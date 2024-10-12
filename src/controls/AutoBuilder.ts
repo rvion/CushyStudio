@@ -23,6 +23,7 @@ export type IAutoBuilder = {
     }>
 }
 
+// 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 SLOW HERE; MUST USE PROXY
 export function mkFormAutoBuilder(form: CushySchemaBuilder): AutoBuilder {
     const autoBuilder = new AutoBuilder(form)
     return new Proxy(autoBuilder, {

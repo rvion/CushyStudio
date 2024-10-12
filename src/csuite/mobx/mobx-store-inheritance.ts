@@ -5,11 +5,12 @@ import type { AnnotationsMap, CreateObservableOptions } from 'mobx'
 import { $mobx, isObservable, makeObservable } from 'mobx'
 
 export const annotationsSymbol = Symbol()
-export const annotationsOverridesSymbol = Symbol()
+// export const annotationsOverridesSymbol = Symbol()
 const objectPrototype = Object.prototype
 
 type Annotations<T extends object = object, U extends PropertyKey = never> = AnnotationsMap<T, U>
 
+let miss = 0
 export const makeAutoObservableInheritance = <
     T extends object & { [annotationsSymbol]?: any },
     AdditionalKeys extends PropertyKey = never,
@@ -31,15 +32,19 @@ export const makeAutoObservableInheritance = <
     // (legacy comment) > Apply only annotations existed in target already
     // (legacy comment) > https://github.com/mobxjs/mobx/discussions/2850#discussioncomment-1396837
     if (annotations != null) {
-        const tmp = {} as Annotations<object, any>
-        for (const key in annotations) {
-            if (key in target) {
-                tmp[key] = annotations[key]
-            }
-        }
-        annotations = tmp
+        // const tmp = {} as Annotations<object, any>
+        // for (const key in annotations) {
+        //     if (key in target) {
+        //         tmp[key] = annotations[key]
+        //     }
+        // }
+        // annotations = tmp
         return makeObservable(target, annotations, options)
+    } else {
+        miss++
     }
+
+    if (miss++ % 100 === 0) console.log(`[🤠] makeAutoObservableInheritance miss: ${miss}`)
 
     // 1. collect all targets by walking the prototype chain
     // (include the base instance itself)

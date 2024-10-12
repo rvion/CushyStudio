@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite'
 
 import { DraftIllustrationUI } from '../../cards/fancycard/DraftIllustration'
 import { Button } from '../../csuite/button/Button'
+import { SpacerUI } from '../../csuite/components/SpacerUI'
 import { Frame, type FrameProps } from '../../csuite/frame/Frame'
 import { hashStringToNumber } from '../../csuite/hashUtils/hash'
 import { InputStringUI } from '../../csuite/input-string/InputStringUI'
@@ -15,7 +16,6 @@ import { DraftMenuLooksUI } from './DraftMenuLooksUI'
 import OverflowingRowUI from './OverflowingRowUI'
 import { PublishAppBtnUI } from './PublishAppBtnUI'
 import { RunOrAutorunUI } from './RunOrAutorunUI'
-import { SpacerUI } from '../../csuite/components/SpacerUI'
 
 export const DraftHeaderUI = observer(function DraftHeader({
     // own props
@@ -72,14 +72,17 @@ export const DraftHeaderUI = observer(function DraftHeader({
             </PanelHeaderUI>
 
             <OverflowingRowUI // quick access to past versions
+                row
                 icon='mdiHistory'
-                tw='gap-1'
+                iconSize='1.25rem'
+                tw='gap-1 items-center'
             >
                 {app.lastExecutedDrafts.map(({ id, title, lastRunAt }) => {
                     return (
                         <Button
                             borderless
-                            // subtle
+                            chroma={draft.id === id ? 0.15 : 0.04}
+                            contrast={draft.id === id ? 0.15 : 0.04}
                             look='primary'
                             hue={hashStringToNumber(id)}
                             key={id}

@@ -3,12 +3,11 @@ import type { Field_prompt } from './FieldPrompt'
 import { observer } from 'mobx-react-lite'
 import { useEffect, useLayoutEffect, useMemo } from 'react'
 
-// import { Button } from '../csuite/button/Button'
-import { InputBoolToggleButtonUI } from '../csuite/checkbox/InputBoolToggleButtonUI'
 import { WidgetSingleLineSummaryUI } from '../csuite/form/WidgetSingleLineSummaryUI'
 import { Frame } from '../csuite/frame/Frame'
+import { IkonOf } from '../csuite/icons/iconHelpers'
+import { SelectUI } from '../csuite/select/SelectUI'
 import { useSt } from '../state/stateContext'
-// import { PromptEditorUI } from './__TEMP__'
 import { PluginWrapperUI } from './plugins/_PluginWrapperUI'
 import { Plugin_AdjustWeightsUI } from './plugins/Plugin_AdjustWeights'
 import { Plugin_DebugAST } from './plugins/Plugin_DebugAST'
@@ -21,41 +20,33 @@ import { WidgetPromptUISt } from './WidgetPromptUISt'
 
 export const WidgetPrompt_LineUI = observer(function WidgetPrompt_LineUI_(p: { field: Field_prompt }) {
     const field = p.field
-    return (
-        <div tw='COLLAPSE-PASSTHROUGH flex flex-1 items-center justify-between'>
-            {field.serial.collapsed ? (
-                <WidgetSingleLineSummaryUI>{field.serial.val}</WidgetSingleLineSummaryUI>
-            ) : (
-                <div /* spacer */ />
-            )}
-            {/* <Button
-                onClick={() => cushy.layout.addCustomV2(PromptEditorUI, { promptID: field.id })}
-                icon='mdiAbacus'
-                subtle
-                square
-            /> */}
-        </div>
-    )
+    if (field.serial.collapsed) return <WidgetSingleLineSummaryUI>{field.serial.val}</WidgetSingleLineSummaryUI>
+    return null
+    //         {/* <Button
+    //             onClick={() => cushy.layout.addCustomV2(PromptEditorUI, { promptID: field.id })}
+    //             icon='mdiAbacus'
+    //             subtle
+    //             square
+    //         /> */}
 })
 
+const isActive = (plugin: PromptPlugin): boolean => (cushy.configFile.get(plugin.configKey) ? true : false)
 export const PluginToggleBarUI = observer(function PluginToggleBarUI_(p: {}) {
     return (
-        <div tw='flex gap-0.5' onMouseDown={(ev) => ev.stopPropagation()}>
-            {plugins.map((plugin) => {
-                const active = cushy.configFile.get(plugin.configKey) ?? false
-                return (
-                    <InputBoolToggleButtonUI
-                        key={plugin.key}
-                        toggleGroup={'plugin'}
-                        tooltip={`${plugin.title}\n${plugin.description}`}
-                        iconSize='1.2em'
-                        value={Boolean(active)}
-                        icon={plugin.icon}
-                        onValueChange={() => cushy.configFile.set(plugin.configKey, !active)}
-                    />
-                )
-            })}
-        </div>
+        <SelectUI<PromptPlugin> //
+            multiple
+            placeholder='plugins'
+            tw='ml-auto'
+            frameProps={{ expand: false, className: 'ml-auto' }}
+            options={(): PromptPlugin[] => plugins}
+            getLabelText={(plugin): string => plugin.title}
+            value={(): PromptPlugin[] => plugins.filter(isActive)}
+            onOptionToggled={(plugin) => cushy.configFile.set(plugin.configKey, !isActive(plugin))}
+            OptionLabelUI={(plugin, where) => {
+                if (where === 'anchor') return <IkonOf name={plugin.icon} />
+                return '🔶DEFAULT🔶'
+            }}
+        />
     )
 })
 

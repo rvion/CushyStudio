@@ -18,7 +18,7 @@ await SYNC_extensionNodeMap()
 await SYNC_alterList()
 
 // ------------------------------------------------------------------------------
-async function SYNC_modelList() {
+async function SYNC_modelList(): Promise<void> {
     console.log(wrapBox(`[🎹] synchronizing model-list.json...`))
     await downloadFile(
         'https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/model-list.json',
@@ -26,7 +26,7 @@ async function SYNC_modelList() {
     )
 }
 // ------------------------------------------------------------------------------
-async function SYNC_customNodeList() {
+async function SYNC_customNodeList(): Promise<void> {
     console.log(wrapBox(`[🎹] synchronizing custom-node-list.json...`))
     await downloadFile(
         'https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/custom-node-list.json',
@@ -34,7 +34,7 @@ async function SYNC_customNodeList() {
     )
 }
 // ------------------------------------------------------------------------------
-async function SYNC_extensionNodeMap() {
+async function SYNC_extensionNodeMap(): Promise<void> {
     console.log(wrapBox(`[🎹] synchronizing extension-node-map.json...`))
     await downloadFile(
         'https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/extension-node-map.json',
@@ -42,7 +42,7 @@ async function SYNC_extensionNodeMap() {
     )
 }
 // alter ------------------------------------------------------------------------------
-async function SYNC_alterList() {
+async function SYNC_alterList(): Promise<void> {
     console.log(wrapBox(`[🎹] synchronizing alter-list.json...`))
     await downloadFile(
         'https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/alter-list.json',

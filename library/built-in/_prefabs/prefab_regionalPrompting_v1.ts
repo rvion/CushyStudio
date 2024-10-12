@@ -1,3 +1,4 @@
+import type { CushySchemaBuilder } from '../../../src/controls/Builder'
 import type { OutputFor } from './_prefabs'
 
 export type UI_regionalPrompting_v1 = X.XBoard<
@@ -6,10 +7,12 @@ export type UI_regionalPrompting_v1 = X.XBoard<
         strength: X.XNumber
     }>
 >
-export function ui_regionalPrompting_v1(): UI_regionalPrompting_v1 {
-    const b = getCurrentForm()
+
+export function ui_regionalPrompting_v1(b: CushySchemaBuilder): UI_regionalPrompting_v1 {
+    b = b ?? getCurrentForm()
     return b.regional({
         element: b.group({
+            // uiui: (b) => b.apply({ Header: '🟢222', Body: '🟢' }),
             items: {
                 prompt: b.prompt({}),
                 strength: b.number({ default: 1, min: 0, max: 2, step: 0.1 }),

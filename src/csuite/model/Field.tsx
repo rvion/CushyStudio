@@ -9,7 +9,6 @@ import type { ProplessFC } from '../types/ReactUtils'
 import type { CovariantFC } from '../variance/CovariantFC'
 import type { FieldTypes } from './$FieldTypes'
 import type { BaseSchema } from './BaseSchema'
-import type { TypeImportLocation } from './codegen/ImportLocation'
 import type { DraftLike } from './Draft'
 import type { FieldConstructor_ViaClass, SerialMigrationFunction, UNVALIDATED } from './FieldConstructor'
 import type { FieldId } from './FieldId'
@@ -20,13 +19,13 @@ import type { Producer } from './pubsub/Producer'
 import type { Repository } from './Repository'
 import type { Transaction } from './Transaction'
 import type { Problem, Problem_Ext } from './Validation'
+import type { AnnotationsMap } from 'mobx'
 
 import { produce, setAutoFreeze } from 'immer'
-import { $mobx, type AnnotationsMap, extendObservable, isObservable, observable } from 'mobx'
+import { $mobx, extendObservable, isObservable, makeObservable, observable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { createElement, type FC, type ReactNode, useMemo } from 'react'
 
-// import { useDebugReasonOfRerendering, useDebugRerender } from '../../../../front/reusable/useDebugUnmount'
 import { csuiteConfig } from '../config/configureCsuite'
 import {
     getFieldSharedClass,
@@ -39,9 +38,7 @@ import {
     isProbablySomeFieldSerial,
 } from '../fields/WidgetUI.DI'
 import { FormAsDropdownConfigUI } from '../form/FormAsDropdownConfigUI'
-import { WidgetErrorsUI } from '../form/WidgetErrorsUI'
 import { WidgetHeaderContainerUI } from '../form/WidgetHeaderContainerUI'
-import { WidgetLabelCaretUI } from '../form/WidgetLabelCaretUI'
 import { WidgetLabelContainerUI } from '../form/WidgetLabelContainerUI'
 import { WidgetLabelIconUI } from '../form/WidgetLabelIconUI'
 import { WidgetToggleUI } from '../form/WidgetToggleUI'
@@ -111,9 +108,19 @@ export interface Field<K extends FieldTypes = FieldTypes> {
 export type UNSAFE_AnyField = any // Field<any>
 
 export abstract class Field<out K extends FieldTypes = FieldTypes> implements Instanciable<K['$Field']>, DraftLike<K> {
+    static codegenValueType(config: any): string {
+        if (
+            config != null && //
+            typeof config === 'object' &&
+            'type' in config &&
+            typeof config.type === 'string'
+        )
+            return `Field_${config.type}_value`
+        return 'any'
+    }
+
     /** @internal */
     static build: 'new' = 'new'
-
     /**
      * unique Field instance ID;
      * each node in the form tree has one;
@@ -142,6 +149,17 @@ export abstract class Field<out K extends FieldTypes = FieldTypes> implements In
 
     /** parent field, (null when root) */
     parent: Field | null
+
+    /** similar to parent, but skip optionals, and other related */
+    get logicalParent(): Field | null {
+        const parent = this.parent
+        if (parent == null) return null
+        let at = parent
+        while (at.parent?.indentChildren === 0) {
+            at = at.parent
+        }
+        return at
+    }
 
     /** schema used to instanciate this widget */
     schema: BaseSchema<this> //K['$Field']>
@@ -193,6 +211,10 @@ export abstract class Field<out K extends FieldTypes = FieldTypes> implements In
 
     private get _migrateSerial(): SerialMigrationFunction<K['$Serial']> {
         return (this.constructor as FieldConstructor_ViaClass<this>).migrateSerial
+    }
+
+    codegenValueType(c: Field['$Config']): string {
+        return (this.constructor as FieldConstructor_ViaClass<this>).codegenValueType(c)
     }
 
     /** wiget value is the simple/easy-to-use representation of that widget  */
@@ -582,8 +604,6 @@ export abstract class Field<out K extends FieldTypes = FieldTypes> implements In
     abstract readonly DefaultBodyUI: CovariantFC<{ field: UNSAFE_AnyField }> | undefined
 
     UIToggle: FC<{ className?: string }> = (p) => <WidgetToggleUI field={this} {...p} />
-    UIErrors: ProplessFC = () => <WidgetErrorsUI field={this} />
-    UILabelCaret: ProplessFC = () => <WidgetLabelCaretUI field={this} />
     UILabelIcon: ProplessFC = () => <WidgetLabelIconUI field={this} />
     UILabelContainer: FC<WidgetLabelContainerProps> = (p) => <WidgetLabelContainerUI {...p} />
     UIHeaderContainer: FC<{ children: ReactNode }> = (p) => (
@@ -628,7 +648,7 @@ export abstract class Field<out K extends FieldTypes = FieldTypes> implements In
         // if (isFieldOptional(this)) return true
         if (isFieldOptional(this.parent)) return true
         if (isFieldChoices(this.parent)) return true
-        if (isFieldChoice(this.parent)) return true
+        if (isFieldChoice(this.parent)) return false
         return false
     }
 
@@ -658,6 +678,14 @@ export abstract class Field<out K extends FieldTypes = FieldTypes> implements In
         throw new Error(`(${this.type}@'${this.path}').setOff: parent (${parent?.type}) is neither optional or choices`)
     }
 
+    get isEnabledWithinParent(): boolean {
+        if (isFieldOptional(this.parent)) return this.parent.active
+        if (isFieldChoices(this.parent)) return this.parent.isBranchEnabled(this.mountKey)
+        if (isFieldChoice(this.parent)) return this.parent.isBranchEnabled(this.mountKey)
+        return true
+    }
+
+    // --------------------------------------------------------
     get isInsideDisabledBranch(): boolean {
         if (this.parent == null) return false
         if (this.parent.isInsideDisabledBranch) return true
@@ -1103,6 +1131,7 @@ export abstract class Field<out K extends FieldTypes = FieldTypes> implements In
      * persistance will usually be done at the root field reacting to this event.
      */
     applySerialUpdateEffects(): void {
+        // console.log(`[🤠] upda applySerialUpdateEffects`)
         this.config.onSerialChange?.(this)
         // this.parent?.applySerialUpdateEffects()
     }
@@ -1110,6 +1139,7 @@ export abstract class Field<out K extends FieldTypes = FieldTypes> implements In
     // 💬 2024-03-15 rvion: use this regexp to quickly review manual serial set patterns
     // | `serial\.[a-zA-Z_]+(\[[a-zA-Z_]+\])? = `
     applyValueUpdateEffects(): void {
+        // console.log(`[🤠] upda applyValueUpdateEffects`)
         // ⏸️ this.serial.lastUpdatedAt = Date.now() as Timestamp
         this.config.onValueChange?.(this)
     }
@@ -1248,13 +1278,6 @@ export abstract class Field<out K extends FieldTypes = FieldTypes> implements In
     UI(props: RENDERER.FieldRenderArgs<this> = {}): ReactNode {
         if (props == undefined) debugger
         return <window.RENDERER.Render field={this} p={props} />
-    }
-
-    /**
-     * @deprecated prefer Field.Render
-     * temporary until shells */
-    renderSimple(p: RENDERER.FieldRenderArgs<this>): ReactNode {
-        return this.UI({ Shell: (x) => <x.UI.Shell.Simple {...x} />, ...p })
     }
 
     /**
@@ -1575,40 +1598,48 @@ export abstract class Field<out K extends FieldTypes = FieldTypes> implements In
             //   VVVVVVVVVVVV this is where we hydrate children
             this.setOwnSerialWithValidationAndMigrationAndFixes(serial)
 
-            // make the object deeply observable including this base class
-            makeAutoObservableInheritance(
-                this,
-                {
-                    // schema should not be able
-                    schema: false,
-                    serial: observable.ref,
+            // 🔶 const observable = (x: any, _: any): any => x
+            // 🔶 const makeAutoObservableInheritance = (x: any, ...args: any[]): any => x
+            // 🔶 const OPTS: CreateObservableOptions = {}
+            // 🔶 if (this.root.config.options?.skipMobxAutoBind) {
+            // 🔶     OPTS.autoBind = false
+            // 🔶 }
 
-                    // components should not be observable; otherwise, it breaks the hot reload in dev-mode
-                    UIToggle: false,
-                    UIErrors: false,
-                    UILabelCaret: false,
-                    UILabelIcon: false,
-                    UILabelContainer: false,
-                    UIHeaderContainer: false,
+            if (this.root.config.instanciationOption?.altMobx) {
+                makeObservable(this, { serial: observable.ref })
+            } else {
+                // make the object deeply observable including this base class
+                makeAutoObservableInheritance(
+                    this,
+                    {
+                        // schema should not be able
+                        schema: false,
+                        serial: observable.ref,
 
-                    // overrides retrieved from parents
-                    ...mobxOverrides,
+                        // components should not be observable; otherwise, it breaks the hot reload in dev-mode
+                        UIToggle: false,
+                        UILabelIcon: false,
+                        UILabelContainer: false,
+                        UIHeaderContainer: false,
 
-                    // misc
-                    getValue: false,
+                        // overrides retrieved from parents
+                        ...mobxOverrides,
 
-                    // Render
-                    Render: false,
-                    render: false,
-                },
-                {},
-                2,
-            )
+                        // misc
+                        getValue: false,
+
+                        // Render
+                        Render: false,
+                        render: false,
+                    },
+                    {},
+                    2,
+                )
+            }
 
             this.UI = this.UI.bind(this)
             this.render = this.render.bind(this)
             this.Render = this.Render.bind(this)
-            this.renderSimple = this.renderSimple.bind(this) // TODO: remove
             this.renderAsConfigBtn = this.renderAsConfigBtn.bind(this) // TODO: remove
 
             this.repo._registerField(this)
@@ -1622,30 +1653,6 @@ export abstract class Field<out K extends FieldTypes = FieldTypes> implements In
 
     cloneWithConfig(config: Partial<K['$Config']>): this {
         return this.schema.withConfig(config).create(this.serial) as this
-    }
-
-    // CODEGEN -------------------------------------------------------
-    codeForTypeModule(p: {
-        //
-        importTypeFrom?: TypeImportLocation
-    }): string {
-        return [
-            `export type ${this.type}Schema = ${this.codeForTypescriptCodeForSchema()}`,
-            `export type ${this.type}Value = ${this.codeForTypescriptCodeForValue()}`,
-            `export type ${this.type}Serial = ${this.codeForTypescriptCodeForSerial()}`,
-        ].join('\n')
-    }
-
-    codeForTypescriptCodeForSchema(): string {
-        return this.type
-    }
-
-    codeForTypescriptCodeForSerial(): string {
-        return this.type
-    }
-
-    codeForTypescriptCodeForValue(): string {
-        return this.type
     }
     // ---------------------------------------------------------------
 

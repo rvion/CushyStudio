@@ -1,9 +1,11 @@
+import type { Field } from '../../model/Field'
 import type { SchemaDict } from '../../model/SchemaDict'
 import type { Field_choices } from './FieldChoices'
 
 import { observer } from 'mobx-react-lite'
 
 import { ListOfFieldsContainerUI } from '../../form/WidgetsContainerUI'
+import { WidgetToggleUI } from '../../form/WidgetToggleUI'
 import { WidgetChoices_SelectHeaderUI } from './WidgetChoices_SelectHeaderUI'
 import { WidgetChoices_TabHeaderSingleLineUI, WidgetChoices_TabHeaderUI } from './WidgetChoices_TabHeaderUI'
 
@@ -14,14 +16,17 @@ export const WidgetChoices_HeaderUI = observer(function WidgetChoices_LineUI_(p:
     else return <WidgetChoices_SelectHeaderUI field={p.field} />
 })
 
-export const WidgetChoices_BodyUI = observer(function WidgetChoices_BodyUI_<T extends SchemaDict>(p: {
-    field: Field_choices<T>
-    justify?: boolean
-    className?: string
-}) {
+export const WidgetChoices_BodyUI = observer(function WidgetChoices_BodyUI_<
+    //
+    T extends SchemaDict,
+>(p: { field: Field_choices<T>; justify?: boolean; className?: string }) {
     const field = p.field
-    const activeSubwidgets = Object.entries(field.enabledBranches) //
+    const activeSubwidgets: {
+        branch: string
+        subWidget: Field
+    }[] = Object.entries(field.enabledBranches) //
         .map(([branch, subWidget]) => ({ branch, subWidget }))
+
     // return activeSubwidgets.map((i) => i.branch).join(',')
     return (
         <ListOfFieldsContainerUI //
@@ -31,7 +36,12 @@ export const WidgetChoices_BodyUI = observer(function WidgetChoices_BodyUI_<T ex
             {activeSubwidgets.map((val) => {
                 const subWidget = val.subWidget
                 if (subWidget == null) return <>❌ error</>
-                return <subWidget.UI key={val.branch} />
+                return (
+                    <subWidget.UI //
+                        key={val.branch}
+                        Toogle={<WidgetToggleUI field={subWidget} />}
+                    />
+                )
                 // return (
                 //     <WidgetWithLabelUI //
                 //         justifyLabel={p.justify}

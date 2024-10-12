@@ -50,7 +50,7 @@ export const schemaModelExtras = (
             border: false,
             default: p.vaeActiveByDefault ? 'vae' : {},
             // label: false,
-            appearance: 'tab',
+            // appearance: 'tab',
         },
     )
 }

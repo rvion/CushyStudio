@@ -1,3 +1,4 @@
+import type { Extension } from '@codemirror/state'
 import type { EditorView } from '@codemirror/view'
 
 import { syntaxTree } from '@codemirror/language'
@@ -11,7 +12,7 @@ import { $commonAncestor, $smartResolve } from './utils'
 // see the https://codemirror.net/examples/decoration/
 
 // TODO: allow to increase / decrease weights by scrolling
-export const PromptKeymap1 = () =>
+export const PromptKeymap1 = (): Extension =>
     keymap.of([
         { key: 'm-ArrowUp', preventDefault: true, run: changeWeights(0.1, ['WeightedExpression', 'Lora', 'Wildcard']) },
         { key: 'm-ArrowDown', preventDefault: true, run: changeWeights(-0.1, ['WeightedExpression', 'Lora', 'Wildcard']) },
@@ -39,7 +40,7 @@ const changeWeights =
         return true
     }
 
-const formatWeights = (weights: number) => {
+const formatWeights = (weights: number): string => {
     return weights.toFixed(3).replace(/\.?0+$/, '')
 }
 
@@ -49,7 +50,7 @@ const changeWeight = (
     from: number,
     to: number,
     amount: number,
-) => {
+): void => {
     const tree = syntaxTree(view.state)
     if (from > to) throw new Error(`❌ from > to`)
     const nodeA = $smartResolve(tree, from)

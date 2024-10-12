@@ -61,6 +61,10 @@ export class Field_datePlain<const NULLABLE extends boolean = false> extends Fie
     // #region static
     static readonly type: 'plaindate' = 'plaindate'
     static readonly emptySerial: Field_datePlain_serial = { $: 'plaindate' }
+    static codegenValueType(config: Field_datePlain_config<any>): string {
+        if (config.nullable) return 'Maybe<Temporal.PlainDate>'
+        return 'Temporal.PlainDate'
+    }
     static migrateSerial(serial: object): Maybe<Field_datePlain_serial> {
         if (isProbablySerialString(serial) || isProbablySerialDate(serial)) {
             if (!serial.value) return { $: this.type }

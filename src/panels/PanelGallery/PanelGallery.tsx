@@ -9,7 +9,7 @@ import { UI } from '../../csuite/components/UI'
 import { FormAsDropdownConfigUI } from '../../csuite/form/FormAsDropdownConfigUI'
 import { Panel, type PanelHeader, type PanelPreset } from '../../router/Panel'
 import { usePanel } from '../../router/usePanel'
-import { type GalleryConf, useGalleryConf } from './galleryConf'
+import { GalleryConf, useGalleryConf } from './galleryConf'
 import { GalleryImageGridUI } from './GalleryImageGridUI'
 import { GallerySearchControlsUI } from './GallerySearchControlsUI'
 
@@ -56,6 +56,18 @@ export const PanelGalleryUI = observer(function PanelGalleryUI_(p: PanelGalleryP
                 <SpacerUI />
                 <GalleryPreferencesUI />
             </UI.Panel.Header>
+            {/* <conf.Render
+                global={(ui) => {
+                    const field = ui.field
+                    ui.apply({ Shell: ui.catalog.Shell.Mobile })
+                    if (isFieldGroup(field))
+                        return {
+                            // Shell: <ui.catalog.group.inline field={field} />,
+                            Header: (): JSX.Element => <ui.catalog.group.inline field={field} />,
+                            Body: null,
+                        }
+                }}
+            /> */}
             <GalleryImageGridUI onClick={p.onClick} />
         </UI.Panel>
     )

@@ -1,5 +1,6 @@
 import react from '@vitejs/plugin-react'
 import { cwd } from 'process'
+import UnoCSS from 'unocss/vite'
 import { defineConfig } from 'vite'
 
 const installDir = cwd()
@@ -26,6 +27,24 @@ export default defineConfig({
     plugins: [
         // dynamicModulePlugin(),
         react({ jsxImportSource: 'JSOX' }),
+        UnoCSS({
+            postcss: false,
+            include: ['src/**/*.{js,jsx,ts,tsx}', 'library/**/*.{js,jsx,ts,tsx}'],
+            content: {
+                filesystem: ['src/**/*.{jsx,tsx}', 'library/**/*.{jsx,tsx}'],
+                pipeline: {
+                    include: [
+                        // the default
+                        // /\.(vue|svelte|[jt]sx|mdx?|astro|elm|php|phtml|html)($|\?)/,
+                        // include js/ts files
+                        'src/**/*.{jsx,tsx}',
+                        'library/**/*.{jsx,tsx}',
+                    ],
+                    // exclude files
+                    // exclude: []
+                },
+            },
+        }),
         // viteSingleFile(),
     ],
     build: {
@@ -41,8 +60,8 @@ export default defineConfig({
             ignored: [
                 '**/src/shell/*.js',
                 //
-                '**/library/**/*.ts',
-                '**/library/**/*.tsx',
+                // '**/library/**/*.ts',
+                // '**/library/**/*.tsx',
                 '**/tsconfig.json',
 
                 // find which one to keep later

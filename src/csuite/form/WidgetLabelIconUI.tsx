@@ -15,7 +15,7 @@ export const WidgetLabelIconUI = observer(function WidgetLabelIconUI_(p: WidgetL
     if (iconName == null) return null
     return (
         <Frame //
-            tw='UI-WidgetLabelIcon self-start minh-widget ABDDE flex items-center'
+            tw='UI-WidgetLabelIcon self-start minh-widget flex items-center'
             className={p.className}
             text={{ chroma: 0.2, contrast: 0.9 }}
         >

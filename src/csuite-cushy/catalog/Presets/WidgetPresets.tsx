@@ -1,9 +1,9 @@
-import type { DropdownProps } from '../dropdown/Dropdown'
-import type { Field } from '../model/Field'
+import type { DropdownProps } from '../../../csuite/dropdown/Dropdown'
+import type { Field } from '../../../csuite/model/Field'
 
 import { observer } from 'mobx-react-lite'
 
-import { UI } from '../components/UI'
+import { UI } from '../../../csuite/components/UI'
 
 export type WidgetPresetsProps = {
     field: Field
@@ -35,8 +35,9 @@ export const WidgetPresetsUI = observer(function WidgetPresets({
                         tooltip={title}
                         tooltipPlacement='top'
                         subtle
-                        icon='mdiBook'
-                        children={presetCount}
+                        borderless
+                        icon='mdiBookOutline'
+                        // children={presetCount}
                     />
                 )
             }
@@ -46,7 +47,7 @@ export const WidgetPresetsUI = observer(function WidgetPresets({
                         key={preset.label}
                         icon={preset.icon}
                         onClick={() => preset.apply(field)}
-                        children={preset.label}
+                        label={preset.label}
                     />
                 ))
             }}

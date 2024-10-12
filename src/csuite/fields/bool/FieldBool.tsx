@@ -78,6 +78,9 @@ export class Field_bool extends Field<Field_bool_types> {
     // #region Static
     static readonly type: 'bool' = 'bool'
     static readonly emptySerial: Field_bool_serial = { $: 'bool' }
+    static codegenValueType(config: Field_bool_config): string {
+        return `boolean`
+    }
     static migrateSerial(serial: object): Maybe<Field_bool_serial> {
         if (isProbablySerialBool(serial)) {
             if ('val' in serial) {

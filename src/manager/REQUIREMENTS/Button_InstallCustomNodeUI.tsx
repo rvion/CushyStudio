@@ -3,6 +3,7 @@ import type { PluginInfo } from '../../manager/custom-node-list/custom-node-list
 import { observer } from 'mobx-react-lite'
 import { useState } from 'react'
 
+import { Button } from '../../csuite/button/Button'
 import { Frame } from '../../csuite/frame/Frame'
 import { useAsyncAction } from '../../importers/usePromise'
 import { useSt } from '../../state/stateContext'
@@ -41,17 +42,14 @@ export const Button_InstallCustomNodeUI = observer(function Button_InstallCustom
                 </div>
                 <div tw='flex-col flex'>
                     {!isInstalled && (
-                        <div
-                            tw={[
-                                'rounded btn bg-primaryborder border-base-300 w-12 h-12',
-                                action.isRunning ? 'btn-disabled' : null,
-                            ]}
+                        <Button
+                            icon={isInstalled ? 'mdiCheck' : 'mdiDownload'}
+                            loading={action.isRunning}
                             onClick={() => action.start()}
                         >
                             {action.isRunning ? <div tw='loading loading-spinner' /> : null}
                             {isInstalled ? '✅' : null}
-                            <span className='material-symbols-outlined'>{isInstalled ? 'download_done' : 'cloud_download'}</span>
-                        </div>
+                        </Button>
                     )}
                 </div>
             </div>

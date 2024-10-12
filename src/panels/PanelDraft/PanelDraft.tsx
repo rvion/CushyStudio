@@ -84,7 +84,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
         return (
             <ErrorPanelUI>
                 {/* <div>{draft.id}</div> */}
-                <div>draft.form is null</div>
+                <div>draft.form is null (err. #syZcdJZpwY)</div>
                 {/* <div>test: {draft.test}</div> */}
             </ErrorPanelUI>
         )

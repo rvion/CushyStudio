@@ -5,6 +5,7 @@ import type { CustomWidgetProps } from '../../src/csuite/fields/custom/FieldCust
 import { observer } from 'mobx-react-lite'
 import Confetti from 'react-confetti'
 
+import { Button } from '../../src/csuite/button/Button'
 import { MyCustomComponent2 } from './example-widget-custom-2'
 
 const MyCustomComponent = observer(function (
@@ -26,10 +27,10 @@ const MyCustomComponent = observer(function (
                 onChange={(ev) => (value.text = ev.target.value)}
             />
             {/* Button -------------------------------------------------------- */}
-            <div className='btn btn-outline btn-primary btn-sm' onClick={() => value.clickCount++}>
+            <Button look='primary' size='sm' onClick={() => value.clickCount++}>
                 <div>Did you click it?</div>
                 <div>{value.clickCount ? `yes ${value.clickCount} times` : `nope`}</div>
-            </div>
+            </Button>
             {/* extra components -------------------------------------------------------- */}
             <p.extra.JsonViewUI value={value} />
             {img && <p.extra.ImageUI img={img} />}

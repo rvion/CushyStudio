@@ -53,6 +53,9 @@ export class Field_seed extends Field<Field_seed_types> {
     // #region type
     static readonly type: 'seed' = 'seed'
     static readonly emptySerial: Field_seed_serial = { $: 'seed' }
+    static codegenValueType(config: Field_seed_config): string {
+        return `number`
+    }
     static migrateSerial(): undefined {}
 
     // #region Ctor

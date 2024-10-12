@@ -60,6 +60,9 @@ export class Field_image extends Field<Field_image_types> {
     static readonly type: 'image' = 'image'
     static readonly emptySerial: Field_image_serial = { $: 'image' }
     static migrateSerial(): undefined {}
+    static codegenValueType(config: Field_image_config): string {
+        return `MediaImageL`
+    }
 
     // #region constructor
     constructor(

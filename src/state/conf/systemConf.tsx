@@ -38,7 +38,7 @@ export const systemConf = cushyFactory.document(
                             tw='flex flex-1 flex-grow flex-col gap-5' //TODO(bird_d): COMPONENT REPLACE: These "containers" should be replaced by a group component.
                         >
                             <div tw='flex w-full flex-1 flex-grow flex-col gap-1'>
-                                <f.externalEditor.UI LabelText={null} />
+                                <f.externalEditor.UI Title={null} />
                             </div>
                         </div>
                     )

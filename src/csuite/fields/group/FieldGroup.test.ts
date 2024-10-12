@@ -2,8 +2,55 @@ import { describe, expect, it } from 'bun:test'
 import { _getAdministration, isObservableProp } from 'mobx'
 
 import { simpleBuilder as b } from '../../index'
+import { expectJSON } from '../../model/TESTS/utils/expectJSON'
 
 describe('groups', () => {
+    it.only('shoudl support apply defaultValue from config to set complex nested values', () => {
+        const S1 = b.fields(
+            {
+                num: b.number({ default: 10 }),
+                str: b.string({ default: 'A' }),
+            },
+            { default: { num: 20, str: 'B' } },
+        )
+        expectJSON(S1.create().value).toEqual({ num: 20, str: 'B' })
+
+        const S2 = b.fields(
+            {
+                x: b.number({ default: 10 }),
+                xx: b.fields({
+                    y: b.string({ default: 'A' }),
+                    yy: b.fields({
+                        z: b.boolean({ default: false }),
+                    }),
+                }),
+            },
+            { default: { x: 20, xx: { y: 'B', yy: { z: true } } } },
+        )
+        expectJSON(S2.create().value).toEqual({ x: 20, xx: { y: 'B', yy: { z: true } } })
+
+        // TODO: move that elsewhere
+        // const S2 = b.int().list({ default: [1, 2, 3] })
+        // expectJSON(S2.create().value).toEqual([1, 2, 3])
+    })
+
+    it('contains child serial in its serial even if child is not set', () => {
+        const S1 = b.fields({
+            num: b.number_(),
+            str: b.string_(),
+        })
+        const E1 = S1.create()
+        expect(E1._acknowledgeCount).toBe(2)
+        expect(E1.Num.serial).toEqual({ $: 'number' })
+        expect(E1.serial).toEqual({
+            $: 'group',
+            values_: {
+                num: { $: 'number' },
+                str: { $: 'str' },
+            },
+        })
+    })
+
     it('are practical to use', () => {
         const S1: S.SGroup<{
             baz: S.SGroup<{

@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 
 import { BadgeListUI } from '../../csuite/badge/BadgeListUI'
 import { Button } from '../../csuite/button/Button'
-import { InputBoolToggleButtonUI } from '../../csuite/checkbox/InputBoolToggleButtonUI'
+import { ToggleButtonUI } from '../../csuite/checkbox/InputBoolToggleButtonUI'
 import { JsonViewUI } from '../../csuite/json/JsonViewUI'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { CivitaiResultVersionUI } from './CivitaiResultVersionUI'
@@ -48,7 +48,7 @@ export const CivitaiResultFullUI = observer(function CivitaiResultFullUI_(p: {
                 tw='flex flex-wrap gap-0.5'
             >
                 {item.modelVersions.map((version: CivitaiModelVersion) => (
-                    <InputBoolToggleButtonUI
+                    <ToggleButtonUI
                         toggleGroup='civitai-versions'
                         value={selected.version === version}
                         key={version.id}
@@ -60,7 +60,7 @@ export const CivitaiResultFullUI = observer(function CivitaiResultFullUI_(p: {
                             src={version.images[0]?.url}
                         />
                         <span>{version.name}</span>
-                    </InputBoolToggleButtonUI>
+                    </ToggleButtonUI>
                 ))}
             </div>
 

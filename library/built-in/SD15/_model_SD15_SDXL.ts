@@ -13,21 +13,41 @@ export const prefabModelSD15andSDXL = (
 ): $prefabModelSD15andSDXL => {
     const b = getCurrentForm()
     const ckpts = cushy.managerRepository.getKnownCheckpoints()
-    return b.fields({
-        ckpt_name: b.enum
-            .Enum_CheckpointLoaderSimple_ckpt_name({
-                label: 'Checkpoint',
-                // default: p.ckpt_name ?? 'revAnimated_v122.safetensors', 🔴
-                default: p.ckpt_name ?? undefined,
-            })
-            .addRequirements(
-                ckpts.map((x) => ({
-                    type: 'modelCustom',
-                    infos: x,
-                })),
-            ),
-        extra: schemaModelExtras(),
-    })
+    return b.fields(
+        {
+            ckpt_name: b.enum
+                .Enum_CheckpointLoaderSimple_ckpt_name({
+                    label: 'Checkpoint',
+                    // default: p.ckpt_name ?? 'revAnimated_v122.safetensors', 🔴
+                    default: p.ckpt_name ?? undefined,
+                })
+                .addRequirements(
+                    ckpts.map((x) => ({
+                        type: 'modelCustom',
+                        infos: x,
+                    })),
+                ),
+            extra: schemaModelExtras(),
+        },
+        {
+            icon: 'mdiTurbine',
+            summary: (ui) => {
+                let out: string = ui.ckpt_name
+                if (ui.extra.freeU) out += ' + FreeU'
+                if (ui.extra.freeUv2) out += ' + FreeUv2'
+                if (ui.extra.vae) out += ' + VAE'
+                if (ui.extra.clipSkip) out += ` + ClipSkip(${ui.extra.clipSkip})`
+                if (ui.extra.pag) out += ` + PAG(${ui.extra.pag.scale})`
+                if (ui.extra.sag) out += ` + SAG(${ui.extra.sag.scale}/${ui.extra.sag.blur_sigma})`
+                // 2024-05-30 rvion:
+                // | changed the summary when Kohya DeepShrink is enabled.
+                // | Was causing some error (not able to convert ui.extra.KohyaDeepShrink to string)
+                // | automatically
+                if (ui.extra.KohyaDeepShrink) out += ` + Shrink(...)` // ${ui.extra.KohyaDeepShrink}
+                return out
+            },
+        },
+    )
 }
 
 export function evalModelSD15andSDXL(doc: $prefabModelSD15andSDXL['$Value']): {

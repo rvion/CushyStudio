@@ -1,4 +1,4 @@
-import type { CompiledRenderProps } from '../presenters/Presenter'
+import type { CompiledRenderProps } from '../presenters/Renderer'
 
 import { observer } from 'mobx-react-lite'
 
@@ -9,7 +9,7 @@ export const ShellSimpleUI = observer(function ShellSimple(p: CompiledRenderProp
     return (
         <div>
             <div tw='row'>
-                {utils.renderFCOrNode(p.LabelText, { field })}
+                {utils.renderFCOrNode(p.Title, { field })}
                 {utils.renderFCOrNodeWithWrapper(p.Header, p, p.ContainerForHeader, {
                     className: p.classNameAroundBodyAndHeader ?? undefined,
                     field,

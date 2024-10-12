@@ -11,6 +11,7 @@ import { twMerge } from 'tailwind-merge'
 import { cls } from '../../widgets/misc/cls'
 import { regionMonitor } from '../regions/RegionMonitor'
 import { objectAssignTsEfficient_t_t } from '../utils/objectAssignTsEfficient'
+import { useEffectAction } from '../utils/useEffectAction'
 import { VirtualDomRect } from './misc/VirtualDomRect'
 import { RevealBackdropUI } from './RevealBackdropUI'
 import { whitelistedClonableComponents } from './RevealCloneWhitelist'
@@ -35,14 +36,14 @@ export const RevealUI = observer(
         const nextTower = useMemo(() => ({ tower: [...parents, lazyState] }), [])
 
         // 🔴 2024-08-08 domi: isn't this broken/useless?
-        useEffect(() => {
+        useEffectAction(() => {
             if (ref2 == null) return
             if (typeof ref2 === 'function') ref2(lazyState)
             else ref2.current = lazyState
         }, [])
 
         // once updated, make sure to keep props in sync so hot reload work well enough.
-        useEffect(() => {
+        useEffectAction(() => {
             if (reveal == null) return
             if (p.content !== reveal.p.content)
                 reveal.contentFn = (): JSX.Element => createElement(p.content, reveal.revealContentProps)

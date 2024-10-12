@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite'
 import { type FC, Fragment } from 'react'
 
 import { openFolderInOS } from '../../app/layout/openExternal'
-import { InputBoolToggleButtonUI } from '../../csuite/checkbox/InputBoolToggleButtonUI'
+import { ToggleButtonUI } from '../../csuite/checkbox/InputBoolToggleButtonUI'
 import { UI } from '../../csuite/components/UI'
 import { FormUI } from '../../csuite/form/FormUI'
 import { Panel, type PanelHeader } from '../../router/Panel'
@@ -73,8 +73,14 @@ export const PanelConfigUI = observer(function Panel_Config_(p: PanelConfigProps
                     title='Actions'
                     content={() => (
                         <>
-                            <UI.Dropdown.Item onClick={() => openInVSCode('CONFIG.json')} children='Open legacy config file' />
-                            <UI.Dropdown.Item onClick={() => openFolderInOS('settings')} children='Open config folder' />
+                            <UI.Dropdown.Item //
+                                onClick={() => openInVSCode('CONFIG.json')}
+                                label='Open legacy config file'
+                            />
+                            <UI.Dropdown.Item //
+                                onClick={() => openFolderInOS('settings')}
+                                label='Open config folder'
+                            />
                         </>
                     )}
                 ></UI.Dropdown>
@@ -109,7 +115,7 @@ const ConfigTabButtonUI = observer(function ConfigTabButtonUI_(p: {
     field: X.SelectOne_<ConfigMode>
 }) {
     return (
-        <InputBoolToggleButtonUI //
+        <ToggleButtonUI //
             toggleGroup='config-tab'
             tw='capitalize h-10'
             value={p.field.is(p.mode)}

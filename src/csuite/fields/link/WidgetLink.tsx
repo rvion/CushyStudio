@@ -1,4 +1,4 @@
-import type { CompiledRenderProps } from '../../../csuite-cushy/presenters/Presenter'
+import type { CompiledRenderProps } from '../../../csuite-cushy/presenters/Renderer'
 import type { BaseSchema } from '../../model/BaseSchema'
 import type { Field_link } from './FieldLink'
 
@@ -12,7 +12,10 @@ export const ShellLinkUI = observer(function ShellLink(p: CompiledRenderProps<Fi
     const child = field.bField
     return (
         <child.UI //
-            LabelText={(x) => renderFCOrNode(p.LabelText, { field: field })}
+            UpDownBtn={p.UpDownBtn}
+            DeleteBtn={p.DeleteBtn}
+            Toogle={p.Toogle}
+            Title={(x) => renderFCOrNode(p.Title, { field: field })}
             classNameAroundBodyAndHeader={extraClass}
         />
     )

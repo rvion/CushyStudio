@@ -60,6 +60,10 @@ export class Field_date<const NULLABLE extends boolean = false> extends Field<Fi
     // #region static
     static readonly type: 'date' = 'date'
     static readonly emptySerial: Field_date_serial = { $: 'date' }
+    static codegenValueType(config: Field_date_config<any>): string {
+        if (config.nullable) return 'Maybe<Date>'
+        return 'Date'
+    }
 
     // #region migration
     static migrateSerial(serial: object): Field_date_serial | null {

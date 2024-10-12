@@ -33,6 +33,8 @@ export type Field_group_config<T extends Field_group_types<SchemaDict>> = FieldC
 
         /** @default @false */
         presetButtons?: boolean
+        default?: T['$Value']
+
         // 🔶 TODO 1: remove summary from here and move it to the base field config directly
         // 🟢 TODO 2: stop passing values to that function, only pass the field directly
         // TODO 3: add a similary Cell option on the base fieldconfig, that return a ReactNode instead of a string
@@ -73,11 +75,14 @@ export type MAGICFIELDS<T extends Field_group_types<SchemaDict>> = {
     [K in keyof T['$Sub'] as Capitalize<K & string>]: T['$Sub'][K]['$Field']
 }
 
-export interface Field_Group_withMagicFields<T extends Field_group_types<SchemaDict>> extends Field_group<T> {
+export interface Field_Group_withMagicFields<T extends Field_group_types<SchemaDict>> //
+    extends Field_group<T> {
     $Field: FieldGroup<T>
 }
+
 /** named alias for the Field with MAGICFields added, to keep field type concise  */
-export type FieldGroup<T extends Field_group_types<SchemaDict>> = Field_group<T> & MAGICFIELDS<T>
+export type FieldGroup<T extends Field_group_types<SchemaDict>> = //
+    Field_group<T> & MAGICFIELDS<T> & { $Field: FieldGroup<T> }
 
 // // prettier-ignore
 // type QuickFormContent<T extends Field> =
@@ -114,6 +119,13 @@ export class Field_group<X extends Field_group_types<SchemaDict> = Field_group_t
 {
     static readonly type: 'group' = 'group'
     static readonly emptySerial: Field_group_serial<any> = { $: 'group', values_: {} }
+    static codegenValueType(config: Field_group_config<any>): string {
+        return [
+            `{`,
+            (Object.entries(config.items) as [string, BaseSchema][]).map(([k, v]) => `${k}: ${v.codegenValueType()}`).join('; '),
+            `}`,
+        ].join(' ')
+    }
     static migrateSerial(): undefined {}
 
     // ⁉️ good approach ? lol
@@ -129,12 +141,6 @@ export class Field_group<X extends Field_group_types<SchemaDict> = Field_group_t
         serial?: Field_group_serial<X>,
     ) {
         super(repo, root, parent, schema, initialMountKey, serial)
-        for (const [fName, fSchema] of this._fieldSchemas) {
-            Object.defineProperty(this, capitalize(fName), {
-                get: () => this.fields[fName],
-                configurable: true,
-            })
-        }
         this.init(serial, {
             // UI
             DefaultHeaderUI: false,
@@ -144,6 +150,14 @@ export class Field_group<X extends Field_group_types<SchemaDict> = Field_group_t
             value_or_zero: false,
             value_unchecked: false,
         })
+        // 🔶 dangerous to do here, but allow to skip either creating a new class
+        // or making sure makeObsevable is not called with wrongly cached annotations
+        for (const [fName, fSchema] of this._fieldSchemas) {
+            Object.defineProperty(this, capitalize(fName), {
+                get: () => this.fields[fName],
+                configurable: true,
+            })
+        }
     }
 
     // #region UI
@@ -228,6 +242,13 @@ export class Field_group<X extends Field_group_types<SchemaDict> = Field_group_t
                 targetChildSerial: next?.values_?.[fName],
                 attach: (child) => {
                     this.fields[fName] = child
+                    const isNew = !(fName in next.values_)
+                    if (isNew) {
+                        const hasDefault = this.config.default != null && fName in this.config.default
+                        if (hasDefault) {
+                            child.value = this.config.default![fName]
+                        }
+                    }
                     // 💬 2024-09-11 rvion:
                     // | 👇 no longer necessary
                     // | this.patchSerial((draft) => void (draft.values_[fName] = child.serial))

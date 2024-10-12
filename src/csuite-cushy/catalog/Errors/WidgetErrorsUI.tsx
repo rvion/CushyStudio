@@ -1,13 +1,13 @@
-import type { Field } from '../model/Field'
+import type { Field } from '../../../csuite/model/Field'
 
 import { observer } from 'mobx-react-lite'
 
-import { Ikon } from '../../csuite/icons/iconHelpers'
-import { csuiteConfig } from '../config/configureCsuite'
-import { Frame } from '../frame/Frame'
-import { MessageInfoUI } from '../messages/MessageInfoUI'
-import { normalizeProblem } from '../model/Validation'
-import { RevealUI } from '../reveal/RevealUI'
+import { csuiteConfig } from '../../../csuite/config/configureCsuite'
+import { Frame } from '../../../csuite/frame/Frame'
+import { Ikon } from '../../../csuite/icons/iconHelpers'
+import { MessageInfoUI } from '../../../csuite/messages/MessageInfoUI'
+import { normalizeProblem } from '../../../csuite/model/Validation'
+import { RevealUI } from '../../../csuite/reveal/RevealUI'
 
 /** default error block */
 export const WidgetErrorsUI = observer(function WidgerErrorsUI_(p: { field: Field }) {

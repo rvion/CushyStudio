@@ -45,6 +45,9 @@ export class Field_optional<out T extends BaseSchema = BaseSchema> extends Field
     // #region Type
     static readonly type: 'optional' = 'optional'
     static readonly emptySerial: Field_optional_serial = { $: 'optional' }
+    static codegenValueType(config: Field_optional_config): string {
+        return `Maybe<${config.schema.codegenValueType()}>`
+    }
     static migrateSerial(): undefined {}
 
     // #region Ctor

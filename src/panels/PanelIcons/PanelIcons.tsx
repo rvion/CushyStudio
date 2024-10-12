@@ -1,11 +1,14 @@
 import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
 
+import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 import { FixedSizeGrid } from 'react-window'
 
 import { Button } from '../../csuite/button/Button'
+import { ToggleButtonUI } from '../../csuite/checkbox/InputBoolToggleButtonUI'
 import { SpacerUI } from '../../csuite/components/SpacerUI'
+import { useCSuite } from '../../csuite/ctx/useCSuite'
 import { Frame } from '../../csuite/frame/Frame'
 import { InputStringUI } from '../../csuite/input-string/InputStringUI'
 import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
@@ -13,8 +16,6 @@ import { useSizeOf } from '../../csuite/smooth-size/useSizeOf'
 import { Panel, type PanelHeader } from '../../router/Panel'
 import { usePanel } from '../../router/usePanel'
 import { IconPanelStableState } from './PanelIconsState'
-import { InputBoolToggleButtonUI } from '../../csuite/checkbox/InputBoolToggleButtonUI'
-import { useCSuite } from '../../csuite/ctx/useCSuite'
 
 export const PanelIcon = new Panel({
     name: 'Icons',
@@ -67,9 +68,13 @@ export const PanelIconUI = observer(function PanelIconUI_(p: NO_PROPS) {
                         icon='mdiMagnify'
                         autoFocus
                         getValue={() => uist.query}
-                        setValue={(val) => (uist.query = val)}
+                        setValue={(val) =>
+                            runInAction(() => {
+                                uist.query = val
+                            })
+                        }
                     />
-                    <InputBoolToggleButtonUI
+                    <ToggleButtonUI
                         toggleGroup='panel-icon-filter'
                         value={uist.filter}
                         icon={uist.filter ? 'mdiFilter' : 'mdiFilterOff'}

@@ -28,14 +28,12 @@ export const Button_InstalModelViaManagerUI = observer(function Button_InstalMod
                             <div tw='loading loading-spinner'></div>
                         ) : (
                             <Button
+                                children='Install'
                                 onClick={async () => {
                                     const res = await host.manager.installModel(mi)
                                     if (!res) return
                                 }}
-                            >
-                                {/* <span className='material-symbols-outlined'>cloud_download</span> */}
-                                <span>Install</span>
-                            </Button>
+                            />
                         )}
                         {renderStatus(modelStatus, p.optional)}
                     </div>

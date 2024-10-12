@@ -1,44 +1,17 @@
-import type { WidgetHeaderContainerProps } from '../../csuite/form/WidgetHeaderContainerUI'
-import type { WidgetIndentProps } from '../../csuite/form/WidgetIndentUI'
-import type { WidgetLabelCaretProps } from '../../csuite/form/WidgetLabelCaretUI'
-import type { WidgetLabelIconProps } from '../../csuite/form/WidgetLabelIconUI'
-import type { WidgetLabelTextProps } from '../../csuite/form/WidgetLabelTextUI'
-import type { WidgetMenuProps } from '../../csuite/form/WidgetMenu'
-import type { WidgetPresetsProps } from '../../csuite/form/WidgetPresets'
-import type { WidgetSingleLineSummaryProps } from '../../csuite/form/WidgetSingleLineSummaryUI'
-import type { WidgetToggleProps } from '../../csuite/form/WidgetToggleUI'
 import type { Field } from '../../csuite/model/Field'
-import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
 import type { CovariantFn1 } from '../../csuite/variance/BivariantHack'
-import type { CovariantFC } from '../../csuite/variance/CovariantFC'
 import type { QuickFormContent } from '../catalog/group/QuickForm'
-import type { FC, ReactNode } from 'react'
+import type { WidgetSlots } from './RenderSlots'
+import type { ReactNode } from 'react'
 
 import { createElement } from 'react'
 
-import { ShellLinkUI } from '../../csuite/fields/link/WidgetLink'
-import { ShellOptionalUI } from '../../csuite/fields/optional/WidgetOptional'
-import { isFieldLink, isFieldOptional } from '../../csuite/fields/WidgetUI.DI'
-import { type BodyContainerProps, WidgetBodyContainerUI } from '../../csuite/form/WidgetBodyContainerUI'
-import { WidgetDebugIDUI } from '../../csuite/form/WidgetDebugIDUI'
-import { WidgetErrorsUI } from '../../csuite/form/WidgetErrorsUI'
-import { WidgetHeaderContainerUI } from '../../csuite/form/WidgetHeaderContainerUI'
-import { WidgetIndentUI } from '../../csuite/form/WidgetIndentUI'
-import { WidgetLabelCaretUI } from '../../csuite/form/WidgetLabelCaretUI'
-import { WidgetLabelIconUI } from '../../csuite/form/WidgetLabelIconUI'
-import { WidgetLabelTextUI } from '../../csuite/form/WidgetLabelTextUI'
-import { WidgetMenuUI } from '../../csuite/form/WidgetMenu'
-import { WidgetPresetsUI } from '../../csuite/form/WidgetPresets'
-import { WidgetSingleLineSummaryUI } from '../../csuite/form/WidgetSingleLineSummaryUI'
-import { WidgetToggleUI } from '../../csuite/form/WidgetToggleUI'
-import { WidgetUndoChangesButtonUI } from '../../csuite/form/WidgetUndoChangesButtonUI'
 import { mergeDefined } from '../../csuite/utils/mergeDefined'
 import { QuickForm } from '../catalog/group/QuickForm'
 import { renderFCOrNode, renderFCOrNodeWithWrapper } from '../shells/_isFC'
-import { type CushyHeadProps, CushyHeadUI } from '../shells/CushyHead'
-import { ShellCushyLeftUI } from '../shells/ShellCushy'
-import { PresenterCtx, usePresenterOrNull } from './PresenterCtx'
-import { widgetsCatalog } from './widgets-catalog'
+import { widgetsCatalog } from './RenderCatalog'
+import { PresenterCtx, usePresenterOrNull } from './RenderCtx'
+import { defaultPresenterRule, defaultPresenterSlots } from './RenderDefaults'
 
 // 👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇
 // Those types are made folling a language design principle:
@@ -124,8 +97,11 @@ export class Presenter {
     ): ReactNode {
         // ⏸️ console.log(`[💄] rendering ${field.path}`)
         // slots accumulator
-        let slots: UISlots<FIELD> = defaultPresenterRule(field)
+        let slots: WidgetSlots<FIELD> = defaultPresenterRule(field)
         const catalog = widgetsCatalog
+
+        // console.log(`[🤠] ${field.pathExt}`)
+        // const shouldLog = field.pathExt === '📄[group]-latent->[link]-b->[choices]-emptyLatent->[group]-batchSize->[shared]'
 
         /**
          * a field can add rules for  any of it's children, not only itself.
@@ -170,12 +146,13 @@ export class Presenter {
                 const _slots = ruleOrConf({
                     field,
                     catalog,
-                    forField: addForField,
+                    apply: (x) => evalRuleOrConf(x),
+                    for: addForField,
                     forAllFields: addForAllFields,
                     forChildrenOf: addForChildrenOf,
                     forChildrenOfFieldWithTypes: addForChildrenOfFieldWithTypes,
                     presets,
-                }) as Maybe<UISlots<FIELD>> // 🔴🔴🔴
+                }) as Maybe<WidgetSlots<FIELD>> // 🔴🔴🔴
                 if (_slots) slots = mergeDefined(slots, _slots)
             } else {
                 const { rule, global, ...slotsOverride } = ruleOrConf
@@ -193,11 +170,17 @@ export class Presenter {
         }
         // #region EVALUATING/MERGING ALL RULES
 
-        // eval all rules from context
-        const rule_viaForField = (this.rulesForField.get(field) ?? []) as RuleOrConf<FIELD>[]
-        // ⏸️ console.log(`[💄]    | ${rule_viaForField.length} rules in context:`, rule_viaForField)
-        for (const ruleOrConf of rule_viaForField) {
-            evalRuleOrConf(ruleOrConf)
+        // eval rule from config
+        if (field.config.uiui != null) {
+            evalRuleOrConf(field.config.uiui)
+        }
+
+        // eval all global rules from compatible prefixes
+        for (const { whenUnderPath, ruleOrConf } of this.rulesForAllFields) {
+            if (field.path.startsWith(whenUnderPath)) {
+                // ⏸️ console.log(`[💄]    | plus global rule:`, ruleOrConf)
+                evalRuleOrConf(ruleOrConf as RuleOrConf<FIELD> /* 🔶 cast probably necessary */)
+            }
         }
 
         if (field.parent) {
@@ -217,22 +200,18 @@ export class Presenter {
             }
         }
 
-        // eval all global rules from compatible prefixes
-        for (const { whenUnderPath, ruleOrConf } of this.rulesForAllFields) {
-            if (field.path.startsWith(whenUnderPath)) {
-                // ⏸️ console.log(`[💄]    | plus global rule:`, ruleOrConf)
-                evalRuleOrConf(ruleOrConf as RuleOrConf<FIELD> /* 🔶 cast probably necessary */)
-            }
-        }
-
-        // eval rule from config
-        if (field.config.uiui != null) {
-            evalRuleOrConf(field.config.uiui)
+        // eval rules for current field specifically
+        const rule_viaForField = (this.rulesForField.get(field) ?? []) as RuleOrConf<FIELD>[]
+        // ⏸️ console.log(`[💄]    | ${rule_viaForField.length} rules in context:`, rule_viaForField)
+        for (const ruleOrConf of rule_viaForField) {
+            evalRuleOrConf(ruleOrConf)
         }
 
         // eval last ruleOrConf passed as parameter
         // ⏸️ console.log(`[💄]    | plus current rule:`, finalRuleOrConf)
         evalRuleOrConf(finalRuleOrConf)
+
+        // if (shouldLog) console.error(`[🤠] `, slots)
 
         // 🎉 slots should now be defined / compiled !
 
@@ -265,7 +244,14 @@ export class Presenter {
         // 🔶 }
         // 🔶 // }
 
-        const Shell = slots.Shell ?? defaultPresenterSlots.Shell
+        // bad logic
+        const Shell = slots.ShellName
+            ? catalog.Shell[slots.ShellName]
+            : slots.Shell //
+              ? slots.Shell
+              : defaultPresenterSlots.Shell
+
+        // console.log(`[🤠] slots.ShellName`, slots.ShellName, field.path, Shell === catalog.Shell.Inline)
         if (!Shell) throw new Error('Shell is not defined')
 
         // COMPILED
@@ -283,165 +269,6 @@ export class Presenter {
     }
 }
 
-export type FCOrNode<P extends object> = CovariantFC<P> | React.ReactNode
-// #region Slots
-/**
- * component slots available in your Presenter
- * list of all components used in the built-in FieldPresenter
- * from very prioritary to very optional
- * ✅ really recommended
- * 🟢 recommanded
- * 🟡 optional
- * 🟠 very optional
- * 🟣 not recommended
- * 🟥 really not recommended
- *
- * ⭕️ entrypoint; needs to be handled by the presenter
- * Mayby<FC> means:
- *
- *    undefined => don't change anything; keep previous slot value
- *    FC        => use this component for the slot, passing props it expects (that's why most of the FC only accept very few params)
- *    null      => disable the slot; i.e. slot should not be displayed/used
- *    ReactNode => use this react node direclty
- */
-export interface UISlots<out FIELD extends Field = Field> {
-    layout?: CovariantFn1<FIELD, QuickFormContent[]>
-    // 1. Shell
-    // can also be used an escape hatch for 100% custom UI
-    /* ⭕️ */ Shell?: FCOrNode<CompiledRenderProps<FIELD>>
-
-    // 2. Direct Slots for this field only
-    // heavilly suggested to include in your presenter unless you know what you do
-    /* ✅ */ Head?: FCOrNode<CushyHeadProps>
-    /* ✅ */ Header?: FCOrNode<{ field: FIELD }>
-    /* ✅ */ Body?: FCOrNode<{ field: FIELD }>
-    /* ✅ */ Extra?: FCOrNode<{ field: FIELD }>
-
-    // stuff you want to include, possilby in some revealable way
-    // based on field.hasError.
-    /* 🟢 */ Errors?: FCOrNode<{ field: FIELD }>
-    /* 🟢 */ LabelText?: FCOrNode<WidgetLabelTextProps>
-
-    /* 🟢 */ DragKnob?: FCOrNode<NO_PROPS>
-    /* 🟢 */ UpDownBtn?: FCOrNode<NO_PROPS>
-    /* 🟢 */ DeleteBtn?: FCOrNode<NO_PROPS>
-
-    // bonus features
-    /* 🟡 */ Indent?: FCOrNode<WidgetIndentProps>
-    /* 🟡 */ UndoBtn?: FCOrNode<{ field: FIELD }>
-    /* 🟡 */ Toogle?: FCOrNode<WidgetToggleProps>
-    /* 🟡 */ Caret?: FCOrNode<WidgetLabelCaretProps>
-    /* 🟡 */ Icon?: FCOrNode<WidgetLabelIconProps>
-    /* 🟡 */ Presets?: FCOrNode<WidgetPresetsProps>
-    /* 🟡 */ MenuBtn?: FCOrNode<WidgetMenuProps>
-
-    // suggested containers
-    /* 🟠 */ ContainerForHeader?: Maybe<FC<WidgetHeaderContainerProps>>
-    /* 🟠 */ ContainerForBody?: Maybe<FC<BodyContainerProps>>
-    /* 🟠 */ ContainerForSummary?: Maybe<FC<WidgetSingleLineSummaryProps>>
-
-    // ---------------------------------------------------------
-    // 3. various other params, mostly to tweak looks
-    classNameAroundBodyAndHeader?: Maybe<string>
-    classNameAroundBody?: Maybe<string>
-    classNameAroundHeader?: Maybe<string>
-    classNameForShell?: Maybe<string>
-    shouldShowHiddenFields?: Maybe<boolean>
-    shouldAnimateResize?: Maybe<boolean>
-    // ---------------------------------------------------------
-    // 4. Slots for shell
-    // stuff you probably don't want to include
-    // debug stuff
-    /* 🟣 */ DebugID?: Maybe<FC<{ field: Field }>>
-
-    // only for the lolz
-    /* 🟥 */ EasterEgg?: Maybe<FC<{ field: Field }>>
-}
-
-// #region P.defaults
-export const defaultPresenterSlots: UISlots<any> = {
-    /* ✅ */ Shell: ShellCushyLeftUI,
-
-    // heavilly suggested to include in your presenter unless you know what you do
-    /* ✅ */ Head: CushyHeadUI, // will be injected by the field
-    /* ✅ */ Header: undefined, // will be injected by the field
-    /* ✅ */ Body: undefined, // will be injected by the field
-    /* ✅ */ Extra: undefined,
-
-    /* 🟢 */ Errors: WidgetErrorsUI,
-    /* 🟢 */ LabelText: WidgetLabelTextUI,
-
-    /* 🟢 */ DragKnob: undefined,
-    /* 🟢 */ UpDownBtn: undefined,
-    /* 🟢 */ DeleteBtn: undefined,
-
-    // bonus features
-    /* 🟡 */ Indent: WidgetIndentUI,
-    /* 🟡 */ UndoBtn: WidgetUndoChangesButtonUI,
-    /* 🟡 */ Toogle: WidgetToggleUI,
-    /* 🟡 */ Caret: WidgetLabelCaretUI,
-    /* 🟡 */ Icon: WidgetLabelIconUI,
-    /* 🟡 */ Presets: WidgetPresetsUI,
-    /* 🟡 */ MenuBtn: WidgetMenuUI,
-
-    // suggested containers
-    /* 🟠 */ ContainerForHeader: WidgetHeaderContainerUI,
-    /* 🟠 */ ContainerForBody: WidgetBodyContainerUI,
-    /* 🟠 */ ContainerForSummary: WidgetSingleLineSummaryUI,
-
-    classNameAroundBodyAndHeader: null,
-    classNameAroundBody: null,
-    classNameAroundHeader: null,
-    classNameForShell: null,
-    shouldShowHiddenFields: false,
-    shouldAnimateResize: true,
-
-    // stuff you probably don't want to include
-    // debug stuff
-    /* 🟣 */ DebugID: WidgetDebugIDUI,
-
-    // only for the lolz
-    /* 🟥 */ EasterEgg: (): JSX.Element => <>🥚</>,
-}
-
-// #region P.setup
-export const configureDefaultFieldPresenterComponents = (
-    /** so you don't have to polute the rest of your code */
-    overrides: Partial<UISlots>,
-): void => {
-    Object.assign(defaultPresenterSlots, overrides)
-}
-
-// type RuleFor<FIELD extends Field = Field> = CovariantFn<[field: FIELD, fn: any], UISlots<FIELD> | undefined>
-
-// #region P.Rule
-// export type PresenterRule<out FIELD extends Field> = (field: FIELD) => Maybe<PresenterSlots>
-
-export const defaultPresenterRule = <FIELD extends Field>(field: FIELD): DisplayConf<FIELD> => {
-    if (isFieldLink(field)) {
-        return {
-            ...defaultPresenterSlots,
-            Shell: ShellLinkUI as any,
-        }
-    }
-    if (isFieldOptional(field)) {
-        return {
-            ...defaultPresenterSlots,
-            Shell: ShellOptionalUI as any,
-        }
-    }
-
-    return {
-        ...defaultPresenterSlots,
-        Header: field.DefaultHeaderUI,
-        Body: field.DefaultBodyUI,
-        Extra: field.schema.LabelExtraUI as FCOrNode<{ field: FIELD }> /* 🔴 check if that can be fixed */,
-        DebugID: null,
-    }
-}
-
-// #region RenderProps
-
 // prettier-ignore
 export type RuleOrConf<FIELD extends Field> =
     | DisplayRule<FIELD>
@@ -450,12 +277,14 @@ export type RuleOrConf<FIELD extends Field> =
 const typed = <T extends any>(t: T): T => t
 
 const presets = {
-    noLabel: typed<DisplayConf<any>>({ LabelText: null, Icon: null, Indent: null }),
+    noLabel: typed<DisplayConf<any>>({ Title: null, Icon: null, Indent: null }),
+    // inline() {},
 }
 
 export type DisplayRuleCtx<FIELD extends Field = Field> = {
     field: FIELD
-    forField<Sub extends Field>(field: Maybe<Sub>, x: RuleOrConf<Sub>): void
+    apply(x: RuleOrConf<FIELD>): void
+    for<Sub extends Field>(field: Maybe<Sub>, x: RuleOrConf<Sub>): void
     forChildrenOf<Sub extends Field>(field: Sub, x: RuleOrConf<Sub['$Child']>): void
     forChildrenOfFieldWithTypes<T extends CATALOG.AllFieldTypes>(type: T, x: RuleOrConf<Field>): void
     forAllFields(x: RuleOrConf<Field>): void
@@ -463,14 +292,14 @@ export type DisplayRuleCtx<FIELD extends Field = Field> = {
     presets: typeof presets
 }
 
-export type DisplayRule<FIELD extends Field> = CovariantFn1<DisplayRuleCtx<FIELD>, UISlots<FIELD> | undefined | void>
+export type DisplayRule<FIELD extends Field> = CovariantFn1<DisplayRuleCtx<FIELD>, WidgetSlots<FIELD> | undefined | void>
 
 /**
  * this is the type you usually specify when calling <field.UI <...RENDER_DSL...> />
  */
 export interface DisplayConf<out FIELD extends Field> //
     // 1️⃣ for self: UISlots + shell + children
-    extends UISlots<FIELD> {
+    extends WidgetSlots<FIELD> {
     layout?: CovariantFn1<FIELD, QuickFormContent[]>
     rule?: RuleOrConf<FIELD>
     global?: RuleOrConf<Field> // | null | undefined | void
@@ -482,7 +311,7 @@ export interface DisplayConf<out FIELD extends Field> //
  */
 export interface CompiledRenderProps<out FIELD extends Field = Field> //
     /** full list of all slots when applying all the rules. */
-    extends UISlots<FIELD> {
+    extends WidgetSlots<FIELD> {
     /** presenter */
     presenter: Presenter
 

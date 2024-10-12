@@ -58,6 +58,10 @@ export class Field_dateTimeZoned<const NULLABLE extends boolean = false> extends
     // #region Static
     static readonly type: 'datetimezoned' = 'datetimezoned'
     static readonly emptySerial: Field_dateTimeZoned_serial = { $: 'datetimezoned' }
+    static codegenValueType(config: Field_dateTimeZoned_config<any>): string {
+        if (config.nullable) return 'Maybe<Temporal.ZonedDateTime>'
+        return 'Temporal.ZonedDateTime'
+    }
 
     // #region Migration
     static migrateSerial(serial: object): Maybe<Field_dateTimeZoned_serial> {

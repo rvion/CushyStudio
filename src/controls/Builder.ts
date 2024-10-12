@@ -5,7 +5,7 @@ import type { Field_custom_config } from '../csuite/fields/custom/FieldCustom'
 import type { Field_date } from '../csuite/fields/date/FieldDate'
 import type { Field_datePlain } from '../csuite/fields/date_plain/FieldDatePlain'
 import type { Field_dateTimeZoned } from '../csuite/fields/datetime_zoned/FieldDateTimeZoned'
-import type { Field_group_types, Field_Group_withMagicFields } from '../csuite/fields/group/FieldGroup'
+import type { Field_group_types, FieldGroup } from '../csuite/fields/group/FieldGroup'
 import type { Field_image_config } from '../csuite/fields/image/FieldImage'
 import type { Field_list_config } from '../csuite/fields/list/FieldList'
 import type { Field_matrix_config } from '../csuite/fields/matrix/FieldMatrix'
@@ -92,7 +92,7 @@ declare global {
 
         // field aliases
         type Shared<T extends Field> = Field_shared<T>
-        type Group<T extends SchemaDict> = Field_group<Field_group_types<T>>
+        type Group<T extends SchemaDict> = FieldGroup<Field_group_types<T>>
         type Empty = Field_group<Field_group_types<NO_PROPS>>
         type Optional<T extends BaseSchema> = Field_optional<T>
         type Bool = Field_bool
@@ -121,7 +121,7 @@ declare global {
 
         // schema aliases
         type XShared<T extends Field> = CushySchema<Field_shared<T>>
-        type XGroup<T extends SchemaDict> = CushySchema<Field_Group_withMagicFields<Field_group_types<T>>>
+        type XGroup<T extends SchemaDict> = CushySchema<FieldGroup<Field_group_types<T>>>
         type XGroup_<T extends SchemaDict> = CushySchema<Field_group<Field_group_types<T>>>
         type XEmpty = CushySchema<Field_group<Field_group_types<NO_PROPS>>>
         type XOptional<T extends BaseSchema> = CushySchema<Field_optional<T>>
@@ -326,7 +326,8 @@ export class CushySchemaBuilder implements IBuilder {
     }
 
     regional<T extends BaseSchema>(sub: Field_board_config<T>): X.XBoard<T> {
-        return Field_board.getSchema(simpleBuilder, sub).withConfig({ body: WidgetListExtUI__Regional })
+        return Field_board.getSchema(simpleBuilder, sub) //
+            .withConfig({ body: WidgetListExtUI__Regional })
     }
 
     listExt<T extends BaseSchema>(sub: Field_board_config<T>): X.XBoard<T> {
@@ -521,3 +522,11 @@ export class CushySchemaBuilder implements IBuilder {
 export const builder = new CushySchemaBuilder()
 export type CushyFactory = Factory<CushySchemaBuilder>
 export const cushyFactory: CushyFactory = new Factory<CushySchemaBuilder>(builder)
+
+/**
+ * zod does it with z, and is kinda praised for it's practicallity.
+ * So why don't we try it too
+ *
+ * @since 2024-10-11
+ */
+export const b = builder

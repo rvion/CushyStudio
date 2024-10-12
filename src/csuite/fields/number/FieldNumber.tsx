@@ -59,7 +59,9 @@ export class Field_number extends Field<Field_number_types> {
     // #region TYPE
     static readonly type: 'number' = 'number'
     static readonly emptySerial: Field_number_serial = { $: 'number' }
-
+    static codegenValueType(config: Field_number_config): string {
+        return `number`
+    }
     static migrateSerial(serial: object): Maybe<Field_number_serial> {
         // migrate from string with number typed as string
         if (isProbablySerialString(serial)) {

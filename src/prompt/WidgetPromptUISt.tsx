@@ -17,7 +17,11 @@ export class WidgetPromptUISt {
 
     replaceTextBy(nextText: string): void {
         this.editorView?.dispatch({
-            changes: { from: 0, to: this.editorView.state.doc.length, insert: nextText },
+            changes: {
+                from: 0,
+                to: this.editorView.state.doc.length,
+                insert: nextText,
+            },
         })
     }
     constructor(public widget: Field_prompt) {

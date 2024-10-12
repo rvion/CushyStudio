@@ -1,30 +1,26 @@
-import type { Field } from '../model/Field'
+import type { Field } from '../../../csuite/model/Field'
 import type { ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
 
-import { useCSuite } from '../ctx/useCSuite'
-import { makeLabelFromPrimitiveValue } from '../utils/makeLabelFromFieldName'
+import { useCSuite } from '../../../csuite/ctx/useCSuite'
+import { makeLabelFromPrimitiveValue } from '../../../csuite/utils/makeLabelFromFieldName'
 
-export type WidgetLabelTextProps = {
+export type WidgetTitleProps = {
     field: Field
+    as?: string
     className?: string
-
-    label?: ReactNode
     children?: ReactNode
 }
 
-export const WidgetLabelTextUI = observer(function WidgetLabelTextUI_(p: WidgetLabelTextProps) {
+export const DefaultWidgetTitleUI = observer(function DefaultWidgetTitle(p: WidgetTitleProps) {
     const csuite = useCSuite()
-    const labelText =
-        p.label ?? //
-        p.children ??
-        p.field.config.label ??
-        makeLabelFromPrimitiveValue(p.field.mountKey)
+    const labelText = p.children ?? p.field.config.label ?? makeLabelFromPrimitiveValue(p.field.mountKey)
+    const Elem: 'div' = (p.as ?? 'div') as 'div'
     return (
-        <span
+        <Elem
             tw={[
-                'UI-WidgetLabel self-start minh-widget lh-widget ABDDE',
+                'UI-WidgetLabel self-start minh-widget lh-widget',
                 // 1. indicate we can click on the label
                 'COLLAPSE-PASSTHROUGH',
                 // p.field.isCollapsed || p.field.isCollapsible ? 'cursor-pointer COLLAPSE-PASSTHROUGH' : null,
@@ -40,7 +36,6 @@ export const WidgetLabelTextUI = observer(function WidgetLabelTextUI_(p: WidgetL
                 // 'line-clamp-2',
 
                 // 3.3. alt. 3:
-                //
                 // '[lineHeight:1.3rem] overflow-auto',
                 csuite.truncateLabels && 'truncate',
 
@@ -49,6 +44,6 @@ export const WidgetLabelTextUI = observer(function WidgetLabelTextUI_(p: WidgetL
         >
             {p.field.isHidden && '🥷 '}
             {labelText}
-        </span>
+        </Elem>
     )
 })

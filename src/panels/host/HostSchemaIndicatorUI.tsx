@@ -40,13 +40,11 @@ export const HostSchemaIndicatorUI = observer(function HostSchemaIndicatorUI_(p:
                 {/* LAST UPDATE */}
                 {host.schemaUpdateResult ? (
                     host.schemaUpdateResult.type === 'error' ? (
-                        <div className='btn btn-sm btn-ghost cursor-help'>
+                        <Button subtle className='cursor-help'>
                             <span className='text-error'>history</span>
-                        </div>
+                        </Button>
                     ) : p.showIcon ? (
-                        <div className='btn btn-sm btn-ghost cursor-help'>
-                            {p.showIcon && <span className='material-symbols-outlined text-green-400 '>check_circle</span>}
-                        </div>
+                        <Button className='btn-ghost cursor-help' icon={p.showIcon ? 'mdiCheckCircle' : undefined} />
                     ) : null
                 ) : null}
 
@@ -56,12 +54,12 @@ export const HostSchemaIndicatorUI = observer(function HostSchemaIndicatorUI_(p:
                         empty schema
                     </Button>
                 ) : (
-                    <div className='btn btn-sm btn-ghost cursor-help'>
+                    <Button className='btn-ghost cursor-help'>
                         {p.showIcon && <span className='material-symbols-outlined text-green-400 '>check_circle</span>}
                         {host.isUpdatingSchema && <div tw='loading loading-spinner loading-xs' />}
                         <span className='text-success'>Schema</span>
                         {sizeTxt}
-                    </div>
+                    </Button>
                 )}
             </div>
         </RevealUI>

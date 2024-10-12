@@ -3,13 +3,19 @@ import type { AspectRatio, ModelType } from './WidgetSizeTypes'
 
 import { observer } from 'mobx-react-lite'
 
-import { InputBoolToggleButtonUI } from '../../checkbox/InputBoolToggleButtonUI'
+import { ToggleButtonUI } from '../../checkbox/InputBoolToggleButtonUI'
 import { InputBoolUI } from '../../checkbox/InputBoolUI'
 import { Frame } from '../../frame/Frame'
 import { InputNumberUI } from '../../input-number/InputNumberUI'
 
 export const WigetSize_LineUI = observer(function WigetSize_LineUI_(p: { field: Field_size }) {
     // 🔴❓ return <WidgetSizeX_LineUI size={p.field} bounds={p.field.config} />
+    return (
+        <div tw='flex flex-1 flex-col'>
+            <WidgetSizeX_LineUI size={p.field} bounds={p.field.config} />
+            {p.field.isCollapsed ? null : <WigetSizeXUI size={p.field} bounds={p.field.config} />}
+        </div>
+    )
     // return (
     //     <div>
     //         <pre>{JSON.stringify(p.field.serial)}</pre>
@@ -24,30 +30,29 @@ export const WigetSize_BlockUI = observer(function WigetSize_BlockUI_(p: { field
         <>
             {/* <pre>{JSON.stringify(p.field.serial, null, 3)}</pre> */}
             {/* <WidgetSizeX_LineUI /> */}
-            <WidgetSizeX_LineUI size={p.field} bounds={p.field.config} />
-            <WigetSizeXUI size={p.field} bounds={p.field.config} />
         </>
     )
 })
+
+const modelBtn = (uist: Field_size, model: ModelType): JSX.Element => (
+    <ToggleButtonUI //
+        toggleGroup='size'
+        tw='w-input'
+        value={uist.desiredModelType == model}
+        onValueChange={() => {
+            uist.setModelType(model)
+            uist.touch()
+        }}
+        text={model}
+        onBlur={() => uist.touch()}
+    />
+)
 
 export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
     size: Field_size
     bounds?: { min?: number; max?: number; step?: number }
 }) {
     const uist = p.size
-    const modelBtn = (model: ModelType): JSX.Element => (
-        <InputBoolToggleButtonUI //
-            toggleGroup='size'
-            tw='w-input'
-            value={uist.desiredModelType == model}
-            onValueChange={() => {
-                uist.setModelType(model)
-                uist.touch()
-            }}
-            text={model}
-            onBlur={() => uist.touch()}
-        />
-    )
 
     // const ratio = uist.width / uist.height
     // const ratioIcon = ratio == 1.0 ? 'mdiApproximatelyEqual' : ratio > 1.0 ? 'mdiCropLandscape' : 'mdiCropPortrait'
@@ -59,10 +64,7 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
                 tw={['h-input w-full h-full flex gap-2 items-center overflow-clip']}
                 style={{ padding: '0px' }}
             >
-                <div tw='flex'>
-                    {modelBtn('1.5')}
-                    {modelBtn('xl')}
-                </div>
+                <AspectRatioSquareUI sizeHelper={uist} />
                 <InputNumberUI
                     //
                     min={p.bounds?.min ?? 128}
@@ -99,9 +101,8 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
                     onBlur={() => uist.touch()}
                 />
                 {/* <Button onClick={uist.flip} icon={ratioIcon} style={{ border: 'none', borderRadius: '0px' }} /> */}
-                <div tw='h-full' style={{ width: '1px' }} />
-                <AspectRatioSquareUI sizeHelper={uist} />
-                <div tw='h-full' style={{ width: '1px' }} />
+                {/* <div tw='h-full' style={{ width: '1px' }} /> */}
+                {/* <div tw='h-full' style={{ width: '1px' }} /> */}
                 <AspectLockButtonUI sizeHelper={uist} />
             </Frame>
         </div>
@@ -111,11 +112,13 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
 export const AspectLockButtonUI = observer(function AspectLockButtonUI_(p: { sizeHelper: Field_size }) {
     const uist = p.sizeHelper
     return (
-        <Frame // Aspect Lock button
-            active={uist.isAspectRatioLocked}
+        <ToggleButtonUI // Aspect Lock button
+            toggleGroup='aspect-ratio-lock'
+            square
+            value={uist.isAspectRatioLocked}
             style={{ border: 'unset', borderRadius: '0px' }}
             icon={uist.isAspectRatioLocked ? 'mdiLink' : 'mdiLinkOff'}
-            onMouseDown={(ev) => {
+            onValueChange={(ev) => {
                 uist.isAspectRatioLocked = !uist.isAspectRatioLocked
                 if (!uist.isAspectRatioLocked) return
                 // Need to snap value if linked
@@ -177,73 +180,57 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
             text={ar}
         />
     )
-
-    // const portrait = uist.height / uist.width > 1.0
-
     return (
-        <Frame
-        // border={{ contrast: uist.isAspectRatioLocked ? 0.0 : -0.05 }}
-        // base={{ contrast: uist.isAspectRatioLocked ? 0.0 : -0.05 }}
-        >
+        <Frame>
             <div tw='flex'>
-                {/* <div tw='btn btn-xs' onClick={() => uist.flip()}> */}
-                {/* <span className='material-symbols-outlined'>rotate_right</span> */}
-                {/* </div> */}
+                <div tw='flex flex-col'>
+                    {modelBtn(p.size, '1.5')}
+                    {modelBtn(p.size, 'xl')}
+                </div>
                 <div tw='ml-auto flex flex-wrap items-center gap-1.5'>
                     <div tw='join'>{resoBtn('1:1')}</div>
-                    {/* <div>|</div> */}
                     <div tw='join flex flex-col'>
                         {resoBtn('16:9')}
                         {resoBtn('9:16')}
                     </div>
-                    {/* <div>|</div> */}
                     <div tw='join flex flex-col'>
                         {resoBtn('4:3')}
                         {resoBtn('3:4')}
                     </div>
-                    {/* <div>|</div> */}
                     <div tw='join flex flex-col'>
                         {resoBtn('3:2')}
                         {resoBtn('2:3')}
                     </div>
                     {p.size.desiredModelType === 'xl' && (
                         <>
-                            {/* <div>|</div> */}
                             <div tw='join flex flex-col'>
                                 {resoBtn('16:15')}
                                 {resoBtn('15:16')}
                             </div>
-                            {/* <div>|</div> */}
                             <div tw='join flex flex-col'>
                                 {resoBtn('17:15')}
                                 {resoBtn('15:17')}
                             </div>
-                            {/* <div>|</div> */}
                             <div tw='join flex flex-col'>
                                 {resoBtn('9:7')}
                                 {resoBtn('7:9')}
                             </div>
-                            {/* <div>|</div> */}
                             <div tw='join flex flex-col'>
                                 {resoBtn('18:13')}
                                 {resoBtn('13:18')}
                             </div>
-                            {/* <div>|</div> */}
                             <div tw='join flex flex-col'>
                                 {resoBtn('19:13')}
                                 {resoBtn('13:19')}
                             </div>
-                            {/* <div>|</div> */}
                             <div tw='join flex flex-col'>
                                 {resoBtn('7:4')}
                                 {resoBtn('4:7')}
                             </div>
-                            {/* <div>|</div> */}
                             <div tw='join flex flex-col'>
                                 {resoBtn('21:11')}
                                 {resoBtn('11:21')}
                             </div>
-                            {/* <div>|</div> */}
                             <div tw='join flex flex-col'>
                                 {resoBtn('2:1')}
                                 {resoBtn('1:2')}

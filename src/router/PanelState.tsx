@@ -8,8 +8,11 @@ import type { PanelPersistedJSON } from './PanelPersistedJSON'
 import type { PanelName } from './PANELS'
 import type * as FL from 'flexlayout-react'
 
+import { useMemo } from 'react'
+
 import { bang } from '../csuite/utils/bang'
 import { naiveDeepClone } from '../csuite/utils/naiveDeepClone'
+import { useMemoAction } from '../csuite/utils/useMemoAction'
 import { PanelPersistentStore } from './PanelPersistentStore'
 
 export type PanelURI = string
@@ -151,29 +154,46 @@ export class PanelState<PROPS extends object = any> {
         //
         uid: string,
         init: (ui: Builder) => SCHEMA,
+
+        /**
+         * yikes, we can't iterate on schemas anymore since we have cache
+         * and as of 2024-10-11, we still don't have a proper expiration mechanism
+         */
+        skipCache?: boolean,
     ): SCHEMA['$Field'] => {
         // if previous entity already exists, return it
-        const prevEntity = this.entities.get(uid)
-        if (prevEntity != null) return prevEntity
+        const cacheFix = useMemo(() => ({ type: '' }), [])
 
-        // get or create panel store to hold/persist the entity
-        let store = this.stores.get(`entity-${uid}`) as PanelPersistentStore<SCHEMA['$Serial'] | false>
-        if (store == null) {
-            store = new PanelPersistentStore(this, uid, () => false)
-            this.stores.set(`entity-${uid}`, store)
-        }
+        return useMemoAction(() => {
+            let schema: SCHEMA = init(cushy.forms.builder)
+            const valueType = schema.codegenValueType()
+            const schemaSeemsIdentical = cacheFix.type === valueType
+            cacheFix.type = valueType
 
-        // clone the schema to inject a callback to persist the entity
-        // via the panel store
-        const schema = init(cushy.forms.builder).withConfig({
-            onSerialChange: (self) => {
-                store.saveData(self.serial)
-            },
+            if (!skipCache && schemaSeemsIdentical) {
+                const prevEntity = this.entities.get(uid)
+                if (prevEntity != null) return prevEntity
+            }
+
+            // get or create panel store to hold/persist the entity
+            let store = this.stores.get(`entity-${uid}`) as PanelPersistentStore<SCHEMA['$Serial'] | false>
+            if (store == null) {
+                store = new PanelPersistentStore(this, uid, () => false)
+                this.stores.set(`entity-${uid}`, store)
+            }
+
+            // clone the schema to inject a callback to persist the entity
+            // via the panel store
+            schema = schema.withConfig({
+                onSerialChange: (self) => {
+                    store.saveData(self.serial)
+                },
+            })
+
+            const prevSerial = store.data
+            const entity = schema.create(prevSerial)
+            this.entities.set(uid, entity)
+            return entity
         })
-
-        const prevSerial = store.data
-        const entity = schema.create(prevSerial)
-        this.entities.set(uid, entity)
-        return entity
     }
 }

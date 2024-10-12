@@ -10,7 +10,6 @@ import {
     drawSelection,
     dropCursor,
     EditorView,
-    highlightActiveLine,
     highlightActiveLineGutter,
     highlightSpecialChars,
     keymap,
@@ -54,7 +53,7 @@ export const basicSetup = ((): Extension[] => [
     autocompletion(),
     rectangularSelection(),
     crosshairCursor(),
-    highlightActiveLine(),
+    // highlightActiveLine(),
     highlightSelectionMatches(),
     keymap.of([
         ...closeBracketsKeymap,

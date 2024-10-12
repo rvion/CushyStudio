@@ -2,6 +2,7 @@ import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
 
 import { observer } from 'mobx-react-lite'
 
+import { Button } from '../../csuite/button/Button'
 import { Panel, type PanelHeader } from '../../router/Panel'
 import { useSt } from '../../state/stateContext'
 import { CreateAppBtnUI } from '../PanelWelcome/CreateAppBtnUI'
@@ -49,7 +50,7 @@ export const PanelMarketplaceUI = observer(function PanelMarketplaceUI_(p: NO_PR
                     {published.ui((x) => (
                         <div tw='flex flex-col gap-1'>
                             {x.data?.map((d) => (
-                                <div tw='btn btn-sm' key={d.id}>
+                                <Button size='sm' key={d.id}>
                                     <img src='' alt='' />
                                     <div>
                                         <div>{d.name}</div>
@@ -64,7 +65,7 @@ export const PanelMarketplaceUI = observer(function PanelMarketplaceUI_(p: NO_PR
                                             ))}
                                         </div> */}
                                     </div>
-                                </div>
+                                </Button>
                             ))}
                         </div>
                     ))}

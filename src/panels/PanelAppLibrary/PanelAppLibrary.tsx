@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite'
 
 import { AppCardUI } from '../../cards/fancycard/AppCardUI'
 import { Button } from '../../csuite/button/Button'
-import { InputBoolToggleButtonUI } from '../../csuite/checkbox/InputBoolToggleButtonUI'
+import { ToggleButtonUI } from '../../csuite/checkbox/InputBoolToggleButtonUI'
 import { InputNumberUI } from '../../csuite/input-number/InputNumberUI'
 import { InputStringUI } from '../../csuite/input-string/InputStringUI'
 import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
@@ -54,7 +54,7 @@ export const PanelAppLibraryUI = observer(function PanelAppLibraryUI_(p: NO_PROP
                     onClick={st.startupFileIndexing}
                     children='Index All Apps'
                 />
-                <InputBoolToggleButtonUI
+                <ToggleButtonUI
                     toggleGroup='panel-app-header'
                     showToggleButtonBox
                     mode='checkbox'
@@ -62,7 +62,7 @@ export const PanelAppLibraryUI = observer(function PanelAppLibraryUI_(p: NO_PROP
                     value={st.library.showDescription}
                     onValueChange={(next) => (st.library.showDescription = next)}
                 />
-                <InputBoolToggleButtonUI
+                <ToggleButtonUI
                     toggleGroup='panel-app-header'
                     showToggleButtonBox
                     mode='checkbox'
@@ -70,7 +70,7 @@ export const PanelAppLibraryUI = observer(function PanelAppLibraryUI_(p: NO_PROP
                     value={st.library.showDrafts}
                     onValueChange={(next) => (st.library.showDrafts = next)}
                 />
-                <InputBoolToggleButtonUI
+                <ToggleButtonUI
                     toggleGroup='panel-app-header'
                     showToggleButtonBox
                     mode='checkbox'

@@ -1,4 +1,4 @@
-import type { CompiledRenderProps } from '../presenters/Presenter'
+import type { CompiledRenderProps } from '../presenters/Renderer'
 import type { ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'

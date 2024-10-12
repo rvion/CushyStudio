@@ -144,6 +144,9 @@ export class Field_selectMany<
     // #region TYPE
     static readonly type: 'selectMany' = 'selectMany'
     static readonly emptySerial: Field_selectMany_serial<any> = { $: 'selectMany' }
+    static codegenValueType(config: Field_selectMany_config<any, any>): string {
+        return `any /* selectMany */`
+    }
     static migrateSerial<K extends SelectKey>(serial: object): Maybe<Field_selectMany_serial<K>> {
         if (isProbablySerialSelectMany(serial)) {
             const { $, values, ...rest } = serial

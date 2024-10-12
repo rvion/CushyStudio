@@ -4,8 +4,7 @@ import type { FieldConstructor } from '../model/FieldConstructor'
 import type { Instanciable } from '../model/Instanciable'
 import type { SchemaDict } from '../model/SchemaDict'
 
-import { makeObservable } from 'mobx'
-
+// import { makeObservable } from 'mobx'
 import { BaseSchema } from '../model/BaseSchema'
 
 export class SimpleSchema<out TYPES extends FieldTypes = FieldTypes>
@@ -18,7 +17,7 @@ export class SimpleSchema<out TYPES extends FieldTypes = FieldTypes>
         config: TYPES['$Config'],
     ) {
         super(fieldConstructor, config, (...args) => new SimpleSchema(...args) as any)
-        makeObservable(this, { config: true, fieldConstructor: false })
+        // makeObservable(this, { config: true, fieldConstructor: false })
     }
 }
 

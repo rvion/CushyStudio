@@ -14,7 +14,7 @@ export const placeholders = ViewPlugin.fromClass(
         constructor(view: EditorView) {
             this.placeholders = this.computeDecorations(view)
         }
-        update(update: ViewUpdate) {
+        update(update: ViewUpdate): void {
             if (!update.docChanged) return
             this.placeholders = this.computeDecorations(update.view)
         }
