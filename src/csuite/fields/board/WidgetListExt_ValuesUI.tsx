@@ -39,6 +39,7 @@ export const WidgetListExt_ValuesUI = observer(function WidgetListExtValuesUI_<T
                             {subWidget.serial.collapsed ? '▸' : '▿'}
                         </Button>
                         <subWidget.UI />
+                        {/* <shape.UI /> */}
                         <Button
                             look='subtle'
                             disabled={min ? items.length <= min : undefined}

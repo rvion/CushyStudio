@@ -33,6 +33,7 @@ export const WidgetListExt_RegionalUI = observer(function WidgetListExt_Regional
                     height: RG.fields.area.height * uist.scale,
                     transformOrigin: 'top left',
                     display: 'block',
+                    border: '1px solid red',
                 }}
             >
                 <Stage
@@ -53,11 +54,15 @@ export const WidgetListExt_RegionalUI = observer(function WidgetListExt_Regional
                             <RectangleUI
                                 key={`rect-${value.id}`}
                                 onChange={(p) => {
-                                    Object.assign(shape, p)
+                                    shape.runInValueTransaction(() => {
+                                        const v = shape.value
+                                        Object.assign(v, p)
+                                    })
                                     value.applyValueUpdateEffects()
                                 }}
                                 isSelected={shape.value.isSelected}
                                 shape={shape.value}
+                                // shape={{ x: 10, y: 10, width: 100, height: 100, fill: 'red', z: 0, depth: 0 }}
                             />
                         ))}
                     </Layer>
@@ -71,7 +76,7 @@ export const RectangleUI = observer(function RectangleUI_(p: {
     //
     shape: SimpleShape
     isSelected?: boolean
-    onChange: (p: Partial<SimpleShape>) => void
+    onChange?: (p: Partial<SimpleShape>) => void
 }) {
     const shapeRef = React.useRef<any>()
     const trRef = React.useRef<any>()
@@ -99,7 +104,7 @@ export const RectangleUI = observer(function RectangleUI_(p: {
                 rotation={p.shape.rotation}
                 draggable
                 onDragEnd={(e) => {
-                    p.onChange({
+                    p.onChange?.({
                         x: e.target.x(),
                         y: e.target.y(),
                     })
@@ -114,7 +119,7 @@ export const RectangleUI = observer(function RectangleUI_(p: {
                     const height = Math.max(5, node.height() * scaleY)
                     node.width(width)
                     node.height(height)
-                    p.onChange({
+                    p.onChange?.({
                         x: node.x(),
                         y: node.y(),
                         width: width,

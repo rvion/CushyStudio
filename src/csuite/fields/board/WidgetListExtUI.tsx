@@ -9,6 +9,8 @@ import { WidgetListExt_RegionalUI } from './WidgetListExt_RegionalUI'
 import { WidgetListExt_TimelineUI } from './WidgetListExt_TimelineUI'
 import { WidgetListExt_ValuesUI } from './WidgetListExt_ValuesUI'
 
+// import { WidgetListExt_ValuesUI } from './WidgetListExt_ValuesUI'
+
 export function WidgetListExtUI__Regional(p: { field: Field_board<any> }): JSX.Element {
     return <WidgetListExtUI field={p.field} mode='regional' />
 }
@@ -39,6 +41,7 @@ export const WidgetListExtUI = observer(function WidgetListExtUI_<T extends Base
                 <div tw='whitespace-pre-wrap w-96'>{JSON.stringify(e)}</div>
             ))} */}
             <WidgetListExt_ValuesUI field={listExt} />
+            {/* <pre>{readableStringify(listExt.Items.items[0]!.Shape.serial, 1)}</pre> */}
         </div>
     )
 })
