@@ -7,24 +7,17 @@ import { AppIllustrationUI } from '../../cards/fancycard/AppIllustrationUI'
 import { DraftIllustrationUI } from '../../cards/fancycard/DraftIllustration'
 import { Button } from '../../csuite/button/Button'
 import { Frame } from '../../csuite/frame/Frame'
-import { Ikon } from '../../csuite/icons/iconHelpers'
-// import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { CreateAppPopupUI } from '../../panels/PanelWelcome/CreateAppBtnUI'
 import { useSt } from '../../state/stateContext'
 
 // Could give this an option be collapsible in the future?
 /** Re-usable container to keep a consistent style around groups of buttons */
-const FavBarContainer = observer(function FavBarContainer_(p: { children?: ReactNode; icon?: string }) {
+const FavBarContainer = observer(function FavBarContainer_(p: { children?: ReactNode }) {
     return (
         <div // Favorite app container
             tw={['w-full flex flex-col rounded', 'gap-1  p-1 text-center justify-center items-center', 'text-shadow']}
         >
-            {p.icon && (
-                <span tw='select-none' className='material-symbols-outlined'>
-                    {p.icon}
-                </span>
-            )}
             {p.children}
         </div>
     )
@@ -72,7 +65,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                         tw='flex items-center justify-center self-center my-0.5'
                         base={{ hue: 90, chromaBlend: 2, contrast: 0.3 }}
                         style={{ width: tempSize, height: tempSize }}
-                        onClick={() => cushy.db.cushy_app.get('library/built-in/SDXL/cushySDXL.ts:0')?.openLastOrCreateDraft()}
+                        onClick={() => cushy.db.cushy_app.get('library/built-in/SDXL/cushySDXL.tsx:0')?.openLastOrCreateDraft()}
                     >
                         SDXL
                     </Button>
@@ -100,9 +93,21 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                     >
                         FLUX
                     </Button>
+                    <Button
+                        tooltip='Slay the Spire Card Generator'
+                        tw='flex items-center justify-center self-center my-0.5'
+                        base={{ hue: 270, chromaBlend: 2, contrast: 0.3 }}
+                        style={{ width: tempSize, height: tempSize }}
+                        onClick={() =>
+                            cushy.db.cushy_app.get('library/built-in/sts/slay-the-spire.ts:0')?.openLastOrCreateDraft()
+                        }
+                    >
+                        StS
+                    </Button>
                     <RevealUI
                         tw='hover:brightness-125 self-center my-0.5'
                         placement='screen-top'
+                        UNSAFE_cloned={true}
                         shell='popup-lg'
                         content={(x) => <CreateAppPopupUI closeFn={() => x.reveal.close()} />}
                     >
@@ -110,10 +115,9 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                             square
                             style={{ width: tempSize, height: tempSize, fontSize: sizeStr }}
                             tw='items-center content-center'
-                            className='material-symbols-outlined'
-                        >
-                            <Ikon.mdiPlus />
-                        </Button>
+                            icon='mdiPlus'
+                            iconSize={tempSize}
+                        />
                     </RevealUI>
                     {/* Lot of divs, but it makes it so the scrolling container is rounded on the inside. */}
                     <div tw='w-full flex flex-col items-center rounded pb-1 overflow-hidden'>
@@ -252,22 +256,21 @@ export const AppDraftsQuickListUI = observer(function AppDraftsQuickListUI_(p: {
     return (
         <div className='MENU-ROOT'>
             <div className='MENU-HEADER'>
-                <div tw='btn btn-sm flex-0' onClick={() => app.setFavorite(!app.isFavorite)}>
-                    <span
-                        tw={[app.isFavorite ? 'text-yellow-500' : null] + ' peer-hover:text-red-500'}
-                        className='material-symbols-outlined'
-                    >
-                        star
-                    </span>
-                </div>
+                <Button
+                    tw={[app.isFavorite ? '!text-yellow-500' : null, '!peer-hover:text-red-500']}
+                    onClick={() => app.setFavorite(!app.isFavorite)}
+                    icon='mdiStar'
+                    square
+                />
                 <div tw='flex-1 flex-grow text-center justify-center content-center border-l border-r border-base-100 pt-1'>
                     {app.name}
                 </div>
-                <div onClick={() => app.createDraft()} tw='btn btn-sm'>
-                    <div>
-                        <span tw='material-symbols-outlined'>add</span>
-                    </div>
-                </div>
+                <Button //
+                    onClick={() => app.createDraft()}
+                    size='sm'
+                    icon='mdiPlus'
+                    square
+                />
             </div>
             <div className='MENU-CONTENT' tw='flex-col flex gap-1 max-w-md'>
                 {app.description ? (

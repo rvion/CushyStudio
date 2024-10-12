@@ -20,7 +20,8 @@ expression[@isGroup=Expression] {
 @skip { space }
 
 Content {expression+ }
-WeightedExpression { "(" Content ")" ("*" Number)? }
+// WeightedExpression { "(" Content ")" ("*" Number)? }
+WeightedExpression { "(" Content (":" Number)? ")" }
 
 Permutations { "{" Content "}" }
 
@@ -29,7 +30,10 @@ TagName {  Identifier | String }
 
 // LORA
 // Lora { @specialize<Identifier, "lora"> ":" LoraName  }
-Lora { "@" loraName ( "[" Number ("," Number)? "]" )?   }
+// Lora { "@" loraName ( "[" Number ("," Number)? "]" )?   }
+Lora { "<lora:" loraName (":" Number ("," Number)? )? ">" }
+
+
 loraName { Identifier | String  }
 
 // WILDCARD
@@ -37,13 +41,14 @@ Wildcard { "?" wildcardName }
 wildcardName { Identifier | String  }
 
 // EMBEDDING
-Embedding { ":" embeddingName }
+Embedding { @specialize<Identifier, "embedding"> ":" embeddingName }
 embeddingName { Identifier | String  }
 
 
 @tokens {
   space { @whitespace+ }
   Break { "break" }
+  // EmbeddingWord { "embedding" }
   Identifier { ($[A-Za-z0-9._\\\/\-] )+ }
   String { '"' !["]* '"' }
   Separator { "," }

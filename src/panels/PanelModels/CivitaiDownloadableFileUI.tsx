@@ -83,10 +83,10 @@ export const CivitaiDownloadableFileUI = observer(function CivitaiDownloadableFi
                 <div tw='text-sm underline'>{formatSize(file.sizeKB * 1000)}</div>
                 <div tw='flex-1'></div>
                 <RevealUI content={() => <JsonViewUI value={file} />}>
-                    <div tw='btn btn-xs btn-outline'>
+                    <Button size='xs'>
                         <Ikon.mdiInformation />
                         infos
-                    </div>
+                    </Button>
                 </RevealUI>
                 {file.primary && <div tw='badge badge-primary'>primary</div>}
             </div>

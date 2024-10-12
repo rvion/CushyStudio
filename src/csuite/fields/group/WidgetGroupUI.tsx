@@ -100,3 +100,18 @@ export const WidgetGroup_BlockUI = observer(function WidgetGroup_BlockUI_<T exte
         </ListOfFieldsContainerUI>
     )
 })
+
+export const WidgetGroupInlineUI = observer(function WidgetGroupInline_<T extends Field_group>(p: {
+    className?: string
+    field: T
+}) {
+    const field = p.field
+    const children = field.childrenActive
+    return (
+        <div tw={[field.config.className, p.className, 'flex']}>
+            {children.map((child, ix) => {
+                return <child.UI key={child.mountKey} />
+            })}
+        </div>
+    )
+})

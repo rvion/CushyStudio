@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react-lite'
 
+import { Button } from '../csuite/button/Button'
 import { parseFloatNoRoundingErr } from '../csuite/utils/parseFloatNoRoundingErr'
 import { ComfyPromptL } from '../models/ComfyPrompt'
 import { ProgressReport } from '../models/ComfyWorkflow'
@@ -47,9 +48,7 @@ export const OutputPromptUI = observer(function OutputPromptUI_(p: {
     if (graph == null) return <>no graph</>
     return (
         <div className='flex flex-col gap-1'>
-            <div tw='btn btn-sm btn-outline' onClick={() => st.stopCurrentPrompt()}>
-                STOP GENERATING
-            </div>
+            <Button onClick={() => st.stopCurrentPrompt()}>STOP GENERATING</Button>
             <GraphSummaryUI graph={graph} />
         </div>
     )

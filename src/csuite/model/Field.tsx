@@ -20,9 +20,10 @@ import type { Producer } from './pubsub/Producer'
 import type { Repository } from './Repository'
 import type { Transaction } from './Transaction'
 import type { Problem, Problem_Ext } from './Validation'
+import type { AnnotationsMap } from 'mobx'
 
 import { produce, setAutoFreeze } from 'immer'
-import { $mobx, type AnnotationsMap, extendObservable, isObservable, observable } from 'mobx'
+import { $mobx, extendObservable, isObservable, makeObservable, observable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { createElement, type FC, type ReactNode, useMemo } from 'react'
 
@@ -1103,6 +1104,7 @@ export abstract class Field<out K extends FieldTypes = FieldTypes> implements In
      * persistance will usually be done at the root field reacting to this event.
      */
     applySerialUpdateEffects(): void {
+        // console.log(`[🤠] upda applySerialUpdateEffects`)
         this.config.onSerialChange?.(this)
         // this.parent?.applySerialUpdateEffects()
     }
@@ -1110,6 +1112,7 @@ export abstract class Field<out K extends FieldTypes = FieldTypes> implements In
     // 💬 2024-03-15 rvion: use this regexp to quickly review manual serial set patterns
     // | `serial\.[a-zA-Z_]+(\[[a-zA-Z_]+\])? = `
     applyValueUpdateEffects(): void {
+        // console.log(`[🤠] upda applyValueUpdateEffects`)
         // ⏸️ this.serial.lastUpdatedAt = Date.now() as Timestamp
         this.config.onValueChange?.(this)
     }
@@ -1575,35 +1578,46 @@ export abstract class Field<out K extends FieldTypes = FieldTypes> implements In
             //   VVVVVVVVVVVV this is where we hydrate children
             this.setOwnSerialWithValidationAndMigrationAndFixes(serial)
 
-            // make the object deeply observable including this base class
-            makeAutoObservableInheritance(
-                this,
-                {
-                    // schema should not be able
-                    schema: false,
-                    serial: observable.ref,
+            // 🔶 const observable = (x: any, _: any): any => x
+            // 🔶 const makeAutoObservableInheritance = (x: any, ...args: any[]): any => x
+            // 🔶 const OPTS: CreateObservableOptions = {}
+            // 🔶 if (this.root.config.options?.skipMobxAutoBind) {
+            // 🔶     OPTS.autoBind = false
+            // 🔶 }
 
-                    // components should not be observable; otherwise, it breaks the hot reload in dev-mode
-                    UIToggle: false,
-                    UIErrors: false,
-                    UILabelCaret: false,
-                    UILabelIcon: false,
-                    UILabelContainer: false,
-                    UIHeaderContainer: false,
+            if (this.root.config.instanciationOption?.altMobx) {
+                makeObservable(this, { serial: observable.ref })
+            } else {
+                // make the object deeply observable including this base class
+                makeAutoObservableInheritance(
+                    this,
+                    {
+                        // schema should not be able
+                        schema: false,
+                        serial: observable.ref,
 
-                    // overrides retrieved from parents
-                    ...mobxOverrides,
+                        // components should not be observable; otherwise, it breaks the hot reload in dev-mode
+                        UIToggle: false,
+                        UIErrors: false,
+                        UILabelCaret: false,
+                        UILabelIcon: false,
+                        UILabelContainer: false,
+                        UIHeaderContainer: false,
 
-                    // misc
-                    getValue: false,
+                        // overrides retrieved from parents
+                        ...mobxOverrides,
 
-                    // Render
-                    Render: false,
-                    render: false,
-                },
-                {},
-                2,
-            )
+                        // misc
+                        getValue: false,
+
+                        // Render
+                        Render: false,
+                        render: false,
+                    },
+                    {},
+                    2,
+                )
+            }
 
             this.UI = this.UI.bind(this)
             this.render = this.render.bind(this)

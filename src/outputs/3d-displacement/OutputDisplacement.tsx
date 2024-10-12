@@ -1,3 +1,4 @@
+import type { Trigger } from '../../csuite/trigger/Trigger'
 import type { MediaImageL } from '../../models/MediaImage'
 import type { STATE } from '../../state/state'
 
@@ -7,6 +8,7 @@ import { nanoid } from 'nanoid'
 import path, { dirname } from 'pathe'
 import { useMemo } from 'react'
 
+import { Button } from '../../csuite/button/Button'
 import { FormUI } from '../../csuite/form/FormUI'
 import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
 import { bang } from '../../csuite/utils/bang'
@@ -63,11 +65,7 @@ export const OutputDisplacementUI = observer(function OutputDisplacementUI_(p: {
     )
 
     const st = useSt()
-    const saveImgBtn = (
-        <div tw='btn btn-sm' onClick={(ev) => saveCanvasAsImage(uist.canvasRef.current)}>
-            <span className='material-symbols-outlined'>download</span>
-        </div>
-    )
+    const saveImgBtn = <Button icon='mdiDownload' size='sm' onClick={(ev) => saveCanvasAsImage(uist.canvasRef.current)} />
     const menuConf = st.displacementConf.value.menu
     return (
         <div tw='relative flex-1 flex flex-col'>
@@ -92,7 +90,11 @@ export const OutputDisplacementUI = observer(function OutputDisplacementUI_(p: {
 
 export type OrbitControls2 = import('three/examples/jsm/controls/OrbitControls').OrbitControls
 
-export const saveCanvasAsImage = async (canvas: Maybe<HTMLCanvasElement>, subfolder?: string) => {
+export const saveCanvasAsImage = async (
+    //
+    canvas: Maybe<HTMLCanvasElement>,
+    subfolder?: string,
+): Promise<Trigger | undefined> => {
     if (canvas == null) return toastError('❌ canvas is null')
     const imageID = nanoid()
     const filename = `${imageID}.png`

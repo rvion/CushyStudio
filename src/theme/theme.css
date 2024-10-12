@@ -101,20 +101,22 @@ h4 { font-size: 1rem; font-weight: bold; }
 .flexlayout__tabset-selected { background-image: none; }
 
 /* mod 3. attempt to make a simple hover effect to indicate which tab is currently hovered */
+
 /* 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 */
-.flexlayout__tab .CSHY-panel-header{
+/* .flexlayout__tab .CSHY-panel-header{ */
     /* 🔴 border: 1px solid transparent */
     /* var(--color-tabset-background); */
     /* border-top: none; */
-}
+/* } */
+
 /* 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 */
-.flexlayout__tab:hover .CSHY-panel-header {
+/* .flexlayout__tab:hover .CSHY-panel-header { */
     /* 🔴 border: 1px solid oklch(from var(--KLR) 0.5 .1 calc(h)); */
     /* border: 1px solid oklch(from var(--KLR) 0.5 calc(c * 3) h); */
     /* border: 1px solid red; */
     /* border-top: none; */
     /* box-shadow: inset 0 0 10px 10px oklch(from var(--KLR) 0.5 .2 calc(h + 180)); */
-}
+/* } */
 
 /* .flexlayout__tabset_tabbar_inner_tab_container {
     border-left: 1px solid var(--color-tabset-background);

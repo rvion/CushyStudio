@@ -126,7 +126,7 @@ export const AnchorContentUI = observer(function AnchorContentUI_<OPTION>(p: { s
 
     return WRAP_SHOULD_NOT_IMPACT_ICONS ? (
         // IN THIS BRANCH, LAYOUT IS DONE VIA GRID
-        <Frame hover tw={['h-input flex', 'flex-grow', 'grid pl-1.5']} line style={{ gridTemplateColumns: '1fr 24px' }}>
+        <Frame hover tw={['h-input flex', 'flex-grow', 'grid']} line style={{ gridTemplateColumns: '1fr 24px' }}>
             {/* 2px for parent border + 2 * 2px for icon padding */}
             {/* <Ikon.mdiTextBoxSearchOutline tw='box-border m-[2px]' size='calc((var(--input-height) - 4px - 2px)' /> */}
             <SelectValueContainerUI wrap={p.select.p.wrap ?? true}>{displayValue}</SelectValueContainerUI>

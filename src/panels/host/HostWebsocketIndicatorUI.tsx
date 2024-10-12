@@ -1,13 +1,13 @@
 import { observer } from 'mobx-react-lite'
 
 import { Button } from '../../csuite/button/Button'
+import { useCSuite } from '../../csuite/ctx/useCSuite'
+import { Frame } from '../../csuite/frame/Frame'
 import { Message } from '../../csuite/inputs/shims'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
+import { QuickHostActionsUI } from '../../manager/REQUIREMENTS/QuickHostActionsUI'
 import { HostL } from '../../models/Host'
 import { useSt } from '../../state/stateContext'
-import { QuickHostActionsUI } from '../../manager/REQUIREMENTS/QuickHostActionsUI'
-import { Frame } from '../../csuite/frame/Frame'
-import { useCSuite } from '../../csuite/ctx/useCSuite'
 
 export const ConnectionInfoUI = observer(function ConnectionInfoUI_(p: { host: HostL }) {
     const host = p.host
@@ -64,10 +64,12 @@ export const HostWebsocketIndicatorUI = observer(function HostWebsocketIndicator
     return (
         <RevealUI showDelay={0} content={() => <HostQuickMenuUI host={p.host} />}>
             {ws == null ? (
-                <Button subtle tw='opacity-50'>
-                    {p.showIcon && <span className='material-symbols-outlined '>cloud_off</span>}
-                    <span className=''>WS</span>
-                </Button>
+                <Button //
+                    icon={p.showIcon ? 'mdiCloudOff' : undefined}
+                    subtle
+                    tw='opacity-50'
+                    children='WS'
+                />
             ) : ws?.isOpen ? (
                 <Button subtle>
                     {p.showIcon && <span className='material-symbols-outlined text-green-400 '>check_circle</span>}

@@ -3,7 +3,7 @@ import type { Field_seed } from './FieldSeed'
 import { observer } from 'mobx-react-lite'
 
 import { Button } from '../../button/Button'
-import { InputBoolToggleButtonUI } from '../../checkbox/InputBoolToggleButtonUI'
+import { ToggleButtonUI } from '../../checkbox/InputBoolToggleButtonUI'
 import { useCSuite } from '../../ctx/useCSuite'
 import { Frame } from '../../frame/Frame'
 import { InputNumberUI } from '../../input-number/InputNumberUI'
@@ -25,7 +25,7 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { field: Field_se
             roundness={csuite.inputRoundness}
             border={csuite.inputBorder}
         >
-            <InputBoolToggleButtonUI // Random
+            <ToggleButtonUI // Random
                 toggleGroup={field.id}
                 icon='mdiAutoFix'
                 value={field.serial.mode === 'randomize'}
@@ -35,7 +35,7 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { field: Field_se
                 }}
                 // text='Random'
             />
-            <InputBoolToggleButtonUI // Fixed
+            <ToggleButtonUI // Fixed
                 toggleGroup={field.id}
                 icon='mdiNumeric1CircleOutline'
                 value={field.serial.mode === 'fixed'}

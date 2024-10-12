@@ -6,6 +6,7 @@ import { observer } from 'mobx-react-lite'
 import { useLayoutEffect, useMemo } from 'react'
 
 import { Button } from '../../csuite/button/Button'
+import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
 import { knownOKLCHHues } from '../../csuite/tinyCSS/knownHues'
 import { Panel, type PanelHeader } from '../../router/Panel'
 import { CUSHY_PORT } from '../../state/PORT'
@@ -38,7 +39,7 @@ export const Panel_Minipaint = observer(function PaintUI_(p: PanelMinipaintProps
 
     return (
         <div className='flex-grow flex flex-col h-full'>
-            <div className='top-1 right-2'>
+            <PanelHeaderUI>
                 <div className='flex items-center gap-2'>
                     <Button
                         tw='join-item'
@@ -51,7 +52,8 @@ export const Panel_Minipaint = observer(function PaintUI_(p: PanelMinipaintProps
                         Save
                     </Button>
                     <Button
-                        tw={['btn btn-sm self-start', uist.autoSave ? 'btn-active' : null]}
+                        // active={Boolean(uist.autoSave)}
+                        // tw={['self-start', uist.autoSave ? 'btn-active' : null]}
                         icon='mdiRepeat'
                         loading={Boolean(uist.autoSave)}
                         onClick={() => uist.toggleAutoSave()}
@@ -69,7 +71,7 @@ export const Panel_Minipaint = observer(function PaintUI_(p: PanelMinipaintProps
                         .png
                     </div>
                 </div>
-            </div>
+            </PanelHeaderUI>
             <iframe
                 style={{
                     border: 'none',

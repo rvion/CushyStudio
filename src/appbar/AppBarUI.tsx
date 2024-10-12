@@ -3,21 +3,32 @@ import { observer } from 'mobx-react-lite'
 import { Button } from '../csuite/button/Button'
 import { SpacerUI } from '../csuite/components/SpacerUI'
 import { Frame } from '../csuite/frame/Frame'
+import { menuWithoutProps } from '../csuite/menu/Menu'
 import { cmd_fav_toggleFavBar } from '../operators/commands/cmd_favorites'
-import { HostSchemaIndicatorUI } from '../panels/host/HostSchemaIndicatorUI'
-import { ConnectionInfoUI, HostWebsocketIndicatorUI } from '../panels/host/HostWebsocketIndicatorUI'
+import { ConnectionInfoUI } from '../panels/host/HostWebsocketIndicatorUI'
 import { UpdateBtnUI } from '../updater/UpdateBtnUI'
 import { assets } from '../utils/assets/assets'
 import { MenuAboutUI } from './MenuAboutUI'
 import { MenuAppsUI } from './MenuApps'
-import { MenuComfyUI } from './MenuComfyUI'
+import { menuComfyUI2 } from './MenuComfyUI'
 import { MenuDebugUI } from './MenuDebugUI'
 import { MenuNSFWCheckerUI } from './MenuNSFWChecker'
 import { MenuSettingsUI } from './MenuSettingsUI'
-import { MenuShortcutsUI } from './MenuShortcuts'
+import { menuCommands } from './MenuShortcuts'
 import { MenuUtilsUI } from './MenuUtilsUI'
-import { MenuPanelsUI } from './MenuWindowUI'
+import { menuPanels } from './MenuWindowUI'
 import { PerspectivePickerUI } from './PerspectivePickerUI'
+
+const mainMenu = menuWithoutProps({
+    title: 'mainMenu',
+    entries: () => [
+        //
+        menuPanels.bind(),
+        menuCommands.bind(),
+        menuComfyUI2.bind(),
+    ],
+    // horizontalMenuGroup: true,
+})
 
 export const AppBarUI = observer(function AppBarUI_(p: {}) {
     const mainHost = cushy.mainHost
@@ -35,12 +46,11 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
             >
                 <img style={{ width: '1.3rem' }} src={assets.CushyLogo_512_png} alt='' />
             </Button.Ghost>
-            <div tw='px-1'>
-                <UpdateBtnUI updater={cushy.updater}>CushyStudio </UpdateBtnUI>
-            </div>
-            <MenuPanelsUI />
-            <MenuShortcutsUI />
-            <MenuComfyUI />
+            <div tw='px-1'>CushyStudio</div>
+            <mainMenu.MenuBarUI />
+            {/* <MenuPanelsUI /> */}
+            {/* <MenuCommandsUI /> */}
+            {/* <MenuComfyUI /> */}
             <MenuAppsUI />
             {/* <MenuEditUI /> */}
             <MenuSettingsUI // TODO(bird_d): Should go inside "Edit" eventually, the nesting is probably inconvienient for now.
@@ -52,6 +62,7 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
             <PerspectivePickerUI tw='self-center mx-auto' />
 
             <SpacerUI />
+            <UpdateBtnUI updater={cushy.updater} />
             <Frame line>
                 <ConnectionInfoUI host={mainHost} />
                 {/* <HostWebsocketIndicatorUI host={mainHost} /> */}

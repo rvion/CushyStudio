@@ -16,6 +16,18 @@
                 "message": "Please use 'window_addEventListener' instead of 'window.addEventListener'."
             }
         ],
+        // "no-restricted-imports": [
+        //     "error",
+        //     {
+        //         "paths": [
+        //             {
+        //                 "name": "mobx",
+        //                 "importNames": ["makeAutoObservable"],
+        //                 "message": "Please use 'makeAutoObservableV2' instead of 'makeAutoObservable' from 'mobx'."
+        //             }
+        //         ]
+        //     }
+        // ],
         "@typescript-eslint/naming-convention": "off",
         "unused-imports/no-unused-imports": "error",
         "@typescript-eslint/semi": "off",
@@ -31,6 +43,8 @@
         "consistent-this": [2, "self", "that"] // as a paliative solution to above permissive rule
     },
     "ignorePatterns": [
+        "uno.config.ts",
+        "vite.config.ts",
         //
         "out",
         "dist",

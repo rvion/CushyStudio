@@ -46,7 +46,7 @@ export const WidgetPresetsUI = observer(function WidgetPresets({
                         key={preset.label}
                         icon={preset.icon}
                         onClick={() => preset.apply(field)}
-                        children={preset.label}
+                        label={preset.label}
                     />
                 ))
             }}

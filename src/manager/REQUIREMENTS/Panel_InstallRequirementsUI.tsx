@@ -32,7 +32,7 @@ export const InstallRequirementsBtnUI = observer(function InstallRequirementsBtn
             )}
         >
             <Button //
-                icon='mdiDownload'
+                icon='mdiPuzzleOutline'
                 size='widget'
                 square={!p.label}
                 subtle={!actionRequired}
@@ -51,9 +51,10 @@ export const Panel_InstallRequirementsUI = observer(function Panel_InstallRequir
     const repo = manager.repository
     return (
         <div tw='flex flex-col gap-2 p-2'>
-            <MessageWarningUI markdown='make sure your `ComfyUI\custom_nodes\ComfyUI-Manager\config.ini` properly has `bypass_ssl = True`'>
-                make sure you have
-            </MessageWarningUI>
+            <MessageWarningUI
+                tw='text-sm'
+                markdown='make sure your `ComfyUI\custom_nodes\ComfyUI-Manager\config.ini` properly has `bypass_ssl = True`'
+            />
             <QuickHostActionsUI host={host} tw='flex gap-1 flex-wrap' />
             <hr />
             <div tw='flex flex-col overflow-scroll gap-2'>
@@ -152,7 +153,7 @@ export const Panel_InstallRequirementsUI = observer(function Panel_InstallRequir
                     // // const dlPath = host.manager.getModelInfoFinalFilePath(mi)
                     // return (
                     //     <div key={mi.url}>
-                    //         <div
+                    //         <Button
                     //             onClick={async () => {
                     //                 // 🔴 TODO
                     //                 // https://github.com/ltdrdata/ComfyUI-Manager/blob/main/js/model-downloader.js#L11
@@ -169,13 +170,11 @@ export const Panel_InstallRequirementsUI = observer(function Panel_InstallRequir
                     //                 // ⏸️     .get(p.widget.input.enumName)
                     //                 // ⏸️ enumInfo?.values.push(mi.filename)
                     //             }}
-                    //             tw='btn btn-sm btn-outline btn-sm'
                     //             key={mi.name}
                     //         >
                     //             {isInstalled ? '✅' : null}
-                    //             <span className='material-symbols-outlined'>cloud_download</span>
                     //             <span>{mi.name}</span>
-                    //         </div>
+                    //         </Button>
                     //         {/* <RevealUI> */}
                     //         {/* <div>infos</div> */}
                     //         {/*

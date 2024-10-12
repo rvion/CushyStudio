@@ -3,7 +3,7 @@ export const samplePrompts = {
         //
         'masterpiece, tree',
         '?color, ?3d_term, ?adj_beauty, ?adj_general',
-        '(nature)*0.9, (intricate_details)*1.1',
+        '(nature:0.9), (intricate_details:1.1)',
     ].join('\n'),
 }
 

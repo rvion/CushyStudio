@@ -102,7 +102,7 @@ export class Panel<Props> {
                 return new SimpleMenuAction({
                     label: name,
                     icon: this.p.icon,
-                    onPick: (): void => {
+                    onClick: (): void => {
                         const preset: PanelPreset<any> = presetFn()
                         const props: Props = { ...baseProps, ...preset.props }
                         cushy.layout.open(this.name as any, props, { where: 'left' })

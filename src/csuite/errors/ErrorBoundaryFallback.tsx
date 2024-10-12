@@ -1,16 +1,21 @@
+import { Button } from '../button/Button'
 import { JsonViewUI } from '../json/JsonViewUI'
 
 export const ErrorBoundaryFallback = (p: {
     // 🔴 pretty unsafe
     error: any
     resetErrorBoundary: (...args: any[]) => void
-}) => {
+}): JSX.Element => {
     return (
         <div role='alert'>
             <p tw='flex gap-2 items-center'>
-                <span onClick={() => p.resetErrorBoundary()} tw='btn btn-square btn-sm btn-error rounded'>
-                    <span className='material-symbols-outlined'>refresh</span>
-                </span>
+                <Button //
+                    icon='mdiRefresh'
+                    onClick={() => p.resetErrorBoundary()}
+                    size='sm'
+                    look='error'
+                    square
+                />
                 Something went wrong:
             </p>
             <pre style={{ color: 'red' }}>{p.error?.message}</pre>

@@ -48,6 +48,7 @@ import { TreeView } from '../csuite/tree/TreeView'
 import { VirtualHierarchy } from '../csuite/tree/VirtualHierarchy'
 import { type SQLITE_boolean_, SQLITE_false, SQLITE_true } from '../csuite/types/SQLITE_boolean'
 import { exhaust } from '../csuite/utils/exhaust'
+import { toastError } from '../csuite/utils/toasts'
 import { liveDB, LiveDB } from '../db/LiveDB'
 import { quickBench } from '../db/quickBench'
 import { asHostID } from '../db/TYPES.gen'
@@ -782,6 +783,11 @@ export class STATE {
         // 🔴 console.info(`[👢] WEBSOCKET: received ${e.data}`)
         const msg: WsMsg = JSON.parse(e.data as any)
 
+        // silent whitelist
+        if (typeof msg === 'object' && 'type' in msg) {
+            if ((msg.type as any) === 'crystools.monitor') return
+        }
+
         const shouldCheckPAYLOADS = true
         if (shouldCheckPAYLOADS) {
             const match = WsMsg$Schema.safeParse(msg)
@@ -826,7 +832,9 @@ export class STATE {
         }
         exhaust(msg)
         console.log('❌', 'Unknown message:', msg)
-        throw new Error('Unknown message type: ' + JSON.stringify(msg))
+
+        toastError('Unknown message type: ' + JSON.stringify(msg.type))
+        // throw new Error('Unknown message type: ' + JSON.stringify(msg))
     }
 
     /** attempt to convert an url to a Blob */

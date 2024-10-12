@@ -1,11 +1,17 @@
-.UI-MAIN{
+/* .UI-MAIN{ */
   /* border: 6px solid oklch(from var(--KLR) calc(l - 0.1 * var(--DIR)) calc(c / 2) h);; */
   /* border-left: 6px solid var(--appbar); */
   /* border-right: 6px solid var(--appbar); */
+/* } */
 
-}
+/* :root { */
+/* } */
 
 .flexlayout__layout {
+  --p: oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) calc(c * 2) h);
+  --s: oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) calc(c * 2) h + 180);
+  --t: oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) calc(c * 2) h + 270);
+
   --color-background:                       oklch(from var(--KLR) calc(l + 0.0001 * var(--DIR)) calc(c / 2) h); /* White background equivalent */
   --color-base:                             oklch(from var(--KLR) calc(l + 0.0001 * var(--DIR)) calc(c / 2) h); /* Base color */
   --color-1:                                oklch(from var(--KLR) calc(l + 0.0001 * var(--DIR)) calc(c / 2) h); /* Slightly off-white */
@@ -15,10 +21,10 @@
   --color-5:                                oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h); /* Slightly darker than --color-3 */
   --color-6:                                oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h); /* Placeholder for a color a bit darker than --color-5 */
 
-  --color-drag1:                            oklch(var(--p));  /* Primary color for dragging */
-  --color-drag2:                            oklch(var(--s));  /* Secondary color for dragging */
-  --color-drag1-background:                 oklch(var(--p));  /* Primary color background with lowered opacity */
-  --color-drag2-background:                 oklch(var(--s));  /* Secondary color background with lowered opacity */
+  --color-drag1:                            oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) calc(c * 2) h);  /* Primary color for dragging */
+  --color-drag2:                            oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) calc(c * 2) h + 180);  /* Secondary color for dragging */
+  --color-drag1-background:                 oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) calc(c * 2) h);  /* Primary color background with lowered opacity */
+  --color-drag2-background:                 oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) calc(c * 2) h + 180);  /* Secondary color background with lowered opacity */
 
   --color-overflow:                         oklch(from var(--KLR) calc(l + 0.4 * var(--DIR)) calc(c / 2) h);
   --color-icon:                             oklch(from var(--KLR) calc(l + 0.4 * var(--DIR)) calc(c / 2) h);

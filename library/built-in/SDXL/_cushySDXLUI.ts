@@ -10,8 +10,8 @@ import { sampleNegative, samplePrompts } from '../samplePrompts'
 import { type $prefabModelSD15andSDXL, prefabModelSD15andSDXL } from '../SD15/_model_SD15_SDXL'
 
 export type $CushySDXLUI = X.XGroup<{
-    positive: X.XPrompt
-    negative: X.XPrompt
+    positive: X.XList<X.XOptional<X.XPrompt>>
+    negative: X.XList<X.XOptional<X.XPrompt>>
     model: $prefabModelSD15andSDXL
     latent: UI_LatentV3
     sampler: UI_Sampler_Advanced
@@ -23,34 +23,42 @@ export type $CushySDXLUI = X.XGroup<{
     extra2: $extra2
 }>
 
+// type K = $CushySDXLUI['$Field']
+
 export function CushySDXLUI(ui: X.Builder): $CushySDXLUI {
     return ui.fields({
-        positive: ui.prompt({
-            icon: 'mdiPlusBoxOutline',
-            background: { hue: 150, chroma: 0.05 },
-            default: samplePrompts.tree,
-            presets: [
-                //
-                { label: 'Portrait', icon: 'mdiFaceWoman', apply: (w) => w.setText('portrait, face') },
-                { label: 'Landscape', icon: 'mdiImageFilterHdr', apply: (w) => w.setText('landscape, nature') },
-                { label: 'Tree', icon: 'mdiTree', apply: (w) => w.setText(samplePrompts.tree) },
-                { label: 'Abstract', icon: 'mdiShape', apply: (w) => w.setText('abstract, art') },
-            ],
-        }),
-        negative: ui.prompt({
-            icon: 'mdiMinusBoxOutline',
-            startCollapsed: true,
-            default: 'bad quality, blurry, low resolution, pixelated, noisy',
-            box: { base: { hue: 0, chroma: 0.05 } },
-            presets: [
-                { icon: 'mdiCloseOctagon', label: 'simple negative', apply: (w) => w.setText(sampleNegative.simpleNegative) },
-                {
-                    icon: 'mdiCloseOctagon',
-                    label: 'simple negative + nsfw',
-                    apply: (w) => w.setText(sampleNegative.simpleNegativeNsfw),
-                },
-            ],
-        }),
+        positive: ui
+            .prompt({
+                icon: 'mdiPlusBoxOutline',
+                background: { hue: 150, chroma: 0.05 },
+                default: samplePrompts.tree,
+                presets: [
+                    //
+                    { label: 'Portrait', icon: 'mdiFaceWoman', apply: (w) => w.setText('portrait, face') },
+                    { label: 'Landscape', icon: 'mdiImageFilterHdr', apply: (w) => w.setText('landscape, nature') },
+                    { label: 'Tree', icon: 'mdiTree', apply: (w) => w.setText(samplePrompts.tree) },
+                    { label: 'Abstract', icon: 'mdiShape', apply: (w) => w.setText('abstract, art') },
+                ],
+            })
+            .optional(true)
+            .list({ min: 1 }),
+        negative: ui
+            .prompt({
+                icon: 'mdiMinusBoxOutline',
+                startCollapsed: true,
+                default: 'bad quality, blurry, low resolution, pixelated, noisy',
+                box: { base: { hue: 0, chroma: 0.05 } },
+                presets: [
+                    { icon: 'mdiCloseOctagon', label: 'simple negative', apply: (w) => w.setText(sampleNegative.simpleNegative) },
+                    {
+                        icon: 'mdiCloseOctagon',
+                        label: 'simple negative + nsfw',
+                        apply: (w) => w.setText(sampleNegative.simpleNegativeNsfw),
+                    },
+                ],
+            })
+            .optional(true)
+            .list({ min: 1 }),
         model: prefabModelSD15andSDXL({
             ckpt_name: 'albedobaseXL_v21.safetensors',
         }).addRequirements({

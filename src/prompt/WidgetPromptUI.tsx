@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite'
 import { useEffect, useLayoutEffect, useMemo } from 'react'
 
 // import { Button } from '../csuite/button/Button'
-import { InputBoolToggleButtonUI } from '../csuite/checkbox/InputBoolToggleButtonUI'
+import { ToggleButtonUI } from '../csuite/checkbox/InputBoolToggleButtonUI'
 import { WidgetSingleLineSummaryUI } from '../csuite/form/WidgetSingleLineSummaryUI'
 import { Frame } from '../csuite/frame/Frame'
 import { useSt } from '../state/stateContext'
@@ -21,21 +21,14 @@ import { WidgetPromptUISt } from './WidgetPromptUISt'
 
 export const WidgetPrompt_LineUI = observer(function WidgetPrompt_LineUI_(p: { field: Field_prompt }) {
     const field = p.field
-    return (
-        <div tw='COLLAPSE-PASSTHROUGH flex flex-1 items-center justify-between'>
-            {field.serial.collapsed ? (
-                <WidgetSingleLineSummaryUI>{field.serial.val}</WidgetSingleLineSummaryUI>
-            ) : (
-                <div /* spacer */ />
-            )}
-            {/* <Button
-                onClick={() => cushy.layout.addCustomV2(PromptEditorUI, { promptID: field.id })}
-                icon='mdiAbacus'
-                subtle
-                square
-            /> */}
-        </div>
-    )
+    if (field.serial.collapsed) return <WidgetSingleLineSummaryUI>{field.serial.val}</WidgetSingleLineSummaryUI>
+    return null
+    //         {/* <Button
+    //             onClick={() => cushy.layout.addCustomV2(PromptEditorUI, { promptID: field.id })}
+    //             icon='mdiAbacus'
+    //             subtle
+    //             square
+    //         /> */}
 })
 
 export const PluginToggleBarUI = observer(function PluginToggleBarUI_(p: {}) {
@@ -44,7 +37,7 @@ export const PluginToggleBarUI = observer(function PluginToggleBarUI_(p: {}) {
             {plugins.map((plugin) => {
                 const active = cushy.configFile.get(plugin.configKey) ?? false
                 return (
-                    <InputBoolToggleButtonUI
+                    <ToggleButtonUI
                         key={plugin.key}
                         toggleGroup={'plugin'}
                         tooltip={`${plugin.title}\n${plugin.description}`}

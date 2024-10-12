@@ -1,4 +1,4 @@
-import type { CompiledRenderProps } from '../../../csuite-cushy/presenters/Presenter'
+import type { CompiledRenderProps } from '../../../csuite-cushy/presenters/Renderer'
 import type { Field_optional } from './FieldOptional'
 
 import { observer } from 'mobx-react-lite'
@@ -11,8 +11,10 @@ export const ShellOptionalUI = observer(function ShellOptionalUI_(p: CompiledRen
     const child = field.child
     return (
         <child.UI //
+            UpDownBtn={p.UpDownBtn}
+            DeleteBtn={p.DeleteBtn}
             Toogle={<field.UIToggle />}
-            LabelText={(x) => renderFCOrNode(p.LabelText, { field: field })}
+            Title={(x) => renderFCOrNode(p.Title, { field: field })}
             classNameAroundBodyAndHeader={extraClass}
         />
     )

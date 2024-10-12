@@ -65,23 +65,25 @@ export class ComfyWorkflowL extends BaseInst<TABLES['comfy_workflow']> {
         return this.nodes.length
     }
 
-    menuAction_openInFullScreen = async (ev: MouseEvent): Promise<void> => {
-        ev.preventDefault()
-        ev.stopPropagation()
+    menuAction_openInFullScreen = async (ev?: MouseEvent): Promise<void> => {
+        ev?.preventDefault()
+        ev?.stopPropagation()
         const prompt = await this.json_workflow()
         if (prompt == null) return
         this.st.layout.open('ComfyUI', { litegraphJson: prompt }, { where: 'biggest' })
     }
-    menuAction_openInTab = async (ev: MouseEvent): Promise<void> => {
-        ev.preventDefault()
-        ev.stopPropagation()
+
+    menuAction_openInTab = async (ev?: MouseEvent): Promise<void> => {
+        ev?.preventDefault()
+        ev?.stopPropagation()
         const prompt = await this.json_workflow()
         if (prompt == null) return
         this.st.layout.open('ComfyUI', { litegraphJson: prompt })
     }
-    menuAction_downloadPrompt = async (ev: MouseEvent): Promise<void> => {
-        ev.preventDefault()
-        ev.stopPropagation()
+
+    menuAction_downloadPrompt = async (ev?: MouseEvent): Promise<void> => {
+        ev?.preventDefault()
+        ev?.stopPropagation()
         const jsonPrompt = this.json_forPrompt('use_class_name_and_number')
         // ensure folder exists
         const folderExists = existsSync(this.cacheFolder)
@@ -94,9 +96,9 @@ export class ComfyWorkflowL extends BaseInst<TABLES['comfy_workflow']> {
         writeFileSync(path, JSON.stringify(jsonPrompt, null, 3))
     }
 
-    menuAction_downloadWorkflow = async (ev: MouseEvent): Promise<void> => {
-        ev.preventDefault()
-        ev.preventDefault()
+    menuAction_downloadWorkflow = async (ev?: MouseEvent): Promise<void> => {
+        ev?.preventDefault()
+        ev?.preventDefault()
         const jsonWorkflow = await this.json_workflow()
         console.log('>>>🟢', { jsonWorkflow })
         // ensure folder exists

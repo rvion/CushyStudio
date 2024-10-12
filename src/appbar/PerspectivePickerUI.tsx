@@ -31,13 +31,13 @@ export const PerspectivePickerUI = observer(function PerspectivePicker(p: FrameP
                                         })
                                     }
                                     icon='mdiTagEdit'
-                                    children='Rename'
+                                    label='Rename'
                                 />
-                                <MenuItem onClick={() => p.saveSnapshot()} icon='mdiZipDisk' children='save' />
-                                <MenuItem onClick={() => p.resetToSnapshot()} icon='mdiLockReset' children='Reset To Last Save' />
-                                <MenuItem onClick={() => p.resetToDefault()} icon='mdiRestore' children='Reset To Default' />
-                                <MenuItem onClick={() => p.duplicate()} icon='mdiClipboard' children='Duplicate' />
-                                <MenuItem onClick={() => p.delete()} icon='mdiTrashCan' children='Delete' />
+                                <MenuItem onClick={() => p.saveSnapshot()} icon='mdiZipDisk' label='save' />
+                                <MenuItem onClick={() => p.resetToSnapshot()} icon='mdiLockReset' label='Reset To Last Save' />
+                                <MenuItem onClick={() => p.resetToDefault()} icon='mdiRestore' label='Reset To Default' />
+                                <MenuItem onClick={() => p.duplicate()} icon='mdiClipboard' label='Duplicate' />
+                                <MenuItem onClick={() => p.delete()} icon='mdiTrashCan' label='Delete' />
                             </>
                         )}
                     >
@@ -45,12 +45,9 @@ export const PerspectivePickerUI = observer(function PerspectivePicker(p: FrameP
                             tw='!rounded-b-none'
                             base={{ contrast: p.isActive ? 0.3 : -0.033, chroma: 0.07 }}
                             dropShadow={undefined}
-                            // subtle
-                            // active={p.isActive}
-                            // disabled={!p.isActive}
                             borderless
                             look={p.isActive ? 'primary' : 'ghost'}
-                            children={p.data.name}
+                            children={p.data.name ?? '<untitled>'}
                             onClick={() => p.open()}
                         />
                     </RevealUI>

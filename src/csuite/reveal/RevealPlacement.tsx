@@ -4,6 +4,7 @@ export type RevealPlacement =
      * will clamp the revealed content above the dom of the given element.
      */
     | 'above'
+    | 'above-no-clamp'
 
     // absolute placement ---------------------------------------------------------
     | 'screen'
@@ -72,6 +73,15 @@ export const computePlacement = (
             height: anchor.height,
             maxWidth: anchor.width, // do we need do double the information ?
             maxHeight: anchor.height, // do we need do double the information ?
+            // TODO: review those two lines below:
+            minWidth: anchor.width,
+            minHeight: anchor.height,
+        }
+    }
+    if (placement === 'above-no-clamp') {
+        return {
+            top: anchor.top,
+            left: anchor.left,
             // TODO: review those two lines below:
             minWidth: anchor.width,
             minHeight: anchor.height,

@@ -7,7 +7,7 @@ import { observer } from 'mobx-react-lite'
 import { createElement } from 'react'
 
 import { InputBoolCheckboxUI } from './InputBoolCheckboxUI'
-import { InputBoolToggleButtonUI } from './InputBoolToggleButtonUI'
+import { ToggleButtonUI } from './InputBoolToggleButtonUI'
 
 export type BoolButtonMode = 'radio' | 'checkbox' | false
 
@@ -39,5 +39,5 @@ export type BoolButtonProps = {
 export const InputBoolUI = observer(function InputBool(p: BoolButtonProps) {
     const display = p.display ?? 'check'
     if (display === 'check') return createElement(InputBoolCheckboxUI, p)
-    return createElement(InputBoolToggleButtonUI, p)
+    return createElement(ToggleButtonUI, p)
 })

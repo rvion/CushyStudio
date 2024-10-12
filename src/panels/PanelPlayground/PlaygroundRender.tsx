@@ -1,4 +1,4 @@
-import type { DisplayRuleCtx } from '../../csuite-cushy/presenters/Presenter'
+import type { DisplayRuleCtx } from '../../csuite-cushy/presenters/Renderer'
 import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
 
 import { observer } from 'mobx-react-lite'
@@ -27,7 +27,7 @@ export const PlaygroundRenderUI = observer(function PlaygroundRender(p: NO_PROPS
                 layout={({ fields: f }) => [f.x, f.x, f.x, f.x, '*']}
                 rule={(ui) => {
                     ui.forField(ui.field.Z, { Header: 'hello guys' })
-                    ui.forField(ui.field.Y, { LabelText: null })
+                    ui.forField(ui.field.Y, { Title: null })
                     ui.forField(ui.field.Sub1.Z, { Header: 'hope you guys good' })
                     ui.forField(ui.field.Sub1, { layout: (f) => [f.X, f.Y, f.Y, '*'], Header: 'hope you guys good' })
                     ui.forAllFields((ui: DisplayRuleCtx) => {

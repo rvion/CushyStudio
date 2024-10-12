@@ -3,6 +3,7 @@ import type { Trigger } from '../trigger/Trigger'
 import type { Menu, MenuEntryWithKey } from './Menu'
 import type { MenuEntry } from './MenuEntry'
 
+import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { createElement, type UIEvent } from 'react'
 
@@ -37,17 +38,28 @@ export class MenuInstance<Props> implements Activity {
         public menu: Menu<Props>,
         public props: Props,
         public keysTaken: Set<string> = new Set(),
-    ) {}
+    ) {
+        makeAutoObservable(this, {
+            uid: false,
+            UI: false,
+        })
+    }
 
     get entries(): MenuEntry[] {
         return this.menu.def.entries(this.props, menuBuilder)
     }
 
+    // 💬 2024-10-10 rvion:
+    // | TODO: better cache stuff (see [REFFOR])
+    // | and find way to make shortcuts properly work
+
     get entriesWithKb(): MenuEntryWithKey[] {
+        // console.log(`[REFFOR] ${this.uid} entriesWithKb...`)
         return this.acceleratedEntries.out
     }
 
     get allocatedKeys(): Set<string> {
+        // console.log(`[REFFOR] ${this.uid} allocatedKeys...`)
         return this.acceleratedEntries.allocatedKeys
     }
 
@@ -55,6 +67,7 @@ export class MenuInstance<Props> implements Activity {
         out: MenuEntryWithKey[]
         allocatedKeys: Set<string>
     } {
+        // console.log(`[REFFOR] ${this.uid} acceleratedEntries...`)
         const allocatedKeys = new Set<string>([...this.keysTaken])
         const out: MenuEntryWithKey[] = []
         for (const entry of this.entries) {
@@ -64,17 +77,17 @@ export class MenuInstance<Props> implements Activity {
                 // | we want to show them with no key if we can't find letter
                 // | for them
                 // | ⏸️ if (res == null) continue
-                out.push({ entry, char: res?.char, charIx: res?.pos })
+                out.push({ entry: entry, char: res?.char, charIx: res?.pos })
             } else if (entry instanceof Command) {
                 const res = this.findSuitableKeys(entry.label, allocatedKeys)
                 // ⏸️ if (res == null) continue
-                out.push({ entry, char: res?.char, charIx: res?.pos })
+                out.push({ entry: entry, char: res?.char, charIx: res?.pos })
             } else if (isBoundMenu(entry)) {
                 const res = this.findSuitableKeys(entry.menu.title, allocatedKeys)
                 // ⏸️ if (res == null) continue
-                out.push({ entry, char: res?.char, charIx: res?.pos })
+                out.push({ entry: entry, char: res?.char, charIx: res?.pos })
             } else {
-                out.push({ entry })
+                out.push({ entry: entry })
             }
         }
         return { out, allocatedKeys }

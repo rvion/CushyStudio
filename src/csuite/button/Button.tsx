@@ -1,8 +1,9 @@
 import { makeAutoObservable, observable, runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { useEffect, useMemo } from 'react'
+import { type ForwardedRef, forwardRef, useEffect, useMemo } from 'react'
 
 import { Frame, FrameProps } from '../frame/Frame'
+import { registerComponentAsClonableWhenInsideReveal } from '../reveal/RevealCloneWhitelist'
 import { window_addEventListener } from '../utils/window_addEventListenerAction'
 import { withDefaultProps } from './withDefaultProps'
 
@@ -16,75 +17,81 @@ export type ButtonProps = FrameProps & {
     borderless?: boolean
     /** hue */
     hue?: number
+    contrast?: number
     chroma?: number
 }
 
-const _Button = observer(function Button_(p: ButtonProps) {
-    const uist = useMemo(() => new ButtonState(p), [])
+const _Button = observer(
+    forwardRef(function Button_(p: ButtonProps, ref: ForwardedRef<HTMLDivElement>) {
+        const uist = useMemo(() => new ButtonState(p), [])
 
-    // ensure new properties that could change during lifetime of the component stays up-to-date in the stable state.
-    runInAction(() => (uist.props = p))
+        // ensure new properties that could change during lifetime of the component stays up-to-date in the stable state.
+        runInAction(() => (uist.props = p))
 
-    // ensure any unmounting of this component will properly clean-up
-    useEffect(() => uist.release, [])
+        // ensure any unmounting of this component will properly clean-up
+        useEffect(() => uist.release, [])
 
-    const { size, look, subtle, borderless, iconSize, onClick, ...rest } = p
-    const theme = cushy.theme.value
-    const csuite = cushy.csuite
+        const { size, look, subtle, borderless, iconSize, onClick, ...rest } = p
+        const theme = cushy.theme.value
+        const csuite = cushy.csuite
 
-    return (
-        <Frame //
-            as='button'
-            size={size ?? 'input'}
-            look={look}
-            // (bird_d): Need to make this optional, disabling it to make it consistent with everything else for now
-            // boxShadow={
-            //     uist.visuallyActive || p.subtle || p.borderless //
-            //         ? undefined
-            //         : { inset: true, y: -3, blur: 5, spread: 0, color: 5 }
-            // }
-            base={{
-                contrast: subtle //
-                    ? 0
-                    : uist.visuallyActive || uist.running
-                      ? buttonContrastWhenPressed
-                      : buttonContrast,
-                hue: p.hue,
-                chroma: p.chroma,
-            }}
-            border={borderless ? 0 : csuite.inputBorder}
-            hover={p.disabled ? false : 3}
-            // active={uist.visuallyActive}
-            disabled={p.disabled}
-            dropShadow={p.subtle ? undefined : (p.dropShadow ?? theme.inputShadow)}
-            roundness={csuite.inputRoundness}
-            loading={p.loading ?? uist.running}
-            tabIndex={p.tabIndex}
-            onMouseDown={uist.press}
-            onClick={uist.onClick}
-            iconSize={iconSize ?? '1.1rem'}
-            {...rest}
-            tw={[
-                'inline-flex',
-                'select-none',
+        return (
+            <Frame //
+                ref={ref}
+                as='button'
+                size={size ?? 'input'}
+                look={look}
+                // (bird_d): Need to make this optional, disabling it to make it consistent with everything else for now
+                // boxShadow={
+                //     uist.visuallyActive || p.subtle || p.borderless //
+                //         ? undefined
+                //         : { inset: true, y: -3, blur: 5, spread: 0, color: 5 }
+                // }
+                base={{
+                    contrast:
+                        p.contrast ??
+                        (subtle //
+                            ? 0
+                            : uist.visuallyActive || uist.running
+                              ? buttonContrastWhenPressed
+                              : buttonContrast),
+                    hue: p.hue,
+                    chroma: p.chroma,
+                }}
+                border={borderless ? 0 : csuite.inputBorder}
+                hover={p.disabled ? false : 3}
+                // active={uist.visuallyActive}
+                disabled={p.disabled}
+                dropShadow={p.subtle ? undefined : (p.dropShadow ?? theme.inputShadow)}
+                roundness={csuite.inputRoundness}
+                loading={p.loading ?? uist.running}
+                tabIndex={p.tabIndex}
+                onMouseDown={uist.press}
+                onClick={uist.onClick}
+                iconSize={iconSize ?? '1.1rem'}
+                {...rest}
+                tw={[
+                    'inline-flex',
+                    'select-none',
 
-                // 💬 2024-07-30 rvion: let's make sure the default theme is good for prototyping;
-                // | no nee to add too much padding, this can be themed by CSS
-                p.square ? null : 'px-1',
+                    // 💬 2024-07-30 rvion: let's make sure the default theme is good for prototyping;
+                    // | no nee to add too much padding, this can be themed by CSS
+                    p.square ? null : 'px-1',
 
-                // 💬 2024-07-30 rvion: let's leave the themeing to somewhere else;
-                // | if people want semibold or bold buttons, they can do so using the ui-button class
-                // | 'font-semibold',
+                    // 💬 2024-07-30 rvion: let's leave the themeing to somewhere else;
+                    // | if people want semibold or bold buttons, they can do so using the ui-button class
+                    // | 'font-semibold',
 
-                'ui-button',
-                'gap-1 items-center',
-                p.disabled ? 'cursor-not-allowed' : 'cursor-pointer',
-                'whitespace-nowrap',
-                'justify-center',
-            ]}
-        />
-    )
-})
+                    'ui-button',
+                    'gap-1 items-center',
+                    p.disabled ? 'cursor-not-allowed' : 'cursor-pointer',
+                    'whitespace-nowrap',
+                    'justify-center',
+                ]}
+            />
+        )
+    }),
+)
 
 export class ButtonState {
     pressed: boolean = false
@@ -139,4 +146,6 @@ export const Button = Object.assign(_Button, {
     Ghost: withDefaultProps(_Button, { borderless: true, subtle: true }),
 })
 
-// registerComponentAsClonableWhenInsideReveal(Button)
+// 💬 2024-10-08 rvion:
+// | was commented, but probably worth uncommenting
+registerComponentAsClonableWhenInsideReveal(_Button)

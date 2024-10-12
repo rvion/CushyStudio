@@ -6,40 +6,59 @@ import { observer } from 'mobx-react-lite'
 
 import { ComboUI } from '../accelerators/ComboUI'
 import { Frame } from '../frame/Frame'
-import { IkonOf } from '../icons/iconHelpers'
+import { Ikon, IkonOf } from '../icons/iconHelpers'
+import { formatMenuLabel } from '../menu/formatMenuLabel'
 
-export const _MenuItem = observer(function DropdownItem_(p: {
-    onClick?: (ev: React.MouseEvent<HTMLElement, MouseEvent>) => unknown
-    /** ⚠️ unused for now */
-    size?: 'sm' | 'xs' | 'md' | 'lg'
+export type MenuItemProps = {
+    // behaviour
+    onClick?: (ev?: React.MouseEvent<HTMLElement, MouseEvent>) => unknown
+
+    // icon
     icon?: Maybe<IconName>
+    iconJSX?: ReactNode // if specified, will be used instead of icon
     iconClassName?: Maybe<string>
-    disabled?: boolean
+
+    disabled?: boolean | (() => boolean)
     active?: boolean
     className?: string
     children?: ReactNode
-    label?: ReactNode
+    label: string
+    /** index of the char that need to be emphasis to hint we can press that key to quickly click the entry */
+    labelAcceleratorIx?: number
     loading?: boolean
     /** right before the (menu shortcust) */
     localShortcut?: CushyShortcut
     globalShortcut?: CushyShortcut
+    // slots
     beforeShortcut?: ReactNode
     afterShortcut?: ReactNode
     stopPropagation?: boolean
-}) {
+}
+
+export const _MenuItem = observer(function DropdownItem_(p: MenuItemProps) {
     // prettier-ignore
     const {
-        //
-        stopPropagation,
-        size, label, disabled, icon, children, active,
-        localShortcut, globalShortcut, beforeShortcut, afterShortcut,
+        // behaviour
         onClick,
+
+        // icon
+        icon, iconClassName, iconJSX,
+
+        label, labelAcceleratorIx, disabled, children, active,
+        localShortcut, globalShortcut, beforeShortcut, afterShortcut,
+        stopPropagation,
         ...rest
     } = p
+
+    const isDisabled: boolean | undefined =
+        typeof disabled === 'function' //
+            ? disabled()
+            : disabled
+
     return (
         <Frame
             loading={p.loading}
-            text={{ contrast: disabled ? 0.5 : 1 }}
+            text={{ contrast: isDisabled ? 0.5 : 1 }}
             base={{
                 contrast: active ? 0.1 : 0,
                 chroma: active ? 0.1 : undefined,
@@ -61,16 +80,17 @@ export const _MenuItem = observer(function DropdownItem_(p: {
             ]}
             {...rest}
         >
-            {icon ? ( //
-                <IkonOf name={icon /* ?? '_' */} className={p.iconClassName ?? undefined} />
-            ) : (
-                <div />
-            )}
+            {iconJSX ??
+                (icon ? ( //
+                    <IkonOf name={icon /* ?? '_' */} className={iconClassName ?? undefined} />
+                ) : (
+                    <Ikon._ />
+                ))}
             {/* <div tw='flex h-full items-center'>{icon}</div> */}
             {/* {icon} */}
-            <div tw='flex items-center'>
-                {label}
-                {children}
+            <div tw='flex flex-1 items-center'>
+                {children ?? (labelAcceleratorIx != null ? formatMenuLabel(labelAcceleratorIx, label) : label)}
+                {/* {children} */}
                 {beforeShortcut}
                 {localShortcut ? (
                     <div tw='ml-auto pl-2 text-xs italic'>{localShortcut && <ComboUI combo={localShortcut} />}</div>
@@ -85,7 +105,14 @@ export const _MenuItem = observer(function DropdownItem_(p: {
 })
 
 export const MenuDivider = observer(function Divider_(p: { children?: ReactNode }) {
-    return <div className='divider px-2 !h-input my-2 text-sm'>{p.children ?? <></>}</div>
+    return (
+        <div className='relative !h-widget text-sm grid'>
+            <div tw='absolute z-0 h-1 [border-top:1px_solid_#aaaaaa88] w-full [top:50%]'></div>
+            <Frame border tw='relative z-1 h-widget justify-self-center'>
+                {p.children ?? <></>}
+            </Frame>
+        </div>
+    )
 })
 
 export const MenuItem = Object.assign(_MenuItem, {

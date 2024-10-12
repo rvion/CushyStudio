@@ -18,6 +18,7 @@ export type WidgetLabelCaretProps = {
 export const WidgetLabelCaretUI = observer(function WidgetLabelCaretUI_(p: WidgetLabelCaretProps) {
     const csuite = useCSuite()
     if (!csuite.showExpandCarets) return null
+    if (p.field.parent == null) return null
     if (!p.field.isCollapsed && !p.field.isCollapsible) {
         const showPlaceholder = p.placeholder ?? true
         if (showPlaceholder) return <WidgetLabelCaretPlaceholderUI className={p.className} />
@@ -25,6 +26,7 @@ export const WidgetLabelCaretUI = observer(function WidgetLabelCaretUI_(p: Widge
     }
     return (
         <WidgetLabelCaretAlwaysUI //
+            tw='text-sm'
             className={p.className}
             isCollapsed={p.field.isCollapsed}
         />
@@ -45,7 +47,7 @@ export const WidgetLabelCaretAlwaysUI = observer(function WidgetLabelCaretAlways
                 className={className}
                 tw={[
                     //
-                    'UI-WidgetLabelCaret self-start minh-widget ABDDE',
+                    'UI-WidgetLabelCaret self-start minh-widget',
                     'COLLAPSE-PASSTHROUGH shrink-0',
                 ]}
             />
@@ -56,7 +58,7 @@ export const WidgetLabelCaretAlwaysUI = observer(function WidgetLabelCaretAlways
             className={className}
             tw={[
                 //
-                'UI-WidgetLabelCaret self-start minh-widget ABDDE',
+                'UI-WidgetLabelCaret self-start minh-widget',
                 'COLLAPSE-PASSTHROUGH shrink-0 opacity-35',
             ]}
         />

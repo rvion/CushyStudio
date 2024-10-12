@@ -1,5 +1,5 @@
 import type { CushySchema } from '../controls/Schema'
-import type { DisplayRule } from '../csuite-cushy/presenters/Presenter'
+import type { DisplayRule } from '../csuite-cushy/presenters/Renderer'
 import type { Field } from '../csuite/model/Field'
 import type { SchemaDict } from '../csuite/model/SchemaDict'
 import type { MediaImageL } from '../models/MediaImage'
@@ -53,6 +53,7 @@ export type App<FIELD extends Field> = {
 
     /* layout */
     layout?: Maybe<DisplayRule<NoInfer<FIELD>>>
+    layout2?: (f: FIELD['$Field']) => void
 
     /** so you cana have fancy buttons to switch between a few things */
     presets?: Record<string, (doc: NoInfer<FIELD>) => void>

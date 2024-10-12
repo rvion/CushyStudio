@@ -1,4 +1,4 @@
-import type { CompiledRenderProps } from '../presenters/Presenter'
+import type { CompiledRenderProps } from '../presenters/Renderer'
 import type { ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
@@ -24,7 +24,10 @@ const CushyShellUI = observer(function CushySHell(
     const WUI = (
         <Frame
             className={p.classNameForShell ?? undefined}
-            tw={['UI-WidgetWithLabel !border-l-0 !border-r-0 !border-b-0 py-0.5']}
+            tw={[
+                // 'py-0.5',
+                'UI-WidgetWithLabel !border-l-0 !border-r-0 !border-b-0',
+            ]}
             roundness={csuite.inputRoundness}
             base={field.background}
             border={field.border}
@@ -72,7 +75,7 @@ export const ShellCushyLeftUI = observer(function ShellCushyLeft(p: CompiledRend
                         {utils.renderFCOrNode(p.DragKnob, /*  */ {})}
                         {utils.renderFCOrNode(p.Caret, /*     */ { field })}
                         {utils.renderFCOrNode(p.Icon, /*      */ { field, className: 'mr-1' })}
-                        {utils.renderFCOrNode(p.LabelText, /* */ { field })}
+                        {utils.renderFCOrNode(p.Title, /* */ { field })}
                         {utils.renderFCOrNode(p.DebugID, /*   */ { field })}
                         {utils.renderFCOrNode(p.Presets, /*   */ { field, className: 'ml-auto self-start' })}
                     </WidgetLabelContainerUI>
@@ -102,7 +105,7 @@ export const ShellCushyRightUI = observer(function ShellCushyRight(p: CompiledRe
                         {utils.renderFCOrNode(p.Caret /*     */, { field, className: 'mr-auto' })}
                         {utils.renderFCOrNode(p.Presets /*   */, { field, className: 'self-start mr-2' })}
                         {!p.field.isCollapsed && !p.field.isCollapsible && <div tw='mr-auto' />}
-                        {utils.renderFCOrNode(p.LabelText /* */, { field })}
+                        {utils.renderFCOrNode(p.Title /* */, { field })}
                         {utils.renderFCOrNode(p.DebugID /*   */, { field })}
                         {utils.renderFCOrNode(p.Icon /*      */, { field, className: 'mx-1' })}
                     </WidgetLabelContainerUI>
@@ -135,7 +138,7 @@ export const ShellCushyFluidUI = observer(function ShellCushyFluid(p: CompiledRe
                         {utils.renderFCOrNode(p.Caret, /*     */ { field })}
                         {utils.renderFCOrNode(p.Toogle, /*    */ { field: originalField, className: 'mr-1' })}
                         {utils.renderFCOrNode(p.Icon, /*      */ { field, className: 'mr-1' })}
-                        {utils.renderFCOrNode(p.LabelText, /* */ { field })}
+                        {utils.renderFCOrNode(p.Title, /* */ { field })}
                         {utils.renderFCOrNode(p.DebugID, /*   */ { field })}
                         <WidgetPresetsUI field={field} />
                     </WidgetLabelContainerUI>

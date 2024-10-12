@@ -1,14 +1,14 @@
 const fs = require('fs')
 const path = require('path')
 const { promisify } = require('util')
-const readFile = promisify(fs.readFile)
-const writeFile = promisify(fs.writeFile)
-const postcss = require('postcss')
-const tailwindcss = require('tailwindcss')
+// 💋const readFile = promisify(fs.readFile)
+// 💋const writeFile = promisify(fs.writeFile)
+// 💋const postcss = require('postcss')
+// 💋 const tailwindcss = require('tailwindcss')
 
 const esbuild = require('esbuild')
 const { writeFileSync } = require('fs')
-const { resolve } = require('path')
+// 💋 const { resolve } = require('path')
 
 const args = process.argv.slice(2)
 
@@ -19,9 +19,9 @@ async function build() {
         await buildJS()
     }
 
-    if (args.includes('css')) {
-        await buildTailwind()
-    }
+    // 💋 if (args.includes('css')) {
+    // 💋     await buildTailwind()
+    // 💋 }
     // show size of all assets in the release folder
     const files = fs.readdirSync('release')
     for (const f of files) {
@@ -138,31 +138,31 @@ async function buildJS() {
     writeFileSync('release/meta.json', JSON.stringify(res.metafile, null, 2))
 }
 
-async function buildTailwind() {
-    console.log(`[BUILD] 2. build css `)
-
-    try {
-        // Define file paths
-        const inputFilePath = path.join('release', 'main.css')
-        const outputFilePath = path.join('release', 'output.css')
-
-        // Read the CSS file
-        const css = await readFile(inputFilePath, 'utf8')
-
-        // Process the CSS with Tailwind
-        const result = await postcss([tailwindcss]).process(css, { from: inputFilePath, to: outputFilePath })
-
-        // Write the processed CSS to a file
-        await writeFile(outputFilePath, result.css)
-
-        if (result.map) {
-            await writeFile(outputFilePath + '.map', result.map)
-        }
-
-        console.log('Tailwind CSS build complete.')
-    } catch (error) {
-        console.error('Error occurred building css:', error)
-    }
-}
+// 💋 async function buildTailwind() {
+// 💋     console.log(`[BUILD] 2. build css `)
+// 💋
+// 💋     try {
+// 💋         // Define file paths
+// 💋         const inputFilePath = path.join('release', 'main.css')
+// 💋         const outputFilePath = path.join('release', 'output.css')
+// 💋
+// 💋         // Read the CSS file
+// 💋         const css = await readFile(inputFilePath, 'utf8')
+// 💋
+// 💋         // Process the CSS with Tailwind
+// 💋         const result = await postcss([tailwindcss]).process(css, { from: inputFilePath, to: outputFilePath })
+// 💋
+// 💋         // Write the processed CSS to a file
+// 💋         await writeFile(outputFilePath, result.css)
+// 💋
+// 💋         if (result.map) {
+// 💋             await writeFile(outputFilePath + '.map', result.map)
+// 💋         }
+// 💋
+// 💋         console.log('Tailwind CSS build complete.')
+// 💋     } catch (error) {
+// 💋         console.error('Error occurred building css:', error)
+// 💋     }
+// 💋 }
 
 // buildTailwind()

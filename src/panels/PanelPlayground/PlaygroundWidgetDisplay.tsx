@@ -6,7 +6,7 @@ import { Fragment } from 'react/jsx-runtime'
 import { FrameWithCSuiteOverride } from '../../csuite/ctx/CSuiteOverride'
 import { FormUI } from '../../csuite/form/FormUI'
 import { type FrameAppearance, frameTemplates } from '../../csuite/frame/FrameTemplates'
-import { getIconName } from '../../csuite/icons/getAllIcons'
+import { getNthIconName } from '../../csuite/icons/getAllIcons'
 import { mapObjectEntries } from '../../csuite/utils/mapObjectEntries'
 import { mapObjectValues } from '../../csuite/utils/mapObjectValues'
 import { readJSON, writeJSON } from '../../state/jsonUtils'
@@ -176,7 +176,7 @@ const useDoc = (): Field<any> => {
                         ...mapObjectValues(frameTemplates, (k, v, ix) =>
                             b.button({
                                 text: k,
-                                icon: getIconName(ix * 10),
+                                icon: getNthIconName(ix * 10),
                                 look: k as FrameAppearance,
                             }),
                         ),
@@ -184,7 +184,7 @@ const useDoc = (): Field<any> => {
                             k + '_',
                             b.button({
                                 text: k,
-                                icon: getIconName(1000 + ix * 10),
+                                icon: getNthIconName(1000 + ix * 10),
                                 look: k as FrameAppearance,
                                 expand: true,
                             }),

@@ -3,7 +3,7 @@ import type { AspectRatio, ModelType } from './WidgetSizeTypes'
 
 import { observer } from 'mobx-react-lite'
 
-import { InputBoolToggleButtonUI } from '../../checkbox/InputBoolToggleButtonUI'
+import { ToggleButtonUI } from '../../checkbox/InputBoolToggleButtonUI'
 import { InputBoolUI } from '../../checkbox/InputBoolUI'
 import { Frame } from '../../frame/Frame'
 import { InputNumberUI } from '../../input-number/InputNumberUI'
@@ -36,7 +36,7 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
 }) {
     const uist = p.size
     const modelBtn = (model: ModelType): JSX.Element => (
-        <InputBoolToggleButtonUI //
+        <ToggleButtonUI //
             toggleGroup='size'
             tw='w-input'
             value={uist.desiredModelType == model}
@@ -177,73 +177,53 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: {
             text={ar}
         />
     )
-
-    // const portrait = uist.height / uist.width > 1.0
-
     return (
-        <Frame
-        // border={{ contrast: uist.isAspectRatioLocked ? 0.0 : -0.05 }}
-        // base={{ contrast: uist.isAspectRatioLocked ? 0.0 : -0.05 }}
-        >
+        <Frame>
             <div tw='flex'>
-                {/* <div tw='btn btn-xs' onClick={() => uist.flip()}> */}
-                {/* <span className='material-symbols-outlined'>rotate_right</span> */}
-                {/* </div> */}
                 <div tw='ml-auto flex flex-wrap items-center gap-1.5'>
                     <div tw='join'>{resoBtn('1:1')}</div>
-                    {/* <div>|</div> */}
                     <div tw='join flex flex-col'>
                         {resoBtn('16:9')}
                         {resoBtn('9:16')}
                     </div>
-                    {/* <div>|</div> */}
                     <div tw='join flex flex-col'>
                         {resoBtn('4:3')}
                         {resoBtn('3:4')}
                     </div>
-                    {/* <div>|</div> */}
                     <div tw='join flex flex-col'>
                         {resoBtn('3:2')}
                         {resoBtn('2:3')}
                     </div>
                     {p.size.desiredModelType === 'xl' && (
                         <>
-                            {/* <div>|</div> */}
                             <div tw='join flex flex-col'>
                                 {resoBtn('16:15')}
                                 {resoBtn('15:16')}
                             </div>
-                            {/* <div>|</div> */}
                             <div tw='join flex flex-col'>
                                 {resoBtn('17:15')}
                                 {resoBtn('15:17')}
                             </div>
-                            {/* <div>|</div> */}
                             <div tw='join flex flex-col'>
                                 {resoBtn('9:7')}
                                 {resoBtn('7:9')}
                             </div>
-                            {/* <div>|</div> */}
                             <div tw='join flex flex-col'>
                                 {resoBtn('18:13')}
                                 {resoBtn('13:18')}
                             </div>
-                            {/* <div>|</div> */}
                             <div tw='join flex flex-col'>
                                 {resoBtn('19:13')}
                                 {resoBtn('13:19')}
                             </div>
-                            {/* <div>|</div> */}
                             <div tw='join flex flex-col'>
                                 {resoBtn('7:4')}
                                 {resoBtn('4:7')}
                             </div>
-                            {/* <div>|</div> */}
                             <div tw='join flex flex-col'>
                                 {resoBtn('21:11')}
                                 {resoBtn('11:21')}
                             </div>
-                            {/* <div>|</div> */}
                             <div tw='join flex flex-col'>
                                 {resoBtn('2:1')}
                                 {resoBtn('1:2')}

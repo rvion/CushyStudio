@@ -31,6 +31,7 @@ export type RevealShowTrigger =
     | 'clickAndHover'
     | 'none' // 🔴 TODO
     | 'rightClick' // 🔴 TODO
+    | 'menubar-item' // complex standard menubar behaviour
 
 // ❓ |  () => ...
 // ❓ |  { chick: ..., hover: ..., focus: ... }
@@ -59,7 +60,7 @@ export type RevealHideReason =
     | 'pickOption'
     | 'blurAnchor'
     | 'closeButton' // ex: in modals
-    | 'cascade' // another reveal appearing caused the closure
+    | 'an-other-reveal-opened' // another reveal appearing caused the closure
     | 'programmatic'
     | 'unknown'
 
@@ -79,7 +80,7 @@ export type RevealProps = {
     // components / slots -------------------------------------------------------------
     /** @since 2024-07-23 */
     shell?: FC<RevealShellProps> | KnownShells
-    content: FC<RevealContentProps>
+    content: FC<RevealContentProps> // | null
     children: React.ReactNode //, React.ReactNode]
     title?: React.ReactNode // only for popup
 

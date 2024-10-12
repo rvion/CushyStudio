@@ -71,7 +71,7 @@ const dynamicCompletion: CompletionSource = (context: CompletionContext): Comple
     const addEmbeddings = (): void => {
         for (const embeddingName of st.schema.data.embeddings) {
             const noWrap = isValidPromptLangIdentifier(embeddingName)
-            const prefix = alreadyhasPrefix ? '' : `:`
+            const prefix = alreadyhasPrefix ? '' : `embedding:`
             completionsOptions.push({
                 displayLabel: `${embeddingName}`,
                 detail: 'embedding',
