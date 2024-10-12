@@ -61,7 +61,7 @@ export class BuilderMisc<Schemaᐸ_ᐳ extends SchemaAndAliasesᐸ_ᐳ> extends 
      * @see {@link color} for a better color field based on colorjs.io
      */
     colorV2(config: Field_string_config = {}): Schemaᐸ_ᐳ['Color'] {
-        return this.buildSchema(Field_string, { inputType: 'color', ...config })
+        return this.buildSchema(Field_string, { inputType: 'color', default: 'red', ...config })
     }
 
     matrix(config: Field_matrix_config): Schemaᐸ_ᐳ['Matrix'] {
