@@ -22,10 +22,32 @@ export function getKlass<SUPER, CUSTOM>(
     SUPER: Klass<SUPER>,
     ktu: KlassToUse<any, CUSTOM>,
 ): Klass<CUSTOM> {
-    if (ktu.prototype && ktu.prototype.constructor === ktu) {
+    // 1. `() => {}`
+    //   - prototype: undefined
+    //   - prototype.constructor === ktu: false (N.A.)
+    //   - toString() => '() => {}'
+    //
+    // 2. function() {}
+    //   - prototype: {}
+    //   - prototype.constructor === ktu: true
+    //   - toString() => 'function() {}'
+    //
+    // 3. class {}
+    //   - prototype: {}
+    //   - prototype.constructor === ktu: true
+    //   - toString() => 'class {}'
+
+    if (ktu.prototype === undefined) {
+        // lambda function
         const fn = ktu as CovariantFn<[SUPER: Klass<SUPER>], Klass<CUSTOM>>
         return fn(SUPER) as Klass<CUSTOM>
     } else {
-        return ktu as Klass<CUSTOM>
+        const str = ktu.toString()
+        if (str.startsWith('class')) {
+            return ktu as Klass<CUSTOM>
+        } else {
+            const fn = ktu as CovariantFn<[SUPER: Klass<SUPER>], Klass<CUSTOM>>
+            return fn(SUPER) as Klass<CUSTOM>
+        }
     }
 }
