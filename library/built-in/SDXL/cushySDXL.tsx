@@ -70,7 +70,7 @@ app({
             // ui2.apply()
             const isTopLevelGroup = ui2.field.depth === 1 && true //
             // (ui2.field.type === 'group' || ui2.field.type === 'list' || ui2.field.type === 'choices')
-            if (ui.field.Positive.Prompts.childrenAll.includes(ui2.field.parent)) {
+            if (ui2.field.parent?.parent === ui.field.Positive.Prompts) {
                 ui2.apply({
                     Icon: false,
                     Shell: ui.catalog.Shell.List1,
