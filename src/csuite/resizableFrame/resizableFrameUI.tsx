@@ -8,6 +8,7 @@ import { Frame, type FrameProps } from '../frame/Frame'
 import { IkonOf } from '../icons/iconHelpers'
 import { PanelHeaderUI } from '../panel/PanelHeaderUI'
 import { window_addEventListener } from '../utils/window_addEventListenerAction'
+import { useCSuite } from '../ctx/useCSuite'
 
 /* Used once per widget since they should not conflict. */
 let startValue = 0
@@ -84,19 +85,24 @@ class ResizableFrameStableState {
 export const ResizableFrame = observer(function ResizableFrame_(p: ResizableFrameProps) {
     // create stable state, that we can programmatically mutate witout caring about stale references
     const uist = useMemo(() => new ResizableFrameStableState(p), [])
+    const csuite = useCSuite()
+    const theme = cushy.theme.value
 
     const { currentSize, ...props } = p
     return (
         <Frame // container
             // hover
-            tw='flex flex-col !p-0'
+            tw='flex flex-col !p-0 overflow-clip'
             style={{ gap: '0px', ...p.style }}
+            dropShadow={theme.inputShadow}
+            roundness={csuite.inputRoundness}
             {...props}
         >
             {p.header && <PanelHeaderUI>{p.header}</PanelHeaderUI>}
 
             <Frame // Content
                 tw='w-full overflow-auto'
+                base={csuite.inputContrast}
                 style={{
                     height: `${uist.size}px`,
                     borderBottomLeftRadius: '0px',
@@ -109,6 +115,7 @@ export const ResizableFrame = observer(function ResizableFrame_(p: ResizableFram
 
             <Frame // Footer
                 className='h-input w-full relative'
+                base={csuite.inputContrast}
                 style={{ borderTop: '1px solid oklch(from var(--KLR) calc(l + 0.1 * var(--DIR)) c h)' }}
             >
                 <Frame

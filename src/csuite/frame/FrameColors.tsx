@@ -47,7 +47,18 @@ export function computeColors(
     roundness: Maybe<number | string> = null,
 ): ComputedColors {
     // ------------------------------------------------------------
-    const strToHash = JSON.stringify({ prevCtx, box, look, disabled, hovered, active, boxShadow, dropShadow })
+    const strToHash = JSON.stringify({
+        // Add new parameters here as well or else hot-reload will not work
+        prevCtx,
+        box,
+        look,
+        disabled,
+        hovered,
+        active,
+        boxShadow,
+        dropShadow,
+        roundness,
+    })
     const hash = SparkMD5.hash(strToHash)
     if (colorCache.has(hash)) return colorCache.get(hash)!
     totalComputeColors++
