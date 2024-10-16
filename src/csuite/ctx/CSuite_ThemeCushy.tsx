@@ -17,28 +17,28 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
     showSelectIcons: boolean = true
 
     get tooltipDelay(): Maybe<number> {
-        return cushy.preferences.interface.value.tooltipDelay
+        return cushy.preferences.interface.TooltipDelay.value
     }
 
     get showFoldButtons(): boolean {
-        return this.st.preferences.interface.value.showWidgetFoldButtons ?? true
+        return this.st.preferences.interface.ShowWidgetFoldButtons.value ?? true
     }
 
     // sizes ------------------------------------------------------
     get widgetHeight(): number {
-        return this.st.preferences.interface.value.widgetHeight ?? 1.8
+        return this.st.preferences.interface.WidgetHeight.value ?? 1.8
     }
 
     get inputHeight(): number {
-        return this.st.preferences.interface.value.inputHeight ?? 1.6
+        return this.st.preferences.interface.InputHeight.value ?? 1.6
     }
 
     get insideHeight(): number {
-        return this.st.preferences.interface.value.insideHeight ?? 1.2
+        return this.st.preferences.interface.InsideHeight.value ?? 1.2
     }
 
     get inputRoundness(): number {
-        return this.st.theme.value.inputRoundness ?? 5
+        return this.st.theme.InputRoundness.value ?? 5
     }
 
     // misc ------------------------------------------------------
@@ -47,23 +47,23 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
     }
 
     get showWidgetUndo(): boolean {
-        return this.st.preferences.interface.value.showWidgetUndo ?? true
+        return this.st.preferences.interface.ShowWidgetUndo.value ?? true
     }
 
     get showWidgetMenu(): boolean {
-        return this.st.preferences.interface.value.showWidgetMenu ?? true
+        return this.st.preferences.interface.ShowWidgetMenu.value ?? true
     }
 
     get showWidgetDiff(): boolean {
-        return this.st.preferences.interface.value.showWidgetDiff ?? true
+        return this.st.preferences.interface.ShowWidgetDiff.value ?? true
     }
 
     get showToggleButtonBox(): boolean {
-        return this.st.preferences.interface.value.showToggleButtonBox ?? false
+        return this.st.preferences.interface.ShowToggleButtonBox.value ?? false
     }
 
     get labellayout(): FormGlobalLayoutMode {
-        const x = this.st.theme.value.labelLayout
+        const x = this.st.theme.LabelLayout.value
         if (x === 'fluid') return 'fluid'
         if (x === 'fixed-left') return 'fixed-left'
         if (x === 'fixed-right') return 'fixed-right'
@@ -77,7 +77,7 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
     // theme
 
     get baseStr(): string {
-        return this.st.theme.root.value.base
+        return this.st.theme.Base.value
     }
 
     get base(): Kolor {
@@ -91,19 +91,19 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
     labelBackground: TintExt = 0 // 3 // {}
 
     get text(): Tint {
-        return run_tint(this.st.theme.value.text)
+        return run_tint(this.st.theme.Text.value)
     }
 
     get inputContrast(): TintExt {
-        return this.st.theme.value.inputContrast
+        return this.st.theme.InputContrast.value
     }
 
     get inputBorder(): TintExt {
-        return this.st.theme.value.inputBorder ?? 10
+        return this.st.theme.InputBorder.value ?? 10
     }
 
     get labelText(): Tint | undefined {
-        const raw = this.st.theme.value.textLabel
+        const raw = this.st.theme.TextLabel.value
         if (raw == null) return undefined
         return run_tint(raw)
     }
@@ -113,8 +113,8 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
         contrast: Maybe<number>
     } {
         return {
-            border: this.st.theme.value.fieldGroups?.border,
-            contrast: this.st.theme.value.fieldGroups?.contrast,
+            border: this.st.theme.FieldGroups.value?.border,
+            contrast: this.st.theme.FieldGroups.value?.contrast,
         }
     }
 }

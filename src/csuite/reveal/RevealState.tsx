@@ -1,5 +1,6 @@
 import type { NO_PROPS } from '../types/NO_PROPS'
-import type { RevealHideReason, RevealHideTriggers, RevealProps, RevealShowTrigger } from './RevealProps'
+import type { RevealHideReason, RevealHideTriggers, RevealOpenReason, RevealProps, RevealShowTrigger } from './RevealProps'
+import type { RevealStateLazy } from './RevealStateLazy'
 import type { RevealContentProps } from './shells/ShellProps'
 import type { CSSProperties, FC, ReactNode } from 'react'
 
@@ -22,15 +23,12 @@ export const defaultShowDelay_whenNested = 0
 export const defaultHideDelay_whenNested = 0
 
 export class RevealState {
-    static nextUID: number = 1
-
     static shared: { current: Maybe<RevealState> } = observable({ current: null }, { current: observable.ref })
+    uid: number
 
     get showBackdrop(): boolean {
         return this.p.showBackdrop ?? true
     }
-
-    uid = RevealState.nextUID++
 
     onMiddleClickAnchor = (ev: React.MouseEvent<unknown>): void => {
         this.logEv(ev, `anchor.onMiddleClick`)
@@ -42,7 +40,7 @@ export class RevealState {
         const closed = !this.isVisible
         if (closed) {
             if (this.shouldRevealOnAnchorRightClick) {
-                this.open()
+                this.open('rightClickAnchor')
                 ev.stopPropagation()
             }
         } else {
@@ -59,12 +57,12 @@ export class RevealState {
         const closed = !this.isVisible
         if (closed) {
             if (this.shouldRevealOnAnchorClick) {
-                this.open()
+                this.open('leftClickAnchor')
                 ev.stopPropagation()
             }
         } else {
             if (this.shouldHideOnAnchorClick) {
-                this.close('clickAnchor')
+                this.close('leftClickAnchor')
                 ev.stopPropagation()
             }
         }
@@ -103,15 +101,24 @@ export class RevealState {
         return { reveal: this }
     }
 
+    p: RevealProps
+    parents: RevealState[]
+    anchorRef: React.RefObject<HTMLDivElement> // 🚨 ref do not work when observables!
+
     constructor(
         //
-        public p: RevealProps,
-        public parents: RevealState[],
-        public anchorRef: React.RefObject<HTMLDivElement>, // 🚨 ref do not work when observables!
+        public lazyState: RevealStateLazy,
+        // public p: RevealProps,
+        // public parents: RevealState[],
+        // public anchorRef: React.RefObject<HTMLDivElement>, // 🚨 ref do not work when observables!
     ) {
+        this.p = { ...lazyState.p }
+        this.parents = lazyState.parents
+        this.anchorRef = lazyState.anchorRef
+        this.uid = lazyState.uid
         // see comment above
         this.contentFn = (): ReactNode => {
-            const Component = p.content
+            const Component = this.p.content
             if (Component == null) return null
             return <Component reveal={this} />
         }
@@ -334,9 +341,9 @@ export class RevealState {
 
         /* 🔥 */ if (this.isVisible) return
         /* 🔥 */ if (!this.shouldRevealOnAnchorHover) return
-        /* 🔥 */ if (RevealState.shared.current) return this.open()
+        /* 🔥 */ if (RevealState.shared.current) return this.open('mouse-enter-anchor-(no-parent-open)')
         this._resetAllAnchorTimouts()
-        this.enterAnchorTimeoutId = setTimeout(this.open, this.showDelay)
+        this.enterAnchorTimeoutId = setTimeout(() => this.open('mouse-enter-anchor-(with-parent-open)'), this.showDelay)
     }
 
     onMouseLeaveAnchor = (ev: React.MouseEvent<unknown>): void => {
@@ -364,16 +371,16 @@ export class RevealState {
     }
 
     // ---
-    open = (): void => {
+    open = (reason: RevealOpenReason): void => {
         if (this.isVisible) return
 
         // ensure parents are properly opened first
         if (!this.parent?.isVisible) console.warn(`[🔶] INVARIANT VIOLATION IN REVEAL STATE`)
-        if (this.parent && !this.parent.isVisible) {
-            this.parent.open()
-        }
+        // 🔴 if (this.parent && !this.parent.isVisible) {
+        // 🔴     this.parent.open('child-is-opening-so-as-parent-I-must-open-too')
+        // 🔴 }
 
-        this.log(`🚨 open`)
+        this.log(`🚨 open (reason=${reason})`)
         this._register()
         this.lastOpenClose = Date.now()
         const wasVisible = this.isVisible
@@ -407,6 +414,7 @@ export class RevealState {
     }
 
     close = (reason?: RevealHideReason): void => {
+        if (!this.isVisible) return this.log(`🔴 attempting to close BUT already closed ! (reason=${reason})`)
         this.log(`🚨 close (reason=${reason})`)
 
         if (this.p.onBeforeHide) {
@@ -478,8 +486,8 @@ export class RevealState {
     }
 
     // tooltip --------------------------------------------
-    enterTooltipTimeoutId: NodeJS.Timeout | null = null
-    leaveTooltipTimeoutId: NodeJS.Timeout | null = null
+    private enterTooltipTimeoutId: NodeJS.Timeout | null = null
+    private leaveTooltipTimeoutId: NodeJS.Timeout | null = null
 
     onMouseEnterTooltip = (ev?: React.MouseEvent<unknown, MouseEvent>): void => {
         this.logEv(ev, `onMouseEnterTooltip`)
@@ -495,14 +503,14 @@ export class RevealState {
     }
 
     // ---
-    enterTooltip = (): void => {
+    private enterTooltip = (): void => {
         this._resetAllTooltipTimouts()
         for (const [ix, p] of this.parents.entries()) p.enterChildren(ix)
         this.log(`🔶 enterTooltip`)
         this.inTooltip = true
     }
 
-    leaveTooltip = (): void => {
+    private leaveTooltip = (): void => {
         this._resetAllTooltipTimouts()
         for (const [ix, p] of this.parents.entries()) p.leaveChildren(ix)
         this.log(`🔶 leaveTooltip`)
@@ -573,7 +581,7 @@ export class RevealState {
         if (!this.shouldRevealOnAnchorFocus) return
 
         // if (ev.relatedTarget != null && !(ev.relatedTarget instanceof Window)) // 🔶 not needed anymore?
-        this.open()
+        this.open('focus-anchor')
 
         ev.stopPropagation()
         ev.preventDefault()
@@ -602,7 +610,7 @@ export class RevealState {
             const isLetter = letterCode >= 65 && letterCode <= 90
             const isEnter = ev.key === 'Enter'
             if ((isLetter && !hasMod(ev)) || isEnter) {
-                this.open()
+                this.open('KeyboardEnterOrLetterWhenAnchorFocused')
                 ev.preventDefault()
                 ev.stopPropagation()
                 return
@@ -674,6 +682,7 @@ export class RevealState {
             >,
         msg: string,
     ): void {
+        return
         if (!DEBUG_REVEAL) return
         // this.log(`🎩 ${this.uid} ${evUID(ev)} ${msg}`)
         const evenInfo = `${ev?.type}#${evUID(ev)}`.padStart(15)
@@ -697,7 +706,7 @@ export class RevealState {
         if (this.p.placement === 'screen-top-right') return '#00000022'
 
         // popovers are transparent? we need better semantics than "placement" though
-        return
+        return // '#00000011'
     }
 }
 

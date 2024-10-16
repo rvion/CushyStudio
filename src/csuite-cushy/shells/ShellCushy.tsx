@@ -5,7 +5,9 @@ import { observer } from 'mobx-react-lite'
 
 import { useCSuite } from '../../csuite/ctx/useCSuite'
 import { WidgetLabelContainerUI } from '../../csuite/form/WidgetLabelContainerUI'
+import { menu_fieldActions } from '../../csuite/form/WidgetMenu'
 import { Frame } from '../../csuite/frame/Frame'
+import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { AnimatedSizeUI } from '../../csuite/smooth-size/AnimatedSizeUI'
 import { WidgetPresetsUI } from '../catalog/Presets/WidgetPresets'
 
@@ -29,7 +31,20 @@ const CushyShellUI = observer(function CushySHell(
             // border={p.card ? 1 : field.border}
             {...p.field.config.box}
         >
-            {utils.renderFCOrNodeWithWrapper(p.HEADER, {}, p.Head, p)}
+            <RevealUI
+                tw='w-full'
+                trigger={'rightClick'}
+                relativeTo='mouse'
+                hideTriggers={{
+                    backdropClick: true,
+                    escapeKey: true,
+                    blurAnchor: true,
+                    clickAnchor: true,
+                }}
+                content={() => <menu_fieldActions.UI props={p.field} />}
+            >
+                {utils.renderFCOrNodeWithWrapper(p.HEADER, {}, p.Head, p)}
+            </RevealUI>
             {p.field.isCollapsed
                 ? null
                 : utils.renderFCOrNodeWithWrapper(p.Body, p, p.ContainerForBody, {
@@ -124,9 +139,6 @@ export const ShellCushyRightUI = observer(function ShellCushyRight(p: CompiledRe
                         {utils.renderFCOrNode(p.DebugID /*   */, { field })}
                         {utils.renderFCOrNode(p.Icon /*      */, { field, className: 'mx-1' })}
                     </WidgetLabelContainerUI>
-
-                    {/* TOOGLE (when justified) */}
-                    <div tw='w-0.5' />
                     {utils.renderFCOrNode(p.Toogle, { field: originalField })}
                 </>
             }

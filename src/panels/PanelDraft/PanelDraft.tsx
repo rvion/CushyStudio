@@ -164,7 +164,6 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                             <MarkdownUI tw='_WidgetMardownUI w-full' markdown={metadata.help} />
                         </MessageInfoUI>
                     )}
-
                     {/* {metadata?.description && (
                     <BoxSubtle>
                         <MarkdownUI tw='_WidgetMardownUI text-sm italic px-1 w-full' markdown={metadata.description} />
@@ -179,7 +178,6 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                             // global={{ Shell: ShellMobileUI }}
                         />
                     )}
-
                     <RevealUI
                         placement='topStart'
                         content={() => (

@@ -32,43 +32,47 @@ export type $CushySDXLUI = X.XGroup<{
 
 // type K = $CushySDXLUI['$Field']
 
-export function CushySDXLUI(b: X.Builder): $CushySDXLUI {
+export function _cushySDXLSchema(b: X.Builder): $CushySDXLUI {
     const tags = cushy.danbooru.tags
     const artists = tags.filter((t) => t.category === 1).map((t) => t.text)
     console.log(`[🤠] tags`, tags)
     console.log(`[🤠] artists`, artists)
     return b.fields({
-        positive: b.fields({
-            prompts: b
-                .prompt({
-                    icon: 'mdiPlusBoxOutline',
-                    // background: { hue: 150, chroma: 0.05 },
-                    default: samplePrompts.tree,
-                    presets: [
-                        //
-                        { label: 'Portrait', icon: 'mdiFaceWoman', apply: (w) => w.setText('portrait, face') },
-                        { label: 'Landscape', icon: 'mdiImageFilterHdr', apply: (w) => w.setText('landscape, nature') },
-                        { label: 'Tree', icon: 'mdiTree', apply: (w) => w.setText(samplePrompts.tree) },
-                        { label: 'Abstract', icon: 'mdiShape', apply: (w) => w.setText('abstract, art') },
-                    ],
-                })
-                .optional(true)
-                .list({ min: 1 }),
-            regionalPrompt: ui_regionalPrompting_v1(b)
-                // .withConfig({ uiui: { Head: false } })
-                .subscribe(latentSizeChanel, (s, self) => {
-                    const area = self.fields.area
-                    self.fields.area.runInValueTransaction(() => {
-                        area.width = s.w
-                        area.height = s.h
+        positive: b.fields(
+            {
+                prompts: b
+                    .prompt({
+                        icon: 'mdiPlusBoxOutline',
+                        // background: { hue: 150, chroma: 0.05 },
+                        default: samplePrompts.tree,
+                        presets: [
+                            //
+                            { label: 'Portrait', icon: 'mdiFaceWoman', apply: (w) => w.setText('portrait, face') },
+                            { label: 'Landscape', icon: 'mdiImageFilterHdr', apply: (w) => w.setText('landscape, nature') },
+                            { label: 'Tree', icon: 'mdiTree', apply: (w) => w.setText(samplePrompts.tree) },
+                            { label: 'Abstract', icon: 'mdiShape', apply: (w) => w.setText('abstract, art') },
+                        ],
                     })
-                })
-                .optional(),
-            artists: b.selectManyStrings(artists),
-            // artistsV2: b.selectManyOptionIds(
-            //     tags.filter((t) => t.category === 1).map((t) => ({ id: t.text, label: `${t.text} (${t.count})` })),
-            // ),
-        }),
+                    .optional(true)
+                    .list({ min: 1 }),
+                regionalPrompt: ui_regionalPrompting_v1(b)
+                    // .withConfig({ uiui: { Head: false } })
+                    .subscribe(latentSizeChanel, (s, self) => {
+                        const area = self.fields.area
+                        self.fields.area.runInValueTransaction(() => {
+                            area.width = s.w
+                            area.height = s.h
+                        })
+                    })
+                    .optional(),
+                artists: b.selectManyStrings(artists),
+                // artistsV2: b.selectManyOptionIds(
+                //     tags.filter((t) => t.category === 1).map((t) => ({ id: t.text, label: `${t.text} (${t.count})` })),
+                // ),
+            },
+            { icon: 'mdiPlusBoxOutline' },
+        ),
+        controlnets: ui_cnet(),
         negative: b
             .prompt({
                 icon: 'mdiMinusBoxOutline',
@@ -85,7 +89,7 @@ export function CushySDXLUI(b: X.Builder): $CushySDXLUI {
                 ],
             })
             .optional(true)
-            .list({ min: 1 }),
+            .list({ min: 1, icon: 'mdiMinusBoxOutline' }),
         model: prefabModelSD15andSDXL({
             ckpt_name: 'albedobaseXL_v21.safetensors',
         }).addRequirements({
@@ -102,7 +106,6 @@ export function CushySDXLUI(b: X.Builder): $CushySDXLUI {
         }),
         sampler: ui_sampler_advanced(),
         customSave: ui_customSave(),
-        controlnets: ui_cnet(),
         ipAdapter: ui_IPAdapterV2().optional(),
         faceID: ui_IPAdapterFaceIDV2().optional(),
         extra: extra1(),

@@ -53,7 +53,6 @@ export type App<FIELD extends Field> = {
 
     /* layout */
     layout?: Maybe<DisplayRule<NoInfer<FIELD>>>
-    layout2?: (f: FIELD['$Field']) => void
 
     /** so you cana have fancy buttons to switch between a few things */
     presets?: Record<string, (doc: NoInfer<FIELD>) => void>

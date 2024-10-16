@@ -127,6 +127,7 @@ export const MenuUI = observer(function Menu({
                     const label = entry.title
                     return (
                         <RevealUI //
+                            key={ix}
                             trigger='hover'
                             hideTriggers={{}}
                             tw='min-w-60 !block'
@@ -134,7 +135,7 @@ export const MenuUI = observer(function Menu({
                             content={() => <MenuUI menu={entry.init(menu.allocatedKeys)} />}
                         >
                             <MenuItem //
-                                key={ix}
+                                disabled={entry.menu.def.disabled}
                                 localShortcut={char}
                                 icon={entry.icon}
                                 afterShortcut={<IkonOf name='mdiMenuRight' />}

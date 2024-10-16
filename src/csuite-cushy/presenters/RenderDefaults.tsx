@@ -22,9 +22,12 @@ import { WidgetPresetsUI } from '../catalog/Presets/WidgetPresets'
 import { DefaultWidgetTitleUI } from '../catalog/Title/WidgetLabelTextUI'
 import { CushyHeadUI } from '../shells/CushyHead'
 import { ShellCushyLeftUI } from '../shells/ShellCushy'
+import { widgetsCatalog } from './RenderCatalog'
 
 export const defaultPresenterRule = <FIELD extends Field>(field: FIELD): DisplayConf<FIELD> => {
     const slots: WidgetSlots<FIELD> = { ...defaultPresenterSlots }
+    const catalog = widgetsCatalog
+    const apply = (overrides: Partial<WidgetSlots<FIELD>>): void => void Object.assign(slots, overrides)
     slots.DebugID = null
 
     // shared
@@ -39,11 +42,22 @@ export const defaultPresenterRule = <FIELD extends Field>(field: FIELD): Display
     else if (isFieldOptional(field)) {
         slots.Shell = ShellOptionalUI as any
     }
+
     // others
     else {
         slots.Header = field.DefaultHeaderUI
         slots.Body = field.DefaultBodyUI
         slots.Extra = field.schema.LabelExtraUI as FCOrNode<{ field: FIELD }> /* 🔴 check if that can be fixed */
+
+        if (field.depth === 1) {
+            if (field.isOfType('group', 'list', 'choices')) {
+                slots.Decoration = (p): JSX.Element => <catalog.Decorations.Card field={field} {...p} />
+                slots.Title = catalog.Title.h3
+            }
+        } else if (field.depth === 2) {
+            if (field.isOfType('group', 'list', 'choices')) apply({ Title: catalog.Title.h4 })
+            if (!field.isOfType('optional', 'link', 'list', 'shared')) apply({ Shell: catalog.Shell.Right })
+        }
     }
 
     return slots

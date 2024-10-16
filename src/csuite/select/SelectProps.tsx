@@ -1,4 +1,3 @@
-import type { DovProps } from '../frame/Dov/Dov'
 import type { FrameProps } from '../frame/Frame'
 import type { IconName } from '../icons/icons'
 import type { InputStringProps } from '../input-string/InputStringUI'
@@ -128,7 +127,7 @@ export type SelectProps<OPTION> = {
     // 🧚‍♀️ onAnchorBlur?: (ev: React.FocusEvent<HTMLElement>) => void
     // 🧚‍♀️ onAnchorKeyDown?: (ev: React.KeyboardEvent<HTMLElement>) => void
     revealProps?: Partial<RevealProps>
-    popupWrapperProps?: DovProps
+    popupWrapperProps?: React.HTMLAttributes<HTMLDivElement>
     textInputProps?: InputStringProps
 
     // customization slots

@@ -5,7 +5,10 @@ import { observer } from 'mobx-react-lite'
 
 import { WidgetHeaderContainerUI } from '../../csuite/form/WidgetHeaderContainerUI'
 
-export type CushyHeadProps = CompiledRenderProps & { children?: ReactNode }
+export type CushyHeadProps = CompiledRenderProps & {
+    children?: ReactNode
+    // asRevealAnchor?: // TODO
+}
 
 export const CushyHeadUI = observer(function CushyHead(p: CushyHeadProps) {
     const field = p.field

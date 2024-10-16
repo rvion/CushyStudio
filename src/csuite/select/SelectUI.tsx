@@ -37,72 +37,79 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
             </Frame>
         )
 
-    return (
-        // bird_d: Why did this need to be a Row? Why does Row not use Frame? wtf is <Dov>
-        // gl if this breaks anything
-        <>
-            <RevealUI //
-                ref={select.revealStateRef}
-                trigger='pseudofocus'
-                // shell='popover'
-                shell={SelectShellUI}
-                // placement={p.placement ?? 'autoVerticalStart'}
-                placement='cover'
-                content={({ reveal }) => <PopupComp reveal={reveal} selectState={select} />}
-                // 🔶 be careful to not override stuff with that (goes both ways)
-                {...p.revealProps}
-                onHidden={(reason) => {
-                    select.revealState?.log(`🔶 revealUI - onHidden (focus anchor)`)
-                    select.clean()
-
-                    p.revealProps?.onHidden?.(reason)
-                }}
-                sharedAnchorRef={select.anchorRef}
-                anchorProps={{
-                    ...p.revealProps?.anchorProps,
-                    onKeyDown: (ev) => {
-                        // 🔶 note: the anchor gets all keyboard events even when input inside popup via portal is focused!
-                        select.handleTooltipKeyDown(ev)
-                        p.revealProps?.anchorProps?.onKeyDown?.(ev)
-                    },
-                }}
+    const WUI = (
+        <RevealUI //
+            ref={select.revealStateRef}
+            trigger='pseudofocus'
+            // shell='popover'
+            shell={SelectShellUI}
+            // placement={p.placement ?? 'autoVerticalStart'}
+            placement='cover'
+            content={({ reveal }) => (
+                <PopupComp //
+                    reveal={reveal}
+                    selectState={select}
+                />
+            )}
+            // 🔶 be careful to not override stuff with that (goes both ways)
+            {...p.revealProps}
+            onHidden={(reason) => {
+                // select.revealState?.log(`🔶 revealUI - onHidden (focus anchor)`)
+                select.clean()
+                p.revealProps?.onHidden?.(reason)
+            }}
+            sharedAnchorRef={select.anchorRef}
+            anchorProps={{
+                ...p.revealProps?.anchorProps,
+                onKeyDown: (ev) => {
+                    // 🔶 note: the anchor gets all keyboard events even when input inside popup via portal is focused!
+                    select.handleTooltipKeyDown(ev)
+                    p.revealProps?.anchorProps?.onKeyDown?.(ev)
+                },
+            }}
+        >
+            <Frame
+                tw={[
+                    //
+                    'overflow-clip',
+                    'UI-Select minh-input',
+                    'relative',
+                    'h-full',
+                    'flex items-center',
+                ]}
+                align
+                base={csuite.inputContrast}
+                border={csuite.inputBorder}
+                roundness={csuite.inputRoundness}
+                dropShadow={cushy.theme.value.inputShadow}
+                expand // </RevealUI>={p.expand ?? true}
+                tabIndex={0}
+                tooltip={p.tooltip}
+                {...p.frameProps}
+                // line
+                // hover
             >
-                <Frame
-                    tw={[
-                        //
-                        'overflow-clip',
-                        'UI-Select minh-input',
-                        'relative',
-                        'h-full',
-                        'flex items-center',
-                    ]}
-                    align
-                    base={csuite.inputContrast}
-                    border={csuite.inputBorder}
-                    roundness={csuite.inputRoundness}
-                    dropShadow={cushy.theme.value.inputShadow}
-                    expand // </RevealUI>={p.expand ?? true}
-                    tabIndex={0}
-                    tooltip={p.tooltip}
-                    {...p.frameProps}
-                    // line
-                    // hover
-                >
-                    <AnchorContentComp select={select} />
-                    {p.clearable && (
-                        <Button
-                            square
-                            icon='_clear'
-                            onFocus={(ev) => ev.stopPropagation()}
-                            onClick={(ev) => {
-                                ev.preventDefault()
-                                ev.stopPropagation()
-                                p.clearable!()
-                            }}
-                        />
-                    )}
-                </Frame>
-            </RevealUI>
+                <AnchorContentComp select={select} />
+                {p.clearable && (
+                    <Button
+                        square
+                        icon='_clear'
+                        onFocus={(ev) => ev.stopPropagation()}
+                        onClick={(ev) => {
+                            ev.preventDefault()
+                            ev.stopPropagation()
+                            p.clearable!()
+                        }}
+                    />
+                )}
+            </Frame>
+        </RevealUI>
+    )
+    if (p.createOption == null) return WUI
+
+    return (
+        <>
+            {WUI}
             {p.createOption != null && p.createOption.isActive !== false && (
                 <Button subtle size='inside' onClick={() => select.createOption()}>
                     {p.createOption.label ?? 'Créer'}

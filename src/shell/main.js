@@ -340,7 +340,15 @@ async function START() {
             const installer = require('electron-devtools-installer')
             const forceDownload = !!process.env.UPGRADE_EXTENSIONS
             const extensions = ['REACT_DEVELOPER_TOOLS']
-            return Promise.all(extensions.map((name) => installer.default(installer[name], forceDownload))).catch(console.log)
+            return Promise.all(
+                //
+                extensions.map((name) =>
+                    installer
+                        .default(installer[name], forceDownload)
+                        .catch(console.log)
+                        .then((name) => console.log(`Added Extension:  ${name}`)),
+                ),
+            ) //
         }
 
         void createWindow()

@@ -1,7 +1,6 @@
 import type { RevealProps } from './RevealProps'
 
 import { makeAutoObservable } from 'mobx'
-import { nanoid } from 'nanoid'
 import React from 'react'
 
 import { DEBUG_REVEAL } from './DEBUG_REVEAL'
@@ -12,7 +11,9 @@ import { RevealState } from './RevealState'
  * it's important to keep that class lighweight.
  */
 export class RevealStateLazy {
-    uid = nanoid()
+    static nextUID: number = 1
+    uid = RevealStateLazy.nextUID++
+
     childRef = React.createRef<HTMLDivElement>()
     constructor(
         //
@@ -20,7 +21,7 @@ export class RevealStateLazy {
         public parents: RevealState[],
         public anchorRef: React.RefObject<HTMLDivElement>,
     ) {
-        if (DEBUG_REVEAL) console.log(`💙 new RevealStateLazy (lazyId: ${this.uid} / props: ${p.placement})`)
+        // if (DEBUG_REVEAL) console.log(`💙 new RevealStateLazy (lazyId: ${this.uid} / props: ${p.placement})`)
         makeAutoObservable(this, {
             p: false,
             anchorRef: false, // 🚨 ref do not work when observables!
@@ -31,7 +32,7 @@ export class RevealStateLazy {
 
     getRevealState = (): RevealState => {
         if (this.state) return this.state
-        this.state = new RevealState({ ...this.p }, this.parents, this.anchorRef)
+        this.state = new RevealState(this)
         if (DEBUG_REVEAL) this.state.log(`💙 init`)
         return this.state!
     }

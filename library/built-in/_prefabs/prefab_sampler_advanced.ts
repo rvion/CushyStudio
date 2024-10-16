@@ -189,7 +189,7 @@ export function ui_sampler_advanced(p?: {
                 return `sigmas:${sigmas} guide:${guidance} cfg:${cfg} `
             },
             icon: 'mdiTimerSandComplete',
-            box: { base: { hue: 300, chroma: 0.1 } },
+            // box: { base: { hue: 300, chroma: 0.1 } },
             label: 'Sampler',
             startCollapsed: p?.startCollapsed ?? false,
             presets: [

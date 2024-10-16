@@ -1,4 +1,3 @@
-import type { Menu } from '../../csuite/menu/Menu'
 import type { MenuEntry } from '../menu/MenuEntry'
 import type { Field } from '../model/Field'
 
@@ -6,7 +5,7 @@ import { observer } from 'mobx-react-lite'
 
 import { Button } from '../../csuite/button/Button'
 import { MenuDividerUI_ } from '../../csuite/dropdown/MenuDividerUI'
-import { menuWithProps } from '../../csuite/menu/Menu'
+import { Menu, menuWithProps } from '../../csuite/menu/Menu'
 import { SimpleMenuAction } from '../../csuite/menu/SimpleMenuAction'
 import { SimpleMenuModal } from '../../csuite/menu/SimpleMenuModal'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
@@ -43,6 +42,34 @@ export const menu_fieldActions: Menu<Field> = menuWithProps({
     title: 'widget actions',
     entries: (field: Field) => {
         const out: MenuEntry[] = []
+        // CREATE PRESET ACTION
+        const presets = field.config.presets ?? []
+        out.push(
+            new Menu({
+                icon: 'mdiLanguageXaml',
+                title: `Presets ${presets.length}`,
+                disabled: presets.length === 0,
+                entries: (): MenuEntry[] =>
+                    presets.map(
+                        (entry) =>
+                            new SimpleMenuAction({
+                                label: entry.label,
+                                icon: entry.icon,
+                                onClick: (): void => entry.apply(field),
+                            }),
+                    ),
+            }).bind({}),
+        )
+        out.push(
+            new SimpleMenuModal({
+                label: 'Create Preset',
+                icon: 'mdiPlus',
+                submit: (): void => {
+                    console.log(`[🤠] values`)
+                },
+                UI: (w): JSX.Element => <CreatePresetUI field={field} />,
+            }),
+        )
         // RESET
         out.push(
             new SimpleMenuAction({
@@ -94,36 +121,26 @@ export const menu_fieldActions: Menu<Field> = menuWithProps({
         )
 
         out.push(MenuDividerUI_)
-        // CREATE PRESET ACTION
-        out.push(
-            new SimpleMenuModal({
-                label: 'Create Preset',
-                icon: 'mdiPlus',
-                submit: (): void => {
-                    console.log(`[🤠] values`)
-                },
-                UI: (w): JSX.Element => <CreatePresetUI field={field} />,
-            }),
-        )
+
         // out.push(
         //     new SimpleMenuAction({
         //         label: 'Create Preset (V2)',
         //         onPick: () => cushy.layout.addCustomV2(CreatePresetUI, { widget /* 🔴 */ }),
         //     }),
         // )
-        const presets = field.config.presets ?? []
-        if (presets.length > 0) {
-            // out.push(MenuDividerUI_)
-            for (const entry of presets) {
-                out.push(
-                    new SimpleMenuAction({
-                        label: entry.label,
-                        icon: entry.icon,
-                        onClick: (): void => entry.apply(field),
-                    }),
-                )
-            }
-        }
+
+        // if (presets.length > 0) {
+        // // out.push(MenuDividerUI_)
+        // for (const entry of presets) {
+        //     out.push(
+        //         new SimpleMenuAction({
+        //             label: entry.label,
+        //             icon: entry.icon,
+        //             onClick: (): void => entry.apply(field),
+        //         }),
+        //     )
+        // }
+        // }
 
         out.push(MenuDividerUI_)
         out.push(

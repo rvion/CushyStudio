@@ -40,6 +40,7 @@ export type MenuDef<Props> = {
     id?: string
     icon?: Maybe<IconName>
     entries: (props: Props, builder: MenuBuilder<any>) => MenuEntry[]
+    disabled?: boolean
 }
 
 export type MenuID = Tagged<string, 'MenuID'>

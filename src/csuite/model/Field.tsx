@@ -205,6 +205,10 @@ export abstract class Field<out K extends FieldTypes = FieldTypes> implements In
         return (this.constructor as FieldConstructor_ViaClass<this>).type
     }
 
+    isOfType(...type: CATALOG.AllFieldTypes[]): boolean {
+        return type.includes(this.type)
+    }
+
     private get _emptySerial(): K['$Serial'] {
         return (this.constructor as FieldConstructor_ViaClass<this>).emptySerial
     }

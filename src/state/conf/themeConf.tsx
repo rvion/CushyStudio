@@ -104,7 +104,8 @@ export const themeConf: ThemeConf['$Field'] = cushyFactory.document(
                         label: 'Dark Blue',
                         icon: 'mdiLightSwitch',
                         apply: (w): void => {
-                            w.value.base = 'oklch(24.7% 0.01 247.9)'
+                            w.value.base = 'oklch(50% 0.08 255)'
+                            // w.value.base = 'oklch(24.7% 0.01 247.9)'
                             // w.value.appbar = 'oklch(40.6% 0.08 244.8)'
                             w.value.appbar = 'oklch(51.6% 0.12 263)'
                         },

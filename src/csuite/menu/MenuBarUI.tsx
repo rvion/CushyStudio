@@ -102,6 +102,7 @@ export const MenuBarUI = observer(function MenuBar({
 
             return (
                 <RevealUI //
+                    tw='inline-flex'
                     key={entry.uid}
                     ref={ABC.ref}
                     trigger='menubar-item'
@@ -170,7 +171,7 @@ export const MenuBarUI = observer(function MenuBar({
                             else if (isBoundMenu(entry.entry)) {
                                 if (entry.ref == null) console.log(`[🔴] no REFFOR`, entry)
                                 else if (entry.ref.current == null) console.log(`[🔴] no entry ref current`)
-                                else void entry.ref.current.getRevealState().open()
+                                else void entry.ref.current.getRevealState().open('programmatically-via-open-function')
                             }
                             menu.onStop()
                             ev.stopPropagation()

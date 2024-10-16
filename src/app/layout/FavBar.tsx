@@ -69,6 +69,28 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                     >
                         SDXL
                     </Button>
+                    {/* <AppIllustrationUI //
+                        // className={'!rounded-none'}
+                        size={tempSize}
+                        app={cushy.db.cushy_app.get('library/built-in/SDXL/cushySDXL.tsx:1')}
+                    /> */}
+                    <Button
+                        tw='flex items-center justify-center self-center my-0.5'
+                        base={{ hue: 90, chromaBlend: 2, contrast: 0.3 }}
+                        style={{
+                            width: tempSize,
+                            height: tempSize,
+                            background: `url(${cushy.db.cushy_app.get('library/built-in/SDXL/cushySDXL.tsx:1')?.illustrationPathWithFileProtocol})`,
+                            backgroundSize: 'cover',
+                            textShadow: '0 0 10px black',
+                            fontWeight: 'bold',
+                            color: 'white',
+                            fontSize: '1rem',
+                        }}
+                        onClick={() => cushy.db.cushy_app.get('library/built-in/SDXL/cushySDXL.tsx:1')?.openLastOrCreateDraft()}
+                    >
+                        NoobAI
+                    </Button>
                     <Button
                         tw='flex items-center justify-center self-center my-0.5'
                         base={{ hue: 180, chromaBlend: 2, contrast: 0.3 }}

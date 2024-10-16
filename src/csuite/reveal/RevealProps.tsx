@@ -1,4 +1,3 @@
-import type { DovProps } from '../frame/Dov/Dov'
 import type { RevealCloseEvent } from './RevealCloseEvent'
 import type { RevealPlacement } from './RevealPlacement'
 import type { RevealContentProps, RevealShellProps } from './shells/ShellProps'
@@ -49,7 +48,7 @@ export type RevealHideTrigger =
 export type RevealHideTriggers = { [key in RevealHideTrigger]?: boolean }
 
 export type RevealHideReason =
-    | 'clickAnchor' //
+    | 'leftClickAnchor' //
     | 'rightClickAnchor' //
     | 'backdropClick'
     | 'shellClick' // via shell (not backdrop)
@@ -63,6 +62,21 @@ export type RevealHideReason =
     | 'an-other-reveal-opened' // another reveal appearing caused the closure
     | 'programmatic'
     | 'unknown'
+    | 'RevealUI-is-unmounted'
+
+export type RevealOpenReason =
+    | 'leftClickAnchor' //
+    | 'rightClickAnchor' //
+    | 'tabKey'
+    | 'shiftTabKey'
+    | 'programmatically-via-open-function'
+    | 'unknown'
+    | 'child-is-opening-so-as-parent-I-must-open-too'
+    | 'mouse-enter-anchor-(no-parent-open)'
+    | 'mouse-enter-anchor-(with-parent-open)'
+    | 'focus-anchor'
+    | 'KeyboardEnterOrLetterWhenAnchorFocused'
+    | 'default-visible'
 
 export type RevealProps = {
     /** @since 2024-07-23 */
@@ -120,5 +134,5 @@ export type RevealProps = {
     useSeparateTower?: boolean
 
     // 🔴 actually the child may not accept DovProps...
-    anchorProps?: DovProps
+    anchorProps?: React.HTMLAttributes<HTMLDivElement>
 }

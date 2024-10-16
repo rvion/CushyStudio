@@ -244,7 +244,7 @@ export class AutoCompleteSelectState<OPTION> {
     // UNUSED
     openMenuProgrammatically = (): void => {
         this.revealState?.log(`🔶 SelectSate openMenuProgrammatically`)
-        this.revealStateRef.current?.getRevealState()?.open()
+        this.revealStateRef.current?.getRevealState()?.open('programmatically-via-open-function')
         this.inputRef_real.current?.focus() // 🔴 never been tested
     }
 
