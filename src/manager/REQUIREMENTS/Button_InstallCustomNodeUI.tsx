@@ -31,7 +31,7 @@ export const Button_InstallCustomNodeUI = observer(function Button_InstallCustom
                         </span>
                         <div tw='flex-col self-start' /* Title and Author */>
                             <div style={{ lineHeight: '1rem' }}>
-                                <span className='font-bold text-primary text-base'>NODES: {plugin.title}</span>
+                                <span className='text-primary text-base font-bold'>NODES: {plugin.title}</span>
                             </div>
                             <div tw='text-xs opacity-75 pl-0'>{plugin.author}</div>
                         </div>

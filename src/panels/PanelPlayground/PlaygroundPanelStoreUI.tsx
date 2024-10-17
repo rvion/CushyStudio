@@ -43,7 +43,7 @@ export const PlaygroundPanelStoreUI = observer(function PlaygroundPanelStoreUI_(
 })
 
 export const ShowAllPanelConfigsUI = observer(function ShowAllPanelConfigsUI_(p: {}) {
-    let OUT: { id: string; ps: Maybe<PanelState> }[] = []
+    const OUT: { id: string; ps: Maybe<PanelState> }[] = []
     cushy.layout.traverse({
         onTab(tab) {
             // console.log(`[🔶🔶] `, tab.getId(), [...PanelStateByNode.keys()])

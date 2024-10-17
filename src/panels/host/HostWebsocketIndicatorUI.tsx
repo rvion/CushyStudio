@@ -1,3 +1,5 @@
+import type { HostL } from '../../models/Host'
+
 import { observer } from 'mobx-react-lite'
 
 import { Button } from '../../csuite/button/Button'
@@ -6,7 +8,6 @@ import { Frame } from '../../csuite/frame/Frame'
 import { Message } from '../../csuite/inputs/shims'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { QuickHostActionsUI } from '../../manager/REQUIREMENTS/QuickHostActionsUI'
-import { HostL } from '../../models/Host'
 import { useSt } from '../../state/stateContext'
 
 export const ConnectionInfoUI = observer(function ConnectionInfoUI_(p: { host: HostL }) {
@@ -72,7 +73,7 @@ export const HostWebsocketIndicatorUI = observer(function HostWebsocketIndicator
                 />
             ) : ws?.isOpen ? (
                 <Button subtle>
-                    {p.showIcon && <span className='material-symbols-outlined text-green-400 '>check_circle</span>}
+                    {p.showIcon && <span className='material-symbols-outlined text-green-400'>check_circle</span>}
                     <span className='text-success'>WS</span>
                 </Button>
             ) : (

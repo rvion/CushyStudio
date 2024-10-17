@@ -2,7 +2,6 @@ import type { MediaImageL } from '../../models/MediaImage'
 
 import { observer } from 'mobx-react-lite'
 
-
 type SmolSize = `${'1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'}rem`
 
 export const ImageSimpleUI = observer(function ImageSimple({

@@ -40,7 +40,7 @@ export const WidgetMatrixUI = observer(function WidgetStrUI_(p: { field: Field_m
                 </thead>
                 <tbody>
                     {rows.map((row, rowIx: number) => (
-                        <tr key={rowIx} className='p-0 m-0'>
+                        <tr key={rowIx} className='m-0 p-0'>
                             <td
                                 //
                                 onClick={() => {
@@ -56,7 +56,7 @@ export const WidgetMatrixUI = observer(function WidgetStrUI_(p: { field: Field_m
                                 return (
                                     <td
                                         key={colIx}
-                                        className='hover:bg-gray-400 cursor-pointer'
+                                        className='cursor-pointer hover:bg-gray-400'
                                         onClick={() => {
                                             field.setCell(row, col, !checked)
                                             field.touch()

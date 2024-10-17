@@ -4,9 +4,9 @@ import type { ReactNode } from 'react'
 import { observer } from 'mobx-react-lite'
 import { useEffect, useMemo } from 'react'
 
+import { useCSuite } from '../ctx/useCSuite'
 import { Frame, type FrameProps } from '../frame/Frame'
 import { ShelfState } from './ShelfState'
-import { useCSuite } from '../ctx/useCSuite'
 
 export type ShelfProps = FrameProps & OwnShelfProps
 

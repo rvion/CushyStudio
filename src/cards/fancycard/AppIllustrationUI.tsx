@@ -1,6 +1,6 @@
-import { observer } from 'mobx-react-lite'
+import type { CushyAppL } from '../../models/CushyApp'
 
-import { CushyAppL } from '../../models/CushyApp'
+import { observer } from 'mobx-react-lite'
 
 export const AppIllustrationUI = observer(function AppIllustrationUI_(p: {
     grayscale?: boolean

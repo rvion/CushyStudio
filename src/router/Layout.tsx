@@ -2,13 +2,15 @@ import type { PropsOf } from '../csuite/types/PropsOf'
 import type { PerspectiveL } from '../models/Perspective'
 import type { STATE } from '../state/state'
 import type { PanelPersistedJSON } from './PanelPersistedJSON'
+import type { PanelName, Panels } from './PANELS'
+import type { FC } from 'react'
 
 import * as FL from 'flexlayout-react'
 import { Actions, Layout, Model as FlexLayoutModel } from 'flexlayout-react'
 import { action, isObservable, makeAutoObservable, runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
-import { createElement, createRef, FC, type RefObject } from 'react'
+import { createElement, createRef, type RefObject } from 'react'
 
 import { hashJSONObjectToNumber } from '../csuite/hashUtils/hash'
 import { getIconAsDataSVG } from '../csuite/icons/iconStr'
@@ -22,7 +24,7 @@ import { type CustomPanelRef, registerCustomPanel } from '../panels/PanelCustom/
 import { PanelWelcomeUI } from '../panels/PanelWelcome/PanelWelcome'
 import { perspectiveHelper } from './DefaultPerspective'
 import { PanelContainerUI } from './PanelContainerUI'
-import { PanelName, panels, Panels } from './PANELS'
+import { panels } from './PANELS'
 import { type TraversalNextStep, type TraverseFn, traverseLayoutNode } from './traverseLayoutNode'
 
 export type TabsetExt = 'active' | 'hoverd' | FL.TabSetNode
@@ -222,7 +224,7 @@ export class CushyLayoutManager {
     }
 
     closeCurrentTabset(): Trigger {
-        let tabset = this.getActiveOrFirstTabset_orNull()
+        const tabset = this.getActiveOrFirstTabset_orNull()
         if (tabset == null) return Trigger.UNMATCHED
         this.do(Actions.deleteTabset(tabset.getId()))
         return Trigger.Success

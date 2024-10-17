@@ -4,11 +4,11 @@ import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 
+import { useCSuite } from '../ctx/useCSuite'
 import { Frame, type FrameProps } from '../frame/Frame'
 import { IkonOf } from '../icons/iconHelpers'
 import { PanelHeaderUI } from '../panel/PanelHeaderUI'
 import { window_addEventListener } from '../utils/window_addEventListenerAction'
-import { useCSuite } from '../ctx/useCSuite'
 
 /* Used once per widget since they should not conflict. */
 let startValue = 0
@@ -114,7 +114,7 @@ export const ResizableFrame = observer(function ResizableFrame_(p: ResizableFram
             </Frame>
 
             <Frame // Footer
-                className='h-input w-full relative'
+                className='h-input relative w-full'
                 base={csuite.inputContrast}
                 style={{ borderTop: '1px solid oklch(from var(--KLR) calc(l + 0.1 * var(--DIR)) c h)' }}
             >

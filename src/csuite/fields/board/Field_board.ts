@@ -9,9 +9,10 @@ import type { FieldConfig } from '../../model/FieldConfig'
 import type { SchemaDict } from '../../model/SchemaDict'
 import type { SimpleBuilder } from '../../simple/SimpleBuilder'
 import type { SimpleSchema } from '../../simple/SimpleSchema'
+import type { SimpleShapeSchema } from './ShapeSchema'
 
 import { Field_group, type Field_group_types, type MAGICFIELDS } from '../group/FieldGroup'
-import { type SimpleShape, simpleShapeSchema, SimpleShapeSchema } from './ShapeSchema'
+import { type SimpleShape, simpleShapeSchema } from './ShapeSchema'
 import { WidgetListExt_LineUI, WidgetListExtUI__Regional } from './WidgetListExtUI'
 
 // #region Config

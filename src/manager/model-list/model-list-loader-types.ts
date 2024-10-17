@@ -2,8 +2,9 @@ import type { KnownModel_Base } from './KnownModel_Base'
 import type { KnownModel_Name } from './KnownModel_Name'
 import type { KnownModel_SavePath } from './KnownModel_SavePath'
 import type { KnownModel_Type } from './KnownModel_Type'
+import type { Static } from '@sinclair/typebox'
 
-import { Static, Type } from '@sinclair/typebox'
+import { Type } from '@sinclair/typebox'
 
 // prettier-ignore
 

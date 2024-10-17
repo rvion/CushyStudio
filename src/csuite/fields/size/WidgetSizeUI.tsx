@@ -3,13 +3,13 @@ import type { AspectRatio, ModelType } from './WidgetSizeTypes'
 
 import { observer } from 'mobx-react-lite'
 
+import { Button } from '../../button/Button'
 import { ToggleButtonUI } from '../../checkbox/InputBoolToggleButtonUI'
 import { InputBoolUI } from '../../checkbox/InputBoolUI'
+import { useCSuite } from '../../ctx/useCSuite'
+import { Dropdown } from '../../dropdown/Dropdown'
 import { Frame } from '../../frame/Frame'
 import { InputNumberUI } from '../../input-number/InputNumberUI'
-import { useCSuite } from '../../ctx/useCSuite'
-import { Button } from '../../button/Button'
-import { Dropdown } from '../../dropdown/Dropdown'
 
 export const WigetSize_LineUI = observer(function WigetSize_LineUI_(p: { field: Field_size }) {
     // 🔴❓ return <WidgetSizeX_LineUI size={p.field} bounds={p.field.config} />
@@ -64,7 +64,7 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
     const theme = cushy.theme.value
 
     return (
-        <div className='flex flex-1 full gap-1'>
+        <div className='full flex flex-1 gap-1'>
             <Frame //Joined container
                 border={csuite.inputBorder}
                 roundness={csuite.inputRoundness}

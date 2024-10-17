@@ -113,7 +113,7 @@ export const CushyUI = observer(function CushyUI_() {
                 </div>
                 <GlobalSearchUI /* Ctrl or Cmd + F: does not work natively on electron; implemented here */ />
                 <AppBarUI />
-                <div className='flex flex-grow relative overflow-clip'>
+                <div className='relative flex flex-grow overflow-clip'>
                     <FavBarUI direction='row' />
                     <ProjectUI />
                 </div>
@@ -125,5 +125,5 @@ export const CushyUI = observer(function CushyUI_() {
 
 // force a few extra tailwind classNames to be included
 const foo = (
-    <div className='grid grid-cols-2 grid-cols-1 grid-cols-3 grid-cols-4 grid-cols-5 grid-cols-6 grid-cols-7 grid-cols-8' />
+    <div className='grid grid-cols-1 grid-cols-2 grid-cols-3 grid-cols-4 grid-cols-5 grid-cols-6 grid-cols-7 grid-cols-8' />
 )

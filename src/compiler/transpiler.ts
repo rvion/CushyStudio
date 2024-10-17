@@ -175,7 +175,7 @@ export function _parseImportStatements(code: string): ImportStructure[] {
 function _generateSyncImportReplacement(importStructure: ImportStructure): string {
     const { moduleName, defaultImport, namedImports } = importStructure
 
-    let importParts: string[] = []
+    const importParts: string[] = []
     if (defaultImport) {
         importParts.push(defaultImport)
     }

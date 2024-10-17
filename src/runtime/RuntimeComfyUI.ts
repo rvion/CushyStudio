@@ -1,9 +1,8 @@
+import type { ComfyWorkflowL } from '../models/ComfyWorkflow'
+import type { MediaImageL } from '../models/MediaImage'
 import type { Runtime } from './Runtime'
 
 import { makeAutoObservable } from 'mobx'
-
-import { ComfyWorkflowL } from '../models/ComfyWorkflow'
-import { MediaImageL } from '../models/MediaImage'
 
 /** namespace for all ComfyUI-related utils */
 export class RuntimeComfyUI {

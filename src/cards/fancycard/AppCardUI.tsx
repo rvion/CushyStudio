@@ -1,8 +1,9 @@
+import type { CushyAppL } from '../../models/CushyApp'
+
 import { observer } from 'mobx-react-lite'
 
 import { InputBoolCheckboxUI } from '../../csuite/checkbox/InputBoolCheckboxUI'
 import { Frame } from '../../csuite/frame/Frame'
-import { CushyAppL } from '../../models/CushyApp'
 import { useSt } from '../../state/stateContext'
 import { AppIllustrationUI } from './AppIllustrationUI'
 

@@ -1,6 +1,6 @@
-import React from 'react'
+import type { PanelState } from './PanelState'
 
-import { PanelState } from './PanelState'
+import React from 'react'
 
 export const panelContext = React.createContext<PanelState | null>(null)
 

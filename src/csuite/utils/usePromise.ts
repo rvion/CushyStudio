@@ -1,4 +1,6 @@
-import { DependencyList, useEffect, useState } from 'react'
+import type { DependencyList } from 'react'
+
+import { useEffect, useState } from 'react'
 
 /** wrap a promise into a hook */
 export const usePromise = <T>(

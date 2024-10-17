@@ -1,6 +1,8 @@
 import type { LiteGraphJSON } from '../core/LiteGraph'
+import type { CushyScriptL } from '../models/CushyScript'
 import type { STATE } from '../state/state'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
+import type { AppMetadata } from './AppManifest'
 import type { Library } from './Library'
 import type { BuildContext, Metafile, OutputFile } from 'esbuild'
 
@@ -14,11 +16,9 @@ import { exhaust } from '../csuite/utils/exhaust'
 import { ManualPromise } from '../csuite/utils/ManualPromise'
 import { toastError } from '../csuite/utils/toasts'
 import { asCushyScriptID } from '../db/TYPES.gen'
-import { CushyScriptL } from '../models/CushyScript'
 import { FPath } from '../models/FPath'
 import { asAbsolutePath } from '../utils/fs/pathUtils'
 import { getPngMetadataFromUint8Array } from '../utils/png/_getPngMetadata'
-import { AppMetadata } from './AppManifest'
 
 // prettier-ignore
 export type LoadStrategy =

@@ -42,8 +42,8 @@ export const $commonAncestor = (
     a: SyntaxNode
     b: SyntaxNode
 } => {
-    let ancestorsA = $ancestorsTopDown(nodeA)
-    let ancestorsB = $ancestorsTopDown(nodeB)
+    const ancestorsA = $ancestorsTopDown(nodeA)
+    const ancestorsB = $ancestorsTopDown(nodeB)
     // console.log(`ancestorsA: ${ancestorsA.map((a) => a.name).join(' -> ')}`)
     // console.log(`ancestorsB: ${ancestorsB.map((a) => a.name).join(' -> ')}`)
     const maxLen = Math.max(ancestorsA.length, ancestorsB.length)

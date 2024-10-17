@@ -1,11 +1,13 @@
+import type { App, AppRef } from '../cards/App'
 import type { LibraryFile } from '../cards/LibraryFile'
 import type { LiveDB } from '../db/LiveDB'
 import type { TABLES } from '../db/TYPES.gen'
+import type { CushyAppL } from './CushyApp'
 
 import { existsSync, statSync } from 'fs'
 import { runInAction } from 'mobx'
 
-import { App, AppRef, type CustomView, type CustomViewRef } from '../cards/App'
+import { type CustomView, type CustomViewRef } from '../cards/App'
 import { CUSHY_IMPORT, replaceImportsWithSyncImport } from '../compiler/transpiler'
 import { extractErrorMessage } from '../csuite/formatters/extractErrorMessage'
 import { getCurrentForm_IMPL } from '../csuite/model/runWithGlobalForm'
@@ -13,7 +15,6 @@ import { SQLITE_false, SQLITE_true } from '../csuite/types/SQLITE_boolean'
 import { BaseInst } from '../db/BaseInst'
 import { LiveTable } from '../db/LiveTable'
 import { asRelativePath } from '../utils/fs/pathUtils'
-import { CushyAppL } from './CushyApp'
 import { Executable, LoadedCustomView } from './Executable'
 import { getCurrentRun_IMPL } from './getGlobalRuntimeCtx'
 

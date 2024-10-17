@@ -1,3 +1,5 @@
+import type { LibraryFile } from '../../../../cards/LibraryFile'
+import type { ITreeElement, ITreeEntry, TreeEntryAction } from '../../../../csuite/tree/TreeEntry'
 import type { TreeNode } from '../../../../csuite/tree/TreeNode'
 import type { CushyScriptL } from '../../../../models/CushyScript'
 
@@ -5,8 +7,7 @@ import { makeAutoObservable } from 'mobx'
 import { basename } from 'pathe'
 import { cwd } from 'process'
 
-import { LibraryFile, type ScriptExtractionResult } from '../../../../cards/LibraryFile'
-import { ITreeElement, ITreeEntry, TreeEntryAction } from '../../../../csuite/tree/TreeEntry'
+import { type ScriptExtractionResult } from '../../../../cards/LibraryFile'
 import { assets } from '../../../../utils/assets/assets'
 import { TreeApp } from './TreeApp'
 

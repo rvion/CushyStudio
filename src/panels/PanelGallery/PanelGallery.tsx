@@ -1,4 +1,5 @@
 import type { MediaImageL } from '../../models/MediaImage'
+import type { GalleryConf } from './galleryConf'
 
 import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
@@ -9,7 +10,7 @@ import { UI } from '../../csuite/components/UI'
 import { FormAsDropdownConfigUI } from '../../csuite/form/FormAsDropdownConfigUI'
 import { Panel, type PanelHeader, type PanelPreset } from '../../router/Panel'
 import { usePanel } from '../../router/usePanel'
-import { GalleryConf, useGalleryConf } from './galleryConf'
+import { useGalleryConf } from './galleryConf'
 import { GalleryImageGridUI } from './GalleryImageGridUI'
 import { GallerySearchControlsUI } from './GallerySearchControlsUI'
 

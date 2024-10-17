@@ -1,7 +1,8 @@
 import type { CushyAppL } from '../../models/CushyApp'
+import type { ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
-import { ReactNode, useState } from 'react'
+import { useState } from 'react'
 
 import { AppIllustrationUI } from '../../cards/fancycard/AppIllustrationUI'
 import { DraftIllustrationUI } from '../../cards/fancycard/DraftIllustration'

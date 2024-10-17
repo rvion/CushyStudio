@@ -1,10 +1,11 @@
+import type { ComfyPromptL } from '../models/ComfyPrompt'
+import type { ProgressReport } from '../models/ComfyWorkflow'
+import type { StepL } from '../models/Step'
+
 import { observer } from 'mobx-react-lite'
 
 import { Button } from '../csuite/button/Button'
 import { parseFloatNoRoundingErr } from '../csuite/utils/parseFloatNoRoundingErr'
-import { ComfyPromptL } from '../models/ComfyPrompt'
-import { ProgressReport } from '../models/ComfyWorkflow'
-import { StepL } from '../models/Step'
 import { useSt } from '../state/stateContext'
 import { GraphSummaryUI } from '../widgets/workspace/GraphSummaryUI'
 

@@ -1,3 +1,4 @@
+import type { GitManagedFolder } from './updater'
 import type { ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
@@ -12,7 +13,6 @@ import { RevealUI } from '../csuite/reveal/RevealUI'
 import { exhaust } from '../csuite/utils/exhaust'
 import { _formatAsRelativeDateTime } from './_getRelativeTimeString'
 import { GitInstallUI } from './GitInstallUI'
-import { GitManagedFolder } from './updater'
 import { UpdaterErrorUI } from './UpdaterErrorUI'
 
 export const UpdateBtnUI = observer(function UpdateBtnUI_(p: {

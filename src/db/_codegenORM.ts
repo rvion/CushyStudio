@@ -1,4 +1,5 @@
-import BetterSqlite3 from 'better-sqlite3'
+import type BetterSqlite3 from 'better-sqlite3'
+
 import { writeFileSync } from 'fs'
 import JSON5 from 'json5'
 

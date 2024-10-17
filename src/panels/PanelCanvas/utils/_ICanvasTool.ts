@@ -1,9 +1,8 @@
 import type { IconName } from '../../../csuite/icons/icons'
 import type { UnifiedCanvas } from '../states/UnifiedCanvas'
 import type { UnifiedCanvasViewInfos } from '../types/RectSimple'
+import type { Stroke } from './_StrokeInfo'
 import type { KonvaEventObject } from 'konva/lib/Node'
-
-import { Stroke } from './_StrokeInfo'
 
 export type ToolPressPayload = {
     /** on press, a stroke is started */

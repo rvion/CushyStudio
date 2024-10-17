@@ -1,8 +1,9 @@
+import type { LiveDB } from './LiveDB'
+
 import { statSync } from 'fs'
 
 import { formatSize } from '../csuite/utils/formatSize'
 import { DB_RELATIVE_PATH } from './DB_CONFIG'
-import { LiveDB } from './LiveDB'
 
 export type DBStats = { [key: string]: { count: number; size: number } }
 

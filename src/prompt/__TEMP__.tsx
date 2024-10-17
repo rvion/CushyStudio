@@ -85,7 +85,7 @@ export const PromptEditorUI = observer(function PromptEditorUI_(p: { promptID: F
 
                 mount = (domNode: HTMLDivElement): void => {
                     domNode.innerHTML = ''
-                    let view = new EditorView({ state: this.editorState, parent: domNode })
+                    const view = new EditorView({ state: this.editorState, parent: domNode })
                     this.editorView = view
                 }
 

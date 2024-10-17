@@ -1,6 +1,7 @@
+import type { PanelURI } from './PanelState'
+
 import { useMemo } from 'react'
 
-import { PanelURI } from './PanelState'
 import { usePanel } from './usePanel'
 
 /** stuff there will get garbage asap */

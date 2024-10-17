@@ -1,4 +1,5 @@
 import type { Field_prompt } from './FieldPrompt'
+import type { PromptPlugin } from './plugins/PromptPlugin'
 
 import { observer } from 'mobx-react-lite'
 import { useEffect, useLayoutEffect, useMemo } from 'react'
@@ -15,7 +16,6 @@ import { Plugin_LoraControlsUI } from './plugins/Plugin_LoraBoxUI'
 import { Plugin_PreviewPromptUI } from './plugins/Plugin_PreviewUI'
 import { Plugin_ReorderTopLevelStuffUI } from './plugins/Plugin_ReorderTopLevelStuffUI'
 import { Plugin_ShortcutsUI } from './plugins/Plugin_ShortcutsUI'
-import { PromptPlugin } from './plugins/PromptPlugin'
 import { WidgetPromptUISt } from './WidgetPromptUISt'
 
 export const WidgetPrompt_LineUI = observer(function WidgetPrompt_LineUI_(p: { field: Field_prompt }) {
@@ -82,7 +82,7 @@ export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { field: Fiel
             {/* ACTIVE PLUGINS */}
             {/* <PluginToggleBarUI /> */}
             {haveAtLeastOnePluginActive && (
-                <Frame className='flex flex-col gap-1 p-1 my-1'>
+                <Frame className='my-1 flex flex-col gap-1 p-1'>
                     {plugins.map((plugin) => {
                         const active = st.configFile.get(plugin.configKey) ?? false
                         if (!active) return null

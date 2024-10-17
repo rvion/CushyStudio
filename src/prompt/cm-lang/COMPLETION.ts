@@ -1,10 +1,11 @@
 import type { STATE } from '../../state/state'
+import type { PromptLangNodeName } from '../grammar/grammar.types'
+import type { Completion, CompletionContext, CompletionResult, CompletionSource } from '@codemirror/autocomplete'
 import type { Extension } from '@codemirror/state'
 
-import { autocompletion, Completion, CompletionContext, CompletionResult, CompletionSource } from '@codemirror/autocomplete'
+import { autocompletion } from '@codemirror/autocomplete'
 import { syntaxTree } from '@codemirror/language'
 
-import { PromptLangNodeName } from '../grammar/grammar.types'
 import { isValidPromptLangIdentifier } from './isIdentifier'
 import { $ancestorsBottomUp } from './utils'
 
@@ -38,7 +39,7 @@ const dynamicCompletion: CompletionSource = (context: CompletionContext): Comple
     // console.log(`[🟢] x`, nodeToReplace?.name) // prettier-ignore
 
     // OUTPUT
-    let completionsOptions: Completion[] = []
+    const completionsOptions: Completion[] = []
 
     const addWildcards = (): void => {
         for (const [wildcard, values] of Object.entries(st.wildcards)) {

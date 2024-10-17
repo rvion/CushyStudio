@@ -1,12 +1,12 @@
+import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
+import { useMemo } from 'react'
 
+import { useCSuite } from '../../csuite/ctx/useCSuite'
+import { Frame } from '../../csuite/frame/Frame'
 import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
 import { Panel, type PanelHeader } from '../../router/Panel'
 import { useSt } from '../../state/stateContext'
-import { Frame } from '../../csuite/frame/Frame'
-import { useCSuite } from '../../csuite/ctx/useCSuite'
-import { makeAutoObservable } from 'mobx'
-import { useMemo } from 'react'
 import { PanelAssetsShelfUI } from './PanelAssetsShelfUI'
 
 /** This is going to be rudementary for now, including only Loras atm. */
@@ -153,7 +153,7 @@ const AssetPageLora = observer(function AssetPageLora_(p: { st: PanelAssetsState
                                 let start = -1
                                 let end = -1
 
-                                for (let i of [...selectedItems].sort((a, b) => a - b)) {
+                                for (const i of [...selectedItems].sort((a, b) => a - b)) {
                                     // If there wasn't anything before, but there is a selection after, select everything between those instead.
                                     if (i > index) {
                                         if (start == -1) {

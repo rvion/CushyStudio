@@ -1,3 +1,4 @@
+import type { PanelName } from './PANELS'
 import type * as FL from 'flexlayout-react'
 
 import { observer } from 'mobx-react-lite'
@@ -7,7 +8,7 @@ import { ErrorBoundaryUI } from '../csuite/errors/ErrorBoundaryUI'
 import { Frame } from '../csuite/frame/Frame'
 import { Message } from '../csuite/inputs/shims'
 import { useMemoAction } from '../csuite/utils/useMemoAction'
-import { PanelName, panels } from './PANELS'
+import { panels } from './PANELS'
 import { PanelState } from './PanelState'
 import { PanelStateByNode } from './PanelStateByNode'
 import { panelContext } from './usePanel'
@@ -79,7 +80,7 @@ export const PanelContainerUI = observer(function PanelContainer(p: {
                     onFocus={(e) => e.currentTarget.classList.add('Hovered-Region')}
                     onBlur={(e) => e.currentTarget.classList.remove('Hovered-Region')}
                 >
-                    <Component {...panelProps} className='w-full h-full border-none' />
+                    <Component {...panelProps} className='h-full w-full border-none' />
                 </Frame>
             </panelContext.Provider>
         </ErrorBoundaryUI>

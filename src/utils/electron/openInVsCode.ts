@@ -16,7 +16,7 @@ async function tryEditor(editor: string, filePath: string): Promise<void> {
             if (!error) {
                 resolvePromise()
             } else {
-                let errMsg = new Error(`Could not open file with ${editor}: ${error.message}`)
+                const errMsg = new Error(`Could not open file with ${editor}: ${error.message}`)
                 rejectPromise(errMsg)
             }
         })
@@ -49,7 +49,7 @@ export async function openInVSCode(filePathWithinWorkspace: string): Promise<voi
         const preferredEditor = st.configFile.get('preferredTextEditor')
 
         /* Build list of editors by priority, inserting the user's preferred option to the front */
-        let textEditors = ['code', 'codium', 'default']
+        const textEditors = ['code', 'codium', 'default']
         if (preferredEditor && textEditors.indexOf(preferredEditor) === -1) {
             textEditors.unshift(preferredEditor)
         }
@@ -58,7 +58,7 @@ export async function openInVSCode(filePathWithinWorkspace: string): Promise<voi
         let usingVSCode = true
         /* Attempt to open in user preferred text editor, then VSCode/Codium as we support that
          *  editor the best, then use the system's default text editor. */
-        for (let editor of textEditors) {
+        for (const editor of textEditors) {
             if (['code', 'codium'].indexOf(editor) === -1) {
                 /* Open the file in the default text editor */
                 let command = editor
@@ -69,7 +69,7 @@ export async function openInVSCode(filePathWithinWorkspace: string): Promise<voi
 
                 /* Open with preferred editor, or default text editor */
                 try {
-                    let result = await tryEditor(command, absoluteFilePath)
+                    const result = await tryEditor(command, absoluteFilePath)
                     usingVSCode = false
                     foundWorkingEditor = true
                     break

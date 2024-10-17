@@ -1,21 +1,21 @@
+import type { MediaImageL } from '../../../models/MediaImage'
 import type { STATE } from '../../../state/state'
 import type { RectSimple } from '../types/RectSimple'
 import type { UnifiedCanvas } from './UnifiedCanvas'
+import type { Layer } from 'konva/lib/Layer'
+import type { KonvaEventObject } from 'konva/lib/Node'
 import type { Shape } from 'konva/lib/Shape'
+import type { Stage } from 'konva/lib/Stage'
 
 import Konva from 'konva'
-import { Layer } from 'konva/lib/Layer'
-import { KonvaEventObject } from 'konva/lib/Node'
 import { Rect } from 'konva/lib/shapes/Rect'
 import { Transformer } from 'konva/lib/shapes/Transformer'
-import { Stage } from 'konva/lib/Stage'
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { toast } from 'react-toastify'
 
 import { bang } from '../../../csuite/utils/bang'
 import { createMediaImage_fromDataURI } from '../../../models/createMediaImage_fromWebFile'
-import { MediaImageL } from '../../../models/MediaImage'
 
 export class UnifiedSelection {
     id: string = nanoid()
@@ -145,7 +145,7 @@ export class UnifiedSelection {
         // 🟢 SAVE CANVAS (3️⃣)
         /* 🥐 */ C.activeMask.layer.opacity(1)
         C.activeMask.layer.children.forEach((c) => {
-            ;(c as any).stroke('white')
+            (c as any).stroke('white')
         })
         // C.activeMask.layer
         //     .add
@@ -165,7 +165,7 @@ export class UnifiedSelection {
         const mask = createMediaImage_fromDataURI(dataURL2!, `outputs/canvas/${nanoid()}-mask.png`)
 
         C.activeMask.layer.children.forEach((c) => {
-            ;(c as any).stroke(C.activeMask.color)
+            (c as any).stroke(C.activeMask.color)
         })
         /* 🥐 */ C.activeMask.layer.opacity(0.5)
         /* 🥐 */ C.activeMask.layer.cache()

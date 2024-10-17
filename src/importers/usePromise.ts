@@ -1,5 +1,7 @@
+import type { DependencyList } from 'react'
+
 import { observable } from 'mobx'
-import { DependencyList, useMemo } from 'react'
+import { useMemo } from 'react'
 
 import { ManualPromise } from '../csuite/utils/ManualPromise'
 

@@ -1,10 +1,10 @@
+import type { CushyAppL } from '../models/CushyApp'
 import type { STATE } from '../state/state'
 
 import { action, makeAutoObservable } from 'mobx'
 import path from 'pathe'
 import Watcher from 'watcher'
 
-import { CushyAppL } from '../models/CushyApp'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { LibraryFile } from './LibraryFile'
 import { shouldSkip_duringWatch } from './shouldSkip'
@@ -82,7 +82,7 @@ export class Library {
         // ⏸️ this.expanded = new Set(expanded)
         const cache = this.st.hotReloadPersistentCache
         if (cache.watcher) {
-            ;(cache.watcher as Watcher).close()
+            (cache.watcher as Watcher).close()
         }
 
         // register watcher to properly reload all cards

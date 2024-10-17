@@ -1,8 +1,8 @@
 import type { UnifiedCanvas } from '../states/UnifiedCanvas'
 import type { ICanvasTool } from '../utils/_ICanvasTool'
 import type { KonvaEventObject } from 'konva/lib/Node'
+import type { Stage } from 'konva/lib/Stage'
 
-import { Stage } from 'konva/lib/Stage'
 import { observable } from 'mobx'
 
 import { MouseBtn } from '../../../csuite/types/MouseBtn'

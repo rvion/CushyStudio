@@ -1,11 +1,12 @@
+import type { TEdge } from '../csuite/utils/toposort'
+import type { ComfyNodeSchema, NodeInputExt } from '../models/ComfySchema'
 import type { STATE } from '../state/state'
+import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 
 import { convertComfyNodeNameToCushyNodeNameValidInJS } from '../core/normalizeJSIdentifier'
 import { ComfyPrimitiveMapping } from '../core/Primitives'
 import { bang } from '../csuite/utils/bang'
-import { TEdge, toposort } from '../csuite/utils/toposort'
-import { ComfyNodeSchema, NodeInputExt } from '../models/ComfySchema'
-import { ComfyPromptJSON } from '../types/ComfyPrompt'
+import { toposort } from '../csuite/utils/toposort'
 import { CodeBuffer } from '../utils/codegen/CodeBuffer'
 import { asJSAccessor, escapeJSKey } from '../utils/codegen/escapeJSKey'
 import { jsEscapeStr } from '../utils/codegen/jsEscapeStr'
@@ -210,7 +211,7 @@ export class ComfyImporter {
                     : value
 
                 // apply rules
-                let draft: RuleInput = {
+                const draft: RuleInput = {
                     inputName: name,
                     nodeName: classType,
                     valueStr,

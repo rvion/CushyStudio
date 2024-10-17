@@ -1,3 +1,6 @@
+import type { Prompt_Lora, Prompt_WeightedExpression } from '../grammar/grammar.practical'
+import type { WidgetPromptUISt } from '../WidgetPromptUISt'
+
 import { observer } from 'mobx-react-lite'
 
 import { openExternal } from '../../app/layout/openExternal'
@@ -8,8 +11,6 @@ import { InputLegacy } from '../../csuite/inputs/shims'
 import { MessageErrorUI } from '../../csuite/messages/MessageErrorUI'
 import { SelectUI } from '../../csuite/select/SelectUI'
 import { useSt } from '../../state/stateContext'
-import { Prompt_Lora, Prompt_WeightedExpression } from '../grammar/grammar.practical'
-import { WidgetPromptUISt } from '../WidgetPromptUISt'
 
 // TODO: Once it is possible to get the modifier key's states, holding shift when pressing the trash button should not trim whitespace/commas
 

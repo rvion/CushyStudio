@@ -3,6 +3,8 @@ import type { MediaImageL } from '../../../models/MediaImage'
 import type { STATE } from '../../../state/state'
 import type { UnifiedCanvasViewInfos } from '../types/RectSimple'
 import type { ICanvasTool } from '../utils/_ICanvasTool'
+import type { UnifiedCanvasBrushMode, UnifiedCanvasTool } from './UnifiedCanvasTool'
+import type { UnifiedStep } from './UnifiedStep'
 
 import Konva from 'konva'
 import { makeAutoObservable, observable } from 'mobx'
@@ -17,11 +19,9 @@ import { ToolMove } from '../tools/ToolMove'
 import { ToolPaint } from '../tools/ToolPaint'
 import { ToolStamp } from '../tools/ToolStamp'
 import { KonvaGrid } from './KonvaGrid1'
-import { UnifiedCanvasBrushMode, UnifiedCanvasTool } from './UnifiedCanvasTool'
 import { UnifiedImage } from './UnifiedImage'
 import { UnifiedMask } from './UnifiedMask'
 import { UnifiedSelection } from './UnifiedSelection'
-import { UnifiedStep } from './UnifiedStep'
 
 export class UnifiedCanvas {
     snapToGrid = true

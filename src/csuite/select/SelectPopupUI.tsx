@@ -91,7 +91,7 @@ export const SelectPopupUI = observer(function SelectPopupUI_<OPTION>(p: SelectP
             ) : select.p.virtualized !== false ? (
                 select.filteredOptions.length !== 0 && (
                     <FixedSizeList<{ s: AutoCompleteSelectState<OPTION>; reveal: RevealState }>
-                        className='mt-2 mb-1'
+                        className='mb-1 mt-2'
                         useIsScrolling={false}
                         /* temp hack to leave place for soon-to-be input */
                         height={Math.min(400, itemSize * select.filteredOptions.length)}

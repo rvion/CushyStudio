@@ -1,6 +1,8 @@
+import type { CSSProperties } from 'react'
+
 // @ts-ignore
 import debounce from 'lodash.debounce'
-import React, { CSSProperties, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 
 import { Button } from '../../csuite/button/Button'
 import { InputSliderUI_legacy } from '../../csuite/input-slider/Slider'

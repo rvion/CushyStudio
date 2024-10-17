@@ -1,7 +1,7 @@
 import type { RSSize } from '../types/RsuiteTypes'
+import type { ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
-import { ReactNode } from 'react'
 
 import { exhaust } from '../utils/exhaust'
 

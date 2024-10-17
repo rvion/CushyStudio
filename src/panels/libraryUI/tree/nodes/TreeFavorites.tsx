@@ -1,9 +1,9 @@
 import type { ITreeElement, ITreeEntry } from '../../../../csuite/tree/TreeEntry'
+import type { TreeNode } from '../../../../csuite/tree/TreeNode'
+import type { VirtualFolder } from '../../../../csuite/tree/VirtualHierarchy'
+import type { CushyAppL } from '../../../../models/CushyApp'
 import type { DraftL } from '../../../../models/Draft'
 
-import { TreeNode } from '../../../../csuite/tree/TreeNode'
-import { VirtualFolder } from '../../../../csuite/tree/VirtualHierarchy'
-import { CushyAppL } from '../../../../models/CushyApp'
 import { TreeApp } from './TreeApp'
 import { TreeAppFolder } from './TreeAppFolders'
 import { TreeDraft } from './TreeDraft'

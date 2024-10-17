@@ -1,11 +1,11 @@
 import type { ITreeElement, ITreeEntry, TreeEntryAction } from '../../../../csuite/tree/TreeEntry'
+import type { TreeNode } from '../../../../csuite/tree/TreeNode'
 
 import { readdirSync, statSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
 import { basename } from 'pathe'
 
 import { shouldSkip } from '../../../../cards/shouldSkip'
-import { TreeNode } from '../../../../csuite/tree/TreeNode'
 import { asRelativePath } from '../../../../utils/fs/pathUtils'
 import { TreeFile } from './TreeFile'
 

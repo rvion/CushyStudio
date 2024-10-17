@@ -22,7 +22,7 @@ export const PanelSteps = new Panel({
 export const PanelStepsUI = observer(function PanelStepsUI_(p: NO_PROPS) {
     console.log(`[❓🔴] rendering > PanelStepsUI`)
     return (
-        <div className='flex flex-col h-full'>
+        <div className='h-full flex flex-col'>
             <PanelHeaderUI tw='sticky top-0' icon='mdiStepForward'>
                 <FormAsDropdownConfigUI form={PanelStepsConf} title='Step Options' />
             </PanelHeaderUI>
@@ -35,7 +35,7 @@ const StepListUI = observer(function StepLists(p: {}) {
     const amount = clamp(Math.round(PanelStepsConf.value.maxItem), 1, 1000)
     const steps = cushy.db.step.getLastN(amount)
     return (
-        <div className='flex flex-col gap-0.5 flex-grow select-none' style={{ overflow: 'auto' }}>
+        <div className='flex flex-grow flex-col select-none gap-0.5' style={{ overflow: 'auto' }}>
             {/* {PanelStepsConf.render()} */}
             {steps.map((step, ix: number) => (
                 <StepCardUI //

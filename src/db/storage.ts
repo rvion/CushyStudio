@@ -1,4 +1,6 @@
-import BetterSqlite3, { default as SQL } from 'better-sqlite3'
+import type BetterSqlite3 from 'better-sqlite3'
+
+import SQL from 'better-sqlite3'
 
 import { _applyAllMigrations } from './_applyAllMigrations'
 import { _codegenORM } from './_codegenORM'

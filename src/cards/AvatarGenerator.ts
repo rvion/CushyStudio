@@ -59,7 +59,7 @@ export function generateAvatar(
     // the first 15 characters of the hash control the pixels (even/odd)
     // they are drawn down the middle first, then mirrored outwards
     let color
-    let rectangles: Rect[] = []
+    const rectangles: Rect[] = []
     hash.split('').forEach((char, i) => {
         color = parseInt(hash.charAt(i), 16) % 2 ? backgroundCssValue : foregroundCssValue
 
@@ -159,15 +159,15 @@ function hsl2rgb(
 // This implementation (a modified version of the SheetJS version) has been optimized
 // for our use case, at the expense of conforming to the adler32 specification
 // for non-ascii inputs.
-var MOD = 65521
+const MOD = 65521
 function adler32(data: string): number {
-    var a = 1
-    var b = 0
-    var i = 0
-    var l = data.length
-    var m = l & ~0x3
+    let a = 1
+    let b = 0
+    let i = 0
+    const l = data.length
+    const m = l & ~0x3
     while (i < m) {
-        var n = Math.min(i + 4096, m)
+        const n = Math.min(i + 4096, m)
         for (; i < n; i += 4) {
             b +=
                 (a += data.charCodeAt(i)) +

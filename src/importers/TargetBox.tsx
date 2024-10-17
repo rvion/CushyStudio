@@ -1,7 +1,7 @@
+import type { ReactNode } from 'react'
 import type { DropTargetMonitor } from 'react-dnd'
 
 import { observer } from 'mobx-react-lite'
-import { ReactNode } from 'react'
 import { useDrop } from 'react-dnd'
 import { NativeTypes } from 'react-dnd-html5-backend'
 

@@ -1,12 +1,13 @@
 import type { Tree } from './Tree'
 import type { TreeNode, TreeScrollOptions } from './TreeNode'
+import type { KeyEv } from './TreeShortcuts'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { createRef } from 'react'
 
 import { Trigger } from '../trigger/Trigger'
-import { KeyEv, onKeyDownHandlers } from './TreeShortcuts'
+import { onKeyDownHandlers } from './TreeShortcuts'
 
 export class TreeView {
     /** treeview id; only for debugging purpose */

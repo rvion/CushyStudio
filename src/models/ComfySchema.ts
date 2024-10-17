@@ -225,7 +225,7 @@ export class ComfySchemaL extends BaseInst<TABLES['comfy_schema']> {
                 // this.knownTypes.add(optNormalized)
 
                 // index production
-                let arr = this.nodesByProduction[slotTypeName]
+                const arr = this.nodesByProduction[slotTypeName]
                 if (arr == null) this.nodesByProduction[slotTypeName] = [nodeNameInCushy]
                 else arr.push(nodeNameInCushy)
 
@@ -611,7 +611,7 @@ export class ComfyNodeSchema {
         const p = b.w
 
         // single type interfaces
-        let x: { [key: string]: number } = {}
+        const x: { [key: string]: number } = {}
         for (const i of this.outputs) x[i.typeName] = (x[i.typeName] ?? 0) + 1
         this.singleOuputs = this.outputs.filter((i) => x[i.typeName] === 1)
         const ifaces = this.singleOuputs.map((i) => `HasSingle_${i.typeName}`)

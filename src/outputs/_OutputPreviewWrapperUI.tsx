@@ -1,11 +1,12 @@
+import type { StepOutput } from '../types/StepOutput'
+import type { ReactNode } from 'react'
+
 import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { ReactNode } from 'react'
 
 import { ErrorBoundaryUI } from '../csuite/errors/ErrorBoundaryUI'
 import { Frame } from '../csuite/frame/Frame'
 import { useSt } from '../state/stateContext'
-import { StepOutput } from '../types/StepOutput'
 
 export const OutputPreviewWrapperUI = observer(function OutputPreviewWrapperUI_(p: {
     /** 3/4 letters max if possible */

@@ -1,3 +1,4 @@
+import type { ComfyWorkflowBuilder } from '../back/NodeBuilder'
 import type { CustomViewRef, DraftExecutionContext } from '../cards/App'
 import type { Printable } from '../core/Printable'
 import type { Field } from '../csuite/model/Field'
@@ -8,13 +9,13 @@ import type { MediaTextL } from '../models/MediaText'
 import type { StepL } from '../models/Step'
 import type { CompiledPrompt } from '../prompt/FieldPrompt'
 import type { STATE } from '../state/state'
+import type { Wildcards } from '../widgets/prompter/nodes/wildcards/wildcards'
 
 import child_process, { execSync } from 'child_process'
 import { createHash } from 'crypto'
 import fs, { writeFileSync } from 'fs'
 import * as path from 'pathe'
 
-import { ComfyWorkflowBuilder } from '../back/NodeBuilder'
 import { auto } from '../core/autoValue'
 import { ComfyNodeOutput } from '../core/Slot'
 import { toJSONError } from '../csuite/errors/toJSONError'
@@ -24,7 +25,6 @@ import { checkIfComfyImageExists } from '../models/ImageInfos_ComfyGenerated'
 import { compilePrompt } from '../prompt/_compile'
 import { _formatAsRelativeDateTime } from '../updater/_getRelativeTimeString'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
-import { Wildcards } from '../widgets/prompter/nodes/wildcards/wildcards'
 import { RuntimeApps } from './RuntimeApps'
 import { RuntimeCanvas } from './RuntimeCanvas'
 import { RuntimeColors } from './RuntimeColors'
@@ -534,7 +534,7 @@ export class Runtime<FIELD extends Field = any> {
 
     output_text = (p: { title: string; message: Printable } | string): MediaTextL => {
         const [title, message] = typeof p === 'string' ? ['<no-title>', p] : [p.title, p.message]
-        let msg = this.extractString(message)
+        const msg = this.extractString(message)
         console.info(msg)
         return this.step.db.media_text.create({
             kind: 'text',
@@ -572,7 +572,7 @@ export class Runtime<FIELD extends Field = any> {
 
     // private
     downloadURI = (uri: string, name: string): void => {
-        var link = document.createElement('a')
+        const link = document.createElement('a')
         link.download = name
         link.href = uri
         document.body.appendChild(link)

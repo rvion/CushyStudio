@@ -1,8 +1,8 @@
+import type { CushyShortcut } from '../../csuite/commands/CommandManager'
 import type { IconName } from '../../csuite/icons/icons'
 
 import { ctx_global } from '../../csuite/command-topic/ctx_global'
 import { command, type Command } from '../../csuite/commands/Command'
-import { CushyShortcut } from '../../csuite/commands/CommandManager'
 import { Trigger } from '../../csuite/trigger/Trigger'
 
 // ------------------------------------------------------------------------------------

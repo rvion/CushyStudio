@@ -1,11 +1,13 @@
+import type { ComfyWorkflowL } from '../../models/ComfyWorkflow'
+import type { MutableRefObject } from 'react'
+
 // @ts-ignore
 import { action, autorun, observable } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { MutableRefObject, useEffect, useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { createPortal } from 'react-dom'
 
 import { window_addEventListener } from '../../csuite/utils/window_addEventListenerAction'
-import { ComfyWorkflowL } from '../../models/ComfyWorkflow'
 import { DrawWorkflowUI } from './DrawWorkflowUI'
 import { useCursorLockMove } from './useCursorLockMove'
 

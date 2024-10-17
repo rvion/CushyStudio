@@ -43,8 +43,8 @@ export class MinipaintState {
         img.src = iamgeL.url
         img.onload = function (): void {
             const iframe = document.getElementById('miniPaint') as any
-            var Layers = iframe.contentWindow.Layers
-            var new_layer = {
+            const Layers = iframe.contentWindow.Layers
+            const new_layer = {
                 name: nanoid(8),
                 type: 'image',
                 data: img,
@@ -77,15 +77,15 @@ export class MinipaintState {
     }
 
     saveImage(): void {
-        var Layers = getLayers()
-        var dim = Layers.get_dimensions()
-        var tempCanvas = document.createElement('canvas')
-        var tempCtx = tempCanvas.getContext('2d')
+        const Layers = getLayers()
+        const dim = Layers.get_dimensions()
+        const tempCanvas = document.createElement('canvas')
+        const tempCtx = tempCanvas.getContext('2d')
         tempCanvas.width = dim.width
         tempCanvas.height = dim.height
         Layers.convert_layers_to_canvas(tempCtx)
 
-        var data = tempCanvas.toDataURL()
+        const data = tempCanvas.toDataURL()
         console.log(`${data.length} bytes`)
         tempCanvas.toBlob(async (blob) => {
             if (blob == null) throw new Error(`❌ blob is null`)

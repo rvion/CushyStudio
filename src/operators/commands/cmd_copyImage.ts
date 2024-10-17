@@ -1,8 +1,9 @@
+import type { MediaImageL } from '../../models/MediaImage'
+
 import { cushyFactory } from '../../controls/Builder'
 import { command, type Command } from '../../csuite/commands/Command'
 import { lazy_viaProxy } from '../../csuite/lazy/lazy_viaProxy'
 import { type Menu, menuWithProps } from '../../csuite/menu/Menu'
-import { MediaImageL } from '../../models/MediaImage'
 import { ctx_image } from '../contexts/ctx_image'
 
 export type AvailableImageCopyFormats = 'PNG' | 'JPG' | 'WEBP'

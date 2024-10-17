@@ -1,10 +1,11 @@
+import type { SelectOptionNoVal } from '../../csuite/fields/selectOne/SelectOption'
+import type { FormGlobalLayoutMode } from './FormGlobalLayoutMode'
+
 import { cushyFactory } from '../../controls/Builder'
-import { SelectOptionNoVal } from '../../csuite/fields/selectOne/SelectOption'
 import { WidgetSelectOne_TabUI } from '../../csuite/fields/selectOne/WidgetSelectOne_TabUI'
 import { type $schemaSimpleDropShadow, schemaSimpleDropShadow } from '../../csuite/frame/SimpleDropShadow'
 import { ui_tint, type UI_Tint } from '../../csuite/kolor/prefab_Tint'
 import { readJSON, writeJSON } from '../jsonUtils'
-import { FormGlobalLayoutMode } from './FormGlobalLayoutMode'
 
 // --------------
 export type ThemeConf = X.XGroup<{

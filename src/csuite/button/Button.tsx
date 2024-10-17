@@ -1,8 +1,10 @@
+import type { FrameProps } from '../frame/Frame'
+
 import { makeAutoObservable, observable, runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { type ForwardedRef, forwardRef, useEffect, useMemo } from 'react'
 
-import { Frame, FrameProps } from '../frame/Frame'
+import { Frame } from '../frame/Frame'
 import { registerComponentAsClonableWhenInsideReveal } from '../reveal/RevealCloneWhitelist'
 import { window_addEventListener } from '../utils/window_addEventListenerAction'
 import { withDefaultProps } from './withDefaultProps'

@@ -28,7 +28,7 @@ const requiredRegions = [
 // Helper function to extract found regions in order
 const extractRegionsInOrder = (fileContent: string, regions: string[]): string[] => {
     const foundRegions: string[] = []
-    let currentIndex = 0
+    const currentIndex = 0
 
     // Extract entire line after `// #region` prefix
     const regionRegex = /\/\/\s*#region\s*(.*)/g

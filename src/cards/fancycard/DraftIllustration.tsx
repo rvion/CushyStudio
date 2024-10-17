@@ -48,7 +48,7 @@ export const DraftIllustrationUI = observer(function DraftIllustrationUI_(p: {
 
     // 3. show illustration on top
     return (
-        <div style={dropStyle} ref={dropRef} className='relative DROP_IMAGE_HANDLER'>
+        <div style={dropStyle} ref={dropRef} className='DROP_IMAGE_HANDLER relative'>
             {p.revealAppIllustrationOnHover ? ( //
                 <div tw='absolute opacity-0 hover:opacity-100 z-50 bg-neutral' style={{ transition: 'opacity 0.2s' }}>
                     <AppIllustrationUI app={draft.app} size={p.size} />

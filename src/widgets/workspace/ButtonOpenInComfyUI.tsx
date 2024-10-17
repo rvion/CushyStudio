@@ -6,7 +6,7 @@ import { Button } from '../../csuite/button/Button'
 import { useSt } from '../../state/stateContext'
 
 export const ButtonOpenInComfyUI = observer(function ButtonOpenInComfyUI_(p: { graph: ComfyWorkflowL | ComfyWorkflowID }) {
-    let graphOrGraphID = p.graph
+    const graphOrGraphID = p.graph
     const st = useSt()
     const graph =
         typeof graphOrGraphID === 'string' //

@@ -1,5 +1,6 @@
+import type { ReactNode } from 'react'
+
 import { observer } from 'mobx-react-lite'
-import { ReactNode } from 'react'
 
 export const FramePhoneUI = observer(function FramePhoneUI_(p: {
     //

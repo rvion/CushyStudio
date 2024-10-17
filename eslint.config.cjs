@@ -230,6 +230,7 @@ module.exports = [
             '@typescript-eslint/camelcase': 'off', //                      USELESS STYLE / NAMING STUFF
 
             semi: 'off', //                                                USELESS STYLE / NAMING STUFF
+            'no-extra-semi': 'off', //                                     CONFLICT WITH PRETTIER
         },
     },
 ]

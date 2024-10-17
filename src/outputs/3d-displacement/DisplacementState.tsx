@@ -1,7 +1,7 @@
 import type { Panel_DisplacementProps } from './OutputDisplacement'
+import type * as THREE from 'three'
 
 import { createRef } from 'react'
-import * as THREE from 'three'
 
 // State class
 

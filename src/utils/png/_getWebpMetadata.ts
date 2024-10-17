@@ -32,7 +32,7 @@ const getWebpMetadataFromFile = (webp: Uint8Array): Maybe<ExifData> => {
 
     // Start searching for chunks after the WEBP signature
     let offset = 12
-    let txt_chunks: ExifData = {}
+    const txt_chunks: ExifData = {}
     // Loop through the chunks in the WEBP file
     while (offset < webp.length) {
         const chunk_length = dataView.getUint32(offset + 4, true)
@@ -41,10 +41,10 @@ const getWebpMetadataFromFile = (webp: Uint8Array): Maybe<ExifData> => {
             if (String.fromCharCode(...webp.slice(offset + 8, offset + 8 + 6)) == 'Exif\0\0') {
                 offset += 6
             }
-            let data = parseExifData(webp.slice(offset + 8, offset + 8 + chunk_length))
-            for (var key in data) {
-                var value = data[key]
-                let index = value.indexOf(':')
+            const data = parseExifData(webp.slice(offset + 8, offset + 8 + chunk_length))
+            for (const key in data) {
+                const value = data[key]
+                const index = value.indexOf(':')
                 txt_chunks[value.slice(0, index)] = value.slice(index + 1)
             }
         }

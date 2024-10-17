@@ -95,7 +95,7 @@ export class AuthState {
     }
     startLoginFlowWithGithub = async (): Promise<void> => {
         logger.info(`[🔑 AUTH] starting login flow...`)
-        let { data, error } = await this.st.supabase.auth.signInWithOAuth({
+        const { data, error } = await this.st.supabase.auth.signInWithOAuth({
             provider: 'github',
             options: {
                 skipBrowserRedirect: true,

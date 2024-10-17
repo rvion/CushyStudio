@@ -5,7 +5,7 @@ import { CUSHY_PORT } from '../state/PORT'
 export const Panel_TypeDoc = observer(function Panel_TypeDoc_(p: {}) {
     return (
         <iframe //
-            className='w-full h-full'
+            className='h-full w-full'
             src={`http://localhost:${CUSHY_PORT}/library/_doc/index.html`}
             frameBorder='0'
         />

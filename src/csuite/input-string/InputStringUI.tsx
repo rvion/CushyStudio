@@ -196,7 +196,7 @@ export const InputStringUI = observer(
                 )}
                 {p.slotBeforeInput}
                 {autoResize ? (
-                    <div className='relative minh-input'>
+                    <div className='minh-input relative'>
                         {input}
                         <span
                             style={{ maxWidth: p.autoResizeMaxWidth }}

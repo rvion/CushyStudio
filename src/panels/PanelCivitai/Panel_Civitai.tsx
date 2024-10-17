@@ -14,5 +14,5 @@ export const PanelCivitai = new Panel({
 })
 
 const PanelCivitaiUI = observer(function PanelCivitaiUI_(p: NO_PROPS) {
-    return <iframe className='w-full h-full' src={'https://civitai.com'} frameBorder='0' />
+    return <iframe className='h-full w-full' src={'https://civitai.com'} frameBorder='0' />
 })

@@ -134,7 +134,7 @@ export const EnumSelectorUI = observer(function EnumSelectorUI_(p: {
                             </MessageErrorUI>
                         )}
                     >
-                        <div className='text-orange-500 flex items-center'>
+                        <div className='flex items-center text-orange-500'>
                             <Ikon.mdiInformation />
                             <span>{value.finalValue}</span>
                         </div>

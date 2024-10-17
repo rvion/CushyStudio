@@ -1,13 +1,13 @@
 import type { STATE } from '../../state/state'
-import type { Action } from '@codemirror/lint'
+import type { Action, Diagnostic } from '@codemirror/lint'
 import type { EditorView } from '@codemirror/view'
 
-import { Diagnostic, linter } from '@codemirror/lint'
+import { linter } from '@codemirror/lint'
 
 import { PromptAST } from '../grammar/grammar.practical'
 
 export const PromptLinter1 = linter((view: EditorView) => {
-    let diagnostics: Diagnostic[] = []
+    const diagnostics: Diagnostic[] = []
     const st: STATE = cushy
     const removeAction: Action = {
         name: 'Remove',

@@ -1,5 +1,7 @@
+import type { ReactNode } from 'react'
+
 import { observer } from 'mobx-react-lite'
-import { ReactNode, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 import { Frame, type FrameProps } from '../../csuite/frame/Frame'
 import { RevealUI } from '../../csuite/reveal/RevealUI'

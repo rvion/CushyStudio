@@ -1,4 +1,4 @@
-import { PluginInstallStatus } from './PluginInstallStatus'
+import type { PluginInstallStatus } from './PluginInstallStatus'
 
 export const renderStatus = (
     //
@@ -6,7 +6,7 @@ export const renderStatus = (
     optional: boolean,
     tailwind?: string | undefined,
 ): JSX.Element => {
-    let tw = tailwind ?? ''
+    const tw = tailwind ?? ''
     if (status === 'installed') return <span tw={[tw, 'text-green-500']}>Installed</span>
     if (status === 'not-installed') {
         if (optional) return <span tw={[tw, 'text-yellow-500']}>optional</span>

@@ -1,4 +1,5 @@
 import type { NodePort } from '../../core/ComfyNode'
+import type { ComfyWorkflowL } from '../../models/ComfyWorkflow'
 
 import { observer } from 'mobx-react-lite'
 import { Fragment, useEffect, useRef } from 'react'
@@ -7,7 +8,6 @@ import { Frame } from '../../csuite/frame/Frame'
 import { hashStringToNumber } from '../../csuite/hashUtils/hash'
 import { ProgressLine } from '../../csuite/inputs/shims'
 import { bang } from '../../csuite/utils/bang'
-import { ComfyWorkflowL } from '../../models/ComfyWorkflow'
 import { randomColorHSLNice } from '../../panels/PanelCanvas/utils/randomColor'
 import { NodeSlotSize } from './NodeSlotSize'
 

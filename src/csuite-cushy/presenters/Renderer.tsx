@@ -10,8 +10,8 @@ import { mergeDefined } from '../../csuite/utils/mergeDefined'
 import { QuickForm } from '../catalog/group/QuickForm'
 import { renderFCOrNode, renderFCOrNodeWithWrapper } from '../shells/_isFC'
 import { widgetsCatalog } from './RenderCatalog'
-import { PresenterCtx, usePresenterOrNull } from './RenderCtx'
 import { defaultPresenterRule, defaultPresenterSlots } from './RenderDefaults'
+import { RenderUI } from './RenderUI'
 
 // 👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇
 // Those types are made folling a language design principle:
@@ -20,31 +20,10 @@ import { defaultPresenterRule, defaultPresenterSlots } from './RenderDefaults'
 // see src/csuite-cushy/presenters/presenter.readme.md
 // 👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆
 
-// #region <Render />
-// const customRender = (field: Field, p: RENDERER.FieldRenderArgs<any>): ReactNode => {
-//     // const { Widget, Wrapper, readonly, label, renderCtx, ...renderProps } = p
-//     const { ctx, baseRenderer, ...renderProps } = p
-//     // 🔶 shouldn't it be presenter from context instead?
-//     // => yes, for now Field.Render provides it to this function (in a very brittle way) via p.baseRenderer
-//     const renderer = p.baseRenderer ?? getGlobalRenderer()
-//     return renderer.extends(ctx).render(field, renderProps as any)
-// }
-
-const CushyRender = ({ field, p }: { field: Field; p: RENDERER.FieldRenderArgs<any> }): ReactNode => {
-    const presenter = usePresenterOrNull() ?? new Presenter()
-
-    return (
-        <PresenterCtx.Provider value={presenter}>
-            {/*  */}
-            {presenter.render(field, p)}
-        </PresenterCtx.Provider>
-    )
-}
-
 // #region 'window' mixin
 // Renderer is injected, to help with using csuite in other codebases.
 window.RENDERER = {
-    Render: CushyRender,
+    Render: RenderUI,
 }
 
 // #region Presenter
@@ -110,7 +89,7 @@ export class Presenter {
          */
         const addForField = <SUB extends Field>(sub: Maybe<SUB>, ruleOrConf: RuleOrConf<SUB>): any => {
             if (sub == null) return
-            let sub_ = sub as Field
+            const sub_ = sub as Field
             if (sub_ === field) {
                 // ⏸️ console.log(`[💄@${sub.path} ] adding a self rule (why though❓); merging it right now`)
                 evalRuleOrConf(ruleOrConf as RuleOrConf<FIELD>)

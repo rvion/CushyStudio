@@ -1,13 +1,13 @@
 import { observer } from 'mobx-react-lite'
 
+import { useCSuite } from '../../csuite/ctx/useCSuite'
+import { Frame } from '../../csuite/frame/Frame'
 import { MessageInfoUI } from '../../csuite/messages/MessageInfoUI'
 import { SelectUI } from '../../csuite/select/SelectUI'
 import { Panel, type PanelHeader } from '../../router/Panel'
 import { useSt } from '../../state/stateContext'
 import { HostUI } from '../host/HostUI'
 import { AddHostBtnUI } from './AddHostBtnUI'
-import { Frame } from '../../csuite/frame/Frame'
-import { useCSuite } from '../../csuite/ctx/useCSuite'
 
 export type PanelComfyHostProps = {
     hostID?: HostID

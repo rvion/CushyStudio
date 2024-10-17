@@ -1,10 +1,11 @@
+import type { HostL } from '../../models/Host'
+
 import { observer } from 'mobx-react-lite'
 
 import { Button } from '../../csuite/button/Button'
 import { Message } from '../../csuite/inputs/shims'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { QuickHostActionsUI } from '../../manager/REQUIREMENTS/QuickHostActionsUI'
-import { HostL } from '../../models/Host'
 
 export const HostSchemaIndicatorUI = observer(function HostSchemaIndicatorUI_(p: {
     //
@@ -55,7 +56,7 @@ export const HostSchemaIndicatorUI = observer(function HostSchemaIndicatorUI_(p:
                     </Button>
                 ) : (
                     <Button className='btn-ghost cursor-help'>
-                        {p.showIcon && <span className='material-symbols-outlined text-green-400 '>check_circle</span>}
+                        {p.showIcon && <span className='material-symbols-outlined text-green-400'>check_circle</span>}
                         {host.isUpdatingSchema && <div tw='loading loading-spinner loading-xs' />}
                         <span className='text-success'>Schema</span>
                         {sizeTxt}

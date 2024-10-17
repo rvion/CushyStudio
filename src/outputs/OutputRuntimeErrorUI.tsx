@@ -1,9 +1,10 @@
+import type { RuntimeErrorL } from '../models/RuntimeError'
+import type { StepL } from '../models/Step'
+
 import { observer } from 'mobx-react-lite'
 
 import { Surface } from '../csuite/inputs/shims'
 import { JsonViewUI } from '../csuite/json/JsonViewUI'
-import { RuntimeErrorL } from '../models/RuntimeError'
-import { StepL } from '../models/Step'
 
 export const OutputRuntimeErrorPreviewUI = observer(function OutputRuntimeErrorPreviewUI_(p: {
     step?: Maybe<StepL>

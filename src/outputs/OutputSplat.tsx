@@ -1,7 +1,8 @@
+import type { MediaSplatL } from '../models/MediaSplat'
+import type { StepL } from '../models/Step'
+
 import { observer } from 'mobx-react-lite'
 
-import { MediaSplatL } from '../models/MediaSplat'
-import { StepL } from '../models/Step'
 import { useSt } from '../state/stateContext'
 
 export const OutputSplatPreviewUI = observer(function OutputImagePreviewUI_(p: {
@@ -27,7 +28,7 @@ export const OutputSplatUI = observer(function OutputSplatUI_(p: { step?: Maybe<
         <iframe //
             tabIndex={-1}
             autoFocus
-            className='w-full h-full'
+            className='h-full w-full'
             frameBorder='0'
             src='https://antimatter15.com/splat/'
         ></iframe>

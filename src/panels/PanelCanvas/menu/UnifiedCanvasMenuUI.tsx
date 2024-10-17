@@ -185,7 +185,7 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
                     <Frame base={{ contrast: -0.1 }} tw='w-full p-2'>
                         {canvas.selections.map((uniSel) => (
                             <Frame base={{ contrast: canvas.activeSelection === uniSel ? 0.25 : 0.1 }} border tw='p-2'>
-                                <div key={uniSel.id} className='flex whitespace-nowrap gap-1'>
+                                <div key={uniSel.id} className='flex gap-1 whitespace-nowrap'>
                                     <div tw='flex gap-0.5 items-center'>
                                         <input
                                             type='radio'
@@ -260,7 +260,7 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
                                             canvas.activeMask = mask
                                         }}
                                     />
-                                    <div className='flex whitespace-nowrap items-center'>
+                                    <div className='flex items-center whitespace-nowrap'>
                                         <Button onClick={() => void (canvas.activeMask = mask)}>{mask.uid}</Button>
                                         <input
                                             value={mask.name}

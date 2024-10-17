@@ -1,11 +1,13 @@
 import type { ComfyManagerRepository } from '../ComfyManagerRepository'
+import type { KnownModel_Name } from './KnownModel_Name'
+import type { ModelInfo } from './model-list-loader-types'
+import type { ValueError } from '@sinclair/typebox/value'
 
-import { Value, ValueError } from '@sinclair/typebox/value'
+import { Value } from '@sinclair/typebox/value'
 // https://github.com/ltdrdata/ComfyUI-Manager/blob/main/model-list.json
 import { readFileSync, writeFileSync } from 'fs'
 
-import { KnownModel_Name } from './KnownModel_Name'
-import { ModelInfo, ModelInfo_Schema } from './model-list-loader-types'
+import { ModelInfo_Schema } from './model-list-loader-types'
 
 export type ModelFile = {
     models: ModelInfo[]

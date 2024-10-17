@@ -1,4 +1,5 @@
 import type { MediaCustomL } from '../../models/MediaCustom'
+import type { StepL } from '../../models/Step'
 
 // import * as drei from '@react-three/drei'
 // import * as fiber from '@react-three/fiber'
@@ -15,7 +16,6 @@ import { jsx, jsxs } from '../../csuite/custom-jsx/jsx-runtime'
 // import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js'
 import { ErrorBoundaryUI } from '../../csuite/errors/ErrorBoundaryUI'
 import { MessageErrorUI } from '../../csuite/messages/MessageErrorUI'
-import { StepL } from '../../models/Step'
 
 export const Output3dScenePreviewUI = observer(function Output3dScenePreviewUI_(p: {
     step?: Maybe<StepL>

@@ -1,3 +1,5 @@
+import type { HostL } from '../../models/Host'
+
 import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 
@@ -8,7 +10,6 @@ import { Frame } from '../../csuite/frame/Frame'
 import { InputStringUI } from '../../csuite/input-string/InputStringUI'
 import { knownOKLCHHues } from '../../csuite/tinyCSS/knownHues'
 import { SQLITE_false, SQLITE_true } from '../../csuite/types/SQLITE_boolean'
-import { HostL } from '../../models/Host'
 import { useSt } from '../../state/stateContext'
 import { LabelUI } from '../LabelUI'
 import { HostSchemaIndicatorUI } from './HostSchemaIndicatorUI'
@@ -39,7 +40,7 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                 )}
             </div>
 
-            <div className='p-2 flex flex-col gap-1'>
+            <div className='flex flex-col gap-1 p-2'>
                 {/* SELECT BTN */}
                 <FrameWithCSuiteOverride line config={{ inputHeight: 3 }}>
                     <Button look='success' expand active={isMain} onClick={() => host.electAsPrimary()} children='Set Primary' />

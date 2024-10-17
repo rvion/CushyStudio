@@ -1,7 +1,8 @@
+import type { WidgetPromptUISt } from '../WidgetPromptUISt'
+
 import { observer } from 'mobx-react-lite'
 
 import { Frame } from '../../csuite/frame/Frame'
-import { WidgetPromptUISt } from '../WidgetPromptUISt'
 
 export const Plugin_ReorderTopLevelStuffUI = observer(function Plugin_ReorderTopLevelStuffUI_(p: { uist: WidgetPromptUISt }) {
     const uist = p.uist

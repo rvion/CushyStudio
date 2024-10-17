@@ -147,7 +147,7 @@ export const ImageActionMenu = observer(function ImageActionMenu_(p: { img: Medi
                                             draft.openOrFocusTab()
                                         }}
                                     />
-                                    <div className='ml-auto line'>
+                                    <div className='line ml-auto'>
                                         <div tw='opacity-55 italic'>({draft.app.name})</div>
                                     </div>
                                 </div>

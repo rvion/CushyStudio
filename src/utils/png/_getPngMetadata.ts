@@ -1,5 +1,7 @@
 // import * as vscode from 'vscode'
-import { Either, resultFailure, resultSuccess } from '../../types/Either'
+import type { Either } from '../../types/Either'
+
+import { resultFailure, resultSuccess } from '../../types/Either'
 
 // const showErrorMessage = vscode.window.showErrorMessage
 
@@ -50,7 +52,7 @@ export const getPngMetadataFromUint8Array = (pngData: Uint8Array): Either<string
     // Start searching for chunks after the PNG signature
     let offset = 8
 
-    let txt_chunks: TextChunks = {}
+    const txt_chunks: TextChunks = {}
 
     // Loop through the chunks in the PNG file
     while (offset < pngData.length) {

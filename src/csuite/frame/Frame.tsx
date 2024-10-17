@@ -1,6 +1,7 @@
 import type { BoxUIProps } from '../box/BoxUIProps'
 import type { IconName } from '../icons/icons'
 import type { RevealPlacement } from '../reveal/RevealPlacement'
+import type { ComputedColors } from './FrameColors'
 import type { FrameSize } from './FrameSize'
 import type { FrameAppearance } from './FrameTemplates'
 import type { SimpleBoxShadow } from './SimpleBoxShadow'
@@ -19,7 +20,7 @@ import { registerComponentAsClonableWhenInsideReveal } from '../reveal/RevealClo
 import { compileOrRetrieveClassName } from '../tinyCSS/quickClass'
 import { getDOMElementDepth } from '../utils/getDOMElementDepth'
 import { objectAssignTsEfficient_t_t } from '../utils/objectAssignTsEfficient'
-import { computeColors, ComputedColors } from './FrameColors'
+import { computeColors } from './FrameColors'
 import { frameMode } from './frameMode'
 import { tooltipStuff } from './tooltip'
 

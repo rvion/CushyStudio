@@ -1,5 +1,6 @@
+import type { ReactNode } from 'react'
+
 import { observer } from 'mobx-react-lite'
-import { ReactNode } from 'react'
 
 import { BadgeUI } from '../../csuite/badge/BadgeUI'
 import { InputStringUI } from '../../csuite/input-string/InputStringUI'

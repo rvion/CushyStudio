@@ -1,7 +1,7 @@
 import chalk from 'chalk'
 
-let a = ['group', { a: ['string', 's'] }]
-let b = ['group', { a: ['string', 's'], b: ['number', 12] }]
+const a = ['group', { a: ['string', 's'] }]
+const b = ['group', { a: ['string', 's'], b: ['number', 12] }]
 
 const B1 = ['string', '78197289738927438943789']
 const BX = ['bigint', '78197289738927438943789']

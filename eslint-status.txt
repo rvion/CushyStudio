@@ -1,28 +1,11 @@
 
-/Users/loco/dev/CushyStudio/src/app/layout/AppUI.tsx
-  116:32  warning  UnoCSS utilities are not ordered  unocss/order
-  128:20  warning  UnoCSS utilities are not ordered  unocss/order
-
 /Users/loco/dev/CushyStudio/src/app/layout/CreateDeckModalUI.tsx
+  14:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
   15:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  16:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  21:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/app/layout/FavBar.tsx
-  4:1  error  Imports "ReactNode" are only used as type  @typescript-eslint/consistent-type-imports
-
-/Users/loco/dev/CushyStudio/src/app/layout/GithubUsernameInputUI.tsx
-  2:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-
-/Users/loco/dev/CushyStudio/src/app/layout/ProjectUI.tsx
-  10:24  warning  UnoCSS utilities are not ordered  unocss/order
-  14:27  warning  UnoCSS utilities are not ordered  unocss/order
+  20:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/app/layout/openExternal.ts
   8:29  error  `import()` type annotations are forbidden  @typescript-eslint/consistent-type-imports
-
-/Users/loco/dev/CushyStudio/src/app/shortcuts/simpleValidInInput.ts
-  5:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
 
 /Users/loco/dev/CushyStudio/src/appbar/MenuShortcuts.tsx
   8:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
@@ -31,103 +14,42 @@
   20:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
 
 /Users/loco/dev/CushyStudio/src/back/ImageStore.ts
-   3:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-   4:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-   5:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-  42:5  error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-  49:5  error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/back/NodeBuilder.ts
-  6:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-
-/Users/loco/dev/CushyStudio/src/back/statusUI.tsx
-  1:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-
-/Users/loco/dev/CushyStudio/src/cards/AppManifest.ts
-  3:1  error  Imports "Static" are only used as type  @typescript-eslint/consistent-type-imports
+  42:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  49:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/cards/AvatarGenerator.ts
-   62:9  error  'rectangles' is never reassigned. Use 'const' instead  prefer-const
-  140:1  error  Missing return type on function                        @typescript-eslint/explicit-function-return-type
-  162:1  error  Unexpected var, use let or const instead               no-var
-  164:5  error  Unexpected var, use let or const instead               no-var
-  165:5  error  Unexpected var, use let or const instead               no-var
-  166:5  error  Unexpected var, use let or const instead               no-var
-  167:5  error  Unexpected var, use let or const instead               no-var
-  168:5  error  Unexpected var, use let or const instead               no-var
-  170:9  error  Unexpected var, use let or const instead               no-var
+  140:1  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/cards/GithubAvatarUI.tsx
-  3:1  error  Imports "GithubUserName" are only used as type  @typescript-eslint/consistent-type-imports
-  5:8  error  Missing return type on function                 @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/cards/Library.ts
-   7:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-  85:13  error  Unnecessary semicolon                                                     no-extra-semi
+  7:8  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/cards/LibraryFile.ts
-   17:1   error  All imports in the declaration are only used as types. Use `import type`                                    @typescript-eslint/consistent-type-imports
-   21:1   error  All imports in the declaration are only used as types. Use `import type`                                    @typescript-eslint/consistent-type-imports
   246:41  error  Optional chain expressions can return undefined by design - using a non-null assertion is unsafe and wrong  @typescript-eslint/no-non-null-asserted-optional-chain
-
-/Users/loco/dev/CushyStudio/src/cards/fancycard/AppCardUI.tsx
-  5:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-
-/Users/loco/dev/CushyStudio/src/cards/fancycard/AppIllustrationUI.tsx
-  3:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-
-/Users/loco/dev/CushyStudio/src/cards/fancycard/DraftIllustration.tsx
-  51:56  warning  UnoCSS utilities are not ordered  unocss/order
 
 /Users/loco/dev/CushyStudio/src/cards/githubRepo.ts
   17:45  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/cards/walkLib.ts
-   6:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-   7:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-   8:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-  20:5   error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-  30:17  error  Move function declaration to function body root                           no-inner-declarations
-  30:17  error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
+  21:5   error  Missing return type on function                  @typescript-eslint/explicit-function-return-type
+  31:17  error  Move function declaration to function body root  no-inner-declarations
+  31:17  error  Missing return type on function                  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/compiler/transpiler.ts
-   47:57  error  `import()` type annotations are forbidden               @typescript-eslint/consistent-type-imports
-  178:9   error  'importParts' is never reassigned. Use 'const' instead  prefer-const
-
-/Users/loco/dev/CushyStudio/src/controls/AutoBuilder.ts
-  105:37  error  'textarea' is never reassigned. Use 'const' instead  prefer-const
+  47:57  error  `import()` type annotations are forbidden  @typescript-eslint/consistent-type-imports
 
 /Users/loco/dev/CushyStudio/src/controls/Builder.ts
-   28:1   error  Imports "Field_board_config" are only used as type                        @typescript-eslint/consistent-type-imports
-   31:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-   33:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-   36:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-   37:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-   39:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-   41:1   error  Imports "Field_markdown_config" are only used as type                     @typescript-eslint/consistent-type-imports
-   46:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-   47:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-   48:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-   51:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-   52:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-   82:5   error  ES2015 module syntax is preferred over namespaces                         @typescript-eslint/no-namespace
-   84:27  error  `import()` type annotations are forbidden                                 @typescript-eslint/consistent-type-imports
-   85:24  error  `import()` type annotations are forbidden                                 @typescript-eslint/consistent-type-imports
-   86:57  error  `import()` type annotations are forbidden                                 @typescript-eslint/consistent-type-imports
-   87:27  error  `import()` type annotations are forbidden                                 @typescript-eslint/consistent-type-imports
-   88:70  error  `import()` type annotations are forbidden                                 @typescript-eslint/consistent-type-imports
-   89:24  error  `import()` type annotations are forbidden                                 @typescript-eslint/consistent-type-imports
-  469:25  error  'Q1' is never reassigned. Use 'const' instead                             prefer-const
+  83:5   error  ES2015 module syntax is preferred over namespaces  @typescript-eslint/no-namespace
+  85:27  error  `import()` type annotations are forbidden          @typescript-eslint/consistent-type-imports
+  86:24  error  `import()` type annotations are forbidden          @typescript-eslint/consistent-type-imports
+  87:57  error  `import()` type annotations are forbidden          @typescript-eslint/consistent-type-imports
+  88:27  error  `import()` type annotations are forbidden          @typescript-eslint/consistent-type-imports
+  89:70  error  `import()` type annotations are forbidden          @typescript-eslint/consistent-type-imports
+  90:24  error  `import()` type annotations are forbidden          @typescript-eslint/consistent-type-imports
 
 /Users/loco/dev/CushyStudio/src/core/Colors.ts
   24:56  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
   31:66  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
   40:67  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/core/ComfyNode.ts
-   6:1  error  Imports "ReactNode" are only used as type                                 @typescript-eslint/consistent-type-imports
-   9:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-  10:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
 
 /Users/loco/dev/CushyStudio/src/core/JsonFile.ts
   44:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
@@ -136,16 +58,8 @@
   61:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
   64:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
-/Users/loco/dev/CushyStudio/src/core/Printable.ts
-  1:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-
 /Users/loco/dev/CushyStudio/src/csuite-bundler/bundle-csuite.ts
-  125:9   error  'res' is never reassigned. Use 'const' instead                   prefer-const
-  135:5   error  'allFilesWithExt' is never reassigned. Use 'const' instead       prefer-const
-  136:5   error  'allFilesNoExt' is never reassigned. Use 'const' instead         prefer-const
-  285:21  error  Unnecessary escape character: \.                                 no-useless-escape
-  384:9   error  'fileInSrcWithExt_ts' is never reassigned. Use 'const' instead   prefer-const
-  388:9   error  'fileInSrcWithExt_tsx' is never reassigned. Use 'const' instead  prefer-const
+  285:21  error  Unnecessary escape character: \.  no-useless-escape
 
 /Users/loco/dev/CushyStudio/src/csuite-bundler/mkPKGJSON.ts
   1:8  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
@@ -171,8 +85,7 @@
   13:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
 
 /Users/loco/dev/CushyStudio/src/csuite-cushy/presenters/Renderer.tsx
-   33:7   error  Fast refresh only works when a file only exports components. Move your component(s) to a separate file  react-refresh/only-export-components
-  113:17  error  'sub_' is never reassigned. Use 'const' instead                                                         prefer-const
+  33:7  error  Fast refresh only works when a file only exports components. Move your component(s) to a separate file  react-refresh/only-export-components
 
 /Users/loco/dev/CushyStudio/src/csuite/activity/ActivityManager.ts
   23:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
@@ -191,28 +104,22 @@
   21:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
 
 /Users/loco/dev/CushyStudio/src/csuite/button/Button.tsx
-    5:1   error  Imports "FrameProps" are only used as type  @typescript-eslint/consistent-type-imports
-  117:20  error  Empty block statement                       no-empty
+  119:20  error  Empty block statement  no-empty
 
 /Users/loco/dev/CushyStudio/src/csuite/config/configureCsuite.ts
   26:59  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/csuite/dropdown/Dropdown.tsx
-   5:1   error  All imports in the declaration are only used as types. Use `import type`                                                        @typescript-eslint/consistent-type-imports
   27:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
 
 /Users/loco/dev/CushyStudio/src/csuite/dropdown/MenuDividerUI.tsx
   1:8  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/csuite/dropdown/MenuItem.tsx
-   41:14  error    Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
-  112:24  warning  UnoCSS utilities are not ordered                                                                                                unocss/order
+  41:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
 
 /Users/loco/dev/CushyStudio/src/csuite/environment/getOS.ts
   7:8  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/csuite/fields/board/Field_board.ts
-  14:1  error  Imports "SimpleShapeSchema" are only used as type  @typescript-eslint/consistent-type-imports
 
 /Users/loco/dev/CushyStudio/src/csuite/fields/board/WidgetListExtUI.tsx
   14:17  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
@@ -228,19 +135,9 @@
 /Users/loco/dev/CushyStudio/src/csuite/fields/custom/FieldCustom.tsx
   14:69  error  `import()` type annotations are forbidden  @typescript-eslint/consistent-type-imports
 
-/Users/loco/dev/CushyStudio/src/csuite/fields/date/WidgetDateUI.tsx
-  40:21  error  Unnecessary semicolon  no-extra-semi
-
-/Users/loco/dev/CushyStudio/src/csuite/fields/date_plain/WidgetDatePlainUI.tsx
-  30:17  error  Unnecessary semicolon  no-extra-semi
-
-/Users/loco/dev/CushyStudio/src/csuite/fields/datetime_zoned/WidgetDateTimeZonedUI.tsx
-  29:17  error  Unnecessary semicolon  no-extra-semi
-
 /Users/loco/dev/CushyStudio/src/csuite/fields/enum/WidgetEnumUI.tsx
-   27:14  error    Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
-   61:14  error    Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
-  137:40  warning  UnoCSS utilities are not ordered                                                                                                unocss/order
+  27:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+  61:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
 
 /Users/loco/dev/CushyStudio/src/csuite/fields/group/WidgetGroupUI.tsx
   13:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
@@ -250,10 +147,6 @@
   12:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
   26:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
 
-/Users/loco/dev/CushyStudio/src/csuite/fields/matrix/WidgetMatrixUI.tsx
-  43:51  warning  UnoCSS utilities are not ordered  unocss/order
-  59:51  warning  UnoCSS utilities are not ordered  unocss/order
-
 /Users/loco/dev/CushyStudio/src/csuite/fields/orbit/Cube3D.tsx
   14:8  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
@@ -262,10 +155,9 @@
   10:77  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/csuite/fields/size/WidgetSizeUI.tsx
-  14:14  error    Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
-  31:14  error    Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
-  54:14  error    Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
-  67:24  warning  UnoCSS utilities are not ordered                                                                                                unocss/order
+  14:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+  31:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+  54:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
 
 /Users/loco/dev/CushyStudio/src/csuite/fields/string/WidgetStringUI.tsx
   23:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
@@ -289,26 +181,14 @@
 /Users/loco/dev/CushyStudio/src/csuite/formatters/stringifyReadable.ts
   2:8  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
-/Users/loco/dev/CushyStudio/src/csuite/frame/Frame.tsx
-  22:1  error  Imports "ComputedColors" are only used as type  @typescript-eslint/consistent-type-imports
-
 /Users/loco/dev/CushyStudio/src/csuite/frame/frameMode.tsx
   5:35  error  Unexpected constant condition  no-constant-condition
-
-/Users/loco/dev/CushyStudio/src/csuite/icons/getAllIcons.ts
-  3:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
 
 /Users/loco/dev/CushyStudio/src/csuite/icons/iconHelpers.tsx
    9:21  error  `import()` type annotations are forbidden  @typescript-eslint/consistent-type-imports
   21:5   error  Missing return type on function            @typescript-eslint/explicit-function-return-type
   23:40  error  Missing return type on function            @typescript-eslint/explicit-function-return-type
   28:23  error  Missing return type on function            @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/csuite/input-string/InputStringUI.tsx
-  199:36  warning  UnoCSS utilities are not ordered  unocss/order
-
-/Users/loco/dev/CushyStudio/src/csuite/inputs/shims.tsx
-  4:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
 
 /Users/loco/dev/CushyStudio/src/csuite/introspect/_isBoundCommand.tsx
   7:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
@@ -319,9 +199,6 @@
 /Users/loco/dev/CushyStudio/src/csuite/introspect/_isCommand.tsx
   7:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
 
-/Users/loco/dev/CushyStudio/src/csuite/menu/Menu.ts
-  12:1  error  Imports "BoundMenuOpts" are only used as type  @typescript-eslint/consistent-type-imports
-
 /Users/loco/dev/CushyStudio/src/csuite/model/Factory.ts
   167:17  error  Empty block statement  no-empty
 
@@ -331,12 +208,7 @@
   1294:33  error  Unexpected 'debugger' statement   no-debugger
   1689:28  error  Irregular whitespace not allowed  no-irregular-whitespace
 
-/Users/loco/dev/CushyStudio/src/csuite/model/TESTS/fieldRegions.test.ts
-  31:9  error  'currentIndex' is never reassigned. Use 'const' instead  prefer-const
-
 /Users/loco/dev/CushyStudio/src/csuite/model/TESTS/play-with-serial-formats.ts
-    3:5  error  'a' is never reassigned. Use 'const' instead                           prefer-const
-    4:5  error  'b' is never reassigned. Use 'const' instead                           prefer-const
   213:5  error  Expected an assignment or function call and instead saw an expression  @typescript-eslint/no-unused-expressions
   214:5  error  Expected an assignment or function call and instead saw an expression  @typescript-eslint/no-unused-expressions
 
@@ -358,14 +230,8 @@
   26:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
   64:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
-/Users/loco/dev/CushyStudio/src/csuite/model/autofix/autofixSerial_20240711.ts
-  17:13  error  Unnecessary semicolon  no-extra-semi
-
 /Users/loco/dev/CushyStudio/src/csuite/openrouter/OpenRouter_ask.ts
   24:12  error  Redundant use of `await` on a return value  no-return-await
-
-/Users/loco/dev/CushyStudio/src/csuite/resizableFrame/resizableFrameUI.tsx
-  117:27  warning  UnoCSS utilities are not ordered  unocss/order
 
 /Users/loco/dev/CushyStudio/src/csuite/rnd/createRandomGenerator.ts
    1:53  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
@@ -377,9 +243,6 @@
 /Users/loco/dev/CushyStudio/src/csuite/select/SelectOptionUI.tsx
   48:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
 
-/Users/loco/dev/CushyStudio/src/csuite/select/SelectPopupUI.tsx
-  94:35  warning  UnoCSS utilities are not ordered  unocss/order
-
 /Users/loco/dev/CushyStudio/src/csuite/shelf/ShelfUI.tsx
   20:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
 
@@ -388,12 +251,6 @@
 
 /Users/loco/dev/CushyStudio/src/csuite/tinyCSS/compileOrRetrieveClassName.tsx
   49:25  error  '_styleElement' is assigned to itself  no-self-assign
-
-/Users/loco/dev/CushyStudio/src/csuite/tree/TreeUI.tsx
-  29:40  warning  UnoCSS utilities are not ordered  unocss/order
-
-/Users/loco/dev/CushyStudio/src/csuite/tree/TreeView.ts
-  9:1  error  Imports "KeyEv" are only used as type  @typescript-eslint/consistent-type-imports
 
 /Users/loco/dev/CushyStudio/src/csuite/utils/ObservablePromise.ts
   15:52  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
@@ -422,21 +279,8 @@
   10:1  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
   22:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
-/Users/loco/dev/CushyStudio/src/csuite/utils/useObservableRef.tsx
-  2:1  error  Imports "DependencyList" are only used as type  @typescript-eslint/consistent-type-imports
-
-/Users/loco/dev/CushyStudio/src/csuite/utils/usePromise.ts
-  1:1  error  Imports "DependencyList" are only used as type  @typescript-eslint/consistent-type-imports
-
-/Users/loco/dev/CushyStudio/src/csuite/wrappers/FramePhoneUI.tsx
-  2:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-
 /Users/loco/dev/CushyStudio/src/db/LazyValue.ts
   31:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/db/LiveDB.ts
-   5:1  error  Imports "BetterSqlite3" are only used as type                             @typescript-eslint/consistent-type-imports
-  34:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
 
 /Users/loco/dev/CushyStudio/src/db/LiveHelpers.ts
    9:64  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
@@ -444,75 +288,34 @@
   27:36  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/db/LiveTable.ts
-   17:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-  100:73  error  Irregular whitespace not allowed                                          no-irregular-whitespace
-  117:73  error  Irregular whitespace not allowed                                          no-irregular-whitespace
-
-/Users/loco/dev/CushyStudio/src/db/TYPES.gen.ts
-  23:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
+  100:73  error  Irregular whitespace not allowed  no-irregular-whitespace
+  117:73  error  Irregular whitespace not allowed  no-irregular-whitespace
 
 /Users/loco/dev/CushyStudio/src/db/TYPES_json.ts
-   17:1   error  Imports "TObject" and "TSchema" are only used as type  @typescript-eslint/consistent-type-imports
-  151:27  error  Unexpected 'debugger' statement                        no-debugger
-  163:27  error  Unexpected 'debugger' statement                        no-debugger
-
-/Users/loco/dev/CushyStudio/src/db/_applyAllMigrations.ts
-  1:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-  3:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-
-/Users/loco/dev/CushyStudio/src/db/_codegenORM.ts
-  1:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
+  151:27  error  Unexpected 'debugger' statement  no-debugger
+  163:27  error  Unexpected 'debugger' statement  no-debugger
 
 /Users/loco/dev/CushyStudio/src/db/_createTable.ts
   1:67  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
-/Users/loco/dev/CushyStudio/src/db/_getAllColumnsForTable.ts
-  1:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-
-/Users/loco/dev/CushyStudio/src/db/_getAllForeignKeysForTable.ts
-  1:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-
 /Users/loco/dev/CushyStudio/src/db/_listAllTables.ts
-  1:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-  7:4  error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
+  7:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/db/_makeNotNullable.ts
-   1:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-  12:3  error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
+  12:3  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/db/_setupMigrationEngine.ts
-   1:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-  14:4  error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/db/getDBStats.ts
-  5:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
+  14:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/db/storage.ts
-   1:1  error  Imports "BetterSqlite3" are only used as type  @typescript-eslint/consistent-type-imports
-  12:5  error  Missing return type on function                @typescript-eslint/explicit-function-return-type
-  27:5  error  Missing return type on function                @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/importers/ComfyImporter.ts
-    6:1   error  Imports "TEdge" are only used as type                                     @typescript-eslint/consistent-type-imports
-    7:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-    8:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-  213:21  error  'draft' is never reassigned. Use 'const' instead                          prefer-const
-
-/Users/loco/dev/CushyStudio/src/importers/FilesBeeingImported.tsx
-  26:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
+  14:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  29:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/importers/TargetBox.tsx
-   4:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-  20:13  error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-  27:13  error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-  31:13  error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-  34:13  error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/importers/usePromise.ts
-  2:1  error  Imports "DependencyList" are only used as type  @typescript-eslint/consistent-type-imports
-
-/Users/loco/dev/CushyStudio/src/manager/REQUIREMENTS/Button_InstallCustomNodeUI.tsx
-  34:49  warning  UnoCSS utilities are not ordered  unocss/order
+  20:13  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  27:13  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  31:13  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  34:13  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/manager/REQUIREMENTS/FOOBAR.tsx
   40:30  error  Optional chain expressions can return undefined by design - using a non-null assertion is unsafe and wrong  @typescript-eslint/no-non-null-asserted-optional-chain
@@ -521,60 +324,13 @@
 /Users/loco/dev/CushyStudio/src/manager/REQUIREMENTS/Panel_InstallRequirementsUI.tsx
   47:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
 
-/Users/loco/dev/CushyStudio/src/manager/REQUIREMENTS/QuickHostActionsUI.tsx
-  5:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-
-/Users/loco/dev/CushyStudio/src/manager/REQUIREMENTS/convertToPluginInfoList.tsx
-  1:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-
-/Users/loco/dev/CushyStudio/src/manager/REQUIREMENTS/renderStatus.tsx
-  1:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-  9:9  error  'tw' is never reassigned. Use 'const' instead                             prefer-const
-
 /Users/loco/dev/CushyStudio/src/manager/_utils/_wrapBox.ts
    6:3   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
   20:42  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
-/Users/loco/dev/CushyStudio/src/manager/custom-node-list/custom-node-list-loader.ts
-  3:1  error  Imports "ValueError" are only used as type                       @typescript-eslint/consistent-type-imports
-  6:1  error  Imports "CustomNodeFile" and "PluginInfo" are only used as type  @typescript-eslint/consistent-type-imports
-
-/Users/loco/dev/CushyStudio/src/manager/extension-node-map/extension-node-map-loader.ts
-   5:1   error  Imports "ValueError" are only used as type                                @typescript-eslint/consistent-type-imports
-   9:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-  10:1   error  Imports "ENMInfos" and "ExtensionNodeMapFile" are only used as type       @typescript-eslint/consistent-type-imports
-  13:9   error  'totalCustomNodeSeen' is never reassigned. Use 'const' instead            prefer-const
-  59:13  error  'nodesInPlugin' is never reassigned. Use 'const' instead                  prefer-const
-
-/Users/loco/dev/CushyStudio/src/manager/extension-node-map/extension-node-map-types.ts
-  1:1  error  Imports "Static" are only used as type                                    @typescript-eslint/consistent-type-imports
-  3:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-
-/Users/loco/dev/CushyStudio/src/manager/model-list/model-list-loader-types.ts
-  6:1  error  Imports "Static" are only used as type  @typescript-eslint/consistent-type-imports
-
-/Users/loco/dev/CushyStudio/src/manager/model-list/model-list-loader.ts
-  3:1  error  Imports "ValueError" are only used as type                                @typescript-eslint/consistent-type-imports
-  7:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-  8:1  error  Imports "ModelInfo" are only used as type                                 @typescript-eslint/consistent-type-imports
-
 /Users/loco/dev/CushyStudio/src/models/ComfyPrompt.ts
-   24:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-   25:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-   28:1   error  Imports "ImageCreationOpts" are only used as type                         @typescript-eslint/consistent-type-imports
-  135:16  error  Redundant use of `await` on a return value                                no-return-await
-  148:16  error  Redundant use of `await` on a return value                                no-return-await
-
-/Users/loco/dev/CushyStudio/src/models/ComfySchema.ts
-  228:21  error  'arr' is never reassigned. Use 'const' instead  prefer-const
-  614:13  error  'x' is never reassigned. Use 'const' instead    prefer-const
-
-/Users/loco/dev/CushyStudio/src/models/ComfyWorkflow.ts
-  21:1  error  Imports "LiteGraphJSON" are only used as type  @typescript-eslint/consistent-type-imports
-
-/Users/loco/dev/CushyStudio/src/models/CushyScript.ts
-   8:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-  16:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
+  133:16  error  Redundant use of `await` on a return value  no-return-await
+  146:16  error  Redundant use of `await` on a return value  no-return-await
 
 /Users/loco/dev/CushyStudio/src/models/Executable.ts
   38:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
@@ -584,21 +340,11 @@
   8:77  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/models/MediaImage.ts
-   24:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-   30:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-  573:16  error  Redundant use of `await` on a return value                                no-return-await
-  701:17  error  Empty block statement                                                     no-empty
-
-/Users/loco/dev/CushyStudio/src/models/Project.ts
-  11:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
+  573:16  error  Redundant use of `await` on a return value  no-return-await
+  701:17  error  Empty block statement                       no-empty
 
 /Users/loco/dev/CushyStudio/src/models/Step.ts
-  10:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-  17:1   error  Imports "RuntimeExecutionResult" are only used as type                    @typescript-eslint/consistent-type-imports
-  18:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-  19:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-  20:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-  76:25  error  Redundant use of `await` on a return value                                no-return-await
+  77:25  error  Redundant use of `await` on a return value  no-return-await
 
 /Users/loco/dev/CushyStudio/src/models/getGlobalRuntimeCtx.ts
    7:39  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
@@ -611,29 +357,12 @@
   87:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/openpose/drawPoseOld.ts
-   76:5   error  Missing return type on function                        @typescript-eslint/explicit-function-return-type
-   85:13  error  'totalPoses' is never reassigned. Use 'const' instead  prefer-const
-   87:17  error  'pose' is never reassigned. Use 'const' instead        prefer-const
-   89:21  error  'pair' is never reassigned. Use 'const' instead        prefer-const
-   90:21  error  'indexStart' is never reassigned. Use 'const' instead  prefer-const
-   91:21  error  'indexEnd' is never reassigned. Use 'const' instead    prefer-const
-   93:21  error  'keypoint1' is never reassigned. Use 'const' instead   prefer-const
-   94:21  error  'x1' is never reassigned. Use 'const' instead          prefer-const
-   95:21  error  'y1' is never reassigned. Use 'const' instead          prefer-const
-   96:21  error  'score1' is never reassigned. Use 'const' instead      prefer-const
-   98:21  error  'keypoint2' is never reassigned. Use 'const' instead   prefer-const
-   99:21  error  'x2' is never reassigned. Use 'const' instead          prefer-const
-  100:21  error  'y2' is never reassigned. Use 'const' instead          prefer-const
-  101:21  error  'score2' is never reassigned. Use 'const' instead      prefer-const
-  128:5   error  Missing return type on function                        @typescript-eslint/explicit-function-return-type
+   76:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  128:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/openpose/drawPoseV2.ts
-    1:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-   31:8   error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-  119:55  error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/operators/commands/cmd_copyImage.ts
-  5:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
+   31:8   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  119:55  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/operators/commands/cmd_goTo.ts
   20:43  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
@@ -642,19 +371,15 @@
   8:35  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/outputs/3d-displacement/DisplacementState.tsx
-   4:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-  12:5  error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
+  12:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/outputs/3d-displacement/OutputDisplacement.tsx
-   18:1   error  All imports in the declaration are only used as types. Use `import type`                                                        @typescript-eslint/consistent-type-imports
-   19:1   error  All imports in the declaration are only used as types. Use `import type`                                                        @typescript-eslint/consistent-type-imports
    91:30  error  `import()` type annotations are forbidden                                                                                       @typescript-eslint/consistent-type-imports
    93:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
   111:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
 
 /Users/loco/dev/CushyStudio/src/outputs/3d-scene/Output3dScene.tsx
-   8:1  error  Definition for rule 'unused-imports/no-unused-imports' was not found      unused-imports/no-unused-imports
-  18:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
+  9:1  error  Definition for rule 'unused-imports/no-unused-imports' was not found  unused-imports/no-unused-imports
 
 /Users/loco/dev/CushyStudio/src/outputs/3d-utils/Ground3d.tsx
   15:8  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
@@ -662,41 +387,8 @@
 /Users/loco/dev/CushyStudio/src/outputs/3d-utils/SkyBox3D.tsx
   6:8  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
-/Users/loco/dev/CushyStudio/src/outputs/OutputPromptUI.tsx
-  5:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-  6:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-  7:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-
-/Users/loco/dev/CushyStudio/src/outputs/OutputRuntimeErrorUI.tsx
-  5:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-  6:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-
-/Users/loco/dev/CushyStudio/src/outputs/OutputSplat.tsx
-   3:1   error    All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-   4:1   error    All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-  30:23  warning  UnoCSS utilities are not ordered                                          unocss/order
-
-/Users/loco/dev/CushyStudio/src/outputs/OutputTextUI.tsx
-   8:1   error    All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-  54:32  warning  UnoCSS utilities are not ordered                                          unocss/order
-  66:32  warning  UnoCSS utilities are not ordered                                          unocss/order
-  76:32  warning  UnoCSS utilities are not ordered                                          unocss/order
-
 /Users/loco/dev/CushyStudio/src/outputs/OutputUI.tsx
-  14:1   error  All imports in the declaration are only used as types. Use `import type`                                                        @typescript-eslint/consistent-type-imports
-  41:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
-
-/Users/loco/dev/CushyStudio/src/outputs/OutputVideo.tsx
-   5:1   error    All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-  26:61  warning  UnoCSS utilities are not ordered                                          unocss/order
-
-/Users/loco/dev/CushyStudio/src/outputs/OutputWorkflowUI.tsx
-   8:1   error    All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-  22:23  warning  UnoCSS utilities are not ordered                                          unocss/order
-
-/Users/loco/dev/CushyStudio/src/outputs/_OutputPreviewWrapperUI.tsx
-  3:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-  8:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
+  42:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
 
 /Users/loco/dev/CushyStudio/src/panels/3d/controls/OrbitControls.ts
    104:30  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
@@ -752,103 +444,57 @@
   1067:9   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
   1078:9   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
-/Users/loco/dev/CushyStudio/src/panels/ImageDropdownUI.tsx
-  150:52  warning  UnoCSS utilities are not ordered  unocss/order
-
-/Users/loco/dev/CushyStudio/src/panels/PanelAssets/PanelAssets.tsx
-  156:42  error  'i' is never reassigned. Use 'const' instead  prefer-const
-
-/Users/loco/dev/CushyStudio/src/panels/PanelCanvas/PanelCanvas.tsx
-  79:23  warning  UnoCSS utilities are not ordered  unocss/order
-
 /Users/loco/dev/CushyStudio/src/panels/PanelCanvas/commands/_cmd_canvas_changeBrushSize.tsx
   20:17  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
   23:17  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/panels/PanelCanvas/commands/_cmd_canvas_toggleToolshelf.tsx
-  4:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-
-/Users/loco/dev/CushyStudio/src/panels/PanelCanvas/events/moveBehaviour_updatePointerInfos.tsx
-  15:9  error  Unexpected var, use let or const instead  no-var
-  16:9  error  Unexpected var, use let or const instead  no-var
 
 /Users/loco/dev/CushyStudio/src/panels/PanelCanvas/events/scrollBehavior_resizeBrush.tsx
   8:3  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/panels/PanelCanvas/events/scrollBehavior_resizeGenerationTarget.tsx
-  10:3   error  Missing return type on function                       @typescript-eslint/explicit-function-return-type
-  12:13  error  'direction' is never reassigned. Use 'const' instead  prefer-const
+  10:3  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/panels/PanelCanvas/events/scrollBehavior_zoomCanvas.tsx
-   8:3  error  Missing return type on function           @typescript-eslint/explicit-function-return-type
-  17:5  error  Unexpected var, use let or const instead  no-var
-  18:5  error  Unexpected var, use let or const instead  no-var
-  21:5  error  Unexpected var, use let or const instead  no-var
-  35:5  error  Unexpected var, use let or const instead  no-var
-  42:5  error  Unexpected var, use let or const instead  no-var
+  8:3  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/panels/PanelCanvas/events/setupStage.ts
-   5:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-  14:51  error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/panels/PanelCanvas/menu/UnifiedCanvasMenuUI.tsx
-  188:64  warning  UnoCSS utilities are not ordered  unocss/order
-  263:52  warning  UnoCSS utilities are not ordered  unocss/order
+  14:51  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/panels/PanelCanvas/states/KonvaGrid1.tsx
-   6:5   error  Missing return type on function           @typescript-eslint/explicit-function-return-type
-   7:5   error  Missing return type on function           @typescript-eslint/explicit-function-return-type
-  15:14  error  Unexpected var, use let or const instead  no-var
-  16:18  error  Unexpected var, use let or const instead  no-var
+  6:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  7:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/panels/PanelCanvas/states/UnifiedCanvas.tsx
-   20:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-   24:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-   63:5  error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-   70:5  error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-   80:5  error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-   81:5  error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-   83:5  error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-   92:5  error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-  109:5  error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-  136:5  error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
+   63:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   70:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   80:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   81:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   83:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   92:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  109:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  136:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/panels/PanelCanvas/states/UnifiedImage.ts
-   7:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-  11:5  error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-  12:5  error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-  19:5  error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/panels/PanelCanvas/states/UnifiedMask.ts
-  6:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-  7:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-  8:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
+  11:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  12:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  19:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/panels/PanelCanvas/states/UnifiedSelection.ts
-    7:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-    8:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-   11:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-   18:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-   28:5   error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-   35:5   error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-   36:5   error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-   37:5   error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-   38:5   error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-   88:13  error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-  148:13  error  Unnecessary semicolon                                                     no-extra-semi
-  168:13  error  Unnecessary semicolon                                                     no-extra-semi
-  220:5   error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-  227:5   error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-  240:5   error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
+   28:5   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   35:5   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   36:5   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   37:5   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   38:5   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   88:13  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  220:5   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  227:5   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  240:5   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/panels/PanelCanvas/states/UnifiedStep.ts
-   7:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-   8:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-   9:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-  15:5  error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-  16:5  error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-  23:5  error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-  28:5  error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
+  15:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  16:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  23:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  28:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/panels/PanelCanvas/tools/ToolGenerate.ts
   25:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
@@ -862,87 +508,29 @@
 /Users/loco/dev/CushyStudio/src/panels/PanelCanvas/tools/ToolPaint.ts
   13:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
-/Users/loco/dev/CushyStudio/src/panels/PanelCanvas/utils/_ICanvasTool.ts
-  6:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-
 /Users/loco/dev/CushyStudio/src/panels/PanelCanvas/utils/_StrokeInfo.ts
   15:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/panels/PanelCanvas/utils/snap.tsx
   1:53  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
-/Users/loco/dev/CushyStudio/src/panels/PanelCivitai/Panel_Civitai.tsx
-  17:30  warning  UnoCSS utilities are not ordered  unocss/order
-
-/Users/loco/dev/CushyStudio/src/panels/PanelComfyNodeExplorer/Panel_ComfyNodeExplorer.tsx
-  27:24  warning  UnoCSS utilities are not ordered  unocss/order
-  32:27  warning  UnoCSS utilities are not ordered  unocss/order
-
 /Users/loco/dev/CushyStudio/src/panels/PanelCustom/CustomPanels.tsx
   8:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
-
-/Users/loco/dev/CushyStudio/src/panels/PanelDraft/OverflowingRowUI.tsx
-  2:1  error  Imports "ReactNode" are only used as type  @typescript-eslint/consistent-type-imports
 
 /Users/loco/dev/CushyStudio/src/panels/PanelDraftSerial/PanelDraftSerial.tsx
   20:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
 
-/Users/loco/dev/CushyStudio/src/panels/PanelGallery/PanelGallery.tsx
-  12:1  error  Imports "GalleryConf" are only used as type  @typescript-eslint/consistent-type-imports
-
 /Users/loco/dev/CushyStudio/src/panels/PanelGallery/galleryConf.tsx
   23:7  error  Fast refresh only works when a file only exports components. Move your component(s) to a separate file  react-refresh/only-export-components
 
-/Users/loco/dev/CushyStudio/src/panels/PanelIFrame/PanelIFrame.tsx
-  51:23  warning  UnoCSS utilities are not ordered  unocss/order
-
-/Users/loco/dev/CushyStudio/src/panels/PanelMinipaint/MinipaintState.tsx
-  46:13  error  Unexpected var, use let or const instead  no-var
-  47:13  error  Unexpected var, use let or const instead  no-var
-  80:9   error  Unexpected var, use let or const instead  no-var
-  81:9   error  Unexpected var, use let or const instead  no-var
-  82:9   error  Unexpected var, use let or const instead  no-var
-  83:9   error  Unexpected var, use let or const instead  no-var
-  88:9   error  Unexpected var, use let or const instead  no-var
-
 /Users/loco/dev/CushyStudio/src/panels/PanelMinipaint/Panel_Minipaint.tsx
-  29:14  error    Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
-  41:24  warning  UnoCSS utilities are not ordered                                                                                                unocss/order
-
-/Users/loco/dev/CushyStudio/src/panels/PanelModels/CivitaiBrowserUI.tsx
-  6:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
+  29:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
 
 /Users/loco/dev/CushyStudio/src/panels/PanelModels/CivitaiResultVersionUI.tsx
   19:9  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
-/Users/loco/dev/CushyStudio/src/panels/PanelModels/Panel_Models.tsx
-  28:24  warning  UnoCSS utilities are not ordered  unocss/order
-
-/Users/loco/dev/CushyStudio/src/panels/PanelPlayground/PlaygroundPanelStoreUI.tsx
-  46:9  error  'OUT' is never reassigned. Use 'const' instead  prefer-const
-
-/Users/loco/dev/CushyStudio/src/panels/PanelSteps/Panel_Steps.tsx
-  25:24  warning  UnoCSS utilities are not ordered  unocss/order
-  38:24  warning  UnoCSS utilities are not ordered  unocss/order
-
-/Users/loco/dev/CushyStudio/src/panels/Panel_Squoosh.tsx
-  28:23  warning  UnoCSS utilities are not ordered  unocss/order
-
-/Users/loco/dev/CushyStudio/src/panels/Panel_TypeDoc.tsx
-  8:23  warning  UnoCSS utilities are not ordered  unocss/order
-
-/Users/loco/dev/CushyStudio/src/panels/host/HostSchemaIndicatorUI.tsx
-   7:1   error    All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-  58:56  warning  UnoCSS utilities are not ordered                                          unocss/order
-
 /Users/loco/dev/CushyStudio/src/panels/host/HostUI.tsx
-   11:1   error    All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-   42:28  warning  UnoCSS utilities are not ordered                                          unocss/order
-  109:32  error    Irregular whitespace not allowed                                          no-irregular-whitespace
-
-/Users/loco/dev/CushyStudio/src/panels/host/HostWebsocketIndicatorUI.tsx
-   9:1   error    All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-  75:52  warning  UnoCSS utilities are not ordered                                          unocss/order
+  110:32  error  Irregular whitespace not allowed  no-irregular-whitespace
 
 /Users/loco/dev/CushyStudio/src/panels/libraryUI/tree/nodes/TreeApp.tsx
   16:5   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
@@ -971,27 +559,19 @@
   7:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/panels/libraryUI/tree/nodes/TreeFavorites.tsx
-   4:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-   5:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-   6:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-  17:5  error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-  28:5  error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-  39:5  error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-  70:5  error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/panels/libraryUI/tree/nodes/TreeFile.tsx
-  8:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-  9:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
+  17:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  28:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  39:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  70:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/panels/libraryUI/tree/nodes/TreeFolder.tsx
-   8:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-  16:5   error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-  17:5   error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-  40:5   error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-  46:69  error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-  47:86  error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-  50:5   error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-  51:5   error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
+  16:5   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  17:5   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  40:5   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  46:69  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  47:86  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  50:5   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  51:5   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/perfs/monitorVSCodePerfs.ts
    57:40  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
@@ -1007,42 +587,14 @@
   6:69  error  `import()` type annotations are forbidden  @typescript-eslint/consistent-type-imports
 
 /Users/loco/dev/CushyStudio/src/prompt/WidgetPromptUI.tsx
-  18:1   error    All imports in the declaration are only used as types. Use `import type`                                                        @typescript-eslint/consistent-type-imports
-  21:14  error    Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
-  85:34  warning  UnoCSS utilities are not ordered                                                                                                unocss/order
-
-/Users/loco/dev/CushyStudio/src/prompt/WidgetPromptUISt.tsx
-  11:1   error  Imports "Prompt_Lora" are only used as type      @typescript-eslint/consistent-type-imports
-  83:13  error  'view' is never reassigned. Use 'const' instead  prefer-const
-
-/Users/loco/dev/CushyStudio/src/prompt/__TEMP__.tsx
-  88:25  error  'view' is never reassigned. Use 'const' instead  prefer-const
+  21:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
 
 /Users/loco/dev/CushyStudio/src/prompt/_compile.ts
-   4:1   error  Imports "Prompt_Node" are only used as type             @typescript-eslint/consistent-type-imports
-  28:22  error  Missing return type on function                         @typescript-eslint/explicit-function-return-type
-  51:39  error  Missing return type on function                         @typescript-eslint/explicit-function-return-type
-  59:21  error  'finalWeight' is never reassigned. Use 'const' instead  prefer-const
-
-/Users/loco/dev/CushyStudio/src/prompt/cm-lang/COMMANDS.ts
-  8:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-
-/Users/loco/dev/CushyStudio/src/prompt/cm-lang/COMPLETION.ts
-   4:1  error  Imports "Completion", "CompletionContext", "CompletionResult" and "CompletionSource" are only used as type  @typescript-eslint/consistent-type-imports
-   7:1  error  All imports in the declaration are only used as types. Use `import type`                                    @typescript-eslint/consistent-type-imports
-  41:9  error  'completionsOptions' is never reassigned. Use 'const' instead                                               prefer-const
-
-/Users/loco/dev/CushyStudio/src/prompt/cm-lang/DECORATION.ts
-  2:1  error  Imports "Range" are only used as type                                         @typescript-eslint/consistent-type-imports
-  3:1  error  Imports "DecorationSet", "EditorView" and "ViewUpdate" are only used as type  @typescript-eslint/consistent-type-imports
-  5:1  error  All imports in the declaration are only used as types. Use `import type`      @typescript-eslint/consistent-type-imports
+  29:22  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  52:39  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/prompt/cm-lang/LANG.ts
   15:8  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/prompt/cm-lang/LINT.ts
-   5:1  error  Imports "Diagnostic" are only used as type              @typescript-eslint/consistent-type-imports
-  10:9  error  'diagnostics' is never reassigned. Use 'const' instead  prefer-const
 
 /Users/loco/dev/CushyStudio/src/prompt/cm-lang/LINT2.ts
   7:8  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
@@ -1051,22 +603,8 @@
   2:28  error  Unnecessary escape character: \/  no-useless-escape
   2:30  error  Unnecessary escape character: \-  no-useless-escape
 
-/Users/loco/dev/CushyStudio/src/prompt/cm-lang/utils.ts
-  45:9  error  'ancestorsA' is never reassigned. Use 'const' instead  prefer-const
-  46:9  error  'ancestorsB' is never reassigned. Use 'const' instead  prefer-const
-
 /Users/loco/dev/CushyStudio/src/prompt/compiler/promptsplit.ts
   39:22  error  Unnecessary escape character: \[  no-useless-escape
-
-/Users/loco/dev/CushyStudio/src/prompt/grammar/grammar.parser.ts
-  20:27  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/prompt/grammar/grammar.practical.ts
-    3:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-    4:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-    9:36  error  `import()` type annotations are forbidden                                 @typescript-eslint/consistent-type-imports
-   98:13  error  'stack' is never reassigned. Use 'const' instead                          prefer-const
-  167:13  error  'result' is never reassigned. Use 'const' instead                         prefer-const
 
 /Users/loco/dev/CushyStudio/src/prompt/grammar/grammar.test.ts
   29:40  error  Unnecessary escape character: \"  no-useless-escape
@@ -1077,57 +615,16 @@
   33:43  error  Unnecessary escape character: \"  no-useless-escape
 
 /Users/loco/dev/CushyStudio/src/prompt/plugins/Plugin_LoraBoxUI.tsx
-  11:1  error  All imports in the declaration are only used as types. Use `import type`                                @typescript-eslint/consistent-type-imports
-  12:1  error  All imports in the declaration are only used as types. Use `import type`                                @typescript-eslint/consistent-type-imports
-  65:7  error  Fast refresh only works when a file only exports components. Move your component(s) to a separate file  react-refresh/only-export-components
-
-/Users/loco/dev/CushyStudio/src/prompt/plugins/Plugin_ReorderTopLevelStuffUI.tsx
-  4:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-
-/Users/loco/dev/CushyStudio/src/prompt/plugins/Plugin_ShortcutsUI.tsx
-  5:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-
-/Users/loco/dev/CushyStudio/src/router/Layout.tsx
-   11:1   error  Imports "FC" are only used as type                      @typescript-eslint/consistent-type-imports
-   25:1   error  Imports "PanelName" and "Panels" are only used as type  @typescript-eslint/consistent-type-imports
-  225:13  error  'tabset' is never reassigned. Use 'const' instead       prefer-const
-
-/Users/loco/dev/CushyStudio/src/router/PANELS.tsx
-  32:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-
-/Users/loco/dev/CushyStudio/src/router/PanelContainerUI.tsx
-  10:1   error    Imports "PanelName" are only used as type  @typescript-eslint/consistent-type-imports
-  82:58  warning  UnoCSS utilities are not ordered           unocss/order
-
-/Users/loco/dev/CushyStudio/src/router/PanelStateByNode.tsx
-  3:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-
-/Users/loco/dev/CushyStudio/src/router/traverseLayoutNode.ts
-  1:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-
-/Users/loco/dev/CushyStudio/src/router/usePanel.tsx
-  3:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-
-/Users/loco/dev/CushyStudio/src/router/usePanelTemporaryData.tsx
-  3:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
+  66:7  error  Fast refresh only works when a file only exports components. Move your component(s) to a separate file  react-refresh/only-export-components
 
 /Users/loco/dev/CushyStudio/src/runtime/Runtime.ts
-   17:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-   27:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-  151:24  error  `import()` type annotations are forbidden                                 @typescript-eslint/consistent-type-imports
-  157:18  error  `import()` type annotations are forbidden                                 @typescript-eslint/consistent-type-imports
-  430:16  error  Redundant use of `await` on a return value                                no-return-await
-  537:13  error  'msg' is never reassigned. Use 'const' instead                            prefer-const
-  575:9   error  Unexpected var, use let or const instead                                  no-var
-  648:16  error  Redundant use of `await` on a return value                                no-return-await
-
-/Users/loco/dev/CushyStudio/src/runtime/RuntimeApps.ts
-  7:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
+  151:24  error  `import()` type annotations are forbidden   @typescript-eslint/consistent-type-imports
+  157:18  error  `import()` type annotations are forbidden   @typescript-eslint/consistent-type-imports
+  430:16  error  Redundant use of `await` on a return value  no-return-await
+  648:16  error  Redundant use of `await` on a return value  no-return-await
 
 /Users/loco/dev/CushyStudio/src/runtime/RuntimeComfyUI.ts
-   5:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-   6:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-  74:5  error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
+  73:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/runtime/RuntimeHosts.ts
   16:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
@@ -1136,9 +633,6 @@
   25:16  error  Redundant use of `await` on a return value  no-return-await
   34:16  error  Redundant use of `await` on a return value  no-return-await
   39:16  error  Redundant use of `await` on a return value  no-return-await
-
-/Users/loco/dev/CushyStudio/src/runtime/RuntimeKonva.ts
-  8:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
 
 /Users/loco/dev/CushyStudio/src/runtime/RuntimeLLM.ts
   23:5   error  Missing return type on function             @typescript-eslint/explicit-function-return-type
@@ -1155,92 +649,33 @@
    6:1  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
   27:1  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
-/Users/loco/dev/CushyStudio/src/state/AuthState.ts
-  98:15  error  'data' is never reassigned. Use 'const' instead   prefer-const
-  98:21  error  'error' is never reassigned. Use 'const' instead  prefer-const
-
 /Users/loco/dev/CushyStudio/src/state/Marketplace.ts
   21:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
   23:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
   33:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
-/Users/loco/dev/CushyStudio/src/state/Uploader.ts
-  8:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-
-/Users/loco/dev/CushyStudio/src/state/conf/themeConf.tsx
-  2:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-  7:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-
 /Users/loco/dev/CushyStudio/src/state/state.ts
-   18:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-   28:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-   29:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-   33:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-   36:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-   43:1   error  Imports "RegionMonitor" are only used as type                             @typescript-eslint/consistent-type-imports
-   52:1   error  Imports "LiveDB" are only used as type                                    @typescript-eslint/consistent-type-imports
-   57:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-   58:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-   60:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-   61:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-   63:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-   64:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-   65:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-   72:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-   74:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-   75:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-  575:9   error  Expected an assignment or function call and instead saw an expression     @typescript-eslint/no-unused-expressions
-  576:9   error  Expected an assignment or function call and instead saw an expression     @typescript-eslint/no-unused-expressions
-  577:9   error  Expected an assignment or function call and instead saw an expression     @typescript-eslint/no-unused-expressions
-  758:21  error  Unexpected lexical declaration in case block                              no-case-declarations
-  759:21  error  Unexpected lexical declaration in case block                              no-case-declarations
-  760:21  error  Unexpected lexical declaration in case block                              no-case-declarations
-  769:21  error  Unexpected lexical declaration in case block                              no-case-declarations
-  770:21  error  Unexpected lexical declaration in case block                              no-case-declarations
-  951:9   error  Unnecessary semicolon                                                     no-extra-semi
-  954:9   error  Unnecessary semicolon                                                     no-extra-semi
-  966:9   error  Unnecessary semicolon                                                     no-extra-semi
-
-/Users/loco/dev/CushyStudio/src/state/supa.ts
-  4:1  error  Imports "SupabaseClient" are only used as type  @typescript-eslint/consistent-type-imports
-
-/Users/loco/dev/CushyStudio/src/tools/autoupload-screenshots.ts
-  31:13  error  'filename' is never reassigned. Use 'const' instead  prefer-const
-  32:13  error  'path' is never reassigned. Use 'const' instead      prefer-const
-
-/Users/loco/dev/CushyStudio/src/types/ComfySchemaJSON.ts
-  9:1  error  Imports "ZodType" are only used as type  @typescript-eslint/consistent-type-imports
-
-/Users/loco/dev/CushyStudio/src/types/StepOutput.ts
-  11:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-
-/Users/loco/dev/CushyStudio/src/updater/GitInstallUI.tsx
-  4:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-
-/Users/loco/dev/CushyStudio/src/updater/GitUninstallUI.tsx
-  4:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
+  578:9   error  Expected an assignment or function call and instead saw an expression  @typescript-eslint/no-unused-expressions
+  579:9   error  Expected an assignment or function call and instead saw an expression  @typescript-eslint/no-unused-expressions
+  580:9   error  Expected an assignment or function call and instead saw an expression  @typescript-eslint/no-unused-expressions
+  761:21  error  Unexpected lexical declaration in case block                           no-case-declarations
+  762:21  error  Unexpected lexical declaration in case block                           no-case-declarations
+  763:21  error  Unexpected lexical declaration in case block                           no-case-declarations
+  772:21  error  Unexpected lexical declaration in case block                           no-case-declarations
+  773:21  error  Unexpected lexical declaration in case block                           no-case-declarations
 
 /Users/loco/dev/CushyStudio/src/updater/LogFIFO.ts
   12:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
-/Users/loco/dev/CushyStudio/src/updater/UpdateBtnUI.tsx
-  15:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-
-/Users/loco/dev/CushyStudio/src/updater/UpdaterErrorUI.tsx
-  4:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-
 /Users/loco/dev/CushyStudio/src/updater/updater.ts
-    7:1   error  Imports "SimpleGit" are only used as type                                 @typescript-eslint/consistent-type-imports
-   10:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-   11:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-  182:13  error  Move function declaration to function body root                           no-inner-declarations
-  212:5   error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-  310:5   error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-  360:5   error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-  367:5   error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-  428:5   error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-  432:5   error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-  469:5   error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
+  183:13  error  Move function declaration to function body root  no-inner-declarations
+  213:5   error  Missing return type on function                  @typescript-eslint/explicit-function-return-type
+  311:5   error  Missing return type on function                  @typescript-eslint/explicit-function-return-type
+  361:5   error  Missing return type on function                  @typescript-eslint/explicit-function-return-type
+  368:5   error  Missing return type on function                  @typescript-eslint/explicit-function-return-type
+  429:5   error  Missing return type on function                  @typescript-eslint/explicit-function-return-type
+  433:5   error  Missing return type on function                  @typescript-eslint/explicit-function-return-type
+  470:5   error  Missing return type on function                  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/utils/assets/assets.gen.ts
   10:47   error  Missing return type on function   @typescript-eslint/explicit-function-return-type
@@ -1267,15 +702,8 @@
 /Users/loco/dev/CushyStudio/src/utils/electron/ElectronUtils.ts
   125:17  error  Expected an assignment or function call and instead saw an expression  @typescript-eslint/no-unused-expressions
 
-/Users/loco/dev/CushyStudio/src/utils/electron/globalSearchUI.tsx
-  30:29  error  'next' is never reassigned. Use 'const' instead  prefer-const
-
 /Users/loco/dev/CushyStudio/src/utils/electron/openInVsCode.ts
-  19:21  error  'errMsg' is never reassigned. Use 'const' instead       prefer-const
-  28:24  error  Promise executor functions should not be async          no-async-promise-executor
-  52:13  error  'textEditors' is never reassigned. Use 'const' instead  prefer-const
-  61:18  error  'editor' is never reassigned. Use 'const' instead       prefer-const
-  72:25  error  'result' is never reassigned. Use 'const' instead       prefer-const
+  28:24  error  Promise executor functions should not be async  no-async-promise-executor
 
 /Users/loco/dev/CushyStudio/src/utils/fs/deleteDirectoryRecursive.ts
   3:8  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
@@ -1286,44 +714,25 @@
 /Users/loco/dev/CushyStudio/src/utils/fs/getNonce.ts
   11:8  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
-/Users/loco/dev/CushyStudio/src/utils/microbench.ts
-   6:9  error  'x' is never reassigned. Use 'const' instead  prefer-const
-  19:9  error  'x' is never reassigned. Use 'const' instead  prefer-const
-  34:9  error  'x' is never reassigned. Use 'const' instead  prefer-const
-
 /Users/loco/dev/CushyStudio/src/utils/png/_getPngMetadata.ts
-   2:1   error  Imports "Either" are only used as type                 @typescript-eslint/consistent-type-imports
-  13:33  error  Missing return type on function                        @typescript-eslint/explicit-function-return-type
-  53:9   error  'txt_chunks' is never reassigned. Use 'const' instead  prefer-const
+  15:33  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/utils/png/_getWebpMetadata.ts
-   6:33  error  Missing return type on function                        @typescript-eslint/explicit-function-return-type
-  35:9   error  'txt_chunks' is never reassigned. Use 'const' instead  prefer-const
-  44:17  error  'data' is never reassigned. Use 'const' instead        prefer-const
-  45:18  error  Unexpected var, use let or const instead               no-var
-  46:17  error  Unexpected var, use let or const instead               no-var
-  47:21  error  'index' is never reassigned. Use 'const' instead       prefer-const
+  6:33  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/utils/png/_parseExifData.ts
-   9:5   error  Missing return type on function                 @typescript-eslint/explicit-function-return-type
-  10:13  error  'arr' is never reassigned. Use 'const' instead  prefer-const
-  21:5   error  Missing return type on function                 @typescript-eslint/explicit-function-return-type
+   9:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  21:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/widgets/galleries/dnd.ts
-   4:1   error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-  11:50  error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-  16:13  error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-  40:75  error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-  50:9   error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-  55:9   error  Missing return type on function                                           @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/widgets/graph/DrawWorkflowUI.tsx
-  10:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
+  11:50  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  16:13  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  40:75  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  50:9   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  55:9   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/widgets/graph/GraphPreviewUI.tsx
-   4:1   error  Imports "MutableRefObject" are only used as type                                                                                @typescript-eslint/consistent-type-imports
-   8:1   error  All imports in the declaration are only used as types. Use `import type`                                                        @typescript-eslint/consistent-type-imports
-  14:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+  16:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
 
 /Users/loco/dev/CushyStudio/src/widgets/graph/useCursorLockMove.ts
   15:9  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
@@ -1336,9 +745,6 @@
   34:9  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
   39:9  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
-/Users/loco/dev/CushyStudio/src/widgets/misc/ErrorScreenUI.tsx
-  3:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-
 /Users/loco/dev/CushyStudio/src/widgets/misc/IconUI.tsx
   1:61  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
@@ -1350,33 +756,18 @@
   10:4   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
   27:45  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
-/Users/loco/dev/CushyStudio/src/widgets/misc/LabelUI.tsx
-  17:23  warning  UnoCSS utilities are not ordered  unocss/order
-
-/Users/loco/dev/CushyStudio/src/widgets/misc/ResultWrapperUI.tsx
-  4:1  error  All imports in the declaration are only used as types. Use `import type`  @typescript-eslint/consistent-type-imports
-
 /Users/loco/dev/CushyStudio/src/widgets/misc/ScribbleUI.tsx
-   3:1   error  Imports "CSSProperties" are only used as type  @typescript-eslint/consistent-type-imports
-  17:4   error  Missing return type on function                @typescript-eslint/explicit-function-return-type
-  43:82  error  Missing return type on function                @typescript-eslint/explicit-function-return-type
-  51:30  error  Missing return type on function                @typescript-eslint/explicit-function-return-type
-  52:82  error  Missing return type on function                @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/widgets/misc/TabUI.tsx
-  2:1  error  Imports "CSSProperties", "ReactElement" and "ReactNode" are only used as type  @typescript-eslint/consistent-type-imports
+  19:4   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  45:82  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  53:30  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  54:82  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/widgets/misc/TypescriptHighlightedCodeUI.tsx
-  17:4   error    Missing return type on function   @typescript-eslint/explicit-function-return-type
-  26:28  warning  UnoCSS utilities are not ordered  unocss/order
-  46:60  error    Missing return type on function   @typescript-eslint/explicit-function-return-type
+  17:4   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  46:60  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/widgets/misc/filePathIcon.tsx
-  1:54  error    Missing return type on function   @typescript-eslint/explicit-function-return-type
-  2:58  warning  UnoCSS utilities are not ordered  unocss/order
-  3:59  warning  UnoCSS utilities are not ordered  unocss/order
-  4:60  warning  UnoCSS utilities are not ordered  unocss/order
-  5:59  warning  UnoCSS utilities are not ordered  unocss/order
+  1:54  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/widgets/misc/useGlobalDropHook.ts
    8:46  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
@@ -1387,14 +778,4 @@
 /Users/loco/dev/CushyStudio/src/widgets/prompter/nodes/usertags/UserLoader.ts
   39:11  error  Use the spread operator instead of '.apply()'  prefer-spread
 
-/Users/loco/dev/CushyStudio/src/widgets/workspace/ButtonDownloadFilesUI.tsx
-  12:9  error  'graphOrGraphID' is never reassigned. Use 'const' instead  prefer-const
-
-/Users/loco/dev/CushyStudio/src/widgets/workspace/ButtonOpenInComfyUI.tsx
-  9:9  error  'graphOrGraphID' is never reassigned. Use 'const' instead  prefer-const
-
-/Users/loco/dev/CushyStudio/src/widgets/workspace/SectionTitle.tsx
-  10:28  warning  UnoCSS utilities are not ordered  unocss/order
-
-✖ 789 problems (742 errors, 47 warnings)
-  311 errors and 47 warnings potentially fixable with the `--fix` option.
+✖ 429 problems (429 errors, 0 warnings)

@@ -12,8 +12,8 @@ export class KonvaGrid {
         _canvas.width = 200
         _canvas.height = 200
         const ctx = _canvas.getContext('2d')!
-        for (var x = 0; x < 200; x++) {
-            for (var y = 0; y < 200; y++) {
+        for (let x = 0; x < 200; x++) {
+            for (let y = 0; y < 200; y++) {
                 ctx.fillStyle =
                     (x + y) % 2 === 0 //
                         ? '#656565'

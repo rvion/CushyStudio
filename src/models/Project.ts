@@ -2,13 +2,13 @@ import type { LiveDB } from '../db/LiveDB'
 import type { TABLES } from '../db/TYPES.gen'
 import type { ComfySchemaL } from './ComfySchema'
 import type { ComfyWorkflowL } from './ComfyWorkflow'
+import type { DraftL } from './Draft'
 
 import { SQLITE_false, SQLITE_true } from '../csuite/types/SQLITE_boolean'
 import { BaseInst } from '../db/BaseInst'
 import { LiveRef } from '../db/LiveRef'
 import { LiveRefOpt } from '../db/LiveRefOpt'
 import { LiveTable } from '../db/LiveTable'
-import { DraftL } from './Draft'
 
 export type ProjectID = Branded<string, { ProjectID: true }>
 export const asProjectID = (s: string): ProjectID => s as any

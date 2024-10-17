@@ -3,19 +3,35 @@ import '../models/asyncRuntimeStorage'
 
 import type { ResilientWebSocketClient } from '../back/ResilientWebsocket'
 import type { ActionTagMethodList } from '../cards/App'
+import type { GithubRepoName } from '../cards/githubRepo'
+import type { GithubUserName } from '../cards/GithubUser'
+import type { PreferedFormLayout } from '../config/ConfigFile'
+import type { JsonFile } from '../core/JsonFile'
 import type { Activity } from '../csuite/activity/Activity'
 import type { CSuiteConfig } from '../csuite/ctx/CSuiteConfig'
 import type { Tint } from '../csuite/kolor/Tint'
 import type { AnyFieldSerial } from '../csuite/model/EntitySerial'
+import type { RegionMonitor } from '../csuite/regions/RegionMonitor'
 import type { TreeNode } from '../csuite/tree/TreeNode'
 import type { Timestamp } from '../csuite/types/Timestamp'
+import type { LiveDB } from '../db/LiveDB'
 import type { ModelInfo } from '../manager/model-list/model-list-loader-types'
+import type { ComfySchemaL, EnumValue } from '../models/ComfySchema'
+import type { ComfyWorkflowL } from '../models/ComfyWorkflow'
+import type { CushyAppL } from '../models/CushyApp'
+import type { DraftL } from '../models/Draft'
+import type { HostL } from '../models/Host'
 import type { MediaImageL } from '../models/MediaImage'
+import type { ProjectL } from '../models/Project'
+import type { StepL } from '../models/Step'
 import type { ConfigMode } from '../panels/PanelConfig/PanelConfig'
+import type { Database } from '../supa/database.types'
+import type { CleanedEnumResult } from '../types/EnumUtils'
+import type { StepOutput } from '../types/StepOutput'
 import type { CSCriticalError } from '../widgets/CSCriticalError'
 import type { Wildcards } from '../widgets/prompter/nodes/wildcards/wildcards'
+import type { SupabaseClient } from '@supabase/supabase-js'
 
-import { SupabaseClient } from '@supabase/supabase-js'
 import { closest } from 'fastest-levenshtein'
 import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'fs'
 import { makeAutoObservable, observable, toJS } from 'mobx'
@@ -25,22 +41,19 @@ import { createRef } from 'react'
 import { fromZodError } from 'zod-validation-error'
 
 import { asAppPath } from '../cards/asAppPath'
-import { GithubRepoName } from '../cards/githubRepo'
-import { GithubUserName } from '../cards/GithubUser'
 import { Library } from '../cards/Library'
 import { recursivelyFindAppsInFolder } from '../cards/walkLib'
 import { STANDARD_HOST_ID, vIRTUAL_HOST_ID__BASE, vIRTUAL_HOST_ID__FULL } from '../config/ComfyHostDef'
-import { type ConfigFile, PreferedFormLayout } from '../config/ConfigFile'
+import { type ConfigFile } from '../config/ConfigFile'
 import { mkConfigFile } from '../config/mkConfigFile'
 import { builder, cushyFactory, type CushyFactory } from '../controls/Builder'
-import { JsonFile } from '../core/JsonFile'
 import { Channel } from '../csuite' // WIP remove me 2024-06-25 🔴
 import { activityManager, type ActivityManager } from '../csuite/activity/ActivityManager'
 import { commandManager, type CommandManager } from '../csuite/commands/CommandManager'
 import { CSuite_ThemeCushy } from '../csuite/ctx/CSuite_ThemeCushy'
 import { run_tint } from '../csuite/kolor/prefab_Tint'
 import { getGlobalRepository } from '../csuite/model/Repository'
-import { regionMonitor, RegionMonitor } from '../csuite/regions/RegionMonitor'
+import { regionMonitor } from '../csuite/regions/RegionMonitor'
 import { createRandomGenerator } from '../csuite/rnd/createRandomGenerator'
 import { Tree, type TreeStorageConfig } from '../csuite/tree/Tree'
 import { treeElement } from '../csuite/tree/TreeEntry'
@@ -49,30 +62,20 @@ import { VirtualHierarchy } from '../csuite/tree/VirtualHierarchy'
 import { type SQLITE_boolean_, SQLITE_false, SQLITE_true } from '../csuite/types/SQLITE_boolean'
 import { exhaust } from '../csuite/utils/exhaust'
 import { toastError } from '../csuite/utils/toasts'
-import { liveDB, LiveDB } from '../db/LiveDB'
+import { liveDB } from '../db/LiveDB'
 import { quickBench } from '../db/quickBench'
 import { asHostID } from '../db/TYPES.gen'
 import { ComfyImporter } from '../importers/ComfyImporter'
 import { ComfyManagerRepository } from '../manager/ComfyManagerRepository'
-import { ComfySchemaL, EnumValue } from '../models/ComfySchema'
-import { ComfyWorkflowL } from '../models/ComfyWorkflow'
 import { createMediaImage_fromPath } from '../models/createMediaImage_fromWebFile'
-import { CushyAppL } from '../models/CushyApp'
-import { DraftL } from '../models/Draft'
 import { FPath } from '../models/FPath'
-import { HostL } from '../models/Host'
-import { ProjectL } from '../models/Project'
-import { StepL } from '../models/Step'
 import { TreeApp } from '../panels/libraryUI/tree/nodes/TreeApp'
 import { TreeDraft } from '../panels/libraryUI/tree/nodes/TreeDraft'
 import { TreeAllApps, TreeAllDrafts, TreeFavoriteApps, TreeFavoriteDrafts } from '../panels/libraryUI/tree/nodes/TreeFavorites'
 import { TreeFolder } from '../panels/libraryUI/tree/nodes/TreeFolder'
 import { CushyLayoutManager } from '../router/Layout'
 import { SafetyChecker } from '../safety/Safety'
-import { Database } from '../supa/database.types'
 import { type ComfyStatus, type PromptID, type PromptRelated_WsMsg, type WsMsg, WsMsg$Schema } from '../types/ComfyWsApi'
-import { CleanedEnumResult } from '../types/EnumUtils'
-import { StepOutput } from '../types/StepOutput'
 import { GitManagedFolder } from '../updater/updater'
 import { ElectronUtils } from '../utils/electron/ElectronUtils'
 import { SearchManager } from '../utils/electron/findInPage'
@@ -948,10 +951,10 @@ export class STATE {
 function INJECT_CUSHY_GLOBALLY(CUSHY: STATE): void {
     //  globally register the state as this
     if ((window as any).CushyObservableCache == null) {
-        ;(window as any).CushyObservableCache = observable({ st: CUSHY })
+        (window as any).CushyObservableCache = observable({ st: CUSHY })
         ;(window as any).st = CUSHY // <- remove this once window.st usage has been cleend
     } else {
-        ;(window as any).CushyObservableCache.st = CUSHY
+        (window as any).CushyObservableCache.st = CUSHY
         ;(window as any).st = CUSHY // <- remove this once window.st usage has been cleend
     }
     if ((window as any).cushy == null) {
@@ -963,6 +966,6 @@ function INJECT_CUSHY_GLOBALLY(CUSHY: STATE): void {
         })
     }
     if ((window as any).toJS == null) {
-        ;(window as any).toJS = toJS
+        (window as any).toJS = toJS
     }
 }

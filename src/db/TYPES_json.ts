@@ -10,11 +10,11 @@ import type { WsMsgExecutionError } from '../types/ComfyWsApi'
 import type { SqlColDef } from './_getAllColumnsForTable'
 import type { BaseInstanceFields } from './LiveInstance'
 import type { KyselyTables } from './TYPES.gen'
-import type { TNull, TUndefined, TUnion } from '@sinclair/typebox'
+import type { TNull, TObject, TSchema, TUndefined, TUnion } from '@sinclair/typebox'
 import type { Metafile } from 'esbuild'
 import type { IJsonModel } from 'flexlayout-react'
 
-import { TObject, TSchema, Type } from '@sinclair/typebox'
+import { Type } from '@sinclair/typebox'
 
 export type StatusT = keyof typeof Status
 // export type JSONColumnType< =

@@ -1,6 +1,6 @@
-import * as icons from '@mdi/js'
+import type { IconName } from './icons'
 
-import { IconName } from './icons'
+import * as icons from '@mdi/js'
 
 let _icons
 export function getAllIcons(): IconName[] {

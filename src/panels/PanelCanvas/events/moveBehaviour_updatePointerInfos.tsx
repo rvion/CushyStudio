@@ -12,8 +12,8 @@ export const moveBehaviour_updatePointerInfos = (e: KonvaEventObject<MouseEvent>
         e.evt.preventDefault()
 
         // update cursor infos -----------------------------------------
-        var scale = stage.scaleX()
-        var pointer = stage.getPointerPosition()
+        const scale = stage.scaleX()
+        const pointer = stage.getPointerPosition()
         if (pointer == null) return console.log(`[❌] nope`)
         const canvasX = stage.x()
         const canvasY = stage.y()

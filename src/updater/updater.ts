@@ -1,14 +1,15 @@
+import type { GithubRepoName } from '../cards/githubRepo'
+import type { GithubUserName } from '../cards/GithubUser'
 import type { STATE } from '../state/state'
+import type { SimpleGit } from 'simple-git'
 
 import { exec } from 'child_process'
 import { existsSync, lstatSync, mkdirSync, statSync, utimesSync } from 'fs'
 import { makeAutoObservable, runInAction } from 'mobx'
 import { join, relative } from 'pathe'
-import simpleGit, { SimpleGit } from 'simple-git'
+import simpleGit from 'simple-git'
 
 import { FolderGitStatus } from '../cards/FolderGitStatus'
-import { GithubRepoName } from '../cards/githubRepo'
-import { GithubUserName } from '../cards/GithubUser'
 import { deleteDirectoryRecursive } from '../utils/fs/deleteDirectoryRecursive'
 import { asRelativePath } from '../utils/fs/pathUtils'
 import { _formatAsRelativeDateTime } from './_getRelativeTimeString'

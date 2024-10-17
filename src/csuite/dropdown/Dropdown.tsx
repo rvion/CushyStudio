@@ -1,8 +1,8 @@
 import type { IconName } from '../icons/icons'
 import type { Tint } from '../kolor/Tint'
+import type { ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
-import { ReactNode } from 'react'
 
 import { Button } from '../button/Button'
 import { Frame } from '../frame/Frame'

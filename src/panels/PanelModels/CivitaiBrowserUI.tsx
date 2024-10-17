@@ -1,9 +1,10 @@
+import type { Civitai, CivitaiSearchResultItem } from './CivitaiSpec'
+
 import { observer } from 'mobx-react-lite'
 
 import { InputStringUI } from '../../csuite/input-string/InputStringUI'
 import { CivitaiResultCardUI } from './CivitaiResultCardUI'
 import { CivitaiResultFullUI } from './CivitaiResultFullUI'
-import { Civitai, CivitaiSearchResultItem } from './CivitaiSpec'
 
 export const CivitaiUI = observer(function CivitaiUI_(p: { className?: string; civitai: Civitai }) {
     const civitai = p.civitai

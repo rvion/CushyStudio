@@ -2,9 +2,9 @@ import type { MediaImageL } from '../../../models/MediaImage'
 import type { STATE } from '../../../state/state'
 import type { UnifiedCanvas } from './UnifiedCanvas'
 import type { Group } from 'konva/lib/Group'
+import type { Image } from 'konva/lib/shapes/Image'
 
 import Konva from 'konva'
-import { Image } from 'konva/lib/shapes/Image'
 import { makeAutoObservable } from 'mobx'
 
 export class UnifiedImage {

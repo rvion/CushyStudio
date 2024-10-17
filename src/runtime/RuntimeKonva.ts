@@ -1,3 +1,4 @@
+import type { MediaImageL } from '../models/MediaImage'
 import type { Runtime } from './Runtime'
 import type { ImageConfig } from 'konva/lib/shapes/Image'
 
@@ -5,7 +6,6 @@ import konva from 'konva'
 import { makeAutoObservable } from 'mobx'
 import { isAbsolute, resolve } from 'pathe'
 
-import { MediaImageL } from '../models/MediaImage'
 import { createHTMLImage_fromURL } from '../state/createHTMLImage_fromURL'
 
 /**

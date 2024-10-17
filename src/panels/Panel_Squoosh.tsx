@@ -25,7 +25,7 @@ export const PanelSquooshUI = observer(function PanelSquooshUI_(p: NO_PROPS) {
     // )
     return (
         <iframe //
-            className='w-full h-full'
+            className='h-full w-full'
             frameBorder='0'
             src={'https://squoosh.app/'}
         />

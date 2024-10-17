@@ -25,7 +25,7 @@ export const PanelModelsUI = observer(function PanelModelsUI_(p: NO_PROPS) {
     const st = useSt()
     const civitai = useMemo(() => new Civitai(), [])
     return (
-        <div className='flex flex-col gap-2 h-full w-full'>
+        <div className='h-full w-full flex flex-col gap-2'>
             <PanelHeaderUI>
                 <SectionTitleUI
                     label={

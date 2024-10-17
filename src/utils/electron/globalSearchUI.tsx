@@ -27,7 +27,7 @@ export const GlobalSearchUI = observer(function GlobalSearch(p: {}) {
                             ev.target.select()
                     }}
                     onChange={(ev) => {
-                        let next = ev.target.value
+                        const next = ev.target.value
                         // ⏸️ if (next[1] && next[1] !== '$') {
                         // ⏸️     next = Array.from(next)
                         // ⏸️         .filter((c) => c !== '$')

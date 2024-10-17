@@ -2,6 +2,7 @@ import type { LiteGraphJSON } from '../core/LiteGraph'
 import type { KnownCustomNode_CushyName } from '../manager/extension-node-map/KnownCustomNode_CushyName'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 import type { ExifData } from '../utils/png/_parseExifData'
+import type { PromptToCodeOpts } from './ComfyImporter'
 
 import { writeFileSync } from 'fs'
 import { observer, useLocalObservable } from 'mobx-react-lite'
@@ -23,7 +24,6 @@ import { useSt } from '../state/stateContext'
 import { getPngMetadataFromFile, type TextChunks } from '../utils/png/_getPngMetadata'
 import { getWebpMetadata } from '../utils/png/_getWebpMetadata'
 import { TypescriptHighlightedCodeUI } from '../widgets/misc/TypescriptHighlightedCodeUI'
-import { PromptToCodeOpts } from './ComfyImporter'
 import { usePromise } from './usePromise'
 
 export interface FileListProps {

@@ -1,4 +1,4 @@
-import BetterSqlite3 from 'better-sqlite3'
+import type BetterSqlite3 from 'better-sqlite3'
 
 // prettier-ignore
 export type SqlFKDef = {

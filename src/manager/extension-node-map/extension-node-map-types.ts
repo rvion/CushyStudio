@@ -1,6 +1,7 @@
-import { Static, Type } from '@sinclair/typebox'
+import type { NodeNameInComfy } from '../../models/ComfySchema'
+import type { Static } from '@sinclair/typebox'
 
-import { NodeNameInComfy } from '../../models/ComfySchema'
+import { Type } from '@sinclair/typebox'
 
 // FILE TYPE ------------------------------------------------------------------------
 // wtf is this format...

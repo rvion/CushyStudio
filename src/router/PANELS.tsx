@@ -1,3 +1,5 @@
+import type { Panel } from './Panel'
+
 import { PanelScript } from '../panels/Panel_Script'
 import { PanelSquoosh } from '../panels/Panel_Squoosh'
 import { PanelAppLibrary } from '../panels/PanelAppLibrary/PanelAppLibrary'
@@ -29,7 +31,6 @@ import { PanelSteps } from '../panels/PanelSteps/Panel_Steps'
 import { PanelTreeExplorer } from '../panels/PanelTreeExplorer/PanelTreeExplorer'
 import { PanelLastImage, PanelViewImage } from '../panels/PanelViewImage/Panel_ViewImage'
 import { PanelWelcome } from '../panels/PanelWelcome/PanelWelcome'
-import { Panel } from './Panel'
 
 export const panels = {
     Assets: PanelAssets,

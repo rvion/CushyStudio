@@ -1,13 +1,14 @@
+import type { ComfyNodeSchema, NodeInputExt, NodeOutputExt } from '../models/ComfySchema'
 import type { ComfyWorkflowL, ProgressReport } from '../models/ComfyWorkflow'
+import type { ComfyNodeID, ComfyNodeMetadata } from '../types/ComfyNodeID'
 import type { ComfyNodeJSON } from '../types/ComfyPrompt'
 import type { NodeProgress } from '../types/ComfyWsApi'
+import type { ReactNode } from 'react'
 
 import { configure, extendObservable, makeAutoObservable } from 'mobx'
-import { createElement, ReactNode } from 'react'
+import { createElement } from 'react'
 
 import { ComfyDefaultNodeWhenUnknown_Name } from '../models/ComfyDefaultNodeWhenUnknown'
-import { ComfyNodeSchema, NodeInputExt, NodeOutputExt } from '../models/ComfySchema'
-import { ComfyNodeID, ComfyNodeMetadata } from '../types/ComfyNodeID'
 import { nodeLineHeight, NodeSlotSize, NodeTitleHeight } from '../widgets/graph/NodeSlotSize'
 import { auto_ } from './autoValue'
 import { comfyColors } from './Colors'

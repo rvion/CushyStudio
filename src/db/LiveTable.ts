@@ -1,6 +1,7 @@
 import type { BaseInst } from './BaseInst'
 import type { LiveDB } from './LiveDB'
 import type { $BaseInstanceFields } from './LiveInstance'
+import type { TableInfo } from './TYPES_json'
 import type { RunResult } from 'better-sqlite3'
 import type { DeleteQueryBuilder, SelectQueryBuilder } from 'kysely'
 
@@ -14,7 +15,6 @@ import { kysely } from '../DB'
 import { sqlbench, sqlbenchRaw } from '../utils/microbench'
 import { DEPENDS_ON } from './LiveHelpers'
 import { type KyselyTables, type LiveDBSubKeys, schemas, type TableName } from './TYPES.gen'
-import { TableInfo } from './TYPES_json'
 
 export interface LiveEntityClass<TABLE extends TableInfo> {
     new (...args: any[]): TABLE['$L']

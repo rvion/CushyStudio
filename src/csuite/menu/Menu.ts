@@ -1,6 +1,7 @@
 import type { IconName } from '../icons/icons'
 import type { RevealStateLazy } from '../reveal/RevealStateLazy'
 import type { NO_PROPS } from '../types/NO_PROPS'
+import type { BoundMenuOpts } from './BoundMenuOpts'
 import type { MenuBuilder } from './MenuBuilder'
 import type { MenuEntry } from './MenuEntry'
 
@@ -9,7 +10,7 @@ import { createElement, useMemo } from 'react'
 
 import { activityManager } from '../activity/ActivityManager'
 import { Trigger } from '../trigger/Trigger'
-import { BoundMenu, BoundMenuOpts } from './BoundMenuOpts'
+import { BoundMenu } from './BoundMenuOpts'
 import { MenuBarUI } from './MenuBarUI'
 import { MenuInstance } from './MenuInstance'
 import { menuManager } from './menuManager'

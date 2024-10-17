@@ -14,7 +14,7 @@ export const TreeValue = observer(function TreeValue_(p: {
                 textDecoration: p.onClick ? 'underline' : undefined,
                 cursor: p.onClick ? 'pointer' : undefined,
             }}
-            className='TreeValue label row gap1 items-baseline'
+            className='TreeValue label row items-baseline gap1'
             onClick={p.onClick}
         >
             <span style={{ width: '6rem' }}>{p.title}:</span>

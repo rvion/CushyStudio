@@ -18,9 +18,9 @@ import type { ProjectL } from '../models/Project'
 import type { RuntimeErrorL } from '../models/RuntimeError'
 import type { StepL } from '../models/Step'
 import type { TreeEntryL } from '../models/TreeEntry'
+import type { Generated } from 'kysely'
 
 import { Type } from '@sinclair/typebox'
-import { Generated, /* Insertable, Selectable, Updateable */ } from 'kysely'
 
 import * as T from './TYPES_json'
 

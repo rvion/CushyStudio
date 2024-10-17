@@ -2,7 +2,6 @@ import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { createRef } from 'react'
 
-
 export class CreateDeckModalState {
     constructor(public id = nanoid()) {
         makeAutoObservable(this)

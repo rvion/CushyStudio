@@ -1,5 +1,7 @@
+import type { DependencyList } from 'react'
+
 import { observable } from 'mobx'
-import { DependencyList, type RefObject, useMemo } from 'react'
+import { type RefObject, useMemo } from 'react'
 
 export const useObservableRef = <T extends any>(
     //

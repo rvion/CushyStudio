@@ -9,7 +9,7 @@ export const ButtonDownloadFilesUI = observer(function ButtonDownloadFilesUI_(p:
     //
     graph: ComfyWorkflowL | ComfyWorkflowID
 }) {
-    let graphOrGraphID = p.graph
+    const graphOrGraphID = p.graph
     const st = useSt()
     const graph =
         typeof graphOrGraphID === 'string' //

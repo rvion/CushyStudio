@@ -82,23 +82,23 @@ export class OpenPoseDrawer {
     ) {
         console.log('renderPoses')
         console.log(poses)
-        let totalPoses = poses.length
+        const totalPoses = poses.length
         for (let i = 0; i < totalPoses; i++) {
-            let pose = poses[i]
+            const pose = poses[i]
             for (let j = 0; j < this.bonePairs.length; j++) {
-                let pair = this.bonePairs[j]!
-                let indexStart = pair[0]!
-                let indexEnd = pair[1]!
+                const pair = this.bonePairs[j]!
+                const indexStart = pair[0]!
+                const indexEnd = pair[1]!
 
-                let keypoint1 = pose[indexStart]
-                let x1 = keypoint1[0] * renderScale
-                let y1 = keypoint1[1] * renderScale
-                let score1 = keypoint1[2]
+                const keypoint1 = pose[indexStart]
+                const x1 = keypoint1[0] * renderScale
+                const y1 = keypoint1[1] * renderScale
+                const score1 = keypoint1[2]
 
-                let keypoint2 = pose[indexEnd]
-                let x2 = keypoint2[0] * renderScale
-                let y2 = keypoint2[1] * renderScale
-                let score2 = keypoint2[2]
+                const keypoint2 = pose[indexEnd]
+                const x2 = keypoint2[0] * renderScale
+                const y2 = keypoint2[1] * renderScale
+                const score2 = keypoint2[2]
 
                 if (score1 == 0 || score2 == 0) {
                     continue

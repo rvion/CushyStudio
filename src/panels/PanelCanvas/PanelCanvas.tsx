@@ -76,7 +76,7 @@ export const PanelCanvasUI = observer(function Panel_Canvas_(p: PanelCanvasProps
             tabIndex={0}
             // onKeyDown={canvas.onKeyDown}
             ref={containerRef}
-            className='flex flex-1 w-full h-full overflow-hidden'
+            className='h-full w-full flex flex-1 overflow-hidden'
         >
             <RegionUI //
                 regionName='UnifiedCanvas2'

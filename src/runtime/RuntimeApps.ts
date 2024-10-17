@@ -1,10 +1,9 @@
+import type { AppRef } from '../cards/App'
 import type { Field } from '../csuite/model/Field'
 import type { CushyAppL } from '../models/CushyApp'
 import type { Runtime, RuntimeExecutionResult } from './Runtime'
 
 import { makeAutoObservable } from 'mobx'
-
-import { AppRef } from '../cards/App'
 
 /** namespace for all Apps-related utils */
 export class RuntimeApps {

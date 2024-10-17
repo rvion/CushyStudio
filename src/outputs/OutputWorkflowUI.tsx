@@ -1,3 +1,4 @@
+import type { ComfyWorkflowL } from '../models/ComfyWorkflow'
 import type { StepL } from '../models/Step'
 
 import { observer } from 'mobx-react-lite'
@@ -5,7 +6,6 @@ import { observer } from 'mobx-react-lite'
 import { MenuItem } from '../csuite/dropdown/MenuItem'
 import { Frame } from '../csuite/frame/Frame'
 import { RevealUI } from '../csuite/reveal/RevealUI'
-import { ComfyWorkflowL } from '../models/ComfyWorkflow'
 import { useSt } from '../state/stateContext'
 import { DrawWorkflowUI } from '../widgets/graph/DrawWorkflowUI'
 import { GraphPreviewUI } from '../widgets/graph/GraphPreviewUI'
@@ -19,7 +19,7 @@ export const OutputWorkflowPreviewUI = observer(function OutputWorkflowUI_(p: { 
         // <RevealUI showDelay={0} hideDelay={100}>
 
         <RevealUI
-            className='w-full h-full item-center justify-center'
+            className='item-center h-full w-full justify-center'
             content={() => (
                 <ul tabIndex={0} tw='shadow menu dropdown-content z-[1]  rounded-box'>
                     {/* <ImageDropdownMenuUI img={image} /> */}

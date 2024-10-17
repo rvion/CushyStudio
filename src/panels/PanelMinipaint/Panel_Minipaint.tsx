@@ -38,7 +38,7 @@ export const Panel_Minipaint = observer(function PaintUI_(p: PanelMinipaintProps
     }, [p.imgID])
 
     return (
-        <div className='flex-grow flex flex-col h-full'>
+        <div className='h-full flex flex-grow flex-col'>
             <PanelHeaderUI>
                 <div className='flex items-center gap-2'>
                     <Button

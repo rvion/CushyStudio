@@ -1,8 +1,8 @@
 import type { MediaVideoL } from '../models/MediaVideo'
+import type { StepL } from '../models/Step'
 
 import { observer } from 'mobx-react-lite'
 
-import { StepL } from '../models/Step'
 import { useSt } from '../state/stateContext'
 
 export const OutputVideoPreviewUI = observer(function OutputImagePreviewUI_(p: {
@@ -23,7 +23,7 @@ export const OutputVideoPreviewUI = observer(function OutputImagePreviewUI_(p: {
             ]}
             style={{ fontSize: `${size / 2}px` }}
         >
-            <span style={{ lineHeight: sizeStr }} className='material-symbols-outlined p-0 m-0'>
+            <span style={{ lineHeight: sizeStr }} className='material-symbols-outlined m-0 p-0'>
                 play_circle
             </span>
         </div>

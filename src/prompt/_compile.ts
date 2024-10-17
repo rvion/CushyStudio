@@ -1,7 +1,8 @@
 import type { CompiledPrompt } from './FieldPrompt'
+import type { Prompt_Node } from './grammar/grammar.practical'
 
 import { chooseRandomly } from '../csuite/rnd/chooseRnadomly'
-import { Prompt_Node, PromptAST } from './grammar/grammar.practical'
+import { PromptAST } from './grammar/grammar.practical'
 
 export type PromptCompilationCtx = {
     getLoraAssociatedTriggerWords(loraName: string): Maybe<string>
@@ -56,7 +57,7 @@ export const compilePrompt = (p: {
                     BUFF[BUFF.length - 1] ?? ''
 
                 const space = txt === ',' ? '' : lastChar === ' ' ? '' : ' '
-                let finalWeight = Math.abs(weights)
+                const finalWeight = Math.abs(weights)
                 let finalTxt = finalWeight === 1 ? txt : `(${txt}:${finalWeight})`
                 finalTxt = space + finalTxt
                 // ⏸️ if (weights < 0) NEG += finalTxt
