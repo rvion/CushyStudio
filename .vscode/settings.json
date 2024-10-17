@@ -1,7 +1,5 @@
 {
     "eslint.format.enable": true,
-    "eslint.validate": ["typescript", "typescriptreact"],
-    "eslint.options": { "extensions": [".ts", ".tsx"] },
 
     //
     "marksToOutline.mark": "#region",

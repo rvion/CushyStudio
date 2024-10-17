@@ -102,7 +102,7 @@ export class AutoBuilder {
                             else if (typeLower === 'text' || typeLower === 'string') {
                                 // number default -----------
                                 let def: string | undefined = undefined
-                                let textarea = opts?.multiline ?? undefined
+                                const textarea = opts?.multiline ?? undefined
 
                                 if (opts?.default != null) {
                                     if (typeof opts.default !== 'string') {

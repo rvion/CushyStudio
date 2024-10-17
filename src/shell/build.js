@@ -8,6 +8,7 @@ const { promisify } = require('util')
 
 const esbuild = require('esbuild')
 const { writeFileSync } = require('fs')
+const { execSync } = require('child_process')
 // 💋 const { resolve } = require('path')
 
 const args = process.argv.slice(2)
@@ -43,6 +44,29 @@ async function buildJS() {
         define: {
             'process.env.NODE_ENV': '"production"',
         },
+        plugins: [
+            {
+                name: 'cushy-uno',
+                setup(build) /* : void */ {
+                    // Adjust the filter to match 'virtual:uno.css' exactly
+                    build.onResolve({ filter: /^virtual:uno.css$/ }, (args) => {
+                        return { path: args.path, namespace: 'cushy-uno' }
+                    })
+
+                    // Use the same namespace and match all paths within it
+                    build.onLoad({ filter: /.*/, namespace: 'cushy-uno' }, (args) => {
+                        // Run the CSS build command without 'stdio: inherit' to capture output
+                        execSync('./node_modules/.bin/unocss "src/**/*.tsx" -o release/uno.css', { stdio: 'inherit' })
+
+                        // Read the generated CSS content
+                        const unoCss = fs.readFileSync('release/uno.css', 'utf8')
+
+                        // Return the contents with the correct loader
+                        return { contents: unoCss, loader: 'css' }
+                    })
+                },
+            },
+        ],
         // entryPoints: ['src/app/main.tsx'],
         entryPoints: ['src/app/main.tsx'],
         bundle: true,

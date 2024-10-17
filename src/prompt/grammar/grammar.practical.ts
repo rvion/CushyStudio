@@ -1,12 +1,11 @@
+import type * as GrammarTerms from './grammar.parser.terms'
+import type * as Lezer from '@lezer/common'
+import type { SyntaxNode } from '@lezer/common'
 import type { EditorView } from 'codemirror'
 
-import * as Lezer from '@lezer/common'
-import { SyntaxNode } from '@lezer/common'
-
-// import { nanoid } from 'nanoid'
 import { parser } from './grammar.parser'
 
-type KnownNodeNames = keyof typeof import('./grammar.parser.terms')
+type KnownNodeNames = keyof typeof GrammarTerms
 
 // ----------------------------------------
 // prettier-ignore
@@ -25,7 +24,10 @@ type CLASSES = {
     String:             Prompt_String
     Tag:                Prompt_Tag
     TagName:            Prompt_TagName
+    Artist:             Prompt_Artist
+    ArtistName:         Prompt_ArtistName
     Wildcard:           Prompt_Wildcard
+
 }
 
 // 1. wrap text
@@ -70,6 +72,8 @@ export class PromptAST {
         String            : Prompt_String,
         Tag               : Prompt_Tag,
         TagName           : Prompt_TagName,
+        Artist            : Prompt_Artist,
+        ArtistName        : Prompt_ArtistName,
         Wildcard          : Prompt_Wildcard,
     }
 
@@ -95,7 +99,7 @@ export class PromptAST {
         public editorView?: Maybe<EditorView>,
     ) {
         this.tree = parser.parse(CONTENT)
-        let stack: ManagedNode[] = []
+        const stack: ManagedNode[] = []
         this.tree.iterate({
             enter: (nodeRef) => {
                 // special case for root
@@ -164,7 +168,7 @@ abstract class ManagedNode<Name extends KnownNodeNames = any> {
     childrens: ManagedNode[] = []
 
     get ancestorsIncludingSelf(): ManagedNode[] {
-        let result: ManagedNode[] = []
+        const result: ManagedNode[] = []
         // eslint-disable-next-line consistent-this
         let current: Maybe<ManagedNode> = this
         while (current) {
@@ -399,6 +403,14 @@ export class Prompt_Tag extends ManagedNode<'Tag'> {
 
 export class Prompt_TagName extends ManagedNode<'TagName'> {
     $kind = 'TagName' as const
+}
+
+export class Prompt_Artist extends ManagedNode<'Artist'> {
+    $kind = 'Artist' as const
+}
+
+export class Prompt_ArtistName extends ManagedNode<'ArtistName'> {
+    $kind = 'ArtistName' as const
 }
 
 export class Prompt_Unknown extends ManagedNode<any> {

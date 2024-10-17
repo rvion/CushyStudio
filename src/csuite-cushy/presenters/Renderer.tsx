@@ -282,6 +282,9 @@ const presets = {
 }
 
 export type DisplayRuleCtx<FIELD extends Field = Field> = {
+    // TODO
+    // for(fieldPath: string, x: RuleOrConf<Field>): void
+
     field: FIELD
     apply(x: RuleOrConf<FIELD>): void
     for<Sub extends Field>(field: Maybe<Sub>, x: RuleOrConf<Sub>): void
