@@ -1,11 +1,11 @@
 // ---------------------------------------------------------------------
 
 import { ctx_global } from '../../csuite/command-topic/ctx_global'
-import { command } from '../../csuite/commands/Command'
-import { menuWithoutProps, type MenuWithoutProps } from '../../csuite/menu/Menu'
+import { command, type Command } from '../../csuite/commands/Command'
+import { defineMenu, type Menu } from '../../csuite/menu/Menu'
 import { Trigger } from '../../csuite/trigger/Trigger'
 
-export const menu_utils: MenuWithoutProps = menuWithoutProps({
+export const menu_utils: Menu = defineMenu({
     title: 'Utils',
     entries: () => [
         //
@@ -13,11 +13,11 @@ export const menu_utils: MenuWithoutProps = menuWithoutProps({
         cmd_nav_openGallery2,
         cmd_nav_openGallery3,
         cmd_nav_openCivitaiPanel,
-        menu_utils.bind({}),
+        menu_utils,
     ],
 })
 
-const cmd_nav_openGallery = (ix?: number) => {
+const cmd_nav_openGallery = (ix?: number): Command<null> => {
     return command({
         id: `nav.openGallery${ix ?? ''}`,
         label: `Open Gallery ${ix ?? ''}`,

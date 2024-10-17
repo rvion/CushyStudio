@@ -9,8 +9,8 @@ import { activityManager } from '../activity/ActivityManager'
 import { MenuItem } from '../dropdown/MenuItem'
 import { IkonOf } from '../icons/iconHelpers'
 import { isBoundCommand } from '../introspect/_isBoundCommand'
-import { isBoundMenu } from '../introspect/_isBoundMenu'
 import { isCommand } from '../introspect/_isCommand'
+import { isMenu } from '../introspect/_isMenu'
 import { isWidget } from '../model/$FieldSym'
 import { RevealUI } from '../reveal/RevealUI'
 import { SimpleMenuAction } from './SimpleMenuAction'
@@ -18,10 +18,10 @@ import { SimpleMenuModal } from './SimpleMenuModal'
 
 // -----------------------
 export type MenuUIProps = {
-    menu: MenuInstance<any>
+    menu: MenuInstance
 } & React.HTMLAttributes<HTMLDivElement>
 
-export const MenuUI = observer(function Menu({
+export const MenuUI = observer(function MenuUI_({
     // own props
     menu,
 
@@ -123,7 +123,7 @@ export const MenuUI = observer(function Menu({
                 }
 
                 // bound menu
-                else if (isBoundMenu(entry)) {
+                else if (isMenu(entry)) {
                     const label = entry.title
                     return (
                         <RevealUI //
@@ -135,7 +135,7 @@ export const MenuUI = observer(function Menu({
                             content={() => <MenuUI menu={entry.init(menu.allocatedKeys)} />}
                         >
                             <MenuItem //
-                                disabled={entry.menu.def.disabled}
+                                disabled={entry.def.disabled}
                                 localShortcut={char}
                                 icon={entry.icon}
                                 afterShortcut={<IkonOf name='mdiMenuRight' />}

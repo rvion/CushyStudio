@@ -36,7 +36,7 @@ export const expandBraces = (prompt: string): string[] => {
 
 function expandBracket(input: string): string {
     return input.replace(
-        /(, )?\s*([^,\[]+)\s*\[([^\]]+)\]\s*(, )?/g,
+        /(, )?\s*([^,[]+)\s*\[([^\]]+)\]\s*(, )?/g,
         (_, leadingComma = '', prefix, content, trailingComma = '') => {
             // Split the content by commas not preceded by a backslash
             const words = content.split(/(?<!\\),/).map((s: any) => s.trim().replace(/\\,/g, ','))

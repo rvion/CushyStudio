@@ -1,4 +1,4 @@
-import type { Field } from '../model/Field'
+import type { Field } from '../../../csuite/model/Field'
 
 import { observer } from 'mobx-react-lite'
 

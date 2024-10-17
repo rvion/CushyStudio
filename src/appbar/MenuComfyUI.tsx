@@ -1,12 +1,12 @@
 import { openFolderInOS } from '../app/layout/openExternal'
 import { Button } from '../csuite/button/Button'
 import { MenuDivider } from '../csuite/dropdown/MenuItem'
-import { menuWithoutProps, type MenuWithoutProps } from '../csuite/menu/Menu'
+import { defineMenu, type Menu } from '../csuite/menu/Menu'
 import { panels } from '../router/PANELS'
 
-export const menuComfyUI2: MenuWithoutProps = menuWithoutProps({
+export const menuComfyUI2: Menu = defineMenu({
     title: 'ComfyUI',
-    entries: (_, b) => [
+    entries: (b) => [
         //
         ...panels.ComfyUI.menuEntries,
         ...panels.ComfyUINodeExplorer.menuEntries,

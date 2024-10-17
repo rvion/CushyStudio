@@ -1,8 +1,8 @@
-import type { CompiledPrompt } from './FieldPrompt'
-import type { Prompt_Node } from './grammar/grammar.practical'
+import type { CompiledPrompt } from '../FieldPrompt'
+import type { Prompt_Node } from '../grammar/grammar.practical'
 
-import { chooseRandomly } from '../csuite/rnd/chooseRnadomly'
-import { PromptAST } from './grammar/grammar.practical'
+import { chooseRandomly } from '../../csuite/rnd/chooseRnadomly'
+import { PromptAST } from '../grammar/grammar.practical'
 
 export type PromptCompilationCtx = {
     getLoraAssociatedTriggerWords(loraName: string): Maybe<string>
@@ -26,7 +26,7 @@ export const compilePrompt = (p: {
     // -----------
     const subPrompts: string[] = []
     let BUFF = ''
-    const BREAK = () => {
+    const BREAK = (): void => {
         subPrompts.push(BUFF)
         BUFF = ''
     }
@@ -49,7 +49,7 @@ export const compilePrompt = (p: {
         (node: Prompt_Node) => {
             const toktype = node.$kind
             const weights = weightStack[weightStack.length - 1]!
-            const set = (txt: string) => {
+            const set = (txt: string): void => {
                 const lastChar =
                     //  ⏸️ weights < 0
                     //  ⏸️     ? NEG[NEG.length - 1] ?? ''

@@ -1,19 +1,19 @@
 import type { Activity } from '../activity/Activity'
 import type { Trigger } from '../trigger/Trigger'
-import type { Menu, MenuEntryWithKey } from './Menu'
-import type { MenuEntry } from './MenuEntry'
+import type { Menu } from './Menu'
+import type { MenuEntry, MenuEntryWithKey } from './MenuEntry'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { createElement, type UIEvent } from 'react'
 
 import { Command } from '../commands/Command'
-import { isBoundMenu } from '../introspect/_isBoundMenu'
+import { isMenu } from '../introspect/_isMenu'
 import { menuBuilder } from './MenuBuilder'
 import { MenuUI } from './MenuUI'
 import { SimpleMenuAction } from './SimpleMenuAction'
 
-export class MenuInstance<Props> implements Activity {
+export class MenuInstance implements Activity {
     /** called when menu starts */
     onStart(): void {}
 
@@ -35,8 +35,7 @@ export class MenuInstance<Props> implements Activity {
 
     constructor(
         //
-        public menu: Menu<Props>,
-        public props: Props,
+        public menu: Menu,
         public keysTaken: Set<string> = new Set(),
     ) {
         makeAutoObservable(this, {
@@ -46,7 +45,7 @@ export class MenuInstance<Props> implements Activity {
     }
 
     get entries(): MenuEntry[] {
-        return this.menu.def.entries(this.props, menuBuilder)
+        return this.menu.def.entries(menuBuilder)
     }
 
     // 💬 2024-10-10 rvion:
@@ -82,8 +81,8 @@ export class MenuInstance<Props> implements Activity {
                 const res = this.findSuitableKeys(entry.label, allocatedKeys)
                 // ⏸️ if (res == null) continue
                 out.push({ entry: entry, char: res?.char, charIx: res?.pos })
-            } else if (isBoundMenu(entry)) {
-                const res = this.findSuitableKeys(entry.menu.title, allocatedKeys)
+            } else if (isMenu(entry)) {
+                const res = this.findSuitableKeys(entry.title, allocatedKeys)
                 // ⏸️ if (res == null) continue
                 out.push({ entry: entry, char: res?.char, charIx: res?.pos })
             } else {

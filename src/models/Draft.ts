@@ -1,6 +1,7 @@
 import type { DraftExecutionContext } from '../cards/App'
 import type { LibraryFile } from '../cards/LibraryFile'
 import type { Field_group } from '../csuite/fields/group/FieldGroup'
+import type { Provenance } from '../csuite/provenance/Provenance'
 import type { LiveDB } from '../db/LiveDB'
 import type { TABLES } from '../db/TYPES.gen'
 import type { CushyAppL } from './CushyApp'
@@ -12,6 +13,7 @@ import { observable, reaction } from 'mobx'
 import { Status } from '../back/Status'
 import { cushyFactory } from '../controls/Builder'
 import { getGlobalSeeder } from '../csuite/fields/seed/Seeder'
+import { lazy_viaProxy } from '../csuite/lazy/lazy_viaProxy'
 import { SQLITE_false, SQLITE_true } from '../csuite/types/SQLITE_boolean'
 import { toastError } from '../csuite/utils/toasts'
 import { BaseInst } from '../db/BaseInst'
@@ -33,6 +35,11 @@ export class DraftL extends BaseInst<TABLES['draft']> {
     dataObservabilityConfig = {
         formSerial: observable.ref,
     }
+
+    provenance: Provenance = lazy_viaProxy(() => ({
+        uri: this.app.script.id,
+        open: () => this.app.script.openInVSCode(),
+    }))
 
     // 🔴 HACKY
     shouldAutoStart = false

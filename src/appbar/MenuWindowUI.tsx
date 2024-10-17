@@ -1,6 +1,6 @@
 import type { MenuEntry } from '../csuite/menu/MenuEntry'
 
-import { menuWithoutProps, type MenuWithoutProps } from '../csuite/menu/Menu'
+import { defineMenu, type Menu } from '../csuite/menu/Menu'
 import { capitalize } from '../csuite/utils/capitalize'
 import { getPanelCategoryIcon, type PanelCategory } from '../router/PanelCategory'
 import { allPanels } from '../router/PANELS'
@@ -17,38 +17,36 @@ const groupBy = <X extends any, Key extends string>(
 ): Record<Key, X[]> => arr.reduce<Record<string, X[]>>((a, b, i) => ((a[getKey(b, i, arr)] ||= []).push(b), a), {})
 
 // const XXX = ['Civitai', 'Squoosh']
-export const menuPanels: MenuWithoutProps = menuWithoutProps({
+export const menuPanels: Menu = defineMenu({
     title: 'Panels',
     entries: (): MenuEntry[] => {
         const byCategory = groupBy(allPanels, (v) => v.category)
         return [
             // Alphabetically
-            menuWithoutProps({
+            defineMenu({
                 title: 'Alphabetically',
                 entries: () => allPanels.flatMap((panel) => panel.menuEntries).toSorted((a, b) => a.title.localeCompare(b.title)),
                 icon: 'mdiSortAlphabeticalVariant',
-            }).bind(),
+            }),
 
             // By categories
             ...Object.entries(byCategory).map(([category, panels]) => {
-                return menuWithoutProps({
+                return defineMenu({
                     title: capitalize(category),
                     entries: () => panels.flatMap((p) => p.menuEntries),
                     icon: getPanelCategoryIcon(category as PanelCategory),
-                }).bind()
+                })
             }),
 
             // menuWithoutProps({
             //     title: 'FooBar',
             //     entries: () => allPanels.filter((v) => !XXX.includes(v.name)).flatMap((panel) => panel.menuEntries),
-            // }).bind(),
+            // }),
 
             // menuWithoutProps({
             //     title: 'Utils',
             //     entries: () => allPanels.filter((v) => XXX.includes(v.name)).flatMap((panel) => panel.menuEntries),
-            // }).bind(),
+            // }),
         ]
     },
 })
-
-export const MenuPanelsUI = (): JSX.Element => <menuPanels.UI />

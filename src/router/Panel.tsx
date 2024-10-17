@@ -1,11 +1,10 @@
 import type { Command } from '../csuite/commands/Command'
 import type { IconName } from '../csuite/icons/icons'
-import type { BoundMenu } from '../csuite/menu/BoundMenuOpts'
 import type { PanelCategory } from './PanelCategory'
 
 import { ctx_global } from '../csuite/command-topic/ctx_global'
 import { command } from '../csuite/commands/Command'
-import { menuWithoutProps } from '../csuite/menu/Menu'
+import { defineMenu, type Menu } from '../csuite/menu/Menu'
 import { SimpleMenuAction } from '../csuite/menu/SimpleMenuAction'
 import { Trigger } from '../csuite/trigger/Trigger'
 
@@ -82,9 +81,9 @@ export class Panel<Props> {
         return this.p.icon
     }
 
-    get menuEntries(): (BoundMenu | Command)[] {
+    get menuEntries(): (Menu | Command)[] {
         const presets = Object.entries(this.p.presets ?? {})
-        const out: (BoundMenu | Command)[] = []
+        const out: (Menu | Command)[] = []
 
         const defEntry = this.defaultCommand /* new SimpleMenuAction({
             label: this.name,
@@ -109,12 +108,12 @@ export class Panel<Props> {
                     },
                 })
             })
-            const x: BoundMenu = menuWithoutProps({
+            const x: Menu = defineMenu({
                 icon: this.p.icon,
                 title: this.name,
                 id: this.name,
                 entries: () => [defEntry, ...sub],
-            }).bind()
+            })
             out.push(x)
         }
         return out

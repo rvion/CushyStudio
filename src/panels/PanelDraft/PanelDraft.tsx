@@ -12,6 +12,7 @@ import { Frame } from '../../csuite/frame/Frame'
 import { MarkdownUI } from '../../csuite/markdown/MarkdownUI'
 import { MessageErrorUI } from '../../csuite/messages/MessageErrorUI'
 import { MessageInfoUI } from '../../csuite/messages/MessageInfoUI'
+import { ProvenanceCtx } from '../../csuite/provenance/Provenance'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { SelectUI } from '../../csuite/select/SelectUI'
 import { QuickTableUI } from '../../csuite/utils/quicktable'
@@ -110,7 +111,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
     const metadata = draft.app.executable_orExtract?.metadata
     // {/* <ActionDraftListUI card={card} /> */}
     const fpath = draft.file.fPath
-    const OUT = (
+    let OUT = (
         <draftContext.Provider value={draft} key={draft.id}>
             {/* <DraftHeaderUI
                 draft={draft}
@@ -196,6 +197,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
             </Frame>
         </draftContext.Provider>
     )
+    OUT = <ProvenanceCtx.Provider value={draft.provenance} children={OUT} />
     if (!wrapMobile) return OUT
     return (
         <div tw='flex flex-col items-center pt-2'>

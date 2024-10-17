@@ -1,6 +1,6 @@
 import { ctx_global } from '../csuite/command-topic/ctx_global'
 import { command } from '../csuite/commands/Command'
-import { menuWithoutProps } from '../csuite/menu/Menu'
+import { defineMenu } from '../csuite/menu/Menu'
 import { Trigger } from '../csuite/trigger/Trigger'
 
 const helpCommands = [
@@ -42,7 +42,7 @@ const helpCommands = [
     }),
 ]
 
-export const MenuHelpV2 = menuWithoutProps({
+export const MenuHelpV2 = defineMenu({
     title: 'Help',
     entries: () => helpCommands,
 })

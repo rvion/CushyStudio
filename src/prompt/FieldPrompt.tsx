@@ -9,10 +9,11 @@ import { produce } from 'immer'
 
 import { registerFieldClass } from '../csuite/fields/WidgetUI.DI'
 import { Field } from '../csuite/model/Field'
-import { compilePrompt } from './_compile'
+import { compilePrompt } from './compiler/_compile'
 import { parser } from './grammar/grammar.parser'
 import { PromptAST } from './grammar/grammar.practical'
-import { WidgetPromptCollapsibleUI, WidgetPromptUI } from './WidgetPromptUI'
+import { WidgetPromptCollapsibleUI } from './widgets/WidgetPromptCollapsibleUI'
+import { WidgetPromptUI } from './widgets/WidgetPromptUI'
 
 export type CompiledPrompt = {
     /** e.g. "score_9 score_8 BREAK foo bar baz" */

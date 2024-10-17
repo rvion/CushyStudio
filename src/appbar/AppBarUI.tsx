@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite'
 import { Button } from '../csuite/button/Button'
 import { SpacerUI } from '../csuite/components/SpacerUI'
 import { Frame } from '../csuite/frame/Frame'
-import { menuWithoutProps } from '../csuite/menu/Menu'
+import { defineMenu } from '../csuite/menu/Menu'
 import { cmd_fav_toggleFavBar } from '../operators/commands/cmd_favorites'
 import { ConnectionInfoUI } from '../panels/host/HostWebsocketIndicatorUI'
 import { UpdateBtnUI } from '../updater/UpdateBtnUI'
@@ -19,13 +19,13 @@ import { MenuUtilsUI } from './MenuUtilsUI'
 import { menuPanels } from './MenuWindowUI'
 import { PerspectivePickerUI } from './PerspectivePickerUI'
 
-const mainMenu = menuWithoutProps({
+const mainMenu = defineMenu({
     title: 'mainMenu',
     entries: () => [
         //
-        menuPanels.bind(),
-        menuCommands.bind(),
-        menuComfyUI2.bind(),
+        menuPanels,
+        menuCommands,
+        menuComfyUI2,
     ],
     // horizontalMenuGroup: true,
 })

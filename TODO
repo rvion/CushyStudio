@@ -1,3 +1,34 @@
+SHORT TERM TODO:
+
+    ☐ fix the seed widget: right now, when in random mode (not set to a specific number) evaluating two prompts will use the same seed. it's a bug
+
+    ☐ undoing choices via the undo button doesn't work properly. choices no longer there are still displayed
+        ☐  absolutely need to write some failing test first; clearly some reactivity issue
+
+    ☐ prompts boxs are synced between two drafts this should not happen (have not checked other ui, vinsi pony app has this problem)
+        ☐ find simple repro
+
+    ☐ prompt plugins issues
+        ☐ like the `preview final prompt` are not synced with the text. once opened, the text is never updated
+        ☐ in the `lora plugin`: the first letter break focus, and then it allows you to type properly
+
+    ☐ the generated prompt is just broken. (foo, bar, baz :1.1) generates shitty stuff.
+        ☐ write test before fixing so those kind of stuff are never broken anymore
+
+    ☐ gallery is broken with images incorrectly overlapping
+
+    ☐ a draft is only synced when its duplicated, if you make a new item in a list after the duplication that item isn't synced
+
+    ☐ gallery no longer resize dynamically; observability issues again
+
+    ☐ open in vscode enty in field menu not working
+
+Nice to have?:
+    ☐ Can step output be chosen what can be turned off and on? like only image on or only graphs?
+        ☐ have toogles to allow to hide some of the outputs ?
+
+    ☐ make a proper controlnet UI
+---------------------
 🔴 = important
 
 misc:
@@ -5,12 +36,11 @@ misc:
         ☐ 🔴resetting choices no longer work properly
             ☐ need a test
     ☐ shells
-        ☐ right click anywhere on field to bring field menu on fields
+        ✔ right click anywhere on field to bring field menu on fields @done(24-10-17 20:41)
         ☐ remove undo button, and move it as left gutter
     ☐ prompt:
         ☐ 🔴 fix prompt compliation
     ☐ sdxl
-        ☐ make a proper controlnet UI
     ☐ research
          ☐ field type templates
             ☐ only use FieldTypes instead of schema / field

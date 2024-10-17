@@ -5,8 +5,8 @@ import React from 'react'
 
 import { renderFCOrNode } from '../../csuite-cushy/shells/_isFC'
 import { isBoundCommand } from '../introspect/_isBoundCommand'
-import { isBoundMenu } from '../introspect/_isBoundMenu'
 import { isCommand } from '../introspect/_isCommand'
+import { isMenu } from '../introspect/_isMenu'
 import { isWidget } from '../model/$FieldSym'
 import { RevealUI } from '../reveal/RevealUI'
 import { formatMenuLabel } from './formatMenuLabel'
@@ -91,7 +91,7 @@ export const MenuBarUI = observer(function MenuBar({
         }
 
         // bound menu
-        else if (isBoundMenu(entry)) {
+        else if (isMenu(entry)) {
             const label = entry.title
 
             // 🔴 wrong place
@@ -103,7 +103,7 @@ export const MenuBarUI = observer(function MenuBar({
             return (
                 <RevealUI //
                     tw='inline-flex'
-                    key={entry.uid}
+                    key={entry.id}
                     ref={ABC.ref}
                     trigger='menubar-item'
                     hasBackdrop={false}
@@ -168,7 +168,7 @@ export const MenuBarUI = observer(function MenuBar({
                             // if (entry.entry instanceof SimpleMenuEntryPopup) entry.entry.onPick()
                             else if (isBoundCommand(entry.entry)) void entry.entry.execute()
                             else if (isCommand(entry.entry)) void entry.entry.execute()
-                            else if (isBoundMenu(entry.entry)) {
+                            else if (isMenu(entry.entry)) {
                                 if (entry.ref == null) console.log(`[🔴] no REFFOR`, entry)
                                 else if (entry.ref.current == null) console.log(`[🔴] no entry ref current`)
                                 else void entry.ref.current.getRevealState().open('programmatically-via-open-function')

@@ -4,9 +4,10 @@ import type { ReactNode } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import { useCSuite } from '../../csuite/ctx/useCSuite'
+import { fieldActionMenu } from '../../csuite/form/fieldActionMenu'
 import { WidgetLabelContainerUI } from '../../csuite/form/WidgetLabelContainerUI'
-import { menu_fieldActions } from '../../csuite/form/WidgetMenu'
 import { Frame } from '../../csuite/frame/Frame'
+import { useProvenance } from '../../csuite/provenance/Provenance'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { AnimatedSizeUI } from '../../csuite/smooth-size/AnimatedSizeUI'
 import { WidgetPresetsUI } from '../catalog/Presets/WidgetPresets'
@@ -20,6 +21,7 @@ const CushyShellUI = observer(function CushySHell(
 ) {
     const field = p.field
     const utils = p.presenter.utils
+    const provenance = useProvenance()
     const csuite = useCSuite()
     if (p.field.isHidden && !p.shouldShowHiddenFields) return null
     let WUI: ReactNode = (
@@ -41,7 +43,7 @@ const CushyShellUI = observer(function CushySHell(
                     blurAnchor: true,
                     clickAnchor: true,
                 }}
-                content={() => <menu_fieldActions.UI props={p.field} />}
+                content={() => <fieldActionMenu.UI props={{ field: p.field, provenance }} />}
             >
                 {utils.renderFCOrNodeWithWrapper(p.HEADER, {}, p.Head, p)}
             </RevealUI>

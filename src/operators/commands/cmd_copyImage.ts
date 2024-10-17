@@ -3,7 +3,7 @@ import type { MediaImageL } from '../../models/MediaImage'
 import { cushyFactory } from '../../controls/Builder'
 import { command, type Command } from '../../csuite/commands/Command'
 import { lazy_viaProxy } from '../../csuite/lazy/lazy_viaProxy'
-import { type Menu, menuWithProps } from '../../csuite/menu/Menu'
+import { defineMenuTemplate, type MenuTemplate } from '../../csuite/menu/MenuTemplate'
 import { ctx_image } from '../contexts/ctx_image'
 
 export type AvailableImageCopyFormats = 'PNG' | 'JPG' | 'WEBP'
@@ -65,7 +65,7 @@ const form_foo = lazy_viaProxy(() =>
     ),
 )
 
-export const menu_imageActions: Menu<MediaImageL> = menuWithProps({
+export const menu_imageActions: MenuTemplate<MediaImageL> = defineMenuTemplate({
     title: 'image actions',
     entries: (image: MediaImageL) => [
         //
@@ -74,7 +74,7 @@ export const menu_imageActions: Menu<MediaImageL> = menuWithProps({
     ],
 })
 
-export const menu_copyImageAs: Menu<MediaImageL> = menuWithProps({
+export const menu_copyImageAs: MenuTemplate<MediaImageL> = defineMenuTemplate({
     title: 'Save image as',
     entries: (image: MediaImageL) => [
         cmd_copyImage_as_PNG.bind(image),

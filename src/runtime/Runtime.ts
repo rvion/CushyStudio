@@ -10,6 +10,8 @@ import type { StepL } from '../models/Step'
 import type { CompiledPrompt } from '../prompt/FieldPrompt'
 import type { STATE } from '../state/state'
 import type { Wildcards } from '../widgets/prompter/nodes/wildcards/wildcards'
+import type * as FS from 'fs'
+import type * as Pathe from 'pathe'
 
 import child_process, { execSync } from 'child_process'
 import { createHash } from 'crypto'
@@ -22,7 +24,7 @@ import { toJSONError } from '../csuite/errors/toJSONError'
 import { createRandomGenerator } from '../csuite/rnd/createRandomGenerator'
 import { braceExpansion } from '../csuite/utils/expansion'
 import { checkIfComfyImageExists } from '../models/ImageInfos_ComfyGenerated'
-import { compilePrompt } from '../prompt/_compile'
+import { compilePrompt } from '../prompt/compiler/_compile'
 import { _formatAsRelativeDateTime } from '../updater/_getRelativeTimeString'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { RuntimeApps } from './RuntimeApps'
@@ -148,13 +150,13 @@ export class Runtime<FIELD extends Field = any> {
      * your app can do IO.
      * with great power comes great responsibility.
      */
-    Filesystem: typeof import('fs') = fs
+    Filesystem: typeof FS = fs
 
     /**
      * path manifulation library;
      * avoid concateing paths yourself if you want your app
      */
-    Path: typeof import('pathe') = path
+    Path: typeof Pathe = path
 
     isCurrentDraftAutoStartEnabled = (): Maybe<boolean> => {
         return this.step.draft?.shouldAutoStart
@@ -427,7 +429,7 @@ export class Runtime<FIELD extends Field = any> {
         subfolder: string
         filename: string
     }): Promise<boolean> => {
-        return await checkIfComfyImageExists(this.Cushy.getServerHostHTTP(), imageInfo)
+        return checkIfComfyImageExists(this.Cushy.getServerHostHTTP(), imageInfo)
     }
 
     get generatedImages(): MediaImageL[] {
@@ -645,7 +647,7 @@ export class Runtime<FIELD extends Field = any> {
 
     loadImageAnswer = async (ia: MediaImageL): Promise<ImageAndMask> => {
         const img = this.Cushy.db.media_image.getOrThrow(ia.id)
-        return await img.loadInWorkflow(this.workflow)
+        return img.loadInWorkflow(this.workflow)
     }
 
     private extractString = (message: Printable): string => {
