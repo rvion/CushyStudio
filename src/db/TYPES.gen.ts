@@ -293,8 +293,7 @@ export type ProjectUpdate = {
     autostartMaxDelay?: number
 }
 
-export type ProjectBackRefsToHandleOnDelete = {
-}
+export type ProjectBackRefsToHandleOnDelete = EmptyObject
 
 export type ProjectT = {
     id: ProjectID
@@ -642,8 +641,7 @@ export type ComfySchemaUpdate = {
     hostID?: HostID | null
 }
 
-export type ComfySchemaBackRefsToHandleOnDelete = {
-}
+export type ComfySchemaBackRefsToHandleOnDelete = EmptyObject
 
 export type ComfySchemaT = {
     id: ComfySchemaID
@@ -733,8 +731,7 @@ export type MediaTextUpdate = {
     title?: string
 }
 
-export type MediaTextBackRefsToHandleOnDelete = {
-}
+export type MediaTextBackRefsToHandleOnDelete = EmptyObject
 
 export type MediaTextT = {
     id: MediaTextID
@@ -831,8 +828,7 @@ export type MediaVideoUpdate = {
     url?: string
 }
 
-export type MediaVideoBackRefsToHandleOnDelete = {
-}
+export type MediaVideoBackRefsToHandleOnDelete = EmptyObject
 
 export type MediaVideoT = {
     id: MediaVideoID
@@ -973,8 +969,7 @@ export type MediaImageUpdate = {
     safetyRating?: T.MediaImage_safetyRating | null
 }
 
-export type MediaImageBackRefsToHandleOnDelete = {
-}
+export type MediaImageBackRefsToHandleOnDelete = EmptyObject
 
 export type MediaImageT = {
     id: MediaImageID
@@ -1113,8 +1108,7 @@ export type Media3dDisplacementUpdate = {
     promptID?: ComfyPromptID | null
 }
 
-export type Media3dDisplacementBackRefsToHandleOnDelete = {
-}
+export type Media3dDisplacementBackRefsToHandleOnDelete = EmptyObject
 
 export type Media3dDisplacementT = {
     id: Media3dDisplacementID
@@ -1221,8 +1215,7 @@ export type RuntimeErrorUpdate = {
     stepID?: StepID | null
 }
 
-export type RuntimeErrorBackRefsToHandleOnDelete = {
-}
+export type RuntimeErrorBackRefsToHandleOnDelete = EmptyObject
 
 export type RuntimeErrorT = {
     id: RuntimeErrorID
@@ -1312,8 +1305,7 @@ export type MediaSplatUpdate = {
     url?: string
 }
 
-export type MediaSplatBackRefsToHandleOnDelete = {
-}
+export type MediaSplatBackRefsToHandleOnDelete = EmptyObject
 
 export type MediaSplatT = {
     id: MediaSplatID
@@ -1388,8 +1380,7 @@ export type CustomDataUpdate = {
     json?: T.CustomData_json
 }
 
-export type CustomDataBackRefsToHandleOnDelete = {
-}
+export type CustomDataBackRefsToHandleOnDelete = EmptyObject
 
 export type CustomDataT = {
     id: CustomDataID
@@ -1740,8 +1731,7 @@ export type AuthUpdate = {
     expires_in?: number | null
 }
 
-export type AuthBackRefsToHandleOnDelete = {
-}
+export type AuthBackRefsToHandleOnDelete = EmptyObject
 
 export type AuthT = {
     id: AuthID
@@ -1832,8 +1822,7 @@ export type TreeEntryUpdate = {
     isSelected?: number | null
 }
 
-export type TreeEntryBackRefsToHandleOnDelete = {
-}
+export type TreeEntryBackRefsToHandleOnDelete = EmptyObject
 
 export type TreeEntryT = {
     id: TreeEntryID
@@ -2043,8 +2032,7 @@ export type MediaCustomUpdate = {
     viewID?: string
 }
 
-export type MediaCustomBackRefsToHandleOnDelete = {
-}
+export type MediaCustomBackRefsToHandleOnDelete = EmptyObject
 
 export type MediaCustomT = {
     id: MediaCustomID
@@ -2134,8 +2122,7 @@ export type PerspectiveUpdate = {
     priority?: number
 }
 
-export type PerspectiveBackRefsToHandleOnDelete = {
-}
+export type PerspectiveBackRefsToHandleOnDelete = EmptyObject
 
 export type PerspectiveT = {
     id: PerspectiveID
