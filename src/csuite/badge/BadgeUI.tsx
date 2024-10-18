@@ -34,7 +34,7 @@ export const BadgeUI = observer(function BadgeUI_({
             tw={[
                 //
                 'leading-normal',
-                'rounded px-1 whitespace-nowrap',
+                'whitespace-nowrap rounded px-1',
                 hasAction && 'cursor-pointer',
                 'w-fit',
                 // 'lh-inside h-inside',

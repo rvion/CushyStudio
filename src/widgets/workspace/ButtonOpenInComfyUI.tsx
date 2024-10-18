@@ -14,7 +14,7 @@ export const ButtonOpenInComfyUI = observer(function ButtonOpenInComfyUI_(p: { g
             : graphOrGraphID
 
     return (
-        <div tw='flex gap-2 items-center'>
+        <div tw='flex items-center gap-2'>
             Open:
             <Button icon='mdiOpenInNew' look='ghost' size='sm' onClick={graph.menuAction_openInTab}>
                 open in ComfyUI Tab

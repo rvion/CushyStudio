@@ -27,7 +27,7 @@ export const WidgetListExtUI = observer(function WidgetListExtUI_<T extends Base
     const listExt = p.field
     const { area } = listExt.fields
     return (
-        <div className='_WidgetListExtUI' tw='flex-grow w-full'>
+        <div className='_WidgetListExtUI' tw='w-full flex-grow'>
             {/* <ListControlsUI widget={widget} /> */}
             {/* <WidgetSizeX_LineUI size={area} bounds={listExt} /> */}
             {/* <WigetSizeXUI size={area} bounds={listExt} /> */}
@@ -52,7 +52,7 @@ export const WidgetListExt_LineUI = observer(function WidgetList_LineUI_(p: {
 }) {
     return (
         <div tw='flex flex-1 items-center'>
-            <div tw='text-sm text-gray-500 italic'>{p.field.fields.items.length} items</div>
+            <div tw='text-sm italic text-gray-500'>{p.field.fields.items.length} items</div>
             <div tw='ml-auto'>
                 <ListControlsUI field={p.field.fields.items} />
             </div>

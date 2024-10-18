@@ -8,7 +8,7 @@ export const Panel_ViewLatent = observer(function Panel_ViewLatent_(p: {}) {
     const url = st.latentPreview?.url
     // 🛝 const background = st.galleryConf.value.galleryBgColor ?? undefined
     return (
-        <div tw='w-full h-full flex flex-col' /* 🛝 style={{ background }} */>
+        <div tw='flex h-full w-full flex-col' /* 🛝 style={{ background }} */>
             <TransformWrapper centerZoomedOut centerOnInit>
                 <TransformComponent
                     wrapperStyle={{ height: '100%', width: '100%' }}
@@ -21,7 +21,7 @@ export const Panel_ViewLatent = observer(function Panel_ViewLatent_(p: {}) {
                             alt='last generated image'
                         />
                     ) : (
-                        <div tw='w-96 h-96 flex items-center justify-center'>
+                        <div tw='flex h-96 w-96 items-center justify-center'>
                             <div>no image yet</div>
                         </div>
                     )}

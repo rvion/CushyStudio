@@ -12,12 +12,12 @@ export const SelectValueContainerUI = observer(function SelectValueContainerUI_(
     return (
         <div
             tw={[
-                'flex gap-0.5 flex-grow items-center lh-input-2 ',
+                'lh-input-2 flex flex-grow items-center gap-0.5 ',
                 p.wrap === 'no-wrap-no-overflow-hidden' //
                     ? ''
                     : p.wrap === true
                       ? 'flex-wrap'
-                      : 'overflow-hidden line-clamp-1 text-ellipsis whitespace-nowrap',
+                      : 'line-clamp-1 overflow-hidden text-ellipsis whitespace-nowrap',
             ]}
         >
             {p.children}

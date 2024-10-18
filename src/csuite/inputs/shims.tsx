@@ -61,7 +61,7 @@ export const Surface = (p: {
         <div
             //
             // style={{ border: '1px solid #404040' }}
-            tw='p-2 border border-opacity-25 bg-opacity-50 border-base-content input-bordered rounded-btn'
+            tw='border-base-content input-bordered rounded-btn border border-opacity-25 bg-opacity-50 p-2'
             {...rest}
         >
             {header}
@@ -80,7 +80,7 @@ export const ProgressLine = observer(function ProgressLine_(p: {
     return (
         <progress
             //
-            tw={[status, 'm-0 progress', p.className]}
+            tw={[status, 'progress m-0', p.className]}
             value={p.percent}
             max={100}
         ></progress>

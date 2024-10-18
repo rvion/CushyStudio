@@ -134,7 +134,7 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: {
         { title: 'autoui+id', conf: { preserveId: true, autoUI: true } },
     ]
     return (
-        <Surface className={p.className} tw='overflow-auto virtua'>
+        <Surface className={p.className} tw='virtua overflow-auto'>
             <LegacyFieldUI k='name' v={file.name} />
             <LegacyFieldUI k='size' v={file.size} />
             <LegacyFieldUI k='name' v={file.type} />

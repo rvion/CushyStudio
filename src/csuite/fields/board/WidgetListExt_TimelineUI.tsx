@@ -18,14 +18,14 @@ export const WidgetListExt_TimelineUI = observer(function WidgetTimelineUI_<T ex
     return (
         <div tw='overflow-auto'>
             <div tw='flex flex-col gap-1' style={{ width: value.area.width * scale }}>
-                <div style={{ minHeight: '1rem', width: value.area.width * scale }} tw='timeline-item w-full relative'></div>
+                <div style={{ minHeight: '1rem', width: value.area.width * scale }} tw='timeline-item relative w-full'></div>
                 {entries.map(({ shape, value: widget }, ix) => {
                     const { width, x } = shape.value
                     return (
                         <div
                             key={widget.id}
                             style={{ minHeight: '2rem', width: value.area.width * scale }}
-                            tw='timeline-item w-full relative'
+                            tw='timeline-item relative w-full'
                         >
                             <div
                                 tw={[

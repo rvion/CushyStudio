@@ -46,7 +46,7 @@ export const DraftMenuDataBlockUI = observer(function DraftMenuDataBlockUI_(p: {
                     <Button
                         base={{ contrast: -0.077 }}
                         borderless
-                        tw='!gap-0 !px-0.5 !rounded-none'
+                        tw='!gap-0 !rounded-none !px-0.5'
                         icon='mdiPencilBox'
                         suffixIcon={'mdiChevronDown'}
                     />

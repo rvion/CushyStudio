@@ -29,7 +29,7 @@ export const PanelComfyHostsUI = observer(function PanelComfyHostsUI_(p: PanelCo
     const csuite = useCSuite()
 
     return (
-        <div tw='w-full h-full flex flex-col gap-2 p-2'>
+        <div tw='flex h-full w-full flex-col gap-2 p-2'>
             <div className='line'>
                 <div>Primary Host</div>
                 <Frame //

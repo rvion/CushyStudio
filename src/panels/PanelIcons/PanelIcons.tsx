@@ -52,7 +52,7 @@ export const PanelIconUI = observer(function PanelIconUI_(p: NO_PROPS) {
     const csuite = useCSuite()
 
     return (
-        <div tw='h-full w-full flex flex-col'>
+        <div tw='flex h-full w-full flex-col'>
             <PanelHeaderUI>
                 {/* {form.fields.query.header()} */}
                 <SpacerUI />

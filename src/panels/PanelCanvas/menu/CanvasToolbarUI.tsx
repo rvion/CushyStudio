@@ -16,7 +16,7 @@ export const CanvasToolbarUI = observer(function CanvasToolbarUI_(p: {}) {
             panelState={canvas.toolShelf}
             defaultSize={cushy.preferences.interface.value.toolBarIconSize}
         >
-            <div tw='flex flex-col p-2 gap-1'>
+            <div tw='flex flex-col gap-1 p-2'>
                 {/* <Button // NONE ----------------------------------------------------------------
                     icon='mdiSetNone'
                     onClick={() => canvas.enable_none()}

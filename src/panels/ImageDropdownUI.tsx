@@ -157,7 +157,7 @@ export const ImageActionMenu = observer(function ImageActionMenu_(p: { img: Medi
                                         }}
                                     />
                                     <div className='line ml-auto'>
-                                        <div tw='opacity-55 italic'>({draft.app.name})</div>
+                                        <div tw='italic opacity-55'>({draft.app.name})</div>
                                     </div>
                                 </div>
                             </MenuItem>

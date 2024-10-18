@@ -109,7 +109,7 @@ export const HostQuickMenuUI = observer(function HostQuickMenuUI_(p: { host: Hos
                 ),
             )}
             <div // logs
-                tw='opacity-85 overflow-auto resize'
+                tw='resize overflow-auto opacity-85'
                 style={{ width: '800px', maxHeight: '400px' }}
             >
                 <div>

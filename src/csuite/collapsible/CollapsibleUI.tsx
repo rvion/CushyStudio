@@ -13,7 +13,7 @@ export const CollapsibleUI = observer(function CollapsibleUI_(p: CollapsibleProp
     // 🔶 AnimatedSizeUI doesn't work with padding
     // (demo: <CollapsibleUI tw='pt-5' ... /> with encapsulating AnimatedSizeUI instead of div)
     return (
-        <div tw={['flex flex-col cursor-pointer']} className={p.className} style={p.style}>
+        <div tw={['flex cursor-pointer flex-col']} className={p.className} style={p.style}>
             {SELF.p.hideAnchorWhenExpanded && SELF.isExpanded ? null : (
                 <div tw='flex select-none' onClick={(ev) => SELF.toggle()}>
                     {p.children ?? (

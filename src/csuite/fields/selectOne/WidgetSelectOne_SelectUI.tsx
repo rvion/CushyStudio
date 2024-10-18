@@ -19,7 +19,7 @@ export const WidgetSelectOne_SelectUI = observer(function WidgetSelectOne_Select
         // when not-set:
         | undefined
     return (
-        <div tw='flex-1 w-full'>
+        <div tw='w-full flex-1'>
             <SelectUI<OPTION>
                 // 💬 2024-09-16 rvion: still necessary ?
                 // | probably not; todo: remove

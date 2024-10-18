@@ -5,7 +5,7 @@ import { type GalleryConf, useGalleryConf } from './galleryConf'
 export const GallerySearchControlsUI = observer(function GallerySearchControlsUI_(p: {}) {
     const conf: GalleryConf = useGalleryConf()
     return (
-        <div tw='flex gap-1 items-center'>
+        <div tw='flex items-center gap-1'>
             {/* {conf.fields.filterPath.header()} */}
             {/* {conf.fields.filterAppName.header()} */}
             {conf.fields.filterTag.header()}

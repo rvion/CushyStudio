@@ -61,7 +61,7 @@ export const PanelContainerUI = observer(function PanelContainer(p: {
                 <Frame
                     col
                     tw={[
-                        'flex-1 h-full w-full',
+                        'h-full w-full flex-1',
                         'overflow-auto', // overflow-auto to only show scrollbar when needed
                         // 'overflow-scroll',
                     ]}
@@ -78,7 +78,7 @@ export const PanelContainerUI = observer(function PanelContainer(p: {
                     onFocus={(e) => e.currentTarget.classList.add('Hovered-Region')}
                     onBlur={(e) => e.currentTarget.classList.remove('Hovered-Region')}
                 >
-                    <Component {...panelProps} className='h-full w-full border-none' />
+                    <Component {...panelProps} className='size-full border-none' />
                 </Frame>
             </panelContext.Provider>
         </ErrorBoundaryUI>

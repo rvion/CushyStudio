@@ -44,7 +44,7 @@ export const PanelHeaderUI = observer(function PanelHeader({
                     : 'h-widget',
                 'UI-PanelHeader',
                 'CSHY-panel-header',
-                'flex gap-1 select-none',
+                'flex select-none gap-1',
                 'overflow-auto',
                 'items-center',
                 // 'flex-wrap',

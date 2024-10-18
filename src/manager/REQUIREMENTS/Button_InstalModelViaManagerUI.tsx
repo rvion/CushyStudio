@@ -42,12 +42,12 @@ export const Button_InstalModelViaManagerUI = observer(function Button_InstalMod
             {/* Infos------------------------------------ */}
             <div tw='flex flex-col'>
                 <div tw='flex items-center'>
-                    <span tw='font-bold whitespace-nowrap text-xl text-fuchsia-500'>
+                    <span tw='whitespace-nowrap text-xl font-bold text-fuchsia-500'>
                         <span className='material-symbols-outlined'>model_training</span>
                     </span>
                     <div tw='font-bold [line-height:1rem]'>{mi.name}</div>
                 </div>
-                <span tw='italic text-sm opacity-75 line-clamp-2'>
+                <span tw='line-clamp-2 text-sm italic opacity-75'>
                     <b>{mi.size}</b> - {mi.description}
                     {/* TODO: show install method by icon? */}
                     {/* (via {plugin.install_type}) */}

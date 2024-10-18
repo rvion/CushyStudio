@@ -75,7 +75,7 @@ export const ScribbleCanvas = (p: {
     }
     return (
         <div style={p.style} className={p.className}>
-            <div tw='flex gap-2 items-start'>
+            <div tw='flex items-start gap-2'>
                 <Button
                     size='sm'
                     onClick={() => {

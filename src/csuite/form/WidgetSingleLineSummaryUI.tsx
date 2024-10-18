@@ -15,7 +15,7 @@ export const WidgetSingleLineSummaryUI = observer(function WidgetSingleLineSumma
     // )
     return (
         <FrameSubtle //
-            tw='COLLAPSE-PASSTHROUGH overflow-hidden ml-1 lh-input line-clamp-1 italic'
+            tw='COLLAPSE-PASSTHROUGH lh-input ml-1 line-clamp-1 overflow-hidden italic'
             {...p}
         />
     )

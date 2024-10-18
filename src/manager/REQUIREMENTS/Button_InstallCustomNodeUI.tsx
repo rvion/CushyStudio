@@ -22,25 +22,25 @@ export const Button_InstallCustomNodeUI = observer(function Button_InstallCustom
     const [isExpanded, setIsExpanded] = useState<boolean>(false)
 
     return (
-        <Frame base tw={[isInstalled ? 'bg-success-1' : null, 'flex-col p-2 rounded']}>
+        <Frame base tw={[isInstalled ? 'bg-success-1' : null, 'flex-col rounded p-2']}>
             <div tw='flex pb-2' /* Contains everything but description */>
                 <div tw='flex-1 flex-col' /* Node info container */>
                     <div tw='flex items-center gap-1 p-0.5' /* Title container */>
-                        <span tw='font-bold whitespace-nowrap text-xl text-blue-500'>
+                        <span tw='whitespace-nowrap text-xl font-bold text-blue-500'>
                             <span className='material-symbols-outlined'>account_tree</span>
                         </span>
                         <div tw='flex-col self-start' /* Title and Author */>
                             <div style={{ lineHeight: '1rem' }}>
                                 <span className='text-primary text-base font-bold'>NODES: {plugin.title}</span>
                             </div>
-                            <div tw='text-xs opacity-75 pl-0'>{plugin.author}</div>
+                            <div tw='pl-0 text-xs opacity-75'>{plugin.author}</div>
                         </div>
                         {/* {isInstalled ? <span tw='text-green-500'>Installed</span> : <span tw='text-red-500'>Custom Nodes Required</span>} */}
                         <div className='flex-1'></div>
                         {renderStatus(pluginStatus, p.optional, 'text-xs pr-2 self-start')}
                     </div>
                 </div>
-                <div tw='flex-col flex'>
+                <div tw='flex flex-col'>
                     {!isInstalled && (
                         <Button
                             icon={isInstalled ? 'mdiCheck' : 'mdiDownload'}
@@ -55,12 +55,12 @@ export const Button_InstallCustomNodeUI = observer(function Button_InstallCustom
             </div>
 
             <div // Description Container
-                tw={['rounded-b py-0.5 px-1 cursor-default', isExpanded ? '' : 'truncate', 'hover:brightness-125']}
+                tw={['cursor-default rounded-b px-1 py-0.5', isExpanded ? '' : 'truncate', 'hover:brightness-125']}
                 onClick={(ev) => {
                     setIsExpanded(!isExpanded)
                 }}
             >
-                <span tw='italic text-sm opacity-75'>
+                <span tw='text-sm italic opacity-75'>
                     {plugin.description}
                     {/* TODO: show install method by icon? */}
                     {/* (via {plugin.install_type}) */}

@@ -7,7 +7,7 @@ export const SectionTitleUI = observer(function SectionTitleUI_(p: {
 }) {
     return (
         <b className={`flex ${p.className}`}>
-            <div className='mb-auto mt-auto flex-grow'>{p.label}</div>
+            <div className='my-auto grow'>{p.label}</div>
             {p.children}
         </b>
     )

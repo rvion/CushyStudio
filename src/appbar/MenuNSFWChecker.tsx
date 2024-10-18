@@ -26,14 +26,14 @@ export const NSFWToggleUI = observer(function NSFWToggleUI_(p: {}) {
         <div tw='p-2'>
             {val ? (
                 <MessageInfoUI>
-                    <div tw='flex whitespace-nowrap gap-1'>
+                    <div tw='flex gap-1 whitespace-nowrap'>
                         NSFW filter is currently
                         <b>ON</b>
                     </div>
                 </MessageInfoUI>
             ) : (
                 <MessageWarningUI>
-                    <div tw='flex whitespace-nowrap gap-1'>
+                    <div tw='flex gap-1 whitespace-nowrap'>
                         NSFW filter is currently
                         <b>OFF</b>
                     </div>

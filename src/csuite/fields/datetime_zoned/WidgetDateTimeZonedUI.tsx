@@ -41,7 +41,7 @@ export const WidgetDateTimeZoned_HeaderUI = observer(function WidgetDateTimeZone
     const field = p.field
     const config = field.config
     return (
-        <div tw='sticky flex items-center gap-0.5 top-0 z-[50] w-full'>
+        <div tw='sticky top-0 z-[50] flex w-full items-center gap-0.5'>
             <InputStringUI
                 tw='w-full'
                 inputClassName={field.mustDisplayErrors ? 'rsx-field-error' : undefined}

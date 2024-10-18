@@ -46,7 +46,7 @@ const UCLayerUI = observer(function UCLayerUI_(p: { canvas: UnifiedCanvas; UCIma
             <Frame
                 base={{ contrast: -0.1 }}
                 border={{ contrast: 0.4 }}
-                tw='rounded-md overflow-clip'
+                tw='overflow-clip rounded-md'
                 style={{
                     width: `${inputHeight * 3}rem`,
                     minWidth: `${inputHeight * 3}rem`,
@@ -63,7 +63,7 @@ const UCLayerUI = observer(function UCLayerUI_(p: { canvas: UnifiedCanvas; UCIma
                 />
             </Frame>
             {/*  */}
-            <div tw='flex flex-col w-full'>
+            <div tw='flex w-full flex-col'>
                 <div
                     tw={[
                         //
@@ -93,7 +93,7 @@ const UCLayerUI = observer(function UCLayerUI_(p: { canvas: UnifiedCanvas; UCIma
                     style={{ height: `${inputHeight}rem` }}
                 >
                     <Frame //
-                        tw='rounded-sm w-8 h-full'
+                        tw='h-full w-8 rounded-sm'
                         base={{ hue: 250, chroma: 0.1, contrast: 0.5 }}
                         border={{ contrast: 0.2 }}
                         text={{ contrast: 0.2 }}
@@ -127,7 +127,7 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
     const [dropStyle2, dropRef2] = useImageDrop(st, (img) => canvas.addMask(img))
     return (
         <>
-            <BasicShelfUI anchor='right' floating tw='flex flex-col p-1.5 gap-1.5'>
+            <BasicShelfUI anchor='right' floating tw='flex flex-col gap-1.5 p-1.5'>
                 {/* TOP LEVEL BUTTON */}
                 <Frame
                     tw='rounded-md p-2'
@@ -136,7 +136,7 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
                     }}
                 >
                     Layers
-                    <Frame tw='p-2 rounded-md' base={{ contrast: -0.1 }}>
+                    <Frame tw='rounded-md p-2' base={{ contrast: -0.1 }}>
                         <div /* SortableList */
                             // inlist={true}
                             // onSortEnd={(oldIndex, newIndex) => {
@@ -175,7 +175,7 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
                 </Frame>
 
                 {/* SELECTIONS */}
-                <Frame tw='p-2 rounded-md' border>
+                <Frame tw='rounded-md p-2' border>
                     <div tw='flex items-center justify-between'>
                         Selections
                         <Button square onClick={canvas.addSelection}>
@@ -186,7 +186,7 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
                         {canvas.selections.map((uniSel) => (
                             <Frame base={{ contrast: canvas.activeSelection === uniSel ? 0.25 : 0.1 }} border tw='p-2'>
                                 <div key={uniSel.id} className='flex gap-1 whitespace-nowrap'>
-                                    <div tw='flex gap-0.5 items-center'>
+                                    <div tw='flex items-center gap-0.5'>
                                         <input
                                             type='radio'
                                             checked={canvas.activeSelection === uniSel}
@@ -239,7 +239,7 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
                 </Frame>
 
                 {/* Masks */}
-                <Frame tw='p-2.5 rounded-md'>
+                <Frame tw='rounded-md p-2.5'>
                     <div ref={dropRef2}>
                         <div tw='flex items-center justify-between'>
                             <div>Masks</div>
@@ -250,7 +250,7 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
                         {canvas.masks.map((mask) => {
                             const active = mask === canvas.activeMask
                             return (
-                                <div key={mask.uid} tw='flex items-center gap-1 w-full'>
+                                <div key={mask.uid} tw='flex w-full items-center gap-1'>
                                     <input
                                         type='radio'
                                         checked={active}

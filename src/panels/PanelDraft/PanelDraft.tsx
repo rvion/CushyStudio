@@ -147,7 +147,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                     style={toJS(containerStyle ?? defaultContainerStyle)}
                     tw={[
                         //
-                        'flex-1 flex flex-col p-2 gap-1',
+                        'flex flex-1 flex-col gap-1 p-2',
                         run_justify(justify.value),
                         containerClassName,
                     ]}
@@ -182,7 +182,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                     <RevealUI
                         placement='topStart'
                         content={() => (
-                            <div tw='overflow-auto bd1' style={{ maxHeight: '30rem' }}>
+                            <div tw='bd1 overflow-auto' style={{ maxHeight: '30rem' }}>
                                 <ul>
                                     {Object.keys(app.script.data.metafile?.inputs ?? {}).map((t, ix) => (
                                         <li key={ix}>{t}</li>
@@ -239,7 +239,7 @@ export const AppCompilationErrorUI = observer(function AppCompilationErrorUI_(p:
         <ErrorPanelUI>
             <h3>invalid app</h3>
             <RecompileUI always app={p.app} />
-            <pre tw='bg-black text-white text-xs'>{p.app.script.data.code}</pre>
+            <pre tw='bg-black text-xs text-white'>{p.app.script.data.code}</pre>
         </ErrorPanelUI>
     )
 })

@@ -13,7 +13,7 @@ export const WidgetBoolUI = observer(function WidgetBoolUI_(p: { field: Field_bo
     }
 
     return (
-        <div tw='flex w-full h-full '>
+        <div tw='flex h-full w-full '>
             <InputBoolUI
                 // config
                 display={field.config.display}

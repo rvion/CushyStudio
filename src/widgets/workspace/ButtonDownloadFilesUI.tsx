@@ -17,7 +17,7 @@ export const ButtonDownloadFilesUI = observer(function ButtonDownloadFilesUI_(p:
             : graphOrGraphID
 
     return (
-        <div tw='flex gap-2 items-center'>
+        <div tw='flex items-center gap-2'>
             <Button look='primary' icon='mdiCloudDownload' size='sm' onClick={graph.menuAction_downloadWorkflow}>
                 Download ComfyUI Workflow
             </Button>

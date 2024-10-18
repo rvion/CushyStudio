@@ -18,9 +18,9 @@ export const OutputTextPreviewUI = observer(function OutputTextPreviewUI_(p: {
             <div
                 tw={[
                     //
-                    '[line-height:100%] [font-size:60%]',
+                    '[font-size:60%] [line-height:100%]',
                     'bg-accent text-accent-content',
-                    'text-center w-full font-bold',
+                    'w-full text-center font-bold',
                 ]}
             >
                 MD
@@ -29,16 +29,16 @@ export const OutputTextPreviewUI = observer(function OutputTextPreviewUI_(p: {
             <div
                 tw={[
                     //
-                    '[line-height:100%] [font-size:60%]',
+                    '[font-size:60%] [line-height:100%]',
                     'bg-purple-500 text-black',
-                    'text-center w-full font-bold',
+                    'w-full text-center font-bold',
                 ]}
             >
                 {'<HTML/>'}
             </div>
         ) : (
             <div //
-                tw='text-xs whitespace-pre-wrap overflow-hidden '
+                tw='overflow-hidden whitespace-pre-wrap text-xs '
             >
                 {output.data.content}
             </div>
@@ -75,7 +75,7 @@ export const OutputTextUI = observer(function OutputTextUI_(p: { step?: Maybe<St
         return (
             <Surface className='m-2 w-full'>
                 {/*  */}
-                <div tw='font-bold text-xl'>Text:</div>
+                <div tw='text-xl font-bold'>Text:</div>
                 {p.output.data.content}
             </Surface>
         )

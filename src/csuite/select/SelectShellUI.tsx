@@ -14,7 +14,7 @@ export const SelectShellUI = observer(function SelectShellUI_(p: RevealShellProp
                 // '_RevealUI', // 🚂
                 'pointer-events-auto',
                 'shadow-xl shadow-neutral-300',
-                'bg-white border border-gray-200',
+                'border border-gray-200 bg-white',
                 'overflow-auto',
                 'flex flex-col',
                 'rounded-md', // should be exactly like the input

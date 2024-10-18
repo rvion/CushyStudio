@@ -50,7 +50,7 @@ export const DrawWorkflowUI = observer(function DrawWorkflowUI_(p: {
     }, [wflow.currentExecutingNode?.uid, p.offset?.x, p.offset?.y])
 
     return (
-        <div tw='relative overflow-auto flex-1 h-full w-full' ref={ref}>
+        <div tw='relative h-full w-full flex-1 overflow-auto' ref={ref}>
             {wflow.nodes.map((node) => {
                 if (node == null) return
                 const pgr = node.progressReport
@@ -150,7 +150,7 @@ export const DrawWorkflowUI = observer(function DrawWorkflowUI_(p: {
                             <Frame
                                 base={6}
                                 style={{ height: '20px' }}
-                                tw='overflow-hidden font-bold whitespace-nowrap overflow-ellipsis'
+                                tw='overflow-hidden overflow-ellipsis whitespace-nowrap font-bold'
                             >
                                 {node.$schema.nameInComfy} [{node.uid}]
                             </Frame>
@@ -158,7 +158,7 @@ export const DrawWorkflowUI = observer(function DrawWorkflowUI_(p: {
                                 <Frame tw='flex justify-between px-2' /* style={{ borderBottom: '1px solid gray' }} */>
                                     <div>
                                         {node._incomingEdges().map((ie) => (
-                                            <div tw='truncate overflow-hidden' style={{ height: '20px' }} key={ie.inputName}>
+                                            <div tw='overflow-hidden truncate' style={{ height: '20px' }} key={ie.inputName}>
                                                 {ie.inputName} {/* {'<-'} [{ie.from}] */}
                                             </div>
                                         ))}
@@ -178,7 +178,7 @@ export const DrawWorkflowUI = observer(function DrawWorkflowUI_(p: {
                                         hover
                                         key={ie.inputName}
                                         style={{ height: '20px' }}
-                                        tw='overflow-hidden whitespace-nowrap overflow-ellipsis px-2'
+                                        tw='overflow-hidden overflow-ellipsis whitespace-nowrap px-2'
                                     >
                                         <div tw='flex'>
                                             <div>{ie.inputName}:</div>

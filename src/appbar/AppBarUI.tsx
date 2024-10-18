@@ -36,7 +36,7 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
         <Frame
             //
             base={cushy.theme.value.appbar ?? { contrast: 0 }}
-            tw={['flex items-center px-2 py-0.5 overflow-auto', 'overflow-auto shrink-0']}
+            tw={['flex items-center overflow-auto px-2 py-0.5', 'shrink-0 overflow-auto']}
             id='CushyAppBar'
         >
             {/* <PanelHeaderUI tw='flex items-center px-2 overflow-auto'> */}
@@ -59,7 +59,7 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
             <MenuUtilsUI />
             <MenuAboutUI />
             <MenuDebugUI />
-            <PerspectivePickerUI tw='self-center mx-auto' />
+            <PerspectivePickerUI tw='mx-auto self-center' />
 
             <SpacerUI />
             <UpdateBtnUI updater={cushy.updater} />

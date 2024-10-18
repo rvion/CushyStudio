@@ -19,9 +19,9 @@ export const OutputWorkflowPreviewUI = observer(function OutputWorkflowUI_(p: { 
         // <RevealUI showDelay={0} hideDelay={100}>
 
         <RevealUI
-            className='item-center h-full w-full justify-center'
+            className='item-center size-full justify-center'
             content={() => (
-                <ul tabIndex={0} tw='shadow menu dropdown-content z-[1]  rounded-box'>
+                <ul tabIndex={0} tw='menu dropdown-content rounded-box z-[1]  shadow'>
                     {/* <ImageDropdownMenuUI img={image} /> */}
                     <MenuItem //
                         icon={'mdiOpenInNew'}
@@ -65,7 +65,7 @@ export const OutputWorkflowUI = observer(function OutputWorkflowUI_(p: { step?: 
     return (
         // <TabUI tw='w-full h-full'>
         // <div>Simple View</div>
-        <div tw='w-full h-full'>
+        <div tw='h-full w-full'>
             {/* <div>
                     <ButtonDownloadFilesUI graph={graph} />
                     <ButtonOpenInComfyUI graph={graph} />

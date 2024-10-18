@@ -8,7 +8,7 @@ export const WidgetLabelCaretPlaceholderUI = observer(function WidgetLabelCaretP
             className={p.className}
             tw={[
                 //
-                'UI-WidgetLabelCaret self-start minh-widget',
+                'UI-WidgetLabelCaret minh-widget self-start',
                 'COLLAPSE-PASSTHROUGH shrink-0',
             ]}
         />

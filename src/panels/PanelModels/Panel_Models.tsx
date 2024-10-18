@@ -25,7 +25,7 @@ export const PanelModelsUI = observer(function PanelModelsUI_(p: NO_PROPS) {
     const st = useSt()
     const civitai = useMemo(() => new Civitai(), [])
     return (
-        <div className='h-full w-full flex flex-col gap-2'>
+        <div className='flex size-full flex-col gap-2'>
             <PanelHeaderUI>
                 <SectionTitleUI
                     label={
@@ -52,7 +52,7 @@ export const FieldUI = observer(function FieldUI_(p: {
     children: React.ReactNode
 }) {
     return (
-        <div className={p.className} tw='flex gap-2 items-center'>
+        <div className={p.className} tw='flex items-center gap-2'>
             <label tw='whitespace-nowrap'>{p.label}</label>
             {p.children}
             {p.required && <div tw='join-item'>Required</div>}

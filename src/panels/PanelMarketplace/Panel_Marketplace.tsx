@@ -33,7 +33,7 @@ export const PanelMarketplaceUI = observer(function PanelMarketplaceUI_(p: NO_PR
     const selected = mkp.selectedApp
     return (
         <div>
-            <div tw='p-2 flex gap-2'>
+            <div tw='flex gap-2 p-2'>
                 <input
                     onChange={(e) => (mkp.query.value = e.target.value)}
                     className='csuite-basic-input'

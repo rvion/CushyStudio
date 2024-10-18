@@ -44,7 +44,7 @@ export const RecentDrafMenuEntriesUI = observer(function RecentDrafMenuEntriesUI
                         <DraftIllustrationUI draft={draft} size='2rem' />
                         <div tw='text' style={{ lineHeight: '1rem' }}>
                             <div>{draft.name}</div>
-                            <div tw='italic text-sm text-gray-500 flex gap-1'>
+                            <div tw='flex gap-1 text-sm italic text-gray-500'>
                                 <AppIllustrationUI app={draft.app} size='1rem' /> {draft.app.name}
                             </div>
                         </div>

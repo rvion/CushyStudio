@@ -61,7 +61,7 @@ export const _BasicShelfUI = observer(function BasicShelf({
             <div //Resize Handle Area
                 tw={[
                     'absolute select-none',
-                    uist.dragging && '!top-0 !left-0',
+                    uist.dragging && '!left-0 !top-0',
                     isHorizontal ? 'hover:cursor-ew-resize' : 'hover:cursor-ns-resize',
                 ]}
                 style={{
@@ -86,7 +86,7 @@ const BasicShelf_ColumnUI = observer(function BasicShelf_Column(
     //
     p: React.HTMLAttributes<HTMLDivElement>,
 ) {
-    return <div tw='flex flex-col p-2 gap' {...p}></div>
+    return <div tw='gap flex flex-col p-2' {...p}></div>
 })
 
 const BasicShelf_GroupUI = observer(function BasicShelf_Group({
@@ -106,7 +106,7 @@ const BasicShelf_GroupUI = observer(function BasicShelf_Group({
             dropShadow={dropShadow}
             tw={[
                 // bird_d: Maybe should be aligned by default?
-                align && 'overflow-clip flex [&>*]:!rounded-none [&>*]:!border-0 !gap-0 [&>*]:h-input',
+                align && '[&>*]:h-input flex !gap-0 overflow-clip [&>*]:!rounded-none [&>*]:!border-0',
                 '[&>*]:!border-none',
             ]}
         >
@@ -116,7 +116,7 @@ const BasicShelf_GroupUI = observer(function BasicShelf_Group({
 })
 
 export const BasicShelfContentUI = observer(function BasicShelfContentUI_(p: React.HTMLAttributes<HTMLDivElement>) {
-    return <div tw='flex flex-1 p-2 overflow-auto' {...p} />
+    return <div tw='flex flex-1 overflow-auto p-2' {...p} />
 })
 
 export const BasicShelfUI = Object.assign(_BasicShelfUI, {

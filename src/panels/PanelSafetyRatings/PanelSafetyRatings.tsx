@@ -70,7 +70,7 @@ export const PanelSafetyRatingsUI = observer(function PanelSafetyRatings(p: Pane
                 />
             </Frame>
             <QuickTableUI
-                tw='m-2 bd'
+                tw='bd m-2'
                 rows={cushy.db.media_image
                     .selectRaw2((r) =>
                         r
@@ -107,7 +107,7 @@ export const PanelSafetyRatingsUI = observer(function PanelSafetyRatings(p: Pane
 
             <QuickTableUI
                 key={xxx.Image.value?.id}
-                tw='m-2 bd'
+                tw='bd m-2'
                 rows={cushy.db.media_image.selectRaw2((r) =>
                     r
                         .select((t) => [

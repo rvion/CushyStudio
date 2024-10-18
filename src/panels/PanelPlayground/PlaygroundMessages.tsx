@@ -39,7 +39,7 @@ export const PlaygroundMessages = observer(function PlaygroundImportFromComfy_(p
                 <MessageErrorUI>test</MessageErrorUI>
                 <MessageWarningUI>test</MessageWarningUI>
                 <div tw='divider my-0'>inline flex-start</div>
-                <div tw='flex gap-1 items-start'>
+                <div tw='flex items-start gap-1'>
                     <MessageInfoUI>test</MessageInfoUI>
                     <MessageErrorUI title='test'>test</MessageErrorUI>
                     <MessageWarningUI>test</MessageWarningUI>

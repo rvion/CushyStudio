@@ -57,7 +57,7 @@ export const StepCardUI = observer(function StepOutputsV1HeaderUI_(p: {
     return (
         <Frame
             base={p.contrast}
-            tw={['flex flex-wrap relative cursor-pointer', p.className]}
+            tw={['relative flex cursor-pointer flex-wrap', p.className]}
             onClick={() => st.layout.open('Output', { stepID: step.id })}
             style={p.style}
         >
@@ -68,7 +68,7 @@ export const StepCardUI = observer(function StepOutputsV1HeaderUI_(p: {
             )}
             {showApp && (
                 <div
-                    tw={['cursor-pointer', isSelected ? 'border-2 border-primary' : '']}
+                    tw={['cursor-pointer', isSelected ? 'border-primary border-2' : '']}
                     style={{ width: appSize, height: appSize, flexShrink: 0 }}
                 >
                     {step.app ? (

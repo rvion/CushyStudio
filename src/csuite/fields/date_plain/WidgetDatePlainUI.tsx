@@ -42,7 +42,7 @@ export const WidgetDatePlain_HeaderUI = observer(function WidgetDatePlainUI_<NUL
     const field = p.field
     const config = field.config
     return (
-        <div tw='sticky flex items-center gap-0.5 top-0 z-[50] w-full'>
+        <div tw='sticky top-0 z-[50] flex w-full items-center gap-0.5'>
             <InputStringUI
                 tw='w-full'
                 inputClassName={field.hasOwnErrors ? 'rsx-field-error' : undefined}

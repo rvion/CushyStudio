@@ -76,7 +76,7 @@ export const PanelCanvasUI = observer(function Panel_Canvas_(p: PanelCanvasProps
             tabIndex={0}
             // onKeyDown={canvas.onKeyDown}
             ref={containerRef}
-            className='h-full w-full flex flex-1 overflow-hidden'
+            className='flex size-full flex-1 overflow-hidden'
         >
             <RegionUI //
                 regionName='UnifiedCanvas2'
@@ -130,7 +130,7 @@ export const PanelCanvasUI = observer(function Panel_Canvas_(p: PanelCanvasProps
                             />
                         </div>
                     </div>
-                    <div tw='flex justify-center items-center'>
+                    <div tw='flex items-center justify-center'>
                         <InputNumberUI // TODO: This should be a menu that pops up a form that allows you to choose different snapping methods, possibly.
                             mode='int'
                             min={2}
@@ -178,7 +178,7 @@ export const PanelCanvasUI = observer(function Panel_Canvas_(p: PanelCanvasProps
                     style={dropStyle}
                     ref={dropRef}
                     className='DROP_IMAGE_HANDLER'
-                    tw='_Panel_Canvas flex-grow flex flex-row h-full relative !z-0'
+                    tw='_Panel_Canvas relative !z-0 flex h-full flex-grow flex-row'
                 >
                     {/* <GridTilingUI /> */}
                     {canvas.steps.map((s) => {

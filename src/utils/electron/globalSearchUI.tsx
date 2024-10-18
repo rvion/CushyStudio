@@ -9,8 +9,8 @@ export const GlobalSearchUI = observer(function GlobalSearch(p: {}) {
             <div
                 //
                 style={{ zIndex: 9999999 }}
-                tw='absolute top-10
-                10 right-10 bg-gray-500'
+                tw='10 absolute
+                right-10 top-10 bg-gray-500'
             >
                 <input
                     tw='input input-sm'

@@ -10,7 +10,7 @@ export const LegacyFieldUI = observer(function LegacyFieldUI_(p: {
     children: React.ReactNode
 }) {
     return (
-        <div className={p.className} tw='flex gap-2 items-center'>
+        <div className={p.className} tw='flex items-center gap-2'>
             <WidgetLabelContainerUI justify>
                 <label tw='whitespace-nowrap'>{p.label}</label>
             </WidgetLabelContainerUI>

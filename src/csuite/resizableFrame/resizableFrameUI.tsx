@@ -92,7 +92,7 @@ export const ResizableFrame = observer(function ResizableFrame_(p: ResizableFram
     return (
         <Frame // container
             // hover
-            tw='flex flex-col !p-0 overflow-clip'
+            tw='flex flex-col overflow-clip !p-0'
             style={{ gap: '0px', ...p.style }}
             dropShadow={theme.inputShadow}
             roundness={csuite.inputRoundness}
@@ -120,12 +120,12 @@ export const ResizableFrame = observer(function ResizableFrame_(p: ResizableFram
             >
                 <Frame
                     hover
-                    tw='!flex absolute inset-0 h-full items-center justify-center cursor-ns-resize'
+                    tw='absolute inset-0 !flex h-full cursor-ns-resize items-center justify-center'
                     onMouseDown={() => uist.start()}
                 >
                     <IkonOf name='mdiDragHorizontalVariant'></IkonOf>
                 </Frame>
-                <div tw='absolute lh-input items-center'>{p.footer}</div>
+                <div tw='lh-input absolute items-center'>{p.footer}</div>
             </Frame>
         </Frame>
     )

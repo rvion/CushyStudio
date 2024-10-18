@@ -17,7 +17,7 @@ export const OutputRuntimeErrorUI = observer(function OutputRuntimeErrorUI_(p: {
     const output = p.output
     const msg = output.data
     return (
-        <Surface tw='w-full h-full'>
+        <Surface tw='h-full w-full'>
             <div className='bg-error text-error-content'>
                 <div tw='text-xl font-bold'>Runtime Error</div>
                 <div tw='italic'>{msg.message}</div>

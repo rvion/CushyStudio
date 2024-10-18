@@ -79,7 +79,7 @@ export const CivitaiDownloadableFileUI = observer(function CivitaiDownloadableFi
                 tw='flex items-center gap-1'
             >
                 <Ikon.mdiFile />
-                <div tw='font-bold flex items-center'>{file.name}</div>
+                <div tw='flex items-center font-bold'>{file.name}</div>
                 <div tw='text-sm underline'>{formatSize(file.sizeKB * 1000)}</div>
                 <div tw='flex-1'></div>
                 <RevealUI content={() => <JsonViewUI value={file} />}>

@@ -30,7 +30,7 @@ export const ListControlsUI = observer(function ListControlsUI_(p: {
 
     return (
         <div
-            tw='sticky flex items-center gap-0.5 top-0 flex z-[50] w-full'
+            tw='sticky top-0 z-[50] flex w-full items-center gap-0.5'
             onMouseDown={(ev) => {
                 ev.preventDefault()
                 ev.stopPropagation()

@@ -30,7 +30,7 @@ export const _Dropdown = observer(function Dropdown(p: DropdownProps): JSX.Eleme
         <RevealUI
             tw={[p.className]}
             hideTriggers={{ shellClick: true, backdropClick: true, escapeKey: true }}
-            content={() => <Frame tabIndex={0} tw='flex flex-col z-[1]' children={p.content?.()} />}
+            content={() => <Frame tabIndex={0} tw='z-[1] flex flex-col' children={p.content?.()} />}
             children={
                 p.button ?? <Button borderless subtle icon={p.startIcon} tabIndex={0} expand={p.expand} children={p.title} />
             }

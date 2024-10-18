@@ -117,7 +117,7 @@ const ConfigTabButtonUI = observer(function ConfigTabButtonUI_(p: {
     return (
         <ToggleButtonUI //
             toggleGroup='config-tab'
-            tw='capitalize h-10'
+            tw='h-10 capitalize'
             value={p.field.is(p.mode)}
             text={p.mode}
             onValueChange={(_) => p.field.setValue(p.mode)}

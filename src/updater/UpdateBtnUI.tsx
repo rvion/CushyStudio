@@ -36,7 +36,7 @@ export const UpdateBtnUI = observer(function UpdateBtnUI_(p: {
     )
     if (updater.hasUpdateAvailable)
         ANCHOR = (
-            <div tw='flex items-center shrink-0' className={p.className}>
+            <div tw='flex shrink-0 items-center' className={p.className}>
                 {ANCHOR}
                 <BadgeUI contrast={0.2} chroma={0.13} hue={0}>
                     Update Available
@@ -64,7 +64,7 @@ export const UpdaterDetailsUI = observer(function UpdaterDetailsUI_(p: { updater
     const hasErrors = updater.hasErrors
 
     return (
-        <div tw='p-1 overflow-auto [max-height:80vh] flex flex-col gap-2'>
+        <div tw='flex flex-col gap-2 overflow-auto p-1 [max-height:80vh]'>
             {hasErrors && <Message type='error'>error</Message>}
             {updater.hasUpdateAvailable && <MessageInfoUI>To update: close cushy and run the update script</MessageInfoUI>}
             <UpdaterErrorUI updater={updater} />
@@ -88,7 +88,7 @@ export const UpdaterDetailsUI = observer(function UpdaterDetailsUI_(p: { updater
                 </Button>
             </div>
             <div>
-                <table tw='table table-zebra-zebra table-xs'>
+                <table tw='table-zebra-zebra table-xs table'>
                     <tbody>
                         {updater.lastLogs.logs.map((log, i) => (
                             <tr key={i}>

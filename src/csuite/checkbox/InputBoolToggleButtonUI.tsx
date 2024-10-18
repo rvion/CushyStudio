@@ -29,7 +29,7 @@ export const ToggleButtonUI = observer(function ToggleButtonUI_(
         <Button
             tw={
                 /* twMerge */ [
-                    'minh-input select-none cursor-pointer px-1',
+                    'minh-input cursor-pointer select-none px-1',
                     p.showToggleButtonBox ? undefined : 'justify-center',
                     p.className,
                 ]

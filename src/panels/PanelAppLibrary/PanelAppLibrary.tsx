@@ -26,7 +26,7 @@ export const PanelAppLibraryUI = observer(function PanelAppLibraryUI_(p: NO_PROP
     const library = st.library
 
     return (
-        <div tw='relative h-full flex-grow flex flex-col'>
+        <div tw='relative flex h-full flex-grow flex-col'>
             <PanelHeaderUI>
                 <InputStringUI
                     icon='mdiMagnify'
@@ -129,8 +129,8 @@ export const PanelAppLibraryUI = observer(function PanelAppLibraryUI_(p: NO_PROP
                     })
                 }}
             />
-            <div tw='flex flex-col flex-grow p-4 overflow-auto'>
-                <div tw='text-xl text-accent font-bold'>Built-in Apps</div>
+            <div tw='flex flex-grow flex-col overflow-auto p-4'>
+                <div tw='text-accent text-xl font-bold'>Built-in Apps</div>
                 <div tw='flex flex-wrap  gap-2'>
                     {st.library.appsFilteredBuiltIn.map((app, ix) => (
                         <div key={app.id}>
@@ -142,7 +142,7 @@ export const PanelAppLibraryUI = observer(function PanelAppLibraryUI_(p: NO_PROP
                     ))}
                 </div>
                 <div tw='divider'></div>
-                <div tw='text-xl text-accent font-bold'>Local Apps</div>
+                <div tw='text-accent text-xl font-bold'>Local Apps</div>
                 <div tw='flex flex-wrap  gap-2'>
                     {st.library.appsFilteredLocal.map((app, ix) => (
                         <div key={app.id}>
@@ -154,7 +154,7 @@ export const PanelAppLibraryUI = observer(function PanelAppLibraryUI_(p: NO_PROP
                     ))}
                 </div>
                 <div tw='divider'></div>
-                <div tw='text-xl text-accent font-bold'>SDK Examples</div>
+                <div tw='text-accent text-xl font-bold'>SDK Examples</div>
                 <div tw='flex flex-wrap  gap-2'>
                     {st.library.appsFilteredExample.map((app, ix) => (
                         <div key={app.id}>

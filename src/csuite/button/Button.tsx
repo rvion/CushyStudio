@@ -85,7 +85,7 @@ const _Button = observer(
                     // | 'font-semibold',
 
                     'ui-button',
-                    'gap-1 items-center',
+                    'items-center gap-1',
                     p.disabled ? 'cursor-not-allowed' : 'cursor-pointer',
                     'whitespace-nowrap',
                     'justify-center',

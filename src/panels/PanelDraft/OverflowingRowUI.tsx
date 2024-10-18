@@ -68,7 +68,7 @@ export const OverflowingRowUI = observer(function OverflowingRow({
     return (
         <Frame //
             ref={containerRef}
-            tw='flex relative'
+            tw='relative flex'
             className={className}
             {...rest}
             style={{ overflow: 'hidden', position: 'relative' }}

@@ -17,7 +17,7 @@ export const WidgetSelectMany_SelectUI = observer(function WidgetSelectMany_Sele
     const field = p.field
     type OPTION = SelectOption<VALUE, KEY> | undefined
     return (
-        <div tw='flex flex-1 gap-1 w-full'>
+        <div tw='flex w-full flex-1 gap-1'>
             <SelectUI<OPTION>
                 multiple
                 wrap={field.wrap}

@@ -8,7 +8,7 @@ export function formatMenuLabel(
     return (
         <div>
             <span>{label.slice(0, charIx)}</span>
-            <span tw='underline text-red'>{label[charIx]}</span>
+            <span tw='text-red underline'>{label[charIx]}</span>
             <span>{label.slice(charIx + 1)}</span>
         </div>
     )

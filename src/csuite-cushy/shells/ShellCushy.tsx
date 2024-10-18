@@ -27,7 +27,7 @@ const CushyShellUI = observer(function CushySHell(
     let WUI: ReactNode = (
         <Frame
             className={p.classNameForShell ?? undefined}
-            tw={['UI-WidgetWithLabel !border-l-0 !border-r-0 !border-b-0']}
+            tw={['UI-WidgetWithLabel !border-b-0 !border-l-0 !border-r-0']}
             roundness={csuite.inputRoundness}
             base={field.background}
             // border={p.card ? 1 : field.border}

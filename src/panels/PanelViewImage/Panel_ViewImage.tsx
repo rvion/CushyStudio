@@ -58,7 +58,7 @@ export const PanelViewImageUI = observer(function PanelViewImage(p: PanelViewIma
             //
             className={p.className}
             // 🛝 style={{ background }}
-            tw='flex flex-col flex-grow w-full'
+            tw='flex w-full flex-grow flex-col'
         >
             <ImageActionBarUI img={img} />
             {/* 🟢 test2 */}
@@ -86,10 +86,10 @@ export const PanelViewImageUI = observer(function PanelViewImage(p: PanelViewIma
                             alt='last generated image'
                         />
                     ) : (
-                        <div tw='w-full h-full relative flex'>
+                        <div tw='relative flex h-full w-full'>
                             <div
                                 style={{ fontSize: '3rem', textShadow: '0 0 5px #ffffff' }}
-                                tw='animate-pulse absolute self-center w-full text-center text-xl text-black font-bold'
+                                tw='absolute w-full animate-pulse self-center text-center text-xl font-bold text-black'
                             >
                                 no image yet
                             </div>

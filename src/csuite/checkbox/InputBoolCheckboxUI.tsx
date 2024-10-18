@@ -22,7 +22,7 @@ export const InputBoolCheckboxUI = observer(function InputBoolCheckboxUI_(p: Boo
             hover
             size='input'
             triggerOnPress={{ startingState: isActive, toggleGroup }}
-            tw={['select-none cursor-pointer px-0.5']}
+            tw={['cursor-pointer select-none px-0.5']}
             onClick={(ev) => {
                 if (!p.onValueChange) return
                 ev.stopPropagation()

@@ -29,7 +29,7 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                 hue: isMain ? knownOKLCHHues.success : undefined,
             }}
             border={10}
-            tw={['p-2 w-96 shadow-xl', isMain && 'bg-primary bg-opacity-30']}
+            tw={['w-96 p-2 shadow-xl', isMain && 'bg-primary bg-opacity-30']}
         >
             <div tw='flex gap-1'>
                 <HostWebsocketIndicatorUI showIcon host={host} />
@@ -72,7 +72,7 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                 {/* <div tw='divider m-1'></div> */}
                 {/* <div tw='font-bold under'>Configuration</div> */}
                 {/* NAME */}
-                <div tw='flex gap-1 items-center'>
+                <div tw='flex items-center gap-1'>
                     <div tw='w-14'>name</div>
                     <input
                         disabled={disabled}
@@ -83,7 +83,7 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                 </div>
 
                 {/* HOST */}
-                <div tw='flex gap-1 items-center'>
+                <div tw='flex items-center gap-1'>
                     <div tw='w-14'>Host</div>
                     <input
                         disabled={disabled}
@@ -94,7 +94,7 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                 </div>
 
                 {/* PORT */}
-                <div tw='flex gap-1 items-center'>
+                <div tw='flex items-center gap-1'>
                     <div tw='w-14'>Port</div>
                     <input
                         disabled={disabled}
@@ -143,7 +143,7 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                 </div>
                 {/* ID */}
                 <div tw='flex'>
-                    <div tw='italic text-xs text-opacity-50'>id: {host.id}</div>
+                    <div tw='text-xs italic text-opacity-50'>id: {host.id}</div>
                 </div>
                 <Button
                     onClick={async () => {

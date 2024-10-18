@@ -25,11 +25,11 @@ export const MessageUI = observer(function MessageInfoUI_(p: {
             base={{ contrast: 0.05, hue: p.hue ?? knownOKLCHHues.info, chroma: 0.04 }}
             border={10}
             className={p.className}
-            tw='p-0.5 rounded flex items-start gap-1'
+            tw='flex items-start gap-1 rounded p-0.5'
         >
             {p.icon && (
                 <Frame text={{ chroma: 0.1, contrast: 0.2 }}>
-                    <IkonOf name={p.icon} tw='flex-none text-lg h-input' />
+                    <IkonOf name={p.icon} tw='h-input flex-none text-lg' />
                 </Frame>
             )}
             <div>

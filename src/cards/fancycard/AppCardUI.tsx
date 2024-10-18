@@ -35,7 +35,7 @@ export const AppCardUI = observer(function FancyCardUI_(p: {
             tw={[
                 //
                 'flex flex-col',
-                'shadow-xl border border-neutral border-opacity-25',
+                'border-neutral border border-opacity-25 shadow-xl',
                 `STYLE_A`,
                 p.active ? 'active' : 'not-active',
                 'cursor-pointer',
@@ -44,7 +44,7 @@ export const AppCardUI = observer(function FancyCardUI_(p: {
             {app.file.fPath.UIDiagnosticBadge()}
             {/* {app.file.fPath.existsSync} */}
             {/* ROW 1 */}
-            <div tw='flex items-start flex-grow' style={{ fontSize: '1rem' }}>
+            <div tw='flex flex-grow items-start' style={{ fontSize: '1rem' }}>
                 {/* FAVORITE */}
                 {st.library.showFavorites ? (
                     <InputBoolCheckboxUI
@@ -84,7 +84,7 @@ export const AppCardUI = observer(function FancyCardUI_(p: {
 
                 {/* DESCRIPTION */}
                 {st.library.showDescription ? (
-                    <div tw='flex-grow flex flex-col ml-1 w-44'>
+                    <div tw='ml-1 flex w-44 flex-grow flex-col'>
                         {/* <div>
                             {(file.manifest.categories ?? []).map((i, ix) => (
                                 <Tag key={ix}>{i}</Tag>
@@ -99,7 +99,7 @@ export const AppCardUI = observer(function FancyCardUI_(p: {
 
             {/* ROW 3 */}
             {/* PATH */}
-            <div tw='italic text-xs whitespace-nowrap overflow-ellipsis overflow-hidden text-opacity-50'>{file.relPath}</div>
+            <div tw='overflow-hidden overflow-ellipsis whitespace-nowrap text-xs italic text-opacity-50'>{file.relPath}</div>
 
             {/* ROW 4 */}
             {/* KIND */}

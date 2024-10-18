@@ -43,7 +43,7 @@ export const RevealTestUI = observer(function RevealTestUI_(p: {}) {
     const NotForwardingProps: React.FC = () => anchor('NOT FORWARDING PROPS')
 
     return (
-        <div tw='flex-1 flex flex-col gap-2'>
+        <div tw='flex flex-1 flex-col gap-2'>
             <Frame border base>
                 {conf.UI()}
             </Frame>
@@ -62,7 +62,7 @@ export const RevealTestUI = observer(function RevealTestUI_(p: {}) {
                 </RevealUI>
             </Frame> */}
             {/* AUTO -------------------------- */}
-            <div tw='grid grid-cols-5 gap-1 m-8'>
+            <div tw='m-8 grid grid-cols-5 gap-1'>
                 {/* top ---------------------------------------------- */}
                 <div></div>
                 <RevealUI trigger={conf.value.trigger} placement='topStart' content={Content}>

@@ -52,7 +52,7 @@ export const ToolShelfUI = observer(function ToolShelfUI_(p: ToolShelfProps) {
                         ]}
                     >
                         <Button
-                            tw='relative top-16 -left-0.5'
+                            tw='relative -left-0.5 top-16'
                             size={'xs'}
                             square
                             icon='mdiChevronRight'
@@ -86,7 +86,7 @@ export const ToolShelfUI = observer(function ToolShelfUI_(p: ToolShelfProps) {
                         <div //Resize Handle Area
                             tw={[
                                 'absolute select-none',
-                                uist.dragging && '!top-0 !left-0',
+                                uist.dragging && '!left-0 !top-0',
                                 isHorizontal ? 'hover:cursor-ew-resize' : 'hover:cursor-ns-resize',
                             ]}
                             style={{

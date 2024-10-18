@@ -16,7 +16,7 @@ export const WidgetChoices_SelectHeaderUI = observer(function WidgetChoices_Sele
 
     return (
         <div
-            tw='relative flex-1 flex flex-row gap-2'
+            tw='relative flex flex-1 flex-row gap-2'
             onMouseDown={(ev) => {
                 ev.preventDefault()
                 ev.stopPropagation()

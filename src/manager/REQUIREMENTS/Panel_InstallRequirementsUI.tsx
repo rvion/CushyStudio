@@ -55,9 +55,9 @@ export const Panel_InstallRequirementsUI = observer(function Panel_InstallRequir
                 tw='text-sm'
                 markdown='make sure your `ComfyUI\custom_nodes\ComfyUI-Manager\config.ini` properly has `bypass_ssl = True`'
             />
-            <QuickHostActionsUI host={host} tw='flex gap-1 flex-wrap' />
+            <QuickHostActionsUI host={host} tw='flex flex-wrap gap-1' />
             <hr />
-            <div tw='flex flex-col overflow-scroll gap-2'>
+            <div tw='flex flex-col gap-2 overflow-scroll'>
                 {rr.map((req) => {
                     // ------------------------------------------------
                     if (req.type === 'customNodesByNameInCushy') {

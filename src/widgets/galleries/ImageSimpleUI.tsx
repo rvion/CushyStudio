@@ -44,7 +44,7 @@ export const ImageSimpleUI = observer(function ImageSimple({
     const IMG = (
         <img
             className={className}
-            tw='object-contain bg-contain bg-no-repeat bg-center'
+            tw='bg-contain bg-center bg-no-repeat object-contain'
             // src={image.urlForSize(ImageWidthPx)}
             src={image.urlForSize(ImageWidthPx)}
             onMouseEnter={image.onMouseEnter}

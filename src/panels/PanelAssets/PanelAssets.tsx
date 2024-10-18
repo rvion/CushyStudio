@@ -52,7 +52,7 @@ export const PanelAssetsUI = observer(function PanelAssetsUI_(p: PanelAssetsProp
 const AssetContent = observer(function AssetContent_(p: { st: PanelAssetsState }) {
     return (
         <Frame //
-            tw='flex w-full h-full overflow-auto'
+            tw='flex h-full w-full overflow-auto'
         >
             <AssetPageLora st={p.st} />
             <PanelAssetsShelfUI st={p.st} />
@@ -85,7 +85,7 @@ const AssetPageLora = observer(function AssetPageLora_(p: { st: PanelAssetsState
 
     return (
         <Frame //
-            tw='flex w-full h-full gap-1 p-1 overflow-auto'
+            tw='flex h-full w-full gap-1 overflow-auto p-1'
             wrap
             onMouseDown={(e) => {
                 // Prevent misclicks from de-selecting when trying to select more.
@@ -111,7 +111,7 @@ const AssetPageLora = observer(function AssetPageLora_(p: { st: PanelAssetsState
                 return (
                     <Frame //
                         key={index}
-                        tw='flex flex-col w-32 h-40 overflow-clip select-none !border-none'
+                        tw='flex h-40 w-32 select-none flex-col overflow-clip !border-none'
                         tooltip={`${name}\nReplace with description of Lora.`}
                         active
                         border={false}
@@ -185,12 +185,12 @@ const AssetPageLora = observer(function AssetPageLora_(p: { st: PanelAssetsState
                         }}
                     >
                         <Frame //
-                            tw='flex flex-1 flex-grow w-32 h-32 items-center justify-center'
+                            tw='flex h-32 w-32 flex-1 flex-grow items-center justify-center'
                         >
                             <span tw='text-5xl'>🥚</span>
                         </Frame>
-                        <div tw='flex flex-shrink-1 items-center justify-center text-center whitespace-nowrap'>
-                            <span tw='truncate p-1 text-sm whitespace-nowrap'>{name}</span>
+                        <div tw='flex-shrink-1 flex items-center justify-center whitespace-nowrap text-center'>
+                            <span tw='truncate whitespace-nowrap p-1 text-sm'>{name}</span>
                         </div>
                     </Frame>
                 )

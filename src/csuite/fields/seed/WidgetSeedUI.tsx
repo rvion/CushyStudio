@@ -18,7 +18,7 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { field: Field_se
             tw={[
                 //
                 'h-input',
-                'flex-1 flex items-center',
+                'flex flex-1 items-center',
                 // bird_d: Need to put this as a tw alias or make a wrapper component
             ]}
             align
@@ -47,7 +47,7 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { field: Field_se
             />
             <InputNumberUI // Fixed value
                 disabled={field.serial.mode === 'randomize'}
-                tw={['!border-none flex-1']}
+                tw={['flex-1 !border-none']}
                 min={field.config.min}
                 max={field.config.max}
                 step={1}

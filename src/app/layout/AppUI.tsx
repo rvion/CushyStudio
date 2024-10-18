@@ -99,21 +99,21 @@ export const CushyUI = observer(function CushyUI_() {
                 // ❌ }}
                 ref={appRef}
                 tw={[
-                    'col grow h-full overflow-clip',
+                    'col h-full grow overflow-clip',
                     // topic=WZ2sEOGiLy
                     st.preferences.interface.value.useDefaultCursorEverywhere && 'useDefaultCursorEverywhere',
                 ]}
             >
                 <div // Global Popup/Reveal/Tooltip container always be on screen with overflow-clip added.
                     id='tooltip-root'
-                    tw='absolute inset-0 w-full h-full overflow-clip pointer-events-none'
+                    tw='pointer-events-none absolute inset-0 h-full w-full overflow-clip'
                 >
                     <TooltipUI />
                     <ActivityStackUI />
                 </div>
                 <GlobalSearchUI /* Ctrl or Cmd + F: does not work natively on electron; implemented here */ />
                 <AppBarUI />
-                <div className='relative flex flex-grow overflow-clip'>
+                <div className='relative flex grow text-clip'>
                     <FavBarUI direction='row' />
                     <ProjectUI />
                 </div>

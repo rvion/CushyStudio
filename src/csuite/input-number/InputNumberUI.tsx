@@ -271,7 +271,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                 'UI-InputNumber',
                 'h-input relative',
                 'input-number-ui',
-                'flex-1 select-none min-w-24 cursor-ew-resize overflow-clip',
+                'min-w-24 flex-1 cursor-ew-resize select-none overflow-clip',
             ]}
             onWheel={(ev) => {
                 /* NOTE: This could probably divide by the length? But I'm not sure how to get the distance of 1 scroll tick.
@@ -290,15 +290,15 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
             <Frame /* Slider display */
                 className='inui-foreground'
                 base={{ contrast: p.hideSlider ? 0 : 0.1, chromaBlend: 1 }}
-                tw={['z-10 absolute left-0 h-input']}
+                tw={['h-input absolute left-0 z-10']}
                 style={{ width: `${((val - uist.rangeMin) / (uist.rangeMax - uist.rangeMin)) * 100}%` }}
             />
 
-            <div tw='grid w-full h-full items-center z-20' style={{ gridTemplateColumns: '16px 1fr 16px' }}>
+            <div tw='z-20 grid h-full w-full items-center' style={{ gridTemplateColumns: '16px 1fr 16px' }}>
                 <Button /* Left Button */
                     className='control'
                     borderless
-                    tw='!rounded-none items-center z-20 opacity-0'
+                    tw='z-20 items-center !rounded-none opacity-0'
                     tabIndex={-1}
                     onClick={uist.decrement}
                     icon='mdiChevronLeft'
@@ -307,7 +307,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                     tw={[
                         //
                         'th-text',
-                        `flex px-1 text-sm truncate z-20 h-full`,
+                        `z-20 flex h-full truncate px-1 text-sm`,
                         'items-center',
                         // 'items-center justify-center',
                     ]}
@@ -346,7 +346,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                             // 'text-shadow outline-0',
                             /* `absolute opacity-0` is a bit of a hack around not being able to figure out why the input kept taking up so much width.
                              * Can't use `hidden` here because it messes up focusing. */
-                            !isEditing && 'cursor-not-allowed pointer-events-none absolute opacity-0',
+                            !isEditing && 'pointer-events-none absolute cursor-not-allowed opacity-0',
                             !isEditing && p.text ? 'text-right' : 'text-center',
                         ]}
                         value={isEditing ? uist.inputValue : val}
@@ -414,7 +414,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                         <>
                             {p.text && (
                                 <div /* Inner Label Text - Not shown while editing */
-                                    tw={['w-full pr-1 outline-0 border-0 border-transparent z-10 text-left truncate']}
+                                    tw={['z-10 w-full truncate border-0 border-transparent pr-1 text-left outline-0']}
                                 >
                                     {p.text}
                                 </div>
@@ -429,7 +429,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                 <Button /* Right Button */
                     className='control'
                     borderless
-                    tw='!rounded-none items-center z-20 opacity-0'
+                    tw='z-20 items-center !rounded-none opacity-0'
                     tabIndex={-1}
                     onClick={uist.increment}
                     icon='mdiChevronRight'

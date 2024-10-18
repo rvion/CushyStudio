@@ -31,10 +31,10 @@ export const OutputDisplacementPreviewUI = observer(function OutputImagePreviewU
     const sizeStr = st.historySizeStr
     return (
         <div
-            tw={['bg-orange-500 text-black', 'flex items-center justify-center h-full w-full']}
+            tw={['bg-orange-500 text-black', 'flex h-full w-full items-center justify-center']}
             style={{ lineHeight: sizeStr, fontSize: `${size / 3}px` }}
         >
-            <div tw='font-bold text-xl'>3D</div>
+            <div tw='text-xl font-bold'>3D</div>
         </div>
     )
 })
@@ -68,14 +68,14 @@ export const OutputDisplacementUI = observer(function OutputDisplacementUI_(p: {
     const saveImgBtn = <Button icon='mdiDownload' size='sm' onClick={(ev) => saveCanvasAsImage(uist.canvasRef.current)} />
     const menuConf = st.displacementConf.value.menu
     return (
-        <div tw='relative flex-1 flex flex-col'>
+        <div tw='relative flex flex-1 flex-col'>
             {menuConf.right ? (
-                <div tw='absolute top-0 right-0 z-50 p-2 !w-96'>
+                <div tw='absolute right-0 top-0 z-50 !w-96 p-2'>
                     {saveImgBtn}
                     <FormUI field={st.displacementConf} />
                 </div>
             ) : menuConf.left ? (
-                <div tw='absolute top-0 left-0 z-50 p-2 !w-96'>
+                <div tw='absolute left-0 top-0 z-50 !w-96 p-2'>
                     {saveImgBtn}
                     <FormUI field={st.displacementConf} />
                 </div>

@@ -17,7 +17,7 @@ import { useSt } from '../../state/stateContext'
 const FavBarContainer = observer(function FavBarContainer_(p: { children?: ReactNode }) {
     return (
         <div // Favorite app container
-            tw={['w-full flex flex-col rounded', 'gap-1  p-1 text-center justify-center items-center', 'text-shadow']}
+            tw={['flex w-full flex-col rounded', 'items-center  justify-center gap-1 p-1 text-center', 'text-shadow']}
         >
             {p.children}
         </div>
@@ -43,19 +43,19 @@ export const FavBarUI = observer(function FavBarUI_(p: {
         <>
             <Frame
                 base={cushy.theme.value.appbar ?? { contrast: -0.077 }}
-                tw='relative flex flex-col box-content overflow-hidden px-1'
+                tw='relative box-content flex flex-col overflow-hidden px-1'
                 style={{ flexDirection: p.direction, scrollBehavior: 'inherit' }}
                 roundness={'5px'}
             >
                 <Frame
                     base={{ contrast: -0.1 }}
-                    tw='flex flex-col inset-0 flex-1 select-none overflow-hidden p-1'
+                    tw='inset-0 flex flex-1 select-none flex-col overflow-hidden p-1'
                     roundness={'5px'}
                 >
                     {/* <PanelHeaderUI>{conf.renderAsConfigBtn()}</PanelHeaderUI> */}
                     <Button
                         //
-                        tw='flex items-center justify-center self-center my-0.5'
+                        tw='my-0.5 flex items-center justify-center self-center'
                         base={{ hue: 0, chromaBlend: 2, contrast: 0.3 }}
                         style={{ width: tempSize, height: tempSize }}
                         onClick={() => cushy.db.cushy_app.get('library/built-in/SD15/cushySD15.ts:0')?.openLastOrCreateDraft()}
@@ -63,7 +63,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                         <div>SD1.5</div>
                     </Button>
                     <Button
-                        tw='flex items-center justify-center self-center my-0.5'
+                        tw='my-0.5 flex items-center justify-center self-center'
                         base={{ hue: 90, chromaBlend: 2, contrast: 0.3 }}
                         style={{ width: tempSize, height: tempSize }}
                         onClick={() => cushy.db.cushy_app.get('library/built-in/SDXL/cushySDXL.tsx:0')?.openLastOrCreateDraft()}
@@ -76,7 +76,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                         app={cushy.db.cushy_app.get('library/built-in/SDXL/cushySDXL.tsx:1')}
                     /> */}
                     <Button
-                        tw='flex items-center justify-center self-center my-0.5'
+                        tw='my-0.5 flex items-center justify-center self-center'
                         base={{ hue: 90, chromaBlend: 2, contrast: 0.3 }}
                         style={{
                             width: tempSize,
@@ -93,7 +93,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                         NoobAI
                     </Button>
                     <Button
-                        tw='flex items-center justify-center self-center my-0.5'
+                        tw='my-0.5 flex items-center justify-center self-center'
                         base={{ hue: 180, chromaBlend: 2, contrast: 0.3 }}
                         style={{ width: tempSize, height: tempSize }}
                         onClick={() => cushy.db.cushy_app.get('library/built-in/SD3/cushySD3.ts:0')?.openLastOrCreateDraft()}
@@ -101,7 +101,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                         SD3
                     </Button>
                     <Button
-                        tw='flex items-center justify-center self-center my-0.5'
+                        tw='my-0.5 flex items-center justify-center self-center'
                         base={{ hue: 210, chromaBlend: 2, contrast: 0.3 }}
                         style={{ width: tempSize, height: tempSize }}
                         onClick={() => cushy.db.cushy_app.get('library/built-in/Cascade/cushyCascade.ts:0')?.openLastOrCreateDraft()} // prettier-ignore
@@ -109,7 +109,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                         Cascade
                     </Button>
                     <Button
-                        tw='flex items-center justify-center self-center my-0.5'
+                        tw='my-0.5 flex items-center justify-center self-center'
                         base={{ hue: 270, chromaBlend: 2, contrast: 0.3 }}
                         style={{ width: tempSize, height: tempSize }}
                         onClick={() => cushy.db.cushy_app.get('library/built-in/Flux/cushyFlux.ts:0')?.openLastOrCreateDraft()}
@@ -118,7 +118,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                     </Button>
                     <Button
                         tooltip='Slay the Spire Card Generator'
-                        tw='flex items-center justify-center self-center my-0.5'
+                        tw='my-0.5 flex items-center justify-center self-center'
                         base={{ hue: 270, chromaBlend: 2, contrast: 0.3 }}
                         style={{ width: tempSize, height: tempSize }}
                         onClick={() =>
@@ -128,7 +128,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                         StS
                     </Button>
                     <RevealUI
-                        tw='hover:brightness-125 self-center my-0.5'
+                        tw='my-0.5 self-center hover:brightness-125'
                         placement='screen-top'
                         UNSAFE_cloned={true}
                         shell='popup-lg'
@@ -137,15 +137,15 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                         <Button
                             square
                             style={{ width: tempSize, height: tempSize, fontSize: sizeStr }}
-                            tw='items-center content-center'
+                            tw='content-center items-center'
                             icon='mdiPlus'
                             iconSize={tempSize}
                         />
                     </RevealUI>
                     {/* Lot of divs, but it makes it so the scrolling container is rounded on the inside. */}
-                    <div tw='w-full flex flex-col items-center rounded pb-1 overflow-hidden'>
-                        <div tw='rounded items-center justify-center overflow-hidden'>
-                            <div tw='hide-vertical-scroll h-full items-center flex flex-col gap-1 overflow-scroll'>
+                    <div tw='flex w-full flex-col items-center overflow-hidden rounded pb-1'>
+                        <div tw='items-center justify-center overflow-hidden rounded'>
+                            <div tw='hide-vertical-scroll flex h-full flex-col items-center gap-1 overflow-scroll'>
                                 {/* ------------------------------------------------------------------------ */}
                                 {st.favoriteApps.length > 0 && (
                                     <FavBarContainer /* icon='apps' */>
@@ -285,7 +285,7 @@ export const AppDraftsQuickListUI = observer(function AppDraftsQuickListUI_(p: {
                     icon='mdiStar'
                     square
                 />
-                <div tw='flex-1 flex-grow text-center justify-center content-center border-l border-r border-base-100 pt-1'>
+                <div tw='border-base-100 flex-1 flex-grow content-center justify-center border-l border-r pt-1 text-center'>
                     {app.name}
                 </div>
                 <Button //
@@ -295,16 +295,16 @@ export const AppDraftsQuickListUI = observer(function AppDraftsQuickListUI_(p: {
                     square
                 />
             </div>
-            <div className='MENU-CONTENT' tw='flex-col flex gap-1 max-w-md'>
+            <div className='MENU-CONTENT' tw='flex max-w-md flex-col gap-1'>
                 {app.description ? (
                     <div //Description
-                        tw='flex-1 rounded p-1 italic text-sm'
+                        tw='flex-1 rounded p-1 text-sm italic'
                     >
                         {app.description}
                     </div>
                 ) : null}
                 <div //App Grid Container
-                    tw='flex-col p-2 rounded'
+                    tw='flex-col rounded p-2'
                 >
                     <div //Filter Input
                         tw='flex rounded pb-2'
@@ -318,18 +318,18 @@ export const AppDraftsQuickListUI = observer(function AppDraftsQuickListUI_(p: {
                         <Button icon='mdiCancel' onClick={(ev) => setFilterText('')}></Button>
                     </div>
                     <div //App Grid Container
-                        tw='grid grid-cols-3 gap-2 max-h-96 overflow-scroll'
+                        tw='grid max-h-96 grid-cols-3 gap-2 overflow-scroll'
                     >
                         {filteredApps.map((draft) => (
                             <div
                                 key={draft.id}
-                                tw='flex brightness-95 cursor-pointer hover:brightness-110 rounded-md border-base-100 border p-1 justify-center'
+                                tw='border-base-100 flex cursor-pointer justify-center rounded-md border p-1 brightness-95 hover:brightness-110'
                             >
                                 <div key={draft.id} onClick={() => draft.openOrFocusTab()}>
-                                    <div tw='flex self-center text-center justify-center p-1'>
+                                    <div tw='flex justify-center self-center p-1 text-center'>
                                         <DraftIllustrationUI size='8rem' draft={draft} />
                                     </div>
-                                    <div tw='text-center text-sm truncate overflow-clip max-w-32'>{draft.name}</div>
+                                    <div tw='max-w-32 overflow-clip truncate text-center text-sm'>{draft.name}</div>
                                 </div>
                             </div>
                         ))}

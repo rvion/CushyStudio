@@ -132,7 +132,7 @@ export const PromptEditorUI = observer(function PromptEditorUI_(p: { promptID: F
     }, [])
 
     return (
-        <div tw='p-2 flex flex-col gap-1'>
+        <div tw='flex flex-col gap-1 p-2'>
             <MessageInfoUI title='instructions'> select the [from] to change the to widget </MessageInfoUI>
             <div className='flex flex-wrap'>
                 {cushy.repository.getWidgetsByType<Field_prompt>('prompt').map((widget) => (

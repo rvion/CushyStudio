@@ -14,7 +14,7 @@ export const ComboUI = observer(function ComboUI_(p: {
     if (p.combo == null) return null
     const iss = parseShortcutToInputSequence(p.combo)
     return (
-        <div tw='whitespace-nowrap flex gap-2'>
+        <div tw='flex gap-2 whitespace-nowrap'>
             {iss.map((token, ix) => {
                 const keys = token.split('+')
                 return (

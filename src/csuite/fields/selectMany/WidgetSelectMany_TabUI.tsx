@@ -16,7 +16,7 @@ export const WidgetSelectMany_TabUI = observer(function WidgetSelectMany_TabUI_<
     return (
         <div>
             <div
-                tw='rounded select-none flex flex-wrap gap-x-0.5 gap-y-0'
+                tw='flex select-none flex-wrap gap-x-0.5 gap-y-0 rounded'
                 style={{ justifyContent: getJustifyContent(field.config.tabPosition) }}
             >
                 {p.field.options.map((option) => {

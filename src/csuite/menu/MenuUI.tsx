@@ -130,7 +130,7 @@ export const MenuUI = observer(function MenuUI_({
                             key={ix}
                             trigger='hover'
                             hideTriggers={{}}
-                            tw='min-w-60 !block'
+                            tw='!block min-w-60'
                             placement='rightStart'
                             content={() => <MenuUI menu={entry.init(menu.allocatedKeys)} />}
                         >

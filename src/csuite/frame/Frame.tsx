@@ -230,7 +230,7 @@ export const Frame = observer(
                     {icon && <IkonOf tw='pointer-events-none flex-none' name={icon} size={iconSize} />}
                     {p.children}
                     {suffixIcon && <IkonOf tw='pointer-events-none' name={suffixIcon} size={iconSize} />}
-                    {loading && <div tw='loading loading-spinner absolute loading-sm self-center justify-self-center' />}
+                    {loading && <div tw='loading loading-spinner loading-sm absolute self-center justify-self-center' />}
                 </CurrentStyleCtx.Provider>
             </Elem>
         )

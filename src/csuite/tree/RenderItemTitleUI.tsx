@@ -15,14 +15,14 @@ export const RenderItemTitleUI = observer(function RenderItemTitleUI_(p: { node:
     }
 
     return (
-        <div tw='flex flex-grow items-center gap-0.5 whitespace-nowrap overflow-ellipsis'>
+        <div tw='flex flex-grow items-center gap-0.5 overflow-ellipsis whitespace-nowrap'>
             {icon}
             <div
                 tw={[
                     //
                     '_TreeItemTitle',
                     'cursor-pointer',
-                    'flex-grow relative overflow-hidden overflow-ellipsis',
+                    'relative flex-grow overflow-hidden overflow-ellipsis',
                 ]}
                 onClick={() => {
                     item.onPrimaryAction?.(node)

@@ -27,7 +27,7 @@ export const CivitaiUI = observer(function CivitaiUI_(p: { className?: string; c
                         />
                     </div>
                     <div //RESULS
-                        tw='flex flex-col flex-initial overflow-auto'
+                        tw='flex flex-initial flex-col overflow-auto'
                     >
                         {civitai.results?.ui((x) =>
                             x.items.map((i: CivitaiSearchResultItem) => (

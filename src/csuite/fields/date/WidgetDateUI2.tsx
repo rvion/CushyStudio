@@ -40,7 +40,7 @@ export const WidgetDate_HeaderUI = observer(function WidgetDateUI_(p: { field: F
     const field = p.field
     const config = field.config
     return (
-        <div tw='sticky flex items-center gap-0.5 top-0 w-full'>
+        <div tw='sticky top-0 flex w-full items-center gap-0.5'>
             <InputStringUI
                 tw='w-full'
                 inputClassName={['w-full', 'minh-input', 'UI-InputDate', field.mustDisplayErrors && 'border-red-700 border']

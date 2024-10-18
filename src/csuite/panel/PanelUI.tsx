@@ -12,14 +12,14 @@ const _PanelUI = observer(function Panel(p: FrameProps) {
             // let's have that
             col
             expand
-            tw='overflow-auto h-full'
+            tw='h-full overflow-auto'
             {...p}
         />
     )
 })
 
 export const PanelContentUI = observer(function PanelContent(p: React.HTMLAttributes<HTMLDivElement>) {
-    return <div tw='flex flex-1 p-2 overflow-auto' {...p} />
+    return <div tw='flex flex-1 overflow-auto p-2' {...p} />
 })
 
 export const PanelUI = Object.assign(_PanelUI, {

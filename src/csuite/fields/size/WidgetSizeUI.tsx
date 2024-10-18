@@ -75,7 +75,7 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
 
                     'flex flex-1 flex-col overflow-clip',
                     // Clip children to fix border issues and make the children styled correctly
-                    '[&>*]:!rounded-none [&>*]:!border-0 !gap-0 !p-0',
+                    '!gap-0 !p-0 [&>*]:!rounded-none [&>*]:!border-0',
                     // Add borders/"dividers" where needed (Right of every child except last)
                     '[&>*:not(:last-child)]:!border-b',
                     '[&>*]:filter-none',
@@ -139,7 +139,7 @@ export const AspectLockButtonUI = observer(function AspectLockButtonUI_(p: { siz
             tw={[
                 'flex flex-col overflow-clip',
                 // Clip children to fix border issues and make the children styled correctly
-                '[&>*]:!rounded-none [&>*]:!border-0 !gap-0 !p-0',
+                '!gap-0 !p-0 [&>*]:!rounded-none [&>*]:!border-0',
                 // Add borders/"dividers" where needed (Right of every child except last)
                 '[&>*:not(:last-child)]:!border-b',
                 '[&>*]:filter-none',
@@ -164,7 +164,7 @@ export const AspectLockButtonUI = observer(function AspectLockButtonUI_(p: { siz
                 square
                 size='input'
                 base={{ contrast: uist.isAspectRatioLocked ? 0.2 : 0.0 }}
-                tw='!gap-0 !px-0.5 !rounded-none flex flex-1'
+                tw='flex flex-1 !gap-0 !rounded-none !px-0.5'
                 // tw='!gap-0 !px-0.5 !rounded-none'
                 active={uist.isAspectRatioLocked}
                 suffixIcon={uist.isAspectRatioLocked ? 'mdiLink' : 'mdiLinkOff'}
@@ -184,7 +184,7 @@ export const AspectLockButtonUI = observer(function AspectLockButtonUI_(p: { siz
                         square
                         size='input'
                         base={csuite.inputContrast}
-                        tw='!gap-0 !px-0.5 !rounded-none flex flex-1'
+                        tw='flex flex-1 !gap-0 !rounded-none !px-0.5'
                         suffixIcon={'mdiChevronDown'}
                     />
                 }
@@ -211,7 +211,7 @@ export const AspectRatioSquareUI = observer(function AspectRatioSquareUI_(p: { s
                 'overflow-clip',
                 'items-center justify-center',
                 'cursor-pointer',
-                `!w-[64px] !h-[64px]`,
+                `!h-[64px] !w-[64px]`,
             ]}
             onClick={() => uist.flip()}
             hover
@@ -219,7 +219,7 @@ export const AspectRatioSquareUI = observer(function AspectRatioSquareUI_(p: { s
         >
             <Frame
                 base={10}
-                tw='!relative w-full h-full'
+                tw='!relative h-full w-full'
                 style={{
                     //
                     width: '100%',
@@ -253,7 +253,7 @@ export const WigetSizeXUI = observer(function WigetSizeXUI_(p: { size: Field_siz
         />
     )
     return (
-        <Frame tw='w-132 p-1 gap-1 flex flex-col'>
+        <Frame tw='w-132 flex flex-col gap-1 p-1'>
             <div tw='flex flex-row justify-center'>
                 {modelBtn(p.size, '1.5')}
                 {modelBtn(p.size, 'xl')}

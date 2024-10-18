@@ -62,7 +62,7 @@ export const TabsUI = observer(function Tabs_(p: {
                 ) : (
                     <>no tab {onIx}</>
                 )}
-                {p.disabled && <div tw='inset-0 absolute pointer-events-none' style={{ background: 'rgba(0,0,0,0.5)' }}></div>}
+                {p.disabled && <div tw='pointer-events-none absolute inset-0' style={{ background: 'rgba(0,0,0,0.5)' }}></div>}
             </div>
             {p.bottomTabs && tabHeader}
         </div>

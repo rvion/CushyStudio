@@ -12,7 +12,7 @@ export const PlaygroundGraphUI = observer(function PlaygroundGraphUI_(p: {}) {
 
     return (
         <div tw='h-full'>
-            <div tw='flex gap-1 items-center'>
+            <div tw='flex items-center gap-1'>
                 <Button onClick={update}>update</Button>
                 {form.renderAsConfigBtn({ title: 'Graph Conf' })}
             </div>

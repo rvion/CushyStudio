@@ -26,14 +26,14 @@ export const DBStatsUI = observer(function DBStats(p: {}) {
             <div>total size: {formatSize(sum(byCount.map((i) => i.size)))}</div>
             <div>total rows: {formatNum(sum(byCount.map((i) => i.count)))}</div>
 
-            <Frame row tw='gap-2 wrap justify-center'>
+            <Frame row tw='wrap justify-center gap-2'>
                 {[
                     { name: 'sorted by count', data: byCount },
                     { name: 'sorted by size', data: bySize },
                 ].map(({ name, data }) => (
                     <Frame>
                         <h2 tw='mx-auto text-center'>{name}</h2>
-                        <table tw='[&_td]:px-2 [&_td]:mx-2 [&_th]:px-2 border-separate border-spacing-x-2'>
+                        <table tw='border-separate border-spacing-x-2 [&_td]:mx-2 [&_td]:px-2 [&_th]:px-2'>
                             <thead>
                                 <tr>
                                     <th tw='text-right '>size</th>
@@ -51,17 +51,17 @@ export const DBStatsUI = observer(function DBStats(p: {}) {
                                             hue: (360 * ix) / arr.length,
                                         }}
                                     >
-                                        <Frame as='td' tw='text-right font-mono relative'>
+                                        <Frame as='td' tw='relative text-right font-mono'>
                                             <Frame
-                                                tw='absolute top-0 bottom-0 left-0 z-0'
+                                                tw='absolute bottom-0 left-0 top-0 z-0'
                                                 style={{ width: `${(100 * size) / maxSize}%` }}
                                                 base={{ chromaBlend: 3, contrast: 0.2 }}
                                             />
                                             <div tw='relative z-10'>{formatSize(size)}</div>
                                         </Frame>
-                                        <Frame as='td' tw='text-right font-mono relative'>
+                                        <Frame as='td' tw='relative text-right font-mono'>
                                             <Frame
-                                                tw='absolute top-0 bottom-0 left-0 z-0'
+                                                tw='absolute bottom-0 left-0 top-0 z-0'
                                                 style={{ width: `${(100 * count) / maxCount}%` }}
                                                 base={{ chromaBlend: 3, contrast: 0.2 }}
                                             ></Frame>

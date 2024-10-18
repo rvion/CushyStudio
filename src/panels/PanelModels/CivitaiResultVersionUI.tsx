@@ -34,7 +34,7 @@ export const CivitaiResultVersionUI = observer(function CivitaiResultVersionUI_(
                     style={{ width: size1, height: size1, objectFit: 'contain' }}
                     src={imgUrl}
                 />
-                <div tw='flex flex-col flex-1'>
+                <div tw='flex flex-1 flex-col'>
                     <div // key infos
                         tw='flex gap-2'
                     >
@@ -50,7 +50,7 @@ export const CivitaiResultVersionUI = observer(function CivitaiResultVersionUI_(
                         )}
                         {/* {modelVersion.downloadUrl} */}
                         <div // trigger words infos
-                            tw='flex items-center flex-gap'
+                            tw='flex-gap flex items-center'
                         >
                             Trigger words:
                             <div tw='text-sm'>

@@ -32,7 +32,7 @@ export const ActivityContainerUI = observer(function ActivityContainerUI_(p: {
         <div // whole screen
             tabIndex={-1}
             className='$activity-root'
-            tw='absolute inset-0 h-full w-full pointer-events-auto'
+            tw='pointer-events-auto absolute inset-0 h-full w-full'
             onAuxClick={(ev) => {
                 activity.onAuxClick?.(ev, routine)
                 activity.onEvent?.(ev, routine)
@@ -76,7 +76,7 @@ export const ActivityContainerUI = observer(function ActivityContainerUI_(p: {
                 activity.onEvent?.(ev, routine)
             }}
         >
-            <div tw='relative w-full h-full'>
+            <div tw='relative h-full w-full'>
                 {activity.backdrop ? (
                     <div // backdrop
                         className='$activity-backdrop'
@@ -88,7 +88,7 @@ export const ActivityContainerUI = observer(function ActivityContainerUI_(p: {
                 ) : null}
 
                 <div // debug info
-                    tw='absolute top-10 left-10 [z-index:99999]'
+                    tw='absolute left-10 top-10 [z-index:99999]'
                 >
                     activity "{activity.title}"
                 </div>
@@ -110,11 +110,11 @@ export const ActivityContainerUI = observer(function ActivityContainerUI_(p: {
                     }}
                 >
                     {activity.shell === 'popup-lg' ? (
-                        <ModalShellUI tw='max-w-lg w-fit h-fit m-8' close={() => p.stop()} title={activity.title}>
+                        <ModalShellUI tw='m-8 h-fit w-fit max-w-lg' close={() => p.stop()} title={activity.title}>
                             {p.children}
                         </ModalShellUI>
                     ) : activity.shell === 'popup-sm' ? (
-                        <ModalShellUI tw='max-w-sm w-fit h-fit m-8' close={() => p.stop()} title={activity.title}>
+                        <ModalShellUI tw='m-8 h-fit w-fit max-w-sm' close={() => p.stop()} title={activity.title}>
                             {p.children}
                         </ModalShellUI>
                     ) : activity.shell === 'popup-full' ? (

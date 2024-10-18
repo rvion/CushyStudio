@@ -6,11 +6,11 @@ import { GalleryHoveredPreviewUI } from '../../widgets/galleries/GalleryHoveredP
 
 export const ProjectUI = observer(function ProjectUI_(p: {}) {
     return (
-        <div className='UI-MAIN relative h-full flex flex-grow flex-col'>
+        <div className='UI-MAIN relative flex h-full grow flex-col'>
             <GalleryHoveredPreviewUI />
             <div
                 id='hovered-graph'
-                className='[z-index:2000] pointer-events-none absolute bottom-3 left-3 right-3 top-3 overflow-auto bg-opacity-80'
+                className='pointer-events-none absolute inset-3 overflow-auto bg-opacity-80 [z-index:2000]'
                 style={{ transition: 'all 0.2s ease-in-out', opacity: 0 }}
             />
             <ErrorBoundaryUI>

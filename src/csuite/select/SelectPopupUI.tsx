@@ -70,7 +70,7 @@ export const SelectPopupUI = observer(function SelectPopupUI_<OPTION>(p: SelectP
                         setValue={(next) => select.filterOptions(next)}
                         tw={[
                             //
-                            'absolute top-0 left-0 right-0 z-50 h-inside',
+                            'h-inside absolute left-0 right-0 top-0 z-50',
                             'min-w-24 flex-1',
                             // 'bg-gray-200 !rounded-none',
                         ]}
@@ -103,7 +103,7 @@ export const SelectPopupUI = observer(function SelectPopupUI_<OPTION>(p: SelectP
                     />
                 )
             ) : (
-                <Frame col tw='max-h-96 pt-2 pb-1'>
+                <Frame col tw='max-h-96 pb-1 pt-2'>
                     {select.filteredOptions.map((option, index) =>
                         select.p.slotOptionUI != null ? (
                             <select.p.slotOptionUI //

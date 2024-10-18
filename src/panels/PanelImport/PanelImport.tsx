@@ -23,7 +23,7 @@ export const PanelImportUI = observer(function PanelImportUI_(p: {}) {
     const st = useSt()
 
     return (
-        <div tw='w-full h-full'>
+        <div tw='h-full w-full'>
             <PanelHeaderUI>
                 <SpacerUI />
                 {/* Putting clear items button on the right because actions that remove things should be separated in some way from other things to prevent mis-clicks. */}
@@ -34,7 +34,7 @@ export const PanelImportUI = observer(function PanelImportUI_(p: {}) {
                     children='Clear Items'
                 />
             </PanelHeaderUI>
-            <div tw='flex flex-col gap-3 m-3'>
+            <div tw='m-3 flex flex-col gap-3'>
                 {st.droppedFiles.map((file, ix) => (
                     <Frame border base key={`${file.name}+${ix}`} tw='p-1'>
                         <Frame line icon='mdiFileImport'>
@@ -54,8 +54,8 @@ export const PanelImportUI = observer(function PanelImportUI_(p: {}) {
                 ))}
             </div>
             {st.droppedFiles.length == 0 ? (
-                <div tw='flex items-center w-full h-auto p-10 justify-center text-center'>
-                    <div tw='flex-1 flex-grow opacity-50 w-full h-full select-none'>
+                <div tw='flex h-auto w-full items-center justify-center p-10 text-center'>
+                    <div tw='h-full w-full flex-1 flex-grow select-none opacity-50'>
                         Drag a file or an image from a web browser on to CushyStudio to import it.
                     </div>
                 </div>

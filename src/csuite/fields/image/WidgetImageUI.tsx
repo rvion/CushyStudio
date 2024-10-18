@@ -32,7 +32,7 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: {
     return image != null ? ( //
         <ResizableFrame // Container
             border
-            tw='text-sm w-full'
+            tw='w-full text-sm'
             currentSize={size}
             onResize={(val) => {
                 field.size = val
@@ -95,7 +95,7 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: {
             }
             footer={
                 <Frame // Dimensions
-                    tw='w-full h-full pointer-events-none !bg-transparent'
+                    tw='pointer-events-none h-full w-full !bg-transparent'
                 >
                     {image?.width} x {image?.height}
                 </Frame>
@@ -105,7 +105,7 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: {
                 style={dropStyle}
                 ref={dropRef}
                 className='DROP_IMAGE_HANDLER'
-                tw='_WidgetSelectImageUI flex flex-1 w-full h-full'
+                tw='_WidgetSelectImageUI flex h-full w-full flex-1'
             >
                 <ImageUI img={image} size={field.size} />
             </div>

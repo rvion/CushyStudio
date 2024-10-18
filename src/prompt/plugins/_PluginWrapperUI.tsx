@@ -14,7 +14,7 @@ export const PluginWrapperUI = observer(function PluginWrapperUI_(p: {
     const Icon = Ikon[plugin.icon]
     return (
         <Frame>
-            <div tw='italic text-gray-500 text-sm flex gap-1 align-center'>
+            <div tw='align-center flex gap-1 text-sm italic text-gray-500'>
                 <Icon /> Plugin {plugin.title}
             </div>
             {p.children}

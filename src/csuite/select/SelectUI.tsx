@@ -30,7 +30,7 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                     //
                     'UI-Select minh-input',
                     'ANCHOR-REVEAL',
-                    p.hasErrors && 'border-red-700 border',
+                    p.hasErrors && 'border border-red-700',
                 ]}
             >
                 <AnchorContentComp select={select} />

@@ -13,10 +13,10 @@ export const WidgetList_LineUI: FC<{ field: Field_list<any> }> = observer(functi
     field: Field_list<any>
 }) {
     return (
-        <div tw='flex flex-1 items-center COLLAPSE-PASSTHROUGH'>
+        <div tw='COLLAPSE-PASSTHROUGH flex flex-1 items-center'>
             {p.field.isAuto ? null : (
                 <ListControlsUI field={p.field}>
-                    <div tw='text-sm text-gray-500 italic whitespace-nowrap'>{p.field.length} items</div>
+                    <div tw='whitespace-nowrap text-sm italic text-gray-500'>{p.field.length} items</div>
                 </ListControlsUI>
             )}
         </div>

@@ -102,7 +102,7 @@ export const InputStringUI = observer(
                 inputTailwind = 'w-full h-full !bg-transparent opacity-0 !p-0'
                 visualHelper = (
                     <Frame //
-                        tw='UI-Color left-0 absolute w-full h-full flex items-center font-mono whitespace-nowrap text-[0.6rem] pl-2'
+                        tw='UI-Color absolute left-0 flex h-full w-full items-center whitespace-nowrap pl-2 font-mono text-[0.6rem]'
                         base={value ? value : undefined}
                         text={{ contrast: 1 }}
                     >
@@ -177,7 +177,7 @@ export const InputStringUI = observer(
                 tw={[
                     //
                     p.icon && !p.clearable ? 'pr-1' : 'px-0',
-                    'UI-InputString h-input flex items-center relative text-sm overflow-clip',
+                    'UI-InputString h-input relative flex items-center overflow-clip text-sm',
                 ]}
                 onMouseDown={(ev) => {
                     if (ev.button == 1) {
@@ -200,7 +200,7 @@ export const InputStringUI = observer(
                         {input}
                         <span
                             style={{ maxWidth: p.autoResizeMaxWidth }}
-                            tw='whitespace-nowrap minh-input lh-input whitespace-pre select-none'
+                            tw='minh-input lh-input select-none whitespace-nowrap whitespace-pre'
                         >
                             {p.getValue() ? p.getValue() : <span tw='opacity-30'>{p.placeholder || ' '}</span>}
                         </span>

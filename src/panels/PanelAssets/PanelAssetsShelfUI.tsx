@@ -15,11 +15,11 @@ export const PanelAssetsShelfUI = observer(function PanelAssetsShelfUI_(p: { st:
             tw='flex'
             anchor='right'
         >
-            <div tw='flex flex-col w-full p-1.5 gap-1.5 select-none'>
+            <div tw='flex w-full select-none flex-col gap-1.5 p-1.5'>
                 Lora DB info and editable data should be here
                 {activeLora ? (
                     <Frame // Kind of useless since the path isn't a full one, but need something here to display for now
-                        tw='flex w-full truncate line-clamp-1 whitespace-nowrap p-1 select-none'
+                        tw='line-clamp-1 flex w-full select-none truncate whitespace-nowrap p-1'
                         icon='mdiFileDocument'
                         line
                         tooltip={`Filepath\n${activeLora}`}

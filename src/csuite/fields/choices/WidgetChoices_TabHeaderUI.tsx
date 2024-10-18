@@ -21,7 +21,7 @@ export const WidgetChoices_TabHeaderUI = observer(function WidgetChoicesTab_Line
     const isActive = !p.field.canBeToggledWithinParent || !p.field.isInsideDisabledBranch
     return (
         <div
-            tw='rounded select-none flex flex-1 flex-wrap gap-x-1 gap-y-0.5'
+            tw='flex flex-1 select-none flex-wrap gap-x-1 gap-y-0.5 rounded'
             style={{ justifyContent: getJustifyContent(field.config.tabPosition) }}
         >
             {choices.map((c) => {
@@ -74,7 +74,7 @@ export const WidgetChoices_TabHeaderSingleLineUI = observer(function WidgetChoic
     const choices = field.choicesWithLabels // choicesStr.map((v) => ({ key: v }))
     const csuite = useCSuite()
     return (
-        <Frame tw='grid grid-rows-1 h-widget' expand>
+        <Frame tw='h-widget grid grid-rows-1' expand>
             <OverflowingRowUI tw='gap-1'>
                 {choices.map((c) => {
                     const isSelected = field.isBranchEnabled(c.key) // serial.branches[c.key]

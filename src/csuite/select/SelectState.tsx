@@ -208,7 +208,7 @@ export class AutoCompleteSelectState<OPTION> {
     get displayValueInAnchor(): ReactNode {
         if (this.p.hideValue) return this.p.placeholder ?? ''
         const value: (OPTION | OPTION[]) | undefined = this.value
-        const placeHolderStr = <div tw='text-gray-300 text-sm w-full '>{this.p.placeholder ?? 'Select...'}</div>
+        const placeHolderStr = <div tw='w-full text-sm text-gray-300 '>{this.p.placeholder ?? 'Select...'}</div>
         if (value === undefined) return placeHolderStr
         // 💬 2024-09-18 rvion:
         // | null is now a valid value; only undefined means no value.

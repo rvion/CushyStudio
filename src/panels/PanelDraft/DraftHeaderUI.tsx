@@ -34,7 +34,7 @@ export const DraftHeaderUI = observer(function DraftHeader({
     return (
         <Frame
             style={mergeStylesTsEfficient({ zIndex: 99 }, style)}
-            tw='🔴test flex flex-col sticky top-0 z-50 overflow-clip shrink-0'
+            tw='🔴test sticky top-0 z-50 flex shrink-0 flex-col overflow-clip'
             {...rest}
         >
             <PanelHeaderUI>
@@ -44,7 +44,7 @@ export const DraftHeaderUI = observer(function DraftHeader({
                 <Frame
                     //Joined
 
-                    tw='overflow-clip flex [&>*]:!rounded-none [&>*]:!border-0'
+                    tw='flex overflow-clip [&>*]:!rounded-none [&>*]:!border-0'
                     border
                     roundness={'5px'}
                     dropShadow={
@@ -75,7 +75,7 @@ export const DraftHeaderUI = observer(function DraftHeader({
                 row
                 icon='mdiHistory'
                 iconSize='1.25rem'
-                tw='gap-1 items-center'
+                tw='items-center gap-1'
             >
                 {app.lastExecutedDrafts.map(({ id, title, lastRunAt }) => {
                     return (
@@ -93,17 +93,17 @@ export const DraftHeaderUI = observer(function DraftHeader({
                     )
                 })}
             </OverflowingRowUI>
-            <Frame tw='flex w-full gap-2 p-2 flex-grow text-base-content' base={{ contrast: -0.025 }}>
+            <Frame tw='text-base-content flex w-full flex-grow gap-2 p-2' base={{ contrast: -0.025 }}>
                 <DraftIllustrationUI
                     revealAppIllustrationOnHover
                     draft={draft}
                     size={`${cushy.preferences.interface.value.inputHeight * 2.25}rem`}
                     // size='3.69rem'
                 />
-                <div tw='flex flex-col flex-1 gap-2'>
+                <div tw='flex flex-1 flex-col gap-2'>
                     <Frame line>
                         <DraftMenuDataBlockUI draft={draft} title='Drafts' />
-                        <RunOrAutorunUI tw='flex-grow !h-full' draft={draft} />
+                        <RunOrAutorunUI tw='!h-full flex-grow' draft={draft} />
                     </Frame>
                     <div tw='flex items-center justify-between'>
                         <InputStringUI

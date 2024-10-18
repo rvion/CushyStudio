@@ -23,7 +23,7 @@ export const Plugin_LoraControlsUI = observer(function Plugin_LoraControlsUI_(p:
     return (
         <>
             {/* {uist.loras.length === 0 && <div tw='italic text-gray-500'>No loras in prompt</div>} */}
-            <div tw='flex flex-col p-1 gap-1'>
+            <div tw='flex flex-col gap-1 p-1'>
                 {uist.loras.map((loraASTNode, ix) => {
                     const weighted = loraASTNode.firstAncestor('WeightedExpression')
                     const isOnlyLora = weighted?.contentText == loraASTNode?.text
@@ -83,10 +83,10 @@ const LoraBoxUI = observer(function LoraBoxUI_(p: {
     return (
         <Frame base={5} tw='rounded p-2'>
             <div //Header
-                tw='flex w-full h-10 border-b pb-2 items-center border-base-200 mb-2'
+                tw='border-base-200 mb-2 flex h-10 w-full items-center border-b pb-2'
             >
                 <div //Join Lora selection and Delete Button
-                    tw='flex-1 join'
+                    tw='join flex-1'
                 >
                     <SelectUI<string>
                         tw='join-item'
@@ -122,7 +122,7 @@ const LoraBoxUI = observer(function LoraBoxUI_(p: {
                 /> */}
             </div>
             {/* {node.name} */}
-            <div tw='flex gap-1 items-center'>
+            <div tw='flex items-center gap-1'>
                 <div tw='w-32'>Model Strength</div>
                 <div tw='flex flex-grow items-center'>
                     <InputNumberUI
@@ -145,7 +145,7 @@ const LoraBoxUI = observer(function LoraBoxUI_(p: {
                     />
                 </div>
             </div>
-            <div tw='flex gap-1 items-center'>
+            <div tw='flex items-center gap-1'>
                 <div tw='w-32'>Clip Strength</div>
                 <div tw='flex flex-grow items-center'>
                     <InputNumberUI
@@ -173,12 +173,12 @@ const LoraBoxUI = observer(function LoraBoxUI_(p: {
                     />
                 </div>
             </div>
-            <div tw='flex gap-1 items-center'>
+            <div tw='flex items-center gap-1'>
                 <div tw='w-32'>Trigger Words*</div>
-                <div tw='flex flex-grow join'>
+                <div tw='join flex flex-grow'>
                     <InputLegacy
                         //
-                        tw='h-input rounded join-item'
+                        tw='h-input join-item rounded'
                         type='text'
                         value={associatedText}
                         onChange={(ev) => {
@@ -209,7 +209,7 @@ const LoraBoxUI = observer(function LoraBoxUI_(p: {
                     />
                 </div>
             </div>
-            <div tw='opacity-50 italic text-xs'>
+            <div tw='text-xs italic opacity-50'>
                 *: Only trigger words will be multiplied by weights; to change the lora model and clip strength, use [x,y] syntax
             </div>
             <div tw='flex items-center gap-1'>

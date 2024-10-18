@@ -26,7 +26,7 @@ export const CivitaiResultFullUI = observer(function CivitaiResultFullUI_(p: {
 
     return (
         <div tw='flex flex-col gap-1 p-2'>
-            <div tw='flex gap-1 items-baseline'>
+            <div tw='flex items-baseline gap-1'>
                 <div tw='text-2xl font-bold'>{item.name}</div>
                 <div tw='italic opacity-50'>#{item.id}</div>
                 <div tw='badge badge-lg bg-yellow-600 text-black'>{item.type}</div>

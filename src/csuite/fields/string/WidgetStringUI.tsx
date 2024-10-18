@@ -44,7 +44,7 @@ export const WidgetString_TextareaInput = observer(function WidgetString_Textare
                     lineHeight: '1.3rem',
                     resize: p.field.config.resize ?? 'both',
                 }}
-                tw='csuite-input w-full p-2 !bg-transparent'
+                tw='csuite-input w-full !bg-transparent p-2'
                 placeholder={field.config.placeHolder}
                 rows={3}
                 value={field.value_or_zero}

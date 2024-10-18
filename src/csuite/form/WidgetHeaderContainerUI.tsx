@@ -26,7 +26,7 @@ export const WidgetHeaderContainerUI = observer(function WidgetHeaderContainerUI
             <Frame
                 tw={[
                     'COLLAPSE-PASSTHROUGH',
-                    'flex flex-1 gap-0.5 select-none min-w-0',
+                    'flex min-w-0 flex-1 select-none gap-0.5',
 
                     // 💬 2024-10-10 rvion:
                     // 'h-widget',

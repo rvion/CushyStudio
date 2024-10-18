@@ -19,7 +19,7 @@ export const OutputVideoPreviewUI = observer(function OutputImagePreviewUI_(p: {
             tw={[
                 //
                 'bg-red-400 text-black',
-                'text-center w-full font-bold',
+                'w-full text-center font-bold',
             ]}
             style={{ fontSize: `${size / 2}px` }}
         >

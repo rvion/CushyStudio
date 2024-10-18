@@ -8,7 +8,7 @@ export const ErrorBoundaryFallback = (p: {
 }): JSX.Element => {
     return (
         <div role='alert'>
-            <p tw='flex gap-2 items-center'>
+            <p tw='flex items-center gap-2'>
                 <Button //
                     icon='mdiRefresh'
                     onClick={() => p.resetErrorBoundary()}

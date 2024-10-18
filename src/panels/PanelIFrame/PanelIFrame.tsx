@@ -48,7 +48,7 @@ export const PanelIframeUI = observer(function Panel_Iframe_(p: PanelIframeProps
     // )
     return (
         <iframe //
-            className='disable-x-frame-options h-full w-full'
+            className='disable-x-frame-options size-full'
             src={p.url}
             // frameBorder='0'
             // ⏸️ onLoad={() => {

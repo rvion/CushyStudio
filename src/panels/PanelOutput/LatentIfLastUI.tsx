@@ -12,7 +12,7 @@ export const LatentIfLastUI = observer(function LatentIfLastUI_(p: {}) {
     if (lastImage == null || latent.receivedAt > lastImage.createdAt) {
         return (
             <img //
-                tw='absolute bottom-0 right-0 shadow-xl z-50'
+                tw='absolute bottom-0 right-0 z-50 shadow-xl'
                 style={{
                     //
                     filter: st.project.filterNSFW ? 'blur(50px)' : undefined,

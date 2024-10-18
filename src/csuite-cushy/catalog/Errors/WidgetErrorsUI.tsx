@@ -23,7 +23,7 @@ export const WidgetErrorsUI = observer(function WidgerErrorsUI_(p: { field: Fiel
             {field.ownErrors.map((e, i) => (
                 // 🦀 Added `h-input` to make it less ugly, but not sure if it's the right way
                 <RevealUI key={i} trigger={'click'} content={() => e.longerMessage ?? 'no extra infos'}>
-                    <div tw='flex items-center gap-1 h-input'>
+                    <div tw='h-input flex items-center gap-1'>
                         <Ikon.mdiAlert />
                         {e.message}
                     </div>
@@ -47,7 +47,7 @@ export const WidgetConfigErrorsUI = observer(function WidgetConfigErrorsUI_(p: {
             {configPbs.map((e, i) => (
                 // 🦀 Added `h-input` to make it less ugly, but not sure if it's the right way
                 <RevealUI key={i} trigger={'click'} content={() => e.longerMessage ?? 'no extra infos'}>
-                    <div tw='flex items-center gap-1 h-input'>
+                    <div tw='h-input flex items-center gap-1'>
                         <Ikon.mdiNinja />
                         {e.message}
                     </div>

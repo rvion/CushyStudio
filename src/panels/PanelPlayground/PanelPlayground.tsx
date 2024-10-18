@@ -65,7 +65,7 @@ export const PanelPlaygroundUI = observer(function PanelPlaygroundUI_(p: PanelPl
             </ErrorBoundaryUI>
 
             <MessageInfoUI>
-                <div tw='inline text-sm overflow-clip'>
+                <div tw='inline overflow-clip text-sm'>
                     <span>Use this panel as a scratchpad by modifying </span>
                     <span tw='rounded px-1'>PlaygroundScratchPad</span>
                     <span> in </span>

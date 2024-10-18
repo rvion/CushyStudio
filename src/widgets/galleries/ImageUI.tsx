@@ -35,7 +35,7 @@ export const ImageUI = observer(function ImageUI_({
     const IMG = (
         <img
             className={className}
-            tw='object-contain bg-contain bg-no-repeat bg-center'
+            tw='bg-contain bg-center bg-no-repeat object-contain'
             // src={image.url}
             src={image.urlForSize(size)}
             onMouseEnter={image.onMouseEnter}

@@ -22,7 +22,7 @@ export const OutputPromptPreviewUI = observer(function OutputPromptPreviewUI_(p:
 
     const pgr1: ProgressReport = prompt.progressGlobal
     return (
-        <div tw='flex items-center justify-center p-0 h-full w-full text-shadow text-sm'>
+        <div tw='text-shadow flex h-full w-full items-center justify-center p-0 text-sm'>
             <div
                 className='radial-progress'
                 style={{
