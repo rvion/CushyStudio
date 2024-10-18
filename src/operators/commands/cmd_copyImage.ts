@@ -1,9 +1,11 @@
+import type { DeleteInstructionsFor } from '../../db/TYPES_json'
 import type { MediaImageL } from '../../models/MediaImage'
 
 import { cushyFactory } from '../../controls/Builder'
 import { command, type Command } from '../../csuite/commands/Command'
 import { lazy_viaProxy } from '../../csuite/lazy/lazy_viaProxy'
 import { defineMenuTemplate, type MenuTemplate } from '../../csuite/menu/MenuTemplate'
+import { Trigger } from '../../csuite/trigger/Trigger'
 import { ctx_image } from '../contexts/ctx_image'
 
 export type AvailableImageCopyFormats = 'PNG' | 'JPG' | 'WEBP'
@@ -23,6 +25,19 @@ export const cmd_copyImage: Command<MediaImageL> = command({
     action: (image) =>
         /* { format: image.format, quality: form_foo.fields.quality.value } */
         image.copyToClipboard_viaCanvas(),
+})
+
+// first we define command;
+// command can take props
+export const cmd_deleteImage: Command<MediaImageL> = command({
+    id: 'deleteImage',
+    label: 'Delete Image',
+    ctx: ctx_image,
+    combos: 'alt+backspace',
+    action: (image) => {
+        image.delete({ a: 'cascade' })
+        return Trigger.Success
+    },
 })
 
 export const cmd_copyImage_as = (format: string): Command<MediaImageL> =>

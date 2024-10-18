@@ -698,7 +698,10 @@ export class MediaImageL extends BaseInst<TABLES['media_image']> {
             await img.toFile(this._thumbnailRelPath)
             // then refresh the thumbnail
             this._thumbnailReady = true
-        } catch {}
+        } catch {
+            console.log(`[❌] _mkThumbnail failed for image ${this.data.path}`)
+            //
+        }
     }
 
     // THUMBHASH ------------------------------------------------------------------------------------------
