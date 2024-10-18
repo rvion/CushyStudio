@@ -8,6 +8,7 @@ import Confetti from 'react-confetti'
 import { Button } from '../../src/csuite/button/Button'
 import { MyCustomComponent2 } from './example-widget-custom-2'
 
+// eslint-disable-next-line react-refresh/only-export-components
 const MyCustomComponent = observer(function (
     p: CustomWidgetProps<{
         clickCount: number
@@ -33,7 +34,7 @@ const MyCustomComponent = observer(function (
             </Button>
             {/* extra components -------------------------------------------------------- */}
             <p.extra.JsonViewUI value={value} />
-            {img && <p.extra.ImageUI img={img} />}
+            {img && <p.extra.ImageUI size={200} img={img} />}
             {/* imported file -------------------------------------------------------- */}
             <MyCustomComponent2 text={value.text} />
             {/* imported file -------------------------------------------------------- */}

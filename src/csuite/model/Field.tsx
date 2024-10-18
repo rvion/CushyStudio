@@ -1686,7 +1686,7 @@ export abstract class Field<out K extends FieldTypes = FieldTypes> implements In
         const snapshot = produce(this.serial, (draft) => {
             // a bad person would say: "Yo, Dawg; I heard you liked snapshots. So I put a snapshot in your snapshot, so you can snapshot while snapshotting"
             // but it's wrong. we don't want snapshotception.
-            // so we delete the snapshot from the snapshot before it's too late.
+            // so we delete the snapshot from the snapshot before it's too late.
             // otherwise, once we take a second snapshot, the first snapshot will indeed appear in the second snapshot.
             // Snapshot.
             delete draft.snapshot

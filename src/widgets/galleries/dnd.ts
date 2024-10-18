@@ -2,42 +2,35 @@ import type { MediaImageL } from '../../models/MediaImage'
 import type { STATE } from '../../state/state'
 import type { CSSProperties } from 'react'
 
-import { useDrag, useDrop } from 'react-dnd'
+import { type ConnectDragPreview, type ConnectDragSource, type ConnectDropTarget, useDrag, useDrop } from 'react-dnd'
 import { NativeTypes } from 'react-dnd-html5-backend'
 
 import { createMediaImage_fromFileObject } from '../../models/createMediaImage_fromWebFile'
 import { ItemTypes } from './DnDItemTypes'
 
-export const useImageDrag = (image: MediaImageL) =>
+export const useImageDrag = (
+    image: MediaImageL,
+): [
+    //
+    { opacity: number },
+    ConnectDragSource,
+    ConnectDragPreview,
+] =>
     useDrag(
         () => ({
             type: ItemTypes.Image,
             item: { image },
-            collect: (monitor) => {
-                // console.log('monitor.isDragging()=', monitor.isDragging())
+            collect: (monitor): { opacity: number } => {
                 return { opacity: monitor.isDragging() ? 0.5 : 1 }
             },
         }),
         [image],
     )
 
-// export const useImageDrop = (fn: (image: ImageL) => void) =>
-//     useDrop<{ image: ImageL }, void, CSSProperties>(() => ({
-//         accept: ItemTypes.Image,
-//         collect(monitor) {
-//             return { outline: monitor.isOver() ? '1px solid gold' : undefined }
-//         },
-//         drop(item: { image: ImageL }, monitor) {
-//             console.log('AAAA')
-//             return fn(item.image)
-//             // item.image.update({ folderID: p.folder.id })
-//         },
-//     }))
-
 type Drop1 = { image: MediaImageL }
 type Drop2 = { files: (File & { path: AbsolutePath })[] }
 
-export const useImageDrop = (st: STATE, fn: (image: MediaImageL) => void) =>
+export const useImageDrop = (st: STATE, fn: (image: MediaImageL) => void): [CSSProperties, ConnectDropTarget] =>
     useDrop<Drop1 | Drop2, void, CSSProperties>(() => ({
         // 1. Accepts both custom Image and native files drops.
         accept: [
@@ -47,12 +40,12 @@ export const useImageDrop = (st: STATE, fn: (image: MediaImageL) => void) =>
         ],
 
         // 2. add golden border when hovering over
-        collect(monitor) {
+        collect(monitor): CSSProperties {
             return { outline: monitor.isOver() ? '1px solid gold' : undefined }
         },
 
         // 3. import as ImageL if needed
-        drop(item: Drop1 | Drop2, monitor) {
+        drop(item: Drop1 | Drop2, monitor): void {
             if (monitor.getItemType() == ItemTypes.Image) {
                 const image: MediaImageL = (item as Drop1).image
                 return fn(image)
@@ -74,7 +67,5 @@ export const useImageDrop = (st: STATE, fn: (image: MediaImageL) => void) =>
             }
 
             throw new Error('Unknown drop type')
-            // console.log('AAAA')
-            // item.image.update({ folderID: p.folder.id })
         },
     }))

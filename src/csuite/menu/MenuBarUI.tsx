@@ -97,7 +97,7 @@ export const MenuBarUI = observer(function MenuBar({
             // 🔴 wrong place
             if (ABC.ref == null) {
                 ABC.ref = React.createRef<RevealStateLazy>()
-                console.log(`[🔴🔴🔴]`, ABC)
+                // console.log(`[🔴🔴🔴]`, ABC)
             }
 
             return (

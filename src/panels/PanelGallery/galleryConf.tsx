@@ -1,29 +1,41 @@
 import type { CushySchemaBuilder } from '../../controls/Builder'
+import type { FieldCtorProps } from '../../csuite/model/Field'
 import type { MediaImageL } from '../../models/MediaImage'
 
 import { Field_group, type MAGICFIELDS } from '../../csuite/fields/group/FieldGroup'
 import { usePanel } from '../../router/usePanel'
 
-// export type GalleryConfData = X.XGroup<{
-//     defaultSort: X.XSelectOne_<'createdAt' | 'updatedAt'>
-//     gallerySize: X.XNumber
-//     galleryMaxImages: X.XNumber
-//     galleryBgColor: X.XOptional<X.XColor>
-//     galleryHoverOpacity: X.XNumber
-//     showPreviewInFullScreen: X.XBool
-//     onlyShowBlurryThumbnails: X.XBool
-//     filterPath: X.XString
-//     filterTag: X.XString
-//     filterStar: X.XBool
-//     filterAppName: X.XOptional<X.XSelectOne<{ id: CushyAppID; label: string }, CushyAppID>>
-// }>
-type Data = ReturnType<typeof GalleryConfDataSchema>
+export function useGalleryConf(): GalleryConf {
+    return usePanel().usePersistentModel('gallery-conf', (ui) =>
+        galleryConfDataSchema(ui).useBuilder((...args) => new GalleryConf(...args)),
+    )
+}
+
+// alt 1. use inference
+// type GalleryConfData = ReturnType<typeof GalleryConfDataSchema>
+
+// alt 2. copy paste the explicit type for speedup
+type GalleryConfData = X.XGroup<{
+    defaultSort: X.XSelectOne_<'createdAt' | 'updatedAt'>
+    gallerySize: X.XNumber
+    virtualized: X.XBool
+    galleryMaxImages: X.XNumber
+    galleryBgColor: X.XOptional<X.XColor>
+    galleryHoverOpacity: X.XNumber
+    showPreviewInFullScreen: X.XBool
+    onlyShowBlurryThumbnails: X.XBool
+    filterPath: X.XString
+    filterTag: X.XString
+    filterStar: X.XBool
+    filterAppName: X.XOptional<X.XSelectOne<{ id: CushyAppID; label: string }, CushyAppID>>
+}>
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-const GalleryConfDataSchema = (ui: CushySchemaBuilder) => {
+const galleryConfDataSchema = (ui: CushySchemaBuilder): GalleryConfData => {
     // const y = ui.selectOneString(['createdAt', 'updatedAt'] as const, { default: 'createdAt' })
     return ui.fields({
         defaultSort: ui.selectOneString(['createdAt', 'updatedAt'] as const, { default: 'createdAt' }),
+        virtualized: ui.boolean({ label: 'Virtualized', default: false }),
         gallerySize: ui.int({ label: 'Preview Size', default: 48, min: 24, step: 8, softMax: 512, max: 1024, tooltip: 'Size of the preview images in px', unit: 'px' }), // prettier-ignore
         galleryMaxImages: ui.int({ label: 'Number of items', min: 10, softMax: 300, default: 50, tooltip: 'Maximum number of images to display', }), // prettier-ignore
         galleryBgColor: ui.colorV2({ label: 'background' }).optional(),
@@ -37,9 +49,14 @@ const GalleryConfDataSchema = (ui: CushySchemaBuilder) => {
     })
 }
 
-export interface GalleryConf extends MAGICFIELDS<Data['$Reflect']> {}
-export class GalleryConf extends Field_group<Data['$Reflect']> {
-    $Field!: GalleryConf
+export interface GalleryConf extends MAGICFIELDS<GalleryConfData['$Reflect']> {
+    $Field: GalleryConf
+}
+export class GalleryConf extends Field_group<GalleryConfData['$Reflect']> {
+    constructor(...args: FieldCtorProps) {
+        super(...args)
+        this.autoExtendObservable()
+    }
 
     get imageToDisplay(): MediaImageL[] {
         const conf = this.value
@@ -71,12 +88,4 @@ export class GalleryConf extends Field_group<Data['$Reflect']> {
         )
         return out
     }
-}
-
-export function useGalleryConf(): GalleryConf {
-    // prettier-ignore
-    return usePanel().usePersistentModel('gallery-conf',
-        // (ui) => GalleryConfDataSchema(ui).useClass(() => GalleryConf),
-        (ui) => GalleryConfDataSchema(ui).useBuilder((...args) => new GalleryConf(...args)),
-    )
 }

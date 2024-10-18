@@ -59,10 +59,8 @@ export const PanelContainerUI = observer(function PanelContainer(p: {
         <ErrorBoundaryUI>
             <panelContext.Provider value={panelState}>
                 <Frame
-                    //
                     col
                     tw={[
-                        //
                         'flex-1 h-full w-full',
                         'overflow-auto', // overflow-auto to only show scrollbar when needed
                         // 'overflow-scroll',

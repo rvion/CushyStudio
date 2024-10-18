@@ -3,10 +3,13 @@ import type { PanelPersistedJSON } from './PanelPersistedJSON'
 import type { PanelState } from './PanelState'
 
 import { isObservable } from 'mobx'
+import { nanoid } from 'nanoid'
 
 // import { makeAutoObservable } from 'mobx'
 
 export class PanelPersistentStore<X extends Json = Json> {
+    uid = nanoid(3)
+
     /** data is loaded lazilly, but is not synced automatically
      * you need to call `save` to set it back in the tab data
      */

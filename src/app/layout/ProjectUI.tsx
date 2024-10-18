@@ -5,7 +5,6 @@ import { useSt } from '../../state/stateContext'
 import { GalleryHoveredPreviewUI } from '../../widgets/galleries/GalleryHoveredPreviewUI'
 
 export const ProjectUI = observer(function ProjectUI_(p: {}) {
-    const st = useSt()
     return (
         <div className='UI-MAIN relative h-full flex flex-grow flex-col'>
             <GalleryHoveredPreviewUI />
@@ -15,7 +14,7 @@ export const ProjectUI = observer(function ProjectUI_(p: {}) {
                 style={{ transition: 'all 0.2s ease-in-out', opacity: 0 }}
             />
             <ErrorBoundaryUI>
-                <st.layout.UI />
+                <cushy.layout.UI />
             </ErrorBoundaryUI>
         </div>
     )

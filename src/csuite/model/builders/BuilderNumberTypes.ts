@@ -11,11 +11,11 @@ export class BuilderNumber<Schemaᐸ_ᐳ extends SchemaAndAliasesᐸ_ᐳ> extend
     static fromSchemaClass = BaseBuilder.buildfromSchemaClass(BuilderNumber)
 
     // #region ints
-    int_(config: Omit<Field_number_config, 'mode'> = {}): Schemaᐸ_ᐳ['Number'] {
-        return this._number({ mode: 'int', ...config })
-    }
     int(config: Omit<Field_number_config, 'mode'> = {}): Schemaᐸ_ᐳ['Number'] {
         return this.int_({ default: this._autotDefault(config), ...config })
+    }
+    int_(config: Omit<Field_number_config, 'mode'> = {}): Schemaᐸ_ᐳ['Number'] {
+        return this._number({ mode: 'int', ...config })
     }
 
     // #region float

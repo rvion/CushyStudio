@@ -5,7 +5,7 @@ import { nanoid } from 'nanoid'
 
 import { createMediaImage_fromBlobObject } from '../../../models/createMediaImage_fromWebFile'
 import { FPath } from '../../../models/FPath'
-import { PanelGalleryUI } from '../../../panels/PanelGallery/PanelGallery'
+import { PanelGalleryUI } from '../../../panels/PanelGallery/PanelGalleryUI'
 import { useSt } from '../../../state/stateContext'
 import { useImageDrop } from '../../../widgets/galleries/dnd'
 import { ImageUI } from '../../../widgets/galleries/ImageUI'

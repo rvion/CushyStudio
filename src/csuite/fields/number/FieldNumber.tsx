@@ -86,7 +86,6 @@ export class Field_number extends Field<Field_number_types> {
         // /* 😂 */ console.log(`[🤠] ${getUIDForMemoryStructure(serial)} (FieldNumber#constructor ❌)`)
         // /* 😂 */ console.log(`[🤠] ${getUIDForMemoryStructure(this.serial)} (FieldNumber#constructor ❌)`)
         this.init(serial, {
-            value: computed,
             DefaultHeaderUI: false,
             DefaultBodyUI: false,
         })

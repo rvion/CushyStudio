@@ -11,7 +11,12 @@ export const OutputImagePreviewUI = observer(function OutputImagePreviewUI_(p: {
     step?: Maybe<StepL>
     output: MediaImageL
 }) {
-    return <ImageUI tw='!rounded-none cursor-default' img={p.output} size='100%' />
+    return (
+        <ImageUI //
+            img={p.output}
+            size={500}
+        />
+    )
 })
 
 export const OutputImageUI = observer(function OutputImageUI_(p: { step?: Maybe<StepL>; output: MediaImageL }) {

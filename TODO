@@ -23,6 +23,9 @@ SHORT TERM TODO:
 
     ☐ open in vscode enty in field menu not working
 
+    ☐ fix droppign images from gallery to mask
+    ☐ add autofocus to image picker from inputImage
+
 Nice to have?:
     ☐ Can step output be chosen what can be turned off and on? like only image on or only graphs?
         ☐ have toogles to allow to hide some of the outputs ?

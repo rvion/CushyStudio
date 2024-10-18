@@ -149,41 +149,44 @@ export class PanelState<PROPS extends object = any> {
         return store
     }
 
-    entities: Map<string, Field> = new Map<string, Field>()
+    documents: Map<string, Field> = new Map<string, Field>()
     usePersistentModel = <SCHEMA extends BaseSchema>(
         //
         uid: string,
         init: (ui: Builder) => SCHEMA,
-
-        /**
-         * yikes, we can't iterate on schemas anymore since we have cache
-         * and as of 2024-10-11, we still don't have a proper expiration mechanism
-         */
-        skipCache?: boolean,
+        opts?: { log?: boolean },
     ): SCHEMA['$Field'] => {
-        // if previous entity already exists, return it
-        const cacheFix = useMemo(() => ({ type: '' }), [])
-
         return useMemoAction(() => {
             let schema: SCHEMA = init(cushy.forms.builder)
-            const valueType = schema.codegenValueType()
-            const schemaSeemsIdentical = cacheFix.type === valueType
-            cacheFix.type = valueType
+            const log = opts?.log ? logForPersistentModel : logVoid
+            log(`usePersistentModel (${uid})`)
 
-            if (!skipCache && schemaSeemsIdentical) {
-                const prevEntity = this.entities.get(uid)
-                if (prevEntity != null) return prevEntity
+            const prevEntity = this.documents.get(uid)
+            if (prevEntity != null) {
+                const prevHash = prevEntity.schema.codegenValueType()
+                const nextHash = schema.codegenValueType()
+                if (prevHash === nextHash) {
+                    log(`    | 🟢 prev entity found; schema is identical`)
+                    return prevEntity
+                } else {
+                    log(`    | prev entity found; schema is different`)
+                    log(`    | prev entity schema`, prevHash)
+                    log(`    | next entity schema`, nextHash)
+                }
+            } else {
+                log(`    | prev entity not found; creating new one`)
             }
 
             // get or create panel store to hold/persist the entity
-            let store = this.stores.get(`entity-${uid}`) as PanelPersistentStore<SCHEMA['$Serial'] | false>
+            const storeName = `entity-${uid}`
+            let store = this.stores.get(storeName) as PanelPersistentStore<SCHEMA['$Serial'] | false>
             if (store == null) {
+                log(`    | creating store (${storeName})`)
                 store = new PanelPersistentStore(this, uid, () => false)
-                this.stores.set(`entity-${uid}`, store)
+                this.stores.set(storeName, store)
             }
 
-            // clone the schema to inject a callback to persist the entity
-            // via the panel store
+            // clone the schema to inject a callback to persist the entity via the panel store
             schema = schema.withConfig({
                 onSerialChange: (self) => {
                     store.saveData(self.serial)
@@ -192,8 +195,12 @@ export class PanelState<PROPS extends object = any> {
 
             const prevSerial = store.data
             const entity = schema.create(prevSerial)
-            this.entities.set(uid, entity)
+            this.documents.set(uid, entity)
+            log(`    | ENTITY for (${uid}) ID IS`, entity.id, `from store ${store.uid}`)
             return entity
         })
     }
 }
+
+const logVoid = (...args: any): void => {}
+const logForPersistentModel = (...args: any): void => console.log('[🤦‍♀️]', ...args)

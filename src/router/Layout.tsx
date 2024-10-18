@@ -1,28 +1,28 @@
 import type { PropsOf } from '../csuite/types/PropsOf'
+import type { ProplessFC } from '../csuite/types/ReactUtils'
 import type { PerspectiveL } from '../models/Perspective'
 import type { STATE } from '../state/state'
 import type { PanelPersistedJSON } from './PanelPersistedJSON'
 import type { PanelName, Panels } from './PANELS'
+import type { Layout } from 'flexlayout-react'
 import type { FC } from 'react'
 
 import * as FL from 'flexlayout-react'
-import { Actions, Layout, Model as FlexLayoutModel } from 'flexlayout-react'
+import { Actions, Model as FlexLayoutModel } from 'flexlayout-react'
 import { action, isObservable, makeAutoObservable, runInAction } from 'mobx'
-import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 import { createElement, createRef, type RefObject } from 'react'
 
 import { hashJSONObjectToNumber } from '../csuite/hashUtils/hash'
 import { getIconAsDataSVG } from '../csuite/icons/iconStr'
 import { Message } from '../csuite/inputs/shims'
-import { PanelUI } from '../csuite/panel/PanelUI'
 import { regionMonitor } from '../csuite/regions/RegionMonitor'
 import { Trigger } from '../csuite/trigger/Trigger'
 import { bang } from '../csuite/utils/bang'
 import { toastError } from '../csuite/utils/toasts'
 import { type CustomPanelRef, registerCustomPanel } from '../panels/PanelCustom/CustomPanels'
-import { PanelWelcomeUI } from '../panels/PanelWelcome/PanelWelcome'
 import { perspectiveHelper } from './DefaultPerspective'
+import { LayoutUI } from './LayoutUI'
 import { PanelContainerUI } from './PanelContainerUI'
 import { panels } from './PANELS'
 import { type TraversalNextStep, type TraverseFn, traverseLayoutNode } from './traverseLayoutNode'
@@ -507,49 +507,7 @@ export class CushyLayoutManager {
         // return parent as FL.TabSetNode
     }
 
-    UI = observer(() => {
-        console.log('[💠] Rendering Layout')
-        return (
-            <Layout //
-                // 🔴 never re-use panels is probably the wrong fix;
-                // we could/should/will make something better/faster/stronger.
-                key={this.perspective.id}
-                ref={this.layoutRef}
-                model={this.model}
-                factory={this.factory}
-                onTabSetPlaceHolder={() => {
-                    return (
-                        <PanelUI>
-                            <PanelWelcomeUI />
-                        </PanelUI>
-                    )
-                }}
-                /* This is more responsive and better for stuff like the gallery, where you may want to match the size of the panel to the size of the images.
-                 * Click => Dragging => Unclick is very annoying when you want something a specific way and need to see the changes quickly. */
-                realtimeResize
-                onAuxMouseClick={(node, event) => {
-                    // Middle Mouse to close tab
-                    if (event.button == 1 && node instanceof FL.TabNode) {
-                        if (node.isEnableClose()) {
-                            this.closeTab(node.getId())
-                        }
-                    }
-                }}
-                onModelChange={(model) => {
-                    runInAction(() => {
-                        const tabset = this.getActiveOrFirstTabset_orThrow()
-                        this.currentTabSet = tabset
-                        this.currentTab = tabset?.getSelectedNode()
-                        this.currentTabID = this.currentTab?.getId()
-                    })
-                    this.perspective.update({
-                        layout: model.toJson(),
-                    })
-                    // this.saveCurrentPerspectiveAsDefault()
-                }}
-            />
-        )
-    })
+    UI: ProplessFC = (): JSX.Element => <LayoutUI layout={this} />
 
     /** rename tab by ID */
     renameTab(tabID: string, newName: string): void {

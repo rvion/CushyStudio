@@ -1,6 +1,7 @@
 import { runInAction } from 'mobx'
 import { type DependencyList, useMemo } from 'react'
 
-export function useMemoAction<T>(factory: () => T, deps: DependencyList = []): T {
+const noDeps: DependencyList = []
+export function useMemoAction<T>(factory: () => T, deps: DependencyList = noDeps): T {
     return useMemo(() => runInAction(() => factory()), deps)
 }
