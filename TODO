@@ -19,7 +19,7 @@ SHORT TERM TODO:
 
     ☐ a draft is only synced when its duplicated, if you make a new item in a list after the duplication that item isn't synced
 
-    ☐ gallery no longer resize dynamically; observability issues again
+    ✔ gallery no longer resize dynamically; observability issues again @done(24-10-18 09:20)
 
     ☐ open in vscode enty in field menu not working
 

@@ -517,7 +517,7 @@ export class MediaImageL extends BaseInst<TABLES['media_image']> {
     // THUMBNAIL ------------------------------------------------------------------------------------------
     _thumbnailReady: boolean = false
     get thumbnailURL(): string {
-        console.log(`[🤠] get thumbnailURL(): string`)
+        // console.log(`[🤠] get thumbnailURL(): string`)
         // ⏸️ if (this._efficientlyCachedTumbnailBufferURL) return this._efficientlyCachedTumbnailBufferURL
         // no need to add hash suffix, cause path already uses hash
         if (this._thumbnailReady || existsSync(this._thumbnailAbsPath)) return `file://${this._thumbnailAbsPath}`

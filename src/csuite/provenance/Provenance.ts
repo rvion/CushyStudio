@@ -1,7 +1,7 @@
 import { createContext, useContext } from 'react'
 
 export type Provenance = {
-    uri: string
+    uri?: () => string
     open(): Promise<void> | void
 }
 

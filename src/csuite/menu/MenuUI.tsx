@@ -71,8 +71,8 @@ export const MenuUI = observer(function MenuUI_({
                             label={entry.opts.label}
                             // children={formatMenuLabel(charIx, entry.opts.label)}
                             icon={entry.opts.icon}
-                            onClick={() => {
-                                entry.opts.onClick?.()
+                            onClick={async () => {
+                                await entry.opts.onClick?.()
                                 menu.onStop()
                             }}
                         />
@@ -147,10 +147,10 @@ export const MenuUI = observer(function MenuUI_({
                 }
                 //
                 else if (isWidget(entry)) {
-                    return entry.UI()
+                    return <div key={ix}>{entry.UI()}</div>
                 }
 
-                return renderFCOrNode(entry, {})
+                return <div key={ix}>{renderFCOrNode(entry, {})}</div>
                 // plain jsx
                 // else if (React.isValidElement(entry)) {
                 //     return entry

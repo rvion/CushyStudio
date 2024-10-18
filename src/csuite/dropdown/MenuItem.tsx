@@ -1,13 +1,14 @@
 import type { CushyShortcut } from '../commands/CommandManager'
 import type { IconName } from '../icons/icons'
-import type { ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
+import { type ReactNode, useState } from 'react'
 
 import { ComboUI } from '../accelerators/ComboUI'
 import { Frame } from '../frame/Frame'
 import { Ikon, IkonOf } from '../icons/iconHelpers'
 import { formatMenuLabel } from '../menu/formatMenuLabel'
+import { MenuDivider } from './MenuDivider'
 
 export type MenuItemProps = {
     // behaviour
@@ -53,6 +54,7 @@ export const _MenuItem = observer(function DropdownItem_(p: MenuItemProps) {
         ...rest
     } = p
 
+    const [isExecuting, setExecuting] = useState(false)
     const isDisabled: boolean | undefined =
         typeof disabled === 'function' //
             ? disabled()
@@ -60,7 +62,7 @@ export const _MenuItem = observer(function DropdownItem_(p: MenuItemProps) {
 
     return (
         <Frame
-            loading={p.loading}
+            loading={p.loading ?? isExecuting}
             text={{ contrast: isDisabled ? 0.5 : 1 }}
             base={{
                 contrast: active ? 0.1 : 0,
@@ -68,10 +70,13 @@ export const _MenuItem = observer(function DropdownItem_(p: MenuItemProps) {
             }}
             // hover={{ contrast: 0.15, chroma: 0.2, hueShift: 180 }}
             hover={15}
-            onClick={(ev) => {
+            onClick={async (ev) => {
                 // ev.preventDefault()
                 if (stopPropagation) ev.stopPropagation()
-                return p.onClick?.(ev)
+                setExecuting(true)
+                const res = await p.onClick?.(ev)
+                setExecuting(false)
+                return res
             }}
             style={{ lineHeight: '1.6rem' }}
             tw={[
@@ -104,17 +109,6 @@ export const _MenuItem = observer(function DropdownItem_(p: MenuItemProps) {
                 {afterShortcut}
             </div>
         </Frame>
-    )
-})
-
-export const MenuDivider = observer(function Divider_(p: { children?: ReactNode }) {
-    return (
-        <div className='!h-widget relative grid text-sm'>
-            <div tw='absolute z-0 h-1 [border-top:1px_solid_#aaaaaa88] w-full [top:50%]'></div>
-            <Frame border tw='relative z-1 h-widget justify-self-center'>
-                {p.children ?? <></>}
-            </Frame>
-        </div>
     )
 })
 

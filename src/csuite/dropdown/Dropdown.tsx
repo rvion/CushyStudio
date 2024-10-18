@@ -7,7 +7,8 @@ import { observer } from 'mobx-react-lite'
 import { Button } from '../button/Button'
 import { Frame } from '../frame/Frame'
 import { RevealUI } from '../reveal/RevealUI'
-import { MenuDivider, MenuItem } from './MenuItem'
+import { MenuDivider } from './MenuDivider'
+import { MenuItem } from './MenuItem'
 
 export type DropdownProps = {
     title: ReactNode

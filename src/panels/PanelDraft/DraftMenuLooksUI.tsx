@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite'
 
 import { BadgeUI } from '../../csuite/badge/BadgeUI'
 import { Dropdown } from '../../csuite/dropdown/Dropdown'
-import { MenuDividerUI_ } from '../../csuite/dropdown/MenuDividerUI'
+import { MenuDividerUI_ } from '../../csuite/dropdown/MenuDivider2'
 import { MenuItem } from '../../csuite/dropdown/MenuItem'
 import { useSt } from '../../state/stateContext'
 

@@ -1,6 +1,6 @@
 import { openFolderInOS } from '../app/layout/openExternal'
 import { Button } from '../csuite/button/Button'
-import { MenuDivider } from '../csuite/dropdown/MenuItem'
+import { MenuDivider } from '../csuite/dropdown/MenuDivider'
 import { defineMenu, type Menu } from '../csuite/menu/Menu'
 import { panels } from '../router/PANELS'
 

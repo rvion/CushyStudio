@@ -2,7 +2,7 @@ import type { MenuEntry } from '../menu/MenuEntry'
 import type { Field } from '../model/Field'
 import type { Provenance } from '../provenance/Provenance'
 
-import { MenuDividerUI_ } from '../dropdown/MenuDividerUI'
+import { MenuDividerUI_ } from '../dropdown/MenuDivider2'
 import { defineMenuTemplate, MenuTemplate } from '../menu/MenuTemplate'
 import { SimpleMenuAction } from '../menu/SimpleMenuAction'
 import { SimpleMenuModal } from '../menu/SimpleMenuModal'
@@ -52,7 +52,10 @@ export const fieldActionMenu: MenuTemplate<FieldActionMenuProps> = defineMenuTem
                 label: 'Open in VSCode',
                 icon: 'mdiMicrosoftVisualStudioCode',
                 disabled: (): boolean => provenance == null,
-                onClick: (): Promise<void> | void => provenance?.open(),
+                onClick: (): Promise<void> | void => {
+                    console.log(`[🤠] `, provenance)
+                    return provenance?.open?.()
+                },
             }),
         )
         // RESET

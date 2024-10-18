@@ -36,10 +36,14 @@ export class DraftL extends BaseInst<TABLES['draft']> {
         formSerial: observable.ref,
     }
 
-    provenance: Provenance = lazy_viaProxy(() => ({
-        uri: this.app.script.id,
+    provenance: Provenance = {
+        uri: () => this.app.script.id,
         open: () => this.app.script.openInVSCode(),
-    }))
+    }
+    // getProvenance = (): Provenance => ({
+    //     uri: this.app.script.id,
+    //     open: () => this.app.script.openInVSCode(),
+    // })
 
     // 🔴 HACKY
     shouldAutoStart = false
