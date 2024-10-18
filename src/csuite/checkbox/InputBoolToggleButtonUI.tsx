@@ -1,8 +1,8 @@
 import type { BoolButtonProps } from './InputBoolUI'
 
 import { observer } from 'mobx-react-lite'
-import { twMerge } from 'tailwind-merge'
 
+// import { twMerge } from 'tailwind-merge'
 import { Button } from '../button/Button'
 import { useCSuite } from '../ctx/useCSuite'
 import { CheckboxAndRadioIcon } from './_InputBoolToggleButtonBoxUI'
@@ -27,11 +27,13 @@ export const ToggleButtonUI = observer(function ToggleButtonUI_(
     const dropShadow = p.dropShadow ?? theme.inputShadow
     return (
         <Button
-            tw={twMerge([
-                'minh-input select-none cursor-pointer px-1',
-                p.showToggleButtonBox ? undefined : 'justify-center',
-                p.className,
-            ])}
+            tw={
+                /* twMerge */ [
+                    'minh-input select-none cursor-pointer px-1',
+                    p.showToggleButtonBox ? undefined : 'justify-center',
+                    p.className,
+                ]
+            }
             onKeyDown={(ev) => {
                 if (ev.key === 'Enter') {
                     p.onValueChange?.(!isActive)

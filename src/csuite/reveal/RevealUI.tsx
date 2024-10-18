@@ -6,8 +6,8 @@ import type { FC, ForwardedRef, ReactPortal } from 'react'
 import { observer } from 'mobx-react-lite'
 import React, { cloneElement, createElement, forwardRef, useEffect, useMemo, useRef } from 'react'
 import { createPortal } from 'react-dom'
-import { twMerge } from 'tailwind-merge'
 
+// import { twMerge } from 'tailwind-merge'
 import { cls } from '../../widgets/misc/cls'
 import { regionMonitor } from '../regions/RegionMonitor'
 import { objectAssignTsEfficient_t_t } from '../utils/objectAssignTsEfficient'
@@ -159,7 +159,7 @@ export const RevealUI = observer(
         return (
             <div //
                 // 'inline-flex',
-                tw={twMerge(['UI-Reveal 🔶NOT-CLONED🔶', reveal?.defaultCursor ?? 'cursor-pointer', p.className])}
+                tw={/* twMerge */ ['UI-Reveal 🔶NOT-CLONED🔶', reveal?.defaultCursor ?? 'cursor-pointer', p.className]}
                 ref={anchorRef}
                 style={p.style}
                 onContextMenu={lazyState.onContextMenu}

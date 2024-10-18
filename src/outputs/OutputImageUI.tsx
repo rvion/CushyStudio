@@ -14,7 +14,7 @@ export const OutputImagePreviewUI = observer(function OutputImagePreviewUI_(p: {
     return (
         <ImageUI //
             img={p.output}
-            size={500}
+            size={32}
         />
     )
 })

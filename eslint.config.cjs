@@ -5,11 +5,10 @@
 
 const typescriptEslint = require('@typescript-eslint/eslint-plugin')
 const reactRefresh = require('eslint-plugin-react-refresh')
-const path = require('path')
 const globals = require('globals')
 const tsParser = require('@typescript-eslint/parser')
 const js = require('@eslint/js')
-const unocss = require('@unocss/eslint-config/flat')
+const tailwindcss = require('eslint-plugin-tailwindcss')
 const { FlatCompat } = require('@eslint/eslintrc')
 
 // 💬 2024-10-16 rvion:
@@ -79,15 +78,6 @@ module.exports = [
         // |> 'plugin:prettier/recommended',
     ),
 
-    // 💬 2024-10-17 rvion:
-    // | we never setup tailwind linting before, but since we're working on eslint
-    // | let's just install the official plugin https://unocss.dev/integrations/eslint
-    // | TODO: review if we want all the rules;
-    // |   - @unocss/order - Enforce a specific order for class selectors.
-    // |   - @unocss/order-attributify - Enforce a specific order for attributify selectors.
-    // |   - @unocss/blocklist - Disallow specific class selectors [Optional].
-    // |   - @unocss/enforce-class-compile - Enforce class compile [Optional].
-    unocss,
     // 4. our actual main config.
     {
         // cache: true,
@@ -104,8 +94,29 @@ module.exports = [
         plugins: {
             'react-refresh': reactRefresh,
             '@typescript-eslint': typescriptEslint,
+            tailwindcss: tailwindcss,
         },
         rules: {
+            // 👇 this one is sadly quite slow;
+            // but will be quite pleasant to cleanup our crappy tw code
+            // also, we need to suport className='...' and tw='...'
+            'tailwindcss/classnames-order': [
+                'warn',
+                {
+                    classRegex: '^(className|tw)$',
+                },
+            ],
+
+            'tailwindcss/enforces-negative-arbitrary-values': 'warn',
+            'tailwindcss/enforces-shorthand': 'warn',
+            'tailwindcss/migration-from-tailwind-2': 'warn',
+            'tailwindcss/no-contradicting-classname': 'error',
+            'tailwindcss/no-unnecessary-arbitrary-value': 'warn',
+
+            // those two rules takes a shit amount of time
+            'tailwindcss/no-arbitrary-value': 'off',
+            'tailwindcss/no-custom-classname': 'off',
+
             'no-restricted-properties': [
                 'error',
                 {
@@ -196,6 +207,13 @@ module.exports = [
                     fixStyle: 'separate-type-imports',
                 },
             ],
+
+            // 💬 2024-10-18 rvion:
+            // this rule should not be activate unless we run with the full linter
+            // otherwise, `--fix` will possibly remove correct disable comments
+            'eslint-comments/no-unused-disable': USE_SLOW_TYPECHECKING_RULES //
+                ? ERROR_LEVEL
+                : 'off',
 
             '@typescript-eslint/no-non-null-assertion': 'off', // 🔶 prevent ! to check if null
 

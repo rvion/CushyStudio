@@ -1,77 +1,20 @@
 import react from '@vitejs/plugin-react'
 import { cwd } from 'process'
-import UnoCSS from 'unocss/vite'
 import { defineConfig } from 'vite'
 
 const installDir = cwd()
 
-// Read package.json and get all dependencies
-// const packageJson = JSON.parse(readFileSync('./package.json', 'utf-8'))
-// const allDependencies = Object.keys(packageJson.dependencies)
-
 console.log(`[VITE] loading vite config`)
-
 // https://vitejs.dev/config/
 export default defineConfig({
     clearScreen: false,
-    optimizeDeps: {
-        // exclude: allDependencies,
-        exclude: [
-            //
-            'fsevents',
-            'esbuild',
-        ],
-    },
-    // publicDir: 'library',
+    optimizeDeps: { exclude: ['fsevents', 'esbuild'] },
     // https://github.com/vitejs/vite-plugin-react/commit/25fe88a02d3a718b81a3b1290ff4e46bfab427f9
-    plugins: [
-        // dynamicModulePlugin(),
-        react({ jsxImportSource: 'JSOX' }),
-        UnoCSS({
-            postcss: false,
-            include: ['src/**/*.{js,jsx,ts,tsx}', 'library/**/*.{js,jsx,ts,tsx}'],
-            content: {
-                filesystem: ['src/**/*.{jsx,tsx}', 'library/**/*.{jsx,tsx}'],
-                pipeline: {
-                    include: [
-                        // the default
-                        // /\.(vue|svelte|[jt]sx|mdx?|astro|elm|php|phtml|html)($|\?)/,
-                        // include js/ts files
-                        'src/**/*.{jsx,tsx}',
-                        'library/**/*.{jsx,tsx}',
-                    ],
-                    // exclude files
-                    // exclude: []
-                },
-            },
-        }),
-        // viteSingleFile(),
-    ],
-    build: {
-        // rollupOptions: {
-        //     external: allDependencies,
-        // },
-        emptyOutDir: true,
-        copyPublicDir: false,
-    },
+    plugins: [react({ jsxImportSource: 'JSOX' })],
+    build: { emptyOutDir: true, copyPublicDir: false },
     server: {
         port: 8788,
-        watch: {
-            ignored: [
-                '**/src/shell/*.js',
-                //
-                // '**/library/**/*.ts',
-                // '**/library/**/*.tsx',
-                '**/tsconfig.json',
-
-                // find which one to keep later
-                '**/library/**/*.js',
-                '**/library/*/*/dist',
-                '**/library/*/*/dist/',
-                '**/library/*/*/dist/**/*.js',
-                '**/library/**/dist/**/*.js',
-            ],
-        },
+        watch: { ignored: ['**/src/shell/*.js', '**/tsconfig.json', '**/library/**'] },
     },
     resolve: {
         alias: {

@@ -102,6 +102,15 @@ export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { i
                 onClick={() => img.useAsDraftIllustration()}
                 label='Use as Draft Illustration'
             />
+            <MenuItem
+                icon='mdiOpenInApp'
+                disabled={img.step == null}
+                onClick={() => {
+                    if (img.step == null) return
+                    cushy.layout.open('Output', { stepID: img.step.id })
+                }}
+                label='Open Step'
+            />
             <MenuItem.Divider />
             <ImageActionMenu img={img} />
         </>

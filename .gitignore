@@ -72,7 +72,6 @@ release-forms/*
 # release folder for cushy
 release/main.css
 release/meta.json
-release/uno.css
 release/output.css
 release/main.js
 

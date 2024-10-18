@@ -1,5 +1,12 @@
 SHORT TERM TODO:
 
+    ✔ remove unoCSS @done(24-10-18 19:57)
+
+    ☐ remove last remnants of daisy
+        ☐ loading loading-spinner
+        ☐ btn
+        ☐ material-symbols-outlined
+
     ☐ fix the seed widget: right now, when in random mode (not set to a specific number) evaluating two prompts will use the same seed. it's a bug
 
     ☐ undoing choices via the undo button doesn't work properly. choices no longer there are still displayed
@@ -21,9 +28,11 @@ SHORT TERM TODO:
 
     ✔ gallery no longer resize dynamically; observability issues again @done(24-10-18 09:20)
 
-    ☐ open in vscode enty in field menu not working
+    ✔ open in vscode enty in field menu not working @done(24-10-18 16:20)
+    ✔ add menu entry to open step panel from any image that comes from a step @done(24-10-18 16:20)
 
-    ☐ fix droppign images from gallery to mask
+    ☐ fix dropping images from gallery to mask
+
     ☐ add autofocus to image picker from inputImage
 
 Nice to have?:

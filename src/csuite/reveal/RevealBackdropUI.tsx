@@ -14,17 +14,12 @@ export const RevealBackdropUI = observer(function RevealBackdropUI_({
         <div // backdrop (full-screen)
             onClick={(ev) => reveal.onBackdropClick(ev)}
             style={{ zIndex: 99999999 }}
-            tw={[
-                //
-                'absolute inset-0',
-                'pointer-events-auto justify-center z-50',
-                'flex items-center',
-            ]}
+            tw={'pointer-events-auto absolute inset-0 z-50 flex items-center justify-center'}
         >
             {reveal.showBackdrop && (
                 <div // backdrop shadow (child div to avoid animation interference)
                     style={{ backgroundColor: reveal.backdropColor }}
-                    tw='absolute inset-0 animate-in fade-in'
+                    tw='animate-in fade-in absolute inset-0'
                 />
             )}
             {children}

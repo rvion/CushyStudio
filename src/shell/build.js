@@ -1,29 +1,15 @@
 const fs = require('fs')
 const path = require('path')
-const { promisify } = require('util')
-// 💋const readFile = promisify(fs.readFile)
-// 💋const writeFile = promisify(fs.writeFile)
-// 💋const postcss = require('postcss')
-// 💋 const tailwindcss = require('tailwindcss')
 
 const esbuild = require('esbuild')
 const { writeFileSync } = require('fs')
-const { execSync } = require('child_process')
-// 💋 const { resolve } = require('path')
 
 const args = process.argv.slice(2)
 
 build()
 
 async function build() {
-    if (args.includes('js')) {
-        await buildJS()
-    }
-
-    // 💋 if (args.includes('css')) {
-    // 💋     await buildTailwind()
-    // 💋 }
-    // show size of all assets in the release folder
+    if (args.includes('js')) await buildJS()
     const files = fs.readdirSync('release')
     for (const f of files) {
         const size = fs.statSync(path.join('release', f)).size
@@ -41,32 +27,7 @@ async function buildJS() {
 
     const res = await esbuild.build({
         // https://github.com/evanw/esbuild/issues/2377#issuecomment-1178426065
-        define: {
-            'process.env.NODE_ENV': '"production"',
-        },
-        plugins: [
-            {
-                name: 'cushy-uno',
-                setup(build) /* : void */ {
-                    // Adjust the filter to match 'virtual:uno.css' exactly
-                    build.onResolve({ filter: /^virtual:uno.css$/ }, (args) => {
-                        return { path: args.path, namespace: 'cushy-uno' }
-                    })
-
-                    // Use the same namespace and match all paths within it
-                    build.onLoad({ filter: /.*/, namespace: 'cushy-uno' }, (args) => {
-                        // Run the CSS build command without 'stdio: inherit' to capture output
-                        execSync('./node_modules/.bin/unocss "src/**/*.tsx" -o release/uno.css', { stdio: 'inherit' })
-
-                        // Read the generated CSS content
-                        const unoCss = fs.readFileSync('release/uno.css', 'utf8')
-
-                        // Return the contents with the correct loader
-                        return { contents: unoCss, loader: 'css' }
-                    })
-                },
-            },
-        ],
+        define: { 'process.env.NODE_ENV': '"production"' },
         // entryPoints: ['src/app/main.tsx'],
         entryPoints: ['src/app/main.tsx'],
         bundle: true,
@@ -161,32 +122,3 @@ async function buildJS() {
     if (res.warnings) console.log(`[BUILD]`, res.warnings)
     writeFileSync('release/meta.json', JSON.stringify(res.metafile, null, 2))
 }
-
-// 💋 async function buildTailwind() {
-// 💋     console.log(`[BUILD] 2. build css `)
-// 💋
-// 💋     try {
-// 💋         // Define file paths
-// 💋         const inputFilePath = path.join('release', 'main.css')
-// 💋         const outputFilePath = path.join('release', 'output.css')
-// 💋
-// 💋         // Read the CSS file
-// 💋         const css = await readFile(inputFilePath, 'utf8')
-// 💋
-// 💋         // Process the CSS with Tailwind
-// 💋         const result = await postcss([tailwindcss]).process(css, { from: inputFilePath, to: outputFilePath })
-// 💋
-// 💋         // Write the processed CSS to a file
-// 💋         await writeFile(outputFilePath, result.css)
-// 💋
-// 💋         if (result.map) {
-// 💋             await writeFile(outputFilePath + '.map', result.map)
-// 💋         }
-// 💋
-// 💋         console.log('Tailwind CSS build complete.')
-// 💋     } catch (error) {
-// 💋         console.error('Error occurred building css:', error)
-// 💋     }
-// 💋 }
-
-// buildTailwind()
