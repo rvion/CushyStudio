@@ -1,4 +1,8 @@
 {
+    // annoying, since base tailwind generate those
+    "css.lint.vendorPrefix": "ignore",
+    "css.lint.propertyIgnoredDueToDisplay": "ignore",
+
     "eslint.format.enable": true,
 
     //

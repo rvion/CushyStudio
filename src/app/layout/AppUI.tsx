@@ -122,8 +122,3 @@ export const CushyUI = observer(function CushyUI_() {
         </CSuiteProvider>
     )
 })
-
-// force a few extra tailwind classNames to be included
-const foo = (
-    <div className='grid grid-cols-1 grid-cols-2 grid-cols-3 grid-cols-4 grid-cols-5 grid-cols-6 grid-cols-7 grid-cols-8' />
-)
