@@ -5,7 +5,7 @@ export const scrollBehavior_resizeBrush = (
     //
     canvas: UnifiedCanvas,
     e: KonvaEventObject<WheelEvent>,
-) => {
+): void => {
     const newSize = Math.max(1, canvas.maskToolSize + e.evt.deltaY / 200)
     canvas.setBrushSize(newSize)
     return

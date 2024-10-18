@@ -23,12 +23,32 @@ export type SimpleShape = {
     rotation?: number
 
     // interraction
-    isSelected?: boolean
-    isDragging?: boolean
-    isResizing?: boolean
+    isSelected: boolean
+    isDragging: boolean
+    isResizing: boolean
 }
 
-export type SimpleShapeSchema = S.SGroup<{
+export const mkPlacement = (p: Partial<SimpleShape>): SimpleShape$['$Value'] => {
+    return {
+        x: 0,
+        y: 0,
+        z: 0,
+        width: 0,
+        height: 0,
+        depth: 0,
+        rotation: 0,
+        fill: 'black',
+        scaleX: 1,
+        scaleY: 1,
+        scaleZ: 1,
+        isSelected: false,
+        isDragging: false,
+        isResizing: false,
+        ...p,
+    }
+}
+
+export type SimpleShape$ = S.SGroup<{
     x: S.SNumber
     y: S.SNumber
     z: S.SNumber
@@ -45,7 +65,7 @@ export type SimpleShapeSchema = S.SGroup<{
     isResizing: S.SBool
 }>
 
-export function simpleShapeSchema(b: SimpleBuilder): SimpleShapeSchema {
+export function simpleShape$(b: SimpleBuilder): SimpleShape$ {
     return b.fields({
         // pos
         x: b.number(),

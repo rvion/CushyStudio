@@ -12,20 +12,20 @@ import { autorun, makeAutoObservable } from 'mobx'
 import { createHTMLImage_fromURLNoAwait } from '../../../state/createHTMLImage_fromURL'
 
 export class UnifiedStep {
-    hide = () => this.layer.hide()
-    show = () => this.layer.show()
+    hide = (): Layer => this.layer.hide()
+    show = (): Layer => this.layer.show()
     st: STATE
     layer: Layer
     image: Image
     placeholder: Konva.Rect
 
     /** remove self from parent canvas.steps */
-    delete = () => {
+    delete = (): void => {
         this.layer.destroy()
         this.canvas.steps = this.canvas.steps.filter((s) => s !== this)
     }
 
-    accept = () => {
+    accept = (): void => {
         if (this.imageL == null) return
         this.canvas.addImage(this.imageL, {
             x: this.image.x(),

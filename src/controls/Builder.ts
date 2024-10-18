@@ -1,5 +1,5 @@
 import type { Field_board_config } from '../csuite/fields/board/Field_board'
-import type { SimpleShapeSchema } from '../csuite/fields/board/ShapeSchema'
+import type { SimpleShape$ } from '../csuite/fields/board/ShapeSchema'
 import type { Field_bool } from '../csuite/fields/bool/FieldBool'
 import type { Field_button_config } from '../csuite/fields/button/FieldButton'
 import type { Field_choices } from '../csuite/fields/choices/FieldChoices'
@@ -37,7 +37,7 @@ import { createElement } from 'react'
 
 import { simpleBuilder } from '../csuite'
 import { Field_board } from '../csuite/fields/board/Field_board'
-import { simpleShapeSchema } from '../csuite/fields/board/ShapeSchema'
+import { simpleShape$ } from '../csuite/fields/board/ShapeSchema'
 import { WidgetListExtUI__Timeline } from '../csuite/fields/board/WidgetListExtUI'
 import { Field_button } from '../csuite/fields/button/FieldButton'
 import { Field_color } from '../csuite/fields/color/FieldColor'
@@ -80,13 +80,20 @@ import { CushySchema, type CushySchemaᐸ_ᐳ } from './Schema'
 //  => would make EVERYTHING so much simpler
 
 declare global {
+    // eslint-disable-next-line @typescript-eslint/no-namespace
     namespace X {
         // #region core types
+        // eslint-disable-next-line @typescript-eslint/consistent-type-imports
         type SchemaDict = import('../csuite/model/SchemaDict').SchemaDict
+        // eslint-disable-next-line @typescript-eslint/consistent-type-imports
         type Builder = import('./Builder').CushySchemaBuilder
+        // eslint-disable-next-line @typescript-eslint/consistent-type-imports
         type Field<K extends FieldTypes = FieldTypes> = import('../csuite/model/Field').Field<K>
+        // eslint-disable-next-line @typescript-eslint/consistent-type-imports
         type FieldTypes = import('../csuite/model/$FieldTypes').FieldTypes
+        // eslint-disable-next-line @typescript-eslint/consistent-type-imports
         type BaseSchema<out TYPES extends FieldTypes = FieldTypes> = import('../csuite/model/BaseSchema').BaseSchema<TYPES>
+        // eslint-disable-next-line @typescript-eslint/consistent-type-imports
         type Runtime = import('../runtime/Runtime').Runtime
 
         // #region core types
@@ -313,8 +320,8 @@ export class CushySchemaBuilder implements IBuilder {
         return new CushySchema<Field_list<T>>(Field_list, config)
     }
 
-    cube(): SimpleShapeSchema {
-        return simpleShapeSchema(simpleBuilder)
+    cube(): SimpleShape$ {
+        return simpleShape$(simpleBuilder)
     }
 
     // #region ListExt
@@ -451,6 +458,7 @@ export class CushySchemaBuilder implements IBuilder {
         })
     }
 
+    // TODO: clean that up
     app(): X.XSelectOne<{ id: CushyAppID; label: string }, CushyAppID> {
         type OX = { id: CushyAppID; label: string }
         return this.selectOne<OX, CushyAppID>({
@@ -481,6 +489,40 @@ export class CushySchemaBuilder implements IBuilder {
                         : Q1
                 })
                 return matchingApps.map((i) => ({ id: i.id, label: `${i.name} (${i.count} steps)` }))
+            },
+        })
+    }
+    // TODO: clean that up
+    draft(): X.XSelectOne<{ id: DraftID; label: string }, DraftID> {
+        type OX = { id: DraftID; label: string }
+        return this.selectOne<OX, DraftID>({
+            getIdFromValue: (v): DraftID => v.id,
+            getOptionFromId: (id: DraftID): SelectOption<OX, DraftID> => {
+                const app = bang(cushy.db.draft.selectOne((q) => q.where('id', 'is', id)))
+                const value = { id: app.id, label: app.name }
+                return { ...value, value: value }
+            },
+            getValueFromId: (id: DraftID): OX => {
+                const app = cushy.db.draft.selectOne((q) => q.where('id', 'is', id))
+                return { id: app?.id ?? 'NotFound', label: app?.name ?? 'Not Found' }
+            },
+            values: (self) => {
+                const matchingApps = cushy.db.draft.selectRaw((q) => {
+                    const query = self.serial.query
+                    const Q1 = q
+                        .innerJoin('step', 'draft.id', 'step.draftID')
+                        .groupBy('draft.id')
+                        .select(({ fn }) => [
+                            //
+                            'draft.id',
+                            'draft.title',
+                            fn.count('step.id').as('count'),
+                        ])
+                    return query?.length //
+                        ? Q1.where('draft.title', 'like', `%${query}%`)
+                        : Q1
+                })
+                return matchingApps.map((i) => ({ id: i.id, label: `${i.title} (${i.count} steps)` }))
             },
         })
     }

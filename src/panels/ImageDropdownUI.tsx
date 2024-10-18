@@ -53,7 +53,7 @@ export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { i
                 icon='mdiFocusAuto'
                 disabled={!img?.absPath}
                 localShortcut='shift+click'
-                onClick={() => st.layout.open('Canvas', { imgID: img.id })}
+                onClick={() => st.layout.open('Canvas', { startingImgID: img.id })}
                 label='Unified Canvas'
             />
             <MenuItem

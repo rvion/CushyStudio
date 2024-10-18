@@ -60,16 +60,16 @@ export class UnifiedCanvas {
     }
 
     // UNDO SYSTEM ---------------------------------------------------
-    redo = () => {
+    redo = (): void => {
         const last = this._redoBuffer.pop()
-        if (last == null) return toastError('Nothing to redo')
+        if (last == null) return void toastError('Nothing to redo')
         last()
         // this._undoBuffer.push(last)
     }
 
-    undo = () => {
+    undo = (): void => {
         const last = this._undoBuffer.pop()
-        if (last == null) return toastError('Nothing to undo')
+        if (last == null) return void toastError('Nothing to undo')
         last()
         // this._redoBuffer.push(last)
     }
@@ -77,10 +77,14 @@ export class UnifiedCanvas {
     _undoBuffer: (() => void)[] = []
     _redoBuffer: (() => void)[] = []
 
-    get canUndo() { return this._undoBuffer.length > 0 } // prettier-ignore
-    get canRedo() { return this._redoBuffer.length > 0 } // prettier-ignore
+    get canUndo(): boolean {
+        return this._undoBuffer.length > 0
+    }
+    get canRedo(): boolean {
+        return this._redoBuffer.length > 0
+    }
 
-    addToUndo = (fn: () => void) => {
+    addToUndo = (fn: () => void): void => {
         this._undoBuffer.push(fn)
         this._redoBuffer = []
     }
@@ -89,7 +93,10 @@ export class UnifiedCanvas {
 
     activeSelection: UnifiedSelection
     private _activeMask: UnifiedMask
-    get activeMask() { return this._activeMask } // prettier-ignore
+    get activeMask(): UnifiedMask {
+        return this._activeMask
+    }
+
     set activeMask(mask: UnifiedMask) {
         this._activeMask = mask
         for (const mask of this.masks) mask.layer.hide()
@@ -106,7 +113,10 @@ export class UnifiedCanvas {
 
     _lastLine: Konva.Line | null = null
 
-    get pointerPosition() {
+    get pointerPosition(): {
+        x: number
+        y: number
+    } {
         return {
             x: this.infos.viewPointerX,
             y: this.infos.viewPointerY,
@@ -133,7 +143,7 @@ export class UnifiedCanvas {
         radius: this.maskToolSize / 2,
         opacity: this.maskOpacity,
     })
-    setBrushSize = (size: number) => {
+    setBrushSize = (size: number): void => {
         this.maskToolSize = size
         this.brush.radius(size / 2)
     }

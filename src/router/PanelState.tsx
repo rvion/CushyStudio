@@ -153,11 +153,11 @@ export class PanelState<PROPS extends object = any> {
     usePersistentModel = <SCHEMA extends BaseSchema>(
         //
         uid: string,
-        init: (ui: Builder) => SCHEMA,
+        init: ((ui: Builder) => SCHEMA) | SCHEMA,
         opts?: { log?: boolean },
     ): SCHEMA['$Field'] => {
         return useMemoAction(() => {
-            let schema: SCHEMA = init(cushy.forms.builder)
+            let schema: SCHEMA = typeof init === 'function' ? init(cushy.forms.builder) : init
             const log = opts?.log ? logForPersistentModel : logVoid
             log(`usePersistentModel (${uid})`)
 

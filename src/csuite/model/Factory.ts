@@ -183,6 +183,7 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
     define<SCHEMA extends BaseSchema>(schemaFn: (form: BUILDER) => SCHEMA): SCHEMA {
         return schemaFn(this.builder)
     }
+    schema = <T extends BaseSchema>(fn: (form: BUILDER) => T): T => fn(this.builder)
 
     /** eval schema if it's a function */
     private evalSchema<SCHEMA extends BaseSchema>(buildFn: SCHEMA | ((form: BUILDER) => SCHEMA)): SCHEMA {

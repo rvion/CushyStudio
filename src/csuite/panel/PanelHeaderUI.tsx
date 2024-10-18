@@ -38,10 +38,7 @@ export const PanelHeaderUI = observer(function PanelHeader({
                 //
                 'sticky top-0 [z-index:999]',
                 'px-1',
-                'py-[18px]',
-                extensibleHeight //
-                    ? 'minh-widget shrink-0'
-                    : 'h-widget',
+                extensibleHeight ? 'minh-widget shrink-0' : 'h-widget',
                 'UI-PanelHeader',
                 'CSHY-panel-header',
                 'flex select-none gap-1',

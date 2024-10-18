@@ -12,7 +12,7 @@ export const ErrorBoundaryFallback = (p: {
                 <Button //
                     icon='mdiRefresh'
                     onClick={() => p.resetErrorBoundary()}
-                    size='sm'
+                    // size='sm'
                     look='error'
                     square
                 />

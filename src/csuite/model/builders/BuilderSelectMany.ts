@@ -1,5 +1,6 @@
 import type { FieldTypes } from '../$FieldTypes'
 import type {
+    Field_selectMany_,
     Field_selectMany_config,
     Field_selectMany_config_simplified,
     Field_selectMany_config_simplified_,
@@ -81,6 +82,22 @@ export class BuilderSelectMany<Schemaᐸ_ᐳ extends SchemaAndAliasesᐸ_ᐳ> ex
 
     /** @alias to selectManyString */
     selectManyStrings = this.selectManyString
+
+    /**
+     * @since 2024-10-18
+     */
+    selectManyDynamicStrings = <const K extends string>(
+        p: (self: Field_selectMany_<K>) => readonly K[],
+        config: Field_selectMany_config_simplified_<K> = {},
+    ): Apply<Schemaᐸ_ᐳ['Many_'], K> => {
+        return this.selectMany({
+            choices: (self) => removeReadOnly(p(self)),
+            getOptionFromId: (id) => ({ id, label: id, value: id }),
+            getValueFromId: (id) => id,
+            getIdFromValue: (v) => v,
+            ...config,
+        })
+    }
 
     /**
      * the value is the option itself

@@ -732,6 +732,10 @@ video {
   top: 2rem;
 }
 
+.bottom-10 {
+  bottom: 2.5rem;
+}
+
 .\!z-0 {
   z-index: 0 !important;
 }
@@ -766,6 +770,14 @@ video {
 
 .z-\[50\] {
   z-index: 50;
+}
+
+.z-\[999\] {
+  z-index: 999;
+}
+
+.z-\[999999\] {
+  z-index: 999999;
 }
 
 .col-span-1 {

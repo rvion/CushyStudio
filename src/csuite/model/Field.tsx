@@ -180,7 +180,7 @@ export abstract class Field<out K extends FieldTypes = FieldTypes> implements In
         initialMountKey: string,
         serial?: K['$Serial'],
     ) {
-        this.id = mkNewFieldId()
+        this.id = serial?.uid ?? mkNewFieldId()
         this.repo = repo
         this.root = root ?? this
         this.parent = parent
@@ -1274,13 +1274,15 @@ export abstract class Field<out K extends FieldTypes = FieldTypes> implements In
 
     //  => LOCO
     Render(props: RENDERER.FieldRenderArgs<this> = {}): ReactNode {
-        if (props == undefined) debugger
+        // eslint-disable-next-line no-debugger
+        if (props == undefined) debugger /* 🔴 */
         return <window.RENDERER.Render field={this} p={props} />
     }
 
     //  => CUSHY
     UI(props: RENDERER.FieldRenderArgs<this> = {}): ReactNode {
-        if (props == undefined) debugger
+        // eslint-disable-next-line no-debugger
+        if (props == undefined) debugger /* 🔴 */
         return <window.RENDERER.Render field={this} p={props} />
     }
 
@@ -1291,7 +1293,8 @@ export abstract class Field<out K extends FieldTypes = FieldTypes> implements In
      * @see {@link Render}
      */
     render(props: RENDERER.FieldRenderArgs<this> = {}): ReactNode {
-        if (props == undefined) debugger
+        // eslint-disable-next-line no-debugger
+        if (props == undefined) debugger /* 🔴 */
         return <window.RENDERER.Render field={this} p={props} />
     }
 

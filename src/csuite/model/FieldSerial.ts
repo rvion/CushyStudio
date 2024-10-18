@@ -1,3 +1,5 @@
+import type { FieldId } from './FieldId'
+
 /** helper to define widget serial types */
 export type FieldSerial<X> = X & FieldSerial_CommonProperties
 
@@ -29,4 +31,7 @@ export type FieldSerial_CommonProperties = {
     // ⏸️  * every changes will be recorded up to number | 10 versions
     // ⏸️  * */
     // ⏸️ _history: { at: Timestamp; version: any }[]
+
+    /** may or may not be a good idea to add back :S */
+    uid?: FieldId
 }

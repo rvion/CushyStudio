@@ -5,18 +5,21 @@ import type { Group } from 'konva/lib/Group'
 import type { Image } from 'konva/lib/shapes/Image'
 
 import Konva from 'konva'
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable, observable } from 'mobx'
 
 export class UnifiedImage {
-    hide = () => this.group.hide()
-    show = () => this.group.show()
+    hide = (): Group => this.group.hide()
+    show = (): Group => this.group.show()
     st: STATE
     group: Group
     image: Image
     name: string
     visible: boolean = true
-
-    remove = () => {
+    TEST = observable({
+        x: 100,
+        y: 50,
+    })
+    remove = (): void => {
         this.group.remove()
     }
 

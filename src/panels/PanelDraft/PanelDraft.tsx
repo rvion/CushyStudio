@@ -161,9 +161,9 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                     }}
                 >
                     {metadata?.help && (
-                        <MessageInfoUI>
-                            <MarkdownUI tw='_WidgetMardownUI w-full' markdown={metadata.help} />
-                        </MessageInfoUI>
+                        // <MessageInfoUI>
+                        <MarkdownUI tw='_WidgetMardownUI w-full' markdown={metadata.help} />
+                        // </MessageInfoUI>
                     )}
                     {/* {metadata?.description && (
                     <BoxSubtle>

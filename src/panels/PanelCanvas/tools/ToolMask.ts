@@ -14,7 +14,7 @@ export class ToolMask implements ICanvasTool {
 
     constructor(public canvas: UnifiedCanvas) {}
 
-    onPress({ stroke }: ToolPressPayload) {
+    onPress({ stroke }: ToolPressPayload): void {
         // 1. ensure pointer
         const canvas = this.canvas
         const activeMask = canvas.activeMask
@@ -31,7 +31,7 @@ export class ToolMask implements ICanvasTool {
         canvas.tempLayer.add(canvas._lastLine)
     }
 
-    onMove = ({ stroke, ev, infos }: ToolMovePayload) => {
+    onMove = ({ stroke, ev, infos }: ToolMovePayload): void => {
         const canvas = this.canvas
         ev.evt.preventDefault() // prevent scrolling on touch devices
         const x = infos.viewPointerX
@@ -43,7 +43,7 @@ export class ToolMask implements ICanvasTool {
         /* 🔴 */ bang(canvas._lastLine).points(newPoints)
     }
 
-    onRelease = () => {
+    onRelease = (): void => {
         const canvas = this.canvas
         const lastLine = bang(canvas._lastLine)
         // ----------

@@ -1,11 +1,14 @@
 import type { UnifiedCanvas } from './UnifiedCanvas'
+import type { Image } from 'konva/lib/shapes/Image'
 
 import Konva from 'konva'
 
 export class KonvaGrid {
-    hide = () => this.image.hide()
-    show = () => this.image.show()
+    hide = (): Image => this.image.hide()
+    show = (): Image => this.image.show()
+
     image: Konva.Image
+
     constructor(public canvas: UnifiedCanvas) {
         const cellSize = 64
         const _canvas = document.createElement('canvas')

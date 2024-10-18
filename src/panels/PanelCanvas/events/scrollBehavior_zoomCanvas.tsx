@@ -5,7 +5,7 @@ export const scrollBehavior_zoomCanvas = (
     //
     canvas: UnifiedCanvas,
     e: KonvaEventObject<WheelEvent>,
-) => {
+): void => {
     const stage = e.target.getStage()
     if (stage == null) return console.warn(`🔶 missing stage`)
     // console.log(`[🧐😀] stage`, stage)

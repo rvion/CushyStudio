@@ -268,7 +268,7 @@ export class MediaImageL extends BaseInst<TABLES['media_image']> {
         if (ev.shiftKey) {
             ev.stopPropagation()
             ev.preventDefault()
-            return void cushy.layout.open('Canvas', { imgID: this.id })
+            return void cushy.layout.open('Canvas', { startingImgID: this.id })
         }
         if (ev.altKey) {
             ev.stopPropagation()
@@ -364,7 +364,7 @@ export class MediaImageL extends BaseInst<TABLES['media_image']> {
     }
 
     openInCanvasEditor = (): void => {
-        this.st.layout.open('Canvas', { imgID: this.id })
+        this.st.layout.open('Canvas', { startingImgID: this.id })
     }
 
     // ---------------------------------------------------------------
