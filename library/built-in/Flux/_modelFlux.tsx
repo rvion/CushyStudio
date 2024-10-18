@@ -37,7 +37,7 @@ export const prefabModelFlux = (): $prefabModelFlux => {
         })
         .addRequirements([
             { type: 'modelInManager', modelName: 'FLUX.1 VAE model' },
-            { type: 'modelInManager', modelName: 'FLUX.1 [schnell] Diffusion model' },
+            { type: 'modelInManager', modelName: 'FLUX.1 [Schnell] Diffusion model' },
             { type: 'modelInManager', modelName: 'kijai/FLUX.1 [dev] Diffusion model (float8_e4m3fn)' },
             { type: 'modelInManager', modelName: 'kijai/FLUX.1 [schnell] Diffusion model (float8_e4m3fn)' },
             { type: 'modelInManager', modelName: 'Comfy Org/FLUX.1 [dev] Checkpoint model (fp8)' },
@@ -70,21 +70,18 @@ export const evalModelFlux = (
 } => {
     const run = getCurrentRun()
     const graph = run.nodes
-    let ckpt: _MODEL
-    let clip: _CLIP
-    let vae: _VAE | undefined = undefined
-
-    const ckptLoader = graph.UNETLoader({
+    const vae: _VAE | undefined = undefined
+    const ckptLoader: _MODEL = graph.UNETLoader({
         unet_name: doc.ckpt_name,
         weight_dtype: doc.weight_type,
     })
-    ckpt = ckptLoader._MODEL
+    const ckpt = ckptLoader._MODEL
     const clipLoader = graph.DualCLIPLoader({
         clip_name1: doc.clip1,
         clip_name2: doc.clip2,
         type: doc.type,
     })
-    clip = clipLoader._CLIP
+    const clip: _CLIP = clipLoader._CLIP
     //Flux requires a vae to be selected
     if (!doc.extra.vae) {
         throw new Error('No VAE selected')
