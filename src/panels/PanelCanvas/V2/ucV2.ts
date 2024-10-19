@@ -34,22 +34,21 @@ export const uc2$ = (b: CushySchemaBuilder): UC2$ =>
 
 // #region Masks
 // gayscale/opacity
-type Mask$ = X.XGroup<{
+export type Mask$ = X.XGroup<{
+    name: X.XString
     placement: SimpleShape$
+    visible: X.XBool
     image: X.XImage
 }>
 const mask$ = (b: CushySchemaBuilder): Mask$ =>
     b.fields({
+        name: b.string(),
         placement: simpleShape$(),
+        visible: b.bool(true),
         image: b.image(),
     })
 
-export type Masks$ = X.XList<
-    X.XGroup<{
-        placement: SimpleShape$
-        image: X.XImage
-    }>
->
+export type Masks$ = X.XList<Mask$>
 const masks$ = (b: CushySchemaBuilder): Masks$ => mask$(b).list()
 
 // #region Layer

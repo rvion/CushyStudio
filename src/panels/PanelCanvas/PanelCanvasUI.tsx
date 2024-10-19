@@ -38,6 +38,8 @@ export const PanelCanvasUI = observer(function Panel_Canvas_(p: PanelCanvasProps
         runInAction(() => canvas.addImage(img))
         uc2.Layers.push({
             placement: mkPlacement({ x: 0, y: 0 }),
+            name: img.id,
+            visible: true,
             content: { image: img },
         })
     })

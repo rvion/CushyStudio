@@ -491,6 +491,7 @@ export class Field_list<T extends BaseSchema> //
         this.addItem({ at: ix, value: item.isValid ? item.value : undefined })
     }
 
+    // TODO: support partial values ?
     /**
      * Appends new elements to the end of an array,
      * and returns the new length of the array.

@@ -6,16 +6,20 @@ import { BasicShelfUI } from '../../../csuite/shelf/ShelfUI'
 import { useImageDrop } from '../../../widgets/galleries/dnd'
 import { useUCV2 } from '../V2/ucV2'
 import { UCLayerUI } from './UCLayerUI'
+import { UCMaskMenuUI } from './UCMaskMenuUI'
 
 export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {}) {
     const ucv2 = useUCV2()
     const layers = ucv2.Layers.items
+    const masks = ucv2.Masks.items
 
     const [dropStyle2, dropRef2] = useImageDrop(cushy, (img) => {
         // TODO: move as method once setup with custom classes finished
         // canvas.addMask(img)
         ucv2.Masks.push({
             image: img,
+            visible: true,
+            name: 'masky-mac-mask-face',
             placement: mkPlacement({ x: 0, y: 0 }),
         })
     })
@@ -29,6 +33,16 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
                         <div /* SortableList */ className='list' tw='flex flex-col gap-2'>
                             {layers.map((p, i) => {
                                 return <UCLayerUI layer={p} index={i} />
+                            })}
+                        </div>
+                    </Frame>
+                </Frame>
+                <Frame tw='rounded-md p-2' style={{ filter: 'drop-shadow(0px 1px 0px black)' }}>
+                    Masks
+                    <Frame tw='rounded-md p-2' base={{ contrast: -0.1 }}>
+                        <div /* SortableList */ className='list' tw='flex flex-col gap-2'>
+                            {masks.map((p, i) => {
+                                return <UCMaskMenuUI mask={p} index={i} />
                             })}
                         </div>
                     </Frame>
