@@ -11,7 +11,9 @@ import { produce } from 'immer'
 import { csuiteConfig } from '../../config/configureCsuite'
 import { Field } from '../../model/Field'
 import { isProbablySerialString, registerFieldClass } from '../WidgetUI.DI'
-import { WidgetString_SmallInput, WidgetString_TextareaInput, WidgetStringUI } from './WidgetStringUI'
+import { WidgetString_SmallInput } from './WidgetString_SmallInput'
+import { WidgetString_TextareaInput } from './WidgetString_TextareaInput'
+import { WidgetStringUI } from './WidgetStringUI'
 
 type CssProprtyGlobals = '-moz-initial' | 'inherit' | 'initial' | 'revert' | 'unset'
 

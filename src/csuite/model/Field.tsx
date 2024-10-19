@@ -32,6 +32,7 @@ import {
     isFieldChoice,
     isFieldChoices,
     isFieldGroup,
+    isFieldList,
     isFieldOptional,
     isProbablySerialList,
     isProbablySerialOptional,
@@ -650,6 +651,7 @@ export abstract class Field<out K extends FieldTypes = FieldTypes> implements In
      */
     get canBeToggledWithinParent(): boolean {
         // if (isFieldOptional(this)) return true
+        if (isFieldList(this.parent)) return true
         if (isFieldOptional(this.parent)) return true
         if (isFieldChoices(this.parent)) return true
         if (isFieldChoice(this.parent)) return false
@@ -666,7 +668,7 @@ export abstract class Field<out K extends FieldTypes = FieldTypes> implements In
         if (isFieldOptional(parent)) return parent.setOn()
         if (isFieldChoices(parent)) return parent.enableBranch(this.mountKey)
         if (isFieldChoice(parent)) return parent.enableBranch(this.mountKey)
-        throw new Error(`(${this.type}@'${this.path}').setOn: parent (${parent?.type}) is neither optional or choices`)
+        throw new Error(`(${this.type}@'${this.path}').setOn: parent (${parent?.type}) is not [optional, choice, choices]`)
     }
 
     /**
@@ -677,9 +679,10 @@ export abstract class Field<out K extends FieldTypes = FieldTypes> implements In
     disableSelfWithinParent(): void {
         const parent = this.parent
         if (isFieldOptional(parent)) return parent.setOff()
+        if (isFieldList(parent)) return parent.removeItem(this)
         if (isFieldChoices(parent)) return parent.disableBranch(this.mountKey)
         if (isFieldChoice(parent)) return parent.disableBranch(this.mountKey)
-        throw new Error(`(${this.type}@'${this.path}').setOff: parent (${parent?.type}) is neither optional or choices`)
+        throw new Error(`(${this.type}@'${this.path}').setOff: (${parent?.type} is not [optional, choice, choices, list]`)
     }
 
     get isEnabledWithinParent(): boolean {
@@ -688,7 +691,6 @@ export abstract class Field<out K extends FieldTypes = FieldTypes> implements In
         if (isFieldChoice(this.parent)) return this.parent.isBranchEnabled(this.mountKey)
         return true
     }
-
     // --------------------------------------------------------
     get isInsideDisabledBranch(): boolean {
         if (this.parent == null) return false

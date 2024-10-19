@@ -21,12 +21,7 @@ export const prefabModelSD15andSDXL = (
                     // default: p.ckpt_name ?? 'revAnimated_v122.safetensors', 🔴
                     default: p.ckpt_name ?? undefined,
                 })
-                .addRequirements(
-                    ckpts.map((x) => ({
-                        type: 'modelCustom',
-                        infos: x,
-                    })),
-                ),
+                .addRequirements(ckpts.map((x) => ({ type: 'modelCustom', infos: x }))),
             extra: schemaModelExtras(),
         },
         {

@@ -1,9 +1,13 @@
 import type { Field_number } from '../../csuite/fields/number/FieldNumber'
+import type { Field_string } from '../../csuite/fields/string/FieldString'
 import type { CompiledRenderProps } from './Renderer'
 import type { FC } from 'react'
 
 import { WidgetGroup_BlockUI, WidgetGroup_LineUI, WidgetGroupInlineUI } from '../../csuite/fields/group/WidgetGroupUI'
 import { WidgetNumberUI } from '../../csuite/fields/number/WidgetNumberUI'
+import { WidgetString_SmallInput } from '../../csuite/fields/string/WidgetString_SmallInput'
+import { WidgetString_summary } from '../../csuite/fields/string/WidgetString_summary'
+import { WidgetString_TextareaInput } from '../../csuite/fields/string/WidgetString_TextareaInput'
 import { Frame, type FrameProps } from '../../csuite/frame/Frame'
 import { type WidgetCardProps, WidgetCardUI } from '../catalog/Decorations/WidgetCardUI'
 import { QuickForm, type QuickFormProps } from '../catalog/group/QuickForm'
@@ -51,6 +55,12 @@ export type WidgetsCatalog = {
         def: FC<{ field: Field_number }>
     }
 
+    string: {
+        input: FC<{ field: Field_string }>
+        summary: FC<{ field: Field_string }>
+        textarea: FC<{ field: Field_string }>
+    }
+
     group: {
         controls: typeof WidgetGroup_LineUI
         group: typeof WidgetGroup_BlockUI
@@ -84,12 +94,17 @@ export const widgetsCatalog: WidgetsCatalog = {
         default: DefaultWidgetTitleUI,
     },
     QuickForm: QuickForm,
+    number: {
+        def: WidgetNumberUI,
+    },
+    string: {
+        input: WidgetString_SmallInput,
+        summary: WidgetString_summary,
+        textarea: WidgetString_TextareaInput,
+    },
     group: {
         controls: WidgetGroup_LineUI,
         group: WidgetGroup_BlockUI,
         inline: WidgetGroupInlineUI,
-    },
-    number: {
-        def: WidgetNumberUI,
     },
 }

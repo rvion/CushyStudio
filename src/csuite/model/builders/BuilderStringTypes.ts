@@ -18,7 +18,11 @@ export class BuilderString<Schemaᐸ_ᐳ extends SchemaAndAliasesᐸ_ᐳ> extend
      * primitive string type
      */
     string(config: Field_string_config = {}): Schemaᐸ_ᐳ['String'] {
-        return this.string_({ default: config.default ?? '', ...config, placeHolder: 'Vide' })
+        return this.string_({
+            default: config.default ?? '',
+            ...config,
+            // placeHolder: 'Vide', <-- not the place for that
+        })
     }
 
     /**

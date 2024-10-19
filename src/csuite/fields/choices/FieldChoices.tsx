@@ -8,6 +8,8 @@ import type { Repository } from '../../model/Repository'
 import type { SchemaDict } from '../../model/SchemaDict'
 import type { Problem_Ext } from '../../model/Validation'
 import type { ProplessFC } from '../../types/ReactUtils'
+import type { CovariantFn } from '../../variance/BivariantHack'
+import type { CovariantFC } from '../../variance/CovariantFC'
 import type { TabPositionConfig } from './TabPositionConfig'
 
 import { produce } from 'immer'
@@ -173,18 +175,22 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
      * dictionary of enabled children branches
      * TODO: rename
      */
-    enabledBranches: { [k in keyof T]?: T[k]['$Field'] } = {}
-
-    /** alias for enabledBranches */
-    get branches(): { [k in keyof T]?: T[k]['$Field'] } {
-        return this.enabledBranches
+    activeBranchesDict: { [k in keyof T]?: T[k]['$Field'] } = {}
+    get activeBranchesList(): T[keyof T]['$Field'][] {
+        return Object.values(this.activeBranchesDict)
     }
+
+    // /** alias for enabledBranches */
+    // get branches(): { [k in keyof T]?: T[k]['$Field'] } {
+    //     return this.activeBranchesDict
+    // }
+
     /**
      * very handy to mimmic fieldGropu api a bit,
      * since choiceS are equivalent to partial object
      */
     get fields(): { [k in keyof T]?: T[k]['$Field'] } {
-        return this.branches
+        return this.activeBranchesDict
     }
 
     get firstPossibleChoice(): (keyof T & string) | undefined {
@@ -200,6 +206,28 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
         // 🔶 may be wrong, but it really annoys me right now
         if (this.activeBranchNames.length === 0) return false
         return super.isCollapsible
+    }
+
+    when1<RESULT>(cases: {
+        [K in keyof T]?: CovariantFn<[field: T[K]['$Field']], RESULT>
+    }): Maybe<RESULT> {
+        for (const branch of this.activeBranchesList) {
+            if (branch && branch.mountKey in cases) {
+                return cases[branch.mountKey]!(branch)
+            }
+        }
+    }
+
+    when<RESULT>(cases: {
+        [K in keyof T]?: CovariantFn<[field: T[K]['$Field']], RESULT>
+    }): RESULT[] {
+        const OUT: RESULT[] = []
+        for (const branch of this.activeBranchesList) {
+            if (branch && branch.mountKey in cases) {
+                OUT.push(cases[branch.mountKey]!(branch))
+            }
+        }
+        return OUT
     }
 
     get choicesWithLabels(): { key: keyof T & string; label: string; icon?: IconName }[] {
@@ -232,7 +260,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
 
     get firstActiveBranchField(): T[keyof T]['$Field'] | undefined {
         if (this.firstActiveBranchName == null) return undefined
-        return this.enabledBranches[this.firstActiveBranchName]
+        return this.activeBranchesDict[this.firstActiveBranchName]
     }
 
     /**
@@ -296,10 +324,10 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
         const config = this.config
         const serial = this.serial
         if (this.isSingle) {
-            const activeBranches = this.getActiveBranchNamesFromBooleanRecord(serial.branches)
+            const activeBranchesNames = this.getActiveBranchNamesFromBooleanRecord(serial.branches)
 
             // 1. more than one active branch, while in single mode
-            if (activeBranches.length > 1) {
+            if (activeBranchesNames.length > 1) {
                 OUT.push('Only One choices allowed but has multiple active branches')
             }
 
@@ -319,7 +347,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
     get hasChanges(): boolean {
         for (const branchName of this.allPossibleChoices) {
             const shouldBeActive = this.isBranchActiveByDefault(branchName)
-            const child = this.enabledBranches[branchName]
+            const child = this.activeBranchesDict[branchName]
             if (child && !shouldBeActive) return true
             if (!child && shouldBeActive) return true
             if (child && shouldBeActive && child.hasChanges) return true
@@ -351,15 +379,15 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
      * so it's active children fields are just the activated one
      */
     get childrenAll(): this['$Child']['$Field'][] {
-        return Object.values(this.enabledBranches)
+        return Object.values(this.activeBranchesDict)
     }
 
     get childrenActive(): Field[] {
-        return Object.values(this.enabledBranches)
+        return Object.values(this.activeBranchesDict)
     }
 
     get subFieldsWithKeys(): KeyedField[] {
-        return Object.entries(this.enabledBranches).map(([key, field]) => ({ key, field }))
+        return Object.entries(this.activeBranchesDict).map(([key, field]) => ({ key, field }))
     }
 
     _acknowledgeCount = 0
@@ -445,10 +473,10 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
                 this.RECONCILE({
                     mountKey: branch,
                     correctChildSchema: this.getSchemaForBranch(branch),
-                    existingChild: this.enabledBranches[branch],
+                    existingChild: this.activeBranchesDict[branch],
                     targetChildSerial: null,
                     attach: (child) => {
-                        this.enabledBranches[branch] = child
+                        this.activeBranchesDict[branch] = child
                     },
                 })
             }
@@ -471,18 +499,18 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
                 this.RECONCILE({
                     mountKey: branch,
                     correctChildSchema: schema,
-                    existingChild: this.enabledBranches[branch],
+                    existingChild: this.activeBranchesDict[branch],
                     targetChildSerial: branchSerial,
                     attach: (child) => {
-                        this.enabledBranches[branch] = child
+                        this.activeBranchesDict[branch] = child
                     },
                 })
             } else {
                 // remove children
-                const prevChild = this.enabledBranches[branch]
+                const prevChild = this.activeBranchesDict[branch]
                 if (prevChild) {
                     prevChild.disposeTree()
-                    delete this.enabledBranches[branch]
+                    delete this.activeBranchesDict[branch]
                 }
             }
         }
@@ -515,7 +543,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
             set: (_target, prop, value): boolean => {
                 if (typeof prop !== 'string') return false
                 const branchName = prop
-                const subWidget: Maybe<Field> = this.enabledBranches[branchName]
+                const subWidget: Maybe<Field> = this.activeBranchesDict[branchName]
                 // case when branch currently DISABLED
                 if (subWidget == null) {
                     const field = this.enableBranch(branchName)
@@ -532,14 +560,14 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
             get: (_target, prop): any => {
                 if (typeof prop !== 'string') return
                 const branchName = prop
-                const subWidget: Maybe<Field> = this.enabledBranches[branchName]
+                const subWidget: Maybe<Field> = this.activeBranchesDict[branchName]
                 if (subWidget == null) return
                 return subWidget.getValue(mode)
             },
             getOwnPropertyDescriptor: (_target, prop): PropertyDescriptor | undefined => {
                 if (typeof prop !== 'string') return
                 const branchName = prop
-                const subWidget: Maybe<Field> = this.enabledBranches[branchName]
+                const subWidget: Maybe<Field> = this.activeBranchesDict[branchName]
                 if (subWidget == null) return
                 return {
                     enumerable: true,
@@ -555,14 +583,14 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
     // #region METHODS
     disableBranch(branch: keyof T & string): void {
         // ensure branch to disable is enabled
-        if (!this.enabledBranches[branch]) {
+        if (!this.activeBranchesDict[branch]) {
             return // console.info(`❌ Branch "${branch}" not enabled`)
         }
         this.runInValueTransaction(() => {
             // remove children
-            const prevChild = this.enabledBranches[branch]
+            const prevChild = this.activeBranchesDict[branch]
             if (prevChild) prevChild.disposeTree()
-            delete this.enabledBranches[branch]
+            delete this.activeBranchesDict[branch]
 
             // WE NEED TO KEEP THIS ONE UNLESS WE WANT TO DISCARD THE DRAFT
             // we could make this opt-in via a config flag and persist in memory only via enableBranch
@@ -583,7 +611,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
 
         this.runInValueTransaction(() => {
             if (this.isSingle) {
-                for (const key in this.enabledBranches) {
+                for (const key in this.activeBranchesDict) {
                     this.disableBranch(key)
                 }
             }
@@ -592,10 +620,10 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
             this.RECONCILE({
                 mountKey: branchName,
                 correctChildSchema: schema,
-                existingChild: this.enabledBranches[branchName],
+                existingChild: this.activeBranchesDict[branchName],
                 targetChildSerial: this.serial.values?.[branchName],
                 attach: (child) => {
-                    this.enabledBranches[branchName] = child
+                    this.activeBranchesDict[branchName] = child
                 },
             })
 
@@ -606,7 +634,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
             })
         })
 
-        return this.enabledBranches[branchName]
+        return this.activeBranchesDict[branchName]
     }
 
     toggleBranch(branch: keyof T & string): void {
@@ -673,7 +701,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
             if (this.isBranchDisabled(branch)) this.enableBranch(branch)
 
             // 2.2 then patch branch value to given value
-            this.enabledBranches[branch]!.value = value!
+            this.activeBranchesDict[branch]!.value = value!
             return true
         }
     }

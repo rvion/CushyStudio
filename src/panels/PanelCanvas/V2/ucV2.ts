@@ -44,7 +44,7 @@ const mask$ = (b: CushySchemaBuilder): Mask$ =>
         image: b.image(),
     })
 
-type Masks$ = X.XList<
+export type Masks$ = X.XList<
     X.XGroup<{
         placement: SimpleShape$
         image: X.XImage
@@ -53,20 +53,24 @@ type Masks$ = X.XList<
 const masks$ = (b: CushySchemaBuilder): Masks$ => mask$(b).list()
 
 // #region Layer
-type Layer$ = X.XGroup<{
+export type Layer$ = X.XGroup<{
     placement: SimpleShape$
+    visible: X.XBool
+    name: X.XString
     content: X.XChoices<{
         image: X.XImage
         aiGeneration: X.XGroup<{
             masks: X.XSelectMany_<FieldId>
             draftId: X.XSelectOne<{ id: DraftID; label: string }, DraftID>
-            imageId: X.XImage
+            image: X.XImage
         }>
     }>
 }>
 const layer$ = (b: CushySchemaBuilder): Layer$ =>
     b.fields({
         placement: simpleShape$(),
+        visible: b.bool(true),
+        name: b.string(),
         content: b.choice({
             image: b.image(/* MediaImageL */),
             aiGeneration: b.fields({
@@ -88,7 +92,7 @@ const layer$ = (b: CushySchemaBuilder): Layer$ =>
                 //  => Bridge is just too specifc, let's leave each app include
                 // it's own bridge prefab
                 draftId: b.draft(/* DraftId */),
-                imageId: b.image(),
+                image: b.image(),
             }),
         }),
     })

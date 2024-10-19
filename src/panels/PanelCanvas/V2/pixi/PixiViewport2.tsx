@@ -51,7 +51,9 @@ const PixiViewportComponent = PixiComponent<PixiComponentViewportProps, Viewport
             events: props.app.renderer.events, // .plugins.interaction,
             // interaction: props.app.renderer.plugins.interaction,
         })
-            .drag({ mouseButtons: 'right' })
+            .drag({
+                mouseButtons: 'right',
+            })
             // .pinch()
             .wheel()
             // .decelerate()

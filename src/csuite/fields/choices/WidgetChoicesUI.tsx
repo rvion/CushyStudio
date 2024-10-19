@@ -24,7 +24,7 @@ export const WidgetChoices_BodyUI = observer(function WidgetChoices_BodyUI_<
     const activeSubwidgets: {
         branch: string
         subWidget: Field
-    }[] = Object.entries(field.enabledBranches) //
+    }[] = Object.entries(field.activeBranchesDict) //
         .map(([branch, subWidget]) => ({ branch, subWidget }))
 
     // return activeSubwidgets.map((i) => i.branch).join(',')

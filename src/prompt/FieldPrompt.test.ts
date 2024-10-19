@@ -22,7 +22,7 @@ describe('FieldPrompt', () => {
                     apply({ fields }): void {
                         // V1
                         fields.c.enableBranch('bar')
-                        fields.c.branches.bar?.setText('new prompt A')
+                        fields.c.activeBranchesDict.bar?.setText('new prompt A')
                         // V2
                         fields.c.enableBranch('bar')?.setText('new prompt B')
                     },
@@ -42,7 +42,7 @@ describe('FieldPrompt', () => {
             expect(E1.value.c.foo).toBeNil()
             expect(E1.value.c.bar?.text).toBe('coucou')
 
-            E1.fields.c.enabledBranches.bar?.setText('new prompt')
+            E1.fields.c.activeBranchesDict.bar?.setText('new prompt')
 
             expect(E1.value.c.bar?.text).toBe('new prompt')
         })

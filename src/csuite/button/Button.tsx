@@ -33,9 +33,10 @@ const _Button = observer(
         // ensure any unmounting of this component will properly clean-up
         useEffect(() => uist.release, [])
 
-        const { size, look, subtle, borderless, iconSize, onClick, ...rest } = p
+        const { size, look, subtle, borderless, iconSize, onClick, square: square_, ...rest } = p
         const theme = cushy.theme.value
         const csuite = cushy.csuite
+        const square = square_ ?? (p.icon != null && p.children == null)
 
         return (
             <Frame //
@@ -69,6 +70,7 @@ const _Button = observer(
                 loading={p.loading ?? uist.running}
                 tabIndex={p.tabIndex}
                 onMouseDown={uist.press}
+                square={square}
                 onClick={uist.onClick}
                 iconSize={iconSize ?? '1.1rem'}
                 {...rest}
@@ -116,7 +118,6 @@ export class ButtonState {
                 // mark as running
                 runInAction(() => (this.running = true))
                 void res.finally(() => runInAction(() => (this.running = false)))
-            } else {
             }
         }
     }
