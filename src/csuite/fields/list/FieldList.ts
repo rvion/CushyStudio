@@ -486,9 +486,12 @@ export class Field_list<T extends BaseSchema> //
     }
 
     // ADDING ITEMS -------------------------------------------------
-    duplicateItemAtIndex(ix: number): void {
+    duplicateItemAtIndex(ix: number): Maybe<T['$Field']> {
         const item = this.items[ix]!
-        this.addItem({ at: ix, value: item.isValid ? item.value : undefined })
+        return this.addItem({
+            at: ix + 1,
+            value: item.isValid ? item.value : undefined,
+        })
     }
 
     // TODO: support partial values ?

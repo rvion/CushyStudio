@@ -55,16 +55,17 @@ export const UnifiedCanvasPixi = observer(
                                 <DragableSpritePixi //
                                     key={i.id}
                                     placement={placement}
-                                    image={image}
+                                    mediaImage={image.value}
                                 />
                             ),
-                            aiGeneration: (x) => (
-                                <DragableSpritePixi //
-                                    key={i.id}
-                                    placement={placement}
-                                    image={x.Image}
-                                />
-                            ),
+                            aiGeneration: (x) =>
+                                x.Image.value ? (
+                                    <DragableSpritePixi //
+                                        key={i.id}
+                                        placement={placement}
+                                        mediaImage={x.Image.value}
+                                    />
+                                ) : null,
                         })
                     })}
                     {/* all masks */}
@@ -77,7 +78,7 @@ export const UnifiedCanvasPixi = observer(
                             <DragableSpritePixi //
                                 key={i.id}
                                 placement={placement}
-                                image={image}
+                                mediaImage={image.value}
                             />
                         )
                     })}

@@ -1,5 +1,6 @@
 import type { SimpleShape$ } from '../../../../csuite/fields/core-prefabs/ShapeSchema'
 import type { Field_image } from '../../../../csuite/fields/image/FieldImage'
+import type { MediaImageL } from '../../../../models/MediaImage'
 import type { UnifiedImage } from '../../states/UnifiedImage'
 import type { DisplayObject, FederatedPointerEvent } from 'pixi.js'
 
@@ -22,7 +23,7 @@ interface PixiEvent {
 class XXX {
     constructor(
         //
-        public i: Field_image,
+        public i: MediaImageL,
         public placement: SimpleShape$['$Field'],
     ) {
         makeAutoObservable(this)
@@ -59,26 +60,26 @@ class XXX {
 
 type DraggableSpriteProps = {
     placement: SimpleShape$['$Field']
-    image: Field_image
+    mediaImage: MediaImageL
 }
 
 export const DragableSpritePixi = observer(function DraggableSpriteUI_(p: DraggableSpriteProps) {
-    const i = p.image
-    const xxx = useMemo(() => new XXX(p.image, p.placement), [i])
+    const mediaImage = p.mediaImage
+    const xxx = useMemo(() => new XXX(p.mediaImage, p.placement), [mediaImage])
     return (
         <>
             <Sprite //
                 interactive
                 width={p.placement.Width.value || 512}
                 height={p.placement.Height.value || 512}
-                key={i.value.id}
+                key={mediaImage.id}
                 anchor={0.5}
                 // onDragStart={onDragStart}
                 pointerdown={xxx.onDragStart}
                 pointerup={xxx.onDragEnd}
                 pointerupoutside={xxx.onDragEnd}
                 pointermove={xxx.onDragMove}
-                image={i.value.urlForSize(320)}
+                image={mediaImage.urlForSize(320)}
                 x={xxx.placement.X.value}
                 y={xxx.placement.Y.value}
             />

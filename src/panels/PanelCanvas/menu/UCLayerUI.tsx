@@ -16,8 +16,10 @@ export const UCLayerUI = observer(function UCLayerUI_(p: {
 }) {
     const inputHeight = cushy.preferences.interface.value.inputHeight
     const isVisible: boolean = p.layer.Visible.value
-    const imgField = p.layer.Content.when1({ aiGeneration: (t) => t.fields.image, image: (t) => t })
-    const image = imgField?.value
+    const image = p.layer.Content.when1({
+        aiGeneration: (t) => t.fields.image.value,
+        image: (t) => t.value,
+    })
 
     // TEMP
     // Do not use interface.value.inputHeight in the future. Have a separate option for layer size?

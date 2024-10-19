@@ -61,7 +61,7 @@ export type Layer$ = X.XGroup<{
         aiGeneration: X.XGroup<{
             masks: X.XSelectMany_<FieldId>
             draftId: X.XSelectOne<{ id: DraftID; label: string }, DraftID>
-            image: X.XImage
+            image: X.XOptional<X.XImage>
         }>
     }>
 }>
@@ -91,7 +91,7 @@ const layer$ = (b: CushySchemaBuilder): Layer$ =>
                 //  => Bridge is just too specifc, let's leave each app include
                 // it's own bridge prefab
                 draftId: b.draft(/* DraftId */),
-                image: b.image(),
+                image: b.image().optional(),
             }),
         }),
     })

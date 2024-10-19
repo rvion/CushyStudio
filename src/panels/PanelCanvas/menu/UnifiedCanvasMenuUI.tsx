@@ -14,7 +14,7 @@ import { UCMaskMenuUI } from './UCMaskMenuUI'
 
 export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {}) {
     const ucv2 = useUCV2()
-    const layers = ucv2.Layers.items
+    const layers = ucv2.Layers
     const masks = ucv2.Masks.items
 
     const [dropStyle2, dropRef2] = useImageDrop(cushy, (img) => {
@@ -35,12 +35,12 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
                     Layers
                     <Frame tw='rounded-md p-2' base={{ contrast: -0.1 }}>
                         <div /* SortableList */ className='list' tw='flex flex-col gap-2'>
-                            {layers.map((p, i) => {
-                                return p.Content.when1({
-                                    image: () => <UCLayerUI layer={p} index={i} />,
+                            {layers.items.map((layer, i) => {
+                                return layer.Content.when1({
+                                    image: () => <UCLayerUI layer={layer} index={i} />,
                                     aiGeneration: (x) => (
                                         <div>
-                                            <UCLayerUI layer={p} index={i} />
+                                            <UCLayerUI layer={layer} index={i} />
                                             <x.DraftId.UI Shell={ShellInputOnly} />
                                             <DraftInlineImageOutputsUI
                                                 onCLick={(img) => (x.Image.value = img)}
@@ -56,6 +56,17 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
                                                         draft.start({
                                                             /* context */
                                                         })
+                                                    }}
+                                                />
+                                                <Button
+                                                    icon='mdiContentCopy'
+                                                    onClick={() => {
+                                                        const newLayer = layers.duplicateItemAtIndex(i)
+                                                        if (newLayer == null) return toastError('Failed to duplicate layer')
+                                                        newLayer.Content.when({
+                                                            aiGeneration: (x) => x.Image.setActive(false),
+                                                        })
+                                                        // should create a copy of that layer, below, without any image selected
                                                     }}
                                                 />
                                             </div>
