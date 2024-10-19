@@ -6,6 +6,7 @@ import type { LiveDB } from '../db/LiveDB'
 import type { TABLES } from '../db/TYPES.gen'
 import type { CushyAppL } from './CushyApp'
 import type { Executable } from './Executable'
+import type { MediaImageL } from './MediaImage'
 import type { StepL } from './Step'
 
 import { observable, reaction } from 'mobx'
@@ -34,6 +35,19 @@ export class DraftL extends BaseInst<TABLES['draft']> {
     instObservabilityConfig: undefined
     dataObservabilityConfig = {
         formSerial: observable.ref,
+    }
+
+    // get drafts(): DraftL[] {
+    //     return cushy.db.draft.select((q) => q.where('appID', '=', this.id))
+    // }
+
+    // > app ❌
+    //    > drafts ❌
+    //       > steps 🟢
+    //          > prompts 🟢
+    get images(): MediaImageL[] {
+        const stepIds = this.db.step.selectRaw((q) => q.select('id').where('draftID', '=', this.id)).map((t) => t.id)
+        return this.db.media_image.select((q) => q.where('stepID', 'in', stepIds))
     }
 
     provenance: Provenance = {

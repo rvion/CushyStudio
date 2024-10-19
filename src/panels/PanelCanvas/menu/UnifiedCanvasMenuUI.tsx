@@ -1,10 +1,12 @@
 import { observer } from 'mobx-react-lite'
 
+import { ShellInputOnly } from '../../../csuite-cushy/shells/ShellInputOnly'
 import { mkPlacement } from '../../../csuite/fields/core-prefabs/ShapeSchema'
 import { Frame } from '../../../csuite/frame/Frame'
 import { BasicShelfUI } from '../../../csuite/shelf/ShelfUI'
 import { useImageDrop } from '../../../widgets/galleries/dnd'
 import { useUCV2 } from '../V2/ucV2'
+import { DraftInlineImageOutputsUI } from './DraftInlineImageOutputsUI'
 import { UCLayerUI } from './UCLayerUI'
 import { UCMaskMenuUI } from './UCMaskMenuUI'
 
@@ -32,7 +34,16 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
                     <Frame tw='rounded-md p-2' base={{ contrast: -0.1 }}>
                         <div /* SortableList */ className='list' tw='flex flex-col gap-2'>
                             {layers.map((p, i) => {
-                                return <UCLayerUI layer={p} index={i} />
+                                return p.Content.when1({
+                                    image: () => <UCLayerUI layer={p} index={i} />,
+                                    aiGeneration: (x) => (
+                                        <div>
+                                            <UCLayerUI layer={p} index={i} />
+                                            <x.DraftId.UI Shell={ShellInputOnly} />
+                                            <DraftInlineImageOutputsUI draftID={x.DraftId.value.id} />
+                                        </div>
+                                    ),
+                                })
                             })}
                         </div>
                     </Frame>
