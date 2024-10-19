@@ -28,7 +28,8 @@ export class BuilderBool<Schemaᐸ_ᐳ extends SchemaAndAliasesᐸ_ᐳ> extends 
     /**
      * boolean with default to false, unless default specified otherwise
      */
-    bool(config: Field_bool_config = {}): Schemaᐸ_ᐳ['Bool'] {
+    bool(config: Field_bool_config | boolean = {}): Schemaᐸ_ᐳ['Bool'] {
+        if (typeof config === 'boolean') config = { default: config }
         const def = config.default ?? false
         return this.bool_({ default: def, ...config })
     }
