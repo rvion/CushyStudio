@@ -1,9 +1,7 @@
 import { Stage } from '@pixi/react'
 import { observer } from 'mobx-react-lite'
-import { BlurFilter } from 'pixi.js'
-import { type ForwardedRef, forwardRef, useMemo } from 'react'
+import { type ForwardedRef, forwardRef } from 'react'
 
-import { useUnifiedCanvas } from '../../states/UnifiedCanvasCtx'
 import { useUCV2 } from '../ucV2'
 import { DragableSpritePixi } from './DragableSpritePixi'
 import { GridPixi } from './GridPixi'
@@ -28,68 +26,63 @@ export const UnifiedCanvasPixi = observer(
         // const bunnyUrl = 'https://pixijs.io/pixi-react/img/bunny.png'
 
         return (
-            <div //
-            // style={{ border: '4px solid blue' }}
-            // tw='bd'
+            <Stage // stage root
+                ref={ref2}
+                width={width}
+                height={height}
+                options={{ background: 0x1099bb }}
             >
-                <Stage // stage root
-                    ref={ref2}
-                    width={width}
-                    height={height}
-                    options={{ background: 0x1099bb }}
+                <ViewportPixi // zoom/pan/pinch/scroll area
+                    height={10_000}
+                    width={10_000}
+                    minScale={0.1}
+                    maxScale={20}
                 >
-                    <ViewportPixi // zoom/pan/pinch/scroll area
+                    <GridPixi // background grid
                         height={10_000}
                         width={10_000}
-                        minScale={0.1}
-                        maxScale={1}
-                    >
-                        <GridPixi // background grid
-                            height={10_000}
-                            width={10_000}
-                        />
-                        <RectPixi // final frame of the image
-                            {...uc2.Frame.value}
-                        />
-                        {/* all layers */}
-                        {uc2.Layers.items.map((i) => {
-                            const x = i.fields.content
-                            if (!i.Visible.value) return null
-                            const placement = i.fields.placement
-                            return x.when1({
-                                image: (image) => (
-                                    <DragableSpritePixi //
-                                        key={i.id}
-                                        placement={placement}
-                                        image={image}
-                                    />
-                                ),
-                                aiGeneration: (x) => (
-                                    <DragableSpritePixi //
-                                        key={i.id}
-                                        placement={placement}
-                                        image={x.Image}
-                                    />
-                                ),
-                            })
-                        })}
-                        {/* all masks */}
-                        {uc2.Masks.items.map((i) => {
-                            const image = i.fields.image
-                            const placement = i.fields.placement
-                            if (!i.Visible.value) return null
-                            if (image == null) return null
-                            return (
+                    />
+                    <RectPixi // final frame of the image
+                        {...uc2.Frame.value}
+                    />
+                    {/* all layers */}
+                    {uc2.Layers.items.map((i) => {
+                        const x = i.fields.content
+                        if (!i.Visible.value) return null
+                        const placement = i.fields.placement
+                        return x.when1({
+                            image: (image) => (
                                 <DragableSpritePixi //
                                     key={i.id}
                                     placement={placement}
                                     image={image}
                                 />
-                            )
-                        })}
-                    </ViewportPixi>
-                </Stage>
-            </div>
+                            ),
+                            aiGeneration: (x) => (
+                                <DragableSpritePixi //
+                                    key={i.id}
+                                    placement={placement}
+                                    image={x.Image}
+                                />
+                            ),
+                        })
+                    })}
+                    {/* all masks */}
+                    {uc2.Masks.items.map((i) => {
+                        const image = i.fields.image
+                        const placement = i.fields.placement
+                        if (!i.Visible.value) return null
+                        if (image == null) return null
+                        return (
+                            <DragableSpritePixi //
+                                key={i.id}
+                                placement={placement}
+                                image={image}
+                            />
+                        )
+                    })}
+                </ViewportPixi>
+            </Stage>
         )
     }),
 )
