@@ -3,11 +3,8 @@ import type { Layer$ } from '../V2/ucV2'
 import { observer } from 'mobx-react-lite'
 
 import { ShellInputOnly } from '../../../csuite-cushy/shells/ShellInputOnly'
-import { ShellSimpleUI } from '../../../csuite-cushy/shells/ShellSimple'
 import { Button } from '../../../csuite/button/Button'
 import { Frame } from '../../../csuite/frame/Frame'
-import { CachedResizedImage } from '../../../csuite/image/CachedResizedImageUI'
-import { InputStringUI } from '../../../csuite/input-string/InputStringUI'
 
 export const UCLayerUI = observer(function UCLayerUI_(p: {
     //
@@ -17,8 +14,8 @@ export const UCLayerUI = observer(function UCLayerUI_(p: {
     const inputHeight = cushy.preferences.interface.value.inputHeight
     const isVisible: boolean = p.layer.Visible.value
     const image = p.layer.Content.when1({
-        aiGeneration: (t) => t.fields.image.value,
-        image: (t) => t.value,
+        aiGeneration: (t) => t.fields.image.value_or_zero,
+        image: (t) => t.value_or_zero,
     })
 
     // TEMP

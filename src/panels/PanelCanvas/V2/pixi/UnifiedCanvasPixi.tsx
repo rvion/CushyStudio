@@ -39,8 +39,10 @@ export const UnifiedCanvasPixi = observer(
                     maxScale={20}
                 >
                     <GridPixi // background grid
-                        height={10_000}
-                        width={10_000}
+                        y={uc2.Frame.Y.value}
+                        x={uc2.Frame.Y.value}
+                        height={uc2.Frame.Width.value}
+                        width={uc2.Frame.Width.value}
                     />
                     <RectPixi // final frame of the image
                         {...uc2.Frame.value}
@@ -59,11 +61,11 @@ export const UnifiedCanvasPixi = observer(
                                 />
                             ),
                             aiGeneration: (x) =>
-                                x.Image.value ? (
+                                x.Image.value_or_zero ? (
                                     <DragableSpritePixi //
                                         key={i.id}
                                         placement={placement}
-                                        mediaImage={x.Image.value}
+                                        mediaImage={x.Image.value_or_zero}
                                     />
                                 ) : null,
                         })
