@@ -279,6 +279,18 @@ export class BaseSchema<
         return this.config.producers ?? []
     }
 
+    addCheck(check: NonNullable<TYPES['$Config']['check']>): this {
+        const prevCheck = this.config.check
+        if (prevCheck == null) return this.withConfig({ check })
+        return this.withConfig({
+            check: (f) => {
+                const prevCheckResults = prevCheck!(f)
+                const nextCheckResults = check(f)
+                return [prevCheckResults, nextCheckResults]
+            },
+        })
+    }
+
     addReaction<T>(
         //
         expr: (self: TYPES['$Field']) => T,
