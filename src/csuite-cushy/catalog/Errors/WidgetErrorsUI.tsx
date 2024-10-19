@@ -16,14 +16,14 @@ export const WidgetErrorsUI = observer(function WidgerErrorsUI_(p: { field: Fiel
     return (
         <Frame
             // tw='text-red-700 -mt-1'
-            text='#9f3030'
+            text={{ hue: 0, contrast: 0.5, chroma: 0.3 }}
             tw='-mt-1'
         >
             {/* {field.pathExt} */}
             {field.ownErrors.map((e, i) => (
                 // 🦀 Added `h-input` to make it less ugly, but not sure if it's the right way
                 <RevealUI key={i} trigger={'click'} content={() => e.longerMessage ?? 'no extra infos'}>
-                    <div tw='h-input flex items-center gap-1'>
+                    <div tw='flex items-center gap-1'>
                         <Ikon.mdiAlert />
                         {e.message}
                     </div>
