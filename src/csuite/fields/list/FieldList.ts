@@ -509,6 +509,17 @@ export class Field_list<T extends BaseSchema> //
         return this.length
     }
 
+    // TODO: add that:
+    // pushSerials(...serials: T['$Serial'][]): number {
+    //     if (serials.length === 0) return this.length
+    //     this.runInValueTransaction(() => {
+    //         for (const s of serials) {
+    //             this.addItem({ serial: s })
+    //         }
+    //     })
+    //     return this.length
+    // }
+
     /**
      * Inserts new elements at the start of an array,
      * and returns the new length of the array.
