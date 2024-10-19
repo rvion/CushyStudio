@@ -53,24 +53,31 @@ export const UnifiedCanvasPixi = observer(
                         />
                         {/* all layers */}
                         {uc2.Layers.items.map((i) => {
-                            const x = i.fields.content.fields
+                            const x = i.fields.content
                             if (!i.Visible.value) return null
                             const placement = i.fields.placement
-                            // TODO: need a map funciton here;
-                            // if (x.aiGeneration) return <DraggableSpriteUI i={i} />
-                            if (x.image == null) return null
-                            return (
-                                <DragableSpritePixi //
-                                    key={i.id}
-                                    placement={placement}
-                                    image={x.image}
-                                />
-                            )
+                            return x.when1({
+                                image: (image) => (
+                                    <DragableSpritePixi //
+                                        key={i.id}
+                                        placement={placement}
+                                        image={image}
+                                    />
+                                ),
+                                aiGeneration: (x) => (
+                                    <DragableSpritePixi //
+                                        key={i.id}
+                                        placement={placement}
+                                        image={x.Image}
+                                    />
+                                ),
+                            })
                         })}
                         {/* all masks */}
                         {uc2.Masks.items.map((i) => {
                             const image = i.fields.image
                             const placement = i.fields.placement
+                            if (!i.Visible.value) return null
                             if (image == null) return null
                             return (
                                 <DragableSpritePixi //

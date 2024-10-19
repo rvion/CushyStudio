@@ -1,9 +1,11 @@
 import { observer } from 'mobx-react-lite'
 
 import { ShellInputOnly } from '../../../csuite-cushy/shells/ShellInputOnly'
+import { Button } from '../../../csuite/button/Button'
 import { mkPlacement } from '../../../csuite/fields/core-prefabs/ShapeSchema'
 import { Frame } from '../../../csuite/frame/Frame'
 import { BasicShelfUI } from '../../../csuite/shelf/ShelfUI'
+import { toastError } from '../../../csuite/utils/toasts'
 import { useImageDrop } from '../../../widgets/galleries/dnd'
 import { useUCV2 } from '../V2/ucV2'
 import { DraftInlineImageOutputsUI } from './DraftInlineImageOutputsUI'
@@ -40,7 +42,23 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
                                         <div>
                                             <UCLayerUI layer={p} index={i} />
                                             <x.DraftId.UI Shell={ShellInputOnly} />
-                                            <DraftInlineImageOutputsUI draftID={x.DraftId.value.id} />
+                                            <DraftInlineImageOutputsUI
+                                                onCLick={(img) => (x.Image.value = img)}
+                                                draftID={x.DraftId.value.id}
+                                            />
+                                            <div tw='flex gap-1'>
+                                                <Button icon='mdiCursorMove' />
+                                                <Button
+                                                    icon='mdiPlay'
+                                                    onClick={() => {
+                                                        const draft = cushy.db.draft.get(x.DraftId.value.id)
+                                                        if (!draft) return toastError('Draft not found')
+                                                        draft.start({
+                                                            /* context */
+                                                        })
+                                                    }}
+                                                />
+                                            </div>
                                         </div>
                                     ),
                                 })

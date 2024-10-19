@@ -1,6 +1,13 @@
+import type { MediaImageL } from '../../../models/MediaImage'
+
 import { observer } from 'mobx-react-lite'
 
-export const DraftInlineImageOutputsUI = observer(function DraftInlineImageOutputsUI_(p: { draftID: DraftID }) {
+import { ImageUI } from '../../../widgets/galleries/ImageUI'
+
+export const DraftInlineImageOutputsUI = observer(function DraftInlineImageOutputsUI_(p: {
+    onCLick?: (img: MediaImageL) => void
+    draftID: DraftID
+}) {
     const draft = cushy.db.draft.get(p.draftID)
     if (!draft) return `❌ draft not found: ${p.draftID}`
     const images = draft.images
@@ -8,9 +15,12 @@ export const DraftInlineImageOutputsUI = observer(function DraftInlineImageOutpu
         <div tw='flex gap-1 overflow-auto'>
             {images.map((image) => {
                 return (
-                    <img //
-                        style={{ width: '64px' }}
-                        src={image.url}
+                    <ImageUI //
+                        onClick={() => p.onCLick?.(image)}
+                        style={{ flexShrink: '0' }}
+                        key={image.id}
+                        img={image}
+                        size={64}
                     />
                 )
             })}

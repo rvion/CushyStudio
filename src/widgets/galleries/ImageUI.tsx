@@ -71,6 +71,7 @@ export const ImageUI = observer(function ImageUI_({
         <RevealUI //
             trigger='rightClick'
             relativeTo='mouse'
+            tw='shrink-0'
             content={() => <ImageDropdownMenuUI img={image} />}
             children={IMG}
         />

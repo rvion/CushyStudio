@@ -14,9 +14,8 @@ import { observable, reaction } from 'mobx'
 import { Status } from '../back/Status'
 import { cushyFactory } from '../controls/Builder'
 import { getGlobalSeeder } from '../csuite/fields/seed/Seeder'
-import { lazy_viaProxy } from '../csuite/lazy/lazy_viaProxy'
 import { SQLITE_false, SQLITE_true } from '../csuite/types/SQLITE_boolean'
-import { toastError } from '../csuite/utils/toasts'
+import { toastError, toastSuccess } from '../csuite/utils/toasts'
 import { BaseInst } from '../db/BaseInst'
 import { LiveRef } from '../db/LiveRef'
 import { LiveTable } from '../db/LiveTable'
@@ -46,8 +45,11 @@ export class DraftL extends BaseInst<TABLES['draft']> {
     //       > steps 🟢
     //          > prompts 🟢
     get images(): MediaImageL[] {
-        const stepIds = this.db.step.selectRaw((q) => q.select('id').where('draftID', '=', this.id)).map((t) => t.id)
-        return this.db.media_image.select((q) => q.where('stepID', 'in', stepIds))
+        const stepIds = this.db.step //
+            .selectRaw((q) => q.select('id').where('draftID', '=', this.id))
+            .map((t) => t.id)
+        return this.db.media_image //
+            .select((q) => q.where('stepID', 'in', stepIds).orderBy('updatedAt desc'), ['media_image'])
     }
 
     provenance: Provenance = {

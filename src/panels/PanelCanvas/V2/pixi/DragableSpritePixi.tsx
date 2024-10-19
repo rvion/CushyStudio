@@ -69,8 +69,8 @@ export const DragableSpritePixi = observer(function DraggableSpriteUI_(p: Dragga
         <>
             <Sprite //
                 interactive
-                width={100}
-                height={100}
+                width={p.placement.Width.value || 512}
+                height={p.placement.Height.value || 512}
                 key={i.value.id}
                 anchor={0.5}
                 // onDragStart={onDragStart}
