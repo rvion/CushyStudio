@@ -33,7 +33,7 @@ export type Field_group_config<T extends Field_group_types<SchemaDict>> = FieldC
 
         /** @default @false */
         presetButtons?: boolean
-        default?: T['$Value']
+        default?: Partial<T['$Value']>
 
         // 🔶 TODO 1: remove summary from here and move it to the base field config directly
         // 🟢 TODO 2: stop passing values to that function, only pass the field directly
@@ -244,7 +244,9 @@ export class Field_group<X extends Field_group_types<SchemaDict> = Field_group_t
                     this.fields[fName] = child
                     const isNew = !(fName in next.values_)
                     if (isNew) {
-                        const hasDefault = this.config.default != null && fName in this.config.default
+                        const hasDefault =
+                            this.config.default != null && //
+                            fName in this.config.default // <-- handle partial default
                         if (hasDefault) {
                             child.value = this.config.default![fName]
                         }
