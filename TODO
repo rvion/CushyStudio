@@ -17,6 +17,11 @@ SHORT TERM TODO:
     ☐ undoing choices via the undo button doesn't work properly. choices no longer there are still displayed
         ☐  absolutely need to write some failing test first; clearly some reactivity issue
 
+    ☐ improve the civitai custom frontend:
+        ☐ cache request
+        ☐ add history
+        ☐ download button has weird double spinner / double text while downloading
+
     ☐ prompts boxs are synced between two drafts this should not happen (have not checked other ui, vinsi pony app has this problem)
         ☐ find simple repro
 
