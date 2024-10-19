@@ -8,19 +8,29 @@ import { object } from 'zod'
 // ------------------------------------------------------------------------------
 // final props
 export interface ViewportProps {
+    // size
     width: number
     height: number
+
+    //constraints
+    minScale?: number
+    maxScale?: number
+    maxHeight?: number
+    maxWidth?: number
+    minHeight?: number
+    minWidth?: number
+    //
     children?: React.ReactNode
 }
 // 2. make a HOC warpper that handle retrieving the app on it's own
-export const PixiViewport = forwardRef((props: ViewportProps, ref: Ref<Viewport>) => (
+export const ViewportPixi = forwardRef((props: ViewportProps, ref: Ref<Viewport>) => (
     <PixiViewportComponent //
         ref={ref}
         app={useApp()} // <--- reason why we need that wrapper
         {...props}
     />
 ))
-PixiViewport.displayName = 'PixiViewport'
+ViewportPixi.displayName = 'ViewportPixi'
 
 // ------------------------------------------------------------------------------
 // 1. create a base component that simply wrap everything
@@ -46,8 +56,12 @@ const PixiViewportComponent = PixiComponent<PixiComponentViewportProps, Viewport
             .wheel()
             // .decelerate()
             .clampZoom({
-                minScale: 0.25,
-                maxScale: 4,
+                minScale: props.minScale,
+                maxScale: props.maxScale,
+                maxHeight: props.maxHeight,
+                maxWidth: props.maxWidth,
+                minHeight: props.minHeight,
+                minWidth: props.minWidth,
             })
 
         return viewport

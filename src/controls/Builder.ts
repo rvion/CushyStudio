@@ -1,9 +1,9 @@
 import type { Field_board_config } from '../csuite/fields/board/Field_board'
-import type { SimpleShape$ } from '../csuite/fields/board/ShapeSchema'
 import type { Field_bool } from '../csuite/fields/bool/FieldBool'
 import type { Field_button_config } from '../csuite/fields/button/FieldButton'
 import type { Field_choices } from '../csuite/fields/choices/FieldChoices'
 import type { Field_color_config } from '../csuite/fields/color/FieldColor'
+import type { SimpleShape$ } from '../csuite/fields/core-prefabs/ShapeSchema'
 import type { Field_custom_config } from '../csuite/fields/custom/FieldCustom'
 import type { Field_date } from '../csuite/fields/date/FieldDate'
 import type { Field_datePlain } from '../csuite/fields/date_plain/FieldDatePlain'
@@ -37,10 +37,10 @@ import { createElement } from 'react'
 
 import { simpleBuilder } from '../csuite'
 import { Field_board } from '../csuite/fields/board/Field_board'
-import { simpleShape$ } from '../csuite/fields/board/ShapeSchema'
 import { WidgetListExtUI__Timeline } from '../csuite/fields/board/WidgetListExtUI'
 import { Field_button } from '../csuite/fields/button/FieldButton'
 import { Field_color } from '../csuite/fields/color/FieldColor'
+import { simpleShape$ } from '../csuite/fields/core-prefabs/ShapeSchema'
 import { Field_custom } from '../csuite/fields/custom/FieldCustom'
 import { Field_image } from '../csuite/fields/image/FieldImage'
 import { Field_list } from '../csuite/fields/list/FieldList'
@@ -321,7 +321,7 @@ export class CushySchemaBuilder implements IBuilder {
     }
 
     cube(): SimpleShape$ {
-        return simpleShape$(simpleBuilder)
+        return simpleShape$()
     }
 
     // #region ListExt

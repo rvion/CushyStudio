@@ -1,6 +1,6 @@
 import type { Field } from '../../model/Field'
 
-import { mkPlacement, type SimpleShape } from './ShapeSchema'
+import { mkPlacement, type SimpleShape } from '../core-prefabs/ShapeSchema'
 
 export type BoardSize = {
     width: number

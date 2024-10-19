@@ -4,7 +4,7 @@ import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import React, { useMemo } from 'react'
 
-import { mkPlacement } from '../../csuite/fields/board/ShapeSchema'
+import { mkPlacement } from '../../csuite/fields/core-prefabs/ShapeSchema'
 import { RegionUI } from '../../csuite/regions/RegionUI'
 import { useImageDrop } from '../../widgets/galleries/dnd'
 import { UnifiedCanvasMenuUI } from './menu/UnifiedCanvasMenuUI'
@@ -12,8 +12,8 @@ import { PanelCanvasHeaderUI } from './PanelCanvasHeaderUI'
 import { UnifiedCanvas } from './states/UnifiedCanvas'
 import { UnifiedCanvasCtx } from './states/UnifiedCanvasCtx'
 import { useSize } from './utils/useSize'
-import { PixiApp1234 } from './V2/pixi/Pixi1234'
-import { useUCV2 } from './V2/stateV2'
+import { UnifiedCanvasPixi } from './V2/pixi/UnifiedCanvasPixi'
+import { useUCV2 } from './V2/ucV2'
 
 export type PanelCanvasProps = {
     startingImgID?: MediaImageID
@@ -113,13 +113,13 @@ export const PanelCanvasUI = observer(function Panel_Canvas_(p: PanelCanvasProps
                             </div>
                         )
                     })}
-                    <PixiApp1234 />
+                    <UnifiedCanvasPixi />
                     {/* <div //
                         id={canvas.uid}
                         ref={canvas.rootRef}
                         tw='flex-1'
                     ></div> */}
-                    <div tw='absolute top-0 z-[999999]'>
+                    <div tw='absolute top-0 z-[999999] opacity-50'>
                         <uc2.UI />
                     </div>
                     {/* <CanvasToolbarUI /> */}

@@ -1,4 +1,4 @@
-import type { SimpleBuilder } from '../../simple/SimpleBuilder'
+import { simpleBuilder } from '../../SimpleFactory'
 
 export type SimpleShape = {
     // pos
@@ -65,32 +65,38 @@ export type SimpleShape$ = S.SGroup<{
     isResizing: S.SBool
 }>
 
-export function simpleShape$(b: SimpleBuilder): SimpleShape$ {
-    return b.fields({
-        // pos
-        x: b.number(),
-        y: b.number(),
-        z: b.number(),
+export function simpleShape$(def?: Partial<SimpleShape>): SimpleShape$ {
+    const b = simpleBuilder
+    return b.fields(
+        {
+            // pos
+            x: b.number(),
+            y: b.number(),
+            z: b.number(),
 
-        // size
-        width: b.number(),
-        height: b.number(),
-        depth: b.number(),
+            // size
+            width: b.number(),
+            height: b.number(),
+            depth: b.number(),
 
-        // scale
-        scaleX: b.number().optional(),
-        scaleY: b.number().optional(),
-        scaleZ: b.number().optional(),
+            // scale
+            scaleX: b.number().optional(),
+            scaleY: b.number().optional(),
+            scaleZ: b.number().optional(),
 
-        // color
-        fill: b.colorV2(),
+            // color
+            fill: b.colorV2(),
 
-        // rotation
-        rotation: b.number().optional(),
+            // rotation
+            rotation: b.number().optional(),
 
-        // interraction
-        isSelected: b.boolean(),
-        isDragging: b.boolean(),
-        isResizing: b.boolean(),
-    })
+            // interraction
+            isSelected: b.boolean(),
+            isDragging: b.boolean(),
+            isResizing: b.boolean(),
+        },
+        {
+            default: def,
+        },
+    )
 }

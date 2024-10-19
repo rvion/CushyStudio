@@ -1,4 +1,4 @@
-import type { SimpleShape$ } from '../../../../csuite/fields/board/ShapeSchema'
+import type { SimpleShape$ } from '../../../../csuite/fields/core-prefabs/ShapeSchema'
 import type { Field_image } from '../../../../csuite/fields/image/FieldImage'
 import type { UnifiedImage } from '../../states/UnifiedImage'
 import type { DisplayObject, FederatedPointerEvent } from 'pixi.js'
@@ -62,7 +62,7 @@ type DraggableSpriteProps = {
     image: Field_image
 }
 
-export const DraggableSpriteUI = observer(function DraggableSpriteUI_(p: DraggableSpriteProps) {
+export const DragableSpritePixi = observer(function DraggableSpriteUI_(p: DraggableSpriteProps) {
     const i = p.image
     const xxx = useMemo(() => new XXX(p.image, p.placement), [i])
     return (

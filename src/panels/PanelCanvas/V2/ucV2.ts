@@ -2,7 +2,8 @@ import type { CushySchemaBuilder } from '../../../controls/Builder'
 import type { FieldId } from '../../../csuite/model/FieldId'
 
 import { type Builder, Channel } from '../../../csuite'
-import { simpleShape$, type SimpleShape$ } from '../../../csuite/fields/board/ShapeSchema'
+import { simpleRect$, type SimpleRect$ } from '../../../csuite/fields/core-prefabs/RectSchema'
+import { simpleShape$, type SimpleShape$ } from '../../../csuite/fields/core-prefabs/ShapeSchema'
 import { simpleBuilder } from '../../../csuite/SimpleFactory'
 import { usePanel } from '../../../router/usePanel'
 
@@ -18,6 +19,7 @@ const masksChannel: Channel<Masks$['$Field']> = new Channel()
  */
 export type UC2$ = X.XGroup<{
     fileName: X.XString
+    frame: SimpleRect$
     masks: X.XList<Mask$>
     layers: X.XList<Layer$>
 }>
@@ -25,12 +27,10 @@ export type UC2$ = X.XGroup<{
 export const uc2$ = (b: CushySchemaBuilder): UC2$ =>
     b.fields({
         fileName: b.string(),
+        frame: simpleRect$({ width: 1024, height: 1024 }),
         masks: mask$(b).list().publishSelf(masksChannel),
         layers: layer$(b).list(),
     })
-
-// #region Placement
-const placement: SimpleShape$ = simpleShape$(simpleBuilder)
 
 // #region Masks
 // gayscale/opacity
@@ -40,7 +40,7 @@ type Mask$ = X.XGroup<{
 }>
 const mask$ = (b: CushySchemaBuilder): Mask$ =>
     b.fields({
-        placement: placement,
+        placement: simpleShape$(),
         image: b.image(),
     })
 
@@ -66,7 +66,7 @@ type Layer$ = X.XGroup<{
 }>
 const layer$ = (b: CushySchemaBuilder): Layer$ =>
     b.fields({
-        placement: placement,
+        placement: simpleShape$(),
         content: b.choice({
             image: b.image(/* MediaImageL */),
             aiGeneration: b.fields({

@@ -1,6 +1,6 @@
 import type { BaseSchema } from '../../model/BaseSchema'
+import type { SimpleShape } from '../core-prefabs/ShapeSchema'
 import type { Field_board } from './Field_board'
-import type { SimpleShape } from './ShapeSchema'
 import type { Shape } from 'konva/lib/Shape'
 
 import { observer, useLocalObservable } from 'mobx-react-lite'
