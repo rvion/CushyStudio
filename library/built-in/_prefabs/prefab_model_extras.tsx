@@ -13,6 +13,11 @@ export type $schemaModelExtras = X.XChoices<{
     clipSkip: X.XNumber
     freeU: X.XEmpty
     freeUv2: X.XEmpty
+    vpred: X.XGroup<{ zsnr: X.XBool }>
+    sampling: X.XGroup<{
+        sampling: X.XEnum<Enum_ModelSamplingDiscrete_sampling>
+        zsnr: X.XBool
+    }>
     pag: UI_model_pag
     sag: UI_model_sag
     KohyaDeepShrink: UI_model_kohyaDeepShrink
@@ -27,32 +32,41 @@ export const schemaModelExtras = (
     } = {},
 ): $schemaModelExtras => {
     const b = getCurrentForm()
-    return b.choices(
-        {
-            checkpointConfig: b.enum.Enum_CheckpointLoader_config_name({ label: 'Config' }),
-            rescaleCFG: b.float({ min: 0, max: 2, softMax: 1, default: 0.75 }),
-            vae: b.enum.Enum_VAELoader_vae_name({ default: p.defaultVAE }),
-            clipSkip: b.int({ label: 'Clip Skip', default: 1, min: 1, max: 5 }),
-            freeU: b.empty({ label: 'freeU ' }),
-            freeUv2: b.empty({ label: 'freeU (v2)' }),
-            pag: ui_model_pag(b),
-            sag: ui_model_sag(b),
-            KohyaDeepShrink: ui_model_kohyaDeepShrink(b),
-            civitai_ckpt_air: b
-                .string({
-                    tooltip: 'Civitai checkpoint Air, as found on the civitai Website. It should look like this: 43331@176425', // prettier-ignore
-                    label: 'Civitai Ref',
-                    placeHolder: 'e.g. 43331@176425',
-                })
-                .addRequirements([{ type: 'customNodesByNameInCushy', nodeName: 'CivitAI$_Checkpoint$_Loader' }]),
-        },
-        {
-            border: false,
-            default: p.vaeActiveByDefault ? 'vae' : {},
-            // label: false,
-            // appearance: 'tab',
-        },
-    )
+    return b
+        .choices(
+            {
+                checkpointConfig: b.enum.Enum_CheckpointLoader_config_name({ label: 'Config' }),
+                rescaleCFG: b.float({ min: 0, max: 2, softMax: 1, default: 0.75 }),
+                vae: b.enum.Enum_VAELoader_vae_name({ default: p.defaultVAE }),
+                clipSkip: b.int({ label: 'Clip Skip', default: 1, min: 1, max: 5 }),
+                freeU: b.empty({ label: 'freeU ' }),
+                freeUv2: b.empty({ label: 'freeU (v2)' }),
+                vpred: b.fields({ zsnr: b.bool() }),
+                sampling: b.auto.ModelSamplingDiscrete(),
+                pag: ui_model_pag(b),
+                sag: ui_model_sag(b),
+                KohyaDeepShrink: ui_model_kohyaDeepShrink(b),
+                civitai_ckpt_air: b
+                    .string({
+                        tooltip: 'Civitai checkpoint Air, as found on the civitai Website. It should look like this: 43331@176425', // prettier-ignore
+                        label: 'Civitai Ref',
+                        placeHolder: 'e.g. 43331@176425',
+                    })
+                    .addRequirements([{ type: 'customNodesByNameInCushy', nodeName: 'CivitAI$_Checkpoint$_Loader' }]),
+            },
+            {
+                border: false,
+                default: p.vaeActiveByDefault ? 'vae' : {},
+                // label: false,
+                // appearance: 'tab',
+            },
+        )
+        .addCheck((f) => {
+            console.log(`[🦇] check is properly executing`, f.isBranchEnabled('vpred'), f.isBranchEnabled('sampling'))
+            if (f.isBranchEnabled('vpred') && f.isBranchEnabled('sampling')) {
+                return 'You can only use one of Vpred or Sampling, not both; vpred is just a shortcut for sampling with vpred mode enabled.'
+            }
+        })
 }
 
 // ------------
@@ -65,6 +79,20 @@ export function evalModelExtras_part1(
     { vae, clip, ckpt }: XX1,
 ): XX2 {
     const graph = getCurrentRun().nodes
+
+    if (extra.sampling) {
+        ckpt = graph.ModelSamplingDiscrete({
+            model: ckpt,
+            zsnr: extra.sampling.zsnr,
+            sampling: extra.sampling.sampling,
+        })
+    } else if (extra.vpred) {
+        ckpt = graph.ModelSamplingDiscrete({
+            model: ckpt,
+            zsnr: extra.vpred.zsnr,
+            sampling: 'v_prediction',
+        })
+    }
 
     if (extra.vae) vae = graph.VAELoader({ vae_name: extra.vae })
     if (vae === undefined) {
