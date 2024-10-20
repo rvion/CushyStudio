@@ -208,7 +208,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
         return super.isCollapsible
     }
 
-    when1<RESULT>(cases: {
+    match<RESULT>(cases: {
         [K in keyof T]?: CovariantFn<[field: T[K]['$Field']], RESULT>
     }): Maybe<RESULT> {
         for (const branch of this.activeBranchesList) {
@@ -218,7 +218,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
         }
     }
 
-    when<RESULT>(cases: {
+    matchAll<RESULT>(cases: {
         [K in keyof T]?: CovariantFn<[field: T[K]['$Field']], RESULT>
     }): RESULT[] {
         const OUT: RESULT[] = []

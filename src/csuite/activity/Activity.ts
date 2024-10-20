@@ -37,6 +37,7 @@ export type Activity = {
 
     /** will be executed when activity end */
     onStop?: () => void
+
     /**
      * everytime an event bubbles upward to the activity root, it will
      * pass through this function
@@ -54,7 +55,9 @@ export type Activity = {
     onMouseDown?: (event: MouseEvent, routine: Routine) => void
     onMouseEnter?: (event: MouseEvent, routine: Routine) => void
     onMouseLeave?: (event: MouseEvent, routine: Routine) => void
+
     onKeyUp?: (event: KeyboardEvent, routine: Routine) => void
+    onKeyDown?: (event: KeyboardEvent, routine: Routine) => void
 
     /**
      * @since 2024-05-21

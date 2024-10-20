@@ -23,7 +23,22 @@ export type KeyEventInfo = {
     inInput: boolean
 }
 
+type KeyboardSpy = (inputToken: InputToken, ev: KeyboardEvent<HTMLElement>) => void
+type UnregisterSpy = () => void
+
 export class CommandManager {
+    // ----------------------------------------------------------------
+    spies: KeyboardSpy[] = []
+    useSpy = (fn: KeyboardSpy): UnregisterSpy => {
+        this.spies.push(fn)
+        return () => {
+            const idx = this.spies.indexOf(fn)
+            if (idx === -1) throw new Error(`spy not found`)
+            this.spies.splice(idx, 1)
+        }
+    }
+    // ----------------------------------------------------------------
+
     constructor(
         public conf: {
             log?: boolean
@@ -125,7 +140,7 @@ export class CommandManager {
         return inInput
     }
 
-    private inputToken = (ev: KeyboardEvent<HTMLElement>): InputToken => {
+    private getInputTokenFromEvent = (ev: KeyboardEvent<HTMLElement>): InputToken => {
         // console.log(`[🤠] input > ev.key`, ev.key)
         const keyLower = ev.key.toLowerCase()
         const inputAccum: string[] = []
@@ -145,7 +160,8 @@ export class CommandManager {
     }
 
     processKeyDownEvent = (ev: KeyboardEvent<HTMLElement>): Trigger => {
-        const inputToken = this.inputToken(ev)
+        const inputToken = this.getInputTokenFromEvent(ev)
+        for (const spy of this.spies) spy(inputToken, ev)
         const inInput = this.evInInput(ev)
         return this.processKeyDown({ inputToken, inInput }, ev)
     }

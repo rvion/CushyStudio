@@ -1,6 +1,7 @@
 import type { SimpleShape$ } from '../../../../csuite/fields/core-prefabs/ShapeSchema'
 import type { MediaImageL } from '../../../../models/MediaImage'
 import type { UnifiedCanvas } from '../../states/UnifiedCanvas'
+import type { Layer$ } from '../ucV2'
 
 import { extend, useAsset } from '@pixi/react'
 // import { Sprite, Text } from '@pixi/react/lib/components'
@@ -104,6 +105,8 @@ class XXX {
 type DraggableSpriteProps = {
     placement: SimpleShape$['$Field']
     mediaImage: MediaImageL
+    layer: Layer$['$Field']
+    onClick?: () => void
 }
 
 extend({ Sprite })
@@ -125,6 +128,7 @@ export const PixiMediaImage = observer(function DraggableSpriteUI_(p: DraggableS
                 width={p.placement.Width.value || 512}
                 height={p.placement.Height.value || 512}
                 key={mediaImage.id}
+                onClick={p.onClick}
                 // anchor={0.5}
                 onPointerDown={xxx.onDragStart}
                 onPointerUp={xxx.onDragEnd}

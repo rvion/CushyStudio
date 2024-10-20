@@ -12,7 +12,8 @@ import { nanoid } from 'nanoid'
  * Routine is that class.
  * */
 export class Routine {
-    uid = nanoid()
+    uid: string = nanoid()
+
     constructor(
         //
         public manager: ActivityManager,
@@ -21,7 +22,7 @@ export class Routine {
         // makeAutoObservable(this)
     }
 
-    stop() {
+    stop(): void {
         this.manager.stop(this)
     }
 }

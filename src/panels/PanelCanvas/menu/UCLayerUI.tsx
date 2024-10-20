@@ -10,10 +10,12 @@ export const UCLayerUI = observer(function UCLayerUI_(p: {
     //
     layer: Layer$['$Field']
     index: number
+    active?: boolean
+    children?: React.ReactNode
 }) {
     const inputHeight = cushy.preferences.interface.value.inputHeight
     const isVisible: boolean = p.layer.Visible.value
-    const image = p.layer.Content.when1({
+    const image = p.layer.Content.match({
         aiGeneration: (t) => t.fields.image.value_or_zero,
         image: (t) => t.value_or_zero,
     })
@@ -28,7 +30,8 @@ export const UCLayerUI = observer(function UCLayerUI_(p: {
         <Frame
             tw={['flex gap-2', 'p-1', 'rounded-md']}
             base={{ contrast: 0.1, chroma: 0.077 }}
-            style={{ height: frameSize_ }}
+            // style={{ height: frameSize_ }}
+            active={p.active}
             hover
         >
             <Frame

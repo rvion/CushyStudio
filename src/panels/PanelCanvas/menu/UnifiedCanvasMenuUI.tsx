@@ -7,12 +7,14 @@ import { Frame } from '../../../csuite/frame/Frame'
 import { BasicShelfUI } from '../../../csuite/shelf/ShelfUI'
 import { toastError } from '../../../csuite/utils/toasts'
 import { useImageDrop } from '../../../widgets/galleries/dnd'
+import { useUnifiedCanvas } from '../states/UnifiedCanvasCtx'
 import { useUCV2 } from '../V2/ucV2'
 import { DraftInlineImageOutputsUI } from './DraftInlineImageOutputsUI'
 import { UCLayerUI } from './UCLayerUI'
 import { UCMaskMenuUI } from './UCMaskMenuUI'
 
 export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {}) {
+    const uc1 = useUnifiedCanvas()
     const ucv2 = useUCV2()
     const layers = ucv2.Layers
     const masks = ucv2.Masks.items
@@ -36,11 +38,17 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
                     <Frame tw='rounded-md p-2' base={{ contrast: -0.1 }}>
                         <div /* SortableList */ className='list' tw='flex flex-col gap-2'>
                             {layers.items.map((layer, i) => {
-                                return layer.Content.when1({
-                                    image: () => <UCLayerUI layer={layer} index={i} />,
+                                return layer.Content.match({
+                                    image: () => (
+                                        <UCLayerUI //
+                                            active={layer === uc1.activeLayer}
+                                            layer={layer}
+                                            index={i}
+                                        />
+                                    ),
                                     aiGeneration: (x) => (
                                         <div>
-                                            <UCLayerUI layer={layer} index={i} />
+                                            <UCLayerUI active={layer === uc1.activeLayer} layer={layer} index={i} />
                                             <x.DraftId.UI Shell={ShellInputOnly} />
                                             <DraftInlineImageOutputsUI
                                                 onCLick={(img) => (x.Image.value = img)}
@@ -63,7 +71,7 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
                                                     onClick={() => {
                                                         const newLayer = layers.duplicateItemAtIndex(i)
                                                         if (newLayer == null) return toastError('Failed to duplicate layer')
-                                                        newLayer.Content.when({
+                                                        newLayer.Content.matchAll({
                                                             aiGeneration: (x) => x.Image.setActive(false),
                                                         })
                                                         // should create a copy of that layer, below, without any image selected

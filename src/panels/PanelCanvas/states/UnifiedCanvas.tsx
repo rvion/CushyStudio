@@ -4,7 +4,7 @@ import type { STATE } from '../../../state/state'
 import type { UnifiedCanvasBrushMode, UnifiedCanvasTool } from '../tools/UnifiedCanvasTool'
 import type { UnifiedCanvasViewInfos } from '../types/RectSimple'
 import type { ICanvasTool } from '../utils/_ICanvasTool'
-import type { UC2$ } from '../V2/ucV2'
+import type { Layer$, UC2$ } from '../V2/ucV2'
 import type { UnifiedStep } from './UnifiedStep'
 import type { Viewport } from 'pixi-viewport'
 import type { Application, Renderer } from 'pixi.js'
@@ -27,6 +27,10 @@ import { UnifiedMask } from './UnifiedMask'
 import { UnifiedSelection } from './UnifiedSelection'
 
 export class UnifiedCanvas {
+    activeLayer: Layer$['$Field'] | null = null
+    selectLayer(layer: Layer$['$Field']): void {
+        this.activeLayer = layer
+    }
     app: Application<Renderer> | null = null
     updateViewportInfos = (vp: Viewport): void => {
         this.viewportInfos.x = vp.x

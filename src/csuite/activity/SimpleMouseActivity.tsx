@@ -1,6 +1,19 @@
 import type { Activity } from './Activity'
 import type { Routine } from './Routine'
-import type { MouseEvent } from 'react'
+import type { KeyboardEvent, MouseEvent } from 'react'
+
+export type SimpleMouseActivityProps = {
+    //
+    onStart?: (info: SimpleMouseActivity) => void
+    onMove?: (info: SimpleMouseActivity, routine: Routine) => void
+    onCommit?: (info: SimpleMouseActivity, routine: Routine) => void
+    onCancel?: (info: SimpleMouseActivity, routine: Routine) => void
+    /** will be called after either onCommit or onCancel */
+    onStop?: () => void
+
+    // onKeyUp?: (key: string, info: SimpleMouseActivity) => void
+    onKeyDown?: (key: string, info: SimpleMouseActivity, routine: Routine) => void
+}
 
 /**
  * TODO:
@@ -9,17 +22,7 @@ import type { MouseEvent } from 'react'
  * this class handle the boring stuff
  */
 export class SimpleMouseActivity implements Activity {
-    constructor(
-        public p: {
-            //
-            onStart?: (info: SimpleMouseActivity) => void
-            onMove?: (info: SimpleMouseActivity) => void
-            onCommit?: (info: SimpleMouseActivity) => void
-            onCancel?: (info: SimpleMouseActivity) => void
-            /** will be called after either onCommit or onCancel */
-            onStop?: () => void
-        },
-    ) {}
+    constructor(public p: SimpleMouseActivityProps) {}
 
     /** WILL BE Re-INITALIZED in onStart() */
 
@@ -29,10 +32,11 @@ export class SimpleMouseActivity implements Activity {
     lastX: number = 0
     lastY: number = 0
 
-    get x() {
+    get x(): number {
         return this.lastX
     }
-    get y() {
+
+    get y(): number {
         return this.lastY
     }
 
@@ -41,7 +45,17 @@ export class SimpleMouseActivity implements Activity {
     euclidianDistanceFromStart = 0
     shiftKey = false
 
-    onStart() {
+    // onKeyUp(ev: KeyboardEvent): void {
+    //     // console.log(`[🐭🐭🐭] key up`)
+    //     this.p.onKeyUp?.(ev.key, this)
+    // }
+    onKeyDown(ev: KeyboardEvent, routine: Routine): void {
+        console.log(`[💩] SimpleMouseActivity is receiving an activity`)
+        // console.log(`[🐭🐭🐭] key up`)
+        this.p.onKeyDown?.(ev.key, this, routine)
+    }
+
+    onStart(): void {
         // console.log(`[🐭🐭🐭] start`)
         this.startX = cushy.region.mouseX
         this.startY = cushy.region.mouseY
@@ -59,22 +73,22 @@ export class SimpleMouseActivity implements Activity {
         this.shiftKey = event.shiftKey
     }
 
-    onMouseMove(event: MouseEvent, routine: Routine) {
+    onMouseMove(event: MouseEvent, routine: Routine): void {
         this._updateInfo(event)
-        this.p.onMove?.(this)
+        this.p.onMove?.(this, routine)
     }
 
-    onMouseUp(event: MouseEvent, routine: Routine) {
+    onMouseUp(event: MouseEvent, routine: Routine): void {
         const btn = event.button
 
         // const info = this._getInfo(event)
         // case 1. right click / middle click => CANCEL
         if (btn === 1 || btn === 2) {
-            this.p.onCancel?.(this)
+            this.p.onCancel?.(this, routine)
         }
         // case 2. left click => commit
         else {
-            this.p.onCommit?.(this)
+            this.p.onCommit?.(this, routine)
         }
         this.p.onStop?.()
         routine.stop()
