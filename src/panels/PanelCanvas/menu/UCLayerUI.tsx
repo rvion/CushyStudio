@@ -24,7 +24,7 @@ export const UCLayerUI = observer(function UCLayerUI_(p: {
     const frameSize_ = `${inputHeight * SIZE + 0.5}rem`
     const imageSize_ = `${inputHeight * SIZE}rem`
 
-    const ui = (
+    return (
         <Frame
             tw={['flex gap-2', 'p-1', 'rounded-md']}
             base={{ contrast: 0.1, chroma: 0.077 }}
@@ -74,5 +74,4 @@ export const UCLayerUI = observer(function UCLayerUI_(p: {
             </div>
         </Frame>
     )
-    return ui
 })

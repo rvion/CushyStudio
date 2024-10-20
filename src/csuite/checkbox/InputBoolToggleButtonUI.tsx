@@ -16,7 +16,7 @@ export const ToggleButtonUI = observer(function ToggleButtonUI_(
         showToggleButtonBox?: boolean
         /** emulate beeing hovered, passed down to frame as-is */
         hovered?: (reallyHovered: boolean) => boolean | undefined
-        // iconSize?: string
+        iconSize?: string
     },
 ) {
     const isActive = p.value ?? false
@@ -65,7 +65,7 @@ export const ToggleButtonUI = observer(function ToggleButtonUI_(
                 if (p.preventDefault) ev.preventDefault()
             }}
             {...p.box}
-            // iconSize={p.iconSize ?? '2.5em'}
+            iconSize={p.iconSize}
             // hoverable={!p.disabled}
             // boxShadow={
             //     !Boolean(border) //

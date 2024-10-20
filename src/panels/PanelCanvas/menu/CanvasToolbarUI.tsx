@@ -53,7 +53,7 @@ export const CanvasToolCategoriesUI = observer(function CanvasToolCategoriesUI_(
         <div>
             {categories.map((category) => {
                 return (
-                    <div tw='flex'>
+                    <div tw='flex' key={category}>
                         <div>{category}</div>
                         <div>
                             <CanvasToolsUI category={category} />{' '}

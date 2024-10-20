@@ -11,7 +11,7 @@ import { moveBehaviour_dragView } from './moveBehaviour_dragView'
 import { moveBehaviour_updatePointerInfos } from './moveBehaviour_updatePointerInfos'
 import { scrollBehavior_zoomCanvas } from './scrollBehavior_zoomCanvas'
 
-export const setupStage = (canvas: UnifiedCanvas) => {
+export const setupStage = (canvas: UnifiedCanvas): void => {
     const stage: Stage = canvas.stage
     let pressedButton: MouseBtn = MouseBtn.NONE
 

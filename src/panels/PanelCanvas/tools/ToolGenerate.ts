@@ -1,4 +1,5 @@
 import type { IconName } from '../../../csuite/icons/icons'
+import type { Trigger } from '../../../csuite/trigger/Trigger'
 import type { UnifiedCanvas } from '../states/UnifiedCanvas'
 import type { ICanvasTool, ToolMovePayload, ToolPressPayload } from '../utils/_ICanvasTool'
 
@@ -22,7 +23,7 @@ export class ToolGenerate implements ICanvasTool {
         this.canvas.activeSelection.hide()
     }
 
-    onPress({ ev: e }: ToolPressPayload) {
+    onPress({ ev: e }: ToolPressPayload): Trigger | undefined {
         const canvas = this.canvas
         e.cancelBubble = true
         e.evt.preventDefault()
@@ -44,7 +45,7 @@ export class ToolGenerate implements ICanvasTool {
         }
     }
 
-    onMove({ infos }: ToolMovePayload) {
+    onMove({ infos }: ToolMovePayload): boolean {
         const uc = this.canvas
         const sel = uc.activeSelection
         const x = snap(infos.viewPointerX - sel.stableData.width / 2, uc.snapSize)

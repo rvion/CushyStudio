@@ -1,10 +1,13 @@
 import type { DraftL } from '../../../models/Draft'
 import type { MediaImageL } from '../../../models/MediaImage'
 import type { STATE } from '../../../state/state'
+import type { UnifiedCanvasBrushMode, UnifiedCanvasTool } from '../tools/UnifiedCanvasTool'
 import type { UnifiedCanvasViewInfos } from '../types/RectSimple'
 import type { ICanvasTool } from '../utils/_ICanvasTool'
-import type { UnifiedCanvasBrushMode, UnifiedCanvasTool } from './UnifiedCanvasTool'
+import type { UC2$ } from '../V2/ucV2'
 import type { UnifiedStep } from './UnifiedStep'
+import type { Viewport } from 'pixi-viewport'
+import type { Application, Renderer } from 'pixi.js'
 
 import Konva from 'konva'
 import { makeAutoObservable, observable } from 'mobx'
@@ -24,6 +27,32 @@ import { UnifiedMask } from './UnifiedMask'
 import { UnifiedSelection } from './UnifiedSelection'
 
 export class UnifiedCanvas {
+    app: Application<Renderer> | null = null
+    updateViewportInfos = (vp: Viewport): void => {
+        this.viewportInfos.x = vp.x
+        this.viewportInfos.y = vp.y
+        this.viewportInfos.width = vp.width
+        this.viewportInfos.height = vp.height
+        this.viewportInfos.scaleX = vp.scale.x
+        this.viewportInfos.scaleY = vp.scale.y
+    }
+    viewportInstance: Maybe<Viewport> = null
+    viewportInfos = {
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 100,
+        scaleX: 1,
+        scaleY: 1,
+    }
+
+    cursor = {
+        xInWorld: 0,
+        yInWorld: 0,
+        xInScreen: 0,
+        yInScreen: 0,
+    }
+
     snapToGrid = true
     snapSize = 64
     usePenPressure = true
@@ -80,6 +109,7 @@ export class UnifiedCanvas {
     get canUndo(): boolean {
         return this._undoBuffer.length > 0
     }
+
     get canRedo(): boolean {
         return this._redoBuffer.length > 0
     }
@@ -182,7 +212,7 @@ export class UnifiedCanvas {
 
     constructor(
         public st: STATE,
-        baseImage: MediaImageL,
+        public ucv2: UC2$['$Field'],
     ) {
         this.stage = new Konva.Stage({ container: this.containerDiv, width: 512, height: 512 })
 
@@ -194,7 +224,7 @@ export class UnifiedCanvas {
         this.grid = new KonvaGrid(this)
         this.tempLayer.opacity(0.5)
         this.tempLayer.add(this.brush)
-        this.images = [new UnifiedImage(this, baseImage)]
+        this.images = []
 
         // ------------------------------
 
