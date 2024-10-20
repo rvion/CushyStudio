@@ -55,6 +55,8 @@ export class UnifiedCanvas {
         yInWorld: 0,
         xInScreen: 0,
         yInScreen: 0,
+        xInWindow: 0,
+        yInWIndow: 0,
     }
 
     snapToGrid = true

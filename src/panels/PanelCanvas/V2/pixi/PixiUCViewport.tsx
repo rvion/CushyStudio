@@ -29,6 +29,8 @@ export const PixiUCViewport = observer(function PixiUCViewport_(p: { children: R
                         const worldPos = viewport.toWorld(e.screenX, e.screenY)
                         uc1.cursor.xInWorld = worldPos.x
                         uc1.cursor.yInWorld = worldPos.y
+                        uc1.cursor.xInWindow = e.clientX
+                        uc1.cursor.yInWIndow = e.clientY
                     })
                 })
                 viewport //

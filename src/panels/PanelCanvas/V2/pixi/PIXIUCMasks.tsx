@@ -18,6 +18,7 @@ export const PIXIUCMasks = observer(function UCMasks_(p: { uc2: UC2$['$Field'] }
                         key={i.id}
                         placement={placement}
                         mediaImage={image.value}
+                        alpha={0.5}
                     />
                 )
             })}

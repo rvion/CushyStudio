@@ -62,9 +62,10 @@ export class ActivityManager {
     }
 
     /**
-     * similar to `start`.
+     *
+     * mouse activity commint on mouse up, cancel on right click,et. TODO: doucment
      * start an activity, return Trigger.Success */
-    startSimpleActivity_ = (p: SimpleMouseActivityProps): Trigger => {
+    startSimpleMouseActivity_ = (p: SimpleMouseActivityProps): Trigger => {
         const activity = new SimpleMouseActivity(p)
         return this.start_(activity)
     }

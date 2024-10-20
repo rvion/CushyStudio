@@ -130,6 +130,13 @@ export class Field_list<T extends BaseSchema> //
 
     items: T['$Field'][] = []
 
+    get last(): T['$Field'] | null {
+        return this.items[this.items.length - 1] ?? null
+    }
+    get first(): T['$Field'] | null {
+        return this.items[0] ?? null
+    }
+
     get hasChanges(): boolean {
         // 💬 2024-06-?? rvion:
         //  | in auto mode, length is managed,

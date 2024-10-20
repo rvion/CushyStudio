@@ -32,6 +32,13 @@ export class SimpleMouseActivity implements Activity {
     lastX: number = 0
     lastY: number = 0
 
+    get width(): number {
+        return this.lastX - this.startX
+    }
+    get height(): number {
+        return this.lastY - this.startY
+    }
+
     get x(): number {
         return this.lastX
     }
@@ -67,6 +74,8 @@ export class SimpleMouseActivity implements Activity {
     }
 
     private _updateInfo = (event: MouseEvent): void => {
+        this.lastX = event.clientX
+        this.lastY = event.clientY
         this.offsetFromStart = event.clientX - this.startX
         this.offsetFromLast = event.clientX - this.startX
         this.euclidianDistanceFromStart = Math.sqrt((event.clientX - this.startX) ** 2 + (event.clientY - this.startY) ** 2)

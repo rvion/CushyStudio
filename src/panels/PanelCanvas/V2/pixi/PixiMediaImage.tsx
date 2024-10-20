@@ -105,8 +105,9 @@ class XXX {
 type DraggableSpriteProps = {
     placement: SimpleShape$['$Field']
     mediaImage: MediaImageL
-    layer: Layer$['$Field']
+    layer?: Layer$['$Field']
     onClick?: () => void
+    alpha?: number
 }
 
 extend({ Sprite })
@@ -127,6 +128,7 @@ export const PixiMediaImage = observer(function DraggableSpriteUI_(p: DraggableS
                 interactive
                 width={p.placement.Width.value || 512}
                 height={p.placement.Height.value || 512}
+                alpha={p.alpha}
                 key={mediaImage.id}
                 onClick={p.onClick}
                 // anchor={0.5}
