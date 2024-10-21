@@ -19,6 +19,7 @@ declare type TableNameInDB =
     | 'tree_entry'
     | 'host'
     | 'media_custom'
+    | 'perspective'
 
 declare type CushyViewID = Tagged<string, { CushyViewID: true }>
 declare type ComfyWorkflowID = Tagged<string, { ComfyWorkflowID: true }>
@@ -40,3 +41,4 @@ declare type AuthID = Tagged<string, { AuthID: true }>
 declare type TreeEntryID = Tagged<string, { TreeEntryID: true }>
 declare type HostID = Tagged<string, { HostID: true }>
 declare type MediaCustomID = Tagged<string, { MediaCustomID: true }>
+declare type PerspectiveID = Tagged<string, { PerspectiveID: true }>

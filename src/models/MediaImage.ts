@@ -1,5 +1,7 @@
-import type { LiveInstance } from '../db/LiveInstance'
+import type { ManualPromise } from '../csuite/utils/ManualPromise'
+import type { LiveDB } from '../db/LiveDB'
 import type { TABLES } from '../db/TYPES.gen'
+import type { SafetyResult } from '../safety/Safety'
 import type { ComfyNodeMetadata } from '../types/ComfyNodeID'
 import type { ComfyNodeJSON } from '../types/ComfyPrompt'
 import type { ComfyPromptL } from './ComfyPrompt'
@@ -21,11 +23,11 @@ import sharp from 'sharp'
 import { hasMod } from '../csuite/accelerators/META_NAME'
 import { Trigger } from '../csuite/trigger/Trigger'
 import { asSTRING_orCrash } from '../csuite/utils/bang'
-import { ManualPromise } from '../csuite/utils/ManualPromise'
 import { sleep } from '../csuite/utils/sleep'
 import { toastError, toastImage, toastInfo } from '../csuite/utils/toasts'
+import { BaseInst } from '../db/BaseInst'
 import { LiveRefOpt } from '../db/LiveRefOpt'
-import { SafetyResult } from '../safety/Safety'
+import { LiveTable } from '../db/LiveTable'
 import { createHTMLImage_fromURL } from '../state/createHTMLImage_fromURL'
 import { hashArrayBuffer } from '../state/hashArrayBuffer'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
@@ -35,11 +37,20 @@ import {
     createMediaImage_fromDataURI,
     type ImageCreationOpts,
 } from './createMediaImage_fromWebFile'
+import { FPath } from './FPath'
 import { getCurrentRun_IMPL } from './getGlobalRuntimeCtx'
-import { FPath } from './PathObj'
 
-export interface MediaImageL extends LiveInstance<TABLES['media_image']> {}
-export class MediaImageL {
+export class MediaImageRepo extends LiveTable<TABLES['media_image'], typeof MediaImageL> {
+    constructor(liveDB: LiveDB) {
+        super(liveDB, 'media_image', '🖼️', MediaImageL)
+        this.init()
+    }
+}
+
+export class MediaImageL extends BaseInst<TABLES['media_image']> {
+    instObservabilityConfig: undefined
+    dataObservabilityConfig: undefined
+
     static async cacheMissingSafetyRatings({
         //
         amount = 10,
@@ -247,7 +258,7 @@ export class MediaImageL {
         if (ev.ctrlKey && ev.shiftKey && ev.altKey && !this.star) {
             ev.stopPropagation()
             ev.preventDefault()
-            return void this.delete()
+            return void this.delete({})
         }
         if (hasMod(ev)) {
             ev.stopPropagation()
@@ -257,7 +268,7 @@ export class MediaImageL {
         if (ev.shiftKey) {
             ev.stopPropagation()
             ev.preventDefault()
-            return void cushy.layout.open('Canvas', { imgID: this.id })
+            return void cushy.layout.open('Canvas', { startingImgID: this.id })
         }
         if (ev.altKey) {
             ev.stopPropagation()
@@ -353,7 +364,7 @@ export class MediaImageL {
     }
 
     openInCanvasEditor = (): void => {
-        this.st.layout.open('Canvas', { imgID: this.id })
+        this.st.layout.open('Canvas', { startingImgID: this.id })
     }
 
     // ---------------------------------------------------------------
@@ -506,7 +517,7 @@ export class MediaImageL {
     // THUMBNAIL ------------------------------------------------------------------------------------------
     _thumbnailReady: boolean = false
     get thumbnailURL(): string {
-        console.log(`[🤠] get thumbnailURL(): string`)
+        // console.log(`[🤠] get thumbnailURL(): string`)
         // ⏸️ if (this._efficientlyCachedTumbnailBufferURL) return this._efficientlyCachedTumbnailBufferURL
         // no need to add hash suffix, cause path already uses hash
         if (this._thumbnailReady || existsSync(this._thumbnailAbsPath)) return `file://${this._thumbnailAbsPath}`
@@ -687,7 +698,10 @@ export class MediaImageL {
             await img.toFile(this._thumbnailRelPath)
             // then refresh the thumbnail
             this._thumbnailReady = true
-        } catch {}
+        } catch {
+            console.log(`[❌] _mkThumbnail failed for image ${this.data.path}`)
+            //
+        }
     }
 
     // THUMBHASH ------------------------------------------------------------------------------------------

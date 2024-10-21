@@ -1,33 +1,28 @@
 import type { BoxUIProps } from '../box/BoxUIProps'
 import type { IconName } from '../icons/icons'
-import type { TintExt } from '../kolor/Tint'
 import type { RevealPlacement } from '../reveal/RevealPlacement'
+import type { ComputedColors } from './FrameColors'
 import type { FrameSize } from './FrameSize'
 import type { FrameAppearance } from './FrameTemplates'
+import type { SimpleBoxShadow } from './SimpleBoxShadow'
+import type { SimpleDropShadow } from './SimpleDropShadow'
 import type { ForwardedRef, MouseEvent } from 'react'
 
+import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { forwardRef, useContext, useState } from 'react'
 
 import { normalizeBox } from '../box/BoxNormalized'
 import { CurrentStyleCtx } from '../box/CurrentStyleCtx'
-import { usePressLogic } from '../button/usePressLogic'
+import { type ClickAndSlideConf, usePressLogic } from '../button/usePressLogic'
 import { IkonOf } from '../icons/iconHelpers'
 import { registerComponentAsClonableWhenInsideReveal } from '../reveal/RevealCloneWhitelist'
 import { compileOrRetrieveClassName } from '../tinyCSS/quickClass'
 import { getDOMElementDepth } from '../utils/getDOMElementDepth'
 import { objectAssignTsEfficient_t_t } from '../utils/objectAssignTsEfficient'
-import { computeColors, ComputedColors } from './FrameColors'
+import { computeColors } from './FrameColors'
+import { frameMode } from './frameMode'
 import { tooltipStuff } from './tooltip'
-
-export type SimpleBoxShadow = {
-    inset?: boolean
-    x?: number
-    y?: number
-    blur?: number
-    spread?: number
-    color?: TintExt
-}
 
 export type FrameProps = {
     //
@@ -41,6 +36,7 @@ export type FrameProps = {
 
     /** should be moved to Box props soon */
     boxShadow?: SimpleBoxShadow
+    dropShadow?: SimpleDropShadow
 
     // quick layout ----------------------------------------------------
     /** quick layout feature to add `flex flex-row` */
@@ -59,7 +55,7 @@ export type FrameProps = {
 
     // logic --------------------------------------------------
     /** TODO: */
-    triggerOnPress?: { startingState: boolean }
+    triggerOnPress?: ClickAndSlideConf
     // STATES MODIFIERS ------------------------------------------------
     active?: Maybe<boolean>
     loading?: boolean
@@ -69,6 +65,9 @@ export type FrameProps = {
     // /** when true flex=1 */
     expand?: boolean
 
+    /** border-radius */
+    roundness?: number | string
+
     /** HIGH LEVEL THEME-DEFINED BOX STYLES */
     look?: FrameAppearance
     // ICON ------------------------------------------------------------
@@ -76,19 +75,15 @@ export type FrameProps = {
     iconSize?: string
 
     suffixIcon?: Maybe<IconName>
+    noColorStuff?: boolean
+
+    /** Makes children of the Frame "!rounded-none !border-none", grouping them together visually */
+    align?: boolean
 } & BoxUIProps &
     /** Sizing and aspect ratio vocabulary */
     FrameSize
 
 // ------------------------------------------------------------------
-// quick and dirty way to configure frame to use either style or className
-type FrameMode = 'CLASSNAME' | 'STYLE'
-let frameMode: FrameMode = 1 - 1 === 1 ? 'STYLE' : 'CLASSNAME'
-export const configureFrameEngine = (mode: FrameMode): void => {
-    frameMode = mode
-}
-// ------------------------------------------------------------------
-
 export const Frame = observer(
     forwardRef(function Frame_(p: FrameProps, ref: ForwardedRef<HTMLDivElement>) {
         // PROPS --------------------------------------------
@@ -97,13 +92,14 @@ export const Frame = observer(
         const {
             as,                                                 // html
 
-            active, disabled,                                   // built-in state & style modifiers
+            align, active, disabled,                            // built-in state & style modifiers
             icon, iconSize, suffixIcon, loading,                // addons
             expand, square, size,                               // size
 
             look,                                               // style: 1/4: frame templates
             base, hover, border, text, textShadow, shadow,      // style: 2/4: frame overrides
-            boxShadow,                                          // style: 3/4: css
+            roundness,
+            boxShadow, dropShadow,                              // style: 3/4: css
             style, className,                                   // style: 4/4: css, className
 
             row, line, col, wrap,                               // layout
@@ -112,6 +108,7 @@ export const Frame = observer(
             onMouseDown, onMouseEnter, onClick, triggerOnPress, // interractions
             tooltip, tooltipPlacement,
 
+            noColorStuff: noColorStuff__,
             // remaining properties
             ...rest
         } = p
@@ -122,20 +119,15 @@ export const Frame = observer(
         const box = normalizeBox(p)
         const [hovered_, setHovered] = useState(false)
         const hovered = hovered__ ? hovered__(hovered_) : hovered_
+        const noColorStuff = p.noColorStuff ?? prevCtx.noColorStuff
 
         // 👉 2024-06-12 rvion: we should probably be able to
         // | stop here by checking against a hash of those props
         // | + prevCtx + box + look + disabled + hovered + active + boxShadow
         // 👉 2024-07-22 rvion: done
-        const { variables, nextDir, KBase, nextext }: ComputedColors = computeColors(
-            prevCtx,
-            box,
-            look,
-            disabled,
-            hovered,
-            active,
-            boxShadow,
-        )
+        const { variables, nextDir, KBase, nextext }: ComputedColors = noColorStuff // 🔴
+            ? { variables: {}, nextDir: prevCtx.dir ?? 1, KBase: prevCtx.base, nextext: prevCtx.text }
+            : computeColors(prevCtx, box, look, disabled, hovered, active, boxShadow, dropShadow, roundness)
 
         // ===================================================================
         const _onMouseOver = (ev: MouseEvent): void => {
@@ -144,11 +136,13 @@ export const Frame = observer(
             if (tooltip != null) {
                 const elem = ev.currentTarget
                 const depth = getDOMElementDepth(elem)
-                tooltipStuff.tooltips.set(depth, {
-                    depth,
-                    ref: elem,
-                    text: tooltip ?? 'test',
-                    placement: tooltipPlacement ?? 'bottom',
+                runInAction(() => {
+                    tooltipStuff.tooltips.set(depth, {
+                        depth,
+                        ref: elem,
+                        text: tooltip ?? 'test',
+                        placement: tooltipPlacement ?? 'auto',
+                    })
                 })
             }
         }
@@ -160,7 +154,9 @@ export const Frame = observer(
                 const depth = getDOMElementDepth(elem)
                 const prev = tooltipStuff.tooltips.get(depth)
                 if (prev?.ref === ev.currentTarget) {
-                    tooltipStuff.tooltips.delete(depth)
+                    runInAction(() => {
+                        tooltipStuff.tooltips.delete(depth)
+                    })
                 }
             }
         }
@@ -185,8 +181,12 @@ export const Frame = observer(
                 {...(as === 'image' ? { loading: 'lazy' } : {})}
                 tw={[
                     'box',
+                    noColorStuff === true
+                        ? undefined
+                        : frameMode === 'CLASSNAME'
+                          ? compileOrRetrieveClassName(variables)
+                          : undefined,
                     // 'flex',
-                    frameMode === 'CLASSNAME' ? compileOrRetrieveClassName(variables) : undefined,
                     size && `box-${size}`,
                     square && `box-square`,
                     loading && 'relative',
@@ -197,17 +197,26 @@ export const Frame = observer(
                     p.row && 'flex flex-row',
                     p.col && 'flex flex-col',
                     p.wrap && 'flex-wrap',
+                    p.align && [
+                        // Clip children to fix border issues and make the children styled correctly
+                        'h-input flex !gap-0 overflow-clip [&>*]:!rounded-none [&>*]:!border-0',
+                        // Add borders/"dividers" where needed (Right of every child except last)
+                        '[&>*:not(:last-child)]:!border-r',
+                        // '[&>*:not(:last-child)]:!mr-[1px]',
+                    ],
                     className,
                 ]}
                 // style={{ position: 'relative' }}
                 style={
-                    frameMode === 'CLASSNAME' //
+                    noColorStuff === true
                         ? style
-                        : objectAssignTsEfficient_t_t(style, variables)
+                        : frameMode === 'CLASSNAME' //
+                          ? style
+                          : objectAssignTsEfficient_t_t(style, variables)
                 }
                 {...rest}
                 {...(triggerOnPress != null
-                    ? usePressLogic({ onMouseDown, onMouseEnter, onClick }, triggerOnPress.startingState)
+                    ? usePressLogic({ onMouseDown, onMouseEnter, onClick }, triggerOnPress)
                     : { onMouseDown, onMouseEnter, onClick })}
             >
                 <CurrentStyleCtx.Provider
@@ -215,12 +224,13 @@ export const Frame = observer(
                         dir: nextDir,
                         base: KBase,
                         text: nextext,
+                        noColorStuff: noColorStuff,
                     }}
                 >
                     {icon && <IkonOf tw='pointer-events-none flex-none' name={icon} size={iconSize} />}
                     {p.children}
                     {suffixIcon && <IkonOf tw='pointer-events-none' name={suffixIcon} size={iconSize} />}
-                    {loading && <div tw='loading loading-spinner absolute loading-sm self-center justify-self-center' />}
+                    {loading && <div tw='loading loading-spinner loading-sm absolute self-center justify-self-center' />}
                 </CurrentStyleCtx.Provider>
             </Elem>
         )

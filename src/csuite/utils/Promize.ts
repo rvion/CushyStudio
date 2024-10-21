@@ -39,7 +39,7 @@ export class Promize<T = any> implements PromiseLike<T> {
         if (this._value === error) return t
         return this._value
     }
-    ui = (fn: (t: T) => ReactNode) => {
+    ui = (fn: (t: T) => ReactNode): ReactNode => {
         if (this._value === newly) return null
         if (this._value === running) return createElement('div', { className: 'loading loading-spinner' })
         if (this._value === error) return createElement('div', { className: 'error' }, '❌')
@@ -69,7 +69,7 @@ export class Promize<T = any> implements PromiseLike<T> {
         return this._value as T
     }
 
-    set = async (t: T | Promise<T>) => {
+    set = async (t: T | Promise<T>): Promise<void> => {
         try {
             runInAction(() => {
                 this._value = running

@@ -1,6 +1,8 @@
+import type { CSSProperties } from 'react'
+
 // @ts-ignore
 import debounce from 'lodash.debounce'
-import React, { CSSProperties, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 
 import { Button } from '../../csuite/button/Button'
 import { InputSliderUI_legacy } from '../../csuite/input-slider/Slider'
@@ -73,7 +75,7 @@ export const ScribbleCanvas = (p: {
     }
     return (
         <div style={p.style} className={p.className}>
-            <div tw='flex gap-2 items-start'>
+            <div tw='flex items-start gap-2'>
                 <Button
                     size='sm'
                     onClick={() => {

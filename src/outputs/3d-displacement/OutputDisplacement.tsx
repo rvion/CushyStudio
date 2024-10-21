@@ -1,4 +1,7 @@
+import type { Trigger } from '../../csuite/trigger/Trigger'
+import type { Media3dDisplacementL } from '../../models/Media3dDisplacement'
 import type { MediaImageL } from '../../models/MediaImage'
+import type { StepL } from '../../models/Step'
 import type { STATE } from '../../state/state'
 
 import { mkdirSync } from 'fs'
@@ -7,14 +10,13 @@ import { nanoid } from 'nanoid'
 import path, { dirname } from 'pathe'
 import { useMemo } from 'react'
 
+import { Button } from '../../csuite/button/Button'
 import { FormUI } from '../../csuite/form/FormUI'
 import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
 import { bang } from '../../csuite/utils/bang'
 import { toastError } from '../../csuite/utils/toasts'
 import { createMediaImage_fromBlobObject, createMediaImage_fromDataURI } from '../../models/createMediaImage_fromWebFile'
-import { Media3dDisplacementL } from '../../models/Media3dDisplacement'
-import { FPath } from '../../models/PathObj'
-import { StepL } from '../../models/Step'
+import { FPath } from '../../models/FPath'
 import { useSt } from '../../state/stateContext'
 import { asRelativePath } from '../../utils/fs/pathUtils'
 import { DisplacementState } from './DisplacementState'
@@ -29,10 +31,10 @@ export const OutputDisplacementPreviewUI = observer(function OutputImagePreviewU
     const sizeStr = st.historySizeStr
     return (
         <div
-            tw={['bg-orange-500 text-black', 'flex items-center justify-center h-full w-full']}
+            tw={['bg-orange-500 text-black', 'flex h-full w-full items-center justify-center']}
             style={{ lineHeight: sizeStr, fontSize: `${size / 3}px` }}
         >
-            <div tw='font-bold text-xl'>3D</div>
+            <div tw='text-xl font-bold'>3D</div>
         </div>
     )
 })
@@ -63,21 +65,17 @@ export const OutputDisplacementUI = observer(function OutputDisplacementUI_(p: {
     )
 
     const st = useSt()
-    const saveImgBtn = (
-        <div tw='btn btn-sm' onClick={(ev) => saveCanvasAsImage(uist.canvasRef.current)}>
-            <span className='material-symbols-outlined'>download</span>
-        </div>
-    )
+    const saveImgBtn = <Button icon='mdiDownload' size='sm' onClick={(ev) => saveCanvasAsImage(uist.canvasRef.current)} />
     const menuConf = st.displacementConf.value.menu
     return (
-        <div tw='relative flex-1 flex flex-col'>
+        <div tw='relative flex flex-1 flex-col'>
             {menuConf.right ? (
-                <div tw='absolute top-0 right-0 z-50 p-2 !w-96'>
+                <div tw='absolute right-0 top-0 z-50 !w-96 p-2'>
                     {saveImgBtn}
                     <FormUI field={st.displacementConf} />
                 </div>
             ) : menuConf.left ? (
-                <div tw='absolute top-0 left-0 z-50 p-2 !w-96'>
+                <div tw='absolute left-0 top-0 z-50 !w-96 p-2'>
                     {saveImgBtn}
                     <FormUI field={st.displacementConf} />
                 </div>
@@ -92,7 +90,11 @@ export const OutputDisplacementUI = observer(function OutputDisplacementUI_(p: {
 
 export type OrbitControls2 = import('three/examples/jsm/controls/OrbitControls').OrbitControls
 
-export const saveCanvasAsImage = async (canvas: Maybe<HTMLCanvasElement>, subfolder?: string) => {
+export const saveCanvasAsImage = async (
+    //
+    canvas: Maybe<HTMLCanvasElement>,
+    subfolder?: string,
+): Promise<Trigger | undefined> => {
     if (canvas == null) return toastError('❌ canvas is null')
     const imageID = nanoid()
     const filename = `${imageID}.png`

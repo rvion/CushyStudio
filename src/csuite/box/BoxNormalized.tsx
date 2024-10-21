@@ -1,6 +1,6 @@
 import type { Box } from './Box'
 
-import { normalizeTint, type Tint, type TintExt } from '../kolor/Tint'
+import { normalizeTint, type Tint } from '../kolor/Tint'
 
 export type BoxNormalized = {
     base?: Tint //       BASE              (relative to its parent's BASE)

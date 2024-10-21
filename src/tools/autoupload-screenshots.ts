@@ -28,8 +28,8 @@ const watcher = watch(
         if (_filename.includes('_converted')) return
         if (event === 'change') return console.log(chalk.gray(`skipping change event for ${_filename}`))
 
-        let filename = _filename
-        let path = join(dir, filename)
+        const filename = _filename
+        const path = join(dir, filename)
 
         if (existsSync(path) === false) {
             return console.log(chalk.gray(`file deleted => skipping`))

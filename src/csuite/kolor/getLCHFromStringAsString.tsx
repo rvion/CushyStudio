@@ -1,6 +1,5 @@
-import Color from 'colorjs.io'
-
 /** return any color in oklch notation */
+import Color from 'colorjs.io'
 
 export function getLCHFromStringAsString(str: string): string {
     // empty case: let's have some default without generating any error

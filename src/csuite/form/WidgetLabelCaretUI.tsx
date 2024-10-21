@@ -3,43 +3,38 @@ import type { Field } from '../model/Field'
 import { observer } from 'mobx-react-lite'
 
 import { Ikon } from '../../csuite/icons/iconHelpers'
+import { useCSuite } from '../ctx/useCSuite'
+import { WidgetLabelCaretPlaceholderUI } from './WidgetLabelCaretPlaceholderUI'
 
 export const LabelCaretWidth = '1rem'
 
-export const WidgetLabelCaretPlaceholderUI = observer(function WidgetLabelCaretPlaceholderUI_(p: { className?: string }) {
-    return (
-        <Ikon._
-            className={p.className}
-            tw={[
-                //
-                'UI-WidgetLabelCaret self-start minh-widget ABDDE',
-                'COLLAPSE-PASSTHROUGH shrink-0',
-            ]}
-        />
-    )
-})
-
-export const WidgetLabelCaretUI = observer(function WidgetLabelCaretUI_(p: {
-    //
+export type WidgetLabelCaretProps = {
     className?: string
     /** @default true */
     placeholder?: boolean
     field: Field
-}) {
+}
+
+export const WidgetLabelCaretUI = observer(function WidgetLabelCaretUI_(p: WidgetLabelCaretProps) {
+    const csuite = useCSuite()
+    if (!csuite.showExpandCarets) return null
+    if (p.field.parent == null) return null
     if (!p.field.isCollapsed && !p.field.isCollapsible) {
         const showPlaceholder = p.placeholder ?? true
+        // 🔴
         if (showPlaceholder) return <WidgetLabelCaretPlaceholderUI className={p.className} />
         return null
     }
     return (
         <WidgetLabelCaretAlwaysUI //
+            tw='text-sm'
             className={p.className}
             isCollapsed={p.field.isCollapsed}
         />
     )
 })
 
-export const WidgetLabelCaretAlwaysUI = observer(function WidgetLabelCaretAlways_({
+const WidgetLabelCaretAlwaysUI = observer(function WidgetLabelCaretAlways_({
     isCollapsed,
     className,
 }: {
@@ -53,7 +48,7 @@ export const WidgetLabelCaretAlwaysUI = observer(function WidgetLabelCaretAlways
                 className={className}
                 tw={[
                     //
-                    'UI-WidgetLabelCaret self-start minh-widget ABDDE',
+                    'UI-WidgetLabelCaret minh-widget self-start',
                     'COLLAPSE-PASSTHROUGH shrink-0',
                 ]}
             />
@@ -64,7 +59,7 @@ export const WidgetLabelCaretAlwaysUI = observer(function WidgetLabelCaretAlways
             className={className}
             tw={[
                 //
-                'UI-WidgetLabelCaret self-start minh-widget ABDDE',
+                'UI-WidgetLabelCaret minh-widget self-start',
                 'COLLAPSE-PASSTHROUGH shrink-0 opacity-35',
             ]}
         />

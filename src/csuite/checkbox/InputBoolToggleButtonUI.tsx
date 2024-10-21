@@ -2,12 +2,15 @@ import type { BoolButtonProps } from './InputBoolUI'
 
 import { observer } from 'mobx-react-lite'
 
+// import { twMerge } from 'tailwind-merge'
+import { Button } from '../button/Button'
 import { useCSuite } from '../ctx/useCSuite'
-import { Frame } from '../frame/Frame'
-import { getInputBoolChroma, getInputBoolContrast } from './_InputBoolChroma'
-import { InputBoolToggleButtonBoxUI } from './_InputBoolToggleButtonBoxUI'
+import { CheckboxAndRadioIcon } from './_InputBoolToggleButtonBoxUI'
 
-export const InputBoolToggleButtonUI = observer(function InputBoolToggleButtonUI_(
+// 🔴 2024-07-31: domi: this should actually look like a button?
+// => then let's use a Button propably
+// => or only have one component with some props?
+export const ToggleButtonUI = observer(function ToggleButtonUI_(
     p: BoolButtonProps & {
         preventDefault?: boolean
         showToggleButtonBox?: boolean
@@ -17,16 +20,20 @@ export const InputBoolToggleButtonUI = observer(function InputBoolToggleButtonUI
     },
 ) {
     const isActive = p.value ?? false
-    const expand = p.expand
-    const chroma = getInputBoolChroma(isActive)
-    const kit = useCSuite()
-    const border = p.border ?? 10
+    const csuite = useCSuite()
+    // const chroma = getInputBoolChroma(isActive)
+    // const border = p.border ?? 10
+    const theme = cushy.theme.value
+    const dropShadow = p.dropShadow ?? theme.inputShadow
     return (
-        <Frame
-            tw={[
-                'InputBoolToggleButtonUI minh-input !select-none cursor-pointer px-1 text-sm flex items-center',
-                p.showToggleButtonBox ? undefined : 'justify-center',
-            ]}
+        <Button
+            tw={
+                /* twMerge */ [
+                    'minh-input cursor-pointer select-none px-1',
+                    p.showToggleButtonBox ? undefined : 'justify-center',
+                    p.className,
+                ]
+            }
             onKeyDown={(ev) => {
                 if (ev.key === 'Enter') {
                     p.onValueChange?.(!isActive)
@@ -36,41 +43,44 @@ export const InputBoolToggleButtonUI = observer(function InputBoolToggleButtonUI
                     ev.preventDefault()
                 }
             }}
-            boxShadow={
-                !Boolean(border) //
-                    ? undefined
-                    : { inset: true, y: -3, blur: 5, spread: 0, color: 5 }
-            }
+            subtle={!isActive}
             tabIndex={0}
             className={p.className}
-            triggerOnPress={{ startingState: isActive }}
+            triggerOnPress={{ startingState: isActive, toggleGroup: p.toggleGroup }}
             tooltip={p.tooltip}
             tooltipPlacement={p.tooltipPlacement}
-            look='default'
-            base={{ contrast: getInputBoolContrast(isActive), chroma: chroma }}
-            border={border}
-            iconSize={p.iconSize ?? '1.5em'}
-            hover={!p.disabled}
-            expand={expand}
+            look={isActive ? 'primary' : undefined} // 🔴🦀 temp solution to visually broken active options
+            border={csuite.inputBorder}
+            disabled={p.disabled}
+            dropShadow={p.look == 'subtle' ? undefined : dropShadow}
+            roundness={csuite.inputRoundness}
+            expand={p.expand}
             style={p.style}
             hovered={p.hovered}
             icon={p.icon}
-            {...p.box}
             onClick={(ev) => {
                 // wasEnabled = !isActive
                 ev.stopPropagation()
                 p.onValueChange?.(!isActive)
                 if (p.preventDefault) ev.preventDefault()
             }}
+            {...p.box}
+            iconSize={p.iconSize}
+            // hoverable={!p.disabled}
+            // boxShadow={
+            //     !Boolean(border) //
+            //         ? undefined
+            //         : { inset: true, y: -3, blur: 5, spread: 0, color: 5 }
+            // }
         >
-            {(p.showToggleButtonBox ?? kit.showToggleButtonBox) && p.mode != null && (
-                <InputBoolToggleButtonBoxUI isActive={isActive} mode={p.mode} />
+            {(p.showToggleButtonBox ?? csuite.showToggleButtonBox) && p.mode != null && (
+                <CheckboxAndRadioIcon isActive={isActive} mode={p.mode} />
             )}
             {/* 2024-06-07 rvion: make sure long label remain legible even on low width
                 - I removed the "line-clamp-1" from the paragraph below
                 - I replaced the "h-input" by "minh-input" in the Frame above
             */}
             {p.children ?? <p tw='w-full text-center'>{p.text}</p>}
-        </Frame>
+        </Button>
     )
 })

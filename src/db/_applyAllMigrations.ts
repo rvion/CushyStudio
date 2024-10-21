@@ -1,6 +1,6 @@
-import BetterSqlite3 from 'better-sqlite3'
+import type { Migration } from './_setupMigrationEngine'
+import type BetterSqlite3 from 'better-sqlite3'
 
-import { Migration } from './_setupMigrationEngine'
 import { migrations } from './migrations'
 
 export type MigrationContext = {
@@ -9,7 +9,7 @@ export type MigrationContext = {
     log: (...res: any[]) => void
 }
 
-export const _applyAllMigrations = (ctx: MigrationContext) => {
+export const _applyAllMigrations = (ctx: MigrationContext): void => {
     const db = ctx.db
     const executedMigrations: Migration[] = db.prepare('select * from migrations').all() as Migration[]
     // const executedMigrationsNames = executedMigrations.map((e) => e.name)

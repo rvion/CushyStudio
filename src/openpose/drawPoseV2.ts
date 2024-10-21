@@ -1,4 +1,4 @@
-import { OpenPoseData } from './OpenPoseData'
+import type { OpenPoseData } from './OpenPoseData'
 
 const boneColors = [
     '#ff0055',

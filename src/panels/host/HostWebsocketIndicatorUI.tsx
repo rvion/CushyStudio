@@ -1,11 +1,54 @@
+import type { HostL } from '../../models/Host'
+
 import { observer } from 'mobx-react-lite'
 
 import { Button } from '../../csuite/button/Button'
+import { useCSuite } from '../../csuite/ctx/useCSuite'
+import { Frame } from '../../csuite/frame/Frame'
 import { Message } from '../../csuite/inputs/shims'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
-import { HostL } from '../../models/Host'
+import { QuickHostActionsUI } from '../../manager/REQUIREMENTS/QuickHostActionsUI'
 import { useSt } from '../../state/stateContext'
-import { _formatAsRelativeDateTime } from '../../updater/_getRelativeTimeString'
+
+export const ConnectionInfoUI = observer(function ConnectionInfoUI_(p: { host: HostL }) {
+    const host = p.host
+    const size = host.schema?.size ?? 0
+    const connected = p.host.isConnected
+    const csuite = useCSuite()
+    return (
+        <RevealUI
+            showDelay={0}
+            content={() => {
+                return (
+                    <Frame>
+                        <div>
+                            {p.host.data.isVirtual ? <div tw='p-2'>Not Applicable</div> : <HostQuickMenuUI host={p.host} />}
+                        </div>
+                        <div tw='text-xs text-opacity-50'>({size} nodes)</div>
+                        {p.host.ws?.isOpen ? null : (
+                            <Message showIcon type='warning'>
+                                <div>Is your ComfyUI server running? </div>
+                                <div>You config file says it should be accessible at</div>
+                                <div>{host.getServerHostHTTP()}</div>
+                                <div>{host.getWSUrl()}</div>
+                            </Message>
+                        )}
+                        <pre>{host.schemaRetrievalLogs.join('\n')}</pre>
+                        <QuickHostActionsUI host={host} />
+                    </Frame>
+                )
+            }}
+        >
+            <Button //
+                tooltip='Host information'
+                borderless
+                square
+                look={connected ? 'success' : 'error'}
+                icon={connected ? 'mdiServer' : 'mdiServerOff'}
+            />
+        </RevealUI>
+    )
+})
 
 export const HostWebsocketIndicatorUI = observer(function HostWebsocketIndicatorUI_(p: {
     //
@@ -22,13 +65,15 @@ export const HostWebsocketIndicatorUI = observer(function HostWebsocketIndicator
     return (
         <RevealUI showDelay={0} content={() => <HostQuickMenuUI host={p.host} />}>
             {ws == null ? (
-                <Button subtle tw='opacity-50'>
-                    {p.showIcon && <span className='material-symbols-outlined '>cloud_off</span>}
-                    <span className=''>WS</span>
-                </Button>
+                <Button //
+                    icon={p.showIcon ? 'mdiCloudOff' : undefined}
+                    subtle
+                    tw='opacity-50'
+                    children='WS'
+                />
             ) : ws?.isOpen ? (
                 <Button subtle>
-                    {p.showIcon && <span className='material-symbols-outlined text-green-400 '>check_circle</span>}
+                    {p.showIcon && <span className='material-symbols-outlined text-green-400'>check_circle</span>}
                     <span className='text-success'>WS</span>
                 </Button>
             ) : (
@@ -64,7 +109,7 @@ export const HostQuickMenuUI = observer(function HostQuickMenuUI_(p: { host: Hos
                 ),
             )}
             <div // logs
-                tw='opacity-85 overflow-auto resize'
+                tw='resize overflow-auto opacity-85'
                 style={{ width: '800px', maxHeight: '400px' }}
             >
                 <div>

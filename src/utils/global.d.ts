@@ -1,11 +1,17 @@
 import 'react'
 
+import type { PixiReactElementProps } from '@pixi/react/types/typedefs/PixiReactNode'
+import type { Viewport } from 'pixi-viewport'
+
 type ClassLike = import('../csuite/types/ClassLike').ClassLike
 
 declare global {
     namespace JSX {
         interface IntrinsicAttributes {
             tw?: string | ClassLike[]
+        }
+        interface IntrinsicElements {
+            viewport: PixiReactElementProps<typeof Viewport>
         }
     }
     /*

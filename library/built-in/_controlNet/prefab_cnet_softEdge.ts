@@ -43,17 +43,19 @@ export type UI_subform_SoftEdge_Preprocessor = X.XChoice<{
 }>
 export function ui_subform_SoftEdge_Preprocessor(): UI_subform_SoftEdge_Preprocessor {
     const form: X.Builder = getCurrentForm()
-    return form.choice({
-        label: 'SoftEdge Edge Preprocessor',
-        startCollapsed: true,
-        default: 'HED',
-        appearance: 'tab',
-        items: {
+    return form.choice(
+        {
             None: form.empty(),
             HED: ui_subform_SoftEdge_Preprocessor_Options(form),
             Pidinet: ui_subform_SoftEdge_Preprocessor_Options(form),
         },
-    })
+        {
+            label: 'SoftEdge Edge Preprocessor',
+            startCollapsed: true,
+            default: 'HED',
+            appearance: 'tab',
+        },
+    )
 }
 
 // ====================================================================================

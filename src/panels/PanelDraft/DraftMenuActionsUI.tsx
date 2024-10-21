@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite'
 import { showItemInFolder } from '../../app/layout/openExternal'
 import { KEYS } from '../../app/shortcuts/shorcutKeys'
 import { Dropdown } from '../../csuite/dropdown/Dropdown'
-import { MenuDividerUI_ } from '../../csuite/dropdown/MenuDividerUI'
+import { MenuDividerUI_ } from '../../csuite/dropdown/MenuDivider2'
 import { MenuItem } from '../../csuite/dropdown/MenuItem'
 import { useSt } from '../../state/stateContext'
 import { openInVSCode } from '../../utils/electron/openInVsCode'
@@ -31,50 +31,52 @@ export const DraftMenuActionsUI = observer(function DraftMenuActionsUI_(p: {
                         onClick={() => app.setFavorite(!app.isFavorite)}
                         iconClassName={app.isFavorite ? 'text-yellow-500' : undefined}
                         icon='mdiStar'
-                    >
-                        Favorite App
-                    </MenuItem>
+                        label='Favorite App'
+                    />
                     <MenuItem
                         // active={draft.isFavorite}
                         onClick={() => draft.setFavorite(!draft.isFavorite)}
                         iconClassName={draft.isFavorite ? 'text-yellow-500' : null}
                         icon='mdiStar'
-                    >
-                        Favorite Draft
-                    </MenuItem>
+                        label='Favorite Draft'
+                    />
                     <div tw='divider my-0'></div>
                     <MenuItem
                         localShortcut={KEYS.duplicateCurrentDraft}
                         iconClassName='text-green-500'
                         icon='mdiContentCopy'
                         onClick={() => draft.duplicateAndFocus()}
-                    >
-                        Duplicate Draft
-                    </MenuItem>
+                        label='Duplicate Draft'
+                    />
                     <MenuItem
                         // shortcut={KEYS.duplicateCurrentDraft}
                         iconClassName={'text-green-500'}
                         icon='mdiContentCopy'
                         onClick={() => draft.app.createDraft()}
-                    >
-                        New empty Draft
-                    </MenuItem>
-                    <MenuItem icon='mdiContentCopy' onClick={() => navigator.clipboard.writeText(draft.id)}>
-                        Copy ID ({draft.id})
-                    </MenuItem>
-                    <MenuItem icon='mdiMicrosoftVisualStudioCode' onClick={() => openInVSCode(file?.absPath ?? '')}>
-                        Edit App Definition
-                    </MenuItem>
-                    <MenuItem icon='mdiOpenInApp' onClick={() => showItemInFolder(file.absPath)}>
-                        Show Item In Folder
-                    </MenuItem>
+                        label='New empty Draft'
+                    />
+                    <MenuItem //
+                        icon='mdiContentCopy'
+                        onClick={() => navigator.clipboard.writeText(draft.id)}
+                        label={`Copy ID ({draft.id})`}
+                    />
+                    <MenuItem //
+                        icon='mdiMicrosoftVisualStudioCode'
+                        onClick={() => openInVSCode(file?.absPath ?? '')}
+                        label='Edit App Definition'
+                    />
+                    <MenuItem //
+                        icon='mdiOpenInApp'
+                        onClick={() => showItemInFolder(file.absPath)}
+                        label='Show Item In Folder'
+                    />
                     <MenuItem
                         label='Delete'
                         icon='mdiDelete'
                         iconClassName=' text-red-500'
                         onClick={() => {
                             const confirm = window.confirm('Are you sure you want to delete this draft?')
-                            if (confirm) draft.delete()
+                            if (confirm) draft.delete({})
                         }}
                     />
                     <MenuItem
@@ -88,7 +90,6 @@ export const DraftMenuActionsUI = observer(function DraftMenuActionsUI_(p: {
                     />
 
                     <MenuDividerUI_ />
-                    {/* <button disabled={app.isPublishing} tw='btn btn-ghost btn-square btn-sm' onClick={async () => {}}></button> */}
                     <MenuItem
                         loading={app.isPublishing}
                         icon='mdiPublish'
@@ -97,23 +98,17 @@ export const DraftMenuActionsUI = observer(function DraftMenuActionsUI_(p: {
                     />
 
                     <div tw='divider my-0'>Debug</div>
-                    <MenuItem
-                        icon='mdiInformation'
-                        onClick={() => st.layout.open('DraftJsonResult', { draftID: draft.id })}
-                        size='sm'
-                    >
-                        Form result
-                    </MenuItem>
-                    <MenuItem icon='mdiForest' onClick={() => st.layout.open('DraftJsonSerial', { draftID: draft.id })} size='sm'>
-                        Form state
-                    </MenuItem>
-                    <MenuItem
+                    <MenuItem //
+                        icon='mdiForest'
+                        onClick={() => st.layout.open('DraftJsonSerial', { draftID: draft.id })}
+                        label='Form Serial'
+                    />
+
+                    <MenuItem //
                         icon='mdiCodeArray'
                         onClick={() => st.layout.open('Script', { scriptID: draft.app.script.id })}
-                        size='sm'
-                    >
-                        App code
-                    </MenuItem>
+                        label='App code'
+                    />
                 </>
             )}
         />

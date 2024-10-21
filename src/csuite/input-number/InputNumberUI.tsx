@@ -6,8 +6,9 @@ import React, { useEffect, useMemo } from 'react'
 
 import { Button } from '../button/Button'
 import { useCSuite } from '../ctx/useCSuite'
-import { Frame } from '../frame/Frame'
+import { Frame, type FrameProps } from '../frame/Frame'
 import { parseFloatNoRoundingErr } from '../utils/parseFloatNoRoundingErr'
+import { window_addEventListener } from '../utils/window_addEventListenerAction'
 
 const clamp = (x: number, min: number, max: number): number => Math.max(min, Math.min(max, x))
 
@@ -26,6 +27,7 @@ type InputNumberProps = {
     value?: Maybe<number>
     mode: 'int' | 'float'
     onValueChange: (next: number) => void
+    onBlur?: () => void
     step?: number
     min?: number
     max?: number
@@ -39,6 +41,14 @@ type InputNumberProps = {
     placeholder?: string
     forceSnap?: boolean
     className?: string
+} & {
+    // 💬 2024-09-30 rvion:
+    // Temporarilly, let's just accept the two we use manually,
+    // and improve that later.
+    //
+    //> & FrameProps 🔴 will hhave to take all those props properly into account if we want to add taht here
+    roundness?: FrameProps['roundness']
+    dropShadow?: FrameProps['dropShadow']
 }
 
 /** this class will be instanciated ONCE in every InputNumberUI, (local the the InputNumberUI) */
@@ -147,13 +157,13 @@ class InputNumberStableState {
 
     increment = (): void => {
         startValue = this.value
-        let num = this.value + (this.isInteger ? this.step : this.step * 0.1)
+        const num = this.value + (this.isInteger ? this.step : this.step * 0.1)
         this.syncValues(num, { soft: true })
     }
 
     decrement = (): void => {
         startValue = this.value
-        let num = this.value - (this.isInteger ? this.step : this.step * 0.1)
+        const num = this.value - (this.isInteger ? this.step : this.step * 0.1)
         this.syncValues(num, { soft: true })
     }
 
@@ -167,8 +177,8 @@ class InputNumberStableState {
         dragged = true
         cumulativeOffset += e.movementX
 
-        let precision = (e.shiftKey ? 0.001 : 0.01) * this.step
-        let offset = this.numberSliderSpeed * cumulativeOffset * precision
+        const precision = (e.shiftKey ? 0.001 : 0.01) * this.step
+        const offset = this.numberSliderSpeed * cumulativeOffset * precision
 
         const next = lastValue + offset
         // Parse value
@@ -243,7 +253,9 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
     const step = uist.step
     const rounding = uist.rounding
     const isEditing = uist.isEditing
+    const theme = cushy.theme.value
 
+    const dropShadow = uist.props.dropShadow ?? theme.inputShadow
     return (
         <Frame /* Root */
             style={p.style}
@@ -251,15 +263,15 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
             border={csuite.inputBorder}
             hover={{ contrast: 0.03 }}
             className={p.className}
-            // base={{ contrast: isEditing ? -0.1 : 0.05 }}
-            // textShadow={{ contrast: 1, hue: 0, chroma: 1 }}
+            // unsure about the amount of code we had to use for that prop
+            dropShadow={dropShadow ? dropShadow : undefined}
+            roundness={p.roundness ?? csuite.inputRoundness}
+            disabled={p.disabled}
             tw={[
                 'UI-InputNumber',
-                p.disabled && 'pointer-events-none opacity-25',
                 'h-input relative',
                 'input-number-ui',
-                'flex-1 select-none min-w-24 cursor-ew-resize overflow-clip',
-                // !isEditing && 'hover:border-base-200 hover:border-b-base-300 hover:bg-primary/40',
+                'min-w-24 flex-1 cursor-ew-resize select-none overflow-clip',
             ]}
             onWheel={(ev) => {
                 /* NOTE: This could probably divide by the length? But I'm not sure how to get the distance of 1 scroll tick.
@@ -277,16 +289,16 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
         >
             <Frame /* Slider display */
                 className='inui-foreground'
-                base={{ contrast: p.hideSlider ? 0 : 0.1, chromaBlend: 2 }}
-                tw={['z-10 absolute left-0 h-input']}
+                base={{ contrast: p.hideSlider ? 0 : 0.1, chromaBlend: 1 }}
+                tw={['h-input absolute left-0 z-10']}
                 style={{ width: `${((val - uist.rangeMin) / (uist.rangeMax - uist.rangeMin)) * 100}%` }}
             />
 
-            <div tw='grid w-full h-full items-center z-20' style={{ gridTemplateColumns: '16px 1fr 16px' }}>
+            <div tw='z-20 grid h-full w-full items-center' style={{ gridTemplateColumns: '16px 1fr 16px' }}>
                 <Button /* Left Button */
                     className='control'
                     borderless
-                    tw='rounded-none items-center z-20 opacity-0'
+                    tw='z-20 items-center !rounded-none opacity-0'
                     tabIndex={-1}
                     onClick={uist.decrement}
                     icon='mdiChevronLeft'
@@ -295,7 +307,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                     tw={[
                         //
                         'th-text',
-                        `flex px-1 text-sm truncate z-20 h-full`,
+                        `z-20 flex h-full truncate px-1 text-sm`,
                         'items-center',
                         // 'items-center justify-center',
                     ]}
@@ -308,10 +320,10 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                         cumulativeOffset = 0
                         dragged = false
 
-                        window.addEventListener('mousemove', uist.mouseMoveListener, true)
-                        window.addEventListener('pointerup', uist.onPointerUpListener, true)
-                        window.addEventListener('pointerlockchange', uist.onPointerLockChange, true)
-                        window.addEventListener('mousedown', uist.cancelListener, true)
+                        window_addEventListener('mousemove', uist.mouseMoveListener, true)
+                        window_addEventListener('pointerup', uist.onPointerUpListener, true)
+                        window_addEventListener('pointerlockchange', uist.onPointerLockChange, true)
+                        window_addEventListener('mousedown', uist.cancelListener, true)
 
                         /* Fix for low-sensitivity devices, it will get raw input from the mouse instead of the processed input.
                          *  NOTE: This does not work on Linux right now, but when it does get added for Linux, this code should not need to be changed.
@@ -334,7 +346,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                             // 'text-shadow outline-0',
                             /* `absolute opacity-0` is a bit of a hack around not being able to figure out why the input kept taking up so much width.
                              * Can't use `hidden` here because it messes up focusing. */
-                            !isEditing && 'cursor-not-allowed pointer-events-none absolute opacity-0',
+                            !isEditing && 'pointer-events-none absolute cursor-not-allowed opacity-0',
                             !isEditing && p.text ? 'text-right' : 'text-center',
                         ]}
                         value={isEditing ? uist.inputValue : val}
@@ -352,7 +364,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                             uist.inputValue = ev?.target.value
                         }}
                         onFocus={(ev) => {
-                            let textInput = ev.currentTarget
+                            const textInput = ev.currentTarget
                             activeSlider = textInput.parentElement as HTMLDivElement
                             textInput.select()
                             startValue = val
@@ -366,9 +378,11 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                             if (cancelled) {
                                 cancelled = false
                                 uist.syncValues(startValue, undefined)
+                                p.onBlur?.()
                                 return
                             }
                             uist.syncValues(ev.currentTarget.value, { skipRounding: true })
+                            p.onBlur?.()
                         }}
                         onKeyDown={(ev) => {
                             if (ev.key === 'Enter') {
@@ -400,7 +414,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                         <>
                             {p.text && (
                                 <div /* Inner Label Text - Not shown while editing */
-                                    tw={['w-full pr-1 outline-0 border-0 border-transparent z-10 text-left truncate']}
+                                    tw={['z-10 w-full truncate border-0 border-transparent pr-1 text-left outline-0']}
                                 >
                                     {p.text}
                                 </div>
@@ -415,7 +429,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                 <Button /* Right Button */
                     className='control'
                     borderless
-                    tw='rounded-none items-center z-20 opacity-0'
+                    tw='z-20 items-center !rounded-none opacity-0'
                     tabIndex={-1}
                     onClick={uist.increment}
                     icon='mdiChevronRight'

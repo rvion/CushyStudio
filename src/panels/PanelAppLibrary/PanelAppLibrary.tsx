@@ -4,11 +4,11 @@ import { observer } from 'mobx-react-lite'
 
 import { AppCardUI } from '../../cards/fancycard/AppCardUI'
 import { Button } from '../../csuite/button/Button'
-import { InputBoolToggleButtonUI } from '../../csuite/checkbox/InputBoolToggleButtonUI'
-import { Frame } from '../../csuite/frame/Frame'
+import { ToggleButtonUI } from '../../csuite/checkbox/InputBoolToggleButtonUI'
 import { InputNumberUI } from '../../csuite/input-number/InputNumberUI'
 import { InputStringUI } from '../../csuite/input-string/InputStringUI'
 import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
+import { toastSuccess } from '../../csuite/utils/toasts'
 import { Panel, type PanelHeader } from '../../router/Panel'
 import { useSt } from '../../state/stateContext'
 
@@ -26,7 +26,7 @@ export const PanelAppLibraryUI = observer(function PanelAppLibraryUI_(p: NO_PROP
     const library = st.library
 
     return (
-        <div tw='relative h-full flex-grow flex flex-col'>
+        <div tw='relative flex h-full flex-grow flex-col'>
             <PanelHeaderUI>
                 <InputStringUI
                     icon='mdiMagnify'
@@ -54,21 +54,24 @@ export const PanelAppLibraryUI = observer(function PanelAppLibraryUI_(p: NO_PROP
                     onClick={st.startupFileIndexing}
                     children='Index All Apps'
                 />
-                <InputBoolToggleButtonUI
+                <ToggleButtonUI
+                    toggleGroup='panel-app-header'
                     showToggleButtonBox
                     mode='checkbox'
                     text='Descriptions'
                     value={st.library.showDescription}
                     onValueChange={(next) => (st.library.showDescription = next)}
                 />
-                <InputBoolToggleButtonUI
+                <ToggleButtonUI
+                    toggleGroup='panel-app-header'
                     showToggleButtonBox
                     mode='checkbox'
                     text='Drafts'
                     value={st.library.showDrafts}
                     onValueChange={(next) => (st.library.showDrafts = next)}
                 />
-                <InputBoolToggleButtonUI
+                <ToggleButtonUI
+                    toggleGroup='panel-app-header'
                     showToggleButtonBox
                     mode='checkbox'
                     text='Favorites'
@@ -86,8 +89,48 @@ export const PanelAppLibraryUI = observer(function PanelAppLibraryUI_(p: NO_PROP
                     value={parseInt(st.library.imageSize.slice(0, -3), 10)}
                 />
             </PanelHeaderUI>
-            <div tw='flex flex-col flex-grow p-4 overflow-auto'>
-                <div tw='text-xl text-accent font-bold'>Built-in Apps</div>
+            <Button
+                tw='self-start'
+                look='error'
+                children='remove every deleted app'
+                onClick={() => {
+                    const allapps = st.db.cushy_app.findAll()
+
+                    const toDelete = allapps.filter((app) => !app.scriptStillExistsOnDisk)
+                    if (toDelete.length === 0) {
+                        toastSuccess('no deleted apps found')
+                    }
+                    cushy.startActivity({
+                        backdrop: true,
+                        shell: 'popup-full',
+                        UI: () => (
+                            <div>
+                                {toDelete.length} app lacks based on non-existing scripts
+                                <Button
+                                    onClick={() => {
+                                        toDelete.forEach((app) => {
+                                            app.delete({
+                                                draft_appID: {
+                                                    project_currentDraftID: 'set null',
+                                                    step_draftID: 'set null',
+                                                },
+                                                // 🔶 we probably want to make step.app nullable.
+                                                step_appID: {
+                                                    comfy_prompt_stepID: {},
+                                                },
+                                            })
+                                        })
+                                    }}
+                                >
+                                    Send them to oblivion (SUPER SLOW)
+                                </Button>
+                            </div>
+                        ),
+                    })
+                }}
+            />
+            <div tw='flex flex-grow flex-col overflow-auto p-4'>
+                <div tw='text-accent text-xl font-bold'>Built-in Apps</div>
                 <div tw='flex flex-wrap  gap-2'>
                     {st.library.appsFilteredBuiltIn.map((app, ix) => (
                         <div key={app.id}>
@@ -99,7 +142,7 @@ export const PanelAppLibraryUI = observer(function PanelAppLibraryUI_(p: NO_PROP
                     ))}
                 </div>
                 <div tw='divider'></div>
-                <div tw='text-xl text-accent font-bold'>Local Apps</div>
+                <div tw='text-accent text-xl font-bold'>Local Apps</div>
                 <div tw='flex flex-wrap  gap-2'>
                     {st.library.appsFilteredLocal.map((app, ix) => (
                         <div key={app.id}>
@@ -111,7 +154,7 @@ export const PanelAppLibraryUI = observer(function PanelAppLibraryUI_(p: NO_PROP
                     ))}
                 </div>
                 <div tw='divider'></div>
-                <div tw='text-xl text-accent font-bold'>SDK Examples</div>
+                <div tw='text-accent text-xl font-bold'>SDK Examples</div>
                 <div tw='flex flex-wrap  gap-2'>
                     {st.library.appsFilteredExample.map((app, ix) => (
                         <div key={app.id}>

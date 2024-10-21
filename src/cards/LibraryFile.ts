@@ -1,8 +1,10 @@
 import type { LiteGraphJSON } from '../core/LiteGraph'
+import type { CushyScriptL } from '../models/CushyScript'
 import type { STATE } from '../state/state'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
+import type { AppMetadata } from './AppManifest'
 import type { Library } from './Library'
-import type { Metafile, OutputFile } from 'esbuild'
+import type { BuildContext, Metafile, OutputFile } from 'esbuild'
 
 import { readFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
@@ -14,10 +16,9 @@ import { exhaust } from '../csuite/utils/exhaust'
 import { ManualPromise } from '../csuite/utils/ManualPromise'
 import { toastError } from '../csuite/utils/toasts'
 import { asCushyScriptID } from '../db/TYPES.gen'
-import { CushyScriptL } from '../models/CushyScript'
+import { FPath } from '../models/FPath'
 import { asAbsolutePath } from '../utils/fs/pathUtils'
 import { getPngMetadataFromUint8Array } from '../utils/png/_getPngMetadata'
-import { AppMetadata } from './AppManifest'
 
 // prettier-ignore
 export type LoadStrategy =
@@ -51,10 +52,20 @@ export class LibraryFile {
     ) {
         this.st = library.st
         this.strategies = this.findLoadStrategies()
-        makeAutoObservable(this, { _esbuildContext: false })
+        makeAutoObservable(this, {
+            fPath: false,
+            _esbuildContext: false,
+        })
     }
 
-    get baseName() {
+    /** the new abstraction around files */
+    get fPath(): FPath {
+        const out = new FPath(this.absPath)
+        Object.defineProperty(this, 'fPath', { value: out })
+        return out
+    }
+
+    get baseName(): string {
         return basename(this.relPath)
     }
     /** access to the global app state */
@@ -231,7 +242,8 @@ export class LibraryFile {
             const ctx = await this._esbuildContext
             const res = await ctx.rebuild()
             // console.log(`[🧐] res`, Object.keys(res.metafile.inputs))
-            const outFile: OutputFile = res.outputFiles[0]!
+            //                                    🔴   V
+            const outFile: OutputFile = res.outputFiles?.[0]!
             if (outFile.text == null) throw new Error('compilation failed')
 
             // const distPathWrongExt = path.join(this.folderAbs, 'dist', this.deckRelativeFilePath)
@@ -250,7 +262,7 @@ export class LibraryFile {
         }
     }
     /** the persistent esbuild context, used to allow for fast rebundling */
-    get _esbuildContext() {
+    get _esbuildContext(): Promise<BuildContext<any>> {
         // ensure typescript files
         if (!this.relPath.endsWith('.ts') && !this.relPath.endsWith('.tsx'))
             throw new Error('esbuild can only work on .ts or .tsx files')

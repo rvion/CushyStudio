@@ -122,7 +122,7 @@ let metaFilePath!: string
 mkdirSync(DIST_RELPATH, { recursive: true })
 mkdirSync(`${DIST_RELPATH}/pre`, { recursive: true })
 await microbench('took', async () => {
-    let res = await buildJS({
+    const res = await buildJS({
         shouldMinify: false,
         entryPoints: [ENTRYPOINT],
         outfile: `${DIST_RELPATH}/pre/initial.js`,
@@ -132,8 +132,8 @@ await microbench('took', async () => {
 })
 
 // LIST ALL REAL JS FILES ----------------------------------------------
-let allFilesWithExt: string[] = []
-let allFilesNoExt: string[] = []
+const allFilesWithExt: string[] = []
+const allFilesNoExt: string[] = []
 const jsModuleInBundle = new Set()
 const esbuildMetafile: Metafile = readJSONSync(metaFilePath)
 const esbuildMetafileInput = esbuildMetafile.inputs
@@ -381,11 +381,11 @@ const unwantedSet = new Set(unwantedSorted)
 for (const u of unwantedSorted) {
     // ------------
     const fileInSrcWithoutExt = mapPathToModule(u)
-    let fileInSrcWithExt_ts = fileInSrcWithoutExt + '.ts'
+    const fileInSrcWithExt_ts = fileInSrcWithoutExt + '.ts'
     const fileInSrcWithExt_ts_exists = existsSync(fileInSrcWithExt_ts)
     if (fileInSrcWithExt_ts_exists) cpSync(fileInSrcWithExt_ts, `${DIST_RELPATH}/${fileInSrcWithExt_ts}`)
 
-    let fileInSrcWithExt_tsx = fileInSrcWithoutExt + '.tsx'
+    const fileInSrcWithExt_tsx = fileInSrcWithoutExt + '.tsx'
     const fileInSrcWithExt_tsx_exists = existsSync(fileInSrcWithExt_tsx)
     if (fileInSrcWithExt_tsx_exists) cpSync(fileInSrcWithExt_tsx, `${DIST_RELPATH}/${fileInSrcWithExt_tsx}`)
 

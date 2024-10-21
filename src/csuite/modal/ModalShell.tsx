@@ -42,7 +42,7 @@ export const ModalShellUI = observer(function ModalShellUI_(p: {
                 />
             </div>
             {/* BODY */}
-            <div tw='_ModalBody flex-1 flex flex-col'>{p.children}</div>
+            <div tw='_ModalBody flex flex-1 flex-col'>{p.children}</div>
             {/* FOOTER */}
             {p.footer && <div tw='_ModalFooter'>{p.footer}</div>}
         </Frame>

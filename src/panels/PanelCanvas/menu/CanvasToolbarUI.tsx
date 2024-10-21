@@ -10,20 +10,21 @@ export const CanvasToolbarUI = observer(function CanvasToolbarUI_(p: {}) {
     const canvas = useUnifiedCanvas()
     return (
         <ToolShelfUI
+            tw='[z-index:99999]'
             anchor='left'
             floating
             panelState={canvas.toolShelf}
             defaultSize={cushy.preferences.interface.value.toolBarIconSize}
         >
-            <div tw='flex flex-col p-2 gap-1'>
-                {/* <div // NONE ----------------------------------------------------------------
+            <div tw='flex flex-col gap-1 p-2'>
+                {/* <Button // NONE ----------------------------------------------------------------
+                    icon='mdiSetNone'
                     onClick={() => canvas.enable_none()}
-                    tw={['btn btn-xs', canvas.tool === 'none' ? 'btn-primary' : null]}
+                    tw={[canvas.tool === 'none' ? 'btn-primary' : null]}
                 >
                     none
-                    <Ikon.mdiSetNone />
                     <ComboUI combo='0' />
-                </div> */}
+                </Button> */}
                 {canvas.allTools
                     .toSorted((x, y) => x.category.localeCompare(y.category))
                     .map((tool: ICanvasTool) => (
@@ -52,7 +53,7 @@ export const CanvasToolCategoriesUI = observer(function CanvasToolCategoriesUI_(
         <div>
             {categories.map((category) => {
                 return (
-                    <div tw='flex'>
+                    <div tw='flex' key={category}>
                         <div>{category}</div>
                         <div>
                             <CanvasToolsUI category={category} />{' '}
@@ -74,6 +75,7 @@ export const CanvasToolsUI = observer(function CanvasToolsUI_(p: { category?: st
                     <div tw={[draft === canvas.currentDraft ? 'bd' : null]}>
                         <DraftIllustrationUI
                             onClick={() => {
+                                console.log(`[🤠] CLICKED`)
                                 draft.openOrFocusTab()
                                 canvas.currentDraft = draft
                             }}

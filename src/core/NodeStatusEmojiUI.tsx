@@ -2,16 +2,17 @@ import type { ComfyNode } from './ComfyNode'
 
 import { observer } from 'mobx-react-lite'
 
+import { Ikon } from '../csuite/icons/iconHelpers'
 import { Loader } from '../csuite/inputs/shims'
 import { exhaust } from '../csuite/utils/exhaust'
 
 export const NodeStatusEmojiUI = observer(function NodeStatusEmojiUI_(p: { node: ComfyNode<any, any> }) {
     const s = p.node.status
     if (s === 'executing') return <Loader />
-    if (s === 'cached') return <span className='material-symbols-outlined text-green-600'>bookmark</span>
-    if (s === 'done') return <span className='material-symbols-outlined text-green-600'>done</span>
-    if (s === 'error') return <span className='material-symbols-outlined text-red-600'>error</span>
-    if (s === 'waiting') return <span className='material-symbols-outlined text-blue-600'>next_plan</span>
-    if (s == null) return <span className='material-symbols-outlined text-gray-600'>contact_support</span>
+    if (s === 'cached') return <Ikon.mdiBookmark tw='text-green-600' />
+    if (s === 'done') return <Ikon.mdiCheck tw='text-green-600' />
+    if (s === 'error') return <Ikon.mdiAlert tw='text-red-600' />
+    if (s === 'waiting') return <Ikon.mdiClockOutline tw='text-blue-600' />
+    if (s == null) return <Ikon.mdiCrosshairsQuestion tw='text-gray-600' />
     return exhaust(s)
 })

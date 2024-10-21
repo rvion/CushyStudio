@@ -16,6 +16,7 @@ import { PlaygroundJSX } from './PlaygroundJSX'
 import { PlaygroundMessages } from './PlaygroundMessages'
 import { PlaygroundPanelStoreUI } from './PlaygroundPanelStoreUI'
 import { PlaygroundRegisteredForms } from './PlaygroundRegisteredForms'
+import { PlaygroundRenderUI } from './PlaygroundRender'
 import { PlaygroundRequirements } from './PlaygroundRequirements'
 import { PlaygroundScratchPad } from './PlaygroundScratchPad'
 import { PlaygroundSelectUI } from './PlaygroundSelectUI'
@@ -47,6 +48,7 @@ export const PanelPlaygroundUI = observer(function PanelPlaygroundUI_(p: PanelPl
             <UI.Panel.Header extensibleHeight>{Header_Playground.root.header()}</UI.Panel.Header>
             <ErrorBoundaryUI /* 👇 playground sub-pages */>
                 {mode.forms && <PlaygroundForms />}
+                {mode.render && <PlaygroundRenderUI />}
                 {mode.requirements && <PlaygroundRequirements />}
                 {mode.registeredForms && <PlaygroundRegisteredForms />}
                 {mode.widgetShowcase && <PlaygroundWidgetDisplay />}
@@ -63,7 +65,7 @@ export const PanelPlaygroundUI = observer(function PanelPlaygroundUI_(p: PanelPl
             </ErrorBoundaryUI>
 
             <MessageInfoUI>
-                <div tw='inline text-sm overflow-clip'>
+                <div tw='inline overflow-clip text-sm'>
                     <span>Use this panel as a scratchpad by modifying </span>
                     <span tw='rounded px-1'>PlaygroundScratchPad</span>
                     <span> in </span>
@@ -78,19 +80,17 @@ export const PanelPlaygroundUI = observer(function PanelPlaygroundUI_(p: PanelPl
     )
 })
 
-const Header_Playground = cushyFactory.entity(
+const Header_Playground = cushyFactory.document(
     (ui) =>
-        ui.choice({
-            appearance: 'tab',
-            default: 'scratchPad',
-            tabPosition: 'start',
-            items: {
+        ui.choice(
+            {
                 skins: ui.empty(),
                 jsx: ui.empty(),
                 panelProps: ui.empty(),
                 select: ui.empty(),
                 size: ui.empty(),
                 forms: ui.empty(),
+                render: ui.empty(),
                 customPanels: ui.empty(),
                 requirements: ui.empty(),
                 registeredForms: ui.empty(),
@@ -100,7 +100,8 @@ const Header_Playground = cushyFactory.entity(
                 comfyImport: ui.empty(),
                 messages: ui.empty(),
             },
-        }),
+            { appearance: 'tab', default: 'scratchPad', tabPosition: 'start' },
+        ),
     {
         name: 'Playground Conf',
         serial: () => readJSON('settings/playground_config.json'),

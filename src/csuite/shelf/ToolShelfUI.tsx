@@ -7,7 +7,7 @@ import { observer } from 'mobx-react-lite'
 import { useEffect, useMemo } from 'react'
 
 import { Button } from '../button/Button'
-import { InputBoolToggleButtonUI } from '../checkbox/InputBoolToggleButtonUI'
+import { ToggleButtonUI } from '../checkbox/InputBoolToggleButtonUI'
 import { Frame } from '../frame/Frame'
 import { ToolShelfState } from './ToolShelfState'
 
@@ -52,7 +52,7 @@ export const ToolShelfUI = observer(function ToolShelfUI_(p: ToolShelfProps) {
                         ]}
                     >
                         <Button
-                            tw='relative top-16 -left-0.5'
+                            tw='relative -left-0.5 top-16'
                             size={'xs'}
                             square
                             icon='mdiChevronRight'
@@ -86,7 +86,7 @@ export const ToolShelfUI = observer(function ToolShelfUI_(p: ToolShelfProps) {
                         <div //Resize Handle Area
                             tw={[
                                 'absolute select-none',
-                                uist.dragging && '!top-0 !left-0',
+                                uist.dragging && '!left-0 !top-0',
                                 isHorizontal ? 'hover:cursor-ew-resize' : 'hover:cursor-ns-resize',
                             ]}
                             style={{
@@ -110,7 +110,7 @@ export const ToolShelfUI = observer(function ToolShelfUI_(p: ToolShelfProps) {
     )
 })
 
-function getFlex(pState: ToolShelfPanelState) {
+function getFlex(pState: ToolShelfPanelState): 'flex-row' | 'flex-col' {
     const size = cushy.preferences.interface.value.toolBarIconSize
     if (pState.size < size * 2 && pState.size > size) {
         return 'flex-row'
@@ -147,7 +147,8 @@ export const ToolShelfButtonUI = observer(function ToolShelfButtonUI_(
     const iconSize = cushy.preferences.interface.value.toolBarIconSize
     const expand = p.panelState.size > iconSize * 2
     return (
-        <InputBoolToggleButtonUI //
+        <ToggleButtonUI //
+            toggleGroup='shelf'
             style={{
                 //
                 width: `${!expand ? iconSize : p.panelState.size}px`,

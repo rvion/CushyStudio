@@ -56,12 +56,8 @@ export type UI_subform_Tile_Preprocessor = X.XChoice<{
 }>
 export function ui_subform_Tile_Preprocessor(): UI_subform_Tile_Preprocessor {
     const form: X.Builder = getCurrentForm()
-    return form.choice({
-        label: 'Depth Preprocessor',
-        startCollapsed: true,
-        default: 'Pyrup',
-        appearance: 'tab',
-        items: {
+    return form.choice(
+        {
             None: form.empty(),
             Pyrup: form.group({
                 label: 'Settings',
@@ -72,7 +68,13 @@ export function ui_subform_Tile_Preprocessor(): UI_subform_Tile_Preprocessor {
                 },
             }),
         },
-    })
+        {
+            label: 'Depth Preprocessor',
+            startCollapsed: true,
+            default: 'Pyrup',
+            appearance: 'tab',
+        },
+    )
 }
 
 // 🅿️ Tile RUN ===================================================

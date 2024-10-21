@@ -1,116 +1,87 @@
-☐ before commit:
-    ☐ finish panel output
-    ☐ change panel config shelf default size
-    ☐ new api to pre-compute colors
-    ☐ select: multiple placement >
+SHORT TERM TODO:
 
-2024-07-26 - MAJOR BREAKTHROUGH:
-    ☐ header => cell
-    ☐ body => full
+    CORE BUGS:
+        ☐ undoing choices via the undo button doesn't work properly. choices no longer there are still displayed
+            ☐  absolutely need to write some failing test first; clearly some reactivity issue
 
-2024-07-17:
-    ☐ well known skins @started(24-07-25 16:33)
-        ☐ WidgetWithLabelUI:
-            ☐ new flag { vertical?: boolean, ...}
-        ☐ DefaultCellUI: (guarantee to always be ONE cell height)
-        ☐ readonly property on any Widget (bloc)
-    ✘ multiple withConfig / rank-1 types @cancelled(24-07-25 16:33)
-    ✔ // 💬 2024-07-17YOLO🦀🦊 @done(24-07-25 16:33)
-    ✔ render du RevealUI @done(24-07-25 16:32)
-        ☐ (aussi présent sur le FormUI)
-    ✔ discuter inputHeight / widgetHeight @done(24-07-25 16:33)
-        ☐ renommer 'widget' => 'cell', ajouter 'inside'
-    ☐ migration system
-    ☐ inputUpload
+        ☐ resetting lists kina make some lists not set (see controlnets)
 
-    ☐ customize select agressively so we have one version that looks like notion
+    ☐ UC 2024-10-18
+        ☐ reading the code
+        ☐ making implementation plan
+            ☐
 
-2024-07-15:
-    ✔ list identation @done(24-07-25 16:33)
-    ✔ list sub-items boxes not taken into account @done(24-07-25 16:33)
+    ✔ remove unoCSS @done(24-10-18 19:57)
 
-2024-07-12:
-    ✔ repository not as property of other classes, but as param with defulat from DI mechanism @done(24-07-25 16:34)
-    ✔ csuite expect globalRepo to exist/be available via DI @done(24-07-25 16:34)
-    ✘ csuite expect globalDomain to exist/be available via DI @cancelled(24-07-25 16:39)
-    ✔ Builder and Schema do not know the repository that will host the instances @done(24-07-25 16:39)
-    ✔ schema must NOT know its builder (it's irrelevant) @done(24-07-25 16:39)
-    ✘ basebuilder MUST take the schema class as ctor so we can re-use it. @cancelled(24-07-25 16:39)
-    ✘ BASE schema must be able to change it's ctor. @cancelled(24-07-25 16:39)
+    ☐ remove last remnants of daisy
+        ☐ loading loading-spinner
+        ☐ btn
+        ☐ material-symbols-outlined
 
-2024-07-11:
-    ✘ only a single schema class @cancelled(24-07-12 16:15)
-
-2024-07-08:
-    ☐ updateSnapshot only called once
-    ✔ 'type' => '$' @done(24-07-17 16:23)
-    ✔ choices widget @done(24-07-17 16:23)
-    ☐ avoir un endroit ou ecrire des tests sur les pub/sub et sur les reactions.
-    ✔ size @done(24-07-17 16:23)
-    ☐ Field_Dyanmic
-    ✔ valmut partout @done(24-07-17 16:23)
-    ✔ onInit @done(24-07-10 13:55)
-    ☐ onCreate
-    ✔ extends @done(24-07-17 16:23)
-        ✔ customMethods @done(24-07-17 16:23)
-        ✔ customForms @done(24-07-17 16:23)
+    ☐ fix the seed widget: right now, when in random mode (not set to a specific number) evaluating two prompts will use the same seed. it's a bug
 
 
-2024-07-01:
-    ✔ test about link auto-migration. @done(24-07-08 10:16)
-    ✔ setSerial. @done(24-07-08 10:16)
-    ✔ setting value on value by addming more proxies. @done(24-07-08 10:16)
-    ✘ info mapping via custom schema mapping. @cancelled(24-07-08 10:16)
+    ☐ improve the civitai custom frontend:
+        ☐ cache request
+        ☐ add history
+        ☐ download button has weird double spinner / double text while downloading
 
-2024-06-29:
-    ✘ 1. tweak entity api so we only have one param ({schema, serial, ...}) (15min) @cancelled(24-07-01 22:33)
-    ✔ 2. recover from/to list when iterating on the schema (15min) @done(24-07-01 22:33)
-    ☐ 3. config tab persitence (15min)
-    ☐ 4. debug icon to see panel data (15min)
+    ☐ prompts boxs are synced between two drafts this should not happen (have not checked other ui, vinsi pony app has this problem)
+        ☐ find simple repro
 
---------------
-☐ make sure choices always show in the same order
-☐ debug electron
-    - https://github.com/nodejs/node/blob/main/doc/abi_version_registry.json
-    - https://www.electronjs.org/blog/electron-31-0
+    ☐ prompt plugins issues
+        ☐ like the `preview final prompt` are not synced with the text. once opened, the text is never updated
+        ☐ in the `lora plugin`: the first letter break focus, and then it allows you to type properly
 
---------------
+    ☐ the generated prompt is just broken. (foo, bar, baz :1.1) generates shitty stuff.
+        ☐ write test before fixing so those kind of stuff are never broken anymore
 
-☐ post to pictogrammers
-☐ form context
-☐ previous value
-☐ router api (copy from loco)
+    ☐ gallery is broken with images incorrectly overlapping
 
-☐ compile classes so it's instant
-☐ rename frame hight-level apperance names ('headless' 'subtle' 'default' 'ghost' 'primary' 'secondary')
-☐ make controls for all of those high-level apperance names
-    ☐ text + shadow + base + ... for each
-☐ add a few cushy-specific options like labels (text +...)
-☐ simpler APIs to override forms
+    ☐ a draft is only synced when its duplicated, if you make a new item in a list after the duplication that item isn't synced
 
-----------------
+    ✔ gallery no longer resize dynamically; observability issues again @done(24-10-18 09:20)
 
+    ✔ open in vscode enty in field menu not working @done(24-10-18 16:20)
+    ✔ add menu entry to open step panel from any image that comes from a step @done(24-10-18 16:20)
 
-☐ hovering color should propagate
-☐ background should probably not be inherited; I thought transparent by default stuff was bad, b
+    ☐ fix dropping images from gallery to mask
+
+    ☐ add autofocus to image picker from inputImage
+
+    ☐ opening minipaint says Cannot GET /minipaint/index.html
+        ☐ prod don't work, dev does (tought my shortcut was dev.....)
+        ☐ need to remove the three different public server, and just serve everything from root folder instead
+        ☐ public folders were a bad idea
 
 
-☐ bundle
-    ☐ improve chain leading to type import to easilly remove wrong links
-    ☐ make sure all TS and JS are all present
-    ☐ move all stuff in one unique folder
 
-Loco:
-    ✔ remove `cushy.` usage in all forms @done(24-05-07 14:31)
-    ☐ tree widget (no more st) usage
-    ☐ default values
-    icons:
-        ☐ @mdi/react
-        ☐ @mdi/js
-        ☐ list icons
-        ☐ more icons for other key types
-    ☐ misc forms
-        ☐ color transparency ?
+Nice to have?:
+    ☐ Can step output be chosen what can be turned off and on? like only image on or only graphs?
+        ☐ have toogles to allow to hide some of the outputs ?
+
+    ☐ make a proper controlnet UI
+---------------------
+🔴 = important
+
+misc:
+    ☐ bugfixes
+        ☐ 🔴resetting choices no longer work properly
+            ☐ need a test
+    ☐ shells
+        ✔ right click anywhere on field to bring field menu on fields @done(24-10-17 20:41)
+        ☐ remove undo button, and move it as left gutter
+    ☐ prompt:
+        ☐ 🔴 fix prompt compliation
+    ☐ sdxl
+    ☐ research
+         ☐ field type templates
+            ☐ only use FieldTypes instead of schema / field
+            - similar to what is already done in group
+
+
+💬 2024-09-27 TYPE PERF:
+
 
 UC take 2:
     ✔ selection should be hidden when not in generate mode @done(24-03-31 20:49)
@@ -129,35 +100,6 @@ UC take 2:
 
 -------------
 
-
-✔ <Form theme={...} /> @done(24-05-07 14:31)
-✔ better bundling ? @done(24-05-07 14:31)
-✔ remove all config options @done(24-05-07 14:31)
-
-✔ make all files accesible @done(24-03-26 15:38)
-✔ output custom @done(24-03-26 15:38)
-    ✔ 3 options @done(24-03-26 15:38)
-        ✔ simple function ? => force d'inliner tout, empèche la moindre reutilisation @done(24-03-26 15:38)
-        ✔ faire dres trucs magique pour compiler une fontion avec toutes ses dépendences @done(24-03-26 15:38)
-        ✔ définir un output type dans l'app, qui en plus se hot reload => prob mieux @done(24-03-26 15:38)
-            ✔ plus résilient et moins résilient à la fois. @done(24-03-26 15:38)
-✔ add back threejs into build @done(24-03-26 15:38)
-☐ investigate https://stackoverflow.com/questions/52579681/typescript-prevent-imports-from-certain-directory-in-project
-✔ add back the live update of string values @done(24-03-20 15:21)
-    ✔ current system forbid usage as dynamic search @done(24-03-20 15:21)
-    ✔ annoying when we expect the string to update live at different areas @done(24-03-20 15:21)
-✔ tab between widget int does not work properly (extra jump somewhere in the middle, have to press tab more than once) @done(24-03-26 15:38)
-    ✔ int do not work properly @done(24-03-26 15:38)
-    ✔ https://cushy.fra1.cdn.digitaloceanspaces.com/rvion/76a67a6a40edffde772bfd345703fc62c0146963.jpg @done(24-03-26 15:38)
-✔ missing focus around text and input @done(24-03-26 15:38)
-    ✔ tabbing between widgets is hard to do becase we don't have any visual clues anymore @done(24-03-26 15:38)
-    ✔ https://cushy.fra1.cdn.digitaloceanspaces.com/rvion/76a67a6a40edffde772bfd345703fc62c0146963.jpg @done(24-03-26 15:38)
-
-✔ fix codegen with new template @done(24-03-05 23:30)
-✔ recent Apps @done(24-03-26 15:38)
-✔ recentDrafts @done(24-03-20 15:22)
-✔ proper Tab @done(24-05-07 14:31)
-✔ lastRunAt @done(24-03-26 15:39)
 ☐ https://github.com/WiseLibs/better-sqlite3/issues/262
 ✔ lastUpdateAt on forms. @done(24-03-31 19:33)
 ☐ fold button when no label.
@@ -210,21 +152,6 @@ masterpiece, sofa, tree, [color] [adj_beauty] [adj_general] nature, intricate_de
 - make _formBuilder not observable => need engine for model
 - fix random not updating
 -
----------------------
-form rework:
-    ✘ emoji to illustration app @cancelled(24-01-28 08:13)
-    ✔ stop that crap with optionals at type level => use proper Optional warpper. @done(24-01-28 08:13)
-        ✔ make it transparent through the formBuilder @done(24-01-28 08:13)
-        ✔ hoist label automagically. @done(24-01-28 08:13)
-    ✔ properly rewrite group / groupOpt @done(24-01-28 08:13)
-    ✔ duplicating a draft should @done(24-01-28 08:13)
-    Migration guide:
-        ✔ `form.str(...)` has been renamed to `form.string(...)` @done(24-01-28 08:14)
-        ✔ `form.strOpt(...)` has been renamed to `form.stringOpt(...)` @done(24-01-28 08:14)
-        ✔ in various `form.*Opt` variants: `default` property has been renamed to `startActive` @done(24-01-28 08:14)
-        ✔ no more `group: string` param in widget configs, it was anyway unused @done(24-01-28 08:14)
-
-
 ☐ RELEASE AFTER
     ☐ prompt lang @started(24-02-08 23:41)
     ☐ basic unified canvas @started(24-02-08 23:41)
@@ -281,185 +208,3 @@ Todo :
     ☐ cache action compilation
     ☐ image loader (local files by path)
     ☐ permutations node (possibly hard, possibly easy with lists)
-    ☐ code builder:
-    ✘ new primitive to add all the primitive inputs instead of having super long names, @cancelled(24-02-18 15:30)
-    ✘ add back popout button @cancelled(24-02-18 15:33)
-    ✔ use any image as draft illustration @done(24-02-18 15:30)
-    ✘ runpod serverless @cancelled(24-02-18 15:30)
-    ✔ one-click create app @done(24-02-18 15:30)
-    ✔ stuck in ComfyUI @done(24-02-18 15:30)
-    ✘ comfyUI node explorer looks bad @cancelled(24-02-18 15:30)
-    ✘ select nodes  => see the corresponding code in realtime @cancelled(24-01-26 18:49)
-    ✔ better treeview with apps @done(24-02-01 19:11)
-    ✔ home page @done(24-01-31 13:00)
-    ✔ image app @done(24-01-31 13:00)
-    ✔ optimize all images ☐ option to reduce image size @started(24-01-26 18:50) @done(24-02-01 19:08) @lasted(6d18m22s)
-    ✔ disable update button from within the app, and tell people to close cushy and click install @done(24-02-01 19:08)
-    ✔ single output panel @done(24-02-01 19:08)
-    ✔ move hosts in an other panel @done(24-02-01 19:08)
-    ✔ library page on the website @done(24-01-26 18:49)
-    ✔ finish autorun so it wait for nothing to be running an action change @done(24-01-26 18:49)
-    ✔ image drop anywhere in the app @done(24-01-26 18:48)
-    ✔ currentForm() @done(23-12-31 15:38)
-    ✔ fix nsfwjs by including the model locally (web host went down) @done(23-12-23 08:54)
-    ✔ button to delete draft @done(23-12-31 01:16)
-    ✔ https://unjs.io/packages/image-meta @done(23-12-31 13:21)
-    ✔ better hot-reload @done(23-12-31 18:38)
-    ✔ store metafile @done(23-12-31 18:38)
-    ✔ stop storing build artifact on disk @done(23-12-31 18:38)
-    ✔ currentRun() @done(23-12-31 18:53)
-    ✔ fix login callback not beeing available after public dir change @done(24-01-06 22:12)
-    ✔  better way for authors to add defautls to their prefabs / presets (??) @done(24-01-01 22:50)
-        ✔ avoid errors @done(24-01-01 22:50)
-    ✔ include requirements on custom nodes needed so an error message appear if missing custom nodes @done(24-01-01 22:50)
-        ☐ display it if node is missing
-    ✔ button to download missing models automatically @done(24-01-01 22:51)
-    ✔ duplicated 'CLIPVision model (IP-Adapter)' + finish fixing the ip adapter @done(24-01-07 09:40)
-
-
-misc:
-    ✔ open folder @done(23-12-22 15:59)
-    ✔ "edit" delete the output image @done(23-12-22 14:02)
-    ✔ add default non virtual local host @done(23-12-22 13:57)
-    ✔ config => settings @done(23-12-21 23:16)
-    ✔ ability to quickly troubleshoot db problems via debug menu @done(23-12-21 23:16)
-    ✔ proper size & orientation detection is now available for any kind of image, thanks to image-meta @done(23-12-21 23:16)
-    ✔ prompt errors reported by cushy (not runtime error) are now properly reported as errors in the UI and persisted in the DB @done(23-12-21 23:16)
-    ✔ capitalize `theme` word in appbar @done(23-12-20 15:55)
-    ✔ reorder appbar to have login at the end of the left section @done(23-12-20 15:55)
-    ✔ opening a past step fold it in the outputs panel @done(23-12-20 15:34)
-    ✔ menu reveal  close itself too fast @done(23-12-20 15:12)
-    ✔ text on theme menu @done(23-12-20 15:13)
-    ✔ auto layout not handling positive correctly @done(23-12-20 15:50)
-    ✔ improve forms look and feel @done(23-12-20 15:27)
-    ✔ improve size widget preview a bit @done(23-12-20 15:27)
-    ✔ hacky fix library so it's at least a bit usable @done(23-12-20 15:40)
-    ✔ codegen swap file @done(23-12-20 15:17)
-    ✔ hot reload apps @done(23-12-22 17:37)
-    ✔ don't autofocus preview images @done(23-12-19 10:25)
-    ✔ draft tabs/ files @done(23-12-19 10:24)
-    ✔ background image for config panel @done(23-12-19 10:24)
-
-    ✘ small mention in the readme that dev console can help troubleshoot problems. @cancelled(23-12-19 10:24)
-    ✘ custom size on size widget @cancelled(23-12-19 10:24)
-
-    // 🔶 can't move frame ref here because no way to override mobx
-    // comfyUIIframeRef = createRef<HTMLIFrameElement>()
-
-    ✘ surrounded by card for ju and tu @cancelled(23-12-16 17:59)
-    ✔ better marketplace without fetching stars and repo infos by adding some gen-marketplace-data @done(23-12-16 17:59)
-    ✔ tree library menu by default @done(23-12-16 17:53)
-    ✔ drafts @done(23-12-16 17:53)
-    ✔ fix the "run" button not being disabled when it should @done(23-12-16 17:53)
-    ✔ have a better auto-UI generated @done(23-12-16 18:00)
-    ✔ make the run button red if cushy is not running @done(23-12-16 18:00)
-
-✔ remove the need for node / npm to be installed @done(23-12-06 00:14)
-✔ ❌ problem : @done(23-12-06 00:14)
-    ✔ installing Cushy depends on having node and git installed @done(23-12-06 00:14)
-    ✔ many people don't have node installed @done(23-12-06 00:14)
-    ✔ many people have too old / incompatible version installed @done(23-12-06 00:14)
-    ✔ install instruction have too many steps @done(23-12-06 00:14)
-    ✔ it's hard to provide a self-contained upgradable archive @done(23-12-06 00:14)
-
-✔ 🟢 solution: @done(23-12-06 00:14)
-    ✔ have a install script with 0 dependencies that @done(23-12-06 00:14)
-        ✔ download the tiny `pnpm` binary (exact version) @done(23-12-06 00:14)
-        ✔ use `pnpm` to install all dependencies including electron @done(23-12-06 00:14)
-        ✔ bypass completely the need for node by using electron built-in node @done(23-12-06 00:14)
-            ✔ start `vite` via it's typescritp api from the start.cjs script itself @done(23-12-06 00:14)
-            ✔ this will also probably fix the problem of vite/electron not closing synchronously @done(23-12-06 00:14)
-    ✔ extra bonus: @done(23-12-06 00:14)
-        ✔ ship pnpm binaries for common archs in the repo directly ? @done(23-12-06 00:14)
-
-✔ fix all selects @done(23-11-26 11:56)
-✔ proper error message when node not found @done(23-12-02 10:44)
-✔ open in correct panels @done(23-11-25 14:23)
-✔ have official layout show on first launch even if no comfyUI found @done(23-11-24 22:39)
-✔ auto-open all default 5/6 built-in apps @done(23-11-24 22:34)
-✔ re-ordernable lists @done(23-11-24 13:51)
-✔ step on size widget @done(23-11-24 13:51)
-✔ favorites added at the top @done(23-11-23 20:53)
-✔ boolean toogles @done(23-11-23 20:51)
-✔ regional prompt should allow to change color @done(23-11-23 21:11)
-✔ ensure we don't download github stars anymore @done(23-11-24 12:20)
-
-✔ break node in rich prompt @done(23-11-11 09:57)
-✔ properly re-focus root on any blur (find some code I previously wrote for that) @done(23-11-11 11:20)
-✔ fix remaining errors in the codebase @done(23-11-11 11:18)
-✔ proper size picker action @done(23-11-20 03:18)
-✔ no git init when creating actions @done(23-11-10 20:21)
-✔ faster clone @done(23-11-10 20:21)
-✔ add squoosh images @done(23-11-20 03:18)
-✔ error messages @done(23-11-20 03:18)
-
-✔ center preview @done(23-11-08 20:55)
-✔ better latent preview @done(23-11-01 13:15)
-    ✔ fix aspect ratio @done(23-11-01 13:15)
-    ✔ zoom on hover @done(23-11-01 13:15)
-
-✔ better scribble @done(23-11-08 20:55)
-✔ edit should add to type-checking @done(23-11-08 20:55)
-✔ autorun @done(23-11-08 20:55)
-✔ scribble @done(23-11-08 20:55)
-✔ close things @done(23-11-08 20:56)
-✔ better type-checking config @done(23-11-08 20:56)
-
-✔ remove the action picker completely @done(23-11-08 20:56)
-    ✔ have a full-screen card picker that appear on pick  an action part @done(23-11-08 20:56)
-✔ make the default layout have two columns: @done(23-11-08 20:56)
-    ✔ one for the card UI @done(23-11-08 20:56)
-    ✔ one for the preview @done(23-11-08 20:56)
-✘ have the "gallery" be a "bottom" border so it don't take space @cancelled(23-11-08 20:57)
-✔ switch to a nice vertical layout for forms, since 80% of people prefer that @done(23-11-08 20:57)
-✔ redo the navbar, so labels are visible for all main menus @done(23-11-08 20:57)
-
-✘ have the "run" panel be a  right "border" so it don't take space @cancelled(23-11-08 20:57)
-    ✘ https://rawgit.com/caplin/FlexLayout/demos/demos/v0.7/demo/index.html @cancelled(23-11-08 20:57)
-
-
-marketplace:
-    ✔ proper action pack manifest file @done(23-11-08 20:57)
-    ✘ show readme in marketplace @cancelled(23-11-08 20:57)
-    ✔ one-click create action pack @started(23-10-26 21:30) @done(23-11-01 10:39) @lasted(5d14h9m30s)
-    ✔ refresh star count and readme every few hours (add expire mechanism) @done(23-10-26 21:29)
-
-perf:
-    ✔ make type inference is faster @done(23-10-26 20:55)
-    ✔ make Cushy not load all actions/draft by default @done(23-11-08 20:56)
-
-discoverability:
-    ✔ self discoverable completsion `:`, `@`, `#`, `*` @done(23-10-26 20:54)
-    ✔ better default action pack files  (that shows how to build modular ui helper, etc) @done(23-10-26 20:55)
-
-panes:
-    ✔ ComfyNodeExplorer @done(23-10-26 20:04)
-
-asset pack:
-    ✔ marketplace should allow custom assets for images @done(23-11-08 20:57)
-    ✔ support assets in packages @done(23-11-08 20:57)
-
-widget UI:
-    ✔ polish some widgets @done(23-11-08 20:57)
-    ✔ prompts disable @done(23-11-08 20:57)
-    ✔ choices @done(23-11-08 20:57)
-    ✔ improve image preview so it fit by default + more features @done(23-10-26 21:47)
-
-misc:
-    ✔ image upload by hash system (multi host !!!) @done(23-11-10 09:41)
-    ✘ fix prompt (-api.json) import @cancelled(23-11-10 09:41)
-    ✔ add CLA for contributors @done(23-10-25 21:41)
-    ✔ better default layout on first run @done(23-10-24 21:54)
-    ✔ fix png import @started(23-10-24 18:23) @done(23-10-24 18:24) @lasted(1m32s)
-    ✔ add shortcut system @done(23-10-24 21:08)
-        ✔ fix cmd+w not working by default due to electron registering global shortcuts @done(23-11-08 21:01)
-        ✔ fix cmd+w closing the top-level window for bad reasons @done(23-11-10 18:22)
-
---------------------
-
-https://cushy.fra1.cdn.digitaloceanspaces.com/rvion/6MDKAn1sLhBrqjQqpeNZP7XqYhsX3bsNMGX7YABk4w.jpg
-- custom allow subtrees
-- widget should be able to render themsemves
-
-
-blender scenes act as top-level form trees (in the shared scenantic)

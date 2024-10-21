@@ -7,9 +7,9 @@ export const scrollBehavior_resizeGenerationTarget = (
     //
     canvas: UnifiedCanvas,
     e: KonvaEventObject<WheelEvent>,
-) => {
+): void => {
     if (canvas.tool === 'generate') {
-        let direction = e.evt.deltaY > 0 ? -1 : 1
+        const direction = e.evt.deltaY > 0 ? -1 : 1
         runInAction(() => {
             const sel = canvas.activeSelection
             const size = canvas.snapSize

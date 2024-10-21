@@ -37,13 +37,11 @@ export const PanelHeaderUI = observer(function PanelHeader({
             tw={[
                 //
                 'sticky top-0 [z-index:999]',
-                'px-0.5',
-                extensibleHeight //
-                    ? 'minh-widget shrink-0'
-                    : 'h-widget',
+                'px-1',
+                extensibleHeight ? 'minh-widget shrink-0' : 'h-widget',
                 'UI-PanelHeader',
                 'CSHY-panel-header',
-                'flex gap-1 select-none',
+                'flex select-none gap-1',
                 'overflow-auto',
                 'items-center',
                 // 'flex-wrap',

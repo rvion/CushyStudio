@@ -5,10 +5,11 @@ app({
     metadata: {
         name: 'orchestrator',
     },
-    ui: (form) => ({
-        batchesStart: form.int({ default: 5 }),
-        batchesEnd: form.int({ default: 7 }),
-    }),
+    ui: (b) =>
+        b.fields({
+            batchesStart: b.int({ default: 5 }),
+            batchesEnd: b.int({ default: 7 }),
+        }),
     run: async (run, ui) => {
         for (let batch = ui.batchesStart; batch <= ui.batchesEnd; batch++) {
             run.output_text(`starting batch ${batch}`)
@@ -33,11 +34,12 @@ const foo = app({
     metadata: {
         name: 'test-2023-12-19',
     },
-    ui: (form) => ({
-        frameStart: form.int({ default: 1 }),
-        frameEnd: form.int({ default: 10 }),
-        reprocess: form.boolean({ default: false }),
-    }),
+    ui: (b) =>
+        b.fields({
+            frameStart: b.int({ default: 1 }),
+            frameEnd: b.int({ default: 10 }),
+            reprocess: b.boolean({ default: false }),
+        }),
     run: async (run, ui) => {
         // run.formInstance.values.frameStart
 

@@ -3,59 +3,61 @@
  * For the slay-the-spire game
  */
 
+import type { SelectOptionNoVal } from '../../../src/csuite/fields/selectOne/SelectOption'
 import type { MediaImageL } from '../../../src/models/MediaImage'
 
 import { bang } from '../../../src/csuite/utils/bang'
 import { run_ipadapter_standalone, ui_ipadapter_standalone } from '../_ipAdapter/prefab_ipAdapter_base_standalone'
-import { run_model, ui_model } from '../_prefabs/prefab_model'
 import { run_prompt } from '../_prefabs/prefab_prompt'
 import { View_DeckOfCards } from '../_views/View_DeckOfCards'
+import { evalModelSD15andSDXL, prefabModelSD15andSDXL } from '../SD15/_model_SD15_SDXL'
 import { stsAssets } from './_stsAssets'
 import { allCards } from './_stsCards'
 import { drawCard } from './_stsDrawCard'
 import { convertColors, convertKind, convertRarity } from './_stsHelpers'
+
+const cardOptions: SelectOptionNoVal<string>[] = allCards.map((x) => {
+    const color = convertColors(x.Color)
+    const kind = convertKind(x.Type)
+    const rarity = convertRarity(x.Rarity)
+    const label = `${x.Name} ${color} ${kind} (${rarity})`
+    return { id: x.ID ?? x.Name, label }
+})
 
 app({
     metadata: {
         name: 'slay-the-spire art-pack generator',
         description: 'SlayTheSpire (STS) art-pack generator',
     },
-    ui: (ui) => ({
-        model: ui_model(),
-        ipadapter: ui_ipadapter_standalone().optional(),
-        // positive: ui.string({ default: 'masterpiece, tree' }),
-        seed: ui.seed({}),
-        mode: ui.selectOneV2(['xl', '1.5']),
-        secondPass: ui.bool(),
-        //
-        rarity: ui.selectOneV2(['uncommon', 'common', 'rare']).optional(),
-        colors: ui.selectOneV2(['red', 'green', 'gray']).optional(),
-        kind: ui.selectOneV2(['attack', 'power', 'skill']).optional(),
-        cards: ui.selectMany({
-            choices: allCards.map((x) => {
-                const color = convertColors(x.Color)
-                const kind = convertKind(x.Type)
-                const rarity = convertRarity(x.Rarity)
-                const label = `${x.Name} ${color} ${kind} (${rarity})`
-                return { id: x.ID ?? x.Name, label }
-            }),
-        }),
-        llmModel: ui.llmModel({ default: 'openai/gpt-4' }),
-        max: ui.int({ default: 3, min: 1, max: 100 }),
-        promptPrefix: ui.prompt(),
-        promptSuffix: ui.prompt(),
-        character: ui.prompt({ default: 'an elf-robot, with blue hairs' }),
+    ui: (b) =>
+        b.fields({
+            model: prefabModelSD15andSDXL(),
+            ipadapter: ui_ipadapter_standalone().optional(),
+            // positive: ui.string({ default: 'masterpiece, tree' }),
+            seed: b.seed({}),
+            mode: b.selectOneString(['xl', '1.5']),
+            secondPass: b.bool(),
+            //
+            rarity: b.selectOneString(['uncommon', 'common', 'rare']).optional(),
+            colors: b.selectOneString(['red', 'green', 'gray']).optional(),
+            kind: b.selectOneString(['attack', 'power', 'skill']).optional(),
+            cards: b.selectManyOptionIds(cardOptions, { appearance: 'select' }),
+            llmModel: b.llmModel({ default: 'openai/gpt-4' }),
+            max: b.int({ default: 3, min: 1, max: 100 }),
+            promptPrefix: b.prompt(),
+            promptSuffix: b.prompt(),
+            character: b.prompt({ default: 'an elf-robot, with blue hairs' }),
 
-        negative: ui.prompt({ default: 'bad quality, blurry, low resolution, pixelated, noisy' }),
-    }),
+            negative: b.prompt({ default: 'bad quality, blurry, low resolution, pixelated, noisy' }),
+        }),
     run: async (run, ui) => {
         const W = 500
         const H = 380
         const workflow = run.workflow
         const graph = workflow.builder
-        let { ckpt, clip, vae } = run_model(ui.model)
+        let { ckpt, clip, vae } = evalModelSD15andSDXL(ui.model)
         if (ui.ipadapter) ckpt = (await run_ipadapter_standalone(ui.ipadapter, ckpt)).ip_adapted_model
-        const isXL = ui.mode.id === 'xl'
+        const isXL = ui.mode === 'xl'
         const height = isXL ? H * 3 : H
         const width = isXL ? W * 3 : W
         const negativeText = ui.negative.compile({ onLora: () => {} }).promptIncludingBreaks
@@ -75,7 +77,7 @@ app({
             if (AFTERGENERATION.length >= ui.max) break
             // if cards are manually specified, only use those
             if (ui.cards.length > 0) {
-                const match = ui.cards.map((i) => i.id).includes(x.ID ?? x.Name)
+                const match = ui.cards.includes(x.ID ?? x.Name)
                 if (!match) continue
             }
 
@@ -85,9 +87,9 @@ app({
             const uid = `${x.ID ?? x.Name}-${color}-${kind}-${rarity}`
 
             console.log(`[🤠] `, color, kind, rarity)
-            if (ui.rarity && ui.rarity.id !== rarity) continue
-            if (ui.colors && ui.colors.id !== color) continue
-            if (ui.kind && ui.kind.id !== kind) continue
+            if (ui.rarity && ui.rarity !== rarity) continue
+            if (ui.colors && ui.colors !== color) continue
+            if (ui.kind && ui.kind !== kind) continue
 
             // ----------------------------
 

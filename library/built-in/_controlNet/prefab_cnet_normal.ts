@@ -53,19 +53,16 @@ type UI_subform_Normal_Preprocessor = X.XChoice<{
 
 function ui_subform_Normal_Preprocessor(): UI_subform_Normal_Preprocessor {
     const form: X.Builder = getCurrentForm()
-    return form.choice({
-        label: 'Normal Preprocessor',
-        startCollapsed: true,
-        default: 'Midas',
-        appearance: 'tab',
-        items: {
+    return form.choice(
+        {
             None: form.empty(),
             Midas: ui_subform_Normal_Midas(),
             BAE: ui_subform_Normal_bae(),
             // TODO: Add support for auto-modifying the resolution based on other form selections
             // TODO: Add support for auto-cropping
         },
-    })
+        { label: 'Normal Preprocessor', startCollapsed: true, default: 'Midas', appearance: 'tab' },
+    )
 }
 
 // ==========================================================================================

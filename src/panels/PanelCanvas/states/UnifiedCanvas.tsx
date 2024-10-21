@@ -1,8 +1,13 @@
 import type { DraftL } from '../../../models/Draft'
 import type { MediaImageL } from '../../../models/MediaImage'
 import type { STATE } from '../../../state/state'
+import type { UnifiedCanvasBrushMode, UnifiedCanvasTool } from '../tools/UnifiedCanvasTool'
 import type { UnifiedCanvasViewInfos } from '../types/RectSimple'
 import type { ICanvasTool } from '../utils/_ICanvasTool'
+import type { Layer$, UC2$ } from '../V2/ucV2'
+import type { UnifiedStep } from './UnifiedStep'
+import type { Viewport } from 'pixi-viewport'
+import type { Application, Renderer } from 'pixi.js'
 
 import Konva from 'konva'
 import { makeAutoObservable, observable } from 'mobx'
@@ -17,13 +22,43 @@ import { ToolMove } from '../tools/ToolMove'
 import { ToolPaint } from '../tools/ToolPaint'
 import { ToolStamp } from '../tools/ToolStamp'
 import { KonvaGrid } from './KonvaGrid1'
-import { UnifiedCanvasBrushMode, UnifiedCanvasTool } from './UnifiedCanvasTool'
 import { UnifiedImage } from './UnifiedImage'
 import { UnifiedMask } from './UnifiedMask'
 import { UnifiedSelection } from './UnifiedSelection'
-import { UnifiedStep } from './UnifiedStep'
 
 export class UnifiedCanvas {
+    activeLayer: Layer$['$Field'] | null = null
+    selectLayer(layer: Layer$['$Field']): void {
+        this.activeLayer = layer
+    }
+    app: Application<Renderer> | null = null
+    updateViewportInfos = (vp: Viewport): void => {
+        this.viewportInfos.x = vp.x
+        this.viewportInfos.y = vp.y
+        this.viewportInfos.width = vp.width
+        this.viewportInfos.height = vp.height
+        this.viewportInfos.scaleX = vp.scale.x
+        this.viewportInfos.scaleY = vp.scale.y
+    }
+    viewportInstance: Maybe<Viewport> = null
+    viewportInfos = {
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 100,
+        scaleX: 1,
+        scaleY: 1,
+    }
+
+    cursor = {
+        xInWorld: 0,
+        yInWorld: 0,
+        xInScreen: 0,
+        yInScreen: 0,
+        xInWindow: 0,
+        yInWIndow: 0,
+    }
+
     snapToGrid = true
     snapSize = 64
     usePenPressure = true
@@ -60,16 +95,16 @@ export class UnifiedCanvas {
     }
 
     // UNDO SYSTEM ---------------------------------------------------
-    redo = () => {
+    redo = (): void => {
         const last = this._redoBuffer.pop()
-        if (last == null) return toastError('Nothing to redo')
+        if (last == null) return void toastError('Nothing to redo')
         last()
         // this._undoBuffer.push(last)
     }
 
-    undo = () => {
+    undo = (): void => {
         const last = this._undoBuffer.pop()
-        if (last == null) return toastError('Nothing to undo')
+        if (last == null) return void toastError('Nothing to undo')
         last()
         // this._redoBuffer.push(last)
     }
@@ -77,10 +112,15 @@ export class UnifiedCanvas {
     _undoBuffer: (() => void)[] = []
     _redoBuffer: (() => void)[] = []
 
-    get canUndo() { return this._undoBuffer.length > 0 } // prettier-ignore
-    get canRedo() { return this._redoBuffer.length > 0 } // prettier-ignore
+    get canUndo(): boolean {
+        return this._undoBuffer.length > 0
+    }
 
-    addToUndo = (fn: () => void) => {
+    get canRedo(): boolean {
+        return this._redoBuffer.length > 0
+    }
+
+    addToUndo = (fn: () => void): void => {
         this._undoBuffer.push(fn)
         this._redoBuffer = []
     }
@@ -89,7 +129,10 @@ export class UnifiedCanvas {
 
     activeSelection: UnifiedSelection
     private _activeMask: UnifiedMask
-    get activeMask() { return this._activeMask } // prettier-ignore
+    get activeMask(): UnifiedMask {
+        return this._activeMask
+    }
+
     set activeMask(mask: UnifiedMask) {
         this._activeMask = mask
         for (const mask of this.masks) mask.layer.hide()
@@ -106,7 +149,10 @@ export class UnifiedCanvas {
 
     _lastLine: Konva.Line | null = null
 
-    get pointerPosition() {
+    get pointerPosition(): {
+        x: number
+        y: number
+    } {
         return {
             x: this.infos.viewPointerX,
             y: this.infos.viewPointerY,
@@ -133,7 +179,7 @@ export class UnifiedCanvas {
         radius: this.maskToolSize / 2,
         opacity: this.maskOpacity,
     })
-    setBrushSize = (size: number) => {
+    setBrushSize = (size: number): void => {
         this.maskToolSize = size
         this.brush.radius(size / 2)
     }
@@ -172,7 +218,7 @@ export class UnifiedCanvas {
 
     constructor(
         public st: STATE,
-        baseImage: MediaImageL,
+        public ucv2: UC2$['$Field'],
     ) {
         this.stage = new Konva.Stage({ container: this.containerDiv, width: 512, height: 512 })
 
@@ -184,12 +230,13 @@ export class UnifiedCanvas {
         this.grid = new KonvaGrid(this)
         this.tempLayer.opacity(0.5)
         this.tempLayer.add(this.brush)
-        this.images = [new UnifiedImage(this, baseImage)]
+        this.images = []
 
         // ------------------------------
 
         const selection = this.addSelection()
         this.activeSelection = selection
+        this.activeSelection.hide()
 
         const mask = this.addMask()
         this._activeMask = mask
@@ -202,7 +249,7 @@ export class UnifiedCanvas {
         setupStage(this)
     }
 
-    addImage = (img: MediaImageL, position?: { x: number; y: number }) => {
+    addImage = (img: MediaImageL, position?: { x: number; y: number }): void => {
         this.images.push(new UnifiedImage(this, img, position))
     }
 

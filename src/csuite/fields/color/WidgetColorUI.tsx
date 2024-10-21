@@ -8,7 +8,11 @@ export const WidgetColorUI = observer(function WidgetColorUI_(p: { field: Field_
         <input //
             value={field.serial.value}
             type='color'
-            onChange={(ev) => (field.value = ev.target.value)}
+            onBlur={() => field.touch()}
+            onChange={(ev) => {
+                field.value = ev.target.value
+                p.field.touch()
+            }}
         />
     )
 })

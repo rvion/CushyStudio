@@ -27,9 +27,9 @@ export const PanelWelcomeUI = observer(function PanelWelcomeUI_(p: {}) {
     return (
         <div tw='relative'>
             <PanelHeaderUI></PanelHeaderUI>
-            <section tw='text-center py-2 flex flex-col gap-2 items-center px-8'>
+            <section tw='flex flex-col items-center gap-2 px-8 py-2 text-center'>
                 <h1 tw='text-2xl'>Welcome to CushyStudio !</h1>
-                <div tw='italic text-sm'>
+                <div tw='text-sm italic'>
                     Psss. You're early; this app is still in Beta. It update often, and break sometimes. Hope you'll have fun !
                 </div>
                 <div tw='divider mx-8'></div>

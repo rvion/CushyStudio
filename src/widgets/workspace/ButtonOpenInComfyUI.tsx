@@ -6,7 +6,7 @@ import { Button } from '../../csuite/button/Button'
 import { useSt } from '../../state/stateContext'
 
 export const ButtonOpenInComfyUI = observer(function ButtonOpenInComfyUI_(p: { graph: ComfyWorkflowL | ComfyWorkflowID }) {
-    let graphOrGraphID = p.graph
+    const graphOrGraphID = p.graph
     const st = useSt()
     const graph =
         typeof graphOrGraphID === 'string' //
@@ -14,7 +14,7 @@ export const ButtonOpenInComfyUI = observer(function ButtonOpenInComfyUI_(p: { g
             : graphOrGraphID
 
     return (
-        <div tw='flex gap-2 items-center'>
+        <div tw='flex items-center gap-2'>
             Open:
             <Button icon='mdiOpenInNew' look='ghost' size='sm' onClick={graph.menuAction_openInTab}>
                 open in ComfyUI Tab

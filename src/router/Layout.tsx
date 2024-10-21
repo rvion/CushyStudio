@@ -1,13 +1,17 @@
+import type { PropsOf } from '../csuite/types/PropsOf'
+import type { ProplessFC } from '../csuite/types/ReactUtils'
+import type { PerspectiveL } from '../models/Perspective'
 import type { STATE } from '../state/state'
 import type { PanelPersistedJSON } from './PanelPersistedJSON'
-import type { PanelState } from './PanelState'
+import type { PanelName, Panels } from './PANELS'
+import type { Layout } from 'flexlayout-react'
+import type { FC } from 'react'
 
 import * as FL from 'flexlayout-react'
-import { Actions, IJsonModel, Layout, Model as FlexLayoutModel } from 'flexlayout-react'
-import { action, makeAutoObservable, runInAction, toJS } from 'mobx'
-import { observer } from 'mobx-react-lite'
+import { Actions, Model as FlexLayoutModel } from 'flexlayout-react'
+import { action, isObservable, makeAutoObservable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
-import { createElement, createRef, FC, type RefObject } from 'react'
+import { createElement, createRef, type RefObject } from 'react'
 
 import { hashJSONObjectToNumber } from '../csuite/hashUtils/hash'
 import { getIconAsDataSVG } from '../csuite/icons/iconStr'
@@ -17,11 +21,13 @@ import { Trigger } from '../csuite/trigger/Trigger'
 import { bang } from '../csuite/utils/bang'
 import { toastError } from '../csuite/utils/toasts'
 import { type CustomPanelRef, registerCustomPanel } from '../panels/PanelCustom/CustomPanels'
+import { perspectiveHelper } from './DefaultPerspective'
+import { LayoutUI } from './LayoutUI'
 import { PanelContainerUI } from './PanelContainerUI'
-import { PanelName, panels, Panels } from './PANELS'
+import { panels } from './PANELS'
 import { type TraversalNextStep, type TraverseFn, traverseLayoutNode } from './traverseLayoutNode'
 
-export type PropsOf<T> = T extends FC<infer Props> ? Props : '❌'
+export type TabsetExt = 'active' | 'hoverd' | FL.TabSetNode
 
 // prettier-ignore
 export type PanelPlacement =
@@ -75,24 +81,90 @@ export class CushyLayoutManager {
         this.modelKey++
     }
 
+    perspective: PerspectiveL
     constructor(public st: STATE) {
-        const prevLayout = st.configFile.value.layouts_v13?.default
-        const json = prevLayout ?? this.makeDefaultLayout()
-        try {
-            this.setModel(FlexLayoutModel.fromJson(json))
-        } catch (e) {
-            console.log('[💠] Layout: ❌ error loading layout', e)
-            this.setModel(FlexLayoutModel.fromJson(this.makeDefaultLayout()))
-        }
+        // const prevLayout = st.configFile.value.layouts_v13?.default
+        this.perspective = cushy.db.perspective.getOrCreate('default')
+        this.openPerspective(this.perspective)
         makeAutoObservable(this, {
             layoutRef: false,
             open: action,
         })
     }
 
-    /** pretty print model layout as json  */
+    /** pretty print model layout as json */
     prettyPrintLayoutModel(): void {
-        console.log(`[💠] model:`, JSON.stringify(this.model.toJson(), null, 4))
+        const obs = isObservable(this.model)
+        console.log(`[💠] ${obs ? '(❌ OBSERVABLE)' : ''} layout model:`, JSON.stringify(this.model.toJson(), null, 4))
+    }
+
+    private _getTabset(tse: TabsetExt): FL.TabSetNode {
+        if (tse === 'active') return this.getActiveOrFirstTabset_orThrow()
+        if (tse === 'hoverd') return this.getHoveredOrFirstTabset_orThrow()
+        return tse
+    }
+
+    // Tabset Size Manipulation -----------------------------------------------------------
+    /** widen given tabset by given factor (default to 1.3) */
+    widenTabset(tse: TabsetExt, factor = 1.3): void {
+        this.prettyPrintLayoutShape()
+        const tabset = this._getTabset(tse)
+        const prevWeight = tabset.getWeight()
+        this.do((a) =>
+            a.updateNodeAttributes(
+                //
+                tabset.getId(),
+                { weight: prevWeight * factor },
+            ),
+        )
+    }
+
+    /** widen given tabset by given factor (default to 0.7) */
+    shrinkTabset(tse: TabsetExt, factor = 0.7): void {
+        this.prettyPrintLayoutShape()
+        const tabset = this._getTabset(tse)
+        const prevWeight = tabset.getWeight()
+        this.do((a) =>
+            a.updateNodeAttributes(
+                //
+                tabset.getId(),
+                { weight: prevWeight * factor },
+            ),
+        )
+    }
+
+    /** reset tabset size by resetting it's layout weight (default to 1) */
+    resetTabsetSize(tse: TabsetExt, weight = 100): void {
+        this.prettyPrintLayoutShape()
+        const tabset = this._getTabset(tse)
+        this.do((a) => a.updateNodeAttributes(tabset.getId(), { weight }))
+    }
+
+    // Tabset Size Manipulation -----------------------------------------------------------
+
+    /** pretty print model shape as tree, only showing important infos */
+    prettyPrintLayoutShape(): void {
+        const out: string[] = []
+        function getDepth(node: FL.Node): number {
+            let depth = 0
+            let at: Maybe<FL.Node> = node
+            while (at != null) {
+                depth++
+                at = at.getParent()
+            }
+            return depth
+        }
+        this.traverse({
+            onNode2({ type, node }) {
+                const weight =
+                    type === 'tabset' //
+                        ? ` (${node.getWeight().toString()})`
+                        : ''
+                out.push(`${'  '.repeat(getDepth(node))}${type}${weight}`)
+                return null
+            },
+        })
+        console.log(`[💠] layout shape:\n${out.join('\n')}`)
     }
 
     /** quick method to maximize a tabset */
@@ -152,7 +224,7 @@ export class CushyLayoutManager {
     }
 
     closeCurrentTabset(): Trigger {
-        let tabset = this.getActiveOrFirstTabset_orNull()
+        const tabset = this.getActiveOrFirstTabset_orNull()
         if (tabset == null) return Trigger.UNMATCHED
         this.do(Actions.deleteTabset(tabset.getId()))
         return Trigger.Success
@@ -271,35 +343,49 @@ export class CushyLayoutManager {
      * currently active perspective name
      * DO NOT UPDATE THAT MANUALLY
      */
-    currentPerspectiveName = 'default'
+    // currentPerspectiveName = 'default'
 
-    allPerspectives: PerspectiveDataForSelect[] = [
-        { label: 'default', value: 'default' },
-        { label: 'test', value: 'test' },
-    ]
+    // allPerspectives: PerspectiveDataForSelect[] = [
+    //     { label: 'default', value: 'default' },
+    //     { label: 'test', value: 'test' },
+    // ]
 
-    /**
-     * update the currently selected perspective to the current layout
-     * allow to easilly revert to this specific set of panels later
-     */
-    saveCurrentPerspective(): void {
-        return this.saveCurrentPerspectiveAs(this.currentPerspectiveName)
-    }
+    // /**
+    //  * update the currently selected perspective to the current layout
+    //  * allow to easilly revert to this specific set of panels later
+    //  */
+    // saveCurrentPerspective(): void {
+    //     return this.saveCurrentPerspectiveAs(this.currentPerspectiveName)
+    // }
 
-    saveCurrentPerspectiveAsDefault(): void {
-        return this.saveCurrentPerspectiveAs('default')
-    }
+    // saveCurrentPerspectiveAsDefault(): void {
+    //     return this.saveCurrentPerspectiveAs('default')
+    // }
 
-    saveCurrentPerspectiveAs(perspectiveName: string): void {
-        const curr: FL.IJsonModel = this.model.toJson()
-        this.st.configFile.update((t) => {
-            t.layouts_v13 ??= {}
-            t.layouts_v13[perspectiveName] = curr
-        })
+    // saveCurrentPerspectiveAs(perspectiveName: string): void {
+    //     const curr: FL.IJsonModel = this.model.toJson()
+    //     this.st.configFile.update((t) => {
+    //         t.layouts_v13 ??= {}
+    //         t.layouts_v13[perspectiveName] = curr
+    //     })
+    // }
+    openPerspective(perspective: PerspectiveL): void {
+        this.perspective = perspective
+        const json = this.perspective.data.layout
+        if (isObservable(json)) {
+            console.log(`[💠] Layout: ❌ json is observable`)
+            // throw new Error('❌nope22❌')
+        }
+        try {
+            this.setModel(FlexLayoutModel.fromJson(json))
+        } catch (e) {
+            console.log('[💠] Layout: ❌ error loading layout', e)
+            this.setModel(FlexLayoutModel.fromJson(perspectiveHelper.default()))
+        }
     }
 
     resetCurrent(): void {
-        this.reset(this.currentPerspectiveName)
+        this.perspective.resetToDefault()
     }
 
     resetDefault(): void {
@@ -307,12 +393,10 @@ export class CushyLayoutManager {
     }
 
     reset(perspectiveName: string): void {
-        this.st.configFile.update((t) => {
-            t.layouts_v13 ??= {}
-            delete t.layouts_v13[perspectiveName]
-        })
-        if (perspectiveName === this.currentPerspectiveName) {
-            this.setModel(FlexLayoutModel.fromJson(this.makeDefaultLayout()))
+        const perspective = cushy.db.perspective.getOrCreate(perspectiveName)
+        perspective.resetToDefault()
+        if (perspective === this.perspective) {
+            this.setModel(FlexLayoutModel.fromJson(perspective.data.layout))
         }
     }
 
@@ -423,36 +507,7 @@ export class CushyLayoutManager {
         // return parent as FL.TabSetNode
     }
 
-    UI = observer(() => {
-        console.log('[💠] Rendering Layout')
-        return (
-            <Layout //
-                ref={this.layoutRef}
-                model={this.model}
-                factory={this.factory}
-                /* This is more responsive and better for stuff like the gallery, where you may want to match the size of the panel to the size of the images.
-                 * Click => Dragging => Unclick is very annoying when you want something a specific way and need to see the changes quickly. */
-                realtimeResize
-                onAuxMouseClick={(node, event) => {
-                    // Middle Mouse to close tab
-                    if (event.button == 1 && node instanceof FL.TabNode) {
-                        if (node.isEnableClose()) {
-                            this.closeTab(node.getId())
-                        }
-                    }
-                }}
-                onModelChange={(model) => {
-                    runInAction(() => {
-                        const tabset = this.getActiveOrFirstTabset_orThrow()
-                        this.currentTabSet = tabset
-                        this.currentTab = tabset?.getSelectedNode()
-                        this.currentTabID = this.currentTab?.getId()
-                    })
-                    this.saveCurrentPerspectiveAsDefault()
-                }}
-            />
-        )
-    })
+    UI: ProplessFC = (): JSX.Element => <LayoutUI layout={this} />
 
     /** rename tab by ID */
     renameTab(tabID: string, newName: string): void {
@@ -494,9 +549,9 @@ export class CushyLayoutManager {
         this.model.doAction(Actions.renameTab(tabID, newName))
     }
 
-    closeCurrentTab(): Trigger {
+    closeCurrentTab(tse: TabsetExt = 'hoverd'): Trigger {
         // 1. find tabset
-        const tabset = this.getActiveOrFirstTabset_orThrow()
+        const tabset = this._getTabset(tse)
         if (tabset == null) return Trigger.UNMATCHED
 
         // 2. find active tab
@@ -542,7 +597,8 @@ export class CushyLayoutManager {
             console.log(`❌ currentTabIs(...): "${id}" does not start with ${tabPrefix}`)
             return null
         }
-        return (current as FL.TabNode).getConfig() as Maybe<PropsOf<Panels[K]['widget']>>
+        const config: PanelPersistedJSON<Panels[K]['$Props']> = (current as FL.TabNode).getConfig()
+        return config.$props
     }
 
     findTabsFor = <K extends PanelName>(
@@ -584,6 +640,7 @@ export class CushyLayoutManager {
             this.model.doAction(Actions.renameTab(tabID, title || panelName))
         })
     }
+
     // TRAVERSAL CAPABILITIES --------------------------------------------------------
 
     /** traverse layout tree from the root */
@@ -737,129 +794,6 @@ export class CushyLayoutManager {
         return prevTab
     }
 
-    // 🔴 todo: ensure we correctly pass ids there too
-    private defineTab<const PN extends PanelName>(p: {
-        panelName: PN
-        props: PropsOf<Panels[PN]['widget']>
-        width?: number
-        canClose?: boolean
-    }): FL.IJsonTabNode {
-        const { panelName, props } = p
-        const id = `/${panelName}/${hashJSONObjectToNumber(props ?? {})}`
-        const panel = panels[panelName]
-        const { title } = panel.header(props as any)
-        const icon = panel.icon
-        const config: PanelPersistedJSON = { $props: props, $store: {}, $temp: {} }
-        return {
-            id: id,
-            type: 'tab',
-            name: title,
-            config,
-            component: p.panelName,
-            enableClose: p.canClose ?? true,
-            enableRename: false,
-            enableFloat: false,
-            icon: getIconAsDataSVG(icon),
-        }
-    }
-
-    makeDefaultLayout = (): IJsonModel => {
-        const out: IJsonModel = {
-            global: {
-                tabEnableFloat: false,
-                splitterSize: 6,
-                tabEnableRename: false,
-                borderEnableAutoHide: true,
-                borderAutoSelectTabWhenClosed: true,
-                tabSetHeaderHeight: 24,
-                tabSetTabStripHeight: 24,
-                tabSetEnableSingleTabStretch: false /* 🔴 */,
-                //
-                // tabSetEnableSingleTabStretch: true,
-            },
-            // borders: [
-            //     // LEFT BORDER
-            //     // {
-            //     //     type: 'border',
-            //     //     // size: 350,
-            //     //     location: 'left',
-            //     //     // selected: 0,
-            //     //     show: true,
-            //     //     children: [this.defineTab({ panelName: 'TreeExplorer', props: {}, canClose: false, width: 300 })],
-            //     //     size: 300,
-            //     // },
-            //     // RIGHT BORDER
-            //     {
-            //         type: 'border',
-            //         location: 'right',
-            //         show: true,
-            //         selected: 0,
-            //         size: 150,
-            //         children: [
-            //             //
-            //             this.defineTab({ panelName: 'Gallery', props: {} }),
-            //             this.defineTab({ panelName: 'Steps', props: {}, canClose: false }),
-            //         ],
-            //     },
-            // ],
-            layout: {
-                id: 'rootRow',
-                type: 'row',
-                children: [
-                    // {
-                    //     id: 'leftPane',
-                    //     type: 'row',
-                    //     width: 512,
-                    //     children: [
-                    {
-                        type: 'tabset',
-                        minWidth: 150,
-                        minHeight: 150,
-                        // width: 512,
-                        // enableClose: false,
-                        // enableDeleteWhenEmpty: false,
-                        children: [
-                            //
-                            this.defineTab({ panelName: 'Welcome', props: {}, width: 512 }),
-                            this.defineTab({ panelName: 'PanelAppLibrary', props: {}, width: 512 }),
-                            this.defineTab({ panelName: 'TreeExplorer', props: {}, width: 512 }),
-                        ],
-                        // enableSingleTabStretch: true,
-                    },
-                    {
-                        type: 'tabset',
-                        // enableClose: false,
-                        // enableDeleteWhenEmpty: false,
-                        minWidth: 100,
-                        minHeight: 100,
-                        selected: 0,
-                        children: [
-                            this.defineTab({ panelName: 'Output', props: {}, canClose: false }),
-                            // this.defineTab({ panelName: 'Hosts', props: {}, canClose: false }),
-                        ],
-                    },
-                    {
-                        type: 'tabset',
-                        // enableClose: false,
-                        // enableDeleteWhenEmpty: false,
-                        minWidth: 100,
-                        minHeight: 100,
-                        selected: 0,
-                        children: [
-                            this.defineTab({ panelName: 'Gallery', props: {} }),
-                            // this.defineTab({ panelName: 'Output', props: {}, canClose: false }),
-                            // this.defineTab({ panelName: 'Hosts', props: {}, canClose: false }),
-                        ],
-                    },
-                    //     ],
-                    // },
-                ],
-            },
-        }
-
-        return out
-    }
-
     /**
      * @experimental
      * @unstable
@@ -905,7 +839,7 @@ export class CushyLayoutManager {
             )
 
         return createElement(PanelContainerUI, {
-            node,
+            flexLayoutTabNode: node,
             panelName,
             panelProps,
         })

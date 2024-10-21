@@ -1,3 +1,5 @@
+import type { StepOutput } from '../types/StepOutput'
+
 import { observer } from 'mobx-react-lite'
 
 import { exhaust } from '../csuite/utils/exhaust'
@@ -11,7 +13,6 @@ import { MediaTextL } from '../models/MediaText'
 import { MediaVideoL } from '../models/MediaVideo'
 import { RuntimeErrorL } from '../models/RuntimeError'
 import { StepL } from '../models/Step'
-import { StepOutput } from '../types/StepOutput'
 import { OutputDisplacementPreviewUI, OutputDisplacementUI } from './3d-displacement/OutputDisplacement'
 import { Output3dScenePreviewUI, Output3dSceneUI2 } from './3d-scene/Output3dScene'
 import { OutputPreviewWrapperUI } from './_OutputPreviewWrapperUI'

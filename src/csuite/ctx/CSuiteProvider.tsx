@@ -24,7 +24,7 @@ export const CSuiteProvider = observer(function CSuiteProvider_(p: {
         <CSuiteCtx.Provider value={config}>
             <Frame //
                 className={p.className}
-                tw='w-full h-full flex-1'
+                tw='h-full w-full flex-1'
                 base={config.base}
                 text={config.text}
                 style={{

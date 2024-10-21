@@ -19,10 +19,10 @@ export const PlaygroundScratchPad = observer(function PlaygroundScratchPad_(p: {
 export const ThemeConfigUI = observer(function ThemeConfigUI_(p: {}) {
     const uist = useLocalObservable(() => ({ base: 'oklch(.3 0.05 0)' }))
     return (
-        <div tw='w-full h-full p-1'>
+        <div tw='h-full w-full p-1'>
             <Frame
                 //
-                tw='p-1 m-1'
+                tw='m-1 p-1'
                 base={uist.base /* 'oklch(.3 0.05 0)' */}
                 border={20}
                 text={{ contrast: 1, chromaBlend: 1, hueShift: 45 }}
@@ -58,29 +58,29 @@ export const ThemeConfigUI = observer(function ThemeConfigUI_(p: {}) {
                 </FrameBase>
                 <FrameTitle children='test' />
                 <FrameSubtle children='test' />
-                <Frame tw='p-1 m-1' base={{ contrast: 0.05 }}>
+                <Frame tw='m-1 p-1' base={{ contrast: 0.05 }}>
                     A 2
                     <FrameSubtle>
                         test 1
                         <FrameSubtle children='test 2' />
                     </FrameSubtle>
                 </Frame>
-                <Frame tw='p-1 m-1 _bd' border={{ contrast: 1, chromaBlend: 1 }} base={{ contrast: 0.05, hueShift: 80 }}>
+                <Frame tw='_bd m-1 p-1' border={{ contrast: 1, chromaBlend: 1 }} base={{ contrast: 0.05, hueShift: 80 }}>
                     A 3
-                    <Frame tw='p-1 m-1 _bd' border={20} base={20}>
+                    <Frame tw='_bd m-1 p-1' border={20} base={20}>
                         A 4
-                        <Frame tw='p-1 m-1 _bd' border={20} base={20}>
+                        <Frame tw='_bd m-1 p-1' border={20} base={20}>
                             A 5
-                            <Frame tw='p-1 m-1 _bd' border={20} base={20}>
+                            <Frame tw='_bd m-1 p-1' border={20} base={20}>
                                 A 6
                                 <FrameTitle tw='text-xl font-bold' children='Test' />
                                 <Frame
-                                    tw='p-1 m-1 _bd'
+                                    tw='_bd m-1 p-1'
                                     border={{ contrast: 0.3, chromaBlend: 1 }}
                                     base={{ contrast: 0.0, hueShift: 30 }}
                                 >
                                     A 7
-                                    <Frame tw='p-1 m-1 _bd' border={{ contrast: 0.3, chromaBlend: 1 }} base={{ contrast: 0.05 }}>
+                                    <Frame tw='_bd m-1 p-1' border={{ contrast: 0.3, chromaBlend: 1 }} base={{ contrast: 0.05 }}>
                                         A 8
                                     </Frame>
                                 </Frame>

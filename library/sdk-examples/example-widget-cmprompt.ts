@@ -1,7 +1,8 @@
 app({
-    ui: (form) => ({
-        promptV2: form.prompt({}),
-    }),
+    ui: (b) =>
+        b.fields({
+            promptV2: b.prompt({}),
+        }),
 
     run: async (flow, form) => {
         const DEBUG = JSON.stringify(form, null, 3)

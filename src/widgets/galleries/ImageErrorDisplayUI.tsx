@@ -8,12 +8,12 @@ export const ImageErrorDisplayUI = observer(function ImageErrorDisplayUI_(p: {
     return (
         <div
             className={p.className}
-            tw='relative rounded flex flex-col w-full h-full border border-error border-dotted items-center justify-center bg-error/5 text-error select-none pointer-events-none'
+            tw='border-error bg-error/5 text-error pointer-events-none relative flex h-full w-full select-none flex-col items-center justify-center rounded border border-dotted'
         >
-            <div tw='flex relative text-sm' style={{ fontSize: p.size ?? 'inherit' }}>
+            <div tw='relative flex text-sm' style={{ fontSize: p.size ?? 'inherit' }}>
                 <span className='material-symbols-outlined'>scan_delete</span>
             </div>
-            <div tw='absolute top-0 right-0 -translate-x-0.5 translate-y-0.5' style={{ fontSize: '0px' }}>
+            <div tw='absolute right-0 top-0 -translate-x-0.5 translate-y-0.5' style={{ fontSize: '0px' }}>
                 {p.icon && (
                     <span className='material-symbols-outlined' style={{ fontSize: '12px' }}>
                         {p.icon}

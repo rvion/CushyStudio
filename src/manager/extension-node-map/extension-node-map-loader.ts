@@ -1,16 +1,18 @@
 import type { NodeNameInComfy } from '../../models/ComfySchema'
 import type { ComfyManagerRepository } from '../ComfyManagerRepository'
+import type { KnownCustomNode_File } from '../custom-node-list/KnownCustomNode_File'
+import type { ENMInfos, ExtensionNodeMapFile } from './extension-node-map-types'
 import type { KnownCustomNode_CushyName } from './KnownCustomNode_CushyName'
+import type { ValueError } from '@sinclair/typebox/value'
 
-import { Value, ValueError } from '@sinclair/typebox/value'
+import { Value } from '@sinclair/typebox/value'
 import { readFileSync, writeFileSync } from 'fs'
 
-import { normalizeJSIdentifier } from '../../core/normalizeJSIdentifier'
-import { KnownCustomNode_File } from '../custom-node-list/KnownCustomNode_File'
-import { ENMInfos, ENMInfos_Schema, ExtensionNodeMapFile } from './extension-node-map-types'
+import { convertComfyNodeNameToCushyNodeNameValidInJS } from '../../core/normalizeJSIdentifier'
+import { ENMInfos_Schema } from './extension-node-map-types'
 
 export const _getCustomNodeRegistry = (DB: ComfyManagerRepository): void => {
-    let totalCustomNodeSeen = 0
+    const totalCustomNodeSeen = 0
 
     // 1. read file
     const extensionNodeMapFile: ExtensionNodeMapFile = JSON.parse(
@@ -56,7 +58,7 @@ export const _getCustomNodeRegistry = (DB: ComfyManagerRepository): void => {
         if (plugin == null) throw new Error(`[❌] plugin not found for ${enmEntry.url}`)
 
         // 3.2 ensure we have a list of nodes for this plugin
-        let nodesInPlugin: KnownCustomNode_CushyName[] = DB.customNodes_byPluginName.get(plugin.title) ?? []
+        const nodesInPlugin: KnownCustomNode_CushyName[] = DB.customNodes_byPluginName.get(plugin.title) ?? []
         DB.customNodes_byPluginName.set(plugin.title, nodesInPlugin)
 
         // INITIALIZATION ------------------------------------------------------------
@@ -68,7 +70,7 @@ export const _getCustomNodeRegistry = (DB: ComfyManagerRepository): void => {
             else prevEntry1.push(plugin)
 
             // 4.2 index by nodeNameInCushy
-            const nodeNameInCushy = normalizeJSIdentifier(nodeNameInComfy, ' ')
+            const nodeNameInCushy = convertComfyNodeNameToCushyNodeNameValidInJS(nodeNameInComfy)
             const prevEntry2 = DB.plugins_byNodeNameInCushy.get(nodeNameInCushy)
             if (prevEntry2 == null) DB.plugins_byNodeNameInCushy.set(nodeNameInCushy, [plugin])
             else prevEntry2.push(plugin)

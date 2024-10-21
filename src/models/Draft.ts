@@ -1,26 +1,66 @@
 import type { DraftExecutionContext } from '../cards/App'
 import type { LibraryFile } from '../cards/LibraryFile'
 import type { Field_group } from '../csuite/fields/group/FieldGroup'
-import type { LiveInstance } from '../db/LiveInstance'
+import type { Provenance } from '../csuite/provenance/Provenance'
+import type { LiveDB } from '../db/LiveDB'
 import type { TABLES } from '../db/TYPES.gen'
 import type { CushyAppL } from './CushyApp'
 import type { Executable } from './Executable'
+import type { MediaImageL } from './MediaImage'
 import type { StepL } from './Step'
 
-import { reaction } from 'mobx'
+import { observable, reaction } from 'mobx'
 
 import { Status } from '../back/Status'
 import { cushyFactory } from '../controls/Builder'
 import { getGlobalSeeder } from '../csuite/fields/seed/Seeder'
 import { SQLITE_false, SQLITE_true } from '../csuite/types/SQLITE_boolean'
-import { toastError } from '../csuite/utils/toasts'
+import { toastError, toastSuccess } from '../csuite/utils/toasts'
+import { BaseInst } from '../db/BaseInst'
 import { LiveRef } from '../db/LiveRef'
+import { LiveTable } from '../db/LiveTable'
 
 export type FormPath = (string | number)[]
 
+export class DraftRepo extends LiveTable<TABLES['draft'], typeof DraftL> {
+    constructor(liveDB: LiveDB) {
+        super(liveDB, 'draft', '📝', DraftL)
+        this.init()
+    }
+}
+
 /** a thin wrapper around a single Draft somewhere in a .ts file */
-export interface DraftL extends LiveInstance<TABLES['draft']> {}
-export class DraftL {
+export class DraftL extends BaseInst<TABLES['draft']> {
+    instObservabilityConfig: undefined
+    dataObservabilityConfig = {
+        formSerial: observable.ref,
+    }
+
+    // get drafts(): DraftL[] {
+    //     return cushy.db.draft.select((q) => q.where('appID', '=', this.id))
+    // }
+
+    // > app ❌
+    //    > drafts ❌
+    //       > steps 🟢
+    //          > prompts 🟢
+    get images(): MediaImageL[] {
+        const stepIds = this.db.step //
+            .selectRaw((q) => q.select('id').where('draftID', '=', this.id))
+            .map((t) => t.id)
+        return this.db.media_image //
+            .select((q) => q.where('stepID', 'in', stepIds).orderBy('updatedAt desc'), ['media_image'])
+    }
+
+    provenance: Provenance = {
+        uri: () => this.app.script.id,
+        open: () => this.app.script.openInVSCode(),
+    }
+    // getProvenance = (): Provenance => ({
+    //     uri: this.app.script.id,
+    //     open: () => this.app.script.openInVSCode(),
+    // })
+
     // 🔴 HACKY
     shouldAutoStart = false
 
@@ -60,12 +100,12 @@ export class DraftL {
             return input + '-1'
         }
     }
-    duplicateAndFocus(): void {
-        const newDraft = this.clone({
-            title: this._duplicateTitle(this.name),
-        })
+
+    duplicateAndFocus(): DraftL {
+        const newDraft = this.clone({ title: this._duplicateTitle(this.name) })
         newDraft.openOrFocusTab()
         newDraft.revealInFileExplorer()
+        return newDraft
     }
 
     revealInFileExplorer = (): void => {
@@ -273,10 +313,12 @@ export class DraftL {
                 // | we're no longer using reactions
                 // if (this.form) this.form.cleanup?.()
 
-                this._form = cushyFactory.fields(action.ui, {
+                this._form = cushyFactory.document(action.ui, {
                     name: this.name,
                     serial: () => this.data.formSerial,
                     onSerialChange: (form) => {
+                        console.log(`[🧐] update draft(${this.id}) SERIAL`)
+
                         this.update({ formSerial: form.serial })
                         console.log(`[🧐] UPDATING draft(${this.id}) SERIAL`)
                         this.isDirty = true

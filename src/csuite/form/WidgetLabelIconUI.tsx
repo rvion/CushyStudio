@@ -5,16 +5,17 @@ import { observer } from 'mobx-react-lite'
 import { Frame } from '../../csuite/frame/Frame'
 import { IkonOf } from '../../csuite/icons/iconHelpers'
 
-export const WidgetLabelIconUI = observer(function WidgetLabelIconUI_(p: {
-    //
+export type WidgetLabelIconProps = {
     className?: string
-    widget: Field
-}) {
-    const iconName = p.widget.icon
+    field: Field
+}
+
+export const WidgetLabelIconUI = observer(function WidgetLabelIconUI_(p: WidgetLabelIconProps) {
+    const iconName = p.field.icon
     if (iconName == null) return null
     return (
         <Frame //
-            tw='UI-WidgetLabelIcon self-start minh-widget ABDDE flex items-center'
+            tw='UI-WidgetLabelIcon minh-widget flex items-center self-start'
             className={p.className}
             text={{ chroma: 0.2, contrast: 0.9 }}
         >

@@ -1,11 +1,11 @@
 import type { MediaTextL } from '../models/MediaText'
+import type { StepL } from '../models/Step'
 
 import { observer } from 'mobx-react-lite'
 
 import { Surface } from '../csuite/inputs/shims'
 import { MarkdownUI } from '../csuite/markdown/MarkdownUI'
 import { TabUI } from '../csuite/tabs/TabUI'
-import { StepL } from '../models/Step'
 
 export const OutputTextPreviewUI = observer(function OutputTextPreviewUI_(p: {
     //
@@ -18,9 +18,9 @@ export const OutputTextPreviewUI = observer(function OutputTextPreviewUI_(p: {
             <div
                 tw={[
                     //
-                    '[line-height:100%] [font-size:60%]',
+                    '[font-size:60%] [line-height:100%]',
                     'bg-accent text-accent-content',
-                    'text-center w-full font-bold',
+                    'w-full text-center font-bold',
                 ]}
             >
                 MD
@@ -29,16 +29,16 @@ export const OutputTextPreviewUI = observer(function OutputTextPreviewUI_(p: {
             <div
                 tw={[
                     //
-                    '[line-height:100%] [font-size:60%]',
+                    '[font-size:60%] [line-height:100%]',
                     'bg-purple-500 text-black',
-                    'text-center w-full font-bold',
+                    'w-full text-center font-bold',
                 ]}
             >
                 {'<HTML/>'}
             </div>
         ) : (
             <div //
-                tw='text-xs whitespace-pre-wrap overflow-hidden '
+                tw='overflow-hidden whitespace-pre-wrap text-xs '
             >
                 {output.data.content}
             </div>
@@ -51,7 +51,7 @@ export const OutputTextUI = observer(function OutputTextUI_(p: { step?: Maybe<St
     // 🔴 handle markdown / html / text
     if (p.output.data.kind === 'markdown')
         return (
-            <Surface className='w-full m-2'>
+            <Surface className='m-2 w-full'>
                 <TabUI tw='w-full'>
                     <div>rendered version</div>
                     <MarkdownUI tw='w-full' markdown={p.output.data.content} />
@@ -63,7 +63,7 @@ export const OutputTextUI = observer(function OutputTextUI_(p: { step?: Maybe<St
 
     if (p.output.data.kind === 'html')
         return (
-            <Surface className='w-full m-2'>
+            <Surface className='m-2 w-full'>
                 <div //
                     className='_HTML _MD w-full'
                     dangerouslySetInnerHTML={{ __html: p.output.data.content }}
@@ -73,9 +73,9 @@ export const OutputTextUI = observer(function OutputTextUI_(p: { step?: Maybe<St
 
     if (p.output.data.kind === 'text')
         return (
-            <Surface className='w-full m-2'>
+            <Surface className='m-2 w-full'>
                 {/*  */}
-                <div tw='font-bold text-xl'>Text:</div>
+                <div tw='text-xl font-bold'>Text:</div>
                 {p.output.data.content}
             </Surface>
         )

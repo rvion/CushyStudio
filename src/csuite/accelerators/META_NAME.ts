@@ -1,4 +1,3 @@
-import type { KeyName } from '../commands/CommandManager'
 import type { KeyboardEvent as ReactKeyboardEvent, MouseEvent } from 'react'
 
 import { getOS } from '../environment/getOS'

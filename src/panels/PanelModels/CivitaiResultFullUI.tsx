@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 
 import { BadgeListUI } from '../../csuite/badge/BadgeListUI'
 import { Button } from '../../csuite/button/Button'
-import { InputBoolToggleButtonUI } from '../../csuite/checkbox/InputBoolToggleButtonUI'
+import { ToggleButtonUI } from '../../csuite/checkbox/InputBoolToggleButtonUI'
 import { JsonViewUI } from '../../csuite/json/JsonViewUI'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { CivitaiResultVersionUI } from './CivitaiResultVersionUI'
@@ -26,7 +26,7 @@ export const CivitaiResultFullUI = observer(function CivitaiResultFullUI_(p: {
 
     return (
         <div tw='flex flex-col gap-1 p-2'>
-            <div tw='flex gap-1 items-baseline'>
+            <div tw='flex items-baseline gap-1'>
                 <div tw='text-2xl font-bold'>{item.name}</div>
                 <div tw='italic opacity-50'>#{item.id}</div>
                 <div tw='badge badge-lg bg-yellow-600 text-black'>{item.type}</div>
@@ -48,7 +48,8 @@ export const CivitaiResultFullUI = observer(function CivitaiResultFullUI_(p: {
                 tw='flex flex-wrap gap-0.5'
             >
                 {item.modelVersions.map((version: CivitaiModelVersion) => (
-                    <InputBoolToggleButtonUI
+                    <ToggleButtonUI
+                        toggleGroup='civitai-versions'
                         value={selected.version === version}
                         key={version.id}
                         onValueChange={() => (selected.version = version)}
@@ -59,7 +60,7 @@ export const CivitaiResultFullUI = observer(function CivitaiResultFullUI_(p: {
                             src={version.images[0]?.url}
                         />
                         <span>{version.name}</span>
-                    </InputBoolToggleButtonUI>
+                    </ToggleButtonUI>
                 ))}
             </div>
 

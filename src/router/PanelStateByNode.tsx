@@ -1,6 +1,6 @@
-import { observable } from 'mobx'
+import type { PanelState } from './PanelState'
 
-import { PanelState } from './PanelState'
+import { observable } from 'mobx'
 
 // export const PanelStateById = new Map<string, PanelState>()
 

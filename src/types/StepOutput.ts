@@ -3,12 +3,11 @@ import type { ComfyWorkflowL } from '../models/ComfyWorkflow'
 import type { Media3dDisplacementL } from '../models/Media3dDisplacement'
 import type { MediaCustomL } from '../models/MediaCustom'
 import type { MediaImageL } from '../models/MediaImage'
+import type { MediaSplatL } from '../models/MediaSplat'
 import type { MediaTextL } from '../models/MediaText'
 import type { MediaVideoL } from '../models/MediaVideo'
 import type { RuntimeErrorL } from '../models/RuntimeError'
 import type { StepL } from '../models/Step'
-
-import { MediaSplatL } from '../models/MediaSplat'
 
 // prettier-ignore
 export type StepOutput =

@@ -4,6 +4,7 @@ import type { ReactNode } from 'react'
 import { observer } from 'mobx-react-lite'
 import { useEffect, useMemo } from 'react'
 
+import { useCSuite } from '../ctx/useCSuite'
 import { Frame, type FrameProps } from '../frame/Frame'
 import { ShelfState } from './ShelfState'
 
@@ -17,7 +18,7 @@ export type OwnShelfProps = {
 
 //TODO(bird_d): Use the activity system for resizing, request a way to change the cursor on the fly for activities.
 export const _BasicShelfUI = observer(function BasicShelf({
-    // basic-shelf specific
+    // own props
     anchor,
     defaultSize,
     floating = false,
@@ -60,7 +61,7 @@ export const _BasicShelfUI = observer(function BasicShelf({
             <div //Resize Handle Area
                 tw={[
                     'absolute select-none',
-                    uist.dragging && '!top-0 !left-0',
+                    uist.dragging && '!left-0 !top-0',
                     isHorizontal ? 'hover:cursor-ew-resize' : 'hover:cursor-ns-resize',
                 ]}
                 style={{
@@ -85,19 +86,37 @@ const BasicShelf_ColumnUI = observer(function BasicShelf_Column(
     //
     p: React.HTMLAttributes<HTMLDivElement>,
 ) {
-    return <div tw='flex flex-col p-2 gap' {...p}></div>
+    return <div tw='gap flex flex-col p-2' {...p}></div>
 })
 
-const BasicShelf_GroupUI = observer(function BasicShelf_Group({ children, ...tint }: { children?: ReactNode } & Tint) {
+const BasicShelf_GroupUI = observer(function BasicShelf_Group({
+    align,
+    children,
+    ...tint
+}: { align?: boolean; children?: ReactNode } & Tint) {
+    const csuite = useCSuite()
+    const dropShadow = cushy.theme.value.inputShadow
+
     return (
-        <Frame col base={tint} border tw={['[&>*]:!border-none']}>
+        <Frame
+            col
+            base={tint}
+            border
+            roundness={csuite.inputRoundness}
+            dropShadow={dropShadow}
+            tw={[
+                // bird_d: Maybe should be aligned by default?
+                align && '[&>*]:h-input flex !gap-0 overflow-clip [&>*]:!rounded-none [&>*]:!border-0',
+                '[&>*]:!border-none',
+            ]}
+        >
             {children}
         </Frame>
     )
 })
 
 export const BasicShelfContentUI = observer(function BasicShelfContentUI_(p: React.HTMLAttributes<HTMLDivElement>) {
-    return <div tw='flex flex-1 p-2 overflow-auto' {...p} />
+    return <div tw='flex flex-1 overflow-auto p-2' {...p} />
 })
 
 export const BasicShelfUI = Object.assign(_BasicShelfUI, {

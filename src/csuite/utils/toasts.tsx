@@ -1,4 +1,6 @@
-import { toast, ToastPosition } from 'react-toastify'
+import type { ToastPosition } from 'react-toastify'
+
+import { toast } from 'react-toastify'
 
 import { Trigger } from '../trigger/Trigger'
 
@@ -21,9 +23,9 @@ export const toastImage = (imageSrc: string | Buffer, message: string) => {
     const src = typeof imageSrc === 'string' ? imageSrc : imageSrc.toString('base64')
     console.log(src)
     const CustomToast = () => (
-        <div tw='flex flex-col aspect-square'>
+        <div tw='flex aspect-square flex-col'>
             <img
-                tw='object-contain bg-black rounded'
+                tw='rounded bg-black object-contain'
                 src={`${src}`}
                 alt='Toast Image'
                 style={{ width: '256px', height: '256px' }}

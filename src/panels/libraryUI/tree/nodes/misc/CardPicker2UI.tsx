@@ -65,7 +65,7 @@ export const AppFavoriteBtnCustomUI = observer(function AppFavoriteBtnCustomUI_(
                 //
                 'material-symbols-outlined',
                 'cursor-pointer',
-                'hover:text-yellow-500 text-gray-500',
+                'text-gray-500 hover:text-yellow-500',
             ]}
             style={{ fontSize: size }}
             onClick={(ev) => {

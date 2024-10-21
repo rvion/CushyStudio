@@ -1,10 +1,11 @@
 app({
     // name: 'playground-seed-widget',
-    ui: (form) => ({
-        prompt: form.prompt({}),
-        prompt2: form.prompt({}),
-        seed3: form.markdown({ markdown: '' }),
-    }),
+    ui: (b) =>
+        b.fields({
+            prompt: b.prompt({}),
+            prompt2: b.prompt({}),
+            seed3: b.markdown({ markdown: '' }),
+        }),
 
     run: async (flow, form) => {},
 })

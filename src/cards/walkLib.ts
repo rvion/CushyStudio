@@ -1,11 +1,12 @@
+import type { ActionTagMethodList } from './App'
+import type { Library } from './Library'
+import type { LibraryFile } from './LibraryFile'
+
 import { readdirSync, readFileSync, statSync } from 'fs'
 import path, { join } from 'pathe'
 
 import { hasValidActionExtension } from '../back/ActionExtensions'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
-import { ActionTagMethodList } from './App'
-import { Library } from './Library'
-import { LibraryFile } from './LibraryFile'
 import { shouldSkip } from './shouldSkip'
 
 export const recursivelyFindAppsInFolder = (

@@ -10,7 +10,7 @@ export type UserTag = {
 
 export class UserTags {
     private static _instance: UserTags
-    static build = () => {
+    static build = (): UserTags => {
         if (!UserTags._instance) UserTags._instance = new UserTags()
         return UserTags._instance
     }

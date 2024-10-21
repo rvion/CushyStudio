@@ -1,18 +1,21 @@
+import type { CushySchemaBuilder } from '../../../src/controls/Builder'
 import type { OutputFor } from './_prefabs'
 
-export type UI_regionalPrompting_v1 = X.XListExt<
+export type UI_regionalPrompting_v1 = X.XBoard<
     X.XGroup<{
         prompt: X.XPrompt
         strength: X.XNumber
     }>
 >
-export function ui_regionalPrompting_v1(): UI_regionalPrompting_v1 {
-    const form = getCurrentForm()
-    return form.regional({
-        element: form.group({
+
+export function ui_regionalPrompting_v1(b: CushySchemaBuilder): UI_regionalPrompting_v1 {
+    b = b ?? getCurrentForm()
+    return b.regional({
+        element: b.group({
+            // uiui: (b) => b.apply({ Header: '🟢222', Body: '🟢' }),
             items: {
-                prompt: form.prompt({}),
-                strength: form.number({ default: 1, min: 0, max: 2, step: 0.1 }),
+                prompt: b.prompt({}),
+                strength: b.number({ default: 1, min: 0, max: 2, step: 0.1 }),
                 // mode: form.enum.Enum_ConditioningBlend_blending_mode({}),
             },
         }),

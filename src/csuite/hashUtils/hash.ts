@@ -1,5 +1,12 @@
 export const hashJSONObjectToNumber = (obj: object): number => hashStringToNumber(stableStringify(obj))
 
+export const hashPrimitiveToNumber = (s: string | null | boolean | number): number => {
+    if (s == null) return 1
+    if (typeof s === 'number') return s
+    if (typeof s === 'boolean') return s ? 1 : 2
+    return hashStringToNumber(s)
+}
+
 export const hashStringToNumber = (s: string): number => {
     let hash = 0,
         i,

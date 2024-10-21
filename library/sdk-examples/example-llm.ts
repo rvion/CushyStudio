@@ -1,7 +1,3 @@
-import type { OpenRouter_Models } from '../../src/csuite/openrouter/OpenRouter_models'
-
-import { openRouterInfos } from '../../src/csuite/openrouter/OpenRouter_infos'
-
 const defaultSystemPrompt = [
     //
     `You are an assistant in charge of writing a prompt to be submitted to a stable distribution ai image generative pipeline.`,
@@ -15,30 +11,29 @@ const defaultSystemPrompt = [
 ].join('\n')
 
 app({
-    ui: (ui) => ({
-        topic: ui.string({ textarea: true, default: 'world tree, fantasy, epic, majestic' }),
-        llmModel: ui.selectOne({
-            choices: Object.entries(openRouterInfos).map(([id, info]) => ({ id: id as OpenRouter_Models, label: info.name })),
+    ui: (b) =>
+        b.fields({
+            topic: b.string({ textarea: true, default: 'world tree, fantasy, epic, majestic' }),
+            llmModel: b.llmModel(),
+            customSystemMessage: b.group({
+                startCollapsed: true,
+                items: {
+                    system: b.string({
+                        textarea: true,
+                        default: defaultSystemPrompt,
+                        tooltip:
+                            'Try experimenting with the system prompt. You may get better results from different models depending on how specific the instructions are.',
+                    }),
+                },
+            }),
+            promptFromLlm: b.markdown({
+                markdown: ``,
+            }),
+            ckpt_name: b.enum.Enum_CheckpointLoaderSimple_ckpt_name({
+                default: 'revAnimated_v122.safetensors',
+                label: 'Checkpoint',
+            }),
         }),
-        customSystemMessage: ui.group({
-            startCollapsed: true,
-            items: {
-                system: ui.string({
-                    textarea: true,
-                    default: defaultSystemPrompt,
-                    tooltip:
-                        'Try experimenting with the system prompt. You may get better results from different models depending on how specific the instructions are.',
-                }),
-            },
-        }),
-        promptFromLlm: ui.markdown({
-            markdown: ``,
-        }),
-        ckpt_name: ui.enum.Enum_CheckpointLoaderSimple_ckpt_name({
-            default: 'revAnimated_v122.safetensors',
-            label: 'Checkpoint',
-        }),
-    }),
 
     run: async (sdk, ui) => {
         if (!sdk.LLM.isConfigured) {

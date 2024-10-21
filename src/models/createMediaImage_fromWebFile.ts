@@ -9,7 +9,7 @@ import { imageMeta } from 'image-meta'
 import { bang } from '../csuite/utils/bang'
 import { hashArrayBuffer } from '../state/hashArrayBuffer'
 import { extractExtensionFromContentType } from '../widgets/misc/extractExtensionFromContentType'
-import { FPath } from './PathObj'
+import { FPath } from './FPath'
 
 export type ImageCreationOpts = {
     promptID?: Maybe<PromptID>

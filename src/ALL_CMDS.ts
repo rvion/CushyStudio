@@ -6,12 +6,14 @@ import './operators/commands/cmd_goTo'
 
 import { allLayoutCommands } from './app/shortcuts/cmd_layout'
 import { allLegacyCommands } from './app/shortcuts/cmd_mix'
+import { allScreencastCommands } from './app/shortcuts/cmd_screencast'
 import { allTreeCommands } from './csuite/tree/TreeCommands'
 import {
     cmd_copyImage,
     cmd_copyImage_as_JPG,
     cmd_copyImage_as_PNG,
     cmd_copyImage_as_WEBP,
+    cmd_deleteImage,
     cmd_open_copyImageAs_menu,
 } from './operators/commands/cmd_copyImage'
 import { cmd_fav_toggleFavBar } from './operators/commands/cmd_favorites'
@@ -29,6 +31,7 @@ export const allCommands = [
     cmd_fav_toggleFavBar,
     // copy image (work in every compatible contexts)
     cmd_copyImage,
+    cmd_deleteImage,
     cmd_copyImage_as_PNG,
     cmd_copyImage_as_WEBP,
     cmd_copyImage_as_JPG,
@@ -43,4 +46,5 @@ export const allCommands = [
     ...allLayoutCommands,
     ...allLegacyCommands,
     ...allTreeCommands,
+    ...allScreencastCommands,
 ]

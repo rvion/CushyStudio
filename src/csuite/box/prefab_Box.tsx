@@ -16,9 +16,19 @@ export type UI_Box = X.XChoices<{
 export const ui_Box = (
     //
     ui: Builder,
-    config?: Omit<Field_choices_config<any>, 'multi' | 'items'>,
+    config?: Omit<
+        Field_choices_config<{
+            base: UI_Tint
+            text: UI_Tint
+            textShadow: UI_Tint
+            shadow: UI_Tint
+            border: UI_Tint
+            hover: X.XBool
+        }>,
+        'multi' | 'items'
+    >,
 ): UI_Box => {
-    return ui.choicesV2(
+    return ui.choices(
         {
             base: ui_tint(ui),
             // text stuff

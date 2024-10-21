@@ -19,7 +19,7 @@ export const GalleryHoveredPreviewUI = observer(function GalleryHoveredPreviewUI
         <div>
             {/* OVERLAY CONTAINER */}
             <div
-                tw='ml-auto inset-0 text-center'
+                tw='inset-0 ml-auto text-center'
                 style={{
                     opacity: /* 🛝 st.galleryConf.value.galleryHoverOpacity ?? */ 0.9, //.galleryHoverOpacity,
                     boxShadow: '0 0 1rem 0 #ebebebe0',

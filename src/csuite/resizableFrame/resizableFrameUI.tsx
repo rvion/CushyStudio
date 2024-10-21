@@ -1,10 +1,14 @@
+import type { ReactNode } from 'react'
+
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { ReactNode, useMemo } from 'react'
+import { useMemo } from 'react'
 
+import { useCSuite } from '../ctx/useCSuite'
 import { Frame, type FrameProps } from '../frame/Frame'
 import { IkonOf } from '../icons/iconHelpers'
 import { PanelHeaderUI } from '../panel/PanelHeaderUI'
+import { window_addEventListener } from '../utils/window_addEventListenerAction'
 
 /* Used once per widget since they should not conflict. */
 let startValue = 0
@@ -50,19 +54,19 @@ class ResizableFrameStableState {
         makeAutoObservable(this)
     }
 
-    start = () => {
+    start = (): void => {
         startValue = this.size
         offset = 0
-        window.addEventListener('mousemove', this.resize, true)
-        window.addEventListener('pointerup', this.stop, true)
+        window_addEventListener('mousemove', this.resize, true)
+        window_addEventListener('pointerup', this.stop, true)
     }
 
-    stop = () => {
+    stop = (): void => {
         window.removeEventListener('mousemove', this.resize, true)
         window.removeEventListener('pointerup', this.stop, true)
     }
 
-    resize = (e: MouseEvent) => {
+    resize = (e: MouseEvent): void => {
         if (this.props.relative) {
             return this.props.onResize?.(e.movementY)
         }
@@ -81,19 +85,24 @@ class ResizableFrameStableState {
 export const ResizableFrame = observer(function ResizableFrame_(p: ResizableFrameProps) {
     // create stable state, that we can programmatically mutate witout caring about stale references
     const uist = useMemo(() => new ResizableFrameStableState(p), [])
+    const csuite = useCSuite()
+    const theme = cushy.theme.value
 
     const { currentSize, ...props } = p
     return (
         <Frame // container
             // hover
-            tw='flex flex-col !p-0'
+            tw='flex flex-col overflow-clip !p-0'
             style={{ gap: '0px', ...p.style }}
+            dropShadow={theme.inputShadow}
+            roundness={csuite.inputRoundness}
             {...props}
         >
             {p.header && <PanelHeaderUI>{p.header}</PanelHeaderUI>}
 
             <Frame // Content
                 tw='w-full overflow-auto'
+                base={csuite.inputContrast}
                 style={{
                     height: `${uist.size}px`,
                     borderBottomLeftRadius: '0px',
@@ -105,17 +114,18 @@ export const ResizableFrame = observer(function ResizableFrame_(p: ResizableFram
             </Frame>
 
             <Frame // Footer
-                className='h-input w-full relative'
+                className='h-input relative w-full'
+                base={csuite.inputContrast}
                 style={{ borderTop: '1px solid oklch(from var(--KLR) calc(l + 0.1 * var(--DIR)) c h)' }}
             >
                 <Frame
                     hover
-                    tw='!flex absolute inset-0 h-full items-center justify-center cursor-ns-resize'
+                    tw='absolute inset-0 !flex h-full cursor-ns-resize items-center justify-center'
                     onMouseDown={() => uist.start()}
                 >
                     <IkonOf name='mdiDragHorizontalVariant'></IkonOf>
                 </Frame>
-                <div tw='absolute lh-input items-center'>{p.footer}</div>
+                <div tw='lh-input absolute items-center'>{p.footer}</div>
             </Frame>
         </Frame>
     )

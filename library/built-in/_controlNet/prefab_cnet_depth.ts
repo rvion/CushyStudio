@@ -50,11 +50,8 @@ export type UI_subform_Depth_Preprocessor = X.XChoice<{
 }>
 export function ui_subform_Depth_Preprocessor(): UI_subform_Depth_Preprocessor {
     const ui: X.Builder = getCurrentForm()
-    return ui.choice({
-        label: 'Depth Preprocessor',
-        default: 'Midas',
-        appearance: 'tab',
-        items: {
+    return ui.choice(
+        {
             None: ui.empty(),
             Midas: ui_subform_Depth_Midas(),
             Leres: ui_subform_Depth_LeReS(),
@@ -62,7 +59,8 @@ export function ui_subform_Depth_Preprocessor(): UI_subform_Depth_Preprocessor {
             // TODO: Add support for auto-modifying the resolution based on other form selections
             // TODO: Add support for auto-cropping
         },
-    })
+        { label: 'Depth Preprocessor', default: 'Midas', appearance: 'tab' },
+    )
 }
 
 // ================================================================================

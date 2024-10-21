@@ -1,6 +1,5 @@
 import type { CollapsibleState } from './CollapsibleState'
-
-import React from 'react'
+import type React from 'react'
 
 export type CollapsibleProps = {
     startCollapsed?: boolean
@@ -10,6 +9,8 @@ export type CollapsibleProps = {
     children?: React.ReactNode
     titleCollapsed?: React.ReactNode
     titleExpanded?: React.ReactNode
+
+    hideAnchorWhenExpanded?: boolean
 
     onToggle?: (state: CollapsibleState) => void
 

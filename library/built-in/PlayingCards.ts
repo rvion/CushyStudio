@@ -5,9 +5,9 @@ import { toJS } from 'mobx'
 import { CardSuit, CardValue } from './_PlayingCards/_cardLayouts'
 import { _drawCard } from './_PlayingCards/_drawCard'
 import { ui_highresfix } from './_prefabs/_prefabs'
-import { run_model, ui_model } from './_prefabs/prefab_model'
 import { run_prompt } from './_prefabs/prefab_prompt'
 import { run_sampler, ui_sampler } from './_prefabs/prefab_sampler'
+import { evalModelSD15andSDXL, prefabModelSD15andSDXL } from './SD15/_model_SD15_SDXL'
 
 app({
     metadata: {
@@ -15,85 +15,84 @@ app({
         illustration: 'library/built-in/_illustrations/poker-card-generator.jpg',
         description: 'Allow you to generate illustrated deck of cards',
     },
-    ui: (ui: X.Builder) => ({
-        // [UI] CARD ---------------------------------------
-        // _2: form.markdown({ markdown: `### Cards`, label: false }),
-        cards: ui.matrix({
-            cols: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'],
-            rows: ['spades', 'hearts', 'clubs', 'diamonds'],
-            default: [],
-        }),
-        // [UI] SIZES --------------------------------------
-        size: ui.size({ default: { modelType: 'SD1.5 512', aspectRatio: '16:9' } }),
-        logoSize: ui.int({ default: 120, min: 20, max: 1000 }),
+    ui: (b: X.Builder) =>
+        b.fields({
+            // [UI] CARD ---------------------------------------
+            // _2: form.markdown({ markdown: `### Cards`, label: false }),
+            cards: b.matrix({
+                cols: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'],
+                rows: ['spades', 'hearts', 'clubs', 'diamonds'],
+                default: [],
+            }),
+            // [UI] SIZES --------------------------------------
+            size: b.size({ default: { modelType: 'SD1.5 512', aspectRatio: '16:9' } }),
+            logoSize: b.int({ default: 120, min: 20, max: 1000 }),
 
-        // [UI] MODEL --------------------------------------
-        model: ui_model(),
-        sampler: ui_sampler(),
-        highResFix: ui_highresfix().optional(true),
-        globalNegative: ui.prompt({}),
-        logos: ui.group({
-            layout: 'H',
-            // className: 'flex flex-wrap',
-            items: {
-                spades: ui.image({}).optional(),
-                hearts: ui.image({}).optional(),
-                clubs: ui.image({}).optional(),
-                diamonds: ui.image({}).optional(),
-            },
-        }),
+            // [UI] MODEL --------------------------------------
+            model: prefabModelSD15andSDXL(),
+            sampler: ui_sampler(),
+            highResFix: ui_highresfix().optional(true),
+            globalNegative: b.prompt({}),
+            logos: b.fields(
+                {
+                    spades: b.image({}).optional(),
+                    hearts: b.image({}).optional(),
+                    clubs: b.image({}).optional(),
+                    diamonds: b.image({}).optional(),
+                },
+                { layout: 'H' },
+            ),
 
-        // _3: form.markdown({ markdown: `### Prompts`, label: false }),
-        generalTheme: ui.string({ default: 'fantasy' }),
-        // Main cards
-        illustrations: ui.group({
-            layout: 'H',
-            // className: 'p-2 bg-red-800',
-            items: {
-                Jack: ui.string({ default: 'gold, Knight' }),
-                Queen: ui.string({ default: 'gold, Queen' }),
-                King: ui.string({ default: 'gold, King' }),
-            },
-        }),
+            // _3: form.markdown({ markdown: `### Prompts`, label: false }),
+            generalTheme: b.string({ default: 'fantasy' }),
+            // Main cards
+            illustrations: b.fields(
+                {
+                    Jack: b.string({ default: 'gold, Knight' }),
+                    Queen: b.string({ default: 'gold, Queen' }),
+                    King: b.string({ default: 'gold, King' }),
+                },
+                { layout: 'H' },
+            ),
 
-        // [UI] THEME --------------------------------------
-        themes: ui.group({
-            items: {
-                spades: ui.string({ default: 'underwater, sea, fish, tentacles, ocean' }),
-                hearts: ui.string({ default: 'volcanic, lava, rock, fire' }),
-                clubs: ui.string({ default: 'forest, nature, branches, trees' }),
-                diamonds: ui.string({ default: 'snow, ice, mountain, transparent winter' }),
-            },
-        }),
+            // [UI] THEME --------------------------------------
+            themes: b.group({
+                items: {
+                    spades: b.string({ default: 'underwater, sea, fish, tentacles, ocean' }),
+                    hearts: b.string({ default: 'volcanic, lava, rock, fire' }),
+                    clubs: b.string({ default: 'forest, nature, branches, trees' }),
+                    diamonds: b.string({ default: 'snow, ice, mountain, transparent winter' }),
+                },
+            }),
 
-        colors: ui.group({
-            items: {
-                spades: ui.string({ default: 'blue' }),
-                hearts: ui.string({ default: 'red' }),
-                clubs: ui.string({ default: 'green' }),
-                diamonds: ui.string({ default: 'white' }),
-            },
-        }),
+            colors: b.group({
+                items: {
+                    spades: b.string({ default: 'blue' }),
+                    hearts: b.string({ default: 'red' }),
+                    clubs: b.string({ default: 'green' }),
+                    diamonds: b.string({ default: 'white' }),
+                },
+            }),
 
-        // theme5: form.string({ default: 'winter', }),
+            // theme5: form.string({ default: 'winter', }),
 
-        // [UI] BORDERS ------------------------------------
-        background: ui.group({
-            items: {
-                seed: ui.seed({ default: 0, defaultMode: 'fixed' }),
-                help: ui.markdown({ markdown: `Use \`{color}\` and \`{suit}\` to insert the current color and suit` }),
-                prompt: ui.string({ default: `{color} background pattern` }),
-            },
+            // [UI] BORDERS ------------------------------------
+            background: b.group({
+                items: {
+                    seed: b.seed({ default: 0, defaultMode: 'fixed' }),
+                    help: b.markdown({ markdown: `Use \`{color}\` and \`{suit}\` to insert the current color and suit` }),
+                    prompt: b.string({ default: `{color} background pattern` }),
+                },
+            }),
+            margin: b.int({ default: 40 }).optional(),
+            symetry: b.bool({ default: false }),
         }),
-        margin: ui.int({ default: 40 }).optional(),
-        symetry: ui.bool({ default: false }),
-    }),
     run: async (run, ui) => {
         //===//===//===//===//===//===//===//===//===//===//===//===//===//
         // 1. SETUP --------------------------------------------------
         const graph = run.nodes
-        const floor = (x: number) => Math.floor(x)
-        let { ckpt, vae, clip } = run_model(ui.model)
+        const floor = (x: number): number => Math.floor(x)
+        let { ckpt, vae, clip } = evalModelSD15andSDXL(ui.model)
         const suits = Array.from(new Set(ui.cards.map((c) => c.row)))
         const values = Array.from(new Set(ui.cards.map((c) => c.col)))
         const W = ui.size.width, W2 = floor(W / 2), W3 = floor(W / 3), W4 = floor(W / 4) // prettier-ignore

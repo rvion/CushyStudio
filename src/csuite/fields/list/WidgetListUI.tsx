@@ -6,20 +6,17 @@ import { observer } from 'mobx-react-lite'
 import { type FC, forwardRef } from 'react'
 
 import { Button } from '../../button/Button'
-import { WidgetWithLabelUI } from '../../form/WidgetWithLabelUI'
 import { ListControlsUI } from './ListControlsUI'
-
-const { default: SortableList, SortableItem, SortableKnob } = await import('react-easy-sort')
 
 // TODO (bird_d): Make collapse button on left, probably just re-use a "Group" component in this widget.
 export const WidgetList_LineUI: FC<{ field: Field_list<any> }> = observer(function WidgetList_LineUI_(p: {
     field: Field_list<any>
 }) {
     return (
-        <div tw='flex flex-1 items-center COLLAPSE-PASSTHROUGH'>
+        <div tw='COLLAPSE-PASSTHROUGH flex flex-1 items-center'>
             {p.field.isAuto ? null : (
                 <ListControlsUI field={p.field}>
-                    <div tw='text-sm text-gray-500 italic whitespace-nowrap'>{p.field.length} items</div>
+                    <div tw='whitespace-nowrap text-sm italic text-gray-500'>{p.field.length} items</div>
                 </ListControlsUI>
             )}
         </div>
@@ -31,18 +28,16 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
     const subFields = listField.items
     const min = listField.config.min
     return (
-        <SortableList
-            //
-            onSortEnd={(s, e) => p.field.moveItem(s, e)}
+        <div /* SortableList */
+            // onSortEnd={(s, e) => p.field.moveItem(s, e)}
+            // draggedItemClassName='dragged'
             className='list'
-            draggedItemClassName='dragged'
         >
             {subFields.map((subField, ix) => {
                 return (
-                    <SortableItem key={subField.id}>
-                        <WidgetWithLabelUI
-                            fieldName={ix.toString()}
-                            field={subField}
+                    <div /* SortableItem */ key={subField.id}>
+                        <subField.UI
+                            Title={ix.toString()}
                             // slotDragKnob={
                             //     <div tw='flex'>
                             //         <SortableKnob>
@@ -50,7 +45,7 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
                             //         </SortableKnob>
                             //     </div>
                             // }
-                            slotDelete={
+                            DeleteBtn={
                                 listField.isAuto ? null : (
                                     <Button
                                         disabled={min != null && listField.items.length <= min}
@@ -58,21 +53,25 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
                                         size='input'
                                         subtle
                                         icon='mdiDeleteOutline'
-                                        onClick={() => listField.removeItem(subField)}
+                                        onClick={() => {
+                                            listField.removeItem(subField)
+                                            listField.touch()
+                                        }}
+                                        onBlur={() => listField.touch()}
                                     />
                                 )
                             }
-                            slotUpDown={
+                            UpDownBtn={
                                 <div tw='flex'>
                                     <ListItemMoveUpButtonUI listField={listField} ix={ix} />
                                     <ListItemMoveDownButtonUI listField={listField} ix={ix} />
                                 </div>
                             }
                         />
-                    </SortableItem>
+                    </div>
                 )
             })}
-        </SortableList>
+        </div>
     )
 })
 
@@ -95,7 +94,10 @@ export const ListItemMoveUpButtonUI = observer(function ListItemMoveUpButtonUI_(
     return (
         <Button
             disabled={ix === 0}
-            onClick={() => listField.moveItem(ix, ix - 1)}
+            onClick={() => {
+                listField.moveItem(ix, ix - 1)
+                listField.touch()
+            }}
             square
             borderless
             subtle
@@ -116,7 +118,10 @@ export const ListItemMoveDownButtonUI = observer(function ListItemMoveDownButton
         <Button
             //
             disabled={ix === listField.length - 1}
-            onClick={() => listField.moveItem(ix, ix + 1)}
+            onClick={() => {
+                listField.moveItem(ix, ix + 1)
+                listField.touch()
+            }}
             square
             borderless
             subtle

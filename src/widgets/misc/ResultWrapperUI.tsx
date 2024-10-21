@@ -1,7 +1,8 @@
+import type { Result } from '../../types/Either'
+
 import { observer } from 'mobx-react-lite'
 
 import { Message } from '../../csuite/inputs/shims'
-import { Result } from '../../types/Either'
 
 export const ResultWrapperUI = observer(function ResultWrapperUI_<T>(p: {
     res?: Maybe<Result<T>>

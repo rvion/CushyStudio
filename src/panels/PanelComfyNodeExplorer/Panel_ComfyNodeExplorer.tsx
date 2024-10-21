@@ -24,12 +24,12 @@ export const PanelComfyNodeExplorerUI = observer(function PanelComfyNodeExplorer
     const search = useMemo(() => new ComfyNodeExplorerState(pj), [])
     const repo = st.managerRepository
     return (
-        <div className='flex flex-col _MD'>
+        <div className='_MD flex flex-col'>
             <table
                 //
                 cellPadding={0}
                 cellSpacing={0}
-                className='table table-zebra-zebra table-zebra table-sm'
+                className='table-zebra-zebra table-zebra table-sm table'
             >
                 <thead tw='sticky top-0 z-40'>
                     <tr>

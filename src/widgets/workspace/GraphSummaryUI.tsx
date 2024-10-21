@@ -30,7 +30,7 @@ export const GraphSummaryUI = observer(function GraphSummaryUI_(p: { graph: Comf
                             <span>{n.statusEmoji}</span>
                         </RevealUI>
                         <NodeRefUI size={1.1} label={ix.toString()} node={n} />
-                        <span tw='text-sm overflow-hidden whitespace-nowrap text-ellipsis'>{n.$schema.nameInComfy}</span>
+                        <span tw='overflow-hidden text-ellipsis whitespace-nowrap text-sm'>{n.$schema.nameInComfy}</span>
                     </div>
                 ))}
             </div>

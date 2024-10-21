@@ -12,7 +12,7 @@ export const Plugin_AdjustWeightsUI = observer(function Plugin_AdjustWeightsUI_(
     return (
         <div>
             {uist.ast.findAll('WeightedExpression').map((weighted, index) => (
-                <div key={index} tw='flex gap-2 items-center'>
+                <div key={index} tw='flex items-center gap-2'>
                     <InputNumberUI
                         tw='w-48 flex-none'
                         onValueChange={(v) => (weighted.weight = v)}

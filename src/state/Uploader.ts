@@ -1,11 +1,10 @@
-import type { ComfyUploadImageResult } from '../types/ComfyWsApi'
-import type { STATE } from './state'
-
 // import { readFileSync } from 'fs'
 // import { lookup } from 'mime-types'
 // import path from 'pathe'
 // import { hashBlob } from './hashBlob'
-import { MediaImageL } from '../models/MediaImage'
+import type { MediaImageL } from '../models/MediaImage'
+import type { ComfyUploadImageResult } from '../types/ComfyWsApi'
+import type { STATE } from './state'
 
 // import { asAbsolutePath } from '../utils/fs/pathUtils'
 // import { asSTRING_orCrash } from '../utils/misc/bang'

@@ -1,10 +1,10 @@
+import type { CushyAppL } from '../models/CushyApp'
 import type { STATE } from '../state/state'
 
 import { action, makeAutoObservable } from 'mobx'
 import path from 'pathe'
 import Watcher from 'watcher'
 
-import { CushyAppL } from '../models/CushyApp'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { LibraryFile } from './LibraryFile'
 import { shouldSkip_duringWatch } from './shouldSkip'
@@ -82,14 +82,14 @@ export class Library {
         // ⏸️ this.expanded = new Set(expanded)
         const cache = this.st.hotReloadPersistentCache
         if (cache.watcher) {
-            ;(cache.watcher as Watcher).close()
+            (cache.watcher as Watcher).close()
         }
 
         // register watcher to properly reload all cards
         this.watcher = cache.watcher = new Watcher('library', {
             recursive: true,
             depth: 20,
-            ignore: (t) => {
+            ignore: (t): boolean => {
                 const baseName = path.basename(t)
                 return shouldSkip_duringWatch(baseName)
             },
@@ -118,7 +118,7 @@ export class Library {
                 // RELOAD ALL APPS from opened drafts
                 // logic is a bit complex, but it seems like a good trade-off
                 const allAppsNeedingUpdate = new Set<CushyAppL>()
-                const allDraftTabs = st.layout.findTabsFor('Draft')
+                const allDraftTabs = cushy.layout.findTabsFor('Draft')
                 for (const d of allDraftTabs) {
                     // retrieve the draft from the tab
                     const draft = st.db.draft.get(d.props.draftID)

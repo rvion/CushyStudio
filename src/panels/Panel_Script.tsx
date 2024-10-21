@@ -43,9 +43,9 @@ export const PanelScriptUI = observer(function PanelScriptUI_(p: PanelScriptProp
             <div>extracted from: {script.relPath}</div>
             <TabUI>
                 <div>text (before import rewrite)</div>
-                <pre tw='text-xs font-mono'>{script.data.code}</pre>
+                <pre tw='font-mono text-xs'>{script.data.code}</pre>
                 <div>text (after import rewrite)</div>
-                <pre tw='text-xs font-mono'>{replaceImportsWithSyncImport(script.data.code)}</pre>
+                <pre tw='font-mono text-xs'>{replaceImportsWithSyncImport(script.data.code)}</pre>
                 <div>code</div>
                 <TypescriptHighlightedCodeUI code={script.data.code}></TypescriptHighlightedCodeUI>
             </TabUI>

@@ -6,7 +6,7 @@ import * as React from 'react'
 import { Button } from '../button/Button'
 import { RevealUI } from '../reveal/RevealUI'
 
-export const MenuRootUI = observer(function MenuRootUI_(p: { menu: MenuInstance<any> }) {
+export const MenuRootUI = observer(function MenuRootUI_(p: { menu: MenuInstance }) {
     return (
         <RevealUI /* className='dropdown' */ placement='bottomStart' content={() => <p.menu.UI />}>
             <Button borderless subtle>

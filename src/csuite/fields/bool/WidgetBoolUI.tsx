@@ -13,7 +13,7 @@ export const WidgetBoolUI = observer(function WidgetBoolUI_(p: { field: Field_bo
     }
 
     return (
-        <div tw='flex w-full h-full '>
+        <div tw='flex h-full w-full '>
             <InputBoolUI
                 // config
                 display={field.config.display}
@@ -21,8 +21,13 @@ export const WidgetBoolUI = observer(function WidgetBoolUI_(p: { field: Field_bo
                 icon={field.icon}
                 text={field.config.text ?? field.config.label2}
                 // value
-                value={field.value}
-                onValueChange={(value) => (field.value = value)}
+                value={field.value_or_zero}
+                onBlur={() => field.touch()}
+                onValueChange={(value) => {
+                    field.value = value
+                    p.field.touch()
+                }}
+                toggleGroup={'field-bool'}
             />
 
             <SpacerUI />

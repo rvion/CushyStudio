@@ -3,14 +3,16 @@ import type { Requirements } from './Requirements'
 
 import { observer } from 'mobx-react-lite'
 
+import { MessageWarningUI } from '../../csuite'
 import { Button } from '../../csuite/button/Button'
 import { MessageErrorUI } from '../../csuite/messages/MessageErrorUI'
-import { MessageWarningUI } from '../../csuite/messages/MessageWarningUI'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { exhaust } from '../../csuite/utils/exhaust'
 import { useSt } from '../../state/stateContext'
 import { Button_InstallCustomNodeUI } from './Button_InstallCustomNodeUI'
 import { Button_InstalModelViaManagerUI } from './Button_InstalModelViaManagerUI'
+import { IntallBtnForKnownCivitaiModelId, IntallBtnForKnownCivitaiModelVersionId } from './FOOBAR'
+import { QuickHostActionsUI } from './QuickHostActionsUI'
 
 export const InstallRequirementsBtnUI = observer(function InstallRequirementsBtnUI_(p: {
     active: boolean
@@ -30,7 +32,7 @@ export const InstallRequirementsBtnUI = observer(function InstallRequirementsBtn
             )}
         >
             <Button //
-                icon='mdiDownload'
+                icon='mdiPuzzleOutline'
                 size='widget'
                 square={!p.label}
                 subtle={!actionRequired}
@@ -48,52 +50,26 @@ export const Panel_InstallRequirementsUI = observer(function Panel_InstallRequir
     const manager = host.manager
     const repo = manager.repository
     return (
-        <div tw='flex flex-col gap-2 '>
-            <div tw='flex gap-1'>
-                {/*
-                TODO: uncomment when implemented
-                <div tw='btn btn-sm flex-1' onClick={() => host.fetchAndUpdateSchema()}>
-                    <span className='material-symbols-outlined'>cloud_download</span>
-                    Install All
-                </div>
-                */}
-                <RevealUI
-                    content={() => (
-                        <div tw='max-h-96 overflow-auto'>
-                            {((): JSX.Element => {
-                                if (manager.pluginList == null) return <div tw='loading loading-spinner'></div>
-                                return (
-                                    <div tw='flex flex-col'>
-                                        {manager.titlesOfAllInstalledPlugins.map((name) => (
-                                            <div key={name}>{name}</div>
-                                        ))}
-                                    </div>
-                                )
-                            })()}
-                        </div>
-                    )}
-                >
-                    <Button>See Installed</Button>
-                </RevealUI>
-                <Button
-                    onClick={async () => {
-                        await host.fetchAndUpdateSchema()
-                        await host.manager.updateHostPluginsAndModels()
-                    }}
-                >
-                    Reload Schema
-                </Button>
-                <Button onClick={() => host.manager.rebootComfyUI()}>Restart ComfyUI</Button>
-            </div>
-            <MessageWarningUI markdown='this widget is beta; Clicking install does not show progress yet; check your ComfyUI logs' />
-            <div tw='flex flex-col overflow-scroll gap-2'>
+        <div tw='flex flex-col gap-2 p-2'>
+            <MessageWarningUI
+                tw='text-sm'
+                markdown='make sure your `ComfyUI\custom_nodes\ComfyUI-Manager\config.ini` properly has `bypass_ssl = True`'
+            />
+            <QuickHostActionsUI host={host} tw='flex flex-wrap gap-1' />
+            <hr />
+            <div tw='flex flex-col gap-2 overflow-scroll'>
                 {rr.map((req) => {
                     // ------------------------------------------------
                     if (req.type === 'customNodesByNameInCushy') {
                         const plugins: PluginInfo[] = repo.plugins_byNodeNameInCushy.get(req.nodeName) ?? []
                         if (plugins.length == 0) return <MessageErrorUI markdown={`node plugin **${req.nodeName}** not found`} />
                         if (plugins.length === 1)
-                            return <Button_InstallCustomNodeUI optional={req.optional ?? false} plugin={plugins[0]!} />
+                            return (
+                                <Button_InstallCustomNodeUI //
+                                    optional={req.optional ?? false}
+                                    plugin={plugins[0]!}
+                                />
+                            )
                         return (
                             <div tw='bd'>
                                 <MessageErrorUI>
@@ -104,7 +80,11 @@ export const Panel_InstallRequirementsUI = observer(function Panel_InstallRequir
                                 </MessageErrorUI>
                                 {plugins.map((x) => {
                                     return (
-                                        <Button_InstallCustomNodeUI optional={req.optional ?? false} key={x.title} plugin={x} />
+                                        <Button_InstallCustomNodeUI //
+                                            optional={req.optional ?? false}
+                                            key={x.title}
+                                            plugin={x}
+                                        />
                                     )
                                 })}
                             </div>
@@ -144,22 +124,11 @@ export const Panel_InstallRequirementsUI = observer(function Panel_InstallRequir
 
                     // ------------------------------------------------
                     if (req.type === 'modelInCivitai') {
-                        // 🔴
                         return (
-                            <Button_InstalModelViaManagerUI
-                                optional={req.optional ?? false}
-                                modelInfo={{
-                                    name: 'negative_hand Negative Embedding',
-                                    type: 'embeddings',
-                                    base: req.base,
-                                    save_path: 'default',
-                                    description:
-                                        'If you use this embedding with negatives, you can solve the issue of damaging your hands.',
-                                    reference: 'https://civitai.com/models/56519/negativehand-negative-embedding',
-                                    filename: 'negative_hand-neg.pt',
-                                    url: 'https://civitai.com/api/download/models/60938',
-                                }}
-                            />
+                            <div>
+                                <IntallBtnForKnownCivitaiModelId civitaiModelId={req.civitaiModelId} />
+                                <IntallBtnForKnownCivitaiModelVersionId /* civitaiModelId={req.civitaiModelId} */ />
+                            </div>
                         )
                     }
                     if (req.type === 'modelInManager') {
@@ -184,7 +153,7 @@ export const Panel_InstallRequirementsUI = observer(function Panel_InstallRequir
                     // // const dlPath = host.manager.getModelInfoFinalFilePath(mi)
                     // return (
                     //     <div key={mi.url}>
-                    //         <div
+                    //         <Button
                     //             onClick={async () => {
                     //                 // 🔴 TODO
                     //                 // https://github.com/ltdrdata/ComfyUI-Manager/blob/main/js/model-downloader.js#L11
@@ -201,13 +170,11 @@ export const Panel_InstallRequirementsUI = observer(function Panel_InstallRequir
                     //                 // ⏸️     .get(p.widget.input.enumName)
                     //                 // ⏸️ enumInfo?.values.push(mi.filename)
                     //             }}
-                    //             tw='btn btn-sm btn-outline btn-sm'
                     //             key={mi.name}
                     //         >
                     //             {isInstalled ? '✅' : null}
-                    //             <span className='material-symbols-outlined'>cloud_download</span>
                     //             <span>{mi.name}</span>
-                    //         </div>
+                    //         </Button>
                     //         {/* <RevealUI> */}
                     //         {/* <div>infos</div> */}
                     //         {/*
@@ -222,6 +189,9 @@ export const Panel_InstallRequirementsUI = observer(function Panel_InstallRequir
                     // )
                 })}
             </div>
+            {/* <MessageWarningUI //
+                markdown='this widget is beta; Clicking install does not show progress yet; check your ComfyUI logs'
+            /> */}
         </div>
     )
 })

@@ -92,3 +92,5 @@ src/tools/cushy-screenshots-logs.txt
 
 @cushy/*
 @cushy.zip
+
+eslint.config.debug.json

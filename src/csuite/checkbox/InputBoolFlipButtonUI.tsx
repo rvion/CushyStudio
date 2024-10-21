@@ -18,9 +18,9 @@ export const InputBoolFlipButtonUI = observer(function InputBoolFlipButtonUI_(p:
             tooltip={p.tooltip}
             tooltipPlacement={p.tooltipPlacement}
             hover
-            triggerOnPress={{ startingState: isActive }}
+            triggerOnPress={{ startingState: isActive, toggleGroup: p.toggleGroup }}
             expand={p.expand}
-            tw={['flex flex-row !select-none cursor-pointer']}
+            tw={['flex cursor-pointer !select-none flex-row']}
             onClick={(ev) => {
                 if (!p.onValueChange) return
                 ev.stopPropagation()

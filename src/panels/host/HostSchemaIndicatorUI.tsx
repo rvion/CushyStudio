@@ -1,9 +1,11 @@
+import type { HostL } from '../../models/Host'
+
 import { observer } from 'mobx-react-lite'
 
 import { Button } from '../../csuite/button/Button'
 import { Message } from '../../csuite/inputs/shims'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
-import { HostL } from '../../models/Host'
+import { QuickHostActionsUI } from '../../manager/REQUIREMENTS/QuickHostActionsUI'
 
 export const HostSchemaIndicatorUI = observer(function HostSchemaIndicatorUI_(p: {
     //
@@ -29,18 +31,7 @@ export const HostSchemaIndicatorUI = observer(function HostSchemaIndicatorUI_(p:
                         </Message>
                     )}
                     <pre>{host.schemaRetrievalLogs.join('\n')}</pre>
-                    <div
-                        tw='btn btn-sm'
-                        onClick={async () => {
-                            await host.fetchAndUpdateSchema()
-                            return host.manager.updateHostPluginsAndModels()
-                        }}
-                    >
-                        Reload Schema
-                    </div>
-                    <div tw='btn btn-sm btn-warning flex-1' onClick={() => host.manager.rebootComfyUI()}>
-                        Restart ComfyUI
-                    </div>
+                    <QuickHostActionsUI host={host} />
                 </div>
             )}
         >
@@ -50,13 +41,11 @@ export const HostSchemaIndicatorUI = observer(function HostSchemaIndicatorUI_(p:
                 {/* LAST UPDATE */}
                 {host.schemaUpdateResult ? (
                     host.schemaUpdateResult.type === 'error' ? (
-                        <div className='btn btn-sm btn-ghost cursor-help'>
+                        <Button subtle className='cursor-help'>
                             <span className='text-error'>history</span>
-                        </div>
+                        </Button>
                     ) : p.showIcon ? (
-                        <div className='btn btn-sm btn-ghost cursor-help'>
-                            {p.showIcon && <span className='material-symbols-outlined text-green-400 '>check_circle</span>}
-                        </div>
+                        <Button className='btn-ghost cursor-help' icon={p.showIcon ? 'mdiCheckCircle' : undefined} />
                     ) : null
                 ) : null}
 
@@ -66,12 +55,12 @@ export const HostSchemaIndicatorUI = observer(function HostSchemaIndicatorUI_(p:
                         empty schema
                     </Button>
                 ) : (
-                    <div className='btn btn-sm btn-ghost cursor-help'>
-                        {p.showIcon && <span className='material-symbols-outlined text-green-400 '>check_circle</span>}
+                    <Button className='btn-ghost cursor-help'>
+                        {p.showIcon && <span className='material-symbols-outlined text-green-400'>check_circle</span>}
                         {host.isUpdatingSchema && <div tw='loading loading-spinner loading-xs' />}
                         <span className='text-success'>Schema</span>
                         {sizeTxt}
-                    </div>
+                    </Button>
                 )}
             </div>
         </RevealUI>

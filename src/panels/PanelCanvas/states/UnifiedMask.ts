@@ -1,11 +1,11 @@
 import type { MediaImageL } from '../../../models/MediaImage'
 import type { STATE } from '../../../state/state'
 import type { UnifiedCanvas } from './UnifiedCanvas'
+import type { Layer } from 'konva/lib/Layer'
+import type { Image } from 'konva/lib/shapes/Image'
+import type { Stage } from 'konva/lib/Stage'
 
 import Konva from 'konva'
-import { Layer } from 'konva/lib/Layer'
-import { Image } from 'konva/lib/shapes/Image'
-import { Stage } from 'konva/lib/Stage'
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 

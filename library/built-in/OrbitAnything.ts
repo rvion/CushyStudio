@@ -18,11 +18,12 @@ app({
             `- be **centered** (no parts escaping the frame)'`,
         ].join('\n'),
     },
-    ui: (form) => ({
-        image: form.image({}),
-        orbit: form.orbit({}).addRequirements([{ type: 'modelInManager', modelName: 'stabilityai/Stable Zero123' }]),
-        sndPass: form.fields({ positive: form.prompt({}) }).optional(),
-    }),
+    ui: (b) =>
+        b.fields({
+            image: b.image({}),
+            orbit: b.orbit({}).addRequirements([{ type: 'modelInManager', modelName: 'stabilityai/Stable Zero123' }]),
+            sndPass: b.fields({ positive: b.prompt({}) }).optional(),
+        }),
     run: async (run, ui) => {
         const graph = run.nodes
         // @ts-ignore

@@ -1,22 +1,27 @@
-import type { FrameProps } from '../frame/Frame'
 import type { MenuInstance } from './MenuInstance'
 
 import { observer } from 'mobx-react-lite'
 import * as React from 'react'
-import { createElement, type MouseEvent } from 'react'
+import { type MouseEvent } from 'react'
 
+import { renderFCOrNode } from '../../csuite-cushy/shells/_isFC'
 import { activityManager } from '../activity/ActivityManager'
 import { MenuItem } from '../dropdown/MenuItem'
 import { IkonOf } from '../icons/iconHelpers'
 import { isBoundCommand } from '../introspect/_isBoundCommand'
-import { isBoundMenu } from '../introspect/_isBoundMenu'
 import { isCommand } from '../introspect/_isCommand'
+import { isMenu } from '../introspect/_isMenu'
 import { isWidget } from '../model/$FieldSym'
 import { RevealUI } from '../reveal/RevealUI'
 import { SimpleMenuAction } from './SimpleMenuAction'
 import { SimpleMenuModal } from './SimpleMenuModal'
 
-export const MenuUI = observer(function Menu({
+// -----------------------
+export type MenuUIProps = {
+    menu: MenuInstance
+} & React.HTMLAttributes<HTMLDivElement>
+
+export const MenuUI = observer(function MenuUI_({
     // own props
     menu,
 
@@ -27,12 +32,13 @@ export const MenuUI = observer(function Menu({
 
     // rest (so custom JSX magic can work)
     ...rest
-}: { menu: MenuInstance<any> } & React.HTMLAttributes<HTMLDivElement>) {
+}: MenuUIProps) {
     return (
         <div
             tabIndex={tabIndex ?? -1}
             autoFocus={autoFocus ?? true}
             tw='w-fit'
+            // TODO: this should be handled by the menu activity instead.
             onKeyDown={(ev) => {
                 // call the original onKeyDown
                 onKeyDown?.(ev)
@@ -41,7 +47,7 @@ export const MenuUI = observer(function Menu({
                 const key = ev.key
                 for (const entry of menu.entriesWithKb) {
                     if (entry.char === key) {
-                        if (entry.entry instanceof SimpleMenuAction) entry.entry.opts.onPick()
+                        if (entry.entry instanceof SimpleMenuAction) entry.entry.opts.onClick?.()
                         // if (entry.entry instanceof SimpleMenuEntryPopup) entry.entry.onPick()
                         else if (isBoundCommand(entry.entry)) void entry.entry.execute()
                         else if (isCommand(entry.entry)) void entry.entry.execute()
@@ -54,7 +60,8 @@ export const MenuUI = observer(function Menu({
             }}
             {...rest}
         >
-            {menu.entriesWithKb.map(({ entry, char, charIx }, ix) => {
+            {menu.entriesWithKb.map(({ entry: entry, char, charIx }, ix) => {
+                // 1. simple menu action
                 if (entry instanceof SimpleMenuAction) {
                     return (
                         <MenuItem //
@@ -62,14 +69,16 @@ export const MenuUI = observer(function Menu({
                             key={ix}
                             localShortcut={char}
                             label={entry.opts.label}
+                            // children={formatMenuLabel(charIx, entry.opts.label)}
                             icon={entry.opts.icon}
-                            onClick={() => {
-                                entry.opts.onPick()
+                            onClick={async () => {
+                                await entry.opts.onClick?.()
                                 menu.onStop()
                             }}
                         />
                     )
                 }
+                // 2. simple menu modal
                 if (entry instanceof SimpleMenuModal) {
                     return (
                         <MenuItem //
@@ -78,7 +87,7 @@ export const MenuUI = observer(function Menu({
                             icon={entry.p.icon}
                             localShortcut={char}
                             label={entry.p.label}
-                            onClick={(event: MouseEvent) => {
+                            onClick={(event?: MouseEvent) => {
                                 activityManager.start({
                                     event,
                                     placement: 'auto',
@@ -95,81 +104,63 @@ export const MenuUI = observer(function Menu({
                         />
                     )
                 }
+                // 3. commands and bound commands
                 if (isBoundCommand(entry) || isCommand(entry)) {
-                    const label = entry.label
                     return (
-                        <MenuItem //
+                        <MenuItem
                             tw='min-w-60'
                             key={ix}
-                            // localShortcut={char}
+                            label={entry.label}
+                            labelAcceleratorIx={charIx}
                             globalShortcut={isCommand(entry) ? entry.firstCombo : char}
                             icon={entry.icon}
                             onClick={() => {
                                 void entry.execute()
                                 menu.onStop()
                             }}
-                            // beforeShortcut={
-                            //     isCommand(entry) && entry.combos ? (
-                            //         Array.isArray(entry.combos) ? (
-                            //             entry.combos.length > 0 ? (
-                            //                 <ComboUI combo={entry.combos[0]!} />
-                            //             ) : undefined
-                            //         ) : (
-                            //             <ComboUI combo={entry.combos} />
-                            //         )
-                            //     ) : undefined
-                            // }
-                            label={
-                                <>
-                                    {charIx != null ? (
-                                        <div>
-                                            <span>{label.slice(0, charIx)}</span>
-                                            <span tw='underline text-red'>{label[charIx]}</span>
-                                            <span>{label.slice(charIx + 1)}</span>
-                                        </div>
-                                    ) : (
-                                        label
-                                    )}
-                                </>
-                            }
                         />
                     )
-                } else if (isBoundMenu(entry)) {
+                }
+
+                // bound menu
+                else if (isMenu(entry)) {
                     const label = entry.title
                     return (
                         <RevealUI //
+                            key={ix}
                             trigger='hover'
-                            tw='min-w-60 !block'
+                            hideTriggers={{}}
+                            tw='!block min-w-60'
                             placement='rightStart'
                             content={() => <MenuUI menu={entry.init(menu.allocatedKeys)} />}
                         >
                             <MenuItem //
-                                key={ix}
+                                disabled={entry.def.disabled}
                                 localShortcut={char}
                                 icon={entry.icon}
                                 afterShortcut={<IkonOf name='mdiMenuRight' />}
-                                // onClick={() => entry.open()}
-                                label={
-                                    <>
-                                        {charIx != null ? (
-                                            <div>
-                                                <span tw='font-bold'>{label.slice(0, charIx)}</span>
-                                                <span tw='underline text-red'>{label[charIx]}</span>
-                                                <span>{label.slice(charIx + 1)}</span>
-                                            </div>
-                                        ) : (
-                                            label
-                                        )}
-                                    </>
-                                }
+                                label={label}
+                                labelAcceleratorIx={charIx}
                             />
                         </RevealUI>
                     )
-                } else if (isWidget(entry)) {
-                    return entry.renderWithLabel()
-                } else {
-                    return <React.Fragment key={ix}>{createElement(entry)}</React.Fragment>
                 }
+                //
+                else if (isWidget(entry)) {
+                    return <div key={ix}>{entry.UI()}</div>
+                }
+
+                return <div key={ix}>{renderFCOrNode(entry, {})}</div>
+                // plain jsx
+                // else if (React.isValidElement(entry)) {
+                //     return entry
+                // }
+
+                // // custom element
+                // else {
+                //     return <React.Fragment key={ix}>{createElement(entry)}</React.Fragment>
+                //     // return entry as any as React.ReactNode
+                // }
             })}
         </div>
     )

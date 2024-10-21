@@ -12,7 +12,7 @@ export const ShellPopoverUI = observer(function ShellPopoverUI_(p: RevealShellPr
             // when  see _ShellForFocusEvents
             tabIndex={0}
             shadow
-            className={reveal.p.tooltipWrapperClassName}
+            className={reveal.p.shellClassName}
             tw={[
                 //
                 '_RevealUI pointer-events-auto',
@@ -39,7 +39,7 @@ export const ShellPopoverUI = observer(function ShellPopoverUI_(p: RevealShellPr
                 <Frame // LOCK
                     icon='mdiLock'
                     text={{ contrast: 0.3 }}
-                    tw='italic text-sm flex gap-1 items-center justify-center absolute'
+                    tw='absolute flex items-center justify-center gap-1 text-sm italic'
                 >
                     shift+right-click to unlock
                 </Frame>

@@ -1,4 +1,4 @@
-import BetterSqlite3 from 'better-sqlite3'
+import type BetterSqlite3 from 'better-sqlite3'
 
 export type Migration = {
     id: string

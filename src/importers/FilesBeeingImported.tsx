@@ -1,22 +1,29 @@
 import type { LiteGraphJSON } from '../core/LiteGraph'
+import type { KnownCustomNode_CushyName } from '../manager/extension-node-map/KnownCustomNode_CushyName'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
+import type { ExifData } from '../utils/png/_parseExifData'
+import type { PromptToCodeOpts } from './ComfyImporter'
 
 import { writeFileSync } from 'fs'
-import { keys } from 'mobx'
 import { observer, useLocalObservable } from 'mobx-react-lite'
 import { useState } from 'react'
 
 import { convertLiteGraphToPrompt } from '../core/litegraphToPrompt'
+import { convertComfyNodeNameToCushyNodeNameValidInJS } from '../core/normalizeJSIdentifier'
+import { UnknownCustomNode } from '../core/UnknownCustomNode'
+import { MessageErrorUI } from '../csuite'
+import { Button } from '../csuite/button/Button'
 import { extractErrorMessage } from '../csuite/formatters/extractErrorMessage'
+import { Frame } from '../csuite/frame/Frame'
 import { Surface } from '../csuite/inputs/shims'
 import { MessageInfoUI } from '../csuite/messages/MessageInfoUI'
 import { toastError } from '../csuite/utils/toasts'
+import { Panel_InstallRequirementsUI } from '../manager/REQUIREMENTS/Panel_InstallRequirementsUI'
 import { createMediaImage_fromFileObject } from '../models/createMediaImage_fromWebFile'
 import { useSt } from '../state/stateContext'
-import { getPngMetadataFromFile } from '../utils/png/_getPngMetadata'
+import { getPngMetadataFromFile, type TextChunks } from '../utils/png/_getPngMetadata'
 import { getWebpMetadata } from '../utils/png/_getWebpMetadata'
 import { TypescriptHighlightedCodeUI } from '../widgets/misc/TypescriptHighlightedCodeUI'
-import { PromptToCodeOpts } from './ComfyImporter'
 import { usePromise } from './usePromise'
 
 export interface FileListProps {
@@ -24,7 +31,6 @@ export interface FileListProps {
 }
 
 export const ImportAsImageUI = observer(function ImportAsImageUI_(p: { className?: string; file: File }) {
-    const st = useSt()
     const file = p.file
     const url = URL.createObjectURL(p.file)
     const uiSt = useLocalObservable(() => ({ validImage: false }))
@@ -38,19 +44,27 @@ export const ImportAsImageUI = observer(function ImportAsImageUI_(p: { className
                 style={{ width: '5rem', height: '5rem' }}
                 src={url}
             />
-            <div
-                tw={['btn btn-primary btn-sm', uiSt.validImage ? null : 'btn-disabled']}
+            <Button
+                look='primary'
+                size='sm'
+                disabled={!uiSt.validImage}
                 onClick={async () => {
                     if (!uiSt.validImage) return
                     await createMediaImage_fromFileObject(file)
                 }}
-            >
-                import as image
-            </div>
+                children='Import as image'
+            />
         </div>
     )
 })
 
+type TTT = Promise<ExifData> | Promise<{ workflow: string }> | 'NO'
+function foobar(file: File): TTT {
+    if (file.name.endsWith('.png')) return getPngMetadataFromFile(file)
+    if (file.name.endsWith('.webp')) return getWebpMetadata(file)
+    if (file.name.endsWith('.json')) return file.text().then((x) => ({ workflow: x }))
+    return 'NO'
+}
 export const ImportedFileUI = observer(function ImportedFileUI_(p: {
     //
     className?: string
@@ -61,12 +75,9 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: {
     const [relPath, setRelPath] = useState<string | null>(`library/local/${file.name}-${Date.now()}.ts`)
     const st = useSt()
 
-    const promise = usePromise(() => {
-        if (file.name.endsWith('.png')) return getPngMetadataFromFile(file)
-        if (file.name.endsWith('.webp')) return getWebpMetadata(file)
-        if (file.name.endsWith('.json')) return file.text().then((x) => ({ workflow: x }))
-        return Promise.resolve('NO')
-    }, [])
+    type T = Promise<ExifData> | string | { workflow: string }
+    type T2 = Promise<ExifData> | Promise<TextChunks> | 'NO' | Promise<{ workflow: string }>
+    const promise = usePromise<TTT>(() => foobar(file), [])
     const metadata = promise.value
 
     if (metadata == null) return <>loading...</>
@@ -87,6 +98,26 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: {
         promptJSON = convertLiteGraphToPrompt(st.schema, workflowJSON)
     } catch (error) {
         console.log(error)
+        if (error instanceof UnknownCustomNode) {
+            return (
+                <Frame border>
+                    <MessageErrorUI title={`${error.node.type} ❓`}>
+                        Unknown Node
+                        <Panel_InstallRequirementsUI
+                            requirements={[
+                                //
+                                {
+                                    type: 'customNodesByNameInCushy',
+                                    nodeName: convertComfyNodeNameToCushyNodeNameValidInJS(
+                                        error.node.type,
+                                    ) as KnownCustomNode_CushyName,
+                                },
+                            ]}
+                        />
+                    </MessageErrorUI>
+                </Frame>
+            )
+        }
         return <>❌3. cannot convert LiteGraph To Prompt {extractErrorMessage(error)}</>
     }
 
@@ -103,7 +134,7 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: {
         { title: 'autoui+id', conf: { preserveId: true, autoUI: true } },
     ]
     return (
-        <Surface className={p.className} tw='overflow-auto virtua'>
+        <Surface className={p.className} tw='virtua overflow-auto'>
             <LegacyFieldUI k='name' v={file.name} />
             <LegacyFieldUI k='size' v={file.size} />
             <LegacyFieldUI k='name' v={file.type} />
@@ -115,8 +146,9 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: {
 
             <div tw='join'>
                 {partialImportConfs.map((conf) => (
-                    <div
-                        tw='btn btn-sm btn-outline join-item'
+                    <Button
+                        size='sm'
+                        tw='join-item'
                         key={conf.title}
                         onClick={async () => {
                             //
@@ -130,13 +162,15 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: {
                         }}
                     >
                         {conf.title}
-                    </div>
+                    </Button>
                 ))}
             </div>
 
             {code && (
                 <div tw='bd1 m-2'>
-                    <div
+                    <Button
+                        look='primary'
+                        size='sm'
                         onClick={async () => {
                             // if (uist.hasConflict) return toastError('file already exist, change app name')
                             const path = `${st.rootPath}/${relPath}`
@@ -152,10 +186,9 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: {
                             const firstApp = apps[0]!
                             firstApp.openLastOrCreateDraft()
                         }}
-                        tw='btn btn-sm btn-primary'
                     >
                         create file
-                    </div>
+                    </Button>
                     <MessageInfoUI markdown={` This file will be created as  \`${relPath}\``} />
                     <TypescriptHighlightedCodeUI code={code} />
                 </div>

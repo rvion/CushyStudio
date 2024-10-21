@@ -6,6 +6,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 import { ToastContainer } from 'react-toastify'
 
 import { CushyUI } from '../../app/layout/AppUI'
+// import { withMobxSpy } from '../../csuite/utils/withSpy'
 import { TargetBox } from '../../importers/TargetBox'
 import { STATE } from '../../state/state'
 import { stContext } from '../../state/stateContext'
@@ -15,6 +16,7 @@ import { useGlobalDropHook } from './useGlobalDropHook'
 const path = asAbsolutePath(process.cwd())
 
 export const MainUI = observer(function MainUI_() {
+    // const st = useMemo(() => runInAction(() => withMobxSpy(() => new STATE(path))), [])
     const st = useMemo(() => runInAction(() => new STATE(path)), [])
     useGlobalDropHook(st)
     return (

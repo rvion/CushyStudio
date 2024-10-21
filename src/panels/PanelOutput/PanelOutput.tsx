@@ -33,7 +33,11 @@ export const PanelStepUI = observer(function PanelStepUI_(p: PanelStepUI) {
             ? cushy.db.step.last()
             : cushy.db.step.get(p.stepID)
     if (step == null) return null
-    const out1 = st.hovered ?? st.focusedStepOutput ?? step.lastMediaOutput ?? st.db.media_image.last()
+    const out1 =
+        st.hovered ?? //
+        st.focusedStepOutput ??
+        step.lastMediaOutput ??
+        st.db.media_image.last()
     // const out2 = step.comfy_workflows.findLast((i) => i.createdAt)
 
     return (
@@ -41,7 +45,7 @@ export const PanelStepUI = observer(function PanelStepUI_(p: PanelStepUI) {
             tw={[
                 //
                 'flex flex-col',
-                'flex-grow h-full w-full',
+                'h-full w-full flex-grow',
                 // 'overflow-clip', // Make sure scrollbar doesn't encompass entire panel, only where it makes sense.
             ]}
         >
@@ -56,7 +60,7 @@ export const PanelStepUI = observer(function PanelStepUI_(p: PanelStepUI) {
             </PanelHeaderUI>
 
             <div // STEP OUTPUTS ======================================================================
-                tw={'flex overflow-auto flex-shrink-0 max-h-[50%] p-0.5'}
+                tw={'flex max-h-[50%] flex-shrink-0 overflow-auto p-0.5'}
             >
                 {PanelStepsConf.renderAsConfigBtn()}
                 {step?.finalStatus === Status.Running && (

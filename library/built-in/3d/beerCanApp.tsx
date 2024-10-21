@@ -5,9 +5,10 @@ app({
         name: 'Beer Can App',
         description: 'diplay a 3d TinCan with provided image as Label texture',
     },
-    ui: (ui) => ({
-        image: ui.image({ label: 'Image' }),
-    }),
+    ui: (b) =>
+        b.fields({
+            image: b.image({ label: 'Image' }),
+        }),
     run: async (run, ui) => {
         run.output_custom({
             view: CustomView3dCan,

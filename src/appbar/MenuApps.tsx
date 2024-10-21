@@ -1,6 +1,5 @@
 import { observer } from 'mobx-react-lite'
 
-import { KEYS } from '../app/shortcuts/shorcutKeys'
 import { AppIllustrationUI } from '../cards/fancycard/AppIllustrationUI'
 import { DraftIllustrationUI } from '../cards/fancycard/DraftIllustration'
 import { Dropdown } from '../csuite/dropdown/Dropdown'
@@ -10,7 +9,6 @@ import { _formatAsRelativeDateTime } from '../updater/_getRelativeTimeString'
 export const MenuAppsUI = observer(function MenuAppsUI_(p: {}) {
     return (
         <Dropdown
-            expand
             title='Apps'
             content={() => (
                 <>
@@ -36,11 +34,17 @@ export const RecentDrafMenuEntriesUI = observer(function RecentDrafMenuEntriesUI
             {cushy.db.draft
                 .select((t) => t.orderBy('lastRunAt', 'desc').limit(10))
                 .map((draft) => (
-                    <MenuItem key={draft.id} onClick={() => draft.openOrFocusTab()}>
+                    <MenuItem
+                        //
+                        key={draft.id}
+                        onClick={() => draft.openOrFocusTab()}
+                        label={draft.app.name}
+                        // TODO make sure display nicely when fuzzy find main menu
+                    >
                         <DraftIllustrationUI draft={draft} size='2rem' />
                         <div tw='text' style={{ lineHeight: '1rem' }}>
                             <div>{draft.name}</div>
-                            <div tw='italic text-sm text-gray-500 flex gap-1'>
+                            <div tw='flex gap-1 text-sm italic text-gray-500'>
                                 <AppIllustrationUI app={draft.app} size='1rem' /> {draft.app.name}
                             </div>
                         </div>
@@ -57,7 +61,7 @@ export const RecentAppMenuEntriesUI = observer(function RecentAppMenuEntriesUI_(
             {cushy.db.cushy_app
                 .select((t) => t.orderBy('lastRunAt', 'desc').limit(5))
                 .map((app) => (
-                    <MenuItem onClick={() => app.openLastOrCreateDraft()}>
+                    <MenuItem onClick={() => app.openLastOrCreateDraft()} label={app.name}>
                         <AppIllustrationUI app={app} size='1.5rem' />
                         <div tw='flex items-center'>{app.name}</div>
                         <div tw='ml-auto text-xs italic text-gray-500'>{_formatAsRelativeDateTime(app.data.lastRunAt)}</div>

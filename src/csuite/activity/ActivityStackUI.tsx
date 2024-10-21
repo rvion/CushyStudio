@@ -19,11 +19,12 @@ export const ActivityStackUI = observer(function ActivityStackUI_(p: {}) {
                         routine={routine}
                         ix={ix}
                     >
+                        {/* <Frame base>{buildPath(document.activeElement!)}</Frame> */}
                         {/*
-                        some activities do not have any UI associated;
-                        we STILL want to use the ActivityContainerUI
-                        to handle the event.
-                    */}
+                            some activities do not have any UI associated;
+                            we STILL want to use the ActivityContainerUI
+                            to handle the event.
+                        */}
                         {activity.UI ? (
                             <activity.UI //
                                 routine={routine}

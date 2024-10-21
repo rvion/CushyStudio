@@ -9,8 +9,8 @@ import { menu_imageActions } from './commands/cmd_copyImage'
 export const DemoActivityUI = observer(() => {
     const img = cushy.db.media_image.lastOrCrash()
     return (
-        <Frame tw='flex items-center justify-center h-full' onClick={(ev) => ev.stopPropagation()}>
-            <div tw='grid grid-cols-4 grid-visible gap-2'>
+        <Frame tw='flex h-full items-center justify-center' onClick={(ev) => ev.stopPropagation()}>
+            <div tw='grid-visible grid grid-cols-4 gap-2'>
                 {/* A */}
                 <Frame>
                     <h3 tw='italic text-gray-500'>Open as as standalone Activity</h3>

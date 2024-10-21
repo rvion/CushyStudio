@@ -1,8 +1,8 @@
 import type { UnifiedCanvas } from '../states/UnifiedCanvas'
-import type { ICanvasTool, ToolCommitPayload } from '../utils/_ICanvasTool'
+import type { ICanvasTool } from '../utils/_ICanvasTool'
 import type { KonvaEventObject } from 'konva/lib/Node'
+import type { Stage } from 'konva/lib/Stage'
 
-import { Stage } from 'konva/lib/Stage'
 import { observable } from 'mobx'
 
 import { MouseBtn } from '../../../csuite/types/MouseBtn'
@@ -11,7 +11,7 @@ import { moveBehaviour_dragView } from './moveBehaviour_dragView'
 import { moveBehaviour_updatePointerInfos } from './moveBehaviour_updatePointerInfos'
 import { scrollBehavior_zoomCanvas } from './scrollBehavior_zoomCanvas'
 
-export const setupStage = (canvas: UnifiedCanvas) => {
+export const setupStage = (canvas: UnifiedCanvas): void => {
     const stage: Stage = canvas.stage
     let pressedButton: MouseBtn = MouseBtn.NONE
 

@@ -1,13 +1,6 @@
 import type { MediaImageL } from '../../models/MediaImage'
 
-import { existsSync, type PathLike } from 'fs'
 import { observer } from 'mobx-react-lite'
-
-import { RevealUI } from '../../csuite/reveal/RevealUI'
-import { ImageDropdownMenuUI } from '../../panels/ImageDropdownUI'
-import { useSt } from '../../state/stateContext'
-import { useImageDrag } from './dnd'
-import { ImageErrorDisplayUI } from './ImageErrorDisplayUI'
 
 type SmolSize = `${'1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'}rem`
 
@@ -51,7 +44,7 @@ export const ImageSimpleUI = observer(function ImageSimple({
     const IMG = (
         <img
             className={className}
-            tw='object-contain bg-contain bg-no-repeat bg-center'
+            tw='bg-contain bg-center bg-no-repeat object-contain'
             // src={image.urlForSize(ImageWidthPx)}
             src={image.urlForSize(ImageWidthPx)}
             onMouseEnter={image.onMouseEnter}

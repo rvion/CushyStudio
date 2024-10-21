@@ -1,4 +1,4 @@
-import type { LiveInstance } from '../db/LiveInstance'
+import type { LiveDB } from '../db/LiveDB'
 import type { PluginInfo } from '../manager/custom-node-list/custom-node-list-types'
 import type { KnownCustomNode_File } from '../manager/custom-node-list/KnownCustomNode_File'
 import type { KnownCustomNode_Title } from '../manager/custom-node-list/KnownCustomNode_Title'
@@ -11,14 +11,23 @@ import { ResilientWebSocketClient } from '../back/ResilientWebsocket'
 import { extractErrorMessage } from '../csuite/formatters/extractErrorMessage'
 import { readableStringify } from '../csuite/formatters/stringifyReadable'
 import { toastError, toastSuccess } from '../csuite/utils/toasts'
+import { BaseInst } from '../db/BaseInst'
+import { LiveTable } from '../db/LiveTable'
 import { asComfySchemaID, type TABLES } from '../db/TYPES.gen'
 import { ComfyManager } from '../manager/ComfyManager'
 import { downloadFile } from '../utils/fs/downloadFile'
 import { asRelativePath } from '../utils/fs/pathUtils'
 
-export interface HostL extends LiveInstance<TABLES['host']> {}
+export class HostRepo extends LiveTable<TABLES['host'], typeof HostL> {
+    constructor(liveDB: LiveDB) {
+        super(liveDB, 'host', '📑', HostL)
+        this.init()
+    }
+}
+export class HostL extends BaseInst<TABLES['host']> {
+    instObservabilityConfig = { manager: false }
+    dataObservabilityConfig: undefined
 
-export class HostL {
     // 🔶 can't move frame ref here because no way to override mobx
     // comfyUIIframeRef = createRef<HTMLIFrameElement>()
 
@@ -61,49 +70,60 @@ export class HostL {
 
     // Rotating srever logs --------------------------------------------
     private wantLog: boolean = true
+
     enableServerLogs(): Promise<any> {
         this.wantLog = true
         return this.manager.configureLogging(this.wantLog)
     }
-    disableServerLogs = () => {
+
+    disableServerLogs = (): Promise<unknown> => {
         this.wantLog = false
         return this.manager.configureLogging(this.wantLog)
     }
-    toggleServerLogs = () => {
+
+    toggleServerLogs = (): Promise<unknown> => {
         this.wantLog = !this.wantLog
         return this.manager.configureLogging(this.wantLog)
     }
-    maxLogs = 200
-    serverLogs: { at: string; content: string; id: number }[] = []
-    logId: number = 0
-    addLog = (content: string) => {
+
+    /** maximum amount of logs to keep in memory */
+    maxLogs: number = 200
+
+    /** server sent by the comfy-manager plugin */
+    serverLogs: {
+        at: string
+        content: string
+        id: number
+    }[] = []
+
+    /** last log id received */
+    private logId: number = 0
+
+    addLog = (content: string): void => {
         if (this.serverLogs.length > this.maxLogs) this.serverLogs.shift()
         const d = new Date().toISOString().slice(11, 19)
         this.serverLogs.push({ content, id: this.logId++, at: d })
     }
 
+    // Rotating srever logs --------------------------------------------
     get isReadonly(): boolean {
         return this.data.isReadonly ? true : false
     }
 
     /** root install of ComfyUI on the host filesystem */
-    get absolutePathToComfyUI() {
+    get absolutePathToComfyUI(): Maybe<string> {
         return this.data.absolutePathToComfyUI
     }
 
     /** prefered location to download models */
-    get absolutPathToDownloadModelsTo() {
+    get absolutPathToDownloadModelsTo(): Maybe<string> {
         return (
             this.data.absolutPathToDownloadModelsTo ?? //
             `${this.data.absolutePathToComfyUI}/models/checkpoints`
         )
     }
 
-    observabilityConfig = {
-        manager: false,
-    }
-
-    get manager() {
+    get manager(): ComfyManager {
         const manager = new ComfyManager(this)
         Object.defineProperty(this, 'manager', { value: manager })
         return manager
@@ -116,7 +136,7 @@ export class HostL {
     embeddingsPath: AbsolutePath = null as any /**  'null' is here for a reason */
     sdkDTSPath: AbsolutePath = null as any /**  'null' is here for a reason */
     schema: ComfySchemaL = null as any /**  'null' is here for a reason */
-    onHydrate = () => {
+    onHydrate = (): void => {
         this.fileCacheFolder = this.st.resolve(this.st.rootPath, asRelativePath(`schema/hosts/${this.id}`))
         const exists = existsSync(this.fileCacheFolder)
         if (!exists) {
@@ -162,21 +182,21 @@ export class HostL {
         return true
     }
 
-    installCustomNodeByFile = async (customNodeFile: KnownCustomNode_File) => {
+    installCustomNodeByFile = async (customNodeFile: KnownCustomNode_File): Promise<boolean> => {
         const manager = this.manager.repository
         const plugin: PluginInfo | undefined = manager.plugins_byFile.get(customNodeFile)
         if (plugin == null) throw new Error(`Unknown custom node for file: "${customNodeFile}"`)
         return this.manager.installPlugin(plugin)
     }
 
-    installCustomNodeByTitle = async (customNodeTitle: KnownCustomNode_Title) => {
+    installCustomNodeByTitle = async (customNodeTitle: KnownCustomNode_Title): Promise<boolean> => {
         const manager = this.manager.repository
         const plugin: PluginInfo | undefined = manager.plugins_byTitle.get(customNodeTitle)
         if (plugin == null) throw new Error(`Unknown custom node for title: "${customNodeTitle}"`)
         return this.manager.installPlugin(plugin)
     }
 
-    installCustomNode = async (customNode: PluginInfo) => {
+    installCustomNode = async (customNode: PluginInfo): Promise<boolean> => {
         return this.manager.installPlugin(customNode)
     }
 
@@ -203,7 +223,7 @@ export class HostL {
 
     // LOGS -----------------------------------------------------------------------------
     schemaRetrievalLogs: string[] = []
-    resetLog = () => {
+    resetLog = (): void => {
         this.schemaRetrievalLogs.splice(0, this.schemaRetrievalLogs.length)
     }
 
@@ -213,8 +233,8 @@ export class HostL {
     // }
 
     // STARTING -----------------------------------------------------------------------------
-    get isConnected() {
-        return this.ws?.isOpen
+    get isConnected(): boolean {
+        return this.ws?.isOpen ?? false
     }
 
     // 🔶 TODO
@@ -236,7 +256,7 @@ export class HostL {
         return this.st.configFile.value.mainComfyHostID === this.id
     }
 
-    private writeSDKToDisk = () => {
+    private writeSDKToDisk = (): void => {
         const comfySchemaTs = this.schema.codegenDTS()
         writeFileSync(this.sdkDTSPath, comfySchemaTs, 'utf-8')
         if (this.isPrimary) writeFileSync(this.st.primarySdkDtsPath, comfySchemaTs, 'utf-8')
@@ -268,12 +288,16 @@ export class HostL {
     }
 
     _isUpdatingSchema: boolean = false
-    get isUpdatingSchema() { return this._isUpdatingSchema } // prettier-ignore
-    set isUpdatingSchema(v: boolean) { this._isUpdatingSchema = v; } // prettier-ignore
+    get isUpdatingSchema(): boolean {
+        return this._isUpdatingSchema
+    }
+    set isUpdatingSchema(v: boolean) {
+        this._isUpdatingSchema = v
+    }
 
     schemaUpdateResult: Maybe<{ type: 'success' } | { type: 'error'; error: any }> = null
 
-    private updateSchemaFromFileCache = () => {
+    private updateSchemaFromFileCache = (): void => {
         const object_info_json = this.st.readJSON_<any>(this.comfyJSONPath)
         const embeddings_json = this.st.readJSON_<any>(this.embeddingsPath)
 

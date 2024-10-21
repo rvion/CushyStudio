@@ -1,4 +1,5 @@
 import type { CompiledPrompt, Field_prompt } from './FieldPrompt'
+import type { Prompt_Lora } from './grammar/grammar.practical'
 
 import { EditorState } from '@codemirror/state'
 import { EditorView } from 'codemirror'
@@ -8,7 +9,7 @@ import { createRef } from 'react'
 import { PromptLang } from './cm-lang/LANG'
 import { basicSetup } from './cm-lang/SETUP'
 import { generatePromptCombinations } from './compiler/promptsplit'
-import { Prompt_Lora, PromptAST } from './grammar/grammar.practical'
+import { PromptAST } from './grammar/grammar.practical'
 
 export class WidgetPromptUISt {
     mountRef = createRef<HTMLDivElement>()
@@ -17,10 +18,14 @@ export class WidgetPromptUISt {
 
     replaceTextBy(nextText: string): void {
         this.editorView?.dispatch({
-            changes: { from: 0, to: this.editorView.state.doc.length, insert: nextText },
+            changes: {
+                from: 0,
+                to: this.editorView.state.doc.length,
+                insert: nextText,
+            },
         })
     }
-    constructor(public widget: Field_prompt) {
+    constructor(public field: Field_prompt) {
         this.editorState = EditorState.create({
             doc: this.text,
             extensions: [
@@ -50,11 +55,11 @@ export class WidgetPromptUISt {
 
     // get/set
     get text(): string {
-        return this.widget.serial.val ?? ''
+        return this.field.serial.val ?? ''
     }
 
     set text(val: string) {
-        this.widget.setText_INTERNAL(val)
+        this.field.setText_INTERNAL(val)
     }
 
     // computed
@@ -71,12 +76,12 @@ export class WidgetPromptUISt {
     }
 
     get compiled(): CompiledPrompt {
-        return this.widget.compile({ onLora: (lora) => {} })
+        return this.field.compile({ onLora: (lora) => {} })
     }
 
     mount(domNode: HTMLDivElement): void {
         domNode.innerHTML = ''
-        let view = new EditorView({
+        const view = new EditorView({
             state: this.editorState,
             parent: domNode,
         })

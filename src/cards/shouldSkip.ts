@@ -13,6 +13,7 @@ export const shouldSkip = (baseName: string): boolean => {
 
 export const shouldSkip_duringWatch = (baseName: string): boolean => {
     if (baseName.startsWith('node_modules')) return true
+    if (baseName.startsWith('.git')) return true
     if (baseName.startsWith('dist')) return true
     return false
 }

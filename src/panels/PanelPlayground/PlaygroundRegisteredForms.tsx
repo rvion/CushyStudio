@@ -8,11 +8,11 @@ export const PlaygroundRegisteredForms = observer(function PlaygroundRequirement
     const st = useSt()
     return (
         <div tw='h-full p-1'>
-            <div tw='p-1 rounded  border border-primary/30'>
+            <div tw='border-primary/30 rounded  border p-1'>
                 <div tw='w-full items-center text-center'>
                     <p>Currently Unused</p>
                 </div>
-                <div tw='w-full my-1 rounded bg-neutral-content' style={{ height: '1px', minHeight: '1px' }} />
+                <div tw='bg-neutral-content my-1 w-full rounded' style={{ height: '1px', minHeight: '1px' }} />
                 {/* TODO: Should get a registered form by id and display it. */}
                 <FormUI field={st.favbar} />
             </div>

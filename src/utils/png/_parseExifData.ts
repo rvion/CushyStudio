@@ -7,7 +7,7 @@ export function parseExifData(arrData: Uint8Array): ExifData {
 
     // Function to read 16-bit and 32-bit integers from binary data
     function readInt(offset: number, isLittleEndian: boolean, length: number) {
-        let arr = arrData.slice(offset, offset + length)
+        const arr = arrData.slice(offset, offset + length)
         if (length === 2) {
             return new DataView(arr.buffer, arr.byteOffset, arr.byteLength).getUint16(0, isLittleEndian)
         } else if (length === 4) {

@@ -1,7 +1,8 @@
 import type { Database } from '../supa/database.types'
-
 // https://supabase.com/dashboard/project/hcbawdmupnlvqtyaubvt/api
-import { createClient, SupabaseClient } from '@supabase/supabase-js'
+import type { SupabaseClient } from '@supabase/supabase-js'
+
+import { createClient } from '@supabase/supabase-js'
 
 export const mkSupa = (): SupabaseClient<Database> => {
     // const supabaseUrl = 'https://hcbawdmupnlvqtyaubvt.supabase.co'

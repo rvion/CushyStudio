@@ -1,5 +1,7 @@
 import type { LibraryFile } from '../cards/LibraryFile'
+import type { DisplayRule } from '../csuite-cushy/presenters/Renderer'
 import type { Timestamp } from '../csuite/types/Timestamp'
+import type { LiveDB } from '../db/LiveDB'
 import type { TABLES } from '../db/TYPES.gen'
 import type { CushyScriptL } from './CushyScript'
 import type { DraftL } from './Draft'
@@ -12,12 +14,22 @@ import { generateAvatar } from '../cards/AvatarGenerator'
 import { VirtualHierarchy } from '../csuite/tree/VirtualHierarchy'
 import { SQLITE_false, SQLITE_true } from '../csuite/types/SQLITE_boolean'
 import { toastError, toastSuccess } from '../csuite/utils/toasts'
-import { LiveInstance } from '../db/LiveInstance'
+import { BaseInst } from '../db/BaseInst'
 import { LiveRef } from '../db/LiveRef'
+import { LiveTable } from '../db/LiveTable'
 import { hashArrayBuffer } from '../state/hashArrayBuffer'
 
-export interface CushyAppL extends LiveInstance<TABLES['cushy_app']> {}
-export class CushyAppL {
+export class CushyAppRepo extends LiveTable<TABLES['cushy_app'], typeof CushyAppL> {
+    constructor(liveDB: LiveDB) {
+        super(liveDB, 'cushy_app', '🌟', CushyAppL)
+        this.init()
+    }
+}
+
+export class CushyAppL extends BaseInst<TABLES['cushy_app']> {
+    instObservabilityConfig: undefined
+    dataObservabilityConfig: undefined
+
     // linked scripts
     private _scriptL: LiveRef<this, CushyScriptL> = new LiveRef(this, 'scriptID', 'cushy_script')
 
@@ -54,6 +66,22 @@ export class CushyAppL {
                     .where('appID', '=', this.id) //
                     .orderBy('lastRunAt', 'desc')
                     .select(['id', 'title', 'lastRunAt']),
+            ['draft.lastRunAt', 'draft.appID'],
+        )
+    }
+
+    get last10ExecutedDrafts(): {
+        id: DraftID
+        title: Maybe<string>
+        lastRunAt: Maybe<number>
+    }[] {
+        return this.db.draft.selectRaw(
+            (query) =>
+                query
+                    .where('appID', '=', this.id) //
+                    .orderBy('lastRunAt', 'desc')
+                    .select(['id', 'title', 'lastRunAt'])
+                    .limit(10),
             ['draft.lastRunAt', 'draft.appID'],
         )
     }
@@ -131,6 +159,10 @@ export class CushyAppL {
 
     get executable_orExtract(): Maybe<Executable> {
         return this.script.getExecutable_orExtract(this.id)
+    }
+
+    get scriptStillExistsOnDisk(): boolean {
+        return this.script.stillExistsOnDisk
     }
 
     // get possiblyAlreadyCachedexecutable(): Maybe<Executable> {
@@ -308,6 +340,10 @@ export class CushyAppL {
     /** globaly unique id (in theory...); 🔶 */
     get uid(): Timestamp {
         return this.data.createdAt as Timestamp
+    }
+
+    get layout(): Maybe<DisplayRule<any>> {
+        return this.executable_orExtract?.def.layout
     }
 
     get name(): string {

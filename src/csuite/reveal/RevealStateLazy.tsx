@@ -1,7 +1,6 @@
 import type { RevealProps } from './RevealProps'
 
 import { makeAutoObservable } from 'mobx'
-import { nanoid } from 'nanoid'
 import React from 'react'
 
 import { DEBUG_REVEAL } from './DEBUG_REVEAL'
@@ -12,27 +11,38 @@ import { RevealState } from './RevealState'
  * it's important to keep that class lighweight.
  */
 export class RevealStateLazy {
-    uid = nanoid()
+    static nextUID: number = 1
+    uid = RevealStateLazy.nextUID++
+
     childRef = React.createRef<HTMLDivElement>()
     constructor(
         //
         public p: RevealProps,
         public parents: RevealState[],
+        public anchorRef: React.RefObject<HTMLDivElement>,
     ) {
-        makeAutoObservable(this, { p: false })
+        // if (DEBUG_REVEAL) console.log(`💙 new RevealStateLazy (lazyId: ${this.uid} / props: ${p.placement})`)
+        makeAutoObservable(this, {
+            p: false,
+            anchorRef: false, // 🚨 ref do not work when observables!
+        })
     }
 
     state: RevealState | null = null
 
     getRevealState = (): RevealState => {
         if (this.state) return this.state
-        this.state = new RevealState({ ...this.p }, this.parents)
+        this.state = new RevealState(this)
         if (DEBUG_REVEAL) this.state.log(`💙 init`)
         return this.state!
     }
 
     // all of those callbacks are for anchor ----------------------------------------
     onContextMenu = (ev: React.MouseEvent<unknown>): void => {
+        if (this.p.trigger === 'rightClick') {
+            this.getRevealState().onRightClickAnchor(ev)
+        }
+
         // lock input on shift+right click
         if (ev.shiftKey) {
             this.getRevealState().toggleLock()
@@ -65,5 +75,8 @@ export class RevealStateLazy {
     }
     onBlur = (ev: React.FocusEvent<unknown>): void => {
         return this.getRevealState().onBlurAnchor(ev)
+    }
+    onKeyDown = (ev: React.KeyboardEvent<Element>): void => {
+        return this.getRevealState().onAnchorKeyDown(ev)
     }
 }

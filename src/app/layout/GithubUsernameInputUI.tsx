@@ -1,5 +1,6 @@
+import type { ReactNode } from 'react'
+
 import { observer } from 'mobx-react-lite'
-import { ReactNode } from 'react'
 
 import { BadgeUI } from '../../csuite/badge/BadgeUI'
 import { InputStringUI } from '../../csuite/input-string/InputStringUI'
@@ -15,8 +16,8 @@ export const GithubUsernameInputUI = observer(function GithubUsernameInputUI_(p:
     const st = useSt()
     const githubUsername = st.configFile.value.githubUsername || '<your-github-username>'
     return (
-        <div tw='w-auto join'>
-            <div tw='flex items-center px-2 join-item'>
+        <div tw='join w-auto'>
+            <div tw='join-item flex items-center px-2'>
                 <img src={assets.GithubLogo2_png} alt='Github Logo' style={{ width: '1.4rem', height: '1.4rem' }} />
                 <RevealUI
                     placement='bottomStart'

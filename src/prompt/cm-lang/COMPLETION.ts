@@ -1,10 +1,11 @@
 import type { STATE } from '../../state/state'
+import type { PromptLangNodeName } from '../grammar/grammar.types'
+import type { Completion, CompletionContext, CompletionResult, CompletionSource } from '@codemirror/autocomplete'
 import type { Extension } from '@codemirror/state'
 
-import { autocompletion, Completion, CompletionContext, CompletionResult, CompletionSource } from '@codemirror/autocomplete'
+import { autocompletion } from '@codemirror/autocomplete'
 import { syntaxTree } from '@codemirror/language'
 
-import { PromptLangNodeName } from '../grammar/grammar.types'
 import { isValidPromptLangIdentifier } from './isIdentifier'
 import { $ancestorsBottomUp } from './utils'
 
@@ -38,7 +39,7 @@ const dynamicCompletion: CompletionSource = (context: CompletionContext): Comple
     // console.log(`[🟢] x`, nodeToReplace?.name) // prettier-ignore
 
     // OUTPUT
-    let completionsOptions: Completion[] = []
+    const completionsOptions: Completion[] = []
 
     const addWildcards = (): void => {
         for (const [wildcard, values] of Object.entries(st.wildcards)) {
@@ -57,21 +58,22 @@ const dynamicCompletion: CompletionSource = (context: CompletionContext): Comple
     }
     const addLoras = (): void => {
         for (const loraName of st.schema.getLoras()) {
-            const noWrap = isValidPromptLangIdentifier(loraName)
+            // const noWrap = isValidPromptLangIdentifier(loraName)
             const prefix = alreadyhasPrefix ? '' : `@`
             completionsOptions.push({
                 displayLabel: `lora: ${loraName}`,
                 label: loraName,
                 type: 'lora',
                 boost: 99,
-                apply: noWrap ? `${prefix}${loraName}` : `${prefix}"${loraName}"`,
+                apply: `${prefix}<lora:${loraName}:1>`,
+                // apply: noWrap ? `${prefix}${loraName}` : `${prefix}"${loraName}"`,
             })
         }
     }
     const addEmbeddings = (): void => {
         for (const embeddingName of st.schema.data.embeddings) {
             const noWrap = isValidPromptLangIdentifier(embeddingName)
-            const prefix = alreadyhasPrefix ? '' : `:`
+            const prefix = alreadyhasPrefix ? '' : `embedding:`
             completionsOptions.push({
                 displayLabel: `${embeddingName}`,
                 detail: 'embedding',

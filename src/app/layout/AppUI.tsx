@@ -1,5 +1,6 @@
 import '../../ALL_CMDS'
 
+import { action } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useEffect, useRef } from 'react'
 
@@ -13,6 +14,7 @@ import { computeColors } from '../../csuite/frame/FrameColors'
 import { Kolor } from '../../csuite/kolor/Kolor'
 import { useRegionMonitor } from '../../csuite/regions/RegionMonitor'
 import { Trigger } from '../../csuite/trigger/Trigger'
+import { window_addEventListener } from '../../csuite/utils/window_addEventListenerAction'
 import { useSt } from '../../state/stateContext'
 import { GlobalSearchUI } from '../../utils/electron/globalSearchUI'
 import { FavBarUI } from './FavBar'
@@ -26,7 +28,7 @@ export const CushyUI = observer(function CushyUI_() {
     useEffect(() => {
         const current = appRef.current
         if (current == null) return
-        function handleKeyDown(event: KeyboardEvent): void {
+        const handleKeyDown = action((event: KeyboardEvent): void => {
             const x: Trigger = commandManager.processKeyDownEvent(event as any)
 
             if (x === Trigger.Success) {
@@ -51,13 +53,13 @@ export const CushyUI = observer(function CushyUI_() {
                 event.preventDefault()
                 event.stopPropagation()
             }
-        }
-        window.addEventListener('keydown', handleKeyDown)
+        })
+        window_addEventListener('keydown', handleKeyDown)
         if (document.activeElement === document.body) current.focus()
         return (): void => window.removeEventListener('keydown', handleKeyDown)
     }, [appRef.current, st])
 
-    const appBarColor = st.theme.value.appbar ?? 'red'
+    const appBarColor = st.theme.value.appbar ?? st.theme.value.base
     const appBarBase = Kolor.fromString(appBarColor)
     const inactiveTabColors = computeColors(
         {
@@ -67,13 +69,22 @@ export const CushyUI = observer(function CushyUI_() {
         },
         { base: { contrast: 0.1 } },
     )
+
+    const appBarComputed = computeColors(
+        {
+            base: appBarBase,
+            dir: appBarBase.lightness > 0.5 ? -1 : 1,
+            text: defaultTextTint,
+        },
+        { base: { contrast: -0.077 } },
+    )
     return (
         <CSuiteProvider config={cushy.csuite}>
             <div
                 id='CushyStudio'
                 style={{
                     // @ts-ignore
-                    '--appbar': appBarColor,
+                    '--appbar': appBarComputed.variables.background,
                     '--foobar1': inactiveTabColors.variables.color,
                     '--foobar2': inactiveTabColors.variables.background,
                 }}
@@ -88,21 +99,21 @@ export const CushyUI = observer(function CushyUI_() {
                 // ❌ }}
                 ref={appRef}
                 tw={[
-                    'col grow h-full overflow-clip',
+                    'col h-full grow overflow-clip',
                     // topic=WZ2sEOGiLy
                     st.preferences.interface.value.useDefaultCursorEverywhere && 'useDefaultCursorEverywhere',
                 ]}
             >
                 <div // Global Popup/Reveal/Tooltip container always be on screen with overflow-clip added.
                     id='tooltip-root'
-                    tw='absolute inset-0 w-full h-full overflow-clip pointer-events-none'
+                    tw='pointer-events-none absolute inset-0 h-full w-full overflow-clip'
                 >
                     <TooltipUI />
                     <ActivityStackUI />
                 </div>
                 <GlobalSearchUI /* Ctrl or Cmd + F: does not work natively on electron; implemented here */ />
                 <AppBarUI />
-                <div className='flex flex-grow relative overflow-clip'>
+                <div className='relative flex grow text-clip'>
                     <FavBarUI direction='row' />
                     <ProjectUI />
                 </div>
@@ -111,8 +122,3 @@ export const CushyUI = observer(function CushyUI_() {
         </CSuiteProvider>
     )
 })
-
-// force a few extra tailwind classNames to be included
-const foo = (
-    <div className='grid grid-cols-2 grid-cols-1 grid-cols-3 grid-cols-4 grid-cols-5 grid-cols-6 grid-cols-7 grid-cols-8' />
-)

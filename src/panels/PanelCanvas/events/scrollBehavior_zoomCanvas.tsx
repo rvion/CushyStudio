@@ -5,7 +5,7 @@ export const scrollBehavior_zoomCanvas = (
     //
     canvas: UnifiedCanvas,
     e: KonvaEventObject<WheelEvent>,
-) => {
+): void => {
     const stage = e.target.getStage()
     if (stage == null) return console.warn(`🔶 missing stage`)
     // console.log(`[🧐😀] stage`, stage)
@@ -14,11 +14,11 @@ export const scrollBehavior_zoomCanvas = (
     // stop default scrolling
     e.evt.preventDefault()
 
-    var oldScale = stage.scaleX()
-    var pointer = stage.getPointerPosition()
+    const oldScale = stage.scaleX()
+    const pointer = stage.getPointerPosition()
     if (pointer == null) return console.log(`[❌] nope`)
 
-    var mousePointTo = {
+    const mousePointTo = {
         x: (pointer.x - stage.x()) / oldScale,
         y: (pointer.y - stage.y()) / oldScale,
     }
@@ -32,14 +32,14 @@ export const scrollBehavior_zoomCanvas = (
         direction = -direction
     }
 
-    var newScale =
+    const newScale =
         direction > 0 //
             ? oldScale * scaleBy
             : oldScale / scaleBy
 
     stage.scale({ x: newScale, y: newScale })
 
-    var newPos = {
+    const newPos = {
         x: pointer.x - mousePointTo.x * newScale,
         y: pointer.y - mousePointTo.y * newScale,
     }

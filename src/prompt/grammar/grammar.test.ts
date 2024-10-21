@@ -3,23 +3,25 @@ import { describe, expect, it } from 'bun:test'
 import { PromptAST } from './grammar.practical'
 
 // (masterpiece, tree)x-0.8, (*color)x0.6 @"xl\pxll.safetensors"[.2,.8]`
-const test1 = `@a[1] ?foo (baz, @test[-2,3])*1.2 ((a))`
+// const test1 = `%posewildcard, <lora:abc:0.9>, (nsfw:1.3), (a,b,c), embedding:bad1, <lora:ab>, <lora:ab:-1>`
+const test1 = `<lora:a:1> ?foo (baz, <lora:test:-2,3>:1.2) ((a)), embedding:test`
 const expr = new PromptAST(test1)
+console.log(expr.toString())
 describe('prompt grammar', () => {
     it('parse', () => {
         expect(expr.toString()).toBe(
             [
                 `Prompt: `,
-                `  Lora: "@a[1]" (weight=1)`,
+                `  Lora: "<lora:a:1>" (weight=1)`,
                 `    Identifier: "a"`,
                 `    Number: "1"`,
                 `  Wildcard: "?foo"`,
                 `    Identifier: "foo"`,
-                `  WeightedExpression: "(baz, @test[-2,3])*1.2"`,
+                `  WeightedExpression: "(baz, <lora:test:-2,3>:1.2)"`,
                 `    Content: `,
                 `      Identifier: "baz"`,
                 `      Separator: ","`,
-                `      Lora: "@test[-2,3]" (weight=3)`,
+                `      Lora: "<lora:test:-2,3>" (weight=3)`,
                 `        Identifier: "test"`,
                 `        Number: "-2"`,
                 `        Number: "3"`,
@@ -29,6 +31,9 @@ describe('prompt grammar', () => {
                 `      WeightedExpression: \"(a)\"`,
                 `        Content: `,
                 `          Identifier: \"a\"`,
+                `  Separator: ","`,
+                `  Embedding: "embedding:test"`,
+                `    Identifier: "test"`,
             ].join('\n'),
         )
     })

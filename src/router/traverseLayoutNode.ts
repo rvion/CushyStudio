@@ -1,4 +1,4 @@
-import * as FL from 'flexlayout-react'
+import type * as FL from 'flexlayout-react'
 
 import { exhaust } from '../csuite/utils/exhaust'
 

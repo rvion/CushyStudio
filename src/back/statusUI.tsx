@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 import { Loader } from '../csuite/inputs/shims'
 import { exhaust } from '../csuite/utils/exhaust'

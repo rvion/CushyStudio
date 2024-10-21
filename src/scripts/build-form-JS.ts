@@ -72,7 +72,6 @@ export async function buildJS(p: {
             'react-error-boundary',
             'nanoid',
             'react-toastify',
-            'react-easy-sort',
             '@uiw/react-json-view',
             'mobx',
             'three',

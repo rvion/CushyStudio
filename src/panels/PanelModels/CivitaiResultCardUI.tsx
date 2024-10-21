@@ -39,7 +39,7 @@ export const CivitaiResultCardUI = observer(function CivitaiResultCardUI_(p: {
                 <div>
                     <div tw='font-bold'>{item.name}</div>
                     <div tw='flex items-center gap-1'>
-                        <div tw='opacity-50 text-sm'>{item.modelVersions.length} version</div>
+                        <div tw='text-sm opacity-50'>{item.modelVersions.length} version</div>
                         <div tw='flex-1'></div>
                         <BadgeUI autoHue={item.type}>{item.type}</BadgeUI>
                         {item.nsfw ? <BadgeUI hue={0}>nsfw</BadgeUI> : null}

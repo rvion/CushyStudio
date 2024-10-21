@@ -5,8 +5,10 @@ import type { CustomWidgetProps } from '../../src/csuite/fields/custom/FieldCust
 import { observer } from 'mobx-react-lite'
 import Confetti from 'react-confetti'
 
+import { Button } from '../../src/csuite/button/Button'
 import { MyCustomComponent2 } from './example-widget-custom-2'
 
+// eslint-disable-next-line react-refresh/only-export-components
 const MyCustomComponent = observer(function (
     p: CustomWidgetProps<{
         clickCount: number
@@ -26,13 +28,13 @@ const MyCustomComponent = observer(function (
                 onChange={(ev) => (value.text = ev.target.value)}
             />
             {/* Button -------------------------------------------------------- */}
-            <div className='btn btn-outline btn-primary btn-sm' onClick={() => value.clickCount++}>
+            <Button look='primary' size='sm' onClick={() => value.clickCount++}>
                 <div>Did you click it?</div>
                 <div>{value.clickCount ? `yes ${value.clickCount} times` : `nope`}</div>
-            </div>
+            </Button>
             {/* extra components -------------------------------------------------------- */}
             <p.extra.JsonViewUI value={value} />
-            {img && <p.extra.ImageUI img={img} />}
+            {img && <p.extra.ImageUI size={200} img={img} />}
             {/* imported file -------------------------------------------------------- */}
             <MyCustomComponent2 text={value.text} />
             {/* imported file -------------------------------------------------------- */}
@@ -44,17 +46,18 @@ const MyCustomComponent = observer(function (
 })
 
 app({
-    ui: (ui) => ({
-        // doc: ui.markdown('This is an advanced example of providing your own custom react component to display in the form'),
-        demo: ui.custom({
-            /** 📝 Provide your component and default value */
-            Component: MyCustomComponent,
-            defaultValue: () => ({
-                clickCount: 0,
-                text: `initial text` as string,
+    ui: (b) =>
+        b.fields({
+            // doc: ui.markdown('This is an advanced example of providing your own custom react component to display in the form'),
+            demo: b.custom({
+                /** 📝 Provide your component and default value */
+                Component: MyCustomComponent,
+                defaultValue: () => ({
+                    clickCount: 0,
+                    text: `initial text` as string,
+                }),
             }),
         }),
-    }),
 
     run: async (run, ui) => {
         /** 📝 Get the view state during a run */

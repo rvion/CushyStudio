@@ -1,9 +1,11 @@
+import type { ComfyPromptL } from '../models/ComfyPrompt'
+import type { ProgressReport } from '../models/ComfyWorkflow'
+import type { StepL } from '../models/Step'
+
 import { observer } from 'mobx-react-lite'
 
+import { Button } from '../csuite/button/Button'
 import { parseFloatNoRoundingErr } from '../csuite/utils/parseFloatNoRoundingErr'
-import { ComfyPromptL } from '../models/ComfyPrompt'
-import { ProgressReport } from '../models/ComfyWorkflow'
-import { StepL } from '../models/Step'
 import { useSt } from '../state/stateContext'
 import { GraphSummaryUI } from '../widgets/workspace/GraphSummaryUI'
 
@@ -20,7 +22,7 @@ export const OutputPromptPreviewUI = observer(function OutputPromptPreviewUI_(p:
 
     const pgr1: ProgressReport = prompt.progressGlobal
     return (
-        <div tw='flex items-center justify-center p-0 h-full w-full text-shadow text-sm'>
+        <div tw='text-shadow flex h-full w-full items-center justify-center p-0 text-sm'>
             <div
                 className='radial-progress'
                 style={{
@@ -47,9 +49,7 @@ export const OutputPromptUI = observer(function OutputPromptUI_(p: {
     if (graph == null) return <>no graph</>
     return (
         <div className='flex flex-col gap-1'>
-            <div tw='btn btn-sm btn-outline' onClick={() => st.stopCurrentPrompt()}>
-                STOP GENERATING
-            </div>
+            <Button onClick={() => st.stopCurrentPrompt()}>STOP GENERATING</Button>
             <GraphSummaryUI graph={graph} />
         </div>
     )

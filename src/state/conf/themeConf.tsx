@@ -1,15 +1,17 @@
-import type { BaseSelectEntry } from '../../csuite/fields/selectOne/FieldSelectOne'
+import type { SelectOptionNoVal } from '../../csuite/fields/selectOne/SelectOption'
+import type { FormGlobalLayoutMode } from './FormGlobalLayoutMode'
 
 import { cushyFactory } from '../../controls/Builder'
 import { WidgetSelectOne_TabUI } from '../../csuite/fields/selectOne/WidgetSelectOne_TabUI'
+import { type $schemaSimpleDropShadow, schemaSimpleDropShadow } from '../../csuite/frame/SimpleDropShadow'
 import { ui_tint, type UI_Tint } from '../../csuite/kolor/prefab_Tint'
 import { readJSON, writeJSON } from '../jsonUtils'
-import { FormGlobalLayoutMode } from './FormGlobalLayoutMode'
 
+// --------------
 export type ThemeConf = X.XGroup<{
     labelLayout: X.XSelectOne_<FormGlobalLayoutMode>
-    base: X.XString
-    appbar: X.XString
+    base: X.XColor
+    appbar: X.XOptional<X.XColor>
     fieldGroups: X.XGroup<{
         border: X.XOptional<X.XNumber>
         contrast: X.XOptional<X.XNumber>
@@ -18,22 +20,26 @@ export type ThemeConf = X.XGroup<{
     textLabel: X.XOptional<UI_Tint>
     inputBorder: X.XOptional<X.XNumber>
     inputContrast: X.XOptional<X.XNumber>
+    inputShadow: X.XOptional<$schemaSimpleDropShadow>
+    inputRoundness: X.XNumber
 }>
 
-export const themeConf: ThemeConf['$Field'] = cushyFactory.entity(
+export const themeConf: ThemeConf['$Field'] = cushyFactory.document(
     (ui) =>
         ui.fields(
             {
-                labelLayout: ui.selectOne<BaseSelectEntry<FormGlobalLayoutMode>>({
-                    header: (p) => <WidgetSelectOne_TabUI field={p.field} tw='!gap-0 ![flex-wrap:nowrap]' />,
-                    choices: [
-                        { id: 'fixed-left', icon: 'mdiAlignHorizontalLeft', label: '' },
-                        { id: 'fixed-right', icon: 'mdiAlignHorizontalRight', label: '' },
-                        { id: 'fluid', icon: 'mdiFullscreenExit', label: '' },
-                        { id: 'mobile', icon: 'mdiCellphone', label: '' },
+                labelLayout: ui.selectOneOptionId<SelectOptionNoVal<FormGlobalLayoutMode>>(
+                    [
+                        { id: 'fixed-left', /*  */ icon: 'mdiAlignHorizontalLeft' /*  */, label: '' },
+                        { id: 'fixed-right', /* */ icon: 'mdiAlignHorizontalRight' /* */, label: '' },
+                        { id: 'fluid', /*       */ icon: 'mdiFullscreenExit' /*       */, label: '' },
+                        { id: 'mobile', /*      */ icon: 'mdiCellphone' /*            */, label: '' },
                     ],
-                    default: { id: 'fixed-left', icon: 'mdiAlignHorizontalRight' },
-                }),
+                    {
+                        header: (p) => <WidgetSelectOne_TabUI field={p.field} tw='!gap-0 ![flex-wrap:nowrap]' />,
+                        default: 'fixed-left',
+                    },
+                ),
                 // 1. colors
                 base: ui.colorV2({
                     tooltip: 'main color of the CushyStudio UI',
@@ -44,10 +50,12 @@ export const themeConf: ThemeConf['$Field'] = cushyFactory.entity(
                     //     { label: 'Moonlight', icon: 'mdiMoonFull', apply: (w) => (w.value = 'oklch(32.1% 0.01 268.4)') },
                     // ],
                 }),
-                appbar: ui.colorV2({
-                    tooltip: 'color or the app shell (appbar, footer, tabset separator, etc.)',
-                    default: '#313338',
-                }),
+                appbar: ui
+                    .colorV2({
+                        tooltip: 'color or the app shell (appbar, footer, tabset separator, etc.)',
+                        default: '#313338',
+                    })
+                    .optional(false),
 
                 // ...
                 // gap: ui.float({ default: 0.5, min: 0, max: 2 }).optional(),
@@ -62,8 +70,8 @@ export const themeConf: ThemeConf['$Field'] = cushyFactory.entity(
                 // fields group
                 fieldGroups: ui.fields(
                     {
-                        border: ui.percent({ default: 8 }).optional(),
-                        contrast: ui.percent({ default: 0.824, min: 0, softMax: 10, max: 100 }).optional(),
+                        border: ui.percent({ default: 20 }).optional(false),
+                        contrast: ui.percent({ default: 0.824, min: 0, softMax: 10, max: 100 }).optional(false),
                         // padding: ui.float({ default: 0.5, min: 0, max: 2 }).optional(),
                     },
                     { background: { hue: 180 } },
@@ -74,9 +82,11 @@ export const themeConf: ThemeConf['$Field'] = cushyFactory.entity(
                 textLabel: ui_tint(ui, { contrast: 0.45, chroma: 0.045 }).optional(true),
 
                 // 3. misc
-                inputBorder: ui.percent({ default: 8 }).optional(true),
-                inputContrast: ui.percent({ default: 5 }).optional(true),
+                inputBorder: ui.percent({ default: 5, min: -100, max: 100 }).optional(true),
+                inputContrast: ui.percent({ default: -10, min: -100, max: 100 }).optional(true),
+                inputShadow: schemaSimpleDropShadow(ui).optional(true),
                 // ui.ratio({ default: 0.05 }).optional(true),
+                inputRoundness: ui.int({ default: 5, min: 0 }),
             },
             {
                 label: 'Theme',
@@ -95,7 +105,8 @@ export const themeConf: ThemeConf['$Field'] = cushyFactory.entity(
                         label: 'Dark Blue',
                         icon: 'mdiLightSwitch',
                         apply: (w): void => {
-                            w.value.base = 'oklch(24.7% 0.01 247.9)'
+                            w.value.base = 'oklch(50% 0.08 255)'
+                            // w.value.base = 'oklch(24.7% 0.01 247.9)'
                             // w.value.appbar = 'oklch(40.6% 0.08 244.8)'
                             w.value.appbar = 'oklch(51.6% 0.12 263)'
                         },

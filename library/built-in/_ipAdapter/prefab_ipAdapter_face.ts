@@ -65,18 +65,19 @@ export function ui_IPAdapterFaceID(): UI_IPAdapterFaceID {
                             // 'ip-adapter-faceid-plus_sd15.bin',
                             ipAdapter_faceID_ClipModelList,
                         ),
-                        lora: form.enum.Enum_LoraLoader_lora_name({
-                            // enumName: 'Enum_AV$_CheckpointModelsToParametersPipe_lora_1_name',
-                            // @ts-ignore
-                            default: 'ip-adapter-faceid-plusv2_sd15_lora.safetensors',
-                            label: 'Face ID Lora',
-                            recommandedModels: {
-                                modelFolderPrefix: 'models/lora',
-                                knownModel: ipAdapter_faceID_LoraList,
-                            },
-                            tooltip:
-                                'Select the same LORA as the model. So for ip-adapter-faceid-plus, select ip-adapter-faceid-plus_sd15_lora',
-                        }),
+                        lora: form.enum
+                            .Enum_LoraLoader_lora_name({
+                                // enumName: 'Enum_AV$_CheckpointModelsToParametersPipe_lora_1_name',
+                                // @ts-ignore
+                                default: 'ip-adapter-faceid-plusv2_sd15_lora.safetensors',
+                                label: 'Face ID Lora',
+                                // recommandedModels: {
+                                //     modelFolderPrefix: 'models/lora',
+                                //     knownModel: ipAdapter_faceID_LoraList,
+                                // },
+                                tooltip: 'Select the same LORA as the model. So for ip-adapter-faceid-plus, select ip-adapter-faceid-plus_sd15_lora', // prettier-ignore
+                            })
+                            .addRequirementOnComfyManagerModel(ipAdapter_faceID_LoraList),
                     },
                 }),
 
@@ -128,7 +129,12 @@ export const run_cnet_IPAdapterFaceID = (
     const faceIDnode = graph.IPAdapterFaceID({
         ipadapter: graph.IPAdapterModelLoader({ ipadapter_file: ip.models.cnet_model_name }),
         clip_vision: ip_clip_name,
-        insightface: (t) => t.IPAdapterInsightFaceLoader({ provider: 'CPU' }),
+        insightface: (t) =>
+            t.IPAdapterInsightFaceLoader({
+                provider: 'CPU',
+                // 🔴        VVVVVV review that
+                model_name: 'antelopev2',
+            }),
         image: image,
         combine_embeds: 'average',
         model: ckpt,

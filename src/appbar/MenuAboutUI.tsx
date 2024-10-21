@@ -8,7 +8,6 @@ import { RevealUI } from '../csuite/reveal/RevealUI'
 export const MenuAboutUI = observer(function MenuAboutUI_(p: {}) {
     return (
         <Dropdown
-            // startIcon={<span className='material-symbols-outlined'>help_center</span>}
             title='About'
             content={() => (
                 <>
@@ -39,19 +38,22 @@ export const MenuAboutUI = observer(function MenuAboutUI_(p: {}) {
                         <MenuItem //
                             icon='mdiLogout'
                             onClick={() => cushy.auth.logout()}
-                            children={'Logout'}
+                            label='Logout'
                         />
                     ) : (
                         <MenuItem //
                             icon='mdiLogin'
                             onClick={() => void cushy.auth.startLoginFlowWithGithub()}
-                            children={'Login with Github'}
+                            label='Login with Github'
                         />
                     )}
                     {/* // TODO(bird_d): Github integration should be moved inside the CushyStudio "Button" when that's a thing. */}
                     {/* <MenuDivider></MenuDivider> */}
                     <RevealUI content={() => <JsonViewUI value={cushy.auth.user} />}>
-                        <MenuItem icon='mdiInformation'>{cushy.auth.user?.email}</MenuItem>
+                        <MenuItem //
+                            icon='mdiInformation'
+                            label={cushy.auth.user?.email ?? '<no-email>'}
+                        />
                     </RevealUI>
                 </>
             )}

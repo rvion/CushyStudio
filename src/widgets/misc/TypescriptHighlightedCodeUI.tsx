@@ -23,7 +23,7 @@ export const TypescriptHighlightedCodeUI = (p: {
     }, [ref, p.code])
     return (
         <div className='relative'>
-            <div className='absolute top-2 right-2'>
+            <div className='absolute right-2 top-2'>
                 <Button
                     size='sm'
                     tabIndex={p.tabIndex}

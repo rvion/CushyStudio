@@ -3,93 +3,83 @@ app({
         name: '🚂 locomotive scenario',
         description: 'Show form capabilities to fulfill complex requirements unrelated to Stable diffusion.',
     },
-    ui: (ui) => {
-        return {
-            name: ui.string({ label: 'Scénario', default: 'iscab code A' }),
-            source: ui.group({
+    ui: (b) =>
+        b.fields({
+            name: b.string({ label: 'Scénario', default: 'iscab code A' }),
+            source: b.group({
                 label: 'Source des Données',
                 items: {
-                    source: ui.selectOne({ choices: [{ id: 'a', label: 'ISCAB - Liens de borne' }] }),
-                    maxEvents: ui.int({ min: 1, max: 5000, default: 10, step: 100 }),
-                    actif: ui.bool(),
+                    source: b.selectOneString(['ISCAB - Liens de borne']),
+                    maxEvents: b.int({ min: 1, max: 5000, default: 10, step: 100 }),
+                    actif: b.bool(),
                 },
             }),
-            template: ui.prompt({ label: 'Template par défaut' }),
-            signature: ui.group({
+            template: b.prompt({ label: 'Template par défaut' }),
+            signature: b.group({
                 label: false,
                 collapsed: false,
                 items: {
-                    signature: ui.string({ label: 'Signature par défaut' }),
-                    assigner: ui.selectOneV2(['Assigner', 'Ne pas assigner']),
+                    signature: b.string({ label: 'Signature par défaut' }),
+                    assigner: b.selectOneString(['Assigner', 'Ne pas assigner']),
                 },
             }),
-            date: ui.group({
+            date: b.group({
                 label: false,
                 collapsed: false,
                 items: {
-                    at: ui.choice({
-                        label: 'Date',
-                        appearance: 'tab',
-                        border: false,
-                        items: {
-                            computed: ui.group({
+                    at: b.choice(
+                        {
+                            computed: b.group({
                                 // having both `collapsed` and `label` false skip the whole label line
                                 border: false,
                                 collapsed: false,
                                 label: 'Calculée',
 
                                 items: {
-                                    [`D'après la`]: ui.selectOneV2(['Date de création', 'Date de modification']),
-                                    offset: ui.int({ label: 'à J+' }),
+                                    [`D'après la`]: b.selectOneString(['Date de création', 'Date de modification']),
+                                    offset: b.int({ label: 'à J+' }),
                                     // time: ui.int({ label: 'Heure' /* suffix: 'min' */ }),
-                                    heure: ui.time({ default: '10:30' }),
-                                    limit: ui.int({ label: 'Limite /jour', default: 200 }),
+                                    heure: b.stringTime({ default: '10:30' }),
+                                    limit: b.int({ label: 'Limite /jour', default: 200 }),
                                 },
                             }),
-                            onEventRecetption: ui.group({}),
-                            fixed: ui.group({}),
+                            onEventRecetption: b.group({}),
+                            fixed: b.group({}),
                         },
-                    }),
-                    allowHolidays: ui.bool({ label2: "Autoriser l'envoi les jours feriés", label: false }),
-                    canInterrupt: ui.bool({ label2: 'Peut interrompre une conversation', label: false }),
-                    allowNight: ui.bool({ label2: "Autoriser l'envoi la nuit (24h/24)", label: false }),
-                    allowProcessed: ui.bool({ label2: "Autoriser l'envoi pour les conversations traitées", label: false }),
+                        { label: 'Date', appearance: 'tab', border: false },
+                    ),
+                    allowHolidays: b.bool({ label2: "Autoriser l'envoi les jours feriés", label: false }),
+                    canInterrupt: b.bool({ label2: 'Peut interrompre une conversation', label: false }),
+                    allowNight: b.bool({ label2: "Autoriser l'envoi la nuit (24h/24)", label: false }),
+                    allowProcessed: b.bool({ label2: "Autoriser l'envoi pour les conversations traitées", label: false }),
                 },
             }),
-            test: ui.group({
+            test: b.group({
                 items: {
-                    aaa1: ui.textarea(),
-                    aaa2: ui.int().optional(),
-                    aaa3: ui.int().optional(),
-                    aaa4: ui.int().optional(),
-                    aaa5: ui.int().optional(),
-                    aaa6: ui.int().optional(),
-                    aaa7: ui.int().optional(),
+                    aaa1: b.textarea(),
+                    aaa2: b.int().optional(),
+                    aaa3: b.int().optional(),
+                    aaa4: b.int().optional(),
+                    aaa5: b.int().optional(),
+                    aaa6: b.int().optional(),
+                    aaa7: b.int().optional(),
                 },
             }),
-            audience: ui.group({
+            audience: b.group({
                 label: 'Audience',
                 items: {
-                    via: ui.selectOne({
-                        label: 'Via',
-                        choices: [
-                            { id: 'sms', label: 'SMS' },
-                            { id: 'email', label: 'Email' },
-                            { id: 'push', label: 'Push' },
-                        ],
-                    }),
-                    locations: ui.selectMany({
+                    via: b.selectOneOptionId([
+                        { id: 'sms', label: 'SMS' },
+                        { id: 'email', label: 'Email' },
+                        { id: 'push', label: 'Push' },
+                    ]),
+                    locations: b.selectManyStrings(['Locomotive', 'Locomotive (Bis)'], {
                         label: 'Établissements',
-                        choices: [
-                            { id: 'a', label: 'Locomotive' },
-                            { id: 'b', label: 'Locomotive (Bis)' },
-                        ],
                     }),
-                    filter: ui.prompt({ label: 'Filtre' }),
+                    filter: b.prompt({ label: 'Filtre' }),
                 },
             }),
-        }
-    },
+        }),
 
     run: async (sdk, ui) => {
         //

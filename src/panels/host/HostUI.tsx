@@ -1,3 +1,5 @@
+import type { HostL } from '../../models/Host'
+
 import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 
@@ -8,7 +10,6 @@ import { Frame } from '../../csuite/frame/Frame'
 import { InputStringUI } from '../../csuite/input-string/InputStringUI'
 import { knownOKLCHHues } from '../../csuite/tinyCSS/knownHues'
 import { SQLITE_false, SQLITE_true } from '../../csuite/types/SQLITE_boolean'
-import { HostL } from '../../models/Host'
 import { useSt } from '../../state/stateContext'
 import { LabelUI } from '../LabelUI'
 import { HostSchemaIndicatorUI } from './HostSchemaIndicatorUI'
@@ -28,7 +29,7 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                 hue: isMain ? knownOKLCHHues.success : undefined,
             }}
             border={10}
-            tw={['p-2 w-96 shadow-xl', isMain && 'bg-primary bg-opacity-30']}
+            tw={['w-96 p-2 shadow-xl', isMain && 'bg-primary bg-opacity-30']}
         >
             <div tw='flex gap-1'>
                 <HostWebsocketIndicatorUI showIcon host={host} />
@@ -39,7 +40,7 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                 )}
             </div>
 
-            <div className='p-2 flex flex-col gap-1'>
+            <div className='flex flex-col gap-1 p-2'>
                 {/* SELECT BTN */}
                 <FrameWithCSuiteOverride line config={{ inputHeight: 3 }}>
                     <Button look='success' expand active={isMain} onClick={() => host.electAsPrimary()} children='Set Primary' />
@@ -56,8 +57,8 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                         onClick={() => {
                             if (host.isReadonly) return
                             runInAction(() => {
-                                host.schema.delete()
-                                host.delete()
+                                host.schema.delete({})
+                                host.delete({})
                             })
                             // st.configFile.update(() => {
                             //     if (config.mainComfyHostID === host.id) config.mainComfyHostID = null
@@ -71,7 +72,7 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                 {/* <div tw='divider m-1'></div> */}
                 {/* <div tw='font-bold under'>Configuration</div> */}
                 {/* NAME */}
-                <div tw='flex gap-1 items-center'>
+                <div tw='flex items-center gap-1'>
                     <div tw='w-14'>name</div>
                     <input
                         disabled={disabled}
@@ -82,7 +83,7 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                 </div>
 
                 {/* HOST */}
-                <div tw='flex gap-1 items-center'>
+                <div tw='flex items-center gap-1'>
                     <div tw='w-14'>Host</div>
                     <input
                         disabled={disabled}
@@ -93,7 +94,7 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                 </div>
 
                 {/* PORT */}
-                <div tw='flex gap-1 items-center'>
+                <div tw='flex items-center gap-1'>
                     <div tw='w-14'>Port</div>
                     <input
                         disabled={disabled}
@@ -107,12 +108,14 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                 </div>
 
                 <InputBoolUI // HTTPS
+                    toggleGroup='host-flags'
                     disabled={disabled}
                     value={host.data.useHttps ? true : false}
                     onValueChange={(next) => host.update({ useHttps: next ? SQLITE_true : SQLITE_false })}
                     text='use HTTPS'
                 />
                 <InputBoolUI // LOCAL PATH
+                    toggleGroup='host-flags'
                     disabled={disabled}
                     onValueChange={(next) => host.update({ isLocal: next ? SQLITE_true : SQLITE_false })}
                     value={host.data.isLocal ? true : false}
@@ -140,7 +143,7 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                 </div>
                 {/* ID */}
                 <div tw='flex'>
-                    <div tw='italic text-xs text-opacity-50'>id: {host.id}</div>
+                    <div tw='text-xs italic text-opacity-50'>id: {host.id}</div>
                 </div>
                 <Button
                     onClick={async () => {

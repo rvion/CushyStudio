@@ -1,24 +1,33 @@
+import type { App, AppRef } from '../cards/App'
 import type { LibraryFile } from '../cards/LibraryFile'
-import type { LiveInstance } from '../db/LiveInstance'
+import type { LiveDB } from '../db/LiveDB'
 import type { TABLES } from '../db/TYPES.gen'
+import type { CushyAppL } from './CushyApp'
 
-import { statSync } from 'fs'
+import { existsSync, statSync } from 'fs'
 import { runInAction } from 'mobx'
 
-import { App, AppRef, type CustomView, type CustomViewRef } from '../cards/App'
+import { type CustomView, type CustomViewRef } from '../cards/App'
 import { CUSHY_IMPORT, replaceImportsWithSyncImport } from '../compiler/transpiler'
 import { extractErrorMessage } from '../csuite/formatters/extractErrorMessage'
 import { getCurrentForm_IMPL } from '../csuite/model/runWithGlobalForm'
 import { SQLITE_false, SQLITE_true } from '../csuite/types/SQLITE_boolean'
+import { BaseInst } from '../db/BaseInst'
+import { LiveTable } from '../db/LiveTable'
 import { asRelativePath } from '../utils/fs/pathUtils'
-import { CushyAppL } from './CushyApp'
 import { Executable, LoadedCustomView } from './Executable'
 import { getCurrentRun_IMPL } from './getGlobalRuntimeCtx'
 
-// import { LazyValue } from '../db/LazyValue'
+export class CushyScriptRepo extends LiveTable<TABLES['cushy_script'], typeof CushyScriptL> {
+    constructor(liveDB: LiveDB) {
+        super(liveDB, 'cushy_script', '⭐️', CushyScriptL)
+        this.init()
+    }
+}
 
-export interface CushyScriptL extends LiveInstance<TABLES['cushy_script']> {}
-export class CushyScriptL {
+export class CushyScriptL extends BaseInst<TABLES['cushy_script']> {
+    instObservabilityConfig: undefined
+    dataObservabilityConfig: undefined
     // get firstApp(): Maybe<CushyAppL> {
     //     return this.apps[0]
     // }
@@ -28,8 +37,13 @@ export class CushyScriptL {
         return asRelativePath(this.data.path)
     }
 
+    openInVSCode = (): Promise<void> => {
+        return cushy.openInVSCode(this.relPath)
+    }
+
     _apps_viaScript: Maybe<CushyAppL[]> = null
-    get _apps_viaDB() {
+
+    get _apps_viaDB(): CushyAppL[] {
         return cushy.db.cushy_app.select((q) => q.where('scriptID', '=', this.id), ['cushy_script'])
     }
     // private _apps_viaDB = new LiveCollection<TABLES['cushy_app']>({
@@ -51,7 +65,7 @@ export class CushyScriptL {
     // ⏸️     return this._apps_viaScript!
     // ⏸️ }
 
-    onHydrate = () => {
+    onHydrate = (): void => {
         if (this.data.lastEvaluatedAt == null) this.evaluateAndUpdateAppsAndViews()
     }
 
@@ -66,10 +80,17 @@ export class CushyScriptL {
     }
 
     get isOutOfDate(): { needRecompile: boolean; reason: string } {
-        return this._isOutOfDate()
+        return this.checkIfisOutOfDate()
     }
 
-    _isOutOfDate = (): { needRecompile: boolean; reason: string } => {
+    get stillExistsOnDisk(): boolean {
+        return existsSync(this.relPath)
+    }
+
+    checkIfisOutOfDate = (): {
+        needRecompile: boolean
+        reason: string
+    } => {
         try {
             // 1. no lastExtractedAt => ❌ need recompile
             const lastExtractedAt = this.data.lastExtractedAt

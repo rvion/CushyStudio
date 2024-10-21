@@ -1,7 +1,5 @@
 import type { ImageStoreT } from '../back/ImageStore'
-import type { LiveTable } from '../db/LiveTable'
-import type { TABLES } from '../db/TYPES.gen'
-import type { CustomDataL } from '../models/CustomData'
+import type { CustomDataL, CustomDataRepo } from '../models/CustomData'
 import type { Runtime } from './Runtime'
 
 import { makeAutoObservable } from 'mobx'
@@ -14,7 +12,7 @@ export type StoreScope = 'global' | 'app' | 'draft' | 'run'
 
 /** namespace for all store-related utils */
 export class RuntimeStore {
-    private CustomDataTable: LiveTable<TABLES['custom_data']>
+    private CustomDataTable: CustomDataRepo
     private imageStoresIndex = new Map<string, ImageStore>()
 
     constructor(private rt: Runtime) {
@@ -86,7 +84,7 @@ export class RuntimeStore {
         return store
     }
 
-    private mkPrefixForScope = (scope: StoreScope) => {
+    private mkPrefixForScope = (scope: StoreScope): string => {
         if (scope === 'global') return ''
         if (scope === 'app') return `app:${this.rt.step.app.id}`
         if (scope === 'draft') return `draft:${bang(this.rt.step.data.draftID)}`

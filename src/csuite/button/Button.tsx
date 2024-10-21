@@ -1,89 +1,107 @@
+import type { FrameProps } from '../frame/Frame'
+
 import { makeAutoObservable, observable, runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { useEffect, useMemo } from 'react'
+import { type ForwardedRef, forwardRef, useEffect, useMemo } from 'react'
 
-import { Frame, FrameProps } from '../frame/Frame'
+import { Frame } from '../frame/Frame'
+import { registerComponentAsClonableWhenInsideReveal } from '../reveal/RevealCloneWhitelist'
+import { window_addEventListener } from '../utils/window_addEventListenerAction'
 import { withDefaultProps } from './withDefaultProps'
 
 const buttonContrastWhenPressed: number = 0.13 // 30%
 const buttonContrast: number = 0.08 // 20%
 
-const _Button = observer(function Button_(
-    p: FrameProps & {
-        /** no contrast */
-        subtle?: boolean
-        /** no border */
-        borderless?: boolean
-        /** hue */
-        hue?: number
-        chroma?: number
-    },
-) {
-    const uist = useMemo(() => new ButtonState(p), [])
+export type ButtonProps = FrameProps & {
+    /** no contrast */
+    subtle?: boolean
+    /** no border */
+    borderless?: boolean
+    /** hue */
+    hue?: number
+    contrast?: number
+    chroma?: number
+}
 
-    // ensure new properties that could change during lifetime of the component stays up-to-date in the stable state.
-    runInAction(() => (uist.props = p))
+const _Button = observer(
+    forwardRef(function Button_(p: ButtonProps, ref: ForwardedRef<HTMLDivElement>) {
+        const uist = useMemo(() => new ButtonState(p), [])
 
-    // ensure any unmounting of this component will properly clean-up
-    useEffect(() => uist.release, [])
+        // ensure new properties that could change during lifetime of the component stays up-to-date in the stable state.
+        runInAction(() => (uist.props = p))
 
-    const { size, look, subtle, borderless, iconSize, onClick, ...rest } = p
-    return (
-        <Frame //
-            as='button'
-            size={size ?? 'input'}
-            look={look}
-            boxShadow={
-                uist.visuallyActive || p.subtle || p.borderless //
-                    ? undefined
-                    : { inset: true, y: -3, blur: 5, spread: 0, color: 5 }
-            }
-            base={{
-                contrast: subtle //
-                    ? 0
-                    : uist.visuallyActive || uist.running
-                      ? buttonContrastWhenPressed
-                      : buttonContrast,
-                hue: p.hue,
-                chroma: p.chroma,
-            }}
-            border={borderless ? 0 : 10}
-            hover={p.disabled ? false : 3}
-            // active={uist.visuallyActive}
-            disabled={p.disabled}
-            loading={p.loading ?? uist.running}
-            tabIndex={p.tabIndex}
-            onMouseDown={uist.press}
-            onClick={uist.onClick}
-            iconSize={iconSize ?? '1.1rem'}
-            {...rest}
-            tw={[
-                'inline-flex',
-                'select-none',
+        // ensure any unmounting of this component will properly clean-up
+        useEffect(() => uist.release, [])
 
-                // 💬 2024-07-30 rvion: let's make sure the default theme is good for prototyping;
-                // | no nee to add too much padding, this can be themed by CSS
-                p.square ? null : 'px-1',
+        const { size, look, subtle, borderless, iconSize, onClick, square: square_, ...rest } = p
+        const theme = cushy.theme.value
+        const csuite = cushy.csuite
+        const square = square_ ?? (p.icon != null && p.children == null)
 
-                // 💬 2024-07-30 rvion: let's leave the themeing to somewhere else;
-                // | if people want semibold or bold buttons, they can do so using the ui-button class
-                // | 'font-semibold',
+        return (
+            <Frame //
+                ref={ref}
+                as='button'
+                size={size ?? 'input'}
+                look={look}
+                // (bird_d): Need to make this optional, disabling it to make it consistent with everything else for now
+                // boxShadow={
+                //     uist.visuallyActive || p.subtle || p.borderless //
+                //         ? undefined
+                //         : { inset: true, y: -3, blur: 5, spread: 0, color: 5 }
+                // }
+                base={{
+                    contrast:
+                        p.contrast ??
+                        (subtle //
+                            ? 0
+                            : uist.visuallyActive || uist.running
+                              ? buttonContrastWhenPressed
+                              : buttonContrast),
+                    hue: p.hue,
+                    chroma: p.chroma,
+                }}
+                border={borderless ? 0 : csuite.inputBorder}
+                hover={p.disabled ? false : 3}
+                // active={uist.visuallyActive}
+                disabled={p.disabled}
+                dropShadow={p.subtle ? undefined : (p.dropShadow ?? theme.inputShadow)}
+                roundness={csuite.inputRoundness}
+                loading={p.loading ?? uist.running}
+                tabIndex={p.tabIndex}
+                onMouseDown={uist.press}
+                square={square}
+                onClick={uist.onClick}
+                iconSize={iconSize ?? '1.1rem'}
+                {...rest}
+                tw={[
+                    'inline-flex',
+                    'select-none',
 
-                'ui-button',
-                'rounded-sm gap-1 items-center',
-                p.disabled ? null : 'cursor-pointer',
-                'whitespace-nowrap',
-                'justify-center',
-            ]}
-        />
-    )
-})
+                    // 💬 2024-07-30 rvion: let's make sure the default theme is good for prototyping;
+                    // | no nee to add too much padding, this can be themed by CSS
+                    p.square ? null : 'px-1',
 
-class ButtonState {
+                    // 💬 2024-07-30 rvion: let's leave the themeing to somewhere else;
+                    // | if people want semibold or bold buttons, they can do so using the ui-button class
+                    // | 'font-semibold',
+
+                    'ui-button',
+                    'items-center gap-1',
+                    p.disabled ? 'cursor-not-allowed' : 'cursor-pointer',
+                    'whitespace-nowrap',
+                    'justify-center',
+                ]}
+            />
+        )
+    }),
+)
+
+export class ButtonState {
     pressed: boolean = false
     running: boolean = false
 
-    constructor(public props: FrameProps) {
+    constructor(public props: Pick<FrameProps, 'disabled' | 'onClick' | 'active'>) {
         makeAutoObservable(this, { props: observable.ref })
     }
 
@@ -100,7 +118,6 @@ class ButtonState {
                 // mark as running
                 runInAction(() => (this.running = true))
                 void res.finally(() => runInAction(() => (this.running = false)))
-            } else {
             }
         }
     }
@@ -112,7 +129,7 @@ class ButtonState {
         if (this.running) return
 
         this.pressed = true
-        window.addEventListener('pointerup', this.release, true)
+        window_addEventListener('pointerup', this.release, true)
     }
 
     release = (/* e: MouseEvent */): void => {
@@ -132,4 +149,6 @@ export const Button = Object.assign(_Button, {
     Ghost: withDefaultProps(_Button, { borderless: true, subtle: true }),
 })
 
-// registerComponentAsClonableWhenInsideReveal(Button)
+// 💬 2024-10-08 rvion:
+// | was commented, but probably worth uncommenting
+registerComponentAsClonableWhenInsideReveal(_Button)

@@ -1,4 +1,4 @@
-import type { FC, MouseEventHandler } from 'react'
+import type { FC } from 'react'
 
 import * as IconImport from '@mdi/react'
 

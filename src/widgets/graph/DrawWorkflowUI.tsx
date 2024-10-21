@@ -1,4 +1,5 @@
 import type { NodePort } from '../../core/ComfyNode'
+import type { ComfyWorkflowL } from '../../models/ComfyWorkflow'
 
 import { observer } from 'mobx-react-lite'
 import { Fragment, useEffect, useRef } from 'react'
@@ -7,7 +8,6 @@ import { Frame } from '../../csuite/frame/Frame'
 import { hashStringToNumber } from '../../csuite/hashUtils/hash'
 import { ProgressLine } from '../../csuite/inputs/shims'
 import { bang } from '../../csuite/utils/bang'
-import { ComfyWorkflowL } from '../../models/ComfyWorkflow'
 import { randomColorHSLNice } from '../../panels/PanelCanvas/utils/randomColor'
 import { NodeSlotSize } from './NodeSlotSize'
 
@@ -26,7 +26,7 @@ export const DrawWorkflowUI = observer(function DrawWorkflowUI_(p: {
     }
     const ref = useRef<HTMLDivElement>(null)
     const colorFn = randomColorHSLNice // randomNiceColor
-    const update = () => void wflow.RUNLAYOUT(cushy.autolayoutOpts)
+    const update = (): void => void wflow.RUNLAYOUT(cushy.autolayoutOpts)
     useEffect(update, [JSON.stringify(cushy.autolayoutOpts), wflow.id])
 
     useEffect(() => {
@@ -50,7 +50,7 @@ export const DrawWorkflowUI = observer(function DrawWorkflowUI_(p: {
     }, [wflow.currentExecutingNode?.uid, p.offset?.x, p.offset?.y])
 
     return (
-        <div tw='relative overflow-auto flex-1 h-full w-full' ref={ref}>
+        <div tw='relative h-full w-full flex-1 overflow-auto' ref={ref}>
             {wflow.nodes.map((node) => {
                 if (node == null) return
                 const pgr = node.progressReport
@@ -86,7 +86,7 @@ export const DrawWorkflowUI = observer(function DrawWorkflowUI_(p: {
                             const color = colorFn(p.type)
                             return (
                                 <div
-                                    tw='absolute'
+                                    tw='absolute transition-all'
                                     key={p.id}
                                     style={{
                                         // borderRadius: '50%',
@@ -108,8 +108,8 @@ export const DrawWorkflowUI = observer(function DrawWorkflowUI_(p: {
                             const color = colorFn(p.type)
                             return (
                                 <div
+                                    tw='absolute transition-all'
                                     key={p.id}
-                                    tw='absolute'
                                     style={{
                                         border: '1px solid gray',
                                         borderRadius: '50%',
@@ -126,9 +126,9 @@ export const DrawWorkflowUI = observer(function DrawWorkflowUI_(p: {
                         {/* ACTUAL NODE */}
                         <Frame
                             base={{ contrast: 0.03, hue: getChroma(node.$schema.nameInComfy), chroma: 0.07 }}
+                            className='node rounded-sm transition-all'
                             hover
                             border={20}
-                            className='node rounded-sm'
                             key={node.uid}
                             style={{
                                 zIndex: 991,
@@ -150,7 +150,7 @@ export const DrawWorkflowUI = observer(function DrawWorkflowUI_(p: {
                             <Frame
                                 base={6}
                                 style={{ height: '20px' }}
-                                tw='overflow-hidden font-bold whitespace-nowrap overflow-ellipsis'
+                                tw='overflow-hidden overflow-ellipsis whitespace-nowrap font-bold'
                             >
                                 {node.$schema.nameInComfy} [{node.uid}]
                             </Frame>
@@ -158,7 +158,7 @@ export const DrawWorkflowUI = observer(function DrawWorkflowUI_(p: {
                                 <Frame tw='flex justify-between px-2' /* style={{ borderBottom: '1px solid gray' }} */>
                                     <div>
                                         {node._incomingEdges().map((ie) => (
-                                            <div tw='truncate overflow-hidden' style={{ height: '20px' }} key={ie.inputName}>
+                                            <div tw='overflow-hidden truncate' style={{ height: '20px' }} key={ie.inputName}>
                                                 {ie.inputName} {/* {'<-'} [{ie.from}] */}
                                             </div>
                                         ))}
@@ -178,7 +178,7 @@ export const DrawWorkflowUI = observer(function DrawWorkflowUI_(p: {
                                         hover
                                         key={ie.inputName}
                                         style={{ height: '20px' }}
-                                        tw='overflow-hidden whitespace-nowrap overflow-ellipsis px-2'
+                                        tw='overflow-hidden overflow-ellipsis whitespace-nowrap px-2'
                                     >
                                         <div tw='flex'>
                                             <div>{ie.inputName}:</div>

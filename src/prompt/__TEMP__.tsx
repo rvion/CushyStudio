@@ -9,7 +9,7 @@ import { observer } from 'mobx-react-lite'
 import { createRef, useLayoutEffect, useMemo } from 'react'
 
 import { Button } from '../csuite/button/Button'
-import { InputBoolToggleButtonUI } from '../csuite/checkbox/InputBoolToggleButtonUI'
+import { ToggleButtonUI } from '../csuite/checkbox/InputBoolToggleButtonUI'
 import { MessageInfoUI } from '../csuite/messages/MessageInfoUI'
 import { SelectUI } from '../csuite/select/SelectUI'
 import { toastError } from '../csuite/utils/toasts'
@@ -85,7 +85,7 @@ export const PromptEditorUI = observer(function PromptEditorUI_(p: { promptID: F
 
                 mount = (domNode: HTMLDivElement): void => {
                     domNode.innerHTML = ''
-                    let view = new EditorView({ state: this.editorState, parent: domNode })
+                    const view = new EditorView({ state: this.editorState, parent: domNode })
                     this.editorView = view
                 }
 
@@ -132,11 +132,12 @@ export const PromptEditorUI = observer(function PromptEditorUI_(p: { promptID: F
     }, [])
 
     return (
-        <div tw='p-2 flex flex-col gap-1'>
+        <div tw='flex flex-col gap-1 p-2'>
             <MessageInfoUI title='instructions'> select the [from] to change the to widget </MessageInfoUI>
             <div className='flex flex-wrap'>
                 {cushy.repository.getWidgetsByType<Field_prompt>('prompt').map((widget) => (
-                    <InputBoolToggleButtonUI //
+                    <ToggleButtonUI //
+                        toggleGroup='prompt-link'
                         key={widget.id}
                         text={widget.text.slice(0, 10) + '...'}
                         value={uist.currentlyLinkedWidget === widget}

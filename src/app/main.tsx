@@ -1,4 +1,4 @@
-import '../theme/tw.css'
+import '../theme/twin.css'
 import 'react-toastify/dist/ReactToastify.css'
 import 'highlight.js/styles/stackoverflow-dark.css'
 import '../theme/flexlayout.css'
@@ -10,6 +10,8 @@ import '../theme/markdown.css'
 import '../theme/Tree.css'
 import '../theme/theme.css'
 import '../csuite/input-number/InputNumberUI.css'
+// make sure presenter is properly injected
+import '../csuite-cushy/presenters/Renderer'
 
 import ReactDOM from 'react-dom/client'
 

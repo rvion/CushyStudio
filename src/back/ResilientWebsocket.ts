@@ -1,6 +1,6 @@
 // import type { MessageEvent, EventListenerOptions, CloseEvent } from 'ws'
 
-import { makeAutoObservable, reaction } from 'mobx'
+import { action, makeAutoObservable, reaction } from 'mobx'
 
 type Message = string | Buffer
 
@@ -68,27 +68,27 @@ export class ResilientWebSocketClient {
             }
         }
 
-        ws.onopen = (event: Event): void => {
+        ws.onopen = action((event: Event): void => {
             if (ws !== this.currentWS) return
             this.addInfo('✅ WebSocket connected to ' + this.url)
             this.isOpen = true
             this.options.onConnectOrReconnect()
             this.flushMessageBuffer()
-        }
+        })
 
-        ws.onclose = (event: CloseEvent): void => {
+        ws.onclose = action((event: CloseEvent): void => {
             if (ws !== this.currentWS) return
             this.addError(`WebSocket closed (reason=${JSON.stringify(event.reason)}, code=${event.code})`)
             this.isOpen = false
             this.addInfo('⏱️ reconnecting in 2 seconds...')
             this.reconnectTimeout = setTimeout(() => this.connect(), 2000) // Attempt to reconnect after 5 seconds
-        }
+        })
 
-        ws.onerror = (event: Event): void => {
+        ws.onerror = action((event: Event): void => {
             if (ws !== this.currentWS) return
             this.addError(`WebSocket ERROR` + JSON.stringify(event))
             console.error({ event })
-        }
+        })
     }
 
     public send(message: Message): void {

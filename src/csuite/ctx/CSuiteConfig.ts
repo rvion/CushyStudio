@@ -2,8 +2,6 @@ import type { FormGlobalLayoutMode } from '../../state/conf/FormGlobalLayoutMode
 import type { Kolor } from '../kolor/Kolor'
 import type { Tint, TintExt } from '../kolor/Tint'
 
-import { NumberVar } from '../tinyCSS/CSSVar'
-
 /**
  * set of shared configuration used by cushy kit;
  * to be injected via context
@@ -31,12 +29,15 @@ export interface CSuiteConfig {
     showWidgetDiff: boolean
     showToggleButtonBox: boolean
     showFoldButtons: boolean
+    showSelectIcons: boolean
+    showExpandCarets: boolean
 
     // ------------------------------------------------------------
     // [size]
     widgetHeight: number
     inputHeight: number
     insideHeight: number
+    inputRoundness: number
 
     // ------------------------------------------------------------
     // [theme]

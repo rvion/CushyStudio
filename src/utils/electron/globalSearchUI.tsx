@@ -1,18 +1,16 @@
 import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 
-import { JsonViewUI } from '../../csuite/json/JsonViewUI'
-
-export const GlobalSearchUI = observer(function GlobalSearchUI_(p: {}) {
+export const GlobalSearchUI = observer(function GlobalSearch(p: {}) {
     if (!cushy.search.active) return null
     const aa = nanoid()
     return (
         <div>
             <div
                 //
-                style={{ zIndex: 999 }}
-                tw='absolute top-10
-                10 right-10 bg-gray-500'
+                style={{ zIndex: 9999999 }}
+                tw='10 absolute
+                right-10 top-10 bg-gray-500'
             >
                 <input
                     tw='input input-sm'
@@ -29,7 +27,7 @@ export const GlobalSearchUI = observer(function GlobalSearchUI_(p: {}) {
                             ev.target.select()
                     }}
                     onChange={(ev) => {
-                        let next = ev.target.value
+                        const next = ev.target.value
                         // ⏸️ if (next[1] && next[1] !== '$') {
                         // ⏸️     next = Array.from(next)
                         // ⏸️         .filter((c) => c !== '$')
@@ -51,8 +49,8 @@ export const GlobalSearchUI = observer(function GlobalSearchUI_(p: {}) {
                     //     cushy.search.deactivate()
                     // }}
                 />
-                {cushy.search.query.value.length}
-                <JsonViewUI value={cushy.search.results} />
+                {/* {cushy.search.query.value.length} */}
+                {/* <JsonViewUI value={cushy.search.results} /> */}
             </div>
         </div>
     )

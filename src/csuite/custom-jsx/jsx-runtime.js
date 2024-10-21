@@ -51,7 +51,7 @@ export function jsx(type, props, key) {
     const isSym = typeof type === 'symbol'
     const isPrim = typeof type === 'string'
     const compCls = compName ? `🔘${compName}` : null // 'UI-'
-    const { tw, className, 'data-ux': ux, ...rest } = props
+    const { tw, className, data__ux: ux, ...rest } = props
     const PROPS = isSym
         ? rest
         : isPrim
@@ -62,7 +62,7 @@ export function jsx(type, props, key) {
             }
           : {
                 ...rest,
-                'data-ux': ux ? [...ux, compCls] : [compCls],
+                data__ux: ux ? [...ux, compCls] : [compCls],
                 className: joinCls([className, tw]),
             }
     return jsx_(type, PROPS, key)
@@ -73,7 +73,7 @@ export function jsxs(type, props, key) {
     const isSym = typeof type === 'symbol'
     const isPrim = typeof type === 'string'
     const compCls = compName ? `🔘${compName}` : null // 'UI-'
-    const { tw, className, 'data-ux': ux, ...rest } = props
+    const { tw, className, data__ux: ux, ...rest } = props
     const PROPS = isSym
         ? rest
         : isPrim
@@ -84,7 +84,7 @@ export function jsxs(type, props, key) {
             }
           : {
                 ...rest,
-                'data-ux': ux ? [...ux, compCls] : [compCls],
+                data__ux: ux ? [...ux, compCls] : [compCls],
                 className: joinCls([className, tw]),
             }
     return jsxs_(type, PROPS, key)

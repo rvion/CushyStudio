@@ -24,7 +24,10 @@ export const PanelShortcutsUI = observer(function PanelShortcutsUI_(p: NO_PROPS)
             <PanelHeaderUI>
                 <DebugControlsUI />
             </PanelHeaderUI>
-            <SectionTitleUI label='Shortcuts' className='block' />
+            <SectionTitleUI //
+                label='Shortcuts'
+                className='block'
+            />
             <CommandTableUI />
             <MessageInfoUI
                 markdown={`\

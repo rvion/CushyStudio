@@ -7,7 +7,7 @@ import { simpleFactory } from '../../index'
 describe('basic', () => {
     describe('group', () => {
         it('works', () => {
-            const ent = simpleFactory.entity((f) => f.fields({}))
+            const ent = simpleFactory.document((f) => f.fields({}))
             expect(ent).toBeTruthy()
             expect(ent.value).toMatchObject({})
         })
@@ -15,17 +15,17 @@ describe('basic', () => {
 
     describe('markdown', () => {
         it('works', () => {
-            const E = simpleFactory.entity((f) => f.fields({ md: f.markdown('ok') }))
+            const E = simpleFactory.document((f) => f.fields({ md: f.markdown('ok') }))
             expect(E).toBeTruthy()
-            expect(E.subFields.length).toBe(1)
-            expect(E.subFields[0]!.type).toBe('markdown')
+            expect(E.childrenAll.length).toBe(1)
+            expect(E.childrenAll[0]!.type).toBe('markdown')
             expect(E.root.value.md).toEqual({ $: 'markdown' })
         })
     })
 
     describe('string', () => {
         it('works', () => {
-            const E = simpleFactory.entity((f) => f.string())
+            const E = simpleFactory.document((f) => f.string())
             expect(E.value).toBe('')
 
             // set root value through entity.value setter
@@ -37,14 +37,14 @@ describe('basic', () => {
             expect(E.value).toBe('super2')
             expect(E.root.value).toBe('super2')
 
-            const E2 = simpleFactory.entity((f) => f.string({ default: 'ok' }))
+            const E2 = simpleFactory.document((f) => f.string({ default: 'ok' }))
             expect(E2.value).toBe('ok')
         })
     })
 
     describe('Size', () => {
         it('works', () => {
-            const ent = simpleFactory.entity((f) => f.fields({ size: f.size() }))
+            const ent = simpleFactory.document((f) => f.fields({ size: f.size() }))
             expect(ent).toBeTruthy()
             expect(ent.value).toMatchObject({})
             expect(ent.value.size).toMatchObject({

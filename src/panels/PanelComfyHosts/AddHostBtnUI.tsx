@@ -10,6 +10,7 @@ export const AddHostBtnUI = observer(function AddHostBtnUI_(p: {}) {
     const st = useSt()
     return (
         <Button
+            tooltip='Add a new Host'
             icon='mdiPlus'
             look='primary'
             onClick={() => {
@@ -26,8 +27,6 @@ export const AddHostBtnUI = observer(function AddHostBtnUI_(p: {}) {
                     })
                 })
             }}
-        >
-            Add Host
-        </Button>
+        />
     )
 })

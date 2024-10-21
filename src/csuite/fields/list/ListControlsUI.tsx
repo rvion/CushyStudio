@@ -13,6 +13,7 @@ export type IWidgetListLike = {
     readonly length: number
     readonly isCollapsed?: boolean
     setCollapsed(value: boolean): void
+    touch: () => void
     config: {
         max?: number
         min?: number
@@ -29,7 +30,7 @@ export const ListControlsUI = observer(function ListControlsUI_(p: {
 
     return (
         <div
-            tw='sticky flex items-center gap-0.5 top-0 flex z-[50] w-full'
+            tw='sticky top-0 z-[50] flex w-full items-center gap-0.5'
             onMouseDown={(ev) => {
                 ev.preventDefault()
                 ev.stopPropagation()
@@ -59,6 +60,7 @@ export const ListButtonAddUI = observer(function ListButtonAddUI_(p: { field: IW
             square
             icon='mdiPlus'
             onClick={(ev) => {
+                field.touch()
                 if (!canAdd) return
                 ev.stopPropagation()
                 field.addItem()
@@ -81,6 +83,7 @@ export const ListButtonClearUI = observer(function ListButtonClearUI_(p: { field
             square
             icon='mdiDeleteSweep'
             onClick={(ev) => {
+                field.touch()
                 if (!canClear) return
                 ev.stopPropagation()
                 field.removeAllItems()
@@ -98,6 +101,7 @@ export const ListButtonFoldUI = observer(function ListButtonFoldUI_(p: { field: 
             square
             icon='mdiUnfoldMoreHorizontal'
             onClick={(ev) => {
+                field.touch()
                 ev.stopPropagation()
                 field.expandAllChildren()
             }}
@@ -132,6 +136,7 @@ export const ListButtonAdd100ItemsUI = observer(function ListButtonAdd100ItemsUI
             square
             icon='mdiUnfoldLessHorizontal'
             onClick={() => {
+                field.touch()
                 runInAction(() => {
                     for (let i = 0; i < 100; i++) field.addItem()
                 })

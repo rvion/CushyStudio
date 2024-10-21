@@ -1,4 +1,18 @@
 {
+    "create a test file":{
+        "description": "create a test file",
+        "scope": "typescript",
+        "prefix": "tst",
+        "body": [
+            "import { describe, expect, it } from 'bun:test'",
+            "",
+            "describe('$1', () => {",
+            "    it('${2:work}', () => {",
+            "        expect($3).toBe($4)",
+            "    })",
+            "})",
+        ],
+    },
     "create new observable react component": {
         "scope": "typescriptreact",
         "prefix": "ocomp",
@@ -35,7 +49,7 @@
         "prefix": "uist",
         "body": ["const uiSt = useLocalObservable$1(() => ({$2}))"],
         "description": "uist"
-    }
+    },
     "icon":{
         "scope": "typescriptreact",
         "prefix": "icon",

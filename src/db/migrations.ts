@@ -738,4 +738,17 @@ export const migrations: {
         name: 'store image safety rating',
         up: ['alter table media_image add column safetyRating json'],
     },
+    {
+        id: 'pJsBZR-eOq',
+        name: 'perspective table',
+        up: [
+            _createTable('perspective', [
+                //
+                `name text`,
+                `layout json not null`,
+                `layoutDefault json`,
+                `priority int not null`,
+            ]),
+        ],
+    },
 ]

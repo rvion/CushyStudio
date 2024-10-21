@@ -9,14 +9,6 @@ import { useImageDrop } from '../../widgets/galleries/dnd'
 import { ImageErrorDisplayUI } from '../../widgets/galleries/ImageErrorDisplayUI'
 import { AppIllustrationUI } from './AppIllustrationUI'
 
-// import { CushyAppL } from 'src/models/CushyApp'
-// import { DraftL } from 'src/models/Draft'
-// import { useSt } from 'src/state/stateContext'
-// import { useImageDrop } from 'src/widgets/galleries/dnd'
-// import { existsSync } from 'fs'
-// import { fileURLToPath } from 'url'
-// import { ImageErrorDisplayUI } from 'src/widgets/galleries/ImageUI'
-
 export const DraftIllustrationUI = observer(function DraftIllustrationUI_(p: {
     className?: string
     onClick?: () => void
@@ -56,9 +48,9 @@ export const DraftIllustrationUI = observer(function DraftIllustrationUI_(p: {
 
     // 3. show illustration on top
     return (
-        <div style={dropStyle} ref={dropRef} className='relative DROP_IMAGE_HANDLER'>
+        <div style={dropStyle} ref={dropRef} className='DROP_IMAGE_HANDLER relative'>
             {p.revealAppIllustrationOnHover ? ( //
-                <div tw='absolute opacity-0 hover:opacity-100 z-50 bg-neutral' style={{ transition: 'opacity 0.2s' }}>
+                <div tw='bg-neutral absolute z-50 opacity-0 hover:opacity-100' style={{ transition: 'opacity 0.2s' }}>
                     <AppIllustrationUI app={draft.app} size={p.size} />
                 </div>
             ) : null}

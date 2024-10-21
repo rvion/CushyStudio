@@ -1,6 +1,6 @@
-import { observer } from 'mobx-react-lite'
+import type { CSCriticalError } from '../CSCriticalError'
 
-import { CSCriticalError } from '../CSCriticalError'
+import { observer } from 'mobx-react-lite'
 
 export const ErrorScreenUI = observer(function ErrorScreenUI_(p: { err: CSCriticalError }) {
     return (

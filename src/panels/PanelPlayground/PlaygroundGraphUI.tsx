@@ -12,12 +12,15 @@ export const PlaygroundGraphUI = observer(function PlaygroundGraphUI_(p: {}) {
 
     return (
         <div tw='h-full'>
-            <div tw='flex gap-1 items-center'>
+            <div tw='flex items-center gap-1'>
                 <Button onClick={update}>update</Button>
                 {form.renderAsConfigBtn({ title: 'Graph Conf' })}
             </div>
-            {form.render()}
-            <DrawWorkflowUI spline={form.value.spline} workflow={workflow} />
+            {form.UI()}
+            <DrawWorkflowUI //
+                spline={form.value.spline}
+                workflow={workflow}
+            />
         </div>
     )
 })

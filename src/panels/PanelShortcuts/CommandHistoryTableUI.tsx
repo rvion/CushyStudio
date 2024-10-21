@@ -29,7 +29,11 @@ export const CommandHistoryTableUI = observer(function CommandHistoryTable(p: Fr
                     {out.toReversed().map((o, ix) => (
                         <tr key={o.shortcut}>
                             <td>
-                                <BadgeListUI autoHue badges={parseShortcutToInputSequence(o.shortcut)} />
+                                <BadgeListUI //
+                                    autoHue
+                                    getKey={(_, ix) => ix.toString()}
+                                    badges={parseShortcutToInputSequence(o.shortcut)}
+                                />
                             </td>
                             {/* <td>{o.commands.length}</td> */}
 

@@ -1,21 +1,34 @@
+import type { ComfyNodeSchema, NodeInputExt, NodeOutputExt } from '../models/ComfySchema'
 import type { ComfyWorkflowL, ProgressReport } from '../models/ComfyWorkflow'
+import type { ComfyNodeID, ComfyNodeMetadata } from '../types/ComfyNodeID'
 import type { ComfyNodeJSON } from '../types/ComfyPrompt'
 import type { NodeProgress } from '../types/ComfyWsApi'
+import type { ReactNode } from 'react'
 
 import { configure, extendObservable, makeAutoObservable } from 'mobx'
-import { createElement, ReactNode } from 'react'
+import { createElement } from 'react'
 
 import { ComfyDefaultNodeWhenUnknown_Name } from '../models/ComfyDefaultNodeWhenUnknown'
-import { ComfyNodeSchema, NodeInputExt, NodeOutputExt } from '../models/ComfySchema'
-import { ComfyNodeID, ComfyNodeMetadata } from '../types/ComfyNodeID'
-import { nodeLineHeight, NodeSlotSize, NodeSlotVSep, NodeTitleHeight } from '../widgets/graph/NodeSlotSize'
+import { nodeLineHeight, NodeSlotSize, NodeTitleHeight } from '../widgets/graph/NodeSlotSize'
 import { auto_ } from './autoValue'
 import { comfyColors } from './Colors'
 import { NodeStatusEmojiUI } from './NodeStatusEmojiUI'
 import { ComfyNodeOutput } from './Slot'
 
-configure({ enforceActions: 'never' })
 // configure({ enforceActions: 'always' })
+configure({
+    enforceActions: 'observed',
+
+    // 💬 2024-10-08 rvion:
+    // | dangerous option; may help a bit during dev to speedup DX
+    // | but should be disabled in production.
+    // |
+    // | doc says:
+    // | >> By default, MobX will catch and re-throw exceptions happening in your code to make sure that a reaction in one exception does not prevent the scheduled execution of other, possibly unrelated, reactions. This means exceptions are not propagated back to the original causing code and therefore you won't be able to catch them using try/catch.
+    // | >> By disabling error boundaries, exceptions can escape derivations. This might ease debugging, but might leave MobX and by extension your application in an unrecoverable broken state. Default: false.
+    //
+    // disableErrorBoundaries: true,
+})
 
 type NodeExecutionStatus = 'executing' | 'done' | 'error' | 'waiting' | 'cached' | null
 
@@ -28,6 +41,8 @@ export type NodePort = {
     x: number
     y: number
 }
+
+export type ComfyNodeUID = string
 
 /** ComfyNode
  * - correspond to a signal in the graph
@@ -43,12 +58,12 @@ export class ComfyNode<
         return this
     }
 
-    tag(tagName: string) {
+    tag(tagName: string): this {
         this.addTag(tagName)
         return this
     }
 
-    addTag(tag: string) {
+    addTag(tag: string): this {
         if (this.meta.tags == null) this.meta.tags = [tag]
         else this.meta.tags.push(tag)
         return this
@@ -77,26 +92,33 @@ export class ComfyNode<
     updatedAt: number = Date.now()
     json: ComfyNodeJSON
 
-    get isExecuting() { return this.status === 'executing' } // prettier-ignore
+    get isExecuting(): boolean {
+        return this.status === 'executing'
+    }
+
     get statusEmoji(): ReactNode {
         return createElement(NodeStatusEmojiUI, { node: this })
     }
 
     disabled: boolean = false
-    disable() { this.disabled = true } // prettier-ignore
+
+    disable(): void {
+        this.disabled = true
+    }
 
     get inputs(): ComfyNode_input {
         return this.json.inputs as any
     }
 
     /** update a node */
-    set(p: Partial<ComfyNode_input>) {
+    set(p: Partial<ComfyNode_input>): this {
         for (const [key, value] of Object.entries(p)) {
             const next = this.serializeValue(key, value)
             const prev = this.json.inputs[key]
             if (next === prev) continue
             this.json.inputs[key] = next as any // 🔴
         }
+        return this
         // 🔴 wrong resonsibility
         // console.log('CHANGES', changes)
     }
@@ -113,7 +135,7 @@ export class ComfyNode<
     constructor(
         //
         public graph: ComfyWorkflowL,
-        public uid: string, //  = graph.getUID(),
+        public uid: ComfyNodeUID, //  = graph.getUID(),
         jsonExt: ComfyNodeJSON,
         public meta: ComfyNodeMetadata = {},
     ) {
@@ -164,7 +186,7 @@ export class ComfyNode<
         // makeObservable(this, { artifacts: observable })
     }
 
-    _convertPromptExtToPrompt(promptExt: ComfyNodeJSON) {
+    _convertPromptExtToPrompt(promptExt: ComfyNodeJSON): ComfyNodeJSON {
         const inputs: { [inputName: string]: any } = {}
         const _done = new Set<string>()
         for (const i of this.$schema.inputs) {
@@ -201,7 +223,11 @@ export class ComfyNode<
         return primitives
     }
 
-    // return the list of nodes that feed into this node
+    /** return true if the given node is plugged into this one */
+    isChildrenOf(node: ComfyNode<any>): boolean {
+        return this._incomingNodes().includes(node.uid)
+    }
+
     get parents(): ComfyNode<any>[] {
         return this._incomingNodes().map((id) => this.graph.getNode(id)!)
     }
@@ -212,7 +238,7 @@ export class ComfyNode<
     x = 0
     y = 0
     col = 0
-    get outgoingPorts() {
+    get outgoingPorts(): NodePort[] {
         return this.$outputs.map(
             (o, ix): NodePort => ({
                 id: this.uid + '#' + o.slotIx,
@@ -230,7 +256,7 @@ export class ComfyNode<
         )
     }
 
-    get incomingPorts() {
+    get incomingPorts(): NodePort[] {
         return this._incomingEdges().map(
             (e, ix): NodePort => ({
                 id: this.uid + '<-' + e.from + '#' + e.fromSlotIx,

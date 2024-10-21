@@ -1,5 +1,7 @@
+import type { CSSProperties, ReactElement, ReactNode } from 'react'
+
 import { observer } from 'mobx-react-lite'
-import { CSSProperties, ReactElement, ReactNode, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 type TabBody = () => ReactElement | null
 type Tab = {
@@ -60,7 +62,7 @@ export const TabsUI = observer(function Tabs_(p: {
                 ) : (
                     <>no tab {onIx}</>
                 )}
-                {p.disabled && <div tw='inset-0 absolute pointer-events-none' style={{ background: 'rgba(0,0,0,0.5)' }}></div>}
+                {p.disabled && <div tw='pointer-events-none absolute inset-0' style={{ background: 'rgba(0,0,0,0.5)' }}></div>}
             </div>
             {p.bottomTabs && tabHeader}
         </div>

@@ -2,19 +2,24 @@ import type { MediaImageL } from '../../../models/MediaImage'
 import type { STATE } from '../../../state/state'
 import type { UnifiedCanvas } from './UnifiedCanvas'
 import type { Group } from 'konva/lib/Group'
+import type { Image } from 'konva/lib/shapes/Image'
 
 import Konva from 'konva'
-import { Image } from 'konva/lib/shapes/Image'
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable, observable } from 'mobx'
 
 export class UnifiedImage {
-    hide = () => this.group.hide()
-    show = () => this.group.show()
+    hide = (): Group => this.group.hide()
+    show = (): Group => this.group.show()
     st: STATE
     group: Group
     image: Image
-
-    remove = () => {
+    name: string
+    visible: boolean = true
+    TEST = observable({
+        x: 100,
+        y: 50,
+    })
+    remove = (): void => {
         this.group.remove()
     }
 
@@ -25,6 +30,10 @@ export class UnifiedImage {
         public position?: { x: number; y: number },
     ) {
         this.st = canvas.st
+        this.name = `Layer 0`
+        if (canvas.images) {
+            this.name = `Layer ${canvas.images.length}`
+        }
 
         makeAutoObservable(this, {})
 
@@ -32,7 +41,8 @@ export class UnifiedImage {
         this.group = new Konva.Group()
         // stage.add(this.group)
         this.image = new Konva.Image({
-            draggable: true,
+            // (bird_d): Should be done through move tool for the active layer!
+            // draggable: true,
             image: img.asHTMLImageElement_noWait,
             x: position?.x ?? 0,
             y: position?.y ?? 0,

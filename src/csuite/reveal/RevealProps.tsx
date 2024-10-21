@@ -1,8 +1,8 @@
+import type { RevealCloseEvent } from './RevealCloseEvent'
 import type { RevealPlacement } from './RevealPlacement'
 import type { RevealContentProps, RevealShellProps } from './shells/ShellProps'
+import type React from 'react'
 import type { FC } from 'react'
-
-import React from 'react'
 
 // prettier-ignore
 export type KnownShells =
@@ -29,6 +29,9 @@ export type RevealShowTrigger =
     // renamed or replaced by the trigger dict (object) notation.
     | 'clickAndHover'
     | 'none' // 🔴 TODO
+    | 'rightClick' // 🔴 TODO
+    | 'menubar-item' // complex standard menubar behaviour
+
 // ❓ |  () => ...
 // ❓ |  { chick: ..., hover: ..., focus: ... }
 
@@ -45,7 +48,8 @@ export type RevealHideTrigger =
 export type RevealHideTriggers = { [key in RevealHideTrigger]?: boolean }
 
 export type RevealHideReason =
-    | 'clickAnchor' //
+    | 'leftClickAnchor' //
+    | 'rightClickAnchor' //
     | 'backdropClick'
     | 'shellClick' // via shell (not backdrop)
     | 'mouseOutside'
@@ -55,9 +59,24 @@ export type RevealHideReason =
     | 'pickOption'
     | 'blurAnchor'
     | 'closeButton' // ex: in modals
-    | 'cascade' // another reveal appearing caused the closure
+    | 'an-other-reveal-opened' // another reveal appearing caused the closure
     | 'programmatic'
     | 'unknown'
+    | 'RevealUI-is-unmounted'
+
+export type RevealOpenReason =
+    | 'leftClickAnchor' //
+    | 'rightClickAnchor' //
+    | 'tabKey'
+    | 'shiftTabKey'
+    | 'programmatically-via-open-function'
+    | 'unknown'
+    | 'child-is-opening-so-as-parent-I-must-open-too'
+    | 'mouse-enter-anchor-(no-parent-open)'
+    | 'mouse-enter-anchor-(with-parent-open)'
+    | 'focus-anchor'
+    | 'KeyboardEnterOrLetterWhenAnchorFocused'
+    | 'default-visible'
 
 export type RevealProps = {
     /** @since 2024-07-23 */
@@ -75,12 +94,13 @@ export type RevealProps = {
     // components / slots -------------------------------------------------------------
     /** @since 2024-07-23 */
     shell?: FC<RevealShellProps> | KnownShells
-    content: FC<RevealContentProps>
+    content: FC<RevealContentProps> // | null
     children: React.ReactNode //, React.ReactNode]
     title?: React.ReactNode // only for popup
 
     // callbacks if we need to add side effects after reveal/hide
     onRevealed?: () => void
+    onBeforeHide?: (ev: RevealCloseEvent) => void
     onHidden?: (reason: RevealHideReason) => void
 
     // SHOW triggers ------------------------------------------------------------------
@@ -96,7 +116,7 @@ export type RevealProps = {
     defaultVisible?: boolean
 
     // look and feel ------------------------------------------------------------------
-    tooltipWrapperClassName?: string
+    shellClassName?: string
     className?: string
     style?: React.CSSProperties
 
@@ -104,4 +124,15 @@ export type RevealProps = {
     UNSAFE_cloned?: boolean
 
     sharedAnchorRef?: React.RefObject<HTMLDivElement>
+    backdropColor?: string
+    hasBackdrop?: boolean
+    showBackdrop?: boolean
+
+    /**
+     * when we have nested Reveals but they actually are independent
+     */
+    useSeparateTower?: boolean
+
+    // 🔴 actually the child may not accept DovProps...
+    anchorProps?: React.HTMLAttributes<HTMLDivElement>
 }

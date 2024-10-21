@@ -1,14 +1,17 @@
+import type { Panel } from './Panel'
+
 import { PanelScript } from '../panels/Panel_Script'
 import { PanelSquoosh } from '../panels/Panel_Squoosh'
 import { PanelAppLibrary } from '../panels/PanelAppLibrary/PanelAppLibrary'
-import { PanelCanvas } from '../panels/PanelCanvas/Panel_Canvas'
+import { PanelAssets } from '../panels/PanelAssets/PanelAssets'
+import { PanelCanvas } from '../panels/PanelCanvas/PanelCanvas'
 import { PanelCivitai } from '../panels/PanelCivitai/Panel_Civitai'
 import { PanelComfy } from '../panels/PanelComfy/PanelComfy'
 import { PanelComfyHosts } from '../panels/PanelComfyHosts/Panel_ComfyUIHosts'
 import { PanelComfyNodeExplorer } from '../panels/PanelComfyNodeExplorer/Panel_ComfyNodeExplorer'
 import { PanelConfig, PanelSettings } from '../panels/PanelConfig/PanelConfig'
 import { PanelCustom } from '../panels/PanelCustom/PanelCustom'
-import { PanelDraft } from '../panels/PanelDraft/Panel_Draft'
+import { PanelDraft } from '../panels/PanelDraft/PanelDraft'
 import { PanelDraftSerial } from '../panels/PanelDraftSerial/PanelDraftSerial'
 import { PanelDraftValue } from '../panels/PanelDraftValue/PanelDraftValue'
 import { PanelGallery } from '../panels/PanelGallery/PanelGallery'
@@ -28,9 +31,9 @@ import { PanelSteps } from '../panels/PanelSteps/Panel_Steps'
 import { PanelTreeExplorer } from '../panels/PanelTreeExplorer/PanelTreeExplorer'
 import { PanelLastImage, PanelViewImage } from '../panels/PanelViewImage/Panel_ViewImage'
 import { PanelWelcome } from '../panels/PanelWelcome/PanelWelcome'
-import { Panel } from './Panel'
 
 export const panels = {
+    Assets: PanelAssets,
     // Image
     Gallery: PanelGallery,
     Paint: PanelMinipaint,

@@ -1,19 +1,22 @@
 import type { UnifiedCanvas } from './UnifiedCanvas'
+import type { Image } from 'konva/lib/shapes/Image'
 
 import Konva from 'konva'
 
 export class KonvaGrid {
-    hide = () => this.image.hide()
-    show = () => this.image.show()
+    hide = (): Image => this.image.hide()
+    show = (): Image => this.image.show()
+
     image: Konva.Image
+
     constructor(public canvas: UnifiedCanvas) {
         const cellSize = 64
         const _canvas = document.createElement('canvas')
         _canvas.width = 200
         _canvas.height = 200
         const ctx = _canvas.getContext('2d')!
-        for (var x = 0; x < 200; x++) {
-            for (var y = 0; y < 200; y++) {
+        for (let x = 0; x < 200; x++) {
+            for (let y = 0; y < 200; y++) {
                 ctx.fillStyle =
                     (x + y) % 2 === 0 //
                         ? '#656565'
