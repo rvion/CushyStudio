@@ -1,5 +1,11 @@
 SHORT TERM TODO:
 
+    CORE BUGS:
+        ☐ undoing choices via the undo button doesn't work properly. choices no longer there are still displayed
+            ☐  absolutely need to write some failing test first; clearly some reactivity issue
+
+        ☐ resetting lists kina make some lists not set (see controlnets)
+
     ☐ UC 2024-10-18
         ☐ reading the code
         ☐ making implementation plan
@@ -14,8 +20,6 @@ SHORT TERM TODO:
 
     ☐ fix the seed widget: right now, when in random mode (not set to a specific number) evaluating two prompts will use the same seed. it's a bug
 
-    ☐ undoing choices via the undo button doesn't work properly. choices no longer there are still displayed
-        ☐  absolutely need to write some failing test first; clearly some reactivity issue
 
     ☐ improve the civitai custom frontend:
         ☐ cache request

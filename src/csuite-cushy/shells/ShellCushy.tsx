@@ -137,7 +137,7 @@ export const ShellCushyRightUI = observer(function ShellCushyRight(p: CompiledRe
                         {utils.renderFCOrNode(p.Caret /*     */, { field, className: 'mr-auto' })}
                         {utils.renderFCOrNode(p.Presets /*   */, { field, className: 'self-start mr-2' })}
                         {!p.field.isCollapsed && !p.field.isCollapsible && <div tw='mr-auto' />}
-                        {utils.renderFCOrNode(p.Title /* */, { field })}
+                        {utils.renderFCOrNode(p.Title /*     */, { field, className: 'mr-2' })}
                         {utils.renderFCOrNode(p.DebugID /*   */, { field })}
                         {utils.renderFCOrNode(p.Icon /*      */, { field, className: 'mx-1' })}
                     </WidgetLabelContainerUI>

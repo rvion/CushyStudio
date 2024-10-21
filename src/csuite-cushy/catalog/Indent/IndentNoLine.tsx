@@ -1,12 +1,10 @@
+import type { WidgetIndentProps } from './WidgetIndentUI'
+
 import { observer } from 'mobx-react-lite'
 
-import { Frame, type FrameProps } from '../frame/Frame'
+import { Frame } from '../../../csuite/frame/Frame'
 
-export type WidgetIndentProps = {
-    depth: number
-} & FrameProps
-
-export const WidgetIndentUI = observer(function WidgetIndentUI_({
+export const WidgetIndentNoLinesUI = observer(function WidgetIndentNoLinesUI_({
     // own props
     depth,
 
@@ -36,7 +34,7 @@ export const WidgetIndentUI = observer(function WidgetIndentUI_({
                     key={i}
                     className='UI-WidgetIndent'
                     style={{
-                        borderRight: '1px solid oklch(from var(--KLR) calc(l + 0.1 * var(--DIR)) c h)', // 🚂 we disabled this border
+                        // borderRight: '1px solid oklch(from var(--KLR) calc(l + 0.1 * var(--DIR)) c h)', // 🚂 we disabled this border
                         width: `${0.7}rem`,
                         flexShrink: 0,
                         alignSelf: 'stretch',

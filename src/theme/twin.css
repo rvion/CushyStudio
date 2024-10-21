@@ -971,6 +971,10 @@ video {
   margin-top: 0.5rem;
 }
 
+.mr-8 {
+  margin-right: 2rem;
+}
+
 .box-border {
   box-sizing: border-box;
 }

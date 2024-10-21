@@ -1,6 +1,3 @@
-import type { MediaImageL } from '../../models/MediaImage'
-
-import { runInAction, trace } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import React, { useMemo } from 'react'
 
