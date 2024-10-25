@@ -32,7 +32,6 @@ export const WidgetString_SmallInput = observer(function WidgetStringUI_(p: {
          getValue={() => field.value_or_zero}
          setValue={(value) => {
             field.value = value
-            field.touch()
          }}
          disabled={p.readonly}
          clearable={config.clearable}

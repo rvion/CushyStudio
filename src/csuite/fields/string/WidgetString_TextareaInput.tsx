@@ -29,7 +29,6 @@ export const WidgetString_TextareaInput = observer(function WidgetString_Textare
             value={field.value_or_zero}
             onChange={(ev) => {
                field.value = ev.target.value
-               field.touch()
             }}
             onBlur={() => field.touch()}
          />

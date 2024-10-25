@@ -28,6 +28,7 @@ type InputNumberProps = {
    mode: 'int' | 'float'
    onValueChange: (next: number) => void
    onBlur?: () => void
+   onFocus?: () => void
    step?: number
    min?: number
    max?: number
@@ -368,8 +369,11 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                      activeSlider = textInput.parentElement as HTMLDivElement
                      textInput.select()
                      startValue = val
-                     uist.inputValue = val.toString()
-                     uist.isEditing = true
+                     runInAction(() => {
+                        uist.inputValue = val.toString()
+                        uist.isEditing = true
+                     })
+                     p.onFocus?.()
                   }}
                   onBlur={(ev) => {
                      uist.isEditing = false

@@ -9,7 +9,9 @@ import type { FC } from 'react'
 import { produce } from 'immer'
 
 import { csuiteConfig } from '../../config/configureCsuite'
+import { getCheckConfig, getCheckError } from '../../errors/getCheckConfig'
 import { Field } from '../../model/Field'
+import { makeLabelFromPrimitiveValue } from '../../utils/makeLabelFromFieldName'
 import { isProbablySerialString, registerFieldClass } from '../WidgetUI.DI'
 import { WidgetString_SmallInput } from './WidgetString_SmallInput'
 import { WidgetString_TextareaInput } from './WidgetString_TextareaInput'
@@ -60,9 +62,9 @@ export type Field_string_config = FieldConfig<
       innerIcon?: IconName
 
       // validation
-      pattern?: string
-      minLength?: number
-      maxLength?: number
+      pattern?: string | RegExp | { value: string | RegExp; error: string }
+      minLength?: number | { value: number; error: string }
+      maxLength?: number | { value: number; error: string }
 
       // randomization
       randomizationPool?: string[]
@@ -234,8 +236,8 @@ export class Field_string extends Field<Field_string_types> {
    get ownConfigSpecificProblems(): Problem_Ext {
       const i18n = csuiteConfig.i18n
       const out: string[] = []
-      const minlen = this.config.minLength
-      const maxlen = this.config.maxLength
+      const minlen = getCheckConfig(this.config.minLength)
+      const maxlen = getCheckConfig(this.config.maxLength)
       if (minlen != null && maxlen != null) {
          if (minlen > maxlen) {
             // 💬 2024-09-17 rvion: lol, no need to check the opposite 🤦‍♂️
@@ -264,19 +266,38 @@ export class Field_string extends Field<Field_string_types> {
       const value = this.value_or_zero
 
       // check min
-      const min = this.config.minLength
-      if (min != null && value.length < min) out.push(i18n.err.str.tooShort({ min }))
+      const min = getCheckConfig(this.config.minLength)
+      if (min === 1 && value.length === 0)
+         out.push(
+            getCheckError(
+               this.config.minLength,
+               // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+               i18n.err.str.required({
+                  prefix: this.config.label || makeLabelFromPrimitiveValue(this.mountKey),
+               }),
+            ),
+         )
+      else if (min != null && value.length < min)
+         out.push(getCheckError(this.config.minLength, i18n.err.str.tooShort({ min })))
 
       // check max
-      const max = this.config.maxLength
-      if (max != null && value.length > max) out.push(i18n.err.str.tooLong({ max }))
+      const max = getCheckConfig(this.config.maxLength)
+      if (max != null && value.length > max)
+         out.push(getCheckError(this.config.maxLength, i18n.err.str.tooLong({ max })))
 
       // check pattern
-      const pattern = this.config.pattern
+      const pattern = getCheckConfig(this.config.pattern)
       if (pattern != null) {
          const reg = new RegExp(pattern).test(value)
-         if (!reg) out.push(`Value does not match pattern /${pattern}/`)
+         if (!reg) {
+            const errMsg: string = getCheckError(
+               this.config.pattern,
+               i18n.err.str.pattern({ pattern: pattern.toString() }),
+            )
+            out.push(errMsg)
+         }
       }
+
       return out.length > 0 ? out : null
    }
    // #region randomization

@@ -29,6 +29,8 @@ export const csuite_i18n_en = {
          // value
          tooShort: ({ min }: { min: number }): string => `Must be at least ${min} characters`,
          tooLong: ({ max }: { max: number }): string => `Must be at most ${max} characters`,
+         required: ({ prefix }: { prefix: string }): string => `${prefix} is required`,
+         pattern: ({ pattern }: { pattern: string }): string => `Invalid format`,
       },
       field: {
          not_set: 'Field is not set',
@@ -36,7 +38,7 @@ export const csuite_i18n_en = {
       },
       selectMany: {
          required: (): string => `At least one value must be selected`,
-         notEnoughValues: ({ min }: { min: number }) => `At least ${min} values must be selected`,
+         notEnoughValues: ({ min }: { min: number }): string => `At least ${min} values must be selected`,
       },
    },
    ui: {
@@ -79,6 +81,8 @@ export const csuite_i18n_fr: CsuiteI18nConfig = {
          // value
          tooShort: ({ min }: { min: number }) => `Doit contenir au moins ${min} caractères`,
          tooLong: ({ max }: { max: number }) => `Doit contenir au plus ${max} caractères`,
+         required: ({ prefix }: { prefix: string }) => `Le champ ${prefix.toLowerCase()} est obligatoire`,
+         pattern: ({ pattern }: { pattern: string }) => `Format incorrect`,
       },
       field: {
          not_set: 'Valeur manquante',

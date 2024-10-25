@@ -8,6 +8,7 @@ import { forwardRef, useState } from 'react'
 
 import { Button } from '../button/Button'
 import { useCSuite } from '../ctx/useCSuite'
+import { getCheckConfig } from '../errors/getCheckConfig'
 import { Frame, type FrameProps } from '../frame/Frame'
 import { IkonOf } from '../icons/iconHelpers'
 import { getLCHFromStringAsString } from '../kolor/getLCHFromStringAsString'
@@ -90,7 +91,7 @@ export const InputStringUI = observer(
       const temporaryValue = p.buffered?.getTemporaryValue?.()
       const isDirty = isBuffered && temporaryValue != null && temporaryValue !== value
       const autoResize = p.autoResize
-      const inptClassNameWhenAutosize = autoResize
+      const inputClassNameWhenAutosize = autoResize
          ? 'absolute top-0 left-0 right-0 opacity-10 focus:opacity-100 z-50'
          : null
       const [reveal, setReveal] = useState(false)
@@ -123,9 +124,9 @@ export const InputStringUI = observer(
             size={autoResize ? 1 : undefined}
             className={p.inputClassName}
             style={p.inputStyle}
-            tw={[inptClassNameWhenAutosize, inputTailwind]}
+            tw={[inputClassNameWhenAutosize, inputTailwind]}
             type={reveal ? 'text' : p.type}
-            pattern={p.pattern}
+            pattern={getCheckConfig(p.pattern)?.toString()}
             placeholder={p.placeholder}
             autoFocus={p.autoFocus}
             disabled={p.disabled}
@@ -149,9 +150,11 @@ export const InputStringUI = observer(
                p.onBlur?.(ev)
             }}
             onKeyDown={(ev) => {
-               if (ev.key === 'Enter') {
-                  ev.currentTarget.blur()
-               } else if (ev.key === 'Escape') {
+               // 🔴 Prevents users from submitting the form when pressing enter (required by monoloco)
+               // ⏸️ if (ev.key === 'Enter') {
+               // ⏸️    ev.currentTarget.blur()
+               // ⏸️ } else
+               if (ev.key === 'Escape') {
                   if (!p.buffered && temporaryValue) p.setValue(temporaryValue)
                   p.buffered?.setTemporaryValue(null)
                   ev.currentTarget.blur()

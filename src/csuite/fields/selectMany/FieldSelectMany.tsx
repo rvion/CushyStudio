@@ -429,7 +429,10 @@ export class Field_selectMany<
             if (prop === 'filter') return (...args: [any, any]) => this.selectedValues.filter(...args)
             if (prop === 'sort') return (...args: [any]) => this.selectedValues.sort(...args)
             if (prop === 'join') return (...args: [any]) => this.selectedValues.join(...args)
-            if (prop === 'toJSON') return undefined
+            if (prop === 'toJSON') return undefined // <--- 🔴 THIS IS PROBABLY WRONG
+            if (prop === 'constructor') return Reflect.get(_, prop)
+            if (prop === 'hasOwnProperty') return Reflect.get(this.selectedValues, prop)
+
             // 💬 2024-09-03 rvion:
             // | let's be conservative and just throw, rather to pass that to some other
             // | function we haven't properly tested/reviewed yet.
