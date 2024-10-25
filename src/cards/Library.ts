@@ -82,7 +82,7 @@ export class Library {
         // ⏸️ this.expanded = new Set(expanded)
         const cache = this.st.hotReloadPersistentCache
         if (cache.watcher) {
-            (cache.watcher as Watcher).close()
+            ;(cache.watcher as Watcher).close()
         }
 
         // register watcher to properly reload all cards

@@ -1,4 +1,3 @@
-
 export type SqlFindOptions = {
     mode?: 'raw'
     limit?: number

@@ -18,7 +18,7 @@ export const CollapsibleUI = observer(function CollapsibleUI_(p: CollapsibleProp
                 <div tw='flex select-none' onClick={(ev) => SELF.toggle()}>
                     {p.children ?? (
                         <Frame tw='flex' look='link' icon={SELF.isCollapsed ? 'mdiChevronRight' : 'mdiChevronDown'}>
-                            {SELF.isCollapsed ? p.titleCollapsed ?? 'Voir plus' : p.titleExpanded ?? 'Voir moins'}
+                            {SELF.isCollapsed ? (p.titleCollapsed ?? 'Voir plus') : (p.titleExpanded ?? 'Voir moins')}
                         </Frame>
                     )}
                 </div>

@@ -6,7 +6,11 @@ import type { Problem } from './Validation'
  * @since 2024-09-04
  */
 export class ValidationError extends Error {
-    constructor(message: string, field: Field, public problems: Problem[]) {
+    constructor(
+        message: string,
+        field: Field,
+        public problems: Problem[],
+    ) {
         super(message)
         this.name = 'ValidationError'
     }

@@ -1,4 +1,3 @@
-
 declare type TableNameInDB =
     | 'comfy_workflow'
     | 'draft'

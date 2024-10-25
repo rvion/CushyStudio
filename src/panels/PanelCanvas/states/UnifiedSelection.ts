@@ -145,7 +145,7 @@ export class UnifiedSelection {
         // 🟢 SAVE CANVAS (3️⃣)
         /* 🥐 */ C.activeMask.layer.opacity(1)
         C.activeMask.layer.children.forEach((c) => {
-            (c as any).stroke('white')
+            ;(c as any).stroke('white')
         })
         // C.activeMask.layer
         //     .add
@@ -165,7 +165,7 @@ export class UnifiedSelection {
         const mask = createMediaImage_fromDataURI(dataURL2!, `outputs/canvas/${nanoid()}-mask.png`)
 
         C.activeMask.layer.children.forEach((c) => {
-            (c as any).stroke(C.activeMask.color)
+            ;(c as any).stroke(C.activeMask.color)
         })
         /* 🥐 */ C.activeMask.layer.opacity(0.5)
         /* 🥐 */ C.activeMask.layer.cache()

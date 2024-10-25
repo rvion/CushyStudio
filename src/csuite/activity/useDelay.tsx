@@ -17,8 +17,8 @@ export const useDelay = (
         delayMs == null //
             ? false
             : delayMs === 0
-            ? false
-            : true
+              ? false
+              : true
 
     const [delayed, setDelayed] = useState(defVal)
 

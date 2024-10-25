@@ -18,7 +18,7 @@ export function toJSONError(thrown: unknown): JSONError {
     const OUT: JSONError = {
         message: isError ? thrown.message : String(thrown),
         name: isError ? thrown.name : typeof thrown,
-        stack: isError ? thrown.stack ?? null : null,
+        stack: isError ? (thrown.stack ?? null) : null,
         customFields: {} as JSONDict,
     }
 

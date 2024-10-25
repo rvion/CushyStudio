@@ -51,7 +51,7 @@ export type NewComfyWorkflow = {
 }
 
 export type ComfyWorkflowUpdate = {
-   id?: never // ComfyWorkflowID
+    id?: never // ComfyWorkflowID
     createdAt?: number
     updatedAt?: number
     comfyPromptJSON?: T.ComfyWorkflow_comfyPromptJSON
@@ -76,16 +76,15 @@ export type ComfyWorkflowT = {
 }
 
 export type ComfyWorkflowTypes = {
-    TableName: 'comfy_workflow',
-    JSName: 'ComfyWorkflow',
-    Read: ComfyWorkflowT,
-    Instance: ComfyWorkflowL,
-    Create: NewComfyWorkflow,
-    Update: ComfyWorkflowUpdate,
-    ID: ComfyWorkflowID,
-    Delete: ComfyWorkflowBackRefsToHandleOnDelete,
+    TableName: 'comfy_workflow'
+    JSName: 'ComfyWorkflow'
+    Read: ComfyWorkflowT
+    Instance: ComfyWorkflowL
+    Create: NewComfyWorkflow
+    Update: ComfyWorkflowUpdate
+    ID: ComfyWorkflowID
+    Delete: ComfyWorkflowBackRefsToHandleOnDelete
 }
-
 
 export const ComfyWorkflowSchema = Type.Object(
     {
@@ -113,12 +112,12 @@ export const ComfyWorkflowBackRefs = [
 ]
 
 export const ComfyWorkflowFields = {
-    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
-    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
-    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
-    comfyPromptJSON: {cid:3,name:'comfyPromptJSON',type:'json',notnull:1,dflt_value:null,pk:0},
-    stepID: {cid:4,name:'stepID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
-    metadata: {cid:5,name:'metadata',type:'json',notnull:1,dflt_value:"'{}'",pk:0},
+    id: { cid: 0, name: 'id', type: 'string', notnull: 1, dflt_value: 'hex(randomblob(16))', pk: 1 },
+    createdAt: { cid: 1, name: 'createdAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
+    updatedAt: { cid: 2, name: 'updatedAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
+    comfyPromptJSON: { cid: 3, name: 'comfyPromptJSON', type: 'json', notnull: 1, dflt_value: null, pk: 0 },
+    stepID: { cid: 4, name: 'stepID', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
+    metadata: { cid: 5, name: 'metadata', type: 'json', notnull: 1, dflt_value: "'{}'", pk: 0 },
 }
 
 // #region Draft
@@ -160,7 +159,7 @@ export type NewDraft = {
 }
 
 export type DraftUpdate = {
-   id?: never // DraftID
+    id?: never // DraftID
     createdAt?: number
     updatedAt?: number
     title?: string | null
@@ -191,16 +190,15 @@ export type DraftT = {
 }
 
 export type DraftTypes = {
-    TableName: 'draft',
-    JSName: 'Draft',
-    Read: DraftT,
-    Instance: DraftL,
-    Create: NewDraft,
-    Update: DraftUpdate,
-    ID: DraftID,
-    Delete: DraftBackRefsToHandleOnDelete,
+    TableName: 'draft'
+    JSName: 'Draft'
+    Read: DraftT
+    Instance: DraftL
+    Create: NewDraft
+    Update: DraftUpdate
+    ID: DraftID
+    Delete: DraftBackRefsToHandleOnDelete
 }
-
 
 export const DraftSchema = Type.Object(
     {
@@ -230,16 +228,16 @@ export const DraftBackRefs = [
 ]
 
 export const DraftFields = {
-    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
-    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
-    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
-    title: {cid:3,name:'title',type:'TEXT',notnull:0,dflt_value:null,pk:0},
-    formSerial: {cid:4,name:'formSerial',type:'json',notnull:1,dflt_value:null,pk:0},
-    appID: {cid:5,name:'appID',type:'TEXT',notnull:1,dflt_value:null,pk:0},
-    illustration: {cid:6,name:'illustration',type:'TEXT',notnull:0,dflt_value:null,pk:0},
-    isFavorite: {cid:7,name:'isFavorite',type:'INT',notnull:1,dflt_value:'0',pk:0},
-    lastRunAt: {cid:8,name:'lastRunAt',type:'INT',notnull:0,dflt_value:null,pk:0},
-    canvasToolCategory: {cid:9,name:'canvasToolCategory',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    id: { cid: 0, name: 'id', type: 'string', notnull: 1, dflt_value: 'hex(randomblob(16))', pk: 1 },
+    createdAt: { cid: 1, name: 'createdAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
+    updatedAt: { cid: 2, name: 'updatedAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
+    title: { cid: 3, name: 'title', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
+    formSerial: { cid: 4, name: 'formSerial', type: 'json', notnull: 1, dflt_value: null, pk: 0 },
+    appID: { cid: 5, name: 'appID', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
+    illustration: { cid: 6, name: 'illustration', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
+    isFavorite: { cid: 7, name: 'isFavorite', type: 'INT', notnull: 1, dflt_value: '0', pk: 0 },
+    lastRunAt: { cid: 8, name: 'lastRunAt', type: 'INT', notnull: 0, dflt_value: null, pk: 0 },
+    canvasToolCategory: { cid: 9, name: 'canvasToolCategory', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
 }
 
 // #region Project
@@ -281,7 +279,7 @@ export type NewProject = {
 }
 
 export type ProjectUpdate = {
-   id?: never // ProjectID
+    id?: never // ProjectID
     createdAt?: number
     updatedAt?: number
     name?: string | null
@@ -309,16 +307,15 @@ export type ProjectT = {
 }
 
 export type ProjectTypes = {
-    TableName: 'project',
-    JSName: 'Project',
-    Read: ProjectT,
-    Instance: ProjectL,
-    Create: NewProject,
-    Update: ProjectUpdate,
-    ID: ProjectID,
-    Delete: ProjectBackRefsToHandleOnDelete,
+    TableName: 'project'
+    JSName: 'Project'
+    Read: ProjectT
+    Instance: ProjectL
+    Create: NewProject
+    Update: ProjectUpdate
+    ID: ProjectID
+    Delete: ProjectBackRefsToHandleOnDelete
 }
-
 
 export const ProjectSchema = Type.Object(
     {
@@ -345,16 +342,16 @@ export const ProjectRefs = [
 export const ProjectBackRefs = []
 
 export const ProjectFields = {
-    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
-    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
-    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
-    name: {cid:3,name:'name',type:'TEXT',notnull:0,dflt_value:null,pk:0},
-    rootGraphID: {cid:4,name:'rootGraphID',type:'TEXT',notnull:1,dflt_value:null,pk:0},
-    currentApp: {cid:5,name:'currentApp',type:'TEXT',notnull:0,dflt_value:null,pk:0},
-    currentDraftID: {cid:6,name:'currentDraftID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
-    filterNSFW: {cid:7,name:'filterNSFW',type:'INT',notnull:1,dflt_value:'0',pk:0},
-    autostartDelay: {cid:8,name:'autostartDelay',type:'INT',notnull:1,dflt_value:'0',pk:0},
-    autostartMaxDelay: {cid:9,name:'autostartMaxDelay',type:'INT',notnull:1,dflt_value:'100',pk:0},
+    id: { cid: 0, name: 'id', type: 'string', notnull: 1, dflt_value: 'hex(randomblob(16))', pk: 1 },
+    createdAt: { cid: 1, name: 'createdAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
+    updatedAt: { cid: 2, name: 'updatedAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
+    name: { cid: 3, name: 'name', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
+    rootGraphID: { cid: 4, name: 'rootGraphID', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
+    currentApp: { cid: 5, name: 'currentApp', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
+    currentDraftID: { cid: 6, name: 'currentDraftID', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
+    filterNSFW: { cid: 7, name: 'filterNSFW', type: 'INT', notnull: 1, dflt_value: '0', pk: 0 },
+    autostartDelay: { cid: 8, name: 'autostartDelay', type: 'INT', notnull: 1, dflt_value: '0', pk: 0 },
+    autostartMaxDelay: { cid: 9, name: 'autostartMaxDelay', type: 'INT', notnull: 1, dflt_value: '100', pk: 0 },
 }
 
 // #region Step
@@ -396,7 +393,7 @@ export type NewStep = {
 }
 
 export type StepUpdate = {
-   id?: never // StepID
+    id?: never // StepID
     createdAt?: number
     updatedAt?: number
     name?: string | null
@@ -434,16 +431,15 @@ export type StepT = {
 }
 
 export type StepTypes = {
-    TableName: 'step',
-    JSName: 'Step',
-    Read: StepT,
-    Instance: StepL,
-    Create: NewStep,
-    Update: StepUpdate,
-    ID: StepID,
-    Delete: StepBackRefsToHandleOnDelete,
+    TableName: 'step'
+    JSName: 'Step'
+    Read: StepT
+    Instance: StepL
+    Create: NewStep
+    Update: StepUpdate
+    ID: StepID
+    Delete: StepBackRefsToHandleOnDelete
 }
-
 
 export const StepSchema = Type.Object(
     {
@@ -482,16 +478,16 @@ export const StepBackRefs = [
 ]
 
 export const StepFields = {
-    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
-    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
-    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
-    name: {cid:3,name:'name',type:'TEXT',notnull:0,dflt_value:null,pk:0},
-    formSerial: {cid:4,name:'formSerial',type:'json',notnull:1,dflt_value:null,pk:0},
-    outputGraphID: {cid:5,name:'outputGraphID',type:'TEXT',notnull:1,dflt_value:null,pk:0},
-    status: {cid:6,name:'status',type:'TEXT',notnull:1,dflt_value:null,pk:0},
-    isExpanded: {cid:7,name:'isExpanded',type:'INT',notnull:1,dflt_value:'1',pk:0},
-    appID: {cid:8,name:'appID',type:'TEXT',notnull:1,dflt_value:null,pk:0},
-    draftID: {cid:9,name:'draftID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    id: { cid: 0, name: 'id', type: 'string', notnull: 1, dflt_value: 'hex(randomblob(16))', pk: 1 },
+    createdAt: { cid: 1, name: 'createdAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
+    updatedAt: { cid: 2, name: 'updatedAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
+    name: { cid: 3, name: 'name', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
+    formSerial: { cid: 4, name: 'formSerial', type: 'json', notnull: 1, dflt_value: null, pk: 0 },
+    outputGraphID: { cid: 5, name: 'outputGraphID', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
+    status: { cid: 6, name: 'status', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
+    isExpanded: { cid: 7, name: 'isExpanded', type: 'INT', notnull: 1, dflt_value: '1', pk: 0 },
+    appID: { cid: 8, name: 'appID', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
+    draftID: { cid: 9, name: 'draftID', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
 }
 
 // #region ComfyPrompt
@@ -527,7 +523,7 @@ export type NewComfyPrompt = {
 }
 
 export type ComfyPromptUpdate = {
-   id?: never // ComfyPromptID
+    id?: never // ComfyPromptID
     createdAt?: number
     updatedAt?: number
     stepID?: StepID
@@ -556,16 +552,15 @@ export type ComfyPromptT = {
 }
 
 export type ComfyPromptTypes = {
-    TableName: 'comfy_prompt',
-    JSName: 'ComfyPrompt',
-    Read: ComfyPromptT,
-    Instance: ComfyPromptL,
-    Create: NewComfyPrompt,
-    Update: ComfyPromptUpdate,
-    ID: ComfyPromptID,
-    Delete: ComfyPromptBackRefsToHandleOnDelete,
+    TableName: 'comfy_prompt'
+    JSName: 'ComfyPrompt'
+    Read: ComfyPromptT
+    Instance: ComfyPromptL
+    Create: NewComfyPrompt
+    Update: ComfyPromptUpdate
+    ID: ComfyPromptID
+    Delete: ComfyPromptBackRefsToHandleOnDelete
 }
-
 
 export const ComfyPromptSchema = Type.Object(
     {
@@ -596,14 +591,14 @@ export const ComfyPromptBackRefs = [
 ]
 
 export const ComfyPromptFields = {
-    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
-    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
-    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
-    stepID: {cid:3,name:'stepID',type:'TEXT',notnull:1,dflt_value:null,pk:0},
-    graphID: {cid:4,name:'graphID',type:'TEXT',notnull:1,dflt_value:null,pk:0},
-    executed: {cid:5,name:'executed',type:'INT',notnull:1,dflt_value:'0',pk:0},
-    error: {cid:6,name:'error',type:'json',notnull:0,dflt_value:null,pk:0},
-    status: {cid:7,name:'status',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    id: { cid: 0, name: 'id', type: 'string', notnull: 1, dflt_value: 'hex(randomblob(16))', pk: 1 },
+    createdAt: { cid: 1, name: 'createdAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
+    updatedAt: { cid: 2, name: 'updatedAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
+    stepID: { cid: 3, name: 'stepID', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
+    graphID: { cid: 4, name: 'graphID', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
+    executed: { cid: 5, name: 'executed', type: 'INT', notnull: 1, dflt_value: '0', pk: 0 },
+    error: { cid: 6, name: 'error', type: 'json', notnull: 0, dflt_value: null, pk: 0 },
+    status: { cid: 7, name: 'status', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
 }
 
 // #region ComfySchema
@@ -633,7 +628,7 @@ export type NewComfySchema = {
 }
 
 export type ComfySchemaUpdate = {
-   id?: never // ComfySchemaID
+    id?: never // ComfySchemaID
     createdAt?: number
     updatedAt?: number
     spec?: T.ComfySchema_spec
@@ -653,16 +648,15 @@ export type ComfySchemaT = {
 }
 
 export type ComfySchemaTypes = {
-    TableName: 'comfy_schema',
-    JSName: 'ComfySchema',
-    Read: ComfySchemaT,
-    Instance: ComfySchemaL,
-    Create: NewComfySchema,
-    Update: ComfySchemaUpdate,
-    ID: ComfySchemaID,
-    Delete: ComfySchemaBackRefsToHandleOnDelete,
+    TableName: 'comfy_schema'
+    JSName: 'ComfySchema'
+    Read: ComfySchemaT
+    Instance: ComfySchemaL
+    Create: NewComfySchema
+    Update: ComfySchemaUpdate
+    ID: ComfySchemaID
+    Delete: ComfySchemaBackRefsToHandleOnDelete
 }
-
 
 export const ComfySchemaSchema = Type.Object(
     {
@@ -684,12 +678,12 @@ export const ComfySchemaRefs = [
 export const ComfySchemaBackRefs = []
 
 export const ComfySchemaFields = {
-    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
-    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
-    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
-    spec: {cid:3,name:'spec',type:'json',notnull:1,dflt_value:null,pk:0},
-    embeddings: {cid:4,name:'embeddings',type:'json',notnull:1,dflt_value:null,pk:0},
-    hostID: {cid:5,name:'hostID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    id: { cid: 0, name: 'id', type: 'string', notnull: 1, dflt_value: 'hex(randomblob(16))', pk: 1 },
+    createdAt: { cid: 1, name: 'createdAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
+    updatedAt: { cid: 2, name: 'updatedAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
+    spec: { cid: 3, name: 'spec', type: 'json', notnull: 1, dflt_value: null, pk: 0 },
+    embeddings: { cid: 4, name: 'embeddings', type: 'json', notnull: 1, dflt_value: null, pk: 0 },
+    hostID: { cid: 5, name: 'hostID', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
 }
 
 // #region MediaText
@@ -722,7 +716,7 @@ export type NewMediaText = {
 }
 
 export type MediaTextUpdate = {
-   id?: never // MediaTextID
+    id?: never // MediaTextID
     createdAt?: number
     updatedAt?: number
     kind?: string
@@ -744,16 +738,15 @@ export type MediaTextT = {
 }
 
 export type MediaTextTypes = {
-    TableName: 'media_text',
-    JSName: 'MediaText',
-    Read: MediaTextT,
-    Instance: MediaTextL,
-    Create: NewMediaText,
-    Update: MediaTextUpdate,
-    ID: MediaTextID,
-    Delete: MediaTextBackRefsToHandleOnDelete,
+    TableName: 'media_text'
+    JSName: 'MediaText'
+    Read: MediaTextT
+    Instance: MediaTextL
+    Create: NewMediaText
+    Update: MediaTextUpdate
+    ID: MediaTextID
+    Delete: MediaTextBackRefsToHandleOnDelete
 }
-
 
 export const MediaTextSchema = Type.Object(
     {
@@ -776,13 +769,13 @@ export const MediaTextRefs = [
 export const MediaTextBackRefs = []
 
 export const MediaTextFields = {
-    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
-    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
-    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
-    kind: {cid:3,name:'kind',type:'TEXT',notnull:1,dflt_value:null,pk:0},
-    content: {cid:4,name:'content',type:'TEXT',notnull:1,dflt_value:null,pk:0},
-    stepID: {cid:5,name:'stepID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
-    title: {cid:6,name:'title',type:'TEXT',notnull:1,dflt_value:"''",pk:0},
+    id: { cid: 0, name: 'id', type: 'string', notnull: 1, dflt_value: 'hex(randomblob(16))', pk: 1 },
+    createdAt: { cid: 1, name: 'createdAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
+    updatedAt: { cid: 2, name: 'updatedAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
+    kind: { cid: 3, name: 'kind', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
+    content: { cid: 4, name: 'content', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
+    stepID: { cid: 5, name: 'stepID', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
+    title: { cid: 6, name: 'title', type: 'TEXT', notnull: 1, dflt_value: "''", pk: 0 },
 }
 
 // #region MediaVideo
@@ -818,7 +811,7 @@ export type NewMediaVideo = {
 }
 
 export type MediaVideoUpdate = {
-   id?: never // MediaVideoID
+    id?: never // MediaVideoID
     createdAt?: number
     updatedAt?: number
     absPath?: string | null
@@ -842,16 +835,15 @@ export type MediaVideoT = {
 }
 
 export type MediaVideoTypes = {
-    TableName: 'media_video',
-    JSName: 'MediaVideo',
-    Read: MediaVideoT,
-    Instance: MediaVideoL,
-    Create: NewMediaVideo,
-    Update: MediaVideoUpdate,
-    ID: MediaVideoID,
-    Delete: MediaVideoBackRefsToHandleOnDelete,
+    TableName: 'media_video'
+    JSName: 'MediaVideo'
+    Read: MediaVideoT
+    Instance: MediaVideoL
+    Create: NewMediaVideo
+    Update: MediaVideoUpdate
+    ID: MediaVideoID
+    Delete: MediaVideoBackRefsToHandleOnDelete
 }
-
 
 export const MediaVideoSchema = Type.Object(
     {
@@ -876,14 +868,14 @@ export const MediaVideoRefs = [
 export const MediaVideoBackRefs = []
 
 export const MediaVideoFields = {
-    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
-    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
-    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
-    absPath: {cid:3,name:'absPath',type:'TEXT',notnull:0,dflt_value:null,pk:0},
-    stepID: {cid:4,name:'stepID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
-    promptID: {cid:5,name:'promptID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
-    filePath: {cid:6,name:'filePath',type:'TEXT',notnull:0,dflt_value:null,pk:0},
-    url: {cid:7,name:'url',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+    id: { cid: 0, name: 'id', type: 'string', notnull: 1, dflt_value: 'hex(randomblob(16))', pk: 1 },
+    createdAt: { cid: 1, name: 'createdAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
+    updatedAt: { cid: 2, name: 'updatedAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
+    absPath: { cid: 3, name: 'absPath', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
+    stepID: { cid: 4, name: 'stepID', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
+    promptID: { cid: 5, name: 'promptID', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
+    filePath: { cid: 6, name: 'filePath', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
+    url: { cid: 7, name: 'url', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
 }
 
 // #region MediaImage
@@ -949,7 +941,7 @@ export type NewMediaImage = {
 }
 
 export type MediaImageUpdate = {
-   id?: never // MediaImageID
+    id?: never // MediaImageID
     createdAt?: number
     updatedAt?: number
     star?: number | null
@@ -993,16 +985,15 @@ export type MediaImageT = {
 }
 
 export type MediaImageTypes = {
-    TableName: 'media_image',
-    JSName: 'MediaImage',
-    Read: MediaImageT,
-    Instance: MediaImageL,
-    Create: NewMediaImage,
-    Update: MediaImageUpdate,
-    ID: MediaImageID,
-    Delete: MediaImageBackRefsToHandleOnDelete,
+    TableName: 'media_image'
+    JSName: 'MediaImage'
+    Read: MediaImageT
+    Instance: MediaImageL
+    Create: NewMediaImage
+    Update: MediaImageUpdate
+    ID: MediaImageID
+    Delete: MediaImageBackRefsToHandleOnDelete
 }
-
 
 export const MediaImageSchema = Type.Object(
     {
@@ -1037,24 +1028,24 @@ export const MediaImageRefs = [
 export const MediaImageBackRefs = []
 
 export const MediaImageFields = {
-    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
-    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
-    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
-    star: {cid:3,name:'star',type:'INT',notnull:0,dflt_value:null,pk:0},
-    promptID: {cid:4,name:'promptID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
-    stepID: {cid:5,name:'stepID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
-    promptNodeID: {cid:6,name:'promptNodeID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
-    width: {cid:7,name:'width',type:'INT',notnull:1,dflt_value:null,pk:0},
-    height: {cid:8,name:'height',type:'INT',notnull:1,dflt_value:null,pk:0},
-    fileSize: {cid:9,name:'fileSize',type:'INT',notnull:1,dflt_value:null,pk:0},
-    hash: {cid:10,name:'hash',type:'TEXT',notnull:1,dflt_value:null,pk:0},
-    path: {cid:11,name:'path',type:'TEXT',notnull:1,dflt_value:null,pk:0},
-    comfyUIInfos: {cid:12,name:'comfyUIInfos',type:'json',notnull:0,dflt_value:null,pk:0},
-    type: {cid:13,name:'type',type:'TEXT',notnull:0,dflt_value:null,pk:0},
-    orientation: {cid:14,name:'orientation',type:'INT',notnull:0,dflt_value:null,pk:0},
-    tags: {cid:15,name:'tags',type:'string',notnull:0,dflt_value:null,pk:0},
-    thumbnail: {cid:16,name:'thumbnail',type:'TEXT',notnull:0,dflt_value:null,pk:0},
-    safetyRating: {cid:17,name:'safetyRating',type:'json',notnull:0,dflt_value:null,pk:0},
+    id: { cid: 0, name: 'id', type: 'string', notnull: 1, dflt_value: 'hex(randomblob(16))', pk: 1 },
+    createdAt: { cid: 1, name: 'createdAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
+    updatedAt: { cid: 2, name: 'updatedAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
+    star: { cid: 3, name: 'star', type: 'INT', notnull: 0, dflt_value: null, pk: 0 },
+    promptID: { cid: 4, name: 'promptID', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
+    stepID: { cid: 5, name: 'stepID', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
+    promptNodeID: { cid: 6, name: 'promptNodeID', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
+    width: { cid: 7, name: 'width', type: 'INT', notnull: 1, dflt_value: null, pk: 0 },
+    height: { cid: 8, name: 'height', type: 'INT', notnull: 1, dflt_value: null, pk: 0 },
+    fileSize: { cid: 9, name: 'fileSize', type: 'INT', notnull: 1, dflt_value: null, pk: 0 },
+    hash: { cid: 10, name: 'hash', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
+    path: { cid: 11, name: 'path', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
+    comfyUIInfos: { cid: 12, name: 'comfyUIInfos', type: 'json', notnull: 0, dflt_value: null, pk: 0 },
+    type: { cid: 13, name: 'type', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
+    orientation: { cid: 14, name: 'orientation', type: 'INT', notnull: 0, dflt_value: null, pk: 0 },
+    tags: { cid: 15, name: 'tags', type: 'string', notnull: 0, dflt_value: null, pk: 0 },
+    thumbnail: { cid: 16, name: 'thumbnail', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
+    safetyRating: { cid: 17, name: 'safetyRating', type: 'json', notnull: 0, dflt_value: null, pk: 0 },
 }
 
 // #region Media3dDisplacement
@@ -1096,7 +1087,7 @@ export type NewMedia3dDisplacement = {
 }
 
 export type Media3dDisplacementUpdate = {
-   id?: never // Media3dDisplacementID
+    id?: never // Media3dDisplacementID
     createdAt?: number
     updatedAt?: number
     width?: number | null
@@ -1124,16 +1115,15 @@ export type Media3dDisplacementT = {
 }
 
 export type Media3dDisplacementTypes = {
-    TableName: 'media_3d_displacement',
-    JSName: 'Media3dDisplacement',
-    Read: Media3dDisplacementT,
-    Instance: Media3dDisplacementL,
-    Create: NewMedia3dDisplacement,
-    Update: Media3dDisplacementUpdate,
-    ID: Media3dDisplacementID,
-    Delete: Media3dDisplacementBackRefsToHandleOnDelete,
+    TableName: 'media_3d_displacement'
+    JSName: 'Media3dDisplacement'
+    Read: Media3dDisplacementT
+    Instance: Media3dDisplacementL
+    Create: NewMedia3dDisplacement
+    Update: Media3dDisplacementUpdate
+    ID: Media3dDisplacementID
+    Delete: Media3dDisplacementBackRefsToHandleOnDelete
 }
-
 
 export const Media3dDisplacementSchema = Type.Object(
     {
@@ -1160,16 +1150,16 @@ export const Media3dDisplacementRefs = [
 export const Media3dDisplacementBackRefs = []
 
 export const Media3dDisplacementFields = {
-    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
-    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
-    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
-    width: {cid:3,name:'width',type:'INT',notnull:0,dflt_value:null,pk:0},
-    height: {cid:4,name:'height',type:'INT',notnull:0,dflt_value:null,pk:0},
-    image: {cid:5,name:'image',type:'TEXT',notnull:0,dflt_value:null,pk:0},
-    depthMap: {cid:6,name:'depthMap',type:'TEXT',notnull:0,dflt_value:null,pk:0},
-    normalMap: {cid:7,name:'normalMap',type:'TEXT',notnull:0,dflt_value:null,pk:0},
-    stepID: {cid:8,name:'stepID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
-    promptID: {cid:9,name:'promptID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    id: { cid: 0, name: 'id', type: 'string', notnull: 1, dflt_value: 'hex(randomblob(16))', pk: 1 },
+    createdAt: { cid: 1, name: 'createdAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
+    updatedAt: { cid: 2, name: 'updatedAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
+    width: { cid: 3, name: 'width', type: 'INT', notnull: 0, dflt_value: null, pk: 0 },
+    height: { cid: 4, name: 'height', type: 'INT', notnull: 0, dflt_value: null, pk: 0 },
+    image: { cid: 5, name: 'image', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
+    depthMap: { cid: 6, name: 'depthMap', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
+    normalMap: { cid: 7, name: 'normalMap', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
+    stepID: { cid: 8, name: 'stepID', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
+    promptID: { cid: 9, name: 'promptID', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
 }
 
 // #region RuntimeError
@@ -1205,7 +1195,7 @@ export type NewRuntimeError = {
 }
 
 export type RuntimeErrorUpdate = {
-   id?: never // RuntimeErrorID
+    id?: never // RuntimeErrorID
     createdAt?: number
     updatedAt?: number
     message?: string
@@ -1229,16 +1219,15 @@ export type RuntimeErrorT = {
 }
 
 export type RuntimeErrorTypes = {
-    TableName: 'runtime_error',
-    JSName: 'RuntimeError',
-    Read: RuntimeErrorT,
-    Instance: RuntimeErrorL,
-    Create: NewRuntimeError,
-    Update: RuntimeErrorUpdate,
-    ID: RuntimeErrorID,
-    Delete: RuntimeErrorBackRefsToHandleOnDelete,
+    TableName: 'runtime_error'
+    JSName: 'RuntimeError'
+    Read: RuntimeErrorT
+    Instance: RuntimeErrorL
+    Create: NewRuntimeError
+    Update: RuntimeErrorUpdate
+    ID: RuntimeErrorID
+    Delete: RuntimeErrorBackRefsToHandleOnDelete
 }
-
 
 export const RuntimeErrorSchema = Type.Object(
     {
@@ -1264,14 +1253,14 @@ export const RuntimeErrorRefs = [
 export const RuntimeErrorBackRefs = []
 
 export const RuntimeErrorFields = {
-    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
-    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
-    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
-    message: {cid:3,name:'message',type:'TEXT',notnull:1,dflt_value:null,pk:0},
-    infos: {cid:4,name:'infos',type:'json',notnull:1,dflt_value:null,pk:0},
-    promptID: {cid:5,name:'promptID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
-    graphID: {cid:6,name:'graphID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
-    stepID: {cid:7,name:'stepID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
+    id: { cid: 0, name: 'id', type: 'string', notnull: 1, dflt_value: 'hex(randomblob(16))', pk: 1 },
+    createdAt: { cid: 1, name: 'createdAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
+    updatedAt: { cid: 2, name: 'updatedAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
+    message: { cid: 3, name: 'message', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
+    infos: { cid: 4, name: 'infos', type: 'json', notnull: 1, dflt_value: null, pk: 0 },
+    promptID: { cid: 5, name: 'promptID', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
+    graphID: { cid: 6, name: 'graphID', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
+    stepID: { cid: 7, name: 'stepID', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
 }
 
 // #region MediaSplat
@@ -1298,7 +1287,7 @@ export type NewMediaSplat = {
 }
 
 export type MediaSplatUpdate = {
-   id?: never // MediaSplatID
+    id?: never // MediaSplatID
     createdAt?: number
     updatedAt?: number
     stepID?: StepID | null
@@ -1316,16 +1305,15 @@ export type MediaSplatT = {
 }
 
 export type MediaSplatTypes = {
-    TableName: 'media_splat',
-    JSName: 'MediaSplat',
-    Read: MediaSplatT,
-    Instance: MediaSplatL,
-    Create: NewMediaSplat,
-    Update: MediaSplatUpdate,
-    ID: MediaSplatID,
-    Delete: MediaSplatBackRefsToHandleOnDelete,
+    TableName: 'media_splat'
+    JSName: 'MediaSplat'
+    Read: MediaSplatT
+    Instance: MediaSplatL
+    Create: NewMediaSplat
+    Update: MediaSplatUpdate
+    ID: MediaSplatID
+    Delete: MediaSplatBackRefsToHandleOnDelete
 }
-
 
 export const MediaSplatSchema = Type.Object(
     {
@@ -1346,11 +1334,11 @@ export const MediaSplatRefs = [
 export const MediaSplatBackRefs = []
 
 export const MediaSplatFields = {
-    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
-    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
-    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
-    stepID: {cid:3,name:'stepID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
-    url: {cid:4,name:'url',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+    id: { cid: 0, name: 'id', type: 'string', notnull: 1, dflt_value: 'hex(randomblob(16))', pk: 1 },
+    createdAt: { cid: 1, name: 'createdAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
+    updatedAt: { cid: 2, name: 'updatedAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
+    stepID: { cid: 3, name: 'stepID', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
+    url: { cid: 4, name: 'url', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
 }
 
 // #region CustomData
@@ -1374,7 +1362,7 @@ export type NewCustomData = {
 }
 
 export type CustomDataUpdate = {
-   id?: never // CustomDataID
+    id?: never // CustomDataID
     createdAt?: number
     updatedAt?: number
     json?: T.CustomData_json
@@ -1390,16 +1378,15 @@ export type CustomDataT = {
 }
 
 export type CustomDataTypes = {
-    TableName: 'custom_data',
-    JSName: 'CustomData',
-    Read: CustomDataT,
-    Instance: CustomDataL,
-    Create: NewCustomData,
-    Update: CustomDataUpdate,
-    ID: CustomDataID,
-    Delete: CustomDataBackRefsToHandleOnDelete,
+    TableName: 'custom_data'
+    JSName: 'CustomData'
+    Read: CustomDataT
+    Instance: CustomDataL
+    Create: NewCustomData
+    Update: CustomDataUpdate
+    ID: CustomDataID
+    Delete: CustomDataBackRefsToHandleOnDelete
 }
-
 
 export const CustomDataSchema = Type.Object(
     {
@@ -1416,10 +1403,10 @@ export const CustomDataRefs = []
 export const CustomDataBackRefs = []
 
 export const CustomDataFields = {
-    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
-    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
-    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
-    json: {cid:3,name:'json',type:'json',notnull:1,dflt_value:"'{}'",pk:0},
+    id: { cid: 0, name: 'id', type: 'string', notnull: 1, dflt_value: 'hex(randomblob(16))', pk: 1 },
+    createdAt: { cid: 1, name: 'createdAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
+    updatedAt: { cid: 2, name: 'updatedAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
+    json: { cid: 3, name: 'json', type: 'json', notnull: 1, dflt_value: "'{}'", pk: 0 },
 }
 
 // #region CushyScript
@@ -1458,7 +1445,7 @@ export type NewCushyScript = {
 }
 
 export type CushyScriptUpdate = {
-   id?: never // CushyScriptID
+    id?: never // CushyScriptID
     createdAt?: number
     updatedAt?: number
     path?: string
@@ -1486,16 +1473,15 @@ export type CushyScriptT = {
 }
 
 export type CushyScriptTypes = {
-    TableName: 'cushy_script',
-    JSName: 'CushyScript',
-    Read: CushyScriptT,
-    Instance: CushyScriptL,
-    Create: NewCushyScript,
-    Update: CushyScriptUpdate,
-    ID: CushyScriptID,
-    Delete: CushyScriptBackRefsToHandleOnDelete,
+    TableName: 'cushy_script'
+    JSName: 'CushyScript'
+    Read: CushyScriptT
+    Instance: CushyScriptL
+    Create: NewCushyScript
+    Update: CushyScriptUpdate
+    ID: CushyScriptID
+    Delete: CushyScriptBackRefsToHandleOnDelete
 }
-
 
 export const CushyScriptSchema = Type.Object(
     {
@@ -1520,15 +1506,15 @@ export const CushyScriptBackRefs = [
 ]
 
 export const CushyScriptFields = {
-    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
-    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
-    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
-    path: {cid:3,name:'path',type:'TEXT',notnull:1,dflt_value:null,pk:0},
-    code: {cid:4,name:'code',type:'TEXT',notnull:1,dflt_value:null,pk:0},
-    lastEvaluatedAt: {cid:5,name:'lastEvaluatedAt',type:'INT',notnull:0,dflt_value:null,pk:0},
-    lastSuccessfulEvaluationAt: {cid:6,name:'lastSuccessfulEvaluationAt',type:'INT',notnull:0,dflt_value:null,pk:0},
-    metafile: {cid:7,name:'metafile',type:'json',notnull:0,dflt_value:null,pk:0},
-    lastExtractedAt: {cid:8,name:'lastExtractedAt',type:'INT',notnull:0,dflt_value:null,pk:0},
+    id: { cid: 0, name: 'id', type: 'string', notnull: 1, dflt_value: 'hex(randomblob(16))', pk: 1 },
+    createdAt: { cid: 1, name: 'createdAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
+    updatedAt: { cid: 2, name: 'updatedAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
+    path: { cid: 3, name: 'path', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
+    code: { cid: 4, name: 'code', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
+    lastEvaluatedAt: { cid: 5, name: 'lastEvaluatedAt', type: 'INT', notnull: 0, dflt_value: null, pk: 0 },
+    lastSuccessfulEvaluationAt: { cid: 6, name: 'lastSuccessfulEvaluationAt', type: 'INT', notnull: 0, dflt_value: null, pk: 0 },
+    metafile: { cid: 7, name: 'metafile', type: 'json', notnull: 0, dflt_value: null, pk: 0 },
+    lastExtractedAt: { cid: 8, name: 'lastExtractedAt', type: 'INT', notnull: 0, dflt_value: null, pk: 0 },
 }
 
 // #region CushyApp
@@ -1582,7 +1568,7 @@ export type NewCushyApp = {
 }
 
 export type CushyAppUpdate = {
-   id?: never // CushyAppID
+    id?: never // CushyAppID
     createdAt?: number
     updatedAt?: number
     guid?: string | null
@@ -1621,16 +1607,15 @@ export type CushyAppT = {
 }
 
 export type CushyAppTypes = {
-    TableName: 'cushy_app',
-    JSName: 'CushyApp',
-    Read: CushyAppT,
-    Instance: CushyAppL,
-    Create: NewCushyApp,
-    Update: CushyAppUpdate,
-    ID: CushyAppID,
-    Delete: CushyAppBackRefsToHandleOnDelete,
+    TableName: 'cushy_app'
+    JSName: 'CushyApp'
+    Read: CushyAppT
+    Instance: CushyAppL
+    Create: NewCushyApp
+    Update: CushyAppUpdate
+    ID: CushyAppID
+    Delete: CushyAppBackRefsToHandleOnDelete
 }
-
 
 export const CushyAppSchema = Type.Object(
     {
@@ -1664,20 +1649,20 @@ export const CushyAppBackRefs = [
 ]
 
 export const CushyAppFields = {
-    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
-    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
-    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
-    guid: {cid:3,name:'guid',type:'TEXT',notnull:0,dflt_value:null,pk:0},
-    scriptID: {cid:4,name:'scriptID',type:'TEXT',notnull:1,dflt_value:null,pk:0},
-    name: {cid:5,name:'name',type:'TEXT',notnull:0,dflt_value:null,pk:0},
-    illustration: {cid:6,name:'illustration',type:'TEXT',notnull:0,dflt_value:null,pk:0},
-    description: {cid:7,name:'description',type:'TEXT',notnull:0,dflt_value:null,pk:0},
-    tags: {cid:8,name:'tags',type:'TEXT',notnull:0,dflt_value:null,pk:0},
-    publishedAsUserID: {cid:9,name:'publishedAsUserID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
-    publishedAt: {cid:10,name:'publishedAt',type:'INT',notnull:0,dflt_value:null,pk:0},
-    isFavorite: {cid:11,name:'isFavorite',type:'INT',notnull:1,dflt_value:'0',pk:0},
-    canStartFromImage: {cid:12,name:'canStartFromImage',type:'INT',notnull:0,dflt_value:null,pk:0},
-    lastRunAt: {cid:13,name:'lastRunAt',type:'INT',notnull:0,dflt_value:null,pk:0},
+    id: { cid: 0, name: 'id', type: 'string', notnull: 1, dflt_value: 'hex(randomblob(16))', pk: 1 },
+    createdAt: { cid: 1, name: 'createdAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
+    updatedAt: { cid: 2, name: 'updatedAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
+    guid: { cid: 3, name: 'guid', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
+    scriptID: { cid: 4, name: 'scriptID', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
+    name: { cid: 5, name: 'name', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
+    illustration: { cid: 6, name: 'illustration', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
+    description: { cid: 7, name: 'description', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
+    tags: { cid: 8, name: 'tags', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
+    publishedAsUserID: { cid: 9, name: 'publishedAsUserID', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
+    publishedAt: { cid: 10, name: 'publishedAt', type: 'INT', notnull: 0, dflt_value: null, pk: 0 },
+    isFavorite: { cid: 11, name: 'isFavorite', type: 'INT', notnull: 1, dflt_value: '0', pk: 0 },
+    canStartFromImage: { cid: 12, name: 'canStartFromImage', type: 'INT', notnull: 0, dflt_value: null, pk: 0 },
+    lastRunAt: { cid: 13, name: 'lastRunAt', type: 'INT', notnull: 0, dflt_value: null, pk: 0 },
 }
 
 // #region Auth
@@ -1719,7 +1704,7 @@ export type NewAuth = {
 }
 
 export type AuthUpdate = {
-   id?: never // AuthID
+    id?: never // AuthID
     createdAt?: number
     updatedAt?: number
     provider_token?: string | null
@@ -1747,16 +1732,15 @@ export type AuthT = {
 }
 
 export type AuthTypes = {
-    TableName: 'auth',
-    JSName: 'Auth',
-    Read: AuthT,
-    Instance: AuthL,
-    Create: NewAuth,
-    Update: AuthUpdate,
-    ID: AuthID,
-    Delete: AuthBackRefsToHandleOnDelete,
+    TableName: 'auth'
+    JSName: 'Auth'
+    Read: AuthT
+    Instance: AuthL
+    Create: NewAuth
+    Update: AuthUpdate
+    ID: AuthID
+    Delete: AuthBackRefsToHandleOnDelete
 }
-
 
 export const AuthSchema = Type.Object(
     {
@@ -1779,16 +1763,16 @@ export const AuthRefs = []
 export const AuthBackRefs = []
 
 export const AuthFields = {
-    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
-    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
-    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
-    provider_token: {cid:3,name:'provider_token',type:'TEXT',notnull:0,dflt_value:null,pk:0},
-    refresh_token: {cid:4,name:'refresh_token',type:'TEXT',notnull:0,dflt_value:null,pk:0},
-    token_type: {cid:5,name:'token_type',type:'TEXT',notnull:0,dflt_value:null,pk:0},
-    access_token: {cid:6,name:'access_token',type:'TEXT',notnull:0,dflt_value:null,pk:0},
-    provider_refresh_token: {cid:7,name:'provider_refresh_token',type:'TEXT',notnull:0,dflt_value:null,pk:0},
-    expires_at: {cid:8,name:'expires_at',type:'INT',notnull:0,dflt_value:null,pk:0},
-    expires_in: {cid:9,name:'expires_in',type:'INT',notnull:0,dflt_value:null,pk:0},
+    id: { cid: 0, name: 'id', type: 'string', notnull: 1, dflt_value: 'hex(randomblob(16))', pk: 1 },
+    createdAt: { cid: 1, name: 'createdAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
+    updatedAt: { cid: 2, name: 'updatedAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
+    provider_token: { cid: 3, name: 'provider_token', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
+    refresh_token: { cid: 4, name: 'refresh_token', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
+    token_type: { cid: 5, name: 'token_type', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
+    access_token: { cid: 6, name: 'access_token', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
+    provider_refresh_token: { cid: 7, name: 'provider_refresh_token', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
+    expires_at: { cid: 8, name: 'expires_at', type: 'INT', notnull: 0, dflt_value: null, pk: 0 },
+    expires_in: { cid: 9, name: 'expires_in', type: 'INT', notnull: 0, dflt_value: null, pk: 0 },
 }
 
 // #region TreeEntry
@@ -1815,7 +1799,7 @@ export type NewTreeEntry = {
 }
 
 export type TreeEntryUpdate = {
-   id?: never // TreeEntryID
+    id?: never // TreeEntryID
     createdAt?: number
     updatedAt?: number
     isExpanded?: number | null
@@ -1833,16 +1817,15 @@ export type TreeEntryT = {
 }
 
 export type TreeEntryTypes = {
-    TableName: 'tree_entry',
-    JSName: 'TreeEntry',
-    Read: TreeEntryT,
-    Instance: TreeEntryL,
-    Create: NewTreeEntry,
-    Update: TreeEntryUpdate,
-    ID: TreeEntryID,
-    Delete: TreeEntryBackRefsToHandleOnDelete,
+    TableName: 'tree_entry'
+    JSName: 'TreeEntry'
+    Read: TreeEntryT
+    Instance: TreeEntryL
+    Create: NewTreeEntry
+    Update: TreeEntryUpdate
+    ID: TreeEntryID
+    Delete: TreeEntryBackRefsToHandleOnDelete
 }
-
 
 export const TreeEntrySchema = Type.Object(
     {
@@ -1860,11 +1843,11 @@ export const TreeEntryRefs = []
 export const TreeEntryBackRefs = []
 
 export const TreeEntryFields = {
-    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
-    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
-    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
-    isExpanded: {cid:3,name:'isExpanded',type:'INT',notnull:0,dflt_value:null,pk:0},
-    isSelected: {cid:4,name:'isSelected',type:'INT',notnull:0,dflt_value:'0',pk:0},
+    id: { cid: 0, name: 'id', type: 'string', notnull: 1, dflt_value: 'hex(randomblob(16))', pk: 1 },
+    createdAt: { cid: 1, name: 'createdAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
+    updatedAt: { cid: 2, name: 'updatedAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
+    isExpanded: { cid: 3, name: 'isExpanded', type: 'INT', notnull: 0, dflt_value: null, pk: 0 },
+    isSelected: { cid: 4, name: 'isSelected', type: 'INT', notnull: 0, dflt_value: '0', pk: 0 },
 }
 
 // #region Host
@@ -1912,7 +1895,7 @@ export type NewHost = {
 }
 
 export type HostUpdate = {
-   id?: never // HostID
+    id?: never // HostID
     createdAt?: number
     updatedAt?: number
     name?: string
@@ -1946,16 +1929,15 @@ export type HostT = {
 }
 
 export type HostTypes = {
-    TableName: 'host',
-    JSName: 'Host',
-    Read: HostT,
-    Instance: HostL,
-    Create: NewHost,
-    Update: HostUpdate,
-    ID: HostID,
-    Delete: HostBackRefsToHandleOnDelete,
+    TableName: 'host'
+    JSName: 'Host'
+    Read: HostT
+    Instance: HostL
+    Create: NewHost
+    Update: HostUpdate
+    ID: HostID
+    Delete: HostBackRefsToHandleOnDelete
 }
-
 
 export const HostSchema = Type.Object(
     {
@@ -1983,18 +1965,25 @@ export const HostBackRefs = [
 ]
 
 export const HostFields = {
-    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
-    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
-    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
-    name: {cid:3,name:'name',type:'TEXT',notnull:1,dflt_value:'hex(randomblob(16))',pk:0},
-    hostname: {cid:4,name:'hostname',type:'TEXT',notnull:1,dflt_value:'"localhost"',pk:0},
-    port: {cid:5,name:'port',type:'INT',notnull:1,dflt_value:'8188',pk:0},
-    useHttps: {cid:6,name:'useHttps',type:'INT',notnull:1,dflt_value:'0',pk:0},
-    isLocal: {cid:7,name:'isLocal',type:'INT',notnull:1,dflt_value:'0',pk:0},
-    absolutePathToComfyUI: {cid:8,name:'absolutePathToComfyUI',type:'TEXT',notnull:0,dflt_value:null,pk:0},
-    absolutPathToDownloadModelsTo: {cid:9,name:'absolutPathToDownloadModelsTo',type:'TEXT',notnull:0,dflt_value:null,pk:0},
-    isVirtual: {cid:10,name:'isVirtual',type:'INT',notnull:1,dflt_value:'0',pk:0},
-    isReadonly: {cid:11,name:'isReadonly',type:'INT',notnull:1,dflt_value:'0',pk:0},
+    id: { cid: 0, name: 'id', type: 'string', notnull: 1, dflt_value: 'hex(randomblob(16))', pk: 1 },
+    createdAt: { cid: 1, name: 'createdAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
+    updatedAt: { cid: 2, name: 'updatedAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
+    name: { cid: 3, name: 'name', type: 'TEXT', notnull: 1, dflt_value: 'hex(randomblob(16))', pk: 0 },
+    hostname: { cid: 4, name: 'hostname', type: 'TEXT', notnull: 1, dflt_value: '"localhost"', pk: 0 },
+    port: { cid: 5, name: 'port', type: 'INT', notnull: 1, dflt_value: '8188', pk: 0 },
+    useHttps: { cid: 6, name: 'useHttps', type: 'INT', notnull: 1, dflt_value: '0', pk: 0 },
+    isLocal: { cid: 7, name: 'isLocal', type: 'INT', notnull: 1, dflt_value: '0', pk: 0 },
+    absolutePathToComfyUI: { cid: 8, name: 'absolutePathToComfyUI', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
+    absolutPathToDownloadModelsTo: {
+        cid: 9,
+        name: 'absolutPathToDownloadModelsTo',
+        type: 'TEXT',
+        notnull: 0,
+        dflt_value: null,
+        pk: 0,
+    },
+    isVirtual: { cid: 10, name: 'isVirtual', type: 'INT', notnull: 1, dflt_value: '0', pk: 0 },
+    isReadonly: { cid: 11, name: 'isReadonly', type: 'INT', notnull: 1, dflt_value: '0', pk: 0 },
 }
 
 // #region MediaCustom
@@ -2024,7 +2013,7 @@ export type NewMediaCustom = {
 }
 
 export type MediaCustomUpdate = {
-   id?: never // MediaCustomID
+    id?: never // MediaCustomID
     createdAt?: number
     updatedAt?: number
     params?: T.MediaCustom_params | null
@@ -2044,16 +2033,15 @@ export type MediaCustomT = {
 }
 
 export type MediaCustomTypes = {
-    TableName: 'media_custom',
-    JSName: 'MediaCustom',
-    Read: MediaCustomT,
-    Instance: MediaCustomL,
-    Create: NewMediaCustom,
-    Update: MediaCustomUpdate,
-    ID: MediaCustomID,
-    Delete: MediaCustomBackRefsToHandleOnDelete,
+    TableName: 'media_custom'
+    JSName: 'MediaCustom'
+    Read: MediaCustomT
+    Instance: MediaCustomL
+    Create: NewMediaCustom
+    Update: MediaCustomUpdate
+    ID: MediaCustomID
+    Delete: MediaCustomBackRefsToHandleOnDelete
 }
-
 
 export const MediaCustomSchema = Type.Object(
     {
@@ -2075,12 +2063,12 @@ export const MediaCustomRefs = [
 export const MediaCustomBackRefs = []
 
 export const MediaCustomFields = {
-    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
-    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
-    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
-    params: {cid:3,name:'params',type:'json',notnull:0,dflt_value:null,pk:0},
-    stepID: {cid:4,name:'stepID',type:'TEXT',notnull:0,dflt_value:null,pk:0},
-    viewID: {cid:5,name:'viewID',type:'TEXT',notnull:1,dflt_value:null,pk:0},
+    id: { cid: 0, name: 'id', type: 'string', notnull: 1, dflt_value: 'hex(randomblob(16))', pk: 1 },
+    createdAt: { cid: 1, name: 'createdAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
+    updatedAt: { cid: 2, name: 'updatedAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
+    params: { cid: 3, name: 'params', type: 'json', notnull: 0, dflt_value: null, pk: 0 },
+    stepID: { cid: 4, name: 'stepID', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
+    viewID: { cid: 5, name: 'viewID', type: 'TEXT', notnull: 1, dflt_value: null, pk: 0 },
 }
 
 // #region Perspective
@@ -2113,7 +2101,7 @@ export type NewPerspective = {
 }
 
 export type PerspectiveUpdate = {
-   id?: never // PerspectiveID
+    id?: never // PerspectiveID
     createdAt?: number
     updatedAt?: number
     name?: string | null
@@ -2135,16 +2123,15 @@ export type PerspectiveT = {
 }
 
 export type PerspectiveTypes = {
-    TableName: 'perspective',
-    JSName: 'Perspective',
-    Read: PerspectiveT,
-    Instance: PerspectiveL,
-    Create: NewPerspective,
-    Update: PerspectiveUpdate,
-    ID: PerspectiveID,
-    Delete: PerspectiveBackRefsToHandleOnDelete,
+    TableName: 'perspective'
+    JSName: 'Perspective'
+    Read: PerspectiveT
+    Instance: PerspectiveL
+    Create: NewPerspective
+    Update: PerspectiveUpdate
+    ID: PerspectiveID
+    Delete: PerspectiveBackRefsToHandleOnDelete
 }
-
 
 export const PerspectiveSchema = Type.Object(
     {
@@ -2164,13 +2151,13 @@ export const PerspectiveRefs = []
 export const PerspectiveBackRefs = []
 
 export const PerspectiveFields = {
-    id: {cid:0,name:'id',type:'string',notnull:1,dflt_value:'hex(randomblob(16))',pk:1},
-    createdAt: {cid:1,name:'createdAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
-    updatedAt: {cid:2,name:'updatedAt',type:'INTEGER',notnull:1,dflt_value:'now',pk:0},
-    name: {cid:3,name:'name',type:'TEXT',notnull:0,dflt_value:null,pk:0},
-    layout: {cid:4,name:'layout',type:'json',notnull:1,dflt_value:null,pk:0},
-    layoutDefault: {cid:5,name:'layoutDefault',type:'json',notnull:0,dflt_value:null,pk:0},
-    priority: {cid:6,name:'priority',type:'INT',notnull:1,dflt_value:null,pk:0},
+    id: { cid: 0, name: 'id', type: 'string', notnull: 1, dflt_value: 'hex(randomblob(16))', pk: 1 },
+    createdAt: { cid: 1, name: 'createdAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
+    updatedAt: { cid: 2, name: 'updatedAt', type: 'INTEGER', notnull: 1, dflt_value: 'now', pk: 0 },
+    name: { cid: 3, name: 'name', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
+    layout: { cid: 4, name: 'layout', type: 'json', notnull: 1, dflt_value: null, pk: 0 },
+    layoutDefault: { cid: 5, name: 'layoutDefault', type: 'json', notnull: 0, dflt_value: null, pk: 0 },
+    priority: { cid: 6, name: 'priority', type: 'INT', notnull: 1, dflt_value: null, pk: 0 },
 }
 
 // prettier-ignore
@@ -2563,7 +2550,7 @@ export type KyselyTables = {
     media_custom: MediaCustomTable
     perspective: PerspectiveTable
 }
-export type LiveDBSubKeys = 
+export type LiveDBSubKeys =
     | 'comfy_workflow'
     | 'comfy_workflow.id'
     | 'comfy_workflow.createdAt'

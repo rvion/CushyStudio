@@ -8,8 +8,8 @@ export const RenderItemTitleUI = observer(function RenderItemTitleUI_(p: { node:
     const node = p.node
     const item = node.data
     let icon = node.isOpen //
-        ? item.iconExpanded ?? item.icon
-        : item.icon ?? item.iconExpanded
+        ? (item.iconExpanded ?? item.icon)
+        : (item.icon ?? item.iconExpanded)
     if (typeof icon === 'string') {
         icon = <img src={icon} style={{ width: '1.3rem', height: '1.3rem' }} />
     }
