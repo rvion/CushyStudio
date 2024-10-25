@@ -74,7 +74,6 @@ export class Field_number extends Field<Field_number_types> {
 
    // #region CTOR
    constructor(
-      //
       repo: Repository,
       root: Field | null,
       parent: Field | null,

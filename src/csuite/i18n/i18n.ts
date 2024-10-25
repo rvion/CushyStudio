@@ -34,6 +34,16 @@ export const csuite_i18n_en = {
          not_set: 'Field is not set',
          defaultExplicitelySetToNullButFieldNotNullable: 'Default value is explicitely set to null, but field is not nullable', // prettier-ignore
       },
+      selectMany: {
+         required: (): string => `At least one value must be selected`,
+         notEnoughValues: ({ min }: { min: number }) => `At least ${min} values must be selected`,
+      },
+   },
+   ui: {
+      selectMany: {
+         selectAll: 'Select all',
+         selectNone: 'Select none',
+      },
    },
    langs: {
       en: 'English',
@@ -73,6 +83,16 @@ export const csuite_i18n_fr: CsuiteI18nConfig = {
       field: {
          not_set: 'Valeur manquante',
          defaultExplicitelySetToNullButFieldNotNullable: 'La valeur par défaut est explicitement définie à null, mais le champ n\'est pas nullable', // prettier-ignore
+      },
+      selectMany: {
+         required: (): string => `Au moins une valeur doit être sélectionnée`,
+         notEnoughValues: ({ min }: { min: number }) => `Au moins ${min} valeurs doivent être sélectionnées`,
+      },
+   },
+   ui: {
+      selectMany: {
+         selectAll: 'Tout sélectionner',
+         selectNone: 'Tout désélectionner',
       },
    },
    langs: {

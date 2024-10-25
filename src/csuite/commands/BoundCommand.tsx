@@ -16,7 +16,6 @@ export class BoundCommand<Ctx = any> {
    $SYM = BoundCommandSym
 
    constructor(
-      //
       private command: Command<Ctx>,
       private ctx: Ctx,
       private ui?: BoundCommandOpts,

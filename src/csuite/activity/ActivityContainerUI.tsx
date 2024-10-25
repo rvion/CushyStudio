@@ -54,7 +54,6 @@ export const ActivityContainerUI = observer(function ActivityContainerUI_(p: {
             activity.onEvent?.(ev, routine)
          }}
          onMouseMove={(ev) => {
-            // console.log(`[💩] mouse is moving, yay`, ev, routine)
             activity.onMouseMove?.(ev, routine)
             activity.onEvent?.(ev, routine)
          }}
@@ -63,7 +62,6 @@ export const ActivityContainerUI = observer(function ActivityContainerUI_(p: {
             activity.onEvent?.(ev, routine)
          }}
          onKeyUp={(ev) => {
-            // console.log(`[💩] onKeyUp catched in ActivityContainer`, ev, routine)
             // 💬 2024-06-22 rvion:
             // | I'm OK with escape being a built-in feature
             // | safeguard for escape key

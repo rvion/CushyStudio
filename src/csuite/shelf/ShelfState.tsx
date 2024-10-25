@@ -7,10 +7,7 @@ import { window_addEventListener } from '../utils/window_addEventListenerAction'
 let startValue: number = 0
 
 export class ShelfState {
-   constructor(
-      //
-      public props: OwnShelfProps,
-   ) {
+   constructor(public props: OwnShelfProps) {
       this.size = props.defaultSize ?? 200
       makeAutoObservable(this)
    }
