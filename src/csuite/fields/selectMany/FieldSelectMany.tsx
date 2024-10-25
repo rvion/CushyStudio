@@ -248,7 +248,10 @@ export class Field_selectMany<
    }
 
    get ownTypeSpecificProblems(): Maybe<string[]> {
+      // when field is not set, no specific error yet; FieldNotSet error will already
+      // be thrown elsewhere
       if (this.serial.values == null) return null
+
       const errors: string[] = []
       if (this.shouldValidateThatValueIsAmongstKeys) {
          for (const selectedKey of this.selectedKeys) {
@@ -264,7 +267,7 @@ export class Field_selectMany<
          }
       }
       if (errors.length > 0) return errors
-      return null
+      return
    }
 
    constructor(

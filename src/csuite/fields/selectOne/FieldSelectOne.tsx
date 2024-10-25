@@ -244,10 +244,19 @@ export class Field_selectOne<
       return false
    }
 
-   get ownTypeSpecificProblems(): Maybe<string> {
-      const selected = this.possibleKeys.find((c) => c === this.selectedId)
-      if (selected === undefined && !this.config.disableLocalFiltering)
-         return `selected value (id: ${this.selectedId}) not in choices`
+   get ownTypeSpecificProblems(): Maybe<string[]> {
+      // when field is not set, no specific error yet; FieldNotSet error will already
+      // be thrown elsewhere
+      if (this.serial.val == null) return null
+
+      const errors: string[] = []
+      if (this.shouldValidateThatValueIsAmongstKeys) {
+         const selected = this.possibleKeys.find((c) => c === this.selectedId)
+         if (selected === undefined && !this.config.disableLocalFiltering)
+            errors.push(`selected value (id: ${this.selectedId}) not in choices`)
+      }
+
+      if (errors.length > 0) return errors
       return
    }
 
