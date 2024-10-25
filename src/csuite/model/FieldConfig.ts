@@ -158,7 +158,7 @@ export interface FieldConfig_CommonProperties<out T extends FieldTypes> {
    hidden?: boolean
 
    /** unused internally, here so you can add whatever you want inside */
-   custom?: any
+   custom?: unknown
 
    // EXTENSION SYSMEM ------------------------------------------------------
    // csuite models have 3 main ways to be extends:

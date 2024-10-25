@@ -986,7 +986,10 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
     * It is READONLY.
     */
    getConfigCustom<T = unknown>(): Readonly<T> {
-      return this.config.custom ?? {}
+      return (
+         this.config.custom ?? //
+         ({} as any)
+      )
    }
 
    /**
