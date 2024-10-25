@@ -982,6 +982,7 @@ export class STATE {
 function INJECT_CUSHY_GLOBALLY(CUSHY: STATE): void {
    //  globally register the state as this
    if ((window as any).CushyObservableCache == null) {
+      ;(window as any).loco = undefined // 🔴 remove me ASAP
       ;(window as any).CushyObservableCache = observable({ st: CUSHY })
       ;(window as any).st = CUSHY // <- remove this once window.st usage has been cleend
    } else {
