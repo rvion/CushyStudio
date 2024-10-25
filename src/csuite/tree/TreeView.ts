@@ -14,7 +14,6 @@ export class TreeView {
    id = nanoid(4)
 
    constructor(
-      //
       public tree: Tree,
       public conf: {
          /** focus is when you use arrow to navigate, or mouse to click on entries.  */

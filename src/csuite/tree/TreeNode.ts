@@ -94,7 +94,6 @@ export class TreeNode {
    entryL: INodeStore
 
    constructor(
-      //
       public tree: Tree,
       public elem: ITreeElement,
       public parent: TreeNode | undefined,

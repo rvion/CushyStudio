@@ -47,7 +47,6 @@ export class Tree {
    KeyboardNavigableDomNodeID = nanoid()
 
    constructor(
-      //
       rootNodes: ITreeElement[],
       public config: TreeStorageConfig = { getNodeState: defaultTreeStorage },
    ) {
