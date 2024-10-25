@@ -14,6 +14,7 @@ import { Frame } from '../frame/Frame'
 import { getUIDForMemoryStructure } from '../utils/getUIDForMemoryStructure'
 import { createObservableRef } from '../utils/observableRef'
 import { searchMatches } from '../utils/searchMatches'
+import { SelectDefaultOptionUI } from './SelectOptionBadgeUI'
 
 interface ToolTipPosition {
    top?: number | undefined
@@ -162,31 +163,20 @@ export class AutoCompleteSelectState<OPTION> {
 
    DefaultDisplayOption = (option: OPTION, opt: { where: SelectValueSlots }): React.ReactNode => {
       const label = this.p.getLabelText(option)
-
       return (
-         <BadgeUI key={this.getKey(option)} autoHue={label} hue={this.getHue(option)}>
-            {label}
-            {opt.where === 'popup-input' && !this.p.uncloseableOptions && (
-               <Frame
-                  tw='ml-1'
-                  hover
-                  onFocus={(ev) => {
-                     ev.stopPropagation()
-                     ev.preventDefault()
-                  }}
-                  onClick={(ev) => {
-                     console.log(`[🤠] UUUU`)
-                     this.toggleOption(option)
-                     ev.preventDefault()
-                     ev.stopPropagation()
-                  }}
-                  icon='mdiClose'
-                  iconSize='0.8rem'
-               />
-            )}
-         </BadgeUI>
+         <SelectDefaultOptionUI //
+            label={label}
+            hue={this.getHue(option)}
+            key={this.getKey(option)}
+            closeFn={
+               opt.where === 'popup-input' && !this.p.uncloseableOptions //
+                  ? (): void => void this.toggleOption(option)
+                  : undefined
+            }
+         />
       )
    }
+
    DisplayOptionUI(option: OPTION, opt: { where: SelectValueSlots }): React.ReactNode {
       if (this.p.OptionLabelUI) {
          // return '🔶'

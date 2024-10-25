@@ -18,6 +18,10 @@ export type SelectOptionProps<T> = {
    boolButtonProps?: BoolButtonProps
 }
 
+/*
+ * this is just a wrapper around SelectOptionUI that respect
+ * what react-window (virtualization library) expects as a component
+ */
 export const SelectOptionUI = observer(function SelectOptionUI_<T>(p: SelectOptionProps<T>) {
    const state = p.state
    const isSelected = state.values.find((v) => state.isEqual(v, p.option)) != null

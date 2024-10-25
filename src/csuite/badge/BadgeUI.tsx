@@ -5,14 +5,7 @@ import { observer } from 'mobx-react-lite'
 import { Frame, type FrameProps } from '../frame/Frame'
 import { hashStringToNumber } from '../hashUtils/hash'
 
-export const BadgeUI = observer(function BadgeUI_({
-   hue,
-   autoHue,
-   chroma,
-   contrast,
-   children,
-   ...rest
-}: {
+export type BadgeProps = {
    /** oklch hue */
    chroma?: number
    contrast?: number
@@ -24,7 +17,9 @@ export const BadgeUI = observer(function BadgeUI_({
    autoHue?: string | boolean
    children?: ReactNode
    className?: string
-} & FrameProps) {
+} & FrameProps
+
+export const BadgeUI = observer(function BadgeUI_({ hue, autoHue, chroma, contrast, ...rest }: BadgeProps) {
    const hasAction = Boolean(rest.onClick)
    return (
       <Frame
@@ -50,15 +45,13 @@ export const BadgeUI = observer(function BadgeUI_({
                hue ??
                (autoHue != null
                   ? typeof autoHue === 'boolean'
-                     ? typeof children === 'string'
-                        ? hashStringToNumber(children)
+                     ? typeof rest.children === 'string'
+                        ? hashStringToNumber(rest.children)
                         : undefined
                      : hashStringToNumber(autoHue)
                   : undefined),
          }}
          {...rest}
-      >
-         {children}
-      </Frame>
+      />
    )
 })
