@@ -413,7 +413,7 @@ export class RevealState {
       this._resetAllAnchorTimouts()
       this.inAnchor = true
 
-      if (!wasVisible) this.p.onRevealed?.()
+      if (!wasVisible) this.p.onRevealed?.(this)
    }
 
    closeUpTo = (depth: number, reason: RevealHideReason): void => {

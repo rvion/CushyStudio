@@ -1,5 +1,6 @@
 import type { RevealCloseEvent } from './RevealCloseEvent'
 import type { RevealPlacement } from './RevealPlacement'
+import type { RevealState } from './RevealState'
 import type { RevealContentProps, RevealShellProps } from './shells/ShellProps'
 import type React from 'react'
 import type { FC } from 'react'
@@ -99,7 +100,7 @@ export type RevealProps = {
    title?: React.ReactNode // only for popup
 
    // callbacks if we need to add side effects after reveal/hide
-   onRevealed?: () => void
+   onRevealed?: (rst: RevealState) => void
    onBeforeHide?: (ev: RevealCloseEvent) => void
    onHidden?: (reason: RevealHideReason) => void
 
