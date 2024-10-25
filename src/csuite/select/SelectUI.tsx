@@ -92,6 +92,7 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
             <AnchorContentComp select={select} />
             {p.onCleared && (
                <Button
+                  disabled={select.value == null}
                   square
                   icon='_clear'
                   onFocus={(ev) => ev.stopPropagation()}
