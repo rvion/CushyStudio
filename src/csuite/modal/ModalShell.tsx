@@ -13,7 +13,6 @@ export const ModalShellUI = observer(function ModalShellUI_(p: {
    className?: string
    style?: CSSProperties
    children?: React.ReactNode
-   footer?: React.ReactNode | undefined
    onClick?: (ev: React.MouseEvent<unknown, MouseEvent>) => void
    close: () => void
 }) {
@@ -43,8 +42,6 @@ export const ModalShellUI = observer(function ModalShellUI_(p: {
          </div>
          {/* BODY */}
          <div tw='_ModalBody flex flex-1 flex-col'>{p.children}</div>
-         {/* FOOTER */}
-         {p.footer && <div tw='_ModalFooter'>{p.footer}</div>}
       </Frame>
    )
 })
