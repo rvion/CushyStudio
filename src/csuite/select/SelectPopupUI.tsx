@@ -45,7 +45,11 @@ export const SelectPopupUI = observer(function SelectPopupUI_<OPTION>(p: SelectP
                'bg-gray-100',
             ]}
          >
-            {p.selectState.displayValueInPopup}
+            {select.p.SlotDisplayValueInPopupUI != null ? (
+               <select.p.SlotDisplayValueInPopupUI select={select} />
+            ) : (
+               p.selectState.displayValueInPopup
+            )}
 
             {select.p.slotTextInputUI != null ? (
                <select.p.slotTextInputUI select={select} />

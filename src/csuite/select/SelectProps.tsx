@@ -135,6 +135,7 @@ export type SelectProps<OPTION> = {
    slotPopupUI?: React.FC<SelectPopupProps<OPTION>>
    slotAnchorContentUI?: React.FC<{ select: AutoCompleteSelectState<OPTION> }>
    slotDisplayValueUI?: React.FC<{ select: AutoCompleteSelectState<OPTION> }>
+   SlotDisplayValueInPopupUI?: React.FC<{ select: AutoCompleteSelectState<OPTION> }>
    slotResultsListUI?: React.FC<{ select: AutoCompleteSelectState<OPTION> }>
    slotOptionUI?: React.FC<SelectOptionProps<OPTION>>
 
