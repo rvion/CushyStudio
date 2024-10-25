@@ -261,6 +261,12 @@ export class BaseSchema<
         })
     }
 
+    publishValue(chan: Channel<TYPES['$Value']> | ChannelId): this {
+        return this.withConfig({
+            producers: [...(this.config.producers ?? []), { chan, produce: (s) => s.value }],
+        })
+    }
+
     subscribe<T>(chan: Channel<T> | ChannelId, effect: (arg: T, self: TYPES['$Field']) => void): this {
         return this.addReaction(
             (self) => self.consume(chan),
