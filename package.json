@@ -24,6 +24,7 @@
     "scripts": {
         "build-css:tsx-only": "unocss \"src/**/*.tsx\" -o release/uno.css",
         "build-css": "unocss \"src/**/*.tsx\" \"src/**/*.ts\" -o release/uno.css",
+        "pretty": "prettier --write .",
         "eslint-debug-rules": "eslint --print-config file.js > eslint.config.debug.json && code eslint.config.debug.json",
         "eslint-debug-state": "eslint --debug --no-color src/ -o eslint-status.txt",
         "eslint-fixall": "eslint src/ --fix",
