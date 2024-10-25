@@ -595,9 +595,14 @@ export class STATE {
       this.auth = new AuthState(this)
       this.danbooru = DanbooruTags.build(this)
 
-      this.virtualHostBase // ensure getters are called at least once so we upsert the two core virtual hosts
-      this.virtualHostFull // ensure getters are called at least once so we upsert the two core virtual hosts
-      this.standardHost // ensure getters are called at least once so we upsert the two core virtual hosts
+      // 🔴 ensure getters are called at least once so we upsert the two core virtual hosts
+      // 💬 2024-10-26 rvion: this is just bad
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      this.virtualHostBase
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      this.virtualHostFull
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      this.standardHost
 
       this.mainHost.CONNECT()
 
