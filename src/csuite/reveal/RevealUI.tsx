@@ -36,7 +36,7 @@ export const RevealUI = observer(
       const parents_: RevealStateLazy[] = useRevealOrNull()?.tower ?? []
       const parents: RevealStateLazy[] = p.useSeparateTower ? [] : parents_
 
-      // Eagerly retreiving parents is OK here cause as a children, we expects our parents to exist.
+      // Eagerly retrieving parents is OK here cause as a children, we expects our parents to exist.
       const lazyState = useMemo(() => new RevealStateLazy(p, parents.map((p) => p.getRevealState()), anchorRef), []) // prettier-ignore
       const { state: reveal } = lazyState
       const nextTower = useMemo(() => ({ tower: [...parents, lazyState] }), [])
