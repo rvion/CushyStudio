@@ -140,7 +140,8 @@ export class PanelState<PROPS extends object = any> {
         return bang(this.getConfig().$props) // (this.getConfig() as any as PROPS)
     }
 
-    stores: Map<string, PanelPersistentStore> = new Map<string, PanelPersistentStore>()
+    stores: Map<string, PanelPersistentStore<any>> = new Map<string, PanelPersistentStore>()
+
     usePersistentStore = <X extends Json>(key: string, init: () => X): PanelPersistentStore<X> => {
         let store = this.stores.get(key) as Maybe<PanelPersistentStore<X>>
         if (store != null) return store
@@ -179,10 +180,10 @@ export class PanelState<PROPS extends object = any> {
 
             // get or create panel store to hold/persist the entity
             const storeName = `entity-${uid}`
-            let store = this.stores.get(storeName) as PanelPersistentStore<SCHEMA['$Serial'] | false>
+            let store: PanelPersistentStore<any> = this.stores.get(storeName) as PanelPersistentStore<SCHEMA['$Serial'] | false>
             if (store == null) {
                 log(`    | creating store (${storeName})`)
-                store = new PanelPersistentStore(this, uid, () => false)
+                store = new PanelPersistentStore(this, uid, () => false as false)
                 this.stores.set(storeName, store)
             }
 

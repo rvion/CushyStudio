@@ -100,13 +100,7 @@ module.exports = [
             // 👇 this one is sadly quite slow;
             // but will be quite pleasant to cleanup our crappy tw code
             // also, we need to suport className='...' and tw='...'
-            'tailwindcss/classnames-order': [
-                'warn',
-                {
-                    classRegex: '^(className|tw)$',
-                },
-            ],
-
+            'tailwindcss/classnames-order': ['warn', { classRegex: '^(className|tw)$' }],
             'tailwindcss/enforces-negative-arbitrary-values': 'warn',
             'tailwindcss/enforces-shorthand': 'warn',
             'tailwindcss/migration-from-tailwind-2': 'warn',

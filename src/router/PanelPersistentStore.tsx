@@ -5,6 +5,8 @@ import type { PanelState } from './PanelState'
 import { isObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 
+import { debounce } from '../csuite/utils/debounce'
+
 // import { makeAutoObservable } from 'mobx'
 
 export class PanelPersistentStore<X extends Json = Json> {
@@ -26,7 +28,7 @@ export class PanelPersistentStore<X extends Json = Json> {
         // makeAutoObservable(this)
     }
 
-    saveData(data: X): void {
+    saveData_(data: X): void {
         const tabId = this.panelState.uri
         const prevConfig = this.panelState.getConfig()
         this.data = data
@@ -43,6 +45,7 @@ export class PanelPersistentStore<X extends Json = Json> {
             return a.updateNodeAttributes(tabId, { config: nextConfig })
         })
     }
+    saveData: (data: X) => void = debounce(this.saveData_.bind(this), 200, 1000)
 
     /** return the store JSON or initialize it */
     loadData(): X {

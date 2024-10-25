@@ -1,4 +1,5 @@
-import { type OutputFor } from './_prefabs'
+import type { OutputFor } from './_prefabs'
+
 import { ui_sampler, type UI_Sampler } from './prefab_sampler'
 
 const facePositiveDefault = 'perfect face, beautiful, masterpiece, hightly detailed, sharp details'
