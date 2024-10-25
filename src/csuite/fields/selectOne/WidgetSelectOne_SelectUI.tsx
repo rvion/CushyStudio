@@ -51,9 +51,13 @@ export const WidgetSelectOne_SelectUI = observer(function WidgetSelectOne_Select
             placeholder={field.config.placeholder}
             readonly={field.config.readonly}
             slotAnchorContentUI={field.config.SlotAnchorContentUI}
-            clearable={
-               field.canBeToggledWithinParent //
-                  ? (): void => field.disableSelfWithinParent()
+            onCleared={
+               field.canBeToggledWithinParent
+                  ? (): void => {
+                       field.disableSelfWithinParent()
+                       field.touch()
+                       p.selectProps?.onCleared?.()
+                    }
                   : undefined
             }
             onOptionToggled={(option) => {
@@ -69,10 +73,6 @@ export const WidgetSelectOne_SelectUI = observer(function WidgetSelectOne_Select
                   field.touch()
                   p.selectProps?.revealProps?.onHidden?.(reason)
                },
-            }}
-            onCleared={() => {
-               field.touch()
-               p.selectProps?.onCleared?.()
             }}
          />
       </div>

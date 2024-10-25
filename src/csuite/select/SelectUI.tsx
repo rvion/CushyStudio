@@ -90,7 +90,7 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
             // hover
          >
             <AnchorContentComp select={select} />
-            {p.clearable && (
+            {p.onCleared && (
                <Button
                   square
                   icon='_clear'
@@ -98,7 +98,7 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                   onClick={(ev) => {
                      ev.preventDefault()
                      ev.stopPropagation()
-                     p.clearable!()
+                     p.onCleared!()
                   }}
                />
             )}

@@ -49,13 +49,15 @@ export const WidgetSelectMany_SelectUI = observer(function WidgetSelectMany_Sele
                field.toggleId(selectOption.id)
                field.touch()
             }}
-            clearable={
-               p.field.canBeToggledWithinParent &&
-               !p.field.isInsideDisabledBranch &&
-               !p.field.config.readonly &&
-               !p.field.parent?.config.readonly
+            onCleared={
+               field.canBeToggledWithinParent &&
+               // 🔴 ARE THOSE TRHE CONDITIONS BELOW CORRECT ?
+               !field.isInsideDisabledBranch &&
+               !field.config.readonly &&
+               !field.parent?.config.readonly
                   ? (): void => {
-                       p.field.disableSelfWithinParent()
+                       field.disableSelfWithinParent()
+                       field.touch()
                        p.selectProps?.onCleared?.()
                     }
                   : null
@@ -68,10 +70,6 @@ export const WidgetSelectMany_SelectUI = observer(function WidgetSelectMany_Sele
                   field.touch()
                   p.selectProps?.revealProps?.onHidden?.(reason)
                },
-            }}
-            onCleared={() => {
-               field.touch()
-               p.selectProps?.onCleared?.()
             }}
          />
          {field.config.wrapButton && (

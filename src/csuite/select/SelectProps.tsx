@@ -31,7 +31,6 @@ export type SelectProps<OPTION> = {
 
    /** callback when a new option is selected */
    onOptionToggled: null | ((next: OPTION, self: AutoCompleteSelectState<OPTION>) => void)
-   onCleared?: () => void
 
    /**
     * @deprecated
@@ -91,7 +90,7 @@ export type SelectProps<OPTION> = {
    placeholder?: string
    disabled?: boolean
 
-   clearable?: Maybe<() => void>
+   onCleared?: Maybe<() => void>
 
    /** if true, popup-input options won't have a close icon */
    uncloseableOptions?: boolean

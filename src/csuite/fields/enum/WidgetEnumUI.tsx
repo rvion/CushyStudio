@@ -107,7 +107,7 @@ export const EnumSelectorUI = observer(function EnumSelectorUI_(p: {
          <SelectUI //
             tw={[{ ['rsx-field-error']: hasError }]}
             disabled={p.disabled}
-            clearable={p.clearable}
+            onCleared={p.clearable}
             options={() => options}
             getLabelText={(v) => v?.toString() ?? 'null'}
             value={() => p.value().candidateValue}
