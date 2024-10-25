@@ -2,19 +2,19 @@
 // https://slay-the-spire.fandom.com/wiki/Module:Cards/data
 
 export type STSCard = {
-    Name: string
-    Image: string
-    Color: 'Colorless' | 'Green' | 'Red' | 'Blue' | 'Curse' | 'Purple'
-    Rarity: 'Special' | 'Uncommon' | 'Rare' | 'Basic' | 'Common' | 'Curse'
-    Type: 'Skill' | 'Attack' | 'Power' | 'Curse' | 'Status'
-    Cost: number | string
-    CostPlus?: number
-    Text: string
-    Traits: string[]
-    //
-    ID?: string /** to dedupe cards with similar names */
-    NoUpgrade?: boolean
-    Link?: string
+   Name: string
+   Image: string
+   Color: 'Colorless' | 'Green' | 'Red' | 'Blue' | 'Curse' | 'Purple'
+   Rarity: 'Special' | 'Uncommon' | 'Rare' | 'Basic' | 'Common' | 'Curse'
+   Type: 'Skill' | 'Attack' | 'Power' | 'Curse' | 'Status'
+   Cost: number | string
+   CostPlus?: number
+   Text: string
+   Traits: string[]
+   //
+   ID?: string /** to dedupe cards with similar names */
+   NoUpgrade?: boolean
+   Link?: string
 }
 
 // prettier-ignore

@@ -13,7 +13,7 @@ export const panelContext = React.createContext<PanelState | null>(null)
  *   -
  */
 export const usePanel = <PROPS extends object = any>(): PanelState<PROPS> => {
-    const data = React.useContext(panelContext)
-    if (data == null) throw new Error('❌ usePanel has been called not in a Panel')
-    return data
+   const data = React.useContext(panelContext)
+   if (data == null) throw new Error('❌ usePanel has been called not in a Panel')
+   return data
 }

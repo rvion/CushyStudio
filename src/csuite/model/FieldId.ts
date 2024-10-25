@@ -8,5 +8,5 @@ export type FieldId = Branded<string, { FieldId: true }>
  * not configurable for now; may be later when we try to optimize serial size
  */
 export function mkNewFieldId(): FieldId {
-    return nanoid(8) as FieldId
+   return nanoid(8) as FieldId
 }

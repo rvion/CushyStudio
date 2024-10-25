@@ -14,27 +14,27 @@ export type ProjectID = Branded<string, { ProjectID: true }>
 export const asProjectID = (s: string): ProjectID => s as any
 
 export class ProjectRepo extends LiveTable<TABLES['project'], typeof ProjectL> {
-    constructor(liveDB: LiveDB) {
-        super(liveDB, 'project', '🤠', ProjectL)
-        this.init()
-    }
+   constructor(liveDB: LiveDB) {
+      super(liveDB, 'project', '🤠', ProjectL)
+      this.init()
+   }
 }
 
 /** a thin wrapper around a single Project somewhere in a .ts file */
 export class ProjectL extends BaseInst<TABLES['project']> {
-    instObservabilityConfig: undefined
-    dataObservabilityConfig: undefined
+   instObservabilityConfig: undefined
+   dataObservabilityConfig: undefined
 
-    rootGraph = new LiveRef<this, ComfyWorkflowL>(this, 'rootGraphID', 'comfy_workflow')
-    draft = new LiveRefOpt<this, DraftL>(this, 'currentDraftID', 'draft')
+   rootGraph = new LiveRef<this, ComfyWorkflowL>(this, 'rootGraphID', 'comfy_workflow')
+   draft = new LiveRefOpt<this, DraftL>(this, 'currentDraftID', 'draft')
 
-    get filterNSFW(): boolean {
-        return this.data.filterNSFW ? true : false
-    }
-    set filterNSFW(v: boolean) {
-        this.update({ filterNSFW: v ? SQLITE_true : SQLITE_false })
-    }
-    get schema(): ComfySchemaL {
-        return this.st.schema
-    }
+   get filterNSFW(): boolean {
+      return this.data.filterNSFW ? true : false
+   }
+   set filterNSFW(v: boolean) {
+      this.update({ filterNSFW: v ? SQLITE_true : SQLITE_false })
+   }
+   get schema(): ComfySchemaL {
+      return this.st.schema
+   }
 }

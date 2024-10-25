@@ -8,111 +8,122 @@ import type { OutputFor } from './_prefabs'
 // with codebase typechecking performances, and making breaking
 // changes more explicit.
 export type UI_advancedPrompt = X.XList<
-    X.XChoice<{
-        prompt: X.XPrompt
-        characters: X.XChoice<{
+   X.XChoice<{
+      prompt: X.XPrompt
+      characters: X.XChoice<{
+         [k: string]: X.XChoice<{
+            [k: string]: X.XGroup<SchemaDict>
+         }>
+      }>
+      styles: X.XChoice<{
+         [k: string]: X.XChoice<{
             [k: string]: X.XChoice<{
-                [k: string]: X.XGroup<SchemaDict>
+               [k: string]: X.XGroup<SchemaDict>
             }>
-        }>
-        styles: X.XChoice<{
-            [k: string]: X.XChoice<{
-                [k: string]: X.XChoice<{
-                    [k: string]: X.XGroup<SchemaDict>
-                }>
-            }>
-        }>
-    }>
+         }>
+      }>
+   }>
 >
 
 export function ui_advancedPrompt(): UI_advancedPrompt {
-    const form = getCurrentForm()
-    return form.list({
-        min: 1,
-        layout: 'H',
-        icon: 'mdiBookAlphabet',
-        element: () =>
-            form.choice(
-                {
-                    prompt: form.prompt({ default: ' \n' }),
-                    characters: form.choice(
-                        Object.fromEntries(
-                            Object.entries(CHARACTER_GROUPS).map(([group, characters]) => [
-                                group,
-                                form.choice(Object.fromEntries(characters.map((character) => [character, form.group({})])), {
-                                    appearance: 'tab',
-                                }),
-                            ]),
+   const form = getCurrentForm()
+   return form.list({
+      min: 1,
+      layout: 'H',
+      icon: 'mdiBookAlphabet',
+      element: () =>
+         form.choice(
+            {
+               prompt: form.prompt({ default: ' \n' }),
+               characters: form.choice(
+                  Object.fromEntries(
+                     Object.entries(CHARACTER_GROUPS).map(([group, characters]) => [
+                        group,
+                        form.choice(
+                           Object.fromEntries(characters.map((character) => [character, form.group({})])),
+                           {
+                              appearance: 'tab',
+                           },
                         ),
-                        {
-                            appearance: 'tab',
-                        },
-                    ),
-                    styles: form.choice(
-                        Object.fromEntries(
-                            Object.entries(STYLE_GROUPS).map(([group, subgroups]) => [
-                                group,
-                                form.choice(
-                                    Object.fromEntries(
-                                        Object.entries(subgroups).map(([subgroup, styles]) => [
-                                            subgroup,
+                     ]),
+                  ),
+                  {
+                     appearance: 'tab',
+                  },
+               ),
+               styles: form.choice(
+                  Object.fromEntries(
+                     Object.entries(STYLE_GROUPS).map(([group, subgroups]) => [
+                        group,
+                        form.choice(
+                           Object.fromEntries(
+                              Object.entries(subgroups).map(([subgroup, styles]) => [
+                                 subgroup,
 
-                                            form.choice(Object.fromEntries(styles.map((style) => [style, form.group({})])), {
-                                                appearance: 'tab',
-                                            }),
-                                        ]),
-                                    ),
-                                    { appearance: 'tab' },
-                                ),
-                            ]),
+                                 form.choice(
+                                    Object.fromEntries(styles.map((style) => [style, form.group({})])),
+                                    {
+                                       appearance: 'tab',
+                                    },
+                                 ),
+                              ]),
+                           ),
+                           { appearance: 'tab' },
                         ),
-                        { appearance: 'tab' },
-                    ),
-                },
-                { appearance: 'tab' },
-            ),
-    })
+                     ]),
+                  ),
+                  { appearance: 'tab' },
+               ),
+            },
+            { appearance: 'tab' },
+         ),
+   })
 }
 
 export const run_advancedPrompt = (ui: OutputFor<typeof ui_advancedPrompt>): string => {
-    return ui
-        .map((item) => {
-            const promptText = item.prompt?.text || ''
-            const characterText = item.characters ? ` ${getCharacterText(item.characters)} ` : ''
-            const styleText = item.styles ? ` ${getStyleText(item.styles)}` : ''
-            return `${promptText}${characterText}${styleText}`
-        })
-        .join('\n')
+   return ui
+      .map((item) => {
+         const promptText = item.prompt?.text || ''
+         const characterText = item.characters ? ` ${getCharacterText(item.characters)} ` : ''
+         const styleText = item.styles ? ` ${getStyleText(item.styles)}` : ''
+         return `${promptText}${characterText}${styleText}`
+      })
+      .join('\n')
 }
 
 // Custom function
 
 function camelCaseToReadable(text: string): string {
-    return text
-        .replace(/([A-Z])/g, ' $1') // insert a space before all capital letters
-        .replace(/^./, (str) => str.toUpperCase()) // capitalize the first letter
+   return text
+      .replace(/([A-Z])/g, ' $1') // insert a space before all capital letters
+      .replace(/^./, (str) => str.toUpperCase()) // capitalize the first letter
 }
 
 function getCharacterText(characters: any): string {
-    return Object.entries(CHARACTER_GROUPS)
-        .filter(([group]) => characters[group])
-        .flatMap(([group, groupCharacters]) => groupCharacters.filter((character) => characters[group]?.[character]))
-        .join(' ')
+   return Object.entries(CHARACTER_GROUPS)
+      .filter(([group]) => characters[group])
+      .flatMap(([group, groupCharacters]) =>
+         groupCharacters.filter((character) => characters[group]?.[character]),
+      )
+      .join(' ')
 }
 
 function getStyleText(styles: any): string {
-    return Object.entries(STYLE_GROUPS)
-        .filter(([group]) => styles[group])
-        .flatMap(([group, subgroups]) =>
-            Object.entries(subgroups)
-                .filter(([subgroup]) => styles[group]?.[subgroup])
-                .flatMap(([subgroup, groupStyles]) =>
-                    groupStyles
-                        .filter((style) => styles[group]?.[subgroup]?.[style])
-                        .map((style) => `${style} ${group === 'ArtStyles' ? 'art' : camelCaseToReadable(subgroup)} style,`),
-                ),
-        )
-        .join(', ')
+   return Object.entries(STYLE_GROUPS)
+      .filter(([group]) => styles[group])
+      .flatMap(([group, subgroups]) =>
+         Object.entries(subgroups)
+            .filter(([subgroup]) => styles[group]?.[subgroup])
+            .flatMap(([subgroup, groupStyles]) =>
+               groupStyles
+                  .filter((style) => styles[group]?.[subgroup]?.[style])
+                  .map(
+                     (style) =>
+                        `${style} ${group === 'ArtStyles' ? 'art' : camelCaseToReadable(subgroup)} style,`,
+                  ),
+            ),
+      )
+      .join(', ')
 }
 
 // prettier-ignore
@@ -123,32 +134,41 @@ export const CHARACTER_GROUPS = {
 }
 
 export const STYLE_GROUPS = {
-    ShowStyles: {
-        Sonic: ['Classic', 'Modern', 'Boom', 'Comic', 'Pixel Art'],
-        Zelda: ['Breath of the Wild', 'Twilight Princess', 'Wind Waker', 'Ocarina of Time', "Majora's Mask"],
-    },
-    ArtStyles: {
-        VideoGame: ['Pixel Art', 'Low Poly', 'Cel Shaded', 'Realistic', 'Anime', 'Cartoon', 'Retro', 'Minimalist lineless'],
-        Drawing: ['Sketch', 'Line Art', 'Coloring', 'Shading'],
-        Painting: [
-            'Impressionism',
-            'Surrealism',
-            'Cubism',
-            'Abstract',
-            'Expressionism',
-            'Pop Art',
-            'Dada',
-            'Futurism',
-            'Art Nouveau',
-            'Art Deco',
-            'Suprematism',
-            'Pointillism',
-            'Symbolism',
-            'Romanticism',
-            'Neoclassicism',
-            'Renaissance',
-            'Mannerism',
-            'Gothic',
-        ],
-    },
+   ShowStyles: {
+      Sonic: ['Classic', 'Modern', 'Boom', 'Comic', 'Pixel Art'],
+      Zelda: ['Breath of the Wild', 'Twilight Princess', 'Wind Waker', 'Ocarina of Time', "Majora's Mask"],
+   },
+   ArtStyles: {
+      VideoGame: [
+         'Pixel Art',
+         'Low Poly',
+         'Cel Shaded',
+         'Realistic',
+         'Anime',
+         'Cartoon',
+         'Retro',
+         'Minimalist lineless',
+      ],
+      Drawing: ['Sketch', 'Line Art', 'Coloring', 'Shading'],
+      Painting: [
+         'Impressionism',
+         'Surrealism',
+         'Cubism',
+         'Abstract',
+         'Expressionism',
+         'Pop Art',
+         'Dada',
+         'Futurism',
+         'Art Nouveau',
+         'Art Deco',
+         'Suprematism',
+         'Pointillism',
+         'Symbolism',
+         'Romanticism',
+         'Neoclassicism',
+         'Renaissance',
+         'Mannerism',
+         'Gothic',
+      ],
+   },
 }

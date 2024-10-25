@@ -9,15 +9,15 @@ import { MenuAppsUI } from './MenuApps'
 // TODO(bird_d): Settings can go here eventually, but it's a bit cluttered right now.
 
 export const MenuEditUI = observer(function MenuEditUI_(p: {}) {
-    return (
-        <Dropdown
-            title='Edit'
-            content={() => (
-                <>
-                    {/* <MenuComfyUI /> */}
-                    <MenuAppsUI />
-                </>
-            )}
-        />
-    )
+   return (
+      <Dropdown
+         title='Edit'
+         content={() => (
+            <>
+               {/* <MenuComfyUI /> */}
+               <MenuAppsUI />
+            </>
+         )}
+      />
+   )
 })

@@ -22,58 +22,58 @@ export const defineMenu = (def: MenuProps): Menu => new Menu(def)
 export type MenuID = Tagged<string, 'MenuID'>
 
 export type MenuProps = {
-    title: string
-    /**
-     * used to register menu into menu manager so you can open menu by ref
-     * required for hot performant / simple hot reload
-     */
-    id?: string
-    icon?: Maybe<IconName>
-    entries: (builder: MenuBuilder<any>) => MenuEntry[]
-    disabled?: boolean
+   title: string
+   /**
+    * used to register menu into menu manager so you can open menu by ref
+    * required for hot performant / simple hot reload
+    */
+   id?: string
+   icon?: Maybe<IconName>
+   entries: (builder: MenuBuilder<any>) => MenuEntry[]
+   disabled?: boolean
 }
 
 export class Menu {
-    id: MenuID
-    $SYM = MenuSym
+   id: MenuID
+   $SYM = MenuSym
 
-    get title(): string {
-        return this.def.title
-    }
+   get title(): string {
+      return this.def.title
+   }
 
-    get icon(): Maybe<IconName> {
-        return this.def.icon
-    }
+   get icon(): Maybe<IconName> {
+      return this.def.icon
+   }
 
-    constructor(public def: MenuProps) {
-        this.id = def.id ?? nanoid()
-        // /menuManager.registerMenuTemplate(this)
-    }
+   constructor(public def: MenuProps) {
+      this.id = def.id ?? nanoid()
+      // /menuManager.registerMenuTemplate(this)
+   }
 
-    UI = (): JSX.Element => {
-        const menuInst = useMemo(() => new MenuInstance(this), [])
-        return createElement(MenuRootUI, { menu: menuInst })
-    }
+   UI = (): JSX.Element => {
+      const menuInst = useMemo(() => new MenuInstance(this), [])
+      return createElement(MenuRootUI, { menu: menuInst })
+   }
 
-    DropDownUI = (): JSX.Element => {
-        const menuInst = useMemo(() => new MenuInstance(this), [])
-        return createElement(MenuRootUI, { menu: menuInst })
-    }
+   DropDownUI = (): JSX.Element => {
+      const menuInst = useMemo(() => new MenuInstance(this), [])
+      return createElement(MenuRootUI, { menu: menuInst })
+   }
 
-    MenuBarUI = (): JSX.Element => {
-        const menuInst = useMemo(() => new MenuInstance(this), [])
-        return createElement(MenuBarUI, { menu: menuInst })
-    }
+   MenuBarUI = (): JSX.Element => {
+      const menuInst = useMemo(() => new MenuInstance(this), [])
+      return createElement(MenuBarUI, { menu: menuInst })
+   }
 
-    /** what is it used for  */
-    init = (keysTaken?: Set<string>): MenuInstance => {
-        return new MenuInstance(this, keysTaken)
-    }
+   /** what is it used for  */
+   init = (keysTaken?: Set<string>): MenuInstance => {
+      return new MenuInstance(this, keysTaken)
+   }
 
-    /** push the menu to current activity */
-    open(): Trigger | Promise<Trigger> {
-        const instance = new MenuInstance(this)
-        activityManager.start(instance)
-        return Trigger.Success
-    }
+   /** push the menu to current activity */
+   open(): Trigger | Promise<Trigger> {
+      const instance = new MenuInstance(this)
+      activityManager.start(instance)
+      return Trigger.Success
+   }
 }

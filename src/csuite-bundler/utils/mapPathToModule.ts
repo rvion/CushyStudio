@@ -17,8 +17,8 @@
  * '/lib/utils/example.ts' => 'src/utils/example'
  */
 export function mapPathToModule(k: string) {
-    return k
-        .replace(/^\/lib\//, 'src/') //
-        .replace(/\.d?\.?tsx?$/, '')
-        .replace(/\.js$/, '')
+   return k
+      .replace(/^\/lib\//, 'src/') //
+      .replace(/\.d?\.?tsx?$/, '')
+      .replace(/\.js$/, '')
 }

@@ -6,26 +6,26 @@ import type { Viewport } from 'pixi-viewport'
 type ClassLike = import('../csuite/types/ClassLike').ClassLike
 
 declare global {
-    namespace JSX {
-        interface IntrinsicAttributes {
-            tw?: string | ClassLike[]
-        }
-        interface IntrinsicElements {
-            viewport: PixiReactElementProps<typeof Viewport>
-        }
-    }
-    /*
+   namespace JSX {
+      interface IntrinsicAttributes {
+         tw?: string | ClassLike[]
+      }
+      interface IntrinsicElements {
+         viewport: PixiReactElementProps<typeof Viewport>
+      }
+   }
+   /*
     defined on window, using observable cache + getter, to allow hot-reload
         | Object.defineProperty(window, 'CushyObservableCache' { value: observable({ st: this }) })
         | Object.defineProperty(window, 'cushy', { get() { return (window as any).st } }) // prettier-ignore
     */
-    const cushy: import('../state/state').STATE
+   const cushy: import('../state/state').STATE
 }
 
 declare module 'react' {
-    interface DOMAttributes<T> {
-        tw?: string | ClassLike[]
-    }
+   interface DOMAttributes<T> {
+      tw?: string | ClassLike[]
+   }
 }
 
 // -----------------
@@ -38,8 +38,8 @@ type XRFrameImpl = XRFrame
 type XRFrameRequestCallbackImpl = XRFrameRequestCallback
 
 declare module 'three' {
-    interface XRFrame extends XRFrameImpl {}
-    type XRFrameRequestCallback = XRFrameRequestCallbackImpl
+   interface XRFrame extends XRFrameImpl {}
+   type XRFrameRequestCallback = XRFrameRequestCallbackImpl
 }
 
 // HDRCubeTextureLoader.d.ts

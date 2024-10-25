@@ -5,34 +5,34 @@ import { linter } from '@codemirror/lint'
 // Show syntax error from Lezer parse
 
 export function simpleLezerLinter() {
-    return linter((view) => {
-        const { state } = view
-        const tree = syntaxTree(state)
-        if (tree.length === state.doc.length) {
-            let pos: Maybe<number> = null
-            tree.iterate({
-                enter: (n) => {
-                    if (pos == null && n.type.isError) {
-                        pos = n.from
-                        return false
-                    }
-                },
-            })
+   return linter((view) => {
+      const { state } = view
+      const tree = syntaxTree(state)
+      if (tree.length === state.doc.length) {
+         let pos: Maybe<number> = null
+         tree.iterate({
+            enter: (n) => {
+               if (pos == null && n.type.isError) {
+                  pos = n.from
+                  return false
+               }
+            },
+         })
 
-            if (pos != null)
-                return [
-                    {
-                        from: pos,
-                        to: pos + 1,
-                        severity: 'error',
-                        message: 'syntax error',
-                        markClass: 'cm-lezer-syntax-error',
-                    },
-                ]
-        }
+         if (pos != null)
+            return [
+               {
+                  from: pos,
+                  to: pos + 1,
+                  severity: 'error',
+                  message: 'syntax error',
+                  markClass: 'cm-lezer-syntax-error',
+               },
+            ]
+      }
 
-        return []
-    })
+      return []
+   })
 }
 
 /*

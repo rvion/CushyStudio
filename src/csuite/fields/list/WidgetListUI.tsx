@@ -10,123 +10,125 @@ import { ListControlsUI } from './ListControlsUI'
 
 // TODO (bird_d): Make collapse button on left, probably just re-use a "Group" component in this widget.
 export const WidgetList_LineUI: FC<{ field: Field_list<any> }> = observer(function WidgetList_LineUI_(p: {
-    field: Field_list<any>
+   field: Field_list<any>
 }) {
-    return (
-        <div tw='COLLAPSE-PASSTHROUGH flex flex-1 items-center'>
-            {p.field.isAuto ? null : (
-                <ListControlsUI field={p.field}>
-                    <div tw='whitespace-nowrap text-sm italic text-gray-500'>{p.field.length} items</div>
-                </ListControlsUI>
-            )}
-        </div>
-    )
+   return (
+      <div tw='COLLAPSE-PASSTHROUGH flex flex-1 items-center'>
+         {p.field.isAuto ? null : (
+            <ListControlsUI field={p.field}>
+               <div tw='whitespace-nowrap text-sm italic text-gray-500'>{p.field.length} items</div>
+            </ListControlsUI>
+         )}
+      </div>
+   )
 })
 
-export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends BaseSchema>(p: { field: Field_list<T> }) {
-    const listField = p.field
-    const subFields = listField.items
-    const min = listField.config.min
-    return (
-        <div /* SortableList */
-            // onSortEnd={(s, e) => p.field.moveItem(s, e)}
-            // draggedItemClassName='dragged'
-            className='list'
-        >
-            {subFields.map((subField, ix) => {
-                return (
-                    <div /* SortableItem */ key={subField.id}>
-                        <subField.UI
-                            Title={ix.toString()}
-                            // slotDragKnob={
-                            //     <div tw='flex'>
-                            //         <SortableKnob>
-                            //             <ListDragHandleUI field={subField} ix={ix} />
-                            //         </SortableKnob>
-                            //     </div>
-                            // }
-                            DeleteBtn={
-                                listField.isAuto ? null : (
-                                    <Button
-                                        disabled={min != null && listField.items.length <= min}
-                                        square
-                                        size='input'
-                                        subtle
-                                        icon='mdiDeleteOutline'
-                                        onClick={() => {
-                                            listField.removeItem(subField)
-                                            listField.touch()
-                                        }}
-                                        onBlur={() => listField.touch()}
-                                    />
-                                )
-                            }
-                            UpDownBtn={
-                                <div tw='flex'>
-                                    <ListItemMoveUpButtonUI listField={listField} ix={ix} />
-                                    <ListItemMoveDownButtonUI listField={listField} ix={ix} />
-                                </div>
-                            }
-                        />
-                    </div>
-                )
-            })}
-        </div>
-    )
+export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends BaseSchema>(p: {
+   field: Field_list<T>
+}) {
+   const listField = p.field
+   const subFields = listField.items
+   const min = listField.config.min
+   return (
+      <div /* SortableList */
+         // onSortEnd={(s, e) => p.field.moveItem(s, e)}
+         // draggedItemClassName='dragged'
+         className='list'
+      >
+         {subFields.map((subField, ix) => {
+            return (
+               <div /* SortableItem */ key={subField.id}>
+                  <subField.UI
+                     Title={ix.toString()}
+                     // slotDragKnob={
+                     //     <div tw='flex'>
+                     //         <SortableKnob>
+                     //             <ListDragHandleUI field={subField} ix={ix} />
+                     //         </SortableKnob>
+                     //     </div>
+                     // }
+                     DeleteBtn={
+                        listField.isAuto ? null : (
+                           <Button
+                              disabled={min != null && listField.items.length <= min}
+                              square
+                              size='input'
+                              subtle
+                              icon='mdiDeleteOutline'
+                              onClick={() => {
+                                 listField.removeItem(subField)
+                                 listField.touch()
+                              }}
+                              onBlur={() => listField.touch()}
+                           />
+                        )
+                     }
+                     UpDownBtn={
+                        <div tw='flex'>
+                           <ListItemMoveUpButtonUI listField={listField} ix={ix} />
+                           <ListItemMoveDownButtonUI listField={listField} ix={ix} />
+                        </div>
+                     }
+                  />
+               </div>
+            )
+         })}
+      </div>
+   )
 })
 
 const ListDragHandleUI = forwardRef<HTMLDivElement, { ix: number; field: Field }>((p, ref) => {
-    return (
-        //TODO (bird_d): FIX UI - Needs to be Button when ref is implemented.
-        <div ref={ref} onClick={(ev) => p.field.toggleCollapsed()}>
-            <Button size='input' subtle borderless square icon='mdiDragHorizontalVariant' />
-        </div>
-    )
+   return (
+      //TODO (bird_d): FIX UI - Needs to be Button when ref is implemented.
+      <div ref={ref} onClick={(ev) => p.field.toggleCollapsed()}>
+         <Button size='input' subtle borderless square icon='mdiDragHorizontalVariant' />
+      </div>
+   )
 })
 
 export const ListItemMoveUpButtonUI = observer(function ListItemMoveUpButtonUI_({
-    listField,
-    ix,
+   listField,
+   ix,
 }: {
-    listField: Field_list<any>
-    ix: number
+   listField: Field_list<any>
+   ix: number
 }) {
-    return (
-        <Button
-            disabled={ix === 0}
-            onClick={() => {
-                listField.moveItem(ix, ix - 1)
-                listField.touch()
-            }}
-            square
-            borderless
-            subtle
-            size='xs'
-            icon='mdiArrowUp'
-        />
-    )
+   return (
+      <Button
+         disabled={ix === 0}
+         onClick={() => {
+            listField.moveItem(ix, ix - 1)
+            listField.touch()
+         }}
+         square
+         borderless
+         subtle
+         size='xs'
+         icon='mdiArrowUp'
+      />
+   )
 })
 
 export const ListItemMoveDownButtonUI = observer(function ListItemMoveDownButtonUI_({
-    listField,
-    ix,
+   listField,
+   ix,
 }: {
-    listField: Field_list<any>
-    ix: number
+   listField: Field_list<any>
+   ix: number
 }) {
-    return (
-        <Button
-            //
-            disabled={ix === listField.length - 1}
-            onClick={() => {
-                listField.moveItem(ix, ix + 1)
-                listField.touch()
-            }}
-            square
-            borderless
-            subtle
-            size='xs'
-            icon='mdiArrowDown'
-        />
-    )
+   return (
+      <Button
+         //
+         disabled={ix === listField.length - 1}
+         onClick={() => {
+            listField.moveItem(ix, ix + 1)
+            listField.touch()
+         }}
+         square
+         borderless
+         subtle
+         size='xs'
+         icon='mdiArrowDown'
+      />
+   )
 })

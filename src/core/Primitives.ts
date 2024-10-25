@@ -1,19 +1,19 @@
 import type { NodeInputExt } from '../models/ComfySchema'
 
 export const ComfyPrimitiveMapping: { [key: string]: string } = {
-    // BACK
-    BOOLEAN: 'boolean',
-    FLOAT: 'number',
-    INT: 'number',
-    STRING: 'string',
+   // BACK
+   BOOLEAN: 'boolean',
+   FLOAT: 'number',
+   INT: 'number',
+   STRING: 'string',
 
-    // ????
-    // ⏸️ Boolean: 'boolean',
-    // ⏸️ Float: 'number',
-    // ⏸️ Integer: 'number',
-    // ⏸️ SchedulerName: 'string',
-    // ⏸️ SamplerName: 'string',
-    // ⏸️ IMAGE_PATH: 'string',
+   // ????
+   // ⏸️ Boolean: 'boolean',
+   // ⏸️ Float: 'number',
+   // ⏸️ Integer: 'number',
+   // ⏸️ SchedulerName: 'string',
+   // ⏸️ SamplerName: 'string',
+   // ⏸️ IMAGE_PATH: 'string',
 }
 
 export const ComfyPrimitives: string[] = Object.keys(ComfyPrimitiveMapping)
@@ -23,13 +23,13 @@ export const ComfyPrimitives: string[] = Object.keys(ComfyPrimitiveMapping)
  * (e.g. a seed or an enum that has not been turned into a primitive)
  */
 export const howManyWidgetValuesForThisSchemaType = (input: NodeInputExt): number => {
-    if (input.type === 'INT') {
-        if (input.nameInComfy === 'seed' || input.nameInComfy === 'noise_seed') return 2
-    }
-    if (input.isPrimitive) return 1
-    if (input.type.startsWith('Enum_')) return 1
-    // console.log(343, input)
-    return 0
+   if (input.type === 'INT') {
+      if (input.nameInComfy === 'seed' || input.nameInComfy === 'noise_seed') return 2
+   }
+   if (input.isPrimitive) return 1
+   if (input.type.startsWith('Enum_')) return 1
+   // console.log(343, input)
+   return 0
 }
 
 /**
@@ -37,19 +37,19 @@ export const howManyWidgetValuesForThisSchemaType = (input: NodeInputExt): numbe
  * to determine how many Field_values need to be consumed for this input
  */
 export const howManyWidgetValuesForThisInputType = (type: string, nameInComfy: string): number => {
-    if (type === 'INT') {
-        if (nameInComfy === 'seed' || nameInComfy === 'noise_seed') return 2
-        return 1
-    }
-    if (type === 'BOOLEAN') return 1
-    if (type === 'FLOAT') return 1
-    if (type === 'STRING') return 1
-    if (type === 'COMBO') return 1
-    if (type === 'INT:seed') return 2
-    if (type === 'INT:noise_seed') return 2
+   if (type === 'INT') {
+      if (nameInComfy === 'seed' || nameInComfy === 'noise_seed') return 2
+      return 1
+   }
+   if (type === 'BOOLEAN') return 1
+   if (type === 'FLOAT') return 1
+   if (type === 'STRING') return 1
+   if (type === 'COMBO') return 1
+   if (type === 'INT:seed') return 2
+   if (type === 'INT:noise_seed') return 2
 
-    // not a primitive, no Field_values
-    return 0
+   // not a primitive, no Field_values
+   return 0
 }
 /*
 

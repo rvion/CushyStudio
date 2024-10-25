@@ -13,43 +13,43 @@ import { Frame } from '../../csuite/frame/Frame'
 import { MessageErrorUI } from '../../csuite/messages/MessageErrorUI'
 
 export type FormUIProps = {
-    // form ---------------------------------------------------------
-    field: Maybe<Field>
+   // form ---------------------------------------------------------
+   field: Maybe<Field>
 
-    Header?: FC<NO_PROPS>
-    Content?: FC<NO_PROPS> //
-    // layout?: SimplifiedFormDef
+   Header?: FC<NO_PROPS>
+   Content?: FC<NO_PROPS> //
+   // layout?: SimplifiedFormDef
 
-    // root wrapper
-    label?: string | false
-    justifyLabel?: boolean
+   // root wrapper
+   label?: string | false
+   justifyLabel?: boolean
 
-    // look and feel ------------------------------------------------
-    theme?: Box
-    className?: string
-    style?: CSSProperties
+   // look and feel ------------------------------------------------
+   theme?: Box
+   className?: string
+   style?: CSSProperties
 
-    // submit -------------------------------------------------------
-    /** @default false */
-    allowSubmitWhenErrors?: boolean
+   // submit -------------------------------------------------------
+   /** @default false */
+   allowSubmitWhenErrors?: boolean
 
-    // --------------------------------------------------------------
-    // 🔴 TODO: do the same thing as tong and only provide a single submit prop instead
+   // --------------------------------------------------------------
+   // 🔴 TODO: do the same thing as tong and only provide a single submit prop instead
 
-    /**
-     * override default label.
-     * @default 'Submit'
-     * only used when
-     *  - submitAction is provided (no submitAction => no button => no label needed)
-     * Use `Footer` instead if you want to provide multiple actions, custom submit button, etc.
-     */
-    submitLabel?: string
-    submitLook?: FrameAppearance
-    submitSize?: RSSize
-    /** * override default action */
-    submitAction?: ((field: Field) => void) | 'confetti'
-    /** for custom submit button and more actions */
-    Footer?: FC<{ field: Field; canSubmit: boolean }>
+   /**
+    * override default label.
+    * @default 'Submit'
+    * only used when
+    *  - submitAction is provided (no submitAction => no button => no label needed)
+    * Use `Footer` instead if you want to provide multiple actions, custom submit button, etc.
+    */
+   submitLabel?: string
+   submitLook?: FrameAppearance
+   submitSize?: RSSize
+   /** * override default action */
+   submitAction?: ((field: Field) => void) | 'confetti'
+   /** for custom submit button and more actions */
+   Footer?: FC<{ field: Field; canSubmit: boolean }>
 }
 
 /**
@@ -60,51 +60,53 @@ export type FormUIProps = {
  * - some action buttons (submit...)
  */
 export const FormUI = observer(function FormUI_(p: FormUIProps) {
-    const field = p.field
-    if (field == null) return <MessageErrorUI markdown={`form is not yet initialized`} />
-    const canSubmit: boolean = p.allowSubmitWhenErrors || p.field == null || p.field.isValid
-    return (
-        <Frame tw='UI-Form' col {...p.theme} className={p.className} style={p.style}>
-            {p.Header && <p.Header />}
-            {p.Content ? <p.Content /> : field.UI({ Header: null })}
-            {createElement(FormSubmitBtnUI, p)}
-            {p.Footer != null && <p.Footer field={field} canSubmit={canSubmit} />}
-        </Frame>
-    )
+   const field = p.field
+   if (field == null) return <MessageErrorUI markdown={`form is not yet initialized`} />
+   const canSubmit: boolean = p.allowSubmitWhenErrors || p.field == null || p.field.isValid
+   return (
+      <Frame tw='UI-Form' col {...p.theme} className={p.className} style={p.style}>
+         {p.Header && <p.Header />}
+         {p.Content ? <p.Content /> : field.UI({ Header: null })}
+         {createElement(FormSubmitBtnUI, p)}
+         {p.Footer != null && <p.Footer field={field} canSubmit={canSubmit} />}
+      </Frame>
+   )
 })
 
 export const FormSubmitBtnUI = observer(function FormSubmitBtnUI_(p: FormUIProps) {
-    const field = p.field
-    if (field == null) return <MessageErrorUI markdown={`form is not yet initialized`} />
+   const field = p.field
+   if (field == null) return <MessageErrorUI markdown={`form is not yet initialized`} />
 
-    const submitAction = p.submitAction
-    const canSubmit: boolean = p.allowSubmitWhenErrors || p.field == null || p.field.isValid
+   const submitAction = p.submitAction
+   const canSubmit: boolean = p.allowSubmitWhenErrors || p.field == null || p.field.isValid
 
-    return (
-        <div>
-            {submitAction != null && (
-                <div tw='flex'>
-                    <Button
-                        look={p.submitLook ?? 'primary'}
-                        size={p.submitSize ?? 'input'}
-                        tw='ml-auto'
-                        disabled={!canSubmit}
-                        onClick={async () => {
-                            if (!canSubmit) return
+   return (
+      <div>
+         {submitAction != null && (
+            <div tw='flex'>
+               <Button
+                  look={p.submitLook ?? 'primary'}
+                  size={p.submitSize ?? 'input'}
+                  tw='ml-auto'
+                  disabled={!canSubmit}
+                  onClick={async () => {
+                     if (!canSubmit) return
 
-                            if (submitAction === 'confetti') {
-                                // @ts-ignore
-                                const fire = (await import('https://cdn.skypack.dev/canvas-confetti')).default as (p: any) => void
-                                fire({ zIndex: 100000, particleCount: 100, spread: 70 })
-                            } else {
-                                submitAction(field)
-                            }
-                        }}
-                    >
-                        {p.submitLabel ?? 'Submit'}
-                    </Button>
-                </div>
-            )}
-        </div>
-    )
+                     if (submitAction === 'confetti') {
+                        // @ts-ignore
+                        const fire = (await import('https://cdn.skypack.dev/canvas-confetti')).default as (
+                           p: any,
+                        ) => void
+                        fire({ zIndex: 100000, particleCount: 100, spread: 70 })
+                     } else {
+                        submitAction(field)
+                     }
+                  }}
+               >
+                  {p.submitLabel ?? 'Submit'}
+               </Button>
+            </div>
+         )}
+      </div>
+   )
 })

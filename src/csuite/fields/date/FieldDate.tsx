@@ -17,229 +17,230 @@ import { WidgetDate_HeaderUI } from './WidgetDateUI'
 
 // #region Config
 export type Field_date_config<NULLABLE extends boolean> = FieldConfig<
-    {
-        default?: NULLABLE extends false //
-            ? Date | (() => Date)
-            : Date | null | (() => Date | null)
-        nullable?: NULLABLE
-        placeHolder?: string
-        innerIcon?: IconName
-    },
-    Field_date_types<NULLABLE>
+   {
+      default?: NULLABLE extends false //
+         ? Date | (() => Date)
+         : Date | null | (() => Date | null)
+      nullable?: NULLABLE
+      placeHolder?: string
+      innerIcon?: IconName
+   },
+   Field_date_types<NULLABLE>
 >
 
 // #region Value
 export type Field_date_value<NULLABLE extends boolean> = //
-    NULLABLE extends false //
-        ? Date
-        : Maybe<Date>
+   NULLABLE extends false //
+      ? Date
+      : Maybe<Date>
 
 export type Field_date_unchecked<NULLABLE extends boolean> = //
-    Field_date_value<NULLABLE> | undefined
+   Field_date_value<NULLABLE> | undefined
 
 // #region Serial
 export type Field_date_serial = FieldSerial<{
-    $: 'date'
-    value?: ISOString | null
+   $: 'date'
+   value?: ISOString | null
 }>
 
 // #region Types
 export type Field_date_types<NULLABLE extends boolean> = {
-    $Type: 'date'
-    $Config: Field_date_config<NULLABLE>
-    $Serial: Field_date_serial
-    $Value: Field_date_value<NULLABLE>
-    $Unchecked: Field_date_unchecked<NULLABLE>
-    $Field: Field_date<NULLABLE>
-    $Child: never
-    $Reflect: Field_date_types<NULLABLE>
+   $Type: 'date'
+   $Config: Field_date_config<NULLABLE>
+   $Serial: Field_date_serial
+   $Value: Field_date_value<NULLABLE>
+   $Unchecked: Field_date_unchecked<NULLABLE>
+   $Field: Field_date<NULLABLE>
+   $Child: never
+   $Reflect: Field_date_types<NULLABLE>
 }
 
 // #region State
 export class Field_date<const NULLABLE extends boolean = false> extends Field<Field_date_types<NULLABLE>> {
-    // #region static
-    static readonly type: 'date' = 'date'
-    static readonly emptySerial: Field_date_serial = { $: 'date' }
-    static codegenValueType(config: Field_date_config<any>): string {
-        if (config.nullable) return 'Maybe<Date>'
-        return 'Date'
-    }
+   // #region static
+   static readonly type: 'date' = 'date'
+   static readonly emptySerial: Field_date_serial = { $: 'date' }
+   static codegenValueType(config: Field_date_config<any>): string {
+      if (config.nullable) return 'Maybe<Date>'
+      return 'Date'
+   }
 
-    // #region migration
-    static migrateSerial(serial: object): Field_date_serial | null {
-        if (isProbablySerialString(serial)) {
-            const stringSerial = serial as Field_string_serial
-            if (!stringSerial.value) return { $: this.type }
-            const parsed = new Date(stringSerial.value)
-            if (!isNaN(parsed.getTime())) {
-                return { $: this.type, value: parsed.toISOString() }
-            }
-        }
-        return null
-    }
+   // #region migration
+   static migrateSerial(serial: object): Field_date_serial | null {
+      if (isProbablySerialString(serial)) {
+         const stringSerial = serial as Field_string_serial
+         if (!stringSerial.value) return { $: this.type }
+         const parsed = new Date(stringSerial.value)
+         if (!isNaN(parsed.getTime())) {
+            return { $: this.type, value: parsed.toISOString() }
+         }
+      }
+      return null
+   }
 
-    // #region Ctor
-    constructor(
-        repo: Repository,
-        root: Field | null,
-        parent: Field | null,
-        schema: BaseSchema<Field_date<NULLABLE>>,
-        initialMountKey: string,
-        serial?: Field_date_serial,
-    ) {
-        super(repo, root, parent, schema, initialMountKey, serial)
-        this.init(serial)
-    }
+   // #region Ctor
+   constructor(
+      repo: Repository,
+      root: Field | null,
+      parent: Field | null,
+      schema: BaseSchema<Field_date<NULLABLE>>,
+      initialMountKey: string,
+      serial?: Field_date_serial,
+   ) {
+      super(repo, root, parent, schema, initialMountKey, serial)
+      this.init(serial)
+   }
 
-    // #region serial
-    protected setOwnSerial(next: Field_date_serial): void {
-        if (next.value === undefined) {
-            const def = this.defaultValue
-            if (def !== undefined)
-                next = produce(next, (draft) => {
-                    draft.value = def == null ? def : def.toISOString()
-                })
-        }
-
-        this.assignNewSerial(next)
-
-        const raw = this.serial.value
-        this.selectedValue_ = raw == null ? null : new Date(raw)
-    }
-
-    // #region Nullability
-    get canBeToggledWithinParent(): boolean {
-        if (this.config.nullable) return true
-        return super.canBeToggledWithinParent
-    }
-
-    disableSelfWithinParent(): void {
-        if (this.config.nullable) {
-            this.patchSerial((draft) => void (draft.value = null))
-            return
-        }
-        if (super.canBeToggledWithinParent) {
-            super.disableSelfWithinParent()
-        }
-    }
-
-    enableSelfWithinParent(): void {
-        if (super.canBeToggledWithinParent) {
-            super.enableSelfWithinParent()
-        }
-    }
-
-    // #region Set/Unset
-    get isOwnSet(): boolean {
-        return this.config.nullable //
-            ? this.serial.value !== undefined
-            : this.serial.value != null
-    }
-
-    unset(): void {
-        this.patchSerial((draft) => {
-            delete draft.value
-        })
-    }
-
-    // #region value
-    get value(): Field_date_value<NULLABLE> {
-        return this.value_or_fail
-    }
-
-    set value(next: Field_date_value<NULLABLE>) {
-        if (!this.config.nullable && next == null) {
-            throw new Error('Field_date: value is null')
-        }
-
-        this.selectedValue_ = next
-        this.runInValueTransaction(() => {
-            this.patchSerial((draft) => {
-                draft.value = next?.toISOString() ?? null
+   // #region serial
+   protected setOwnSerial(next: Field_date_serial): void {
+      if (next.value === undefined) {
+         const def = this.defaultValue
+         if (def !== undefined)
+            next = produce(next, (draft) => {
+               draft.value = def == null ? def : def.toISOString()
             })
-        })
-    }
+      }
 
-    get value_or_fail(): Field_date_value<NULLABLE> {
-        if (this.config.nullable || this.selectedValue != null) {
-            return this.selectedValue as Field_date_value<NULLABLE>
-        }
+      this.assignNewSerial(next)
 
-        throw new Error('Field_date: value is null')
-    }
+      const raw = this.serial.value
+      this.selectedValue_ = raw == null ? null : new Date(raw)
+   }
 
-    get value_or_zero(): Field_date_value<NULLABLE> {
-        if (this.value_unchecked != null) return this.value_unchecked
-        if (this.config.nullable) return null as Field_date_value<NULLABLE>
-        return new Date() // ⚠️ zero value set to now ? Maybe new Date(0) would be saner
-    }
+   // #region Nullability
+   get canBeToggledWithinParent(): boolean {
+      if (this.config.nullable) return true
+      return super.canBeToggledWithinParent
+   }
 
-    get value_unchecked(): Field_date_unchecked<NULLABLE> {
-        return this.selectedValue ?? undefined
-    }
+   disableSelfWithinParent(): void {
+      if (this.config.nullable) {
+         this.patchSerial((draft) => void (draft.value = null))
+         return
+      }
+      if (super.canBeToggledWithinParent) {
+         super.disableSelfWithinParent()
+      }
+   }
 
-    // #region value ext
-    private selectedValue_: Field_date_value<NULLABLE> | null = null
+   enableSelfWithinParent(): void {
+      if (super.canBeToggledWithinParent) {
+         super.enableSelfWithinParent()
+      }
+   }
 
-    get selectedValue(): Field_date_value<NULLABLE> | null {
-        return this.selectedValue_
-    }
+   // #region Set/Unset
+   get isOwnSet(): boolean {
+      return this.config.nullable //
+         ? this.serial.value !== undefined
+         : this.serial.value != null
+   }
 
-    get defaultValue(): Field_date_value<NULLABLE> | null {
-        if (typeof this.config.default === 'function') {
-            return this.config.default()
-        }
+   unset(): void {
+      this.patchSerial((draft) => {
+         delete draft.value
+      })
+   }
 
-        if (this.config.default != null || this.config.nullable) {
-            return (this.config.default ?? null) as Field_date_value<NULLABLE>
-        }
+   // #region value
+   get value(): Field_date_value<NULLABLE> {
+      return this.value_or_fail
+   }
 
-        return null
-    }
+   set value(next: Field_date_value<NULLABLE>) {
+      if (!this.config.nullable && next == null) {
+         throw new Error('Field_date: value is null')
+      }
 
-    // #region validation
-    get ownConfigSpecificProblems(): Problem_Ext {
-        const out: string[] = []
-        if (!this.config.nullable) {
-            if ('default' in this.config) {
-                const def = this.config.default
-                if (def == null) out.push(csuiteConfig.i18n.err.field.defaultExplicitelySetToNullButFieldNotNullable)
-            }
-        }
-        return out
-    }
+      this.selectedValue_ = next
+      this.runInValueTransaction(() => {
+         this.patchSerial((draft) => {
+            draft.value = next?.toISOString() ?? null
+         })
+      })
+   }
 
-    get ownTypeSpecificProblems(): Problem_Ext {
-        if (this.config.nullable || this.selectedValue != null) return null
+   get value_or_fail(): Field_date_value<NULLABLE> {
+      if (this.config.nullable || this.selectedValue != null) {
+         return this.selectedValue as Field_date_value<NULLABLE>
+      }
 
-        return {
-            severity: Severity.Error,
-            message: 'Value is required',
-        }
-    }
-    // #region changes
-    get hasChanges(): boolean {
-        return this.serial.value != this.defaultValue?.toISOString()
-    }
+      throw new Error('Field_date: value is null')
+   }
 
-    // #region misc
-    setValueFromString(value: string): void {
-        const nextValue = !value ? null : new Date(value)
+   get value_or_zero(): Field_date_value<NULLABLE> {
+      if (this.value_unchecked != null) return this.value_unchecked
+      if (this.config.nullable) return null as Field_date_value<NULLABLE>
+      return new Date() // ⚠️ zero value set to now ? Maybe new Date(0) would be saner
+   }
 
-        if (nextValue && isNaN(nextValue.getTime())) {
-            throw new Error('Field_date: invalid date')
-        }
+   get value_unchecked(): Field_date_unchecked<NULLABLE> {
+      return this.selectedValue ?? undefined
+   }
 
-        if (this.config.nullable || nextValue != null) {
-            this.value = nextValue as Field_date_value<NULLABLE>
-        } else {
-            this.selectedValue_ = nextValue
-        }
-    }
+   // #region value ext
+   private selectedValue_: Field_date_value<NULLABLE> | null = null
 
-    // #region UI
-    readonly DefaultHeaderUI: CovariantFC<{ field: Field_date<NULLABLE>; readonly?: boolean }> | undefined =
-        WidgetDate_HeaderUI<NULLABLE>
+   get selectedValue(): Field_date_value<NULLABLE> | null {
+      return this.selectedValue_
+   }
 
-    readonly DefaultBodyUI: CovariantFC<{ field: Field_date<NULLABLE> }> | undefined = undefined
+   get defaultValue(): Field_date_value<NULLABLE> | null {
+      if (typeof this.config.default === 'function') {
+         return this.config.default()
+      }
+
+      if (this.config.default != null || this.config.nullable) {
+         return (this.config.default ?? null) as Field_date_value<NULLABLE>
+      }
+
+      return null
+   }
+
+   // #region validation
+   get ownConfigSpecificProblems(): Problem_Ext {
+      const out: string[] = []
+      if (!this.config.nullable) {
+         if ('default' in this.config) {
+            const def = this.config.default
+            if (def == null)
+               out.push(csuiteConfig.i18n.err.field.defaultExplicitelySetToNullButFieldNotNullable)
+         }
+      }
+      return out
+   }
+
+   get ownTypeSpecificProblems(): Problem_Ext {
+      if (this.config.nullable || this.selectedValue != null) return null
+
+      return {
+         severity: Severity.Error,
+         message: 'Value is required',
+      }
+   }
+   // #region changes
+   get hasChanges(): boolean {
+      return this.serial.value != this.defaultValue?.toISOString()
+   }
+
+   // #region misc
+   setValueFromString(value: string): void {
+      const nextValue = !value ? null : new Date(value)
+
+      if (nextValue && isNaN(nextValue.getTime())) {
+         throw new Error('Field_date: invalid date')
+      }
+
+      if (this.config.nullable || nextValue != null) {
+         this.value = nextValue as Field_date_value<NULLABLE>
+      } else {
+         this.selectedValue_ = nextValue
+      }
+   }
+
+   // #region UI
+   readonly DefaultHeaderUI: CovariantFC<{ field: Field_date<NULLABLE>; readonly?: boolean }> | undefined =
+      WidgetDate_HeaderUI<NULLABLE>
+
+   readonly DefaultBodyUI: CovariantFC<{ field: Field_date<NULLABLE> }> | undefined = undefined
 }

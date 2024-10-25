@@ -6,35 +6,35 @@ import { MenuItem } from '../csuite/dropdown/MenuItem'
 import { useSt } from '../state/stateContext'
 
 export const MenuSettingsUI = observer(function MenuSettingsUI_(p: {}) {
-    const st = useSt()
-    return (
-        <Dropdown
-            title='Settings'
-            content={() => (
-                <>
-                    <MenuItem
-                        onClick={() => st.layout.open('Config', {})}
-                        icon={'mdiSettingsHelper'}
-                        localShortcut={KEYS.openPage_Config}
-                        label='Config'
-                    />
-                    <MenuItem
-                        onClick={() => st.layout.open('Hosts', {})}
-                        icon={'mdiHospital'}
-                        localShortcut={KEYS.openPage_Hosts}
-                        label='ComfyUI Hosts'
-                    />
-                    <MenuItem
-                        onClick={() => st.layout.open('Shortcuts', {})}
-                        icon={'mdiKey'}
-                        localShortcut={KEYS.openPage_Shortcuts}
-                        label='Shortcuts'
-                    />
-                    {/* <MenuDivider />
+   const st = useSt()
+   return (
+      <Dropdown
+         title='Settings'
+         content={() => (
+            <>
+               <MenuItem
+                  onClick={() => st.layout.open('Config', {})}
+                  icon={'mdiSettingsHelper'}
+                  localShortcut={KEYS.openPage_Config}
+                  label='Config'
+               />
+               <MenuItem
+                  onClick={() => st.layout.open('Hosts', {})}
+                  icon={'mdiHospital'}
+                  localShortcut={KEYS.openPage_Hosts}
+                  label='ComfyUI Hosts'
+               />
+               <MenuItem
+                  onClick={() => st.layout.open('Shortcuts', {})}
+                  icon={'mdiKey'}
+                  localShortcut={KEYS.openPage_Shortcuts}
+                  label='Shortcuts'
+               />
+               {/* <MenuDivider />
                     <MenuDivider /> */}
-                    {/* <MenuDebugUI /> */}
-                </>
-            )}
-        />
-    )
+               {/* <MenuDebugUI /> */}
+            </>
+         )}
+      />
+   )
 })

@@ -7,14 +7,14 @@ import type { Static } from '@sinclair/typebox'
 import { Type } from '@sinclair/typebox'
 
 const K: ModelInfo = {
-    name: 'TEMP_briaai_RMBG-1.4',
-    type: 'controlnet',
-    base: 'SDXL',
-    save_path: 'custom_nodes/ComfyUI-BRIA_AI-RMBG/RMBG-1.4',
-    description: '<3 stuff',
-    reference: 'https://huggingface.co/briaai/RMBG-1.4',
-    filename: 'model.pth',
-    url: 'https://huggingface.co/briaai/RMBG-1.4/resolve/main/model.pth?download=true',
+   name: 'TEMP_briaai_RMBG-1.4',
+   type: 'controlnet',
+   base: 'SDXL',
+   save_path: 'custom_nodes/ComfyUI-BRIA_AI-RMBG/RMBG-1.4',
+   description: '<3 stuff',
+   reference: 'https://huggingface.co/briaai/RMBG-1.4',
+   filename: 'model.pth',
+   url: 'https://huggingface.co/briaai/RMBG-1.4/resolve/main/model.pth?download=true',
 }
 
 // prettier-ignore
@@ -31,18 +31,18 @@ export type ModelInfo = {
 };
 
 export const ModelInfo_Schema = Type.Object(
-    {
-        name: Type.Any(),
-        type: Type.Any(),
-        base: Type.Any(),
-        save_path: Type.Any(),
-        description: Type.String(),
-        reference: Type.String(),
-        filename: Type.String(),
-        url: Type.String(),
-        size: Type.Optional(Type.String()),
-    },
-    { additionalProperties: false },
+   {
+      name: Type.Any(),
+      type: Type.Any(),
+      base: Type.Any(),
+      save_path: Type.Any(),
+      description: Type.String(),
+      reference: Type.String(),
+      filename: Type.String(),
+      url: Type.String(),
+      size: Type.Optional(Type.String()),
+   },
+   { additionalProperties: false },
 )
 /* ✅ */ type ModelInfo2 = Static<typeof ModelInfo_Schema>
 /* ✅ */ const _t1: ModelInfo = 0 as any as ModelInfo2

@@ -5,7 +5,7 @@ import type { BoundCommand } from '../commands/BoundCommand'
 export const BoundCommandSym = Symbol('BoundCommand')
 
 export const isBoundCommand = (x: any): x is BoundCommand =>
-    x != null && //
-    typeof x === 'object' &&
-    '$SYM' in x &&
-    x.$SYM === BoundCommandSym
+   x != null && //
+   typeof x === 'object' &&
+   '$SYM' in x &&
+   x.$SYM === BoundCommandSym

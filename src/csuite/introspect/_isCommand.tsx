@@ -5,7 +5,7 @@ import type { Command } from '../commands/Command'
 export const CommandSym = Symbol('Command')
 
 export const isCommand = (x: any): x is Command =>
-    x != null && //
-    typeof x === 'object' &&
-    '$SYM' in x &&
-    x.$SYM === CommandSym
+   x != null && //
+   typeof x === 'object' &&
+   '$SYM' in x &&
+   x.$SYM === CommandSym

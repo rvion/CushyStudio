@@ -6,13 +6,13 @@ import { ctx_unifiedCanvas } from '../../../operators/contexts/ctx_unifiedCanvas
 
 // TODO: Could/Should be a pie menu for toggling any of the shelfs in the panel/region.
 export const cmd_canvas_toggleToolshelf = command<UnifiedCanvas>({
-    id: 'canvas.toggleToolshelf',
-    ctx: ctx_unifiedCanvas,
-    combos: 't',
-    description: 'Toggles the Toolshelf on the left side of the panel/region',
-    label: 'Toggle Toolshelf',
-    action: (uc) => {
-        uc.toolShelf.visible = !uc.toolShelf.visible
-        return Trigger.Success
-    },
+   id: 'canvas.toggleToolshelf',
+   ctx: ctx_unifiedCanvas,
+   combos: 't',
+   description: 'Toggles the Toolshelf on the left side of the panel/region',
+   label: 'Toggle Toolshelf',
+   action: (uc) => {
+      uc.toolShelf.visible = !uc.toolShelf.visible
+      return Trigger.Success
+   },
 })

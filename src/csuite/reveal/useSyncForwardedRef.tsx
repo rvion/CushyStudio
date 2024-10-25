@@ -10,17 +10,17 @@ import { useEffectAction } from '../utils/useEffectAction'
  */
 
 export function useSyncForwardedRef(
-    //
-    forwaredRef: Maybe<ForwardedRef<HTMLDivElement>>,
-    localRef: RefObject<HTMLDivElement>,
+   //
+   forwaredRef: Maybe<ForwardedRef<HTMLDivElement>>,
+   localRef: RefObject<HTMLDivElement>,
 ): void {
-    useEffectAction(() => {
-        if (forwaredRef == null) return
-        if (typeof forwaredRef === 'function') forwaredRef(localRef.current)
-        else forwaredRef.current = localRef.current
-        // 💬 2024-09-28 rvion:
-        // | surprisingly, ref is forwarded a bit late;
-        // | TODO: investigate sometime later
-        // | console.log(`[🤠] REF HAVE BEEN FORWARDED`)
-    }, [localRef.current])
+   useEffectAction(() => {
+      if (forwaredRef == null) return
+      if (typeof forwaredRef === 'function') forwaredRef(localRef.current)
+      else forwaredRef.current = localRef.current
+      // 💬 2024-09-28 rvion:
+      // | surprisingly, ref is forwarded a bit late;
+      // | TODO: investigate sometime later
+      // | console.log(`[🤠] REF HAVE BEEN FORWARDED`)
+   }, [localRef.current])
 }

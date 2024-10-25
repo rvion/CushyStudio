@@ -8,36 +8,36 @@ import type { ValidationError } from './ValidationError'
  * before accessing a field
  */
 export class Draft<T extends FieldTypes> implements DraftLike<T> {
-    constructor(private field: T['$Field']) {}
+   constructor(private field: T['$Field']) {}
 
-    // 🔶 TEMPORARY HACK UNTIL RENDER BRANCH
-    getFieldUnchecked(): T['$Field'] {
-        return this.field
-    }
+   // 🔶 TEMPORARY HACK UNTIL RENDER BRANCH
+   getFieldUnchecked(): T['$Field'] {
+      return this.field
+   }
 
-    // FIELDS ------------------------------------------------------------
-    // 🧪
-    validate(): Result<T['$Field'], ValidationError> {
-        return this.field.validate()
-    }
+   // FIELDS ------------------------------------------------------------
+   // 🧪
+   validate(): Result<T['$Field'], ValidationError> {
+      return this.field.validate()
+   }
 
-    validateOrNull(): Maybe<T['$Field']> {
-        return this.field.validateOrNull()
-    }
+   validateOrNull(): Maybe<T['$Field']> {
+      return this.field.validateOrNull()
+   }
 
-    validateOrThrow(): T['$Field'] {
-        return this.field.validateOrThrow()
-    }
+   validateOrThrow(): T['$Field'] {
+      return this.field.validateOrThrow()
+   }
 }
 
 // injecting field types into draft, because why not
 export interface Draft<T extends FieldTypes> {
-    $Type: T['$Type']
-    $Config: T['$Config']
-    $Serial: T['$Serial']
-    $Value: T['$Value']
-    $Field: T['$Field']
-    $Unchecked: T['$Unchecked']
+   $Type: T['$Type']
+   $Config: T['$Config']
+   $Serial: T['$Serial']
+   $Value: T['$Value']
+   $Field: T['$Field']
+   $Unchecked: T['$Unchecked']
 }
 
 /** 🧪 might be useful:
@@ -68,19 +68,19 @@ export interface Draft<T extends FieldTypes> {
  * But maybe we will want draft specific functionally at some point ? Hard to tell
  */
 export interface DraftLike<T extends FieldTypes> {
-    $Type: T['$Type']
-    $Config: T['$Config']
-    $Serial: T['$Serial']
-    $Value: T['$Value']
-    $Field: T['$Field']
-    $Unchecked: T['$Unchecked']
+   $Type: T['$Type']
+   $Config: T['$Config']
+   $Serial: T['$Serial']
+   $Value: T['$Value']
+   $Field: T['$Field']
+   $Unchecked: T['$Unchecked']
 
-    // 🔶 TEMPORARY HACK UNTIL RENDER BRANCH
-    getFieldUnchecked(): T['$Field']
+   // 🔶 TEMPORARY HACK UNTIL RENDER BRANCH
+   getFieldUnchecked(): T['$Field']
 
-    validate(): Result<T['$Field'], ValidationError>
-    validateOrNull(): Maybe<T['$Field']>
-    validateOrThrow(): T['$Field']
+   validate(): Result<T['$Field'], ValidationError>
+   validateOrNull(): Maybe<T['$Field']>
+   validateOrThrow(): T['$Field']
 }
 
 // 💬 2024-09-04 rvion:

@@ -7,66 +7,70 @@ import { MenuItem } from '../csuite/dropdown/MenuItem'
 import { _formatAsRelativeDateTime } from '../updater/_getRelativeTimeString'
 
 export const MenuAppsUI = observer(function MenuAppsUI_(p: {}) {
-    return (
-        <Dropdown
-            title='Apps'
-            content={() => (
-                <>
-                    {/* <MenuItem
+   return (
+      <Dropdown
+         title='Apps'
+         content={() => (
+            <>
+               {/* <MenuItem
                         onClick={() => cushy.layout.FOCUS_OR_CREATE('Marketplace', {}, 'RIGHT_PANE_TABSET')}
                         icon='mdiCloudDownload'
                         localShortcut={KEYS.openPage_Marketplace}
                         label='Civitai'
                     /> */}
-                    <MenuItem.Divider>Recently Used Drafts</MenuItem.Divider>
-                    <RecentDrafMenuEntriesUI />
-                    <MenuItem.Divider>Recently Used Apps</MenuItem.Divider>
-                    <RecentAppMenuEntriesUI />
-                </>
-            )}
-        />
-    )
+               <MenuItem.Divider>Recently Used Drafts</MenuItem.Divider>
+               <RecentDrafMenuEntriesUI />
+               <MenuItem.Divider>Recently Used Apps</MenuItem.Divider>
+               <RecentAppMenuEntriesUI />
+            </>
+         )}
+      />
+   )
 })
 
 export const RecentDrafMenuEntriesUI = observer(function RecentDrafMenuEntriesUI_(p: {}) {
-    return (
-        <>
-            {cushy.db.draft
-                .select((t) => t.orderBy('lastRunAt', 'desc').limit(10))
-                .map((draft) => (
-                    <MenuItem
-                        //
-                        key={draft.id}
-                        onClick={() => draft.openOrFocusTab()}
-                        label={draft.app.name}
-                        // TODO make sure display nicely when fuzzy find main menu
-                    >
-                        <DraftIllustrationUI draft={draft} size='2rem' />
-                        <div tw='text' style={{ lineHeight: '1rem' }}>
-                            <div>{draft.name}</div>
-                            <div tw='flex gap-1 text-sm italic text-gray-500'>
-                                <AppIllustrationUI app={draft.app} size='1rem' /> {draft.app.name}
-                            </div>
-                        </div>
-                        <div tw='ml-auto text-xs italic text-gray-500'>{_formatAsRelativeDateTime(draft.data.lastRunAt)}</div>
-                    </MenuItem>
-                ))}
-        </>
-    )
+   return (
+      <>
+         {cushy.db.draft
+            .select((t) => t.orderBy('lastRunAt', 'desc').limit(10))
+            .map((draft) => (
+               <MenuItem
+                  //
+                  key={draft.id}
+                  onClick={() => draft.openOrFocusTab()}
+                  label={draft.app.name}
+                  // TODO make sure display nicely when fuzzy find main menu
+               >
+                  <DraftIllustrationUI draft={draft} size='2rem' />
+                  <div tw='text' style={{ lineHeight: '1rem' }}>
+                     <div>{draft.name}</div>
+                     <div tw='flex gap-1 text-sm italic text-gray-500'>
+                        <AppIllustrationUI app={draft.app} size='1rem' /> {draft.app.name}
+                     </div>
+                  </div>
+                  <div tw='ml-auto text-xs italic text-gray-500'>
+                     {_formatAsRelativeDateTime(draft.data.lastRunAt)}
+                  </div>
+               </MenuItem>
+            ))}
+      </>
+   )
 })
 
 export const RecentAppMenuEntriesUI = observer(function RecentAppMenuEntriesUI_(p: {}) {
-    return (
-        <>
-            {cushy.db.cushy_app
-                .select((t) => t.orderBy('lastRunAt', 'desc').limit(5))
-                .map((app) => (
-                    <MenuItem onClick={() => app.openLastOrCreateDraft()} label={app.name}>
-                        <AppIllustrationUI app={app} size='1.5rem' />
-                        <div tw='flex items-center'>{app.name}</div>
-                        <div tw='ml-auto text-xs italic text-gray-500'>{_formatAsRelativeDateTime(app.data.lastRunAt)}</div>
-                    </MenuItem>
-                ))}
-        </>
-    )
+   return (
+      <>
+         {cushy.db.cushy_app
+            .select((t) => t.orderBy('lastRunAt', 'desc').limit(5))
+            .map((app) => (
+               <MenuItem onClick={() => app.openLastOrCreateDraft()} label={app.name}>
+                  <AppIllustrationUI app={app} size='1.5rem' />
+                  <div tw='flex items-center'>{app.name}</div>
+                  <div tw='ml-auto text-xs italic text-gray-500'>
+                     {_formatAsRelativeDateTime(app.data.lastRunAt)}
+                  </div>
+               </MenuItem>
+            ))}
+      </>
+   )
 })

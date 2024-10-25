@@ -13,88 +13,112 @@ import { $commonAncestor, $smartResolve } from './utils'
 
 // TODO: allow to increase / decrease weights by scrolling
 export const PromptKeymap1 = (): Extension =>
-    keymap.of([
-        { key: 'm-ArrowUp', preventDefault: true, run: changeWeights(0.1, ['WeightedExpression', 'Lora', 'Wildcard']) },
-        { key: 'm-ArrowDown', preventDefault: true, run: changeWeights(-0.1, ['WeightedExpression', 'Lora', 'Wildcard']) },
-        { key: 'a-ArrowUp', preventDefault: true, run: changeWeights(0.1, ['WeightedExpression', 'Lora', 'Wildcard']) },
-        { key: 'a-ArrowDown', preventDefault: true, run: changeWeights(-0.1, ['WeightedExpression', 'Lora', 'Wildcard']) },
-        { key: 'm-j', preventDefault: true, run: changeWeights(0.1, ['WeightedExpression', 'Lora', 'Wildcard']) },
-        { key: 'm-k', preventDefault: true, run: changeWeights(-0.1, ['WeightedExpression', 'Lora', 'Wildcard']) },
-        // { key: 'm-s-j', preventDefault: true, run: changeWeight(0.1, ['Lora', 'Wildcard']) },
-        // { key: 'm-s-k', preventDefault: true, run: changeWeight(-0.1, ['Lora', 'Wildcard']) },
-        // { key: 'm-s-j', preventDefault: true, run: increaseWeights, },
-        // key: 'Alt-ArrowUp',
-    ])
+   keymap.of([
+      {
+         key: 'm-ArrowUp',
+         preventDefault: true,
+         run: changeWeights(0.1, ['WeightedExpression', 'Lora', 'Wildcard']),
+      },
+      {
+         key: 'm-ArrowDown',
+         preventDefault: true,
+         run: changeWeights(-0.1, ['WeightedExpression', 'Lora', 'Wildcard']),
+      },
+      {
+         key: 'a-ArrowUp',
+         preventDefault: true,
+         run: changeWeights(0.1, ['WeightedExpression', 'Lora', 'Wildcard']),
+      },
+      {
+         key: 'a-ArrowDown',
+         preventDefault: true,
+         run: changeWeights(-0.1, ['WeightedExpression', 'Lora', 'Wildcard']),
+      },
+      {
+         key: 'm-j',
+         preventDefault: true,
+         run: changeWeights(0.1, ['WeightedExpression', 'Lora', 'Wildcard']),
+      },
+      {
+         key: 'm-k',
+         preventDefault: true,
+         run: changeWeights(-0.1, ['WeightedExpression', 'Lora', 'Wildcard']),
+      },
+      // { key: 'm-s-j', preventDefault: true, run: changeWeight(0.1, ['Lora', 'Wildcard']) },
+      // { key: 'm-s-k', preventDefault: true, run: changeWeight(-0.1, ['Lora', 'Wildcard']) },
+      // { key: 'm-s-j', preventDefault: true, run: increaseWeights, },
+      // key: 'Alt-ArrowUp',
+   ])
 
 const changeWeights =
-    (amount: number, stopAt: PromptLangNodeName[]) =>
-    (view: EditorView): boolean => {
-        // const state: EditorState = view.state
-        // const text = view.state.doc.toString()
-        // const tree = syntaxTree(view.state)
+   (amount: number, stopAt: PromptLangNodeName[]) =>
+   (view: EditorView): boolean => {
+      // const state: EditorState = view.state
+      // const text = view.state.doc.toString()
+      // const tree = syntaxTree(view.state)
 
-        const ranges = view.state.selection.ranges
-        for (const r of ranges) {
-            changeWeight(view, r.from, r.to, amount)
-        }
-        return true
-    }
+      const ranges = view.state.selection.ranges
+      for (const r of ranges) {
+         changeWeight(view, r.from, r.to, amount)
+      }
+      return true
+   }
 
 const formatWeights = (weights: number): string => {
-    return weights.toFixed(3).replace(/\.?0+$/, '')
+   return weights.toFixed(3).replace(/\.?0+$/, '')
 }
 
 const changeWeight = (
-    //
-    view: EditorView,
-    from: number,
-    to: number,
-    amount: number,
+   //
+   view: EditorView,
+   from: number,
+   to: number,
+   amount: number,
 ): void => {
-    const tree = syntaxTree(view.state)
-    if (from > to) throw new Error(`❌ from > to`)
-    const nodeA = $smartResolve(tree, from)
-    const nodeB = $smartResolve(tree, to)
-    const { a, b } = $commonAncestor(nodeA, nodeB, ['WeightedExpression', 'Lora', 'Wildcard'])
+   const tree = syntaxTree(view.state)
+   if (from > to) throw new Error(`❌ from > to`)
+   const nodeA = $smartResolve(tree, from)
+   const nodeB = $smartResolve(tree, to)
+   const { a, b } = $commonAncestor(nodeA, nodeB, ['WeightedExpression', 'Lora', 'Wildcard'])
 
-    // increase weights
-    if (a === b && a.name === 'WeightedExpression') {
-        const number = bang(a.node.lastChild, 'A')
-        if ((number.name as PromptLangNodeName) !== 'Number') {
-            throw new Error(`❌ Expected a number`)
-            return
-        }
-        const numberTxt = view.state.doc.sliceString(number.from, number.to)
-        const oldWeights = parseFloat(numberTxt)
-        const newWeights = oldWeights + amount
+   // increase weights
+   if (a === b && a.name === 'WeightedExpression') {
+      const number = bang(a.node.lastChild, 'A')
+      if ((number.name as PromptLangNodeName) !== 'Number') {
+         throw new Error(`❌ Expected a number`)
+         return
+      }
+      const numberTxt = view.state.doc.sliceString(number.from, number.to)
+      const oldWeights = parseFloat(numberTxt)
+      const newWeights = oldWeights + amount
 
-        // remove weight and ungroup
-        if (newWeights === 1) {
-            view.dispatch({
-                changes: [
-                    // remove the `(`
-                    { from: a.from, to: a.from + 1, insert: `` },
-                    // remove the `)*...`
-                    { from: number.from - 2, to: number.to, insert: `` },
-                ],
-            })
-            return
-        }
+      // remove weight and ungroup
+      if (newWeights === 1) {
+         view.dispatch({
+            changes: [
+               // remove the `(`
+               { from: a.from, to: a.from + 1, insert: `` },
+               // remove the `)*...`
+               { from: number.from - 2, to: number.to, insert: `` },
+            ],
+         })
+         return
+      }
 
-        // update the weights
-        view.dispatch({
-            changes: [{ from: number.from, to: number.to, insert: formatWeights(newWeights) }],
-        })
-        return
-    }
+      // update the weights
+      view.dispatch({
+         changes: [{ from: number.from, to: number.to, insert: formatWeights(newWeights) }],
+      })
+      return
+   }
 
-    // console.log(`[🧐] D: a(${a.name}:${a.from}->${a.to}) & b(${b.name}:${b.from}->${b.to})`)
-    // group and weights
-    const newWeights = formatWeights(1 + amount)
-    view.dispatch({
-        changes: [
-            { from: a.from, to: a.from, insert: `(` },
-            { from: b.to, to: b.to, insert: `)*${newWeights}` },
-        ],
-    })
+   // console.log(`[🧐] D: a(${a.name}:${a.from}->${a.to}) & b(${b.name}:${b.from}->${b.to})`)
+   // group and weights
+   const newWeights = formatWeights(1 + amount)
+   view.dispatch({
+      changes: [
+         { from: a.from, to: a.from, insert: `(` },
+         { from: b.to, to: b.to, insert: `)*${newWeights}` },
+      ],
+   })
 }

@@ -11,13 +11,13 @@ import { MenuDivider } from './MenuDivider'
 import { MenuItem } from './MenuItem'
 
 export type DropdownProps = {
-    title: ReactNode
-    className?: string
-    startIcon?: Maybe<IconName>
-    theme?: Tint
-    content?: () => ReactNode
-    button?: ReactNode
-    expand?: boolean
+   title: ReactNode
+   className?: string
+   startIcon?: Maybe<IconName>
+   theme?: Tint
+   content?: () => ReactNode
+   button?: ReactNode
+   expand?: boolean
 }
 
 /**
@@ -26,20 +26,29 @@ export type DropdownProps = {
  * see modules like `src/appbar/MenuDebugUI.tsx`
  */
 export const _Dropdown = observer(function Dropdown(p: DropdownProps): JSX.Element {
-    return (
-        <RevealUI
-            tw={[p.className]}
-            hideTriggers={{ shellClick: true, backdropClick: true, escapeKey: true }}
-            content={() => <Frame tabIndex={0} tw='z-[1] flex flex-col' children={p.content?.()} />}
-            children={
-                p.button ?? <Button borderless subtle icon={p.startIcon} tabIndex={0} expand={p.expand} children={p.title} />
-            }
-        />
-    )
+   return (
+      <RevealUI
+         tw={[p.className]}
+         hideTriggers={{ shellClick: true, backdropClick: true, escapeKey: true }}
+         content={() => <Frame tabIndex={0} tw='z-[1] flex flex-col' children={p.content?.()} />}
+         children={
+            p.button ?? (
+               <Button
+                  borderless
+                  subtle
+                  icon={p.startIcon}
+                  tabIndex={0}
+                  expand={p.expand}
+                  children={p.title}
+               />
+            )
+         }
+      />
+   )
 })
 
 export const Dropdown = Object.assign(_Dropdown, {
-    // name: 'BasicShelfUI',
-    Divider: MenuDivider,
-    Item: MenuItem,
+   // name: 'BasicShelfUI',
+   Divider: MenuDivider,
+   Item: MenuItem,
 })

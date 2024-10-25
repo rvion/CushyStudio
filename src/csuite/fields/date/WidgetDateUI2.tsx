@@ -13,52 +13,60 @@ import { formatDateForInput } from './format'
  * Please remove this explanation when the warning is fixed.
  */
 export const WidgetDate_ClearButtonUI = observer(function WidgetDate_ClearButtonUI_(p: {
-    field: Field_date
-    readonly?: boolean
+   field: Field_date
+   readonly?: boolean
 }) {
-    if (p.readonly) return null
+   if (p.readonly) return null
 
-    return (
-        <Button
-            tw='flex-shrink flex-grow-0'
-            size='input'
-            borderless
-            subtle
-            square
-            icon='mdiClose'
-            disabled={p.field.selectedValue == null}
-            onClick={() => {
-                p.field.disableSelfWithinParent()
-                p.field.touch()
-            }}
-        />
-    )
+   return (
+      <Button
+         tw='flex-shrink flex-grow-0'
+         size='input'
+         borderless
+         subtle
+         square
+         icon='mdiClose'
+         disabled={p.field.selectedValue == null}
+         onClick={() => {
+            p.field.disableSelfWithinParent()
+            p.field.touch()
+         }}
+      />
+   )
 })
 
 // date HEADER
-export const WidgetDate_HeaderUI = observer(function WidgetDateUI_(p: { field: Field_date; readonly?: boolean }) {
-    const field = p.field
-    const config = field.config
-    return (
-        <div tw='sticky top-0 flex w-full items-center gap-0.5'>
-            <InputStringUI
-                tw='w-full'
-                inputClassName={['w-full', 'minh-input', 'UI-InputDate', field.mustDisplayErrors && 'border-red-700 border']
-                    .filter(Boolean)
-                    .join(' ')}
-                icon={p.field.config.innerIcon}
-                type='datetime-local'
-                className={config.className}
-                getValue={() => formatDateForInput(field.selectedValue)}
-                setValue={(value) => {
-                    field.setValueFromString(value)
-                    p.field.touch()
-                }}
-                placeholder={field.config.placeHolder}
-                disabled={p.readonly}
-                onBlur={() => field.touch()}
-            />
-            <WidgetDate_ClearButtonUI field={field} readonly={p.readonly} />
-        </div>
-    )
+export const WidgetDate_HeaderUI = observer(function WidgetDateUI_(p: {
+   field: Field_date
+   readonly?: boolean
+}) {
+   const field = p.field
+   const config = field.config
+   return (
+      <div tw='sticky top-0 flex w-full items-center gap-0.5'>
+         <InputStringUI
+            tw='w-full'
+            inputClassName={[
+               'w-full',
+               'minh-input',
+               'UI-InputDate',
+               field.mustDisplayErrors && 'border-red-700 border',
+            ]
+               .filter(Boolean)
+               .join(' ')}
+            icon={p.field.config.innerIcon}
+            type='datetime-local'
+            className={config.className}
+            getValue={() => formatDateForInput(field.selectedValue)}
+            setValue={(value) => {
+               field.setValueFromString(value)
+               p.field.touch()
+            }}
+            placeholder={field.config.placeHolder}
+            disabled={p.readonly}
+            onBlur={() => field.touch()}
+         />
+         <WidgetDate_ClearButtonUI field={field} readonly={p.readonly} />
+      </div>
+   )
 })

@@ -25,13 +25,13 @@ export type MenuEntry =
 
 // ACTIVITY STACK
 export type MenuEntryWithKey = {
-    entry: MenuEntry
-    /** local key bound to that menu entry */
-    char?: string
-    /**
-     * char index within the string;
-     * (value kept around to speed up later processing to add underline at the right position)
-     * */
-    charIx?: number
-    ref?: React.RefObject<RevealStateLazy>
+   entry: MenuEntry
+   /** local key bound to that menu entry */
+   char?: string
+   /**
+    * char index within the string;
+    * (value kept around to speed up later processing to add underline at the right position)
+    * */
+   charIx?: number
+   ref?: React.RefObject<RevealStateLazy>
 }

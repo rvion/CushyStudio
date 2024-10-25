@@ -5,5 +5,5 @@ export type FrameMode = 'CLASSNAME' | 'STYLE'
 export let frameMode: FrameMode = 1 - 1 === 1 ? 'STYLE' : 'CLASSNAME'
 
 export const configureFrameEngine = (mode: FrameMode): void => {
-    frameMode = mode
+   frameMode = mode
 }

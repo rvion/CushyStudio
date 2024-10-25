@@ -16,17 +16,17 @@ import { useGlobalDropHook } from './useGlobalDropHook'
 const path = asAbsolutePath(process.cwd())
 
 export const MainUI = observer(function MainUI_() {
-    // const st = useMemo(() => runInAction(() => withMobxSpy(() => new STATE(path))), [])
-    const st = useMemo(() => runInAction(() => new STATE(path)), [])
-    useGlobalDropHook(st)
-    return (
-        <stContext.Provider value={st}>
-            <ToastContainer />
-            <DndProvider backend={HTML5Backend}>
-                <TargetBox>
-                    <CushyUI />
-                </TargetBox>
-            </DndProvider>
-        </stContext.Provider>
-    )
+   // const st = useMemo(() => runInAction(() => withMobxSpy(() => new STATE(path))), [])
+   const st = useMemo(() => runInAction(() => new STATE(path)), [])
+   useGlobalDropHook(st)
+   return (
+      <stContext.Provider value={st}>
+         <ToastContainer />
+         <DndProvider backend={HTML5Backend}>
+            <TargetBox>
+               <CushyUI />
+            </TargetBox>
+         </DndProvider>
+      </stContext.Provider>
+   )
 })

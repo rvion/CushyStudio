@@ -33,56 +33,56 @@ import { PanelLastImage, PanelViewImage } from '../panels/PanelViewImage/Panel_V
 import { PanelWelcome } from '../panels/PanelWelcome/PanelWelcome'
 
 export const panels = {
-    Assets: PanelAssets,
-    // Image
-    Gallery: PanelGallery,
-    Paint: PanelMinipaint,
-    Canvas: PanelCanvas,
-    Image: PanelViewImage,
-    SafetyRatings: PanelSafetyRatings,
+   Assets: PanelAssets,
+   // Image
+   Gallery: PanelGallery,
+   Paint: PanelMinipaint,
+   Canvas: PanelCanvas,
+   Image: PanelViewImage,
+   SafetyRatings: PanelSafetyRatings,
 
-    // apps & marketplace
-    Marketplace: PanelMarketplace,
-    TreeExplorer: PanelTreeExplorer,
-    Import: PanelImport,
+   // apps & marketplace
+   Marketplace: PanelMarketplace,
+   TreeExplorer: PanelTreeExplorer,
+   Import: PanelImport,
 
-    // ComfyUI
-    ComfyUI: PanelComfy,
-    ComfyUINodeExplorer: PanelComfyNodeExplorer,
+   // ComfyUI
+   ComfyUI: PanelComfy,
+   ComfyUINodeExplorer: PanelComfyNodeExplorer,
 
-    // misc
-    Output: PanelStep,
-    Steps: PanelSteps,
-    LastGraph: PanelLastGraph,
-    LastImage: PanelLastImage,
-    LastStep: PanelLastStep,
-    Custom: PanelCustom,
+   // misc
+   Output: PanelStep,
+   Steps: PanelSteps,
+   LastGraph: PanelLastGraph,
+   LastImage: PanelLastImage,
+   LastStep: PanelLastStep,
+   Custom: PanelCustom,
 
-    // App
-    Welcome: PanelWelcome,
-    PanelAppLibrary: PanelAppLibrary,
+   // App
+   Welcome: PanelWelcome,
+   PanelAppLibrary: PanelAppLibrary,
 
-    // Draft
-    Draft: PanelDraft,
-    DraftJsonResult: PanelDraftValue,
-    DraftJsonSerial: PanelDraftSerial,
-    Script: PanelScript,
+   // Draft
+   Draft: PanelDraft,
+   DraftJsonResult: PanelDraftValue,
+   DraftJsonSerial: PanelDraftSerial,
+   Script: PanelScript,
 
-    // DevTools
-    Icons: PanelIcon,
-    Playground: PanelPlayground,
+   // DevTools
+   Icons: PanelIcon,
+   Playground: PanelPlayground,
 
-    // iframe utils
-    IFrame: PanelIframe,
-    Civitai: PanelCivitai,
-    Squoosh: PanelSquoosh,
+   // iframe utils
+   IFrame: PanelIframe,
+   Civitai: PanelCivitai,
+   Squoosh: PanelSquoosh,
 
-    // config
-    Config: PanelConfig,
-    Settings: PanelSettings,
-    Models: PanelModels,
-    Hosts: PanelComfyHosts,
-    Shortcuts: PanelShortcuts,
+   // config
+   Config: PanelConfig,
+   Settings: PanelSettings,
+   Models: PanelModels,
+   Hosts: PanelComfyHosts,
+   Shortcuts: PanelShortcuts,
 } satisfies { [k in string]: Panel<any> }
 
 export const allPanels: Panel<any>[] = Object.values(panels)

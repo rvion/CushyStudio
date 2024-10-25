@@ -4,8 +4,8 @@ import { naiveDeepClone } from '../utils/naiveDeepClone'
 import { toJSONError } from './toJSONError'
 
 describe('convertThrownObjectToDict', () => {
-    // prettier-ignore
-    it('works with everything', () => {
+   // prettier-ignore
+   it('works with everything', () => {
         assertCanBeTransformedToErrorDict('test')
         assertCanBeTransformedToErrorDict(1)
         assertCanBeTransformedToErrorDict(['foo','bar'])
@@ -30,8 +30,8 @@ describe('convertThrownObjectToDict', () => {
 })
 
 function assertCanBeTransformedToErrorDict(thrown: unknown): void {
-    const dict = toJSONError(thrown)
-    expect(dict).toBeObject()
-    expect(dict).toMatchObject(naiveDeepClone(dict))
-    // console.log(`[🤠]`, JSON.stringify(dict, null, 4))
+   const dict = toJSONError(thrown)
+   expect(dict).toBeObject()
+   expect(dict).toMatchObject(naiveDeepClone(dict))
+   // console.log(`[🤠]`, JSON.stringify(dict, null, 4))
 }

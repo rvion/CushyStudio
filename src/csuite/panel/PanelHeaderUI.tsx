@@ -16,44 +16,44 @@ import { Frame, type FrameProps } from '../frame/Frame'
  * ```
  */
 export const PanelHeaderUI = observer(function PanelHeader({
-    // own props ---------------------------------------------------------------------
-    /** extensible flag makes the panel header have minh-widget instead of h-widget */
-    extensibleHeight,
-    title,
+   // own props ---------------------------------------------------------------------
+   /** extensible flag makes the panel header have minh-widget instead of h-widget */
+   extensibleHeight,
+   title,
 
-    // modified ----------------------------------------------------------------------
-    children,
+   // modified ----------------------------------------------------------------------
+   children,
 
-    // rest ---------------------------------------------------------------------------
-    ...rest
+   // rest ---------------------------------------------------------------------------
+   ...rest
 }: {
-    extensibleHeight?: boolean
-    title?: string
-    //
+   extensibleHeight?: boolean
+   title?: string
+   //
 } & FrameProps) {
-    return (
-        <Frame // Container
-            base={{ contrast: 0.08 /* hueShift: 100 */ /* chromaBlend: 2 */ }}
-            tw={[
-                //
-                'sticky top-0 [z-index:999]',
-                'px-1',
-                extensibleHeight ? 'minh-widget shrink-0' : 'h-widget',
-                'UI-PanelHeader',
-                'CSHY-panel-header',
-                'flex select-none gap-1',
-                'overflow-auto',
-                'items-center',
-                // 'flex-wrap',
-            ]}
-            onWheel={(event) => {
-                event.currentTarget.scrollLeft += event.deltaY
-                event.stopPropagation()
-            }}
-            {...rest}
-        >
-            {title && <div>{title}</div>}
-            {children}
-        </Frame>
-    )
+   return (
+      <Frame // Container
+         base={{ contrast: 0.08 /* hueShift: 100 */ /* chromaBlend: 2 */ }}
+         tw={[
+            //
+            'sticky top-0 [z-index:999]',
+            'px-1',
+            extensibleHeight ? 'minh-widget shrink-0' : 'h-widget',
+            'UI-PanelHeader',
+            'CSHY-panel-header',
+            'flex select-none gap-1',
+            'overflow-auto',
+            'items-center',
+            // 'flex-wrap',
+         ]}
+         onWheel={(event) => {
+            event.currentTarget.scrollLeft += event.deltaY
+            event.stopPropagation()
+         }}
+         {...rest}
+      >
+         {title && <div>{title}</div>}
+         {children}
+      </Frame>
+   )
 })

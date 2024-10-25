@@ -9,30 +9,30 @@ import { useProvenance } from '../provenance/Provenance'
 import { fieldActionMenu } from './fieldActionMenu'
 
 export type WidgetMenuProps = {
-    className?: string
-    field: Field
+   className?: string
+   field: Field
 }
 
 export const WidgetMenuUI = observer(function WidgetMenu(p: WidgetMenuProps) {
-    const field = p.field
-    const provenance = useProvenance()
-    const menu: Menu = fieldActionMenu.useBind({ field, provenance })
-    return (
-        <RevealUI //
-            className={p.className}
-            content={() => <menu.UI />}
-        >
-            <Button //
-                tooltip='Open field menu'
-                tabIndex={-1}
-                borderless
-                subtle
-                icon='mdiDotsVertical'
-                look='ghost'
-                size='widget'
-                // square
-                tw='!px-0'
-            />
-        </RevealUI>
-    )
+   const field = p.field
+   const provenance = useProvenance()
+   const menu: Menu = fieldActionMenu.useBind({ field, provenance })
+   return (
+      <RevealUI //
+         className={p.className}
+         content={() => <menu.UI />}
+      >
+         <Button //
+            tooltip='Open field menu'
+            tabIndex={-1}
+            borderless
+            subtle
+            icon='mdiDotsVertical'
+            look='ghost'
+            size='widget'
+            // square
+            tw='!px-0'
+         />
+      </RevealUI>
+   )
 })

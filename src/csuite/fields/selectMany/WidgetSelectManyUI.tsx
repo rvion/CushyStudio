@@ -9,14 +9,14 @@ import { WidgetSelectMany_SelectUI } from './WidgetSelectMany_SelectUI'
 import { WidgetSelectMany_TabUI } from './WidgetSelectMany_TabUI'
 
 export const WidgetSelectManyUI = observer(function WidgetSelectManyUI_<VALUE, KEY extends SelectKey>(p: {
-    field: Field_selectMany<VALUE, KEY>
+   field: Field_selectMany<VALUE, KEY>
 }) {
-    const field = p.field
-    const appearance: SelectManyAppearance = field.config.appearance ?? 'tab'
-    if (appearance === 'tab') return <WidgetSelectMany_TabUI field={field} />
-    if (appearance === 'select') return <WidgetSelectMany_SelectUI field={field} />
-    if (appearance === 'list') return <WidgetSelectMany_ListUI field={field} />
-    exhaust(appearance)
+   const field = p.field
+   const appearance: SelectManyAppearance = field.config.appearance ?? 'tab'
+   if (appearance === 'tab') return <WidgetSelectMany_TabUI field={field} />
+   if (appearance === 'select') return <WidgetSelectMany_SelectUI field={field} />
+   if (appearance === 'list') return <WidgetSelectMany_ListUI field={field} />
+   exhaust(appearance)
 })
 
 // if (appearance === 'select') return (

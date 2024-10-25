@@ -9,29 +9,29 @@ import type { FieldSerial_CommonProperties } from './FieldSerial'
  * | > still allow to use SharedConfig properties, and SharedSerial properties
  */
 export type FieldTypes = {
-    /** string that allow to discriminate on the field itself */
-    $Type: CATALOG.AllFieldTypes
+   /** string that allow to discriminate on the field itself */
+   $Type: CATALOG.AllFieldTypes
 
-    /** options this field take that modify it's behaviour */
-    $Config: FieldConfig_CommonProperties<any>
+   /** options this field take that modify it's behaviour */
+   $Config: FieldConfig_CommonProperties<any>
 
-    /** serial this field serialize to  */
-    $Serial: FieldSerial_CommonProperties
+   /** serial this field serialize to  */
+   $Serial: FieldSerial_CommonProperties
 
-    /** instance */
-    $Field: Field // 💡 <$FieldTypes_ANY>
+   /** instance */
+   $Field: Field // 💡 <$FieldTypes_ANY>
 
-    /** practical value we get extract from this field */
-    $Value: any
+   /** practical value we get extract from this field */
+   $Value: any
 
-    /** unchecked value we can extract */
-    $Unchecked: any
+   /** unchecked value we can extract */
+   $Unchecked: any
 
-    /** union of it's children */
-    $Child: any // FieldTypes | never
+   /** union of it's children */
+   $Child: any // FieldTypes | never
 
-    /** Reflect */
-    $Reflect: any
+   /** Reflect */
+   $Reflect: any
 }
 
 // export type FieldTypes_Reflect<T extends FieldTypes> = {

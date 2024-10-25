@@ -10,7 +10,9 @@ import type { CSSProperties, ReactNode } from 'react'
 
 // export const action = <const F extends WidgetDict>(name: string, t: Omit<Action<F>, 'name'>): Action<F> => ({ name, ...t })
 /* 🛋️ */ export type GlobalFunctionToDefineAnApp = <const FIELD extends Field>(t: App<FIELD>) => AppRef<FIELD>
-/* 🛋️ */ export type GlobalFunctionToDefineAView = <const P extends { [key: string]: any }>(t: CustomView<P>) => CustomViewRef<P>
+/* 🛋️ */ export type GlobalFunctionToDefineAView = <const P extends { [key: string]: any }>(
+   t: CustomView<P>,
+) => CustomViewRef<P>
 /* 🛋️ */ export type GlobalGetCurrentRun = () => Runtime
 
 /* shared */ export type GlobalGetCurrentForm = () => X.Builder
@@ -21,64 +23,64 @@ import type { CSSProperties, ReactNode } from 'react'
 export type ActionTags = (arg0: ActionTagMethodList) => void
 
 export type AppRef<FIELDS> = {
-    /** this is a virtual property; only here so app refs can carry the type-level form information. */
-    $FIELDS: FIELDS
-    /** app ID */
-    id: CushyAppID
+   /** this is a virtual property; only here so app refs can carry the type-level form information. */
+   $FIELDS: FIELDS
+   /** app ID */
+   id: CushyAppID
 }
 
 export type CustomViewRef<PARAMS> = {
-    /** this is a virtual property; only here so view refs can carry the type-level view params. */
-    $PARAMS: PARAMS
-    /** app ID */
-    id: CushyViewID
+   /** this is a virtual property; only here so view refs can carry the type-level view params. */
+   $PARAMS: PARAMS
+   /** app ID */
+   id: CushyViewID
 }
 
 export type $ExtractFormValueType<FIELDS extends SchemaDict> = { [k in keyof FIELDS]: FIELDS[k]['$Value'] }
 
 export type CustomView<T = any> = {
-    preview: (t: T) => ReactNode
-    render: (t: T) => ReactNode
+   preview: (t: T) => ReactNode
+   render: (t: T) => ReactNode
 }
 
 export type DraftExecutionContext = {
-    image?: Maybe<MediaImageL>
-    mask?: Maybe<MediaImageL>
-    canvas?: Maybe<UnifiedCanvas>
+   image?: Maybe<MediaImageL>
+   mask?: Maybe<MediaImageL>
+   canvas?: Maybe<UnifiedCanvas>
 }
 
 export type App<FIELD extends Field> = {
-    /** app interface (GUI) */
-    ui: (form: X.Builder) => CushySchema<FIELD>
+   /** app interface (GUI) */
+   ui: (form: X.Builder) => CushySchema<FIELD>
 
-    /* layout */
-    layout?: Maybe<DisplayRule<NoInfer<FIELD>>>
+   /* layout */
+   layout?: Maybe<DisplayRule<NoInfer<FIELD>>>
 
-    /** so you cana have fancy buttons to switch between a few things */
-    presets?: Record<string, (doc: NoInfer<FIELD>) => void>
+   /** so you cana have fancy buttons to switch between a few things */
+   presets?: Record<string, (doc: NoInfer<FIELD>) => void>
 
-    /** app execution logic */
-    run: (
-        //
-        runtime: Runtime<NoInfer<FIELD>>,
-        formResult: NoInfer<FIELD>['$Value'],
-        context: DraftExecutionContext,
-    ) => void | Promise<void>
+   /** app execution logic */
+   run: (
+      //
+      runtime: Runtime<NoInfer<FIELD>>,
+      formResult: NoInfer<FIELD>['$Value'],
+      context: DraftExecutionContext,
+   ) => void | Promise<void>
 
-    /** if set to true, will register drafts to quick action in image context menu */
-    canStartFromImage?: boolean
+   /** if set to true, will register drafts to quick action in image context menu */
+   canStartFromImage?: boolean
 
-    /** the list of dependencies user can specify */
-    metadata?: AppMetadata
+   /** the list of dependencies user can specify */
+   metadata?: AppMetadata
 
-    /** form container className */
-    containerClassName?: string
+   /** form container className */
+   containerClassName?: string
 
-    containerStyle?: CSSProperties
+   containerStyle?: CSSProperties
 
-    // HELP ============================================================
-    /** dependencies of your action */
-    customNodeRequired?: string[]
-    /** help text to show user when using their card */
-    help?: string
+   // HELP ============================================================
+   /** dependencies of your action */
+   customNodeRequired?: string[]
+   /** help text to show user when using their card */
+   help?: string
 }

@@ -19,7 +19,7 @@ import { Type } from '@sinclair/typebox'
 export type StatusT = keyof typeof Status
 // export type JSONColumnType< =
 export const Nullable = <T extends TSchema>(schema: T): TUnion<[T, TNull, TUndefined]> =>
-    Type.Union([schema, Type.Null(), Type.Undefined()])
+   Type.Union([schema, Type.Null(), Type.Undefined()])
 
 // #region CushyApp
 export type CushyScript_metafile = Metafile
@@ -98,91 +98,91 @@ export type DBRef = { fromTable: string; fromField: string; toTable: string; tof
 // }
 
 export type DeleteInstructionsFor<B> = {
-    [backref in keyof B]: 'set null' | 'cascade' | DeleteInstructionsFor<B[backref]> //
+   [backref in keyof B]: 'set null' | 'cascade' | DeleteInstructionsFor<B[backref]> //
 }
 
 export class TableInfo<
-    /** table name const-expr */
-    TableName extends keyof KyselyTables = any,
-    /* data you get when you select */
-    T extends BaseInstanceFields = BaseInstanceFields,
-    /* live entity class (wrapper around T) */
-    L = any,
-    /* data required for create */
-    N = any,
-    /* data required for update */
-    U = any,
-    /* data unique identifier */
-    ID = any,
-    /* BackRefsToHandleOnDelete */
-    B extends object = any,
+   /** table name const-expr */
+   TableName extends keyof KyselyTables = any,
+   /* data you get when you select */
+   T extends BaseInstanceFields = BaseInstanceFields,
+   /* live entity class (wrapper around T) */
+   L = any,
+   /* data required for create */
+   N = any,
+   /* data required for update */
+   U = any,
+   /* data unique identifier */
+   ID = any,
+   /* BackRefsToHandleOnDelete */
+   B extends object = any,
 > {
-    $TableName!: TableName
-    $T!: T
-    $L!: L
-    $N!: N
-    $B!: B
-    $Update!: U
-    $ID!: ID
-    $DeleteInstructions!: DeleteInstructionsFor<B>
+   $TableName!: TableName
+   $T!: T
+   $L!: L
+   $N!: N
+   $B!: B
+   $Update!: U
+   $ID!: ID
+   $DeleteInstructions!: DeleteInstructionsFor<B>
 
-    cols: SqlColDef[]
-    // insertSQL: string
-    constructor(
-        //
-        public sql_name: TableName,
-        public ts_name: string,
-        public fields: { [fieldName: string]: SqlColDef },
-        public schema: TObject<any>,
-        public refs: DBRef[],
-        public backrefs: DBRef[],
-    ) {
-        this.cols = Object.values(fields)
-        // this.insertSQL = [
-        //     `insert into ${this.sql_name}`,
-        //     `(${this.cols.map((c) => c.name).join(', ')})`,
-        //     `values`,
-        //     `(${this.cols.map((c) => `@${c.name}`).join(', ')})`,
-        // ].join(' ')
-    }
+   cols: SqlColDef[]
+   // insertSQL: string
+   constructor(
+      //
+      public sql_name: TableName,
+      public ts_name: string,
+      public fields: { [fieldName: string]: SqlColDef },
+      public schema: TObject<any>,
+      public refs: DBRef[],
+      public backrefs: DBRef[],
+   ) {
+      this.cols = Object.values(fields)
+      // this.insertSQL = [
+      //     `insert into ${this.sql_name}`,
+      //     `(${this.cols.map((c) => c.name).join(', ')})`,
+      //     `values`,
+      //     `(${this.cols.map((c) => `@${c.name}`).join(', ')})`,
+      // ].join(' ')
+   }
 
-    // TODO: use
-    hydrateJSONFields_skipMissingData = (data: any): T => {
-        if (data == null) debugger
-        for (const col of this.cols) {
-            if (col.type !== 'json') continue
-            const rawCol = data[col.name]
-            if (rawCol == null) continue
-            stats[`${this.sql_name}.${col.name}`] = (stats[col.name] || 0) + 1
+   // TODO: use
+   hydrateJSONFields_skipMissingData = (data: any): T => {
+      if (data == null) debugger
+      for (const col of this.cols) {
+         if (col.type !== 'json') continue
+         const rawCol = data[col.name]
+         if (rawCol == null) continue
+         stats[`${this.sql_name}.${col.name}`] = (stats[col.name] || 0) + 1
+         data[col.name] = JSON.parse(rawCol)
+      }
+      return data
+   }
+
+   hydrateJSONFields_crashOnMissingData = (data: any): T => {
+      if (data == null) debugger
+      for (const col of this.cols) {
+         if (col.type !== 'json') continue
+         const rawCol = data[col.name]
+         // when value is null
+         if (rawCol == null) {
+            if (col.notnull) throw new Error(`json column ${col.name} is null`)
+            data[col.name] = null
+            continue
+         }
+         // 2024-06-26 ------------------------------------------------------------
+         try {
+            // when value is present
             data[col.name] = JSON.parse(rawCol)
-        }
-        return data
-    }
-
-    hydrateJSONFields_crashOnMissingData = (data: any): T => {
-        if (data == null) debugger
-        for (const col of this.cols) {
-            if (col.type !== 'json') continue
-            const rawCol = data[col.name]
-            // when value is null
-            if (rawCol == null) {
-                if (col.notnull) throw new Error(`json column ${col.name} is null`)
-                data[col.name] = null
-                continue
-            }
-            // 2024-06-26 ------------------------------------------------------------
-            try {
-                // when value is present
-                data[col.name] = JSON.parse(rawCol)
-                stats[`${this.sql_name}.${col.name}`] = (stats[col.name] || 0) + 1
-            } catch (e) {
-                console.log(`[🔴] ERROR parsing field ${col.name} of table ${this.sql_name}`)
-                throw e
-            }
-            // -----------------------------------------------------------------------
-        }
-        return data
-    }
+            stats[`${this.sql_name}.${col.name}`] = (stats[col.name] || 0) + 1
+         } catch (e) {
+            console.log(`[🔴] ERROR parsing field ${col.name} of table ${this.sql_name}`)
+            throw e
+         }
+         // -----------------------------------------------------------------------
+      }
+      return data
+   }
 }
 
 const stats: any = {}

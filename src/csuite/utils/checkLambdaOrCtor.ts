@@ -7,8 +7,8 @@
  * @since 2024-09-23
  */
 export function checkLambdaOrCtor(ctor: any): 'ctor' | 'closure' {
-    if (ctor.prototype && ctor.prototype.constructor === ctor) {
-        return 'ctor'
-    }
-    return 'closure'
+   if (ctor.prototype && ctor.prototype.constructor === ctor) {
+      return 'ctor'
+   }
+   return 'closure'
 }

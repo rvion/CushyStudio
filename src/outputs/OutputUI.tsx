@@ -26,16 +26,16 @@ import { OutputWorkflowPreviewUI, OutputWorkflowUI } from './OutputWorkflowUI'
 
 // PREVIEW -----------------------------------------------------------------------------
 export const OutputPreviewUI = observer(function StepOutputUI_(p: {
-    //
-    step?: Maybe<StepL>
-    output: StepOutput
-    size?: string
+   //
+   step?: Maybe<StepL>
+   output: StepOutput
+   size?: string
 }) {
-    return (
-        <OutputPreviewWrapperUI output={p.output} size={p.size}>
-            <OutputPreview_ContentUI step={p.step} output={p.output} />
-        </OutputPreviewWrapperUI>
-    )
+   return (
+      <OutputPreviewWrapperUI output={p.output} size={p.size}>
+         <OutputPreview_ContentUI step={p.step} output={p.output} />
+      </OutputPreviewWrapperUI>
+   )
 })
 
 // prettier-ignore

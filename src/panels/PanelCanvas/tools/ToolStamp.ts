@@ -3,10 +3,10 @@ import type { UnifiedCanvas } from '../states/UnifiedCanvas'
 import type { ICanvasTool } from '../utils/_ICanvasTool'
 
 export class ToolStamp implements ICanvasTool {
-    id: 'stamp' = 'stamp'
-    category: 'draw' = 'draw'
-    icon: IconName = 'mdiStamper'
-    description = '....'
+   id: 'stamp' = 'stamp'
+   category: 'draw' = 'draw'
+   icon: IconName = 'mdiStamper'
+   description = '....'
 
-    constructor(public canvas: UnifiedCanvas) {}
+   constructor(public canvas: UnifiedCanvas) {}
 }

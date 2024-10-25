@@ -21,23 +21,23 @@ export type PluginInfo = {
 };
 
 export const CustomNodesInfo_Schema = Type.Object(
-    {
-        author: Type.String(),
-        reference: Type.String(),
-        title: Type.String() as any,
-        files: Type.Array(Type.String()) as any,
-        install_type: Type.String(),
-        description: Type.String(),
-        preemptions: Type.Optional(Type.Array(Type.String())),
-        //
-        pip: Type.Optional(Type.Array(Type.String())),
-        nodename_pattern: Type.Optional(Type.String()),
-        apt_dependency: Type.Optional(Type.Array(Type.String())),
-        js_path: Type.Optional(Type.String()),
-    },
-    { additionalProperties: false },
+   {
+      author: Type.String(),
+      reference: Type.String(),
+      title: Type.String() as any,
+      files: Type.Array(Type.String()) as any,
+      install_type: Type.String(),
+      description: Type.String(),
+      preemptions: Type.Optional(Type.Array(Type.String())),
+      //
+      pip: Type.Optional(Type.Array(Type.String())),
+      nodename_pattern: Type.Optional(Type.String()),
+      apt_dependency: Type.Optional(Type.Array(Type.String())),
+      js_path: Type.Optional(Type.String()),
+   },
+   { additionalProperties: false },
 )
 
 export type CustomNodeFile = {
-    custom_nodes: PluginInfo[]
+   custom_nodes: PluginInfo[]
 }

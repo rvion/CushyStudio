@@ -14,90 +14,90 @@ import { UCLayerUI } from './UCLayerUI'
 import { UCMaskMenuUI } from './UCMaskMenuUI'
 
 export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {}) {
-    const uc1 = useUnifiedCanvas()
-    const ucv2 = useUCV2()
-    const layers = ucv2.Layers
-    const masks = ucv2.Masks.items
+   const uc1 = useUnifiedCanvas()
+   const ucv2 = useUCV2()
+   const layers = ucv2.Layers
+   const masks = ucv2.Masks.items
 
-    const [dropStyle2, dropRef2] = useImageDrop(cushy, (img) => {
-        // TODO: move as method once setup with custom classes finished
-        // canvas.addMask(img)
-        ucv2.Masks.push({
-            image: img,
-            visible: true,
-            name: 'masky-mac-mask-face',
-            placement: mkPlacement({ x: 0, y: 0 }),
-        })
-    })
-    return (
-        <>
-            <BasicShelfUI anchor='right' floating tw='flex flex-col gap-1.5 p-1.5'>
-                {/* TOP LEVEL BUTTON */}
-                <Frame tw='rounded-md p-2' style={{ filter: 'drop-shadow(0px 1px 0px black)' }}>
-                    Layers
-                    <Frame tw='rounded-md p-2' base={{ contrast: -0.1 }}>
-                        <div /* SortableList */ className='list' tw='flex flex-col gap-2'>
-                            {layers.items.map((layer, i) => {
-                                return layer.Content.match({
-                                    image: () => (
-                                        <UCLayerUI //
-                                            active={layer === uc1.activeLayer}
-                                            layer={layer}
-                                            index={i}
-                                        />
-                                    ),
-                                    aiGeneration: (x) => (
-                                        <div>
-                                            <UCLayerUI active={layer === uc1.activeLayer} layer={layer} index={i} />
-                                            <x.DraftId.UI Shell={ShellInputOnly} />
-                                            <DraftInlineImageOutputsUI
-                                                onCLick={(img) => (x.Image.value = img)}
-                                                draftID={x.DraftId.value.id}
-                                            />
-                                            <div tw='flex gap-1'>
-                                                <Button icon='mdiCursorMove' />
-                                                <Button
-                                                    icon='mdiPlay'
-                                                    onClick={() => {
-                                                        const draft = cushy.db.draft.get(x.DraftId.value.id)
-                                                        if (!draft) return toastError('Draft not found')
-                                                        draft.start({
-                                                            /* context */
-                                                        })
-                                                    }}
-                                                />
-                                                <Button
-                                                    icon='mdiContentCopy'
-                                                    onClick={() => {
-                                                        const newLayer = layers.duplicateItemAtIndex(i)
-                                                        if (newLayer == null) return toastError('Failed to duplicate layer')
-                                                        newLayer.Content.matchAll({
-                                                            aiGeneration: (x) => x.Image.setActive(false),
-                                                        })
-                                                        // should create a copy of that layer, below, without any image selected
-                                                    }}
-                                                />
-                                            </div>
-                                        </div>
-                                    ),
-                                })
-                            })}
-                        </div>
-                    </Frame>
-                </Frame>
-                <Frame tw='rounded-md p-2' style={{ filter: 'drop-shadow(0px 1px 0px black)' }}>
-                    Masks
-                    <Frame tw='rounded-md p-2' base={{ contrast: -0.1 }}>
-                        <div /* SortableList */ className='list' tw='flex flex-col gap-2'>
-                            {masks.map((p, i) => {
-                                return <UCMaskMenuUI mask={p} index={i} />
-                            })}
-                        </div>
-                    </Frame>
-                </Frame>
-            </BasicShelfUI>
-        </>
-    )
+   const [dropStyle2, dropRef2] = useImageDrop(cushy, (img) => {
+      // TODO: move as method once setup with custom classes finished
+      // canvas.addMask(img)
+      ucv2.Masks.push({
+         image: img,
+         visible: true,
+         name: 'masky-mac-mask-face',
+         placement: mkPlacement({ x: 0, y: 0 }),
+      })
+   })
+   return (
+      <>
+         <BasicShelfUI anchor='right' floating tw='flex flex-col gap-1.5 p-1.5'>
+            {/* TOP LEVEL BUTTON */}
+            <Frame tw='rounded-md p-2' style={{ filter: 'drop-shadow(0px 1px 0px black)' }}>
+               Layers
+               <Frame tw='rounded-md p-2' base={{ contrast: -0.1 }}>
+                  <div /* SortableList */ className='list' tw='flex flex-col gap-2'>
+                     {layers.items.map((layer, i) => {
+                        return layer.Content.match({
+                           image: () => (
+                              <UCLayerUI //
+                                 active={layer === uc1.activeLayer}
+                                 layer={layer}
+                                 index={i}
+                              />
+                           ),
+                           aiGeneration: (x) => (
+                              <div>
+                                 <UCLayerUI active={layer === uc1.activeLayer} layer={layer} index={i} />
+                                 <x.DraftId.UI Shell={ShellInputOnly} />
+                                 <DraftInlineImageOutputsUI
+                                    onCLick={(img) => (x.Image.value = img)}
+                                    draftID={x.DraftId.value.id}
+                                 />
+                                 <div tw='flex gap-1'>
+                                    <Button icon='mdiCursorMove' />
+                                    <Button
+                                       icon='mdiPlay'
+                                       onClick={() => {
+                                          const draft = cushy.db.draft.get(x.DraftId.value.id)
+                                          if (!draft) return toastError('Draft not found')
+                                          draft.start({
+                                             /* context */
+                                          })
+                                       }}
+                                    />
+                                    <Button
+                                       icon='mdiContentCopy'
+                                       onClick={() => {
+                                          const newLayer = layers.duplicateItemAtIndex(i)
+                                          if (newLayer == null) return toastError('Failed to duplicate layer')
+                                          newLayer.Content.matchAll({
+                                             aiGeneration: (x) => x.Image.setActive(false),
+                                          })
+                                          // should create a copy of that layer, below, without any image selected
+                                       }}
+                                    />
+                                 </div>
+                              </div>
+                           ),
+                        })
+                     })}
+                  </div>
+               </Frame>
+            </Frame>
+            <Frame tw='rounded-md p-2' style={{ filter: 'drop-shadow(0px 1px 0px black)' }}>
+               Masks
+               <Frame tw='rounded-md p-2' base={{ contrast: -0.1 }}>
+                  <div /* SortableList */ className='list' tw='flex flex-col gap-2'>
+                     {masks.map((p, i) => {
+                        return <UCMaskMenuUI mask={p} index={i} />
+                     })}
+                  </div>
+               </Frame>
+            </Frame>
+         </BasicShelfUI>
+      </>
+   )
 })
 
 // {/* SELECTIONS */}

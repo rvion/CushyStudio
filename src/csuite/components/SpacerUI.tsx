@@ -17,5 +17,5 @@ import { observer } from 'mobx-react-lite'
  * ```
  */
 export const SpacerUI = observer(function SpacerUI_(p: {}) {
-    return <div tw={['ml-auto']} />
+   return <div tw={['ml-auto']} />
 })

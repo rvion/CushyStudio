@@ -11,37 +11,37 @@ type SupaPublishedApp = Database['public']['Tables']['published_apps']['Row']
 // type SupaUser = Database['auth']['Tables']['users']['Row']
 
 export class Marketplace {
-    constructor(public st: STATE) {
-        makeAutoObservable(this)
-    }
+   constructor(public st: STATE) {
+      makeAutoObservable(this)
+   }
 
-    query = new Debounced('', 300)
-    selectedApp: Maybe<SupaPublishedApp> = null
+   query = new Debounced('', 300)
+   selectedApp: Maybe<SupaPublishedApp> = null
 
-    getUserInfoViaAuth = (user_id: string) => {}
+   getUserInfoViaAuth = (user_id: string) => {}
 
-    getUserInfoViaDB = (user_id: string) => 0
-    // Kwery.get('getUserInfo', { user_id }, async () => {
-    //     const x: PostgrestSingleResponse<SupaUser[]> = await this.st.supabase
-    //         .schema('auth') //
-    //         .from('users')
-    //         .select('*')
-    //         .eq('id', user_id)
-    //     return x.data?.[0]
-    // })
+   getUserInfoViaDB = (user_id: string) => 0
+   // Kwery.get('getUserInfo', { user_id }, async () => {
+   //     const x: PostgrestSingleResponse<SupaUser[]> = await this.st.supabase
+   //         .schema('auth') //
+   //         .from('users')
+   //         .select('*')
+   //         .eq('id', user_id)
+   //     return x.data?.[0]
+   // })
 
-    publishedApps = () =>
-        Promize.get(
-            'fetchAllPublishedApps',
-            { q: this.query.debouncedValue },
-            async (): Promise<PostgrestSingleResponse<SupaPublishedApp[]>> => {
-                const x = await this.st.supabase //
-                    .from('published_apps')
-                    .select('*')
-                    .filter('name', 'ilike', `%${this.query.debouncedValue}%`)
-                    .limit(10)
-                // this._allPublishedApps = x
-                return x
-            },
-        )
+   publishedApps = () =>
+      Promize.get(
+         'fetchAllPublishedApps',
+         { q: this.query.debouncedValue },
+         async (): Promise<PostgrestSingleResponse<SupaPublishedApp[]>> => {
+            const x = await this.st.supabase //
+               .from('published_apps')
+               .select('*')
+               .filter('name', 'ilike', `%${this.query.debouncedValue}%`)
+               .limit(10)
+            // this._allPublishedApps = x
+            return x
+         },
+      )
 }

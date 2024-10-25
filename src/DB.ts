@@ -5,12 +5,14 @@ import { Kysely, SqliteDialect } from 'kysely'
 
 // ---------------------------------------------------------------
 const dialect = new SqliteDialect({
-    // database: SQLite(DB_RELATIVE_PATH, { nativeBinding: 'node_modules/better-sqlite3/build/Release/better_sqlite3.node' }),
-    database: new SQLite(':memory:', { nativeBinding: 'node_modules/better-sqlite3/build/Release/better_sqlite3.node' }),
+   // database: SQLite(DB_RELATIVE_PATH, { nativeBinding: 'node_modules/better-sqlite3/build/Release/better_sqlite3.node' }),
+   database: new SQLite(':memory:', {
+      nativeBinding: 'node_modules/better-sqlite3/build/Release/better_sqlite3.node',
+   }),
 })
 
 export const kysely = new Kysely<KyselyTables>({
-    dialect,
+   dialect,
 })
 
 // DEBUG: // db

@@ -6,7 +6,7 @@ export const MenuSym = Symbol('BoundMenu')
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const isMenu = (x: any): x is Menu =>
-    x != null && //
-    typeof x === 'object' &&
-    '$SYM' in x &&
-    x.$SYM === MenuSym
+   x != null && //
+   typeof x === 'object' &&
+   '$SYM' in x &&
+   x.$SYM === MenuSym

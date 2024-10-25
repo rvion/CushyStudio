@@ -1,17 +1,17 @@
 export type Mixins<T> = {
-    [k: string]: PropertyDescriptor & ThisType<T>
+   [k: string]: PropertyDescriptor & ThisType<T>
 }
 
 type Class<T> = {
-    new (...args: any[]): T
+   new (...args: any[]): T
 }
 
 export const MIX = <T>(TargetCls: Class<T>, mixins: Mixins<T>) => {
-    return Object.defineProperties(TargetCls.prototype, mixins)
+   return Object.defineProperties(TargetCls.prototype, mixins)
 }
 
 export const MERGE_PROTOTYPES = (TargetCls: Class<unknown>, SrcCls: Class<unknown>) => {
-    return Object.defineProperties(TargetCls.prototype, Object.getOwnPropertyDescriptors(SrcCls.prototype))
+   return Object.defineProperties(TargetCls.prototype, Object.getOwnPropertyDescriptors(SrcCls.prototype))
 }
 
 // ⏸️ export const MERGE_PROTOTYPES_V2 = (TargetCls: Class<unknown>, SrcCls: Class<unknown>) => {

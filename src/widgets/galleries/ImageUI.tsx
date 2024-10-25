@@ -9,71 +9,71 @@ import { useImageDrag } from './dnd'
 import { ImageErrorDisplayUI } from './ImageErrorDisplayUI'
 
 export const ImageUI = observer(function ImageUI_({
-    size,
-    img,
-    onClick,
-    className,
-    style,
-    // blurred,
-    ...rest
+   size,
+   img,
+   onClick,
+   className,
+   style,
+   // blurred,
+   ...rest
 }: {
-    size: number /* px */
-    img: MediaImageL | MediaImageID
-    onClick?: (img: MediaImageL) => void
-    className?: string
-    // blurred?: boolean
-    style?: React.CSSProperties
+   size: number /* px */
+   img: MediaImageL | MediaImageID
+   onClick?: (img: MediaImageL) => void
+   className?: string
+   // blurred?: boolean
+   style?: React.CSSProperties
 }) {
-    const image = typeof img === 'string' ? cushy.db.media_image.get(img) : img
-    const ImageWidth = `${size}px`
+   const image = typeof img === 'string' ? cushy.db.media_image.get(img) : img
+   const ImageWidth = `${size}px`
 
-    if (image == null) {
-        return <div style={{ width: ImageWidth, height: ImageWidth }}>❌</div>
-    }
+   if (image == null) {
+      return <div style={{ width: ImageWidth, height: ImageWidth }}>❌</div>
+   }
 
-    const [{ opacity }, dragRef] = useImageDrag(image! /* 🔴 */)
-    const IMG = (
-        <img
-            className={className}
-            tw='bg-contain bg-center bg-no-repeat object-contain'
-            // src={image.url}
-            src={image.urlForSize(size)}
-            onMouseEnter={image.onMouseEnter}
-            onMouseLeave={image.onMouseLeave}
-            onClick={onClick ? (): void => void onClick(image) : image.onClick}
-            onAuxClick={(ev) => {
-                if (ev.button === 1) return image.onMiddleClick()
-                if (ev.button === 2) return image.onRightClick()
-            }}
-            ref={dragRef}
-            style={{
-                // not really necessary; let's just keep the bare minimum to make things faster
-                // backgroundImage: `url(${image.thumbhashURL})`,
-                width: ImageWidth,
-                height: ImageWidth,
-                // filter: blurred ? 'blur(10px)' : undefined,
-                opacity,
-                ...style,
-            }}
-            {...rest}
-        />
-    )
+   const [{ opacity }, dragRef] = useImageDrag(image! /* 🔴 */)
+   const IMG = (
+      <img
+         className={className}
+         tw='bg-contain bg-center bg-no-repeat object-contain'
+         // src={image.url}
+         src={image.urlForSize(size)}
+         onMouseEnter={image.onMouseEnter}
+         onMouseLeave={image.onMouseLeave}
+         onClick={onClick ? (): void => void onClick(image) : image.onClick}
+         onAuxClick={(ev) => {
+            if (ev.button === 1) return image.onMiddleClick()
+            if (ev.button === 2) return image.onRightClick()
+         }}
+         ref={dragRef}
+         style={{
+            // not really necessary; let's just keep the bare minimum to make things faster
+            // backgroundImage: `url(${image.thumbhashURL})`,
+            width: ImageWidth,
+            height: ImageWidth,
+            // filter: blurred ? 'blur(10px)' : undefined,
+            opacity,
+            ...style,
+         }}
+         {...rest}
+      />
+   )
 
-    if (image.existsLocally && !existsSync(image?.absPath as PathLike))
-        return (
-            <ImageErrorDisplayUI //
-                className='hover:border-transparent'
-                icon={'folder'}
-            />
-        )
+   if (image.existsLocally && !existsSync(image?.absPath as PathLike))
+      return (
+         <ImageErrorDisplayUI //
+            className='hover:border-transparent'
+            icon={'folder'}
+         />
+      )
 
-    return (
-        <RevealUI //
-            trigger='rightClick'
-            relativeTo='mouse'
-            tw='shrink-0'
-            content={() => <ImageDropdownMenuUI img={image} />}
-            children={IMG}
-        />
-    )
+   return (
+      <RevealUI //
+         trigger='rightClick'
+         relativeTo='mouse'
+         tw='shrink-0'
+         content={() => <ImageDropdownMenuUI img={image} />}
+         children={IMG}
+      />
+   )
 })

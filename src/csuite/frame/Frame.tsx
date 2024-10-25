@@ -25,71 +25,71 @@ import { frameMode } from './frameMode'
 import { tooltipStuff } from './tooltip'
 
 export type FrameProps = {
-    //
-    as?: string
+   //
+   as?: string
 
-    /** by default, frames are flex, if you want them to be block, use `block` property, or change the display property manually */
-    block?: boolean
+   /** by default, frames are flex, if you want them to be block, use `block` property, or change the display property manually */
+   block?: boolean
 
-    tooltip?: string
-    tooltipPlacement?: RevealPlacement
+   tooltip?: string
+   tooltipPlacement?: RevealPlacement
 
-    /** should be moved to Box props soon */
-    boxShadow?: SimpleBoxShadow
-    dropShadow?: SimpleDropShadow
+   /** should be moved to Box props soon */
+   boxShadow?: SimpleBoxShadow
+   dropShadow?: SimpleDropShadow
 
-    // quick layout ----------------------------------------------------
-    /** quick layout feature to add `flex flex-row` */
-    row?: boolean
-    /** quick layout feature to add `flex flex-row items-center` */
-    line?: boolean
-    linegap?: boolean
-    wrap?: boolean
-    /** quick layout feature to add `flex flex-row` */
-    col?: boolean
+   // quick layout ----------------------------------------------------
+   /** quick layout feature to add `flex flex-row` */
+   row?: boolean
+   /** quick layout feature to add `flex flex-row items-center` */
+   line?: boolean
+   linegap?: boolean
+   wrap?: boolean
+   /** quick layout feature to add `flex flex-row` */
+   col?: boolean
 
-    // hovering --------------------------------------------------------
+   // hovering --------------------------------------------------------
 
-    /** allow to pretend the frame is hovered */
-    hovered?: (reallyHovered: boolean) => boolean | undefined
+   /** allow to pretend the frame is hovered */
+   hovered?: (reallyHovered: boolean) => boolean | undefined
 
-    // logic --------------------------------------------------
-    /** TODO: */
-    triggerOnPress?: ClickAndSlideConf
-    // STATES MODIFIERS ------------------------------------------------
-    active?: Maybe<boolean>
-    loading?: boolean
-    disabled?: boolean
+   // logic --------------------------------------------------
+   /** TODO: */
+   triggerOnPress?: ClickAndSlideConf
+   // STATES MODIFIERS ------------------------------------------------
+   active?: Maybe<boolean>
+   loading?: boolean
+   disabled?: boolean
 
-    // FITT size -------------------------------------------------------
-    // /** when true flex=1 */
-    expand?: boolean
+   // FITT size -------------------------------------------------------
+   // /** when true flex=1 */
+   expand?: boolean
 
-    /** border-radius */
-    roundness?: number | string
+   /** border-radius */
+   roundness?: number | string
 
-    /** HIGH LEVEL THEME-DEFINED BOX STYLES */
-    look?: FrameAppearance
-    // ICON ------------------------------------------------------------
-    icon?: Maybe<IconName>
-    iconSize?: string
+   /** HIGH LEVEL THEME-DEFINED BOX STYLES */
+   look?: FrameAppearance
+   // ICON ------------------------------------------------------------
+   icon?: Maybe<IconName>
+   iconSize?: string
 
-    suffixIcon?: Maybe<IconName>
-    noColorStuff?: boolean
+   suffixIcon?: Maybe<IconName>
+   noColorStuff?: boolean
 
-    /** Makes children of the Frame "!rounded-none !border-none", grouping them together visually */
-    align?: boolean
+   /** Makes children of the Frame "!rounded-none !border-none", grouping them together visually */
+   align?: boolean
 } & BoxUIProps &
-    /** Sizing and aspect ratio vocabulary */
-    FrameSize
+   /** Sizing and aspect ratio vocabulary */
+   FrameSize
 
 // ------------------------------------------------------------------
 export const Frame = observer(
-    forwardRef(function Frame_(p: FrameProps, ref: ForwardedRef<HTMLDivElement>) {
-        // PROPS --------------------------------------------
+   forwardRef(function Frame_(p: FrameProps, ref: ForwardedRef<HTMLDivElement>) {
+      // PROPS --------------------------------------------
 
-        // prettier-ignore
-        const {
+      // prettier-ignore
+      const {
             as,                                                 // html
 
             align, active, disabled,                            // built-in state & style modifiers
@@ -113,128 +113,130 @@ export const Frame = observer(
             ...rest
         } = p
 
-        // TEMPLATE -------------------------------------------
-        // const theme = useTheme().value
-        const prevCtx = useContext(CurrentStyleCtx)
-        const box = normalizeBox(p)
-        const [hovered_, setHovered] = useState(false)
-        const hovered = hovered__ ? hovered__(hovered_) : hovered_
-        const noColorStuff = p.noColorStuff ?? prevCtx.noColorStuff
+      // TEMPLATE -------------------------------------------
+      // const theme = useTheme().value
+      const prevCtx = useContext(CurrentStyleCtx)
+      const box = normalizeBox(p)
+      const [hovered_, setHovered] = useState(false)
+      const hovered = hovered__ ? hovered__(hovered_) : hovered_
+      const noColorStuff = p.noColorStuff ?? prevCtx.noColorStuff
 
-        // 👉 2024-06-12 rvion: we should probably be able to
-        // | stop here by checking against a hash of those props
-        // | + prevCtx + box + look + disabled + hovered + active + boxShadow
-        // 👉 2024-07-22 rvion: done
-        const { variables, nextDir, KBase, nextext }: ComputedColors = noColorStuff // 🔴
-            ? { variables: {}, nextDir: prevCtx.dir ?? 1, KBase: prevCtx.base, nextext: prevCtx.text }
-            : computeColors(prevCtx, box, look, disabled, hovered, active, boxShadow, dropShadow, roundness)
+      // 👉 2024-06-12 rvion: we should probably be able to
+      // | stop here by checking against a hash of those props
+      // | + prevCtx + box + look + disabled + hovered + active + boxShadow
+      // 👉 2024-07-22 rvion: done
+      const { variables, nextDir, KBase, nextext }: ComputedColors = noColorStuff // 🔴
+         ? { variables: {}, nextDir: prevCtx.dir ?? 1, KBase: prevCtx.base, nextext: prevCtx.text }
+         : computeColors(prevCtx, box, look, disabled, hovered, active, boxShadow, dropShadow, roundness)
 
-        // ===================================================================
-        const _onMouseOver = (ev: MouseEvent): void => {
-            // console.log(`[🤠] hover`, ev.currentTarget)
-            if (p.hover != null) setHovered(true)
-            if (tooltip != null) {
-                const elem = ev.currentTarget
-                const depth = getDOMElementDepth(elem)
-                runInAction(() => {
-                    tooltipStuff.tooltips.set(depth, {
-                        depth,
-                        ref: elem,
-                        text: tooltip ?? 'test',
-                        placement: tooltipPlacement ?? 'auto',
-                    })
-                })
+      // ===================================================================
+      const _onMouseOver = (ev: MouseEvent): void => {
+         // console.log(`[🤠] hover`, ev.currentTarget)
+         if (p.hover != null) setHovered(true)
+         if (tooltip != null) {
+            const elem = ev.currentTarget
+            const depth = getDOMElementDepth(elem)
+            runInAction(() => {
+               tooltipStuff.tooltips.set(depth, {
+                  depth,
+                  ref: elem,
+                  text: tooltip ?? 'test',
+                  placement: tooltipPlacement ?? 'auto',
+               })
+            })
+         }
+      }
+
+      const _onMouseOut = (ev: MouseEvent): void => {
+         if (p.hover != null) setHovered(false)
+         if (tooltip != null) {
+            const elem = ev.currentTarget
+            const depth = getDOMElementDepth(elem)
+            const prev = tooltipStuff.tooltips.get(depth)
+            if (prev?.ref === ev.currentTarget) {
+               runInAction(() => {
+                  tooltipStuff.tooltips.delete(depth)
+               })
             }
-        }
+         }
+      }
 
-        const _onMouseOut = (ev: MouseEvent): void => {
-            if (p.hover != null) setHovered(false)
-            if (tooltip != null) {
-                const elem = ev.currentTarget
-                const depth = getDOMElementDepth(elem)
-                const prev = tooltipStuff.tooltips.get(depth)
-                if (prev?.ref === ev.currentTarget) {
-                    runInAction(() => {
-                        tooltipStuff.tooltips.delete(depth)
-                    })
-                }
+      // for typescript perf reason, let's not care about the `as` prop
+      // and just pretend it's always a div. it will mostly always be.
+
+      const Elem: 'div' = (as ?? 'div') as 'div'
+      // ===================================================================
+      return (
+         <Elem //
+            ref={ref}
+            // 📋 tooltip is now handled by csuite directly
+            // | no need to rely on the browser's default tooltip
+            // | // title={tooltip}
+
+            onMouseOver={_onMouseOver}
+            onMouseOut={_onMouseOut}
+            // special-case: if it's a button, let's add type=button to disable form submission
+            {...(as === 'button' ? { type: 'button' } : {})}
+            // special-case: if it's an image, let's make it lazy; should be the default
+            {...(as === 'image' ? { loading: 'lazy' } : {})}
+            tw={[
+               'box',
+               noColorStuff === true
+                  ? undefined
+                  : frameMode === 'CLASSNAME'
+                    ? compileOrRetrieveClassName(variables)
+                    : undefined,
+               // 'flex',
+               size && `box-${size}`,
+               square && `box-square`,
+               loading && 'relative',
+               expand && 'flex-1',
+               // layout
+               p.line && 'flex flex-row items-center gap-x-1',
+               // p.linegap && 'flex flex-row items-center gap-x-2',
+               p.row && 'flex flex-row',
+               p.col && 'flex flex-col',
+               p.wrap && 'flex-wrap',
+               p.align && [
+                  // Clip children to fix border issues and make the children styled correctly
+                  'h-input flex !gap-0 overflow-clip [&>*]:!rounded-none [&>*]:!border-0',
+                  // Add borders/"dividers" where needed (Right of every child except last)
+                  '[&>*:not(:last-child)]:!border-r',
+                  // '[&>*:not(:last-child)]:!mr-[1px]',
+               ],
+               className,
+            ]}
+            // style={{ position: 'relative' }}
+            style={
+               noColorStuff === true
+                  ? style
+                  : frameMode === 'CLASSNAME' //
+                    ? style
+                    : objectAssignTsEfficient_t_t(style, variables)
             }
-        }
-
-        // for typescript perf reason, let's not care about the `as` prop
-        // and just pretend it's always a div. it will mostly always be.
-
-        const Elem: 'div' = (as ?? 'div') as 'div'
-        // ===================================================================
-        return (
-            <Elem //
-                ref={ref}
-                // 📋 tooltip is now handled by csuite directly
-                // | no need to rely on the browser's default tooltip
-                // | // title={tooltip}
-
-                onMouseOver={_onMouseOver}
-                onMouseOut={_onMouseOut}
-                // special-case: if it's a button, let's add type=button to disable form submission
-                {...(as === 'button' ? { type: 'button' } : {})}
-                // special-case: if it's an image, let's make it lazy; should be the default
-                {...(as === 'image' ? { loading: 'lazy' } : {})}
-                tw={[
-                    'box',
-                    noColorStuff === true
-                        ? undefined
-                        : frameMode === 'CLASSNAME'
-                          ? compileOrRetrieveClassName(variables)
-                          : undefined,
-                    // 'flex',
-                    size && `box-${size}`,
-                    square && `box-square`,
-                    loading && 'relative',
-                    expand && 'flex-1',
-                    // layout
-                    p.line && 'flex flex-row items-center gap-x-1',
-                    // p.linegap && 'flex flex-row items-center gap-x-2',
-                    p.row && 'flex flex-row',
-                    p.col && 'flex flex-col',
-                    p.wrap && 'flex-wrap',
-                    p.align && [
-                        // Clip children to fix border issues and make the children styled correctly
-                        'h-input flex !gap-0 overflow-clip [&>*]:!rounded-none [&>*]:!border-0',
-                        // Add borders/"dividers" where needed (Right of every child except last)
-                        '[&>*:not(:last-child)]:!border-r',
-                        // '[&>*:not(:last-child)]:!mr-[1px]',
-                    ],
-                    className,
-                ]}
-                // style={{ position: 'relative' }}
-                style={
-                    noColorStuff === true
-                        ? style
-                        : frameMode === 'CLASSNAME' //
-                          ? style
-                          : objectAssignTsEfficient_t_t(style, variables)
-                }
-                {...rest}
-                {...(triggerOnPress != null
-                    ? usePressLogic({ onMouseDown, onMouseEnter, onClick }, triggerOnPress)
-                    : { onMouseDown, onMouseEnter, onClick })}
+            {...rest}
+            {...(triggerOnPress != null
+               ? usePressLogic({ onMouseDown, onMouseEnter, onClick }, triggerOnPress)
+               : { onMouseDown, onMouseEnter, onClick })}
+         >
+            <CurrentStyleCtx.Provider
+               value={{
+                  dir: nextDir,
+                  base: KBase,
+                  text: nextext,
+                  noColorStuff: noColorStuff,
+               }}
             >
-                <CurrentStyleCtx.Provider
-                    value={{
-                        dir: nextDir,
-                        base: KBase,
-                        text: nextext,
-                        noColorStuff: noColorStuff,
-                    }}
-                >
-                    {icon && <IkonOf tw='pointer-events-none flex-none' name={icon} size={iconSize} />}
-                    {p.children}
-                    {suffixIcon && <IkonOf tw='pointer-events-none' name={suffixIcon} size={iconSize} />}
-                    {loading && <div tw='loading loading-spinner loading-sm absolute self-center justify-self-center' />}
-                </CurrentStyleCtx.Provider>
-            </Elem>
-        )
-    }),
+               {icon && <IkonOf tw='pointer-events-none flex-none' name={icon} size={iconSize} />}
+               {p.children}
+               {suffixIcon && <IkonOf tw='pointer-events-none' name={suffixIcon} size={iconSize} />}
+               {loading && (
+                  <div tw='loading loading-spinner loading-sm absolute self-center justify-self-center' />
+               )}
+            </CurrentStyleCtx.Provider>
+         </Elem>
+      )
+   }),
 )
 
 Frame.displayName = 'Frame'

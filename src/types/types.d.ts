@@ -25,9 +25,9 @@ declare type ConvertibleImageFormat =
     | 'raw'
 
 declare type ImageSaveFormat = {
-    format: ConvertibleImageFormat
-    prefix?: string
-    quality?: number
+   format: ConvertibleImageFormat
+   prefix?: string
+   quality?: number
 }
 
 // --------------
