@@ -58,35 +58,11 @@ export type RevealComputedPosition = {
 export const computePlacement = (
    //
    placement: RevealPlacement,
-   anchor: DOMRect,
+   anchor: DOMRect | null,
 ): RevealComputedPosition => {
    // 2024-09-06 domi: we could consider something like https://floating-ui.com/docs/tutorial
    // it seems to exclusively handle the positioning
    // may do that well and integrate with our custom reveal
-
-   // ABOVE =======================================================================================
-   if (placement === 'above') {
-      return {
-         top: anchor.top,
-         left: anchor.left,
-         width: anchor.width,
-         height: anchor.height,
-         maxWidth: anchor.width, // do we need do double the information ?
-         maxHeight: anchor.height, // do we need do double the information ?
-         // TODO: review those two lines below:
-         minWidth: anchor.width,
-         minHeight: anchor.height,
-      }
-   }
-   if (placement === 'above-no-clamp') {
-      return {
-         top: anchor.top,
-         left: anchor.left,
-         // TODO: review those two lines below:
-         minWidth: anchor.width,
-         minHeight: anchor.height,
-      }
-   }
 
    // ABSOLUTE ====================================================================================
    if (placement === 'screen')
@@ -131,6 +107,37 @@ export const computePlacement = (
          maxHeight: '98vh',
       }
 
+   if (anchor == null) {
+      return {
+         top: 0,
+         left: 0,
+      }
+   }
+
+   // ABOVE =======================================================================================
+   if (placement === 'above') {
+      return {
+         top: anchor.top,
+         left: anchor.left,
+         width: anchor.width,
+         height: anchor.height,
+         maxWidth: anchor.width, // do we need do double the information ?
+         maxHeight: anchor.height, // do we need do double the information ?
+         // TODO: review those two lines below:
+         minWidth: anchor.width,
+         minHeight: anchor.height,
+      }
+   }
+
+   if (placement === 'above-no-clamp') {
+      return {
+         top: anchor.top,
+         left: anchor.left,
+         // TODO: review those two lines below:
+         minWidth: anchor.width,
+         minHeight: anchor.height,
+      }
+   }
    // AUTO ========================================================================================
    if (placement === 'autoHorizontalStart') {
       placement =

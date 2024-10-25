@@ -96,7 +96,7 @@ export type RevealProps = {
    /** @since 2024-07-23 */
    shell?: FC<RevealShellProps> | KnownShells
    content: FC<RevealContentProps> // | null
-   children: React.ReactNode //, React.ReactNode]
+   children?: React.ReactNode //, React.ReactNode]
    title?: React.ReactNode // only for popup
 
    // callbacks if we need to add side effects after reveal/hide

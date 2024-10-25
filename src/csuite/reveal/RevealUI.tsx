@@ -89,9 +89,12 @@ export const RevealUI = observer(
          // 2. place around anchor
          else if (relTo == null || relTo === 'anchor') {
             const element = anchorRef.current
-            if (!element) return
-            const rect = element.getBoundingClientRect()
-            reveal.setPosition(rect)
+            if (element) {
+               const rect = element.getBoundingClientRect()
+               reveal.setPosition(rect)
+            } else {
+               reveal.setPosition(null)
+            }
          }
 
          // 3. place somewhere else
@@ -113,7 +116,7 @@ export const RevealUI = observer(
       // if having two code paths prooves a bad idea, we may want to revert that decision
       const shouldClone = ((): boolean => {
          if (p.UNSAFE_cloned != null) return p.UNSAFE_cloned
-         const children = React.Children.toArray(p.children)
+         const children = p.children != null ? React.Children.toArray(p.children) : []
          if (children.length !== 1) return false
          const child0 = children[0]!
          const isValidElement = React.isValidElement(child0)
@@ -159,6 +162,10 @@ export const RevealUI = observer(
                {clonedChildren}
             </RevealCtx.Provider>
          )
+      }
+
+      if (p.children == null) {
+         return <RevealCtx.Provider value={nextTower}>{mkTooltip(reveal) /* tooltip */}</RevealCtx.Provider>
       }
 
       // this span could be bypassed by cloning the child element and injecting props,

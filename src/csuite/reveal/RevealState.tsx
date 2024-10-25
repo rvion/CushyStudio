@@ -324,7 +324,7 @@ export class RevealState {
       return out
    }
    tooltipPosition: RevealComputedPosition = { top: 0, left: 0 }
-   setPosition = (rect: DOMRect): void => {
+   setPosition = (rect: DOMRect | null): void => {
       this.tooltipPosition = computePlacement(this.placement, rect)
    }
 
