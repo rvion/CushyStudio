@@ -3,12 +3,14 @@ import type { BadgeProps } from '../badge/BadgeUI'
 import { observer } from 'mobx-react-lite'
 
 import { BadgeUI } from '../badge/BadgeUI'
+import { Button } from '../button/Button'
 import { Frame } from '../frame/Frame'
 
 export const SelectDefaultOptionUI = observer(function SelectDefaultOptionUI_({
    // own
    label,
    closeFn,
+   link,
 
    // modified
    autoHue,
@@ -16,7 +18,12 @@ export const SelectDefaultOptionUI = observer(function SelectDefaultOptionUI_({
 
    // rest
    ...rest
-}: { label?: string; closeFn?: () => void } & BadgeProps) {
+}: {
+   /** link to some other page */
+   link?: () => string
+   label?: string
+   closeFn?: () => void
+} & BadgeProps) {
    if (label == null && typeof children === 'string') {
       label = children
       children = null
@@ -26,11 +33,30 @@ export const SelectDefaultOptionUI = observer(function SelectDefaultOptionUI_({
          autoHue={autoHue ?? label}
          {...rest}
       >
+         {link ? (
+            <Button
+               icon='mdiOpenInNew'
+               size='inside'
+               square
+               subtle
+               borderless
+               onFocus={(ev) => {
+                  ev.stopPropagation()
+                  ev.preventDefault()
+               }}
+               onClick={(ev) => {
+                  ev.stopPropagation()
+                  ev.preventDefault()
+                  /* 🔴 find a better way to handle that */
+                  ;(window as any).loco?.router.goToURL(link())
+               }}
+            />
+         ) : undefined}
          {label}
          {children}
          {closeFn && (
             <Frame
-               tw='ml-1'
+               tw='ml-1 cursor-pointer'
                hover
                onFocus={(ev) => {
                   ev.stopPropagation()
