@@ -8,7 +8,7 @@ import { forwardRef, useState } from 'react'
 
 import { Button } from '../button/Button'
 import { useCSuite } from '../ctx/useCSuite'
-import { getCheckConfig } from '../errors/getCheckConfig'
+import { extractConfigValue } from '../errors/extractConfig'
 import { Frame, type FrameProps } from '../frame/Frame'
 import { IkonOf } from '../icons/iconHelpers'
 import { getLCHFromStringAsString } from '../kolor/getLCHFromStringAsString'
@@ -126,7 +126,7 @@ export const InputStringUI = observer(
             style={p.inputStyle}
             tw={[inputClassNameWhenAutosize, inputTailwind]}
             type={reveal ? 'text' : p.type}
-            pattern={getCheckConfig(p.pattern)?.toString()}
+            pattern={extractConfigValue(p.pattern)?.toString()}
             placeholder={p.placeholder}
             autoFocus={p.autoFocus}
             disabled={p.disabled}

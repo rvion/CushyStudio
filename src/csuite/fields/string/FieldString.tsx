@@ -9,7 +9,7 @@ import type { FC } from 'react'
 import { produce } from 'immer'
 
 import { csuiteConfig } from '../../config/configureCsuite'
-import { getCheckConfig, getCheckError } from '../../errors/getCheckConfig'
+import { extractConfigMessage, extractConfigValue } from '../../errors/extractConfig'
 import { Field } from '../../model/Field'
 import { makeLabelFromPrimitiveValue } from '../../utils/makeLabelFromFieldName'
 import { isProbablySerialString, registerFieldClass } from '../WidgetUI.DI'
@@ -236,8 +236,8 @@ export class Field_string extends Field<Field_string_types> {
    get ownConfigSpecificProblems(): Problem_Ext {
       const i18n = csuiteConfig.i18n
       const out: string[] = []
-      const minlen = getCheckConfig(this.config.minLength)
-      const maxlen = getCheckConfig(this.config.maxLength)
+      const minlen = extractConfigValue(this.config.minLength)
+      const maxlen = extractConfigValue(this.config.maxLength)
       if (minlen != null && maxlen != null) {
          if (minlen > maxlen) {
             // 💬 2024-09-17 rvion: lol, no need to check the opposite 🤦‍♂️
@@ -266,10 +266,10 @@ export class Field_string extends Field<Field_string_types> {
       const value = this.value_or_zero
 
       // check min
-      const min = getCheckConfig(this.config.minLength)
+      const min = extractConfigValue(this.config.minLength)
       if (min === 1 && value.length === 0)
          out.push(
-            getCheckError(
+            extractConfigMessage(
                this.config.minLength,
                // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
                i18n.err.str.required({
@@ -278,19 +278,19 @@ export class Field_string extends Field<Field_string_types> {
             ),
          )
       else if (min != null && value.length < min)
-         out.push(getCheckError(this.config.minLength, i18n.err.str.tooShort({ min })))
+         out.push(extractConfigMessage(this.config.minLength, i18n.err.str.tooShort({ min })))
 
       // check max
-      const max = getCheckConfig(this.config.maxLength)
+      const max = extractConfigValue(this.config.maxLength)
       if (max != null && value.length > max)
-         out.push(getCheckError(this.config.maxLength, i18n.err.str.tooLong({ max })))
+         out.push(extractConfigMessage(this.config.maxLength, i18n.err.str.tooLong({ max })))
 
       // check pattern
-      const pattern = getCheckConfig(this.config.pattern)
+      const pattern = extractConfigValue(this.config.pattern)
       if (pattern != null) {
          const reg = new RegExp(pattern).test(value)
          if (!reg) {
-            const errMsg: string = getCheckError(
+            const errMsg: string = extractConfigMessage(
                this.config.pattern,
                i18n.err.str.pattern({ pattern: pattern.toString() }),
             )
