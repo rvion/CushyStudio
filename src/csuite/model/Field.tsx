@@ -108,6 +108,8 @@ export interface Field<K extends FieldTypes = FieldTypes> {
  */
 export type UNSAFE_AnyField = any // Field<any>
 
+export type PathObject = [string, Maybe<PathObject>]
+
 export abstract class Field<out K extends FieldTypes = FieldTypes>
    implements Instanciable<K['$Field']>, DraftLike<K>
 {
@@ -841,11 +843,43 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
       return p.path + '.' + this.mountKey
    }
 
+   /**
+    * akin to reverse polish notation
+    * possibly memory friendly (yes, meaningless in JS)
+    * e.g.
+    *  | when pathis `$.a.b.c.d`
+    *  | pathObject is `['d', ['c', ['b', ['a', ['$']]]]]`
+    */
+   get pathObject(): PathObject {
+      return [this.path, this.parent?.pathObject]
+   }
+
    /** path within the model */
    get pathExt(): string {
       const p = this.parent
       if (p == null) return `📄[${this.type}]`
       return p.pathExt + '-' + this.mountKey + `->[${this.type}]`
+   }
+
+   getFieldAt(path: string): Maybe<Field<any>> {
+      const parts = path.split('.')
+      // eslint-disable-next-line consistent-this
+      let current: Maybe<Field> = this
+      for (const part of parts) {
+         if (part === '$') {
+            current = this.root
+            continue
+         }
+         current = current.getChildrenByKey(part) as Maybe<Field>
+         if (current == null) return null
+      }
+
+      return current
+   }
+
+   getChildrenByKey(key: string): Maybe<K['$Child']> {
+      // TODO: more efficient overrides
+      return this.childrenAll.find((f) => f.mountKey === key)
    }
 
    mountKey: string
@@ -1736,8 +1770,14 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
       })
    }
 
-   clone(): this {
+   // TODO: rename as clone as standalone document
+   cloneWithoutParent(): this {
       return this.schema.create(this.serial) as this
+   }
+
+   cloneTheWholeTree(): this {
+      const r = this.root.cloneWithoutParent()
+      return r.getFieldAt(this.path) as this
    }
 
    cloneWithConfig(config: Partial<K['$Config']>): this {
