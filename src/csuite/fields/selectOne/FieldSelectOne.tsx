@@ -449,10 +449,11 @@ export class Field_selectOne<
    }
 
    private _getValueOrThrow(key: KEY | undefined): CanThrow<VALUE> {
-      if (key === undefined) throw new Error(`Field_selectOne._zeroValue (${this.pathExt}): no key available`)
+      if (key === undefined)
+         throw new Error(`Field_selectOne._getValueOrThrow (${this.pathExt}): no key available`)
       const value = this.getValueFromId(key)
       if (value === undefined)
-         throw new Error(`Field_selectOne._zeroValue (${this.pathExt}): value not found for first key`)
+         throw new Error(`Field_selectOne._getValueOrThrow (${this.pathExt}): value not found for first key`)
       return value as VALUE
    }
 
