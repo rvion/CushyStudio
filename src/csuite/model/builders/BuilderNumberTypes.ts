@@ -27,13 +27,13 @@ export class BuilderNumber<Schemaᐸ_ᐳ extends SchemaAndAliasesᐸ_ᐳ> extend
    }
 
    // #region ratios
-   /** [number variant] precent = mode=int, default=100, step=10, min=1, max=100, suffix='%', */
+   /** [number variant] precent = mode=int, default=100, step=10, min=0, max=100, suffix='%' */
    percent(config: Omit<Field_number_config, 'mode'> = {}): Schemaᐸ_ᐳ['Number'] {
       return this._number({
          mode: 'int',
          default: 100,
          step: 10,
-         min: 1,
+         min: 0,
          max: 100,
          suffix: '%',
          ...config,
