@@ -44,8 +44,8 @@ export class RuntimeComfyUI {
       const latent = p.from //
          ? builder.VAEEncode({
               vae: model,
-              // @ts-ignore 🔴 temporarilly ignored because it depends on some custom ComfyUI node that may not be present
               pixels: builder.Base64ImageInput({
+                 // @ts-ignore 🔴 temporarilly ignored because it depends on some custom ComfyUI node that may not be present
                  bas64_image: p.from.url.replace('data:image/png;base64,', ''),
               }),
            })

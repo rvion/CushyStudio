@@ -25,8 +25,8 @@ app({
                   default: 'Stable-Cascade\\stage_b_bf16.safetensors',
                }),
                stage_b_type: b.enum.Enum_UNETLoader_weight_dtype({ default: 'default' }),
-               // @ts-ignore
                stage_c: b.enum.Enum_UNETLoader_unet_name({
+                  // @ts-ignore
                   default: 'Stable-Cascade\\stage_c_bf16.safetensors',
                }),
                stage_c_type: b.enum.Enum_UNETLoader_weight_dtype({ default: 'default' }),
