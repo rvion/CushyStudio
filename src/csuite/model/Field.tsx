@@ -1304,9 +1304,11 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
       return false
    }
 
+   // TODO: remove this getter !!
    /** whether the widget should be considered inactive */
    get isDisabled(): boolean {
-      return isFieldOptional(this) && !this.serial.active
+      // return isFieldOptional(this) && !this.serial.active
+      return isFieldOptional(this) && !this.active
    }
 
    // #region UI
