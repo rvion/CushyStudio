@@ -18,7 +18,8 @@ import {
    ListButtonFoldUI,
    ListButtonUnfoldUI,
 } from './ListControlsUI'
-import { WidgetList_BodyUI, WidgetList_LineUI } from './WidgetListUI'
+import { WidgetList_BodyUI } from './WidgetList_BodyUI'
+import { WidgetList_LineUI } from './WidgetList_LineUI'
 
 // #region 🔶AUTO
 interface AutoBehaviour<out T extends BaseSchema> {
