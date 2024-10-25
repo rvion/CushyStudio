@@ -3,7 +3,7 @@ import type { Field_shared } from './FieldShared'
 
 import { observer } from 'mobx-react-lite'
 
-import { renderFCOrNode } from '../../../csuite-cushy/shells/_isFC'
+import { renderFCOrNode } from '../../utils/renderFCOrNode'
 
 export const ShellSharedUI = observer(function ShellShared(p: CompiledRenderProps<Field_shared>) {
    const field = p.field

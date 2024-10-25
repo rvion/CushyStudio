@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite'
 import { WidgetHeaderContainerUI } from '../../csuite/form/WidgetHeaderContainerUI'
 import { Frame } from '../../csuite/frame/Frame'
 import { AnimatedSizeUI } from '../../csuite/smooth-size/AnimatedSizeUI'
-import { _isFC, renderFCOrNode, renderFCOrNodeWithWrapper } from './_isFC'
+import { _isFC, renderFCOrNode, renderFCOrNodeWithWrapper } from '../../csuite/utils/renderFCOrNode'
 
 export const ShellMobileUI = observer(function ShellMobile(p: CompiledRenderProps) {
    const { field } = p

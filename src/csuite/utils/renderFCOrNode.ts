@@ -1,4 +1,4 @@
-import type { CovariantFC } from '../../csuite/variance/CovariantFC'
+import type { CovariantFC } from '../variance/CovariantFC'
 
 import { createElement, type ReactNode } from 'react'
 

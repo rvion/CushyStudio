@@ -1,3 +1,4 @@
+import type { ComfySchemaL } from '../models/ComfySchema'
 import type { ComfyWorkflowL } from '../models/ComfyWorkflow'
 import type { MediaImageL } from '../models/MediaImage'
 import type { Runtime } from './Runtime'
@@ -72,7 +73,7 @@ export class RuntimeComfyUI {
 
    // ----------------------------------------------------------------------------------------------------
    /** retrieve the global schema */
-   get schema() {
+   get schema(): ComfySchemaL {
       return this.rt.Cushy.schema
    }
 

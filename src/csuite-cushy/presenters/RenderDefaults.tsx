@@ -1,5 +1,5 @@
 import type { Field } from '../../csuite/model/Field'
-import type { FCOrNode } from '../shells/_isFC'
+import type { FCOrNode } from '../../csuite/utils/renderFCOrNode'
 import type { DisplayConf } from './Renderer'
 import type { WidgetSlots } from './RenderSlots'
 

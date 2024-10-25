@@ -4,7 +4,7 @@ import type { Field_link } from './FieldLink'
 
 import { observer } from 'mobx-react-lite'
 
-import { renderFCOrNode } from '../../../csuite-cushy/shells/_isFC'
+import { renderFCOrNode } from '../../utils/renderFCOrNode'
 
 export const ShellLinkUI = observer(function ShellLink(
    p: CompiledRenderProps<Field_link<BaseSchema, BaseSchema>>,
