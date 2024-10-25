@@ -16,7 +16,11 @@ export const SelectDefaultOptionUI = observer(function SelectDefaultOptionUI_({
 
    // rest
    ...rest
-}: { label: string; closeFn?: () => void } & BadgeProps) {
+}: { label?: string; closeFn?: () => void } & BadgeProps) {
+   if (label == null && typeof children === 'string') {
+      label = children
+      children = null
+   }
    return (
       <BadgeUI //
          autoHue={autoHue ?? label}
