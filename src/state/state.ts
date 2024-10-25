@@ -788,7 +788,7 @@ export class STATE {
          const eventType = view.getUint32(0)
          const buffer = e.data.slice(4)
          switch (eventType) {
-            case 1:
+            case 1: {
                const view2 = new DataView(e.data)
                const imageType = view2.getUint32(0)
                let imageMime
@@ -809,6 +809,7 @@ export class STATE {
                   promtID: this.activePromptID,
                }
                break
+            }
             default:
                throw new Error(`Unknown binary websocket message of type ${eventType}`)
          }
