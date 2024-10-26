@@ -13,6 +13,7 @@ import { isElemAChildOf } from '../utils/isElemAChildOf'
 import { toCssSizeValue } from '../utils/toCssSizeValue'
 import { DEBUG_REVEAL } from './DEBUG_REVEAL'
 import { RevealCloseEvent } from './RevealCloseEvent'
+import { removeFromGlobalRevealStack } from './RevealGlobal'
 import { computePlacement, type RevealComputedPosition, type RevealPlacement } from './RevealPlacement'
 import { global_RevealStack } from './RevealStack'
 
@@ -427,6 +428,10 @@ export class RevealState {
          this.p.onBeforeHide(event)
          if (event.isDefaultPrevented) return
       }
+
+      // To avoid relying on the render loop to update the global stack
+      // we remove the lazy state from the global stack as soon as we know it's closed
+      removeFromGlobalRevealStack(this.lazyState)
 
       this._unregister()
       this.lastOpenClose = Date.now()

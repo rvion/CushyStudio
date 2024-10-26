@@ -4,17 +4,19 @@ import { useEffectAction } from '../utils/useEffectAction'
 
 export const globalRevealStack: RevealStateLazy[] = []
 
-// type T2 = RevealState
-
 export const useEffectToRegisterInGlobalRevealStack = (rs: RevealStateLazy): void => {
    useEffectAction(() => {
       globalRevealStack.push(rs)
-      return (): void => {
-         globalRevealStack.splice(globalRevealStack.indexOf(rs), 1)
-      }
+      return (): void => removeFromGlobalRevealStack(rs)
    }, [])
 }
 
 export const getLastGlobalRevealStack = (): RevealStateLazy | undefined => {
    return globalRevealStack[globalRevealStack.length - 1]
+}
+
+export const removeFromGlobalRevealStack = (rs: RevealStateLazy): void => {
+   const index = globalRevealStack.indexOf(rs)
+
+   if (index >= 0) globalRevealStack.splice(globalRevealStack.indexOf(rs), 1)
 }
