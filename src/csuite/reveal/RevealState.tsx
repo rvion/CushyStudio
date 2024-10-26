@@ -1,11 +1,5 @@
 import type { NO_PROPS } from '../types/NO_PROPS'
-import type {
-   RevealHideReason,
-   RevealHideTriggers,
-   RevealOpenReason,
-   RevealProps,
-   RevealShowTrigger,
-} from './RevealProps'
+import type { RevealHideReason, RevealHideTriggers, RevealOpenReason, RevealProps, RevealShowTrigger } from './RevealProps'
 import type { RevealStateLazy } from './RevealStateLazy'
 import type { RevealContentProps } from './shells/ShellProps'
 import type { CSSProperties, FC, ReactNode } from 'react'
@@ -48,11 +42,13 @@ export class RevealState {
          if (this.shouldRevealOnAnchorRightClick) {
             this.open('rightClickAnchor')
             ev.stopPropagation()
+            ev.preventDefault()
          }
       } else {
          if (this.shouldHideOnAnchorRightClick) {
             this.close('rightClickAnchor')
             ev.stopPropagation()
+            ev.preventDefault()
          }
       }
       // this.onLeftClickAnchor(ev) // 2024-07-31 domi: not sure what the use-case is, but annoying when you want to inspect the element
@@ -65,11 +61,13 @@ export class RevealState {
          if (this.shouldRevealOnAnchorClick) {
             this.open('leftClickAnchor')
             ev.stopPropagation()
+            ev.preventDefault()
          }
       } else {
          if (this.shouldHideOnAnchorClick) {
             this.close('leftClickAnchor')
             ev.stopPropagation()
+            ev.preventDefault()
          }
       }
    }
@@ -687,6 +685,7 @@ export class RevealState {
       if (this.shouldHideOnBackdropClick) {
          this.close('backdropClick')
          ev.stopPropagation() // 🔴 there should be another props letting us know that the backdrop is transparent to clicks
+         ev.preventDefault()
       }
    }
 
@@ -698,6 +697,7 @@ export class RevealState {
       this.logEv(ev, `onShellClick (shouldHideOnShellClick=${this.shouldHideOnShellClick})`)
       if (this.shouldHideOnShellClick) this.close('shellClick')
       ev.stopPropagation()
+      ev.preventDefault()
    }
 
    // prettier-ignore
