@@ -111,7 +111,7 @@ export class RevealState {
 
    constructor(public lazyState: RevealStateLazy) {
       this.p = { ...lazyState.p }
-      this.parents = lazyState.parents
+      this.parents = lazyState.parentsLazy.map((lazy) => lazy.getRevealState())
       this.anchorRef = lazyState.anchorRef
       this.uid = lazyState.uid
       // see comment above
