@@ -57,9 +57,9 @@ describe('kolor', () => {
       // expect(col.contrastWCAG21(black)).toBe(0.2441954071332088)
       // expect(col.contrastWCAG21(white)).toBe(0.048776781536359275)
 
-      expect(black.contrastWCAG21(white)).toBe(20.999999999999986)
+      expect(black.contrastWCAG21(white)).toBeCloseTo(21, 5)
 
-      expect(gray.contrastWCAG21(white)).toBe(5.9999999999999964)
-      expect(gray.contrastWCAG21(black)).toBe(3.4999999999999996)
+      expect(gray.contrastWCAG21(white)).toBeCloseTo(6, 5)
+      expect(gray.contrastWCAG21(black)).toBeCloseTo(3.5, 5)
    })
 })
