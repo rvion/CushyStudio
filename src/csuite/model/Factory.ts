@@ -20,11 +20,7 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
    builder: BUILDER
    repository: Repository
 
-   constructor(
-      //
-      builder: BUILDER,
-      repository?: Repository,
-   ) {
+   constructor(builder: BUILDER, repository?: Repository) {
       this.repository = repository ?? getGlobalRepository()
       this.builder = builder
    }

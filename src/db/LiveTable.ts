@@ -234,7 +234,6 @@ export class LiveTable<
    }
 
    constructor(
-      //
       public db: LiveDB,
       public name: TableNameInDB,
       public emoji: string,

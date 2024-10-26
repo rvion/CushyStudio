@@ -45,7 +45,6 @@ export type ScriptExtractionResult =
  */
 export class LibraryFile {
    constructor(
-      //
       public library: Library,
       public absPath: AbsolutePath,
       public relPath: RelativePath,

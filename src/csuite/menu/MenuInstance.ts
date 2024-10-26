@@ -34,7 +34,6 @@ export class MenuInstance implements Activity {
    }
 
    constructor(
-      //
       public menu: Menu,
       public keysTaken: Set<string> = new Set(),
    ) {

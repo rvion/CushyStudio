@@ -15,7 +15,6 @@ export class LiveRefOpt<
     * */
    private key: string
    constructor(
-      //
       public owner: Owner,
       key: keyof Owner['data'],
       public tableName: TableName,

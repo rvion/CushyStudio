@@ -84,7 +84,6 @@ export class Field_size extends Field<Field_size_types> {
    }
 
    constructor(
-      //
       repo: Repository,
       root: Field | null,
       parent: Field | null,

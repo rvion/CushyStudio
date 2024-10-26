@@ -48,7 +48,6 @@ export class Field_shared<F extends Field = Field> extends Field<Field_shared_ty
 
    // #region CTOR
    constructor(
-      //
       repo: Repository,
       root: Field | null,
       parent: Field | null,

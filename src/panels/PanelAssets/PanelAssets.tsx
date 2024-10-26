@@ -28,10 +28,7 @@ export type PanelAssetsProps = {
 }
 
 export class PanelAssetsState {
-   constructor(
-      //
-      public props: PanelAssetsProps,
-   ) {
+   constructor(public props: PanelAssetsProps) {
       makeAutoObservable(this)
    }
 }

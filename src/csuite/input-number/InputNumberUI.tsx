@@ -55,7 +55,6 @@ type InputNumberProps = {
 /** this class will be instanciated ONCE in every InputNumberUI, (local the the InputNumberUI) */
 class InputNumberStableState {
    constructor(
-      //
       public props: InputNumberProps,
       public kit: Maybe<CSuiteConfig>,
    ) {

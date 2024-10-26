@@ -52,7 +52,6 @@ export class Field_color extends Field<Field_color_types> {
 
    // #region Ctor
    constructor(
-      //
       repo: Repository,
       root: Field | null,
       parent: Field | null,

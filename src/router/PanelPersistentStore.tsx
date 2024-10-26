@@ -18,7 +18,6 @@ export class PanelPersistentStore<X extends Json = Json> {
    data: X
 
    constructor(
-      //
       public panelState: PanelState,
       public storeKey: string,
       /** default value */

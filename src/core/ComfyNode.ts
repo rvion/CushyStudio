@@ -133,7 +133,6 @@ export class ComfyNode<
    uidPrefixed: string
 
    constructor(
-      //
       public graph: ComfyWorkflowL,
       public uid: ComfyNodeUID, //  = graph.getUID(),
       jsonExt: ComfyNodeJSON,

@@ -25,7 +25,6 @@ export class RevealStateLazy {
    readonly towerContext: { tower: RevealStateLazy[] }
 
    constructor(
-      //
       public p: RevealProps,
       public parentsLazy: RevealStateLazy[],
       public anchorRef: React.RefObject<HTMLDivElement>,

@@ -8,7 +8,6 @@ import { asCushyAppID } from '../db/TYPES.gen'
 
 export class LoadedCustomView<T = any> {
    constructor(
-      //
       public script: CushyScriptL,
       public ix: number,
       public def: CustomView<T>,
@@ -29,7 +28,6 @@ export class LoadedCustomView<T = any> {
 
 export class Executable {
    constructor(
-      //
       public script: CushyScriptL,
       public ix: number,
       public def: App<any>,

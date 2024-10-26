@@ -6,10 +6,7 @@ import { window_addEventListener } from '../utils/window_addEventListenerAction'
 
 let startValue = 0
 export class ToolShelfState {
-   constructor(
-      //
-      public props: ToolShelfProps,
-   ) {
+   constructor(public props: ToolShelfProps) {
       this.size = props.defaultSize ?? 128
       props.panelState.size = this.size
       makeAutoObservable(this)

@@ -24,7 +24,6 @@ export class UnifiedImage {
    }
 
    constructor(
-      //
       public canvas: UnifiedCanvas,
       public img: MediaImageL,
       public position?: { x: number; y: number },

@@ -84,7 +84,6 @@ export class Field_enum<O extends EnumValue> extends Field<Field_enum_types<O>> 
 
    // #region Ctor
    constructor(
-      //
       repo: Repository,
       root: Field | null,
       parent: Field | null,

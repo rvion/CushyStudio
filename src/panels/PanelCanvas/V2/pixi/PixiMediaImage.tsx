@@ -33,7 +33,6 @@ let currentlyDragged: {
 
 class XXX {
    constructor(
-      //
       public i: MediaImageL,
       public placement: SimpleShape$['$Field'],
       public uc: UnifiedCanvas,

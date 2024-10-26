@@ -46,10 +46,7 @@ type ResizableFrameProps = {
 
 class ResizableFrameStableState {
    size: number
-   constructor(
-      //
-      public props: ResizableFrameProps,
-   ) {
+   constructor(public props: ResizableFrameProps) {
       this.size = props.currentSize ?? props.startSize ?? defaultSize
       makeAutoObservable(this)
    }

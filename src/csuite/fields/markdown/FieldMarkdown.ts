@@ -51,7 +51,6 @@ export class Field_markdown extends Field<Field_markdown_types> {
 
    // #region CTOR
    constructor(
-      //
       repo: Repository,
       root: Field | null,
       parent: Field | null,

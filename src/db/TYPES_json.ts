@@ -129,7 +129,6 @@ export class TableInfo<
    cols: SqlColDef[]
    // insertSQL: string
    constructor(
-      //
       public sql_name: TableName,
       public ts_name: string,
       public fields: { [fieldName: string]: SqlColDef },

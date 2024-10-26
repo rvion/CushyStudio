@@ -8,7 +8,6 @@ export class LiveRef<
    L extends BaseInst<any>,
 > {
    constructor(
-      //
       public owner: Owner,
       public key: keyof Owner['data'],
       public tableName: TableName,

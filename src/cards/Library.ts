@@ -73,10 +73,7 @@ export class Library {
 
    watcher: Watcher
 
-   constructor(
-      //
-      public st: STATE,
-   ) {
+   constructor(public st: STATE) {
       // Watching a single path
       // ⏸️ const expanded = includedCards.map((x) => x.slice(8, -5))
       // ⏸️ this.expanded = new Set(expanded)

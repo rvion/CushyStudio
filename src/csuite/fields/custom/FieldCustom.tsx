@@ -58,7 +58,6 @@ export class Field_custom<T> extends Field<Field_custom_types<T>> {
 
    // #region Ctor
    constructor(
-      //
       repo: Repository,
       root: Field | null,
       parent: Field | null,

@@ -29,7 +29,6 @@ export class UnifiedMask {
    }
 
    constructor(
-      //
       public canvas: UnifiedCanvas,
       img?: MediaImageL,
    ) {

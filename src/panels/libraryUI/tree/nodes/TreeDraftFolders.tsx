@@ -9,10 +9,7 @@ import { TreeDraft } from './TreeDraft'
 
 export class TreeDraftFolder implements ITreeEntry<VirtualFolder<DraftL>> {
    get st() { return cushy } // prettier-ignore
-   constructor(
-      //
-      public vf: VirtualFolder<DraftL>,
-   ) {}
+   constructor(public vf: VirtualFolder<DraftL>) {}
 
    get name() {
       return `${basename(this.vf.folderPath)}`

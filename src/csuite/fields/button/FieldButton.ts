@@ -76,7 +76,6 @@ export class Field_button<K> extends Field<Field_button_types<K>> {
 
    // #region CTOR
    constructor(
-      //
       repo: Repository,
       root: Field | null,
       parent: Field | null,

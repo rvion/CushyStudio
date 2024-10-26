@@ -65,7 +65,6 @@ export class Field_matrix extends Field<Field_matrix_types> {
 
    // #region Ctor
    constructor(
-      //
       repo: Repository,
       root: Field | null,
       parent: Field | null,

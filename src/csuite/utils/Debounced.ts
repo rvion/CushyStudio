@@ -2,7 +2,6 @@ import { makeAutoObservable } from 'mobx'
 
 export class Debounced<T> {
    constructor(
-      //
       private _value: T,
       public delay: number = 700 /* ms */,
       public onChange?: (value: T) => void,

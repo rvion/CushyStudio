@@ -13,10 +13,7 @@ export const getLayers = (): any => {
 }
 
 export class MinipaintState {
-   constructor(
-      //
-      public st: STATE,
-   ) {
+   constructor(public st: STATE) {
       makeObservable(this, {
          autoSave: observable,
          toggleAutoSave: action,

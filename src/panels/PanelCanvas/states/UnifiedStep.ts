@@ -42,7 +42,6 @@ export class UnifiedStep {
    // moveNext =
    index = 0
    constructor(
-      //
       public canvas: UnifiedCanvas,
       public step: StepL,
    ) {

@@ -66,7 +66,6 @@ export class Field_image extends Field<Field_image_types> {
 
    // #region constructor
    constructor(
-      //
       repo: Repository,
       root: Field | null,
       parent: Field | null,

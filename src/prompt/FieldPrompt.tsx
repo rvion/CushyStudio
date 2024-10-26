@@ -74,7 +74,6 @@ export class Field_prompt extends Field<Field_prompt_types> {
 
    // #region Ctor
    constructor(
-      //
       repo: Repository,
       root: Field | null,
       parent: Field | null,

@@ -242,7 +242,6 @@ export class Field_list<T extends BaseSchema> //
    }
 
    constructor(
-      //
       repo: Repository,
       root: Field | null,
       parent: Field | null,

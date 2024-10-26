@@ -594,7 +594,6 @@ export class ComfyNodeSchema {
    singleOuputs: NodeOutputExt[] = []
 
    constructor(
-      //
       public nameInComfy: string,
       public nameInCushy: string,
       public category: string,

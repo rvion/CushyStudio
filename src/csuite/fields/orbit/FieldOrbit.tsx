@@ -70,7 +70,6 @@ export class Field_orbit extends Field<Field_orbit_types> {
 
    // #region Ctor
    constructor(
-      //
       repo: Repository,
       root: Field | null,
       parent: Field | null,

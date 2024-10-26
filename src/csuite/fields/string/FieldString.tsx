@@ -122,7 +122,6 @@ export class Field_string extends Field<Field_string_types> {
 
    // #region CTOR
    constructor(
-      //
       repo: Repository,
       root: Field | null,
       parent: Field | null,

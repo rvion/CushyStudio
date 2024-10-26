@@ -60,7 +60,6 @@ export class Field_seed extends Field<Field_seed_types> {
 
    // #region Ctor
    constructor(
-      //
       repo: Repository,
       root: Field | null,
       parent: Field | null,

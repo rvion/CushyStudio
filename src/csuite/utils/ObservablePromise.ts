@@ -7,10 +7,7 @@ export class ObservablePromise<T> {
    promise: Promise<T>
    resolve!: (t: T | PromiseLike<T>) => void
    reject!: (err: any) => void
-   constructor(
-      //
-      public fn?: (self: ObservablePromise<T>) => {},
-   ) {
+   constructor(public fn?: (self: ObservablePromise<T>) => {}) {
       this.promise = new Promise((resolve, reject) => {
          this.resolve = (t: T | PromiseLike<T>) => {
             if (isPromise(t)) {

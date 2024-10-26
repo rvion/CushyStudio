@@ -93,7 +93,6 @@ export class PromptAST {
 
    root!: ManagedNode
    constructor(
-      //
       public CONTENT: string,
       /** require if you want to update the text programmatically */
       public editorView?: Maybe<EditorView>,
@@ -239,7 +238,6 @@ abstract class ManagedNode<Name extends KnownNodeNames = any> {
    }
 
    constructor(
-      //
       public expression: PromptAST,
       public parent: Maybe<ManagedNode>,
       public node: SyntaxNode,

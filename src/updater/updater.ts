@@ -38,7 +38,6 @@ type ManagedFolderConfig = {
 
 export class GitManagedFolder {
    constructor(
-      //
       public st: STATE,
       public config: ManagedFolderConfig,
    ) {
