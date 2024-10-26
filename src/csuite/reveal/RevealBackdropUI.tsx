@@ -45,10 +45,10 @@ export const RevealBackdropUI = observer(function RevealBackdropUI_({
          {reveal.showBackdrop && (
             <div // backdrop shadow (child div to avoid animation interference)
                style={{ backgroundColor: reveal.backdropColor }}
-               tw='animate-in fade-in _BackdropForClickEvents absolute inset-0'
+               tw='animate-in fade-in absolute inset-0'
             />
          )}
-         <div tw='absolute inset-0 overflow-auto'>{children}</div>
+         <div tw='_BackdropForClickEvents absolute inset-0 overflow-auto'>{children}</div>
       </div>
    )
 })
