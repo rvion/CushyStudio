@@ -1756,6 +1756,13 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
                   // Render
                   Render: false,
                   render: false,
+
+                  // Actions that have been micro-optimized:
+                  traverse: false,
+                  traverseAllDepthFirst: false,
+                  traverseAlltraverseBreadthFirst: false,
+                  traverseBreadthFirst: false,
+                  traverseDepthFirst: false,
                },
                {},
                2,
