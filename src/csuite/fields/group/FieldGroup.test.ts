@@ -5,7 +5,7 @@ import { simpleBuilder as b } from '../../index'
 import { expectJSON } from '../../model/TESTS/utils/expectJSON'
 
 describe('groups', () => {
-   it('shoudl support apply defaultValue from config to set complex nested values', () => {
+   it('should support apply defaultValue from config to set complex nested values', () => {
       const S1 = b.fields(
          {
             num: b.number({ default: 10 }),
