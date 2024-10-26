@@ -30,6 +30,6 @@
     },
     "hasSemicolon": false,
     "tabSize": 3,
-    "maxLineLength": 130,
+    "maxLineLength": 110,
     "ignoreESLintRules": ".*"
 }

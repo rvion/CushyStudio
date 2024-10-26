@@ -1,5 +1,11 @@
 import type { NO_PROPS } from '../types/NO_PROPS'
-import type { RevealHideReason, RevealHideTriggers, RevealOpenReason, RevealProps, RevealShowTrigger } from './RevealProps'
+import type {
+   RevealHideReason,
+   RevealHideTriggers,
+   RevealOpenReason,
+   RevealProps,
+   RevealShowTrigger,
+} from './RevealProps'
 import type { RevealStateLazy } from './RevealStateLazy'
 import type { RevealContentProps } from './shells/ShellProps'
 import type { CSSProperties, FC, ReactNode } from 'react'
