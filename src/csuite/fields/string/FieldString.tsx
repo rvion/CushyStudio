@@ -1,3 +1,4 @@
+import type { ErrorConfigValue } from '../../errors/extractConfig'
 import type { IconName } from '../../icons/icons'
 import type { BaseSchema } from '../../model/BaseSchema'
 import type { FieldConfig } from '../../model/FieldConfig'
@@ -63,8 +64,8 @@ export type Field_string_config = FieldConfig<
 
       // validation
       pattern?: string | RegExp | { value: string | RegExp; error: string }
-      minLength?: number | { value: number; error: string }
-      maxLength?: number | { value: number; error: string }
+      minLength?: ErrorConfigValue<number>
+      maxLength?: ErrorConfigValue<number>
 
       // randomization
       randomizationPool?: string[]

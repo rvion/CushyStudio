@@ -44,7 +44,7 @@ export const WidgetChoices_SelectHeaderUI = observer(function WidgetChoices_Sele
             // closeOnPick={false}
             resetQueryOnPick={false}
             onOptionToggled={(v) => {
-               // DUBIOUS
+               // 🔴 DUBIOUS
                if (p.field.canBeToggledWithinParent) p.field.enableSelfWithinParent()
                field.toggleBranch(v.key)
                p.field.touch()

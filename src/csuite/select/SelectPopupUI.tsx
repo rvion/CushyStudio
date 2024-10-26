@@ -7,7 +7,7 @@ import { FixedSizeList } from 'react-window'
 
 import { Frame } from '../frame/Frame'
 import { InputStringUI } from '../input-string/InputStringUI'
-import { SelectOptionUI, SelectOptionUI_FixedList } from './SelectOptionUI'
+import { SelectAllNoneUI, SelectOptionUI, SelectOptionUI_FixedList } from './SelectOptionUI'
 
 const trueMinWidth = '20rem'
 
@@ -25,6 +25,8 @@ export const SelectPopupUI = observer(function SelectPopupUI_<OPTION>(p: SelectP
          : trueMinWidth
 
    const itemSize = typeof select.p.virtualized === 'number' ? select.p.virtualized : 28 // should probably match input height or cell height
+   const showSelectAll =
+      select.filteredOptions.length > 1 && select.p.showSelectAllNone !== false && select.isMultiSelect
    return (
       <div
          tw={[
@@ -40,7 +42,7 @@ export const SelectPopupUI = observer(function SelectPopupUI_<OPTION>(p: SelectP
             tw={[
                //
                'minh-input p-input', // padding shoud simulate the difference between input size and inside size
-               'flex flex-wrap items-start gap-0.5 rounded-t-md',
+               'flex flex-wrap items-start gap-0.5 overflow-auto rounded-t-md',
                'border-b border-gray-200',
                'bg-gray-100',
             ]}
@@ -94,40 +96,52 @@ export const SelectPopupUI = observer(function SelectPopupUI_<OPTION>(p: SelectP
             <select.p.slotResultsListUI select={select} />
          ) : select.p.virtualized !== false ? (
             select.filteredOptions.length !== 0 && (
-               <FixedSizeList<{ s: AutoCompleteSelectState<OPTION>; reveal: RevealState }>
-                  className='mb-1 mt-2'
-                  useIsScrolling={false}
-                  /* temp hack to leave place for soon-to-be input */
-                  height={Math.min(400, itemSize * select.filteredOptions.length)}
-                  itemCount={select.filteredOptions.length}
-                  itemSize={itemSize}
-                  width='100%'
-                  children={SelectOptionUI_FixedList}
-                  itemData={{ s: select, reveal: p.reveal }}
-               />
+               <>
+                  {showSelectAll && <SelectAllNoneUI tw='mt-2' state={select} />}
+                  <FixedSizeList<{
+                     s: AutoCompleteSelectState<OPTION>
+                     reveal: RevealState
+                  }>
+                     className={`mb-1 ${showSelectAll ? 'mt-1' : 'mt-2'}`}
+                     useIsScrolling={false}
+                     height={Math.min(
+                        400,
+                        itemSize /* temp hack to leave place for soon-to-be input */ *
+                           select.filteredOptions.length,
+                     )}
+                     itemCount={select.filteredOptions.length}
+                     itemSize={itemSize}
+                     width='100%'
+                     children={SelectOptionUI_FixedList}
+                     itemData={{ s: select, reveal: p.reveal }}
+                  />
+               </>
             )
          ) : (
-            <Frame col tw='max-h-96 pb-1 pt-2'>
-               {select.filteredOptions.map((option, index) =>
-                  select.p.slotOptionUI != null ? (
-                     <select.p.slotOptionUI //
-                        key={select.getKey(option)}
-                        index={index}
-                        option={option}
-                        state={select}
-                        reveal={p.reveal}
-                     />
-                  ) : (
-                     <SelectOptionUI<OPTION> //
-                        key={select.getKey(option)}
-                        index={index}
-                        reveal={p.reveal}
-                        option={option}
-                        state={select}
-                     />
-                  ),
-               )}
-            </Frame>
+            <>
+               {showSelectAll && <SelectAllNoneUI tw='mt-2' state={select} />}
+               <Frame col tw='max-h-96 pb-1 pt-2'>
+                  {select.filteredOptions.map((option, index) =>
+                     select.p.slotOptionUI != null ? (
+                        <select.p.slotOptionUI //
+                           key={select.getKey(option)}
+                           index={index}
+                           option={option}
+                           state={select}
+                           reveal={p.reveal}
+                        />
+                     ) : (
+                        <SelectOptionUI<OPTION> //
+                           key={select.getKey(option)}
+                           index={index}
+                           reveal={p.reveal}
+                           option={option}
+                           state={select}
+                        />
+                     ),
+                  )}
+               </Frame>
+            </>
          )}
       </div>
    )

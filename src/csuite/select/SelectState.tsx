@@ -4,7 +4,7 @@ import type { RevealStateLazy } from '../reveal/RevealStateLazy'
 import type { SelectProps } from './SelectProps'
 import type { ReactNode } from 'react'
 
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 import React from 'react'
 
@@ -55,6 +55,10 @@ export class AutoCompleteSelectState<OPTION> {
       makeAutoObservable(this, {
          anchorRef: false, // 🚨 ref do not work when observables!
          inputRef_real: false,
+
+         // this class is one of the few we want to make fast
+         selectAll: false /* micro_optimize_with_run_inActions_inside */,
+         selectNone: false /* micro_optimize_with_run_inActions_inside */,
       })
    }
 
@@ -323,6 +327,28 @@ export class AutoCompleteSelectState<OPTION> {
          this.options.push(createdOption)
          this.toggleOption(createdOption)
       }
+   }
+
+   selectAll(): void {
+      runInAction(() => {
+         if (this.p.onSelectAll && this.searchQuery == '') {
+            this.p.onSelectAll(this.searchQuery)
+         } else {
+            this.filteredOptions.forEach((option) => {
+               if (!this.isOptionSelected(option)) this.toggleOption(option)
+            })
+         }
+      })
+   }
+
+   selectNone(): void {
+      const unselectedOptions = this.searchQuery == '' ? this.values : this.filteredOptions
+
+      runInAction(() => {
+         unselectedOptions.forEach((option) => {
+            if (this.isOptionSelected(option)) this.toggleOption(option)
+         })
+      })
    }
 
    /**

@@ -29,7 +29,7 @@
         ]
     },
     "hasSemicolon": false,
-    "tabSize": 4,
+    "tabSize": 3,
     "maxLineLength": 130,
     "ignoreESLintRules": ".*"
 }

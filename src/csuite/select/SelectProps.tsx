@@ -100,6 +100,18 @@ export type SelectProps<OPTION> = {
    // style?: React.CSSProperties // use revealProps.anchorProps.style instead
 
    /**
+    * wride doc
+    * @since 2024-10-17
+    */
+   showSelectAllNone?: boolean
+
+   /**
+    * Implement the selection of ALL values, when the user did not type any search filter
+    * @since 2024-10-17
+    */
+   onSelectAll?: (filterText: string) => void
+
+   /**
     * @default: false if multi-select, true if single select
     */
    closeOnPick?: boolean

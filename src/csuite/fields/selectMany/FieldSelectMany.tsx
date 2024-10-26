@@ -8,6 +8,8 @@ import type { TabPositionConfig } from '../choices/TabPositionConfig'
 import type { SelectKey } from '../selectOne/SelectOneKey'
 import type { SelectOption } from '../selectOne/SelectOption'
 
+import { csuiteConfig } from '../../config/configureCsuite'
+import { type ErrorConfigValue, extractConfigMessage, extractConfigValue } from '../../errors/extractConfig'
 import { stableStringify } from '../../hashUtils/hash'
 import { Field } from '../../model/Field'
 import { isProbablySerialSelectMany, registerFieldClass } from '../WidgetUI.DI'
@@ -62,6 +64,7 @@ export type Field_selectMany_config<
          isActive?: boolean
          action: () => Promise<Maybe<SelectOption<VALUE, KEY>>>
       }
+      selectAll?: (self: Field_selectMany<VALUE, KEY>) => void
       getIdFromValue: (t: VALUE) => KEY
       getValueFromId: (t: KEY) => Maybe<VALUE>
       getOptionFromId: (t: KEY, field: Field_selectMany<VALUE, KEY>) => Maybe<SelectOption<VALUE, KEY>>
@@ -87,6 +90,7 @@ export type Field_selectMany_config<
        */
       tabPosition?: TabPositionConfig
       placeholder?: string
+      minLength?: ErrorConfigValue<number>
    },
    Field_selectMany_types<VALUE, KEY>
 >
@@ -253,6 +257,21 @@ export class Field_selectMany<
       if (this.serial.values == null) return null
 
       const errors: string[] = []
+      const min = extractConfigValue(this.config.minLength)
+
+      // special error message when (len=0, min=1)
+      if (min === 1 && this.serial.values.length === 0) {
+         errors.push(extractConfigMessage(this.config.minLength, csuiteConfig.i18n.err.selectMany.required()))
+      }
+      // error message when min!=null && len < min
+      else if (min != null && this.serial.values.length < min)
+         errors.push(
+            extractConfigMessage(
+               this.config.minLength,
+               csuiteConfig.i18n.err.selectMany.notEnoughValues({ min }),
+            ),
+         )
+
       if (this.shouldValidateThatValueIsAmongstKeys) {
          for (const selectedKey of this.selectedKeys) {
             const found = this.possibleKeys.find((possibleKey) => possibleKey === selectedKey)
@@ -429,6 +448,7 @@ export class Field_selectMany<
             if (prop === 'filter') return (...args: [any, any]) => this.selectedValues.filter(...args)
             if (prop === 'sort') return (...args: [any]) => this.selectedValues.sort(...args)
             if (prop === 'join') return (...args: [any]) => this.selectedValues.join(...args)
+            if (prop === 'toSorted') return (...args: [any]) => this.selectedValues.toSorted(...args)
             if (prop === 'toJSON') return undefined // <--- 🔴 THIS IS PROBABLY WRONG
             if (prop === 'constructor') return Reflect.get(_, prop)
             if (prop === 'hasOwnProperty') return Reflect.get(this.selectedValues, prop)

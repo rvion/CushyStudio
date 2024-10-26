@@ -14,7 +14,7 @@ declare global {
 
    interface Window {
       RENDERER: {
-         Render: FC<{ field: Field; p: RENDERER.FieldRenderArgs<any> }>
+         Render: FC<{ field: Field } & RENDERER.FieldRenderArgs<any>>
       }
    }
 

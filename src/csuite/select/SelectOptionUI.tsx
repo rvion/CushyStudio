@@ -7,6 +7,7 @@ import { observer } from 'mobx-react-lite'
 import { type ListChildComponentProps } from 'react-window'
 
 import { InputBoolCheckboxUI } from '../checkbox/InputBoolCheckboxUI'
+import { csuiteConfig } from '../config/configureCsuite'
 
 export type SelectOptionProps<T> = {
    reveal: RevealState
@@ -17,6 +18,33 @@ export type SelectOptionProps<T> = {
    isScrolling?: boolean
    boolButtonProps?: BoolButtonProps
 }
+
+export const SelectAllNoneUI = observer(function SelectAllNoneUI_<T>(p: {
+   state: AutoCompleteSelectState<T>
+   className?: string
+}) {
+   return (
+      <div tw='px-2' className={p.className}>
+         <button
+            tw='text-sky-700 hover:text-sky-700 hover:underline'
+            type='button'
+            onClick={() => {
+               p.state.selectAll()
+            }}
+         >
+            {csuiteConfig.i18n.ui.selectMany.selectAll}
+         </button>{' '}
+         /{' '}
+         <button
+            tw='text-sky-700 hover:text-sky-700 hover:underline'
+            type='button'
+            onClick={() => p.state.selectNone()}
+         >
+            {csuiteConfig.i18n.ui.selectMany.selectNone}
+         </button>
+      </div>
+   )
+})
 
 /*
  * this is just a wrapper around SelectOptionUI that respect

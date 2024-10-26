@@ -131,7 +131,12 @@ export const AnchorContentUI = observer(function AnchorContentUI_<OPTION>(p: {
    if (!csuite.showSelectIcons)
       return (
          <div tw={['w-full', 'grid', 'p-input']} style={{ gridTemplateColumns: '1fr' }}>
-            <SelectValueContainerUI wrap={p.select.p.wrap ?? true}>{displayValue}</SelectValueContainerUI>
+            <SelectValueContainerUI //
+               valuesCount={p.select.values.length}
+               wrap={p.select.p.wrap ?? true}
+            >
+               {displayValue}
+            </SelectValueContainerUI>
          </div>
       )
 
@@ -145,14 +150,24 @@ export const AnchorContentUI = observer(function AnchorContentUI_<OPTION>(p: {
       >
          {/* 2px for parent border + 2 * 2px for icon padding */}
          {/* <Ikon.mdiTextBoxSearchOutline tw='box-border m-[2px]' size='calc((var(--input-height) - 4px - 2px)' /> */}
-         <SelectValueContainerUI wrap={p.select.p.wrap ?? true}>{displayValue}</SelectValueContainerUI>
+         <SelectValueContainerUI //
+            valuesCount={p.select.values.length}
+            wrap={p.select.p.wrap ?? true}
+         >
+            {displayValue}
+         </SelectValueContainerUI>
          {/* <Ikon.mdiChevronDown size={1} /> */}
       </Frame>
    ) : (
       // IN THIS BRANCH, WE ADD FLEX-NONE
       <>
          {/* <Ikon.mdiTextBoxSearchOutline tw='box-border m-[2px] flex-none' size='calc((var(--input-height) - 4px - 2px)' /> */}
-         <SelectValueContainerUI wrap={p.select.p.wrap ?? true}>{displayValue}</SelectValueContainerUI>
+         <SelectValueContainerUI //
+            valuesCount={p.select.values.length}
+            wrap={p.select.p.wrap ?? true}
+         >
+            {displayValue}
+         </SelectValueContainerUI>
          {/* <Ikon.mdiChevronDown size={1} /> */}
       </>
    )

@@ -1,4 +1,6 @@
-export function extractConfigValue<T>(config?: T | { value: T; error: string }): T | undefined {
+export type ErrorConfigValue<T> = T | { value: T; error: string }
+
+export function extractConfigValue<T>(config?: ErrorConfigValue<T>): T | undefined {
    if (config === undefined || config === null) return undefined
 
    return Object.prototype.hasOwnProperty.call(config, 'value')
@@ -7,7 +9,7 @@ export function extractConfigValue<T>(config?: T | { value: T; error: string }):
 }
 
 export function extractConfigMessage<T>(
-   config: undefined | T | { value: T; error: string },
+   config: undefined | ErrorConfigValue<T>,
    defaultMessage: string,
 ): string {
    if (config === undefined || config === null) return defaultMessage

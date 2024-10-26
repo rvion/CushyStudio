@@ -1387,16 +1387,25 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
 
    //  => LOCO
    Render(props: RENDERER.FieldRenderArgs<this> = {}): ReactNode {
-      // eslint-disable-next-line no-debugger
-      if (props == undefined) debugger /* 🔴 */
-      return <window.RENDERER.Render field={this} p={props} />
+      return <window.RENDERER.Render field={this} {...props} />
    }
 
    //  => CUSHY
    UI(props: RENDERER.FieldRenderArgs<this> = {}): ReactNode {
-      // eslint-disable-next-line no-debugger
-      if (props == undefined) debugger /* 🔴 */
-      return <window.RENDERER.Render field={this} p={props} />
+      // 💬 2024-10-17 ghusse:
+      // | Spreading props here instead of passing them as a single object
+      // | avoids useless refresh when the widget's parent is rerendered
+      // | because the props object is recreated every time, even if
+      // | the props themselves are the same.
+      //
+      // 💬 2024-10-26 rvion:
+      // | okay; so it it’s true-ish, but also probably deserve a quick discussion some day;
+      // | since we probably want to have custom object comparer for key components like
+      // | this one.
+      // | relying on memo using Object.is to compare stuff is just wrong, and spread here
+      // | just doesn’t fix much as soon as we pass down more complex props that include
+      // | objects not beeing cached/made referentially stable in the parent component.
+      return <window.RENDERER.Render field={this} {...props} />
    }
 
    /**
@@ -1408,7 +1417,7 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
    render(props: RENDERER.FieldRenderArgs<this> = {}): ReactNode {
       // eslint-disable-next-line no-debugger
       if (props == undefined) debugger /* 🔴 */
-      return <window.RENDERER.Render field={this} p={props} />
+      return <window.RENDERER.Render field={this} {...props} />
    }
 
    /**
