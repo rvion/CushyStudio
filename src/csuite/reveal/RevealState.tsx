@@ -697,7 +697,11 @@ export class RevealState {
       this.logEv(ev, `onShellClick (shouldHideOnShellClick=${this.shouldHideOnShellClick})`)
       if (this.shouldHideOnShellClick) this.close('shellClick')
       ev.stopPropagation()
-      ev.preventDefault()
+
+      // 💬 2024-10-16 domi:
+      // | @ghusse je ne pense pas qu'il faille empêcher le default dans ce cas là,
+      // | on est dans un clic à l'interieur du shell, on ne veut juste pas qu'il en sorte?
+      // ev.preventDefault()
    }
 
    // prettier-ignore
