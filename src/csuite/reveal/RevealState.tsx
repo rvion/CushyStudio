@@ -108,16 +108,10 @@ export class RevealState {
    }
 
    p: RevealProps
-   parents: RevealState[]
+   readonly parents: RevealState[]
    anchorRef: React.RefObject<HTMLDivElement> // 🚨 ref do not work when observables!
 
-   constructor(
-      //
-      public lazyState: RevealStateLazy,
-      // public p: RevealProps,
-      // public parents: RevealState[],
-      // public anchorRef: React.RefObject<HTMLDivElement>, // 🚨 ref do not work when observables!
-   ) {
+   constructor(public lazyState: RevealStateLazy) {
       this.p = { ...lazyState.p }
       this.parents = lazyState.parents
       this.anchorRef = lazyState.anchorRef
@@ -138,6 +132,7 @@ export class RevealState {
       makeAutoObservable(this, {
          uid: false,
          p: false,
+         parents: false,
          PREVENT_DOUBLE_OPEN_CLOSE_DELAY: false,
          delaySinceLastOpenClose: false,
          anchorRef: false, // 🚨 ref do not work when observables!

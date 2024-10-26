@@ -1,10 +1,9 @@
 import type { RevealProps } from './RevealProps'
-import type { RevealState } from './RevealState'
 import type { RevealShellProps } from './shells/ShellProps'
-import type { FC, ForwardedRef, ReactPortal } from 'react'
+import type { ForwardedRef, ReactNode, ReactPortal } from 'react'
 
 import { observer } from 'mobx-react-lite'
-import React, { cloneElement, createElement, forwardRef, useEffect, useMemo, useRef } from 'react'
+import React, { cloneElement, createElement, forwardRef, useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 
 // import { twMerge } from 'tailwind-merge'
@@ -12,10 +11,12 @@ import { cls } from '../../widgets/misc/cls'
 import { regionMonitor } from '../regions/RegionMonitor'
 import { objectAssignTsEfficient_t_t } from '../utils/objectAssignTsEfficient'
 import { useEffectAction } from '../utils/useEffectAction'
+import { useMemoAction } from '../utils/useMemoAction'
 import { VirtualDomRect } from './misc/VirtualDomRect'
 import { RevealBackdropUI } from './RevealBackdropUI'
 import { whitelistedClonableComponents } from './RevealCloneWhitelist'
 import { RevealCtx, useRevealOrNull } from './RevealCtx'
+import { useEffectToRegisterInGlobalRevealStack } from './RevealGlobal'
 import { RevealStateLazy } from './RevealStateLazy'
 import { ShellNoneUI } from './shells/ShellNone'
 import { ShellPopoverUI } from './shells/ShellPopover'
@@ -33,13 +34,14 @@ export const RevealUI = observer(
       const anchorRef = useRef<HTMLDivElement>(null)
       useSyncForwardedRef(p.sharedAnchorRef, anchorRef)
 
-      const parents_: RevealStateLazy[] = useRevealOrNull()?.tower ?? []
+      const parents_: RevealStateLazy[] = p.parentRevealState?.tower ?? useRevealOrNull()?.tower ?? []
       const parents: RevealStateLazy[] = p.useSeparateTower ? [] : parents_
 
       // Eagerly retrieving parents is OK here cause as a children, we expects our parents to exist.
-      const lazyState = useMemo(() => new RevealStateLazy(p, parents.map((p) => p.getRevealState()), anchorRef), []) // prettier-ignore
-      const { state: reveal } = lazyState
-      const nextTower = useMemo(() => ({ tower: [...parents, lazyState] }), [])
+      const lazyState = useMemoAction(() => new RevealStateLazy(p, parents, anchorRef), []) // prettier-ignore
+      const reveal = lazyState.state
+      const nextTower = lazyState.towerContext // (() => ({ tower: [...parents, lazyState] }), [])
+      useEffectToRegisterInGlobalRevealStack(lazyState)
 
       // 🔴 2024-08-08 domi: isn't this broken/useless?
       useEffectAction(() => {
@@ -152,7 +154,7 @@ export const RevealUI = observer(
                 },
                 <>
                     {child.props.children}
-                    {mkTooltip(reveal) /* add the tooltip at the end of the children list */}
+                    {mkTooltip(lazyState)}
                 </>
             )
          return (
@@ -165,7 +167,9 @@ export const RevealUI = observer(
       }
 
       if (p.children == null) {
-         return <RevealCtx.Provider value={nextTower}>{mkTooltip(reveal) /* tooltip */}</RevealCtx.Provider>
+         return (
+            <RevealCtx.Provider value={nextTower}>{mkTooltip(lazyState) /* tooltip */}</RevealCtx.Provider>
+         )
       }
 
       // this span could be bypassed by cloning the child element and injecting props,
@@ -195,7 +199,7 @@ export const RevealUI = observer(
             {p.children /* anchor */}
             <RevealCtx.Provider value={nextTower}>
                {/*  */}
-               {mkTooltip(reveal) /* tooltip */}
+               {mkTooltip(lazyState) /* tooltip */}
             </RevealCtx.Provider>
          </div>
       )
@@ -204,7 +208,10 @@ export const RevealUI = observer(
 
 RevealUI.displayName = 'RevealUI'
 
-const mkTooltip = (select: Maybe<RevealState>): Maybe<ReactPortal> => {
+const mkTooltip = (lazyState: Maybe<RevealStateLazy>): Maybe<ReactPortal> => {
+   if (lazyState == null) return null
+   const select = lazyState.state
+
    // ensure uist initialized
    if (select == null) return null
 
@@ -218,19 +225,22 @@ const mkTooltip = (select: Maybe<RevealState>): Maybe<ReactPortal> => {
    const p = select.p
    const hiddenContent = createElement(select.contentFn)
 
-   const ShellUI: React.FC<RevealShellProps> = ((): FC<RevealShellProps> => {
+   const ShellUI: React.FC<RevealShellProps> = (props: RevealShellProps): ReactNode => {
       const shell = p.shell
-      if (shell === 'popover') return ShellPopoverUI
-      if (shell === 'none') return ShellNoneUI
+      if (shell === 'popover') return <ShellPopoverUI {...props} />
+      if (shell === 'none') return <ShellNoneUI {...props} />
       //
-      if (shell === 'popup') return ShellPopupUI
-      if (shell === 'popup-xs') return ShellPopupXSUI
-      if (shell === 'popup-sm') return ShellPopupSMUI
-      if (shell === 'popup-lg') return ShellPopupLGUI
-      if (shell === 'popup-xl') return ShellPopupXLUI
+      if (shell === 'popup') return <ShellPopupUI {...props} />
+      if (shell === 'popup-xs') return <ShellPopupXSUI {...props} />
+      if (shell === 'popup-sm') return <ShellPopupSMUI {...props} />
+      if (shell === 'popup-lg') return <ShellPopupLGUI {...props} />
+      if (shell === 'popup-xl') return <ShellPopupXLUI {...props} />
 
-      return shell ?? ShellPopoverUI
-   })()
+      if (!shell) return <ShellPopoverUI {...props} />
+
+      const Shell = shell as React.FC<RevealShellProps>
+      return <Shell {...props} />
+   }
 
    let revealedContent = (
       <ShellUI pos={pos} reveal={select}>

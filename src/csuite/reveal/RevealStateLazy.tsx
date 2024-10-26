@@ -13,15 +13,27 @@ import { RevealState } from './RevealState'
 export class RevealStateLazy {
    static nextUID: number = 1
    uid = RevealStateLazy.nextUID++
-
    childRef = React.createRef<HTMLDivElement>()
+
+   /**
+    * stack of RevealStateLazy, from root,
+    * including self as last item
+    *
+    * @since 2024-10-11
+    * */
+   readonly tower: RevealStateLazy[]
+   readonly towerContext: { tower: RevealStateLazy[] }
+
    constructor(
       //
       public p: RevealProps,
-      public parents: RevealState[],
+      public parentsLazy: RevealStateLazy[],
       public anchorRef: React.RefObject<HTMLDivElement>,
    ) {
       // if (DEBUG_REVEAL) console.log(`💙 new RevealStateLazy (lazyId: ${this.uid} / props: ${p.placement})`)
+      this.tower = [...parentsLazy, this]
+      this.towerContext = { tower: this.tower }
+
       makeAutoObservable(this, {
          p: false,
          anchorRef: false, // 🚨 ref do not work when observables!

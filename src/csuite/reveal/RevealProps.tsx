@@ -1,6 +1,7 @@
 import type { RevealCloseEvent } from './RevealCloseEvent'
 import type { RevealPlacement } from './RevealPlacement'
 import type { RevealState } from './RevealState'
+import type { RevealStateLazy } from './RevealStateLazy'
 import type { RevealContentProps, RevealShellProps } from './shells/ShellProps'
 import type React from 'react'
 import type { FC } from 'react'
@@ -133,6 +134,16 @@ export type RevealProps = {
     * when we have nested Reveals but they actually are independent
     */
    useSeparateTower?: boolean
+
+   /**
+    * Advanced feature:
+    * if you need to open modal programmatically, outside of
+    * a react component, the RevealUI won't be able to retrieve
+    * it's parent tower from the react context. in that case, you'll need
+    * to pass that.
+    *
+    */
+   parentRevealState?: RevealStateLazy
 
    // 🔴 actually the child may not accept DovProps...
    anchorProps?: React.HTMLAttributes<HTMLDivElement>
