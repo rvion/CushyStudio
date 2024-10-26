@@ -49,6 +49,7 @@ export const RevealUI = observer(
          if (typeof ref2 === 'function') ref2(lazyState)
          else ref2.current = lazyState
       }, [])
+
       useEffect(() => {
          return (): void => lazyState.state?.close('RevealUI-is-unmounted')
       }, [])

@@ -9,8 +9,6 @@ import { nanoid } from 'nanoid'
 import React from 'react'
 
 import { hasMod } from '../accelerators/META_NAME'
-import { BadgeUI } from '../badge/BadgeUI'
-import { Frame } from '../frame/Frame'
 import { getUIDForMemoryStructure } from '../utils/getUIDForMemoryStructure'
 import { createObservableRef } from '../utils/observableRef'
 import { searchMatches } from '../utils/searchMatches'

@@ -36,7 +36,7 @@ export const renderFCOrNodeWithWrapper = <
    return createElement(wrapper, wrapperProps, inner)
 }
 
-export const _isFC = <T extends object>(x: FCOrNode<T>): x is CovariantFC<T> => {
+export const _isFC = <T extends object>(x: /* FCOrNode<T> */ unknown): x is CovariantFC<T> => {
    // if it's a simple function , it's probably some FC
    if (typeof x === 'function') return true
 
