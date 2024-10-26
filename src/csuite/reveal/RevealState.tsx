@@ -574,6 +574,26 @@ export class RevealState {
    onFocusAnchor = (ev: React.FocusEvent<unknown>): void => {
       if (isElemAChildOf(ev.relatedTarget, '._ShellForFocusEvents')) return
 
+      /**
+       * 💬 2024-10-14 domi: if we put a button inside the anchor,
+       * it won't be clickable by default, because anchor focus is
+       * triggered on mouse down, ie. the reveal will open before
+       * the button is clicked.
+       * So if the target is the button, we do not open the reveal.
+       *
+       * 💬 2024-10-26 rvion:
+       * | at first, it seems (naively) the wrong place to do that to me
+       * | "why not just prevenDefault/stopPropagation in the nested onFocus ?""
+       * | but the `ev.target !== ev.currentTarget` indeed actually makes it pretty handy
+       * | in most cases (Let's see if a counter-example ever arise).
+       */
+      if (
+         ev.target instanceof HTMLButtonElement &&
+         // if the anchor itself is the clicked button, we don't want to skip!
+         ev.target !== ev.currentTarget
+      )
+         return
+
       // (mouseDown: ${this._mouseDown})
       this.logEv(ev, `anchor.onFocus (⏳: ${this.delaySinceLastOpenClose})`)
 
