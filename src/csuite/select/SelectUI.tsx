@@ -133,7 +133,7 @@ export const AnchorContentUI = observer(function AnchorContentUI_<OPTION>(p: {
          <div tw={['w-full', 'grid', 'p-input']} style={{ gridTemplateColumns: '1fr' }}>
             <SelectValueContainerUI //
                valuesCount={p.select.values.length}
-               wrap={p.select.p.wrap ?? true}
+               wrap={p.select.p.wrap ?? false}
             >
                {displayValue}
             </SelectValueContainerUI>
@@ -152,7 +152,7 @@ export const AnchorContentUI = observer(function AnchorContentUI_<OPTION>(p: {
          {/* <Ikon.mdiTextBoxSearchOutline tw='box-border m-[2px]' size='calc((var(--input-height) - 4px - 2px)' /> */}
          <SelectValueContainerUI //
             valuesCount={p.select.values.length}
-            wrap={p.select.p.wrap ?? true}
+            wrap={p.select.p.wrap ?? false}
          >
             {displayValue}
          </SelectValueContainerUI>
@@ -164,7 +164,7 @@ export const AnchorContentUI = observer(function AnchorContentUI_<OPTION>(p: {
          {/* <Ikon.mdiTextBoxSearchOutline tw='box-border m-[2px] flex-none' size='calc((var(--input-height) - 4px - 2px)' /> */}
          <SelectValueContainerUI //
             valuesCount={p.select.values.length}
-            wrap={p.select.p.wrap ?? true}
+            wrap={p.select.p.wrap ?? false}
          >
             {displayValue}
          </SelectValueContainerUI>
