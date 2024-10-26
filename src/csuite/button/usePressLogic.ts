@@ -5,8 +5,7 @@ import { window_addEventListener } from '../utils/window_addEventListenerAction'
 let draggedElement: HTMLElement | null = null
 let startingState: boolean = false
 let currentToggleGroup: SharedClickAndSlideKey | null = null
-
-// let isDragging = false
+// let isDragging: boolean = false
 
 type MouseEvCallback = (ev: React.MouseEvent<HTMLDivElement>) => void
 

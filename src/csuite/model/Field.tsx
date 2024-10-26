@@ -502,7 +502,7 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
       problems: { msg: string; data: any }[]
    } {
       const wasNull = serialish == null
-      let skipAutoFix = false
+      let skipAutoFix: boolean = false
       let serial: object
 
       // #region 1.1. case `null` => use `_emptySerial`

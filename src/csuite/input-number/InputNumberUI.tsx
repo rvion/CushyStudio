@@ -13,14 +13,14 @@ import { window_addEventListener } from '../utils/window_addEventListenerAction'
 const clamp = (x: number, min: number, max: number): number => Math.max(min, Math.min(max, x))
 
 /* NOTE(bird_d): Having these here should be fine since only one slider should be dragging/active at a time? */
-let startValue = 0
-let dragged = false
-let cumulativeOffset = 0
-let lastShiftState = false
-let lastControlState = false
-let lastValue = 0
+let startValue: number = 0
+let dragged: boolean = false
+let cumulativeOffset: number = 0
+let lastShiftState: boolean = false
+let lastControlState: boolean = false
+let lastValue: number = 0
 let activeSlider: HTMLDivElement | null = null
-let cancelled = false
+let cancelled: boolean = false
 
 type InputNumberProps = {
    disabled?: boolean
