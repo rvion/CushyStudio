@@ -22,7 +22,7 @@ export const RevealBackdropUI = observer(function RevealBackdropUI_({
                tw='animate-in fade-in absolute inset-0'
             />
          )}
-         {children}
+         <div tw='absolute inset-0 overflow-auto'>{children}</div>
       </div>
    )
 })
