@@ -4,10 +4,8 @@ import type { AutoCompleteSelectState } from './SelectState'
 import type { CSSProperties } from 'react'
 
 import { observer } from 'mobx-react-lite'
-import { type ListChildComponentProps } from 'react-window'
 
 import { InputBoolCheckboxUI } from '../checkbox/InputBoolCheckboxUI'
-import { csuiteConfig } from '../config/configureCsuite'
 
 export type SelectOptionProps<T> = {
    reveal: RevealState
@@ -18,33 +16,6 @@ export type SelectOptionProps<T> = {
    isScrolling?: boolean
    boolButtonProps?: BoolButtonProps
 }
-
-export const SelectAllNoneUI = observer(function SelectAllNoneUI_<T>(p: {
-   state: AutoCompleteSelectState<T>
-   className?: string
-}) {
-   return (
-      <div tw='px-2' className={p.className}>
-         <button
-            tw='text-sky-700 hover:text-sky-700 hover:underline'
-            type='button'
-            onClick={() => {
-               p.state.selectAll()
-            }}
-         >
-            {csuiteConfig.i18n.ui.selectMany.selectAll}
-         </button>{' '}
-         /{' '}
-         <button
-            tw='text-sky-700 hover:text-sky-700 hover:underline'
-            type='button'
-            onClick={() => p.state.selectNone()}
-         >
-            {csuiteConfig.i18n.ui.selectMany.selectNone}
-         </button>
-      </div>
-   )
-})
 
 /*
  * this is just a wrapper around SelectOptionUI that respect
@@ -74,26 +45,5 @@ export const SelectOptionUI = observer(function SelectOptionUI_<T>(p: SelectOpti
             {state.DisplayOptionUI(p.option, { where: 'options-list' })}
          </InputBoolCheckboxUI>
       </>
-   )
-})
-
-export const SelectOptionUI_FixedList = observer(function SelectOptionUI_<T>({
-   data,
-   index,
-   style,
-   isScrolling,
-}: ListChildComponentProps<{ s: AutoCompleteSelectState<T>; reveal: RevealState }>) {
-   const s = data.s
-   const option = s.filteredOptions[index]!
-   // 🔶 TODO: onClick on option loses input focus => input should refocus onBlur when target isChildOf stuff
-   return (
-      <SelectOptionUI //
-         option={option}
-         reveal={data.reveal}
-         state={s}
-         index={index}
-         style={style}
-         isScrolling={isScrolling}
-      />
    )
 })

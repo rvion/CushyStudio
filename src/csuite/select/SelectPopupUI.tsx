@@ -7,7 +7,9 @@ import { FixedSizeList } from 'react-window'
 
 import { Frame } from '../frame/Frame'
 import { InputStringUI } from '../input-string/InputStringUI'
-import { SelectAllNoneUI, SelectOptionUI, SelectOptionUI_FixedList } from './SelectOptionUI'
+import { SelectAllNoneUI } from './SelectAllNoneUI'
+import { SelectOptionUI } from './SelectOptionUI'
+import { SelectOptionUI_FixedList } from './SelectOptionUI_FixedList'
 
 const trueMinWidth = '20rem'
 
