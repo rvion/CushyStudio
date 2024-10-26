@@ -15,7 +15,7 @@ import { getJustifyContent } from './TabPositionConfig'
 export const WidgetChoices_TabHeaderUI = observer(function WidgetChoicesTab_LineUI_<T extends SchemaDict>(p: {
    field: Field_choices<T>
 }) {
-   const field = p.field
+   const field: Field_choices<T> = p.field
    const choices = field.choicesWithLabels // choicesStr.map((v) => ({ key: v }))
    const csuite = useCSuite()
    const isActive = !p.field.canBeToggledWithinParent || !p.field.isInsideDisabledBranch
@@ -37,9 +37,8 @@ export const WidgetChoices_TabHeaderUI = observer(function WidgetChoicesTab_Line
                   text={c.label ?? c.key}
                   box={isSelected ? undefined : { text: csuite.labelText }}
                   onValueChange={(value) => {
-                     // 🔴 seems dubious
-                     p.field.enableSelfWithinParent()
-
+                     // 🔴 DUBIOUS
+                     if (p.field.canBeToggledWithinParent) p.field.enableSelfWithinParent()
                      if (value != isSelected) {
                         field.toggleBranch(c.key)
                      }
