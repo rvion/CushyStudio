@@ -1,56 +1,56 @@
 import { openFolderInOS } from '../app/layout/openExternal'
 import { Button } from '../csuite/button/Button'
-import { MenuDivider } from '../csuite/dropdown/MenuItem'
-import { menuWithoutProps, type MenuWithoutProps } from '../csuite/menu/Menu'
+import { MenuDivider } from '../csuite/dropdown/MenuDivider'
+import { defineMenu, type Menu } from '../csuite/menu/Menu'
 import { panels } from '../router/PANELS'
 
-export const menuComfyUI2: MenuWithoutProps = menuWithoutProps({
-    title: 'ComfyUI',
-    entries: (_, b) => [
-        //
-        ...panels.ComfyUI.menuEntries,
-        ...panels.ComfyUINodeExplorer.menuEntries,
-        menuDivider,
-        b.SimpleMenuAction({
-            label: 'Hosts',
-            onClick: () => cushy.layout.open('Hosts', {}),
+export const menuComfyUI2: Menu = defineMenu({
+   title: 'ComfyUI',
+   entries: (b) => [
+      //
+      ...panels.ComfyUI.menuEntries,
+      ...panels.ComfyUINodeExplorer.menuEntries,
+      menuDivider,
+      b.SimpleMenuAction({
+         label: 'Hosts',
+         onClick: () => cushy.layout.open('Hosts', {}),
+         icon: 'mdiServerNetwork',
+      }),
+      ...cushy.hosts.map((host) => {
+         return b.SimpleMenuAction({
             icon: 'mdiServerNetwork',
-        }),
-        ...cushy.hosts.map((host) => {
-            return b.SimpleMenuAction({
-                icon: 'mdiServerNetwork',
-                label: host.data.name,
-                onClick: () => host.electAsPrimary(),
-            })
-        }),
-    ],
+            label: host.data.name,
+            onClick: () => host.electAsPrimary(),
+         })
+      }),
+   ],
 })
 
 const menuDivider = (
-    <MenuDivider>
-        <div
-            tw='flex' // TODO(bird_d: JOINER)
-        >
-            <Button
-                icon='mdiClipboard'
-                onClick={() => {
-                    void navigator.clipboard.writeText(cushy.configFile.value.mainComfyHostID ?? '')
-                }}
-            >
-                Primary Host
-            </Button>
-            <Button
-                icon='mdiFolderOpen'
-                onClick={(ev) => {
-                    ev.stopPropagation()
-                    ev.preventDefault()
-                    return openFolderInOS(
-                        `${cushy.rootPath}/schema/hosts/${cushy.configFile.value.mainComfyHostID}` as AbsolutePath,
-                    )
-                }}
-            />
-        </div>
-    </MenuDivider>
+   <MenuDivider>
+      <div
+         tw='flex' // TODO(bird_d: JOINER)
+      >
+         <Button
+            icon='mdiClipboard'
+            onClick={() => {
+               void navigator.clipboard.writeText(cushy.configFile.value.mainComfyHostID ?? '')
+            }}
+         >
+            Primary Host
+         </Button>
+         <Button
+            icon='mdiFolderOpen'
+            onClick={(ev) => {
+               ev.stopPropagation()
+               ev.preventDefault()
+               return openFolderInOS(
+                  `${cushy.rootPath}/schema/hosts/${cushy.configFile.value.mainComfyHostID}` as AbsolutePath,
+               )
+            }}
+         />
+      </div>
+   </MenuDivider>
 )
 
 // export const MenuComfyUI = observer(function MenuComfyUI_(p: {}) {

@@ -12,6 +12,7 @@ import type { Field_bool, Field_bool_serial } from './bool/FieldBool'
 import type { Field_button_serial } from './button/FieldButton'
 import type { Field_choices, Field_choices_serial } from './choices/FieldChoices'
 import type { Field_date, Field_date_serial } from './date/FieldDate'
+import type { Field_datePlain } from './date_plain/FieldDatePlain'
 import type { Field_group, Field_group_serial } from './group/FieldGroup'
 import type { Field_link, Field_link_serial } from './link/FieldLink'
 import type { Field_list, Field_list_serial } from './list/FieldList'
@@ -33,7 +34,7 @@ import { bang } from '../utils/bang'
 const KNOWN_FIELDS: { [widgetName: string]: Field<any> } = {}
 
 export const getFieldClass = (fieldType: string): unknown => {
-    return bang(KNOWN_FIELDS[fieldType] as any)
+   return bang(KNOWN_FIELDS[fieldType] as any)
 }
 
 export const getFieldOptionalClass = (): typeof Field_optional => getFieldClass('optional') as any
@@ -43,14 +44,15 @@ export const getFieldGroupClass = (): typeof Field_group<any> => getFieldClass('
 export const getFieldStringClass = (): typeof Field_string => getFieldClass('str') as any
 export const getFieldNumberClass = (): typeof Field_number => getFieldClass('number') as any
 export const getFieldListClass = (): typeof Field_list<any> => getFieldClass('list') as any
-export const getFieldSelectOneClass = (): typeof Field_selectOne<any, string> => getFieldClass('selectOne') as any
+export const getFieldSelectOneClass = (): typeof Field_selectOne<any, string> =>
+   getFieldClass('selectOne') as any
 
 export const registerFieldClass = <T extends { $Type: string }>(
-    //
-    type: T['$Type'],
-    kls: { new (...args: any[]): T },
+   //
+   type: T['$Type'],
+   kls: { new (...args: any[]): T },
 ): void => {
-    KNOWN_FIELDS[type] = kls as any
+   KNOWN_FIELDS[type] = kls as any
 }
 
 // help with DI, and help around some typescript bug not able to narrow types
@@ -68,24 +70,25 @@ export const isFieldSelectMany = _checkIfIs<Field_selectMany<any, any>>('selectM
 export const isFieldChoices = _checkIfIs<Field_choices<any>>('choices', (f) => f.isMulti)
 export const isFieldChoice = _checkIfIs<Field_choices<any>>('choices', (f) => f.isSingle)
 export const isFieldDate = _checkIfIs<Field_date<any>>('date')
+export const isFieldDatePlain = _checkIfIs<Field_datePlain<any>>('plaindate')
 export const isFieldDateNullable = _checkIfIs<Field_date<true>>('date', (f) => f.config.nullable === true)
 export const isFieldDateNotNullable = _checkIfIs<Field_date<false>>(
-    'date',
-    (f) => f.config.nullable === undefined || f.config.nullable === false,
+   'date',
+   (f) => f.config.nullable === undefined || f.config.nullable === false,
 )
 
 function _checkIfIs<W extends { $Type: string; $Field: Field }>(
-    /** widget type to check */
-    type: W['$Type'],
-    predicate?: (widget: W['$Field']) => boolean,
+   /** widget type to check */
+   type: W['$Type'],
+   predicate?: (widget: W['$Field']) => boolean,
 ): (widget: any) => widget is W {
-    return (widget): widget is W => {
-        if (widget == null) return false
-        if (typeof widget !== 'object') return false
-        if (widget.type !== type) return false
-        if (predicate && !predicate(widget)) return false
-        return true
-    }
+   return (widget): widget is W => {
+      if (widget == null) return false
+      if (typeof widget !== 'object') return false
+      if (widget.type !== type) return false
+      if (predicate && !predicate(widget)) return false
+      return true
+   }
 }
 
 // help with DI, and help around some typescript bug not able to narrow types
@@ -105,19 +108,19 @@ export const isProbablySerialSelectMany = _checkIfSerialIs<Field_selectMany_seri
 export const isProbablySerialChoices = _checkIfSerialIs<Field_choices_serial<any>>('choices')
 
 export const isProbablySomeFieldSerial = (object: object): object is FieldSerial_CommonProperties => {
-    if (object == null) throw new Error('❌ invariant violation')
-    if (typeof object !== 'object') throw new Error('❌ invariant violation')
-    return '$' in object && typeof object.$ === 'string'
+   if (object == null) throw new Error('❌ invariant violation')
+   if (typeof object !== 'object') throw new Error('❌ invariant violation')
+   return '$' in object && typeof object.$ === 'string'
 }
 
 function _checkIfSerialIs<W extends { $: string }>(
-    /** widget type to check */
-    type: W['$'],
+   /** widget type to check */
+   type: W['$'],
 ): (widget: any) => widget is W {
-    return (serial): serial is W => {
-        if (serial == null) return false
-        if (typeof serial !== 'object') return false
-        if (serial.$ !== type) return false
-        return true
-    }
+   return (serial): serial is W => {
+      if (serial == null) return false
+      if (typeof serial !== 'object') return false
+      if (serial.$ !== type) return false
+      return true
+   }
 }

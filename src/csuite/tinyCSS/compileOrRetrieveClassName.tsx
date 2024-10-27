@@ -8,19 +8,19 @@ const knownRules: Set<Selector> = new Set()
 export const hasRule = (selector: Selector): boolean => knownRules.has(selector)
 
 export function addRule(selector: string, block: string = ''): CSSStyleRule {
-    const styleSheet = getStyleElement().sheet as CSSStyleSheet
-    const rules = styleSheet.cssRules
-    if (rules == null) throw new Error('❌ no rules')
+   const styleSheet = getStyleElement().sheet as CSSStyleSheet
+   const rules = styleSheet.cssRules
+   if (rules == null) throw new Error('❌ no rules')
 
-    // quick and dirty console log to make sure we don't over create css rules
-    if (knownRules.size > 0 && knownRules.size % 100 === 0)
-        console.log(`[🏛️] ${knownRules.size}th rule added`, selector, knownRules.has(selector))
+   // quick and dirty console log to make sure we don't over create css rules
+   if (knownRules.size > 0 && knownRules.size % 100 === 0)
+      console.log(`[🏛️] ${knownRules.size}th rule added`, selector, knownRules.has(selector))
 
-    knownRules.add(selector)
+   knownRules.add(selector)
 
-    // create rule
-    const index = styleSheet.insertRule(`${selector} {${block}}`, styleSheet.cssRules.length)
-    return styleSheet.cssRules[index] as CSSStyleRule
+   // create rule
+   const index = styleSheet.insertRule(`${selector} {${block}}`, styleSheet.cssRules.length)
+   return styleSheet.cssRules[index] as CSSStyleRule
 }
 
 // ⏸️ export function upsertRule(selector: string, block: string = ''): CSSStyleRule {
@@ -43,14 +43,14 @@ export function addRule(selector: string, block: string = ''): CSSStyleRule {
 
 let _styleElement: HTMLStyleElement | null = null
 function getStyleElement(): HTMLStyleElement {
-    if (_styleElement != null) return _styleElement
-    // let styleElement = document.querySelector('[title="dynamic-theme-css"]') as HTMLStyleElement
-    if (_styleElement) {
-        _styleElement = _styleElement
-    } else {
-        _styleElement = _styleElement ?? document.createElement('style')
-        _styleElement.title = 'dynamic-theme-css'
-        document.head.appendChild(_styleElement)
-    }
-    return _styleElement!
+   if (_styleElement != null) return _styleElement
+   // let styleElement = document.querySelector('[title="dynamic-theme-css"]') as HTMLStyleElement
+   if (_styleElement) {
+      _styleElement = _styleElement
+   } else {
+      _styleElement = _styleElement ?? document.createElement('style')
+      _styleElement.title = 'dynamic-theme-css'
+      document.head.appendChild(_styleElement)
+   }
+   return _styleElement!
 }

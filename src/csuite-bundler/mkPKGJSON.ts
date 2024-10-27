@@ -1,5 +1,5 @@
 export function mkPKGJSON(name: string) {
-    return `\
+   return `\
 {
     "name": "${name}",
     "version": "0.0.${Date.now()}",

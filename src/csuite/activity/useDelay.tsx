@@ -9,32 +9,32 @@ let _timeout: Maybe<NodeJS.Timeout>
  * 🔴 sligthly buggy; not properly updating when deps change
  */
 export const useDelay = (
-    /** miliseconds */
-    delayMs: Maybe<number>, // null means no dealy
-    deps: DependencyList,
+   /** miliseconds */
+   delayMs: Maybe<number>, // null means no dealy
+   deps: DependencyList,
 ): boolean => {
-    const defVal =
-        delayMs == null //
-            ? false
-            : delayMs === 0
-            ? false
-            : true
+   const defVal =
+      delayMs == null //
+         ? false
+         : delayMs === 0
+           ? false
+           : true
 
-    const [delayed, setDelayed] = useState(defVal)
+   const [delayed, setDelayed] = useState(defVal)
 
-    useEffect(() => {
-        if (_timeout != null) clearTimeout(_timeout)
-        if (delayMs == null) return
-        _timeout = setTimeout((): void => {
-            // console.log('delayed')
-            setDelayed(false)
-        }, delayMs)
+   useEffect(() => {
+      if (_timeout != null) clearTimeout(_timeout)
+      if (delayMs == null) return
+      _timeout = setTimeout((): void => {
+         // console.log('delayed')
+         setDelayed(false)
+      }, delayMs)
 
-        return (): void => {
-            setDelayed(defVal)
-            if (_timeout != null) clearTimeout(_timeout)
-        }
-    }, deps)
-    // if (delayMs == null) return true
-    return delayed
+      return (): void => {
+         setDelayed(defVal)
+         if (_timeout != null) clearTimeout(_timeout)
+      }
+   }, deps)
+   // if (delayMs == null) return true
+   return delayed
 }

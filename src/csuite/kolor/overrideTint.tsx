@@ -9,29 +9,29 @@ import type { Tint } from './Tint'
  * | or relative values; not both.
  */
 export const overrideTint = (
-    //
-    a: Maybe<Tint>,
-    b: Maybe<Tint>,
+   //
+   a: Maybe<Tint>,
+   b: Maybe<Tint>,
 ): Tint => {
-    if (a == null && b == null) return {}
-    if (a == null) return b!
-    if (b == null) return a
+   if (a == null && b == null) return {}
+   if (a == null) return b!
+   if (b == null) return a
 
-    const out: Tint = {}
-    /**/ if (b.lightness != null) out.lightness = b.lightness
-    else if (b.contrast != null) out.contrast = b.contrast
-    else if (a.lightness != null) out.lightness = a.lightness
-    else if (a.contrast != null) out.contrast = a.contrast
+   const out: Tint = {}
+   /**/ if (b.lightness != null) out.lightness = b.lightness
+   else if (b.contrast != null) out.contrast = b.contrast
+   else if (a.lightness != null) out.lightness = a.lightness
+   else if (a.contrast != null) out.contrast = a.contrast
 
-    /**/ if (b.chroma != null) out.chroma = b.chroma
-    else if (b.chromaBlend != null) out.chromaBlend = b.chromaBlend
-    else if (a.chroma != null) out.chroma = a.chroma
-    else if (a.chromaBlend != null) out.chromaBlend = a.chromaBlend
+   /**/ if (b.chroma != null) out.chroma = b.chroma
+   else if (b.chromaBlend != null) out.chromaBlend = b.chromaBlend
+   else if (a.chroma != null) out.chroma = a.chroma
+   else if (a.chromaBlend != null) out.chromaBlend = a.chromaBlend
 
-    /**/ if (b.hue != null) out.hue = b.hue
-    else if (b.hueShift != null) out.hueShift = b.hueShift
-    else if (a.hue != null) out.hue = a.hue
-    else if (a.hueShift != null) out.hueShift = a.hueShift
+   /**/ if (b.hue != null) out.hue = b.hue
+   else if (b.hueShift != null) out.hueShift = b.hueShift
+   else if (a.hue != null) out.hue = a.hue
+   else if (a.hueShift != null) out.hueShift = a.hueShift
 
-    return out
+   return out
 }

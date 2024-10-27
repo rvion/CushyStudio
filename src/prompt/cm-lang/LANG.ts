@@ -5,21 +5,21 @@ import { PromptLinter1 } from './LINT'
 import { parserWithMetadata } from './STYLE'
 
 export const PromptLangBase = LRLanguage.define({
-    parser: parserWithMetadata,
-    name: 'PromptLang',
-    languageData: {
-        commentTokens: { line: ';' },
-    },
+   parser: parserWithMetadata,
+   name: 'PromptLang',
+   languageData: {
+      commentTokens: { line: ';' },
+   },
 })
 
 export function PromptLang() {
-    return new LanguageSupport(
-        //
-        PromptLangBase,
-        [
-            //
-            PromptComletion1,
-            PromptLinter1,
-        ],
-    )
+   return new LanguageSupport(
+      //
+      PromptLangBase,
+      [
+         //
+         PromptComletion1,
+         PromptLinter1,
+      ],
+   )
 }

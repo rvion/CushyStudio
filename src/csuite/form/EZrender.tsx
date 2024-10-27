@@ -11,8 +11,8 @@ export type EZRenderable<P> = FC<P> | null // | ReactNode
 export function EZrender<P>(X: null, props: any): ReactNode
 export function EZrender<P>(X: FC<P>, props: P): ReactNode
 export function EZrender<P>(X: Maybe<FC<any>>, props?: P): ReactNode {
-    if (typeof X === 'function') return <X {...props} />
-    return X
+   if (typeof X === 'function') return <X {...props} />
+   return X
 }
 
 /**

@@ -9,22 +9,22 @@ const mkClassName = customAlphabet('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQR
 const cache: Record<string, string> = {}
 
 export const compileOrRetrieveClassName = (appearance: CSSProperties): string => {
-    const vals = JSON.stringify(appearance)
-    const uid = SparkMD5.hash(vals)
-    if (uid in cache) return cache[uid]!
+   const vals = JSON.stringify(appearance)
+   const uid = SparkMD5.hash(vals)
+   if (uid in cache) return cache[uid]!
 
-    const className = 'box-' + mkClassName()
-    // console.log(`[🌈] `, `.${hash}`, appearance)
-    const cssBlock = Object.entries(appearance)
-        .map(([key, val]) => {
-            // console.log(`[🌈] ---`, key, val)
-            if (val == null) return ''
-            return `${key}: ${val};`
-        })
-        .join('\n')
+   const className = 'box-' + mkClassName()
+   // console.log(`[🌈] `, `.${hash}`, appearance)
+   const cssBlock = Object.entries(appearance)
+      .map(([key, val]) => {
+         // console.log(`[🌈] ---`, key, val)
+         if (val == null) return ''
+         return `${key}: ${val};`
+      })
+      .join('\n')
 
-    addRule(`.${className}`, cssBlock)
-    cache[uid] = className
+   addRule(`.${className}`, cssBlock)
+   cache[uid] = className
 
-    return className
+   return className
 }

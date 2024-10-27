@@ -1,3 +1,5 @@
+import type { StepOutput } from '../types/StepOutput'
+
 import { observer } from 'mobx-react-lite'
 
 import { exhaust } from '../csuite/utils/exhaust'
@@ -11,7 +13,6 @@ import { MediaTextL } from '../models/MediaText'
 import { MediaVideoL } from '../models/MediaVideo'
 import { RuntimeErrorL } from '../models/RuntimeError'
 import { StepL } from '../models/Step'
-import { StepOutput } from '../types/StepOutput'
 import { OutputDisplacementPreviewUI, OutputDisplacementUI } from './3d-displacement/OutputDisplacement'
 import { Output3dScenePreviewUI, Output3dSceneUI2 } from './3d-scene/Output3dScene'
 import { OutputPreviewWrapperUI } from './_OutputPreviewWrapperUI'
@@ -25,16 +26,16 @@ import { OutputWorkflowPreviewUI, OutputWorkflowUI } from './OutputWorkflowUI'
 
 // PREVIEW -----------------------------------------------------------------------------
 export const OutputPreviewUI = observer(function StepOutputUI_(p: {
-    //
-    step?: Maybe<StepL>
-    output: StepOutput
-    size?: string
+   //
+   step?: Maybe<StepL>
+   output: StepOutput
+   size?: string
 }) {
-    return (
-        <OutputPreviewWrapperUI output={p.output} size={p.size}>
-            <OutputPreview_ContentUI step={p.step} output={p.output} />
-        </OutputPreviewWrapperUI>
-    )
+   return (
+      <OutputPreviewWrapperUI output={p.output} size={p.size}>
+         <OutputPreview_ContentUI step={p.step} output={p.output} />
+      </OutputPreviewWrapperUI>
+   )
 })
 
 // prettier-ignore

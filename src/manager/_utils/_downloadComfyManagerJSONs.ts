@@ -19,39 +19,39 @@ await SYNC_alterList()
 
 // ------------------------------------------------------------------------------
 async function SYNC_modelList(): Promise<void> {
-    console.log(wrapBox(`[🎹] synchronizing model-list.json...`))
-    await downloadFile(
-        'https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/model-list.json',
-        'src/manager/model-list/model-list.json',
-    )
+   console.log(wrapBox(`[🎹] synchronizing model-list.json...`))
+   await downloadFile(
+      'https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/model-list.json',
+      'src/manager/model-list/model-list.json',
+   )
 }
 // ------------------------------------------------------------------------------
 async function SYNC_customNodeList(): Promise<void> {
-    console.log(wrapBox(`[🎹] synchronizing custom-node-list.json...`))
-    await downloadFile(
-        'https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/custom-node-list.json',
-        'src/manager/custom-node-list/custom-node-list.json',
-    )
+   console.log(wrapBox(`[🎹] synchronizing custom-node-list.json...`))
+   await downloadFile(
+      'https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/custom-node-list.json',
+      'src/manager/custom-node-list/custom-node-list.json',
+   )
 }
 // ------------------------------------------------------------------------------
 async function SYNC_extensionNodeMap(): Promise<void> {
-    console.log(wrapBox(`[🎹] synchronizing extension-node-map.json...`))
-    await downloadFile(
-        'https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/extension-node-map.json',
-        'src/manager/extension-node-map/extension-node-map.json',
-    )
+   console.log(wrapBox(`[🎹] synchronizing extension-node-map.json...`))
+   await downloadFile(
+      'https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/extension-node-map.json',
+      'src/manager/extension-node-map/extension-node-map.json',
+   )
 }
 // alter ------------------------------------------------------------------------------
 async function SYNC_alterList(): Promise<void> {
-    console.log(wrapBox(`[🎹] synchronizing alter-list.json...`))
-    await downloadFile(
-        'https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/alter-list.json',
-        'src/manager/alter-list/alter-list.json',
-    )
+   console.log(wrapBox(`[🎹] synchronizing alter-list.json...`))
+   await downloadFile(
+      'https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/alter-list.json',
+      'src/manager/alter-list/alter-list.json',
+   )
 }
 
 // should take care of the code generation
 new ComfyManagerRepository({
-    check: true,
-    genTypes: true,
+   check: true,
+   genTypes: true,
 })

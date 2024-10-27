@@ -1,6 +1,19 @@
 import type { Activity } from './Activity'
 import type { Routine } from './Routine'
-import type { MouseEvent } from 'react'
+import type { KeyboardEvent, MouseEvent } from 'react'
+
+export type SimpleMouseActivityProps = {
+   //
+   onStart?: (info: SimpleMouseActivity) => void
+   onMove?: (info: SimpleMouseActivity, routine: Routine) => void
+   onCommit?: (info: SimpleMouseActivity, routine: Routine) => void
+   onCancel?: (info: SimpleMouseActivity, routine: Routine) => void
+   /** will be called after either onCommit or onCancel */
+   onStop?: () => void
+
+   // onKeyUp?: (key: string, info: SimpleMouseActivity) => void
+   onKeyDown?: (key: string, info: SimpleMouseActivity, routine: Routine) => void
+}
 
 /**
  * TODO:
@@ -9,74 +22,86 @@ import type { MouseEvent } from 'react'
  * this class handle the boring stuff
  */
 export class SimpleMouseActivity implements Activity {
-    constructor(
-        public p: {
-            //
-            onStart?: (info: SimpleMouseActivity) => void
-            onMove?: (info: SimpleMouseActivity) => void
-            onCommit?: (info: SimpleMouseActivity) => void
-            onCancel?: (info: SimpleMouseActivity) => void
-            /** will be called after either onCommit or onCancel */
-            onStop?: () => void
-        },
-    ) {}
+   constructor(public p: SimpleMouseActivityProps) {}
 
-    /** WILL BE Re-INITALIZED in onStart() */
+   /** WILL BE Re-INITALIZED in onStart() */
 
-    startX: number = 0
-    startY: number = 0
+   startX: number = 0
+   startY: number = 0
 
-    lastX: number = 0
-    lastY: number = 0
+   lastX: number = 0
+   lastY: number = 0
 
-    get x() {
-        return this.lastX
-    }
-    get y() {
-        return this.lastY
-    }
+   get width(): number {
+      return this.lastX - this.startX
+   }
+   get height(): number {
+      return this.lastY - this.startY
+   }
 
-    offsetFromStart = 0
-    offsetFromLast = 0
-    euclidianDistanceFromStart = 0
-    shiftKey = false
+   get x(): number {
+      return this.lastX
+   }
 
-    onStart() {
-        // console.log(`[🐭🐭🐭] start`)
-        this.startX = cushy.region.mouseX
-        this.startY = cushy.region.mouseY
+   get y(): number {
+      return this.lastY
+   }
 
-        this.lastX = cushy.region.mouseX
-        this.lastY = cushy.region.mouseY
+   offsetFromStart = 0
+   offsetFromLast = 0
+   euclidianDistanceFromStart = 0
+   shiftKey = false
 
-        this.p.onStart?.(this)
-    }
+   // onKeyUp(ev: KeyboardEvent): void {
+   //     // console.log(`[🐭🐭🐭] key up`)
+   //     this.p.onKeyUp?.(ev.key, this)
+   // }
+   onKeyDown(ev: KeyboardEvent, routine: Routine): void {
+      console.log(`[💩] SimpleMouseActivity is receiving an activity`)
+      // console.log(`[🐭🐭🐭] key up`)
+      this.p.onKeyDown?.(ev.key, this, routine)
+   }
 
-    private _updateInfo = (event: MouseEvent): void => {
-        this.offsetFromStart = event.clientX - this.startX
-        this.offsetFromLast = event.clientX - this.startX
-        this.euclidianDistanceFromStart = Math.sqrt((event.clientX - this.startX) ** 2 + (event.clientY - this.startY) ** 2)
-        this.shiftKey = event.shiftKey
-    }
+   onStart(): void {
+      // console.log(`[🐭🐭🐭] start`)
+      this.startX = cushy.region.mouseX
+      this.startY = cushy.region.mouseY
 
-    onMouseMove(event: MouseEvent, routine: Routine) {
-        this._updateInfo(event)
-        this.p.onMove?.(this)
-    }
+      this.lastX = cushy.region.mouseX
+      this.lastY = cushy.region.mouseY
 
-    onMouseUp(event: MouseEvent, routine: Routine) {
-        const btn = event.button
+      this.p.onStart?.(this)
+   }
 
-        // const info = this._getInfo(event)
-        // case 1. right click / middle click => CANCEL
-        if (btn === 1 || btn === 2) {
-            this.p.onCancel?.(this)
-        }
-        // case 2. left click => commit
-        else {
-            this.p.onCommit?.(this)
-        }
-        this.p.onStop?.()
-        routine.stop()
-    }
+   private _updateInfo = (event: MouseEvent): void => {
+      this.lastX = event.clientX
+      this.lastY = event.clientY
+      this.offsetFromStart = event.clientX - this.startX
+      this.offsetFromLast = event.clientX - this.startX
+      this.euclidianDistanceFromStart = Math.sqrt(
+         (event.clientX - this.startX) ** 2 + (event.clientY - this.startY) ** 2,
+      )
+      this.shiftKey = event.shiftKey
+   }
+
+   onMouseMove(event: MouseEvent, routine: Routine): void {
+      this._updateInfo(event)
+      this.p.onMove?.(this, routine)
+   }
+
+   onMouseUp(event: MouseEvent, routine: Routine): void {
+      const btn = event.button
+
+      // const info = this._getInfo(event)
+      // case 1. right click / middle click => CANCEL
+      if (btn === 1 || btn === 2) {
+         this.p.onCancel?.(this, routine)
+      }
+      // case 2. left click => commit
+      else {
+         this.p.onCommit?.(this, routine)
+      }
+      this.p.onStop?.()
+      routine.stop()
+   }
 }

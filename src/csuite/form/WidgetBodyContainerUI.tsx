@@ -5,12 +5,12 @@ import { Frame, type FrameProps } from '../frame/Frame'
 
 export type BodyContainerProps = FrameProps
 export const WidgetBodyContainerUI = observer(function WidgetBodyContainerUI_(
-    //
-    p: BodyContainerProps,
+   //
+   p: BodyContainerProps,
 ) {
-    return (
-        <ErrorBoundaryUI>
-            <Frame {...p} />
-        </ErrorBoundaryUI>
-    )
+   return (
+      <ErrorBoundaryUI>
+         <Frame {...p} />
+      </ErrorBoundaryUI>
+   )
 })

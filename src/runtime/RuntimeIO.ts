@@ -4,7 +4,7 @@ import { makeAutoObservable } from 'mobx'
 
 /** namespace for all extra utils */
 export class RuntimeIO {
-    constructor(private rt: Runtime) {
-        makeAutoObservable(this)
-    }
+   constructor(private rt: Runtime) {
+      makeAutoObservable(this)
+   }
 }

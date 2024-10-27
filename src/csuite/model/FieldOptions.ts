@@ -1,3 +1,3 @@
 export type FieldOptions = {
-    altMobx?: boolean
+   altMobx?: boolean
 }

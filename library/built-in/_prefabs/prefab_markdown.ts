@@ -1,16 +1,16 @@
 import type { Runtime } from '../../../src/CUSHY'
 
 export const output_demo_summary = (run: Runtime) => {
-    run.output_HTML({
-        title: 'demo html',
-        htmlContent: `
+   run.output_HTML({
+      title: 'demo html',
+      htmlContent: `
         <h1> Hello </h1>
         <h2> Hello </h2>
     `,
-    })
-    run.output_Markdown({
-        title: 'demo markdown',
-        markdownContent: `
+   })
+   run.output_Markdown({
+      title: 'demo markdown',
+      markdownContent: `
 # Hello
 
 this is a test
@@ -28,5 +28,5 @@ this is the last generated image:
 ![](${run.lastImage?.url})
 
 `,
-    })
+   })
 }

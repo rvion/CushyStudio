@@ -13,31 +13,31 @@ export type BoolButtonMode = 'radio' | 'checkbox' | false
 
 // TODO: switch to frame
 export type BoolButtonProps = {
-    /** true when active, false when inactive, undefined when unset */
-    value?: Maybe<boolean>
+   /** true when active, false when inactive, undefined when unset */
+   value?: Maybe<boolean>
 
-    /** @default 'check' */
-    display?: 'check' | 'button'
+   /** @default 'check' */
+   display?: 'check' | 'button'
 
-    /** @default 'checkbox' */
-    mode?: BoolButtonMode
+   /** @default 'checkbox' */
+   mode?: BoolButtonMode
 
-    // iconOn?: Maybe<IconName | false>
-    iconOff?: Maybe<IconName | boolean>
+   // iconOn?: Maybe<IconName | false>
+   iconOff?: Maybe<IconName | boolean>
 
-    /** alternative way to specify children */
-    text?: string
+   /** alternative way to specify children */
+   text?: string
 
-    // border?: TintExt
+   // border?: TintExt
 
-    box?: Box
-    onValueChange?: (next: boolean) => void
+   box?: Box
+   onValueChange?: (next: boolean) => void
 
-    toggleGroup: SharedClickAndSlideKey
+   toggleGroup: SharedClickAndSlideKey
 } & FrameProps
 
 export const InputBoolUI = observer(function InputBool(p: BoolButtonProps) {
-    const display = p.display ?? 'check'
-    if (display === 'check') return createElement(InputBoolCheckboxUI, p)
-    return createElement(ToggleButtonUI, p)
+   const display = p.display ?? 'check'
+   if (display === 'check') return createElement(InputBoolCheckboxUI, p)
+   return createElement(ToggleButtonUI, p)
 })

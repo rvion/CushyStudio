@@ -44,9 +44,9 @@ export const stsAssets = {
     'mask-skill' :            'https://cushy.fra1.cdn.digitaloceanspaces.com/rvion/xPbgOSkMFK2dz4CUCEqtXm8YiH2QzB4463IEH4oeivo.png',
 }
 const character = [
-    //
-    'The Silent',
-    'The Ironclad',
-    'The Defect',
-    'The Watcher',
+   //
+   'The Silent',
+   'The Ironclad',
+   'The Defect',
+   'The Watcher',
 ]

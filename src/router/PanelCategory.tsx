@@ -15,15 +15,15 @@ export type PanelCategory =
     | 'developper'
 
 export function getPanelCategoryIcon(x: PanelCategory): IconName {
-    if (x === 'app') return 'mdiApps'
-    if (x === 'outputs') return 'mdiFileDocument'
-    if (x === 'settings') return 'mdiCog'
-    if (x === 'ComfyUI') return 'cdiNodes'
-    if (x === 'models') return 'mdiDatabase'
-    if (x === 'tools') return 'mdiWrench'
-    if (x === 'help') return 'mdiHelpCircle'
-    if (x === 'misc') return 'mdiDotsHorizontal'
-    if (x === 'developper') return 'mdiCodeBraces'
-    exhaust(x)
-    return 'mdiBatteryUnknown'
+   if (x === 'app') return 'mdiApps'
+   if (x === 'outputs') return 'mdiFileDocument'
+   if (x === 'settings') return 'mdiCog'
+   if (x === 'ComfyUI') return 'cdiNodes'
+   if (x === 'models') return 'mdiDatabase'
+   if (x === 'tools') return 'mdiWrench'
+   if (x === 'help') return 'mdiHelpCircle'
+   if (x === 'misc') return 'mdiDotsHorizontal'
+   if (x === 'developper') return 'mdiCodeBraces'
+   exhaust(x)
+   return 'mdiBatteryUnknown'
 }

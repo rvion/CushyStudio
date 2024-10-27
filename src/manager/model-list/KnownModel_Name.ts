@@ -170,6 +170,11 @@ export type KnownModel_Name =
      * see https://huggingface.co/guoyww/animatediff
      */
     | "animatediff/v3_sd15_sparsectrl_scribble.ckpt"
+    /** SegGPT
+     * 1.48GB - https://huggingface.co/BAAI/SegGPT/resolve/main/seggpt_vit_large.pth
+     * see https://huggingface.co/BAAI/SegGPT
+     */
+    | "BAAI/SegGPT"
     /** The idea behind this embedding was to somehow train the negative prompt as an embedding, thus unifying the basis of the negative prompt into one word or embedding.
      * 25KB - https://civitai.com/api/download/models/60095
      * see https://civitai.com/models/55700/badprompt-negative-embedding
@@ -195,6 +200,171 @@ export type KnownModel_Name =
      * see https://huggingface.co/CiaraRowles/TemporalNet2
      */
     | "CiaraRowles/TemporalNet2"
+    /** FLUX.1 [Dev] Diffusion model (f16/.gguf)
+     * 23.8GB - https://huggingface.co/city96/FLUX.1-dev-gguf/resolve/main/flux1-dev-F16.gguf
+     * see https://huggingface.co/city96/FLUX.1-dev-gguf
+     */
+    | "city96/flux1-dev-F16.gguf"
+    /** FLUX.1 [Dev] Diffusion model (Q2_K/.gguf)
+     * 4.03GB - https://huggingface.co/city96/FLUX.1-dev-gguf/resolve/main/flux1-dev-Q2_K.gguf
+     * see https://huggingface.co/city96/FLUX.1-dev-gguf
+     */
+    | "city96/flux1-dev-Q2_K.gguf"
+    /** FLUX.1 [Dev] Diffusion model (Q3_K_S/.gguf)
+     * 5.23GB - https://huggingface.co/city96/FLUX.1-dev-gguf/resolve/main/flux1-dev-Q3_K_S.gguf
+     * see https://huggingface.co/city96/FLUX.1-dev-gguf
+     */
+    | "city96/flux1-dev-Q3_K_S.gguf"
+    /** FLUX.1 [Dev] Diffusion model (Q4_0/.gguf)
+     * 6.79GB - https://huggingface.co/city96/FLUX.1-dev-gguf/resolve/main/flux1-dev-Q4_0.gguf
+     * see https://huggingface.co/city96/FLUX.1-dev-gguf
+     */
+    | "city96/flux1-dev-Q4_0.gguf"
+    /** FLUX.1 [Dev] Diffusion model (Q4_1/.gguf)
+     * 7.53GB - https://huggingface.co/city96/FLUX.1-dev-gguf/resolve/main/flux1-dev-Q4_1.gguf
+     * see https://huggingface.co/city96/FLUX.1-dev-gguf
+     */
+    | "city96/flux1-dev-Q4_1.gguf"
+    /** FLUX.1 [Dev] Diffusion model (Q4_K_S/.gguf)
+     * 6.81GB - https://huggingface.co/city96/FLUX.1-dev-gguf/resolve/main/flux1-dev-Q4_K_S.gguf
+     * see https://huggingface.co/city96/FLUX.1-dev-gguf
+     */
+    | "city96/flux1-dev-Q4_K_S.gguf"
+    /** FLUX.1 [Dev] Diffusion model (Q5_0/.gguf)
+     * 8.27GB - https://huggingface.co/city96/FLUX.1-dev-gguf/resolve/main/flux1-dev-Q5_0.gguf
+     * see https://huggingface.co/city96/FLUX.1-dev-gguf
+     */
+    | "city96/flux1-dev-Q5_0.gguf"
+    /** FLUX.1 [Dev] Diffusion model (Q5_1/.gguf)
+     * 9.01GB - https://huggingface.co/city96/FLUX.1-dev-gguf/resolve/main/flux1-dev-Q5_1.gguf
+     * see https://huggingface.co/city96/FLUX.1-dev-gguf
+     */
+    | "city96/flux1-dev-Q5_1.gguf"
+    /** FLUX.1 [Dev] Diffusion model (Q5_K_S/.gguf)
+     * 8.29GB - https://huggingface.co/city96/FLUX.1-dev-gguf/resolve/main/flux1-dev-Q5_K_S.gguf
+     * see https://huggingface.co/city96/FLUX.1-dev-gguf
+     */
+    | "city96/flux1-dev-Q5_K_S.gguf"
+    /** FLUX.1 [Dev] Diffusion model (Q6_K/.gguf)
+     * 9.86GB - https://huggingface.co/city96/FLUX.1-dev-gguf/resolve/main/flux1-dev-Q6_K.gguf
+     * see https://huggingface.co/city96/FLUX.1-dev-gguf
+     */
+    | "city96/flux1-dev-Q6_K.gguf"
+    /** FLUX.1 [Dev] Diffusion model (Q8_0/.gguf)
+     * 12.7GB - https://huggingface.co/city96/FLUX.1-dev-gguf/resolve/main/flux1-dev-Q8_0.gguf
+     * see https://huggingface.co/city96/FLUX.1-dev-gguf
+     */
+    | "city96/flux1-dev-Q8_0.gguf"
+    /** FLUX.1 [Dev] Diffusion model (f16/.gguf)
+     * 23.8GB - https://huggingface.co/city96/FLUX.1-schnell-gguf/resolve/main/flux1-schnell-F16.gguf
+     * see https://huggingface.co/city96/FLUX.1-schnell-gguf
+     */
+    | "city96/flux1-schnell-F16.gguf"
+    /** FLUX.1 [Dev] Diffusion model (Q2_K/.gguf)
+     * 4.01GB - https://huggingface.co/city96/FLUX.1-schnell-gguf/resolve/main/flux1-schnell-Q2_K.gguf
+     * see https://huggingface.co/city96/FLUX.1-schnell-gguf
+     */
+    | "city96/flux1-schnell-Q2_K.gguf"
+    /** FLUX.1 [Dev] Diffusion model (Q3_K_S/.gguf)
+     * 5.21GB - https://huggingface.co/city96/FLUX.1-schnell-gguf/resolve/main/flux1-schnell-Q3_K_S.gguf
+     * see https://huggingface.co/city96/FLUX.1-schnell-gguf
+     */
+    | "city96/flux1-schnell-Q3_K_S.gguf"
+    /** FLUX.1 [Dev] Diffusion model (Q4_0/.gguf)
+     * 6.77GB - https://huggingface.co/city96/FLUX.1-schnell-gguf/resolve/main/flux1-schnell-Q4_0.gguf
+     * see https://huggingface.co/city96/FLUX.1-schnell-gguf
+     */
+    | "city96/flux1-schnell-Q4_0.gguf"
+    /** FLUX.1 [Dev] Diffusion model (Q4_1/.gguf)
+     * 7.51GB - https://huggingface.co/city96/FLUX.1-schnell-gguf/resolve/main/flux1-schnell-Q4_1.gguf
+     * see https://huggingface.co/city96/FLUX.1-schnell-gguf
+     */
+    | "city96/flux1-schnell-Q4_1.gguf"
+    /** FLUX.1 [Dev] Diffusion model (Q4_K_S/.gguf)
+     * 6.78GB - https://huggingface.co/city96/FLUX.1-schnell-gguf/resolve/main/flux1-schnell-Q4_K_S.gguf
+     * see https://huggingface.co/city96/FLUX.1-schnell-gguf
+     */
+    | "city96/flux1-schnell-Q4_K_S.gguf"
+    /** FLUX.1 [Dev] Diffusion model (Q5_0/.gguf)
+     * 8.25GB - https://huggingface.co/city96/FLUX.1-schnell-gguf/resolve/main/flux1-schnell-Q5_0.gguf
+     * see https://huggingface.co/city96/FLUX.1-schnell-gguf
+     */
+    | "city96/flux1-schnell-Q5_0.gguf"
+    /** FLUX.1 [Dev] Diffusion model (Q5_1/.gguf)
+     * 8.99GB - https://huggingface.co/city96/FLUX.1-schnell-gguf/resolve/main/flux1-schnell-Q5_1.gguf
+     * see https://huggingface.co/city96/FLUX.1-schnell-gguf
+     */
+    | "city96/flux1-schnell-Q5_1.gguf"
+    /** FLUX.1 [Dev] Diffusion model (Q5_K_S/.gguf)
+     * 8.26GB - https://huggingface.co/city96/FLUX.1-schnell-gguf/resolve/main/flux1-schnell-Q5_K_S.gguf
+     * see https://huggingface.co/city96/FLUX.1-schnell-gguf
+     */
+    | "city96/flux1-schnell-Q5_K_S.gguf"
+    /** FLUX.1 [Dev] Diffusion model (Q6_K/.gguf)
+     * 9.83GB - https://huggingface.co/city96/FLUX.1-schnell-gguf/resolve/main/flux1-schnell-Q6_K.gguf
+     * see https://huggingface.co/city96/FLUX.1-schnell-gguf
+     */
+    | "city96/flux1-schnell-Q6_K.gguf"
+    /** FLUX.1 [Dev] Diffusion model (Q8_0/.gguf)
+     * 12.7GB - https://huggingface.co/city96/FLUX.1-schnell-gguf/resolve/main/flux1-schnell-Q8_0.gguf
+     * see https://huggingface.co/city96/FLUX.1-schnell-gguf
+     */
+    | "city96/flux1-schnell-Q8_0.gguf"
+    /** t5xxl Text Encoder GGUF model. (float 16)
+     * 9.53GB - https://huggingface.co/city96/t5-v1_1-xxl-encoder-gguf/resolve/main/t5-v1_1-xxl-encoder-f16.gguf
+     * see https://huggingface.co/city96/t5-v1_1-xxl-encoder-gguf
+     */
+    | "city96/t5-v1_1-xxl-encoder-f16.gguf"
+    /** t5xxl Text Encoder GGUF model. (float 32)
+     * 19.1GB - https://huggingface.co/city96/t5-v1_1-xxl-encoder-gguf/resolve/main/t5-v1_1-xxl-encoder-f32.gguf
+     * see https://huggingface.co/city96/t5-v1_1-xxl-encoder-gguf
+     */
+    | "city96/t5-v1_1-xxl-encoder-f32.gguf"
+    /** t5xxl Text Encoder GGUF model. (Q3_K_L quantized)
+     * 2.46GB - https://huggingface.co/city96/t5-v1_1-xxl-encoder-gguf/resolve/main/t5-v1_1-xxl-encoder-Q3_K_L.gguf
+     * see https://huggingface.co/city96/t5-v1_1-xxl-encoder-gguf
+     */
+    | "city96/t5-v1_1-xxl-encoder-Q3_K_L.gguf"
+    /** t5xxl Text Encoder GGUF model. (Q3_K_M quantized)
+     * 2.3GB - https://huggingface.co/city96/t5-v1_1-xxl-encoder-gguf/resolve/main/t5-v1_1-xxl-encoder-Q3_K_M.gguf
+     * see https://huggingface.co/city96/t5-v1_1-xxl-encoder-gguf
+     */
+    | "city96/t5-v1_1-xxl-encoder-Q3_K_M.gguf"
+    /** t5xxl Text Encoder GGUF model. (Q3_K_S quantized)
+     * 2.1GB - https://huggingface.co/city96/t5-v1_1-xxl-encoder-gguf/resolve/main/t5-v1_1-xxl-encoder-Q3_K_S.gguf
+     * see https://huggingface.co/city96/t5-v1_1-xxl-encoder-gguf
+     */
+    | "city96/t5-v1_1-xxl-encoder-Q3_K_S.gguf"
+    /** t5xxl Text Encoder GGUF model. (Q4_K_M quantized)
+     * 2.9GB - https://huggingface.co/city96/t5-v1_1-xxl-encoder-gguf/resolve/main/t5-v1_1-xxl-encoder-Q4_K_M.gguf
+     * see https://huggingface.co/city96/t5-v1_1-xxl-encoder-gguf
+     */
+    | "city96/t5-v1_1-xxl-encoder-Q4_K_M.gguf"
+    /** t5xxl Text Encoder GGUF model. (Q4_K_S quantized)
+     * 2.74GB - https://huggingface.co/city96/t5-v1_1-xxl-encoder-gguf/resolve/main/t5-v1_1-xxl-encoder-Q4_K_S.gguf
+     * see https://huggingface.co/city96/t5-v1_1-xxl-encoder-gguf
+     */
+    | "city96/t5-v1_1-xxl-encoder-Q4_K_S.gguf"
+    /** t5xxl Text Encoder GGUF model. (Q5_K_M quantized)
+     * 3.39GB - https://huggingface.co/city96/t5-v1_1-xxl-encoder-gguf/resolve/main/t5-v1_1-xxl-encoder-Q5_K_M.gguf
+     * see https://huggingface.co/city96/t5-v1_1-xxl-encoder-gguf
+     */
+    | "city96/t5-v1_1-xxl-encoder-Q5_K_M.gguf"
+    /** t5xxl Text Encoder GGUF model. (Q5_K_S quantized)
+     * 3.29GB - https://huggingface.co/city96/t5-v1_1-xxl-encoder-gguf/resolve/main/t5-v1_1-xxl-encoder-Q5_K_S.gguf
+     * see https://huggingface.co/city96/t5-v1_1-xxl-encoder-gguf
+     */
+    | "city96/t5-v1_1-xxl-encoder-Q5_K_S.gguf"
+    /** t5xxl Text Encoder GGUF model. (Q6_K quantized)
+     * 3.91GB - https://huggingface.co/city96/t5-v1_1-xxl-encoder-gguf/resolve/main/t5-v1_1-xxl-encoder-Q6_K.gguf
+     * see https://huggingface.co/city96/t5-v1_1-xxl-encoder-gguf
+     */
+    | "city96/t5-v1_1-xxl-encoder-Q6_K.gguf"
+    /** t5xxl Text Encoder GGUF model. (Q8_0 quantized)
+     * 5.06GB - https://huggingface.co/city96/t5-v1_1-xxl-encoder-gguf/resolve/main/t5-v1_1-xxl-encoder-Q8_0.gguf
+     * see https://huggingface.co/city96/t5-v1_1-xxl-encoder-gguf
+     */
+    | "city96/t5-v1_1-xxl-encoder-Q8_0.gguf"
     /** CLIPVision model (needed for IP-Adapter)
      * 3.69GB - https://huggingface.co/h94/IP-Adapter/resolve/main/sdxl_models/image_encoder/model.safetensors
      * see https://huggingface.co/h94/IP-Adapter
@@ -205,6 +375,11 @@ export type KnownModel_Name =
      * see https://huggingface.co/h94/IP-Adapter
      */
     | "CLIPVision model (IP-Adapter) CLIP-ViT-H-14-laion2B-s32B-b79K"
+    /** CLIPVision model (needed for IP-Adapter)
+     * 1.71GB - https://huggingface.co/Kwai-Kolors/Kolors-IP-Adapter-Plus/resolve/main/image_encoder/pytorch_model.bin
+     * see https://huggingface.co/Kwai-Kolors/Kolors-IP-Adapter-Plus
+     */
+    | "CLIPVision model (Kwai-Kolors/Kolors-IP-Adapter-Plus/clip-vit-large)"
     /** CLIPVision model (needed for styles model)
      * 1.71GB - https://huggingface.co/openai/clip-vit-large-patch14/resolve/main/model.safetensors
      * see https://huggingface.co/openai/clip-vit-large-patch14
@@ -396,6 +571,11 @@ You need to this model for <B>Tiled Resample</B>
      * see https://huggingface.co/Bingsu/adetailer/tree/main
      */
     | "deepfashion2_yolov8s (segm)"
+    /** Depth pro model for [a/ComfyUI-Depth-Pro](https://github.com/spacepxl/ComfyUI-Depth-Pro)
+     * 1.9GB - https://huggingface.co/spacepxl/ml-depth-pro/resolve/main/depth_pro.fp16.safetensors
+     * see https://huggingface.co/spacepxl/ml-depth-pro
+     */
+    | "Depth Pro model"
     /** Depth-FM monocular depth estimation model
      * 1.73GB - https://huggingface.co/Kijai/depth-fm-pruned/resolve/main/depthfm-v1_fp16.safetensors
      * see https://huggingface.co/Kijai/depth-fm-pruned
@@ -422,15 +602,15 @@ You need to this model for <B>Tiled Resample</B>
      */
     | "detection_Resnet50_Final.pth"
     /** Stable Diffusion XL inpainting model 0.1. You need UNETLoader instead of CheckpointLoader.
+     * 5.14GB - https://huggingface.co/diffusers/stable-diffusion-xl-1.0-inpainting-0.1/resolve/main/unet/diffusion_pytorch_model.fp16.safetensors
+     * see https://huggingface.co/diffusers/stable-diffusion-xl-1.0-inpainting-0.1
+     */
+    | "diffusers/stable-diffusion-xl-1.0-inpainting-0.1 (diffusion_models/fp16)"
+    /** Stable Diffusion XL inpainting model 0.1. You need UNETLoader instead of CheckpointLoader.
      * 10.3GB - https://huggingface.co/diffusers/stable-diffusion-xl-1.0-inpainting-0.1/resolve/main/unet/diffusion_pytorch_model.safetensors
      * see https://huggingface.co/diffusers/stable-diffusion-xl-1.0-inpainting-0.1
      */
     | "diffusers/stable-diffusion-xl-1.0-inpainting-0.1 (UNET)"
-    /** Stable Diffusion XL inpainting model 0.1. You need UNETLoader instead of CheckpointLoader.
-     * 5.14GB - https://huggingface.co/diffusers/stable-diffusion-xl-1.0-inpainting-0.1/resolve/main/unet/diffusion_pytorch_model.fp16.safetensors
-     * see https://huggingface.co/diffusers/stable-diffusion-xl-1.0-inpainting-0.1
-     */
-    | "diffusers/stable-diffusion-xl-1.0-inpainting-0.1 (UNET/fp16)"
     /** InstantId controlnet model
      * 2.50GB - https://huggingface.co/InstantX/InstantID/resolve/main/ControlNetModel/diffusion_pytorch_model.safetensors
      * see https://huggingface.co/InstantX/InstantID
@@ -441,6 +621,16 @@ You need to this model for <B>Tiled Resample</B>
      * see https://huggingface.co/matt3ounstable/dlib_predictor_recognition/tree/main
      */
     | "dlib_face_recognition_resnet_model_v1.dat [Face Analysis]"
+    /** DMD2 LoRA (4steps)
+     * 787MB - https://huggingface.co/tianweiy/DMD2/resolve/main/dmd2_sdxl_4step_lora.safetensors
+     * see https://huggingface.co/tianweiy/DMD2
+     */
+    | "DMD2 LoRA (4steps)"
+    /** DMD2 LoRA (4steps/fp16)
+     * 394MB - https://huggingface.co/tianweiy/DMD2/resolve/main/dmd2_sdxl_4step_lora_fp16.safetensors
+     * see https://huggingface.co/tianweiy/DMD2
+     */
+    | "DMD2 LoRA (4steps/fp16)"
     /** ToonCrafter checkpoint model for ComfyUI-ToonCrafter
      * 10.5GB - https://huggingface.co/Doubiiu/ToonCrafter/resolve/main/model.ckpt
      * see https://huggingface.co/Doubiiu/ToonCrafter/tree/main
@@ -507,11 +697,11 @@ You need to this model for <B>Tiled Resample</B>
      */
     | "face_yolov8s (bbox)"
     /** FLUX.1 [Schnell] Diffusion model (a.k.a. FLUX.1 turbo model)[w/Due to the large size of the model, it is recommended to download it through a browser if possible.]
-     * 23.8GB - https://huggingface.co/black-forest-labs/FLUX.1-schnell/resolve/main/flux1-schnell.sft
+     * 23.8GB - https://huggingface.co/black-forest-labs/FLUX.1-schnell/resolve/main/flux1-schnell.safetensors
      * see https://huggingface.co/black-forest-labs/FLUX.1-schnell
      */
-    | "FLUX.1 [schnell] Diffusion model"
-    /** FLUX.1 [Schnell] VAE model
+    | "FLUX.1 [Schnell] Diffusion model"
+    /** FLUX.1 VAE model
      * 335MB - https://huggingface.co/black-forest-labs/FLUX.1-schnell/resolve/main/ae.safetensors
      * see https://huggingface.co/black-forest-labs/FLUX.1-schnell
      */
@@ -557,7 +747,7 @@ You need to this model for <B>Tiled Resample</B>
      */
     | "google-t5/t5-base"
     /** The encoder part of https://huggingface.co/google/t5-v1_1-xxl, used with SD3 and Flux1
-     * 10.1GB - https://huggingface.co/mcmonkey/google_t5-v1_1-xxl_encoderonly/resolve/main/pytorch_model.safetensors
+     * 10.1GB - https://huggingface.co/mcmonkey/google_t5-v1_1-xxl_encoderonly/resolve/main/model.safetensors
      * see https://huggingface.co/mcmonkey/google_t5-v1_1-xxl_encoderonly
      */
     | "google-t5/t5-v1_1-xxl_encoderonly-fp16"
@@ -606,6 +796,91 @@ You need to this model for <B>Tiled Resample</B>
      * see https://huggingface.co/comfyanonymous/hunyuan_dit_comfyui
      */
     | "hunyuan_dit_1.2.safetensors"
+    /** Hyper-SD CFG LoRA (12steps)
+     * 269MB - https://huggingface.co/ByteDance/Hyper-SD/resolve/main/Hyper-SD15-12steps-CFG-lora.safetensors
+     * see https://huggingface.co/ByteDance/Hyper-SD
+     */
+    | "Hyper-SD CFG LoRA (12steps) - SD1.5"
+    /** Hyper-SD CFG LoRA (12steps) - SDXL
+     * 787MB - https://huggingface.co/ByteDance/Hyper-SD/resolve/main/Hyper-SDXL-12steps-CFG-lora.safetensors
+     * see https://huggingface.co/ByteDance/Hyper-SD
+     */
+    | "Hyper-SD CFG LoRA (12steps) - SDXL"
+    /** Hyper-SD CFG LoRA (16steps) - SD3
+     * 472MB - https://huggingface.co/ByteDance/Hyper-SD/resolve/main/Hyper-SD3-16steps-CFG-lora.safetensors
+     * see https://huggingface.co/ByteDance/Hyper-SD
+     */
+    | "Hyper-SD CFG LoRA (16steps) - SD3"
+    /** Hyper-SD CFG LoRA (4steps) - SD3
+     * 472MB - https://huggingface.co/ByteDance/Hyper-SD/resolve/main/Hyper-SD3-4steps-CFG-lora.safetensors
+     * see https://huggingface.co/ByteDance/Hyper-SD
+     */
+    | "Hyper-SD CFG LoRA (4steps) - SD3"
+    /** Hyper-SD CFG LoRA (8steps)
+     * 269MB - https://huggingface.co/ByteDance/Hyper-SD/resolve/main/Hyper-SD15-8steps-CFG-lora.safetensors
+     * see https://huggingface.co/ByteDance/Hyper-SD
+     */
+    | "Hyper-SD CFG LoRA (8steps) - SD1.5"
+    /** Hyper-SD CFG LoRA (8steps) - SD3
+     * 472MB - https://huggingface.co/ByteDance/Hyper-SD/resolve/main/Hyper-SD3-8steps-CFG-lora.safetensors
+     * see https://huggingface.co/ByteDance/Hyper-SD
+     */
+    | "Hyper-SD CFG LoRA (8steps) - SD3"
+    /** Hyper-SD CFG LoRA (8steps) - SDXL
+     * 787MB - https://huggingface.co/ByteDance/Hyper-SD/resolve/main/Hyper-SDXL-8steps-CFG-lora.safetensors
+     * see https://huggingface.co/ByteDance/Hyper-SD
+     */
+    | "Hyper-SD CFG LoRA (8steps) - SDXL"
+    /** Hyper-SD LoRA (16steps) - FLUX.1 [Dev]
+     * 1.39GB - https://huggingface.co/ByteDance/Hyper-SD/resolve/main/Hyper-FLUX.1-dev-16steps-lora.safetensors
+     * see https://huggingface.co/ByteDance/Hyper-SD
+     */
+    | "Hyper-SD LoRA (16steps) - FLUX.1 [Dev]"
+    /** Hyper-SD LoRA (1step) - SD1.5
+     * 269MB - https://huggingface.co/ByteDance/Hyper-SD/resolve/main/Hyper-SD15-1step-lora.safetensors
+     * see https://huggingface.co/ByteDance/Hyper-SD
+     */
+    | "Hyper-SD LoRA (1step) - SD1.5"
+    /** Hyper-SD LoRA (1step) - SDXL
+     * 787MB - https://huggingface.co/ByteDance/Hyper-SD/resolve/main/Hyper-SDXL-1step-lora.safetensors
+     * see https://huggingface.co/ByteDance/Hyper-SD
+     */
+    | "Hyper-SD LoRA (1step) - SDXL"
+    /** Hyper-SD LoRA (2steps) - SD1.5
+     * 269MB - https://huggingface.co/ByteDance/Hyper-SD/resolve/main/Hyper-SD15-2steps-lora.safetensors
+     * see https://huggingface.co/ByteDance/Hyper-SD
+     */
+    | "Hyper-SD LoRA (2steps) - SD1.5"
+    /** Hyper-SD LoRA (2steps) - SDXL
+     * 787MB - https://huggingface.co/ByteDance/Hyper-SD/resolve/main/Hyper-SDXL-2steps-lora.safetensors
+     * see https://huggingface.co/ByteDance/Hyper-SD
+     */
+    | "Hyper-SD LoRA (2steps) - SDXL"
+    /** Hyper-SD LoRA (4steps)
+     * 269MB - https://huggingface.co/ByteDance/Hyper-SD/resolve/main/Hyper-SD15-4steps-lora.safetensors
+     * see https://huggingface.co/ByteDance/Hyper-SD
+     */
+    | "Hyper-SD LoRA (4steps) - SD1.5"
+    /** Hyper-SD LoRA (4steps) - SDXL
+     * 787MB - https://huggingface.co/ByteDance/Hyper-SD/resolve/main/Hyper-SD15-4steps-lora.safetensors
+     * see https://huggingface.co/ByteDance/Hyper-SD
+     */
+    | "Hyper-SD LoRA (4steps) - SDXL"
+    /** Hyper-SD LoRA (8steps) - FLUX.1 [Dev]
+     * 1.39GB - https://huggingface.co/ByteDance/Hyper-SD/resolve/main/Hyper-FLUX.1-dev-8steps-lora.safetensors
+     * see https://huggingface.co/ByteDance/Hyper-SD
+     */
+    | "Hyper-SD LoRA (8steps) - FLUX.1 [Dev]"
+    /** Hyper-SD LoRA (8steps)
+     * 269MB - https://huggingface.co/ByteDance/Hyper-SD/resolve/main/Hyper-SD15-8steps-lora.safetensors
+     * see https://huggingface.co/ByteDance/Hyper-SD
+     */
+    | "Hyper-SD LoRA (8steps) - SD1.5"
+    /** Hyper-SD LoRA (8steps) - SDXL
+     * 787MB - https://huggingface.co/ByteDance/Hyper-SD/resolve/main/Hyper-SDXL-8steps-lora.safetensors
+     * see https://huggingface.co/ByteDance/Hyper-SD
+     */
+    | "Hyper-SD LoRA (8steps) - SDXL"
     /** Relighting model conditioned with text, foreground, and background
      * 1.72GB - https://huggingface.co/lllyasviel/ic-light/resolve/main/iclight_sd15_fbc.safetensors
      * see https://huggingface.co/lllyasviel/ic-light
@@ -666,6 +941,11 @@ You need to this model for <B>Tiled Resample</B>
      * see https://huggingface.co/InstantX/InstantID
      */
     | "InstantID/ip-adapter"
+    /** FLUX.1 [Dev] Union Controlnet. Supports Canny, Depth, Pose, Tile, Blur, Gray Low Quality.
+     * 6.6GB - https://huggingface.co/InstantX/FLUX.1-dev-Controlnet-Union/resolve/main/diffusion_pytorch_model.safetensors
+     * see https://huggingface.co/InstantX/FLUX.1-dev-Controlnet-Union
+     */
+    | "InstantX/FLUX.1-dev Controlnet (Union)"
     /** Controlnet SD3 Canny model.
      * 1.19GB - https://huggingface.co/InstantX/SD3-Controlnet-Canny/resolve/main/diffusion_pytorch_model.safetensors
      * see https://huggingface.co/InstantX/SD3-Controlnet-Canny
@@ -835,6 +1115,36 @@ ComfyUI roop and comfy_mtb)
      * see https://huggingface.co/InstantX/InstantID
      */
     | "ip-adapter.bin"
+    /** This is Flux.1-dev ControlNet for Depth map developed by Jasper research team.
+     * 3.58GB - https://huggingface.co/jasperai/Flux.1-dev-Controlnet-Depth/resolve/main/diffusion_pytorch_model.safetensors
+     * see https://huggingface.co/jasperai/Flux.1-dev-Controlnet-Depth
+     */
+    | "jasperai/FLUX.1-dev-Controlnet-Depth"
+    /** This is Flux.1-dev ControlNet for Surface Normals map developed by Jasper research team.
+     * 3.58GB - https://huggingface.co/jasperai/Flux.1-dev-Controlnet-Surface-Normals/resolve/main/diffusion_pytorch_model.safetensors
+     * see https://huggingface.co/jasperai/Flux.1-dev-Controlnet-Surface-Normals
+     */
+    | "jasperai/Flux.1-dev-Controlnet-Surface-Normals"
+    /** This is Flux.1-dev ControlNet for low resolution images developed by Jasper research team.
+     * 3.58GB - https://huggingface.co/jasperai/Flux.1-dev-Controlnet-Upscaler/resolve/main/diffusion_pytorch_model.safetensors
+     * see https://huggingface.co/jasperai/Flux.1-dev-Controlnet-Upscaler
+     */
+    | "jasperai/FLUX.1-dev-Controlnet-Upscaler"
+    /** This is required for Kolors
+     * 12.52GB - https://huggingface.co/Kijai/ChatGLM3-safetensors/resolve/main/chatglm3-fp16.safetensors
+     * see https://huggingface.co/Kijai/ChatGLM3-safetensors/tree/main
+     */
+    | "Kijai/ChatGLM3 (16bit)"
+    /** This is required for Kolors
+     * 3.92GB - https://huggingface.co/Kijai/ChatGLM3-safetensors/resolve/main/chatglm3-4bit.safetensors
+     * see https://huggingface.co/Kijai/ChatGLM3-safetensors/tree/main
+     */
+    | "Kijai/ChatGLM3 (4bit)"
+    /** This is required for Kolors
+     * 3.92GB - https://huggingface.co/Kijai/ChatGLM3-safetensors/resolve/main/chatglm3-8bit.safetensors
+     * see https://huggingface.co/Kijai/ChatGLM3-safetensors/tree/main
+     */
+    | "Kijai/ChatGLM3 (8bit)"
     /** DepthAnythingV2 model
      * 195.0MB - https://huggingface.co/Kijai/DepthAnythingV2-safetensors/resolve/main/depth_anything_v2_vitb_fp16.safetensors
      * see https://huggingface.co/Kijai/DepthAnythingV2-safetensors/tree/main
@@ -875,6 +1185,41 @@ ComfyUI roop and comfy_mtb)
      * see https://huggingface.co/Kijai/flux-fp8
      */
     | "kijai/FLUX.1 [schnell] Diffusion model (float8_e4m3fn)"
+    /** lotus depth d model v1.1 (fp16). This model can be used in ComfyUI-Lotus custom nodes.
+     * 1.74GB - https://huggingface.co/Kijai/lotus-comfyui/resolve/main/lotus-depth-d-v-1-1-fp16.safetensors
+     * see https://huggingface.co/Kijai/lotus-comfyui
+     */
+    | "kijai/lotus depth d model v1.1 (fp16)"
+    /** lotus depth g model v1.0. This model can be used in ComfyUI-Lotus custom nodes.
+     * 3.47GB - https://huggingface.co/Kijai/lotus-comfyui/resolve/main/lotus-depth-g-v1-0.safetensors
+     * see https://huggingface.co/Kijai/lotus-comfyui
+     */
+    | "kijai/lotus depth g model v1.0"
+    /** lotus depth g model v1.0 (fp16). This model can be used in ComfyUI-Lotus custom nodes.
+     * 1.74GB - https://huggingface.co/Kijai/lotus-comfyui/resolve/main/lotus-depth-g-v1-0-fp16.safetensors
+     * see https://huggingface.co/Kijai/lotus-comfyui
+     */
+    | "kijai/lotus depth g model v1.0 (fp16)"
+    /** lotus normal d model v1.0. This model can be used in ComfyUI-Lotus custom nodes.
+     * 3.47GB - https://huggingface.co/Kijai/lotus-comfyui/resolve/main/lotus-normal-d-v1-0.safetensors
+     * see https://huggingface.co/Kijai/lotus-comfyui
+     */
+    | "kijai/lotus normal d model v1.0"
+    /** lotus normal d model v1.0 (fp16). This model can be used in ComfyUI-Lotus custom nodes.
+     * 1.74GB - https://huggingface.co/Kijai/lotus-comfyui/resolve/main/lotus-normal-d-v1-0-fp16.safetensors
+     * see https://huggingface.co/Kijai/lotus-comfyui
+     */
+    | "kijai/lotus normal d model v1.0 (fp16)"
+    /** lotus normal g model v1.0. This model can be used in ComfyUI-Lotus custom nodes.
+     * 3.47GB - https://huggingface.co/Kijai/lotus-comfyui/resolve/main/lotus-normal-g-v1-0.safetensors
+     * see https://huggingface.co/Kijai/lotus-comfyui
+     */
+    | "kijai/lotus normal g model v1.0"
+    /** lotus normal g model v1.0 (fp16). This model can be used in ComfyUI-Lotus custom nodes.
+     * 1.74GB - https://huggingface.co/Kijai/lotus-comfyui/resolve/main/lotus-normal-g-v1-0-fp16.safetensors
+     * see https://huggingface.co/Kijai/lotus-comfyui
+     */
+    | "kijai/lotus normal g model v1.0 (fp16)"
     /** SUPIR checkpoint model
      * 2.66GB - https://huggingface.co/Kijai/SUPIR_pruned/resolve/main/SUPIR-v0F_fp16.safetensors
      * see https://huggingface.co/Kijai/SUPIR_pruned/tree/main
@@ -900,6 +1245,26 @@ ComfyUI roop and comfy_mtb)
      * see https://huggingface.co/kohya-ss/controlnet-lllite
      */
     | "kohya-ss/ControlNet-LLLite: SDXL Canny Anime"
+    /** Kolors UNet model
+     * 10.3GB - https://huggingface.co/Kwai-Kolors/Kolors/resolve/main/unet/diffusion_pytorch_model.safetensors
+     * see https://huggingface.co/Kwai-Kolors/Kolors
+     */
+    | "Kolors UNet model"
+    /** Kolors UNet model
+     * 5.16GB - https://huggingface.co/Kwai-Kolors/Kolors/resolve/main/unet/diffusion_pytorch_model.fp16.safetensors
+     * see https://huggingface.co/Kwai-Kolors/Kolors
+     */
+    | "Kolors UNet model (fp16)"
+    /** You can use this model in the [a/ComfyUI IPAdapter plus](https://github.com/cubiq/ComfyUI_IPAdapter_plus) extension.
+     * 2.39GB - https://huggingface.co/Kwai-Kolors/Kolors-IP-Adapter-FaceID-Plus/resolve/main/ipa-faceid-plus.bin
+     * see https://huggingface.co/Kwai-Kolors/Kolors-IP-Adapter-FaceID-Plus
+     */
+    | "Kolors-IP-Adapter-FaceID-Plus.bin (Kwai-Kolors/Kolors-IP-Adapter-Plus)"
+    /** You can use this model in the [a/ComfyUI IPAdapter plus](https://github.com/cubiq/ComfyUI_IPAdapter_plus) extension.
+     * 1.01GB - https://huggingface.co/Kwai-Kolors/Kolors-IP-Adapter-Plus/resolve/main/ip_adapter_plus_general.bin
+     * see https://huggingface.co/Kwai-Kolors/Kolors-IP-Adapter-Plus
+     */
+    | "Kolors-IP-Adapter-Plus.bin (Kwai-Kolors/Kolors-IP-Adapter-Plus)"
     /** Latent Consistency LoRA for SD1.5
      * 134.6MB - https://huggingface.co/latent-consistency/lcm-lora-sdv1-5/resolve/main/pytorch_lora_weights.safetensors
      * see https://huggingface.co/latent-consistency/lcm-lora-sdv1-5
@@ -1060,21 +1425,21 @@ ComfyUI roop and comfy_mtb)
      * see https://huggingface.co/stabilityai/stable-diffusion-xl-refiner-1.0
      */
     | "sd_xl_refiner_1.0_0.9vae.safetensors"
-    /** SDXL Lightning LoRA (2step)
+    /** SDXL Lightning LoRA (2steps)
      * 393.9MB - https://huggingface.co/ByteDance/SDXL-Lightning/resolve/main/sdxl_lightning_2step_lora.safetensors
      * see https://huggingface.co/ByteDance/SDXL-Lightning
      */
-    | "SDXL Lightning LoRA (2step)"
-    /** SDXL Lightning LoRA (4step)
+    | "SDXL Lightning LoRA (2steps)"
+    /** SDXL Lightning LoRA (4steps)
      * 393.9MB - https://huggingface.co/ByteDance/SDXL-Lightning/resolve/main/sdxl_lightning_4step_lora.safetensors
      * see https://huggingface.co/ByteDance/SDXL-Lightning
      */
-    | "SDXL Lightning LoRA (4step)"
-    /** SDXL Lightning LoRA (8tep)
+    | "SDXL Lightning LoRA (4steps)"
+    /** SDXL Lightning LoRA (8steps)
      * 393.9MB - https://huggingface.co/ByteDance/SDXL-Lightning/resolve/main/sdxl_lightning_8step_lora.safetensors
      * see https://huggingface.co/ByteDance/SDXL-Lightning
      */
-    | "SDXL Lightning LoRA (8step)"
+    | "SDXL Lightning LoRA (8steps)"
     /** SDXL-VAE
      * 334.6MB - https://huggingface.co/stabilityai/sdxl-vae/resolve/main/sdxl_vae.safetensors
      * see https://huggingface.co/stabilityai/sdxl-vae
@@ -1120,6 +1485,17 @@ ComfyUI roop and comfy_mtb)
      * see https://huggingface.co/segmind/Segmind-VegaRT
      */
     | "Segmind-VegaRT - Latent Consistency Model (LCM) LoRA of Segmind-Vega"
+    /** FLUX.1 [Dev] Union Controlnet. Supports Canny, Tile, Depth, Blur, Pose, Gray, Low Quality
+     * 6.6GB - https://huggingface.co/Shakker-Labs/FLUX.1-dev-ControlNet-Union-Pro/resolve/main/diffusion_pytorch_model.safetensors
+     * see https://huggingface.co/Shakker-Labs/FLUX.1-dev-ControlNet-Union-Pro
+     */
+    | "Shakker-Labs/FLUX.1-dev-ControlNet-Union-Pro"
+    /** FLUX.1 [Dev] Union Controlnet. Supports Canny, Tile, Depth, Blur, Pose, Gray, Low Quality
+Version quantized to fp8_e4m3fn by Kijai
+     * 3.3GB - https://huggingface.co/Kijai/flux-fp8/resolve/main/flux_shakker_labs_union_pro-fp8_e4m3fn.safetensors
+     * see https://huggingface.co/Kijai/flux-fp8
+     */
+    | "Shakker-Labs/FLUX.1-dev-ControlNet-Union-Pro (fp8_e4m3fn) by Kijai"
     /** To use the Face Analysis for ComfyUI custom node, installation of this model is needed.
      * 99.7MB - https://huggingface.co/matt3ounstable/dlib_predictor_recognition/resolve/main/shape_predictor_68_face_landmarks.dat
      * see https://huggingface.co/matt3ounstable/dlib_predictor_recognition/tree/main
@@ -1523,6 +1899,16 @@ NOTE: 25 frames @ 576x1024
      * see https://github.com/facebookresearch/segment-anything#model-checkpoints
      */
     | "ViT-L SAM model"
+    /** Greatly improved TEXT + Detail (as CLIP-L for Flux.1)
+     * 931MB - https://huggingface.co/zer0int/CLIP-GmP-ViT-L-14/resolve/main/ViT-L-14-TEXT-detail-improved-hiT-GmP-HF.safetensors
+     * see https://huggingface.co/zer0int
+     */
+    | "ViT-L-14-TEXT-detail-improved-hiT-GmP-HF.safetensors [Long CLIP L]"
+    /** Greatly improved TEXT + Detail (as CLIP-L for Flux.1)
+     * 323MB - https://huggingface.co/zer0int/CLIP-GmP-ViT-L-14/resolve/main/ViT-L-14-TEXT-detail-improved-hiT-GmP-TE-only-HF.safetensors
+     * see https://huggingface.co/zer0int
+     */
+    | "ViT-L-14-TEXT-detail-improved-hiT-GmP-HF.safetensors [Long CLIP L]"
     /** Buffalo_l w600k_r50.onnx model for IpAdapterPlus
      * 174.4MB - https://huggingface.co/public-data/insightface/resolve/main/models/buffalo_l/w600k_r50.onnx
      * see https://github.com/cubiq/ComfyUI_IPAdapter_plus?tab=readme-ov-file#faceid

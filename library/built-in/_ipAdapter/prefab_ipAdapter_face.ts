@@ -2,168 +2,176 @@ import type { Cnet_args } from '../_controlNet/prefab_cnet'
 import type { OutputFor } from '../_prefabs/_prefabs'
 
 import { ipAdapterDoc } from './_ipAdapterDoc'
-import { ipAdapter_faceID_ClipModelList, ipAdapter_faceID_LoraList, ipAdapterModelList } from './_ipAdapterModelList'
+import {
+   ipAdapter_faceID_ClipModelList,
+   ipAdapter_faceID_LoraList,
+   ipAdapterModelList,
+} from './_ipAdapterModelList'
 import { ui_ipadapter_CLIPSelection, ui_subform_IPAdapter_common } from './_ipAdapterUtils'
 import { ui_ipadapter_modelSelection } from './ui_ipadapter_modelSelection'
 
 // 🅿️ IPAdapter FaceID ===================================================
 export type UI_IPAdapterFaceID = X.XGroup<{
-    reinforce: X.XOptional<
-        X.XGroup<{
-            strength: X.XNumber
-            settings: X.XGroup<{
-                extra: X.XList<X.XImage>
-                crop: X.XBool
-                startAtStepPercent: X.XNumber
-                endAtStepPercent: X.XNumber
-                weight_type: X.XEnum<Enum_IPAdapterAdvanced_weight_type>
-                embedding_scaling: X.XEnum<Enum_IPAdapterAdvanced_embeds_scaling>
-                noise: X.XNumber
-                unfold_batch: X.XBool
-            }>
-            cnet_model_name: X.XEnum<Enum_AV$_IPAdapterPipe_ip_adapter_name>
-            help: X.XMarkdown
-        }>
-    >
-    strength: X.XNumber
-    settings: X.XGroup<{
-        extra: X.XList<X.XImage>
-        crop: X.XBool
-        startAtStepPercent: X.XNumber
-        endAtStepPercent: X.XNumber
-        weight_type: X.XEnum<Enum_IPAdapterAdvanced_weight_type>
-        embedding_scaling: X.XEnum<Enum_IPAdapterAdvanced_embeds_scaling>
-        noise: X.XNumber
-        unfold_batch: X.XBool
-    }>
-    help: X.XMarkdown
-    models: X.XGroup<{
-        lora: X.XEnum<Enum_LoraLoader_lora_name>
-        cnet_model_name: X.XEnum<Enum_AV$_IPAdapterPipe_ip_adapter_name>
-        clip_name: X.XEnum<Enum_CLIPVisionLoader_clip_name>
-    }>
-    lora_strength: X.XNumber
+   reinforce: X.XOptional<
+      X.XGroup<{
+         strength: X.XNumber
+         settings: X.XGroup<{
+            extra: X.XList<X.XImage>
+            crop: X.XBool
+            startAtStepPercent: X.XNumber
+            endAtStepPercent: X.XNumber
+            weight_type: X.XEnum<Enum_IPAdapterAdvanced_weight_type>
+            embedding_scaling: X.XEnum<Enum_IPAdapterAdvanced_embeds_scaling>
+            noise: X.XNumber
+            unfold_batch: X.XBool
+         }>
+         cnet_model_name: X.XEnum<Enum_AV$_IPAdapterPipe_ip_adapter_name>
+         help: X.XMarkdown
+      }>
+   >
+   strength: X.XNumber
+   settings: X.XGroup<{
+      extra: X.XList<X.XImage>
+      crop: X.XBool
+      startAtStepPercent: X.XNumber
+      endAtStepPercent: X.XNumber
+      weight_type: X.XEnum<Enum_IPAdapterAdvanced_weight_type>
+      embedding_scaling: X.XEnum<Enum_IPAdapterAdvanced_embeds_scaling>
+      noise: X.XNumber
+      unfold_batch: X.XBool
+   }>
+   help: X.XMarkdown
+   models: X.XGroup<{
+      lora: X.XEnum<Enum_LoraLoader_lora_name>
+      cnet_model_name: X.XEnum<Enum_AV$_IPAdapterPipe_ip_adapter_name>
+      clip_name: X.XEnum<Enum_CLIPVisionLoader_clip_name>
+   }>
+   lora_strength: X.XNumber
 }>
 
 export function ui_IPAdapterFaceID(): UI_IPAdapterFaceID {
-    const form = getCurrentForm()
-    return form
-        .group({
-            label: 'FaceID IPAdapter',
-            items: {
-                help: form.markdown({ startCollapsed: true, markdown: ipAdapterDoc }),
-                models: form.group({
-                    label: 'Select or Download Models',
-                    // startCollapsed: true,
-                    items: {
-                        ...ui_ipadapter_CLIPSelection(form),
-                        ...ui_ipadapter_modelSelection(
-                            form,
-                            // @ts-ignore
-                            'ip-adapter-faceid-plusv2_sd15.bin',
-                            //'ip-adapter-plus-face_sd15.safetensors',
-                            // 'ip-adapter-faceid-plus_sd15.bin',
-                            ipAdapter_faceID_ClipModelList,
-                        ),
-                        lora: form.enum
-                            .Enum_LoraLoader_lora_name({
-                                // enumName: 'Enum_AV$_CheckpointModelsToParametersPipe_lora_1_name',
-                                // @ts-ignore
-                                default: 'ip-adapter-faceid-plusv2_sd15_lora.safetensors',
-                                label: 'Face ID Lora',
-                                // recommandedModels: {
-                                //     modelFolderPrefix: 'models/lora',
-                                //     knownModel: ipAdapter_faceID_LoraList,
-                                // },
-                                tooltip: 'Select the same LORA as the model. So for ip-adapter-faceid-plus, select ip-adapter-faceid-plus_sd15_lora', // prettier-ignore
-                            })
-                            .addRequirementOnComfyManagerModel(ipAdapter_faceID_LoraList),
-                    },
-                }),
+   const form = getCurrentForm()
+   return form
+      .group({
+         label: 'FaceID IPAdapter',
+         items: {
+            help: form.markdown({ startCollapsed: true, markdown: ipAdapterDoc }),
+            models: form.group({
+               label: 'Select or Download Models',
+               // startCollapsed: true,
+               items: {
+                  ...ui_ipadapter_CLIPSelection(form),
+                  ...ui_ipadapter_modelSelection(
+                     form,
+                     // @ts-ignore
+                     'ip-adapter-faceid-plusv2_sd15.bin',
+                     //'ip-adapter-plus-face_sd15.safetensors',
+                     // 'ip-adapter-faceid-plus_sd15.bin',
+                     ipAdapter_faceID_ClipModelList,
+                  ),
+                  lora: form.enum
+                     .Enum_LoraLoader_lora_name({
+                        // enumName: 'Enum_AV$_CheckpointModelsToParametersPipe_lora_1_name',
+                        // @ts-ignore
+                        default: 'ip-adapter-faceid-plusv2_sd15_lora.safetensors',
+                        label: 'Face ID Lora',
+                        // recommandedModels: {
+                        //     modelFolderPrefix: 'models/lora',
+                        //     knownModel: ipAdapter_faceID_LoraList,
+                        // },
+                        tooltip: 'Select the same LORA as the model. So for ip-adapter-faceid-plus, select ip-adapter-faceid-plus_sd15_lora', // prettier-ignore
+                     })
+                     .addRequirementOnComfyManagerModel(ipAdapter_faceID_LoraList),
+               },
+            }),
 
-                lora_strength: form.float({ default: 0.5, min: 0, max: 2, step: 0.1 }),
-                ...ui_subform_IPAdapter_common(form),
-                reinforce: form
-                    .group({
+            lora_strength: form.float({ default: 0.5, min: 0, max: 2, step: 0.1 }),
+            ...ui_subform_IPAdapter_common(form),
+            reinforce: form
+               .group({
+                  startCollapsed: true,
+                  label: 'Reinforce With Additional IPAdapter',
+                  tooltip:
+                     'Enabling will apply an additional IPAdapter. This usually makes faces more accurate, but pulls along more features from the face image.',
+                  items: {
+                     help: form.markdown({
                         startCollapsed: true,
-                        label: 'Reinforce With Additional IPAdapter',
-                        tooltip:
-                            'Enabling will apply an additional IPAdapter. This usually makes faces more accurate, but pulls along more features from the face image.',
-                        items: {
-                            help: form.markdown({
-                                startCollapsed: true,
-                                markdown: `Recommended to select a model with "face" in it but NOT "faceID". So ip-adapter-plus-face_sd15 for example.\nAlso keep the strength pretty low. Like 0.3 unless you want the image dominated by the face image style.`,
-                            }),
-                            ...ui_ipadapter_modelSelection(form, 'ip-adapter-plus-face_sd15.safetensors', ipAdapterModelList),
-                            ...ui_subform_IPAdapter_common(form, 0.3),
-                        },
-                    })
-                    .optional(),
-            },
-        })
-        .addRequirements([{ type: 'customNodesByTitle', title: 'ComfyUI_IPAdapter_plus' }])
+                        markdown: `Recommended to select a model with "face" in it but NOT "faceID". So ip-adapter-plus-face_sd15 for example.\nAlso keep the strength pretty low. Like 0.3 unless you want the image dominated by the face image style.`,
+                     }),
+                     ...ui_ipadapter_modelSelection(
+                        form,
+                        'ip-adapter-plus-face_sd15.safetensors',
+                        ipAdapterModelList,
+                     ),
+                     ...ui_subform_IPAdapter_common(form, 0.3),
+                  },
+               })
+               .optional(),
+         },
+      })
+      .addRequirements([{ type: 'customNodesByTitle', title: 'ComfyUI_IPAdapter_plus' }])
 }
 
 // 🅿️ IPAdapter FaceID RUN ===================================================
 export const run_cnet_IPAdapterFaceID = (
-    IPAdapter: OutputFor<typeof ui_IPAdapterFaceID>,
-    cnet_args: Cnet_args,
-    image: _IMAGE,
+   IPAdapter: OutputFor<typeof ui_IPAdapterFaceID>,
+   cnet_args: Cnet_args,
+   image: _IMAGE,
 ): {
-    ip_adapted_model: _MODEL
+   ip_adapted_model: _MODEL
 } => {
-    const run = getCurrentRun()
-    const graph = run.nodes
-    const ip = IPAdapter
+   const run = getCurrentRun()
+   const graph = run.nodes
+   const ip = IPAdapter
 
-    let ckpt = cnet_args.ckptPos
-    ckpt = graph.LoraLoader({
-        model: ckpt,
-        clip: run.AUTO,
-        strength_clip: ip.lora_strength,
-        strength_model: ip.lora_strength,
-        lora_name: ip.models.lora,
-    })
+   let ckpt = cnet_args.ckptPos
+   ckpt = graph.LoraLoader({
+      model: ckpt,
+      clip: run.AUTO,
+      strength_clip: ip.lora_strength,
+      strength_model: ip.lora_strength,
+      lora_name: ip.models.lora,
+   })
 
-    const ip_clip_name = graph.CLIPVisionLoader({ clip_name: ip.models.clip_name })
-    const faceIDnode = graph.IPAdapterFaceID({
-        ipadapter: graph.IPAdapterModelLoader({ ipadapter_file: ip.models.cnet_model_name }),
-        clip_vision: ip_clip_name,
-        insightface: (t) =>
-            t.IPAdapterInsightFaceLoader({
-                provider: 'CPU',
-                // 🔴        VVVVVV review that
-                model_name: 'antelopev2',
-            }),
-        image: image,
-        combine_embeds: 'average',
-        model: ckpt,
-        weight: ip.strength,
-        weight_faceidv2: ip.strength,
-        weight_type: ip.settings.weight_type,
-        start_at: ip.settings.startAtStepPercent,
-        end_at: ip.settings.endAtStepPercent,
-        embeds_scaling: 'V only',
-    })
+   const ip_clip_name = graph.CLIPVisionLoader({ clip_name: ip.models.clip_name })
+   const faceIDnode = graph.IPAdapterFaceID({
+      ipadapter: graph.IPAdapterModelLoader({ ipadapter_file: ip.models.cnet_model_name }),
+      clip_vision: ip_clip_name,
+      insightface: (t) =>
+         t.IPAdapterInsightFaceLoader({
+            provider: 'CPU',
+            // 🔴        VVVVVV review that
+            model_name: 'antelopev2',
+         }),
+      image: image,
+      combine_embeds: 'average',
+      model: ckpt,
+      weight: ip.strength,
+      weight_faceidv2: ip.strength,
+      weight_type: ip.settings.weight_type,
+      start_at: ip.settings.startAtStepPercent,
+      end_at: ip.settings.endAtStepPercent,
+      embeds_scaling: 'V only',
+   })
 
-    ckpt = faceIDnode._MODEL
+   ckpt = faceIDnode._MODEL
 
-    if (ip.reinforce) {
-        const ip_model = graph.IPAdapterModelLoader({ ipadapter_file: ip.reinforce.cnet_model_name })
-        const ip_adapted_model = graph.IPAdapterAdvanced({
-            ipadapter: ip_model,
-            image: image,
-            model: ckpt,
-            weight: ip.reinforce.strength,
-            start_at: ip.reinforce.settings.startAtStepPercent,
-            end_at: ip.reinforce.settings.endAtStepPercent,
-            combine_embeds: 'average',
-            weight_type: ip.reinforce.settings.weight_type,
-            clip_vision: ip_clip_name,
-            embeds_scaling: 'V only',
-        })._MODEL
-        ckpt = ip_adapted_model
-    }
+   if (ip.reinforce) {
+      const ip_model = graph.IPAdapterModelLoader({ ipadapter_file: ip.reinforce.cnet_model_name })
+      const ip_adapted_model = graph.IPAdapterAdvanced({
+         ipadapter: ip_model,
+         image: image,
+         model: ckpt,
+         weight: ip.reinforce.strength,
+         start_at: ip.reinforce.settings.startAtStepPercent,
+         end_at: ip.reinforce.settings.endAtStepPercent,
+         combine_embeds: 'average',
+         weight_type: ip.reinforce.settings.weight_type,
+         clip_vision: ip_clip_name,
+         embeds_scaling: 'V only',
+      })._MODEL
+      ckpt = ip_adapted_model
+   }
 
-    return { ip_adapted_model: ckpt }
+   return { ip_adapted_model: ckpt }
 }

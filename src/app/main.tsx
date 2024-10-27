@@ -1,9 +1,4 @@
-// 1. remove the old tw.css
-// import '../theme/tw.css'
-// 2. apply the compat reset
-import '@unocss/reset/tailwind.css'
-// 3. load the virtual uno.css
-import 'virtual:uno.css'
+import '../theme/twin.css'
 import 'react-toastify/dist/ReactToastify.css'
 import 'highlight.js/styles/stackoverflow-dark.css'
 import '../theme/flexlayout.css'

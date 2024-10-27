@@ -1,9 +1,9 @@
 app({
-    ui: (b) =>
-        b.fields({
-            int: b.number({}),
-            html: b.markdown({
-                markdown: b._FIX_INDENTATION`
+   ui: (b) =>
+      b.fields({
+         int: b.number({}),
+         html: b.markdown({
+            markdown: b._FIX_INDENTATION`
                 ## hello
 
                 how are you
@@ -20,9 +20,9 @@ app({
                 | Paragraph   | Text        |
 
                 `,
-            }),
-        }),
-    run: async (flow, p) => {
-        flow.output_text('hello')
-    },
+         }),
+      }),
+   run: async (flow, p) => {
+      flow.output_text('hello')
+   },
 })

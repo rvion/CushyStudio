@@ -5,5 +5,5 @@ import type { CushySchemaBuilder } from '../../controls/Builder'
  * @deprecated
  */
 export const getCurrentForm_IMPL = (): CushySchemaBuilder => {
-    return cushy.builder
+   return cushy.builder
 }

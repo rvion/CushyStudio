@@ -7,11 +7,11 @@ import { PanelUI } from '../panel/PanelUI'
 import { BasicShelfUI } from '../shelf/ShelfUI'
 
 export const UI = {
-    Frame: Frame,
-    Button: Button,
-    Panel: PanelUI,
-    Shelf: BasicShelfUI,
-    Checkbox: InputBoolCheckboxUI,
-    ToogleButton: ToggleButtonUI,
-    Dropdown: Dropdown,
+   Frame: Frame,
+   Button: Button,
+   Panel: PanelUI,
+   Shelf: BasicShelfUI,
+   Checkbox: InputBoolCheckboxUI,
+   ToogleButton: ToggleButtonUI,
+   Dropdown: Dropdown,
 }

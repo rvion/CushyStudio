@@ -13,49 +13,49 @@ import { CivitaiUI } from './CivitaiBrowserUI'
 import { Civitai } from './CivitaiSpec'
 
 export const PanelModels = new Panel({
-    name: 'Models',
-    widget: (): React.FC<NO_PROPS> => PanelModelsUI,
-    header: (p): PanelHeader => ({ title: 'Models' }),
-    def: (): NO_PROPS => ({}),
-    category: 'models',
-    icon: 'mdiGlobeModel',
+   name: 'Models',
+   widget: (): React.FC<NO_PROPS> => PanelModelsUI,
+   header: (p): PanelHeader => ({ title: 'Models' }),
+   def: (): NO_PROPS => ({}),
+   category: 'models',
+   icon: 'mdiGlobeModel',
 })
 
 export const PanelModelsUI = observer(function PanelModelsUI_(p: NO_PROPS) {
-    const st = useSt()
-    const civitai = useMemo(() => new Civitai(), [])
-    return (
-        <div className='flex flex-col gap-2 h-full w-full'>
-            <PanelHeaderUI>
-                <SectionTitleUI
-                    label={
-                        <div tw='flex gap-1'>
-                            <img tw='h-input' src={assets.CivitaiLogo_png} alt='Civitai logo' />
-                            CIVITAI
-                        </div>
-                    }
-                    className='block'
-                />
-                <SpacerUI />
-                {st.civitaiConf.renderAsConfigBtn({ title: 'CIVITAI Options' })}
-            </PanelHeaderUI>
-            <CivitaiUI tw='flex-1' civitai={civitai} />
-        </div>
-    )
+   const st = useSt()
+   const civitai = useMemo(() => new Civitai(), [])
+   return (
+      <div className='flex size-full flex-col gap-2'>
+         <PanelHeaderUI>
+            <SectionTitleUI
+               label={
+                  <div tw='flex gap-1'>
+                     <img tw='h-input' src={assets.CivitaiLogo_png} alt='Civitai logo' />
+                     CIVITAI
+                  </div>
+               }
+               className='block'
+            />
+            <SpacerUI />
+            {st.civitaiConf.renderAsConfigBtn({ title: 'CIVITAI Options' })}
+         </PanelHeaderUI>
+         <CivitaiUI tw='flex-1' civitai={civitai} />
+      </div>
+   )
 })
 
 export const FieldUI = observer(function FieldUI_(p: {
-    required?: boolean
-    label?: string
-    help?: string
-    className?: string
-    children: React.ReactNode
+   required?: boolean
+   label?: string
+   help?: string
+   className?: string
+   children: React.ReactNode
 }) {
-    return (
-        <div className={p.className} tw='flex gap-2 items-center'>
-            <label tw='whitespace-nowrap'>{p.label}</label>
-            {p.children}
-            {p.required && <div tw='join-item'>Required</div>}
-        </div>
-    )
+   return (
+      <div className={p.className} tw='flex items-center gap-2'>
+         <label tw='whitespace-nowrap'>{p.label}</label>
+         {p.children}
+         {p.required && <div tw='join-item'>Required</div>}
+      </div>
+   )
 })

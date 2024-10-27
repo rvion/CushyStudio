@@ -1,7 +1,9 @@
 {
+    // annoying, since base tailwind generate those
+    "css.lint.vendorPrefix": "ignore",
+    "css.lint.propertyIgnoredDueToDisplay": "ignore",
+
     "eslint.format.enable": true,
-    "eslint.validate": ["typescript", "typescriptreact"],
-    "eslint.options": { "extensions": [".ts", ".tsx"] },
 
     //
     "marksToOutline.mark": "#region",

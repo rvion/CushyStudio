@@ -7,6 +7,7 @@ expression[@isGroup=Expression] {
   Lora |
   Wildcard |
   Embedding |
+  Artist |
   Tag |
 
   Separator |
@@ -44,6 +45,10 @@ wildcardName { Identifier | String  }
 Embedding { @specialize<Identifier, "embedding"> ":" embeddingName }
 embeddingName { Identifier | String  }
 
+
+// ARTIST
+Artist { @specialize<Identifier, "artist"> ":" ArtistName }
+ArtistName { Identifier | String  }
 
 @tokens {
   space { @whitespace+ }

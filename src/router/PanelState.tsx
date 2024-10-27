@@ -18,182 +18,192 @@ import { PanelPersistentStore } from './PanelPersistentStore'
 export type PanelURI = string
 
 export class PanelState<PROPS extends object = any> {
-    constructor(
-        public flexLayoutTabNode: FL.TabNode,
-        public uri: PanelURI,
-        public def: Panel<PROPS>,
-    ) {}
+   constructor(
+      public flexLayoutTabNode: FL.TabNode,
+      public uri: PanelURI,
+      public def: Panel<PROPS>,
+   ) {}
 
-    patchAttributes(attributes: {
-        // borders
-        borderHeight?: number
-        borderWidth?: number
+   patchAttributes(attributes: {
+      // borders
+      borderHeight?: number
+      borderWidth?: number
 
-        // doc
-        altName?: string
-        helpText?: string
+      // doc
+      altName?: string
+      helpText?: string
 
-        // class names
-        className?: string
-        contentClassName?: string
-        tabsetClassName?: string
+      // class names
+      className?: string
+      contentClassName?: string
+      tabsetClassName?: string
 
-        // can taht be modified ?
-        enableClose?: boolean
-        enableDrag?: boolean
-        enableFloat?: boolean
-        enableRename?: boolean
-        enableRenderOnDemand?: boolean
-    }): void {
-        this.layout.do((a) => a.updateNodeAttributes(this.uri, attributes))
-    }
+      // can taht be modified ?
+      enableClose?: boolean
+      enableDrag?: boolean
+      enableFloat?: boolean
+      enableRename?: boolean
+      enableRenderOnDemand?: boolean
+   }): void {
+      this.layout.do((a) => a.updateNodeAttributes(this.uri, attributes))
+   }
 
-    setTabColor(nextColor?: string): void {
-        console.log(`[🤠] COLOR IS SET ${nextColor}`, this.flexLayoutTabNode)
-        this.patchAttributes({
-            className: nextColor,
-            // contentClassName: nextColor + 'B',
-            // tabsetClassName: nextColor + 'C',
-            // altName: nextColor,
-            // helpText: nextColor,
-        })
-        console.log(`[🤠] COLOR IS SET ${nextColor}`, this.flexLayoutTabNode)
-    }
+   setTabColor(nextColor?: string): void {
+      console.log(`[🤠] COLOR IS SET ${nextColor}`, this.flexLayoutTabNode)
+      this.patchAttributes({
+         className: nextColor,
+         // contentClassName: nextColor + 'B',
+         // tabsetClassName: nextColor + 'C',
+         // altName: nextColor,
+         // helpText: nextColor,
+      })
+      console.log(`[🤠] COLOR IS SET ${nextColor}`, this.flexLayoutTabNode)
+   }
 
-    /** ❌ UNFINISHED */
-    setProps(p: any): void {
-        throw new Error('❌ setProps not implemented')
-    }
+   /** ❌ UNFINISHED */
+   setProps(p: any): void {
+      throw new Error('❌ setProps not implemented')
+   }
 
-    getExtraData(): any {
-        return this.flexLayoutTabNode.getExtraData()
-    }
+   getExtraData(): any {
+      return this.flexLayoutTabNode.getExtraData()
+   }
 
-    get layout(): CushyLayoutManager {
-        return cushy.layout
-    }
+   get layout(): CushyLayoutManager {
+      return cushy.layout
+   }
 
-    get parentTabset(): FL.TabSetNode {
-        const parent1 = this.flexLayoutTabNode.getParent()
-        if (parent1?.getType() !== 'tabset') throw new Error('❌ tab parent is not a tabset')
-        const tabset = parent1 as FL.TabSetNode
-        return tabset
-    }
+   get parentTabset(): FL.TabSetNode {
+      const parent1 = this.flexLayoutTabNode.getParent()
+      if (parent1?.getType() !== 'tabset') throw new Error('❌ tab parent is not a tabset')
+      const tabset = parent1 as FL.TabSetNode
+      return tabset
+   }
 
-    get parentRow(): FL.RowNode {
-        const parent2 = this.parentTabset.getParent()
-        if (parent2?.getType() !== 'row') throw new Error('❌ tabset parent is not a row')
-        const row = parent2 as FL.RowNode
-        return row
-    }
+   get parentRow(): FL.RowNode {
+      const parent2 = this.parentTabset.getParent()
+      if (parent2?.getType() !== 'row') throw new Error('❌ tabset parent is not a row')
+      const row = parent2 as FL.RowNode
+      return row
+   }
 
-    /** widen this tab tabset */
-    widen(): void {
-        this.layout.widenTabset(this.parentTabset)
-    }
+   /** widen this tab tabset */
+   widen(): void {
+      this.layout.widenTabset(this.parentTabset)
+   }
 
-    /** widen this tab tabset */
-    shrink(): void {
-        this.layout.shrinkTabset(this.parentTabset)
-    }
+   /** widen this tab tabset */
+   shrink(): void {
+      this.layout.shrinkTabset(this.parentTabset)
+   }
 
-    /** reset tabset size */
-    resetSize(): void {
-        this.layout.resetTabsetSize(this.parentTabset)
-    }
+   /** reset tabset size */
+   resetSize(): void {
+      this.layout.resetTabsetSize(this.parentTabset)
+   }
 
-    get model(): FL.Model {
-        return this.layout.model
-    }
+   get model(): FL.Model {
+      return this.layout.model
+   }
 
-    clone(partialProps: Partial<PROPS>): void {
-        const config = this.getConfig()
-        this.layout.open(
-            this.panelName,
-            { ...this.getProps(), ...partialProps },
-            {
-                where: 'below',
-                $store: naiveDeepClone(config.$store),
-                $temp: naiveDeepClone(config.$temp),
+   clone(partialProps: Partial<PROPS>): void {
+      const config = this.getConfig()
+      this.layout.open(
+         this.panelName,
+         { ...this.getProps(), ...partialProps },
+         {
+            where: 'below',
+            $store: naiveDeepClone(config.$store),
+            $temp: naiveDeepClone(config.$temp),
+         },
+      )
+   }
+
+   get panelName(): PanelName {
+      const panelName = this.flexLayoutTabNode.getComponent() as Maybe<PanelName>
+      return bang(panelName)
+   }
+
+   /**
+    * Returns the config attribute that can be used to store node specific data that
+    * WILL be saved to the json. The config attribute should be changed via the action Actions.updateNodeAttributes rather
+    * than directly, for example:
+    * this.state.model.doAction(
+    *   FlexLayout.Actions.updateNodeAttributes(node.getId(), {config:myConfigObject}));
+    */
+   getConfig(): PanelPersistedJSON<PROPS> {
+      return this.flexLayoutTabNode.getConfig()
+   }
+
+   /** get component props */
+   getProps(): PROPS {
+      return bang(this.getConfig().$props) // (this.getConfig() as any as PROPS)
+   }
+
+   stores: Map<string, PanelPersistentStore<any>> = new Map<string, PanelPersistentStore>()
+
+   usePersistentStore = <X extends Json>(key: string, init: () => X): PanelPersistentStore<X> => {
+      let store = this.stores.get(key) as Maybe<PanelPersistentStore<X>>
+      if (store != null) return store
+      store = new PanelPersistentStore<X>(this, key, init)
+      this.stores.set(key, store)
+      return store
+   }
+
+   documents: Map<string, Field> = new Map<string, Field>()
+   usePersistentModel = <SCHEMA extends BaseSchema>(
+      //
+      uid: string,
+      init: ((ui: Builder) => SCHEMA) | SCHEMA,
+      opts?: { log?: boolean },
+   ): SCHEMA['$Field'] => {
+      return useMemoAction(() => {
+         let schema: SCHEMA = typeof init === 'function' ? init(cushy.forms.builder) : init
+         const log = opts?.log ? logForPersistentModel : logVoid
+         log(`usePersistentModel (${uid})`)
+
+         const prevEntity = this.documents.get(uid)
+         if (prevEntity != null) {
+            const prevHash = prevEntity.schema.codegenValueType()
+            const nextHash = schema.codegenValueType()
+            if (prevHash === nextHash) {
+               log(`    | 🟢 prev entity found; schema is identical`)
+               return prevEntity
+            } else {
+               log(`    | prev entity found; schema is different`)
+               log(`    | prev entity schema`, prevHash)
+               log(`    | next entity schema`, nextHash)
+            }
+         } else {
+            log(`    | prev entity not found; creating new one`)
+         }
+
+         // get or create panel store to hold/persist the entity
+         const storeName = `entity-${uid}`
+         let store: PanelPersistentStore<any> = this.stores.get(storeName) as PanelPersistentStore<
+            SCHEMA['$Serial'] | false
+         >
+         if (store == null) {
+            log(`    | creating store (${storeName})`)
+            store = new PanelPersistentStore(this, uid, () => false as false)
+            this.stores.set(storeName, store)
+         }
+
+         // clone the schema to inject a callback to persist the entity via the panel store
+         schema = schema.withConfig({
+            onSerialChange: (self) => {
+               store.saveData(self.serial)
             },
-        )
-    }
+         })
 
-    get panelName(): PanelName {
-        const panelName = this.flexLayoutTabNode.getComponent() as Maybe<PanelName>
-        return bang(panelName)
-    }
-
-    /**
-     * Returns the config attribute that can be used to store node specific data that
-     * WILL be saved to the json. The config attribute should be changed via the action Actions.updateNodeAttributes rather
-     * than directly, for example:
-     * this.state.model.doAction(
-     *   FlexLayout.Actions.updateNodeAttributes(node.getId(), {config:myConfigObject}));
-     */
-    getConfig(): PanelPersistedJSON<PROPS> {
-        return this.flexLayoutTabNode.getConfig()
-    }
-
-    /** get component props */
-    getProps(): PROPS {
-        return bang(this.getConfig().$props) // (this.getConfig() as any as PROPS)
-    }
-
-    stores: Map<string, PanelPersistentStore> = new Map<string, PanelPersistentStore>()
-    usePersistentStore = <X extends Json>(key: string, init: () => X): PanelPersistentStore<X> => {
-        let store = this.stores.get(key) as Maybe<PanelPersistentStore<X>>
-        if (store != null) return store
-        store = new PanelPersistentStore<X>(this, key, init)
-        this.stores.set(key, store)
-        return store
-    }
-
-    entities: Map<string, Field> = new Map<string, Field>()
-    usePersistentModel = <SCHEMA extends BaseSchema>(
-        //
-        uid: string,
-        init: (ui: Builder) => SCHEMA,
-
-        /**
-         * yikes, we can't iterate on schemas anymore since we have cache
-         * and as of 2024-10-11, we still don't have a proper expiration mechanism
-         */
-        skipCache?: boolean,
-    ): SCHEMA['$Field'] => {
-        // if previous entity already exists, return it
-        const cacheFix = useMemo(() => ({ type: '' }), [])
-
-        return useMemoAction(() => {
-            let schema: SCHEMA = init(cushy.forms.builder)
-            const valueType = schema.codegenValueType()
-            const schemaSeemsIdentical = cacheFix.type === valueType
-            cacheFix.type = valueType
-
-            if (!skipCache && schemaSeemsIdentical) {
-                const prevEntity = this.entities.get(uid)
-                if (prevEntity != null) return prevEntity
-            }
-
-            // get or create panel store to hold/persist the entity
-            let store = this.stores.get(`entity-${uid}`) as PanelPersistentStore<SCHEMA['$Serial'] | false>
-            if (store == null) {
-                store = new PanelPersistentStore(this, uid, () => false)
-                this.stores.set(`entity-${uid}`, store)
-            }
-
-            // clone the schema to inject a callback to persist the entity
-            // via the panel store
-            schema = schema.withConfig({
-                onSerialChange: (self) => {
-                    store.saveData(self.serial)
-                },
-            })
-
-            const prevSerial = store.data
-            const entity = schema.create(prevSerial)
-            this.entities.set(uid, entity)
-            return entity
-        })
-    }
+         const prevSerial = store.data
+         const entity = schema.create(prevSerial)
+         this.documents.set(uid, entity)
+         log(`    | ENTITY for (${uid}) ID IS`, entity.id, `from store ${store.uid}`)
+         return entity
+      })
+   }
 }
+
+const logVoid = (...args: any): void => {}
+const logForPersistentModel = (...args: any): void => console.log('[🤦‍♀️]', ...args)

@@ -5,7 +5,7 @@
 export type SelectKey = string | null | boolean | number
 
 export function convertSelectKeyToReactKey(key: SelectKey): string {
-    return key === null //
-        ? 'null'
-        : key.toString()
+   return key === null //
+      ? 'null'
+      : key.toString()
 }

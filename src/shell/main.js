@@ -1,6 +1,7 @@
 const { mkdirSync } = require('fs')
 const { cwd } = require('process')
 const { clipboard } = require('electron')
+const { execSync, spawn } = require('child_process')
 
 void START()
 
@@ -60,10 +61,16 @@ async function START() {
 
             server.printUrls()
         }
+        console.log(`[✅] starting vite dev-server`)
         startDevServer().catch((error) => {
             console.error(error)
             process.exit(1)
         })
+
+        // start CSS builder
+        console.log(`[✅] starting tailwind dev-server`)
+        void spawn('./node_modules/.bin/tailwindcss', ['--watch', '-o', 'src/theme/twin.css'], { stdio: 'inherit' })
+        // void spawn('./node_modules/.bin/unocss', ['--watch', '-o', 'src/theme/twin.css'], { stdio: 'inherit' })
     }
 
     // ===//=====//======//======//======//======//======//======//======//======//======//======//==
@@ -340,7 +347,15 @@ async function START() {
             const installer = require('electron-devtools-installer')
             const forceDownload = !!process.env.UPGRADE_EXTENSIONS
             const extensions = ['REACT_DEVELOPER_TOOLS']
-            return Promise.all(extensions.map((name) => installer.default(installer[name], forceDownload))).catch(console.log)
+            return Promise.all(
+                //
+                extensions.map((name) =>
+                    installer
+                        .default(installer[name], forceDownload)
+                        .catch(console.log)
+                        .then((name) => console.log(`Added Extension:  ${name}`)),
+                ),
+            ) //
         }
 
         void createWindow()

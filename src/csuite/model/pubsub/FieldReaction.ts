@@ -6,6 +6,6 @@ import type { FieldTypes } from '../$FieldTypes'
  * until the field is fully constructed
  */
 export type FieldReaction<T extends FieldTypes> = {
-    expr(self: T['$Field']): any
-    effect(arg: any, self: T['$Field']): void
+   expr(self: T['$Field']): any
+   effect(arg: any, self: T['$Field']): void
 }

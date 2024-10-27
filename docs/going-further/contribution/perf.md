@@ -12,11 +12,4 @@
 
 - remove all UI from fields themeselves; probably not worth it
 
-- vite
-  - => unoCSS
-    - loading loading-spinner
-    - btn
-    - material-symbols-outlined
-    -spinner
-
 - cycles

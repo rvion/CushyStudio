@@ -7,13 +7,21 @@ import { PanelViewImageUI } from '../panels/PanelViewImage/Panel_ViewImage'
 import { ImageUI } from '../widgets/galleries/ImageUI'
 
 export const OutputImagePreviewUI = observer(function OutputImagePreviewUI_(p: {
-    //
-    step?: Maybe<StepL>
-    output: MediaImageL
+   //
+   step?: Maybe<StepL>
+   output: MediaImageL
 }) {
-    return <ImageUI tw='!rounded-none cursor-default' img={p.output} size='100%' />
+   return (
+      <ImageUI //
+         img={p.output}
+         size={32}
+      />
+   )
 })
 
-export const OutputImageUI = observer(function OutputImageUI_(p: { step?: Maybe<StepL>; output: MediaImageL }) {
-    return <PanelViewImageUI imageID={p.output.id} />
+export const OutputImageUI = observer(function OutputImageUI_(p: {
+   step?: Maybe<StepL>
+   output: MediaImageL
+}) {
+   return <PanelViewImageUI imageID={p.output.id} />
 })

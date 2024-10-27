@@ -3,15 +3,15 @@ import chalk from 'chalk'
 import { wrapBox } from '../../manager/_utils/_wrapBox'
 
 export function sectionTool(x: string) {
-    console.log(`tool: ${chalk.yellowBright(x)}`)
+   console.log(`tool: ${chalk.yellowBright(x)}`)
 }
 
 export function sectionObjective(x: string) {
-    console.log(chalk.gray.italic(`objective: ${x}`))
+   console.log(chalk.gray.italic(`objective: ${x}`))
 }
 
 export function section(x: string) {
-    console.log('\n' + wrapBox(x, 1, chalk.bold.cyan))
+   console.log('\n' + wrapBox(x, 1, chalk.bold.cyan))
 }
 
 // async function buildTailwind() {
@@ -36,5 +36,5 @@ export function section(x: string) {
 //     }
 // }
 export function CRASH() {
-    throw new Error('❌')
+   throw new Error('❌')
 }

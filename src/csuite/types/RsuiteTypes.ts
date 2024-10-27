@@ -1,17 +1,17 @@
 export const sizeManual: RSSize[] = [
-    //
-    'xs',
-    'sm',
-    'md',
-    'lg',
-    'xl',
+   //
+   'xs',
+   'sm',
+   'md',
+   'lg',
+   'xl',
 ]
 
 export const sizeInternal: RSSize[] = [
-    //
-    'widget',
-    'input',
-    'inside',
+   //
+   'widget',
+   'input',
+   'inside',
 ]
 
 // prettier-ignore

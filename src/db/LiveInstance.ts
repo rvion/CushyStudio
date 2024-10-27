@@ -8,9 +8,9 @@ export type $OptionalFieldsForUpsert = 'createdAt' | 'updatedAt'
 
 export type $BaseInstanceFields = 'id' | 'createdAt' | 'updatedAt'
 export type BaseInstanceFields = {
-    id: string
-    createdAt: number
-    updatedAt: number
+   id: string
+   createdAt: number
+   updatedAt: number
 }
 
 // export interface LiveInstance<TABLE extends TableInfo> {
@@ -37,5 +37,5 @@ export type BaseInstanceFields = {
 // }
 
 export type UpdateOptions = {
-    debug?: boolean
+   debug?: boolean
 }

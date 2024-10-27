@@ -208,10 +208,11 @@
 /* Select Utils ------------------------------------------------------------------------------------- */
 ._SelectPopupUI,
 ._RevealUI {
-    box-shadow:
+    box-shadow: 0 0 20px 0 oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h)
+    /* box-shadow:
         0     15px 10px -10px oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h),
         15px  15px 10px -10px oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h),
-        -15px 15px 10px -10px oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h);
+        -15px 15px 10px -10px oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h); */
     /* 0 0 10px 1px oklch(var(--b3)); */
 }
 

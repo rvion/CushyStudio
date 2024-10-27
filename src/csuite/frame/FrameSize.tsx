@@ -3,8 +3,8 @@ import type { RSSize } from '../types/RsuiteTypes'
 import { exhaust } from '../utils/exhaust'
 
 export type FrameSize = {
-    size?: Maybe<RSSize>
-    square?: boolean
+   size?: Maybe<RSSize>
+   square?: boolean
 }
 
 // prettier-ignore

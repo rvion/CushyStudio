@@ -18,52 +18,52 @@ import { combine } from '../utils/combine'
 import { SimpleSchema, type SimpleSchemaᐸ_ᐳ } from './SimpleSchema'
 
 export interface SimpleBuilder //
-    extends BuilderString<SimpleSchemaᐸ_ᐳ>,
-        BuilderBool<SimpleSchemaᐸ_ᐳ>,
-        BuilderNumber<SimpleSchemaᐸ_ᐳ>,
-        BuilderDate<SimpleSchemaᐸ_ᐳ>,
-        BuilderMisc<SimpleSchemaᐸ_ᐳ>,
-        BuilderSelectOne<SimpleSchemaᐸ_ᐳ>,
-        BuilderSelectMany<SimpleSchemaᐸ_ᐳ>,
-        BuilderChoices<SimpleSchemaᐸ_ᐳ>,
-        BuilderGroup<SimpleSchemaᐸ_ᐳ>,
-        BuilderShared<SimpleSchemaᐸ_ᐳ> {}
+   extends BuilderString<SimpleSchemaᐸ_ᐳ>,
+      BuilderBool<SimpleSchemaᐸ_ᐳ>,
+      BuilderNumber<SimpleSchemaᐸ_ᐳ>,
+      BuilderDate<SimpleSchemaᐸ_ᐳ>,
+      BuilderMisc<SimpleSchemaᐸ_ᐳ>,
+      BuilderSelectOne<SimpleSchemaᐸ_ᐳ>,
+      BuilderSelectMany<SimpleSchemaᐸ_ᐳ>,
+      BuilderChoices<SimpleSchemaᐸ_ᐳ>,
+      BuilderGroup<SimpleSchemaᐸ_ᐳ>,
+      BuilderShared<SimpleSchemaᐸ_ᐳ> {}
 
 export class SimpleBuilder /* implements IBuilder<Schemaᐸ_ᐳ> */ {
-    constructor() {
-        combine<any /* ts perf maybe ? */>(
-            //
-            this,
-            BuilderString.fromSchemaClass(SimpleSchema),
-            BuilderBool.fromSchemaClass(SimpleSchema),
-            BuilderNumber.fromSchemaClass(SimpleSchema),
-            BuilderDate.fromSchemaClass(SimpleSchema),
-            BuilderMisc.fromSchemaClass(SimpleSchema),
-            BuilderSelectOne.fromSchemaClass(SimpleSchema),
-            BuilderSelectMany.fromSchemaClass(SimpleSchema),
-            BuilderChoices.fromSchemaClass(SimpleSchema),
-            BuilderGroup.fromSchemaClass(SimpleSchema),
-            BuilderShared.fromSchemaClass(SimpleSchema),
-        )
+   constructor() {
+      combine<any /* ts perf maybe ? */>(
+         //
+         this,
+         BuilderString.fromSchemaClass(SimpleSchema),
+         BuilderBool.fromSchemaClass(SimpleSchema),
+         BuilderNumber.fromSchemaClass(SimpleSchema),
+         BuilderDate.fromSchemaClass(SimpleSchema),
+         BuilderMisc.fromSchemaClass(SimpleSchema),
+         BuilderSelectOne.fromSchemaClass(SimpleSchema),
+         BuilderSelectMany.fromSchemaClass(SimpleSchema),
+         BuilderChoices.fromSchemaClass(SimpleSchema),
+         BuilderGroup.fromSchemaClass(SimpleSchema),
+         BuilderShared.fromSchemaClass(SimpleSchema),
+      )
 
-        makeAutoObservable(this, {})
-    }
+      makeAutoObservable(this, {})
+   }
 
-    /** list with a default */
-    list<T extends BaseSchema>(config: Field_list_config<T>): S.SList<T> {
-        return this.list_({
-            defaultLength: config.min ?? 0,
-            ...config,
-        })
-    }
+   /** list with a default */
+   list<T extends BaseSchema>(config: Field_list_config<T>): S.SList<T> {
+      return this.list_({
+         defaultLength: config.min ?? 0,
+         ...config,
+      })
+   }
 
-    /** list */
-    list_<T extends BaseSchema>(config: Field_list_config<T>): S.SList<T> {
-        return new SimpleSchema<Field_list<T>>(Field_list, config)
-    }
+   /** list */
+   list_<T extends BaseSchema>(config: Field_list_config<T>): S.SList<T> {
+      return new SimpleSchema<Field_list<T>>(Field_list, config)
+   }
 
-    // optional wrappers
-    optional<T extends BaseSchema>(p: Field_optional_config<T>): S.SOptional<T> {
-        return new SimpleSchema<Field_optional<T>>(Field_optional, p)
-    }
+   // optional wrappers
+   optional<T extends BaseSchema>(p: Field_optional_config<T>): S.SOptional<T> {
+      return new SimpleSchema<Field_optional<T>>(Field_optional, p)
+   }
 }

@@ -14,30 +14,34 @@ import { isAction } from 'mobx'
  * MDN Reference: https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener
  */
 export function window_addEventListener<K extends keyof WindowEventMap>(
-    type: K,
-    listener: (this: Window, ev: WindowEventMap[K]) => any,
-    options?: boolean | AddEventListenerOptions,
+   type: K,
+   listener: (this: Window, ev: WindowEventMap[K]) => any,
+   options?: boolean | AddEventListenerOptions,
 ): void
 
 export function window_addEventListener(
-    type: string,
-    listener: EventListenerOrEventListenerObject,
-    options?: boolean | AddEventListenerOptions,
+   type: string,
+   listener: EventListenerOrEventListenerObject,
+   options?: boolean | AddEventListenerOptions,
 ): void
 
-export function window_addEventListener<K extends keyof WindowEventMap>(type: any, listener: any, options?: any): void {
-    if (!isAction(listener)) throw new Error(`[❌] window_addEventListenerAction must be an action`)
-    // 💬 2024-10-07 rvion:
-    // | I first tried to use the following code, but it didn't work because
-    // | the window.removeEventListener method must be called with the exact same
-    // | reference that was passed to window.addEventListener.
-    // | so better to just throw an error if the listener is not an action.
-    // | and make sure callers do what must be done.
-    //
-    //=| const finalListener = isAction(listener) //
-    //=|     ? listener
-    //=|     : action(listener)
+export function window_addEventListener<K extends keyof WindowEventMap>(
+   type: any,
+   listener: any,
+   options?: any,
+): void {
+   if (!isAction(listener)) throw new Error(`[❌] window_addEventListenerAction must be an action`)
+   // 💬 2024-10-07 rvion:
+   // | I first tried to use the following code, but it didn't work because
+   // | the window.removeEventListener method must be called with the exact same
+   // | reference that was passed to window.addEventListener.
+   // | so better to just throw an error if the listener is not an action.
+   // | and make sure callers do what must be done.
+   //
+   //=| const finalListener = isAction(listener) //
+   //=|     ? listener
+   //=|     : action(listener)
 
-    // eslint-disable-next-line no-restricted-properties
-    window.addEventListener(type, listener, options)
+   // eslint-disable-next-line no-restricted-properties
+   window.addEventListener(type, listener, options)
 }

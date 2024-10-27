@@ -8,22 +8,22 @@ export type KnownModel_Type =
     | "face_restore"       // x   3
     | "zero123"            // x   5
     | "embeddings"         // x   4
-    | "VAE"                // x   7
-    | "unet"               // x  13
-    | "clip"               // x   5
-    | "lora"               // x  16
+    | "VAE"                // x   8
+    | "diffusion_model"    // x  44
+    | "clip"               // x  18
+    | "lora"               // x  35
     | "unclip"             // x   2
     | "T2I-Adapter"        // x  18
     | "T2I-Style"          // x   1
-    | "controlnet"         // x  61
-    | "clip_vision"        // x   4
+    | "controlnet"         // x  67
+    | "clip_vision"        // x   5
     | "gligen"             // x   1
     | "sam"                // x   4
     | "seecoder"           // x   3
     | "Ultralytics"        // x  16
     | "animatediff"        // x  13
     | "motion lora"        // x   8
-    | "IP-Adapter"         // x  22
+    | "IP-Adapter"         // x  24
     | "PFG"                // x   3
     | "GFPGAN"             // x   1
     | "CodeFormer"         // x   1
@@ -42,7 +42,9 @@ export type KnownModel_Type =
     | "CustomNet"          // x   1
     | "RGT"                // x   6
     | "depthanything"      // x   6
-    | "vae"                // x   1
+    | "SegGPT"             // x   1
+    | "depth-pro"          // x   1
+    | "LLM"                // x   3
 
 export const knownModel_Type: KnownModel_Type[] = [
     "TAESD"             ,  // x   8
@@ -53,22 +55,22 @@ export const knownModel_Type: KnownModel_Type[] = [
     "face_restore"      ,  // x   3
     "zero123"           ,  // x   5
     "embeddings"        ,  // x   4
-    "VAE"               ,  // x   7
-    "unet"              ,  // x  13
-    "clip"              ,  // x   5
-    "lora"              ,  // x  16
+    "VAE"               ,  // x   8
+    "diffusion_model"   ,  // x  44
+    "clip"              ,  // x  18
+    "lora"              ,  // x  35
     "unclip"            ,  // x   2
     "T2I-Adapter"       ,  // x  18
     "T2I-Style"         ,  // x   1
-    "controlnet"        ,  // x  61
-    "clip_vision"       ,  // x   4
+    "controlnet"        ,  // x  67
+    "clip_vision"       ,  // x   5
     "gligen"            ,  // x   1
     "sam"               ,  // x   4
     "seecoder"          ,  // x   3
     "Ultralytics"       ,  // x  16
     "animatediff"       ,  // x  13
     "motion lora"       ,  // x   8
-    "IP-Adapter"        ,  // x  22
+    "IP-Adapter"        ,  // x  24
     "PFG"               ,  // x   3
     "GFPGAN"            ,  // x   1
     "CodeFormer"        ,  // x   1
@@ -87,6 +89,8 @@ export const knownModel_Type: KnownModel_Type[] = [
     "CustomNet"         ,  // x   1
     "RGT"               ,  // x   6
     "depthanything"     ,  // x   6
-    "vae"               ,  // x   1
+    "SegGPT"            ,  // x   1
+    "depth-pro"         ,  // x   1
+    "LLM"               ,  // x   3
 ]
 

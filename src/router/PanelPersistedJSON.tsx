@@ -5,17 +5,17 @@ import type { Json } from '../csuite/types/Json'
 // | instead of extends any to make sure we alwyas store stuff that can be serialized to json ?
 
 export type PanelPersistedJSON<PROPS extends any = any> = {
-    // 💬 2024-08-13 rvion:
-    // | this is not necessary, since we can always retrieve the
-    // | panelName using `tabNode.getComponent()`
-    // |    VVVVVVVVVV
-    // | ❌ $panelName: string
+   // 💬 2024-08-13 rvion:
+   // | this is not necessary, since we can always retrieve the
+   // | panelName using `tabNode.getComponent()`
+   // |    VVVVVVVVVV
+   // | ❌ $panelName: string
 
-    $props: PROPS
+   $props: PROPS
 
-    /** persisted in panel json, remain when cushy is closed/re-opened */
-    $store?: { [storeName: string]: Json }
+   /** persisted in panel json, remain when cushy is closed/re-opened */
+   $store?: { [storeName: string]: Json }
 
-    /** volative store; not persisted in json, lost when cushy quit */
-    $temp?: { [storeName: string]: Json }
+   /** volative store; not persisted in json, lost when cushy quit */
+   $temp?: { [storeName: string]: Json }
 }

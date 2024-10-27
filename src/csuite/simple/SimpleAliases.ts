@@ -24,77 +24,77 @@ import type { NO_PROPS } from '../types/NO_PROPS'
 import type { SimpleSchema } from './SimpleSchema'
 
 declare global {
-    // eslint-disable-next-line @typescript-eslint/no-namespace
-    namespace S {
-        //  ====== core ==============================================================
-        type SchemaDict = import('../model/SchemaDict').SchemaDict
-        type Builder = import('./SimpleBuilder').SimpleBuilder
-        type Field = import('../model/Field').Field
+   // eslint-disable-next-line @typescript-eslint/no-namespace
+   namespace S {
+      //  ====== core ==============================================================
+      type SchemaDict = import('../model/SchemaDict').SchemaDict
+      type Builder = import('./SimpleBuilder').SimpleBuilder
+      type Field = import('../model/Field').Field
 
-        //  ====== field aliases ======================================================
-        type Shared<T extends Field> = Field_shared<T>
-        //
-        type Group<T extends SchemaDict> = Field_group<Field_group_types<T>>
-        type List<T extends BaseSchema> = Field_list<T>
-        type Link<A extends BaseSchema, B extends BaseSchema> = Field_link<A, B>
-        type Choices<T extends SchemaDict = SchemaDict> = Field_choices<T>
-        type Optional<T extends BaseSchema> = Field_optional<T>
-        //
+      //  ====== field aliases ======================================================
+      type Shared<T extends Field> = Field_shared<T>
+      //
+      type Group<T extends SchemaDict> = Field_group<Field_group_types<T>>
+      type List<T extends BaseSchema> = Field_list<T>
+      type Link<A extends BaseSchema, B extends BaseSchema> = Field_link<A, B>
+      type Choices<T extends SchemaDict = SchemaDict> = Field_choices<T>
+      type Optional<T extends BaseSchema> = Field_optional<T>
+      //
 
-        type SelectOne<T, K extends string> = Field_selectOne<T, K>
-        type SelectMany<T, K extends string> = Field_selectMany<T, K>
-        type SelectOne_<T extends string> = Field_selectOne<T, T>
-        type SelectMany_<T extends string> = Field_selectMany<T, T>
-        //
-        type Empty = Field_group<Field_group_types<NO_PROPS>>
-        type Bool = Field_bool
-        type String = Field_string
-        type Number = Field_number
-        type Color = Field_color
-        type Seed = Field_seed
-        type Matrix = Field_matrix
-        type Size = Field_size
-        //
-        type Button<T> = Field_button<T>
-        type Markdown = Field_markdown
+      type SelectOne<T, K extends string> = Field_selectOne<T, K>
+      type SelectMany<T, K extends string> = Field_selectMany<T, K>
+      type SelectOne_<T extends string> = Field_selectOne<T, T>
+      type SelectMany_<T extends string> = Field_selectMany<T, T>
+      //
+      type Empty = Field_group<Field_group_types<NO_PROPS>>
+      type Bool = Field_bool
+      type String = Field_string
+      type Number = Field_number
+      type Color = Field_color
+      type Seed = Field_seed
+      type Matrix = Field_matrix
+      type Size = Field_size
+      //
+      type Button<T> = Field_button<T>
+      type Markdown = Field_markdown
 
-        //  ====== schema aliases ======================================================
-        type SShared<T extends Field> = SimpleSchema<Field_shared<T>>
-        //
-        type SGroup<T extends SchemaDict> = SimpleSchema<Field_Group_withMagicFields<Field_group_types<T>>>
-        type SList<T extends BaseSchema> = SimpleSchema<Field_list<T>>
-        type SLink<A extends BaseSchema, B extends BaseSchema> = SimpleSchema<Field_link<A, B>>
-        type SChoices<T extends SchemaDict = SchemaDict> = SimpleSchema<Field_choices<T>>
-        type SOptional<T extends BaseSchema> = SimpleSchema<Field_optional<T>>
-        type SSelectOne<T, ID extends string = string> = SimpleSchema<Field_selectOne<T, ID>>
-        type SSelectMany<T, ID extends string = string> = SimpleSchema<Field_selectMany<T, ID>>
+      //  ====== schema aliases ======================================================
+      type SShared<T extends Field> = SimpleSchema<Field_shared<T>>
+      //
+      type SGroup<T extends SchemaDict> = SimpleSchema<Field_Group_withMagicFields<Field_group_types<T>>>
+      type SList<T extends BaseSchema> = SimpleSchema<Field_list<T>>
+      type SLink<A extends BaseSchema, B extends BaseSchema> = SimpleSchema<Field_link<A, B>>
+      type SChoices<T extends SchemaDict = SchemaDict> = SimpleSchema<Field_choices<T>>
+      type SOptional<T extends BaseSchema> = SimpleSchema<Field_optional<T>>
+      type SSelectOne<T, ID extends string = string> = SimpleSchema<Field_selectOne<T, ID>>
+      type SSelectMany<T, ID extends string = string> = SimpleSchema<Field_selectMany<T, ID>>
 
-        type SSelectOne_<T extends string> = SimpleSchema<Field_selectOne<T, T>> // variant that may be shorter to read
-        type SSelectMany_<T extends string> = SimpleSchema<Field_selectMany<T, T>> // variant that may be shorter to read
-        //
-        type SEmpty = SimpleSchema<Field_group<Field_group_types<NO_PROPS>>>
-        type SBool = SimpleSchema<Field_bool>
-        type SString = SimpleSchema<Field_string>
+      type SSelectOne_<T extends string> = SimpleSchema<Field_selectOne<T, T>> // variant that may be shorter to read
+      type SSelectMany_<T extends string> = SimpleSchema<Field_selectMany<T, T>> // variant that may be shorter to read
+      //
+      type SEmpty = SimpleSchema<Field_group<Field_group_types<NO_PROPS>>>
+      type SBool = SimpleSchema<Field_bool>
+      type SString = SimpleSchema<Field_string>
 
-        type SDatePlain<NULLABLE extends boolean> = SimpleSchema<Field_datePlain<NULLABLE>>
-        type SDatePlainRequired = SimpleSchema<Field_datePlain<false>>
-        type SDatePlainNullable = SimpleSchema<Field_datePlain<true>>
+      type SDatePlain<NULLABLE extends boolean> = SimpleSchema<Field_datePlain<NULLABLE>>
+      type SDatePlainRequired = SimpleSchema<Field_datePlain<false>>
+      type SDatePlainNullable = SimpleSchema<Field_datePlain<true>>
 
-        type SDateTimeZoned<NULLABLE extends boolean> = SimpleSchema<Field_dateTimeZoned<NULLABLE>>
-        type SDateTimeZonedRequired = SimpleSchema<Field_dateTimeZoned<false>>
-        type SDateTimeZonedNullable = SimpleSchema<Field_dateTimeZoned<true>>
+      type SDateTimeZoned<NULLABLE extends boolean> = SimpleSchema<Field_dateTimeZoned<NULLABLE>>
+      type SDateTimeZonedRequired = SimpleSchema<Field_dateTimeZoned<false>>
+      type SDateTimeZonedNullable = SimpleSchema<Field_dateTimeZoned<true>>
 
-        type SDate<NULLABLE extends boolean> = SimpleSchema<Field_date<NULLABLE>>
-        type SDateRequired = SimpleSchema<Field_date<false>>
-        type SDateNullable = SimpleSchema<Field_date<true>>
+      type SDate<NULLABLE extends boolean> = SimpleSchema<Field_date<NULLABLE>>
+      type SDateRequired = SimpleSchema<Field_date<false>>
+      type SDateNullable = SimpleSchema<Field_date<true>>
 
-        type SNumber = SimpleSchema<Field_number>
-        type SColor = SimpleSchema<Field_color>
-        type SSeed = SimpleSchema<Field_seed>
-        type SMatrix = SimpleSchema<Field_matrix>
-        type SSize = SimpleSchema<Field_size>
-        //
-        type SButton<T> = SimpleSchema<Field_button<T>>
-        type SMarkdown = SimpleSchema<Field_markdown>
-    }
+      type SNumber = SimpleSchema<Field_number>
+      type SColor = SimpleSchema<Field_color>
+      type SSeed = SimpleSchema<Field_seed>
+      type SMatrix = SimpleSchema<Field_matrix>
+      type SSize = SimpleSchema<Field_size>
+      //
+      type SButton<T> = SimpleSchema<Field_button<T>>
+      type SMarkdown = SimpleSchema<Field_markdown>
+   }
 }

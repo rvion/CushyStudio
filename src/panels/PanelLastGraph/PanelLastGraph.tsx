@@ -8,24 +8,24 @@ import { useSt } from '../../state/stateContext'
 import { GraphPreviewUI } from '../../widgets/graph/GraphPreviewUI'
 
 export const PanelLastGraph = new Panel({
-    name: 'LastGraph',
-    widget: (): React.FC<NO_PROPS> => PanelLastGraphUI,
-    header: (p): PanelHeader => ({ title: '⏱️ LastGraph' }),
-    def: (): NO_PROPS => ({}),
-    icon: 'cdiNodes',
-    category: 'ComfyUI',
+   name: 'LastGraph',
+   widget: (): React.FC<NO_PROPS> => PanelLastGraphUI,
+   header: (p): PanelHeader => ({ title: '⏱️ LastGraph' }),
+   def: (): NO_PROPS => ({}),
+   icon: 'cdiNodes',
+   category: 'ComfyUI',
 })
 
 export const PanelLastGraphUI = observer(function PanelLastGraphUI_(p: NO_PROPS) {
-    const st = useSt()
-    const lastGraph = st.db.comfy_workflow.last()
-    return (
-        <div>
-            {lastGraph && (
-                <ErrorBoundaryUI>
-                    <GraphPreviewUI graph={lastGraph} />
-                </ErrorBoundaryUI>
-            )}
-        </div>
-    )
+   const st = useSt()
+   const lastGraph = st.db.comfy_workflow.last()
+   return (
+      <div>
+         {lastGraph && (
+            <ErrorBoundaryUI>
+               <GraphPreviewUI graph={lastGraph} />
+            </ErrorBoundaryUI>
+         )}
+      </div>
+   )
 })

@@ -14,11 +14,11 @@ b1.w(`export const wildcards: Wildcards = {`)
 // for (const name of names) b1.w(`    "${name}": string[],`)
 // b1.w(`} = {`)
 for (const x of files) {
-    const name = x.replace(/.ts/g, '').replace(/-/g, '_').replace(/.txt/g, '')
-    const file = readFileSync(`tmp/wildcards/${x}`, 'utf8')
-    const lines = file.split(/\r?\n/)
+   const name = x.replace(/.ts/g, '').replace(/-/g, '_').replace(/.txt/g, '')
+   const file = readFileSync(`tmp/wildcards/${x}`, 'utf8')
+   const lines = file.split(/\r?\n/)
 
-    b1.w(`"${name}": ${JSON.stringify(lines)},`)
+   b1.w(`"${name}": ${JSON.stringify(lines)},`)
 }
 b1.w(`}`)
 writeFileSync('src/embeds/wildcards.ts', b1.content, 'utf-8')

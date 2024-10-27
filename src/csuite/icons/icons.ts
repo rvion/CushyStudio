@@ -30,15 +30,15 @@ import { _IconsXDI } from './iconsXDI'
 // - 🔶 some incompatibilities with rsuite Button/IconButton -> we probably want to have new Tong's base components before migrating everything.
 
 export const allIcons = {
-    _: 'M 0,0 z',
-    // made by pictogrammers, for all
-    ..._IconsMDI,
-    // made by/for ???
-    ..._IconsXDI,
-    // made by/for locomotive
-    ..._IconsLDI,
-    // made by/for cushy
-    ..._IconsCDI,
+   _: 'M 0,0 z',
+   // made by pictogrammers, for all
+   ..._IconsMDI,
+   // made by/for ???
+   ..._IconsXDI,
+   // made by/for locomotive
+   ..._IconsLDI,
+   // made by/for cushy
+   ..._IconsCDI,
 }
 
 // slow when used in union => will break typescript
@@ -51,8 +51,8 @@ export const allIcons = {
 export type IconName = [keyof typeof allIcons][0]
 
 export type IdLabelIcon = {
-    id: string
-    label?: string
-    icon?: IconName
-    hue?: number
+   id: string
+   label?: string
+   icon?: IconName
+   hue?: number
 }
