@@ -91,6 +91,7 @@ export const ResizableFrame = observer(function ResizableFrame_(p: ResizableFram
          // hover
          tw='flex flex-col overflow-clip !p-0'
          style={{ gap: '0px', ...p.style }}
+         border={{ contrast: 0 }}
          dropShadow={theme.inputShadow}
          roundness={csuite.inputRoundness}
          {...props}
