@@ -1478,6 +1478,10 @@ video {
   flex-direction: row;
 }
 
+.\!flex-row {
+  flex-direction: row !important;
+}
+
 .flex-col {
   flex-direction: column;
 }
@@ -1552,6 +1556,10 @@ video {
 
 .gap-5 {
   gap: 1.25rem;
+}
+
+.\!gap-2 {
+  gap: 0.5rem !important;
 }
 
 .gap-x-0\.5 {
