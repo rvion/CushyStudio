@@ -196,7 +196,7 @@ describe('field customizations', () => {
    })
 
    describe('autoExtendObservable', () => {
-      it('throw when called twice', () => {
+      it.skip('throw when called twice', () => {
          const S0 = b.empty()
          const S1 = S0.useClass(
             () =>

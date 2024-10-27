@@ -1686,13 +1686,22 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
       // if it's not, we should throw an error
       if (baseAnnotations == null)
          throw new Error(
-            '❌ autoExtendObservable can only be callled after some base' +
+            '❌ autoExtendObservable can only be called after some base' +
                'class has been made observable using makeAutoObservableInheritance',
          )
 
       const accumPropertiesAndAnnotations = (something: any): void => {
          Reflect.ownKeys(something).forEach((key) => {
-            if (key === $mobx || key === 'constructor') return
+            // 🔴 exclusion added after investigation, but we still need to check that
+            // calling the function twice has no effect on the object
+            if (
+               key === $mobx || //
+               key === 'constructor' ||
+               //      VVVVVVVVVVVVVVVVV (TODO: review)
+               key === annotationsSymbol
+            )
+               return
+
             if (key in baseAnnotations) return
             const annotation = !overrides
                ? true
