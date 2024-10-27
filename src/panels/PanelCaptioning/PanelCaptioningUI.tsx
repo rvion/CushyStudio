@@ -35,7 +35,7 @@ export const PanelCaptioningUI = observer(function PanelCaptioningUI_(p: PanelCa
       b
          .fields({
             uid: b.string(),
-            activeImage: b.number(),
+            active: b.number(),
             selected: b.number().list(),
             folderPath: b.string(),
          })
@@ -84,9 +84,18 @@ export const PanelCaptioningUI = observer(function PanelCaptioningUI_(p: PanelCa
                {doc.FolderPath.value != '' ? (
                   <ResizableFrame // List of files in folder, when one is selected it should try to load the associated .caption and fill the captioning data with it
                   >
-                     <Frame tw='flex flex-col p-1 gap-0.5'>
-                        {test_data.map((data) => {
-                           return <Frame tw='h-input' base={{ contrast: 0.1 }}></Frame>
+                     <Frame tw='flex flex-col gap-0.5 p-1'>
+                        {test_data.map((data, index) => {
+                           return (
+                              <Frame
+                                 tw='h-input'
+                                 hover
+                                 base={{ contrast: index == doc.Active.value ? 0.1 : 0 }}
+                                 onClick={() => {
+                                    doc.Active.value = index
+                                 }}
+                              ></Frame>
+                           )
                         })}
                      </Frame>
                   </ResizableFrame>

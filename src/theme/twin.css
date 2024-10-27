@@ -1126,6 +1126,10 @@ video {
   height: 100%;
 }
 
+.h-64 {
+  height: 16rem;
+}
+
 .max-h-28 {
   max-height: 7rem;
 }
@@ -1209,6 +1213,10 @@ video {
 
 .w-full {
   width: 100%;
+}
+
+.w-64 {
+  width: 16rem;
 }
 
 .min-w-0 {
@@ -1474,12 +1482,12 @@ video {
   grid-template-rows: repeat(9, minmax(0, 1fr));
 }
 
-.flex-row {
-  flex-direction: row;
-}
-
 .\!flex-row {
   flex-direction: row !important;
+}
+
+.flex-row {
+  flex-direction: row;
 }
 
 .flex-col {
@@ -1530,6 +1538,10 @@ video {
   gap: 0px !important;
 }
 
+.\!gap-2 {
+  gap: 0.5rem !important;
+}
+
 .gap-0 {
   gap: 0px;
 }
@@ -1556,10 +1568,6 @@ video {
 
 .gap-5 {
   gap: 1.25rem;
-}
-
-.\!gap-2 {
-  gap: 0.5rem !important;
 }
 
 .gap-x-0\.5 {
@@ -1961,10 +1969,6 @@ video {
   padding: 0.625rem;
 }
 
-.p-3 {
-  padding: 0.75rem;
-}
-
 .p-4 {
   padding: 1rem;
 }
@@ -1975,6 +1979,10 @@ video {
 
 .p-8 {
   padding: 2rem;
+}
+
+.\!p-1 {
+  padding: 0.25rem !important;
 }
 
 .\!px-0 {
@@ -2164,25 +2172,12 @@ video {
   font-weight: 600;
 }
 
-.uppercase {
-  text-transform: uppercase;
-}
-
-.lowercase {
-  text-transform: lowercase;
-}
-
 .capitalize {
   text-transform: capitalize;
 }
 
 .italic {
   font-style: italic;
-}
-
-.ordinal {
-  --tw-ordinal: ordinal;
-  font-variant-numeric: var(--tw-ordinal) var(--tw-slashed-zero) var(--tw-numeric-figure) var(--tw-numeric-spacing) var(--tw-numeric-fraction);
 }
 
 .\!leading-none {
