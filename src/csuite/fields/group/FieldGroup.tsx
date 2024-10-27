@@ -331,7 +331,15 @@ export class Field_group<X extends Field_group_types<SchemaDict> = Field_group_t
    set value(val: Field_group_value<X['$Sub']>) {
       this.runInAutoTransaction(() => {
          for (const key in val) {
-            this.fields[key].value = val[key]
+            const child = this.fields[key]
+            if (child == null) {
+               console.warn(
+                  `🔴 Field_Group(${this.path}).setValue: invalid key "${key}" with value`,
+                  val[key],
+               )
+               continue
+            }
+            child.value = val[key]
          }
       })
    }
