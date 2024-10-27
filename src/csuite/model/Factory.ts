@@ -160,7 +160,9 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
          const prev = localStorage.getItem(key)
          const parsed = prev ? JSON.parse(prev) : null
          serial = parsed
-      } catch {}
+      } catch {
+         /* empty */
+      }
 
       return this.use(
          schemaExt,

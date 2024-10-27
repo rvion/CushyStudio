@@ -1,68 +1,20 @@
 
-/Users/loco/dev/CushyStudio/src/app/layout/AppUI.tsx
-  128:10  error  Classnames grid-cols-1, grid-cols-2, grid-cols-3, grid-cols-4, grid-cols-5, grid-cols-6, grid-cols-7, grid-cols-8 are conflicting!  tailwindcss/no-contradicting-classname
-
-/Users/loco/dev/CushyStudio/src/app/layout/CreateDeckModalUI.tsx
-  14:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  15:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  20:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/app/layout/ProjectUI.tsx
-  13:17  warning  Classname 'bg-opacity-80' should be replaced by an opacity suffix (eg. '/80')  tailwindcss/migration-from-tailwind-2
-
-/Users/loco/dev/CushyStudio/src/app/layout/openExternal.ts
-  8:29  error  `import()` type annotations are forbidden  @typescript-eslint/consistent-type-imports
-
-/Users/loco/dev/CushyStudio/src/back/ImageStore.ts
-  42:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  49:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/cards/AvatarGenerator.ts
-  140:1  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/cards/GithubAvatarUI.tsx
-  7:8  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
 /Users/loco/dev/CushyStudio/src/cards/LibraryFile.ts
-  246:41  error  Optional chain expressions can return undefined by design - using a non-null assertion is unsafe and wrong  @typescript-eslint/no-non-null-asserted-optional-chain
+  252:38  error  Optional chain expressions can return undefined by design - using a non-null assertion is unsafe and wrong  @typescript-eslint/no-non-null-asserted-optional-chain
 
 /Users/loco/dev/CushyStudio/src/cards/githubRepo.ts
   17:45  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
-/Users/loco/dev/CushyStudio/src/cards/walkLib.ts
-  21:5   error  Missing return type on function                  @typescript-eslint/explicit-function-return-type
-  31:17  error  Move function declaration to function body root  no-inner-declarations
-  31:17  error  Missing return type on function                  @typescript-eslint/explicit-function-return-type
-
 /Users/loco/dev/CushyStudio/src/compiler/transpiler.ts
-  47:57  error  `import()` type annotations are forbidden  @typescript-eslint/consistent-type-imports
+  47:56  error  `import()` type annotations are forbidden  @typescript-eslint/consistent-type-imports
 
 /Users/loco/dev/CushyStudio/src/controls/Builder.ts
-  83:5   error  ES2015 module syntax is preferred over namespaces  @typescript-eslint/no-namespace
-  85:27  error  `import()` type annotations are forbidden          @typescript-eslint/consistent-type-imports
-  86:24  error  `import()` type annotations are forbidden          @typescript-eslint/consistent-type-imports
-  87:57  error  `import()` type annotations are forbidden          @typescript-eslint/consistent-type-imports
-  88:27  error  `import()` type annotations are forbidden          @typescript-eslint/consistent-type-imports
-  89:70  error  `import()` type annotations are forbidden          @typescript-eslint/consistent-type-imports
-  90:24  error  `import()` type annotations are forbidden          @typescript-eslint/consistent-type-imports
+  96:10  error  `import()` type annotations are forbidden  @typescript-eslint/consistent-type-imports
 
 /Users/loco/dev/CushyStudio/src/core/Colors.ts
   24:56  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
   31:66  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
   40:67  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/core/JsonFile.ts
-  44:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  52:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  58:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  61:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  64:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/csuite-bundler/bundle-csuite.ts
-  285:21  error  Unnecessary escape character: \.  no-useless-escape
-
-/Users/loco/dev/CushyStudio/src/csuite-bundler/mkPKGJSON.ts
-  1:8  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/csuite-bundler/utils/_section.ts
    5:8  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
@@ -75,7 +27,7 @@
 
 /Users/loco/dev/CushyStudio/src/csuite-bundler/utils/_waitConfirm.ts
   1:8   error  Missing return type on function          @typescript-eslint/explicit-function-return-type
-  2:22  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+  2:21  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
 
 /Users/loco/dev/CushyStudio/src/csuite-bundler/utils/mapPathToModule.ts
   19:8  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
@@ -83,25 +35,6 @@
 /Users/loco/dev/CushyStudio/src/csuite-cushy/presenters/RenderCtx.tsx
    7:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
   13:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
-
-/Users/loco/dev/CushyStudio/src/csuite/activity/ActivityManager.ts
-  23:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/csuite/activity/Routine.ts
-  24:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/csuite/activity/SimpleMouseActivity.tsx
-  32:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  35:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  44:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  62:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  67:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/csuite/box/CurrentStyleCtx.tsx
-  21:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
-
-/Users/loco/dev/CushyStudio/src/csuite/button/Button.tsx
-  119:20  error  Empty block statement  no-empty
 
 /Users/loco/dev/CushyStudio/src/csuite/config/configureCsuite.ts
   26:59  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
@@ -126,24 +59,6 @@
 /Users/loco/dev/CushyStudio/src/csuite/fields/choices/TabPositionConfig.tsx
   3:74  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
-/Users/loco/dev/CushyStudio/src/csuite/fields/custom/FieldCustom.tsx
-  14:69  error  `import()` type annotations are forbidden  @typescript-eslint/consistent-type-imports
-
-/Users/loco/dev/CushyStudio/src/csuite/fields/enum/WidgetEnumUI.tsx
-  27:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
-  61:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
-
-/Users/loco/dev/CushyStudio/src/csuite/fields/group/WidgetGroupUI.tsx
-  13:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
-  77:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
-
-/Users/loco/dev/CushyStudio/src/csuite/fields/list/WidgetListUI.tsx
-  12:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
-  26:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
-
-/Users/loco/dev/CushyStudio/src/csuite/fields/orbit/Cube3D.tsx
-  14:8  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
 /Users/loco/dev/CushyStudio/src/csuite/fields/orbit/_orbitUtils.tsx
    5:63  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
   10:77  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
@@ -153,21 +68,16 @@
   31:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
   54:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
 
-/Users/loco/dev/CushyStudio/src/csuite/fields/string/WidgetStringUI.tsx
-  23:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
-  31:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
-  62:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
-
 /Users/loco/dev/CushyStudio/src/csuite/form/Form.tsx
-  51:45  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  51:37  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/csuite/form/WidgetLabelCaretUI.tsx
-  44:16  error  Irregular whitespace not allowed  no-irregular-whitespace
+  44:15  error  Irregular whitespace not allowed  no-irregular-whitespace
 
 /Users/loco/dev/CushyStudio/src/csuite/formatters/_formatPreviewDate.ts
    1:71  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  18:39  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  43:62  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  22:39  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  47:62  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/csuite/formatters/stringifyReadable.ts
   2:8  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
@@ -177,8 +87,8 @@
 
 /Users/loco/dev/CushyStudio/src/csuite/icons/iconHelpers.tsx
    9:21  error  `import()` type annotations are forbidden  @typescript-eslint/consistent-type-imports
-  21:5   error  Missing return type on function            @typescript-eslint/explicit-function-return-type
-  23:40  error  Missing return type on function            @typescript-eslint/explicit-function-return-type
+  21:4   error  Missing return type on function            @typescript-eslint/explicit-function-return-type
+  23:38  error  Missing return type on function            @typescript-eslint/explicit-function-return-type
   28:23  error  Missing return type on function            @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/csuite/introspect/_isBoundCommand.tsx
@@ -187,67 +97,50 @@
 /Users/loco/dev/CushyStudio/src/csuite/introspect/_isCommand.tsx
   7:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
 
-/Users/loco/dev/CushyStudio/src/csuite/model/Factory.ts
-  167:17  error  Empty block statement  no-empty
-
-/Users/loco/dev/CushyStudio/src/csuite/model/Field.tsx
-  1277:33  error  Unexpected 'debugger' statement  no-debugger
-  1283:33  error  Unexpected 'debugger' statement  no-debugger
-  1294:33  error  Unexpected 'debugger' statement  no-debugger
-
 /Users/loco/dev/CushyStudio/src/csuite/model/TESTS/play-with-serial-formats.ts
-  213:5  error  Expected an assignment or function call and instead saw an expression  @typescript-eslint/no-unused-expressions
-  214:5  error  Expected an assignment or function call and instead saw an expression  @typescript-eslint/no-unused-expressions
+  219:4  error  Expected an assignment or function call and instead saw an expression  @typescript-eslint/no-unused-expressions
+  220:4  error  Expected an assignment or function call and instead saw an expression  @typescript-eslint/no-unused-expressions
 
 /Users/loco/dev/CushyStudio/src/csuite/model/TESTS/proxy.test.ts
-  46:9   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  51:46  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  52:43  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  54:40  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  67:9   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  46:7   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  51:43  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  52:40  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  54:36  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  67:7   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
   88:1   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
-/Users/loco/dev/CushyStudio/src/csuite/model/TESTS/publish.test.ts
-  51:1  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
 /Users/loco/dev/CushyStudio/src/csuite/model/TreeEntry_Field.tsx
-  12:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  17:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  22:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  26:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  64:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  12:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  17:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  22:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  26:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  64:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/csuite/openrouter/OpenRouter_ask.ts
-  24:12  error  Redundant use of `await` on a return value  no-return-await
+  24:11  error  Redundant use of `await` on a return value  no-return-await
 
 /Users/loco/dev/CushyStudio/src/csuite/rnd/createRandomGenerator.ts
    1:53  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   4:82  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   6:40  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  18:15  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  26:15  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/csuite/select/SelectOptionUI.tsx
-  48:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+   4:81  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   6:39  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  18:14  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  26:14  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/csuite/shelf/ShelfUI.tsx
   20:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
 
 /Users/loco/dev/CushyStudio/src/csuite/tinyCSS/CSSVar.tsx
-  17:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  20:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/csuite/tinyCSS/compileOrRetrieveClassName.tsx
-  49:25  error  '_styleElement' is assigned to itself  no-self-assign
+  49:23  error  '_styleElement' is assigned to itself  no-self-assign
 
 /Users/loco/dev/CushyStudio/src/csuite/utils/ObservablePromise.ts
-  15:52  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  26:31  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  12:49  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  23:28  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/csuite/utils/_FIX_INDENTATION.ts
   4:61  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/csuite/utils/clamp.ts
-  3:60  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/csuite/utils/sleep.ts
   1:35  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
@@ -260,14 +153,14 @@
   12:40  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
   16:41  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
   22:72  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  25:28  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  25:27  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/csuite/utils/toposort.ts
   10:1  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  22:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  22:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/db/LazyValue.ts
-  31:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  31:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/db/LiveHelpers.ts
    9:64  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
@@ -275,12 +168,12 @@
   27:36  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/db/LiveTable.ts
-  100:73  error  Irregular whitespace not allowed  no-irregular-whitespace
-  117:73  error  Irregular whitespace not allowed  no-irregular-whitespace
+  100:72  error  Irregular whitespace not allowed  no-irregular-whitespace
+  117:72  error  Irregular whitespace not allowed  no-irregular-whitespace
 
 /Users/loco/dev/CushyStudio/src/db/TYPES_json.ts
-  151:27  error  Unexpected 'debugger' statement  no-debugger
-  163:27  error  Unexpected 'debugger' statement  no-debugger
+  150:25  error  Unexpected 'debugger' statement  no-debugger
+  162:25  error  Unexpected 'debugger' statement  no-debugger
 
 /Users/loco/dev/CushyStudio/src/db/_createTable.ts
   1:67  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
@@ -295,57 +188,56 @@
   14:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/db/storage.ts
-  14:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  29:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  14:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  29:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/importers/TargetBox.tsx
-  20:13  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  27:13  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  31:13  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  34:13  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  20:10  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  27:10  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  31:10  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  34:10  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/manager/REQUIREMENTS/FOOBAR.tsx
-  40:30  error  Optional chain expressions can return undefined by design - using a non-null assertion is unsafe and wrong  @typescript-eslint/no-non-null-asserted-optional-chain
-  41:27  error  Optional chain expressions can return undefined by design - using a non-null assertion is unsafe and wrong  @typescript-eslint/no-non-null-asserted-optional-chain
+  40:25  error  Optional chain expressions can return undefined by design - using a non-null assertion is unsafe and wrong  @typescript-eslint/no-non-null-asserted-optional-chain
+  41:22  error  Optional chain expressions can return undefined by design - using a non-null assertion is unsafe and wrong  @typescript-eslint/no-non-null-asserted-optional-chain
 
 /Users/loco/dev/CushyStudio/src/manager/REQUIREMENTS/Panel_InstallRequirementsUI.tsx
   47:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
 
 /Users/loco/dev/CushyStudio/src/manager/_utils/_wrapBox.ts
    6:3   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  20:42  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  22:42  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/models/ComfyPrompt.ts
-  133:16  error  Redundant use of `await` on a return value  no-return-await
-  146:16  error  Redundant use of `await` on a return value  no-return-await
+  136:14  error  Redundant use of `await` on a return value  no-return-await
+  149:14  error  Redundant use of `await` on a return value  no-return-await
 
 /Users/loco/dev/CushyStudio/src/models/Executable.ts
-  38:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  42:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  36:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  40:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/models/ImageInfos_ComfyGenerated.ts
   8:77  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/models/MediaImage.ts
-  573:16  error  Redundant use of `await` on a return value  no-return-await
-  701:17  error  Empty block statement                       no-empty
+  574:14  error  Redundant use of `await` on a return value  no-return-await
 
 /Users/loco/dev/CushyStudio/src/models/Step.ts
-  77:25  error  Redundant use of `await` on a return value  no-return-await
+  77:22  error  Redundant use of `await` on a return value  no-return-await
 
 /Users/loco/dev/CushyStudio/src/models/getGlobalRuntimeCtx.ts
    7:39  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  10:9   error  Unexpected 'debugger' statement  no-debugger
+  10:7   error  Unexpected 'debugger' statement  no-debugger
 
 /Users/loco/dev/CushyStudio/src/openpose/OpenPoseAnimV0.ts
-  38:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  76:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  81:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  87:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  38:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  76:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  81:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  87:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/openpose/drawPoseOld.ts
-   76:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  128:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   76:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  128:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/openpose/drawPoseV2.ts
    31:8   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
@@ -355,12 +247,12 @@
   8:35  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/outputs/3d-displacement/DisplacementState.tsx
-  12:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  12:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/outputs/3d-displacement/OutputDisplacement.tsx
-   91:30  error  `import()` type annotations are forbidden                                                                                       @typescript-eslint/consistent-type-imports
-   93:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
-  111:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+   96:30  error  `import()` type annotations are forbidden                                                                                       @typescript-eslint/consistent-type-imports
+   98:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+  116:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
 
 /Users/loco/dev/CushyStudio/src/outputs/3d-scene/Output3dScene.tsx
   9:1  error  Definition for rule 'unused-imports/no-unused-imports' was not found  unused-imports/no-unused-imports
@@ -375,121 +267,75 @@
   42:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
 
 /Users/loco/dev/CushyStudio/src/panels/3d/controls/OrbitControls.ts
-   104:30  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   108:34  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   112:28  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   116:34  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   121:38  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   126:26  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   132:22  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   159:20  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   338:24  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   404:9   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   412:9   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   416:9   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   420:9   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   427:20  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   438:20  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   456:20  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   489:9   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   498:9   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   507:9   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   526:9   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   534:9   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   538:9   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   543:9   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   547:9   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   563:9   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   579:9   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   591:9   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   603:9   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   656:9   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   667:9   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   678:9   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   687:9   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   693:9   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   699:9   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   722:9   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   741:9   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   758:9   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   764:9   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   774:9   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   795:9   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   805:9   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   820:9   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   893:9   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   918:9   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   930:9   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   936:9   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  1001:9   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  1046:9   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  1052:9   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  1056:9   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  1067:9   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  1078:9   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/panels/PanelCanvas/events/scrollBehavior_resizeBrush.tsx
-  8:3  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/panels/PanelCanvas/events/scrollBehavior_resizeGenerationTarget.tsx
-  10:3  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/panels/PanelCanvas/events/scrollBehavior_zoomCanvas.tsx
-  8:3  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/panels/PanelCanvas/events/setupStage.ts
-  14:51  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/panels/PanelCanvas/states/KonvaGrid1.tsx
-  6:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  7:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/panels/PanelCanvas/states/UnifiedCanvas.tsx
-   63:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   70:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   80:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   81:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   83:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   92:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  109:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  136:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/panels/PanelCanvas/states/UnifiedImage.ts
-  11:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  12:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  19:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   115:28  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   119:32  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   123:26  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   127:32  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   132:36  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   137:24  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   143:20  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   170:17  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   356:22  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   422:7   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   430:7   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   434:7   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   438:7   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   445:17  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   456:17  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   474:17  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   511:7   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   522:7   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   533:7   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   556:7   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   564:7   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   568:7   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   573:7   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   577:7   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   593:7   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   609:7   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   621:7   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   633:7   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   686:7   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   697:7   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   708:7   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   717:7   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   723:7   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   729:7   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   752:7   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   771:7   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   788:7   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   794:7   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   804:7   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   825:7   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   835:7   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   850:7   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   923:7   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   948:7   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   960:7   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   966:7   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  1031:7   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  1076:7   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  1082:7   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  1086:7   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  1097:7   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  1108:7   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/panels/PanelCanvas/states/UnifiedSelection.ts
-   28:5   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   35:5   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   36:5   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   37:5   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   38:5   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   88:13  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  220:5   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  227:5   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  240:5   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/panels/PanelCanvas/states/UnifiedStep.ts
-  15:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  16:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  23:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  28:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/panels/PanelCanvas/tools/ToolGenerate.ts
-  25:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  47:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/panels/PanelCanvas/tools/ToolMask.ts
-  17:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  34:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  46:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   28:4   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   35:4   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   36:4   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   37:4   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   38:4   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   88:10  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  220:4   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  227:4   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  240:4   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/panels/PanelCanvas/tools/ToolPaint.ts
-  13:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  13:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/panels/PanelCanvas/utils/_StrokeInfo.ts
-  15:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  15:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/panels/PanelCanvas/utils/snap.tsx
   1:53  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
@@ -504,64 +350,57 @@
   29:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
 
 /Users/loco/dev/CushyStudio/src/panels/PanelModels/CivitaiResultVersionUI.tsx
-  19:9  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  19:7  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/panels/host/HostUI.tsx
-  110:32  error  Irregular whitespace not allowed  no-irregular-whitespace
+  120:28  error  Irregular whitespace not allowed  no-irregular-whitespace
 
 /Users/loco/dev/CushyStudio/src/panels/libraryUI/tree/nodes/TreeApp.tsx
-  16:5   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  24:5   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  26:5   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  31:5   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  58:5   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  69:13  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/panels/libraryUI/tree/nodes/TreeAppFolders.tsx
-  11:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  14:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  17:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  18:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  20:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  16:4   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  24:4   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  26:4   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  31:4   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  58:4   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  71:10  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/panels/libraryUI/tree/nodes/TreeDraftFolders.tsx
-  11:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  17:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  20:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  21:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  22:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  11:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  14:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  17:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  18:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  19:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/panels/libraryUI/tree/nodes/TreeError.tsx
-  6:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  7:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  6:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  7:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/panels/libraryUI/tree/nodes/TreeFavorites.tsx
-  17:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  28:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  39:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  70:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  17:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  30:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  43:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  74:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/panels/libraryUI/tree/nodes/TreeFolder.tsx
-  16:5   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  17:5   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  40:5   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  46:69  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  47:86  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  50:5   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  51:5   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  16:4   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  17:4   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  40:4   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  46:66  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  48:52  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  51:4   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  52:4   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/perfs/monitorVSCodePerfs.ts
-   57:40  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   57:39  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
   106:33  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
   114:55  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
   152:42  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  159:1   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  264:1   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  161:1   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  266:1   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/prompt/FieldPrompt.test.ts
-  5:9   error  Unexpected constant condition              no-constant-condition
-  6:28  error  A `require()` style import is forbidden    @typescript-eslint/no-require-imports
-  6:69  error  `import()` type annotations are forbidden  @typescript-eslint/consistent-type-imports
+  5:8   error  Unexpected constant condition              no-constant-condition
+  6:27  error  A `require()` style import is forbidden    @typescript-eslint/no-require-imports
+  6:68  error  `import()` type annotations are forbidden  @typescript-eslint/consistent-type-imports
 
 /Users/loco/dev/CushyStudio/src/prompt/cm-lang/LANG.ts
   15:8  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
@@ -570,73 +409,60 @@
   7:8  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/prompt/cm-lang/isIdentifier.ts
-  2:28  error  Unnecessary escape character: \/  no-useless-escape
-  2:30  error  Unnecessary escape character: \-  no-useless-escape
+  2:27  error  Unnecessary escape character: \/  no-useless-escape
+  2:29  error  Unnecessary escape character: \-  no-useless-escape
 
 /Users/loco/dev/CushyStudio/src/prompt/grammar/grammar.test.ts
-  29:40  error  Unnecessary escape character: \"  no-useless-escape
-  29:47  error  Unnecessary escape character: \"  no-useless-escape
-  31:44  error  Unnecessary escape character: \"  no-useless-escape
-  31:49  error  Unnecessary escape character: \"  no-useless-escape
-  33:40  error  Unnecessary escape character: \"  no-useless-escape
-  33:43  error  Unnecessary escape character: \"  no-useless-escape
+  29:36  error  Unnecessary escape character: \"  no-useless-escape
+  29:43  error  Unnecessary escape character: \"  no-useless-escape
+  31:40  error  Unnecessary escape character: \"  no-useless-escape
+  31:45  error  Unnecessary escape character: \"  no-useless-escape
+  33:36  error  Unnecessary escape character: \"  no-useless-escape
+  33:39  error  Unnecessary escape character: \"  no-useless-escape
 
 /Users/loco/dev/CushyStudio/src/prompt/plugins/Plugin_LoraBoxUI.tsx
   66:7  error  Fast refresh only works when a file only exports components. Move your component(s) to a separate file  react-refresh/only-export-components
 
-/Users/loco/dev/CushyStudio/src/runtime/RuntimeComfyUI.ts
-  73:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
 /Users/loco/dev/CushyStudio/src/runtime/RuntimeHosts.ts
-  16:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  16:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/runtime/RuntimeImages.ts
-  25:16  error  Redundant use of `await` on a return value  no-return-await
-  34:16  error  Redundant use of `await` on a return value  no-return-await
-  39:16  error  Redundant use of `await` on a return value  no-return-await
+  25:14  error  Redundant use of `await` on a return value  no-return-await
+  34:14  error  Redundant use of `await` on a return value  no-return-await
+  39:14  error  Redundant use of `await` on a return value  no-return-await
 
 /Users/loco/dev/CushyStudio/src/runtime/RuntimeLLM.ts
-  23:5   error  Missing return type on function             @typescript-eslint/explicit-function-return-type
-  29:16  error  Redundant use of `await` on a return value  no-return-await
+  23:4   error  Missing return type on function             @typescript-eslint/explicit-function-return-type
+  29:14  error  Redundant use of `await` on a return value  no-return-await
 
 /Users/loco/dev/CushyStudio/src/runtime/RuntimeVideo.ts
-  21:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  21:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/safety/Safety.ts
-  24:32  error  A `require()` style import is forbidden    @typescript-eslint/no-require-imports
-  24:60  error  `import()` type annotations are forbidden  @typescript-eslint/consistent-type-imports
+  24:29  error  A `require()` style import is forbidden    @typescript-eslint/no-require-imports
+  24:57  error  `import()` type annotations are forbidden  @typescript-eslint/consistent-type-imports
 
 /Users/loco/dev/CushyStudio/src/scripts/import-rewriter.ts
    6:1  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
   27:1  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/state/Marketplace.ts
-  21:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  23:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  33:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/state/state.ts
-  578:9   error  Expected an assignment or function call and instead saw an expression  @typescript-eslint/no-unused-expressions
-  579:9   error  Expected an assignment or function call and instead saw an expression  @typescript-eslint/no-unused-expressions
-  580:9   error  Expected an assignment or function call and instead saw an expression  @typescript-eslint/no-unused-expressions
-  761:21  error  Unexpected lexical declaration in case block                           no-case-declarations
-  762:21  error  Unexpected lexical declaration in case block                           no-case-declarations
-  763:21  error  Unexpected lexical declaration in case block                           no-case-declarations
-  772:21  error  Unexpected lexical declaration in case block                           no-case-declarations
-  773:21  error  Unexpected lexical declaration in case block                           no-case-declarations
+  21:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  23:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  33:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/updater/LogFIFO.ts
-  12:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  12:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/updater/updater.ts
-  183:13  error  Move function declaration to function body root  no-inner-declarations
-  213:5   error  Missing return type on function                  @typescript-eslint/explicit-function-return-type
-  311:5   error  Missing return type on function                  @typescript-eslint/explicit-function-return-type
-  361:5   error  Missing return type on function                  @typescript-eslint/explicit-function-return-type
-  368:5   error  Missing return type on function                  @typescript-eslint/explicit-function-return-type
-  429:5   error  Missing return type on function                  @typescript-eslint/explicit-function-return-type
-  433:5   error  Missing return type on function                  @typescript-eslint/explicit-function-return-type
-  470:5   error  Missing return type on function                  @typescript-eslint/explicit-function-return-type
+  182:10  error  Move function declaration to function body root  no-inner-declarations
+  212:4   error  Missing return type on function                  @typescript-eslint/explicit-function-return-type
+  310:4   error  Missing return type on function                  @typescript-eslint/explicit-function-return-type
+  360:4   error  Missing return type on function                  @typescript-eslint/explicit-function-return-type
+  367:4   error  Missing return type on function                  @typescript-eslint/explicit-function-return-type
+  428:4   error  Missing return type on function                  @typescript-eslint/explicit-function-return-type
+  432:4   error  Missing return type on function                  @typescript-eslint/explicit-function-return-type
+  469:4   error  Missing return type on function                  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/utils/assets/assets.gen.ts
   10:47   error  Missing return type on function   @typescript-eslint/explicit-function-return-type
@@ -646,25 +472,25 @@
   4:34  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/utils/codegen/CodeBuffer.ts
-  12:5   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  13:5   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  21:5   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  25:5   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  26:5   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  27:5   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  28:5   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  29:5   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  35:5   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  12:4   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  13:4   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  21:4   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  25:4   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  26:4   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  27:4   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  28:4   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  29:4   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  35:4   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
   51:62  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/utils/codegen/jsEscapeStr.ts
   1:8  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/utils/electron/ElectronUtils.ts
-  125:17  error  Expected an assignment or function call and instead saw an expression  @typescript-eslint/no-unused-expressions
+  125:13  error  Expected an assignment or function call and instead saw an expression  @typescript-eslint/no-unused-expressions
 
 /Users/loco/dev/CushyStudio/src/utils/electron/openInVsCode.ts
-  28:24  error  Promise executor functions should not be async  no-async-promise-executor
+  28:23  error  Promise executor functions should not be async  no-async-promise-executor
 
 /Users/loco/dev/CushyStudio/src/utils/fs/deleteDirectoryRecursive.ts
   3:8  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
@@ -676,28 +502,28 @@
   11:8  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/utils/png/_getPngMetadata.ts
-  15:33  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  15:31  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/utils/png/_getWebpMetadata.ts
-  6:33  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  6:31  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/utils/png/_parseExifData.ts
-   9:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  21:5  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+   9:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  21:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/widgets/graph/GraphPreviewUI.tsx
   16:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
 
 /Users/loco/dev/CushyStudio/src/widgets/graph/useCursorLockMove.ts
-  15:9  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  16:9  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  17:9  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  18:9  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  19:9  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  20:9  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  26:9  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  34:9  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  39:9  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  15:7  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  16:7  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  17:7  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  18:7  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  19:7  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  20:7  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  26:7  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  34:7  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  39:7  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/widgets/misc/IconUI.tsx
   1:61  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
@@ -712,9 +538,9 @@
 
 /Users/loco/dev/CushyStudio/src/widgets/misc/ScribbleUI.tsx
   19:4   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  45:82  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  53:30  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  54:82  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  45:81  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  53:29  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  54:81  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/widgets/misc/TypescriptHighlightedCodeUI.tsx
   17:4   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
@@ -725,11 +551,11 @@
 
 /Users/loco/dev/CushyStudio/src/widgets/misc/useGlobalDropHook.ts
    8:46  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  10:42  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  77:19  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  10:40  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  77:17  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
   94:50  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/widgets/prompter/nodes/usertags/UserLoader.ts
-  39:11  error  Use the spread operator instead of '.apply()'  prefer-spread
+  39:10  error  Use the spread operator instead of '.apply()'  prefer-spread
 
-✖ 407 problems (406 errors, 1 warning)
+✖ 313 problems (313 errors, 0 warnings)

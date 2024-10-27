@@ -12,7 +12,7 @@ export function GithubUserUI(p: {
    showName?: boolean | 'after'
    className?: string
    textClassName?: string
-}) {
+}): JSX.Element | GithubUserName {
    const st = useSt()
    const { username } = p
    const size = p.size ?? '1.5rem'

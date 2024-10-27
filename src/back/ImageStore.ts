@@ -39,14 +39,14 @@ export class ImageStore {
    }
 
    // -------------------- actions
-   set = (img: MediaImageL | MediaImageT | MediaImageID) => {
+   set = (img: MediaImageL | MediaImageT | MediaImageID): void => {
       const id = typeof img === 'string' ? img : img.id
       const nextValue: ImageStoreT = { imageID: id }
       this.store.update({ json: nextValue })
    }
 
    /** manually empty the store */
-   clear = () => {
+   clear = (): void => {
       const nextValue: ImageStoreT = {}
       this.store.update({ json: nextValue })
    }

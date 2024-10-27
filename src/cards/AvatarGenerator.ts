@@ -142,7 +142,11 @@ function hsl2rgb(
    h: number,
    s: number,
    b: number,
-) {
+): {
+   red: number
+   green: number
+   blue: number
+} {
    h *= 6
    const x = [(b += s *= b < 0.5 ? b : 1 - b), b - (h % 1) * s * 2, (b -= s *= 2), b, b + (h % 1) * s, b + s]
 

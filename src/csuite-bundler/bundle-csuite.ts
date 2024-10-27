@@ -297,7 +297,7 @@ const config = [
     {
         input: '${LIB_ENTRYPOINT_DTS_ABSPATH}',
         output: [{ file: '${DIST_ABSPATH}/main.d.ts', format: 'es' }],
-        external: [/\.s?css$/], // ignore .css and .scss file
+        external: [/\\.s?css$/], // ignore .css and .scss file
         plugins: [dts(), visualizer({ template: 'raw-data' })],
     },
 ]

@@ -18,6 +18,7 @@ export type CurrentStyle = {
    /** shiftDirection will change at threesholds (0.25 when pos, .75 when neg) */
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const defaultTextTint: Tint = {
    contrast: 1,
    chromaBlend: 0,

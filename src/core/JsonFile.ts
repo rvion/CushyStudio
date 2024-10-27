@@ -41,7 +41,7 @@ export class JsonFile<T extends object> {
       p.fixup?.(this)
    }
 
-   set = <const X extends keyof T>(k: X, v: T[X]) => {
+   set = <const X extends keyof T>(k: X, v: T[X]): void => {
       this.value[k] = v
    }
 
@@ -49,19 +49,25 @@ export class JsonFile<T extends object> {
       return this.value[k]
    }
 
-   erase = () => {
+   erase = (): void => {
       console.info(`[💾] CONFIG erasing [${this.fileName}]`)
       rmSync(this._path)
       this.init(this.p)
    }
 
-   get folder() { return bang(this.folderPath); } // prettier-ignore
+   get folder(): AbsolutePath {
+      return bang(this.folderPath)
+   }
 
    private _path!: string
-   get path() { return bang(this._path); } // prettier-ignore
+   get path(): string {
+      return bang(this._path)
+   }
 
    private _value!: T
-   get value() { return bang(this._value); } // prettier-ignore
+   get value(): T {
+      return bang(this._value)
+   }
 
    /** save the file */
 

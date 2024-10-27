@@ -9,6 +9,7 @@ import { hasValidActionExtension } from '../back/ActionExtensions'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { shouldSkip } from './shouldSkip'
 
+// TODO: review that; fix it ; make it usable again
 export const recursivelyFindAppsInFolder = (
    //
    library: Library,
@@ -18,7 +19,24 @@ export const recursivelyFindAppsInFolder = (
    WALK(root)
    return out
 
-   function WALK(dir: AbsolutePath) {
+   function load(
+      //
+      tags: ActionTagMethodList,
+      name: string,
+      dir: string,
+   ): void {
+      try {
+         tags.forEach((tag) => {
+            tag.key = `${name ? name : ''}/${tag.key}`
+            library.st.actionTags.push(tag)
+         })
+         console.log(`[🏷️] Loaded action tags for ${dir}`)
+      } catch (error) {
+         console.log(`[🔴] Failed to load action tags for ${dir}/_actionTags.ts\nGot: ${tags}`)
+      }
+   }
+
+   function WALK(dir: AbsolutePath): void {
       const files = readdirSync(dir)
       for (const baseName of files) {
          // TAGS ------------------------------------------------------------
@@ -26,25 +44,12 @@ export const recursivelyFindAppsInFolder = (
             baseName === '_actionTags.ts' || //
             baseName === '_actionTags.js'
          ) {
-            const name = dir.split('/').at(-1)
-            const _this = library
-            function load(tags: ActionTagMethodList) {
-               try {
-                  tags.forEach((tag) => {
-                     tag.key = `${name ? name : ''}/${tag.key}`
-                     _this.st.actionTags.push(tag)
-                  })
-                  console.log(`[🏷️] Loaded action tags for ${dir}`)
-               } catch (error) {
-                  console.log(`[🔴] Failed to load action tags for ${dir}/_actionTags.ts\nGot: ${tags}`)
-               }
-            }
+            const name = dir.split('/').at(-1)!
+
             try {
-               const loader = new Function(
-                  'actionTags',
-                  readFileSync(asAbsolutePath(join(dir, baseName))).toString(),
-               )
-               loader(load)
+               const functionCode = readFileSync(asAbsolutePath(join(dir, baseName))).toString()
+               const loader = new Function('actionTags', functionCode)
+               loader((actionTags: ActionTagMethodList) => load(actionTags, name, dir))
             } catch (error) {
                console.log(`[🔴] Failed to load action tags for ${dir}/_actionTags.ts`)
             }

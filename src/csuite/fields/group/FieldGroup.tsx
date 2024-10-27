@@ -13,7 +13,8 @@ import { produce } from 'immer'
 import { Field } from '../../model/Field'
 import { capitalize } from '../../utils/capitalize'
 import { registerFieldClass } from '../WidgetUI.DI'
-import { WidgetGroup_BlockUI, WidgetGroup_LineUI } from './WidgetGroupUI'
+import { WidgetGroup_BlockUI } from './WidgetGroup_BlockUI'
+import { WidgetGroup_LineUI } from './WidgetGroup_Header'
 
 // #region Config
 export type Field_group_config<T extends Field_group_types<SchemaDict>> = FieldConfig<

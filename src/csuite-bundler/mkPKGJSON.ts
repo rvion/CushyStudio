@@ -1,4 +1,4 @@
-export function mkPKGJSON(name: string) {
+export function mkPKGJSON(name: string): string {
    return `\
 {
     "name": "${name}",

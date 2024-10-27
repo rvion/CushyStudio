@@ -1,11 +1,13 @@
 // electron shell utilities
 // https://www.electronjs.org/docs/latest/api/shell
 
+import type { Shell } from 'electron'
+
 import { dirname } from 'pathe'
 
 import { FPath } from '../../models/FPath'
 
-type ElectronShell = typeof import('electron').shell
+type ElectronShell = Shell
 
 export const openExternal = (stuff: string): Promise<void> =>
    getElectronShell().openExternal(stuff, { activate: true })

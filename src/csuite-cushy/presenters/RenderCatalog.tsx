@@ -3,11 +3,9 @@ import type { Field_string } from '../../csuite/fields/string/FieldString'
 import type { CompiledRenderProps } from './Renderer'
 import type { FC } from 'react'
 
-import {
-   WidgetGroup_BlockUI,
-   WidgetGroup_LineUI,
-   WidgetGroupInlineUI,
-} from '../../csuite/fields/group/WidgetGroupUI'
+import { WidgetGroup_BlockUI } from '../../csuite/fields/group/WidgetGroup_BlockUI'
+import { WidgetGroup_LineUI } from '../../csuite/fields/group/WidgetGroup_Header'
+import { WidgetGroup_InlineUI } from '../../csuite/fields/group/WidgetGroup_InlineUI'
 import { WidgetNumberUI } from '../../csuite/fields/number/WidgetNumberUI'
 import { WidgetString_SmallInput } from '../../csuite/fields/string/WidgetString_SmallInput'
 import { WidgetString_summary } from '../../csuite/fields/string/WidgetString_summary'
@@ -80,7 +78,7 @@ export type WidgetsCatalog = {
    group: {
       controls: typeof WidgetGroup_LineUI
       group: typeof WidgetGroup_BlockUI
-      inline: typeof WidgetGroupInlineUI
+      inline: typeof WidgetGroup_InlineUI
    }
 }
 
@@ -125,6 +123,6 @@ export const widgetsCatalog: WidgetsCatalog = {
    group: {
       controls: WidgetGroup_LineUI,
       group: WidgetGroup_BlockUI,
-      inline: WidgetGroupInlineUI,
+      inline: WidgetGroup_InlineUI,
    },
 }

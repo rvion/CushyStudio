@@ -3,6 +3,7 @@ import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
+import type { UIKit } from './WidgetCustomUI'
 import type { FC } from 'react'
 
 import { produce } from 'immer'
@@ -11,7 +12,10 @@ import { Field } from '../../model/Field'
 import { registerFieldClass } from '../WidgetUI.DI'
 import { WidgetCustom_HeaderUI } from './WidgetCustomUI'
 
-export type CustomWidgetProps<T> = { field: Field_custom<T>; extra: import('./WidgetCustomUI').UIKit }
+export type CustomWidgetProps<T> = {
+   field: Field_custom<T>
+   extra: UIKit
+}
 
 // #region $Config
 export type Field_custom_config<T> = FieldConfig<
