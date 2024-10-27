@@ -31,6 +31,7 @@ import { PanelSteps } from '../panels/PanelSteps/Panel_Steps'
 import { PanelTreeExplorer } from '../panels/PanelTreeExplorer/PanelTreeExplorer'
 import { PanelLastImage, PanelViewImage } from '../panels/PanelViewImage/Panel_ViewImage'
 import { PanelWelcome } from '../panels/PanelWelcome/PanelWelcome'
+import { PanelCaptioning } from '../panels/PanelCaptioning/PanelCaptioning'
 
 export const panels = {
    Assets: PanelAssets,
@@ -83,6 +84,9 @@ export const panels = {
    Models: PanelModels,
    Hosts: PanelComfyHosts,
    Shortcuts: PanelShortcuts,
+
+   // Dataset Handling
+   Captioning: PanelCaptioning,
 } satisfies { [k in string]: Panel<any> }
 
 export const allPanels: Panel<any>[] = Object.values(panels)
