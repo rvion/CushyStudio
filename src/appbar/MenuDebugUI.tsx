@@ -56,7 +56,7 @@ export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
                <MenuItem //
                   iconClassName='text-green-500'
                   icon='mdiBug'
-                  onClick={() => st.electronUtils.toggleDevTools()}
+                  onClick={() => st.electron.toggleDevTools()}
                   label='console'
                />
                <MenuItem //

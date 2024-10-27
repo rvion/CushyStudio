@@ -14,7 +14,7 @@
 // }
 
 export type GithubRepoName = Branded<string, { GithubRepoName: true }>
-export const asGithubRepoName = (s: string) => s as GithubRepoName
+export const asGithubRepoName = (s: string): GithubRepoName => s as GithubRepoName
 
 // export class GithubRepo {
 //     // --------------------------------------------------------------------------------

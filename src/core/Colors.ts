@@ -21,14 +21,14 @@ export const comfyColors: { [category: string]: string } = {
    primitive: palette.primitive,
 }
 
-export const getColorForCategory = (_category: string) => {
+export const getColorForCategory = (_category: string): string | undefined => {
    const category = _category.toLowerCase()
    if (category in comfyColors) return comfyColors[category]
    return 'var(--comfy-default)'
 }
 
 // INPUT ----------------------------------------------------------------
-export const getColorForInputNameInComfy = (nameInComfy: string) => {
+export const getColorForInputNameInComfy = (nameInComfy: string): string | undefined => {
    const name = nameInComfy.toLowerCase()
    if (name.includes('width')) return palette.primitive
    if (name.includes('height')) return palette.primitive
@@ -37,7 +37,7 @@ export const getColorForInputNameInComfy = (nameInComfy: string) => {
 }
 
 // OUTPUTS ----------------------------------------------------------------
-export const getColorForOutputNameInCushy = (nameInComfy: string) => {
+export const getColorForOutputNameInCushy = (nameInComfy: string): string | undefined => {
    const name = nameInComfy.toLowerCase()
    if (name in nameColors) return comfyColors[name]
    return 'var(--comfy-default)'

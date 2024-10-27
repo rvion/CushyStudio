@@ -10,6 +10,7 @@ import { MessageInfoUI } from '../../csuite/messages/MessageInfoUI'
 import { Panel, type PanelHeader } from '../../router/Panel'
 import { readJSON, writeJSON } from '../../state/jsonUtils'
 import { PlaygroundCustomPanelsUI } from './PlaygroundCustomPanelsUI'
+import { PlaygroundElectronUI } from './PlaygroundElectron'
 import { PlaygroundForms } from './PlaygroundForms'
 import { PlaygroundGraphUI } from './PlaygroundGraphUI'
 import { PlaygroundJSX } from './PlaygroundJSX'
@@ -47,6 +48,7 @@ export const PanelPlaygroundUI = observer(function PanelPlaygroundUI_(p: PanelPl
       <UI.Panel tw='gap-1'>
          <UI.Panel.Header extensibleHeight>{Header_Playground.root.header()}</UI.Panel.Header>
          <ErrorBoundaryUI /* 👇 playground sub-pages */>
+            {mode.electron && <PlaygroundElectronUI />}
             {mode.forms && <PlaygroundForms />}
             {mode.render && <PlaygroundRenderUI />}
             {mode.requirements && <PlaygroundRequirements />}
@@ -84,6 +86,7 @@ const Header_Playground = cushyFactory.document(
    (ui) =>
       ui.choice(
          {
+            electron: ui.empty(),
             skins: ui.empty(),
             jsx: ui.empty(),
             panelProps: ui.empty(),

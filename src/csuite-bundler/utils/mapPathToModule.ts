@@ -16,7 +16,7 @@
 /** maps:
  * '/lib/utils/example.ts' => 'src/utils/example'
  */
-export function mapPathToModule(k: string) {
+export function mapPathToModule(k: string): string {
    return k
       .replace(/^\/lib\//, 'src/') //
       .replace(/\.d?\.?tsx?$/, '')

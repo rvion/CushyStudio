@@ -173,7 +173,7 @@ export class MediaImageL extends BaseInst<TABLES['media_image']> {
    /** Uses electron clipboard API to copy the image to clipboard, will only copy as PNG. */
    copyToClipboard = async (): Promise<void> => {
       try {
-         await this.st.electronUtils.copyImageToClipboard({
+         await this.st.electron.copyImageToClipboard({
             format: this.extension.split('.').pop(),
             buffer: this.getArrayBuffer(),
          })
@@ -571,7 +571,7 @@ export class MediaImageL extends BaseInst<TABLES['media_image']> {
    }
 
    addWatermark_withKonva = async (text: string, p?: WatermarkProps): Promise<MediaImageL> => {
-      return await this.processWithKonva(
+      return this.processWithKonva(
          ({ stage, layer }) => {
             const textNode = new Konva.Text({
                x: p?.x ?? 0,

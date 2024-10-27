@@ -142,7 +142,7 @@ export class STATE {
    configMode: ConfigMode = 'legacy'
    updater: GitManagedFolder
    hovered: Maybe<StepOutput> = null
-   electronUtils: ElectronUtils
+   electron: ElectronUtils
    library: Library
    danbooru: DanbooruTags
    userTags = UserTags.build()
@@ -575,7 +575,7 @@ export class STATE {
       console.log(`[🤠] assing liveDB db`, liveDB._uid)
       this.supabase = mkSupa()
       this.marketplace = new Marketplace(this)
-      this.electronUtils = new ElectronUtils(this)
+      this.electron = new ElectronUtils(this)
       // this.shortcuts = new CommandManager(allCommands, this, { name: nanoid() })
       // console.log(`[🛋️] ${this.shortcuts.shortcuts.length} shortcuts loaded`)
       this.uploader = new Uploader(this)

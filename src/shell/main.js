@@ -83,8 +83,16 @@ async function START() {
     // ⏸️     console.log('❌ error patching electron icon and name', error)
     // ⏸️ }
 
-    const { app, BrowserWindow, globalShortcut, ipcMain, session } = require('electron')
+    const Electron = require('electron')
+    const { app, BrowserWindow, globalShortcut, ipcMain, session, } = Electron
 
+    ipcMain.handle('proxy',async (event, arg) => {
+        console.log(`[🔎] proxy received with arg:`, arg)
+        const {object, method, props} = arg
+        const stuff = Electron[object][method]
+        if (typeof stuff !== 'function') return stuff
+        return await Electron[object][method](...props)
+    })
     ipcMain.on('resize-for-video-capture', (event, arg) => {
         const focusedWindow = BrowserWindow.getFocusedWindow()
         if (focusedWindow) focusedWindow.setSize(1920, 1080)
@@ -168,6 +176,9 @@ async function START() {
                 webviewTag: true,
                 webSecurity: false, // Disable CORS
                 allowRunningInsecureContent: true, // Disable CORS
+                // 💬 2024-10-27 rvion:
+                // | this doesn't work since we have  {..., contextIsolation: false }
+                // ❌ preload: path.join(__dirname, 'preload.js'),
             },
         })
 

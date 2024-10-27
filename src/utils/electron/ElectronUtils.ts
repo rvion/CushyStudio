@@ -1,6 +1,7 @@
 import type { STATE } from '../../state/state'
 
 import { makeInputToken } from '../../csuite/commands/CommandManager'
+import { bang } from '../../csuite/utils/bang'
 import { createMediaImage_fromPath } from '../../models/createMediaImage_fromWebFile'
 import { FPath } from '../../models/FPath'
 
@@ -26,8 +27,12 @@ export type Clipboard_ImagePayload = {
 }
 
 export class ElectronUtils {
+   ipc: Electron.IpcRenderer
+
    constructor(public st: STATE) {
       const ipcRenderer = window.require('electron').ipcRenderer
+      this.ipc = ipcRenderer
+
       ipcRenderer.removeAllListeners('execute')
       ipcRenderer.on('execute', async function (event, data) {
          const uid: number = data.uid
@@ -90,8 +95,7 @@ export class ElectronUtils {
       try {
          const prevPref = Boolean(this.st.configFile.value.preferDevToolsOpen)
          this.st.configFile.update({ preferDevToolsOpen: !prevPref })
-         const ipcRenderer = window.require('electron').ipcRenderer
-         ipcRenderer.send('toggle-devtools')
+         this.ipc.send('toggle-devtools')
       } catch (error) {
          console.error('❌ failed to toggle DevTools', error)
       }
@@ -100,8 +104,7 @@ export class ElectronUtils {
    openDevTools = (updateConfig: boolean = false): void => {
       try {
          this.st.configFile.update({ preferDevToolsOpen: true })
-         const ipcRenderer = window.require('electron').ipcRenderer
-         ipcRenderer.send('open-devtools')
+         this.ipc.send('open-devtools')
       } catch (error) {
          console.error('❌ failed to open DevTools', error)
       }
@@ -110,7 +113,7 @@ export class ElectronUtils {
    closeDevTools = (updateConfig: boolean = false): void => {
       try {
          this.st.configFile.update({ preferDevToolsOpen: false })
-         const ipcRenderer = window.require('electron').ipcRenderer
+         const ipcRenderer = this.ipc
          ipcRenderer.send('close-devtools')
       } catch (error) {
          console.error('❌ failed to close DevTools', error)
@@ -120,7 +123,7 @@ export class ElectronUtils {
    copyImageToClipboard = (payload: Clipboard_ImagePayload): Promise<unknown> => {
       return new Promise((resolve, reject) => {
          const format = payload.format ?? 'png'
-         const ipcRenderer = window.require('electron').ipcRenderer
+         const ipcRenderer = this.ipc
          ipcRenderer.once('image-copied', (event, response) => {
             response.result === true ? resolve(response.data) : reject(response.data)
          })
@@ -131,4 +134,52 @@ export class ElectronUtils {
          })
       })
    }
+
+   private _mkProxyFor(objectName: string): ProxyHandler<Record<string, any>> {
+      return {
+         get: (target, prop): any => {
+            if (typeof prop === 'string') {
+               if (target[prop]) return target[prop]
+               const fn = async (...args: any[]): Promise<any> => {
+                  const result = await this.ipc.invoke('proxy', {
+                     object: objectName,
+                     method: prop,
+                     props: args,
+                  })
+                  return result
+               }
+               target[prop] = fn
+               return fn
+            }
+         },
+      }
+   }
+
+   /** allow access to every electron dialog methods */
+   dialog: Remotify<typeof Electron.dialog> = new Proxy({} as any, this._mkProxyFor('dialog'))
+   clipboard: Remotify<typeof Electron.clipboard> = new Proxy({} as any, this._mkProxyFor('clipboard'))
+   nativeImage: Remotify<typeof Electron.nativeImage> = new Proxy({} as any, this._mkProxyFor('nativeImage'))
+   nativeTheme: Remotify<typeof Electron.nativeTheme> = new Proxy({} as any, this._mkProxyFor('nativeTheme'))
+   safeStorage: Remotify<typeof Electron.safeStorage> = new Proxy({} as any, this._mkProxyFor('safeStorage'))
+   net: Remotify<typeof Electron.net> = new Proxy({} as any, this._mkProxyFor('net'))
+
+   /**
+    * this is just a simple openFolder method to showcase how we can wrap electron methods;
+    * I think it's better to use the dialog object directly.
+    * for more complex use-case, use the dialog object above directly
+    */
+   async simpleOpenFolder(): Promise<AbsolutePath> {
+      // require('electron').net.online
+      const res = await this.dialog.showOpenDialog({ properties: ['openDirectory'] })
+      return bang(res.filePaths[0] as AbsolutePath)
+   }
+}
+
+type Promisify<T> = T extends Promise<infer U> ? T : Promise<T>
+type Remotify<T extends object> = {
+   [K in keyof T]: T[K] extends (...args: any[]) => any
+      ? (...args: Parameters<T[K]>) => Promisify<ReturnType<T[K]>>
+      : T[K] extends string | number | boolean
+        ? () => Promisify<T[K]>
+        : never
 }

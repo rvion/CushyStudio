@@ -12,6 +12,7 @@ import path, { basename, dirname } from 'pathe'
 
 import { createEsbuildContextFor } from '../compiler/transpiler'
 import { convertLiteGraphToPrompt } from '../core/litegraphToPrompt'
+import { bang } from '../csuite/utils/bang'
 import { exhaust } from '../csuite/utils/exhaust'
 import { ManualPromise } from '../csuite/utils/ManualPromise'
 import { toastError } from '../csuite/utils/toasts'
@@ -247,9 +248,23 @@ export class LibraryFile {
          // console.log('-- a', { eps: this.relPath })
          const ctx = await this._esbuildContext
          const res = await ctx.rebuild()
+
+         if (res.outputFiles == null) {
+            return this.addError(
+               '❌ transpile error in load_asCushyStudioAction; res.outputFiles is null',
+               null,
+            )
+         }
+
+         if (res.outputFiles.length === 0) {
+            return this.addError(
+               '❌ transpile error in load_asCushyStudioAction; res.outputFiles is empty',
+               null,
+            )
+         }
          // console.log(`[🧐] res`, Object.keys(res.metafile.inputs))
          //                                    🔴   V
-         const outFile: OutputFile = res.outputFiles?.[0]!
+         const outFile: OutputFile = res.outputFiles[0]!
          if (outFile.text == null) throw new Error('compilation failed')
 
          // const distPathWrongExt = path.join(this.folderAbs, 'dist', this.deckRelativeFilePath)

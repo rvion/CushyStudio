@@ -1,29 +1,9 @@
 
-/Users/loco/dev/CushyStudio/src/cards/LibraryFile.ts
-  252:38  error  Optional chain expressions can return undefined by design - using a non-null assertion is unsafe and wrong  @typescript-eslint/no-non-null-asserted-optional-chain
-
 /Users/loco/dev/CushyStudio/src/cards/githubRepo.ts
   17:45  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
-/Users/loco/dev/CushyStudio/src/compiler/transpiler.ts
-  47:56  error  `import()` type annotations are forbidden  @typescript-eslint/consistent-type-imports
-
 /Users/loco/dev/CushyStudio/src/controls/Builder.ts
   96:10  error  `import()` type annotations are forbidden  @typescript-eslint/consistent-type-imports
-
-/Users/loco/dev/CushyStudio/src/core/Colors.ts
-  24:56  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  31:66  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  40:67  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/csuite-bundler/utils/_section.ts
-   5:8  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   9:8  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  13:8  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  38:8  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/csuite-bundler/utils/_showESBUILDOutput.ts
-  6:8  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/csuite-bundler/utils/_waitConfirm.ts
   1:8   error  Missing return type on function          @typescript-eslint/explicit-function-return-type
@@ -558,4 +538,4 @@
 /Users/loco/dev/CushyStudio/src/widgets/prompter/nodes/usertags/UserLoader.ts
   39:10  error  Use the spread operator instead of '.apply()'  prefer-spread
 
-✖ 313 problems (313 errors, 0 warnings)
+✖ 303 problems (303 errors, 0 warnings)

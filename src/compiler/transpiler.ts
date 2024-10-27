@@ -4,6 +4,7 @@
  */
 
 import type { any_TsEfficient } from '../csuite/utils/objectAssignTsEfficient'
+import type ESBUILD from 'esbuild'
 import type { BuildContext } from 'esbuild'
 
 // EXTERNAL MODULES we'll inject ------------------------------------------------
@@ -44,7 +45,7 @@ export async function createEsbuildContextFor(p: {
    entrypoints: AbsolutePath[]
    root: AbsolutePath
 }): Promise<BuildContext<any>> {
-   const esbuild = window.require('esbuild') as typeof import('esbuild')
+   const esbuild = window.require('esbuild') as typeof ESBUILD
    const distFolder = path.join(p.root, 'dist')
 
    return esbuild.context({

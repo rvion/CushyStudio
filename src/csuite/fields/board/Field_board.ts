@@ -13,7 +13,8 @@ import type { SimpleShape$ } from '../core-prefabs/ShapeSchema'
 
 import { type SimpleShape, simpleShape$ } from '../core-prefabs/ShapeSchema'
 import { Field_group, type Field_group_types, type MAGICFIELDS } from '../group/FieldGroup'
-import { WidgetListExt_LineUI, WidgetListExtUI__Regional } from './WidgetListExtUI'
+import { WidgetListExt_LineUI } from './WidgetListExt_LineUI'
+import { WidgetListExtUI__Regional } from './WidgetListExtUI'
 
 // #region Config
 export type Field_board_config<T extends BaseSchema> = {
