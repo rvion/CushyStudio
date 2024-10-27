@@ -50,4 +50,5 @@ export class CSuite_ThemeLoco implements CSuiteConfig {
    showWidgetExtra: boolean = true
    truncateLabels?: boolean | undefined = false
    fieldGroups = {}
+   enableRollingClick = false
 }

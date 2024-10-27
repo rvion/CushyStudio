@@ -15,6 +15,7 @@ import { forwardRef, useContext, useState } from 'react'
 import { normalizeBox } from '../box/BoxNormalized'
 import { CurrentStyleCtx } from '../box/CurrentStyleCtx'
 import { type ClickAndSlideConf, usePressLogic } from '../button/usePressLogic'
+import { useCSuite } from '../ctx/useCSuite'
 import { IkonOf } from '../icons/iconHelpers'
 import { registerComponentAsClonableWhenInsideReveal } from '../reveal/RevealCloneWhitelist'
 import { compileOrRetrieveClassName } from '../tinyCSS/quickClass'
@@ -112,6 +113,9 @@ export const Frame = observer(
             // remaining properties
             ...rest
         } = p
+
+      const csuite = useCSuite()
+      const enableTriggerOnPress = csuite.enableRollingClick ?? true
 
       // TEMPLATE -------------------------------------------
       // const theme = useTheme().value
@@ -215,7 +219,7 @@ export const Frame = observer(
                     : objectAssignTsEfficient_t_t(style, variables)
             }
             {...rest}
-            {...(triggerOnPress != null
+            {...(triggerOnPress != null && enableTriggerOnPress
                ? usePressLogic({ onMouseDown, onMouseEnter, onClick }, triggerOnPress)
                : { onMouseDown, onMouseEnter, onClick })}
          >
