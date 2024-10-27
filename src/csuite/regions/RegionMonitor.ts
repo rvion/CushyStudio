@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 
 import { hasMod } from '../accelerators/META_NAME'
 import { isElemAChildOf } from '../utils/isElemAChildOf'
-import { createObservableRefMut } from '../utils/observableRef'
+import { createObservableRef } from '../utils/observableRef'
 import { window_addEventListener } from '../utils/window_addEventListenerAction'
 
 export type HoveredRegion = {
@@ -38,7 +38,7 @@ export class RegionMonitor {
       makeAutoObservable(this, { knownRegions: false })
    }
 
-   currentlyFocused = createObservableRefMut<HTMLElement>()
+   currentlyFocused = createObservableRef<HTMLElement>()
    isWithin = (domSelector: string): boolean => {
       if (this.currentlyFocused.current == null) return false
       return isElemAChildOf(this.currentlyFocused.current, domSelector)

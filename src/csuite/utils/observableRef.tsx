@@ -1,10 +1,26 @@
-import { observable } from 'mobx'
-import { type RefObject } from 'react'
+import type { DependencyList } from 'react'
 
-export const createObservableRef = <T extends any>(value: Maybe<T> = null): RefObject<T> => {
-   return observable({ current: value }, { current: observable.ref })
+import { makeAutoObservable, observable } from 'mobx'
+import { useMemo } from 'react'
+
+export function useObservableRef<T extends any>(deps: DependencyList): ObservableRef<T> {
+   return useMemo(() => new ObservableRef(), deps)
 }
 
-export const createObservableRefMut = <T extends any>(value: Maybe<T> = null): { current: Maybe<T> } => {
-   return observable({ current: value }, { current: observable.ref })
+export function createObservableRef<T extends any>(value?: T): ObservableRef<T> {
+   return new ObservableRef(value)
+}
+
+class ObservableRef<T extends any> {
+   constructor(private _current: T | null = null) {
+      makeAutoObservable<this, '_current'>(this, { _current: observable.ref })
+   }
+
+   get current(): T | null {
+      return this._current ?? null
+   }
+
+   set current(value: T | null) {
+      this._current = value
+   }
 }
