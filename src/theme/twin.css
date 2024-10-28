@@ -1514,14 +1514,6 @@ video {
   align-items: baseline;
 }
 
-.justify-start {
-  justify-content: flex-start;
-}
-
-.\!justify-start {
-  justify-content: flex-start !important;
-}
-
 .justify-end {
   justify-content: flex-end;
 }
@@ -1603,14 +1595,6 @@ video {
 
 .self-stretch {
   align-self: stretch;
-}
-
-.justify-self-start {
-  justify-self: start;
-}
-
-.\!justify-self-start {
-  justify-self: start !important;
 }
 
 .justify-self-center {

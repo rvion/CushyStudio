@@ -1,16 +1,13 @@
 import type { FieldCtorProps } from '../../csuite/model/Field'
 
 import { makeAutoObservable } from 'mobx'
-import { observer } from 'mobx-react-lite'
+import { observer, useLocalObservable } from 'mobx-react-lite'
 
-import { CushySchemaBuilder } from '../../controls/Builder'
-import { ShellInputOnly } from '../../csuite-cushy/shells/ShellInputOnly'
 import { Button } from '../../csuite/button/Button'
 import { SpacerUI } from '../../csuite/components/SpacerUI'
 import { Frame } from '../../csuite/frame/Frame'
-import { Ikon } from '../../csuite/icons/iconHelpers'
 import { CachedResizedImage } from '../../csuite/image/CachedResizedImageUI'
-import { InputStringUI } from '../../csuite/input-string/InputStringUI'
+import { ButtonStringUI } from '../../csuite/input-string-button/ButtonStringUI'
 import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
 import { PanelUI } from '../../csuite/panel/PanelUI'
 import { ResizableFrame } from '../../csuite/resizableFrame/resizableFrameUI'
@@ -38,6 +35,14 @@ export class PanelCaptioningState {
 
 export const PanelCaptioningUI = observer(function PanelCaptioningUI_(p: PanelCaptioningProps) {
    const panel = usePanel<PanelCaptioningProps>()
+   const test_data = useLocalObservable(() => [
+      //
+      {
+         filepath: 'example/path/maw.png',
+         captions: ['mouth teeth maw', '', 'ur mom lol'],
+      },
+      { filepath: 'wah/tmooafphniawhniop/paw.png', captions: ['paw foot feet', '', 'ur dad lol'] },
+   ])
    // const b = CushySchemaBuilder
    // const schema = b.fields()
    const doc = panel.usePersistentModel('uist-1', (b) =>
@@ -79,15 +84,6 @@ export const PanelCaptioningUI = observer(function PanelCaptioningUI_(p: PanelCa
                },
          ),
    )
-
-   const test_data = [
-      //
-      {
-         filepath: 'example/path/maw.png',
-         captions: ['mouth teeth maw', '', 'ur mom lol'],
-      },
-      { filepath: 'wah/tmooafphniawhniop/paw.png', captions: ['paw foot feet', '', 'ur dad lol'] },
-   ]
 
    // const uist = useMemo(() => new PanelCaptioningState({ active: -1, selected: new Set() }), [])
 
@@ -140,14 +136,14 @@ export const PanelCaptioningUI = observer(function PanelCaptioningUI_(p: PanelCa
 
                {doc.FolderPath.value != '' ? (
                   <>
-                     <ResizableFrame // List of files in folder, when one is selected it should try to load the associated .caption and fill the captioning data with it
+                     <ResizableFrame // Files
                      >
                         <Frame tw='flex flex-col gap-0.5 p-1'>
                            {test_data.map((data, index) => {
                               return (
                                  <Frame line>
                                     <Button
-                                       tw='h-input w-full'
+                                       tw='h-input w-full truncate'
                                        subtle
                                        borderless
                                        base={{ contrast: index == activeImage ? 0.1 : 0 }}
@@ -166,13 +162,13 @@ export const PanelCaptioningUI = observer(function PanelCaptioningUI_(p: PanelCa
                            })}
                         </Frame>
                      </ResizableFrame>
-                     <ResizableFrame // List of files in folder, when one is selected it should try to load the associated .caption and fill the captioning data with it
+                     <ResizableFrame // Captions
                      >
                         <Frame tw='flex flex-col gap-0.5 p-1'>
                            {test_data[activeImage]?.captions.map((data, index) => {
                               return (
-                                 <Button
-                                    tw='h-input'
+                                 <ButtonStringUI
+                                    tw='h-input truncate'
                                     subtle
                                     borderless
                                     base={{ contrast: index == doc.ActiveCaption.value.index ? 0.1 : 0 }}
@@ -180,14 +176,25 @@ export const PanelCaptioningUI = observer(function PanelCaptioningUI_(p: PanelCa
                                        doc.ActiveCaption.value.index = index
                                     }}
                                     tooltip={data}
+                                    setValue={(val) => {
+                                       test_data[activeImage]!.captions[doc.ActiveCaption.Index.value] = val
+                                    }}
+                                    getValue={() => {
+                                       const text =
+                                          test_data[activeImage]?.captions[doc.ActiveCaption.Index.value]
+                                       if (text === undefined) {
+                                          return 'USER SHOULD NOT SEE THIS'
+                                       }
+                                       return text
+                                    }}
                                  >
                                     {data}
-                                 </Button>
+                                 </ButtonStringUI>
                               )
                            })}
                         </Frame>
                      </ResizableFrame>
-                     <InputStringUI //
+                     {/* <InputStringUI //
                         setValue={(val) => {
                            test_data[activeImage]!.captions[doc.ActiveCaption.Index.value] = val
                         }}
@@ -198,7 +205,7 @@ export const PanelCaptioningUI = observer(function PanelCaptioningUI_(p: PanelCa
                            }
                            return text
                         }}
-                     />
+                     /> */}
                   </>
                ) : (
                   <></>
