@@ -25,7 +25,10 @@ export const PanelCaptioning = new Panel({
    header: (p: PanelCaptioningProps): PanelHeader => ({ title: 'Captioning' }),
    def: (): PanelCaptioningProps => ({
       //
-      active: -1,
+      activeImage: { index: -1, filePath: '' },
+      activeCaption: { index: -1, text: '' },
+      activeGlobalCaption: { index: -1, text: '' },
+      activeDirectory: { path: '', files: [] },
       selected: new Set(),
       folderPath: '',
       exportPath: '',
