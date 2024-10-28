@@ -3,7 +3,7 @@ import type { InputStringProps } from '../input-string/InputStringUI'
 import type { ForwardedRef } from 'react'
 
 import { observer } from 'mobx-react-lite'
-import { forwardRef } from 'react'
+import { forwardRef, useMemo } from 'react'
 
 import { Button } from '../button/Button'
 import { InputStringUI } from '../input-string/InputStringUI'
@@ -19,13 +19,27 @@ export const ButtonStringUI = observer(
       { getValue, setValue, ...rest }: ButtonStringProps,
       ref: ForwardedRef<HTMLDivElement>,
    ) {
+      const prev = useMemo(() => getValue(), [])
       return (
          <RevealUI
             trigger={'rightClick'}
-            placement={'above'}
-            content={() => (
+            placement={'above-no-clamp'}
+            content={(p) => (
                <InputStringUI //
                   autoFocus
+                  onKeyDown={(ev) => {
+                     if (ev.key === 'Escape') {
+                        ev.preventDefault()
+                        ev.stopPropagation()
+                        setValue(prev)
+                        p.reveal.close()
+                     }
+                     if (ev.key === 'Enter') {
+                        ev.preventDefault()
+                        ev.stopPropagation()
+                        p.reveal.close()
+                     }
+                  }}
                   setValue={setValue}
                   getValue={getValue}
                />
@@ -40,8 +54,8 @@ export const ButtonStringUI = observer(
    }),
 )
 
-/* 
-Type '(ev: FocusEvent<HTMLInputElement, Element>) => void' is not assignable 
+/*
+Type '(ev: FocusEvent<HTMLInputElement, Element>) => void' is not assignable
 type '(ev: FocusEvent<HTMLDivElement, Element>) => void'.
 
 */
