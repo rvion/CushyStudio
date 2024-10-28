@@ -22,8 +22,9 @@ export const ButtonStringUI = observer(
       const prev = useMemo(() => getValue(), [])
       return (
          <RevealUI
-            trigger={'rightClick'}
-            placement={'above-no-clamp'}
+            backdropColor='rgba(0,0,0,0.25)'
+            trigger={['doubleClick', 'rightClick']}
+            placement='above-no-clamp'
             content={(p) => (
                <InputStringUI //
                   autoFocus

@@ -65,6 +65,9 @@ export class RevealStateLazy {
    onClick = (ev: React.MouseEvent<unknown>): void => {
       return this.getRevealState().onLeftClickAnchor(ev)
    }
+   onDoubleClick = (ev: React.MouseEvent<unknown>): void => {
+      return this.getRevealState().onDoubleClickAnchor(ev)
+   }
    // 🧑‍🎤 onMouseDown = (ev: React.MouseEvent<unknown>): void => {
    // 🧑‍🎤     return this.getRevealState().onMouseDownAnchor(ev)
    // 🧑‍🎤 }

@@ -60,6 +60,9 @@ export const RevealUI = observer(
          if (reveal == null) return
          if (p.content !== reveal.p.content)
             reveal.contentFn = (): JSX.Element => createElement(p.content, reveal.revealContentProps)
+         if (p.showBackdrop !== reveal.p.showBackdrop) reveal.p.showBackdrop = p.showBackdrop
+         if (p.hasBackdrop !== reveal.p.hasBackdrop) reveal.p.hasBackdrop = p.hasBackdrop
+         if (p.backdropColor !== reveal.p.backdropColor) reveal.p.backdropColor = p.backdropColor
          if (p.trigger !== reveal.p.trigger) reveal.p.trigger = p.trigger
          if (p.placement !== reveal.p.placement) reveal.p.placement = p.placement
          if (p.showDelay !== reveal.p.showDelay) reveal.p.showDelay = p.showDelay
@@ -145,6 +148,7 @@ export const RevealUI = observer(
                     className: cls('🟢CLONED🟢', child.props?.className, p.className, /* 'bg-red-500' /**/),
                     ...p.anchorProps as any, // 🔴 not sure how to type this
                     onContextMenu: (ev: any) => { lazyState.onContextMenu(ev); p.anchorProps?.onContextMenu?.(ev); child.props?.onContextMenu?.(ev) },
+                    onDoubleClick: (ev: any) => { lazyState.onDoubleClick(ev); p.anchorProps?.onDoubleClick?.(ev); child.props?.onDoubleClick?.(ev) },
                     onClick: (ev: any)       => { lazyState.onClick(ev)      ; p.anchorProps?.onClick?.(ev); child.props?.onClick?.(ev) },
                     onAuxClick: (ev: any)    => { lazyState.onAuxClick(ev)   ; p.anchorProps?.onAuxClick?.(ev); child.props?.onAuxClick?.(ev) },
                     onMouseEnter: (ev: any)  => { lazyState.onMouseEnter(ev) ; p.anchorProps?.onMouseEnter?.(ev); child.props?.onMouseEnter?.(ev) },
@@ -152,6 +156,7 @@ export const RevealUI = observer(
                     onFocus: (ev: any)       => { lazyState.onFocus(ev)      ; p.anchorProps?.onFocus?.(ev); child.props?.onFocus?.(ev) },
                     onBlur: (ev: any)        => { lazyState.onBlur(ev)       ; p.anchorProps?.onBlur?.(ev); child.props?.onBlur?.(ev) },
                     onKeyDown: (ev: any)     => { lazyState.onKeyDown(ev)    ; p.anchorProps?.onKeyDown?.(ev); child.props?.onKeyDown?.(ev) },
+
                 },
                 <>
                     {child.props.children}
