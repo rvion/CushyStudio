@@ -12,6 +12,8 @@ const logFile = join(__dirname, 'cushy-screenshots-logs.txt')
 console.log(`[🧐] echo starting cushy screenshot manager!`)
 const dir = '/Users/loco/S3-1'
 
+console.log(`[🧐] every file pasted into ${dir} will be uploaded`)
+
 const watcher = watch(
    dir,
    { recursive: true, persistent: true },
