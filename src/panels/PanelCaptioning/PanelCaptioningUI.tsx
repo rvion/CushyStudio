@@ -177,11 +177,10 @@ export const PanelCaptioningUI = observer(function PanelCaptioningUI_(p: PanelCa
                                     }}
                                     tooltip={data}
                                     setValue={(val) => {
-                                       test_data[activeImage]!.captions[doc.ActiveCaption.Index.value] = val
+                                       test_data[activeImage]!.captions[index] = val
                                     }}
                                     getValue={() => {
-                                       const text =
-                                          test_data[activeImage]?.captions[doc.ActiveCaption.Index.value]
+                                       const text = test_data[activeImage]?.captions[index]
                                        if (text === undefined) {
                                           return 'USER SHOULD NOT SEE THIS'
                                        }
