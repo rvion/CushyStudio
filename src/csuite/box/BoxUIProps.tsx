@@ -13,6 +13,7 @@ export type BoxBasicProps = {
 
    // mouse
    onClick?: (ev: React.MouseEvent<HTMLDivElement>) => unknown
+   onDoubleClick?: (ev: React.MouseEvent<HTMLDivElement>) => unknown
    onMouseDown?: (ev: React.MouseEvent<HTMLDivElement>) => void
    onMouseUp?: (ev: React.MouseEvent<HTMLDivElement>) => void
    onMouseEnter?: (ev: React.MouseEvent<HTMLDivElement>) => void
