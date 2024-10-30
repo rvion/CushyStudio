@@ -22,7 +22,6 @@ export const ButtonStringUI = observer(
       const prev = useMemo(() => getValue(), [])
       return (
          <RevealUI
-            backdropColor='rgba(0,0,0,0.25)'
             trigger={['doubleClick', 'rightClick']}
             placement='above-no-clamp'
             content={(p) => (
