@@ -1,7 +1,4 @@
 
-/Users/loco/dev/CushyStudio/src/controls/Builder.ts
-  96:10  error  `import()` type annotations are forbidden  @typescript-eslint/consistent-type-imports
-
 /Users/loco/dev/CushyStudio/src/csuite-cushy/presenters/RenderCtx.tsx
    7:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
   13:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
@@ -11,9 +8,6 @@
 
 /Users/loco/dev/CushyStudio/src/csuite/dropdown/MenuItem.tsx
   42:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
-
-/Users/loco/dev/CushyStudio/src/csuite/environment/getOS.ts
-  7:8  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/csuite/fields/board/WidgetListExtUI.tsx
   13:17  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
@@ -71,11 +65,7 @@
   24:11  error  Redundant use of `await` on a return value  no-return-await
 
 /Users/loco/dev/CushyStudio/src/csuite/rnd/createRandomGenerator.ts
-   1:53  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   4:81  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   6:39  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  18:14  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  26:14  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
+  1:53  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/csuite/shelf/ShelfUI.tsx
   20:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
@@ -90,21 +80,11 @@
   12:49  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
   23:28  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
-/Users/loco/dev/CushyStudio/src/csuite/utils/sleep.ts
-  1:35  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/csuite/utils/toArray.ts
-  1:81  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
 /Users/loco/dev/CushyStudio/src/csuite/utils/toasts.tsx
-   8:43  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  12:40  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  16:41  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
   25:27  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/csuite/utils/toposort.ts
   10:1  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  22:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/db/LazyValue.ts
   31:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
@@ -174,15 +154,11 @@
 /Users/loco/dev/CushyStudio/src/outputs/3d-scene/Output3dScene.tsx
   9:1  error  Definition for rule 'unused-imports/no-unused-imports' was not found  unused-imports/no-unused-imports
 
-/Users/loco/dev/CushyStudio/src/outputs/3d-utils/Ground3d.tsx
-  15:8  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
 /Users/loco/dev/CushyStudio/src/outputs/OutputUI.tsx
   42:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
 
 /Users/loco/dev/CushyStudio/src/panels/3d/controls/OrbitControls.ts
    123:26  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-   170:17  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
    445:17  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
    456:17  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
    474:17  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
@@ -251,12 +227,6 @@
   6:27  error  A `require()` style import is forbidden    @typescript-eslint/no-require-imports
   6:68  error  `import()` type annotations are forbidden  @typescript-eslint/consistent-type-imports
 
-/Users/loco/dev/CushyStudio/src/prompt/cm-lang/LANG.ts
-  15:8  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/prompt/cm-lang/LINT2.ts
-  7:8  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
 /Users/loco/dev/CushyStudio/src/prompt/cm-lang/isIdentifier.ts
   2:27  error  Unnecessary escape character: \/  no-useless-escape
   2:29  error  Unnecessary escape character: \-  no-useless-escape
@@ -324,29 +294,7 @@
 /Users/loco/dev/CushyStudio/src/utils/png/_getWebpMetadata.ts
   6:31  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
-/Users/loco/dev/CushyStudio/src/utils/png/_parseExifData.ts
-  21:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/widgets/misc/IconsUI.tsx
-   5:53  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  12:51  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/widgets/misc/Image.tsx
-  10:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/widgets/misc/ScribbleUI.tsx
-  19:4   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  45:81  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  53:29  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  54:81  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/widgets/misc/TypescriptHighlightedCodeUI.tsx
-  46:60  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/widgets/misc/filePathIcon.tsx
-  1:54  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
 /Users/loco/dev/CushyStudio/src/widgets/prompter/nodes/usertags/UserLoader.ts
   39:10  error  Use the spread operator instead of '.apply()'  prefer-spread
 
-✖ 180 problems (180 errors, 0 warnings)
+✖ 154 problems (154 errors, 0 warnings)
