@@ -7,7 +7,8 @@ import { cwd } from 'process'
 // import { getRepoRoot } from '../../back/reusable/getRepoFilePath'
 // import { variableNameify } from '../../back/reusable/variableNameify'
 
-export const variableNameify = (name: string) => name.replaceAll(/[*\-+~.()'"!:@/]/g, '_').replace(/^\_/, '')
+export const variableNameify = (name: string): string =>
+   name.replaceAll(/[*\-+~.()'"!:@/]/g, '_').replace(/^_/, '')
 
 async function* walk(dir: string): AsyncGenerator<string, void, void> {
    for await (const leaf of await fs.promises.opendir(dir)) {

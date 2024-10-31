@@ -3,6 +3,7 @@ import type { TreeNode } from '../../../../csuite/tree/TreeNode'
 import type { VirtualFolder } from '../../../../csuite/tree/VirtualHierarchy'
 import type { CushyAppL } from '../../../../models/CushyApp'
 import type { DraftL } from '../../../../models/Draft'
+import type { STATE } from '../../../../state/state'
 
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
@@ -13,7 +14,7 @@ import { TreeDraftFolder } from './TreeDraftFolders'
 
 export class TreeApp implements ITreeEntry {
    app?: Maybe<CushyAppL>
-   get st() { return cushy } // prettier-ignore
+   get st():STATE { return cushy } // prettier-ignore
    constructor(
       public appID: CushyAppID, // public app: CushyAppL,
    ) {
@@ -21,14 +22,14 @@ export class TreeApp implements ITreeEntry {
       makeAutoObservable(this)
    }
 
-   get name() { return `${this.app?.name??'❌'}`; } // prettier-ignore
+   get name(): string { return `${this.app?.name??'❌'}`; } // prettier-ignore
    isFolder = true
-   get icon() {
+   get icon(): string {
       return this.app?.illustrationPathWithFileProtocol ?? ''
       // return <span className='material-symbols-outlined'>Draft</span>
    }
 
-   onPrimaryAction = (n: TreeNode) => {
+   onPrimaryAction = (n: TreeNode): void => {
       if (this.app == null) return
       if (!n.isOpen) n.open()
       if (this.app.drafts.length > 0) return
@@ -55,7 +56,7 @@ export class TreeApp implements ITreeEntry {
       return [...subFolders, ...subFiles]
    }
 
-   extra = () => (
+   extra = (): JSX.Element | null => (
       <>
          {this.app?.isLoadedInMemory ? (
             <span className='material-symbols-outlined text-green-500'>memory</span>
@@ -68,7 +69,7 @@ export class TreeApp implements ITreeEntry {
          name: 'add Draft',
          icon: 'add',
          mode: 'small',
-         onClick: (node) => {
+         onClick: (node): void => {
             if (this.app == null) return
             this.app.createDraft()
             node.open()

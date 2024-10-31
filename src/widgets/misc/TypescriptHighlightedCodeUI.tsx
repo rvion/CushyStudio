@@ -14,7 +14,7 @@ export const TypescriptHighlightedCodeUI = (p: {
    className?: string
    code: string
    wrap?: boolean
-}) => {
+}): JSX.Element => {
    const ref = useRef(null)
    useLayoutEffect(() => {
       const e = ref.current

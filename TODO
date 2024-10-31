@@ -20,6 +20,7 @@ SHORT TERM TODO:
 
     ☐ fix the seed widget: right now, when in random mode (not set to a specific number) evaluating two prompts will use the same seed. it's a bug
 
+    ☐ add missing observers (e.g. look for `UI = (p` )
 
     ☐ improve the civitai custom frontend:
         ☐ cache request
