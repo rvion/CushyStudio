@@ -1,5 +1,5 @@
 const tab = '    '
-export function readableStringify(obj: any, maxLevel = 3, level = 0) {
+export function readableStringify(obj: any, maxLevel = 3, level = 0): string {
    if (level > maxLevel) return JSON.stringify(obj)
    if (typeof obj !== 'object' || obj === null) return JSON.stringify(obj)
    const indent = '    '.repeat(level + 1)

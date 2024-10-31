@@ -6,7 +6,7 @@ export function parseExifData(arrData: Uint8Array): ExifData {
    const isLittleEndian = new Uint16Array(arrData.slice(0, 2))[0] === 0x4949
 
    // Function to read 16-bit and 32-bit integers from binary data
-   function readInt(offset: number, isLittleEndian: boolean, length: number) {
+   function readInt(offset: number, isLittleEndian: boolean, length: number): number | undefined {
       const arr = arrData.slice(offset, offset + length)
       if (length === 2) {
          return new DataView(arr.buffer, arr.byteOffset, arr.byteLength).getUint16(0, isLittleEndian)

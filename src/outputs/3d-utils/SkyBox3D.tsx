@@ -3,7 +3,7 @@ import { CubeTextureLoader } from 'three'
 
 // Loads the skybox texture and applies it to the scene.
 
-export function SkyBox3D() {
+export function SkyBox3D(): null {
    // highlight-start
    const { scene } = useThree()
    const loader = new CubeTextureLoader()

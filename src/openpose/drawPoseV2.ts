@@ -32,7 +32,7 @@ export function drawOpenPoseBones(
    //
    openposeData: OpenPoseData,
    ctx: CanvasRenderingContext2D,
-) {
+): void {
    // Define the colors for the bones and joints
    const BONE_COLOR = 'red'
    const JOINT_COLOR = 'blue'
@@ -116,7 +116,7 @@ export function drawOpenPoseBones(
    }
 }
 
-const convertHexToRGBA = (hex: string, alpha: number) => {
+const convertHexToRGBA = (hex: string, alpha: number): string => {
    const tempHex = hex.replace('#', '')
    const r = parseInt(tempHex.substring(0, 2), 16)
    const g = parseInt(tempHex.substring(2, 4), 16)

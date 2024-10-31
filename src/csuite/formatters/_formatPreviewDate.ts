@@ -1,4 +1,4 @@
-export const _formatPreviewDate = (date?: Date, showInterval = false) => {
+export const _formatPreviewDate = (date?: Date, showInterval = false): string => {
    if (date == null) return '<❌ date error>'
    const today = new Date(new Date().setHours(0, 0, 0, 0))
    const yesterday = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1, 0, 0, 0, 0)
@@ -19,7 +19,7 @@ export const _formatPreviewDate = (date?: Date, showInterval = false) => {
    return date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) + intervalStr
 }
 
-const _getTimeInterval = (date: Date) => {
+const _getTimeInterval = (date: Date): string => {
    const nowTs = Date.now()
    const dateTs = date.getTime()
    const seconds = Math.floor((nowTs - dateTs) / 1000)
@@ -44,5 +44,5 @@ const _getTimeInterval = (date: Date) => {
 }
 
 const _weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-const _generateIntervalString = (time: number, unit: string) =>
+const _generateIntervalString = (time: number, unit: string): string =>
    ' (' + time + ` ${time > 1 ? `${unit}s` : unit} ago)`

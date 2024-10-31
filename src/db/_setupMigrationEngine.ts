@@ -11,7 +11,7 @@ export const _setupMigrationEngine = (store: {
    //
    db: BetterSqlite3.Database
    log: (...res: any[]) => void
-}) => {
+}): void => {
    const rootMig = `--sql
         create table if not exists migrations (
             id         text    primary key,

@@ -24,7 +24,7 @@ export const Image = (p: {
    )
 }
 
-const renderSize = (size?: number | string) => {
+const renderSize = (size?: number | string): string | undefined => {
    if (size == null) return undefined
    if (typeof size === 'number') return `${size}px`
    return size

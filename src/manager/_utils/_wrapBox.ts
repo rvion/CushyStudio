@@ -3,7 +3,7 @@ export const wrapBox = (
    code: string,
    maxLines: number = 10,
    formatter?: (line: string) => string,
-) => {
+): string => {
    const lines = code.split('\n')
    const totalLines = lines.length
    const logerThanMax = totalLines > maxLines
@@ -19,7 +19,7 @@ export const wrapBox = (
    return box
 }
 
-export const withGutter = (code: string) => {
+export const withGutter = (code: string): string => {
    const lines = code.split('\n')
    return lines
       .map((line, i) => `${(i + 1).toString().padStart(lines.length.toString().length)} | ${line}`)

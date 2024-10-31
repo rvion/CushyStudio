@@ -19,7 +19,7 @@ export const toastError = (msg: string) => {
 }
 
 // Function to show toast with an image
-export const toastImage = (imageSrc: string | Buffer, message: string) => {
+export const toastImage = (imageSrc: string | Buffer, message: string): void => {
    const src = typeof imageSrc === 'string' ? imageSrc : imageSrc.toString('base64')
    console.log(src)
    const CustomToast = () => (

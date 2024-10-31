@@ -24,4 +24,4 @@ export const MERGE_PROTOTYPES = (TargetCls: Class<unknown>, SrcCls: Class<unknow
 // ⏸️     return Object.defineProperties(TargetCls.prototype, to_copy)
 // ⏸️ }
 
-export const DEPENDS_ON = (x: any) => {}
+export const DEPENDS_ON = (x: any): void => {}

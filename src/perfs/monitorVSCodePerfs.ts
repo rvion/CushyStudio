@@ -54,7 +54,7 @@ foreverRead.stdout.on('data', (chunk) => {
    const utf8 = chunk.toString('utf-8')
    content += utf8
    let isCompleting = false
-   const processLine = (line: string) => {
+   const processLine = (line: string): void => {
       try {
          const x: TsDiagnostic = JSON.parse(line.endsWith(',') ? line.slice(0, -1) : line)
          // console.log('⏰', JSON.stringify(x), chalk.gray.italic(`(${content.length})`))
@@ -103,7 +103,7 @@ foreverRead.stdout.on('data', (chunk) => {
 
 const CREATE_VIDEO = false
 
-const readFile = (path: string) => {
+const readFile = (path: string): string => {
    // if (fileCache.has(path)) return fileCache.get(path)!
    const content = fs.readFileSync(path, 'utf-8')
    // fileCache.set(path, content)
@@ -111,7 +111,7 @@ const readFile = (path: string) => {
 }
 
 /** generate a nice diagnostic */
-export const processRequest = (JSONS: TsDiagnostic[]) => {
+export const processRequest = (JSONS: TsDiagnostic[]): void => {
    console.log(`    | ${JSONS.length} events received`)
    console.log(
       `    | ` +
@@ -149,7 +149,7 @@ export const processRequest = (JSONS: TsDiagnostic[]) => {
    }
 }
 
-export const withGutter = (code: string) => {
+export const withGutter = (code: string): string => {
    const rawLines = code.split('\n')
    const nonEmptyFirstLineIdx = rawLines.findIndex((l) => l.trim().length > 0)
    const lines = rawLines.slice(nonEmptyFirstLineIdx === -1 ? 0 : nonEmptyFirstLineIdx)
@@ -158,7 +158,7 @@ export const withGutter = (code: string) => {
       .join('\n')
 }
 
-function DEBUG_EV(x: TsDiagnostic) {
+function DEBUG_EV(x: TsDiagnostic): void {
    const longThreshold = 50_000
    const maxSeverity = 20
 
@@ -263,7 +263,7 @@ function* allTraceFiles(): Generator<string> {
    }
 }
 
-function ensureTraceIsEnabled() {
+function ensureTraceIsEnabled(): void {
    const settingsPath = '.vscode/settings.json'
    const settings = fs.readFileSync(settingsPath, 'utf-8')
 
