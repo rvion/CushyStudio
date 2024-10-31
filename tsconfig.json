@@ -30,7 +30,7 @@
             "nsfwjs": ["./src/typings/nsfwjs.d.ts"],
 
             // emptied
-            "typescript": ["./src/typings/empty-types.d.ts"],
+            // "typescript": ["./src/typings/empty-types.d.ts"],
             "webgl2": ["./src/typings/empty-types.d.ts"],
             "@tensorflow/tfjs": ["./src/typings/empty-types.d.ts"],
             "@types/webgl": ["./src/typings/empty-types.d.ts"],

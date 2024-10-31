@@ -50,11 +50,8 @@ module.exports = [
          '**/*.js',
          '**/*.cjs',
          '**/*.mjs',
-         // misc
-         'src/loco/scripts.next/',
-         'src/loco/script-next.ts',
-         'src/loco/scripts.current/',
-         'src/loco/script-current.ts',
+         // temporary
+         'src/tools/autotype.ts',
       ],
    },
 
