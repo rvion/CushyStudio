@@ -2,7 +2,7 @@ import type { FrameProps } from '../frame/Frame'
 
 import { makeAutoObservable, observable, runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { type ForwardedRef, forwardRef, useEffect, useMemo } from 'react'
+import React, { type ForwardedRef, forwardRef, useEffect, useMemo } from 'react'
 
 import { Frame } from '../frame/Frame'
 import { registerComponentAsClonableWhenInsideReveal } from '../reveal/RevealCloneWhitelist'
@@ -101,7 +101,7 @@ export class ButtonState {
    pressed: boolean = false
    running: boolean = false
 
-   constructor(public props: Pick<FrameProps, 'disabled' | 'onClick' | 'active'>) {
+   constructor(public props: Pick<FrameProps, 'disabled' | 'onClick' | 'onDoubleClick' | 'active'>) {
       makeAutoObservable(this, { props: observable.ref })
    }
 
@@ -113,6 +113,23 @@ export class ButtonState {
 
       if (this.props.onClick) {
          const res = this.props.onClick(ev)
+         if (res == null) return
+         if (res instanceof Promise) {
+            // mark as running
+            runInAction(() => (this.running = true))
+            void res.finally(() => runInAction(() => (this.running = false)))
+         }
+      }
+   }
+
+   onDoubleClick = (ev: React.MouseEvent<any>): void => {
+      // prevent to run if already running
+      if (this.props.disabled) return
+      // prevent to run if already running (automatic behaviour when onClick return Promsies)
+      if (this.running) return
+
+      if (this.props.onDoubleClick) {
+         const res = this.props.onDoubleClick(ev)
          if (res == null) return
          if (res instanceof Promise) {
             // mark as running
