@@ -91,9 +91,9 @@ declare global {
       type Field<K extends FieldTypes = FieldTypes> = import('../csuite/model/Field').Field<K>
       // eslint-disable-next-line @typescript-eslint/consistent-type-imports
       type FieldTypes = import('../csuite/model/$FieldTypes').FieldTypes
+      // prettier-ignore
       // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-      type BaseSchema<out TYPES extends FieldTypes = FieldTypes> =
-         import('../csuite/model/BaseSchema').BaseSchema<TYPES>
+      type BaseSchema<out TYPES extends FieldTypes = FieldTypes> = import('../csuite/model/BaseSchema').BaseSchema<TYPES>
       // eslint-disable-next-line @typescript-eslint/consistent-type-imports
       type Runtime = import('../runtime/Runtime').Runtime
 

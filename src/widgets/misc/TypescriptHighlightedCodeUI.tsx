@@ -43,7 +43,7 @@ export const TypescriptHighlightedCodeUI = (p: {
    )
 }
 
-export const JSONHighlightedCodeUI = (p: { code: string }) => {
+export const JSONHighlightedCodeUI = (p: { code: string }): JSX.Element => {
    // const ref = useRef(null)
    // useLayoutEffect(() => {
    //     const e = ref.current

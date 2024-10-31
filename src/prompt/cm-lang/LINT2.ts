@@ -1,10 +1,12 @@
+import type { Extension } from '@codemirror/state'
+
 import { syntaxTree } from '@codemirror/language'
 import { linter } from '@codemirror/lint'
 
 // https://discuss.codemirror.net/t/show-syntax-error-from-lezer-parse/5346
 // Show syntax error from Lezer parse
 
-export function simpleLezerLinter() {
+export function simpleLezerLinter(): Extension {
    return linter((view) => {
       const { state } = view
       const tree = syntaxTree(state)

@@ -154,7 +154,7 @@ class OrbitControls extends EventDispatcher {
       }
 
       // this method is exposed, but perhaps it would be better if we can make it private...
-      this.update = (function () {
+      this.update = (function (): (deltaTime?: null) => boolean {
          const offset = new Vector3()
 
          // so camera.up is the orbit axis
@@ -167,7 +167,7 @@ class OrbitControls extends EventDispatcher {
 
          const twoPI = 2 * Math.PI
 
-         return function update(deltaTime = null) {
+         return function update(deltaTime = null): boolean {
             const position = scope.object.position
 
             offset.copy(position).sub(scope.target)

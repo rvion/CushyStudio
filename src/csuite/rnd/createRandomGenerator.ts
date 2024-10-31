@@ -1,14 +1,14 @@
 export const createRandomGenerator = (hash: string) => {
    const seed = xmur3(hash)()
    const random = mulberry32(seed)
-   const randomInt = (minInclusive = 0, maxExclusive = Number.MAX_SAFE_INTEGER) =>
+   const randomInt = (minInclusive = 0, maxExclusive = Number.MAX_SAFE_INTEGER): number =>
       Math.min(minInclusive + Math.floor(random() * (maxExclusive - minInclusive)), maxExclusive - 1)
-   const randomItem = <T>(items: T[]) => items[randomInt(0, items.length)]
+   const randomItem = <T>(items: T[]): T | undefined => items[randomInt(0, items.length)]
    return { random, randomInt, randomItem }
 }
 
 // FROM: https://stackoverflow.com/a/47593316/567524
-function xmur3(str: string) {
+function xmur3(str: string): () => number {
    let h = 1779033703 ^ str.length
    for (let i = 0; i < str.length; i++) {
       h = Math.imul(h ^ str.charCodeAt(i), 3432918353)
@@ -22,7 +22,7 @@ function xmur3(str: string) {
    }
 }
 
-function mulberry32(a: number) {
+function mulberry32(a: number): () => number {
    return () => {
       let t = (a += 0x6d2b79f5)
       t = Math.imul(t ^ (t >>> 15), t | 1)

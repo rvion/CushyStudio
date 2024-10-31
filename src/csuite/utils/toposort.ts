@@ -19,7 +19,7 @@ function toposortAlgo(nodes: TNode[], edges: TEdge[]) {
 
    return sorted
 
-   function visit(node: TNode, ix: number, predecessors: TNode[]) {
+   function visit(node: TNode, ix: number, predecessors: TNode[]): void {
       let i = ix
       if (predecessors.indexOf(node) >= 0) {
          console.log(predecessors, node)

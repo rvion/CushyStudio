@@ -18,7 +18,7 @@ export function parseExifData(arrData: Uint8Array): ExifData {
    // Read the offset to the first IFD (Image File Directory)
    const ifdOffset = readInt(4, isLittleEndian, 4)!
 
-   function parseIFD(offset: number) {
+   function parseIFD(offset: number): ExifData {
       const numEntries: number = readInt(offset, isLittleEndian, 2)!
       const result: ExifData = {}
 

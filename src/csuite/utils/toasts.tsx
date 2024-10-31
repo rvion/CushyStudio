@@ -5,15 +5,15 @@ import { toast } from 'react-toastify'
 import { Trigger } from '../trigger/Trigger'
 
 const position: ToastPosition = 'bottom-right'
-export const toastSuccess = (msg: string) => {
+export const toastSuccess = (msg: string): Trigger => {
    toast(msg, { type: 'success', position })
    return Trigger.UNMATCHED
 }
-export const toastInfo = (msg: string) => {
+export const toastInfo = (msg: string): Trigger => {
    toast(msg, { type: 'info', position })
    return Trigger.UNMATCHED
 }
-export const toastError = (msg: string) => {
+export const toastError = (msg: string): Trigger => {
    toast(msg, { type: 'error', position })
    return Trigger.UNMATCHED
 }
