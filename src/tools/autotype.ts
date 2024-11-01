@@ -94,7 +94,14 @@ async function addTypes(
                } else {
                   // Handle regular variables
                   // fix: discard var decls for now
-                  if (Math.random() < 6969) return // TODO: decide what to do with regular variables
+                  const isModuleExport =
+                     node.parent &&
+                     ts.isVariableDeclarationList(node.parent) &&
+                     // TODO: just check if parent.parent is a SourceFile (instead? both?)
+                     (node.parent.parent?.getText().startsWith('export ') ||
+                        node.parent.parent.parent?.kind === ts.SyntaxKind.SourceFile)
+
+                  if (!isModuleExport) return // TODO: decide what to do with regular variables
                   const [typeString, action] = renderType(checker, type, typeContext)
                   if (action === 'skip') return LOG_WARN(`  [skip] type ${chalk.underline(typeString)} for ${node.name.getText()} in ${fileName}`) // prettier-ignore
 
@@ -540,6 +547,7 @@ function isAnonymousClass(typeString: string): boolean {
 // #region File Utils
 /** get all files in given folder */
 function getAllFiles(dirPath: string, arrayOfFiles: string[] = []): string[] {
+   return ['src/utils/codegen/jsEscapeStr.ts']
    // return ['src/back/features/integrations/nylas/ui/NylasThreadListUI.tsx']
    // return ['src/back/features/devutils/CMD_exec/SynchronizeEventRelations.ts']
    const files: string[] = fs.readdirSync(dirPath)
