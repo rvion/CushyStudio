@@ -1,8 +1,8 @@
-import type { UC2$ } from '../ucV2'
+import type { UC2$ } from '../stateV2/ucV2'
 
 import { observer } from 'mobx-react-lite'
 
-import { useUnifiedCanvas } from '../../states/UnifiedCanvasCtx'
+import { useUnifiedCanvas } from '../states/UnifiedCanvasCtx'
 import { PixiMediaImage } from './PixiMediaImage'
 
 export const PIXIUCLayers = observer(function UCLayers_(p: { uc2: UC2$['$Field'] }) {

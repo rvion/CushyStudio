@@ -1,7 +1,7 @@
-import type { SimpleShape$ } from '../../../../csuite/fields/core-prefabs/ShapeSchema'
-import type { MediaImageL } from '../../../../models/MediaImage'
-import type { UnifiedCanvas } from '../../states/UnifiedCanvas'
-import type { Layer$ } from '../ucV2'
+import type { SimpleShape$ } from '../../../csuite/fields/core-prefabs/ShapeSchema'
+import type { MediaImageL } from '../../../models/MediaImage'
+import type { UnifiedCanvas } from '../states/UnifiedCanvas'
+import type { Layer$ } from '../stateV2/ucV2'
 
 import { extend, useAsset } from '@pixi/react'
 // import { Sprite, Text } from '@pixi/react/lib/components'
@@ -10,7 +10,7 @@ import { observer } from 'mobx-react-lite'
 import { type Container, type FederatedEventHandler, type FederatedPointerEvent, Sprite } from 'pixi.js'
 import { useMemo } from 'react'
 
-import { useUnifiedCanvas } from '../../states/UnifiedCanvasCtx'
+import { useUnifiedCanvas } from '../states/UnifiedCanvasCtx'
 
 type InteractionData = FederatedPointerEvent
 interface Draggable extends Container {

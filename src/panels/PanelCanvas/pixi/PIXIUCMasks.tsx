@@ -1,4 +1,4 @@
-import type { UC2$ } from '../ucV2'
+import type { UC2$ } from '../stateV2/ucV2'
 
 import { observer } from 'mobx-react-lite'
 

@@ -1,4 +1,4 @@
-import type { Layer$ } from '../V2/ucV2'
+import type { Layer$ } from '../stateV2/ucV2'
 
 import { observer } from 'mobx-react-lite'
 
@@ -67,12 +67,14 @@ export const UCLayerUI = observer(function UCLayerUI_(p: {
 
                {/* <SpacerUI /> */}
                <Button
+                  tooltip='Delete'
                   onClick={() => p.layer.disableSelfWithinParent()}
                   icon={'mdiDelete'}
                   borderless
                   subtle
                />
                <Button
+                  tooltip='visibility'
                   onClick={() => p.layer.Visible.toggle()}
                   icon={isVisible ? 'mdiEye' : 'mdiEyeClosed'}
                   borderless

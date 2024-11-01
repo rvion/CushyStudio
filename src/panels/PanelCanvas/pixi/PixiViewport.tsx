@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite'
 import { Viewport } from 'pixi-viewport'
 import React, { useState } from 'react'
 
-import { useUnifiedCanvas } from '../../states/UnifiedCanvasCtx'
+import { useUnifiedCanvas } from '../states/UnifiedCanvasCtx'
 // import { ViewportCtx, ViewportWrapper } from './PixiViewportCtx'
 import { useApplication2 } from './workaround/useApplication/PixiApplicationContext2'
 

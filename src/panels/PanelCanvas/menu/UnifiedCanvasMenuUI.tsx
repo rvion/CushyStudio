@@ -8,8 +8,8 @@ import { BasicShelfUI } from '../../../csuite/shelf/ShelfUI'
 import { toastError } from '../../../csuite/utils/toasts'
 import { useImageDrop } from '../../../widgets/galleries/dnd'
 import { useUnifiedCanvas } from '../states/UnifiedCanvasCtx'
-import { useUCV2 } from '../V2/ucV2'
-import { DraftInlineImageOutputsUI } from './DraftInlineImageOutputsUI'
+import { useUCV2 } from '../stateV2/ucV2'
+import { UCDraftImagePickerHorizontalUI } from './UCDraftImagePickerHorizontalUI'
 import { UCLayerUI } from './UCLayerUI'
 import { UCMaskMenuUI } from './UCMaskMenuUI'
 
@@ -34,7 +34,30 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
          <BasicShelfUI anchor='right' floating tw='flex flex-col gap-1.5 p-1.5'>
             {/* TOP LEVEL BUTTON */}
             <Frame tw='rounded-md p-2' style={{ filter: 'drop-shadow(0px 1px 0px black)' }}>
-               Layers
+               <div tw='flex justify-between'>
+                  <span>Layers</span>
+                  <Button
+                     icon='mdiPlus'
+                     onClick={() => {
+                        const lastActiveDraft = cushy.db.draft.last()
+                        if (lastActiveDraft == null) return toastError('No active draft')
+                        ucv2.Layers.addItem({
+                           value: {
+                              name: 'new layer',
+                              placement: mkPlacement({ x: 0, y: 0 }),
+                              visible: true,
+                              content: {
+                                 aiGeneration: {
+                                    draftId: { id: lastActiveDraft?.id, label: lastActiveDraft?.name },
+                                    image: undefined,
+                                    masks: [],
+                                 },
+                              },
+                           },
+                        })
+                     }}
+                  ></Button>
+               </div>
                <Frame tw='rounded-md p-2' base={{ contrast: -0.1 }}>
                   <div /* SortableList */ className='list' tw='flex flex-col gap-2'>
                      {layers.items.map((layer, i) => {
@@ -50,10 +73,6 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
                               <div>
                                  <UCLayerUI active={layer === uc1.activeLayer} layer={layer} index={i} />
                                  <x.DraftId.UI Shell={ShellInputOnly} />
-                                 <DraftInlineImageOutputsUI
-                                    onCLick={(img) => (x.Image.value = img)}
-                                    draftID={x.DraftId.value.id}
-                                 />
                                  <div tw='flex gap-1'>
                                     <Button icon='mdiCursorMove' />
                                     <Button
@@ -76,6 +95,10 @@ export const UnifiedCanvasMenuUI = observer(function UnifiedCanvasMenuUI_(p: {})
                                           })
                                           // should create a copy of that layer, below, without any image selected
                                        }}
+                                    />
+                                    <UCDraftImagePickerHorizontalUI
+                                       onCLick={(img) => (x.Image.value = img)}
+                                       draftID={x.DraftId.value.id}
                                     />
                                  </div>
                               </div>

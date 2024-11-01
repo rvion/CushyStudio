@@ -1,4 +1,4 @@
-import type { SimpleRect } from '../../../../csuite/fields/core-prefabs/RectSchema'
+import type { SimpleRect } from '../../../csuite/fields/core-prefabs/RectSchema'
 
 import { observer } from 'mobx-react-lite'
 

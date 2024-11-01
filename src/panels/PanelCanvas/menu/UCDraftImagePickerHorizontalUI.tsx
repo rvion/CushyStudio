@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite'
 
 import { ImageUI } from '../../../widgets/galleries/ImageUI'
 
-export const DraftInlineImageOutputsUI = observer(function DraftInlineImageOutputsUI_(p: {
+export const UCDraftImagePickerHorizontalUI = observer(function UCDraftImagePickerHorizontalUI_(p: {
    onCLick?: (img: MediaImageL) => void
    draftID: DraftID
 }) {

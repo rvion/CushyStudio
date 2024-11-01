@@ -7,11 +7,11 @@ import { useImageDrop } from '../../widgets/galleries/dnd'
 import { CanvasToolbarUI } from './menu/CanvasToolbarUI'
 import { UnifiedCanvasMenuUI } from './menu/UnifiedCanvasMenuUI'
 import { PanelCanvasHeaderUI } from './PanelCanvasHeaderUI'
+import { PixiUC } from './pixi/PixiUC'
 import { UnifiedCanvas } from './states/UnifiedCanvas'
 import { UnifiedCanvasCtx } from './states/UnifiedCanvasCtx'
+import { useUCV2 } from './stateV2/ucV2'
 import { useSize } from './utils/useSize'
-import { PixiUC } from './V2/pixi/PixiUC'
-import { useUCV2 } from './V2/ucV2'
 
 export type PanelCanvasProps = {
    startingImgID?: MediaImageID
