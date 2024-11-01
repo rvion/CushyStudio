@@ -3,7 +3,6 @@
 import chalk from 'chalk'
 import * as fs from 'fs'
 import * as path from 'path'
-// import { createInterface } from 'readline'
 import * as ts from 'typescript'
 
 import { bang } from '../csuite/utils/bang'
@@ -11,18 +10,6 @@ import { bang } from '../csuite/utils/bang'
 const summaryLines: string[] = []
 const globalTypes = new Set(['string', 'number', 'boolean', 'void', 'undefined', 'null', 'any', 'Promise'])
 const globallyInjectedSymbols = new Set(['Maybe', 'Z'])
-
-/* Debug utility to stop after a few files */
-// const rl = createInterface({ input: process.stdin, output: process.stdout })
-const waitForInput = async (question: string): Promise<string> => {
-   return 'ok'
-   // return new Promise((resolve) => {
-   //    rl.question(question, (answer) => {
-   //       rl.close()
-   //       resolve(answer)
-   //    })
-   // })
-}
 
 async function addTypes(
    //
