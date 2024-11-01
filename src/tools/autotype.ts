@@ -444,7 +444,8 @@ function renderType(
          if (final.length < 25) return true
          return false
       }
-      return true
+      // return true
+      return false
    })()
 
    return [alt1, isWhitelisted ? 'insert' : 'skip']
