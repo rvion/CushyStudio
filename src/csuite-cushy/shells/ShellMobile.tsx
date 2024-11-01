@@ -13,7 +13,7 @@ export const ShellMobileUI = observer(function ShellMobile(p: CompiledRenderProp
 
    const WUI = (
       <Frame
-         className={p.classNameForShell ?? undefined}
+         className={p.className ?? undefined}
          tw={['UI-WidgetWithLabel !border-b-0 !border-l-0 !border-r-0']}
          base={field.background}
          border={field.border}

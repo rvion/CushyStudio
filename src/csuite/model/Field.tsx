@@ -1138,7 +1138,7 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
    }
 
    get mustDisplayErrors(): boolean {
-      return true
+      return this.hasOwnErrors
       return this.hasOwnErrors && this.touched
    }
 

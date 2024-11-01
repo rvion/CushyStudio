@@ -9,7 +9,7 @@ import { useProvenance } from '../provenance/Provenance'
 import { fieldActionMenu } from './fieldActionMenu'
 
 export type WidgetMenuProps = {
-   className?: string
+   className?: string | null
    field: Field
 }
 
@@ -19,7 +19,7 @@ export const WidgetMenuUI = observer(function WidgetMenu(p: WidgetMenuProps) {
    const menu: Menu = fieldActionMenu.useBind({ field, provenance })
    return (
       <RevealUI //
-         className={p.className}
+         className={p.className ?? undefined}
          content={() => <menu.UI />}
       >
          <Button //

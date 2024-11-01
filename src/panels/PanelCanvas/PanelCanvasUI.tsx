@@ -5,7 +5,7 @@ import { mkPlacement } from '../../csuite/fields/core-prefabs/ShapeSchema'
 import { RegionUI } from '../../csuite/regions/RegionUI'
 import { useImageDrop } from '../../widgets/galleries/dnd'
 import { CanvasToolbarUI } from './menu/CanvasToolbarUI'
-import { UnifiedCanvasMenuUI } from './menu/UnifiedCanvasMenuUI'
+import { UCMenuUI } from './menu/UCMenuUI'
 import { PanelCanvasHeaderUI } from './PanelCanvasHeaderUI'
 import { PixiUC } from './pixi/PixiUC'
 import { UnifiedCanvas } from './states/UnifiedCanvas'
@@ -83,7 +83,7 @@ export const PanelCanvasUI = observer(function Panel_Canvas_(p: PanelCanvasProps
                   <uc2.UI />
                </div>
                <CanvasToolbarUI />
-               <UnifiedCanvasMenuUI />
+               <UCMenuUI />
             </div>
          </RegionUI>
       </div>

@@ -505,8 +505,10 @@ export class CushySchemaBuilder implements IBuilder {
       return this.selectOne<OX, DraftID>({
          getIdFromValue: (v): DraftID => v.id,
          getOptionFromId: (id: DraftID): SelectOption<OX, DraftID> => {
-            const app = bang(cushy.db.draft.selectOne((q) => q.where('id', 'is', id)))
-            const value = { id: app.id, label: app.name }
+            const draft = cushy.db.draft.selectOne((q) => q.where('id', 'is', id))
+            if (!draft)
+               return { id: 'NotFound', label: 'Not Found', value: { id: 'NotFound', label: 'Not Found' } }
+            const value = { id: draft.id, label: draft.name }
             return { ...value, value: value }
          },
          getValueFromId: (id: DraftID): OX => {

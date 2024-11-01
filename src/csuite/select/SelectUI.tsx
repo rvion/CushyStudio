@@ -6,6 +6,7 @@ import { useMemo } from 'react'
 import { Button } from '../button/Button'
 import { useCSuite } from '../ctx/useCSuite'
 import { Frame } from '../frame/Frame'
+import { Ikon } from '../icons/iconHelpers'
 import { RevealUI } from '../reveal/RevealUI'
 import { SelectPopupUI } from './SelectPopupUI'
 import { SelectShellUI } from './SelectShellUI'
@@ -156,7 +157,7 @@ export const AnchorContentUI = observer(function AnchorContentUI_<OPTION>(p: {
          >
             {displayValue}
          </SelectValueContainerUI>
-         {/* <Ikon.mdiChevronDown size={1} /> */}
+         <Ikon.mdiChevronDown size={1} />
       </Frame>
    ) : (
       // IN THIS BRANCH, WE ADD FLEX-NONE

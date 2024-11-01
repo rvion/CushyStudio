@@ -1,7 +1,7 @@
 import type { SimpleShape$ } from '../../../csuite/fields/core-prefabs/ShapeSchema'
 import type { MediaImageL } from '../../../models/MediaImage'
 import type { UnifiedCanvas } from '../states/UnifiedCanvas'
-import type { Layer$ } from '../stateV2/ucV2'
+import type { Layer$ } from '../stateV2/Layer$'
 
 import { extend, useAsset } from '@pixi/react'
 // import { Sprite, Text } from '@pixi/react/lib/components'
@@ -86,18 +86,18 @@ class XXX {
       if (currentlyDragged.self !== this) return
 
       const sprite = event.currentTarget as Draggable
-      // if (sprite.dragging) {
-      // console.log(`[🤠] sprite.data`, sprite.data)
-      // const newPosition = sprite.data!.getLocalPosition(sprite.parent)
-      // sprite.x = newPosition.x
-      // sprite.y = newPosition.y
       const nextXInWorld = this.uc.cursor.xInWorld - currentlyDragged.startXInImage
       const nextYInWorld = this.uc.cursor.yInWorld - currentlyDragged.startYInImage
+
+      // Respect snap to grid global nullable value
+      const snapToGrid = this.uc.snapToGrid ? this.uc.snapSize : null
+      const snappedX = snapToGrid ? Math.round(nextXInWorld / snapToGrid) * snapToGrid : nextXInWorld
+      const snappedY = snapToGrid ? Math.round(nextYInWorld / snapToGrid) * snapToGrid : nextYInWorld
+
       this.placement.runInValueTransaction(() => {
-         this.placement.X.value = nextXInWorld
-         this.placement.Y.value = nextYInWorld
+         this.placement.X.value = snappedX
+         this.placement.Y.value = snappedY
       })
-      // }
    }
 }
 
@@ -125,8 +125,8 @@ export const PixiMediaImage = observer(function DraggableSpriteUI_(p: DraggableS
       <>
          <pixiSprite //
             interactive
-            width={p.placement.Width.value || 512}
-            height={p.placement.Height.value || 512}
+            width={p.placement.Width.value || mediaImage.width}
+            height={p.placement.Height.value || mediaImage.height}
             alpha={p.alpha}
             key={mediaImage.id}
             onClick={p.onClick}
@@ -140,7 +140,7 @@ export const PixiMediaImage = observer(function DraggableSpriteUI_(p: DraggableS
             texture={asset}
          />
 
-         <pixiText //
+         {/* <pixiText //
             text={xxx.placement.X.value.toString()}
             x={xxx.placement.X.value}
             y={xxx.placement.Y.value - 100}
@@ -149,7 +149,7 @@ export const PixiMediaImage = observer(function DraggableSpriteUI_(p: DraggableS
             text={uc.viewportInfos.x.toString()}
             x={xxx.placement.X.value}
             y={xxx.placement.Y.value - 50}
-         />
+         /> */}
       </>
    )
 })

@@ -1,4 +1,5 @@
 import type { Field_enum_config } from '../csuite/fields/enum/FieldEnum'
+import type { Field_string_config } from '../csuite/fields/string/FieldString'
 import type { FieldConfig } from '../csuite/model/FieldConfig'
 import type { EnumValue } from '../models/ComfySchema'
 import type { CushySchemaBuilder } from './Builder'
@@ -101,22 +102,21 @@ export class AutoBuilder {
                      // number ------------------------------------------
                      else if (typeLower === 'text' || typeLower === 'string') {
                         // number default -----------
-                        let def: string | undefined = undefined
                         const textarea = opts?.multiline ?? undefined
+                        const conf: Field_string_config = {
+                           label: field.nameInComfy,
+                           textarea: textarea,
+                        }
 
                         if (opts?.default != null) {
                            if (typeof opts.default !== 'string') {
                               console.log(`[👗] ❌ Invalid default for number: ${opts.default}`)
                               continue
                            }
-                           def = opts.default
+                           conf.default = opts.default
                         }
                         // number value
-                        items[field.nameInComfy] = formBuilder.string({
-                           label: field.nameInComfy,
-                           default: def,
-                           textarea: textarea,
-                        })
+                        items[field.nameInComfy] = formBuilder.string(conf)
                      }
                      // number ------------------------------------------
                      else if (typeLower === 'number') {
@@ -160,6 +160,7 @@ export class AutoBuilder {
                      }
                      // int ------------------------------------------
                      else if (typeLower === 'float') {
+                        // console.log(`[🔴🔴🔴] `, opts)
                         // float default -----------
                         let def: number | undefined = undefined
                         if (opts?.default != null) {
@@ -170,9 +171,12 @@ export class AutoBuilder {
                            def = opts.default
                         }
                         // float field -----------
-                        items[field.nameInComfy] = formBuilder.int({
+                        items[field.nameInComfy] = formBuilder.float({
                            label: field.nameInComfy,
                            default: def,
+                           min: opts?.min ?? undefined,
+                           max: opts?.max ?? undefined,
+                           step: opts?.step ?? undefined,
                         })
                      } else {
                         console.log(`[👗] ❌ Unknown primitive type: ${typeLower}`)

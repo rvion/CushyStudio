@@ -26,7 +26,7 @@ const CushyShellUI = observer(function CushySHell(
    if (p.field.isHidden && !p.shouldShowHiddenFields) return null
    let WUI: ReactNode = (
       <Frame
-         className={p.classNameForShell ?? undefined}
+         className={p.className ?? undefined}
          tw={['UI-WidgetWithLabel !border-b-0 !border-l-0 !border-r-0']}
          roundness={csuite.inputRoundness}
          base={field.background}
