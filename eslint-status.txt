@@ -204,11 +204,6 @@
 
 /Users/loco/dev/CushyStudio/src/updater/updater.ts
   182:10  error  Move function declaration to function body root  no-inner-declarations
-  212:4   error  Missing return type on function                  @typescript-eslint/explicit-function-return-type
-  360:4   error  Missing return type on function                  @typescript-eslint/explicit-function-return-type
-  367:4   error  Missing return type on function                  @typescript-eslint/explicit-function-return-type
-  428:4   error  Missing return type on function                  @typescript-eslint/explicit-function-return-type
-  432:4   error  Missing return type on function                  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/utils/codegen/jsEscapeStr.ts
   1:8  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
@@ -228,4 +223,4 @@
 /Users/loco/dev/CushyStudio/src/widgets/prompter/nodes/usertags/UserLoader.ts
   39:10  error  Use the spread operator instead of '.apply()'  prefer-spread
 
-✖ 115 problems (115 errors, 0 warnings)
+✖ 110 problems (110 errors, 0 warnings)

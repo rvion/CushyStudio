@@ -17,21 +17,21 @@ export const TargetBox = observer((p: { children?: ReactNode }) => {
             // NativeTypes.URL,
             // NativeTypes.TEXT,
          ],
-         drop(item: { files: any[] }) {
+         drop(item: { files: any[] }): void {
             if (item) {
                const files = item.files
                st.droppedFiles.push(...files)
                st.layout.open('Import', {})
             }
          },
-         canDrop(item: any) {
+         canDrop(item: any): true {
             // console.log('canDrop', item.files, item.items)
             return true
          },
-         hover(item: any) {
+         hover(item: any): void {
             // console.log('hover', item.files, item.items)
          },
-         collect: (monitor: DropTargetMonitor) => {
+         collect: (monitor: DropTargetMonitor): { isOver: boolean; canDrop: boolean; isActive: boolean } => {
             // const item = monitor.getItem() as any
             // if (item) {
             //     console.log('collect', item.files, item.items)

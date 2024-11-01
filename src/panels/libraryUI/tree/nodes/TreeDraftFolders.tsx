@@ -2,21 +2,30 @@ import type { ITreeElement, ITreeEntry } from '../../../../csuite/tree/TreeEntry
 import type { TreeNode } from '../../../../csuite/tree/TreeNode'
 import type { VirtualFolder } from '../../../../csuite/tree/VirtualHierarchy'
 import type { DraftL } from '../../../../models/Draft'
+import type { STATE } from '../../../../state/state'
 
 import { basename } from 'pathe'
 
 import { TreeDraft } from './TreeDraft'
 
 export class TreeDraftFolder implements ITreeEntry<VirtualFolder<DraftL>> {
-   get st() { return cushy } // prettier-ignore
+   get st(): STATE {
+      return cushy
+   }
    constructor(public vf: VirtualFolder<DraftL>) {}
 
    get name(): string {
       return `${basename(this.vf.folderPath)}`
    }
-   get icon() { return <span className='material-symbols-outlined text-yellow-700'>folder</span> } // prettier-ignore
-   get iconExpanded() { return <span className='material-symbols-outlined text-yellow-700'>folder_open</span> } // prettier-ignore
-   onPrimaryAction = (n: TreeNode) => n.toggle()
+   get icon(): JSX.Element {
+      return <span className='material-symbols-outlined text-yellow-700'>folder</span>
+   }
+   get iconExpanded(): JSX.Element {
+      return <span className='material-symbols-outlined text-yellow-700'>folder_open</span>
+   }
+   onPrimaryAction(n: TreeNode): void {
+      n.toggle()
+   }
    children = (): ITreeElement<any>[] => {
       const vh = this.vf.vh
       const subFolders = vh
