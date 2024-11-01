@@ -442,10 +442,16 @@ function renderType(
       // console.log(`[🤠] `, simpleVariationsRegex('[a-zA-Z]+_E').test(final))
       if (simpleVariationsRegex('[a-zA-Z]+_E').test(final)) return true
       if (simpleVariationsRegex('[a-zA-Z]+_L').test(final)) return true
+
+      // type-level number litteral
+      if (/^[0-9]+$/.test(final)) return true
+
+      // small type-level string litteral
       if (final.startsWith('"') && !final.includes('|') && !final.includes(' ') && !final.includes('<')) {
          if (final.length < 25) return true
          return false
       }
+
       // return true
       return false
    })()
