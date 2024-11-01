@@ -1,3 +1,5 @@
+// TODO: re-enable var decls for exported stuffs
+// TODO: use React.FC instead of FunctionComponent
 import chalk from 'chalk'
 import * as fs from 'fs'
 import * as path from 'path'

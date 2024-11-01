@@ -209,7 +209,7 @@ export class GitManagedFolder {
       }
    }
 
-   private _bumpLastFetchAt = () => {
+   private _bumpLastFetchAt(): void {
       const FETCH_HEAD_path = this.config.absFolderPath + '/.git/FETCH_HEAD'
       const FETCH_HEAD_path_exists = existsSync(FETCH_HEAD_path)
       if (FETCH_HEAD_path_exists) {
@@ -357,14 +357,14 @@ export class GitManagedFolder {
       return cache[this.config.absFolderPath] != null
    }
 
-   private _stopPeriodicUpdateCheck = () => {
+   private _stopPeriodicUpdateCheck(): void {
       const __global__ = globalThis as any
       const cache = (__global__.__UPDATERCACHE__ ??= {})
       if (cache[this.config.absFolderPath]) clearInterval(cache[this.config.absFolderPath])
       cache[this.config.absFolderPath] = null
    }
 
-   private _registerPeriodicUpdateCheck = (p: NodeJS.Timeout) => {
+   private _registerPeriodicUpdateCheck(p: NodeJS.Timeout): void {
       const __global__ = globalThis as any
       const cache = (__global__.__UPDATERCACHE__ ??= {})
       if (cache[this.config.absFolderPath]) clearInterval(cache[this.config.absFolderPath])
