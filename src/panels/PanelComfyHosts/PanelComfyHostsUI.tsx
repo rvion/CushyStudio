@@ -2,9 +2,7 @@ import { observer } from 'mobx-react-lite'
 
 import { useCSuite } from '../../csuite/ctx/useCSuite'
 import { Frame } from '../../csuite/frame/Frame'
-import { MessageInfoUI } from '../../csuite/messages/MessageInfoUI'
 import { SelectUI } from '../../csuite/select/SelectUI'
-import { Panel, type PanelHeader } from '../../router/Panel'
 import { useSt } from '../../state/stateContext'
 import { HostUI } from '../host/HostUI'
 import { AddHostBtnUI } from './AddHostBtnUI'
@@ -12,15 +10,6 @@ import { AddHostBtnUI } from './AddHostBtnUI'
 export type PanelComfyHostProps = {
    hostID?: HostID
 }
-
-export const PanelComfyHosts = new Panel({
-   name: 'Hosts',
-   category: 'ComfyUI',
-   widget: (): React.FC<PanelComfyHostProps> => PanelComfyHostsUI,
-   header: (): PanelHeader => ({ title: 'Hosts' }),
-   def: (): PanelComfyHostProps => ({}),
-   icon: 'mdiDesktopTower',
-})
 
 export const PanelComfyHostsUI = observer(function PanelComfyHostsUI_(p: PanelComfyHostProps) {
    const st = useSt()

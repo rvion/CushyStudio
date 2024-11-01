@@ -9,23 +9,28 @@ import { basename } from 'pathe'
 import { TreeDraft } from './TreeDraft'
 
 export class TreeDraftFolder implements ITreeEntry<VirtualFolder<DraftL>> {
+   constructor(public vf: VirtualFolder<DraftL>) {}
+
    get st(): STATE {
       return cushy
    }
-   constructor(public vf: VirtualFolder<DraftL>) {}
 
    get name(): string {
       return `${basename(this.vf.folderPath)}`
    }
+
    get icon(): JSX.Element {
       return <span className='material-symbols-outlined text-yellow-700'>folder</span>
    }
+
    get iconExpanded(): JSX.Element {
       return <span className='material-symbols-outlined text-yellow-700'>folder_open</span>
    }
+
    onPrimaryAction(n: TreeNode): void {
       n.toggle()
    }
+
    children = (): ITreeElement<any>[] => {
       const vh = this.vf.vh
       const subFolders = vh

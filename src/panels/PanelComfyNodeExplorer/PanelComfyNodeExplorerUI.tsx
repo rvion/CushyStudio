@@ -5,18 +5,8 @@ import { useMemo } from 'react'
 
 import { getColorForInputNameInComfy, getColorForOutputNameInCushy } from '../../core/Colors'
 import { InputLegacy } from '../../csuite/inputs/shims'
-import { Panel, type PanelHeader } from '../../router/Panel'
 import { useSt } from '../../state/stateContext'
 import { ComfyNodeExplorerState } from './ComfyNodeExplorerState'
-
-export const PanelComfyNodeExplorer = new Panel({
-   name: 'ComfyUI Node Explorer',
-   category: 'ComfyUI',
-   widget: (): React.FC<NO_PROPS> => PanelComfyNodeExplorerUI,
-   header: (p): PanelHeader => ({ title: 'ComfyUI Node Explorer' }),
-   def: (): NO_PROPS => ({}),
-   icon: 'mdiAccessPoint',
-})
 
 export const PanelComfyNodeExplorerUI = observer(function PanelComfyNodeExplorerUI_(p: NO_PROPS) {
    const st = useSt()
