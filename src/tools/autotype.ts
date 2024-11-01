@@ -7,22 +7,8 @@ import * as ts from 'typescript'
 import { bang } from '../csuite/utils/bang'
 
 const summaryLines: string[] = []
-const globalTypes = new Set([
-   //
-   'string',
-   'number',
-   'boolean',
-   'void',
-   'undefined',
-   'null',
-   'any',
-   'Promise',
-])
-const globallyInjectedSymbols = new Set([
-   //
-   'Maybe',
-   'Z',
-]) // Adjusted to include 'Z' prefix
+const globalTypes = new Set(['string', 'number', 'boolean', 'void', 'undefined', 'null', 'any', 'Promise'])
+const globallyInjectedSymbols = new Set(['Maybe', 'Z'])
 
 /* Debug utility to stop after a few files */
 // const rl = createInterface({ input: process.stdin, output: process.stdout })
@@ -144,14 +130,20 @@ async function addTypes(
                }
             }
          }
+         // #endregion
+
          // #region 2. ForOf
          else if (ts.isForOfStatement(node)) {
             LOG_DEBUG( `  Skipped type annotation in for...of for ${node.initializer.getText()} in ${fileName}`) // prettier-ignore
          }
+         // #endregion
+
          // #region 3. ForIn
          else if (ts.isForInStatement(node)) {
             LOG_DEBUG( `  Skipped type annotation in for...in for ${node.initializer.getText()} in ${fileName}`) // prettier-ignore
          }
+         // #endregion
+
          // #region 4. FunDecl
          else if ((ts.isFunctionDeclaration(node) || ts.isFunctionExpression(node)) && !node.type) {
             const signature = checker.getSignatureFromDeclaration(node)
@@ -187,6 +179,123 @@ async function addTypes(
                }
             }
          }
+         // #endregion
+
+         // #region 5. Class Members
+         else if (ts.isClassDeclaration(node) && node.members) {
+            if (!node.name) {
+               LOG_WARN(`  Skipped unnamed class in ${fileName}`)
+               return
+            }
+            LOG_INFO(`  Processing class: ${node.name.getText()}`)
+            node.members.forEach((member) => {
+               // Handle Property Declarations
+               if (ts.isPropertyDeclaration(member) && !member.type) {
+                  const propName = member.name.getText()
+                  const symbol = checker.getSymbolAtLocation(member.name)
+                  if (symbol) {
+                     const type = checker.getTypeOfSymbolAtLocation(symbol, symbol.valueDeclaration!)
+                     const [typeString, action] = renderType(checker, type, typeContext)
+                     if (action === 'skip') {
+                        LOG_WARN(
+                           `    [skip] type ${chalk.underline(typeString)} for property ${propName} in class ${node.name?.getText()}`,
+                        )
+                        return
+                     }
+
+                     // Check for 'any' or Anonymous Class in type
+                     if (typeString.includes('any') || isAnonymousClass(typeString)) {
+                        const reason = typeString.includes('any') ? `'any'` : 'Anonymous class'
+                        LOG_ERR(
+                           `    Skipped adding ${reason} type for property ${propName} in class ${node.name?.getText()}`,
+                        )
+                     } else if (typeString.split(/\s+/).length <= 4 && !typeString.includes('any')) {
+                        LOG_OK(`    Adding type to property ${propName}: ${chalk.underline(typeString)}`)
+                        changes.push({
+                           pos: member.name.getEnd(),
+                           text: `: ${typeString}`,
+                        })
+                        gatherImports(typeString, importStatements)
+                     } else {
+                        LOG_WARN(`    Skipped type for property ${propName}: Too long (${typeString})`)
+                     }
+                  }
+               }
+               // Handle Get Accessors
+               else if (ts.isGetAccessor(member) && !member.type) {
+                  const accessorName = member.name.getText()
+                  const signature = checker.getSignatureFromDeclaration(member)
+                  if (signature) {
+                     const returnType = checker.getReturnTypeOfSignature(signature)
+                     const [returnTypeString, action] = renderType(checker, returnType, typeContext)
+                     if (action === 'skip') {
+                        LOG_WARN( `    [skip] type ${chalk.underline(returnTypeString)} for getter ${accessorName} in class ${node.name?.getText()}`, ) // prettier-ignore
+                        return
+                     }
+
+                     // Check for 'any' or Anonymous Class in return type
+                     if (returnTypeString.includes('any') || isAnonymousClass(returnTypeString)) {
+                        const reason = returnTypeString.includes('any') ? `'any'` : 'Anonymous class'
+                        LOG_ERR( `    Skipped adding ${reason} return type for getter ${accessorName} in class ${node.name?.getText()}`, ) // prettier-ignore
+                     } else if (
+                        returnTypeString.split(/\s+/).length <= 4 &&
+                        !returnTypeString.includes('any')
+                     ) {
+                        LOG_OK(`    Adding return type to getter ${accessorName}: ${returnTypeString}`)
+                        const pos = getFunctionReturnTypeInsertPos(member)
+                        if (pos !== undefined) {
+                           changes.push({ pos: pos, text: `: ${returnTypeString}` })
+                        } else {
+                           LOG_ERR( `    Failed to determine where to insert return type for getter ${accessorName} in class ${node.name?.getText()}`, ) // prettier-ignore
+                           return
+                        }
+                        gatherImports(returnTypeString, importStatements)
+                     } else {
+                        LOG_WARN( `    Skipped return type for getter ${accessorName}: Too long (${returnTypeString})`, ) // prettier-ignore
+                     }
+                  }
+               }
+               // Handle Method Declarations
+               else if (ts.isMethodDeclaration(member) && !member.type) {
+                  const methodName = member.name.getText()
+                  const signature = checker.getSignatureFromDeclaration(member)
+                  if (signature) {
+                     const returnType = checker.getReturnTypeOfSignature(signature)
+                     const [returnTypeString, action] = renderType(checker, returnType, typeContext)
+                     if (action === 'skip') {
+                        LOG_WARN( `    [skip] type ${chalk.underline(returnTypeString)} for method ${methodName} in class ${node.name?.getText()}`, ) // prettier-ignore
+                        return
+                     }
+
+                     // Check for 'any' or Anonymous Class in return type
+                     if (returnTypeString.includes('any') || isAnonymousClass(returnTypeString)) {
+                        const reason = returnTypeString.includes('any') ? `'any'` : 'Anonymous class'
+                        LOG_ERR( `    Skipped adding ${reason} return type for method ${methodName} in class ${node.name?.getText()}`, ) // prettier-ignore
+                     } else if (
+                        returnTypeString.split(/\s+/).length <= 4 &&
+                        !returnTypeString.includes('any')
+                     ) {
+                        LOG_OK(`    Adding return type to method ${methodName}: ${returnTypeString}`)
+                        const pos = getFunctionReturnTypeInsertPos(member)
+                        if (pos !== undefined) {
+                           changes.push({ pos: pos, text: `: ${returnTypeString}` })
+                        } else {
+                           LOG_ERR(
+                              `    Failed to determine where to insert return type for method ${methodName} in class ${node.name?.getText()}`,
+                           )
+                           return
+                        }
+                        gatherImports(returnTypeString, importStatements)
+                     } else {
+                        LOG_WARN(
+                           `    Skipped return type for method ${methodName}: Too long (${returnTypeString})`,
+                        )
+                     }
+                  }
+               }
+            })
+         }
+         // #endregion
 
          ts.forEachChild(node, visit)
       }
@@ -267,6 +376,8 @@ const fileNames: string[] = getAllFiles(directoryPath)
 await addTypes(fileNames, compilerOptions)
 fs.writeFileSync('autotype.summary.txt', summaryLines.join('\n'))
 
+// #endregion
+
 // #region TS Utils
 /** Find the last import statement to insert new imports after */
 function getImportInsertPosition(sourceFile: ts.SourceFile): number {
@@ -281,6 +392,7 @@ function getImportInsertPosition(sourceFile: ts.SourceFile): number {
 
 type TypeContext = { ext: '.ts' | '.tsx' }
 
+/** Determine the import path for well-known types based on naming conventions */
 function getWellKnownImportLocation(finalType: string): string | null {
    const isSimpleWord = /^[a-zA-Z_]+$/.test(finalType)
    if (!isSimpleWord) return null
@@ -289,7 +401,7 @@ function getWellKnownImportLocation(finalType: string): string | null {
    return null
 }
 
-/** render a ts.Type to what we want to inject */
+/** Render a ts.Type to what we want to inject */
 function renderType(
    checker: ts.TypeChecker,
    returnType: ts.Type,
@@ -337,6 +449,7 @@ function renderType(
 
    return [alt1, isWhitelisted ? 'insert' : 'skip']
 }
+
 function simpleVariationsRegex(subRegex: string): RegExp {
    return new RegExp(
       `^(${[
@@ -366,10 +479,24 @@ function simpleVariations(type: string): string[] {
 
 /** Find the position to insert the return type for a function */
 function getFunctionReturnTypeInsertPos(
-   node: ts.FunctionDeclaration | ts.FunctionExpression | ts.ArrowFunction,
+   node:
+      | ts.FunctionDeclaration
+      | ts.FunctionExpression
+      | ts.ArrowFunction
+      | ts.MethodDeclaration
+      | ts.GetAccessorDeclaration,
 ): number | undefined {
    const sourceFile = node.getSourceFile()
-   const end = node.parameters.end
+   let end: number
+
+   if (ts.isArrowFunction(node)) {
+      // For arrow functions, find the end of the parameters
+      end = node.parameters.end
+   } else {
+      // For regular functions and methods, find the end of the parameters
+      end = node.parameters.end
+   }
+
    const text: string = sourceFile.text
 
    // Find the position after the closing parenthesis
@@ -412,8 +539,10 @@ function isAnonymousClass(typeString: string): boolean {
    return /\bAnonymous\s+class\b/.test(typeString)
 }
 
+// #endregion
+
 // #region File Utils
-/** get all files in give folder */
+/** get all files in given folder */
 function getAllFiles(dirPath: string, arrayOfFiles: string[] = []): string[] {
    // return ['src/back/features/integrations/nylas/ui/NylasThreadListUI.tsx']
    // return ['src/back/features/devutils/CMD_exec/SynchronizeEventRelations.ts']
@@ -429,6 +558,7 @@ function getAllFiles(dirPath: string, arrayOfFiles: string[] = []): string[] {
 
    return arrayOfFiles
 }
+// #endregion
 
 // #region Logger Utils
 function LOG_OK(line: string): void {
@@ -450,3 +580,4 @@ function LOG(chalkFn: (text: string) => string, line: string): void {
    summaryLines.push(line)
    console.log(chalkFn(line))
 }
+// #endregion
