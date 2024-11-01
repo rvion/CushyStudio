@@ -63,12 +63,6 @@
   14:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
   29:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
-/Users/loco/dev/CushyStudio/src/importers/TargetBox.tsx
-  20:10  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  27:10  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  31:10  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  34:10  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
 /Users/loco/dev/CushyStudio/src/manager/REQUIREMENTS/FOOBAR.tsx
   40:25  error  Optional chain expressions can return undefined by design - using a non-null assertion is unsafe and wrong  @typescript-eslint/no-non-null-asserted-optional-chain
   41:22  error  Optional chain expressions can return undefined by design - using a non-null assertion is unsafe and wrong  @typescript-eslint/no-non-null-asserted-optional-chain
@@ -100,12 +94,8 @@
   12:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
 
 /Users/loco/dev/CushyStudio/src/outputs/3d-displacement/OutputDisplacement.tsx
-   96:30  error  `import()` type annotations are forbidden                                                                                       @typescript-eslint/consistent-type-imports
-   98:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
-  116:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
-
-/Users/loco/dev/CushyStudio/src/outputs/3d-scene/Output3dScene.tsx
-  9:1  error  Definition for rule 'unused-imports/no-unused-imports' was not found  unused-imports/no-unused-imports
+   96:23  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+  113:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
 
 /Users/loco/dev/CushyStudio/src/outputs/OutputUI.tsx
   42:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
@@ -139,18 +129,6 @@
 /Users/loco/dev/CushyStudio/src/panels/host/HostUI.tsx
   120:28  error  Irregular whitespace not allowed  no-irregular-whitespace
 
-/Users/loco/dev/CushyStudio/src/panels/libraryUI/tree/nodes/TreeDraftFolders.tsx
-  11:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  17:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  18:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  19:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/panels/libraryUI/tree/nodes/TreeFavorites.tsx
-  17:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  30:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  43:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-  74:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
 /Users/loco/dev/CushyStudio/src/panels/libraryUI/tree/nodes/TreeFolder.tsx
   40:4   error  Missing return type on function  @typescript-eslint/explicit-function-return-type
   46:66  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
@@ -167,24 +145,8 @@
   2:27  error  Unnecessary escape character: \/  no-useless-escape
   2:29  error  Unnecessary escape character: \-  no-useless-escape
 
-/Users/loco/dev/CushyStudio/src/prompt/grammar/grammar.test.ts
-  29:36  error  Unnecessary escape character: \"  no-useless-escape
-  29:43  error  Unnecessary escape character: \"  no-useless-escape
-  31:40  error  Unnecessary escape character: \"  no-useless-escape
-  31:45  error  Unnecessary escape character: \"  no-useless-escape
-  33:36  error  Unnecessary escape character: \"  no-useless-escape
-  33:39  error  Unnecessary escape character: \"  no-useless-escape
-
 /Users/loco/dev/CushyStudio/src/prompt/plugins/Plugin_LoraBoxUI.tsx
   66:7  error  Fast refresh only works when a file only exports components. Move your component(s) to a separate file  react-refresh/only-export-components
-
-/Users/loco/dev/CushyStudio/src/runtime/RuntimeHosts.ts
-  16:4  error  Missing return type on function  @typescript-eslint/explicit-function-return-type
-
-/Users/loco/dev/CushyStudio/src/runtime/RuntimeImages.ts
-  25:14  error  Redundant use of `await` on a return value  no-return-await
-  34:14  error  Redundant use of `await` on a return value  no-return-await
-  39:14  error  Redundant use of `await` on a return value  no-return-await
 
 /Users/loco/dev/CushyStudio/src/runtime/RuntimeLLM.ts
   23:4   error  Missing return type on function             @typescript-eslint/explicit-function-return-type
@@ -223,4 +185,4 @@
 /Users/loco/dev/CushyStudio/src/widgets/prompter/nodes/usertags/UserLoader.ts
   39:10  error  Use the spread operator instead of '.apply()'  prefer-spread
 
-✖ 110 problems (110 errors, 0 warnings)
+✖ 86 problems (86 errors, 0 warnings)

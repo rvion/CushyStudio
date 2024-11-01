@@ -1,5 +1,6 @@
 SHORT TERM TODO:
 
+    ☐ remove all `p: {}` and other `: {}` annotations
     CORE BUGS:
         ☐ undoing choices via the undo button doesn't work properly. choices no longer there are still displayed
             ☐  absolutely need to write some failing test first; clearly some reactivity issue
