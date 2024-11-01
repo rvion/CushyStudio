@@ -205,7 +205,7 @@ export class GitManagedFolder {
          this._bumpLastFetchAt()
          await this.updateInfos()
       } catch (error) {
-         this.error(`updates check failed: ${(error as any).message}`)
+         this.logError(`updates check failed: ${(error as any).message}`)
       }
    }
 
@@ -425,11 +425,11 @@ export class GitManagedFolder {
    }
 
    lastLogs = new LogFifo(100)
-   log = (...args: any[]) => {
+   private log(...args: any[]): void {
       this.lastLogs.add(args.join(' '))
       // console.log(`[🚀] (${this.relPath || 'root'})`, ...args)
    }
-   error = (...args: any[]) => {
+   private logError(...args: any[]): void {
       console.error(`[🚀] (${this.relPath || 'root'})`, ...args)
    }
 
