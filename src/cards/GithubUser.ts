@@ -60,7 +60,7 @@ export class GithubUser {
    }
 
    // --------------------------------------------------------------------------------
-   private githubUserAvatarRelPath = `.cushy/github/${this.username}/avatar.png`
+   private githubUserAvatarRelPath: string = `.cushy/github/${this.username}/avatar.png`
    get localAvatarURL(): string {
       return `file://${this.st.resolveFromRoot(asRelativePath(this.githubUserAvatarRelPath))}`
    }
@@ -68,7 +68,7 @@ export class GithubUser {
       return this.data?.json.avatar_url
    }
 
-   private _downloadImageRequested = false
+   private _downloadImageRequested: boolean = false
 
    /** download github avatar image */
    private async downloadImage(): Promise<void> {

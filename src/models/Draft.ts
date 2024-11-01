@@ -62,7 +62,7 @@ export class DraftL extends BaseInst<TABLES['draft']> {
    // })
 
    // 🔴 HACKY
-   shouldAutoStart = false
+   shouldAutoStart: boolean = false
 
    /** collapse all top-level form entryes */
    collapseTopLevelFormEntries(): void {
@@ -157,7 +157,7 @@ export class DraftL extends BaseInst<TABLES['draft']> {
 
    lastStarted: Maybe<StepL> = null
 
-   isDirty = false
+   isDirty: boolean = false
 
    checkIfShouldRestart = (): void => {
       // console.log(`[⏰] checkIfShouldRestart called`)
@@ -298,7 +298,7 @@ export class DraftL extends BaseInst<TABLES['draft']> {
       return this.st.library.getFile(this.appRef.item.relPath)
    }
 
-   isInitialized = false
+   isInitialized: boolean = false
 
    AWAKE = (): Maybe<() => void> => {
       // if (this.isInitializing) return

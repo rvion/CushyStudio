@@ -10,7 +10,7 @@ import { debounce } from '../csuite/utils/debounce'
 // import { makeAutoObservable } from 'mobx'
 
 export class PanelPersistentStore<X extends Json = Json> {
-   uid = nanoid(3)
+   uid: string = nanoid(3)
 
    /** data is loaded lazilly, but is not synced automatically
     * you need to call `save` to set it back in the tab data

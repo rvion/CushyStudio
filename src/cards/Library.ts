@@ -28,12 +28,12 @@ export class Library {
    // }
 
    // ------------------------------------------------------------------------------------
-   query = ''
-   showDescription = true
-   showDrafts = true
-   showFavorites = true
-   imageSize = '11rem'
-   selectionCursor = 0
+   query: string = ''
+   showDescription: boolean = true
+   showDrafts: boolean = true
+   showFavorites: boolean = true
+   imageSize: string = '11rem'
+   selectionCursor: number = 0
 
    get appsFiltered(): CushyAppL[] {
       return this.st.db.cushy_app //

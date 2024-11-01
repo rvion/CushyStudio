@@ -100,7 +100,7 @@ export class LiveDB {
    /** You should not call that unless you know what you're doing */
    runCodegen = (): void => _codegenORM(this)
 
-   _uid = nanoid()
+   _uid: string = nanoid()
    constructor() {
       // init SQLITE ---------------------------------------------------------
       const db = SQL(DB_RELATIVE_PATH, {

@@ -25,7 +25,7 @@ export class ManualPromise<T = any> implements PromiseLike<T> {
     * true when the promise is running;
     * NOT AUTOMATIC; since this is a MANUAL promise, you have to use that flag manually
     */
-   isRunning = false
+   isRunning: boolean = false
 
    setValue = (t: T): void => {
       this.value = t

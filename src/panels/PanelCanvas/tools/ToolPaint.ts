@@ -6,11 +6,11 @@ export class ToolPaint implements ICanvasTool {
    id: 'paint' = 'paint'
    category: 'draw' = 'draw'
    icon: IconName = 'mdiBrush'
-   description = 'draw on top of the canvas'
+   description: string = 'draw on top of the canvas'
 
    constructor(public canvas: UnifiedCanvas) {}
 
-   onMove() {
+   onMove(): boolean {
       const uc = this.canvas
       uc.brush //
          .x(uc.infos.viewPointerX)

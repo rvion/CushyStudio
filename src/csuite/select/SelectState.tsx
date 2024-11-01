@@ -24,7 +24,7 @@ interface ToolTipPosition {
 export type SelectValueSlots = 'anchor' | 'popup-input' | 'options-list'
 
 export class AutoCompleteSelectState<OPTION> {
-   uid = nanoid()
+   uid: string = nanoid()
    // various refs for our select so we can quickly puppet
    // various key dom elements of the select, or move the focus
    // around when needed
@@ -83,7 +83,7 @@ export class AutoCompleteSelectState<OPTION> {
       return this.isEqual(selected, option)
    }
 
-   isMultiSelect = this.p.multiple ?? false
+   isMultiSelect: boolean = this.p.multiple ?? false
 
    get options(): OPTION[] {
       return this.p.options?.(this.searchQuery) ?? [] // replace with actual options logic
@@ -272,7 +272,7 @@ export class AutoCompleteSelectState<OPTION> {
     * SEARCH/FILTER OPTIONS
     **/
 
-   private _searchQuery = ''
+   private _searchQuery: string = ''
    get searchQuery(): string {
       return this.p.getSearchQuery?.() ?? this._searchQuery
    }

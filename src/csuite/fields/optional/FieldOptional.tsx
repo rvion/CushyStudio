@@ -67,8 +67,8 @@ export class Field_optional<out T extends BaseSchema = BaseSchema> extends Field
    }
 
    // #region UI
-   DefaultHeaderUI = undefined
-   DefaultBodyUI = undefined
+   DefaultHeaderUI: undefined = undefined
+   DefaultBodyUI: undefined = undefined
 
    get actualWidgetToDisplay(): Field {
       return this.child.actualWidgetToDisplay

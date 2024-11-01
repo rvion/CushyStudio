@@ -390,7 +390,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
       return Object.entries(this.activeBranchesDict).map(([key, field]) => ({ key, field }))
    }
 
-   _acknowledgeCount = 0
+   _acknowledgeCount: number = 0
    _acknowledgeNewChildSerial(mountKey: keyof T & string, childSerial: any): boolean {
       this._acknowledgeCount++
       return this.patchSerial((draft) => {

@@ -59,10 +59,10 @@ export class UnifiedCanvas {
       yInWIndow: 0,
    }
 
-   snapToGrid = true
-   snapSize = 64
-   usePenPressure = true
-   enableOverlay = true
+   snapToGrid: boolean = true
+   snapSize: number = 64
+   usePenPressure: boolean = true
+   enableOverlay: boolean = true
    toolShelf = {
       visible: true,
       size: cushy.preferences.interface.value.toolBarIconSize,
@@ -144,8 +144,8 @@ export class UnifiedCanvas {
    // ----------------------------------------------------------------------
    tool: UnifiedCanvasTool = 'none'
    brushMode: UnifiedCanvasBrushMode = 'paint'
-   maskColor = 'red'
-   maskOpacity = 0.5
+   maskColor: string = 'red'
+   maskOpacity: number = 0.5
 
    _lastLine: Konva.Line | null = null
 
@@ -214,7 +214,7 @@ export class UnifiedCanvas {
    imageLayer: Konva.Layer
 
    /** used as container id for potential Portals to display html over122ays */
-   uid = nanoid()
+   uid: string = nanoid()
 
    constructor(
       public st: STATE,

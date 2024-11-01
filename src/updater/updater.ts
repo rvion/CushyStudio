@@ -64,13 +64,13 @@ export class GitManagedFolder {
    nextFetchAt = 0 as Timestamp
 
    /** Number of commits in origin/<main branch> */
-   originCommitsCount = 0
+   originCommitsCount: number = 0
 
    /** Number of commits in HEAD */
-   headCommitsCount = 0
+   headCommitsCount: number = 0
 
    /** main branch name; usually master (previous git default) or main (new git default) */
-   mainBranchName = ''
+   mainBranchName: string = ''
 
    /** the simple git  */
    git: Maybe<SimpleGit> = null
@@ -307,7 +307,7 @@ export class GitManagedFolder {
    lastPullAttempt: Maybe<UpdateTrace> = null
 
    /** true when more commit are present on origin */
-   get hasUpdateAvailable() {
+   get hasUpdateAvailable(): boolean {
       if (this.originCommitsCount <= this.headCommitsCount) return false
       return true
    }
@@ -466,7 +466,7 @@ export class GitManagedFolder {
    }
 
    commandErrors = new Map<string, any>()
-   get hasErrors() {
+   get hasErrors(): boolean {
       return this.commandErrors.size > 0
    }
 }

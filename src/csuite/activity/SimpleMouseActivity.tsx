@@ -47,10 +47,10 @@ export class SimpleMouseActivity implements Activity {
       return this.lastY
    }
 
-   offsetFromStart = 0
-   offsetFromLast = 0
-   euclidianDistanceFromStart = 0
-   shiftKey = false
+   offsetFromStart: number = 0
+   offsetFromLast: number = 0
+   euclidianDistanceFromStart: number = 0
+   shiftKey: boolean = false
 
    // onKeyUp(ev: KeyboardEvent): void {
    //     // console.log(`[🐭🐭🐭] key up`)

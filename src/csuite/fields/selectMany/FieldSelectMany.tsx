@@ -179,7 +179,7 @@ export class Field_selectMany<
 
    // #region UI
    DefaultHeaderUI = WidgetSelectManyUI
-   DefaultBodyUI = undefined
+   DefaultBodyUI: undefined = undefined
    // DefaultBodyUI = WidgetSelectMany_ListUI
 
    get isCollapsedByDefault(): boolean {
@@ -213,7 +213,7 @@ export class Field_selectMany<
       this.selectedKeys = this.defaultKeys ?? []
    }
 
-   wrap = this.config.wrap ?? false
+   wrap: boolean = this.config.wrap ?? false
 
    get query(): string {
       return this.serial.query ?? ''

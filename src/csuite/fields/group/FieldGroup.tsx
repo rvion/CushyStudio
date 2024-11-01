@@ -268,7 +268,7 @@ export class Field_group<X extends Field_group_types<SchemaDict> = Field_group_t
     */
    fields: { [k in keyof X['$Sub']]: X['$Sub'][k]['$Field'] } = {} as any
 
-   _acknowledgeCount = 0
+   _acknowledgeCount: number = 0
    _acknowledgeNewChildSerial(mountKey: string, newChildSerial: any): boolean {
       // console.log(`[🤠] ACK`, getUIDForMemoryStructure(newChildSerial), getUIDForMemoryStructure(this.serial), this.serial)
       const didChange = this.patchSerial((draft) => void ((draft.values_ as any)[mountKey] = newChildSerial))

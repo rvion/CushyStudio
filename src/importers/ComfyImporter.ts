@@ -35,7 +35,7 @@ export class ComfyImporter {
 
    // -----------------------------------------------------------------------------
    // ATTRIBUTE TO IGNORE
-   UI_ONLY_ATTRIBUTES = [
+   UI_ONLY_ATTRIBUTES: string[] = [
       //
       'Random seed after every gen',
       'choose file to upload',

@@ -99,7 +99,7 @@ export class Field_image extends Field<Field_image_types> {
 
    // #region UI
    DefaultHeaderUI = WidgetSelectImageUI
-   DefaultBodyUI = undefined
+   DefaultBodyUI: undefined = undefined
 
    // #region UI/helpers
    get animateResize(): boolean {

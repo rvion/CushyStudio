@@ -75,7 +75,7 @@ export class CushyLayoutManager {
     * Useful to properly force react component to refresh when switching
     * between different perspectives
     */
-   private modelKey = 0
+   private modelKey: number = 0
    private setModel(model: FlexLayoutModel): void {
       this.model = model
       this.modelKey++

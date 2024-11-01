@@ -6,7 +6,7 @@ export class ToolStamp implements ICanvasTool {
    id: 'stamp' = 'stamp'
    category: 'draw' = 'draw'
    icon: IconName = 'mdiStamper'
-   description = '....'
+   description: string = '....'
 
    constructor(public canvas: UnifiedCanvas) {}
 }

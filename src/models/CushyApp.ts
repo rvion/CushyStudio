@@ -170,7 +170,7 @@ export class CushyAppL extends BaseInst<TABLES['cushy_app']> {
    // }
 
    // PUBLISHING ---------------------------------------------------------------------------
-   isPublishing = false
+   isPublishing: boolean = false
    FAIL_prepublish = (summary: string, howToFix?: string): never => {
       const title = `[🚀] ❌ pre-publish check failed: ${summary}`
       console.log(title)

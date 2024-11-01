@@ -215,7 +215,7 @@ export class Field_selectOne<
 
    // 📌 UI ---------------------------------------------------------------------|
    DefaultHeaderUI = WidgetSelectOneUI
-   DefaultBodyUI = undefined
+   DefaultBodyUI: undefined = undefined
    DefaultCellUI = WidgetSelectOne_CellUI
 
    // @deprecated

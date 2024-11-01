@@ -234,9 +234,9 @@ export class ComfyNode<
    //     return this._incomingNodes().map((id) => this.graph.getNode(id)!)
    // }
 
-   x = 0
-   y = 0
-   col = 0
+   x: number = 0
+   y: number = 0
+   col: number = 0
    get outgoingPorts(): NodePort[] {
       return this.$outputs.map(
          (o, ix): NodePort => ({

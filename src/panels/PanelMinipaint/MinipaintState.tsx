@@ -67,7 +67,7 @@ export class MinipaintState {
       }
    }
 
-   fileName = nanoid(8)
+   fileName: string = nanoid(8)
 
    get fileNameWithExt(): string {
       return this.fileName + '.png'

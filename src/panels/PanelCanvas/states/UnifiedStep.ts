@@ -40,7 +40,7 @@ export class UnifiedStep {
       return stepImage
    }
    // moveNext =
-   index = 0
+   index: number = 0
    constructor(
       public canvas: UnifiedCanvas,
       public step: StepL,

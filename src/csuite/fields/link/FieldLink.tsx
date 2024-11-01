@@ -146,7 +146,7 @@ export class Field_link<
    }
 
    // #region UI
-   DefaultHeaderUI = undefined
+   DefaultHeaderUI: undefined = undefined
    DefaultBodyUI: FC<{}> = () => this.bField.UI() // 🔴 Not sure how to use `Render` properly here
 
    get actualWidgetToDisplay(): Field {

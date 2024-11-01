@@ -23,7 +23,7 @@ export class TreeApp implements ITreeEntry {
    }
 
    get name(): string { return `${this.app?.name??'❌'}`; } // prettier-ignore
-   isFolder = true
+   isFolder: boolean = true
    get icon(): string {
       return this.app?.illustrationPathWithFileProtocol ?? ''
       // return <span className='material-symbols-outlined'>Draft</span>

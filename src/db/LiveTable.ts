@@ -207,7 +207,7 @@ export class LiveTable<
 
    // 🟢 --------------------------------------------------------------------------------
    /** return last entity from table, or null if table is empty */
-   stmt_query = `select * from ${this.name} order by createdAt desc limit 1`
+   stmt_query: string = `select * from ${this.name} order by createdAt desc limit 1`
    stmt_last = this.db.compileSelectOne_<TABLE>(this.schema, this.stmt_query)
 
    // 💬 2024-06-13 rvion; perf issue was caused by this

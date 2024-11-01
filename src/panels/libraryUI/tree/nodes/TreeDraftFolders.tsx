@@ -11,7 +11,7 @@ export class TreeDraftFolder implements ITreeEntry<VirtualFolder<DraftL>> {
    get st() { return cushy } // prettier-ignore
    constructor(public vf: VirtualFolder<DraftL>) {}
 
-   get name() {
+   get name(): string {
       return `${basename(this.vf.folderPath)}`
    }
    get icon() { return <span className='material-symbols-outlined text-yellow-700'>folder</span> } // prettier-ignore

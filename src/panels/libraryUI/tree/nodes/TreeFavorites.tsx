@@ -10,9 +10,9 @@ import { TreeDraft } from './TreeDraft'
 import { TreeDraftFolder } from './TreeDraftFolders'
 
 export class TreeFavoriteApps implements ITreeEntry {
-   isFolder = true
+   isFolder: boolean = true
    icon = (<span className='material-symbols-outlined _text-yellow-500'>star</span>)
-   name = 'Favorite Apps'
+   name: string = 'Favorite Apps'
    constructor(p: {}) {}
    onPrimaryAction = (n: TreeNode) => n.toggle()
    children = (): ITreeElement<CushyAppID>[] => {
@@ -23,9 +23,9 @@ export class TreeFavoriteApps implements ITreeEntry {
 }
 
 export class TreeFavoriteDrafts implements ITreeEntry {
-   isFolder = true
+   isFolder: boolean = true
    icon = (<span className='material-symbols-outlined _text-blue-500'>star</span>)
-   name = 'Favorite Drafts'
+   name: string = 'Favorite Drafts'
    constructor(p: {}) {}
    onPrimaryAction = (n: TreeNode) => n.toggle()
    children = (): ITreeElement<DraftL>[] => {
@@ -36,9 +36,9 @@ export class TreeFavoriteDrafts implements ITreeEntry {
 }
 
 export class TreeAllDrafts implements ITreeEntry {
-   isFolder = true
+   isFolder: boolean = true
    icon = (<span className='material-symbols-outlined _text-blue-500'>palette</span>)
-   name = 'All Drafts'
+   name: string = 'All Drafts'
    constructor(p: {}) {}
    onPrimaryAction = (n: TreeNode) => n.toggle()
    children = (): ITreeElement<any>[] => {
@@ -67,9 +67,9 @@ export class TreeAllDrafts implements ITreeEntry {
 }
 
 export class TreeAllApps implements ITreeEntry {
-   isFolder = true
+   isFolder: boolean = true
    icon = (<span className='material-symbols-outlined _text-yellow-500'>palette</span>)
-   name = 'All Apps'
+   name: string = 'All Apps'
    constructor(p: {}) {}
    onPrimaryAction = (n: TreeNode) => n.toggle()
    children = (): ITreeElement<any>[] => {

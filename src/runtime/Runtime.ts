@@ -681,5 +681,5 @@ export class Runtime<FIELD extends Field = any> {
       return prompt
    }
 
-   private _promptCounter = 0
+   private _promptCounter: number = 0
 }

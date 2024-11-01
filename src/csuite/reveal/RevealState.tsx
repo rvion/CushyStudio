@@ -168,8 +168,8 @@ export class RevealState {
    }
 
    // ------------------------------------------------
-   inAnchor = false
-   inTooltip = false
+   inAnchor: boolean = false
+   inTooltip: boolean = false
    subRevealsCurrentlyVisible = new Set<number>()
 
    /** how deep in the reveal stack we are */
@@ -323,7 +323,7 @@ export class RevealState {
    }
 
    // lock --------------------------------------------
-   _lock = false
+   _lock: boolean = false
    toggleLock = (): void => {
       this._lock = !this._lock
    }
@@ -573,7 +573,7 @@ export class RevealState {
       this.subRevealsCurrentlyVisible.delete(depth)
    }
 
-   lastOpenClose = 0
+   lastOpenClose: number = 0
    get delaySinceLastOpenClose(): number {
       return Date.now() - this.lastOpenClose
    }

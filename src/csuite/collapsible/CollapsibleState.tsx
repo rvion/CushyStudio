@@ -7,7 +7,7 @@ export class CollapsibleState {
       makeAutoObservable(this)
    }
 
-   isCollapsed = this.p.startCollapsed ?? true
+   isCollapsed: boolean = this.p.startCollapsed ?? true
 
    get isExpanded(): boolean {
       return !this.isCollapsed

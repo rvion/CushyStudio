@@ -102,7 +102,7 @@ export class Field_number extends Field<Field_number_types> {
 
    // #region UI
    DefaultHeaderUI = WidgetNumberUI
-   DefaultBodyUI = undefined
+   DefaultBodyUI: undefined = undefined
 
    readonly forceSnap: boolean = false
 

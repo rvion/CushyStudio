@@ -44,7 +44,7 @@ export const defaultTreeStorage = (node: TreeNode): INodeStore => {
 
 export class Tree {
    topLevelNodes: TreeNode[] = []
-   KeyboardNavigableDomNodeID = nanoid()
+   KeyboardNavigableDomNodeID: string = nanoid()
 
    constructor(
       rootNodes: ITreeElement[],

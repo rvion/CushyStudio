@@ -159,7 +159,7 @@ const _isLink = (v: any): v is [string, number] => {
 
 export class LiteGraphCtx {
    constructor(public graph: ComfyWorkflowL) {}
-   nextLinkId = 0
+   nextLinkId: number = 0
    links: LiteGraphLink[] = []
    allocateLink = (
       fromNodeId: number,

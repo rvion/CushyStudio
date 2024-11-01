@@ -6,7 +6,7 @@ export class CodeBuffer {
    ) {
       for (const line of lines) this.writeLine(line)
    }
-   public tab = '   '
+   public tab: string = '   '
    content: string = ''
 
    append = (str: string): string => (this.content += str)
