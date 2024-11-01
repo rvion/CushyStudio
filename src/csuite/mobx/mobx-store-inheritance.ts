@@ -10,7 +10,7 @@ const objectPrototype = Object.prototype
 
 type Annotations<T extends object = object, U extends PropertyKey = never> = AnnotationsMap<T, U>
 
-let miss = 0
+let miss: number = 0
 export const makeAutoObservableInheritance = <
    T extends object & { [annotationsSymbol]?: any },
    AdditionalKeys extends PropertyKey = never,

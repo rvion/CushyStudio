@@ -163,7 +163,7 @@ function hsl2rgb(
 // This implementation (a modified version of the SheetJS version) has been optimized
 // for our use case, at the expense of conforming to the adler32 specification
 // for non-ascii inputs.
-const MOD = 65521
+const MOD: 65521 = 65521
 function adler32(data: string): number {
    let a = 1
    let b = 0

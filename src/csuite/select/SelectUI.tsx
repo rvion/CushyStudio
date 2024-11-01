@@ -120,7 +120,7 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
    )
 })
 
-const WRAP_SHOULD_NOT_IMPACT_ICONS = true
+const WRAP_SHOULD_NOT_IMPACT_ICONS: true = true
 export const AnchorContentUI = observer(function AnchorContentUI_<OPTION>(p: {
    select: AutoCompleteSelectState<OPTION>
 }) {

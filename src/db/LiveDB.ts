@@ -38,7 +38,7 @@ import { liveDBSubKeys } from './TYPES.gen'
 
 export type Indexed<T> = { [id: string]: T }
 
-let ix = 0
+let ix: number = 0
 
 export class LiveDB {
    _tables: LiveTable<any, any>[] = []

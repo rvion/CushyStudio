@@ -43,6 +43,6 @@ const _getTimeInterval = (date: Date): string => {
    return _generateIntervalString(Math.floor(interval), 'second')
 }
 
-const _weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+const _weekdays: string[] = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 const _generateIntervalString = (time: number, unit: string): string =>
    ' (' + time + ` ${time > 1 ? `${unit}s` : unit} ago)`

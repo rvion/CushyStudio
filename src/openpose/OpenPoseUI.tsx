@@ -5,8 +5,8 @@ import { Button } from '../csuite/button/Button'
 import { useSt } from '../state/stateContext'
 import { OpenPoseAnimV0 } from './OpenPoseAnimV0'
 
-const CANVAS_WIDTH = 640
-const CANVAS_HEIGHT = 480
+const CANVAS_WIDTH: 640 = 640
+const CANVAS_HEIGHT: 480 = 480
 
 // Get the canvas element from the HTML document
 const canvas = document.getElementById('canvas')

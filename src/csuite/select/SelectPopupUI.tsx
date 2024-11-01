@@ -11,7 +11,7 @@ import { SelectAllNoneUI } from './SelectAllNoneUI'
 import { SelectOptionUI } from './SelectOptionUI'
 import { SelectOptionUI_FixedList } from './SelectOptionUI_FixedList'
 
-const trueMinWidth = '20rem'
+const trueMinWidth: "20rem" = '20rem'
 
 export type SelectPopupProps<OPTION> = {
    reveal: RevealState

@@ -2,8 +2,8 @@ import { readdirSync, readFileSync, writeFileSync } from 'fs'
 
 import { CodeBuffer } from '../../../../utils/codegen/CodeBuffer'
 
-const files = readdirSync('tmp/wildcards')
-const names = files.map((y) => y.replace(/.ts/g, '').replace(/-/g, '_').replace(/.txt/g, ''))
+const files: string[] = readdirSync('tmp/wildcards')
+const names: string[] = files.map((y) => y.replace(/.ts/g, '').replace(/-/g, '_').replace(/.txt/g, ''))
 const b1 = new CodeBuffer()
 b1.w(`// FILE GENERATED: do not edit. Changes made manually will be overwritten.\n`)
 b1.w(`export type Wildcards = {`)

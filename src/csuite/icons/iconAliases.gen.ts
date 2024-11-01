@@ -17,9 +17,9 @@ type Meta = {
    deprecated: boolean // false,
 }
 
-const metaFile = 'tmp/icon-aliases.json'
+const metaFile: "tmp/icon-aliases.json" = 'tmp/icon-aliases.json'
 
-const metaFileExists = existsSync(metaFile)
+const metaFileExists: boolean = existsSync(metaFile)
 if (!metaFileExists) {
    console.log(`[💠] meta file does not exists, downloading...`)
    await downloadFile(
@@ -33,7 +33,7 @@ if (!metaFileExists) {
 
 const json: Meta[] = JSON.parse(readFileSync(metaFile, 'utf-8'))
 
-let out = `
+let out: string = `
 export const iconAliases: {
     [key: string]: string[]
 } = {

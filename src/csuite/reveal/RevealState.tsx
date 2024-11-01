@@ -25,11 +25,11 @@ import {
 } from './RevealProps'
 import { global_RevealStack } from './RevealStack'
 
-export const defaultShowDelay_whenRoot = 100
-export const defaultHideDelay_whenRoot = 300
+export const defaultShowDelay_whenRoot: 100 = 100
+export const defaultHideDelay_whenRoot: 300 = 300
 
-export const defaultShowDelay_whenNested = 0
-export const defaultHideDelay_whenNested = 0
+export const defaultShowDelay_whenNested: 0 = 0
+export const defaultHideDelay_whenNested: 0 = 0
 
 export class RevealState {
    static shared: { current: Maybe<RevealState> } = observable({ current: null }, { current: observable.ref })

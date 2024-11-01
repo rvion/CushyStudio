@@ -8,7 +8,7 @@ import { _setupMigrationEngine } from './_setupMigrationEngine'
 import { DB_RELATIVE_PATH } from './DB_CONFIG'
 import { _checkAllMigrationsHaveDifferentIds } from './migrations'
 
-let ix = 0
+let ix: number = 0
 
 export class Store {
    log = (...res: any[]) => console.log('🟢', ix++, ...res)

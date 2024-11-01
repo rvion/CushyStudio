@@ -7,7 +7,7 @@ import { cwd } from 'process'
 
 import { toastError, toastInfo } from '../../csuite/utils/toasts'
 
-const workspaceFolderPath = cwd()
+const workspaceFolderPath: string = cwd()
 
 /* Probably un-needed function, but this makes sure that we keep the UI non-blocking */
 async function tryEditor(editor: string, filePath: string): Promise<void> {

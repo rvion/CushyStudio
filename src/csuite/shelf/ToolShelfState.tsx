@@ -4,7 +4,7 @@ import { makeAutoObservable } from 'mobx'
 
 import { window_addEventListener } from '../utils/window_addEventListenerAction'
 
-let startValue = 0
+let startValue: number = 0
 export class ToolShelfState {
    constructor(public props: ToolShelfProps) {
       this.size = props.defaultSize ?? 128

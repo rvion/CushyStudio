@@ -24,7 +24,7 @@ const _startEvent = { type: 'start' }
 const _endEvent = { type: 'end' }
 const _ray = new Ray()
 const _plane = new Plane()
-const TILT_LIMIT = Math.cos(70 * MathUtils.DEG2RAD)
+const TILT_LIMIT: number = Math.cos(70 * MathUtils.DEG2RAD)
 
 class OrbitControls extends EventDispatcher {
    constructor(object, domElement) {

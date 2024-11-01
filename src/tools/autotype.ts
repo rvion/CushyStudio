@@ -547,7 +547,7 @@ function isAnonymousClass(typeString: string): boolean {
 // #region File Utils
 /** get all files in given folder */
 function getAllFiles(dirPath: string, arrayOfFiles: string[] = []): string[] {
-   return ['src/utils/codegen/jsEscapeStr.ts']
+   // return ['src/utils/codegen/jsEscapeStr.ts']
    // return ['src/back/features/integrations/nylas/ui/NylasThreadListUI.tsx']
    // return ['src/back/features/devutils/CMD_exec/SynchronizeEventRelations.ts']
    const files: string[] = fs.readdirSync(dirPath)

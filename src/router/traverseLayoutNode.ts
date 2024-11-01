@@ -43,7 +43,7 @@ export type FlexlayoutNodeWithType =
    | { type: 'splitter'; node: FL.SplitterNode }
 
 export type KnownLayoutNodeType = 'row' | 'tabset' | 'tab' | 'border' | 'splitter'
-export const knownLayoutNodeType = ['row', 'tabset', 'tab', 'border', 'splitter']
+export const knownLayoutNodeType: string[] = ['row', 'tabset', 'tab', 'border', 'splitter']
 
 export function traverseLayoutNode(node: FL.Node, fns: TraverseFn): void {
    const x = _getNodeType(node)

@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'pathe'
 
-const srcFolder = './src'
+const srcFolder: "./src" = './src'
 
 function processFile(filePath: string): void {
    const content = fs.readFileSync(filePath, 'utf8')

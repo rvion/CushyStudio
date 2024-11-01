@@ -1,6 +1,6 @@
 import type { OpenPoseData } from './OpenPoseData'
 
-const boneColors = [
+const boneColors: string[] = [
    '#ff0055',
    '#ff0000',
    '#ff5500',

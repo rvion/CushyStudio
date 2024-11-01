@@ -28,7 +28,7 @@ export type PromptToCodeOpts = {
    autoUI: boolean
 }
 
-const formVarInUIFn = 'form'
+const formVarInUIFn: "form" = 'form'
 
 export class ComfyImporter {
    constructor(public st: STATE) {}

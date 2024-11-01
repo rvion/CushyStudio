@@ -32,7 +32,7 @@ export type ComputedColors = {
    nextext: Tint
 }
 
-let totalComputeColors = 0
+let totalComputeColors: number = 0
 const colorCache = new Map<string, ComputedColors>()
 export function computeColors(
    prevCtx: CurrentStyle,

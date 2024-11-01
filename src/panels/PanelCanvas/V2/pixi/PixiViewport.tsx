@@ -19,7 +19,7 @@ export type PixiViewportProps = {
 
 // https://github.com/davidfig/pixi-viewport/issues/488#issuecomment-2156417301
 
-let max = 20
+let max: number = 20
 export const PixiViewport = observer(function PixiViewport_(p: PixiViewportProps) {
    const uc = useUnifiedCanvas()
    // const app = useApplication2()

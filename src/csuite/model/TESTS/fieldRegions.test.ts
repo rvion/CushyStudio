@@ -3,10 +3,10 @@ import { readdirSync, readFileSync, statSync } from 'fs'
 import { join } from 'path'
 
 // Define the directory where the `Field<...>.ts` or `.tsx` files are located
-const directoryPath = 'src/csuite' // Change this to your directory path
+const directoryPath: "src/csuite" = 'src/csuite' // Change this to your directory path
 
 // Define the list of required regions in order
-const requiredRegions = [
+const requiredRegions: string[] = [
    '$Config', // config type
    '$Serial', // serial type
    '$Value',

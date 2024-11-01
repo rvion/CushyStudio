@@ -6,7 +6,7 @@ import { Ikon } from '../../csuite/icons/iconHelpers'
 import { useCSuite } from '../ctx/useCSuite'
 import { WidgetLabelCaretPlaceholderUI } from './WidgetLabelCaretPlaceholderUI'
 
-export const LabelCaretWidth = '1rem'
+export const LabelCaretWidth: "1rem" = '1rem'
 
 export type WidgetLabelCaretProps = {
    className?: string
