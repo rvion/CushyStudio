@@ -5,6 +5,7 @@ import { observer } from 'mobx-react-lite'
 import { Button } from '../../csuite/button/Button'
 import { useCSuite } from '../../csuite/ctx/useCSuite'
 import { Frame } from '../../csuite/frame/Frame'
+import { Ikon } from '../../csuite/icons/iconHelpers'
 import { Message } from '../../csuite/inputs/shims'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { QuickHostActionsUI } from '../../manager/REQUIREMENTS/QuickHostActionsUI'
@@ -77,7 +78,7 @@ export const HostWebsocketIndicatorUI = observer(function HostWebsocketIndicator
             />
          ) : ws?.isOpen ? (
             <Button subtle>
-               {p.showIcon && <span className='material-symbols-outlined text-green-400'>check_circle</span>}
+               {p.showIcon && <Ikon.mdiCheckCircle tw='text-green-400' />}
                <span className='text-success'>WS</span>
             </Button>
          ) : (

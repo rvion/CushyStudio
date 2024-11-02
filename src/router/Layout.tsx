@@ -755,6 +755,7 @@ export class CushyLayoutManager {
          })()
 
          const panel = panels[panelName]
+         console.log('⁉️', panels, panelName, panel)
          const { title } = panel.header(panelProps as any)
          const icon = panel.icon
          const config: PanelPersistedJSON = {

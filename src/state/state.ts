@@ -43,7 +43,7 @@ import { fromZodError } from 'zod-validation-error'
 import { asAppPath } from '../cards/asAppPath'
 import { Library } from '../cards/Library'
 import { recursivelyFindAppsInFolder } from '../cards/walkLib'
-import { STANDARD_HOST_ID, vIRTUAL_HOST_ID__BASE, vIRTUAL_HOST_ID__FULL } from '../config/ComfyHostDef'
+import { STANDARD_HOST_ID, vIRTUAL_HOST_ID__BASE } from '../config/ComfyHostDef'
 import { type ConfigFile } from '../config/ConfigFile'
 import { mkConfigFile } from '../config/mkConfigFile'
 import { builder, cushyFactory, type CushyFactory } from '../controls/Builder'
@@ -600,7 +600,7 @@ export class STATE {
       // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       this.virtualHostBase
       // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-      this.virtualHostFull
+      // this.virtualHostFull
       // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       this.standardHost
 
@@ -698,18 +698,18 @@ export class STATE {
       })
    }
 
-   get virtualHostFull(): HostL {
-      return this.db.host.upsert({
-         id: asHostID(vIRTUAL_HOST_ID__FULL),
-         hostname: 'localhost',
-         useHttps: SQLITE_false,
-         port: 8188,
-         name: 'virtual-ComfyUI-full',
-         isLocal: SQLITE_true,
-         isVirtual: SQLITE_true,
-         isReadonly: SQLITE_true,
-      })
-   }
+   // get virtualHostFull(): HostL {
+   //    return this.db.host.upsert({
+   //       id: asHostID(vIRTUAL_HOST_ID__FULL),
+   //       hostname: 'localhost',
+   //       useHttps: SQLITE_false,
+   //       port: 8188,
+   //       name: 'virtual-ComfyUI-full',
+   //       isLocal: SQLITE_true,
+   //       isVirtual: SQLITE_true,
+   //       isReadonly: SQLITE_true,
+   //    })
+   // }
    // ------------------------------------------------------------
    wipeOuputTopLevelImages = (): void => {
       const outputFolderPath = this.outputFolderPath

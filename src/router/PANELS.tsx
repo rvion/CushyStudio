@@ -49,7 +49,7 @@ export const panels = {
 
    // ComfyUI
    ComfyUI: PanelComfy,
-   ComfyUINodeExplorer: PanelComfyNodeExplorer,
+   'ComfyUI Node Explorer': PanelComfyNodeExplorer,
 
    // misc
    Output: PanelStep,

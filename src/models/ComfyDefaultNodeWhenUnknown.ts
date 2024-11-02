@@ -12,4 +12,5 @@ export const ComfyDefaultNodeWhenUnknown_Schema: ComfyNodeSchemaJSON = {
    name: 'UnknownNodeXX',
    output_is_list: [],
    output_node: false,
+   python_module: 'nodes',
 }
