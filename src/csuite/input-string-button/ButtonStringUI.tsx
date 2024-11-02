@@ -16,7 +16,7 @@ export type ButtonStringProps = {
 
 export const ButtonStringUI = observer(
    forwardRef(function WidgetStringUI_(
-      { getValue, setValue, ...rest }: ButtonStringProps,
+      { getValue, setValue, onKeyDown, ...rest }: ButtonStringProps,
       ref: ForwardedRef<HTMLDivElement>,
    ) {
       const prev = useMemo(() => getValue(), [])
@@ -28,6 +28,9 @@ export const ButtonStringUI = observer(
                <InputStringUI //
                   autoFocus
                   onKeyDown={(ev) => {
+                     if (onKeyDown) {
+                        onKeyDown(ev)
+                     }
                      if (ev.key === 'Escape') {
                         ev.preventDefault()
                         ev.stopPropagation()
