@@ -129,8 +129,6 @@ export const PanelCaptioningUI = observer(function PanelCaptioningUI_(p: PanelCa
    const activeImage = doc.ActiveImage.value.index ?? 0
    const activePath = doc.ActiveImage.FilePath.value
 
-   // console.log('[FD], ', activePath)
-
    return (
       <PanelUI>
          <PanelHeaderUI>
@@ -198,7 +196,6 @@ export const PanelCaptioningUI = observer(function PanelCaptioningUI_(p: PanelCa
                                           doc.ActiveImage.value.captions = updateActiveCaption(
                                              `${doc.value.activeDirectory.path}/${doc.value.activeImage.filePath.split('.').shift()}.txt`,
                                           )
-                                          console.log('[FD], ', doc.ActiveImage.value.captions)
                                        }}
                                        tooltip={data}
                                     >
