@@ -21,18 +21,14 @@ export function captioningDocSchema(b: CushySchemaBuilder) {
          captions: b
             .string()
             .list()
-            .publish(chan, (self) => self.length) //  🟢 WORKS
-            .publish(chan2, (self) => self.value), // 🔴 DOESN'T (mobx issue)
+            .publish(chan, (self) => self.length), //  🟢 WORKS
       }),
 
       activeCaption: b.fields({
          text: b.string(),
          index: b
             .number()
-            .subscribe(chan2, (captions, self) => console.log(`[🔴] OK`, captions))
-            .subscribe(chan, (captionsLen, self) => {
-               self.value = clamp(self.value, 0, captionsLen - 1)
-            }),
+            .subscribe(chan, (captionsLen, self) => (self.value = clamp(self.value, 0, captionsLen - 1))),
       }),
       activeGlobalCaption: b.group({
          items: {
