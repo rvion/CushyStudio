@@ -8,7 +8,6 @@ import { Trigger } from '../../csuite/trigger/Trigger'
 import { PanelCaptioningCtx } from './PanelCaptioningCtx'
 
 export const ctx_captionning = new CommandContext<PanelCaptioningState>('Captioning', () => {
-   console.log('[FD] LOLLLLL', regionMonitor.isOver(PanelCaptioningCtx))
    return regionMonitor.isOver(PanelCaptioningCtx) ?? Trigger.UNMATCHED
 })
 
@@ -46,7 +45,7 @@ export const cmd_captioning_selectPreviousCaption = command({
    label: 'Select Previous Caption',
    action: (ctx) => {
       ctx.doc.value.activeCaption.index -= 1
-      ctx.update()
+      // ctx.update()
       return Trigger.Success
    },
 })
@@ -59,7 +58,7 @@ export const cmd_captioning_selectNextCaption = command({
    label: 'Select Next Caption',
    action: (ctx) => {
       ctx.doc.value.activeCaption.index += 1
-      ctx.update()
+      // ctx.update()
       return Trigger.Success
    },
 })
