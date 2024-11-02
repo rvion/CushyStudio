@@ -25,13 +25,15 @@ export const PanelCaptioning = new Panel({
    header: (p: PanelCaptioningProps): PanelHeader => ({ title: 'Captioning' }),
    def: (): PanelCaptioningProps => ({
       //
-      activeImage: { index: -1, filePath: '' },
+      activeImage: { index: -1, filePath: '', captions: [] as string[] },
       activeCaption: { index: -1, text: '' },
       activeGlobalCaption: { index: -1, text: '' },
       activeDirectory: { path: '', files: [] },
       selected: new Set(),
       folderPath: '',
       exportPath: '',
+      floatingCaption: '',
+      floatingGlobalCaption: '',
    }),
    icon: 'mdiImageText',
    category: 'tools',
