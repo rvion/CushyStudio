@@ -1004,6 +1004,13 @@ video {
   -webkit-line-clamp: 3;
 }
 
+.\!line-clamp-1 {
+  overflow: hidden !important;
+  display: -webkit-box !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: 1 !important;
+}
+
 .\!block {
   display: block !important;
 }
@@ -1277,6 +1284,10 @@ video {
 
 .flex-shrink-0 {
   flex-shrink: 0;
+}
+
+.\!flex-shrink {
+  flex-shrink: 1 !important;
 }
 
 .shrink {

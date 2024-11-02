@@ -153,6 +153,8 @@ export const PanelCaptioningUI = observer(function PanelCaptioningUI_(p: PanelCa
             <BasicShelfUI tw='flex flex-col !gap-2 overflow-clip p-2' anchor='right'>
                <Frame line tw='flex flex-row'>
                   <Button
+                     tooltip={doc.FolderPath.value}
+                     expand
                      icon={'mdiFolderOpen'}
                      onClick={async () => {
                         const d = await cushy.electron.dialog.showOpenDialog({
