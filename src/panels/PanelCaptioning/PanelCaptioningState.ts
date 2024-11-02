@@ -1,44 +1,40 @@
 import type { CushySchemaBuilder } from '../../controls/Builder'
 import type { Field_list } from '../../csuite/fields/list/FieldList'
 
+import { clamp } from 'three/src/math/MathUtils'
+
 import { Channel } from '../../csuite'
 
 export type CaptioningDocSchema = ReturnType<typeof captioningDocSchema>
 export type CaptioningDoc = CaptioningDocSchema['$Field']
 
-const chan = new Channel<Field_list<X.XString>>('captioning.activeImage')
+const chan = new Channel<number>('captioning.activeImage')
+const chan2 = new Channel<string[]>('captioning.activeImage')
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function captioningDocSchema(b: CushySchemaBuilder) {
    return b.fields({
       uid: b.string(),
 
-      activeImage: b.group({
-         items: {
-            index: b.number(),
-            filePath: b.string(),
-            captions: b.string().list().publishSelf(chan),
-         },
+      activeImage: b.fields({
+         index: b.number(),
+         filePath: b.string(),
+         captions: b
+            .string()
+            .list()
+            .publish(chan, (self) => self.length), //  🟢 WORKS
+         // .publishValue(chan2), //                 🔴 DOESN'T (mobx issue)
       }),
 
-      activeCaption: b.group({
-         items: {
-            index: b.number({
-               onValueChange: (field) => {
-                  //
-                  const captions = field.consume(chan)
-
-                  if (!captions) {
-                     return
-                  }
-
-                  field.value = captions?.length
-                  // field.value = captions?.lengt
-                  // console.log('[FD] DOCC', field.root.fields.activeDirectory.value.files.length)
-               },
-            }),
-            text: b.string(),
-         },
+      activeCaption: b.fields({
+         text: b.string(),
+         index: b.number().subscribe(chan, (captionsLen, self) => {
+            const nextValue = clamp(self.value, 0, captionsLen - 1)
+            self.value = nextValue
+         }),
+         // .subscribe(chan2, (captions, self) => {
+         //    console.log(`[🔴] OK`, captions)
+         // }),
       }),
       activeGlobalCaption: b.group({
          items: {

@@ -56,22 +56,18 @@ export class PanelCaptioningState {
 
    update(): void {
       const doc = this.doc
-
-      doc.value.activeImage.index = clamp(
-         doc.value.activeImage.index,
-         0,
-         doc.value.activeDirectory.files.length - 1,
-      )
+      const val = doc.value
+      val.activeImage.index = clamp(val.activeImage.index, 0, val.activeDirectory.files.length - 1)
       doc.ActiveImage.value.filePath =
          doc.ActiveDirectory.Files.value[doc.ActiveImage.Index.value] ?? 'NO FILE PATH???'
       doc.ActiveImage.value.captions = updateActiveCaption(
-         `${doc.value.activeDirectory.path}/${doc.value.activeImage.filePath.split('.').shift()}.txt`,
+         `${val.activeDirectory.path}/${val.activeImage.filePath.split('.').shift()}.txt`,
       )
-      doc.ActiveCaption.value.index = clamp(
-         doc.ActiveCaption.value.index,
-         0,
-         doc.value.activeImage.captions.length - 1,
-      )
+      // doc.ActiveCaption.value.index = clamp(
+      //    doc.ActiveCaption.value.index,
+      //    0,
+      //    val.activeImage.captions.length - 1,
+      // )
    }
 
    updateCaptionFile(): void {
