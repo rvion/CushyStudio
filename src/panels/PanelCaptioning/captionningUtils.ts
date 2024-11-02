@@ -6,7 +6,7 @@ export function updateActiveDirectory(dirPath: string): Array<string> {
       .readdirSync(dirPath, { withFileTypes: true })
       .filter((file) => {
          const ext = path.extname(file.name).toLowerCase()
-         return ['.jpg', '.jpeg', '.png', '.gif', '.bmp'].includes(ext)
+         return ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp'].includes(ext)
       })
       .map((val) => {
          return val.name
