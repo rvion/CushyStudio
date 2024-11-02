@@ -22,23 +22,16 @@ export function captioningDocSchema(b: CushySchemaBuilder) {
             .string()
             .list()
             .publish(chan, (self) => self.length) //  🟢 WORKS
-            .publishValue(chan2), //                  🔴 DOESN'T (mobx issue)
+            .publish(chan2, (self) => self.value), // 🔴 DOESN'T (mobx issue)
       }),
 
       activeCaption: b.fields({
          text: b.string(),
          index: b
             .number()
+            .subscribe(chan2, (captions, self) => console.log(`[🔴] OK`, captions))
             .subscribe(chan, (captionsLen, self) => {
-               const nextValue = clamp(self.value, 0, captionsLen - 1)
-               // console.log(`[🤠] FUCKME`, {
-               //    captionsLen,
-               //    nextValue,
-               // })
-               self.value = nextValue
-            })
-            .subscribe(chan2, (captions, self) => {
-               console.log(`[🔴] OK`, captions)
+               self.value = clamp(self.value, 0, captionsLen - 1)
             }),
       }),
       activeGlobalCaption: b.group({
