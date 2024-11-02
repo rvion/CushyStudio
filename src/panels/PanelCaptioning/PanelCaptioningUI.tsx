@@ -73,6 +73,14 @@ export class PanelCaptioningState {
          doc.value.activeImage.captions.length - 1,
       )
    }
+
+   updateCaptionFile(): void {
+      const doc = this.doc
+      fs.writeFileSync(
+         `${doc.value.activeDirectory.path}/${doc.value.activeImage.filePath.split('.').shift()}.txt`,
+         doc.value.activeImage.captions.join('\n'),
+      )
+   }
 }
 
 export const PanelCaptioningUI = observer(function PanelCaptioningUI_(p: PanelCaptioningProps) {
@@ -270,11 +278,8 @@ export const PanelCaptioningUI = observer(function PanelCaptioningUI_(p: PanelCa
 
                               if (ev.key == 'Enter') {
                                  doc.value.activeImage.captions.push(doc.value.floatingCaption)
-                                 fs.writeFileSync(
-                                    `${doc.value.activeDirectory.path}/${doc.value.activeImage.filePath.split('.').shift()}.txt`,
-                                    doc.value.activeImage.captions.join('\n'),
-                                 )
-                                 doc.value.floatingCaption = ''
+                                 state.updateCaptionFile()
+                                 state.doc.value.floatingCaption = ''
                               }
                            }}
                            setValue={(val) => {

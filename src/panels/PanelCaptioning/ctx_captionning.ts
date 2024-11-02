@@ -18,7 +18,7 @@ export const cmd_captioning_selectPreviousImage = command({
    combos: 'pageup',
    description: '',
    label: 'Select Previous Image',
-   action: (/* HERE --> */ ctx) => {
+   action: (ctx) => {
       ctx.doc.value.activeImage.index -= 1
       ctx.update()
       return Trigger.Success
@@ -30,9 +30,35 @@ export const cmd_captioning_selectNextImage = command({
    ctx: ctx_captionning,
    combos: 'pagedown',
    description: '',
-   label: 'Select Previous Image',
-   action: (/* HERE --> */ ctx) => {
+   label: 'Select Next Image',
+   action: (ctx) => {
       ctx.doc.value.activeImage.index += 1
+      ctx.update()
+      return Trigger.Success
+   },
+})
+
+export const cmd_captioning_selectPreviousCaption = command({
+   id: 'captioning.select_previous_caption',
+   ctx: ctx_captionning,
+   combos: 'up',
+   description: '',
+   label: 'Select Previous Caption',
+   action: (ctx) => {
+      ctx.doc.value.activeCaption.index -= 1
+      ctx.update()
+      return Trigger.Success
+   },
+})
+
+export const cmd_captioning_selectNextCaption = command({
+   id: 'captioning.select_next_caption',
+   ctx: ctx_captionning,
+   combos: 'down',
+   description: '',
+   label: 'Select Next Caption',
+   action: (ctx) => {
+      ctx.doc.value.activeCaption.index += 1
       ctx.update()
       return Trigger.Success
    },
@@ -44,9 +70,10 @@ export const cmd_captioningDeleteActiveCaption = command({
    combos: 'delete',
    description: '',
    label: 'Delete Active Caption',
-   action: (/* HERE --> */ ctx) => {
-      console.log('[FD] YOOO', ctx)
-      ctx.doc.ActiveImage.Captions.removeItemAt(ctx.doc.ActiveImage.Index.value)
+   action: (ctx) => {
+      ctx.doc.ActiveImage.Captions.removeItemAt(ctx.doc.ActiveCaption.Index.value)
+      ctx.updateCaptionFile()
+      ctx.update()
       return Trigger.Success
    },
 })
