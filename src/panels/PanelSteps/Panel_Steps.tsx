@@ -3,7 +3,7 @@ import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
 import { observer } from 'mobx-react-lite'
 
 import { FormAsDropdownConfigUI } from '../../csuite/form/FormAsDropdownConfigUI'
-import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
+import { PanelUI } from '../../csuite/panel/PanelUI'
 import { clamp } from '../../csuite/utils/clamp'
 import { Panel, type PanelHeader } from '../../router/Panel'
 import { PanelStepsConf } from './Panel_StepsConf'
@@ -22,12 +22,14 @@ export const PanelSteps = new Panel({
 export const PanelStepsUI = observer(function PanelStepsUI_(p: NO_PROPS) {
    console.log(`[❓🔴] rendering > PanelStepsUI`)
    return (
-      <div className='flex h-full flex-col'>
-         <PanelHeaderUI tw='sticky top-0' icon='mdiStepForward'>
+      <PanelUI>
+         <PanelUI.Header>
             <FormAsDropdownConfigUI form={PanelStepsConf} title='Step Options' />
-         </PanelHeaderUI>
-         <StepListUI />
-      </div>
+         </PanelUI.Header>
+         <PanelUI.Content>
+            <StepListUI />
+         </PanelUI.Content>
+      </PanelUI>
    )
 })
 
