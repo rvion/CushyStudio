@@ -1,10 +1,10 @@
 import type { ImageAndMask, Runtime } from '../../../src/runtime/Runtime'
+import type { CardSuit, CardSuitPosition, CardValue } from './_cardLayouts'
 import type { NodeConfig } from 'konva/lib/Node'
-
-import { TextConfig } from 'konva/lib/shapes/Text'
+import type { TextConfig } from 'konva/lib/shapes/Text'
 
 import { exhaust } from '../../../src/csuite/utils/exhaust'
-import { CardSuit, CardSuitPosition, CardValue, getCardLayout } from './_cardLayouts'
+import { getCardLayout } from './_cardLayouts'
 
 export async function _drawCard(
    run: Runtime,
@@ -42,7 +42,7 @@ export async function _drawCard(
    }
 
    // LOGOS -----------------------------------------------------------------
-   const suitLogoImage = await (() => {
+   const suitLogoImage = await ((): Promise<HTMLImageElement> => {
       if (suit === 'diamonds')
          return canvas.createHTMLImage_fromPath('library/built-in/_assets/symbol-diamond.png')
       if (suit === 'clubs') return canvas.createHTMLImage_fromPath('library/built-in/_assets/symbol-club.png')
@@ -63,7 +63,7 @@ export async function _drawCard(
       const norm2 = normalize(pos, 1.4)
       const nthHalo = new K.Image({ image: suitLogoImage, ...norm2, opacity: 0.5 })
       base.add(nthHalo, nthSymbol)
-      base.getStage().add
+      // base.getStage().add
 
       // mask image
       const norm3 = normalize(pos, 0.8)

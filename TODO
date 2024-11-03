@@ -1,5 +1,9 @@
 SHORT TERM TODO:
 
+    ☐ Improve ComfyUI Codegen
+        ☐ Namesapce all the custom nodes in dedicatd interfaces
+        ☐ change the way to construct / access the root workflow
+
     ☐ remove all `p: {}` and other `: {}` annotations
     CORE BUGS:
         ☐ undoing choices via the undo button doesn't work properly. choices no longer there are still displayed

@@ -171,35 +171,9 @@ export class Runtime<FIELD extends Field = any> {
       return this.step.draft?.isDirty
    }
 
-   compilePrompt = (p: {
-      text: string
-      seed?: number /** for wildcard */
-      onLora: (
-         //
-         lora: Enum_LoraLoader_lora_name,
-         strength_clip: number,
-         strength_model: number,
-      ) => void
-      /** @default true */
-      printWildcards?: boolean
-   }): CompiledPrompt =>
-      compilePrompt({
-         text: p.text,
-         ctx: this.Cushy,
-         seed: p.seed,
-         onLora: p.onLora,
-         printWildcards: p.printWildcards ?? true,
-      })
-
    constructor(public step: StepL) {
       this.Cushy = step.st
       this.folder = step.st.outputFolderPath
-
-      // ⏸️ this.upload_FileAtAbsolutePath = this.st.uploader.upload_FileAtAbsolutePath.bind(this.st.uploader)
-      // ⏸️ this.upload_ImageAtURL = this.st.uploader.upload_ImageAtURL.bind(this.st.uploader)
-      // ⏸️ this.upload_dataURL = this.st.uploader.upload_dataURL.bind(this.st.uploader)
-      // ⏸️ this.upload_Asset = this.st.uploader.upload_Asset.bind(this.st.uploader)
-      // ⏸️ this.upload_Blob = this.st.uploader.upload_Blob.bind(this.st.uploader)
    }
 
    /**
@@ -259,12 +233,20 @@ export class Runtime<FIELD extends Field = any> {
       return this.Cushy.configFile.value?.loraPrompts?.[loraName]
    }
 
-   /** the default app's ComfyUI graph we're manipulating */
+   /**
+    * @deprecated
+    * the default app's ComfyUI graph we're manipulating
+    */
    get workflow(): ComfyWorkflowL {
+      // this should also be deprecated
+      //               VVVVVVVVVVVVVV
       return this.step.outputWorkflow.item
    }
 
-   /** graph buider */
+   /**
+    * @deprecated
+    * graph buider
+    */
    get nodes(): ComfyWorkflowBuilder {
       return this.workflow.builder
    }

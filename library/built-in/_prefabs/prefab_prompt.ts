@@ -17,7 +17,7 @@ export const run_prompt = (p: {
    const richPrompt = p.prompt
    let clip = p.clip ?? run.AUTO
    let ckpt = p.ckpt ?? run.AUTO
-   const CX = run.compilePrompt({
+   const CX = run.ComfyUI.compilePrompt({
       text: richPrompt.text,
       printWildcards: p.printWildcards,
       seed: p.seed,
@@ -47,7 +47,7 @@ export const run_prompt = (p: {
       promptIncludingBreaks: CX.promptIncludingBreaks,
       clip,
       ckpt,
-      get conditioning() {
+      get conditioning(): _CONDITIONING {
          if (CX.subPrompts.length > 1) {
             let start: _CONDITIONING = run.nodes.CLIPTextEncode({ clip, text: CX.subPrompts[0]! })
             for (let i = 1; i < CX.subPrompts.length; i++) {

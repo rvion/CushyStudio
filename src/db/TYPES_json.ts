@@ -147,7 +147,7 @@ export class TableInfo<
 
    // TODO: use
    hydrateJSONFields_skipMissingData = (data: any): T => {
-      if (data == null) debugger
+      // if (data == null) debugger
       for (const col of this.cols) {
          if (col.type !== 'json') continue
          const rawCol = data[col.name]
@@ -159,7 +159,7 @@ export class TableInfo<
    }
 
    hydrateJSONFields_crashOnMissingData = (data: any): T => {
-      if (data == null) debugger
+      // if (data == null) debugger
       for (const col of this.cols) {
          if (col.type !== 'json') continue
          const rawCol = data[col.name]
