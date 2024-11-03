@@ -1,7 +1,7 @@
-import type { PanelCaptioningProps } from './PanelCaptioningUI'
+import type { PanelCaptioningProps } from './PanelCaptioningProps'
 
 import { Panel, type PanelHeader } from '../../router/Panel'
-import { PanelCaptioningUI } from './PanelCaptioningUI'
+import { PanelCaptioningWrapperUI } from './PanelCaptioningProps'
 
 /** This is the Captioning Panel
  *    Structure:
@@ -21,7 +21,7 @@ import { PanelCaptioningUI } from './PanelCaptioningUI'
 
 export const PanelCaptioning = new Panel({
    name: 'Captioning',
-   widget: (): React.FC<PanelCaptioningProps> => PanelCaptioningUI,
+   widget: (): React.FC<PanelCaptioningProps> => PanelCaptioningWrapperUI,
    header: (p: PanelCaptioningProps): PanelHeader => ({ title: 'Captioning' }),
    def: (): PanelCaptioningProps => ({
       //

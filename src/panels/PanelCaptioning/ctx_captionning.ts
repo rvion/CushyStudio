@@ -1,6 +1,4 @@
-import type { UnifiedCanvas } from '../../panels/PanelCanvas/states/UnifiedCanvas'
-import type { CaptioningDoc } from './PanelCaptioningState'
-import type { PanelCaptioningState } from './PanelCaptioningUI'
+import type { PanelCaptioningState } from './PanelCaptioningState'
 
 import { command, CommandContext } from '../../csuite/commands/Command'
 import { regionMonitor } from '../../csuite/regions/RegionMonitor'
@@ -18,8 +16,7 @@ export const cmd_captioning_selectPreviousImage = command({
    description: '',
    label: 'Select Previous Image',
    action: (ctx) => {
-      ctx.doc.value.activeImage.index -= 1
-      ctx.update()
+      ctx.activeImageIndex -= 1
       return Trigger.Success
    },
 })
@@ -31,8 +28,7 @@ export const cmd_captioning_selectNextImage = command({
    description: '',
    label: 'Select Next Image',
    action: (ctx) => {
-      ctx.doc.value.activeImage.index += 1
-      ctx.update()
+      ctx.activeImageIndex += 1
       return Trigger.Success
    },
 })
@@ -44,7 +40,7 @@ export const cmd_captioning_selectPreviousCaption = command({
    description: '',
    label: 'Select Previous Caption',
    action: (ctx) => {
-      ctx.doc.value.activeCaption.index -= 1
+      ctx.activeCaptionIndex -= 1
       // ctx.update()
       return Trigger.Success
    },
@@ -57,7 +53,7 @@ export const cmd_captioning_selectNextCaption = command({
    description: '',
    label: 'Select Next Caption',
    action: (ctx) => {
-      ctx.doc.value.activeCaption.index += 1
+      ctx.activeCaptionIndex += 1
       // ctx.update()
       return Trigger.Success
    },
@@ -70,9 +66,9 @@ export const cmd_captioningDeleteActiveCaption = command({
    description: '',
    label: 'Delete Active Caption',
    action: (ctx) => {
-      ctx.doc.ActiveImage.Captions.removeItemAt(ctx.doc.ActiveCaption.Index.value)
-      ctx.updateCaptionFile()
-      ctx.update()
+      if (ctx.captions.length === 0) return Trigger.UNMATCHED
+      ctx.captions.splice(ctx.activeCaptionIndex, 1)
+      ctx.activeCaptionIndex--
       return Trigger.Success
    },
 })

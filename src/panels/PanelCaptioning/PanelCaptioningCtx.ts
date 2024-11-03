@@ -1,4 +1,4 @@
-import type { PanelCaptioningState } from './PanelCaptioningUI'
+import type { PanelCaptioningState } from './PanelCaptioningState'
 
 import { createContext, useContext } from 'react'
 

@@ -1,6 +1,6 @@
 /* (bird_d)TODO: Add Property Shelf here when rvion adds stuff I need */
 
-import type { PanelCaptioningProps } from './PanelCaptioningUI'
+import type { PanelCaptioningProps } from './PanelCaptioningProps'
 
 import { observer } from 'mobx-react-lite'
 

@@ -1,52 +1,91 @@
-import type { CushySchemaBuilder } from '../../controls/Builder'
+import { existsSync, unlinkSync, writeFileSync } from 'fs'
+import { makeAutoObservable, reaction } from 'mobx'
 
-import { clamp } from 'three/src/math/MathUtils'
+import { getCaptionsForImageAt, getImagesInDirectory } from './captionningUtils'
 
-import { Channel } from '../../csuite'
+// path means ~ abslute
+// name means ~ path.pop()
+export class PanelCaptioningState {
+   constructor() {
+      makeAutoObservable(this)
 
-export type CaptioningDocSchema = ReturnType<typeof captioningDocSchema>
-export type CaptioningDoc = CaptioningDocSchema['$Field']
+      // #region Reactions (automatic reactive behaviours)
+      // load caption file when image changes
+      reaction(
+         () => this.captionFilePath,
+         (fp) => (this.captions = getCaptionsForImageAt(fp)),
+      )
 
-const chan = new Channel<number>()
-const chan2 = new Channel<string[]>()
+      // save caption file when expected content change
+      reaction(
+         () => this.captionsFileContent,
+         (content) => this.updateCaptionFile(content),
+         { delay: 0.3 },
+      )
+   }
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export function captioningDocSchema(b: CushySchemaBuilder) {
-   return b.fields({
-      uid: b.string(),
+   // #region Current Folder
+   folderPath: Maybe<string> = null
+   get folderName(): string {
+      return this.folderPath?.split('/').pop() ?? 'No Folder'
+   }
+   get files(): string[] {
+      if (this.folderPath == null) return []
+      return getImagesInDirectory(this.folderPath)
+   }
 
-      activeImage: b.fields({
-         index: b.number(),
-         filePath: b.string(),
-         captions: b
-            .string()
-            .list()
-            .publish(chan, (self) => self.length), //  🟢 WORKS
-      }),
+   // #region Current Image
+   private _activeImageIndex: number = 0
+   get activeImageIndex(): number {
+      return this._activeImageIndex
+   }
+   set activeImageIndex(val: number) {
+      this._activeImageIndex = val
+      this.captions = getCaptionsForImageAt(this.imageNameWithExt)
+   }
 
-      activeCaption: b.fields({
-         text: b.string(),
-         index: b
-            .number()
-            .subscribe(chan, (captionsLen, self) => (self.value = clamp(self.value, 0, captionsLen - 1))),
-      }),
-      activeGlobalCaption: b.group({
-         items: {
-            index: b.number(),
-            text: b.string(),
-         },
-      }),
-      activeDirectory: b.group({
-         items: {
-            path: b.string(),
-            files: b.string().list(),
-         },
-      }),
+   get imagePath(): string {
+      return `${this.folderPath}/${this.imageNameWithExt}`
+   }
+   get imageNameWithExt(): string {
+      return this.files[this.activeImageIndex]!
+   }
+   // 🔶 wrong code
+   get imageNameWithoutExt(): string {
+      return this.imageNameWithExt.split('.').shift()!
+   }
 
-      floatingCaption: b.string(),
-      floatingGlobalCaption: b.string(),
+   // #region Current Captions
+   captions: string[] = []
 
-      selected: b.number().list(),
-      folderPath: b.string(),
-   })
+   get captionsFileContent(): string {
+      return this.captions.join('\n')
+   }
+
+   private _activeCaptionIndex: Map</* this.imagePath */ string, number> = new Map()
+   // 🎱 private _activeCaptionIndex: number = 0
+
+   get activeCaptionIndex(): number {
+      return this._activeCaptionIndex.get(this.imagePath) ?? 0
+      // 🎱 return this._activeCaptionIndex
+   }
+   set activeCaptionIndex(val: number) {
+      this._activeCaptionIndex.set(this.imagePath, val)
+      // 🎱 this._activeCaptionIndex = val
+   }
+   // #region Floating caption
+
+   floatingCaption: string = ''
+
+   // #region Utils
+   get captionFilePath(): string {
+      return `${this.folderPath}/${this.imageNameWithoutExt}.txt`
+   }
+   private updateCaptionFile(content: string): void {
+      if (content == null) {
+         if (existsSync(this.captionFilePath)) unlinkSync(this.captionFilePath)
+      } else {
+         writeFileSync(this.captionFilePath, content)
+      }
+   }
 }
