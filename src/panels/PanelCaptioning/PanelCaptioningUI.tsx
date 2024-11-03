@@ -37,7 +37,6 @@ export const PanelCaptioningUI = observer(function PanelCaptioningUI_(p: {}) {
             </div> */}
             <Frame //
                tw='flex h-full w-full items-center justify-center overflow-auto'
-               border={'red'}
                base={{ contrast: 0.1 }}
             >
                <img // Active Image
