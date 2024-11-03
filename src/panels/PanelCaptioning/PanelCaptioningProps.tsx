@@ -30,7 +30,7 @@ export const PanelCaptioningWrapperUI = observer(function PanelCaptioningUI_(p: 
       [],
    )
    return (
-      <RegionUI tw='w-full h-full' regionName='Captioning' regionCtx={PanelCaptioningCtx} regionValue={state}>
+      <RegionUI tw='h-full w-full' regionName='Captioning' regionCtx={PanelCaptioningCtx} regionValue={state}>
          <PanelCaptioningUI />
       </RegionUI>
    )

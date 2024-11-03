@@ -46,7 +46,7 @@ export const PanelCaptioningUI = observer(function PanelCaptioningUI_(p: {}) {
                   src={`file://${doc.folderPath}/${doc.imageNameWithExt}`}
                />
             </Frame>
-            <BasicShelfUI tw='flex flex-col !gap-2 overflow-auto p-2' anchor='right'>
+            <BasicShelfUI anchor='right'>
                <Frame line tw='flex flex-row'>
                   <Button
                      tooltip={doc.folderPath ?? 'no folder selected'}

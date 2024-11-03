@@ -45,6 +45,7 @@ export const BasicShelfUI = observerWC(
       return (
          <Frame
             {...rest}
+            container
             style={{
                width: isHorizontal ? uist.size : 'unset',
                height: !isHorizontal ? uist.size : 'unset',
