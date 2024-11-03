@@ -46,7 +46,7 @@ export type FrameProps = {
    line?: boolean
    linegap?: boolean
    wrap?: boolean
-   /** quick layout feature to add `flex flex-row` */
+   /** quick layout feature to add `flex flex-col` */
    col?: boolean
 
    // hovering --------------------------------------------------------
