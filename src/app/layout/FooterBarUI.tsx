@@ -11,7 +11,7 @@ export const FooterBarUI = observer(function FooterBarUI_(p: {}) {
          //
          border={0}
          base={cushy.theme.value.appbar ?? { contrast: -0.077 }}
-         tw='flex items-center px-1 py-1'
+         tw='line-clamp-1 flex items-center truncate px-1 py-1'
       >
          <ToggleButtonUI
             tw='mr-2'
