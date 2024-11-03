@@ -1621,6 +1621,10 @@ video {
   overflow: clip;
 }
 
+.overflow-visible {
+  overflow: visible;
+}
+
 .overflow-scroll {
   overflow: scroll;
 }

@@ -15,6 +15,7 @@ import { useCaptioningState } from './PanelCaptioningCtx'
 
 export const PanelCaptioningUI = observer(function PanelCaptioningUI_(p: {}) {
    const doc = useCaptioningState()
+   // const misc = usePanel().usePersistentStore<{ showDebug: boolean }>('misc', () => ({ showDebug: false }))
    return (
       <>
          <PanelHeaderUI>
@@ -26,6 +27,13 @@ export const PanelCaptioningUI = observer(function PanelCaptioningUI_(p: {}) {
             // Cropping, potentially region-based captioning in the future?
             tw='!flex-row' // Content
          >
+            {/* <div>
+               <Button
+                  icon='mdiEyeLock'
+                  onClick={() => misc.saveData({ showDebug: !misc.data.showDebug })}
+               ></Button>
+               {misc.data.showDebug ?? <pre tw='text-xs w-96 overflow-visible'>{doc.debug}</pre>}
+            </div> */}
             <Frame //
                tw='flex w-full items-center justify-center'
                base={{ contrast: 0.1 }}
@@ -122,7 +130,7 @@ export const PanelCaptioningUI = observer(function PanelCaptioningUI_(p: {}) {
                                           borderless
                                           icon='mdiMinus'
                                           onClick={(ev) => {
-                                             doc.captions.splice(ix, 1)
+                                             doc.removeCaptionAt(ix)
                                              ev.stopPropagation()
                                              ev.preventDefault()
                                           }}
