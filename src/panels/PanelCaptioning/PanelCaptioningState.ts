@@ -37,7 +37,10 @@ export class PanelCaptioningState {
          inputRefCaptionGlobal?: RefObject<HTMLInputElement>
       } = {},
    ) {
-      if (props.startFolder != null) this.folderPath = props.startFolder
+      if (props.startFolder != null) {
+         this.folderPath = props.startFolder
+         this.activeImageIndex = 0
+      }
       if (props.inputRefCaption != null) this.inputRefCaption = props.inputRefCaption
       if (props.inputRefCaptionGlobal != null) this.inputRefCaptionGlobal = props.inputRefCaptionGlobal
 
