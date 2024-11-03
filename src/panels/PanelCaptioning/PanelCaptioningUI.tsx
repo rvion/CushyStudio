@@ -1,5 +1,6 @@
 import { action, runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
+import { useRef } from 'react'
 
 import { Button } from '../../csuite/button/Button'
 import { SpacerUI } from '../../csuite/components/SpacerUI'
@@ -146,6 +147,7 @@ export const PanelCaptioningUI = observer(function PanelCaptioningUI_(p: {}) {
                         </Frame>
                      </ResizableFrame>
                      <InputStringUI //
+                        ref={doc.inputRefCaption}
                         clearable
                         icon='mdiTextBoxPlus'
                         onKeyDown={(ev) => {

@@ -71,3 +71,37 @@ export const cmd_captioningDeleteActiveCaption = command({
       return Trigger.Success
    },
 })
+
+export const cmd_captioningFocusCaptionBox = command({
+   id: 'captioning.focus_caption_box',
+   ctx: ctx_captionning,
+   combos: 'f',
+   description: '',
+   label: 'Focus Caption Input',
+   action: (ctx) => {
+      ctx.focusInput('caption')
+      return Trigger.Success
+   },
+})
+
+export const cmd_captioningFocusGlobalCaptionBox = command({
+   id: 'captioning.focus_global_caption_box',
+   ctx: ctx_captionning,
+   combos: 'shift+f',
+   description: '',
+   label: 'Focus Global Caption Input',
+   action: (ctx) => {
+      ctx.focusInput('globalCaption')
+      return Trigger.Success
+   },
+})
+
+export const CommandsCaptions = [
+   cmd_captioning_selectPreviousImage,
+   cmd_captioning_selectNextImage,
+   cmd_captioning_selectPreviousCaption,
+   cmd_captioning_selectNextCaption,
+   cmd_captioningDeleteActiveCaption,
+   cmd_captioningFocusCaptionBox,
+   cmd_captioningFocusGlobalCaptionBox,
+]

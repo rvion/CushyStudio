@@ -1,11 +1,14 @@
 import { existsSync, unlinkSync, writeFileSync } from 'fs'
 import { makeAutoObservable, reaction } from 'mobx'
+import { type MutableRefObject, type RefObject, useRef } from 'react'
 
 import { clamp } from '../../csuite/utils/clamp'
 import { getCaptionsForImageAt, getImagesInDirectory } from './captionningUtils'
 
 // path means ~ abslute
 // name means ~ path.pop()
+
+export type CaptionFocusOption = 'caption' | 'globalCaption'
 export class PanelCaptioningState {
    get debug(): string {
       return JSON.stringify(
@@ -30,9 +33,14 @@ export class PanelCaptioningState {
       private props: {
          onFolderChange?: (folderPath: string) => void
          startFolder?: Maybe<string>
+         inputRefCaption?: RefObject<HTMLInputElement>
+         inputRefCaptionGlobal?: RefObject<HTMLInputElement>
       } = {},
    ) {
       if (props.startFolder != null) this.folderPath = props.startFolder
+      if (props.inputRefCaption != null) this.inputRefCaption = props.inputRefCaption
+      if (props.inputRefCaptionGlobal != null) this.inputRefCaptionGlobal = props.inputRefCaptionGlobal
+
       makeAutoObservable(this)
    }
 
@@ -115,6 +123,28 @@ export class PanelCaptioningState {
    // #region Utils
    get captionFilePath(): string {
       return `${this.folderPath}/${this.imageNameWithoutExt}.txt`
+   }
+
+   inputRefCaption?: RefObject<HTMLInputElement>
+   inputRefCaptionGlobal?: RefObject<HTMLInputElement>
+
+   focusInput(type: CaptionFocusOption): void {
+      switch (type) {
+         case 'caption': {
+            if (!this.inputRefCaption || !this.inputRefCaption.current) {
+               return
+            }
+            this.inputRefCaption.current.focus()
+            break
+         }
+         case 'globalCaption': {
+            if (!this.inputRefCaptionGlobal || !this.inputRefCaptionGlobal.current) {
+               return
+            }
+            this.inputRefCaptionGlobal.current.focus()
+            break
+         }
+      }
    }
 
    private updateCaptionFile(content: string): void {

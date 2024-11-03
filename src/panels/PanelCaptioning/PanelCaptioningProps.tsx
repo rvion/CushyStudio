@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 
 import { RegionUI } from '../../csuite/regions/RegionUI'
 import { usePanel } from '../../router/usePanel'
@@ -16,11 +16,16 @@ export const PanelCaptioningWrapperUI = observer(function PanelCaptioningUI_(p: 
       folder: null,
    }))
 
+   const inputRefCaption = useRef<HTMLInputElement>(null)
+   const inputRefCaptionGlobal = useRef<HTMLInputElement>(null)
+
    const state = useMemo(
       () =>
          new PanelCaptioningState({
             startFolder: store.data.folder,
             onFolderChange(next): void { store.saveData({ folder: next }) }, // prettier-ignore
+            inputRefCaption,
+            inputRefCaptionGlobal,
          }),
       [],
    )
