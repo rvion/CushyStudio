@@ -6,6 +6,7 @@ import { Frame } from '../../frame/Frame'
 
 export const ShellPopoverUI = observer(function ShellPopoverUI_(p: RevealShellProps) {
    const reveal = p.reveal
+   const locked = reveal._lock
    return (
       <Frame
          // make sure the shell intercept focus events
@@ -22,13 +23,16 @@ export const ShellPopoverUI = observer(function ShellPopoverUI_(p: RevealShellPr
             '_ShellForFocusEvents',
          ]}
          roundness={cushy.theme.value.inputRoundness}
-         border={cushy.theme.value.inputBorder}
+         border={locked ? { hue: 0, contrast: 0.2, chromaBlend: 500 } : cushy.theme.value.inputBorder}
          dropShadow={cushy.theme.value.inputShadow}
          // onContextMenu={uist.open}
          onClick={(ev) => reveal.onShellClick(ev)}
          onMouseEnter={(ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => reveal.onMouseEnterTooltip(ev)}
          onMouseLeave={(ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => reveal.onMouseLeaveTooltip(ev)}
-         style={reveal.posCSS}
+         style={{
+            borderStyle: locked ? 'dashed' : 'inherit',
+            ...reveal.posCSS,
+         }}
       >
          {reveal.p.title != null && (
             <div tw='px-2'>
@@ -38,11 +42,11 @@ export const ShellPopoverUI = observer(function ShellPopoverUI_(p: RevealShellPr
          )}
 
          {p.children}
-         {reveal._lock ? (
+         {locked ? (
             <Frame // LOCK
                icon='mdiLock'
                text={{ contrast: 0.3 }}
-               tw='absolute flex items-center justify-center gap-1 text-sm italic'
+               tw='flex items-center justify-center gap-1 text-sm italic'
             >
                shift+right-click to unlock
             </Frame>
