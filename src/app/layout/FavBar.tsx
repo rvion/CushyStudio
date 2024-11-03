@@ -8,6 +8,7 @@ import { AppIllustrationUI } from '../../cards/fancycard/AppIllustrationUI'
 import { DraftIllustrationUI } from '../../cards/fancycard/DraftIllustration'
 import { Button } from '../../csuite/button/Button'
 import { Frame } from '../../csuite/frame/Frame'
+import { InputStringUI } from '../../csuite/input-string/InputStringUI'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { CreateAppPopupUI } from '../../panels/PanelWelcome/CreateAppBtnUI'
 import { useSt } from '../../state/stateContext'
@@ -54,13 +55,13 @@ export const FavBarUI = observer(function FavBarUI_(p: {
          >
             <Frame //
                base={{ contrast: -0.1 }}
-               tw='flex flex-grow flex-1 flex-col overflow-auto p-1'
+               tw='flex flex-grow flex-1 flex-col overflow-auto p-1 '
                roundness={'5px'}
             >
                {/* <PanelHeaderUI>{conf.renderAsConfigBtn()}</PanelHeaderUI> */}
                <Button
                   //
-                  tw='my-0.5 flex items-center justify-center self-center'
+                  tw='my-0.5 flex items-center justify-center self-center flex-shrink-0'
                   tooltip='SD1.5'
                   base={{ hue: 0, chromaBlend: 2, contrast: 0.3 }}
                   style={{ width: tempSize, height: tempSize }}
@@ -71,7 +72,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                   <span tw='truncate'>SD1.5</span>
                </Button>
                <Button
-                  tw='my-0.5 flex items-center justify-center self-center'
+                  tw='my-0.5 flex items-center justify-center self-center flex-shrink-0'
                   tooltip='SDXL'
                   base={{ hue: 90, chromaBlend: 2, contrast: 0.3 }}
                   style={{ width: tempSize, height: tempSize }}
@@ -87,7 +88,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                         app={cushy.db.cushy_app.get('library/built-in/SDXL/cushySDXL.tsx:1')}
                     /> */}
                <Button
-                  tw='my-0.5 flex items-center justify-center self-center'
+                  tw='my-0.5 flex items-center justify-center self-center flex-shrink-0'
                   tooltip='NoobAI'
                   base={{ hue: 90, chromaBlend: 2, contrast: 0.3 }}
                   style={{
@@ -107,7 +108,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                   <span tw='truncate'>NoobAI</span>
                </Button>
                <Button
-                  tw='my-0.5 flex items-center justify-center self-center'
+                  tw='my-0.5 flex items-center justify-center self-center flex-shrink-0'
                   tooltip='SD3'
                   base={{ hue: 180, chromaBlend: 2, contrast: 0.3 }}
                   style={{ width: tempSize, height: tempSize }}
@@ -118,7 +119,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                   <span tw='truncate'>SD3</span>
                </Button>
                <Button
-                  tw='my-0.5 flex items-center justify-center self-center truncate'
+                  tw='my-0.5 flex items-center justify-center self-center truncate flex-shrink-0'
                   tooltip='Cascade'
                   base={{ hue: 210, chromaBlend: 2, contrast: 0.3 }}
                   style={{ width: tempSize, height: tempSize }}
@@ -127,7 +128,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                   <span tw='truncate'>Cascade</span>
                </Button>
                <Button
-                  tw='my-0.5 flex items-center justify-center self-center'
+                  tw='my-0.5 flex items-center justify-center self-center flex-shrink-0'
                   tooltip='FLUX'
                   base={{ hue: 270, chromaBlend: 2, contrast: 0.3 }}
                   style={{ width: tempSize, height: tempSize }}
@@ -139,7 +140,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                </Button>
                <Button
                   tooltip='Slay the Spire Card Generator'
-                  tw='my-0.5 flex items-center justify-center self-center'
+                  tw='my-0.5 flex items-center justify-center self-center flex-shrink-0'
                   base={{ hue: 270, chromaBlend: 2, contrast: 0.3 }}
                   style={{ width: tempSize, height: tempSize }}
                   onClick={() =>
@@ -160,7 +161,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                   <Button
                      square
                      style={{ width: tempSize, height: tempSize, fontSize: sizeStr }}
-                     tw='content-center items-center'
+                     tw='content-center items-center flex-shrink-0'
                      icon='mdiPlus'
                      iconSize={tempSize}
                   />
@@ -173,21 +174,21 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                      {st.favoriteApps.map((app) => (
                         <Frame
                            border={20}
-                           hover
                            tooltip={app.name}
-                           // tw='rounded border border-base-300 overflow-clip box-content'
+                           roundness={cushy.theme.value.inputRoundness}
                            key={app.id}
                            style={{ width: tempSize, height: tempSize }}
+                           tw='flex overflow-clip object-contain'
                         >
                            <RevealUI
-                              showDelay={0}
-                              trigger='hover'
+                              // showDelay={0}
+                              trigger='click'
                               placement='right'
                               content={() => <AppDraftsQuickListUI app={app} />}
+                              shell='popover'
                            >
                               <AppIllustrationUI //
                                  className={'!rounded-none'}
-                                 size={tempSize}
                                  app={app}
                               />
                            </RevealUI>
@@ -214,25 +215,22 @@ export const AppDraftsQuickListUI = observer(function AppDraftsQuickListUI_(p: {
               return draft.name.toLowerCase().indexOf(filterText) != -1
            })
    return (
-      <div className='MENU-ROOT'>
-         <div className='MENU-HEADER'>
+      <>
+         <Frame tw='flex w-full flex-1 flex-grow' line>
             <Button
                tw={[app.isFavorite ? '!text-yellow-500' : null, '!peer-hover:text-red-500']}
                onClick={() => app.setFavorite(!app.isFavorite)}
                icon='mdiStar'
                square
             />
-            <div tw='border-base-100 flex-1 flex-grow content-center justify-center border-l border-r pt-1 text-center'>
-               {app.name}
-            </div>
+            <span tw='flex-grow truncate text-center'>{app.name}</span>
             <Button //
                onClick={() => app.createDraft()}
-               size='sm'
                icon='mdiPlus'
                square
             />
-         </div>
-         <div className='MENU-CONTENT' tw='flex max-w-md flex-col gap-1'>
+         </Frame>
+         <Frame tw='flex max-w-md flex-col gap-1'>
             {app.description ? (
                <div //Description
                   tw='flex-1 rounded p-1 text-sm italic'
@@ -243,36 +241,37 @@ export const AppDraftsQuickListUI = observer(function AppDraftsQuickListUI_(p: {
             <div //App Grid Container
                tw='flex-col rounded p-2'
             >
-               <div //Filter Input
-                  tw='flex rounded pb-2'
-               >
-                  <input
+               <Frame line>
+                  <InputStringUI
                      tw='csuite-basic-input w-full rounded-r-none'
-                     value={filterText}
-                     onChange={(ev) => setFilterText(ev.currentTarget.value)}
+                     setValue={(val) => {
+                        setFilterText(val)
+                     }}
+                     getValue={() => filterText}
                      placeholder='Filter Drafts'
-                  ></input>
+                  ></InputStringUI>
                   <Button icon='mdiCancel' onClick={(ev) => setFilterText('')}></Button>
-               </div>
-               <div //App Grid Container
-                  tw='grid max-h-96 grid-cols-3 gap-2 overflow-scroll'
+               </Frame>
+               <Frame //App Grid Container
+                  base={{ contrast: -0.1 }}
+                  tw='grid h-[20.5rem] grid-cols-3 gap-1 overflow-auto p-1'
                >
                   {filteredApps.map((draft) => (
-                     <div
+                     <Button //
+                        size='inside'
                         key={draft.id}
-                        tw='border-base-100 flex cursor-pointer justify-center rounded-md border p-1 brightness-95 hover:brightness-110'
                      >
                         <div key={draft.id} onClick={() => draft.openOrFocusTab()}>
                            <div tw='flex justify-center self-center p-1 text-center'>
-                              <DraftIllustrationUI size='8rem' draft={draft} />
+                              <DraftIllustrationUI size='7.77rem' draft={draft} />
                            </div>
-                           <div tw='max-w-32 overflow-clip truncate text-center text-sm'>{draft.name}</div>
+                           <span tw='truncate text-center'>{draft.name}</span>
                         </div>
-                     </div>
+                     </Button>
                   ))}
-               </div>
+               </Frame>
             </div>
-         </div>
-      </div>
+         </Frame>
+      </>
    )
 })
