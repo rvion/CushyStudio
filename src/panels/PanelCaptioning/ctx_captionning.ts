@@ -67,8 +67,7 @@ export const cmd_captioningDeleteActiveCaption = command({
    label: 'Delete Active Caption',
    action: (ctx) => {
       if (ctx.captions.length === 0) return Trigger.UNMATCHED
-      ctx.captions.splice(ctx.activeCaptionIndex, 1)
-      ctx.activeCaptionIndex--
+      ctx.removeCaptionAt(ctx.activeCaptionIndex)
       return Trigger.Success
    },
 })
