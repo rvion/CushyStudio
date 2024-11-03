@@ -1,7 +1,8 @@
 import { observer } from 'mobx-react-lite'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 
 import { RegionUI } from '../../csuite/regions/RegionUI'
+import { usePanel } from '../../router/usePanel'
 import { PanelCaptioningCtx } from './PanelCaptioningCtx'
 import { PanelCaptioningState } from './PanelCaptioningState'
 import { PanelCaptioningUI } from './PanelCaptioningUI'
@@ -9,8 +10,20 @@ import { PanelCaptioningUI } from './PanelCaptioningUI'
 export type PanelCaptioningProps = {}
 
 export const PanelCaptioningWrapperUI = observer(function PanelCaptioningUI_(p: PanelCaptioningProps) {
-   const state = useMemo(() => new PanelCaptioningState(), [])
-   const doc = state
+   // 💬 2024-11-03 rvion: save current folder to panel block storage, so we can restore it
+   // both on hot-reload, or regular app restart
+   const store = usePanel().usePersistentStore<{ folder: string | null }>('curr-folder', () => ({
+      folder: null,
+   }))
+
+   const state = useMemo(
+      () =>
+         new PanelCaptioningState({
+            startFolder: store.data.folder,
+            onFolderChange(next): void { store.saveData({ folder: next }) }, // prettier-ignore
+         }),
+      [],
+   )
    return (
       <RegionUI regionName='Captioning' regionCtx={PanelCaptioningCtx} regionValue={state}>
          <PanelCaptioningUI />

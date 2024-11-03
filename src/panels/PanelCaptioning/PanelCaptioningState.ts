@@ -1,12 +1,19 @@
 import { existsSync, unlinkSync, writeFileSync } from 'fs'
 import { makeAutoObservable, reaction } from 'mobx'
 
+import { clamp } from '../../csuite/utils/clamp'
 import { getCaptionsForImageAt, getImagesInDirectory } from './captionningUtils'
 
 // path means ~ abslute
 // name means ~ path.pop()
 export class PanelCaptioningState {
-   constructor() {
+   constructor(
+      private props: {
+         onFolderChange?: (folderPath: string) => void
+         startFolder?: Maybe<string>
+      } = {},
+   ) {
+      if (props.startFolder != null) this.folderPath = props.startFolder
       makeAutoObservable(this)
 
       // #region Reactions (automatic reactive behaviours)
@@ -25,7 +32,15 @@ export class PanelCaptioningState {
    }
 
    // #region Current Folder
-   folderPath: Maybe<string> = null
+   private _folderPath: Maybe<string> = null
+   get folderPath(): Maybe<string> {
+      return this._folderPath
+   }
+   set folderPath(val: Maybe<string>) {
+      this._folderPath = val
+      if (val != null) this.props.onFolderChange?.(val)
+   }
+
    get folderName(): string {
       return this.folderPath?.split('/').pop() ?? 'No Folder'
    }
@@ -40,6 +55,7 @@ export class PanelCaptioningState {
       return this._activeImageIndex
    }
    set activeImageIndex(val: number) {
+      val = clamp(val, 0, this.files.length - 1)
       this._activeImageIndex = val
       this.captions = getCaptionsForImageAt(this.imageNameWithExt)
    }
@@ -56,6 +72,10 @@ export class PanelCaptioningState {
    }
 
    // #region Current Captions
+   addCaption(newCaption: string): void {
+      if (this.captions.includes(newCaption)) return
+      this.captions.push(newCaption)
+   }
    captions: string[] = []
 
    get captionsFileContent(): string {
@@ -70,6 +90,7 @@ export class PanelCaptioningState {
       // 🎱 return this._activeCaptionIndex
    }
    set activeCaptionIndex(val: number) {
+      val = clamp(val, 0, this.captions.length - 1)
       this._activeCaptionIndex.set(this.imagePath, val)
       // 🎱 this._activeCaptionIndex = val
    }

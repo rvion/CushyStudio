@@ -44,7 +44,7 @@ export const PanelCaptioningUI = observer(function PanelCaptioningUI_(p: {}) {
                      icon={'mdiFolderOpen'}
                      onClick={async () => {
                         const d = await cushy.electron.dialog.showOpenDialog({
-                           properties: ['openFile', 'openDirectory'],
+                           properties: ['openDirectory'],
                         })
                         if (d.canceled) return
                         // TODO:  if is File, get directory instead and focus file
@@ -55,6 +55,10 @@ export const PanelCaptioningUI = observer(function PanelCaptioningUI_(p: {}) {
                   >
                      {doc.folderName}
                   </Button>
+                  {/* <Button
+                     icon='mdiOpenInNew'
+                     onClick={() => revealInFileExplorer(doc.folderPath)}
+                  ></Button> */}
                </Frame>
 
                {doc.folderPath ? (
@@ -140,7 +144,7 @@ export const PanelCaptioningUI = observer(function PanelCaptioningUI_(p: {}) {
                            if (!doc.floatingCaption) return
                            if (ev.key == 'Enter') {
                               runInAction(() => {
-                                 doc.captions.push(doc.floatingCaption)
+                                 doc.addCaption(doc.floatingCaption)
                                  doc.floatingCaption = ''
                               })
                            }
