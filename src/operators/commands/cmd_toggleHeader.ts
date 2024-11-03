@@ -17,6 +17,15 @@ export const ctx_menu = new CommandContext<Menu>('OverMenu', () => {
          builder.SimpleMenuAction({ label: 'C', onClick: () => console.log(`[🤠] A`) }),
          builder.SimpleMenuAction({ label: 'B', onClick: () => console.log(`[🤠] B`) }),
          builder.SimpleMenuAction({ label: 'C', onClick: () => console.log(`[🤠] C`) }),
+         new Menu({
+            title: 'D',
+            entries: (builder): MenuEntry[] => [
+               builder.SimpleMenuAction({ label: 'D1', onClick: () => console.log(`[🤠] D1`) }),
+               builder.SimpleMenuAction({ label: 'D2', onClick: () => console.log(`[🤠] D2`) }),
+               builder.SimpleMenuAction({ label: 'D3', onClick: () => console.log(`[🤠] D3`) }),
+            ],
+            icon: 'mdiKeyboardCaps',
+         }),
       ],
       icon: 'mdiKeyboardCaps',
    })
