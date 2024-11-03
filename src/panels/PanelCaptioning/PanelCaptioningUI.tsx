@@ -18,7 +18,7 @@ export const PanelCaptioningUI = observer(function PanelCaptioningUI_(p: {}) {
    const doc = useCaptioningState()
    // const misc = usePanel().usePersistentStore<{ showDebug: boolean }>('misc', () => ({ showDebug: false }))
    return (
-      <>
+      <PanelUI>
          <PanelHeaderUI>
             <SpacerUI />
 
@@ -36,11 +36,12 @@ export const PanelCaptioningUI = observer(function PanelCaptioningUI_(p: {}) {
                {misc.data.showDebug ?? <pre tw='text-xs w-96 overflow-visible'>{doc.debug}</pre>}
             </div> */}
             <Frame //
-               tw='flex w-full items-center justify-center'
+               tw='flex h-full w-full items-center justify-center overflow-auto'
+               border={'red'}
                base={{ contrast: 0.1 }}
             >
                <img // Active Image
-                  tw='select-none'
+                  tw='h-full w-full select-none object-contain'
                   draggable={false}
                   src={`file://${doc.folderPath}/${doc.imageNameWithExt}`}
                />
@@ -168,6 +169,6 @@ export const PanelCaptioningUI = observer(function PanelCaptioningUI_(p: {}) {
                )}
             </BasicShelfUI>
          </PanelUI.Content>
-      </>
+      </PanelUI>
    )
 })
