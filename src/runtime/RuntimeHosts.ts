@@ -13,7 +13,7 @@ export class RuntimeHosts {
     * download a file in a host
     * alias to `host.downloadFileIfMissing(url, path)`
     */
-   downloadFileIfMissing = async (p: { host: HostL; url: string; path: string }) => {
+   downloadFileIfMissing = async (p: { host: HostL; url: string; path: string }): Promise<true> => {
       return p.host.downloadFileIfMissing(p.url, p.path)
    }
 

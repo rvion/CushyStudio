@@ -25,11 +25,11 @@ import {
 } from './RevealProps'
 import { global_RevealStack } from './RevealStack'
 
-export const defaultShowDelay_whenRoot = 100
-export const defaultHideDelay_whenRoot = 300
+export const defaultShowDelay_whenRoot: 100 = 100
+export const defaultHideDelay_whenRoot: 300 = 300
 
-export const defaultShowDelay_whenNested = 0
-export const defaultHideDelay_whenNested = 0
+export const defaultShowDelay_whenNested: 0 = 0
+export const defaultHideDelay_whenNested: 0 = 0
 
 export class RevealState {
    static shared: { current: Maybe<RevealState> } = observable({ current: null }, { current: observable.ref })
@@ -168,8 +168,8 @@ export class RevealState {
    }
 
    // ------------------------------------------------
-   inAnchor = false
-   inTooltip = false
+   inAnchor: boolean = false
+   inTooltip: boolean = false
    subRevealsCurrentlyVisible = new Set<number>()
 
    /** how deep in the reveal stack we are */
@@ -323,7 +323,7 @@ export class RevealState {
    }
 
    // lock --------------------------------------------
-   _lock = false
+   _lock: boolean = false
    toggleLock = (): void => {
       this._lock = !this._lock
    }
@@ -573,7 +573,7 @@ export class RevealState {
       this.subRevealsCurrentlyVisible.delete(depth)
    }
 
-   lastOpenClose = 0
+   lastOpenClose: number = 0
    get delaySinceLastOpenClose(): number {
       return Date.now() - this.lastOpenClose
    }

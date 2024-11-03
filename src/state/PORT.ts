@@ -1,6 +1,6 @@
-const mode = process.env['CUSHY_RUN_MODE']
+const mode: string | undefined = process.env['CUSHY_RUN_MODE']
 if (mode == null) throw new Error('CUSHY_RUN_MODE is not defined')
-const allowedModes = ['dev', 'dist']
+const allowedModes: string[] = ['dev', 'dist']
 if (!allowedModes.includes(mode)) {
    console.error(`CUSHY_RUN_MODE is not allowed: ${mode}`)
    process.exit(1)

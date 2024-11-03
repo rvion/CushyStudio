@@ -12,7 +12,7 @@ export class Stroke {
    x: number = 0
    y: number = 0
 
-   reset({ x, y }: { x: number; y: number } = { x: 0, y: 0 }) {
+   reset({ x, y }: { x: number; y: number } = { x: 0, y: 0 }): void {
       this.startX = x
       this.startY = y
       this.prevX = x

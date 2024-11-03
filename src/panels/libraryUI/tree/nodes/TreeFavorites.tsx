@@ -10,11 +10,13 @@ import { TreeDraft } from './TreeDraft'
 import { TreeDraftFolder } from './TreeDraftFolders'
 
 export class TreeFavoriteApps implements ITreeEntry {
-   isFolder = true
-   icon = (<span className='material-symbols-outlined _text-yellow-500'>star</span>)
-   name = 'Favorite Apps'
+   isFolder: boolean = true
+   icon: JSX.Element = (<span className='material-symbols-outlined _text-yellow-500'>star</span>)
+   name: string = 'Favorite Apps'
    constructor(p: {}) {}
-   onPrimaryAction = (n: TreeNode) => n.toggle()
+   onPrimaryAction(n: TreeNode): void {
+      n.toggle()
+   }
    children = (): ITreeElement<CushyAppID>[] => {
       return cushy.favoriteApps.map(
          (app): ITreeElement<CushyAppID> => ({ ctor: TreeApp, key: app.id, props: app.id }),
@@ -23,11 +25,13 @@ export class TreeFavoriteApps implements ITreeEntry {
 }
 
 export class TreeFavoriteDrafts implements ITreeEntry {
-   isFolder = true
-   icon = (<span className='material-symbols-outlined _text-blue-500'>star</span>)
-   name = 'Favorite Drafts'
+   isFolder: boolean = true
+   icon: JSX.Element = (<span className='material-symbols-outlined _text-blue-500'>star</span>)
+   name: string = 'Favorite Drafts'
    constructor(p: {}) {}
-   onPrimaryAction = (n: TreeNode) => n.toggle()
+   onPrimaryAction(n: TreeNode): void {
+      n.toggle()
+   }
    children = (): ITreeElement<DraftL>[] => {
       return cushy.favoriteDrafts.map(
          (draft): ITreeElement<DraftL> => ({ ctor: TreeDraft, key: draft.id, props: draft }),
@@ -36,11 +40,13 @@ export class TreeFavoriteDrafts implements ITreeEntry {
 }
 
 export class TreeAllDrafts implements ITreeEntry {
-   isFolder = true
-   icon = (<span className='material-symbols-outlined _text-blue-500'>palette</span>)
-   name = 'All Drafts'
+   isFolder: boolean = true
+   icon: JSX.Element = (<span className='material-symbols-outlined _text-blue-500'>palette</span>)
+   name: string = 'All Drafts'
    constructor(p: {}) {}
-   onPrimaryAction = (n: TreeNode) => n.toggle()
+   onPrimaryAction(n: TreeNode): void {
+      n.toggle()
+   }
    children = (): ITreeElement<any>[] => {
       const vh = cushy.virtualDraftHierarchy
       const subFolders = vh
@@ -67,11 +73,13 @@ export class TreeAllDrafts implements ITreeEntry {
 }
 
 export class TreeAllApps implements ITreeEntry {
-   isFolder = true
-   icon = (<span className='material-symbols-outlined _text-yellow-500'>palette</span>)
-   name = 'All Apps'
+   isFolder: boolean = true
+   icon: JSX.Element = (<span className='material-symbols-outlined _text-yellow-500'>palette</span>)
+   name: string = 'All Apps'
    constructor(p: {}) {}
-   onPrimaryAction = (n: TreeNode) => n.toggle()
+   onPrimaryAction(n: TreeNode): void {
+      n.toggle()
+   }
    children = (): ITreeElement<any>[] => {
       const vh = cushy.virtualAppHierarchy
       return [

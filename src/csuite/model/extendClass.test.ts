@@ -100,8 +100,8 @@ describe('field customizations', () => {
          type T0 = { foo: S.SNumber }
          class Foo2 extends Field_group<Field_group_types<T0>> {
             $Field!: Foo2
-            static HELLO = 'WORLD'
-            volatile1 = 12
+            static HELLO: string = 'WORLD'
+            volatile1: number = 12
             get volatile2(): number {
                return 33
             }
@@ -155,8 +155,8 @@ describe('field customizations', () => {
                super(...args)
                this.autoExtendObservable()
             }
-            static HELLO = 'WORLD'
-            volatile1 = 12
+            static HELLO: string = 'WORLD'
+            volatile1: number = 12
             get volatile2(): number {
                return 33
             }

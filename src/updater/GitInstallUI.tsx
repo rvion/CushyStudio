@@ -4,8 +4,11 @@ import { observer } from 'mobx-react-lite'
 
 import { Button } from '../csuite/button/Button'
 
-export const GitInstallUI = observer(function GitInstallUI_(p: { updater: GitManagedFolder }) {
-   const updater = p.updater
+export type GitInstallUIProps = {
+   updater: GitManagedFolder
+}
+
+export const GitInstallUI: React.FC<GitInstallUIProps> = observer(function GitInstallUI_({ updater }) {
    return (
       <Button
          loading={updater.currentAction != null}

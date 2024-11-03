@@ -11,7 +11,7 @@ import { onKeyDownHandlers } from './TreeShortcuts'
 
 export class TreeView {
    /** treeview id; only for debugging purpose */
-   id = nanoid(4)
+   id: string = nanoid(4)
 
    constructor(
       public tree: Tree,

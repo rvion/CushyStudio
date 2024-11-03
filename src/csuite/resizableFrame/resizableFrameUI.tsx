@@ -11,10 +11,10 @@ import { PanelHeaderUI } from '../panel/PanelHeaderUI'
 import { window_addEventListener } from '../utils/window_addEventListenerAction'
 
 /* Used once per widget since they should not conflict. */
-let startValue = 0
-let offset = 0
+let startValue: number = 0
+let offset: number = 0
 
-const defaultSize = 200
+const defaultSize: 200 = 200
 type ResizableFrameProps = {
    /**
     * The size of the container content

@@ -11,17 +11,17 @@ export class CSuite_ThemeLoco implements CSuiteConfig {
    }
 
    // tooltip behaviour
-   tooltipDelay = 0
+   tooltipDelay: number = 0
 
    // form behaviour
-   clickAndSlideMultiplicator = 1
-   showWidgetUndo = false
-   showWidgetMenu = false
-   showWidgetDiff = false
-   showFoldButtons = false
-   showToggleButtonBox = false
-   showSelectIcons = false
-   showExpandCarets = false
+   clickAndSlideMultiplicator: number = 1
+   showWidgetUndo: boolean = false
+   showWidgetMenu: boolean = false
+   showWidgetDiff: boolean = false
+   showFoldButtons: boolean = false
+   showToggleButtonBox: boolean = false
+   showSelectIcons: boolean = false
+   showExpandCarets: boolean = false
    labellayout: 'fixed-left' | 'fixed-right' | 'fluid' = 'fixed-left'
 
    // core theme colors
@@ -50,5 +50,5 @@ export class CSuite_ThemeLoco implements CSuiteConfig {
    showWidgetExtra: boolean = true
    truncateLabels?: boolean | undefined = false
    fieldGroups = {}
-   enableRollingClick = false
+   enableRollingClick: boolean = false
 }

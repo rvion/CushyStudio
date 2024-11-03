@@ -64,7 +64,7 @@ export class Field_enum<O extends EnumValue> extends Field<Field_enum_types<O>> 
 
    // #region UI
    DefaultHeaderUI = WidgetEnumUI
-   DefaultBodyUI = undefined
+   DefaultBodyUI: undefined = undefined
 
    get defaultValue(): Field_enum_value<O> {
       return this.config.default ?? (this.possibleValues[0] as any)

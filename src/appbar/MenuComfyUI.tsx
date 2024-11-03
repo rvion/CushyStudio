@@ -9,7 +9,7 @@ export const menuComfyUI2: Menu = defineMenu({
    entries: (b) => [
       //
       ...panels.ComfyUI.menuEntries,
-      ...panels.ComfyUINodeExplorer.menuEntries,
+      ...panels['ComfyUI Node Explorer'].menuEntries,
       menuDivider,
       b.SimpleMenuAction({
          label: 'Hosts',

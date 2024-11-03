@@ -7,7 +7,8 @@ export const ShellInputOnly = observer(function ShellInputOnly(p: CompiledRender
    const field = p.field
    const utils = p.presenter.utils
    return (
-      <div tw='row'>
+      <div tw='row' className={p.className ?? undefined}>
+         {/* {utils.renderFCOrNode(p.Header, p)} */}
          {utils.renderFCOrNodeWithWrapper(p.Header, p, p.ContainerForHeader, {
             className: p.classNameAroundBodyAndHeader ?? undefined,
             field,

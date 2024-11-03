@@ -91,9 +91,9 @@ declare global {
       type Field<K extends FieldTypes = FieldTypes> = import('../csuite/model/Field').Field<K>
       // eslint-disable-next-line @typescript-eslint/consistent-type-imports
       type FieldTypes = import('../csuite/model/$FieldTypes').FieldTypes
+      // prettier-ignore
       // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-      type BaseSchema<out TYPES extends FieldTypes = FieldTypes> =
-         import('../csuite/model/BaseSchema').BaseSchema<TYPES>
+      type BaseSchema<out TYPES extends FieldTypes = FieldTypes> = import('../csuite/model/BaseSchema').BaseSchema<TYPES>
       // eslint-disable-next-line @typescript-eslint/consistent-type-imports
       type Runtime = import('../runtime/Runtime').Runtime
 
@@ -505,8 +505,10 @@ export class CushySchemaBuilder implements IBuilder {
       return this.selectOne<OX, DraftID>({
          getIdFromValue: (v): DraftID => v.id,
          getOptionFromId: (id: DraftID): SelectOption<OX, DraftID> => {
-            const app = bang(cushy.db.draft.selectOne((q) => q.where('id', 'is', id)))
-            const value = { id: app.id, label: app.name }
+            const draft = cushy.db.draft.selectOne((q) => q.where('id', 'is', id))
+            if (!draft)
+               return { id: 'NotFound', label: 'Not Found', value: { id: 'NotFound', label: 'Not Found' } }
+            const value = { id: draft.id, label: draft.name }
             return { ...value, value: value }
          },
          getValueFromId: (id: DraftID): OX => {

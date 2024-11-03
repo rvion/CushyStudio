@@ -17,9 +17,9 @@ export class UnifiedMask {
    show = (): Konva.Layer => this.layer.show()
    readonly st: STATE
    readonly layer: Layer
-   readonly uid = nanoid(4)
+   readonly uid: string = nanoid(4)
    name: string = `mask-${this.uid}`
-   color = randomColor()
+   color: string = randomColor()
    image: Maybe<Image> = null
 
    saveMask = (): MediaImageL => {

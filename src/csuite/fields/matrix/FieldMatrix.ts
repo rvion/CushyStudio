@@ -81,7 +81,7 @@ export class Field_matrix extends Field<Field_matrix_types> {
 
    // #region UI
    DefaultHeaderUI = WidgetMatrixUI
-   DefaultBodyUI = undefined
+   DefaultBodyUI: undefined = undefined
 
    // #region Serial
    protected setOwnSerial(next: Field_matrix_serial): void {

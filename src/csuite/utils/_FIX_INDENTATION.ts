@@ -1,7 +1,7 @@
 // quick helper for markdown
 // todo: 🦊 2023-10-29 move elsewhere
 
-export const _FIX_INDENTATION = (str: TemplateStringsArray) => {
+export const _FIX_INDENTATION = (str: TemplateStringsArray): string => {
    if (str.length === 0) return ''
    // split string into lines
    let lines = str[0]!.split('\n').slice(1)

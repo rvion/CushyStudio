@@ -94,7 +94,7 @@ export class Field_button<K> extends Field<Field_button_types<K>> {
 
    // #region UI
    readonly DefaultHeaderUI = WidgetButtonUI
-   readonly DefaultBodyUI = undefined
+   readonly DefaultBodyUI: undefined = undefined
 
    // #region SERIAL
    protected setOwnSerial(next: Field_button_serial): void {

@@ -23,7 +23,7 @@ export type CSuiteConfigOverride = {
    isDev?: boolean
 }
 
-export const configureCsuite = (xx: CSuiteConfigOverride) => {
+export const configureCsuite = (xx: CSuiteConfigOverride): void => {
    const { lang, langDefinition, isDev } = xx
 
    // assign lang by name

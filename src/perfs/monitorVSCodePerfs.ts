@@ -15,7 +15,7 @@ const args = arg({
    '-c': '--clean-traces',
 })
 
-const codeLogsDir = path.join(process.env.HOME!, 'Library/Application Support/Code/logs')
+const codeLogsDir: string = path.join(process.env.HOME!, 'Library/Application Support/Code/logs')
 if (!fs.existsSync(codeLogsDir)) throw new Error('❌ no VSCode logs directory found')
 
 ensureTraceIsEnabled()
@@ -45,16 +45,16 @@ const PENDING_DIAGNOSTIC: {
 // PROCESS DIAGNOSTIC FILE ----------------
 
 // e.g. '/Users/globi/Library/Application Support/Code/logs/20240415T115212/window2/exthost/vscode.typescript-language-features/tsserver-log-5mLfBS'
-const tracePath = options.traceFile
+const tracePath: string = options.traceFile
 
 const foreverRead = spawn('tail', ['-f', tracePath], { stdio: 'pipe' })
-let content = ''
+let content: string = ''
 
 foreverRead.stdout.on('data', (chunk) => {
    const utf8 = chunk.toString('utf-8')
    content += utf8
    let isCompleting = false
-   const processLine = (line: string) => {
+   const processLine = (line: string): void => {
       try {
          const x: TsDiagnostic = JSON.parse(line.endsWith(',') ? line.slice(0, -1) : line)
          // console.log('⏰', JSON.stringify(x), chalk.gray.italic(`(${content.length})`))
@@ -101,9 +101,9 @@ foreverRead.stdout.on('data', (chunk) => {
    while (consumeFullLine());
 })
 
-const CREATE_VIDEO = false
+const CREATE_VIDEO: false = false
 
-const readFile = (path: string) => {
+const readFile = (path: string): string => {
    // if (fileCache.has(path)) return fileCache.get(path)!
    const content = fs.readFileSync(path, 'utf-8')
    // fileCache.set(path, content)
@@ -111,7 +111,7 @@ const readFile = (path: string) => {
 }
 
 /** generate a nice diagnostic */
-export const processRequest = (JSONS: TsDiagnostic[]) => {
+export const processRequest = (JSONS: TsDiagnostic[]): void => {
    console.log(`    | ${JSONS.length} events received`)
    console.log(
       `    | ` +
@@ -149,7 +149,7 @@ export const processRequest = (JSONS: TsDiagnostic[]) => {
    }
 }
 
-export const withGutter = (code: string) => {
+export const withGutter = (code: string): string => {
    const rawLines = code.split('\n')
    const nonEmptyFirstLineIdx = rawLines.findIndex((l) => l.trim().length > 0)
    const lines = rawLines.slice(nonEmptyFirstLineIdx === -1 ? 0 : nonEmptyFirstLineIdx)
@@ -158,7 +158,7 @@ export const withGutter = (code: string) => {
       .join('\n')
 }
 
-function DEBUG_EV(x: TsDiagnostic) {
+function DEBUG_EV(x: TsDiagnostic): void {
    const longThreshold = 50_000
    const maxSeverity = 20
 
@@ -263,7 +263,7 @@ function* allTraceFiles(): Generator<string> {
    }
 }
 
-function ensureTraceIsEnabled() {
+function ensureTraceIsEnabled(): void {
    const settingsPath = '.vscode/settings.json'
    const settings = fs.readFileSync(settingsPath, 'utf-8')
 

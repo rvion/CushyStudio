@@ -7,10 +7,10 @@ import { searchMatches } from '../../csuite/utils/searchMatches'
 
 export class ComfyNodeExplorerState {
    // globalSearch = ''
-   name = ''
-   input = ''
-   output = ''
-   category = ''
+   name: string = ''
+   input: string = ''
+   output: string = ''
+   category: string = ''
    constructor(public pj: ProjectL) {
       makeAutoObservable(this)
    }

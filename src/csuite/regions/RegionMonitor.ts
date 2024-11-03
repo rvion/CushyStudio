@@ -47,8 +47,8 @@ export class RegionMonitor {
    hoveredRegion: Maybe<HoveredRegion> = null
    hoveredPanel: Maybe<string> = null
 
-   mouseX = 0
-   mouseY = 0
+   mouseX: number = 0
+   mouseY: number = 0
 
    get hoveredCtx(): Maybe<HoveredCtx> {
       const id = this.hoveredRegion?.id
@@ -65,11 +65,11 @@ export class RegionMonitor {
       return null
    }
 
-   ctrl = false
-   alt = false
-   shift = false
-   cmd = false
-   mod = false
+   ctrl: boolean = false
+   alt: boolean = false
+   shift: boolean = false
+   cmd: boolean = false
+   mod: boolean = false
 
    get debugMods(): string {
       const out: string[] = []

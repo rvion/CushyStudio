@@ -10,7 +10,7 @@ export class ToolMask implements ICanvasTool {
    id: 'mask' = 'mask'
    category: 'generate' = 'generate'
    icon: IconName = 'mdiTransitionMasked'
-   description = 'draw a mask on the canvas'
+   description: string = 'draw a mask on the canvas'
 
    constructor(public canvas: UnifiedCanvas) {}
 

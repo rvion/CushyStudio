@@ -38,7 +38,7 @@ import { liveDBSubKeys } from './TYPES.gen'
 
 export type Indexed<T> = { [id: string]: T }
 
-let ix = 0
+let ix: number = 0
 
 export class LiveDB {
    _tables: LiveTable<any, any>[] = []
@@ -100,7 +100,7 @@ export class LiveDB {
    /** You should not call that unless you know what you're doing */
    runCodegen = (): void => _codegenORM(this)
 
-   _uid = nanoid()
+   _uid: string = nanoid()
    constructor() {
       // init SQLITE ---------------------------------------------------------
       const db = SQL(DB_RELATIVE_PATH, {

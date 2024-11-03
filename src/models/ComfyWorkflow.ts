@@ -371,7 +371,7 @@ export class ComfyWorkflowL extends BaseInst<TABLES['comfy_workflow']> {
       return asHTMLContent(marked(this.flowSummaryMd) as string)
    }
 
-   _uidNumber = 0
+   _uidNumber: number = 0
    // private _nextUID = 1
    // getUID = () => (this._nextUID++).toString()
    getNodeOrCrash = (nodeID: ComfyNodeID): ComfyNode<any> => {

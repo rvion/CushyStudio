@@ -7,7 +7,7 @@ const test1 = `@a[1] (foo, bar)*1.2`
 
 const parse1 = parser.parse(test1)
 
-let indent = -1
+let indent: number = -1
 parse1.iterate({
    leave(nodeType) {
       indent--

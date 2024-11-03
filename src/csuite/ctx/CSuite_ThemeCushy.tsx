@@ -14,7 +14,7 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
    }
 
    showExpandCarets: boolean = true
-   showSelectIcons: boolean = true
+   showSelectIcons: boolean = false
 
    get tooltipDelay(): Maybe<number> {
       return cushy.preferences.interface.TooltipDelay.value

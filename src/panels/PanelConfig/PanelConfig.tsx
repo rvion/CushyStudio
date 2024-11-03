@@ -10,7 +10,7 @@ import { FormUI } from '../../csuite/form/FormUI'
 import { Panel, type PanelHeader } from '../../router/Panel'
 import { usePanel } from '../../router/usePanel'
 import { openInVSCode } from '../../utils/electron/openInVsCode'
-import { PanelComfyHostsUI } from '../PanelComfyHosts/Panel_ComfyUIHosts'
+import { PanelComfyHostsUI } from '../PanelComfyHosts/PanelComfyHostsUI'
 import { LegacyOptions } from './LegacyOptions'
 
 export type ConfigMode = 'hosts' | 'input' | 'interface' | 'legacy' | 'system' | 'theme' | 'TEMP'

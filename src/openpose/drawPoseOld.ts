@@ -37,7 +37,7 @@ export class OpenPoseDrawer {
     * Colors array corresponding to the "bonePairs" array above. For example, the first pair of
     * coordinates [1,8] will be drawn with the first color in this array, "#ff0055".
     */
-   boneColors = [
+   boneColors: string[] = [
       '#ff0055',
       '#ff0000',
       '#ff5500',
@@ -65,8 +65,8 @@ export class OpenPoseDrawer {
       '#00ffff',
    ]
 
-   jointCircleRadius = 6
-   lineWidth = 4
+   jointCircleRadius: number = 6
+   lineWidth: number = 4
 
    /**
     * Goes through each set of bonePairs and if the received data has those
@@ -79,7 +79,7 @@ export class OpenPoseDrawer {
       poses: any[],
       renderScale: number,
       animationAlpha: number,
-   ) {
+   ): void {
       console.log('renderPoses')
       console.log(poses)
       const totalPoses = poses.length

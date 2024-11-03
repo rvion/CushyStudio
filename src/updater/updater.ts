@@ -64,13 +64,13 @@ export class GitManagedFolder {
    nextFetchAt = 0 as Timestamp
 
    /** Number of commits in origin/<main branch> */
-   originCommitsCount = 0
+   originCommitsCount: number = 0
 
    /** Number of commits in HEAD */
-   headCommitsCount = 0
+   headCommitsCount: number = 0
 
    /** main branch name; usually master (previous git default) or main (new git default) */
-   mainBranchName = ''
+   mainBranchName: string = ''
 
    /** the simple git  */
    git: Maybe<SimpleGit> = null
@@ -205,11 +205,11 @@ export class GitManagedFolder {
          this._bumpLastFetchAt()
          await this.updateInfos()
       } catch (error) {
-         this.error(`updates check failed: ${(error as any).message}`)
+         this.logError(`updates check failed: ${(error as any).message}`)
       }
    }
 
-   private _bumpLastFetchAt = () => {
+   private _bumpLastFetchAt(): void {
       const FETCH_HEAD_path = this.config.absFolderPath + '/.git/FETCH_HEAD'
       const FETCH_HEAD_path_exists = existsSync(FETCH_HEAD_path)
       if (FETCH_HEAD_path_exists) {
@@ -307,7 +307,7 @@ export class GitManagedFolder {
    lastPullAttempt: Maybe<UpdateTrace> = null
 
    /** true when more commit are present on origin */
-   get hasUpdateAvailable() {
+   get hasUpdateAvailable(): boolean {
       if (this.originCommitsCount <= this.headCommitsCount) return false
       return true
    }
@@ -357,14 +357,14 @@ export class GitManagedFolder {
       return cache[this.config.absFolderPath] != null
    }
 
-   private _stopPeriodicUpdateCheck = () => {
+   private _stopPeriodicUpdateCheck(): void {
       const __global__ = globalThis as any
       const cache = (__global__.__UPDATERCACHE__ ??= {})
       if (cache[this.config.absFolderPath]) clearInterval(cache[this.config.absFolderPath])
       cache[this.config.absFolderPath] = null
    }
 
-   private _registerPeriodicUpdateCheck = (p: NodeJS.Timeout) => {
+   private _registerPeriodicUpdateCheck(p: NodeJS.Timeout): void {
       const __global__ = globalThis as any
       const cache = (__global__.__UPDATERCACHE__ ??= {})
       if (cache[this.config.absFolderPath]) clearInterval(cache[this.config.absFolderPath])
@@ -425,11 +425,11 @@ export class GitManagedFolder {
    }
 
    lastLogs = new LogFifo(100)
-   log = (...args: any[]) => {
+   private log(...args: any[]): void {
       this.lastLogs.add(args.join(' '))
       // console.log(`[🚀] (${this.relPath || 'root'})`, ...args)
    }
-   error = (...args: any[]) => {
+   private logError(...args: any[]): void {
       console.error(`[🚀] (${this.relPath || 'root'})`, ...args)
    }
 
@@ -466,7 +466,7 @@ export class GitManagedFolder {
    }
 
    commandErrors = new Map<string, any>()
-   get hasErrors() {
+   get hasErrors(): boolean {
       return this.commandErrors.size > 0
    }
 }

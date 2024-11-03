@@ -21,6 +21,7 @@ export const WidgetString_SmallInput = observer(function WidgetStringUI_(p: {
         // 3. if none of the above, use mountKye
         field.mountKey
 
+   // return '🟢'
    return (
       <InputStringUI
          tw={['w-full', field.mustDisplayErrors && 'rsx-field-error']}

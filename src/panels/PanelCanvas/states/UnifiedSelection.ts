@@ -32,10 +32,10 @@ export class UnifiedSelection {
       this.canvas.selections = this.canvas.selections.filter((s) => s !== this)
    }
 
-   get x() { return this.stableData.x } // prettier-ignore
-   get y() { return this.stableData.y } // prettier-ignore
-   get width() { return this.stableData.width } // prettier-ignore
-   get height() { return this.stableData.height } // prettier-ignore
+   get x(): number { return this.stableData.x } // prettier-ignore
+   get y(): number { return this.stableData.y } // prettier-ignore
+   get width(): number { return this.stableData.width } // prettier-ignore
+   get height(): number { return this.stableData.height } // prettier-ignore
 
    // the draggable / resizable selection
    stableData: RectSimple = {

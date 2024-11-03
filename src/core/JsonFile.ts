@@ -22,7 +22,7 @@ export type PersistedJSONInfo<T extends object> = {
 export class JsonFile<T extends object> {
    private ready_yes!: (v: boolean) => void
    private ready_no!: (err: Error) => void
-   finished = new Promise<boolean>((yes, no) => {
+   finished: Promise<boolean> = new Promise<boolean>((yes, no) => {
       this.ready_yes = yes
       this.ready_no = no
    })

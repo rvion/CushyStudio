@@ -15,7 +15,7 @@ export type SafetyResult = {
 export class SafetyChecker {
    promises = new Map<string, ManualPromise<SafetyResult>>()
    model: Maybe<Promise<nsfwjs.NSFWJS>> = null
-   loaded = false
+   loaded: boolean = false
 
    constructor(public st: STATE) {}
 

@@ -133,7 +133,7 @@ export class ComfyPromptL extends BaseInst<TABLES['comfy_prompt']> {
 
    private onExecutionSuccess = async (msg: WsMsgExecutionSuccess): Promise<void> => {
       await Promise.all(this.pendingPromises)
-      return await this._finish({ status: 'Success' })
+      return this._finish({ status: 'Success' })
    }
 
    private onError = async (msg: WsMsgExecutionError): Promise<void> => {
@@ -146,7 +146,7 @@ export class ComfyPromptL extends BaseInst<TABLES['comfy_prompt']> {
          stepID: this.step.id,
       })
       this.step.update({ status: Status.Failure })
-      return await this._finish({ status: 'Failure', error: msg })
+      return this._finish({ status: 'Failure', error: msg })
    }
 
    /**
@@ -300,7 +300,7 @@ export class ComfyPromptL extends BaseInst<TABLES['comfy_prompt']> {
    }
 
    /** finish this step */
-   private alreadyFinished = false
+   private alreadyFinished: boolean = false
    private _finish = async (p: Pick<ComfyPromptUpdate, 'status' | 'error'>): Promise<void> => {
       if (this.alreadyFinished) throw new Error(`❌ invariant violation: already finished`)
       this.alreadyFinished = true

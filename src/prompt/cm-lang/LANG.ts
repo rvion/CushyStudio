@@ -12,7 +12,7 @@ export const PromptLangBase = LRLanguage.define({
    },
 })
 
-export function PromptLang() {
+export function PromptLang(): LanguageSupport {
    return new LanguageSupport(
       //
       PromptLangBase,

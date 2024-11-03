@@ -13,7 +13,7 @@ import { dirname } from 'pathe'
  * | })()
  * |
  */
-export function downloadFile(url: string, outputPath: AbsolutePath | string) {
+export function downloadFile(url: string, outputPath: AbsolutePath | string): Promise<true> {
    const baseDir = dirname(outputPath)
    mkdirSync(baseDir, { recursive: true })
 

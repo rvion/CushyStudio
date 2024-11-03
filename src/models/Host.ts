@@ -6,6 +6,7 @@ import type { Requirements } from '../manager/REQUIREMENTS/Requirements'
 import type { ComfySchemaL, EmbeddingName } from './ComfySchema'
 
 import { copyFileSync, existsSync, mkdirSync, writeFileSync } from 'fs'
+import * as v from 'valibot'
 
 import { ResilientWebSocketClient } from '../back/ResilientWebsocket'
 import { extractErrorMessage } from '../csuite/formatters/extractErrorMessage'
@@ -15,6 +16,7 @@ import { BaseInst } from '../db/BaseInst'
 import { LiveTable } from '../db/LiveTable'
 import { asComfySchemaID, type TABLES } from '../db/TYPES.gen'
 import { ComfyManager } from '../manager/ComfyManager'
+import { ComfySchemaJSON_valibot } from '../types/ComfySchemaJSON'
 import { downloadFile } from '../utils/fs/downloadFile'
 import { asRelativePath } from '../utils/fs/pathUtils'
 
@@ -329,6 +331,24 @@ export class HostL extends BaseInst<TABLES['host']> {
          const object_info_json = (await object_info_res.json()) as { [key: string]: any }
          const object_info_str = readableStringify(object_info_json, 4)
          writeFileSync(this.comfyJSONPath, object_info_str, 'utf-8')
+         // use valibot to check if payload match the type, and display errors if not
+         const res = v.safeParse(ComfySchemaJSON_valibot, object_info_json)
+         // const res = ComfySchemaJSON_valibot..safeParse(object_info_json) //{ KSampler: schema$['KSampler'] })
+         if (res.success) {
+            console.log('🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢 valid schema')
+         } else {
+            console.log('🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 invalid schema')
+            for (const issue of res.issues) {
+               console.log(issue.path?.map((p) => p.key).join('/'), issue.message, { issue })
+            }
+            console.log('🔴', res.issues)
+            // const DEBUG_small = JSON.stringify(res.error.flatten(), null, 4)
+            //         writeFileSync('schema/debug.errors.json', DEBUG_small, 'utf-8')
+            //         const DEBUG_full = JSON.stringify(res.error, null, 4)
+            //         writeFileSync('schema/debug.errors-full.json', DEBUG_full, 'utf-8')
+            // console.log('🔴', res.error.flatten())
+            // console.log('🔴', res.error.toString())
+         }
 
          // 2 ------------------------------------
          // download embeddigns

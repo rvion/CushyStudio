@@ -17,7 +17,7 @@ export class NumberVar<Name extends string = string> {
       makeObservable(this, { value_: observable, value: computed })
    }
 
-   toString() {
+   toString(): string {
       return `var(--${this.name})`
    }
 }

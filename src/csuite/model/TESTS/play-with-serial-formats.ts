@@ -3,8 +3,8 @@ import chalk from 'chalk'
 const a = ['group', { a: ['string', 's'] }]
 const b = ['group', { a: ['string', 's'], b: ['number', 12] }]
 
-const B1 = ['string', '78197289738927438943789']
-const BX = ['bigint', '78197289738927438943789']
+const B1: string[] = ['string', '78197289738927438943789']
+const BX: string[] = ['bigint', '78197289738927438943789']
 
 const A2 = { type: 'string', value: 'abc', collapsed: true, custom: { foo: 1 } }
 const B2 = ['string', 'abc', { collapsed: true, custom: { foo: 1 } }]
@@ -24,8 +24,8 @@ type Serial1 = { type: string; value: number }
 type Serial2 = [type: string, value: number]
 
 const t0 = 0 as any as Serial2
-const x = t0[0]
-const y = t0[1]
+const x: string = t0[0]
+const y: number = t0[1]
 print(
    'V1',
    '(yesterday)',

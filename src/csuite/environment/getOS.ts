@@ -4,7 +4,7 @@ type _OS = 'Mac' | 'iOS' | 'Windows' | 'Android' | 'Linux' | 'unknown'
 
 let _os: Maybe<_OS>
 
-export function getOS() {
+export function getOS(): _OS {
    if (_os) return _os
    _os = getOS_()
    return _os

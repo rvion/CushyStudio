@@ -48,7 +48,7 @@ export class Field_color extends Field<Field_color_types> {
 
    // #region UI
    readonly DefaultHeaderUI = WidgetColorUI
-   readonly DefaultBodyUI = undefined
+   readonly DefaultBodyUI: undefined = undefined
 
    // #region Ctor
    constructor(

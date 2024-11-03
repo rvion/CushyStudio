@@ -6,11 +6,11 @@ export class CodeBuffer {
    ) {
       for (const line of lines) this.writeLine(line)
    }
-   public tab = '   '
+   public tab: string = '   '
    content: string = ''
 
-   append = (str: string) => (this.content += str)
-   writeLine = (txt: string) => {
+   append = (str: string): string => (this.content += str)
+   writeLine = (txt: string): this => {
       this.content +=
          txt
             .split('\n')
@@ -18,21 +18,21 @@ export class CodeBuffer {
             .join('\n') + '\n'
       return this
    }
-   w = (txt: string, opts: { if: boolean } = { if: true }) => {
+   w = (txt: string, opts: { if: boolean } = { if: true }): void => {
       if (opts.if) this.writeLine(txt)
    }
 
-   newLine = () => (this.content += '\n')
-   line = (...txts: string[]) => this.writeLine(txts.join(''))
-   indent = () => this._indent++
-   deindent = () => this._indent--
-   indented = (fn: () => void) => {
+   newLine = (): string => (this.content += '\n')
+   line = (...txts: string[]): this => this.writeLine(txts.join(''))
+   indent = (): number => this._indent++
+   deindent = (): number => this._indent--
+   indented = (fn: () => void): void => {
       this._indent++
       fn()
       this._indent--
    }
 
-   bar = (text: string) => this.w(renderBar(text, '// '))
+   bar = (text: string): void => this.w(renderBar(text, '// '))
 
    // writeTS = (path: string) => {
    //     // const prefix = `// FILE GENERATED: do not edit. Changes made manually will be overwritten.\n\n`
@@ -48,7 +48,7 @@ export const repeatStr = (x: number, str: string): string => {
    return out
 }
 
-export const renderBar = (text: string, prefix: string = '') => {
+export const renderBar = (text: string, prefix: string = ''): string => {
    const ___bar___ = '============================================================================='
    return (
       `${prefix}|${___bar___}|\n` +

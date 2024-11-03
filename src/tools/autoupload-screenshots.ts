@@ -8,9 +8,11 @@ import { hashArrayBuffer } from '../state/hashArrayBuffer'
 
 const exec = promisify(exec_)
 
-const logFile = join(__dirname, 'cushy-screenshots-logs.txt')
+const logFile: string = join(__dirname, 'cushy-screenshots-logs.txt')
 console.log(`[🧐] echo starting cushy screenshot manager!`)
-const dir = '/Users/loco/S3-1'
+const dir: "/Users/loco/S3-1" = '/Users/loco/S3-1'
+
+console.log(`[🧐] every file pasted into ${dir} will be uploaded`)
 
 const watcher = watch(
    dir,

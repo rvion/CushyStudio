@@ -321,7 +321,7 @@ export class Field_string extends Field<Field_string_types> {
    // #region UI
    UITextarea: FC = () => <WidgetString_TextareaInput field={this} />
    UIInputText: FC = () => <WidgetString_SmallInput field={this} />
-   DefaultBodyUI = undefined
+   DefaultBodyUI: undefined = undefined
    DefaultHeaderUI = WidgetStringUI
 
    get isCollapsible(): boolean {

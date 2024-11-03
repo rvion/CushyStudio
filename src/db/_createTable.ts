@@ -1,4 +1,4 @@
-export const _createTable = (tableName: string, fields: string[]) => {
+export const _createTable = (tableName: string, fields: string[]): string => {
    return `--sql
         create table ${tableName} (
             id string primary key not null default (hex(randomblob(16))),

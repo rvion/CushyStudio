@@ -94,3 +94,6 @@ src/tools/cushy-screenshots-logs.txt
 @cushy.zip
 
 eslint.config.debug.json
+
+autotype.summary.txt
+src/theme/twin.css

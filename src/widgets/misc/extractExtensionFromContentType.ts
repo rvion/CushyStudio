@@ -10,4 +10,4 @@ export const extractExtensionFromContentType = (contentType: string): string => 
    return ''
 }
 
-export const knownImageExtensions = ['.bmp', '.gif', '.ico', '.jpeg', '.png', '.svg', '.tiff', '.webp']
+export const knownImageExtensions: string[] = ['.bmp', '.gif', '.ico', '.jpeg', '.png', '.svg', '.tiff', '.webp']

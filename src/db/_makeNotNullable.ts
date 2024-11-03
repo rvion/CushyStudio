@@ -9,7 +9,7 @@ export const _makeNotNullable = (
    },
    tableName: string,
    field: string,
-) => {
+): string => {
    const db = p.db
 
    const cols = _getAllColumnsForTable(db, tableName)

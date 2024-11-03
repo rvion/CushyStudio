@@ -84,7 +84,7 @@ export interface WidgetSlots<out FIELD extends Field = Field> {
    classNameAroundBodyAndHeader?: Maybe<string>
    classNameAroundBody?: Maybe<string>
    classNameAroundHeader?: Maybe<string>
-   classNameForShell?: Maybe<string>
+   className?: Maybe<string>
    shouldShowHiddenFields?: Maybe<boolean>
    shouldAnimateResize?: Maybe<boolean>
 

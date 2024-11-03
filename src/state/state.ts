@@ -43,7 +43,7 @@ import { fromZodError } from 'zod-validation-error'
 import { asAppPath } from '../cards/asAppPath'
 import { Library } from '../cards/Library'
 import { recursivelyFindAppsInFolder } from '../cards/walkLib'
-import { STANDARD_HOST_ID, vIRTUAL_HOST_ID__BASE, vIRTUAL_HOST_ID__FULL } from '../config/ComfyHostDef'
+import { STANDARD_HOST_ID, vIRTUAL_HOST_ID__BASE } from '../config/ComfyHostDef'
 import { type ConfigFile } from '../config/ConfigFile'
 import { mkConfigFile } from '../config/mkConfigFile'
 import { builder, cushyFactory, type CushyFactory } from '../controls/Builder'
@@ -105,7 +105,7 @@ import { Uploader } from './Uploader'
 
 export class STATE {
    // LEAVE THIS AT THE TOP OF THIS CLASS
-   __INJECTION__ = INJECT_CUSHY_GLOBALLY(this)
+   __INJECTION__: void = INJECT_CUSHY_GLOBALLY(this)
 
    /** hack to help closing prompt completions */
    currentPromptFocused: Maybe<HTMLDivElement> = null
@@ -115,7 +115,7 @@ export class STATE {
    resolve = (from: AbsolutePath, relativePath: RelativePath): AbsolutePath =>
       asAbsolutePath(join(from, relativePath))
    layout: CushyLayoutManager
-   uid = nanoid() // front uid to fix hot reload
+   uid: string = nanoid() // front uid to fix hot reload
    db: LiveDB // core data
    uploader: Uploader
    supabase: SupabaseClient<Database>
@@ -245,7 +245,7 @@ export class STATE {
 
    showCommandHistory: boolean = false
 
-   comfySessionId = 'temp' /** send by ComfyUI server */
+   comfySessionId: string = 'temp' /** send by ComfyUI server */
 
    // paths
    cacheFolderPath: AbsolutePath
@@ -407,7 +407,7 @@ export class STATE {
    }
 
    safetyChecker = new SafetyChecker(this)
-   draftsFolded = false
+   draftsFolded: boolean = false
 
    fixEnumValue = (
       //
@@ -600,7 +600,7 @@ export class STATE {
       // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       this.virtualHostBase
       // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-      this.virtualHostFull
+      // this.virtualHostFull
       // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       this.standardHost
 
@@ -698,18 +698,18 @@ export class STATE {
       })
    }
 
-   get virtualHostFull(): HostL {
-      return this.db.host.upsert({
-         id: asHostID(vIRTUAL_HOST_ID__FULL),
-         hostname: 'localhost',
-         useHttps: SQLITE_false,
-         port: 8188,
-         name: 'virtual-ComfyUI-full',
-         isLocal: SQLITE_true,
-         isVirtual: SQLITE_true,
-         isReadonly: SQLITE_true,
-      })
-   }
+   // get virtualHostFull(): HostL {
+   //    return this.db.host.upsert({
+   //       id: asHostID(vIRTUAL_HOST_ID__FULL),
+   //       hostname: 'localhost',
+   //       useHttps: SQLITE_false,
+   //       port: 8188,
+   //       name: 'virtual-ComfyUI-full',
+   //       isLocal: SQLITE_true,
+   //       isVirtual: SQLITE_true,
+   //       isReadonly: SQLITE_true,
+   //    })
+   // }
    // ------------------------------------------------------------
    wipeOuputTopLevelImages = (): void => {
       const outputFolderPath = this.outputFolderPath

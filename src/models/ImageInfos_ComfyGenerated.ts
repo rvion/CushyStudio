@@ -5,7 +5,7 @@ export type ImageInfos_ComfyGenerated = {
    comfyImageInfo: ComfyImageInfo
 }
 
-export const getComfyURLFromImageInfos = (infos: ImageInfos_ComfyGenerated) => {
+export const getComfyURLFromImageInfos = (infos: ImageInfos_ComfyGenerated): string => {
    return infos.comfyHostHttpURL + '/view?' + new URLSearchParams(infos.comfyImageInfo).toString()
 }
 

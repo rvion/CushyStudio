@@ -9,7 +9,7 @@ export class LogFifo {
       makeAutoObservable(this)
    }
 
-   add(line: string) {
+   add(line: string): void {
       if (this.logs.length >= this._maxSize) this.logs.pop()
       this.logs.unshift({ date: Date.now(), msg: line })
    }

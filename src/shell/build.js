@@ -3,6 +3,7 @@ const path = require('path')
 
 const esbuild = require('esbuild')
 const { writeFileSync } = require('fs')
+const { spawn, spawnSync } = require('child_process')
 
 const args = process.argv.slice(2)
 
@@ -15,6 +16,9 @@ async function build() {
         const size = fs.statSync(path.join('release', f)).size
         console.log(`${f}: ${size} bytes`)
     }
+
+    spawnSync('./node_modules/.bin/tailwindcss', ['-o', 'src/theme/twin.css'], { stdio: 'inherit' })
+
     process.exit(0)
 }
 

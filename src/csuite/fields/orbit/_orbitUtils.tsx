@@ -2,12 +2,12 @@
 // import { suspend } from 'suspend-react'
 // const inter = import('@pmndrs/assets/fonts/inter_regular.woff')
 // useFrame((state) => (textRef.current!.position!.x = Math.sin(state.clock.elapsedTime) * 2))
-export const clampMod = (v: number, min: number, max: number) => {
+export const clampMod = (v: number, min: number, max: number): number => {
    const rangeSize = max - min + 1
    return ((((v - min) % rangeSize) + rangeSize) % rangeSize) + min
 }
 
-const inRange = (val: number, min: number, max: number, margin: number = 0) => {
+const inRange = (val: number, min: number, max: number, margin: number = 0): boolean => {
    return val >= min - margin && val <= max + margin
 }
 

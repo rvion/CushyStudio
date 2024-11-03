@@ -13,8 +13,8 @@ export class TreeFolder implements ITreeEntry<RelativePath> {
    constructor(public path: RelativePath) {
       makeAutoObservable(this)
    }
-   get id(){return `path#${this.path}`} //prettier-ignore
-   get name() { return basename(this.path) } // prettier-ignore
+   get id(): string{return `path#${this.path}`} //prettier-ignore
+   get name(): string { return basename(this.path) } // prettier-ignore
 
    children(): ITreeElement<RelativePath>[] {
       const files = readdirSync(this.path)
@@ -35,7 +35,7 @@ export class TreeFolder implements ITreeEntry<RelativePath> {
       ]
    }
 
-   isFolder = true
+   isFolder: boolean = true
 
    onPrimaryAction = (n: TreeNode) => {
       n.toggle()

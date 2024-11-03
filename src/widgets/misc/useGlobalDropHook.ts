@@ -5,9 +5,9 @@ import { useEffect } from 'react'
 
 import { extractExtensionFromContentType } from './extractExtensionFromContentType'
 
-export const useGlobalDropHook = (st: STATE) => {
+export const useGlobalDropHook = (st: STATE): void => {
    useEffect(() => {
-      const fn = async (ev: DragEvent) => {
+      const fn = async (ev: DragEvent): Promise<null | undefined> => {
          console.log(`[🫳] DROP: ev`, ev)
          if (ev.dataTransfer == null) return null
          if (ev.target instanceof HTMLElement) {
@@ -74,7 +74,7 @@ export const useGlobalDropHook = (st: STATE) => {
       }
 
       document.body.ondrop = fn
-      return () => {
+      return (): void => {
          document.body.ondrop = null
       }
    })
@@ -91,7 +91,7 @@ const downloadURLToFile = async (url: string): Promise<File> => {
    return file1
 }
 
-const extractImgFromHTML = (html: Maybe<string>) => {
+const extractImgFromHTML = (html: Maybe<string>): string | null => {
    if (html == null) return null
    const url = html.match(/<img.*?src="(.*?)"/)
    console.log(`[🫳] DROP:    | extractImgFromHTML:`, url)

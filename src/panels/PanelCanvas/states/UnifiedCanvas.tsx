@@ -1,10 +1,11 @@
 import type { DraftL } from '../../../models/Draft'
 import type { MediaImageL } from '../../../models/MediaImage'
 import type { STATE } from '../../../state/state'
+import type { Layer$ } from '../stateV2/Layer$'
+import type { UC2$ } from '../stateV2/ucV2'
 import type { UnifiedCanvasBrushMode, UnifiedCanvasTool } from '../tools/UnifiedCanvasTool'
 import type { UnifiedCanvasViewInfos } from '../types/RectSimple'
 import type { ICanvasTool } from '../utils/_ICanvasTool'
-import type { Layer$, UC2$ } from '../V2/ucV2'
 import type { UnifiedStep } from './UnifiedStep'
 import type { Viewport } from 'pixi-viewport'
 import type { Application, Renderer } from 'pixi.js'
@@ -59,10 +60,10 @@ export class UnifiedCanvas {
       yInWIndow: 0,
    }
 
-   snapToGrid = true
-   snapSize = 64
-   usePenPressure = true
-   enableOverlay = true
+   snapToGrid: boolean = true
+   snapSize: number = 64
+   usePenPressure: boolean = true
+   enableOverlay: boolean = true
    toolShelf = {
       visible: true,
       size: cushy.preferences.interface.value.toolBarIconSize,
@@ -144,8 +145,8 @@ export class UnifiedCanvas {
    // ----------------------------------------------------------------------
    tool: UnifiedCanvasTool = 'none'
    brushMode: UnifiedCanvasBrushMode = 'paint'
-   maskColor = 'red'
-   maskOpacity = 0.5
+   maskColor: string = 'red'
+   maskOpacity: number = 0.5
 
    _lastLine: Konva.Line | null = null
 
@@ -214,7 +215,7 @@ export class UnifiedCanvas {
    imageLayer: Konva.Layer
 
    /** used as container id for potential Portals to display html over122ays */
-   uid = nanoid()
+   uid: string = nanoid()
 
    constructor(
       public st: STATE,

@@ -16,7 +16,7 @@ export const ScribbleCanvas = (p: {
    onChange: (base64: string) => void
    style?: CSSProperties
    className?: string
-}) => {
+}): JSX.Element => {
    const canvasRef = useRef<HTMLCanvasElement | null>(null)
    const [drawing, setDrawing] = useState(false)
    const [canvasWidth, setCanvasWidth] = useState(512)
@@ -42,7 +42,7 @@ export const ScribbleCanvas = (p: {
       [p.onChange],
    )
 
-   const handleMouseDown = (e: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
+   const handleMouseDown = (e: React.MouseEvent<HTMLCanvasElement, MouseEvent>): void => {
       setDrawing(true)
       setPosition({
          x: e.nativeEvent.offsetX,
@@ -50,8 +50,8 @@ export const ScribbleCanvas = (p: {
       })
    }
 
-   const handleMouseUp = () => setDrawing(false)
-   const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
+   const handleMouseUp = (): void => setDrawing(false)
+   const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement, MouseEvent>): void => {
       if (!drawing) return
 
       const ctx = canvasRef.current?.getContext('2d')

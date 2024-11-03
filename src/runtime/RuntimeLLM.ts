@@ -32,7 +32,7 @@ export class RuntimeLLM {
    /** dictionary of all known openrouter models */
    allModels = openRouterInfos
 
-   defaultSystemPrompt = [
+   defaultSystemPrompt: string = [
       //
       `You are an assistant in charge of writing a prompt to be submitted to a stable distribution ai image generative pipeline.`,
       `Write a prompt describing the user submited topic in a way that will help the ai generate a relevant image.`,
@@ -44,7 +44,7 @@ export class RuntimeLLM {
       `ONLY answer with the prompt itself. DO NOT answer anything else. No Hello, no thanks, no signature, no nothing.`,
    ].join('\n')
 
-   simpleSystemPrompt = [
+   simpleSystemPrompt: string = [
       //
       `You are an assistant in charge of writing a prompt to be submitted to a stable distribution ai image generative pipeline.`,
       `Write a prompt describing the user submited topic in a way that will help the ai generate a relevant image.`,
@@ -52,7 +52,7 @@ export class RuntimeLLM {
       `ONLY answer with the prompt itself. DO NOT answer anything else. No Hello, no thanks, no signature, no nothing.`,
    ].join('\n')
 
-   simpleSystemPromptKeywordList = [
+   simpleSystemPromptKeywordList: string = [
       //
       `You are an assistant in charge of writing a prompt to be submitted to a stable distribution ai image generative pipeline.`,
       `Write a prompt describing the user submited topic in a way that will help the ai generate a relevant image.`,
@@ -63,7 +63,7 @@ export class RuntimeLLM {
       `try to include a long list of comma separated words.`,
    ].join('\n')
 
-   simpleSystemPromptNaturalLanguage = [
+   simpleSystemPromptNaturalLanguage: string = [
       //
       `You are an assistant in charge of writing a prompt to be submitted to a stable distribution ai image generative pipeline.`,
       `Write a prompt describing the user submited topic in a way that will help the ai generate a relevant image.`,

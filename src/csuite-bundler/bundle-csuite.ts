@@ -50,17 +50,17 @@ type UID = Tagged<string, 'UID'>
 // SUMMARY ------------------------------------------------------------------
 // buffer to accumulate logs
 // so we can review what this script did
-let out = ''
+let out: string = ''
 const append = (x: string): void => {
    out += x + '\n'
 }
 
-const ENTRYPOINT = 'src/csuite/index.ts'
-const PACKAGE_NAME = '@cushy/forms'
-const DIST_RELPATH = PACKAGE_NAME
-const DIST_ABSPATH = resolve(PACKAGE_NAME)
+const ENTRYPOINT: "src/csuite/index.ts" = 'src/csuite/index.ts'
+const PACKAGE_NAME: "@cushy/forms" = '@cushy/forms'
+const DIST_RELPATH: "@cushy/forms" = PACKAGE_NAME
+const DIST_ABSPATH: string = resolve(PACKAGE_NAME)
 const distPackageJSONPath_REL = `./${DIST_RELPATH}/package.json`
-const distPackageJSONPath_ABS = resolve(DIST_ABSPATH, 'package.json')
+const distPackageJSONPath_ABS: string = resolve(DIST_ABSPATH, 'package.json')
 
 // ------------------------------------------------------------------------
 section(`0. preparing`)
@@ -198,7 +198,7 @@ updateJSON<{ peerDeps: Record<string, '*'> }>(distPackageJSONPath_ABS, (pkg) => 
 section(`2. COPY ALL TS Files`)
 sectionObjective(`create a subset of the codebase that only includes the files that are actually used`)
 sectionTool('bun script')
-let total = 0
+let total: number = 0
 for (const srcRelPath of allFilesWithExt) {
    // const
    const libRelPath = DIST_RELPATH + '/' + srcRelPath // srcRelPath.replace(/^src\//, '../')
@@ -212,8 +212,8 @@ for (const srcRelPath of allFilesWithExt) {
 // LIST ALL REAL JS FILES ----------------------------------------------
 section(`2. REEXPORT all ${jsModuleInBundle.size} files from single module`)
 sectionTool('bun script')
-let libEntrypointCode = ''
-let mainReexportTSCode = '' // code at the root of the package that re-export everything
+let libEntrypointCode: string = ''
+let mainReexportTSCode: string = '' // code at the root of the package that re-export everything
 for (const srcRelPath of allFilesNoExt) {
    // const
    if (srcRelPath === 'src/csuite/custom-jsx/jsx-runtime') continue
@@ -222,16 +222,16 @@ for (const srcRelPath of allFilesNoExt) {
    libEntrypointCode += `export * from '${libRelPath}'\n`
    mainReexportTSCode += `export * from './${srcRelPath}'\n`
 }
-const SRC_ENTRYPOINT_RELPATH = ENTRYPOINT.replace(/\.tsx?$/, '.LIBRARY.ts')
+const SRC_ENTRYPOINT_RELPATH: string = ENTRYPOINT.replace(/\.tsx?$/, '.LIBRARY.ts')
 // const SRC_ENTRYPOINT_ABSPATH = resolve(SRC_ENTRYPOINT_RELPATH)
 writeFileSync(SRC_ENTRYPOINT_RELPATH, libEntrypointCode)
 writeFileSync(`${PACKAGE_NAME}/main.ts`, mainReexportTSCode)
 console.log(`writing new entrypoint here: ${chalk.underline(SRC_ENTRYPOINT_RELPATH)}`)
-const LIB_ENTRYPOINT_DTS_RELPATH = SRC_ENTRYPOINT_RELPATH.replace(/\.tsx?$/, '.d.ts').replace(
+const LIB_ENTRYPOINT_DTS_RELPATH: string = SRC_ENTRYPOINT_RELPATH.replace(/\.tsx?$/, '.d.ts').replace(
    /^src\//,
    'lib/',
 )
-const LIB_ENTRYPOINT_DTS_ABSPATH = resolve(LIB_ENTRYPOINT_DTS_RELPATH)
+const LIB_ENTRYPOINT_DTS_ABSPATH: string = resolve(LIB_ENTRYPOINT_DTS_RELPATH)
 console.log(`corresponding lib entrypoint: ${chalk.underline(LIB_ENTRYPOINT_DTS_RELPATH)}`)
 
 // BUNDLE the js (from TS) ----------------------------------------------
@@ -284,8 +284,8 @@ unlinkSync(SRC_ENTRYPOINT_RELPATH)
 section(`5. writing new form.rollup.config.mjs`)
 sectionTool('bun script')
 // const ROLLUP_CONFIG_RELPATH = ENTRYPOINT.replace(/\.tsx?$/, '.rollup.config.mjs')
-const ROLLUP_CONFIG_RELPATH = DIST_RELPATH + '/' + 'rollup.config.mjs' //`${cwd()}/${ROLLUP_CONFIG_RELPATH}`
-const ROLLUP_CONFIG_ABSPATH = resolve(ROLLUP_CONFIG_RELPATH)
+const ROLLUP_CONFIG_RELPATH: string = DIST_RELPATH + '/' + 'rollup.config.mjs' //`${cwd()}/${ROLLUP_CONFIG_RELPATH}`
+const ROLLUP_CONFIG_ABSPATH: string = resolve(ROLLUP_CONFIG_RELPATH)
 console.log(`writing rollup config here: ${chalk.underline(ROLLUP_CONFIG_RELPATH)}`)
 writeFileSync(
    ROLLUP_CONFIG_RELPATH,
@@ -315,11 +315,11 @@ const rollupBin = './src/scripts/node_modules/.bin/rollup'
 // /Users/loco/dev/CushyStudio/src/scripts/node_modules/.bin/rollup -c /Users/loco/dev/CushyStudio/src/controls/Builder.loco.rollup.config.mjs
 //`'${rollupRoot}/node_modules/.bin/rollup'`
 console.log(` `)
-const rollupCmd = [rollupBin, `-c '${ROLLUP_CONFIG_ABSPATH}'`].join(' ')
+const rollupCmd: string = [rollupBin, `-c '${ROLLUP_CONFIG_ABSPATH}'`].join(' ')
 console.log(`executing comand:  ${chalk.yellowBright(rollupCmd)}`)
 execSync(rollupCmd, { stdio: 'inherit' /* cwd: rollupRoot */ })
 mkdirSync(`${DIST_RELPATH}/dts`, { recursive: true })
-const rollupStatsPath = `${DIST_ABSPATH}/dts/main.d.rollup-stats.json`
+const rollupStatsPath: string = `${DIST_ABSPATH}/dts/main.d.rollup-stats.json`
 renameSync(`stats.json`, rollupStatsPath)
 // execSync('yarn form:bundle-dts', { stdio: 'inherit' })
 // await waitConfirm()
@@ -370,7 +370,7 @@ function emojiLogic(x: string): string {
 
 append(`\n\nTYPES:`)
 const unwanted: string[] = []
-let visited = 1 // the <...>.LIBRARY
+let visited: number = 1 // the <...>.LIBRARY
 const entriesSorted = [...fileInfos.entries()].toSorted((a, b) => a[0].localeCompare(b[0]))
 for (const [dtsPath, fi] of entriesSorted) {
    const base = mapPathToModule(dtsPath)
@@ -391,7 +391,7 @@ for (const [dtsPath, fi] of entriesSorted) {
 }
 
 append(`\n\n❌ POSSIBLY UNWANTED FILES IN DTS:`)
-const unwantedSorted = unwanted.toSorted()
+const unwantedSorted: string[] = unwanted.toSorted()
 const unwantedSet = new Set(unwantedSorted)
 for (const u of unwantedSorted) {
    // ------------

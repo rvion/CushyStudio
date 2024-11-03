@@ -11,7 +11,7 @@ export class ToolGenerate implements ICanvasTool {
    id: 'generate' = 'generate'
    category: 'generate' = 'generate'
    icon: IconName = 'mdiImageArea'
-   description = 'run a portion of the canvas though some draft'
+   description: string = 'run a portion of the canvas though some draft'
 
    constructor(public canvas: UnifiedCanvas) {}
 

@@ -106,7 +106,7 @@ export const defaultPresenterSlots: WidgetSlots<any> = {
    classNameAroundBodyAndHeader: null,
    classNameAroundBody: null,
    classNameAroundHeader: null,
-   classNameForShell: null,
+   className: null,
    shouldShowHiddenFields: false,
    shouldAnimateResize: true,
 

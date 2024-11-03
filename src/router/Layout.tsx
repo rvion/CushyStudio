@@ -75,7 +75,7 @@ export class CushyLayoutManager {
     * Useful to properly force react component to refresh when switching
     * between different perspectives
     */
-   private modelKey = 0
+   private modelKey: number = 0
    private setModel(model: FlexLayoutModel): void {
       this.model = model
       this.modelKey++
@@ -755,6 +755,7 @@ export class CushyLayoutManager {
          })()
 
          const panel = panels[panelName]
+         console.log('⁉️', panels, panelName, panel)
          const { title } = panel.header(panelProps as any)
          const icon = panel.icon
          const config: PanelPersistedJSON = {

@@ -12,18 +12,28 @@ export const useCursorLockMove = (): {
       dy: 0,
       lastX: 0,
       lastY: 0,
-      setIsDragging(val:boolean) { x.isDragging = val }, // prettier-ignore
-      setDx(val:number) { x.dx = val }, // prettier-ignore
-      setDy(val:number) { x.dy = val }, // prettier-ignore
-      setLastX(val:number) { x.lastX = val }, // prettier-ignore
-      setLastY(val:number) { x.lastY = val }, // prettier-ignore
-      unlockPointer: () => {
+      setIsDragging(val: boolean): void {
+         x.isDragging = val
+      },
+      setDx(val: number): void {
+         x.dx = val
+      },
+      setDy(val: number): void {
+         x.dy = val
+      },
+      setLastX(val: number): void {
+         x.lastX = val
+      },
+      setLastY(val: number): void {
+         x.lastY = val
+      },
+      unlockPointer: (): void => {
          document.exitPointerLock()
          x.setIsDragging(false)
          x.cleanup()
       },
 
-      onPointerMove: (event: MouseEvent) => {
+      onPointerMove: (event: MouseEvent): void => {
          x.setDx(x.dx + event.movementX)
          x.setDy(x.dy + event.movementY)
          x.setLastX(x.lastX + event.movementX)
@@ -31,12 +41,12 @@ export const useCursorLockMove = (): {
       },
 
       // Cleanup function to ensure we remove event listeners
-      cleanup: () => {
+      cleanup: (): void => {
          document.removeEventListener('mousemove', x.onPointerMove)
          document.removeEventListener('click', x.unlockPointer)
       },
 
-      onPointerDown: (event: React.PointerEvent) => {
+      onPointerDown: (event: React.PointerEvent): void => {
          // Request pointer lock for the target element
          x.dx = 0
          x.dy = 0

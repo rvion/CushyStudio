@@ -15,8 +15,8 @@ export class TreeDraft implements ITreeEntry {
 
    constructor(public draft: DraftL) {}
 
-   isFolder = false
-   canRename = true
+   isFolder: boolean = false
+   canRename: boolean = true
 
    onPrimaryAction = (): void => this.draft.openOrFocusTab()
 

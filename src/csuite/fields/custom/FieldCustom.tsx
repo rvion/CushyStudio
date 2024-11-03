@@ -94,7 +94,7 @@ export class Field_custom<T> extends Field<Field_custom_types<T>> {
 
    // #region UI
    DefaultHeaderUI = WidgetCustom_HeaderUI
-   DefaultBodyUI = undefined
+   DefaultBodyUI: undefined = undefined
 
    get Component(): Field_custom_config<T>['Component'] {
       return this.config.Component

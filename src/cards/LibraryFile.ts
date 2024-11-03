@@ -123,7 +123,7 @@ export class LibraryFile {
    /** load a file trying all compatible strategies */
    private successfullLoadStrategies: Maybe<LoadStrategy> = null
    private lastSuccessfullExtractedScriptDuringSession: Maybe<CushyScriptL> = null
-   scriptExtractionAttemptedOnce = false
+   scriptExtractionAttemptedOnce: boolean = false
    currentScriptExtractionPromise: Maybe<ManualPromise<ScriptExtractionResult>> = null
 
    extractScriptFromFileAndUpdateApps = async (p?: { force?: boolean }): Promise<ScriptExtractionResult> => {

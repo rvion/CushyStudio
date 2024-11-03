@@ -22,7 +22,7 @@ export class RuntimeImages {
    // simple to use functions
    loadAsImage = async (relPathOrDataURL: string, workflow?: ComfyWorkflowL): Promise<LoadImage> => {
       const img = this.createFromDataURLOrPath(relPathOrDataURL)
-      return await img.loadInWorkflow(workflow)
+      return img.loadInWorkflow(workflow)
    }
 
    loadAsMask = async (
@@ -31,12 +31,12 @@ export class RuntimeImages {
       workflow?: ComfyWorkflowL,
    ): Promise<LoadImageMask> => {
       const img = this.createFromDataURLOrPath(relPathOrDataURL)
-      return await img.loadInWorkflowAsMask(channel, workflow)
+      return img.loadInWorkflowAsMask(channel, workflow)
    }
 
    loadAsEnum = async (relPathOrDataURL: string): Promise<Enum_LoadImage_image> => {
       const img = this.createFromDataURLOrPath(relPathOrDataURL)
-      return await img.uploadAndReturnEnumName()
+      return img.uploadAndReturnEnumName()
    }
 
    // ----------------------------------------------------------------------------------------

@@ -41,4 +41,4 @@ await bench.run()
 // show results
 console.table(bench.table())
 
-export const x = 0
+export const x: 0 = 0

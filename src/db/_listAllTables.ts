@@ -4,7 +4,7 @@ export const _listAllTables = (store: {
    //
    db: BetterSqlite3.Database
    log: (...res: any[]) => void
-}) => {
+}): void => {
    const db = store.db
    const stmt = db.prepare(`select name from sqlite_master where type='table'`)
    const tables = stmt.all() as { name: string }[]

@@ -1,141 +1,140 @@
-// import { Static, Type } from '@sinclair/typebox'
-// import { Value, ValueError } from '@sinclair/typebox/value'
-// import { Either, resultFailure, resultSuccess } from './Either'
-// import { optionalString, string } from './schema'
-
-// RAW -----------------------------------------------------------------
-/** type of the file sent by the backend at /object_info */
-
-import type { ZodType } from 'zod'
-
-import { z } from 'zod'
+// Import all valibot functions under the namespace 'v'
+import * as v from 'valibot'
 
 // --------------------------------------------------------------------
-export const ComfySchemaJSON_zod: ZodType<ComfySchemaJSON> = z.record(z.lazy(() => ComfyNodeSchemaJSON_zod))
-export type ComfySchemaJSON = {
-   [nodeTypeName: string]: ComfyNodeSchemaJSON
-}
+// ComfySchemaJSON Schema and Type
+
+export const ComfySchemaJSON_valibot = v.record(
+   v.string(),
+   v.lazy(() => ComfyNodeSchemaJSON_valibot),
+)
+
+export type ComfySchemaJSON = v.InferInput<typeof ComfySchemaJSON_valibot>
 
 // --------------------------------------------------------------------
-export const ComfyNodeSchemaJSON_zod: ZodType<ComfyNodeSchemaJSON> = z.object({
-   input: z.object({
-      required: z.record(z.lazy(() => ComfyInputSpec_zod)).optional(),
-      optional: z.record(z.lazy(() => ComfyInputSpec_zod)).optional(),
+// ComfyNodeSchemaJSON Schema and Type
+
+export const ComfyNodeSchemaJSON_valibot = v.strictObject({
+   input: v.strictObject({
+      required: v.optional(
+         v.record(
+            v.string(),
+            v.lazy(() => ComfyInputSpec_valibot),
+         ),
+      ),
+      optional: v.optional(
+         v.record(
+            v.string(),
+            v.lazy(() => ComfyInputSpec_valibot),
+         ),
+      ),
+      hidden: v.optional(
+         v.record(
+            v.string(),
+            v.lazy(() => ComfyInputHiddenEntry_valibot),
+         ),
+      ),
    }),
-   output: z.array(z.lazy(() => ComfyInputType_zod)),
-   output_is_list: z.array(z.boolean()),
-   output_name: z.array(z.string()),
-   name: z.string(),
-   display_name: z.string(),
-   description: z.string(),
-   category: z.string(),
-   output_node: z.boolean(),
-})
-export type ComfyNodeSchemaJSON = {
-   input: {
-      required?: { [inputName: string]: ComfyInputSpec }
-      optional?: { [inputName: string]: ComfyInputSpec }
-   }
-   output: ComfyInputType[]
-   output_is_list: boolean[]
-   output_name: string[]
-   name: string
-   display_name: string
-   description: string
-   category: string
-   output_node: boolean
-}
-
-// --------------------------------------------------------------------
-export const ComfyInputSpec_zod: ZodType<ComfyInputSpec> = z
-   .union([
-      //
-      z.tuple([z.lazy(() => ComfyInputType_zod)]),
-      z.tuple([z.lazy(() => ComfyInputType_zod), z.lazy(() => ComfyInputOpts_zod)]),
-   ])
-   .describe('ComfyInputSpec')
-
-// prettier-ignore
-export type ComfyInputSpec =
-    | [ComfyInputType]
-    | [ComfyInputType, ComfyInputOpts]
-
-// --------------------------------------------------------------------
-export const ComfyInputType_zod: ZodType<ComfyInputType> = z
-   .union([
-      //
-      z.string().describe('node name or primitive'),
-      z.lazy(() => ComfyEnumDef_zod),
-   ])
-   .describe('ComfyInputType')
-
-export type ComfyInputType =
-   /** node name or primitive */
-   | string
-   /** enum */
-   | ComfyEnumDef
-
-// --------------------------------------------------------------------
-export const ComfyEnumDef_zod: ZodType<ComfyEnumDef> = z
-   .array(
-      z.union([
-         //
-         z.string(),
-         z.number(),
-         z.boolean(),
-         z.object({
-            content: z.string(),
-            image: z.string().nullable().optional(),
-         }),
-      ]),
-   )
-   .describe('enum')
-export type ComfyEnumDef = (string | boolean | number | { content: string; image?: any })[]
-
-// --------------------------------------------------------------------
-export const ComfyInputOpts_zod: ZodType<ComfyInputOpts> = z
-   .union([
-      z.string(), // <--- ❌ why does one node use "" as default ?
-      z.object({
-         multiline: z.boolean().nullable().optional(),
-         default: z.union([z.boolean(), z.number(), z.string()]).nullable().optional(),
-         forceInput: z.boolean().nullable().optional(),
-         min: z.number().nullable().optional(),
-         max: z.number().nullable().optional(),
-         step: z.number().nullable().optional(),
+   input_order: v.optional(
+      v.strictObject({
+         required: v.optional(v.array(v.string())),
+         optional: v.optional(v.array(v.string())),
+         hidden: v.optional(v.array(v.string())),
       }),
-   ])
-   .describe('ComfyInputOpts')
+   ),
+   output: v.array(v.lazy(() => ComfyInputType_valibot)),
+   output_is_list: v.array(v.boolean()),
+   output_name: v.array(v.string()),
+   name: v.string(),
+   display_name: v.string(),
+   description: v.string(),
+   python_module: v.string(),
+   category: v.string(),
+   output_node: v.boolean(),
+   output_tooltips: v.optional(v.array(v.string())),
+   // Stability Flags
+   deprecated: v.optional(v.boolean()),
+   experimental: v.optional(v.boolean()),
+})
 
-export type ComfyInputOpts =
-   | {
-        multiline?: Maybe<boolean>
-        default?: Maybe<boolean | number | string>
-        forceInput?: Maybe<boolean>
-        min?: Maybe<number>
-        max?: Maybe<number>
-        step?: Maybe<number>
-     }
-   | string
+export type ComfyNodeSchemaJSON = v.InferInput<typeof ComfyNodeSchemaJSON_valibot>
 
-// export type ComfyInputOpts_String = {
-//     multiline?: boolean
-//     default?: string
-// }
+// --------------------------------------------------------------------
+// ComfyInputSpec Schema and Type
 
-// export type ComfyInputOpts_Number = {
-//     default?: number
-//     min?: number
-//     max?: number
-//     step?: number
-// }
+export const ComfyInputSpec_valibot = v.union([
+   v.tuple([v.lazy(() => ComfyInputType_valibot), v.lazy(() => ComfyInputOpts_valibot)]),
+   v.tuple([v.lazy(() => ComfyInputType_valibot)]),
+   // means it's broken,
+   // example: https://cushy.fra1.cdn.digitaloceanspaces.com/rvion/d80fcc5e2db2fe0eea071f6065b1f4a4ad354b2f.jpg
+   v.tuple([v.null()]),
+])
+// .description('ComfyInputSpec')
 
-// export type ComfyInputOpts_Boolean = {
-//     default?: boolean
-// }
+export type ComfyInputSpec = v.InferInput<typeof ComfyInputSpec_valibot>
 
-// // prettier-ignore
-// export type ComfyInputOpts =
-//     | ComfyInputOpts_String
-//     | ComfyInputOpts_Number
-//     | ComfyInputOpts_Boolean
+// --------------------------------------------------------------------
+// ComfyInputHiddenEntry Schema and Type
+
+export const ComfyInputHiddenEntry_valibot = v.union([
+   //
+   v.string(),
+   // BROKEN STUFF (e.g. found in several 'rgthree' nodes)
+   v.array(v.array(v.literal('CHOOSE'))),
+   // BROKEN STUFF (e.g. found in "ttN xyPlot")
+   v.array(v.record(v.string(), v.any())),
+]) //'ComfyInputHiddenEntry'
+
+export type ComfyInputHiddenEntrySpec = v.InferInput<typeof ComfyInputHiddenEntry_valibot>
+
+// --------------------------------------------------------------------
+// ComfyInputType Schema and Type
+
+export const ComfyInputType_valibot = v.union([
+   v.string(), //, 'node name or primitive'),
+   v.lazy(() => ComfyEnumDef_valibot),
+])
+// .description('ComfyInputType')
+
+export type ComfyInputType = v.InferInput<typeof ComfyInputType_valibot>
+
+// --------------------------------------------------------------------
+// ComfyEnumDef Schema and Type
+
+export const ComfyEnumDef_valibot = v.array(
+   v.union([
+      v.string(),
+      v.number(),
+      v.boolean(),
+      v.strictObject({
+         content: v.string(),
+         image: v.optional(v.nullable(v.string())),
+      }),
+   ]),
+)
+// .description('enum')
+
+export type ComfyEnumDef = v.InferInput<typeof ComfyEnumDef_valibot>
+
+// --------------------------------------------------------------------
+// ComfyInputOpts Schema and Type
+
+export const ComfyInputOpts_valibot = v.union([
+   v.string(),
+   v.strictObject({
+      tooltip: v.optional(v.nullable(v.string())),
+      multiline: v.optional(v.nullable(v.boolean())),
+      default: v.optional(v.nullable(v.union([v.boolean(), v.number(), v.string()]))),
+      forceInput: v.optional(v.nullable(v.boolean())),
+      min: v.optional(v.nullable(v.number())),
+      round: v.optional(v.nullable(v.union([v.boolean(), v.number()]))),
+      max: v.optional(v.nullable(v.number())),
+      step: v.optional(v.nullable(v.number())),
+      /** Observed on 2024-11-01; 171 occurrences */
+      dynamicPrompts: v.optional(v.boolean()),
+      padding: v.optional(v.boolean()),
+   }),
+])
+// .description('ComfyInputOpts')
+
+export type ComfyInputOpts = v.InferInput<typeof ComfyInputOpts_valibot>

@@ -92,7 +92,7 @@ export class Field_seed extends Field<Field_seed_types> {
 
    // #region UI
    DefaultHeaderUI = WidgetSeedUI
-   DefaultBodyUI = undefined
+   DefaultBodyUI: undefined = undefined
 
    // #region validation
    get ownConfigSpecificProblems(): Problem_Ext {

@@ -263,12 +263,12 @@ export type Prompt_Node = CLASSES[keyof CLASSES]
 // ----------------------------------------
 // type safe node wrappers
 export class Prompt_Prompt extends ManagedNode<'Prompt'> {
-   $kind = 'Prompt' as const
+   $kind: "Prompt" = 'Prompt' as const
    printSelfText = (): string => ``
 }
 
 export class Prompt_Lora extends ManagedNode<'Lora'> {
-   $kind = 'Lora' as const
+   $kind: "Lora" = 'Lora' as const
 
    printSelfText = (): string => `"${this.text}" (weight=${this.strength_clip})`
 
@@ -309,7 +309,7 @@ export class Prompt_Lora extends ManagedNode<'Lora'> {
 }
 
 export class Prompt_Embedding extends ManagedNode<'Embedding'> {
-   $kind = 'Embedding' as const
+   $kind: "Embedding" = 'Embedding' as const
 
    get name(): string {
       return (
@@ -320,7 +320,7 @@ export class Prompt_Embedding extends ManagedNode<'Embedding'> {
    }
 }
 export class Prompt_Wildcard extends ManagedNode<'Wildcard'> {
-   $kind = 'Wildcard' as const
+   $kind: "Wildcard" = 'Wildcard' as const
 
    get name(): string {
       return (
@@ -332,11 +332,11 @@ export class Prompt_Wildcard extends ManagedNode<'Wildcard'> {
 }
 
 export class Prompt_Identifier extends ManagedNode<'Identifier'> {
-   $kind = 'Identifier' as const
+   $kind: "Identifier" = 'Identifier' as const
 }
 
 export class Prompt_Number extends ManagedNode<'Number'> {
-   $kind = 'Number' as const
+   $kind: "Number" = 'Number' as const
 
    get number(): number {
       return parseFloat(this.text)
@@ -352,16 +352,16 @@ export class Prompt_Number extends ManagedNode<'Number'> {
 }
 
 export class Prompt_Separator extends ManagedNode<'Separator'> {
-   $kind = 'Separator' as const
+   $kind: "Separator" = 'Separator' as const
 }
 
 export class Prompt_Content extends ManagedNode<'Content'> {
-   $kind = 'Content' as const
+   $kind: "Content" = 'Content' as const
    printSelfText = (): string => ``
 }
 
 export class Prompt_WeightedExpression extends ManagedNode<'WeightedExpression'> {
-   $kind = 'WeightedExpression' as const
+   $kind: "WeightedExpression" = 'WeightedExpression' as const
 
    get contentText(): string {
       return this.getChild('Content')?.text ?? ''
@@ -377,19 +377,19 @@ export class Prompt_WeightedExpression extends ManagedNode<'WeightedExpression'>
 }
 
 export class Prompt_Break extends ManagedNode<'Break'> {
-   $kind = 'Break' as const
+   $kind: "Break" = 'Break' as const
 }
 
 export class Prompt_Comment extends ManagedNode<'Comment'> {
-   $kind = 'Comment' as const
+   $kind: "Comment" = 'Comment' as const
 }
 
 export class Prompt_Permutations extends ManagedNode<'Permutations'> {
-   $kind = 'Permutations' as const
+   $kind: "Permutations" = 'Permutations' as const
 }
 
 export class Prompt_String extends ManagedNode<'String'> {
-   $kind = 'String' as const
+   $kind: "String" = 'String' as const
 
    get content(): string {
       return this.text.slice(1, -1)
@@ -397,23 +397,23 @@ export class Prompt_String extends ManagedNode<'String'> {
 }
 
 export class Prompt_Tag extends ManagedNode<'Tag'> {
-   $kind = 'Tag' as const
+   $kind: "Tag" = 'Tag' as const
 }
 
 export class Prompt_TagName extends ManagedNode<'TagName'> {
-   $kind = 'TagName' as const
+   $kind: "TagName" = 'TagName' as const
 }
 
 export class Prompt_Artist extends ManagedNode<'Artist'> {
-   $kind = 'Artist' as const
+   $kind: "Artist" = 'Artist' as const
 }
 
 export class Prompt_ArtistName extends ManagedNode<'ArtistName'> {
-   $kind = 'ArtistName' as const
+   $kind: "ArtistName" = 'ArtistName' as const
 }
 
 export class Prompt_Unknown extends ManagedNode<any> {
-   $kind = 'Unknown' as 'Unknown'
+   $kind: "Unknown" = 'Unknown' as 'Unknown'
    constructor(expression: PromptAST, parent: Maybe<ManagedNode>, node: SyntaxNode) {
       super(expression, parent, node)
       console.log(`[❌] unknown node "${node.name}" at position ${node.from}-${node.to}`)

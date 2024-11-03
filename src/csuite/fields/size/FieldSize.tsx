@@ -18,7 +18,8 @@ import {
    type ModelType,
    type SDModelType,
 } from './WidgetSizeTypes'
-import { WigetSize_BlockUI, WigetSize_LineUI } from './WidgetSizeUI'
+import { WigetSize_BlockUI } from './WigetSize_BlockUI'
+import { WigetSize_LineUI } from './WigetSize_LineUI'
 
 type SizeAble = {
    width: number

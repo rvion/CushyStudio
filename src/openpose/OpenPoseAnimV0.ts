@@ -33,7 +33,7 @@ export class OpenPoseAnimV0 {
    // @internal
    private intervalId: any | null = null
 
-   ix = 0
+   ix: number = 0
 
    drawAllToPngAndSaveLocally = async () => {
       let i = -1

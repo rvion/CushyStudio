@@ -1,4 +1,5 @@
-import type { Layer$, Mask$, Masks$ } from '../V2/ucV2'
+import type { Layer$ } from '../stateV2/Layer$'
+import type { Mask$, Masks$ } from '../stateV2/Masks$'
 
 import { observer } from 'mobx-react-lite'
 

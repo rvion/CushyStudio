@@ -1,7 +1,7 @@
 import type { RevealHideReason } from './RevealProps'
 
 export class RevealCloseEvent {
-   private prevented = false
+   private prevented: boolean = false
 
    constructor(public readonly reason: RevealHideReason) {}
 

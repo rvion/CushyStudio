@@ -12,7 +12,7 @@ import { RevealState } from './RevealState'
  */
 export class RevealStateLazy {
    static nextUID: number = 1
-   uid = RevealStateLazy.nextUID++
+   uid: number = RevealStateLazy.nextUID++
    childRef = React.createRef<HTMLDivElement>()
 
    /**

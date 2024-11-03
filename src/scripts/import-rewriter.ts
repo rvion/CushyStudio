@@ -1,9 +1,9 @@
 import fs from 'fs'
 import path from 'pathe'
 
-const srcFolder = './src'
+const srcFolder: "./src" = './src'
 
-function processFile(filePath: string) {
+function processFile(filePath: string): void {
    const content = fs.readFileSync(filePath, 'utf8')
    const modifiedContent = content.replace(
       /import\s+(type\s+)?{([^}]+)}\s+from\s+'src\/([^']+)'/g,
@@ -24,7 +24,7 @@ function processFile(filePath: string) {
    fs.writeFileSync(filePath, modifiedContent, 'utf8')
 }
 
-function traverseDirectory(directoryPath: string) {
+function traverseDirectory(directoryPath: string): void {
    const files = fs.readdirSync(directoryPath)
    files.forEach((file) => {
       const filePath = path.join(directoryPath, file)

@@ -7,18 +7,14 @@ import { observer } from 'mobx-react-lite'
 import { useEffect, useMemo } from 'react'
 import { createPortal } from 'react-dom'
 
+import { useObservableRef } from '../../csuite/utils/observableRef'
 import { window_addEventListener } from '../../csuite/utils/window_addEventListenerAction'
 import { DrawWorkflowUI } from './DrawWorkflowUI'
 import { useCursorLockMove } from './useCursorLockMove'
 
-// import { renderMinimap } from '../minimap/Minimap'
-
-export const useObservableRef = <T extends any>(): MutableRefObject<T> =>
-   useMemo(() => observable({ current: null } as MutableRefObject<T>), [])
-
 export const GraphPreviewUI = observer(function GraphPreviewUI_(p: { graph: ComfyWorkflowL }) {
    const workflow = p.graph
-   const canvasRef = useObservableRef<HTMLCanvasElement>()
+   const canvasRef = useObservableRef<HTMLCanvasElement>([])
    const canvas = canvasRef.current
    const { dx, dy, isDragging, props } = useCursorLockMove()
    useEffect(() => {

@@ -34,7 +34,7 @@ export class ElectronUtils {
       this.ipc = ipcRenderer
 
       ipcRenderer.removeAllListeners('execute')
-      ipcRenderer.on('execute', async function (event, data) {
+      ipcRenderer.on('execute', async function (event, data): Promise<void> {
          const uid: number = data.uid
          const draftID: string = data.payload?.query?.draftID
          if (typeof draftID === 'number') {

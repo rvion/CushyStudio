@@ -30,7 +30,7 @@ export class RuntimeVideos {
       })
    }
 
-   static VideoCounter = 1
+   static VideoCounter: number = 1
 
    output_video_ffmpegGeneratedImagesTogether = async (
       /** image to incldue (defaults to all images generated in the fun) */

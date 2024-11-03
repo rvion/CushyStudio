@@ -421,7 +421,7 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
     * will be set to true after the first initialization
     * TODO: also use that to wait for whole tree to be patched before applying effects
     * */
-   ready = false
+   ready: boolean = false
 
    /**
     * if your field need to wait for the document to be ready;
@@ -942,7 +942,7 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
    /** every child class must implement change detection from its default  */
    abstract readonly hasChanges: boolean
 
-   private touched_ = false
+   private touched_: boolean = false
 
    /** true when the field contains unsaved changes */
    get touched(): boolean {
@@ -1138,7 +1138,7 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
    }
 
    get mustDisplayErrors(): boolean {
-      return true
+      return this.hasOwnErrors
       return this.hasOwnErrors && this.touched
    }
 
@@ -1579,7 +1579,7 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
       this.__version__++
       // this.parent?._acknowledgeNewChildSerial(this.mountKey, this.serial)
    }
-   __version__ = 1
+   __version__: number = 1
 
    /**
     * equivalent to `produce`, followed by `assignNewSerial` (if something did change)

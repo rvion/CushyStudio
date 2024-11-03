@@ -48,7 +48,7 @@ export class Form {
                   submitAction:
                      this.props.submitAction == null
                         ? undefined
-                        : async (x) => {
+                        : async (x): Promise<void> => {
                              if (this.props.submitAction == null) return
                              if (this.props.submitAction === 'confetti') {
                                 // @ts-ignore
