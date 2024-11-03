@@ -55,13 +55,13 @@ export const FavBarUI = observer(function FavBarUI_(p: {
          >
             <Frame //
                base={{ contrast: -0.1 }}
-               tw='flex flex-grow flex-1 flex-col overflow-auto p-1 '
+               tw='flex flex-1 flex-grow flex-col overflow-auto p-1 '
                roundness={'5px'}
             >
                {/* <PanelHeaderUI>{conf.renderAsConfigBtn()}</PanelHeaderUI> */}
                <Button
                   //
-                  tw='my-0.5 flex items-center justify-center self-center flex-shrink-0'
+                  tw='my-0.5 flex flex-shrink-0 items-center justify-center self-center'
                   tooltip='SD1.5'
                   base={{ hue: 0, chromaBlend: 2, contrast: 0.3 }}
                   style={{ width: tempSize, height: tempSize }}
@@ -72,7 +72,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                   <span tw='truncate'>SD1.5</span>
                </Button>
                <Button
-                  tw='my-0.5 flex items-center justify-center self-center flex-shrink-0'
+                  tw='my-0.5 flex flex-shrink-0 items-center justify-center self-center'
                   tooltip='SDXL'
                   base={{ hue: 90, chromaBlend: 2, contrast: 0.3 }}
                   style={{ width: tempSize, height: tempSize }}
@@ -88,7 +88,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                         app={cushy.db.cushy_app.get('library/built-in/SDXL/cushySDXL.tsx:1')}
                     /> */}
                <Button
-                  tw='my-0.5 flex items-center justify-center self-center flex-shrink-0'
+                  tw='my-0.5 flex flex-shrink-0 items-center justify-center self-center'
                   tooltip='NoobAI'
                   base={{ hue: 90, chromaBlend: 2, contrast: 0.3 }}
                   style={{
@@ -108,7 +108,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                   <span tw='truncate'>NoobAI</span>
                </Button>
                <Button
-                  tw='my-0.5 flex items-center justify-center self-center flex-shrink-0'
+                  tw='my-0.5 flex flex-shrink-0 items-center justify-center self-center'
                   tooltip='SD3'
                   base={{ hue: 180, chromaBlend: 2, contrast: 0.3 }}
                   style={{ width: tempSize, height: tempSize }}
@@ -119,7 +119,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                   <span tw='truncate'>SD3</span>
                </Button>
                <Button
-                  tw='my-0.5 flex items-center justify-center self-center truncate flex-shrink-0'
+                  tw='my-0.5 flex flex-shrink-0 items-center justify-center self-center truncate'
                   tooltip='Cascade'
                   base={{ hue: 210, chromaBlend: 2, contrast: 0.3 }}
                   style={{ width: tempSize, height: tempSize }}
@@ -128,7 +128,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                   <span tw='truncate'>Cascade</span>
                </Button>
                <Button
-                  tw='my-0.5 flex items-center justify-center self-center flex-shrink-0'
+                  tw='my-0.5 flex flex-shrink-0 items-center justify-center self-center'
                   tooltip='FLUX'
                   base={{ hue: 270, chromaBlend: 2, contrast: 0.3 }}
                   style={{ width: tempSize, height: tempSize }}
@@ -140,7 +140,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                </Button>
                <Button
                   tooltip='Slay the Spire Card Generator'
-                  tw='my-0.5 flex items-center justify-center self-center flex-shrink-0'
+                  tw='my-0.5 flex flex-shrink-0 items-center justify-center self-center'
                   base={{ hue: 270, chromaBlend: 2, contrast: 0.3 }}
                   style={{ width: tempSize, height: tempSize }}
                   onClick={() =>
@@ -161,7 +161,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                   <Button
                      square
                      style={{ width: tempSize, height: tempSize, fontSize: sizeStr }}
-                     tw='content-center items-center flex-shrink-0'
+                     tw='flex-shrink-0 content-center items-center'
                      icon='mdiPlus'
                      iconSize={tempSize}
                   />
