@@ -1,99 +1,24 @@
-import type { FieldCtorProps } from '../../csuite/model/Field'
-
-import { makeAutoObservable } from 'mobx'
-import { observer, useLocalObservable } from 'mobx-react-lite'
+import { action, runInAction } from 'mobx'
+import { observer } from 'mobx-react-lite'
+import { useRef } from 'react'
 
 import { Button } from '../../csuite/button/Button'
 import { SpacerUI } from '../../csuite/components/SpacerUI'
 import { Frame } from '../../csuite/frame/Frame'
 import { CachedResizedImage } from '../../csuite/image/CachedResizedImageUI'
 import { ButtonStringUI } from '../../csuite/input-string-button/ButtonStringUI'
+import { InputStringUI } from '../../csuite/input-string/InputStringUI'
 import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
 import { PanelUI } from '../../csuite/panel/PanelUI'
 import { ResizableFrame } from '../../csuite/resizableFrame/resizableFrameUI'
 import { BasicShelfUI } from '../../csuite/shelf/ShelfUI'
-import { usePanel } from '../../router/usePanel'
+import { useCaptioningState } from './PanelCaptioningCtx'
 
-export type PanelCaptioningProps = {
-   uid?: number | string
-   /** Should maybe be the item itself instead of a number? This is just for skeleton */
-   activeImage: { index: number; filePath: string }
-   activeCaption: { index: number; text: string }
-   activeGlobalCaption: { index: number; text: string }
-   activeDirectory: { path: string; files: Array<string> }
-   /** Array of indexes, not sure if I like this approach. I think I would prefer the item itself to know if it is selected. But each panel should have a different state, so hmmmm... */
-   selected: Set<number>
-   folderPath: string
-   exportPath: string
-}
-
-export class PanelCaptioningState {
-   constructor(public props: PanelCaptioningProps) {
-      makeAutoObservable(this)
-   }
-}
-
-export const PanelCaptioningUI = observer(function PanelCaptioningUI_(p: PanelCaptioningProps) {
-   const panel = usePanel<PanelCaptioningProps>()
-   const test_data = useLocalObservable(() => [
-      //
-      {
-         filepath: 'example/path/maw.png',
-         captions: ['mouth teeth maw', '', 'ur mom lol'],
-      },
-      { filepath: 'wah/tmooafphniawhniop/paw.png', captions: ['paw foot feet', '', 'ur dad lol'] },
-   ])
-   // const b = CushySchemaBuilder
-   // const schema = b.fields()
-   const doc = panel.usePersistentModel('uist-1', (b) =>
-      b
-         .fields({
-            uid: b.string(),
-
-            activeImage: b.group({
-               items: {
-                  index: b.number(),
-                  filePath: b.string(),
-               },
-            }),
-
-            activeCaption: b.group({
-               items: {
-                  index: b.number(),
-                  text: b.string(),
-               },
-            }),
-            activeGlobalCaption: b.group({
-               items: {
-                  index: b.number(),
-                  text: b.string(),
-               },
-            }),
-            activeDirectory: b.string().list(),
-
-            selected: b.number().list(),
-            folderPath: b.string(),
-         })
-         .useClass(
-            (SUPER) =>
-               class extends SUPER {
-                  constructor(...args: FieldCtorProps) {
-                     super(...args)
-                     this.autoExtendObservable()
-                  }
-               },
-         ),
-   )
-
-   // const uist = useMemo(() => new PanelCaptioningState({ active: -1, selected: new Set() }), [])
-
-   const activeImage = doc.ActiveImage.value.index ?? 0
-   const activePath = doc.ActiveImage.FilePath.value
-
-   console.log('[FD], ', activePath)
-
+export const PanelCaptioningUI = observer(function PanelCaptioningUI_(p: {}) {
+   const doc = useCaptioningState()
+   // const misc = usePanel().usePersistentStore<{ showDebug: boolean }>('misc', () => ({ showDebug: false }))
    return (
-      <PanelUI>
+      <>
          <PanelHeaderUI>
             <SpacerUI />
 
@@ -103,6 +28,13 @@ export const PanelCaptioningUI = observer(function PanelCaptioningUI_(p: PanelCa
             // Cropping, potentially region-based captioning in the future?
             tw='!flex-row' // Content
          >
+            {/* <div>
+               <Button
+                  icon='mdiEyeLock'
+                  onClick={() => misc.saveData({ showDebug: !misc.data.showDebug })}
+               ></Button>
+               {misc.data.showDebug ?? <pre tw='text-xs w-96 overflow-visible'>{doc.debug}</pre>}
+            </div> */}
             <Frame //
                tw='flex w-full items-center justify-center'
                base={{ contrast: 0.1 }}
@@ -110,54 +42,56 @@ export const PanelCaptioningUI = observer(function PanelCaptioningUI_(p: PanelCa
                <img // Active Image
                   tw='select-none'
                   draggable={false}
-                  src={`file://${doc.ActiveImage.FilePath.value}`}
+                  src={`file://${doc.folderPath}/${doc.imageNameWithExt}`}
                />
             </Frame>
             <BasicShelfUI tw='flex flex-col !gap-2 overflow-clip p-2' anchor='right'>
-               <Button
-                  icon={'mdiFolderOpen'}
-                  onClick={async () => {
-                     const d = await cushy.electron.dialog.showOpenDialog({
-                        properties: ['openFile', 'openDirectory'],
-                     })
+               <Frame line tw='flex flex-row'>
+                  <Button
+                     tooltip={doc.folderPath ?? 'no folder selected'}
+                     expand
+                     icon={'mdiFolderOpen'}
+                     onClick={async () => {
+                        const d = await cushy.electron.dialog.showOpenDialog({
+                           properties: ['openDirectory'],
+                        })
+                        if (d.canceled) return
+                        // TODO:  if is File, get directory instead and focus file
+                        runInAction(() => {
+                           doc.folderPath = d.filePaths[0] ?? 'Th e FUCK'
+                        })
+                     }}
+                  >
+                     {doc.folderName}
+                  </Button>
+                  {/* <Button
+                     icon='mdiOpenInNew'
+                     onClick={() => revealInFileExplorer(doc.folderPath)}
+                  ></Button> */}
+               </Frame>
 
-                     if (d.canceled) {
-                        console.log('[FD] suck me')
-                        return
-                     }
-
-                     doc.FolderPath.value = d.filePaths[0] ?? 'Th e FUCK'
-
-                     // console.log('[FD] foldeR: ', d.filePaths[0])
-                  }}
-               >
-                  {doc.FolderPath.value.split('/').pop()}
-               </Button>
-
-               {doc.FolderPath.value != '' ? (
+               {doc.folderPath ? (
                   <>
                      <ResizableFrame // Files
                      >
                         <Frame tw='flex flex-col gap-0.5 p-1'>
-                           {test_data.map((data, index) => {
+                           {doc.files.map((fileName, ix) => {
+                              const isSelected = ix == doc.activeImageIndex
                               return (
-                                 <Frame line>
-                                    <Button
-                                       tw='h-input w-full truncate'
-                                       subtle
-                                       borderless
-                                       base={{ contrast: index == activeImage ? 0.1 : 0 }}
-                                       onClick={() => {
-                                          doc.ActiveImage.value.index = index
-                                          doc.ActiveCaption.value.index = 0
-                                          doc.ActiveImage.value.filePath = data.filepath
-                                       }}
-                                       tooltip={data.filepath}
-                                    >
-                                       <CachedResizedImage size={24} src={data.filepath}></CachedResizedImage>
-                                       {data.filepath.split('/').pop()!.split('.').shift()}
-                                    </Button>
-                                 </Frame>
+                                 <Button
+                                    triggerOnPress={{ startingState: isSelected, toggleGroup: '9RAXAFzyuQ' }}
+                                    tw='h-input w-full !justify-start'
+                                    subtle
+                                    borderless
+                                    base={{ contrast: isSelected ? 0.1 : 0 }}
+                                    onClick={() => (doc.activeImageIndex = ix)}
+                                    tooltip={fileName}
+                                 >
+                                    <CachedResizedImage size={24} src={`${doc.folderPath}/${fileName}`} />
+                                    <span tw='truncate text-center'>
+                                       {fileName.split('/').pop()!.split('.').shift()}
+                                    </span>
+                                 </Button>
                               )
                            })}
                         </Frame>
@@ -165,52 +99,75 @@ export const PanelCaptioningUI = observer(function PanelCaptioningUI_(p: PanelCa
                      <ResizableFrame // Captions
                      >
                         <Frame tw='flex flex-col gap-0.5 p-1'>
-                           {test_data[activeImage]?.captions.map((data, index) => {
+                           {doc.captions.map((caption, ix) => {
+                              const isSelected = ix == doc.activeCaptionIndex
                               return (
-                                 <ButtonStringUI
-                                    tw='h-input truncate'
-                                    subtle
-                                    borderless
-                                    base={{ contrast: index == doc.ActiveCaption.value.index ? 0.1 : 0 }}
-                                    onClick={() => {
-                                       doc.ActiveCaption.value.index = index
-                                    }}
-                                    tooltip={data}
-                                    setValue={(val) => {
-                                       test_data[activeImage]!.captions[index] = val
-                                    }}
-                                    getValue={() => {
-                                       const text = test_data[activeImage]?.captions[index]
-                                       if (text === undefined) {
-                                          return 'USER SHOULD NOT SEE THIS'
-                                       }
-                                       return text
-                                    }}
-                                 >
-                                    {data}
-                                 </ButtonStringUI>
+                                 <Frame key={ix} line>
+                                    <ButtonStringUI
+                                       tw='h-input truncate'
+                                       expand
+                                       subtle
+                                       triggerOnPress={{
+                                          startingState: isSelected,
+                                          toggleGroup: '3ZrdohNf6d',
+                                       }}
+                                       borderless
+                                       base={{ contrast: isSelected ? 0.1 : 0 }}
+                                       onClick={() => (doc.activeCaptionIndex = ix)}
+                                       tooltip={caption}
+                                       setValue={(val) => (doc.captions[doc.activeCaptionIndex] = val)}
+                                       getValue={() => {
+                                          const text = doc.captions[doc.activeCaptionIndex]
+                                          if (text === undefined) return 'USER SHOULD NOT SEE THIS'
+                                          return text
+                                       }}
+                                    >
+                                       <span tw='flex-grow truncate text-start'>{caption}</span>
+                                       <Button
+                                          tooltip='Remove caption'
+                                          size='sm'
+                                          square
+                                          subtle
+                                          borderless
+                                          icon='mdiMinus'
+                                          onClick={(ev) => {
+                                             doc.removeCaptionAt(ix)
+                                             ev.stopPropagation()
+                                             ev.preventDefault()
+                                          }}
+                                          onDoubleClick={(ev) => {
+                                             ev.stopPropagation()
+                                             ev.preventDefault()
+                                          }}
+                                       />
+                                    </ButtonStringUI>
+                                 </Frame>
                               )
                            })}
                         </Frame>
                      </ResizableFrame>
-                     {/* <InputStringUI //
-                        setValue={(val) => {
-                           test_data[activeImage]!.captions[doc.ActiveCaption.Index.value] = val
-                        }}
-                        getValue={() => {
-                           const text = test_data[activeImage]?.captions[doc.ActiveCaption.Index.value]
-                           if (text === undefined) {
-                              return 'USER SHOULD NOT SEE THIS'
+                     <InputStringUI //
+                        ref={doc.inputRefCaption}
+                        clearable
+                        icon='mdiTextBoxPlus'
+                        onKeyDown={(ev) => {
+                           if (!doc.floatingCaption) return
+                           if (ev.key == 'Enter') {
+                              runInAction(() => {
+                                 doc.addCaption(doc.floatingCaption)
+                                 doc.floatingCaption = ''
+                              })
                            }
-                           return text
                         }}
-                     /> */}
+                        setValue={action((val) => (doc.floatingCaption = val))}
+                        getValue={() => doc.floatingCaption}
+                     />
                   </>
                ) : (
                   <></>
                )}
             </BasicShelfUI>
          </PanelUI.Content>
-      </PanelUI>
+      </>
    )
 })

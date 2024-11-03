@@ -18,7 +18,9 @@ export class Channel<T> {
       return bang(field.consume(this), 'Empty channel')
    }
 
-   constructor(public id: ChannelId = nanoid()) {
+   id: ChannelId = nanoid()
+
+   constructor() {
       makeAutoObservable(this)
    }
 

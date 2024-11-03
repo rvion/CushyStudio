@@ -16,19 +16,21 @@ export type ButtonStringProps = {
 
 export const ButtonStringUI = observer(
    forwardRef(function WidgetStringUI_(
-      { getValue, setValue, ...rest }: ButtonStringProps,
+      { getValue, setValue, onKeyDown, ...rest }: ButtonStringProps,
       ref: ForwardedRef<HTMLDivElement>,
    ) {
       const prev = useMemo(() => getValue(), [])
       return (
          <RevealUI
-            backdropColor='rgba(0,0,0,0.25)'
             trigger={['doubleClick', 'rightClick']}
             placement='above-no-clamp'
             content={(p) => (
                <InputStringUI //
                   autoFocus
                   onKeyDown={(ev) => {
+                     if (onKeyDown) {
+                        onKeyDown(ev)
+                     }
                      if (ev.key === 'Escape') {
                         ev.preventDefault()
                         ev.stopPropagation()

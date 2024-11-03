@@ -21,6 +21,9 @@ export const ShellPopoverUI = observer(function ShellPopoverUI_(p: RevealShellPr
             // we need some class to check that we're indeed focusing on a child of the popup
             '_ShellForFocusEvents',
          ]}
+         roundness={cushy.theme.value.inputRoundness}
+         border={cushy.theme.value.inputBorder}
+         dropShadow={cushy.theme.value.inputShadow}
          // onContextMenu={uist.open}
          onClick={(ev) => reveal.onShellClick(ev)}
          onMouseEnter={(ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => reveal.onMouseEnterTooltip(ev)}

@@ -25,6 +25,12 @@ import {
    cmd_nav_openIcons,
 } from './operators/commands/cmd_goTo'
 import { allCanvasCommands } from './panels/PanelCanvas/commands/canvasCommands'
+import {
+   cmd_captioning_selectNextImage,
+   cmd_captioning_selectPreviousImage,
+   cmd_captioningDeleteActiveCaption,
+   CommandsCaptions,
+} from './panels/PanelCaptioning/ctx_captionning'
 
 export const allCommands = [
    //
@@ -47,4 +53,5 @@ export const allCommands = [
    ...allLegacyCommands,
    ...allTreeCommands,
    ...allScreencastCommands,
+   ...CommandsCaptions,
 ]
