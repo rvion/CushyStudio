@@ -32,6 +32,8 @@ export type FrameProps = {
    /** by default, frames are flex, if you want them to be block, use `block` property, or change the display property manually */
    block?: boolean
 
+   container?: boolean | string | React.HTMLAttributes<HTMLDivElement>
+
    tooltip?: string
    tooltipPlacement?: RevealPlacement
 
@@ -103,7 +105,7 @@ export const Frame = observer(
             boxShadow, dropShadow,                              // style: 3/4: css
             style, className,                                   // style: 4/4: css, className
 
-            row, line, col, wrap,                               // layout
+            container, row, line, col, wrap,                    // layout
 
             hovered: hovered__,                                 // state
             onMouseDown, onMouseEnter, onClick, triggerOnPress, // interractions
@@ -208,6 +210,8 @@ export const Frame = observer(
                   '[&>*:not(:last-child)]:!border-r',
                   // '[&>*:not(:last-child)]:!mr-[1px]',
                ],
+               // Fixes scrolling when used as a container
+               p.container && 'overflow-clip',
                className,
             ]}
             // style={{ position: 'relative' }}
@@ -232,7 +236,28 @@ export const Frame = observer(
                }}
             >
                {icon && <IkonOf tw='pointer-events-none flex-none' name={icon} size={iconSize} />}
-               {p.children}
+               {container != null ? (
+                  <div
+                     tw={
+                        typeof container === 'string'
+                           ? container
+                           : typeof container === 'boolean'
+                             ? [
+                                  //
+                                  'flex h-full w-full flex-1 flex-col overflow-auto',
+                                  // TODO(bird_d): Use csuite theming for these
+                                  'gap-1 p-2',
+                               ]
+                             : undefined
+                        //   ? 'flex flex-col gap-1 p-2 '
+                     }
+                     {...(typeof container === 'object' ? container : undefined)}
+                  >
+                     {p.children}
+                  </div>
+               ) : (
+                  p.children
+               )}
                {suffixIcon && <IkonOf tw='pointer-events-none' name={suffixIcon} size={iconSize} />}
                {loading && (
                   <div tw='loading loading-spinner loading-sm absolute self-center justify-self-center' />
