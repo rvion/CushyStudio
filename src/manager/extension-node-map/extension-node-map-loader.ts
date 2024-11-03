@@ -1,4 +1,4 @@
-import type { NodeNameInComfy } from '../../models/ComfySchema'
+import type { NodeNameInComfy } from '../../comfyui/comfyui-types'
 import type { ComfyManagerRepository } from '../ComfyManagerRepository'
 import type { KnownCustomNode_File } from '../custom-node-list/KnownCustomNode_File'
 import type { ENMInfos, ExtensionNodeMapFile } from './extension-node-map-types'

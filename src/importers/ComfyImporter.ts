@@ -1,7 +1,8 @@
+import type { ComfyUIAPIRequest } from '../comfyui/comfyui-prompt-api'
+import type { NodeInputExt } from '../comfyui/comfyui-types'
+import type { ParsedComfyUIObjectInfoNodeSchema } from '../comfyui/ParsedComfyUIObjectInfoNodeSchema'
 import type { TEdge } from '../csuite/utils/toposort'
-import type { ComfyNodeSchema, NodeInputExt } from '../models/ComfySchema'
 import type { STATE } from '../state/state'
-import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 
 import { convertComfyNodeNameToCushyNodeNameValidInJS } from '../core/normalizeJSIdentifier'
 import { ComfyPrimitiveMapping } from '../core/Primitives'
@@ -28,7 +29,7 @@ export type PromptToCodeOpts = {
    autoUI: boolean
 }
 
-const formVarInUIFn: "form" = 'form'
+const formVarInUIFn: 'form' = 'form'
 
 export class ComfyImporter {
    constructor(public st: STATE) {}
@@ -113,7 +114,7 @@ export class ComfyImporter {
       return x
    }
 
-   convertPromptToCode = (flow: ComfyPromptJSON, opts: PromptToCodeOpts): string => {
+   convertPromptToCode = (flow: ComfyUIAPIRequest, opts: PromptToCodeOpts): string => {
       this.resetCache()
       const flowNodes = Object.entries(flow)
       const ids = Object.keys(flow)
@@ -170,7 +171,7 @@ export class ComfyImporter {
          const varName = this.mkVarNameForNodeType(classType, []) //`${classType}_${nodeID}`
 
          generatedName.set(nodeID, varName)
-         const schema: Maybe<ComfyNodeSchema> =
+         const schema: Maybe<ParsedComfyUIObjectInfoNodeSchema> =
             this.st.schema.nodesByNameInCushy[classType] ?? //
             this.st.schema.nodesByNameInCushy[this.knownAliaes[classType]!]
          if (schema == null) {

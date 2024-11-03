@@ -11,6 +11,7 @@ dts
 
 # in case of local ComfyUI clone
 ComfyUI
+!src/comfyui
 
 # electron
 out

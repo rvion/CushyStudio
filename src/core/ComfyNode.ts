@@ -1,7 +1,8 @@
-import type { ComfyNodeSchema, NodeInputExt, NodeOutputExt } from '../models/ComfySchema'
+import type { ComfyUIAPIRequest_Node } from '../comfyui/comfyui-prompt-api'
+import type { NodeInputExt, NodeOutputExt } from '../comfyui/comfyui-types'
+import type { ParsedComfyUIObjectInfoNodeSchema } from '../comfyui/ParsedComfyUIObjectInfoNodeSchema'
 import type { ComfyWorkflowL, ProgressReport } from '../models/ComfyWorkflow'
 import type { ComfyNodeID, ComfyNodeMetadata } from '../types/ComfyNodeID'
-import type { ComfyNodeJSON } from '../types/ComfyPrompt'
 import type { NodeProgress } from '../types/ComfyWsApi'
 import type { ReactNode } from 'react'
 
@@ -88,9 +89,9 @@ export class ComfyNode<
       return { percent, isDone, countDone: this.progressRatio * 100, countTotal: 100 }
    }
 
-   $schema: ComfyNodeSchema
+   $schema: ParsedComfyUIObjectInfoNodeSchema
    updatedAt: number = Date.now()
-   json: ComfyNodeJSON
+   json: ComfyUIAPIRequest_Node
 
    get isExecuting(): boolean {
       return this.status === 'executing'
@@ -135,7 +136,7 @@ export class ComfyNode<
    constructor(
       public graph: ComfyWorkflowL,
       public uid: ComfyNodeUID, //  = graph.getUID(),
-      jsonExt: ComfyNodeJSON,
+      jsonExt: ComfyUIAPIRequest_Node,
       public meta: ComfyNodeMetadata = {},
    ) {
       this.uidNumber = this.graph._uidNumber++
@@ -185,7 +186,7 @@ export class ComfyNode<
       // makeObservable(this, { artifacts: observable })
    }
 
-   _convertPromptExtToPrompt(promptExt: ComfyNodeJSON): ComfyNodeJSON {
+   _convertPromptExtToPrompt(promptExt: ComfyUIAPIRequest_Node): ComfyUIAPIRequest_Node {
       const inputs: { [inputName: string]: any } = {}
       const _done = new Set<string>()
       for (const i of this.$schema.inputs) {

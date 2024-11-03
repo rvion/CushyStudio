@@ -1,9 +1,10 @@
+import type { EmbeddingName } from '../comfyui/comfyui-types'
 import type { LiveDB } from '../db/LiveDB'
 import type { PluginInfo } from '../manager/custom-node-list/custom-node-list-types'
 import type { KnownCustomNode_File } from '../manager/custom-node-list/KnownCustomNode_File'
 import type { KnownCustomNode_Title } from '../manager/custom-node-list/KnownCustomNode_Title'
 import type { Requirements } from '../manager/REQUIREMENTS/Requirements'
-import type { ComfySchemaL, EmbeddingName } from './ComfySchema'
+import type { ComfySchemaL } from './ComfySchema'
 
 import { copyFileSync, existsSync, mkdirSync, writeFileSync } from 'fs'
 import * as v from 'valibot'
@@ -259,7 +260,7 @@ export class HostL extends BaseInst<TABLES['host']> {
    }
 
    private writeSDKToDisk = (): void => {
-      const comfySchemaTs = this.schema.codegenDTS()
+      const comfySchemaTs = this.schema.parseObjectInfo.codegenDTS()
       writeFileSync(this.sdkDTSPath, comfySchemaTs, 'utf-8')
       if (this.isPrimary) writeFileSync(this.st.primarySdkDtsPath, comfySchemaTs, 'utf-8')
       // if (this.isPrimary) this._copyGeneratedSDKToGlobalDTS()

@@ -1,23 +1,27 @@
-import type { ComfyNodeSchema, ComfySchemaL, NodeInputExt } from '../models/ComfySchema'
-import type { ComfyNodeJSON, ComfyPromptJSON } from '../types/ComfyPrompt'
 import type {
    LiteGraphJSON,
    LiteGraphLink,
    LiteGraphLinkID,
    LiteGraphNode,
    LiteGraphNodeInput,
-} from './LiteGraph'
+} from '../core/LiteGraph'
+import type { ComfySchemaL } from '../models/ComfySchema'
+import type { ComfyUIAPIRequest, ComfyUIAPIRequest_Node } from './comfyui-prompt-api'
+import type { NodeInputExt } from './comfyui-types'
+import type { ParsedComfyUIObjectInfoNodeSchema } from './ParsedComfyUIObjectInfoNodeSchema'
 
+import { howManyWidgetValuesForThisInputType, howManyWidgetValuesForThisSchemaType } from '../core/Primitives'
+import { UnknownCustomNode } from '../core/UnknownCustomNode'
 import { bang } from '../csuite/utils/bang'
-import { howManyWidgetValuesForThisInputType, howManyWidgetValuesForThisSchemaType } from './Primitives'
-import { UnknownCustomNode } from './UnknownCustomNode'
 
+/** return a valid JSON ready to send to ComfyUI */
 export const convertLiteGraphToPrompt = (
-   //
+   /** the ComfySchema object (to look for references/definitions) */
    schema: ComfySchemaL,
+   /** the litegraph */
    workflow: LiteGraphJSON,
-): ComfyPromptJSON => {
-   const prompt: ComfyPromptJSON = {}
+): ComfyUIAPIRequest => {
+   const prompt: ComfyUIAPIRequest = {}
    const LOG = (...args: any[]): void => console.log('[🔥] converter ℹ️ :', ...args)
    const ERR = (...args: any[]): void => console.error('[🔥] converter 🔴 :', ...args)
    console.groupCollapsed('[🔥] converter')
@@ -75,11 +79,11 @@ export const convertLiteGraphToPrompt = (
             continue
          }
 
-         const inputs: ComfyNodeJSON['inputs'] = {}
+         const inputs: ComfyUIAPIRequest_Node['inputs'] = {}
 
          const fieldNamesWithLinks = new Set((node?.inputs ?? []).map((i) => i.name))
          const nodeTypeName = node.type
-         const nodeSchema_ = schema.nodesByNameInComfy[nodeTypeName]
+         const nodeSchema_ = schema.parseObjectInfo.nodesByNameInComfy[nodeTypeName]
          // ?? schema.nodesByNameInComfy[ComfyDefaultNodeWhenUnknown_Name]
 
          if (nodeSchema_ == null) {
@@ -88,7 +92,7 @@ export const convertLiteGraphToPrompt = (
             LOG(`❌ current prompt Step is:`, { prompt })
             throw new UnknownCustomNode(node) //`❌ node ${node.type}) has no known schema; you probably need to install some custom node`)
          }
-         const nodeSchema: ComfyNodeSchema = nodeSchema_
+         const nodeSchema: ParsedComfyUIObjectInfoNodeSchema = nodeSchema_
          const inputsInNodeSchema: NodeInputExt[] = nodeSchema.inputs
          if (inputsInNodeSchema == null) throw new Error(`❌ node ${node.id}(${node.type}) has no input`)
 

@@ -1,4 +1,4 @@
-import type { EnumValue } from '../../../models/ComfySchema'
+import type { EnumValue } from '../../../comfyui/comfyui-types'
 import type { Field_enum_config } from './FieldEnum'
 
 // ⁉️

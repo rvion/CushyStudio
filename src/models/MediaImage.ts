@@ -1,9 +1,9 @@
+import type { ComfyUIAPIRequest_Node } from '../comfyui/comfyui-prompt-api'
 import type { ManualPromise } from '../csuite/utils/ManualPromise'
 import type { LiveDB } from '../db/LiveDB'
 import type { TABLES } from '../db/TYPES.gen'
 import type { SafetyResult } from '../safety/Safety'
 import type { ComfyNodeMetadata } from '../types/ComfyNodeID'
-import type { ComfyNodeJSON } from '../types/ComfyPrompt'
 import type { ComfyPromptL } from './ComfyPrompt'
 import type { ComfyWorkflowL } from './ComfyWorkflow'
 import type { CushyAppL } from './CushyApp'
@@ -335,7 +335,7 @@ export class MediaImageL extends BaseInst<TABLES['media_image']> {
    }
 
    /** return the json of the ComfyNode that led to this image */
-   get ComfyNode(): Maybe<ComfyNodeJSON> {
+   get ComfyNode(): Maybe<ComfyUIAPIRequest_Node> {
       const nodeID = this.data.promptNodeID
       if (nodeID == null) return null
       return this.graph?.data.comfyPromptJSON[nodeID]

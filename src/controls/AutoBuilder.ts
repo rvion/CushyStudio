@@ -1,7 +1,7 @@
+import type { EnumValue } from '../comfyui/comfyui-types'
 import type { Field_enum_config } from '../csuite/fields/enum/FieldEnum'
 import type { Field_string_config } from '../csuite/fields/string/FieldString'
 import type { FieldConfig } from '../csuite/model/FieldConfig'
-import type { EnumValue } from '../models/ComfySchema'
 import type { CushySchemaBuilder } from './Builder'
 
 type AutoWidget<T> = T extends { kind: any; type: infer X }

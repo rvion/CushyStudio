@@ -1,9 +1,11 @@
 import type { IDNaminScheemeInPromptSentToComfyUI } from '../back/IDNaminScheemeInPromptSentToComfyUI'
+import type { ComfyUIAPIRequest } from '../comfyui/comfyui-prompt-api'
+import type { ParsedObjectInfo } from '../comfyui/ParsedComfyUIObjectInfo'
+import type { ParsedComfyUIObjectInfoNodeSchema } from '../comfyui/ParsedComfyUIObjectInfoNodeSchema'
 import type { LiteGraphJSON } from '../core/LiteGraph'
 import type { LiveDB } from '../db/LiveDB'
 import type { ComfyWorkflowT, TABLES } from '../db/TYPES.gen'
 import type { ComfyNodeID, ComfyNodeMetadata } from '../types/ComfyNodeID'
-import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 import type {
    ApiPromptInput,
    PromptInfo,
@@ -14,7 +16,7 @@ import type {
 import type { HTMLContent, MDContent } from '../types/markdown'
 import type { VisEdges, VisNodes } from '../widgets/misc/VisUI'
 import type { ComfyPromptL } from './ComfyPrompt'
-import type { ComfyNodeSchema, ComfySchemaL } from './ComfySchema'
+import type { ComfySchemaL } from './ComfySchema'
 import type { StepL } from './Step'
 import type { MouseEvent } from 'react'
 
@@ -119,7 +121,7 @@ export class ComfyWorkflowL extends BaseInst<TABLES['comfy_workflow']> {
       writeFileSync(path, JSON.stringify(jsonWorkflow, null, 3))
    }
 
-   get comfyPromptJSON(): ComfyPromptJSON {
+   get comfyPromptJSON(): ComfyUIAPIRequest {
       return this.data.comfyPromptJSON
    }
 
@@ -246,8 +248,8 @@ export class ComfyWorkflowL extends BaseInst<TABLES['comfy_workflow']> {
       // this.st.writeTextFile(workflowJSONPath, JSON.stringify(liteGraphJSON, null, 4))
    }
    /** return the coresponding comfy prompt  */
-   json_forPrompt = (ns: IDNaminScheemeInPromptSentToComfyUI): ComfyPromptJSON => {
-      const json: ComfyPromptJSON = {}
+   json_forPrompt = (ns: IDNaminScheemeInPromptSentToComfyUI): ComfyUIAPIRequest => {
+      const json: ComfyUIAPIRequest = {}
       for (const node of this.nodes) {
          if (node.disabled) continue
          // console.log(`🦊 ${node.uid}`)
@@ -386,14 +388,14 @@ export class ComfyWorkflowL extends BaseInst<TABLES['comfy_workflow']> {
 
    /** visjs JSON format (network visualisation) */
    get JSON_forVisDataVisualisation(): { nodes: VisNodes[]; edges: VisEdges[] } {
-      const json: ComfyPromptJSON = this.json_forPrompt('use_stringified_numbers_only')
-      const schemas: ComfySchemaL = this.schema
+      const json: ComfyUIAPIRequest = this.json_forPrompt('use_stringified_numbers_only')
+      const comfyUIObjectInfo: ParsedObjectInfo = this.schema.parseObjectInfo
       const nodes: VisNodes[] = []
       const edges: VisEdges[] = []
       if (json == null) return { nodes: [], edges: [] }
       for (const [uid, node] of Object.entries(json)) {
-         const schema: ComfyNodeSchema = bang(
-            schemas.nodesByNameInComfy[node.class_type],
+         const schema: ParsedComfyUIObjectInfoNodeSchema = bang(
+            comfyUIObjectInfo.nodesByNameInComfy[node.class_type],
             `unknown node ${node.class_type}`,
          )
          const color = comfyColors[schema.category]

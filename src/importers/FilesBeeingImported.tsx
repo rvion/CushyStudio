@@ -1,6 +1,6 @@
+import type { ComfyUIAPIRequest } from '../comfyui/comfyui-prompt-api'
 import type { LiteGraphJSON } from '../core/LiteGraph'
 import type { KnownCustomNode_CushyName } from '../manager/extension-node-map/KnownCustomNode_CushyName'
-import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 import type { ExifData } from '../utils/png/_parseExifData'
 import type { PromptToCodeOpts } from './ComfyImporter'
 
@@ -8,7 +8,7 @@ import { writeFileSync } from 'fs'
 import { observer, useLocalObservable } from 'mobx-react-lite'
 import { useState } from 'react'
 
-import { convertLiteGraphToPrompt } from '../core/litegraphToPrompt'
+import { convertLiteGraphToPrompt } from '../comfyui/litegraphToApiRequestPayload'
 import { convertComfyNodeNameToCushyNodeNameValidInJS } from '../core/normalizeJSIdentifier'
 import { UnknownCustomNode } from '../core/UnknownCustomNode'
 import { MessageErrorUI } from '../csuite'
@@ -93,7 +93,7 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: {
       return <>❌2. workflow is not valid json</>
    }
 
-   let promptJSON: ComfyPromptJSON
+   let promptJSON: ComfyUIAPIRequest
    try {
       promptJSON = convertLiteGraphToPrompt(st.schema, workflowJSON)
    } catch (error) {

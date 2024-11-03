@@ -1,3 +1,4 @@
+import type { EnumValue } from '../comfyui/comfyui-types'
 import type { Field_board_config } from '../csuite/fields/board/Field_board'
 import type { Field_bool } from '../csuite/fields/bool/FieldBool'
 import type { Field_button_config } from '../csuite/fields/button/FieldButton'
@@ -29,7 +30,6 @@ import type { IBuilder } from '../csuite/model/IBuilder'
 import type { OpenRouter_Models } from '../csuite/openrouter/OpenRouter_models'
 import type { SimpleSchema } from '../csuite/simple/SimpleSchema'
 import type { NO_PROPS } from '../csuite/types/NO_PROPS'
-import type { EnumValue } from '../models/ComfySchema'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'

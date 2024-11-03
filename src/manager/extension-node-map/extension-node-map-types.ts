@@ -1,4 +1,4 @@
-import type { NodeNameInComfy } from '../../models/ComfySchema'
+import type { NodeNameInComfy } from '../../comfyui/comfyui-types'
 import type { Static } from '@sinclair/typebox'
 
 import { Type } from '@sinclair/typebox'

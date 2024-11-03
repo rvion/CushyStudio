@@ -1,4 +1,4 @@
-import type { EnumValue } from '../../../models/ComfySchema'
+import type { EnumValue } from '../../../comfyui/comfyui-types'
 import type { CleanedEnumResult } from '../../../types/EnumUtils'
 import type { BaseSchema } from '../../model/BaseSchema'
 import type { FieldConfig } from '../../model/FieldConfig'

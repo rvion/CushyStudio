@@ -1,4 +1,4 @@
-import type { NodeNameInComfy, NodeNameInCushy } from '../models/ComfySchema'
+import type { NodeNameInComfy, NodeNameInCushy } from '../comfyui/comfyui-types'
 import type { PluginInfo } from './custom-node-list/custom-node-list-types'
 import type { KnownCustomNode_File } from './custom-node-list/KnownCustomNode_File'
 import type { KnownCustomNode_Title } from './custom-node-list/KnownCustomNode_Title'

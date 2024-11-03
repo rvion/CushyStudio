@@ -1,4 +1,4 @@
-import type { EnumName, EnumValue } from '../../../models/ComfySchema'
+import type { EnumName, EnumValue } from '../../../comfyui/comfyui-types'
 import type { CleanedEnumResult } from '../../../types/EnumUtils'
 
 import { observer } from 'mobx-react-lite'

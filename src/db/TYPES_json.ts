@@ -1,10 +1,10 @@
 import type { Status } from '../back/Status'
+import type { ComfyUIAPIRequest } from '../comfyui/comfyui-prompt-api'
+import type { EmbeddingName } from '../comfyui/comfyui-types'
 import type { AnyFieldSerial } from '../csuite/model/EntitySerial'
-import type { EmbeddingName } from '../models/ComfySchema'
 import type { ImageInfos_ComfyGenerated } from '../models/ImageInfos_ComfyGenerated'
 import type { SafetyResult } from '../safety/Safety'
 import type { ComfyNodeID, ComfyNodeMetadata } from '../types/ComfyNodeID'
-import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 import type { ComfySchemaJSON } from '../types/ComfySchemaJSON'
 import type { WsMsgExecutionError } from '../types/ComfyWsApi'
 import type { SqlColDef } from './_getAllColumnsForTable'
@@ -48,7 +48,7 @@ export const MediaImage_safetyRating_Schema = Type.Record(Type.String(), Type.An
 export type ComfyWorkflow_metadata = { [key: ComfyNodeID]: ComfyNodeMetadata }
 export const ComfyWorkflow_metadata_Schema = Type.Record(Type.String(), Type.Any())
 
-export type ComfyWorkflow_comfyPromptJSON = ComfyPromptJSON
+export type ComfyWorkflow_comfyPromptJSON = ComfyUIAPIRequest
 export const ComfyWorkflow_comfyPromptJSON_Schema = Type.Record(Type.String(), Type.Any())
 
 // #region Media3dScene

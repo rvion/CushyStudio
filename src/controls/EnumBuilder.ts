@@ -1,4 +1,4 @@
-import type { EnumValue } from '../models/ComfySchema'
+import type { EnumValue } from '../comfyui/comfyui-types'
 /**
  * this module is here to allow performant type-level apis for enums.
  * TODO: document the unique challenges this appraoch is solving
