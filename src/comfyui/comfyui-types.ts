@@ -1,4 +1,4 @@
-import type { ComfyInputOpts } from '../types/ComfySchemaJSON'
+import type { ComfyInputOpts } from './ComfyUIObjectInfoTypes'
 
 export type EnumHash = string
 export type EnumName = string
@@ -6,6 +6,8 @@ export type EnumValue = string | boolean | number
 
 export type NodeNameInComfy = string
 export type NodeNameInCushy = string
+
+// export type QualifiedNodeNameInCushy = {}
 
 export type EmbeddingName = Branded<string, { Embedding: true }>
 
@@ -30,7 +32,8 @@ export type NodeOutputExt = {
 
 export type EnumInfo = {
    // enumNameInComfy: string
+   pythonModule: string
    enumNameInCushy: EnumName
    values: EnumValue[]
-   aliases: string[]
+   aliases: { pythonModule: string; enumNameAlias: EnumName }[]
 }

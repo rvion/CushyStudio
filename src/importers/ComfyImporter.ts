@@ -1,6 +1,6 @@
 import type { ComfyUIAPIRequest } from '../comfyui/comfyui-prompt-api'
 import type { NodeInputExt } from '../comfyui/comfyui-types'
-import type { ParsedComfyUIObjectInfoNodeSchema } from '../comfyui/ParsedComfyUIObjectInfoNodeSchema'
+import type { ComfyUIObjectInfoParsedNodeSchema } from '../comfyui/ComfyUIObjectInfoParsedNodeSchema'
 import type { TEdge } from '../csuite/utils/toposort'
 import type { STATE } from '../state/state'
 
@@ -171,7 +171,7 @@ export class ComfyImporter {
          const varName = this.mkVarNameForNodeType(classType, []) //`${classType}_${nodeID}`
 
          generatedName.set(nodeID, varName)
-         const schema: Maybe<ParsedComfyUIObjectInfoNodeSchema> =
+         const schema: Maybe<ComfyUIObjectInfoParsedNodeSchema> =
             this.st.schema.nodesByNameInCushy[classType] ?? //
             this.st.schema.nodesByNameInCushy[this.knownAliaes[classType]!]
          if (schema == null) {

@@ -1,6 +1,6 @@
 import type { ComfyUIAPIRequest_Node } from '../comfyui/comfyui-prompt-api'
 import type { NodeInputExt, NodeOutputExt } from '../comfyui/comfyui-types'
-import type { ParsedComfyUIObjectInfoNodeSchema } from '../comfyui/ParsedComfyUIObjectInfoNodeSchema'
+import type { ComfyUIObjectInfoParsedNodeSchema } from '../comfyui/ComfyUIObjectInfoParsedNodeSchema'
 import type { ComfyWorkflowL, ProgressReport } from '../models/ComfyWorkflow'
 import type { ComfyNodeID, ComfyNodeMetadata } from '../types/ComfyNodeID'
 import type { NodeProgress } from '../types/ComfyWsApi'
@@ -89,7 +89,7 @@ export class ComfyNode<
       return { percent, isDone, countDone: this.progressRatio * 100, countTotal: 100 }
    }
 
-   $schema: ParsedComfyUIObjectInfoNodeSchema
+   $schema: ComfyUIObjectInfoParsedNodeSchema
    updatedAt: number = Date.now()
    json: ComfyUIAPIRequest_Node
 

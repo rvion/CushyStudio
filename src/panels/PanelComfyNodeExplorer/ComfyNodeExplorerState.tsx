@@ -1,4 +1,4 @@
-import type { ParsedComfyUIObjectInfoNodeSchema } from '../../comfyui/ParsedComfyUIObjectInfoNodeSchema'
+import type { ComfyUIObjectInfoParsedNodeSchema } from '../../comfyui/ComfyUIObjectInfoParsedNodeSchema'
 import type { ProjectL } from '../../models/Project'
 
 import { makeAutoObservable } from 'mobx'
@@ -14,11 +14,11 @@ export class ComfyNodeExplorerState {
    constructor(public pj: ProjectL) {
       makeAutoObservable(this)
    }
-   get nodeEntries(): [string, ParsedComfyUIObjectInfoNodeSchema][] {
+   get nodeEntries(): [string, ComfyUIObjectInfoParsedNodeSchema][] {
       return Object.entries(this.pj.schema.parseObjectInfo.nodesByNameInComfy)
    }
-   get matches(): [string, ParsedComfyUIObjectInfoNodeSchema][] {
-      const OUT: [string, ParsedComfyUIObjectInfoNodeSchema][] = []
+   get matches(): [string, ComfyUIObjectInfoParsedNodeSchema][] {
+      const OUT: [string, ComfyUIObjectInfoParsedNodeSchema][] = []
       for (const [_nameInCushy, nodeSchema] of this.nodeEntries) {
          const nameInCushy = _nameInCushy.toLowerCase()
          const nameInComfy = nodeSchema.nameInComfy.toLowerCase()

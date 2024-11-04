@@ -1,5 +1,5 @@
-import type { ComfyInputOpts } from '../types/ComfySchemaJSON'
 import type { NodeInputExt, NodeOutputExt } from './comfyui-types'
+import type { ComfyInputOpts } from './ComfyUIObjectInfoTypes'
 
 import { ComfyPrimitiveMapping } from '../core/Primitives'
 import { CodeBuffer } from '../utils/codegen/CodeBuffer'
@@ -8,7 +8,7 @@ import { escapeJSKey } from '../utils/codegen/escapeJSKey'
 /**
  *
  */
-export class ParsedComfyUIObjectInfoNodeSchema {
+export class ComfyUIObjectInfoParsedNodeSchema {
    /** list of types the node has a single output of */
    singleOuputs: NodeOutputExt[] = []
 
@@ -18,6 +18,7 @@ export class ParsedComfyUIObjectInfoNodeSchema {
       public category: string,
       public inputs: NodeInputExt[],
       public outputs: NodeOutputExt[],
+      public pythonModule: string,
    ) {
       this.category = this.category.replaceAll('/', '_')
    }
@@ -53,7 +54,8 @@ export class ParsedComfyUIObjectInfoNodeSchema {
       // inputs
       // p(`\n// ${this.name} -------------------------------`)
       // const msgIfDifferent = this.nameInComfy !== this.nameInCushy ? ` ("${this.nameInComfy}" in ComfyUI)` : ''
-      p(`// ${this.nameInComfy} [${this.category}]`)
+      p(`// --------------------------------------------------------------------------------------------`)
+      p(`// #region ${this.nameInComfy} [${this.category}]`)
       p(`export interface ${this.nameInCushy} extends ${ifaces.join(', ')} {`)
       p(`    nameInComfy: "${this.nameInComfy}"`)
       p(`}`)

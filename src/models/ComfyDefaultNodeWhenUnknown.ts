@@ -1,4 +1,4 @@
-import type { ComfyNodeSchemaJSON } from '../types/ComfySchemaJSON'
+import type { ComfyNodeSchemaJSON } from '../comfyui/ComfyUIObjectInfoTypes'
 
 export const ComfyDefaultNodeWhenUnknown_Name: string = 'UnknownNodeXX'
 

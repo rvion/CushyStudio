@@ -1,75 +1,105 @@
-import type { ParsedObjectInfo } from './ParsedComfyUIObjectInfo'
+import type { ComfyUIObjectInfoParsed } from './ComfyUIObjectInfoParsed'
 
+import { convetComfySlotNameToCushySlotNameValidInJS } from '../core/normalizeJSIdentifier'
 import { ComfyPrimitiveMapping } from '../core/Primitives'
 import { CodeBuffer } from '../utils/codegen/CodeBuffer'
 import { escapeJSKey } from '../utils/codegen/escapeJSKey'
-import { wrapQuote } from './ParsedComfyUIObjectInfoNodeSchema'
+import { wrapQuote } from './ComfyUIObjectInfoParsedNodeSchema'
 
 export function codegenSDK(
-   //
-   this: ParsedObjectInfo,
+   this: ComfyUIObjectInfoParsed,
    {
       // options with their defaults
       prefix = '../src/',
    }: { prefix?: string },
-): string {
+): {
+   main: string
+   pythonModules: {
+      pythonModule: string
+      content: string
+   }[]
+} {
    const b = new CodeBuffer()
+   const px = new (class {
+      constructor() {}
+      buffers = new Map<string, CodeBuffer>()
+      get pythonModules(): {
+         pythonModule: string
+         content: string
+      }[] {
+         return [...this.buffers.entries()].map(([k, v]) => ({
+            pythonModule: k,
+            content: v.content,
+         }))
+      }
+      get(pythonModule: string): CodeBuffer {
+         if (!this.buffers.has(pythonModule)) {
+            const b2 = new CodeBuffer()
+            this.buffers.set(pythonModule, b2)
+            const p = b2.w
+            p(`import type { ComfyNode } from '${prefix}core/ComfyNode'`)
+            p(`import type { ComfyNodeMetadata } from '${prefix}types/ComfyNodeID'`)
+            p(`import type { ComfyNodeOutput } from '${prefix}core/Slot'`)
+            p(`import type { ComfyNodeSchemaJSON } from '${prefix}comfyui/ComfyUIObjectInfoTypes'`)
+            p('')
+            p('declare global {')
+            b2.indent()
+            p('namespace ComfyUI {')
+            b2.indent()
+            p(`namespace ${pythonModuleToNamespace(pythonModule)} {`)
+            b2.indent()
+         }
+         return this.buffers.get(pythonModule)!
+      }
+   })()
    const p = b.w
+
+   for (const x of this.pythonModules.keys()) px.get(x)
 
    p('')
    p(`import type { ComfyNode } from '${prefix}core/ComfyNode'`)
    p(`import type { ComfyNodeMetadata } from '${prefix}types/ComfyNodeID'`)
    p(`import type { ComfyNodeOutput } from '${prefix}core/Slot'`)
-   p(`import type { ComfyNodeSchemaJSON } from '${prefix}types/ComfySchemaJSON'`)
-   p('')
-   // p(`import type { GlobalFunctionToDefineAnApp } from '${prefix}cards/App'`)
-   // p(`import type { GlobalFunctionToDefineAnApp, GlobalFunctionToDefineAView, GlobalGetCurrentForm, GlobalGetCurrentRun } from '${prefix}cards/App'`) // prettier-ignore
-   p('')
-   p(`// CONTENT IN THIS FILE:`)
-   p('//')
-   p('//  0. Entrypoint')
-   p('//  1. Requirable')
-   p('//  2. Embeddings')
-   p('//  3. Suggestions')
-   p('//  4. TYPES')
-   p('//  5. ACCEPTABLE')
-   p('//  6. ENUMS')
-   p('//  7. INTERFACES')
-   p('//  8. NODES')
-   p('//  9. INDEX')
-   p('')
+   p(`import type { ComfyNodeSchemaJSON } from '${prefix}comfyui/ComfyUIObjectInfoTypes'`)
+
    p(`declare global {`)
    p(``)
-   // p(`/** @deprecated use the global 'app' function instead to register an app */`)
-   // p(`const action: GlobalFunctionToDefineAnApp`)
-   // p(``)
-   // p(`/** @deprecated use the global 'app' function instead to register an app */`)
-   // p(`const card: GlobalFunctionToDefineAnApp`)
-   // p(``)
-   // p(`const app: GlobalFunctionToDefineAnApp`)
-   // p(`const view: GlobalFunctionToDefineAView`)
-   // p(`const getCurrentForm: GlobalGetCurrentForm`)
-   // p(`const getCurrentRun: GlobalGetCurrentRun`)
-   // p(``)
-   // p(`const actionTags: ActionTags`)
-   p(``)
-   p(`\n// 0. Entrypoint --------------------------`)
+
+   // #region PythonModulesAvaialbles ------------------------------------------------
+   // This is direcltly in the global/ComfyUI
+   // it shows the list of all modules we have installed
+   p(`// #${''}region PythonModulesAvaialbles`)
+   p(`export type PythonModulesAvaialbles = `)
+   for (const [k, v] of this.pythonModules.entries()) {
+      p(`    | ${wrapQuote(k)} // ${v.join(', ')}`)
+   }
+   p(`// #${''}endregion `)
+   // #endregion
+
+   // #region NODES INDEX -------------------------------------------------------------
    // p(`export type _INVALID_null = any {`)
-   p(`export interface ComfySetup {`)
-   // prettier-ignore
+   for (const b2 of px.buffers.values()) {
+      b2.w(`// #${''}region NODES INDEX`)
+      b2.w(`export interface NODES {`)
+   }
+   // p(`export interface NODES {`)
    for (const n of this.nodes) {
-               p(`    /* category:${n.category}, name:"${n.nameInComfy}", output:${n.outputs.map(o => o.nameInCushy).join('+')} */`)
-               p(`    ${n.nameInCushy}(p: ${n.nameInCushy}_input, meta?: ComfyNodeMetadata): ${n.nameInCushy}`)
-           }
-   p(`}`)
+      const b2 = px.get(n.pythonModule)
+      b2.w(`    /* category:${n.category}, name:"${n.nameInComfy}", output:${n.outputs.map((o) => o.nameInCushy).join('+')} */`) // prettier-ignore
+      b2.w(`    ${n.nameInCushy}(p: ${n.nameInCushy}_input, meta?: ComfyNodeMetadata): ${n.nameInCushy}`)
+   }
+   for (const b2 of px.buffers.values()) b2.w(`}`)
+   // p(`}`)
 
    // #region Requireables
-   p(`\n// 1. Requirable --------------------------`)
+   p(`// #${''}region 1. Enums`)
    p(`export interface Requirable {`)
    const requirables = this.requirables
    for (const n of requirables)
       p(`    ${escapeJSKey(n.name)}: { $Name: ${JSON.stringify(n.name)}, $Value: ${n.name} },`)
    p(`}`)
+   p(`// #${''}endregion`)
+   // #endregion
 
    // #region Embeddings
    p(`\n// 2. Embeddings -------------------------------`)
@@ -103,6 +133,7 @@ export function codegenSDK(
    // }
    for (const tp of slotTypes) {
       const producingNodes: Maybe<string[]> = this.nodesByProduction[tp.comfyType]
+
       if (producingNodes)
          p(
             `export interface CanProduce_${tp.comfyType} extends Pick<ComfySetup, ${producingNodes
@@ -113,8 +144,7 @@ export function codegenSDK(
    }
 
    // #region Types
-   p(`\n// 4. TYPES -------------------------------`)
-
+   // ⏸️ p(`\n// 4. TYPES -------------------------------`)
    // ⏸️ for (const t of slotTypes) {
    // ⏸️     // const tsType = this.toTSType(t)
    // ⏸️     p(`export type ${t.slotTypeAlias} = ${t.tsType}`)
@@ -123,11 +153,7 @@ export function codegenSDK(
    p(`\n// 5. ACCEPTABLE INPUTS -------------------------------`)
    p(`export type _INVALID_null = any`)
    for (const t of slotTypes) {
-      // const tsType = this.toTSType(t)
-      p(
-         `export type _${t.comfyType} = ${t.tsType} | HasSingle_${t.comfyType} | ((x: CanProduce_${t.comfyType}) => _${t.comfyType})`,
-      )
-      // ${i.type} | HasSingle_${i.type}
+      p( `export type _${t.comfyType} = ${t.tsType} | HasSingle_${t.comfyType} | ((x: CanProduce_${t.comfyType}) => _${t.comfyType})`, ) // prettier-ignore
    }
 
    p(`\n// 6. ENUMS -------------------------------`)
@@ -135,12 +161,12 @@ export function codegenSDK(
    for (const e of this.knownEnumsByHash.values()) {
       if (e.values.length > 0) {
          allAcceptableEnums.push(e.enumNameInCushy)
-         p(`export type ${e.enumNameInCushy} = ${e.values.map((v) => `${JSON.stringify(v)}`).join(' | ')}`)
-         if (e.aliases.length > 0) {
-            for (const alias of e.aliases) {
-               allAcceptableEnums.push(alias)
-               p(`export type ${alias} = ${e.enumNameInCushy}`)
-            }
+         p(
+            `/* 🔴 */export type ${e.enumNameInCushy} = ${e.values.map((v) => `${JSON.stringify(v)}`).join(' | ')}`,
+         )
+         for (const { enumNameAlias, pythonModule } of e.aliases) {
+            allAcceptableEnums.push(enumNameAlias)
+            p(`/* 🟢 */export type ${enumNameAlias} = ComfyUI.${e.pythonModule}.${e.enumNameInCushy}`)
          }
       } else {
          p(`export type ${e.enumNameInCushy} = '🔴' // never`)
@@ -166,8 +192,13 @@ export function codegenSDK(
    // }
 
    p(`\n// 8. NODES -------------------------------`)
-   for (const n of this.nodes) p(n.codegen())
+   for (const n of this.nodes) {
+      const b = px.get(n.pythonModule)
+      b.w(n.codegen())
+      // p(n.codegen())
+   }
 
+   // #region AutoForm type Helper
    p(`\n// 8.2 NODE UI helpers --------------------`)
    p(`export interface FormHelper {`)
    for (const n of this.nodes) b.append(n.codegenUI())
@@ -186,22 +217,24 @@ export function codegenSDK(
 
    p(`}`) // 🔴
 
-   // p(`\n// Entrypoint --------------------------`)
-   // p(`export interface ComfySetup {`)
+   for (const x of this.pythonModules.keys()) {
+      const b2 = px.get(x)
+      b2.deindent()
+      b2.w('}')
+      b2.deindent()
+      b2.w('}')
+      b2.deindent()
+      b2.w('}')
+   }
 
-   // // prettier-ignore
-   // for (const n of this.nodes) {
-   //     p(`    ${n.nameInCushy}(args: ${n.nameInCushy}_input, uid?: ComfyNodeID): ${n.nameInCushy}`)
-   // }
-   // // p(`\n// misc \n`)
-   // // prettier-ignore
-   // // for (const n of this.nodes) {
-   // //     p(`    ${n.category}_${n.name} = (args: ${n.name}_input, uid?: rt.NodeUID) => new ${n.name}(this, uid, args)`)
-   // // }
-   // p(`}`)
+   return {
+      main: b.content,
+      pythonModules: px.pythonModules,
+   }
+}
 
-   // p(`declare const WORKFLOW: (builder: (graph: ComfyGraph) => void) => void`)
-   // b.writeTS('./src/core/Comfy.ts')
-   // p(`declare const WORKFLOW: import("core/WorkflowFn").WorkflowType`)
-   return b.content
+function pythonModuleToNamespace(pythonModule: string): string {
+   let x = pythonModule
+   x = x.replace('custom_nodes.ComfyUI-', '')
+   return convetComfySlotNameToCushySlotNameValidInJS(x)
 }

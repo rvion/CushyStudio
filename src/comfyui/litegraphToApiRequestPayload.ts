@@ -8,7 +8,7 @@ import type {
 import type { ComfySchemaL } from '../models/ComfySchema'
 import type { ComfyUIAPIRequest, ComfyUIAPIRequest_Node } from './comfyui-prompt-api'
 import type { NodeInputExt } from './comfyui-types'
-import type { ParsedComfyUIObjectInfoNodeSchema } from './ParsedComfyUIObjectInfoNodeSchema'
+import type { ComfyUIObjectInfoParsedNodeSchema } from './ComfyUIObjectInfoParsedNodeSchema'
 
 import { howManyWidgetValuesForThisInputType, howManyWidgetValuesForThisSchemaType } from '../core/Primitives'
 import { UnknownCustomNode } from '../core/UnknownCustomNode'
@@ -92,7 +92,7 @@ export const convertLiteGraphToPrompt = (
             LOG(`❌ current prompt Step is:`, { prompt })
             throw new UnknownCustomNode(node) //`❌ node ${node.type}) has no known schema; you probably need to install some custom node`)
          }
-         const nodeSchema: ParsedComfyUIObjectInfoNodeSchema = nodeSchema_
+         const nodeSchema: ComfyUIObjectInfoParsedNodeSchema = nodeSchema_
          const inputsInNodeSchema: NodeInputExt[] = nodeSchema.inputs
          if (inputsInNodeSchema == null) throw new Error(`❌ node ${node.id}(${node.type}) has no input`)
 

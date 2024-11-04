@@ -1,7 +1,7 @@
 import type { IDNaminScheemeInPromptSentToComfyUI } from '../back/IDNaminScheemeInPromptSentToComfyUI'
 import type { ComfyUIAPIRequest } from '../comfyui/comfyui-prompt-api'
-import type { ParsedObjectInfo } from '../comfyui/ParsedComfyUIObjectInfo'
-import type { ParsedComfyUIObjectInfoNodeSchema } from '../comfyui/ParsedComfyUIObjectInfoNodeSchema'
+import type { ComfyUIObjectInfoParsed } from '../comfyui/ComfyUIObjectInfoParsed'
+import type { ComfyUIObjectInfoParsedNodeSchema } from '../comfyui/ComfyUIObjectInfoParsedNodeSchema'
 import type { LiteGraphJSON } from '../core/LiteGraph'
 import type { LiveDB } from '../db/LiveDB'
 import type { ComfyWorkflowT, TABLES } from '../db/TYPES.gen'
@@ -389,12 +389,12 @@ export class ComfyWorkflowL extends BaseInst<TABLES['comfy_workflow']> {
    /** visjs JSON format (network visualisation) */
    get JSON_forVisDataVisualisation(): { nodes: VisNodes[]; edges: VisEdges[] } {
       const json: ComfyUIAPIRequest = this.json_forPrompt('use_stringified_numbers_only')
-      const comfyUIObjectInfo: ParsedObjectInfo = this.schema.parseObjectInfo
+      const comfyUIObjectInfo: ComfyUIObjectInfoParsed = this.schema.parseObjectInfo
       const nodes: VisNodes[] = []
       const edges: VisEdges[] = []
       if (json == null) return { nodes: [], edges: [] }
       for (const [uid, node] of Object.entries(json)) {
-         const schema: ParsedComfyUIObjectInfoNodeSchema = bang(
+         const schema: ComfyUIObjectInfoParsedNodeSchema = bang(
             comfyUIObjectInfo.nodesByNameInComfy[node.class_type],
             `unknown node ${node.class_type}`,
          )

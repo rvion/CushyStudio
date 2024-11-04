@@ -5,7 +5,23 @@
 // so we can monitor what it does.
 import fs from 'fs'
 
-import { ParsedObjectInfo } from './ParsedComfyUIObjectInfo'
+import { readableStringify } from '../csuite/formatters/stringifyReadable'
+import { ComfyUIObjectInfoParsed } from './ComfyUIObjectInfoParsed'
+
+if (true) {
+   const controller = new AbortController()
+   const timeout = setTimeout(() => controller.abort(), 2000)
+   try {
+      const raw = await fetch('http://192.168.1.19:8188/object_info', { signal: controller.signal })
+      console.log(raw)
+      const result = await raw.json()
+      fs.writeFileSync('src/comfyui/__object_info.json', readableStringify(result, 3), 'utf8')
+   } catch (error) {
+      console.error('Fetch request timed out or failed:', error)
+   } finally {
+      clearTimeout(timeout)
+   }
+}
 
 // find . -name 'object_info.json'
 const inputObjectInfoPath = 'schema/hosts/Z3LBuTxBOybwVxlb5bbCk/object_info.json'
@@ -27,15 +43,18 @@ const embeddings = JSON.parse(fs.readFileSync(inputEmbeddingsPath, 'utf-8'))
 const spec = JSON.parse(fs.readFileSync(inputObjectInfoPath, 'utf-8'))
 
 // step 3. craft a parsed ObjectInfo
-const parsedObjectInfo = new ParsedObjectInfo({
+const parsedObjectInfo = new ComfyUIObjectInfoParsed({
    id: 'test',
    spec,
    embeddings,
 })
 
 const finalSDK = parsedObjectInfo.codegenDTS({ prefix: '../../../src/' })
-fs.writeFileSync(`${targetDebugFolder}/DEBUG-sdk.d.ts`, finalSDK)
-console.log(`[🤠] finalSDK.length:`, finalSDK.length)
+fs.writeFileSync(`${targetDebugFolder}/DEBUG-sdk.d.ts`, finalSDK.main)
+for (const { pythonModule, content } of finalSDK.pythonModules) {
+   fs.writeFileSync(`${targetDebugFolder}/${pythonModule}.d.ts`, content)
+}
+// console.log(`[🤠] finalSDK.length:`, finalSDK.length)
 
 // ... profit
 console.log(`🟢 done`)

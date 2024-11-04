@@ -1,14 +1,18 @@
 /** this class is used to buffer text and then write it to a file */
 export class CodeBuffer {
+   public tab: string = '   '
    constructor(
       private _indent: number = 0,
       lines: string[] = [],
    ) {
       for (const line of lines) this.writeLine(line)
    }
-   public tab: string = '   '
+
    content: string = ''
 
+   // #region adding text
+   newLine = (): string => (this.content += '\n')
+   line = (...txts: string[]): this => this.writeLine(txts.join(''))
    append = (str: string): string => (this.content += str)
    writeLine = (txt: string): this => {
       this.content +=
@@ -22,8 +26,7 @@ export class CodeBuffer {
       if (opts.if) this.writeLine(txt)
    }
 
-   newLine = (): string => (this.content += '\n')
-   line = (...txts: string[]): this => this.writeLine(txts.join(''))
+   // #region indentations
    indent = (): number => this._indent++
    deindent = (): number => this._indent--
    indented = (fn: () => void): void => {

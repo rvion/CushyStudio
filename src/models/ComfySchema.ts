@@ -1,12 +1,12 @@
 import type { EmbeddingName, EnumInfo, EnumValue } from '../comfyui/comfyui-types'
-import type { ParsedComfyUIObjectInfoNodeSchema } from '../comfyui/ParsedComfyUIObjectInfoNodeSchema'
+import type { ComfyUIObjectInfoParsedNodeSchema } from '../comfyui/ComfyUIObjectInfoParsedNodeSchema'
 import type { LiveDB } from '../db/LiveDB'
 import type { TABLES } from '../db/TYPES.gen'
 import type { HostL } from './Host'
 
 import { observable } from 'mobx'
 
-import { ParsedObjectInfo } from '../comfyui/ParsedComfyUIObjectInfo'
+import { ComfyUIObjectInfoParsed } from '../comfyui/ComfyUIObjectInfoParsed'
 import { BaseInst } from '../db/BaseInst'
 import { LiveRef } from '../db/LiveRef'
 import { LiveTable } from '../db/LiveTable'
@@ -35,16 +35,20 @@ export class ComfySchemaL extends BaseInst<TABLES['comfy_schema']> {
 
    hostRef = new LiveRef<this, HostL>(this, 'hostID', 'host')
 
-   parseObjectInfo: ParsedObjectInfo = new ParsedObjectInfo({ id: 'empty', spec: {}, embeddings: [] })
+   parseObjectInfo: ComfyUIObjectInfoParsed = new ComfyUIObjectInfoParsed({
+      id: 'empty',
+      spec: {},
+      embeddings: [],
+   })
 
    // forward to underlying parsedObjectInfo
    get knownEnumsByName(): Map<string, EnumInfo> { return this.parseObjectInfo.knownEnumsByName } // prettier-ignore
-   get nodes(): ParsedComfyUIObjectInfoNodeSchema[] { return this.parseObjectInfo.nodes } // prettier-ignore
-   get nodesByNameInCushy(): Record<string, ParsedComfyUIObjectInfoNodeSchema> { return this.parseObjectInfo.nodesByNameInCushy } // prettier-ignore
-   get nodesByNameInComfy(): Record<string, ParsedComfyUIObjectInfoNodeSchema> { return this.parseObjectInfo.nodesByNameInComfy } // prettier-ignore
+   get nodes(): ComfyUIObjectInfoParsedNodeSchema[] { return this.parseObjectInfo.nodes } // prettier-ignore
+   get nodesByNameInCushy(): Record<string, ComfyUIObjectInfoParsedNodeSchema> { return this.parseObjectInfo.nodesByNameInCushy } // prettier-ignore
+   get nodesByNameInComfy(): Record<string, ComfyUIObjectInfoParsedNodeSchema> { return this.parseObjectInfo.nodesByNameInComfy } // prettier-ignore
 
    onUpdate = (): void => {
-      this.parseObjectInfo = new ParsedObjectInfo(this.data)
+      this.parseObjectInfo = new ComfyUIObjectInfoParsed(this.data)
    }
 
    /**

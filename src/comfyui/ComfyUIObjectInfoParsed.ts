@@ -1,13 +1,14 @@
-import type { ComfyEnumDef, ComfyNodeSchemaJSON, ComfySchemaJSON } from '../types/ComfySchemaJSON'
 import type {
    EnumHash,
    EnumInfo,
    EnumName,
    EnumValue,
    NodeInputExt,
+   NodeNameInComfy,
    NodeNameInCushy,
    NodeOutputExt,
 } from './comfyui-types'
+import type { ComfyEnumDef, ComfyNodeSchemaJSON, ComfySchemaJSON } from './ComfyUIObjectInfoTypes'
 
 import { observable, toJS } from 'mobx'
 
@@ -23,9 +24,9 @@ import {
 } from '../models/ComfyDefaultNodeWhenUnknown'
 import { escapeJSKey } from '../utils/codegen/escapeJSKey'
 import { codegenSDK } from './comfyui-sdk-codegen'
-import { ParsedComfyUIObjectInfoNodeSchema } from './ParsedComfyUIObjectInfoNodeSchema'
+import { ComfyUIObjectInfoParsedNodeSchema } from './ComfyUIObjectInfoParsedNodeSchema'
 
-export class ParsedObjectInfo {
+export class ComfyUIObjectInfoParsed {
    codegenDTS = codegenSDK.bind(this)
 
    // #region ctor
@@ -47,36 +48,28 @@ export class ParsedObjectInfo {
    knownSlotTypes = new Set<string>()
    knownEnumsByName = new Map<EnumName, EnumInfo>()
    knownEnumsByHash = new Map<EnumHash, EnumInfo>()
-   nodes: ParsedComfyUIObjectInfoNodeSchema[] = []
-   nodesByNameInComfy: { [key: string]: ParsedComfyUIObjectInfoNodeSchema } = {}
-   nodesByNameInCushy: { [key: string]: ParsedComfyUIObjectInfoNodeSchema } = {}
+   nodes: ComfyUIObjectInfoParsedNodeSchema[] = []
+   nodesByNameInComfy: { [key: string]: ComfyUIObjectInfoParsedNodeSchema } = {}
+   nodesByNameInCushy: { [key: string]: ComfyUIObjectInfoParsedNodeSchema } = {}
    nodesByProduction: { [key: string]: NodeNameInCushy[] } = {}
    enumsAppearingInOutput = new Set<string>()
-
+   pythonModules = new Map<string, NodeNameInComfy[]>()
    // get host(): HostL { return this.hostRef.item } // prettier-ignore
    // get hostName(): string { return this.hostRef.item.data.name } // prettier-ignore
 
    /** on update is called automatically by live instances */
    onUpdate(): void {
       this.log(`updating schema #${this.data.id}`)
-      // reset spec
-      // this.spec = this.data.spec
-      // this.embeddings = this.data.embeddings
-
-      // this.knownSlotTypes.clear()
-      // this.knownEnumsByHash.clear()
-      // this.knownEnumsByName.clear()
-      // this.nodes.splice(0, this.nodes.length)
-      // this.nodesByNameInComfy = {}
-      // this.nodesByNameInCushy = {}
-      // this.nodesByProduction = {}
-      // this.enumsAppearingInOutput.clear()
-
-      // compile spec
       const entries: [string, ComfyNodeSchemaJSON][] = Object.entries(this.data.spec)
-
       entries.push([ComfyDefaultNodeWhenUnknown_Name, ComfyDefaultNodeWhenUnknown_Schema])
+
       for (const __x of entries) {
+         // record python module
+         const pythonModule = __x[1].python_module
+         const prev = this.pythonModules.get(pythonModule)
+         if (prev == null) this.pythonModules.set(pythonModule, [__x[0]])
+         else prev.push(__x[0])
+
          const nodeNameInComfy = __x[0]
          const nodeDef = __x[1]
          // console.chanel?.append(`[${nodeNameInComfy}]`)
@@ -91,7 +84,7 @@ export class ParsedObjectInfo {
 
          const inputs: NodeInputExt[] = []
          const outputs: NodeOutputExt[] = []
-         const node = new ParsedComfyUIObjectInfoNodeSchema(
+         const node = new ComfyUIObjectInfoParsedNodeSchema(
             //
             nodeNameInComfy,
             nodeNameInCushy,
@@ -99,6 +92,7 @@ export class ParsedObjectInfo {
             nodeDef.category,
             inputs,
             outputs,
+            pythonModule,
          )
 
          // INDEX NODE
@@ -133,6 +127,7 @@ export class ParsedObjectInfo {
             } else if (Array.isArray(slotType)) {
                const uniqueEnumName = `Enum_${nodeNameInCushy}_${outputNameInCushy}_out`
                slotTypeName = this.processEnumNameOrValue({
+                  pythonModule,
                   candidateName: uniqueEnumName,
                   comfyEnumDef: slotType,
                })
@@ -196,6 +191,7 @@ export class ParsedObjectInfo {
             if (slotType == null) {
                const uniqueEnumName = `INVALID_null`
                inputTypeNameInCushy = this.processEnumNameOrValue({
+                  pythonModule,
                   candidateName: uniqueEnumName,
                   comfyEnumDef: ['❌'],
                })
@@ -205,6 +201,7 @@ export class ParsedObjectInfo {
             } else if (Array.isArray(slotType)) {
                const uniqueEnumName = `Enum_${nodeNameInCushy}_${inputNameInCushy}`
                inputTypeNameInCushy = this.processEnumNameOrValue({
+                  pythonModule,
                   candidateName: uniqueEnumName,
                   comfyEnumDef: slotType,
                })
@@ -243,6 +240,7 @@ export class ParsedObjectInfo {
 
    processEnumNameOrValue = (p: {
       //
+      pythonModule: string
       candidateName: string
       comfyEnumDef: ComfyEnumDef
    }): string => {
@@ -266,11 +264,16 @@ export class ParsedObjectInfo {
          // 💬 2024-09-30 rvion:
          // | 🔴 making that observable seems wrong; huge perf problem at instanciation.
          // case 3.A. PRE-EXISTING
-         enumInfo = observable({ enumNameInCushy: p.candidateName, values: enumValues, aliases: [] })
+         enumInfo = observable({
+            pythonModule: p.pythonModule,
+            enumNameInCushy: p.candidateName,
+            values: enumValues,
+            aliases: [],
+         })
          this.knownEnumsByHash.set(hash, enumInfo)
       } else {
          // case 3.B. PRE-EXISTING
-         enumInfo.aliases.push(p.candidateName)
+         enumInfo.aliases.push({ enumNameAlias: p.candidateName, pythonModule: p.pythonModule })
       }
 
       // ❌ if (p.candidateName === 'Enum_DualCLIPLoader_clip_name1') debugger
@@ -293,9 +296,9 @@ export class ParsedObjectInfo {
    // }
    get requirables(): {
       name: string
-      kind: 'enum' | 'node' | 'prim'
+      kind: 'enum'
    }[] {
-      const out: { name: string; kind: 'enum' | 'node' | 'prim' }[] = []
+      const out: { name: string; kind: 'enum' }[] = []
       // for (const n of this.knownSlotTypes) out.push({ name: n, kind: 'prim' })
       for (const n of this.knownEnumsByName) out.push({ name: n[0], kind: 'enum' })
       // for (const n of this.nodes) out.push({ name: n.nameInCushy, kind: 'node' })

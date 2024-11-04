@@ -48,6 +48,7 @@ export const ComfyNodeSchemaJSON_valibot = v.strictObject({
    name: v.string(),
    display_name: v.string(),
    description: v.string(),
+   /**  */
    python_module: v.string(),
    category: v.string(),
    output_node: v.boolean(),
