@@ -6,14 +6,14 @@ import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
 export type UI_subform_Lineart = X.XGroup<{
    preprocessor: UI_subform_Lineart_Preprocessor
    models: X.XGroup<{
-      cnet_model_name: X.XEnum<Enum_ControlNetLoader_control_net_name>
+      cnet_model_name: X.XEnum<Comfy.Enums['Comfy.Base.ControlNetLoader.input.control_net_name']>
    }>
    strength: X.XNumber
    advanced: X.XGroup<{
       startAtStepPercent: X.XNumber
       endAtStepPercent: X.XNumber
-      crop: X.XEnum<Enum_LatentUpscale_crop>
-      upscale_method: X.XEnum<Enum_ImageScale_upscale_method>
+      crop: X.XEnum<Comfy.Enums['Comfy.Base.LatentUpscale.input.crop']>
+      upscale_method: X.XEnum<Comfy.Enums['Comfy.Base.ImageScale.input.upscale_method']>
    }>
 }>
 
@@ -29,7 +29,7 @@ export function ui_subform_Lineart(): UI_subform_Lineart {
                label: 'Select or Download Models',
                // startCollapsed: true,
                items: {
-                  cnet_model_name: ui.enum.Enum_ControlNetLoader_control_net_name({
+                  cnet_model_name: ui.enum['ControlNetLoader.input.control_net_name']({
                      label: 'Model',
                      filter: (name) => name.toString().includes('lineart'),
                      // @ts-ignore

@@ -3,7 +3,7 @@ import type { OutputFor } from './_prefabs'
 
 export type UI_Mask = X.XGroup<{
    image: X.XImage
-   mode: X.XEnum<Enum_LoadImageMask_channel>
+   mode: X.XEnum<Comfy.Enums['LoadImageMask.channel']>
    invert: X.XBool
    grow: X.XNumber
    feather: X.XNumber
@@ -18,7 +18,7 @@ export function ui_mask(): UI_Mask {
       collapsed: false,
       items: {
          image: form.image({}),
-         mode: form.enum.Enum_LoadImageMask_channel({}),
+         mode: form.enum['LoadImageMask.input.channel']({}),
          invert: form.bool({}),
          grow: form.int({ default: 0, min: -100, max: 100 }),
          feather: form.int({ default: 0, min: 0, max: 100 }),

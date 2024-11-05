@@ -18,7 +18,7 @@ export type IEnumListBuilder = {
    // |    ✅: X.Many_<Enum_UpscaleModelLoader_model_name>
    // | without Extract<...>
    // |    ❌: X.Many_<"4x-AnimeSharp.pth" | "4x-UltraSharp.pth" | "4x_NMKD-Siax_200k.pth" | ...>
-   [K in keyof Comfy.Enums]: IEnumListBuilderFn<Extract<Comfy.Enums[K]['$Value'], string>>
+   [K in keyof Comfy.Enums]: IEnumListBuilderFn<Extract<Comfy.Enums[K], string>>
    // [K in keyof Requirable]: IEnumListBuilderFn<Requirable[K]['$Value'] & string>
 }
 

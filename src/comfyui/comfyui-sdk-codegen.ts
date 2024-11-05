@@ -126,7 +126,8 @@ export function codegenSDK(
    for (const e of this.knownUnionByHash.values()) {
       for (const alias of e.enumNames) {
          const enumKey = alias
-         p(`    ${escapeJSKey(enumKey)}: { $Name: ${JSON.stringify(enumKey)}, $Value: Comfy.Union.${e.unionNameInCushy} },`) // prettier-ignore
+         // p(`    ${escapeJSKey(enumKey)}: { $Name: ${JSON.stringify(enumKey)}, $Value: Comfy.Union.${e.unionNameInCushy} },`) // prettier-ignore
+         p(`    ${escapeJSKey(enumKey)}: Comfy.Union.${e.unionNameInCushy}`) // prettier-ignore
       }
    }
    // for (const n of requirables)

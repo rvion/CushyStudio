@@ -16,7 +16,7 @@ export function ui_regionalPrompting_v1(b: CushySchemaBuilder): UI_regionalPromp
          items: {
             prompt: b.prompt({}),
             strength: b.number({ default: 1, min: 0, max: 2, step: 0.1 }),
-            // mode: form.enum.Enum_ConditioningBlend_blending_mode({}),
+            // mode: form.enum["ConditioningBlend.input.blending_mode"]({}),
          },
       }),
       height: 512,

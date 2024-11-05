@@ -11,7 +11,7 @@ import { CushySchema } from './Schema'
 export type IEnumBuilderFN<T extends ComfyUnionValue> = (
    config?: Omit<Field_enum_config<T>, 'enumName'>,
 ) => X.XEnum<T>
-export type IEnumBuilder = { [K in keyof Comfy.Enums]: IEnumBuilderFN<Comfy.Enums[K]['$Value']> }
+export type IEnumBuilder = { [K in keyof Comfy.Enums]: IEnumBuilderFN<Comfy.Enums[K]> }
 
 export interface EnumBuilder extends IEnumBuilder {}
 export class EnumBuilder {

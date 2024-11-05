@@ -11,7 +11,7 @@ export type UI_IPAdapterFaceIDV2 = X.XGroup<{
       weight: X.XNumber
       weight_faceidv2: X.XNumber
       models: X.XGroup<{
-         type: X.XEnum<Enum_IPAdapterUnifiedLoaderFaceID_preset>
+         type: X.XEnum<Comfy.Enums['IPAdapterUnifiedLoaderFaceID.preset']>
       }>
       extra: X.XList<UI_FaceIDImageInput>
       advancedSettings: X.XGroup<{
@@ -19,9 +19,9 @@ export type UI_IPAdapterFaceIDV2 = X.XGroup<{
          startAtStepPercent: X.XNumber
          endAtStepPercent: X.XNumber
          lora_strength: X.XNumber
-         embedding_combination: X.XEnum<Enum_ImpactIPAdapterApplySEGS_combine_embeds>
-         weight_type: X.XEnum<Enum_IPAdapterAdvanced_weight_type>
-         embedding_scaling: X.XEnum<Enum_IPAdapterAdvanced_embeds_scaling>
+         embedding_combination: X.XEnum<Comfy.Enums['ImpactIPAdapterApplySEGS.combine_embeds']>
+         weight_type: X.XEnum<Comfy.Enums['IPAdapterAdvanced.weight_type']>
+         embedding_scaling: X.XEnum<Comfy.Enums['IPAdapterAdvanced.embeds_scaling']>
          noise: X.XNumber
          unfold_batch: X.XBool
          adapterAttentionMask: X.XOptional<X.XImage>
@@ -43,7 +43,7 @@ export function ui_IPAdapterFaceIDV2(): UI_IPAdapterFaceIDV2 {
                      weight_faceidv2: form.float({ default: 0.8, min: -1, max: 3, step: 0.1 }),
                      models: form.fields(
                         {
-                           type: form.enum.Enum_IPAdapterUnifiedLoaderFaceID_preset({
+                           type: form.enum['IPAdapterUnifiedLoaderFaceID.input.preset']({
                               default: 'FACEID PLUS V2',
                            }),
                         },
@@ -59,11 +59,13 @@ export function ui_IPAdapterFaceIDV2(): UI_IPAdapterFaceIDV2 {
                            startAtStepPercent: form.float({ default: 0, min: 0, max: 1, step: 0.1 }),
                            endAtStepPercent: form.float({ default: 1, min: 0, max: 1, step: 0.05 }),
                            lora_strength: form.float({ default: 0.6, min: 0, max: 1, step: 0.1 }),
-                           embedding_combination: form.enum.Enum_IPAdapterAdvanced_combine_embeds({
+                           embedding_combination: form.enum['IPAdapterAdvanced.input.combine_embeds']({
                               default: 'average',
                            }),
-                           weight_type: form.enum.Enum_IPAdapterAdvanced_weight_type({ default: 'linear' }),
-                           embedding_scaling: form.enum.Enum_IPAdapterAdvanced_embeds_scaling({
+                           weight_type: form.enum['IPAdapterAdvanced.input.weight_type']({
+                              default: 'linear',
+                           }),
+                           embedding_scaling: form.enum['IPAdapterAdvanced.input.embeds_scaling']({
                               default: 'V only',
                            }),
                            noise: form.float({ default: 0, min: 0, max: 1, step: 0.1 }),
@@ -145,7 +147,7 @@ export type UI_FaceIDImageInput = X.XGroup<{
    image: X.XImage
    advanced: X.XGroup<{
       sharpening: X.XNumber
-      crop_position: X.XEnum<Enum_PrepImageForClipVision_crop_position>
+      crop_position: X.XEnum<Comfy.Enums['PrepImageForClipVision.crop_position']>
    }>
 }>
 export function ui_FaceIDImageInput(form: X.Builder): UI_FaceIDImageInput {
@@ -155,7 +157,7 @@ export function ui_FaceIDImageInput(form: X.Builder): UI_FaceIDImageInput {
          advanced: form.fields(
             {
                sharpening: form.float({ default: 0, min: 0, max: 1, step: 0.1 }),
-               crop_position: form.enum.Enum_PrepImageForClipVision_crop_position({ default: 'top' }),
+               crop_position: form.enum['PrepImageForClipVision.input.crop_position']({ default: 'top' }),
             },
             {
                startCollapsed: true,
@@ -178,14 +180,14 @@ export function ui_FaceIDImageInput(form: X.Builder): UI_FaceIDImageInput {
 // ======================================================================================================
 export type UI_extraIpAdapter = X.XGroup<{
    weight: X.XNumber
-   embedding_combination: X.XEnum<Enum_ImpactIPAdapterApplySEGS_combine_embeds>
+   embedding_combination: X.XEnum<Comfy.Enums['ImpactIPAdapterApplySEGS.combine_embeds']>
    ipAdapterSettings: UI_ipadapter_advancedSettings
 }>
 function ui_extraIpAdapter(form: X.Builder): UI_extraIpAdapter {
    return form.fields(
       {
          weight: form.float({ default: 0.4, min: -1, max: 3, step: 0.1 }),
-         embedding_combination: form.enum.Enum_IPAdapterAdvanced_combine_embeds({
+         embedding_combination: form.enum['IPAdapterAdvanced.input.combine_embeds']({
             default: 'average',
          }),
          ipAdapterSettings: ui_ipadapter_advancedSettings(form, 0.25, 1, 'ease in'),

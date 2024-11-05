@@ -5,11 +5,11 @@ import {
 } from '../_prefabs/prefab_model_extras'
 
 export type $prefabModelFlux = X.XGroup<{
-   ckpt_name: X.XEnum<Enum_UNETLoader_unet_name>
-   weight_type: X.XEnum<Enum_UNETLoader_weight_dtype>
-   clip1: X.XEnum<Enum_CLIPLoader_clip_name>
-   clip2: X.XEnum<Enum_CLIPLoader_clip_name>
-   type: X.XEnum<Enum_DualCLIPLoader_type>
+   ckpt_name: X.XEnum<Comfy.Enums['UNETLoader.unet_name']>
+   weight_type: X.XEnum<Comfy.Enums['UNETLoader.weight_dtype']>
+   clip1: X.XEnum<Comfy.Enums['CLIPLoader.clip_name']>
+   clip2: X.XEnum<Comfy.Enums['CLIPLoader.clip_name']>
+   type: X.XEnum<Comfy.Enums['DualCLIPLoader.type']>
    extra: $schemaModelExtras
 }>
 
@@ -18,11 +18,14 @@ export const prefabModelFlux = (): $prefabModelFlux => {
    // const ckpts = cushy.managerRepository.getKnownCheckpoints()
    return b
       .fields({
-         ckpt_name: b.enum.Enum_UNETLoader_unet_name({
+         ckpt_name: b.enum['UNETLoader.input.unet_name']({
             // @ts-ignore
             default: 'flux1-dev.sft',
          }),
-         weight_type: b.enum.Enum_UNETLoader_weight_dtype({ label: 'Weight Type', default: 'fp8_e4m3fn' }),
+         weight_type: b.enum['UNETLoader.input.weight_dtype']({
+            label: 'Weight Type',
+            default: 'fp8_e4m3fn',
+         }),
          clip1: b.enum
             .Enum_DualCLIPLoader_clip_name1({
                // @ts-ignore
@@ -33,7 +36,7 @@ export const prefabModelFlux = (): $prefabModelFlux => {
          clip2: b.enum
             .Enum_DualCLIPLoader_clip_name2({ default: 'clip_l.safetensors' })
             .addRequirementOnComfyManagerModel('comfyanonymous/clip_l'),
-         type: b.enum.Enum_DualCLIPLoader_type({ default: 'flux' }),
+         type: b.enum['DualCLIPLoader.input.type']({ default: 'flux' }),
          extra: schemaModelExtras({
             defaultVAE: 'FLUX1\\ae.sft',
             vaeActiveByDefault: true,

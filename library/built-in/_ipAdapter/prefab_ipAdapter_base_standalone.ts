@@ -15,7 +15,7 @@ export const ui_ipadapter_standalone = () => {
             help: form.markdown({ startCollapsed: true, markdown: ipAdapterDoc }),
             image: form.image({ label: 'Image' }),
             extra: form.list({ label: 'Extra', element: form.image({ label: 'Image' }) }),
-            embedding_scaling: form.enum.Enum_IPAdapterAdvanced_embeds_scaling({ default: 'V only' }),
+            embedding_scaling: form.enum['IPAdapterAdvanced.input.embeds_scaling']({ default: 'V only' }),
             ...ui_ipadapter_CLIPSelection(form),
             ...ui_ipadapter_modelSelection(form, 'ip-adapter-plus_sd15.safetensors', ipAdapterModelList),
             ...ui_subform_IPAdapter_common(form),

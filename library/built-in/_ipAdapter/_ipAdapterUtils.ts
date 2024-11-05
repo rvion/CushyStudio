@@ -5,8 +5,8 @@ export type UI_subform_IPAdapter_common = {
       crop: X.XBool
       startAtStepPercent: X.XNumber
       endAtStepPercent: X.XNumber
-      weight_type: X.XEnum<Enum_IPAdapterAdvanced_weight_type>
-      embedding_scaling: X.XEnum<Enum_IPAdapterAdvanced_embeds_scaling>
+      weight_type: X.XEnum<Comfy.Enums['IPAdapterAdvanced.weight_type']>
+      embedding_scaling: X.XEnum<Comfy.Enums['IPAdapterAdvanced.embeds_scaling']>
       noise: X.XNumber
       unfold_batch: X.XBool
    }>
@@ -33,8 +33,8 @@ export function ui_subform_IPAdapter_common(
             crop: ui.bool({ default: true }),
             startAtStepPercent: ui.float({ default: 0, min: 0, max: 1, step: 0.1 }),
             endAtStepPercent: ui.float({ default: 1, min: 0, max: 1, step: 0.1 }),
-            weight_type: ui.enum.Enum_IPAdapterAdvanced_weight_type({ default: 'linear' }),
-            embedding_scaling: ui.enum.Enum_IPAdapterAdvanced_embeds_scaling({ default: 'V only' }),
+            weight_type: ui.enum['IPAdapterAdvanced.input.weight_type']({ default: 'linear' }),
+            embedding_scaling: ui.enum['IPAdapterAdvanced.input.embeds_scaling']({ default: 'V only' }),
             noise: ui.float({ default: 0, min: 0, max: 1, step: 0.1 }),
             unfold_batch: ui.bool({ default: false }),
          },
@@ -43,7 +43,7 @@ export function ui_subform_IPAdapter_common(
 }
 
 export type UI_ipadapter_CLIPSelection = {
-   clip_name: X.XEnum<Enum_CLIPVisionLoader_clip_name>
+   clip_name: X.XEnum<Comfy.Enums['CLIPVisionLoader.clip_name']>
 }
 
 //🅿️ IPAdapter CLIP Selection ===================================================

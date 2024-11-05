@@ -7,15 +7,15 @@ import { ui_model_pag, type UI_model_pag } from './prefab_model_pag'
 import { ui_model_sag, type UI_model_sag } from './prefab_model_sag'
 
 export type $schemaModelExtras = X.XChoices<{
-   checkpointConfig: X.XEnum<Enum_CheckpointLoader_config_name>
+   checkpointConfig: X.XEnum<Comfy.Enums['CheckpointLoader.config_name']>
    rescaleCFG: X.XNumber
-   vae: X.XEnum<Enum_VAELoader_vae_name>
+   vae: X.XEnum<Comfy.Enums['VAELoader.vae_name']>
    clipSkip: X.XNumber
    freeU: X.XEmpty
    freeUv2: X.XEmpty
    vpred: X.XGroup<{ zsnr: X.XBool }>
    sampling: X.XGroup<{
-      sampling: X.XEnum<Enum_ModelSamplingDiscrete_sampling>
+      sampling: X.XEnum<Comfy.Enums['ModelSamplingDiscrete.sampling']>
       zsnr: X.XBool
    }>
    pag: UI_model_pag
@@ -35,9 +35,9 @@ export const schemaModelExtras = (
    return b
       .choices(
          {
-            checkpointConfig: b.enum.Enum_CheckpointLoader_config_name({ label: 'Config' }),
+            checkpointConfig: b.enum['CheckpointLoader.input.config_name']({ label: 'Config' }),
             rescaleCFG: b.float({ min: 0, max: 2, softMax: 1, default: 0.75 }),
-            vae: b.enum.Enum_VAELoader_vae_name({ default: p.defaultVAE }),
+            vae: b.enum['VAELoader.input.vae_name']({ default: p.defaultVAE }),
             clipSkip: b.int({ label: 'Clip Skip', default: 1, min: 1, max: 5 }),
             freeU: b.empty({ label: 'freeU ' }),
             freeUv2: b.empty({ label: 'freeU (v2)' }),

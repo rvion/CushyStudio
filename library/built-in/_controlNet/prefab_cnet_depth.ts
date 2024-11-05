@@ -5,13 +5,13 @@ import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
 // 🅿️ Depth FORM ===================================================
 export type UI_subform_Depth = X.XGroup<{
    preprocessor: UI_subform_Depth_Preprocessor
-   cnet_model_name: X.XEnum<Enum_ControlNetLoader_control_net_name>
+   cnet_model_name: X.XEnum<Comfy.Enums['Comfy.Base.ControlNetLoader.input.control_net_name']>
    strength: X.XNumber
    advanced: X.XGroup<{
       startAtStepPercent: X.XNumber
       endAtStepPercent: X.XNumber
-      crop: X.XEnum<Enum_LatentUpscale_crop>
-      upscale_method: X.XEnum<Enum_ImageScale_upscale_method>
+      crop: X.XEnum<Comfy.Enums['Comfy.Base.LatentUpscale.input.crop']>
+      upscale_method: X.XEnum<Comfy.Enums['Comfy.Base.ImageScale.input.upscale_method']>
    }>
 }>
 export function ui_subform_Depth(): UI_subform_Depth {
@@ -22,7 +22,7 @@ export function ui_subform_Depth(): UI_subform_Depth {
          items: {
             ...cnet_ui_common(ui),
             preprocessor: ui_subform_Depth_Preprocessor(),
-            cnet_model_name: ui.enum.Enum_ControlNetLoader_control_net_name({
+            cnet_model_name: ui.enum['Comfy.Base.ControlNetLoader.input.control_net_name']({
                label: 'Model',
                // @ts-ignore
                default: 't2iadapter_depth_sd14v1.pth',
@@ -125,7 +125,7 @@ export function ui_subform_Depth_Zoe(): UI_subform_Depth_Zoe {
 // 🅿️ Depth RUN ===================================================
 export const run_cnet_Depth = (
    Depth: OutputFor<typeof ui_subform_Depth>,
-   image: _IMAGE,
+   image: Comfy.Input.IMAGE,
    resolution: number, // 512 | 768 | 1024 = 512,
 ): {
    image: _IMAGE

@@ -5,10 +5,10 @@ import {
 } from '../_prefabs/prefab_model_extras'
 
 export type $prefabModelSD3 = X.XGroup<{
-   ckpt_name: X.XEnum<Enum_CheckpointLoaderSimple_ckpt_name>
-   clip1: X.XEnum<Enum_CLIPLoader_clip_name>
-   clip2: X.XEnum<Enum_CLIPLoader_clip_name>
-   clip3: X.XEnum<Enum_CLIPLoader_clip_name>
+   ckpt_name: X.XEnum<Comfy.Enums['CheckpointLoaderSimple.ckpt_name']>
+   clip1: X.XEnum<Comfy.Enums['CLIPLoader.clip_name']>
+   clip2: X.XEnum<Comfy.Enums['CLIPLoader.clip_name']>
+   clip3: X.XEnum<Comfy.Enums['CLIPLoader.clip_name']>
    extra: $schemaModelExtras
 }>
 
@@ -17,13 +17,13 @@ export const prefabModelSD3 = (): $prefabModelSD3 => {
    // const ckpts = cushy.managerRepository.getKnownCheckpoints()
    return b
       .fields({
-         ckpt_name: b.enum.Enum_CheckpointLoaderSimple_ckpt_name({ label: 'Checkpoint' }),
-         clip1: b.enum.Enum_TripleCLIPLoader_clip_name1({
+         ckpt_name: b.enum['CheckpointLoaderSimple.input.ckpt_name']({ label: 'Checkpoint' }),
+         clip1: b.enum['TripleCLIPLoader.input.clip_name1']({
             // @ts-ignore
             default: 't5xxl_fp16.safetensors',
          }),
-         clip2: b.enum.Enum_TripleCLIPLoader_clip_name2({ default: 'clip_l.safetensors' }),
-         clip3: b.enum.Enum_TripleCLIPLoader_clip_name3({
+         clip2: b.enum['TripleCLIPLoader.input.clip_name2']({ default: 'clip_l.safetensors' }),
+         clip3: b.enum['TripleCLIPLoader.input.clip_name3']({
             // @ts-ignore
             default: 'clip_g.safetensors',
          }),

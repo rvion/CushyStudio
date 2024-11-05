@@ -7,8 +7,8 @@ export type UI_Sampler = X.XGroup<{
    steps: X.XNumber
    cfg: X.XNumber
    seed: X.XSeed
-   sampler_name: X.XEnum<Enum_KSampler_sampler_name>
-   scheduler: X.XEnum<Enum_KSampler_scheduler>
+   sampler_name: X.XEnum<Comfy.Enums['KSampler.sampler_name']>
+   scheduler: X.XEnum<Comfy.Enums['KSampler.scheduler']>
 }>
 
 type UiSampleProps = {
@@ -27,11 +27,11 @@ export function ui_sampler(p?: UiSampleProps): UI_Sampler {
          steps: form.int({ step: 10, default: p?.steps ?? 20, label: 'Steps', min: 0, softMax: 100 }),
          cfg: form.float({ step: 1, label: 'CFG', min: 0, max: 100, softMax: 10, default: p?.cfg ?? 7 }),
          seed: form.seed({}),
-         sampler_name: form.enum.Enum_KSampler_sampler_name({
+         sampler_name: form.enum['KSampler.input.sampler_name']({
             label: 'Sampler',
             default: p?.sampler_name ?? 'euler',
          }),
-         scheduler: form.enum.Enum_KSampler_scheduler({
+         scheduler: form.enum['KSampler.input.scheduler']({
             label: 'Scheduler',
             default: p?.scheduler ?? 'karras',
          }),

@@ -15,7 +15,7 @@ type PromptLisT$ = X.XGroup<{
          prompt: X.XPrompt
          mask: X.XImage
          invert: X.XBool
-         mode: X.XEnum<Enum_LoadImageMask_channel>
+         mode: X.XEnum<Comfy.Enums['LoadImageMask.channel']>
          blur: X.XNumber
       }>
    >
@@ -39,7 +39,7 @@ export const ui_promptList = (): PromptLisT$ => {
                   prompt: form.prompt(),
                   mask: form.image({}),
                   invert: form.bool({}),
-                  mode: form.enum.Enum_LoadImageMask_channel({}),
+                  mode: form.enum['LoadImageMask.input.channel']({}),
                   blur: form.float({ default: 6, min: 0, max: 2048, softMax: 24, step: 1 }),
                },
                {

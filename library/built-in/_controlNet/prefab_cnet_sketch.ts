@@ -8,10 +8,10 @@ export type UI_subform_Sketch = X.XGroup<{
    advanced: X.XGroup<{
       startAtStepPercent: X.XNumber
       endAtStepPercent: X.XNumber
-      crop: X.XEnum<Enum_LatentUpscale_crop>
-      upscale_method: X.XEnum<Enum_ImageScale_upscale_method>
+      crop: X.XEnum<Comfy.Enums['LatentUpscale.crop']>
+      upscale_method: X.XEnum<Comfy.Enums['ImageScale.upscale_method']>
    }>
-   cnet_model_name: X.XEnum<Enum_ControlNetLoader_control_net_name>
+   cnet_model_name: X.XEnum<Comfy.Enums['ControlNetLoader.control_net_name']>
 }>
 export function ui_subform_Sketch(): UI_subform_Sketch {
    const form = getCurrentForm()
@@ -19,7 +19,7 @@ export function ui_subform_Sketch(): UI_subform_Sketch {
       .group({
          label: 'Sketch',
          items: {
-            cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
+            cnet_model_name: form.enum['ControlNetLoader.input.control_net_name']({
                label: 'Model',
                default: 't2iadapter_sketch_sd14v1.pth',
             }),

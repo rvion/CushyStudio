@@ -18,18 +18,18 @@ app({
       b.fields({
          models: b.group({
             items: {
-               stage_a_vae: b.enum.Enum_VAELoader_vae_name({
+               stage_a_vae: b.enum['VAELoader.input.vae_name']({
                   default: 'Stable-Cascade\\stage_a.safetensors',
                }),
-               stage_b: b.enum.Enum_UNETLoader_unet_name({
+               stage_b: b.enum['UNETLoader.input.unet_name']({
                   default: 'Stable-Cascade\\stage_b_bf16.safetensors',
                }),
-               stage_b_type: b.enum.Enum_UNETLoader_weight_dtype({ default: 'default' }),
-               stage_c: b.enum.Enum_UNETLoader_unet_name({
+               stage_b_type: b.enum['UNETLoader.input.weight_dtype']({ default: 'default' }),
+               stage_c: b.enum['UNETLoader.input.unet_name']({
                   // @ts-ignore
                   default: 'Stable-Cascade\\stage_c_bf16.safetensors',
                }),
-               stage_c_type: b.enum.Enum_UNETLoader_weight_dtype({ default: 'default' }),
+               stage_c_type: b.enum['UNETLoader.input.weight_dtype']({ default: 'default' }),
             },
          }),
          startingLatent: b.fields({
@@ -39,8 +39,8 @@ app({
             batch_size: b.int({ default: 1, min: 1, max: 64 }),
          }),
          clip: b.fields({
-            type: b.enum.Enum_CLIPLoader_type({ default: 'stable_cascade' }),
-            clip_name: b.enum.Enum_CLIPLoader_clip_name({
+            type: b.enum['CLIPLoader.input.type']({ default: 'stable_cascade' }),
+            clip_name: b.enum['CLIPLoader.input.clip_name']({
                extraDefaults: ['stabilityai/stable-cascade/text_encoder/model.safetensors'],
                default: 'Stable-Cascade\\model.safetensors',
             }),
@@ -57,8 +57,8 @@ app({
                seed: b.seed({ default: 762626426130783 }),
                steps: b.int({ default: 20, min: 1, max: 10000 }),
                cfg: b.float({ default: 4, min: 0, max: 100, step: 0.1 }),
-               sampler_name: b.enum.Enum_KSampler_sampler_name({ default: 'euler_ancestral' }),
-               scheduler: b.enum.Enum_KSampler_scheduler({ default: 'simple' }),
+               sampler_name: b.enum['KSampler.input.sampler_name']({ default: 'euler_ancestral' }),
+               scheduler: b.enum['KSampler.input.scheduler']({ default: 'simple' }),
                denoise: b.float({ default: 1, min: 0, max: 1, step: 0.01 }),
             },
          }),
@@ -67,8 +67,8 @@ app({
                seed_1: b.int({ default: 150623345818947, min: 0, max: 18446744073709552000 }),
                steps_1: b.int({ default: 10, min: 1, max: 10000 }),
                cfg_1: b.float({ default: 1.1, min: 0, max: 100, step: 0.1 }),
-               sampler_name_1: b.enum.Enum_KSampler_sampler_name({ default: 'euler_ancestral' }),
-               scheduler_1: b.enum.Enum_KSampler_scheduler({ default: 'simple' }),
+               sampler_name_1: b.enum['KSampler.input.sampler_name']({ default: 'euler_ancestral' }),
+               scheduler_1: b.enum['KSampler.input.scheduler']({ default: 'simple' }),
                denoise_1: b.float({ default: 1, min: 0, max: 1, step: 0.01 }),
             },
          }),

@@ -29,7 +29,7 @@ app({
          promptFromLlm: b.markdown({
             markdown: ``,
          }),
-         ckpt_name: b.enum.Enum_CheckpointLoaderSimple_ckpt_name({
+         ckpt_name: b.enum['CheckpointLoaderSimple.input.ckpt_name']({
             default: 'revAnimated_v122.safetensors',
             label: 'Checkpoint',
          }),

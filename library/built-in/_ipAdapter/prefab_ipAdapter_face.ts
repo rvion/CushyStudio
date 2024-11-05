@@ -20,8 +20,8 @@ export type UI_IPAdapterFaceID = X.XGroup<{
             crop: X.XBool
             startAtStepPercent: X.XNumber
             endAtStepPercent: X.XNumber
-            weight_type: X.XEnum<Enum_IPAdapterAdvanced_weight_type>
-            embedding_scaling: X.XEnum<Enum_IPAdapterAdvanced_embeds_scaling>
+            weight_type: X.XEnum<Comfy.Enums['IPAdapterAdvanced.weight_type']>
+            embedding_scaling: X.XEnum<Comfy.Enums['IPAdapterAdvanced.embeds_scaling']>
             noise: X.XNumber
             unfold_batch: X.XBool
          }>
@@ -35,16 +35,16 @@ export type UI_IPAdapterFaceID = X.XGroup<{
       crop: X.XBool
       startAtStepPercent: X.XNumber
       endAtStepPercent: X.XNumber
-      weight_type: X.XEnum<Enum_IPAdapterAdvanced_weight_type>
-      embedding_scaling: X.XEnum<Enum_IPAdapterAdvanced_embeds_scaling>
+      weight_type: X.XEnum<Comfy.Enums['IPAdapterAdvanced.weight_type']>
+      embedding_scaling: X.XEnum<Comfy.Enums['IPAdapterAdvanced.embeds_scaling']>
       noise: X.XNumber
       unfold_batch: X.XBool
    }>
    help: X.XMarkdown
    models: X.XGroup<{
-      lora: X.XEnum<Enum_LoraLoader_lora_name>
+      lora: X.XEnum<Comfy.Enums['LoraLoader.lora_name']>
       cnet_model_name: X.XEnum<Enum_AV$_IPAdapterPipe_ip_adapter_name>
-      clip_name: X.XEnum<Enum_CLIPVisionLoader_clip_name>
+      clip_name: X.XEnum<Comfy.Enums['CLIPVisionLoader.clip_name']>
    }>
    lora_strength: X.XNumber
 }>

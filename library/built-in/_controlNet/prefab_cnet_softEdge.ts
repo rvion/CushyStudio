@@ -5,13 +5,13 @@ import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
 // 🅿️ SoftEdge FORM ===================================================
 export type UI_subform_SoftEdge = X.XGroup<{
    preprocessor: UI_subform_SoftEdge_Preprocessor
-   cnet_model_name: X.XEnum<Enum_ControlNetLoader_control_net_name>
+   cnet_model_name: X.XEnum<Comfy.Enums['ControlNetLoader.control_net_name']>
    strength: X.XNumber
    advanced: X.XGroup<{
       startAtStepPercent: X.XNumber
       endAtStepPercent: X.XNumber
-      crop: X.XEnum<Enum_LatentUpscale_crop>
-      upscale_method: X.XEnum<Enum_ImageScale_upscale_method>
+      crop: X.XEnum<Comfy.Enums['LatentUpscale.crop']>
+      upscale_method: X.XEnum<Comfy.Enums['ImageScale.upscale_method']>
    }>
 }>
 export function ui_subform_SoftEdge(): UI_subform_SoftEdge {
@@ -22,7 +22,7 @@ export function ui_subform_SoftEdge(): UI_subform_SoftEdge {
          items: {
             ...cnet_ui_common(form),
             preprocessor: ui_subform_SoftEdge_Preprocessor(),
-            cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
+            cnet_model_name: form.enum['ControlNetLoader.input.control_net_name']({
                label: 'Model',
                default: 'control_v11p_sd15_softedge.pth' as any,
                extraDefaults: ['control_v11p_sd15_softedge.pth'],

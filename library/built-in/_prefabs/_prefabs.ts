@@ -92,11 +92,11 @@ export const util_expandBrances = (str: string): string[] => {
    return Array.from(result)
 }
 
-export const ui_vaeName = (form: X.Builder): X.XOptional<X.XEnum<Enum_VAELoader_vae_name>> =>
+export const ui_vaeName = (form: X.Builder): X.XOptional<X.XEnum<Comfy.Enums['VAELoader.vae_name']>> =>
    form.enumOpt.Enum_VAELoader_vae_name({ label: 'VAE' })
 
-export const ui_modelName = (form: X.Builder): X.XEnum<Enum_CheckpointLoaderSimple_ckpt_name> =>
-   form.enum.Enum_CheckpointLoaderSimple_ckpt_name({ label: 'Checkpoint' })
+export const ui_modelName = (form: X.Builder): X.XEnum<Comfy.Enums['CheckpointLoaderSimple.ckpt_name']> =>
+   form.enum['CheckpointLoaderSimple.input.ckpt_name']({ label: 'Checkpoint' })
 
 const resolutions: Resolutions[] = [
    '1024x1024',

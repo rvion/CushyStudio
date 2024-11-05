@@ -4,7 +4,7 @@ import type { OutputFor } from './_prefabs'
 import { run_prompt } from './prefab_prompt'
 
 export type UI_Sampler_Advanced = X.XGroup<{
-   sampler_name: X.XEnum<Enum_KSampler_sampler_name>
+   sampler_name: X.XEnum<Comfy.Enums['KSampler.sampler_name']>
    guidanceType: X.XChoice<{
       CFG: X.XNumber
       DualCFG: X.XGroup<{
@@ -21,12 +21,12 @@ export type UI_Sampler_Advanced = X.XGroup<{
       basic: X.XGroup<{
          denoise: X.XNumber
          steps: X.XNumber
-         scheduler: X.XEnum<Enum_KSampler_scheduler>
+         scheduler: X.XEnum<Comfy.Enums['KSampler.scheduler']>
       }>
       AlignYourStep: X.XGroup<{
          denoise: X.XNumber
          steps: X.XNumber
-         modelType: X.XEnum<Enum_AlignYourStepsScheduler_model_type>
+         modelType: X.XEnum<Comfy.Enums['AlignYourStepsScheduler.model_type']>
       }>
       karrasCustom: X.XGroup<{
          steps: X.XNumber
@@ -80,11 +80,11 @@ export function ui_sampler_advanced(p?: {
       {
          sampler_name: p?.sharedSampler
             ? // ⏸️ shared_samplerName()
-              form.enum.Enum_KSampler_sampler_name({
+              form.enum['KSampler.input.sampler_name']({
                  label: 'Sampler',
                  default: 'dpmpp_sde',
               })
-            : form.enum.Enum_KSampler_sampler_name({
+            : form.enum['KSampler.input.sampler_name']({
                  label: 'Sampler',
                  default: p?.sampler_name ?? 'euler',
               }),
@@ -161,7 +161,7 @@ export function ui_sampler_advanced(p?: {
                      min: 0,
                      softMax: 100,
                   }),
-                  scheduler: form.enum.Enum_KSampler_scheduler({
+                  scheduler: form.enum['KSampler.input.scheduler']({
                      label: 'Scheduler',
                      default: p?.scheduler ?? 'karras',
                   }),
@@ -175,7 +175,7 @@ export function ui_sampler_advanced(p?: {
                      label: 'Denoise',
                   }),
                   steps: form.int({ step: 1, default: p?.steps ?? 10, label: 'Steps', min: 0, softMax: 100 }),
-                  modelType: form.enum.Enum_AlignYourStepsScheduler_model_type({ default: 'SDXL' }),
+                  modelType: form.enum['AlignYourStepsScheduler.input.model_type']({ default: 'SDXL' }),
                }),
                karrasCustom: form.auto.KarrasScheduler(),
                ExponentialCustom: form.auto.ExponentialScheduler(),

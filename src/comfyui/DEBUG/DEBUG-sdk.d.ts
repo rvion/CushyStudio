@@ -7896,219 +7896,219 @@ declare global {
    // #region 1. Enums
    namespace Comfy {
       export interface Enums {
-          "Comfy.Base.KSampler.input.sampler_name": { $Name: "Comfy.Base.KSampler.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
-          "Comfy.Base.KSamplerAdvanced.input.sampler_name": { $Name: "Comfy.Base.KSamplerAdvanced.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
-          "Comfy.Extra.custom_sampler.KSamplerSelect.input.sampler_name": { $Name: "Comfy.Extra.custom_sampler.KSamplerSelect.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
-          "Comfy.Custom.Impact_Pack.DetailerForEach.input.sampler_name": { $Name: "Comfy.Custom.Impact_Pack.DetailerForEach.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
-          "Comfy.Custom.Impact_Pack.DetailerForEachDebug.input.sampler_name": { $Name: "Comfy.Custom.Impact_Pack.DetailerForEachDebug.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
-          "Comfy.Custom.Impact_Pack.DetailerForEachPipe.input.sampler_name": { $Name: "Comfy.Custom.Impact_Pack.DetailerForEachPipe.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
-          "Comfy.Custom.Impact_Pack.DetailerForEachDebugPipe.input.sampler_name": { $Name: "Comfy.Custom.Impact_Pack.DetailerForEachDebugPipe.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
-          "Comfy.Custom.Impact_Pack.DetailerForEachPipeForAnimateDiff.input.sampler_name": { $Name: "Comfy.Custom.Impact_Pack.DetailerForEachPipeForAnimateDiff.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
-          "Comfy.Custom.Impact_Pack.FaceDetailer.input.sampler_name": { $Name: "Comfy.Custom.Impact_Pack.FaceDetailer.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
-          "Comfy.Custom.Impact_Pack.FaceDetailerPipe.input.sampler_name": { $Name: "Comfy.Custom.Impact_Pack.FaceDetailerPipe.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
-          "Comfy.Custom.Impact_Pack.MaskDetailerPipe.input.sampler_name": { $Name: "Comfy.Custom.Impact_Pack.MaskDetailerPipe.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
-          "Comfy.Custom.Impact_Pack.PixelKSampleUpscalerProvider.input.sampler_name": { $Name: "Comfy.Custom.Impact_Pack.PixelKSampleUpscalerProvider.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
-          "Comfy.Custom.Impact_Pack.PixelKSampleUpscalerProviderPipe.input.sampler_name": { $Name: "Comfy.Custom.Impact_Pack.PixelKSampleUpscalerProviderPipe.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
-          "Comfy.Custom.Impact_Pack.PixelTiledKSampleUpscalerProvider.input.sampler_name": { $Name: "Comfy.Custom.Impact_Pack.PixelTiledKSampleUpscalerProvider.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
-          "Comfy.Custom.Impact_Pack.PixelTiledKSampleUpscalerProviderPipe.input.sampler_name": { $Name: "Comfy.Custom.Impact_Pack.PixelTiledKSampleUpscalerProviderPipe.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
-          "Comfy.Custom.Impact_Pack.UnsamplerHookProvider.input.sampler_name": { $Name: "Comfy.Custom.Impact_Pack.UnsamplerHookProvider.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
-          "Comfy.Custom.Impact_Pack.UnsamplerDetailerHookProvider.input.sampler_name": { $Name: "Comfy.Custom.Impact_Pack.UnsamplerDetailerHookProvider.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
-          "Comfy.Custom.Impact_Pack.KSamplerProvider.input.sampler_name": { $Name: "Comfy.Custom.Impact_Pack.KSamplerProvider.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
-          "Comfy.Custom.Impact_Pack.TiledKSamplerProvider.input.sampler_name": { $Name: "Comfy.Custom.Impact_Pack.TiledKSamplerProvider.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
-          "Comfy.Custom.Impact_Pack.KSamplerAdvancedProvider.input.sampler_name": { $Name: "Comfy.Custom.Impact_Pack.KSamplerAdvancedProvider.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
-          "Comfy.Custom.Impact_Pack.SEGSUpscaler.input.sampler_name": { $Name: "Comfy.Custom.Impact_Pack.SEGSUpscaler.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
-          "Comfy.Custom.Impact_Pack.SEGSUpscalerPipe.input.sampler_name": { $Name: "Comfy.Custom.Impact_Pack.SEGSUpscalerPipe.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
-          "Comfy.Custom.Impact_Pack.SEGSDetailer.input.sampler_name": { $Name: "Comfy.Custom.Impact_Pack.SEGSDetailer.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
-          "Comfy.Custom.Impact_Pack.SEGSDetailerForAnimateDiff.input.sampler_name": { $Name: "Comfy.Custom.Impact_Pack.SEGSDetailerForAnimateDiff.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
-          "Comfy.Custom.Impact_Pack.ImpactKSamplerBasicPipe.input.sampler_name": { $Name: "Comfy.Custom.Impact_Pack.ImpactKSamplerBasicPipe.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
-          "Comfy.Custom.Impact_Pack.ImpactKSamplerAdvancedBasicPipe.input.sampler_name": { $Name: "Comfy.Custom.Impact_Pack.ImpactKSamplerAdvancedBasicPipe.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
-          "Comfy.Base.KSampler.input.scheduler": { $Name: "Comfy.Base.KSampler.input.scheduler", $Value: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325 },
-          "Comfy.Base.KSamplerAdvanced.input.scheduler": { $Name: "Comfy.Base.KSamplerAdvanced.input.scheduler", $Value: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325 },
-          "Comfy.Extra.custom_sampler.BasicScheduler.input.scheduler": { $Name: "Comfy.Extra.custom_sampler.BasicScheduler.input.scheduler", $Value: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325 },
-          "Comfy.Custom.Impact_Pack.PixelTiledKSampleUpscalerProvider.input.scheduler": { $Name: "Comfy.Custom.Impact_Pack.PixelTiledKSampleUpscalerProvider.input.scheduler", $Value: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325 },
-          "Comfy.Custom.Impact_Pack.PixelTiledKSampleUpscalerProviderPipe.input.scheduler": { $Name: "Comfy.Custom.Impact_Pack.PixelTiledKSampleUpscalerProviderPipe.input.scheduler", $Value: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325 },
-          "Comfy.Custom.Impact_Pack.UnsamplerHookProvider.input.scheduler": { $Name: "Comfy.Custom.Impact_Pack.UnsamplerHookProvider.input.scheduler", $Value: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325 },
-          "Comfy.Custom.Impact_Pack.UnsamplerDetailerHookProvider.input.scheduler": { $Name: "Comfy.Custom.Impact_Pack.UnsamplerDetailerHookProvider.input.scheduler", $Value: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325 },
-          "Comfy.Custom.Impact_Pack.TiledKSamplerProvider.input.scheduler": { $Name: "Comfy.Custom.Impact_Pack.TiledKSamplerProvider.input.scheduler", $Value: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325 },
-          "Comfy.Custom.Impact_Pack.ImpactSchedulerAdapter.input.scheduler": { $Name: "Comfy.Custom.Impact_Pack.ImpactSchedulerAdapter.input.scheduler", $Value: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325 },
-          "Comfy.Base.CheckpointLoaderSimple.input.ckpt_name": { $Name: "Comfy.Base.CheckpointLoaderSimple.input.ckpt_name", $Value: Comfy.Union.E_1f08f73a9a576ae570aa3d82ea94f2bcfc29a8fc },
-          "Comfy.Base.unCLIPCheckpointLoader.input.ckpt_name": { $Name: "Comfy.Base.unCLIPCheckpointLoader.input.ckpt_name", $Value: Comfy.Union.E_1f08f73a9a576ae570aa3d82ea94f2bcfc29a8fc },
-          "Comfy.Base.CheckpointLoader.input.ckpt_name": { $Name: "Comfy.Base.CheckpointLoader.input.ckpt_name", $Value: Comfy.Union.E_1f08f73a9a576ae570aa3d82ea94f2bcfc29a8fc },
-          "Comfy.Extra.video_model.ImageOnlyCheckpointLoader.input.ckpt_name": { $Name: "Comfy.Extra.video_model.ImageOnlyCheckpointLoader.input.ckpt_name", $Value: Comfy.Union.E_1f08f73a9a576ae570aa3d82ea94f2bcfc29a8fc },
-          "Comfy.Base.VAELoader.input.vae_name": { $Name: "Comfy.Base.VAELoader.input.vae_name", $Value: Comfy.Union.E_621a1d2d13812defa70c4b6ec953d17713bd232a },
-          "Comfy.Base.LatentUpscale.input.upscale_method": { $Name: "Comfy.Base.LatentUpscale.input.upscale_method", $Value: Comfy.Union.E_6e6cbf6c48411ad480e010b0c9d2434b41af430d },
-          "Comfy.Base.LatentUpscaleBy.input.upscale_method": { $Name: "Comfy.Base.LatentUpscaleBy.input.upscale_method", $Value: Comfy.Union.E_6e6cbf6c48411ad480e010b0c9d2434b41af430d },
-          "Comfy.Extra.model_downscale.PatchModelAddDownscale.input.downscale_method": { $Name: "Comfy.Extra.model_downscale.PatchModelAddDownscale.input.downscale_method", $Value: Comfy.Union.E_6e6cbf6c48411ad480e010b0c9d2434b41af430d },
-          "Comfy.Extra.model_downscale.PatchModelAddDownscale.input.upscale_method": { $Name: "Comfy.Extra.model_downscale.PatchModelAddDownscale.input.upscale_method", $Value: Comfy.Union.E_6e6cbf6c48411ad480e010b0c9d2434b41af430d },
-          "Comfy.Extra.advanced_samplers.SamplerLCMUpscale.input.upscale_method": { $Name: "Comfy.Extra.advanced_samplers.SamplerLCMUpscale.input.upscale_method", $Value: Comfy.Union.E_6e6cbf6c48411ad480e010b0c9d2434b41af430d },
-          "Comfy.Base.LatentUpscale.input.crop": { $Name: "Comfy.Base.LatentUpscale.input.crop", $Value: Comfy.Union.E_e2779c2a162ed54d5841127cc2968e8d50f5e431 },
-          "Comfy.Base.ImageScale.input.crop": { $Name: "Comfy.Base.ImageScale.input.crop", $Value: Comfy.Union.E_e2779c2a162ed54d5841127cc2968e8d50f5e431 },
-          "Comfy.Base.LoadImage.input.image": { $Name: "Comfy.Base.LoadImage.input.image", $Value: Comfy.Union.E_26ea5ad8c44c9551fea858fff18017427386b591 },
-          "Comfy.Base.LoadImageMask.input.image": { $Name: "Comfy.Base.LoadImageMask.input.image", $Value: Comfy.Union.E_26ea5ad8c44c9551fea858fff18017427386b591 },
-          "Comfy.Custom.Impact_Pack.ImageReceiver.input.image": { $Name: "Comfy.Custom.Impact_Pack.ImageReceiver.input.image", $Value: Comfy.Union.E_26ea5ad8c44c9551fea858fff18017427386b591 },
-          "Comfy.Base.LoadImageMask.input.channel": { $Name: "Comfy.Base.LoadImageMask.input.channel", $Value: Comfy.Union.E_19d5be39f1fd20a88fdbcb009a06c7df2b0ef998 },
-          "Comfy.Extra.mask.ImageToMask.input.channel": { $Name: "Comfy.Extra.mask.ImageToMask.input.channel", $Value: Comfy.Union.E_19d5be39f1fd20a88fdbcb009a06c7df2b0ef998 },
-          "Comfy.Base.ImageScale.input.upscale_method": { $Name: "Comfy.Base.ImageScale.input.upscale_method", $Value: Comfy.Union.E_165b455eb22956fc9da6e1b76d49a4077f15d897 },
-          "Comfy.Base.ImageScaleBy.input.upscale_method": { $Name: "Comfy.Base.ImageScaleBy.input.upscale_method", $Value: Comfy.Union.E_165b455eb22956fc9da6e1b76d49a4077f15d897 },
-          "Comfy.Extra.post_processing.ImageScaleToTotalPixels.input.upscale_method": { $Name: "Comfy.Extra.post_processing.ImageScaleToTotalPixels.input.upscale_method", $Value: Comfy.Union.E_165b455eb22956fc9da6e1b76d49a4077f15d897 },
-          "Comfy.Base.ConditioningSetMask.input.set_cond_area": { $Name: "Comfy.Base.ConditioningSetMask.input.set_cond_area", $Value: Comfy.Union.E_046ed3ef4b2b9a9cfdb62e53a70fe767fb996451 },
-          "Comfy.Base.KSamplerAdvanced.input.add_noise": { $Name: "Comfy.Base.KSamplerAdvanced.input.add_noise", $Value: Comfy.Union.E_449b4cae3566dd9b97c417c352bb08e25b89431b },
-          "Comfy.Base.KSamplerAdvanced.input.return_with_leftover_noise": { $Name: "Comfy.Base.KSamplerAdvanced.input.return_with_leftover_noise", $Value: Comfy.Union.E_449b4cae3566dd9b97c417c352bb08e25b89431b },
-          "Comfy.Custom.Impact_Pack.UnsamplerHookProvider.input.normalize": { $Name: "Comfy.Custom.Impact_Pack.UnsamplerHookProvider.input.normalize", $Value: Comfy.Union.E_449b4cae3566dd9b97c417c352bb08e25b89431b },
-          "Comfy.Custom.Impact_Pack.UnsamplerDetailerHookProvider.input.normalize": { $Name: "Comfy.Custom.Impact_Pack.UnsamplerDetailerHookProvider.input.normalize", $Value: Comfy.Union.E_449b4cae3566dd9b97c417c352bb08e25b89431b },
-          "Comfy.Base.LatentRotate.input.rotation": { $Name: "Comfy.Base.LatentRotate.input.rotation", $Value: Comfy.Union.E_061551528c540e0171a9c88a94c7d5375aa31f8a },
-          "Comfy.Base.LatentFlip.input.flip_method": { $Name: "Comfy.Base.LatentFlip.input.flip_method", $Value: Comfy.Union.E_cdf7071acecb5016da941b6e718b82c97248a3e4 },
-          "Comfy.Base.LoraLoader.input.lora_name": { $Name: "Comfy.Base.LoraLoader.input.lora_name", $Value: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 },
-          "Comfy.Base.CLIPLoader.input.clip_name": { $Name: "Comfy.Base.CLIPLoader.input.clip_name", $Value: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 },
-          "Comfy.Base.UNETLoader.input.unet_name": { $Name: "Comfy.Base.UNETLoader.input.unet_name", $Value: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 },
-          "Comfy.Base.DualCLIPLoader.input.clip_name1": { $Name: "Comfy.Base.DualCLIPLoader.input.clip_name1", $Value: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 },
-          "Comfy.Base.DualCLIPLoader.input.clip_name2": { $Name: "Comfy.Base.DualCLIPLoader.input.clip_name2", $Value: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 },
-          "Comfy.Base.ControlNetLoader.input.control_net_name": { $Name: "Comfy.Base.ControlNetLoader.input.control_net_name", $Value: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 },
-          "Comfy.Base.DiffControlNetLoader.input.control_net_name": { $Name: "Comfy.Base.DiffControlNetLoader.input.control_net_name", $Value: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 },
-          "Comfy.Base.StyleModelLoader.input.style_model_name": { $Name: "Comfy.Base.StyleModelLoader.input.style_model_name", $Value: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 },
-          "Comfy.Base.CLIPVisionLoader.input.clip_name": { $Name: "Comfy.Base.CLIPVisionLoader.input.clip_name", $Value: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 },
-          "Comfy.Base.GLIGENLoader.input.gligen_name": { $Name: "Comfy.Base.GLIGENLoader.input.gligen_name", $Value: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 },
-          "Comfy.Base.DiffusersLoader.input.model_path": { $Name: "Comfy.Base.DiffusersLoader.input.model_path", $Value: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 },
-          "Comfy.Base.LoadLatent.input.latent": { $Name: "Comfy.Base.LoadLatent.input.latent", $Value: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 },
-          "Comfy.Base.LoraLoaderModelOnly.input.lora_name": { $Name: "Comfy.Base.LoraLoaderModelOnly.input.lora_name", $Value: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 },
-          "Comfy.Extra.hypernetwork.HypernetworkLoader.input.hypernetwork_name": { $Name: "Comfy.Extra.hypernetwork.HypernetworkLoader.input.hypernetwork_name", $Value: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 },
-          "Comfy.Extra.photomaker.PhotoMakerLoader.input.photomaker_model_name": { $Name: "Comfy.Extra.photomaker.PhotoMakerLoader.input.photomaker_model_name", $Value: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 },
-          "Comfy.Extra.audio.LoadAudio.input.audio": { $Name: "Comfy.Extra.audio.LoadAudio.input.audio", $Value: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 },
-          "Comfy.Extra.sd3.TripleCLIPLoader.input.clip_name1": { $Name: "Comfy.Extra.sd3.TripleCLIPLoader.input.clip_name1", $Value: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 },
-          "Comfy.Extra.sd3.TripleCLIPLoader.input.clip_name2": { $Name: "Comfy.Extra.sd3.TripleCLIPLoader.input.clip_name2", $Value: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 },
-          "Comfy.Extra.sd3.TripleCLIPLoader.input.clip_name3": { $Name: "Comfy.Extra.sd3.TripleCLIPLoader.input.clip_name3", $Value: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 },
-          "Comfy.Custom.Impact_Pack.ONNXDetectorProvider.input.model_name": { $Name: "Comfy.Custom.Impact_Pack.ONNXDetectorProvider.input.model_name", $Value: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 },
-          "Comfy.Custom.Impact_Pack.LatentReceiver.input.latent": { $Name: "Comfy.Custom.Impact_Pack.LatentReceiver.input.latent", $Value: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 },
-          "Comfy.Base.CLIPLoader.input.type": { $Name: "Comfy.Base.CLIPLoader.input.type", $Value: Comfy.Union.E_766fb79b4f3904a6716246cfb2a33b7b9e6a08c4 },
-          "Comfy.Base.UNETLoader.input.weight_dtype": { $Name: "Comfy.Base.UNETLoader.input.weight_dtype", $Value: Comfy.Union.E_21ba65fbb0df707c108b25356a3507e13f21ea58 },
-          "Comfy.Base.DualCLIPLoader.input.type": { $Name: "Comfy.Base.DualCLIPLoader.input.type", $Value: Comfy.Union.E_39292df8ce88fd66f0dacf6f9110cfa2594ca25c },
-          "Comfy.Base.CheckpointLoader.input.config_name": { $Name: "Comfy.Base.CheckpointLoader.input.config_name", $Value: Comfy.Union.E_a1972c9480c542a0e8ccafa03c2572ba5fc62160 },
-          "Comfy.Extra.latent.LatentBatchSeedBehavior.input.seed_behavior": { $Name: "Comfy.Extra.latent.LatentBatchSeedBehavior.input.seed_behavior", $Value: Comfy.Union.E_1d09df0c3ce1b4556d07af26e593d4033efc639b },
-          "Comfy.Extra.upscale_model.UpscaleModelLoader.input.model_name": { $Name: "Comfy.Extra.upscale_model.UpscaleModelLoader.input.model_name", $Value: Comfy.Union.E_2504d8563e078c3ed105667cbb6d0ff714d5798b },
-          "Comfy.Extra.post_processing.ImageBlend.input.blend_mode": { $Name: "Comfy.Extra.post_processing.ImageBlend.input.blend_mode", $Value: Comfy.Union.E_4ca09d2bc16d4174960bd60a103d4c0911361855 },
-          "Comfy.Extra.post_processing.ImageQuantize.input.dither": { $Name: "Comfy.Extra.post_processing.ImageQuantize.input.dither", $Value: Comfy.Union.E_7c2feaebcf0bbbcda0fe9f3c8cba1cf87002bc0e },
-          "Comfy.Extra.mask.MaskComposite.input.operation": { $Name: "Comfy.Extra.mask.MaskComposite.input.operation", $Value: Comfy.Union.E_88c0c90dbad3b41c3c4a4f8a89afad7b1c0db2e0 },
-          "Comfy.Extra.compositing.PorterDuffImageComposite.input.mode": { $Name: "Comfy.Extra.compositing.PorterDuffImageComposite.input.mode", $Value: Comfy.Union.E_d954b5ae44db00529f0fd0bfb816e25c12617df8 },
-          "Comfy.Extra.custom_sampler.SamplerDPMPP$_3M$_SDE.input.noise_device": { $Name: "Comfy.Extra.custom_sampler.SamplerDPMPP$_3M$_SDE.input.noise_device", $Value: Comfy.Union.E_928b7403128cb25513cafc463a76a922ba5d4bd0 },
-          "Comfy.Extra.custom_sampler.SamplerDPMPP$_2M$_SDE.input.noise_device": { $Name: "Comfy.Extra.custom_sampler.SamplerDPMPP$_2M$_SDE.input.noise_device", $Value: Comfy.Union.E_928b7403128cb25513cafc463a76a922ba5d4bd0 },
-          "Comfy.Extra.custom_sampler.SamplerDPMPP$_SDE.input.noise_device": { $Name: "Comfy.Extra.custom_sampler.SamplerDPMPP$_SDE.input.noise_device", $Value: Comfy.Union.E_928b7403128cb25513cafc463a76a922ba5d4bd0 },
-          "Comfy.Extra.custom_sampler.SamplerDPMPP$_2M$_SDE.input.solver_type": { $Name: "Comfy.Extra.custom_sampler.SamplerDPMPP$_2M$_SDE.input.solver_type", $Value: Comfy.Union.E_148e0bc88719e23ec2f2c80871fe45ae759cd7e1 },
-          "Comfy.Extra.model_advanced.ModelSamplingDiscrete.input.sampling": { $Name: "Comfy.Extra.model_advanced.ModelSamplingDiscrete.input.sampling", $Value: Comfy.Union.E_e89ec78e24ca5e9c91264b9e9b5ed722d2b509dc },
-          "Comfy.Extra.model_advanced.ModelSamplingContinuousEDM.input.sampling": { $Name: "Comfy.Extra.model_advanced.ModelSamplingContinuousEDM.input.sampling", $Value: Comfy.Union.E_bf8a83a3d55d70c688644bf18edaf23501f7c168 },
-          "Comfy.Extra.model_advanced.ModelSamplingContinuousV.input.sampling": { $Name: "Comfy.Extra.model_advanced.ModelSamplingContinuousV.input.sampling", $Value: Comfy.Union.E_3c3164c6c468d61dfa20092960e3d7854495e50c },
-          "Comfy.Extra.images.SaveAnimatedWEBP.input.method": { $Name: "Comfy.Extra.images.SaveAnimatedWEBP.input.method", $Value: Comfy.Union.E_253b68425542d8144b2b8a7af90f057b41939f63 },
-          "Comfy.Extra.morphology.Morphology.input.operation": { $Name: "Comfy.Extra.morphology.Morphology.input.operation", $Value: Comfy.Union.E_6ba03252ec9c8111f7381dfb573cd99c2b4d0e3b },
-          "Comfy.Extra.align_your_steps.AlignYourStepsScheduler.input.model_type": { $Name: "Comfy.Extra.align_your_steps.AlignYourStepsScheduler.input.model_type", $Value: Comfy.Union.E_ec317371192386ae10cedaee29b315e900386a18 },
-          "Comfy.Extra.advanced_samplers.SamplerEulerCFGpp.input.version": { $Name: "Comfy.Extra.advanced_samplers.SamplerEulerCFGpp.input.version", $Value: Comfy.Union.E_a8aa5eb2d828c2e279168c48955c7a0fe3ea011a },
-          "Comfy.Extra.sd3.CLIPTextEncodeSD3.input.empty_padding": { $Name: "Comfy.Extra.sd3.CLIPTextEncodeSD3.input.empty_padding", $Value: Comfy.Union.E_270e152a81c37daf152e6cc67675baaafe058bc4 },
-          "Comfy.Extra.controlnet.SetUnionControlNetType.input.type": { $Name: "Comfy.Extra.controlnet.SetUnionControlNetType.input.type", $Value: Comfy.Union.E_0e92c8b1b6fe90c3e343d8b54b531b9d887eee62 },
-          "Comfy.Extra.lora_extract.LoraSave.input.lora_type": { $Name: "Comfy.Extra.lora_extract.LoraSave.input.lora_type", $Value: Comfy.Union.E_b80b6129a942660e31e08221ee04a76f537556ce },
-          "Comfy.Extra.torch_compile.TorchCompileModel.input.backend": { $Name: "Comfy.Extra.torch_compile.TorchCompileModel.input.backend", $Value: Comfy.Union.E_4bbca93e426c35d56c43252f1fb21877d5e7a1aa },
-          "Comfy.Custom.Impact_Pack.SAMLoader.input.model_name": { $Name: "Comfy.Custom.Impact_Pack.SAMLoader.input.model_name", $Value: Comfy.Union.E_40c777392f92d61852ab0f7a429a755abf59b71a },
-          "Comfy.Custom.Impact_Pack.SAMLoader.input.device_mode": { $Name: "Comfy.Custom.Impact_Pack.SAMLoader.input.device_mode", $Value: Comfy.Union.E_2ad445b99254e9b51c963d9f1a75fabe3d01e569 },
-          "Comfy.Custom.Impact_Pack.ImpactHFTransformersClassifierProvider.input.device_mode": { $Name: "Comfy.Custom.Impact_Pack.ImpactHFTransformersClassifierProvider.input.device_mode", $Value: Comfy.Union.E_2ad445b99254e9b51c963d9f1a75fabe3d01e569 },
-          "Comfy.Custom.Impact_Pack.DetailerForEach.input.scheduler": { $Name: "Comfy.Custom.Impact_Pack.DetailerForEach.input.scheduler", $Value: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d },
-          "Comfy.Custom.Impact_Pack.DetailerForEachDebug.input.scheduler": { $Name: "Comfy.Custom.Impact_Pack.DetailerForEachDebug.input.scheduler", $Value: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d },
-          "Comfy.Custom.Impact_Pack.DetailerForEachPipe.input.scheduler": { $Name: "Comfy.Custom.Impact_Pack.DetailerForEachPipe.input.scheduler", $Value: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d },
-          "Comfy.Custom.Impact_Pack.DetailerForEachDebugPipe.input.scheduler": { $Name: "Comfy.Custom.Impact_Pack.DetailerForEachDebugPipe.input.scheduler", $Value: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d },
-          "Comfy.Custom.Impact_Pack.DetailerForEachPipeForAnimateDiff.input.scheduler": { $Name: "Comfy.Custom.Impact_Pack.DetailerForEachPipeForAnimateDiff.input.scheduler", $Value: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d },
-          "Comfy.Custom.Impact_Pack.FaceDetailer.input.scheduler": { $Name: "Comfy.Custom.Impact_Pack.FaceDetailer.input.scheduler", $Value: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d },
-          "Comfy.Custom.Impact_Pack.FaceDetailerPipe.input.scheduler": { $Name: "Comfy.Custom.Impact_Pack.FaceDetailerPipe.input.scheduler", $Value: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d },
-          "Comfy.Custom.Impact_Pack.MaskDetailerPipe.input.scheduler": { $Name: "Comfy.Custom.Impact_Pack.MaskDetailerPipe.input.scheduler", $Value: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d },
-          "Comfy.Custom.Impact_Pack.PixelKSampleUpscalerProvider.input.scheduler": { $Name: "Comfy.Custom.Impact_Pack.PixelKSampleUpscalerProvider.input.scheduler", $Value: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d },
-          "Comfy.Custom.Impact_Pack.PixelKSampleUpscalerProviderPipe.input.scheduler": { $Name: "Comfy.Custom.Impact_Pack.PixelKSampleUpscalerProviderPipe.input.scheduler", $Value: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d },
-          "Comfy.Custom.Impact_Pack.KSamplerProvider.input.scheduler": { $Name: "Comfy.Custom.Impact_Pack.KSamplerProvider.input.scheduler", $Value: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d },
-          "Comfy.Custom.Impact_Pack.KSamplerAdvancedProvider.input.scheduler": { $Name: "Comfy.Custom.Impact_Pack.KSamplerAdvancedProvider.input.scheduler", $Value: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d },
-          "Comfy.Custom.Impact_Pack.SEGSUpscaler.input.scheduler": { $Name: "Comfy.Custom.Impact_Pack.SEGSUpscaler.input.scheduler", $Value: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d },
-          "Comfy.Custom.Impact_Pack.SEGSUpscalerPipe.input.scheduler": { $Name: "Comfy.Custom.Impact_Pack.SEGSUpscalerPipe.input.scheduler", $Value: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d },
-          "Comfy.Custom.Impact_Pack.SEGSDetailer.input.scheduler": { $Name: "Comfy.Custom.Impact_Pack.SEGSDetailer.input.scheduler", $Value: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d },
-          "Comfy.Custom.Impact_Pack.SEGSDetailerForAnimateDiff.input.scheduler": { $Name: "Comfy.Custom.Impact_Pack.SEGSDetailerForAnimateDiff.input.scheduler", $Value: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d },
-          "Comfy.Custom.Impact_Pack.ImpactKSamplerBasicPipe.input.scheduler": { $Name: "Comfy.Custom.Impact_Pack.ImpactKSamplerBasicPipe.input.scheduler", $Value: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d },
-          "Comfy.Custom.Impact_Pack.ImpactKSamplerAdvancedBasicPipe.input.scheduler": { $Name: "Comfy.Custom.Impact_Pack.ImpactKSamplerAdvancedBasicPipe.input.scheduler", $Value: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d },
-          "Comfy.Custom.Impact_Pack.ImpactSchedulerAdapter.output.scheduler": { $Name: "Comfy.Custom.Impact_Pack.ImpactSchedulerAdapter.output.scheduler", $Value: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d },
-          "Comfy.Custom.Impact_Pack.SAMDetectorCombined.input.detection_hint": { $Name: "Comfy.Custom.Impact_Pack.SAMDetectorCombined.input.detection_hint", $Value: Comfy.Union.E_40275a874822a8699ee13794e127b63cdd6bfdae },
-          "Comfy.Custom.Impact_Pack.SAMDetectorSegmented.input.detection_hint": { $Name: "Comfy.Custom.Impact_Pack.SAMDetectorSegmented.input.detection_hint", $Value: Comfy.Union.E_40275a874822a8699ee13794e127b63cdd6bfdae },
-          "Comfy.Custom.Impact_Pack.FaceDetailer.input.sam_detection_hint": { $Name: "Comfy.Custom.Impact_Pack.FaceDetailer.input.sam_detection_hint", $Value: Comfy.Union.E_40275a874822a8699ee13794e127b63cdd6bfdae },
-          "Comfy.Custom.Impact_Pack.FaceDetailerPipe.input.sam_detection_hint": { $Name: "Comfy.Custom.Impact_Pack.FaceDetailerPipe.input.sam_detection_hint", $Value: Comfy.Union.E_40275a874822a8699ee13794e127b63cdd6bfdae },
-          "Comfy.Custom.Impact_Pack.SAMDetectorCombined.input.mask_hint_use_negative": { $Name: "Comfy.Custom.Impact_Pack.SAMDetectorCombined.input.mask_hint_use_negative", $Value: Comfy.Union.E_aa302307a82588b6e514aca43e4cddad342a73fc },
-          "Comfy.Custom.Impact_Pack.SAMDetectorSegmented.input.mask_hint_use_negative": { $Name: "Comfy.Custom.Impact_Pack.SAMDetectorSegmented.input.mask_hint_use_negative", $Value: Comfy.Union.E_aa302307a82588b6e514aca43e4cddad342a73fc },
-          "Comfy.Custom.Impact_Pack.FaceDetailer.input.sam_mask_hint_use_negative": { $Name: "Comfy.Custom.Impact_Pack.FaceDetailer.input.sam_mask_hint_use_negative", $Value: Comfy.Union.E_aa302307a82588b6e514aca43e4cddad342a73fc },
-          "Comfy.Custom.Impact_Pack.FaceDetailerPipe.input.sam_mask_hint_use_negative": { $Name: "Comfy.Custom.Impact_Pack.FaceDetailerPipe.input.sam_mask_hint_use_negative", $Value: Comfy.Union.E_aa302307a82588b6e514aca43e4cddad342a73fc },
-          "Comfy.Custom.Impact_Pack.ToDetailerPipe.input.Select$_to$_add$_LoRA": { $Name: "Comfy.Custom.Impact_Pack.ToDetailerPipe.input.Select$_to$_add$_LoRA", $Value: Comfy.Union.E_35e403c7628f220c07d5485d6e81fc66b4fc12df },
-          "Comfy.Custom.Impact_Pack.ToDetailerPipeSDXL.input.Select$_to$_add$_LoRA": { $Name: "Comfy.Custom.Impact_Pack.ToDetailerPipeSDXL.input.Select$_to$_add$_LoRA", $Value: Comfy.Union.E_35e403c7628f220c07d5485d6e81fc66b4fc12df },
-          "Comfy.Custom.Impact_Pack.BasicPipeToDetailerPipe.input.Select$_to$_add$_LoRA": { $Name: "Comfy.Custom.Impact_Pack.BasicPipeToDetailerPipe.input.Select$_to$_add$_LoRA", $Value: Comfy.Union.E_35e403c7628f220c07d5485d6e81fc66b4fc12df },
-          "Comfy.Custom.Impact_Pack.BasicPipeToDetailerPipeSDXL.input.Select$_to$_add$_LoRA": { $Name: "Comfy.Custom.Impact_Pack.BasicPipeToDetailerPipeSDXL.input.Select$_to$_add$_LoRA", $Value: Comfy.Union.E_35e403c7628f220c07d5485d6e81fc66b4fc12df },
-          "Comfy.Custom.Impact_Pack.EditDetailerPipe.input.Select$_to$_add$_LoRA": { $Name: "Comfy.Custom.Impact_Pack.EditDetailerPipe.input.Select$_to$_add$_LoRA", $Value: Comfy.Union.E_35e403c7628f220c07d5485d6e81fc66b4fc12df },
-          "Comfy.Custom.Impact_Pack.EditDetailerPipeSDXL.input.Select$_to$_add$_LoRA": { $Name: "Comfy.Custom.Impact_Pack.EditDetailerPipeSDXL.input.Select$_to$_add$_LoRA", $Value: Comfy.Union.E_35e403c7628f220c07d5485d6e81fc66b4fc12df },
-          "Comfy.Custom.Impact_Pack.ImpactWildcardEncode.input.Select$_to$_add$_LoRA": { $Name: "Comfy.Custom.Impact_Pack.ImpactWildcardEncode.input.Select$_to$_add$_LoRA", $Value: Comfy.Union.E_35e403c7628f220c07d5485d6e81fc66b4fc12df },
-          "Comfy.Custom.Impact_Pack.ToDetailerPipe.input.Select$_to$_add$_Wildcard": { $Name: "Comfy.Custom.Impact_Pack.ToDetailerPipe.input.Select$_to$_add$_Wildcard", $Value: Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26 },
-          "Comfy.Custom.Impact_Pack.ToDetailerPipeSDXL.input.Select$_to$_add$_Wildcard": { $Name: "Comfy.Custom.Impact_Pack.ToDetailerPipeSDXL.input.Select$_to$_add$_Wildcard", $Value: Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26 },
-          "Comfy.Custom.Impact_Pack.BasicPipeToDetailerPipe.input.Select$_to$_add$_Wildcard": { $Name: "Comfy.Custom.Impact_Pack.BasicPipeToDetailerPipe.input.Select$_to$_add$_Wildcard", $Value: Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26 },
-          "Comfy.Custom.Impact_Pack.BasicPipeToDetailerPipeSDXL.input.Select$_to$_add$_Wildcard": { $Name: "Comfy.Custom.Impact_Pack.BasicPipeToDetailerPipeSDXL.input.Select$_to$_add$_Wildcard", $Value: Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26 },
-          "Comfy.Custom.Impact_Pack.EditDetailerPipe.input.Select$_to$_add$_Wildcard": { $Name: "Comfy.Custom.Impact_Pack.EditDetailerPipe.input.Select$_to$_add$_Wildcard", $Value: Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26 },
-          "Comfy.Custom.Impact_Pack.EditDetailerPipeSDXL.input.Select$_to$_add$_Wildcard": { $Name: "Comfy.Custom.Impact_Pack.EditDetailerPipeSDXL.input.Select$_to$_add$_Wildcard", $Value: Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26 },
-          "Comfy.Custom.Impact_Pack.ImpactWildcardProcessor.input.Select$_to$_add$_Wildcard": { $Name: "Comfy.Custom.Impact_Pack.ImpactWildcardProcessor.input.Select$_to$_add$_Wildcard", $Value: Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26 },
-          "Comfy.Custom.Impact_Pack.ImpactWildcardEncode.input.Select$_to$_add$_Wildcard": { $Name: "Comfy.Custom.Impact_Pack.ImpactWildcardEncode.input.Select$_to$_add$_Wildcard", $Value: Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26 },
-          "Comfy.Custom.Impact_Pack.LatentPixelScale.input.scale_method": { $Name: "Comfy.Custom.Impact_Pack.LatentPixelScale.input.scale_method", $Value: Comfy.Union.E_f9c5efbc827613eb902695cd0a25738ee31c607d },
-          "Comfy.Custom.Impact_Pack.PixelKSampleUpscalerProvider.input.scale_method": { $Name: "Comfy.Custom.Impact_Pack.PixelKSampleUpscalerProvider.input.scale_method", $Value: Comfy.Union.E_f9c5efbc827613eb902695cd0a25738ee31c607d },
-          "Comfy.Custom.Impact_Pack.PixelKSampleUpscalerProviderPipe.input.scale_method": { $Name: "Comfy.Custom.Impact_Pack.PixelKSampleUpscalerProviderPipe.input.scale_method", $Value: Comfy.Union.E_f9c5efbc827613eb902695cd0a25738ee31c607d },
-          "Comfy.Custom.Impact_Pack.PixelTiledKSampleUpscalerProvider.input.scale_method": { $Name: "Comfy.Custom.Impact_Pack.PixelTiledKSampleUpscalerProvider.input.scale_method", $Value: Comfy.Union.E_f9c5efbc827613eb902695cd0a25738ee31c607d },
-          "Comfy.Custom.Impact_Pack.PixelTiledKSampleUpscalerProviderPipe.input.scale_method": { $Name: "Comfy.Custom.Impact_Pack.PixelTiledKSampleUpscalerProviderPipe.input.scale_method", $Value: Comfy.Union.E_f9c5efbc827613eb902695cd0a25738ee31c607d },
-          "Comfy.Custom.Impact_Pack.TwoSamplersForMaskUpscalerProvider.input.scale_method": { $Name: "Comfy.Custom.Impact_Pack.TwoSamplersForMaskUpscalerProvider.input.scale_method", $Value: Comfy.Union.E_f9c5efbc827613eb902695cd0a25738ee31c607d },
-          "Comfy.Custom.Impact_Pack.TwoSamplersForMaskUpscalerProviderPipe.input.scale_method": { $Name: "Comfy.Custom.Impact_Pack.TwoSamplersForMaskUpscalerProviderPipe.input.scale_method", $Value: Comfy.Union.E_f9c5efbc827613eb902695cd0a25738ee31c607d },
-          "Comfy.Custom.Impact_Pack.IterativeLatentUpscale.input.step_mode": { $Name: "Comfy.Custom.Impact_Pack.IterativeLatentUpscale.input.step_mode", $Value: Comfy.Union.E_4724269c8f643d5efa98f97e1e55a7ddfe6aac6c },
-          "Comfy.Custom.Impact_Pack.IterativeImageUpscale.input.step_mode": { $Name: "Comfy.Custom.Impact_Pack.IterativeImageUpscale.input.step_mode", $Value: Comfy.Union.E_4724269c8f643d5efa98f97e1e55a7ddfe6aac6c },
-          "Comfy.Custom.Impact_Pack.PixelTiledKSampleUpscalerProvider.input.tiling_strategy": { $Name: "Comfy.Custom.Impact_Pack.PixelTiledKSampleUpscalerProvider.input.tiling_strategy", $Value: Comfy.Union.E_304f89a0de34643f12756237824e7261db28aaf5 },
-          "Comfy.Custom.Impact_Pack.PixelTiledKSampleUpscalerProviderPipe.input.tiling_strategy": { $Name: "Comfy.Custom.Impact_Pack.PixelTiledKSampleUpscalerProviderPipe.input.tiling_strategy", $Value: Comfy.Union.E_304f89a0de34643f12756237824e7261db28aaf5 },
-          "Comfy.Custom.Impact_Pack.TiledKSamplerProvider.input.tiling_strategy": { $Name: "Comfy.Custom.Impact_Pack.TiledKSamplerProvider.input.tiling_strategy", $Value: Comfy.Union.E_304f89a0de34643f12756237824e7261db28aaf5 },
-          "Comfy.Custom.Impact_Pack.TwoSamplersForMaskUpscalerProvider.input.full_sample_schedule": { $Name: "Comfy.Custom.Impact_Pack.TwoSamplersForMaskUpscalerProvider.input.full_sample_schedule", $Value: Comfy.Union.E_de6a9887e0bfe301f572e929959509ed64574d1b },
-          "Comfy.Custom.Impact_Pack.TwoSamplersForMaskUpscalerProviderPipe.input.full_sample_schedule": { $Name: "Comfy.Custom.Impact_Pack.TwoSamplersForMaskUpscalerProviderPipe.input.full_sample_schedule", $Value: Comfy.Union.E_de6a9887e0bfe301f572e929959509ed64574d1b },
-          "Comfy.Custom.Impact_Pack.DenoiseScheduleHookProvider.input.schedule_for_iteration": { $Name: "Comfy.Custom.Impact_Pack.DenoiseScheduleHookProvider.input.schedule_for_iteration", $Value: Comfy.Union.E_0f7d0d088b6ea936fb25b477722d734706fe8b40 },
-          "Comfy.Custom.Impact_Pack.StepsScheduleHookProvider.input.schedule_for_iteration": { $Name: "Comfy.Custom.Impact_Pack.StepsScheduleHookProvider.input.schedule_for_iteration", $Value: Comfy.Union.E_0f7d0d088b6ea936fb25b477722d734706fe8b40 },
-          "Comfy.Custom.Impact_Pack.CfgScheduleHookProvider.input.schedule_for_iteration": { $Name: "Comfy.Custom.Impact_Pack.CfgScheduleHookProvider.input.schedule_for_iteration", $Value: Comfy.Union.E_0f7d0d088b6ea936fb25b477722d734706fe8b40 },
-          "Comfy.Custom.Impact_Pack.NoiseInjectionHookProvider.input.schedule_for_iteration": { $Name: "Comfy.Custom.Impact_Pack.NoiseInjectionHookProvider.input.schedule_for_iteration", $Value: Comfy.Union.E_0f7d0d088b6ea936fb25b477722d734706fe8b40 },
-          "Comfy.Custom.Impact_Pack.UnsamplerHookProvider.input.schedule_for_iteration": { $Name: "Comfy.Custom.Impact_Pack.UnsamplerHookProvider.input.schedule_for_iteration", $Value: Comfy.Union.E_0f7d0d088b6ea936fb25b477722d734706fe8b40 },
-          "Comfy.Custom.Impact_Pack.DenoiseSchedulerDetailerHookProvider.input.schedule_for_cycle": { $Name: "Comfy.Custom.Impact_Pack.DenoiseSchedulerDetailerHookProvider.input.schedule_for_cycle", $Value: Comfy.Union.E_0f7d0d088b6ea936fb25b477722d734706fe8b40 },
-          "Comfy.Custom.Impact_Pack.NoiseInjectionHookProvider.input.source": { $Name: "Comfy.Custom.Impact_Pack.NoiseInjectionHookProvider.input.source", $Value: Comfy.Union.E_3dfc15432d4b952e91053feecd5a5427720957fc },
-          "Comfy.Custom.Impact_Pack.NoiseInjectionDetailerHookProvider.input.source": { $Name: "Comfy.Custom.Impact_Pack.NoiseInjectionDetailerHookProvider.input.source", $Value: Comfy.Union.E_3dfc15432d4b952e91053feecd5a5427720957fc },
-          "Comfy.Custom.Impact_Pack.CoreMLDetailerHookProvider.input.mode": { $Name: "Comfy.Custom.Impact_Pack.CoreMLDetailerHookProvider.input.mode", $Value: Comfy.Union.E_d4b6506ab5528aeab8952aa9d308dbc242d01e63 },
-          "Comfy.Custom.Impact_Pack.NoiseInjectionDetailerHookProvider.input.schedule_for_cycle": { $Name: "Comfy.Custom.Impact_Pack.NoiseInjectionDetailerHookProvider.input.schedule_for_cycle", $Value: Comfy.Union.E_afbc7832ad78555d4f5646f97ed21b561fe3d1f0 },
-          "Comfy.Custom.Impact_Pack.UnsamplerDetailerHookProvider.input.schedule_for_cycle": { $Name: "Comfy.Custom.Impact_Pack.UnsamplerDetailerHookProvider.input.schedule_for_cycle", $Value: Comfy.Union.E_afbc7832ad78555d4f5646f97ed21b561fe3d1f0 },
-          "Comfy.Custom.Impact_Pack.SEGSOrderedFilterDetailerHookProvider.input.target": { $Name: "Comfy.Custom.Impact_Pack.SEGSOrderedFilterDetailerHookProvider.input.target", $Value: Comfy.Union.E_87bec9aa0dfe9b9678fd35387106d931d78358cd },
-          "Comfy.Custom.Impact_Pack.SEGSRangeFilterDetailerHookProvider.input.target": { $Name: "Comfy.Custom.Impact_Pack.SEGSRangeFilterDetailerHookProvider.input.target", $Value: Comfy.Union.E_aceb55e7f03fcbc2a78383bd8ddff8676e42e536 },
-          "Comfy.Custom.Impact_Pack.SEGSLabelFilterDetailerHookProvider.input.preset": { $Name: "Comfy.Custom.Impact_Pack.SEGSLabelFilterDetailerHookProvider.input.preset", $Value: Comfy.Union.E_cc1f262afc534d382e5c36082cecd4fc2a9c4ffb },
-          "Comfy.Custom.Impact_Pack.ImpactSEGSLabelFilter.input.preset": { $Name: "Comfy.Custom.Impact_Pack.ImpactSEGSLabelFilter.input.preset", $Value: Comfy.Union.E_cc1f262afc534d382e5c36082cecd4fc2a9c4ffb },
-          "Comfy.Custom.Impact_Pack.ImpactSimpleDetectorSEGS$_for$_AD.input.masking_mode": { $Name: "Comfy.Custom.Impact_Pack.ImpactSimpleDetectorSEGS$_for$_AD.input.masking_mode", $Value: Comfy.Union.E_e5ef6b688dbafd88538e80bf002826bade4bb121 },
-          "Comfy.Custom.Impact_Pack.ImpactSimpleDetectorSEGS$_for$_AD.input.segs_pivot": { $Name: "Comfy.Custom.Impact_Pack.ImpactSimpleDetectorSEGS$_for$_AD.input.segs_pivot", $Value: Comfy.Union.E_651ea09f69db9a1eb817103d1ea8e3ac08b4a319 },
-          "Comfy.Custom.Impact_Pack.ImpactIPAdapterApplySEGS.input.weight_type": { $Name: "Comfy.Custom.Impact_Pack.ImpactIPAdapterApplySEGS.input.weight_type", $Value: Comfy.Union.E_05cddbad13b094c2641c6bb7d261e15c71efc903 },
-          "Comfy.Custom.Impact_Pack.ImpactIPAdapterApplySEGS.input.combine_embeds": { $Name: "Comfy.Custom.Impact_Pack.ImpactIPAdapterApplySEGS.input.combine_embeds", $Value: Comfy.Union.E_055d80a7c582bd5b57fd6775414e697be3f0f580 },
-          "Comfy.Custom.Impact_Pack.PreviewBridge.input.restore_mask": { $Name: "Comfy.Custom.Impact_Pack.PreviewBridge.input.restore_mask", $Value: Comfy.Union.E_f27fae3205ecf36e9f4a68f3867d38e025476963 },
-          "Comfy.Custom.Impact_Pack.PreviewBridgeLatent.input.restore_mask": { $Name: "Comfy.Custom.Impact_Pack.PreviewBridgeLatent.input.restore_mask", $Value: Comfy.Union.E_f27fae3205ecf36e9f4a68f3867d38e025476963 },
-          "Comfy.Custom.Impact_Pack.PreviewBridgeLatent.input.preview_method": { $Name: "Comfy.Custom.Impact_Pack.PreviewBridgeLatent.input.preview_method", $Value: Comfy.Union.E_ea287ec9983f05378f2614091804a1b6b95d1c79 },
-          "Comfy.Custom.Impact_Pack.LatentSender.input.preview_method": { $Name: "Comfy.Custom.Impact_Pack.LatentSender.input.preview_method", $Value: Comfy.Union.E_fa4a13687b111fa33a8c8fa375d5321d09b46b27 },
-          "Comfy.Custom.Impact_Pack.SEGSUpscaler.input.resampling_method": { $Name: "Comfy.Custom.Impact_Pack.SEGSUpscaler.input.resampling_method", $Value: Comfy.Union.E_bac912b55de8a59480c74aba068f4a3b5f9a0e38 },
-          "Comfy.Custom.Impact_Pack.SEGSUpscalerPipe.input.resampling_method": { $Name: "Comfy.Custom.Impact_Pack.SEGSUpscalerPipe.input.resampling_method", $Value: Comfy.Union.E_bac912b55de8a59480c74aba068f4a3b5f9a0e38 },
-          "Comfy.Custom.Impact_Pack.SEGSUpscaler.input.supersample": { $Name: "Comfy.Custom.Impact_Pack.SEGSUpscaler.input.supersample", $Value: Comfy.Union.E_c1a74591678033a2ccc87aa0add77dab7f001da5 },
-          "Comfy.Custom.Impact_Pack.SEGSUpscalerPipe.input.supersample": { $Name: "Comfy.Custom.Impact_Pack.SEGSUpscalerPipe.input.supersample", $Value: Comfy.Union.E_c1a74591678033a2ccc87aa0add77dab7f001da5 },
-          "Comfy.Custom.Impact_Pack.ImpactMakeTileSEGS.input.irregular_mask_mode": { $Name: "Comfy.Custom.Impact_Pack.ImpactMakeTileSEGS.input.irregular_mask_mode", $Value: Comfy.Union.E_5cc1495fe28eac05289d45b29269b31c6edca055 },
-          "Comfy.Custom.Impact_Pack.ReencodeLatent.input.tile_mode": { $Name: "Comfy.Custom.Impact_Pack.ReencodeLatent.input.tile_mode", $Value: Comfy.Union.E_d5776f669e41b2ec29cd020ce34a8b7cdf23693d },
-          "Comfy.Custom.Impact_Pack.ReencodeLatentPipe.input.tile_mode": { $Name: "Comfy.Custom.Impact_Pack.ReencodeLatentPipe.input.tile_mode", $Value: Comfy.Union.E_d5776f669e41b2ec29cd020ce34a8b7cdf23693d },
-          "Comfy.Custom.Impact_Pack.RegionalSampler.input.seed_2nd_mode": { $Name: "Comfy.Custom.Impact_Pack.RegionalSampler.input.seed_2nd_mode", $Value: Comfy.Union.E_1e8364b55644fdbf6d28dd3e6197d9fe1777e361 },
-          "Comfy.Custom.Impact_Pack.RegionalSampler.input.additional_mode": { $Name: "Comfy.Custom.Impact_Pack.RegionalSampler.input.additional_mode", $Value: Comfy.Union.E_db19bd49ccd13456a936f2070c088f16070aa0b1 },
-          "Comfy.Custom.Impact_Pack.RegionalSamplerAdvanced.input.additional_mode": { $Name: "Comfy.Custom.Impact_Pack.RegionalSamplerAdvanced.input.additional_mode", $Value: Comfy.Union.E_db19bd49ccd13456a936f2070c088f16070aa0b1 },
-          "Comfy.Custom.Impact_Pack.RegionalSampler.input.additional_sampler": { $Name: "Comfy.Custom.Impact_Pack.RegionalSampler.input.additional_sampler", $Value: Comfy.Union.E_3fd6d592305b0bc44ce9c69a23201f8d7a155884 },
-          "Comfy.Custom.Impact_Pack.RegionalSamplerAdvanced.input.additional_sampler": { $Name: "Comfy.Custom.Impact_Pack.RegionalSamplerAdvanced.input.additional_sampler", $Value: Comfy.Union.E_3fd6d592305b0bc44ce9c69a23201f8d7a155884 },
-          "Comfy.Custom.Impact_Pack.RegionalPrompt.input.variation_method": { $Name: "Comfy.Custom.Impact_Pack.RegionalPrompt.input.variation_method", $Value: Comfy.Union.E_627d63e970919d713af795854ffd9dd2642f92d2 },
-          "Comfy.Custom.Impact_Pack.ImpactSEGSRangeFilter.input.target": { $Name: "Comfy.Custom.Impact_Pack.ImpactSEGSRangeFilter.input.target", $Value: Comfy.Union.E_10c017f4a76414789a861361dc5cdbfef12e2d7d },
-          "Comfy.Custom.Impact_Pack.ImpactSEGSOrderedFilter.input.target": { $Name: "Comfy.Custom.Impact_Pack.ImpactSEGSOrderedFilter.input.target", $Value: Comfy.Union.E_b1f554e93f550a374a1ff740ad7447a7b34b71be },
-          "Comfy.Custom.Impact_Pack.ImpactCompare.input.cmp": { $Name: "Comfy.Custom.Impact_Pack.ImpactCompare.input.cmp", $Value: Comfy.Union.E_87d3a21083ff67c538309f218241f70a793f619c },
-          "Comfy.Custom.Impact_Pack.ImpactLogicalOperators.input.operator": { $Name: "Comfy.Custom.Impact_Pack.ImpactLogicalOperators.input.operator", $Value: Comfy.Union.E_99d83eba8f2a90cc88da26295981d92d458e4e14 },
-          "Comfy.Custom.Impact_Pack.ImpactValueReceiver.input.typ": { $Name: "Comfy.Custom.Impact_Pack.ImpactValueReceiver.input.typ", $Value: Comfy.Union.E_6c86e4efdc8db8dae17215fbf80825ddaad06ffa },
-          "Comfy.Custom.Impact_Pack.ImpactControlBridge.input.behavior": { $Name: "Comfy.Custom.Impact_Pack.ImpactControlBridge.input.behavior", $Value: Comfy.Union.E_383642e8f2544ff8678e350c4f1049624ad6589e },
-          "Comfy.Custom.Impact_Pack.ImpactHFTransformersClassifierProvider.input.preset_repo_id": { $Name: "Comfy.Custom.Impact_Pack.ImpactHFTransformersClassifierProvider.input.preset_repo_id", $Value: Comfy.Union.E_7fd75955db2b2e81b87d8452255b37c2d98fd105 },
-          "Comfy.Custom.Impact_Pack.ImpactSEGSClassify.input.preset_expr": { $Name: "Comfy.Custom.Impact_Pack.ImpactSEGSClassify.input.preset_expr", $Value: Comfy.Union.E_01400d675e59295302197d02289e89ead401098e },
-          "Comfy.Custom.Impact_Pack.ImpactSchedulerAdapter.input.extra_scheduler": { $Name: "Comfy.Custom.Impact_Pack.ImpactSchedulerAdapter.input.extra_scheduler", $Value: Comfy.Union.E_64bb9134d159ff7e3f573facb7cb2fcfbb2de483 },
-          "Comfy.Custom.Impact_Pack.UltralyticsDetectorProvider.input.model_name": { $Name: "Comfy.Custom.Impact_Pack.UltralyticsDetectorProvider.input.model_name", $Value: Comfy.Union.E_cf11746957b2cb2b6379bbd08fe59610b2aae90a },
+          "Comfy.Base.KSampler.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          "Comfy.Base.KSamplerAdvanced.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          "Comfy.Extra.custom_sampler.KSamplerSelect.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          "Comfy.Custom.Impact_Pack.DetailerForEach.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          "Comfy.Custom.Impact_Pack.DetailerForEachDebug.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          "Comfy.Custom.Impact_Pack.DetailerForEachPipe.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          "Comfy.Custom.Impact_Pack.DetailerForEachDebugPipe.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          "Comfy.Custom.Impact_Pack.DetailerForEachPipeForAnimateDiff.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          "Comfy.Custom.Impact_Pack.FaceDetailer.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          "Comfy.Custom.Impact_Pack.FaceDetailerPipe.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          "Comfy.Custom.Impact_Pack.MaskDetailerPipe.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          "Comfy.Custom.Impact_Pack.PixelKSampleUpscalerProvider.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          "Comfy.Custom.Impact_Pack.PixelKSampleUpscalerProviderPipe.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          "Comfy.Custom.Impact_Pack.PixelTiledKSampleUpscalerProvider.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          "Comfy.Custom.Impact_Pack.PixelTiledKSampleUpscalerProviderPipe.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          "Comfy.Custom.Impact_Pack.UnsamplerHookProvider.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          "Comfy.Custom.Impact_Pack.UnsamplerDetailerHookProvider.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          "Comfy.Custom.Impact_Pack.KSamplerProvider.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          "Comfy.Custom.Impact_Pack.TiledKSamplerProvider.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          "Comfy.Custom.Impact_Pack.KSamplerAdvancedProvider.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          "Comfy.Custom.Impact_Pack.SEGSUpscaler.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          "Comfy.Custom.Impact_Pack.SEGSUpscalerPipe.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          "Comfy.Custom.Impact_Pack.SEGSDetailer.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          "Comfy.Custom.Impact_Pack.SEGSDetailerForAnimateDiff.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          "Comfy.Custom.Impact_Pack.ImpactKSamplerBasicPipe.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          "Comfy.Custom.Impact_Pack.ImpactKSamplerAdvancedBasicPipe.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          "Comfy.Base.KSampler.input.scheduler": Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325
+          "Comfy.Base.KSamplerAdvanced.input.scheduler": Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325
+          "Comfy.Extra.custom_sampler.BasicScheduler.input.scheduler": Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325
+          "Comfy.Custom.Impact_Pack.PixelTiledKSampleUpscalerProvider.input.scheduler": Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325
+          "Comfy.Custom.Impact_Pack.PixelTiledKSampleUpscalerProviderPipe.input.scheduler": Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325
+          "Comfy.Custom.Impact_Pack.UnsamplerHookProvider.input.scheduler": Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325
+          "Comfy.Custom.Impact_Pack.UnsamplerDetailerHookProvider.input.scheduler": Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325
+          "Comfy.Custom.Impact_Pack.TiledKSamplerProvider.input.scheduler": Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325
+          "Comfy.Custom.Impact_Pack.ImpactSchedulerAdapter.input.scheduler": Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325
+          "Comfy.Base.CheckpointLoaderSimple.input.ckpt_name": Comfy.Union.E_1f08f73a9a576ae570aa3d82ea94f2bcfc29a8fc
+          "Comfy.Base.unCLIPCheckpointLoader.input.ckpt_name": Comfy.Union.E_1f08f73a9a576ae570aa3d82ea94f2bcfc29a8fc
+          "Comfy.Base.CheckpointLoader.input.ckpt_name": Comfy.Union.E_1f08f73a9a576ae570aa3d82ea94f2bcfc29a8fc
+          "Comfy.Extra.video_model.ImageOnlyCheckpointLoader.input.ckpt_name": Comfy.Union.E_1f08f73a9a576ae570aa3d82ea94f2bcfc29a8fc
+          "Comfy.Base.VAELoader.input.vae_name": Comfy.Union.E_621a1d2d13812defa70c4b6ec953d17713bd232a
+          "Comfy.Base.LatentUpscale.input.upscale_method": Comfy.Union.E_6e6cbf6c48411ad480e010b0c9d2434b41af430d
+          "Comfy.Base.LatentUpscaleBy.input.upscale_method": Comfy.Union.E_6e6cbf6c48411ad480e010b0c9d2434b41af430d
+          "Comfy.Extra.model_downscale.PatchModelAddDownscale.input.downscale_method": Comfy.Union.E_6e6cbf6c48411ad480e010b0c9d2434b41af430d
+          "Comfy.Extra.model_downscale.PatchModelAddDownscale.input.upscale_method": Comfy.Union.E_6e6cbf6c48411ad480e010b0c9d2434b41af430d
+          "Comfy.Extra.advanced_samplers.SamplerLCMUpscale.input.upscale_method": Comfy.Union.E_6e6cbf6c48411ad480e010b0c9d2434b41af430d
+          "Comfy.Base.LatentUpscale.input.crop": Comfy.Union.E_e2779c2a162ed54d5841127cc2968e8d50f5e431
+          "Comfy.Base.ImageScale.input.crop": Comfy.Union.E_e2779c2a162ed54d5841127cc2968e8d50f5e431
+          "Comfy.Base.LoadImage.input.image": Comfy.Union.E_26ea5ad8c44c9551fea858fff18017427386b591
+          "Comfy.Base.LoadImageMask.input.image": Comfy.Union.E_26ea5ad8c44c9551fea858fff18017427386b591
+          "Comfy.Custom.Impact_Pack.ImageReceiver.input.image": Comfy.Union.E_26ea5ad8c44c9551fea858fff18017427386b591
+          "Comfy.Base.LoadImageMask.input.channel": Comfy.Union.E_19d5be39f1fd20a88fdbcb009a06c7df2b0ef998
+          "Comfy.Extra.mask.ImageToMask.input.channel": Comfy.Union.E_19d5be39f1fd20a88fdbcb009a06c7df2b0ef998
+          "Comfy.Base.ImageScale.input.upscale_method": Comfy.Union.E_165b455eb22956fc9da6e1b76d49a4077f15d897
+          "Comfy.Base.ImageScaleBy.input.upscale_method": Comfy.Union.E_165b455eb22956fc9da6e1b76d49a4077f15d897
+          "Comfy.Extra.post_processing.ImageScaleToTotalPixels.input.upscale_method": Comfy.Union.E_165b455eb22956fc9da6e1b76d49a4077f15d897
+          "Comfy.Base.ConditioningSetMask.input.set_cond_area": Comfy.Union.E_046ed3ef4b2b9a9cfdb62e53a70fe767fb996451
+          "Comfy.Base.KSamplerAdvanced.input.add_noise": Comfy.Union.E_449b4cae3566dd9b97c417c352bb08e25b89431b
+          "Comfy.Base.KSamplerAdvanced.input.return_with_leftover_noise": Comfy.Union.E_449b4cae3566dd9b97c417c352bb08e25b89431b
+          "Comfy.Custom.Impact_Pack.UnsamplerHookProvider.input.normalize": Comfy.Union.E_449b4cae3566dd9b97c417c352bb08e25b89431b
+          "Comfy.Custom.Impact_Pack.UnsamplerDetailerHookProvider.input.normalize": Comfy.Union.E_449b4cae3566dd9b97c417c352bb08e25b89431b
+          "Comfy.Base.LatentRotate.input.rotation": Comfy.Union.E_061551528c540e0171a9c88a94c7d5375aa31f8a
+          "Comfy.Base.LatentFlip.input.flip_method": Comfy.Union.E_cdf7071acecb5016da941b6e718b82c97248a3e4
+          "Comfy.Base.LoraLoader.input.lora_name": Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
+          "Comfy.Base.CLIPLoader.input.clip_name": Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
+          "Comfy.Base.UNETLoader.input.unet_name": Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
+          "Comfy.Base.DualCLIPLoader.input.clip_name1": Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
+          "Comfy.Base.DualCLIPLoader.input.clip_name2": Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
+          "Comfy.Base.ControlNetLoader.input.control_net_name": Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
+          "Comfy.Base.DiffControlNetLoader.input.control_net_name": Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
+          "Comfy.Base.StyleModelLoader.input.style_model_name": Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
+          "Comfy.Base.CLIPVisionLoader.input.clip_name": Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
+          "Comfy.Base.GLIGENLoader.input.gligen_name": Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
+          "Comfy.Base.DiffusersLoader.input.model_path": Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
+          "Comfy.Base.LoadLatent.input.latent": Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
+          "Comfy.Base.LoraLoaderModelOnly.input.lora_name": Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
+          "Comfy.Extra.hypernetwork.HypernetworkLoader.input.hypernetwork_name": Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
+          "Comfy.Extra.photomaker.PhotoMakerLoader.input.photomaker_model_name": Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
+          "Comfy.Extra.audio.LoadAudio.input.audio": Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
+          "Comfy.Extra.sd3.TripleCLIPLoader.input.clip_name1": Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
+          "Comfy.Extra.sd3.TripleCLIPLoader.input.clip_name2": Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
+          "Comfy.Extra.sd3.TripleCLIPLoader.input.clip_name3": Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
+          "Comfy.Custom.Impact_Pack.ONNXDetectorProvider.input.model_name": Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
+          "Comfy.Custom.Impact_Pack.LatentReceiver.input.latent": Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
+          "Comfy.Base.CLIPLoader.input.type": Comfy.Union.E_766fb79b4f3904a6716246cfb2a33b7b9e6a08c4
+          "Comfy.Base.UNETLoader.input.weight_dtype": Comfy.Union.E_21ba65fbb0df707c108b25356a3507e13f21ea58
+          "Comfy.Base.DualCLIPLoader.input.type": Comfy.Union.E_39292df8ce88fd66f0dacf6f9110cfa2594ca25c
+          "Comfy.Base.CheckpointLoader.input.config_name": Comfy.Union.E_a1972c9480c542a0e8ccafa03c2572ba5fc62160
+          "Comfy.Extra.latent.LatentBatchSeedBehavior.input.seed_behavior": Comfy.Union.E_1d09df0c3ce1b4556d07af26e593d4033efc639b
+          "Comfy.Extra.upscale_model.UpscaleModelLoader.input.model_name": Comfy.Union.E_2504d8563e078c3ed105667cbb6d0ff714d5798b
+          "Comfy.Extra.post_processing.ImageBlend.input.blend_mode": Comfy.Union.E_4ca09d2bc16d4174960bd60a103d4c0911361855
+          "Comfy.Extra.post_processing.ImageQuantize.input.dither": Comfy.Union.E_7c2feaebcf0bbbcda0fe9f3c8cba1cf87002bc0e
+          "Comfy.Extra.mask.MaskComposite.input.operation": Comfy.Union.E_88c0c90dbad3b41c3c4a4f8a89afad7b1c0db2e0
+          "Comfy.Extra.compositing.PorterDuffImageComposite.input.mode": Comfy.Union.E_d954b5ae44db00529f0fd0bfb816e25c12617df8
+          "Comfy.Extra.custom_sampler.SamplerDPMPP$_3M$_SDE.input.noise_device": Comfy.Union.E_928b7403128cb25513cafc463a76a922ba5d4bd0
+          "Comfy.Extra.custom_sampler.SamplerDPMPP$_2M$_SDE.input.noise_device": Comfy.Union.E_928b7403128cb25513cafc463a76a922ba5d4bd0
+          "Comfy.Extra.custom_sampler.SamplerDPMPP$_SDE.input.noise_device": Comfy.Union.E_928b7403128cb25513cafc463a76a922ba5d4bd0
+          "Comfy.Extra.custom_sampler.SamplerDPMPP$_2M$_SDE.input.solver_type": Comfy.Union.E_148e0bc88719e23ec2f2c80871fe45ae759cd7e1
+          "Comfy.Extra.model_advanced.ModelSamplingDiscrete.input.sampling": Comfy.Union.E_e89ec78e24ca5e9c91264b9e9b5ed722d2b509dc
+          "Comfy.Extra.model_advanced.ModelSamplingContinuousEDM.input.sampling": Comfy.Union.E_bf8a83a3d55d70c688644bf18edaf23501f7c168
+          "Comfy.Extra.model_advanced.ModelSamplingContinuousV.input.sampling": Comfy.Union.E_3c3164c6c468d61dfa20092960e3d7854495e50c
+          "Comfy.Extra.images.SaveAnimatedWEBP.input.method": Comfy.Union.E_253b68425542d8144b2b8a7af90f057b41939f63
+          "Comfy.Extra.morphology.Morphology.input.operation": Comfy.Union.E_6ba03252ec9c8111f7381dfb573cd99c2b4d0e3b
+          "Comfy.Extra.align_your_steps.AlignYourStepsScheduler.input.model_type": Comfy.Union.E_ec317371192386ae10cedaee29b315e900386a18
+          "Comfy.Extra.advanced_samplers.SamplerEulerCFGpp.input.version": Comfy.Union.E_a8aa5eb2d828c2e279168c48955c7a0fe3ea011a
+          "Comfy.Extra.sd3.CLIPTextEncodeSD3.input.empty_padding": Comfy.Union.E_270e152a81c37daf152e6cc67675baaafe058bc4
+          "Comfy.Extra.controlnet.SetUnionControlNetType.input.type": Comfy.Union.E_0e92c8b1b6fe90c3e343d8b54b531b9d887eee62
+          "Comfy.Extra.lora_extract.LoraSave.input.lora_type": Comfy.Union.E_b80b6129a942660e31e08221ee04a76f537556ce
+          "Comfy.Extra.torch_compile.TorchCompileModel.input.backend": Comfy.Union.E_4bbca93e426c35d56c43252f1fb21877d5e7a1aa
+          "Comfy.Custom.Impact_Pack.SAMLoader.input.model_name": Comfy.Union.E_40c777392f92d61852ab0f7a429a755abf59b71a
+          "Comfy.Custom.Impact_Pack.SAMLoader.input.device_mode": Comfy.Union.E_2ad445b99254e9b51c963d9f1a75fabe3d01e569
+          "Comfy.Custom.Impact_Pack.ImpactHFTransformersClassifierProvider.input.device_mode": Comfy.Union.E_2ad445b99254e9b51c963d9f1a75fabe3d01e569
+          "Comfy.Custom.Impact_Pack.DetailerForEach.input.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
+          "Comfy.Custom.Impact_Pack.DetailerForEachDebug.input.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
+          "Comfy.Custom.Impact_Pack.DetailerForEachPipe.input.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
+          "Comfy.Custom.Impact_Pack.DetailerForEachDebugPipe.input.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
+          "Comfy.Custom.Impact_Pack.DetailerForEachPipeForAnimateDiff.input.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
+          "Comfy.Custom.Impact_Pack.FaceDetailer.input.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
+          "Comfy.Custom.Impact_Pack.FaceDetailerPipe.input.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
+          "Comfy.Custom.Impact_Pack.MaskDetailerPipe.input.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
+          "Comfy.Custom.Impact_Pack.PixelKSampleUpscalerProvider.input.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
+          "Comfy.Custom.Impact_Pack.PixelKSampleUpscalerProviderPipe.input.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
+          "Comfy.Custom.Impact_Pack.KSamplerProvider.input.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
+          "Comfy.Custom.Impact_Pack.KSamplerAdvancedProvider.input.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
+          "Comfy.Custom.Impact_Pack.SEGSUpscaler.input.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
+          "Comfy.Custom.Impact_Pack.SEGSUpscalerPipe.input.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
+          "Comfy.Custom.Impact_Pack.SEGSDetailer.input.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
+          "Comfy.Custom.Impact_Pack.SEGSDetailerForAnimateDiff.input.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
+          "Comfy.Custom.Impact_Pack.ImpactKSamplerBasicPipe.input.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
+          "Comfy.Custom.Impact_Pack.ImpactKSamplerAdvancedBasicPipe.input.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
+          "Comfy.Custom.Impact_Pack.ImpactSchedulerAdapter.output.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
+          "Comfy.Custom.Impact_Pack.SAMDetectorCombined.input.detection_hint": Comfy.Union.E_40275a874822a8699ee13794e127b63cdd6bfdae
+          "Comfy.Custom.Impact_Pack.SAMDetectorSegmented.input.detection_hint": Comfy.Union.E_40275a874822a8699ee13794e127b63cdd6bfdae
+          "Comfy.Custom.Impact_Pack.FaceDetailer.input.sam_detection_hint": Comfy.Union.E_40275a874822a8699ee13794e127b63cdd6bfdae
+          "Comfy.Custom.Impact_Pack.FaceDetailerPipe.input.sam_detection_hint": Comfy.Union.E_40275a874822a8699ee13794e127b63cdd6bfdae
+          "Comfy.Custom.Impact_Pack.SAMDetectorCombined.input.mask_hint_use_negative": Comfy.Union.E_aa302307a82588b6e514aca43e4cddad342a73fc
+          "Comfy.Custom.Impact_Pack.SAMDetectorSegmented.input.mask_hint_use_negative": Comfy.Union.E_aa302307a82588b6e514aca43e4cddad342a73fc
+          "Comfy.Custom.Impact_Pack.FaceDetailer.input.sam_mask_hint_use_negative": Comfy.Union.E_aa302307a82588b6e514aca43e4cddad342a73fc
+          "Comfy.Custom.Impact_Pack.FaceDetailerPipe.input.sam_mask_hint_use_negative": Comfy.Union.E_aa302307a82588b6e514aca43e4cddad342a73fc
+          "Comfy.Custom.Impact_Pack.ToDetailerPipe.input.Select$_to$_add$_LoRA": Comfy.Union.E_35e403c7628f220c07d5485d6e81fc66b4fc12df
+          "Comfy.Custom.Impact_Pack.ToDetailerPipeSDXL.input.Select$_to$_add$_LoRA": Comfy.Union.E_35e403c7628f220c07d5485d6e81fc66b4fc12df
+          "Comfy.Custom.Impact_Pack.BasicPipeToDetailerPipe.input.Select$_to$_add$_LoRA": Comfy.Union.E_35e403c7628f220c07d5485d6e81fc66b4fc12df
+          "Comfy.Custom.Impact_Pack.BasicPipeToDetailerPipeSDXL.input.Select$_to$_add$_LoRA": Comfy.Union.E_35e403c7628f220c07d5485d6e81fc66b4fc12df
+          "Comfy.Custom.Impact_Pack.EditDetailerPipe.input.Select$_to$_add$_LoRA": Comfy.Union.E_35e403c7628f220c07d5485d6e81fc66b4fc12df
+          "Comfy.Custom.Impact_Pack.EditDetailerPipeSDXL.input.Select$_to$_add$_LoRA": Comfy.Union.E_35e403c7628f220c07d5485d6e81fc66b4fc12df
+          "Comfy.Custom.Impact_Pack.ImpactWildcardEncode.input.Select$_to$_add$_LoRA": Comfy.Union.E_35e403c7628f220c07d5485d6e81fc66b4fc12df
+          "Comfy.Custom.Impact_Pack.ToDetailerPipe.input.Select$_to$_add$_Wildcard": Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26
+          "Comfy.Custom.Impact_Pack.ToDetailerPipeSDXL.input.Select$_to$_add$_Wildcard": Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26
+          "Comfy.Custom.Impact_Pack.BasicPipeToDetailerPipe.input.Select$_to$_add$_Wildcard": Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26
+          "Comfy.Custom.Impact_Pack.BasicPipeToDetailerPipeSDXL.input.Select$_to$_add$_Wildcard": Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26
+          "Comfy.Custom.Impact_Pack.EditDetailerPipe.input.Select$_to$_add$_Wildcard": Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26
+          "Comfy.Custom.Impact_Pack.EditDetailerPipeSDXL.input.Select$_to$_add$_Wildcard": Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26
+          "Comfy.Custom.Impact_Pack.ImpactWildcardProcessor.input.Select$_to$_add$_Wildcard": Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26
+          "Comfy.Custom.Impact_Pack.ImpactWildcardEncode.input.Select$_to$_add$_Wildcard": Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26
+          "Comfy.Custom.Impact_Pack.LatentPixelScale.input.scale_method": Comfy.Union.E_f9c5efbc827613eb902695cd0a25738ee31c607d
+          "Comfy.Custom.Impact_Pack.PixelKSampleUpscalerProvider.input.scale_method": Comfy.Union.E_f9c5efbc827613eb902695cd0a25738ee31c607d
+          "Comfy.Custom.Impact_Pack.PixelKSampleUpscalerProviderPipe.input.scale_method": Comfy.Union.E_f9c5efbc827613eb902695cd0a25738ee31c607d
+          "Comfy.Custom.Impact_Pack.PixelTiledKSampleUpscalerProvider.input.scale_method": Comfy.Union.E_f9c5efbc827613eb902695cd0a25738ee31c607d
+          "Comfy.Custom.Impact_Pack.PixelTiledKSampleUpscalerProviderPipe.input.scale_method": Comfy.Union.E_f9c5efbc827613eb902695cd0a25738ee31c607d
+          "Comfy.Custom.Impact_Pack.TwoSamplersForMaskUpscalerProvider.input.scale_method": Comfy.Union.E_f9c5efbc827613eb902695cd0a25738ee31c607d
+          "Comfy.Custom.Impact_Pack.TwoSamplersForMaskUpscalerProviderPipe.input.scale_method": Comfy.Union.E_f9c5efbc827613eb902695cd0a25738ee31c607d
+          "Comfy.Custom.Impact_Pack.IterativeLatentUpscale.input.step_mode": Comfy.Union.E_4724269c8f643d5efa98f97e1e55a7ddfe6aac6c
+          "Comfy.Custom.Impact_Pack.IterativeImageUpscale.input.step_mode": Comfy.Union.E_4724269c8f643d5efa98f97e1e55a7ddfe6aac6c
+          "Comfy.Custom.Impact_Pack.PixelTiledKSampleUpscalerProvider.input.tiling_strategy": Comfy.Union.E_304f89a0de34643f12756237824e7261db28aaf5
+          "Comfy.Custom.Impact_Pack.PixelTiledKSampleUpscalerProviderPipe.input.tiling_strategy": Comfy.Union.E_304f89a0de34643f12756237824e7261db28aaf5
+          "Comfy.Custom.Impact_Pack.TiledKSamplerProvider.input.tiling_strategy": Comfy.Union.E_304f89a0de34643f12756237824e7261db28aaf5
+          "Comfy.Custom.Impact_Pack.TwoSamplersForMaskUpscalerProvider.input.full_sample_schedule": Comfy.Union.E_de6a9887e0bfe301f572e929959509ed64574d1b
+          "Comfy.Custom.Impact_Pack.TwoSamplersForMaskUpscalerProviderPipe.input.full_sample_schedule": Comfy.Union.E_de6a9887e0bfe301f572e929959509ed64574d1b
+          "Comfy.Custom.Impact_Pack.DenoiseScheduleHookProvider.input.schedule_for_iteration": Comfy.Union.E_0f7d0d088b6ea936fb25b477722d734706fe8b40
+          "Comfy.Custom.Impact_Pack.StepsScheduleHookProvider.input.schedule_for_iteration": Comfy.Union.E_0f7d0d088b6ea936fb25b477722d734706fe8b40
+          "Comfy.Custom.Impact_Pack.CfgScheduleHookProvider.input.schedule_for_iteration": Comfy.Union.E_0f7d0d088b6ea936fb25b477722d734706fe8b40
+          "Comfy.Custom.Impact_Pack.NoiseInjectionHookProvider.input.schedule_for_iteration": Comfy.Union.E_0f7d0d088b6ea936fb25b477722d734706fe8b40
+          "Comfy.Custom.Impact_Pack.UnsamplerHookProvider.input.schedule_for_iteration": Comfy.Union.E_0f7d0d088b6ea936fb25b477722d734706fe8b40
+          "Comfy.Custom.Impact_Pack.DenoiseSchedulerDetailerHookProvider.input.schedule_for_cycle": Comfy.Union.E_0f7d0d088b6ea936fb25b477722d734706fe8b40
+          "Comfy.Custom.Impact_Pack.NoiseInjectionHookProvider.input.source": Comfy.Union.E_3dfc15432d4b952e91053feecd5a5427720957fc
+          "Comfy.Custom.Impact_Pack.NoiseInjectionDetailerHookProvider.input.source": Comfy.Union.E_3dfc15432d4b952e91053feecd5a5427720957fc
+          "Comfy.Custom.Impact_Pack.CoreMLDetailerHookProvider.input.mode": Comfy.Union.E_d4b6506ab5528aeab8952aa9d308dbc242d01e63
+          "Comfy.Custom.Impact_Pack.NoiseInjectionDetailerHookProvider.input.schedule_for_cycle": Comfy.Union.E_afbc7832ad78555d4f5646f97ed21b561fe3d1f0
+          "Comfy.Custom.Impact_Pack.UnsamplerDetailerHookProvider.input.schedule_for_cycle": Comfy.Union.E_afbc7832ad78555d4f5646f97ed21b561fe3d1f0
+          "Comfy.Custom.Impact_Pack.SEGSOrderedFilterDetailerHookProvider.input.target": Comfy.Union.E_87bec9aa0dfe9b9678fd35387106d931d78358cd
+          "Comfy.Custom.Impact_Pack.SEGSRangeFilterDetailerHookProvider.input.target": Comfy.Union.E_aceb55e7f03fcbc2a78383bd8ddff8676e42e536
+          "Comfy.Custom.Impact_Pack.SEGSLabelFilterDetailerHookProvider.input.preset": Comfy.Union.E_cc1f262afc534d382e5c36082cecd4fc2a9c4ffb
+          "Comfy.Custom.Impact_Pack.ImpactSEGSLabelFilter.input.preset": Comfy.Union.E_cc1f262afc534d382e5c36082cecd4fc2a9c4ffb
+          "Comfy.Custom.Impact_Pack.ImpactSimpleDetectorSEGS$_for$_AD.input.masking_mode": Comfy.Union.E_e5ef6b688dbafd88538e80bf002826bade4bb121
+          "Comfy.Custom.Impact_Pack.ImpactSimpleDetectorSEGS$_for$_AD.input.segs_pivot": Comfy.Union.E_651ea09f69db9a1eb817103d1ea8e3ac08b4a319
+          "Comfy.Custom.Impact_Pack.ImpactIPAdapterApplySEGS.input.weight_type": Comfy.Union.E_05cddbad13b094c2641c6bb7d261e15c71efc903
+          "Comfy.Custom.Impact_Pack.ImpactIPAdapterApplySEGS.input.combine_embeds": Comfy.Union.E_055d80a7c582bd5b57fd6775414e697be3f0f580
+          "Comfy.Custom.Impact_Pack.PreviewBridge.input.restore_mask": Comfy.Union.E_f27fae3205ecf36e9f4a68f3867d38e025476963
+          "Comfy.Custom.Impact_Pack.PreviewBridgeLatent.input.restore_mask": Comfy.Union.E_f27fae3205ecf36e9f4a68f3867d38e025476963
+          "Comfy.Custom.Impact_Pack.PreviewBridgeLatent.input.preview_method": Comfy.Union.E_ea287ec9983f05378f2614091804a1b6b95d1c79
+          "Comfy.Custom.Impact_Pack.LatentSender.input.preview_method": Comfy.Union.E_fa4a13687b111fa33a8c8fa375d5321d09b46b27
+          "Comfy.Custom.Impact_Pack.SEGSUpscaler.input.resampling_method": Comfy.Union.E_bac912b55de8a59480c74aba068f4a3b5f9a0e38
+          "Comfy.Custom.Impact_Pack.SEGSUpscalerPipe.input.resampling_method": Comfy.Union.E_bac912b55de8a59480c74aba068f4a3b5f9a0e38
+          "Comfy.Custom.Impact_Pack.SEGSUpscaler.input.supersample": Comfy.Union.E_c1a74591678033a2ccc87aa0add77dab7f001da5
+          "Comfy.Custom.Impact_Pack.SEGSUpscalerPipe.input.supersample": Comfy.Union.E_c1a74591678033a2ccc87aa0add77dab7f001da5
+          "Comfy.Custom.Impact_Pack.ImpactMakeTileSEGS.input.irregular_mask_mode": Comfy.Union.E_5cc1495fe28eac05289d45b29269b31c6edca055
+          "Comfy.Custom.Impact_Pack.ReencodeLatent.input.tile_mode": Comfy.Union.E_d5776f669e41b2ec29cd020ce34a8b7cdf23693d
+          "Comfy.Custom.Impact_Pack.ReencodeLatentPipe.input.tile_mode": Comfy.Union.E_d5776f669e41b2ec29cd020ce34a8b7cdf23693d
+          "Comfy.Custom.Impact_Pack.RegionalSampler.input.seed_2nd_mode": Comfy.Union.E_1e8364b55644fdbf6d28dd3e6197d9fe1777e361
+          "Comfy.Custom.Impact_Pack.RegionalSampler.input.additional_mode": Comfy.Union.E_db19bd49ccd13456a936f2070c088f16070aa0b1
+          "Comfy.Custom.Impact_Pack.RegionalSamplerAdvanced.input.additional_mode": Comfy.Union.E_db19bd49ccd13456a936f2070c088f16070aa0b1
+          "Comfy.Custom.Impact_Pack.RegionalSampler.input.additional_sampler": Comfy.Union.E_3fd6d592305b0bc44ce9c69a23201f8d7a155884
+          "Comfy.Custom.Impact_Pack.RegionalSamplerAdvanced.input.additional_sampler": Comfy.Union.E_3fd6d592305b0bc44ce9c69a23201f8d7a155884
+          "Comfy.Custom.Impact_Pack.RegionalPrompt.input.variation_method": Comfy.Union.E_627d63e970919d713af795854ffd9dd2642f92d2
+          "Comfy.Custom.Impact_Pack.ImpactSEGSRangeFilter.input.target": Comfy.Union.E_10c017f4a76414789a861361dc5cdbfef12e2d7d
+          "Comfy.Custom.Impact_Pack.ImpactSEGSOrderedFilter.input.target": Comfy.Union.E_b1f554e93f550a374a1ff740ad7447a7b34b71be
+          "Comfy.Custom.Impact_Pack.ImpactCompare.input.cmp": Comfy.Union.E_87d3a21083ff67c538309f218241f70a793f619c
+          "Comfy.Custom.Impact_Pack.ImpactLogicalOperators.input.operator": Comfy.Union.E_99d83eba8f2a90cc88da26295981d92d458e4e14
+          "Comfy.Custom.Impact_Pack.ImpactValueReceiver.input.typ": Comfy.Union.E_6c86e4efdc8db8dae17215fbf80825ddaad06ffa
+          "Comfy.Custom.Impact_Pack.ImpactControlBridge.input.behavior": Comfy.Union.E_383642e8f2544ff8678e350c4f1049624ad6589e
+          "Comfy.Custom.Impact_Pack.ImpactHFTransformersClassifierProvider.input.preset_repo_id": Comfy.Union.E_7fd75955db2b2e81b87d8452255b37c2d98fd105
+          "Comfy.Custom.Impact_Pack.ImpactSEGSClassify.input.preset_expr": Comfy.Union.E_01400d675e59295302197d02289e89ead401098e
+          "Comfy.Custom.Impact_Pack.ImpactSchedulerAdapter.input.extra_scheduler": Comfy.Union.E_64bb9134d159ff7e3f573facb7cb2fcfbb2de483
+          "Comfy.Custom.Impact_Pack.UltralyticsDetectorProvider.input.model_name": Comfy.Union.E_cf11746957b2cb2b6379bbd08fe59610b2aae90a
       }
    }
    // #endregion

@@ -13,11 +13,11 @@ export type UI_Refiners = X.XGroup<{
    refinerType: X.XChoices<{
       faces: X.XGroup<{
          prompt: X.XString
-         detector: X.XEnum<Enum_UltralyticsDetectorProvider_model_name>
+         detector: X.XEnum<Comfy.Enums['UltralyticsDetectorProvider.model_name']>
       }>
       hands: X.XGroup<{
          prompt: X.XString
-         detector: X.XEnum<Enum_UltralyticsDetectorProvider_model_name>
+         detector: X.XEnum<Comfy.Enums['UltralyticsDetectorProvider.model_name']>
       }>
       eyes: X.XGroup<{ prompt: X.XString }>
    }>
@@ -25,8 +25,8 @@ export type UI_Refiners = X.XGroup<{
       sampler: UI_Sampler
       sam: X.XOptional<
          X.XGroup<{
-            model_name: X.XEnum<Enum_SAMLoader_model_name>
-            device_mode: X.XEnum<Enum_BLIPCaption_device_mode>
+            model_name: X.XEnum<Comfy.Enums['SAMLoader.model_name']>
+            device_mode: X.XEnum<Comfy.Enums['BLIPCaption.device_mode']>
          }>
       >
    }>
@@ -43,7 +43,7 @@ export function ui_refiners(): UI_Refiners {
                      .fields(
                         {
                            prompt: form.string({ default: facePositiveDefault, textarea: true }),
-                           detector: form.enum.Enum_UltralyticsDetectorProvider_model_name({
+                           detector: form.enum['UltralyticsDetectorProvider.input.model_name']({
                               default: 'bbox/face_yolov8m.pt',
                            }),
                         },
@@ -64,7 +64,7 @@ export function ui_refiners(): UI_Refiners {
                      .fields(
                         {
                            prompt: form.string({ default: handPositiveDefault, textarea: true }),
-                           detector: form.enum.Enum_UltralyticsDetectorProvider_model_name({
+                           detector: form.enum['UltralyticsDetectorProvider.input.model_name']({
                               default: 'bbox/hand_yolov8s.pt',
                            }),
                         },
@@ -98,8 +98,10 @@ export function ui_refiners(): UI_Refiners {
                sam: form
                   .fields(
                      {
-                        model_name: form.enum.Enum_SAMLoader_model_name({ default: 'sam_vit_b_01ec64.pth' }),
-                        device_mode: form.enum.Enum_SAMLoader_device_mode({ default: 'AUTO' }),
+                        model_name: form.enum['SAMLoader.input.model_name']({
+                           default: 'sam_vit_b_01ec64.pth',
+                        }),
+                        device_mode: form.enum['SAMLoader.input.device_mode']({ default: 'AUTO' }),
                      },
                      {
                         startCollapsed: true,

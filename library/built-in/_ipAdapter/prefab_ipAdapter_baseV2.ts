@@ -6,8 +6,8 @@ export type UI_ipadapter_advancedSettings = X.XGroup<{
    startAtStepPercent: X.XNumber
    endAtStepPercent: X.XNumber
    adapterAttentionMask: X.XOptional<X.XImage>
-   weight_type: X.XEnum<Enum_IPAdapterAdvanced_weight_type>
-   embedding_scaling: X.XEnum<Enum_IPAdapterAdvanced_embeds_scaling>
+   weight_type: X.XEnum<Comfy.Enums['IPAdapterAdvanced.weight_type']>
+   embedding_scaling: X.XEnum<Comfy.Enums['IPAdapterAdvanced.embeds_scaling']>
    noise: X.XNumber
    unfold_batch: X.XBool
 }>
@@ -28,8 +28,8 @@ export const ui_ipadapter_advancedSettings = (
                tooltip: 'This defines the region of the generated image the IPAdapter will apply to',
             })
             .optional(),
-         weight_type: form.enum.Enum_IPAdapterAdvanced_weight_type({ default: weight_type }),
-         embedding_scaling: form.enum.Enum_IPAdapterAdvanced_embeds_scaling({ default: 'V only' }),
+         weight_type: form.enum['IPAdapterAdvanced.input.weight_type']({ default: weight_type }),
+         embedding_scaling: form.enum['IPAdapterAdvanced.input.embeds_scaling']({ default: 'V only' }),
          noise: form.float({ default: 0, min: 0, max: 1, step: 0.1 }),
          unfold_batch: form.bool({ default: false }),
       },
@@ -47,7 +47,7 @@ export type UI_IPAdapterImageInput = X.XGroup<{
    image: X.XImage
    advanced: X.XGroup<{
       imageWeight: X.XNumber
-      embedding_combination: X.XEnum<Enum_ImpactIPAdapterApplySEGS_combine_embeds>
+      embedding_combination: X.XEnum<Comfy.Enums['ImpactIPAdapterApplySEGS.combine_embeds']>
       imageAttentionMask: X.XOptional<X.XImage>
    }>
 }>
@@ -58,7 +58,9 @@ export function ui_IPAdapterImageInput(form: X.Builder): UI_IPAdapterImageInput 
          advanced: form.fields(
             {
                imageWeight: form.float({ default: 1, min: 0, max: 2, step: 0.1 }),
-               embedding_combination: form.enum.Enum_IPAdapterAdvanced_combine_embeds({ default: 'average' }),
+               embedding_combination: form.enum['IPAdapterAdvanced.input.combine_embeds']({
+                  default: 'average',
+               }),
                imageAttentionMask: form
                   .image({
                      label: 'Image Attention Mask',
@@ -114,7 +116,7 @@ export function ui_IPAdapterV2(): UI_IPAdapterV2 {
                   adapterStrength: form.float({ default: 0.8, min: 0, max: 2, step: 0.1 }),
                   models: form.fields(
                      {
-                        type: form.enum.Enum_IPAdapterUnifiedLoader_preset({
+                        type: form.enum['IPAdapterUnifiedLoader.input.preset']({
                            default: 'STANDARD (medium strength)',
                         }),
                      },

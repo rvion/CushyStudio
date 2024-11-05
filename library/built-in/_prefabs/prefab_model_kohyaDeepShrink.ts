@@ -9,8 +9,8 @@ export type UI_model_kohyaDeepShrink = X.XGroup<{
       startPercent: X.XNumber
       endPercent: X.XNumber
       downscaleAfterSkip: X.XBool
-      downscaleMethod: X.XEnum<Enum_LatentUpscale_upscale_method>
-      upscaleMethod: X.XEnum<Enum_LatentUpscale_upscale_method>
+      downscaleMethod: X.XEnum<Comfy.Enums['LatentUpscale.upscale_method']>
+      upscaleMethod: X.XEnum<Comfy.Enums['LatentUpscale.upscale_method']>
    }>
 }>
 
@@ -35,10 +35,12 @@ export function ui_model_kohyaDeepShrink(form: X.Builder): UI_model_kohyaDeepShr
                startPercent: form.float({ default: 0, min: 0, max: 1, step: 0.05 }),
                endPercent: form.float({ default: 0.35, min: 0, max: 1, step: 0.05 }),
                downscaleAfterSkip: form.bool({ default: false }),
-               downscaleMethod: form.enum.Enum_PatchModelAddDownscale_downscale_method({
+               downscaleMethod: form.enum['PatchModelAddDownscale.input.downscale_method']({
                   default: 'bislerp',
                }),
-               upscaleMethod: form.enum.Enum_PatchModelAddDownscale_upscale_method({ default: 'bicubic' }),
+               upscaleMethod: form.enum['PatchModelAddDownscale.input.upscale_method']({
+                  default: 'bicubic',
+               }),
             },
             {
                startCollapsed: true,

@@ -5,7 +5,7 @@ app({
    },
    ui: (b) =>
       b.fields({
-         model: b.enum.Enum_CheckpointLoaderSimple_ckpt_name({}),
+         model: b.enum['CheckpointLoaderSimple.input.ckpt_name']({}),
          positive: b.string({ default: 'masterpiece, tree' }),
          seed: b.seed({}),
       }),

@@ -5,13 +5,13 @@ import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
 // 🅿️ OPEN POSE FORM ===================================================
 export type UI_subform_OpenPose = X.XGroup<{
    preprocessor: UI_subform_OpenPose_Preprocessor
-   cnet_model_name: X.XEnum<Enum_ControlNetLoader_control_net_name>
+   cnet_model_name: X.XEnum<Comfy.Enums['ControlNetLoader.control_net_name']>
    strength: X.XNumber
    advanced: X.XGroup<{
       startAtStepPercent: X.XNumber
       endAtStepPercent: X.XNumber
-      crop: X.XEnum<Enum_LatentUpscale_crop>
-      upscale_method: X.XEnum<Enum_ImageScale_upscale_method>
+      crop: X.XEnum<Comfy.Enums['LatentUpscale.crop']>
+      upscale_method: X.XEnum<Comfy.Enums['ImageScale.upscale_method']>
    }>
 }>
 
@@ -22,7 +22,7 @@ export function ui_subform_OpenPose(): UI_subform_OpenPose {
          {
             ...cnet_ui_common(form),
             preprocessor: ui_subform_OpenPose_Preprocessor(),
-            cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
+            cnet_model_name: form.enum['ControlNetLoader.input.control_net_name']({
                label: 'Model',
                // @ts-ignore
                default: 't2iadapter_openpose_sd14v1.pth',
@@ -75,11 +75,11 @@ function ui_subform_OpenPose_Preprocessor(): UI_subform_OpenPose_Preprocessor {
                detect_body: form.bool({ default: true }),
                detect_face: form.bool({ default: true }),
                detect_hand: form.bool({ default: true }),
-               bbox_detector: form.enum.Enum_DWPreprocessor_bbox_detector({
+               bbox_detector: form.enum['DWPreprocessor.input.bbox_detector']({
                   label: 'Model',
                   default: 'yolox_l.onnx',
                }),
-               pose_estimator: form.enum.Enum_DWPreprocessor_pose_estimator({
+               pose_estimator: form.enum['DWPreprocessor.input.pose_estimator']({
                   label: 'Model',
                   default: 'dw-ll_ucoco_384.onnx',
                }),

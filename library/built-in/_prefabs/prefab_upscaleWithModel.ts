@@ -4,7 +4,7 @@ import type { Requirements } from '../../../src/manager/REQUIREMENTS/Requirement
 import type { OutputFor } from './_prefabs'
 
 export type UI_upscaleWithModel = X.XGroup<{
-   model: X.XEnum<Enum_UpscaleModelLoader_model_name>
+   model: X.XEnum<Comfy.Enums['UpscaleModelLoader.model_name']>
 }>
 
 export function ui_upscaleWithModel(): UI_upscaleWithModel {
@@ -12,7 +12,7 @@ export function ui_upscaleWithModel(): UI_upscaleWithModel {
    return ui
       .group({
          label: 'Upscale via Model',
-         items: { model: ui.enum.Enum_UpscaleModelLoader_model_name({ default: '4x-UltraSharp.pth' }) },
+         items: { model: ui.enum['UpscaleModelLoader.input.model_name']({ default: '4x-UltraSharp.pth' }) },
          icon: 'mdiArrowExpandAll',
          box: { base: { hue: 180, chroma: 0.1 } },
       })

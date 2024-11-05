@@ -14,7 +14,7 @@ export type IEnumBuilderOptFn<T extends ComfyUnionValue> = (
    config?: Omit<Field_enum_config<T>, 'enumName'> & { startActive?: boolean },
 ) => X.XOptional<X.XEnum<T>>
 export type IEnumBuilderOpt = {
-   [K in keyof Comfy.Enums]: IEnumBuilderOptFn<Comfy.Enums[K]['$Value']>
+   [K in keyof Comfy.Enums]: IEnumBuilderOptFn<Comfy.Enums[K]>
 }
 
 export interface EnumBuilderOpt extends IEnumBuilderOpt {}
