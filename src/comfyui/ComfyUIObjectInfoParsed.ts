@@ -1,11 +1,11 @@
 import type {
    ComfyEnumName,
    ComfyUnionHash,
+   ComfyUnionInfo,
+   ComfyUnionName,
    ComfyUnionValue,
-   EnumInfo,
    NodeInputExt,
    NodeNameInComfy,
-   NodeNameInCushy,
    NodeOutputExt,
 } from './comfyui-types'
 import type { ComfyEnumDef, ComfyNodeSchemaJSON, ComfySchemaJSON } from './ComfyUIObjectInfoTypes'
@@ -48,8 +48,9 @@ export class ComfyUIObjectInfoParsed {
 
    // #region props
    knownSlotTypes = new Set<string>()
-   knownEnumsByName = new Map<ComfyEnumName, EnumInfo>()
-   knownEnumsByHash = new Map<ComfyUnionHash, EnumInfo>()
+   knownUnionByEnumName = new Map<ComfyEnumName, ComfyUnionInfo>()
+   knownUnionByHash = new Map<ComfyUnionHash, ComfyUnionInfo>()
+   knownUnionByName = new Map<ComfyUnionName, ComfyUnionInfo>()
    nodes: ComfyUIObjectInfoParsedNodeSchema[] = []
    nodesByNameInComfy: { [key: string]: ComfyUIObjectInfoParsedNodeSchema } = {}
    nodesByNameInCushy: { [key: string]: ComfyUIObjectInfoParsedNodeSchema } = {}
@@ -86,7 +87,7 @@ export class ComfyUIObjectInfoParsed {
 
          const inputs: NodeInputExt[] = []
          const outputs: NodeOutputExt[] = []
-         const ownEnums: { in: 'input' | 'output'; ownName: string; enum: EnumInfo }[] = []
+         const ownEnums: { in: 'input' | 'output'; ownName: string; enum: ComfyUnionInfo }[] = []
          const node = new ComfyUIObjectInfoParsedNodeSchema(
             VV,
             ownEnums,
@@ -133,7 +134,7 @@ export class ComfyUIObjectInfoParsed {
                const uniqueEnumName = `${pythonModuleToNamespace(pythonModule)}.${nodeNameInCushy}.output.${outputNameInCushy}`
                const RESX = this.processEnumNameOrValue({
                   pythonModule,
-                  candidateName: uniqueEnumName,
+                  enumName: uniqueEnumName,
                   comfyEnumDef: slotType,
                })
                slotTypeName = RESX.typeName
@@ -199,7 +200,7 @@ export class ComfyUIObjectInfoParsed {
                const uniqueEnumName = `INVALID_null`
                const RESX = this.processEnumNameOrValue({
                   pythonModule,
-                  candidateName: uniqueEnumName,
+                  enumName: uniqueEnumName,
                   comfyEnumDef: ['❌'],
                })
                inputTypeNameInCushy = RESX.typeName
@@ -211,7 +212,7 @@ export class ComfyUIObjectInfoParsed {
                const uniqueEnumName = `${pythonModuleToNamespace(pythonModule)}.${nodeNameInCushy}.input.${inputNameInCushy}`
                const RESX = this.processEnumNameOrValue({
                   pythonModule,
-                  candidateName: uniqueEnumName,
+                  enumName: uniqueEnumName,
                   comfyEnumDef: slotType,
                })
                inputTypeNameInCushy = RESX.typeName
@@ -232,7 +233,7 @@ export class ComfyUIObjectInfoParsed {
                   type: inputTypeNameInCushy,
                   opts: slotOpts,
                   isPrimitive: ComfyPrimitives.includes(inputTypeNameInCushy),
-                  isEnum: this.knownEnumsByName.has(inputTypeNameInCushy),
+                  isEnum: this.knownUnionByName.has(inputTypeNameInCushy),
                   index: node.inputs.length, // 🔴
                })
             } else {
@@ -253,9 +254,9 @@ export class ComfyUIObjectInfoParsed {
    processEnumNameOrValue = (p: {
       //
       pythonModule: string
-      candidateName: string
+      enumName: string
       comfyEnumDef: ComfyEnumDef
-   }): { typeName: string; ownName: string; enum: EnumInfo } => {
+   }): { typeName: string; ownName: string; enum: ComfyUnionInfo } => {
       // 1. build enum
       const enumValues: ComfyUnionValue[] = []
       for (const enumValue of p.comfyEnumDef) {
@@ -272,23 +273,24 @@ export class ComfyUIObjectInfoParsed {
       const hash = crypto.createHash('sha1').update(hashContent).digest('hex')
 
       // 3. retrieve or create an EnumInfo
-      let enumInfo: Maybe<EnumInfo> = this.knownEnumsByHash.get(hash)
-      if (enumInfo == null) {
+      let unionInfo: Maybe<ComfyUnionInfo> = this.knownUnionByHash.get(hash)
+      if (unionInfo == null) {
+         const unionNameInCushy = 'E_' + hash
          // 💬 2024-09-30 rvion:
          // | 🔴 making that observable seems wrong; huge perf problem at instanciation.
          // case 3.A. PRE-EXISTING
-         enumInfo = observable({
+         unionInfo = observable({
             hash,
-            pythonModule: p.pythonModule,
-            enumNameInCushy: 'E_' + hash, //p.candidateName,
+            unionNameInCushy: unionNameInCushy,
             values: enumValues,
-            qualifiedNames: [],
+            enumNames: [],
          })
-         this.knownEnumsByHash.set(hash, enumInfo)
+         this.knownUnionByHash.set(hash, unionInfo)
+         this.knownUnionByName.set(unionNameInCushy, unionInfo)
       }
       // else {
       // case 3.B. PRE-EXISTING
-      enumInfo.qualifiedNames.push(p.candidateName)
+      unionInfo.enumNames.push(p.enumName)
       // enumInfo.qualifiedNames.push({
       //    pythonModule: p.pythonModule,
       //    enumNameAlias: p.candidateName,
@@ -298,11 +300,11 @@ export class ComfyUIObjectInfoParsed {
       // ❌ if (p.candidateName === 'Enum_DualCLIPLoader_clip_name1') debugger
 
       // 4.sore enum by name
-      this.knownEnumsByName.set(p.candidateName, enumInfo)
+      this.knownUnionByEnumName.set(p.enumName, unionInfo)
       return {
-         typeName: enumInfo.enumNameInCushy,
-         ownName: p.candidateName,
-         enum: enumInfo,
+         typeName: unionInfo.unionNameInCushy,
+         ownName: p.enumName,
+         enum: unionInfo,
       }
    }
 
@@ -319,12 +321,12 @@ export class ComfyUIObjectInfoParsed {
    // }
    get requirables(): {
       name: string
-      enum: EnumInfo
+      enum: ComfyUnionInfo
       kind: 'enum'
    }[] {
-      const out: { name: string; enum: EnumInfo; kind: 'enum' }[] = []
+      const out: { name: string; enum: ComfyUnionInfo; kind: 'enum' }[] = []
       // for (const n of this.knownSlotTypes) out.push({ name: n, kind: 'prim' })
-      for (const n of this.knownEnumsByName)
+      for (const n of this.knownUnionByEnumName)
          out.push({
             name: n[0],
             kind: 'enum',

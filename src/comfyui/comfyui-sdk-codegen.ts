@@ -123,10 +123,10 @@ export function codegenSDK(
    b.indent()
    p(`export interface Enums {`)
    const requirables = this.requirables
-   for (const e of this.knownEnumsByHash.values()) {
-      for (const alias of e.qualifiedNames) {
+   for (const e of this.knownUnionByHash.values()) {
+      for (const alias of e.enumNames) {
          const enumKey = alias
-         p(`    ${escapeJSKey(enumKey)}: { $Name: ${JSON.stringify(enumKey)}, $Value: Comfy.Union.${e.enumNameInCushy} },`) // prettier-ignore
+         p(`    ${escapeJSKey(enumKey)}: { $Name: ${JSON.stringify(enumKey)}, $Value: Comfy.Union.${e.unionNameInCushy} },`) // prettier-ignore
       }
    }
    // for (const n of requirables)
@@ -207,18 +207,18 @@ export function codegenSDK(
    p(`\n// 6. ENUMS -------------------------------`)
    const allAcceptableEnums: string[] = []
    p(`namespace Comfy.Union {`)
-   for (const e of this.knownEnumsByHash.values()) {
+   for (const e of this.knownUnionByHash.values()) {
       if (e.values.length > 0) {
-         allAcceptableEnums.push(e.enumNameInCushy)
+         allAcceptableEnums.push(e.unionNameInCushy)
          // p(`   type ${e.hash}=0`)
-         p(`   type ${e.enumNameInCushy} = ${e.values.map((v) => `${JSON.stringify(v)}`).join(' | ')}`)
+         p(`   type ${e.unionNameInCushy} = ${e.values.map((v) => `${JSON.stringify(v)}`).join(' | ')}`)
          // p(`   type ${e.enumNameInCushy} = ${e.values.map((v) => `${JSON.stringify(v)}`).join(' | ')}`)
          // for (const { enumNameAlias, pythonModule } of e.aliases) {
          //    allAcceptableEnums.push(enumNameAlias)
          //    p(`/* 🟢 */export type ${enumNameAlias} = ComfyUI.${e.pythonModule}.${e.enumNameInCushy}`)
          // }
       } else {
-         p(`   type ${e.enumNameInCushy} = '🔴' // never`)
+         p(`   type ${e.unionNameInCushy} = '🔴' // never`)
          // p(`   type ${e.enumNameInCushy} = '🔴' // never`)
       }
    }

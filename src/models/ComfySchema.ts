@@ -1,4 +1,4 @@
-import type { ComfyUnionValue, EmbeddingName, EnumInfo } from '../comfyui/comfyui-types'
+import type { ComfyUnionInfo, ComfyUnionValue, EmbeddingName } from '../comfyui/comfyui-types'
 import type { ComfyUIObjectInfoParsedNodeSchema } from '../comfyui/ComfyUIObjectInfoParsedNodeSchema'
 import type { LiveDB } from '../db/LiveDB'
 import type { TABLES } from '../db/TYPES.gen'
@@ -42,7 +42,7 @@ export class ComfySchemaL extends BaseInst<TABLES['comfy_schema']> {
    })
 
    // forward to underlying parsedObjectInfo
-   get knownEnumsByName(): Map<string, EnumInfo> { return this.parseObjectInfo.knownEnumsByName } // prettier-ignore
+   get knownEnumsByName(): Map<string, ComfyUnionInfo> { return this.parseObjectInfo.knownUnionByEnumName } // prettier-ignore
    get nodes(): ComfyUIObjectInfoParsedNodeSchema[] { return this.parseObjectInfo.nodes } // prettier-ignore
    get nodesByNameInCushy(): Record<string, ComfyUIObjectInfoParsedNodeSchema> { return this.parseObjectInfo.nodesByNameInCushy } // prettier-ignore
    get nodesByNameInComfy(): Record<string, ComfyUIObjectInfoParsedNodeSchema> { return this.parseObjectInfo.nodesByNameInComfy } // prettier-ignore

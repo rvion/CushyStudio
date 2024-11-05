@@ -30,11 +30,9 @@ export type NodeOutputExt = {
    isPrimitive: boolean
 }
 
-export type EnumInfo = {
+export type ComfyUnionInfo = {
    hash: ComfyUnionHash
-   // enumNameInComfy: string
-   pythonModule: string
-   enumNameInCushy: ComfyUnionName
+   unionNameInCushy: ComfyUnionName
    values: ComfyUnionValue[]
-   qualifiedNames: ComfyEnumName[]
+   enumNames: ComfyEnumName[]
 }

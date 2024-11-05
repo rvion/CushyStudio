@@ -1,11 +1,11 @@
-import type { EnumInfo, NodeInputExt, NodeOutputExt } from './comfyui-types'
+import type { ComfyUnionInfo, NodeInputExt, NodeOutputExt } from './comfyui-types'
 import type { ComfyInputOpts, ComfyNodeSchemaJSON } from './ComfyUIObjectInfoTypes'
 
 import { ComfyPrimitiveMapping } from '../core/Primitives'
 import { CodeBuffer } from '../utils/codegen/CodeBuffer'
 import { escapeJSKey } from '../utils/codegen/escapeJSKey'
 
-export type NodeOwnEnum = { in: 'input' | 'output'; ownName: string; enum: EnumInfo }
+export type NodeOwnEnum = { in: 'input' | 'output'; ownName: string; enum: ComfyUnionInfo }
 /**
  *
  */
@@ -35,9 +35,11 @@ export class ComfyUIObjectInfoParsedNodeSchema {
             const tsType = ComfyPrimitiveMapping[i.type]
             if (tsType == null) return console.log(`[🔶] invariant violation`)
             p(`        ${escapeJSKey(i.nameInComfy)}: { kind: '${tsType}', type: ${tsType} }`)
-         }
-         if (i.isEnum) {
-            p(`        ${escapeJSKey(i.nameInComfy)}: { kind: 'enum', type: ${i.type} }`)
+         } else if (i.isEnum) {
+            p(`        ${escapeJSKey(i.nameInComfy)}: { kind: 'enum', type: Comfy.Union.${i.type} }`)
+         } else {
+            p(`        // ${escapeJSKey(i.nameInComfy)}: { kind: 'object', type: ${i.type} }`)
+            // p(`        //      ${JSON.stringify(i)}`)
          }
       })
       p(`    }`)

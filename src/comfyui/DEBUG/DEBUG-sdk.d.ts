@@ -8520,27 +8520,44 @@ declare global {
    // 8.2 NODE UI helpers --------------------
    export interface FormHelper {
     KSampler: {
+        // model: { kind: 'object', type: MODEL }
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
+        scheduler: { kind: 'enum', type: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325 }
+        // positive: { kind: 'object', type: CONDITIONING }
+        // negative: { kind: 'object', type: CONDITIONING }
+        // latent_image: { kind: 'object', type: LATENT }
         denoise: { kind: 'number', type: number }
     }
     CheckpointLoaderSimple: {
+        ckpt_name: { kind: 'enum', type: Comfy.Union.E_1f08f73a9a576ae570aa3d82ea94f2bcfc29a8fc }
     }
     CLIPTextEncode: {
         text: { kind: 'string', type: string }
+        // clip: { kind: 'object', type: CLIP }
     }
     CLIPSetLastLayer: {
+        // clip: { kind: 'object', type: CLIP }
         stop_at_clip_layer: { kind: 'number', type: number }
     }
     VAEDecode: {
+        // samples: { kind: 'object', type: LATENT }
+        // vae: { kind: 'object', type: VAE }
     }
     VAEEncode: {
+        // pixels: { kind: 'object', type: IMAGE }
+        // vae: { kind: 'object', type: VAE }
     }
     VAEEncodeForInpaint: {
+        // pixels: { kind: 'object', type: IMAGE }
+        // vae: { kind: 'object', type: VAE }
+        // mask: { kind: 'object', type: MASK }
         grow_mask_by: { kind: 'number', type: number }
     }
     VAELoader: {
+        vae_name: { kind: 'enum', type: Comfy.Union.E_621a1d2d13812defa70c4b6ec953d17713bd232a }
     }
     EmptyLatentImage: {
         width: { kind: 'number', type: number }
@@ -8548,40 +8565,61 @@ declare global {
         batch_size: { kind: 'number', type: number }
     }
     LatentUpscale: {
+        // samples: { kind: 'object', type: LATENT }
+        upscale_method: { kind: 'enum', type: Comfy.Union.E_6e6cbf6c48411ad480e010b0c9d2434b41af430d }
         width: { kind: 'number', type: number }
         height: { kind: 'number', type: number }
+        crop: { kind: 'enum', type: Comfy.Union.E_e2779c2a162ed54d5841127cc2968e8d50f5e431 }
     }
     LatentUpscaleBy: {
+        // samples: { kind: 'object', type: LATENT }
+        upscale_method: { kind: 'enum', type: Comfy.Union.E_6e6cbf6c48411ad480e010b0c9d2434b41af430d }
         scale_by: { kind: 'number', type: number }
     }
     LatentFromBatch: {
+        // samples: { kind: 'object', type: LATENT }
         batch_index: { kind: 'number', type: number }
         length: { kind: 'number', type: number }
     }
     RepeatLatentBatch: {
+        // samples: { kind: 'object', type: LATENT }
         amount: { kind: 'number', type: number }
     }
     SaveImage: {
+        // images: { kind: 'object', type: IMAGE }
         filename_prefix: { kind: 'string', type: string }
     }
     PreviewImage: {
+        // images: { kind: 'object', type: IMAGE }
     }
     LoadImage: {
+        image: { kind: 'enum', type: Comfy.Union.E_26ea5ad8c44c9551fea858fff18017427386b591 }
     }
     LoadImageMask: {
+        image: { kind: 'enum', type: Comfy.Union.E_26ea5ad8c44c9551fea858fff18017427386b591 }
+        channel: { kind: 'enum', type: Comfy.Union.E_19d5be39f1fd20a88fdbcb009a06c7df2b0ef998 }
     }
     ImageScale: {
+        // image: { kind: 'object', type: IMAGE }
+        upscale_method: { kind: 'enum', type: Comfy.Union.E_165b455eb22956fc9da6e1b76d49a4077f15d897 }
         width: { kind: 'number', type: number }
         height: { kind: 'number', type: number }
+        crop: { kind: 'enum', type: Comfy.Union.E_e2779c2a162ed54d5841127cc2968e8d50f5e431 }
     }
     ImageScaleBy: {
+        // image: { kind: 'object', type: IMAGE }
+        upscale_method: { kind: 'enum', type: Comfy.Union.E_165b455eb22956fc9da6e1b76d49a4077f15d897 }
         scale_by: { kind: 'number', type: number }
     }
     ImageInvert: {
+        // image: { kind: 'object', type: IMAGE }
     }
     ImageBatch: {
+        // image1: { kind: 'object', type: IMAGE }
+        // image2: { kind: 'object', type: IMAGE }
     }
     ImagePadForOutpaint: {
+        // image: { kind: 'object', type: IMAGE }
         left: { kind: 'number', type: number }
         top: { kind: 'number', type: number }
         right: { kind: 'number', type: number }
@@ -8595,13 +8633,20 @@ declare global {
         color: { kind: 'number', type: number }
     }
     ConditioningAverage: {
+        // conditioning_to: { kind: 'object', type: CONDITIONING }
+        // conditioning_from: { kind: 'object', type: CONDITIONING }
         conditioning_to_strength: { kind: 'number', type: number }
     }
     ConditioningCombine: {
+        // conditioning_1: { kind: 'object', type: CONDITIONING }
+        // conditioning_2: { kind: 'object', type: CONDITIONING }
     }
     ConditioningConcat: {
+        // conditioning_to: { kind: 'object', type: CONDITIONING }
+        // conditioning_from: { kind: 'object', type: CONDITIONING }
     }
     ConditioningSetArea: {
+        // conditioning: { kind: 'object', type: CONDITIONING }
         width: { kind: 'number', type: number }
         height: { kind: 'number', type: number }
         x: { kind: 'number', type: number }
@@ -8609,6 +8654,7 @@ declare global {
         strength: { kind: 'number', type: number }
     }
     ConditioningSetAreaPercentage: {
+        // conditioning: { kind: 'object', type: CONDITIONING }
         width: { kind: 'number', type: number }
         height: { kind: 'number', type: number }
         x: { kind: 'number', type: number }
@@ -8616,83 +8662,145 @@ declare global {
         strength: { kind: 'number', type: number }
     }
     ConditioningSetAreaStrength: {
+        // conditioning: { kind: 'object', type: CONDITIONING }
         strength: { kind: 'number', type: number }
     }
     ConditioningSetMask: {
+        // conditioning: { kind: 'object', type: CONDITIONING }
+        // mask: { kind: 'object', type: MASK }
         strength: { kind: 'number', type: number }
+        set_cond_area: { kind: 'enum', type: Comfy.Union.E_046ed3ef4b2b9a9cfdb62e53a70fe767fb996451 }
     }
     KSamplerAdvanced: {
+        // model: { kind: 'object', type: MODEL }
+        add_noise: { kind: 'enum', type: Comfy.Union.E_449b4cae3566dd9b97c417c352bb08e25b89431b }
         noise_seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
+        scheduler: { kind: 'enum', type: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325 }
+        // positive: { kind: 'object', type: CONDITIONING }
+        // negative: { kind: 'object', type: CONDITIONING }
+        // latent_image: { kind: 'object', type: LATENT }
         start_at_step: { kind: 'number', type: number }
         end_at_step: { kind: 'number', type: number }
+        return_with_leftover_noise: { kind: 'enum', type: Comfy.Union.E_449b4cae3566dd9b97c417c352bb08e25b89431b }
     }
     SetLatentNoiseMask: {
+        // samples: { kind: 'object', type: LATENT }
+        // mask: { kind: 'object', type: MASK }
     }
     LatentComposite: {
+        // samples_to: { kind: 'object', type: LATENT }
+        // samples_from: { kind: 'object', type: LATENT }
         x: { kind: 'number', type: number }
         y: { kind: 'number', type: number }
         feather: { kind: 'number', type: number }
     }
     LatentBlend: {
+        // samples1: { kind: 'object', type: LATENT }
+        // samples2: { kind: 'object', type: LATENT }
         blend_factor: { kind: 'number', type: number }
     }
     LatentRotate: {
+        // samples: { kind: 'object', type: LATENT }
+        rotation: { kind: 'enum', type: Comfy.Union.E_061551528c540e0171a9c88a94c7d5375aa31f8a }
     }
     LatentFlip: {
+        // samples: { kind: 'object', type: LATENT }
+        flip_method: { kind: 'enum', type: Comfy.Union.E_cdf7071acecb5016da941b6e718b82c97248a3e4 }
     }
     LatentCrop: {
+        // samples: { kind: 'object', type: LATENT }
         width: { kind: 'number', type: number }
         height: { kind: 'number', type: number }
         x: { kind: 'number', type: number }
         y: { kind: 'number', type: number }
     }
     LoraLoader: {
+        // model: { kind: 'object', type: MODEL }
+        // clip: { kind: 'object', type: CLIP }
+        lora_name: { kind: 'enum', type: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 }
         strength_model: { kind: 'number', type: number }
         strength_clip: { kind: 'number', type: number }
     }
     CLIPLoader: {
+        clip_name: { kind: 'enum', type: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 }
+        type: { kind: 'enum', type: Comfy.Union.E_766fb79b4f3904a6716246cfb2a33b7b9e6a08c4 }
     }
     UNETLoader: {
+        unet_name: { kind: 'enum', type: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 }
+        weight_dtype: { kind: 'enum', type: Comfy.Union.E_21ba65fbb0df707c108b25356a3507e13f21ea58 }
     }
     DualCLIPLoader: {
+        clip_name1: { kind: 'enum', type: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 }
+        clip_name2: { kind: 'enum', type: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 }
+        type: { kind: 'enum', type: Comfy.Union.E_39292df8ce88fd66f0dacf6f9110cfa2594ca25c }
     }
     CLIPVisionEncode: {
+        // clip_vision: { kind: 'object', type: CLIP_VISION }
+        // image: { kind: 'object', type: IMAGE }
     }
     StyleModelApply: {
+        // conditioning: { kind: 'object', type: CONDITIONING }
+        // style_model: { kind: 'object', type: STYLE_MODEL }
+        // clip_vision_output: { kind: 'object', type: CLIP_VISION_OUTPUT }
     }
     unCLIPConditioning: {
+        // conditioning: { kind: 'object', type: CONDITIONING }
+        // clip_vision_output: { kind: 'object', type: CLIP_VISION_OUTPUT }
         strength: { kind: 'number', type: number }
         noise_augmentation: { kind: 'number', type: number }
     }
     ControlNetApply: {
+        // conditioning: { kind: 'object', type: CONDITIONING }
+        // control_net: { kind: 'object', type: CONTROL_NET }
+        // image: { kind: 'object', type: IMAGE }
         strength: { kind: 'number', type: number }
     }
     ControlNetApplyAdvanced: {
+        // positive: { kind: 'object', type: CONDITIONING }
+        // negative: { kind: 'object', type: CONDITIONING }
+        // control_net: { kind: 'object', type: CONTROL_NET }
+        // image: { kind: 'object', type: IMAGE }
         strength: { kind: 'number', type: number }
         start_percent: { kind: 'number', type: number }
         end_percent: { kind: 'number', type: number }
+        // vae: { kind: 'object', type: VAE }
     }
     ControlNetLoader: {
+        control_net_name: { kind: 'enum', type: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 }
     }
     DiffControlNetLoader: {
+        // model: { kind: 'object', type: MODEL }
+        control_net_name: { kind: 'enum', type: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 }
     }
     StyleModelLoader: {
+        style_model_name: { kind: 'enum', type: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 }
     }
     CLIPVisionLoader: {
+        clip_name: { kind: 'enum', type: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 }
     }
     VAEDecodeTiled: {
+        // samples: { kind: 'object', type: LATENT }
+        // vae: { kind: 'object', type: VAE }
         tile_size: { kind: 'number', type: number }
     }
     VAEEncodeTiled: {
+        // pixels: { kind: 'object', type: IMAGE }
+        // vae: { kind: 'object', type: VAE }
         tile_size: { kind: 'number', type: number }
     }
     unCLIPCheckpointLoader: {
+        ckpt_name: { kind: 'enum', type: Comfy.Union.E_1f08f73a9a576ae570aa3d82ea94f2bcfc29a8fc }
     }
     GLIGENLoader: {
+        gligen_name: { kind: 'enum', type: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 }
     }
     GLIGENTextBoxApply: {
+        // conditioning_to: { kind: 'object', type: CONDITIONING }
+        // clip: { kind: 'object', type: CLIP }
+        // gligen_textbox_model: { kind: 'object', type: GLIGEN }
         text: { kind: 'string', type: string }
         width: { kind: 'number', type: number }
         height: { kind: 'number', type: number }
@@ -8700,42 +8808,71 @@ declare global {
         y: { kind: 'number', type: number }
     }
     InpaintModelConditioning: {
+        // positive: { kind: 'object', type: CONDITIONING }
+        // negative: { kind: 'object', type: CONDITIONING }
+        // vae: { kind: 'object', type: VAE }
+        // pixels: { kind: 'object', type: IMAGE }
+        // mask: { kind: 'object', type: MASK }
     }
     CheckpointLoader: {
+        config_name: { kind: 'enum', type: Comfy.Union.E_a1972c9480c542a0e8ccafa03c2572ba5fc62160 }
+        ckpt_name: { kind: 'enum', type: Comfy.Union.E_1f08f73a9a576ae570aa3d82ea94f2bcfc29a8fc }
     }
     DiffusersLoader: {
+        model_path: { kind: 'enum', type: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 }
     }
     LoadLatent: {
+        latent: { kind: 'enum', type: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 }
     }
     SaveLatent: {
+        // samples: { kind: 'object', type: LATENT }
         filename_prefix: { kind: 'string', type: string }
     }
     ConditioningZeroOut: {
+        // conditioning: { kind: 'object', type: CONDITIONING }
     }
     ConditioningSetTimestepRange: {
+        // conditioning: { kind: 'object', type: CONDITIONING }
         start: { kind: 'number', type: number }
         end: { kind: 'number', type: number }
     }
     LoraLoaderModelOnly: {
+        // model: { kind: 'object', type: MODEL }
+        lora_name: { kind: 'enum', type: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 }
         strength_model: { kind: 'number', type: number }
     }
     LatentAdd: {
+        // samples1: { kind: 'object', type: LATENT }
+        // samples2: { kind: 'object', type: LATENT }
     }
     LatentSubtract: {
+        // samples1: { kind: 'object', type: LATENT }
+        // samples2: { kind: 'object', type: LATENT }
     }
     LatentMultiply: {
+        // samples: { kind: 'object', type: LATENT }
         multiplier: { kind: 'number', type: number }
     }
     LatentInterpolate: {
+        // samples1: { kind: 'object', type: LATENT }
+        // samples2: { kind: 'object', type: LATENT }
         ratio: { kind: 'number', type: number }
     }
     LatentBatch: {
+        // samples1: { kind: 'object', type: LATENT }
+        // samples2: { kind: 'object', type: LATENT }
     }
     LatentBatchSeedBehavior: {
+        // samples: { kind: 'object', type: LATENT }
+        seed_behavior: { kind: 'enum', type: Comfy.Union.E_1d09df0c3ce1b4556d07af26e593d4033efc639b }
     }
     LatentApplyOperation: {
+        // samples: { kind: 'object', type: LATENT }
+        // operation: { kind: 'object', type: LATENT_OPERATION }
     }
     LatentApplyOperationCFG: {
+        // model: { kind: 'object', type: MODEL }
+        // operation: { kind: 'object', type: LATENT_OPERATION }
     }
     LatentOperationTonemapReinhard: {
         multiplier: { kind: 'number', type: number }
@@ -8746,45 +8883,69 @@ declare global {
         alpha: { kind: 'number', type: number }
     }
     HypernetworkLoader: {
+        // model: { kind: 'object', type: MODEL }
+        hypernetwork_name: { kind: 'enum', type: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 }
         strength: { kind: 'number', type: number }
     }
     UpscaleModelLoader: {
+        model_name: { kind: 'enum', type: Comfy.Union.E_2504d8563e078c3ed105667cbb6d0ff714d5798b }
     }
     ImageUpscaleWithModel: {
+        // upscale_model: { kind: 'object', type: UPSCALE_MODEL }
+        // image: { kind: 'object', type: IMAGE }
     }
     ImageBlend: {
+        // image1: { kind: 'object', type: IMAGE }
+        // image2: { kind: 'object', type: IMAGE }
         blend_factor: { kind: 'number', type: number }
+        blend_mode: { kind: 'enum', type: Comfy.Union.E_4ca09d2bc16d4174960bd60a103d4c0911361855 }
     }
     ImageBlur: {
+        // image: { kind: 'object', type: IMAGE }
         blur_radius: { kind: 'number', type: number }
         sigma: { kind: 'number', type: number }
     }
     ImageQuantize: {
+        // image: { kind: 'object', type: IMAGE }
         colors: { kind: 'number', type: number }
+        dither: { kind: 'enum', type: Comfy.Union.E_7c2feaebcf0bbbcda0fe9f3c8cba1cf87002bc0e }
     }
     ImageSharpen: {
+        // image: { kind: 'object', type: IMAGE }
         sharpen_radius: { kind: 'number', type: number }
         sigma: { kind: 'number', type: number }
         alpha: { kind: 'number', type: number }
     }
     ImageScaleToTotalPixels: {
+        // image: { kind: 'object', type: IMAGE }
+        upscale_method: { kind: 'enum', type: Comfy.Union.E_165b455eb22956fc9da6e1b76d49a4077f15d897 }
         megapixels: { kind: 'number', type: number }
     }
     LatentCompositeMasked: {
+        // destination: { kind: 'object', type: LATENT }
+        // source: { kind: 'object', type: LATENT }
         x: { kind: 'number', type: number }
         y: { kind: 'number', type: number }
         resize_source: { kind: 'boolean', type: boolean }
+        // mask: { kind: 'object', type: MASK }
     }
     ImageCompositeMasked: {
+        // destination: { kind: 'object', type: IMAGE }
+        // source: { kind: 'object', type: IMAGE }
         x: { kind: 'number', type: number }
         y: { kind: 'number', type: number }
         resize_source: { kind: 'boolean', type: boolean }
+        // mask: { kind: 'object', type: MASK }
     }
     MaskToImage: {
+        // mask: { kind: 'object', type: MASK }
     }
     ImageToMask: {
+        // image: { kind: 'object', type: IMAGE }
+        channel: { kind: 'enum', type: Comfy.Union.E_19d5be39f1fd20a88fdbcb009a06c7df2b0ef998 }
     }
     ImageColorToMask: {
+        // image: { kind: 'object', type: IMAGE }
         color: { kind: 'number', type: number }
     }
     SolidMask: {
@@ -8793,76 +8954,115 @@ declare global {
         height: { kind: 'number', type: number }
     }
     InvertMask: {
+        // mask: { kind: 'object', type: MASK }
     }
     CropMask: {
+        // mask: { kind: 'object', type: MASK }
         x: { kind: 'number', type: number }
         y: { kind: 'number', type: number }
         width: { kind: 'number', type: number }
         height: { kind: 'number', type: number }
     }
     MaskComposite: {
+        // destination: { kind: 'object', type: MASK }
+        // source: { kind: 'object', type: MASK }
         x: { kind: 'number', type: number }
         y: { kind: 'number', type: number }
+        operation: { kind: 'enum', type: Comfy.Union.E_88c0c90dbad3b41c3c4a4f8a89afad7b1c0db2e0 }
     }
     FeatherMask: {
+        // mask: { kind: 'object', type: MASK }
         left: { kind: 'number', type: number }
         top: { kind: 'number', type: number }
         right: { kind: 'number', type: number }
         bottom: { kind: 'number', type: number }
     }
     GrowMask: {
+        // mask: { kind: 'object', type: MASK }
         expand: { kind: 'number', type: number }
         tapered_corners: { kind: 'boolean', type: boolean }
     }
     ThresholdMask: {
+        // mask: { kind: 'object', type: MASK }
         value: { kind: 'number', type: number }
     }
     PorterDuffImageComposite: {
+        // source: { kind: 'object', type: IMAGE }
+        // source_alpha: { kind: 'object', type: MASK }
+        // destination: { kind: 'object', type: IMAGE }
+        // destination_alpha: { kind: 'object', type: MASK }
+        mode: { kind: 'enum', type: Comfy.Union.E_d954b5ae44db00529f0fd0bfb816e25c12617df8 }
     }
     SplitImageWithAlpha: {
+        // image: { kind: 'object', type: IMAGE }
     }
     JoinImageWithAlpha: {
+        // image: { kind: 'object', type: IMAGE }
+        // alpha: { kind: 'object', type: MASK }
     }
     RebatchLatents: {
+        // latents: { kind: 'object', type: LATENT }
         batch_size: { kind: 'number', type: number }
     }
     RebatchImages: {
+        // images: { kind: 'object', type: IMAGE }
         batch_size: { kind: 'number', type: number }
     }
     ModelMergeSimple: {
+        // model1: { kind: 'object', type: MODEL }
+        // model2: { kind: 'object', type: MODEL }
         ratio: { kind: 'number', type: number }
     }
     ModelMergeBlocks: {
+        // model1: { kind: 'object', type: MODEL }
+        // model2: { kind: 'object', type: MODEL }
         input: { kind: 'number', type: number }
         middle: { kind: 'number', type: number }
         out: { kind: 'number', type: number }
     }
     ModelMergeSubtract: {
+        // model1: { kind: 'object', type: MODEL }
+        // model2: { kind: 'object', type: MODEL }
         multiplier: { kind: 'number', type: number }
     }
     ModelMergeAdd: {
+        // model1: { kind: 'object', type: MODEL }
+        // model2: { kind: 'object', type: MODEL }
     }
     CheckpointSave: {
+        // model: { kind: 'object', type: MODEL }
+        // clip: { kind: 'object', type: CLIP }
+        // vae: { kind: 'object', type: VAE }
         filename_prefix: { kind: 'string', type: string }
     }
     CLIPMergeSimple: {
+        // clip1: { kind: 'object', type: CLIP }
+        // clip2: { kind: 'object', type: CLIP }
         ratio: { kind: 'number', type: number }
     }
     CLIPMergeSubtract: {
+        // clip1: { kind: 'object', type: CLIP }
+        // clip2: { kind: 'object', type: CLIP }
         multiplier: { kind: 'number', type: number }
     }
     CLIPMergeAdd: {
+        // clip1: { kind: 'object', type: CLIP }
+        // clip2: { kind: 'object', type: CLIP }
     }
     CLIPSave: {
+        // clip: { kind: 'object', type: CLIP }
         filename_prefix: { kind: 'string', type: string }
     }
     VAESave: {
+        // vae: { kind: 'object', type: VAE }
         filename_prefix: { kind: 'string', type: string }
     }
     ModelSave: {
+        // model: { kind: 'object', type: MODEL }
         filename_prefix: { kind: 'string', type: string }
     }
     TomePatchModel: {
+        // model: { kind: 'object', type: MODEL }
         ratio: { kind: 'number', type: number }
     }
     CLIPTextEncodeSDXLRefiner: {
@@ -8870,6 +9070,7 @@ declare global {
         width: { kind: 'number', type: number }
         height: { kind: 'number', type: number }
         text: { kind: 'string', type: string }
+        // clip: { kind: 'object', type: CLIP }
     }
     CLIPTextEncodeSDXL: {
         width: { kind: 'number', type: number }
@@ -8879,30 +9080,42 @@ declare global {
         target_width: { kind: 'number', type: number }
         target_height: { kind: 'number', type: number }
         text_g: { kind: 'string', type: string }
+        // clip: { kind: 'object', type: CLIP }
         text_l: { kind: 'string', type: string }
     }
     Canny: {
+        // image: { kind: 'object', type: IMAGE }
         low_threshold: { kind: 'number', type: number }
         high_threshold: { kind: 'number', type: number }
     }
     FreeU: {
+        // model: { kind: 'object', type: MODEL }
         b1: { kind: 'number', type: number }
         b2: { kind: 'number', type: number }
         s1: { kind: 'number', type: number }
         s2: { kind: 'number', type: number }
     }
     FreeU$_V2: {
+        // model: { kind: 'object', type: MODEL }
         b1: { kind: 'number', type: number }
         b2: { kind: 'number', type: number }
         s1: { kind: 'number', type: number }
         s2: { kind: 'number', type: number }
     }
     SamplerCustom: {
+        // model: { kind: 'object', type: MODEL }
         add_noise: { kind: 'boolean', type: boolean }
         noise_seed: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
+        // positive: { kind: 'object', type: CONDITIONING }
+        // negative: { kind: 'object', type: CONDITIONING }
+        // sampler: { kind: 'object', type: SAMPLER }
+        // sigmas: { kind: 'object', type: SIGMAS }
+        // latent_image: { kind: 'object', type: LATENT }
     }
     BasicScheduler: {
+        // model: { kind: 'object', type: MODEL }
+        scheduler: { kind: 'enum', type: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325 }
         steps: { kind: 'number', type: number }
         denoise: { kind: 'number', type: number }
     }
@@ -8937,15 +9150,18 @@ declare global {
         eps_s: { kind: 'number', type: number }
     }
     BetaSamplingScheduler: {
+        // model: { kind: 'object', type: MODEL }
         steps: { kind: 'number', type: number }
         alpha: { kind: 'number', type: number }
         beta: { kind: 'number', type: number }
     }
     SDTurboScheduler: {
+        // model: { kind: 'object', type: MODEL }
         steps: { kind: 'number', type: number }
         denoise: { kind: 'number', type: number }
     }
     KSamplerSelect: {
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
     }
     SamplerEulerAncestral: {
         eta: { kind: 'number', type: number }
@@ -8961,15 +9177,19 @@ declare global {
     SamplerDPMPP$_3M$_SDE: {
         eta: { kind: 'number', type: number }
         s_noise: { kind: 'number', type: number }
+        noise_device: { kind: 'enum', type: Comfy.Union.E_928b7403128cb25513cafc463a76a922ba5d4bd0 }
     }
     SamplerDPMPP$_2M$_SDE: {
+        solver_type: { kind: 'enum', type: Comfy.Union.E_148e0bc88719e23ec2f2c80871fe45ae759cd7e1 }
         eta: { kind: 'number', type: number }
         s_noise: { kind: 'number', type: number }
+        noise_device: { kind: 'enum', type: Comfy.Union.E_928b7403128cb25513cafc463a76a922ba5d4bd0 }
     }
     SamplerDPMPP$_SDE: {
         eta: { kind: 'number', type: number }
         s_noise: { kind: 'number', type: number }
         r: { kind: 'number', type: number }
+        noise_device: { kind: 'enum', type: Comfy.Union.E_928b7403128cb25513cafc463a76a922ba5d4bd0 }
     }
     SamplerDPMPP$_2S$_Ancestral: {
         eta: { kind: 'number', type: number }
@@ -8988,21 +9208,33 @@ declare global {
         s_noise: { kind: 'number', type: number }
     }
     SplitSigmas: {
+        // sigmas: { kind: 'object', type: SIGMAS }
         step: { kind: 'number', type: number }
     }
     SplitSigmasDenoise: {
+        // sigmas: { kind: 'object', type: SIGMAS }
         denoise: { kind: 'number', type: number }
     }
     FlipSigmas: {
+        // sigmas: { kind: 'object', type: SIGMAS }
     }
     CFGGuider: {
+        // model: { kind: 'object', type: MODEL }
+        // positive: { kind: 'object', type: CONDITIONING }
+        // negative: { kind: 'object', type: CONDITIONING }
         cfg: { kind: 'number', type: number }
     }
     DualCFGGuider: {
+        // model: { kind: 'object', type: MODEL }
+        // cond1: { kind: 'object', type: CONDITIONING }
+        // cond2: { kind: 'object', type: CONDITIONING }
+        // negative: { kind: 'object', type: CONDITIONING }
         cfg_conds: { kind: 'number', type: number }
         cfg_cond2_negative: { kind: 'number', type: number }
     }
     BasicGuider: {
+        // model: { kind: 'object', type: MODEL }
+        // conditioning: { kind: 'object', type: CONDITIONING }
     }
     RandomNoise: {
         noise_seed: { kind: 'number', type: number }
@@ -9010,78 +9242,112 @@ declare global {
     DisableNoise: {
     }
     AddNoise: {
+        // model: { kind: 'object', type: MODEL }
+        // noise: { kind: 'object', type: NOISE }
+        // sigmas: { kind: 'object', type: SIGMAS }
+        // latent_image: { kind: 'object', type: LATENT }
     }
     SamplerCustomAdvanced: {
+        // noise: { kind: 'object', type: NOISE }
+        // guider: { kind: 'object', type: GUIDER }
+        // sampler: { kind: 'object', type: SAMPLER }
+        // sigmas: { kind: 'object', type: SIGMAS }
+        // latent_image: { kind: 'object', type: LATENT }
     }
     HyperTile: {
+        // model: { kind: 'object', type: MODEL }
         tile_size: { kind: 'number', type: number }
         swap_size: { kind: 'number', type: number }
         max_depth: { kind: 'number', type: number }
         scale_depth: { kind: 'boolean', type: boolean }
     }
     ModelSamplingDiscrete: {
+        // model: { kind: 'object', type: MODEL }
+        sampling: { kind: 'enum', type: Comfy.Union.E_e89ec78e24ca5e9c91264b9e9b5ed722d2b509dc }
         zsnr: { kind: 'boolean', type: boolean }
     }
     ModelSamplingContinuousEDM: {
+        // model: { kind: 'object', type: MODEL }
+        sampling: { kind: 'enum', type: Comfy.Union.E_bf8a83a3d55d70c688644bf18edaf23501f7c168 }
         sigma_max: { kind: 'number', type: number }
         sigma_min: { kind: 'number', type: number }
     }
     ModelSamplingContinuousV: {
+        // model: { kind: 'object', type: MODEL }
+        sampling: { kind: 'enum', type: Comfy.Union.E_3c3164c6c468d61dfa20092960e3d7854495e50c }
         sigma_max: { kind: 'number', type: number }
         sigma_min: { kind: 'number', type: number }
     }
     ModelSamplingStableCascade: {
+        // model: { kind: 'object', type: MODEL }
         shift: { kind: 'number', type: number }
     }
     ModelSamplingSD3: {
+        // model: { kind: 'object', type: MODEL }
         shift: { kind: 'number', type: number }
     }
     ModelSamplingAuraFlow: {
+        // model: { kind: 'object', type: MODEL }
         shift: { kind: 'number', type: number }
     }
     ModelSamplingFlux: {
+        // model: { kind: 'object', type: MODEL }
         max_shift: { kind: 'number', type: number }
         base_shift: { kind: 'number', type: number }
         width: { kind: 'number', type: number }
         height: { kind: 'number', type: number }
     }
     RescaleCFG: {
+        // model: { kind: 'object', type: MODEL }
         multiplier: { kind: 'number', type: number }
     }
     PatchModelAddDownscale: {
+        // model: { kind: 'object', type: MODEL }
         block_number: { kind: 'number', type: number }
         downscale_factor: { kind: 'number', type: number }
         start_percent: { kind: 'number', type: number }
         end_percent: { kind: 'number', type: number }
         downscale_after_skip: { kind: 'boolean', type: boolean }
+        downscale_method: { kind: 'enum', type: Comfy.Union.E_6e6cbf6c48411ad480e010b0c9d2434b41af430d }
+        upscale_method: { kind: 'enum', type: Comfy.Union.E_6e6cbf6c48411ad480e010b0c9d2434b41af430d }
     }
     ImageCrop: {
+        // image: { kind: 'object', type: IMAGE }
         width: { kind: 'number', type: number }
         height: { kind: 'number', type: number }
         x: { kind: 'number', type: number }
         y: { kind: 'number', type: number }
     }
     RepeatImageBatch: {
+        // image: { kind: 'object', type: IMAGE }
         amount: { kind: 'number', type: number }
     }
     ImageFromBatch: {
+        // image: { kind: 'object', type: IMAGE }
         batch_index: { kind: 'number', type: number }
         length: { kind: 'number', type: number }
     }
     SaveAnimatedWEBP: {
+        // images: { kind: 'object', type: IMAGE }
         filename_prefix: { kind: 'string', type: string }
         fps: { kind: 'number', type: number }
         lossless: { kind: 'boolean', type: boolean }
         quality: { kind: 'number', type: number }
+        method: { kind: 'enum', type: Comfy.Union.E_253b68425542d8144b2b8a7af90f057b41939f63 }
     }
     SaveAnimatedPNG: {
+        // images: { kind: 'object', type: IMAGE }
         filename_prefix: { kind: 'string', type: string }
         fps: { kind: 'number', type: number }
         compress_level: { kind: 'number', type: number }
     }
     ImageOnlyCheckpointLoader: {
+        ckpt_name: { kind: 'enum', type: Comfy.Union.E_1f08f73a9a576ae570aa3d82ea94f2bcfc29a8fc }
     }
     SVD$_img2vid$_Conditioning: {
+        // clip_vision: { kind: 'object', type: CLIP_VISION }
+        // init_image: { kind: 'object', type: IMAGE }
+        // vae: { kind: 'object', type: VAE }
         width: { kind: 'number', type: number }
         height: { kind: 'number', type: number }
         video_frames: { kind: 'number', type: number }
@@ -9090,26 +9356,41 @@ declare global {
         augmentation_level: { kind: 'number', type: number }
     }
     VideoLinearCFGGuidance: {
+        // model: { kind: 'object', type: MODEL }
         min_cfg: { kind: 'number', type: number }
     }
     VideoTriangleCFGGuidance: {
+        // model: { kind: 'object', type: MODEL }
         min_cfg: { kind: 'number', type: number }
     }
     ImageOnlyCheckpointSave: {
+        // model: { kind: 'object', type: MODEL }
+        // clip_vision: { kind: 'object', type: CLIP_VISION }
+        // vae: { kind: 'object', type: VAE }
         filename_prefix: { kind: 'string', type: string }
     }
     SelfAttentionGuidance: {
+        // model: { kind: 'object', type: MODEL }
         scale: { kind: 'number', type: number }
         blur_sigma: { kind: 'number', type: number }
     }
     PerpNeg: {
+        // model: { kind: 'object', type: MODEL }
+        // empty_conditioning: { kind: 'object', type: CONDITIONING }
         neg_scale: { kind: 'number', type: number }
     }
     PerpNegGuider: {
+        // model: { kind: 'object', type: MODEL }
+        // positive: { kind: 'object', type: CONDITIONING }
+        // negative: { kind: 'object', type: CONDITIONING }
+        // empty_conditioning: { kind: 'object', type: CONDITIONING }
         cfg: { kind: 'number', type: number }
         neg_scale: { kind: 'number', type: number }
     }
     StableZero123$_Conditioning: {
+        // clip_vision: { kind: 'object', type: CLIP_VISION }
+        // init_image: { kind: 'object', type: IMAGE }
+        // vae: { kind: 'object', type: VAE }
         width: { kind: 'number', type: number }
         height: { kind: 'number', type: number }
         batch_size: { kind: 'number', type: number }
@@ -9117,6 +9398,9 @@ declare global {
         azimuth: { kind: 'number', type: number }
     }
     StableZero123$_Conditioning$_Batched: {
+        // clip_vision: { kind: 'object', type: CLIP_VISION }
+        // init_image: { kind: 'object', type: IMAGE }
+        // vae: { kind: 'object', type: VAE }
         width: { kind: 'number', type: number }
         height: { kind: 'number', type: number }
         batch_size: { kind: 'number', type: number }
@@ -9126,24 +9410,38 @@ declare global {
         azimuth_batch_increment: { kind: 'number', type: number }
     }
     SV3D$_Conditioning: {
+        // clip_vision: { kind: 'object', type: CLIP_VISION }
+        // init_image: { kind: 'object', type: IMAGE }
+        // vae: { kind: 'object', type: VAE }
         width: { kind: 'number', type: number }
         height: { kind: 'number', type: number }
         video_frames: { kind: 'number', type: number }
         elevation: { kind: 'number', type: number }
     }
     SD$_4XUpscale$_Conditioning: {
+        // images: { kind: 'object', type: IMAGE }
+        // positive: { kind: 'object', type: CONDITIONING }
+        // negative: { kind: 'object', type: CONDITIONING }
         scale_ratio: { kind: 'number', type: number }
         noise_augmentation: { kind: 'number', type: number }
     }
     PhotoMakerLoader: {
+        photomaker_model_name: { kind: 'enum', type: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 }
     }
     PhotoMakerEncode: {
+        // photomaker: { kind: 'object', type: PHOTOMAKER }
+        // image: { kind: 'object', type: IMAGE }
+        // clip: { kind: 'object', type: CLIP }
         text: { kind: 'string', type: string }
     }
     CLIPTextEncodeControlnet: {
+        // clip: { kind: 'object', type: CLIP }
+        // conditioning: { kind: 'object', type: CONDITIONING }
         text: { kind: 'string', type: string }
     }
     Morphology: {
+        // image: { kind: 'object', type: IMAGE }
+        operation: { kind: 'enum', type: Comfy.Union.E_6ba03252ec9c8111f7381dfb573cd99c2b4d0e3b }
         kernel_size: { kind: 'number', type: number }
     }
     StableCascade$_EmptyLatentImage: {
@@ -9153,17 +9451,30 @@ declare global {
         batch_size: { kind: 'number', type: number }
     }
     StableCascade$_StageB$_Conditioning: {
+        // conditioning: { kind: 'object', type: CONDITIONING }
+        // stage_c: { kind: 'object', type: LATENT }
     }
     StableCascade$_StageC$_VAEEncode: {
+        // image: { kind: 'object', type: IMAGE }
+        // vae: { kind: 'object', type: VAE }
         compression: { kind: 'number', type: number }
     }
     StableCascade$_SuperResolutionControlnet: {
+        // image: { kind: 'object', type: IMAGE }
+        // vae: { kind: 'object', type: VAE }
     }
     DifferentialDiffusion: {
+        // model: { kind: 'object', type: MODEL }
     }
     InstructPixToPixConditioning: {
+        // positive: { kind: 'object', type: CONDITIONING }
+        // negative: { kind: 'object', type: CONDITIONING }
+        // vae: { kind: 'object', type: VAE }
+        // pixels: { kind: 'object', type: IMAGE }
     }
     ModelMergeSD1: {
+        // model1: { kind: 'object', type: MODEL }
+        // model2: { kind: 'object', type: MODEL }
         "time_embed.": { kind: 'number', type: number }
         "label_emb.": { kind: 'number', type: number }
         "input_blocks.0.": { kind: 'number', type: number }
@@ -9196,6 +9507,8 @@ declare global {
         "out.": { kind: 'number', type: number }
     }
     ModelMergeSD2: {
+        // model1: { kind: 'object', type: MODEL }
+        // model2: { kind: 'object', type: MODEL }
         "time_embed.": { kind: 'number', type: number }
         "label_emb.": { kind: 'number', type: number }
         "input_blocks.0.": { kind: 'number', type: number }
@@ -9228,6 +9541,8 @@ declare global {
         "out.": { kind: 'number', type: number }
     }
     ModelMergeSDXL: {
+        // model1: { kind: 'object', type: MODEL }
+        // model2: { kind: 'object', type: MODEL }
         "time_embed.": { kind: 'number', type: number }
         "label_emb.": { kind: 'number', type: number }
         "input_blocks.0": { kind: 'number', type: number }
@@ -9254,6 +9569,8 @@ declare global {
         "out.": { kind: 'number', type: number }
     }
     ModelMergeSD3$_2B: {
+        // model1: { kind: 'object', type: MODEL }
+        // model2: { kind: 'object', type: MODEL }
         "pos_embed.": { kind: 'number', type: number }
         "x_embedder.": { kind: 'number', type: number }
         "context_embedder.": { kind: 'number', type: number }
@@ -9286,6 +9603,8 @@ declare global {
         "final_layer.": { kind: 'number', type: number }
     }
     ModelMergeFlux1: {
+        // model1: { kind: 'object', type: MODEL }
+        // model2: { kind: 'object', type: MODEL }
         "img_in.": { kind: 'number', type: number }
         "time_in.": { kind: 'number', type: number }
         guidance_in: { kind: 'number', type: number }
@@ -9351,6 +9670,8 @@ declare global {
         "final_layer.": { kind: 'number', type: number }
     }
     ModelMergeSD35$_Large: {
+        // model1: { kind: 'object', type: MODEL }
+        // model2: { kind: 'object', type: MODEL }
         "pos_embed.": { kind: 'number', type: number }
         "x_embedder.": { kind: 'number', type: number }
         "context_embedder.": { kind: 'number', type: number }
@@ -9397,31 +9718,37 @@ declare global {
         "final_layer.": { kind: 'number', type: number }
     }
     PerturbedAttentionGuidance: {
+        // model: { kind: 'object', type: MODEL }
         scale: { kind: 'number', type: number }
     }
     AlignYourStepsScheduler: {
+        model_type: { kind: 'enum', type: Comfy.Union.E_ec317371192386ae10cedaee29b315e900386a18 }
         steps: { kind: 'number', type: number }
         denoise: { kind: 'number', type: number }
     }
     UNetSelfAttentionMultiply: {
+        // model: { kind: 'object', type: MODEL }
         q: { kind: 'number', type: number }
         k: { kind: 'number', type: number }
         v: { kind: 'number', type: number }
         out: { kind: 'number', type: number }
     }
     UNetCrossAttentionMultiply: {
+        // model: { kind: 'object', type: MODEL }
         q: { kind: 'number', type: number }
         k: { kind: 'number', type: number }
         v: { kind: 'number', type: number }
         out: { kind: 'number', type: number }
     }
     CLIPAttentionMultiply: {
+        // clip: { kind: 'object', type: CLIP }
         q: { kind: 'number', type: number }
         k: { kind: 'number', type: number }
         v: { kind: 'number', type: number }
         out: { kind: 'number', type: number }
     }
     UNetTemporalAttentionMultiply: {
+        // model: { kind: 'object', type: MODEL }
         self_structural: { kind: 'number', type: number }
         self_temporal: { kind: 'number', type: number }
         cross_structural: { kind: 'number', type: number }
@@ -9430,10 +9757,13 @@ declare global {
     SamplerLCMUpscale: {
         scale_ratio: { kind: 'number', type: number }
         scale_steps: { kind: 'number', type: number }
+        upscale_method: { kind: 'enum', type: Comfy.Union.E_6e6cbf6c48411ad480e010b0c9d2434b41af430d }
     }
     SamplerEulerCFGpp: {
+        version: { kind: 'enum', type: Comfy.Union.E_a8aa5eb2d828c2e279168c48955c7a0fe3ea011a }
     }
     WebcamCapture: {
+        // image: { kind: 'object', type: WEBCAM }
         width: { kind: 'number', type: number }
         height: { kind: 'number', type: number }
         capture_on_queue: { kind: 'boolean', type: boolean }
@@ -9443,17 +9773,27 @@ declare global {
         batch_size: { kind: 'number', type: number }
     }
     VAEEncodeAudio: {
+        // audio: { kind: 'object', type: AUDIO }
+        // vae: { kind: 'object', type: VAE }
     }
     VAEDecodeAudio: {
+        // samples: { kind: 'object', type: LATENT }
+        // vae: { kind: 'object', type: VAE }
     }
     SaveAudio: {
+        // audio: { kind: 'object', type: AUDIO }
         filename_prefix: { kind: 'string', type: string }
     }
     LoadAudio: {
+        audio: { kind: 'enum', type: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 }
     }
     PreviewAudio: {
+        // audio: { kind: 'object', type: AUDIO }
     }
     TripleCLIPLoader: {
+        clip_name1: { kind: 'enum', type: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 }
+        clip_name2: { kind: 'enum', type: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 }
+        clip_name3: { kind: 'enum', type: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 }
     }
     EmptySD3LatentImage: {
         width: { kind: 'number', type: number }
@@ -9461,16 +9801,24 @@ declare global {
         batch_size: { kind: 'number', type: number }
     }
     CLIPTextEncodeSD3: {
+        // clip: { kind: 'object', type: CLIP }
         clip_l: { kind: 'string', type: string }
         clip_g: { kind: 'string', type: string }
         t5xxl: { kind: 'string', type: string }
+        empty_padding: { kind: 'enum', type: Comfy.Union.E_270e152a81c37daf152e6cc67675baaafe058bc4 }
     }
     ControlNetApplySD3: {
+        // positive: { kind: 'object', type: CONDITIONING }
+        // negative: { kind: 'object', type: CONDITIONING }
+        // control_net: { kind: 'object', type: CONTROL_NET }
+        // vae: { kind: 'object', type: VAE }
+        // image: { kind: 'object', type: IMAGE }
         strength: { kind: 'number', type: number }
         start_percent: { kind: 'number', type: number }
         end_percent: { kind: 'number', type: number }
     }
     SkipLayerGuidanceSD3: {
+        // model: { kind: 'object', type: MODEL }
         layers: { kind: 'string', type: string }
         scale: { kind: 'number', type: number }
         start_percent: { kind: 'number', type: number }
@@ -9482,30 +9830,46 @@ declare global {
         denoise: { kind: 'number', type: number }
     }
     SetUnionControlNetType: {
+        // control_net: { kind: 'object', type: CONTROL_NET }
+        type: { kind: 'enum', type: Comfy.Union.E_0e92c8b1b6fe90c3e343d8b54b531b9d887eee62 }
     }
     ControlNetInpaintingAliMamaApply: {
+        // positive: { kind: 'object', type: CONDITIONING }
+        // negative: { kind: 'object', type: CONDITIONING }
+        // control_net: { kind: 'object', type: CONTROL_NET }
+        // vae: { kind: 'object', type: VAE }
+        // image: { kind: 'object', type: IMAGE }
+        // mask: { kind: 'object', type: MASK }
         strength: { kind: 'number', type: number }
         start_percent: { kind: 'number', type: number }
         end_percent: { kind: 'number', type: number }
     }
     CLIPTextEncodeHunyuanDiT: {
+        // clip: { kind: 'object', type: CLIP }
         bert: { kind: 'string', type: string }
         mt5xl: { kind: 'string', type: string }
     }
     CLIPTextEncodeFlux: {
+        // clip: { kind: 'object', type: CLIP }
         clip_l: { kind: 'string', type: string }
         t5xxl: { kind: 'string', type: string }
         guidance: { kind: 'number', type: number }
     }
     FluxGuidance: {
+        // conditioning: { kind: 'object', type: CONDITIONING }
         guidance: { kind: 'number', type: number }
     }
     LoraSave: {
         filename_prefix: { kind: 'string', type: string }
         rank: { kind: 'number', type: number }
+        lora_type: { kind: 'enum', type: Comfy.Union.E_b80b6129a942660e31e08221ee04a76f537556ce }
         bias_diff: { kind: 'boolean', type: boolean }
+        // model_diff: { kind: 'object', type: MODEL }
+        // text_encoder_diff: { kind: 'object', type: CLIP }
     }
     TorchCompileModel: {
+        // model: { kind: 'object', type: MODEL }
+        backend: { kind: 'enum', type: Comfy.Union.E_4bbca93e426c35d56c43252f1fb21877d5e7a1aa }
     }
     EmptyMochiLatentVideo: {
         width: { kind: 'number', type: number }
@@ -9514,8 +9878,11 @@ declare global {
         batch_size: { kind: 'number', type: number }
     }
     SaveImageWebsocket: {
+        // images: { kind: 'object', type: IMAGE }
     }
     SAMLoader: {
+        model_name: { kind: 'enum', type: Comfy.Union.E_40c777392f92d61852ab0f7a429a755abf59b71a }
+        device_mode: { kind: 'enum', type: Comfy.Union.E_2ad445b99254e9b51c963d9f1a75fabe3d01e569 }
     }
     CLIPSegDetectorProvider: {
         text: { kind: 'string', type: string }
@@ -9524,108 +9891,177 @@ declare global {
         dilation_factor: { kind: 'number', type: number }
     }
     ONNXDetectorProvider: {
+        model_name: { kind: 'enum', type: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 }
     }
     BitwiseAndMaskForEach: {
+        // base_segs: { kind: 'object', type: SEGS }
+        // mask_segs: { kind: 'object', type: SEGS }
     }
     SubtractMaskForEach: {
+        // base_segs: { kind: 'object', type: SEGS }
+        // mask_segs: { kind: 'object', type: SEGS }
     }
     DetailerForEach: {
+        // image: { kind: 'object', type: IMAGE }
+        // segs: { kind: 'object', type: SEGS }
+        // model: { kind: 'object', type: MODEL }
+        // clip: { kind: 'object', type: CLIP }
+        // vae: { kind: 'object', type: VAE }
         guide_size: { kind: 'number', type: number }
         guide_size_for: { kind: 'boolean', type: boolean }
         max_size: { kind: 'number', type: number }
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
+        scheduler: { kind: 'enum', type: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d }
+        // positive: { kind: 'object', type: CONDITIONING }
+        // negative: { kind: 'object', type: CONDITIONING }
         denoise: { kind: 'number', type: number }
         feather: { kind: 'number', type: number }
         noise_mask: { kind: 'boolean', type: boolean }
         force_inpaint: { kind: 'boolean', type: boolean }
         wildcard: { kind: 'string', type: string }
         cycle: { kind: 'number', type: number }
+        // detailer_hook: { kind: 'object', type: DETAILER_HOOK }
         inpaint_model: { kind: 'boolean', type: boolean }
         noise_mask_feather: { kind: 'number', type: number }
+        // scheduler_func_opt: { kind: 'object', type: SCHEDULER_FUNC }
     }
     DetailerForEachDebug: {
+        // image: { kind: 'object', type: IMAGE }
+        // segs: { kind: 'object', type: SEGS }
+        // model: { kind: 'object', type: MODEL }
+        // clip: { kind: 'object', type: CLIP }
+        // vae: { kind: 'object', type: VAE }
         guide_size: { kind: 'number', type: number }
         guide_size_for: { kind: 'boolean', type: boolean }
         max_size: { kind: 'number', type: number }
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
+        scheduler: { kind: 'enum', type: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d }
+        // positive: { kind: 'object', type: CONDITIONING }
+        // negative: { kind: 'object', type: CONDITIONING }
         denoise: { kind: 'number', type: number }
         feather: { kind: 'number', type: number }
         noise_mask: { kind: 'boolean', type: boolean }
         force_inpaint: { kind: 'boolean', type: boolean }
         wildcard: { kind: 'string', type: string }
         cycle: { kind: 'number', type: number }
+        // detailer_hook: { kind: 'object', type: DETAILER_HOOK }
         inpaint_model: { kind: 'boolean', type: boolean }
         noise_mask_feather: { kind: 'number', type: number }
+        // scheduler_func_opt: { kind: 'object', type: SCHEDULER_FUNC }
     }
     DetailerForEachPipe: {
+        // image: { kind: 'object', type: IMAGE }
+        // segs: { kind: 'object', type: SEGS }
         guide_size: { kind: 'number', type: number }
         guide_size_for: { kind: 'boolean', type: boolean }
         max_size: { kind: 'number', type: number }
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
+        scheduler: { kind: 'enum', type: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d }
         denoise: { kind: 'number', type: number }
         feather: { kind: 'number', type: number }
         noise_mask: { kind: 'boolean', type: boolean }
         force_inpaint: { kind: 'boolean', type: boolean }
+        // basic_pipe: { kind: 'object', type: BASIC_PIPE }
         wildcard: { kind: 'string', type: string }
         refiner_ratio: { kind: 'number', type: number }
         cycle: { kind: 'number', type: number }
+        // detailer_hook: { kind: 'object', type: DETAILER_HOOK }
+        // refiner_basic_pipe_opt: { kind: 'object', type: BASIC_PIPE }
         inpaint_model: { kind: 'boolean', type: boolean }
         noise_mask_feather: { kind: 'number', type: number }
+        // scheduler_func_opt: { kind: 'object', type: SCHEDULER_FUNC }
     }
     DetailerForEachDebugPipe: {
+        // image: { kind: 'object', type: IMAGE }
+        // segs: { kind: 'object', type: SEGS }
         guide_size: { kind: 'number', type: number }
         guide_size_for: { kind: 'boolean', type: boolean }
         max_size: { kind: 'number', type: number }
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
+        scheduler: { kind: 'enum', type: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d }
         denoise: { kind: 'number', type: number }
         feather: { kind: 'number', type: number }
         noise_mask: { kind: 'boolean', type: boolean }
         force_inpaint: { kind: 'boolean', type: boolean }
+        // basic_pipe: { kind: 'object', type: BASIC_PIPE }
         wildcard: { kind: 'string', type: string }
         refiner_ratio: { kind: 'number', type: number }
         cycle: { kind: 'number', type: number }
+        // detailer_hook: { kind: 'object', type: DETAILER_HOOK }
+        // refiner_basic_pipe_opt: { kind: 'object', type: BASIC_PIPE }
         inpaint_model: { kind: 'boolean', type: boolean }
         noise_mask_feather: { kind: 'number', type: number }
+        // scheduler_func_opt: { kind: 'object', type: SCHEDULER_FUNC }
     }
     DetailerForEachPipeForAnimateDiff: {
+        // image_frames: { kind: 'object', type: IMAGE }
+        // segs: { kind: 'object', type: SEGS }
         guide_size: { kind: 'number', type: number }
         guide_size_for: { kind: 'boolean', type: boolean }
         max_size: { kind: 'number', type: number }
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
+        scheduler: { kind: 'enum', type: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d }
         denoise: { kind: 'number', type: number }
         feather: { kind: 'number', type: number }
+        // basic_pipe: { kind: 'object', type: BASIC_PIPE }
         refiner_ratio: { kind: 'number', type: number }
+        // detailer_hook: { kind: 'object', type: DETAILER_HOOK }
+        // refiner_basic_pipe_opt: { kind: 'object', type: BASIC_PIPE }
         noise_mask_feather: { kind: 'number', type: number }
+        // scheduler_func_opt: { kind: 'object', type: SCHEDULER_FUNC }
     }
     SAMDetectorCombined: {
+        // sam_model: { kind: 'object', type: SAM_MODEL }
+        // segs: { kind: 'object', type: SEGS }
+        // image: { kind: 'object', type: IMAGE }
+        detection_hint: { kind: 'enum', type: Comfy.Union.E_40275a874822a8699ee13794e127b63cdd6bfdae }
         dilation: { kind: 'number', type: number }
         threshold: { kind: 'number', type: number }
         bbox_expansion: { kind: 'number', type: number }
         mask_hint_threshold: { kind: 'number', type: number }
+        mask_hint_use_negative: { kind: 'enum', type: Comfy.Union.E_aa302307a82588b6e514aca43e4cddad342a73fc }
     }
     SAMDetectorSegmented: {
+        // sam_model: { kind: 'object', type: SAM_MODEL }
+        // segs: { kind: 'object', type: SEGS }
+        // image: { kind: 'object', type: IMAGE }
+        detection_hint: { kind: 'enum', type: Comfy.Union.E_40275a874822a8699ee13794e127b63cdd6bfdae }
         dilation: { kind: 'number', type: number }
         threshold: { kind: 'number', type: number }
         bbox_expansion: { kind: 'number', type: number }
         mask_hint_threshold: { kind: 'number', type: number }
+        mask_hint_use_negative: { kind: 'enum', type: Comfy.Union.E_aa302307a82588b6e514aca43e4cddad342a73fc }
     }
     FaceDetailer: {
+        // image: { kind: 'object', type: IMAGE }
+        // model: { kind: 'object', type: MODEL }
+        // clip: { kind: 'object', type: CLIP }
+        // vae: { kind: 'object', type: VAE }
         guide_size: { kind: 'number', type: number }
         guide_size_for: { kind: 'boolean', type: boolean }
         max_size: { kind: 'number', type: number }
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
+        scheduler: { kind: 'enum', type: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d }
+        // positive: { kind: 'object', type: CONDITIONING }
+        // negative: { kind: 'object', type: CONDITIONING }
         denoise: { kind: 'number', type: number }
         feather: { kind: 'number', type: number }
         noise_mask: { kind: 'boolean', type: boolean }
@@ -9633,23 +10069,34 @@ declare global {
         bbox_threshold: { kind: 'number', type: number }
         bbox_dilation: { kind: 'number', type: number }
         bbox_crop_factor: { kind: 'number', type: number }
+        sam_detection_hint: { kind: 'enum', type: Comfy.Union.E_40275a874822a8699ee13794e127b63cdd6bfdae }
         sam_dilation: { kind: 'number', type: number }
         sam_threshold: { kind: 'number', type: number }
         sam_bbox_expansion: { kind: 'number', type: number }
         sam_mask_hint_threshold: { kind: 'number', type: number }
+        sam_mask_hint_use_negative: { kind: 'enum', type: Comfy.Union.E_aa302307a82588b6e514aca43e4cddad342a73fc }
         drop_size: { kind: 'number', type: number }
+        // bbox_detector: { kind: 'object', type: BBOX_DETECTOR }
         wildcard: { kind: 'string', type: string }
         cycle: { kind: 'number', type: number }
+        // sam_model_opt: { kind: 'object', type: SAM_MODEL }
+        // segm_detector_opt: { kind: 'object', type: SEGM_DETECTOR }
+        // detailer_hook: { kind: 'object', type: DETAILER_HOOK }
         inpaint_model: { kind: 'boolean', type: boolean }
         noise_mask_feather: { kind: 'number', type: number }
+        // scheduler_func_opt: { kind: 'object', type: SCHEDULER_FUNC }
     }
     FaceDetailerPipe: {
+        // image: { kind: 'object', type: IMAGE }
+        // detailer_pipe: { kind: 'object', type: DETAILER_PIPE }
         guide_size: { kind: 'number', type: number }
         guide_size_for: { kind: 'boolean', type: boolean }
         max_size: { kind: 'number', type: number }
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
+        scheduler: { kind: 'enum', type: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d }
         denoise: { kind: 'number', type: number }
         feather: { kind: 'number', type: number }
         noise_mask: { kind: 'boolean', type: boolean }
@@ -9657,17 +10104,23 @@ declare global {
         bbox_threshold: { kind: 'number', type: number }
         bbox_dilation: { kind: 'number', type: number }
         bbox_crop_factor: { kind: 'number', type: number }
+        sam_detection_hint: { kind: 'enum', type: Comfy.Union.E_40275a874822a8699ee13794e127b63cdd6bfdae }
         sam_dilation: { kind: 'number', type: number }
         sam_threshold: { kind: 'number', type: number }
         sam_bbox_expansion: { kind: 'number', type: number }
         sam_mask_hint_threshold: { kind: 'number', type: number }
+        sam_mask_hint_use_negative: { kind: 'enum', type: Comfy.Union.E_aa302307a82588b6e514aca43e4cddad342a73fc }
         drop_size: { kind: 'number', type: number }
         refiner_ratio: { kind: 'number', type: number }
         cycle: { kind: 'number', type: number }
         inpaint_model: { kind: 'boolean', type: boolean }
         noise_mask_feather: { kind: 'number', type: number }
+        // scheduler_func_opt: { kind: 'object', type: SCHEDULER_FUNC }
     }
     MaskDetailerPipe: {
+        // image: { kind: 'object', type: IMAGE }
+        // mask: { kind: 'object', type: MASK }
+        // basic_pipe: { kind: 'object', type: BASIC_PIPE }
         guide_size: { kind: 'number', type: number }
         guide_size_for: { kind: 'boolean', type: boolean }
         max_size: { kind: 'number', type: number }
@@ -9675,6 +10128,8 @@ declare global {
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
+        scheduler: { kind: 'enum', type: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d }
         denoise: { kind: 'number', type: number }
         feather: { kind: 'number', type: number }
         crop_factor: { kind: 'number', type: number }
@@ -9682,158 +10137,349 @@ declare global {
         refiner_ratio: { kind: 'number', type: number }
         batch_size: { kind: 'number', type: number }
         cycle: { kind: 'number', type: number }
+        // refiner_basic_pipe_opt: { kind: 'object', type: BASIC_PIPE }
+        // detailer_hook: { kind: 'object', type: DETAILER_HOOK }
         inpaint_model: { kind: 'boolean', type: boolean }
         noise_mask_feather: { kind: 'number', type: number }
         bbox_fill: { kind: 'boolean', type: boolean }
         contour_fill: { kind: 'boolean', type: boolean }
+        // scheduler_func_opt: { kind: 'object', type: SCHEDULER_FUNC }
     }
     ToDetailerPipe: {
+        // model: { kind: 'object', type: MODEL }
+        // clip: { kind: 'object', type: CLIP }
+        // vae: { kind: 'object', type: VAE }
+        // positive: { kind: 'object', type: CONDITIONING }
+        // negative: { kind: 'object', type: CONDITIONING }
+        // bbox_detector: { kind: 'object', type: BBOX_DETECTOR }
         wildcard: { kind: 'string', type: string }
+        "Select to add LoRA": { kind: 'enum', type: Comfy.Union.E_35e403c7628f220c07d5485d6e81fc66b4fc12df }
+        "Select to add Wildcard": { kind: 'enum', type: Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26 }
+        // sam_model_opt: { kind: 'object', type: SAM_MODEL }
+        // segm_detector_opt: { kind: 'object', type: SEGM_DETECTOR }
+        // detailer_hook: { kind: 'object', type: DETAILER_HOOK }
     }
     ToDetailerPipeSDXL: {
+        // model: { kind: 'object', type: MODEL }
+        // clip: { kind: 'object', type: CLIP }
+        // vae: { kind: 'object', type: VAE }
+        // positive: { kind: 'object', type: CONDITIONING }
+        // negative: { kind: 'object', type: CONDITIONING }
+        // refiner_model: { kind: 'object', type: MODEL }
+        // refiner_clip: { kind: 'object', type: CLIP }
+        // refiner_positive: { kind: 'object', type: CONDITIONING }
+        // refiner_negative: { kind: 'object', type: CONDITIONING }
+        // bbox_detector: { kind: 'object', type: BBOX_DETECTOR }
         wildcard: { kind: 'string', type: string }
+        "Select to add LoRA": { kind: 'enum', type: Comfy.Union.E_35e403c7628f220c07d5485d6e81fc66b4fc12df }
+        "Select to add Wildcard": { kind: 'enum', type: Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26 }
+        // sam_model_opt: { kind: 'object', type: SAM_MODEL }
+        // segm_detector_opt: { kind: 'object', type: SEGM_DETECTOR }
+        // detailer_hook: { kind: 'object', type: DETAILER_HOOK }
     }
     FromDetailerPipe: {
+        // detailer_pipe: { kind: 'object', type: DETAILER_PIPE }
     }
     FromDetailerPipe$_v2: {
+        // detailer_pipe: { kind: 'object', type: DETAILER_PIPE }
     }
     FromDetailerPipeSDXL: {
+        // detailer_pipe: { kind: 'object', type: DETAILER_PIPE }
     }
     AnyPipeToBasic: {
+        // any_pipe: { kind: 'object', type: $Star }
     }
     ToBasicPipe: {
+        // model: { kind: 'object', type: MODEL }
+        // clip: { kind: 'object', type: CLIP }
+        // vae: { kind: 'object', type: VAE }
+        // positive: { kind: 'object', type: CONDITIONING }
+        // negative: { kind: 'object', type: CONDITIONING }
     }
     FromBasicPipe: {
+        // basic_pipe: { kind: 'object', type: BASIC_PIPE }
     }
     FromBasicPipe$_v2: {
+        // basic_pipe: { kind: 'object', type: BASIC_PIPE }
     }
     BasicPipeToDetailerPipe: {
+        // basic_pipe: { kind: 'object', type: BASIC_PIPE }
+        // bbox_detector: { kind: 'object', type: BBOX_DETECTOR }
         wildcard: { kind: 'string', type: string }
+        "Select to add LoRA": { kind: 'enum', type: Comfy.Union.E_35e403c7628f220c07d5485d6e81fc66b4fc12df }
+        "Select to add Wildcard": { kind: 'enum', type: Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26 }
+        // sam_model_opt: { kind: 'object', type: SAM_MODEL }
+        // segm_detector_opt: { kind: 'object', type: SEGM_DETECTOR }
+        // detailer_hook: { kind: 'object', type: DETAILER_HOOK }
     }
     BasicPipeToDetailerPipeSDXL: {
+        // base_basic_pipe: { kind: 'object', type: BASIC_PIPE }
+        // refiner_basic_pipe: { kind: 'object', type: BASIC_PIPE }
+        // bbox_detector: { kind: 'object', type: BBOX_DETECTOR }
         wildcard: { kind: 'string', type: string }
+        "Select to add LoRA": { kind: 'enum', type: Comfy.Union.E_35e403c7628f220c07d5485d6e81fc66b4fc12df }
+        "Select to add Wildcard": { kind: 'enum', type: Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26 }
+        // sam_model_opt: { kind: 'object', type: SAM_MODEL }
+        // segm_detector_opt: { kind: 'object', type: SEGM_DETECTOR }
+        // detailer_hook: { kind: 'object', type: DETAILER_HOOK }
     }
     DetailerPipeToBasicPipe: {
+        // detailer_pipe: { kind: 'object', type: DETAILER_PIPE }
     }
     EditBasicPipe: {
+        // basic_pipe: { kind: 'object', type: BASIC_PIPE }
+        // model: { kind: 'object', type: MODEL }
+        // clip: { kind: 'object', type: CLIP }
+        // vae: { kind: 'object', type: VAE }
+        // positive: { kind: 'object', type: CONDITIONING }
+        // negative: { kind: 'object', type: CONDITIONING }
     }
     EditDetailerPipe: {
+        // detailer_pipe: { kind: 'object', type: DETAILER_PIPE }
         wildcard: { kind: 'string', type: string }
+        "Select to add LoRA": { kind: 'enum', type: Comfy.Union.E_35e403c7628f220c07d5485d6e81fc66b4fc12df }
+        "Select to add Wildcard": { kind: 'enum', type: Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26 }
+        // model: { kind: 'object', type: MODEL }
+        // clip: { kind: 'object', type: CLIP }
+        // vae: { kind: 'object', type: VAE }
+        // positive: { kind: 'object', type: CONDITIONING }
+        // negative: { kind: 'object', type: CONDITIONING }
+        // bbox_detector: { kind: 'object', type: BBOX_DETECTOR }
+        // sam_model: { kind: 'object', type: SAM_MODEL }
+        // segm_detector: { kind: 'object', type: SEGM_DETECTOR }
+        // detailer_hook: { kind: 'object', type: DETAILER_HOOK }
     }
     EditDetailerPipeSDXL: {
+        // detailer_pipe: { kind: 'object', type: DETAILER_PIPE }
         wildcard: { kind: 'string', type: string }
+        "Select to add LoRA": { kind: 'enum', type: Comfy.Union.E_35e403c7628f220c07d5485d6e81fc66b4fc12df }
+        "Select to add Wildcard": { kind: 'enum', type: Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26 }
+        // model: { kind: 'object', type: MODEL }
+        // clip: { kind: 'object', type: CLIP }
+        // vae: { kind: 'object', type: VAE }
+        // positive: { kind: 'object', type: CONDITIONING }
+        // negative: { kind: 'object', type: CONDITIONING }
+        // refiner_model: { kind: 'object', type: MODEL }
+        // refiner_clip: { kind: 'object', type: CLIP }
+        // refiner_positive: { kind: 'object', type: CONDITIONING }
+        // refiner_negative: { kind: 'object', type: CONDITIONING }
+        // bbox_detector: { kind: 'object', type: BBOX_DETECTOR }
+        // sam_model: { kind: 'object', type: SAM_MODEL }
+        // segm_detector: { kind: 'object', type: SEGM_DETECTOR }
+        // detailer_hook: { kind: 'object', type: DETAILER_HOOK }
     }
     LatentPixelScale: {
+        // samples: { kind: 'object', type: LATENT }
+        scale_method: { kind: 'enum', type: Comfy.Union.E_f9c5efbc827613eb902695cd0a25738ee31c607d }
         scale_factor: { kind: 'number', type: number }
+        // vae: { kind: 'object', type: VAE }
         use_tiled_vae: { kind: 'boolean', type: boolean }
+        // upscale_model_opt: { kind: 'object', type: UPSCALE_MODEL }
     }
     PixelKSampleUpscalerProvider: {
+        scale_method: { kind: 'enum', type: Comfy.Union.E_f9c5efbc827613eb902695cd0a25738ee31c607d }
+        // model: { kind: 'object', type: MODEL }
+        // vae: { kind: 'object', type: VAE }
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
+        scheduler: { kind: 'enum', type: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d }
+        // positive: { kind: 'object', type: CONDITIONING }
+        // negative: { kind: 'object', type: CONDITIONING }
         denoise: { kind: 'number', type: number }
         use_tiled_vae: { kind: 'boolean', type: boolean }
         tile_size: { kind: 'number', type: number }
+        // upscale_model_opt: { kind: 'object', type: UPSCALE_MODEL }
+        // pk_hook_opt: { kind: 'object', type: PK_HOOK }
+        // scheduler_func_opt: { kind: 'object', type: SCHEDULER_FUNC }
     }
     PixelKSampleUpscalerProviderPipe: {
+        scale_method: { kind: 'enum', type: Comfy.Union.E_f9c5efbc827613eb902695cd0a25738ee31c607d }
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
+        scheduler: { kind: 'enum', type: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d }
         denoise: { kind: 'number', type: number }
         use_tiled_vae: { kind: 'boolean', type: boolean }
+        // basic_pipe: { kind: 'object', type: BASIC_PIPE }
         tile_size: { kind: 'number', type: number }
+        // upscale_model_opt: { kind: 'object', type: UPSCALE_MODEL }
+        // pk_hook_opt: { kind: 'object', type: PK_HOOK }
+        // scheduler_func_opt: { kind: 'object', type: SCHEDULER_FUNC }
+        // tile_cnet_opt: { kind: 'object', type: CONTROL_NET }
         tile_cnet_strength: { kind: 'number', type: number }
     }
     IterativeLatentUpscale: {
+        // samples: { kind: 'object', type: LATENT }
         upscale_factor: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         temp_prefix: { kind: 'string', type: string }
+        // upscaler: { kind: 'object', type: UPSCALER }
+        step_mode: { kind: 'enum', type: Comfy.Union.E_4724269c8f643d5efa98f97e1e55a7ddfe6aac6c }
     }
     IterativeImageUpscale: {
+        // pixels: { kind: 'object', type: IMAGE }
         upscale_factor: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         temp_prefix: { kind: 'string', type: string }
+        // upscaler: { kind: 'object', type: UPSCALER }
+        // vae: { kind: 'object', type: VAE }
+        step_mode: { kind: 'enum', type: Comfy.Union.E_4724269c8f643d5efa98f97e1e55a7ddfe6aac6c }
     }
     PixelTiledKSampleUpscalerProvider: {
+        scale_method: { kind: 'enum', type: Comfy.Union.E_f9c5efbc827613eb902695cd0a25738ee31c607d }
+        // model: { kind: 'object', type: MODEL }
+        // vae: { kind: 'object', type: VAE }
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
+        scheduler: { kind: 'enum', type: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325 }
+        // positive: { kind: 'object', type: CONDITIONING }
+        // negative: { kind: 'object', type: CONDITIONING }
         denoise: { kind: 'number', type: number }
         tile_width: { kind: 'number', type: number }
         tile_height: { kind: 'number', type: number }
+        tiling_strategy: { kind: 'enum', type: Comfy.Union.E_304f89a0de34643f12756237824e7261db28aaf5 }
+        // upscale_model_opt: { kind: 'object', type: UPSCALE_MODEL }
+        // pk_hook_opt: { kind: 'object', type: PK_HOOK }
+        // tile_cnet_opt: { kind: 'object', type: CONTROL_NET }
         tile_cnet_strength: { kind: 'number', type: number }
     }
     PixelTiledKSampleUpscalerProviderPipe: {
+        scale_method: { kind: 'enum', type: Comfy.Union.E_f9c5efbc827613eb902695cd0a25738ee31c607d }
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
+        scheduler: { kind: 'enum', type: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325 }
         denoise: { kind: 'number', type: number }
         tile_width: { kind: 'number', type: number }
         tile_height: { kind: 'number', type: number }
+        tiling_strategy: { kind: 'enum', type: Comfy.Union.E_304f89a0de34643f12756237824e7261db28aaf5 }
+        // basic_pipe: { kind: 'object', type: BASIC_PIPE }
+        // upscale_model_opt: { kind: 'object', type: UPSCALE_MODEL }
+        // pk_hook_opt: { kind: 'object', type: PK_HOOK }
+        // tile_cnet_opt: { kind: 'object', type: CONTROL_NET }
         tile_cnet_strength: { kind: 'number', type: number }
     }
     TwoSamplersForMaskUpscalerProvider: {
+        scale_method: { kind: 'enum', type: Comfy.Union.E_f9c5efbc827613eb902695cd0a25738ee31c607d }
+        full_sample_schedule: { kind: 'enum', type: Comfy.Union.E_de6a9887e0bfe301f572e929959509ed64574d1b }
         use_tiled_vae: { kind: 'boolean', type: boolean }
+        // base_sampler: { kind: 'object', type: KSAMPLER }
+        // mask_sampler: { kind: 'object', type: KSAMPLER }
+        // mask: { kind: 'object', type: MASK }
+        // vae: { kind: 'object', type: VAE }
         tile_size: { kind: 'number', type: number }
+        // full_sampler_opt: { kind: 'object', type: KSAMPLER }
+        // upscale_model_opt: { kind: 'object', type: UPSCALE_MODEL }
+        // pk_hook_base_opt: { kind: 'object', type: PK_HOOK }
+        // pk_hook_mask_opt: { kind: 'object', type: PK_HOOK }
+        // pk_hook_full_opt: { kind: 'object', type: PK_HOOK }
     }
     TwoSamplersForMaskUpscalerProviderPipe: {
+        scale_method: { kind: 'enum', type: Comfy.Union.E_f9c5efbc827613eb902695cd0a25738ee31c607d }
+        full_sample_schedule: { kind: 'enum', type: Comfy.Union.E_de6a9887e0bfe301f572e929959509ed64574d1b }
         use_tiled_vae: { kind: 'boolean', type: boolean }
+        // base_sampler: { kind: 'object', type: KSAMPLER }
+        // mask_sampler: { kind: 'object', type: KSAMPLER }
+        // mask: { kind: 'object', type: MASK }
+        // basic_pipe: { kind: 'object', type: BASIC_PIPE }
         tile_size: { kind: 'number', type: number }
+        // full_sampler_opt: { kind: 'object', type: KSAMPLER }
+        // upscale_model_opt: { kind: 'object', type: UPSCALE_MODEL }
+        // pk_hook_base_opt: { kind: 'object', type: PK_HOOK }
+        // pk_hook_mask_opt: { kind: 'object', type: PK_HOOK }
+        // pk_hook_full_opt: { kind: 'object', type: PK_HOOK }
     }
     PixelKSampleHookCombine: {
+        // hook1: { kind: 'object', type: PK_HOOK }
+        // hook2: { kind: 'object', type: PK_HOOK }
     }
     DenoiseScheduleHookProvider: {
+        schedule_for_iteration: { kind: 'enum', type: Comfy.Union.E_0f7d0d088b6ea936fb25b477722d734706fe8b40 }
         target_denoise: { kind: 'number', type: number }
     }
     StepsScheduleHookProvider: {
+        schedule_for_iteration: { kind: 'enum', type: Comfy.Union.E_0f7d0d088b6ea936fb25b477722d734706fe8b40 }
         target_steps: { kind: 'number', type: number }
     }
     CfgScheduleHookProvider: {
+        schedule_for_iteration: { kind: 'enum', type: Comfy.Union.E_0f7d0d088b6ea936fb25b477722d734706fe8b40 }
         target_cfg: { kind: 'number', type: number }
     }
     NoiseInjectionHookProvider: {
+        schedule_for_iteration: { kind: 'enum', type: Comfy.Union.E_0f7d0d088b6ea936fb25b477722d734706fe8b40 }
+        source: { kind: 'enum', type: Comfy.Union.E_3dfc15432d4b952e91053feecd5a5427720957fc }
         seed: { kind: 'number', type: number }
         start_strength: { kind: 'number', type: number }
         end_strength: { kind: 'number', type: number }
     }
     UnsamplerHookProvider: {
+        // model: { kind: 'object', type: MODEL }
         steps: { kind: 'number', type: number }
         start_end_at_step: { kind: 'number', type: number }
         end_end_at_step: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
+        scheduler: { kind: 'enum', type: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325 }
+        normalize: { kind: 'enum', type: Comfy.Union.E_449b4cae3566dd9b97c417c352bb08e25b89431b }
+        // positive: { kind: 'object', type: CONDITIONING }
+        // negative: { kind: 'object', type: CONDITIONING }
+        schedule_for_iteration: { kind: 'enum', type: Comfy.Union.E_0f7d0d088b6ea936fb25b477722d734706fe8b40 }
     }
     CoreMLDetailerHookProvider: {
+        mode: { kind: 'enum', type: Comfy.Union.E_d4b6506ab5528aeab8952aa9d308dbc242d01e63 }
     }
     PreviewDetailerHookProvider: {
         quality: { kind: 'number', type: number }
     }
     DetailerHookCombine: {
+        // hook1: { kind: 'object', type: DETAILER_HOOK }
+        // hook2: { kind: 'object', type: DETAILER_HOOK }
     }
     NoiseInjectionDetailerHookProvider: {
+        schedule_for_cycle: { kind: 'enum', type: Comfy.Union.E_afbc7832ad78555d4f5646f97ed21b561fe3d1f0 }
+        source: { kind: 'enum', type: Comfy.Union.E_3dfc15432d4b952e91053feecd5a5427720957fc }
         seed: { kind: 'number', type: number }
         start_strength: { kind: 'number', type: number }
         end_strength: { kind: 'number', type: number }
     }
     UnsamplerDetailerHookProvider: {
+        // model: { kind: 'object', type: MODEL }
         steps: { kind: 'number', type: number }
         start_end_at_step: { kind: 'number', type: number }
         end_end_at_step: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
+        scheduler: { kind: 'enum', type: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325 }
+        normalize: { kind: 'enum', type: Comfy.Union.E_449b4cae3566dd9b97c417c352bb08e25b89431b }
+        // positive: { kind: 'object', type: CONDITIONING }
+        // negative: { kind: 'object', type: CONDITIONING }
+        schedule_for_cycle: { kind: 'enum', type: Comfy.Union.E_afbc7832ad78555d4f5646f97ed21b561fe3d1f0 }
     }
     DenoiseSchedulerDetailerHookProvider: {
+        schedule_for_cycle: { kind: 'enum', type: Comfy.Union.E_0f7d0d088b6ea936fb25b477722d734706fe8b40 }
         target_denoise: { kind: 'number', type: number }
     }
     SEGSOrderedFilterDetailerHookProvider: {
+        target: { kind: 'enum', type: Comfy.Union.E_87bec9aa0dfe9b9678fd35387106d931d78358cd }
         order: { kind: 'boolean', type: boolean }
         take_start: { kind: 'number', type: number }
         take_count: { kind: 'number', type: number }
     }
     SEGSRangeFilterDetailerHookProvider: {
+        target: { kind: 'enum', type: Comfy.Union.E_aceb55e7f03fcbc2a78383bd8ddff8676e42e536 }
         mode: { kind: 'boolean', type: boolean }
         min_value: { kind: 'number', type: number }
         max_value: { kind: 'number', type: number }
     }
     SEGSLabelFilterDetailerHookProvider: {
+        // segs: { kind: 'object', type: SEGS }
+        preset: { kind: 'enum', type: Comfy.Union.E_cc1f262afc534d382e5c36082cecd4fc2a9c4ffb }
         labels: { kind: 'string', type: string }
     }
     VariationNoiseDetailerHookProvider: {
@@ -9841,20 +10487,32 @@ declare global {
         strength: { kind: 'number', type: number }
     }
     BitwiseAndMask: {
+        // mask1: { kind: 'object', type: MASK }
+        // mask2: { kind: 'object', type: MASK }
     }
     SubtractMask: {
+        // mask1: { kind: 'object', type: MASK }
+        // mask2: { kind: 'object', type: MASK }
     }
     AddMask: {
+        // mask1: { kind: 'object', type: MASK }
+        // mask2: { kind: 'object', type: MASK }
     }
     ImpactSegsAndMask: {
+        // segs: { kind: 'object', type: SEGS }
+        // mask: { kind: 'object', type: MASK }
     }
     ImpactSegsAndMaskForEach: {
+        // segs: { kind: 'object', type: SEGS }
+        // masks: { kind: 'object', type: MASK }
     }
     EmptySegs: {
     }
     ImpactFlattenMask: {
+        // masks: { kind: 'object', type: MASK }
     }
     MediaPipeFaceMeshToSEGS: {
+        // image: { kind: 'object', type: IMAGE }
         crop_factor: { kind: 'number', type: number }
         bbox_fill: { kind: 'boolean', type: boolean }
         crop_min_size: { kind: 'number', type: number }
@@ -9870,6 +10528,7 @@ declare global {
         right_pupil: { kind: 'boolean', type: boolean }
     }
     MaskToSEGS: {
+        // mask: { kind: 'object', type: MASK }
         combined: { kind: 'boolean', type: boolean }
         crop_factor: { kind: 'number', type: number }
         bbox_fill: { kind: 'boolean', type: boolean }
@@ -9877,6 +10536,7 @@ declare global {
         contour_fill: { kind: 'boolean', type: boolean }
     }
     MaskToSEGS$_for$_AnimateDiff: {
+        // mask: { kind: 'object', type: MASK }
         combined: { kind: 'boolean', type: boolean }
         crop_factor: { kind: 'number', type: number }
         bbox_fill: { kind: 'boolean', type: boolean }
@@ -9884,41 +10544,59 @@ declare global {
         contour_fill: { kind: 'boolean', type: boolean }
     }
     ToBinaryMask: {
+        // mask: { kind: 'object', type: MASK }
         threshold: { kind: 'number', type: number }
     }
     MasksToMaskList: {
+        // masks: { kind: 'object', type: MASK }
     }
     MaskListToMaskBatch: {
+        // mask: { kind: 'object', type: MASK }
     }
     ImageListToImageBatch: {
+        // images: { kind: 'object', type: IMAGE }
     }
     SetDefaultImageForSEGS: {
+        // segs: { kind: 'object', type: SEGS }
+        // image: { kind: 'object', type: IMAGE }
         override: { kind: 'boolean', type: boolean }
     }
     RemoveImageFromSEGS: {
+        // segs: { kind: 'object', type: SEGS }
     }
     BboxDetectorSEGS: {
+        // bbox_detector: { kind: 'object', type: BBOX_DETECTOR }
+        // image: { kind: 'object', type: IMAGE }
         threshold: { kind: 'number', type: number }
         dilation: { kind: 'number', type: number }
         crop_factor: { kind: 'number', type: number }
         drop_size: { kind: 'number', type: number }
         labels: { kind: 'string', type: string }
+        // detailer_hook: { kind: 'object', type: DETAILER_HOOK }
     }
     SegmDetectorSEGS: {
+        // segm_detector: { kind: 'object', type: SEGM_DETECTOR }
+        // image: { kind: 'object', type: IMAGE }
         threshold: { kind: 'number', type: number }
         dilation: { kind: 'number', type: number }
         crop_factor: { kind: 'number', type: number }
         drop_size: { kind: 'number', type: number }
         labels: { kind: 'string', type: string }
+        // detailer_hook: { kind: 'object', type: DETAILER_HOOK }
     }
     ONNXDetectorSEGS: {
+        // bbox_detector: { kind: 'object', type: BBOX_DETECTOR }
+        // image: { kind: 'object', type: IMAGE }
         threshold: { kind: 'number', type: number }
         dilation: { kind: 'number', type: number }
         crop_factor: { kind: 'number', type: number }
         drop_size: { kind: 'number', type: number }
         labels: { kind: 'string', type: string }
+        // detailer_hook: { kind: 'object', type: DETAILER_HOOK }
     }
     ImpactSimpleDetectorSEGS$_for$_AD: {
+        // bbox_detector: { kind: 'object', type: BBOX_DETECTOR }
+        // image_frames: { kind: 'object', type: IMAGE }
         bbox_threshold: { kind: 'number', type: number }
         bbox_dilation: { kind: 'number', type: number }
         crop_factor: { kind: 'number', type: number }
@@ -9927,8 +10605,14 @@ declare global {
         sub_dilation: { kind: 'number', type: number }
         sub_bbox_expansion: { kind: 'number', type: number }
         sam_mask_hint_threshold: { kind: 'number', type: number }
+        masking_mode: { kind: 'enum', type: Comfy.Union.E_e5ef6b688dbafd88538e80bf002826bade4bb121 }
+        segs_pivot: { kind: 'enum', type: Comfy.Union.E_651ea09f69db9a1eb817103d1ea8e3ac08b4a319 }
+        // sam_model_opt: { kind: 'object', type: SAM_MODEL }
+        // segm_detector_opt: { kind: 'object', type: SEGM_DETECTOR }
     }
     ImpactSimpleDetectorSEGS: {
+        // bbox_detector: { kind: 'object', type: BBOX_DETECTOR }
+        // image: { kind: 'object', type: IMAGE }
         bbox_threshold: { kind: 'number', type: number }
         bbox_dilation: { kind: 'number', type: number }
         crop_factor: { kind: 'number', type: number }
@@ -9938,8 +10622,12 @@ declare global {
         sub_bbox_expansion: { kind: 'number', type: number }
         sam_mask_hint_threshold: { kind: 'number', type: number }
         post_dilation: { kind: 'number', type: number }
+        // sam_model_opt: { kind: 'object', type: SAM_MODEL }
+        // segm_detector_opt: { kind: 'object', type: SEGM_DETECTOR }
     }
     ImpactSimpleDetectorSEGSPipe: {
+        // detailer_pipe: { kind: 'object', type: DETAILER_PIPE }
+        // image: { kind: 'object', type: IMAGE }
         bbox_threshold: { kind: 'number', type: number }
         bbox_dilation: { kind: 'number', type: number }
         crop_factor: { kind: 'number', type: number }
@@ -9951,142 +10639,226 @@ declare global {
         post_dilation: { kind: 'number', type: number }
     }
     ImpactControlNetApplySEGS: {
+        // segs: { kind: 'object', type: SEGS }
+        // control_net: { kind: 'object', type: CONTROL_NET }
         strength: { kind: 'number', type: number }
+        // segs_preprocessor: { kind: 'object', type: SEGS_PREPROCESSOR }
+        // control_image: { kind: 'object', type: IMAGE }
     }
     ImpactControlNetApplyAdvancedSEGS: {
+        // segs: { kind: 'object', type: SEGS }
+        // control_net: { kind: 'object', type: CONTROL_NET }
         strength: { kind: 'number', type: number }
         start_percent: { kind: 'number', type: number }
         end_percent: { kind: 'number', type: number }
+        // segs_preprocessor: { kind: 'object', type: SEGS_PREPROCESSOR }
+        // control_image: { kind: 'object', type: IMAGE }
+        // vae: { kind: 'object', type: VAE }
     }
     ImpactControlNetClearSEGS: {
+        // segs: { kind: 'object', type: SEGS }
     }
     ImpactIPAdapterApplySEGS: {
+        // segs: { kind: 'object', type: SEGS }
+        // ipadapter_pipe: { kind: 'object', type: IPADAPTER_PIPE }
         weight: { kind: 'number', type: number }
         noise: { kind: 'number', type: number }
+        weight_type: { kind: 'enum', type: Comfy.Union.E_05cddbad13b094c2641c6bb7d261e15c71efc903 }
         start_at: { kind: 'number', type: number }
         end_at: { kind: 'number', type: number }
         unfold_batch: { kind: 'boolean', type: boolean }
         faceid_v2: { kind: 'boolean', type: boolean }
         weight_v2: { kind: 'number', type: number }
         context_crop_factor: { kind: 'number', type: number }
+        // reference_image: { kind: 'object', type: IMAGE }
+        combine_embeds: { kind: 'enum', type: Comfy.Union.E_055d80a7c582bd5b57fd6775414e697be3f0f580 }
+        // neg_image: { kind: 'object', type: IMAGE }
     }
     ImpactDecomposeSEGS: {
+        // segs: { kind: 'object', type: SEGS }
     }
     ImpactAssembleSEGS: {
+        // seg_header: { kind: 'object', type: SEGS_HEADER }
+        // seg_elt: { kind: 'object', type: SEG_ELT }
     }
     ImpactFrom$_SEG$_ELT: {
+        // seg_elt: { kind: 'object', type: SEG_ELT }
     }
     ImpactEdit$_SEG$_ELT: {
+        // seg_elt: { kind: 'object', type: SEG_ELT }
+        // cropped_image_opt: { kind: 'object', type: IMAGE }
+        // cropped_mask_opt: { kind: 'object', type: MASK }
+        // crop_region_opt: { kind: 'object', type: SEG_ELT_crop_region }
+        // bbox_opt: { kind: 'object', type: SEG_ELT_bbox }
+        // control_net_wrapper_opt: { kind: 'object', type: SEG_ELT_control_net_wrapper }
         confidence_opt: { kind: 'number', type: number }
         label_opt: { kind: 'string', type: string }
     }
     ImpactDilate$_Mask$_SEG$_ELT: {
+        // seg_elt: { kind: 'object', type: SEG_ELT }
         dilation: { kind: 'number', type: number }
     }
     ImpactDilateMask: {
+        // mask: { kind: 'object', type: MASK }
         dilation: { kind: 'number', type: number }
     }
     ImpactGaussianBlurMask: {
+        // mask: { kind: 'object', type: MASK }
         kernel_size: { kind: 'number', type: number }
         sigma: { kind: 'number', type: number }
     }
     ImpactDilateMaskInSEGS: {
+        // segs: { kind: 'object', type: SEGS }
         dilation: { kind: 'number', type: number }
     }
     ImpactGaussianBlurMaskInSEGS: {
+        // segs: { kind: 'object', type: SEGS }
         kernel_size: { kind: 'number', type: number }
         sigma: { kind: 'number', type: number }
     }
     ImpactScaleBy$_BBOX$_SEG$_ELT: {
+        // seg: { kind: 'object', type: SEG_ELT }
         scale_by: { kind: 'number', type: number }
     }
     ImpactFrom$_SEG$_ELT$_bbox: {
+        // bbox: { kind: 'object', type: SEG_ELT_bbox }
     }
     ImpactFrom$_SEG$_ELT$_crop$_region: {
+        // crop_region: { kind: 'object', type: SEG_ELT_crop_region }
     }
     ImpactCount$_Elts$_in$_SEGS: {
+        // segs: { kind: 'object', type: SEGS }
     }
     BboxDetectorCombined$_v2: {
+        // bbox_detector: { kind: 'object', type: BBOX_DETECTOR }
+        // image: { kind: 'object', type: IMAGE }
         threshold: { kind: 'number', type: number }
         dilation: { kind: 'number', type: number }
     }
     SegmDetectorCombined$_v2: {
+        // segm_detector: { kind: 'object', type: SEGM_DETECTOR }
+        // image: { kind: 'object', type: IMAGE }
         threshold: { kind: 'number', type: number }
         dilation: { kind: 'number', type: number }
     }
     SegsToCombinedMask: {
+        // segs: { kind: 'object', type: SEGS }
     }
     KSamplerProvider: {
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
+        scheduler: { kind: 'enum', type: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d }
         denoise: { kind: 'number', type: number }
+        // basic_pipe: { kind: 'object', type: BASIC_PIPE }
+        // scheduler_func_opt: { kind: 'object', type: SCHEDULER_FUNC }
     }
     TwoSamplersForMask: {
+        // latent_image: { kind: 'object', type: LATENT }
+        // base_sampler: { kind: 'object', type: KSAMPLER }
+        // mask_sampler: { kind: 'object', type: KSAMPLER }
+        // mask: { kind: 'object', type: MASK }
     }
     TiledKSamplerProvider: {
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
+        scheduler: { kind: 'enum', type: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325 }
         denoise: { kind: 'number', type: number }
         tile_width: { kind: 'number', type: number }
         tile_height: { kind: 'number', type: number }
+        tiling_strategy: { kind: 'enum', type: Comfy.Union.E_304f89a0de34643f12756237824e7261db28aaf5 }
+        // basic_pipe: { kind: 'object', type: BASIC_PIPE }
     }
     KSamplerAdvancedProvider: {
         cfg: { kind: 'number', type: number }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
+        scheduler: { kind: 'enum', type: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d }
         sigma_factor: { kind: 'number', type: number }
+        // basic_pipe: { kind: 'object', type: BASIC_PIPE }
+        // sampler_opt: { kind: 'object', type: SAMPLER }
+        // scheduler_func_opt: { kind: 'object', type: SCHEDULER_FUNC }
     }
     TwoAdvancedSamplersForMask: {
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         denoise: { kind: 'number', type: number }
+        // samples: { kind: 'object', type: LATENT }
+        // base_sampler: { kind: 'object', type: KSAMPLER_ADVANCED }
+        // mask_sampler: { kind: 'object', type: KSAMPLER_ADVANCED }
+        // mask: { kind: 'object', type: MASK }
         overlap_factor: { kind: 'number', type: number }
     }
     ImpactNegativeConditioningPlaceholder: {
     }
     PreviewBridge: {
+        // images: { kind: 'object', type: IMAGE }
         image: { kind: 'string', type: string }
         block: { kind: 'boolean', type: boolean }
+        restore_mask: { kind: 'enum', type: Comfy.Union.E_f27fae3205ecf36e9f4a68f3867d38e025476963 }
     }
     PreviewBridgeLatent: {
+        // latent: { kind: 'object', type: LATENT }
         image: { kind: 'string', type: string }
+        preview_method: { kind: 'enum', type: Comfy.Union.E_ea287ec9983f05378f2614091804a1b6b95d1c79 }
+        // vae_opt: { kind: 'object', type: VAE }
         block: { kind: 'boolean', type: boolean }
+        restore_mask: { kind: 'enum', type: Comfy.Union.E_f27fae3205ecf36e9f4a68f3867d38e025476963 }
     }
     ImageSender: {
+        // images: { kind: 'object', type: IMAGE }
         filename_prefix: { kind: 'string', type: string }
         link_id: { kind: 'number', type: number }
     }
     ImageReceiver: {
+        image: { kind: 'enum', type: Comfy.Union.E_26ea5ad8c44c9551fea858fff18017427386b591 }
         link_id: { kind: 'number', type: number }
         save_to_workflow: { kind: 'boolean', type: boolean }
         image_data: { kind: 'string', type: string }
         trigger_always: { kind: 'boolean', type: boolean }
     }
     LatentSender: {
+        // samples: { kind: 'object', type: LATENT }
         filename_prefix: { kind: 'string', type: string }
         link_id: { kind: 'number', type: number }
+        preview_method: { kind: 'enum', type: Comfy.Union.E_fa4a13687b111fa33a8c8fa375d5321d09b46b27 }
     }
     LatentReceiver: {
+        latent: { kind: 'enum', type: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 }
         link_id: { kind: 'number', type: number }
         trigger_always: { kind: 'boolean', type: boolean }
     }
     ImageMaskSwitch: {
         select: { kind: 'number', type: number }
+        // images1: { kind: 'object', type: IMAGE }
+        // mask1_opt: { kind: 'object', type: MASK }
+        // images2_opt: { kind: 'object', type: IMAGE }
+        // mask2_opt: { kind: 'object', type: MASK }
+        // images3_opt: { kind: 'object', type: IMAGE }
+        // mask3_opt: { kind: 'object', type: MASK }
+        // images4_opt: { kind: 'object', type: IMAGE }
+        // mask4_opt: { kind: 'object', type: MASK }
     }
     LatentSwitch: {
         select: { kind: 'number', type: number }
         sel_mode: { kind: 'boolean', type: boolean }
+        // input1: { kind: 'object', type: $Star }
     }
     SEGSSwitch: {
         select: { kind: 'number', type: number }
         sel_mode: { kind: 'boolean', type: boolean }
+        // input1: { kind: 'object', type: $Star }
     }
     ImpactSwitch: {
         select: { kind: 'number', type: number }
         sel_mode: { kind: 'boolean', type: boolean }
+        // input1: { kind: 'object', type: $Star }
     }
     ImpactInversedSwitch: {
         select: { kind: 'number', type: number }
+        // input: { kind: 'object', type: $Star }
         sel_mode: { kind: 'boolean', type: boolean }
     }
     ImpactWildcardProcessor: {
@@ -10094,132 +10866,223 @@ declare global {
         populated_text: { kind: 'string', type: string }
         mode: { kind: 'boolean', type: boolean }
         seed: { kind: 'number', type: number }
+        "Select to add Wildcard": { kind: 'enum', type: Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26 }
     }
     ImpactWildcardEncode: {
+        // model: { kind: 'object', type: MODEL }
+        // clip: { kind: 'object', type: CLIP }
         wildcard_text: { kind: 'string', type: string }
         populated_text: { kind: 'string', type: string }
         mode: { kind: 'boolean', type: boolean }
+        "Select to add LoRA": { kind: 'enum', type: Comfy.Union.E_35e403c7628f220c07d5485d6e81fc66b4fc12df }
+        "Select to add Wildcard": { kind: 'enum', type: Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26 }
         seed: { kind: 'number', type: number }
     }
     SEGSUpscaler: {
+        // image: { kind: 'object', type: IMAGE }
+        // segs: { kind: 'object', type: SEGS }
+        // model: { kind: 'object', type: MODEL }
+        // clip: { kind: 'object', type: CLIP }
+        // vae: { kind: 'object', type: VAE }
         rescale_factor: { kind: 'number', type: number }
+        resampling_method: { kind: 'enum', type: Comfy.Union.E_bac912b55de8a59480c74aba068f4a3b5f9a0e38 }
+        supersample: { kind: 'enum', type: Comfy.Union.E_c1a74591678033a2ccc87aa0add77dab7f001da5 }
         rounding_modulus: { kind: 'number', type: number }
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
+        scheduler: { kind: 'enum', type: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d }
+        // positive: { kind: 'object', type: CONDITIONING }
+        // negative: { kind: 'object', type: CONDITIONING }
         denoise: { kind: 'number', type: number }
         feather: { kind: 'number', type: number }
         inpaint_model: { kind: 'boolean', type: boolean }
         noise_mask_feather: { kind: 'number', type: number }
+        // upscale_model_opt: { kind: 'object', type: UPSCALE_MODEL }
+        // upscaler_hook_opt: { kind: 'object', type: UPSCALER_HOOK }
+        // scheduler_func_opt: { kind: 'object', type: SCHEDULER_FUNC }
     }
     SEGSUpscalerPipe: {
+        // image: { kind: 'object', type: IMAGE }
+        // segs: { kind: 'object', type: SEGS }
+        // basic_pipe: { kind: 'object', type: BASIC_PIPE }
         rescale_factor: { kind: 'number', type: number }
+        resampling_method: { kind: 'enum', type: Comfy.Union.E_bac912b55de8a59480c74aba068f4a3b5f9a0e38 }
+        supersample: { kind: 'enum', type: Comfy.Union.E_c1a74591678033a2ccc87aa0add77dab7f001da5 }
         rounding_modulus: { kind: 'number', type: number }
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
+        scheduler: { kind: 'enum', type: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d }
         denoise: { kind: 'number', type: number }
         feather: { kind: 'number', type: number }
         inpaint_model: { kind: 'boolean', type: boolean }
         noise_mask_feather: { kind: 'number', type: number }
+        // upscale_model_opt: { kind: 'object', type: UPSCALE_MODEL }
+        // upscaler_hook_opt: { kind: 'object', type: UPSCALER_HOOK }
+        // scheduler_func_opt: { kind: 'object', type: SCHEDULER_FUNC }
     }
     SEGSDetailer: {
+        // image: { kind: 'object', type: IMAGE }
+        // segs: { kind: 'object', type: SEGS }
         guide_size: { kind: 'number', type: number }
         guide_size_for: { kind: 'boolean', type: boolean }
         max_size: { kind: 'number', type: number }
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
+        scheduler: { kind: 'enum', type: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d }
         denoise: { kind: 'number', type: number }
         noise_mask: { kind: 'boolean', type: boolean }
         force_inpaint: { kind: 'boolean', type: boolean }
+        // basic_pipe: { kind: 'object', type: BASIC_PIPE }
         refiner_ratio: { kind: 'number', type: number }
         batch_size: { kind: 'number', type: number }
         cycle: { kind: 'number', type: number }
+        // refiner_basic_pipe_opt: { kind: 'object', type: BASIC_PIPE }
         inpaint_model: { kind: 'boolean', type: boolean }
         noise_mask_feather: { kind: 'number', type: number }
+        // scheduler_func_opt: { kind: 'object', type: SCHEDULER_FUNC }
     }
     SEGSPaste: {
+        // image: { kind: 'object', type: IMAGE }
+        // segs: { kind: 'object', type: SEGS }
         feather: { kind: 'number', type: number }
         alpha: { kind: 'number', type: number }
+        // ref_image_opt: { kind: 'object', type: IMAGE }
     }
     SEGSPreview: {
+        // segs: { kind: 'object', type: SEGS }
         alpha_mode: { kind: 'boolean', type: boolean }
         min_alpha: { kind: 'number', type: number }
+        // fallback_image_opt: { kind: 'object', type: IMAGE }
     }
     SEGSPreviewCNet: {
+        // segs: { kind: 'object', type: SEGS }
     }
     SEGSToImageList: {
+        // segs: { kind: 'object', type: SEGS }
+        // fallback_image_opt: { kind: 'object', type: IMAGE }
     }
     ImpactSEGSToMaskList: {
+        // segs: { kind: 'object', type: SEGS }
     }
     ImpactSEGSToMaskBatch: {
+        // segs: { kind: 'object', type: SEGS }
     }
     ImpactSEGSConcat: {
+        // segs1: { kind: 'object', type: SEGS }
     }
     ImpactSEGSPicker: {
         picks: { kind: 'string', type: string }
+        // segs: { kind: 'object', type: SEGS }
+        // fallback_image_opt: { kind: 'object', type: IMAGE }
     }
     ImpactMakeTileSEGS: {
+        // images: { kind: 'object', type: IMAGE }
         bbox_size: { kind: 'number', type: number }
         crop_factor: { kind: 'number', type: number }
         min_overlap: { kind: 'number', type: number }
         filter_segs_dilation: { kind: 'number', type: number }
         mask_irregularity: { kind: 'number', type: number }
+        irregular_mask_mode: { kind: 'enum', type: Comfy.Union.E_5cc1495fe28eac05289d45b29269b31c6edca055 }
+        // filter_in_segs_opt: { kind: 'object', type: SEGS }
+        // filter_out_segs_opt: { kind: 'object', type: SEGS }
     }
     ImpactSEGSMerge: {
+        // segs: { kind: 'object', type: SEGS }
     }
     SEGSDetailerForAnimateDiff: {
+        // image_frames: { kind: 'object', type: IMAGE }
+        // segs: { kind: 'object', type: SEGS }
         guide_size: { kind: 'number', type: number }
         guide_size_for: { kind: 'boolean', type: boolean }
         max_size: { kind: 'number', type: number }
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
+        scheduler: { kind: 'enum', type: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d }
         denoise: { kind: 'number', type: number }
+        // basic_pipe: { kind: 'object', type: BASIC_PIPE }
         refiner_ratio: { kind: 'number', type: number }
+        // refiner_basic_pipe_opt: { kind: 'object', type: BASIC_PIPE }
         noise_mask_feather: { kind: 'number', type: number }
+        // scheduler_func_opt: { kind: 'object', type: SCHEDULER_FUNC }
     }
     ImpactKSamplerBasicPipe: {
+        // basic_pipe: { kind: 'object', type: BASIC_PIPE }
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
+        scheduler: { kind: 'enum', type: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d }
+        // latent_image: { kind: 'object', type: LATENT }
         denoise: { kind: 'number', type: number }
+        // scheduler_func_opt: { kind: 'object', type: SCHEDULER_FUNC }
     }
     ImpactKSamplerAdvancedBasicPipe: {
+        // basic_pipe: { kind: 'object', type: BASIC_PIPE }
         add_noise: { kind: 'boolean', type: boolean }
         noise_seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
+        scheduler: { kind: 'enum', type: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d }
+        // latent_image: { kind: 'object', type: LATENT }
         start_at_step: { kind: 'number', type: number }
         end_at_step: { kind: 'number', type: number }
         return_with_leftover_noise: { kind: 'boolean', type: boolean }
+        // scheduler_func_opt: { kind: 'object', type: SCHEDULER_FUNC }
     }
     ReencodeLatent: {
+        // samples: { kind: 'object', type: LATENT }
+        tile_mode: { kind: 'enum', type: Comfy.Union.E_d5776f669e41b2ec29cd020ce34a8b7cdf23693d }
+        // input_vae: { kind: 'object', type: VAE }
+        // output_vae: { kind: 'object', type: VAE }
         tile_size: { kind: 'number', type: number }
     }
     ReencodeLatentPipe: {
+        // samples: { kind: 'object', type: LATENT }
+        tile_mode: { kind: 'enum', type: Comfy.Union.E_d5776f669e41b2ec29cd020ce34a8b7cdf23693d }
+        // input_basic_pipe: { kind: 'object', type: BASIC_PIPE }
+        // output_basic_pipe: { kind: 'object', type: BASIC_PIPE }
     }
     ImpactImageBatchToImageList: {
+        // image: { kind: 'object', type: IMAGE }
     }
     ImpactMakeImageList: {
+        // image1: { kind: 'object', type: IMAGE }
     }
     ImpactMakeImageBatch: {
+        // image1: { kind: 'object', type: IMAGE }
     }
     ImpactMakeAnyList: {
+        // value1: { kind: 'object', type: $Star }
     }
     ImpactMakeMaskList: {
+        // mask1: { kind: 'object', type: MASK }
     }
     ImpactMakeMaskBatch: {
+        // mask1: { kind: 'object', type: MASK }
     }
     RegionalSampler: {
         seed: { kind: 'number', type: number }
         seed_2nd: { kind: 'number', type: number }
+        seed_2nd_mode: { kind: 'enum', type: Comfy.Union.E_1e8364b55644fdbf6d28dd3e6197d9fe1777e361 }
         steps: { kind: 'number', type: number }
         base_only_steps: { kind: 'number', type: number }
         denoise: { kind: 'number', type: number }
+        // samples: { kind: 'object', type: LATENT }
+        // base_sampler: { kind: 'object', type: KSAMPLER_ADVANCED }
+        // regional_prompts: { kind: 'object', type: REGIONAL_PROMPTS }
         overlap_factor: { kind: 'number', type: number }
         restore_latent: { kind: 'boolean', type: boolean }
+        additional_mode: { kind: 'enum', type: Comfy.Union.E_db19bd49ccd13456a936f2070c088f16070aa0b1 }
+        additional_sampler: { kind: 'enum', type: Comfy.Union.E_3fd6d592305b0bc44ce9c69a23201f8d7a155884 }
         additional_sigma_ratio: { kind: 'number', type: number }
     }
     RegionalSamplerAdvanced: {
@@ -10231,47 +11094,76 @@ declare global {
         overlap_factor: { kind: 'number', type: number }
         restore_latent: { kind: 'boolean', type: boolean }
         return_with_leftover_noise: { kind: 'boolean', type: boolean }
+        // latent_image: { kind: 'object', type: LATENT }
+        // base_sampler: { kind: 'object', type: KSAMPLER_ADVANCED }
+        // regional_prompts: { kind: 'object', type: REGIONAL_PROMPTS }
+        additional_mode: { kind: 'enum', type: Comfy.Union.E_db19bd49ccd13456a936f2070c088f16070aa0b1 }
+        additional_sampler: { kind: 'enum', type: Comfy.Union.E_3fd6d592305b0bc44ce9c69a23201f8d7a155884 }
         additional_sigma_ratio: { kind: 'number', type: number }
     }
     CombineRegionalPrompts: {
+        // regional_prompts1: { kind: 'object', type: REGIONAL_PROMPTS }
     }
     RegionalPrompt: {
+        // mask: { kind: 'object', type: MASK }
+        // advanced_sampler: { kind: 'object', type: KSAMPLER_ADVANCED }
         variation_seed: { kind: 'number', type: number }
         variation_strength: { kind: 'number', type: number }
+        variation_method: { kind: 'enum', type: Comfy.Union.E_627d63e970919d713af795854ffd9dd2642f92d2 }
     }
     ImpactCombineConditionings: {
+        // conditioning1: { kind: 'object', type: CONDITIONING }
     }
     ImpactConcatConditionings: {
+        // conditioning1: { kind: 'object', type: CONDITIONING }
     }
     ImpactSEGSLabelAssign: {
+        // segs: { kind: 'object', type: SEGS }
         labels: { kind: 'string', type: string }
     }
     ImpactSEGSLabelFilter: {
+        // segs: { kind: 'object', type: SEGS }
+        preset: { kind: 'enum', type: Comfy.Union.E_cc1f262afc534d382e5c36082cecd4fc2a9c4ffb }
         labels: { kind: 'string', type: string }
     }
     ImpactSEGSRangeFilter: {
+        // segs: { kind: 'object', type: SEGS }
+        target: { kind: 'enum', type: Comfy.Union.E_10c017f4a76414789a861361dc5cdbfef12e2d7d }
         mode: { kind: 'boolean', type: boolean }
         min_value: { kind: 'number', type: number }
         max_value: { kind: 'number', type: number }
     }
     ImpactSEGSOrderedFilter: {
+        // segs: { kind: 'object', type: SEGS }
+        target: { kind: 'enum', type: Comfy.Union.E_b1f554e93f550a374a1ff740ad7447a7b34b71be }
         order: { kind: 'boolean', type: boolean }
         take_start: { kind: 'number', type: number }
         take_count: { kind: 'number', type: number }
     }
     ImpactCompare: {
+        cmp: { kind: 'enum', type: Comfy.Union.E_87d3a21083ff67c538309f218241f70a793f619c }
+        // a: { kind: 'object', type: $Star }
+        // b: { kind: 'object', type: $Star }
     }
     ImpactConditionalBranch: {
         cond: { kind: 'boolean', type: boolean }
+        // tt_value: { kind: 'object', type: $Star }
+        // ff_value: { kind: 'object', type: $Star }
     }
     ImpactConditionalBranchSelMode: {
         cond: { kind: 'boolean', type: boolean }
+        // tt_value: { kind: 'object', type: $Star }
+        // ff_value: { kind: 'object', type: $Star }
     }
     ImpactIfNone: {
+        // signal: { kind: 'object', type: $Star }
+        // any_input: { kind: 'object', type: $Star }
     }
     ImpactConvertDataType: {
+        // value: { kind: 'object', type: $Star }
     }
     ImpactLogicalOperators: {
+        operator: { kind: 'enum', type: Comfy.Union.E_99d83eba8f2a90cc88da26295981d92d458e4e14 }
         bool_a: { kind: 'boolean', type: boolean }
         bool_b: { kind: 'boolean', type: boolean }
     }
@@ -10285,18 +11177,25 @@ declare global {
         value: { kind: 'boolean', type: boolean }
     }
     ImpactValueSender: {
+        // value: { kind: 'object', type: $Star }
         link_id: { kind: 'number', type: number }
+        // signal_opt: { kind: 'object', type: $Star }
     }
     ImpactValueReceiver: {
+        typ: { kind: 'enum', type: Comfy.Union.E_6c86e4efdc8db8dae17215fbf80825ddaad06ffa }
         value: { kind: 'string', type: string }
         link_id: { kind: 'number', type: number }
     }
     ImpactImageInfo: {
+        // value: { kind: 'object', type: IMAGE }
     }
     ImpactLatentInfo: {
+        // value: { kind: 'object', type: LATENT }
     }
     ImpactMinMax: {
         mode: { kind: 'boolean', type: boolean }
+        // a: { kind: 'object', type: $Star }
+        // b: { kind: 'object', type: $Star }
     }
     ImpactNeg: {
         value: { kind: 'boolean', type: boolean }
@@ -10322,23 +11221,30 @@ declare global {
         exclude_tags: { kind: 'string', type: string }
     }
     ImpactExecutionOrderController: {
+        // signal: { kind: 'object', type: $Star }
+        // value: { kind: 'object', type: $Star }
     }
     RemoveNoiseMask: {
+        // samples: { kind: 'object', type: LATENT }
     }
     ImpactLogger: {
+        // data: { kind: 'object', type: $Star }
         text: { kind: 'string', type: string }
     }
     ImpactDummyInput: {
     }
     ImpactQueueTrigger: {
+        // signal: { kind: 'object', type: $Star }
         mode: { kind: 'boolean', type: boolean }
     }
     ImpactQueueTriggerCountdown: {
         count: { kind: 'number', type: number }
         total: { kind: 'number', type: number }
         mode: { kind: 'boolean', type: boolean }
+        // signal: { kind: 'object', type: $Star }
     }
     ImpactSetWidgetValue: {
+        // signal: { kind: 'object', type: $Star }
         node_id: { kind: 'number', type: number }
         widget_name: { kind: 'string', type: string }
         boolean_value: { kind: 'boolean', type: boolean }
@@ -10347,15 +11253,20 @@ declare global {
         string_value: { kind: 'string', type: string }
     }
     ImpactNodeSetMuteState: {
+        // signal: { kind: 'object', type: $Star }
         node_id: { kind: 'number', type: number }
         set_state: { kind: 'boolean', type: boolean }
     }
     ImpactControlBridge: {
+        // value: { kind: 'object', type: $Star }
         mode: { kind: 'boolean', type: boolean }
+        behavior: { kind: 'enum', type: Comfy.Union.E_383642e8f2544ff8678e350c4f1049624ad6589e }
     }
     ImpactIsNotEmptySEGS: {
+        // segs: { kind: 'object', type: SEGS }
     }
     ImpactSleep: {
+        // signal: { kind: 'object', type: $Star }
         seconds: { kind: 'number', type: number }
     }
     ImpactRemoteBoolean: {
@@ -10369,18 +11280,27 @@ declare global {
         value: { kind: 'number', type: number }
     }
     ImpactHFTransformersClassifierProvider: {
+        preset_repo_id: { kind: 'enum', type: Comfy.Union.E_7fd75955db2b2e81b87d8452255b37c2d98fd105 }
         manual_repo_id: { kind: 'string', type: string }
+        device_mode: { kind: 'enum', type: Comfy.Union.E_2ad445b99254e9b51c963d9f1a75fabe3d01e569 }
     }
     ImpactSEGSClassify: {
+        // classifier: { kind: 'object', type: TRANSFORMERS_CLASSIFIER }
+        // segs: { kind: 'object', type: SEGS }
+        preset_expr: { kind: 'enum', type: Comfy.Union.E_01400d675e59295302197d02289e89ead401098e }
         manual_expr: { kind: 'string', type: string }
+        // ref_image_opt: { kind: 'object', type: IMAGE }
     }
     ImpactSchedulerAdapter: {
+        scheduler: { kind: 'enum', type: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325 }
+        extra_scheduler: { kind: 'enum', type: Comfy.Union.E_64bb9134d159ff7e3f573facb7cb2fcfbb2de483 }
     }
     GITSSchedulerFuncProvider: {
         coeff: { kind: 'number', type: number }
         denoise: { kind: 'number', type: number }
     }
     UltralyticsDetectorProvider: {
+        model_name: { kind: 'enum', type: Comfy.Union.E_cf11746957b2cb2b6379bbd08fe59610b2aae90a }
     }
     UnknownNodeXX: {
     }
