@@ -111,19 +111,19 @@ export function ui_cnet(): UI_cnet {
 
 // RUN -----------------------------------------------------------
 export type Cnet_args = {
-   positive: _CONDITIONING
-   negative: _CONDITIONING
+   positive: Comfy.Input.CONDITIONING
+   negative: Comfy.Input.CONDITIONING
    width: number
    height: number
-   ckptPos: _MODEL
+   ckptPos: Comfy.Input.MODEL
 }
 
 export type Cnet_return = {
-   cnet_positive: _CONDITIONING
-   cnet_negative: _CONDITIONING
-   post_cnet_positive: _CONDITIONING
-   post_cnet_negative: _CONDITIONING
-   ckpt_return: _MODEL
+   cnet_positive: Comfy.Input.CONDITIONING
+   cnet_negative: Comfy.Input.CONDITIONING
+   post_cnet_positive: Comfy.Input.CONDITIONING
+   post_cnet_negative: Comfy.Input.CONDITIONING
+   ckpt_return: Comfy.Input.MODEL
 }
 
 export async function run_cnet(
@@ -137,7 +137,7 @@ export async function run_cnet(
 
    if (cnetList) {
       for (const cnetImage of cnetList) {
-         let image: _IMAGE = (await run.loadImageAnswer(cnetImage.image))._IMAGE
+         let image: Comfy.Input.IMAGE = (await run.loadImageAnswer(cnetImage.image))._IMAGE
          const mask = await run_mask(cnetImage.mask)
          const { width, height } = ctx
          let resolution = Math.min(width, height)
@@ -262,7 +262,7 @@ const _apply_cnet = (
    strength: number,
    startPct: number,
    endPct: number,
-   image: _IMAGE,
+   image: Comfy.Input.IMAGE,
    cnet_name: Enum_ControlNetLoader_control_net_name,
    mask: HasSingle_MASK | null,
 ): void => {

@@ -85,9 +85,9 @@ export function ui_latent_v3(p: { size?: Field_size_config } = {}): UI_LatentV3 
 export const run_latent_v3 = async (p: {
    //
    opts: ReturnType<typeof ui_latent_v3>['$Value']
-   vae: _VAE
+   vae: Comfy.Input.VAE
 }): Promise<{
-   latent: _LATENT
+   latent: Comfy.Input.LATENT
    width: number
    height: number
 }> => {
@@ -99,12 +99,12 @@ export const run_latent_v3 = async (p: {
    // misc calculatiosn
    let width: number
    let height: number
-   let latent: _LATENT
+   let latent: Comfy.Input.LATENT
 
    // case 1. start form image
    if (opts.image) {
       const _img = run.loadImage(opts.image.image.id)
-      let image: _IMAGE = await _img.loadInWorkflow()
+      let image: Comfy.Input.IMAGE = await _img.loadInWorkflow()
       if (opts.image.resize) {
          image = graph.Image_Resize({ image, ...opts.image.resize })
          if (opts.image.resize.mode === 'rescale') {

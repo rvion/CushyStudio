@@ -71,14 +71,14 @@ export const prefabModelFlux = (): $prefabModelFlux => {
 export const evalModelFlux = (
    doc: $prefabModelFlux['$Value'],
 ): {
-   ckpt: _MODEL
-   vae: _VAE
-   clip: _CLIP
+   ckpt: Comfy.Input.MODEL
+   vae: Comfy.Input.VAE
+   clip: Comfy.Input.CLIP
 } => {
    const run = getCurrentRun()
    const graph = run.nodes
-   const vae: _VAE | undefined = undefined
-   const ckptLoader: _MODEL = graph.UNETLoader({
+   const vae: Comfy.Input.VAE | undefined = undefined
+   const ckptLoader: Comfy.Input.MODEL = graph.UNETLoader({
       unet_name: doc.ckpt_name,
       weight_dtype: doc.weight_type,
    })
@@ -88,7 +88,7 @@ export const evalModelFlux = (
       clip_name2: doc.clip2,
       type: doc.type,
    })
-   const clip: _CLIP = clipLoader._CLIP
+   const clip: Comfy.Input.CLIP = clipLoader._CLIP
    //Flux requires a vae to be selected
    if (!doc.extra.vae) {
       throw new Error('No VAE selected')

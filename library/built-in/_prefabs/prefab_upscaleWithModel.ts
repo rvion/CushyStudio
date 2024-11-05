@@ -35,8 +35,8 @@ export function ui_upscaleWithModel(): UI_upscaleWithModel {
 
 export const run_upscaleWithModel = (
    ui: NonNullable<OutputFor<typeof ui_upscaleWithModel>>,
-   p?: { image?: _IMAGE },
-): _IMAGE => {
+   p?: { image?: Comfy.Input.IMAGE },
+): Comfy.Input.IMAGE => {
    const run = getCurrentRun()
    const graph: ComfyWorkflowBuilder = run.nodes
    const upscale = ui

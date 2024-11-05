@@ -54,13 +54,13 @@ export function ui_sampler(p?: UiSampleProps): UI_Sampler {
 
 // CTX -----------------------------------------------------------
 export type Ctx_sampler = {
-   ckpt: _MODEL
-   clip: _CLIP
-   latent: _LATENT
+   ckpt: Comfy.Input.MODEL
+   clip: Comfy.Input.CLIP
+   latent: Comfy.Input.LATENT
    positive: string | _CONDITIONING
    negative: string | _CONDITIONING
    preview?: boolean
-   vae: _VAE
+   vae: Comfy.Input.VAE
 }
 
 // RUN -----------------------------------------------------------

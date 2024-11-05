@@ -271,27 +271,27 @@ export function ui_sampler_advanced(p?: {
 
 // CTX -----------------------------------------------------------
 export type Ctx_sampler_advanced = {
-   ckpt: _MODEL
-   clip: _CLIP
-   latent: _LATENT | HasSingle_LATENT
+   ckpt: Comfy.Input.MODEL
+   clip: Comfy.Input.CLIP
+   latent: Comfy.Input.LATENT | HasSingle_LATENT
    positive: string | _CONDITIONING
    negative: string | _CONDITIONING
    width?: number
    height?: number
    preview?: boolean
    cfg?: number //for flux
-   vae: _VAE
+   vae: Comfy.Input.VAE
 }
 
 export const encodeText = (
    run: Runtime,
-   clip: _CLIP,
+   clip: Comfy.Input.CLIP,
    text: string,
    encodingType: 'SDXL' | 'CLIP' | 'FLUX' | 'SD3',
    cfg?: number,
    width?: number,
    height?: number,
-): _CONDITIONING => {
+): Comfy.Input.CONDITIONING => {
    const graph = run.nodes
    if (encodingType == 'FLUX' && !cfg) {
       cfg = 3.5 //default cfg in case not passed
@@ -327,16 +327,16 @@ export const run_sampler_advanced = (
    ui: OutputFor<typeof ui_sampler_advanced>,
    ctx: Ctx_sampler_advanced,
    blankLatent?: boolean,
-): { output: _LATENT; denoised_output: _LATENT } => {
+): { output: _LATENT; denoised_output: Comfy.Input.LATENT } => {
    const graph = run.nodes
    let ckpt = ctx.ckpt
    const posCondition2string = ui.guidanceType.DualCFG
       ? run_prompt({ prompt: ui.guidanceType.DualCFG.dualCFGPositive2, printWildcards: true })
       : undefined
    // flow.output_text(`run_sampler with seed : ${opts.seed}`)
-   let posCondition: _CONDITIONING
-   let negCondition: _CONDITIONING
-   let posCondition2: _CONDITIONING | undefined
+   let posCondition: Comfy.Input.CONDITIONING
+   let negCondition: Comfy.Input.CONDITIONING
+   let posCondition2: Comfy.Input.CONDITIONING | undefined
    if (
       (ui.textEncoderType.CLIP || ui.textEncoderType.SD3) &&
       typeof ctx.positive === 'string' &&
@@ -399,7 +399,7 @@ export const run_sampler_advanced = (
    }
 
    const noise = graph.RandomNoise({ noise_seed: ui.seed }).outputs.NOISE
-   let guider: _GUIDER
+   let guider: Comfy.Input.GUIDER
    if (ui.guidanceType.DualCFG) {
       if (!posCondition2) throw new Error('Second conditioning not defined')
       guider = graph.DualCFGGuider({
@@ -436,7 +436,7 @@ export const run_sampler_advanced = (
       }
    else throw new Error('❌ Guider type not known')
 
-   let sigmas: _SIGMAS
+   let sigmas: Comfy.Input.SIGMAS
    if (ui.sigmasType.basic) {
       sigmas = graph.BasicScheduler({
          scheduler: ui.sigmasType.basic.scheduler,

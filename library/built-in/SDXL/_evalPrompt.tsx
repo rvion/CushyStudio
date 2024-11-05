@@ -29,13 +29,13 @@ export function _evalPrompt(
       extra: $extra1
       extra2: $extra2
    }>,
-   initialClip: _CLIP,
-   initialCkpt: _MODEL,
+   initialClip: Comfy.Input.CLIP,
+   initialCkpt: Comfy.Input.MODEL,
    graph: ComfyWorkflowBuilder,
 ): {
-   conditioning: _CONDITIONING
-   ckpt: _MODEL
-   clip: _CLIP
+   conditioning: Comfy.Input.CONDITIONING
+   ckpt: Comfy.Input.MODEL
+   clip: Comfy.Input.CLIP
 } {
    const posPrompt = run_prompt({
       prompt: { text },
@@ -45,6 +45,6 @@ export function _evalPrompt(
    })
    const clip = posPrompt.clip
    let ckpt = posPrompt.ckpt
-   let conditioning: _CONDITIONING = posPrompt.conditioning // graph.CLIPTextEncode({ clip: clipPos, text: finalText })
+   let conditioning: Comfy.Input.CONDITIONING = posPrompt.conditioning // graph.CLIPTextEncode({ clip: clipPos, text: finalText })
    return { conditioning, ckpt, clip }
 }

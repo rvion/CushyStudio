@@ -57,7 +57,7 @@ app({
             init_image: startImage2,
             vae: ckpt,
          })
-         let latent: _LATENT = graph.KSampler({
+         let latent: Comfy.Input.LATENT = graph.KSampler({
             seed: run.randomSeed(),
             steps: ui.steps,
             cfg: 4,
@@ -72,7 +72,7 @@ app({
 
          // SECOND PASS (a.k.a. highres fix) ---------------------------------------------------------
 
-         let image: _IMAGE = graph.VAEDecode({ samples: latent, vae: ckpt })
+         let image: Comfy.Input.IMAGE = graph.VAEDecode({ samples: latent, vae: ckpt })
          if (ui.upscale) {
             image = graph.ImageUpscaleWithModel({ upscale_model, image })
          }

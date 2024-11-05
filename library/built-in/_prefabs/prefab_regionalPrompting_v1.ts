@@ -35,10 +35,10 @@ export function ui_regionalPrompting_v1(b: CushySchemaBuilder): UI_regionalPromp
 export const run_regionalPrompting_v1 = (
    ui: OutputFor<typeof ui_regionalPrompting_v1>,
    p: {
-      conditionning: _CONDITIONING
-      clip: _CLIP
+      conditionning: Comfy.Input.CONDITIONING
+      clip: Comfy.Input.CLIP
    },
-): _CONDITIONING => {
+): Comfy.Input.CONDITIONING => {
    const run = getCurrentRun()
    let positive = p.conditionning
    const graph = run.nodes

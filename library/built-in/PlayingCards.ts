@@ -172,8 +172,8 @@ app({
          const positive = graph.CLIPTextEncode({ clip, text: positiveText })
          const negative = negP.conditioning // graph.CLIPTextEncode({ clip, text: negativeText })
          const xxx = foo[`${suit}_${value}`]!
-         // let latent: _LATENT = suitsBackground.get(suit)! // emptyLatent
-         let latent: _LATENT = graph.VAEEncode({ pixels: xxx.base, vae })
+         // let latent: Comfy.Input.LATENT = suitsBackground.get(suit)! // emptyLatent
+         let latent: Comfy.Input.LATENT = graph.VAEEncode({ pixels: xxx.base, vae })
          latent = graph.SetLatentNoiseMask({
             samples: latent,
             mask: xxx.mask, // graph.ImageToMask({ image: xxx.mask, channel: 'alpha' }),
@@ -219,7 +219,7 @@ app({
          }
 
          // ADD LOGOS ----------------------------------------
-         let pixels: _IMAGE = graph.VAEDecode({ vae, samples: latent })
+         let pixels: Comfy.Input.IMAGE = graph.VAEDecode({ vae, samples: latent })
          graph.SaveImage({ images: pixels, filename_prefix: `cards/${suit}/${value}/img` })
       }
       await run.PROMPT()

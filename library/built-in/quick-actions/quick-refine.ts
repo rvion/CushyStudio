@@ -17,7 +17,7 @@ app({
    //                  👇👇👇👇👇
    run: async (run, ui, { image }) => {
       if (image == null) throw new Error('no image provided')
-      let img: _IMAGE = await image.loadInWorkflow()
+      let img: Comfy.Input.IMAGE = await image.loadInWorkflow()
       // evalModelSD15andSDXL(ui.model)
       img = run_refiners_fromImage(ui.refiners, img)
       run.add_previewImage(img)

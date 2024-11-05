@@ -35,16 +35,16 @@ export async function _cushySDXLRun(
    // #region PROMPT ENGINE -- POSITIVE
    const mergeConditionning = (
       //
-      a: _CONDITIONING | undefined,
-      b: _CONDITIONING,
-   ): _CONDITIONING => {
+      a: Comfy.Input.CONDITIONING | undefined,
+      b: Comfy.Input.CONDITIONING,
+   ): Comfy.Input.CONDITIONING => {
       if (a == null) return b
       return graph.ConditioningCombine({ conditioning_1: a, conditioning_2: b })
    }
 
    let ckptPos = ckpt
    let clipPos = clip_
-   let positive!: _CONDITIONING
+   let positive!: Comfy.Input.CONDITIONING
    for (const prompt of ui.positive.prompts) {
       if (prompt == null /* disabled */) continue
       const res = _evalPrompt(prompt.text, ui, clipPos, ckptPos, graph)
@@ -86,7 +86,7 @@ export async function _cushySDXLRun(
    // #region PROMPT ENGINE -- NEGATIVE
    let ckptNeg = ckpt
    let clipNeg = clip_
-   let negative!: _CONDITIONING
+   let negative!: Comfy.Input.CONDITIONING
    for (const prompt of ui.negative) {
       if (prompt == null /* disabled */) continue
       const res = _evalPrompt(prompt.text, ui, clipNeg, ckpt, graph)
@@ -121,7 +121,7 @@ export async function _cushySDXLRun(
       ckptPos = cnet_out.ckpt_return //only used for ipAdapter, otherwise it will just be a passthrough
    }
 
-   let ip_adapter: _IPADAPTER | undefined
+   let ip_adapter: Comfy.Input.IPADAPTER | undefined
    if (ui.ipAdapter) {
       const ipAdapter_out = await run_IPAdapterV2(ui.ipAdapter, ckptPos, ip_adapter)
       ckptPos = ipAdapter_out.ip_adapted_model
@@ -231,7 +231,7 @@ export async function _cushySDXLRun(
    // UPSCALE with upscale model ------------------------------------------------------------
    // TODO
    // ---------------------------------------------------------------------------------------
-   let finalImage: _IMAGE = graph.VAEDecode({ samples: latent, vae })
+   let finalImage: Comfy.Input.IMAGE = graph.VAEDecode({ samples: latent, vae })
 
    // REFINE PASS AFTER ---------------------------------------------------------------------
    if (extra.refine) {

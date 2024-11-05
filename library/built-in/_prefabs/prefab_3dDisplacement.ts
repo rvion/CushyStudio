@@ -52,7 +52,7 @@ export function run_Dispacement2(startImg: string | MediaImageL): void {
 export function run_Dispacement1(
    //
    show3d: OutputFor<typeof ui_3dDisplacement>,
-   finalImage: _IMAGE,
+   finalImage: Comfy.Input.IMAGE,
 ): void {
    const run = getCurrentRun()
    const graph = run.nodes

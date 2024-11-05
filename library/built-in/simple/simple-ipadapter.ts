@@ -28,9 +28,9 @@ app({
       // ui
       // MODEL, clip skip, vae, etc. ---------------------------------------------------------------
       let ckptls = graph.CheckpointLoaderSimple({ ckpt_name: 'revAnimated_v122.safetensors' }) //run_model(ui.model)
-      let vae: _VAE = ckptls
-      let ckpt: _MODEL = ckptls
-      let clip: _CLIP = ckptls
+      let vae: Comfy.Input.VAE = ckptls
+      let ckpt: Comfy.Input.MODEL = ckptls
+      let clip: Comfy.Input.CLIP = ckptls
 
       const posPrompt = ui.positive
       const negPrompt = ui.negative

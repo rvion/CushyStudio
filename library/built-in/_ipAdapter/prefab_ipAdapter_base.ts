@@ -50,8 +50,8 @@ export function ui_subform_IPAdapter(): UI_subform_IPAdapter {
 export function run_cnet_IPAdapter(
    IPAdapter: OutputFor<typeof ui_subform_IPAdapter>,
    cnet_args: Cnet_args,
-   image: _IMAGE,
-): { ip_adapted_model: _MODEL } {
+   image: Comfy.Input.IMAGE,
+): { ip_adapted_model: Comfy.Input.MODEL } {
    const run = getCurrentRun()
    const graph = run.nodes
    const ip = IPAdapter
@@ -67,8 +67,8 @@ export function run_cnet_IPAdapter(
    const ip_clip_name = graph.CLIPVisionLoader({ clip_name: ip.models.clip_name })
 
    let image_ = graph.IPAdapterEncoder({ ipadapter: ip_model, image, clip_vision: ip_clip_name }).outputs
-   let pos_embed: _EMBEDS = image_.pos_embed
-   let neg_embed: _EMBEDS = image_.neg_embed
+   let pos_embed: Comfy.Input.EMBEDS = image_.pos_embed
+   let neg_embed: Comfy.Input.EMBEDS = image_.neg_embed
 
    const ip_adapted_model = graph.IPAdapterEmbeds({
       ipadapter: ip_model,

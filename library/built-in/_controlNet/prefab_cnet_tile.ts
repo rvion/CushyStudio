@@ -80,10 +80,10 @@ export function ui_subform_Tile_Preprocessor(): UI_subform_Tile_Preprocessor {
 // 🅿️ Tile RUN ===================================================
 export const run_cnet_Tile = (
    Tile: OutputFor<typeof ui_subform_Tile>,
-   image: _IMAGE,
+   image: Comfy.Input.IMAGE,
    resolution: number, // 512 | 768 | 1024 = 512,
 ): {
-   image: _IMAGE
+   image: Comfy.Input.IMAGE
    cnet_name: Enum_ControlNetLoader_control_net_name
 } => {
    const run = getCurrentRun()

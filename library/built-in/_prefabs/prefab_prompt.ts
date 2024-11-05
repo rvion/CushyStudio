@@ -1,17 +1,17 @@
 export const run_prompt = (p: {
    prompt: { text: string }
    /** recommanded, but if left empty, AUTO will be used */
-   clip?: _CLIP
+   clip?: Comfy.Input.CLIP
    /** recommanded, but if left empty, AUTO will be used */
-   ckpt?: _MODEL
+   ckpt?: Comfy.Input.MODEL
 
    printWildcards?: boolean
    seed?: number
 }): {
    promptIncludingBreaks: string
-   clip: _CLIP
-   ckpt: _MODEL
-   readonly conditioning: _CONDITIONING
+   clip: Comfy.Input.CLIP
+   ckpt: Comfy.Input.MODEL
+   readonly conditioning: Comfy.Input.CONDITIONING
 } => {
    const run = getCurrentRun()
    const richPrompt = p.prompt
@@ -47,9 +47,9 @@ export const run_prompt = (p: {
       promptIncludingBreaks: CX.promptIncludingBreaks,
       clip,
       ckpt,
-      get conditioning(): _CONDITIONING {
+      get conditioning(): Comfy.Input.CONDITIONING {
          if (CX.subPrompts.length > 1) {
-            let start: _CONDITIONING = run.nodes.CLIPTextEncode({ clip, text: CX.subPrompts[0]! })
+            let start: Comfy.Input.CONDITIONING = run.nodes.CLIPTextEncode({ clip, text: CX.subPrompts[0]! })
             for (let i = 1; i < CX.subPrompts.length; i++) {
                start = run.nodes.ConditioningConcat({
                   conditioning_from: start,

@@ -26,7 +26,7 @@ app({
    run: async (sdk, ui, { image }) => {
       const x = sdk.nodes
       if (image == null) throw new Error('no image provided')
-      const img: _IMAGE = await image.loadInWorkflow()
+      const img: Comfy.Input.IMAGE = await image.loadInWorkflow()
 
       const A = ui.via.maskeradePrompt
       if (A) {

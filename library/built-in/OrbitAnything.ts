@@ -42,7 +42,7 @@ app({
          init_image: startImage2,
          vae: ckpt,
       })
-      let latent: _LATENT = graph.KSampler({
+      let latent: Comfy.Input.LATENT = graph.KSampler({
          seed: run.randomSeed(),
          steps: 20,
          cfg: 4,
