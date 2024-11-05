@@ -1437,13 +1437,8 @@ https://stackoverflow.com/questions/61002681/connecting-to-wsl2-server-via-local
 netsh interface portproxy add v4tov4 listenport=8188 listenaddress=0.0.0.0 connectport=8188 connectaddress=127.0.0.1
 ```
 
-
 ```shell
-C:\Windows\System32>netsh interface portproxy add v4tov4 listenport=8188 listenaddress=0.0.0.0 connectport=8188 connectaddress=127.0.0.1
-
-
-C:\Windows\System32>
-C:\Windows\System32>netsh interface portproxy show all
+netsh interface portproxy show all
 
 Listen on ipv4:             Connect to ipv4:
 
@@ -1456,5 +1451,44 @@ still not working; adding firewall rule
 
 ## add firewall rule:
 
-```
+```shell
+# add direwall rule to allow incoming requests on 8188
 netsh advfirewall firewall add rule name="Allow Port 8188" protocol=TCP dir=in localport=8188 action=allow
+# add port forwarding rule so any incoming request on 8188 will be forwarded to 127.0.0.1
+netsh interface portproxy add v4tov4 listenport=8188 listenaddress=0.0.0.0 connectport=8188 connectaddress=127.0.0.1
+# show the port forwarding rules
+netsh interface portproxy show all
+```
+
+<!-- 192.168.1.19 -->
+
+## More setup
+
+https://github.com/mmartial/ComfyUI-Nvidia-Docker
+
+```shell
+docker volume create test
+docker stop comfyui
+docker rm comfy
+docker run -it --rm --name comfyui --gpus all -p 8188:8188 -v test:/home/runner -e CLI_ARGS="--listen 0.0.0.0" yanwk/comfyui-boot:cu121
+```
+
+
+```shell
+docker volume ls
+docker volume inspect test
+docker system df
+# get
+docker system df -v
+```
+
+```shell
+# practical acces to the comfyui docker container
+docker exec -it comfyui bash
+docker exec -u root -it comfyui bash
+zypper install wget awk
+# https://meshnet.nordvpn.com/how-to/joint-projects/vs-code-server
+curl -fsSL https://code-server.dev/install.sh | sh
+
+# wget -O- https://aka.ms/install-vscode-server/setup.sh | sh
+``

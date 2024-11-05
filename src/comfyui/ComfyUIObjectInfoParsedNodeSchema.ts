@@ -1,10 +1,11 @@
-import type { NodeInputExt, NodeOutputExt } from './comfyui-types'
-import type { ComfyInputOpts } from './ComfyUIObjectInfoTypes'
+import type { EnumInfo, NodeInputExt, NodeOutputExt } from './comfyui-types'
+import type { ComfyInputOpts, ComfyNodeSchemaJSON } from './ComfyUIObjectInfoTypes'
 
 import { ComfyPrimitiveMapping } from '../core/Primitives'
 import { CodeBuffer } from '../utils/codegen/CodeBuffer'
 import { escapeJSKey } from '../utils/codegen/escapeJSKey'
 
+export type NodeOwnEnum = { in: 'input' | 'output'; ownName: string; enum: EnumInfo }
 /**
  *
  */
@@ -13,6 +14,8 @@ export class ComfyUIObjectInfoParsedNodeSchema {
    singleOuputs: NodeOutputExt[] = []
 
    constructor(
+      public raw: ComfyNodeSchemaJSON,
+      public ownEnums: NodeOwnEnum[], // <-- TODO: remove
       public nameInComfy: string,
       public nameInCushy: string,
       public category: string,
@@ -41,8 +44,8 @@ export class ComfyUIObjectInfoParsedNodeSchema {
       return b.content
    }
 
-   codegen(): string {
-      const b = new CodeBuffer()
+   codegen(b?: CodeBuffer): string {
+      b = b ?? new CodeBuffer()
       const p = b.w
 
       // single type interfaces
@@ -54,12 +57,17 @@ export class ComfyUIObjectInfoParsedNodeSchema {
       // inputs
       // p(`\n// ${this.name} -------------------------------`)
       // const msgIfDifferent = this.nameInComfy !== this.nameInCushy ? ` ("${this.nameInComfy}" in ComfyUI)` : ''
-      p(`// --------------------------------------------------------------------------------------------`)
-      p(`// #region ${this.nameInComfy} [${this.category}]`)
-      p(`export interface ${this.nameInCushy} extends ${ifaces.join(', ')} {`)
+      // p(`// --------------------------------------------------------------------------------------------`)
+      // p(`// #region ${this.nameInComfy} [${this.category}]`)
+      p(`interface ${this.nameInCushy} extends ${ifaces.join(', ')} {`)
       p(`    nameInComfy: "${this.nameInComfy}"`)
       p(`}`)
-      p(`export interface ${this.nameInCushy}_output {`)
+      // for (const i of this.ownEnums) {
+      //    // for (const { enumNameAlias, pythonModule } of e.aliases) {
+      //    // allAcceptableEnums.push(enumNameAlias)
+      //    // p(`/* 🟢 */export type ${i.ownName} = Comfy.Union.${i.enum.enumNameInCushy}`)
+      // }
+      p(`interface ${this.nameInCushy}_output {`)
       // p(`    $schema: ${this.name}_schema`)
       this.outputs.forEach((i, ix) => {
          p(`    ${escapeJSKey(i.nameInCushy)}: ComfyNodeOutput<'${i.typeName}', ${ix}>,`)
@@ -77,12 +85,12 @@ export class ComfyUIObjectInfoParsedNodeSchema {
       // p(`    outputs: ${JSON.stringify(this.outputs)},`)
       // p(`    category: ${JSON.stringify(this.category)},`)
       // p(`}`)
-      p(`export interface ${this.nameInCushy}_input {`)
+      p(`interface ${this.nameInCushy}_input {`)
       for (const i of this.inputs) {
          const opts = typeof i.opts === 'string' ? null : i.opts
          const type = /*ComfyPrimitiveMapping[i.type] //
                    ? i.type
-                   : */ i.type.startsWith('Enum_') ? i.type : `_${i.type}`
+                   : */ i.type.startsWith('Enum_') ? `Comfy.Union.${i.type}` : `Comfy.Input.${i.type}`
          if (opts) p(`    ${this.renderOpts(opts)}`)
          const canBeOmmited = opts?.default !== undefined || !i.required
          p(`    ${i.nameInComfyEscaped}${canBeOmmited ? '?' : ''}: ${type}`)

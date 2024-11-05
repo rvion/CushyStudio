@@ -8,9 +8,10 @@ import fs from 'fs'
 import { readableStringify } from '../csuite/formatters/stringifyReadable'
 import { ComfyUIObjectInfoParsed } from './ComfyUIObjectInfoParsed'
 
+// eslint-disable-next-line no-constant-condition
 if (true) {
    const controller = new AbortController()
-   const timeout = setTimeout(() => controller.abort(), 2000)
+   const timeout = setTimeout(() => controller.abort(), 500)
    try {
       const raw = await fetch('http://192.168.1.19:8188/object_info', { signal: controller.signal })
       console.log(raw)
@@ -24,10 +25,11 @@ if (true) {
 }
 
 // find . -name 'object_info.json'
-const inputObjectInfoPath = 'schema/hosts/Z3LBuTxBOybwVxlb5bbCk/object_info.json'
+// const inputObjectInfoPath = 'schema/hosts/Z3LBuTxBOybwVxlb5bbCk/object_info.json'
+const inputObjectInfoPath = 'src/comfyui/__object_info.json'
 const inputEmbeddingsPath = 'schema/hosts/Z3LBuTxBOybwVxlb5bbCk/embeddings.json'
 
-const targetDebugFolder = `src/comfyui/script-quick-gen-output`
+const targetDebugFolder = `src/comfyui/DEBUG`
 const _oldTxtFilePath = 'schema/hosts/Z3LBuTxBOybwVxlb5bbCk/sdk.dts.txt'
 const _oldDTSFilePath = 'schema/global.d.ts'
 
@@ -50,10 +52,10 @@ const parsedObjectInfo = new ComfyUIObjectInfoParsed({
 })
 
 const finalSDK = parsedObjectInfo.codegenDTS({ prefix: '../../../src/' })
-fs.writeFileSync(`${targetDebugFolder}/DEBUG-sdk.d.ts`, finalSDK.main)
-for (const { pythonModule, content } of finalSDK.pythonModules) {
-   fs.writeFileSync(`${targetDebugFolder}/${pythonModule}.d.ts`, content)
-}
+fs.writeFileSync(`${targetDebugFolder}/DEBUG-sdk.d.ts`, finalSDK)
+// for (const { pythonModule, content } of finalSDK.pythonModules) {
+//    fs.writeFileSync(`${targetDebugFolder}/${pythonModule}.d.ts`, content)
+// }
 // console.log(`[🤠] finalSDK.length:`, finalSDK.length)
 
 // ... profit

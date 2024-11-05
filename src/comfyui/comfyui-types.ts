@@ -18,7 +18,6 @@ export type NodeInputExt = {
    opts?: ComfyInputOpts
    isPrimitive: boolean
    isEnum: boolean
-   // isEnum: boolean
    required: boolean
    index: number
 }
@@ -31,6 +30,7 @@ export type NodeOutputExt = {
 }
 
 export type EnumInfo = {
+   hash: EnumHash
    // enumNameInComfy: string
    pythonModule: string
    enumNameInCushy: EnumName

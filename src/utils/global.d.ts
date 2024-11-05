@@ -6,6 +6,11 @@ import type { Viewport } from 'pixi-viewport'
 type ClassLike = import('../csuite/types/ClassLike').ClassLike
 
 declare global {
+   const app: import('../cards/App').GlobalFunctionToDefineAnApp
+   const view: import('../cards/App').GlobalFunctionToDefineAView
+   const getCurrentForm: import('../cards/App').GlobalGetCurrentForm
+   const getCurrentRun: import('../cards/App').GlobalGetCurrentRun
+
    namespace JSX {
       interface IntrinsicAttributes {
          tw?: string | ClassLike[]

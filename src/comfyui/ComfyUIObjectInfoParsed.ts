@@ -10,6 +10,7 @@ import type {
 } from './comfyui-types'
 import type { ComfyEnumDef, ComfyNodeSchemaJSON, ComfySchemaJSON } from './ComfyUIObjectInfoTypes'
 
+import crypto from 'crypto'
 import { observable, toJS } from 'mobx'
 
 import {
@@ -51,7 +52,7 @@ export class ComfyUIObjectInfoParsed {
    nodes: ComfyUIObjectInfoParsedNodeSchema[] = []
    nodesByNameInComfy: { [key: string]: ComfyUIObjectInfoParsedNodeSchema } = {}
    nodesByNameInCushy: { [key: string]: ComfyUIObjectInfoParsedNodeSchema } = {}
-   nodesByProduction: { [key: string]: NodeNameInCushy[] } = {}
+   nodesByProduction: { [key: string]: ComfyUIObjectInfoParsedNodeSchema[] } = {}
    enumsAppearingInOutput = new Set<string>()
    pythonModules = new Map<string, NodeNameInComfy[]>()
    // get host(): HostL { return this.hostRef.item } // prettier-ignore
@@ -63,15 +64,15 @@ export class ComfyUIObjectInfoParsed {
       const entries: [string, ComfyNodeSchemaJSON][] = Object.entries(this.data.spec)
       entries.push([ComfyDefaultNodeWhenUnknown_Name, ComfyDefaultNodeWhenUnknown_Schema])
 
-      for (const __x of entries) {
+      for (const [KK, VV] of entries) {
          // record python module
-         const pythonModule = __x[1].python_module
+         const pythonModule = VV.python_module
          const prev = this.pythonModules.get(pythonModule)
-         if (prev == null) this.pythonModules.set(pythonModule, [__x[0]])
-         else prev.push(__x[0])
+         if (prev == null) this.pythonModules.set(pythonModule, [KK])
+         else prev.push(KK)
 
-         const nodeNameInComfy = __x[0]
-         const nodeDef = __x[1]
+         const nodeNameInComfy = KK
+         const nodeDef = VV
          // console.chanel?.append(`[${nodeNameInComfy}]`)
          // apply prefix
          const nodeNameInCushy = convertComfyNodeNameToCushyNodeNameValidInJS(nodeNameInComfy)
@@ -84,7 +85,10 @@ export class ComfyUIObjectInfoParsed {
 
          const inputs: NodeInputExt[] = []
          const outputs: NodeOutputExt[] = []
+         const ownEnums: { in: 'input' | 'output'; ownName: string; enum: EnumInfo }[] = []
          const node = new ComfyUIObjectInfoParsedNodeSchema(
+            VV,
+            ownEnums,
             //
             nodeNameInComfy,
             nodeNameInCushy,
@@ -100,7 +104,7 @@ export class ComfyUIObjectInfoParsed {
          this.nodesByNameInCushy[nodeNameInCushy] = node
          this.nodes.push(node)
 
-         // OUTPUTS ----------------------------------------------------------------------
+         // #region OUTPUTS ----------------------------------------------------------------------
          const outputNamer: { [key: string]: number } = {}
          // console.info(JSON.stringify(nodeDef.output))
          // [⏸️ debug] if (typeof nodeDef.output.entries !== 'function') {
@@ -126,11 +130,13 @@ export class ComfyUIObjectInfoParsed {
                this.knownSlotTypes.add(slotTypeName)
             } else if (Array.isArray(slotType)) {
                const uniqueEnumName = `Enum_${nodeNameInCushy}_${outputNameInCushy}_out`
-               slotTypeName = this.processEnumNameOrValue({
+               const RESX = this.processEnumNameOrValue({
                   pythonModule,
                   candidateName: uniqueEnumName,
                   comfyEnumDef: slotType,
                })
+               slotTypeName = RESX.typeName
+               ownEnums.push({ in: 'output', ownName: RESX.ownName, enum: RESX.enum })
                this.enumsAppearingInOutput.add(slotTypeName)
             } else {
                throw new Error(`invalid output ${ix} "${slotType}" in node "${nodeNameInComfy}"`)
@@ -140,8 +146,8 @@ export class ComfyUIObjectInfoParsed {
 
             // index production
             const arr = this.nodesByProduction[slotTypeName]
-            if (arr == null) this.nodesByProduction[slotTypeName] = [nodeNameInCushy]
-            else arr.push(nodeNameInCushy)
+            if (arr == null) this.nodesByProduction[slotTypeName] = [node]
+            else arr.push(node)
 
             // const at = (outputNamer[slotType] ??= 0)
             // const nameInComfy = at === 0 ? slotType : `${slotType}_${at}`
@@ -155,7 +161,7 @@ export class ComfyUIObjectInfoParsed {
             // outputNamer[slotType]++
          }
 
-         // INPUTS ----------------------------------------------------------------------
+         // #region INPUTS ----------------------------------------------------------------------
          const optionalInputs = Object.entries(nodeDef.input?.optional ?? {}) //
             .map(([name, spec]) => ({ required: false, name, spec }))
          const requiredInputs = Object.entries(nodeDef.input?.required ?? {}) //
@@ -190,21 +196,25 @@ export class ComfyUIObjectInfoParsed {
 
             if (slotType == null) {
                const uniqueEnumName = `INVALID_null`
-               inputTypeNameInCushy = this.processEnumNameOrValue({
+               const RESX = this.processEnumNameOrValue({
                   pythonModule,
                   candidateName: uniqueEnumName,
                   comfyEnumDef: ['❌'],
                })
+               inputTypeNameInCushy = RESX.typeName
+               ownEnums.push({ in: 'input', ownName: RESX.ownName, enum: RESX.enum })
             } else if (typeof slotType === 'string') {
                inputTypeNameInCushy = convetComfySlotNameToCushySlotNameValidInJS(slotType)
                this.knownSlotTypes.add(inputTypeNameInCushy)
             } else if (Array.isArray(slotType)) {
                const uniqueEnumName = `Enum_${nodeNameInCushy}_${inputNameInCushy}`
-               inputTypeNameInCushy = this.processEnumNameOrValue({
+               const RESX = this.processEnumNameOrValue({
                   pythonModule,
                   candidateName: uniqueEnumName,
                   comfyEnumDef: slotType,
                })
+               inputTypeNameInCushy = RESX.typeName
+               ownEnums.push({ in: 'input', ownName: RESX.ownName, enum: RESX.enum })
             } else {
                throw new Error(
                   `invalid schema (${JSON.stringify(slotType)}) for input "${
@@ -238,12 +248,13 @@ export class ComfyUIObjectInfoParsed {
       // this.updateComponents()
    }
 
+   // #region processEnumNameOrValue
    processEnumNameOrValue = (p: {
       //
       pythonModule: string
       candidateName: string
       comfyEnumDef: ComfyEnumDef
-   }): string => {
+   }): { typeName: string; ownName: string; enum: EnumInfo } => {
       // 1. build enum
       const enumValues: EnumValue[] = []
       for (const enumValue of p.comfyEnumDef) {
@@ -253,10 +264,11 @@ export class ComfyUIObjectInfoParsed {
          else enumValues.push(enumValue.content)
       }
       // 2. hash its value
-      const hash =
+      const hashContent =
          enumValues.length === 0 //
-            ? `[[empty:${p.candidateName}]]`
+            ? `[[empty]]` // `[[empty:${p.candidateName}]]`
             : enumValues.sort().join('|')
+      const hash = crypto.createHash('sha1').update(hashContent).digest('hex')
 
       // 3. retrieve or create an EnumInfo
       let enumInfo: Maybe<EnumInfo> = this.knownEnumsByHash.get(hash)
@@ -265,22 +277,28 @@ export class ComfyUIObjectInfoParsed {
          // | 🔴 making that observable seems wrong; huge perf problem at instanciation.
          // case 3.A. PRE-EXISTING
          enumInfo = observable({
+            hash,
             pythonModule: p.pythonModule,
             enumNameInCushy: p.candidateName,
             values: enumValues,
             aliases: [],
          })
          this.knownEnumsByHash.set(hash, enumInfo)
-      } else {
-         // case 3.B. PRE-EXISTING
-         enumInfo.aliases.push({ enumNameAlias: p.candidateName, pythonModule: p.pythonModule })
       }
+      // else {
+      // case 3.B. PRE-EXISTING
+      enumInfo.aliases.push({ enumNameAlias: p.candidateName, pythonModule: p.pythonModule })
+      // }
 
       // ❌ if (p.candidateName === 'Enum_DualCLIPLoader_clip_name1') debugger
 
       // 4.sore enum by name
       this.knownEnumsByName.set(p.candidateName, enumInfo)
-      return enumInfo.enumNameInCushy
+      return {
+         typeName: enumInfo.enumNameInCushy,
+         ownName: p.candidateName,
+         enum: enumInfo,
+      }
    }
 
    // updateComponents() {
@@ -296,11 +314,17 @@ export class ComfyUIObjectInfoParsed {
    // }
    get requirables(): {
       name: string
+      enum: EnumInfo
       kind: 'enum'
    }[] {
-      const out: { name: string; kind: 'enum' }[] = []
+      const out: { name: string; enum: EnumInfo; kind: 'enum' }[] = []
       // for (const n of this.knownSlotTypes) out.push({ name: n, kind: 'prim' })
-      for (const n of this.knownEnumsByName) out.push({ name: n[0], kind: 'enum' })
+      for (const n of this.knownEnumsByName)
+         out.push({
+            name: n[0],
+            kind: 'enum',
+            enum: n[1],
+         })
       // for (const n of this.nodes) out.push({ name: n.nameInCushy, kind: 'node' })
       return out
    }
