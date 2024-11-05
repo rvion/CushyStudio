@@ -2,30 +2,19 @@
 
 import type { MenuEntry } from '../../csuite/menu/MenuEntry'
 
-import { entries } from 'mobx'
-
 import { CPie } from '../../csuite/activity/SimplePieMenu'
-import { ctx_global } from '../../csuite/command-topic/ctx_global'
-import { command, type Command, CommandContext } from '../../csuite/commands/Command'
-import { defineMenu, Menu } from '../../csuite/menu/Menu'
+import { command, CommandContext } from '../../csuite/commands/Command'
+import { Menu } from '../../csuite/menu/Menu'
 import { Trigger } from '../../csuite/trigger/Trigger'
 
 export const ctx_menu = new CommandContext<Menu>('OverMenu', () => {
    const x = new Menu({
       title: 'test',
       entries: (builder): MenuEntry[] => [
-         builder.SimpleMenuAction({ label: 'C', onClick: () => console.log(`[🤠] A`) }),
+         builder.SimpleMenuAction({ label: 'A', onClick: () => console.log(`[🤠] A`) }),
          builder.SimpleMenuAction({ label: 'B', onClick: () => console.log(`[🤠] B`) }),
          builder.SimpleMenuAction({ label: 'C', onClick: () => console.log(`[🤠] C`) }),
-         new Menu({
-            title: 'D',
-            entries: (builder): MenuEntry[] => [
-               builder.SimpleMenuAction({ label: 'D1', onClick: () => console.log(`[🤠] D1`) }),
-               builder.SimpleMenuAction({ label: 'D2', onClick: () => console.log(`[🤠] D2`) }),
-               builder.SimpleMenuAction({ label: 'D3', onClick: () => console.log(`[🤠] D3`) }),
-            ],
-            icon: 'mdiKeyboardCaps',
-         }),
+         builder.SimpleMenuAction({ label: 'D', onClick: () => console.log(`[🤠] D`) }),
       ],
       icon: 'mdiKeyboardCaps',
    })

@@ -78,6 +78,6 @@ export class CPie implements Activity {
       routine.stop()
    }
    UI: FC<{ activity: Activity; routine: Routine; stop: () => void }> | undefined = () => {
-      return <MenuPieUI menu={this.menu.init()} />
+      return <MenuPieUI startX={this.startX} startY={this.startY} menu={this.menu.init()} />
    }
 }
