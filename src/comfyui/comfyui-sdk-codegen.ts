@@ -1,10 +1,10 @@
 import type { ComfyUIObjectInfoParsed } from './ComfyUIObjectInfoParsed'
 
-import { convetComfySlotNameToCushySlotNameValidInJS } from '../core/normalizeJSIdentifier'
 import { ComfyPrimitiveMapping } from '../core/Primitives'
 import { CodeBuffer } from '../utils/codegen/CodeBuffer'
 import { escapeJSKey } from '../utils/codegen/escapeJSKey'
 import { type ComfyUIObjectInfoParsedNodeSchema, wrapQuote } from './ComfyUIObjectInfoParsedNodeSchema'
+import { groupByAsArray, pythonModuleToNamespace } from './pythonModuleToNamespace'
 
 export function codegenSDK(
    this: ComfyUIObjectInfoParsed,
@@ -124,8 +124,8 @@ export function codegenSDK(
    p(`export interface Requirable {`)
    const requirables = this.requirables
    for (const e of this.knownEnumsByHash.values()) {
-      for (const alias of e.aliases) {
-         const enumKey = `${pythonModuleToNamespace(alias.pythonModule)}.${alias.enumNameAlias}`
+      for (const alias of e.qualifiedNames) {
+         const enumKey = alias
          p(`    ${escapeJSKey(enumKey)}: { $Name: ${JSON.stringify(enumKey)}, $Value: Comfy.Union.${e.enumNameInCushy} },`) // prettier-ignore
       }
    }
@@ -281,41 +281,4 @@ export function codegenSDK(
    // p('}')
    return b.content
    // pythonModules: px.pythonModules,
-}
-
-function pythonModuleToNamespace(pythonModule: string): string {
-   return `Comfy.${pythonModuleToNamespace_(pythonModule)}`
-}
-function pythonModuleToNamespace_(pythonModule: string): string {
-   if (pythonModule === 'nodes') return 'Base'
-   return pythonModule
-      .split('.')
-      .map((i) => {
-         let y = i
-         if (y === 'comfy_extras') return 'Extra'
-         if (y === 'custom_nodes') return 'Custom'
-
-         if (y.startsWith('nodes_')) y = y.replace('nodes_', '')
-         if (y.startsWith('ComfyUI-')) y = y.replace('ComfyUI-', '')
-         y = y.replaceAll('-', '_')
-         y = y.replaceAll(' ', '_')
-         y = y.replaceAll('.', '_')
-         return y
-      })
-      .map(convetComfySlotNameToCushySlotNameValidInJS)
-      .join('.')
-}
-
-function groupByAsArray<T>(arr: T[], key: (t: T) => string): [string, T[]][] {
-   const grouppedDict = groupByAsDict(arr, key)
-   return Object.entries(grouppedDict)
-}
-function groupByAsDict<T>(arr: T[], key: (t: T) => string): Record<string, T[]> {
-   const res: Record<string, any[]> = {}
-   for (const x of arr) {
-      const k = key(x)
-      if (res[k] == null) res[k] = []
-      res[k].push(x)
-   }
-   return res
 }

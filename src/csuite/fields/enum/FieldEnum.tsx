@@ -1,4 +1,4 @@
-import type { EnumValue } from '../../../comfyui/comfyui-types'
+import type { ComfyUnionValue } from '../../../comfyui/comfyui-types'
 import type { CleanedEnumResult } from '../../../types/EnumUtils'
 import type { BaseSchema } from '../../model/BaseSchema'
 import type { FieldConfig } from '../../model/FieldConfig'
@@ -14,12 +14,12 @@ import { _extractDefaultValue } from './_extractDefaultValue'
 import { WidgetEnumUI } from './WidgetEnumUI'
 
 // #region Config
-export type Field_enum_config<O extends EnumValue> = FieldConfig<
+export type Field_enum_config<O extends ComfyUnionValue> = FieldConfig<
    {
       enumName: string
       default?: O
       extraDefaults?: string[]
-      filter?: (v: EnumValue) => boolean
+      filter?: (v: ComfyUnionValue) => boolean
       appearance?: 'select' | 'tab'
       /**
        * @since 2024-07-22
@@ -31,16 +31,16 @@ export type Field_enum_config<O extends EnumValue> = FieldConfig<
 >
 
 // #region Serial
-export type Field_enum_serial<O extends EnumValue> = FieldSerial<{
+export type Field_enum_serial<O extends ComfyUnionValue> = FieldSerial<{
    $: 'enum'
    val?: O
 }>
 
 // #region Value
-export type Field_enum_value<O extends EnumValue> = O // Requirable[T]
+export type Field_enum_value<O extends ComfyUnionValue> = O // Requirable[T]
 
 // #region Types
-export type Field_enum_types<O extends EnumValue> = {
+export type Field_enum_types<O extends ComfyUnionValue> = {
    $Type: 'enum'
    $Config: Field_enum_config<O>
    $Serial: Field_enum_serial<O>
@@ -52,7 +52,7 @@ export type Field_enum_types<O extends EnumValue> = {
 }
 
 // #region State
-export class Field_enum<O extends EnumValue> extends Field<Field_enum_types<O>> {
+export class Field_enum<O extends ComfyUnionValue> extends Field<Field_enum_types<O>> {
    // #region Static
    static readonly type: 'enum' = 'enum'
    static readonly emptySerial: Field_enum_serial<any> = { $: 'enum' }
@@ -111,7 +111,7 @@ export class Field_enum<O extends EnumValue> extends Field<Field_enum_types<O>> 
       this.serial.val = undefined
    }
 
-   get possibleValues(): EnumValue[] {
+   get possibleValues(): ComfyUnionValue[] {
       return cushy.schema.knownEnumsByName.get(this.config.enumName as any)?.values ?? []
    }
 

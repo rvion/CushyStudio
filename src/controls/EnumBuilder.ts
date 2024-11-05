@@ -1,4 +1,4 @@
-import type { EnumValue } from '../comfyui/comfyui-types'
+import type { ComfyUnionValue } from '../comfyui/comfyui-types'
 /**
  * this module is here to allow performant type-level apis for enums.
  * TODO: document the unique challenges this appraoch is solving
@@ -8,7 +8,7 @@ import type { CushySchemaBuilder } from './Builder'
 import { Field_enum, type Field_enum_config } from '../csuite/fields/enum/FieldEnum'
 import { CushySchema } from './Schema'
 
-export type IEnumBuilderFN<T extends EnumValue> = (
+export type IEnumBuilderFN<T extends ComfyUnionValue> = (
    config?: Omit<Field_enum_config<T>, 'enumName'>,
 ) => X.XEnum<T>
 export type IEnumBuilder = { [K in keyof Requirable]: IEnumBuilderFN<Requirable[K]['$Value']> }

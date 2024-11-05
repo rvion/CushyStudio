@@ -1,4 +1,4 @@
-import type { EmbeddingName, EnumInfo, EnumValue } from '../comfyui/comfyui-types'
+import type { ComfyUnionValue, EmbeddingName, EnumInfo } from '../comfyui/comfyui-types'
 import type { ComfyUIObjectInfoParsedNodeSchema } from '../comfyui/ComfyUIObjectInfoParsedNodeSchema'
 import type { LiveDB } from '../db/LiveDB'
 import type { TABLES } from '../db/TYPES.gen'
@@ -98,7 +98,9 @@ export class ComfySchemaL extends BaseInst<TABLES['comfy_schema']> {
    }
 
    // ENUM --------------------------------------------------------------
-   getEnumOptionsForSelectPicker = (enumName: string): { asOptionLabel: string; value: EnumValue }[] => {
+   getEnumOptionsForSelectPicker = (
+      enumName: string,
+   ): { asOptionLabel: string; value: ComfyUnionValue }[] => {
       const candidates = this.knownEnumsByName.get(enumName)?.values ?? []
       return candidates.map((x) => ({ asOptionLabel: x.toString(), value: x }))
    }

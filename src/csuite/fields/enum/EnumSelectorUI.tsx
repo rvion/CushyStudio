@@ -1,4 +1,4 @@
-import type { EnumName, EnumValue } from '../../../comfyui/comfyui-types'
+import type { ComfyEnumName, ComfyUnionValue } from '../../../comfyui/comfyui-types'
 import type { CleanedEnumResult } from '../../../types/EnumUtils'
 
 import { observer } from 'mobx-react-lite'
@@ -13,14 +13,14 @@ export const EnumSelectorUI = observer(function EnumSelectorUI_(p: {
    value: () => CleanedEnumResult<any>
    // displayValue?: boolean
    // substituteValue?: EnumValue | null
-   onChange: (v: EnumValue | null) => void
+   onChange: (v: ComfyUnionValue | null) => void
    clearable?: Maybe<() => void>
    disabled?: boolean
-   enumName: EnumName
+   enumName: ComfyEnumName
 }) {
    const project = useSt().project
    const schema = project.schema
-   const options: EnumValue[] = schema.knownEnumsByName.get(p.enumName)?.values ?? [] // schema.getEnumOptionsForSelectPicker(p.enumName)
+   const options: ComfyUnionValue[] = schema.knownEnumsByName.get(p.enumName)?.values ?? [] // schema.getEnumOptionsForSelectPicker(p.enumName)
 
    // const valueIsValid = (p.value != null || p.isOptional) && options.some((x) => x.value === p.value)
    const value = p.value()

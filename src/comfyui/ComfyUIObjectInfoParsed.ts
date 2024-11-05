@@ -1,8 +1,8 @@
 import type {
-   EnumHash,
+   ComfyEnumName,
+   ComfyUnionHash,
+   ComfyUnionValue,
    EnumInfo,
-   EnumName,
-   EnumValue,
    NodeInputExt,
    NodeNameInComfy,
    NodeNameInCushy,
@@ -26,6 +26,7 @@ import {
 import { escapeJSKey } from '../utils/codegen/escapeJSKey'
 import { codegenSDK } from './comfyui-sdk-codegen'
 import { ComfyUIObjectInfoParsedNodeSchema } from './ComfyUIObjectInfoParsedNodeSchema'
+import { pythonModuleToNamespace } from './pythonModuleToNamespace'
 
 export class ComfyUIObjectInfoParsed {
    codegenDTS = codegenSDK.bind(this)
@@ -47,8 +48,8 @@ export class ComfyUIObjectInfoParsed {
 
    // #region props
    knownSlotTypes = new Set<string>()
-   knownEnumsByName = new Map<EnumName, EnumInfo>()
-   knownEnumsByHash = new Map<EnumHash, EnumInfo>()
+   knownEnumsByName = new Map<ComfyEnumName, EnumInfo>()
+   knownEnumsByHash = new Map<ComfyUnionHash, EnumInfo>()
    nodes: ComfyUIObjectInfoParsedNodeSchema[] = []
    nodesByNameInComfy: { [key: string]: ComfyUIObjectInfoParsedNodeSchema } = {}
    nodesByNameInCushy: { [key: string]: ComfyUIObjectInfoParsedNodeSchema } = {}
@@ -129,7 +130,7 @@ export class ComfyUIObjectInfoParsed {
                slotTypeName = convetComfySlotNameToCushySlotNameValidInJS(slotType)
                this.knownSlotTypes.add(slotTypeName)
             } else if (Array.isArray(slotType)) {
-               const uniqueEnumName = `${nodeNameInCushy}.output.${outputNameInCushy}`
+               const uniqueEnumName = `${pythonModuleToNamespace(pythonModule)}.${nodeNameInCushy}.output.${outputNameInCushy}`
                const RESX = this.processEnumNameOrValue({
                   pythonModule,
                   candidateName: uniqueEnumName,
@@ -207,7 +208,7 @@ export class ComfyUIObjectInfoParsed {
                inputTypeNameInCushy = convetComfySlotNameToCushySlotNameValidInJS(slotType)
                this.knownSlotTypes.add(inputTypeNameInCushy)
             } else if (Array.isArray(slotType)) {
-               const uniqueEnumName = `${nodeNameInCushy}.input.${inputNameInCushy}`
+               const uniqueEnumName = `${pythonModuleToNamespace(pythonModule)}.${nodeNameInCushy}.input.${inputNameInCushy}`
                const RESX = this.processEnumNameOrValue({
                   pythonModule,
                   candidateName: uniqueEnumName,
@@ -256,7 +257,7 @@ export class ComfyUIObjectInfoParsed {
       comfyEnumDef: ComfyEnumDef
    }): { typeName: string; ownName: string; enum: EnumInfo } => {
       // 1. build enum
-      const enumValues: EnumValue[] = []
+      const enumValues: ComfyUnionValue[] = []
       for (const enumValue of p.comfyEnumDef) {
          if (typeof enumValue === 'string') enumValues.push(enumValue)
          else if (typeof enumValue === 'boolean') enumValues.push(enumValue)
@@ -281,16 +282,17 @@ export class ComfyUIObjectInfoParsed {
             pythonModule: p.pythonModule,
             enumNameInCushy: 'E_' + hash, //p.candidateName,
             values: enumValues,
-            aliases: [],
+            qualifiedNames: [],
          })
          this.knownEnumsByHash.set(hash, enumInfo)
       }
       // else {
       // case 3.B. PRE-EXISTING
-      enumInfo.aliases.push({
-         pythonModule: p.pythonModule,
-         enumNameAlias: p.candidateName,
-      })
+      enumInfo.qualifiedNames.push(p.candidateName)
+      // enumInfo.qualifiedNames.push({
+      //    pythonModule: p.pythonModule,
+      //    enumNameAlias: p.candidateName,
+      // })
       // }
 
       // ❌ if (p.candidateName === 'Enum_DualCLIPLoader_clip_name1') debugger

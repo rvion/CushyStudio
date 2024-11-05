@@ -1,8 +1,9 @@
 import type { ComfyInputOpts } from './ComfyUIObjectInfoTypes'
 
-export type EnumHash = string
-export type EnumName = string
-export type EnumValue = string | boolean | number
+export type ComfyUnionHash = string //  '26c34bf761d4be4554ab944105c5a3c017c99453
+export type ComfyUnionName = string // 'E_26c34bf761d4be4554ab944105c5a3c017c99453'
+export type ComfyEnumName = string //  'Comfy.Custom.Impact_Pack.CfgScheduleHookProvider.input.schedule_for_iteration'
+export type ComfyUnionValue = string | boolean | number
 
 export type NodeNameInComfy = string
 export type NodeNameInCushy = string
@@ -30,10 +31,10 @@ export type NodeOutputExt = {
 }
 
 export type EnumInfo = {
-   hash: EnumHash
+   hash: ComfyUnionHash
    // enumNameInComfy: string
    pythonModule: string
-   enumNameInCushy: EnumName
-   values: EnumValue[]
-   aliases: { pythonModule: string; enumNameAlias: EnumName }[]
+   enumNameInCushy: ComfyUnionName
+   values: ComfyUnionValue[]
+   qualifiedNames: ComfyEnumName[]
 }

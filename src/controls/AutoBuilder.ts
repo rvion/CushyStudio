@@ -1,4 +1,4 @@
-import type { EnumValue } from '../comfyui/comfyui-types'
+import type { ComfyUnionValue } from '../comfyui/comfyui-types'
 import type { Field_enum_config } from '../csuite/fields/enum/FieldEnum'
 import type { Field_string_config } from '../csuite/fields/string/FieldString'
 import type { FieldConfig } from '../csuite/model/FieldConfig'
@@ -14,7 +14,7 @@ type AutoWidget<T> = T extends { kind: any; type: infer X }
           : T['kind'] extends 'prompt'
             ? X.XPrompt
             : T['kind'] extends 'enum'
-              ? X.XEnum<X & EnumValue>
+              ? X.XEnum<X & ComfyUnionValue>
               : any
    : any
 

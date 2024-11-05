@@ -1,4 +1,4 @@
-import type { EnumValue } from '../comfyui/comfyui-types'
+import type { ComfyUnionValue } from '../comfyui/comfyui-types'
 import type { Field_board_config } from '../csuite/fields/board/Field_board'
 import type { Field_bool } from '../csuite/fields/bool/FieldBool'
 import type { Field_button_config } from '../csuite/fields/button/FieldButton'
@@ -112,7 +112,7 @@ declare global {
       type Choice<T extends SchemaDict = SchemaDict> = Field_choices<T>
       type Number = Field_number
       type Color = Field_color
-      type Enum<T extends EnumValue> = Field_enum<T>
+      type Enum<T extends ComfyUnionValue> = Field_enum<T>
       type List<T extends BaseSchema> = Field_list<T>
       type Orbit = Field_orbit
       // type ListExt<T extends BaseSchema> = Field_listExt<T>
@@ -168,7 +168,7 @@ declare global {
       type XMarkdown = CushySchema<Field_markdown>
 
       type XPrompt = CushySchema<Field_prompt>
-      type XEnum<T extends EnumValue> = CushySchema<Field_enum<T>>
+      type XEnum<T extends ComfyUnionValue> = CushySchema<Field_enum<T>>
       type XOrbit = CushySchema<Field_orbit>
       type XImage = CushySchema<Field_image>
       type XCustom<T> = CushySchema<Field_custom<T>>

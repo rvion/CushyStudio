@@ -5,7 +5,7 @@ import type { ResilientWebSocketClient } from '../back/ResilientWebsocket'
 import type { ActionTagMethodList } from '../cards/App'
 import type { GithubRepoName } from '../cards/githubRepo'
 import type { GithubUserName } from '../cards/GithubUser'
-import type { EnumValue } from '../comfyui/comfyui-types'
+import type { ComfyUnionValue } from '../comfyui/comfyui-types'
 import type { PreferedFormLayout } from '../config/ConfigFile'
 import type { JsonFile } from '../core/JsonFile'
 import type { Activity } from '../csuite/activity/Activity'
@@ -412,7 +412,7 @@ export class STATE {
 
    fixEnumValue = (
       //
-      candidateValue: Maybe<EnumValue>,
+      candidateValue: Maybe<ComfyUnionValue>,
       enumName: string,
    ): CleanedEnumResult<any> => {
       // 0. retrieve enum dev
