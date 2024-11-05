@@ -70,8 +70,8 @@ export function ui_sampler_advanced(p?: {
    denoise?: number
    steps?: number
    cfg?: number
-   sampler_name?: Enum_KSampler_sampler_name
-   scheduler?: Enum_KSampler_scheduler
+   sampler_name?: Comfy.Enums['Comfy.Base.KSampler.input.sampler_name']
+   scheduler?: Comfy.Enums['Comfy.Base.KSampler.input.scheduler']
    startCollapsed?: boolean
    sharedSampler?: boolean
 }): UI_Sampler_Advanced {

@@ -26,7 +26,7 @@ export type $schemaModelExtras = X.XChoices<{
 
 export const schemaModelExtras = (
    p: {
-      defaultVAE?: Enum_VAELoader_vae_name
+      defaultVAE?: Comfy.Enums['Comfy.Base.VAELoader.input.vae_name']
       vaeActiveByDefault?: boolean
       // default?: $schemaModelExtras['$Value']
    } = {},

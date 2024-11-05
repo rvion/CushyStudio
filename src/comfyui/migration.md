@@ -32,4 +32,5 @@ X.XEnum<Comfy.Enums['$1.input.$2']>
 
 ```
 : Enum_([A-Za-z0-9]+)_([A-Za-z0-9_]+)
-: Comfy.Enums['$1.input.$2']
+: Comfy.Enums['Comfy.Base.$1.input.$2']
+```

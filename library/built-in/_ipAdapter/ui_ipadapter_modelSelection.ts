@@ -8,7 +8,7 @@ export type UI_ipadapter_modelSelection = {
 
 export const ui_ipadapter_modelSelection = (
    form: X.Builder,
-   defaultModel: Enum_IPAdapterModelLoader_ipadapter_file = 'ip-adapter_sd15.safetensors',
+   defaultModel: Comfy.Enums['Comfy.Base.IPAdapterModelLoader.input.ipadapter_file'] = 'ip-adapter_sd15.safetensors',
    knownModels:
       | KnownModel_Name //
       | KnownModel_Name[]

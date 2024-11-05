@@ -108,7 +108,7 @@ export const run_cnet_Normal = (
    resolution: number, // 512 | 768 | 1024 = 512,
 ): {
    image: Comfy.Input.IMAGE
-   cnet_name: Enum_ControlNetLoader_control_net_name
+   cnet_name: Comfy.Enums['Comfy.Base.ControlNetLoader.input.control_net_name']
 } => {
    const run = getCurrentRun()
    const graph = run.nodes

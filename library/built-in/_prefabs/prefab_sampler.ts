@@ -15,8 +15,8 @@ type UiSampleProps = {
    denoise?: number
    steps?: number
    cfg?: number
-   sampler_name?: Enum_KSampler_sampler_name
-   scheduler?: Enum_KSampler_scheduler
+   sampler_name?: Comfy.Enums['Comfy.Base.KSampler.input.sampler_name']
+   scheduler?: Comfy.Enums['Comfy.Base.KSampler.input.scheduler']
    startCollapsed?: boolean
 }
 export function ui_sampler(p?: UiSampleProps): UI_Sampler {
