@@ -7894,8 +7894,8 @@ declare global {
       }
    }
    // #region 1. Enums
-   namespace Comfy.Enum {
-      export interface Requirable {
+   namespace Comfy {
+      export interface Enums {
           "Comfy.Base.KSampler.input.sampler_name": { $Name: "Comfy.Base.KSampler.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
           "Comfy.Base.KSamplerAdvanced.input.sampler_name": { $Name: "Comfy.Base.KSamplerAdvanced.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
           "Comfy.Extra.custom_sampler.KSamplerSelect.input.sampler_name": { $Name: "Comfy.Extra.custom_sampler.KSamplerSelect.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
@@ -8515,7 +8515,7 @@ declare global {
    export interface HasSingle_MASK { _MASK: ComfyNodeOutput<'MASK'> } // prettier-ignore
    export interface HasSingle_SEGS { _SEGS: ComfyNodeOutput<'SEGS'> } // prettier-ignore
    export interface HasSingle_VAE { _VAE: ComfyNodeOutput<'VAE'> } // prettier-ignore
-   export interface HasSingle_E_720061fdb15e8c451b6aa7ed023644f064ddc57d { _E_720061fdb15e8c451b6aa7ed023644f064ddc57d: E_720061fdb15e8c451b6aa7ed023644f064ddc57d } // prettier-ignore
+   export interface HasSingle_E_720061fdb15e8c451b6aa7ed023644f064ddc57d { _E_720061fdb15e8c451b6aa7ed023644f064ddc57d: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d } // prettier-ignore
    
    // 8.2 NODE UI helpers --------------------
    export interface FormHelper {

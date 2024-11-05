@@ -119,9 +119,9 @@ export function codegenSDK(
 
    // #region Requireables
    p(`// #${''}region 1. Enums`)
-   p('namespace Comfy.Enum {')
+   p('namespace Comfy {')
    b.indent()
-   p(`export interface Requirable {`)
+   p(`export interface Enums {`)
    const requirables = this.requirables
    for (const e of this.knownEnumsByHash.values()) {
       for (const alias of e.qualifiedNames) {
@@ -234,7 +234,7 @@ export function codegenSDK(
    }
    // knownEnumOutput
    for (const t of this.enumsAppearingInOutput.values()) {
-      p(`export interface HasSingle_${t} { _${t}: ${t} } // prettier-ignore`)
+      p(`export interface HasSingle_${t} { _${t}: Comfy.Union.${t} } // prettier-ignore`)
    }
    // for (const t of this.knownEnums.values()) {
    //     p(
