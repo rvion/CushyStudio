@@ -125,7 +125,7 @@ export function codegenSDK(
    const requirables = this.requirables
    for (const e of this.knownEnumsByHash.values()) {
       for (const alias of e.aliases) {
-         const enumKey = `${pythonModuleToNamespace(alias.pythonModule)}/${alias.enumNameAlias}`
+         const enumKey = `${pythonModuleToNamespace(alias.pythonModule)}.${alias.enumNameAlias}`
          p(`    ${escapeJSKey(enumKey)}: { $Name: ${JSON.stringify(enumKey)}, $Value: Comfy.Union.${e.enumNameInCushy} },`) // prettier-ignore
       }
    }
@@ -287,13 +287,23 @@ function pythonModuleToNamespace(pythonModule: string): string {
    return `Comfy.${pythonModuleToNamespace_(pythonModule)}`
 }
 function pythonModuleToNamespace_(pythonModule: string): string {
-   let x = pythonModule
-   if (x === 'nodes') return 'Base'
+   if (pythonModule === 'nodes') return 'Base'
+   return pythonModule
+      .split('.')
+      .map((i) => {
+         let y = i
+         if (y === 'comfy_extras') return 'Extra'
+         if (y === 'custom_nodes') return 'Custom'
 
-   if (x.startsWith('comfy_extras.nodes_')) x = x.replace('comfy_extras.nodes_', 'Extras.')
-   if (x.startsWith('custom_nodes.ComfyUI-')) x = x.replace('custom_nodes.ComfyUI-', 'Custom.')
-
-   return convetComfySlotNameToCushySlotNameValidInJS(x)
+         if (y.startsWith('nodes_')) y = y.replace('nodes_', '')
+         if (y.startsWith('ComfyUI-')) y = y.replace('ComfyUI-', '')
+         y = y.replaceAll('-', '_')
+         y = y.replaceAll(' ', '_')
+         y = y.replaceAll('.', '_')
+         return y
+      })
+      .map(convetComfySlotNameToCushySlotNameValidInJS)
+      .join('.')
 }
 
 function groupByAsArray<T>(arr: T[], key: (t: T) => string): [string, T[]][] {

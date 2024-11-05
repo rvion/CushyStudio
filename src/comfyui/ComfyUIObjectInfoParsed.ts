@@ -129,7 +129,7 @@ export class ComfyUIObjectInfoParsed {
                slotTypeName = convetComfySlotNameToCushySlotNameValidInJS(slotType)
                this.knownSlotTypes.add(slotTypeName)
             } else if (Array.isArray(slotType)) {
-               const uniqueEnumName = `Enum_${nodeNameInCushy}_${outputNameInCushy}_out`
+               const uniqueEnumName = `${nodeNameInCushy}.output.${outputNameInCushy}`
                const RESX = this.processEnumNameOrValue({
                   pythonModule,
                   candidateName: uniqueEnumName,
@@ -207,7 +207,7 @@ export class ComfyUIObjectInfoParsed {
                inputTypeNameInCushy = convetComfySlotNameToCushySlotNameValidInJS(slotType)
                this.knownSlotTypes.add(inputTypeNameInCushy)
             } else if (Array.isArray(slotType)) {
-               const uniqueEnumName = `Enum_${nodeNameInCushy}_${inputNameInCushy}`
+               const uniqueEnumName = `${nodeNameInCushy}.input.${inputNameInCushy}`
                const RESX = this.processEnumNameOrValue({
                   pythonModule,
                   candidateName: uniqueEnumName,
@@ -279,7 +279,7 @@ export class ComfyUIObjectInfoParsed {
          enumInfo = observable({
             hash,
             pythonModule: p.pythonModule,
-            enumNameInCushy: p.candidateName,
+            enumNameInCushy: 'E_' + hash, //p.candidateName,
             values: enumValues,
             aliases: [],
          })
@@ -287,7 +287,10 @@ export class ComfyUIObjectInfoParsed {
       }
       // else {
       // case 3.B. PRE-EXISTING
-      enumInfo.aliases.push({ enumNameAlias: p.candidateName, pythonModule: p.pythonModule })
+      enumInfo.aliases.push({
+         pythonModule: p.pythonModule,
+         enumNameAlias: p.candidateName,
+      })
       // }
 
       // ❌ if (p.candidateName === 'Enum_DualCLIPLoader_clip_name1') debugger

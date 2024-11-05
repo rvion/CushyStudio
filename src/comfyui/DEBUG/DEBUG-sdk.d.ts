@@ -12,227 +12,227 @@ declare global {
            */
           | 'nodes'
           /**
-           * SDK Namespace: Comfy.Extras$5latent
+           * SDK Namespace: Comfy.Extra.latent
            * Nodes: LatentAdd, LatentSubtract, LatentMultiply, LatentInterpolate, LatentBatch, LatentBatchSeedBehavior, LatentApplyOperation, LatentApplyOperationCFG, LatentOperationTonemapReinhard, LatentOperationSharpen
            */
           | 'comfy_extras.nodes_latent'
           /**
-           * SDK Namespace: Comfy.Extras$5hypernetwork
+           * SDK Namespace: Comfy.Extra.hypernetwork
            * Nodes: HypernetworkLoader
            */
           | 'comfy_extras.nodes_hypernetwork'
           /**
-           * SDK Namespace: Comfy.Extras$5upscale_model
+           * SDK Namespace: Comfy.Extra.upscale_model
            * Nodes: UpscaleModelLoader, ImageUpscaleWithModel
            */
           | 'comfy_extras.nodes_upscale_model'
           /**
-           * SDK Namespace: Comfy.Extras$5post_processing
+           * SDK Namespace: Comfy.Extra.post_processing
            * Nodes: ImageBlend, ImageBlur, ImageQuantize, ImageSharpen, ImageScaleToTotalPixels
            */
           | 'comfy_extras.nodes_post_processing'
           /**
-           * SDK Namespace: Comfy.Extras$5mask
+           * SDK Namespace: Comfy.Extra.mask
            * Nodes: LatentCompositeMasked, ImageCompositeMasked, MaskToImage, ImageToMask, ImageColorToMask, SolidMask, InvertMask, CropMask, MaskComposite, FeatherMask, GrowMask, ThresholdMask
            */
           | 'comfy_extras.nodes_mask'
           /**
-           * SDK Namespace: Comfy.Extras$5compositing
+           * SDK Namespace: Comfy.Extra.compositing
            * Nodes: PorterDuffImageComposite, SplitImageWithAlpha, JoinImageWithAlpha
            */
           | 'comfy_extras.nodes_compositing'
           /**
-           * SDK Namespace: Comfy.Extras$5rebatch
+           * SDK Namespace: Comfy.Extra.rebatch
            * Nodes: RebatchLatents, RebatchImages
            */
           | 'comfy_extras.nodes_rebatch'
           /**
-           * SDK Namespace: Comfy.Extras$5model_merging
+           * SDK Namespace: Comfy.Extra.model_merging
            * Nodes: ModelMergeSimple, ModelMergeBlocks, ModelMergeSubtract, ModelMergeAdd, CheckpointSave, CLIPMergeSimple, CLIPMergeSubtract, CLIPMergeAdd, CLIPSave, VAESave, ModelSave
            */
           | 'comfy_extras.nodes_model_merging'
           /**
-           * SDK Namespace: Comfy.Extras$5tomesd
+           * SDK Namespace: Comfy.Extra.tomesd
            * Nodes: TomePatchModel
            */
           | 'comfy_extras.nodes_tomesd'
           /**
-           * SDK Namespace: Comfy.Extras$5clip_sdxl
+           * SDK Namespace: Comfy.Extra.clip_sdxl
            * Nodes: CLIPTextEncodeSDXLRefiner, CLIPTextEncodeSDXL
            */
           | 'comfy_extras.nodes_clip_sdxl'
           /**
-           * SDK Namespace: Comfy.Extras$5canny
+           * SDK Namespace: Comfy.Extra.canny
            * Nodes: Canny
            */
           | 'comfy_extras.nodes_canny'
           /**
-           * SDK Namespace: Comfy.Extras$5freelunch
+           * SDK Namespace: Comfy.Extra.freelunch
            * Nodes: FreeU, FreeU_V2
            */
           | 'comfy_extras.nodes_freelunch'
           /**
-           * SDK Namespace: Comfy.Extras$5custom_sampler
+           * SDK Namespace: Comfy.Extra.custom_sampler
            * Nodes: SamplerCustom, BasicScheduler, KarrasScheduler, ExponentialScheduler, PolyexponentialScheduler, LaplaceScheduler, VPScheduler, BetaSamplingScheduler, SDTurboScheduler, KSamplerSelect, SamplerEulerAncestral, SamplerEulerAncestralCFGPP, SamplerLMS, SamplerDPMPP_3M_SDE, SamplerDPMPP_2M_SDE, SamplerDPMPP_SDE, SamplerDPMPP_2S_Ancestral, SamplerDPMAdaptative, SplitSigmas, SplitSigmasDenoise, FlipSigmas, CFGGuider, DualCFGGuider, BasicGuider, RandomNoise, DisableNoise, AddNoise, SamplerCustomAdvanced
            */
           | 'comfy_extras.nodes_custom_sampler'
           /**
-           * SDK Namespace: Comfy.Extras$5hypertile
+           * SDK Namespace: Comfy.Extra.hypertile
            * Nodes: HyperTile
            */
           | 'comfy_extras.nodes_hypertile'
           /**
-           * SDK Namespace: Comfy.Extras$5model_advanced
+           * SDK Namespace: Comfy.Extra.model_advanced
            * Nodes: ModelSamplingDiscrete, ModelSamplingContinuousEDM, ModelSamplingContinuousV, ModelSamplingStableCascade, ModelSamplingSD3, ModelSamplingAuraFlow, ModelSamplingFlux, RescaleCFG
            */
           | 'comfy_extras.nodes_model_advanced'
           /**
-           * SDK Namespace: Comfy.Extras$5model_downscale
+           * SDK Namespace: Comfy.Extra.model_downscale
            * Nodes: PatchModelAddDownscale
            */
           | 'comfy_extras.nodes_model_downscale'
           /**
-           * SDK Namespace: Comfy.Extras$5images
+           * SDK Namespace: Comfy.Extra.images
            * Nodes: ImageCrop, RepeatImageBatch, ImageFromBatch, SaveAnimatedWEBP, SaveAnimatedPNG
            */
           | 'comfy_extras.nodes_images'
           /**
-           * SDK Namespace: Comfy.Extras$5video_model
+           * SDK Namespace: Comfy.Extra.video_model
            * Nodes: ImageOnlyCheckpointLoader, SVD_img2vid_Conditioning, VideoLinearCFGGuidance, VideoTriangleCFGGuidance, ImageOnlyCheckpointSave
            */
           | 'comfy_extras.nodes_video_model'
           /**
-           * SDK Namespace: Comfy.Extras$5sag
+           * SDK Namespace: Comfy.Extra.sag
            * Nodes: SelfAttentionGuidance
            */
           | 'comfy_extras.nodes_sag'
           /**
-           * SDK Namespace: Comfy.Extras$5perpneg
+           * SDK Namespace: Comfy.Extra.perpneg
            * Nodes: PerpNeg, PerpNegGuider
            */
           | 'comfy_extras.nodes_perpneg'
           /**
-           * SDK Namespace: Comfy.Extras$5stable3d
+           * SDK Namespace: Comfy.Extra.stable3d
            * Nodes: StableZero123_Conditioning, StableZero123_Conditioning_Batched, SV3D_Conditioning
            */
           | 'comfy_extras.nodes_stable3d'
           /**
-           * SDK Namespace: Comfy.Extras$5sdupscale
+           * SDK Namespace: Comfy.Extra.sdupscale
            * Nodes: SD_4XUpscale_Conditioning
            */
           | 'comfy_extras.nodes_sdupscale'
           /**
-           * SDK Namespace: Comfy.Extras$5photomaker
+           * SDK Namespace: Comfy.Extra.photomaker
            * Nodes: PhotoMakerLoader, PhotoMakerEncode
            */
           | 'comfy_extras.nodes_photomaker'
           /**
-           * SDK Namespace: Comfy.Extras$5cond
+           * SDK Namespace: Comfy.Extra.cond
            * Nodes: CLIPTextEncodeControlnet
            */
           | 'comfy_extras.nodes_cond'
           /**
-           * SDK Namespace: Comfy.Extras$5morphology
+           * SDK Namespace: Comfy.Extra.morphology
            * Nodes: Morphology
            */
           | 'comfy_extras.nodes_morphology'
           /**
-           * SDK Namespace: Comfy.Extras$5stable_cascade
+           * SDK Namespace: Comfy.Extra.stable_cascade
            * Nodes: StableCascade_EmptyLatentImage, StableCascade_StageB_Conditioning, StableCascade_StageC_VAEEncode, StableCascade_SuperResolutionControlnet
            */
           | 'comfy_extras.nodes_stable_cascade'
           /**
-           * SDK Namespace: Comfy.Extras$5differential_diffusion
+           * SDK Namespace: Comfy.Extra.differential_diffusion
            * Nodes: DifferentialDiffusion
            */
           | 'comfy_extras.nodes_differential_diffusion'
           /**
-           * SDK Namespace: Comfy.Extras$5ip2p
+           * SDK Namespace: Comfy.Extra.ip2p
            * Nodes: InstructPixToPixConditioning
            */
           | 'comfy_extras.nodes_ip2p'
           /**
-           * SDK Namespace: Comfy.Extras$5model_merging_model_specific
+           * SDK Namespace: Comfy.Extra.model_merging_model_specific
            * Nodes: ModelMergeSD1, ModelMergeSD2, ModelMergeSDXL, ModelMergeSD3_2B, ModelMergeFlux1, ModelMergeSD35_Large
            */
           | 'comfy_extras.nodes_model_merging_model_specific'
           /**
-           * SDK Namespace: Comfy.Extras$5pag
+           * SDK Namespace: Comfy.Extra.pag
            * Nodes: PerturbedAttentionGuidance
            */
           | 'comfy_extras.nodes_pag'
           /**
-           * SDK Namespace: Comfy.Extras$5align_your_steps
+           * SDK Namespace: Comfy.Extra.align_your_steps
            * Nodes: AlignYourStepsScheduler
            */
           | 'comfy_extras.nodes_align_your_steps'
           /**
-           * SDK Namespace: Comfy.Extras$5attention_multiply
+           * SDK Namespace: Comfy.Extra.attention_multiply
            * Nodes: UNetSelfAttentionMultiply, UNetCrossAttentionMultiply, CLIPAttentionMultiply, UNetTemporalAttentionMultiply
            */
           | 'comfy_extras.nodes_attention_multiply'
           /**
-           * SDK Namespace: Comfy.Extras$5advanced_samplers
+           * SDK Namespace: Comfy.Extra.advanced_samplers
            * Nodes: SamplerLCMUpscale, SamplerEulerCFGpp
            */
           | 'comfy_extras.nodes_advanced_samplers'
           /**
-           * SDK Namespace: Comfy.Extras$5webcam
+           * SDK Namespace: Comfy.Extra.webcam
            * Nodes: WebcamCapture
            */
           | 'comfy_extras.nodes_webcam'
           /**
-           * SDK Namespace: Comfy.Extras$5audio
+           * SDK Namespace: Comfy.Extra.audio
            * Nodes: EmptyLatentAudio, VAEEncodeAudio, VAEDecodeAudio, SaveAudio, LoadAudio, PreviewAudio
            */
           | 'comfy_extras.nodes_audio'
           /**
-           * SDK Namespace: Comfy.Extras$5sd3
+           * SDK Namespace: Comfy.Extra.sd3
            * Nodes: TripleCLIPLoader, EmptySD3LatentImage, CLIPTextEncodeSD3, ControlNetApplySD3, SkipLayerGuidanceSD3
            */
           | 'comfy_extras.nodes_sd3'
           /**
-           * SDK Namespace: Comfy.Extras$5gits
+           * SDK Namespace: Comfy.Extra.gits
            * Nodes: GITSScheduler
            */
           | 'comfy_extras.nodes_gits'
           /**
-           * SDK Namespace: Comfy.Extras$5controlnet
+           * SDK Namespace: Comfy.Extra.controlnet
            * Nodes: SetUnionControlNetType, ControlNetInpaintingAliMamaApply
            */
           | 'comfy_extras.nodes_controlnet'
           /**
-           * SDK Namespace: Comfy.Extras$5hunyuan
+           * SDK Namespace: Comfy.Extra.hunyuan
            * Nodes: CLIPTextEncodeHunyuanDiT
            */
           | 'comfy_extras.nodes_hunyuan'
           /**
-           * SDK Namespace: Comfy.Extras$5flux
+           * SDK Namespace: Comfy.Extra.flux
            * Nodes: CLIPTextEncodeFlux, FluxGuidance
            */
           | 'comfy_extras.nodes_flux'
           /**
-           * SDK Namespace: Comfy.Extras$5lora_extract
+           * SDK Namespace: Comfy.Extra.lora_extract
            * Nodes: LoraSave
            */
           | 'comfy_extras.nodes_lora_extract'
           /**
-           * SDK Namespace: Comfy.Extras$5torch_compile
+           * SDK Namespace: Comfy.Extra.torch_compile
            * Nodes: TorchCompileModel
            */
           | 'comfy_extras.nodes_torch_compile'
           /**
-           * SDK Namespace: Comfy.Extras$5mochi
+           * SDK Namespace: Comfy.Extra.mochi
            * Nodes: EmptyMochiLatentVideo
            */
           | 'comfy_extras.nodes_mochi'
           /**
-           * SDK Namespace: Comfy.custom_nodes$5websocket_image_save
+           * SDK Namespace: Comfy.Custom.websocket_image_save
            * Nodes: SaveImageWebsocket
            */
           | 'custom_nodes.websocket_image_save'
           /**
-           * SDK Namespace: Comfy.Custom$5Impact$7Pack
+           * SDK Namespace: Comfy.Custom.Impact_Pack
            * Nodes: SAMLoader, CLIPSegDetectorProvider, ONNXDetectorProvider, BitwiseAndMaskForEach, SubtractMaskForEach, DetailerForEach, DetailerForEachDebug, DetailerForEachPipe, DetailerForEachDebugPipe, DetailerForEachPipeForAnimateDiff, SAMDetectorCombined, SAMDetectorSegmented, FaceDetailer, FaceDetailerPipe, MaskDetailerPipe, ToDetailerPipe, ToDetailerPipeSDXL, FromDetailerPipe, FromDetailerPipe_v2, FromDetailerPipeSDXL, AnyPipeToBasic, ToBasicPipe, FromBasicPipe, FromBasicPipe_v2, BasicPipeToDetailerPipe, BasicPipeToDetailerPipeSDXL, DetailerPipeToBasicPipe, EditBasicPipe, EditDetailerPipe, EditDetailerPipeSDXL, LatentPixelScale, PixelKSampleUpscalerProvider, PixelKSampleUpscalerProviderPipe, IterativeLatentUpscale, IterativeImageUpscale, PixelTiledKSampleUpscalerProvider, PixelTiledKSampleUpscalerProviderPipe, TwoSamplersForMaskUpscalerProvider, TwoSamplersForMaskUpscalerProviderPipe, PixelKSampleHookCombine, DenoiseScheduleHookProvider, StepsScheduleHookProvider, CfgScheduleHookProvider, NoiseInjectionHookProvider, UnsamplerHookProvider, CoreMLDetailerHookProvider, PreviewDetailerHookProvider, DetailerHookCombine, NoiseInjectionDetailerHookProvider, UnsamplerDetailerHookProvider, DenoiseSchedulerDetailerHookProvider, SEGSOrderedFilterDetailerHookProvider, SEGSRangeFilterDetailerHookProvider, SEGSLabelFilterDetailerHookProvider, VariationNoiseDetailerHookProvider, BitwiseAndMask, SubtractMask, AddMask, ImpactSegsAndMask, ImpactSegsAndMaskForEach, EmptySegs, ImpactFlattenMask, MediaPipeFaceMeshToSEGS, MaskToSEGS, MaskToSEGS_for_AnimateDiff, ToBinaryMask, MasksToMaskList, MaskListToMaskBatch, ImageListToImageBatch, SetDefaultImageForSEGS, RemoveImageFromSEGS, BboxDetectorSEGS, SegmDetectorSEGS, ONNXDetectorSEGS, ImpactSimpleDetectorSEGS_for_AD, ImpactSimpleDetectorSEGS, ImpactSimpleDetectorSEGSPipe, ImpactControlNetApplySEGS, ImpactControlNetApplyAdvancedSEGS, ImpactControlNetClearSEGS, ImpactIPAdapterApplySEGS, ImpactDecomposeSEGS, ImpactAssembleSEGS, ImpactFrom_SEG_ELT, ImpactEdit_SEG_ELT, ImpactDilate_Mask_SEG_ELT, ImpactDilateMask, ImpactGaussianBlurMask, ImpactDilateMaskInSEGS, ImpactGaussianBlurMaskInSEGS, ImpactScaleBy_BBOX_SEG_ELT, ImpactFrom_SEG_ELT_bbox, ImpactFrom_SEG_ELT_crop_region, ImpactCount_Elts_in_SEGS, BboxDetectorCombined_v2, SegmDetectorCombined_v2, SegsToCombinedMask, KSamplerProvider, TwoSamplersForMask, TiledKSamplerProvider, KSamplerAdvancedProvider, TwoAdvancedSamplersForMask, ImpactNegativeConditioningPlaceholder, PreviewBridge, PreviewBridgeLatent, ImageSender, ImageReceiver, LatentSender, LatentReceiver, ImageMaskSwitch, LatentSwitch, SEGSSwitch, ImpactSwitch, ImpactInversedSwitch, ImpactWildcardProcessor, ImpactWildcardEncode, SEGSUpscaler, SEGSUpscalerPipe, SEGSDetailer, SEGSPaste, SEGSPreview, SEGSPreviewCNet, SEGSToImageList, ImpactSEGSToMaskList, ImpactSEGSToMaskBatch, ImpactSEGSConcat, ImpactSEGSPicker, ImpactMakeTileSEGS, ImpactSEGSMerge, SEGSDetailerForAnimateDiff, ImpactKSamplerBasicPipe, ImpactKSamplerAdvancedBasicPipe, ReencodeLatent, ReencodeLatentPipe, ImpactImageBatchToImageList, ImpactMakeImageList, ImpactMakeImageBatch, ImpactMakeAnyList, ImpactMakeMaskList, ImpactMakeMaskBatch, RegionalSampler, RegionalSamplerAdvanced, CombineRegionalPrompts, RegionalPrompt, ImpactCombineConditionings, ImpactConcatConditionings, ImpactSEGSLabelAssign, ImpactSEGSLabelFilter, ImpactSEGSRangeFilter, ImpactSEGSOrderedFilter, ImpactCompare, ImpactConditionalBranch, ImpactConditionalBranchSelMode, ImpactIfNone, ImpactConvertDataType, ImpactLogicalOperators, ImpactInt, ImpactFloat, ImpactBoolean, ImpactValueSender, ImpactValueReceiver, ImpactImageInfo, ImpactLatentInfo, ImpactMinMax, ImpactNeg, ImpactConditionalStopIteration, ImpactStringSelector, StringListToString, WildcardPromptFromString, ImpactExecutionOrderController, RemoveNoiseMask, ImpactLogger, ImpactDummyInput, ImpactQueueTrigger, ImpactQueueTriggerCountdown, ImpactSetWidgetValue, ImpactNodeSetMuteState, ImpactControlBridge, ImpactIsNotEmptySEGS, ImpactSleep, ImpactRemoteBoolean, ImpactRemoteInt, ImpactHFTransformersClassifierProvider, ImpactSEGSClassify, ImpactSchedulerAdapter, GITSSchedulerFuncProvider, UltralyticsDetectorProvider
            */
           | 'custom_nodes.ComfyUI-Impact-Pack'
@@ -417,9 +417,9 @@ declare global {
           /** default=8 min=100 max=100 step=0.1 */
           cfg?: Comfy.Input.FLOAT
           /** */
-          sampler_name: Comfy.Union.Enum_KSampler_sampler_name
+          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
           /** */
-          scheduler: Comfy.Union.Enum_KSampler_scheduler
+          scheduler: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325
           /** */
           positive: Comfy.Input.CONDITIONING
           /** */
@@ -439,7 +439,7 @@ declare global {
       }
       interface CheckpointLoaderSimple_input {
           /** */
-          ckpt_name: Comfy.Union.Enum_CheckpointLoaderSimple_ckpt_name
+          ckpt_name: Comfy.Union.E_1f08f73a9a576ae570aa3d82ea94f2bcfc29a8fc
       }
       interface CLIPTextEncode extends HasSingle_CONDITIONING, ComfyNode<CLIPTextEncode_input, CLIPTextEncode_output> {
           nameInComfy: "CLIPTextEncode"
@@ -506,7 +506,7 @@ declare global {
           VAE: ComfyNodeOutput<'VAE', 0>,
       }
       interface VAELoader_input {
-          vae_name: Comfy.Union.Enum_VAELoader_vae_name
+          vae_name: Comfy.Union.E_621a1d2d13812defa70c4b6ec953d17713bd232a
       }
       interface EmptyLatentImage extends HasSingle_LATENT, ComfyNode<EmptyLatentImage_input, EmptyLatentImage_output> {
           nameInComfy: "EmptyLatentImage"
@@ -530,12 +530,12 @@ declare global {
       }
       interface LatentUpscale_input {
           samples: Comfy.Input.LATENT
-          upscale_method: Comfy.Union.Enum_LatentUpscale_upscale_method
+          upscale_method: Comfy.Union.E_6e6cbf6c48411ad480e010b0c9d2434b41af430d
           /** default=512 min=16384 max=16384 step=8 */
           width?: Comfy.Input.INT
           /** default=512 min=16384 max=16384 step=8 */
           height?: Comfy.Input.INT
-          crop: Comfy.Union.Enum_LatentUpscale_crop
+          crop: Comfy.Union.E_e2779c2a162ed54d5841127cc2968e8d50f5e431
       }
       interface LatentUpscaleBy extends HasSingle_LATENT, ComfyNode<LatentUpscaleBy_input, LatentUpscaleBy_output> {
           nameInComfy: "LatentUpscaleBy"
@@ -545,7 +545,7 @@ declare global {
       }
       interface LatentUpscaleBy_input {
           samples: Comfy.Input.LATENT
-          upscale_method: Comfy.Union.Enum_LatentUpscale_upscale_method
+          upscale_method: Comfy.Union.E_6e6cbf6c48411ad480e010b0c9d2434b41af430d
           /** default=1.5 min=8 max=8 step=0.01 */
           scale_by?: Comfy.Input.FLOAT
       }
@@ -601,7 +601,7 @@ declare global {
       }
       interface LoadImage_input {
           /** */
-          image: Comfy.Union.Enum_LoadImage_image
+          image: Comfy.Union.E_26ea5ad8c44c9551fea858fff18017427386b591
       }
       interface LoadImageMask extends HasSingle_MASK, ComfyNode<LoadImageMask_input, LoadImageMask_output> {
           nameInComfy: "LoadImageMask"
@@ -611,8 +611,8 @@ declare global {
       }
       interface LoadImageMask_input {
           /** */
-          image: Comfy.Union.Enum_LoadImage_image
-          channel: Comfy.Union.Enum_LoadImageMask_channel
+          image: Comfy.Union.E_26ea5ad8c44c9551fea858fff18017427386b591
+          channel: Comfy.Union.E_19d5be39f1fd20a88fdbcb009a06c7df2b0ef998
       }
       interface ImageScale extends HasSingle_IMAGE, ComfyNode<ImageScale_input, ImageScale_output> {
           nameInComfy: "ImageScale"
@@ -622,12 +622,12 @@ declare global {
       }
       interface ImageScale_input {
           image: Comfy.Input.IMAGE
-          upscale_method: Comfy.Union.Enum_ImageScale_upscale_method
+          upscale_method: Comfy.Union.E_165b455eb22956fc9da6e1b76d49a4077f15d897
           /** default=512 min=16384 max=16384 step=1 */
           width?: Comfy.Input.INT
           /** default=512 min=16384 max=16384 step=1 */
           height?: Comfy.Input.INT
-          crop: Comfy.Union.Enum_LatentUpscale_crop
+          crop: Comfy.Union.E_e2779c2a162ed54d5841127cc2968e8d50f5e431
       }
       interface ImageScaleBy extends HasSingle_IMAGE, ComfyNode<ImageScaleBy_input, ImageScaleBy_output> {
           nameInComfy: "ImageScaleBy"
@@ -637,7 +637,7 @@ declare global {
       }
       interface ImageScaleBy_input {
           image: Comfy.Input.IMAGE
-          upscale_method: Comfy.Union.Enum_ImageScale_upscale_method
+          upscale_method: Comfy.Union.E_165b455eb22956fc9da6e1b76d49a4077f15d897
           /** default=1 min=8 max=8 step=0.01 */
           scale_by?: Comfy.Input.FLOAT
       }
@@ -788,7 +788,7 @@ declare global {
           mask: Comfy.Input.MASK
           /** default=1 min=10 max=10 step=0.01 */
           strength?: Comfy.Input.FLOAT
-          set_cond_area: Comfy.Union.Enum_ConditioningSetMask_set_cond_area
+          set_cond_area: Comfy.Union.E_046ed3ef4b2b9a9cfdb62e53a70fe767fb996451
       }
       interface KSamplerAdvanced extends HasSingle_LATENT, ComfyNode<KSamplerAdvanced_input, KSamplerAdvanced_output> {
           nameInComfy: "KSamplerAdvanced"
@@ -798,15 +798,15 @@ declare global {
       }
       interface KSamplerAdvanced_input {
           model: Comfy.Input.MODEL
-          add_noise: Comfy.Union.Enum_KSamplerAdvanced_add_noise
+          add_noise: Comfy.Union.E_449b4cae3566dd9b97c417c352bb08e25b89431b
           /** default=0 min=18446744073709552000 max=18446744073709552000 */
           noise_seed?: Comfy.Input.INT
           /** default=20 min=10000 max=10000 */
           steps?: Comfy.Input.INT
           /** default=8 min=100 max=100 step=0.1 */
           cfg?: Comfy.Input.FLOAT
-          sampler_name: Comfy.Union.Enum_KSampler_sampler_name
-          scheduler: Comfy.Union.Enum_KSampler_scheduler
+          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          scheduler: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325
           positive: Comfy.Input.CONDITIONING
           negative: Comfy.Input.CONDITIONING
           latent_image: Comfy.Input.LATENT
@@ -814,7 +814,7 @@ declare global {
           start_at_step?: Comfy.Input.INT
           /** default=10000 min=10000 max=10000 */
           end_at_step?: Comfy.Input.INT
-          return_with_leftover_noise: Comfy.Union.Enum_KSamplerAdvanced_add_noise
+          return_with_leftover_noise: Comfy.Union.E_449b4cae3566dd9b97c417c352bb08e25b89431b
       }
       interface SetLatentNoiseMask extends HasSingle_LATENT, ComfyNode<SetLatentNoiseMask_input, SetLatentNoiseMask_output> {
           nameInComfy: "SetLatentNoiseMask"
@@ -862,7 +862,7 @@ declare global {
       }
       interface LatentRotate_input {
           samples: Comfy.Input.LATENT
-          rotation: Comfy.Union.Enum_LatentRotate_rotation
+          rotation: Comfy.Union.E_061551528c540e0171a9c88a94c7d5375aa31f8a
       }
       interface LatentFlip extends HasSingle_LATENT, ComfyNode<LatentFlip_input, LatentFlip_output> {
           nameInComfy: "LatentFlip"
@@ -872,7 +872,7 @@ declare global {
       }
       interface LatentFlip_input {
           samples: Comfy.Input.LATENT
-          flip_method: Comfy.Union.Enum_LatentFlip_flip_method
+          flip_method: Comfy.Union.E_cdf7071acecb5016da941b6e718b82c97248a3e4
       }
       interface LatentCrop extends HasSingle_LATENT, ComfyNode<LatentCrop_input, LatentCrop_output> {
           nameInComfy: "LatentCrop"
@@ -904,7 +904,7 @@ declare global {
           /** */
           clip: Comfy.Input.CLIP
           /** */
-          lora_name: Comfy.Union.Enum_LoraLoader_lora_name
+          lora_name: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
           /** default=1 min=100 max=100 step=0.01 */
           strength_model?: Comfy.Input.FLOAT
           /** default=1 min=100 max=100 step=0.01 */
@@ -917,8 +917,8 @@ declare global {
           CLIP: ComfyNodeOutput<'CLIP', 0>,
       }
       interface CLIPLoader_input {
-          clip_name: Comfy.Union.Enum_LoraLoader_lora_name
-          type: Comfy.Union.Enum_CLIPLoader_type
+          clip_name: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
+          type: Comfy.Union.E_766fb79b4f3904a6716246cfb2a33b7b9e6a08c4
       }
       interface UNETLoader extends HasSingle_MODEL, ComfyNode<UNETLoader_input, UNETLoader_output> {
           nameInComfy: "UNETLoader"
@@ -927,8 +927,8 @@ declare global {
           MODEL: ComfyNodeOutput<'MODEL', 0>,
       }
       interface UNETLoader_input {
-          unet_name: Comfy.Union.Enum_LoraLoader_lora_name
-          weight_dtype: Comfy.Union.Enum_UNETLoader_weight_dtype
+          unet_name: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
+          weight_dtype: Comfy.Union.E_21ba65fbb0df707c108b25356a3507e13f21ea58
       }
       interface DualCLIPLoader extends HasSingle_CLIP, ComfyNode<DualCLIPLoader_input, DualCLIPLoader_output> {
           nameInComfy: "DualCLIPLoader"
@@ -937,9 +937,9 @@ declare global {
           CLIP: ComfyNodeOutput<'CLIP', 0>,
       }
       interface DualCLIPLoader_input {
-          clip_name1: Comfy.Union.Enum_LoraLoader_lora_name
-          clip_name2: Comfy.Union.Enum_LoraLoader_lora_name
-          type: Comfy.Union.Enum_DualCLIPLoader_type
+          clip_name1: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
+          clip_name2: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
+          type: Comfy.Union.E_39292df8ce88fd66f0dacf6f9110cfa2594ca25c
       }
       interface CLIPVisionEncode extends HasSingle_CLIP_VISION_OUTPUT, ComfyNode<CLIPVisionEncode_input, CLIPVisionEncode_output> {
           nameInComfy: "CLIPVisionEncode"
@@ -1016,7 +1016,7 @@ declare global {
           CONTROL_NET: ComfyNodeOutput<'CONTROL_NET', 0>,
       }
       interface ControlNetLoader_input {
-          control_net_name: Comfy.Union.Enum_LoraLoader_lora_name
+          control_net_name: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
       }
       interface DiffControlNetLoader extends HasSingle_CONTROL_NET, ComfyNode<DiffControlNetLoader_input, DiffControlNetLoader_output> {
           nameInComfy: "DiffControlNetLoader"
@@ -1026,7 +1026,7 @@ declare global {
       }
       interface DiffControlNetLoader_input {
           model: Comfy.Input.MODEL
-          control_net_name: Comfy.Union.Enum_LoraLoader_lora_name
+          control_net_name: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
       }
       interface StyleModelLoader extends HasSingle_STYLE_MODEL, ComfyNode<StyleModelLoader_input, StyleModelLoader_output> {
           nameInComfy: "StyleModelLoader"
@@ -1035,7 +1035,7 @@ declare global {
           STYLE_MODEL: ComfyNodeOutput<'STYLE_MODEL', 0>,
       }
       interface StyleModelLoader_input {
-          style_model_name: Comfy.Union.Enum_LoraLoader_lora_name
+          style_model_name: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
       }
       interface CLIPVisionLoader extends HasSingle_CLIP_VISION, ComfyNode<CLIPVisionLoader_input, CLIPVisionLoader_output> {
           nameInComfy: "CLIPVisionLoader"
@@ -1044,7 +1044,7 @@ declare global {
           CLIP_VISION: ComfyNodeOutput<'CLIP_VISION', 0>,
       }
       interface CLIPVisionLoader_input {
-          clip_name: Comfy.Union.Enum_LoraLoader_lora_name
+          clip_name: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
       }
       interface VAEDecodeTiled extends HasSingle_IMAGE, ComfyNode<VAEDecodeTiled_input, VAEDecodeTiled_output> {
           nameInComfy: "VAEDecodeTiled"
@@ -1080,7 +1080,7 @@ declare global {
           CLIP_VISION: ComfyNodeOutput<'CLIP_VISION', 3>,
       }
       interface unCLIPCheckpointLoader_input {
-          ckpt_name: Comfy.Union.Enum_CheckpointLoaderSimple_ckpt_name
+          ckpt_name: Comfy.Union.E_1f08f73a9a576ae570aa3d82ea94f2bcfc29a8fc
       }
       interface GLIGENLoader extends HasSingle_GLIGEN, ComfyNode<GLIGENLoader_input, GLIGENLoader_output> {
           nameInComfy: "GLIGENLoader"
@@ -1089,7 +1089,7 @@ declare global {
           GLIGEN: ComfyNodeOutput<'GLIGEN', 0>,
       }
       interface GLIGENLoader_input {
-          gligen_name: Comfy.Union.Enum_LoraLoader_lora_name
+          gligen_name: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
       }
       interface GLIGENTextBoxApply extends HasSingle_CONDITIONING, ComfyNode<GLIGENTextBoxApply_input, GLIGENTextBoxApply_output> {
           nameInComfy: "GLIGENTextBoxApply"
@@ -1136,8 +1136,8 @@ declare global {
           VAE: ComfyNodeOutput<'VAE', 2>,
       }
       interface CheckpointLoader_input {
-          config_name: Comfy.Union.Enum_CheckpointLoader_config_name
-          ckpt_name: Comfy.Union.Enum_CheckpointLoaderSimple_ckpt_name
+          config_name: Comfy.Union.E_a1972c9480c542a0e8ccafa03c2572ba5fc62160
+          ckpt_name: Comfy.Union.E_1f08f73a9a576ae570aa3d82ea94f2bcfc29a8fc
       }
       interface DiffusersLoader extends HasSingle_MODEL, HasSingle_CLIP, HasSingle_VAE, ComfyNode<DiffusersLoader_input, DiffusersLoader_output> {
           nameInComfy: "DiffusersLoader"
@@ -1148,7 +1148,7 @@ declare global {
           VAE: ComfyNodeOutput<'VAE', 2>,
       }
       interface DiffusersLoader_input {
-          model_path: Comfy.Union.Enum_LoraLoader_lora_name
+          model_path: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
       }
       interface LoadLatent extends HasSingle_LATENT, ComfyNode<LoadLatent_input, LoadLatent_output> {
           nameInComfy: "LoadLatent"
@@ -1157,7 +1157,7 @@ declare global {
           LATENT: ComfyNodeOutput<'LATENT', 0>,
       }
       interface LoadLatent_input {
-          latent: Comfy.Union.Enum_LoraLoader_lora_name
+          latent: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
       }
       interface SaveLatent extends ComfyNode<SaveLatent_input, SaveLatent_output> {
           nameInComfy: "SaveLatent"
@@ -1199,7 +1199,7 @@ declare global {
       }
       interface LoraLoaderModelOnly_input {
           model: Comfy.Input.MODEL
-          lora_name: Comfy.Union.Enum_LoraLoader_lora_name
+          lora_name: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
           /** default=1 min=100 max=100 step=0.01 */
           strength_model?: Comfy.Input.FLOAT
       }
@@ -1213,7 +1213,7 @@ declare global {
    }
    
    // comfy_extras.nodes_latent
-   namespace Comfy.Extras$5latent {
+   namespace Comfy.Extra.latent {
       interface Nodes {
           /** category="latent_advanced" name="LatentAdd" output=[LATENT] */
          LatentAdd(p: LatentAdd_input, meta?: ComfyNodeMetadata): LatentAdd
@@ -1298,7 +1298,7 @@ declare global {
       interface LatentBatchSeedBehavior_input {
           samples: Comfy.Input.LATENT
           /** default="fixed" */
-          seed_behavior?: Comfy.Union.Enum_LatentBatchSeedBehavior_seed_behavior
+          seed_behavior?: Comfy.Union.E_1d09df0c3ce1b4556d07af26e593d4033efc639b
       }
       interface LatentApplyOperation extends HasSingle_LATENT, ComfyNode<LatentApplyOperation_input, LatentApplyOperation_output> {
           nameInComfy: "LatentApplyOperation"
@@ -1347,7 +1347,7 @@ declare global {
    }
    
    // comfy_extras.nodes_hypernetwork
-   namespace Comfy.Extras$5hypernetwork {
+   namespace Comfy.Extra.hypernetwork {
       interface Nodes {
           /** category="loaders" name="HypernetworkLoader" output=[MODEL] */
          HypernetworkLoader(p: HypernetworkLoader_input, meta?: ComfyNodeMetadata): HypernetworkLoader
@@ -1360,14 +1360,14 @@ declare global {
       }
       interface HypernetworkLoader_input {
           model: Comfy.Input.MODEL
-          hypernetwork_name: Comfy.Union.Enum_LoraLoader_lora_name
+          hypernetwork_name: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
           /** default=1 min=10 max=10 step=0.01 */
           strength?: Comfy.Input.FLOAT
       }
    }
    
    // comfy_extras.nodes_upscale_model
-   namespace Comfy.Extras$5upscale_model {
+   namespace Comfy.Extra.upscale_model {
       interface Nodes {
           /** category="loaders" name="UpscaleModelLoader" output=[UPSCALE_MODEL] */
          UpscaleModelLoader(p: UpscaleModelLoader_input, meta?: ComfyNodeMetadata): UpscaleModelLoader
@@ -1381,7 +1381,7 @@ declare global {
           UPSCALE_MODEL: ComfyNodeOutput<'UPSCALE_MODEL', 0>,
       }
       interface UpscaleModelLoader_input {
-          model_name: Comfy.Union.Enum_UpscaleModelLoader_model_name
+          model_name: Comfy.Union.E_2504d8563e078c3ed105667cbb6d0ff714d5798b
       }
       interface ImageUpscaleWithModel extends HasSingle_IMAGE, ComfyNode<ImageUpscaleWithModel_input, ImageUpscaleWithModel_output> {
           nameInComfy: "ImageUpscaleWithModel"
@@ -1396,7 +1396,7 @@ declare global {
    }
    
    // comfy_extras.nodes_post_processing
-   namespace Comfy.Extras$5post_processing {
+   namespace Comfy.Extra.post_processing {
       interface Nodes {
           /** category="image_postprocessing" name="ImageBlend" output=[IMAGE] */
          ImageBlend(p: ImageBlend_input, meta?: ComfyNodeMetadata): ImageBlend
@@ -1420,7 +1420,7 @@ declare global {
           image2: Comfy.Input.IMAGE
           /** default=0.5 min=1 max=1 step=0.01 */
           blend_factor?: Comfy.Input.FLOAT
-          blend_mode: Comfy.Union.Enum_ImageBlend_blend_mode
+          blend_mode: Comfy.Union.E_4ca09d2bc16d4174960bd60a103d4c0911361855
       }
       interface ImageBlur extends HasSingle_IMAGE, ComfyNode<ImageBlur_input, ImageBlur_output> {
           nameInComfy: "ImageBlur"
@@ -1445,7 +1445,7 @@ declare global {
           image: Comfy.Input.IMAGE
           /** default=256 min=256 max=256 step=1 */
           colors?: Comfy.Input.INT
-          dither: Comfy.Union.Enum_ImageQuantize_dither
+          dither: Comfy.Union.E_7c2feaebcf0bbbcda0fe9f3c8cba1cf87002bc0e
       }
       interface ImageSharpen extends HasSingle_IMAGE, ComfyNode<ImageSharpen_input, ImageSharpen_output> {
           nameInComfy: "ImageSharpen"
@@ -1470,14 +1470,14 @@ declare global {
       }
       interface ImageScaleToTotalPixels_input {
           image: Comfy.Input.IMAGE
-          upscale_method: Comfy.Union.Enum_ImageScale_upscale_method
+          upscale_method: Comfy.Union.E_165b455eb22956fc9da6e1b76d49a4077f15d897
           /** default=1 min=16 max=16 step=0.01 */
           megapixels?: Comfy.Input.FLOAT
       }
    }
    
    // comfy_extras.nodes_mask
-   namespace Comfy.Extras$5mask {
+   namespace Comfy.Extra.mask {
       interface Nodes {
           /** category="latent" name="LatentCompositeMasked" output=[LATENT] */
          LatentCompositeMasked(p: LatentCompositeMasked_input, meta?: ComfyNodeMetadata): LatentCompositeMasked
@@ -1555,7 +1555,7 @@ declare global {
       }
       interface ImageToMask_input {
           image: Comfy.Input.IMAGE
-          channel: Comfy.Union.Enum_LoadImageMask_channel
+          channel: Comfy.Union.E_19d5be39f1fd20a88fdbcb009a06c7df2b0ef998
       }
       interface ImageColorToMask extends HasSingle_MASK, ComfyNode<ImageColorToMask_input, ImageColorToMask_output> {
           nameInComfy: "ImageColorToMask"
@@ -1621,7 +1621,7 @@ declare global {
           x?: Comfy.Input.INT
           /** default=0 min=16384 max=16384 step=1 */
           y?: Comfy.Input.INT
-          operation: Comfy.Union.Enum_MaskComposite_operation
+          operation: Comfy.Union.E_88c0c90dbad3b41c3c4a4f8a89afad7b1c0db2e0
       }
       interface FeatherMask extends HasSingle_MASK, ComfyNode<FeatherMask_input, FeatherMask_output> {
           nameInComfy: "FeatherMask"
@@ -1667,7 +1667,7 @@ declare global {
    }
    
    // comfy_extras.nodes_compositing
-   namespace Comfy.Extras$5compositing {
+   namespace Comfy.Extra.compositing {
       interface Nodes {
           /** category="mask_compositing" name="PorterDuffImageComposite" output=[IMAGE, MASK] */
          PorterDuffImageComposite(p: PorterDuffImageComposite_input, meta?: ComfyNodeMetadata): PorterDuffImageComposite
@@ -1689,7 +1689,7 @@ declare global {
           destination: Comfy.Input.IMAGE
           destination_alpha: Comfy.Input.MASK
           /** default="DST" */
-          mode?: Comfy.Union.Enum_PorterDuffImageComposite_mode
+          mode?: Comfy.Union.E_d954b5ae44db00529f0fd0bfb816e25c12617df8
       }
       interface SplitImageWithAlpha extends HasSingle_IMAGE, HasSingle_MASK, ComfyNode<SplitImageWithAlpha_input, SplitImageWithAlpha_output> {
           nameInComfy: "SplitImageWithAlpha"
@@ -1714,7 +1714,7 @@ declare global {
    }
    
    // comfy_extras.nodes_rebatch
-   namespace Comfy.Extras$5rebatch {
+   namespace Comfy.Extra.rebatch {
       interface Nodes {
           /** category="latent_batch" name="RebatchLatents" output=[LATENT] */
          RebatchLatents(p: RebatchLatents_input, meta?: ComfyNodeMetadata): RebatchLatents
@@ -1746,7 +1746,7 @@ declare global {
    }
    
    // comfy_extras.nodes_model_merging
-   namespace Comfy.Extras$5model_merging {
+   namespace Comfy.Extra.model_merging {
       interface Nodes {
           /** category="advanced_model_merging" name="ModelMergeSimple" output=[MODEL] */
          ModelMergeSimple(p: ModelMergeSimple_input, meta?: ComfyNodeMetadata): ModelMergeSimple
@@ -1900,7 +1900,7 @@ declare global {
    }
    
    // comfy_extras.nodes_tomesd
-   namespace Comfy.Extras$5tomesd {
+   namespace Comfy.Extra.tomesd {
       interface Nodes {
           /** category="model_patches_unet" name="TomePatchModel" output=[MODEL] */
          TomePatchModel(p: TomePatchModel_input, meta?: ComfyNodeMetadata): TomePatchModel
@@ -1919,7 +1919,7 @@ declare global {
    }
    
    // comfy_extras.nodes_clip_sdxl
-   namespace Comfy.Extras$5clip_sdxl {
+   namespace Comfy.Extra.clip_sdxl {
       interface Nodes {
           /** category="advanced_conditioning" name="CLIPTextEncodeSDXLRefiner" output=[CONDITIONING] */
          CLIPTextEncodeSDXLRefiner(p: CLIPTextEncodeSDXLRefiner_input, meta?: ComfyNodeMetadata): CLIPTextEncodeSDXLRefiner
@@ -1971,7 +1971,7 @@ declare global {
    }
    
    // comfy_extras.nodes_canny
-   namespace Comfy.Extras$5canny {
+   namespace Comfy.Extra.canny {
       interface Nodes {
           /** category="image_preprocessors" name="Canny" output=[IMAGE] */
          Canny(p: Canny_input, meta?: ComfyNodeMetadata): Canny
@@ -1992,7 +1992,7 @@ declare global {
    }
    
    // comfy_extras.nodes_freelunch
-   namespace Comfy.Extras$5freelunch {
+   namespace Comfy.Extra.freelunch {
       interface Nodes {
           /** category="model_patches_unet" name="FreeU" output=[MODEL] */
          FreeU(p: FreeU_input, meta?: ComfyNodeMetadata): FreeU
@@ -2036,7 +2036,7 @@ declare global {
    }
    
    // comfy_extras.nodes_custom_sampler
-   namespace Comfy.Extras$5custom_sampler {
+   namespace Comfy.Extra.custom_sampler {
       interface Nodes {
           /** category="sampling_custom_sampling" name="SamplerCustom" output=[output, denoised_output] */
          SamplerCustom(p: SamplerCustom_input, meta?: ComfyNodeMetadata): SamplerCustom
@@ -2124,7 +2124,7 @@ declare global {
       }
       interface BasicScheduler_input {
           model: Comfy.Input.MODEL
-          scheduler: Comfy.Union.Enum_KSampler_scheduler
+          scheduler: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325
           /** default=20 min=10000 max=10000 */
           steps?: Comfy.Input.INT
           /** default=1 min=1 max=1 step=0.01 */
@@ -2245,7 +2245,7 @@ declare global {
           SAMPLER: ComfyNodeOutput<'SAMPLER', 0>,
       }
       interface KSamplerSelect_input {
-          sampler_name: Comfy.Union.Enum_KSampler_sampler_name
+          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
       }
       interface SamplerEulerAncestral extends HasSingle_SAMPLER, ComfyNode<SamplerEulerAncestral_input, SamplerEulerAncestral_output> {
           nameInComfy: "SamplerEulerAncestral"
@@ -2292,7 +2292,7 @@ declare global {
           eta?: Comfy.Input.FLOAT
           /** default=1 min=100 max=100 step=0.01 */
           s_noise?: Comfy.Input.FLOAT
-          noise_device: Comfy.Union.Enum_SamplerDPMPP$_3M$_SDE_noise_device
+          noise_device: Comfy.Union.E_928b7403128cb25513cafc463a76a922ba5d4bd0
       }
       interface SamplerDPMPP$_2M$_SDE extends HasSingle_SAMPLER, ComfyNode<SamplerDPMPP$_2M$_SDE_input, SamplerDPMPP$_2M$_SDE_output> {
           nameInComfy: "SamplerDPMPP_2M_SDE"
@@ -2301,12 +2301,12 @@ declare global {
           SAMPLER: ComfyNodeOutput<'SAMPLER', 0>,
       }
       interface SamplerDPMPP$_2M$_SDE_input {
-          solver_type: Comfy.Union.Enum_SamplerDPMPP$_2M$_SDE_solver_type
+          solver_type: Comfy.Union.E_148e0bc88719e23ec2f2c80871fe45ae759cd7e1
           /** default=1 min=100 max=100 step=0.01 */
           eta?: Comfy.Input.FLOAT
           /** default=1 min=100 max=100 step=0.01 */
           s_noise?: Comfy.Input.FLOAT
-          noise_device: Comfy.Union.Enum_SamplerDPMPP$_3M$_SDE_noise_device
+          noise_device: Comfy.Union.E_928b7403128cb25513cafc463a76a922ba5d4bd0
       }
       interface SamplerDPMPP$_SDE extends HasSingle_SAMPLER, ComfyNode<SamplerDPMPP$_SDE_input, SamplerDPMPP$_SDE_output> {
           nameInComfy: "SamplerDPMPP_SDE"
@@ -2321,7 +2321,7 @@ declare global {
           s_noise?: Comfy.Input.FLOAT
           /** default=0.5 min=100 max=100 step=0.01 */
           r?: Comfy.Input.FLOAT
-          noise_device: Comfy.Union.Enum_SamplerDPMPP$_3M$_SDE_noise_device
+          noise_device: Comfy.Union.E_928b7403128cb25513cafc463a76a922ba5d4bd0
       }
       interface SamplerDPMPP$_2S$_Ancestral extends HasSingle_SAMPLER, ComfyNode<SamplerDPMPP$_2S$_Ancestral_input, SamplerDPMPP$_2S$_Ancestral_output> {
           nameInComfy: "SamplerDPMPP_2S_Ancestral"
@@ -2482,7 +2482,7 @@ declare global {
    }
    
    // comfy_extras.nodes_hypertile
-   namespace Comfy.Extras$5hypertile {
+   namespace Comfy.Extra.hypertile {
       interface Nodes {
           /** category="model_patches_unet" name="HyperTile" output=[MODEL] */
          HyperTile(p: HyperTile_input, meta?: ComfyNodeMetadata): HyperTile
@@ -2507,7 +2507,7 @@ declare global {
    }
    
    // comfy_extras.nodes_model_advanced
-   namespace Comfy.Extras$5model_advanced {
+   namespace Comfy.Extra.model_advanced {
       interface Nodes {
           /** category="advanced_model" name="ModelSamplingDiscrete" output=[MODEL] */
          ModelSamplingDiscrete(p: ModelSamplingDiscrete_input, meta?: ComfyNodeMetadata): ModelSamplingDiscrete
@@ -2534,7 +2534,7 @@ declare global {
       }
       interface ModelSamplingDiscrete_input {
           model: Comfy.Input.MODEL
-          sampling: Comfy.Union.Enum_ModelSamplingDiscrete_sampling
+          sampling: Comfy.Union.E_e89ec78e24ca5e9c91264b9e9b5ed722d2b509dc
           /** default=false */
           zsnr?: Comfy.Input.BOOLEAN
       }
@@ -2546,7 +2546,7 @@ declare global {
       }
       interface ModelSamplingContinuousEDM_input {
           model: Comfy.Input.MODEL
-          sampling: Comfy.Union.Enum_ModelSamplingContinuousEDM_sampling
+          sampling: Comfy.Union.E_bf8a83a3d55d70c688644bf18edaf23501f7c168
           /** default=120 min=1000 max=1000 step=0.001 */
           sigma_max?: Comfy.Input.FLOAT
           /** default=0.002 min=1000 max=1000 step=0.001 */
@@ -2560,7 +2560,7 @@ declare global {
       }
       interface ModelSamplingContinuousV_input {
           model: Comfy.Input.MODEL
-          sampling: Comfy.Union.Enum_ModelSamplingContinuousV_sampling
+          sampling: Comfy.Union.E_3c3164c6c468d61dfa20092960e3d7854495e50c
           /** default=500 min=1000 max=1000 step=0.001 */
           sigma_max?: Comfy.Input.FLOAT
           /** default=0.03 min=1000 max=1000 step=0.001 */
@@ -2630,7 +2630,7 @@ declare global {
    }
    
    // comfy_extras.nodes_model_downscale
-   namespace Comfy.Extras$5model_downscale {
+   namespace Comfy.Extra.model_downscale {
       interface Nodes {
           /** category="model_patches_unet" name="PatchModelAddDownscale" output=[MODEL] */
          PatchModelAddDownscale(p: PatchModelAddDownscale_input, meta?: ComfyNodeMetadata): PatchModelAddDownscale
@@ -2653,13 +2653,13 @@ declare global {
           end_percent?: Comfy.Input.FLOAT
           /** default=true */
           downscale_after_skip?: Comfy.Input.BOOLEAN
-          downscale_method: Comfy.Union.Enum_LatentUpscale_upscale_method
-          upscale_method: Comfy.Union.Enum_LatentUpscale_upscale_method
+          downscale_method: Comfy.Union.E_6e6cbf6c48411ad480e010b0c9d2434b41af430d
+          upscale_method: Comfy.Union.E_6e6cbf6c48411ad480e010b0c9d2434b41af430d
       }
    }
    
    // comfy_extras.nodes_images
-   namespace Comfy.Extras$5images {
+   namespace Comfy.Extra.images {
       interface Nodes {
           /** category="image_transform" name="ImageCrop" output=[IMAGE] */
          ImageCrop(p: ImageCrop_input, meta?: ComfyNodeMetadata): ImageCrop
@@ -2728,7 +2728,7 @@ declare global {
           lossless?: Comfy.Input.BOOLEAN
           /** default=80 min=100 max=100 */
           quality?: Comfy.Input.INT
-          method: Comfy.Union.Enum_SaveAnimatedWEBP_method
+          method: Comfy.Union.E_253b68425542d8144b2b8a7af90f057b41939f63
       }
       interface SaveAnimatedPNG extends ComfyNode<SaveAnimatedPNG_input, SaveAnimatedPNG_output> {
           nameInComfy: "SaveAnimatedPNG"
@@ -2747,7 +2747,7 @@ declare global {
    }
    
    // comfy_extras.nodes_video_model
-   namespace Comfy.Extras$5video_model {
+   namespace Comfy.Extra.video_model {
       interface Nodes {
           /** category="loaders_video_models" name="ImageOnlyCheckpointLoader" output=[MODEL, CLIP_VISION, VAE] */
          ImageOnlyCheckpointLoader(p: ImageOnlyCheckpointLoader_input, meta?: ComfyNodeMetadata): ImageOnlyCheckpointLoader
@@ -2769,7 +2769,7 @@ declare global {
           VAE: ComfyNodeOutput<'VAE', 2>,
       }
       interface ImageOnlyCheckpointLoader_input {
-          ckpt_name: Comfy.Union.Enum_CheckpointLoaderSimple_ckpt_name
+          ckpt_name: Comfy.Union.E_1f08f73a9a576ae570aa3d82ea94f2bcfc29a8fc
       }
       interface SVD$_img2vid$_Conditioning extends HasSingle_LATENT, ComfyNode<SVD$_img2vid$_Conditioning_input, SVD$_img2vid$_Conditioning_output> {
           nameInComfy: "SVD_img2vid_Conditioning"
@@ -2833,7 +2833,7 @@ declare global {
    }
    
    // comfy_extras.nodes_sag
-   namespace Comfy.Extras$5sag {
+   namespace Comfy.Extra.sag {
       interface Nodes {
           /** category="_for_testing" name="SelfAttentionGuidance" output=[MODEL] */
          SelfAttentionGuidance(p: SelfAttentionGuidance_input, meta?: ComfyNodeMetadata): SelfAttentionGuidance
@@ -2854,7 +2854,7 @@ declare global {
    }
    
    // comfy_extras.nodes_perpneg
-   namespace Comfy.Extras$5perpneg {
+   namespace Comfy.Extra.perpneg {
       interface Nodes {
           /** category="_for_testing" name="PerpNeg" output=[MODEL] */
          PerpNeg(p: PerpNeg_input, meta?: ComfyNodeMetadata): PerpNeg
@@ -2892,7 +2892,7 @@ declare global {
    }
    
    // comfy_extras.nodes_stable3d
-   namespace Comfy.Extras$5stable3d {
+   namespace Comfy.Extra.stable3d {
       interface Nodes {
           /** category="conditioning_3d_models" name="StableZero123_Conditioning" output=[positive, negative, latent] */
          StableZero123$_Conditioning(p: StableZero123$_Conditioning_input, meta?: ComfyNodeMetadata): StableZero123$_Conditioning
@@ -2975,7 +2975,7 @@ declare global {
    }
    
    // comfy_extras.nodes_sdupscale
-   namespace Comfy.Extras$5sdupscale {
+   namespace Comfy.Extra.sdupscale {
       interface Nodes {
           /** category="conditioning_upscale_diffusion" name="SD_4XUpscale_Conditioning" output=[positive, negative, latent] */
          SD$_4XUpscale$_Conditioning(p: SD$_4XUpscale$_Conditioning_input, meta?: ComfyNodeMetadata): SD$_4XUpscale$_Conditioning
@@ -3000,7 +3000,7 @@ declare global {
    }
    
    // comfy_extras.nodes_photomaker
-   namespace Comfy.Extras$5photomaker {
+   namespace Comfy.Extra.photomaker {
       interface Nodes {
           /** category="_for_testing_photomaker" name="PhotoMakerLoader" output=[PHOTOMAKER] */
          PhotoMakerLoader(p: PhotoMakerLoader_input, meta?: ComfyNodeMetadata): PhotoMakerLoader
@@ -3014,7 +3014,7 @@ declare global {
           PHOTOMAKER: ComfyNodeOutput<'PHOTOMAKER', 0>,
       }
       interface PhotoMakerLoader_input {
-          photomaker_model_name: Comfy.Union.Enum_LoraLoader_lora_name
+          photomaker_model_name: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
       }
       interface PhotoMakerEncode extends HasSingle_CONDITIONING, ComfyNode<PhotoMakerEncode_input, PhotoMakerEncode_output> {
           nameInComfy: "PhotoMakerEncode"
@@ -3032,7 +3032,7 @@ declare global {
    }
    
    // comfy_extras.nodes_cond
-   namespace Comfy.Extras$5cond {
+   namespace Comfy.Extra.cond {
       interface Nodes {
           /** category="_for_testing_conditioning" name="CLIPTextEncodeControlnet" output=[CONDITIONING] */
          CLIPTextEncodeControlnet(p: CLIPTextEncodeControlnet_input, meta?: ComfyNodeMetadata): CLIPTextEncodeControlnet
@@ -3052,7 +3052,7 @@ declare global {
    }
    
    // comfy_extras.nodes_morphology
-   namespace Comfy.Extras$5morphology {
+   namespace Comfy.Extra.morphology {
       interface Nodes {
           /** category="image_postprocessing" name="Morphology" output=[IMAGE] */
          Morphology(p: Morphology_input, meta?: ComfyNodeMetadata): Morphology
@@ -3065,14 +3065,14 @@ declare global {
       }
       interface Morphology_input {
           image: Comfy.Input.IMAGE
-          operation: Comfy.Union.Enum_Morphology_operation
+          operation: Comfy.Union.E_6ba03252ec9c8111f7381dfb573cd99c2b4d0e3b
           /** default=3 min=999 max=999 step=1 */
           kernel_size?: Comfy.Input.INT
       }
    }
    
    // comfy_extras.nodes_stable_cascade
-   namespace Comfy.Extras$5stable_cascade {
+   namespace Comfy.Extra.stable_cascade {
       interface Nodes {
           /** category="latent_stable_cascade" name="StableCascade_EmptyLatentImage" output=[stage_c, stage_b] */
          StableCascade$_EmptyLatentImage(p: StableCascade$_EmptyLatentImage_input, meta?: ComfyNodeMetadata): StableCascade$_EmptyLatentImage
@@ -3138,7 +3138,7 @@ declare global {
    }
    
    // comfy_extras.nodes_differential_diffusion
-   namespace Comfy.Extras$5differential_diffusion {
+   namespace Comfy.Extra.differential_diffusion {
       interface Nodes {
           /** category="_for_testing" name="DifferentialDiffusion" output=[MODEL] */
          DifferentialDiffusion(p: DifferentialDiffusion_input, meta?: ComfyNodeMetadata): DifferentialDiffusion
@@ -3155,7 +3155,7 @@ declare global {
    }
    
    // comfy_extras.nodes_ip2p
-   namespace Comfy.Extras$5ip2p {
+   namespace Comfy.Extra.ip2p {
       interface Nodes {
           /** category="conditioning_instructpix2pix" name="InstructPixToPixConditioning" output=[positive, negative, latent] */
          InstructPixToPixConditioning(p: InstructPixToPixConditioning_input, meta?: ComfyNodeMetadata): InstructPixToPixConditioning
@@ -3177,7 +3177,7 @@ declare global {
    }
    
    // comfy_extras.nodes_model_merging_model_specific
-   namespace Comfy.Extras$5model_merging_model_specific {
+   namespace Comfy.Extra.model_merging_model_specific {
       interface Nodes {
           /** category="advanced_model_merging_model_specific" name="ModelMergeSD1" output=[MODEL] */
          ModelMergeSD1(p: ModelMergeSD1_input, meta?: ComfyNodeMetadata): ModelMergeSD1
@@ -3697,7 +3697,7 @@ declare global {
    }
    
    // comfy_extras.nodes_pag
-   namespace Comfy.Extras$5pag {
+   namespace Comfy.Extra.pag {
       interface Nodes {
           /** category="model_patches_unet" name="PerturbedAttentionGuidance" output=[MODEL] */
          PerturbedAttentionGuidance(p: PerturbedAttentionGuidance_input, meta?: ComfyNodeMetadata): PerturbedAttentionGuidance
@@ -3716,7 +3716,7 @@ declare global {
    }
    
    // comfy_extras.nodes_align_your_steps
-   namespace Comfy.Extras$5align_your_steps {
+   namespace Comfy.Extra.align_your_steps {
       interface Nodes {
           /** category="sampling_custom_sampling_schedulers" name="AlignYourStepsScheduler" output=[SIGMAS] */
          AlignYourStepsScheduler(p: AlignYourStepsScheduler_input, meta?: ComfyNodeMetadata): AlignYourStepsScheduler
@@ -3728,7 +3728,7 @@ declare global {
           SIGMAS: ComfyNodeOutput<'SIGMAS', 0>,
       }
       interface AlignYourStepsScheduler_input {
-          model_type: Comfy.Union.Enum_AlignYourStepsScheduler_model_type
+          model_type: Comfy.Union.E_ec317371192386ae10cedaee29b315e900386a18
           /** default=10 min=10000 max=10000 */
           steps?: Comfy.Input.INT
           /** default=1 min=1 max=1 step=0.01 */
@@ -3737,7 +3737,7 @@ declare global {
    }
    
    // comfy_extras.nodes_attention_multiply
-   namespace Comfy.Extras$5attention_multiply {
+   namespace Comfy.Extra.attention_multiply {
       interface Nodes {
           /** category="_for_testing_attention_experiments" name="UNetSelfAttentionMultiply" output=[MODEL] */
          UNetSelfAttentionMultiply(p: UNetSelfAttentionMultiply_input, meta?: ComfyNodeMetadata): UNetSelfAttentionMultiply
@@ -3819,7 +3819,7 @@ declare global {
    }
    
    // comfy_extras.nodes_advanced_samplers
-   namespace Comfy.Extras$5advanced_samplers {
+   namespace Comfy.Extra.advanced_samplers {
       interface Nodes {
           /** category="sampling_custom_sampling_samplers" name="SamplerLCMUpscale" output=[SAMPLER] */
          SamplerLCMUpscale(p: SamplerLCMUpscale_input, meta?: ComfyNodeMetadata): SamplerLCMUpscale
@@ -3837,7 +3837,7 @@ declare global {
           scale_ratio?: Comfy.Input.FLOAT
           /** default=-1 min=1000 max=1000 step=1 */
           scale_steps?: Comfy.Input.INT
-          upscale_method: Comfy.Union.Enum_LatentUpscale_upscale_method
+          upscale_method: Comfy.Union.E_6e6cbf6c48411ad480e010b0c9d2434b41af430d
       }
       interface SamplerEulerCFGpp extends HasSingle_SAMPLER, ComfyNode<SamplerEulerCFGpp_input, SamplerEulerCFGpp_output> {
           nameInComfy: "SamplerEulerCFGpp"
@@ -3846,12 +3846,12 @@ declare global {
           SAMPLER: ComfyNodeOutput<'SAMPLER', 0>,
       }
       interface SamplerEulerCFGpp_input {
-          version: Comfy.Union.Enum_SamplerEulerCFGpp_version
+          version: Comfy.Union.E_a8aa5eb2d828c2e279168c48955c7a0fe3ea011a
       }
    }
    
    // comfy_extras.nodes_webcam
-   namespace Comfy.Extras$5webcam {
+   namespace Comfy.Extra.webcam {
       interface Nodes {
           /** category="image" name="WebcamCapture" output=[IMAGE] */
          WebcamCapture(p: WebcamCapture_input, meta?: ComfyNodeMetadata): WebcamCapture
@@ -3875,7 +3875,7 @@ declare global {
    }
    
    // comfy_extras.nodes_audio
-   namespace Comfy.Extras$5audio {
+   namespace Comfy.Extra.audio {
       interface Nodes {
           /** category="latent_audio" name="EmptyLatentAudio" output=[LATENT] */
          EmptyLatentAudio(p: EmptyLatentAudio_input, meta?: ComfyNodeMetadata): EmptyLatentAudio
@@ -3940,7 +3940,7 @@ declare global {
       }
       interface LoadAudio_input {
           /** */
-          audio: Comfy.Union.Enum_LoraLoader_lora_name
+          audio: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
       }
       interface PreviewAudio extends ComfyNode<PreviewAudio_input, PreviewAudio_output> {
           nameInComfy: "PreviewAudio"
@@ -3953,7 +3953,7 @@ declare global {
    }
    
    // comfy_extras.nodes_sd3
-   namespace Comfy.Extras$5sd3 {
+   namespace Comfy.Extra.sd3 {
       interface Nodes {
           /** category="advanced_loaders" name="TripleCLIPLoader" output=[CLIP] */
          TripleCLIPLoader(p: TripleCLIPLoader_input, meta?: ComfyNodeMetadata): TripleCLIPLoader
@@ -3973,9 +3973,9 @@ declare global {
           CLIP: ComfyNodeOutput<'CLIP', 0>,
       }
       interface TripleCLIPLoader_input {
-          clip_name1: Comfy.Union.Enum_LoraLoader_lora_name
-          clip_name2: Comfy.Union.Enum_LoraLoader_lora_name
-          clip_name3: Comfy.Union.Enum_LoraLoader_lora_name
+          clip_name1: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
+          clip_name2: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
+          clip_name3: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
       }
       interface EmptySD3LatentImage extends HasSingle_LATENT, ComfyNode<EmptySD3LatentImage_input, EmptySD3LatentImage_output> {
           nameInComfy: "EmptySD3LatentImage"
@@ -4005,7 +4005,7 @@ declare global {
           clip_g: Comfy.Input.STRING
           /** */
           t5xxl: Comfy.Input.STRING
-          empty_padding: Comfy.Union.Enum_CLIPTextEncodeSD3_empty_padding
+          empty_padding: Comfy.Union.E_270e152a81c37daf152e6cc67675baaafe058bc4
       }
       interface ControlNetApplySD3 extends ComfyNode<ControlNetApplySD3_input, ControlNetApplySD3_output> {
           nameInComfy: "ControlNetApplySD3"
@@ -4047,7 +4047,7 @@ declare global {
    }
    
    // comfy_extras.nodes_gits
-   namespace Comfy.Extras$5gits {
+   namespace Comfy.Extra.gits {
       interface Nodes {
           /** category="sampling_custom_sampling_schedulers" name="GITSScheduler" output=[SIGMAS] */
          GITSScheduler(p: GITSScheduler_input, meta?: ComfyNodeMetadata): GITSScheduler
@@ -4069,7 +4069,7 @@ declare global {
    }
    
    // comfy_extras.nodes_controlnet
-   namespace Comfy.Extras$5controlnet {
+   namespace Comfy.Extra.controlnet {
       interface Nodes {
           /** category="conditioning_controlnet" name="SetUnionControlNetType" output=[CONTROL_NET] */
          SetUnionControlNetType(p: SetUnionControlNetType_input, meta?: ComfyNodeMetadata): SetUnionControlNetType
@@ -4084,7 +4084,7 @@ declare global {
       }
       interface SetUnionControlNetType_input {
           control_net: Comfy.Input.CONTROL_NET
-          type: Comfy.Union.Enum_SetUnionControlNetType_type
+          type: Comfy.Union.E_0e92c8b1b6fe90c3e343d8b54b531b9d887eee62
       }
       interface ControlNetInpaintingAliMamaApply extends ComfyNode<ControlNetInpaintingAliMamaApply_input, ControlNetInpaintingAliMamaApply_output> {
           nameInComfy: "ControlNetInpaintingAliMamaApply"
@@ -4110,7 +4110,7 @@ declare global {
    }
    
    // comfy_extras.nodes_hunyuan
-   namespace Comfy.Extras$5hunyuan {
+   namespace Comfy.Extra.hunyuan {
       interface Nodes {
           /** category="advanced_conditioning" name="CLIPTextEncodeHunyuanDiT" output=[CONDITIONING] */
          CLIPTextEncodeHunyuanDiT(p: CLIPTextEncodeHunyuanDiT_input, meta?: ComfyNodeMetadata): CLIPTextEncodeHunyuanDiT
@@ -4131,7 +4131,7 @@ declare global {
    }
    
    // comfy_extras.nodes_flux
-   namespace Comfy.Extras$5flux {
+   namespace Comfy.Extra.flux {
       interface Nodes {
           /** category="advanced_conditioning_flux" name="CLIPTextEncodeFlux" output=[CONDITIONING] */
          CLIPTextEncodeFlux(p: CLIPTextEncodeFlux_input, meta?: ComfyNodeMetadata): CLIPTextEncodeFlux
@@ -4167,7 +4167,7 @@ declare global {
    }
    
    // comfy_extras.nodes_lora_extract
-   namespace Comfy.Extras$5lora_extract {
+   namespace Comfy.Extra.lora_extract {
       interface Nodes {
           /** category="_for_testing" name="LoraSave" output=[] */
          LoraSave(p: LoraSave_input, meta?: ComfyNodeMetadata): LoraSave
@@ -4182,7 +4182,7 @@ declare global {
           filename_prefix?: Comfy.Input.STRING
           /** default=8 min=4096 max=4096 step=1 */
           rank?: Comfy.Input.INT
-          lora_type: Comfy.Union.Enum_LoraSave_lora_type
+          lora_type: Comfy.Union.E_b80b6129a942660e31e08221ee04a76f537556ce
           /** default=true */
           bias_diff?: Comfy.Input.BOOLEAN
           /** */
@@ -4193,7 +4193,7 @@ declare global {
    }
    
    // comfy_extras.nodes_torch_compile
-   namespace Comfy.Extras$5torch_compile {
+   namespace Comfy.Extra.torch_compile {
       interface Nodes {
           /** category="_for_testing" name="TorchCompileModel" output=[MODEL] */
          TorchCompileModel(p: TorchCompileModel_input, meta?: ComfyNodeMetadata): TorchCompileModel
@@ -4206,12 +4206,12 @@ declare global {
       }
       interface TorchCompileModel_input {
           model: Comfy.Input.MODEL
-          backend: Comfy.Union.Enum_TorchCompileModel_backend
+          backend: Comfy.Union.E_4bbca93e426c35d56c43252f1fb21877d5e7a1aa
       }
    }
    
    // comfy_extras.nodes_mochi
-   namespace Comfy.Extras$5mochi {
+   namespace Comfy.Extra.mochi {
       interface Nodes {
           /** category="latent_mochi" name="EmptyMochiLatentVideo" output=[LATENT] */
          EmptyMochiLatentVideo(p: EmptyMochiLatentVideo_input, meta?: ComfyNodeMetadata): EmptyMochiLatentVideo
@@ -4235,7 +4235,7 @@ declare global {
    }
    
    // custom_nodes.websocket_image_save
-   namespace Comfy.custom_nodes$5websocket_image_save {
+   namespace Comfy.Custom.websocket_image_save {
       interface Nodes {
           /** category="api_image" name="SaveImageWebsocket" output=[] */
          SaveImageWebsocket(p: SaveImageWebsocket_input, meta?: ComfyNodeMetadata): SaveImageWebsocket
@@ -4251,7 +4251,7 @@ declare global {
    }
    
    // custom_nodes.ComfyUI-Impact-Pack
-   namespace Comfy.Custom$5Impact$7Pack {
+   namespace Comfy.Custom.Impact_Pack {
       interface Nodes {
          /**
           * Load the SAM (Segment Anything) model. This can be used in places that utilize SAM detection functionality, such as SAMDetector or SimpleDetector.
@@ -4670,9 +4670,9 @@ declare global {
       }
       interface SAMLoader_input {
           /** */
-          model_name: Comfy.Union.Enum_SAMLoader_model_name
+          model_name: Comfy.Union.E_40c777392f92d61852ab0f7a429a755abf59b71a
           /** */
-          device_mode: Comfy.Union.Enum_SAMLoader_device_mode
+          device_mode: Comfy.Union.E_2ad445b99254e9b51c963d9f1a75fabe3d01e569
       }
       interface CLIPSegDetectorProvider extends HasSingle_BBOX_DETECTOR, ComfyNode<CLIPSegDetectorProvider_input, CLIPSegDetectorProvider_output> {
           nameInComfy: "CLIPSegDetectorProvider"
@@ -4697,7 +4697,7 @@ declare global {
           BBOX_DETECTOR: ComfyNodeOutput<'BBOX_DETECTOR', 0>,
       }
       interface ONNXDetectorProvider_input {
-          model_name: Comfy.Union.Enum_LoraLoader_lora_name
+          model_name: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
       }
       interface BitwiseAndMaskForEach extends HasSingle_SEGS, ComfyNode<BitwiseAndMaskForEach_input, BitwiseAndMaskForEach_output> {
           nameInComfy: "BitwiseAndMaskForEach"
@@ -4743,8 +4743,8 @@ declare global {
           steps?: Comfy.Input.INT
           /** default=8 min=100 max=100 */
           cfg?: Comfy.Input.FLOAT
-          sampler_name: Comfy.Union.Enum_KSampler_sampler_name
-          scheduler: Comfy.Union.Enum_DetailerForEach_scheduler
+          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          scheduler: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
           positive: Comfy.Input.CONDITIONING
           negative: Comfy.Input.CONDITIONING
           /** default=0.5 min=1 max=1 step=0.01 */
@@ -4794,8 +4794,8 @@ declare global {
           steps?: Comfy.Input.INT
           /** default=8 min=100 max=100 */
           cfg?: Comfy.Input.FLOAT
-          sampler_name: Comfy.Union.Enum_KSampler_sampler_name
-          scheduler: Comfy.Union.Enum_DetailerForEach_scheduler
+          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          scheduler: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
           positive: Comfy.Input.CONDITIONING
           negative: Comfy.Input.CONDITIONING
           /** default=0.5 min=1 max=1 step=0.01 */
@@ -4841,8 +4841,8 @@ declare global {
           steps?: Comfy.Input.INT
           /** default=8 min=100 max=100 */
           cfg?: Comfy.Input.FLOAT
-          sampler_name: Comfy.Union.Enum_KSampler_sampler_name
-          scheduler: Comfy.Union.Enum_DetailerForEach_scheduler
+          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          scheduler: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
           /** default=0.5 min=1 max=1 step=0.01 */
           denoise?: Comfy.Input.FLOAT
           /** default=5 min=100 max=100 step=1 */
@@ -4893,8 +4893,8 @@ declare global {
           steps?: Comfy.Input.INT
           /** default=8 min=100 max=100 */
           cfg?: Comfy.Input.FLOAT
-          sampler_name: Comfy.Union.Enum_KSampler_sampler_name
-          scheduler: Comfy.Union.Enum_DetailerForEach_scheduler
+          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          scheduler: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
           /** default=0.5 min=1 max=1 step=0.01 */
           denoise?: Comfy.Input.FLOAT
           /** default=5 min=100 max=100 step=1 */
@@ -4942,8 +4942,8 @@ declare global {
           steps?: Comfy.Input.INT
           /** default=8 min=100 max=100 */
           cfg?: Comfy.Input.FLOAT
-          sampler_name: Comfy.Union.Enum_KSampler_sampler_name
-          scheduler: Comfy.Union.Enum_DetailerForEach_scheduler
+          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          scheduler: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
           /** default=0.5 min=1 max=1 step=0.01 */
           denoise?: Comfy.Input.FLOAT
           /** default=5 min=100 max=100 step=1 */
@@ -4971,7 +4971,7 @@ declare global {
           /** */
           image: Comfy.Input.IMAGE
           /** */
-          detection_hint: Comfy.Union.Enum_SAMDetectorCombined_detection_hint
+          detection_hint: Comfy.Union.E_40275a874822a8699ee13794e127b63cdd6bfdae
           /** default=0 min=512 max=512 step=1 */
           dilation?: Comfy.Input.INT
           /** default=0.93 min=1 max=1 step=0.01 */
@@ -4981,7 +4981,7 @@ declare global {
           /** default=0.7 min=1 max=1 step=0.01 */
           mask_hint_threshold?: Comfy.Input.FLOAT
           /** */
-          mask_hint_use_negative: Comfy.Union.Enum_SAMDetectorCombined_mask_hint_use_negative
+          mask_hint_use_negative: Comfy.Union.E_aa302307a82588b6e514aca43e4cddad342a73fc
       }
       interface SAMDetectorSegmented extends ComfyNode<SAMDetectorSegmented_input, SAMDetectorSegmented_output> {
           nameInComfy: "SAMDetectorSegmented"
@@ -4998,7 +4998,7 @@ declare global {
           /** */
           image: Comfy.Input.IMAGE
           /** */
-          detection_hint: Comfy.Union.Enum_SAMDetectorCombined_detection_hint
+          detection_hint: Comfy.Union.E_40275a874822a8699ee13794e127b63cdd6bfdae
           /** default=0 min=512 max=512 step=1 */
           dilation?: Comfy.Input.INT
           /** default=0.93 min=1 max=1 step=0.01 */
@@ -5008,7 +5008,7 @@ declare global {
           /** default=0.7 min=1 max=1 step=0.01 */
           mask_hint_threshold?: Comfy.Input.FLOAT
           /** */
-          mask_hint_use_negative: Comfy.Union.Enum_SAMDetectorCombined_mask_hint_use_negative
+          mask_hint_use_negative: Comfy.Union.E_aa302307a82588b6e514aca43e4cddad342a73fc
       }
       interface FaceDetailer extends HasSingle_MASK, HasSingle_DETAILER_PIPE, ComfyNode<FaceDetailer_input, FaceDetailer_output> {
           nameInComfy: "FaceDetailer"
@@ -5038,8 +5038,8 @@ declare global {
           steps?: Comfy.Input.INT
           /** default=8 min=100 max=100 */
           cfg?: Comfy.Input.FLOAT
-          sampler_name: Comfy.Union.Enum_KSampler_sampler_name
-          scheduler: Comfy.Union.Enum_DetailerForEach_scheduler
+          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          scheduler: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
           positive: Comfy.Input.CONDITIONING
           negative: Comfy.Input.CONDITIONING
           /** default=0.5 min=1 max=1 step=0.01 */
@@ -5056,7 +5056,7 @@ declare global {
           bbox_dilation?: Comfy.Input.INT
           /** default=3 min=10 max=10 step=0.1 */
           bbox_crop_factor?: Comfy.Input.FLOAT
-          sam_detection_hint: Comfy.Union.Enum_SAMDetectorCombined_detection_hint
+          sam_detection_hint: Comfy.Union.E_40275a874822a8699ee13794e127b63cdd6bfdae
           /** default=0 min=512 max=512 step=1 */
           sam_dilation?: Comfy.Input.INT
           /** default=0.93 min=1 max=1 step=0.01 */
@@ -5065,7 +5065,7 @@ declare global {
           sam_bbox_expansion?: Comfy.Input.INT
           /** default=0.7 min=1 max=1 step=0.01 */
           sam_mask_hint_threshold?: Comfy.Input.FLOAT
-          sam_mask_hint_use_negative: Comfy.Union.Enum_SAMDetectorCombined_mask_hint_use_negative
+          sam_mask_hint_use_negative: Comfy.Union.E_aa302307a82588b6e514aca43e4cddad342a73fc
           /** default=10 min=16384 max=16384 step=1 */
           drop_size?: Comfy.Input.INT
           bbox_detector: Comfy.Input.BBOX_DETECTOR
@@ -5108,8 +5108,8 @@ declare global {
           steps?: Comfy.Input.INT
           /** default=8 min=100 max=100 */
           cfg?: Comfy.Input.FLOAT
-          sampler_name: Comfy.Union.Enum_KSampler_sampler_name
-          scheduler: Comfy.Union.Enum_DetailerForEach_scheduler
+          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          scheduler: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
           /** default=0.5 min=1 max=1 step=0.01 */
           denoise?: Comfy.Input.FLOAT
           /** default=5 min=100 max=100 step=1 */
@@ -5124,7 +5124,7 @@ declare global {
           bbox_dilation?: Comfy.Input.INT
           /** default=3 min=10 max=10 step=0.1 */
           bbox_crop_factor?: Comfy.Input.FLOAT
-          sam_detection_hint: Comfy.Union.Enum_SAMDetectorCombined_detection_hint
+          sam_detection_hint: Comfy.Union.E_40275a874822a8699ee13794e127b63cdd6bfdae
           /** default=0 min=512 max=512 step=1 */
           sam_dilation?: Comfy.Input.INT
           /** default=0.93 min=1 max=1 step=0.01 */
@@ -5133,7 +5133,7 @@ declare global {
           sam_bbox_expansion?: Comfy.Input.INT
           /** default=0.7 min=1 max=1 step=0.01 */
           sam_mask_hint_threshold?: Comfy.Input.FLOAT
-          sam_mask_hint_use_negative: Comfy.Union.Enum_SAMDetectorCombined_mask_hint_use_negative
+          sam_mask_hint_use_negative: Comfy.Union.E_aa302307a82588b6e514aca43e4cddad342a73fc
           /** default=10 min=16384 max=16384 step=1 */
           drop_size?: Comfy.Input.INT
           /** default=0.2 min=1 max=1 */
@@ -5174,8 +5174,8 @@ declare global {
           steps?: Comfy.Input.INT
           /** default=8 min=100 max=100 */
           cfg?: Comfy.Input.FLOAT
-          sampler_name: Comfy.Union.Enum_KSampler_sampler_name
-          scheduler: Comfy.Union.Enum_DetailerForEach_scheduler
+          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          scheduler: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
           /** default=0.5 min=1 max=1 step=0.01 */
           denoise?: Comfy.Input.FLOAT
           /** default=5 min=100 max=100 step=1 */
@@ -5217,8 +5217,8 @@ declare global {
           bbox_detector: Comfy.Input.BBOX_DETECTOR
           /** */
           wildcard: Comfy.Input.STRING
-          "Select to add LoRA": Comfy.Union.Enum_ToDetailerPipe_Select$_to$_add$_LoRA
-          "Select to add Wildcard": Comfy.Union.Enum_ToDetailerPipe_Select$_to$_add$_Wildcard
+          "Select to add LoRA": Comfy.Union.E_35e403c7628f220c07d5485d6e81fc66b4fc12df
+          "Select to add Wildcard": Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26
           sam_model_opt?: Comfy.Input.SAM_MODEL
           segm_detector_opt?: Comfy.Input.SEGM_DETECTOR
           detailer_hook?: Comfy.Input.DETAILER_HOOK
@@ -5242,8 +5242,8 @@ declare global {
           bbox_detector: Comfy.Input.BBOX_DETECTOR
           /** */
           wildcard: Comfy.Input.STRING
-          "Select to add LoRA": Comfy.Union.Enum_ToDetailerPipe_Select$_to$_add$_LoRA
-          "Select to add Wildcard": Comfy.Union.Enum_ToDetailerPipe_Select$_to$_add$_Wildcard
+          "Select to add LoRA": Comfy.Union.E_35e403c7628f220c07d5485d6e81fc66b4fc12df
+          "Select to add Wildcard": Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26
           sam_model_opt?: Comfy.Input.SAM_MODEL
           segm_detector_opt?: Comfy.Input.SEGM_DETECTOR
           detailer_hook?: Comfy.Input.DETAILER_HOOK
@@ -5365,8 +5365,8 @@ declare global {
           bbox_detector: Comfy.Input.BBOX_DETECTOR
           /** */
           wildcard: Comfy.Input.STRING
-          "Select to add LoRA": Comfy.Union.Enum_ToDetailerPipe_Select$_to$_add$_LoRA
-          "Select to add Wildcard": Comfy.Union.Enum_ToDetailerPipe_Select$_to$_add$_Wildcard
+          "Select to add LoRA": Comfy.Union.E_35e403c7628f220c07d5485d6e81fc66b4fc12df
+          "Select to add Wildcard": Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26
           sam_model_opt?: Comfy.Input.SAM_MODEL
           segm_detector_opt?: Comfy.Input.SEGM_DETECTOR
           detailer_hook?: Comfy.Input.DETAILER_HOOK
@@ -5383,8 +5383,8 @@ declare global {
           bbox_detector: Comfy.Input.BBOX_DETECTOR
           /** */
           wildcard: Comfy.Input.STRING
-          "Select to add LoRA": Comfy.Union.Enum_ToDetailerPipe_Select$_to$_add$_LoRA
-          "Select to add Wildcard": Comfy.Union.Enum_ToDetailerPipe_Select$_to$_add$_Wildcard
+          "Select to add LoRA": Comfy.Union.E_35e403c7628f220c07d5485d6e81fc66b4fc12df
+          "Select to add Wildcard": Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26
           sam_model_opt?: Comfy.Input.SAM_MODEL
           segm_detector_opt?: Comfy.Input.SEGM_DETECTOR
           detailer_hook?: Comfy.Input.DETAILER_HOOK
@@ -5423,8 +5423,8 @@ declare global {
           detailer_pipe: Comfy.Input.DETAILER_PIPE
           /** */
           wildcard: Comfy.Input.STRING
-          "Select to add LoRA": Comfy.Union.Enum_ToDetailerPipe_Select$_to$_add$_LoRA
-          "Select to add Wildcard": Comfy.Union.Enum_ToDetailerPipe_Select$_to$_add$_Wildcard
+          "Select to add LoRA": Comfy.Union.E_35e403c7628f220c07d5485d6e81fc66b4fc12df
+          "Select to add Wildcard": Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26
           model?: Comfy.Input.MODEL
           clip?: Comfy.Input.CLIP
           vae?: Comfy.Input.VAE
@@ -5445,8 +5445,8 @@ declare global {
           detailer_pipe: Comfy.Input.DETAILER_PIPE
           /** */
           wildcard: Comfy.Input.STRING
-          "Select to add LoRA": Comfy.Union.Enum_ToDetailerPipe_Select$_to$_add$_LoRA
-          "Select to add Wildcard": Comfy.Union.Enum_ToDetailerPipe_Select$_to$_add$_Wildcard
+          "Select to add LoRA": Comfy.Union.E_35e403c7628f220c07d5485d6e81fc66b4fc12df
+          "Select to add Wildcard": Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26
           model?: Comfy.Input.MODEL
           clip?: Comfy.Input.CLIP
           vae?: Comfy.Input.VAE
@@ -5470,7 +5470,7 @@ declare global {
       }
       interface LatentPixelScale_input {
           samples: Comfy.Input.LATENT
-          scale_method: Comfy.Union.Enum_LatentPixelScale_scale_method
+          scale_method: Comfy.Union.E_f9c5efbc827613eb902695cd0a25738ee31c607d
           /** default=1.5 min=10000 max=10000 step=0.1 */
           scale_factor?: Comfy.Input.FLOAT
           vae: Comfy.Input.VAE
@@ -5485,7 +5485,7 @@ declare global {
           UPSCALER: ComfyNodeOutput<'UPSCALER', 0>,
       }
       interface PixelKSampleUpscalerProvider_input {
-          scale_method: Comfy.Union.Enum_LatentPixelScale_scale_method
+          scale_method: Comfy.Union.E_f9c5efbc827613eb902695cd0a25738ee31c607d
           model: Comfy.Input.MODEL
           vae: Comfy.Input.VAE
           /** default=0 min=18446744073709552000 max=18446744073709552000 */
@@ -5494,8 +5494,8 @@ declare global {
           steps?: Comfy.Input.INT
           /** default=8 min=100 max=100 */
           cfg?: Comfy.Input.FLOAT
-          sampler_name: Comfy.Union.Enum_KSampler_sampler_name
-          scheduler: Comfy.Union.Enum_DetailerForEach_scheduler
+          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          scheduler: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
           positive: Comfy.Input.CONDITIONING
           negative: Comfy.Input.CONDITIONING
           /** default=1 min=1 max=1 step=0.01 */
@@ -5515,15 +5515,15 @@ declare global {
           UPSCALER: ComfyNodeOutput<'UPSCALER', 0>,
       }
       interface PixelKSampleUpscalerProviderPipe_input {
-          scale_method: Comfy.Union.Enum_LatentPixelScale_scale_method
+          scale_method: Comfy.Union.E_f9c5efbc827613eb902695cd0a25738ee31c607d
           /** default=0 min=18446744073709552000 max=18446744073709552000 */
           seed?: Comfy.Input.INT
           /** default=20 min=10000 max=10000 */
           steps?: Comfy.Input.INT
           /** default=8 min=100 max=100 */
           cfg?: Comfy.Input.FLOAT
-          sampler_name: Comfy.Union.Enum_KSampler_sampler_name
-          scheduler: Comfy.Union.Enum_DetailerForEach_scheduler
+          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          scheduler: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
           /** default=1 min=1 max=1 step=0.01 */
           denoise?: Comfy.Input.FLOAT
           /** default=false */
@@ -5555,7 +5555,7 @@ declare global {
           temp_prefix?: Comfy.Input.STRING
           upscaler: Comfy.Input.UPSCALER
           /** default="simple" */
-          step_mode?: Comfy.Union.Enum_IterativeLatentUpscale_step_mode
+          step_mode?: Comfy.Union.E_4724269c8f643d5efa98f97e1e55a7ddfe6aac6c
       }
       interface IterativeImageUpscale extends HasSingle_IMAGE, ComfyNode<IterativeImageUpscale_input, IterativeImageUpscale_output> {
           nameInComfy: "IterativeImageUpscale"
@@ -5574,7 +5574,7 @@ declare global {
           upscaler: Comfy.Input.UPSCALER
           vae: Comfy.Input.VAE
           /** default="simple" */
-          step_mode?: Comfy.Union.Enum_IterativeLatentUpscale_step_mode
+          step_mode?: Comfy.Union.E_4724269c8f643d5efa98f97e1e55a7ddfe6aac6c
       }
       interface PixelTiledKSampleUpscalerProvider extends HasSingle_UPSCALER, ComfyNode<PixelTiledKSampleUpscalerProvider_input, PixelTiledKSampleUpscalerProvider_output> {
           nameInComfy: "PixelTiledKSampleUpscalerProvider"
@@ -5583,7 +5583,7 @@ declare global {
           UPSCALER: ComfyNodeOutput<'UPSCALER', 0>,
       }
       interface PixelTiledKSampleUpscalerProvider_input {
-          scale_method: Comfy.Union.Enum_LatentPixelScale_scale_method
+          scale_method: Comfy.Union.E_f9c5efbc827613eb902695cd0a25738ee31c607d
           model: Comfy.Input.MODEL
           vae: Comfy.Input.VAE
           /** default=0 min=18446744073709552000 max=18446744073709552000 */
@@ -5592,8 +5592,8 @@ declare global {
           steps?: Comfy.Input.INT
           /** default=8 min=100 max=100 */
           cfg?: Comfy.Input.FLOAT
-          sampler_name: Comfy.Union.Enum_KSampler_sampler_name
-          scheduler: Comfy.Union.Enum_KSampler_scheduler
+          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          scheduler: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325
           positive: Comfy.Input.CONDITIONING
           negative: Comfy.Input.CONDITIONING
           /** default=1 min=1 max=1 step=0.01 */
@@ -5602,7 +5602,7 @@ declare global {
           tile_width?: Comfy.Input.INT
           /** default=512 min=16384 max=16384 step=64 */
           tile_height?: Comfy.Input.INT
-          tiling_strategy: Comfy.Union.Enum_PixelTiledKSampleUpscalerProvider_tiling_strategy
+          tiling_strategy: Comfy.Union.E_304f89a0de34643f12756237824e7261db28aaf5
           upscale_model_opt?: Comfy.Input.UPSCALE_MODEL
           pk_hook_opt?: Comfy.Input.PK_HOOK
           tile_cnet_opt?: Comfy.Input.CONTROL_NET
@@ -5616,22 +5616,22 @@ declare global {
           UPSCALER: ComfyNodeOutput<'UPSCALER', 0>,
       }
       interface PixelTiledKSampleUpscalerProviderPipe_input {
-          scale_method: Comfy.Union.Enum_LatentPixelScale_scale_method
+          scale_method: Comfy.Union.E_f9c5efbc827613eb902695cd0a25738ee31c607d
           /** default=0 min=18446744073709552000 max=18446744073709552000 */
           seed?: Comfy.Input.INT
           /** default=20 min=10000 max=10000 */
           steps?: Comfy.Input.INT
           /** default=8 min=100 max=100 */
           cfg?: Comfy.Input.FLOAT
-          sampler_name: Comfy.Union.Enum_KSampler_sampler_name
-          scheduler: Comfy.Union.Enum_KSampler_scheduler
+          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          scheduler: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325
           /** default=1 min=1 max=1 step=0.01 */
           denoise?: Comfy.Input.FLOAT
           /** default=512 min=16384 max=16384 step=64 */
           tile_width?: Comfy.Input.INT
           /** default=512 min=16384 max=16384 step=64 */
           tile_height?: Comfy.Input.INT
-          tiling_strategy: Comfy.Union.Enum_PixelTiledKSampleUpscalerProvider_tiling_strategy
+          tiling_strategy: Comfy.Union.E_304f89a0de34643f12756237824e7261db28aaf5
           basic_pipe: Comfy.Input.BASIC_PIPE
           upscale_model_opt?: Comfy.Input.UPSCALE_MODEL
           pk_hook_opt?: Comfy.Input.PK_HOOK
@@ -5646,8 +5646,8 @@ declare global {
           UPSCALER: ComfyNodeOutput<'UPSCALER', 0>,
       }
       interface TwoSamplersForMaskUpscalerProvider_input {
-          scale_method: Comfy.Union.Enum_LatentPixelScale_scale_method
-          full_sample_schedule: Comfy.Union.Enum_TwoSamplersForMaskUpscalerProvider_full_sample_schedule
+          scale_method: Comfy.Union.E_f9c5efbc827613eb902695cd0a25738ee31c607d
+          full_sample_schedule: Comfy.Union.E_de6a9887e0bfe301f572e929959509ed64574d1b
           /** default=false */
           use_tiled_vae?: Comfy.Input.BOOLEAN
           base_sampler: Comfy.Input.KSAMPLER
@@ -5669,8 +5669,8 @@ declare global {
           UPSCALER: ComfyNodeOutput<'UPSCALER', 0>,
       }
       interface TwoSamplersForMaskUpscalerProviderPipe_input {
-          scale_method: Comfy.Union.Enum_LatentPixelScale_scale_method
-          full_sample_schedule: Comfy.Union.Enum_TwoSamplersForMaskUpscalerProvider_full_sample_schedule
+          scale_method: Comfy.Union.E_f9c5efbc827613eb902695cd0a25738ee31c607d
+          full_sample_schedule: Comfy.Union.E_de6a9887e0bfe301f572e929959509ed64574d1b
           /** default=false */
           use_tiled_vae?: Comfy.Input.BOOLEAN
           base_sampler: Comfy.Input.KSAMPLER
@@ -5702,7 +5702,7 @@ declare global {
           PK_HOOK: ComfyNodeOutput<'PK_HOOK', 0>,
       }
       interface DenoiseScheduleHookProvider_input {
-          schedule_for_iteration: Comfy.Union.Enum_DenoiseScheduleHookProvider_schedule_for_iteration
+          schedule_for_iteration: Comfy.Union.E_0f7d0d088b6ea936fb25b477722d734706fe8b40
           /** default=0.2 min=1 max=1 step=0.01 */
           target_denoise?: Comfy.Input.FLOAT
       }
@@ -5713,7 +5713,7 @@ declare global {
           PK_HOOK: ComfyNodeOutput<'PK_HOOK', 0>,
       }
       interface StepsScheduleHookProvider_input {
-          schedule_for_iteration: Comfy.Union.Enum_DenoiseScheduleHookProvider_schedule_for_iteration
+          schedule_for_iteration: Comfy.Union.E_0f7d0d088b6ea936fb25b477722d734706fe8b40
           /** default=20 min=10000 max=10000 */
           target_steps?: Comfy.Input.INT
       }
@@ -5724,7 +5724,7 @@ declare global {
           PK_HOOK: ComfyNodeOutput<'PK_HOOK', 0>,
       }
       interface CfgScheduleHookProvider_input {
-          schedule_for_iteration: Comfy.Union.Enum_DenoiseScheduleHookProvider_schedule_for_iteration
+          schedule_for_iteration: Comfy.Union.E_0f7d0d088b6ea936fb25b477722d734706fe8b40
           /** default=3 min=100 max=100 */
           target_cfg?: Comfy.Input.FLOAT
       }
@@ -5735,8 +5735,8 @@ declare global {
           PK_HOOK: ComfyNodeOutput<'PK_HOOK', 0>,
       }
       interface NoiseInjectionHookProvider_input {
-          schedule_for_iteration: Comfy.Union.Enum_DenoiseScheduleHookProvider_schedule_for_iteration
-          source: Comfy.Union.Enum_NoiseInjectionHookProvider_source
+          schedule_for_iteration: Comfy.Union.E_0f7d0d088b6ea936fb25b477722d734706fe8b40
+          source: Comfy.Union.E_3dfc15432d4b952e91053feecd5a5427720957fc
           /** default=0 min=18446744073709552000 max=18446744073709552000 */
           seed?: Comfy.Input.INT
           /** default=1 min=200 max=200 step=0.01 */
@@ -5760,12 +5760,12 @@ declare global {
           end_end_at_step?: Comfy.Input.INT
           /** default=1 min=100 max=100 */
           cfg?: Comfy.Input.FLOAT
-          sampler_name: Comfy.Union.Enum_KSampler_sampler_name
-          scheduler: Comfy.Union.Enum_KSampler_scheduler
-          normalize: Comfy.Union.Enum_KSamplerAdvanced_add_noise
+          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          scheduler: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325
+          normalize: Comfy.Union.E_449b4cae3566dd9b97c417c352bb08e25b89431b
           positive: Comfy.Input.CONDITIONING
           negative: Comfy.Input.CONDITIONING
-          schedule_for_iteration: Comfy.Union.Enum_DenoiseScheduleHookProvider_schedule_for_iteration
+          schedule_for_iteration: Comfy.Union.E_0f7d0d088b6ea936fb25b477722d734706fe8b40
       }
       interface CoreMLDetailerHookProvider extends HasSingle_DETAILER_HOOK, ComfyNode<CoreMLDetailerHookProvider_input, CoreMLDetailerHookProvider_output> {
           nameInComfy: "CoreMLDetailerHookProvider"
@@ -5774,7 +5774,7 @@ declare global {
           DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK', 0>,
       }
       interface CoreMLDetailerHookProvider_input {
-          mode: Comfy.Union.Enum_CoreMLDetailerHookProvider_mode
+          mode: Comfy.Union.E_d4b6506ab5528aeab8952aa9d308dbc242d01e63
       }
       interface PreviewDetailerHookProvider extends HasSingle_DETAILER_HOOK, HasSingle_UPSCALER_HOOK, ComfyNode<PreviewDetailerHookProvider_input, PreviewDetailerHookProvider_output> {
           nameInComfy: "PreviewDetailerHookProvider"
@@ -5804,8 +5804,8 @@ declare global {
           DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK', 0>,
       }
       interface NoiseInjectionDetailerHookProvider_input {
-          schedule_for_cycle: Comfy.Union.Enum_NoiseInjectionDetailerHookProvider_schedule_for_cycle
-          source: Comfy.Union.Enum_NoiseInjectionHookProvider_source
+          schedule_for_cycle: Comfy.Union.E_afbc7832ad78555d4f5646f97ed21b561fe3d1f0
+          source: Comfy.Union.E_3dfc15432d4b952e91053feecd5a5427720957fc
           /** default=0 min=18446744073709552000 max=18446744073709552000 */
           seed?: Comfy.Input.INT
           /** default=2 min=200 max=200 step=0.01 */
@@ -5829,12 +5829,12 @@ declare global {
           end_end_at_step?: Comfy.Input.INT
           /** default=1 min=100 max=100 */
           cfg?: Comfy.Input.FLOAT
-          sampler_name: Comfy.Union.Enum_KSampler_sampler_name
-          scheduler: Comfy.Union.Enum_KSampler_scheduler
-          normalize: Comfy.Union.Enum_KSamplerAdvanced_add_noise
+          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          scheduler: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325
+          normalize: Comfy.Union.E_449b4cae3566dd9b97c417c352bb08e25b89431b
           positive: Comfy.Input.CONDITIONING
           negative: Comfy.Input.CONDITIONING
-          schedule_for_cycle: Comfy.Union.Enum_NoiseInjectionDetailerHookProvider_schedule_for_cycle
+          schedule_for_cycle: Comfy.Union.E_afbc7832ad78555d4f5646f97ed21b561fe3d1f0
       }
       interface DenoiseSchedulerDetailerHookProvider extends HasSingle_DETAILER_HOOK, ComfyNode<DenoiseSchedulerDetailerHookProvider_input, DenoiseSchedulerDetailerHookProvider_output> {
           nameInComfy: "DenoiseSchedulerDetailerHookProvider"
@@ -5843,7 +5843,7 @@ declare global {
           DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK', 0>,
       }
       interface DenoiseSchedulerDetailerHookProvider_input {
-          schedule_for_cycle: Comfy.Union.Enum_DenoiseScheduleHookProvider_schedule_for_iteration
+          schedule_for_cycle: Comfy.Union.E_0f7d0d088b6ea936fb25b477722d734706fe8b40
           /** default=0.3 min=1 max=1 step=0.01 */
           target_denoise?: Comfy.Input.FLOAT
       }
@@ -5854,7 +5854,7 @@ declare global {
           DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK', 0>,
       }
       interface SEGSOrderedFilterDetailerHookProvider_input {
-          target: Comfy.Union.Enum_SEGSOrderedFilterDetailerHookProvider_target
+          target: Comfy.Union.E_87bec9aa0dfe9b9678fd35387106d931d78358cd
           /** default=true */
           order?: Comfy.Input.BOOLEAN
           /** default=0 min=9223372036854776000 max=9223372036854776000 step=1 */
@@ -5869,7 +5869,7 @@ declare global {
           DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK', 0>,
       }
       interface SEGSRangeFilterDetailerHookProvider_input {
-          target: Comfy.Union.Enum_SEGSRangeFilterDetailerHookProvider_target
+          target: Comfy.Union.E_aceb55e7f03fcbc2a78383bd8ddff8676e42e536
           /** default=true */
           mode?: Comfy.Input.BOOLEAN
           /** default=0 min=9223372036854776000 max=9223372036854776000 step=1 */
@@ -5885,7 +5885,7 @@ declare global {
       }
       interface SEGSLabelFilterDetailerHookProvider_input {
           segs: Comfy.Input.SEGS
-          preset: Comfy.Union.Enum_SEGSLabelFilterDetailerHookProvider_preset
+          preset: Comfy.Union.E_cc1f262afc534d382e5c36082cecd4fc2a9c4ffb
           /** */
           labels: Comfy.Input.STRING
       }
@@ -6188,8 +6188,8 @@ declare global {
           sub_bbox_expansion?: Comfy.Input.INT
           /** default=0.7 min=1 max=1 step=0.01 */
           sam_mask_hint_threshold?: Comfy.Input.FLOAT
-          masking_mode?: Comfy.Union.Enum_ImpactSimpleDetectorSEGS$_for$_AD_masking_mode
-          segs_pivot?: Comfy.Union.Enum_ImpactSimpleDetectorSEGS$_for$_AD_segs_pivot
+          masking_mode?: Comfy.Union.E_e5ef6b688dbafd88538e80bf002826bade4bb121
+          segs_pivot?: Comfy.Union.E_651ea09f69db9a1eb817103d1ea8e3ac08b4a319
           /** */
           sam_model_opt?: Comfy.Input.SAM_MODEL
           segm_detector_opt?: Comfy.Input.SEGM_DETECTOR
@@ -6309,7 +6309,7 @@ declare global {
           /** default=0.4 min=1 max=1 step=0.01 */
           noise?: Comfy.Input.FLOAT
           /** default="channel penalty" */
-          weight_type?: Comfy.Union.Enum_ImpactIPAdapterApplySEGS_weight_type
+          weight_type?: Comfy.Union.E_05cddbad13b094c2641c6bb7d261e15c71efc903
           /** default=0 min=1 max=1 step=0.001 */
           start_at?: Comfy.Input.FLOAT
           /** default=0.9 min=1 max=1 step=0.001 */
@@ -6323,7 +6323,7 @@ declare global {
           /** default=1.2 min=100 max=100 step=0.1 */
           context_crop_factor?: Comfy.Input.FLOAT
           reference_image: Comfy.Input.IMAGE
-          combine_embeds?: Comfy.Union.Enum_ImpactIPAdapterApplySEGS_combine_embeds
+          combine_embeds?: Comfy.Union.E_055d80a7c582bd5b57fd6775414e697be3f0f580
           neg_image?: Comfy.Input.IMAGE
       }
       interface ImpactDecomposeSEGS extends HasSingle_SEGS_HEADER, HasSingle_SEG_ELT, ComfyNode<ImpactDecomposeSEGS_input, ImpactDecomposeSEGS_output> {
@@ -6534,9 +6534,9 @@ declare global {
           /** default=8 min=100 max=100 */
           cfg?: Comfy.Input.FLOAT
           /** */
-          sampler_name: Comfy.Union.Enum_KSampler_sampler_name
+          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
           /** */
-          scheduler: Comfy.Union.Enum_DetailerForEach_scheduler
+          scheduler: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
           /** default=1 min=1 max=1 step=0.01 */
           denoise?: Comfy.Input.FLOAT
           /** */
@@ -6574,9 +6574,9 @@ declare global {
           /** default=8 min=100 max=100 */
           cfg?: Comfy.Input.FLOAT
           /** */
-          sampler_name: Comfy.Union.Enum_KSampler_sampler_name
+          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
           /** */
-          scheduler: Comfy.Union.Enum_KSampler_scheduler
+          scheduler: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325
           /** default=1 min=1 max=1 step=0.01 */
           denoise?: Comfy.Input.FLOAT
           /** default=512 min=16384 max=16384 step=64 */
@@ -6584,7 +6584,7 @@ declare global {
           /** default=512 min=16384 max=16384 step=64 */
           tile_height?: Comfy.Input.INT
           /** */
-          tiling_strategy: Comfy.Union.Enum_PixelTiledKSampleUpscalerProvider_tiling_strategy
+          tiling_strategy: Comfy.Union.E_304f89a0de34643f12756237824e7261db28aaf5
           /** */
           basic_pipe: Comfy.Input.BASIC_PIPE
       }
@@ -6598,9 +6598,9 @@ declare global {
           /** default=8 min=100 max=100 */
           cfg?: Comfy.Input.FLOAT
           /** */
-          sampler_name: Comfy.Union.Enum_KSampler_sampler_name
+          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
           /** */
-          scheduler: Comfy.Union.Enum_DetailerForEach_scheduler
+          scheduler: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
           /** default=1 min=10 max=10 step=0.01 */
           sigma_factor?: Comfy.Input.FLOAT
           /** */
@@ -6656,7 +6656,7 @@ declare global {
           /** default=false */
           block?: Comfy.Input.BOOLEAN
           /** */
-          restore_mask?: Comfy.Union.Enum_PreviewBridge_restore_mask
+          restore_mask?: Comfy.Union.E_f27fae3205ecf36e9f4a68f3867d38e025476963
       }
       interface PreviewBridgeLatent extends HasSingle_LATENT, HasSingle_MASK, ComfyNode<PreviewBridgeLatent_input, PreviewBridgeLatent_output> {
           nameInComfy: "PreviewBridgeLatent"
@@ -6669,12 +6669,12 @@ declare global {
           latent: Comfy.Input.LATENT
           /** default="" */
           image?: Comfy.Input.STRING
-          preview_method: Comfy.Union.Enum_PreviewBridgeLatent_preview_method
+          preview_method: Comfy.Union.E_ea287ec9983f05378f2614091804a1b6b95d1c79
           vae_opt?: Comfy.Input.VAE
           /** default=false */
           block?: Comfy.Input.BOOLEAN
           /** */
-          restore_mask?: Comfy.Union.Enum_PreviewBridge_restore_mask
+          restore_mask?: Comfy.Union.E_f27fae3205ecf36e9f4a68f3867d38e025476963
       }
       interface ImageSender extends ComfyNode<ImageSender_input, ImageSender_output> {
           nameInComfy: "ImageSender"
@@ -6696,7 +6696,7 @@ declare global {
           MASK: ComfyNodeOutput<'MASK', 1>,
       }
       interface ImageReceiver_input {
-          image: Comfy.Union.Enum_LoadImage_image
+          image: Comfy.Union.E_26ea5ad8c44c9551fea858fff18017427386b591
           /** default=0 min=9223372036854776000 max=9223372036854776000 step=1 */
           link_id?: Comfy.Input.INT
           /** default=false */
@@ -6717,7 +6717,7 @@ declare global {
           filename_prefix?: Comfy.Input.STRING
           /** default=0 min=9223372036854776000 max=9223372036854776000 step=1 */
           link_id?: Comfy.Input.INT
-          preview_method: Comfy.Union.Enum_LatentSender_preview_method
+          preview_method: Comfy.Union.E_fa4a13687b111fa33a8c8fa375d5321d09b46b27
       }
       interface LatentReceiver extends HasSingle_LATENT, ComfyNode<LatentReceiver_input, LatentReceiver_output> {
           nameInComfy: "LatentReceiver"
@@ -6726,7 +6726,7 @@ declare global {
           LATENT: ComfyNodeOutput<'LATENT', 0>,
       }
       interface LatentReceiver_input {
-          latent: Comfy.Union.Enum_LoraLoader_lora_name
+          latent: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
           /** default=0 min=9223372036854776000 max=9223372036854776000 step=1 */
           link_id?: Comfy.Input.INT
           /** default=false */
@@ -6828,7 +6828,7 @@ declare global {
           mode?: Comfy.Input.BOOLEAN
           /** default=0 min=18446744073709552000 max=18446744073709552000 */
           seed?: Comfy.Input.INT
-          "Select to add Wildcard": Comfy.Union.Enum_ToDetailerPipe_Select$_to$_add$_Wildcard
+          "Select to add Wildcard": Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26
       }
       interface ImpactWildcardEncode extends HasSingle_MODEL, HasSingle_CLIP, HasSingle_CONDITIONING, HasSingle_STRING, ComfyNode<ImpactWildcardEncode_input, ImpactWildcardEncode_output> {
           nameInComfy: "ImpactWildcardEncode"
@@ -6848,8 +6848,8 @@ declare global {
           populated_text: Comfy.Input.STRING
           /** default=true */
           mode?: Comfy.Input.BOOLEAN
-          "Select to add LoRA": Comfy.Union.Enum_ToDetailerPipe_Select$_to$_add$_LoRA
-          "Select to add Wildcard": Comfy.Union.Enum_ToDetailerPipe_Select$_to$_add$_Wildcard
+          "Select to add LoRA": Comfy.Union.E_35e403c7628f220c07d5485d6e81fc66b4fc12df
+          "Select to add Wildcard": Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26
           /** default=0 min=18446744073709552000 max=18446744073709552000 */
           seed?: Comfy.Input.INT
       }
@@ -6867,8 +6867,8 @@ declare global {
           vae: Comfy.Input.VAE
           /** default=2 min=100 max=100 step=0.01 */
           rescale_factor?: Comfy.Input.FLOAT
-          resampling_method: Comfy.Union.Enum_SEGSUpscaler_resampling_method
-          supersample: Comfy.Union.Enum_SEGSUpscaler_supersample
+          resampling_method: Comfy.Union.E_bac912b55de8a59480c74aba068f4a3b5f9a0e38
+          supersample: Comfy.Union.E_c1a74591678033a2ccc87aa0add77dab7f001da5
           /** default=8 min=1024 max=1024 step=8 */
           rounding_modulus?: Comfy.Input.INT
           /** default=0 min=18446744073709552000 max=18446744073709552000 */
@@ -6877,8 +6877,8 @@ declare global {
           steps?: Comfy.Input.INT
           /** default=8 min=100 max=100 */
           cfg?: Comfy.Input.FLOAT
-          sampler_name: Comfy.Union.Enum_KSampler_sampler_name
-          scheduler: Comfy.Union.Enum_DetailerForEach_scheduler
+          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          scheduler: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
           positive: Comfy.Input.CONDITIONING
           negative: Comfy.Input.CONDITIONING
           /** default=0.5 min=1 max=1 step=0.01 */
@@ -6905,8 +6905,8 @@ declare global {
           basic_pipe: Comfy.Input.BASIC_PIPE
           /** default=2 min=100 max=100 step=0.01 */
           rescale_factor?: Comfy.Input.FLOAT
-          resampling_method: Comfy.Union.Enum_SEGSUpscaler_resampling_method
-          supersample: Comfy.Union.Enum_SEGSUpscaler_supersample
+          resampling_method: Comfy.Union.E_bac912b55de8a59480c74aba068f4a3b5f9a0e38
+          supersample: Comfy.Union.E_c1a74591678033a2ccc87aa0add77dab7f001da5
           /** default=8 min=1024 max=1024 step=8 */
           rounding_modulus?: Comfy.Input.INT
           /** default=0 min=18446744073709552000 max=18446744073709552000 */
@@ -6915,8 +6915,8 @@ declare global {
           steps?: Comfy.Input.INT
           /** default=8 min=100 max=100 */
           cfg?: Comfy.Input.FLOAT
-          sampler_name: Comfy.Union.Enum_KSampler_sampler_name
-          scheduler: Comfy.Union.Enum_DetailerForEach_scheduler
+          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          scheduler: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
           /** default=0.5 min=1 max=1 step=0.01 */
           denoise?: Comfy.Input.FLOAT
           /** default=5 min=100 max=100 step=1 */
@@ -6951,8 +6951,8 @@ declare global {
           steps?: Comfy.Input.INT
           /** default=8 min=100 max=100 */
           cfg?: Comfy.Input.FLOAT
-          sampler_name: Comfy.Union.Enum_KSampler_sampler_name
-          scheduler: Comfy.Union.Enum_DetailerForEach_scheduler
+          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          scheduler: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
           /** default=0.5 min=1 max=1 step=0.01 */
           denoise?: Comfy.Input.FLOAT
           /** default=true */
@@ -7078,7 +7078,7 @@ declare global {
           filter_segs_dilation?: Comfy.Input.INT
           /** default=0 min=1 max=1 step=0.01 */
           mask_irregularity?: Comfy.Input.FLOAT
-          irregular_mask_mode: Comfy.Union.Enum_ImpactMakeTileSEGS_irregular_mask_mode
+          irregular_mask_mode: Comfy.Union.E_5cc1495fe28eac05289d45b29269b31c6edca055
           filter_in_segs_opt?: Comfy.Input.SEGS
           filter_out_segs_opt?: Comfy.Input.SEGS
       }
@@ -7113,8 +7113,8 @@ declare global {
           steps?: Comfy.Input.INT
           /** default=8 min=100 max=100 */
           cfg?: Comfy.Input.FLOAT
-          sampler_name: Comfy.Union.Enum_KSampler_sampler_name
-          scheduler: Comfy.Union.Enum_DetailerForEach_scheduler
+          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          scheduler: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
           /** default=0.5 min=1 max=1 step=0.01 */
           denoise?: Comfy.Input.FLOAT
           basic_pipe: Comfy.Input.BASIC_PIPE
@@ -7143,9 +7143,9 @@ declare global {
           /** default=8 min=100 max=100 */
           cfg?: Comfy.Input.FLOAT
           /** */
-          sampler_name: Comfy.Union.Enum_KSampler_sampler_name
+          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
           /** */
-          scheduler: Comfy.Union.Enum_DetailerForEach_scheduler
+          scheduler: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
           /** */
           latent_image: Comfy.Input.LATENT
           /** default=1 min=1 max=1 step=0.01 */
@@ -7173,9 +7173,9 @@ declare global {
           /** default=8 min=100 max=100 */
           cfg?: Comfy.Input.FLOAT
           /** */
-          sampler_name: Comfy.Union.Enum_KSampler_sampler_name
+          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
           /** */
-          scheduler: Comfy.Union.Enum_DetailerForEach_scheduler
+          scheduler: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
           /** */
           latent_image: Comfy.Input.LATENT
           /** default=0 min=10000 max=10000 */
@@ -7195,7 +7195,7 @@ declare global {
       }
       interface ReencodeLatent_input {
           samples: Comfy.Input.LATENT
-          tile_mode: Comfy.Union.Enum_ReencodeLatent_tile_mode
+          tile_mode: Comfy.Union.E_d5776f669e41b2ec29cd020ce34a8b7cdf23693d
           input_vae: Comfy.Input.VAE
           output_vae: Comfy.Input.VAE
           /** default=512 min=4096 max=4096 step=64 */
@@ -7209,7 +7209,7 @@ declare global {
       }
       interface ReencodeLatentPipe_input {
           samples: Comfy.Input.LATENT
-          tile_mode: Comfy.Union.Enum_ReencodeLatent_tile_mode
+          tile_mode: Comfy.Union.E_d5776f669e41b2ec29cd020ce34a8b7cdf23693d
           input_basic_pipe: Comfy.Input.BASIC_PIPE
           output_basic_pipe: Comfy.Input.BASIC_PIPE
       }
@@ -7279,7 +7279,7 @@ declare global {
           /** default=0 min=18446744073709552000 max=18446744073709552000 */
           seed_2nd?: Comfy.Input.INT
           /** */
-          seed_2nd_mode: Comfy.Union.Enum_RegionalSampler_seed_2nd_mode
+          seed_2nd_mode: Comfy.Union.E_1e8364b55644fdbf6d28dd3e6197d9fe1777e361
           /** default=20 min=10000 max=10000 */
           steps?: Comfy.Input.INT
           /** default=2 min=10000 max=10000 */
@@ -7297,9 +7297,9 @@ declare global {
           /** default=true */
           restore_latent?: Comfy.Input.BOOLEAN
           /** default="ratio between" */
-          additional_mode?: Comfy.Union.Enum_RegionalSampler_additional_mode
+          additional_mode?: Comfy.Union.E_db19bd49ccd13456a936f2070c088f16070aa0b1
           /** */
-          additional_sampler: Comfy.Union.Enum_RegionalSampler_additional_sampler
+          additional_sampler: Comfy.Union.E_3fd6d592305b0bc44ce9c69a23201f8d7a155884
           /** default=0.3 min=1 max=1 step=0.01 */
           additional_sigma_ratio?: Comfy.Input.FLOAT
       }
@@ -7333,9 +7333,9 @@ declare global {
           /** */
           regional_prompts: Comfy.Input.REGIONAL_PROMPTS
           /** default="ratio between" */
-          additional_mode?: Comfy.Union.Enum_RegionalSampler_additional_mode
+          additional_mode?: Comfy.Union.E_db19bd49ccd13456a936f2070c088f16070aa0b1
           /** */
-          additional_sampler: Comfy.Union.Enum_RegionalSampler_additional_sampler
+          additional_sampler: Comfy.Union.E_3fd6d592305b0bc44ce9c69a23201f8d7a155884
           /** default=0.3 min=1 max=1 step=0.01 */
           additional_sigma_ratio?: Comfy.Input.FLOAT
       }
@@ -7365,7 +7365,7 @@ declare global {
           /** default=0 min=1 max=1 step=0.01 */
           variation_strength?: Comfy.Input.FLOAT
           /** */
-          variation_method?: Comfy.Union.Enum_RegionalPrompt_variation_method
+          variation_method?: Comfy.Union.E_627d63e970919d713af795854ffd9dd2642f92d2
       }
       interface ImpactCombineConditionings extends HasSingle_CONDITIONING, ComfyNode<ImpactCombineConditionings_input, ImpactCombineConditionings_output> {
           nameInComfy: "ImpactCombineConditionings"
@@ -7407,7 +7407,7 @@ declare global {
       }
       interface ImpactSEGSLabelFilter_input {
           segs: Comfy.Input.SEGS
-          preset: Comfy.Union.Enum_SEGSLabelFilterDetailerHookProvider_preset
+          preset: Comfy.Union.E_cc1f262afc534d382e5c36082cecd4fc2a9c4ffb
           /** */
           labels: Comfy.Input.STRING
       }
@@ -7420,7 +7420,7 @@ declare global {
       }
       interface ImpactSEGSRangeFilter_input {
           segs: Comfy.Input.SEGS
-          target: Comfy.Union.Enum_ImpactSEGSRangeFilter_target
+          target: Comfy.Union.E_10c017f4a76414789a861361dc5cdbfef12e2d7d
           /** default=true */
           mode?: Comfy.Input.BOOLEAN
           /** default=0 min=9223372036854776000 max=9223372036854776000 step=1 */
@@ -7437,7 +7437,7 @@ declare global {
       }
       interface ImpactSEGSOrderedFilter_input {
           segs: Comfy.Input.SEGS
-          target: Comfy.Union.Enum_ImpactSEGSOrderedFilter_target
+          target: Comfy.Union.E_b1f554e93f550a374a1ff740ad7447a7b34b71be
           /** default=true */
           order?: Comfy.Input.BOOLEAN
           /** default=0 min=9223372036854776000 max=9223372036854776000 step=1 */
@@ -7452,7 +7452,7 @@ declare global {
           BOOLEAN: ComfyNodeOutput<'BOOLEAN', 0>,
       }
       interface ImpactCompare_input {
-          cmp: Comfy.Union.Enum_ImpactCompare_cmp
+          cmp: Comfy.Union.E_87d3a21083ff67c538309f218241f70a793f619c
           a: Comfy.Input.$Star
           b: Comfy.Input.$Star
       }
@@ -7510,7 +7510,7 @@ declare global {
           BOOLEAN: ComfyNodeOutput<'BOOLEAN', 0>,
       }
       interface ImpactLogicalOperators_input {
-          operator: Comfy.Union.Enum_ImpactLogicalOperators_operator
+          operator: Comfy.Union.E_99d83eba8f2a90cc88da26295981d92d458e4e14
           /** */
           bool_a: Comfy.Input.BOOLEAN
           /** */
@@ -7565,7 +7565,7 @@ declare global {
           "$Star": ComfyNodeOutput<'$Star', 0>,
       }
       interface ImpactValueReceiver_input {
-          typ: Comfy.Union.Enum_ImpactValueReceiver_typ
+          typ: Comfy.Union.E_6c86e4efdc8db8dae17215fbf80825ddaad06ffa
           /** default="" */
           value?: Comfy.Input.STRING
           /** default=0 min=9223372036854776000 max=9223372036854776000 step=1 */
@@ -7783,7 +7783,7 @@ declare global {
           value: Comfy.Input.$Star
           /** default=true */
           mode?: Comfy.Input.BOOLEAN
-          behavior: Comfy.Union.Enum_ImpactControlBridge_behavior
+          behavior: Comfy.Union.E_383642e8f2544ff8678e350c4f1049624ad6589e
       }
       interface ImpactIsNotEmptySEGS extends HasSingle_BOOLEAN, ComfyNode<ImpactIsNotEmptySEGS_input, ImpactIsNotEmptySEGS_output> {
           nameInComfy: "ImpactIsNotEmptySEGS"
@@ -7838,10 +7838,10 @@ declare global {
           TRANSFORMERS_CLASSIFIER: ComfyNodeOutput<'TRANSFORMERS_CLASSIFIER', 0>,
       }
       interface ImpactHFTransformersClassifierProvider_input {
-          preset_repo_id: Comfy.Union.Enum_ImpactHFTransformersClassifierProvider_preset_repo_id
+          preset_repo_id: Comfy.Union.E_7fd75955db2b2e81b87d8452255b37c2d98fd105
           /** */
           manual_repo_id: Comfy.Input.STRING
-          device_mode: Comfy.Union.Enum_SAMLoader_device_mode
+          device_mode: Comfy.Union.E_2ad445b99254e9b51c963d9f1a75fabe3d01e569
       }
       interface ImpactSEGSClassify extends HasSingle_STRING, ComfyNode<ImpactSEGSClassify_input, ImpactSEGSClassify_output> {
           nameInComfy: "ImpactSEGSClassify"
@@ -7854,21 +7854,21 @@ declare global {
       interface ImpactSEGSClassify_input {
           classifier: Comfy.Input.TRANSFORMERS_CLASSIFIER
           segs: Comfy.Input.SEGS
-          preset_expr: Comfy.Union.Enum_ImpactSEGSClassify_preset_expr
+          preset_expr: Comfy.Union.E_01400d675e59295302197d02289e89ead401098e
           /** */
           manual_expr: Comfy.Input.STRING
           ref_image_opt?: Comfy.Input.IMAGE
       }
-      interface ImpactSchedulerAdapter extends HasSingle_Enum_DetailerForEach_scheduler, ComfyNode<ImpactSchedulerAdapter_input, ImpactSchedulerAdapter_output> {
+      interface ImpactSchedulerAdapter extends HasSingle_E_720061fdb15e8c451b6aa7ed023644f064ddc57d, ComfyNode<ImpactSchedulerAdapter_input, ImpactSchedulerAdapter_output> {
           nameInComfy: "ImpactSchedulerAdapter"
       }
       interface ImpactSchedulerAdapter_output {
-          scheduler: ComfyNodeOutput<'Enum_DetailerForEach_scheduler', 0>,
+          scheduler: ComfyNodeOutput<'E_720061fdb15e8c451b6aa7ed023644f064ddc57d', 0>,
       }
       interface ImpactSchedulerAdapter_input {
           /** */
-          scheduler: Comfy.Union.Enum_KSampler_scheduler
-          extra_scheduler: Comfy.Union.Enum_ImpactSchedulerAdapter_extra_scheduler
+          scheduler: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325
+          extra_scheduler: Comfy.Union.E_64bb9134d159ff7e3f573facb7cb2fcfbb2de483
       }
       interface GITSSchedulerFuncProvider extends HasSingle_SCHEDULER_FUNC, ComfyNode<GITSSchedulerFuncProvider_input, GITSSchedulerFuncProvider_output> {
           nameInComfy: "GITSSchedulerFuncProvider"
@@ -7890,225 +7890,225 @@ declare global {
           SEGM_DETECTOR: ComfyNodeOutput<'SEGM_DETECTOR', 1>,
       }
       interface UltralyticsDetectorProvider_input {
-          model_name: Comfy.Union.Enum_UltralyticsDetectorProvider_model_name
+          model_name: Comfy.Union.E_cf11746957b2cb2b6379bbd08fe59610b2aae90a
       }
    }
    // #region 1. Enums
    namespace Comfy.Enum {
       export interface Requirable {
-          "Comfy.Base/Enum_KSampler_sampler_name": { $Name: "Comfy.Base/Enum_KSampler_sampler_name", $Value: Comfy.Union.Enum_KSampler_sampler_name },
-          "Comfy.Base/Enum_KSamplerAdvanced_sampler_name": { $Name: "Comfy.Base/Enum_KSamplerAdvanced_sampler_name", $Value: Comfy.Union.Enum_KSampler_sampler_name },
-          "Comfy.Extras$5custom_sampler/Enum_KSamplerSelect_sampler_name": { $Name: "Comfy.Extras$5custom_sampler/Enum_KSamplerSelect_sampler_name", $Value: Comfy.Union.Enum_KSampler_sampler_name },
-          "Comfy.Custom$5Impact$7Pack/Enum_DetailerForEach_sampler_name": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_DetailerForEach_sampler_name", $Value: Comfy.Union.Enum_KSampler_sampler_name },
-          "Comfy.Custom$5Impact$7Pack/Enum_DetailerForEachDebug_sampler_name": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_DetailerForEachDebug_sampler_name", $Value: Comfy.Union.Enum_KSampler_sampler_name },
-          "Comfy.Custom$5Impact$7Pack/Enum_DetailerForEachPipe_sampler_name": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_DetailerForEachPipe_sampler_name", $Value: Comfy.Union.Enum_KSampler_sampler_name },
-          "Comfy.Custom$5Impact$7Pack/Enum_DetailerForEachDebugPipe_sampler_name": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_DetailerForEachDebugPipe_sampler_name", $Value: Comfy.Union.Enum_KSampler_sampler_name },
-          "Comfy.Custom$5Impact$7Pack/Enum_DetailerForEachPipeForAnimateDiff_sampler_name": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_DetailerForEachPipeForAnimateDiff_sampler_name", $Value: Comfy.Union.Enum_KSampler_sampler_name },
-          "Comfy.Custom$5Impact$7Pack/Enum_FaceDetailer_sampler_name": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_FaceDetailer_sampler_name", $Value: Comfy.Union.Enum_KSampler_sampler_name },
-          "Comfy.Custom$5Impact$7Pack/Enum_FaceDetailerPipe_sampler_name": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_FaceDetailerPipe_sampler_name", $Value: Comfy.Union.Enum_KSampler_sampler_name },
-          "Comfy.Custom$5Impact$7Pack/Enum_MaskDetailerPipe_sampler_name": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_MaskDetailerPipe_sampler_name", $Value: Comfy.Union.Enum_KSampler_sampler_name },
-          "Comfy.Custom$5Impact$7Pack/Enum_PixelKSampleUpscalerProvider_sampler_name": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_PixelKSampleUpscalerProvider_sampler_name", $Value: Comfy.Union.Enum_KSampler_sampler_name },
-          "Comfy.Custom$5Impact$7Pack/Enum_PixelKSampleUpscalerProviderPipe_sampler_name": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_PixelKSampleUpscalerProviderPipe_sampler_name", $Value: Comfy.Union.Enum_KSampler_sampler_name },
-          "Comfy.Custom$5Impact$7Pack/Enum_PixelTiledKSampleUpscalerProvider_sampler_name": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_PixelTiledKSampleUpscalerProvider_sampler_name", $Value: Comfy.Union.Enum_KSampler_sampler_name },
-          "Comfy.Custom$5Impact$7Pack/Enum_PixelTiledKSampleUpscalerProviderPipe_sampler_name": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_PixelTiledKSampleUpscalerProviderPipe_sampler_name", $Value: Comfy.Union.Enum_KSampler_sampler_name },
-          "Comfy.Custom$5Impact$7Pack/Enum_UnsamplerHookProvider_sampler_name": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_UnsamplerHookProvider_sampler_name", $Value: Comfy.Union.Enum_KSampler_sampler_name },
-          "Comfy.Custom$5Impact$7Pack/Enum_UnsamplerDetailerHookProvider_sampler_name": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_UnsamplerDetailerHookProvider_sampler_name", $Value: Comfy.Union.Enum_KSampler_sampler_name },
-          "Comfy.Custom$5Impact$7Pack/Enum_KSamplerProvider_sampler_name": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_KSamplerProvider_sampler_name", $Value: Comfy.Union.Enum_KSampler_sampler_name },
-          "Comfy.Custom$5Impact$7Pack/Enum_TiledKSamplerProvider_sampler_name": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_TiledKSamplerProvider_sampler_name", $Value: Comfy.Union.Enum_KSampler_sampler_name },
-          "Comfy.Custom$5Impact$7Pack/Enum_KSamplerAdvancedProvider_sampler_name": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_KSamplerAdvancedProvider_sampler_name", $Value: Comfy.Union.Enum_KSampler_sampler_name },
-          "Comfy.Custom$5Impact$7Pack/Enum_SEGSUpscaler_sampler_name": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_SEGSUpscaler_sampler_name", $Value: Comfy.Union.Enum_KSampler_sampler_name },
-          "Comfy.Custom$5Impact$7Pack/Enum_SEGSUpscalerPipe_sampler_name": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_SEGSUpscalerPipe_sampler_name", $Value: Comfy.Union.Enum_KSampler_sampler_name },
-          "Comfy.Custom$5Impact$7Pack/Enum_SEGSDetailer_sampler_name": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_SEGSDetailer_sampler_name", $Value: Comfy.Union.Enum_KSampler_sampler_name },
-          "Comfy.Custom$5Impact$7Pack/Enum_SEGSDetailerForAnimateDiff_sampler_name": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_SEGSDetailerForAnimateDiff_sampler_name", $Value: Comfy.Union.Enum_KSampler_sampler_name },
-          "Comfy.Custom$5Impact$7Pack/Enum_ImpactKSamplerBasicPipe_sampler_name": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_ImpactKSamplerBasicPipe_sampler_name", $Value: Comfy.Union.Enum_KSampler_sampler_name },
-          "Comfy.Custom$5Impact$7Pack/Enum_ImpactKSamplerAdvancedBasicPipe_sampler_name": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_ImpactKSamplerAdvancedBasicPipe_sampler_name", $Value: Comfy.Union.Enum_KSampler_sampler_name },
-          "Comfy.Base/Enum_KSampler_scheduler": { $Name: "Comfy.Base/Enum_KSampler_scheduler", $Value: Comfy.Union.Enum_KSampler_scheduler },
-          "Comfy.Base/Enum_KSamplerAdvanced_scheduler": { $Name: "Comfy.Base/Enum_KSamplerAdvanced_scheduler", $Value: Comfy.Union.Enum_KSampler_scheduler },
-          "Comfy.Extras$5custom_sampler/Enum_BasicScheduler_scheduler": { $Name: "Comfy.Extras$5custom_sampler/Enum_BasicScheduler_scheduler", $Value: Comfy.Union.Enum_KSampler_scheduler },
-          "Comfy.Custom$5Impact$7Pack/Enum_PixelTiledKSampleUpscalerProvider_scheduler": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_PixelTiledKSampleUpscalerProvider_scheduler", $Value: Comfy.Union.Enum_KSampler_scheduler },
-          "Comfy.Custom$5Impact$7Pack/Enum_PixelTiledKSampleUpscalerProviderPipe_scheduler": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_PixelTiledKSampleUpscalerProviderPipe_scheduler", $Value: Comfy.Union.Enum_KSampler_scheduler },
-          "Comfy.Custom$5Impact$7Pack/Enum_UnsamplerHookProvider_scheduler": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_UnsamplerHookProvider_scheduler", $Value: Comfy.Union.Enum_KSampler_scheduler },
-          "Comfy.Custom$5Impact$7Pack/Enum_UnsamplerDetailerHookProvider_scheduler": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_UnsamplerDetailerHookProvider_scheduler", $Value: Comfy.Union.Enum_KSampler_scheduler },
-          "Comfy.Custom$5Impact$7Pack/Enum_TiledKSamplerProvider_scheduler": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_TiledKSamplerProvider_scheduler", $Value: Comfy.Union.Enum_KSampler_scheduler },
-          "Comfy.Custom$5Impact$7Pack/Enum_ImpactSchedulerAdapter_scheduler": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_ImpactSchedulerAdapter_scheduler", $Value: Comfy.Union.Enum_KSampler_scheduler },
-          "Comfy.Base/Enum_CheckpointLoaderSimple_ckpt_name": { $Name: "Comfy.Base/Enum_CheckpointLoaderSimple_ckpt_name", $Value: Comfy.Union.Enum_CheckpointLoaderSimple_ckpt_name },
-          "Comfy.Base/Enum_unCLIPCheckpointLoader_ckpt_name": { $Name: "Comfy.Base/Enum_unCLIPCheckpointLoader_ckpt_name", $Value: Comfy.Union.Enum_CheckpointLoaderSimple_ckpt_name },
-          "Comfy.Base/Enum_CheckpointLoader_ckpt_name": { $Name: "Comfy.Base/Enum_CheckpointLoader_ckpt_name", $Value: Comfy.Union.Enum_CheckpointLoaderSimple_ckpt_name },
-          "Comfy.Extras$5video_model/Enum_ImageOnlyCheckpointLoader_ckpt_name": { $Name: "Comfy.Extras$5video_model/Enum_ImageOnlyCheckpointLoader_ckpt_name", $Value: Comfy.Union.Enum_CheckpointLoaderSimple_ckpt_name },
-          "Comfy.Base/Enum_VAELoader_vae_name": { $Name: "Comfy.Base/Enum_VAELoader_vae_name", $Value: Comfy.Union.Enum_VAELoader_vae_name },
-          "Comfy.Base/Enum_LatentUpscale_upscale_method": { $Name: "Comfy.Base/Enum_LatentUpscale_upscale_method", $Value: Comfy.Union.Enum_LatentUpscale_upscale_method },
-          "Comfy.Base/Enum_LatentUpscaleBy_upscale_method": { $Name: "Comfy.Base/Enum_LatentUpscaleBy_upscale_method", $Value: Comfy.Union.Enum_LatentUpscale_upscale_method },
-          "Comfy.Extras$5model_downscale/Enum_PatchModelAddDownscale_downscale_method": { $Name: "Comfy.Extras$5model_downscale/Enum_PatchModelAddDownscale_downscale_method", $Value: Comfy.Union.Enum_LatentUpscale_upscale_method },
-          "Comfy.Extras$5model_downscale/Enum_PatchModelAddDownscale_upscale_method": { $Name: "Comfy.Extras$5model_downscale/Enum_PatchModelAddDownscale_upscale_method", $Value: Comfy.Union.Enum_LatentUpscale_upscale_method },
-          "Comfy.Extras$5advanced_samplers/Enum_SamplerLCMUpscale_upscale_method": { $Name: "Comfy.Extras$5advanced_samplers/Enum_SamplerLCMUpscale_upscale_method", $Value: Comfy.Union.Enum_LatentUpscale_upscale_method },
-          "Comfy.Base/Enum_LatentUpscale_crop": { $Name: "Comfy.Base/Enum_LatentUpscale_crop", $Value: Comfy.Union.Enum_LatentUpscale_crop },
-          "Comfy.Base/Enum_ImageScale_crop": { $Name: "Comfy.Base/Enum_ImageScale_crop", $Value: Comfy.Union.Enum_LatentUpscale_crop },
-          "Comfy.Base/Enum_LoadImage_image": { $Name: "Comfy.Base/Enum_LoadImage_image", $Value: Comfy.Union.Enum_LoadImage_image },
-          "Comfy.Base/Enum_LoadImageMask_image": { $Name: "Comfy.Base/Enum_LoadImageMask_image", $Value: Comfy.Union.Enum_LoadImage_image },
-          "Comfy.Custom$5Impact$7Pack/Enum_ImageReceiver_image": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_ImageReceiver_image", $Value: Comfy.Union.Enum_LoadImage_image },
-          "Comfy.Base/Enum_LoadImageMask_channel": { $Name: "Comfy.Base/Enum_LoadImageMask_channel", $Value: Comfy.Union.Enum_LoadImageMask_channel },
-          "Comfy.Extras$5mask/Enum_ImageToMask_channel": { $Name: "Comfy.Extras$5mask/Enum_ImageToMask_channel", $Value: Comfy.Union.Enum_LoadImageMask_channel },
-          "Comfy.Base/Enum_ImageScale_upscale_method": { $Name: "Comfy.Base/Enum_ImageScale_upscale_method", $Value: Comfy.Union.Enum_ImageScale_upscale_method },
-          "Comfy.Base/Enum_ImageScaleBy_upscale_method": { $Name: "Comfy.Base/Enum_ImageScaleBy_upscale_method", $Value: Comfy.Union.Enum_ImageScale_upscale_method },
-          "Comfy.Extras$5post_processing/Enum_ImageScaleToTotalPixels_upscale_method": { $Name: "Comfy.Extras$5post_processing/Enum_ImageScaleToTotalPixels_upscale_method", $Value: Comfy.Union.Enum_ImageScale_upscale_method },
-          "Comfy.Base/Enum_ConditioningSetMask_set_cond_area": { $Name: "Comfy.Base/Enum_ConditioningSetMask_set_cond_area", $Value: Comfy.Union.Enum_ConditioningSetMask_set_cond_area },
-          "Comfy.Base/Enum_KSamplerAdvanced_add_noise": { $Name: "Comfy.Base/Enum_KSamplerAdvanced_add_noise", $Value: Comfy.Union.Enum_KSamplerAdvanced_add_noise },
-          "Comfy.Base/Enum_KSamplerAdvanced_return_with_leftover_noise": { $Name: "Comfy.Base/Enum_KSamplerAdvanced_return_with_leftover_noise", $Value: Comfy.Union.Enum_KSamplerAdvanced_add_noise },
-          "Comfy.Custom$5Impact$7Pack/Enum_UnsamplerHookProvider_normalize": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_UnsamplerHookProvider_normalize", $Value: Comfy.Union.Enum_KSamplerAdvanced_add_noise },
-          "Comfy.Custom$5Impact$7Pack/Enum_UnsamplerDetailerHookProvider_normalize": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_UnsamplerDetailerHookProvider_normalize", $Value: Comfy.Union.Enum_KSamplerAdvanced_add_noise },
-          "Comfy.Base/Enum_LatentRotate_rotation": { $Name: "Comfy.Base/Enum_LatentRotate_rotation", $Value: Comfy.Union.Enum_LatentRotate_rotation },
-          "Comfy.Base/Enum_LatentFlip_flip_method": { $Name: "Comfy.Base/Enum_LatentFlip_flip_method", $Value: Comfy.Union.Enum_LatentFlip_flip_method },
-          "Comfy.Base/Enum_LoraLoader_lora_name": { $Name: "Comfy.Base/Enum_LoraLoader_lora_name", $Value: Comfy.Union.Enum_LoraLoader_lora_name },
-          "Comfy.Base/Enum_CLIPLoader_clip_name": { $Name: "Comfy.Base/Enum_CLIPLoader_clip_name", $Value: Comfy.Union.Enum_LoraLoader_lora_name },
-          "Comfy.Base/Enum_UNETLoader_unet_name": { $Name: "Comfy.Base/Enum_UNETLoader_unet_name", $Value: Comfy.Union.Enum_LoraLoader_lora_name },
-          "Comfy.Base/Enum_DualCLIPLoader_clip_name1": { $Name: "Comfy.Base/Enum_DualCLIPLoader_clip_name1", $Value: Comfy.Union.Enum_LoraLoader_lora_name },
-          "Comfy.Base/Enum_DualCLIPLoader_clip_name2": { $Name: "Comfy.Base/Enum_DualCLIPLoader_clip_name2", $Value: Comfy.Union.Enum_LoraLoader_lora_name },
-          "Comfy.Base/Enum_ControlNetLoader_control_net_name": { $Name: "Comfy.Base/Enum_ControlNetLoader_control_net_name", $Value: Comfy.Union.Enum_LoraLoader_lora_name },
-          "Comfy.Base/Enum_DiffControlNetLoader_control_net_name": { $Name: "Comfy.Base/Enum_DiffControlNetLoader_control_net_name", $Value: Comfy.Union.Enum_LoraLoader_lora_name },
-          "Comfy.Base/Enum_StyleModelLoader_style_model_name": { $Name: "Comfy.Base/Enum_StyleModelLoader_style_model_name", $Value: Comfy.Union.Enum_LoraLoader_lora_name },
-          "Comfy.Base/Enum_CLIPVisionLoader_clip_name": { $Name: "Comfy.Base/Enum_CLIPVisionLoader_clip_name", $Value: Comfy.Union.Enum_LoraLoader_lora_name },
-          "Comfy.Base/Enum_GLIGENLoader_gligen_name": { $Name: "Comfy.Base/Enum_GLIGENLoader_gligen_name", $Value: Comfy.Union.Enum_LoraLoader_lora_name },
-          "Comfy.Base/Enum_DiffusersLoader_model_path": { $Name: "Comfy.Base/Enum_DiffusersLoader_model_path", $Value: Comfy.Union.Enum_LoraLoader_lora_name },
-          "Comfy.Base/Enum_LoadLatent_latent": { $Name: "Comfy.Base/Enum_LoadLatent_latent", $Value: Comfy.Union.Enum_LoraLoader_lora_name },
-          "Comfy.Base/Enum_LoraLoaderModelOnly_lora_name": { $Name: "Comfy.Base/Enum_LoraLoaderModelOnly_lora_name", $Value: Comfy.Union.Enum_LoraLoader_lora_name },
-          "Comfy.Extras$5hypernetwork/Enum_HypernetworkLoader_hypernetwork_name": { $Name: "Comfy.Extras$5hypernetwork/Enum_HypernetworkLoader_hypernetwork_name", $Value: Comfy.Union.Enum_LoraLoader_lora_name },
-          "Comfy.Extras$5photomaker/Enum_PhotoMakerLoader_photomaker_model_name": { $Name: "Comfy.Extras$5photomaker/Enum_PhotoMakerLoader_photomaker_model_name", $Value: Comfy.Union.Enum_LoraLoader_lora_name },
-          "Comfy.Extras$5audio/Enum_LoadAudio_audio": { $Name: "Comfy.Extras$5audio/Enum_LoadAudio_audio", $Value: Comfy.Union.Enum_LoraLoader_lora_name },
-          "Comfy.Extras$5sd3/Enum_TripleCLIPLoader_clip_name1": { $Name: "Comfy.Extras$5sd3/Enum_TripleCLIPLoader_clip_name1", $Value: Comfy.Union.Enum_LoraLoader_lora_name },
-          "Comfy.Extras$5sd3/Enum_TripleCLIPLoader_clip_name2": { $Name: "Comfy.Extras$5sd3/Enum_TripleCLIPLoader_clip_name2", $Value: Comfy.Union.Enum_LoraLoader_lora_name },
-          "Comfy.Extras$5sd3/Enum_TripleCLIPLoader_clip_name3": { $Name: "Comfy.Extras$5sd3/Enum_TripleCLIPLoader_clip_name3", $Value: Comfy.Union.Enum_LoraLoader_lora_name },
-          "Comfy.Custom$5Impact$7Pack/Enum_ONNXDetectorProvider_model_name": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_ONNXDetectorProvider_model_name", $Value: Comfy.Union.Enum_LoraLoader_lora_name },
-          "Comfy.Custom$5Impact$7Pack/Enum_LatentReceiver_latent": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_LatentReceiver_latent", $Value: Comfy.Union.Enum_LoraLoader_lora_name },
-          "Comfy.Base/Enum_CLIPLoader_type": { $Name: "Comfy.Base/Enum_CLIPLoader_type", $Value: Comfy.Union.Enum_CLIPLoader_type },
-          "Comfy.Base/Enum_UNETLoader_weight_dtype": { $Name: "Comfy.Base/Enum_UNETLoader_weight_dtype", $Value: Comfy.Union.Enum_UNETLoader_weight_dtype },
-          "Comfy.Base/Enum_DualCLIPLoader_type": { $Name: "Comfy.Base/Enum_DualCLIPLoader_type", $Value: Comfy.Union.Enum_DualCLIPLoader_type },
-          "Comfy.Base/Enum_CheckpointLoader_config_name": { $Name: "Comfy.Base/Enum_CheckpointLoader_config_name", $Value: Comfy.Union.Enum_CheckpointLoader_config_name },
-          "Comfy.Extras$5latent/Enum_LatentBatchSeedBehavior_seed_behavior": { $Name: "Comfy.Extras$5latent/Enum_LatentBatchSeedBehavior_seed_behavior", $Value: Comfy.Union.Enum_LatentBatchSeedBehavior_seed_behavior },
-          "Comfy.Extras$5upscale_model/Enum_UpscaleModelLoader_model_name": { $Name: "Comfy.Extras$5upscale_model/Enum_UpscaleModelLoader_model_name", $Value: Comfy.Union.Enum_UpscaleModelLoader_model_name },
-          "Comfy.Extras$5post_processing/Enum_ImageBlend_blend_mode": { $Name: "Comfy.Extras$5post_processing/Enum_ImageBlend_blend_mode", $Value: Comfy.Union.Enum_ImageBlend_blend_mode },
-          "Comfy.Extras$5post_processing/Enum_ImageQuantize_dither": { $Name: "Comfy.Extras$5post_processing/Enum_ImageQuantize_dither", $Value: Comfy.Union.Enum_ImageQuantize_dither },
-          "Comfy.Extras$5mask/Enum_MaskComposite_operation": { $Name: "Comfy.Extras$5mask/Enum_MaskComposite_operation", $Value: Comfy.Union.Enum_MaskComposite_operation },
-          "Comfy.Extras$5compositing/Enum_PorterDuffImageComposite_mode": { $Name: "Comfy.Extras$5compositing/Enum_PorterDuffImageComposite_mode", $Value: Comfy.Union.Enum_PorterDuffImageComposite_mode },
-          "Comfy.Extras$5custom_sampler/Enum_SamplerDPMPP$_3M$_SDE_noise_device": { $Name: "Comfy.Extras$5custom_sampler/Enum_SamplerDPMPP$_3M$_SDE_noise_device", $Value: Comfy.Union.Enum_SamplerDPMPP$_3M$_SDE_noise_device },
-          "Comfy.Extras$5custom_sampler/Enum_SamplerDPMPP$_2M$_SDE_noise_device": { $Name: "Comfy.Extras$5custom_sampler/Enum_SamplerDPMPP$_2M$_SDE_noise_device", $Value: Comfy.Union.Enum_SamplerDPMPP$_3M$_SDE_noise_device },
-          "Comfy.Extras$5custom_sampler/Enum_SamplerDPMPP$_SDE_noise_device": { $Name: "Comfy.Extras$5custom_sampler/Enum_SamplerDPMPP$_SDE_noise_device", $Value: Comfy.Union.Enum_SamplerDPMPP$_3M$_SDE_noise_device },
-          "Comfy.Extras$5custom_sampler/Enum_SamplerDPMPP$_2M$_SDE_solver_type": { $Name: "Comfy.Extras$5custom_sampler/Enum_SamplerDPMPP$_2M$_SDE_solver_type", $Value: Comfy.Union.Enum_SamplerDPMPP$_2M$_SDE_solver_type },
-          "Comfy.Extras$5model_advanced/Enum_ModelSamplingDiscrete_sampling": { $Name: "Comfy.Extras$5model_advanced/Enum_ModelSamplingDiscrete_sampling", $Value: Comfy.Union.Enum_ModelSamplingDiscrete_sampling },
-          "Comfy.Extras$5model_advanced/Enum_ModelSamplingContinuousEDM_sampling": { $Name: "Comfy.Extras$5model_advanced/Enum_ModelSamplingContinuousEDM_sampling", $Value: Comfy.Union.Enum_ModelSamplingContinuousEDM_sampling },
-          "Comfy.Extras$5model_advanced/Enum_ModelSamplingContinuousV_sampling": { $Name: "Comfy.Extras$5model_advanced/Enum_ModelSamplingContinuousV_sampling", $Value: Comfy.Union.Enum_ModelSamplingContinuousV_sampling },
-          "Comfy.Extras$5images/Enum_SaveAnimatedWEBP_method": { $Name: "Comfy.Extras$5images/Enum_SaveAnimatedWEBP_method", $Value: Comfy.Union.Enum_SaveAnimatedWEBP_method },
-          "Comfy.Extras$5morphology/Enum_Morphology_operation": { $Name: "Comfy.Extras$5morphology/Enum_Morphology_operation", $Value: Comfy.Union.Enum_Morphology_operation },
-          "Comfy.Extras$5align_your_steps/Enum_AlignYourStepsScheduler_model_type": { $Name: "Comfy.Extras$5align_your_steps/Enum_AlignYourStepsScheduler_model_type", $Value: Comfy.Union.Enum_AlignYourStepsScheduler_model_type },
-          "Comfy.Extras$5advanced_samplers/Enum_SamplerEulerCFGpp_version": { $Name: "Comfy.Extras$5advanced_samplers/Enum_SamplerEulerCFGpp_version", $Value: Comfy.Union.Enum_SamplerEulerCFGpp_version },
-          "Comfy.Extras$5sd3/Enum_CLIPTextEncodeSD3_empty_padding": { $Name: "Comfy.Extras$5sd3/Enum_CLIPTextEncodeSD3_empty_padding", $Value: Comfy.Union.Enum_CLIPTextEncodeSD3_empty_padding },
-          "Comfy.Extras$5controlnet/Enum_SetUnionControlNetType_type": { $Name: "Comfy.Extras$5controlnet/Enum_SetUnionControlNetType_type", $Value: Comfy.Union.Enum_SetUnionControlNetType_type },
-          "Comfy.Extras$5lora_extract/Enum_LoraSave_lora_type": { $Name: "Comfy.Extras$5lora_extract/Enum_LoraSave_lora_type", $Value: Comfy.Union.Enum_LoraSave_lora_type },
-          "Comfy.Extras$5torch_compile/Enum_TorchCompileModel_backend": { $Name: "Comfy.Extras$5torch_compile/Enum_TorchCompileModel_backend", $Value: Comfy.Union.Enum_TorchCompileModel_backend },
-          "Comfy.Custom$5Impact$7Pack/Enum_SAMLoader_model_name": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_SAMLoader_model_name", $Value: Comfy.Union.Enum_SAMLoader_model_name },
-          "Comfy.Custom$5Impact$7Pack/Enum_SAMLoader_device_mode": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_SAMLoader_device_mode", $Value: Comfy.Union.Enum_SAMLoader_device_mode },
-          "Comfy.Custom$5Impact$7Pack/Enum_ImpactHFTransformersClassifierProvider_device_mode": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_ImpactHFTransformersClassifierProvider_device_mode", $Value: Comfy.Union.Enum_SAMLoader_device_mode },
-          "Comfy.Custom$5Impact$7Pack/Enum_DetailerForEach_scheduler": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_DetailerForEach_scheduler", $Value: Comfy.Union.Enum_DetailerForEach_scheduler },
-          "Comfy.Custom$5Impact$7Pack/Enum_DetailerForEachDebug_scheduler": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_DetailerForEachDebug_scheduler", $Value: Comfy.Union.Enum_DetailerForEach_scheduler },
-          "Comfy.Custom$5Impact$7Pack/Enum_DetailerForEachPipe_scheduler": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_DetailerForEachPipe_scheduler", $Value: Comfy.Union.Enum_DetailerForEach_scheduler },
-          "Comfy.Custom$5Impact$7Pack/Enum_DetailerForEachDebugPipe_scheduler": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_DetailerForEachDebugPipe_scheduler", $Value: Comfy.Union.Enum_DetailerForEach_scheduler },
-          "Comfy.Custom$5Impact$7Pack/Enum_DetailerForEachPipeForAnimateDiff_scheduler": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_DetailerForEachPipeForAnimateDiff_scheduler", $Value: Comfy.Union.Enum_DetailerForEach_scheduler },
-          "Comfy.Custom$5Impact$7Pack/Enum_FaceDetailer_scheduler": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_FaceDetailer_scheduler", $Value: Comfy.Union.Enum_DetailerForEach_scheduler },
-          "Comfy.Custom$5Impact$7Pack/Enum_FaceDetailerPipe_scheduler": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_FaceDetailerPipe_scheduler", $Value: Comfy.Union.Enum_DetailerForEach_scheduler },
-          "Comfy.Custom$5Impact$7Pack/Enum_MaskDetailerPipe_scheduler": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_MaskDetailerPipe_scheduler", $Value: Comfy.Union.Enum_DetailerForEach_scheduler },
-          "Comfy.Custom$5Impact$7Pack/Enum_PixelKSampleUpscalerProvider_scheduler": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_PixelKSampleUpscalerProvider_scheduler", $Value: Comfy.Union.Enum_DetailerForEach_scheduler },
-          "Comfy.Custom$5Impact$7Pack/Enum_PixelKSampleUpscalerProviderPipe_scheduler": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_PixelKSampleUpscalerProviderPipe_scheduler", $Value: Comfy.Union.Enum_DetailerForEach_scheduler },
-          "Comfy.Custom$5Impact$7Pack/Enum_KSamplerProvider_scheduler": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_KSamplerProvider_scheduler", $Value: Comfy.Union.Enum_DetailerForEach_scheduler },
-          "Comfy.Custom$5Impact$7Pack/Enum_KSamplerAdvancedProvider_scheduler": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_KSamplerAdvancedProvider_scheduler", $Value: Comfy.Union.Enum_DetailerForEach_scheduler },
-          "Comfy.Custom$5Impact$7Pack/Enum_SEGSUpscaler_scheduler": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_SEGSUpscaler_scheduler", $Value: Comfy.Union.Enum_DetailerForEach_scheduler },
-          "Comfy.Custom$5Impact$7Pack/Enum_SEGSUpscalerPipe_scheduler": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_SEGSUpscalerPipe_scheduler", $Value: Comfy.Union.Enum_DetailerForEach_scheduler },
-          "Comfy.Custom$5Impact$7Pack/Enum_SEGSDetailer_scheduler": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_SEGSDetailer_scheduler", $Value: Comfy.Union.Enum_DetailerForEach_scheduler },
-          "Comfy.Custom$5Impact$7Pack/Enum_SEGSDetailerForAnimateDiff_scheduler": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_SEGSDetailerForAnimateDiff_scheduler", $Value: Comfy.Union.Enum_DetailerForEach_scheduler },
-          "Comfy.Custom$5Impact$7Pack/Enum_ImpactKSamplerBasicPipe_scheduler": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_ImpactKSamplerBasicPipe_scheduler", $Value: Comfy.Union.Enum_DetailerForEach_scheduler },
-          "Comfy.Custom$5Impact$7Pack/Enum_ImpactKSamplerAdvancedBasicPipe_scheduler": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_ImpactKSamplerAdvancedBasicPipe_scheduler", $Value: Comfy.Union.Enum_DetailerForEach_scheduler },
-          "Comfy.Custom$5Impact$7Pack/Enum_ImpactSchedulerAdapter_scheduler_out": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_ImpactSchedulerAdapter_scheduler_out", $Value: Comfy.Union.Enum_DetailerForEach_scheduler },
-          "Comfy.Custom$5Impact$7Pack/Enum_SAMDetectorCombined_detection_hint": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_SAMDetectorCombined_detection_hint", $Value: Comfy.Union.Enum_SAMDetectorCombined_detection_hint },
-          "Comfy.Custom$5Impact$7Pack/Enum_SAMDetectorSegmented_detection_hint": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_SAMDetectorSegmented_detection_hint", $Value: Comfy.Union.Enum_SAMDetectorCombined_detection_hint },
-          "Comfy.Custom$5Impact$7Pack/Enum_FaceDetailer_sam_detection_hint": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_FaceDetailer_sam_detection_hint", $Value: Comfy.Union.Enum_SAMDetectorCombined_detection_hint },
-          "Comfy.Custom$5Impact$7Pack/Enum_FaceDetailerPipe_sam_detection_hint": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_FaceDetailerPipe_sam_detection_hint", $Value: Comfy.Union.Enum_SAMDetectorCombined_detection_hint },
-          "Comfy.Custom$5Impact$7Pack/Enum_SAMDetectorCombined_mask_hint_use_negative": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_SAMDetectorCombined_mask_hint_use_negative", $Value: Comfy.Union.Enum_SAMDetectorCombined_mask_hint_use_negative },
-          "Comfy.Custom$5Impact$7Pack/Enum_SAMDetectorSegmented_mask_hint_use_negative": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_SAMDetectorSegmented_mask_hint_use_negative", $Value: Comfy.Union.Enum_SAMDetectorCombined_mask_hint_use_negative },
-          "Comfy.Custom$5Impact$7Pack/Enum_FaceDetailer_sam_mask_hint_use_negative": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_FaceDetailer_sam_mask_hint_use_negative", $Value: Comfy.Union.Enum_SAMDetectorCombined_mask_hint_use_negative },
-          "Comfy.Custom$5Impact$7Pack/Enum_FaceDetailerPipe_sam_mask_hint_use_negative": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_FaceDetailerPipe_sam_mask_hint_use_negative", $Value: Comfy.Union.Enum_SAMDetectorCombined_mask_hint_use_negative },
-          "Comfy.Custom$5Impact$7Pack/Enum_ToDetailerPipe_Select$_to$_add$_LoRA": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_ToDetailerPipe_Select$_to$_add$_LoRA", $Value: Comfy.Union.Enum_ToDetailerPipe_Select$_to$_add$_LoRA },
-          "Comfy.Custom$5Impact$7Pack/Enum_ToDetailerPipeSDXL_Select$_to$_add$_LoRA": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_ToDetailerPipeSDXL_Select$_to$_add$_LoRA", $Value: Comfy.Union.Enum_ToDetailerPipe_Select$_to$_add$_LoRA },
-          "Comfy.Custom$5Impact$7Pack/Enum_BasicPipeToDetailerPipe_Select$_to$_add$_LoRA": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_BasicPipeToDetailerPipe_Select$_to$_add$_LoRA", $Value: Comfy.Union.Enum_ToDetailerPipe_Select$_to$_add$_LoRA },
-          "Comfy.Custom$5Impact$7Pack/Enum_BasicPipeToDetailerPipeSDXL_Select$_to$_add$_LoRA": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_BasicPipeToDetailerPipeSDXL_Select$_to$_add$_LoRA", $Value: Comfy.Union.Enum_ToDetailerPipe_Select$_to$_add$_LoRA },
-          "Comfy.Custom$5Impact$7Pack/Enum_EditDetailerPipe_Select$_to$_add$_LoRA": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_EditDetailerPipe_Select$_to$_add$_LoRA", $Value: Comfy.Union.Enum_ToDetailerPipe_Select$_to$_add$_LoRA },
-          "Comfy.Custom$5Impact$7Pack/Enum_EditDetailerPipeSDXL_Select$_to$_add$_LoRA": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_EditDetailerPipeSDXL_Select$_to$_add$_LoRA", $Value: Comfy.Union.Enum_ToDetailerPipe_Select$_to$_add$_LoRA },
-          "Comfy.Custom$5Impact$7Pack/Enum_ImpactWildcardEncode_Select$_to$_add$_LoRA": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_ImpactWildcardEncode_Select$_to$_add$_LoRA", $Value: Comfy.Union.Enum_ToDetailerPipe_Select$_to$_add$_LoRA },
-          "Comfy.Custom$5Impact$7Pack/Enum_ToDetailerPipe_Select$_to$_add$_Wildcard": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_ToDetailerPipe_Select$_to$_add$_Wildcard", $Value: Comfy.Union.Enum_ToDetailerPipe_Select$_to$_add$_Wildcard },
-          "Comfy.Custom$5Impact$7Pack/Enum_ToDetailerPipeSDXL_Select$_to$_add$_Wildcard": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_ToDetailerPipeSDXL_Select$_to$_add$_Wildcard", $Value: Comfy.Union.Enum_ToDetailerPipe_Select$_to$_add$_Wildcard },
-          "Comfy.Custom$5Impact$7Pack/Enum_BasicPipeToDetailerPipe_Select$_to$_add$_Wildcard": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_BasicPipeToDetailerPipe_Select$_to$_add$_Wildcard", $Value: Comfy.Union.Enum_ToDetailerPipe_Select$_to$_add$_Wildcard },
-          "Comfy.Custom$5Impact$7Pack/Enum_BasicPipeToDetailerPipeSDXL_Select$_to$_add$_Wildcard": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_BasicPipeToDetailerPipeSDXL_Select$_to$_add$_Wildcard", $Value: Comfy.Union.Enum_ToDetailerPipe_Select$_to$_add$_Wildcard },
-          "Comfy.Custom$5Impact$7Pack/Enum_EditDetailerPipe_Select$_to$_add$_Wildcard": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_EditDetailerPipe_Select$_to$_add$_Wildcard", $Value: Comfy.Union.Enum_ToDetailerPipe_Select$_to$_add$_Wildcard },
-          "Comfy.Custom$5Impact$7Pack/Enum_EditDetailerPipeSDXL_Select$_to$_add$_Wildcard": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_EditDetailerPipeSDXL_Select$_to$_add$_Wildcard", $Value: Comfy.Union.Enum_ToDetailerPipe_Select$_to$_add$_Wildcard },
-          "Comfy.Custom$5Impact$7Pack/Enum_ImpactWildcardProcessor_Select$_to$_add$_Wildcard": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_ImpactWildcardProcessor_Select$_to$_add$_Wildcard", $Value: Comfy.Union.Enum_ToDetailerPipe_Select$_to$_add$_Wildcard },
-          "Comfy.Custom$5Impact$7Pack/Enum_ImpactWildcardEncode_Select$_to$_add$_Wildcard": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_ImpactWildcardEncode_Select$_to$_add$_Wildcard", $Value: Comfy.Union.Enum_ToDetailerPipe_Select$_to$_add$_Wildcard },
-          "Comfy.Custom$5Impact$7Pack/Enum_LatentPixelScale_scale_method": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_LatentPixelScale_scale_method", $Value: Comfy.Union.Enum_LatentPixelScale_scale_method },
-          "Comfy.Custom$5Impact$7Pack/Enum_PixelKSampleUpscalerProvider_scale_method": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_PixelKSampleUpscalerProvider_scale_method", $Value: Comfy.Union.Enum_LatentPixelScale_scale_method },
-          "Comfy.Custom$5Impact$7Pack/Enum_PixelKSampleUpscalerProviderPipe_scale_method": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_PixelKSampleUpscalerProviderPipe_scale_method", $Value: Comfy.Union.Enum_LatentPixelScale_scale_method },
-          "Comfy.Custom$5Impact$7Pack/Enum_PixelTiledKSampleUpscalerProvider_scale_method": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_PixelTiledKSampleUpscalerProvider_scale_method", $Value: Comfy.Union.Enum_LatentPixelScale_scale_method },
-          "Comfy.Custom$5Impact$7Pack/Enum_PixelTiledKSampleUpscalerProviderPipe_scale_method": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_PixelTiledKSampleUpscalerProviderPipe_scale_method", $Value: Comfy.Union.Enum_LatentPixelScale_scale_method },
-          "Comfy.Custom$5Impact$7Pack/Enum_TwoSamplersForMaskUpscalerProvider_scale_method": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_TwoSamplersForMaskUpscalerProvider_scale_method", $Value: Comfy.Union.Enum_LatentPixelScale_scale_method },
-          "Comfy.Custom$5Impact$7Pack/Enum_TwoSamplersForMaskUpscalerProviderPipe_scale_method": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_TwoSamplersForMaskUpscalerProviderPipe_scale_method", $Value: Comfy.Union.Enum_LatentPixelScale_scale_method },
-          "Comfy.Custom$5Impact$7Pack/Enum_IterativeLatentUpscale_step_mode": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_IterativeLatentUpscale_step_mode", $Value: Comfy.Union.Enum_IterativeLatentUpscale_step_mode },
-          "Comfy.Custom$5Impact$7Pack/Enum_IterativeImageUpscale_step_mode": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_IterativeImageUpscale_step_mode", $Value: Comfy.Union.Enum_IterativeLatentUpscale_step_mode },
-          "Comfy.Custom$5Impact$7Pack/Enum_PixelTiledKSampleUpscalerProvider_tiling_strategy": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_PixelTiledKSampleUpscalerProvider_tiling_strategy", $Value: Comfy.Union.Enum_PixelTiledKSampleUpscalerProvider_tiling_strategy },
-          "Comfy.Custom$5Impact$7Pack/Enum_PixelTiledKSampleUpscalerProviderPipe_tiling_strategy": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_PixelTiledKSampleUpscalerProviderPipe_tiling_strategy", $Value: Comfy.Union.Enum_PixelTiledKSampleUpscalerProvider_tiling_strategy },
-          "Comfy.Custom$5Impact$7Pack/Enum_TiledKSamplerProvider_tiling_strategy": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_TiledKSamplerProvider_tiling_strategy", $Value: Comfy.Union.Enum_PixelTiledKSampleUpscalerProvider_tiling_strategy },
-          "Comfy.Custom$5Impact$7Pack/Enum_TwoSamplersForMaskUpscalerProvider_full_sample_schedule": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_TwoSamplersForMaskUpscalerProvider_full_sample_schedule", $Value: Comfy.Union.Enum_TwoSamplersForMaskUpscalerProvider_full_sample_schedule },
-          "Comfy.Custom$5Impact$7Pack/Enum_TwoSamplersForMaskUpscalerProviderPipe_full_sample_schedule": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_TwoSamplersForMaskUpscalerProviderPipe_full_sample_schedule", $Value: Comfy.Union.Enum_TwoSamplersForMaskUpscalerProvider_full_sample_schedule },
-          "Comfy.Custom$5Impact$7Pack/Enum_DenoiseScheduleHookProvider_schedule_for_iteration": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_DenoiseScheduleHookProvider_schedule_for_iteration", $Value: Comfy.Union.Enum_DenoiseScheduleHookProvider_schedule_for_iteration },
-          "Comfy.Custom$5Impact$7Pack/Enum_StepsScheduleHookProvider_schedule_for_iteration": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_StepsScheduleHookProvider_schedule_for_iteration", $Value: Comfy.Union.Enum_DenoiseScheduleHookProvider_schedule_for_iteration },
-          "Comfy.Custom$5Impact$7Pack/Enum_CfgScheduleHookProvider_schedule_for_iteration": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_CfgScheduleHookProvider_schedule_for_iteration", $Value: Comfy.Union.Enum_DenoiseScheduleHookProvider_schedule_for_iteration },
-          "Comfy.Custom$5Impact$7Pack/Enum_NoiseInjectionHookProvider_schedule_for_iteration": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_NoiseInjectionHookProvider_schedule_for_iteration", $Value: Comfy.Union.Enum_DenoiseScheduleHookProvider_schedule_for_iteration },
-          "Comfy.Custom$5Impact$7Pack/Enum_UnsamplerHookProvider_schedule_for_iteration": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_UnsamplerHookProvider_schedule_for_iteration", $Value: Comfy.Union.Enum_DenoiseScheduleHookProvider_schedule_for_iteration },
-          "Comfy.Custom$5Impact$7Pack/Enum_DenoiseSchedulerDetailerHookProvider_schedule_for_cycle": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_DenoiseSchedulerDetailerHookProvider_schedule_for_cycle", $Value: Comfy.Union.Enum_DenoiseScheduleHookProvider_schedule_for_iteration },
-          "Comfy.Custom$5Impact$7Pack/Enum_NoiseInjectionHookProvider_source": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_NoiseInjectionHookProvider_source", $Value: Comfy.Union.Enum_NoiseInjectionHookProvider_source },
-          "Comfy.Custom$5Impact$7Pack/Enum_NoiseInjectionDetailerHookProvider_source": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_NoiseInjectionDetailerHookProvider_source", $Value: Comfy.Union.Enum_NoiseInjectionHookProvider_source },
-          "Comfy.Custom$5Impact$7Pack/Enum_CoreMLDetailerHookProvider_mode": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_CoreMLDetailerHookProvider_mode", $Value: Comfy.Union.Enum_CoreMLDetailerHookProvider_mode },
-          "Comfy.Custom$5Impact$7Pack/Enum_NoiseInjectionDetailerHookProvider_schedule_for_cycle": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_NoiseInjectionDetailerHookProvider_schedule_for_cycle", $Value: Comfy.Union.Enum_NoiseInjectionDetailerHookProvider_schedule_for_cycle },
-          "Comfy.Custom$5Impact$7Pack/Enum_UnsamplerDetailerHookProvider_schedule_for_cycle": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_UnsamplerDetailerHookProvider_schedule_for_cycle", $Value: Comfy.Union.Enum_NoiseInjectionDetailerHookProvider_schedule_for_cycle },
-          "Comfy.Custom$5Impact$7Pack/Enum_SEGSOrderedFilterDetailerHookProvider_target": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_SEGSOrderedFilterDetailerHookProvider_target", $Value: Comfy.Union.Enum_SEGSOrderedFilterDetailerHookProvider_target },
-          "Comfy.Custom$5Impact$7Pack/Enum_SEGSRangeFilterDetailerHookProvider_target": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_SEGSRangeFilterDetailerHookProvider_target", $Value: Comfy.Union.Enum_SEGSRangeFilterDetailerHookProvider_target },
-          "Comfy.Custom$5Impact$7Pack/Enum_SEGSLabelFilterDetailerHookProvider_preset": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_SEGSLabelFilterDetailerHookProvider_preset", $Value: Comfy.Union.Enum_SEGSLabelFilterDetailerHookProvider_preset },
-          "Comfy.Custom$5Impact$7Pack/Enum_ImpactSEGSLabelFilter_preset": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_ImpactSEGSLabelFilter_preset", $Value: Comfy.Union.Enum_SEGSLabelFilterDetailerHookProvider_preset },
-          "Comfy.Custom$5Impact$7Pack/Enum_ImpactSimpleDetectorSEGS$_for$_AD_masking_mode": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_ImpactSimpleDetectorSEGS$_for$_AD_masking_mode", $Value: Comfy.Union.Enum_ImpactSimpleDetectorSEGS$_for$_AD_masking_mode },
-          "Comfy.Custom$5Impact$7Pack/Enum_ImpactSimpleDetectorSEGS$_for$_AD_segs_pivot": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_ImpactSimpleDetectorSEGS$_for$_AD_segs_pivot", $Value: Comfy.Union.Enum_ImpactSimpleDetectorSEGS$_for$_AD_segs_pivot },
-          "Comfy.Custom$5Impact$7Pack/Enum_ImpactIPAdapterApplySEGS_weight_type": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_ImpactIPAdapterApplySEGS_weight_type", $Value: Comfy.Union.Enum_ImpactIPAdapterApplySEGS_weight_type },
-          "Comfy.Custom$5Impact$7Pack/Enum_ImpactIPAdapterApplySEGS_combine_embeds": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_ImpactIPAdapterApplySEGS_combine_embeds", $Value: Comfy.Union.Enum_ImpactIPAdapterApplySEGS_combine_embeds },
-          "Comfy.Custom$5Impact$7Pack/Enum_PreviewBridge_restore_mask": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_PreviewBridge_restore_mask", $Value: Comfy.Union.Enum_PreviewBridge_restore_mask },
-          "Comfy.Custom$5Impact$7Pack/Enum_PreviewBridgeLatent_restore_mask": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_PreviewBridgeLatent_restore_mask", $Value: Comfy.Union.Enum_PreviewBridge_restore_mask },
-          "Comfy.Custom$5Impact$7Pack/Enum_PreviewBridgeLatent_preview_method": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_PreviewBridgeLatent_preview_method", $Value: Comfy.Union.Enum_PreviewBridgeLatent_preview_method },
-          "Comfy.Custom$5Impact$7Pack/Enum_LatentSender_preview_method": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_LatentSender_preview_method", $Value: Comfy.Union.Enum_LatentSender_preview_method },
-          "Comfy.Custom$5Impact$7Pack/Enum_SEGSUpscaler_resampling_method": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_SEGSUpscaler_resampling_method", $Value: Comfy.Union.Enum_SEGSUpscaler_resampling_method },
-          "Comfy.Custom$5Impact$7Pack/Enum_SEGSUpscalerPipe_resampling_method": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_SEGSUpscalerPipe_resampling_method", $Value: Comfy.Union.Enum_SEGSUpscaler_resampling_method },
-          "Comfy.Custom$5Impact$7Pack/Enum_SEGSUpscaler_supersample": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_SEGSUpscaler_supersample", $Value: Comfy.Union.Enum_SEGSUpscaler_supersample },
-          "Comfy.Custom$5Impact$7Pack/Enum_SEGSUpscalerPipe_supersample": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_SEGSUpscalerPipe_supersample", $Value: Comfy.Union.Enum_SEGSUpscaler_supersample },
-          "Comfy.Custom$5Impact$7Pack/Enum_ImpactMakeTileSEGS_irregular_mask_mode": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_ImpactMakeTileSEGS_irregular_mask_mode", $Value: Comfy.Union.Enum_ImpactMakeTileSEGS_irregular_mask_mode },
-          "Comfy.Custom$5Impact$7Pack/Enum_ReencodeLatent_tile_mode": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_ReencodeLatent_tile_mode", $Value: Comfy.Union.Enum_ReencodeLatent_tile_mode },
-          "Comfy.Custom$5Impact$7Pack/Enum_ReencodeLatentPipe_tile_mode": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_ReencodeLatentPipe_tile_mode", $Value: Comfy.Union.Enum_ReencodeLatent_tile_mode },
-          "Comfy.Custom$5Impact$7Pack/Enum_RegionalSampler_seed_2nd_mode": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_RegionalSampler_seed_2nd_mode", $Value: Comfy.Union.Enum_RegionalSampler_seed_2nd_mode },
-          "Comfy.Custom$5Impact$7Pack/Enum_RegionalSampler_additional_mode": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_RegionalSampler_additional_mode", $Value: Comfy.Union.Enum_RegionalSampler_additional_mode },
-          "Comfy.Custom$5Impact$7Pack/Enum_RegionalSamplerAdvanced_additional_mode": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_RegionalSamplerAdvanced_additional_mode", $Value: Comfy.Union.Enum_RegionalSampler_additional_mode },
-          "Comfy.Custom$5Impact$7Pack/Enum_RegionalSampler_additional_sampler": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_RegionalSampler_additional_sampler", $Value: Comfy.Union.Enum_RegionalSampler_additional_sampler },
-          "Comfy.Custom$5Impact$7Pack/Enum_RegionalSamplerAdvanced_additional_sampler": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_RegionalSamplerAdvanced_additional_sampler", $Value: Comfy.Union.Enum_RegionalSampler_additional_sampler },
-          "Comfy.Custom$5Impact$7Pack/Enum_RegionalPrompt_variation_method": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_RegionalPrompt_variation_method", $Value: Comfy.Union.Enum_RegionalPrompt_variation_method },
-          "Comfy.Custom$5Impact$7Pack/Enum_ImpactSEGSRangeFilter_target": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_ImpactSEGSRangeFilter_target", $Value: Comfy.Union.Enum_ImpactSEGSRangeFilter_target },
-          "Comfy.Custom$5Impact$7Pack/Enum_ImpactSEGSOrderedFilter_target": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_ImpactSEGSOrderedFilter_target", $Value: Comfy.Union.Enum_ImpactSEGSOrderedFilter_target },
-          "Comfy.Custom$5Impact$7Pack/Enum_ImpactCompare_cmp": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_ImpactCompare_cmp", $Value: Comfy.Union.Enum_ImpactCompare_cmp },
-          "Comfy.Custom$5Impact$7Pack/Enum_ImpactLogicalOperators_operator": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_ImpactLogicalOperators_operator", $Value: Comfy.Union.Enum_ImpactLogicalOperators_operator },
-          "Comfy.Custom$5Impact$7Pack/Enum_ImpactValueReceiver_typ": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_ImpactValueReceiver_typ", $Value: Comfy.Union.Enum_ImpactValueReceiver_typ },
-          "Comfy.Custom$5Impact$7Pack/Enum_ImpactControlBridge_behavior": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_ImpactControlBridge_behavior", $Value: Comfy.Union.Enum_ImpactControlBridge_behavior },
-          "Comfy.Custom$5Impact$7Pack/Enum_ImpactHFTransformersClassifierProvider_preset_repo_id": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_ImpactHFTransformersClassifierProvider_preset_repo_id", $Value: Comfy.Union.Enum_ImpactHFTransformersClassifierProvider_preset_repo_id },
-          "Comfy.Custom$5Impact$7Pack/Enum_ImpactSEGSClassify_preset_expr": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_ImpactSEGSClassify_preset_expr", $Value: Comfy.Union.Enum_ImpactSEGSClassify_preset_expr },
-          "Comfy.Custom$5Impact$7Pack/Enum_ImpactSchedulerAdapter_extra_scheduler": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_ImpactSchedulerAdapter_extra_scheduler", $Value: Comfy.Union.Enum_ImpactSchedulerAdapter_extra_scheduler },
-          "Comfy.Custom$5Impact$7Pack/Enum_UltralyticsDetectorProvider_model_name": { $Name: "Comfy.Custom$5Impact$7Pack/Enum_UltralyticsDetectorProvider_model_name", $Value: Comfy.Union.Enum_UltralyticsDetectorProvider_model_name },
+          "Comfy.Base.KSampler.input.sampler_name": { $Name: "Comfy.Base.KSampler.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
+          "Comfy.Base.KSamplerAdvanced.input.sampler_name": { $Name: "Comfy.Base.KSamplerAdvanced.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
+          "Comfy.Extra.custom_sampler.KSamplerSelect.input.sampler_name": { $Name: "Comfy.Extra.custom_sampler.KSamplerSelect.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
+          "Comfy.Custom.Impact_Pack.DetailerForEach.input.sampler_name": { $Name: "Comfy.Custom.Impact_Pack.DetailerForEach.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
+          "Comfy.Custom.Impact_Pack.DetailerForEachDebug.input.sampler_name": { $Name: "Comfy.Custom.Impact_Pack.DetailerForEachDebug.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
+          "Comfy.Custom.Impact_Pack.DetailerForEachPipe.input.sampler_name": { $Name: "Comfy.Custom.Impact_Pack.DetailerForEachPipe.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
+          "Comfy.Custom.Impact_Pack.DetailerForEachDebugPipe.input.sampler_name": { $Name: "Comfy.Custom.Impact_Pack.DetailerForEachDebugPipe.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
+          "Comfy.Custom.Impact_Pack.DetailerForEachPipeForAnimateDiff.input.sampler_name": { $Name: "Comfy.Custom.Impact_Pack.DetailerForEachPipeForAnimateDiff.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
+          "Comfy.Custom.Impact_Pack.FaceDetailer.input.sampler_name": { $Name: "Comfy.Custom.Impact_Pack.FaceDetailer.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
+          "Comfy.Custom.Impact_Pack.FaceDetailerPipe.input.sampler_name": { $Name: "Comfy.Custom.Impact_Pack.FaceDetailerPipe.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
+          "Comfy.Custom.Impact_Pack.MaskDetailerPipe.input.sampler_name": { $Name: "Comfy.Custom.Impact_Pack.MaskDetailerPipe.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
+          "Comfy.Custom.Impact_Pack.PixelKSampleUpscalerProvider.input.sampler_name": { $Name: "Comfy.Custom.Impact_Pack.PixelKSampleUpscalerProvider.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
+          "Comfy.Custom.Impact_Pack.PixelKSampleUpscalerProviderPipe.input.sampler_name": { $Name: "Comfy.Custom.Impact_Pack.PixelKSampleUpscalerProviderPipe.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
+          "Comfy.Custom.Impact_Pack.PixelTiledKSampleUpscalerProvider.input.sampler_name": { $Name: "Comfy.Custom.Impact_Pack.PixelTiledKSampleUpscalerProvider.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
+          "Comfy.Custom.Impact_Pack.PixelTiledKSampleUpscalerProviderPipe.input.sampler_name": { $Name: "Comfy.Custom.Impact_Pack.PixelTiledKSampleUpscalerProviderPipe.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
+          "Comfy.Custom.Impact_Pack.UnsamplerHookProvider.input.sampler_name": { $Name: "Comfy.Custom.Impact_Pack.UnsamplerHookProvider.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
+          "Comfy.Custom.Impact_Pack.UnsamplerDetailerHookProvider.input.sampler_name": { $Name: "Comfy.Custom.Impact_Pack.UnsamplerDetailerHookProvider.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
+          "Comfy.Custom.Impact_Pack.KSamplerProvider.input.sampler_name": { $Name: "Comfy.Custom.Impact_Pack.KSamplerProvider.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
+          "Comfy.Custom.Impact_Pack.TiledKSamplerProvider.input.sampler_name": { $Name: "Comfy.Custom.Impact_Pack.TiledKSamplerProvider.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
+          "Comfy.Custom.Impact_Pack.KSamplerAdvancedProvider.input.sampler_name": { $Name: "Comfy.Custom.Impact_Pack.KSamplerAdvancedProvider.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
+          "Comfy.Custom.Impact_Pack.SEGSUpscaler.input.sampler_name": { $Name: "Comfy.Custom.Impact_Pack.SEGSUpscaler.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
+          "Comfy.Custom.Impact_Pack.SEGSUpscalerPipe.input.sampler_name": { $Name: "Comfy.Custom.Impact_Pack.SEGSUpscalerPipe.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
+          "Comfy.Custom.Impact_Pack.SEGSDetailer.input.sampler_name": { $Name: "Comfy.Custom.Impact_Pack.SEGSDetailer.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
+          "Comfy.Custom.Impact_Pack.SEGSDetailerForAnimateDiff.input.sampler_name": { $Name: "Comfy.Custom.Impact_Pack.SEGSDetailerForAnimateDiff.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
+          "Comfy.Custom.Impact_Pack.ImpactKSamplerBasicPipe.input.sampler_name": { $Name: "Comfy.Custom.Impact_Pack.ImpactKSamplerBasicPipe.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
+          "Comfy.Custom.Impact_Pack.ImpactKSamplerAdvancedBasicPipe.input.sampler_name": { $Name: "Comfy.Custom.Impact_Pack.ImpactKSamplerAdvancedBasicPipe.input.sampler_name", $Value: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 },
+          "Comfy.Base.KSampler.input.scheduler": { $Name: "Comfy.Base.KSampler.input.scheduler", $Value: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325 },
+          "Comfy.Base.KSamplerAdvanced.input.scheduler": { $Name: "Comfy.Base.KSamplerAdvanced.input.scheduler", $Value: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325 },
+          "Comfy.Extra.custom_sampler.BasicScheduler.input.scheduler": { $Name: "Comfy.Extra.custom_sampler.BasicScheduler.input.scheduler", $Value: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325 },
+          "Comfy.Custom.Impact_Pack.PixelTiledKSampleUpscalerProvider.input.scheduler": { $Name: "Comfy.Custom.Impact_Pack.PixelTiledKSampleUpscalerProvider.input.scheduler", $Value: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325 },
+          "Comfy.Custom.Impact_Pack.PixelTiledKSampleUpscalerProviderPipe.input.scheduler": { $Name: "Comfy.Custom.Impact_Pack.PixelTiledKSampleUpscalerProviderPipe.input.scheduler", $Value: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325 },
+          "Comfy.Custom.Impact_Pack.UnsamplerHookProvider.input.scheduler": { $Name: "Comfy.Custom.Impact_Pack.UnsamplerHookProvider.input.scheduler", $Value: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325 },
+          "Comfy.Custom.Impact_Pack.UnsamplerDetailerHookProvider.input.scheduler": { $Name: "Comfy.Custom.Impact_Pack.UnsamplerDetailerHookProvider.input.scheduler", $Value: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325 },
+          "Comfy.Custom.Impact_Pack.TiledKSamplerProvider.input.scheduler": { $Name: "Comfy.Custom.Impact_Pack.TiledKSamplerProvider.input.scheduler", $Value: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325 },
+          "Comfy.Custom.Impact_Pack.ImpactSchedulerAdapter.input.scheduler": { $Name: "Comfy.Custom.Impact_Pack.ImpactSchedulerAdapter.input.scheduler", $Value: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325 },
+          "Comfy.Base.CheckpointLoaderSimple.input.ckpt_name": { $Name: "Comfy.Base.CheckpointLoaderSimple.input.ckpt_name", $Value: Comfy.Union.E_1f08f73a9a576ae570aa3d82ea94f2bcfc29a8fc },
+          "Comfy.Base.unCLIPCheckpointLoader.input.ckpt_name": { $Name: "Comfy.Base.unCLIPCheckpointLoader.input.ckpt_name", $Value: Comfy.Union.E_1f08f73a9a576ae570aa3d82ea94f2bcfc29a8fc },
+          "Comfy.Base.CheckpointLoader.input.ckpt_name": { $Name: "Comfy.Base.CheckpointLoader.input.ckpt_name", $Value: Comfy.Union.E_1f08f73a9a576ae570aa3d82ea94f2bcfc29a8fc },
+          "Comfy.Extra.video_model.ImageOnlyCheckpointLoader.input.ckpt_name": { $Name: "Comfy.Extra.video_model.ImageOnlyCheckpointLoader.input.ckpt_name", $Value: Comfy.Union.E_1f08f73a9a576ae570aa3d82ea94f2bcfc29a8fc },
+          "Comfy.Base.VAELoader.input.vae_name": { $Name: "Comfy.Base.VAELoader.input.vae_name", $Value: Comfy.Union.E_621a1d2d13812defa70c4b6ec953d17713bd232a },
+          "Comfy.Base.LatentUpscale.input.upscale_method": { $Name: "Comfy.Base.LatentUpscale.input.upscale_method", $Value: Comfy.Union.E_6e6cbf6c48411ad480e010b0c9d2434b41af430d },
+          "Comfy.Base.LatentUpscaleBy.input.upscale_method": { $Name: "Comfy.Base.LatentUpscaleBy.input.upscale_method", $Value: Comfy.Union.E_6e6cbf6c48411ad480e010b0c9d2434b41af430d },
+          "Comfy.Extra.model_downscale.PatchModelAddDownscale.input.downscale_method": { $Name: "Comfy.Extra.model_downscale.PatchModelAddDownscale.input.downscale_method", $Value: Comfy.Union.E_6e6cbf6c48411ad480e010b0c9d2434b41af430d },
+          "Comfy.Extra.model_downscale.PatchModelAddDownscale.input.upscale_method": { $Name: "Comfy.Extra.model_downscale.PatchModelAddDownscale.input.upscale_method", $Value: Comfy.Union.E_6e6cbf6c48411ad480e010b0c9d2434b41af430d },
+          "Comfy.Extra.advanced_samplers.SamplerLCMUpscale.input.upscale_method": { $Name: "Comfy.Extra.advanced_samplers.SamplerLCMUpscale.input.upscale_method", $Value: Comfy.Union.E_6e6cbf6c48411ad480e010b0c9d2434b41af430d },
+          "Comfy.Base.LatentUpscale.input.crop": { $Name: "Comfy.Base.LatentUpscale.input.crop", $Value: Comfy.Union.E_e2779c2a162ed54d5841127cc2968e8d50f5e431 },
+          "Comfy.Base.ImageScale.input.crop": { $Name: "Comfy.Base.ImageScale.input.crop", $Value: Comfy.Union.E_e2779c2a162ed54d5841127cc2968e8d50f5e431 },
+          "Comfy.Base.LoadImage.input.image": { $Name: "Comfy.Base.LoadImage.input.image", $Value: Comfy.Union.E_26ea5ad8c44c9551fea858fff18017427386b591 },
+          "Comfy.Base.LoadImageMask.input.image": { $Name: "Comfy.Base.LoadImageMask.input.image", $Value: Comfy.Union.E_26ea5ad8c44c9551fea858fff18017427386b591 },
+          "Comfy.Custom.Impact_Pack.ImageReceiver.input.image": { $Name: "Comfy.Custom.Impact_Pack.ImageReceiver.input.image", $Value: Comfy.Union.E_26ea5ad8c44c9551fea858fff18017427386b591 },
+          "Comfy.Base.LoadImageMask.input.channel": { $Name: "Comfy.Base.LoadImageMask.input.channel", $Value: Comfy.Union.E_19d5be39f1fd20a88fdbcb009a06c7df2b0ef998 },
+          "Comfy.Extra.mask.ImageToMask.input.channel": { $Name: "Comfy.Extra.mask.ImageToMask.input.channel", $Value: Comfy.Union.E_19d5be39f1fd20a88fdbcb009a06c7df2b0ef998 },
+          "Comfy.Base.ImageScale.input.upscale_method": { $Name: "Comfy.Base.ImageScale.input.upscale_method", $Value: Comfy.Union.E_165b455eb22956fc9da6e1b76d49a4077f15d897 },
+          "Comfy.Base.ImageScaleBy.input.upscale_method": { $Name: "Comfy.Base.ImageScaleBy.input.upscale_method", $Value: Comfy.Union.E_165b455eb22956fc9da6e1b76d49a4077f15d897 },
+          "Comfy.Extra.post_processing.ImageScaleToTotalPixels.input.upscale_method": { $Name: "Comfy.Extra.post_processing.ImageScaleToTotalPixels.input.upscale_method", $Value: Comfy.Union.E_165b455eb22956fc9da6e1b76d49a4077f15d897 },
+          "Comfy.Base.ConditioningSetMask.input.set_cond_area": { $Name: "Comfy.Base.ConditioningSetMask.input.set_cond_area", $Value: Comfy.Union.E_046ed3ef4b2b9a9cfdb62e53a70fe767fb996451 },
+          "Comfy.Base.KSamplerAdvanced.input.add_noise": { $Name: "Comfy.Base.KSamplerAdvanced.input.add_noise", $Value: Comfy.Union.E_449b4cae3566dd9b97c417c352bb08e25b89431b },
+          "Comfy.Base.KSamplerAdvanced.input.return_with_leftover_noise": { $Name: "Comfy.Base.KSamplerAdvanced.input.return_with_leftover_noise", $Value: Comfy.Union.E_449b4cae3566dd9b97c417c352bb08e25b89431b },
+          "Comfy.Custom.Impact_Pack.UnsamplerHookProvider.input.normalize": { $Name: "Comfy.Custom.Impact_Pack.UnsamplerHookProvider.input.normalize", $Value: Comfy.Union.E_449b4cae3566dd9b97c417c352bb08e25b89431b },
+          "Comfy.Custom.Impact_Pack.UnsamplerDetailerHookProvider.input.normalize": { $Name: "Comfy.Custom.Impact_Pack.UnsamplerDetailerHookProvider.input.normalize", $Value: Comfy.Union.E_449b4cae3566dd9b97c417c352bb08e25b89431b },
+          "Comfy.Base.LatentRotate.input.rotation": { $Name: "Comfy.Base.LatentRotate.input.rotation", $Value: Comfy.Union.E_061551528c540e0171a9c88a94c7d5375aa31f8a },
+          "Comfy.Base.LatentFlip.input.flip_method": { $Name: "Comfy.Base.LatentFlip.input.flip_method", $Value: Comfy.Union.E_cdf7071acecb5016da941b6e718b82c97248a3e4 },
+          "Comfy.Base.LoraLoader.input.lora_name": { $Name: "Comfy.Base.LoraLoader.input.lora_name", $Value: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 },
+          "Comfy.Base.CLIPLoader.input.clip_name": { $Name: "Comfy.Base.CLIPLoader.input.clip_name", $Value: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 },
+          "Comfy.Base.UNETLoader.input.unet_name": { $Name: "Comfy.Base.UNETLoader.input.unet_name", $Value: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 },
+          "Comfy.Base.DualCLIPLoader.input.clip_name1": { $Name: "Comfy.Base.DualCLIPLoader.input.clip_name1", $Value: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 },
+          "Comfy.Base.DualCLIPLoader.input.clip_name2": { $Name: "Comfy.Base.DualCLIPLoader.input.clip_name2", $Value: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 },
+          "Comfy.Base.ControlNetLoader.input.control_net_name": { $Name: "Comfy.Base.ControlNetLoader.input.control_net_name", $Value: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 },
+          "Comfy.Base.DiffControlNetLoader.input.control_net_name": { $Name: "Comfy.Base.DiffControlNetLoader.input.control_net_name", $Value: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 },
+          "Comfy.Base.StyleModelLoader.input.style_model_name": { $Name: "Comfy.Base.StyleModelLoader.input.style_model_name", $Value: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 },
+          "Comfy.Base.CLIPVisionLoader.input.clip_name": { $Name: "Comfy.Base.CLIPVisionLoader.input.clip_name", $Value: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 },
+          "Comfy.Base.GLIGENLoader.input.gligen_name": { $Name: "Comfy.Base.GLIGENLoader.input.gligen_name", $Value: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 },
+          "Comfy.Base.DiffusersLoader.input.model_path": { $Name: "Comfy.Base.DiffusersLoader.input.model_path", $Value: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 },
+          "Comfy.Base.LoadLatent.input.latent": { $Name: "Comfy.Base.LoadLatent.input.latent", $Value: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 },
+          "Comfy.Base.LoraLoaderModelOnly.input.lora_name": { $Name: "Comfy.Base.LoraLoaderModelOnly.input.lora_name", $Value: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 },
+          "Comfy.Extra.hypernetwork.HypernetworkLoader.input.hypernetwork_name": { $Name: "Comfy.Extra.hypernetwork.HypernetworkLoader.input.hypernetwork_name", $Value: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 },
+          "Comfy.Extra.photomaker.PhotoMakerLoader.input.photomaker_model_name": { $Name: "Comfy.Extra.photomaker.PhotoMakerLoader.input.photomaker_model_name", $Value: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 },
+          "Comfy.Extra.audio.LoadAudio.input.audio": { $Name: "Comfy.Extra.audio.LoadAudio.input.audio", $Value: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 },
+          "Comfy.Extra.sd3.TripleCLIPLoader.input.clip_name1": { $Name: "Comfy.Extra.sd3.TripleCLIPLoader.input.clip_name1", $Value: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 },
+          "Comfy.Extra.sd3.TripleCLIPLoader.input.clip_name2": { $Name: "Comfy.Extra.sd3.TripleCLIPLoader.input.clip_name2", $Value: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 },
+          "Comfy.Extra.sd3.TripleCLIPLoader.input.clip_name3": { $Name: "Comfy.Extra.sd3.TripleCLIPLoader.input.clip_name3", $Value: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 },
+          "Comfy.Custom.Impact_Pack.ONNXDetectorProvider.input.model_name": { $Name: "Comfy.Custom.Impact_Pack.ONNXDetectorProvider.input.model_name", $Value: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 },
+          "Comfy.Custom.Impact_Pack.LatentReceiver.input.latent": { $Name: "Comfy.Custom.Impact_Pack.LatentReceiver.input.latent", $Value: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 },
+          "Comfy.Base.CLIPLoader.input.type": { $Name: "Comfy.Base.CLIPLoader.input.type", $Value: Comfy.Union.E_766fb79b4f3904a6716246cfb2a33b7b9e6a08c4 },
+          "Comfy.Base.UNETLoader.input.weight_dtype": { $Name: "Comfy.Base.UNETLoader.input.weight_dtype", $Value: Comfy.Union.E_21ba65fbb0df707c108b25356a3507e13f21ea58 },
+          "Comfy.Base.DualCLIPLoader.input.type": { $Name: "Comfy.Base.DualCLIPLoader.input.type", $Value: Comfy.Union.E_39292df8ce88fd66f0dacf6f9110cfa2594ca25c },
+          "Comfy.Base.CheckpointLoader.input.config_name": { $Name: "Comfy.Base.CheckpointLoader.input.config_name", $Value: Comfy.Union.E_a1972c9480c542a0e8ccafa03c2572ba5fc62160 },
+          "Comfy.Extra.latent.LatentBatchSeedBehavior.input.seed_behavior": { $Name: "Comfy.Extra.latent.LatentBatchSeedBehavior.input.seed_behavior", $Value: Comfy.Union.E_1d09df0c3ce1b4556d07af26e593d4033efc639b },
+          "Comfy.Extra.upscale_model.UpscaleModelLoader.input.model_name": { $Name: "Comfy.Extra.upscale_model.UpscaleModelLoader.input.model_name", $Value: Comfy.Union.E_2504d8563e078c3ed105667cbb6d0ff714d5798b },
+          "Comfy.Extra.post_processing.ImageBlend.input.blend_mode": { $Name: "Comfy.Extra.post_processing.ImageBlend.input.blend_mode", $Value: Comfy.Union.E_4ca09d2bc16d4174960bd60a103d4c0911361855 },
+          "Comfy.Extra.post_processing.ImageQuantize.input.dither": { $Name: "Comfy.Extra.post_processing.ImageQuantize.input.dither", $Value: Comfy.Union.E_7c2feaebcf0bbbcda0fe9f3c8cba1cf87002bc0e },
+          "Comfy.Extra.mask.MaskComposite.input.operation": { $Name: "Comfy.Extra.mask.MaskComposite.input.operation", $Value: Comfy.Union.E_88c0c90dbad3b41c3c4a4f8a89afad7b1c0db2e0 },
+          "Comfy.Extra.compositing.PorterDuffImageComposite.input.mode": { $Name: "Comfy.Extra.compositing.PorterDuffImageComposite.input.mode", $Value: Comfy.Union.E_d954b5ae44db00529f0fd0bfb816e25c12617df8 },
+          "Comfy.Extra.custom_sampler.SamplerDPMPP$_3M$_SDE.input.noise_device": { $Name: "Comfy.Extra.custom_sampler.SamplerDPMPP$_3M$_SDE.input.noise_device", $Value: Comfy.Union.E_928b7403128cb25513cafc463a76a922ba5d4bd0 },
+          "Comfy.Extra.custom_sampler.SamplerDPMPP$_2M$_SDE.input.noise_device": { $Name: "Comfy.Extra.custom_sampler.SamplerDPMPP$_2M$_SDE.input.noise_device", $Value: Comfy.Union.E_928b7403128cb25513cafc463a76a922ba5d4bd0 },
+          "Comfy.Extra.custom_sampler.SamplerDPMPP$_SDE.input.noise_device": { $Name: "Comfy.Extra.custom_sampler.SamplerDPMPP$_SDE.input.noise_device", $Value: Comfy.Union.E_928b7403128cb25513cafc463a76a922ba5d4bd0 },
+          "Comfy.Extra.custom_sampler.SamplerDPMPP$_2M$_SDE.input.solver_type": { $Name: "Comfy.Extra.custom_sampler.SamplerDPMPP$_2M$_SDE.input.solver_type", $Value: Comfy.Union.E_148e0bc88719e23ec2f2c80871fe45ae759cd7e1 },
+          "Comfy.Extra.model_advanced.ModelSamplingDiscrete.input.sampling": { $Name: "Comfy.Extra.model_advanced.ModelSamplingDiscrete.input.sampling", $Value: Comfy.Union.E_e89ec78e24ca5e9c91264b9e9b5ed722d2b509dc },
+          "Comfy.Extra.model_advanced.ModelSamplingContinuousEDM.input.sampling": { $Name: "Comfy.Extra.model_advanced.ModelSamplingContinuousEDM.input.sampling", $Value: Comfy.Union.E_bf8a83a3d55d70c688644bf18edaf23501f7c168 },
+          "Comfy.Extra.model_advanced.ModelSamplingContinuousV.input.sampling": { $Name: "Comfy.Extra.model_advanced.ModelSamplingContinuousV.input.sampling", $Value: Comfy.Union.E_3c3164c6c468d61dfa20092960e3d7854495e50c },
+          "Comfy.Extra.images.SaveAnimatedWEBP.input.method": { $Name: "Comfy.Extra.images.SaveAnimatedWEBP.input.method", $Value: Comfy.Union.E_253b68425542d8144b2b8a7af90f057b41939f63 },
+          "Comfy.Extra.morphology.Morphology.input.operation": { $Name: "Comfy.Extra.morphology.Morphology.input.operation", $Value: Comfy.Union.E_6ba03252ec9c8111f7381dfb573cd99c2b4d0e3b },
+          "Comfy.Extra.align_your_steps.AlignYourStepsScheduler.input.model_type": { $Name: "Comfy.Extra.align_your_steps.AlignYourStepsScheduler.input.model_type", $Value: Comfy.Union.E_ec317371192386ae10cedaee29b315e900386a18 },
+          "Comfy.Extra.advanced_samplers.SamplerEulerCFGpp.input.version": { $Name: "Comfy.Extra.advanced_samplers.SamplerEulerCFGpp.input.version", $Value: Comfy.Union.E_a8aa5eb2d828c2e279168c48955c7a0fe3ea011a },
+          "Comfy.Extra.sd3.CLIPTextEncodeSD3.input.empty_padding": { $Name: "Comfy.Extra.sd3.CLIPTextEncodeSD3.input.empty_padding", $Value: Comfy.Union.E_270e152a81c37daf152e6cc67675baaafe058bc4 },
+          "Comfy.Extra.controlnet.SetUnionControlNetType.input.type": { $Name: "Comfy.Extra.controlnet.SetUnionControlNetType.input.type", $Value: Comfy.Union.E_0e92c8b1b6fe90c3e343d8b54b531b9d887eee62 },
+          "Comfy.Extra.lora_extract.LoraSave.input.lora_type": { $Name: "Comfy.Extra.lora_extract.LoraSave.input.lora_type", $Value: Comfy.Union.E_b80b6129a942660e31e08221ee04a76f537556ce },
+          "Comfy.Extra.torch_compile.TorchCompileModel.input.backend": { $Name: "Comfy.Extra.torch_compile.TorchCompileModel.input.backend", $Value: Comfy.Union.E_4bbca93e426c35d56c43252f1fb21877d5e7a1aa },
+          "Comfy.Custom.Impact_Pack.SAMLoader.input.model_name": { $Name: "Comfy.Custom.Impact_Pack.SAMLoader.input.model_name", $Value: Comfy.Union.E_40c777392f92d61852ab0f7a429a755abf59b71a },
+          "Comfy.Custom.Impact_Pack.SAMLoader.input.device_mode": { $Name: "Comfy.Custom.Impact_Pack.SAMLoader.input.device_mode", $Value: Comfy.Union.E_2ad445b99254e9b51c963d9f1a75fabe3d01e569 },
+          "Comfy.Custom.Impact_Pack.ImpactHFTransformersClassifierProvider.input.device_mode": { $Name: "Comfy.Custom.Impact_Pack.ImpactHFTransformersClassifierProvider.input.device_mode", $Value: Comfy.Union.E_2ad445b99254e9b51c963d9f1a75fabe3d01e569 },
+          "Comfy.Custom.Impact_Pack.DetailerForEach.input.scheduler": { $Name: "Comfy.Custom.Impact_Pack.DetailerForEach.input.scheduler", $Value: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d },
+          "Comfy.Custom.Impact_Pack.DetailerForEachDebug.input.scheduler": { $Name: "Comfy.Custom.Impact_Pack.DetailerForEachDebug.input.scheduler", $Value: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d },
+          "Comfy.Custom.Impact_Pack.DetailerForEachPipe.input.scheduler": { $Name: "Comfy.Custom.Impact_Pack.DetailerForEachPipe.input.scheduler", $Value: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d },
+          "Comfy.Custom.Impact_Pack.DetailerForEachDebugPipe.input.scheduler": { $Name: "Comfy.Custom.Impact_Pack.DetailerForEachDebugPipe.input.scheduler", $Value: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d },
+          "Comfy.Custom.Impact_Pack.DetailerForEachPipeForAnimateDiff.input.scheduler": { $Name: "Comfy.Custom.Impact_Pack.DetailerForEachPipeForAnimateDiff.input.scheduler", $Value: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d },
+          "Comfy.Custom.Impact_Pack.FaceDetailer.input.scheduler": { $Name: "Comfy.Custom.Impact_Pack.FaceDetailer.input.scheduler", $Value: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d },
+          "Comfy.Custom.Impact_Pack.FaceDetailerPipe.input.scheduler": { $Name: "Comfy.Custom.Impact_Pack.FaceDetailerPipe.input.scheduler", $Value: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d },
+          "Comfy.Custom.Impact_Pack.MaskDetailerPipe.input.scheduler": { $Name: "Comfy.Custom.Impact_Pack.MaskDetailerPipe.input.scheduler", $Value: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d },
+          "Comfy.Custom.Impact_Pack.PixelKSampleUpscalerProvider.input.scheduler": { $Name: "Comfy.Custom.Impact_Pack.PixelKSampleUpscalerProvider.input.scheduler", $Value: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d },
+          "Comfy.Custom.Impact_Pack.PixelKSampleUpscalerProviderPipe.input.scheduler": { $Name: "Comfy.Custom.Impact_Pack.PixelKSampleUpscalerProviderPipe.input.scheduler", $Value: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d },
+          "Comfy.Custom.Impact_Pack.KSamplerProvider.input.scheduler": { $Name: "Comfy.Custom.Impact_Pack.KSamplerProvider.input.scheduler", $Value: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d },
+          "Comfy.Custom.Impact_Pack.KSamplerAdvancedProvider.input.scheduler": { $Name: "Comfy.Custom.Impact_Pack.KSamplerAdvancedProvider.input.scheduler", $Value: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d },
+          "Comfy.Custom.Impact_Pack.SEGSUpscaler.input.scheduler": { $Name: "Comfy.Custom.Impact_Pack.SEGSUpscaler.input.scheduler", $Value: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d },
+          "Comfy.Custom.Impact_Pack.SEGSUpscalerPipe.input.scheduler": { $Name: "Comfy.Custom.Impact_Pack.SEGSUpscalerPipe.input.scheduler", $Value: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d },
+          "Comfy.Custom.Impact_Pack.SEGSDetailer.input.scheduler": { $Name: "Comfy.Custom.Impact_Pack.SEGSDetailer.input.scheduler", $Value: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d },
+          "Comfy.Custom.Impact_Pack.SEGSDetailerForAnimateDiff.input.scheduler": { $Name: "Comfy.Custom.Impact_Pack.SEGSDetailerForAnimateDiff.input.scheduler", $Value: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d },
+          "Comfy.Custom.Impact_Pack.ImpactKSamplerBasicPipe.input.scheduler": { $Name: "Comfy.Custom.Impact_Pack.ImpactKSamplerBasicPipe.input.scheduler", $Value: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d },
+          "Comfy.Custom.Impact_Pack.ImpactKSamplerAdvancedBasicPipe.input.scheduler": { $Name: "Comfy.Custom.Impact_Pack.ImpactKSamplerAdvancedBasicPipe.input.scheduler", $Value: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d },
+          "Comfy.Custom.Impact_Pack.ImpactSchedulerAdapter.output.scheduler": { $Name: "Comfy.Custom.Impact_Pack.ImpactSchedulerAdapter.output.scheduler", $Value: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d },
+          "Comfy.Custom.Impact_Pack.SAMDetectorCombined.input.detection_hint": { $Name: "Comfy.Custom.Impact_Pack.SAMDetectorCombined.input.detection_hint", $Value: Comfy.Union.E_40275a874822a8699ee13794e127b63cdd6bfdae },
+          "Comfy.Custom.Impact_Pack.SAMDetectorSegmented.input.detection_hint": { $Name: "Comfy.Custom.Impact_Pack.SAMDetectorSegmented.input.detection_hint", $Value: Comfy.Union.E_40275a874822a8699ee13794e127b63cdd6bfdae },
+          "Comfy.Custom.Impact_Pack.FaceDetailer.input.sam_detection_hint": { $Name: "Comfy.Custom.Impact_Pack.FaceDetailer.input.sam_detection_hint", $Value: Comfy.Union.E_40275a874822a8699ee13794e127b63cdd6bfdae },
+          "Comfy.Custom.Impact_Pack.FaceDetailerPipe.input.sam_detection_hint": { $Name: "Comfy.Custom.Impact_Pack.FaceDetailerPipe.input.sam_detection_hint", $Value: Comfy.Union.E_40275a874822a8699ee13794e127b63cdd6bfdae },
+          "Comfy.Custom.Impact_Pack.SAMDetectorCombined.input.mask_hint_use_negative": { $Name: "Comfy.Custom.Impact_Pack.SAMDetectorCombined.input.mask_hint_use_negative", $Value: Comfy.Union.E_aa302307a82588b6e514aca43e4cddad342a73fc },
+          "Comfy.Custom.Impact_Pack.SAMDetectorSegmented.input.mask_hint_use_negative": { $Name: "Comfy.Custom.Impact_Pack.SAMDetectorSegmented.input.mask_hint_use_negative", $Value: Comfy.Union.E_aa302307a82588b6e514aca43e4cddad342a73fc },
+          "Comfy.Custom.Impact_Pack.FaceDetailer.input.sam_mask_hint_use_negative": { $Name: "Comfy.Custom.Impact_Pack.FaceDetailer.input.sam_mask_hint_use_negative", $Value: Comfy.Union.E_aa302307a82588b6e514aca43e4cddad342a73fc },
+          "Comfy.Custom.Impact_Pack.FaceDetailerPipe.input.sam_mask_hint_use_negative": { $Name: "Comfy.Custom.Impact_Pack.FaceDetailerPipe.input.sam_mask_hint_use_negative", $Value: Comfy.Union.E_aa302307a82588b6e514aca43e4cddad342a73fc },
+          "Comfy.Custom.Impact_Pack.ToDetailerPipe.input.Select$_to$_add$_LoRA": { $Name: "Comfy.Custom.Impact_Pack.ToDetailerPipe.input.Select$_to$_add$_LoRA", $Value: Comfy.Union.E_35e403c7628f220c07d5485d6e81fc66b4fc12df },
+          "Comfy.Custom.Impact_Pack.ToDetailerPipeSDXL.input.Select$_to$_add$_LoRA": { $Name: "Comfy.Custom.Impact_Pack.ToDetailerPipeSDXL.input.Select$_to$_add$_LoRA", $Value: Comfy.Union.E_35e403c7628f220c07d5485d6e81fc66b4fc12df },
+          "Comfy.Custom.Impact_Pack.BasicPipeToDetailerPipe.input.Select$_to$_add$_LoRA": { $Name: "Comfy.Custom.Impact_Pack.BasicPipeToDetailerPipe.input.Select$_to$_add$_LoRA", $Value: Comfy.Union.E_35e403c7628f220c07d5485d6e81fc66b4fc12df },
+          "Comfy.Custom.Impact_Pack.BasicPipeToDetailerPipeSDXL.input.Select$_to$_add$_LoRA": { $Name: "Comfy.Custom.Impact_Pack.BasicPipeToDetailerPipeSDXL.input.Select$_to$_add$_LoRA", $Value: Comfy.Union.E_35e403c7628f220c07d5485d6e81fc66b4fc12df },
+          "Comfy.Custom.Impact_Pack.EditDetailerPipe.input.Select$_to$_add$_LoRA": { $Name: "Comfy.Custom.Impact_Pack.EditDetailerPipe.input.Select$_to$_add$_LoRA", $Value: Comfy.Union.E_35e403c7628f220c07d5485d6e81fc66b4fc12df },
+          "Comfy.Custom.Impact_Pack.EditDetailerPipeSDXL.input.Select$_to$_add$_LoRA": { $Name: "Comfy.Custom.Impact_Pack.EditDetailerPipeSDXL.input.Select$_to$_add$_LoRA", $Value: Comfy.Union.E_35e403c7628f220c07d5485d6e81fc66b4fc12df },
+          "Comfy.Custom.Impact_Pack.ImpactWildcardEncode.input.Select$_to$_add$_LoRA": { $Name: "Comfy.Custom.Impact_Pack.ImpactWildcardEncode.input.Select$_to$_add$_LoRA", $Value: Comfy.Union.E_35e403c7628f220c07d5485d6e81fc66b4fc12df },
+          "Comfy.Custom.Impact_Pack.ToDetailerPipe.input.Select$_to$_add$_Wildcard": { $Name: "Comfy.Custom.Impact_Pack.ToDetailerPipe.input.Select$_to$_add$_Wildcard", $Value: Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26 },
+          "Comfy.Custom.Impact_Pack.ToDetailerPipeSDXL.input.Select$_to$_add$_Wildcard": { $Name: "Comfy.Custom.Impact_Pack.ToDetailerPipeSDXL.input.Select$_to$_add$_Wildcard", $Value: Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26 },
+          "Comfy.Custom.Impact_Pack.BasicPipeToDetailerPipe.input.Select$_to$_add$_Wildcard": { $Name: "Comfy.Custom.Impact_Pack.BasicPipeToDetailerPipe.input.Select$_to$_add$_Wildcard", $Value: Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26 },
+          "Comfy.Custom.Impact_Pack.BasicPipeToDetailerPipeSDXL.input.Select$_to$_add$_Wildcard": { $Name: "Comfy.Custom.Impact_Pack.BasicPipeToDetailerPipeSDXL.input.Select$_to$_add$_Wildcard", $Value: Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26 },
+          "Comfy.Custom.Impact_Pack.EditDetailerPipe.input.Select$_to$_add$_Wildcard": { $Name: "Comfy.Custom.Impact_Pack.EditDetailerPipe.input.Select$_to$_add$_Wildcard", $Value: Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26 },
+          "Comfy.Custom.Impact_Pack.EditDetailerPipeSDXL.input.Select$_to$_add$_Wildcard": { $Name: "Comfy.Custom.Impact_Pack.EditDetailerPipeSDXL.input.Select$_to$_add$_Wildcard", $Value: Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26 },
+          "Comfy.Custom.Impact_Pack.ImpactWildcardProcessor.input.Select$_to$_add$_Wildcard": { $Name: "Comfy.Custom.Impact_Pack.ImpactWildcardProcessor.input.Select$_to$_add$_Wildcard", $Value: Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26 },
+          "Comfy.Custom.Impact_Pack.ImpactWildcardEncode.input.Select$_to$_add$_Wildcard": { $Name: "Comfy.Custom.Impact_Pack.ImpactWildcardEncode.input.Select$_to$_add$_Wildcard", $Value: Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26 },
+          "Comfy.Custom.Impact_Pack.LatentPixelScale.input.scale_method": { $Name: "Comfy.Custom.Impact_Pack.LatentPixelScale.input.scale_method", $Value: Comfy.Union.E_f9c5efbc827613eb902695cd0a25738ee31c607d },
+          "Comfy.Custom.Impact_Pack.PixelKSampleUpscalerProvider.input.scale_method": { $Name: "Comfy.Custom.Impact_Pack.PixelKSampleUpscalerProvider.input.scale_method", $Value: Comfy.Union.E_f9c5efbc827613eb902695cd0a25738ee31c607d },
+          "Comfy.Custom.Impact_Pack.PixelKSampleUpscalerProviderPipe.input.scale_method": { $Name: "Comfy.Custom.Impact_Pack.PixelKSampleUpscalerProviderPipe.input.scale_method", $Value: Comfy.Union.E_f9c5efbc827613eb902695cd0a25738ee31c607d },
+          "Comfy.Custom.Impact_Pack.PixelTiledKSampleUpscalerProvider.input.scale_method": { $Name: "Comfy.Custom.Impact_Pack.PixelTiledKSampleUpscalerProvider.input.scale_method", $Value: Comfy.Union.E_f9c5efbc827613eb902695cd0a25738ee31c607d },
+          "Comfy.Custom.Impact_Pack.PixelTiledKSampleUpscalerProviderPipe.input.scale_method": { $Name: "Comfy.Custom.Impact_Pack.PixelTiledKSampleUpscalerProviderPipe.input.scale_method", $Value: Comfy.Union.E_f9c5efbc827613eb902695cd0a25738ee31c607d },
+          "Comfy.Custom.Impact_Pack.TwoSamplersForMaskUpscalerProvider.input.scale_method": { $Name: "Comfy.Custom.Impact_Pack.TwoSamplersForMaskUpscalerProvider.input.scale_method", $Value: Comfy.Union.E_f9c5efbc827613eb902695cd0a25738ee31c607d },
+          "Comfy.Custom.Impact_Pack.TwoSamplersForMaskUpscalerProviderPipe.input.scale_method": { $Name: "Comfy.Custom.Impact_Pack.TwoSamplersForMaskUpscalerProviderPipe.input.scale_method", $Value: Comfy.Union.E_f9c5efbc827613eb902695cd0a25738ee31c607d },
+          "Comfy.Custom.Impact_Pack.IterativeLatentUpscale.input.step_mode": { $Name: "Comfy.Custom.Impact_Pack.IterativeLatentUpscale.input.step_mode", $Value: Comfy.Union.E_4724269c8f643d5efa98f97e1e55a7ddfe6aac6c },
+          "Comfy.Custom.Impact_Pack.IterativeImageUpscale.input.step_mode": { $Name: "Comfy.Custom.Impact_Pack.IterativeImageUpscale.input.step_mode", $Value: Comfy.Union.E_4724269c8f643d5efa98f97e1e55a7ddfe6aac6c },
+          "Comfy.Custom.Impact_Pack.PixelTiledKSampleUpscalerProvider.input.tiling_strategy": { $Name: "Comfy.Custom.Impact_Pack.PixelTiledKSampleUpscalerProvider.input.tiling_strategy", $Value: Comfy.Union.E_304f89a0de34643f12756237824e7261db28aaf5 },
+          "Comfy.Custom.Impact_Pack.PixelTiledKSampleUpscalerProviderPipe.input.tiling_strategy": { $Name: "Comfy.Custom.Impact_Pack.PixelTiledKSampleUpscalerProviderPipe.input.tiling_strategy", $Value: Comfy.Union.E_304f89a0de34643f12756237824e7261db28aaf5 },
+          "Comfy.Custom.Impact_Pack.TiledKSamplerProvider.input.tiling_strategy": { $Name: "Comfy.Custom.Impact_Pack.TiledKSamplerProvider.input.tiling_strategy", $Value: Comfy.Union.E_304f89a0de34643f12756237824e7261db28aaf5 },
+          "Comfy.Custom.Impact_Pack.TwoSamplersForMaskUpscalerProvider.input.full_sample_schedule": { $Name: "Comfy.Custom.Impact_Pack.TwoSamplersForMaskUpscalerProvider.input.full_sample_schedule", $Value: Comfy.Union.E_de6a9887e0bfe301f572e929959509ed64574d1b },
+          "Comfy.Custom.Impact_Pack.TwoSamplersForMaskUpscalerProviderPipe.input.full_sample_schedule": { $Name: "Comfy.Custom.Impact_Pack.TwoSamplersForMaskUpscalerProviderPipe.input.full_sample_schedule", $Value: Comfy.Union.E_de6a9887e0bfe301f572e929959509ed64574d1b },
+          "Comfy.Custom.Impact_Pack.DenoiseScheduleHookProvider.input.schedule_for_iteration": { $Name: "Comfy.Custom.Impact_Pack.DenoiseScheduleHookProvider.input.schedule_for_iteration", $Value: Comfy.Union.E_0f7d0d088b6ea936fb25b477722d734706fe8b40 },
+          "Comfy.Custom.Impact_Pack.StepsScheduleHookProvider.input.schedule_for_iteration": { $Name: "Comfy.Custom.Impact_Pack.StepsScheduleHookProvider.input.schedule_for_iteration", $Value: Comfy.Union.E_0f7d0d088b6ea936fb25b477722d734706fe8b40 },
+          "Comfy.Custom.Impact_Pack.CfgScheduleHookProvider.input.schedule_for_iteration": { $Name: "Comfy.Custom.Impact_Pack.CfgScheduleHookProvider.input.schedule_for_iteration", $Value: Comfy.Union.E_0f7d0d088b6ea936fb25b477722d734706fe8b40 },
+          "Comfy.Custom.Impact_Pack.NoiseInjectionHookProvider.input.schedule_for_iteration": { $Name: "Comfy.Custom.Impact_Pack.NoiseInjectionHookProvider.input.schedule_for_iteration", $Value: Comfy.Union.E_0f7d0d088b6ea936fb25b477722d734706fe8b40 },
+          "Comfy.Custom.Impact_Pack.UnsamplerHookProvider.input.schedule_for_iteration": { $Name: "Comfy.Custom.Impact_Pack.UnsamplerHookProvider.input.schedule_for_iteration", $Value: Comfy.Union.E_0f7d0d088b6ea936fb25b477722d734706fe8b40 },
+          "Comfy.Custom.Impact_Pack.DenoiseSchedulerDetailerHookProvider.input.schedule_for_cycle": { $Name: "Comfy.Custom.Impact_Pack.DenoiseSchedulerDetailerHookProvider.input.schedule_for_cycle", $Value: Comfy.Union.E_0f7d0d088b6ea936fb25b477722d734706fe8b40 },
+          "Comfy.Custom.Impact_Pack.NoiseInjectionHookProvider.input.source": { $Name: "Comfy.Custom.Impact_Pack.NoiseInjectionHookProvider.input.source", $Value: Comfy.Union.E_3dfc15432d4b952e91053feecd5a5427720957fc },
+          "Comfy.Custom.Impact_Pack.NoiseInjectionDetailerHookProvider.input.source": { $Name: "Comfy.Custom.Impact_Pack.NoiseInjectionDetailerHookProvider.input.source", $Value: Comfy.Union.E_3dfc15432d4b952e91053feecd5a5427720957fc },
+          "Comfy.Custom.Impact_Pack.CoreMLDetailerHookProvider.input.mode": { $Name: "Comfy.Custom.Impact_Pack.CoreMLDetailerHookProvider.input.mode", $Value: Comfy.Union.E_d4b6506ab5528aeab8952aa9d308dbc242d01e63 },
+          "Comfy.Custom.Impact_Pack.NoiseInjectionDetailerHookProvider.input.schedule_for_cycle": { $Name: "Comfy.Custom.Impact_Pack.NoiseInjectionDetailerHookProvider.input.schedule_for_cycle", $Value: Comfy.Union.E_afbc7832ad78555d4f5646f97ed21b561fe3d1f0 },
+          "Comfy.Custom.Impact_Pack.UnsamplerDetailerHookProvider.input.schedule_for_cycle": { $Name: "Comfy.Custom.Impact_Pack.UnsamplerDetailerHookProvider.input.schedule_for_cycle", $Value: Comfy.Union.E_afbc7832ad78555d4f5646f97ed21b561fe3d1f0 },
+          "Comfy.Custom.Impact_Pack.SEGSOrderedFilterDetailerHookProvider.input.target": { $Name: "Comfy.Custom.Impact_Pack.SEGSOrderedFilterDetailerHookProvider.input.target", $Value: Comfy.Union.E_87bec9aa0dfe9b9678fd35387106d931d78358cd },
+          "Comfy.Custom.Impact_Pack.SEGSRangeFilterDetailerHookProvider.input.target": { $Name: "Comfy.Custom.Impact_Pack.SEGSRangeFilterDetailerHookProvider.input.target", $Value: Comfy.Union.E_aceb55e7f03fcbc2a78383bd8ddff8676e42e536 },
+          "Comfy.Custom.Impact_Pack.SEGSLabelFilterDetailerHookProvider.input.preset": { $Name: "Comfy.Custom.Impact_Pack.SEGSLabelFilterDetailerHookProvider.input.preset", $Value: Comfy.Union.E_cc1f262afc534d382e5c36082cecd4fc2a9c4ffb },
+          "Comfy.Custom.Impact_Pack.ImpactSEGSLabelFilter.input.preset": { $Name: "Comfy.Custom.Impact_Pack.ImpactSEGSLabelFilter.input.preset", $Value: Comfy.Union.E_cc1f262afc534d382e5c36082cecd4fc2a9c4ffb },
+          "Comfy.Custom.Impact_Pack.ImpactSimpleDetectorSEGS$_for$_AD.input.masking_mode": { $Name: "Comfy.Custom.Impact_Pack.ImpactSimpleDetectorSEGS$_for$_AD.input.masking_mode", $Value: Comfy.Union.E_e5ef6b688dbafd88538e80bf002826bade4bb121 },
+          "Comfy.Custom.Impact_Pack.ImpactSimpleDetectorSEGS$_for$_AD.input.segs_pivot": { $Name: "Comfy.Custom.Impact_Pack.ImpactSimpleDetectorSEGS$_for$_AD.input.segs_pivot", $Value: Comfy.Union.E_651ea09f69db9a1eb817103d1ea8e3ac08b4a319 },
+          "Comfy.Custom.Impact_Pack.ImpactIPAdapterApplySEGS.input.weight_type": { $Name: "Comfy.Custom.Impact_Pack.ImpactIPAdapterApplySEGS.input.weight_type", $Value: Comfy.Union.E_05cddbad13b094c2641c6bb7d261e15c71efc903 },
+          "Comfy.Custom.Impact_Pack.ImpactIPAdapterApplySEGS.input.combine_embeds": { $Name: "Comfy.Custom.Impact_Pack.ImpactIPAdapterApplySEGS.input.combine_embeds", $Value: Comfy.Union.E_055d80a7c582bd5b57fd6775414e697be3f0f580 },
+          "Comfy.Custom.Impact_Pack.PreviewBridge.input.restore_mask": { $Name: "Comfy.Custom.Impact_Pack.PreviewBridge.input.restore_mask", $Value: Comfy.Union.E_f27fae3205ecf36e9f4a68f3867d38e025476963 },
+          "Comfy.Custom.Impact_Pack.PreviewBridgeLatent.input.restore_mask": { $Name: "Comfy.Custom.Impact_Pack.PreviewBridgeLatent.input.restore_mask", $Value: Comfy.Union.E_f27fae3205ecf36e9f4a68f3867d38e025476963 },
+          "Comfy.Custom.Impact_Pack.PreviewBridgeLatent.input.preview_method": { $Name: "Comfy.Custom.Impact_Pack.PreviewBridgeLatent.input.preview_method", $Value: Comfy.Union.E_ea287ec9983f05378f2614091804a1b6b95d1c79 },
+          "Comfy.Custom.Impact_Pack.LatentSender.input.preview_method": { $Name: "Comfy.Custom.Impact_Pack.LatentSender.input.preview_method", $Value: Comfy.Union.E_fa4a13687b111fa33a8c8fa375d5321d09b46b27 },
+          "Comfy.Custom.Impact_Pack.SEGSUpscaler.input.resampling_method": { $Name: "Comfy.Custom.Impact_Pack.SEGSUpscaler.input.resampling_method", $Value: Comfy.Union.E_bac912b55de8a59480c74aba068f4a3b5f9a0e38 },
+          "Comfy.Custom.Impact_Pack.SEGSUpscalerPipe.input.resampling_method": { $Name: "Comfy.Custom.Impact_Pack.SEGSUpscalerPipe.input.resampling_method", $Value: Comfy.Union.E_bac912b55de8a59480c74aba068f4a3b5f9a0e38 },
+          "Comfy.Custom.Impact_Pack.SEGSUpscaler.input.supersample": { $Name: "Comfy.Custom.Impact_Pack.SEGSUpscaler.input.supersample", $Value: Comfy.Union.E_c1a74591678033a2ccc87aa0add77dab7f001da5 },
+          "Comfy.Custom.Impact_Pack.SEGSUpscalerPipe.input.supersample": { $Name: "Comfy.Custom.Impact_Pack.SEGSUpscalerPipe.input.supersample", $Value: Comfy.Union.E_c1a74591678033a2ccc87aa0add77dab7f001da5 },
+          "Comfy.Custom.Impact_Pack.ImpactMakeTileSEGS.input.irregular_mask_mode": { $Name: "Comfy.Custom.Impact_Pack.ImpactMakeTileSEGS.input.irregular_mask_mode", $Value: Comfy.Union.E_5cc1495fe28eac05289d45b29269b31c6edca055 },
+          "Comfy.Custom.Impact_Pack.ReencodeLatent.input.tile_mode": { $Name: "Comfy.Custom.Impact_Pack.ReencodeLatent.input.tile_mode", $Value: Comfy.Union.E_d5776f669e41b2ec29cd020ce34a8b7cdf23693d },
+          "Comfy.Custom.Impact_Pack.ReencodeLatentPipe.input.tile_mode": { $Name: "Comfy.Custom.Impact_Pack.ReencodeLatentPipe.input.tile_mode", $Value: Comfy.Union.E_d5776f669e41b2ec29cd020ce34a8b7cdf23693d },
+          "Comfy.Custom.Impact_Pack.RegionalSampler.input.seed_2nd_mode": { $Name: "Comfy.Custom.Impact_Pack.RegionalSampler.input.seed_2nd_mode", $Value: Comfy.Union.E_1e8364b55644fdbf6d28dd3e6197d9fe1777e361 },
+          "Comfy.Custom.Impact_Pack.RegionalSampler.input.additional_mode": { $Name: "Comfy.Custom.Impact_Pack.RegionalSampler.input.additional_mode", $Value: Comfy.Union.E_db19bd49ccd13456a936f2070c088f16070aa0b1 },
+          "Comfy.Custom.Impact_Pack.RegionalSamplerAdvanced.input.additional_mode": { $Name: "Comfy.Custom.Impact_Pack.RegionalSamplerAdvanced.input.additional_mode", $Value: Comfy.Union.E_db19bd49ccd13456a936f2070c088f16070aa0b1 },
+          "Comfy.Custom.Impact_Pack.RegionalSampler.input.additional_sampler": { $Name: "Comfy.Custom.Impact_Pack.RegionalSampler.input.additional_sampler", $Value: Comfy.Union.E_3fd6d592305b0bc44ce9c69a23201f8d7a155884 },
+          "Comfy.Custom.Impact_Pack.RegionalSamplerAdvanced.input.additional_sampler": { $Name: "Comfy.Custom.Impact_Pack.RegionalSamplerAdvanced.input.additional_sampler", $Value: Comfy.Union.E_3fd6d592305b0bc44ce9c69a23201f8d7a155884 },
+          "Comfy.Custom.Impact_Pack.RegionalPrompt.input.variation_method": { $Name: "Comfy.Custom.Impact_Pack.RegionalPrompt.input.variation_method", $Value: Comfy.Union.E_627d63e970919d713af795854ffd9dd2642f92d2 },
+          "Comfy.Custom.Impact_Pack.ImpactSEGSRangeFilter.input.target": { $Name: "Comfy.Custom.Impact_Pack.ImpactSEGSRangeFilter.input.target", $Value: Comfy.Union.E_10c017f4a76414789a861361dc5cdbfef12e2d7d },
+          "Comfy.Custom.Impact_Pack.ImpactSEGSOrderedFilter.input.target": { $Name: "Comfy.Custom.Impact_Pack.ImpactSEGSOrderedFilter.input.target", $Value: Comfy.Union.E_b1f554e93f550a374a1ff740ad7447a7b34b71be },
+          "Comfy.Custom.Impact_Pack.ImpactCompare.input.cmp": { $Name: "Comfy.Custom.Impact_Pack.ImpactCompare.input.cmp", $Value: Comfy.Union.E_87d3a21083ff67c538309f218241f70a793f619c },
+          "Comfy.Custom.Impact_Pack.ImpactLogicalOperators.input.operator": { $Name: "Comfy.Custom.Impact_Pack.ImpactLogicalOperators.input.operator", $Value: Comfy.Union.E_99d83eba8f2a90cc88da26295981d92d458e4e14 },
+          "Comfy.Custom.Impact_Pack.ImpactValueReceiver.input.typ": { $Name: "Comfy.Custom.Impact_Pack.ImpactValueReceiver.input.typ", $Value: Comfy.Union.E_6c86e4efdc8db8dae17215fbf80825ddaad06ffa },
+          "Comfy.Custom.Impact_Pack.ImpactControlBridge.input.behavior": { $Name: "Comfy.Custom.Impact_Pack.ImpactControlBridge.input.behavior", $Value: Comfy.Union.E_383642e8f2544ff8678e350c4f1049624ad6589e },
+          "Comfy.Custom.Impact_Pack.ImpactHFTransformersClassifierProvider.input.preset_repo_id": { $Name: "Comfy.Custom.Impact_Pack.ImpactHFTransformersClassifierProvider.input.preset_repo_id", $Value: Comfy.Union.E_7fd75955db2b2e81b87d8452255b37c2d98fd105 },
+          "Comfy.Custom.Impact_Pack.ImpactSEGSClassify.input.preset_expr": { $Name: "Comfy.Custom.Impact_Pack.ImpactSEGSClassify.input.preset_expr", $Value: Comfy.Union.E_01400d675e59295302197d02289e89ead401098e },
+          "Comfy.Custom.Impact_Pack.ImpactSchedulerAdapter.input.extra_scheduler": { $Name: "Comfy.Custom.Impact_Pack.ImpactSchedulerAdapter.input.extra_scheduler", $Value: Comfy.Union.E_64bb9134d159ff7e3f573facb7cb2fcfbb2de483 },
+          "Comfy.Custom.Impact_Pack.UltralyticsDetectorProvider.input.model_name": { $Name: "Comfy.Custom.Impact_Pack.UltralyticsDetectorProvider.input.model_name", $Value: Comfy.Union.E_cf11746957b2cb2b6379bbd08fe59610b2aae90a },
       }
    }
    // #endregion
@@ -8120,212 +8120,212 @@ declare global {
    namespace Comfy.Producer {
       // 3.1. types produced
       export interface SEG_ELT_control_net_wrapper extends
-         Pick<Comfy.Custom$5Impact$7Pack.Nodes, 'ImpactFrom$_SEG$_ELT'>
+         Pick<Comfy.Custom.Impact_Pack.Nodes, 'ImpactFrom$_SEG$_ELT'>
       {}
       export interface TRANSFORMERS_CLASSIFIER extends
-         Pick<Comfy.Custom$5Impact$7Pack.Nodes, 'ImpactHFTransformersClassifierProvider'>
+         Pick<Comfy.Custom.Impact_Pack.Nodes, 'ImpactHFTransformersClassifierProvider'>
       {}
       export interface SEG_ELT_crop_region extends
-         Pick<Comfy.Custom$5Impact$7Pack.Nodes, 'ImpactFrom$_SEG$_ELT'>
+         Pick<Comfy.Custom.Impact_Pack.Nodes, 'ImpactFrom$_SEG$_ELT'>
       {}
       export interface CLIP_VISION_OUTPUT extends
          Pick<Comfy.Base.Nodes, 'CLIPVisionEncode'>
       {}
       export interface BOOLEAN extends
-         Pick<Comfy.Custom$5Impact$7Pack.Nodes, 'ImpactCompare' | 'ImpactIfNone' | 'ImpactConvertDataType' | 'ImpactLogicalOperators' | 'ImpactBoolean' | 'ImpactNeg' | 'ImpactIsNotEmptySEGS'>
+         Pick<Comfy.Custom.Impact_Pack.Nodes, 'ImpactCompare' | 'ImpactIfNone' | 'ImpactConvertDataType' | 'ImpactLogicalOperators' | 'ImpactBoolean' | 'ImpactNeg' | 'ImpactIsNotEmptySEGS'>
       {}
       export interface SEGS_PREPROCESSOR {} // 🔶 no node can output this type.
       export interface KSAMPLER_ADVANCED extends
-         Pick<Comfy.Custom$5Impact$7Pack.Nodes, 'KSamplerAdvancedProvider'>
+         Pick<Comfy.Custom.Impact_Pack.Nodes, 'KSamplerAdvancedProvider'>
       {}
       export interface LATENT_OPERATION extends
-         Pick<Comfy.Extras$5latent.Nodes, 'LatentOperationTonemapReinhard' | 'LatentOperationSharpen'>
+         Pick<Comfy.Extra.latent.Nodes, 'LatentOperationTonemapReinhard' | 'LatentOperationSharpen'>
       {}
       export interface REGIONAL_PROMPTS extends
-         Pick<Comfy.Custom$5Impact$7Pack.Nodes, 'CombineRegionalPrompts' | 'RegionalPrompt'>
+         Pick<Comfy.Custom.Impact_Pack.Nodes, 'CombineRegionalPrompts' | 'RegionalPrompt'>
       {}
       export interface STRING extends
-         Pick<Comfy.Custom$5Impact$7Pack.Nodes, 'ImpactFrom$_SEG$_ELT' | 'LatentSwitch' | 'SEGSSwitch' | 'ImpactSwitch' | 'ImpactWildcardProcessor' | 'ImpactWildcardEncode' | 'ImpactConvertDataType' | 'ImpactStringSelector' | 'StringListToString' | 'WildcardPromptFromString' | 'WildcardPromptFromString' | 'ImpactSEGSClassify'>
+         Pick<Comfy.Custom.Impact_Pack.Nodes, 'ImpactFrom$_SEG$_ELT' | 'LatentSwitch' | 'SEGSSwitch' | 'ImpactSwitch' | 'ImpactWildcardProcessor' | 'ImpactWildcardEncode' | 'ImpactConvertDataType' | 'ImpactStringSelector' | 'StringListToString' | 'WildcardPromptFromString' | 'WildcardPromptFromString' | 'ImpactSEGSClassify'>
       {}
       export interface FLOAT extends
-         Pick<Comfy.Custom$5Impact$7Pack.Nodes, 'ImpactFrom$_SEG$_ELT' | 'ImpactConvertDataType' | 'ImpactFloat'>
+         Pick<Comfy.Custom.Impact_Pack.Nodes, 'ImpactFrom$_SEG$_ELT' | 'ImpactConvertDataType' | 'ImpactFloat'>
       {}
       export interface SCHEDULER_FUNC extends
-         Pick<Comfy.Custom$5Impact$7Pack.Nodes, 'GITSSchedulerFuncProvider'>
+         Pick<Comfy.Custom.Impact_Pack.Nodes, 'GITSSchedulerFuncProvider'>
       {}
       export interface IPADAPTER_PIPE {} // 🔶 no node can output this type.
       export interface UPSCALE_MODEL extends
-         Pick<Comfy.Extras$5upscale_model.Nodes, 'UpscaleModelLoader'>
+         Pick<Comfy.Extra.upscale_model.Nodes, 'UpscaleModelLoader'>
       {}
       export interface BBOX_DETECTOR extends
-         Pick<Comfy.Custom$5Impact$7Pack.Nodes, 'CLIPSegDetectorProvider' | 'ONNXDetectorProvider' | 'FromDetailerPipe' | 'FromDetailerPipe$_v2' | 'FromDetailerPipeSDXL' | 'UltralyticsDetectorProvider'>
+         Pick<Comfy.Custom.Impact_Pack.Nodes, 'CLIPSegDetectorProvider' | 'ONNXDetectorProvider' | 'FromDetailerPipe' | 'FromDetailerPipe$_v2' | 'FromDetailerPipeSDXL' | 'UltralyticsDetectorProvider'>
       {}
       export interface DETAILER_HOOK extends
-         Pick<Comfy.Custom$5Impact$7Pack.Nodes, 'FromDetailerPipe' | 'FromDetailerPipe$_v2' | 'FromDetailerPipeSDXL' | 'CoreMLDetailerHookProvider' | 'PreviewDetailerHookProvider' | 'DetailerHookCombine' | 'NoiseInjectionDetailerHookProvider' | 'UnsamplerDetailerHookProvider' | 'DenoiseSchedulerDetailerHookProvider' | 'SEGSOrderedFilterDetailerHookProvider' | 'SEGSRangeFilterDetailerHookProvider' | 'SEGSLabelFilterDetailerHookProvider' | 'VariationNoiseDetailerHookProvider'>
+         Pick<Comfy.Custom.Impact_Pack.Nodes, 'FromDetailerPipe' | 'FromDetailerPipe$_v2' | 'FromDetailerPipeSDXL' | 'CoreMLDetailerHookProvider' | 'PreviewDetailerHookProvider' | 'DetailerHookCombine' | 'NoiseInjectionDetailerHookProvider' | 'UnsamplerDetailerHookProvider' | 'DenoiseSchedulerDetailerHookProvider' | 'SEGSOrderedFilterDetailerHookProvider' | 'SEGSRangeFilterDetailerHookProvider' | 'SEGSLabelFilterDetailerHookProvider' | 'VariationNoiseDetailerHookProvider'>
       {}
       export interface DETAILER_PIPE extends
-         Pick<Comfy.Custom$5Impact$7Pack.Nodes, 'FaceDetailer' | 'FaceDetailerPipe' | 'ToDetailerPipe' | 'ToDetailerPipeSDXL' | 'FromDetailerPipe$_v2' | 'FromDetailerPipeSDXL' | 'BasicPipeToDetailerPipe' | 'BasicPipeToDetailerPipeSDXL' | 'EditDetailerPipe' | 'EditDetailerPipeSDXL'>
+         Pick<Comfy.Custom.Impact_Pack.Nodes, 'FaceDetailer' | 'FaceDetailerPipe' | 'ToDetailerPipe' | 'ToDetailerPipeSDXL' | 'FromDetailerPipe$_v2' | 'FromDetailerPipeSDXL' | 'BasicPipeToDetailerPipe' | 'BasicPipeToDetailerPipeSDXL' | 'EditDetailerPipe' | 'EditDetailerPipeSDXL'>
       {}
       export interface SEGM_DETECTOR extends
-         Pick<Comfy.Custom$5Impact$7Pack.Nodes, 'FromDetailerPipe' | 'FromDetailerPipe$_v2' | 'FromDetailerPipeSDXL' | 'UltralyticsDetectorProvider'>
+         Pick<Comfy.Custom.Impact_Pack.Nodes, 'FromDetailerPipe' | 'FromDetailerPipe$_v2' | 'FromDetailerPipeSDXL' | 'UltralyticsDetectorProvider'>
       {}
       export interface UPSCALER_HOOK extends
-         Pick<Comfy.Custom$5Impact$7Pack.Nodes, 'PreviewDetailerHookProvider'>
+         Pick<Comfy.Custom.Impact_Pack.Nodes, 'PreviewDetailerHookProvider'>
       {}
       export interface INT extends
-         Pick<Comfy.Custom$5Impact$7Pack.Nodes, 'ImpactFrom$_SEG$_ELT$_bbox' | 'ImpactFrom$_SEG$_ELT$_bbox' | 'ImpactFrom$_SEG$_ELT$_bbox' | 'ImpactFrom$_SEG$_ELT$_bbox' | 'ImpactFrom$_SEG$_ELT$_crop$_region' | 'ImpactFrom$_SEG$_ELT$_crop$_region' | 'ImpactFrom$_SEG$_ELT$_crop$_region' | 'ImpactFrom$_SEG$_ELT$_crop$_region' | 'ImpactCount$_Elts$_in$_SEGS' | 'LatentSwitch' | 'SEGSSwitch' | 'ImpactSwitch' | 'ImpactConvertDataType' | 'ImpactInt' | 'ImpactImageInfo' | 'ImpactImageInfo' | 'ImpactImageInfo' | 'ImpactImageInfo' | 'ImpactLatentInfo' | 'ImpactLatentInfo' | 'ImpactLatentInfo' | 'ImpactLatentInfo' | 'ImpactMinMax' | 'ImpactQueueTriggerCountdown' | 'ImpactQueueTriggerCountdown'>
+         Pick<Comfy.Custom.Impact_Pack.Nodes, 'ImpactFrom$_SEG$_ELT$_bbox' | 'ImpactFrom$_SEG$_ELT$_bbox' | 'ImpactFrom$_SEG$_ELT$_bbox' | 'ImpactFrom$_SEG$_ELT$_bbox' | 'ImpactFrom$_SEG$_ELT$_crop$_region' | 'ImpactFrom$_SEG$_ELT$_crop$_region' | 'ImpactFrom$_SEG$_ELT$_crop$_region' | 'ImpactFrom$_SEG$_ELT$_crop$_region' | 'ImpactCount$_Elts$_in$_SEGS' | 'LatentSwitch' | 'SEGSSwitch' | 'ImpactSwitch' | 'ImpactConvertDataType' | 'ImpactInt' | 'ImpactImageInfo' | 'ImpactImageInfo' | 'ImpactImageInfo' | 'ImpactImageInfo' | 'ImpactLatentInfo' | 'ImpactLatentInfo' | 'ImpactLatentInfo' | 'ImpactLatentInfo' | 'ImpactMinMax' | 'ImpactQueueTriggerCountdown' | 'ImpactQueueTriggerCountdown'>
       {}
       export interface CONDITIONING extends
          Pick<Comfy.Base.Nodes, 'CLIPTextEncode' | 'ConditioningAverage' | 'ConditioningCombine' | 'ConditioningConcat' | 'ConditioningSetArea' | 'ConditioningSetAreaPercentage' | 'ConditioningSetAreaStrength' | 'ConditioningSetMask' | 'StyleModelApply' | 'unCLIPConditioning' | 'ControlNetApply' | 'ControlNetApplyAdvanced' | 'ControlNetApplyAdvanced' | 'GLIGENTextBoxApply' | 'InpaintModelConditioning' | 'InpaintModelConditioning' | 'ConditioningZeroOut' | 'ConditioningSetTimestepRange'>,
-         Pick<Comfy.Extras$5clip_sdxl.Nodes, 'CLIPTextEncodeSDXLRefiner' | 'CLIPTextEncodeSDXL'>,
-         Pick<Comfy.Extras$5video_model.Nodes, 'SVD$_img2vid$_Conditioning' | 'SVD$_img2vid$_Conditioning'>,
-         Pick<Comfy.Extras$5stable3d.Nodes, 'StableZero123$_Conditioning' | 'StableZero123$_Conditioning' | 'StableZero123$_Conditioning$_Batched' | 'StableZero123$_Conditioning$_Batched' | 'SV3D$_Conditioning' | 'SV3D$_Conditioning'>,
-         Pick<Comfy.Extras$5sdupscale.Nodes, 'SD$_4XUpscale$_Conditioning' | 'SD$_4XUpscale$_Conditioning'>,
-         Pick<Comfy.Extras$5photomaker.Nodes, 'PhotoMakerEncode'>,
-         Pick<Comfy.Extras$5cond.Nodes, 'CLIPTextEncodeControlnet'>,
-         Pick<Comfy.Extras$5stable_cascade.Nodes, 'StableCascade$_StageB$_Conditioning'>,
-         Pick<Comfy.Extras$5ip2p.Nodes, 'InstructPixToPixConditioning' | 'InstructPixToPixConditioning'>,
-         Pick<Comfy.Extras$5sd3.Nodes, 'CLIPTextEncodeSD3' | 'ControlNetApplySD3' | 'ControlNetApplySD3'>,
-         Pick<Comfy.Extras$5controlnet.Nodes, 'ControlNetInpaintingAliMamaApply' | 'ControlNetInpaintingAliMamaApply'>,
-         Pick<Comfy.Extras$5hunyuan.Nodes, 'CLIPTextEncodeHunyuanDiT'>,
-         Pick<Comfy.Extras$5flux.Nodes, 'CLIPTextEncodeFlux' | 'FluxGuidance'>,
-         Pick<Comfy.Custom$5Impact$7Pack.Nodes, 'FromDetailerPipe' | 'FromDetailerPipe' | 'FromDetailerPipe$_v2' | 'FromDetailerPipe$_v2' | 'FromDetailerPipeSDXL' | 'FromDetailerPipeSDXL' | 'FromDetailerPipeSDXL' | 'FromDetailerPipeSDXL' | 'FromBasicPipe' | 'FromBasicPipe' | 'FromBasicPipe$_v2' | 'FromBasicPipe$_v2' | 'ImpactNegativeConditioningPlaceholder' | 'ImpactWildcardEncode' | 'ImpactCombineConditionings' | 'ImpactConcatConditionings'>
+         Pick<Comfy.Extra.clip_sdxl.Nodes, 'CLIPTextEncodeSDXLRefiner' | 'CLIPTextEncodeSDXL'>,
+         Pick<Comfy.Extra.video_model.Nodes, 'SVD$_img2vid$_Conditioning' | 'SVD$_img2vid$_Conditioning'>,
+         Pick<Comfy.Extra.stable3d.Nodes, 'StableZero123$_Conditioning' | 'StableZero123$_Conditioning' | 'StableZero123$_Conditioning$_Batched' | 'StableZero123$_Conditioning$_Batched' | 'SV3D$_Conditioning' | 'SV3D$_Conditioning'>,
+         Pick<Comfy.Extra.sdupscale.Nodes, 'SD$_4XUpscale$_Conditioning' | 'SD$_4XUpscale$_Conditioning'>,
+         Pick<Comfy.Extra.photomaker.Nodes, 'PhotoMakerEncode'>,
+         Pick<Comfy.Extra.cond.Nodes, 'CLIPTextEncodeControlnet'>,
+         Pick<Comfy.Extra.stable_cascade.Nodes, 'StableCascade$_StageB$_Conditioning'>,
+         Pick<Comfy.Extra.ip2p.Nodes, 'InstructPixToPixConditioning' | 'InstructPixToPixConditioning'>,
+         Pick<Comfy.Extra.sd3.Nodes, 'CLIPTextEncodeSD3' | 'ControlNetApplySD3' | 'ControlNetApplySD3'>,
+         Pick<Comfy.Extra.controlnet.Nodes, 'ControlNetInpaintingAliMamaApply' | 'ControlNetInpaintingAliMamaApply'>,
+         Pick<Comfy.Extra.hunyuan.Nodes, 'CLIPTextEncodeHunyuanDiT'>,
+         Pick<Comfy.Extra.flux.Nodes, 'CLIPTextEncodeFlux' | 'FluxGuidance'>,
+         Pick<Comfy.Custom.Impact_Pack.Nodes, 'FromDetailerPipe' | 'FromDetailerPipe' | 'FromDetailerPipe$_v2' | 'FromDetailerPipe$_v2' | 'FromDetailerPipeSDXL' | 'FromDetailerPipeSDXL' | 'FromDetailerPipeSDXL' | 'FromDetailerPipeSDXL' | 'FromBasicPipe' | 'FromBasicPipe' | 'FromBasicPipe$_v2' | 'FromBasicPipe$_v2' | 'ImpactNegativeConditioningPlaceholder' | 'ImpactWildcardEncode' | 'ImpactCombineConditionings' | 'ImpactConcatConditionings'>
       {}
       export interface SEG_ELT_bbox extends
-         Pick<Comfy.Custom$5Impact$7Pack.Nodes, 'ImpactFrom$_SEG$_ELT'>
+         Pick<Comfy.Custom.Impact_Pack.Nodes, 'ImpactFrom$_SEG$_ELT'>
       {}
       export interface CLIP_VISION extends
          Pick<Comfy.Base.Nodes, 'CLIPVisionLoader' | 'unCLIPCheckpointLoader'>,
-         Pick<Comfy.Extras$5video_model.Nodes, 'ImageOnlyCheckpointLoader'>
+         Pick<Comfy.Extra.video_model.Nodes, 'ImageOnlyCheckpointLoader'>
       {}
       export interface STYLE_MODEL extends
          Pick<Comfy.Base.Nodes, 'StyleModelLoader'>
       {}
       export interface CONTROL_NET extends
          Pick<Comfy.Base.Nodes, 'ControlNetLoader' | 'DiffControlNetLoader'>,
-         Pick<Comfy.Extras$5controlnet.Nodes, 'SetUnionControlNetType'>
+         Pick<Comfy.Extra.controlnet.Nodes, 'SetUnionControlNetType'>
       {}
       export interface SEGS_HEADER extends
-         Pick<Comfy.Custom$5Impact$7Pack.Nodes, 'ImpactDecomposeSEGS'>
+         Pick<Comfy.Custom.Impact_Pack.Nodes, 'ImpactDecomposeSEGS'>
       {}
       export interface PHOTOMAKER extends
-         Pick<Comfy.Extras$5photomaker.Nodes, 'PhotoMakerLoader'>
+         Pick<Comfy.Extra.photomaker.Nodes, 'PhotoMakerLoader'>
       {}
       export interface BASIC_PIPE extends
-         Pick<Comfy.Custom$5Impact$7Pack.Nodes, 'DetailerForEachPipe' | 'DetailerForEachDebugPipe' | 'DetailerForEachPipeForAnimateDiff' | 'MaskDetailerPipe' | 'MaskDetailerPipe' | 'AnyPipeToBasic' | 'ToBasicPipe' | 'FromBasicPipe$_v2' | 'DetailerPipeToBasicPipe' | 'DetailerPipeToBasicPipe' | 'EditBasicPipe' | 'ImpactKSamplerBasicPipe' | 'ImpactKSamplerAdvancedBasicPipe'>
+         Pick<Comfy.Custom.Impact_Pack.Nodes, 'DetailerForEachPipe' | 'DetailerForEachDebugPipe' | 'DetailerForEachPipeForAnimateDiff' | 'MaskDetailerPipe' | 'MaskDetailerPipe' | 'AnyPipeToBasic' | 'ToBasicPipe' | 'FromBasicPipe$_v2' | 'DetailerPipeToBasicPipe' | 'DetailerPipeToBasicPipe' | 'EditBasicPipe' | 'ImpactKSamplerBasicPipe' | 'ImpactKSamplerAdvancedBasicPipe'>
       {}
       export interface SAM_MODEL extends
-         Pick<Comfy.Custom$5Impact$7Pack.Nodes, 'SAMLoader' | 'FromDetailerPipe' | 'FromDetailerPipe$_v2' | 'FromDetailerPipeSDXL'>
+         Pick<Comfy.Custom.Impact_Pack.Nodes, 'SAMLoader' | 'FromDetailerPipe' | 'FromDetailerPipe$_v2' | 'FromDetailerPipeSDXL'>
       {}
       export interface UPSCALER extends
-         Pick<Comfy.Custom$5Impact$7Pack.Nodes, 'PixelKSampleUpscalerProvider' | 'PixelKSampleUpscalerProviderPipe' | 'PixelTiledKSampleUpscalerProvider' | 'PixelTiledKSampleUpscalerProviderPipe' | 'TwoSamplersForMaskUpscalerProvider' | 'TwoSamplersForMaskUpscalerProviderPipe'>
+         Pick<Comfy.Custom.Impact_Pack.Nodes, 'PixelKSampleUpscalerProvider' | 'PixelKSampleUpscalerProviderPipe' | 'PixelTiledKSampleUpscalerProvider' | 'PixelTiledKSampleUpscalerProviderPipe' | 'TwoSamplersForMaskUpscalerProvider' | 'TwoSamplersForMaskUpscalerProviderPipe'>
       {}
       export interface KSAMPLER extends
-         Pick<Comfy.Custom$5Impact$7Pack.Nodes, 'KSamplerProvider' | 'TiledKSamplerProvider'>
+         Pick<Comfy.Custom.Impact_Pack.Nodes, 'KSamplerProvider' | 'TiledKSamplerProvider'>
       {}
       export interface SAMPLER extends
-         Pick<Comfy.Extras$5custom_sampler.Nodes, 'KSamplerSelect' | 'SamplerEulerAncestral' | 'SamplerEulerAncestralCFGPP' | 'SamplerLMS' | 'SamplerDPMPP$_3M$_SDE' | 'SamplerDPMPP$_2M$_SDE' | 'SamplerDPMPP$_SDE' | 'SamplerDPMPP$_2S$_Ancestral' | 'SamplerDPMAdaptative'>,
-         Pick<Comfy.Extras$5advanced_samplers.Nodes, 'SamplerLCMUpscale' | 'SamplerEulerCFGpp'>
+         Pick<Comfy.Extra.custom_sampler.Nodes, 'KSamplerSelect' | 'SamplerEulerAncestral' | 'SamplerEulerAncestralCFGPP' | 'SamplerLMS' | 'SamplerDPMPP$_3M$_SDE' | 'SamplerDPMPP$_2M$_SDE' | 'SamplerDPMPP$_SDE' | 'SamplerDPMPP$_2S$_Ancestral' | 'SamplerDPMAdaptative'>,
+         Pick<Comfy.Extra.advanced_samplers.Nodes, 'SamplerLCMUpscale' | 'SamplerEulerCFGpp'>
       {}
       export interface PK_HOOK extends
-         Pick<Comfy.Custom$5Impact$7Pack.Nodes, 'PixelKSampleHookCombine' | 'DenoiseScheduleHookProvider' | 'StepsScheduleHookProvider' | 'CfgScheduleHookProvider' | 'NoiseInjectionHookProvider' | 'UnsamplerHookProvider'>
+         Pick<Comfy.Custom.Impact_Pack.Nodes, 'PixelKSampleHookCombine' | 'DenoiseScheduleHookProvider' | 'StepsScheduleHookProvider' | 'CfgScheduleHookProvider' | 'NoiseInjectionHookProvider' | 'UnsamplerHookProvider'>
       {}
       export interface SEG_ELT extends
-         Pick<Comfy.Custom$5Impact$7Pack.Nodes, 'ImpactDecomposeSEGS' | 'ImpactFrom$_SEG$_ELT' | 'ImpactEdit$_SEG$_ELT' | 'ImpactDilate$_Mask$_SEG$_ELT' | 'ImpactScaleBy$_BBOX$_SEG$_ELT'>
+         Pick<Comfy.Custom.Impact_Pack.Nodes, 'ImpactDecomposeSEGS' | 'ImpactFrom$_SEG$_ELT' | 'ImpactEdit$_SEG$_ELT' | 'ImpactDilate$_Mask$_SEG$_ELT' | 'ImpactScaleBy$_BBOX$_SEG$_ELT'>
       {}
       export interface LATENT extends
          Pick<Comfy.Base.Nodes, 'KSampler' | 'VAEEncode' | 'VAEEncodeForInpaint' | 'EmptyLatentImage' | 'LatentUpscale' | 'LatentUpscaleBy' | 'LatentFromBatch' | 'RepeatLatentBatch' | 'KSamplerAdvanced' | 'SetLatentNoiseMask' | 'LatentComposite' | 'LatentBlend' | 'LatentRotate' | 'LatentFlip' | 'LatentCrop' | 'VAEEncodeTiled' | 'InpaintModelConditioning' | 'LoadLatent'>,
-         Pick<Comfy.Extras$5latent.Nodes, 'LatentAdd' | 'LatentSubtract' | 'LatentMultiply' | 'LatentInterpolate' | 'LatentBatch' | 'LatentBatchSeedBehavior' | 'LatentApplyOperation'>,
-         Pick<Comfy.Extras$5mask.Nodes, 'LatentCompositeMasked'>,
-         Pick<Comfy.Extras$5rebatch.Nodes, 'RebatchLatents'>,
-         Pick<Comfy.Extras$5custom_sampler.Nodes, 'SamplerCustom' | 'SamplerCustom' | 'AddNoise' | 'SamplerCustomAdvanced' | 'SamplerCustomAdvanced'>,
-         Pick<Comfy.Extras$5video_model.Nodes, 'SVD$_img2vid$_Conditioning'>,
-         Pick<Comfy.Extras$5stable3d.Nodes, 'StableZero123$_Conditioning' | 'StableZero123$_Conditioning$_Batched' | 'SV3D$_Conditioning'>,
-         Pick<Comfy.Extras$5sdupscale.Nodes, 'SD$_4XUpscale$_Conditioning'>,
-         Pick<Comfy.Extras$5stable_cascade.Nodes, 'StableCascade$_EmptyLatentImage' | 'StableCascade$_EmptyLatentImage' | 'StableCascade$_StageC$_VAEEncode' | 'StableCascade$_StageC$_VAEEncode' | 'StableCascade$_SuperResolutionControlnet' | 'StableCascade$_SuperResolutionControlnet'>,
-         Pick<Comfy.Extras$5ip2p.Nodes, 'InstructPixToPixConditioning'>,
-         Pick<Comfy.Extras$5audio.Nodes, 'EmptyLatentAudio' | 'VAEEncodeAudio'>,
-         Pick<Comfy.Extras$5sd3.Nodes, 'EmptySD3LatentImage'>,
-         Pick<Comfy.Extras$5mochi.Nodes, 'EmptyMochiLatentVideo'>,
-         Pick<Comfy.Custom$5Impact$7Pack.Nodes, 'LatentPixelScale' | 'IterativeLatentUpscale' | 'TwoSamplersForMask' | 'TwoAdvancedSamplersForMask' | 'PreviewBridgeLatent' | 'LatentReceiver' | 'ImpactKSamplerBasicPipe' | 'ImpactKSamplerAdvancedBasicPipe' | 'ReencodeLatent' | 'ReencodeLatentPipe' | 'RegionalSampler' | 'RegionalSamplerAdvanced' | 'RemoveNoiseMask'>
+         Pick<Comfy.Extra.latent.Nodes, 'LatentAdd' | 'LatentSubtract' | 'LatentMultiply' | 'LatentInterpolate' | 'LatentBatch' | 'LatentBatchSeedBehavior' | 'LatentApplyOperation'>,
+         Pick<Comfy.Extra.mask.Nodes, 'LatentCompositeMasked'>,
+         Pick<Comfy.Extra.rebatch.Nodes, 'RebatchLatents'>,
+         Pick<Comfy.Extra.custom_sampler.Nodes, 'SamplerCustom' | 'SamplerCustom' | 'AddNoise' | 'SamplerCustomAdvanced' | 'SamplerCustomAdvanced'>,
+         Pick<Comfy.Extra.video_model.Nodes, 'SVD$_img2vid$_Conditioning'>,
+         Pick<Comfy.Extra.stable3d.Nodes, 'StableZero123$_Conditioning' | 'StableZero123$_Conditioning$_Batched' | 'SV3D$_Conditioning'>,
+         Pick<Comfy.Extra.sdupscale.Nodes, 'SD$_4XUpscale$_Conditioning'>,
+         Pick<Comfy.Extra.stable_cascade.Nodes, 'StableCascade$_EmptyLatentImage' | 'StableCascade$_EmptyLatentImage' | 'StableCascade$_StageC$_VAEEncode' | 'StableCascade$_StageC$_VAEEncode' | 'StableCascade$_SuperResolutionControlnet' | 'StableCascade$_SuperResolutionControlnet'>,
+         Pick<Comfy.Extra.ip2p.Nodes, 'InstructPixToPixConditioning'>,
+         Pick<Comfy.Extra.audio.Nodes, 'EmptyLatentAudio' | 'VAEEncodeAudio'>,
+         Pick<Comfy.Extra.sd3.Nodes, 'EmptySD3LatentImage'>,
+         Pick<Comfy.Extra.mochi.Nodes, 'EmptyMochiLatentVideo'>,
+         Pick<Comfy.Custom.Impact_Pack.Nodes, 'LatentPixelScale' | 'IterativeLatentUpscale' | 'TwoSamplersForMask' | 'TwoAdvancedSamplersForMask' | 'PreviewBridgeLatent' | 'LatentReceiver' | 'ImpactKSamplerBasicPipe' | 'ImpactKSamplerAdvancedBasicPipe' | 'ReencodeLatent' | 'ReencodeLatentPipe' | 'RegionalSampler' | 'RegionalSamplerAdvanced' | 'RemoveNoiseMask'>
       {}
       export interface GLIGEN extends
          Pick<Comfy.Base.Nodes, 'GLIGENLoader'>
       {}
       export interface SIGMAS extends
-         Pick<Comfy.Extras$5custom_sampler.Nodes, 'BasicScheduler' | 'KarrasScheduler' | 'ExponentialScheduler' | 'PolyexponentialScheduler' | 'LaplaceScheduler' | 'VPScheduler' | 'BetaSamplingScheduler' | 'SDTurboScheduler' | 'SplitSigmas' | 'SplitSigmas' | 'SplitSigmasDenoise' | 'SplitSigmasDenoise' | 'FlipSigmas'>,
-         Pick<Comfy.Extras$5align_your_steps.Nodes, 'AlignYourStepsScheduler'>,
-         Pick<Comfy.Extras$5gits.Nodes, 'GITSScheduler'>
+         Pick<Comfy.Extra.custom_sampler.Nodes, 'BasicScheduler' | 'KarrasScheduler' | 'ExponentialScheduler' | 'PolyexponentialScheduler' | 'LaplaceScheduler' | 'VPScheduler' | 'BetaSamplingScheduler' | 'SDTurboScheduler' | 'SplitSigmas' | 'SplitSigmas' | 'SplitSigmasDenoise' | 'SplitSigmasDenoise' | 'FlipSigmas'>,
+         Pick<Comfy.Extra.align_your_steps.Nodes, 'AlignYourStepsScheduler'>,
+         Pick<Comfy.Extra.gits.Nodes, 'GITSScheduler'>
       {}
       export interface GUIDER extends
-         Pick<Comfy.Extras$5custom_sampler.Nodes, 'CFGGuider' | 'DualCFGGuider' | 'BasicGuider'>,
-         Pick<Comfy.Extras$5perpneg.Nodes, 'PerpNegGuider'>
+         Pick<Comfy.Extra.custom_sampler.Nodes, 'CFGGuider' | 'DualCFGGuider' | 'BasicGuider'>,
+         Pick<Comfy.Extra.perpneg.Nodes, 'PerpNegGuider'>
       {}
       export interface WEBCAM {} // 🔶 no node can output this type.
       export interface MODEL extends
          Pick<Comfy.Base.Nodes, 'CheckpointLoaderSimple' | 'LoraLoader' | 'UNETLoader' | 'unCLIPCheckpointLoader' | 'CheckpointLoader' | 'DiffusersLoader' | 'LoraLoaderModelOnly'>,
-         Pick<Comfy.Extras$5latent.Nodes, 'LatentApplyOperationCFG'>,
-         Pick<Comfy.Extras$5hypernetwork.Nodes, 'HypernetworkLoader'>,
-         Pick<Comfy.Extras$5model_merging.Nodes, 'ModelMergeSimple' | 'ModelMergeBlocks' | 'ModelMergeSubtract' | 'ModelMergeAdd'>,
-         Pick<Comfy.Extras$5tomesd.Nodes, 'TomePatchModel'>,
-         Pick<Comfy.Extras$5freelunch.Nodes, 'FreeU' | 'FreeU$_V2'>,
-         Pick<Comfy.Extras$5hypertile.Nodes, 'HyperTile'>,
-         Pick<Comfy.Extras$5model_advanced.Nodes, 'ModelSamplingDiscrete' | 'ModelSamplingContinuousEDM' | 'ModelSamplingContinuousV' | 'ModelSamplingStableCascade' | 'ModelSamplingSD3' | 'ModelSamplingAuraFlow' | 'ModelSamplingFlux' | 'RescaleCFG'>,
-         Pick<Comfy.Extras$5model_downscale.Nodes, 'PatchModelAddDownscale'>,
-         Pick<Comfy.Extras$5video_model.Nodes, 'ImageOnlyCheckpointLoader' | 'VideoLinearCFGGuidance' | 'VideoTriangleCFGGuidance'>,
-         Pick<Comfy.Extras$5sag.Nodes, 'SelfAttentionGuidance'>,
-         Pick<Comfy.Extras$5perpneg.Nodes, 'PerpNeg'>,
-         Pick<Comfy.Extras$5differential_diffusion.Nodes, 'DifferentialDiffusion'>,
-         Pick<Comfy.Extras$5model_merging_model_specific.Nodes, 'ModelMergeSD1' | 'ModelMergeSD2' | 'ModelMergeSDXL' | 'ModelMergeSD3$_2B' | 'ModelMergeFlux1' | 'ModelMergeSD35$_Large'>,
-         Pick<Comfy.Extras$5pag.Nodes, 'PerturbedAttentionGuidance'>,
-         Pick<Comfy.Extras$5attention_multiply.Nodes, 'UNetSelfAttentionMultiply' | 'UNetCrossAttentionMultiply' | 'UNetTemporalAttentionMultiply'>,
-         Pick<Comfy.Extras$5sd3.Nodes, 'SkipLayerGuidanceSD3'>,
-         Pick<Comfy.Extras$5torch_compile.Nodes, 'TorchCompileModel'>,
-         Pick<Comfy.Custom$5Impact$7Pack.Nodes, 'FromDetailerPipe' | 'FromDetailerPipe$_v2' | 'FromDetailerPipeSDXL' | 'FromDetailerPipeSDXL' | 'FromBasicPipe' | 'FromBasicPipe$_v2' | 'ImpactWildcardEncode'>
+         Pick<Comfy.Extra.latent.Nodes, 'LatentApplyOperationCFG'>,
+         Pick<Comfy.Extra.hypernetwork.Nodes, 'HypernetworkLoader'>,
+         Pick<Comfy.Extra.model_merging.Nodes, 'ModelMergeSimple' | 'ModelMergeBlocks' | 'ModelMergeSubtract' | 'ModelMergeAdd'>,
+         Pick<Comfy.Extra.tomesd.Nodes, 'TomePatchModel'>,
+         Pick<Comfy.Extra.freelunch.Nodes, 'FreeU' | 'FreeU$_V2'>,
+         Pick<Comfy.Extra.hypertile.Nodes, 'HyperTile'>,
+         Pick<Comfy.Extra.model_advanced.Nodes, 'ModelSamplingDiscrete' | 'ModelSamplingContinuousEDM' | 'ModelSamplingContinuousV' | 'ModelSamplingStableCascade' | 'ModelSamplingSD3' | 'ModelSamplingAuraFlow' | 'ModelSamplingFlux' | 'RescaleCFG'>,
+         Pick<Comfy.Extra.model_downscale.Nodes, 'PatchModelAddDownscale'>,
+         Pick<Comfy.Extra.video_model.Nodes, 'ImageOnlyCheckpointLoader' | 'VideoLinearCFGGuidance' | 'VideoTriangleCFGGuidance'>,
+         Pick<Comfy.Extra.sag.Nodes, 'SelfAttentionGuidance'>,
+         Pick<Comfy.Extra.perpneg.Nodes, 'PerpNeg'>,
+         Pick<Comfy.Extra.differential_diffusion.Nodes, 'DifferentialDiffusion'>,
+         Pick<Comfy.Extra.model_merging_model_specific.Nodes, 'ModelMergeSD1' | 'ModelMergeSD2' | 'ModelMergeSDXL' | 'ModelMergeSD3$_2B' | 'ModelMergeFlux1' | 'ModelMergeSD35$_Large'>,
+         Pick<Comfy.Extra.pag.Nodes, 'PerturbedAttentionGuidance'>,
+         Pick<Comfy.Extra.attention_multiply.Nodes, 'UNetSelfAttentionMultiply' | 'UNetCrossAttentionMultiply' | 'UNetTemporalAttentionMultiply'>,
+         Pick<Comfy.Extra.sd3.Nodes, 'SkipLayerGuidanceSD3'>,
+         Pick<Comfy.Extra.torch_compile.Nodes, 'TorchCompileModel'>,
+         Pick<Comfy.Custom.Impact_Pack.Nodes, 'FromDetailerPipe' | 'FromDetailerPipe$_v2' | 'FromDetailerPipeSDXL' | 'FromDetailerPipeSDXL' | 'FromBasicPipe' | 'FromBasicPipe$_v2' | 'ImpactWildcardEncode'>
       {}
       export interface IMAGE extends
          Pick<Comfy.Base.Nodes, 'VAEDecode' | 'LoadImage' | 'ImageScale' | 'ImageScaleBy' | 'ImageInvert' | 'ImageBatch' | 'ImagePadForOutpaint' | 'EmptyImage' | 'VAEDecodeTiled'>,
-         Pick<Comfy.Extras$5upscale_model.Nodes, 'ImageUpscaleWithModel'>,
-         Pick<Comfy.Extras$5post_processing.Nodes, 'ImageBlend' | 'ImageBlur' | 'ImageQuantize' | 'ImageSharpen' | 'ImageScaleToTotalPixels'>,
-         Pick<Comfy.Extras$5mask.Nodes, 'ImageCompositeMasked' | 'MaskToImage'>,
-         Pick<Comfy.Extras$5compositing.Nodes, 'PorterDuffImageComposite' | 'SplitImageWithAlpha' | 'JoinImageWithAlpha'>,
-         Pick<Comfy.Extras$5rebatch.Nodes, 'RebatchImages'>,
-         Pick<Comfy.Extras$5canny.Nodes, 'Canny'>,
-         Pick<Comfy.Extras$5images.Nodes, 'ImageCrop' | 'RepeatImageBatch' | 'ImageFromBatch'>,
-         Pick<Comfy.Extras$5morphology.Nodes, 'Morphology'>,
-         Pick<Comfy.Extras$5stable_cascade.Nodes, 'StableCascade$_SuperResolutionControlnet'>,
-         Pick<Comfy.Extras$5webcam.Nodes, 'WebcamCapture'>,
-         Pick<Comfy.Custom$5Impact$7Pack.Nodes, 'DetailerForEach' | 'DetailerForEachDebug' | 'DetailerForEachDebug' | 'DetailerForEachDebug' | 'DetailerForEachDebug' | 'DetailerForEachDebug' | 'DetailerForEachPipe' | 'DetailerForEachPipe' | 'DetailerForEachDebugPipe' | 'DetailerForEachDebugPipe' | 'DetailerForEachDebugPipe' | 'DetailerForEachDebugPipe' | 'DetailerForEachDebugPipe' | 'DetailerForEachPipeForAnimateDiff' | 'DetailerForEachPipeForAnimateDiff' | 'FaceDetailer' | 'FaceDetailer' | 'FaceDetailer' | 'FaceDetailer' | 'FaceDetailerPipe' | 'FaceDetailerPipe' | 'FaceDetailerPipe' | 'FaceDetailerPipe' | 'MaskDetailerPipe' | 'MaskDetailerPipe' | 'MaskDetailerPipe' | 'LatentPixelScale' | 'IterativeImageUpscale' | 'ImageListToImageBatch' | 'ImpactFrom$_SEG$_ELT' | 'PreviewBridge' | 'ImageReceiver' | 'ImageMaskSwitch' | 'SEGSUpscaler' | 'SEGSUpscalerPipe' | 'SEGSDetailer' | 'SEGSPaste' | 'SEGSPreview' | 'SEGSPreviewCNet' | 'SEGSToImageList' | 'SEGSDetailerForAnimateDiff' | 'ImpactImageBatchToImageList' | 'ImpactMakeImageList' | 'ImpactMakeImageBatch'>
+         Pick<Comfy.Extra.upscale_model.Nodes, 'ImageUpscaleWithModel'>,
+         Pick<Comfy.Extra.post_processing.Nodes, 'ImageBlend' | 'ImageBlur' | 'ImageQuantize' | 'ImageSharpen' | 'ImageScaleToTotalPixels'>,
+         Pick<Comfy.Extra.mask.Nodes, 'ImageCompositeMasked' | 'MaskToImage'>,
+         Pick<Comfy.Extra.compositing.Nodes, 'PorterDuffImageComposite' | 'SplitImageWithAlpha' | 'JoinImageWithAlpha'>,
+         Pick<Comfy.Extra.rebatch.Nodes, 'RebatchImages'>,
+         Pick<Comfy.Extra.canny.Nodes, 'Canny'>,
+         Pick<Comfy.Extra.images.Nodes, 'ImageCrop' | 'RepeatImageBatch' | 'ImageFromBatch'>,
+         Pick<Comfy.Extra.morphology.Nodes, 'Morphology'>,
+         Pick<Comfy.Extra.stable_cascade.Nodes, 'StableCascade$_SuperResolutionControlnet'>,
+         Pick<Comfy.Extra.webcam.Nodes, 'WebcamCapture'>,
+         Pick<Comfy.Custom.Impact_Pack.Nodes, 'DetailerForEach' | 'DetailerForEachDebug' | 'DetailerForEachDebug' | 'DetailerForEachDebug' | 'DetailerForEachDebug' | 'DetailerForEachDebug' | 'DetailerForEachPipe' | 'DetailerForEachPipe' | 'DetailerForEachDebugPipe' | 'DetailerForEachDebugPipe' | 'DetailerForEachDebugPipe' | 'DetailerForEachDebugPipe' | 'DetailerForEachDebugPipe' | 'DetailerForEachPipeForAnimateDiff' | 'DetailerForEachPipeForAnimateDiff' | 'FaceDetailer' | 'FaceDetailer' | 'FaceDetailer' | 'FaceDetailer' | 'FaceDetailerPipe' | 'FaceDetailerPipe' | 'FaceDetailerPipe' | 'FaceDetailerPipe' | 'MaskDetailerPipe' | 'MaskDetailerPipe' | 'MaskDetailerPipe' | 'LatentPixelScale' | 'IterativeImageUpscale' | 'ImageListToImageBatch' | 'ImpactFrom$_SEG$_ELT' | 'PreviewBridge' | 'ImageReceiver' | 'ImageMaskSwitch' | 'SEGSUpscaler' | 'SEGSUpscalerPipe' | 'SEGSDetailer' | 'SEGSPaste' | 'SEGSPreview' | 'SEGSPreviewCNet' | 'SEGSToImageList' | 'SEGSDetailerForAnimateDiff' | 'ImpactImageBatchToImageList' | 'ImpactMakeImageList' | 'ImpactMakeImageBatch'>
       {}
       export interface NOISE extends
-         Pick<Comfy.Extras$5custom_sampler.Nodes, 'RandomNoise' | 'DisableNoise'>
+         Pick<Comfy.Extra.custom_sampler.Nodes, 'RandomNoise' | 'DisableNoise'>
       {}
       export interface AUDIO extends
-         Pick<Comfy.Extras$5audio.Nodes, 'VAEDecodeAudio' | 'LoadAudio'>
+         Pick<Comfy.Extra.audio.Nodes, 'VAEDecodeAudio' | 'LoadAudio'>
       {}
       export interface $Star extends
-         Pick<Comfy.Custom$5Impact$7Pack.Nodes, 'LatentSwitch' | 'SEGSSwitch' | 'ImpactSwitch' | 'ImpactInversedSwitch' | 'ImpactMakeAnyList' | 'ImpactConditionalBranch' | 'ImpactConditionalBranchSelMode' | 'ImpactIfNone' | 'ImpactValueSender' | 'ImpactValueReceiver' | 'ImpactExecutionOrderController' | 'ImpactExecutionOrderController' | 'ImpactDummyInput' | 'ImpactQueueTrigger' | 'ImpactQueueTriggerCountdown' | 'ImpactSetWidgetValue' | 'ImpactNodeSetMuteState' | 'ImpactControlBridge' | 'ImpactSleep'>
+         Pick<Comfy.Custom.Impact_Pack.Nodes, 'LatentSwitch' | 'SEGSSwitch' | 'ImpactSwitch' | 'ImpactInversedSwitch' | 'ImpactMakeAnyList' | 'ImpactConditionalBranch' | 'ImpactConditionalBranchSelMode' | 'ImpactIfNone' | 'ImpactValueSender' | 'ImpactValueReceiver' | 'ImpactExecutionOrderController' | 'ImpactExecutionOrderController' | 'ImpactDummyInput' | 'ImpactQueueTrigger' | 'ImpactQueueTriggerCountdown' | 'ImpactSetWidgetValue' | 'ImpactNodeSetMuteState' | 'ImpactControlBridge' | 'ImpactSleep'>
       {}
       export interface CLIP extends
          Pick<Comfy.Base.Nodes, 'CheckpointLoaderSimple' | 'CLIPSetLastLayer' | 'LoraLoader' | 'CLIPLoader' | 'DualCLIPLoader' | 'unCLIPCheckpointLoader' | 'CheckpointLoader' | 'DiffusersLoader'>,
-         Pick<Comfy.Extras$5model_merging.Nodes, 'CLIPMergeSimple' | 'CLIPMergeSubtract' | 'CLIPMergeAdd'>,
-         Pick<Comfy.Extras$5attention_multiply.Nodes, 'CLIPAttentionMultiply'>,
-         Pick<Comfy.Extras$5sd3.Nodes, 'TripleCLIPLoader'>,
-         Pick<Comfy.Custom$5Impact$7Pack.Nodes, 'FromDetailerPipe' | 'FromDetailerPipe$_v2' | 'FromDetailerPipeSDXL' | 'FromDetailerPipeSDXL' | 'FromBasicPipe' | 'FromBasicPipe$_v2' | 'ImpactWildcardEncode'>
+         Pick<Comfy.Extra.model_merging.Nodes, 'CLIPMergeSimple' | 'CLIPMergeSubtract' | 'CLIPMergeAdd'>,
+         Pick<Comfy.Extra.attention_multiply.Nodes, 'CLIPAttentionMultiply'>,
+         Pick<Comfy.Extra.sd3.Nodes, 'TripleCLIPLoader'>,
+         Pick<Comfy.Custom.Impact_Pack.Nodes, 'FromDetailerPipe' | 'FromDetailerPipe$_v2' | 'FromDetailerPipeSDXL' | 'FromDetailerPipeSDXL' | 'FromBasicPipe' | 'FromBasicPipe$_v2' | 'ImpactWildcardEncode'>
       {}
       export interface MASK extends
          Pick<Comfy.Base.Nodes, 'LoadImage' | 'LoadImageMask' | 'ImagePadForOutpaint'>,
-         Pick<Comfy.Extras$5mask.Nodes, 'ImageToMask' | 'ImageColorToMask' | 'SolidMask' | 'InvertMask' | 'CropMask' | 'MaskComposite' | 'FeatherMask' | 'GrowMask' | 'ThresholdMask'>,
-         Pick<Comfy.Extras$5compositing.Nodes, 'PorterDuffImageComposite' | 'SplitImageWithAlpha'>,
-         Pick<Comfy.Custom$5Impact$7Pack.Nodes, 'SAMDetectorCombined' | 'SAMDetectorSegmented' | 'SAMDetectorSegmented' | 'FaceDetailer' | 'FaceDetailerPipe' | 'BitwiseAndMask' | 'SubtractMask' | 'AddMask' | 'ImpactFlattenMask' | 'ToBinaryMask' | 'MasksToMaskList' | 'MaskListToMaskBatch' | 'ImpactFrom$_SEG$_ELT' | 'ImpactDilateMask' | 'ImpactGaussianBlurMask' | 'BboxDetectorCombined$_v2' | 'SegmDetectorCombined$_v2' | 'SegsToCombinedMask' | 'PreviewBridge' | 'PreviewBridgeLatent' | 'ImageReceiver' | 'ImageMaskSwitch' | 'ImpactSEGSToMaskList' | 'ImpactSEGSToMaskBatch' | 'ImpactMakeMaskList' | 'ImpactMakeMaskBatch'>
+         Pick<Comfy.Extra.mask.Nodes, 'ImageToMask' | 'ImageColorToMask' | 'SolidMask' | 'InvertMask' | 'CropMask' | 'MaskComposite' | 'FeatherMask' | 'GrowMask' | 'ThresholdMask'>,
+         Pick<Comfy.Extra.compositing.Nodes, 'PorterDuffImageComposite' | 'SplitImageWithAlpha'>,
+         Pick<Comfy.Custom.Impact_Pack.Nodes, 'SAMDetectorCombined' | 'SAMDetectorSegmented' | 'SAMDetectorSegmented' | 'FaceDetailer' | 'FaceDetailerPipe' | 'BitwiseAndMask' | 'SubtractMask' | 'AddMask' | 'ImpactFlattenMask' | 'ToBinaryMask' | 'MasksToMaskList' | 'MaskListToMaskBatch' | 'ImpactFrom$_SEG$_ELT' | 'ImpactDilateMask' | 'ImpactGaussianBlurMask' | 'BboxDetectorCombined$_v2' | 'SegmDetectorCombined$_v2' | 'SegsToCombinedMask' | 'PreviewBridge' | 'PreviewBridgeLatent' | 'ImageReceiver' | 'ImageMaskSwitch' | 'ImpactSEGSToMaskList' | 'ImpactSEGSToMaskBatch' | 'ImpactMakeMaskList' | 'ImpactMakeMaskBatch'>
       {}
       export interface SEGS extends
-         Pick<Comfy.Custom$5Impact$7Pack.Nodes, 'BitwiseAndMaskForEach' | 'SubtractMaskForEach' | 'DetailerForEachPipe' | 'DetailerForEachDebugPipe' | 'DetailerForEachPipeForAnimateDiff' | 'ImpactSegsAndMask' | 'ImpactSegsAndMaskForEach' | 'EmptySegs' | 'MediaPipeFaceMeshToSEGS' | 'MaskToSEGS' | 'MaskToSEGS$_for$_AnimateDiff' | 'SetDefaultImageForSEGS' | 'RemoveImageFromSEGS' | 'BboxDetectorSEGS' | 'SegmDetectorSEGS' | 'ONNXDetectorSEGS' | 'ImpactSimpleDetectorSEGS$_for$_AD' | 'ImpactSimpleDetectorSEGS' | 'ImpactSimpleDetectorSEGSPipe' | 'ImpactControlNetApplySEGS' | 'ImpactControlNetApplyAdvancedSEGS' | 'ImpactControlNetClearSEGS' | 'ImpactIPAdapterApplySEGS' | 'ImpactAssembleSEGS' | 'ImpactDilateMaskInSEGS' | 'ImpactGaussianBlurMaskInSEGS' | 'SEGSDetailer' | 'ImpactSEGSConcat' | 'ImpactSEGSPicker' | 'ImpactMakeTileSEGS' | 'ImpactSEGSMerge' | 'SEGSDetailerForAnimateDiff' | 'ImpactSEGSLabelAssign' | 'ImpactSEGSLabelFilter' | 'ImpactSEGSLabelFilter' | 'ImpactSEGSRangeFilter' | 'ImpactSEGSRangeFilter' | 'ImpactSEGSOrderedFilter' | 'ImpactSEGSOrderedFilter' | 'ImpactSEGSClassify' | 'ImpactSEGSClassify'>
+         Pick<Comfy.Custom.Impact_Pack.Nodes, 'BitwiseAndMaskForEach' | 'SubtractMaskForEach' | 'DetailerForEachPipe' | 'DetailerForEachDebugPipe' | 'DetailerForEachPipeForAnimateDiff' | 'ImpactSegsAndMask' | 'ImpactSegsAndMaskForEach' | 'EmptySegs' | 'MediaPipeFaceMeshToSEGS' | 'MaskToSEGS' | 'MaskToSEGS$_for$_AnimateDiff' | 'SetDefaultImageForSEGS' | 'RemoveImageFromSEGS' | 'BboxDetectorSEGS' | 'SegmDetectorSEGS' | 'ONNXDetectorSEGS' | 'ImpactSimpleDetectorSEGS$_for$_AD' | 'ImpactSimpleDetectorSEGS' | 'ImpactSimpleDetectorSEGSPipe' | 'ImpactControlNetApplySEGS' | 'ImpactControlNetApplyAdvancedSEGS' | 'ImpactControlNetClearSEGS' | 'ImpactIPAdapterApplySEGS' | 'ImpactAssembleSEGS' | 'ImpactDilateMaskInSEGS' | 'ImpactGaussianBlurMaskInSEGS' | 'SEGSDetailer' | 'ImpactSEGSConcat' | 'ImpactSEGSPicker' | 'ImpactMakeTileSEGS' | 'ImpactSEGSMerge' | 'SEGSDetailerForAnimateDiff' | 'ImpactSEGSLabelAssign' | 'ImpactSEGSLabelFilter' | 'ImpactSEGSLabelFilter' | 'ImpactSEGSRangeFilter' | 'ImpactSEGSRangeFilter' | 'ImpactSEGSOrderedFilter' | 'ImpactSEGSOrderedFilter' | 'ImpactSEGSClassify' | 'ImpactSEGSClassify'>
       {}
       export interface VAE extends
          Pick<Comfy.Base.Nodes, 'CheckpointLoaderSimple' | 'VAELoader' | 'unCLIPCheckpointLoader' | 'CheckpointLoader' | 'DiffusersLoader'>,
-         Pick<Comfy.Extras$5video_model.Nodes, 'ImageOnlyCheckpointLoader'>,
-         Pick<Comfy.Custom$5Impact$7Pack.Nodes, 'FromDetailerPipe' | 'FromDetailerPipe$_v2' | 'FromDetailerPipeSDXL' | 'FromBasicPipe' | 'FromBasicPipe$_v2' | 'IterativeLatentUpscale' | 'ImpactKSamplerBasicPipe' | 'ImpactKSamplerAdvancedBasicPipe'>
+         Pick<Comfy.Extra.video_model.Nodes, 'ImageOnlyCheckpointLoader'>,
+         Pick<Comfy.Custom.Impact_Pack.Nodes, 'FromDetailerPipe' | 'FromDetailerPipe$_v2' | 'FromDetailerPipeSDXL' | 'FromBasicPipe' | 'FromBasicPipe$_v2' | 'IterativeLatentUpscale' | 'ImpactKSamplerBasicPipe' | 'ImpactKSamplerAdvancedBasicPipe'>
       {}
    }
    
@@ -8384,86 +8384,86 @@ declare global {
    
    // 6. ENUMS -------------------------------
    namespace Comfy.Union {
-      type Enum_KSampler_sampler_name = "ddim" | "ddpm" | "deis" | "dpm_2" | "dpm_2_ancestral" | "dpm_adaptive" | "dpm_fast" | "dpmpp_2m" | "dpmpp_2m_cfg_pp" | "dpmpp_2m_sde" | "dpmpp_2m_sde_gpu" | "dpmpp_2s_ancestral" | "dpmpp_2s_ancestral_cfg_pp" | "dpmpp_3m_sde" | "dpmpp_3m_sde_gpu" | "dpmpp_sde" | "dpmpp_sde_gpu" | "euler" | "euler_ancestral" | "euler_ancestral_cfg_pp" | "euler_cfg_pp" | "heun" | "heunpp2" | "ipndm" | "ipndm_v" | "lcm" | "lms" | "uni_pc" | "uni_pc_bh2"
-      type Enum_KSampler_scheduler = "beta" | "ddim_uniform" | "exponential" | "karras" | "linear_quadratic" | "normal" | "sgm_uniform" | "simple"
-      type Enum_CheckpointLoaderSimple_ckpt_name = "AOM3A3_orangemixs.safetensors" | "photon_v1.safetensors"
-      type Enum_VAELoader_vae_name = "vae-ft-mse-840000-ema-pruned.safetensors"
-      type Enum_LatentUpscale_upscale_method = "area" | "bicubic" | "bilinear" | "bislerp" | "nearest-exact"
-      type Enum_LatentUpscale_crop = "center" | "disabled"
-      type Enum_LoadImage_image = "example.png"
-      type Enum_LoadImageMask_channel = "alpha" | "blue" | "green" | "red"
-      type Enum_ImageScale_upscale_method = "area" | "bicubic" | "bilinear" | "lanczos" | "nearest-exact"
-      type Enum_ConditioningSetMask_set_cond_area = "default" | "mask bounds"
-      type Enum_KSamplerAdvanced_add_noise = "disable" | "enable"
-      type Enum_LatentRotate_rotation = "180 degrees" | "270 degrees" | "90 degrees" | "none"
-      type Enum_LatentFlip_flip_method = "x-axis: vertically" | "y-axis: horizontally"
-      type Enum_LoraLoader_lora_name = '🔴' // never
-      type Enum_CLIPLoader_type = "mochi" | "sd3" | "stable_audio" | "stable_cascade" | "stable_diffusion"
-      type Enum_UNETLoader_weight_dtype = "default" | "fp8_e4m3fn" | "fp8_e4m3fn_fast" | "fp8_e5m2"
-      type Enum_DualCLIPLoader_type = "flux" | "sd3" | "sdxl"
-      type Enum_CheckpointLoader_config_name = "anything_v3.yaml" | "v1-inference.yaml" | "v1-inference_clip_skip_2.yaml" | "v1-inference_clip_skip_2_fp16.yaml" | "v1-inference_fp16.yaml" | "v1-inpainting-inference.yaml" | "v2-inference-v.yaml" | "v2-inference-v_fp32.yaml" | "v2-inference.yaml" | "v2-inference_fp32.yaml" | "v2-inpainting-inference.yaml"
-      type Enum_LatentBatchSeedBehavior_seed_behavior = "fixed" | "random"
-      type Enum_UpscaleModelLoader_model_name = "RealESRGAN_x4plus.pth" | "RealESRGAN_x4plus_anime_6B.pth"
-      type Enum_ImageBlend_blend_mode = "difference" | "multiply" | "normal" | "overlay" | "screen" | "soft_light"
-      type Enum_ImageQuantize_dither = "bayer-16" | "bayer-2" | "bayer-4" | "bayer-8" | "floyd-steinberg" | "none"
-      type Enum_MaskComposite_operation = "add" | "and" | "multiply" | "or" | "subtract" | "xor"
-      type Enum_PorterDuffImageComposite_mode = "ADD" | "CLEAR" | "DARKEN" | "DST" | "DST_ATOP" | "DST_IN" | "DST_OUT" | "DST_OVER" | "LIGHTEN" | "MULTIPLY" | "OVERLAY" | "SCREEN" | "SRC" | "SRC_ATOP" | "SRC_IN" | "SRC_OUT" | "SRC_OVER" | "XOR"
-      type Enum_SamplerDPMPP$_3M$_SDE_noise_device = "cpu" | "gpu"
-      type Enum_SamplerDPMPP$_2M$_SDE_solver_type = "heun" | "midpoint"
-      type Enum_ModelSamplingDiscrete_sampling = "eps" | "lcm" | "v_prediction" | "x0"
-      type Enum_ModelSamplingContinuousEDM_sampling = "edm_playground_v2.5" | "eps" | "v_prediction"
-      type Enum_ModelSamplingContinuousV_sampling = "v_prediction"
-      type Enum_SaveAnimatedWEBP_method = "default" | "fastest" | "slowest"
-      type Enum_Morphology_operation = "bottom_hat" | "close" | "dilate" | "erode" | "gradient" | "open" | "top_hat"
-      type Enum_AlignYourStepsScheduler_model_type = "SD1" | "SDXL" | "SVD"
-      type Enum_SamplerEulerCFGpp_version = "alternative" | "regular"
-      type Enum_CLIPTextEncodeSD3_empty_padding = "empty_prompt" | "none"
-      type Enum_SetUnionControlNetType_type = "auto" | "canny/lineart/anime_lineart/mlsd" | "depth" | "hed/pidi/scribble/ted" | "normal" | "openpose" | "repaint" | "segment" | "tile"
-      type Enum_LoraSave_lora_type = "full_diff" | "standard"
-      type Enum_TorchCompileModel_backend = "cudagraphs" | "inductor"
-      type Enum_SAMLoader_model_name = "ESAM" | "sam_vit_b_01ec64.pth"
-      type Enum_SAMLoader_device_mode = "AUTO" | "CPU" | "Prefer GPU"
-      type Enum_DetailerForEach_scheduler = "AYS SD1" | "AYS SDXL" | "AYS SVD" | "GITS[coeff=1.2]" | "beta" | "ddim_uniform" | "exponential" | "karras" | "linear_quadratic" | "normal" | "sgm_uniform" | "simple"
-      type Enum_SAMDetectorCombined_detection_hint = "center-1" | "diamond-4" | "horizontal-2" | "mask-area" | "mask-point-bbox" | "mask-points" | "none" | "rect-4" | "vertical-2"
-      type Enum_SAMDetectorCombined_mask_hint_use_negative = "False" | "Outter" | "Small"
-      type Enum_ToDetailerPipe_Select$_to$_add$_LoRA = "Select the LoRA to add to the text"
-      type Enum_ToDetailerPipe_Select$_to$_add$_Wildcard = "Select the Wildcard to add to the text"
-      type Enum_LatentPixelScale_scale_method = "area" | "bilinear" | "lanczos" | "nearest-exact"
-      type Enum_IterativeLatentUpscale_step_mode = "geometric" | "simple"
-      type Enum_PixelTiledKSampleUpscalerProvider_tiling_strategy = "padded" | "random" | "simple"
-      type Enum_TwoSamplersForMaskUpscalerProvider_full_sample_schedule = "interleave1" | "interleave1+last1" | "interleave2" | "interleave2+last1" | "interleave3" | "interleave3+last1" | "last1" | "last2" | "none"
-      type Enum_DenoiseScheduleHookProvider_schedule_for_iteration = "simple"
-      type Enum_NoiseInjectionHookProvider_source = "CPU" | "GPU"
-      type Enum_CoreMLDetailerHookProvider_mode = "512x512" | "512x768" | "768x512" | "768x768"
-      type Enum_NoiseInjectionDetailerHookProvider_schedule_for_cycle = "from_start" | "skip_start"
-      type Enum_SEGSOrderedFilterDetailerHookProvider_target = "area(=w*h)" | "height" | "width" | "x1" | "x2" | "y1" | "y2"
-      type Enum_SEGSRangeFilterDetailerHookProvider_target = "area(=w*h)" | "height" | "length_percent" | "width" | "x1" | "x2" | "y1" | "y2"
-      type Enum_SEGSLabelFilterDetailerHookProvider_preset = "airplane" | "all" | "apple" | "backpack" | "banana" | "baseball bat" | "baseball glove" | "bear" | "bed" | "bench" | "bicycle" | "bird" | "boat" | "book" | "bottle" | "bowl" | "broccoli" | "bus" | "cake" | "car" | "carrot" | "cat" | "cell phone" | "chair" | "clock" | "couch" | "cow" | "cup" | "dining table" | "dog" | "donut" | "elephant" | "eyebrows" | "eyes" | "face" | "fire hydrant" | "fork" | "frisbee" | "giraffe" | "hair drier" | "hand" | "handbag" | "horse" | "hot dog" | "keyboard" | "kite" | "knife" | "laptop" | "left_eye" | "left_eyebrow" | "left_pupil" | "long_sleeved_dress" | "long_sleeved_outwear" | "long_sleeved_shirt" | "microwave" | "motorcycle" | "mouse" | "mouth" | "orange" | "oven" | "parking meter" | "person" | "pizza" | "potted plant" | "pupils" | "refrigerator" | "remote" | "right_eye" | "right_eyebrow" | "right_pupil" | "sandwich" | "scissors" | "sheep" | "short_sleeved_dress" | "short_sleeved_outwear" | "short_sleeved_shirt" | "shorts" | "sink" | "skateboard" | "skirt" | "skis" | "sling" | "sling_dress" | "snowboard" | "spoon" | "sports ball" | "stop sign" | "suitcase" | "surfboard" | "teddy bear" | "tennis racket" | "tie" | "toaster" | "toilet" | "toothbrush" | "traffic light" | "train" | "trousers" | "truck" | "tv" | "umbrella" | "vase" | "vest" | "vest_dress" | "wine glass" | "zebra"
-      type Enum_ImpactSimpleDetectorSEGS$_for$_AD_masking_mode = "Combine neighboring frames" | "Don't combine" | "Pivot SEGS"
-      type Enum_ImpactSimpleDetectorSEGS$_for$_AD_segs_pivot = "1st frame mask" | "Combined mask"
-      type Enum_ImpactIPAdapterApplySEGS_weight_type = "channel penalty" | "linear" | "original"
-      type Enum_ImpactIPAdapterApplySEGS_combine_embeds = "add" | "average" | "concat" | "norm average" | "subtract"
-      type Enum_PreviewBridge_restore_mask = "always" | "if_same_size" | "never"
-      type Enum_PreviewBridgeLatent_preview_method = "Latent2RGB-FLUX.1" | "Latent2RGB-Playground-2.5" | "Latent2RGB-SC-B" | "Latent2RGB-SC-Prior" | "Latent2RGB-SD-X4" | "Latent2RGB-SD15" | "Latent2RGB-SD3" | "Latent2RGB-SDXL" | "TAEF1" | "TAESD15" | "TAESD3" | "TAESDXL"
-      type Enum_LatentSender_preview_method = "Latent2RGB-SD15" | "Latent2RGB-SDXL" | "TAESD15" | "TAESDXL"
-      type Enum_SEGSUpscaler_resampling_method = "bicubic" | "bilinear" | "lanczos" | "nearest"
-      type Enum_SEGSUpscaler_supersample = "false" | "true"
-      type Enum_ImpactMakeTileSEGS_irregular_mask_mode = "All random fast" | "All random quality" | "Reuse fast" | "Reuse quality"
-      type Enum_ReencodeLatent_tile_mode = "Both" | "Decode(input) only" | "Encode(output) only" | "None"
-      type Enum_RegionalSampler_seed_2nd_mode = "decrement" | "fixed" | "ignore" | "increment" | "randomize" | "seed+seed_2nd" | "seed-seed_2nd"
-      type Enum_RegionalSampler_additional_mode = "DISABLE" | "ratio additional" | "ratio between"
-      type Enum_RegionalSampler_additional_sampler = "AUTO" | "ddpm" | "dpm_2" | "dpm_fast" | "dpmpp_2m" | "euler" | "heun" | "heunpp2"
-      type Enum_RegionalPrompt_variation_method = "linear" | "slerp"
-      type Enum_ImpactSEGSRangeFilter_target = "area(=w*h)" | "confidence(0-100)" | "height" | "length_percent" | "width" | "x1" | "x2" | "y1" | "y2"
-      type Enum_ImpactSEGSOrderedFilter_target = "area(=w*h)" | "confidence" | "height" | "width" | "x1" | "x2" | "y1" | "y2"
-      type Enum_ImpactCompare_cmp = "a < b" | "a <= b" | "a <> b" | "a = b" | "a > b" | "a >= b" | "ff" | "tt"
-      type Enum_ImpactLogicalOperators_operator = "and" | "or" | "xor"
-      type Enum_ImpactValueReceiver_typ = "BOOLEAN" | "FLOAT" | "INT" | "STRING"
-      type Enum_ImpactControlBridge_behavior = "Bypass" | "Mute" | "Stop"
-      type Enum_ImpactHFTransformersClassifierProvider_preset_repo_id = "Leilab/gender_class" | "Manual repo id" | "NTQAI/pedestrian_gender_recognition" | "ProjectPersonal/GenderClassifier" | "cledoux42/GenderNew_v002" | "crangana/trained-gender" | "ivensamdh/genderage2" | "rizvandwiki/gender-classification-2"
-      type Enum_ImpactSEGSClassify_preset_expr = "#Female < #Male" | "#Female > #Male" | "Age16to25 > 0.1" | "Age50to69 > 0.1" | "Manual expr" | "female > 0.5" | "male > 0.5"
-      type Enum_ImpactSchedulerAdapter_extra_scheduler = "AYS SD1" | "AYS SDXL" | "AYS SVD" | "GITS[coeff=1.2]" | "None"
-      type Enum_UltralyticsDetectorProvider_model_name = "bbox/face_yolov8m.pt" | "bbox/hand_yolov8s.pt" | "segm/person_yolov8m-seg.pt"
+      type E_26c34bf761d4be4554ab944105c5a3c017c99453 = "ddim" | "ddpm" | "deis" | "dpm_2" | "dpm_2_ancestral" | "dpm_adaptive" | "dpm_fast" | "dpmpp_2m" | "dpmpp_2m_cfg_pp" | "dpmpp_2m_sde" | "dpmpp_2m_sde_gpu" | "dpmpp_2s_ancestral" | "dpmpp_2s_ancestral_cfg_pp" | "dpmpp_3m_sde" | "dpmpp_3m_sde_gpu" | "dpmpp_sde" | "dpmpp_sde_gpu" | "euler" | "euler_ancestral" | "euler_ancestral_cfg_pp" | "euler_cfg_pp" | "heun" | "heunpp2" | "ipndm" | "ipndm_v" | "lcm" | "lms" | "uni_pc" | "uni_pc_bh2"
+      type E_5f9267c2d2054f64bc3de0d20b47cf75f7038325 = "beta" | "ddim_uniform" | "exponential" | "karras" | "linear_quadratic" | "normal" | "sgm_uniform" | "simple"
+      type E_1f08f73a9a576ae570aa3d82ea94f2bcfc29a8fc = "AOM3A3_orangemixs.safetensors" | "photon_v1.safetensors"
+      type E_621a1d2d13812defa70c4b6ec953d17713bd232a = "vae-ft-mse-840000-ema-pruned.safetensors"
+      type E_6e6cbf6c48411ad480e010b0c9d2434b41af430d = "area" | "bicubic" | "bilinear" | "bislerp" | "nearest-exact"
+      type E_e2779c2a162ed54d5841127cc2968e8d50f5e431 = "center" | "disabled"
+      type E_26ea5ad8c44c9551fea858fff18017427386b591 = "example.png"
+      type E_19d5be39f1fd20a88fdbcb009a06c7df2b0ef998 = "alpha" | "blue" | "green" | "red"
+      type E_165b455eb22956fc9da6e1b76d49a4077f15d897 = "area" | "bicubic" | "bilinear" | "lanczos" | "nearest-exact"
+      type E_046ed3ef4b2b9a9cfdb62e53a70fe767fb996451 = "default" | "mask bounds"
+      type E_449b4cae3566dd9b97c417c352bb08e25b89431b = "disable" | "enable"
+      type E_061551528c540e0171a9c88a94c7d5375aa31f8a = "180 degrees" | "270 degrees" | "90 degrees" | "none"
+      type E_cdf7071acecb5016da941b6e718b82c97248a3e4 = "x-axis: vertically" | "y-axis: horizontally"
+      type E_779f30207c92fb9c40d7af879864067c0972d190 = '🔴' // never
+      type E_766fb79b4f3904a6716246cfb2a33b7b9e6a08c4 = "mochi" | "sd3" | "stable_audio" | "stable_cascade" | "stable_diffusion"
+      type E_21ba65fbb0df707c108b25356a3507e13f21ea58 = "default" | "fp8_e4m3fn" | "fp8_e4m3fn_fast" | "fp8_e5m2"
+      type E_39292df8ce88fd66f0dacf6f9110cfa2594ca25c = "flux" | "sd3" | "sdxl"
+      type E_a1972c9480c542a0e8ccafa03c2572ba5fc62160 = "anything_v3.yaml" | "v1-inference.yaml" | "v1-inference_clip_skip_2.yaml" | "v1-inference_clip_skip_2_fp16.yaml" | "v1-inference_fp16.yaml" | "v1-inpainting-inference.yaml" | "v2-inference-v.yaml" | "v2-inference-v_fp32.yaml" | "v2-inference.yaml" | "v2-inference_fp32.yaml" | "v2-inpainting-inference.yaml"
+      type E_1d09df0c3ce1b4556d07af26e593d4033efc639b = "fixed" | "random"
+      type E_2504d8563e078c3ed105667cbb6d0ff714d5798b = "RealESRGAN_x4plus.pth" | "RealESRGAN_x4plus_anime_6B.pth"
+      type E_4ca09d2bc16d4174960bd60a103d4c0911361855 = "difference" | "multiply" | "normal" | "overlay" | "screen" | "soft_light"
+      type E_7c2feaebcf0bbbcda0fe9f3c8cba1cf87002bc0e = "bayer-16" | "bayer-2" | "bayer-4" | "bayer-8" | "floyd-steinberg" | "none"
+      type E_88c0c90dbad3b41c3c4a4f8a89afad7b1c0db2e0 = "add" | "and" | "multiply" | "or" | "subtract" | "xor"
+      type E_d954b5ae44db00529f0fd0bfb816e25c12617df8 = "ADD" | "CLEAR" | "DARKEN" | "DST" | "DST_ATOP" | "DST_IN" | "DST_OUT" | "DST_OVER" | "LIGHTEN" | "MULTIPLY" | "OVERLAY" | "SCREEN" | "SRC" | "SRC_ATOP" | "SRC_IN" | "SRC_OUT" | "SRC_OVER" | "XOR"
+      type E_928b7403128cb25513cafc463a76a922ba5d4bd0 = "cpu" | "gpu"
+      type E_148e0bc88719e23ec2f2c80871fe45ae759cd7e1 = "heun" | "midpoint"
+      type E_e89ec78e24ca5e9c91264b9e9b5ed722d2b509dc = "eps" | "lcm" | "v_prediction" | "x0"
+      type E_bf8a83a3d55d70c688644bf18edaf23501f7c168 = "edm_playground_v2.5" | "eps" | "v_prediction"
+      type E_3c3164c6c468d61dfa20092960e3d7854495e50c = "v_prediction"
+      type E_253b68425542d8144b2b8a7af90f057b41939f63 = "default" | "fastest" | "slowest"
+      type E_6ba03252ec9c8111f7381dfb573cd99c2b4d0e3b = "bottom_hat" | "close" | "dilate" | "erode" | "gradient" | "open" | "top_hat"
+      type E_ec317371192386ae10cedaee29b315e900386a18 = "SD1" | "SDXL" | "SVD"
+      type E_a8aa5eb2d828c2e279168c48955c7a0fe3ea011a = "alternative" | "regular"
+      type E_270e152a81c37daf152e6cc67675baaafe058bc4 = "empty_prompt" | "none"
+      type E_0e92c8b1b6fe90c3e343d8b54b531b9d887eee62 = "auto" | "canny/lineart/anime_lineart/mlsd" | "depth" | "hed/pidi/scribble/ted" | "normal" | "openpose" | "repaint" | "segment" | "tile"
+      type E_b80b6129a942660e31e08221ee04a76f537556ce = "full_diff" | "standard"
+      type E_4bbca93e426c35d56c43252f1fb21877d5e7a1aa = "cudagraphs" | "inductor"
+      type E_40c777392f92d61852ab0f7a429a755abf59b71a = "ESAM" | "sam_vit_b_01ec64.pth"
+      type E_2ad445b99254e9b51c963d9f1a75fabe3d01e569 = "AUTO" | "CPU" | "Prefer GPU"
+      type E_720061fdb15e8c451b6aa7ed023644f064ddc57d = "AYS SD1" | "AYS SDXL" | "AYS SVD" | "GITS[coeff=1.2]" | "beta" | "ddim_uniform" | "exponential" | "karras" | "linear_quadratic" | "normal" | "sgm_uniform" | "simple"
+      type E_40275a874822a8699ee13794e127b63cdd6bfdae = "center-1" | "diamond-4" | "horizontal-2" | "mask-area" | "mask-point-bbox" | "mask-points" | "none" | "rect-4" | "vertical-2"
+      type E_aa302307a82588b6e514aca43e4cddad342a73fc = "False" | "Outter" | "Small"
+      type E_35e403c7628f220c07d5485d6e81fc66b4fc12df = "Select the LoRA to add to the text"
+      type E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26 = "Select the Wildcard to add to the text"
+      type E_f9c5efbc827613eb902695cd0a25738ee31c607d = "area" | "bilinear" | "lanczos" | "nearest-exact"
+      type E_4724269c8f643d5efa98f97e1e55a7ddfe6aac6c = "geometric" | "simple"
+      type E_304f89a0de34643f12756237824e7261db28aaf5 = "padded" | "random" | "simple"
+      type E_de6a9887e0bfe301f572e929959509ed64574d1b = "interleave1" | "interleave1+last1" | "interleave2" | "interleave2+last1" | "interleave3" | "interleave3+last1" | "last1" | "last2" | "none"
+      type E_0f7d0d088b6ea936fb25b477722d734706fe8b40 = "simple"
+      type E_3dfc15432d4b952e91053feecd5a5427720957fc = "CPU" | "GPU"
+      type E_d4b6506ab5528aeab8952aa9d308dbc242d01e63 = "512x512" | "512x768" | "768x512" | "768x768"
+      type E_afbc7832ad78555d4f5646f97ed21b561fe3d1f0 = "from_start" | "skip_start"
+      type E_87bec9aa0dfe9b9678fd35387106d931d78358cd = "area(=w*h)" | "height" | "width" | "x1" | "x2" | "y1" | "y2"
+      type E_aceb55e7f03fcbc2a78383bd8ddff8676e42e536 = "area(=w*h)" | "height" | "length_percent" | "width" | "x1" | "x2" | "y1" | "y2"
+      type E_cc1f262afc534d382e5c36082cecd4fc2a9c4ffb = "airplane" | "all" | "apple" | "backpack" | "banana" | "baseball bat" | "baseball glove" | "bear" | "bed" | "bench" | "bicycle" | "bird" | "boat" | "book" | "bottle" | "bowl" | "broccoli" | "bus" | "cake" | "car" | "carrot" | "cat" | "cell phone" | "chair" | "clock" | "couch" | "cow" | "cup" | "dining table" | "dog" | "donut" | "elephant" | "eyebrows" | "eyes" | "face" | "fire hydrant" | "fork" | "frisbee" | "giraffe" | "hair drier" | "hand" | "handbag" | "horse" | "hot dog" | "keyboard" | "kite" | "knife" | "laptop" | "left_eye" | "left_eyebrow" | "left_pupil" | "long_sleeved_dress" | "long_sleeved_outwear" | "long_sleeved_shirt" | "microwave" | "motorcycle" | "mouse" | "mouth" | "orange" | "oven" | "parking meter" | "person" | "pizza" | "potted plant" | "pupils" | "refrigerator" | "remote" | "right_eye" | "right_eyebrow" | "right_pupil" | "sandwich" | "scissors" | "sheep" | "short_sleeved_dress" | "short_sleeved_outwear" | "short_sleeved_shirt" | "shorts" | "sink" | "skateboard" | "skirt" | "skis" | "sling" | "sling_dress" | "snowboard" | "spoon" | "sports ball" | "stop sign" | "suitcase" | "surfboard" | "teddy bear" | "tennis racket" | "tie" | "toaster" | "toilet" | "toothbrush" | "traffic light" | "train" | "trousers" | "truck" | "tv" | "umbrella" | "vase" | "vest" | "vest_dress" | "wine glass" | "zebra"
+      type E_e5ef6b688dbafd88538e80bf002826bade4bb121 = "Combine neighboring frames" | "Don't combine" | "Pivot SEGS"
+      type E_651ea09f69db9a1eb817103d1ea8e3ac08b4a319 = "1st frame mask" | "Combined mask"
+      type E_05cddbad13b094c2641c6bb7d261e15c71efc903 = "channel penalty" | "linear" | "original"
+      type E_055d80a7c582bd5b57fd6775414e697be3f0f580 = "add" | "average" | "concat" | "norm average" | "subtract"
+      type E_f27fae3205ecf36e9f4a68f3867d38e025476963 = "always" | "if_same_size" | "never"
+      type E_ea287ec9983f05378f2614091804a1b6b95d1c79 = "Latent2RGB-FLUX.1" | "Latent2RGB-Playground-2.5" | "Latent2RGB-SC-B" | "Latent2RGB-SC-Prior" | "Latent2RGB-SD-X4" | "Latent2RGB-SD15" | "Latent2RGB-SD3" | "Latent2RGB-SDXL" | "TAEF1" | "TAESD15" | "TAESD3" | "TAESDXL"
+      type E_fa4a13687b111fa33a8c8fa375d5321d09b46b27 = "Latent2RGB-SD15" | "Latent2RGB-SDXL" | "TAESD15" | "TAESDXL"
+      type E_bac912b55de8a59480c74aba068f4a3b5f9a0e38 = "bicubic" | "bilinear" | "lanczos" | "nearest"
+      type E_c1a74591678033a2ccc87aa0add77dab7f001da5 = "false" | "true"
+      type E_5cc1495fe28eac05289d45b29269b31c6edca055 = "All random fast" | "All random quality" | "Reuse fast" | "Reuse quality"
+      type E_d5776f669e41b2ec29cd020ce34a8b7cdf23693d = "Both" | "Decode(input) only" | "Encode(output) only" | "None"
+      type E_1e8364b55644fdbf6d28dd3e6197d9fe1777e361 = "decrement" | "fixed" | "ignore" | "increment" | "randomize" | "seed+seed_2nd" | "seed-seed_2nd"
+      type E_db19bd49ccd13456a936f2070c088f16070aa0b1 = "DISABLE" | "ratio additional" | "ratio between"
+      type E_3fd6d592305b0bc44ce9c69a23201f8d7a155884 = "AUTO" | "ddpm" | "dpm_2" | "dpm_fast" | "dpmpp_2m" | "euler" | "heun" | "heunpp2"
+      type E_627d63e970919d713af795854ffd9dd2642f92d2 = "linear" | "slerp"
+      type E_10c017f4a76414789a861361dc5cdbfef12e2d7d = "area(=w*h)" | "confidence(0-100)" | "height" | "length_percent" | "width" | "x1" | "x2" | "y1" | "y2"
+      type E_b1f554e93f550a374a1ff740ad7447a7b34b71be = "area(=w*h)" | "confidence" | "height" | "width" | "x1" | "x2" | "y1" | "y2"
+      type E_87d3a21083ff67c538309f218241f70a793f619c = "a < b" | "a <= b" | "a <> b" | "a = b" | "a > b" | "a >= b" | "ff" | "tt"
+      type E_99d83eba8f2a90cc88da26295981d92d458e4e14 = "and" | "or" | "xor"
+      type E_6c86e4efdc8db8dae17215fbf80825ddaad06ffa = "BOOLEAN" | "FLOAT" | "INT" | "STRING"
+      type E_383642e8f2544ff8678e350c4f1049624ad6589e = "Bypass" | "Mute" | "Stop"
+      type E_7fd75955db2b2e81b87d8452255b37c2d98fd105 = "Leilab/gender_class" | "Manual repo id" | "NTQAI/pedestrian_gender_recognition" | "ProjectPersonal/GenderClassifier" | "cledoux42/GenderNew_v002" | "crangana/trained-gender" | "ivensamdh/genderage2" | "rizvandwiki/gender-classification-2"
+      type E_01400d675e59295302197d02289e89ead401098e = "#Female < #Male" | "#Female > #Male" | "Age16to25 > 0.1" | "Age50to69 > 0.1" | "Manual expr" | "female > 0.5" | "male > 0.5"
+      type E_64bb9134d159ff7e3f573facb7cb2fcfbb2de483 = "AYS SD1" | "AYS SDXL" | "AYS SVD" | "GITS[coeff=1.2]" | "None"
+      type E_cf11746957b2cb2b6379bbd08fe59610b2aae90a = "bbox/face_yolov8m.pt" | "bbox/hand_yolov8s.pt" | "segm/person_yolov8m-seg.pt"
    }
    
    // 7. INTERFACES --------------------------
@@ -8515,7 +8515,7 @@ declare global {
    export interface HasSingle_MASK { _MASK: ComfyNodeOutput<'MASK'> } // prettier-ignore
    export interface HasSingle_SEGS { _SEGS: ComfyNodeOutput<'SEGS'> } // prettier-ignore
    export interface HasSingle_VAE { _VAE: ComfyNodeOutput<'VAE'> } // prettier-ignore
-   export interface HasSingle_Enum_DetailerForEach_scheduler { _Enum_DetailerForEach_scheduler: Enum_DetailerForEach_scheduler } // prettier-ignore
+   export interface HasSingle_E_720061fdb15e8c451b6aa7ed023644f064ddc57d { _E_720061fdb15e8c451b6aa7ed023644f064ddc57d: E_720061fdb15e8c451b6aa7ed023644f064ddc57d } // prettier-ignore
    
    // 8.2 NODE UI helpers --------------------
    export interface FormHelper {
@@ -8523,12 +8523,9 @@ declare global {
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Enum_KSampler_sampler_name }
-        scheduler: { kind: 'enum', type: Enum_KSampler_scheduler }
         denoise: { kind: 'number', type: number }
     }
     CheckpointLoaderSimple: {
-        ckpt_name: { kind: 'enum', type: Enum_CheckpointLoaderSimple_ckpt_name }
     }
     CLIPTextEncode: {
         text: { kind: 'string', type: string }
@@ -8544,7 +8541,6 @@ declare global {
         grow_mask_by: { kind: 'number', type: number }
     }
     VAELoader: {
-        vae_name: { kind: 'enum', type: Enum_VAELoader_vae_name }
     }
     EmptyLatentImage: {
         width: { kind: 'number', type: number }
@@ -8552,13 +8548,10 @@ declare global {
         batch_size: { kind: 'number', type: number }
     }
     LatentUpscale: {
-        upscale_method: { kind: 'enum', type: Enum_LatentUpscale_upscale_method }
         width: { kind: 'number', type: number }
         height: { kind: 'number', type: number }
-        crop: { kind: 'enum', type: Enum_LatentUpscale_crop }
     }
     LatentUpscaleBy: {
-        upscale_method: { kind: 'enum', type: Enum_LatentUpscale_upscale_method }
         scale_by: { kind: 'number', type: number }
     }
     LatentFromBatch: {
@@ -8574,20 +8567,14 @@ declare global {
     PreviewImage: {
     }
     LoadImage: {
-        image: { kind: 'enum', type: Enum_LoadImage_image }
     }
     LoadImageMask: {
-        image: { kind: 'enum', type: Enum_LoadImage_image }
-        channel: { kind: 'enum', type: Enum_LoadImageMask_channel }
     }
     ImageScale: {
-        upscale_method: { kind: 'enum', type: Enum_ImageScale_upscale_method }
         width: { kind: 'number', type: number }
         height: { kind: 'number', type: number }
-        crop: { kind: 'enum', type: Enum_LatentUpscale_crop }
     }
     ImageScaleBy: {
-        upscale_method: { kind: 'enum', type: Enum_ImageScale_upscale_method }
         scale_by: { kind: 'number', type: number }
     }
     ImageInvert: {
@@ -8633,18 +8620,13 @@ declare global {
     }
     ConditioningSetMask: {
         strength: { kind: 'number', type: number }
-        set_cond_area: { kind: 'enum', type: Enum_ConditioningSetMask_set_cond_area }
     }
     KSamplerAdvanced: {
-        add_noise: { kind: 'enum', type: Enum_KSamplerAdvanced_add_noise }
         noise_seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Enum_KSampler_sampler_name }
-        scheduler: { kind: 'enum', type: Enum_KSampler_scheduler }
         start_at_step: { kind: 'number', type: number }
         end_at_step: { kind: 'number', type: number }
-        return_with_leftover_noise: { kind: 'enum', type: Enum_KSamplerAdvanced_add_noise }
     }
     SetLatentNoiseMask: {
     }
@@ -8657,10 +8639,8 @@ declare global {
         blend_factor: { kind: 'number', type: number }
     }
     LatentRotate: {
-        rotation: { kind: 'enum', type: Enum_LatentRotate_rotation }
     }
     LatentFlip: {
-        flip_method: { kind: 'enum', type: Enum_LatentFlip_flip_method }
     }
     LatentCrop: {
         width: { kind: 'number', type: number }
@@ -8669,22 +8649,14 @@ declare global {
         y: { kind: 'number', type: number }
     }
     LoraLoader: {
-        lora_name: { kind: 'enum', type: Enum_LoraLoader_lora_name }
         strength_model: { kind: 'number', type: number }
         strength_clip: { kind: 'number', type: number }
     }
     CLIPLoader: {
-        clip_name: { kind: 'enum', type: Enum_LoraLoader_lora_name }
-        type: { kind: 'enum', type: Enum_CLIPLoader_type }
     }
     UNETLoader: {
-        unet_name: { kind: 'enum', type: Enum_LoraLoader_lora_name }
-        weight_dtype: { kind: 'enum', type: Enum_UNETLoader_weight_dtype }
     }
     DualCLIPLoader: {
-        clip_name1: { kind: 'enum', type: Enum_LoraLoader_lora_name }
-        clip_name2: { kind: 'enum', type: Enum_LoraLoader_lora_name }
-        type: { kind: 'enum', type: Enum_DualCLIPLoader_type }
     }
     CLIPVisionEncode: {
     }
@@ -8703,16 +8675,12 @@ declare global {
         end_percent: { kind: 'number', type: number }
     }
     ControlNetLoader: {
-        control_net_name: { kind: 'enum', type: Enum_LoraLoader_lora_name }
     }
     DiffControlNetLoader: {
-        control_net_name: { kind: 'enum', type: Enum_LoraLoader_lora_name }
     }
     StyleModelLoader: {
-        style_model_name: { kind: 'enum', type: Enum_LoraLoader_lora_name }
     }
     CLIPVisionLoader: {
-        clip_name: { kind: 'enum', type: Enum_LoraLoader_lora_name }
     }
     VAEDecodeTiled: {
         tile_size: { kind: 'number', type: number }
@@ -8721,10 +8689,8 @@ declare global {
         tile_size: { kind: 'number', type: number }
     }
     unCLIPCheckpointLoader: {
-        ckpt_name: { kind: 'enum', type: Enum_CheckpointLoaderSimple_ckpt_name }
     }
     GLIGENLoader: {
-        gligen_name: { kind: 'enum', type: Enum_LoraLoader_lora_name }
     }
     GLIGENTextBoxApply: {
         text: { kind: 'string', type: string }
@@ -8736,14 +8702,10 @@ declare global {
     InpaintModelConditioning: {
     }
     CheckpointLoader: {
-        config_name: { kind: 'enum', type: Enum_CheckpointLoader_config_name }
-        ckpt_name: { kind: 'enum', type: Enum_CheckpointLoaderSimple_ckpt_name }
     }
     DiffusersLoader: {
-        model_path: { kind: 'enum', type: Enum_LoraLoader_lora_name }
     }
     LoadLatent: {
-        latent: { kind: 'enum', type: Enum_LoraLoader_lora_name }
     }
     SaveLatent: {
         filename_prefix: { kind: 'string', type: string }
@@ -8755,7 +8717,6 @@ declare global {
         end: { kind: 'number', type: number }
     }
     LoraLoaderModelOnly: {
-        lora_name: { kind: 'enum', type: Enum_LoraLoader_lora_name }
         strength_model: { kind: 'number', type: number }
     }
     LatentAdd: {
@@ -8771,7 +8732,6 @@ declare global {
     LatentBatch: {
     }
     LatentBatchSeedBehavior: {
-        seed_behavior: { kind: 'enum', type: Enum_LatentBatchSeedBehavior_seed_behavior }
     }
     LatentApplyOperation: {
     }
@@ -8786,17 +8746,14 @@ declare global {
         alpha: { kind: 'number', type: number }
     }
     HypernetworkLoader: {
-        hypernetwork_name: { kind: 'enum', type: Enum_LoraLoader_lora_name }
         strength: { kind: 'number', type: number }
     }
     UpscaleModelLoader: {
-        model_name: { kind: 'enum', type: Enum_UpscaleModelLoader_model_name }
     }
     ImageUpscaleWithModel: {
     }
     ImageBlend: {
         blend_factor: { kind: 'number', type: number }
-        blend_mode: { kind: 'enum', type: Enum_ImageBlend_blend_mode }
     }
     ImageBlur: {
         blur_radius: { kind: 'number', type: number }
@@ -8804,7 +8761,6 @@ declare global {
     }
     ImageQuantize: {
         colors: { kind: 'number', type: number }
-        dither: { kind: 'enum', type: Enum_ImageQuantize_dither }
     }
     ImageSharpen: {
         sharpen_radius: { kind: 'number', type: number }
@@ -8812,7 +8768,6 @@ declare global {
         alpha: { kind: 'number', type: number }
     }
     ImageScaleToTotalPixels: {
-        upscale_method: { kind: 'enum', type: Enum_ImageScale_upscale_method }
         megapixels: { kind: 'number', type: number }
     }
     LatentCompositeMasked: {
@@ -8828,7 +8783,6 @@ declare global {
     MaskToImage: {
     }
     ImageToMask: {
-        channel: { kind: 'enum', type: Enum_LoadImageMask_channel }
     }
     ImageColorToMask: {
         color: { kind: 'number', type: number }
@@ -8849,7 +8803,6 @@ declare global {
     MaskComposite: {
         x: { kind: 'number', type: number }
         y: { kind: 'number', type: number }
-        operation: { kind: 'enum', type: Enum_MaskComposite_operation }
     }
     FeatherMask: {
         left: { kind: 'number', type: number }
@@ -8865,7 +8818,6 @@ declare global {
         value: { kind: 'number', type: number }
     }
     PorterDuffImageComposite: {
-        mode: { kind: 'enum', type: Enum_PorterDuffImageComposite_mode }
     }
     SplitImageWithAlpha: {
     }
@@ -8951,7 +8903,6 @@ declare global {
         cfg: { kind: 'number', type: number }
     }
     BasicScheduler: {
-        scheduler: { kind: 'enum', type: Enum_KSampler_scheduler }
         steps: { kind: 'number', type: number }
         denoise: { kind: 'number', type: number }
     }
@@ -8995,7 +8946,6 @@ declare global {
         denoise: { kind: 'number', type: number }
     }
     KSamplerSelect: {
-        sampler_name: { kind: 'enum', type: Enum_KSampler_sampler_name }
     }
     SamplerEulerAncestral: {
         eta: { kind: 'number', type: number }
@@ -9011,19 +8961,15 @@ declare global {
     SamplerDPMPP$_3M$_SDE: {
         eta: { kind: 'number', type: number }
         s_noise: { kind: 'number', type: number }
-        noise_device: { kind: 'enum', type: Enum_SamplerDPMPP$_3M$_SDE_noise_device }
     }
     SamplerDPMPP$_2M$_SDE: {
-        solver_type: { kind: 'enum', type: Enum_SamplerDPMPP$_2M$_SDE_solver_type }
         eta: { kind: 'number', type: number }
         s_noise: { kind: 'number', type: number }
-        noise_device: { kind: 'enum', type: Enum_SamplerDPMPP$_3M$_SDE_noise_device }
     }
     SamplerDPMPP$_SDE: {
         eta: { kind: 'number', type: number }
         s_noise: { kind: 'number', type: number }
         r: { kind: 'number', type: number }
-        noise_device: { kind: 'enum', type: Enum_SamplerDPMPP$_3M$_SDE_noise_device }
     }
     SamplerDPMPP$_2S$_Ancestral: {
         eta: { kind: 'number', type: number }
@@ -9074,16 +9020,13 @@ declare global {
         scale_depth: { kind: 'boolean', type: boolean }
     }
     ModelSamplingDiscrete: {
-        sampling: { kind: 'enum', type: Enum_ModelSamplingDiscrete_sampling }
         zsnr: { kind: 'boolean', type: boolean }
     }
     ModelSamplingContinuousEDM: {
-        sampling: { kind: 'enum', type: Enum_ModelSamplingContinuousEDM_sampling }
         sigma_max: { kind: 'number', type: number }
         sigma_min: { kind: 'number', type: number }
     }
     ModelSamplingContinuousV: {
-        sampling: { kind: 'enum', type: Enum_ModelSamplingContinuousV_sampling }
         sigma_max: { kind: 'number', type: number }
         sigma_min: { kind: 'number', type: number }
     }
@@ -9111,8 +9054,6 @@ declare global {
         start_percent: { kind: 'number', type: number }
         end_percent: { kind: 'number', type: number }
         downscale_after_skip: { kind: 'boolean', type: boolean }
-        downscale_method: { kind: 'enum', type: Enum_LatentUpscale_upscale_method }
-        upscale_method: { kind: 'enum', type: Enum_LatentUpscale_upscale_method }
     }
     ImageCrop: {
         width: { kind: 'number', type: number }
@@ -9132,7 +9073,6 @@ declare global {
         fps: { kind: 'number', type: number }
         lossless: { kind: 'boolean', type: boolean }
         quality: { kind: 'number', type: number }
-        method: { kind: 'enum', type: Enum_SaveAnimatedWEBP_method }
     }
     SaveAnimatedPNG: {
         filename_prefix: { kind: 'string', type: string }
@@ -9140,7 +9080,6 @@ declare global {
         compress_level: { kind: 'number', type: number }
     }
     ImageOnlyCheckpointLoader: {
-        ckpt_name: { kind: 'enum', type: Enum_CheckpointLoaderSimple_ckpt_name }
     }
     SVD$_img2vid$_Conditioning: {
         width: { kind: 'number', type: number }
@@ -9197,7 +9136,6 @@ declare global {
         noise_augmentation: { kind: 'number', type: number }
     }
     PhotoMakerLoader: {
-        photomaker_model_name: { kind: 'enum', type: Enum_LoraLoader_lora_name }
     }
     PhotoMakerEncode: {
         text: { kind: 'string', type: string }
@@ -9206,7 +9144,6 @@ declare global {
         text: { kind: 'string', type: string }
     }
     Morphology: {
-        operation: { kind: 'enum', type: Enum_Morphology_operation }
         kernel_size: { kind: 'number', type: number }
     }
     StableCascade$_EmptyLatentImage: {
@@ -9463,7 +9400,6 @@ declare global {
         scale: { kind: 'number', type: number }
     }
     AlignYourStepsScheduler: {
-        model_type: { kind: 'enum', type: Enum_AlignYourStepsScheduler_model_type }
         steps: { kind: 'number', type: number }
         denoise: { kind: 'number', type: number }
     }
@@ -9494,10 +9430,8 @@ declare global {
     SamplerLCMUpscale: {
         scale_ratio: { kind: 'number', type: number }
         scale_steps: { kind: 'number', type: number }
-        upscale_method: { kind: 'enum', type: Enum_LatentUpscale_upscale_method }
     }
     SamplerEulerCFGpp: {
-        version: { kind: 'enum', type: Enum_SamplerEulerCFGpp_version }
     }
     WebcamCapture: {
         width: { kind: 'number', type: number }
@@ -9516,14 +9450,10 @@ declare global {
         filename_prefix: { kind: 'string', type: string }
     }
     LoadAudio: {
-        audio: { kind: 'enum', type: Enum_LoraLoader_lora_name }
     }
     PreviewAudio: {
     }
     TripleCLIPLoader: {
-        clip_name1: { kind: 'enum', type: Enum_LoraLoader_lora_name }
-        clip_name2: { kind: 'enum', type: Enum_LoraLoader_lora_name }
-        clip_name3: { kind: 'enum', type: Enum_LoraLoader_lora_name }
     }
     EmptySD3LatentImage: {
         width: { kind: 'number', type: number }
@@ -9534,7 +9464,6 @@ declare global {
         clip_l: { kind: 'string', type: string }
         clip_g: { kind: 'string', type: string }
         t5xxl: { kind: 'string', type: string }
-        empty_padding: { kind: 'enum', type: Enum_CLIPTextEncodeSD3_empty_padding }
     }
     ControlNetApplySD3: {
         strength: { kind: 'number', type: number }
@@ -9553,7 +9482,6 @@ declare global {
         denoise: { kind: 'number', type: number }
     }
     SetUnionControlNetType: {
-        type: { kind: 'enum', type: Enum_SetUnionControlNetType_type }
     }
     ControlNetInpaintingAliMamaApply: {
         strength: { kind: 'number', type: number }
@@ -9575,11 +9503,9 @@ declare global {
     LoraSave: {
         filename_prefix: { kind: 'string', type: string }
         rank: { kind: 'number', type: number }
-        lora_type: { kind: 'enum', type: Enum_LoraSave_lora_type }
         bias_diff: { kind: 'boolean', type: boolean }
     }
     TorchCompileModel: {
-        backend: { kind: 'enum', type: Enum_TorchCompileModel_backend }
     }
     EmptyMochiLatentVideo: {
         width: { kind: 'number', type: number }
@@ -9590,8 +9516,6 @@ declare global {
     SaveImageWebsocket: {
     }
     SAMLoader: {
-        model_name: { kind: 'enum', type: Enum_SAMLoader_model_name }
-        device_mode: { kind: 'enum', type: Enum_SAMLoader_device_mode }
     }
     CLIPSegDetectorProvider: {
         text: { kind: 'string', type: string }
@@ -9600,7 +9524,6 @@ declare global {
         dilation_factor: { kind: 'number', type: number }
     }
     ONNXDetectorProvider: {
-        model_name: { kind: 'enum', type: Enum_LoraLoader_lora_name }
     }
     BitwiseAndMaskForEach: {
     }
@@ -9613,8 +9536,6 @@ declare global {
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Enum_KSampler_sampler_name }
-        scheduler: { kind: 'enum', type: Enum_DetailerForEach_scheduler }
         denoise: { kind: 'number', type: number }
         feather: { kind: 'number', type: number }
         noise_mask: { kind: 'boolean', type: boolean }
@@ -9631,8 +9552,6 @@ declare global {
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Enum_KSampler_sampler_name }
-        scheduler: { kind: 'enum', type: Enum_DetailerForEach_scheduler }
         denoise: { kind: 'number', type: number }
         feather: { kind: 'number', type: number }
         noise_mask: { kind: 'boolean', type: boolean }
@@ -9649,8 +9568,6 @@ declare global {
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Enum_KSampler_sampler_name }
-        scheduler: { kind: 'enum', type: Enum_DetailerForEach_scheduler }
         denoise: { kind: 'number', type: number }
         feather: { kind: 'number', type: number }
         noise_mask: { kind: 'boolean', type: boolean }
@@ -9668,8 +9585,6 @@ declare global {
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Enum_KSampler_sampler_name }
-        scheduler: { kind: 'enum', type: Enum_DetailerForEach_scheduler }
         denoise: { kind: 'number', type: number }
         feather: { kind: 'number', type: number }
         noise_mask: { kind: 'boolean', type: boolean }
@@ -9687,28 +9602,22 @@ declare global {
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Enum_KSampler_sampler_name }
-        scheduler: { kind: 'enum', type: Enum_DetailerForEach_scheduler }
         denoise: { kind: 'number', type: number }
         feather: { kind: 'number', type: number }
         refiner_ratio: { kind: 'number', type: number }
         noise_mask_feather: { kind: 'number', type: number }
     }
     SAMDetectorCombined: {
-        detection_hint: { kind: 'enum', type: Enum_SAMDetectorCombined_detection_hint }
         dilation: { kind: 'number', type: number }
         threshold: { kind: 'number', type: number }
         bbox_expansion: { kind: 'number', type: number }
         mask_hint_threshold: { kind: 'number', type: number }
-        mask_hint_use_negative: { kind: 'enum', type: Enum_SAMDetectorCombined_mask_hint_use_negative }
     }
     SAMDetectorSegmented: {
-        detection_hint: { kind: 'enum', type: Enum_SAMDetectorCombined_detection_hint }
         dilation: { kind: 'number', type: number }
         threshold: { kind: 'number', type: number }
         bbox_expansion: { kind: 'number', type: number }
         mask_hint_threshold: { kind: 'number', type: number }
-        mask_hint_use_negative: { kind: 'enum', type: Enum_SAMDetectorCombined_mask_hint_use_negative }
     }
     FaceDetailer: {
         guide_size: { kind: 'number', type: number }
@@ -9717,8 +9626,6 @@ declare global {
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Enum_KSampler_sampler_name }
-        scheduler: { kind: 'enum', type: Enum_DetailerForEach_scheduler }
         denoise: { kind: 'number', type: number }
         feather: { kind: 'number', type: number }
         noise_mask: { kind: 'boolean', type: boolean }
@@ -9726,12 +9633,10 @@ declare global {
         bbox_threshold: { kind: 'number', type: number }
         bbox_dilation: { kind: 'number', type: number }
         bbox_crop_factor: { kind: 'number', type: number }
-        sam_detection_hint: { kind: 'enum', type: Enum_SAMDetectorCombined_detection_hint }
         sam_dilation: { kind: 'number', type: number }
         sam_threshold: { kind: 'number', type: number }
         sam_bbox_expansion: { kind: 'number', type: number }
         sam_mask_hint_threshold: { kind: 'number', type: number }
-        sam_mask_hint_use_negative: { kind: 'enum', type: Enum_SAMDetectorCombined_mask_hint_use_negative }
         drop_size: { kind: 'number', type: number }
         wildcard: { kind: 'string', type: string }
         cycle: { kind: 'number', type: number }
@@ -9745,8 +9650,6 @@ declare global {
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Enum_KSampler_sampler_name }
-        scheduler: { kind: 'enum', type: Enum_DetailerForEach_scheduler }
         denoise: { kind: 'number', type: number }
         feather: { kind: 'number', type: number }
         noise_mask: { kind: 'boolean', type: boolean }
@@ -9754,12 +9657,10 @@ declare global {
         bbox_threshold: { kind: 'number', type: number }
         bbox_dilation: { kind: 'number', type: number }
         bbox_crop_factor: { kind: 'number', type: number }
-        sam_detection_hint: { kind: 'enum', type: Enum_SAMDetectorCombined_detection_hint }
         sam_dilation: { kind: 'number', type: number }
         sam_threshold: { kind: 'number', type: number }
         sam_bbox_expansion: { kind: 'number', type: number }
         sam_mask_hint_threshold: { kind: 'number', type: number }
-        sam_mask_hint_use_negative: { kind: 'enum', type: Enum_SAMDetectorCombined_mask_hint_use_negative }
         drop_size: { kind: 'number', type: number }
         refiner_ratio: { kind: 'number', type: number }
         cycle: { kind: 'number', type: number }
@@ -9774,8 +9675,6 @@ declare global {
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Enum_KSampler_sampler_name }
-        scheduler: { kind: 'enum', type: Enum_DetailerForEach_scheduler }
         denoise: { kind: 'number', type: number }
         feather: { kind: 'number', type: number }
         crop_factor: { kind: 'number', type: number }
@@ -9790,13 +9689,9 @@ declare global {
     }
     ToDetailerPipe: {
         wildcard: { kind: 'string', type: string }
-        "Select to add LoRA": { kind: 'enum', type: Enum_ToDetailerPipe_Select$_to$_add$_LoRA }
-        "Select to add Wildcard": { kind: 'enum', type: Enum_ToDetailerPipe_Select$_to$_add$_Wildcard }
     }
     ToDetailerPipeSDXL: {
         wildcard: { kind: 'string', type: string }
-        "Select to add LoRA": { kind: 'enum', type: Enum_ToDetailerPipe_Select$_to$_add$_LoRA }
-        "Select to add Wildcard": { kind: 'enum', type: Enum_ToDetailerPipe_Select$_to$_add$_Wildcard }
     }
     FromDetailerPipe: {
     }
@@ -9814,13 +9709,9 @@ declare global {
     }
     BasicPipeToDetailerPipe: {
         wildcard: { kind: 'string', type: string }
-        "Select to add LoRA": { kind: 'enum', type: Enum_ToDetailerPipe_Select$_to$_add$_LoRA }
-        "Select to add Wildcard": { kind: 'enum', type: Enum_ToDetailerPipe_Select$_to$_add$_Wildcard }
     }
     BasicPipeToDetailerPipeSDXL: {
         wildcard: { kind: 'string', type: string }
-        "Select to add LoRA": { kind: 'enum', type: Enum_ToDetailerPipe_Select$_to$_add$_LoRA }
-        "Select to add Wildcard": { kind: 'enum', type: Enum_ToDetailerPipe_Select$_to$_add$_Wildcard }
     }
     DetailerPipeToBasicPipe: {
     }
@@ -9828,37 +9719,26 @@ declare global {
     }
     EditDetailerPipe: {
         wildcard: { kind: 'string', type: string }
-        "Select to add LoRA": { kind: 'enum', type: Enum_ToDetailerPipe_Select$_to$_add$_LoRA }
-        "Select to add Wildcard": { kind: 'enum', type: Enum_ToDetailerPipe_Select$_to$_add$_Wildcard }
     }
     EditDetailerPipeSDXL: {
         wildcard: { kind: 'string', type: string }
-        "Select to add LoRA": { kind: 'enum', type: Enum_ToDetailerPipe_Select$_to$_add$_LoRA }
-        "Select to add Wildcard": { kind: 'enum', type: Enum_ToDetailerPipe_Select$_to$_add$_Wildcard }
     }
     LatentPixelScale: {
-        scale_method: { kind: 'enum', type: Enum_LatentPixelScale_scale_method }
         scale_factor: { kind: 'number', type: number }
         use_tiled_vae: { kind: 'boolean', type: boolean }
     }
     PixelKSampleUpscalerProvider: {
-        scale_method: { kind: 'enum', type: Enum_LatentPixelScale_scale_method }
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Enum_KSampler_sampler_name }
-        scheduler: { kind: 'enum', type: Enum_DetailerForEach_scheduler }
         denoise: { kind: 'number', type: number }
         use_tiled_vae: { kind: 'boolean', type: boolean }
         tile_size: { kind: 'number', type: number }
     }
     PixelKSampleUpscalerProviderPipe: {
-        scale_method: { kind: 'enum', type: Enum_LatentPixelScale_scale_method }
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Enum_KSampler_sampler_name }
-        scheduler: { kind: 'enum', type: Enum_DetailerForEach_scheduler }
         denoise: { kind: 'number', type: number }
         use_tiled_vae: { kind: 'boolean', type: boolean }
         tile_size: { kind: 'number', type: number }
@@ -9868,69 +9748,50 @@ declare global {
         upscale_factor: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         temp_prefix: { kind: 'string', type: string }
-        step_mode: { kind: 'enum', type: Enum_IterativeLatentUpscale_step_mode }
     }
     IterativeImageUpscale: {
         upscale_factor: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         temp_prefix: { kind: 'string', type: string }
-        step_mode: { kind: 'enum', type: Enum_IterativeLatentUpscale_step_mode }
     }
     PixelTiledKSampleUpscalerProvider: {
-        scale_method: { kind: 'enum', type: Enum_LatentPixelScale_scale_method }
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Enum_KSampler_sampler_name }
-        scheduler: { kind: 'enum', type: Enum_KSampler_scheduler }
         denoise: { kind: 'number', type: number }
         tile_width: { kind: 'number', type: number }
         tile_height: { kind: 'number', type: number }
-        tiling_strategy: { kind: 'enum', type: Enum_PixelTiledKSampleUpscalerProvider_tiling_strategy }
         tile_cnet_strength: { kind: 'number', type: number }
     }
     PixelTiledKSampleUpscalerProviderPipe: {
-        scale_method: { kind: 'enum', type: Enum_LatentPixelScale_scale_method }
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Enum_KSampler_sampler_name }
-        scheduler: { kind: 'enum', type: Enum_KSampler_scheduler }
         denoise: { kind: 'number', type: number }
         tile_width: { kind: 'number', type: number }
         tile_height: { kind: 'number', type: number }
-        tiling_strategy: { kind: 'enum', type: Enum_PixelTiledKSampleUpscalerProvider_tiling_strategy }
         tile_cnet_strength: { kind: 'number', type: number }
     }
     TwoSamplersForMaskUpscalerProvider: {
-        scale_method: { kind: 'enum', type: Enum_LatentPixelScale_scale_method }
-        full_sample_schedule: { kind: 'enum', type: Enum_TwoSamplersForMaskUpscalerProvider_full_sample_schedule }
         use_tiled_vae: { kind: 'boolean', type: boolean }
         tile_size: { kind: 'number', type: number }
     }
     TwoSamplersForMaskUpscalerProviderPipe: {
-        scale_method: { kind: 'enum', type: Enum_LatentPixelScale_scale_method }
-        full_sample_schedule: { kind: 'enum', type: Enum_TwoSamplersForMaskUpscalerProvider_full_sample_schedule }
         use_tiled_vae: { kind: 'boolean', type: boolean }
         tile_size: { kind: 'number', type: number }
     }
     PixelKSampleHookCombine: {
     }
     DenoiseScheduleHookProvider: {
-        schedule_for_iteration: { kind: 'enum', type: Enum_DenoiseScheduleHookProvider_schedule_for_iteration }
         target_denoise: { kind: 'number', type: number }
     }
     StepsScheduleHookProvider: {
-        schedule_for_iteration: { kind: 'enum', type: Enum_DenoiseScheduleHookProvider_schedule_for_iteration }
         target_steps: { kind: 'number', type: number }
     }
     CfgScheduleHookProvider: {
-        schedule_for_iteration: { kind: 'enum', type: Enum_DenoiseScheduleHookProvider_schedule_for_iteration }
         target_cfg: { kind: 'number', type: number }
     }
     NoiseInjectionHookProvider: {
-        schedule_for_iteration: { kind: 'enum', type: Enum_DenoiseScheduleHookProvider_schedule_for_iteration }
-        source: { kind: 'enum', type: Enum_NoiseInjectionHookProvider_source }
         seed: { kind: 'number', type: number }
         start_strength: { kind: 'number', type: number }
         end_strength: { kind: 'number', type: number }
@@ -9940,13 +9801,8 @@ declare global {
         start_end_at_step: { kind: 'number', type: number }
         end_end_at_step: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Enum_KSampler_sampler_name }
-        scheduler: { kind: 'enum', type: Enum_KSampler_scheduler }
-        normalize: { kind: 'enum', type: Enum_KSamplerAdvanced_add_noise }
-        schedule_for_iteration: { kind: 'enum', type: Enum_DenoiseScheduleHookProvider_schedule_for_iteration }
     }
     CoreMLDetailerHookProvider: {
-        mode: { kind: 'enum', type: Enum_CoreMLDetailerHookProvider_mode }
     }
     PreviewDetailerHookProvider: {
         quality: { kind: 'number', type: number }
@@ -9954,8 +9810,6 @@ declare global {
     DetailerHookCombine: {
     }
     NoiseInjectionDetailerHookProvider: {
-        schedule_for_cycle: { kind: 'enum', type: Enum_NoiseInjectionDetailerHookProvider_schedule_for_cycle }
-        source: { kind: 'enum', type: Enum_NoiseInjectionHookProvider_source }
         seed: { kind: 'number', type: number }
         start_strength: { kind: 'number', type: number }
         end_strength: { kind: 'number', type: number }
@@ -9965,29 +9819,21 @@ declare global {
         start_end_at_step: { kind: 'number', type: number }
         end_end_at_step: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Enum_KSampler_sampler_name }
-        scheduler: { kind: 'enum', type: Enum_KSampler_scheduler }
-        normalize: { kind: 'enum', type: Enum_KSamplerAdvanced_add_noise }
-        schedule_for_cycle: { kind: 'enum', type: Enum_NoiseInjectionDetailerHookProvider_schedule_for_cycle }
     }
     DenoiseSchedulerDetailerHookProvider: {
-        schedule_for_cycle: { kind: 'enum', type: Enum_DenoiseScheduleHookProvider_schedule_for_iteration }
         target_denoise: { kind: 'number', type: number }
     }
     SEGSOrderedFilterDetailerHookProvider: {
-        target: { kind: 'enum', type: Enum_SEGSOrderedFilterDetailerHookProvider_target }
         order: { kind: 'boolean', type: boolean }
         take_start: { kind: 'number', type: number }
         take_count: { kind: 'number', type: number }
     }
     SEGSRangeFilterDetailerHookProvider: {
-        target: { kind: 'enum', type: Enum_SEGSRangeFilterDetailerHookProvider_target }
         mode: { kind: 'boolean', type: boolean }
         min_value: { kind: 'number', type: number }
         max_value: { kind: 'number', type: number }
     }
     SEGSLabelFilterDetailerHookProvider: {
-        preset: { kind: 'enum', type: Enum_SEGSLabelFilterDetailerHookProvider_preset }
         labels: { kind: 'string', type: string }
     }
     VariationNoiseDetailerHookProvider: {
@@ -10081,8 +9927,6 @@ declare global {
         sub_dilation: { kind: 'number', type: number }
         sub_bbox_expansion: { kind: 'number', type: number }
         sam_mask_hint_threshold: { kind: 'number', type: number }
-        masking_mode: { kind: 'enum', type: Enum_ImpactSimpleDetectorSEGS$_for$_AD_masking_mode }
-        segs_pivot: { kind: 'enum', type: Enum_ImpactSimpleDetectorSEGS$_for$_AD_segs_pivot }
     }
     ImpactSimpleDetectorSEGS: {
         bbox_threshold: { kind: 'number', type: number }
@@ -10119,14 +9963,12 @@ declare global {
     ImpactIPAdapterApplySEGS: {
         weight: { kind: 'number', type: number }
         noise: { kind: 'number', type: number }
-        weight_type: { kind: 'enum', type: Enum_ImpactIPAdapterApplySEGS_weight_type }
         start_at: { kind: 'number', type: number }
         end_at: { kind: 'number', type: number }
         unfold_batch: { kind: 'boolean', type: boolean }
         faceid_v2: { kind: 'boolean', type: boolean }
         weight_v2: { kind: 'number', type: number }
         context_crop_factor: { kind: 'number', type: number }
-        combine_embeds: { kind: 'enum', type: Enum_ImpactIPAdapterApplySEGS_combine_embeds }
     }
     ImpactDecomposeSEGS: {
     }
@@ -10178,8 +10020,6 @@ declare global {
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Enum_KSampler_sampler_name }
-        scheduler: { kind: 'enum', type: Enum_DetailerForEach_scheduler }
         denoise: { kind: 'number', type: number }
     }
     TwoSamplersForMask: {
@@ -10188,17 +10028,12 @@ declare global {
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Enum_KSampler_sampler_name }
-        scheduler: { kind: 'enum', type: Enum_KSampler_scheduler }
         denoise: { kind: 'number', type: number }
         tile_width: { kind: 'number', type: number }
         tile_height: { kind: 'number', type: number }
-        tiling_strategy: { kind: 'enum', type: Enum_PixelTiledKSampleUpscalerProvider_tiling_strategy }
     }
     KSamplerAdvancedProvider: {
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Enum_KSampler_sampler_name }
-        scheduler: { kind: 'enum', type: Enum_DetailerForEach_scheduler }
         sigma_factor: { kind: 'number', type: number }
     }
     TwoAdvancedSamplersForMask: {
@@ -10212,20 +10047,16 @@ declare global {
     PreviewBridge: {
         image: { kind: 'string', type: string }
         block: { kind: 'boolean', type: boolean }
-        restore_mask: { kind: 'enum', type: Enum_PreviewBridge_restore_mask }
     }
     PreviewBridgeLatent: {
         image: { kind: 'string', type: string }
-        preview_method: { kind: 'enum', type: Enum_PreviewBridgeLatent_preview_method }
         block: { kind: 'boolean', type: boolean }
-        restore_mask: { kind: 'enum', type: Enum_PreviewBridge_restore_mask }
     }
     ImageSender: {
         filename_prefix: { kind: 'string', type: string }
         link_id: { kind: 'number', type: number }
     }
     ImageReceiver: {
-        image: { kind: 'enum', type: Enum_LoadImage_image }
         link_id: { kind: 'number', type: number }
         save_to_workflow: { kind: 'boolean', type: boolean }
         image_data: { kind: 'string', type: string }
@@ -10234,10 +10065,8 @@ declare global {
     LatentSender: {
         filename_prefix: { kind: 'string', type: string }
         link_id: { kind: 'number', type: number }
-        preview_method: { kind: 'enum', type: Enum_LatentSender_preview_method }
     }
     LatentReceiver: {
-        latent: { kind: 'enum', type: Enum_LoraLoader_lora_name }
         link_id: { kind: 'number', type: number }
         trigger_always: { kind: 'boolean', type: boolean }
     }
@@ -10265,26 +10094,19 @@ declare global {
         populated_text: { kind: 'string', type: string }
         mode: { kind: 'boolean', type: boolean }
         seed: { kind: 'number', type: number }
-        "Select to add Wildcard": { kind: 'enum', type: Enum_ToDetailerPipe_Select$_to$_add$_Wildcard }
     }
     ImpactWildcardEncode: {
         wildcard_text: { kind: 'string', type: string }
         populated_text: { kind: 'string', type: string }
         mode: { kind: 'boolean', type: boolean }
-        "Select to add LoRA": { kind: 'enum', type: Enum_ToDetailerPipe_Select$_to$_add$_LoRA }
-        "Select to add Wildcard": { kind: 'enum', type: Enum_ToDetailerPipe_Select$_to$_add$_Wildcard }
         seed: { kind: 'number', type: number }
     }
     SEGSUpscaler: {
         rescale_factor: { kind: 'number', type: number }
-        resampling_method: { kind: 'enum', type: Enum_SEGSUpscaler_resampling_method }
-        supersample: { kind: 'enum', type: Enum_SEGSUpscaler_supersample }
         rounding_modulus: { kind: 'number', type: number }
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Enum_KSampler_sampler_name }
-        scheduler: { kind: 'enum', type: Enum_DetailerForEach_scheduler }
         denoise: { kind: 'number', type: number }
         feather: { kind: 'number', type: number }
         inpaint_model: { kind: 'boolean', type: boolean }
@@ -10292,14 +10114,10 @@ declare global {
     }
     SEGSUpscalerPipe: {
         rescale_factor: { kind: 'number', type: number }
-        resampling_method: { kind: 'enum', type: Enum_SEGSUpscaler_resampling_method }
-        supersample: { kind: 'enum', type: Enum_SEGSUpscaler_supersample }
         rounding_modulus: { kind: 'number', type: number }
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Enum_KSampler_sampler_name }
-        scheduler: { kind: 'enum', type: Enum_DetailerForEach_scheduler }
         denoise: { kind: 'number', type: number }
         feather: { kind: 'number', type: number }
         inpaint_model: { kind: 'boolean', type: boolean }
@@ -10312,8 +10130,6 @@ declare global {
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Enum_KSampler_sampler_name }
-        scheduler: { kind: 'enum', type: Enum_DetailerForEach_scheduler }
         denoise: { kind: 'number', type: number }
         noise_mask: { kind: 'boolean', type: boolean }
         force_inpaint: { kind: 'boolean', type: boolean }
@@ -10350,7 +10166,6 @@ declare global {
         min_overlap: { kind: 'number', type: number }
         filter_segs_dilation: { kind: 'number', type: number }
         mask_irregularity: { kind: 'number', type: number }
-        irregular_mask_mode: { kind: 'enum', type: Enum_ImpactMakeTileSEGS_irregular_mask_mode }
     }
     ImpactSEGSMerge: {
     }
@@ -10361,8 +10176,6 @@ declare global {
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Enum_KSampler_sampler_name }
-        scheduler: { kind: 'enum', type: Enum_DetailerForEach_scheduler }
         denoise: { kind: 'number', type: number }
         refiner_ratio: { kind: 'number', type: number }
         noise_mask_feather: { kind: 'number', type: number }
@@ -10371,8 +10184,6 @@ declare global {
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Enum_KSampler_sampler_name }
-        scheduler: { kind: 'enum', type: Enum_DetailerForEach_scheduler }
         denoise: { kind: 'number', type: number }
     }
     ImpactKSamplerAdvancedBasicPipe: {
@@ -10380,18 +10191,14 @@ declare global {
         noise_seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Enum_KSampler_sampler_name }
-        scheduler: { kind: 'enum', type: Enum_DetailerForEach_scheduler }
         start_at_step: { kind: 'number', type: number }
         end_at_step: { kind: 'number', type: number }
         return_with_leftover_noise: { kind: 'boolean', type: boolean }
     }
     ReencodeLatent: {
-        tile_mode: { kind: 'enum', type: Enum_ReencodeLatent_tile_mode }
         tile_size: { kind: 'number', type: number }
     }
     ReencodeLatentPipe: {
-        tile_mode: { kind: 'enum', type: Enum_ReencodeLatent_tile_mode }
     }
     ImpactImageBatchToImageList: {
     }
@@ -10408,14 +10215,11 @@ declare global {
     RegionalSampler: {
         seed: { kind: 'number', type: number }
         seed_2nd: { kind: 'number', type: number }
-        seed_2nd_mode: { kind: 'enum', type: Enum_RegionalSampler_seed_2nd_mode }
         steps: { kind: 'number', type: number }
         base_only_steps: { kind: 'number', type: number }
         denoise: { kind: 'number', type: number }
         overlap_factor: { kind: 'number', type: number }
         restore_latent: { kind: 'boolean', type: boolean }
-        additional_mode: { kind: 'enum', type: Enum_RegionalSampler_additional_mode }
-        additional_sampler: { kind: 'enum', type: Enum_RegionalSampler_additional_sampler }
         additional_sigma_ratio: { kind: 'number', type: number }
     }
     RegionalSamplerAdvanced: {
@@ -10427,8 +10231,6 @@ declare global {
         overlap_factor: { kind: 'number', type: number }
         restore_latent: { kind: 'boolean', type: boolean }
         return_with_leftover_noise: { kind: 'boolean', type: boolean }
-        additional_mode: { kind: 'enum', type: Enum_RegionalSampler_additional_mode }
-        additional_sampler: { kind: 'enum', type: Enum_RegionalSampler_additional_sampler }
         additional_sigma_ratio: { kind: 'number', type: number }
     }
     CombineRegionalPrompts: {
@@ -10436,7 +10238,6 @@ declare global {
     RegionalPrompt: {
         variation_seed: { kind: 'number', type: number }
         variation_strength: { kind: 'number', type: number }
-        variation_method: { kind: 'enum', type: Enum_RegionalPrompt_variation_method }
     }
     ImpactCombineConditionings: {
     }
@@ -10446,23 +10247,19 @@ declare global {
         labels: { kind: 'string', type: string }
     }
     ImpactSEGSLabelFilter: {
-        preset: { kind: 'enum', type: Enum_SEGSLabelFilterDetailerHookProvider_preset }
         labels: { kind: 'string', type: string }
     }
     ImpactSEGSRangeFilter: {
-        target: { kind: 'enum', type: Enum_ImpactSEGSRangeFilter_target }
         mode: { kind: 'boolean', type: boolean }
         min_value: { kind: 'number', type: number }
         max_value: { kind: 'number', type: number }
     }
     ImpactSEGSOrderedFilter: {
-        target: { kind: 'enum', type: Enum_ImpactSEGSOrderedFilter_target }
         order: { kind: 'boolean', type: boolean }
         take_start: { kind: 'number', type: number }
         take_count: { kind: 'number', type: number }
     }
     ImpactCompare: {
-        cmp: { kind: 'enum', type: Enum_ImpactCompare_cmp }
     }
     ImpactConditionalBranch: {
         cond: { kind: 'boolean', type: boolean }
@@ -10475,7 +10272,6 @@ declare global {
     ImpactConvertDataType: {
     }
     ImpactLogicalOperators: {
-        operator: { kind: 'enum', type: Enum_ImpactLogicalOperators_operator }
         bool_a: { kind: 'boolean', type: boolean }
         bool_b: { kind: 'boolean', type: boolean }
     }
@@ -10492,7 +10288,6 @@ declare global {
         link_id: { kind: 'number', type: number }
     }
     ImpactValueReceiver: {
-        typ: { kind: 'enum', type: Enum_ImpactValueReceiver_typ }
         value: { kind: 'string', type: string }
         link_id: { kind: 'number', type: number }
     }
@@ -10557,7 +10352,6 @@ declare global {
     }
     ImpactControlBridge: {
         mode: { kind: 'boolean', type: boolean }
-        behavior: { kind: 'enum', type: Enum_ImpactControlBridge_behavior }
     }
     ImpactIsNotEmptySEGS: {
     }
@@ -10575,24 +10369,18 @@ declare global {
         value: { kind: 'number', type: number }
     }
     ImpactHFTransformersClassifierProvider: {
-        preset_repo_id: { kind: 'enum', type: Enum_ImpactHFTransformersClassifierProvider_preset_repo_id }
         manual_repo_id: { kind: 'string', type: string }
-        device_mode: { kind: 'enum', type: Enum_SAMLoader_device_mode }
     }
     ImpactSEGSClassify: {
-        preset_expr: { kind: 'enum', type: Enum_ImpactSEGSClassify_preset_expr }
         manual_expr: { kind: 'string', type: string }
     }
     ImpactSchedulerAdapter: {
-        scheduler: { kind: 'enum', type: Enum_KSampler_scheduler }
-        extra_scheduler: { kind: 'enum', type: Enum_ImpactSchedulerAdapter_extra_scheduler }
     }
     GITSSchedulerFuncProvider: {
         coeff: { kind: 'number', type: number }
         denoise: { kind: 'number', type: number }
     }
     UltralyticsDetectorProvider: {
-        model_name: { kind: 'enum', type: Enum_UltralyticsDetectorProvider_model_name }
     }
     UnknownNodeXX: {
     }

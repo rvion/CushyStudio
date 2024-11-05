@@ -90,7 +90,9 @@ export class ComfyUIObjectInfoParsedNodeSchema {
          const opts = typeof i.opts === 'string' ? null : i.opts
          const type = /*ComfyPrimitiveMapping[i.type] //
                    ? i.type
-                   : */ i.type.startsWith('Enum_') ? `Comfy.Union.${i.type}` : `Comfy.Input.${i.type}`
+                   : */ i.type.startsWith('E_') //
+            ? `Comfy.Union.${i.type}`
+            : `Comfy.Input.${i.type}`
          if (opts) p(`    ${this.renderOpts(opts)}`)
          const canBeOmmited = opts?.default !== undefined || !i.required
          p(`    ${i.nameInComfyEscaped}${canBeOmmited ? '?' : ''}: ${type}`)
