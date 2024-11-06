@@ -5,8 +5,8 @@ export type UI_subform_IPAdapter_common = {
       crop: X.XBool
       startAtStepPercent: X.XNumber
       endAtStepPercent: X.XNumber
-      weight_type: X.XEnum<'Custom.IPAdapter_plus.IPAdapterAdvanced.weight_type'>
-      embedding_scaling: X.XEnum<'Custom.IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'>
+      weight_type: X.XEnum<'IPAdapter_plus.IPAdapterAdvanced.weight_type'>
+      embedding_scaling: X.XEnum<'IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'>
       noise: X.XNumber
       unfold_batch: X.XBool
    }>
@@ -33,10 +33,10 @@ export function ui_subform_IPAdapter_common(
             crop: ui.bool({ default: true }),
             startAtStepPercent: ui.float({ default: 0, min: 0, max: 1, step: 0.1 }),
             endAtStepPercent: ui.float({ default: 1, min: 0, max: 1, step: 0.1 }),
-            weight_type: ui.enum['Custom.IPAdapter_plus.IPAdapterAdvanced.weight_type']({
+            weight_type: ui.enum['IPAdapter_plus.IPAdapterAdvanced.weight_type']({
                default: 'linear',
             }),
-            embedding_scaling: ui.enum['Custom.IPAdapter_plus.IPAdapterAdvanced.embeds_scaling']({
+            embedding_scaling: ui.enum['IPAdapter_plus.IPAdapterAdvanced.embeds_scaling']({
                default: 'V only',
             }),
             noise: ui.float({ default: 0, min: 0, max: 1, step: 0.1 }),

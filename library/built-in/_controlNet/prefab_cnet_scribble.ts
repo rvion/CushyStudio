@@ -117,7 +117,7 @@ export const run_cnet_Scribble = (
    resolution: number, // 512 | 768 | 1024 = 512,
 ): {
    image: Comfy.Input.IMAGE
-   cnet_name: Comfy.Enums['ControlNetLoader.control_net_name']
+   cnet_name: Comfy.Slots['ControlNetLoader.control_net_name']
 } => {
    const run = getCurrentRun()
    const graph = run.nodes
@@ -127,7 +127,7 @@ export const run_cnet_Scribble = (
    if (Scribble.preprocessor) {
       if (Scribble.preprocessor.FakeScribble) {
          const fake = Scribble.preprocessor.FakeScribble
-         image = graph['Custom.controlnet_aux.FakeScribblePreprocessor']({
+         image = graph['controlnet_aux.FakeScribblePreprocessor']({
             image: image,
             resolution: resolution,
             safe: fake.safe ? 'enable' : 'disable',
@@ -137,7 +137,7 @@ export const run_cnet_Scribble = (
          else graph.PreviewImage({ images: image })
       } else if (Scribble.preprocessor.XDOG) {
          const xdog = Scribble.preprocessor.XDOG
-         image = graph['Custom.controlnet_aux.Scribble$_XDoG$_Preprocessor']({
+         image = graph['controlnet_aux.Scribble$_XDoG$_Preprocessor']({
             image: image,
             resolution: resolution,
             threshold: xdog.threshold,
@@ -147,7 +147,7 @@ export const run_cnet_Scribble = (
          else graph.PreviewImage({ images: image })
       } else if (Scribble.preprocessor.ScribbleLines) {
          const scribble = Scribble.preprocessor.ScribbleLines
-         image = graph['Custom.controlnet_aux.ScribblePreprocessor']({
+         image = graph['controlnet_aux.ScribblePreprocessor']({
             image: image,
             resolution: resolution,
          })._IMAGE

@@ -11,7 +11,7 @@ export type UI_IPAdapterFaceIDV2 = X.XGroup<{
       weight: X.XNumber
       weight_faceidv2: X.XNumber
       models: X.XGroup<{
-         type: X.XEnum<'Custom.IPAdapter_plus.IPAdapterUnifiedLoaderFaceID.preset'>
+         type: X.XEnum<'IPAdapter_plus.IPAdapterUnifiedLoaderFaceID.preset'>
       }>
       extra: X.XList<UI_FaceIDImageInput>
       advancedSettings: X.XGroup<{
@@ -19,9 +19,9 @@ export type UI_IPAdapterFaceIDV2 = X.XGroup<{
          startAtStepPercent: X.XNumber
          endAtStepPercent: X.XNumber
          lora_strength: X.XNumber
-         embedding_combination: X.XEnum<'Custom.Impact_Pack.ImpactIPAdapterApplySEGS.combine_embeds'>
-         weight_type: X.XEnum<'Custom.IPAdapter_plus.IPAdapterAdvanced.weight_type'>
-         embedding_scaling: X.XEnum<'Custom.IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'>
+         embedding_combination: X.XEnum<'Impact_Pack.ImpactIPAdapterApplySEGS.combine_embeds'>
+         weight_type: X.XEnum<'IPAdapter_plus.IPAdapterAdvanced.weight_type'>
+         embedding_scaling: X.XEnum<'IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'>
          noise: X.XNumber
          unfold_batch: X.XBool
          adapterAttentionMask: X.XOptional<X.XImage>
@@ -43,7 +43,7 @@ export function ui_IPAdapterFaceIDV2(): UI_IPAdapterFaceIDV2 {
                      weight_faceidv2: form.float({ default: 0.8, min: -1, max: 3, step: 0.1 }),
                      models: form.fields(
                         {
-                           type: form.enum['Custom.IPAdapter_plus.IPAdapterUnifiedLoaderFaceID.preset']({
+                           type: form.enum['IPAdapter_plus.IPAdapterUnifiedLoaderFaceID.preset']({
                               default: 'FACEID PLUS V2',
                            }),
                         },
@@ -60,17 +60,15 @@ export function ui_IPAdapterFaceIDV2(): UI_IPAdapterFaceIDV2 {
                            endAtStepPercent: form.float({ default: 1, min: 0, max: 1, step: 0.05 }),
                            lora_strength: form.float({ default: 0.6, min: 0, max: 1, step: 0.1 }),
                            embedding_combination: form.enum[
-                              'Custom.IPAdapter_plus.IPAdapterAdvanced.combine_embeds'
+                              'IPAdapter_plus.IPAdapterAdvanced.combine_embeds'
                            ]({
                               default: 'average',
                            }),
-                           weight_type: form.enum['Custom.IPAdapter_plus.IPAdapterAdvanced.weight_type']({
+                           weight_type: form.enum['IPAdapter_plus.IPAdapterAdvanced.weight_type']({
                               default: 'linear',
                            }),
 
-                           embedding_scaling: form.enum[
-                              'Custom.IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'
-                           ]({
+                           embedding_scaling: form.enum['IPAdapter_plus.IPAdapterAdvanced.embeds_scaling']({
                               default: 'V only',
                            }),
                            noise: form.float({ default: 0, min: 0, max: 1, step: 0.1 }),
@@ -152,7 +150,7 @@ export type UI_FaceIDImageInput = X.XGroup<{
    image: X.XImage
    advanced: X.XGroup<{
       sharpening: X.XNumber
-      crop_position: X.XEnum<'Custom.IPAdapter_plus.PrepImageForClipVision.crop_position'>
+      crop_position: X.XEnum<'IPAdapter_plus.PrepImageForClipVision.crop_position'>
    }>
 }>
 export function ui_FaceIDImageInput(form: X.Builder): UI_FaceIDImageInput {
@@ -162,7 +160,7 @@ export function ui_FaceIDImageInput(form: X.Builder): UI_FaceIDImageInput {
          advanced: form.fields(
             {
                sharpening: form.float({ default: 0, min: 0, max: 1, step: 0.1 }),
-               crop_position: form.enum['Custom.IPAdapter_plus.PrepImageForClipVision.crop_position']({
+               crop_position: form.enum['IPAdapter_plus.PrepImageForClipVision.crop_position']({
                   default: 'top',
                }),
             },
@@ -187,14 +185,14 @@ export function ui_FaceIDImageInput(form: X.Builder): UI_FaceIDImageInput {
 // ======================================================================================================
 export type UI_extraIpAdapter = X.XGroup<{
    weight: X.XNumber
-   embedding_combination: X.XEnum<'Custom.IPAdapter_plus.IPAdapterAdvanced.combine_embeds'>
+   embedding_combination: X.XEnum<'IPAdapter_plus.IPAdapterAdvanced.combine_embeds'>
    ipAdapterSettings: UI_ipadapter_advancedSettings
 }>
 function ui_extraIpAdapter(form: X.Builder): UI_extraIpAdapter {
    return form.fields(
       {
          weight: form.float({ default: 0.4, min: -1, max: 3, step: 0.1 }),
-         embedding_combination: form.enum['Custom.IPAdapter_plus.IPAdapterAdvanced.combine_embeds']({ default: 'average' }), // prettier-ignore
+         embedding_combination: form.enum['IPAdapter_plus.IPAdapterAdvanced.combine_embeds']({ default: 'average' }), // prettier-ignore
          ipAdapterSettings: ui_ipadapter_advancedSettings(form, 0.25, 1, 'ease in'),
       },
       {
@@ -226,7 +224,7 @@ export const run_FaceIDV2 = async (
    let ip_adapter_out: Comfy.Input.IPADAPTER
    let ckpt_pos: Comfy.Input.MODEL = ckpt
 
-   const ip_adapter_loader = graph['Custom.IPAdapter_plus.IPAdapterUnifiedLoaderFaceID']({
+   const ip_adapter_loader = graph['IPAdapter_plus.IPAdapterUnifiedLoaderFaceID']({
       model: ckpt,
       ipadapter: previousIPAdapter,
       preset: ui.settings.models.type,
@@ -237,7 +235,7 @@ export const run_FaceIDV2 = async (
    ckpt_pos = ip_adapter_loader._MODEL
 
    let image: Comfy.Input.IMAGE = await run.loadImageAnswer(ui.baseImage.image)
-   image = graph['Custom.IPAdapter_plus.PrepImageForClipVision']({
+   image = graph['IPAdapter_plus.PrepImageForClipVision']({
       image,
       crop_position: 'center',
       sharpening: 0,
@@ -248,18 +246,18 @@ export const run_FaceIDV2 = async (
    let adapterAttentionMask: Comfy.Input.MASK | undefined
    if (ui.settings.advancedSettings.adapterAttentionMask) {
       const maskLoad = await run.loadImageAnswer(ui.settings.advancedSettings.adapterAttentionMask)
-      const maskClipped = graph['Custom.IPAdapter_plus.PrepImageForClipVision']({
+      const maskClipped = graph['IPAdapter_plus.PrepImageForClipVision']({
          image: maskLoad,
          crop_position: 'center',
          sharpening: 0,
          interpolation: 'LANCZOS',
       })
-      adapterAttentionMask = graph['Extra.ImageToMask']({ image: maskClipped._IMAGE, channel: 'red' })
+      adapterAttentionMask = graph['ImageToMask']({ image: maskClipped._IMAGE, channel: 'red' })
    }
 
    for (const ex of ui.settings.extra) {
       const extra = await run.loadImageAnswer(ex.image)
-      const image2 = graph['Custom.IPAdapter_plus.PrepImageForClipVision']({
+      const image2 = graph['IPAdapter_plus.PrepImageForClipVision']({
          image: extra._IMAGE,
          crop_position: 'center',
          sharpening: 0,
@@ -272,7 +270,7 @@ export const run_FaceIDV2 = async (
       const preview = graph.PreviewImage({ images: image2 })
    }
 
-   const faceID = graph['Custom.IPAdapter_plus.IPAdapterFaceID']({
+   const faceID = graph['IPAdapter_plus.IPAdapterFaceID']({
       model: ckpt_pos,
       ipadapter: ip_adapter,
       image,
@@ -287,7 +285,7 @@ export const run_FaceIDV2 = async (
    let ip_adapted_model = faceID._MODEL
 
    if (ui.settings.advancedSettings.extraIPAdapter) {
-      const extraIP = graph['Custom.IPAdapter_plus.IPAdapterAdvanced']({
+      const extraIP = graph['IPAdapter_plus.IPAdapterAdvanced']({
          model: ip_adapted_model,
          ipadapter: ip_adapter,
          image,

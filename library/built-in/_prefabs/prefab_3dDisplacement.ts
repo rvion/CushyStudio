@@ -63,13 +63,11 @@ export function run_Dispacement1(
       | Comfy.Custom.controlnet_aux.LeReS$7DepthMapPreprocessor
       | Comfy.Custom.Marigold.MarigoldDepthEstimation => {
       if (show3d.depth.MiDaS)
-         return graph['Custom.controlnet_aux.MiDaS$7DepthMapPreprocessor']({ image: finalImage })
-      if (show3d.depth.Zoe)
-         return graph['Custom.controlnet_aux.Zoe$7DepthMapPreprocessor']({ image: finalImage })
+         return graph['controlnet_aux.MiDaS$7DepthMapPreprocessor']({ image: finalImage })
+      if (show3d.depth.Zoe) return graph['controlnet_aux.Zoe$7DepthMapPreprocessor']({ image: finalImage })
       if (show3d.depth.LeReS)
-         return graph['Custom.controlnet_aux.LeReS$7DepthMapPreprocessor']({ image: finalImage })
-      if (show3d.depth.Marigold)
-         return graph['Custom.Marigold.MarigoldDepthEstimation']({ image: finalImage })
+         return graph['controlnet_aux.LeReS$7DepthMapPreprocessor']({ image: finalImage })
+      if (show3d.depth.Marigold) return graph['Marigold.MarigoldDepthEstimation']({ image: finalImage })
       throw new Error('❌ show3d activated, but no depth option choosen')
    })()
    run.add_previewImage(depth).storeAs('depth')
@@ -79,9 +77,9 @@ export function run_Dispacement1(
       | Comfy.Custom.controlnet_aux.BAE$7NormalMapPreprocessor
       | Comfy.Base.EmptyImage => {
       if (show3d.normal === 'MiDaS')
-         return graph['Custom.controlnet_aux.MiDaS$7NormalMapPreprocessor']({ image: finalImage })
+         return graph['controlnet_aux.MiDaS$7NormalMapPreprocessor']({ image: finalImage })
       if (show3d.normal === 'BAE')
-         return graph['Custom.controlnet_aux.BAE$7NormalMapPreprocessor']({ image: finalImage })
+         return graph['controlnet_aux.BAE$7NormalMapPreprocessor']({ image: finalImage })
       if (show3d.normal === 'None') return graph.EmptyImage({ color: 0x7f7fff, height: 512, width: 512 })
       return exhaust(show3d.normal)
    })()

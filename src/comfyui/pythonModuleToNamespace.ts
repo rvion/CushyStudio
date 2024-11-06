@@ -2,8 +2,10 @@ import { convetComfySlotNameToCushySlotNameValidInJS } from '../core/normalizeJS
 
 export function pythonModuleToShortestUnambiguousPrefix(pythonModule: string): string {
    if (pythonModule === 'nodes') return ''
-   if (pythonModule.startsWith('comfy_extras.')) return 'Extra.'
-   return `${pythonModuleToNamespace_(pythonModule)}.`
+   if (pythonModule.startsWith('comfy_extras.')) return '' //''
+   if (pythonModule.startsWith('custom_nodes.'))
+      return `${pythonModuleToNamespace_(pythonModule.replace('custom_nodes.', ''))}.`
+   throw new Error(`unexpected pythonModule: ${pythonModule}`)
 }
 
 export function pythonModuleToNamespace(pythonModule: string): string {

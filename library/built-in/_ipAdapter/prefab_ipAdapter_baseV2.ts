@@ -6,8 +6,8 @@ export type UI_ipadapter_advancedSettings = X.XGroup<{
    startAtStepPercent: X.XNumber
    endAtStepPercent: X.XNumber
    adapterAttentionMask: X.XOptional<X.XImage>
-   weight_type: X.XEnum<'Custom.IPAdapter_plus.IPAdapterAdvanced.weight_type'>
-   embedding_scaling: X.XEnum<'Custom.IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'>
+   weight_type: X.XEnum<'IPAdapter_plus.IPAdapterAdvanced.weight_type'>
+   embedding_scaling: X.XEnum<'IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'>
    noise: X.XNumber
    unfold_batch: X.XBool
 }>
@@ -16,7 +16,7 @@ export const ui_ipadapter_advancedSettings = (
    form: X.Builder,
    start: number = 0,
    end: number = 1,
-   weight_type: Comfy.Enums['Custom.IPAdapter_plus.IPAdapterAdvanced.weight_type'] = 'linear',
+   weight_type: Comfy.Slots['IPAdapter_plus.IPAdapterAdvanced.weight_type'] = 'linear',
 ): UI_ipadapter_advancedSettings => {
    return form.fields(
       {

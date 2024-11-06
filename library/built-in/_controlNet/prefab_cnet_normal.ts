@@ -108,7 +108,7 @@ export const run_cnet_Normal = (
    resolution: number, // 512 | 768 | 1024 = 512,
 ): {
    image: Comfy.Input.IMAGE
-   cnet_name: Comfy.Enums['ControlNetLoader.control_net_name']
+   cnet_name: Comfy.Slots['ControlNetLoader.control_net_name']
 } => {
    const sdk = getCurrentRun()
    const graph = sdk.nodes
@@ -118,7 +118,7 @@ export const run_cnet_Normal = (
    if (Normal.preprocessor) {
       if (Normal.preprocessor.BAE) {
          const bae = Normal.preprocessor.BAE
-         image = graph['Custom.controlnet_aux.BAE$7NormalMapPreprocessor']({
+         image = graph['controlnet_aux.BAE$7NormalMapPreprocessor']({
             image: image,
             resolution: resolution,
          })._IMAGE
@@ -126,7 +126,7 @@ export const run_cnet_Normal = (
          else graph.PreviewImage({ images: image })
       } else if (Normal.preprocessor.Midas) {
          const midas = Normal.preprocessor.Midas
-         image = graph['Custom.controlnet_aux.MiDaS$7NormalMapPreprocessor']({
+         image = graph['controlnet_aux.MiDaS$7NormalMapPreprocessor']({
             image: image,
             resolution: resolution,
             a: midas.a_value,

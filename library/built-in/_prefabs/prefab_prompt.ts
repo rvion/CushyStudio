@@ -23,7 +23,7 @@ export const run_prompt = (p: {
       seed: p.seed,
       onLora: (
          //
-         loraName: Comfy.Enums['LoraLoader.lora_name'],
+         loraName: Comfy.Slots['LoraLoader.lora_name'],
          strength_clip: number,
          strength_model: number,
       ) => {

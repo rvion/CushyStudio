@@ -45,7 +45,7 @@ export const run_cnet_Sketch = (
    image: Comfy.Input.IMAGE,
 ): {
    image: Comfy.Input.IMAGE
-   cnet_name: Comfy.Enums['ControlNetLoader.control_net_name']
+   cnet_name: Comfy.Slots['ControlNetLoader.control_net_name']
 } => {
    const run = getCurrentRun()
    const graph = run.nodes

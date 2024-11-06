@@ -256,7 +256,7 @@ export class Runtime<FIELD extends Field = any> {
 
    /** a built-in prefab to quickly
     * add PreviewImage & JoinImageWithAlpha node to your ComfyUI graph */
-   add_previewImageWithAlpha = (image: HasSingle_IMAGE & HasSingle_MASK): Comfy.Base.PreviewImage => {
+   add_previewImageWithAlpha = (image: HasSingle_IMAGE & HasSingle_MASK): Comfy.Nodes['PreviewImage'] => {
       return this.nodes.PreviewImage({
          images: this.nodes.JoinImageWithAlpha({
             image: image,

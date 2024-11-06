@@ -14,10 +14,10 @@ import { _extractDefaultValue } from './_extractDefaultValue'
 import { WidgetEnumUI } from './WidgetEnumUI'
 
 // #region Config
-export type Field_enum_config<ENUM_NAME extends keyof Comfy.Enums> = FieldConfig<
+export type Field_enum_config<ENUM_NAME extends keyof Comfy.Slots> = FieldConfig<
    {
       enumName: string
-      default?: Comfy.Enums[ENUM_NAME]
+      default?: Comfy.Slots[ENUM_NAME]
       extraDefaults?: string[]
       filter?: (v: ComfyUnionValue) => boolean
       appearance?: 'select' | 'tab'
@@ -31,16 +31,16 @@ export type Field_enum_config<ENUM_NAME extends keyof Comfy.Enums> = FieldConfig
 >
 
 // #region Serial
-export type Field_enum_serial<ENUM_NAME extends keyof Comfy.Enums> = FieldSerial<{
+export type Field_enum_serial<ENUM_NAME extends keyof Comfy.Slots> = FieldSerial<{
    $: 'enum'
-   val?: Comfy.Enums[ENUM_NAME]
+   val?: Comfy.Slots[ENUM_NAME]
 }>
 
 // #region Value
-export type Field_enum_value<ENUM_NAME extends keyof Comfy.Enums> = Comfy.Enums[ENUM_NAME] // Requirable[T]
+export type Field_enum_value<ENUM_NAME extends keyof Comfy.Slots> = Comfy.Slots[ENUM_NAME] // Requirable[T]
 
 // #region Types
-export type Field_enum_types<ENUM_NAME extends keyof Comfy.Enums> = {
+export type Field_enum_types<ENUM_NAME extends keyof Comfy.Slots> = {
    $Type: 'enum'
    $Config: Field_enum_config<ENUM_NAME>
    $Serial: Field_enum_serial<ENUM_NAME>
@@ -52,7 +52,7 @@ export type Field_enum_types<ENUM_NAME extends keyof Comfy.Enums> = {
 }
 
 // #region State
-export class Field_enum<ENUM_NAME extends keyof Comfy.Enums> extends Field<Field_enum_types<ENUM_NAME>> {
+export class Field_enum<ENUM_NAME extends keyof Comfy.Slots> extends Field<Field_enum_types<ENUM_NAME>> {
    // #region Static
    static readonly type: 'enum' = 'enum'
    static readonly emptySerial: Field_enum_serial<any> = { $: 'enum' }
@@ -115,7 +115,7 @@ export class Field_enum<ENUM_NAME extends keyof Comfy.Enums> extends Field<Field
       return cushy.schema.knownEnumsByName.get(this.config.enumName as any)?.values ?? []
    }
 
-   private _isValidValue(v: any): v is Comfy.Enums[ENUM_NAME] {
+   private _isValidValue(v: any): v is Comfy.Slots[ENUM_NAME] {
       const isValidDef = this.possibleValues.includes(v)
       return isValidDef
    }
@@ -129,7 +129,7 @@ export class Field_enum<ENUM_NAME extends keyof Comfy.Enums> extends Field<Field
             // ⏸️ if (!this._isValidValue(def)) {
             // ⏸️     throw new Error(`Invalid default value ${def} for enum ${this.config.enumName}`)
             // ⏸️ }
-            const nextXX = def as any as Comfy.Enums[ENUM_NAME]
+            const nextXX = def as any as Comfy.Slots[ENUM_NAME]
             // 🔴 ping @globi
             // @ts-ignore
             next = produce(next, (draft) => void (draft.val = nextXX))

@@ -166,7 +166,7 @@ export const _WsMsgExecutedData$Schema = z.object({
 
 // helper types
 export type ComfyUploadImageResult = {
-   name: Comfy.Enums['LoadImage.image']
+   name: Comfy.Slots['LoadImage.image']
    subfolder: string
    type: string
 }

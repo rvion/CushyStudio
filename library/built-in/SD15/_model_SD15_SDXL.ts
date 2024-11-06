@@ -11,7 +11,7 @@ export type $prefabModelSD15andSDXL = X.XGroup<{
 
 export const prefabModelSD15andSDXL = (
    p: {
-      ckpt_name?: Comfy.Enums['CheckpointLoaderSimple.ckpt_name']
+      ckpt_name?: Comfy.Slots['CheckpointLoaderSimple.ckpt_name']
       extra?: $schemaModelExtras['$Value']
    } = {},
 ): $prefabModelSD15andSDXL => {

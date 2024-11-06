@@ -10,12 +10,12 @@ import { CushySchema } from './Schema'
 
 // 🔴 showcase how nullability work without optional
 
-export type IEnumBuilderOptFn<ENUM_NAME extends keyof Comfy.Enums> = (
+export type IEnumBuilderOptFn<ENUM_NAME extends keyof Comfy.Slots> = (
    config?: Omit<Field_enum_config<ENUM_NAME>, 'enumName'> & { startActive?: boolean },
 ) => X.XOptional<X.XEnum<ENUM_NAME>>
 
 export type IEnumBuilderOpt = {
-   [K in keyof Comfy.Enums]: IEnumBuilderOptFn<K>
+   [K in keyof Comfy.Slots]: IEnumBuilderOptFn<K>
 }
 
 export interface EnumBuilderOpt extends IEnumBuilderOpt {}

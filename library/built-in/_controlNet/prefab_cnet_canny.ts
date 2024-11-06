@@ -76,11 +76,11 @@ function ui_subform_Canny_Preprocessor(ui: X.Builder): UI_subform_Canny_Preproce
 // 🅿️ Canny RUN ===================================================
 export const run_cnet_canny = (
    canny: OutputFor<typeof ui_subform_Canny>,
-   image: Comfy.Input.IMAGE,
+   image: Comfy.Signal['IMAGE'],
    resolution: number, // 512 | 768 | 1024 = 512,
 ): {
-   image: Comfy.Input.IMAGE
-   cnet_name: Comfy.Enums['ControlNetLoader.control_net_name']
+   image: Comfy.Signal['IMAGE']
+   cnet_name: Comfy.Slots['ControlNetLoader.control_net_name']
 } => {
    const sdk = getCurrentRun()
    const graph = sdk.nodes
@@ -89,7 +89,7 @@ export const run_cnet_canny = (
    // PREPROCESSOR - CANNY ===========================================================
    if (canny.preprocessor) {
       const canPP = canny.preprocessor
-      image = graph['Custom.controlnet_aux.CannyEdgePreprocessor']({
+      image = graph['controlnet_aux.CannyEdgePreprocessor']({
          image: image,
          low_threshold: canPP.lowThreshold,
          high_threshold: canPP.highThreshold,

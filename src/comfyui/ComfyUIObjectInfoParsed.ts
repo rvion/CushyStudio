@@ -203,6 +203,7 @@ export class ComfyUIObjectInfoParsed {
             /** name of the type in cushy */
             let inputTypeNameInCushy: string | undefined
 
+            // 1/4
             if (slotType == null) {
                const uniqueEnumName = `INVALID_null`
                const RESX = this.processEnumNameOrValue({
@@ -212,11 +213,15 @@ export class ComfyUIObjectInfoParsed {
                })
                inputTypeNameInCushy = RESX.unionNameInCushy
                // ownEnums.push({ in: 'input', ownName: RESX.ownName, enum: RESX.enum })
-            } else if (typeof slotType === 'string') {
+            }
+            // 2/4
+            else if (typeof slotType === 'string') {
                inputTypeNameInCushy = convetComfySlotNameToCushySlotNameValidInJS(slotType)
                this.knownSlotTypes.add(inputTypeNameInCushy)
-            } else if (Array.isArray(slotType)) {
-               const uniqueEnumName = `${pythonModuleToShortestUnambiguousPrefix(pythonModule)}${nodeNameInCushy}.${inputNameInCushy}`
+            }
+            // 3/4
+            else if (Array.isArray(slotType)) {
+               const uniqueEnumName = `${pythonModuleToShortestUnambiguousPrefix(pythonModule)}${nodeNameInComfy}.${inputNameInComfy}`
                const RESX = this.processEnumNameOrValue({
                   pythonModule,
                   enumName: uniqueEnumName,
@@ -224,7 +229,9 @@ export class ComfyUIObjectInfoParsed {
                })
                inputTypeNameInCushy = RESX.unionNameInCushy
                // ownEnums.push({ in: 'input', ownName: RESX.ownName, enum: RESX.enum })
-            } else {
+            }
+            // 4/4
+            else {
                throw new Error(
                   `invalid schema (${JSON.stringify(slotType)}) for input "${
                      ipt.name
@@ -277,7 +284,7 @@ export class ComfyUIObjectInfoParsed {
          enumValues.length === 0 //
             ? `[[empty]]` // `[[empty:${p.candidateName}]]`
             : enumValues.sort().join('|')
-      const hash = crypto.createHash('sha1').update(hashContent).digest('hex')
+      const hash = crypto.createHash('sha1').update(hashContent).digest('hex').slice(0, 8)
 
       // 3. retrieve or create an EnumInfo
       let unionInfo: Maybe<ComfyUnionInfo> = this.knownUnionByHash.get(hash)

@@ -16,13 +16,13 @@ type AutoWidget<T> = T extends { kind: any; type: infer TPE }
             : T['kind'] extends 'enum'
               ? // check perf implications here
                 //         VVV
-                X.XEnum<TPE & keyof Comfy.Enums>
+                X.XEnum<TPE & keyof Comfy.Slots>
               : any
    : any
 
 export type IAutoBuilder = {
-   [K in keyof FormHelper]: () => X.XGroup<{
-      [N in keyof FormHelper[K]]: AutoWidget<FormHelper[K][N]>
+   [K in keyof Comfy.FormHelper]: () => X.XGroup<{
+      [N in keyof Comfy.FormHelper[K]]: AutoWidget<Comfy.FormHelper[K][N]>
    }>
 }
 

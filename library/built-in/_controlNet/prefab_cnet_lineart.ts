@@ -117,7 +117,7 @@ export const run_cnet_Lineart = (
    resolution: number, // 512 | 768 | 1024 = 512,
 ): {
    image: Comfy.Input.IMAGE
-   cnet_name: Comfy.Enums['ControlNetLoader.control_net_name']
+   cnet_name: Comfy.Slots['ControlNetLoader.control_net_name']
 } => {
    const sdk = getCurrentRun()
    const graph = sdk.nodes
@@ -128,7 +128,7 @@ export const run_cnet_Lineart = (
       // Anime
       if (Lineart.preprocessor.Anime) {
          const anime = Lineart.preprocessor.Anime
-         image = graph['Custom.controlnet_aux.AnimeLineArtPreprocessor']({
+         image = graph['controlnet_aux.AnimeLineArtPreprocessor']({
             image: image,
             resolution: resolution,
          })._IMAGE
@@ -139,7 +139,7 @@ export const run_cnet_Lineart = (
       // Manga
       else if (Lineart.preprocessor.Manga) {
          const manga = Lineart.preprocessor.Manga
-         image = graph['Custom.controlnet_aux.Manga2Anime$_LineArt$_Preprocessor']({
+         image = graph['controlnet_aux.Manga2Anime$_LineArt$_Preprocessor']({
             image: image,
             resolution: resolution,
          })._IMAGE
@@ -150,7 +150,7 @@ export const run_cnet_Lineart = (
       // Realistic
       else if (Lineart.preprocessor.Realistic) {
          const Realistic = Lineart.preprocessor.Realistic
-         image = graph['Custom.controlnet_aux.LineArtPreprocessor']({
+         image = graph['controlnet_aux.LineArtPreprocessor']({
             image: image,
             resolution: resolution,
             coarse: !Realistic || Realistic?.coarse ? 'enable' : 'disable',

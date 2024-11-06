@@ -13,11 +13,11 @@ export type UI_Refiners = X.XGroup<{
    refinerType: X.XChoices<{
       faces: X.XGroup<{
          prompt: X.XString
-         detector: X.XEnum<'Custom.Impact_Pack.UltralyticsDetectorProvider.model_name'>
+         detector: X.XEnum<'Impact_Pack.UltralyticsDetectorProvider.model_name'>
       }>
       hands: X.XGroup<{
          prompt: X.XString
-         detector: X.XEnum<'Custom.Impact_Pack.UltralyticsDetectorProvider.model_name'>
+         detector: X.XEnum<'Impact_Pack.UltralyticsDetectorProvider.model_name'>
       }>
       eyes: X.XGroup<{ prompt: X.XString }>
    }>
@@ -25,8 +25,8 @@ export type UI_Refiners = X.XGroup<{
       sampler: UI_Sampler
       sam: X.XOptional<
          X.XGroup<{
-            model_name: X.XEnum<'Custom.Impact_Pack.SAMLoader.model_name'>
-            device_mode: X.XEnum<'Custom.Impact_Pack.SAMLoader.device_mode'>
+            model_name: X.XEnum<'Impact_Pack.SAMLoader.model_name'>
+            device_mode: X.XEnum<'Impact_Pack.SAMLoader.device_mode'>
          }>
       >
    }>
@@ -98,8 +98,8 @@ export function ui_refiners(): UI_Refiners {
                sam: form
                   .fields(
                      {
-                        model_name: form.enum['Custom.Impact_Pack.SAMLoader.model_name']({ default: 'sam_vit_b_01ec64.pth', }), // prettier-ignore
-                        device_mode: form.enum['Custom.Impact_Pack.SAMLoader.device_mode']({ default: 'AUTO' }), // prettier-ignore
+                        model_name: form.enum['Impact_Pack.SAMLoader.model_name']({ default: 'sam_vit_b_01ec64.pth', }), // prettier-ignore
+                        device_mode: form.enum['Impact_Pack.SAMLoader.device_mode']({ default: 'AUTO' }), // prettier-ignore
                      },
                      {
                         startCollapsed: true,

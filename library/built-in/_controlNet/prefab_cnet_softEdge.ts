@@ -83,7 +83,7 @@ export const run_cnet_SoftEdge = (
    resolution: number, // 512 | 768 | 1024 = 512,
 ): {
    image: Comfy.Input.IMAGE
-   cnet_name: Comfy.Enums['ControlNetLoader.control_net_name']
+   cnet_name: Comfy.Slots['ControlNetLoader.control_net_name']
 } => {
    const run = getCurrentRun()
    const graph = run.nodes
@@ -92,7 +92,7 @@ export const run_cnet_SoftEdge = (
    // PREPROCESSOR - SoftEdge ===========================================================
    if (SoftEdge.preprocessor.Pidinet) {
       const pid = SoftEdge.preprocessor.Pidinet
-      image = graph['Custom.controlnet_aux.PiDiNetPreprocessor']({
+      image = graph['controlnet_aux.PiDiNetPreprocessor']({
          image: image,
          resolution: resolution,
          safe: pid.safe ? 'enable' : 'disable',
@@ -101,7 +101,7 @@ export const run_cnet_SoftEdge = (
       else graph.PreviewImage({ images: image })
    } else if (SoftEdge.preprocessor.HED) {
       const hed = SoftEdge.preprocessor.HED
-      image = graph['Custom.controlnet_aux.HEDPreprocessor']({
+      image = graph['controlnet_aux.HEDPreprocessor']({
          image: image,
          resolution: resolution,
          safe: !hed || hed?.safe ? 'enable' : 'disable',

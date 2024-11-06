@@ -17,7 +17,7 @@ export type $extra1 = X.XChoices<{
    removeBG: UI_rembg_v1
    mask: UI_Mask
    highResFix: UI_HighResFix
-   upscaleWithModel: X.XGroup<{ model: X.XEnum<'Extra.UpscaleModelLoader.model_name'> }>
+   upscaleWithModel: X.XGroup<{ model: X.XEnum<'UpscaleModelLoader.model_name'> }>
    refine: UI_Refiners
    promtPlus: UI_advancedPrompt
    recursiveImgToImg: UI_recursive

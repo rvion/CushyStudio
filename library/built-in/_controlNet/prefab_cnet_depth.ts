@@ -130,7 +130,7 @@ export const run_cnet_Depth = (
    resolution: number, // 512 | 768 | 1024 = 512,
 ): {
    image: Comfy.Input.IMAGE
-   cnet_name: Comfy.Enums['ControlNetLoader.control_net_name']
+   cnet_name: Comfy.Slots['ControlNetLoader.control_net_name']
 } => {
    const sdk = getCurrentRun()
    const graph = sdk.nodes
@@ -140,7 +140,7 @@ export const run_cnet_Depth = (
    if (Depth.preprocessor) {
       if (Depth.preprocessor.Leres) {
          const leres = Depth.preprocessor.Leres
-         image = graph['Custom.controlnet_aux.LeReS$7DepthMapPreprocessor']({
+         image = graph['controlnet_aux.LeReS$7DepthMapPreprocessor']({
             image: image,
             resolution: resolution,
             rm_nearest: leres.rm_nearest,
@@ -152,7 +152,7 @@ export const run_cnet_Depth = (
          else graph.PreviewImage({ images: image })
       } else if (Depth.preprocessor.Zoe) {
          const zoe = Depth.preprocessor.Zoe
-         image = graph['Custom.controlnet_aux.Zoe$7DepthMapPreprocessor']({
+         image = graph['controlnet_aux.Zoe$7DepthMapPreprocessor']({
             image: image,
             resolution: resolution,
          })._IMAGE
@@ -160,7 +160,7 @@ export const run_cnet_Depth = (
          else graph.PreviewImage({ images: image })
       } else if (Depth.preprocessor.Midas) {
          const midas = Depth.preprocessor.Midas
-         image = graph['Custom.controlnet_aux.MiDaS$7DepthMapPreprocessor']({
+         image = graph['controlnet_aux.MiDaS$7DepthMapPreprocessor']({
             image: image,
             resolution: resolution,
             a: midas.a_value,

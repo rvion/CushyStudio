@@ -5,9 +5,7 @@ import { observable } from 'mobx'
 
 import { ComfyNode } from '../core/ComfyNode'
 
-type K = Comfy.Extra.advanced_samplers.Nodes
-export interface ComfyWorkflowBuilder extends Comfy.Nodes {}
-
+export interface ComfyWorkflowBuilder extends Comfy.Builder {}
 export class ComfyWorkflowBuilder {
    // private nameCache = new Map<string, number>()
 

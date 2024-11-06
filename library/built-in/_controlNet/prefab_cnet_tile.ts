@@ -85,7 +85,7 @@ export const run_cnet_Tile = (
    resolution: number, // 512 | 768 | 1024 = 512,
 ): {
    image: Comfy.Input.IMAGE
-   cnet_name: Comfy.Enums['ControlNetLoader.control_net_name']
+   cnet_name: Comfy.Slots['ControlNetLoader.control_net_name']
 } => {
    const run = getCurrentRun()
    const graph = run.nodes
@@ -94,7 +94,7 @@ export const run_cnet_Tile = (
    // PREPROCESSOR - Tile ===========================================================
    if (Tile.preprocessor.Pyrup) {
       const tile = Tile.preprocessor.Pyrup
-      image = graph['Custom.controlnet_aux.TilePreprocessor']({
+      image = graph['controlnet_aux.TilePreprocessor']({
          image: image,
          resolution: resolution,
          pyrUp_iters: tile.pyrup,

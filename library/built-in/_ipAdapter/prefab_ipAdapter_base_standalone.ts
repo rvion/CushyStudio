@@ -14,8 +14,8 @@ export type UI_ipadapter_standalone = X.XGroup<{
       crop: X.XBool
       startAtStepPercent: X.XNumber
       endAtStepPercent: X.XNumber
-      weight_type: X.XEnum<'Custom.IPAdapter_plus.IPAdapterAdvanced.weight_type'>
-      embedding_scaling: X.XEnum<'Custom.IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'>
+      weight_type: X.XEnum<'IPAdapter_plus.IPAdapterAdvanced.weight_type'>
+      embedding_scaling: X.XEnum<'IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'>
       noise: X.XNumber
       unfold_batch: X.XBool
    }>
@@ -24,7 +24,7 @@ export type UI_ipadapter_standalone = X.XGroup<{
    help: X.XMarkdown
    image: X.XImage
    extra: CushySchema<Field_list<X.XImage>>
-   embedding_scaling: X.XEnum<'Custom.IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'>
+   embedding_scaling: X.XEnum<'IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'>
 }>
 
 export const ui_ipadapter_standalone = () => {
@@ -36,7 +36,7 @@ export const ui_ipadapter_standalone = () => {
             help: form.markdown({ startCollapsed: true, markdown: ipAdapterDoc }),
             image: form.image({ label: 'Image' }),
             extra: form.list({ label: 'Extra', element: form.image({ label: 'Image' }) }),
-            embedding_scaling: form.enum['Custom.IPAdapter_plus.IPAdapterAdvanced.embeds_scaling']({
+            embedding_scaling: form.enum['IPAdapter_plus.IPAdapterAdvanced.embeds_scaling']({
                default: 'V only',
             }),
             ...ui_ipadapter_CLIPSelection(form),
@@ -61,12 +61,12 @@ export const run_ipadapter_standalone = async (
    const run = getCurrentRun()
    const graph = run.nodes
 
-   const ip_model = graph['Custom.IPAdapter_plus.IPAdapterModelLoader']({
+   const ip_model = graph['IPAdapter_plus.IPAdapterModelLoader']({
       ipadapter_file: ui.cnet_model_name,
    })
 
    const image: Comfy.Input.IMAGE = await run.loadImageAnswer(ui.image)
-   const image_ = graph['Custom.IPAdapter_plus.IPAdapterEncoder']({
+   const image_ = graph['IPAdapter_plus.IPAdapterEncoder']({
       ipadapter: ip_model,
       image,
    }).outputs
@@ -75,20 +75,20 @@ export const run_ipadapter_standalone = async (
 
    const ip_clip_name = graph.CLIPVisionLoader({ clip_name: ui.clip_name })
    for (const ex of ui.extra) {
-      const extraImage = graph['Custom.IPAdapter_plus.IPAdapterEncoder']({
+      const extraImage = graph['IPAdapter_plus.IPAdapterEncoder']({
          image: await run.loadImageAnswer(ex),
          ipadapter: ip_model,
          clip_vision: ip_clip_name,
       })
       // merge pos
-      const combinedPos = graph['Custom.IPAdapter_plus.IPAdapterCombineEmbeds']({
+      const combinedPos = graph['IPAdapter_plus.IPAdapterCombineEmbeds']({
          embed1: pos_embed,
          embed2: extraImage.outputs.pos_embed,
          method: 'average',
       })
       pos_embed = combinedPos.outputs.EMBEDS
       // merge neg
-      const combinedNeg = graph['Custom.IPAdapter_plus.IPAdapterCombineEmbeds']({
+      const combinedNeg = graph['IPAdapter_plus.IPAdapterCombineEmbeds']({
          embed1: pos_embed,
          embed2: extraImage.outputs.neg_embed,
          method: 'average',

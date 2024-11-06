@@ -1,8 +1,10 @@
 export const convertComfyNodeNameToCushyNodeNameValidInJS = (name: string): string => {
+   return name
    return normalizeJSIdentifier(name, ' ')
 }
 
 export const convetComfySlotNameToCushySlotNameValidInJS = (name: string): string => {
+   return name
    return normalizeJSIdentifier(name, '_')
 }
 

@@ -20,12 +20,12 @@ export type UI_IPAdapterFaceID = X.XGroup<{
             crop: X.XBool
             startAtStepPercent: X.XNumber
             endAtStepPercent: X.XNumber
-            weight_type: X.XEnum<'Custom.IPAdapter_plus.IPAdapterAdvanced.weight_type'>
-            embedding_scaling: X.XEnum<'Custom.IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'>
+            weight_type: X.XEnum<'IPAdapter_plus.IPAdapterAdvanced.weight_type'>
+            embedding_scaling: X.XEnum<'IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'>
             noise: X.XNumber
             unfold_batch: X.XBool
          }>
-         cnet_model_name: X.XEnum<'Custom.IPAdapter_plus.IPAdapterInsightFaceLoader.model_name'>
+         cnet_model_name: X.XEnum<'IPAdapter_plus.IPAdapterInsightFaceLoader.model_name'>
          help: X.XMarkdown
       }>
    >
@@ -35,15 +35,15 @@ export type UI_IPAdapterFaceID = X.XGroup<{
       crop: X.XBool
       startAtStepPercent: X.XNumber
       endAtStepPercent: X.XNumber
-      weight_type: X.XEnum<'Custom.IPAdapter_plus.IPAdapterAdvanced.weight_type'>
-      embedding_scaling: X.XEnum<'Custom.IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'>
+      weight_type: X.XEnum<'IPAdapter_plus.IPAdapterAdvanced.weight_type'>
+      embedding_scaling: X.XEnum<'IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'>
       noise: X.XNumber
       unfold_batch: X.XBool
    }>
    help: X.XMarkdown
    models: X.XGroup<{
       lora: X.XEnum<'LoraLoader.lora_name'>
-      cnet_model_name: X.XEnum<'Custom.IPAdapter_plus.IPAdapterInsightFaceLoader.model_name'>
+      cnet_model_name: X.XEnum<'IPAdapter_plus.IPAdapterInsightFaceLoader.model_name'>
       clip_name: X.XEnum<'CLIPVisionLoader.clip_name'>
    }>
    lora_strength: X.XNumber
@@ -131,8 +131,8 @@ export const run_cnet_IPAdapterFaceID = (
    })
 
    const ip_clip_name = graph.CLIPVisionLoader({ clip_name: ip.models.clip_name })
-   const faceIDnode = graph['Custom.IPAdapter_plus.IPAdapterFaceID']({
-      ipadapter: graph['Custom.IPAdapter_plus.IPAdapterModelLoader']({
+   const faceIDnode = graph['IPAdapter_plus.IPAdapterFaceID']({
+      ipadapter: graph['IPAdapter_plus.IPAdapterModelLoader']({
          ipadapter_file: ip.models.cnet_model_name,
       }),
       clip_vision: ip_clip_name,
@@ -156,10 +156,10 @@ export const run_cnet_IPAdapterFaceID = (
    ckpt = faceIDnode._MODEL
 
    if (ip.reinforce) {
-      const ip_model = graph['Custom.IPAdapter_plus.IPAdapterModelLoader']({
+      const ip_model = graph['IPAdapter_plus.IPAdapterModelLoader']({
          ipadapter_file: ip.reinforce.cnet_model_name,
       })
-      const ip_adapted_model = graph['Custom.IPAdapter_plus.IPAdapterAdvanced']({
+      const ip_adapted_model = graph['IPAdapter_plus.IPAdapterAdvanced']({
          ipadapter: ip_model,
          image: image,
          model: ckpt,

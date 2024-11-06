@@ -92,7 +92,7 @@ app({
 
       // latent
       const latentOpts = ui.startingLatent
-      const stableCascade$_EmptyLatent_2 = graph['Extra.StableCascade$_EmptyLatentImage']({
+      const stableCascade$_EmptyLatent_2 = graph['StableCascade$_EmptyLatentImage']({
          width: latentOpts.width,
          height: latentOpts.height,
          compression: latentOpts.compression,
@@ -116,7 +116,7 @@ app({
       const conditioningZeroOut_2 = graph.ConditioningZeroOut({
          conditioning: posEmbedding.outputs.CONDITIONING,
       })
-      const stableCascade$_StageB$_Conditioning_2 = graph['Extra.StableCascade$_StageB$_Conditioning']({
+      const stableCascade$_StageB$_Conditioning_2 = graph['StableCascade$_StageB$_Conditioning']({
          conditioning: conditioningZeroOut_2.outputs.CONDITIONING,
          stage_c: kSampler_4.outputs.LATENT,
       })

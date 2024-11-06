@@ -12,13 +12,19 @@ export type NodeOwnEnum = { in: 'input' | 'output'; ownName: string; enum: Comfy
  */
 export class ComfyUIObjectInfoParsedNodeSchema {
    /** list of types the node has a single output of */
-   singleOuputs: NodeOutputExt[] = []
+   _singleOuputs: Maybe<NodeOutputExt[]> = null
+   get singleOuputs(): NodeOutputExt[] {
+      if (this._singleOuputs != null) return this._singleOuputs
+      const x: { [key: string]: number } = {}
+      for (const i of this.outputs) x[i.typeName] = (x[i.typeName] ?? 0) + 1
+      this._singleOuputs = this.outputs.filter((i) => x[i.typeName] === 1)
+      return this._singleOuputs
+   }
 
    constructor(
       public raw: ComfyNodeSchemaJSON,
-      // public ownEnums: NodeOwnEnum[], // <-- TODO: remove
       public nameInComfy: string,
-      public nameInCushy: string,
+      public nameInCushy: string, // same but qualified to keep track of pythonNamespace
       public category: string,
       public inputs: NodeInputExt[],
       public outputs: NodeOutputExt[],
@@ -28,84 +34,30 @@ export class ComfyUIObjectInfoParsedNodeSchema {
    }
 
    get shortestUnambiguousName(): string {
-      return `${pythonModuleToShortestUnambiguousPrefix(this.pythonModule)}${this.nameInCushy}`
+      return `${pythonModuleToShortestUnambiguousPrefix(this.pythonModule)}${this.nameInComfy}`
    }
 
    codegenUI(): string {
       const b = new CodeBuffer()
       const p = b.w
-      p(`    ${this.nameInCushy}: {`)
+      p(`   ${escapeJSKey(this.shortestUnambiguousName)}: {`)
       this.inputs.forEach((i, ix) => {
+         // 1/3
          if (i.isPrimitive) {
             const tsType = ComfyPrimitiveMapping[i.type]
             if (tsType == null) return console.log(`[🔶] invariant violation`)
-            p(`        ${escapeJSKey(i.nameInComfy)}: { kind: '${tsType}', type: ${tsType} }`)
-         } else if (i.isEnum) {
-            p(`        ${escapeJSKey(i.nameInComfy)}: { kind: 'enum', type: Comfy.Union.${i.type} }`)
-         } else {
-            p(`        // ${escapeJSKey(i.nameInComfy)}: { kind: 'object', type: ${i.type} }`)
-            // p(`        //      ${JSON.stringify(i)}`)
+            p(`      ${escapeJSKey(i.nameInComfy)}: { kind: '${tsType}', type: ${tsType} }`)
+         }
+         // 2/3
+         else if (i.isEnum) {
+            p(`      ${escapeJSKey(i.nameInComfy)}: { kind: 'enum', type: Union['${i.type}'] }`)
+         }
+         // 3/3
+         else {
+            p(`      // ${escapeJSKey(i.nameInComfy)}: { kind: 'object', type: ${i.type} }`)
          }
       })
-      p(`    }`)
-      return b.content
-   }
-
-   codegen(b?: CodeBuffer): string {
-      b = b ?? new CodeBuffer()
-      const p = b.w
-
-      // single type interfaces
-      const x: { [key: string]: number } = {}
-      for (const i of this.outputs) x[i.typeName] = (x[i.typeName] ?? 0) + 1
-      this.singleOuputs = this.outputs.filter((i) => x[i.typeName] === 1)
-      const ifaces = this.singleOuputs.map((i) => `HasSingle_${i.typeName}`)
-      ifaces.push(`ComfyNode<${this.nameInCushy}_input, ${this.nameInCushy}_output>`)
-      // inputs
-      // p(`\n// ${this.name} -------------------------------`)
-      // const msgIfDifferent = this.nameInComfy !== this.nameInCushy ? ` ("${this.nameInComfy}" in ComfyUI)` : ''
-      // p(`// --------------------------------------------------------------------------------------------`)
-      // p(`// #region ${this.nameInComfy} [${this.category}]`)
-      p(`interface ${this.nameInCushy} extends ${ifaces.join(', ')} {`)
-      p(`    nameInComfy: "${this.nameInComfy}"`)
-      p(`}`)
-      // for (const i of this.ownEnums) {
-      //    // for (const { enumNameAlias, pythonModule } of e.aliases) {
-      //    // allAcceptableEnums.push(enumNameAlias)
-      //    // p(`/* 🟢 */export type ${i.ownName} = Comfy.Union.${i.enum.enumNameInCushy}`)
-      // }
-      p(`interface ${this.nameInCushy}_output {`)
-      // p(`    $schema: ${this.name}_schema`)
-      this.outputs.forEach((i, ix) => {
-         p(`    ${escapeJSKey(i.nameInCushy)}: ComfyNodeOutput<'${i.typeName}', ${ix}>,`)
-      })
-      // INTERFACE
-      // if (x[i.type] === 1) p(`    get _${i.type}() { return this.${i.name} } // prettier-ignore`)
-      // }
-      // CLASS END
-      p(`}`)
-
-      // p(`// prettier-ignore`)
-      // p(`export const ${this.name}_schema: ComfyNodeSchema = {`)
-      // p(`    type: '${this.name}',`)
-      // p(`    input: ${JSON.stringify(this.inputs)},`)
-      // p(`    outputs: ${JSON.stringify(this.outputs)},`)
-      // p(`    category: ${JSON.stringify(this.category)},`)
-      // p(`}`)
-      p(`interface ${this.nameInCushy}_input {`)
-      for (const i of this.inputs) {
-         const opts = typeof i.opts === 'string' ? null : i.opts
-         const type = /*ComfyPrimitiveMapping[i.type] //
-                   ? i.type
-                   : */ i.type.startsWith('E_') //
-            ? `Comfy.Union.${i.type}`
-            : `Comfy.Input.${i.type}`
-         if (opts) p(`    ${this.renderOpts(opts)}`)
-         const canBeOmmited = opts?.default !== undefined || !i.required
-         p(`    ${i.nameInComfyEscaped}${canBeOmmited ? '?' : ''}: ${type}`)
-      }
-      p(`}`)
-
+      p(`   }`)
       return b.content
    }
 
