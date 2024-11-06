@@ -55,7 +55,10 @@ const foo = app({
 
          // or do the frame
          const builder = run.nodes
-         const model = builder.CheckpointLoaderSimple({ ckpt_name: 'lyriel_v15.safetensors' })
+         const model = builder.CheckpointLoaderSimple({
+            // @ts-ignore
+            ckpt_name: 'lyriel_v15.safetensors',
+         })
          builder
             .PreviewImage({
                images: builder.VAEDecode({

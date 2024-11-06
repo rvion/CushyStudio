@@ -6,14 +6,14 @@ import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
 export type UI_subform_Canny = X.XGroup<{
    preprocessor: UI_subform_Canny_Preprocessor
    models: X.XGroup<{
-      cnet_model_name: X.XEnum<Comfy.Enums['ControlNetLoader.control_net_name']>
+      cnet_model_name: X.XEnum<'ControlNetLoader.control_net_name'>
    }>
    strength: X.XNumber
    advanced: X.XGroup<{
       startAtStepPercent: X.XNumber
       endAtStepPercent: X.XNumber
-      crop: X.XEnum<Comfy.Enums['LatentUpscale.crop']>
-      upscale_method: X.XEnum<Comfy.Enums['ImageScale.upscale_method']>
+      crop: X.XEnum<'LatentUpscale.crop'>
+      upscale_method: X.XEnum<'ImageScale.upscale_method'>
    }>
 }>
 

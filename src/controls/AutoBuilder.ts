@@ -4,7 +4,7 @@ import type { Field_string_config } from '../csuite/fields/string/FieldString'
 import type { FieldConfig } from '../csuite/model/FieldConfig'
 import type { CushySchemaBuilder } from './Builder'
 
-type AutoWidget<T> = T extends { kind: any; type: infer X }
+type AutoWidget<T> = T extends { kind: any; type: infer TPE }
    ? T['kind'] extends 'number'
       ? X.XNumber
       : T['kind'] extends 'string'
@@ -14,7 +14,9 @@ type AutoWidget<T> = T extends { kind: any; type: infer X }
           : T['kind'] extends 'prompt'
             ? X.XPrompt
             : T['kind'] extends 'enum'
-              ? X.XEnum<X & ComfyUnionValue>
+              ? // check perf implications here
+                //         VVV
+                X.XEnum<TPE & keyof Comfy.Enums>
               : any
    : any
 

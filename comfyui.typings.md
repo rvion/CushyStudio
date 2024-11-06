@@ -1,11 +1,13 @@
-import type { ComfyNode } from '../../../src/core/ComfyNode'
-import type { ComfyNodeMetadata } from '../../../src/types/ComfyNodeID'
-import type { ComfyNodeOutput } from '../../../src/core/Slot'
-import type { ComfyNodeSchemaJSON } from '../../../src/comfyui/ComfyUIObjectInfoTypes'
+# Example ComfyUI Typings
+```ts
+import type { ComfyNode } from './src/core/ComfyNode'
+import type { ComfyNodeMetadata } from './src/types/ComfyNodeID'
+import type { ComfyNodeOutput } from './src/core/Slot'
+import type { ComfyNodeSchemaJSON } from './src/comfyui/ComfyUIObjectInfoTypes'
 
 declare global {
    namespace Comfy {
-      export type PythonModulesAvaialbles = 
+      export type PythonModulesAvaialbles =
           /**
            * SDK Namespace: Comfy.Base
            * Nodes: KSampler, CheckpointLoaderSimple, CLIPTextEncode, CLIPSetLastLayer, VAEDecode, VAEEncode, VAEEncodeForInpaint, VAELoader, EmptyLatentImage, LatentUpscale, LatentUpscaleBy, LatentFromBatch, RepeatLatentBatch, SaveImage, PreviewImage, LoadImage, LoadImageMask, ImageScale, ImageScaleBy, ImageInvert, ImageBatch, ImagePadForOutpaint, EmptyImage, ConditioningAverage, ConditioningCombine, ConditioningConcat, ConditioningSetArea, ConditioningSetAreaPercentage, ConditioningSetAreaStrength, ConditioningSetMask, KSamplerAdvanced, SetLatentNoiseMask, LatentComposite, LatentBlend, LatentRotate, LatentFlip, LatentCrop, LoraLoader, CLIPLoader, UNETLoader, DualCLIPLoader, CLIPVisionEncode, StyleModelApply, unCLIPConditioning, ControlNetApply, ControlNetApplyAdvanced, ControlNetLoader, DiffControlNetLoader, StyleModelLoader, CLIPVisionLoader, VAEDecodeTiled, VAEEncodeTiled, unCLIPCheckpointLoader, GLIGENLoader, GLIGENTextBoxApply, InpaintModelConditioning, CheckpointLoader, DiffusersLoader, LoadLatent, SaveLatent, ConditioningZeroOut, ConditioningSetTimestepRange, LoraLoaderModelOnly, UnknownNodeXX
@@ -232,6 +234,11 @@ declare global {
            */
           | 'custom_nodes.websocket_image_save'
           /**
+           * SDK Namespace: Comfy.Custom.was
+           * Nodes: BLIP Model Loader, Blend Latents, Bus Node, Cache Node, Checkpoint Loader, Checkpoint Loader (Simple), CLIPTextEncode (NSP), CLIP Input Switch, CLIP Vision Input Switch, Conditioning Input Switch, Constant Number, Create Grid Image, Create Grid Image from Batch, Create Morph Image, Create Morph Image from Path, Create Video from Path, CLIPSeg Masking, CLIPSeg Model Loader, CLIPSeg Batch Masking, Convert Masks to Images, Control Net Model Input Switch, Debug Number to Console, Dictionary to Console, Diffusers Model Loader, Diffusers Hub Model Down-Loader, Export API, Latent Input Switch, Load Cache, Logic Boolean, Logic Boolean Primitive, Logic Comparison OR, Logic Comparison AND, Logic Comparison XOR, Logic NOT, Lora Loader, Hex to HSL, HSL to Hex, Image SSAO (Ambient Occlusion), Image SSDO (Direct Occlusion), Image Analyze, Image Aspect Ratio, Image Batch, Image Blank, Image Blend by Mask, Image Blend, Image Blending Mode, Image Bloom Filter, Image Canny Filter, Image Chromatic Aberration, Image Color Palette, Image Crop Face, Image Crop Location, Image Crop Square Location, Image Displacement Warp, Image Lucy Sharpen, Image Paste Face, Image Paste Crop, Image Paste Crop by Location, Image Pixelate, Image Power Noise, Image Dragan Photography Filter, Image Edge Detection Filter, Image Film Grain, Image Filter Adjustments, Image Flip, Image Gradient Map, Image Generate Gradient, Image High Pass Filter, Image History Loader, Image Input Switch, Image Levels Adjustment, Image Load, Image Median Filter, Image Mix RGB Channels, Image Monitor Effects Filter, Image Nova Filter, Image Padding, Image Perlin Noise, Image Rembg (Remove Background), Image Perlin Power Fractal, Image Remove Background (Alpha), Image Remove Color, Image Resize, Image Rotate, Image Rotate Hue, Image Send HTTP, Image Save, Image Seamless Texture, Image Select Channel, Image Select Color, Image Shadows and Highlights, Image Size to Number, Image Stitch, Image Style Filter, Image Threshold, Image Tiled, Image Transpose, Image fDOF Filter, Image to Latent Mask, Image to Noise, Image to Seed, Images to RGB, Images to Linear, Integer place counter, Image Voronoi Noise Filter, KSampler (WAS), KSampler Cycle, Latent Batch, Latent Noise Injection, Latent Size to Number, Latent Upscale by Factor (WAS), Load Image Batch, Load Text File, Load Lora, Lora Input Switch, Masks Add, Masks Subtract, Mask Arbitrary Region, Mask Batch to Mask, Mask Batch, Mask Ceiling Region, Mask Crop Dominant Region, Mask Crop Minority Region, Mask Crop Region, Mask Paste Region, Mask Dilate Region, Mask Dominant Region, Mask Erode Region, Mask Fill Holes, Mask Floor Region, Mask Gaussian Region, Mask Invert, Mask Minority Region, Mask Smooth Region, Mask Threshold Region, Masks Combine Regions, Masks Combine Batch, MiDaS Model Loader, MiDaS Depth Approximation, MiDaS Mask Image, Model Input Switch, Number Counter, Number Operation, Number to Float, Number Input Switch, Number Input Condition, Number Multiple Of, Number PI, Number to Int, Number to Seed, Number to String, Number to Text, Boolean To Text, Prompt Styles Selector, Prompt Multiple Styles Selector, Random Number, Save Text File, Seed, Tensor Batch to Image, BLIP Analyze Image, SAM Model Loader, SAM Parameters, SAM Parameters Combine, SAM Image Mask, Samples Passthrough (Stat System), String to Text, Image Bounds, Inset Image Bounds, Bounded Image Blend, Bounded Image Blend with Mask, Bounded Image Crop, Bounded Image Crop with Mask, Image Bounds to Console, Text Dictionary Update, Text Dictionary Get, Text Dictionary Convert, Text Dictionary New, Text Dictionary Keys, Text Dictionary To Text, Text Add Tokens, Text Add Token by Input, Text Compare, Text Concatenate, Text File History Loader, Text Find and Replace by Dictionary, Text Find and Replace Input, Text Find and Replace, Text Find, Text Input Switch, Text List, Text List Concatenate, Text List to Text, Text Load Line From File, Text Multiline, Text Multiline (Code Compatible), Text Parse A1111 Embeddings, Text Parse Noodle Soup Prompts, Text Parse Tokens, Text Random Line, Text Random Prompt, Text String, Text Contains, Text Shuffle, Text Sort, Text to Conditioning, Text to Console, Text to Number, Text to String, Text String Truncate, True Random.org Number Generator, unCLIP Checkpoint Loader, Upscale Model Loader, Upscale Model Switch, Write to GIF, Write to Video, VAE Input Switch, Video Dump Frames, CLIPSEG2
+           */
+          | 'custom_nodes.was-node-suite-comfyui'
+          /**
            * SDK Namespace: Comfy.Custom.IPAdapter_plus
            * Nodes: IPAdapter, IPAdapterAdvanced, IPAdapterBatch, IPAdapterFaceID, IPAdapterFaceIDKolors, IPAAdapterFaceIDBatch, IPAdapterTiled, IPAdapterTiledBatch, IPAdapterEmbeds, IPAdapterEmbedsBatch, IPAdapterStyleComposition, IPAdapterStyleCompositionBatch, IPAdapterMS, IPAdapterClipVisionEnhancer, IPAdapterClipVisionEnhancerBatch, IPAdapterFromParams, IPAdapterPreciseStyleTransfer, IPAdapterPreciseStyleTransferBatch, IPAdapterPreciseComposition, IPAdapterPreciseCompositionBatch, IPAdapterUnifiedLoader, IPAdapterUnifiedLoaderFaceID, IPAdapterModelLoader, IPAdapterInsightFaceLoader, IPAdapterUnifiedLoaderCommunity, IPAdapterEncoder, IPAdapterCombineEmbeds, IPAdapterNoise, PrepImageForClipVision, IPAdapterSaveEmbeds, IPAdapterLoadEmbeds, IPAdapterWeights, IPAdapterCombineWeights, IPAdapterWeightsFromStrategy, IPAdapterPromptScheduleFromWeightsStrategy, IPAdapterRegionalConditioning, IPAdapterCombineParams
            */
@@ -242,12 +249,17 @@ declare global {
            */
           | 'custom_nodes.comfyui_controlnet_aux'
           /**
+           * SDK Namespace: Comfy.Custom.Marigold
+           * Nodes: MarigoldModelLoader, MarigoldDepthEstimation_v2, MarigoldDepthEstimation_v2_video, MarigoldDepthEstimation, MarigoldDepthEstimationVideo, ColorizeDepthmap, SaveImageOpenEXR, RemapDepth
+           */
+          | 'custom_nodes.ComfyUI-Marigold'
+          /**
            * SDK Namespace: Comfy.Custom.Impact_Pack
            * Nodes: SAMLoader, CLIPSegDetectorProvider, ONNXDetectorProvider, BitwiseAndMaskForEach, SubtractMaskForEach, DetailerForEach, DetailerForEachDebug, DetailerForEachPipe, DetailerForEachDebugPipe, DetailerForEachPipeForAnimateDiff, SAMDetectorCombined, SAMDetectorSegmented, FaceDetailer, FaceDetailerPipe, MaskDetailerPipe, ToDetailerPipe, ToDetailerPipeSDXL, FromDetailerPipe, FromDetailerPipe_v2, FromDetailerPipeSDXL, AnyPipeToBasic, ToBasicPipe, FromBasicPipe, FromBasicPipe_v2, BasicPipeToDetailerPipe, BasicPipeToDetailerPipeSDXL, DetailerPipeToBasicPipe, EditBasicPipe, EditDetailerPipe, EditDetailerPipeSDXL, LatentPixelScale, PixelKSampleUpscalerProvider, PixelKSampleUpscalerProviderPipe, IterativeLatentUpscale, IterativeImageUpscale, PixelTiledKSampleUpscalerProvider, PixelTiledKSampleUpscalerProviderPipe, TwoSamplersForMaskUpscalerProvider, TwoSamplersForMaskUpscalerProviderPipe, PixelKSampleHookCombine, DenoiseScheduleHookProvider, StepsScheduleHookProvider, CfgScheduleHookProvider, NoiseInjectionHookProvider, UnsamplerHookProvider, CoreMLDetailerHookProvider, PreviewDetailerHookProvider, DetailerHookCombine, NoiseInjectionDetailerHookProvider, UnsamplerDetailerHookProvider, DenoiseSchedulerDetailerHookProvider, SEGSOrderedFilterDetailerHookProvider, SEGSRangeFilterDetailerHookProvider, SEGSLabelFilterDetailerHookProvider, VariationNoiseDetailerHookProvider, BitwiseAndMask, SubtractMask, AddMask, ImpactSegsAndMask, ImpactSegsAndMaskForEach, EmptySegs, ImpactFlattenMask, MediaPipeFaceMeshToSEGS, MaskToSEGS, MaskToSEGS_for_AnimateDiff, ToBinaryMask, MasksToMaskList, MaskListToMaskBatch, ImageListToImageBatch, SetDefaultImageForSEGS, RemoveImageFromSEGS, BboxDetectorSEGS, SegmDetectorSEGS, ONNXDetectorSEGS, ImpactSimpleDetectorSEGS_for_AD, ImpactSimpleDetectorSEGS, ImpactSimpleDetectorSEGSPipe, ImpactControlNetApplySEGS, ImpactControlNetApplyAdvancedSEGS, ImpactControlNetClearSEGS, ImpactIPAdapterApplySEGS, ImpactDecomposeSEGS, ImpactAssembleSEGS, ImpactFrom_SEG_ELT, ImpactEdit_SEG_ELT, ImpactDilate_Mask_SEG_ELT, ImpactDilateMask, ImpactGaussianBlurMask, ImpactDilateMaskInSEGS, ImpactGaussianBlurMaskInSEGS, ImpactScaleBy_BBOX_SEG_ELT, ImpactFrom_SEG_ELT_bbox, ImpactFrom_SEG_ELT_crop_region, ImpactCount_Elts_in_SEGS, BboxDetectorCombined_v2, SegmDetectorCombined_v2, SegsToCombinedMask, KSamplerProvider, TwoSamplersForMask, TiledKSamplerProvider, KSamplerAdvancedProvider, TwoAdvancedSamplersForMask, ImpactNegativeConditioningPlaceholder, PreviewBridge, PreviewBridgeLatent, ImageSender, ImageReceiver, LatentSender, LatentReceiver, ImageMaskSwitch, LatentSwitch, SEGSSwitch, ImpactSwitch, ImpactInversedSwitch, ImpactWildcardProcessor, ImpactWildcardEncode, SEGSUpscaler, SEGSUpscalerPipe, SEGSDetailer, SEGSPaste, SEGSPreview, SEGSPreviewCNet, SEGSToImageList, ImpactSEGSToMaskList, ImpactSEGSToMaskBatch, ImpactSEGSConcat, ImpactSEGSPicker, ImpactMakeTileSEGS, ImpactSEGSMerge, SEGSDetailerForAnimateDiff, ImpactKSamplerBasicPipe, ImpactKSamplerAdvancedBasicPipe, ReencodeLatent, ReencodeLatentPipe, ImpactImageBatchToImageList, ImpactMakeImageList, ImpactMakeImageBatch, ImpactMakeAnyList, ImpactMakeMaskList, ImpactMakeMaskBatch, RegionalSampler, RegionalSamplerAdvanced, CombineRegionalPrompts, RegionalPrompt, ImpactCombineConditionings, ImpactConcatConditionings, ImpactSEGSLabelAssign, ImpactSEGSLabelFilter, ImpactSEGSRangeFilter, ImpactSEGSOrderedFilter, ImpactCompare, ImpactConditionalBranch, ImpactConditionalBranchSelMode, ImpactIfNone, ImpactConvertDataType, ImpactLogicalOperators, ImpactInt, ImpactFloat, ImpactBoolean, ImpactValueSender, ImpactValueReceiver, ImpactImageInfo, ImpactLatentInfo, ImpactMinMax, ImpactNeg, ImpactConditionalStopIteration, ImpactStringSelector, StringListToString, WildcardPromptFromString, ImpactExecutionOrderController, RemoveNoiseMask, ImpactLogger, ImpactDummyInput, ImpactQueueTrigger, ImpactQueueTriggerCountdown, ImpactSetWidgetValue, ImpactNodeSetMuteState, ImpactControlBridge, ImpactIsNotEmptySEGS, ImpactSleep, ImpactRemoteBoolean, ImpactRemoteInt, ImpactHFTransformersClassifierProvider, ImpactSEGSClassify, ImpactSchedulerAdapter, GITSSchedulerFuncProvider, UltralyticsDetectorProvider
            */
           | 'custom_nodes.ComfyUI-Impact-Pack'
    }
-   
+
    // nodes
    namespace Comfy.Base {
       interface Nodes {
@@ -1220,7 +1232,7 @@ declare global {
       interface UnknownNodeXX_input {
       }
    }
-   
+
    // comfy_extras.nodes_latent
    namespace Comfy.Extra.latent {
       interface Nodes {
@@ -1354,7 +1366,7 @@ declare global {
           alpha?: Comfy.Input.FLOAT
       }
    }
-   
+
    // comfy_extras.nodes_hypernetwork
    namespace Comfy.Extra.hypernetwork {
       interface Nodes {
@@ -1374,7 +1386,7 @@ declare global {
           strength?: Comfy.Input.FLOAT
       }
    }
-   
+
    // comfy_extras.nodes_upscale_model
    namespace Comfy.Extra.upscale_model {
       interface Nodes {
@@ -1390,7 +1402,7 @@ declare global {
           UPSCALE_MODEL: ComfyNodeOutput<'UPSCALE_MODEL', 0>,
       }
       interface UpscaleModelLoader_input {
-          model_name: Comfy.Union.E_2504d8563e078c3ed105667cbb6d0ff714d5798b
+          model_name: Comfy.Union.E_0a165440b634143ee9b4b1d88e03fb1a11863849
       }
       interface ImageUpscaleWithModel extends HasSingle_IMAGE, ComfyNode<ImageUpscaleWithModel_input, ImageUpscaleWithModel_output> {
           nameInComfy: "ImageUpscaleWithModel"
@@ -1403,7 +1415,7 @@ declare global {
           image: Comfy.Input.IMAGE
       }
    }
-   
+
    // comfy_extras.nodes_post_processing
    namespace Comfy.Extra.post_processing {
       interface Nodes {
@@ -1484,7 +1496,7 @@ declare global {
           megapixels?: Comfy.Input.FLOAT
       }
    }
-   
+
    // comfy_extras.nodes_mask
    namespace Comfy.Extra.mask {
       interface Nodes {
@@ -1674,7 +1686,7 @@ declare global {
           value?: Comfy.Input.FLOAT
       }
    }
-   
+
    // comfy_extras.nodes_compositing
    namespace Comfy.Extra.compositing {
       interface Nodes {
@@ -1721,7 +1733,7 @@ declare global {
           alpha: Comfy.Input.MASK
       }
    }
-   
+
    // comfy_extras.nodes_rebatch
    namespace Comfy.Extra.rebatch {
       interface Nodes {
@@ -1753,7 +1765,7 @@ declare global {
           batch_size?: Comfy.Input.INT
       }
    }
-   
+
    // comfy_extras.nodes_model_merging
    namespace Comfy.Extra.model_merging {
       interface Nodes {
@@ -1907,7 +1919,7 @@ declare global {
           filename_prefix?: Comfy.Input.STRING
       }
    }
-   
+
    // comfy_extras.nodes_tomesd
    namespace Comfy.Extra.tomesd {
       interface Nodes {
@@ -1926,7 +1938,7 @@ declare global {
           ratio?: Comfy.Input.FLOAT
       }
    }
-   
+
    // comfy_extras.nodes_clip_sdxl
    namespace Comfy.Extra.clip_sdxl {
       interface Nodes {
@@ -1978,7 +1990,7 @@ declare global {
           text_l: Comfy.Input.STRING
       }
    }
-   
+
    // comfy_extras.nodes_canny
    namespace Comfy.Extra.canny {
       interface Nodes {
@@ -1999,7 +2011,7 @@ declare global {
           high_threshold?: Comfy.Input.FLOAT
       }
    }
-   
+
    // comfy_extras.nodes_freelunch
    namespace Comfy.Extra.freelunch {
       interface Nodes {
@@ -2043,7 +2055,7 @@ declare global {
           s2?: Comfy.Input.FLOAT
       }
    }
-   
+
    // comfy_extras.nodes_custom_sampler
    namespace Comfy.Extra.custom_sampler {
       interface Nodes {
@@ -2489,7 +2501,7 @@ declare global {
           latent_image: Comfy.Input.LATENT
       }
    }
-   
+
    // comfy_extras.nodes_hypertile
    namespace Comfy.Extra.hypertile {
       interface Nodes {
@@ -2514,7 +2526,7 @@ declare global {
           scale_depth?: Comfy.Input.BOOLEAN
       }
    }
-   
+
    // comfy_extras.nodes_model_advanced
    namespace Comfy.Extra.model_advanced {
       interface Nodes {
@@ -2637,7 +2649,7 @@ declare global {
           multiplier?: Comfy.Input.FLOAT
       }
    }
-   
+
    // comfy_extras.nodes_model_downscale
    namespace Comfy.Extra.model_downscale {
       interface Nodes {
@@ -2666,7 +2678,7 @@ declare global {
           upscale_method: Comfy.Union.E_LatentUpscaleMethod
       }
    }
-   
+
    // comfy_extras.nodes_images
    namespace Comfy.Extra.images {
       interface Nodes {
@@ -2754,7 +2766,7 @@ declare global {
           compress_level?: Comfy.Input.INT
       }
    }
-   
+
    // comfy_extras.nodes_video_model
    namespace Comfy.Extra.video_model {
       interface Nodes {
@@ -2840,7 +2852,7 @@ declare global {
           filename_prefix?: Comfy.Input.STRING
       }
    }
-   
+
    // comfy_extras.nodes_sag
    namespace Comfy.Extra.sag {
       interface Nodes {
@@ -2861,7 +2873,7 @@ declare global {
           blur_sigma?: Comfy.Input.FLOAT
       }
    }
-   
+
    // comfy_extras.nodes_perpneg
    namespace Comfy.Extra.perpneg {
       interface Nodes {
@@ -2899,7 +2911,7 @@ declare global {
           neg_scale?: Comfy.Input.FLOAT
       }
    }
-   
+
    // comfy_extras.nodes_stable3d
    namespace Comfy.Extra.stable3d {
       interface Nodes {
@@ -2982,7 +2994,7 @@ declare global {
           elevation?: Comfy.Input.FLOAT
       }
    }
-   
+
    // comfy_extras.nodes_sdupscale
    namespace Comfy.Extra.sdupscale {
       interface Nodes {
@@ -3007,7 +3019,7 @@ declare global {
           noise_augmentation?: Comfy.Input.FLOAT
       }
    }
-   
+
    // comfy_extras.nodes_photomaker
    namespace Comfy.Extra.photomaker {
       interface Nodes {
@@ -3039,7 +3051,7 @@ declare global {
           text?: Comfy.Input.STRING
       }
    }
-   
+
    // comfy_extras.nodes_cond
    namespace Comfy.Extra.cond {
       interface Nodes {
@@ -3059,7 +3071,7 @@ declare global {
           text: Comfy.Input.STRING
       }
    }
-   
+
    // comfy_extras.nodes_morphology
    namespace Comfy.Extra.morphology {
       interface Nodes {
@@ -3079,7 +3091,7 @@ declare global {
           kernel_size?: Comfy.Input.INT
       }
    }
-   
+
    // comfy_extras.nodes_stable_cascade
    namespace Comfy.Extra.stable_cascade {
       interface Nodes {
@@ -3145,7 +3157,7 @@ declare global {
           vae: Comfy.Input.VAE
       }
    }
-   
+
    // comfy_extras.nodes_differential_diffusion
    namespace Comfy.Extra.differential_diffusion {
       interface Nodes {
@@ -3162,7 +3174,7 @@ declare global {
           model: Comfy.Input.MODEL
       }
    }
-   
+
    // comfy_extras.nodes_ip2p
    namespace Comfy.Extra.ip2p {
       interface Nodes {
@@ -3184,7 +3196,7 @@ declare global {
           pixels: Comfy.Input.IMAGE
       }
    }
-   
+
    // comfy_extras.nodes_model_merging_model_specific
    namespace Comfy.Extra.model_merging_model_specific {
       interface Nodes {
@@ -3704,7 +3716,7 @@ declare global {
           "final_layer."?: Comfy.Input.FLOAT
       }
    }
-   
+
    // comfy_extras.nodes_pag
    namespace Comfy.Extra.pag {
       interface Nodes {
@@ -3723,7 +3735,7 @@ declare global {
           scale?: Comfy.Input.FLOAT
       }
    }
-   
+
    // comfy_extras.nodes_align_your_steps
    namespace Comfy.Extra.align_your_steps {
       interface Nodes {
@@ -3744,7 +3756,7 @@ declare global {
           denoise?: Comfy.Input.FLOAT
       }
    }
-   
+
    // comfy_extras.nodes_attention_multiply
    namespace Comfy.Extra.attention_multiply {
       interface Nodes {
@@ -3826,7 +3838,7 @@ declare global {
           cross_temporal?: Comfy.Input.FLOAT
       }
    }
-   
+
    // comfy_extras.nodes_advanced_samplers
    namespace Comfy.Extra.advanced_samplers {
       interface Nodes {
@@ -3858,7 +3870,7 @@ declare global {
           version: Comfy.Union.E_a8aa5eb2d828c2e279168c48955c7a0fe3ea011a
       }
    }
-   
+
    // comfy_extras.nodes_webcam
    namespace Comfy.Extra.webcam {
       interface Nodes {
@@ -3882,7 +3894,7 @@ declare global {
           capture_on_queue?: Comfy.Input.BOOLEAN
       }
    }
-   
+
    // comfy_extras.nodes_audio
    namespace Comfy.Extra.audio {
       interface Nodes {
@@ -3960,7 +3972,7 @@ declare global {
           audio: Comfy.Input.AUDIO
       }
    }
-   
+
    // comfy_extras.nodes_sd3
    namespace Comfy.Extra.sd3 {
       interface Nodes {
@@ -4054,7 +4066,7 @@ declare global {
           end_percent?: Comfy.Input.FLOAT
       }
    }
-   
+
    // comfy_extras.nodes_gits
    namespace Comfy.Extra.gits {
       interface Nodes {
@@ -4076,7 +4088,7 @@ declare global {
           denoise?: Comfy.Input.FLOAT
       }
    }
-   
+
    // comfy_extras.nodes_controlnet
    namespace Comfy.Extra.controlnet {
       interface Nodes {
@@ -4117,7 +4129,7 @@ declare global {
           end_percent?: Comfy.Input.FLOAT
       }
    }
-   
+
    // comfy_extras.nodes_hunyuan
    namespace Comfy.Extra.hunyuan {
       interface Nodes {
@@ -4138,7 +4150,7 @@ declare global {
           mt5xl: Comfy.Input.STRING
       }
    }
-   
+
    // comfy_extras.nodes_flux
    namespace Comfy.Extra.flux {
       interface Nodes {
@@ -4174,7 +4186,7 @@ declare global {
           guidance?: Comfy.Input.FLOAT
       }
    }
-   
+
    // comfy_extras.nodes_lora_extract
    namespace Comfy.Extra.lora_extract {
       interface Nodes {
@@ -4200,7 +4212,7 @@ declare global {
           text_encoder_diff?: Comfy.Input.CLIP
       }
    }
-   
+
    // comfy_extras.nodes_torch_compile
    namespace Comfy.Extra.torch_compile {
       interface Nodes {
@@ -4218,7 +4230,7 @@ declare global {
           backend: Comfy.Union.E_4bbca93e426c35d56c43252f1fb21877d5e7a1aa
       }
    }
-   
+
    // comfy_extras.nodes_mochi
    namespace Comfy.Extra.mochi {
       interface Nodes {
@@ -4242,7 +4254,7 @@ declare global {
           batch_size?: Comfy.Input.INT
       }
    }
-   
+
    // custom_nodes.websocket_image_save
    namespace Comfy.Custom.websocket_image_save {
       interface Nodes {
@@ -4258,7 +4270,3646 @@ declare global {
           images: Comfy.Input.IMAGE
       }
    }
-   
+
+   // custom_nodes.was-node-suite-comfyui
+   namespace Comfy.Custom.was {
+      interface Nodes {
+          /** category="WAS Suite_Loaders" name="BLIP Model Loader" output=[BLIP_MODEL] */
+         BLIP_Model_Loader(p: BLIP_Model_Loader_input, meta?: ComfyNodeMetadata): BLIP_Model_Loader
+          /** category="WAS Suite_Latent" name="Blend Latents" output=[LATENT] */
+         Blend_Latents(p: Blend_Latents_input, meta?: ComfyNodeMetadata): Blend_Latents
+          /** category="WAS Suite_Utilities" name="Bus Node" output=[bus, model, clip, vae, positive, negative] */
+         Bus_Node(p: Bus_Node_input, meta?: ComfyNodeMetadata): Bus_Node
+          /** category="WAS Suite_IO" name="Cache Node" output=[latent_filename, image_filename, conditioning_filename] */
+         Cache_Node(p: Cache_Node_input, meta?: ComfyNodeMetadata): Cache_Node
+          /** category="WAS Suite_Loaders_Advanced" name="Checkpoint Loader" output=[MODEL, CLIP, VAE, NAME_STRING] */
+         Checkpoint_Loader(p: Checkpoint_Loader_input, meta?: ComfyNodeMetadata): Checkpoint_Loader
+          /** category="WAS Suite_Loaders" name="Checkpoint Loader (Simple)" output=[MODEL, CLIP, VAE, NAME_STRING] */
+         Checkpoint_Loader_$1Simple$2(p: Checkpoint_Loader_$1Simple$2_input, meta?: ComfyNodeMetadata): Checkpoint_Loader_$1Simple$2
+          /** category="WAS Suite_Conditioning" name="CLIPTextEncode (NSP)" output=[conditioning, parsed_text, raw_text] */
+         CLIPTextEncode_$1NSP$2(p: CLIPTextEncode_$1NSP$2_input, meta?: ComfyNodeMetadata): CLIPTextEncode_$1NSP$2
+          /** category="WAS Suite_Logic" name="CLIP Input Switch" output=[CLIP] */
+         CLIP_Input_Switch(p: CLIP_Input_Switch_input, meta?: ComfyNodeMetadata): CLIP_Input_Switch
+          /** category="WAS Suite_Logic" name="CLIP Vision Input Switch" output=[CLIP_VISION] */
+         CLIP_Vision_Input_Switch(p: CLIP_Vision_Input_Switch_input, meta?: ComfyNodeMetadata): CLIP_Vision_Input_Switch
+          /** category="WAS Suite_Logic" name="Conditioning Input Switch" output=[CONDITIONING] */
+         Conditioning_Input_Switch(p: Conditioning_Input_Switch_input, meta?: ComfyNodeMetadata): Conditioning_Input_Switch
+          /** category="WAS Suite_Number" name="Constant Number" output=[NUMBER, FLOAT, INT] */
+         Constant_Number(p: Constant_Number_input, meta?: ComfyNodeMetadata): Constant_Number
+          /** category="WAS Suite_Image_Process" name="Create Grid Image" output=[IMAGE] */
+         Create_Grid_Image(p: Create_Grid_Image_input, meta?: ComfyNodeMetadata): Create_Grid_Image
+          /** category="WAS Suite_Image_Process" name="Create Grid Image from Batch" output=[IMAGE] */
+         Create_Grid_Image_from_Batch(p: Create_Grid_Image_from_Batch_input, meta?: ComfyNodeMetadata): Create_Grid_Image_from_Batch
+          /** category="WAS Suite_Animation" name="Create Morph Image" output=[image_a_pass, image_b_pass, filepath_text, filename_text] */
+         Create_Morph_Image(p: Create_Morph_Image_input, meta?: ComfyNodeMetadata): Create_Morph_Image
+          /** category="WAS Suite_Animation" name="Create Morph Image from Path" output=[filepath_text, filename_text] */
+         Create_Morph_Image_from_Path(p: Create_Morph_Image_from_Path_input, meta?: ComfyNodeMetadata): Create_Morph_Image_from_Path
+          /** category="WAS Suite_Animation" name="Create Video from Path" output=[filepath_text, filename_text] */
+         Create_Video_from_Path(p: Create_Video_from_Path_input, meta?: ComfyNodeMetadata): Create_Video_from_Path
+          /** category="WAS Suite_Image_Masking" name="CLIPSeg Masking" output=[MASK, MASK_IMAGE] */
+         CLIPSeg_Masking(p: CLIPSeg_Masking_input, meta?: ComfyNodeMetadata): CLIPSeg_Masking
+          /** category="WAS Suite_Loaders" name="CLIPSeg Model Loader" output=[clipseg_model] */
+         CLIPSeg_Model_Loader(p: CLIPSeg_Model_Loader_input, meta?: ComfyNodeMetadata): CLIPSeg_Model_Loader
+          /** category="WAS Suite_Image_Masking" name="CLIPSeg Batch Masking" output=[IMAGES_BATCH, MASKS_BATCH, MASK_IMAGES_BATCH] */
+         CLIPSeg_Batch_Masking(p: CLIPSeg_Batch_Masking_input, meta?: ComfyNodeMetadata): CLIPSeg_Batch_Masking
+          /** category="WAS Suite_Image_Masking" name="Convert Masks to Images" output=[IMAGES] */
+         Convert_Masks_to_Images(p: Convert_Masks_to_Images_input, meta?: ComfyNodeMetadata): Convert_Masks_to_Images
+          /** category="WAS Suite_Logic" name="Control Net Model Input Switch" output=[CONTROL_NET] */
+         Control_Net_Model_Input_Switch(p: Control_Net_Model_Input_Switch_input, meta?: ComfyNodeMetadata): Control_Net_Model_Input_Switch
+          /** category="WAS Suite_Debug" name="Debug Number to Console" output=[NUMBER] */
+         Debug_Number_to_Console(p: Debug_Number_to_Console_input, meta?: ComfyNodeMetadata): Debug_Number_to_Console
+          /** category="WAS Suite_Debug" name="Dictionary to Console" output=[DICT] */
+         Dictionary_to_Console(p: Dictionary_to_Console_input, meta?: ComfyNodeMetadata): Dictionary_to_Console
+          /** category="WAS Suite_Loaders_Advanced" name="Diffusers Model Loader" output=[MODEL, CLIP, VAE, NAME_STRING] */
+         Diffusers_Model_Loader(p: Diffusers_Model_Loader_input, meta?: ComfyNodeMetadata): Diffusers_Model_Loader
+          /** category="WAS Suite_Loaders_Advanced" name="Diffusers Hub Model Down-Loader" output=[MODEL, CLIP, VAE, NAME_STRING] */
+         Diffusers_Hub_Model_Down$7Loader(p: Diffusers_Hub_Model_Down$7Loader_input, meta?: ComfyNodeMetadata): Diffusers_Hub_Model_Down$7Loader
+          /** category="WAS Suite_Debug" name="Export API" output=[] */
+         Export_API(p: Export_API_input, meta?: ComfyNodeMetadata): Export_API
+          /** category="WAS Suite_Logic" name="Latent Input Switch" output=[LATENT] */
+         Latent_Input_Switch(p: Latent_Input_Switch_input, meta?: ComfyNodeMetadata): Latent_Input_Switch
+          /** category="WAS Suite_IO" name="Load Cache" output=[LATENT, IMAGE, CONDITIONING] */
+         Load_Cache(p: Load_Cache_input, meta?: ComfyNodeMetadata): Load_Cache
+          /** category="WAS Suite_Logic" name="Logic Boolean" output=[BOOLEAN, NUMBER, INT, FLOAT] */
+         Logic_Boolean(p: Logic_Boolean_input, meta?: ComfyNodeMetadata): Logic_Boolean
+          /** category="WAS Suite_Logic" name="Logic Boolean Primitive" output=[BOOLEAN] */
+         Logic_Boolean_Primitive(p: Logic_Boolean_Primitive_input, meta?: ComfyNodeMetadata): Logic_Boolean_Primitive
+          /** category="WAS Suite_Logic" name="Logic Comparison OR" output=[BOOLEAN] */
+         Logic_Comparison_OR(p: Logic_Comparison_OR_input, meta?: ComfyNodeMetadata): Logic_Comparison_OR
+          /** category="WAS Suite_Logic" name="Logic Comparison AND" output=[BOOLEAN] */
+         Logic_Comparison_AND(p: Logic_Comparison_AND_input, meta?: ComfyNodeMetadata): Logic_Comparison_AND
+          /** category="WAS Suite_Logic" name="Logic Comparison XOR" output=[BOOLEAN] */
+         Logic_Comparison_XOR(p: Logic_Comparison_XOR_input, meta?: ComfyNodeMetadata): Logic_Comparison_XOR
+          /** category="WAS Suite_Logic" name="Logic NOT" output=[BOOLEAN] */
+         Logic_NOT(p: Logic_NOT_input, meta?: ComfyNodeMetadata): Logic_NOT
+          /** category="WAS Suite_Loaders" name="Lora Loader" output=[MODEL, CLIP, NAME_STRING] */
+         Lora_Loader(p: Lora_Loader_input, meta?: ComfyNodeMetadata): Lora_Loader
+          /** category="WAS Suite_Utilities" name="Hex to HSL" output=[hue, saturation, lightness, alpha, hsl] */
+         Hex_to_HSL(p: Hex_to_HSL_input, meta?: ComfyNodeMetadata): Hex_to_HSL
+          /** category="WAS Suite_Utilities" name="HSL to Hex" output=[hex_color] */
+         HSL_to_Hex(p: HSL_to_Hex_input, meta?: ComfyNodeMetadata): HSL_to_Hex
+          /** category="WAS Suite_Image_Filter" name="Image SSAO (Ambient Occlusion)" output=[composited_images, ssao_images, specular_mask_images] */
+         Image_SSAO_$1Ambient_Occlusion$2(p: Image_SSAO_$1Ambient_Occlusion$2_input, meta?: ComfyNodeMetadata): Image_SSAO_$1Ambient_Occlusion$2
+          /** category="WAS Suite_Image_Filter" name="Image SSDO (Direct Occlusion)" output=[composited_images, ssdo_images, ssdo_image_masks, light_source_image_masks] */
+         Image_SSDO_$1Direct_Occlusion$2(p: Image_SSDO_$1Direct_Occlusion$2_input, meta?: ComfyNodeMetadata): Image_SSDO_$1Direct_Occlusion$2
+          /** category="WAS Suite_Image_Analyze" name="Image Analyze" output=[IMAGE] */
+         Image_Analyze(p: Image_Analyze_input, meta?: ComfyNodeMetadata): Image_Analyze
+          /** category="WAS Suite_Logic" name="Image Aspect Ratio" output=[aspect_number, aspect_float, is_landscape_bool, aspect_ratio_common, aspect_type] */
+         Image_Aspect_Ratio(p: Image_Aspect_Ratio_input, meta?: ComfyNodeMetadata): Image_Aspect_Ratio
+          /** category="WAS Suite_Image" name="Image Batch" output=[image] */
+         Image_Batch(p: Image_Batch_input, meta?: ComfyNodeMetadata): Image_Batch
+          /** category="WAS Suite_Image" name="Image Blank" output=[IMAGE] */
+         Image_Blank(p: Image_Blank_input, meta?: ComfyNodeMetadata): Image_Blank
+          /** category="WAS Suite_Image" name="Image Blend by Mask" output=[IMAGE] */
+         Image_Blend_by_Mask(p: Image_Blend_by_Mask_input, meta?: ComfyNodeMetadata): Image_Blend_by_Mask
+          /** category="WAS Suite_Image" name="Image Blend" output=[image] */
+         Image_Blend(p: Image_Blend_input, meta?: ComfyNodeMetadata): Image_Blend
+          /** category="WAS Suite_Image" name="Image Blending Mode" output=[image] */
+         Image_Blending_Mode(p: Image_Blending_Mode_input, meta?: ComfyNodeMetadata): Image_Blending_Mode
+          /** category="WAS Suite_Image_Filter" name="Image Bloom Filter" output=[IMAGE] */
+         Image_Bloom_Filter(p: Image_Bloom_Filter_input, meta?: ComfyNodeMetadata): Image_Bloom_Filter
+          /** category="WAS Suite_Image_Filter" name="Image Canny Filter" output=[images] */
+         Image_Canny_Filter(p: Image_Canny_Filter_input, meta?: ComfyNodeMetadata): Image_Canny_Filter
+          /** category="WAS Suite_Image_Filter" name="Image Chromatic Aberration" output=[IMAGE] */
+         Image_Chromatic_Aberration(p: Image_Chromatic_Aberration_input, meta?: ComfyNodeMetadata): Image_Chromatic_Aberration
+          /** category="WAS Suite_Image_Analyze" name="Image Color Palette" output=[image, color_palettes] */
+         Image_Color_Palette(p: Image_Color_Palette_input, meta?: ComfyNodeMetadata): Image_Color_Palette
+          /** category="WAS Suite_Image_Process" name="Image Crop Face" output=[IMAGE, CROP_DATA] */
+         Image_Crop_Face(p: Image_Crop_Face_input, meta?: ComfyNodeMetadata): Image_Crop_Face
+          /** category="WAS Suite_Image_Process" name="Image Crop Location" output=[IMAGE, CROP_DATA] */
+         Image_Crop_Location(p: Image_Crop_Location_input, meta?: ComfyNodeMetadata): Image_Crop_Location
+          /** category="WAS Suite_Image_Process" name="Image Crop Square Location" output=[IMAGE, CROP_DATA] */
+         Image_Crop_Square_Location(p: Image_Crop_Square_Location_input, meta?: ComfyNodeMetadata): Image_Crop_Square_Location
+          /** category="WAS Suite_Image_Transform" name="Image Displacement Warp" output=[images] */
+         Image_Displacement_Warp(p: Image_Displacement_Warp_input, meta?: ComfyNodeMetadata): Image_Displacement_Warp
+          /** category="WAS Suite_Image_Filter" name="Image Lucy Sharpen" output=[IMAGE] */
+         Image_Lucy_Sharpen(p: Image_Lucy_Sharpen_input, meta?: ComfyNodeMetadata): Image_Lucy_Sharpen
+          /** category="WAS Suite_Image_Process" name="Image Paste Face" output=[IMAGE, MASK_IMAGE] */
+         Image_Paste_Face(p: Image_Paste_Face_input, meta?: ComfyNodeMetadata): Image_Paste_Face
+          /** category="WAS Suite_Image_Process" name="Image Paste Crop" output=[IMAGE, MASK] */
+         Image_Paste_Crop(p: Image_Paste_Crop_input, meta?: ComfyNodeMetadata): Image_Paste_Crop
+          /** category="WAS Suite_Image_Process" name="Image Paste Crop by Location" output=[IMAGE, MASK] */
+         Image_Paste_Crop_by_Location(p: Image_Paste_Crop_by_Location_input, meta?: ComfyNodeMetadata): Image_Paste_Crop_by_Location
+          /** category="WAS Suite_Image_Process" name="Image Pixelate" output=[images] */
+         Image_Pixelate(p: Image_Pixelate_input, meta?: ComfyNodeMetadata): Image_Pixelate
+          /** category="WAS Suite_Image_Generate_Noise" name="Image Power Noise" output=[image] */
+         Image_Power_Noise(p: Image_Power_Noise_input, meta?: ComfyNodeMetadata): Image_Power_Noise
+          /** category="WAS Suite_Image_Filter" name="Image Dragan Photography Filter" output=[IMAGE] */
+         Image_Dragan_Photography_Filter(p: Image_Dragan_Photography_Filter_input, meta?: ComfyNodeMetadata): Image_Dragan_Photography_Filter
+          /** category="WAS Suite_Image_Filter" name="Image Edge Detection Filter" output=[IMAGE] */
+         Image_Edge_Detection_Filter(p: Image_Edge_Detection_Filter_input, meta?: ComfyNodeMetadata): Image_Edge_Detection_Filter
+          /** category="WAS Suite_Image_Filter" name="Image Film Grain" output=[IMAGE] */
+         Image_Film_Grain(p: Image_Film_Grain_input, meta?: ComfyNodeMetadata): Image_Film_Grain
+          /** category="WAS Suite_Image_Filter" name="Image Filter Adjustments" output=[IMAGE] */
+         Image_Filter_Adjustments(p: Image_Filter_Adjustments_input, meta?: ComfyNodeMetadata): Image_Filter_Adjustments
+          /** category="WAS Suite_Image_Transform" name="Image Flip" output=[images] */
+         Image_Flip(p: Image_Flip_input, meta?: ComfyNodeMetadata): Image_Flip
+          /** category="WAS Suite_Image_Filter" name="Image Gradient Map" output=[IMAGE] */
+         Image_Gradient_Map(p: Image_Gradient_Map_input, meta?: ComfyNodeMetadata): Image_Gradient_Map
+          /** category="WAS Suite_Image_Generate" name="Image Generate Gradient" output=[IMAGE] */
+         Image_Generate_Gradient(p: Image_Generate_Gradient_input, meta?: ComfyNodeMetadata): Image_Generate_Gradient
+          /** category="WAS Suite_Image_Filter" name="Image High Pass Filter" output=[images] */
+         Image_High_Pass_Filter(p: Image_High_Pass_Filter_input, meta?: ComfyNodeMetadata): Image_High_Pass_Filter
+          /** category="WAS Suite_History" name="Image History Loader" output=[image, filename_text] */
+         Image_History_Loader(p: Image_History_Loader_input, meta?: ComfyNodeMetadata): Image_History_Loader
+          /** category="WAS Suite_Logic" name="Image Input Switch" output=[IMAGE] */
+         Image_Input_Switch(p: Image_Input_Switch_input, meta?: ComfyNodeMetadata): Image_Input_Switch
+          /** category="WAS Suite_Image_Adjustment" name="Image Levels Adjustment" output=[IMAGE] */
+         Image_Levels_Adjustment(p: Image_Levels_Adjustment_input, meta?: ComfyNodeMetadata): Image_Levels_Adjustment
+          /** category="WAS Suite_IO" name="Image Load" output=[image, mask, filename_text] */
+         Image_Load(p: Image_Load_input, meta?: ComfyNodeMetadata): Image_Load
+          /** category="WAS Suite_Image_Filter" name="Image Median Filter" output=[IMAGE] */
+         Image_Median_Filter(p: Image_Median_Filter_input, meta?: ComfyNodeMetadata): Image_Median_Filter
+          /** category="WAS Suite_Image_Process" name="Image Mix RGB Channels" output=[IMAGE] */
+         Image_Mix_RGB_Channels(p: Image_Mix_RGB_Channels_input, meta?: ComfyNodeMetadata): Image_Mix_RGB_Channels
+          /** category="WAS Suite_Image_Filter" name="Image Monitor Effects Filter" output=[image] */
+         Image_Monitor_Effects_Filter(p: Image_Monitor_Effects_Filter_input, meta?: ComfyNodeMetadata): Image_Monitor_Effects_Filter
+          /** category="WAS Suite_Image_Filter" name="Image Nova Filter" output=[IMAGE] */
+         Image_Nova_Filter(p: Image_Nova_Filter_input, meta?: ComfyNodeMetadata): Image_Nova_Filter
+          /** category="WAS Suite_Image_Transform" name="Image Padding" output=[IMAGE, MASK] */
+         Image_Padding(p: Image_Padding_input, meta?: ComfyNodeMetadata): Image_Padding
+          /** category="WAS Suite_Image_Generate_Noise" name="Image Perlin Noise" output=[image] */
+         Image_Perlin_Noise(p: Image_Perlin_Noise_input, meta?: ComfyNodeMetadata): Image_Perlin_Noise
+          /** category="WAS Suite_Image_AI" name="Image Rembg (Remove Background)" output=[images] */
+         Image_Rembg_$1Remove_Background$2(p: Image_Rembg_$1Remove_Background$2_input, meta?: ComfyNodeMetadata): Image_Rembg_$1Remove_Background$2
+          /** category="WAS Suite_Image_Generate_Noise" name="Image Perlin Power Fractal" output=[image] */
+         Image_Perlin_Power_Fractal(p: Image_Perlin_Power_Fractal_input, meta?: ComfyNodeMetadata): Image_Perlin_Power_Fractal
+          /** category="WAS Suite_Image_Process" name="Image Remove Background (Alpha)" output=[images] */
+         Image_Remove_Background_$1Alpha$2(p: Image_Remove_Background_$1Alpha$2_input, meta?: ComfyNodeMetadata): Image_Remove_Background_$1Alpha$2
+          /** category="WAS Suite_Image_Process" name="Image Remove Color" output=[IMAGE] */
+         Image_Remove_Color(p: Image_Remove_Color_input, meta?: ComfyNodeMetadata): Image_Remove_Color
+          /** category="WAS Suite_Image_Transform" name="Image Resize" output=[IMAGE] */
+         Image_Resize(p: Image_Resize_input, meta?: ComfyNodeMetadata): Image_Resize
+          /** category="WAS Suite_Image_Transform" name="Image Rotate" output=[images] */
+         Image_Rotate(p: Image_Rotate_input, meta?: ComfyNodeMetadata): Image_Rotate
+          /** category="WAS Suite_Image_Adjustment" name="Image Rotate Hue" output=[IMAGE] */
+         Image_Rotate_Hue(p: Image_Rotate_Hue_input, meta?: ComfyNodeMetadata): Image_Rotate_Hue
+          /** category="WAS Suite_IO" name="Image Send HTTP" output=[status_code, result_text] */
+         Image_Send_HTTP(p: Image_Send_HTTP_input, meta?: ComfyNodeMetadata): Image_Send_HTTP
+          /** category="WAS Suite_IO" name="Image Save" output=[images, files] */
+         Image_Save(p: Image_Save_input, meta?: ComfyNodeMetadata): Image_Save
+          /** category="WAS Suite_Image_Process" name="Image Seamless Texture" output=[images] */
+         Image_Seamless_Texture(p: Image_Seamless_Texture_input, meta?: ComfyNodeMetadata): Image_Seamless_Texture
+          /** category="WAS Suite_Image_Process" name="Image Select Channel" output=[IMAGE] */
+         Image_Select_Channel(p: Image_Select_Channel_input, meta?: ComfyNodeMetadata): Image_Select_Channel
+          /** category="WAS Suite_Image_Process" name="Image Select Color" output=[IMAGE] */
+         Image_Select_Color(p: Image_Select_Color_input, meta?: ComfyNodeMetadata): Image_Select_Color
+          /** category="WAS Suite_Image_Adjustment" name="Image Shadows and Highlights" output=[image, shadow_map, highlight_map] */
+         Image_Shadows_and_Highlights(p: Image_Shadows_and_Highlights_input, meta?: ComfyNodeMetadata): Image_Shadows_and_Highlights
+          /** category="WAS Suite_Number_Operations" name="Image Size to Number" output=[width_num, height_num, width_float, height_float, width_int, height_int] */
+         Image_Size_to_Number(p: Image_Size_to_Number_input, meta?: ComfyNodeMetadata): Image_Size_to_Number
+          /** category="WAS Suite_Image_Transform" name="Image Stitch" output=[IMAGE] */
+         Image_Stitch(p: Image_Stitch_input, meta?: ComfyNodeMetadata): Image_Stitch
+          /** category="WAS Suite_Image_Filter" name="Image Style Filter" output=[IMAGE] */
+         Image_Style_Filter(p: Image_Style_Filter_input, meta?: ComfyNodeMetadata): Image_Style_Filter
+          /** category="WAS Suite_Image_Process" name="Image Threshold" output=[IMAGE] */
+         Image_Threshold(p: Image_Threshold_input, meta?: ComfyNodeMetadata): Image_Threshold
+          /** category="WAS Suite_Image_Process" name="Image Tiled" output=[IMAGES] */
+         Image_Tiled(p: Image_Tiled_input, meta?: ComfyNodeMetadata): Image_Tiled
+          /** category="WAS Suite_Image_Transform" name="Image Transpose" output=[IMAGE] */
+         Image_Transpose(p: Image_Transpose_input, meta?: ComfyNodeMetadata): Image_Transpose
+          /** category="WAS Suite_Image_Filter" name="Image fDOF Filter" output=[IMAGE] */
+         Image_fDOF_Filter(p: Image_fDOF_Filter_input, meta?: ComfyNodeMetadata): Image_fDOF_Filter
+          /** category="WAS Suite_Image_Masking" name="Image to Latent Mask" output=[MASKS] */
+         Image_to_Latent_Mask(p: Image_to_Latent_Mask_input, meta?: ComfyNodeMetadata): Image_to_Latent_Mask
+          /** category="WAS Suite_Image_Generate_Noise" name="Image to Noise" output=[image] */
+         Image_to_Noise(p: Image_to_Noise_input, meta?: ComfyNodeMetadata): Image_to_Noise
+          /** category="WAS Suite_Image_Analyze" name="Image to Seed" output=[INT] */
+         Image_to_Seed(p: Image_to_Seed_input, meta?: ComfyNodeMetadata): Image_to_Seed
+          /** category="WAS Suite_Image" name="Images to RGB" output=[IMAGE] */
+         Images_to_RGB(p: Images_to_RGB_input, meta?: ComfyNodeMetadata): Images_to_RGB
+          /** category="WAS Suite_Image" name="Images to Linear" output=[IMAGE] */
+         Images_to_Linear(p: Images_to_Linear_input, meta?: ComfyNodeMetadata): Images_to_Linear
+          /** category="WAS Suite_Integer" name="Integer place counter" output=[INT_PLACES] */
+         Integer_place_counter(p: Integer_place_counter_input, meta?: ComfyNodeMetadata): Integer_place_counter
+          /** category="WAS Suite_Image_Generate_Noise" name="Image Voronoi Noise Filter" output=[image] */
+         Image_Voronoi_Noise_Filter(p: Image_Voronoi_Noise_Filter_input, meta?: ComfyNodeMetadata): Image_Voronoi_Noise_Filter
+          /** category="WAS Suite_Sampling" name="KSampler (WAS)" output=[LATENT] */
+         KSampler_$1WAS$2(p: KSampler_$1WAS$2_input, meta?: ComfyNodeMetadata): KSampler_$1WAS$2
+          /** category="WAS Suite_Sampling" name="KSampler Cycle" output=[latent$1s$2] */
+         KSampler_Cycle(p: KSampler_Cycle_input, meta?: ComfyNodeMetadata): KSampler_Cycle
+          /** category="WAS Suite_Latent" name="Latent Batch" output=[latent] */
+         Latent_Batch(p: Latent_Batch_input, meta?: ComfyNodeMetadata): Latent_Batch
+          /** category="WAS Suite_Latent_Generate" name="Latent Noise Injection" output=[LATENT] */
+         Latent_Noise_Injection(p: Latent_Noise_Injection_input, meta?: ComfyNodeMetadata): Latent_Noise_Injection
+          /** category="WAS Suite_Number_Operations" name="Latent Size to Number" output=[tensor_w_num, tensor_h_num, tensor_w_float, tensor_h_float, tensor_w_int, tensor_h_int] */
+         Latent_Size_to_Number(p: Latent_Size_to_Number_input, meta?: ComfyNodeMetadata): Latent_Size_to_Number
+          /** category="WAS Suite_Latent_Transform" name="Latent Upscale by Factor (WAS)" output=[LATENT] */
+         Latent_Upscale_by_Factor_$1WAS$2(p: Latent_Upscale_by_Factor_$1WAS$2_input, meta?: ComfyNodeMetadata): Latent_Upscale_by_Factor_$1WAS$2
+          /** category="WAS Suite_IO" name="Load Image Batch" output=[image, filename_text] */
+         Load_Image_Batch(p: Load_Image_Batch_input, meta?: ComfyNodeMetadata): Load_Image_Batch
+          /** category="WAS Suite_IO" name="Load Text File" output=[STRING, DICT] */
+         Load_Text_File(p: Load_Text_File_input, meta?: ComfyNodeMetadata): Load_Text_File
+          /** category="WAS Suite_Loaders" name="Load Lora" output=[MODEL, CLIP, NAME_STRING] */
+         Load_Lora(p: Load_Lora_input, meta?: ComfyNodeMetadata): Load_Lora
+          /** category="WAS Suite_Logic" name="Lora Input Switch" output=[MODEL, CLIP] */
+         Lora_Input_Switch(p: Lora_Input_Switch_input, meta?: ComfyNodeMetadata): Lora_Input_Switch
+          /** category="WAS Suite_Image_Masking" name="Masks Add" output=[MASKS] */
+         Masks_Add(p: Masks_Add_input, meta?: ComfyNodeMetadata): Masks_Add
+          /** category="WAS Suite_Image_Masking" name="Masks Subtract" output=[MASKS] */
+         Masks_Subtract(p: Masks_Subtract_input, meta?: ComfyNodeMetadata): Masks_Subtract
+          /** category="WAS Suite_Image_Masking" name="Mask Arbitrary Region" output=[MASKS] */
+         Mask_Arbitrary_Region(p: Mask_Arbitrary_Region_input, meta?: ComfyNodeMetadata): Mask_Arbitrary_Region
+          /** category="WAS Suite_Image_Masking" name="Mask Batch to Mask" output=[MASK] */
+         Mask_Batch_to_Mask(p: Mask_Batch_to_Mask_input, meta?: ComfyNodeMetadata): Mask_Batch_to_Mask
+          /** category="WAS Suite_Image_Masking" name="Mask Batch" output=[masks] */
+         Mask_Batch(p: Mask_Batch_input, meta?: ComfyNodeMetadata): Mask_Batch
+          /** category="WAS Suite_Image_Masking" name="Mask Ceiling Region" output=[MASKS] */
+         Mask_Ceiling_Region(p: Mask_Ceiling_Region_input, meta?: ComfyNodeMetadata): Mask_Ceiling_Region
+          /** category="WAS Suite_Image_Masking" name="Mask Crop Dominant Region" output=[MASKS] */
+         Mask_Crop_Dominant_Region(p: Mask_Crop_Dominant_Region_input, meta?: ComfyNodeMetadata): Mask_Crop_Dominant_Region
+          /** category="WAS Suite_Image_Masking" name="Mask Crop Minority Region" output=[MASKS] */
+         Mask_Crop_Minority_Region(p: Mask_Crop_Minority_Region_input, meta?: ComfyNodeMetadata): Mask_Crop_Minority_Region
+          /** category="WAS Suite_Image_Masking" name="Mask Crop Region" output=[cropped_mask, crop_data, top_int, left_int, right_int, bottom_int, width_int, height_int] */
+         Mask_Crop_Region(p: Mask_Crop_Region_input, meta?: ComfyNodeMetadata): Mask_Crop_Region
+          /** category="WAS Suite_Image_Masking" name="Mask Paste Region" output=[RESULT_MASK, CROP_MASK] */
+         Mask_Paste_Region(p: Mask_Paste_Region_input, meta?: ComfyNodeMetadata): Mask_Paste_Region
+          /** category="WAS Suite_Image_Masking" name="Mask Dilate Region" output=[MASKS] */
+         Mask_Dilate_Region(p: Mask_Dilate_Region_input, meta?: ComfyNodeMetadata): Mask_Dilate_Region
+          /** category="WAS Suite_Image_Masking" name="Mask Dominant Region" output=[MASKS] */
+         Mask_Dominant_Region(p: Mask_Dominant_Region_input, meta?: ComfyNodeMetadata): Mask_Dominant_Region
+          /** category="WAS Suite_Image_Masking" name="Mask Erode Region" output=[MASKS] */
+         Mask_Erode_Region(p: Mask_Erode_Region_input, meta?: ComfyNodeMetadata): Mask_Erode_Region
+          /** category="WAS Suite_Image_Masking" name="Mask Fill Holes" output=[MASKS] */
+         Mask_Fill_Holes(p: Mask_Fill_Holes_input, meta?: ComfyNodeMetadata): Mask_Fill_Holes
+          /** category="WAS Suite_Image_Masking" name="Mask Floor Region" output=[MASKS] */
+         Mask_Floor_Region(p: Mask_Floor_Region_input, meta?: ComfyNodeMetadata): Mask_Floor_Region
+          /** category="WAS Suite_Image_Masking" name="Mask Gaussian Region" output=[MASKS] */
+         Mask_Gaussian_Region(p: Mask_Gaussian_Region_input, meta?: ComfyNodeMetadata): Mask_Gaussian_Region
+          /** category="WAS Suite_Image_Masking" name="Mask Invert" output=[MASKS] */
+         Mask_Invert(p: Mask_Invert_input, meta?: ComfyNodeMetadata): Mask_Invert
+          /** category="WAS Suite_Image_Masking" name="Mask Minority Region" output=[MASKS] */
+         Mask_Minority_Region(p: Mask_Minority_Region_input, meta?: ComfyNodeMetadata): Mask_Minority_Region
+          /** category="WAS Suite_Image_Masking" name="Mask Smooth Region" output=[MASKS] */
+         Mask_Smooth_Region(p: Mask_Smooth_Region_input, meta?: ComfyNodeMetadata): Mask_Smooth_Region
+          /** category="WAS Suite_Image_Masking" name="Mask Threshold Region" output=[MASKS] */
+         Mask_Threshold_Region(p: Mask_Threshold_Region_input, meta?: ComfyNodeMetadata): Mask_Threshold_Region
+          /** category="WAS Suite_Image_Masking" name="Masks Combine Regions" output=[MASK] */
+         Masks_Combine_Regions(p: Masks_Combine_Regions_input, meta?: ComfyNodeMetadata): Masks_Combine_Regions
+          /** category="WAS Suite_Image_Masking" name="Masks Combine Batch" output=[MASK] */
+         Masks_Combine_Batch(p: Masks_Combine_Batch_input, meta?: ComfyNodeMetadata): Masks_Combine_Batch
+          /** category="WAS Suite_Loaders" name="MiDaS Model Loader" output=[midas_model] */
+         MiDaS_Model_Loader(p: MiDaS_Model_Loader_input, meta?: ComfyNodeMetadata): MiDaS_Model_Loader
+          /** category="WAS Suite_Image_AI" name="MiDaS Depth Approximation" output=[images] */
+         MiDaS_Depth_Approximation(p: MiDaS_Depth_Approximation_input, meta?: ComfyNodeMetadata): MiDaS_Depth_Approximation
+          /** category="WAS Suite_Image_AI" name="MiDaS Mask Image" output=[RESULT, DEPTH] */
+         MiDaS_Mask_Image(p: MiDaS_Mask_Image_input, meta?: ComfyNodeMetadata): MiDaS_Mask_Image
+          /** category="WAS Suite_Logic" name="Model Input Switch" output=[MODEL] */
+         Model_Input_Switch(p: Model_Input_Switch_input, meta?: ComfyNodeMetadata): Model_Input_Switch
+          /** category="WAS Suite_Number" name="Number Counter" output=[number, float, int] */
+         Number_Counter(p: Number_Counter_input, meta?: ComfyNodeMetadata): Number_Counter
+          /** category="WAS Suite_Number_Operations" name="Number Operation" output=[NUMBER, FLOAT, INT] */
+         Number_Operation(p: Number_Operation_input, meta?: ComfyNodeMetadata): Number_Operation
+          /** category="WAS Suite_Number_Operations" name="Number to Float" output=[FLOAT] */
+         Number_to_Float(p: Number_to_Float_input, meta?: ComfyNodeMetadata): Number_to_Float
+          /** category="WAS Suite_Logic" name="Number Input Switch" output=[NUMBER, FLOAT, INT] */
+         Number_Input_Switch(p: Number_Input_Switch_input, meta?: ComfyNodeMetadata): Number_Input_Switch
+          /** category="WAS Suite_Logic" name="Number Input Condition" output=[NUMBER, FLOAT, INT] */
+         Number_Input_Condition(p: Number_Input_Condition_input, meta?: ComfyNodeMetadata): Number_Input_Condition
+          /** category="WAS Suite_Number_Functions" name="Number Multiple Of" output=[NUMBER, FLOAT, INT] */
+         Number_Multiple_Of(p: Number_Multiple_Of_input, meta?: ComfyNodeMetadata): Number_Multiple_Of
+          /** category="WAS Suite_Number" name="Number PI" output=[NUMBER, FLOAT] */
+         Number_PI(p: Number_PI_input, meta?: ComfyNodeMetadata): Number_PI
+          /** category="WAS Suite_Number_Operations" name="Number to Int" output=[INT] */
+         Number_to_Int(p: Number_to_Int_input, meta?: ComfyNodeMetadata): Number_to_Int
+          /** category="WAS Suite_Number_Operations" name="Number to Seed" output=[SEED] */
+         Number_to_Seed(p: Number_to_Seed_input, meta?: ComfyNodeMetadata): Number_to_Seed
+          /** category="WAS Suite_Number_Operations" name="Number to String" output=[STRING] */
+         Number_to_String(p: Number_to_String_input, meta?: ComfyNodeMetadata): Number_to_String
+          /** category="WAS Suite_Number_Operations" name="Number to Text" output=[STRING] */
+         Number_to_Text(p: Number_to_Text_input, meta?: ComfyNodeMetadata): Number_to_Text
+          /** category="WAS Suite_Logic" name="Boolean To Text" output=[STRING] */
+         Boolean_To_Text(p: Boolean_To_Text_input, meta?: ComfyNodeMetadata): Boolean_To_Text
+          /** category="WAS Suite_Text" name="Prompt Styles Selector" output=[positive_string, negative_string] */
+         Prompt_Styles_Selector(p: Prompt_Styles_Selector_input, meta?: ComfyNodeMetadata): Prompt_Styles_Selector
+          /** category="WAS Suite_Text" name="Prompt Multiple Styles Selector" output=[positive_string, negative_string] */
+         Prompt_Multiple_Styles_Selector(p: Prompt_Multiple_Styles_Selector_input, meta?: ComfyNodeMetadata): Prompt_Multiple_Styles_Selector
+          /** category="WAS Suite_Number" name="Random Number" output=[NUMBER, FLOAT, INT] */
+         Random_Number(p: Random_Number_input, meta?: ComfyNodeMetadata): Random_Number
+          /** category="WAS Suite_IO" name="Save Text File" output=[] */
+         Save_Text_File(p: Save_Text_File_input, meta?: ComfyNodeMetadata): Save_Text_File
+          /** category="WAS Suite_Number" name="Seed" output=[seed, number, float, int] */
+         Seed(p: Seed_input, meta?: ComfyNodeMetadata): Seed
+          /** category="WAS Suite_Latent_Transform" name="Tensor Batch to Image" output=[IMAGE] */
+         Tensor_Batch_to_Image(p: Tensor_Batch_to_Image_input, meta?: ComfyNodeMetadata): Tensor_Batch_to_Image
+          /** category="WAS Suite_Text_AI" name="BLIP Analyze Image" output=[FULL_CAPTIONS, CAPTIONS] */
+         BLIP_Analyze_Image(p: BLIP_Analyze_Image_input, meta?: ComfyNodeMetadata): BLIP_Analyze_Image
+          /** category="WAS Suite_Image_Masking" name="SAM Model Loader" output=[SAM_MODEL] */
+         SAM_Model_Loader(p: SAM_Model_Loader_input, meta?: ComfyNodeMetadata): SAM_Model_Loader
+          /** category="WAS Suite_Image_Masking" name="SAM Parameters" output=[SAM_PARAMETERS] */
+         SAM_Parameters(p: SAM_Parameters_input, meta?: ComfyNodeMetadata): SAM_Parameters
+          /** category="WAS Suite_Image_Masking" name="SAM Parameters Combine" output=[SAM_PARAMETERS] */
+         SAM_Parameters_Combine(p: SAM_Parameters_Combine_input, meta?: ComfyNodeMetadata): SAM_Parameters_Combine
+          /** category="WAS Suite_Image_Masking" name="SAM Image Mask" output=[IMAGE, MASK] */
+         SAM_Image_Mask(p: SAM_Image_Mask_input, meta?: ComfyNodeMetadata): SAM_Image_Mask
+          /** category="WAS Suite_Debug" name="Samples Passthrough (Stat System)" output=[samples] */
+         Samples_Passthrough_$1Stat_System$2(p: Samples_Passthrough_$1Stat_System$2_input, meta?: ComfyNodeMetadata): Samples_Passthrough_$1Stat_System$2
+          /** category="WAS Suite_Text_Operations" name="String to Text" output=[STRING] */
+         String_to_Text(p: String_to_Text_input, meta?: ComfyNodeMetadata): String_to_Text
+          /** category="WAS Suite_Image_Bound" name="Image Bounds" output=[IMAGE_BOUNDS] */
+         Image_Bounds(p: Image_Bounds_input, meta?: ComfyNodeMetadata): Image_Bounds
+          /** category="WAS Suite_Image_Bound" name="Inset Image Bounds" output=[IMAGE_BOUNDS] */
+         Inset_Image_Bounds(p: Inset_Image_Bounds_input, meta?: ComfyNodeMetadata): Inset_Image_Bounds
+          /** category="WAS Suite_Image_Bound" name="Bounded Image Blend" output=[IMAGE] */
+         Bounded_Image_Blend(p: Bounded_Image_Blend_input, meta?: ComfyNodeMetadata): Bounded_Image_Blend
+          /** category="WAS Suite_Image_Bound" name="Bounded Image Blend with Mask" output=[IMAGE] */
+         Bounded_Image_Blend_with_Mask(p: Bounded_Image_Blend_with_Mask_input, meta?: ComfyNodeMetadata): Bounded_Image_Blend_with_Mask
+          /** category="WAS Suite_Image_Bound" name="Bounded Image Crop" output=[IMAGE] */
+         Bounded_Image_Crop(p: Bounded_Image_Crop_input, meta?: ComfyNodeMetadata): Bounded_Image_Crop
+          /** category="WAS Suite_Image_Bound" name="Bounded Image Crop with Mask" output=[IMAGE, IMAGE_BOUNDS] */
+         Bounded_Image_Crop_with_Mask(p: Bounded_Image_Crop_with_Mask_input, meta?: ComfyNodeMetadata): Bounded_Image_Crop_with_Mask
+          /** category="WAS Suite_Debug" name="Image Bounds to Console" output=[IMAGE_BOUNDS] */
+         Image_Bounds_to_Console(p: Image_Bounds_to_Console_input, meta?: ComfyNodeMetadata): Image_Bounds_to_Console
+          /** category="WAS Suite_Text" name="Text Dictionary Update" output=[DICT] */
+         Text_Dictionary_Update(p: Text_Dictionary_Update_input, meta?: ComfyNodeMetadata): Text_Dictionary_Update
+          /** category="WAS Suite_Text" name="Text Dictionary Get" output=[STRING] */
+         Text_Dictionary_Get(p: Text_Dictionary_Get_input, meta?: ComfyNodeMetadata): Text_Dictionary_Get
+          /** category="WAS Suite_Text" name="Text Dictionary Convert" output=[DICT] */
+         Text_Dictionary_Convert(p: Text_Dictionary_Convert_input, meta?: ComfyNodeMetadata): Text_Dictionary_Convert
+          /** category="WAS Suite_Text" name="Text Dictionary New" output=[DICT] */
+         Text_Dictionary_New(p: Text_Dictionary_New_input, meta?: ComfyNodeMetadata): Text_Dictionary_New
+          /** category="WAS Suite_Text" name="Text Dictionary Keys" output=[LIST] */
+         Text_Dictionary_Keys(p: Text_Dictionary_Keys_input, meta?: ComfyNodeMetadata): Text_Dictionary_Keys
+          /** category="WAS Suite_Text" name="Text Dictionary To Text" output=[STRING] */
+         Text_Dictionary_To_Text(p: Text_Dictionary_To_Text_input, meta?: ComfyNodeMetadata): Text_Dictionary_To_Text
+          /** category="WAS Suite_Text_Tokens" name="Text Add Tokens" output=[] */
+         Text_Add_Tokens(p: Text_Add_Tokens_input, meta?: ComfyNodeMetadata): Text_Add_Tokens
+          /** category="WAS Suite_Text_Tokens" name="Text Add Token by Input" output=[] */
+         Text_Add_Token_by_Input(p: Text_Add_Token_by_Input_input, meta?: ComfyNodeMetadata): Text_Add_Token_by_Input
+          /** category="WAS Suite_Text_Search" name="Text Compare" output=[TEXT_A_PASS, TEXT_B_PASS, BOOLEAN, SCORE_NUMBER, COMPARISON_TEXT] */
+         Text_Compare(p: Text_Compare_input, meta?: ComfyNodeMetadata): Text_Compare
+          /** category="WAS Suite_Text" name="Text Concatenate" output=[STRING] */
+         Text_Concatenate(p: Text_Concatenate_input, meta?: ComfyNodeMetadata): Text_Concatenate
+          /** category="WAS Suite_History" name="Text File History Loader" output=[STRING, DICT] */
+         Text_File_History_Loader(p: Text_File_History_Loader_input, meta?: ComfyNodeMetadata): Text_File_History_Loader
+          /** category="WAS Suite_Text_Search" name="Text Find and Replace by Dictionary" output=[STRING] */
+         Text_Find_and_Replace_by_Dictionary(p: Text_Find_and_Replace_by_Dictionary_input, meta?: ComfyNodeMetadata): Text_Find_and_Replace_by_Dictionary
+          /** category="WAS Suite_Text_Search" name="Text Find and Replace Input" output=[result_text, replacement_count_number, replacement_count_float, replacement_count_int] */
+         Text_Find_and_Replace_Input(p: Text_Find_and_Replace_Input_input, meta?: ComfyNodeMetadata): Text_Find_and_Replace_Input
+          /** category="WAS Suite_Text_Search" name="Text Find and Replace" output=[result_text, replacement_count_number, replacement_count_float, replacement_count_int] */
+         Text_Find_and_Replace(p: Text_Find_and_Replace_input, meta?: ComfyNodeMetadata): Text_Find_and_Replace
+          /** category="WAS Suite_Text_Search" name="Text Find" output=[found] */
+         Text_Find(p: Text_Find_input, meta?: ComfyNodeMetadata): Text_Find
+          /** category="WAS Suite_Logic" name="Text Input Switch" output=[STRING] */
+         Text_Input_Switch(p: Text_Input_Switch_input, meta?: ComfyNodeMetadata): Text_Input_Switch
+          /** category="WAS Suite_Text" name="Text List" output=[LIST] */
+         Text_List(p: Text_List_input, meta?: ComfyNodeMetadata): Text_List
+          /** category="WAS Suite_Text" name="Text List Concatenate" output=[LIST] */
+         Text_List_Concatenate(p: Text_List_Concatenate_input, meta?: ComfyNodeMetadata): Text_List_Concatenate
+          /** category="WAS Suite_Text" name="Text List to Text" output=[STRING] */
+         Text_List_to_Text(p: Text_List_to_Text_input, meta?: ComfyNodeMetadata): Text_List_to_Text
+          /** category="WAS Suite_Text" name="Text Load Line From File" output=[line_text, dictionary] */
+         Text_Load_Line_From_File(p: Text_Load_Line_From_File_input, meta?: ComfyNodeMetadata): Text_Load_Line_From_File
+          /** category="WAS Suite_Text" name="Text Multiline" output=[STRING] */
+         Text_Multiline(p: Text_Multiline_input, meta?: ComfyNodeMetadata): Text_Multiline
+          /** category="WAS Suite_Text" name="Text Multiline (Code Compatible)" output=[STRING] */
+         Text_Multiline_$1Code_Compatible$2(p: Text_Multiline_$1Code_Compatible$2_input, meta?: ComfyNodeMetadata): Text_Multiline_$1Code_Compatible$2
+          /** category="WAS Suite_Text_Parse" name="Text Parse A1111 Embeddings" output=[STRING] */
+         Text_Parse_A1111_Embeddings(p: Text_Parse_A1111_Embeddings_input, meta?: ComfyNodeMetadata): Text_Parse_A1111_Embeddings
+          /** category="WAS Suite_Text_Parse" name="Text Parse Noodle Soup Prompts" output=[STRING] */
+         Text_Parse_Noodle_Soup_Prompts(p: Text_Parse_Noodle_Soup_Prompts_input, meta?: ComfyNodeMetadata): Text_Parse_Noodle_Soup_Prompts
+          /** category="WAS Suite_Text_Tokens" name="Text Parse Tokens" output=[STRING] */
+         Text_Parse_Tokens(p: Text_Parse_Tokens_input, meta?: ComfyNodeMetadata): Text_Parse_Tokens
+          /** category="WAS Suite_Text" name="Text Random Line" output=[STRING] */
+         Text_Random_Line(p: Text_Random_Line_input, meta?: ComfyNodeMetadata): Text_Random_Line
+          /** category="WAS Suite_Text" name="Text Random Prompt" output=[STRING] */
+         Text_Random_Prompt(p: Text_Random_Prompt_input, meta?: ComfyNodeMetadata): Text_Random_Prompt
+          /** category="WAS Suite_Text" name="Text String" output=[TEXT, TEXT_B, TEXT_C, TEXT_D] */
+         Text_String(p: Text_String_input, meta?: ComfyNodeMetadata): Text_String
+          /** category="WAS Suite_Logic" name="Text Contains" output=[BOOLEAN] */
+         Text_Contains(p: Text_Contains_input, meta?: ComfyNodeMetadata): Text_Contains
+          /** category="WAS Suite_Text_Operations" name="Text Shuffle" output=[STRING] */
+         Text_Shuffle(p: Text_Shuffle_input, meta?: ComfyNodeMetadata): Text_Shuffle
+          /** category="WAS Suite_Text_Operations" name="Text Sort" output=[STRING] */
+         Text_Sort(p: Text_Sort_input, meta?: ComfyNodeMetadata): Text_Sort
+          /** category="WAS Suite_Text_Operations" name="Text to Conditioning" output=[CONDITIONING] */
+         Text_to_Conditioning(p: Text_to_Conditioning_input, meta?: ComfyNodeMetadata): Text_to_Conditioning
+          /** category="WAS Suite_Debug" name="Text to Console" output=[STRING] */
+         Text_to_Console(p: Text_to_Console_input, meta?: ComfyNodeMetadata): Text_to_Console
+          /** category="WAS Suite_Text_Operations" name="Text to Number" output=[NUMBER] */
+         Text_to_Number(p: Text_to_Number_input, meta?: ComfyNodeMetadata): Text_to_Number
+          /** category="WAS Suite_Text_Operations" name="Text to String" output=[STRING] */
+         Text_to_String(p: Text_to_String_input, meta?: ComfyNodeMetadata): Text_to_String
+          /** category="WAS Suite_Text_Operations" name="Text String Truncate" output=[TEXT, TEXT_B, TEXT_C, TEXT_D] */
+         Text_String_Truncate(p: Text_String_Truncate_input, meta?: ComfyNodeMetadata): Text_String_Truncate
+          /** category="WAS Suite_Number" name="True Random.org Number Generator" output=[NUMBER, FLOAT, INT] */
+         True_Random$5org_Number_Generator(p: True_Random$5org_Number_Generator_input, meta?: ComfyNodeMetadata): True_Random$5org_Number_Generator
+          /** category="WAS Suite_Loaders" name="unCLIP Checkpoint Loader" output=[MODEL, CLIP, VAE, CLIP_VISION, NAME_STRING] */
+         unCLIP_Checkpoint_Loader(p: unCLIP_Checkpoint_Loader_input, meta?: ComfyNodeMetadata): unCLIP_Checkpoint_Loader
+          /** category="WAS Suite_Loaders" name="Upscale Model Loader" output=[UPSCALE_MODEL, MODEL_NAME_TEXT] */
+         Upscale_Model_Loader(p: Upscale_Model_Loader_input, meta?: ComfyNodeMetadata): Upscale_Model_Loader
+          /** category="WAS Suite_Logic" name="Upscale Model Switch" output=[UPSCALE_MODEL] */
+         Upscale_Model_Switch(p: Upscale_Model_Switch_input, meta?: ComfyNodeMetadata): Upscale_Model_Switch
+          /** category="WAS Suite_Animation_Writer" name="Write to GIF" output=[image_pass, filepath_text, filename_text] */
+         Write_to_GIF(p: Write_to_GIF_input, meta?: ComfyNodeMetadata): Write_to_GIF
+          /** category="WAS Suite_Animation_Writer" name="Write to Video" output=[IMAGE_PASS, filepath_text, filename_text] */
+         Write_to_Video(p: Write_to_Video_input, meta?: ComfyNodeMetadata): Write_to_Video
+          /** category="WAS Suite_Logic" name="VAE Input Switch" output=[VAE] */
+         VAE_Input_Switch(p: VAE_Input_Switch_input, meta?: ComfyNodeMetadata): VAE_Input_Switch
+          /** category="WAS Suite_Animation" name="Video Dump Frames" output=[output_path, processed_count] */
+         Video_Dump_Frames(p: Video_Dump_Frames_input, meta?: ComfyNodeMetadata): Video_Dump_Frames
+          /** category="image_transformation" name="CLIPSEG2" output=[IMAGE] */
+         CLIPSEG2(p: CLIPSEG2_input, meta?: ComfyNodeMetadata): CLIPSEG2
+      }
+      interface BLIP_Model_Loader extends HasSingle_BLIP_MODEL, ComfyNode<BLIP_Model_Loader_input, BLIP_Model_Loader_output> {
+          nameInComfy: "BLIP Model Loader"
+      }
+      interface BLIP_Model_Loader_output {
+          BLIP_MODEL: ComfyNodeOutput<'BLIP_MODEL', 0>,
+      }
+      interface BLIP_Model_Loader_input {
+          /** default="Salesforce/blip-image-captioning-base" */
+          blip_model?: Comfy.Input.STRING
+          /** default="Salesforce/blip-vqa-base" */
+          vqa_model_id?: Comfy.Input.STRING
+          device: Comfy.Union.E_48c2dd07be3b3abbddffe76e33499b898c2b0763
+      }
+      interface Blend_Latents extends HasSingle_LATENT, ComfyNode<Blend_Latents_input, Blend_Latents_output> {
+          nameInComfy: "Blend Latents"
+      }
+      interface Blend_Latents_output {
+          LATENT: ComfyNodeOutput<'LATENT', 0>,
+      }
+      interface Blend_Latents_input {
+          latent_a: Comfy.Input.LATENT
+          latent_b: Comfy.Input.LATENT
+          operation: Comfy.Union.E_3f37880395cb0fb6bef6cfeaa3f0bbb7c32be417
+          /** default=0.5 min=1 max=1 step=0.01 */
+          blend?: Comfy.Input.FLOAT
+      }
+      interface Bus_Node extends HasSingle_BUS, HasSingle_MODEL, HasSingle_CLIP, HasSingle_VAE, ComfyNode<Bus_Node_input, Bus_Node_output> {
+          nameInComfy: "Bus Node"
+      }
+      interface Bus_Node_output {
+          bus: ComfyNodeOutput<'BUS', 0>,
+          model: ComfyNodeOutput<'MODEL', 1>,
+          clip: ComfyNodeOutput<'CLIP', 2>,
+          vae: ComfyNodeOutput<'VAE', 3>,
+          positive: ComfyNodeOutput<'CONDITIONING', 4>,
+          negative: ComfyNodeOutput<'CONDITIONING', 5>,
+      }
+      interface Bus_Node_input {
+          bus?: Comfy.Input.BUS
+          model?: Comfy.Input.MODEL
+          clip?: Comfy.Input.CLIP
+          vae?: Comfy.Input.VAE
+          positive?: Comfy.Input.CONDITIONING
+          negative?: Comfy.Input.CONDITIONING
+      }
+      interface Cache_Node extends ComfyNode<Cache_Node_input, Cache_Node_output> {
+          nameInComfy: "Cache Node"
+      }
+      interface Cache_Node_output {
+          latent_filename: ComfyNodeOutput<'STRING', 0>,
+          image_filename: ComfyNodeOutput<'STRING', 1>,
+          conditioning_filename: ComfyNodeOutput<'STRING', 2>,
+      }
+      interface Cache_Node_input {
+          /** default='<redacted>' */
+          latent_suffix?: Comfy.Input.STRING
+          /** default='<redacted>' */
+          image_suffix?: Comfy.Input.STRING
+          /** default='<redacted>' */
+          conditioning_suffix?: Comfy.Input.STRING
+          /** default='<redacted>' */
+          output_path?: Comfy.Input.STRING
+          latent?: Comfy.Input.LATENT
+          image?: Comfy.Input.IMAGE
+          conditioning?: Comfy.Input.CONDITIONING
+      }
+      interface Checkpoint_Loader extends HasSingle_MODEL, HasSingle_CLIP, HasSingle_VAE, HasSingle_STRING, ComfyNode<Checkpoint_Loader_input, Checkpoint_Loader_output> {
+          nameInComfy: "Checkpoint Loader"
+      }
+      interface Checkpoint_Loader_output {
+          MODEL: ComfyNodeOutput<'MODEL', 0>,
+          CLIP: ComfyNodeOutput<'CLIP', 1>,
+          VAE: ComfyNodeOutput<'VAE', 2>,
+          NAME_STRING: ComfyNodeOutput<'STRING', 3>,
+      }
+      interface Checkpoint_Loader_input {
+          config_name: Comfy.Union.E_CkptConfigName
+          ckpt_name: Comfy.Union.E_CkptName
+      }
+      interface Checkpoint_Loader_$1Simple$2 extends HasSingle_MODEL, HasSingle_CLIP, HasSingle_VAE, HasSingle_STRING, ComfyNode<Checkpoint_Loader_$1Simple$2_input, Checkpoint_Loader_$1Simple$2_output> {
+          nameInComfy: "Checkpoint Loader (Simple)"
+      }
+      interface Checkpoint_Loader_$1Simple$2_output {
+          MODEL: ComfyNodeOutput<'MODEL', 0>,
+          CLIP: ComfyNodeOutput<'CLIP', 1>,
+          VAE: ComfyNodeOutput<'VAE', 2>,
+          NAME_STRING: ComfyNodeOutput<'STRING', 3>,
+      }
+      interface Checkpoint_Loader_$1Simple$2_input {
+          ckpt_name: Comfy.Union.E_CkptName
+      }
+      interface CLIPTextEncode_$1NSP$2 extends HasSingle_CONDITIONING, ComfyNode<CLIPTextEncode_$1NSP$2_input, CLIPTextEncode_$1NSP$2_output> {
+          nameInComfy: "CLIPTextEncode (NSP)"
+      }
+      interface CLIPTextEncode_$1NSP$2_output {
+          conditioning: ComfyNodeOutput<'CONDITIONING', 0>,
+          parsed_text: ComfyNodeOutput<'STRING', 1>,
+          raw_text: ComfyNodeOutput<'STRING', 2>,
+      }
+      interface CLIPTextEncode_$1NSP$2_input {
+          mode: Comfy.Union.E_46b521739cab20490e0368732c3787b937bb6d33
+          /** default="__" */
+          noodle_key?: Comfy.Input.STRING
+          /** default=0 min=18446744073709552000 max=18446744073709552000 */
+          seed?: Comfy.Input.INT
+          /** */
+          text: Comfy.Input.STRING
+          clip: Comfy.Input.CLIP
+      }
+      interface CLIP_Input_Switch extends HasSingle_CLIP, ComfyNode<CLIP_Input_Switch_input, CLIP_Input_Switch_output> {
+          nameInComfy: "CLIP Input Switch"
+      }
+      interface CLIP_Input_Switch_output {
+          CLIP: ComfyNodeOutput<'CLIP', 0>,
+      }
+      interface CLIP_Input_Switch_input {
+          clip_a: Comfy.Input.CLIP
+          clip_b: Comfy.Input.CLIP
+          /** */
+          boolean: Comfy.Input.BOOLEAN
+      }
+      interface CLIP_Vision_Input_Switch extends HasSingle_CLIP_VISION, ComfyNode<CLIP_Vision_Input_Switch_input, CLIP_Vision_Input_Switch_output> {
+          nameInComfy: "CLIP Vision Input Switch"
+      }
+      interface CLIP_Vision_Input_Switch_output {
+          CLIP_VISION: ComfyNodeOutput<'CLIP_VISION', 0>,
+      }
+      interface CLIP_Vision_Input_Switch_input {
+          clip_vision_a: Comfy.Input.CLIP_VISION
+          clip_vision_b: Comfy.Input.CLIP_VISION
+          /** */
+          boolean: Comfy.Input.BOOLEAN
+      }
+      interface Conditioning_Input_Switch extends HasSingle_CONDITIONING, ComfyNode<Conditioning_Input_Switch_input, Conditioning_Input_Switch_output> {
+          nameInComfy: "Conditioning Input Switch"
+      }
+      interface Conditioning_Input_Switch_output {
+          CONDITIONING: ComfyNodeOutput<'CONDITIONING', 0>,
+      }
+      interface Conditioning_Input_Switch_input {
+          conditioning_a: Comfy.Input.CONDITIONING
+          conditioning_b: Comfy.Input.CONDITIONING
+          /** */
+          boolean: Comfy.Input.BOOLEAN
+      }
+      interface Constant_Number extends HasSingle_NUMBER, HasSingle_FLOAT, HasSingle_INT, ComfyNode<Constant_Number_input, Constant_Number_output> {
+          nameInComfy: "Constant Number"
+      }
+      interface Constant_Number_output {
+          NUMBER: ComfyNodeOutput<'NUMBER', 0>,
+          FLOAT: ComfyNodeOutput<'FLOAT', 1>,
+          INT: ComfyNodeOutput<'INT', 2>,
+      }
+      interface Constant_Number_input {
+          number_type: Comfy.Union.E_d775619a3b6b2764d08cc78c16dba9db45ba3385
+          /** default=0 min=18446744073709552000 max=18446744073709552000 step=0.01 */
+          number?: Comfy.Input.FLOAT
+          /** */
+          number_as_text?: Comfy.Input.STRING
+      }
+      interface Create_Grid_Image extends HasSingle_IMAGE, ComfyNode<Create_Grid_Image_input, Create_Grid_Image_output> {
+          nameInComfy: "Create Grid Image"
+      }
+      interface Create_Grid_Image_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Create_Grid_Image_input {
+          /** default="./ComfyUI/input/" */
+          images_path?: Comfy.Input.STRING
+          /** default="*" */
+          pattern_glob?: Comfy.Input.STRING
+          include_subfolders: Comfy.Union.E_TrueOrFalse
+          /** default=3 min=100 max=100 step=1 */
+          border_width?: Comfy.Input.INT
+          /** default=6 min=24 max=24 step=1 */
+          number_of_columns?: Comfy.Input.INT
+          /** default=256 min=1280 max=1280 step=1 */
+          max_cell_size?: Comfy.Input.INT
+          /** default=0 min=255 max=255 step=1 */
+          border_red?: Comfy.Input.INT
+          /** default=0 min=255 max=255 step=1 */
+          border_green?: Comfy.Input.INT
+          /** default=0 min=255 max=255 step=1 */
+          border_blue?: Comfy.Input.INT
+      }
+      interface Create_Grid_Image_from_Batch extends HasSingle_IMAGE, ComfyNode<Create_Grid_Image_from_Batch_input, Create_Grid_Image_from_Batch_output> {
+          nameInComfy: "Create Grid Image from Batch"
+      }
+      interface Create_Grid_Image_from_Batch_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Create_Grid_Image_from_Batch_input {
+          images: Comfy.Input.IMAGE
+          /** default=3 min=100 max=100 step=1 */
+          border_width?: Comfy.Input.INT
+          /** default=6 min=24 max=24 step=1 */
+          number_of_columns?: Comfy.Input.INT
+          /** default=256 min=2048 max=2048 step=1 */
+          max_cell_size?: Comfy.Input.INT
+          /** default=0 min=255 max=255 step=1 */
+          border_red?: Comfy.Input.INT
+          /** default=0 min=255 max=255 step=1 */
+          border_green?: Comfy.Input.INT
+          /** default=0 min=255 max=255 step=1 */
+          border_blue?: Comfy.Input.INT
+      }
+      interface Create_Morph_Image extends ComfyNode<Create_Morph_Image_input, Create_Morph_Image_output> {
+          nameInComfy: "Create Morph Image"
+      }
+      interface Create_Morph_Image_output {
+          image_a_pass: ComfyNodeOutput<'IMAGE', 0>,
+          image_b_pass: ComfyNodeOutput<'IMAGE', 1>,
+          filepath_text: ComfyNodeOutput<'STRING', 2>,
+          filename_text: ComfyNodeOutput<'STRING', 3>,
+      }
+      interface Create_Morph_Image_input {
+          image_a: Comfy.Input.IMAGE
+          image_b: Comfy.Input.IMAGE
+          /** default=30 min=60 max=60 step=1 */
+          transition_frames?: Comfy.Input.INT
+          /** default=2500 min=60000 max=60000 step=0.1 */
+          still_image_delay_ms?: Comfy.Input.FLOAT
+          /** default=0.1 min=60000 max=60000 step=0.1 */
+          duration_ms?: Comfy.Input.FLOAT
+          /** default=0 min=100 max=100 step=1 */
+          loops?: Comfy.Input.INT
+          /** default=512 min=1280 max=1280 step=1 */
+          max_size?: Comfy.Input.INT
+          /** default="./ComfyUI/output" */
+          output_path?: Comfy.Input.STRING
+          /** default="morph" */
+          filename?: Comfy.Input.STRING
+          filetype: Comfy.Union.E_3f15cd9dbfdca2b8fe61c86059e860994b7a5e24
+      }
+      interface Create_Morph_Image_from_Path extends ComfyNode<Create_Morph_Image_from_Path_input, Create_Morph_Image_from_Path_output> {
+          nameInComfy: "Create Morph Image from Path"
+      }
+      interface Create_Morph_Image_from_Path_output {
+          filepath_text: ComfyNodeOutput<'STRING', 0>,
+          filename_text: ComfyNodeOutput<'STRING', 1>,
+      }
+      interface Create_Morph_Image_from_Path_input {
+          /** default=30 min=60 max=60 step=1 */
+          transition_frames?: Comfy.Input.INT
+          /** default=2500 min=60000 max=60000 step=0.1 */
+          still_image_delay_ms?: Comfy.Input.FLOAT
+          /** default=0.1 min=60000 max=60000 step=0.1 */
+          duration_ms?: Comfy.Input.FLOAT
+          /** default=0 min=100 max=100 step=1 */
+          loops?: Comfy.Input.INT
+          /** default=512 min=1280 max=1280 step=1 */
+          max_size?: Comfy.Input.INT
+          /** default="./ComfyUI" */
+          input_path?: Comfy.Input.STRING
+          /** default="*" */
+          input_pattern?: Comfy.Input.STRING
+          /** default="./ComfyUI/output" */
+          output_path?: Comfy.Input.STRING
+          /** default="morph" */
+          filename?: Comfy.Input.STRING
+          filetype: Comfy.Union.E_3f15cd9dbfdca2b8fe61c86059e860994b7a5e24
+      }
+      interface Create_Video_from_Path extends ComfyNode<Create_Video_from_Path_input, Create_Video_from_Path_output> {
+          nameInComfy: "Create Video from Path"
+      }
+      interface Create_Video_from_Path_output {
+          filepath_text: ComfyNodeOutput<'STRING', 0>,
+          filename_text: ComfyNodeOutput<'STRING', 1>,
+      }
+      interface Create_Video_from_Path_input {
+          /** default=30 min=120 max=120 step=1 */
+          transition_frames?: Comfy.Input.INT
+          /** default=2.5 min=60000 max=60000 step=0.01 */
+          image_delay_sec?: Comfy.Input.FLOAT
+          /** default=30 min=60 max=60 step=1 */
+          fps?: Comfy.Input.INT
+          /** default=512 min=1920 max=1920 step=1 */
+          max_size?: Comfy.Input.INT
+          /** default="./ComfyUI/input" */
+          input_path?: Comfy.Input.STRING
+          /** default="./ComfyUI/output" */
+          output_path?: Comfy.Input.STRING
+          /** default="comfy_video" */
+          filename?: Comfy.Input.STRING
+          codec: Comfy.Union.E_077330280092fb42c54b5360bc8723312fb6fd1d
+      }
+      interface CLIPSeg_Masking extends HasSingle_MASK, HasSingle_IMAGE, ComfyNode<CLIPSeg_Masking_input, CLIPSeg_Masking_output> {
+          nameInComfy: "CLIPSeg Masking"
+      }
+      interface CLIPSeg_Masking_output {
+          MASK: ComfyNodeOutput<'MASK', 0>,
+          MASK_IMAGE: ComfyNodeOutput<'IMAGE', 1>,
+      }
+      interface CLIPSeg_Masking_input {
+          image: Comfy.Input.IMAGE
+          /** default="" */
+          text?: Comfy.Input.STRING
+          clipseg_model?: Comfy.Input.CLIPSEG_MODEL
+      }
+      interface CLIPSeg_Model_Loader extends HasSingle_CLIPSEG_MODEL, ComfyNode<CLIPSeg_Model_Loader_input, CLIPSeg_Model_Loader_output> {
+          nameInComfy: "CLIPSeg Model Loader"
+      }
+      interface CLIPSeg_Model_Loader_output {
+          clipseg_model: ComfyNodeOutput<'CLIPSEG_MODEL', 0>,
+      }
+      interface CLIPSeg_Model_Loader_input {
+          /** default="CIDAS/clipseg-rd64-refined" */
+          model?: Comfy.Input.STRING
+      }
+      interface CLIPSeg_Batch_Masking extends HasSingle_MASK, ComfyNode<CLIPSeg_Batch_Masking_input, CLIPSeg_Batch_Masking_output> {
+          nameInComfy: "CLIPSeg Batch Masking"
+      }
+      interface CLIPSeg_Batch_Masking_output {
+          IMAGES_BATCH: ComfyNodeOutput<'IMAGE', 0>,
+          MASKS_BATCH: ComfyNodeOutput<'MASK', 1>,
+          MASK_IMAGES_BATCH: ComfyNodeOutput<'IMAGE', 2>,
+      }
+      interface CLIPSeg_Batch_Masking_input {
+          image_a: Comfy.Input.IMAGE
+          image_b: Comfy.Input.IMAGE
+          /** default="" */
+          text_a?: Comfy.Input.STRING
+          /** default="" */
+          text_b?: Comfy.Input.STRING
+          image_c?: Comfy.Input.IMAGE
+          image_d?: Comfy.Input.IMAGE
+          image_e?: Comfy.Input.IMAGE
+          image_f?: Comfy.Input.IMAGE
+          /** default="" */
+          text_c?: Comfy.Input.STRING
+          /** default="" */
+          text_d?: Comfy.Input.STRING
+          /** default="" */
+          text_e?: Comfy.Input.STRING
+          /** default="" */
+          text_f?: Comfy.Input.STRING
+      }
+      interface Convert_Masks_to_Images extends HasSingle_IMAGE, ComfyNode<Convert_Masks_to_Images_input, Convert_Masks_to_Images_output> {
+          nameInComfy: "Convert Masks to Images"
+      }
+      interface Convert_Masks_to_Images_output {
+          IMAGES: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Convert_Masks_to_Images_input {
+          masks: Comfy.Input.MASK
+      }
+      interface Control_Net_Model_Input_Switch extends HasSingle_CONTROL_NET, ComfyNode<Control_Net_Model_Input_Switch_input, Control_Net_Model_Input_Switch_output> {
+          nameInComfy: "Control Net Model Input Switch"
+      }
+      interface Control_Net_Model_Input_Switch_output {
+          CONTROL_NET: ComfyNodeOutput<'CONTROL_NET', 0>,
+      }
+      interface Control_Net_Model_Input_Switch_input {
+          control_net_a: Comfy.Input.CONTROL_NET
+          control_net_b: Comfy.Input.CONTROL_NET
+          /** */
+          boolean: Comfy.Input.BOOLEAN
+      }
+      interface Debug_Number_to_Console extends HasSingle_NUMBER, ComfyNode<Debug_Number_to_Console_input, Debug_Number_to_Console_output> {
+          nameInComfy: "Debug Number to Console"
+      }
+      interface Debug_Number_to_Console_output {
+          NUMBER: ComfyNodeOutput<'NUMBER', 0>,
+      }
+      interface Debug_Number_to_Console_input {
+          number: Comfy.Input.NUMBER
+          /** default="Debug to Console" */
+          label?: Comfy.Input.STRING
+      }
+      interface Dictionary_to_Console extends HasSingle_DICT, ComfyNode<Dictionary_to_Console_input, Dictionary_to_Console_output> {
+          nameInComfy: "Dictionary to Console"
+      }
+      interface Dictionary_to_Console_output {
+          DICT: ComfyNodeOutput<'DICT', 0>,
+      }
+      interface Dictionary_to_Console_input {
+          dictionary: Comfy.Input.DICT
+          /** default="Dictionary Output" */
+          label?: Comfy.Input.STRING
+      }
+      interface Diffusers_Model_Loader extends HasSingle_MODEL, HasSingle_CLIP, HasSingle_VAE, HasSingle_STRING, ComfyNode<Diffusers_Model_Loader_input, Diffusers_Model_Loader_output> {
+          nameInComfy: "Diffusers Model Loader"
+      }
+      interface Diffusers_Model_Loader_output {
+          MODEL: ComfyNodeOutput<'MODEL', 0>,
+          CLIP: ComfyNodeOutput<'CLIP', 1>,
+          VAE: ComfyNodeOutput<'VAE', 2>,
+          NAME_STRING: ComfyNodeOutput<'STRING', 3>,
+      }
+      interface Diffusers_Model_Loader_input {
+          model_path: Comfy.Union.E_LoraName
+      }
+      interface Diffusers_Hub_Model_Down$7Loader extends HasSingle_MODEL, HasSingle_CLIP, HasSingle_VAE, HasSingle_STRING, ComfyNode<Diffusers_Hub_Model_Down$7Loader_input, Diffusers_Hub_Model_Down$7Loader_output> {
+          nameInComfy: "Diffusers Hub Model Down-Loader"
+      }
+      interface Diffusers_Hub_Model_Down$7Loader_output {
+          MODEL: ComfyNodeOutput<'MODEL', 0>,
+          CLIP: ComfyNodeOutput<'CLIP', 1>,
+          VAE: ComfyNodeOutput<'VAE', 2>,
+          NAME_STRING: ComfyNodeOutput<'STRING', 3>,
+      }
+      interface Diffusers_Hub_Model_Down$7Loader_input {
+          /** */
+          repo_id: Comfy.Input.STRING
+          /** default="None" */
+          revision?: Comfy.Input.STRING
+      }
+      interface Export_API extends ComfyNode<Export_API_input, Export_API_output> {
+          nameInComfy: "Export API"
+      }
+      interface Export_API_output {
+      }
+      interface Export_API_input {
+          save_prompt_api: Comfy.Union.E_8d4017579661153a386578b6c3ad4d041bd9eccc
+          /** default="./ComfyUI/output/" */
+          output_path?: Comfy.Input.STRING
+          /** default="ComfyUI_Prompt" */
+          filename_prefix?: Comfy.Input.STRING
+          /** default="_" */
+          filename_delimiter?: Comfy.Input.STRING
+          /** default=4 min=9 max=9 step=1 */
+          filename_number_padding?: Comfy.Input.INT
+          /** default=false */
+          parse_text_tokens?: Comfy.Input.BOOLEAN
+      }
+      interface Latent_Input_Switch extends HasSingle_LATENT, ComfyNode<Latent_Input_Switch_input, Latent_Input_Switch_output> {
+          nameInComfy: "Latent Input Switch"
+      }
+      interface Latent_Input_Switch_output {
+          LATENT: ComfyNodeOutput<'LATENT', 0>,
+      }
+      interface Latent_Input_Switch_input {
+          latent_a: Comfy.Input.LATENT
+          latent_b: Comfy.Input.LATENT
+          /** */
+          boolean: Comfy.Input.BOOLEAN
+      }
+      interface Load_Cache extends HasSingle_LATENT, HasSingle_IMAGE, HasSingle_CONDITIONING, ComfyNode<Load_Cache_input, Load_Cache_output> {
+          nameInComfy: "Load Cache"
+      }
+      interface Load_Cache_output {
+          LATENT: ComfyNodeOutput<'LATENT', 0>,
+          IMAGE: ComfyNodeOutput<'IMAGE', 1>,
+          CONDITIONING: ComfyNodeOutput<'CONDITIONING', 2>,
+      }
+      interface Load_Cache_input {
+          /** default="" */
+          latent_path?: Comfy.Input.STRING
+          /** default="" */
+          image_path?: Comfy.Input.STRING
+          /** default="" */
+          conditioning_path?: Comfy.Input.STRING
+      }
+      interface Logic_Boolean extends HasSingle_BOOLEAN, HasSingle_NUMBER, HasSingle_INT, HasSingle_FLOAT, ComfyNode<Logic_Boolean_input, Logic_Boolean_output> {
+          nameInComfy: "Logic Boolean"
+      }
+      interface Logic_Boolean_output {
+          BOOLEAN: ComfyNodeOutput<'BOOLEAN', 0>,
+          NUMBER: ComfyNodeOutput<'NUMBER', 1>,
+          INT: ComfyNodeOutput<'INT', 2>,
+          FLOAT: ComfyNodeOutput<'FLOAT', 3>,
+      }
+      interface Logic_Boolean_input {
+          /** default=1 min=1 max=1 step=0.01 */
+          boolean?: Comfy.Input.FLOAT
+      }
+      interface Logic_Boolean_Primitive extends HasSingle_BOOLEAN, ComfyNode<Logic_Boolean_Primitive_input, Logic_Boolean_Primitive_output> {
+          nameInComfy: "Logic Boolean Primitive"
+      }
+      interface Logic_Boolean_Primitive_output {
+          BOOLEAN: ComfyNodeOutput<'BOOLEAN', 0>,
+      }
+      interface Logic_Boolean_Primitive_input {
+          /** default=false */
+          boolean?: Comfy.Input.BOOLEAN
+      }
+      interface Logic_Comparison_OR extends HasSingle_BOOLEAN, ComfyNode<Logic_Comparison_OR_input, Logic_Comparison_OR_output> {
+          nameInComfy: "Logic Comparison OR"
+      }
+      interface Logic_Comparison_OR_output {
+          BOOLEAN: ComfyNodeOutput<'BOOLEAN', 0>,
+      }
+      interface Logic_Comparison_OR_input {
+          /** default=false */
+          boolean_a?: Comfy.Input.BOOLEAN
+          /** default=false */
+          boolean_b?: Comfy.Input.BOOLEAN
+      }
+      interface Logic_Comparison_AND extends HasSingle_BOOLEAN, ComfyNode<Logic_Comparison_AND_input, Logic_Comparison_AND_output> {
+          nameInComfy: "Logic Comparison AND"
+      }
+      interface Logic_Comparison_AND_output {
+          BOOLEAN: ComfyNodeOutput<'BOOLEAN', 0>,
+      }
+      interface Logic_Comparison_AND_input {
+          /** default=false */
+          boolean_a?: Comfy.Input.BOOLEAN
+          /** default=false */
+          boolean_b?: Comfy.Input.BOOLEAN
+      }
+      interface Logic_Comparison_XOR extends HasSingle_BOOLEAN, ComfyNode<Logic_Comparison_XOR_input, Logic_Comparison_XOR_output> {
+          nameInComfy: "Logic Comparison XOR"
+      }
+      interface Logic_Comparison_XOR_output {
+          BOOLEAN: ComfyNodeOutput<'BOOLEAN', 0>,
+      }
+      interface Logic_Comparison_XOR_input {
+          /** default=false */
+          boolean_a?: Comfy.Input.BOOLEAN
+          /** default=false */
+          boolean_b?: Comfy.Input.BOOLEAN
+      }
+      interface Logic_NOT extends HasSingle_BOOLEAN, ComfyNode<Logic_NOT_input, Logic_NOT_output> {
+          nameInComfy: "Logic NOT"
+      }
+      interface Logic_NOT_output {
+          BOOLEAN: ComfyNodeOutput<'BOOLEAN', 0>,
+      }
+      interface Logic_NOT_input {
+          /** default=false */
+          boolean?: Comfy.Input.BOOLEAN
+      }
+      interface Lora_Loader extends HasSingle_MODEL, HasSingle_CLIP, HasSingle_STRING, ComfyNode<Lora_Loader_input, Lora_Loader_output> {
+          nameInComfy: "Lora Loader"
+      }
+      interface Lora_Loader_output {
+          MODEL: ComfyNodeOutput<'MODEL', 0>,
+          CLIP: ComfyNodeOutput<'CLIP', 1>,
+          NAME_STRING: ComfyNodeOutput<'STRING', 2>,
+      }
+      interface Lora_Loader_input {
+          model: Comfy.Input.MODEL
+          clip: Comfy.Input.CLIP
+          lora_name: Comfy.Union.E_6eef6648406c333a4035cd5e60d0bf2ecf2606d7
+          /** default=1 min=10 max=10 step=0.01 */
+          strength_model?: Comfy.Input.FLOAT
+          /** default=1 min=10 max=10 step=0.01 */
+          strength_clip?: Comfy.Input.FLOAT
+      }
+      interface Hex_to_HSL extends HasSingle_FLOAT, HasSingle_STRING, ComfyNode<Hex_to_HSL_input, Hex_to_HSL_output> {
+          nameInComfy: "Hex to HSL"
+      }
+      interface Hex_to_HSL_output {
+          hue: ComfyNodeOutput<'INT', 0>,
+          saturation: ComfyNodeOutput<'INT', 1>,
+          lightness: ComfyNodeOutput<'INT', 2>,
+          alpha: ComfyNodeOutput<'FLOAT', 3>,
+          hsl: ComfyNodeOutput<'STRING', 4>,
+      }
+      interface Hex_to_HSL_input {
+          /** default="#FF0000" */
+          hex_color?: Comfy.Input.STRING
+          /** default=false */
+          include_alpha?: Comfy.Input.BOOLEAN
+      }
+      interface HSL_to_Hex extends HasSingle_STRING, ComfyNode<HSL_to_Hex_input, HSL_to_Hex_output> {
+          nameInComfy: "HSL to Hex"
+      }
+      interface HSL_to_Hex_output {
+          hex_color: ComfyNodeOutput<'STRING', 0>,
+      }
+      interface HSL_to_Hex_input {
+          /** default="hsl(0, 100%, 50%)" */
+          hsl_color?: Comfy.Input.STRING
+      }
+      interface Image_SSAO_$1Ambient_Occlusion$2 extends ComfyNode<Image_SSAO_$1Ambient_Occlusion$2_input, Image_SSAO_$1Ambient_Occlusion$2_output> {
+          nameInComfy: "Image SSAO (Ambient Occlusion)"
+      }
+      interface Image_SSAO_$1Ambient_Occlusion$2_output {
+          composited_images: ComfyNodeOutput<'IMAGE', 0>,
+          ssao_images: ComfyNodeOutput<'IMAGE', 1>,
+          specular_mask_images: ComfyNodeOutput<'IMAGE', 2>,
+      }
+      interface Image_SSAO_$1Ambient_Occlusion$2_input {
+          images: Comfy.Input.IMAGE
+          depth_images: Comfy.Input.IMAGE
+          /** default=1 min=5 max=5 step=0.01 */
+          strength?: Comfy.Input.FLOAT
+          /** default=30 min=1024 max=1024 step=0.01 */
+          radius?: Comfy.Input.FLOAT
+          /** default=2.5 min=1024 max=1024 step=0.01 */
+          ao_blur?: Comfy.Input.FLOAT
+          /** default=25 min=255 max=255 step=1 */
+          specular_threshold?: Comfy.Input.INT
+          enable_specular_masking: Comfy.Union.E_e6bf0166cb0a546d639b0416f53e058b11157eff
+          /** default=1 min=512 max=512 step=1 */
+          tile_size?: Comfy.Input.INT
+      }
+      interface Image_SSDO_$1Direct_Occlusion$2 extends ComfyNode<Image_SSDO_$1Direct_Occlusion$2_input, Image_SSDO_$1Direct_Occlusion$2_output> {
+          nameInComfy: "Image SSDO (Direct Occlusion)"
+      }
+      interface Image_SSDO_$1Direct_Occlusion$2_output {
+          composited_images: ComfyNodeOutput<'IMAGE', 0>,
+          ssdo_images: ComfyNodeOutput<'IMAGE', 1>,
+          ssdo_image_masks: ComfyNodeOutput<'IMAGE', 2>,
+          light_source_image_masks: ComfyNodeOutput<'IMAGE', 3>,
+      }
+      interface Image_SSDO_$1Direct_Occlusion$2_input {
+          images: Comfy.Input.IMAGE
+          depth_images: Comfy.Input.IMAGE
+          /** default=1 min=5 max=5 step=0.01 */
+          strength?: Comfy.Input.FLOAT
+          /** default=30 min=1024 max=1024 step=0.01 */
+          radius?: Comfy.Input.FLOAT
+          /** default=128 min=255 max=255 step=1 */
+          specular_threshold?: Comfy.Input.INT
+          colored_occlusion: Comfy.Union.E_e6bf0166cb0a546d639b0416f53e058b11157eff
+      }
+      interface Image_Analyze extends HasSingle_IMAGE, ComfyNode<Image_Analyze_input, Image_Analyze_output> {
+          nameInComfy: "Image Analyze"
+      }
+      interface Image_Analyze_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Image_Analyze_input {
+          image: Comfy.Input.IMAGE
+          mode: Comfy.Union.E_621590e6cf567b6defe22db2a7f19bbadbdeaecb
+      }
+      interface Image_Aspect_Ratio extends HasSingle_FLOAT, ComfyNode<Image_Aspect_Ratio_input, Image_Aspect_Ratio_output> {
+          nameInComfy: "Image Aspect Ratio"
+      }
+      interface Image_Aspect_Ratio_output {
+          aspect_number: ComfyNodeOutput<'NUMBER', 0>,
+          aspect_float: ComfyNodeOutput<'FLOAT', 1>,
+          is_landscape_bool: ComfyNodeOutput<'NUMBER', 2>,
+          aspect_ratio_common: ComfyNodeOutput<'STRING', 3>,
+          aspect_type: ComfyNodeOutput<'STRING', 4>,
+      }
+      interface Image_Aspect_Ratio_input {
+          image?: Comfy.Input.IMAGE
+          width?: Comfy.Input.NUMBER
+          height?: Comfy.Input.NUMBER
+      }
+      interface Image_Batch extends HasSingle_IMAGE, ComfyNode<Image_Batch_input, Image_Batch_output> {
+          nameInComfy: "Image Batch"
+      }
+      interface Image_Batch_output {
+          image: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Image_Batch_input {
+          images_a?: Comfy.Input.IMAGE
+          images_b?: Comfy.Input.IMAGE
+          images_c?: Comfy.Input.IMAGE
+          images_d?: Comfy.Input.IMAGE
+      }
+      interface Image_Blank extends HasSingle_IMAGE, ComfyNode<Image_Blank_input, Image_Blank_output> {
+          nameInComfy: "Image Blank"
+      }
+      interface Image_Blank_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Image_Blank_input {
+          /** default=512 min=4096 max=4096 step=1 */
+          width?: Comfy.Input.INT
+          /** default=512 min=4096 max=4096 step=1 */
+          height?: Comfy.Input.INT
+          /** default=255 min=255 max=255 step=1 */
+          red?: Comfy.Input.INT
+          /** default=255 min=255 max=255 step=1 */
+          green?: Comfy.Input.INT
+          /** default=255 min=255 max=255 step=1 */
+          blue?: Comfy.Input.INT
+      }
+      interface Image_Blend_by_Mask extends HasSingle_IMAGE, ComfyNode<Image_Blend_by_Mask_input, Image_Blend_by_Mask_output> {
+          nameInComfy: "Image Blend by Mask"
+      }
+      interface Image_Blend_by_Mask_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Image_Blend_by_Mask_input {
+          image_a: Comfy.Input.IMAGE
+          image_b: Comfy.Input.IMAGE
+          mask: Comfy.Input.IMAGE
+          /** default=0.5 min=1 max=1 step=0.01 */
+          blend_percentage?: Comfy.Input.FLOAT
+      }
+      interface Image_Blend extends HasSingle_IMAGE, ComfyNode<Image_Blend_input, Image_Blend_output> {
+          nameInComfy: "Image Blend"
+      }
+      interface Image_Blend_output {
+          image: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Image_Blend_input {
+          image_a: Comfy.Input.IMAGE
+          image_b: Comfy.Input.IMAGE
+          /** default=0.5 min=1 max=1 step=0.01 */
+          blend_percentage?: Comfy.Input.FLOAT
+      }
+      interface Image_Blending_Mode extends HasSingle_IMAGE, ComfyNode<Image_Blending_Mode_input, Image_Blending_Mode_output> {
+          nameInComfy: "Image Blending Mode"
+      }
+      interface Image_Blending_Mode_output {
+          image: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Image_Blending_Mode_input {
+          image_a: Comfy.Input.IMAGE
+          image_b: Comfy.Input.IMAGE
+          mode: Comfy.Union.E_1fcc2ccd09b459c4e3871ff2971ebb38c7b641fd
+          /** default=1 min=1 max=1 step=0.01 */
+          blend_percentage?: Comfy.Input.FLOAT
+      }
+      interface Image_Bloom_Filter extends HasSingle_IMAGE, ComfyNode<Image_Bloom_Filter_input, Image_Bloom_Filter_output> {
+          nameInComfy: "Image Bloom Filter"
+      }
+      interface Image_Bloom_Filter_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Image_Bloom_Filter_input {
+          image: Comfy.Input.IMAGE
+          /** default=10 min=1024 max=1024 step=0.1 */
+          radius?: Comfy.Input.FLOAT
+          /** default=1 min=1 max=1 step=0.1 */
+          intensity?: Comfy.Input.FLOAT
+      }
+      interface Image_Canny_Filter extends HasSingle_IMAGE, ComfyNode<Image_Canny_Filter_input, Image_Canny_Filter_output> {
+          nameInComfy: "Image Canny Filter"
+      }
+      interface Image_Canny_Filter_output {
+          images: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Image_Canny_Filter_input {
+          images: Comfy.Input.IMAGE
+          enable_threshold: Comfy.Union.E_TrueOrFalse
+          /** default=0 min=1 max=1 step=0.01 */
+          threshold_low?: Comfy.Input.FLOAT
+          /** default=1 min=1 max=1 step=0.01 */
+          threshold_high?: Comfy.Input.FLOAT
+      }
+      interface Image_Chromatic_Aberration extends HasSingle_IMAGE, ComfyNode<Image_Chromatic_Aberration_input, Image_Chromatic_Aberration_output> {
+          nameInComfy: "Image Chromatic Aberration"
+      }
+      interface Image_Chromatic_Aberration_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Image_Chromatic_Aberration_input {
+          image: Comfy.Input.IMAGE
+          /** default=2 min=255 max=255 step=1 */
+          red_offset?: Comfy.Input.INT
+          /** default=-1 min=255 max=255 step=1 */
+          green_offset?: Comfy.Input.INT
+          /** default=1 min=255 max=255 step=1 */
+          blue_offset?: Comfy.Input.INT
+          /** default=0.5 min=1 max=1 step=0.01 */
+          intensity?: Comfy.Input.FLOAT
+          /** default=12 min=1024 max=1024 step=1 */
+          fade_radius?: Comfy.Input.INT
+      }
+      interface Image_Color_Palette extends HasSingle_IMAGE, HasSingle_LIST, ComfyNode<Image_Color_Palette_input, Image_Color_Palette_output> {
+          nameInComfy: "Image Color Palette"
+      }
+      interface Image_Color_Palette_output {
+          image: ComfyNodeOutput<'IMAGE', 0>,
+          color_palettes: ComfyNodeOutput<'LIST', 1>,
+      }
+      interface Image_Color_Palette_input {
+          image: Comfy.Input.IMAGE
+          /** default=16 min=256 max=256 step=1 */
+          colors?: Comfy.Input.INT
+          mode: Comfy.Union.E_0ea34bc7f4ead6746548832ef8cfbfc3fea9d788
+      }
+      interface Image_Crop_Face extends HasSingle_IMAGE, HasSingle_CROP_DATA, ComfyNode<Image_Crop_Face_input, Image_Crop_Face_output> {
+          nameInComfy: "Image Crop Face"
+      }
+      interface Image_Crop_Face_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+          CROP_DATA: ComfyNodeOutput<'CROP_DATA', 1>,
+      }
+      interface Image_Crop_Face_input {
+          image: Comfy.Input.IMAGE
+          /** default=0.25 min=2 max=2 step=0.01 */
+          crop_padding_factor?: Comfy.Input.FLOAT
+          cascade_xml: Comfy.Union.E_f25d83b46c2741d5aa65866293963e31eb885e6f
+      }
+      interface Image_Crop_Location extends HasSingle_IMAGE, HasSingle_CROP_DATA, ComfyNode<Image_Crop_Location_input, Image_Crop_Location_output> {
+          nameInComfy: "Image Crop Location"
+      }
+      interface Image_Crop_Location_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+          CROP_DATA: ComfyNodeOutput<'CROP_DATA', 1>,
+      }
+      interface Image_Crop_Location_input {
+          image: Comfy.Input.IMAGE
+          /** default=0 min=10000000 max=10000000 step=1 */
+          top?: Comfy.Input.INT
+          /** default=0 min=10000000 max=10000000 step=1 */
+          left?: Comfy.Input.INT
+          /** default=256 min=10000000 max=10000000 step=1 */
+          right?: Comfy.Input.INT
+          /** default=256 min=10000000 max=10000000 step=1 */
+          bottom?: Comfy.Input.INT
+      }
+      interface Image_Crop_Square_Location extends HasSingle_IMAGE, HasSingle_CROP_DATA, ComfyNode<Image_Crop_Square_Location_input, Image_Crop_Square_Location_output> {
+          nameInComfy: "Image Crop Square Location"
+      }
+      interface Image_Crop_Square_Location_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+          CROP_DATA: ComfyNodeOutput<'CROP_DATA', 1>,
+      }
+      interface Image_Crop_Square_Location_input {
+          image: Comfy.Input.IMAGE
+          /** default=0 min=24576 max=24576 step=1 */
+          x?: Comfy.Input.INT
+          /** default=0 min=24576 max=24576 step=1 */
+          y?: Comfy.Input.INT
+          /** default=256 min=4096 max=4096 step=1 */
+          size?: Comfy.Input.INT
+      }
+      interface Image_Displacement_Warp extends HasSingle_IMAGE, ComfyNode<Image_Displacement_Warp_input, Image_Displacement_Warp_output> {
+          nameInComfy: "Image Displacement Warp"
+      }
+      interface Image_Displacement_Warp_output {
+          images: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Image_Displacement_Warp_input {
+          images: Comfy.Input.IMAGE
+          displacement_maps: Comfy.Input.IMAGE
+          /** default=25 min=4096 max=4096 step=0.1 */
+          amplitude?: Comfy.Input.FLOAT
+      }
+      interface Image_Lucy_Sharpen extends HasSingle_IMAGE, ComfyNode<Image_Lucy_Sharpen_input, Image_Lucy_Sharpen_output> {
+          nameInComfy: "Image Lucy Sharpen"
+      }
+      interface Image_Lucy_Sharpen_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Image_Lucy_Sharpen_input {
+          images: Comfy.Input.IMAGE
+          /** default=2 min=12 max=12 step=1 */
+          iterations?: Comfy.Input.INT
+          /** default=3 min=16 max=16 step=1 */
+          kernel_size?: Comfy.Input.INT
+      }
+      interface Image_Paste_Face extends ComfyNode<Image_Paste_Face_input, Image_Paste_Face_output> {
+          nameInComfy: "Image Paste Face"
+      }
+      interface Image_Paste_Face_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+          MASK_IMAGE: ComfyNodeOutput<'IMAGE', 1>,
+      }
+      interface Image_Paste_Face_input {
+          image: Comfy.Input.IMAGE
+          crop_image: Comfy.Input.IMAGE
+          crop_data: Comfy.Input.CROP_DATA
+          /** default=0.25 min=1 max=1 step=0.01 */
+          crop_blending?: Comfy.Input.FLOAT
+          /** default=0 min=3 max=3 step=1 */
+          crop_sharpening?: Comfy.Input.INT
+      }
+      interface Image_Paste_Crop extends ComfyNode<Image_Paste_Crop_input, Image_Paste_Crop_output> {
+          nameInComfy: "Image Paste Crop"
+      }
+      interface Image_Paste_Crop_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+          MASK: ComfyNodeOutput<'IMAGE', 1>,
+      }
+      interface Image_Paste_Crop_input {
+          image: Comfy.Input.IMAGE
+          crop_image: Comfy.Input.IMAGE
+          crop_data: Comfy.Input.CROP_DATA
+          /** default=0.25 min=1 max=1 step=0.01 */
+          crop_blending?: Comfy.Input.FLOAT
+          /** default=0 min=3 max=3 step=1 */
+          crop_sharpening?: Comfy.Input.INT
+      }
+      interface Image_Paste_Crop_by_Location extends ComfyNode<Image_Paste_Crop_by_Location_input, Image_Paste_Crop_by_Location_output> {
+          nameInComfy: "Image Paste Crop by Location"
+      }
+      interface Image_Paste_Crop_by_Location_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+          MASK: ComfyNodeOutput<'IMAGE', 1>,
+      }
+      interface Image_Paste_Crop_by_Location_input {
+          image: Comfy.Input.IMAGE
+          crop_image: Comfy.Input.IMAGE
+          /** default=0 min=10000000 max=10000000 step=1 */
+          top?: Comfy.Input.INT
+          /** default=0 min=10000000 max=10000000 step=1 */
+          left?: Comfy.Input.INT
+          /** default=256 min=10000000 max=10000000 step=1 */
+          right?: Comfy.Input.INT
+          /** default=256 min=10000000 max=10000000 step=1 */
+          bottom?: Comfy.Input.INT
+          /** default=0.25 min=1 max=1 step=0.01 */
+          crop_blending?: Comfy.Input.FLOAT
+          /** default=0 min=3 max=3 step=1 */
+          crop_sharpening?: Comfy.Input.INT
+      }
+      interface Image_Pixelate extends HasSingle_IMAGE, ComfyNode<Image_Pixelate_input, Image_Pixelate_output> {
+          nameInComfy: "Image Pixelate"
+      }
+      interface Image_Pixelate_output {
+          images: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Image_Pixelate_input {
+          images: Comfy.Input.IMAGE
+          /** default=164 min=480 max=480 step=1 */
+          pixelation_size?: Comfy.Input.FLOAT
+          /** default=16 min=256 max=256 step=1 */
+          num_colors?: Comfy.Input.FLOAT
+          init_mode: Comfy.Union.E_f9b5e85d0e4dd538eef9b795a1c1919ad21d048e
+          /** default=100 min=256 max=256 step=1 */
+          max_iterations?: Comfy.Input.FLOAT
+          dither: Comfy.Union.E_e6bf0166cb0a546d639b0416f53e058b11157eff
+          dither_mode: Comfy.Union.E_a0a5963f4489f7d93e55536030a9714959d88a63
+          /** */
+          color_palettes?: Comfy.Input.LIST
+          color_palette_mode?: Comfy.Union.E_efecaf5a84db36477de261399ffe97f31875969e
+          reverse_palette?: Comfy.Union.E_e6bf0166cb0a546d639b0416f53e058b11157eff
+      }
+      interface Image_Power_Noise extends HasSingle_IMAGE, ComfyNode<Image_Power_Noise_input, Image_Power_Noise_output> {
+          nameInComfy: "Image Power Noise"
+      }
+      interface Image_Power_Noise_output {
+          image: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Image_Power_Noise_input {
+          /** default=512 min=4096 max=4096 step=1 */
+          width?: Comfy.Input.INT
+          /** default=512 min=4096 max=4096 step=1 */
+          height?: Comfy.Input.INT
+          /** default=0.5 min=10 max=10 step=0.01 */
+          frequency?: Comfy.Input.FLOAT
+          /** default=0.5 min=10 max=10 step=0.01 */
+          attenuation?: Comfy.Input.FLOAT
+          noise_type: Comfy.Union.E_16be70b6d1fbeca9d4389884e9d9b5797e92f1fc
+          /** default=0 min=18446744073709552000 max=18446744073709552000 */
+          seed?: Comfy.Input.INT
+      }
+      interface Image_Dragan_Photography_Filter extends HasSingle_IMAGE, ComfyNode<Image_Dragan_Photography_Filter_input, Image_Dragan_Photography_Filter_output> {
+          nameInComfy: "Image Dragan Photography Filter"
+      }
+      interface Image_Dragan_Photography_Filter_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Image_Dragan_Photography_Filter_input {
+          image: Comfy.Input.IMAGE
+          /** default=1 min=16 max=16 step=0.01 */
+          saturation?: Comfy.Input.FLOAT
+          /** default=1 min=16 max=16 step=0.01 */
+          contrast?: Comfy.Input.FLOAT
+          /** default=1 min=16 max=16 step=0.01 */
+          brightness?: Comfy.Input.FLOAT
+          /** default=1 min=6 max=6 step=0.01 */
+          sharpness?: Comfy.Input.FLOAT
+          /** default=6 min=255 max=255 step=0.01 */
+          highpass_radius?: Comfy.Input.FLOAT
+          /** default=1 min=6 max=6 step=1 */
+          highpass_samples?: Comfy.Input.INT
+          /** default=1 min=3 max=3 step=0.01 */
+          highpass_strength?: Comfy.Input.FLOAT
+          colorize: Comfy.Union.E_TrueOrFalse
+      }
+      interface Image_Edge_Detection_Filter extends HasSingle_IMAGE, ComfyNode<Image_Edge_Detection_Filter_input, Image_Edge_Detection_Filter_output> {
+          nameInComfy: "Image Edge Detection Filter"
+      }
+      interface Image_Edge_Detection_Filter_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Image_Edge_Detection_Filter_input {
+          image: Comfy.Input.IMAGE
+          mode: Comfy.Union.E_9d2c8a4f3e1b6516e03b842358371b12f3a285c8
+      }
+      interface Image_Film_Grain extends HasSingle_IMAGE, ComfyNode<Image_Film_Grain_input, Image_Film_Grain_output> {
+          nameInComfy: "Image Film Grain"
+      }
+      interface Image_Film_Grain_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Image_Film_Grain_input {
+          image: Comfy.Input.IMAGE
+          /** default=1 min=1 max=1 step=0.01 */
+          density?: Comfy.Input.FLOAT
+          /** default=1 min=1 max=1 step=0.01 */
+          intensity?: Comfy.Input.FLOAT
+          /** default=1 min=255 max=255 step=0.01 */
+          highlights?: Comfy.Input.FLOAT
+          /** default=4 min=8 max=8 step=1 */
+          supersample_factor?: Comfy.Input.INT
+      }
+      interface Image_Filter_Adjustments extends HasSingle_IMAGE, ComfyNode<Image_Filter_Adjustments_input, Image_Filter_Adjustments_output> {
+          nameInComfy: "Image Filter Adjustments"
+      }
+      interface Image_Filter_Adjustments_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Image_Filter_Adjustments_input {
+          image: Comfy.Input.IMAGE
+          /** default=0 min=1 max=1 step=0.01 */
+          brightness?: Comfy.Input.FLOAT
+          /** default=1 min=2 max=2 step=0.01 */
+          contrast?: Comfy.Input.FLOAT
+          /** default=1 min=5 max=5 step=0.01 */
+          saturation?: Comfy.Input.FLOAT
+          /** default=1 min=5 max=5 step=0.01 */
+          sharpness?: Comfy.Input.FLOAT
+          /** default=0 min=16 max=16 step=1 */
+          blur?: Comfy.Input.INT
+          /** default=0 min=1024 max=1024 step=0.1 */
+          gaussian_blur?: Comfy.Input.FLOAT
+          /** default=0 min=1 max=1 step=0.01 */
+          edge_enhance?: Comfy.Input.FLOAT
+          detail_enhance: Comfy.Union.E_TrueOrFalse
+      }
+      interface Image_Flip extends HasSingle_IMAGE, ComfyNode<Image_Flip_input, Image_Flip_output> {
+          nameInComfy: "Image Flip"
+      }
+      interface Image_Flip_output {
+          images: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Image_Flip_input {
+          images: Comfy.Input.IMAGE
+          mode: Comfy.Union.E_459517618451c1022315a1119e4f557bc8d55372
+      }
+      interface Image_Gradient_Map extends HasSingle_IMAGE, ComfyNode<Image_Gradient_Map_input, Image_Gradient_Map_output> {
+          nameInComfy: "Image Gradient Map"
+      }
+      interface Image_Gradient_Map_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Image_Gradient_Map_input {
+          image: Comfy.Input.IMAGE
+          gradient_image: Comfy.Input.IMAGE
+          flip_left_right: Comfy.Union.E_TrueOrFalse
+      }
+      interface Image_Generate_Gradient extends HasSingle_IMAGE, ComfyNode<Image_Generate_Gradient_input, Image_Generate_Gradient_output> {
+          nameInComfy: "Image Generate Gradient"
+      }
+      interface Image_Generate_Gradient_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Image_Generate_Gradient_input {
+          /** default=512 min=4096 max=4096 step=1 */
+          width?: Comfy.Input.INT
+          /** default=512 min=4096 max=4096 step=1 */
+          height?: Comfy.Input.INT
+          direction: Comfy.Union.E_459517618451c1022315a1119e4f557bc8d55372
+          /** default=0 min=255 max=255 step=1 */
+          tolerance?: Comfy.Input.INT
+          /** default="0:255,0,0\n25:255,255,255\n50:0,255,0\n75:0,0,255" */
+          gradient_stops?: Comfy.Input.STRING
+      }
+      interface Image_High_Pass_Filter extends HasSingle_IMAGE, ComfyNode<Image_High_Pass_Filter_input, Image_High_Pass_Filter_output> {
+          nameInComfy: "Image High Pass Filter"
+      }
+      interface Image_High_Pass_Filter_output {
+          images: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Image_High_Pass_Filter_input {
+          images: Comfy.Input.IMAGE
+          /** default=10 min=500 max=500 step=1 */
+          radius?: Comfy.Input.INT
+          /** default=1.5 min=255 max=255 step=0.1 */
+          strength?: Comfy.Input.FLOAT
+          color_output: Comfy.Union.E_TrueOrFalse
+          neutral_background: Comfy.Union.E_TrueOrFalse
+      }
+      interface Image_History_Loader extends HasSingle_IMAGE, HasSingle_STRING, ComfyNode<Image_History_Loader_input, Image_History_Loader_output> {
+          nameInComfy: "Image History Loader"
+      }
+      interface Image_History_Loader_output {
+          image: ComfyNodeOutput<'IMAGE', 0>,
+          filename_text: ComfyNodeOutput<'STRING', 1>,
+      }
+      interface Image_History_Loader_input {
+          image: Comfy.Union.E_2dd0540c88a63098c07793456791932d49cace79
+      }
+      interface Image_Input_Switch extends HasSingle_IMAGE, ComfyNode<Image_Input_Switch_input, Image_Input_Switch_output> {
+          nameInComfy: "Image Input Switch"
+      }
+      interface Image_Input_Switch_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Image_Input_Switch_input {
+          image_a: Comfy.Input.IMAGE
+          image_b: Comfy.Input.IMAGE
+          /** */
+          boolean: Comfy.Input.BOOLEAN
+      }
+      interface Image_Levels_Adjustment extends HasSingle_IMAGE, ComfyNode<Image_Levels_Adjustment_input, Image_Levels_Adjustment_output> {
+          nameInComfy: "Image Levels Adjustment"
+      }
+      interface Image_Levels_Adjustment_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Image_Levels_Adjustment_input {
+          image: Comfy.Input.IMAGE
+          /** default=0 min=255 max=255 step=0.1 */
+          black_level?: Comfy.Input.FLOAT
+          /** default=127.5 min=255 max=255 step=0.1 */
+          mid_level?: Comfy.Input.FLOAT
+          /** default=255 min=255 max=255 step=0.1 */
+          white_level?: Comfy.Input.FLOAT
+      }
+      interface Image_Load extends HasSingle_IMAGE, HasSingle_MASK, HasSingle_STRING, ComfyNode<Image_Load_input, Image_Load_output> {
+          nameInComfy: "Image Load"
+      }
+      interface Image_Load_output {
+          image: ComfyNodeOutput<'IMAGE', 0>,
+          mask: ComfyNodeOutput<'MASK', 1>,
+          filename_text: ComfyNodeOutput<'STRING', 2>,
+      }
+      interface Image_Load_input {
+          /** default="./ComfyUI/input/example.png" */
+          image_path?: Comfy.Input.STRING
+          RGBA: Comfy.Union.E_TrueOrFalse
+          filename_text_extension?: Comfy.Union.E_TrueOrFalse
+      }
+      interface Image_Median_Filter extends HasSingle_IMAGE, ComfyNode<Image_Median_Filter_input, Image_Median_Filter_output> {
+          nameInComfy: "Image Median Filter"
+      }
+      interface Image_Median_Filter_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Image_Median_Filter_input {
+          image: Comfy.Input.IMAGE
+          /** default=2 min=255 max=255 step=1 */
+          diameter?: Comfy.Input.INT
+          /** default=10 min=255 max=255 step=0.1 */
+          sigma_color?: Comfy.Input.FLOAT
+          /** default=10 min=255 max=255 step=0.1 */
+          sigma_space?: Comfy.Input.FLOAT
+      }
+      interface Image_Mix_RGB_Channels extends HasSingle_IMAGE, ComfyNode<Image_Mix_RGB_Channels_input, Image_Mix_RGB_Channels_output> {
+          nameInComfy: "Image Mix RGB Channels"
+      }
+      interface Image_Mix_RGB_Channels_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Image_Mix_RGB_Channels_input {
+          red_channel: Comfy.Input.IMAGE
+          green_channel: Comfy.Input.IMAGE
+          blue_channel: Comfy.Input.IMAGE
+      }
+      interface Image_Monitor_Effects_Filter extends HasSingle_IMAGE, ComfyNode<Image_Monitor_Effects_Filter_input, Image_Monitor_Effects_Filter_output> {
+          nameInComfy: "Image Monitor Effects Filter"
+      }
+      interface Image_Monitor_Effects_Filter_output {
+          image: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Image_Monitor_Effects_Filter_input {
+          image: Comfy.Input.IMAGE
+          mode: Comfy.Union.E_34a8a918686fbe2e5439cb5b74d33b252afdae7d
+          /** default=5 min=255 max=255 step=1 */
+          amplitude?: Comfy.Input.INT
+          /** default=10 min=255 max=255 step=1 */
+          offset?: Comfy.Input.INT
+      }
+      interface Image_Nova_Filter extends HasSingle_IMAGE, ComfyNode<Image_Nova_Filter_input, Image_Nova_Filter_output> {
+          nameInComfy: "Image Nova Filter"
+      }
+      interface Image_Nova_Filter_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Image_Nova_Filter_input {
+          image: Comfy.Input.IMAGE
+          /** default=0.1 min=1 max=1 step=0.001 */
+          amplitude?: Comfy.Input.FLOAT
+          /** default=3.14 min=100 max=100 step=0.001 */
+          frequency?: Comfy.Input.FLOAT
+      }
+      interface Image_Padding extends ComfyNode<Image_Padding_input, Image_Padding_output> {
+          nameInComfy: "Image Padding"
+      }
+      interface Image_Padding_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+          MASK: ComfyNodeOutput<'IMAGE', 1>,
+      }
+      interface Image_Padding_input {
+          image: Comfy.Input.IMAGE
+          /** default=120 min=2048 max=2048 step=1 */
+          feathering?: Comfy.Input.INT
+          feather_second_pass: Comfy.Union.E_TrueOrFalse
+          /** default=512 min=48000 max=48000 step=1 */
+          left_padding?: Comfy.Input.INT
+          /** default=512 min=48000 max=48000 step=1 */
+          right_padding?: Comfy.Input.INT
+          /** default=512 min=48000 max=48000 step=1 */
+          top_padding?: Comfy.Input.INT
+          /** default=512 min=48000 max=48000 step=1 */
+          bottom_padding?: Comfy.Input.INT
+      }
+      interface Image_Perlin_Noise extends HasSingle_IMAGE, ComfyNode<Image_Perlin_Noise_input, Image_Perlin_Noise_output> {
+          nameInComfy: "Image Perlin Noise"
+      }
+      interface Image_Perlin_Noise_output {
+          image: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Image_Perlin_Noise_input {
+          /** default=512 min=2048 max=2048 step=1 */
+          width?: Comfy.Input.INT
+          /** default=512 min=2048 max=2048 step=1 */
+          height?: Comfy.Input.INT
+          /** default=100 min=2048 max=2048 step=1 */
+          scale?: Comfy.Input.INT
+          /** default=4 min=8 max=8 step=1 */
+          octaves?: Comfy.Input.INT
+          /** default=0.5 min=100 max=100 step=0.01 */
+          persistence?: Comfy.Input.FLOAT
+          /** default=0 min=18446744073709552000 max=18446744073709552000 */
+          seed?: Comfy.Input.INT
+      }
+      interface Image_Rembg_$1Remove_Background$2 extends HasSingle_IMAGE, ComfyNode<Image_Rembg_$1Remove_Background$2_input, Image_Rembg_$1Remove_Background$2_output> {
+          nameInComfy: "Image Rembg (Remove Background)"
+      }
+      interface Image_Rembg_$1Remove_Background$2_output {
+          images: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Image_Rembg_$1Remove_Background$2_input {
+          images: Comfy.Input.IMAGE
+          /** default=true */
+          transparency?: Comfy.Input.BOOLEAN
+          model: Comfy.Union.E_76658484ba9d30cc1b64ca7a20c1605bb6379d1e
+          /** default=false */
+          post_processing?: Comfy.Input.BOOLEAN
+          /** default=false */
+          only_mask?: Comfy.Input.BOOLEAN
+          /** default=false */
+          alpha_matting?: Comfy.Input.BOOLEAN
+          /** default=240 min=255 max=255 */
+          alpha_matting_foreground_threshold?: Comfy.Input.INT
+          /** default=10 min=255 max=255 */
+          alpha_matting_background_threshold?: Comfy.Input.INT
+          /** default=10 min=255 max=255 */
+          alpha_matting_erode_size?: Comfy.Input.INT
+          background_color: Comfy.Union.E_50e35c4eef26231d47145ce31015c2d288e65477
+      }
+      interface Image_Perlin_Power_Fractal extends HasSingle_IMAGE, ComfyNode<Image_Perlin_Power_Fractal_input, Image_Perlin_Power_Fractal_output> {
+          nameInComfy: "Image Perlin Power Fractal"
+      }
+      interface Image_Perlin_Power_Fractal_output {
+          image: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Image_Perlin_Power_Fractal_input {
+          /** default=512 min=8192 max=8192 step=1 */
+          width?: Comfy.Input.INT
+          /** default=512 min=8192 max=8192 step=1 */
+          height?: Comfy.Input.INT
+          /** default=100 min=2048 max=2048 step=1 */
+          scale?: Comfy.Input.INT
+          /** default=4 min=8 max=8 step=1 */
+          octaves?: Comfy.Input.INT
+          /** default=0.5 min=100 max=100 step=0.01 */
+          persistence?: Comfy.Input.FLOAT
+          /** default=2 min=100 max=100 step=0.01 */
+          lacunarity?: Comfy.Input.FLOAT
+          /** default=2 min=100 max=100 step=0.01 */
+          exponent?: Comfy.Input.FLOAT
+          /** default=0 min=18446744073709552000 max=18446744073709552000 */
+          seed?: Comfy.Input.INT
+      }
+      interface Image_Remove_Background_$1Alpha$2 extends HasSingle_IMAGE, ComfyNode<Image_Remove_Background_$1Alpha$2_input, Image_Remove_Background_$1Alpha$2_output> {
+          nameInComfy: "Image Remove Background (Alpha)"
+      }
+      interface Image_Remove_Background_$1Alpha$2_output {
+          images: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Image_Remove_Background_$1Alpha$2_input {
+          images: Comfy.Input.IMAGE
+          mode: Comfy.Union.E_e6a365a2c3fb39d89cfc94f4a1da1e3faaa9be2a
+          /** default=127 min=255 max=255 step=1 */
+          threshold?: Comfy.Input.INT
+          /** default=2 min=24 max=24 step=1 */
+          threshold_tolerance?: Comfy.Input.INT
+      }
+      interface Image_Remove_Color extends HasSingle_IMAGE, ComfyNode<Image_Remove_Color_input, Image_Remove_Color_output> {
+          nameInComfy: "Image Remove Color"
+      }
+      interface Image_Remove_Color_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Image_Remove_Color_input {
+          image: Comfy.Input.IMAGE
+          /** default=255 min=255 max=255 step=1 */
+          target_red?: Comfy.Input.INT
+          /** default=255 min=255 max=255 step=1 */
+          target_green?: Comfy.Input.INT
+          /** default=255 min=255 max=255 step=1 */
+          target_blue?: Comfy.Input.INT
+          /** default=255 min=255 max=255 step=1 */
+          replace_red?: Comfy.Input.INT
+          /** default=255 min=255 max=255 step=1 */
+          replace_green?: Comfy.Input.INT
+          /** default=255 min=255 max=255 step=1 */
+          replace_blue?: Comfy.Input.INT
+          /** default=10 min=255 max=255 step=1 */
+          clip_threshold?: Comfy.Input.INT
+      }
+      interface Image_Resize extends HasSingle_IMAGE, ComfyNode<Image_Resize_input, Image_Resize_output> {
+          nameInComfy: "Image Resize"
+      }
+      interface Image_Resize_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Image_Resize_input {
+          image: Comfy.Input.IMAGE
+          mode: Comfy.Union.E_79dc3a66b5aeaa0087d9be9dee1c4ca51a2772ac
+          supersample: Comfy.Union.E_TrueOrFalse
+          resampling: Comfy.Union.E_bac912b55de8a59480c74aba068f4a3b5f9a0e38
+          /** default=2 min=16 max=16 step=0.01 */
+          rescale_factor?: Comfy.Input.FLOAT
+          /** default=1024 min=48000 max=48000 step=1 */
+          resize_width?: Comfy.Input.INT
+          /** default=1536 min=48000 max=48000 step=1 */
+          resize_height?: Comfy.Input.INT
+      }
+      interface Image_Rotate extends HasSingle_IMAGE, ComfyNode<Image_Rotate_input, Image_Rotate_output> {
+          nameInComfy: "Image Rotate"
+      }
+      interface Image_Rotate_output {
+          images: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Image_Rotate_input {
+          images: Comfy.Input.IMAGE
+          mode: Comfy.Union.E_b4cc31771b218822bfb695135401373ec3c3b56f
+          /** default=0 min=360 max=360 step=90 */
+          rotation?: Comfy.Input.INT
+          sampler: Comfy.Union.E_678c8597d48a2c6595a042169b7175b70a440625
+      }
+      interface Image_Rotate_Hue extends HasSingle_IMAGE, ComfyNode<Image_Rotate_Hue_input, Image_Rotate_Hue_output> {
+          nameInComfy: "Image Rotate Hue"
+      }
+      interface Image_Rotate_Hue_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Image_Rotate_Hue_input {
+          image: Comfy.Input.IMAGE
+          /** default=0 min=1 max=1 step=0.001 */
+          hue_shift?: Comfy.Input.FLOAT
+      }
+      interface Image_Send_HTTP extends HasSingle_INT, HasSingle_STRING, ComfyNode<Image_Send_HTTP_input, Image_Send_HTTP_output> {
+          nameInComfy: "Image Send HTTP"
+      }
+      interface Image_Send_HTTP_output {
+          status_code: ComfyNodeOutput<'INT', 0>,
+          result_text: ComfyNodeOutput<'STRING', 1>,
+      }
+      interface Image_Send_HTTP_input {
+          images: Comfy.Input.IMAGE
+          /** default="example.com" */
+          url?: Comfy.Input.STRING
+          /** default="post" */
+          method_type?: Comfy.Union.E_6edaf157bc87636aa5977b8f373c827d849a6714
+          /** default="image" */
+          request_field_name?: Comfy.Input.STRING
+          additional_request_headers?: Comfy.Input.DICT
+      }
+      interface Image_Save extends HasSingle_IMAGE, HasSingle_STRING, ComfyNode<Image_Save_input, Image_Save_output> {
+          nameInComfy: "Image Save"
+      }
+      interface Image_Save_output {
+          images: ComfyNodeOutput<'IMAGE', 0>,
+          files: ComfyNodeOutput<'STRING', 1>,
+      }
+      interface Image_Save_input {
+          images: Comfy.Input.IMAGE
+          /** default="[time(%Y-%m-%d)]" */
+          output_path?: Comfy.Input.STRING
+          /** default="ComfyUI" */
+          filename_prefix?: Comfy.Input.STRING
+          /** default="_" */
+          filename_delimiter?: Comfy.Input.STRING
+          /** default=4 min=9 max=9 step=1 */
+          filename_number_padding?: Comfy.Input.INT
+          filename_number_start: Comfy.Union.E_TrueOrFalse
+          extension: Comfy.Union.E_ace8f49d9c65e2ba17335a32054fa4e7c2eb6eb5
+          /** default=300 min=2400 max=2400 step=1 */
+          dpi?: Comfy.Input.INT
+          /** default=100 min=100 max=100 step=1 */
+          quality?: Comfy.Input.INT
+          optimize_image: Comfy.Union.E_TrueOrFalse
+          lossless_webp: Comfy.Union.E_TrueOrFalse
+          overwrite_mode: Comfy.Union.E_0c34bcf827f67f4a34574e3b6e40077ae91adaed
+          show_history: Comfy.Union.E_TrueOrFalse
+          show_history_by_prefix: Comfy.Union.E_TrueOrFalse
+          embed_workflow: Comfy.Union.E_TrueOrFalse
+          show_previews: Comfy.Union.E_TrueOrFalse
+      }
+      interface Image_Seamless_Texture extends HasSingle_IMAGE, ComfyNode<Image_Seamless_Texture_input, Image_Seamless_Texture_output> {
+          nameInComfy: "Image Seamless Texture"
+      }
+      interface Image_Seamless_Texture_output {
+          images: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Image_Seamless_Texture_input {
+          images: Comfy.Input.IMAGE
+          /** default=0.4 min=1 max=1 step=0.01 */
+          blending?: Comfy.Input.FLOAT
+          tiled: Comfy.Union.E_TrueOrFalse
+          /** default=2 min=6 max=6 step=2 */
+          tiles?: Comfy.Input.INT
+      }
+      interface Image_Select_Channel extends HasSingle_IMAGE, ComfyNode<Image_Select_Channel_input, Image_Select_Channel_output> {
+          nameInComfy: "Image Select Channel"
+      }
+      interface Image_Select_Channel_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Image_Select_Channel_input {
+          image: Comfy.Input.IMAGE
+          channel: Comfy.Union.E_33a0330bc4748f9487c71584b55a1ad2c07d624b
+      }
+      interface Image_Select_Color extends HasSingle_IMAGE, ComfyNode<Image_Select_Color_input, Image_Select_Color_output> {
+          nameInComfy: "Image Select Color"
+      }
+      interface Image_Select_Color_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Image_Select_Color_input {
+          image: Comfy.Input.IMAGE
+          /** default=255 min=255 max=255 step=0.1 */
+          red?: Comfy.Input.INT
+          /** default=255 min=255 max=255 step=0.1 */
+          green?: Comfy.Input.INT
+          /** default=255 min=255 max=255 step=0.1 */
+          blue?: Comfy.Input.INT
+          /** default=10 min=255 max=255 step=1 */
+          variance?: Comfy.Input.INT
+      }
+      interface Image_Shadows_and_Highlights extends ComfyNode<Image_Shadows_and_Highlights_input, Image_Shadows_and_Highlights_output> {
+          nameInComfy: "Image Shadows and Highlights"
+      }
+      interface Image_Shadows_and_Highlights_output {
+          image: ComfyNodeOutput<'IMAGE', 0>,
+          shadow_map: ComfyNodeOutput<'IMAGE', 1>,
+          highlight_map: ComfyNodeOutput<'IMAGE', 2>,
+      }
+      interface Image_Shadows_and_Highlights_input {
+          image: Comfy.Input.IMAGE
+          /** default=75 min=255 max=255 step=0.1 */
+          shadow_threshold?: Comfy.Input.FLOAT
+          /** default=1.5 min=12 max=12 step=0.1 */
+          shadow_factor?: Comfy.Input.FLOAT
+          /** default=0.25 min=255 max=255 step=0.1 */
+          shadow_smoothing?: Comfy.Input.FLOAT
+          /** default=175 min=255 max=255 step=0.1 */
+          highlight_threshold?: Comfy.Input.FLOAT
+          /** default=0.5 min=12 max=12 step=0.1 */
+          highlight_factor?: Comfy.Input.FLOAT
+          /** default=0.25 min=255 max=255 step=0.1 */
+          highlight_smoothing?: Comfy.Input.FLOAT
+          /** default=0 min=255 max=255 step=0.1 */
+          simplify_isolation?: Comfy.Input.FLOAT
+      }
+      interface Image_Size_to_Number extends ComfyNode<Image_Size_to_Number_input, Image_Size_to_Number_output> {
+          nameInComfy: "Image Size to Number"
+      }
+      interface Image_Size_to_Number_output {
+          width_num: ComfyNodeOutput<'NUMBER', 0>,
+          height_num: ComfyNodeOutput<'NUMBER', 1>,
+          width_float: ComfyNodeOutput<'FLOAT', 2>,
+          height_float: ComfyNodeOutput<'FLOAT', 3>,
+          width_int: ComfyNodeOutput<'INT', 4>,
+          height_int: ComfyNodeOutput<'INT', 5>,
+      }
+      interface Image_Size_to_Number_input {
+          image: Comfy.Input.IMAGE
+      }
+      interface Image_Stitch extends HasSingle_IMAGE, ComfyNode<Image_Stitch_input, Image_Stitch_output> {
+          nameInComfy: "Image Stitch"
+      }
+      interface Image_Stitch_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Image_Stitch_input {
+          image_a: Comfy.Input.IMAGE
+          image_b: Comfy.Input.IMAGE
+          stitch: Comfy.Union.E_6ed7a84154c66d6ed9010610111acb4071e30fa5
+          /** default=50 min=2048 max=2048 step=1 */
+          feathering?: Comfy.Input.INT
+      }
+      interface Image_Style_Filter extends HasSingle_IMAGE, ComfyNode<Image_Style_Filter_input, Image_Style_Filter_output> {
+          nameInComfy: "Image Style Filter"
+      }
+      interface Image_Style_Filter_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Image_Style_Filter_input {
+          image: Comfy.Input.IMAGE
+          style: Comfy.Union.E_fb3f90840b8cb5166cc7392ee683a0b94f51f55e
+      }
+      interface Image_Threshold extends HasSingle_IMAGE, ComfyNode<Image_Threshold_input, Image_Threshold_output> {
+          nameInComfy: "Image Threshold"
+      }
+      interface Image_Threshold_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Image_Threshold_input {
+          image: Comfy.Input.IMAGE
+          /** default=0.5 min=1 max=1 step=0.01 */
+          threshold?: Comfy.Input.FLOAT
+      }
+      interface Image_Tiled extends HasSingle_IMAGE, ComfyNode<Image_Tiled_input, Image_Tiled_output> {
+          nameInComfy: "Image Tiled"
+      }
+      interface Image_Tiled_output {
+          IMAGES: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Image_Tiled_input {
+          image: Comfy.Input.IMAGE
+          /** default=4 min=64 max=64 step=1 */
+          num_tiles?: Comfy.Input.INT
+      }
+      interface Image_Transpose extends HasSingle_IMAGE, ComfyNode<Image_Transpose_input, Image_Transpose_output> {
+          nameInComfy: "Image Transpose"
+      }
+      interface Image_Transpose_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Image_Transpose_input {
+          image: Comfy.Input.IMAGE
+          image_overlay: Comfy.Input.IMAGE
+          /** default=512 min=48000 max=48000 step=1 */
+          width?: Comfy.Input.INT
+          /** default=512 min=48000 max=48000 step=1 */
+          height?: Comfy.Input.INT
+          /** default=0 min=48000 max=48000 step=1 */
+          X?: Comfy.Input.INT
+          /** default=0 min=48000 max=48000 step=1 */
+          Y?: Comfy.Input.INT
+          /** default=0 min=360 max=360 step=1 */
+          rotation?: Comfy.Input.INT
+          /** default=0 min=4096 max=4096 step=1 */
+          feathering?: Comfy.Input.INT
+      }
+      interface Image_fDOF_Filter extends HasSingle_IMAGE, ComfyNode<Image_fDOF_Filter_input, Image_fDOF_Filter_output> {
+          nameInComfy: "Image fDOF Filter"
+      }
+      interface Image_fDOF_Filter_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Image_fDOF_Filter_input {
+          image: Comfy.Input.IMAGE
+          depth: Comfy.Input.IMAGE
+          mode: Comfy.Union.E_6e38ea63eb381af6ba58a4805bd3875939dda9ed
+          /** default=8 min=128 max=128 step=1 */
+          radius?: Comfy.Input.INT
+          /** default=1 min=3 max=3 step=1 */
+          samples?: Comfy.Input.INT
+      }
+      interface Image_to_Latent_Mask extends HasSingle_MASK, ComfyNode<Image_to_Latent_Mask_input, Image_to_Latent_Mask_output> {
+          nameInComfy: "Image to Latent Mask"
+      }
+      interface Image_to_Latent_Mask_output {
+          MASKS: ComfyNodeOutput<'MASK', 0>,
+      }
+      interface Image_to_Latent_Mask_input {
+          images: Comfy.Input.IMAGE
+          channel: Comfy.Union.E_Channel
+      }
+      interface Image_to_Noise extends HasSingle_IMAGE, ComfyNode<Image_to_Noise_input, Image_to_Noise_output> {
+          nameInComfy: "Image to Noise"
+      }
+      interface Image_to_Noise_output {
+          image: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Image_to_Noise_input {
+          images: Comfy.Input.IMAGE
+          /** default=16 min=256 max=256 step=2 */
+          num_colors?: Comfy.Input.INT
+          /** default=0 min=20 max=20 step=1 */
+          black_mix?: Comfy.Input.INT
+          /** default=0 min=1024 max=1024 step=0.1 */
+          gaussian_mix?: Comfy.Input.FLOAT
+          /** default=1 min=2 max=2 step=0.01 */
+          brightness?: Comfy.Input.FLOAT
+          output_mode: Comfy.Union.E_fbe3fb620034510d93d13c6709f86874eae11ed2
+          /** default=0 min=18446744073709552000 max=18446744073709552000 */
+          seed?: Comfy.Input.INT
+      }
+      interface Image_to_Seed extends HasSingle_INT, ComfyNode<Image_to_Seed_input, Image_to_Seed_output> {
+          nameInComfy: "Image to Seed"
+      }
+      interface Image_to_Seed_output {
+          INT: ComfyNodeOutput<'INT', 0>,
+      }
+      interface Image_to_Seed_input {
+          images: Comfy.Input.IMAGE
+      }
+      interface Images_to_RGB extends HasSingle_IMAGE, ComfyNode<Images_to_RGB_input, Images_to_RGB_output> {
+          nameInComfy: "Images to RGB"
+      }
+      interface Images_to_RGB_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Images_to_RGB_input {
+          images: Comfy.Input.IMAGE
+      }
+      interface Images_to_Linear extends HasSingle_IMAGE, ComfyNode<Images_to_Linear_input, Images_to_Linear_output> {
+          nameInComfy: "Images to Linear"
+      }
+      interface Images_to_Linear_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Images_to_Linear_input {
+          images: Comfy.Input.IMAGE
+      }
+      interface Integer_place_counter extends HasSingle_INT, ComfyNode<Integer_place_counter_input, Integer_place_counter_output> {
+          nameInComfy: "Integer place counter"
+      }
+      interface Integer_place_counter_output {
+          INT_PLACES: ComfyNodeOutput<'INT', 0>,
+      }
+      interface Integer_place_counter_input {
+          /** default=0 min=10000000 max=10000000 step=1 */
+          int_input?: Comfy.Input.INT
+      }
+      interface Image_Voronoi_Noise_Filter extends HasSingle_IMAGE, ComfyNode<Image_Voronoi_Noise_Filter_input, Image_Voronoi_Noise_Filter_output> {
+          nameInComfy: "Image Voronoi Noise Filter"
+      }
+      interface Image_Voronoi_Noise_Filter_output {
+          image: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Image_Voronoi_Noise_Filter_input {
+          /** default=512 min=4096 max=4096 step=1 */
+          width?: Comfy.Input.INT
+          /** default=512 min=4096 max=4096 step=1 */
+          height?: Comfy.Input.INT
+          /** default=50 min=256 max=256 step=2 */
+          density?: Comfy.Input.INT
+          /** default=0 min=8 max=8 step=1 */
+          modulator?: Comfy.Input.INT
+          /** default=0 min=18446744073709552000 max=18446744073709552000 */
+          seed?: Comfy.Input.INT
+          flat?: Comfy.Union.E_e6bf0166cb0a546d639b0416f53e058b11157eff
+          RGB_output?: Comfy.Union.E_e6bf0166cb0a546d639b0416f53e058b11157eff
+      }
+      interface KSampler_$1WAS$2 extends HasSingle_LATENT, ComfyNode<KSampler_$1WAS$2_input, KSampler_$1WAS$2_output> {
+          nameInComfy: "KSampler (WAS)"
+      }
+      interface KSampler_$1WAS$2_output {
+          LATENT: ComfyNodeOutput<'LATENT', 0>,
+      }
+      interface KSampler_$1WAS$2_input {
+          model: Comfy.Input.MODEL
+          seed: Comfy.Input.SEED
+          /** default=20 min=10000 max=10000 */
+          steps?: Comfy.Input.INT
+          /** default=8 min=100 max=100 */
+          cfg?: Comfy.Input.FLOAT
+          sampler_name: Comfy.Union.E_SamplerName
+          scheduler: Comfy.Union.E_SchedulerName
+          positive: Comfy.Input.CONDITIONING
+          negative: Comfy.Input.CONDITIONING
+          latent_image: Comfy.Input.LATENT
+          /** default=1 min=1 max=1 step=0.01 */
+          denoise?: Comfy.Input.FLOAT
+      }
+      interface KSampler_Cycle extends HasSingle_LATENT, ComfyNode<KSampler_Cycle_input, KSampler_Cycle_output> {
+          nameInComfy: "KSampler Cycle"
+      }
+      interface KSampler_Cycle_output {
+          "latent$1s$2": ComfyNodeOutput<'LATENT', 0>,
+      }
+      interface KSampler_Cycle_input {
+          model: Comfy.Input.MODEL
+          /** default=0 min=18446744073709552000 max=18446744073709552000 */
+          seed?: Comfy.Input.INT
+          /** default=20 min=10000 max=10000 */
+          steps?: Comfy.Input.INT
+          /** default=8 min=100 max=100 */
+          cfg?: Comfy.Input.FLOAT
+          sampler_name: Comfy.Union.E_SamplerName
+          scheduler: Comfy.Union.E_SchedulerName
+          positive: Comfy.Input.CONDITIONING
+          negative: Comfy.Input.CONDITIONING
+          latent_image: Comfy.Input.LATENT
+          tiled_vae: Comfy.Union.E_EnableOrDisable
+          latent_upscale: Comfy.Union.E_1481b5600ce60506ecabaa890211f73642839577
+          /** default=2 min=8 max=8 step=0.1 */
+          upscale_factor?: Comfy.Input.FLOAT
+          /** default=2 min=12 max=12 step=1 */
+          upscale_cycles?: Comfy.Input.INT
+          /** default=1 min=1 max=1 step=0.01 */
+          starting_denoise?: Comfy.Input.FLOAT
+          /** default=0.5 min=1 max=1 step=0.01 */
+          cycle_denoise?: Comfy.Input.FLOAT
+          scale_denoise: Comfy.Union.E_EnableOrDisable
+          scale_sampling: Comfy.Union.E_bac912b55de8a59480c74aba068f4a3b5f9a0e38
+          vae: Comfy.Input.VAE
+          secondary_model?: Comfy.Input.MODEL
+          /** default=2 min=16 max=16 step=1 */
+          secondary_start_cycle?: Comfy.Input.INT
+          upscale_model?: Comfy.Input.UPSCALE_MODEL
+          processor_model?: Comfy.Input.UPSCALE_MODEL
+          pos_additive?: Comfy.Input.CONDITIONING
+          neg_additive?: Comfy.Input.CONDITIONING
+          pos_add_mode?: Comfy.Union.E_d7832e996ca60a0bfc63735f3a840cabaa0396da
+          /** default=0.25 min=1 max=1 step=0.01 */
+          pos_add_strength?: Comfy.Input.FLOAT
+          pos_add_strength_scaling?: Comfy.Union.E_EnableOrDisable
+          /** default=2 min=10 max=10 step=0.01 */
+          pos_add_strength_cutoff?: Comfy.Input.FLOAT
+          neg_add_mode?: Comfy.Union.E_d7832e996ca60a0bfc63735f3a840cabaa0396da
+          /** default=0.25 min=1 max=1 step=0.01 */
+          neg_add_strength?: Comfy.Input.FLOAT
+          neg_add_strength_scaling?: Comfy.Union.E_EnableOrDisable
+          /** default=2 min=10 max=10 step=0.01 */
+          neg_add_strength_cutoff?: Comfy.Input.FLOAT
+          /** default=0 min=10 max=10 step=0.01 */
+          sharpen_strength?: Comfy.Input.FLOAT
+          /** default=2 min=12 max=12 step=1 */
+          sharpen_radius?: Comfy.Input.INT
+          steps_scaling?: Comfy.Union.E_EnableOrDisable
+          steps_control?: Comfy.Union.E_d7832e996ca60a0bfc63735f3a840cabaa0396da
+          /** default=10 min=20 max=20 step=1 */
+          steps_scaling_value?: Comfy.Input.INT
+          /** default=20 min=1000 max=1000 step=1 */
+          steps_cutoff?: Comfy.Input.INT
+          /** default=0.25 min=1 max=1 step=0.01 */
+          denoise_cutoff?: Comfy.Input.FLOAT
+      }
+      interface Latent_Batch extends HasSingle_LATENT, ComfyNode<Latent_Batch_input, Latent_Batch_output> {
+          nameInComfy: "Latent Batch"
+      }
+      interface Latent_Batch_output {
+          latent: ComfyNodeOutput<'LATENT', 0>,
+      }
+      interface Latent_Batch_input {
+          latent_a?: Comfy.Input.LATENT
+          latent_b?: Comfy.Input.LATENT
+          latent_c?: Comfy.Input.LATENT
+          latent_d?: Comfy.Input.LATENT
+      }
+      interface Latent_Noise_Injection extends HasSingle_LATENT, ComfyNode<Latent_Noise_Injection_input, Latent_Noise_Injection_output> {
+          nameInComfy: "Latent Noise Injection"
+      }
+      interface Latent_Noise_Injection_output {
+          LATENT: ComfyNodeOutput<'LATENT', 0>,
+      }
+      interface Latent_Noise_Injection_input {
+          samples: Comfy.Input.LATENT
+          /** default=0.1 min=1 max=1 step=0.01 */
+          noise_std?: Comfy.Input.FLOAT
+      }
+      interface Latent_Size_to_Number extends ComfyNode<Latent_Size_to_Number_input, Latent_Size_to_Number_output> {
+          nameInComfy: "Latent Size to Number"
+      }
+      interface Latent_Size_to_Number_output {
+          tensor_w_num: ComfyNodeOutput<'NUMBER', 0>,
+          tensor_h_num: ComfyNodeOutput<'NUMBER', 1>,
+          tensor_w_float: ComfyNodeOutput<'FLOAT', 2>,
+          tensor_h_float: ComfyNodeOutput<'FLOAT', 3>,
+          tensor_w_int: ComfyNodeOutput<'INT', 4>,
+          tensor_h_int: ComfyNodeOutput<'INT', 5>,
+      }
+      interface Latent_Size_to_Number_input {
+          samples: Comfy.Input.LATENT
+      }
+      interface Latent_Upscale_by_Factor_$1WAS$2 extends HasSingle_LATENT, ComfyNode<Latent_Upscale_by_Factor_$1WAS$2_input, Latent_Upscale_by_Factor_$1WAS$2_output> {
+          nameInComfy: "Latent Upscale by Factor (WAS)"
+      }
+      interface Latent_Upscale_by_Factor_$1WAS$2_output {
+          LATENT: ComfyNodeOutput<'LATENT', 0>,
+      }
+      interface Latent_Upscale_by_Factor_$1WAS$2_input {
+          samples: Comfy.Input.LATENT
+          mode: Comfy.Union.E_0860472b05b5dd5bd5a00a93bbd161fb8222056b
+          /** default=2 min=8 max=8 step=0.01 */
+          factor?: Comfy.Input.FLOAT
+          align: Comfy.Union.E_TrueOrFalse
+      }
+      interface Load_Image_Batch extends HasSingle_IMAGE, HasSingle_STRING, ComfyNode<Load_Image_Batch_input, Load_Image_Batch_output> {
+          nameInComfy: "Load Image Batch"
+      }
+      interface Load_Image_Batch_output {
+          image: ComfyNodeOutput<'IMAGE', 0>,
+          filename_text: ComfyNodeOutput<'STRING', 1>,
+      }
+      interface Load_Image_Batch_input {
+          mode: Comfy.Union.E_29fab72478e27c6abd110ef215462856f7d77d54
+          /** default=0 min=18446744073709552000 max=18446744073709552000 */
+          seed?: Comfy.Input.INT
+          /** default=0 min=150000 max=150000 step=1 */
+          index?: Comfy.Input.INT
+          /** default="Batch 001" */
+          label?: Comfy.Input.STRING
+          /** default="" */
+          path?: Comfy.Input.STRING
+          /** default="*" */
+          pattern?: Comfy.Input.STRING
+          allow_RGBA_output: Comfy.Union.E_TrueOrFalse
+          filename_text_extension?: Comfy.Union.E_TrueOrFalse
+      }
+      interface Load_Text_File extends HasSingle_STRING, HasSingle_DICT, ComfyNode<Load_Text_File_input, Load_Text_File_output> {
+          nameInComfy: "Load Text File"
+      }
+      interface Load_Text_File_output {
+          STRING: ComfyNodeOutput<'STRING', 0>,
+          DICT: ComfyNodeOutput<'DICT', 1>,
+      }
+      interface Load_Text_File_input {
+          /** default="" */
+          file_path?: Comfy.Input.STRING
+          /** default="[filename]" */
+          dictionary_name?: Comfy.Input.STRING
+      }
+      interface Load_Lora extends HasSingle_MODEL, HasSingle_CLIP, HasSingle_STRING, ComfyNode<Load_Lora_input, Load_Lora_output> {
+          nameInComfy: "Load Lora"
+      }
+      interface Load_Lora_output {
+          MODEL: ComfyNodeOutput<'MODEL', 0>,
+          CLIP: ComfyNodeOutput<'CLIP', 1>,
+          NAME_STRING: ComfyNodeOutput<'STRING', 2>,
+      }
+      interface Load_Lora_input {
+          model: Comfy.Input.MODEL
+          clip: Comfy.Input.CLIP
+          lora_name: Comfy.Union.E_6eef6648406c333a4035cd5e60d0bf2ecf2606d7
+          /** default=1 min=10 max=10 step=0.01 */
+          strength_model?: Comfy.Input.FLOAT
+          /** default=1 min=10 max=10 step=0.01 */
+          strength_clip?: Comfy.Input.FLOAT
+      }
+      interface Lora_Input_Switch extends HasSingle_MODEL, HasSingle_CLIP, ComfyNode<Lora_Input_Switch_input, Lora_Input_Switch_output> {
+          nameInComfy: "Lora Input Switch"
+      }
+      interface Lora_Input_Switch_output {
+          MODEL: ComfyNodeOutput<'MODEL', 0>,
+          CLIP: ComfyNodeOutput<'CLIP', 1>,
+      }
+      interface Lora_Input_Switch_input {
+          model_a: Comfy.Input.MODEL
+          clip_a: Comfy.Input.CLIP
+          model_b: Comfy.Input.MODEL
+          clip_b: Comfy.Input.CLIP
+          /** */
+          boolean: Comfy.Input.BOOLEAN
+      }
+      interface Masks_Add extends HasSingle_MASK, ComfyNode<Masks_Add_input, Masks_Add_output> {
+          nameInComfy: "Masks Add"
+      }
+      interface Masks_Add_output {
+          MASKS: ComfyNodeOutput<'MASK', 0>,
+      }
+      interface Masks_Add_input {
+          masks_a: Comfy.Input.MASK
+          masks_b: Comfy.Input.MASK
+      }
+      interface Masks_Subtract extends HasSingle_MASK, ComfyNode<Masks_Subtract_input, Masks_Subtract_output> {
+          nameInComfy: "Masks Subtract"
+      }
+      interface Masks_Subtract_output {
+          MASKS: ComfyNodeOutput<'MASK', 0>,
+      }
+      interface Masks_Subtract_input {
+          masks_a: Comfy.Input.MASK
+          masks_b: Comfy.Input.MASK
+      }
+      interface Mask_Arbitrary_Region extends HasSingle_MASK, ComfyNode<Mask_Arbitrary_Region_input, Mask_Arbitrary_Region_output> {
+          nameInComfy: "Mask Arbitrary Region"
+      }
+      interface Mask_Arbitrary_Region_output {
+          MASKS: ComfyNodeOutput<'MASK', 0>,
+      }
+      interface Mask_Arbitrary_Region_input {
+          masks: Comfy.Input.MASK
+          /** default=256 min=4096 max=4096 step=1 */
+          size?: Comfy.Input.INT
+          /** default=128 min=255 max=255 step=1 */
+          threshold?: Comfy.Input.INT
+      }
+      interface Mask_Batch_to_Mask extends HasSingle_MASK, ComfyNode<Mask_Batch_to_Mask_input, Mask_Batch_to_Mask_output> {
+          nameInComfy: "Mask Batch to Mask"
+      }
+      interface Mask_Batch_to_Mask_output {
+          MASK: ComfyNodeOutput<'MASK', 0>,
+      }
+      interface Mask_Batch_to_Mask_input {
+          masks: Comfy.Input.MASK
+          /** default=0 min=64 max=64 step=1 */
+          batch_number?: Comfy.Input.INT
+      }
+      interface Mask_Batch extends HasSingle_MASK, ComfyNode<Mask_Batch_input, Mask_Batch_output> {
+          nameInComfy: "Mask Batch"
+      }
+      interface Mask_Batch_output {
+          masks: ComfyNodeOutput<'MASK', 0>,
+      }
+      interface Mask_Batch_input {
+          masks_a?: Comfy.Input.MASK
+          masks_b?: Comfy.Input.MASK
+          masks_c?: Comfy.Input.MASK
+          masks_d?: Comfy.Input.MASK
+      }
+      interface Mask_Ceiling_Region extends HasSingle_MASK, ComfyNode<Mask_Ceiling_Region_input, Mask_Ceiling_Region_output> {
+          nameInComfy: "Mask Ceiling Region"
+      }
+      interface Mask_Ceiling_Region_output {
+          MASKS: ComfyNodeOutput<'MASK', 0>,
+      }
+      interface Mask_Ceiling_Region_input {
+          masks: Comfy.Input.MASK
+      }
+      interface Mask_Crop_Dominant_Region extends HasSingle_MASK, ComfyNode<Mask_Crop_Dominant_Region_input, Mask_Crop_Dominant_Region_output> {
+          nameInComfy: "Mask Crop Dominant Region"
+      }
+      interface Mask_Crop_Dominant_Region_output {
+          MASKS: ComfyNodeOutput<'MASK', 0>,
+      }
+      interface Mask_Crop_Dominant_Region_input {
+          masks: Comfy.Input.MASK
+          /** default=24 min=4096 max=4096 step=1 */
+          padding?: Comfy.Input.INT
+      }
+      interface Mask_Crop_Minority_Region extends HasSingle_MASK, ComfyNode<Mask_Crop_Minority_Region_input, Mask_Crop_Minority_Region_output> {
+          nameInComfy: "Mask Crop Minority Region"
+      }
+      interface Mask_Crop_Minority_Region_output {
+          MASKS: ComfyNodeOutput<'MASK', 0>,
+      }
+      interface Mask_Crop_Minority_Region_input {
+          masks: Comfy.Input.MASK
+          /** default=24 min=4096 max=4096 step=1 */
+          padding?: Comfy.Input.INT
+      }
+      interface Mask_Crop_Region extends HasSingle_MASK, HasSingle_CROP_DATA, ComfyNode<Mask_Crop_Region_input, Mask_Crop_Region_output> {
+          nameInComfy: "Mask Crop Region"
+      }
+      interface Mask_Crop_Region_output {
+          cropped_mask: ComfyNodeOutput<'MASK', 0>,
+          crop_data: ComfyNodeOutput<'CROP_DATA', 1>,
+          top_int: ComfyNodeOutput<'INT', 2>,
+          left_int: ComfyNodeOutput<'INT', 3>,
+          right_int: ComfyNodeOutput<'INT', 4>,
+          bottom_int: ComfyNodeOutput<'INT', 5>,
+          width_int: ComfyNodeOutput<'INT', 6>,
+          height_int: ComfyNodeOutput<'INT', 7>,
+      }
+      interface Mask_Crop_Region_input {
+          mask: Comfy.Input.MASK
+          /** default=24 min=4096 max=4096 step=1 */
+          padding?: Comfy.Input.INT
+          region_type: Comfy.Union.E_3f6f2a7e34563d7d52b1e70878b41ee0f557712f
+      }
+      interface Mask_Paste_Region extends ComfyNode<Mask_Paste_Region_input, Mask_Paste_Region_output> {
+          nameInComfy: "Mask Paste Region"
+      }
+      interface Mask_Paste_Region_output {
+          RESULT_MASK: ComfyNodeOutput<'MASK', 0>,
+          CROP_MASK: ComfyNodeOutput<'MASK', 1>,
+      }
+      interface Mask_Paste_Region_input {
+          mask: Comfy.Input.MASK
+          crop_mask: Comfy.Input.MASK
+          crop_data: Comfy.Input.CROP_DATA
+          /** default=0.25 min=1 max=1 step=0.01 */
+          crop_blending?: Comfy.Input.FLOAT
+          /** default=0 min=3 max=3 step=1 */
+          crop_sharpening?: Comfy.Input.INT
+      }
+      interface Mask_Dilate_Region extends HasSingle_MASK, ComfyNode<Mask_Dilate_Region_input, Mask_Dilate_Region_output> {
+          nameInComfy: "Mask Dilate Region"
+      }
+      interface Mask_Dilate_Region_output {
+          MASKS: ComfyNodeOutput<'MASK', 0>,
+      }
+      interface Mask_Dilate_Region_input {
+          masks: Comfy.Input.MASK
+          /** default=5 min=64 max=64 step=1 */
+          iterations?: Comfy.Input.INT
+      }
+      interface Mask_Dominant_Region extends HasSingle_MASK, ComfyNode<Mask_Dominant_Region_input, Mask_Dominant_Region_output> {
+          nameInComfy: "Mask Dominant Region"
+      }
+      interface Mask_Dominant_Region_output {
+          MASKS: ComfyNodeOutput<'MASK', 0>,
+      }
+      interface Mask_Dominant_Region_input {
+          masks: Comfy.Input.MASK
+          /** default=128 min=255 max=255 step=1 */
+          threshold?: Comfy.Input.INT
+      }
+      interface Mask_Erode_Region extends HasSingle_MASK, ComfyNode<Mask_Erode_Region_input, Mask_Erode_Region_output> {
+          nameInComfy: "Mask Erode Region"
+      }
+      interface Mask_Erode_Region_output {
+          MASKS: ComfyNodeOutput<'MASK', 0>,
+      }
+      interface Mask_Erode_Region_input {
+          masks: Comfy.Input.MASK
+          /** default=5 min=64 max=64 step=1 */
+          iterations?: Comfy.Input.INT
+      }
+      interface Mask_Fill_Holes extends HasSingle_MASK, ComfyNode<Mask_Fill_Holes_input, Mask_Fill_Holes_output> {
+          nameInComfy: "Mask Fill Holes"
+      }
+      interface Mask_Fill_Holes_output {
+          MASKS: ComfyNodeOutput<'MASK', 0>,
+      }
+      interface Mask_Fill_Holes_input {
+          masks: Comfy.Input.MASK
+      }
+      interface Mask_Floor_Region extends HasSingle_MASK, ComfyNode<Mask_Floor_Region_input, Mask_Floor_Region_output> {
+          nameInComfy: "Mask Floor Region"
+      }
+      interface Mask_Floor_Region_output {
+          MASKS: ComfyNodeOutput<'MASK', 0>,
+      }
+      interface Mask_Floor_Region_input {
+          masks: Comfy.Input.MASK
+      }
+      interface Mask_Gaussian_Region extends HasSingle_MASK, ComfyNode<Mask_Gaussian_Region_input, Mask_Gaussian_Region_output> {
+          nameInComfy: "Mask Gaussian Region"
+      }
+      interface Mask_Gaussian_Region_output {
+          MASKS: ComfyNodeOutput<'MASK', 0>,
+      }
+      interface Mask_Gaussian_Region_input {
+          masks: Comfy.Input.MASK
+          /** default=5 min=1024 max=1024 step=0.1 */
+          radius?: Comfy.Input.FLOAT
+      }
+      interface Mask_Invert extends HasSingle_MASK, ComfyNode<Mask_Invert_input, Mask_Invert_output> {
+          nameInComfy: "Mask Invert"
+      }
+      interface Mask_Invert_output {
+          MASKS: ComfyNodeOutput<'MASK', 0>,
+      }
+      interface Mask_Invert_input {
+          masks: Comfy.Input.MASK
+      }
+      interface Mask_Minority_Region extends HasSingle_MASK, ComfyNode<Mask_Minority_Region_input, Mask_Minority_Region_output> {
+          nameInComfy: "Mask Minority Region"
+      }
+      interface Mask_Minority_Region_output {
+          MASKS: ComfyNodeOutput<'MASK', 0>,
+      }
+      interface Mask_Minority_Region_input {
+          masks: Comfy.Input.MASK
+          /** default=128 min=255 max=255 step=1 */
+          threshold?: Comfy.Input.INT
+      }
+      interface Mask_Smooth_Region extends HasSingle_MASK, ComfyNode<Mask_Smooth_Region_input, Mask_Smooth_Region_output> {
+          nameInComfy: "Mask Smooth Region"
+      }
+      interface Mask_Smooth_Region_output {
+          MASKS: ComfyNodeOutput<'MASK', 0>,
+      }
+      interface Mask_Smooth_Region_input {
+          masks: Comfy.Input.MASK
+          /** default=5 min=128 max=128 step=0.1 */
+          sigma?: Comfy.Input.FLOAT
+      }
+      interface Mask_Threshold_Region extends HasSingle_MASK, ComfyNode<Mask_Threshold_Region_input, Mask_Threshold_Region_output> {
+          nameInComfy: "Mask Threshold Region"
+      }
+      interface Mask_Threshold_Region_output {
+          MASKS: ComfyNodeOutput<'MASK', 0>,
+      }
+      interface Mask_Threshold_Region_input {
+          masks: Comfy.Input.MASK
+          /** default=75 min=255 max=255 step=1 */
+          black_threshold?: Comfy.Input.INT
+          /** default=175 min=255 max=255 step=1 */
+          white_threshold?: Comfy.Input.INT
+      }
+      interface Masks_Combine_Regions extends HasSingle_MASK, ComfyNode<Masks_Combine_Regions_input, Masks_Combine_Regions_output> {
+          nameInComfy: "Masks Combine Regions"
+      }
+      interface Masks_Combine_Regions_output {
+          MASK: ComfyNodeOutput<'MASK', 0>,
+      }
+      interface Masks_Combine_Regions_input {
+          mask_a: Comfy.Input.MASK
+          mask_b: Comfy.Input.MASK
+          mask_c?: Comfy.Input.MASK
+          mask_d?: Comfy.Input.MASK
+          mask_e?: Comfy.Input.MASK
+          mask_f?: Comfy.Input.MASK
+      }
+      interface Masks_Combine_Batch extends HasSingle_MASK, ComfyNode<Masks_Combine_Batch_input, Masks_Combine_Batch_output> {
+          nameInComfy: "Masks Combine Batch"
+      }
+      interface Masks_Combine_Batch_output {
+          MASK: ComfyNodeOutput<'MASK', 0>,
+      }
+      interface Masks_Combine_Batch_input {
+          masks: Comfy.Input.MASK
+      }
+      interface MiDaS_Model_Loader extends HasSingle_MIDAS_MODEL, ComfyNode<MiDaS_Model_Loader_input, MiDaS_Model_Loader_output> {
+          nameInComfy: "MiDaS Model Loader"
+      }
+      interface MiDaS_Model_Loader_output {
+          midas_model: ComfyNodeOutput<'MIDAS_MODEL', 0>,
+      }
+      interface MiDaS_Model_Loader_input {
+          midas_model: Comfy.Union.E_ddc7f89a89013ba246c565b4a9c3171afa7b3e7b
+      }
+      interface MiDaS_Depth_Approximation extends HasSingle_IMAGE, ComfyNode<MiDaS_Depth_Approximation_input, MiDaS_Depth_Approximation_output> {
+          nameInComfy: "MiDaS Depth Approximation"
+      }
+      interface MiDaS_Depth_Approximation_output {
+          images: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface MiDaS_Depth_Approximation_input {
+          image: Comfy.Input.IMAGE
+          use_cpu: Comfy.Union.E_TrueOrFalse
+          midas_type: Comfy.Union.E_ddc7f89a89013ba246c565b4a9c3171afa7b3e7b
+          invert_depth: Comfy.Union.E_TrueOrFalse
+          midas_model?: Comfy.Input.MIDAS_MODEL
+      }
+      interface MiDaS_Mask_Image extends ComfyNode<MiDaS_Mask_Image_input, MiDaS_Mask_Image_output> {
+          nameInComfy: "MiDaS Mask Image"
+      }
+      interface MiDaS_Mask_Image_output {
+          RESULT: ComfyNodeOutput<'IMAGE', 0>,
+          DEPTH: ComfyNodeOutput<'IMAGE', 1>,
+      }
+      interface MiDaS_Mask_Image_input {
+          image: Comfy.Input.IMAGE
+          use_cpu: Comfy.Union.E_TrueOrFalse
+          midas_model: Comfy.Union.E_4c3e91fd332bf7bc8ecc71438dc9bae1659b47bf
+          remove: Comfy.Union.E_3c44857390dbf2c0b082664aec15269d2f4de7f2
+          threshold: Comfy.Union.E_TrueOrFalse
+          /** default=10 min=255 max=255 step=1 */
+          threshold_low?: Comfy.Input.FLOAT
+          /** default=200 min=255 max=255 step=1 */
+          threshold_mid?: Comfy.Input.FLOAT
+          /** default=210 min=255 max=255 step=1 */
+          threshold_high?: Comfy.Input.FLOAT
+          /** default=0.25 min=16 max=16 step=0.01 */
+          smoothing?: Comfy.Input.FLOAT
+          /** default=0 min=255 max=255 step=1 */
+          background_red?: Comfy.Input.INT
+          /** default=0 min=255 max=255 step=1 */
+          background_green?: Comfy.Input.INT
+          /** default=0 min=255 max=255 step=1 */
+          background_blue?: Comfy.Input.INT
+      }
+      interface Model_Input_Switch extends HasSingle_MODEL, ComfyNode<Model_Input_Switch_input, Model_Input_Switch_output> {
+          nameInComfy: "Model Input Switch"
+      }
+      interface Model_Input_Switch_output {
+          MODEL: ComfyNodeOutput<'MODEL', 0>,
+      }
+      interface Model_Input_Switch_input {
+          model_a: Comfy.Input.MODEL
+          model_b: Comfy.Input.MODEL
+          /** */
+          boolean: Comfy.Input.BOOLEAN
+      }
+      interface Number_Counter extends HasSingle_NUMBER, HasSingle_FLOAT, HasSingle_INT, ComfyNode<Number_Counter_input, Number_Counter_output> {
+          nameInComfy: "Number Counter"
+      }
+      interface Number_Counter_output {
+          number: ComfyNodeOutput<'NUMBER', 0>,
+          float: ComfyNodeOutput<'FLOAT', 1>,
+          int: ComfyNodeOutput<'INT', 2>,
+      }
+      interface Number_Counter_input {
+          number_type: Comfy.Union.E_eb31abaa810f2e5b2910398489893bb10dc12f65
+          mode: Comfy.Union.E_69ae67e56fe369f0949226d306697e018453dd56
+          /** default=0 min=18446744073709552000 max=18446744073709552000 step=0.01 */
+          start?: Comfy.Input.FLOAT
+          /** default=0 min=18446744073709552000 max=18446744073709552000 step=0.01 */
+          stop?: Comfy.Input.FLOAT
+          /** default=1 min=99999 max=99999 step=0.01 */
+          step?: Comfy.Input.FLOAT
+          reset_bool?: Comfy.Input.NUMBER
+      }
+      interface Number_Operation extends HasSingle_NUMBER, HasSingle_FLOAT, HasSingle_INT, ComfyNode<Number_Operation_input, Number_Operation_output> {
+          nameInComfy: "Number Operation"
+      }
+      interface Number_Operation_output {
+          NUMBER: ComfyNodeOutput<'NUMBER', 0>,
+          FLOAT: ComfyNodeOutput<'FLOAT', 1>,
+          INT: ComfyNodeOutput<'INT', 2>,
+      }
+      interface Number_Operation_input {
+          number_a: Comfy.Input.NUMBER
+          number_b: Comfy.Input.NUMBER
+          operation: Comfy.Union.E_89cd8ef2656f9d2aa7e139e06547bccb8894aea6
+      }
+      interface Number_to_Float extends HasSingle_FLOAT, ComfyNode<Number_to_Float_input, Number_to_Float_output> {
+          nameInComfy: "Number to Float"
+      }
+      interface Number_to_Float_output {
+          FLOAT: ComfyNodeOutput<'FLOAT', 0>,
+      }
+      interface Number_to_Float_input {
+          number: Comfy.Input.NUMBER
+      }
+      interface Number_Input_Switch extends HasSingle_NUMBER, HasSingle_FLOAT, HasSingle_INT, ComfyNode<Number_Input_Switch_input, Number_Input_Switch_output> {
+          nameInComfy: "Number Input Switch"
+      }
+      interface Number_Input_Switch_output {
+          NUMBER: ComfyNodeOutput<'NUMBER', 0>,
+          FLOAT: ComfyNodeOutput<'FLOAT', 1>,
+          INT: ComfyNodeOutput<'INT', 2>,
+      }
+      interface Number_Input_Switch_input {
+          number_a: Comfy.Input.NUMBER
+          number_b: Comfy.Input.NUMBER
+          /** */
+          boolean: Comfy.Input.BOOLEAN
+      }
+      interface Number_Input_Condition extends HasSingle_NUMBER, HasSingle_FLOAT, HasSingle_INT, ComfyNode<Number_Input_Condition_input, Number_Input_Condition_output> {
+          nameInComfy: "Number Input Condition"
+      }
+      interface Number_Input_Condition_output {
+          NUMBER: ComfyNodeOutput<'NUMBER', 0>,
+          FLOAT: ComfyNodeOutput<'FLOAT', 1>,
+          INT: ComfyNodeOutput<'INT', 2>,
+      }
+      interface Number_Input_Condition_input {
+          number_a: Comfy.Input.NUMBER
+          number_b: Comfy.Input.NUMBER
+          return_boolean: Comfy.Union.E_TrueOrFalse
+          comparison: Comfy.Union.E_fec65e73cb675e950a5bb41c19b5d494b1fadbb0
+      }
+      interface Number_Multiple_Of extends HasSingle_NUMBER, HasSingle_FLOAT, HasSingle_INT, ComfyNode<Number_Multiple_Of_input, Number_Multiple_Of_output> {
+          nameInComfy: "Number Multiple Of"
+      }
+      interface Number_Multiple_Of_output {
+          NUMBER: ComfyNodeOutput<'NUMBER', 0>,
+          FLOAT: ComfyNodeOutput<'FLOAT', 1>,
+          INT: ComfyNodeOutput<'INT', 2>,
+      }
+      interface Number_Multiple_Of_input {
+          number: Comfy.Input.NUMBER
+          /** default=8 min=18446744073709552000 max=18446744073709552000 */
+          multiple?: Comfy.Input.INT
+      }
+      interface Number_PI extends HasSingle_NUMBER, HasSingle_FLOAT, ComfyNode<Number_PI_input, Number_PI_output> {
+          nameInComfy: "Number PI"
+      }
+      interface Number_PI_output {
+          NUMBER: ComfyNodeOutput<'NUMBER', 0>,
+          FLOAT: ComfyNodeOutput<'FLOAT', 1>,
+      }
+      interface Number_PI_input {
+      }
+      interface Number_to_Int extends HasSingle_INT, ComfyNode<Number_to_Int_input, Number_to_Int_output> {
+          nameInComfy: "Number to Int"
+      }
+      interface Number_to_Int_output {
+          INT: ComfyNodeOutput<'INT', 0>,
+      }
+      interface Number_to_Int_input {
+          number: Comfy.Input.NUMBER
+      }
+      interface Number_to_Seed extends HasSingle_SEED, ComfyNode<Number_to_Seed_input, Number_to_Seed_output> {
+          nameInComfy: "Number to Seed"
+      }
+      interface Number_to_Seed_output {
+          SEED: ComfyNodeOutput<'SEED', 0>,
+      }
+      interface Number_to_Seed_input {
+          number: Comfy.Input.NUMBER
+      }
+      interface Number_to_String extends HasSingle_STRING, ComfyNode<Number_to_String_input, Number_to_String_output> {
+          nameInComfy: "Number to String"
+      }
+      interface Number_to_String_output {
+          STRING: ComfyNodeOutput<'STRING', 0>,
+      }
+      interface Number_to_String_input {
+          number: Comfy.Input.NUMBER
+      }
+      interface Number_to_Text extends HasSingle_STRING, ComfyNode<Number_to_Text_input, Number_to_Text_output> {
+          nameInComfy: "Number to Text"
+      }
+      interface Number_to_Text_output {
+          STRING: ComfyNodeOutput<'STRING', 0>,
+      }
+      interface Number_to_Text_input {
+          number: Comfy.Input.NUMBER
+      }
+      interface Boolean_To_Text extends HasSingle_STRING, ComfyNode<Boolean_To_Text_input, Boolean_To_Text_output> {
+          nameInComfy: "Boolean To Text"
+      }
+      interface Boolean_To_Text_output {
+          STRING: ComfyNodeOutput<'STRING', 0>,
+      }
+      interface Boolean_To_Text_input {
+          /** default=false */
+          boolean?: Comfy.Input.BOOLEAN
+      }
+      interface Prompt_Styles_Selector extends ComfyNode<Prompt_Styles_Selector_input, Prompt_Styles_Selector_output> {
+          nameInComfy: "Prompt Styles Selector"
+      }
+      interface Prompt_Styles_Selector_output {
+          positive_string: ComfyNodeOutput<'STRING', 0>,
+          negative_string: ComfyNodeOutput<'STRING', 1>,
+      }
+      interface Prompt_Styles_Selector_input {
+          style: Comfy.Union.E_6eef6648406c333a4035cd5e60d0bf2ecf2606d7
+      }
+      interface Prompt_Multiple_Styles_Selector extends ComfyNode<Prompt_Multiple_Styles_Selector_input, Prompt_Multiple_Styles_Selector_output> {
+          nameInComfy: "Prompt Multiple Styles Selector"
+      }
+      interface Prompt_Multiple_Styles_Selector_output {
+          positive_string: ComfyNodeOutput<'STRING', 0>,
+          negative_string: ComfyNodeOutput<'STRING', 1>,
+      }
+      interface Prompt_Multiple_Styles_Selector_input {
+          style1: Comfy.Union.E_6eef6648406c333a4035cd5e60d0bf2ecf2606d7
+          style2: Comfy.Union.E_6eef6648406c333a4035cd5e60d0bf2ecf2606d7
+          style3: Comfy.Union.E_6eef6648406c333a4035cd5e60d0bf2ecf2606d7
+          style4: Comfy.Union.E_6eef6648406c333a4035cd5e60d0bf2ecf2606d7
+      }
+      interface Random_Number extends HasSingle_NUMBER, HasSingle_FLOAT, HasSingle_INT, ComfyNode<Random_Number_input, Random_Number_output> {
+          nameInComfy: "Random Number"
+      }
+      interface Random_Number_output {
+          NUMBER: ComfyNodeOutput<'NUMBER', 0>,
+          FLOAT: ComfyNodeOutput<'FLOAT', 1>,
+          INT: ComfyNodeOutput<'INT', 2>,
+      }
+      interface Random_Number_input {
+          number_type: Comfy.Union.E_d775619a3b6b2764d08cc78c16dba9db45ba3385
+          /** default=0 min=18446744073709552000 max=18446744073709552000 */
+          minimum?: Comfy.Input.FLOAT
+          /** default=0 min=18446744073709552000 max=18446744073709552000 */
+          maximum?: Comfy.Input.FLOAT
+          /** default=0 min=18446744073709552000 max=18446744073709552000 */
+          seed?: Comfy.Input.INT
+      }
+      interface Save_Text_File extends ComfyNode<Save_Text_File_input, Save_Text_File_output> {
+          nameInComfy: "Save Text File"
+      }
+      interface Save_Text_File_output {
+      }
+      interface Save_Text_File_input {
+          /** */
+          text: Comfy.Input.STRING
+          /** default="./ComfyUI/output/[time(%Y-%m-%d)]" */
+          path?: Comfy.Input.STRING
+          /** default="ComfyUI" */
+          filename_prefix?: Comfy.Input.STRING
+          /** default="_" */
+          filename_delimiter?: Comfy.Input.STRING
+          /** default=4 min=9 max=9 step=1 */
+          filename_number_padding?: Comfy.Input.INT
+          /** default=".txt" */
+          file_extension?: Comfy.Input.STRING
+          /** default="utf-8" */
+          encoding?: Comfy.Input.STRING
+          /** default="" */
+          filename_suffix?: Comfy.Input.STRING
+      }
+      interface Seed extends HasSingle_SEED, HasSingle_NUMBER, HasSingle_FLOAT, HasSingle_INT, ComfyNode<Seed_input, Seed_output> {
+          nameInComfy: "Seed"
+      }
+      interface Seed_output {
+          seed: ComfyNodeOutput<'SEED', 0>,
+          number: ComfyNodeOutput<'NUMBER', 1>,
+          float: ComfyNodeOutput<'FLOAT', 2>,
+          int: ComfyNodeOutput<'INT', 3>,
+      }
+      interface Seed_input {
+          /** default=0 min=18446744073709552000 max=18446744073709552000 */
+          seed?: Comfy.Input.INT
+      }
+      interface Tensor_Batch_to_Image extends HasSingle_IMAGE, ComfyNode<Tensor_Batch_to_Image_input, Tensor_Batch_to_Image_output> {
+          nameInComfy: "Tensor Batch to Image"
+      }
+      interface Tensor_Batch_to_Image_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Tensor_Batch_to_Image_input {
+          images_batch: Comfy.Input.IMAGE
+          /** default=0 min=64 max=64 step=1 */
+          batch_image_number?: Comfy.Input.INT
+      }
+      interface BLIP_Analyze_Image extends ComfyNode<BLIP_Analyze_Image_input, BLIP_Analyze_Image_output> {
+          nameInComfy: "BLIP Analyze Image"
+      }
+      interface BLIP_Analyze_Image_output {
+          FULL_CAPTIONS: ComfyNodeOutput<'STRING', 0>,
+          CAPTIONS: ComfyNodeOutput<'STRING', 1>,
+      }
+      interface BLIP_Analyze_Image_input {
+          images: Comfy.Input.IMAGE
+          mode: Comfy.Union.E_58116c3d7caa42bbae5816fbe84aaba8f20d824f
+          /** default="What does the background consist of?" */
+          question?: Comfy.Input.STRING
+          blip_model: Comfy.Input.BLIP_MODEL
+          /** default=24 min=1024 max=1024 */
+          min_length?: Comfy.Input.INT
+          /** default=64 min=1024 max=1024 */
+          max_length?: Comfy.Input.INT
+          /** default=5 min=12 max=12 */
+          num_beams?: Comfy.Input.INT
+          /** default=3 min=12 max=12 */
+          no_repeat_ngram_size?: Comfy.Input.INT
+          /** default=false */
+          early_stopping?: Comfy.Input.BOOLEAN
+      }
+      interface SAM_Model_Loader extends HasSingle_SAM_MODEL, ComfyNode<SAM_Model_Loader_input, SAM_Model_Loader_output> {
+          nameInComfy: "SAM Model Loader"
+      }
+      interface SAM_Model_Loader_output {
+          SAM_MODEL: ComfyNodeOutput<'SAM_MODEL', 0>,
+      }
+      interface SAM_Model_Loader_input {
+          model_size: Comfy.Union.E_976ac8179a850faff4be52e51dd7a30db5108680
+      }
+      interface SAM_Parameters extends HasSingle_SAM_PARAMETERS, ComfyNode<SAM_Parameters_input, SAM_Parameters_output> {
+          nameInComfy: "SAM Parameters"
+      }
+      interface SAM_Parameters_output {
+          SAM_PARAMETERS: ComfyNodeOutput<'SAM_PARAMETERS', 0>,
+      }
+      interface SAM_Parameters_input {
+          /** default="[128, 128]; [0, 0]" */
+          points?: Comfy.Input.STRING
+          /** default="[1, 0]" */
+          labels?: Comfy.Input.STRING
+      }
+      interface SAM_Parameters_Combine extends HasSingle_SAM_PARAMETERS, ComfyNode<SAM_Parameters_Combine_input, SAM_Parameters_Combine_output> {
+          nameInComfy: "SAM Parameters Combine"
+      }
+      interface SAM_Parameters_Combine_output {
+          SAM_PARAMETERS: ComfyNodeOutput<'SAM_PARAMETERS', 0>,
+      }
+      interface SAM_Parameters_Combine_input {
+          sam_parameters_a: Comfy.Input.SAM_PARAMETERS
+          sam_parameters_b: Comfy.Input.SAM_PARAMETERS
+      }
+      interface SAM_Image_Mask extends HasSingle_IMAGE, HasSingle_MASK, ComfyNode<SAM_Image_Mask_input, SAM_Image_Mask_output> {
+          nameInComfy: "SAM Image Mask"
+      }
+      interface SAM_Image_Mask_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+          MASK: ComfyNodeOutput<'MASK', 1>,
+      }
+      interface SAM_Image_Mask_input {
+          sam_model: Comfy.Input.SAM_MODEL
+          sam_parameters: Comfy.Input.SAM_PARAMETERS
+          image: Comfy.Input.IMAGE
+      }
+      interface Samples_Passthrough_$1Stat_System$2 extends HasSingle_LATENT, ComfyNode<Samples_Passthrough_$1Stat_System$2_input, Samples_Passthrough_$1Stat_System$2_output> {
+          nameInComfy: "Samples Passthrough (Stat System)"
+      }
+      interface Samples_Passthrough_$1Stat_System$2_output {
+          samples: ComfyNodeOutput<'LATENT', 0>,
+      }
+      interface Samples_Passthrough_$1Stat_System$2_input {
+          samples: Comfy.Input.LATENT
+      }
+      interface String_to_Text extends HasSingle_STRING, ComfyNode<String_to_Text_input, String_to_Text_output> {
+          nameInComfy: "String to Text"
+      }
+      interface String_to_Text_output {
+          STRING: ComfyNodeOutput<'STRING', 0>,
+      }
+      interface String_to_Text_input {
+          /** */
+          string: Comfy.Input.STRING
+      }
+      interface Image_Bounds extends HasSingle_IMAGE_BOUNDS, ComfyNode<Image_Bounds_input, Image_Bounds_output> {
+          nameInComfy: "Image Bounds"
+      }
+      interface Image_Bounds_output {
+          IMAGE_BOUNDS: ComfyNodeOutput<'IMAGE_BOUNDS', 0>,
+      }
+      interface Image_Bounds_input {
+          image: Comfy.Input.IMAGE
+      }
+      interface Inset_Image_Bounds extends HasSingle_IMAGE_BOUNDS, ComfyNode<Inset_Image_Bounds_input, Inset_Image_Bounds_output> {
+          nameInComfy: "Inset Image Bounds"
+      }
+      interface Inset_Image_Bounds_output {
+          IMAGE_BOUNDS: ComfyNodeOutput<'IMAGE_BOUNDS', 0>,
+      }
+      interface Inset_Image_Bounds_input {
+          image_bounds: Comfy.Input.IMAGE_BOUNDS
+          /** default=64 min=18446744073709552000 max=18446744073709552000 */
+          inset_left?: Comfy.Input.INT
+          /** default=64 min=18446744073709552000 max=18446744073709552000 */
+          inset_right?: Comfy.Input.INT
+          /** default=64 min=18446744073709552000 max=18446744073709552000 */
+          inset_top?: Comfy.Input.INT
+          /** default=64 min=18446744073709552000 max=18446744073709552000 */
+          inset_bottom?: Comfy.Input.INT
+      }
+      interface Bounded_Image_Blend extends HasSingle_IMAGE, ComfyNode<Bounded_Image_Blend_input, Bounded_Image_Blend_output> {
+          nameInComfy: "Bounded Image Blend"
+      }
+      interface Bounded_Image_Blend_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Bounded_Image_Blend_input {
+          target: Comfy.Input.IMAGE
+          target_bounds: Comfy.Input.IMAGE_BOUNDS
+          source: Comfy.Input.IMAGE
+          /** default=1 min=1 max=1 */
+          blend_factor?: Comfy.Input.FLOAT
+          /** default=16 min=18446744073709552000 max=18446744073709552000 */
+          feathering?: Comfy.Input.INT
+      }
+      interface Bounded_Image_Blend_with_Mask extends HasSingle_IMAGE, ComfyNode<Bounded_Image_Blend_with_Mask_input, Bounded_Image_Blend_with_Mask_output> {
+          nameInComfy: "Bounded Image Blend with Mask"
+      }
+      interface Bounded_Image_Blend_with_Mask_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Bounded_Image_Blend_with_Mask_input {
+          target: Comfy.Input.IMAGE
+          target_mask: Comfy.Input.MASK
+          target_bounds: Comfy.Input.IMAGE_BOUNDS
+          source: Comfy.Input.IMAGE
+          /** default=1 min=1 max=1 */
+          blend_factor?: Comfy.Input.FLOAT
+          /** default=16 min=18446744073709552000 max=18446744073709552000 */
+          feathering?: Comfy.Input.INT
+      }
+      interface Bounded_Image_Crop extends HasSingle_IMAGE, ComfyNode<Bounded_Image_Crop_input, Bounded_Image_Crop_output> {
+          nameInComfy: "Bounded Image Crop"
+      }
+      interface Bounded_Image_Crop_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Bounded_Image_Crop_input {
+          image: Comfy.Input.IMAGE
+          image_bounds: Comfy.Input.IMAGE_BOUNDS
+      }
+      interface Bounded_Image_Crop_with_Mask extends HasSingle_IMAGE, HasSingle_IMAGE_BOUNDS, ComfyNode<Bounded_Image_Crop_with_Mask_input, Bounded_Image_Crop_with_Mask_output> {
+          nameInComfy: "Bounded Image Crop with Mask"
+      }
+      interface Bounded_Image_Crop_with_Mask_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+          IMAGE_BOUNDS: ComfyNodeOutput<'IMAGE_BOUNDS', 1>,
+      }
+      interface Bounded_Image_Crop_with_Mask_input {
+          image: Comfy.Input.IMAGE
+          mask: Comfy.Input.MASK
+          /** default=64 min=18446744073709552000 max=18446744073709552000 */
+          padding_left?: Comfy.Input.INT
+          /** default=64 min=18446744073709552000 max=18446744073709552000 */
+          padding_right?: Comfy.Input.INT
+          /** default=64 min=18446744073709552000 max=18446744073709552000 */
+          padding_top?: Comfy.Input.INT
+          /** default=64 min=18446744073709552000 max=18446744073709552000 */
+          padding_bottom?: Comfy.Input.INT
+          /** default=false */
+          return_list?: Comfy.Input.BOOLEAN
+      }
+      interface Image_Bounds_to_Console extends HasSingle_IMAGE_BOUNDS, ComfyNode<Image_Bounds_to_Console_input, Image_Bounds_to_Console_output> {
+          nameInComfy: "Image Bounds to Console"
+      }
+      interface Image_Bounds_to_Console_output {
+          IMAGE_BOUNDS: ComfyNodeOutput<'IMAGE_BOUNDS', 0>,
+      }
+      interface Image_Bounds_to_Console_input {
+          image_bounds: Comfy.Input.IMAGE_BOUNDS
+          /** default="Debug to Console" */
+          label?: Comfy.Input.STRING
+      }
+      interface Text_Dictionary_Update extends HasSingle_DICT, ComfyNode<Text_Dictionary_Update_input, Text_Dictionary_Update_output> {
+          nameInComfy: "Text Dictionary Update"
+      }
+      interface Text_Dictionary_Update_output {
+          DICT: ComfyNodeOutput<'DICT', 0>,
+      }
+      interface Text_Dictionary_Update_input {
+          dictionary_a: Comfy.Input.DICT
+          dictionary_b: Comfy.Input.DICT
+          dictionary_c?: Comfy.Input.DICT
+          dictionary_d?: Comfy.Input.DICT
+      }
+      interface Text_Dictionary_Get extends HasSingle_STRING, ComfyNode<Text_Dictionary_Get_input, Text_Dictionary_Get_output> {
+          nameInComfy: "Text Dictionary Get"
+      }
+      interface Text_Dictionary_Get_output {
+          STRING: ComfyNodeOutput<'STRING', 0>,
+      }
+      interface Text_Dictionary_Get_input {
+          dictionary: Comfy.Input.DICT
+          /** default="" */
+          key?: Comfy.Input.STRING
+          /** default="" */
+          default_value?: Comfy.Input.STRING
+      }
+      interface Text_Dictionary_Convert extends HasSingle_DICT, ComfyNode<Text_Dictionary_Convert_input, Text_Dictionary_Convert_output> {
+          nameInComfy: "Text Dictionary Convert"
+      }
+      interface Text_Dictionary_Convert_output {
+          DICT: ComfyNodeOutput<'DICT', 0>,
+      }
+      interface Text_Dictionary_Convert_input {
+          /** */
+          dictionary_text: Comfy.Input.STRING
+      }
+      interface Text_Dictionary_New extends HasSingle_DICT, ComfyNode<Text_Dictionary_New_input, Text_Dictionary_New_output> {
+          nameInComfy: "Text Dictionary New"
+      }
+      interface Text_Dictionary_New_output {
+          DICT: ComfyNodeOutput<'DICT', 0>,
+      }
+      interface Text_Dictionary_New_input {
+          /** default="" */
+          key_1?: Comfy.Input.STRING
+          /** default="" */
+          value_1?: Comfy.Input.STRING
+          /** default="" */
+          key_2?: Comfy.Input.STRING
+          /** default="" */
+          value_2?: Comfy.Input.STRING
+          /** default="" */
+          key_3?: Comfy.Input.STRING
+          /** default="" */
+          value_3?: Comfy.Input.STRING
+          /** default="" */
+          key_4?: Comfy.Input.STRING
+          /** default="" */
+          value_4?: Comfy.Input.STRING
+          /** default="" */
+          key_5?: Comfy.Input.STRING
+          /** default="" */
+          value_5?: Comfy.Input.STRING
+      }
+      interface Text_Dictionary_Keys extends HasSingle_LIST, ComfyNode<Text_Dictionary_Keys_input, Text_Dictionary_Keys_output> {
+          nameInComfy: "Text Dictionary Keys"
+      }
+      interface Text_Dictionary_Keys_output {
+          LIST: ComfyNodeOutput<'LIST', 0>,
+      }
+      interface Text_Dictionary_Keys_input {
+          dictionary: Comfy.Input.DICT
+      }
+      interface Text_Dictionary_To_Text extends HasSingle_STRING, ComfyNode<Text_Dictionary_To_Text_input, Text_Dictionary_To_Text_output> {
+          nameInComfy: "Text Dictionary To Text"
+      }
+      interface Text_Dictionary_To_Text_output {
+          STRING: ComfyNodeOutput<'STRING', 0>,
+      }
+      interface Text_Dictionary_To_Text_input {
+          dictionary: Comfy.Input.DICT
+      }
+      interface Text_Add_Tokens extends ComfyNode<Text_Add_Tokens_input, Text_Add_Tokens_output> {
+          nameInComfy: "Text Add Tokens"
+      }
+      interface Text_Add_Tokens_output {
+      }
+      interface Text_Add_Tokens_input {
+          /** default="[hello]: world" */
+          tokens?: Comfy.Input.STRING
+          print_current_tokens: Comfy.Union.E_TrueOrFalse
+      }
+      interface Text_Add_Token_by_Input extends ComfyNode<Text_Add_Token_by_Input_input, Text_Add_Token_by_Input_output> {
+          nameInComfy: "Text Add Token by Input"
+      }
+      interface Text_Add_Token_by_Input_output {
+      }
+      interface Text_Add_Token_by_Input_input {
+          /** */
+          token_name: Comfy.Input.STRING
+          /** */
+          token_value: Comfy.Input.STRING
+          print_current_tokens: Comfy.Union.E_TrueOrFalse
+      }
+      interface Text_Compare extends HasSingle_BOOLEAN, HasSingle_NUMBER, ComfyNode<Text_Compare_input, Text_Compare_output> {
+          nameInComfy: "Text Compare"
+      }
+      interface Text_Compare_output {
+          TEXT_A_PASS: ComfyNodeOutput<'STRING', 0>,
+          TEXT_B_PASS: ComfyNodeOutput<'STRING', 1>,
+          BOOLEAN: ComfyNodeOutput<'BOOLEAN', 2>,
+          SCORE_NUMBER: ComfyNodeOutput<'NUMBER', 3>,
+          COMPARISON_TEXT: ComfyNodeOutput<'STRING', 4>,
+      }
+      interface Text_Compare_input {
+          /** */
+          text_a: Comfy.Input.STRING
+          /** */
+          text_b: Comfy.Input.STRING
+          mode: Comfy.Union.E_926260613195613af4b1585dd277506097192235
+          /** default=0 min=1 max=1 step=0.01 */
+          tolerance?: Comfy.Input.FLOAT
+      }
+      interface Text_Concatenate extends HasSingle_STRING, ComfyNode<Text_Concatenate_input, Text_Concatenate_output> {
+          nameInComfy: "Text Concatenate"
+      }
+      interface Text_Concatenate_output {
+          STRING: ComfyNodeOutput<'STRING', 0>,
+      }
+      interface Text_Concatenate_input {
+          /** default=", " */
+          delimiter?: Comfy.Input.STRING
+          clean_whitespace: Comfy.Union.E_TrueOrFalse
+          /** */
+          text_a?: Comfy.Input.STRING
+          /** */
+          text_b?: Comfy.Input.STRING
+          /** */
+          text_c?: Comfy.Input.STRING
+          /** */
+          text_d?: Comfy.Input.STRING
+      }
+      interface Text_File_History_Loader extends HasSingle_STRING, HasSingle_DICT, ComfyNode<Text_File_History_Loader_input, Text_File_History_Loader_output> {
+          nameInComfy: "Text File History Loader"
+      }
+      interface Text_File_History_Loader_output {
+          STRING: ComfyNodeOutput<'STRING', 0>,
+          DICT: ComfyNodeOutput<'DICT', 1>,
+      }
+      interface Text_File_History_Loader_input {
+          file: Comfy.Union.E_2dd0540c88a63098c07793456791932d49cace79
+          /** default="[filename]" */
+          dictionary_name?: Comfy.Input.STRING
+      }
+      interface Text_Find_and_Replace_by_Dictionary extends HasSingle_STRING, ComfyNode<Text_Find_and_Replace_by_Dictionary_input, Text_Find_and_Replace_by_Dictionary_output> {
+          nameInComfy: "Text Find and Replace by Dictionary"
+      }
+      interface Text_Find_and_Replace_by_Dictionary_output {
+          STRING: ComfyNodeOutput<'STRING', 0>,
+      }
+      interface Text_Find_and_Replace_by_Dictionary_input {
+          /** */
+          text: Comfy.Input.STRING
+          dictionary: Comfy.Input.DICT
+          /** default="__" */
+          replacement_key?: Comfy.Input.STRING
+          /** default=0 min=18446744073709552000 max=18446744073709552000 */
+          seed?: Comfy.Input.INT
+      }
+      interface Text_Find_and_Replace_Input extends HasSingle_STRING, HasSingle_NUMBER, HasSingle_FLOAT, HasSingle_INT, ComfyNode<Text_Find_and_Replace_Input_input, Text_Find_and_Replace_Input_output> {
+          nameInComfy: "Text Find and Replace Input"
+      }
+      interface Text_Find_and_Replace_Input_output {
+          result_text: ComfyNodeOutput<'STRING', 0>,
+          replacement_count_number: ComfyNodeOutput<'NUMBER', 1>,
+          replacement_count_float: ComfyNodeOutput<'FLOAT', 2>,
+          replacement_count_int: ComfyNodeOutput<'INT', 3>,
+      }
+      interface Text_Find_and_Replace_Input_input {
+          /** */
+          text: Comfy.Input.STRING
+          /** */
+          find: Comfy.Input.STRING
+          /** */
+          replace: Comfy.Input.STRING
+      }
+      interface Text_Find_and_Replace extends HasSingle_STRING, HasSingle_NUMBER, HasSingle_FLOAT, HasSingle_INT, ComfyNode<Text_Find_and_Replace_input, Text_Find_and_Replace_output> {
+          nameInComfy: "Text Find and Replace"
+      }
+      interface Text_Find_and_Replace_output {
+          result_text: ComfyNodeOutput<'STRING', 0>,
+          replacement_count_number: ComfyNodeOutput<'NUMBER', 1>,
+          replacement_count_float: ComfyNodeOutput<'FLOAT', 2>,
+          replacement_count_int: ComfyNodeOutput<'INT', 3>,
+      }
+      interface Text_Find_and_Replace_input {
+          /** */
+          text: Comfy.Input.STRING
+          /** default="" */
+          find?: Comfy.Input.STRING
+          /** default="" */
+          replace?: Comfy.Input.STRING
+      }
+      interface Text_Find extends HasSingle_BOOLEAN, ComfyNode<Text_Find_input, Text_Find_output> {
+          nameInComfy: "Text Find"
+      }
+      interface Text_Find_output {
+          found: ComfyNodeOutput<'BOOLEAN', 0>,
+      }
+      interface Text_Find_input {
+          /** */
+          text: Comfy.Input.STRING
+          /** default="" */
+          substring?: Comfy.Input.STRING
+          /** default="" */
+          pattern?: Comfy.Input.STRING
+      }
+      interface Text_Input_Switch extends HasSingle_STRING, ComfyNode<Text_Input_Switch_input, Text_Input_Switch_output> {
+          nameInComfy: "Text Input Switch"
+      }
+      interface Text_Input_Switch_output {
+          STRING: ComfyNodeOutput<'STRING', 0>,
+      }
+      interface Text_Input_Switch_input {
+          /** */
+          text_a: Comfy.Input.STRING
+          /** */
+          text_b: Comfy.Input.STRING
+          /** */
+          boolean: Comfy.Input.BOOLEAN
+      }
+      interface Text_List extends HasSingle_LIST, ComfyNode<Text_List_input, Text_List_output> {
+          nameInComfy: "Text List"
+      }
+      interface Text_List_output {
+          LIST: ComfyNodeOutput<'LIST', 0>,
+      }
+      interface Text_List_input {
+          /** */
+          text_a?: Comfy.Input.STRING
+          /** */
+          text_b?: Comfy.Input.STRING
+          /** */
+          text_c?: Comfy.Input.STRING
+          /** */
+          text_d?: Comfy.Input.STRING
+          /** */
+          text_e?: Comfy.Input.STRING
+          /** */
+          text_f?: Comfy.Input.STRING
+          /** */
+          text_g?: Comfy.Input.STRING
+      }
+      interface Text_List_Concatenate extends HasSingle_LIST, ComfyNode<Text_List_Concatenate_input, Text_List_Concatenate_output> {
+          nameInComfy: "Text List Concatenate"
+      }
+      interface Text_List_Concatenate_output {
+          LIST: ComfyNodeOutput<'LIST', 0>,
+      }
+      interface Text_List_Concatenate_input {
+          /** */
+          list_a?: Comfy.Input.LIST
+          /** */
+          list_b?: Comfy.Input.LIST
+          /** */
+          list_c?: Comfy.Input.LIST
+          /** */
+          list_d?: Comfy.Input.LIST
+      }
+      interface Text_List_to_Text extends HasSingle_STRING, ComfyNode<Text_List_to_Text_input, Text_List_to_Text_output> {
+          nameInComfy: "Text List to Text"
+      }
+      interface Text_List_to_Text_output {
+          STRING: ComfyNodeOutput<'STRING', 0>,
+      }
+      interface Text_List_to_Text_input {
+          /** default=", " */
+          delimiter?: Comfy.Input.STRING
+          /** */
+          text_list: Comfy.Input.LIST
+      }
+      interface Text_Load_Line_From_File extends HasSingle_STRING, HasSingle_DICT, ComfyNode<Text_Load_Line_From_File_input, Text_Load_Line_From_File_output> {
+          nameInComfy: "Text Load Line From File"
+      }
+      interface Text_Load_Line_From_File_output {
+          line_text: ComfyNodeOutput<'STRING', 0>,
+          dictionary: ComfyNodeOutput<'DICT', 1>,
+      }
+      interface Text_Load_Line_From_File_input {
+          /** default="" */
+          file_path?: Comfy.Input.STRING
+          /** default="[filename]" */
+          dictionary_name?: Comfy.Input.STRING
+          /** default="TextBatch" */
+          label?: Comfy.Input.STRING
+          mode: Comfy.Union.E_351309fb3b96cf7fb7bd0b7102f920b1744bbcec
+          /** default=0 min=undefined step=1 */
+          index?: Comfy.Input.INT
+          /** */
+          multiline_text?: Comfy.Input.STRING
+      }
+      interface Text_Multiline extends HasSingle_STRING, ComfyNode<Text_Multiline_input, Text_Multiline_output> {
+          nameInComfy: "Text Multiline"
+      }
+      interface Text_Multiline_output {
+          STRING: ComfyNodeOutput<'STRING', 0>,
+      }
+      interface Text_Multiline_input {
+          /** default="" */
+          text?: Comfy.Input.STRING
+      }
+      interface Text_Multiline_$1Code_Compatible$2 extends HasSingle_STRING, ComfyNode<Text_Multiline_$1Code_Compatible$2_input, Text_Multiline_$1Code_Compatible$2_output> {
+          nameInComfy: "Text Multiline (Code Compatible)"
+      }
+      interface Text_Multiline_$1Code_Compatible$2_output {
+          STRING: ComfyNodeOutput<'STRING', 0>,
+      }
+      interface Text_Multiline_$1Code_Compatible$2_input {
+          /** default="" */
+          text?: Comfy.Input.STRING
+      }
+      interface Text_Parse_A1111_Embeddings extends HasSingle_STRING, ComfyNode<Text_Parse_A1111_Embeddings_input, Text_Parse_A1111_Embeddings_output> {
+          nameInComfy: "Text Parse A1111 Embeddings"
+      }
+      interface Text_Parse_A1111_Embeddings_output {
+          STRING: ComfyNodeOutput<'STRING', 0>,
+      }
+      interface Text_Parse_A1111_Embeddings_input {
+          /** */
+          text: Comfy.Input.STRING
+      }
+      interface Text_Parse_Noodle_Soup_Prompts extends HasSingle_STRING, ComfyNode<Text_Parse_Noodle_Soup_Prompts_input, Text_Parse_Noodle_Soup_Prompts_output> {
+          nameInComfy: "Text Parse Noodle Soup Prompts"
+      }
+      interface Text_Parse_Noodle_Soup_Prompts_output {
+          STRING: ComfyNodeOutput<'STRING', 0>,
+      }
+      interface Text_Parse_Noodle_Soup_Prompts_input {
+          mode: Comfy.Union.E_46b521739cab20490e0368732c3787b937bb6d33
+          /** default="__" */
+          noodle_key?: Comfy.Input.STRING
+          /** default=0 min=18446744073709552000 max=18446744073709552000 */
+          seed?: Comfy.Input.INT
+          /** */
+          text: Comfy.Input.STRING
+      }
+      interface Text_Parse_Tokens extends HasSingle_STRING, ComfyNode<Text_Parse_Tokens_input, Text_Parse_Tokens_output> {
+          nameInComfy: "Text Parse Tokens"
+      }
+      interface Text_Parse_Tokens_output {
+          STRING: ComfyNodeOutput<'STRING', 0>,
+      }
+      interface Text_Parse_Tokens_input {
+          /** */
+          text: Comfy.Input.STRING
+      }
+      interface Text_Random_Line extends HasSingle_STRING, ComfyNode<Text_Random_Line_input, Text_Random_Line_output> {
+          nameInComfy: "Text Random Line"
+      }
+      interface Text_Random_Line_output {
+          STRING: ComfyNodeOutput<'STRING', 0>,
+      }
+      interface Text_Random_Line_input {
+          /** */
+          text: Comfy.Input.STRING
+          /** default=0 min=18446744073709552000 max=18446744073709552000 */
+          seed?: Comfy.Input.INT
+      }
+      interface Text_Random_Prompt extends HasSingle_STRING, ComfyNode<Text_Random_Prompt_input, Text_Random_Prompt_output> {
+          nameInComfy: "Text Random Prompt"
+      }
+      interface Text_Random_Prompt_output {
+          STRING: ComfyNodeOutput<'STRING', 0>,
+      }
+      interface Text_Random_Prompt_input {
+          /** */
+          search_seed: Comfy.Input.STRING
+      }
+      interface Text_String extends ComfyNode<Text_String_input, Text_String_output> {
+          nameInComfy: "Text String"
+      }
+      interface Text_String_output {
+          TEXT: ComfyNodeOutput<'STRING', 0>,
+          TEXT_B: ComfyNodeOutput<'STRING', 1>,
+          TEXT_C: ComfyNodeOutput<'STRING', 2>,
+          TEXT_D: ComfyNodeOutput<'STRING', 3>,
+      }
+      interface Text_String_input {
+          /** default="" */
+          text?: Comfy.Input.STRING
+          /** default="" */
+          text_b?: Comfy.Input.STRING
+          /** default="" */
+          text_c?: Comfy.Input.STRING
+          /** default="" */
+          text_d?: Comfy.Input.STRING
+      }
+      interface Text_Contains extends HasSingle_BOOLEAN, ComfyNode<Text_Contains_input, Text_Contains_output> {
+          nameInComfy: "Text Contains"
+      }
+      interface Text_Contains_output {
+          BOOLEAN: ComfyNodeOutput<'BOOLEAN', 0>,
+      }
+      interface Text_Contains_input {
+          /** default="" */
+          text?: Comfy.Input.STRING
+          /** default="" */
+          sub_text?: Comfy.Input.STRING
+          /** default=true */
+          case_insensitive?: Comfy.Input.BOOLEAN
+      }
+      interface Text_Shuffle extends HasSingle_STRING, ComfyNode<Text_Shuffle_input, Text_Shuffle_output> {
+          nameInComfy: "Text Shuffle"
+      }
+      interface Text_Shuffle_output {
+          STRING: ComfyNodeOutput<'STRING', 0>,
+      }
+      interface Text_Shuffle_input {
+          /** */
+          text: Comfy.Input.STRING
+          /** default="," */
+          separator?: Comfy.Input.STRING
+          /** default=0 min=18446744073709552000 max=18446744073709552000 */
+          seed?: Comfy.Input.INT
+      }
+      interface Text_Sort extends HasSingle_STRING, ComfyNode<Text_Sort_input, Text_Sort_output> {
+          nameInComfy: "Text Sort"
+      }
+      interface Text_Sort_output {
+          STRING: ComfyNodeOutput<'STRING', 0>,
+      }
+      interface Text_Sort_input {
+          /** */
+          text: Comfy.Input.STRING
+          /** default=", " */
+          separator?: Comfy.Input.STRING
+      }
+      interface Text_to_Conditioning extends HasSingle_CONDITIONING, ComfyNode<Text_to_Conditioning_input, Text_to_Conditioning_output> {
+          nameInComfy: "Text to Conditioning"
+      }
+      interface Text_to_Conditioning_output {
+          CONDITIONING: ComfyNodeOutput<'CONDITIONING', 0>,
+      }
+      interface Text_to_Conditioning_input {
+          clip: Comfy.Input.CLIP
+          /** */
+          text: Comfy.Input.STRING
+      }
+      interface Text_to_Console extends HasSingle_STRING, ComfyNode<Text_to_Console_input, Text_to_Console_output> {
+          nameInComfy: "Text to Console"
+      }
+      interface Text_to_Console_output {
+          STRING: ComfyNodeOutput<'STRING', 0>,
+      }
+      interface Text_to_Console_input {
+          /** */
+          text: Comfy.Input.STRING
+          /** default="Text Output" */
+          label?: Comfy.Input.STRING
+      }
+      interface Text_to_Number extends HasSingle_NUMBER, ComfyNode<Text_to_Number_input, Text_to_Number_output> {
+          nameInComfy: "Text to Number"
+      }
+      interface Text_to_Number_output {
+          NUMBER: ComfyNodeOutput<'NUMBER', 0>,
+      }
+      interface Text_to_Number_input {
+          /** */
+          text: Comfy.Input.STRING
+      }
+      interface Text_to_String extends HasSingle_STRING, ComfyNode<Text_to_String_input, Text_to_String_output> {
+          nameInComfy: "Text to String"
+      }
+      interface Text_to_String_output {
+          STRING: ComfyNodeOutput<'STRING', 0>,
+      }
+      interface Text_to_String_input {
+          /** */
+          text: Comfy.Input.STRING
+      }
+      interface Text_String_Truncate extends ComfyNode<Text_String_Truncate_input, Text_String_Truncate_output> {
+          nameInComfy: "Text String Truncate"
+      }
+      interface Text_String_Truncate_output {
+          TEXT: ComfyNodeOutput<'STRING', 0>,
+          TEXT_B: ComfyNodeOutput<'STRING', 1>,
+          TEXT_C: ComfyNodeOutput<'STRING', 2>,
+          TEXT_D: ComfyNodeOutput<'STRING', 3>,
+      }
+      interface Text_String_Truncate_input {
+          /** */
+          text: Comfy.Input.STRING
+          truncate_by: Comfy.Union.E_1f3e30a386f413ad2817cc490b9f27b4e1166fe7
+          truncate_from: Comfy.Union.E_bd7732af436a46296a84dc5aa8698624101e3749
+          /** default=10 min=99999999 max=99999999 step=1 */
+          truncate_to?: Comfy.Input.INT
+          /** */
+          text_b?: Comfy.Input.STRING
+          /** */
+          text_c?: Comfy.Input.STRING
+          /** */
+          text_d?: Comfy.Input.STRING
+      }
+      interface True_Random$5org_Number_Generator extends HasSingle_NUMBER, HasSingle_FLOAT, HasSingle_INT, ComfyNode<True_Random$5org_Number_Generator_input, True_Random$5org_Number_Generator_output> {
+          nameInComfy: "True Random.org Number Generator"
+      }
+      interface True_Random$5org_Number_Generator_output {
+          NUMBER: ComfyNodeOutput<'NUMBER', 0>,
+          FLOAT: ComfyNodeOutput<'FLOAT', 1>,
+          INT: ComfyNodeOutput<'INT', 2>,
+      }
+      interface True_Random$5org_Number_Generator_input {
+          /** default="00000000-0000-0000-0000-000000000000" */
+          api_key?: Comfy.Input.STRING
+          /** default=0 min=18446744073709552000 max=18446744073709552000 */
+          minimum?: Comfy.Input.FLOAT
+          /** default=10000000 min=18446744073709552000 max=18446744073709552000 */
+          maximum?: Comfy.Input.FLOAT
+          mode: Comfy.Union.E_1d09df0c3ce1b4556d07af26e593d4033efc639b
+      }
+      interface unCLIP_Checkpoint_Loader extends HasSingle_MODEL, HasSingle_CLIP, HasSingle_VAE, HasSingle_CLIP_VISION, HasSingle_STRING, ComfyNode<unCLIP_Checkpoint_Loader_input, unCLIP_Checkpoint_Loader_output> {
+          nameInComfy: "unCLIP Checkpoint Loader"
+      }
+      interface unCLIP_Checkpoint_Loader_output {
+          MODEL: ComfyNodeOutput<'MODEL', 0>,
+          CLIP: ComfyNodeOutput<'CLIP', 1>,
+          VAE: ComfyNodeOutput<'VAE', 2>,
+          CLIP_VISION: ComfyNodeOutput<'CLIP_VISION', 3>,
+          NAME_STRING: ComfyNodeOutput<'STRING', 4>,
+      }
+      interface unCLIP_Checkpoint_Loader_input {
+          ckpt_name: Comfy.Union.E_CkptName
+      }
+      interface Upscale_Model_Loader extends HasSingle_UPSCALE_MODEL, HasSingle_STRING, ComfyNode<Upscale_Model_Loader_input, Upscale_Model_Loader_output> {
+          nameInComfy: "Upscale Model Loader"
+      }
+      interface Upscale_Model_Loader_output {
+          UPSCALE_MODEL: ComfyNodeOutput<'UPSCALE_MODEL', 0>,
+          MODEL_NAME_TEXT: ComfyNodeOutput<'STRING', 1>,
+      }
+      interface Upscale_Model_Loader_input {
+          model_name: Comfy.Union.E_0a165440b634143ee9b4b1d88e03fb1a11863849
+      }
+      interface Upscale_Model_Switch extends HasSingle_UPSCALE_MODEL, ComfyNode<Upscale_Model_Switch_input, Upscale_Model_Switch_output> {
+          nameInComfy: "Upscale Model Switch"
+      }
+      interface Upscale_Model_Switch_output {
+          UPSCALE_MODEL: ComfyNodeOutput<'UPSCALE_MODEL', 0>,
+      }
+      interface Upscale_Model_Switch_input {
+          upscale_model_a: Comfy.Input.UPSCALE_MODEL
+          upscale_model_b: Comfy.Input.UPSCALE_MODEL
+          /** */
+          boolean: Comfy.Input.BOOLEAN
+      }
+      interface Write_to_GIF extends HasSingle_IMAGE, ComfyNode<Write_to_GIF_input, Write_to_GIF_output> {
+          nameInComfy: "Write to GIF"
+      }
+      interface Write_to_GIF_output {
+          image_pass: ComfyNodeOutput<'IMAGE', 0>,
+          filepath_text: ComfyNodeOutput<'STRING', 1>,
+          filename_text: ComfyNodeOutput<'STRING', 2>,
+      }
+      interface Write_to_GIF_input {
+          image: Comfy.Input.IMAGE
+          /** default=30 min=60 max=60 step=1 */
+          transition_frames?: Comfy.Input.INT
+          /** default=2500 min=60000 max=60000 step=0.1 */
+          image_delay_ms?: Comfy.Input.FLOAT
+          /** default=0.1 min=60000 max=60000 step=0.1 */
+          duration_ms?: Comfy.Input.FLOAT
+          /** default=0 min=100 max=100 step=1 */
+          loops?: Comfy.Input.INT
+          /** default=512 min=1280 max=1280 step=1 */
+          max_size?: Comfy.Input.INT
+          /** default="/home/runner/ComfyUI/output" */
+          output_path?: Comfy.Input.STRING
+          /** default="morph_writer" */
+          filename?: Comfy.Input.STRING
+      }
+      interface Write_to_Video extends HasSingle_IMAGE, ComfyNode<Write_to_Video_input, Write_to_Video_output> {
+          nameInComfy: "Write to Video"
+      }
+      interface Write_to_Video_output {
+          IMAGE_PASS: ComfyNodeOutput<'IMAGE', 0>,
+          filepath_text: ComfyNodeOutput<'STRING', 1>,
+          filename_text: ComfyNodeOutput<'STRING', 2>,
+      }
+      interface Write_to_Video_input {
+          image: Comfy.Input.IMAGE
+          /** default=30 min=120 max=120 step=1 */
+          transition_frames?: Comfy.Input.INT
+          /** default=2.5 min=60000 max=60000 step=0.1 */
+          image_delay_sec?: Comfy.Input.FLOAT
+          /** default=30 min=60 max=60 step=1 */
+          fps?: Comfy.Input.INT
+          /** default=512 min=1920 max=1920 step=1 */
+          max_size?: Comfy.Input.INT
+          /** default="./ComfyUI/output" */
+          output_path?: Comfy.Input.STRING
+          /** default="comfy_writer" */
+          filename?: Comfy.Input.STRING
+          codec: Comfy.Union.E_077330280092fb42c54b5360bc8723312fb6fd1d
+      }
+      interface VAE_Input_Switch extends HasSingle_VAE, ComfyNode<VAE_Input_Switch_input, VAE_Input_Switch_output> {
+          nameInComfy: "VAE Input Switch"
+      }
+      interface VAE_Input_Switch_output {
+          VAE: ComfyNodeOutput<'VAE', 0>,
+      }
+      interface VAE_Input_Switch_input {
+          vae_a: Comfy.Input.VAE
+          vae_b: Comfy.Input.VAE
+          /** */
+          boolean: Comfy.Input.BOOLEAN
+      }
+      interface Video_Dump_Frames extends HasSingle_STRING, HasSingle_NUMBER, ComfyNode<Video_Dump_Frames_input, Video_Dump_Frames_output> {
+          nameInComfy: "Video Dump Frames"
+      }
+      interface Video_Dump_Frames_output {
+          output_path: ComfyNodeOutput<'STRING', 0>,
+          processed_count: ComfyNodeOutput<'NUMBER', 1>,
+      }
+      interface Video_Dump_Frames_input {
+          /** default="./ComfyUI/input/MyVideo.mp4" */
+          video_path?: Comfy.Input.STRING
+          /** default="./ComfyUI/input/MyVideo" */
+          output_path?: Comfy.Input.STRING
+          /** default="frame_" */
+          prefix?: Comfy.Input.STRING
+          /** default=4 min=8 max=8 step=1 */
+          filenumber_digits?: Comfy.Input.INT
+          extension: Comfy.Union.E_ddb8b4788a58dbca6274fd750ed1a1d421027721
+      }
+      interface CLIPSEG2 extends HasSingle_IMAGE, ComfyNode<CLIPSEG2_input, CLIPSEG2_output> {
+          nameInComfy: "CLIPSEG2"
+      }
+      interface CLIPSEG2_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface CLIPSEG2_input {
+          image: Comfy.Input.IMAGE
+          /** default="" */
+          text?: Comfy.Input.STRING
+          /** default=false */
+          use_cuda?: Comfy.Input.BOOLEAN
+          clipseg_model?: Comfy.Input.CLIPSEG_MODEL
+      }
+   }
+
    // custom_nodes.ComfyUI_IPAdapter_plus
    namespace Comfy.Custom.IPAdapter_plus {
       interface Nodes {
@@ -5072,7 +8723,7 @@ declare global {
           params_5?: Comfy.Input.IPADAPTER_PARAMS
       }
    }
-   
+
    // custom_nodes.comfyui_controlnet_aux
    namespace Comfy.Custom.controlnet_aux {
       interface Nodes {
@@ -6122,7 +9773,267 @@ declare global {
           text?: Comfy.Input.STRING
       }
    }
-   
+
+   // custom_nodes.ComfyUI-Marigold
+   namespace Comfy.Custom.Marigold {
+      interface Nodes {
+         /**
+          *
+          * Diffusion-based monocular depth estimation:
+          * https://github.com/prs-eth/Marigold
+          *
+          * Uses Diffusers 0.28.0 Marigold pipelines.
+          * Models are automatically downloaded to
+          * ComfyUI/models/diffusers -folder
+          *
+          * category="Marigold" name="MarigoldModelLoader" output=[marigold_model]
+         **/
+         MarigoldModelLoader(p: MarigoldModelLoader_input, meta?: ComfyNodeMetadata): MarigoldModelLoader
+         /**
+          *
+          * Diffusion-based monocular depth estimation:
+          * https://github.com/prs-eth/Marigold
+          *
+          * Uses Diffusers 0.28.0 Marigold pipelines.
+          *
+          * category="Marigold" name="MarigoldDepthEstimation_v2" output=[image]
+         **/
+         MarigoldDepthEstimation$_v2(p: MarigoldDepthEstimation$_v2_input, meta?: ComfyNodeMetadata): MarigoldDepthEstimation$_v2
+         /**
+          *
+          * Diffusion-based monocular depth estimation:
+          * https://github.com/prs-eth/Marigold
+          *
+          * Uses Diffusers 0.28.0 Marigold pipelines.
+          * This node uses the previous frame as init latent to
+          * smooth out the video.
+          *
+          * category="Marigold" name="MarigoldDepthEstimation_v2_video" output=[image]
+         **/
+         MarigoldDepthEstimation$_v2$_video(p: MarigoldDepthEstimation$_v2$_video_input, meta?: ComfyNodeMetadata): MarigoldDepthEstimation$_v2$_video
+         /**
+          *
+          * Diffusion-based monocular depth estimation:
+          * https://github.com/prs-eth/Marigold
+          *
+          * - denoise_steps: steps per depth map, increase for accuracy in exchange of processing time
+          * - n_repeat: amount of iterations to be ensembled into single depth map
+          * - n_repeat_batch_size: how many of the n_repeats are processed as a batch,
+          * if you have the VRAM this can match the n_repeats for faster processing
+          * - model: Marigold or it's LCM version marigold-lcm-v1-0
+          * For the LCM model use around 4 steps and the LCMScheduler
+          * - scheduler: Different schedulers give bit different results
+          * - invert: marigold by default produces depth map where black is front,
+          * for controlnets etc. we want the opposite.
+          * - regularizer_strength, reduction_method, max_iter, tol (tolerance) are settings
+          * for the ensembling process, generally do not touch.
+          * - use_fp16: if true, use fp16, if false use fp32
+          * fp16 uses much less VRAM, but in some cases can lead to loss of quality.
+          *
+          * category="Marigold" name="MarigoldDepthEstimation" output=[ensembled_image]
+         **/
+         MarigoldDepthEstimation(p: MarigoldDepthEstimation_input, meta?: ComfyNodeMetadata): MarigoldDepthEstimation
+         /**
+          *
+          * Diffusion-based monocular depth estimation:
+          * https://github.com/prs-eth/Marigold
+          *
+          * This node is experimental version that includes optical flow
+          * for video consistency between frames.
+          *
+          * - denoise_steps: steps per depth map, increase for accuracy in exchange of processing time
+          * - n_repeat: amount of iterations to be ensembled into single depth map
+          * - n_repeat_batch_size: how many of the n_repeats are processed as a batch,
+          * if you have the VRAM this can match the n_repeats for faster processing
+          * - model: Marigold or it's LCM version marigold-lcm-v1-0
+          * For the LCM model use around 4 steps and the LCMScheduler
+          * - scheduler: Different schedulers give bit different results
+          * - invert: marigold by default produces depth map where black is front,
+          * for controlnets etc. we want the opposite.
+          * - regularizer_strength, reduction_method, max_iter, tol (tolerance) are settings
+          * for the ensembling process, generally do not touch.
+          *
+          * category="Marigold" name="MarigoldDepthEstimationVideo" output=[ensembled_image]
+         **/
+         MarigoldDepthEstimationVideo(p: MarigoldDepthEstimationVideo_input, meta?: ComfyNodeMetadata): MarigoldDepthEstimationVideo
+          /** category="Marigold" name="ColorizeDepthmap" output=[image] */
+         ColorizeDepthmap(p: ColorizeDepthmap_input, meta?: ComfyNodeMetadata): ColorizeDepthmap
+          /** category="Marigold" name="SaveImageOpenEXR" output=[file_url] */
+         SaveImageOpenEXR(p: SaveImageOpenEXR_input, meta?: ComfyNodeMetadata): SaveImageOpenEXR
+          /** category="Marigold" name="RemapDepth" output=[IMAGE] */
+         RemapDepth(p: RemapDepth_input, meta?: ComfyNodeMetadata): RemapDepth
+      }
+      interface MarigoldModelLoader extends HasSingle_MARIGOLDMODEL, ComfyNode<MarigoldModelLoader_input, MarigoldModelLoader_output> {
+          nameInComfy: "MarigoldModelLoader"
+      }
+      interface MarigoldModelLoader_output {
+          marigold_model: ComfyNodeOutput<'MARIGOLDMODEL', 0>,
+      }
+      interface MarigoldModelLoader_input {
+          /** default="marigold-lcm-v1-0" */
+          model?: Comfy.Union.E_0570c9929a05552091968538314c9b91153a0128
+      }
+      interface MarigoldDepthEstimation$_v2 extends HasSingle_IMAGE, ComfyNode<MarigoldDepthEstimation$_v2_input, MarigoldDepthEstimation$_v2_output> {
+          nameInComfy: "MarigoldDepthEstimation_v2"
+      }
+      interface MarigoldDepthEstimation$_v2_output {
+          image: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface MarigoldDepthEstimation$_v2_input {
+          marigold_model: Comfy.Input.MARIGOLDMODEL
+          image: Comfy.Input.IMAGE
+          /** default=123 min=18446744073709552000 max=18446744073709552000 step=1 */
+          seed?: Comfy.Input.INT
+          /** default=4 min=4096 max=4096 step=1 */
+          denoise_steps?: Comfy.Input.INT
+          /** default=3 min=4096 max=4096 step=1 */
+          ensemble_size?: Comfy.Input.INT
+          /** default=768 min=4096 max=4096 step=8 */
+          processing_resolution?: Comfy.Input.INT
+          /** default="LCMScheduler" */
+          scheduler?: Comfy.Union.E_2e7bd488081020be1c7147a13ef7109a71726d85
+          /** default=false */
+          use_taesd_vae?: Comfy.Input.BOOLEAN
+          /** default=false */
+          keep_model_loaded?: Comfy.Input.BOOLEAN
+      }
+      interface MarigoldDepthEstimation$_v2$_video extends HasSingle_IMAGE, ComfyNode<MarigoldDepthEstimation$_v2$_video_input, MarigoldDepthEstimation$_v2$_video_output> {
+          nameInComfy: "MarigoldDepthEstimation_v2_video"
+      }
+      interface MarigoldDepthEstimation$_v2$_video_output {
+          image: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface MarigoldDepthEstimation$_v2$_video_input {
+          marigold_model: Comfy.Input.MARIGOLDMODEL
+          images: Comfy.Input.IMAGE
+          /** default=123 min=18446744073709552000 max=18446744073709552000 step=1 */
+          seed?: Comfy.Input.INT
+          /** default=4 min=4096 max=4096 step=1 */
+          denoise_steps?: Comfy.Input.INT
+          /** default=768 min=4096 max=4096 step=8 */
+          processing_resolution?: Comfy.Input.INT
+          /** default="LCMScheduler" */
+          scheduler?: Comfy.Union.E_2e7bd488081020be1c7147a13ef7109a71726d85
+          /** default=0.1 min=1 max=1 step=0.01 */
+          blend_factor?: Comfy.Input.FLOAT
+          /** default=true */
+          use_taesd_vae?: Comfy.Input.BOOLEAN
+          /** default=false */
+          keep_model_loaded?: Comfy.Input.BOOLEAN
+      }
+      interface MarigoldDepthEstimation extends HasSingle_IMAGE, ComfyNode<MarigoldDepthEstimation_input, MarigoldDepthEstimation_output> {
+          nameInComfy: "MarigoldDepthEstimation"
+      }
+      interface MarigoldDepthEstimation_output {
+          ensembled_image: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface MarigoldDepthEstimation_input {
+          image: Comfy.Input.IMAGE
+          /** default=123 min=18446744073709552000 max=18446744073709552000 step=1 */
+          seed?: Comfy.Input.INT
+          /** default=10 min=4096 max=4096 step=1 */
+          denoise_steps?: Comfy.Input.INT
+          /** default=10 min=4096 max=4096 step=1 */
+          n_repeat?: Comfy.Input.INT
+          /** default=0.02 min=4096 max=4096 step=0.001 */
+          regularizer_strength?: Comfy.Input.FLOAT
+          /** default="median" */
+          reduction_method?: Comfy.Union.E_248755adc763cd425aa60fbe4ddc7e636afb868f
+          /** default=5 min=4096 max=4096 step=1 */
+          max_iter?: Comfy.Input.INT
+          /** default=0.001 min=0.1 max=0.1 step=0.000001 */
+          tol?: Comfy.Input.FLOAT
+          /** default=true */
+          invert?: Comfy.Input.BOOLEAN
+          /** default=true */
+          keep_model_loaded?: Comfy.Input.BOOLEAN
+          /** default=2 min=4096 max=4096 step=1 */
+          n_repeat_batch_size?: Comfy.Input.INT
+          /** default=true */
+          use_fp16?: Comfy.Input.BOOLEAN
+          /** default="DDIMScheduler" */
+          scheduler?: Comfy.Union.E_1094d9b71fc3f2b7cbb07273727f88062feaacbb
+          /** default=true */
+          normalize?: Comfy.Input.BOOLEAN
+          /** default="Marigold" */
+          model?: Comfy.Union.E_137d410291846100389520fe8f2fbf946128dab4
+      }
+      interface MarigoldDepthEstimationVideo extends HasSingle_IMAGE, ComfyNode<MarigoldDepthEstimationVideo_input, MarigoldDepthEstimationVideo_output> {
+          nameInComfy: "MarigoldDepthEstimationVideo"
+      }
+      interface MarigoldDepthEstimationVideo_output {
+          ensembled_image: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface MarigoldDepthEstimationVideo_input {
+          image: Comfy.Input.IMAGE
+          /** default=123 min=18446744073709552000 max=18446744073709552000 step=1 */
+          seed?: Comfy.Input.INT
+          /** default=4 min=4096 max=4096 step=1 */
+          first_frame_denoise_steps?: Comfy.Input.INT
+          /** default=1 min=4096 max=4096 step=1 */
+          first_frame_n_repeat?: Comfy.Input.INT
+          /** default=1 min=4096 max=4096 step=1 */
+          n_repeat_batch_size?: Comfy.Input.INT
+          /** default=true */
+          invert?: Comfy.Input.BOOLEAN
+          /** default=true */
+          keep_model_loaded?: Comfy.Input.BOOLEAN
+          /** default="DEISMultistepScheduler" */
+          scheduler?: Comfy.Union.E_1094d9b71fc3f2b7cbb07273727f88062feaacbb
+          /** default=true */
+          normalize?: Comfy.Input.BOOLEAN
+          /** default=4 min=4096 max=4096 step=1 */
+          denoise_steps?: Comfy.Input.INT
+          /** default=true */
+          flow_warping?: Comfy.Input.BOOLEAN
+          /** default=0.3 min=1 max=1 step=0.05 */
+          flow_depth_mix?: Comfy.Input.FLOAT
+          /** default=0.5 min=1 max=1 step=0.01 */
+          noise_ratio?: Comfy.Input.FLOAT
+          /** default="fp16" */
+          dtype?: Comfy.Union.E_df621c6407a123a6a816c747cbfb7e175b43ea4b
+          /** default="Marigold" */
+          model?: Comfy.Union.E_137d410291846100389520fe8f2fbf946128dab4
+      }
+      interface ColorizeDepthmap extends HasSingle_IMAGE, ComfyNode<ColorizeDepthmap_input, ColorizeDepthmap_output> {
+          nameInComfy: "ColorizeDepthmap"
+      }
+      interface ColorizeDepthmap_output {
+          image: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface ColorizeDepthmap_input {
+          image: Comfy.Input.IMAGE
+          /** default="Spectral" */
+          colorize_method?: Comfy.Union.E_e09dd9c0b27579d3897e5aa427f3b6842789fb3f
+      }
+      interface SaveImageOpenEXR extends HasSingle_STRING, ComfyNode<SaveImageOpenEXR_input, SaveImageOpenEXR_output> {
+          nameInComfy: "SaveImageOpenEXR"
+      }
+      interface SaveImageOpenEXR_output {
+          file_url: ComfyNodeOutput<'STRING', 0>,
+      }
+      interface SaveImageOpenEXR_input {
+          images: Comfy.Input.IMAGE
+          /** default="ComfyUI_EXR" */
+          filename_prefix?: Comfy.Input.STRING
+      }
+      interface RemapDepth extends HasSingle_IMAGE, ComfyNode<RemapDepth_input, RemapDepth_output> {
+          nameInComfy: "RemapDepth"
+      }
+      interface RemapDepth_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface RemapDepth_input {
+          image: Comfy.Input.IMAGE
+          /** default=0 min=1 max=1 step=0.01 */
+          min?: Comfy.Input.FLOAT
+          /** default=1 min=10 max=10 step=0.01 */
+          max?: Comfy.Input.FLOAT
+          /** default=true */
+          clamp?: Comfy.Input.BOOLEAN
+      }
+   }
+
    // custom_nodes.ComfyUI-Impact-Pack
    namespace Comfy.Custom.Impact_Pack {
       interface Nodes {
@@ -9985,6 +13896,224 @@ declare global {
          "Extra.TorchCompileModel": Comfy.Extra.torch_compile.Nodes['TorchCompileModel']
          "Extra.EmptyMochiLatentVideo": Comfy.Extra.mochi.Nodes['EmptyMochiLatentVideo']
          "Custom.websocket_image_save.SaveImageWebsocket": Comfy.Custom.websocket_image_save.Nodes['SaveImageWebsocket']
+         "Custom.was.BLIP_Model_Loader": Comfy.Custom.was.Nodes['BLIP_Model_Loader']
+         "Custom.was.Blend_Latents": Comfy.Custom.was.Nodes['Blend_Latents']
+         "Custom.was.Bus_Node": Comfy.Custom.was.Nodes['Bus_Node']
+         "Custom.was.Cache_Node": Comfy.Custom.was.Nodes['Cache_Node']
+         "Custom.was.Checkpoint_Loader": Comfy.Custom.was.Nodes['Checkpoint_Loader']
+         "Custom.was.Checkpoint_Loader_$1Simple$2": Comfy.Custom.was.Nodes['Checkpoint_Loader_$1Simple$2']
+         "Custom.was.CLIPTextEncode_$1NSP$2": Comfy.Custom.was.Nodes['CLIPTextEncode_$1NSP$2']
+         "Custom.was.CLIP_Input_Switch": Comfy.Custom.was.Nodes['CLIP_Input_Switch']
+         "Custom.was.CLIP_Vision_Input_Switch": Comfy.Custom.was.Nodes['CLIP_Vision_Input_Switch']
+         "Custom.was.Conditioning_Input_Switch": Comfy.Custom.was.Nodes['Conditioning_Input_Switch']
+         "Custom.was.Constant_Number": Comfy.Custom.was.Nodes['Constant_Number']
+         "Custom.was.Create_Grid_Image": Comfy.Custom.was.Nodes['Create_Grid_Image']
+         "Custom.was.Create_Grid_Image_from_Batch": Comfy.Custom.was.Nodes['Create_Grid_Image_from_Batch']
+         "Custom.was.Create_Morph_Image": Comfy.Custom.was.Nodes['Create_Morph_Image']
+         "Custom.was.Create_Morph_Image_from_Path": Comfy.Custom.was.Nodes['Create_Morph_Image_from_Path']
+         "Custom.was.Create_Video_from_Path": Comfy.Custom.was.Nodes['Create_Video_from_Path']
+         "Custom.was.CLIPSeg_Masking": Comfy.Custom.was.Nodes['CLIPSeg_Masking']
+         "Custom.was.CLIPSeg_Model_Loader": Comfy.Custom.was.Nodes['CLIPSeg_Model_Loader']
+         "Custom.was.CLIPSeg_Batch_Masking": Comfy.Custom.was.Nodes['CLIPSeg_Batch_Masking']
+         "Custom.was.Convert_Masks_to_Images": Comfy.Custom.was.Nodes['Convert_Masks_to_Images']
+         "Custom.was.Control_Net_Model_Input_Switch": Comfy.Custom.was.Nodes['Control_Net_Model_Input_Switch']
+         "Custom.was.Debug_Number_to_Console": Comfy.Custom.was.Nodes['Debug_Number_to_Console']
+         "Custom.was.Dictionary_to_Console": Comfy.Custom.was.Nodes['Dictionary_to_Console']
+         "Custom.was.Diffusers_Model_Loader": Comfy.Custom.was.Nodes['Diffusers_Model_Loader']
+         "Custom.was.Diffusers_Hub_Model_Down$7Loader": Comfy.Custom.was.Nodes['Diffusers_Hub_Model_Down$7Loader']
+         "Custom.was.Export_API": Comfy.Custom.was.Nodes['Export_API']
+         "Custom.was.Latent_Input_Switch": Comfy.Custom.was.Nodes['Latent_Input_Switch']
+         "Custom.was.Load_Cache": Comfy.Custom.was.Nodes['Load_Cache']
+         "Custom.was.Logic_Boolean": Comfy.Custom.was.Nodes['Logic_Boolean']
+         "Custom.was.Logic_Boolean_Primitive": Comfy.Custom.was.Nodes['Logic_Boolean_Primitive']
+         "Custom.was.Logic_Comparison_OR": Comfy.Custom.was.Nodes['Logic_Comparison_OR']
+         "Custom.was.Logic_Comparison_AND": Comfy.Custom.was.Nodes['Logic_Comparison_AND']
+         "Custom.was.Logic_Comparison_XOR": Comfy.Custom.was.Nodes['Logic_Comparison_XOR']
+         "Custom.was.Logic_NOT": Comfy.Custom.was.Nodes['Logic_NOT']
+         "Custom.was.Lora_Loader": Comfy.Custom.was.Nodes['Lora_Loader']
+         "Custom.was.Hex_to_HSL": Comfy.Custom.was.Nodes['Hex_to_HSL']
+         "Custom.was.HSL_to_Hex": Comfy.Custom.was.Nodes['HSL_to_Hex']
+         "Custom.was.Image_SSAO_$1Ambient_Occlusion$2": Comfy.Custom.was.Nodes['Image_SSAO_$1Ambient_Occlusion$2']
+         "Custom.was.Image_SSDO_$1Direct_Occlusion$2": Comfy.Custom.was.Nodes['Image_SSDO_$1Direct_Occlusion$2']
+         "Custom.was.Image_Analyze": Comfy.Custom.was.Nodes['Image_Analyze']
+         "Custom.was.Image_Aspect_Ratio": Comfy.Custom.was.Nodes['Image_Aspect_Ratio']
+         "Custom.was.Image_Batch": Comfy.Custom.was.Nodes['Image_Batch']
+         "Custom.was.Image_Blank": Comfy.Custom.was.Nodes['Image_Blank']
+         "Custom.was.Image_Blend_by_Mask": Comfy.Custom.was.Nodes['Image_Blend_by_Mask']
+         "Custom.was.Image_Blend": Comfy.Custom.was.Nodes['Image_Blend']
+         "Custom.was.Image_Blending_Mode": Comfy.Custom.was.Nodes['Image_Blending_Mode']
+         "Custom.was.Image_Bloom_Filter": Comfy.Custom.was.Nodes['Image_Bloom_Filter']
+         "Custom.was.Image_Canny_Filter": Comfy.Custom.was.Nodes['Image_Canny_Filter']
+         "Custom.was.Image_Chromatic_Aberration": Comfy.Custom.was.Nodes['Image_Chromatic_Aberration']
+         "Custom.was.Image_Color_Palette": Comfy.Custom.was.Nodes['Image_Color_Palette']
+         "Custom.was.Image_Crop_Face": Comfy.Custom.was.Nodes['Image_Crop_Face']
+         "Custom.was.Image_Crop_Location": Comfy.Custom.was.Nodes['Image_Crop_Location']
+         "Custom.was.Image_Crop_Square_Location": Comfy.Custom.was.Nodes['Image_Crop_Square_Location']
+         "Custom.was.Image_Displacement_Warp": Comfy.Custom.was.Nodes['Image_Displacement_Warp']
+         "Custom.was.Image_Lucy_Sharpen": Comfy.Custom.was.Nodes['Image_Lucy_Sharpen']
+         "Custom.was.Image_Paste_Face": Comfy.Custom.was.Nodes['Image_Paste_Face']
+         "Custom.was.Image_Paste_Crop": Comfy.Custom.was.Nodes['Image_Paste_Crop']
+         "Custom.was.Image_Paste_Crop_by_Location": Comfy.Custom.was.Nodes['Image_Paste_Crop_by_Location']
+         "Custom.was.Image_Pixelate": Comfy.Custom.was.Nodes['Image_Pixelate']
+         "Custom.was.Image_Power_Noise": Comfy.Custom.was.Nodes['Image_Power_Noise']
+         "Custom.was.Image_Dragan_Photography_Filter": Comfy.Custom.was.Nodes['Image_Dragan_Photography_Filter']
+         "Custom.was.Image_Edge_Detection_Filter": Comfy.Custom.was.Nodes['Image_Edge_Detection_Filter']
+         "Custom.was.Image_Film_Grain": Comfy.Custom.was.Nodes['Image_Film_Grain']
+         "Custom.was.Image_Filter_Adjustments": Comfy.Custom.was.Nodes['Image_Filter_Adjustments']
+         "Custom.was.Image_Flip": Comfy.Custom.was.Nodes['Image_Flip']
+         "Custom.was.Image_Gradient_Map": Comfy.Custom.was.Nodes['Image_Gradient_Map']
+         "Custom.was.Image_Generate_Gradient": Comfy.Custom.was.Nodes['Image_Generate_Gradient']
+         "Custom.was.Image_High_Pass_Filter": Comfy.Custom.was.Nodes['Image_High_Pass_Filter']
+         "Custom.was.Image_History_Loader": Comfy.Custom.was.Nodes['Image_History_Loader']
+         "Custom.was.Image_Input_Switch": Comfy.Custom.was.Nodes['Image_Input_Switch']
+         "Custom.was.Image_Levels_Adjustment": Comfy.Custom.was.Nodes['Image_Levels_Adjustment']
+         "Custom.was.Image_Load": Comfy.Custom.was.Nodes['Image_Load']
+         "Custom.was.Image_Median_Filter": Comfy.Custom.was.Nodes['Image_Median_Filter']
+         "Custom.was.Image_Mix_RGB_Channels": Comfy.Custom.was.Nodes['Image_Mix_RGB_Channels']
+         "Custom.was.Image_Monitor_Effects_Filter": Comfy.Custom.was.Nodes['Image_Monitor_Effects_Filter']
+         "Custom.was.Image_Nova_Filter": Comfy.Custom.was.Nodes['Image_Nova_Filter']
+         "Custom.was.Image_Padding": Comfy.Custom.was.Nodes['Image_Padding']
+         "Custom.was.Image_Perlin_Noise": Comfy.Custom.was.Nodes['Image_Perlin_Noise']
+         "Custom.was.Image_Rembg_$1Remove_Background$2": Comfy.Custom.was.Nodes['Image_Rembg_$1Remove_Background$2']
+         "Custom.was.Image_Perlin_Power_Fractal": Comfy.Custom.was.Nodes['Image_Perlin_Power_Fractal']
+         "Custom.was.Image_Remove_Background_$1Alpha$2": Comfy.Custom.was.Nodes['Image_Remove_Background_$1Alpha$2']
+         "Custom.was.Image_Remove_Color": Comfy.Custom.was.Nodes['Image_Remove_Color']
+         "Custom.was.Image_Resize": Comfy.Custom.was.Nodes['Image_Resize']
+         "Custom.was.Image_Rotate": Comfy.Custom.was.Nodes['Image_Rotate']
+         "Custom.was.Image_Rotate_Hue": Comfy.Custom.was.Nodes['Image_Rotate_Hue']
+         "Custom.was.Image_Send_HTTP": Comfy.Custom.was.Nodes['Image_Send_HTTP']
+         "Custom.was.Image_Save": Comfy.Custom.was.Nodes['Image_Save']
+         "Custom.was.Image_Seamless_Texture": Comfy.Custom.was.Nodes['Image_Seamless_Texture']
+         "Custom.was.Image_Select_Channel": Comfy.Custom.was.Nodes['Image_Select_Channel']
+         "Custom.was.Image_Select_Color": Comfy.Custom.was.Nodes['Image_Select_Color']
+         "Custom.was.Image_Shadows_and_Highlights": Comfy.Custom.was.Nodes['Image_Shadows_and_Highlights']
+         "Custom.was.Image_Size_to_Number": Comfy.Custom.was.Nodes['Image_Size_to_Number']
+         "Custom.was.Image_Stitch": Comfy.Custom.was.Nodes['Image_Stitch']
+         "Custom.was.Image_Style_Filter": Comfy.Custom.was.Nodes['Image_Style_Filter']
+         "Custom.was.Image_Threshold": Comfy.Custom.was.Nodes['Image_Threshold']
+         "Custom.was.Image_Tiled": Comfy.Custom.was.Nodes['Image_Tiled']
+         "Custom.was.Image_Transpose": Comfy.Custom.was.Nodes['Image_Transpose']
+         "Custom.was.Image_fDOF_Filter": Comfy.Custom.was.Nodes['Image_fDOF_Filter']
+         "Custom.was.Image_to_Latent_Mask": Comfy.Custom.was.Nodes['Image_to_Latent_Mask']
+         "Custom.was.Image_to_Noise": Comfy.Custom.was.Nodes['Image_to_Noise']
+         "Custom.was.Image_to_Seed": Comfy.Custom.was.Nodes['Image_to_Seed']
+         "Custom.was.Images_to_RGB": Comfy.Custom.was.Nodes['Images_to_RGB']
+         "Custom.was.Images_to_Linear": Comfy.Custom.was.Nodes['Images_to_Linear']
+         "Custom.was.Integer_place_counter": Comfy.Custom.was.Nodes['Integer_place_counter']
+         "Custom.was.Image_Voronoi_Noise_Filter": Comfy.Custom.was.Nodes['Image_Voronoi_Noise_Filter']
+         "Custom.was.KSampler_$1WAS$2": Comfy.Custom.was.Nodes['KSampler_$1WAS$2']
+         "Custom.was.KSampler_Cycle": Comfy.Custom.was.Nodes['KSampler_Cycle']
+         "Custom.was.Latent_Batch": Comfy.Custom.was.Nodes['Latent_Batch']
+         "Custom.was.Latent_Noise_Injection": Comfy.Custom.was.Nodes['Latent_Noise_Injection']
+         "Custom.was.Latent_Size_to_Number": Comfy.Custom.was.Nodes['Latent_Size_to_Number']
+         "Custom.was.Latent_Upscale_by_Factor_$1WAS$2": Comfy.Custom.was.Nodes['Latent_Upscale_by_Factor_$1WAS$2']
+         "Custom.was.Load_Image_Batch": Comfy.Custom.was.Nodes['Load_Image_Batch']
+         "Custom.was.Load_Text_File": Comfy.Custom.was.Nodes['Load_Text_File']
+         "Custom.was.Load_Lora": Comfy.Custom.was.Nodes['Load_Lora']
+         "Custom.was.Lora_Input_Switch": Comfy.Custom.was.Nodes['Lora_Input_Switch']
+         "Custom.was.Masks_Add": Comfy.Custom.was.Nodes['Masks_Add']
+         "Custom.was.Masks_Subtract": Comfy.Custom.was.Nodes['Masks_Subtract']
+         "Custom.was.Mask_Arbitrary_Region": Comfy.Custom.was.Nodes['Mask_Arbitrary_Region']
+         "Custom.was.Mask_Batch_to_Mask": Comfy.Custom.was.Nodes['Mask_Batch_to_Mask']
+         "Custom.was.Mask_Batch": Comfy.Custom.was.Nodes['Mask_Batch']
+         "Custom.was.Mask_Ceiling_Region": Comfy.Custom.was.Nodes['Mask_Ceiling_Region']
+         "Custom.was.Mask_Crop_Dominant_Region": Comfy.Custom.was.Nodes['Mask_Crop_Dominant_Region']
+         "Custom.was.Mask_Crop_Minority_Region": Comfy.Custom.was.Nodes['Mask_Crop_Minority_Region']
+         "Custom.was.Mask_Crop_Region": Comfy.Custom.was.Nodes['Mask_Crop_Region']
+         "Custom.was.Mask_Paste_Region": Comfy.Custom.was.Nodes['Mask_Paste_Region']
+         "Custom.was.Mask_Dilate_Region": Comfy.Custom.was.Nodes['Mask_Dilate_Region']
+         "Custom.was.Mask_Dominant_Region": Comfy.Custom.was.Nodes['Mask_Dominant_Region']
+         "Custom.was.Mask_Erode_Region": Comfy.Custom.was.Nodes['Mask_Erode_Region']
+         "Custom.was.Mask_Fill_Holes": Comfy.Custom.was.Nodes['Mask_Fill_Holes']
+         "Custom.was.Mask_Floor_Region": Comfy.Custom.was.Nodes['Mask_Floor_Region']
+         "Custom.was.Mask_Gaussian_Region": Comfy.Custom.was.Nodes['Mask_Gaussian_Region']
+         "Custom.was.Mask_Invert": Comfy.Custom.was.Nodes['Mask_Invert']
+         "Custom.was.Mask_Minority_Region": Comfy.Custom.was.Nodes['Mask_Minority_Region']
+         "Custom.was.Mask_Smooth_Region": Comfy.Custom.was.Nodes['Mask_Smooth_Region']
+         "Custom.was.Mask_Threshold_Region": Comfy.Custom.was.Nodes['Mask_Threshold_Region']
+         "Custom.was.Masks_Combine_Regions": Comfy.Custom.was.Nodes['Masks_Combine_Regions']
+         "Custom.was.Masks_Combine_Batch": Comfy.Custom.was.Nodes['Masks_Combine_Batch']
+         "Custom.was.MiDaS_Model_Loader": Comfy.Custom.was.Nodes['MiDaS_Model_Loader']
+         "Custom.was.MiDaS_Depth_Approximation": Comfy.Custom.was.Nodes['MiDaS_Depth_Approximation']
+         "Custom.was.MiDaS_Mask_Image": Comfy.Custom.was.Nodes['MiDaS_Mask_Image']
+         "Custom.was.Model_Input_Switch": Comfy.Custom.was.Nodes['Model_Input_Switch']
+         "Custom.was.Number_Counter": Comfy.Custom.was.Nodes['Number_Counter']
+         "Custom.was.Number_Operation": Comfy.Custom.was.Nodes['Number_Operation']
+         "Custom.was.Number_to_Float": Comfy.Custom.was.Nodes['Number_to_Float']
+         "Custom.was.Number_Input_Switch": Comfy.Custom.was.Nodes['Number_Input_Switch']
+         "Custom.was.Number_Input_Condition": Comfy.Custom.was.Nodes['Number_Input_Condition']
+         "Custom.was.Number_Multiple_Of": Comfy.Custom.was.Nodes['Number_Multiple_Of']
+         "Custom.was.Number_PI": Comfy.Custom.was.Nodes['Number_PI']
+         "Custom.was.Number_to_Int": Comfy.Custom.was.Nodes['Number_to_Int']
+         "Custom.was.Number_to_Seed": Comfy.Custom.was.Nodes['Number_to_Seed']
+         "Custom.was.Number_to_String": Comfy.Custom.was.Nodes['Number_to_String']
+         "Custom.was.Number_to_Text": Comfy.Custom.was.Nodes['Number_to_Text']
+         "Custom.was.Boolean_To_Text": Comfy.Custom.was.Nodes['Boolean_To_Text']
+         "Custom.was.Prompt_Styles_Selector": Comfy.Custom.was.Nodes['Prompt_Styles_Selector']
+         "Custom.was.Prompt_Multiple_Styles_Selector": Comfy.Custom.was.Nodes['Prompt_Multiple_Styles_Selector']
+         "Custom.was.Random_Number": Comfy.Custom.was.Nodes['Random_Number']
+         "Custom.was.Save_Text_File": Comfy.Custom.was.Nodes['Save_Text_File']
+         "Custom.was.Seed": Comfy.Custom.was.Nodes['Seed']
+         "Custom.was.Tensor_Batch_to_Image": Comfy.Custom.was.Nodes['Tensor_Batch_to_Image']
+         "Custom.was.BLIP_Analyze_Image": Comfy.Custom.was.Nodes['BLIP_Analyze_Image']
+         "Custom.was.SAM_Model_Loader": Comfy.Custom.was.Nodes['SAM_Model_Loader']
+         "Custom.was.SAM_Parameters": Comfy.Custom.was.Nodes['SAM_Parameters']
+         "Custom.was.SAM_Parameters_Combine": Comfy.Custom.was.Nodes['SAM_Parameters_Combine']
+         "Custom.was.SAM_Image_Mask": Comfy.Custom.was.Nodes['SAM_Image_Mask']
+         "Custom.was.Samples_Passthrough_$1Stat_System$2": Comfy.Custom.was.Nodes['Samples_Passthrough_$1Stat_System$2']
+         "Custom.was.String_to_Text": Comfy.Custom.was.Nodes['String_to_Text']
+         "Custom.was.Image_Bounds": Comfy.Custom.was.Nodes['Image_Bounds']
+         "Custom.was.Inset_Image_Bounds": Comfy.Custom.was.Nodes['Inset_Image_Bounds']
+         "Custom.was.Bounded_Image_Blend": Comfy.Custom.was.Nodes['Bounded_Image_Blend']
+         "Custom.was.Bounded_Image_Blend_with_Mask": Comfy.Custom.was.Nodes['Bounded_Image_Blend_with_Mask']
+         "Custom.was.Bounded_Image_Crop": Comfy.Custom.was.Nodes['Bounded_Image_Crop']
+         "Custom.was.Bounded_Image_Crop_with_Mask": Comfy.Custom.was.Nodes['Bounded_Image_Crop_with_Mask']
+         "Custom.was.Image_Bounds_to_Console": Comfy.Custom.was.Nodes['Image_Bounds_to_Console']
+         "Custom.was.Text_Dictionary_Update": Comfy.Custom.was.Nodes['Text_Dictionary_Update']
+         "Custom.was.Text_Dictionary_Get": Comfy.Custom.was.Nodes['Text_Dictionary_Get']
+         "Custom.was.Text_Dictionary_Convert": Comfy.Custom.was.Nodes['Text_Dictionary_Convert']
+         "Custom.was.Text_Dictionary_New": Comfy.Custom.was.Nodes['Text_Dictionary_New']
+         "Custom.was.Text_Dictionary_Keys": Comfy.Custom.was.Nodes['Text_Dictionary_Keys']
+         "Custom.was.Text_Dictionary_To_Text": Comfy.Custom.was.Nodes['Text_Dictionary_To_Text']
+         "Custom.was.Text_Add_Tokens": Comfy.Custom.was.Nodes['Text_Add_Tokens']
+         "Custom.was.Text_Add_Token_by_Input": Comfy.Custom.was.Nodes['Text_Add_Token_by_Input']
+         "Custom.was.Text_Compare": Comfy.Custom.was.Nodes['Text_Compare']
+         "Custom.was.Text_Concatenate": Comfy.Custom.was.Nodes['Text_Concatenate']
+         "Custom.was.Text_File_History_Loader": Comfy.Custom.was.Nodes['Text_File_History_Loader']
+         "Custom.was.Text_Find_and_Replace_by_Dictionary": Comfy.Custom.was.Nodes['Text_Find_and_Replace_by_Dictionary']
+         "Custom.was.Text_Find_and_Replace_Input": Comfy.Custom.was.Nodes['Text_Find_and_Replace_Input']
+         "Custom.was.Text_Find_and_Replace": Comfy.Custom.was.Nodes['Text_Find_and_Replace']
+         "Custom.was.Text_Find": Comfy.Custom.was.Nodes['Text_Find']
+         "Custom.was.Text_Input_Switch": Comfy.Custom.was.Nodes['Text_Input_Switch']
+         "Custom.was.Text_List": Comfy.Custom.was.Nodes['Text_List']
+         "Custom.was.Text_List_Concatenate": Comfy.Custom.was.Nodes['Text_List_Concatenate']
+         "Custom.was.Text_List_to_Text": Comfy.Custom.was.Nodes['Text_List_to_Text']
+         "Custom.was.Text_Load_Line_From_File": Comfy.Custom.was.Nodes['Text_Load_Line_From_File']
+         "Custom.was.Text_Multiline": Comfy.Custom.was.Nodes['Text_Multiline']
+         "Custom.was.Text_Multiline_$1Code_Compatible$2": Comfy.Custom.was.Nodes['Text_Multiline_$1Code_Compatible$2']
+         "Custom.was.Text_Parse_A1111_Embeddings": Comfy.Custom.was.Nodes['Text_Parse_A1111_Embeddings']
+         "Custom.was.Text_Parse_Noodle_Soup_Prompts": Comfy.Custom.was.Nodes['Text_Parse_Noodle_Soup_Prompts']
+         "Custom.was.Text_Parse_Tokens": Comfy.Custom.was.Nodes['Text_Parse_Tokens']
+         "Custom.was.Text_Random_Line": Comfy.Custom.was.Nodes['Text_Random_Line']
+         "Custom.was.Text_Random_Prompt": Comfy.Custom.was.Nodes['Text_Random_Prompt']
+         "Custom.was.Text_String": Comfy.Custom.was.Nodes['Text_String']
+         "Custom.was.Text_Contains": Comfy.Custom.was.Nodes['Text_Contains']
+         "Custom.was.Text_Shuffle": Comfy.Custom.was.Nodes['Text_Shuffle']
+         "Custom.was.Text_Sort": Comfy.Custom.was.Nodes['Text_Sort']
+         "Custom.was.Text_to_Conditioning": Comfy.Custom.was.Nodes['Text_to_Conditioning']
+         "Custom.was.Text_to_Console": Comfy.Custom.was.Nodes['Text_to_Console']
+         "Custom.was.Text_to_Number": Comfy.Custom.was.Nodes['Text_to_Number']
+         "Custom.was.Text_to_String": Comfy.Custom.was.Nodes['Text_to_String']
+         "Custom.was.Text_String_Truncate": Comfy.Custom.was.Nodes['Text_String_Truncate']
+         "Custom.was.True_Random$5org_Number_Generator": Comfy.Custom.was.Nodes['True_Random$5org_Number_Generator']
+         "Custom.was.unCLIP_Checkpoint_Loader": Comfy.Custom.was.Nodes['unCLIP_Checkpoint_Loader']
+         "Custom.was.Upscale_Model_Loader": Comfy.Custom.was.Nodes['Upscale_Model_Loader']
+         "Custom.was.Upscale_Model_Switch": Comfy.Custom.was.Nodes['Upscale_Model_Switch']
+         "Custom.was.Write_to_GIF": Comfy.Custom.was.Nodes['Write_to_GIF']
+         "Custom.was.Write_to_Video": Comfy.Custom.was.Nodes['Write_to_Video']
+         "Custom.was.VAE_Input_Switch": Comfy.Custom.was.Nodes['VAE_Input_Switch']
+         "Custom.was.Video_Dump_Frames": Comfy.Custom.was.Nodes['Video_Dump_Frames']
+         "Custom.was.CLIPSEG2": Comfy.Custom.was.Nodes['CLIPSEG2']
          "Custom.IPAdapter_plus.IPAdapter": Comfy.Custom.IPAdapter_plus.Nodes['IPAdapter']
          "Custom.IPAdapter_plus.IPAdapterAdvanced": Comfy.Custom.IPAdapter_plus.Nodes['IPAdapterAdvanced']
          "Custom.IPAdapter_plus.IPAdapterBatch": Comfy.Custom.IPAdapter_plus.Nodes['IPAdapterBatch']
@@ -10086,6 +14215,14 @@ declare global {
          "Custom.controlnet_aux.HintImageEnchance": Comfy.Custom.controlnet_aux.Nodes['HintImageEnchance']
          "Custom.controlnet_aux.ExecuteAllControlNetPreprocessors": Comfy.Custom.controlnet_aux.Nodes['ExecuteAllControlNetPreprocessors']
          "Custom.controlnet_aux.ControlNetAuxSimpleAddText": Comfy.Custom.controlnet_aux.Nodes['ControlNetAuxSimpleAddText']
+         "Custom.Marigold.MarigoldModelLoader": Comfy.Custom.Marigold.Nodes['MarigoldModelLoader']
+         "Custom.Marigold.MarigoldDepthEstimation$_v2": Comfy.Custom.Marigold.Nodes['MarigoldDepthEstimation$_v2']
+         "Custom.Marigold.MarigoldDepthEstimation$_v2$_video": Comfy.Custom.Marigold.Nodes['MarigoldDepthEstimation$_v2$_video']
+         "Custom.Marigold.MarigoldDepthEstimation": Comfy.Custom.Marigold.Nodes['MarigoldDepthEstimation']
+         "Custom.Marigold.MarigoldDepthEstimationVideo": Comfy.Custom.Marigold.Nodes['MarigoldDepthEstimationVideo']
+         "Custom.Marigold.ColorizeDepthmap": Comfy.Custom.Marigold.Nodes['ColorizeDepthmap']
+         "Custom.Marigold.SaveImageOpenEXR": Comfy.Custom.Marigold.Nodes['SaveImageOpenEXR']
+         "Custom.Marigold.RemapDepth": Comfy.Custom.Marigold.Nodes['RemapDepth']
          "Custom.Impact_Pack.SAMLoader": Comfy.Custom.Impact_Pack.Nodes['SAMLoader']
          "Custom.Impact_Pack.CLIPSegDetectorProvider": Comfy.Custom.Impact_Pack.Nodes['CLIPSegDetectorProvider']
          "Custom.Impact_Pack.ONNXDetectorProvider": Comfy.Custom.Impact_Pack.Nodes['ONNXDetectorProvider']
@@ -10280,6 +14417,8 @@ declare global {
           "KSampler.sampler_name": Comfy.Union.E_SamplerName
           "KSamplerAdvanced.sampler_name": Comfy.Union.E_SamplerName
           "Extra.KSamplerSelect.sampler_name": Comfy.Union.E_SamplerName
+          "Custom.was.KSampler_$1WAS$2.sampler_name": Comfy.Union.E_SamplerName
+          "Custom.was.KSampler_Cycle.sampler_name": Comfy.Union.E_SamplerName
           "Custom.Impact_Pack.DetailerForEach.sampler_name": Comfy.Union.E_SamplerName
           "Custom.Impact_Pack.DetailerForEachDebug.sampler_name": Comfy.Union.E_SamplerName
           "Custom.Impact_Pack.DetailerForEachPipe.sampler_name": Comfy.Union.E_SamplerName
@@ -10307,6 +14446,8 @@ declare global {
           "KSampler.scheduler": Comfy.Union.E_SchedulerName
           "KSamplerAdvanced.scheduler": Comfy.Union.E_SchedulerName
           "Extra.BasicScheduler.scheduler": Comfy.Union.E_SchedulerName
+          "Custom.was.KSampler_$1WAS$2.scheduler": Comfy.Union.E_SchedulerName
+          "Custom.was.KSampler_Cycle.scheduler": Comfy.Union.E_SchedulerName
           "Custom.Impact_Pack.PixelTiledKSampleUpscalerProvider.scheduler": Comfy.Union.E_SchedulerName
           "Custom.Impact_Pack.PixelTiledKSampleUpscalerProviderPipe.scheduler": Comfy.Union.E_SchedulerName
           "Custom.Impact_Pack.UnsamplerHookProvider.scheduler": Comfy.Union.E_SchedulerName
@@ -10318,6 +14459,9 @@ declare global {
           "unCLIPCheckpointLoader.ckpt_name": Comfy.Union.E_CkptName
           "CheckpointLoader.ckpt_name": Comfy.Union.E_CkptName
           "Extra.ImageOnlyCheckpointLoader.ckpt_name": Comfy.Union.E_CkptName
+          "Custom.was.Checkpoint_Loader.ckpt_name": Comfy.Union.E_CkptName
+          "Custom.was.Checkpoint_Loader_$1Simple$2.ckpt_name": Comfy.Union.E_CkptName
+          "Custom.was.unCLIP_Checkpoint_Loader.ckpt_name": Comfy.Union.E_CkptName
           // E_VaeName
           "VAELoader.vae_name": Comfy.Union.E_VaeName
           // E_LatentUpscaleMethod
@@ -10336,6 +14480,7 @@ declare global {
           // E_Channel
           "LoadImageMask.channel": Comfy.Union.E_Channel
           "Extra.ImageToMask.channel": Comfy.Union.E_Channel
+          "Custom.was.Image_to_Latent_Mask.channel": Comfy.Union.E_Channel
           // E_ImageUpscaleMethod
           "ImageScale.upscale_method": Comfy.Union.E_ImageUpscaleMethod
           "ImageScaleBy.upscale_method": Comfy.Union.E_ImageUpscaleMethod
@@ -10345,6 +14490,11 @@ declare global {
           // E_EnableOrDisable
           "KSamplerAdvanced.add_noise": Comfy.Union.E_EnableOrDisable
           "KSamplerAdvanced.return_with_leftover_noise": Comfy.Union.E_EnableOrDisable
+          "Custom.was.KSampler_Cycle.tiled_vae": Comfy.Union.E_EnableOrDisable
+          "Custom.was.KSampler_Cycle.scale_denoise": Comfy.Union.E_EnableOrDisable
+          "Custom.was.KSampler_Cycle.pos_add_strength_scaling": Comfy.Union.E_EnableOrDisable
+          "Custom.was.KSampler_Cycle.neg_add_strength_scaling": Comfy.Union.E_EnableOrDisable
+          "Custom.was.KSampler_Cycle.steps_scaling": Comfy.Union.E_EnableOrDisable
           "Custom.controlnet_aux.LeReS$7DepthMapPreprocessor.boost": Comfy.Union.E_EnableOrDisable
           "Custom.controlnet_aux.DWPreprocessor.detect_hand": Comfy.Union.E_EnableOrDisable
           "Custom.controlnet_aux.DWPreprocessor.detect_body": Comfy.Union.E_EnableOrDisable
@@ -10385,6 +14535,7 @@ declare global {
           "Extra.TripleCLIPLoader.clip_name1": Comfy.Union.E_LoraName
           "Extra.TripleCLIPLoader.clip_name2": Comfy.Union.E_LoraName
           "Extra.TripleCLIPLoader.clip_name3": Comfy.Union.E_LoraName
+          "Custom.was.Diffusers_Model_Loader.model_path": Comfy.Union.E_LoraName
           "Custom.IPAdapter_plus.IPAdapterModelLoader.ipadapter_file": Comfy.Union.E_LoraName
           "Custom.IPAdapter_plus.IPAdapterLoadEmbeds.embeds": Comfy.Union.E_LoraName
           "Custom.Impact_Pack.ONNXDetectorProvider.model_name": Comfy.Union.E_LoraName
@@ -10397,10 +14548,13 @@ declare global {
           "DualCLIPLoader.type": Comfy.Union.E_DualClipType
           // E_CkptConfigName
           "CheckpointLoader.config_name": Comfy.Union.E_CkptConfigName
+          "Custom.was.Checkpoint_Loader.config_name": Comfy.Union.E_CkptConfigName
           // E_1d09df0c3ce1b4556d07af26e593d4033efc639b
           "Extra.LatentBatchSeedBehavior.seed_behavior": Comfy.Union.E_1d09df0c3ce1b4556d07af26e593d4033efc639b
-          // E_2504d8563e078c3ed105667cbb6d0ff714d5798b
-          "Extra.UpscaleModelLoader.model_name": Comfy.Union.E_2504d8563e078c3ed105667cbb6d0ff714d5798b
+          "Custom.was.True_Random$5org_Number_Generator.mode": Comfy.Union.E_1d09df0c3ce1b4556d07af26e593d4033efc639b
+          // E_0a165440b634143ee9b4b1d88e03fb1a11863849
+          "Extra.UpscaleModelLoader.model_name": Comfy.Union.E_0a165440b634143ee9b4b1d88e03fb1a11863849
+          "Custom.was.Upscale_Model_Loader.model_name": Comfy.Union.E_0a165440b634143ee9b4b1d88e03fb1a11863849
           // E_4ca09d2bc16d4174960bd60a103d4c0911361855
           "Extra.ImageBlend.blend_mode": Comfy.Union.E_4ca09d2bc16d4174960bd60a103d4c0911361855
           // E_7c2feaebcf0bbbcda0fe9f3c8cba1cf87002bc0e
@@ -10437,6 +14591,172 @@ declare global {
           "Extra.LoraSave.lora_type": Comfy.Union.E_b80b6129a942660e31e08221ee04a76f537556ce
           // E_4bbca93e426c35d56c43252f1fb21877d5e7a1aa
           "Extra.TorchCompileModel.backend": Comfy.Union.E_4bbca93e426c35d56c43252f1fb21877d5e7a1aa
+          // E_48c2dd07be3b3abbddffe76e33499b898c2b0763
+          "Custom.was.BLIP_Model_Loader.device": Comfy.Union.E_48c2dd07be3b3abbddffe76e33499b898c2b0763
+          // E_3f37880395cb0fb6bef6cfeaa3f0bbb7c32be417
+          "Custom.was.Blend_Latents.operation": Comfy.Union.E_3f37880395cb0fb6bef6cfeaa3f0bbb7c32be417
+          // E_46b521739cab20490e0368732c3787b937bb6d33
+          "Custom.was.CLIPTextEncode_$1NSP$2.mode": Comfy.Union.E_46b521739cab20490e0368732c3787b937bb6d33
+          "Custom.was.Text_Parse_Noodle_Soup_Prompts.mode": Comfy.Union.E_46b521739cab20490e0368732c3787b937bb6d33
+          // E_d775619a3b6b2764d08cc78c16dba9db45ba3385
+          "Custom.was.Constant_Number.number_type": Comfy.Union.E_d775619a3b6b2764d08cc78c16dba9db45ba3385
+          "Custom.was.Random_Number.number_type": Comfy.Union.E_d775619a3b6b2764d08cc78c16dba9db45ba3385
+          // E_TrueOrFalse
+          "Custom.was.Create_Grid_Image.include_subfolders": Comfy.Union.E_TrueOrFalse
+          "Custom.was.Image_Canny_Filter.enable_threshold": Comfy.Union.E_TrueOrFalse
+          "Custom.was.Image_Dragan_Photography_Filter.colorize": Comfy.Union.E_TrueOrFalse
+          "Custom.was.Image_Filter_Adjustments.detail_enhance": Comfy.Union.E_TrueOrFalse
+          "Custom.was.Image_Gradient_Map.flip_left_right": Comfy.Union.E_TrueOrFalse
+          "Custom.was.Image_High_Pass_Filter.color_output": Comfy.Union.E_TrueOrFalse
+          "Custom.was.Image_High_Pass_Filter.neutral_background": Comfy.Union.E_TrueOrFalse
+          "Custom.was.Image_Load.RGBA": Comfy.Union.E_TrueOrFalse
+          "Custom.was.Image_Load.filename_text_extension": Comfy.Union.E_TrueOrFalse
+          "Custom.was.Image_Padding.feather_second_pass": Comfy.Union.E_TrueOrFalse
+          "Custom.was.Image_Resize.supersample": Comfy.Union.E_TrueOrFalse
+          "Custom.was.Image_Save.filename_number_start": Comfy.Union.E_TrueOrFalse
+          "Custom.was.Image_Save.optimize_image": Comfy.Union.E_TrueOrFalse
+          "Custom.was.Image_Save.lossless_webp": Comfy.Union.E_TrueOrFalse
+          "Custom.was.Image_Save.show_history": Comfy.Union.E_TrueOrFalse
+          "Custom.was.Image_Save.show_history_by_prefix": Comfy.Union.E_TrueOrFalse
+          "Custom.was.Image_Save.embed_workflow": Comfy.Union.E_TrueOrFalse
+          "Custom.was.Image_Save.show_previews": Comfy.Union.E_TrueOrFalse
+          "Custom.was.Image_Seamless_Texture.tiled": Comfy.Union.E_TrueOrFalse
+          "Custom.was.Latent_Upscale_by_Factor_$1WAS$2.align": Comfy.Union.E_TrueOrFalse
+          "Custom.was.Load_Image_Batch.allow_RGBA_output": Comfy.Union.E_TrueOrFalse
+          "Custom.was.Load_Image_Batch.filename_text_extension": Comfy.Union.E_TrueOrFalse
+          "Custom.was.MiDaS_Depth_Approximation.use_cpu": Comfy.Union.E_TrueOrFalse
+          "Custom.was.MiDaS_Depth_Approximation.invert_depth": Comfy.Union.E_TrueOrFalse
+          "Custom.was.MiDaS_Mask_Image.use_cpu": Comfy.Union.E_TrueOrFalse
+          "Custom.was.MiDaS_Mask_Image.threshold": Comfy.Union.E_TrueOrFalse
+          "Custom.was.Number_Input_Condition.return_boolean": Comfy.Union.E_TrueOrFalse
+          "Custom.was.Text_Add_Tokens.print_current_tokens": Comfy.Union.E_TrueOrFalse
+          "Custom.was.Text_Add_Token_by_Input.print_current_tokens": Comfy.Union.E_TrueOrFalse
+          "Custom.was.Text_Concatenate.clean_whitespace": Comfy.Union.E_TrueOrFalse
+          "Custom.Impact_Pack.SEGSUpscaler.supersample": Comfy.Union.E_TrueOrFalse
+          "Custom.Impact_Pack.SEGSUpscalerPipe.supersample": Comfy.Union.E_TrueOrFalse
+          // E_3f15cd9dbfdca2b8fe61c86059e860994b7a5e24
+          "Custom.was.Create_Morph_Image.filetype": Comfy.Union.E_3f15cd9dbfdca2b8fe61c86059e860994b7a5e24
+          "Custom.was.Create_Morph_Image_from_Path.filetype": Comfy.Union.E_3f15cd9dbfdca2b8fe61c86059e860994b7a5e24
+          // E_077330280092fb42c54b5360bc8723312fb6fd1d
+          "Custom.was.Create_Video_from_Path.codec": Comfy.Union.E_077330280092fb42c54b5360bc8723312fb6fd1d
+          "Custom.was.Write_to_Video.codec": Comfy.Union.E_077330280092fb42c54b5360bc8723312fb6fd1d
+          // E_8d4017579661153a386578b6c3ad4d041bd9eccc
+          "Custom.was.Export_API.save_prompt_api": Comfy.Union.E_8d4017579661153a386578b6c3ad4d041bd9eccc
+          // E_6eef6648406c333a4035cd5e60d0bf2ecf2606d7
+          "Custom.was.Lora_Loader.lora_name": Comfy.Union.E_6eef6648406c333a4035cd5e60d0bf2ecf2606d7
+          "Custom.was.Load_Lora.lora_name": Comfy.Union.E_6eef6648406c333a4035cd5e60d0bf2ecf2606d7
+          "Custom.was.Prompt_Styles_Selector.style": Comfy.Union.E_6eef6648406c333a4035cd5e60d0bf2ecf2606d7
+          "Custom.was.Prompt_Multiple_Styles_Selector.style1": Comfy.Union.E_6eef6648406c333a4035cd5e60d0bf2ecf2606d7
+          "Custom.was.Prompt_Multiple_Styles_Selector.style2": Comfy.Union.E_6eef6648406c333a4035cd5e60d0bf2ecf2606d7
+          "Custom.was.Prompt_Multiple_Styles_Selector.style3": Comfy.Union.E_6eef6648406c333a4035cd5e60d0bf2ecf2606d7
+          "Custom.was.Prompt_Multiple_Styles_Selector.style4": Comfy.Union.E_6eef6648406c333a4035cd5e60d0bf2ecf2606d7
+          // E_e6bf0166cb0a546d639b0416f53e058b11157eff
+          "Custom.was.Image_SSAO_$1Ambient_Occlusion$2.enable_specular_masking": Comfy.Union.E_e6bf0166cb0a546d639b0416f53e058b11157eff
+          "Custom.was.Image_SSDO_$1Direct_Occlusion$2.colored_occlusion": Comfy.Union.E_e6bf0166cb0a546d639b0416f53e058b11157eff
+          "Custom.was.Image_Pixelate.dither": Comfy.Union.E_e6bf0166cb0a546d639b0416f53e058b11157eff
+          "Custom.was.Image_Pixelate.reverse_palette": Comfy.Union.E_e6bf0166cb0a546d639b0416f53e058b11157eff
+          "Custom.was.Image_Voronoi_Noise_Filter.flat": Comfy.Union.E_e6bf0166cb0a546d639b0416f53e058b11157eff
+          "Custom.was.Image_Voronoi_Noise_Filter.RGB_output": Comfy.Union.E_e6bf0166cb0a546d639b0416f53e058b11157eff
+          // E_621590e6cf567b6defe22db2a7f19bbadbdeaecb
+          "Custom.was.Image_Analyze.mode": Comfy.Union.E_621590e6cf567b6defe22db2a7f19bbadbdeaecb
+          // E_1fcc2ccd09b459c4e3871ff2971ebb38c7b641fd
+          "Custom.was.Image_Blending_Mode.mode": Comfy.Union.E_1fcc2ccd09b459c4e3871ff2971ebb38c7b641fd
+          // E_0ea34bc7f4ead6746548832ef8cfbfc3fea9d788
+          "Custom.was.Image_Color_Palette.mode": Comfy.Union.E_0ea34bc7f4ead6746548832ef8cfbfc3fea9d788
+          // E_f25d83b46c2741d5aa65866293963e31eb885e6f
+          "Custom.was.Image_Crop_Face.cascade_xml": Comfy.Union.E_f25d83b46c2741d5aa65866293963e31eb885e6f
+          // E_f9b5e85d0e4dd538eef9b795a1c1919ad21d048e
+          "Custom.was.Image_Pixelate.init_mode": Comfy.Union.E_f9b5e85d0e4dd538eef9b795a1c1919ad21d048e
+          // E_a0a5963f4489f7d93e55536030a9714959d88a63
+          "Custom.was.Image_Pixelate.dither_mode": Comfy.Union.E_a0a5963f4489f7d93e55536030a9714959d88a63
+          // E_efecaf5a84db36477de261399ffe97f31875969e
+          "Custom.was.Image_Pixelate.color_palette_mode": Comfy.Union.E_efecaf5a84db36477de261399ffe97f31875969e
+          // E_16be70b6d1fbeca9d4389884e9d9b5797e92f1fc
+          "Custom.was.Image_Power_Noise.noise_type": Comfy.Union.E_16be70b6d1fbeca9d4389884e9d9b5797e92f1fc
+          // E_9d2c8a4f3e1b6516e03b842358371b12f3a285c8
+          "Custom.was.Image_Edge_Detection_Filter.mode": Comfy.Union.E_9d2c8a4f3e1b6516e03b842358371b12f3a285c8
+          // E_459517618451c1022315a1119e4f557bc8d55372
+          "Custom.was.Image_Flip.mode": Comfy.Union.E_459517618451c1022315a1119e4f557bc8d55372
+          "Custom.was.Image_Generate_Gradient.direction": Comfy.Union.E_459517618451c1022315a1119e4f557bc8d55372
+          // E_2dd0540c88a63098c07793456791932d49cace79
+          "Custom.was.Image_History_Loader.image": Comfy.Union.E_2dd0540c88a63098c07793456791932d49cace79
+          "Custom.was.Text_File_History_Loader.file": Comfy.Union.E_2dd0540c88a63098c07793456791932d49cace79
+          // E_34a8a918686fbe2e5439cb5b74d33b252afdae7d
+          "Custom.was.Image_Monitor_Effects_Filter.mode": Comfy.Union.E_34a8a918686fbe2e5439cb5b74d33b252afdae7d
+          // E_76658484ba9d30cc1b64ca7a20c1605bb6379d1e
+          "Custom.was.Image_Rembg_$1Remove_Background$2.model": Comfy.Union.E_76658484ba9d30cc1b64ca7a20c1605bb6379d1e
+          // E_50e35c4eef26231d47145ce31015c2d288e65477
+          "Custom.was.Image_Rembg_$1Remove_Background$2.background_color": Comfy.Union.E_50e35c4eef26231d47145ce31015c2d288e65477
+          // E_e6a365a2c3fb39d89cfc94f4a1da1e3faaa9be2a
+          "Custom.was.Image_Remove_Background_$1Alpha$2.mode": Comfy.Union.E_e6a365a2c3fb39d89cfc94f4a1da1e3faaa9be2a
+          // E_79dc3a66b5aeaa0087d9be9dee1c4ca51a2772ac
+          "Custom.was.Image_Resize.mode": Comfy.Union.E_79dc3a66b5aeaa0087d9be9dee1c4ca51a2772ac
+          // E_bac912b55de8a59480c74aba068f4a3b5f9a0e38
+          "Custom.was.Image_Resize.resampling": Comfy.Union.E_bac912b55de8a59480c74aba068f4a3b5f9a0e38
+          "Custom.was.KSampler_Cycle.scale_sampling": Comfy.Union.E_bac912b55de8a59480c74aba068f4a3b5f9a0e38
+          "Custom.Impact_Pack.SEGSUpscaler.resampling_method": Comfy.Union.E_bac912b55de8a59480c74aba068f4a3b5f9a0e38
+          "Custom.Impact_Pack.SEGSUpscalerPipe.resampling_method": Comfy.Union.E_bac912b55de8a59480c74aba068f4a3b5f9a0e38
+          // E_b4cc31771b218822bfb695135401373ec3c3b56f
+          "Custom.was.Image_Rotate.mode": Comfy.Union.E_b4cc31771b218822bfb695135401373ec3c3b56f
+          // E_678c8597d48a2c6595a042169b7175b70a440625
+          "Custom.was.Image_Rotate.sampler": Comfy.Union.E_678c8597d48a2c6595a042169b7175b70a440625
+          // E_6edaf157bc87636aa5977b8f373c827d849a6714
+          "Custom.was.Image_Send_HTTP.method_type": Comfy.Union.E_6edaf157bc87636aa5977b8f373c827d849a6714
+          // E_ace8f49d9c65e2ba17335a32054fa4e7c2eb6eb5
+          "Custom.was.Image_Save.extension": Comfy.Union.E_ace8f49d9c65e2ba17335a32054fa4e7c2eb6eb5
+          // E_0c34bcf827f67f4a34574e3b6e40077ae91adaed
+          "Custom.was.Image_Save.overwrite_mode": Comfy.Union.E_0c34bcf827f67f4a34574e3b6e40077ae91adaed
+          // E_33a0330bc4748f9487c71584b55a1ad2c07d624b
+          "Custom.was.Image_Select_Channel.channel": Comfy.Union.E_33a0330bc4748f9487c71584b55a1ad2c07d624b
+          // E_6ed7a84154c66d6ed9010610111acb4071e30fa5
+          "Custom.was.Image_Stitch.stitch": Comfy.Union.E_6ed7a84154c66d6ed9010610111acb4071e30fa5
+          // E_fb3f90840b8cb5166cc7392ee683a0b94f51f55e
+          "Custom.was.Image_Style_Filter.style": Comfy.Union.E_fb3f90840b8cb5166cc7392ee683a0b94f51f55e
+          // E_6e38ea63eb381af6ba58a4805bd3875939dda9ed
+          "Custom.was.Image_fDOF_Filter.mode": Comfy.Union.E_6e38ea63eb381af6ba58a4805bd3875939dda9ed
+          // E_fbe3fb620034510d93d13c6709f86874eae11ed2
+          "Custom.was.Image_to_Noise.output_mode": Comfy.Union.E_fbe3fb620034510d93d13c6709f86874eae11ed2
+          // E_1481b5600ce60506ecabaa890211f73642839577
+          "Custom.was.KSampler_Cycle.latent_upscale": Comfy.Union.E_1481b5600ce60506ecabaa890211f73642839577
+          // E_d7832e996ca60a0bfc63735f3a840cabaa0396da
+          "Custom.was.KSampler_Cycle.pos_add_mode": Comfy.Union.E_d7832e996ca60a0bfc63735f3a840cabaa0396da
+          "Custom.was.KSampler_Cycle.neg_add_mode": Comfy.Union.E_d7832e996ca60a0bfc63735f3a840cabaa0396da
+          "Custom.was.KSampler_Cycle.steps_control": Comfy.Union.E_d7832e996ca60a0bfc63735f3a840cabaa0396da
+          // E_0860472b05b5dd5bd5a00a93bbd161fb8222056b
+          "Custom.was.Latent_Upscale_by_Factor_$1WAS$2.mode": Comfy.Union.E_0860472b05b5dd5bd5a00a93bbd161fb8222056b
+          // E_29fab72478e27c6abd110ef215462856f7d77d54
+          "Custom.was.Load_Image_Batch.mode": Comfy.Union.E_29fab72478e27c6abd110ef215462856f7d77d54
+          // E_3f6f2a7e34563d7d52b1e70878b41ee0f557712f
+          "Custom.was.Mask_Crop_Region.region_type": Comfy.Union.E_3f6f2a7e34563d7d52b1e70878b41ee0f557712f
+          // E_ddc7f89a89013ba246c565b4a9c3171afa7b3e7b
+          "Custom.was.MiDaS_Model_Loader.midas_model": Comfy.Union.E_ddc7f89a89013ba246c565b4a9c3171afa7b3e7b
+          "Custom.was.MiDaS_Depth_Approximation.midas_type": Comfy.Union.E_ddc7f89a89013ba246c565b4a9c3171afa7b3e7b
+          // E_4c3e91fd332bf7bc8ecc71438dc9bae1659b47bf
+          "Custom.was.MiDaS_Mask_Image.midas_model": Comfy.Union.E_4c3e91fd332bf7bc8ecc71438dc9bae1659b47bf
+          // E_3c44857390dbf2c0b082664aec15269d2f4de7f2
+          "Custom.was.MiDaS_Mask_Image.remove": Comfy.Union.E_3c44857390dbf2c0b082664aec15269d2f4de7f2
+          // E_eb31abaa810f2e5b2910398489893bb10dc12f65
+          "Custom.was.Number_Counter.number_type": Comfy.Union.E_eb31abaa810f2e5b2910398489893bb10dc12f65
+          // E_69ae67e56fe369f0949226d306697e018453dd56
+          "Custom.was.Number_Counter.mode": Comfy.Union.E_69ae67e56fe369f0949226d306697e018453dd56
+          // E_89cd8ef2656f9d2aa7e139e06547bccb8894aea6
+          "Custom.was.Number_Operation.operation": Comfy.Union.E_89cd8ef2656f9d2aa7e139e06547bccb8894aea6
+          // E_fec65e73cb675e950a5bb41c19b5d494b1fadbb0
+          "Custom.was.Number_Input_Condition.comparison": Comfy.Union.E_fec65e73cb675e950a5bb41c19b5d494b1fadbb0
+          // E_58116c3d7caa42bbae5816fbe84aaba8f20d824f
+          "Custom.was.BLIP_Analyze_Image.mode": Comfy.Union.E_58116c3d7caa42bbae5816fbe84aaba8f20d824f
+          // E_976ac8179a850faff4be52e51dd7a30db5108680
+          "Custom.was.SAM_Model_Loader.model_size": Comfy.Union.E_976ac8179a850faff4be52e51dd7a30db5108680
+          // E_926260613195613af4b1585dd277506097192235
+          "Custom.was.Text_Compare.mode": Comfy.Union.E_926260613195613af4b1585dd277506097192235
+          // E_351309fb3b96cf7fb7bd0b7102f920b1744bbcec
+          "Custom.was.Text_Load_Line_From_File.mode": Comfy.Union.E_351309fb3b96cf7fb7bd0b7102f920b1744bbcec
+          // E_1f3e30a386f413ad2817cc490b9f27b4e1166fe7
+          "Custom.was.Text_String_Truncate.truncate_by": Comfy.Union.E_1f3e30a386f413ad2817cc490b9f27b4e1166fe7
+          // E_bd7732af436a46296a84dc5aa8698624101e3749
+          "Custom.was.Text_String_Truncate.truncate_from": Comfy.Union.E_bd7732af436a46296a84dc5aa8698624101e3749
+          // E_ddb8b4788a58dbca6274fd750ed1a1d421027721
+          "Custom.was.Video_Dump_Frames.extension": Comfy.Union.E_ddb8b4788a58dbca6274fd750ed1a1d421027721
           // E_1fcb051d43a7df978808f9920fa8d428961d34f5
           "Custom.IPAdapter_plus.IPAdapter.weight_type": Comfy.Union.E_1fcb051d43a7df978808f9920fa8d428961d34f5
           // E_7308d8ab4ff2021b77b352e491612116709172af
@@ -10550,6 +14870,23 @@ declare global {
           // E_d6af160bb3240c471ff93d5647af03d694fc3360
           "Custom.controlnet_aux.PixelPerfectResolution.resize_mode": Comfy.Union.E_d6af160bb3240c471ff93d5647af03d694fc3360
           "Custom.controlnet_aux.HintImageEnchance.resize_mode": Comfy.Union.E_d6af160bb3240c471ff93d5647af03d694fc3360
+          // E_0570c9929a05552091968538314c9b91153a0128
+          "Custom.Marigold.MarigoldModelLoader.model": Comfy.Union.E_0570c9929a05552091968538314c9b91153a0128
+          // E_2e7bd488081020be1c7147a13ef7109a71726d85
+          "Custom.Marigold.MarigoldDepthEstimation$_v2.scheduler": Comfy.Union.E_2e7bd488081020be1c7147a13ef7109a71726d85
+          "Custom.Marigold.MarigoldDepthEstimation$_v2$_video.scheduler": Comfy.Union.E_2e7bd488081020be1c7147a13ef7109a71726d85
+          // E_248755adc763cd425aa60fbe4ddc7e636afb868f
+          "Custom.Marigold.MarigoldDepthEstimation.reduction_method": Comfy.Union.E_248755adc763cd425aa60fbe4ddc7e636afb868f
+          // E_1094d9b71fc3f2b7cbb07273727f88062feaacbb
+          "Custom.Marigold.MarigoldDepthEstimation.scheduler": Comfy.Union.E_1094d9b71fc3f2b7cbb07273727f88062feaacbb
+          "Custom.Marigold.MarigoldDepthEstimationVideo.scheduler": Comfy.Union.E_1094d9b71fc3f2b7cbb07273727f88062feaacbb
+          // E_137d410291846100389520fe8f2fbf946128dab4
+          "Custom.Marigold.MarigoldDepthEstimation.model": Comfy.Union.E_137d410291846100389520fe8f2fbf946128dab4
+          "Custom.Marigold.MarigoldDepthEstimationVideo.model": Comfy.Union.E_137d410291846100389520fe8f2fbf946128dab4
+          // E_df621c6407a123a6a816c747cbfb7e175b43ea4b
+          "Custom.Marigold.MarigoldDepthEstimationVideo.dtype": Comfy.Union.E_df621c6407a123a6a816c747cbfb7e175b43ea4b
+          // E_e09dd9c0b27579d3897e5aa427f3b6842789fb3f
+          "Custom.Marigold.ColorizeDepthmap.colorize_method": Comfy.Union.E_e09dd9c0b27579d3897e5aa427f3b6842789fb3f
           // E_40c777392f92d61852ab0f7a429a755abf59b71a
           "Custom.Impact_Pack.SAMLoader.model_name": Comfy.Union.E_40c777392f92d61852ab0f7a429a755abf59b71a
           // E_2ad445b99254e9b51c963d9f1a75fabe3d01e569
@@ -10655,12 +14992,6 @@ declare global {
           "Custom.Impact_Pack.PreviewBridgeLatent.preview_method": Comfy.Union.E_ea287ec9983f05378f2614091804a1b6b95d1c79
           // E_fa4a13687b111fa33a8c8fa375d5321d09b46b27
           "Custom.Impact_Pack.LatentSender.preview_method": Comfy.Union.E_fa4a13687b111fa33a8c8fa375d5321d09b46b27
-          // E_bac912b55de8a59480c74aba068f4a3b5f9a0e38
-          "Custom.Impact_Pack.SEGSUpscaler.resampling_method": Comfy.Union.E_bac912b55de8a59480c74aba068f4a3b5f9a0e38
-          "Custom.Impact_Pack.SEGSUpscalerPipe.resampling_method": Comfy.Union.E_bac912b55de8a59480c74aba068f4a3b5f9a0e38
-          // E_TrueOrFalse
-          "Custom.Impact_Pack.SEGSUpscaler.supersample": Comfy.Union.E_TrueOrFalse
-          "Custom.Impact_Pack.SEGSUpscalerPipe.supersample": Comfy.Union.E_TrueOrFalse
           // E_5cc1495fe28eac05289d45b29269b31c6edca055
           "Custom.Impact_Pack.ImpactMakeTileSEGS.irregular_mask_mode": Comfy.Union.E_5cc1495fe28eac05289d45b29269b31c6edca055
           // E_d5776f669e41b2ec29cd020ce34a8b7cdf23693d
@@ -10699,10 +15030,10 @@ declare global {
       }
    }
    // #endregion
-   
+
    // 2. Embeddings -------------------------------
    export type Embeddings = 'EasyNegative' | 'bad-artist-anime' | 'bad-artist' | 'bad_prompt_version2' | 'badquality' | 'charturnerv2' | 'ng_deepnegative_v1_75t' | 'realisticvision-negative-embedding'
-   
+
    // 3. Suggestions -------------------------------
    namespace Comfy.Producer {
       // 3.1. types produced
@@ -10719,6 +15050,7 @@ declare global {
          Pick<Comfy.Base.Nodes, 'CLIPVisionEncode'>
       {}
       export interface BOOLEAN extends
+         Pick<Comfy.Custom.was.Nodes, 'Logic_Boolean' | 'Logic_Boolean_Primitive' | 'Logic_Comparison_OR' | 'Logic_Comparison_AND' | 'Logic_Comparison_XOR' | 'Logic_NOT' | 'Text_Compare' | 'Text_Find' | 'Text_Contains'>,
          Pick<Comfy.Custom.Impact_Pack.Nodes, 'ImpactCompare' | 'ImpactIfNone' | 'ImpactConvertDataType' | 'ImpactLogicalOperators' | 'ImpactBoolean' | 'ImpactNeg' | 'ImpactIsNotEmptySEGS'>
       {}
       export interface SEGS_PREPROCESSOR {} // 🔶 no node can output this type.
@@ -10738,26 +15070,39 @@ declare global {
          Pick<Comfy.Custom.Impact_Pack.Nodes, 'CombineRegionalPrompts' | 'RegionalPrompt'>
       {}
       export interface STRING extends
+         Pick<Comfy.Custom.was.Nodes, 'Cache_Node' | 'Cache_Node' | 'Cache_Node' | 'Checkpoint_Loader' | 'Checkpoint_Loader_$1Simple$2' | 'CLIPTextEncode_$1NSP$2' | 'CLIPTextEncode_$1NSP$2' | 'Create_Morph_Image' | 'Create_Morph_Image' | 'Create_Morph_Image_from_Path' | 'Create_Morph_Image_from_Path' | 'Create_Video_from_Path' | 'Create_Video_from_Path' | 'Diffusers_Model_Loader' | 'Diffusers_Hub_Model_Down$7Loader' | 'Lora_Loader' | 'Hex_to_HSL' | 'HSL_to_Hex' | 'Image_Aspect_Ratio' | 'Image_Aspect_Ratio' | 'Image_History_Loader' | 'Image_Load' | 'Image_Send_HTTP' | 'Image_Save' | 'Load_Image_Batch' | 'Load_Text_File' | 'Load_Lora' | 'Number_to_String' | 'Number_to_Text' | 'Boolean_To_Text' | 'Prompt_Styles_Selector' | 'Prompt_Styles_Selector' | 'Prompt_Multiple_Styles_Selector' | 'Prompt_Multiple_Styles_Selector' | 'BLIP_Analyze_Image' | 'BLIP_Analyze_Image' | 'String_to_Text' | 'Text_Dictionary_Get' | 'Text_Dictionary_To_Text' | 'Text_Compare' | 'Text_Compare' | 'Text_Compare' | 'Text_Concatenate' | 'Text_File_History_Loader' | 'Text_Find_and_Replace_by_Dictionary' | 'Text_Find_and_Replace_Input' | 'Text_Find_and_Replace' | 'Text_Input_Switch' | 'Text_List_to_Text' | 'Text_Load_Line_From_File' | 'Text_Multiline' | 'Text_Multiline_$1Code_Compatible$2' | 'Text_Parse_A1111_Embeddings' | 'Text_Parse_Noodle_Soup_Prompts' | 'Text_Parse_Tokens' | 'Text_Random_Line' | 'Text_Random_Prompt' | 'Text_String' | 'Text_String' | 'Text_String' | 'Text_String' | 'Text_Shuffle' | 'Text_Sort' | 'Text_to_Console' | 'Text_to_String' | 'Text_String_Truncate' | 'Text_String_Truncate' | 'Text_String_Truncate' | 'Text_String_Truncate' | 'unCLIP_Checkpoint_Loader' | 'Upscale_Model_Loader' | 'Write_to_GIF' | 'Write_to_GIF' | 'Write_to_Video' | 'Write_to_Video' | 'Video_Dump_Frames'>,
          Pick<Comfy.Custom.IPAdapter_plus.Nodes, 'IPAdapterPromptScheduleFromWeightsStrategy'>,
          Pick<Comfy.Custom.controlnet_aux.Nodes, 'UpperBodyTrackingFromPoseKps'>,
+         Pick<Comfy.Custom.Marigold.Nodes, 'SaveImageOpenEXR'>,
          Pick<Comfy.Custom.Impact_Pack.Nodes, 'ImpactFrom$_SEG$_ELT' | 'LatentSwitch' | 'SEGSSwitch' | 'ImpactSwitch' | 'ImpactWildcardProcessor' | 'ImpactWildcardEncode' | 'ImpactConvertDataType' | 'ImpactStringSelector' | 'StringListToString' | 'WildcardPromptFromString' | 'WildcardPromptFromString' | 'ImpactSEGSClassify'>
       {}
       export interface FLOAT extends
+         Pick<Comfy.Custom.was.Nodes, 'Constant_Number' | 'Logic_Boolean' | 'Hex_to_HSL' | 'Image_Aspect_Ratio' | 'Image_Size_to_Number' | 'Image_Size_to_Number' | 'Latent_Size_to_Number' | 'Latent_Size_to_Number' | 'Number_Counter' | 'Number_Operation' | 'Number_to_Float' | 'Number_Input_Switch' | 'Number_Input_Condition' | 'Number_Multiple_Of' | 'Number_PI' | 'Random_Number' | 'Seed' | 'Text_Find_and_Replace_Input' | 'Text_Find_and_Replace' | 'True_Random$5org_Number_Generator'>,
          Pick<Comfy.Custom.IPAdapter_plus.Nodes, 'IPAdapterWeights' | 'IPAdapterWeights' | 'IPAdapterCombineWeights' | 'IPAdapterWeightsFromStrategy' | 'IPAdapterWeightsFromStrategy'>,
          Pick<Comfy.Custom.Impact_Pack.Nodes, 'ImpactFrom$_SEG$_ELT' | 'ImpactConvertDataType' | 'ImpactFloat'>
+      {}
+      export interface SAM_PARAMETERS extends
+         Pick<Comfy.Custom.was.Nodes, 'SAM_Parameters' | 'SAM_Parameters_Combine'>
       {}
       export interface SCHEDULER_FUNC extends
          Pick<Comfy.Custom.Impact_Pack.Nodes, 'GITSSchedulerFuncProvider'>
       {}
       export interface IPADAPTER_PIPE {} // 🔶 no node can output this type.
       export interface UPSCALE_MODEL extends
-         Pick<Comfy.Extra.upscale_model.Nodes, 'UpscaleModelLoader'>
+         Pick<Comfy.Extra.upscale_model.Nodes, 'UpscaleModelLoader'>,
+         Pick<Comfy.Custom.was.Nodes, 'Upscale_Model_Loader' | 'Upscale_Model_Switch'>
+      {}
+      export interface CLIPSEG_MODEL extends
+         Pick<Comfy.Custom.was.Nodes, 'CLIPSeg_Model_Loader'>
       {}
       export interface POSE_KEYPOINT extends
          Pick<Comfy.Custom.controlnet_aux.Nodes, 'DWPreprocessor' | 'AnimalPosePreprocessor' | 'OpenposePreprocessor'>
       {}
       export interface BBOX_DETECTOR extends
          Pick<Comfy.Custom.Impact_Pack.Nodes, 'CLIPSegDetectorProvider' | 'ONNXDetectorProvider' | 'FromDetailerPipe' | 'FromDetailerPipe$_v2' | 'FromDetailerPipeSDXL' | 'UltralyticsDetectorProvider'>
+      {}
+      export interface MARIGOLDMODEL extends
+         Pick<Comfy.Custom.Marigold.Nodes, 'MarigoldModelLoader'>
       {}
       export interface DETAILER_HOOK extends
          Pick<Comfy.Custom.Impact_Pack.Nodes, 'FromDetailerPipe' | 'FromDetailerPipe$_v2' | 'FromDetailerPipeSDXL' | 'CoreMLDetailerHookProvider' | 'PreviewDetailerHookProvider' | 'DetailerHookCombine' | 'NoiseInjectionDetailerHookProvider' | 'UnsamplerDetailerHookProvider' | 'DenoiseSchedulerDetailerHookProvider' | 'SEGSOrderedFilterDetailerHookProvider' | 'SEGSRangeFilterDetailerHookProvider' | 'SEGSLabelFilterDetailerHookProvider' | 'VariationNoiseDetailerHookProvider'>
@@ -10772,6 +15117,7 @@ declare global {
          Pick<Comfy.Custom.Impact_Pack.Nodes, 'PreviewDetailerHookProvider'>
       {}
       export interface INT extends
+         Pick<Comfy.Custom.was.Nodes, 'Constant_Number' | 'Logic_Boolean' | 'Hex_to_HSL' | 'Hex_to_HSL' | 'Hex_to_HSL' | 'Image_Send_HTTP' | 'Image_Size_to_Number' | 'Image_Size_to_Number' | 'Image_to_Seed' | 'Integer_place_counter' | 'Latent_Size_to_Number' | 'Latent_Size_to_Number' | 'Mask_Crop_Region' | 'Mask_Crop_Region' | 'Mask_Crop_Region' | 'Mask_Crop_Region' | 'Mask_Crop_Region' | 'Mask_Crop_Region' | 'Number_Counter' | 'Number_Operation' | 'Number_Input_Switch' | 'Number_Input_Condition' | 'Number_Multiple_Of' | 'Number_to_Int' | 'Random_Number' | 'Seed' | 'Text_Find_and_Replace_Input' | 'Text_Find_and_Replace' | 'True_Random$5org_Number_Generator'>,
          Pick<Comfy.Custom.IPAdapter_plus.Nodes, 'IPAdapterWeights' | 'IPAdapterCombineWeights' | 'IPAdapterWeightsFromStrategy'>,
          Pick<Comfy.Custom.controlnet_aux.Nodes, 'PixelPerfectResolution' | 'ImageGenResolutionFromImage' | 'ImageGenResolutionFromImage' | 'ImageGenResolutionFromLatent' | 'ImageGenResolutionFromLatent'>,
          Pick<Comfy.Custom.Impact_Pack.Nodes, 'ImpactFrom$_SEG$_ELT$_bbox' | 'ImpactFrom$_SEG$_ELT$_bbox' | 'ImpactFrom$_SEG$_ELT$_bbox' | 'ImpactFrom$_SEG$_ELT$_bbox' | 'ImpactFrom$_SEG$_ELT$_crop$_region' | 'ImpactFrom$_SEG$_ELT$_crop$_region' | 'ImpactFrom$_SEG$_ELT$_crop$_region' | 'ImpactFrom$_SEG$_ELT$_crop$_region' | 'ImpactCount$_Elts$_in$_SEGS' | 'LatentSwitch' | 'SEGSSwitch' | 'ImpactSwitch' | 'ImpactConvertDataType' | 'ImpactInt' | 'ImpactImageInfo' | 'ImpactImageInfo' | 'ImpactImageInfo' | 'ImpactImageInfo' | 'ImpactLatentInfo' | 'ImpactLatentInfo' | 'ImpactLatentInfo' | 'ImpactLatentInfo' | 'ImpactMinMax' | 'ImpactQueueTriggerCountdown' | 'ImpactQueueTriggerCountdown'>
@@ -10790,8 +15136,12 @@ declare global {
          Pick<Comfy.Extra.controlnet.Nodes, 'ControlNetInpaintingAliMamaApply' | 'ControlNetInpaintingAliMamaApply'>,
          Pick<Comfy.Extra.hunyuan.Nodes, 'CLIPTextEncodeHunyuanDiT'>,
          Pick<Comfy.Extra.flux.Nodes, 'CLIPTextEncodeFlux' | 'FluxGuidance'>,
+         Pick<Comfy.Custom.was.Nodes, 'Bus_Node' | 'Bus_Node' | 'CLIPTextEncode_$1NSP$2' | 'Conditioning_Input_Switch' | 'Load_Cache' | 'Text_to_Conditioning'>,
          Pick<Comfy.Custom.IPAdapter_plus.Nodes, 'IPAdapterRegionalConditioning' | 'IPAdapterRegionalConditioning'>,
          Pick<Comfy.Custom.Impact_Pack.Nodes, 'FromDetailerPipe' | 'FromDetailerPipe' | 'FromDetailerPipe$_v2' | 'FromDetailerPipe$_v2' | 'FromDetailerPipeSDXL' | 'FromDetailerPipeSDXL' | 'FromDetailerPipeSDXL' | 'FromDetailerPipeSDXL' | 'FromBasicPipe' | 'FromBasicPipe' | 'FromBasicPipe$_v2' | 'FromBasicPipe$_v2' | 'ImpactNegativeConditioningPlaceholder' | 'ImpactWildcardEncode' | 'ImpactCombineConditionings' | 'ImpactConcatConditionings'>
+      {}
+      export interface IMAGE_BOUNDS extends
+         Pick<Comfy.Custom.was.Nodes, 'Image_Bounds' | 'Inset_Image_Bounds' | 'Bounded_Image_Crop_with_Mask' | 'Image_Bounds_to_Console'>
       {}
       export interface OPTICAL_FLOW extends
          Pick<Comfy.Custom.controlnet_aux.Nodes, 'Unimatch$_OptFlowPreprocessor' | 'MaskOptFlow'>
@@ -10801,14 +15151,19 @@ declare global {
       {}
       export interface CLIP_VISION extends
          Pick<Comfy.Base.Nodes, 'CLIPVisionLoader' | 'unCLIPCheckpointLoader'>,
-         Pick<Comfy.Extra.video_model.Nodes, 'ImageOnlyCheckpointLoader'>
+         Pick<Comfy.Extra.video_model.Nodes, 'ImageOnlyCheckpointLoader'>,
+         Pick<Comfy.Custom.was.Nodes, 'CLIP_Vision_Input_Switch' | 'unCLIP_Checkpoint_Loader'>
       {}
       export interface STYLE_MODEL extends
          Pick<Comfy.Base.Nodes, 'StyleModelLoader'>
       {}
       export interface CONTROL_NET extends
          Pick<Comfy.Base.Nodes, 'ControlNetLoader' | 'DiffControlNetLoader'>,
-         Pick<Comfy.Extra.controlnet.Nodes, 'SetUnionControlNetType'>
+         Pick<Comfy.Extra.controlnet.Nodes, 'SetUnionControlNetType'>,
+         Pick<Comfy.Custom.was.Nodes, 'Control_Net_Model_Input_Switch'>
+      {}
+      export interface MIDAS_MODEL extends
+         Pick<Comfy.Custom.was.Nodes, 'MiDaS_Model_Loader'>
       {}
       export interface INSIGHTFACE extends
          Pick<Comfy.Custom.IPAdapter_plus.Nodes, 'IPAdapterInsightFaceLoader'>
@@ -10819,14 +15174,21 @@ declare global {
       export interface PHOTOMAKER extends
          Pick<Comfy.Extra.photomaker.Nodes, 'PhotoMakerLoader'>
       {}
+      export interface BLIP_MODEL extends
+         Pick<Comfy.Custom.was.Nodes, 'BLIP_Model_Loader'>
+      {}
       export interface BASIC_PIPE extends
          Pick<Comfy.Custom.Impact_Pack.Nodes, 'DetailerForEachPipe' | 'DetailerForEachDebugPipe' | 'DetailerForEachPipeForAnimateDiff' | 'MaskDetailerPipe' | 'MaskDetailerPipe' | 'AnyPipeToBasic' | 'ToBasicPipe' | 'FromBasicPipe$_v2' | 'DetailerPipeToBasicPipe' | 'DetailerPipeToBasicPipe' | 'EditBasicPipe' | 'ImpactKSamplerBasicPipe' | 'ImpactKSamplerAdvancedBasicPipe'>
       {}
-      export interface IPADAPTER extends
-         Pick<Comfy.Custom.IPAdapter_plus.Nodes, 'IPAdapterUnifiedLoader' | 'IPAdapterUnifiedLoaderFaceID' | 'IPAdapterModelLoader' | 'IPAdapterUnifiedLoaderCommunity'>
+      export interface CROP_DATA extends
+         Pick<Comfy.Custom.was.Nodes, 'Image_Crop_Face' | 'Image_Crop_Location' | 'Image_Crop_Square_Location' | 'Mask_Crop_Region'>
       {}
       export interface SAM_MODEL extends
+         Pick<Comfy.Custom.was.Nodes, 'SAM_Model_Loader'>,
          Pick<Comfy.Custom.Impact_Pack.Nodes, 'SAMLoader' | 'FromDetailerPipe' | 'FromDetailerPipe$_v2' | 'FromDetailerPipeSDXL'>
+      {}
+      export interface IPADAPTER extends
+         Pick<Comfy.Custom.IPAdapter_plus.Nodes, 'IPAdapterUnifiedLoader' | 'IPAdapterUnifiedLoaderFaceID' | 'IPAdapterModelLoader' | 'IPAdapterUnifiedLoaderCommunity'>
       {}
       export interface TRACKING extends
          Pick<Comfy.Custom.controlnet_aux.Nodes, 'UpperBodyTrackingFromPoseKps'>
@@ -10861,6 +15223,7 @@ declare global {
          Pick<Comfy.Extra.audio.Nodes, 'EmptyLatentAudio' | 'VAEEncodeAudio'>,
          Pick<Comfy.Extra.sd3.Nodes, 'EmptySD3LatentImage'>,
          Pick<Comfy.Extra.mochi.Nodes, 'EmptyMochiLatentVideo'>,
+         Pick<Comfy.Custom.was.Nodes, 'Blend_Latents' | 'Latent_Input_Switch' | 'Load_Cache' | 'KSampler_$1WAS$2' | 'KSampler_Cycle' | 'Latent_Batch' | 'Latent_Noise_Injection' | 'Latent_Upscale_by_Factor_$1WAS$2' | 'Samples_Passthrough_$1Stat_System$2'>,
          Pick<Comfy.Custom.Impact_Pack.Nodes, 'LatentPixelScale' | 'IterativeLatentUpscale' | 'TwoSamplersForMask' | 'TwoAdvancedSamplersForMask' | 'PreviewBridgeLatent' | 'LatentReceiver' | 'ImpactKSamplerBasicPipe' | 'ImpactKSamplerAdvancedBasicPipe' | 'ReencodeLatent' | 'ReencodeLatentPipe' | 'RegionalSampler' | 'RegionalSamplerAdvanced' | 'RemoveNoiseMask'>
       {}
       export interface GLIGEN extends
@@ -10876,6 +15239,9 @@ declare global {
          Pick<Comfy.Extra.perpneg.Nodes, 'PerpNegGuider'>
       {}
       export interface WEBCAM {} // 🔶 no node can output this type.
+      export interface NUMBER extends
+         Pick<Comfy.Custom.was.Nodes, 'Constant_Number' | 'Debug_Number_to_Console' | 'Logic_Boolean' | 'Image_Aspect_Ratio' | 'Image_Aspect_Ratio' | 'Image_Size_to_Number' | 'Image_Size_to_Number' | 'Latent_Size_to_Number' | 'Latent_Size_to_Number' | 'Number_Counter' | 'Number_Operation' | 'Number_Input_Switch' | 'Number_Input_Condition' | 'Number_Multiple_Of' | 'Number_PI' | 'Random_Number' | 'Seed' | 'Text_Compare' | 'Text_Find_and_Replace_Input' | 'Text_Find_and_Replace' | 'Text_to_Number' | 'True_Random$5org_Number_Generator' | 'Video_Dump_Frames'>
+      {}
       export interface EMBEDS extends
          Pick<Comfy.Custom.IPAdapter_plus.Nodes, 'IPAdapterEncoder' | 'IPAdapterEncoder' | 'IPAdapterCombineEmbeds' | 'IPAdapterLoadEmbeds'>
       {}
@@ -10898,6 +15264,7 @@ declare global {
          Pick<Comfy.Extra.attention_multiply.Nodes, 'UNetSelfAttentionMultiply' | 'UNetCrossAttentionMultiply' | 'UNetTemporalAttentionMultiply'>,
          Pick<Comfy.Extra.sd3.Nodes, 'SkipLayerGuidanceSD3'>,
          Pick<Comfy.Extra.torch_compile.Nodes, 'TorchCompileModel'>,
+         Pick<Comfy.Custom.was.Nodes, 'Bus_Node' | 'Checkpoint_Loader' | 'Checkpoint_Loader_$1Simple$2' | 'Diffusers_Model_Loader' | 'Diffusers_Hub_Model_Down$7Loader' | 'Lora_Loader' | 'Load_Lora' | 'Lora_Input_Switch' | 'Model_Input_Switch' | 'unCLIP_Checkpoint_Loader'>,
          Pick<Comfy.Custom.IPAdapter_plus.Nodes, 'IPAdapter' | 'IPAdapterAdvanced' | 'IPAdapterBatch' | 'IPAdapterFaceID' | 'IPAdapterFaceIDKolors' | 'IPAAdapterFaceIDBatch' | 'IPAdapterTiled' | 'IPAdapterTiledBatch' | 'IPAdapterEmbeds' | 'IPAdapterEmbedsBatch' | 'IPAdapterStyleComposition' | 'IPAdapterStyleCompositionBatch' | 'IPAdapterMS' | 'IPAdapterClipVisionEnhancer' | 'IPAdapterClipVisionEnhancerBatch' | 'IPAdapterFromParams' | 'IPAdapterPreciseStyleTransfer' | 'IPAdapterPreciseStyleTransferBatch' | 'IPAdapterPreciseComposition' | 'IPAdapterPreciseCompositionBatch' | 'IPAdapterUnifiedLoader' | 'IPAdapterUnifiedLoaderFaceID' | 'IPAdapterUnifiedLoaderCommunity'>,
          Pick<Comfy.Custom.Impact_Pack.Nodes, 'FromDetailerPipe' | 'FromDetailerPipe$_v2' | 'FromDetailerPipeSDXL' | 'FromDetailerPipeSDXL' | 'FromBasicPipe' | 'FromBasicPipe$_v2' | 'ImpactWildcardEncode'>
       {}
@@ -10913,8 +15280,10 @@ declare global {
          Pick<Comfy.Extra.morphology.Nodes, 'Morphology'>,
          Pick<Comfy.Extra.stable_cascade.Nodes, 'StableCascade$_SuperResolutionControlnet'>,
          Pick<Comfy.Extra.webcam.Nodes, 'WebcamCapture'>,
+         Pick<Comfy.Custom.was.Nodes, 'Create_Grid_Image' | 'Create_Grid_Image_from_Batch' | 'Create_Morph_Image' | 'Create_Morph_Image' | 'CLIPSeg_Masking' | 'CLIPSeg_Batch_Masking' | 'CLIPSeg_Batch_Masking' | 'Convert_Masks_to_Images' | 'Load_Cache' | 'Image_SSAO_$1Ambient_Occlusion$2' | 'Image_SSAO_$1Ambient_Occlusion$2' | 'Image_SSAO_$1Ambient_Occlusion$2' | 'Image_SSDO_$1Direct_Occlusion$2' | 'Image_SSDO_$1Direct_Occlusion$2' | 'Image_SSDO_$1Direct_Occlusion$2' | 'Image_SSDO_$1Direct_Occlusion$2' | 'Image_Analyze' | 'Image_Batch' | 'Image_Blank' | 'Image_Blend_by_Mask' | 'Image_Blend' | 'Image_Blending_Mode' | 'Image_Bloom_Filter' | 'Image_Canny_Filter' | 'Image_Chromatic_Aberration' | 'Image_Color_Palette' | 'Image_Crop_Face' | 'Image_Crop_Location' | 'Image_Crop_Square_Location' | 'Image_Displacement_Warp' | 'Image_Lucy_Sharpen' | 'Image_Paste_Face' | 'Image_Paste_Face' | 'Image_Paste_Crop' | 'Image_Paste_Crop' | 'Image_Paste_Crop_by_Location' | 'Image_Paste_Crop_by_Location' | 'Image_Pixelate' | 'Image_Power_Noise' | 'Image_Dragan_Photography_Filter' | 'Image_Edge_Detection_Filter' | 'Image_Film_Grain' | 'Image_Filter_Adjustments' | 'Image_Flip' | 'Image_Gradient_Map' | 'Image_Generate_Gradient' | 'Image_High_Pass_Filter' | 'Image_History_Loader' | 'Image_Input_Switch' | 'Image_Levels_Adjustment' | 'Image_Load' | 'Image_Median_Filter' | 'Image_Mix_RGB_Channels' | 'Image_Monitor_Effects_Filter' | 'Image_Nova_Filter' | 'Image_Padding' | 'Image_Padding' | 'Image_Perlin_Noise' | 'Image_Rembg_$1Remove_Background$2' | 'Image_Perlin_Power_Fractal' | 'Image_Remove_Background_$1Alpha$2' | 'Image_Remove_Color' | 'Image_Resize' | 'Image_Rotate' | 'Image_Rotate_Hue' | 'Image_Save' | 'Image_Seamless_Texture' | 'Image_Select_Channel' | 'Image_Select_Color' | 'Image_Shadows_and_Highlights' | 'Image_Shadows_and_Highlights' | 'Image_Shadows_and_Highlights' | 'Image_Stitch' | 'Image_Style_Filter' | 'Image_Threshold' | 'Image_Tiled' | 'Image_Transpose' | 'Image_fDOF_Filter' | 'Image_to_Noise' | 'Images_to_RGB' | 'Images_to_Linear' | 'Image_Voronoi_Noise_Filter' | 'Load_Image_Batch' | 'MiDaS_Depth_Approximation' | 'MiDaS_Mask_Image' | 'MiDaS_Mask_Image' | 'Tensor_Batch_to_Image' | 'SAM_Image_Mask' | 'Bounded_Image_Blend' | 'Bounded_Image_Blend_with_Mask' | 'Bounded_Image_Crop' | 'Bounded_Image_Crop_with_Mask' | 'Write_to_GIF' | 'Write_to_Video' | 'CLIPSEG2'>,
          Pick<Comfy.Custom.IPAdapter_plus.Nodes, 'IPAdapterFaceID' | 'IPAdapterFaceIDKolors' | 'IPAAdapterFaceIDBatch' | 'IPAdapterTiled' | 'IPAdapterTiledBatch' | 'IPAdapterNoise' | 'PrepImageForClipVision' | 'IPAdapterWeights' | 'IPAdapterWeights' | 'IPAdapterWeightsFromStrategy' | 'IPAdapterWeightsFromStrategy'>,
          Pick<Comfy.Custom.controlnet_aux.Nodes, 'ShufflePreprocessor' | 'DensePosePreprocessor' | 'LeReS$7DepthMapPreprocessor' | 'BinaryPreprocessor' | 'AnimeFace$_SemSegPreprocessor' | 'Zoe$7DepthMapPreprocessor' | 'DepthAnythingPreprocessor' | 'Zoe$_DepthAnythingPreprocessor' | 'DepthAnythingV2Preprocessor' | 'CannyEdgePreprocessor' | 'DWPreprocessor' | 'AnimalPosePreprocessor' | 'ImageLuminanceDetector' | 'ImageIntensityDetector' | 'MediaPipe$7FaceMeshPreprocessor' | 'DiffusionEdge$_Preprocessor' | 'M$7LSDPreprocessor' | 'HEDPreprocessor' | 'FakeScribblePreprocessor' | 'OneFormer$7COCO$7SemSegPreprocessor' | 'OneFormer$7ADE20K$7SemSegPreprocessor' | 'BAE$7NormalMapPreprocessor' | 'MeshGraphormer$7DepthMapPreprocessor' | 'MeshGraphormer$6ImpactDetector$7DepthMapPreprocessor' | 'DSINE$7NormalMapPreprocessor' | 'MiDaS$7NormalMapPreprocessor' | 'MiDaS$7DepthMapPreprocessor' | 'AnyLineArtPreprocessor$_aux' | 'SAMPreprocessor' | 'UniFormer$7SemSegPreprocessor' | 'SemSegPreprocessor' | 'PiDiNetPreprocessor' | 'InpaintPreprocessor' | 'LineArtPreprocessor' | 'OpenposePreprocessor' | 'Unimatch$_OptFlowPreprocessor' | 'MaskOptFlow' | 'FacialPartColoringFromPoseKps' | 'RenderPeopleKps' | 'RenderAnimalKps' | 'TEEDPreprocessor' | 'PyraCannyPreprocessor' | 'Metric3D$7DepthMapPreprocessor' | 'Metric3D$7NormalMapPreprocessor' | 'Manga2Anime$_LineArt$_Preprocessor' | 'ScribblePreprocessor' | 'Scribble$_XDoG$_Preprocessor' | 'Scribble$_PiDiNet$_Preprocessor' | 'AnimeLineArtPreprocessor' | 'LineartStandardPreprocessor' | 'TilePreprocessor' | 'TTPlanet$_TileGF$_Preprocessor' | 'TTPlanet$_TileSimple$_Preprocessor' | 'ColorPreprocessor' | 'AIO$_Preprocessor' | 'HintImageEnchance' | 'ExecuteAllControlNetPreprocessors' | 'ControlNetAuxSimpleAddText'>,
+         Pick<Comfy.Custom.Marigold.Nodes, 'MarigoldDepthEstimation$_v2' | 'MarigoldDepthEstimation$_v2$_video' | 'MarigoldDepthEstimation' | 'MarigoldDepthEstimationVideo' | 'ColorizeDepthmap' | 'RemapDepth'>,
          Pick<Comfy.Custom.Impact_Pack.Nodes, 'DetailerForEach' | 'DetailerForEachDebug' | 'DetailerForEachDebug' | 'DetailerForEachDebug' | 'DetailerForEachDebug' | 'DetailerForEachDebug' | 'DetailerForEachPipe' | 'DetailerForEachPipe' | 'DetailerForEachDebugPipe' | 'DetailerForEachDebugPipe' | 'DetailerForEachDebugPipe' | 'DetailerForEachDebugPipe' | 'DetailerForEachDebugPipe' | 'DetailerForEachPipeForAnimateDiff' | 'DetailerForEachPipeForAnimateDiff' | 'FaceDetailer' | 'FaceDetailer' | 'FaceDetailer' | 'FaceDetailer' | 'FaceDetailerPipe' | 'FaceDetailerPipe' | 'FaceDetailerPipe' | 'FaceDetailerPipe' | 'MaskDetailerPipe' | 'MaskDetailerPipe' | 'MaskDetailerPipe' | 'LatentPixelScale' | 'IterativeImageUpscale' | 'ImageListToImageBatch' | 'ImpactFrom$_SEG$_ELT' | 'PreviewBridge' | 'ImageReceiver' | 'ImageMaskSwitch' | 'SEGSUpscaler' | 'SEGSUpscalerPipe' | 'SEGSDetailer' | 'SEGSPaste' | 'SEGSPreview' | 'SEGSPreviewCNet' | 'SEGSToImageList' | 'SEGSDetailerForAnimateDiff' | 'ImpactImageBatchToImageList' | 'ImpactMakeImageList' | 'ImpactMakeImageBatch'>
       {}
       export interface NOISE extends
@@ -10931,15 +15300,26 @@ declare global {
          Pick<Comfy.Extra.model_merging.Nodes, 'CLIPMergeSimple' | 'CLIPMergeSubtract' | 'CLIPMergeAdd'>,
          Pick<Comfy.Extra.attention_multiply.Nodes, 'CLIPAttentionMultiply'>,
          Pick<Comfy.Extra.sd3.Nodes, 'TripleCLIPLoader'>,
+         Pick<Comfy.Custom.was.Nodes, 'Bus_Node' | 'Checkpoint_Loader' | 'Checkpoint_Loader_$1Simple$2' | 'CLIP_Input_Switch' | 'Diffusers_Model_Loader' | 'Diffusers_Hub_Model_Down$7Loader' | 'Lora_Loader' | 'Load_Lora' | 'Lora_Input_Switch' | 'unCLIP_Checkpoint_Loader'>,
          Pick<Comfy.Custom.Impact_Pack.Nodes, 'FromDetailerPipe' | 'FromDetailerPipe$_v2' | 'FromDetailerPipeSDXL' | 'FromDetailerPipeSDXL' | 'FromBasicPipe' | 'FromBasicPipe$_v2' | 'ImpactWildcardEncode'>
       {}
       export interface MASK extends
          Pick<Comfy.Base.Nodes, 'LoadImage' | 'LoadImageMask' | 'ImagePadForOutpaint'>,
          Pick<Comfy.Extra.mask.Nodes, 'ImageToMask' | 'ImageColorToMask' | 'SolidMask' | 'InvertMask' | 'CropMask' | 'MaskComposite' | 'FeatherMask' | 'GrowMask' | 'ThresholdMask'>,
          Pick<Comfy.Extra.compositing.Nodes, 'PorterDuffImageComposite' | 'SplitImageWithAlpha'>,
+         Pick<Comfy.Custom.was.Nodes, 'CLIPSeg_Masking' | 'CLIPSeg_Batch_Masking' | 'Image_Load' | 'Image_to_Latent_Mask' | 'Masks_Add' | 'Masks_Subtract' | 'Mask_Arbitrary_Region' | 'Mask_Batch_to_Mask' | 'Mask_Batch' | 'Mask_Ceiling_Region' | 'Mask_Crop_Dominant_Region' | 'Mask_Crop_Minority_Region' | 'Mask_Crop_Region' | 'Mask_Paste_Region' | 'Mask_Paste_Region' | 'Mask_Dilate_Region' | 'Mask_Dominant_Region' | 'Mask_Erode_Region' | 'Mask_Fill_Holes' | 'Mask_Floor_Region' | 'Mask_Gaussian_Region' | 'Mask_Invert' | 'Mask_Minority_Region' | 'Mask_Smooth_Region' | 'Mask_Threshold_Region' | 'Masks_Combine_Regions' | 'Masks_Combine_Batch' | 'SAM_Image_Mask'>,
          Pick<Comfy.Custom.IPAdapter_plus.Nodes, 'IPAdapterTiled' | 'IPAdapterTiledBatch'>,
          Pick<Comfy.Custom.controlnet_aux.Nodes, 'AnimeFace$_SemSegPreprocessor' | 'MeshGraphormer$7DepthMapPreprocessor' | 'MeshGraphormer$6ImpactDetector$7DepthMapPreprocessor'>,
          Pick<Comfy.Custom.Impact_Pack.Nodes, 'SAMDetectorCombined' | 'SAMDetectorSegmented' | 'SAMDetectorSegmented' | 'FaceDetailer' | 'FaceDetailerPipe' | 'BitwiseAndMask' | 'SubtractMask' | 'AddMask' | 'ImpactFlattenMask' | 'ToBinaryMask' | 'MasksToMaskList' | 'MaskListToMaskBatch' | 'ImpactFrom$_SEG$_ELT' | 'ImpactDilateMask' | 'ImpactGaussianBlurMask' | 'BboxDetectorCombined$_v2' | 'SegmDetectorCombined$_v2' | 'SegsToCombinedMask' | 'PreviewBridge' | 'PreviewBridgeLatent' | 'ImageReceiver' | 'ImageMaskSwitch' | 'ImpactSEGSToMaskList' | 'ImpactSEGSToMaskBatch' | 'ImpactMakeMaskList' | 'ImpactMakeMaskBatch'>
+      {}
+      export interface DICT extends
+         Pick<Comfy.Custom.was.Nodes, 'Dictionary_to_Console' | 'Load_Text_File' | 'Text_Dictionary_Update' | 'Text_Dictionary_Convert' | 'Text_Dictionary_New' | 'Text_File_History_Loader' | 'Text_Load_Line_From_File'>
+      {}
+      export interface LIST extends
+         Pick<Comfy.Custom.was.Nodes, 'Image_Color_Palette' | 'Text_Dictionary_Keys' | 'Text_List' | 'Text_List_Concatenate'>
+      {}
+      export interface SEED extends
+         Pick<Comfy.Custom.was.Nodes, 'Number_to_Seed' | 'Seed'>
       {}
       export interface SEGS extends
          Pick<Comfy.Custom.Impact_Pack.Nodes, 'BitwiseAndMaskForEach' | 'SubtractMaskForEach' | 'DetailerForEachPipe' | 'DetailerForEachDebugPipe' | 'DetailerForEachPipeForAnimateDiff' | 'ImpactSegsAndMask' | 'ImpactSegsAndMaskForEach' | 'EmptySegs' | 'MediaPipeFaceMeshToSEGS' | 'MaskToSEGS' | 'MaskToSEGS$_for$_AnimateDiff' | 'SetDefaultImageForSEGS' | 'RemoveImageFromSEGS' | 'BboxDetectorSEGS' | 'SegmDetectorSEGS' | 'ONNXDetectorSEGS' | 'ImpactSimpleDetectorSEGS$_for$_AD' | 'ImpactSimpleDetectorSEGS' | 'ImpactSimpleDetectorSEGSPipe' | 'ImpactControlNetApplySEGS' | 'ImpactControlNetApplyAdvancedSEGS' | 'ImpactControlNetClearSEGS' | 'ImpactIPAdapterApplySEGS' | 'ImpactAssembleSEGS' | 'ImpactDilateMaskInSEGS' | 'ImpactGaussianBlurMaskInSEGS' | 'SEGSDetailer' | 'ImpactSEGSConcat' | 'ImpactSEGSPicker' | 'ImpactMakeTileSEGS' | 'ImpactSEGSMerge' | 'SEGSDetailerForAnimateDiff' | 'ImpactSEGSLabelAssign' | 'ImpactSEGSLabelFilter' | 'ImpactSEGSLabelFilter' | 'ImpactSEGSRangeFilter' | 'ImpactSEGSRangeFilter' | 'ImpactSEGSOrderedFilter' | 'ImpactSEGSOrderedFilter' | 'ImpactSEGSClassify' | 'ImpactSEGSClassify'>
@@ -10947,10 +15327,14 @@ declare global {
       export interface VAE extends
          Pick<Comfy.Base.Nodes, 'CheckpointLoaderSimple' | 'VAELoader' | 'unCLIPCheckpointLoader' | 'CheckpointLoader' | 'DiffusersLoader'>,
          Pick<Comfy.Extra.video_model.Nodes, 'ImageOnlyCheckpointLoader'>,
+         Pick<Comfy.Custom.was.Nodes, 'Bus_Node' | 'Checkpoint_Loader' | 'Checkpoint_Loader_$1Simple$2' | 'Diffusers_Model_Loader' | 'Diffusers_Hub_Model_Down$7Loader' | 'unCLIP_Checkpoint_Loader' | 'VAE_Input_Switch'>,
          Pick<Comfy.Custom.Impact_Pack.Nodes, 'FromDetailerPipe' | 'FromDetailerPipe$_v2' | 'FromDetailerPipeSDXL' | 'FromBasicPipe' | 'FromBasicPipe$_v2' | 'IterativeLatentUpscale' | 'ImpactKSamplerBasicPipe' | 'ImpactKSamplerAdvancedBasicPipe'>
       {}
+      export interface BUS extends
+         Pick<Comfy.Custom.was.Nodes, 'Bus_Node'>
+      {}
    }
-   
+
    // 5. ACCEPTABLE INPUTS -------------------------------
    namespace Comfy.Input {
       type INVALID_null = any
@@ -10967,28 +15351,35 @@ declare global {
       type REGIONAL_PROMPTS = ComfyNodeOutput<'REGIONAL_PROMPTS'> | HasSingle_REGIONAL_PROMPTS | ((x: Comfy.Producer.REGIONAL_PROMPTS) => Comfy.Input.REGIONAL_PROMPTS)
       type STRING = string | ComfyNodeOutput<'STRING'> | HasSingle_STRING | ((x: Comfy.Producer.STRING) => Comfy.Input.STRING)
       type FLOAT = number | ComfyNodeOutput<'FLOAT'> | HasSingle_FLOAT | ((x: Comfy.Producer.FLOAT) => Comfy.Input.FLOAT)
+      type SAM_PARAMETERS = ComfyNodeOutput<'SAM_PARAMETERS'> | HasSingle_SAM_PARAMETERS | ((x: Comfy.Producer.SAM_PARAMETERS) => Comfy.Input.SAM_PARAMETERS)
       type SCHEDULER_FUNC = ComfyNodeOutput<'SCHEDULER_FUNC'> | HasSingle_SCHEDULER_FUNC | ((x: Comfy.Producer.SCHEDULER_FUNC) => Comfy.Input.SCHEDULER_FUNC)
       type IPADAPTER_PIPE = ComfyNodeOutput<'IPADAPTER_PIPE'> | HasSingle_IPADAPTER_PIPE | ((x: Comfy.Producer.IPADAPTER_PIPE) => Comfy.Input.IPADAPTER_PIPE)
       type UPSCALE_MODEL = ComfyNodeOutput<'UPSCALE_MODEL'> | HasSingle_UPSCALE_MODEL | ((x: Comfy.Producer.UPSCALE_MODEL) => Comfy.Input.UPSCALE_MODEL)
+      type CLIPSEG_MODEL = ComfyNodeOutput<'CLIPSEG_MODEL'> | HasSingle_CLIPSEG_MODEL | ((x: Comfy.Producer.CLIPSEG_MODEL) => Comfy.Input.CLIPSEG_MODEL)
       type POSE_KEYPOINT = ComfyNodeOutput<'POSE_KEYPOINT'> | HasSingle_POSE_KEYPOINT | ((x: Comfy.Producer.POSE_KEYPOINT) => Comfy.Input.POSE_KEYPOINT)
       type BBOX_DETECTOR = ComfyNodeOutput<'BBOX_DETECTOR'> | HasSingle_BBOX_DETECTOR | ((x: Comfy.Producer.BBOX_DETECTOR) => Comfy.Input.BBOX_DETECTOR)
+      type MARIGOLDMODEL = ComfyNodeOutput<'MARIGOLDMODEL'> | HasSingle_MARIGOLDMODEL | ((x: Comfy.Producer.MARIGOLDMODEL) => Comfy.Input.MARIGOLDMODEL)
       type DETAILER_HOOK = ComfyNodeOutput<'DETAILER_HOOK'> | HasSingle_DETAILER_HOOK | ((x: Comfy.Producer.DETAILER_HOOK) => Comfy.Input.DETAILER_HOOK)
       type DETAILER_PIPE = ComfyNodeOutput<'DETAILER_PIPE'> | HasSingle_DETAILER_PIPE | ((x: Comfy.Producer.DETAILER_PIPE) => Comfy.Input.DETAILER_PIPE)
       type SEGM_DETECTOR = ComfyNodeOutput<'SEGM_DETECTOR'> | HasSingle_SEGM_DETECTOR | ((x: Comfy.Producer.SEGM_DETECTOR) => Comfy.Input.SEGM_DETECTOR)
       type UPSCALER_HOOK = ComfyNodeOutput<'UPSCALER_HOOK'> | HasSingle_UPSCALER_HOOK | ((x: Comfy.Producer.UPSCALER_HOOK) => Comfy.Input.UPSCALER_HOOK)
       type INT = number | ComfyNodeOutput<'INT'> | HasSingle_INT | ((x: Comfy.Producer.INT) => Comfy.Input.INT)
       type CONDITIONING = ComfyNodeOutput<'CONDITIONING'> | HasSingle_CONDITIONING | ((x: Comfy.Producer.CONDITIONING) => Comfy.Input.CONDITIONING)
+      type IMAGE_BOUNDS = ComfyNodeOutput<'IMAGE_BOUNDS'> | HasSingle_IMAGE_BOUNDS | ((x: Comfy.Producer.IMAGE_BOUNDS) => Comfy.Input.IMAGE_BOUNDS)
       type OPTICAL_FLOW = ComfyNodeOutput<'OPTICAL_FLOW'> | HasSingle_OPTICAL_FLOW | ((x: Comfy.Producer.OPTICAL_FLOW) => Comfy.Input.OPTICAL_FLOW)
       type SEG_ELT_bbox = ComfyNodeOutput<'SEG_ELT_bbox'> | HasSingle_SEG_ELT_bbox | ((x: Comfy.Producer.SEG_ELT_bbox) => Comfy.Input.SEG_ELT_bbox)
       type CLIP_VISION = ComfyNodeOutput<'CLIP_VISION'> | HasSingle_CLIP_VISION | ((x: Comfy.Producer.CLIP_VISION) => Comfy.Input.CLIP_VISION)
       type STYLE_MODEL = ComfyNodeOutput<'STYLE_MODEL'> | HasSingle_STYLE_MODEL | ((x: Comfy.Producer.STYLE_MODEL) => Comfy.Input.STYLE_MODEL)
       type CONTROL_NET = ComfyNodeOutput<'CONTROL_NET'> | HasSingle_CONTROL_NET | ((x: Comfy.Producer.CONTROL_NET) => Comfy.Input.CONTROL_NET)
+      type MIDAS_MODEL = ComfyNodeOutput<'MIDAS_MODEL'> | HasSingle_MIDAS_MODEL | ((x: Comfy.Producer.MIDAS_MODEL) => Comfy.Input.MIDAS_MODEL)
       type INSIGHTFACE = ComfyNodeOutput<'INSIGHTFACE'> | HasSingle_INSIGHTFACE | ((x: Comfy.Producer.INSIGHTFACE) => Comfy.Input.INSIGHTFACE)
       type SEGS_HEADER = ComfyNodeOutput<'SEGS_HEADER'> | HasSingle_SEGS_HEADER | ((x: Comfy.Producer.SEGS_HEADER) => Comfy.Input.SEGS_HEADER)
       type PHOTOMAKER = ComfyNodeOutput<'PHOTOMAKER'> | HasSingle_PHOTOMAKER | ((x: Comfy.Producer.PHOTOMAKER) => Comfy.Input.PHOTOMAKER)
+      type BLIP_MODEL = ComfyNodeOutput<'BLIP_MODEL'> | HasSingle_BLIP_MODEL | ((x: Comfy.Producer.BLIP_MODEL) => Comfy.Input.BLIP_MODEL)
       type BASIC_PIPE = ComfyNodeOutput<'BASIC_PIPE'> | HasSingle_BASIC_PIPE | ((x: Comfy.Producer.BASIC_PIPE) => Comfy.Input.BASIC_PIPE)
-      type IPADAPTER = ComfyNodeOutput<'IPADAPTER'> | HasSingle_IPADAPTER | ((x: Comfy.Producer.IPADAPTER) => Comfy.Input.IPADAPTER)
+      type CROP_DATA = ComfyNodeOutput<'CROP_DATA'> | HasSingle_CROP_DATA | ((x: Comfy.Producer.CROP_DATA) => Comfy.Input.CROP_DATA)
       type SAM_MODEL = ComfyNodeOutput<'SAM_MODEL'> | HasSingle_SAM_MODEL | ((x: Comfy.Producer.SAM_MODEL) => Comfy.Input.SAM_MODEL)
+      type IPADAPTER = ComfyNodeOutput<'IPADAPTER'> | HasSingle_IPADAPTER | ((x: Comfy.Producer.IPADAPTER) => Comfy.Input.IPADAPTER)
       type TRACKING = ComfyNodeOutput<'TRACKING'> | HasSingle_TRACKING | ((x: Comfy.Producer.TRACKING) => Comfy.Input.TRACKING)
       type UPSCALER = ComfyNodeOutput<'UPSCALER'> | HasSingle_UPSCALER | ((x: Comfy.Producer.UPSCALER) => Comfy.Input.UPSCALER)
       type KSAMPLER = ComfyNodeOutput<'KSAMPLER'> | HasSingle_KSAMPLER | ((x: Comfy.Producer.KSAMPLER) => Comfy.Input.KSAMPLER)
@@ -11000,6 +15391,7 @@ declare global {
       type SIGMAS = ComfyNodeOutput<'SIGMAS'> | HasSingle_SIGMAS | ((x: Comfy.Producer.SIGMAS) => Comfy.Input.SIGMAS)
       type GUIDER = ComfyNodeOutput<'GUIDER'> | HasSingle_GUIDER | ((x: Comfy.Producer.GUIDER) => Comfy.Input.GUIDER)
       type WEBCAM = ComfyNodeOutput<'WEBCAM'> | HasSingle_WEBCAM | ((x: Comfy.Producer.WEBCAM) => Comfy.Input.WEBCAM)
+      type NUMBER = ComfyNodeOutput<'NUMBER'> | HasSingle_NUMBER | ((x: Comfy.Producer.NUMBER) => Comfy.Input.NUMBER)
       type EMBEDS = ComfyNodeOutput<'EMBEDS'> | HasSingle_EMBEDS | ((x: Comfy.Producer.EMBEDS) => Comfy.Input.EMBEDS)
       type MODEL = ComfyNodeOutput<'MODEL'> | HasSingle_MODEL | ((x: Comfy.Producer.MODEL) => Comfy.Input.MODEL)
       type IMAGE = ComfyNodeOutput<'IMAGE'> | HasSingle_IMAGE | ((x: Comfy.Producer.IMAGE) => Comfy.Input.IMAGE)
@@ -11008,17 +15400,21 @@ declare global {
       type $Star = ComfyNodeOutput<'$Star'> | HasSingle_$Star | ((x: Comfy.Producer.$Star) => Comfy.Input.$Star)
       type CLIP = ComfyNodeOutput<'CLIP'> | HasSingle_CLIP | ((x: Comfy.Producer.CLIP) => Comfy.Input.CLIP)
       type MASK = ComfyNodeOutput<'MASK'> | HasSingle_MASK | ((x: Comfy.Producer.MASK) => Comfy.Input.MASK)
+      type DICT = ComfyNodeOutput<'DICT'> | HasSingle_DICT | ((x: Comfy.Producer.DICT) => Comfy.Input.DICT)
+      type LIST = ComfyNodeOutput<'LIST'> | HasSingle_LIST | ((x: Comfy.Producer.LIST) => Comfy.Input.LIST)
+      type SEED = ComfyNodeOutput<'SEED'> | HasSingle_SEED | ((x: Comfy.Producer.SEED) => Comfy.Input.SEED)
       type SEGS = ComfyNodeOutput<'SEGS'> | HasSingle_SEGS | ((x: Comfy.Producer.SEGS) => Comfy.Input.SEGS)
       type VAE = ComfyNodeOutput<'VAE'> | HasSingle_VAE | ((x: Comfy.Producer.VAE) => Comfy.Input.VAE)
+      type BUS = ComfyNodeOutput<'BUS'> | HasSingle_BUS | ((x: Comfy.Producer.BUS) => Comfy.Input.BUS)
    }
-   
+
    // 6. ENUMS -------------------------------
    namespace Comfy.Union {
-      // ["KSampler.sampler_name","KSamplerAdvanced.sampler_name","Extra.KSamplerSelect.sampler_name","Custom.Impact_Pack.DetailerForEach.sampler_name","Custom.Impact_Pack.DetailerForEachDebug.sampler_name","Custom.Impact_Pack.DetailerForEachPipe.sampler_name","Custom.Impact_Pack.DetailerForEachDebugPipe.sampler_name","Custom.Impact_Pack.DetailerForEachPipeForAnimateDiff.sampler_name","Custom.Impact_Pack.FaceDetailer.sampler_name","Custom.Impact_Pack.FaceDetailerPipe.sampler_name","Custom.Impact_Pack.MaskDetailerPipe.sampler_name","Custom.Impact_Pack.PixelKSampleUpscalerProvider.sampler_name","Custom.Impact_Pack.PixelKSampleUpscalerProviderPipe.sampler_name","Custom.Impact_Pack.PixelTiledKSampleUpscalerProvider.sampler_name","Custom.Impact_Pack.PixelTiledKSampleUpscalerProviderPipe.sampler_name","Custom.Impact_Pack.UnsamplerHookProvider.sampler_name","Custom.Impact_Pack.UnsamplerDetailerHookProvider.sampler_name","Custom.Impact_Pack.KSamplerProvider.sampler_name","Custom.Impact_Pack.TiledKSamplerProvider.sampler_name","Custom.Impact_Pack.KSamplerAdvancedProvider.sampler_name","Custom.Impact_Pack.SEGSUpscaler.sampler_name","Custom.Impact_Pack.SEGSUpscalerPipe.sampler_name","Custom.Impact_Pack.SEGSDetailer.sampler_name","Custom.Impact_Pack.SEGSDetailerForAnimateDiff.sampler_name","Custom.Impact_Pack.ImpactKSamplerBasicPipe.sampler_name","Custom.Impact_Pack.ImpactKSamplerAdvancedBasicPipe.sampler_name"]
+      // ["KSampler.sampler_name","KSamplerAdvanced.sampler_name","Extra.KSamplerSelect.sampler_name","Custom.was.KSampler_$1WAS$2.sampler_name","Custom.was.KSampler_Cycle.sampler_name","Custom.Impact_Pack.DetailerForEach.sampler_name","Custom.Impact_Pack.DetailerForEachDebug.sampler_name","Custom.Impact_Pack.DetailerForEachPipe.sampler_name","Custom.Impact_Pack.DetailerForEachDebugPipe.sampler_name","Custom.Impact_Pack.DetailerForEachPipeForAnimateDiff.sampler_name","Custom.Impact_Pack.FaceDetailer.sampler_name","Custom.Impact_Pack.FaceDetailerPipe.sampler_name","Custom.Impact_Pack.MaskDetailerPipe.sampler_name","Custom.Impact_Pack.PixelKSampleUpscalerProvider.sampler_name","Custom.Impact_Pack.PixelKSampleUpscalerProviderPipe.sampler_name","Custom.Impact_Pack.PixelTiledKSampleUpscalerProvider.sampler_name","Custom.Impact_Pack.PixelTiledKSampleUpscalerProviderPipe.sampler_name","Custom.Impact_Pack.UnsamplerHookProvider.sampler_name","Custom.Impact_Pack.UnsamplerDetailerHookProvider.sampler_name","Custom.Impact_Pack.KSamplerProvider.sampler_name","Custom.Impact_Pack.TiledKSamplerProvider.sampler_name","Custom.Impact_Pack.KSamplerAdvancedProvider.sampler_name","Custom.Impact_Pack.SEGSUpscaler.sampler_name","Custom.Impact_Pack.SEGSUpscalerPipe.sampler_name","Custom.Impact_Pack.SEGSDetailer.sampler_name","Custom.Impact_Pack.SEGSDetailerForAnimateDiff.sampler_name","Custom.Impact_Pack.ImpactKSamplerBasicPipe.sampler_name","Custom.Impact_Pack.ImpactKSamplerAdvancedBasicPipe.sampler_name"]
       type E_SamplerName = "ddim" | "ddpm" | "deis" | "dpm_2" | "dpm_2_ancestral" | "dpm_adaptive" | "dpm_fast" | "dpmpp_2m" | "dpmpp_2m_cfg_pp" | "dpmpp_2m_sde" | "dpmpp_2m_sde_gpu" | "dpmpp_2s_ancestral" | "dpmpp_2s_ancestral_cfg_pp" | "dpmpp_3m_sde" | "dpmpp_3m_sde_gpu" | "dpmpp_sde" | "dpmpp_sde_gpu" | "euler" | "euler_ancestral" | "euler_ancestral_cfg_pp" | "euler_cfg_pp" | "heun" | "heunpp2" | "ipndm" | "ipndm_v" | "lcm" | "lms" | "uni_pc" | "uni_pc_bh2"
-      // ["KSampler.scheduler","KSamplerAdvanced.scheduler","Extra.BasicScheduler.scheduler","Custom.Impact_Pack.PixelTiledKSampleUpscalerProvider.scheduler","Custom.Impact_Pack.PixelTiledKSampleUpscalerProviderPipe.scheduler","Custom.Impact_Pack.UnsamplerHookProvider.scheduler","Custom.Impact_Pack.UnsamplerDetailerHookProvider.scheduler","Custom.Impact_Pack.TiledKSamplerProvider.scheduler","Custom.Impact_Pack.ImpactSchedulerAdapter.scheduler"]
+      // ["KSampler.scheduler","KSamplerAdvanced.scheduler","Extra.BasicScheduler.scheduler","Custom.was.KSampler_$1WAS$2.scheduler","Custom.was.KSampler_Cycle.scheduler","Custom.Impact_Pack.PixelTiledKSampleUpscalerProvider.scheduler","Custom.Impact_Pack.PixelTiledKSampleUpscalerProviderPipe.scheduler","Custom.Impact_Pack.UnsamplerHookProvider.scheduler","Custom.Impact_Pack.UnsamplerDetailerHookProvider.scheduler","Custom.Impact_Pack.TiledKSamplerProvider.scheduler","Custom.Impact_Pack.ImpactSchedulerAdapter.scheduler"]
       type E_SchedulerName = "beta" | "ddim_uniform" | "exponential" | "karras" | "linear_quadratic" | "normal" | "sgm_uniform" | "simple"
-      // ["CheckpointLoaderSimple.ckpt_name","unCLIPCheckpointLoader.ckpt_name","CheckpointLoader.ckpt_name","Extra.ImageOnlyCheckpointLoader.ckpt_name"]
+      // ["CheckpointLoaderSimple.ckpt_name","unCLIPCheckpointLoader.ckpt_name","CheckpointLoader.ckpt_name","Extra.ImageOnlyCheckpointLoader.ckpt_name","Custom.was.Checkpoint_Loader.ckpt_name","Custom.was.Checkpoint_Loader_$1Simple$2.ckpt_name","Custom.was.unCLIP_Checkpoint_Loader.ckpt_name"]
       type E_CkptName = "AOM3A3_orangemixs.safetensors" | "photon_v1.safetensors"
       // ["VAELoader.vae_name"]
       type E_VaeName = "vae-ft-mse-840000-ema-pruned.safetensors"
@@ -11028,13 +15424,13 @@ declare global {
       type E_e2779c2a162ed54d5841127cc2968e8d50f5e431 = "center" | "disabled"
       // ["LoadImage.image","LoadImageMask.image","Custom.Impact_Pack.ImageReceiver.image"]
       type E_Image = "example.png"
-      // ["LoadImageMask.channel","Extra.ImageToMask.channel"]
+      // ["LoadImageMask.channel","Extra.ImageToMask.channel","Custom.was.Image_to_Latent_Mask.channel"]
       type E_Channel = "alpha" | "blue" | "green" | "red"
       // ["ImageScale.upscale_method","ImageScaleBy.upscale_method","Extra.ImageScaleToTotalPixels.upscale_method"]
       type E_ImageUpscaleMethod = "area" | "bicubic" | "bilinear" | "lanczos" | "nearest-exact"
       // ["ConditioningSetMask.set_cond_area"]
       type E_046ed3ef4b2b9a9cfdb62e53a70fe767fb996451 = "default" | "mask bounds"
-      // ["KSamplerAdvanced.add_noise","KSamplerAdvanced.return_with_leftover_noise","Custom.controlnet_aux.LeReS$7DepthMapPreprocessor.boost","Custom.controlnet_aux.DWPreprocessor.detect_hand","Custom.controlnet_aux.DWPreprocessor.detect_body","Custom.controlnet_aux.DWPreprocessor.detect_face","Custom.controlnet_aux.DWPreprocessor.scale_stick_for_xinsr_cn","Custom.controlnet_aux.HEDPreprocessor.safe","Custom.controlnet_aux.FakeScribblePreprocessor.safe","Custom.controlnet_aux.PiDiNetPreprocessor.safe","Custom.controlnet_aux.LineArtPreprocessor.coarse","Custom.controlnet_aux.OpenposePreprocessor.detect_hand","Custom.controlnet_aux.OpenposePreprocessor.detect_body","Custom.controlnet_aux.OpenposePreprocessor.detect_face","Custom.controlnet_aux.OpenposePreprocessor.scale_stick_for_xinsr_cn","Custom.controlnet_aux.Scribble$_PiDiNet$_Preprocessor.safe","Custom.Impact_Pack.UnsamplerHookProvider.normalize","Custom.Impact_Pack.UnsamplerDetailerHookProvider.normalize"]
+      // ["KSamplerAdvanced.add_noise","KSamplerAdvanced.return_with_leftover_noise","Custom.was.KSampler_Cycle.tiled_vae","Custom.was.KSampler_Cycle.scale_denoise","Custom.was.KSampler_Cycle.pos_add_strength_scaling","Custom.was.KSampler_Cycle.neg_add_strength_scaling","Custom.was.KSampler_Cycle.steps_scaling","Custom.controlnet_aux.LeReS$7DepthMapPreprocessor.boost","Custom.controlnet_aux.DWPreprocessor.detect_hand","Custom.controlnet_aux.DWPreprocessor.detect_body","Custom.controlnet_aux.DWPreprocessor.detect_face","Custom.controlnet_aux.DWPreprocessor.scale_stick_for_xinsr_cn","Custom.controlnet_aux.HEDPreprocessor.safe","Custom.controlnet_aux.FakeScribblePreprocessor.safe","Custom.controlnet_aux.PiDiNetPreprocessor.safe","Custom.controlnet_aux.LineArtPreprocessor.coarse","Custom.controlnet_aux.OpenposePreprocessor.detect_hand","Custom.controlnet_aux.OpenposePreprocessor.detect_body","Custom.controlnet_aux.OpenposePreprocessor.detect_face","Custom.controlnet_aux.OpenposePreprocessor.scale_stick_for_xinsr_cn","Custom.controlnet_aux.Scribble$_PiDiNet$_Preprocessor.safe","Custom.Impact_Pack.UnsamplerHookProvider.normalize","Custom.Impact_Pack.UnsamplerDetailerHookProvider.normalize"]
       type E_EnableOrDisable = "disable" | "enable"
       // ["LatentRotate.rotation"]
       type E_Rotation = "180 degrees" | "270 degrees" | "90 degrees" | "none"
@@ -11047,12 +15443,12 @@ declare global {
       type E_WeightDType = "default" | "fp8_e4m3fn" | "fp8_e4m3fn_fast" | "fp8_e5m2"
       // ["DualCLIPLoader.type"]
       type E_DualClipType = "flux" | "sd3" | "sdxl"
-      // ["CheckpointLoader.config_name"]
+      // ["CheckpointLoader.config_name","Custom.was.Checkpoint_Loader.config_name"]
       type E_CkptConfigName = "anything_v3.yaml" | "v1-inference.yaml" | "v1-inference_clip_skip_2.yaml" | "v1-inference_clip_skip_2_fp16.yaml" | "v1-inference_fp16.yaml" | "v1-inpainting-inference.yaml" | "v2-inference-v.yaml" | "v2-inference-v_fp32.yaml" | "v2-inference.yaml" | "v2-inference_fp32.yaml" | "v2-inpainting-inference.yaml"
-      // ["Extra.LatentBatchSeedBehavior.seed_behavior"]
+      // ["Extra.LatentBatchSeedBehavior.seed_behavior","Custom.was.True_Random$5org_Number_Generator.mode"]
       type E_1d09df0c3ce1b4556d07af26e593d4033efc639b = "fixed" | "random"
-      // ["Extra.UpscaleModelLoader.model_name"]
-      type E_2504d8563e078c3ed105667cbb6d0ff714d5798b = "RealESRGAN_x4plus.pth" | "RealESRGAN_x4plus_anime_6B.pth"
+      // ["Extra.UpscaleModelLoader.model_name","Custom.was.Upscale_Model_Loader.model_name"]
+      type E_0a165440b634143ee9b4b1d88e03fb1a11863849 = "4x-UltraSharp.pth" | "RealESRGAN_x4plus.pth" | "RealESRGAN_x4plus_anime_6B.pth"
       // ["Extra.ImageBlend.blend_mode"]
       type E_4ca09d2bc16d4174960bd60a103d4c0911361855 = "difference" | "multiply" | "normal" | "overlay" | "screen" | "soft_light"
       // ["Extra.ImageQuantize.dither"]
@@ -11087,6 +15483,118 @@ declare global {
       type E_b80b6129a942660e31e08221ee04a76f537556ce = "full_diff" | "standard"
       // ["Extra.TorchCompileModel.backend"]
       type E_4bbca93e426c35d56c43252f1fb21877d5e7a1aa = "cudagraphs" | "inductor"
+      // ["Custom.was.BLIP_Model_Loader.device"]
+      type E_48c2dd07be3b3abbddffe76e33499b898c2b0763 = "cpu" | "cuda"
+      // ["Custom.was.Blend_Latents.operation"]
+      type E_3f37880395cb0fb6bef6cfeaa3f0bbb7c32be417 = "add" | "difference" | "divide" | "exclusion" | "hard_light" | "linear_dodge" | "multiply" | "overlay" | "random" | "screen" | "soft_light" | "subtract"
+      // ["Custom.was.CLIPTextEncode_$1NSP$2.mode","Custom.was.Text_Parse_Noodle_Soup_Prompts.mode"]
+      type E_46b521739cab20490e0368732c3787b937bb6d33 = "Noodle Soup Prompts" | "Wildcards"
+      // ["Custom.was.Constant_Number.number_type","Custom.was.Random_Number.number_type"]
+      type E_d775619a3b6b2764d08cc78c16dba9db45ba3385 = "bool" | "float" | "integer"
+      // ["Custom.was.Create_Grid_Image.include_subfolders","Custom.was.Image_Canny_Filter.enable_threshold","Custom.was.Image_Dragan_Photography_Filter.colorize","Custom.was.Image_Filter_Adjustments.detail_enhance","Custom.was.Image_Gradient_Map.flip_left_right","Custom.was.Image_High_Pass_Filter.color_output","Custom.was.Image_High_Pass_Filter.neutral_background","Custom.was.Image_Load.RGBA","Custom.was.Image_Load.filename_text_extension","Custom.was.Image_Padding.feather_second_pass","Custom.was.Image_Resize.supersample","Custom.was.Image_Save.filename_number_start","Custom.was.Image_Save.optimize_image","Custom.was.Image_Save.lossless_webp","Custom.was.Image_Save.show_history","Custom.was.Image_Save.show_history_by_prefix","Custom.was.Image_Save.embed_workflow","Custom.was.Image_Save.show_previews","Custom.was.Image_Seamless_Texture.tiled","Custom.was.Latent_Upscale_by_Factor_$1WAS$2.align","Custom.was.Load_Image_Batch.allow_RGBA_output","Custom.was.Load_Image_Batch.filename_text_extension","Custom.was.MiDaS_Depth_Approximation.use_cpu","Custom.was.MiDaS_Depth_Approximation.invert_depth","Custom.was.MiDaS_Mask_Image.use_cpu","Custom.was.MiDaS_Mask_Image.threshold","Custom.was.Number_Input_Condition.return_boolean","Custom.was.Text_Add_Tokens.print_current_tokens","Custom.was.Text_Add_Token_by_Input.print_current_tokens","Custom.was.Text_Concatenate.clean_whitespace","Custom.Impact_Pack.SEGSUpscaler.supersample","Custom.Impact_Pack.SEGSUpscalerPipe.supersample"]
+      type E_TrueOrFalse = "false" | "true"
+      // ["Custom.was.Create_Morph_Image.filetype","Custom.was.Create_Morph_Image_from_Path.filetype"]
+      type E_3f15cd9dbfdca2b8fe61c86059e860994b7a5e24 = "APNG" | "GIF"
+      // ["Custom.was.Create_Video_from_Path.codec","Custom.was.Write_to_Video.codec"]
+      type E_077330280092fb42c54b5360bc8723312fb6fd1d = "AVC1" | "FFV1" | "H264" | "MP4V"
+      // ["Custom.was.Export_API.save_prompt_api"]
+      type E_8d4017579661153a386578b6c3ad4d041bd9eccc = "true" | "true"
+      // ["Custom.was.Lora_Loader.lora_name","Custom.was.Load_Lora.lora_name","Custom.was.Prompt_Styles_Selector.style","Custom.was.Prompt_Multiple_Styles_Selector.style1","Custom.was.Prompt_Multiple_Styles_Selector.style2","Custom.was.Prompt_Multiple_Styles_Selector.style3","Custom.was.Prompt_Multiple_Styles_Selector.style4"]
+      type E_6eef6648406c333a4035cd5e60d0bf2ecf2606d7 = "None"
+      // ["Custom.was.Image_SSAO_$1Ambient_Occlusion$2.enable_specular_masking","Custom.was.Image_SSDO_$1Direct_Occlusion$2.colored_occlusion","Custom.was.Image_Pixelate.dither","Custom.was.Image_Pixelate.reverse_palette","Custom.was.Image_Voronoi_Noise_Filter.flat","Custom.was.Image_Voronoi_Noise_Filter.RGB_output"]
+      type E_e6bf0166cb0a546d639b0416f53e058b11157eff = "False" | "True"
+      // ["Custom.was.Image_Analyze.mode"]
+      type E_621590e6cf567b6defe22db2a7f19bbadbdeaecb = "Black White Levels" | "RGB Levels"
+      // ["Custom.was.Image_Blending_Mode.mode"]
+      type E_1fcc2ccd09b459c4e3871ff2971ebb38c7b641fd = "add" | "color" | "color_burn" | "color_dodge" | "darken" | "difference" | "exclusion" | "hard_light" | "hue" | "lighten" | "multiply" | "overlay" | "screen" | "soft_light"
+      // ["Custom.was.Image_Color_Palette.mode"]
+      type E_0ea34bc7f4ead6746548832ef8cfbfc3fea9d788 = "Chart" | "back_to_back"
+      // ["Custom.was.Image_Crop_Face.cascade_xml"]
+      type E_f25d83b46c2741d5aa65866293963e31eb885e6f = "haarcascade_eye.xml" | "haarcascade_frontalface_alt.xml" | "haarcascade_frontalface_alt2.xml" | "haarcascade_frontalface_alt_tree.xml" | "haarcascade_frontalface_default.xml" | "haarcascade_profileface.xml" | "haarcascade_upperbody.xml" | "lbpcascade_animeface.xml"
+      // ["Custom.was.Image_Pixelate.init_mode"]
+      type E_f9b5e85d0e4dd538eef9b795a1c1919ad21d048e = "k-means++" | "none" | "random"
+      // ["Custom.was.Image_Pixelate.dither_mode"]
+      type E_a0a5963f4489f7d93e55536030a9714959d88a63 = "FloydSteinberg" | "Ordered"
+      // ["Custom.was.Image_Pixelate.color_palette_mode"]
+      type E_efecaf5a84db36477de261399ffe97f31875969e = "Brightness" | "BrightnessAndTonal" | "Linear" | "Tonal"
+      // ["Custom.was.Image_Power_Noise.noise_type"]
+      type E_16be70b6d1fbeca9d4389884e9d9b5797e92f1fc = "blue" | "green" | "grey" | "mix" | "pink" | "white"
+      // ["Custom.was.Image_Edge_Detection_Filter.mode"]
+      type E_9d2c8a4f3e1b6516e03b842358371b12f3a285c8 = "laplacian" | "normal"
+      // ["Custom.was.Image_Flip.mode","Custom.was.Image_Generate_Gradient.direction"]
+      type E_459517618451c1022315a1119e4f557bc8d55372 = "horizontal" | "vertical"
+      // ["Custom.was.Image_History_Loader.image","Custom.was.Text_File_History_Loader.file"]
+      type E_2dd0540c88a63098c07793456791932d49cace79 = "No History"
+      // ["Custom.was.Image_Monitor_Effects_Filter.mode"]
+      type E_34a8a918686fbe2e5439cb5b74d33b252afdae7d = "Digital Distortion" | "Signal Distortion" | "TV Distortion"
+      // ["Custom.was.Image_Rembg_$1Remove_Background$2.model"]
+      type E_76658484ba9d30cc1b64ca7a20c1605bb6379d1e = "isnet-anime" | "isnet-general-use" | "silueta" | "u2net" | "u2net_human_seg" | "u2netp"
+      // ["Custom.was.Image_Rembg_$1Remove_Background$2.background_color"]
+      type E_50e35c4eef26231d47145ce31015c2d288e65477 = "black" | "chroma blue" | "chroma green" | "magenta" | "none" | "white"
+      // ["Custom.was.Image_Remove_Background_$1Alpha$2.mode"]
+      type E_e6a365a2c3fb39d89cfc94f4a1da1e3faaa9be2a = "background" | "foreground"
+      // ["Custom.was.Image_Resize.mode"]
+      type E_79dc3a66b5aeaa0087d9be9dee1c4ca51a2772ac = "rescale" | "resize"
+      // ["Custom.was.Image_Resize.resampling","Custom.was.KSampler_Cycle.scale_sampling","Custom.Impact_Pack.SEGSUpscaler.resampling_method","Custom.Impact_Pack.SEGSUpscalerPipe.resampling_method"]
+      type E_bac912b55de8a59480c74aba068f4a3b5f9a0e38 = "bicubic" | "bilinear" | "lanczos" | "nearest"
+      // ["Custom.was.Image_Rotate.mode"]
+      type E_b4cc31771b218822bfb695135401373ec3c3b56f = "internal" | "transpose"
+      // ["Custom.was.Image_Rotate.sampler"]
+      type E_678c8597d48a2c6595a042169b7175b70a440625 = "bicubic" | "bilinear" | "nearest"
+      // ["Custom.was.Image_Send_HTTP.method_type"]
+      type E_6edaf157bc87636aa5977b8f373c827d849a6714 = "patch" | "post" | "put"
+      // ["Custom.was.Image_Save.extension"]
+      type E_ace8f49d9c65e2ba17335a32054fa4e7c2eb6eb5 = "bmp" | "gif" | "jpeg" | "jpg" | "png" | "tiff" | "webp"
+      // ["Custom.was.Image_Save.overwrite_mode"]
+      type E_0c34bcf827f67f4a34574e3b6e40077ae91adaed = "false" | "prefix_as_filename"
+      // ["Custom.was.Image_Select_Channel.channel"]
+      type E_33a0330bc4748f9487c71584b55a1ad2c07d624b = "blue" | "green" | "red"
+      // ["Custom.was.Image_Stitch.stitch"]
+      type E_6ed7a84154c66d6ed9010610111acb4071e30fa5 = "bottom" | "left" | "right" | "top"
+      // ["Custom.was.Image_Style_Filter.style"]
+      type E_fb3f90840b8cb5166cc7392ee683a0b94f51f55e = "1977" | "aden" | "brannan" | "brooklyn" | "clarendon" | "earlybird" | "fairy tale" | "gingham" | "hudson" | "inkwell" | "kelvin" | "lark" | "lofi" | "maven" | "mayfair" | "moon" | "nashville" | "perpetua" | "reyes" | "rise" | "slumber" | "stinson" | "toaster" | "valencia" | "walden" | "willow" | "xpro2"
+      // ["Custom.was.Image_fDOF_Filter.mode"]
+      type E_6e38ea63eb381af6ba58a4805bd3875939dda9ed = "box" | "gaussian" | "mock"
+      // ["Custom.was.Image_to_Noise.output_mode"]
+      type E_fbe3fb620034510d93d13c6709f86874eae11ed2 = "batch" | "list"
+      // ["Custom.was.KSampler_Cycle.latent_upscale"]
+      type E_1481b5600ce60506ecabaa890211f73642839577 = "area" | "bicubic" | "bilinear" | "bislerp" | "disable" | "nearest-exact"
+      // ["Custom.was.KSampler_Cycle.pos_add_mode","Custom.was.KSampler_Cycle.neg_add_mode","Custom.was.KSampler_Cycle.steps_control"]
+      type E_d7832e996ca60a0bfc63735f3a840cabaa0396da = "decrement" | "increment"
+      // ["Custom.was.Latent_Upscale_by_Factor_$1WAS$2.mode"]
+      type E_0860472b05b5dd5bd5a00a93bbd161fb8222056b = "area" | "bicubic" | "bilinear" | "nearest"
+      // ["Custom.was.Load_Image_Batch.mode"]
+      type E_29fab72478e27c6abd110ef215462856f7d77d54 = "incremental_image" | "random" | "single_image"
+      // ["Custom.was.Mask_Crop_Region.region_type"]
+      type E_3f6f2a7e34563d7d52b1e70878b41ee0f557712f = "dominant" | "minority"
+      // ["Custom.was.MiDaS_Model_Loader.midas_model","Custom.was.MiDaS_Depth_Approximation.midas_type"]
+      type E_ddc7f89a89013ba246c565b4a9c3171afa7b3e7b = "DPT_Hybrid" | "DPT_Large"
+      // ["Custom.was.MiDaS_Mask_Image.midas_model"]
+      type E_4c3e91fd332bf7bc8ecc71438dc9bae1659b47bf = "DPT_Hybrid" | "DPT_Large" | "DPT_Small"
+      // ["Custom.was.MiDaS_Mask_Image.remove"]
+      type E_3c44857390dbf2c0b082664aec15269d2f4de7f2 = "background" | "foregroud"
+      // ["Custom.was.Number_Counter.number_type"]
+      type E_eb31abaa810f2e5b2910398489893bb10dc12f65 = "float" | "integer"
+      // ["Custom.was.Number_Counter.mode"]
+      type E_69ae67e56fe369f0949226d306697e018453dd56 = "decrement" | "decrement_to_stop" | "increment" | "increment_to_stop"
+      // ["Custom.was.Number_Operation.operation"]
+      type E_89cd8ef2656f9d2aa7e139e06547bccb8894aea6 = "addition" | "division" | "does not equal" | "equals" | "exponentiation" | "floor division" | "greater-than" | "greater-than or equals" | "less-than" | "less-than or equals" | "modulus" | "multiplication" | "subtraction"
+      // ["Custom.was.Number_Input_Condition.comparison"]
+      type E_fec65e73cb675e950a5bb41c19b5d494b1fadbb0 = "and" | "divisible by" | "does not equal" | "equals" | "factor of" | "greater-than" | "greater-than or equals" | "if A even" | "if A odd" | "if A prime" | "less-than" | "less-than or equals" | "or"
+      // ["Custom.was.BLIP_Analyze_Image.mode"]
+      type E_58116c3d7caa42bbae5816fbe84aaba8f20d824f = "caption" | "interrogate"
+      // ["Custom.was.SAM_Model_Loader.model_size"]
+      type E_976ac8179a850faff4be52e51dd7a30db5108680 = "ViT-B" | "ViT-H" | "ViT-L"
+      // ["Custom.was.Text_Compare.mode"]
+      type E_926260613195613af4b1585dd277506097192235 = "difference" | "similarity"
+      // ["Custom.was.Text_Load_Line_From_File.mode"]
+      type E_351309fb3b96cf7fb7bd0b7102f920b1744bbcec = "automatic" | "index"
+      // ["Custom.was.Text_String_Truncate.truncate_by"]
+      type E_1f3e30a386f413ad2817cc490b9f27b4e1166fe7 = "characters" | "words"
+      // ["Custom.was.Text_String_Truncate.truncate_from"]
+      type E_bd7732af436a46296a84dc5aa8698624101e3749 = "beginning" | "end"
+      // ["Custom.was.Video_Dump_Frames.extension"]
+      type E_ddb8b4788a58dbca6274fd750ed1a1d421027721 = "gif" | "jpg" | "png" | "tiff"
       // ["Custom.IPAdapter_plus.IPAdapter.weight_type"]
       type E_1fcb051d43a7df978808f9920fa8d428961d34f5 = "prompt is more important" | "standard" | "style transfer"
       // ["Custom.IPAdapter_plus.IPAdapterAdvanced.weight_type","Custom.IPAdapter_plus.IPAdapterBatch.weight_type","Custom.IPAdapter_plus.IPAdapterFaceID.weight_type","Custom.IPAdapter_plus.IPAdapterFaceIDKolors.weight_type","Custom.IPAdapter_plus.IPAAdapterFaceIDBatch.weight_type","Custom.IPAdapter_plus.IPAdapterTiled.weight_type","Custom.IPAdapter_plus.IPAdapterTiledBatch.weight_type","Custom.IPAdapter_plus.IPAdapterEmbeds.weight_type","Custom.IPAdapter_plus.IPAdapterEmbedsBatch.weight_type","Custom.IPAdapter_plus.IPAdapterMS.weight_type","Custom.IPAdapter_plus.IPAdapterClipVisionEnhancer.weight_type","Custom.IPAdapter_plus.IPAdapterClipVisionEnhancerBatch.weight_type","Custom.IPAdapter_plus.IPAdapterRegionalConditioning.weight_type"]
@@ -11151,6 +15659,20 @@ declare global {
       type E_90ee599494f505c55a1a8cf8009c1a81c6238905 = "AnimalPosePreprocessor" | "AnimeFace_SemSegPreprocessor" | "AnimeLineArtPreprocessor" | "AnyLineArtPreprocessor_aux" | "BAE-NormalMapPreprocessor" | "BinaryPreprocessor" | "CannyEdgePreprocessor" | "ColorPreprocessor" | "DSINE-NormalMapPreprocessor" | "DWPreprocessor" | "DensePosePreprocessor" | "DepthAnythingPreprocessor" | "DepthAnythingV2Preprocessor" | "FakeScribblePreprocessor" | "HEDPreprocessor" | "ImageIntensityDetector" | "ImageLuminanceDetector" | "LeReS-DepthMapPreprocessor" | "LineArtPreprocessor" | "LineartStandardPreprocessor" | "M-LSDPreprocessor" | "Manga2Anime_LineArt_Preprocessor" | "MediaPipe-FaceMeshPreprocessor" | "MeshGraphormer-DepthMapPreprocessor" | "Metric3D-DepthMapPreprocessor" | "Metric3D-NormalMapPreprocessor" | "MiDaS-DepthMapPreprocessor" | "MiDaS-NormalMapPreprocessor" | "OneFormer-ADE20K-SemSegPreprocessor" | "OneFormer-COCO-SemSegPreprocessor" | "OpenposePreprocessor" | "PiDiNetPreprocessor" | "PyraCannyPreprocessor" | "SAMPreprocessor" | "ScribblePreprocessor" | "Scribble_PiDiNet_Preprocessor" | "Scribble_XDoG_Preprocessor" | "SemSegPreprocessor" | "ShufflePreprocessor" | "TEEDPreprocessor" | "TTPlanet_TileGF_Preprocessor" | "TTPlanet_TileSimple_Preprocessor" | "TilePreprocessor" | "UniFormer-SemSegPreprocessor" | "Zoe-DepthMapPreprocessor" | "Zoe_DepthAnythingPreprocessor" | "none"
       // ["Custom.controlnet_aux.PixelPerfectResolution.resize_mode","Custom.controlnet_aux.HintImageEnchance.resize_mode"]
       type E_d6af160bb3240c471ff93d5647af03d694fc3360 = "Crop and Resize" | "Just Resize" | "Resize and Fill"
+      // ["Custom.Marigold.MarigoldModelLoader.model"]
+      type E_0570c9929a05552091968538314c9b91153a0128 = "GonzaloMG/marigold-e2e-ft-depth" | "GonzaloMG/marigold-e2e-ft-normals" | "prs-eth/marigold-depth-lcm-v1-0" | "prs-eth/marigold-normals-lcm-v0-1" | "prs-eth/marigold-normals-v0-1" | "prs-eth/marigold-v1-0"
+      // ["Custom.Marigold.MarigoldDepthEstimation$_v2.scheduler","Custom.Marigold.MarigoldDepthEstimation$_v2$_video.scheduler"]
+      type E_2e7bd488081020be1c7147a13ef7109a71726d85 = "DDIMScheduler" | "LCMScheduler"
+      // ["Custom.Marigold.MarigoldDepthEstimation.reduction_method"]
+      type E_248755adc763cd425aa60fbe4ddc7e636afb868f = "mean" | "median"
+      // ["Custom.Marigold.MarigoldDepthEstimation.scheduler","Custom.Marigold.MarigoldDepthEstimationVideo.scheduler"]
+      type E_1094d9b71fc3f2b7cbb07273727f88062feaacbb = "DDIMScheduler" | "DDPMScheduler" | "DEISMultistepScheduler" | "LCMScheduler" | "PNDMScheduler"
+      // ["Custom.Marigold.MarigoldDepthEstimation.model","Custom.Marigold.MarigoldDepthEstimationVideo.model"]
+      type E_137d410291846100389520fe8f2fbf946128dab4 = "Marigold" | "marigold-lcm-v1-0"
+      // ["Custom.Marigold.MarigoldDepthEstimationVideo.dtype"]
+      type E_df621c6407a123a6a816c747cbfb7e175b43ea4b = "bf16" | "fp16" | "fp32"
+      // ["Custom.Marigold.ColorizeDepthmap.colorize_method"]
+      type E_e09dd9c0b27579d3897e5aa427f3b6842789fb3f = "Spectral" | "afmhot" | "brg" | "cividis" | "copper" | "gist_earth" | "gist_ncar" | "gist_rainbow" | "hsv" | "inferno" | "jet" | "magma" | "plasma" | "rainbow" | "seismic" | "terrain" | "turbo" | "twilight" | "viridis"
       // ["Custom.Impact_Pack.SAMLoader.model_name"]
       type E_40c777392f92d61852ab0f7a429a755abf59b71a = "ESAM" | "sam_vit_b_01ec64.pth"
       // ["Custom.Impact_Pack.SAMLoader.device_mode","Custom.Impact_Pack.ImpactHFTransformersClassifierProvider.device_mode"]
@@ -11199,10 +15721,6 @@ declare global {
       type E_ea287ec9983f05378f2614091804a1b6b95d1c79 = "Latent2RGB-FLUX.1" | "Latent2RGB-Playground-2.5" | "Latent2RGB-SC-B" | "Latent2RGB-SC-Prior" | "Latent2RGB-SD-X4" | "Latent2RGB-SD15" | "Latent2RGB-SD3" | "Latent2RGB-SDXL" | "TAEF1" | "TAESD15" | "TAESD3" | "TAESDXL"
       // ["Custom.Impact_Pack.LatentSender.preview_method"]
       type E_fa4a13687b111fa33a8c8fa375d5321d09b46b27 = "Latent2RGB-SD15" | "Latent2RGB-SDXL" | "TAESD15" | "TAESDXL"
-      // ["Custom.Impact_Pack.SEGSUpscaler.resampling_method","Custom.Impact_Pack.SEGSUpscalerPipe.resampling_method"]
-      type E_bac912b55de8a59480c74aba068f4a3b5f9a0e38 = "bicubic" | "bilinear" | "lanczos" | "nearest"
-      // ["Custom.Impact_Pack.SEGSUpscaler.supersample","Custom.Impact_Pack.SEGSUpscalerPipe.supersample"]
-      type E_TrueOrFalse = "false" | "true"
       // ["Custom.Impact_Pack.ImpactMakeTileSEGS.irregular_mask_mode"]
       type E_5cc1495fe28eac05289d45b29269b31c6edca055 = "All random fast" | "All random quality" | "Reuse fast" | "Reuse quality"
       // ["Custom.Impact_Pack.ReencodeLatent.tile_mode","Custom.Impact_Pack.ReencodeLatentPipe.tile_mode"]
@@ -11236,7 +15754,7 @@ declare global {
       // ["Custom.Impact_Pack.UltralyticsDetectorProvider.model_name"]
       type E_cf11746957b2cb2b6379bbd08fe59610b2aae90a = "bbox/face_yolov8m.pt" | "bbox/hand_yolov8s.pt" | "segm/person_yolov8m-seg.pt"
    }
-   
+
    // 7. INTERFACES --------------------------
    export interface HasSingle_SEG_ELT_control_net_wrapper { _SEG_ELT_control_net_wrapper: ComfyNodeOutput<'SEG_ELT_control_net_wrapper'> } // prettier-ignore
    export interface HasSingle_TRANSFORMERS_CLASSIFIER { _TRANSFORMERS_CLASSIFIER: ComfyNodeOutput<'TRANSFORMERS_CLASSIFIER'> } // prettier-ignore
@@ -11251,28 +15769,35 @@ declare global {
    export interface HasSingle_REGIONAL_PROMPTS { _REGIONAL_PROMPTS: ComfyNodeOutput<'REGIONAL_PROMPTS'> } // prettier-ignore
    export interface HasSingle_STRING { _STRING: string | ComfyNodeOutput<'STRING'> } // prettier-ignore
    export interface HasSingle_FLOAT { _FLOAT: number | ComfyNodeOutput<'FLOAT'> } // prettier-ignore
+   export interface HasSingle_SAM_PARAMETERS { _SAM_PARAMETERS: ComfyNodeOutput<'SAM_PARAMETERS'> } // prettier-ignore
    export interface HasSingle_SCHEDULER_FUNC { _SCHEDULER_FUNC: ComfyNodeOutput<'SCHEDULER_FUNC'> } // prettier-ignore
    export interface HasSingle_IPADAPTER_PIPE { _IPADAPTER_PIPE: ComfyNodeOutput<'IPADAPTER_PIPE'> } // prettier-ignore
    export interface HasSingle_UPSCALE_MODEL { _UPSCALE_MODEL: ComfyNodeOutput<'UPSCALE_MODEL'> } // prettier-ignore
+   export interface HasSingle_CLIPSEG_MODEL { _CLIPSEG_MODEL: ComfyNodeOutput<'CLIPSEG_MODEL'> } // prettier-ignore
    export interface HasSingle_POSE_KEYPOINT { _POSE_KEYPOINT: ComfyNodeOutput<'POSE_KEYPOINT'> } // prettier-ignore
    export interface HasSingle_BBOX_DETECTOR { _BBOX_DETECTOR: ComfyNodeOutput<'BBOX_DETECTOR'> } // prettier-ignore
+   export interface HasSingle_MARIGOLDMODEL { _MARIGOLDMODEL: ComfyNodeOutput<'MARIGOLDMODEL'> } // prettier-ignore
    export interface HasSingle_DETAILER_HOOK { _DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK'> } // prettier-ignore
    export interface HasSingle_DETAILER_PIPE { _DETAILER_PIPE: ComfyNodeOutput<'DETAILER_PIPE'> } // prettier-ignore
    export interface HasSingle_SEGM_DETECTOR { _SEGM_DETECTOR: ComfyNodeOutput<'SEGM_DETECTOR'> } // prettier-ignore
    export interface HasSingle_UPSCALER_HOOK { _UPSCALER_HOOK: ComfyNodeOutput<'UPSCALER_HOOK'> } // prettier-ignore
    export interface HasSingle_INT { _INT: number | ComfyNodeOutput<'INT'> } // prettier-ignore
    export interface HasSingle_CONDITIONING { _CONDITIONING: ComfyNodeOutput<'CONDITIONING'> } // prettier-ignore
+   export interface HasSingle_IMAGE_BOUNDS { _IMAGE_BOUNDS: ComfyNodeOutput<'IMAGE_BOUNDS'> } // prettier-ignore
    export interface HasSingle_OPTICAL_FLOW { _OPTICAL_FLOW: ComfyNodeOutput<'OPTICAL_FLOW'> } // prettier-ignore
    export interface HasSingle_SEG_ELT_bbox { _SEG_ELT_bbox: ComfyNodeOutput<'SEG_ELT_bbox'> } // prettier-ignore
    export interface HasSingle_CLIP_VISION { _CLIP_VISION: ComfyNodeOutput<'CLIP_VISION'> } // prettier-ignore
    export interface HasSingle_STYLE_MODEL { _STYLE_MODEL: ComfyNodeOutput<'STYLE_MODEL'> } // prettier-ignore
    export interface HasSingle_CONTROL_NET { _CONTROL_NET: ComfyNodeOutput<'CONTROL_NET'> } // prettier-ignore
+   export interface HasSingle_MIDAS_MODEL { _MIDAS_MODEL: ComfyNodeOutput<'MIDAS_MODEL'> } // prettier-ignore
    export interface HasSingle_INSIGHTFACE { _INSIGHTFACE: ComfyNodeOutput<'INSIGHTFACE'> } // prettier-ignore
    export interface HasSingle_SEGS_HEADER { _SEGS_HEADER: ComfyNodeOutput<'SEGS_HEADER'> } // prettier-ignore
    export interface HasSingle_PHOTOMAKER { _PHOTOMAKER: ComfyNodeOutput<'PHOTOMAKER'> } // prettier-ignore
+   export interface HasSingle_BLIP_MODEL { _BLIP_MODEL: ComfyNodeOutput<'BLIP_MODEL'> } // prettier-ignore
    export interface HasSingle_BASIC_PIPE { _BASIC_PIPE: ComfyNodeOutput<'BASIC_PIPE'> } // prettier-ignore
-   export interface HasSingle_IPADAPTER { _IPADAPTER: ComfyNodeOutput<'IPADAPTER'> } // prettier-ignore
+   export interface HasSingle_CROP_DATA { _CROP_DATA: ComfyNodeOutput<'CROP_DATA'> } // prettier-ignore
    export interface HasSingle_SAM_MODEL { _SAM_MODEL: ComfyNodeOutput<'SAM_MODEL'> } // prettier-ignore
+   export interface HasSingle_IPADAPTER { _IPADAPTER: ComfyNodeOutput<'IPADAPTER'> } // prettier-ignore
    export interface HasSingle_TRACKING { _TRACKING: ComfyNodeOutput<'TRACKING'> } // prettier-ignore
    export interface HasSingle_UPSCALER { _UPSCALER: ComfyNodeOutput<'UPSCALER'> } // prettier-ignore
    export interface HasSingle_KSAMPLER { _KSAMPLER: ComfyNodeOutput<'KSAMPLER'> } // prettier-ignore
@@ -11284,6 +15809,7 @@ declare global {
    export interface HasSingle_SIGMAS { _SIGMAS: ComfyNodeOutput<'SIGMAS'> } // prettier-ignore
    export interface HasSingle_GUIDER { _GUIDER: ComfyNodeOutput<'GUIDER'> } // prettier-ignore
    export interface HasSingle_WEBCAM { _WEBCAM: ComfyNodeOutput<'WEBCAM'> } // prettier-ignore
+   export interface HasSingle_NUMBER { _NUMBER: ComfyNodeOutput<'NUMBER'> } // prettier-ignore
    export interface HasSingle_EMBEDS { _EMBEDS: ComfyNodeOutput<'EMBEDS'> } // prettier-ignore
    export interface HasSingle_MODEL { _MODEL: ComfyNodeOutput<'MODEL'> } // prettier-ignore
    export interface HasSingle_IMAGE { _IMAGE: ComfyNodeOutput<'IMAGE'> } // prettier-ignore
@@ -11292,11 +15818,15 @@ declare global {
    export interface HasSingle_$Star { _$Star: ComfyNodeOutput<'$Star'> } // prettier-ignore
    export interface HasSingle_CLIP { _CLIP: ComfyNodeOutput<'CLIP'> } // prettier-ignore
    export interface HasSingle_MASK { _MASK: ComfyNodeOutput<'MASK'> } // prettier-ignore
+   export interface HasSingle_DICT { _DICT: ComfyNodeOutput<'DICT'> } // prettier-ignore
+   export interface HasSingle_LIST { _LIST: ComfyNodeOutput<'LIST'> } // prettier-ignore
+   export interface HasSingle_SEED { _SEED: ComfyNodeOutput<'SEED'> } // prettier-ignore
    export interface HasSingle_SEGS { _SEGS: ComfyNodeOutput<'SEGS'> } // prettier-ignore
    export interface HasSingle_VAE { _VAE: ComfyNodeOutput<'VAE'> } // prettier-ignore
+   export interface HasSingle_BUS { _BUS: ComfyNodeOutput<'BUS'> } // prettier-ignore
    export interface HasSingle_E_90ee599494f505c55a1a8cf8009c1a81c6238905 { _E_90ee599494f505c55a1a8cf8009c1a81c6238905: Comfy.Union.E_90ee599494f505c55a1a8cf8009c1a81c6238905 } // prettier-ignore
    export interface HasSingle_E_720061fdb15e8c451b6aa7ed023644f064ddc57d { _E_720061fdb15e8c451b6aa7ed023644f064ddc57d: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d } // prettier-ignore
-   
+
    // 8.2 NODE UI helpers --------------------
    export interface FormHelper {
     KSampler: {
@@ -11668,7 +16198,7 @@ declare global {
         strength: { kind: 'number', type: number }
     }
     UpscaleModelLoader: {
-        model_name: { kind: 'enum', type: Comfy.Union.E_2504d8563e078c3ed105667cbb6d0ff714d5798b }
+        model_name: { kind: 'enum', type: Comfy.Union.E_0a165440b634143ee9b4b1d88e03fb1a11863849 }
     }
     ImageUpscaleWithModel: {
         // upscale_model: { kind: 'object', type: UPSCALE_MODEL }
@@ -12660,6 +17190,1282 @@ declare global {
     SaveImageWebsocket: {
         // images: { kind: 'object', type: IMAGE }
     }
+    BLIP_Model_Loader: {
+        blip_model: { kind: 'string', type: string }
+        vqa_model_id: { kind: 'string', type: string }
+        device: { kind: 'enum', type: Comfy.Union.E_48c2dd07be3b3abbddffe76e33499b898c2b0763 }
+    }
+    Blend_Latents: {
+        // latent_a: { kind: 'object', type: LATENT }
+        // latent_b: { kind: 'object', type: LATENT }
+        operation: { kind: 'enum', type: Comfy.Union.E_3f37880395cb0fb6bef6cfeaa3f0bbb7c32be417 }
+        blend: { kind: 'number', type: number }
+    }
+    Bus_Node: {
+        // bus: { kind: 'object', type: BUS }
+        // model: { kind: 'object', type: MODEL }
+        // clip: { kind: 'object', type: CLIP }
+        // vae: { kind: 'object', type: VAE }
+        // positive: { kind: 'object', type: CONDITIONING }
+        // negative: { kind: 'object', type: CONDITIONING }
+    }
+    Cache_Node: {
+        latent_suffix: { kind: 'string', type: string }
+        image_suffix: { kind: 'string', type: string }
+        conditioning_suffix: { kind: 'string', type: string }
+        output_path: { kind: 'string', type: string }
+        // latent: { kind: 'object', type: LATENT }
+        // image: { kind: 'object', type: IMAGE }
+        // conditioning: { kind: 'object', type: CONDITIONING }
+    }
+    Checkpoint_Loader: {
+        config_name: { kind: 'enum', type: Comfy.Union.E_CkptConfigName }
+        ckpt_name: { kind: 'enum', type: Comfy.Union.E_CkptName }
+    }
+    Checkpoint_Loader_$1Simple$2: {
+        ckpt_name: { kind: 'enum', type: Comfy.Union.E_CkptName }
+    }
+    CLIPTextEncode_$1NSP$2: {
+        mode: { kind: 'enum', type: Comfy.Union.E_46b521739cab20490e0368732c3787b937bb6d33 }
+        noodle_key: { kind: 'string', type: string }
+        seed: { kind: 'number', type: number }
+        text: { kind: 'string', type: string }
+        // clip: { kind: 'object', type: CLIP }
+    }
+    CLIP_Input_Switch: {
+        // clip_a: { kind: 'object', type: CLIP }
+        // clip_b: { kind: 'object', type: CLIP }
+        boolean: { kind: 'boolean', type: boolean }
+    }
+    CLIP_Vision_Input_Switch: {
+        // clip_vision_a: { kind: 'object', type: CLIP_VISION }
+        // clip_vision_b: { kind: 'object', type: CLIP_VISION }
+        boolean: { kind: 'boolean', type: boolean }
+    }
+    Conditioning_Input_Switch: {
+        // conditioning_a: { kind: 'object', type: CONDITIONING }
+        // conditioning_b: { kind: 'object', type: CONDITIONING }
+        boolean: { kind: 'boolean', type: boolean }
+    }
+    Constant_Number: {
+        number_type: { kind: 'enum', type: Comfy.Union.E_d775619a3b6b2764d08cc78c16dba9db45ba3385 }
+        number: { kind: 'number', type: number }
+        number_as_text: { kind: 'string', type: string }
+    }
+    Create_Grid_Image: {
+        images_path: { kind: 'string', type: string }
+        pattern_glob: { kind: 'string', type: string }
+        include_subfolders: { kind: 'enum', type: Comfy.Union.E_TrueOrFalse }
+        border_width: { kind: 'number', type: number }
+        number_of_columns: { kind: 'number', type: number }
+        max_cell_size: { kind: 'number', type: number }
+        border_red: { kind: 'number', type: number }
+        border_green: { kind: 'number', type: number }
+        border_blue: { kind: 'number', type: number }
+    }
+    Create_Grid_Image_from_Batch: {
+        // images: { kind: 'object', type: IMAGE }
+        border_width: { kind: 'number', type: number }
+        number_of_columns: { kind: 'number', type: number }
+        max_cell_size: { kind: 'number', type: number }
+        border_red: { kind: 'number', type: number }
+        border_green: { kind: 'number', type: number }
+        border_blue: { kind: 'number', type: number }
+    }
+    Create_Morph_Image: {
+        // image_a: { kind: 'object', type: IMAGE }
+        // image_b: { kind: 'object', type: IMAGE }
+        transition_frames: { kind: 'number', type: number }
+        still_image_delay_ms: { kind: 'number', type: number }
+        duration_ms: { kind: 'number', type: number }
+        loops: { kind: 'number', type: number }
+        max_size: { kind: 'number', type: number }
+        output_path: { kind: 'string', type: string }
+        filename: { kind: 'string', type: string }
+        filetype: { kind: 'enum', type: Comfy.Union.E_3f15cd9dbfdca2b8fe61c86059e860994b7a5e24 }
+    }
+    Create_Morph_Image_from_Path: {
+        transition_frames: { kind: 'number', type: number }
+        still_image_delay_ms: { kind: 'number', type: number }
+        duration_ms: { kind: 'number', type: number }
+        loops: { kind: 'number', type: number }
+        max_size: { kind: 'number', type: number }
+        input_path: { kind: 'string', type: string }
+        input_pattern: { kind: 'string', type: string }
+        output_path: { kind: 'string', type: string }
+        filename: { kind: 'string', type: string }
+        filetype: { kind: 'enum', type: Comfy.Union.E_3f15cd9dbfdca2b8fe61c86059e860994b7a5e24 }
+    }
+    Create_Video_from_Path: {
+        transition_frames: { kind: 'number', type: number }
+        image_delay_sec: { kind: 'number', type: number }
+        fps: { kind: 'number', type: number }
+        max_size: { kind: 'number', type: number }
+        input_path: { kind: 'string', type: string }
+        output_path: { kind: 'string', type: string }
+        filename: { kind: 'string', type: string }
+        codec: { kind: 'enum', type: Comfy.Union.E_077330280092fb42c54b5360bc8723312fb6fd1d }
+    }
+    CLIPSeg_Masking: {
+        // image: { kind: 'object', type: IMAGE }
+        text: { kind: 'string', type: string }
+        // clipseg_model: { kind: 'object', type: CLIPSEG_MODEL }
+    }
+    CLIPSeg_Model_Loader: {
+        model: { kind: 'string', type: string }
+    }
+    CLIPSeg_Batch_Masking: {
+        // image_a: { kind: 'object', type: IMAGE }
+        // image_b: { kind: 'object', type: IMAGE }
+        text_a: { kind: 'string', type: string }
+        text_b: { kind: 'string', type: string }
+        // image_c: { kind: 'object', type: IMAGE }
+        // image_d: { kind: 'object', type: IMAGE }
+        // image_e: { kind: 'object', type: IMAGE }
+        // image_f: { kind: 'object', type: IMAGE }
+        text_c: { kind: 'string', type: string }
+        text_d: { kind: 'string', type: string }
+        text_e: { kind: 'string', type: string }
+        text_f: { kind: 'string', type: string }
+    }
+    Convert_Masks_to_Images: {
+        // masks: { kind: 'object', type: MASK }
+    }
+    Control_Net_Model_Input_Switch: {
+        // control_net_a: { kind: 'object', type: CONTROL_NET }
+        // control_net_b: { kind: 'object', type: CONTROL_NET }
+        boolean: { kind: 'boolean', type: boolean }
+    }
+    Debug_Number_to_Console: {
+        // number: { kind: 'object', type: NUMBER }
+        label: { kind: 'string', type: string }
+    }
+    Dictionary_to_Console: {
+        // dictionary: { kind: 'object', type: DICT }
+        label: { kind: 'string', type: string }
+    }
+    Diffusers_Model_Loader: {
+        model_path: { kind: 'enum', type: Comfy.Union.E_LoraName }
+    }
+    Diffusers_Hub_Model_Down$7Loader: {
+        repo_id: { kind: 'string', type: string }
+        revision: { kind: 'string', type: string }
+    }
+    Export_API: {
+        save_prompt_api: { kind: 'enum', type: Comfy.Union.E_8d4017579661153a386578b6c3ad4d041bd9eccc }
+        output_path: { kind: 'string', type: string }
+        filename_prefix: { kind: 'string', type: string }
+        filename_delimiter: { kind: 'string', type: string }
+        filename_number_padding: { kind: 'number', type: number }
+        parse_text_tokens: { kind: 'boolean', type: boolean }
+    }
+    Latent_Input_Switch: {
+        // latent_a: { kind: 'object', type: LATENT }
+        // latent_b: { kind: 'object', type: LATENT }
+        boolean: { kind: 'boolean', type: boolean }
+    }
+    Load_Cache: {
+        latent_path: { kind: 'string', type: string }
+        image_path: { kind: 'string', type: string }
+        conditioning_path: { kind: 'string', type: string }
+    }
+    Logic_Boolean: {
+        boolean: { kind: 'number', type: number }
+    }
+    Logic_Boolean_Primitive: {
+        boolean: { kind: 'boolean', type: boolean }
+    }
+    Logic_Comparison_OR: {
+        boolean_a: { kind: 'boolean', type: boolean }
+        boolean_b: { kind: 'boolean', type: boolean }
+    }
+    Logic_Comparison_AND: {
+        boolean_a: { kind: 'boolean', type: boolean }
+        boolean_b: { kind: 'boolean', type: boolean }
+    }
+    Logic_Comparison_XOR: {
+        boolean_a: { kind: 'boolean', type: boolean }
+        boolean_b: { kind: 'boolean', type: boolean }
+    }
+    Logic_NOT: {
+        boolean: { kind: 'boolean', type: boolean }
+    }
+    Lora_Loader: {
+        // model: { kind: 'object', type: MODEL }
+        // clip: { kind: 'object', type: CLIP }
+        lora_name: { kind: 'enum', type: Comfy.Union.E_6eef6648406c333a4035cd5e60d0bf2ecf2606d7 }
+        strength_model: { kind: 'number', type: number }
+        strength_clip: { kind: 'number', type: number }
+    }
+    Hex_to_HSL: {
+        hex_color: { kind: 'string', type: string }
+        include_alpha: { kind: 'boolean', type: boolean }
+    }
+    HSL_to_Hex: {
+        hsl_color: { kind: 'string', type: string }
+    }
+    Image_SSAO_$1Ambient_Occlusion$2: {
+        // images: { kind: 'object', type: IMAGE }
+        // depth_images: { kind: 'object', type: IMAGE }
+        strength: { kind: 'number', type: number }
+        radius: { kind: 'number', type: number }
+        ao_blur: { kind: 'number', type: number }
+        specular_threshold: { kind: 'number', type: number }
+        enable_specular_masking: { kind: 'enum', type: Comfy.Union.E_e6bf0166cb0a546d639b0416f53e058b11157eff }
+        tile_size: { kind: 'number', type: number }
+    }
+    Image_SSDO_$1Direct_Occlusion$2: {
+        // images: { kind: 'object', type: IMAGE }
+        // depth_images: { kind: 'object', type: IMAGE }
+        strength: { kind: 'number', type: number }
+        radius: { kind: 'number', type: number }
+        specular_threshold: { kind: 'number', type: number }
+        colored_occlusion: { kind: 'enum', type: Comfy.Union.E_e6bf0166cb0a546d639b0416f53e058b11157eff }
+    }
+    Image_Analyze: {
+        // image: { kind: 'object', type: IMAGE }
+        mode: { kind: 'enum', type: Comfy.Union.E_621590e6cf567b6defe22db2a7f19bbadbdeaecb }
+    }
+    Image_Aspect_Ratio: {
+        // image: { kind: 'object', type: IMAGE }
+        // width: { kind: 'object', type: NUMBER }
+        // height: { kind: 'object', type: NUMBER }
+    }
+    Image_Batch: {
+        // images_a: { kind: 'object', type: IMAGE }
+        // images_b: { kind: 'object', type: IMAGE }
+        // images_c: { kind: 'object', type: IMAGE }
+        // images_d: { kind: 'object', type: IMAGE }
+    }
+    Image_Blank: {
+        width: { kind: 'number', type: number }
+        height: { kind: 'number', type: number }
+        red: { kind: 'number', type: number }
+        green: { kind: 'number', type: number }
+        blue: { kind: 'number', type: number }
+    }
+    Image_Blend_by_Mask: {
+        // image_a: { kind: 'object', type: IMAGE }
+        // image_b: { kind: 'object', type: IMAGE }
+        // mask: { kind: 'object', type: IMAGE }
+        blend_percentage: { kind: 'number', type: number }
+    }
+    Image_Blend: {
+        // image_a: { kind: 'object', type: IMAGE }
+        // image_b: { kind: 'object', type: IMAGE }
+        blend_percentage: { kind: 'number', type: number }
+    }
+    Image_Blending_Mode: {
+        // image_a: { kind: 'object', type: IMAGE }
+        // image_b: { kind: 'object', type: IMAGE }
+        mode: { kind: 'enum', type: Comfy.Union.E_1fcc2ccd09b459c4e3871ff2971ebb38c7b641fd }
+        blend_percentage: { kind: 'number', type: number }
+    }
+    Image_Bloom_Filter: {
+        // image: { kind: 'object', type: IMAGE }
+        radius: { kind: 'number', type: number }
+        intensity: { kind: 'number', type: number }
+    }
+    Image_Canny_Filter: {
+        // images: { kind: 'object', type: IMAGE }
+        enable_threshold: { kind: 'enum', type: Comfy.Union.E_TrueOrFalse }
+        threshold_low: { kind: 'number', type: number }
+        threshold_high: { kind: 'number', type: number }
+    }
+    Image_Chromatic_Aberration: {
+        // image: { kind: 'object', type: IMAGE }
+        red_offset: { kind: 'number', type: number }
+        green_offset: { kind: 'number', type: number }
+        blue_offset: { kind: 'number', type: number }
+        intensity: { kind: 'number', type: number }
+        fade_radius: { kind: 'number', type: number }
+    }
+    Image_Color_Palette: {
+        // image: { kind: 'object', type: IMAGE }
+        colors: { kind: 'number', type: number }
+        mode: { kind: 'enum', type: Comfy.Union.E_0ea34bc7f4ead6746548832ef8cfbfc3fea9d788 }
+    }
+    Image_Crop_Face: {
+        // image: { kind: 'object', type: IMAGE }
+        crop_padding_factor: { kind: 'number', type: number }
+        cascade_xml: { kind: 'enum', type: Comfy.Union.E_f25d83b46c2741d5aa65866293963e31eb885e6f }
+    }
+    Image_Crop_Location: {
+        // image: { kind: 'object', type: IMAGE }
+        top: { kind: 'number', type: number }
+        left: { kind: 'number', type: number }
+        right: { kind: 'number', type: number }
+        bottom: { kind: 'number', type: number }
+    }
+    Image_Crop_Square_Location: {
+        // image: { kind: 'object', type: IMAGE }
+        x: { kind: 'number', type: number }
+        y: { kind: 'number', type: number }
+        size: { kind: 'number', type: number }
+    }
+    Image_Displacement_Warp: {
+        // images: { kind: 'object', type: IMAGE }
+        // displacement_maps: { kind: 'object', type: IMAGE }
+        amplitude: { kind: 'number', type: number }
+    }
+    Image_Lucy_Sharpen: {
+        // images: { kind: 'object', type: IMAGE }
+        iterations: { kind: 'number', type: number }
+        kernel_size: { kind: 'number', type: number }
+    }
+    Image_Paste_Face: {
+        // image: { kind: 'object', type: IMAGE }
+        // crop_image: { kind: 'object', type: IMAGE }
+        // crop_data: { kind: 'object', type: CROP_DATA }
+        crop_blending: { kind: 'number', type: number }
+        crop_sharpening: { kind: 'number', type: number }
+    }
+    Image_Paste_Crop: {
+        // image: { kind: 'object', type: IMAGE }
+        // crop_image: { kind: 'object', type: IMAGE }
+        // crop_data: { kind: 'object', type: CROP_DATA }
+        crop_blending: { kind: 'number', type: number }
+        crop_sharpening: { kind: 'number', type: number }
+    }
+    Image_Paste_Crop_by_Location: {
+        // image: { kind: 'object', type: IMAGE }
+        // crop_image: { kind: 'object', type: IMAGE }
+        top: { kind: 'number', type: number }
+        left: { kind: 'number', type: number }
+        right: { kind: 'number', type: number }
+        bottom: { kind: 'number', type: number }
+        crop_blending: { kind: 'number', type: number }
+        crop_sharpening: { kind: 'number', type: number }
+    }
+    Image_Pixelate: {
+        // images: { kind: 'object', type: IMAGE }
+        pixelation_size: { kind: 'number', type: number }
+        num_colors: { kind: 'number', type: number }
+        init_mode: { kind: 'enum', type: Comfy.Union.E_f9b5e85d0e4dd538eef9b795a1c1919ad21d048e }
+        max_iterations: { kind: 'number', type: number }
+        dither: { kind: 'enum', type: Comfy.Union.E_e6bf0166cb0a546d639b0416f53e058b11157eff }
+        dither_mode: { kind: 'enum', type: Comfy.Union.E_a0a5963f4489f7d93e55536030a9714959d88a63 }
+        // color_palettes: { kind: 'object', type: LIST }
+        color_palette_mode: { kind: 'enum', type: Comfy.Union.E_efecaf5a84db36477de261399ffe97f31875969e }
+        reverse_palette: { kind: 'enum', type: Comfy.Union.E_e6bf0166cb0a546d639b0416f53e058b11157eff }
+    }
+    Image_Power_Noise: {
+        width: { kind: 'number', type: number }
+        height: { kind: 'number', type: number }
+        frequency: { kind: 'number', type: number }
+        attenuation: { kind: 'number', type: number }
+        noise_type: { kind: 'enum', type: Comfy.Union.E_16be70b6d1fbeca9d4389884e9d9b5797e92f1fc }
+        seed: { kind: 'number', type: number }
+    }
+    Image_Dragan_Photography_Filter: {
+        // image: { kind: 'object', type: IMAGE }
+        saturation: { kind: 'number', type: number }
+        contrast: { kind: 'number', type: number }
+        brightness: { kind: 'number', type: number }
+        sharpness: { kind: 'number', type: number }
+        highpass_radius: { kind: 'number', type: number }
+        highpass_samples: { kind: 'number', type: number }
+        highpass_strength: { kind: 'number', type: number }
+        colorize: { kind: 'enum', type: Comfy.Union.E_TrueOrFalse }
+    }
+    Image_Edge_Detection_Filter: {
+        // image: { kind: 'object', type: IMAGE }
+        mode: { kind: 'enum', type: Comfy.Union.E_9d2c8a4f3e1b6516e03b842358371b12f3a285c8 }
+    }
+    Image_Film_Grain: {
+        // image: { kind: 'object', type: IMAGE }
+        density: { kind: 'number', type: number }
+        intensity: { kind: 'number', type: number }
+        highlights: { kind: 'number', type: number }
+        supersample_factor: { kind: 'number', type: number }
+    }
+    Image_Filter_Adjustments: {
+        // image: { kind: 'object', type: IMAGE }
+        brightness: { kind: 'number', type: number }
+        contrast: { kind: 'number', type: number }
+        saturation: { kind: 'number', type: number }
+        sharpness: { kind: 'number', type: number }
+        blur: { kind: 'number', type: number }
+        gaussian_blur: { kind: 'number', type: number }
+        edge_enhance: { kind: 'number', type: number }
+        detail_enhance: { kind: 'enum', type: Comfy.Union.E_TrueOrFalse }
+    }
+    Image_Flip: {
+        // images: { kind: 'object', type: IMAGE }
+        mode: { kind: 'enum', type: Comfy.Union.E_459517618451c1022315a1119e4f557bc8d55372 }
+    }
+    Image_Gradient_Map: {
+        // image: { kind: 'object', type: IMAGE }
+        // gradient_image: { kind: 'object', type: IMAGE }
+        flip_left_right: { kind: 'enum', type: Comfy.Union.E_TrueOrFalse }
+    }
+    Image_Generate_Gradient: {
+        width: { kind: 'number', type: number }
+        height: { kind: 'number', type: number }
+        direction: { kind: 'enum', type: Comfy.Union.E_459517618451c1022315a1119e4f557bc8d55372 }
+        tolerance: { kind: 'number', type: number }
+        gradient_stops: { kind: 'string', type: string }
+    }
+    Image_High_Pass_Filter: {
+        // images: { kind: 'object', type: IMAGE }
+        radius: { kind: 'number', type: number }
+        strength: { kind: 'number', type: number }
+        color_output: { kind: 'enum', type: Comfy.Union.E_TrueOrFalse }
+        neutral_background: { kind: 'enum', type: Comfy.Union.E_TrueOrFalse }
+    }
+    Image_History_Loader: {
+        image: { kind: 'enum', type: Comfy.Union.E_2dd0540c88a63098c07793456791932d49cace79 }
+    }
+    Image_Input_Switch: {
+        // image_a: { kind: 'object', type: IMAGE }
+        // image_b: { kind: 'object', type: IMAGE }
+        boolean: { kind: 'boolean', type: boolean }
+    }
+    Image_Levels_Adjustment: {
+        // image: { kind: 'object', type: IMAGE }
+        black_level: { kind: 'number', type: number }
+        mid_level: { kind: 'number', type: number }
+        white_level: { kind: 'number', type: number }
+    }
+    Image_Load: {
+        image_path: { kind: 'string', type: string }
+        RGBA: { kind: 'enum', type: Comfy.Union.E_TrueOrFalse }
+        filename_text_extension: { kind: 'enum', type: Comfy.Union.E_TrueOrFalse }
+    }
+    Image_Median_Filter: {
+        // image: { kind: 'object', type: IMAGE }
+        diameter: { kind: 'number', type: number }
+        sigma_color: { kind: 'number', type: number }
+        sigma_space: { kind: 'number', type: number }
+    }
+    Image_Mix_RGB_Channels: {
+        // red_channel: { kind: 'object', type: IMAGE }
+        // green_channel: { kind: 'object', type: IMAGE }
+        // blue_channel: { kind: 'object', type: IMAGE }
+    }
+    Image_Monitor_Effects_Filter: {
+        // image: { kind: 'object', type: IMAGE }
+        mode: { kind: 'enum', type: Comfy.Union.E_34a8a918686fbe2e5439cb5b74d33b252afdae7d }
+        amplitude: { kind: 'number', type: number }
+        offset: { kind: 'number', type: number }
+    }
+    Image_Nova_Filter: {
+        // image: { kind: 'object', type: IMAGE }
+        amplitude: { kind: 'number', type: number }
+        frequency: { kind: 'number', type: number }
+    }
+    Image_Padding: {
+        // image: { kind: 'object', type: IMAGE }
+        feathering: { kind: 'number', type: number }
+        feather_second_pass: { kind: 'enum', type: Comfy.Union.E_TrueOrFalse }
+        left_padding: { kind: 'number', type: number }
+        right_padding: { kind: 'number', type: number }
+        top_padding: { kind: 'number', type: number }
+        bottom_padding: { kind: 'number', type: number }
+    }
+    Image_Perlin_Noise: {
+        width: { kind: 'number', type: number }
+        height: { kind: 'number', type: number }
+        scale: { kind: 'number', type: number }
+        octaves: { kind: 'number', type: number }
+        persistence: { kind: 'number', type: number }
+        seed: { kind: 'number', type: number }
+    }
+    Image_Rembg_$1Remove_Background$2: {
+        // images: { kind: 'object', type: IMAGE }
+        transparency: { kind: 'boolean', type: boolean }
+        model: { kind: 'enum', type: Comfy.Union.E_76658484ba9d30cc1b64ca7a20c1605bb6379d1e }
+        post_processing: { kind: 'boolean', type: boolean }
+        only_mask: { kind: 'boolean', type: boolean }
+        alpha_matting: { kind: 'boolean', type: boolean }
+        alpha_matting_foreground_threshold: { kind: 'number', type: number }
+        alpha_matting_background_threshold: { kind: 'number', type: number }
+        alpha_matting_erode_size: { kind: 'number', type: number }
+        background_color: { kind: 'enum', type: Comfy.Union.E_50e35c4eef26231d47145ce31015c2d288e65477 }
+    }
+    Image_Perlin_Power_Fractal: {
+        width: { kind: 'number', type: number }
+        height: { kind: 'number', type: number }
+        scale: { kind: 'number', type: number }
+        octaves: { kind: 'number', type: number }
+        persistence: { kind: 'number', type: number }
+        lacunarity: { kind: 'number', type: number }
+        exponent: { kind: 'number', type: number }
+        seed: { kind: 'number', type: number }
+    }
+    Image_Remove_Background_$1Alpha$2: {
+        // images: { kind: 'object', type: IMAGE }
+        mode: { kind: 'enum', type: Comfy.Union.E_e6a365a2c3fb39d89cfc94f4a1da1e3faaa9be2a }
+        threshold: { kind: 'number', type: number }
+        threshold_tolerance: { kind: 'number', type: number }
+    }
+    Image_Remove_Color: {
+        // image: { kind: 'object', type: IMAGE }
+        target_red: { kind: 'number', type: number }
+        target_green: { kind: 'number', type: number }
+        target_blue: { kind: 'number', type: number }
+        replace_red: { kind: 'number', type: number }
+        replace_green: { kind: 'number', type: number }
+        replace_blue: { kind: 'number', type: number }
+        clip_threshold: { kind: 'number', type: number }
+    }
+    Image_Resize: {
+        // image: { kind: 'object', type: IMAGE }
+        mode: { kind: 'enum', type: Comfy.Union.E_79dc3a66b5aeaa0087d9be9dee1c4ca51a2772ac }
+        supersample: { kind: 'enum', type: Comfy.Union.E_TrueOrFalse }
+        resampling: { kind: 'enum', type: Comfy.Union.E_bac912b55de8a59480c74aba068f4a3b5f9a0e38 }
+        rescale_factor: { kind: 'number', type: number }
+        resize_width: { kind: 'number', type: number }
+        resize_height: { kind: 'number', type: number }
+    }
+    Image_Rotate: {
+        // images: { kind: 'object', type: IMAGE }
+        mode: { kind: 'enum', type: Comfy.Union.E_b4cc31771b218822bfb695135401373ec3c3b56f }
+        rotation: { kind: 'number', type: number }
+        sampler: { kind: 'enum', type: Comfy.Union.E_678c8597d48a2c6595a042169b7175b70a440625 }
+    }
+    Image_Rotate_Hue: {
+        // image: { kind: 'object', type: IMAGE }
+        hue_shift: { kind: 'number', type: number }
+    }
+    Image_Send_HTTP: {
+        // images: { kind: 'object', type: IMAGE }
+        url: { kind: 'string', type: string }
+        method_type: { kind: 'enum', type: Comfy.Union.E_6edaf157bc87636aa5977b8f373c827d849a6714 }
+        request_field_name: { kind: 'string', type: string }
+        // additional_request_headers: { kind: 'object', type: DICT }
+    }
+    Image_Save: {
+        // images: { kind: 'object', type: IMAGE }
+        output_path: { kind: 'string', type: string }
+        filename_prefix: { kind: 'string', type: string }
+        filename_delimiter: { kind: 'string', type: string }
+        filename_number_padding: { kind: 'number', type: number }
+        filename_number_start: { kind: 'enum', type: Comfy.Union.E_TrueOrFalse }
+        extension: { kind: 'enum', type: Comfy.Union.E_ace8f49d9c65e2ba17335a32054fa4e7c2eb6eb5 }
+        dpi: { kind: 'number', type: number }
+        quality: { kind: 'number', type: number }
+        optimize_image: { kind: 'enum', type: Comfy.Union.E_TrueOrFalse }
+        lossless_webp: { kind: 'enum', type: Comfy.Union.E_TrueOrFalse }
+        overwrite_mode: { kind: 'enum', type: Comfy.Union.E_0c34bcf827f67f4a34574e3b6e40077ae91adaed }
+        show_history: { kind: 'enum', type: Comfy.Union.E_TrueOrFalse }
+        show_history_by_prefix: { kind: 'enum', type: Comfy.Union.E_TrueOrFalse }
+        embed_workflow: { kind: 'enum', type: Comfy.Union.E_TrueOrFalse }
+        show_previews: { kind: 'enum', type: Comfy.Union.E_TrueOrFalse }
+    }
+    Image_Seamless_Texture: {
+        // images: { kind: 'object', type: IMAGE }
+        blending: { kind: 'number', type: number }
+        tiled: { kind: 'enum', type: Comfy.Union.E_TrueOrFalse }
+        tiles: { kind: 'number', type: number }
+    }
+    Image_Select_Channel: {
+        // image: { kind: 'object', type: IMAGE }
+        channel: { kind: 'enum', type: Comfy.Union.E_33a0330bc4748f9487c71584b55a1ad2c07d624b }
+    }
+    Image_Select_Color: {
+        // image: { kind: 'object', type: IMAGE }
+        red: { kind: 'number', type: number }
+        green: { kind: 'number', type: number }
+        blue: { kind: 'number', type: number }
+        variance: { kind: 'number', type: number }
+    }
+    Image_Shadows_and_Highlights: {
+        // image: { kind: 'object', type: IMAGE }
+        shadow_threshold: { kind: 'number', type: number }
+        shadow_factor: { kind: 'number', type: number }
+        shadow_smoothing: { kind: 'number', type: number }
+        highlight_threshold: { kind: 'number', type: number }
+        highlight_factor: { kind: 'number', type: number }
+        highlight_smoothing: { kind: 'number', type: number }
+        simplify_isolation: { kind: 'number', type: number }
+    }
+    Image_Size_to_Number: {
+        // image: { kind: 'object', type: IMAGE }
+    }
+    Image_Stitch: {
+        // image_a: { kind: 'object', type: IMAGE }
+        // image_b: { kind: 'object', type: IMAGE }
+        stitch: { kind: 'enum', type: Comfy.Union.E_6ed7a84154c66d6ed9010610111acb4071e30fa5 }
+        feathering: { kind: 'number', type: number }
+    }
+    Image_Style_Filter: {
+        // image: { kind: 'object', type: IMAGE }
+        style: { kind: 'enum', type: Comfy.Union.E_fb3f90840b8cb5166cc7392ee683a0b94f51f55e }
+    }
+    Image_Threshold: {
+        // image: { kind: 'object', type: IMAGE }
+        threshold: { kind: 'number', type: number }
+    }
+    Image_Tiled: {
+        // image: { kind: 'object', type: IMAGE }
+        num_tiles: { kind: 'number', type: number }
+    }
+    Image_Transpose: {
+        // image: { kind: 'object', type: IMAGE }
+        // image_overlay: { kind: 'object', type: IMAGE }
+        width: { kind: 'number', type: number }
+        height: { kind: 'number', type: number }
+        X: { kind: 'number', type: number }
+        Y: { kind: 'number', type: number }
+        rotation: { kind: 'number', type: number }
+        feathering: { kind: 'number', type: number }
+    }
+    Image_fDOF_Filter: {
+        // image: { kind: 'object', type: IMAGE }
+        // depth: { kind: 'object', type: IMAGE }
+        mode: { kind: 'enum', type: Comfy.Union.E_6e38ea63eb381af6ba58a4805bd3875939dda9ed }
+        radius: { kind: 'number', type: number }
+        samples: { kind: 'number', type: number }
+    }
+    Image_to_Latent_Mask: {
+        // images: { kind: 'object', type: IMAGE }
+        channel: { kind: 'enum', type: Comfy.Union.E_Channel }
+    }
+    Image_to_Noise: {
+        // images: { kind: 'object', type: IMAGE }
+        num_colors: { kind: 'number', type: number }
+        black_mix: { kind: 'number', type: number }
+        gaussian_mix: { kind: 'number', type: number }
+        brightness: { kind: 'number', type: number }
+        output_mode: { kind: 'enum', type: Comfy.Union.E_fbe3fb620034510d93d13c6709f86874eae11ed2 }
+        seed: { kind: 'number', type: number }
+    }
+    Image_to_Seed: {
+        // images: { kind: 'object', type: IMAGE }
+    }
+    Images_to_RGB: {
+        // images: { kind: 'object', type: IMAGE }
+    }
+    Images_to_Linear: {
+        // images: { kind: 'object', type: IMAGE }
+    }
+    Integer_place_counter: {
+        int_input: { kind: 'number', type: number }
+    }
+    Image_Voronoi_Noise_Filter: {
+        width: { kind: 'number', type: number }
+        height: { kind: 'number', type: number }
+        density: { kind: 'number', type: number }
+        modulator: { kind: 'number', type: number }
+        seed: { kind: 'number', type: number }
+        flat: { kind: 'enum', type: Comfy.Union.E_e6bf0166cb0a546d639b0416f53e058b11157eff }
+        RGB_output: { kind: 'enum', type: Comfy.Union.E_e6bf0166cb0a546d639b0416f53e058b11157eff }
+    }
+    KSampler_$1WAS$2: {
+        // model: { kind: 'object', type: MODEL }
+        // seed: { kind: 'object', type: SEED }
+        steps: { kind: 'number', type: number }
+        cfg: { kind: 'number', type: number }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_SamplerName }
+        scheduler: { kind: 'enum', type: Comfy.Union.E_SchedulerName }
+        // positive: { kind: 'object', type: CONDITIONING }
+        // negative: { kind: 'object', type: CONDITIONING }
+        // latent_image: { kind: 'object', type: LATENT }
+        denoise: { kind: 'number', type: number }
+    }
+    KSampler_Cycle: {
+        // model: { kind: 'object', type: MODEL }
+        seed: { kind: 'number', type: number }
+        steps: { kind: 'number', type: number }
+        cfg: { kind: 'number', type: number }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_SamplerName }
+        scheduler: { kind: 'enum', type: Comfy.Union.E_SchedulerName }
+        // positive: { kind: 'object', type: CONDITIONING }
+        // negative: { kind: 'object', type: CONDITIONING }
+        // latent_image: { kind: 'object', type: LATENT }
+        tiled_vae: { kind: 'enum', type: Comfy.Union.E_EnableOrDisable }
+        latent_upscale: { kind: 'enum', type: Comfy.Union.E_1481b5600ce60506ecabaa890211f73642839577 }
+        upscale_factor: { kind: 'number', type: number }
+        upscale_cycles: { kind: 'number', type: number }
+        starting_denoise: { kind: 'number', type: number }
+        cycle_denoise: { kind: 'number', type: number }
+        scale_denoise: { kind: 'enum', type: Comfy.Union.E_EnableOrDisable }
+        scale_sampling: { kind: 'enum', type: Comfy.Union.E_bac912b55de8a59480c74aba068f4a3b5f9a0e38 }
+        // vae: { kind: 'object', type: VAE }
+        // secondary_model: { kind: 'object', type: MODEL }
+        secondary_start_cycle: { kind: 'number', type: number }
+        // upscale_model: { kind: 'object', type: UPSCALE_MODEL }
+        // processor_model: { kind: 'object', type: UPSCALE_MODEL }
+        // pos_additive: { kind: 'object', type: CONDITIONING }
+        // neg_additive: { kind: 'object', type: CONDITIONING }
+        pos_add_mode: { kind: 'enum', type: Comfy.Union.E_d7832e996ca60a0bfc63735f3a840cabaa0396da }
+        pos_add_strength: { kind: 'number', type: number }
+        pos_add_strength_scaling: { kind: 'enum', type: Comfy.Union.E_EnableOrDisable }
+        pos_add_strength_cutoff: { kind: 'number', type: number }
+        neg_add_mode: { kind: 'enum', type: Comfy.Union.E_d7832e996ca60a0bfc63735f3a840cabaa0396da }
+        neg_add_strength: { kind: 'number', type: number }
+        neg_add_strength_scaling: { kind: 'enum', type: Comfy.Union.E_EnableOrDisable }
+        neg_add_strength_cutoff: { kind: 'number', type: number }
+        sharpen_strength: { kind: 'number', type: number }
+        sharpen_radius: { kind: 'number', type: number }
+        steps_scaling: { kind: 'enum', type: Comfy.Union.E_EnableOrDisable }
+        steps_control: { kind: 'enum', type: Comfy.Union.E_d7832e996ca60a0bfc63735f3a840cabaa0396da }
+        steps_scaling_value: { kind: 'number', type: number }
+        steps_cutoff: { kind: 'number', type: number }
+        denoise_cutoff: { kind: 'number', type: number }
+    }
+    Latent_Batch: {
+        // latent_a: { kind: 'object', type: LATENT }
+        // latent_b: { kind: 'object', type: LATENT }
+        // latent_c: { kind: 'object', type: LATENT }
+        // latent_d: { kind: 'object', type: LATENT }
+    }
+    Latent_Noise_Injection: {
+        // samples: { kind: 'object', type: LATENT }
+        noise_std: { kind: 'number', type: number }
+    }
+    Latent_Size_to_Number: {
+        // samples: { kind: 'object', type: LATENT }
+    }
+    Latent_Upscale_by_Factor_$1WAS$2: {
+        // samples: { kind: 'object', type: LATENT }
+        mode: { kind: 'enum', type: Comfy.Union.E_0860472b05b5dd5bd5a00a93bbd161fb8222056b }
+        factor: { kind: 'number', type: number }
+        align: { kind: 'enum', type: Comfy.Union.E_TrueOrFalse }
+    }
+    Load_Image_Batch: {
+        mode: { kind: 'enum', type: Comfy.Union.E_29fab72478e27c6abd110ef215462856f7d77d54 }
+        seed: { kind: 'number', type: number }
+        index: { kind: 'number', type: number }
+        label: { kind: 'string', type: string }
+        path: { kind: 'string', type: string }
+        pattern: { kind: 'string', type: string }
+        allow_RGBA_output: { kind: 'enum', type: Comfy.Union.E_TrueOrFalse }
+        filename_text_extension: { kind: 'enum', type: Comfy.Union.E_TrueOrFalse }
+    }
+    Load_Text_File: {
+        file_path: { kind: 'string', type: string }
+        dictionary_name: { kind: 'string', type: string }
+    }
+    Load_Lora: {
+        // model: { kind: 'object', type: MODEL }
+        // clip: { kind: 'object', type: CLIP }
+        lora_name: { kind: 'enum', type: Comfy.Union.E_6eef6648406c333a4035cd5e60d0bf2ecf2606d7 }
+        strength_model: { kind: 'number', type: number }
+        strength_clip: { kind: 'number', type: number }
+    }
+    Lora_Input_Switch: {
+        // model_a: { kind: 'object', type: MODEL }
+        // clip_a: { kind: 'object', type: CLIP }
+        // model_b: { kind: 'object', type: MODEL }
+        // clip_b: { kind: 'object', type: CLIP }
+        boolean: { kind: 'boolean', type: boolean }
+    }
+    Masks_Add: {
+        // masks_a: { kind: 'object', type: MASK }
+        // masks_b: { kind: 'object', type: MASK }
+    }
+    Masks_Subtract: {
+        // masks_a: { kind: 'object', type: MASK }
+        // masks_b: { kind: 'object', type: MASK }
+    }
+    Mask_Arbitrary_Region: {
+        // masks: { kind: 'object', type: MASK }
+        size: { kind: 'number', type: number }
+        threshold: { kind: 'number', type: number }
+    }
+    Mask_Batch_to_Mask: {
+        // masks: { kind: 'object', type: MASK }
+        batch_number: { kind: 'number', type: number }
+    }
+    Mask_Batch: {
+        // masks_a: { kind: 'object', type: MASK }
+        // masks_b: { kind: 'object', type: MASK }
+        // masks_c: { kind: 'object', type: MASK }
+        // masks_d: { kind: 'object', type: MASK }
+    }
+    Mask_Ceiling_Region: {
+        // masks: { kind: 'object', type: MASK }
+    }
+    Mask_Crop_Dominant_Region: {
+        // masks: { kind: 'object', type: MASK }
+        padding: { kind: 'number', type: number }
+    }
+    Mask_Crop_Minority_Region: {
+        // masks: { kind: 'object', type: MASK }
+        padding: { kind: 'number', type: number }
+    }
+    Mask_Crop_Region: {
+        // mask: { kind: 'object', type: MASK }
+        padding: { kind: 'number', type: number }
+        region_type: { kind: 'enum', type: Comfy.Union.E_3f6f2a7e34563d7d52b1e70878b41ee0f557712f }
+    }
+    Mask_Paste_Region: {
+        // mask: { kind: 'object', type: MASK }
+        // crop_mask: { kind: 'object', type: MASK }
+        // crop_data: { kind: 'object', type: CROP_DATA }
+        crop_blending: { kind: 'number', type: number }
+        crop_sharpening: { kind: 'number', type: number }
+    }
+    Mask_Dilate_Region: {
+        // masks: { kind: 'object', type: MASK }
+        iterations: { kind: 'number', type: number }
+    }
+    Mask_Dominant_Region: {
+        // masks: { kind: 'object', type: MASK }
+        threshold: { kind: 'number', type: number }
+    }
+    Mask_Erode_Region: {
+        // masks: { kind: 'object', type: MASK }
+        iterations: { kind: 'number', type: number }
+    }
+    Mask_Fill_Holes: {
+        // masks: { kind: 'object', type: MASK }
+    }
+    Mask_Floor_Region: {
+        // masks: { kind: 'object', type: MASK }
+    }
+    Mask_Gaussian_Region: {
+        // masks: { kind: 'object', type: MASK }
+        radius: { kind: 'number', type: number }
+    }
+    Mask_Invert: {
+        // masks: { kind: 'object', type: MASK }
+    }
+    Mask_Minority_Region: {
+        // masks: { kind: 'object', type: MASK }
+        threshold: { kind: 'number', type: number }
+    }
+    Mask_Smooth_Region: {
+        // masks: { kind: 'object', type: MASK }
+        sigma: { kind: 'number', type: number }
+    }
+    Mask_Threshold_Region: {
+        // masks: { kind: 'object', type: MASK }
+        black_threshold: { kind: 'number', type: number }
+        white_threshold: { kind: 'number', type: number }
+    }
+    Masks_Combine_Regions: {
+        // mask_a: { kind: 'object', type: MASK }
+        // mask_b: { kind: 'object', type: MASK }
+        // mask_c: { kind: 'object', type: MASK }
+        // mask_d: { kind: 'object', type: MASK }
+        // mask_e: { kind: 'object', type: MASK }
+        // mask_f: { kind: 'object', type: MASK }
+    }
+    Masks_Combine_Batch: {
+        // masks: { kind: 'object', type: MASK }
+    }
+    MiDaS_Model_Loader: {
+        midas_model: { kind: 'enum', type: Comfy.Union.E_ddc7f89a89013ba246c565b4a9c3171afa7b3e7b }
+    }
+    MiDaS_Depth_Approximation: {
+        // image: { kind: 'object', type: IMAGE }
+        use_cpu: { kind: 'enum', type: Comfy.Union.E_TrueOrFalse }
+        midas_type: { kind: 'enum', type: Comfy.Union.E_ddc7f89a89013ba246c565b4a9c3171afa7b3e7b }
+        invert_depth: { kind: 'enum', type: Comfy.Union.E_TrueOrFalse }
+        // midas_model: { kind: 'object', type: MIDAS_MODEL }
+    }
+    MiDaS_Mask_Image: {
+        // image: { kind: 'object', type: IMAGE }
+        use_cpu: { kind: 'enum', type: Comfy.Union.E_TrueOrFalse }
+        midas_model: { kind: 'enum', type: Comfy.Union.E_4c3e91fd332bf7bc8ecc71438dc9bae1659b47bf }
+        remove: { kind: 'enum', type: Comfy.Union.E_3c44857390dbf2c0b082664aec15269d2f4de7f2 }
+        threshold: { kind: 'enum', type: Comfy.Union.E_TrueOrFalse }
+        threshold_low: { kind: 'number', type: number }
+        threshold_mid: { kind: 'number', type: number }
+        threshold_high: { kind: 'number', type: number }
+        smoothing: { kind: 'number', type: number }
+        background_red: { kind: 'number', type: number }
+        background_green: { kind: 'number', type: number }
+        background_blue: { kind: 'number', type: number }
+    }
+    Model_Input_Switch: {
+        // model_a: { kind: 'object', type: MODEL }
+        // model_b: { kind: 'object', type: MODEL }
+        boolean: { kind: 'boolean', type: boolean }
+    }
+    Number_Counter: {
+        number_type: { kind: 'enum', type: Comfy.Union.E_eb31abaa810f2e5b2910398489893bb10dc12f65 }
+        mode: { kind: 'enum', type: Comfy.Union.E_69ae67e56fe369f0949226d306697e018453dd56 }
+        start: { kind: 'number', type: number }
+        stop: { kind: 'number', type: number }
+        step: { kind: 'number', type: number }
+        // reset_bool: { kind: 'object', type: NUMBER }
+    }
+    Number_Operation: {
+        // number_a: { kind: 'object', type: NUMBER }
+        // number_b: { kind: 'object', type: NUMBER }
+        operation: { kind: 'enum', type: Comfy.Union.E_89cd8ef2656f9d2aa7e139e06547bccb8894aea6 }
+    }
+    Number_to_Float: {
+        // number: { kind: 'object', type: NUMBER }
+    }
+    Number_Input_Switch: {
+        // number_a: { kind: 'object', type: NUMBER }
+        // number_b: { kind: 'object', type: NUMBER }
+        boolean: { kind: 'boolean', type: boolean }
+    }
+    Number_Input_Condition: {
+        // number_a: { kind: 'object', type: NUMBER }
+        // number_b: { kind: 'object', type: NUMBER }
+        return_boolean: { kind: 'enum', type: Comfy.Union.E_TrueOrFalse }
+        comparison: { kind: 'enum', type: Comfy.Union.E_fec65e73cb675e950a5bb41c19b5d494b1fadbb0 }
+    }
+    Number_Multiple_Of: {
+        // number: { kind: 'object', type: NUMBER }
+        multiple: { kind: 'number', type: number }
+    }
+    Number_PI: {
+    }
+    Number_to_Int: {
+        // number: { kind: 'object', type: NUMBER }
+    }
+    Number_to_Seed: {
+        // number: { kind: 'object', type: NUMBER }
+    }
+    Number_to_String: {
+        // number: { kind: 'object', type: NUMBER }
+    }
+    Number_to_Text: {
+        // number: { kind: 'object', type: NUMBER }
+    }
+    Boolean_To_Text: {
+        boolean: { kind: 'boolean', type: boolean }
+    }
+    Prompt_Styles_Selector: {
+        style: { kind: 'enum', type: Comfy.Union.E_6eef6648406c333a4035cd5e60d0bf2ecf2606d7 }
+    }
+    Prompt_Multiple_Styles_Selector: {
+        style1: { kind: 'enum', type: Comfy.Union.E_6eef6648406c333a4035cd5e60d0bf2ecf2606d7 }
+        style2: { kind: 'enum', type: Comfy.Union.E_6eef6648406c333a4035cd5e60d0bf2ecf2606d7 }
+        style3: { kind: 'enum', type: Comfy.Union.E_6eef6648406c333a4035cd5e60d0bf2ecf2606d7 }
+        style4: { kind: 'enum', type: Comfy.Union.E_6eef6648406c333a4035cd5e60d0bf2ecf2606d7 }
+    }
+    Random_Number: {
+        number_type: { kind: 'enum', type: Comfy.Union.E_d775619a3b6b2764d08cc78c16dba9db45ba3385 }
+        minimum: { kind: 'number', type: number }
+        maximum: { kind: 'number', type: number }
+        seed: { kind: 'number', type: number }
+    }
+    Save_Text_File: {
+        text: { kind: 'string', type: string }
+        path: { kind: 'string', type: string }
+        filename_prefix: { kind: 'string', type: string }
+        filename_delimiter: { kind: 'string', type: string }
+        filename_number_padding: { kind: 'number', type: number }
+        file_extension: { kind: 'string', type: string }
+        encoding: { kind: 'string', type: string }
+        filename_suffix: { kind: 'string', type: string }
+    }
+    Seed: {
+        seed: { kind: 'number', type: number }
+    }
+    Tensor_Batch_to_Image: {
+        // images_batch: { kind: 'object', type: IMAGE }
+        batch_image_number: { kind: 'number', type: number }
+    }
+    BLIP_Analyze_Image: {
+        // images: { kind: 'object', type: IMAGE }
+        mode: { kind: 'enum', type: Comfy.Union.E_58116c3d7caa42bbae5816fbe84aaba8f20d824f }
+        question: { kind: 'string', type: string }
+        // blip_model: { kind: 'object', type: BLIP_MODEL }
+        min_length: { kind: 'number', type: number }
+        max_length: { kind: 'number', type: number }
+        num_beams: { kind: 'number', type: number }
+        no_repeat_ngram_size: { kind: 'number', type: number }
+        early_stopping: { kind: 'boolean', type: boolean }
+    }
+    SAM_Model_Loader: {
+        model_size: { kind: 'enum', type: Comfy.Union.E_976ac8179a850faff4be52e51dd7a30db5108680 }
+    }
+    SAM_Parameters: {
+        points: { kind: 'string', type: string }
+        labels: { kind: 'string', type: string }
+    }
+    SAM_Parameters_Combine: {
+        // sam_parameters_a: { kind: 'object', type: SAM_PARAMETERS }
+        // sam_parameters_b: { kind: 'object', type: SAM_PARAMETERS }
+    }
+    SAM_Image_Mask: {
+        // sam_model: { kind: 'object', type: SAM_MODEL }
+        // sam_parameters: { kind: 'object', type: SAM_PARAMETERS }
+        // image: { kind: 'object', type: IMAGE }
+    }
+    Samples_Passthrough_$1Stat_System$2: {
+        // samples: { kind: 'object', type: LATENT }
+    }
+    String_to_Text: {
+        string: { kind: 'string', type: string }
+    }
+    Image_Bounds: {
+        // image: { kind: 'object', type: IMAGE }
+    }
+    Inset_Image_Bounds: {
+        // image_bounds: { kind: 'object', type: IMAGE_BOUNDS }
+        inset_left: { kind: 'number', type: number }
+        inset_right: { kind: 'number', type: number }
+        inset_top: { kind: 'number', type: number }
+        inset_bottom: { kind: 'number', type: number }
+    }
+    Bounded_Image_Blend: {
+        // target: { kind: 'object', type: IMAGE }
+        // target_bounds: { kind: 'object', type: IMAGE_BOUNDS }
+        // source: { kind: 'object', type: IMAGE }
+        blend_factor: { kind: 'number', type: number }
+        feathering: { kind: 'number', type: number }
+    }
+    Bounded_Image_Blend_with_Mask: {
+        // target: { kind: 'object', type: IMAGE }
+        // target_mask: { kind: 'object', type: MASK }
+        // target_bounds: { kind: 'object', type: IMAGE_BOUNDS }
+        // source: { kind: 'object', type: IMAGE }
+        blend_factor: { kind: 'number', type: number }
+        feathering: { kind: 'number', type: number }
+    }
+    Bounded_Image_Crop: {
+        // image: { kind: 'object', type: IMAGE }
+        // image_bounds: { kind: 'object', type: IMAGE_BOUNDS }
+    }
+    Bounded_Image_Crop_with_Mask: {
+        // image: { kind: 'object', type: IMAGE }
+        // mask: { kind: 'object', type: MASK }
+        padding_left: { kind: 'number', type: number }
+        padding_right: { kind: 'number', type: number }
+        padding_top: { kind: 'number', type: number }
+        padding_bottom: { kind: 'number', type: number }
+        return_list: { kind: 'boolean', type: boolean }
+    }
+    Image_Bounds_to_Console: {
+        // image_bounds: { kind: 'object', type: IMAGE_BOUNDS }
+        label: { kind: 'string', type: string }
+    }
+    Text_Dictionary_Update: {
+        // dictionary_a: { kind: 'object', type: DICT }
+        // dictionary_b: { kind: 'object', type: DICT }
+        // dictionary_c: { kind: 'object', type: DICT }
+        // dictionary_d: { kind: 'object', type: DICT }
+    }
+    Text_Dictionary_Get: {
+        // dictionary: { kind: 'object', type: DICT }
+        key: { kind: 'string', type: string }
+        default_value: { kind: 'string', type: string }
+    }
+    Text_Dictionary_Convert: {
+        dictionary_text: { kind: 'string', type: string }
+    }
+    Text_Dictionary_New: {
+        key_1: { kind: 'string', type: string }
+        value_1: { kind: 'string', type: string }
+        key_2: { kind: 'string', type: string }
+        value_2: { kind: 'string', type: string }
+        key_3: { kind: 'string', type: string }
+        value_3: { kind: 'string', type: string }
+        key_4: { kind: 'string', type: string }
+        value_4: { kind: 'string', type: string }
+        key_5: { kind: 'string', type: string }
+        value_5: { kind: 'string', type: string }
+    }
+    Text_Dictionary_Keys: {
+        // dictionary: { kind: 'object', type: DICT }
+    }
+    Text_Dictionary_To_Text: {
+        // dictionary: { kind: 'object', type: DICT }
+    }
+    Text_Add_Tokens: {
+        tokens: { kind: 'string', type: string }
+        print_current_tokens: { kind: 'enum', type: Comfy.Union.E_TrueOrFalse }
+    }
+    Text_Add_Token_by_Input: {
+        token_name: { kind: 'string', type: string }
+        token_value: { kind: 'string', type: string }
+        print_current_tokens: { kind: 'enum', type: Comfy.Union.E_TrueOrFalse }
+    }
+    Text_Compare: {
+        text_a: { kind: 'string', type: string }
+        text_b: { kind: 'string', type: string }
+        mode: { kind: 'enum', type: Comfy.Union.E_926260613195613af4b1585dd277506097192235 }
+        tolerance: { kind: 'number', type: number }
+    }
+    Text_Concatenate: {
+        delimiter: { kind: 'string', type: string }
+        clean_whitespace: { kind: 'enum', type: Comfy.Union.E_TrueOrFalse }
+        text_a: { kind: 'string', type: string }
+        text_b: { kind: 'string', type: string }
+        text_c: { kind: 'string', type: string }
+        text_d: { kind: 'string', type: string }
+    }
+    Text_File_History_Loader: {
+        file: { kind: 'enum', type: Comfy.Union.E_2dd0540c88a63098c07793456791932d49cace79 }
+        dictionary_name: { kind: 'string', type: string }
+    }
+    Text_Find_and_Replace_by_Dictionary: {
+        text: { kind: 'string', type: string }
+        // dictionary: { kind: 'object', type: DICT }
+        replacement_key: { kind: 'string', type: string }
+        seed: { kind: 'number', type: number }
+    }
+    Text_Find_and_Replace_Input: {
+        text: { kind: 'string', type: string }
+        find: { kind: 'string', type: string }
+        replace: { kind: 'string', type: string }
+    }
+    Text_Find_and_Replace: {
+        text: { kind: 'string', type: string }
+        find: { kind: 'string', type: string }
+        replace: { kind: 'string', type: string }
+    }
+    Text_Find: {
+        text: { kind: 'string', type: string }
+        substring: { kind: 'string', type: string }
+        pattern: { kind: 'string', type: string }
+    }
+    Text_Input_Switch: {
+        text_a: { kind: 'string', type: string }
+        text_b: { kind: 'string', type: string }
+        boolean: { kind: 'boolean', type: boolean }
+    }
+    Text_List: {
+        text_a: { kind: 'string', type: string }
+        text_b: { kind: 'string', type: string }
+        text_c: { kind: 'string', type: string }
+        text_d: { kind: 'string', type: string }
+        text_e: { kind: 'string', type: string }
+        text_f: { kind: 'string', type: string }
+        text_g: { kind: 'string', type: string }
+    }
+    Text_List_Concatenate: {
+        // list_a: { kind: 'object', type: LIST }
+        // list_b: { kind: 'object', type: LIST }
+        // list_c: { kind: 'object', type: LIST }
+        // list_d: { kind: 'object', type: LIST }
+    }
+    Text_List_to_Text: {
+        delimiter: { kind: 'string', type: string }
+        // text_list: { kind: 'object', type: LIST }
+    }
+    Text_Load_Line_From_File: {
+        file_path: { kind: 'string', type: string }
+        dictionary_name: { kind: 'string', type: string }
+        label: { kind: 'string', type: string }
+        mode: { kind: 'enum', type: Comfy.Union.E_351309fb3b96cf7fb7bd0b7102f920b1744bbcec }
+        index: { kind: 'number', type: number }
+        multiline_text: { kind: 'string', type: string }
+    }
+    Text_Multiline: {
+        text: { kind: 'string', type: string }
+    }
+    Text_Multiline_$1Code_Compatible$2: {
+        text: { kind: 'string', type: string }
+    }
+    Text_Parse_A1111_Embeddings: {
+        text: { kind: 'string', type: string }
+    }
+    Text_Parse_Noodle_Soup_Prompts: {
+        mode: { kind: 'enum', type: Comfy.Union.E_46b521739cab20490e0368732c3787b937bb6d33 }
+        noodle_key: { kind: 'string', type: string }
+        seed: { kind: 'number', type: number }
+        text: { kind: 'string', type: string }
+    }
+    Text_Parse_Tokens: {
+        text: { kind: 'string', type: string }
+    }
+    Text_Random_Line: {
+        text: { kind: 'string', type: string }
+        seed: { kind: 'number', type: number }
+    }
+    Text_Random_Prompt: {
+        search_seed: { kind: 'string', type: string }
+    }
+    Text_String: {
+        text: { kind: 'string', type: string }
+        text_b: { kind: 'string', type: string }
+        text_c: { kind: 'string', type: string }
+        text_d: { kind: 'string', type: string }
+    }
+    Text_Contains: {
+        text: { kind: 'string', type: string }
+        sub_text: { kind: 'string', type: string }
+        case_insensitive: { kind: 'boolean', type: boolean }
+    }
+    Text_Shuffle: {
+        text: { kind: 'string', type: string }
+        separator: { kind: 'string', type: string }
+        seed: { kind: 'number', type: number }
+    }
+    Text_Sort: {
+        text: { kind: 'string', type: string }
+        separator: { kind: 'string', type: string }
+    }
+    Text_to_Conditioning: {
+        // clip: { kind: 'object', type: CLIP }
+        text: { kind: 'string', type: string }
+    }
+    Text_to_Console: {
+        text: { kind: 'string', type: string }
+        label: { kind: 'string', type: string }
+    }
+    Text_to_Number: {
+        text: { kind: 'string', type: string }
+    }
+    Text_to_String: {
+        text: { kind: 'string', type: string }
+    }
+    Text_String_Truncate: {
+        text: { kind: 'string', type: string }
+        truncate_by: { kind: 'enum', type: Comfy.Union.E_1f3e30a386f413ad2817cc490b9f27b4e1166fe7 }
+        truncate_from: { kind: 'enum', type: Comfy.Union.E_bd7732af436a46296a84dc5aa8698624101e3749 }
+        truncate_to: { kind: 'number', type: number }
+        text_b: { kind: 'string', type: string }
+        text_c: { kind: 'string', type: string }
+        text_d: { kind: 'string', type: string }
+    }
+    True_Random$5org_Number_Generator: {
+        api_key: { kind: 'string', type: string }
+        minimum: { kind: 'number', type: number }
+        maximum: { kind: 'number', type: number }
+        mode: { kind: 'enum', type: Comfy.Union.E_1d09df0c3ce1b4556d07af26e593d4033efc639b }
+    }
+    unCLIP_Checkpoint_Loader: {
+        ckpt_name: { kind: 'enum', type: Comfy.Union.E_CkptName }
+    }
+    Upscale_Model_Loader: {
+        model_name: { kind: 'enum', type: Comfy.Union.E_0a165440b634143ee9b4b1d88e03fb1a11863849 }
+    }
+    Upscale_Model_Switch: {
+        // upscale_model_a: { kind: 'object', type: UPSCALE_MODEL }
+        // upscale_model_b: { kind: 'object', type: UPSCALE_MODEL }
+        boolean: { kind: 'boolean', type: boolean }
+    }
+    Write_to_GIF: {
+        // image: { kind: 'object', type: IMAGE }
+        transition_frames: { kind: 'number', type: number }
+        image_delay_ms: { kind: 'number', type: number }
+        duration_ms: { kind: 'number', type: number }
+        loops: { kind: 'number', type: number }
+        max_size: { kind: 'number', type: number }
+        output_path: { kind: 'string', type: string }
+        filename: { kind: 'string', type: string }
+    }
+    Write_to_Video: {
+        // image: { kind: 'object', type: IMAGE }
+        transition_frames: { kind: 'number', type: number }
+        image_delay_sec: { kind: 'number', type: number }
+        fps: { kind: 'number', type: number }
+        max_size: { kind: 'number', type: number }
+        output_path: { kind: 'string', type: string }
+        filename: { kind: 'string', type: string }
+        codec: { kind: 'enum', type: Comfy.Union.E_077330280092fb42c54b5360bc8723312fb6fd1d }
+    }
+    VAE_Input_Switch: {
+        // vae_a: { kind: 'object', type: VAE }
+        // vae_b: { kind: 'object', type: VAE }
+        boolean: { kind: 'boolean', type: boolean }
+    }
+    Video_Dump_Frames: {
+        video_path: { kind: 'string', type: string }
+        output_path: { kind: 'string', type: string }
+        prefix: { kind: 'string', type: string }
+        filenumber_digits: { kind: 'number', type: number }
+        extension: { kind: 'enum', type: Comfy.Union.E_ddb8b4788a58dbca6274fd750ed1a1d421027721 }
+    }
+    CLIPSEG2: {
+        // image: { kind: 'object', type: IMAGE }
+        text: { kind: 'string', type: string }
+        use_cuda: { kind: 'boolean', type: boolean }
+        // clipseg_model: { kind: 'object', type: CLIPSEG_MODEL }
+    }
     IPAdapter: {
         // model: { kind: 'object', type: MODEL }
         // ipadapter: { kind: 'object', type: IPADAPTER }
@@ -13405,6 +19211,79 @@ declare global {
     ControlNetAuxSimpleAddText: {
         // image: { kind: 'object', type: IMAGE }
         text: { kind: 'string', type: string }
+    }
+    MarigoldModelLoader: {
+        model: { kind: 'enum', type: Comfy.Union.E_0570c9929a05552091968538314c9b91153a0128 }
+    }
+    MarigoldDepthEstimation$_v2: {
+        // marigold_model: { kind: 'object', type: MARIGOLDMODEL }
+        // image: { kind: 'object', type: IMAGE }
+        seed: { kind: 'number', type: number }
+        denoise_steps: { kind: 'number', type: number }
+        ensemble_size: { kind: 'number', type: number }
+        processing_resolution: { kind: 'number', type: number }
+        scheduler: { kind: 'enum', type: Comfy.Union.E_2e7bd488081020be1c7147a13ef7109a71726d85 }
+        use_taesd_vae: { kind: 'boolean', type: boolean }
+        keep_model_loaded: { kind: 'boolean', type: boolean }
+    }
+    MarigoldDepthEstimation$_v2$_video: {
+        // marigold_model: { kind: 'object', type: MARIGOLDMODEL }
+        // images: { kind: 'object', type: IMAGE }
+        seed: { kind: 'number', type: number }
+        denoise_steps: { kind: 'number', type: number }
+        processing_resolution: { kind: 'number', type: number }
+        scheduler: { kind: 'enum', type: Comfy.Union.E_2e7bd488081020be1c7147a13ef7109a71726d85 }
+        blend_factor: { kind: 'number', type: number }
+        use_taesd_vae: { kind: 'boolean', type: boolean }
+        keep_model_loaded: { kind: 'boolean', type: boolean }
+    }
+    MarigoldDepthEstimation: {
+        // image: { kind: 'object', type: IMAGE }
+        seed: { kind: 'number', type: number }
+        denoise_steps: { kind: 'number', type: number }
+        n_repeat: { kind: 'number', type: number }
+        regularizer_strength: { kind: 'number', type: number }
+        reduction_method: { kind: 'enum', type: Comfy.Union.E_248755adc763cd425aa60fbe4ddc7e636afb868f }
+        max_iter: { kind: 'number', type: number }
+        tol: { kind: 'number', type: number }
+        invert: { kind: 'boolean', type: boolean }
+        keep_model_loaded: { kind: 'boolean', type: boolean }
+        n_repeat_batch_size: { kind: 'number', type: number }
+        use_fp16: { kind: 'boolean', type: boolean }
+        scheduler: { kind: 'enum', type: Comfy.Union.E_1094d9b71fc3f2b7cbb07273727f88062feaacbb }
+        normalize: { kind: 'boolean', type: boolean }
+        model: { kind: 'enum', type: Comfy.Union.E_137d410291846100389520fe8f2fbf946128dab4 }
+    }
+    MarigoldDepthEstimationVideo: {
+        // image: { kind: 'object', type: IMAGE }
+        seed: { kind: 'number', type: number }
+        first_frame_denoise_steps: { kind: 'number', type: number }
+        first_frame_n_repeat: { kind: 'number', type: number }
+        n_repeat_batch_size: { kind: 'number', type: number }
+        invert: { kind: 'boolean', type: boolean }
+        keep_model_loaded: { kind: 'boolean', type: boolean }
+        scheduler: { kind: 'enum', type: Comfy.Union.E_1094d9b71fc3f2b7cbb07273727f88062feaacbb }
+        normalize: { kind: 'boolean', type: boolean }
+        denoise_steps: { kind: 'number', type: number }
+        flow_warping: { kind: 'boolean', type: boolean }
+        flow_depth_mix: { kind: 'number', type: number }
+        noise_ratio: { kind: 'number', type: number }
+        dtype: { kind: 'enum', type: Comfy.Union.E_df621c6407a123a6a816c747cbfb7e175b43ea4b }
+        model: { kind: 'enum', type: Comfy.Union.E_137d410291846100389520fe8f2fbf946128dab4 }
+    }
+    ColorizeDepthmap: {
+        // image: { kind: 'object', type: IMAGE }
+        colorize_method: { kind: 'enum', type: Comfy.Union.E_e09dd9c0b27579d3897e5aa427f3b6842789fb3f }
+    }
+    SaveImageOpenEXR: {
+        // images: { kind: 'object', type: IMAGE }
+        filename_prefix: { kind: 'string', type: string }
+    }
+    RemapDepth: {
+        // image: { kind: 'object', type: IMAGE }
+        min: { kind: 'number', type: number }
+        max: { kind: 'number', type: number }
+        clamp: { kind: 'boolean', type: boolean }
     }
     SAMLoader: {
         model_name: { kind: 'enum', type: Comfy.Union.E_40c777392f92d61852ab0f7a429a755abf59b71a }
@@ -14831,9 +20710,11 @@ declare global {
     UnknownNodeXX: {
     }
    }
-   
+
    // 9. INDEX -------------------------------
    // TODO rename to ObjecInfoContent
    export type Schemas = {[k in ComfyNodeType]: ComfyNodeSchemaJSON}
-   export type ComfyNodeType = 'KSampler' | 'CheckpointLoaderSimple' | 'CLIPTextEncode' | 'CLIPSetLastLayer' | 'VAEDecode' | 'VAEEncode' | 'VAEEncodeForInpaint' | 'VAELoader' | 'EmptyLatentImage' | 'LatentUpscale' | 'LatentUpscaleBy' | 'LatentFromBatch' | 'RepeatLatentBatch' | 'SaveImage' | 'PreviewImage' | 'LoadImage' | 'LoadImageMask' | 'ImageScale' | 'ImageScaleBy' | 'ImageInvert' | 'ImageBatch' | 'ImagePadForOutpaint' | 'EmptyImage' | 'ConditioningAverage' | 'ConditioningCombine' | 'ConditioningConcat' | 'ConditioningSetArea' | 'ConditioningSetAreaPercentage' | 'ConditioningSetAreaStrength' | 'ConditioningSetMask' | 'KSamplerAdvanced' | 'SetLatentNoiseMask' | 'LatentComposite' | 'LatentBlend' | 'LatentRotate' | 'LatentFlip' | 'LatentCrop' | 'LoraLoader' | 'CLIPLoader' | 'UNETLoader' | 'DualCLIPLoader' | 'CLIPVisionEncode' | 'StyleModelApply' | 'unCLIPConditioning' | 'ControlNetApply' | 'ControlNetApplyAdvanced' | 'ControlNetLoader' | 'DiffControlNetLoader' | 'StyleModelLoader' | 'CLIPVisionLoader' | 'VAEDecodeTiled' | 'VAEEncodeTiled' | 'unCLIPCheckpointLoader' | 'GLIGENLoader' | 'GLIGENTextBoxApply' | 'InpaintModelConditioning' | 'CheckpointLoader' | 'DiffusersLoader' | 'LoadLatent' | 'SaveLatent' | 'ConditioningZeroOut' | 'ConditioningSetTimestepRange' | 'LoraLoaderModelOnly' | 'LatentAdd' | 'LatentSubtract' | 'LatentMultiply' | 'LatentInterpolate' | 'LatentBatch' | 'LatentBatchSeedBehavior' | 'LatentApplyOperation' | 'LatentApplyOperationCFG' | 'LatentOperationTonemapReinhard' | 'LatentOperationSharpen' | 'HypernetworkLoader' | 'UpscaleModelLoader' | 'ImageUpscaleWithModel' | 'ImageBlend' | 'ImageBlur' | 'ImageQuantize' | 'ImageSharpen' | 'ImageScaleToTotalPixels' | 'LatentCompositeMasked' | 'ImageCompositeMasked' | 'MaskToImage' | 'ImageToMask' | 'ImageColorToMask' | 'SolidMask' | 'InvertMask' | 'CropMask' | 'MaskComposite' | 'FeatherMask' | 'GrowMask' | 'ThresholdMask' | 'PorterDuffImageComposite' | 'SplitImageWithAlpha' | 'JoinImageWithAlpha' | 'RebatchLatents' | 'RebatchImages' | 'ModelMergeSimple' | 'ModelMergeBlocks' | 'ModelMergeSubtract' | 'ModelMergeAdd' | 'CheckpointSave' | 'CLIPMergeSimple' | 'CLIPMergeSubtract' | 'CLIPMergeAdd' | 'CLIPSave' | 'VAESave' | 'ModelSave' | 'TomePatchModel' | 'CLIPTextEncodeSDXLRefiner' | 'CLIPTextEncodeSDXL' | 'Canny' | 'FreeU' | 'FreeU$_V2' | 'SamplerCustom' | 'BasicScheduler' | 'KarrasScheduler' | 'ExponentialScheduler' | 'PolyexponentialScheduler' | 'LaplaceScheduler' | 'VPScheduler' | 'BetaSamplingScheduler' | 'SDTurboScheduler' | 'KSamplerSelect' | 'SamplerEulerAncestral' | 'SamplerEulerAncestralCFGPP' | 'SamplerLMS' | 'SamplerDPMPP$_3M$_SDE' | 'SamplerDPMPP$_2M$_SDE' | 'SamplerDPMPP$_SDE' | 'SamplerDPMPP$_2S$_Ancestral' | 'SamplerDPMAdaptative' | 'SplitSigmas' | 'SplitSigmasDenoise' | 'FlipSigmas' | 'CFGGuider' | 'DualCFGGuider' | 'BasicGuider' | 'RandomNoise' | 'DisableNoise' | 'AddNoise' | 'SamplerCustomAdvanced' | 'HyperTile' | 'ModelSamplingDiscrete' | 'ModelSamplingContinuousEDM' | 'ModelSamplingContinuousV' | 'ModelSamplingStableCascade' | 'ModelSamplingSD3' | 'ModelSamplingAuraFlow' | 'ModelSamplingFlux' | 'RescaleCFG' | 'PatchModelAddDownscale' | 'ImageCrop' | 'RepeatImageBatch' | 'ImageFromBatch' | 'SaveAnimatedWEBP' | 'SaveAnimatedPNG' | 'ImageOnlyCheckpointLoader' | 'SVD$_img2vid$_Conditioning' | 'VideoLinearCFGGuidance' | 'VideoTriangleCFGGuidance' | 'ImageOnlyCheckpointSave' | 'SelfAttentionGuidance' | 'PerpNeg' | 'PerpNegGuider' | 'StableZero123$_Conditioning' | 'StableZero123$_Conditioning$_Batched' | 'SV3D$_Conditioning' | 'SD$_4XUpscale$_Conditioning' | 'PhotoMakerLoader' | 'PhotoMakerEncode' | 'CLIPTextEncodeControlnet' | 'Morphology' | 'StableCascade$_EmptyLatentImage' | 'StableCascade$_StageB$_Conditioning' | 'StableCascade$_StageC$_VAEEncode' | 'StableCascade$_SuperResolutionControlnet' | 'DifferentialDiffusion' | 'InstructPixToPixConditioning' | 'ModelMergeSD1' | 'ModelMergeSD2' | 'ModelMergeSDXL' | 'ModelMergeSD3$_2B' | 'ModelMergeFlux1' | 'ModelMergeSD35$_Large' | 'PerturbedAttentionGuidance' | 'AlignYourStepsScheduler' | 'UNetSelfAttentionMultiply' | 'UNetCrossAttentionMultiply' | 'CLIPAttentionMultiply' | 'UNetTemporalAttentionMultiply' | 'SamplerLCMUpscale' | 'SamplerEulerCFGpp' | 'WebcamCapture' | 'EmptyLatentAudio' | 'VAEEncodeAudio' | 'VAEDecodeAudio' | 'SaveAudio' | 'LoadAudio' | 'PreviewAudio' | 'TripleCLIPLoader' | 'EmptySD3LatentImage' | 'CLIPTextEncodeSD3' | 'ControlNetApplySD3' | 'SkipLayerGuidanceSD3' | 'GITSScheduler' | 'SetUnionControlNetType' | 'ControlNetInpaintingAliMamaApply' | 'CLIPTextEncodeHunyuanDiT' | 'CLIPTextEncodeFlux' | 'FluxGuidance' | 'LoraSave' | 'TorchCompileModel' | 'EmptyMochiLatentVideo' | 'SaveImageWebsocket' | 'IPAdapter' | 'IPAdapterAdvanced' | 'IPAdapterBatch' | 'IPAdapterFaceID' | 'IPAdapterFaceIDKolors' | 'IPAAdapterFaceIDBatch' | 'IPAdapterTiled' | 'IPAdapterTiledBatch' | 'IPAdapterEmbeds' | 'IPAdapterEmbedsBatch' | 'IPAdapterStyleComposition' | 'IPAdapterStyleCompositionBatch' | 'IPAdapterMS' | 'IPAdapterClipVisionEnhancer' | 'IPAdapterClipVisionEnhancerBatch' | 'IPAdapterFromParams' | 'IPAdapterPreciseStyleTransfer' | 'IPAdapterPreciseStyleTransferBatch' | 'IPAdapterPreciseComposition' | 'IPAdapterPreciseCompositionBatch' | 'IPAdapterUnifiedLoader' | 'IPAdapterUnifiedLoaderFaceID' | 'IPAdapterModelLoader' | 'IPAdapterInsightFaceLoader' | 'IPAdapterUnifiedLoaderCommunity' | 'IPAdapterEncoder' | 'IPAdapterCombineEmbeds' | 'IPAdapterNoise' | 'PrepImageForClipVision' | 'IPAdapterSaveEmbeds' | 'IPAdapterLoadEmbeds' | 'IPAdapterWeights' | 'IPAdapterCombineWeights' | 'IPAdapterWeightsFromStrategy' | 'IPAdapterPromptScheduleFromWeightsStrategy' | 'IPAdapterRegionalConditioning' | 'IPAdapterCombineParams' | 'ShufflePreprocessor' | 'DensePosePreprocessor' | 'LeReS$7DepthMapPreprocessor' | 'BinaryPreprocessor' | 'AnimeFace$_SemSegPreprocessor' | 'Zoe$7DepthMapPreprocessor' | 'DepthAnythingPreprocessor' | 'Zoe$_DepthAnythingPreprocessor' | 'DepthAnythingV2Preprocessor' | 'CannyEdgePreprocessor' | 'DWPreprocessor' | 'AnimalPosePreprocessor' | 'ImageLuminanceDetector' | 'ImageIntensityDetector' | 'MediaPipe$7FaceMeshPreprocessor' | 'DiffusionEdge$_Preprocessor' | 'M$7LSDPreprocessor' | 'HEDPreprocessor' | 'FakeScribblePreprocessor' | 'OneFormer$7COCO$7SemSegPreprocessor' | 'OneFormer$7ADE20K$7SemSegPreprocessor' | 'BAE$7NormalMapPreprocessor' | 'MeshGraphormer$7DepthMapPreprocessor' | 'MeshGraphormer$6ImpactDetector$7DepthMapPreprocessor' | 'DSINE$7NormalMapPreprocessor' | 'MiDaS$7NormalMapPreprocessor' | 'MiDaS$7DepthMapPreprocessor' | 'AnyLineArtPreprocessor$_aux' | 'SAMPreprocessor' | 'UniFormer$7SemSegPreprocessor' | 'SemSegPreprocessor' | 'PiDiNetPreprocessor' | 'InpaintPreprocessor' | 'LineArtPreprocessor' | 'OpenposePreprocessor' | 'Unimatch$_OptFlowPreprocessor' | 'MaskOptFlow' | 'SavePoseKpsAsJsonFile' | 'FacialPartColoringFromPoseKps' | 'UpperBodyTrackingFromPoseKps' | 'RenderPeopleKps' | 'RenderAnimalKps' | 'TEEDPreprocessor' | 'PyraCannyPreprocessor' | 'Metric3D$7DepthMapPreprocessor' | 'Metric3D$7NormalMapPreprocessor' | 'Manga2Anime$_LineArt$_Preprocessor' | 'ScribblePreprocessor' | 'Scribble$_XDoG$_Preprocessor' | 'Scribble$_PiDiNet$_Preprocessor' | 'AnimeLineArtPreprocessor' | 'LineartStandardPreprocessor' | 'TilePreprocessor' | 'TTPlanet$_TileGF$_Preprocessor' | 'TTPlanet$_TileSimple$_Preprocessor' | 'ColorPreprocessor' | 'AIO$_Preprocessor' | 'ControlNetPreprocessorSelector' | 'PixelPerfectResolution' | 'ImageGenResolutionFromImage' | 'ImageGenResolutionFromLatent' | 'HintImageEnchance' | 'ExecuteAllControlNetPreprocessors' | 'ControlNetAuxSimpleAddText' | 'SAMLoader' | 'CLIPSegDetectorProvider' | 'ONNXDetectorProvider' | 'BitwiseAndMaskForEach' | 'SubtractMaskForEach' | 'DetailerForEach' | 'DetailerForEachDebug' | 'DetailerForEachPipe' | 'DetailerForEachDebugPipe' | 'DetailerForEachPipeForAnimateDiff' | 'SAMDetectorCombined' | 'SAMDetectorSegmented' | 'FaceDetailer' | 'FaceDetailerPipe' | 'MaskDetailerPipe' | 'ToDetailerPipe' | 'ToDetailerPipeSDXL' | 'FromDetailerPipe' | 'FromDetailerPipe$_v2' | 'FromDetailerPipeSDXL' | 'AnyPipeToBasic' | 'ToBasicPipe' | 'FromBasicPipe' | 'FromBasicPipe$_v2' | 'BasicPipeToDetailerPipe' | 'BasicPipeToDetailerPipeSDXL' | 'DetailerPipeToBasicPipe' | 'EditBasicPipe' | 'EditDetailerPipe' | 'EditDetailerPipeSDXL' | 'LatentPixelScale' | 'PixelKSampleUpscalerProvider' | 'PixelKSampleUpscalerProviderPipe' | 'IterativeLatentUpscale' | 'IterativeImageUpscale' | 'PixelTiledKSampleUpscalerProvider' | 'PixelTiledKSampleUpscalerProviderPipe' | 'TwoSamplersForMaskUpscalerProvider' | 'TwoSamplersForMaskUpscalerProviderPipe' | 'PixelKSampleHookCombine' | 'DenoiseScheduleHookProvider' | 'StepsScheduleHookProvider' | 'CfgScheduleHookProvider' | 'NoiseInjectionHookProvider' | 'UnsamplerHookProvider' | 'CoreMLDetailerHookProvider' | 'PreviewDetailerHookProvider' | 'DetailerHookCombine' | 'NoiseInjectionDetailerHookProvider' | 'UnsamplerDetailerHookProvider' | 'DenoiseSchedulerDetailerHookProvider' | 'SEGSOrderedFilterDetailerHookProvider' | 'SEGSRangeFilterDetailerHookProvider' | 'SEGSLabelFilterDetailerHookProvider' | 'VariationNoiseDetailerHookProvider' | 'BitwiseAndMask' | 'SubtractMask' | 'AddMask' | 'ImpactSegsAndMask' | 'ImpactSegsAndMaskForEach' | 'EmptySegs' | 'ImpactFlattenMask' | 'MediaPipeFaceMeshToSEGS' | 'MaskToSEGS' | 'MaskToSEGS$_for$_AnimateDiff' | 'ToBinaryMask' | 'MasksToMaskList' | 'MaskListToMaskBatch' | 'ImageListToImageBatch' | 'SetDefaultImageForSEGS' | 'RemoveImageFromSEGS' | 'BboxDetectorSEGS' | 'SegmDetectorSEGS' | 'ONNXDetectorSEGS' | 'ImpactSimpleDetectorSEGS$_for$_AD' | 'ImpactSimpleDetectorSEGS' | 'ImpactSimpleDetectorSEGSPipe' | 'ImpactControlNetApplySEGS' | 'ImpactControlNetApplyAdvancedSEGS' | 'ImpactControlNetClearSEGS' | 'ImpactIPAdapterApplySEGS' | 'ImpactDecomposeSEGS' | 'ImpactAssembleSEGS' | 'ImpactFrom$_SEG$_ELT' | 'ImpactEdit$_SEG$_ELT' | 'ImpactDilate$_Mask$_SEG$_ELT' | 'ImpactDilateMask' | 'ImpactGaussianBlurMask' | 'ImpactDilateMaskInSEGS' | 'ImpactGaussianBlurMaskInSEGS' | 'ImpactScaleBy$_BBOX$_SEG$_ELT' | 'ImpactFrom$_SEG$_ELT$_bbox' | 'ImpactFrom$_SEG$_ELT$_crop$_region' | 'ImpactCount$_Elts$_in$_SEGS' | 'BboxDetectorCombined$_v2' | 'SegmDetectorCombined$_v2' | 'SegsToCombinedMask' | 'KSamplerProvider' | 'TwoSamplersForMask' | 'TiledKSamplerProvider' | 'KSamplerAdvancedProvider' | 'TwoAdvancedSamplersForMask' | 'ImpactNegativeConditioningPlaceholder' | 'PreviewBridge' | 'PreviewBridgeLatent' | 'ImageSender' | 'ImageReceiver' | 'LatentSender' | 'LatentReceiver' | 'ImageMaskSwitch' | 'LatentSwitch' | 'SEGSSwitch' | 'ImpactSwitch' | 'ImpactInversedSwitch' | 'ImpactWildcardProcessor' | 'ImpactWildcardEncode' | 'SEGSUpscaler' | 'SEGSUpscalerPipe' | 'SEGSDetailer' | 'SEGSPaste' | 'SEGSPreview' | 'SEGSPreviewCNet' | 'SEGSToImageList' | 'ImpactSEGSToMaskList' | 'ImpactSEGSToMaskBatch' | 'ImpactSEGSConcat' | 'ImpactSEGSPicker' | 'ImpactMakeTileSEGS' | 'ImpactSEGSMerge' | 'SEGSDetailerForAnimateDiff' | 'ImpactKSamplerBasicPipe' | 'ImpactKSamplerAdvancedBasicPipe' | 'ReencodeLatent' | 'ReencodeLatentPipe' | 'ImpactImageBatchToImageList' | 'ImpactMakeImageList' | 'ImpactMakeImageBatch' | 'ImpactMakeAnyList' | 'ImpactMakeMaskList' | 'ImpactMakeMaskBatch' | 'RegionalSampler' | 'RegionalSamplerAdvanced' | 'CombineRegionalPrompts' | 'RegionalPrompt' | 'ImpactCombineConditionings' | 'ImpactConcatConditionings' | 'ImpactSEGSLabelAssign' | 'ImpactSEGSLabelFilter' | 'ImpactSEGSRangeFilter' | 'ImpactSEGSOrderedFilter' | 'ImpactCompare' | 'ImpactConditionalBranch' | 'ImpactConditionalBranchSelMode' | 'ImpactIfNone' | 'ImpactConvertDataType' | 'ImpactLogicalOperators' | 'ImpactInt' | 'ImpactFloat' | 'ImpactBoolean' | 'ImpactValueSender' | 'ImpactValueReceiver' | 'ImpactImageInfo' | 'ImpactLatentInfo' | 'ImpactMinMax' | 'ImpactNeg' | 'ImpactConditionalStopIteration' | 'ImpactStringSelector' | 'StringListToString' | 'WildcardPromptFromString' | 'ImpactExecutionOrderController' | 'RemoveNoiseMask' | 'ImpactLogger' | 'ImpactDummyInput' | 'ImpactQueueTrigger' | 'ImpactQueueTriggerCountdown' | 'ImpactSetWidgetValue' | 'ImpactNodeSetMuteState' | 'ImpactControlBridge' | 'ImpactIsNotEmptySEGS' | 'ImpactSleep' | 'ImpactRemoteBoolean' | 'ImpactRemoteInt' | 'ImpactHFTransformersClassifierProvider' | 'ImpactSEGSClassify' | 'ImpactSchedulerAdapter' | 'GITSSchedulerFuncProvider' | 'UltralyticsDetectorProvider' | 'UnknownNodeXX'
+   export type ComfyNodeType = 'KSampler' | 'CheckpointLoaderSimple' | 'CLIPTextEncode' | 'CLIPSetLastLayer' | 'VAEDecode' | 'VAEEncode' | 'VAEEncodeForInpaint' | 'VAELoader' | 'EmptyLatentImage' | 'LatentUpscale' | 'LatentUpscaleBy' | 'LatentFromBatch' | 'RepeatLatentBatch' | 'SaveImage' | 'PreviewImage' | 'LoadImage' | 'LoadImageMask' | 'ImageScale' | 'ImageScaleBy' | 'ImageInvert' | 'ImageBatch' | 'ImagePadForOutpaint' | 'EmptyImage' | 'ConditioningAverage' | 'ConditioningCombine' | 'ConditioningConcat' | 'ConditioningSetArea' | 'ConditioningSetAreaPercentage' | 'ConditioningSetAreaStrength' | 'ConditioningSetMask' | 'KSamplerAdvanced' | 'SetLatentNoiseMask' | 'LatentComposite' | 'LatentBlend' | 'LatentRotate' | 'LatentFlip' | 'LatentCrop' | 'LoraLoader' | 'CLIPLoader' | 'UNETLoader' | 'DualCLIPLoader' | 'CLIPVisionEncode' | 'StyleModelApply' | 'unCLIPConditioning' | 'ControlNetApply' | 'ControlNetApplyAdvanced' | 'ControlNetLoader' | 'DiffControlNetLoader' | 'StyleModelLoader' | 'CLIPVisionLoader' | 'VAEDecodeTiled' | 'VAEEncodeTiled' | 'unCLIPCheckpointLoader' | 'GLIGENLoader' | 'GLIGENTextBoxApply' | 'InpaintModelConditioning' | 'CheckpointLoader' | 'DiffusersLoader' | 'LoadLatent' | 'SaveLatent' | 'ConditioningZeroOut' | 'ConditioningSetTimestepRange' | 'LoraLoaderModelOnly' | 'LatentAdd' | 'LatentSubtract' | 'LatentMultiply' | 'LatentInterpolate' | 'LatentBatch' | 'LatentBatchSeedBehavior' | 'LatentApplyOperation' | 'LatentApplyOperationCFG' | 'LatentOperationTonemapReinhard' | 'LatentOperationSharpen' | 'HypernetworkLoader' | 'UpscaleModelLoader' | 'ImageUpscaleWithModel' | 'ImageBlend' | 'ImageBlur' | 'ImageQuantize' | 'ImageSharpen' | 'ImageScaleToTotalPixels' | 'LatentCompositeMasked' | 'ImageCompositeMasked' | 'MaskToImage' | 'ImageToMask' | 'ImageColorToMask' | 'SolidMask' | 'InvertMask' | 'CropMask' | 'MaskComposite' | 'FeatherMask' | 'GrowMask' | 'ThresholdMask' | 'PorterDuffImageComposite' | 'SplitImageWithAlpha' | 'JoinImageWithAlpha' | 'RebatchLatents' | 'RebatchImages' | 'ModelMergeSimple' | 'ModelMergeBlocks' | 'ModelMergeSubtract' | 'ModelMergeAdd' | 'CheckpointSave' | 'CLIPMergeSimple' | 'CLIPMergeSubtract' | 'CLIPMergeAdd' | 'CLIPSave' | 'VAESave' | 'ModelSave' | 'TomePatchModel' | 'CLIPTextEncodeSDXLRefiner' | 'CLIPTextEncodeSDXL' | 'Canny' | 'FreeU' | 'FreeU$_V2' | 'SamplerCustom' | 'BasicScheduler' | 'KarrasScheduler' | 'ExponentialScheduler' | 'PolyexponentialScheduler' | 'LaplaceScheduler' | 'VPScheduler' | 'BetaSamplingScheduler' | 'SDTurboScheduler' | 'KSamplerSelect' | 'SamplerEulerAncestral' | 'SamplerEulerAncestralCFGPP' | 'SamplerLMS' | 'SamplerDPMPP$_3M$_SDE' | 'SamplerDPMPP$_2M$_SDE' | 'SamplerDPMPP$_SDE' | 'SamplerDPMPP$_2S$_Ancestral' | 'SamplerDPMAdaptative' | 'SplitSigmas' | 'SplitSigmasDenoise' | 'FlipSigmas' | 'CFGGuider' | 'DualCFGGuider' | 'BasicGuider' | 'RandomNoise' | 'DisableNoise' | 'AddNoise' | 'SamplerCustomAdvanced' | 'HyperTile' | 'ModelSamplingDiscrete' | 'ModelSamplingContinuousEDM' | 'ModelSamplingContinuousV' | 'ModelSamplingStableCascade' | 'ModelSamplingSD3' | 'ModelSamplingAuraFlow' | 'ModelSamplingFlux' | 'RescaleCFG' | 'PatchModelAddDownscale' | 'ImageCrop' | 'RepeatImageBatch' | 'ImageFromBatch' | 'SaveAnimatedWEBP' | 'SaveAnimatedPNG' | 'ImageOnlyCheckpointLoader' | 'SVD$_img2vid$_Conditioning' | 'VideoLinearCFGGuidance' | 'VideoTriangleCFGGuidance' | 'ImageOnlyCheckpointSave' | 'SelfAttentionGuidance' | 'PerpNeg' | 'PerpNegGuider' | 'StableZero123$_Conditioning' | 'StableZero123$_Conditioning$_Batched' | 'SV3D$_Conditioning' | 'SD$_4XUpscale$_Conditioning' | 'PhotoMakerLoader' | 'PhotoMakerEncode' | 'CLIPTextEncodeControlnet' | 'Morphology' | 'StableCascade$_EmptyLatentImage' | 'StableCascade$_StageB$_Conditioning' | 'StableCascade$_StageC$_VAEEncode' | 'StableCascade$_SuperResolutionControlnet' | 'DifferentialDiffusion' | 'InstructPixToPixConditioning' | 'ModelMergeSD1' | 'ModelMergeSD2' | 'ModelMergeSDXL' | 'ModelMergeSD3$_2B' | 'ModelMergeFlux1' | 'ModelMergeSD35$_Large' | 'PerturbedAttentionGuidance' | 'AlignYourStepsScheduler' | 'UNetSelfAttentionMultiply' | 'UNetCrossAttentionMultiply' | 'CLIPAttentionMultiply' | 'UNetTemporalAttentionMultiply' | 'SamplerLCMUpscale' | 'SamplerEulerCFGpp' | 'WebcamCapture' | 'EmptyLatentAudio' | 'VAEEncodeAudio' | 'VAEDecodeAudio' | 'SaveAudio' | 'LoadAudio' | 'PreviewAudio' | 'TripleCLIPLoader' | 'EmptySD3LatentImage' | 'CLIPTextEncodeSD3' | 'ControlNetApplySD3' | 'SkipLayerGuidanceSD3' | 'GITSScheduler' | 'SetUnionControlNetType' | 'ControlNetInpaintingAliMamaApply' | 'CLIPTextEncodeHunyuanDiT' | 'CLIPTextEncodeFlux' | 'FluxGuidance' | 'LoraSave' | 'TorchCompileModel' | 'EmptyMochiLatentVideo' | 'SaveImageWebsocket' | 'BLIP_Model_Loader' | 'Blend_Latents' | 'Bus_Node' | 'Cache_Node' | 'Checkpoint_Loader' | 'Checkpoint_Loader_$1Simple$2' | 'CLIPTextEncode_$1NSP$2' | 'CLIP_Input_Switch' | 'CLIP_Vision_Input_Switch' | 'Conditioning_Input_Switch' | 'Constant_Number' | 'Create_Grid_Image' | 'Create_Grid_Image_from_Batch' | 'Create_Morph_Image' | 'Create_Morph_Image_from_Path' | 'Create_Video_from_Path' | 'CLIPSeg_Masking' | 'CLIPSeg_Model_Loader' | 'CLIPSeg_Batch_Masking' | 'Convert_Masks_to_Images' | 'Control_Net_Model_Input_Switch' | 'Debug_Number_to_Console' | 'Dictionary_to_Console' | 'Diffusers_Model_Loader' | 'Diffusers_Hub_Model_Down$7Loader' | 'Export_API' | 'Latent_Input_Switch' | 'Load_Cache' | 'Logic_Boolean' | 'Logic_Boolean_Primitive' | 'Logic_Comparison_OR' | 'Logic_Comparison_AND' | 'Logic_Comparison_XOR' | 'Logic_NOT' | 'Lora_Loader' | 'Hex_to_HSL' | 'HSL_to_Hex' | 'Image_SSAO_$1Ambient_Occlusion$2' | 'Image_SSDO_$1Direct_Occlusion$2' | 'Image_Analyze' | 'Image_Aspect_Ratio' | 'Image_Batch' | 'Image_Blank' | 'Image_Blend_by_Mask' | 'Image_Blend' | 'Image_Blending_Mode' | 'Image_Bloom_Filter' | 'Image_Canny_Filter' | 'Image_Chromatic_Aberration' | 'Image_Color_Palette' | 'Image_Crop_Face' | 'Image_Crop_Location' | 'Image_Crop_Square_Location' | 'Image_Displacement_Warp' | 'Image_Lucy_Sharpen' | 'Image_Paste_Face' | 'Image_Paste_Crop' | 'Image_Paste_Crop_by_Location' | 'Image_Pixelate' | 'Image_Power_Noise' | 'Image_Dragan_Photography_Filter' | 'Image_Edge_Detection_Filter' | 'Image_Film_Grain' | 'Image_Filter_Adjustments' | 'Image_Flip' | 'Image_Gradient_Map' | 'Image_Generate_Gradient' | 'Image_High_Pass_Filter' | 'Image_History_Loader' | 'Image_Input_Switch' | 'Image_Levels_Adjustment' | 'Image_Load' | 'Image_Median_Filter' | 'Image_Mix_RGB_Channels' | 'Image_Monitor_Effects_Filter' | 'Image_Nova_Filter' | 'Image_Padding' | 'Image_Perlin_Noise' | 'Image_Rembg_$1Remove_Background$2' | 'Image_Perlin_Power_Fractal' | 'Image_Remove_Background_$1Alpha$2' | 'Image_Remove_Color' | 'Image_Resize' | 'Image_Rotate' | 'Image_Rotate_Hue' | 'Image_Send_HTTP' | 'Image_Save' | 'Image_Seamless_Texture' | 'Image_Select_Channel' | 'Image_Select_Color' | 'Image_Shadows_and_Highlights' | 'Image_Size_to_Number' | 'Image_Stitch' | 'Image_Style_Filter' | 'Image_Threshold' | 'Image_Tiled' | 'Image_Transpose' | 'Image_fDOF_Filter' | 'Image_to_Latent_Mask' | 'Image_to_Noise' | 'Image_to_Seed' | 'Images_to_RGB' | 'Images_to_Linear' | 'Integer_place_counter' | 'Image_Voronoi_Noise_Filter' | 'KSampler_$1WAS$2' | 'KSampler_Cycle' | 'Latent_Batch' | 'Latent_Noise_Injection' | 'Latent_Size_to_Number' | 'Latent_Upscale_by_Factor_$1WAS$2' | 'Load_Image_Batch' | 'Load_Text_File' | 'Load_Lora' | 'Lora_Input_Switch' | 'Masks_Add' | 'Masks_Subtract' | 'Mask_Arbitrary_Region' | 'Mask_Batch_to_Mask' | 'Mask_Batch' | 'Mask_Ceiling_Region' | 'Mask_Crop_Dominant_Region' | 'Mask_Crop_Minority_Region' | 'Mask_Crop_Region' | 'Mask_Paste_Region' | 'Mask_Dilate_Region' | 'Mask_Dominant_Region' | 'Mask_Erode_Region' | 'Mask_Fill_Holes' | 'Mask_Floor_Region' | 'Mask_Gaussian_Region' | 'Mask_Invert' | 'Mask_Minority_Region' | 'Mask_Smooth_Region' | 'Mask_Threshold_Region' | 'Masks_Combine_Regions' | 'Masks_Combine_Batch' | 'MiDaS_Model_Loader' | 'MiDaS_Depth_Approximation' | 'MiDaS_Mask_Image' | 'Model_Input_Switch' | 'Number_Counter' | 'Number_Operation' | 'Number_to_Float' | 'Number_Input_Switch' | 'Number_Input_Condition' | 'Number_Multiple_Of' | 'Number_PI' | 'Number_to_Int' | 'Number_to_Seed' | 'Number_to_String' | 'Number_to_Text' | 'Boolean_To_Text' | 'Prompt_Styles_Selector' | 'Prompt_Multiple_Styles_Selector' | 'Random_Number' | 'Save_Text_File' | 'Seed' | 'Tensor_Batch_to_Image' | 'BLIP_Analyze_Image' | 'SAM_Model_Loader' | 'SAM_Parameters' | 'SAM_Parameters_Combine' | 'SAM_Image_Mask' | 'Samples_Passthrough_$1Stat_System$2' | 'String_to_Text' | 'Image_Bounds' | 'Inset_Image_Bounds' | 'Bounded_Image_Blend' | 'Bounded_Image_Blend_with_Mask' | 'Bounded_Image_Crop' | 'Bounded_Image_Crop_with_Mask' | 'Image_Bounds_to_Console' | 'Text_Dictionary_Update' | 'Text_Dictionary_Get' | 'Text_Dictionary_Convert' | 'Text_Dictionary_New' | 'Text_Dictionary_Keys' | 'Text_Dictionary_To_Text' | 'Text_Add_Tokens' | 'Text_Add_Token_by_Input' | 'Text_Compare' | 'Text_Concatenate' | 'Text_File_History_Loader' | 'Text_Find_and_Replace_by_Dictionary' | 'Text_Find_and_Replace_Input' | 'Text_Find_and_Replace' | 'Text_Find' | 'Text_Input_Switch' | 'Text_List' | 'Text_List_Concatenate' | 'Text_List_to_Text' | 'Text_Load_Line_From_File' | 'Text_Multiline' | 'Text_Multiline_$1Code_Compatible$2' | 'Text_Parse_A1111_Embeddings' | 'Text_Parse_Noodle_Soup_Prompts' | 'Text_Parse_Tokens' | 'Text_Random_Line' | 'Text_Random_Prompt' | 'Text_String' | 'Text_Contains' | 'Text_Shuffle' | 'Text_Sort' | 'Text_to_Conditioning' | 'Text_to_Console' | 'Text_to_Number' | 'Text_to_String' | 'Text_String_Truncate' | 'True_Random$5org_Number_Generator' | 'unCLIP_Checkpoint_Loader' | 'Upscale_Model_Loader' | 'Upscale_Model_Switch' | 'Write_to_GIF' | 'Write_to_Video' | 'VAE_Input_Switch' | 'Video_Dump_Frames' | 'CLIPSEG2' | 'IPAdapter' | 'IPAdapterAdvanced' | 'IPAdapterBatch' | 'IPAdapterFaceID' | 'IPAdapterFaceIDKolors' | 'IPAAdapterFaceIDBatch' | 'IPAdapterTiled' | 'IPAdapterTiledBatch' | 'IPAdapterEmbeds' | 'IPAdapterEmbedsBatch' | 'IPAdapterStyleComposition' | 'IPAdapterStyleCompositionBatch' | 'IPAdapterMS' | 'IPAdapterClipVisionEnhancer' | 'IPAdapterClipVisionEnhancerBatch' | 'IPAdapterFromParams' | 'IPAdapterPreciseStyleTransfer' | 'IPAdapterPreciseStyleTransferBatch' | 'IPAdapterPreciseComposition' | 'IPAdapterPreciseCompositionBatch' | 'IPAdapterUnifiedLoader' | 'IPAdapterUnifiedLoaderFaceID' | 'IPAdapterModelLoader' | 'IPAdapterInsightFaceLoader' | 'IPAdapterUnifiedLoaderCommunity' | 'IPAdapterEncoder' | 'IPAdapterCombineEmbeds' | 'IPAdapterNoise' | 'PrepImageForClipVision' | 'IPAdapterSaveEmbeds' | 'IPAdapterLoadEmbeds' | 'IPAdapterWeights' | 'IPAdapterCombineWeights' | 'IPAdapterWeightsFromStrategy' | 'IPAdapterPromptScheduleFromWeightsStrategy' | 'IPAdapterRegionalConditioning' | 'IPAdapterCombineParams' | 'ShufflePreprocessor' | 'DensePosePreprocessor' | 'LeReS$7DepthMapPreprocessor' | 'BinaryPreprocessor' | 'AnimeFace$_SemSegPreprocessor' | 'Zoe$7DepthMapPreprocessor' | 'DepthAnythingPreprocessor' | 'Zoe$_DepthAnythingPreprocessor' | 'DepthAnythingV2Preprocessor' | 'CannyEdgePreprocessor' | 'DWPreprocessor' | 'AnimalPosePreprocessor' | 'ImageLuminanceDetector' | 'ImageIntensityDetector' | 'MediaPipe$7FaceMeshPreprocessor' | 'DiffusionEdge$_Preprocessor' | 'M$7LSDPreprocessor' | 'HEDPreprocessor' | 'FakeScribblePreprocessor' | 'OneFormer$7COCO$7SemSegPreprocessor' | 'OneFormer$7ADE20K$7SemSegPreprocessor' | 'BAE$7NormalMapPreprocessor' | 'MeshGraphormer$7DepthMapPreprocessor' | 'MeshGraphormer$6ImpactDetector$7DepthMapPreprocessor' | 'DSINE$7NormalMapPreprocessor' | 'MiDaS$7NormalMapPreprocessor' | 'MiDaS$7DepthMapPreprocessor' | 'AnyLineArtPreprocessor$_aux' | 'SAMPreprocessor' | 'UniFormer$7SemSegPreprocessor' | 'SemSegPreprocessor' | 'PiDiNetPreprocessor' | 'InpaintPreprocessor' | 'LineArtPreprocessor' | 'OpenposePreprocessor' | 'Unimatch$_OptFlowPreprocessor' | 'MaskOptFlow' | 'SavePoseKpsAsJsonFile' | 'FacialPartColoringFromPoseKps' | 'UpperBodyTrackingFromPoseKps' | 'RenderPeopleKps' | 'RenderAnimalKps' | 'TEEDPreprocessor' | 'PyraCannyPreprocessor' | 'Metric3D$7DepthMapPreprocessor' | 'Metric3D$7NormalMapPreprocessor' | 'Manga2Anime$_LineArt$_Preprocessor' | 'ScribblePreprocessor' | 'Scribble$_XDoG$_Preprocessor' | 'Scribble$_PiDiNet$_Preprocessor' | 'AnimeLineArtPreprocessor' | 'LineartStandardPreprocessor' | 'TilePreprocessor' | 'TTPlanet$_TileGF$_Preprocessor' | 'TTPlanet$_TileSimple$_Preprocessor' | 'ColorPreprocessor' | 'AIO$_Preprocessor' | 'ControlNetPreprocessorSelector' | 'PixelPerfectResolution' | 'ImageGenResolutionFromImage' | 'ImageGenResolutionFromLatent' | 'HintImageEnchance' | 'ExecuteAllControlNetPreprocessors' | 'ControlNetAuxSimpleAddText' | 'MarigoldModelLoader' | 'MarigoldDepthEstimation$_v2' | 'MarigoldDepthEstimation$_v2$_video' | 'MarigoldDepthEstimation' | 'MarigoldDepthEstimationVideo' | 'ColorizeDepthmap' | 'SaveImageOpenEXR' | 'RemapDepth' | 'SAMLoader' | 'CLIPSegDetectorProvider' | 'ONNXDetectorProvider' | 'BitwiseAndMaskForEach' | 'SubtractMaskForEach' | 'DetailerForEach' | 'DetailerForEachDebug' | 'DetailerForEachPipe' | 'DetailerForEachDebugPipe' | 'DetailerForEachPipeForAnimateDiff' | 'SAMDetectorCombined' | 'SAMDetectorSegmented' | 'FaceDetailer' | 'FaceDetailerPipe' | 'MaskDetailerPipe' | 'ToDetailerPipe' | 'ToDetailerPipeSDXL' | 'FromDetailerPipe' | 'FromDetailerPipe$_v2' | 'FromDetailerPipeSDXL' | 'AnyPipeToBasic' | 'ToBasicPipe' | 'FromBasicPipe' | 'FromBasicPipe$_v2' | 'BasicPipeToDetailerPipe' | 'BasicPipeToDetailerPipeSDXL' | 'DetailerPipeToBasicPipe' | 'EditBasicPipe' | 'EditDetailerPipe' | 'EditDetailerPipeSDXL' | 'LatentPixelScale' | 'PixelKSampleUpscalerProvider' | 'PixelKSampleUpscalerProviderPipe' | 'IterativeLatentUpscale' | 'IterativeImageUpscale' | 'PixelTiledKSampleUpscalerProvider' | 'PixelTiledKSampleUpscalerProviderPipe' | 'TwoSamplersForMaskUpscalerProvider' | 'TwoSamplersForMaskUpscalerProviderPipe' | 'PixelKSampleHookCombine' | 'DenoiseScheduleHookProvider' | 'StepsScheduleHookProvider' | 'CfgScheduleHookProvider' | 'NoiseInjectionHookProvider' | 'UnsamplerHookProvider' | 'CoreMLDetailerHookProvider' | 'PreviewDetailerHookProvider' | 'DetailerHookCombine' | 'NoiseInjectionDetailerHookProvider' | 'UnsamplerDetailerHookProvider' | 'DenoiseSchedulerDetailerHookProvider' | 'SEGSOrderedFilterDetailerHookProvider' | 'SEGSRangeFilterDetailerHookProvider' | 'SEGSLabelFilterDetailerHookProvider' | 'VariationNoiseDetailerHookProvider' | 'BitwiseAndMask' | 'SubtractMask' | 'AddMask' | 'ImpactSegsAndMask' | 'ImpactSegsAndMaskForEach' | 'EmptySegs' | 'ImpactFlattenMask' | 'MediaPipeFaceMeshToSEGS' | 'MaskToSEGS' | 'MaskToSEGS$_for$_AnimateDiff' | 'ToBinaryMask' | 'MasksToMaskList' | 'MaskListToMaskBatch' | 'ImageListToImageBatch' | 'SetDefaultImageForSEGS' | 'RemoveImageFromSEGS' | 'BboxDetectorSEGS' | 'SegmDetectorSEGS' | 'ONNXDetectorSEGS' | 'ImpactSimpleDetectorSEGS$_for$_AD' | 'ImpactSimpleDetectorSEGS' | 'ImpactSimpleDetectorSEGSPipe' | 'ImpactControlNetApplySEGS' | 'ImpactControlNetApplyAdvancedSEGS' | 'ImpactControlNetClearSEGS' | 'ImpactIPAdapterApplySEGS' | 'ImpactDecomposeSEGS' | 'ImpactAssembleSEGS' | 'ImpactFrom$_SEG$_ELT' | 'ImpactEdit$_SEG$_ELT' | 'ImpactDilate$_Mask$_SEG$_ELT' | 'ImpactDilateMask' | 'ImpactGaussianBlurMask' | 'ImpactDilateMaskInSEGS' | 'ImpactGaussianBlurMaskInSEGS' | 'ImpactScaleBy$_BBOX$_SEG$_ELT' | 'ImpactFrom$_SEG$_ELT$_bbox' | 'ImpactFrom$_SEG$_ELT$_crop$_region' | 'ImpactCount$_Elts$_in$_SEGS' | 'BboxDetectorCombined$_v2' | 'SegmDetectorCombined$_v2' | 'SegsToCombinedMask' | 'KSamplerProvider' | 'TwoSamplersForMask' | 'TiledKSamplerProvider' | 'KSamplerAdvancedProvider' | 'TwoAdvancedSamplersForMask' | 'ImpactNegativeConditioningPlaceholder' | 'PreviewBridge' | 'PreviewBridgeLatent' | 'ImageSender' | 'ImageReceiver' | 'LatentSender' | 'LatentReceiver' | 'ImageMaskSwitch' | 'LatentSwitch' | 'SEGSSwitch' | 'ImpactSwitch' | 'ImpactInversedSwitch' | 'ImpactWildcardProcessor' | 'ImpactWildcardEncode' | 'SEGSUpscaler' | 'SEGSUpscalerPipe' | 'SEGSDetailer' | 'SEGSPaste' | 'SEGSPreview' | 'SEGSPreviewCNet' | 'SEGSToImageList' | 'ImpactSEGSToMaskList' | 'ImpactSEGSToMaskBatch' | 'ImpactSEGSConcat' | 'ImpactSEGSPicker' | 'ImpactMakeTileSEGS' | 'ImpactSEGSMerge' | 'SEGSDetailerForAnimateDiff' | 'ImpactKSamplerBasicPipe' | 'ImpactKSamplerAdvancedBasicPipe' | 'ReencodeLatent' | 'ReencodeLatentPipe' | 'ImpactImageBatchToImageList' | 'ImpactMakeImageList' | 'ImpactMakeImageBatch' | 'ImpactMakeAnyList' | 'ImpactMakeMaskList' | 'ImpactMakeMaskBatch' | 'RegionalSampler' | 'RegionalSamplerAdvanced' | 'CombineRegionalPrompts' | 'RegionalPrompt' | 'ImpactCombineConditionings' | 'ImpactConcatConditionings' | 'ImpactSEGSLabelAssign' | 'ImpactSEGSLabelFilter' | 'ImpactSEGSRangeFilter' | 'ImpactSEGSOrderedFilter' | 'ImpactCompare' | 'ImpactConditionalBranch' | 'ImpactConditionalBranchSelMode' | 'ImpactIfNone' | 'ImpactConvertDataType' | 'ImpactLogicalOperators' | 'ImpactInt' | 'ImpactFloat' | 'ImpactBoolean' | 'ImpactValueSender' | 'ImpactValueReceiver' | 'ImpactImageInfo' | 'ImpactLatentInfo' | 'ImpactMinMax' | 'ImpactNeg' | 'ImpactConditionalStopIteration' | 'ImpactStringSelector' | 'StringListToString' | 'WildcardPromptFromString' | 'ImpactExecutionOrderController' | 'RemoveNoiseMask' | 'ImpactLogger' | 'ImpactDummyInput' | 'ImpactQueueTrigger' | 'ImpactQueueTriggerCountdown' | 'ImpactSetWidgetValue' | 'ImpactNodeSetMuteState' | 'ImpactControlBridge' | 'ImpactIsNotEmptySEGS' | 'ImpactSleep' | 'ImpactRemoteBoolean' | 'ImpactRemoteInt' | 'ImpactHFTransformersClassifierProvider' | 'ImpactSEGSClassify' | 'ImpactSchedulerAdapter' | 'GITSSchedulerFuncProvider' | 'UltralyticsDetectorProvider' | 'UnknownNodeXX'
 }
+
+```

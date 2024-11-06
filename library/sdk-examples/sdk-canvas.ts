@@ -1,4 +1,5 @@
 app({
+   help: 'require WAS custom nodes for iamge filp',
    metadata: {
       name: 'sdk-canvas-demo',
       author: 'rvion',
@@ -22,8 +23,8 @@ app({
       const image = await run.Images.loadAsImage(dataURL)
 
       // Flip it with nodes
-      run.nodes.Image_Flip({ images: image, mode: 'vertical' })
-      run.nodes.Image_Flip({ images: run.AUTO, mode: 'horizontal' }) // 'AUTO' matches the last IMAGE slot
+      run.nodes['Custom.was.Image_Flip']({ images: image, mode: 'vertical' })
+      run.nodes['Custom.was.Image_Flip']({ images: run.AUTO, mode: 'horizontal' }) // 'AUTO' matches the last IMAGE slot
       run.nodes.PreviewImage({ images: run.AUTO })
       void run.PROMPT()
    },

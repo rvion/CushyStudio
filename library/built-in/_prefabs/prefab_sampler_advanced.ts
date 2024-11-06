@@ -4,7 +4,7 @@ import type { OutputFor } from './_prefabs'
 import { run_prompt } from './prefab_prompt'
 
 export type UI_Sampler_Advanced = X.XGroup<{
-   sampler_name: X.XEnum<Comfy.Enums['KSampler.sampler_name']>
+   sampler_name: X.XEnum<'KSampler.sampler_name'>
    guidanceType: X.XChoice<{
       CFG: X.XNumber
       DualCFG: X.XGroup<{
@@ -21,12 +21,12 @@ export type UI_Sampler_Advanced = X.XGroup<{
       basic: X.XGroup<{
          denoise: X.XNumber
          steps: X.XNumber
-         scheduler: X.XEnum<Comfy.Enums['KSampler.scheduler']>
+         scheduler: X.XEnum<'KSampler.scheduler'>
       }>
       AlignYourStep: X.XGroup<{
          denoise: X.XNumber
          steps: X.XNumber
-         modelType: X.XEnum<Comfy.Enums['AlignYourStepsScheduler.model_type']>
+         modelType: X.XEnum<'AlignYourStepsScheduler.model_type'>
       }>
       karrasCustom: X.XGroup<{
          steps: X.XNumber

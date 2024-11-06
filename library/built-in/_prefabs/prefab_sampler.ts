@@ -7,8 +7,8 @@ export type UI_Sampler = X.XGroup<{
    steps: X.XNumber
    cfg: X.XNumber
    seed: X.XSeed
-   sampler_name: X.XEnum<Comfy.Enums['KSampler.sampler_name']>
-   scheduler: X.XEnum<Comfy.Enums['KSampler.scheduler']>
+   sampler_name: X.XEnum<'KSampler.sampler_name'>
+   scheduler: X.XEnum<'KSampler.scheduler'>
 }>
 
 type UiSampleProps = {

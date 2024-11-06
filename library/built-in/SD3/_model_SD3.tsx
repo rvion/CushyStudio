@@ -5,10 +5,10 @@ import {
 } from '../_prefabs/prefab_model_extras'
 
 export type $prefabModelSD3 = X.XGroup<{
-   ckpt_name: X.XEnum<Comfy.Enums['CheckpointLoaderSimple.ckpt_name']>
-   clip1: X.XEnum<Comfy.Enums['CLIPLoader.clip_name']>
-   clip2: X.XEnum<Comfy.Enums['CLIPLoader.clip_name']>
-   clip3: X.XEnum<Comfy.Enums['CLIPLoader.clip_name']>
+   ckpt_name: X.XEnum<'CheckpointLoaderSimple.ckpt_name'>
+   clip1: X.XEnum<'CLIPLoader.clip_name'>
+   clip2: X.XEnum<'CLIPLoader.clip_name'>
+   clip3: X.XEnum<'CLIPLoader.clip_name'>
    extra: $schemaModelExtras
 }>
 

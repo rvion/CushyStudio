@@ -14,17 +14,17 @@ export type UI_ipadapter_standalone = X.XGroup<{
       crop: X.XBool
       startAtStepPercent: X.XNumber
       endAtStepPercent: X.XNumber
-      weight_type: X.XEnum<Comfy.Enums['Custom.IPAdapter_plus.IPAdapterAdvanced.weight_type']>
-      embedding_scaling: X.XEnum<Comfy.Enums['Custom.IPAdapter_plus.IPAdapterAdvanced.embeds_scaling']>
+      weight_type: X.XEnum<'Custom.IPAdapter_plus.IPAdapterAdvanced.weight_type'>
+      embedding_scaling: X.XEnum<'Custom.IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'>
       noise: X.XNumber
       unfold_batch: X.XBool
    }>
    cnet_model_name: X.XEnum<Enum_AV$_IPAdapterPipe_ip_adapter_name>
-   clip_name: X.XEnum<Comfy.Enums['CLIPVisionLoader.clip_name']>
+   clip_name: X.XEnum<'CLIPVisionLoader.clip_name'>
    help: X.XMarkdown
    image: X.XImage
    extra: CushySchema<Field_list<X.XImage>>
-   embedding_scaling: X.XEnum<Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd>
+   embedding_scaling: X.XEnum<'Custom.IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'>
 }>
 
 export const ui_ipadapter_standalone = () => {

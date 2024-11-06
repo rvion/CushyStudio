@@ -29,16 +29,16 @@ if (true) {
 const inputObjectInfoPath = 'src/comfyui/__object_info.json'
 const inputEmbeddingsPath = 'schema/hosts/Z3LBuTxBOybwVxlb5bbCk/embeddings.json'
 
-const targetDebugFolder = `src/comfyui/DEBUG`
-const _oldTxtFilePath = 'schema/hosts/Z3LBuTxBOybwVxlb5bbCk/sdk.dts.txt'
-const _oldDTSFilePath = 'schema/global.d.ts'
+// const targetDebugFolder = `src/comfyui/DEBUG`
+// const _oldTxtFilePath = 'schema/hosts/Z3LBuTxBOybwVxlb5bbCk/sdk.dts.txt'
+// const _oldDTSFilePath = 'schema/global.d.ts'
 
 // step 1. clean the target folder
-if (fs.existsSync(targetDebugFolder)) {
-   console.log(`[🤠] folder "${targetDebugFolder}" already exists: deleting...`)
-   fs.rmdirSync(targetDebugFolder, { recursive: true })
-}
-fs.mkdirSync(targetDebugFolder)
+// if (fs.existsSync(targetDebugFolder)) {
+//    console.log(`[🤠] folder "${targetDebugFolder}" already exists: deleting...`)
+//    fs.rmdirSync(targetDebugFolder, { recursive: true })
+// }
+// fs.mkdirSync(targetDebugFolder)
 
 // step 2. read the object_info.json and embeddings files
 const embeddings = JSON.parse(fs.readFileSync(inputEmbeddingsPath, 'utf-8'))
@@ -51,8 +51,11 @@ const parsedObjectInfo = new ComfyUIObjectInfoParsed({
    embeddings,
 })
 
-const finalSDK = parsedObjectInfo.codegenDTS({ prefix: '../../../src/' })
-fs.writeFileSync(`${targetDebugFolder}/DEBUG-sdk.d.ts`, finalSDK)
+const finalSDK = parsedObjectInfo.codegenDTS({
+   /* prefix: '../../../src/' */
+})
+fs.writeFileSync(`schema/global.d.ts`, finalSDK)
+fs.writeFileSync(`comfyui.typings.md`, `# Example ComfyUI Typings\n\`\`\`ts\n${finalSDK}\n\`\`\``)
 // for (const { pythonModule, content } of finalSDK.pythonModules) {
 //    fs.writeFileSync(`${targetDebugFolder}/${pythonModule}.d.ts`, content)
 // }

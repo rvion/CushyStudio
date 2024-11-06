@@ -9,8 +9,8 @@ export type UI_model_kohyaDeepShrink = X.XGroup<{
       startPercent: X.XNumber
       endPercent: X.XNumber
       downscaleAfterSkip: X.XBool
-      downscaleMethod: X.XEnum<Comfy.Enums['LatentUpscale.upscale_method']>
-      upscaleMethod: X.XEnum<Comfy.Enums['LatentUpscale.upscale_method']>
+      downscaleMethod: X.XEnum<'LatentUpscale.upscale_method'>
+      upscaleMethod: X.XEnum<'LatentUpscale.upscale_method'>
    }>
 }>
 

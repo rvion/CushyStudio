@@ -13,11 +13,11 @@ export type UI_Refiners = X.XGroup<{
    refinerType: X.XChoices<{
       faces: X.XGroup<{
          prompt: X.XString
-         detector: X.XEnum<Comfy.Enums['Custom.Impact_Pack.UltralyticsDetectorProvider.model_name']>
+         detector: X.XEnum<'Custom.Impact_Pack.UltralyticsDetectorProvider.model_name'>
       }>
       hands: X.XGroup<{
          prompt: X.XString
-         detector: X.XEnum<Comfy.Enums['Custom.Impact_Pack.UltralyticsDetectorProvider.model_name']>
+         detector: X.XEnum<'Custom.Impact_Pack.UltralyticsDetectorProvider.model_name'>
       }>
       eyes: X.XGroup<{ prompt: X.XString }>
    }>
@@ -25,8 +25,8 @@ export type UI_Refiners = X.XGroup<{
       sampler: UI_Sampler
       sam: X.XOptional<
          X.XGroup<{
-            model_name: X.XEnum<Comfy.Enums['Custom.Impact_Pack.SAMLoader.model_name']>
-            device_mode: X.XEnum<Comfy.Enums['BLIPCaption.device_mode']>
+            model_name: X.XEnum<'Custom.Impact_Pack.SAMLoader.model_name'>
+            device_mode: X.XEnum<'Custom.Impact_Pack.SAMLoader.device_mode'>
          }>
       >
    }>
@@ -98,17 +98,13 @@ export function ui_refiners(): UI_Refiners {
                sam: form
                   .fields(
                      {
-                        model_name: form.enum['SAMLoader.model_name']({
-                           default: 'sam_vit_b_01ec64.pth',
-                        }),
-                        device_mode: form.enum['SAMLoader.device_mode']({ default: 'AUTO' }),
+                        model_name: form.enum['Custom.Impact_Pack.SAMLoader.model_name']({ default: 'sam_vit_b_01ec64.pth', }), // prettier-ignore
+                        device_mode: form.enum['Custom.Impact_Pack.SAMLoader.device_mode']({ default: 'AUTO' }), // prettier-ignore
                      },
                      {
                         startCollapsed: true,
                         tooltip: 'Enabling defines the bounding boxes more clearly rather than a square box',
-                        summary: (ui) => {
-                           return `model:${ui.model_name}`
-                        },
+                        summary: (ui) => `model:${ui.model_name}`,
                      },
                   )
                   .optional(),

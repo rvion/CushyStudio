@@ -5,13 +5,13 @@ import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
 // 🅿️ OPEN POSE FORM ===================================================
 export type UI_subform_OpenPose = X.XGroup<{
    preprocessor: UI_subform_OpenPose_Preprocessor
-   cnet_model_name: X.XEnum<Comfy.Enums['ControlNetLoader.control_net_name']>
+   cnet_model_name: X.XEnum<'ControlNetLoader.control_net_name'>
    strength: X.XNumber
    advanced: X.XGroup<{
       startAtStepPercent: X.XNumber
       endAtStepPercent: X.XNumber
-      crop: X.XEnum<Comfy.Enums['LatentUpscale.crop']>
-      upscale_method: X.XEnum<Comfy.Enums['ImageScale.upscale_method']>
+      crop: X.XEnum<'LatentUpscale.crop'>
+      upscale_method: X.XEnum<'ImageScale.upscale_method'>
    }>
 }>
 
@@ -50,10 +50,8 @@ type UI_subform_OpenPose_Preprocessor = X.XChoice<{
       detect_body: X.XBool
       detect_face: X.XBool
       detect_hand: X.XBool
-      // 'DWPreprocessor$_Provider$_for$_SEGS_$3$3Inspire_bbox_detector'
-      bbox_detector: X.XEnum<Comfy.Enums['Custom.controlnet_aux.DWPreprocessor.bbox_detector']>
-      // 'DWPreprocessor$_Provider$_for$_SEGS_$3$3Inspire_pose_estimator'
-      pose_estimator: X.XEnum<Comfy.Enums['DWPreprocessor$_Provider$_for$_SEGS_$3$3Inspire_pose_estimator']>
+      bbox_detector: X.XEnum<'Custom.controlnet_aux.DWPreprocessor.bbox_detector'> // 'DWPreprocessor$_Provider$_for$_SEGS_$3$3Inspire_bbox_detector'
+      pose_estimator: X.XEnum<'Custom.controlnet_aux.DWPreprocessor.pose_estimator'> // 'DWPreprocessor$_Provider$_for$_SEGS_$3$3Inspire_pose_estimator'
       saveProcessedImage: X.XBool
    }>
    OpenPose: X.XGroup<{
@@ -77,11 +75,11 @@ function ui_subform_OpenPose_Preprocessor(): UI_subform_OpenPose_Preprocessor {
                detect_body: form.bool({ default: true }),
                detect_face: form.bool({ default: true }),
                detect_hand: form.bool({ default: true }),
-               bbox_detector: form.enum['DWPreprocessor.bbox_detector']({
+               bbox_detector: form.enum['Custom.controlnet_aux.DWPreprocessor.bbox_detector']({
                   label: 'Model',
                   default: 'yolox_l.onnx',
                }),
-               pose_estimator: form.enum['DWPreprocessor.pose_estimator']({
+               pose_estimator: form.enum['Custom.controlnet_aux.DWPreprocessor.pose_estimator']({
                   label: 'Model',
                   default: 'dw-ll_ucoco_384.onnx',
                }),
@@ -129,7 +127,7 @@ export const run_cnet_openPose = (
    // })._IMAGE
 
    if (openPose.preprocessor) {
-      var opPP = openPose.preprocessor
+      const opPP = openPose.preprocessor
       if (opPP.OpenPose) {
          returnImage = graph['Custom.controlnet_aux.OpenposePreprocessor']({
             image: image,

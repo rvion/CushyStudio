@@ -58,21 +58,30 @@ export function run_Dispacement1(
    const graph = run.nodes
    run.add_previewImage(finalImage).storeAs('base')
    const depth = (():
-      | MiDaS$7DepthMapPreprocessor
-      | Zoe$7DepthMapPreprocessor
-      | LeReS$7DepthMapPreprocessor
-      | MarigoldDepthEstimation => {
-      if (show3d.depth.MiDaS) return graph.MiDaS$7DepthMapPreprocessor({ image: finalImage })
-      if (show3d.depth.Zoe) return graph.Zoe$7DepthMapPreprocessor({ image: finalImage })
-      if (show3d.depth.LeReS) return graph.LeReS$7DepthMapPreprocessor({ image: finalImage })
-      if (show3d.depth.Marigold) return graph.MarigoldDepthEstimation({ image: finalImage })
+      | Comfy.Custom.controlnet_aux.MiDaS$7DepthMapPreprocessor
+      | Comfy.Custom.controlnet_aux.Zoe$7DepthMapPreprocessor
+      | Comfy.Custom.controlnet_aux.LeReS$7DepthMapPreprocessor
+      | Comfy.Custom.Marigold.MarigoldDepthEstimation => {
+      if (show3d.depth.MiDaS)
+         return graph['Custom.controlnet_aux.MiDaS$7DepthMapPreprocessor']({ image: finalImage })
+      if (show3d.depth.Zoe)
+         return graph['Custom.controlnet_aux.Zoe$7DepthMapPreprocessor']({ image: finalImage })
+      if (show3d.depth.LeReS)
+         return graph['Custom.controlnet_aux.LeReS$7DepthMapPreprocessor']({ image: finalImage })
+      if (show3d.depth.Marigold)
+         return graph['Custom.Marigold.MarigoldDepthEstimation']({ image: finalImage })
       throw new Error('❌ show3d activated, but no depth option choosen')
    })()
    run.add_previewImage(depth).storeAs('depth')
 
-   const normal = ((): MiDaS$7NormalMapPreprocessor | BAE$7NormalMapPreprocessor | EmptyImage => {
-      if (show3d.normal === 'MiDaS') return graph.MiDaS$7NormalMapPreprocessor({ image: finalImage })
-      if (show3d.normal === 'BAE') return graph.BAE$7NormalMapPreprocessor({ image: finalImage })
+   const normal = (():
+      | Comfy.Custom.controlnet_aux.MiDaS$7NormalMapPreprocessor
+      | Comfy.Custom.controlnet_aux.BAE$7NormalMapPreprocessor
+      | Comfy.Base.EmptyImage => {
+      if (show3d.normal === 'MiDaS')
+         return graph['Custom.controlnet_aux.MiDaS$7NormalMapPreprocessor']({ image: finalImage })
+      if (show3d.normal === 'BAE')
+         return graph['Custom.controlnet_aux.BAE$7NormalMapPreprocessor']({ image: finalImage })
       if (show3d.normal === 'None') return graph.EmptyImage({ color: 0x7f7fff, height: 512, width: 512 })
       return exhaust(show3d.normal)
    })()

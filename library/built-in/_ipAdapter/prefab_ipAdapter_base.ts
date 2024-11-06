@@ -16,7 +16,7 @@ export type UI_subform_IPAdapter = X.XGroup<
    {
       models: X.XGroup<{
          cnet_model_name: X.XEnum<Enum_AV$_IPAdapterPipe_ip_adapter_name>
-         clip_name: X.XEnum<Comfy.Enums['CLIPVisionLoader.clip_name']>
+         clip_name: X.XEnum<'CLIPVisionLoader.clip_name'>
       }>
       help: X.XMarkdown
    } & UI_subform_IPAdapter_common

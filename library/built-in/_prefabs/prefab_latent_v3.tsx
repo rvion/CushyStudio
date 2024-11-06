@@ -19,9 +19,9 @@ export type UI_LatentV3 = X.XLink<
          image: X.XImage
          resize: X.XOptional<
             X.XGroup<{
-               mode: X.XEnum<Comfy.Enums['CR.Upscale_Image_mode']>
-               supersample: X.XEnum<Comfy.Enums['ImageDrawRectangleRounded.top_left_corner']>
-               resampling: X.XEnum<Comfy.Enums['SEGSUpscaler.resampling_method']>
+               mode: X.XEnum<'CR.Upscale_Image_mode'>
+               supersample: X.XEnum<'ImageDrawRectangleRounded.top_left_corner'>
+               resampling: X.XEnum<'SEGSUpscaler.resampling_method'>
                rescale_factor: X.XNumber
                resize_width: X.XNumber
                resize_height: X.XNumber

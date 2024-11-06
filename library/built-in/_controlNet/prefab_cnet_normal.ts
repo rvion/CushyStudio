@@ -6,14 +6,14 @@ import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
 export type UI_subform_Normal = X.XGroup<{
    preprocessor: UI_subform_Normal_Preprocessor
    models: X.XGroup<{
-      cnet_model_name: X.XEnum<Comfy.Enums['ControlNetLoader.control_net_name']>
+      cnet_model_name: X.XEnum<'ControlNetLoader.control_net_name'>
    }>
    strength: X.XNumber
    advanced: X.XGroup<{
       startAtStepPercent: X.XNumber
       endAtStepPercent: X.XNumber
-      crop: X.XEnum<Comfy.Enums['LatentUpscale.crop']>
-      upscale_method: X.XEnum<Comfy.Enums['ImageScale.upscale_method']>
+      crop: X.XEnum<'LatentUpscale.crop'>
+      upscale_method: X.XEnum<'ImageScale.upscale_method'>
    }>
 }>
 export function ui_subform_Normal(): UI_subform_Normal {
@@ -118,7 +118,7 @@ export const run_cnet_Normal = (
    if (Normal.preprocessor) {
       if (Normal.preprocessor.BAE) {
          const bae = Normal.preprocessor.BAE
-         image = graph.BAE$7NormalMapPreprocessor({
+         image = graph['Custom.controlnet_aux.BAE$7NormalMapPreprocessor']({
             image: image,
             resolution: resolution,
          })._IMAGE
@@ -126,7 +126,7 @@ export const run_cnet_Normal = (
          else graph.PreviewImage({ images: image })
       } else if (Normal.preprocessor.Midas) {
          const midas = Normal.preprocessor.Midas
-         image = graph.MiDaS$7NormalMapPreprocessor({
+         image = graph['Custom.controlnet_aux.MiDaS$7NormalMapPreprocessor']({
             image: image,
             resolution: resolution,
             a: midas.a_value,

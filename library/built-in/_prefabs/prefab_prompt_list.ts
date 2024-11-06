@@ -15,7 +15,7 @@ type PromptLisT$ = X.XGroup<{
          prompt: X.XPrompt
          mask: X.XImage
          invert: X.XBool
-         mode: X.XEnum<Comfy.Enums['LoadImageMask.channel']>
+         mode: X.XEnum<'LoadImageMask.channel'>
          blur: X.XNumber
       }>
    >

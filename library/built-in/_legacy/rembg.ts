@@ -19,7 +19,7 @@ app({
       const graph = run.nodes
 
       const image = await ((): Promise<ImageAndMask> => {
-         // case where we start from an image
+         // case where we start from an image or from unified canvas
          if (img) return img.loadInWorkflow()
 
          // case where we start from the form
@@ -27,14 +27,14 @@ app({
          return run.loadImageAnswer(form.startImage)
       })()
 
-      if (form.models.RemBG)            graph.PreviewImage({ images: graph.Image_Remove_Background_$1rembg$2({ image }) }) // prettier-ignore
+      // if (form.models.RemBG)            graph.PreviewImage({ images: graph.Image_Remove_Background_$1rembg$2({ image }) }) // prettier-ignore
       // if (form.models.ABG)              graph.PreviewImage({ images: graph.Remove_Image_Background_$1abg$2  ({ image }) }) // prettier-ignore
-      if (form.models.isnetAnime)       graph.PreviewImage({ images: graph.Image_Rembg_$1Remove_Background$2({ images: image, model: 'isnet-anime',       background_color: 'none', }), }) // prettier-ignore
-      if (form.models.isnetGeneralUse)  graph.PreviewImage({ images: graph.Image_Rembg_$1Remove_Background$2({ images: image, model: 'isnet-general-use', background_color: 'none', }), }) // prettier-ignore
-      if (form.models.silueta)          graph.PreviewImage({ images: graph.Image_Rembg_$1Remove_Background$2({ images: image, model: 'silueta',           background_color: 'none', }), }) // prettier-ignore
-      if (form.models.u2net)            graph.PreviewImage({ images: graph.Image_Rembg_$1Remove_Background$2({ images: image, model: 'u2net',             background_color: 'none', }), }) // prettier-ignore
-      if (form.models.u2net_human_seg)  graph.PreviewImage({ images: graph.Image_Rembg_$1Remove_Background$2({ images: image, model: 'u2net_human_seg',   background_color: 'none', }), }) // prettier-ignore
-      if (form.models.u2netp)           graph.PreviewImage({ images: graph.Image_Rembg_$1Remove_Background$2({ images: image, model: 'u2netp',            background_color: 'none', }), }) // prettier-ignore
+      if (form.models.isnetAnime)       graph.PreviewImage({ images: graph['Custom.was.Image_Rembg_$1Remove_Background$2']({ images: image, model: 'isnet-anime',       background_color: 'none', }), }) // prettier-ignore
+      if (form.models.isnetGeneralUse)  graph.PreviewImage({ images: graph['Custom.was.Image_Rembg_$1Remove_Background$2']({ images: image, model: 'isnet-general-use', background_color: 'none', }), }) // prettier-ignore
+      if (form.models.silueta)          graph.PreviewImage({ images: graph['Custom.was.Image_Rembg_$1Remove_Background$2']({ images: image, model: 'silueta',           background_color: 'none', }), }) // prettier-ignore
+      if (form.models.u2net)            graph.PreviewImage({ images: graph['Custom.was.Image_Rembg_$1Remove_Background$2']({ images: image, model: 'u2net',             background_color: 'none', }), }) // prettier-ignore
+      if (form.models.u2net_human_seg)  graph.PreviewImage({ images: graph['Custom.was.Image_Rembg_$1Remove_Background$2']({ images: image, model: 'u2net_human_seg',   background_color: 'none', }), }) // prettier-ignore
+      if (form.models.u2netp)           graph.PreviewImage({ images: graph['Custom.was.Image_Rembg_$1Remove_Background$2']({ images: image, model: 'u2netp',            background_color: 'none', }), }) // prettier-ignore
 
       await run.PROMPT()
    },

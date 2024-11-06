@@ -4,7 +4,7 @@ import type { Requirements } from '../../../src/manager/REQUIREMENTS/Requirement
 import type { OutputFor } from './_prefabs'
 
 export type UI_upscaleWithModel = X.XGroup<{
-   model: X.XEnum<Comfy.Enums['UpscaleModelLoader.model_name']>
+   model: X.XEnum<'Extra.UpscaleModelLoader.model_name'>
 }>
 
 export function ui_upscaleWithModel(): UI_upscaleWithModel {
@@ -12,7 +12,7 @@ export function ui_upscaleWithModel(): UI_upscaleWithModel {
    return ui
       .group({
          label: 'Upscale via Model',
-         items: { model: ui.enum['UpscaleModelLoader.model_name']({ default: '4x-UltraSharp.pth' }) },
+         items: { model: ui.enum['Extra.UpscaleModelLoader.model_name']({ default: '4x-UltraSharp.pth' }) },
          icon: 'mdiArrowExpandAll',
          box: { base: { hue: 180, chroma: 0.1 } },
       })
@@ -41,8 +41,8 @@ export const run_upscaleWithModel = (
    const graph: ComfyWorkflowBuilder = run.nodes
    const upscale = ui
    const upscaleModelName = upscale.model
-   const upscaleModel = graph.UpscaleModelLoader({ model_name: upscaleModelName })
-   const upscaledResult = graph.ImageUpscaleWithModel({
+   const upscaleModel = graph['Extra.UpscaleModelLoader']({ model_name: upscaleModelName })
+   const upscaledResult = graph['Extra.ImageUpscaleWithModel']({
       image: p?.image ?? run.AUTO,
       upscale_model: upscaleModel,
    })

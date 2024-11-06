@@ -8,10 +8,11 @@ import type { CushySchemaBuilder } from './Builder'
 import { Field_enum, type Field_enum_config } from '../csuite/fields/enum/FieldEnum'
 import { CushySchema } from './Schema'
 
-export type IEnumBuilderFN<T extends ComfyUnionValue> = (
-   config?: Omit<Field_enum_config<T>, 'enumName'>,
-) => X.XEnum<T>
-export type IEnumBuilder = { [K in keyof Comfy.Enums]: IEnumBuilderFN<Comfy.Enums[K]> }
+export type IEnumBuilderFN<ENUM_NAME extends keyof Comfy.Enums> = (
+   config?: Omit<Field_enum_config<keyof Comfy.Enums>, 'enumName'>,
+) => X.XEnum<ENUM_NAME>
+
+export type IEnumBuilder = { [K in keyof Comfy.Enums]: IEnumBuilderFN<K> }
 
 export interface EnumBuilder extends IEnumBuilder {}
 export class EnumBuilder {

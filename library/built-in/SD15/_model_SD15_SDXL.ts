@@ -5,7 +5,7 @@ import {
 } from '../_prefabs/prefab_model_extras'
 
 export type $prefabModelSD15andSDXL = X.XGroup<{
-   ckpt_name: X.XEnum<Comfy.Enums['CheckpointLoaderSimple.ckpt_name']>
+   ckpt_name: X.XEnum<'CheckpointLoaderSimple.ckpt_name'>
    extra: $schemaModelExtras
 }>
 

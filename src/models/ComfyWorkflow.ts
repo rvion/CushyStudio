@@ -211,9 +211,9 @@ export class ComfyWorkflowL extends BaseInst<TABLES['comfy_workflow']> {
       // return this.nodes.slice().sort((a, b) => b.updatedAt - a.updatedAt)
    }
 
-   findNodeByType = <T extends keyof ComfySetup>(nameInCushy: T): Maybe<ReturnType<ComfySetup[T]>> => {
-      return this.nodes.find((n) => n.$schema.nameInCushy === nameInCushy) as any
-   }
+   // findNodeByType = <T extends keyof ComfySetup>(nameInCushy: T): Maybe<ReturnType<ComfySetup[T]>> => {
+   //    return this.nodes.find((n) => n.$schema.nameInCushy === nameInCushy) as any
+   // }
 
    /** nodes, indexed by nodeID */
    nodesIndex = new Map<string, ComfyNode<any>>()

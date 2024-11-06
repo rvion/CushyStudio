@@ -5,10 +5,11 @@ export type UI_cnet_ui_common = {
    advanced: X.XGroup<{
       startAtStepPercent: X.XNumber
       endAtStepPercent: X.XNumber
-      crop: X.XEnum<Comfy.Enums['LatentUpscale.crop']>
-      upscale_method: X.XEnum<Comfy.Enums['ImageScale.upscale_method']>
+      crop: X.XEnum<'LatentUpscale.crop'>
+      upscale_method: X.XEnum<'ImageScale.upscale_method'>
    }>
 }
+
 export function cnet_ui_common(ui: X.Builder): UI_cnet_ui_common {
    return {
       strength: ui.float({ default: 1, min: 0, max: 2, step: 0.1 }),

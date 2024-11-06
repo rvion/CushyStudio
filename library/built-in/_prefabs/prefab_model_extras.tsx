@@ -7,15 +7,15 @@ import { ui_model_pag, type UI_model_pag } from './prefab_model_pag'
 import { ui_model_sag, type UI_model_sag } from './prefab_model_sag'
 
 export type $schemaModelExtras = X.XChoices<{
-   checkpointConfig: X.XEnum<Comfy.Enums['CheckpointLoader.config_name']>
+   checkpointConfig: X.XEnum<'CheckpointLoader.config_name'>
    rescaleCFG: X.XNumber
-   vae: X.XEnum<Comfy.Enums['VAELoader.vae_name']>
+   vae: X.XEnum<'VAELoader.vae_name'>
    clipSkip: X.XNumber
    freeU: X.XEmpty
    freeUv2: X.XEmpty
    vpred: X.XGroup<{ zsnr: X.XBool }>
    sampling: X.XGroup<{
-      sampling: X.XEnum<Comfy.Enums['ModelSamplingDiscrete.sampling']>
+      sampling: X.XEnum<'ModelSamplingDiscrete.sampling'>
       zsnr: X.XBool
    }>
    pag: UI_model_pag

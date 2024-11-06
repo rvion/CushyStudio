@@ -1,6 +1,3 @@
-import { b } from '../../../src/controls/Builder'
-import { run_refiners_fromImage, ui_refiners } from '../_prefabs/prefab_detailer'
-
 // import { evalModelSD15andSDXL, prefabModelSD15andSDXL } from '../SD15/_model_SD15_SDXL'
 
 app({
@@ -14,7 +11,7 @@ app({
       b.fields({
          via: b.choice({
             maskeradePrompt: b.fields({
-               ckpt: b.enum.Enum_CheckpointLoader$8pysssss_ckpt_name(),
+               ckpt: b.enum['CheckpointLoader.ckpt_name'](),
                prompt: b.prompt(),
                precision: b.float({ default: 0.5, min: 0, max: 1 }),
                maskByText: b.autoField.Mask_By_Text(),

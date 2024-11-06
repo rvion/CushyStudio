@@ -24,6 +24,10 @@ function pythonModuleToNamespace_(pythonModule: string): string {
          if (y.startsWith('ComfyUI_')) y = y.replace('ComfyUI_', '')
          if (y.startsWith('comfyui_')) y = y.replace('comfyui_', '')
          if (y.startsWith('comfyui-')) y = y.replace('comfyui-', '')
+
+         if (y.endsWith('_node_suite_comfyui')) y = y.replace('_node_suite_comfyui', '')
+         if (y.endsWith('-node-suite-comfyui')) y = y.replace('-node-suite-comfyui', '')
+
          y = y.replaceAll('-', '_')
          y = y.replaceAll(' ', '_')
          y = y.replaceAll('.', '_')

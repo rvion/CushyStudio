@@ -3,7 +3,7 @@ import type { OutputFor } from './_prefabs'
 
 export type UI_Mask = X.XGroup<{
    image: X.XImage
-   mode: X.XEnum<Comfy.Enums['LoadImageMask.channel']>
+   mode: X.XEnum<'LoadImageMask.channel'>
    invert: X.XBool
    grow: X.XNumber
    feather: X.XNumber

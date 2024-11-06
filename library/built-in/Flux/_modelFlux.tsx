@@ -5,11 +5,11 @@ import {
 } from '../_prefabs/prefab_model_extras'
 
 export type $prefabModelFlux = X.XGroup<{
-   ckpt_name: X.XEnum<Comfy.Enums['UNETLoader.unet_name']>
-   weight_type: X.XEnum<Comfy.Enums['UNETLoader.weight_dtype']>
-   clip1: X.XEnum<Comfy.Enums['CLIPLoader.clip_name']>
-   clip2: X.XEnum<Comfy.Enums['CLIPLoader.clip_name']>
-   type: X.XEnum<Comfy.Enums['DualCLIPLoader.type']>
+   ckpt_name: X.XEnum<'UNETLoader.unet_name'>
+   weight_type: X.XEnum<'UNETLoader.weight_dtype'>
+   clip1: X.XEnum<'CLIPLoader.clip_name'>
+   clip2: X.XEnum<'CLIPLoader.clip_name'>
+   type: X.XEnum<'DualCLIPLoader.type'>
    extra: $schemaModelExtras
 }>
 
