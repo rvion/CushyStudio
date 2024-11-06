@@ -72,7 +72,7 @@ export function ui_cnet(): UI_cnet {
                      image: form.image({}),
                      mask: ui_mask()
                         .addRequirements([
-                           { type: 'customNodesByNameInCushy', nodeName: 'ACN$_AdvancedControlNetApply' },
+                           { type: 'customNodesByNameInCushy', nodeName: 'ACN_AdvancedControlNetApply' },
                         ])
                         .withConfig({ tooltip: 'Applies controlnet only to the masked area.' }),
                      resize: form.bool({ default: true }),
@@ -111,19 +111,19 @@ export function ui_cnet(): UI_cnet {
 
 // RUN -----------------------------------------------------------
 export type Cnet_args = {
-   positive: Comfy.Input.CONDITIONING
-   negative: Comfy.Input.CONDITIONING
+   positive: Comfy.Signal['CONDITIONING']
+   negative: Comfy.Signal['CONDITIONING']
    width: number
    height: number
-   ckptPos: Comfy.Input.MODEL
+   ckptPos: Comfy.Signal['MODEL']
 }
 
 export type Cnet_return = {
-   cnet_positive: Comfy.Input.CONDITIONING
-   cnet_negative: Comfy.Input.CONDITIONING
-   post_cnet_positive: Comfy.Input.CONDITIONING
-   post_cnet_negative: Comfy.Input.CONDITIONING
-   ckpt_return: Comfy.Input.MODEL
+   cnet_positive: Comfy.Signal['CONDITIONING']
+   cnet_negative: Comfy.Signal['CONDITIONING']
+   post_cnet_positive: Comfy.Signal['CONDITIONING']
+   post_cnet_negative: Comfy.Signal['CONDITIONING']
+   ckpt_return: Comfy.Signal['MODEL']
 }
 
 export async function run_cnet(
@@ -270,7 +270,7 @@ const _apply_cnet = (
    const graph = run.nodes
    const cnet_node = mask
       ? // @ts-expect-error
-        graph.ACN$_AdvancedControlNetApply({
+        graph.ACN_AdvancedControlNetApply({
            strength: strength ?? 1,
            positive: args.positive,
            negative: args.negative,

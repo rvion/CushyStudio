@@ -97,7 +97,7 @@ export type UI_IPAdapterV2 = X.XGroup<{
    settings: X.XGroup<{
       adapterStrength: X.XNumber
       models: X.XGroup<{
-         type: X.XEnum<Enum_AV$_StyleApply_preset>
+         type: X.XEnum<Enum_AV_StyleApply_preset>
       }>
       advancedSettings: UI_ipadapter_advancedSettings
    }>

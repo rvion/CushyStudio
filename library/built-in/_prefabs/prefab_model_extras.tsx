@@ -53,7 +53,7 @@ export const schemaModelExtras = (
                   placeHolder: 'e.g. 43331@176425',
                })
                .addRequirements([
-                  { type: 'customNodesByNameInCushy', nodeName: 'CivitAI$_Checkpoint$_Loader' },
+                  { type: 'customNodesByNameInCushy', nodeName: 'CivitAI_Checkpoint_Loader' },
                ]),
          },
          {
@@ -109,7 +109,7 @@ export function evalModelExtras_part1(
    if (extra.clipSkip) clip = graph.CLIPSetLastLayer({ clip, stop_at_clip_layer: -Math.abs(extra.clipSkip) })
 
    // 4. Optional FreeU
-   if (extra.freeUv2) ckpt = graph.FreeU$_V2({ model: ckpt })
+   if (extra.freeUv2) ckpt = graph.FreeU_V2({ model: ckpt })
    else if (extra.freeU) ckpt = graph.FreeU({ model: ckpt })
 
    /* Rescale CFG */

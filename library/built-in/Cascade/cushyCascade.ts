@@ -92,7 +92,7 @@ app({
 
       // latent
       const latentOpts = ui.startingLatent
-      const stableCascade$_EmptyLatent_2 = graph['StableCascade$_EmptyLatentImage']({
+      const stableCascade_EmptyLatent_2 = graph['StableCascade_EmptyLatentImage']({
          width: latentOpts.width,
          height: latentOpts.height,
          compression: latentOpts.compression,
@@ -111,12 +111,12 @@ app({
          model: stagec,
          positive: posEmbedding.outputs.CONDITIONING,
          negative: negEmbedding.outputs.CONDITIONING,
-         latent_image: stableCascade$_EmptyLatent_2.outputs.stage_c,
+         latent_image: stableCascade_EmptyLatent_2.outputs.stage_c,
       })
       const conditioningZeroOut_2 = graph.ConditioningZeroOut({
          conditioning: posEmbedding.outputs.CONDITIONING,
       })
-      const stableCascade$_StageB$_Conditioning_2 = graph['StableCascade$_StageB$_Conditioning']({
+      const stableCascade_StageB_Conditioning_2 = graph['StableCascade_StageB_Conditioning']({
          conditioning: conditioningZeroOut_2.outputs.CONDITIONING,
          stage_c: kSampler_4.outputs.LATENT,
       })
@@ -128,9 +128,9 @@ app({
          scheduler: ui.KSampler_1.scheduler_1,
          denoise: ui.KSampler_1.denoise_1,
          model: stageb.outputs.MODEL,
-         positive: stableCascade$_StageB$_Conditioning_2.outputs.CONDITIONING,
+         positive: stableCascade_StageB_Conditioning_2.outputs.CONDITIONING,
          negative: conditioningZeroOut_2.outputs.CONDITIONING,
-         latent_image: stableCascade$_EmptyLatent_2.outputs.stage_b,
+         latent_image: stableCascade_EmptyLatent_2.outputs.stage_b,
       })
       const vAEDecode_2 = graph.VAEDecode({ samples: kSampler_5.outputs.LATENT, vae: vae.outputs.VAE })
       const save_2 = graph.SaveImage({

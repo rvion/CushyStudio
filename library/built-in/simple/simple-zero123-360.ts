@@ -47,7 +47,7 @@ app({
       const startImage2 = await run.loadImageAnswer(ui.image)
       const upscale_model = graph.Upscale_Model_Loader({ model_name: 'RealESRGAN_x2.pth' })
       for (const angle of run.range(ui.from, ui.to, ui.step)) {
-         const sz123 = graph.StableZero123$_Conditioning({
+         const sz123 = graph.StableZero123_Conditioning({
             width: 256,
             height: 256,
             batch_size: 1,

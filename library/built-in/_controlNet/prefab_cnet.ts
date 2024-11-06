@@ -72,7 +72,7 @@ export function ui_cnet(): UI_cnet {
                      image: form.image({}),
                      mask: ui_mask()
                         .addRequirements([
-                           { type: 'customNodesByNameInCushy', nodeName: 'ACN$_AdvancedControlNetApply' },
+                           { type: 'customNodesByNameInCushy', nodeName: 'ACN_AdvancedControlNetApply' },
                         ])
                         .withConfig({ tooltip: 'Applies controlnet only to the masked area.' }),
                      resize: form.bool({ default: true }),
@@ -270,7 +270,7 @@ const _apply_cnet = (
    const graph = run.nodes
    const cnet_node = mask
       ? // @ts-expect-error
-        graph.ACN$_AdvancedControlNetApply({
+        graph.ACN_AdvancedControlNetApply({
            strength: strength ?? 1,
            positive: args.positive,
            negative: args.negative,

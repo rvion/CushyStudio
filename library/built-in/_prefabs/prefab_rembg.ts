@@ -49,6 +49,6 @@ export const run_rembg_v1 = (ui: OutputFor<typeof ui_rembg_v1>, image: _IMAGE): 
    if (ui.u2net)            addImg('u2net',           graph.Image_Rembg_$1Remove_Background$2({ images: image, model: 'u2net',             background_color: 'none', }), ) // prettier-ignore
    if (ui.u2net_human_seg)  addImg('u2net_human_seg', graph.Image_Rembg_$1Remove_Background$2({ images: image, model: 'u2net_human_seg',   background_color: 'none', }), ) // prettier-ignore
    if (ui.u2netp)           addImg('u2netp',          graph.Image_Rembg_$1Remove_Background$2({ images: image, model: 'u2netp',            background_color: 'none', }), ) // prettier-ignore
-   if (ui.RemBGV1_4)        addImg('briarmbg',        graph.BRIA$_RMBG$_Zho({ image, rmbgmodel: graph.BRIA$_RMBG$_ModelLoader$_Zho({}) })) // prettier-ignore
+   if (ui.RemBGV1_4)        addImg('briarmbg',        graph.BRIA_RMBG_Zho({ image, rmbgmodel: graph.BRIA_RMBG_ModelLoader_Zho({}) })) // prettier-ignore
    return OUT
 }

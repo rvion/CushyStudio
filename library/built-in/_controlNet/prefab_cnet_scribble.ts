@@ -137,7 +137,7 @@ export const run_cnet_Scribble = (
          else graph.PreviewImage({ images: image })
       } else if (Scribble.preprocessor.XDOG) {
          const xdog = Scribble.preprocessor.XDOG
-         image = graph['controlnet_aux.Scribble$_XDoG$_Preprocessor']({
+         image = graph['controlnet_aux.Scribble_XDoG_Preprocessor']({
             image: image,
             resolution: resolution,
             threshold: xdog.threshold,

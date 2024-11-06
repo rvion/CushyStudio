@@ -15,7 +15,7 @@ import { ui_ipadapter_modelSelection } from './ui_ipadapter_modelSelection'
 export type UI_subform_IPAdapter = X.XGroup<
    {
       models: X.XGroup<{
-         cnet_model_name: X.XEnum<Enum_AV$_IPAdapterPipe_ip_adapter_name>
+         cnet_model_name: X.XEnum<Enum_AV_IPAdapterPipe_ip_adapter_name>
          clip_name: X.XEnum<'CLIPVisionLoader.clip_name'>
       }>
       help: X.XMarkdown

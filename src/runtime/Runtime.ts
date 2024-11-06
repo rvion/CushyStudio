@@ -41,7 +41,7 @@ import { RuntimeStore } from './RuntimeStore'
 import { RuntimeVideos } from './RuntimeVideo'
 
 export type ImageStoreName = Tagged<string, 'ImageStoreName'>
-export type ImageAndMask = HasSingle_IMAGE & HasSingle_MASK
+export type ImageAndMask = Comfy.HasSingle['IMAGE'] & Comfy.HasSingle['MASK']
 
 // prettier-ignore
 export type RuntimeExecutionResult =
@@ -256,7 +256,9 @@ export class Runtime<FIELD extends Field = any> {
 
    /** a built-in prefab to quickly
     * add PreviewImage & JoinImageWithAlpha node to your ComfyUI graph */
-   add_previewImageWithAlpha = (image: HasSingle_IMAGE & HasSingle_MASK): Comfy.Node['PreviewImage'] => {
+   add_previewImageWithAlpha(
+      image: Comfy.HasSingle['IMAGE'] & Comfy.HasSingle['MASK'],
+   ): Comfy.Node['PreviewImage'] {
       return this.nodes.PreviewImage({
          images: this.nodes.JoinImageWithAlpha({
             image: image,
@@ -267,19 +269,19 @@ export class Runtime<FIELD extends Field = any> {
 
    /** a built-in prefab to quickly
     * add a PreviewImage node to your ComfyUI graph */
-   add_previewImage = (image: Comfy.Input.IMAGE): Comfy.Base.PreviewImage => {
+   add_previewImage = (image: Comfy.Signal['IMAGE']): Comfy.Node['PreviewImage'] => {
       return this.nodes.PreviewImage({ images: image })
    }
 
    /** a built-in prefab to quickly
     * add a PreviewImage node to your ComfyUI graph */
-   add_PreviewMask = (mask: _MASK): PreviewImage => {
+   add_PreviewMask = (mask: Comfy.Signal['MASK']): Comfy.Node['PreviewImage'] => {
       return this.nodes.PreviewImage({ images: this.nodes.MaskToImage({ mask: mask }) })
    }
 
    /** a built-in prefab to quickly
     * add a PreviewImage node to your ComfyUI graph */
-   add_saveImage = (image: _IMAGE, prefix?: string): SaveImage => {
+   add_saveImage = (image: Comfy.Signal['IMAGE'], prefix?: string): Comfy.Node['SaveImage'] => {
       return this.nodes.SaveImage({ images: image, filename_prefix: prefix })
    }
 
@@ -569,7 +571,7 @@ export class Runtime<FIELD extends Field = any> {
     * Takes an embedding name and format it for ComfyUI usage
     * e.g.: "EasyNegative" => "embedding:EasyNegative"
     * */
-   formatEmbeddingForComfyUI = (t: Embeddings): string => `embedding:${t}`
+   formatEmbeddingForComfyUI = (t: Comfy.Embeddings): string => `embedding:${t}`
    formatAsRelativeDateTime = (date: Date | number): string => _formatAsRelativeDateTime(date)
 
    // 🐉 /** ask the user a few informations */

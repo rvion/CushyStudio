@@ -46,14 +46,14 @@ app({
          text: '(bad quality, worst quality:1.2)',
          clip: checkpointLoaderSimpleWithNoiseSelect,
       })
-      const aDE_AnimateDiffUniformContextOptions = graph.ADE$_AnimateDiffUniformContextOptions({
+      const aDE_AnimateDiffUniformContextOptions = graph.ADE_AnimateDiffUniformContextOptions({
          context_length: 16,
          context_stride: 1,
          context_overlap: 4,
          context_schedule: 'uniform',
          closed_loop: false,
       })
-      const aDE_AnimateDiffLoaderWithContext = graph.ADE$_AnimateDiffLoaderWithContext({
+      const aDE_AnimateDiffLoaderWithContext = graph.ADE_AnimateDiffLoaderWithContext({
          model_name: 'mm_sd_v15_v2.ckpt',
          beta_schedule: 'sqrt_linear (AnimateDiff)',
          model: checkpointLoaderSimpleWithNoiseSelect,
@@ -75,7 +75,7 @@ app({
          pw_d: 0,
          clip: checkpointLoaderSimpleWithNoiseSelect,
       })
-      const aDE_EmptyLatentImageLarge = graph.ADE$_EmptyLatentImageLarge({
+      const aDE_EmptyLatentImageLarge = graph.ADE_EmptyLatentImageLarge({
          width: 512,
          height: 512,
          batch_size: ui.timeline.items.length, //100,

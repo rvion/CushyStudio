@@ -50,8 +50,8 @@ type UI_subform_OpenPose_Preprocessor = X.XChoice<{
       detect_body: X.XBool
       detect_face: X.XBool
       detect_hand: X.XBool
-      bbox_detector: X.XEnum<'controlnet_aux.DWPreprocessor.bbox_detector'> // 'DWPreprocessor$_Provider$_for$_SEGS_$3$3Inspire_bbox_detector'
-      pose_estimator: X.XEnum<'controlnet_aux.DWPreprocessor.pose_estimator'> // 'DWPreprocessor$_Provider$_for$_SEGS_$3$3Inspire_pose_estimator'
+      bbox_detector: X.XEnum<'controlnet_aux.DWPreprocessor.bbox_detector'> // 'DWPreprocessor_Provider_for_SEGS_$3$3Inspire_bbox_detector'
+      pose_estimator: X.XEnum<'controlnet_aux.DWPreprocessor.pose_estimator'> // 'DWPreprocessor_Provider_for_SEGS_$3$3Inspire_pose_estimator'
       saveProcessedImage: X.XBool
    }>
    OpenPose: X.XGroup<{
