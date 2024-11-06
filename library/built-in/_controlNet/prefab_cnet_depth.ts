@@ -126,10 +126,10 @@ export function ui_subform_Depth_Zoe(): UI_subform_Depth_Zoe {
 // 🅿️ Depth RUN ===================================================
 export const run_cnet_Depth = (
    Depth: OutputFor<typeof ui_subform_Depth>,
-   image: Comfy.Input.IMAGE,
+   image: Comfy.Signal['IMAGE'],
    resolution: number, // 512 | 768 | 1024 = 512,
 ): {
-   image: Comfy.Input.IMAGE
+   image: Comfy.Signal['IMAGE']
    cnet_name: Comfy.Slots['ControlNetLoader.control_net_name']
 } => {
    const sdk = getCurrentRun()
@@ -140,7 +140,7 @@ export const run_cnet_Depth = (
    if (Depth.preprocessor) {
       if (Depth.preprocessor.Leres) {
          const leres = Depth.preprocessor.Leres
-         image = graph['controlnet_aux.LeReS$7DepthMapPreprocessor']({
+         image = graph['controlnet_aux.LeReS-DepthMapPreprocessor']({
             image: image,
             resolution: resolution,
             rm_nearest: leres.rm_nearest,
@@ -152,7 +152,7 @@ export const run_cnet_Depth = (
          else graph.PreviewImage({ images: image })
       } else if (Depth.preprocessor.Zoe) {
          const zoe = Depth.preprocessor.Zoe
-         image = graph['controlnet_aux.Zoe$7DepthMapPreprocessor']({
+         image = graph['controlnet_aux.Zoe-DepthMapPreprocessor']({
             image: image,
             resolution: resolution,
          })._IMAGE
@@ -160,7 +160,7 @@ export const run_cnet_Depth = (
          else graph.PreviewImage({ images: image })
       } else if (Depth.preprocessor.Midas) {
          const midas = Depth.preprocessor.Midas
-         image = graph['controlnet_aux.MiDaS$7DepthMapPreprocessor']({
+         image = graph['controlnet_aux.MiDaS-DepthMapPreprocessor']({
             image: image,
             resolution: resolution,
             a: midas.a_value,

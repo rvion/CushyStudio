@@ -9595,333 +9595,333 @@ declare global {
          UnknownNodeXX: {
          }
       }
-      interface Nodes {
+      interface Node {
          KSampler: ComfyNode<IN['KSampler'], OUT['KSampler']> & {
-            HasSingle_LATENT: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          CheckpointLoaderSimple: ComfyNode<IN['CheckpointLoaderSimple'], OUT['CheckpointLoaderSimple']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
-            HasSingle_CLIP: ComfyNodeOutput<'CLIP'>
-            HasSingle_VAE: ComfyNodeOutput<'VAE'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
+            _CLIP: ComfyNodeOutput<'CLIP'>
+            _VAE: ComfyNodeOutput<'VAE'>
          }
          CLIPTextEncode: ComfyNode<IN['CLIPTextEncode'], OUT['CLIPTextEncode']> & {
-            HasSingle_CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
+            _CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
          }
          CLIPSetLastLayer: ComfyNode<IN['CLIPSetLastLayer'], OUT['CLIPSetLastLayer']> & {
-            HasSingle_CLIP: ComfyNodeOutput<'CLIP'>
+            _CLIP: ComfyNodeOutput<'CLIP'>
          }
          VAEDecode: ComfyNode<IN['VAEDecode'], OUT['VAEDecode']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          VAEEncode: ComfyNode<IN['VAEEncode'], OUT['VAEEncode']> & {
-            HasSingle_LATENT: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          VAEEncodeForInpaint: ComfyNode<IN['VAEEncodeForInpaint'], OUT['VAEEncodeForInpaint']> & {
-            HasSingle_LATENT: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          VAELoader: ComfyNode<IN['VAELoader'], OUT['VAELoader']> & {
-            HasSingle_VAE: ComfyNodeOutput<'VAE'>
+            _VAE: ComfyNodeOutput<'VAE'>
          }
          EmptyLatentImage: ComfyNode<IN['EmptyLatentImage'], OUT['EmptyLatentImage']> & {
-            HasSingle_LATENT: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          LatentUpscale: ComfyNode<IN['LatentUpscale'], OUT['LatentUpscale']> & {
-            HasSingle_LATENT: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          LatentUpscaleBy: ComfyNode<IN['LatentUpscaleBy'], OUT['LatentUpscaleBy']> & {
-            HasSingle_LATENT: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          LatentFromBatch: ComfyNode<IN['LatentFromBatch'], OUT['LatentFromBatch']> & {
-            HasSingle_LATENT: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          RepeatLatentBatch: ComfyNode<IN['RepeatLatentBatch'], OUT['RepeatLatentBatch']> & {
-            HasSingle_LATENT: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          SaveImage: ComfyNode<IN['SaveImage'], OUT['SaveImage']> & {
          }
          PreviewImage: ComfyNode<IN['PreviewImage'], OUT['PreviewImage']> & {
          }
          LoadImage: ComfyNode<IN['LoadImage'], OUT['LoadImage']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
-            HasSingle_MASK: ComfyNodeOutput<'MASK'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          LoadImageMask: ComfyNode<IN['LoadImageMask'], OUT['LoadImageMask']> & {
-            HasSingle_MASK: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          ImageScale: ComfyNode<IN['ImageScale'], OUT['ImageScale']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          ImageScaleBy: ComfyNode<IN['ImageScaleBy'], OUT['ImageScaleBy']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          ImageInvert: ComfyNode<IN['ImageInvert'], OUT['ImageInvert']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          ImageBatch: ComfyNode<IN['ImageBatch'], OUT['ImageBatch']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          ImagePadForOutpaint: ComfyNode<IN['ImagePadForOutpaint'], OUT['ImagePadForOutpaint']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
-            HasSingle_MASK: ComfyNodeOutput<'MASK'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          EmptyImage: ComfyNode<IN['EmptyImage'], OUT['EmptyImage']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          ConditioningAverage: ComfyNode<IN['ConditioningAverage'], OUT['ConditioningAverage']> & {
-            HasSingle_CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
+            _CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
          }
          ConditioningCombine: ComfyNode<IN['ConditioningCombine'], OUT['ConditioningCombine']> & {
-            HasSingle_CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
+            _CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
          }
          ConditioningConcat: ComfyNode<IN['ConditioningConcat'], OUT['ConditioningConcat']> & {
-            HasSingle_CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
+            _CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
          }
          ConditioningSetArea: ComfyNode<IN['ConditioningSetArea'], OUT['ConditioningSetArea']> & {
-            HasSingle_CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
+            _CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
          }
          ConditioningSetAreaPercentage: ComfyNode<IN['ConditioningSetAreaPercentage'], OUT['ConditioningSetAreaPercentage']> & {
-            HasSingle_CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
+            _CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
          }
          ConditioningSetAreaStrength: ComfyNode<IN['ConditioningSetAreaStrength'], OUT['ConditioningSetAreaStrength']> & {
-            HasSingle_CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
+            _CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
          }
          ConditioningSetMask: ComfyNode<IN['ConditioningSetMask'], OUT['ConditioningSetMask']> & {
-            HasSingle_CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
+            _CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
          }
          KSamplerAdvanced: ComfyNode<IN['KSamplerAdvanced'], OUT['KSamplerAdvanced']> & {
-            HasSingle_LATENT: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          SetLatentNoiseMask: ComfyNode<IN['SetLatentNoiseMask'], OUT['SetLatentNoiseMask']> & {
-            HasSingle_LATENT: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          LatentComposite: ComfyNode<IN['LatentComposite'], OUT['LatentComposite']> & {
-            HasSingle_LATENT: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          LatentBlend: ComfyNode<IN['LatentBlend'], OUT['LatentBlend']> & {
-            HasSingle_LATENT: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          LatentRotate: ComfyNode<IN['LatentRotate'], OUT['LatentRotate']> & {
-            HasSingle_LATENT: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          LatentFlip: ComfyNode<IN['LatentFlip'], OUT['LatentFlip']> & {
-            HasSingle_LATENT: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          LatentCrop: ComfyNode<IN['LatentCrop'], OUT['LatentCrop']> & {
-            HasSingle_LATENT: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          LoraLoader: ComfyNode<IN['LoraLoader'], OUT['LoraLoader']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
-            HasSingle_CLIP: ComfyNodeOutput<'CLIP'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
+            _CLIP: ComfyNodeOutput<'CLIP'>
          }
          CLIPLoader: ComfyNode<IN['CLIPLoader'], OUT['CLIPLoader']> & {
-            HasSingle_CLIP: ComfyNodeOutput<'CLIP'>
+            _CLIP: ComfyNodeOutput<'CLIP'>
          }
          UNETLoader: ComfyNode<IN['UNETLoader'], OUT['UNETLoader']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          DualCLIPLoader: ComfyNode<IN['DualCLIPLoader'], OUT['DualCLIPLoader']> & {
-            HasSingle_CLIP: ComfyNodeOutput<'CLIP'>
+            _CLIP: ComfyNodeOutput<'CLIP'>
          }
          CLIPVisionEncode: ComfyNode<IN['CLIPVisionEncode'], OUT['CLIPVisionEncode']> & {
-            HasSingle_CLIP_VISION_OUTPUT: ComfyNodeOutput<'CLIP_VISION_OUTPUT'>
+            _CLIP_VISION_OUTPUT: ComfyNodeOutput<'CLIP_VISION_OUTPUT'>
          }
          StyleModelApply: ComfyNode<IN['StyleModelApply'], OUT['StyleModelApply']> & {
-            HasSingle_CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
+            _CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
          }
          unCLIPConditioning: ComfyNode<IN['unCLIPConditioning'], OUT['unCLIPConditioning']> & {
-            HasSingle_CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
+            _CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
          }
          ControlNetApply: ComfyNode<IN['ControlNetApply'], OUT['ControlNetApply']> & {
-            HasSingle_CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
+            _CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
          }
          ControlNetApplyAdvanced: ComfyNode<IN['ControlNetApplyAdvanced'], OUT['ControlNetApplyAdvanced']> & {
          }
          ControlNetLoader: ComfyNode<IN['ControlNetLoader'], OUT['ControlNetLoader']> & {
-            HasSingle_CONTROL_NET: ComfyNodeOutput<'CONTROL_NET'>
+            _CONTROL_NET: ComfyNodeOutput<'CONTROL_NET'>
          }
          DiffControlNetLoader: ComfyNode<IN['DiffControlNetLoader'], OUT['DiffControlNetLoader']> & {
-            HasSingle_CONTROL_NET: ComfyNodeOutput<'CONTROL_NET'>
+            _CONTROL_NET: ComfyNodeOutput<'CONTROL_NET'>
          }
          StyleModelLoader: ComfyNode<IN['StyleModelLoader'], OUT['StyleModelLoader']> & {
-            HasSingle_STYLE_MODEL: ComfyNodeOutput<'STYLE_MODEL'>
+            _STYLE_MODEL: ComfyNodeOutput<'STYLE_MODEL'>
          }
          CLIPVisionLoader: ComfyNode<IN['CLIPVisionLoader'], OUT['CLIPVisionLoader']> & {
-            HasSingle_CLIP_VISION: ComfyNodeOutput<'CLIP_VISION'>
+            _CLIP_VISION: ComfyNodeOutput<'CLIP_VISION'>
          }
          VAEDecodeTiled: ComfyNode<IN['VAEDecodeTiled'], OUT['VAEDecodeTiled']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          VAEEncodeTiled: ComfyNode<IN['VAEEncodeTiled'], OUT['VAEEncodeTiled']> & {
-            HasSingle_LATENT: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          unCLIPCheckpointLoader: ComfyNode<IN['unCLIPCheckpointLoader'], OUT['unCLIPCheckpointLoader']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
-            HasSingle_CLIP: ComfyNodeOutput<'CLIP'>
-            HasSingle_VAE: ComfyNodeOutput<'VAE'>
-            HasSingle_CLIP_VISION: ComfyNodeOutput<'CLIP_VISION'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
+            _CLIP: ComfyNodeOutput<'CLIP'>
+            _VAE: ComfyNodeOutput<'VAE'>
+            _CLIP_VISION: ComfyNodeOutput<'CLIP_VISION'>
          }
          GLIGENLoader: ComfyNode<IN['GLIGENLoader'], OUT['GLIGENLoader']> & {
-            HasSingle_GLIGEN: ComfyNodeOutput<'GLIGEN'>
+            _GLIGEN: ComfyNodeOutput<'GLIGEN'>
          }
          GLIGENTextBoxApply: ComfyNode<IN['GLIGENTextBoxApply'], OUT['GLIGENTextBoxApply']> & {
-            HasSingle_CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
+            _CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
          }
          InpaintModelConditioning: ComfyNode<IN['InpaintModelConditioning'], OUT['InpaintModelConditioning']> & {
-            HasSingle_latent: ComfyNodeOutput<'LATENT'>
+            _latent: ComfyNodeOutput<'LATENT'>
          }
          CheckpointLoader: ComfyNode<IN['CheckpointLoader'], OUT['CheckpointLoader']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
-            HasSingle_CLIP: ComfyNodeOutput<'CLIP'>
-            HasSingle_VAE: ComfyNodeOutput<'VAE'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
+            _CLIP: ComfyNodeOutput<'CLIP'>
+            _VAE: ComfyNodeOutput<'VAE'>
          }
          DiffusersLoader: ComfyNode<IN['DiffusersLoader'], OUT['DiffusersLoader']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
-            HasSingle_CLIP: ComfyNodeOutput<'CLIP'>
-            HasSingle_VAE: ComfyNodeOutput<'VAE'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
+            _CLIP: ComfyNodeOutput<'CLIP'>
+            _VAE: ComfyNodeOutput<'VAE'>
          }
          LoadLatent: ComfyNode<IN['LoadLatent'], OUT['LoadLatent']> & {
-            HasSingle_LATENT: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          SaveLatent: ComfyNode<IN['SaveLatent'], OUT['SaveLatent']> & {
          }
          ConditioningZeroOut: ComfyNode<IN['ConditioningZeroOut'], OUT['ConditioningZeroOut']> & {
-            HasSingle_CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
+            _CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
          }
          ConditioningSetTimestepRange: ComfyNode<IN['ConditioningSetTimestepRange'], OUT['ConditioningSetTimestepRange']> & {
-            HasSingle_CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
+            _CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
          }
          LoraLoaderModelOnly: ComfyNode<IN['LoraLoaderModelOnly'], OUT['LoraLoaderModelOnly']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          LatentAdd: ComfyNode<IN['LatentAdd'], OUT['LatentAdd']> & {
-            HasSingle_LATENT: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          LatentSubtract: ComfyNode<IN['LatentSubtract'], OUT['LatentSubtract']> & {
-            HasSingle_LATENT: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          LatentMultiply: ComfyNode<IN['LatentMultiply'], OUT['LatentMultiply']> & {
-            HasSingle_LATENT: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          LatentInterpolate: ComfyNode<IN['LatentInterpolate'], OUT['LatentInterpolate']> & {
-            HasSingle_LATENT: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          LatentBatch: ComfyNode<IN['LatentBatch'], OUT['LatentBatch']> & {
-            HasSingle_LATENT: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          LatentBatchSeedBehavior: ComfyNode<IN['LatentBatchSeedBehavior'], OUT['LatentBatchSeedBehavior']> & {
-            HasSingle_LATENT: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          LatentApplyOperation: ComfyNode<IN['LatentApplyOperation'], OUT['LatentApplyOperation']> & {
-            HasSingle_LATENT: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          LatentApplyOperationCFG: ComfyNode<IN['LatentApplyOperationCFG'], OUT['LatentApplyOperationCFG']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          LatentOperationTonemapReinhard: ComfyNode<IN['LatentOperationTonemapReinhard'], OUT['LatentOperationTonemapReinhard']> & {
-            HasSingle_LATENT_OPERATION: ComfyNodeOutput<'LATENT_OPERATION'>
+            _LATENT_OPERATION: ComfyNodeOutput<'LATENT_OPERATION'>
          }
          LatentOperationSharpen: ComfyNode<IN['LatentOperationSharpen'], OUT['LatentOperationSharpen']> & {
-            HasSingle_LATENT_OPERATION: ComfyNodeOutput<'LATENT_OPERATION'>
+            _LATENT_OPERATION: ComfyNodeOutput<'LATENT_OPERATION'>
          }
          HypernetworkLoader: ComfyNode<IN['HypernetworkLoader'], OUT['HypernetworkLoader']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          UpscaleModelLoader: ComfyNode<IN['UpscaleModelLoader'], OUT['UpscaleModelLoader']> & {
-            HasSingle_UPSCALE_MODEL: ComfyNodeOutput<'UPSCALE_MODEL'>
+            _UPSCALE_MODEL: ComfyNodeOutput<'UPSCALE_MODEL'>
          }
          ImageUpscaleWithModel: ComfyNode<IN['ImageUpscaleWithModel'], OUT['ImageUpscaleWithModel']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          ImageBlend: ComfyNode<IN['ImageBlend'], OUT['ImageBlend']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          ImageBlur: ComfyNode<IN['ImageBlur'], OUT['ImageBlur']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          ImageQuantize: ComfyNode<IN['ImageQuantize'], OUT['ImageQuantize']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          ImageSharpen: ComfyNode<IN['ImageSharpen'], OUT['ImageSharpen']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          ImageScaleToTotalPixels: ComfyNode<IN['ImageScaleToTotalPixels'], OUT['ImageScaleToTotalPixels']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          LatentCompositeMasked: ComfyNode<IN['LatentCompositeMasked'], OUT['LatentCompositeMasked']> & {
-            HasSingle_LATENT: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          ImageCompositeMasked: ComfyNode<IN['ImageCompositeMasked'], OUT['ImageCompositeMasked']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          MaskToImage: ComfyNode<IN['MaskToImage'], OUT['MaskToImage']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          ImageToMask: ComfyNode<IN['ImageToMask'], OUT['ImageToMask']> & {
-            HasSingle_MASK: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          ImageColorToMask: ComfyNode<IN['ImageColorToMask'], OUT['ImageColorToMask']> & {
-            HasSingle_MASK: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          SolidMask: ComfyNode<IN['SolidMask'], OUT['SolidMask']> & {
-            HasSingle_MASK: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          InvertMask: ComfyNode<IN['InvertMask'], OUT['InvertMask']> & {
-            HasSingle_MASK: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          CropMask: ComfyNode<IN['CropMask'], OUT['CropMask']> & {
-            HasSingle_MASK: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          MaskComposite: ComfyNode<IN['MaskComposite'], OUT['MaskComposite']> & {
-            HasSingle_MASK: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          FeatherMask: ComfyNode<IN['FeatherMask'], OUT['FeatherMask']> & {
-            HasSingle_MASK: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          GrowMask: ComfyNode<IN['GrowMask'], OUT['GrowMask']> & {
-            HasSingle_MASK: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          ThresholdMask: ComfyNode<IN['ThresholdMask'], OUT['ThresholdMask']> & {
-            HasSingle_MASK: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          PorterDuffImageComposite: ComfyNode<IN['PorterDuffImageComposite'], OUT['PorterDuffImageComposite']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
-            HasSingle_MASK: ComfyNodeOutput<'MASK'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          SplitImageWithAlpha: ComfyNode<IN['SplitImageWithAlpha'], OUT['SplitImageWithAlpha']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
-            HasSingle_MASK: ComfyNodeOutput<'MASK'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          JoinImageWithAlpha: ComfyNode<IN['JoinImageWithAlpha'], OUT['JoinImageWithAlpha']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          RebatchLatents: ComfyNode<IN['RebatchLatents'], OUT['RebatchLatents']> & {
-            HasSingle_LATENT: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          RebatchImages: ComfyNode<IN['RebatchImages'], OUT['RebatchImages']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          ModelMergeSimple: ComfyNode<IN['ModelMergeSimple'], OUT['ModelMergeSimple']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          ModelMergeBlocks: ComfyNode<IN['ModelMergeBlocks'], OUT['ModelMergeBlocks']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          ModelMergeSubtract: ComfyNode<IN['ModelMergeSubtract'], OUT['ModelMergeSubtract']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          ModelMergeAdd: ComfyNode<IN['ModelMergeAdd'], OUT['ModelMergeAdd']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          CheckpointSave: ComfyNode<IN['CheckpointSave'], OUT['CheckpointSave']> & {
          }
          CLIPMergeSimple: ComfyNode<IN['CLIPMergeSimple'], OUT['CLIPMergeSimple']> & {
-            HasSingle_CLIP: ComfyNodeOutput<'CLIP'>
+            _CLIP: ComfyNodeOutput<'CLIP'>
          }
          CLIPMergeSubtract: ComfyNode<IN['CLIPMergeSubtract'], OUT['CLIPMergeSubtract']> & {
-            HasSingle_CLIP: ComfyNodeOutput<'CLIP'>
+            _CLIP: ComfyNodeOutput<'CLIP'>
          }
          CLIPMergeAdd: ComfyNode<IN['CLIPMergeAdd'], OUT['CLIPMergeAdd']> & {
-            HasSingle_CLIP: ComfyNodeOutput<'CLIP'>
+            _CLIP: ComfyNodeOutput<'CLIP'>
          }
          CLIPSave: ComfyNode<IN['CLIPSave'], OUT['CLIPSave']> & {
          }
@@ -9930,361 +9930,361 @@ declare global {
          ModelSave: ComfyNode<IN['ModelSave'], OUT['ModelSave']> & {
          }
          TomePatchModel: ComfyNode<IN['TomePatchModel'], OUT['TomePatchModel']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          CLIPTextEncodeSDXLRefiner: ComfyNode<IN['CLIPTextEncodeSDXLRefiner'], OUT['CLIPTextEncodeSDXLRefiner']> & {
-            HasSingle_CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
+            _CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
          }
          CLIPTextEncodeSDXL: ComfyNode<IN['CLIPTextEncodeSDXL'], OUT['CLIPTextEncodeSDXL']> & {
-            HasSingle_CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
+            _CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
          }
          Canny: ComfyNode<IN['Canny'], OUT['Canny']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          FreeU: ComfyNode<IN['FreeU'], OUT['FreeU']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          FreeU_V2: ComfyNode<IN['FreeU_V2'], OUT['FreeU_V2']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          SamplerCustom: ComfyNode<IN['SamplerCustom'], OUT['SamplerCustom']> & {
          }
          BasicScheduler: ComfyNode<IN['BasicScheduler'], OUT['BasicScheduler']> & {
-            HasSingle_SIGMAS: ComfyNodeOutput<'SIGMAS'>
+            _SIGMAS: ComfyNodeOutput<'SIGMAS'>
          }
          KarrasScheduler: ComfyNode<IN['KarrasScheduler'], OUT['KarrasScheduler']> & {
-            HasSingle_SIGMAS: ComfyNodeOutput<'SIGMAS'>
+            _SIGMAS: ComfyNodeOutput<'SIGMAS'>
          }
          ExponentialScheduler: ComfyNode<IN['ExponentialScheduler'], OUT['ExponentialScheduler']> & {
-            HasSingle_SIGMAS: ComfyNodeOutput<'SIGMAS'>
+            _SIGMAS: ComfyNodeOutput<'SIGMAS'>
          }
          PolyexponentialScheduler: ComfyNode<IN['PolyexponentialScheduler'], OUT['PolyexponentialScheduler']> & {
-            HasSingle_SIGMAS: ComfyNodeOutput<'SIGMAS'>
+            _SIGMAS: ComfyNodeOutput<'SIGMAS'>
          }
          LaplaceScheduler: ComfyNode<IN['LaplaceScheduler'], OUT['LaplaceScheduler']> & {
-            HasSingle_SIGMAS: ComfyNodeOutput<'SIGMAS'>
+            _SIGMAS: ComfyNodeOutput<'SIGMAS'>
          }
          VPScheduler: ComfyNode<IN['VPScheduler'], OUT['VPScheduler']> & {
-            HasSingle_SIGMAS: ComfyNodeOutput<'SIGMAS'>
+            _SIGMAS: ComfyNodeOutput<'SIGMAS'>
          }
          BetaSamplingScheduler: ComfyNode<IN['BetaSamplingScheduler'], OUT['BetaSamplingScheduler']> & {
-            HasSingle_SIGMAS: ComfyNodeOutput<'SIGMAS'>
+            _SIGMAS: ComfyNodeOutput<'SIGMAS'>
          }
          SDTurboScheduler: ComfyNode<IN['SDTurboScheduler'], OUT['SDTurboScheduler']> & {
-            HasSingle_SIGMAS: ComfyNodeOutput<'SIGMAS'>
+            _SIGMAS: ComfyNodeOutput<'SIGMAS'>
          }
          KSamplerSelect: ComfyNode<IN['KSamplerSelect'], OUT['KSamplerSelect']> & {
-            HasSingle_SAMPLER: ComfyNodeOutput<'SAMPLER'>
+            _SAMPLER: ComfyNodeOutput<'SAMPLER'>
          }
          SamplerEulerAncestral: ComfyNode<IN['SamplerEulerAncestral'], OUT['SamplerEulerAncestral']> & {
-            HasSingle_SAMPLER: ComfyNodeOutput<'SAMPLER'>
+            _SAMPLER: ComfyNodeOutput<'SAMPLER'>
          }
          SamplerEulerAncestralCFGPP: ComfyNode<IN['SamplerEulerAncestralCFGPP'], OUT['SamplerEulerAncestralCFGPP']> & {
-            HasSingle_SAMPLER: ComfyNodeOutput<'SAMPLER'>
+            _SAMPLER: ComfyNodeOutput<'SAMPLER'>
          }
          SamplerLMS: ComfyNode<IN['SamplerLMS'], OUT['SamplerLMS']> & {
-            HasSingle_SAMPLER: ComfyNodeOutput<'SAMPLER'>
+            _SAMPLER: ComfyNodeOutput<'SAMPLER'>
          }
          SamplerDPMPP_3M_SDE: ComfyNode<IN['SamplerDPMPP_3M_SDE'], OUT['SamplerDPMPP_3M_SDE']> & {
-            HasSingle_SAMPLER: ComfyNodeOutput<'SAMPLER'>
+            _SAMPLER: ComfyNodeOutput<'SAMPLER'>
          }
          SamplerDPMPP_2M_SDE: ComfyNode<IN['SamplerDPMPP_2M_SDE'], OUT['SamplerDPMPP_2M_SDE']> & {
-            HasSingle_SAMPLER: ComfyNodeOutput<'SAMPLER'>
+            _SAMPLER: ComfyNodeOutput<'SAMPLER'>
          }
          SamplerDPMPP_SDE: ComfyNode<IN['SamplerDPMPP_SDE'], OUT['SamplerDPMPP_SDE']> & {
-            HasSingle_SAMPLER: ComfyNodeOutput<'SAMPLER'>
+            _SAMPLER: ComfyNodeOutput<'SAMPLER'>
          }
          SamplerDPMPP_2S_Ancestral: ComfyNode<IN['SamplerDPMPP_2S_Ancestral'], OUT['SamplerDPMPP_2S_Ancestral']> & {
-            HasSingle_SAMPLER: ComfyNodeOutput<'SAMPLER'>
+            _SAMPLER: ComfyNodeOutput<'SAMPLER'>
          }
          SamplerDPMAdaptative: ComfyNode<IN['SamplerDPMAdaptative'], OUT['SamplerDPMAdaptative']> & {
-            HasSingle_SAMPLER: ComfyNodeOutput<'SAMPLER'>
+            _SAMPLER: ComfyNodeOutput<'SAMPLER'>
          }
          SplitSigmas: ComfyNode<IN['SplitSigmas'], OUT['SplitSigmas']> & {
          }
          SplitSigmasDenoise: ComfyNode<IN['SplitSigmasDenoise'], OUT['SplitSigmasDenoise']> & {
          }
          FlipSigmas: ComfyNode<IN['FlipSigmas'], OUT['FlipSigmas']> & {
-            HasSingle_SIGMAS: ComfyNodeOutput<'SIGMAS'>
+            _SIGMAS: ComfyNodeOutput<'SIGMAS'>
          }
          CFGGuider: ComfyNode<IN['CFGGuider'], OUT['CFGGuider']> & {
-            HasSingle_GUIDER: ComfyNodeOutput<'GUIDER'>
+            _GUIDER: ComfyNodeOutput<'GUIDER'>
          }
          DualCFGGuider: ComfyNode<IN['DualCFGGuider'], OUT['DualCFGGuider']> & {
-            HasSingle_GUIDER: ComfyNodeOutput<'GUIDER'>
+            _GUIDER: ComfyNodeOutput<'GUIDER'>
          }
          BasicGuider: ComfyNode<IN['BasicGuider'], OUT['BasicGuider']> & {
-            HasSingle_GUIDER: ComfyNodeOutput<'GUIDER'>
+            _GUIDER: ComfyNodeOutput<'GUIDER'>
          }
          RandomNoise: ComfyNode<IN['RandomNoise'], OUT['RandomNoise']> & {
-            HasSingle_NOISE: ComfyNodeOutput<'NOISE'>
+            _NOISE: ComfyNodeOutput<'NOISE'>
          }
          DisableNoise: ComfyNode<IN['DisableNoise'], OUT['DisableNoise']> & {
-            HasSingle_NOISE: ComfyNodeOutput<'NOISE'>
+            _NOISE: ComfyNodeOutput<'NOISE'>
          }
          AddNoise: ComfyNode<IN['AddNoise'], OUT['AddNoise']> & {
-            HasSingle_LATENT: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          SamplerCustomAdvanced: ComfyNode<IN['SamplerCustomAdvanced'], OUT['SamplerCustomAdvanced']> & {
          }
          HyperTile: ComfyNode<IN['HyperTile'], OUT['HyperTile']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          ModelSamplingDiscrete: ComfyNode<IN['ModelSamplingDiscrete'], OUT['ModelSamplingDiscrete']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          ModelSamplingContinuousEDM: ComfyNode<IN['ModelSamplingContinuousEDM'], OUT['ModelSamplingContinuousEDM']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          ModelSamplingContinuousV: ComfyNode<IN['ModelSamplingContinuousV'], OUT['ModelSamplingContinuousV']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          ModelSamplingStableCascade: ComfyNode<IN['ModelSamplingStableCascade'], OUT['ModelSamplingStableCascade']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          ModelSamplingSD3: ComfyNode<IN['ModelSamplingSD3'], OUT['ModelSamplingSD3']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          ModelSamplingAuraFlow: ComfyNode<IN['ModelSamplingAuraFlow'], OUT['ModelSamplingAuraFlow']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          ModelSamplingFlux: ComfyNode<IN['ModelSamplingFlux'], OUT['ModelSamplingFlux']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          RescaleCFG: ComfyNode<IN['RescaleCFG'], OUT['RescaleCFG']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          PatchModelAddDownscale: ComfyNode<IN['PatchModelAddDownscale'], OUT['PatchModelAddDownscale']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          ImageCrop: ComfyNode<IN['ImageCrop'], OUT['ImageCrop']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          RepeatImageBatch: ComfyNode<IN['RepeatImageBatch'], OUT['RepeatImageBatch']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          ImageFromBatch: ComfyNode<IN['ImageFromBatch'], OUT['ImageFromBatch']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          SaveAnimatedWEBP: ComfyNode<IN['SaveAnimatedWEBP'], OUT['SaveAnimatedWEBP']> & {
          }
          SaveAnimatedPNG: ComfyNode<IN['SaveAnimatedPNG'], OUT['SaveAnimatedPNG']> & {
          }
          ImageOnlyCheckpointLoader: ComfyNode<IN['ImageOnlyCheckpointLoader'], OUT['ImageOnlyCheckpointLoader']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
-            HasSingle_CLIP_VISION: ComfyNodeOutput<'CLIP_VISION'>
-            HasSingle_VAE: ComfyNodeOutput<'VAE'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
+            _CLIP_VISION: ComfyNodeOutput<'CLIP_VISION'>
+            _VAE: ComfyNodeOutput<'VAE'>
          }
          SVD_img2vid_Conditioning: ComfyNode<IN['SVD_img2vid_Conditioning'], OUT['SVD_img2vid_Conditioning']> & {
-            HasSingle_latent: ComfyNodeOutput<'LATENT'>
+            _latent: ComfyNodeOutput<'LATENT'>
          }
          VideoLinearCFGGuidance: ComfyNode<IN['VideoLinearCFGGuidance'], OUT['VideoLinearCFGGuidance']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          VideoTriangleCFGGuidance: ComfyNode<IN['VideoTriangleCFGGuidance'], OUT['VideoTriangleCFGGuidance']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          ImageOnlyCheckpointSave: ComfyNode<IN['ImageOnlyCheckpointSave'], OUT['ImageOnlyCheckpointSave']> & {
          }
          SelfAttentionGuidance: ComfyNode<IN['SelfAttentionGuidance'], OUT['SelfAttentionGuidance']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          PerpNeg: ComfyNode<IN['PerpNeg'], OUT['PerpNeg']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          PerpNegGuider: ComfyNode<IN['PerpNegGuider'], OUT['PerpNegGuider']> & {
-            HasSingle_GUIDER: ComfyNodeOutput<'GUIDER'>
+            _GUIDER: ComfyNodeOutput<'GUIDER'>
          }
          StableZero123_Conditioning: ComfyNode<IN['StableZero123_Conditioning'], OUT['StableZero123_Conditioning']> & {
-            HasSingle_latent: ComfyNodeOutput<'LATENT'>
+            _latent: ComfyNodeOutput<'LATENT'>
          }
          StableZero123_Conditioning_Batched: ComfyNode<IN['StableZero123_Conditioning_Batched'], OUT['StableZero123_Conditioning_Batched']> & {
-            HasSingle_latent: ComfyNodeOutput<'LATENT'>
+            _latent: ComfyNodeOutput<'LATENT'>
          }
          SV3D_Conditioning: ComfyNode<IN['SV3D_Conditioning'], OUT['SV3D_Conditioning']> & {
-            HasSingle_latent: ComfyNodeOutput<'LATENT'>
+            _latent: ComfyNodeOutput<'LATENT'>
          }
          SD_4XUpscale_Conditioning: ComfyNode<IN['SD_4XUpscale_Conditioning'], OUT['SD_4XUpscale_Conditioning']> & {
-            HasSingle_latent: ComfyNodeOutput<'LATENT'>
+            _latent: ComfyNodeOutput<'LATENT'>
          }
          PhotoMakerLoader: ComfyNode<IN['PhotoMakerLoader'], OUT['PhotoMakerLoader']> & {
-            HasSingle_PHOTOMAKER: ComfyNodeOutput<'PHOTOMAKER'>
+            _PHOTOMAKER: ComfyNodeOutput<'PHOTOMAKER'>
          }
          PhotoMakerEncode: ComfyNode<IN['PhotoMakerEncode'], OUT['PhotoMakerEncode']> & {
-            HasSingle_CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
+            _CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
          }
          CLIPTextEncodeControlnet: ComfyNode<IN['CLIPTextEncodeControlnet'], OUT['CLIPTextEncodeControlnet']> & {
-            HasSingle_CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
+            _CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
          }
          Morphology: ComfyNode<IN['Morphology'], OUT['Morphology']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          StableCascade_EmptyLatentImage: ComfyNode<IN['StableCascade_EmptyLatentImage'], OUT['StableCascade_EmptyLatentImage']> & {
          }
          StableCascade_StageB_Conditioning: ComfyNode<IN['StableCascade_StageB_Conditioning'], OUT['StableCascade_StageB_Conditioning']> & {
-            HasSingle_CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
+            _CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
          }
          StableCascade_StageC_VAEEncode: ComfyNode<IN['StableCascade_StageC_VAEEncode'], OUT['StableCascade_StageC_VAEEncode']> & {
          }
          StableCascade_SuperResolutionControlnet: ComfyNode<IN['StableCascade_SuperResolutionControlnet'], OUT['StableCascade_SuperResolutionControlnet']> & {
-            HasSingle_controlnet_input: ComfyNodeOutput<'IMAGE'>
+            _controlnet_input: ComfyNodeOutput<'IMAGE'>
          }
          DifferentialDiffusion: ComfyNode<IN['DifferentialDiffusion'], OUT['DifferentialDiffusion']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          InstructPixToPixConditioning: ComfyNode<IN['InstructPixToPixConditioning'], OUT['InstructPixToPixConditioning']> & {
-            HasSingle_latent: ComfyNodeOutput<'LATENT'>
+            _latent: ComfyNodeOutput<'LATENT'>
          }
          ModelMergeSD1: ComfyNode<IN['ModelMergeSD1'], OUT['ModelMergeSD1']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          ModelMergeSD2: ComfyNode<IN['ModelMergeSD2'], OUT['ModelMergeSD2']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          ModelMergeSDXL: ComfyNode<IN['ModelMergeSDXL'], OUT['ModelMergeSDXL']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          ModelMergeSD3_2B: ComfyNode<IN['ModelMergeSD3_2B'], OUT['ModelMergeSD3_2B']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          ModelMergeFlux1: ComfyNode<IN['ModelMergeFlux1'], OUT['ModelMergeFlux1']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          ModelMergeSD35_Large: ComfyNode<IN['ModelMergeSD35_Large'], OUT['ModelMergeSD35_Large']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          PerturbedAttentionGuidance: ComfyNode<IN['PerturbedAttentionGuidance'], OUT['PerturbedAttentionGuidance']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          AlignYourStepsScheduler: ComfyNode<IN['AlignYourStepsScheduler'], OUT['AlignYourStepsScheduler']> & {
-            HasSingle_SIGMAS: ComfyNodeOutput<'SIGMAS'>
+            _SIGMAS: ComfyNodeOutput<'SIGMAS'>
          }
          UNetSelfAttentionMultiply: ComfyNode<IN['UNetSelfAttentionMultiply'], OUT['UNetSelfAttentionMultiply']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          UNetCrossAttentionMultiply: ComfyNode<IN['UNetCrossAttentionMultiply'], OUT['UNetCrossAttentionMultiply']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          CLIPAttentionMultiply: ComfyNode<IN['CLIPAttentionMultiply'], OUT['CLIPAttentionMultiply']> & {
-            HasSingle_CLIP: ComfyNodeOutput<'CLIP'>
+            _CLIP: ComfyNodeOutput<'CLIP'>
          }
          UNetTemporalAttentionMultiply: ComfyNode<IN['UNetTemporalAttentionMultiply'], OUT['UNetTemporalAttentionMultiply']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          SamplerLCMUpscale: ComfyNode<IN['SamplerLCMUpscale'], OUT['SamplerLCMUpscale']> & {
-            HasSingle_SAMPLER: ComfyNodeOutput<'SAMPLER'>
+            _SAMPLER: ComfyNodeOutput<'SAMPLER'>
          }
          SamplerEulerCFGpp: ComfyNode<IN['SamplerEulerCFGpp'], OUT['SamplerEulerCFGpp']> & {
-            HasSingle_SAMPLER: ComfyNodeOutput<'SAMPLER'>
+            _SAMPLER: ComfyNodeOutput<'SAMPLER'>
          }
          WebcamCapture: ComfyNode<IN['WebcamCapture'], OUT['WebcamCapture']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          EmptyLatentAudio: ComfyNode<IN['EmptyLatentAudio'], OUT['EmptyLatentAudio']> & {
-            HasSingle_LATENT: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          VAEEncodeAudio: ComfyNode<IN['VAEEncodeAudio'], OUT['VAEEncodeAudio']> & {
-            HasSingle_LATENT: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          VAEDecodeAudio: ComfyNode<IN['VAEDecodeAudio'], OUT['VAEDecodeAudio']> & {
-            HasSingle_AUDIO: ComfyNodeOutput<'AUDIO'>
+            _AUDIO: ComfyNodeOutput<'AUDIO'>
          }
          SaveAudio: ComfyNode<IN['SaveAudio'], OUT['SaveAudio']> & {
          }
          LoadAudio: ComfyNode<IN['LoadAudio'], OUT['LoadAudio']> & {
-            HasSingle_AUDIO: ComfyNodeOutput<'AUDIO'>
+            _AUDIO: ComfyNodeOutput<'AUDIO'>
          }
          PreviewAudio: ComfyNode<IN['PreviewAudio'], OUT['PreviewAudio']> & {
          }
          TripleCLIPLoader: ComfyNode<IN['TripleCLIPLoader'], OUT['TripleCLIPLoader']> & {
-            HasSingle_CLIP: ComfyNodeOutput<'CLIP'>
+            _CLIP: ComfyNodeOutput<'CLIP'>
          }
          EmptySD3LatentImage: ComfyNode<IN['EmptySD3LatentImage'], OUT['EmptySD3LatentImage']> & {
-            HasSingle_LATENT: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          CLIPTextEncodeSD3: ComfyNode<IN['CLIPTextEncodeSD3'], OUT['CLIPTextEncodeSD3']> & {
-            HasSingle_CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
+            _CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
          }
          ControlNetApplySD3: ComfyNode<IN['ControlNetApplySD3'], OUT['ControlNetApplySD3']> & {
          }
          SkipLayerGuidanceSD3: ComfyNode<IN['SkipLayerGuidanceSD3'], OUT['SkipLayerGuidanceSD3']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          GITSScheduler: ComfyNode<IN['GITSScheduler'], OUT['GITSScheduler']> & {
-            HasSingle_SIGMAS: ComfyNodeOutput<'SIGMAS'>
+            _SIGMAS: ComfyNodeOutput<'SIGMAS'>
          }
          SetUnionControlNetType: ComfyNode<IN['SetUnionControlNetType'], OUT['SetUnionControlNetType']> & {
-            HasSingle_CONTROL_NET: ComfyNodeOutput<'CONTROL_NET'>
+            _CONTROL_NET: ComfyNodeOutput<'CONTROL_NET'>
          }
          ControlNetInpaintingAliMamaApply: ComfyNode<IN['ControlNetInpaintingAliMamaApply'], OUT['ControlNetInpaintingAliMamaApply']> & {
          }
          CLIPTextEncodeHunyuanDiT: ComfyNode<IN['CLIPTextEncodeHunyuanDiT'], OUT['CLIPTextEncodeHunyuanDiT']> & {
-            HasSingle_CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
+            _CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
          }
          CLIPTextEncodeFlux: ComfyNode<IN['CLIPTextEncodeFlux'], OUT['CLIPTextEncodeFlux']> & {
-            HasSingle_CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
+            _CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
          }
          FluxGuidance: ComfyNode<IN['FluxGuidance'], OUT['FluxGuidance']> & {
-            HasSingle_CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
+            _CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
          }
          LoraSave: ComfyNode<IN['LoraSave'], OUT['LoraSave']> & {
          }
          TorchCompileModel: ComfyNode<IN['TorchCompileModel'], OUT['TorchCompileModel']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          EmptyMochiLatentVideo: ComfyNode<IN['EmptyMochiLatentVideo'], OUT['EmptyMochiLatentVideo']> & {
-            HasSingle_LATENT: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          "websocket_image_save.SaveImageWebsocket": ComfyNode<IN['websocket_image_save.SaveImageWebsocket'], OUT['websocket_image_save.SaveImageWebsocket']> & {
          }
          "was.BLIP Model Loader": ComfyNode<IN['was.BLIP Model Loader'], OUT['was.BLIP Model Loader']> & {
-            HasSingle_BLIP_MODEL: ComfyNodeOutput<'BLIP_MODEL'>
+            _BLIP_MODEL: ComfyNodeOutput<'BLIP_MODEL'>
          }
          "was.Blend Latents": ComfyNode<IN['was.Blend Latents'], OUT['was.Blend Latents']> & {
-            HasSingle_LATENT: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          "was.Bus Node": ComfyNode<IN['was.Bus Node'], OUT['was.Bus Node']> & {
-            HasSingle_bus: ComfyNodeOutput<'BUS'>
-            HasSingle_model: ComfyNodeOutput<'MODEL'>
-            HasSingle_clip: ComfyNodeOutput<'CLIP'>
-            HasSingle_vae: ComfyNodeOutput<'VAE'>
+            _bus: ComfyNodeOutput<'BUS'>
+            _model: ComfyNodeOutput<'MODEL'>
+            _clip: ComfyNodeOutput<'CLIP'>
+            _vae: ComfyNodeOutput<'VAE'>
          }
          "was.Cache Node": ComfyNode<IN['was.Cache Node'], OUT['was.Cache Node']> & {
          }
          "was.Checkpoint Loader": ComfyNode<IN['was.Checkpoint Loader'], OUT['was.Checkpoint Loader']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
-            HasSingle_CLIP: ComfyNodeOutput<'CLIP'>
-            HasSingle_VAE: ComfyNodeOutput<'VAE'>
-            HasSingle_NAME_STRING: ComfyNodeOutput<'STRING'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
+            _CLIP: ComfyNodeOutput<'CLIP'>
+            _VAE: ComfyNodeOutput<'VAE'>
+            _NAME_STRING: ComfyNodeOutput<'STRING'>
          }
          "was.Checkpoint Loader (Simple)": ComfyNode<IN['was.Checkpoint Loader (Simple)'], OUT['was.Checkpoint Loader (Simple)']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
-            HasSingle_CLIP: ComfyNodeOutput<'CLIP'>
-            HasSingle_VAE: ComfyNodeOutput<'VAE'>
-            HasSingle_NAME_STRING: ComfyNodeOutput<'STRING'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
+            _CLIP: ComfyNodeOutput<'CLIP'>
+            _VAE: ComfyNodeOutput<'VAE'>
+            _NAME_STRING: ComfyNodeOutput<'STRING'>
          }
          "was.CLIPTextEncode (NSP)": ComfyNode<IN['was.CLIPTextEncode (NSP)'], OUT['was.CLIPTextEncode (NSP)']> & {
-            HasSingle_conditioning: ComfyNodeOutput<'CONDITIONING'>
+            _conditioning: ComfyNodeOutput<'CONDITIONING'>
          }
          "was.CLIP Input Switch": ComfyNode<IN['was.CLIP Input Switch'], OUT['was.CLIP Input Switch']> & {
-            HasSingle_CLIP: ComfyNodeOutput<'CLIP'>
+            _CLIP: ComfyNodeOutput<'CLIP'>
          }
          "was.CLIP Vision Input Switch": ComfyNode<IN['was.CLIP Vision Input Switch'], OUT['was.CLIP Vision Input Switch']> & {
-            HasSingle_CLIP_VISION: ComfyNodeOutput<'CLIP_VISION'>
+            _CLIP_VISION: ComfyNodeOutput<'CLIP_VISION'>
          }
          "was.Conditioning Input Switch": ComfyNode<IN['was.Conditioning Input Switch'], OUT['was.Conditioning Input Switch']> & {
-            HasSingle_CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
+            _CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
          }
          "was.Constant Number": ComfyNode<IN['was.Constant Number'], OUT['was.Constant Number']> & {
-            HasSingle_NUMBER: ComfyNodeOutput<'NUMBER'>
-            HasSingle_FLOAT: ComfyNodeOutput<'FLOAT'>
-            HasSingle_INT: ComfyNodeOutput<'INT'>
+            _NUMBER: ComfyNodeOutput<'NUMBER'>
+            _FLOAT: ComfyNodeOutput<'FLOAT'>
+            _INT: ComfyNodeOutput<'INT'>
          }
          "was.Create Grid Image": ComfyNode<IN['was.Create Grid Image'], OUT['was.Create Grid Image']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Create Grid Image from Batch": ComfyNode<IN['was.Create Grid Image from Batch'], OUT['was.Create Grid Image from Batch']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Create Morph Image": ComfyNode<IN['was.Create Morph Image'], OUT['was.Create Morph Image']> & {
          }
@@ -10293,137 +10293,137 @@ declare global {
          "was.Create Video from Path": ComfyNode<IN['was.Create Video from Path'], OUT['was.Create Video from Path']> & {
          }
          "was.CLIPSeg Masking": ComfyNode<IN['was.CLIPSeg Masking'], OUT['was.CLIPSeg Masking']> & {
-            HasSingle_MASK: ComfyNodeOutput<'MASK'>
-            HasSingle_MASK_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _MASK: ComfyNodeOutput<'MASK'>
+            _MASK_IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.CLIPSeg Model Loader": ComfyNode<IN['was.CLIPSeg Model Loader'], OUT['was.CLIPSeg Model Loader']> & {
-            HasSingle_clipseg_model: ComfyNodeOutput<'CLIPSEG_MODEL'>
+            _clipseg_model: ComfyNodeOutput<'CLIPSEG_MODEL'>
          }
          "was.CLIPSeg Batch Masking": ComfyNode<IN['was.CLIPSeg Batch Masking'], OUT['was.CLIPSeg Batch Masking']> & {
-            HasSingle_MASKS_BATCH: ComfyNodeOutput<'MASK'>
+            _MASKS_BATCH: ComfyNodeOutput<'MASK'>
          }
          "was.Convert Masks to Images": ComfyNode<IN['was.Convert Masks to Images'], OUT['was.Convert Masks to Images']> & {
-            HasSingle_IMAGES: ComfyNodeOutput<'IMAGE'>
+            _IMAGES: ComfyNodeOutput<'IMAGE'>
          }
          "was.Control Net Model Input Switch": ComfyNode<IN['was.Control Net Model Input Switch'], OUT['was.Control Net Model Input Switch']> & {
-            HasSingle_CONTROL_NET: ComfyNodeOutput<'CONTROL_NET'>
+            _CONTROL_NET: ComfyNodeOutput<'CONTROL_NET'>
          }
          "was.Debug Number to Console": ComfyNode<IN['was.Debug Number to Console'], OUT['was.Debug Number to Console']> & {
-            HasSingle_NUMBER: ComfyNodeOutput<'NUMBER'>
+            _NUMBER: ComfyNodeOutput<'NUMBER'>
          }
          "was.Dictionary to Console": ComfyNode<IN['was.Dictionary to Console'], OUT['was.Dictionary to Console']> & {
-            HasSingle_DICT: ComfyNodeOutput<'DICT'>
+            _DICT: ComfyNodeOutput<'DICT'>
          }
          "was.Diffusers Model Loader": ComfyNode<IN['was.Diffusers Model Loader'], OUT['was.Diffusers Model Loader']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
-            HasSingle_CLIP: ComfyNodeOutput<'CLIP'>
-            HasSingle_VAE: ComfyNodeOutput<'VAE'>
-            HasSingle_NAME_STRING: ComfyNodeOutput<'STRING'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
+            _CLIP: ComfyNodeOutput<'CLIP'>
+            _VAE: ComfyNodeOutput<'VAE'>
+            _NAME_STRING: ComfyNodeOutput<'STRING'>
          }
          "was.Diffusers Hub Model Down-Loader": ComfyNode<IN['was.Diffusers Hub Model Down-Loader'], OUT['was.Diffusers Hub Model Down-Loader']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
-            HasSingle_CLIP: ComfyNodeOutput<'CLIP'>
-            HasSingle_VAE: ComfyNodeOutput<'VAE'>
-            HasSingle_NAME_STRING: ComfyNodeOutput<'STRING'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
+            _CLIP: ComfyNodeOutput<'CLIP'>
+            _VAE: ComfyNodeOutput<'VAE'>
+            _NAME_STRING: ComfyNodeOutput<'STRING'>
          }
          "was.Export API": ComfyNode<IN['was.Export API'], OUT['was.Export API']> & {
          }
          "was.Latent Input Switch": ComfyNode<IN['was.Latent Input Switch'], OUT['was.Latent Input Switch']> & {
-            HasSingle_LATENT: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          "was.Load Cache": ComfyNode<IN['was.Load Cache'], OUT['was.Load Cache']> & {
-            HasSingle_LATENT: ComfyNodeOutput<'LATENT'>
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
-            HasSingle_CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
+            _CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
          }
          "was.Logic Boolean": ComfyNode<IN['was.Logic Boolean'], OUT['was.Logic Boolean']> & {
-            HasSingle_BOOLEAN: ComfyNodeOutput<'BOOLEAN'>
-            HasSingle_NUMBER: ComfyNodeOutput<'NUMBER'>
-            HasSingle_INT: ComfyNodeOutput<'INT'>
-            HasSingle_FLOAT: ComfyNodeOutput<'FLOAT'>
+            _BOOLEAN: ComfyNodeOutput<'BOOLEAN'>
+            _NUMBER: ComfyNodeOutput<'NUMBER'>
+            _INT: ComfyNodeOutput<'INT'>
+            _FLOAT: ComfyNodeOutput<'FLOAT'>
          }
          "was.Logic Boolean Primitive": ComfyNode<IN['was.Logic Boolean Primitive'], OUT['was.Logic Boolean Primitive']> & {
-            HasSingle_BOOLEAN: ComfyNodeOutput<'BOOLEAN'>
+            _BOOLEAN: ComfyNodeOutput<'BOOLEAN'>
          }
          "was.Logic Comparison OR": ComfyNode<IN['was.Logic Comparison OR'], OUT['was.Logic Comparison OR']> & {
-            HasSingle_BOOLEAN: ComfyNodeOutput<'BOOLEAN'>
+            _BOOLEAN: ComfyNodeOutput<'BOOLEAN'>
          }
          "was.Logic Comparison AND": ComfyNode<IN['was.Logic Comparison AND'], OUT['was.Logic Comparison AND']> & {
-            HasSingle_BOOLEAN: ComfyNodeOutput<'BOOLEAN'>
+            _BOOLEAN: ComfyNodeOutput<'BOOLEAN'>
          }
          "was.Logic Comparison XOR": ComfyNode<IN['was.Logic Comparison XOR'], OUT['was.Logic Comparison XOR']> & {
-            HasSingle_BOOLEAN: ComfyNodeOutput<'BOOLEAN'>
+            _BOOLEAN: ComfyNodeOutput<'BOOLEAN'>
          }
          "was.Logic NOT": ComfyNode<IN['was.Logic NOT'], OUT['was.Logic NOT']> & {
-            HasSingle_BOOLEAN: ComfyNodeOutput<'BOOLEAN'>
+            _BOOLEAN: ComfyNodeOutput<'BOOLEAN'>
          }
          "was.Lora Loader": ComfyNode<IN['was.Lora Loader'], OUT['was.Lora Loader']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
-            HasSingle_CLIP: ComfyNodeOutput<'CLIP'>
-            HasSingle_NAME_STRING: ComfyNodeOutput<'STRING'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
+            _CLIP: ComfyNodeOutput<'CLIP'>
+            _NAME_STRING: ComfyNodeOutput<'STRING'>
          }
          "was.Hex to HSL": ComfyNode<IN['was.Hex to HSL'], OUT['was.Hex to HSL']> & {
-            HasSingle_alpha: ComfyNodeOutput<'FLOAT'>
-            HasSingle_hsl: ComfyNodeOutput<'STRING'>
+            _alpha: ComfyNodeOutput<'FLOAT'>
+            _hsl: ComfyNodeOutput<'STRING'>
          }
          "was.HSL to Hex": ComfyNode<IN['was.HSL to Hex'], OUT['was.HSL to Hex']> & {
-            HasSingle_hex_color: ComfyNodeOutput<'STRING'>
+            _hex_color: ComfyNodeOutput<'STRING'>
          }
          "was.Image SSAO (Ambient Occlusion)": ComfyNode<IN['was.Image SSAO (Ambient Occlusion)'], OUT['was.Image SSAO (Ambient Occlusion)']> & {
          }
          "was.Image SSDO (Direct Occlusion)": ComfyNode<IN['was.Image SSDO (Direct Occlusion)'], OUT['was.Image SSDO (Direct Occlusion)']> & {
          }
          "was.Image Analyze": ComfyNode<IN['was.Image Analyze'], OUT['was.Image Analyze']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Aspect Ratio": ComfyNode<IN['was.Image Aspect Ratio'], OUT['was.Image Aspect Ratio']> & {
-            HasSingle_aspect_float: ComfyNodeOutput<'FLOAT'>
+            _aspect_float: ComfyNodeOutput<'FLOAT'>
          }
          "was.Image Batch": ComfyNode<IN['was.Image Batch'], OUT['was.Image Batch']> & {
-            HasSingle_image: ComfyNodeOutput<'IMAGE'>
+            _image: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Blank": ComfyNode<IN['was.Image Blank'], OUT['was.Image Blank']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Blend by Mask": ComfyNode<IN['was.Image Blend by Mask'], OUT['was.Image Blend by Mask']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Blend": ComfyNode<IN['was.Image Blend'], OUT['was.Image Blend']> & {
-            HasSingle_image: ComfyNodeOutput<'IMAGE'>
+            _image: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Blending Mode": ComfyNode<IN['was.Image Blending Mode'], OUT['was.Image Blending Mode']> & {
-            HasSingle_image: ComfyNodeOutput<'IMAGE'>
+            _image: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Bloom Filter": ComfyNode<IN['was.Image Bloom Filter'], OUT['was.Image Bloom Filter']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Canny Filter": ComfyNode<IN['was.Image Canny Filter'], OUT['was.Image Canny Filter']> & {
-            HasSingle_images: ComfyNodeOutput<'IMAGE'>
+            _images: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Chromatic Aberration": ComfyNode<IN['was.Image Chromatic Aberration'], OUT['was.Image Chromatic Aberration']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Color Palette": ComfyNode<IN['was.Image Color Palette'], OUT['was.Image Color Palette']> & {
-            HasSingle_image: ComfyNodeOutput<'IMAGE'>
-            HasSingle_color_palettes: ComfyNodeOutput<'LIST'>
+            _image: ComfyNodeOutput<'IMAGE'>
+            _color_palettes: ComfyNodeOutput<'LIST'>
          }
          "was.Image Crop Face": ComfyNode<IN['was.Image Crop Face'], OUT['was.Image Crop Face']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
-            HasSingle_CROP_DATA: ComfyNodeOutput<'CROP_DATA'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
+            _CROP_DATA: ComfyNodeOutput<'CROP_DATA'>
          }
          "was.Image Crop Location": ComfyNode<IN['was.Image Crop Location'], OUT['was.Image Crop Location']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
-            HasSingle_CROP_DATA: ComfyNodeOutput<'CROP_DATA'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
+            _CROP_DATA: ComfyNodeOutput<'CROP_DATA'>
          }
          "was.Image Crop Square Location": ComfyNode<IN['was.Image Crop Square Location'], OUT['was.Image Crop Square Location']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
-            HasSingle_CROP_DATA: ComfyNodeOutput<'CROP_DATA'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
+            _CROP_DATA: ComfyNodeOutput<'CROP_DATA'>
          }
          "was.Image Displacement Warp": ComfyNode<IN['was.Image Displacement Warp'], OUT['was.Image Displacement Warp']> & {
-            HasSingle_images: ComfyNodeOutput<'IMAGE'>
+            _images: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Lucy Sharpen": ComfyNode<IN['was.Image Lucy Sharpen'], OUT['was.Image Lucy Sharpen']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Paste Face": ComfyNode<IN['was.Image Paste Face'], OUT['was.Image Paste Face']> & {
          }
@@ -10432,1351 +10432,1351 @@ declare global {
          "was.Image Paste Crop by Location": ComfyNode<IN['was.Image Paste Crop by Location'], OUT['was.Image Paste Crop by Location']> & {
          }
          "was.Image Pixelate": ComfyNode<IN['was.Image Pixelate'], OUT['was.Image Pixelate']> & {
-            HasSingle_images: ComfyNodeOutput<'IMAGE'>
+            _images: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Power Noise": ComfyNode<IN['was.Image Power Noise'], OUT['was.Image Power Noise']> & {
-            HasSingle_image: ComfyNodeOutput<'IMAGE'>
+            _image: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Dragan Photography Filter": ComfyNode<IN['was.Image Dragan Photography Filter'], OUT['was.Image Dragan Photography Filter']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Edge Detection Filter": ComfyNode<IN['was.Image Edge Detection Filter'], OUT['was.Image Edge Detection Filter']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Film Grain": ComfyNode<IN['was.Image Film Grain'], OUT['was.Image Film Grain']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Filter Adjustments": ComfyNode<IN['was.Image Filter Adjustments'], OUT['was.Image Filter Adjustments']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Flip": ComfyNode<IN['was.Image Flip'], OUT['was.Image Flip']> & {
-            HasSingle_images: ComfyNodeOutput<'IMAGE'>
+            _images: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Gradient Map": ComfyNode<IN['was.Image Gradient Map'], OUT['was.Image Gradient Map']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Generate Gradient": ComfyNode<IN['was.Image Generate Gradient'], OUT['was.Image Generate Gradient']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image High Pass Filter": ComfyNode<IN['was.Image High Pass Filter'], OUT['was.Image High Pass Filter']> & {
-            HasSingle_images: ComfyNodeOutput<'IMAGE'>
+            _images: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image History Loader": ComfyNode<IN['was.Image History Loader'], OUT['was.Image History Loader']> & {
-            HasSingle_image: ComfyNodeOutput<'IMAGE'>
-            HasSingle_filename_text: ComfyNodeOutput<'STRING'>
+            _image: ComfyNodeOutput<'IMAGE'>
+            _filename_text: ComfyNodeOutput<'STRING'>
          }
          "was.Image Input Switch": ComfyNode<IN['was.Image Input Switch'], OUT['was.Image Input Switch']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Levels Adjustment": ComfyNode<IN['was.Image Levels Adjustment'], OUT['was.Image Levels Adjustment']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Load": ComfyNode<IN['was.Image Load'], OUT['was.Image Load']> & {
-            HasSingle_image: ComfyNodeOutput<'IMAGE'>
-            HasSingle_mask: ComfyNodeOutput<'MASK'>
-            HasSingle_filename_text: ComfyNodeOutput<'STRING'>
+            _image: ComfyNodeOutput<'IMAGE'>
+            _mask: ComfyNodeOutput<'MASK'>
+            _filename_text: ComfyNodeOutput<'STRING'>
          }
          "was.Image Median Filter": ComfyNode<IN['was.Image Median Filter'], OUT['was.Image Median Filter']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Mix RGB Channels": ComfyNode<IN['was.Image Mix RGB Channels'], OUT['was.Image Mix RGB Channels']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Monitor Effects Filter": ComfyNode<IN['was.Image Monitor Effects Filter'], OUT['was.Image Monitor Effects Filter']> & {
-            HasSingle_image: ComfyNodeOutput<'IMAGE'>
+            _image: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Nova Filter": ComfyNode<IN['was.Image Nova Filter'], OUT['was.Image Nova Filter']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Padding": ComfyNode<IN['was.Image Padding'], OUT['was.Image Padding']> & {
          }
          "was.Image Perlin Noise": ComfyNode<IN['was.Image Perlin Noise'], OUT['was.Image Perlin Noise']> & {
-            HasSingle_image: ComfyNodeOutput<'IMAGE'>
+            _image: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Rembg (Remove Background)": ComfyNode<IN['was.Image Rembg (Remove Background)'], OUT['was.Image Rembg (Remove Background)']> & {
-            HasSingle_images: ComfyNodeOutput<'IMAGE'>
+            _images: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Perlin Power Fractal": ComfyNode<IN['was.Image Perlin Power Fractal'], OUT['was.Image Perlin Power Fractal']> & {
-            HasSingle_image: ComfyNodeOutput<'IMAGE'>
+            _image: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Remove Background (Alpha)": ComfyNode<IN['was.Image Remove Background (Alpha)'], OUT['was.Image Remove Background (Alpha)']> & {
-            HasSingle_images: ComfyNodeOutput<'IMAGE'>
+            _images: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Remove Color": ComfyNode<IN['was.Image Remove Color'], OUT['was.Image Remove Color']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Resize": ComfyNode<IN['was.Image Resize'], OUT['was.Image Resize']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Rotate": ComfyNode<IN['was.Image Rotate'], OUT['was.Image Rotate']> & {
-            HasSingle_images: ComfyNodeOutput<'IMAGE'>
+            _images: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Rotate Hue": ComfyNode<IN['was.Image Rotate Hue'], OUT['was.Image Rotate Hue']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Send HTTP": ComfyNode<IN['was.Image Send HTTP'], OUT['was.Image Send HTTP']> & {
-            HasSingle_status_code: ComfyNodeOutput<'INT'>
-            HasSingle_result_text: ComfyNodeOutput<'STRING'>
+            _status_code: ComfyNodeOutput<'INT'>
+            _result_text: ComfyNodeOutput<'STRING'>
          }
          "was.Image Save": ComfyNode<IN['was.Image Save'], OUT['was.Image Save']> & {
-            HasSingle_images: ComfyNodeOutput<'IMAGE'>
-            HasSingle_files: ComfyNodeOutput<'STRING'>
+            _images: ComfyNodeOutput<'IMAGE'>
+            _files: ComfyNodeOutput<'STRING'>
          }
          "was.Image Seamless Texture": ComfyNode<IN['was.Image Seamless Texture'], OUT['was.Image Seamless Texture']> & {
-            HasSingle_images: ComfyNodeOutput<'IMAGE'>
+            _images: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Select Channel": ComfyNode<IN['was.Image Select Channel'], OUT['was.Image Select Channel']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Select Color": ComfyNode<IN['was.Image Select Color'], OUT['was.Image Select Color']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Shadows and Highlights": ComfyNode<IN['was.Image Shadows and Highlights'], OUT['was.Image Shadows and Highlights']> & {
          }
          "was.Image Size to Number": ComfyNode<IN['was.Image Size to Number'], OUT['was.Image Size to Number']> & {
          }
          "was.Image Stitch": ComfyNode<IN['was.Image Stitch'], OUT['was.Image Stitch']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Style Filter": ComfyNode<IN['was.Image Style Filter'], OUT['was.Image Style Filter']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Threshold": ComfyNode<IN['was.Image Threshold'], OUT['was.Image Threshold']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Tiled": ComfyNode<IN['was.Image Tiled'], OUT['was.Image Tiled']> & {
-            HasSingle_IMAGES: ComfyNodeOutput<'IMAGE'>
+            _IMAGES: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Transpose": ComfyNode<IN['was.Image Transpose'], OUT['was.Image Transpose']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image fDOF Filter": ComfyNode<IN['was.Image fDOF Filter'], OUT['was.Image fDOF Filter']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image to Latent Mask": ComfyNode<IN['was.Image to Latent Mask'], OUT['was.Image to Latent Mask']> & {
-            HasSingle_MASKS: ComfyNodeOutput<'MASK'>
+            _MASKS: ComfyNodeOutput<'MASK'>
          }
          "was.Image to Noise": ComfyNode<IN['was.Image to Noise'], OUT['was.Image to Noise']> & {
-            HasSingle_image: ComfyNodeOutput<'IMAGE'>
+            _image: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image to Seed": ComfyNode<IN['was.Image to Seed'], OUT['was.Image to Seed']> & {
-            HasSingle_INT: ComfyNodeOutput<'INT'>
+            _INT: ComfyNodeOutput<'INT'>
          }
          "was.Images to RGB": ComfyNode<IN['was.Images to RGB'], OUT['was.Images to RGB']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Images to Linear": ComfyNode<IN['was.Images to Linear'], OUT['was.Images to Linear']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Integer place counter": ComfyNode<IN['was.Integer place counter'], OUT['was.Integer place counter']> & {
-            HasSingle_INT_PLACES: ComfyNodeOutput<'INT'>
+            _INT_PLACES: ComfyNodeOutput<'INT'>
          }
          "was.Image Voronoi Noise Filter": ComfyNode<IN['was.Image Voronoi Noise Filter'], OUT['was.Image Voronoi Noise Filter']> & {
-            HasSingle_image: ComfyNodeOutput<'IMAGE'>
+            _image: ComfyNodeOutput<'IMAGE'>
          }
          "was.KSampler (WAS)": ComfyNode<IN['was.KSampler (WAS)'], OUT['was.KSampler (WAS)']> & {
-            HasSingle_LATENT: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          "was.KSampler Cycle": ComfyNode<IN['was.KSampler Cycle'], OUT['was.KSampler Cycle']> & {
-            "HasSingle_latent(s)": ComfyNodeOutput<'LATENT'>
+            "_latent(s)": ComfyNodeOutput<'LATENT'>
          }
          "was.Latent Batch": ComfyNode<IN['was.Latent Batch'], OUT['was.Latent Batch']> & {
-            HasSingle_latent: ComfyNodeOutput<'LATENT'>
+            _latent: ComfyNodeOutput<'LATENT'>
          }
          "was.Latent Noise Injection": ComfyNode<IN['was.Latent Noise Injection'], OUT['was.Latent Noise Injection']> & {
-            HasSingle_LATENT: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          "was.Latent Size to Number": ComfyNode<IN['was.Latent Size to Number'], OUT['was.Latent Size to Number']> & {
          }
          "was.Latent Upscale by Factor (WAS)": ComfyNode<IN['was.Latent Upscale by Factor (WAS)'], OUT['was.Latent Upscale by Factor (WAS)']> & {
-            HasSingle_LATENT: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          "was.Load Image Batch": ComfyNode<IN['was.Load Image Batch'], OUT['was.Load Image Batch']> & {
-            HasSingle_image: ComfyNodeOutput<'IMAGE'>
-            HasSingle_filename_text: ComfyNodeOutput<'STRING'>
+            _image: ComfyNodeOutput<'IMAGE'>
+            _filename_text: ComfyNodeOutput<'STRING'>
          }
          "was.Load Text File": ComfyNode<IN['was.Load Text File'], OUT['was.Load Text File']> & {
-            HasSingle_STRING: ComfyNodeOutput<'STRING'>
-            HasSingle_DICT: ComfyNodeOutput<'DICT'>
+            _STRING: ComfyNodeOutput<'STRING'>
+            _DICT: ComfyNodeOutput<'DICT'>
          }
          "was.Load Lora": ComfyNode<IN['was.Load Lora'], OUT['was.Load Lora']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
-            HasSingle_CLIP: ComfyNodeOutput<'CLIP'>
-            HasSingle_NAME_STRING: ComfyNodeOutput<'STRING'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
+            _CLIP: ComfyNodeOutput<'CLIP'>
+            _NAME_STRING: ComfyNodeOutput<'STRING'>
          }
          "was.Lora Input Switch": ComfyNode<IN['was.Lora Input Switch'], OUT['was.Lora Input Switch']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
-            HasSingle_CLIP: ComfyNodeOutput<'CLIP'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
+            _CLIP: ComfyNodeOutput<'CLIP'>
          }
          "was.Masks Add": ComfyNode<IN['was.Masks Add'], OUT['was.Masks Add']> & {
-            HasSingle_MASKS: ComfyNodeOutput<'MASK'>
+            _MASKS: ComfyNodeOutput<'MASK'>
          }
          "was.Masks Subtract": ComfyNode<IN['was.Masks Subtract'], OUT['was.Masks Subtract']> & {
-            HasSingle_MASKS: ComfyNodeOutput<'MASK'>
+            _MASKS: ComfyNodeOutput<'MASK'>
          }
          "was.Mask Arbitrary Region": ComfyNode<IN['was.Mask Arbitrary Region'], OUT['was.Mask Arbitrary Region']> & {
-            HasSingle_MASKS: ComfyNodeOutput<'MASK'>
+            _MASKS: ComfyNodeOutput<'MASK'>
          }
          "was.Mask Batch to Mask": ComfyNode<IN['was.Mask Batch to Mask'], OUT['was.Mask Batch to Mask']> & {
-            HasSingle_MASK: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          "was.Mask Batch": ComfyNode<IN['was.Mask Batch'], OUT['was.Mask Batch']> & {
-            HasSingle_masks: ComfyNodeOutput<'MASK'>
+            _masks: ComfyNodeOutput<'MASK'>
          }
          "was.Mask Ceiling Region": ComfyNode<IN['was.Mask Ceiling Region'], OUT['was.Mask Ceiling Region']> & {
-            HasSingle_MASKS: ComfyNodeOutput<'MASK'>
+            _MASKS: ComfyNodeOutput<'MASK'>
          }
          "was.Mask Crop Dominant Region": ComfyNode<IN['was.Mask Crop Dominant Region'], OUT['was.Mask Crop Dominant Region']> & {
-            HasSingle_MASKS: ComfyNodeOutput<'MASK'>
+            _MASKS: ComfyNodeOutput<'MASK'>
          }
          "was.Mask Crop Minority Region": ComfyNode<IN['was.Mask Crop Minority Region'], OUT['was.Mask Crop Minority Region']> & {
-            HasSingle_MASKS: ComfyNodeOutput<'MASK'>
+            _MASKS: ComfyNodeOutput<'MASK'>
          }
          "was.Mask Crop Region": ComfyNode<IN['was.Mask Crop Region'], OUT['was.Mask Crop Region']> & {
-            HasSingle_cropped_mask: ComfyNodeOutput<'MASK'>
-            HasSingle_crop_data: ComfyNodeOutput<'CROP_DATA'>
+            _cropped_mask: ComfyNodeOutput<'MASK'>
+            _crop_data: ComfyNodeOutput<'CROP_DATA'>
          }
          "was.Mask Paste Region": ComfyNode<IN['was.Mask Paste Region'], OUT['was.Mask Paste Region']> & {
          }
          "was.Mask Dilate Region": ComfyNode<IN['was.Mask Dilate Region'], OUT['was.Mask Dilate Region']> & {
-            HasSingle_MASKS: ComfyNodeOutput<'MASK'>
+            _MASKS: ComfyNodeOutput<'MASK'>
          }
          "was.Mask Dominant Region": ComfyNode<IN['was.Mask Dominant Region'], OUT['was.Mask Dominant Region']> & {
-            HasSingle_MASKS: ComfyNodeOutput<'MASK'>
+            _MASKS: ComfyNodeOutput<'MASK'>
          }
          "was.Mask Erode Region": ComfyNode<IN['was.Mask Erode Region'], OUT['was.Mask Erode Region']> & {
-            HasSingle_MASKS: ComfyNodeOutput<'MASK'>
+            _MASKS: ComfyNodeOutput<'MASK'>
          }
          "was.Mask Fill Holes": ComfyNode<IN['was.Mask Fill Holes'], OUT['was.Mask Fill Holes']> & {
-            HasSingle_MASKS: ComfyNodeOutput<'MASK'>
+            _MASKS: ComfyNodeOutput<'MASK'>
          }
          "was.Mask Floor Region": ComfyNode<IN['was.Mask Floor Region'], OUT['was.Mask Floor Region']> & {
-            HasSingle_MASKS: ComfyNodeOutput<'MASK'>
+            _MASKS: ComfyNodeOutput<'MASK'>
          }
          "was.Mask Gaussian Region": ComfyNode<IN['was.Mask Gaussian Region'], OUT['was.Mask Gaussian Region']> & {
-            HasSingle_MASKS: ComfyNodeOutput<'MASK'>
+            _MASKS: ComfyNodeOutput<'MASK'>
          }
          "was.Mask Invert": ComfyNode<IN['was.Mask Invert'], OUT['was.Mask Invert']> & {
-            HasSingle_MASKS: ComfyNodeOutput<'MASK'>
+            _MASKS: ComfyNodeOutput<'MASK'>
          }
          "was.Mask Minority Region": ComfyNode<IN['was.Mask Minority Region'], OUT['was.Mask Minority Region']> & {
-            HasSingle_MASKS: ComfyNodeOutput<'MASK'>
+            _MASKS: ComfyNodeOutput<'MASK'>
          }
          "was.Mask Smooth Region": ComfyNode<IN['was.Mask Smooth Region'], OUT['was.Mask Smooth Region']> & {
-            HasSingle_MASKS: ComfyNodeOutput<'MASK'>
+            _MASKS: ComfyNodeOutput<'MASK'>
          }
          "was.Mask Threshold Region": ComfyNode<IN['was.Mask Threshold Region'], OUT['was.Mask Threshold Region']> & {
-            HasSingle_MASKS: ComfyNodeOutput<'MASK'>
+            _MASKS: ComfyNodeOutput<'MASK'>
          }
          "was.Masks Combine Regions": ComfyNode<IN['was.Masks Combine Regions'], OUT['was.Masks Combine Regions']> & {
-            HasSingle_MASK: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          "was.Masks Combine Batch": ComfyNode<IN['was.Masks Combine Batch'], OUT['was.Masks Combine Batch']> & {
-            HasSingle_MASK: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          "was.MiDaS Model Loader": ComfyNode<IN['was.MiDaS Model Loader'], OUT['was.MiDaS Model Loader']> & {
-            HasSingle_midas_model: ComfyNodeOutput<'MIDAS_MODEL'>
+            _midas_model: ComfyNodeOutput<'MIDAS_MODEL'>
          }
          "was.MiDaS Depth Approximation": ComfyNode<IN['was.MiDaS Depth Approximation'], OUT['was.MiDaS Depth Approximation']> & {
-            HasSingle_images: ComfyNodeOutput<'IMAGE'>
+            _images: ComfyNodeOutput<'IMAGE'>
          }
          "was.MiDaS Mask Image": ComfyNode<IN['was.MiDaS Mask Image'], OUT['was.MiDaS Mask Image']> & {
          }
          "was.Model Input Switch": ComfyNode<IN['was.Model Input Switch'], OUT['was.Model Input Switch']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          "was.Number Counter": ComfyNode<IN['was.Number Counter'], OUT['was.Number Counter']> & {
-            HasSingle_number: ComfyNodeOutput<'NUMBER'>
-            HasSingle_float: ComfyNodeOutput<'FLOAT'>
-            HasSingle_int: ComfyNodeOutput<'INT'>
+            _number: ComfyNodeOutput<'NUMBER'>
+            _float: ComfyNodeOutput<'FLOAT'>
+            _int: ComfyNodeOutput<'INT'>
          }
          "was.Number Operation": ComfyNode<IN['was.Number Operation'], OUT['was.Number Operation']> & {
-            HasSingle_NUMBER: ComfyNodeOutput<'NUMBER'>
-            HasSingle_FLOAT: ComfyNodeOutput<'FLOAT'>
-            HasSingle_INT: ComfyNodeOutput<'INT'>
+            _NUMBER: ComfyNodeOutput<'NUMBER'>
+            _FLOAT: ComfyNodeOutput<'FLOAT'>
+            _INT: ComfyNodeOutput<'INT'>
          }
          "was.Number to Float": ComfyNode<IN['was.Number to Float'], OUT['was.Number to Float']> & {
-            HasSingle_FLOAT: ComfyNodeOutput<'FLOAT'>
+            _FLOAT: ComfyNodeOutput<'FLOAT'>
          }
          "was.Number Input Switch": ComfyNode<IN['was.Number Input Switch'], OUT['was.Number Input Switch']> & {
-            HasSingle_NUMBER: ComfyNodeOutput<'NUMBER'>
-            HasSingle_FLOAT: ComfyNodeOutput<'FLOAT'>
-            HasSingle_INT: ComfyNodeOutput<'INT'>
+            _NUMBER: ComfyNodeOutput<'NUMBER'>
+            _FLOAT: ComfyNodeOutput<'FLOAT'>
+            _INT: ComfyNodeOutput<'INT'>
          }
          "was.Number Input Condition": ComfyNode<IN['was.Number Input Condition'], OUT['was.Number Input Condition']> & {
-            HasSingle_NUMBER: ComfyNodeOutput<'NUMBER'>
-            HasSingle_FLOAT: ComfyNodeOutput<'FLOAT'>
-            HasSingle_INT: ComfyNodeOutput<'INT'>
+            _NUMBER: ComfyNodeOutput<'NUMBER'>
+            _FLOAT: ComfyNodeOutput<'FLOAT'>
+            _INT: ComfyNodeOutput<'INT'>
          }
          "was.Number Multiple Of": ComfyNode<IN['was.Number Multiple Of'], OUT['was.Number Multiple Of']> & {
-            HasSingle_NUMBER: ComfyNodeOutput<'NUMBER'>
-            HasSingle_FLOAT: ComfyNodeOutput<'FLOAT'>
-            HasSingle_INT: ComfyNodeOutput<'INT'>
+            _NUMBER: ComfyNodeOutput<'NUMBER'>
+            _FLOAT: ComfyNodeOutput<'FLOAT'>
+            _INT: ComfyNodeOutput<'INT'>
          }
          "was.Number PI": ComfyNode<IN['was.Number PI'], OUT['was.Number PI']> & {
-            HasSingle_NUMBER: ComfyNodeOutput<'NUMBER'>
-            HasSingle_FLOAT: ComfyNodeOutput<'FLOAT'>
+            _NUMBER: ComfyNodeOutput<'NUMBER'>
+            _FLOAT: ComfyNodeOutput<'FLOAT'>
          }
          "was.Number to Int": ComfyNode<IN['was.Number to Int'], OUT['was.Number to Int']> & {
-            HasSingle_INT: ComfyNodeOutput<'INT'>
+            _INT: ComfyNodeOutput<'INT'>
          }
          "was.Number to Seed": ComfyNode<IN['was.Number to Seed'], OUT['was.Number to Seed']> & {
-            HasSingle_SEED: ComfyNodeOutput<'SEED'>
+            _SEED: ComfyNodeOutput<'SEED'>
          }
          "was.Number to String": ComfyNode<IN['was.Number to String'], OUT['was.Number to String']> & {
-            HasSingle_STRING: ComfyNodeOutput<'STRING'>
+            _STRING: ComfyNodeOutput<'STRING'>
          }
          "was.Number to Text": ComfyNode<IN['was.Number to Text'], OUT['was.Number to Text']> & {
-            HasSingle_STRING: ComfyNodeOutput<'STRING'>
+            _STRING: ComfyNodeOutput<'STRING'>
          }
          "was.Boolean To Text": ComfyNode<IN['was.Boolean To Text'], OUT['was.Boolean To Text']> & {
-            HasSingle_STRING: ComfyNodeOutput<'STRING'>
+            _STRING: ComfyNodeOutput<'STRING'>
          }
          "was.Prompt Styles Selector": ComfyNode<IN['was.Prompt Styles Selector'], OUT['was.Prompt Styles Selector']> & {
          }
          "was.Prompt Multiple Styles Selector": ComfyNode<IN['was.Prompt Multiple Styles Selector'], OUT['was.Prompt Multiple Styles Selector']> & {
          }
          "was.Random Number": ComfyNode<IN['was.Random Number'], OUT['was.Random Number']> & {
-            HasSingle_NUMBER: ComfyNodeOutput<'NUMBER'>
-            HasSingle_FLOAT: ComfyNodeOutput<'FLOAT'>
-            HasSingle_INT: ComfyNodeOutput<'INT'>
+            _NUMBER: ComfyNodeOutput<'NUMBER'>
+            _FLOAT: ComfyNodeOutput<'FLOAT'>
+            _INT: ComfyNodeOutput<'INT'>
          }
          "was.Save Text File": ComfyNode<IN['was.Save Text File'], OUT['was.Save Text File']> & {
          }
          "was.Seed": ComfyNode<IN['was.Seed'], OUT['was.Seed']> & {
-            HasSingle_seed: ComfyNodeOutput<'SEED'>
-            HasSingle_number: ComfyNodeOutput<'NUMBER'>
-            HasSingle_float: ComfyNodeOutput<'FLOAT'>
-            HasSingle_int: ComfyNodeOutput<'INT'>
+            _seed: ComfyNodeOutput<'SEED'>
+            _number: ComfyNodeOutput<'NUMBER'>
+            _float: ComfyNodeOutput<'FLOAT'>
+            _int: ComfyNodeOutput<'INT'>
          }
          "was.Tensor Batch to Image": ComfyNode<IN['was.Tensor Batch to Image'], OUT['was.Tensor Batch to Image']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.BLIP Analyze Image": ComfyNode<IN['was.BLIP Analyze Image'], OUT['was.BLIP Analyze Image']> & {
          }
          "was.SAM Model Loader": ComfyNode<IN['was.SAM Model Loader'], OUT['was.SAM Model Loader']> & {
-            HasSingle_SAM_MODEL: ComfyNodeOutput<'SAM_MODEL'>
+            _SAM_MODEL: ComfyNodeOutput<'SAM_MODEL'>
          }
          "was.SAM Parameters": ComfyNode<IN['was.SAM Parameters'], OUT['was.SAM Parameters']> & {
-            HasSingle_SAM_PARAMETERS: ComfyNodeOutput<'SAM_PARAMETERS'>
+            _SAM_PARAMETERS: ComfyNodeOutput<'SAM_PARAMETERS'>
          }
          "was.SAM Parameters Combine": ComfyNode<IN['was.SAM Parameters Combine'], OUT['was.SAM Parameters Combine']> & {
-            HasSingle_SAM_PARAMETERS: ComfyNodeOutput<'SAM_PARAMETERS'>
+            _SAM_PARAMETERS: ComfyNodeOutput<'SAM_PARAMETERS'>
          }
          "was.SAM Image Mask": ComfyNode<IN['was.SAM Image Mask'], OUT['was.SAM Image Mask']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
-            HasSingle_MASK: ComfyNodeOutput<'MASK'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          "was.Samples Passthrough (Stat System)": ComfyNode<IN['was.Samples Passthrough (Stat System)'], OUT['was.Samples Passthrough (Stat System)']> & {
-            HasSingle_samples: ComfyNodeOutput<'LATENT'>
+            _samples: ComfyNodeOutput<'LATENT'>
          }
          "was.String to Text": ComfyNode<IN['was.String to Text'], OUT['was.String to Text']> & {
-            HasSingle_STRING: ComfyNodeOutput<'STRING'>
+            _STRING: ComfyNodeOutput<'STRING'>
          }
          "was.Image Bounds": ComfyNode<IN['was.Image Bounds'], OUT['was.Image Bounds']> & {
-            HasSingle_IMAGE_BOUNDS: ComfyNodeOutput<'IMAGE_BOUNDS'>
+            _IMAGE_BOUNDS: ComfyNodeOutput<'IMAGE_BOUNDS'>
          }
          "was.Inset Image Bounds": ComfyNode<IN['was.Inset Image Bounds'], OUT['was.Inset Image Bounds']> & {
-            HasSingle_IMAGE_BOUNDS: ComfyNodeOutput<'IMAGE_BOUNDS'>
+            _IMAGE_BOUNDS: ComfyNodeOutput<'IMAGE_BOUNDS'>
          }
          "was.Bounded Image Blend": ComfyNode<IN['was.Bounded Image Blend'], OUT['was.Bounded Image Blend']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Bounded Image Blend with Mask": ComfyNode<IN['was.Bounded Image Blend with Mask'], OUT['was.Bounded Image Blend with Mask']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Bounded Image Crop": ComfyNode<IN['was.Bounded Image Crop'], OUT['was.Bounded Image Crop']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Bounded Image Crop with Mask": ComfyNode<IN['was.Bounded Image Crop with Mask'], OUT['was.Bounded Image Crop with Mask']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
-            HasSingle_IMAGE_BOUNDS: ComfyNodeOutput<'IMAGE_BOUNDS'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE_BOUNDS: ComfyNodeOutput<'IMAGE_BOUNDS'>
          }
          "was.Image Bounds to Console": ComfyNode<IN['was.Image Bounds to Console'], OUT['was.Image Bounds to Console']> & {
-            HasSingle_IMAGE_BOUNDS: ComfyNodeOutput<'IMAGE_BOUNDS'>
+            _IMAGE_BOUNDS: ComfyNodeOutput<'IMAGE_BOUNDS'>
          }
          "was.Text Dictionary Update": ComfyNode<IN['was.Text Dictionary Update'], OUT['was.Text Dictionary Update']> & {
-            HasSingle_DICT: ComfyNodeOutput<'DICT'>
+            _DICT: ComfyNodeOutput<'DICT'>
          }
          "was.Text Dictionary Get": ComfyNode<IN['was.Text Dictionary Get'], OUT['was.Text Dictionary Get']> & {
-            HasSingle_STRING: ComfyNodeOutput<'STRING'>
+            _STRING: ComfyNodeOutput<'STRING'>
          }
          "was.Text Dictionary Convert": ComfyNode<IN['was.Text Dictionary Convert'], OUT['was.Text Dictionary Convert']> & {
-            HasSingle_DICT: ComfyNodeOutput<'DICT'>
+            _DICT: ComfyNodeOutput<'DICT'>
          }
          "was.Text Dictionary New": ComfyNode<IN['was.Text Dictionary New'], OUT['was.Text Dictionary New']> & {
-            HasSingle_DICT: ComfyNodeOutput<'DICT'>
+            _DICT: ComfyNodeOutput<'DICT'>
          }
          "was.Text Dictionary Keys": ComfyNode<IN['was.Text Dictionary Keys'], OUT['was.Text Dictionary Keys']> & {
-            HasSingle_LIST: ComfyNodeOutput<'LIST'>
+            _LIST: ComfyNodeOutput<'LIST'>
          }
          "was.Text Dictionary To Text": ComfyNode<IN['was.Text Dictionary To Text'], OUT['was.Text Dictionary To Text']> & {
-            HasSingle_STRING: ComfyNodeOutput<'STRING'>
+            _STRING: ComfyNodeOutput<'STRING'>
          }
          "was.Text Add Tokens": ComfyNode<IN['was.Text Add Tokens'], OUT['was.Text Add Tokens']> & {
          }
          "was.Text Add Token by Input": ComfyNode<IN['was.Text Add Token by Input'], OUT['was.Text Add Token by Input']> & {
          }
          "was.Text Compare": ComfyNode<IN['was.Text Compare'], OUT['was.Text Compare']> & {
-            HasSingle_BOOLEAN: ComfyNodeOutput<'BOOLEAN'>
-            HasSingle_SCORE_NUMBER: ComfyNodeOutput<'NUMBER'>
+            _BOOLEAN: ComfyNodeOutput<'BOOLEAN'>
+            _SCORE_NUMBER: ComfyNodeOutput<'NUMBER'>
          }
          "was.Text Concatenate": ComfyNode<IN['was.Text Concatenate'], OUT['was.Text Concatenate']> & {
-            HasSingle_STRING: ComfyNodeOutput<'STRING'>
+            _STRING: ComfyNodeOutput<'STRING'>
          }
          "was.Text File History Loader": ComfyNode<IN['was.Text File History Loader'], OUT['was.Text File History Loader']> & {
-            HasSingle_STRING: ComfyNodeOutput<'STRING'>
-            HasSingle_DICT: ComfyNodeOutput<'DICT'>
+            _STRING: ComfyNodeOutput<'STRING'>
+            _DICT: ComfyNodeOutput<'DICT'>
          }
          "was.Text Find and Replace by Dictionary": ComfyNode<IN['was.Text Find and Replace by Dictionary'], OUT['was.Text Find and Replace by Dictionary']> & {
-            HasSingle_STRING: ComfyNodeOutput<'STRING'>
+            _STRING: ComfyNodeOutput<'STRING'>
          }
          "was.Text Find and Replace Input": ComfyNode<IN['was.Text Find and Replace Input'], OUT['was.Text Find and Replace Input']> & {
-            HasSingle_result_text: ComfyNodeOutput<'STRING'>
-            HasSingle_replacement_count_number: ComfyNodeOutput<'NUMBER'>
-            HasSingle_replacement_count_float: ComfyNodeOutput<'FLOAT'>
-            HasSingle_replacement_count_int: ComfyNodeOutput<'INT'>
+            _result_text: ComfyNodeOutput<'STRING'>
+            _replacement_count_number: ComfyNodeOutput<'NUMBER'>
+            _replacement_count_float: ComfyNodeOutput<'FLOAT'>
+            _replacement_count_int: ComfyNodeOutput<'INT'>
          }
          "was.Text Find and Replace": ComfyNode<IN['was.Text Find and Replace'], OUT['was.Text Find and Replace']> & {
-            HasSingle_result_text: ComfyNodeOutput<'STRING'>
-            HasSingle_replacement_count_number: ComfyNodeOutput<'NUMBER'>
-            HasSingle_replacement_count_float: ComfyNodeOutput<'FLOAT'>
-            HasSingle_replacement_count_int: ComfyNodeOutput<'INT'>
+            _result_text: ComfyNodeOutput<'STRING'>
+            _replacement_count_number: ComfyNodeOutput<'NUMBER'>
+            _replacement_count_float: ComfyNodeOutput<'FLOAT'>
+            _replacement_count_int: ComfyNodeOutput<'INT'>
          }
          "was.Text Find": ComfyNode<IN['was.Text Find'], OUT['was.Text Find']> & {
-            HasSingle_found: ComfyNodeOutput<'BOOLEAN'>
+            _found: ComfyNodeOutput<'BOOLEAN'>
          }
          "was.Text Input Switch": ComfyNode<IN['was.Text Input Switch'], OUT['was.Text Input Switch']> & {
-            HasSingle_STRING: ComfyNodeOutput<'STRING'>
+            _STRING: ComfyNodeOutput<'STRING'>
          }
          "was.Text List": ComfyNode<IN['was.Text List'], OUT['was.Text List']> & {
-            HasSingle_LIST: ComfyNodeOutput<'LIST'>
+            _LIST: ComfyNodeOutput<'LIST'>
          }
          "was.Text List Concatenate": ComfyNode<IN['was.Text List Concatenate'], OUT['was.Text List Concatenate']> & {
-            HasSingle_LIST: ComfyNodeOutput<'LIST'>
+            _LIST: ComfyNodeOutput<'LIST'>
          }
          "was.Text List to Text": ComfyNode<IN['was.Text List to Text'], OUT['was.Text List to Text']> & {
-            HasSingle_STRING: ComfyNodeOutput<'STRING'>
+            _STRING: ComfyNodeOutput<'STRING'>
          }
          "was.Text Load Line From File": ComfyNode<IN['was.Text Load Line From File'], OUT['was.Text Load Line From File']> & {
-            HasSingle_line_text: ComfyNodeOutput<'STRING'>
-            HasSingle_dictionary: ComfyNodeOutput<'DICT'>
+            _line_text: ComfyNodeOutput<'STRING'>
+            _dictionary: ComfyNodeOutput<'DICT'>
          }
          "was.Text Multiline": ComfyNode<IN['was.Text Multiline'], OUT['was.Text Multiline']> & {
-            HasSingle_STRING: ComfyNodeOutput<'STRING'>
+            _STRING: ComfyNodeOutput<'STRING'>
          }
          "was.Text Multiline (Code Compatible)": ComfyNode<IN['was.Text Multiline (Code Compatible)'], OUT['was.Text Multiline (Code Compatible)']> & {
-            HasSingle_STRING: ComfyNodeOutput<'STRING'>
+            _STRING: ComfyNodeOutput<'STRING'>
          }
          "was.Text Parse A1111 Embeddings": ComfyNode<IN['was.Text Parse A1111 Embeddings'], OUT['was.Text Parse A1111 Embeddings']> & {
-            HasSingle_STRING: ComfyNodeOutput<'STRING'>
+            _STRING: ComfyNodeOutput<'STRING'>
          }
          "was.Text Parse Noodle Soup Prompts": ComfyNode<IN['was.Text Parse Noodle Soup Prompts'], OUT['was.Text Parse Noodle Soup Prompts']> & {
-            HasSingle_STRING: ComfyNodeOutput<'STRING'>
+            _STRING: ComfyNodeOutput<'STRING'>
          }
          "was.Text Parse Tokens": ComfyNode<IN['was.Text Parse Tokens'], OUT['was.Text Parse Tokens']> & {
-            HasSingle_STRING: ComfyNodeOutput<'STRING'>
+            _STRING: ComfyNodeOutput<'STRING'>
          }
          "was.Text Random Line": ComfyNode<IN['was.Text Random Line'], OUT['was.Text Random Line']> & {
-            HasSingle_STRING: ComfyNodeOutput<'STRING'>
+            _STRING: ComfyNodeOutput<'STRING'>
          }
          "was.Text Random Prompt": ComfyNode<IN['was.Text Random Prompt'], OUT['was.Text Random Prompt']> & {
-            HasSingle_STRING: ComfyNodeOutput<'STRING'>
+            _STRING: ComfyNodeOutput<'STRING'>
          }
          "was.Text String": ComfyNode<IN['was.Text String'], OUT['was.Text String']> & {
          }
          "was.Text Contains": ComfyNode<IN['was.Text Contains'], OUT['was.Text Contains']> & {
-            HasSingle_BOOLEAN: ComfyNodeOutput<'BOOLEAN'>
+            _BOOLEAN: ComfyNodeOutput<'BOOLEAN'>
          }
          "was.Text Shuffle": ComfyNode<IN['was.Text Shuffle'], OUT['was.Text Shuffle']> & {
-            HasSingle_STRING: ComfyNodeOutput<'STRING'>
+            _STRING: ComfyNodeOutput<'STRING'>
          }
          "was.Text Sort": ComfyNode<IN['was.Text Sort'], OUT['was.Text Sort']> & {
-            HasSingle_STRING: ComfyNodeOutput<'STRING'>
+            _STRING: ComfyNodeOutput<'STRING'>
          }
          "was.Text to Conditioning": ComfyNode<IN['was.Text to Conditioning'], OUT['was.Text to Conditioning']> & {
-            HasSingle_CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
+            _CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
          }
          "was.Text to Console": ComfyNode<IN['was.Text to Console'], OUT['was.Text to Console']> & {
-            HasSingle_STRING: ComfyNodeOutput<'STRING'>
+            _STRING: ComfyNodeOutput<'STRING'>
          }
          "was.Text to Number": ComfyNode<IN['was.Text to Number'], OUT['was.Text to Number']> & {
-            HasSingle_NUMBER: ComfyNodeOutput<'NUMBER'>
+            _NUMBER: ComfyNodeOutput<'NUMBER'>
          }
          "was.Text to String": ComfyNode<IN['was.Text to String'], OUT['was.Text to String']> & {
-            HasSingle_STRING: ComfyNodeOutput<'STRING'>
+            _STRING: ComfyNodeOutput<'STRING'>
          }
          "was.Text String Truncate": ComfyNode<IN['was.Text String Truncate'], OUT['was.Text String Truncate']> & {
          }
          "was.True Random.org Number Generator": ComfyNode<IN['was.True Random.org Number Generator'], OUT['was.True Random.org Number Generator']> & {
-            HasSingle_NUMBER: ComfyNodeOutput<'NUMBER'>
-            HasSingle_FLOAT: ComfyNodeOutput<'FLOAT'>
-            HasSingle_INT: ComfyNodeOutput<'INT'>
+            _NUMBER: ComfyNodeOutput<'NUMBER'>
+            _FLOAT: ComfyNodeOutput<'FLOAT'>
+            _INT: ComfyNodeOutput<'INT'>
          }
          "was.unCLIP Checkpoint Loader": ComfyNode<IN['was.unCLIP Checkpoint Loader'], OUT['was.unCLIP Checkpoint Loader']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
-            HasSingle_CLIP: ComfyNodeOutput<'CLIP'>
-            HasSingle_VAE: ComfyNodeOutput<'VAE'>
-            HasSingle_CLIP_VISION: ComfyNodeOutput<'CLIP_VISION'>
-            HasSingle_NAME_STRING: ComfyNodeOutput<'STRING'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
+            _CLIP: ComfyNodeOutput<'CLIP'>
+            _VAE: ComfyNodeOutput<'VAE'>
+            _CLIP_VISION: ComfyNodeOutput<'CLIP_VISION'>
+            _NAME_STRING: ComfyNodeOutput<'STRING'>
          }
          "was.Upscale Model Loader": ComfyNode<IN['was.Upscale Model Loader'], OUT['was.Upscale Model Loader']> & {
-            HasSingle_UPSCALE_MODEL: ComfyNodeOutput<'UPSCALE_MODEL'>
-            HasSingle_MODEL_NAME_TEXT: ComfyNodeOutput<'STRING'>
+            _UPSCALE_MODEL: ComfyNodeOutput<'UPSCALE_MODEL'>
+            _MODEL_NAME_TEXT: ComfyNodeOutput<'STRING'>
          }
          "was.Upscale Model Switch": ComfyNode<IN['was.Upscale Model Switch'], OUT['was.Upscale Model Switch']> & {
-            HasSingle_UPSCALE_MODEL: ComfyNodeOutput<'UPSCALE_MODEL'>
+            _UPSCALE_MODEL: ComfyNodeOutput<'UPSCALE_MODEL'>
          }
          "was.Write to GIF": ComfyNode<IN['was.Write to GIF'], OUT['was.Write to GIF']> & {
-            HasSingle_image_pass: ComfyNodeOutput<'IMAGE'>
+            _image_pass: ComfyNodeOutput<'IMAGE'>
          }
          "was.Write to Video": ComfyNode<IN['was.Write to Video'], OUT['was.Write to Video']> & {
-            HasSingle_IMAGE_PASS: ComfyNodeOutput<'IMAGE'>
+            _IMAGE_PASS: ComfyNodeOutput<'IMAGE'>
          }
          "was.VAE Input Switch": ComfyNode<IN['was.VAE Input Switch'], OUT['was.VAE Input Switch']> & {
-            HasSingle_VAE: ComfyNodeOutput<'VAE'>
+            _VAE: ComfyNodeOutput<'VAE'>
          }
          "was.Video Dump Frames": ComfyNode<IN['was.Video Dump Frames'], OUT['was.Video Dump Frames']> & {
-            HasSingle_output_path: ComfyNodeOutput<'STRING'>
-            HasSingle_processed_count: ComfyNodeOutput<'NUMBER'>
+            _output_path: ComfyNodeOutput<'STRING'>
+            _processed_count: ComfyNodeOutput<'NUMBER'>
          }
          "was.CLIPSEG2": ComfyNode<IN['was.CLIPSEG2'], OUT['was.CLIPSEG2']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "IPAdapter_plus.IPAdapter": ComfyNode<IN['IPAdapter_plus.IPAdapter'], OUT['IPAdapter_plus.IPAdapter']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          "IPAdapter_plus.IPAdapterAdvanced": ComfyNode<IN['IPAdapter_plus.IPAdapterAdvanced'], OUT['IPAdapter_plus.IPAdapterAdvanced']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          "IPAdapter_plus.IPAdapterBatch": ComfyNode<IN['IPAdapter_plus.IPAdapterBatch'], OUT['IPAdapter_plus.IPAdapterBatch']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          "IPAdapter_plus.IPAdapterFaceID": ComfyNode<IN['IPAdapter_plus.IPAdapterFaceID'], OUT['IPAdapter_plus.IPAdapterFaceID']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
-            HasSingle_face_image: ComfyNodeOutput<'IMAGE'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
+            _face_image: ComfyNodeOutput<'IMAGE'>
          }
          "IPAdapter_plus.IPAdapterFaceIDKolors": ComfyNode<IN['IPAdapter_plus.IPAdapterFaceIDKolors'], OUT['IPAdapter_plus.IPAdapterFaceIDKolors']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
-            HasSingle_face_image: ComfyNodeOutput<'IMAGE'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
+            _face_image: ComfyNodeOutput<'IMAGE'>
          }
          "IPAdapter_plus.IPAAdapterFaceIDBatch": ComfyNode<IN['IPAdapter_plus.IPAAdapterFaceIDBatch'], OUT['IPAdapter_plus.IPAAdapterFaceIDBatch']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
-            HasSingle_face_image: ComfyNodeOutput<'IMAGE'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
+            _face_image: ComfyNodeOutput<'IMAGE'>
          }
          "IPAdapter_plus.IPAdapterTiled": ComfyNode<IN['IPAdapter_plus.IPAdapterTiled'], OUT['IPAdapter_plus.IPAdapterTiled']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
-            HasSingle_tiles: ComfyNodeOutput<'IMAGE'>
-            HasSingle_masks: ComfyNodeOutput<'MASK'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
+            _tiles: ComfyNodeOutput<'IMAGE'>
+            _masks: ComfyNodeOutput<'MASK'>
          }
          "IPAdapter_plus.IPAdapterTiledBatch": ComfyNode<IN['IPAdapter_plus.IPAdapterTiledBatch'], OUT['IPAdapter_plus.IPAdapterTiledBatch']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
-            HasSingle_tiles: ComfyNodeOutput<'IMAGE'>
-            HasSingle_masks: ComfyNodeOutput<'MASK'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
+            _tiles: ComfyNodeOutput<'IMAGE'>
+            _masks: ComfyNodeOutput<'MASK'>
          }
          "IPAdapter_plus.IPAdapterEmbeds": ComfyNode<IN['IPAdapter_plus.IPAdapterEmbeds'], OUT['IPAdapter_plus.IPAdapterEmbeds']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          "IPAdapter_plus.IPAdapterEmbedsBatch": ComfyNode<IN['IPAdapter_plus.IPAdapterEmbedsBatch'], OUT['IPAdapter_plus.IPAdapterEmbedsBatch']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          "IPAdapter_plus.IPAdapterStyleComposition": ComfyNode<IN['IPAdapter_plus.IPAdapterStyleComposition'], OUT['IPAdapter_plus.IPAdapterStyleComposition']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          "IPAdapter_plus.IPAdapterStyleCompositionBatch": ComfyNode<IN['IPAdapter_plus.IPAdapterStyleCompositionBatch'], OUT['IPAdapter_plus.IPAdapterStyleCompositionBatch']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          "IPAdapter_plus.IPAdapterMS": ComfyNode<IN['IPAdapter_plus.IPAdapterMS'], OUT['IPAdapter_plus.IPAdapterMS']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          "IPAdapter_plus.IPAdapterClipVisionEnhancer": ComfyNode<IN['IPAdapter_plus.IPAdapterClipVisionEnhancer'], OUT['IPAdapter_plus.IPAdapterClipVisionEnhancer']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          "IPAdapter_plus.IPAdapterClipVisionEnhancerBatch": ComfyNode<IN['IPAdapter_plus.IPAdapterClipVisionEnhancerBatch'], OUT['IPAdapter_plus.IPAdapterClipVisionEnhancerBatch']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          "IPAdapter_plus.IPAdapterFromParams": ComfyNode<IN['IPAdapter_plus.IPAdapterFromParams'], OUT['IPAdapter_plus.IPAdapterFromParams']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          "IPAdapter_plus.IPAdapterPreciseStyleTransfer": ComfyNode<IN['IPAdapter_plus.IPAdapterPreciseStyleTransfer'], OUT['IPAdapter_plus.IPAdapterPreciseStyleTransfer']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          "IPAdapter_plus.IPAdapterPreciseStyleTransferBatch": ComfyNode<IN['IPAdapter_plus.IPAdapterPreciseStyleTransferBatch'], OUT['IPAdapter_plus.IPAdapterPreciseStyleTransferBatch']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          "IPAdapter_plus.IPAdapterPreciseComposition": ComfyNode<IN['IPAdapter_plus.IPAdapterPreciseComposition'], OUT['IPAdapter_plus.IPAdapterPreciseComposition']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          "IPAdapter_plus.IPAdapterPreciseCompositionBatch": ComfyNode<IN['IPAdapter_plus.IPAdapterPreciseCompositionBatch'], OUT['IPAdapter_plus.IPAdapterPreciseCompositionBatch']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
          }
          "IPAdapter_plus.IPAdapterUnifiedLoader": ComfyNode<IN['IPAdapter_plus.IPAdapterUnifiedLoader'], OUT['IPAdapter_plus.IPAdapterUnifiedLoader']> & {
-            HasSingle_model: ComfyNodeOutput<'MODEL'>
-            HasSingle_ipadapter: ComfyNodeOutput<'IPADAPTER'>
+            _model: ComfyNodeOutput<'MODEL'>
+            _ipadapter: ComfyNodeOutput<'IPADAPTER'>
          }
          "IPAdapter_plus.IPAdapterUnifiedLoaderFaceID": ComfyNode<IN['IPAdapter_plus.IPAdapterUnifiedLoaderFaceID'], OUT['IPAdapter_plus.IPAdapterUnifiedLoaderFaceID']> & {
-            HasSingle_MODEL: ComfyNodeOutput<'MODEL'>
-            HasSingle_ipadapter: ComfyNodeOutput<'IPADAPTER'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
+            _ipadapter: ComfyNodeOutput<'IPADAPTER'>
          }
          "IPAdapter_plus.IPAdapterModelLoader": ComfyNode<IN['IPAdapter_plus.IPAdapterModelLoader'], OUT['IPAdapter_plus.IPAdapterModelLoader']> & {
-            HasSingle_IPADAPTER: ComfyNodeOutput<'IPADAPTER'>
+            _IPADAPTER: ComfyNodeOutput<'IPADAPTER'>
          }
          "IPAdapter_plus.IPAdapterInsightFaceLoader": ComfyNode<IN['IPAdapter_plus.IPAdapterInsightFaceLoader'], OUT['IPAdapter_plus.IPAdapterInsightFaceLoader']> & {
-            HasSingle_INSIGHTFACE: ComfyNodeOutput<'INSIGHTFACE'>
+            _INSIGHTFACE: ComfyNodeOutput<'INSIGHTFACE'>
          }
          "IPAdapter_plus.IPAdapterUnifiedLoaderCommunity": ComfyNode<IN['IPAdapter_plus.IPAdapterUnifiedLoaderCommunity'], OUT['IPAdapter_plus.IPAdapterUnifiedLoaderCommunity']> & {
-            HasSingle_model: ComfyNodeOutput<'MODEL'>
-            HasSingle_ipadapter: ComfyNodeOutput<'IPADAPTER'>
+            _model: ComfyNodeOutput<'MODEL'>
+            _ipadapter: ComfyNodeOutput<'IPADAPTER'>
          }
          "IPAdapter_plus.IPAdapterEncoder": ComfyNode<IN['IPAdapter_plus.IPAdapterEncoder'], OUT['IPAdapter_plus.IPAdapterEncoder']> & {
          }
          "IPAdapter_plus.IPAdapterCombineEmbeds": ComfyNode<IN['IPAdapter_plus.IPAdapterCombineEmbeds'], OUT['IPAdapter_plus.IPAdapterCombineEmbeds']> & {
-            HasSingle_EMBEDS: ComfyNodeOutput<'EMBEDS'>
+            _EMBEDS: ComfyNodeOutput<'EMBEDS'>
          }
          "IPAdapter_plus.IPAdapterNoise": ComfyNode<IN['IPAdapter_plus.IPAdapterNoise'], OUT['IPAdapter_plus.IPAdapterNoise']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "IPAdapter_plus.PrepImageForClipVision": ComfyNode<IN['IPAdapter_plus.PrepImageForClipVision'], OUT['IPAdapter_plus.PrepImageForClipVision']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "IPAdapter_plus.IPAdapterSaveEmbeds": ComfyNode<IN['IPAdapter_plus.IPAdapterSaveEmbeds'], OUT['IPAdapter_plus.IPAdapterSaveEmbeds']> & {
          }
          "IPAdapter_plus.IPAdapterLoadEmbeds": ComfyNode<IN['IPAdapter_plus.IPAdapterLoadEmbeds'], OUT['IPAdapter_plus.IPAdapterLoadEmbeds']> & {
-            HasSingle_EMBEDS: ComfyNodeOutput<'EMBEDS'>
+            _EMBEDS: ComfyNodeOutput<'EMBEDS'>
          }
          "IPAdapter_plus.IPAdapterWeights": ComfyNode<IN['IPAdapter_plus.IPAdapterWeights'], OUT['IPAdapter_plus.IPAdapterWeights']> & {
-            HasSingle_total_frames: ComfyNodeOutput<'INT'>
-            HasSingle_weights_strategy: ComfyNodeOutput<'WEIGHTS_STRATEGY'>
+            _total_frames: ComfyNodeOutput<'INT'>
+            _weights_strategy: ComfyNodeOutput<'WEIGHTS_STRATEGY'>
          }
          "IPAdapter_plus.IPAdapterCombineWeights": ComfyNode<IN['IPAdapter_plus.IPAdapterCombineWeights'], OUT['IPAdapter_plus.IPAdapterCombineWeights']> & {
-            HasSingle_weights: ComfyNodeOutput<'FLOAT'>
-            HasSingle_count: ComfyNodeOutput<'INT'>
+            _weights: ComfyNodeOutput<'FLOAT'>
+            _count: ComfyNodeOutput<'INT'>
          }
          "IPAdapter_plus.IPAdapterWeightsFromStrategy": ComfyNode<IN['IPAdapter_plus.IPAdapterWeightsFromStrategy'], OUT['IPAdapter_plus.IPAdapterWeightsFromStrategy']> & {
-            HasSingle_total_frames: ComfyNodeOutput<'INT'>
-            HasSingle_weights_strategy: ComfyNodeOutput<'WEIGHTS_STRATEGY'>
+            _total_frames: ComfyNodeOutput<'INT'>
+            _weights_strategy: ComfyNodeOutput<'WEIGHTS_STRATEGY'>
          }
          "IPAdapter_plus.IPAdapterPromptScheduleFromWeightsStrategy": ComfyNode<IN['IPAdapter_plus.IPAdapterPromptScheduleFromWeightsStrategy'], OUT['IPAdapter_plus.IPAdapterPromptScheduleFromWeightsStrategy']> & {
-            HasSingle_prompt_schedule: ComfyNodeOutput<'STRING'>
+            _prompt_schedule: ComfyNodeOutput<'STRING'>
          }
          "IPAdapter_plus.IPAdapterRegionalConditioning": ComfyNode<IN['IPAdapter_plus.IPAdapterRegionalConditioning'], OUT['IPAdapter_plus.IPAdapterRegionalConditioning']> & {
-            HasSingle_IPADAPTER_PARAMS: ComfyNodeOutput<'IPADAPTER_PARAMS'>
+            _IPADAPTER_PARAMS: ComfyNodeOutput<'IPADAPTER_PARAMS'>
          }
          "IPAdapter_plus.IPAdapterCombineParams": ComfyNode<IN['IPAdapter_plus.IPAdapterCombineParams'], OUT['IPAdapter_plus.IPAdapterCombineParams']> & {
-            HasSingle_IPADAPTER_PARAMS: ComfyNodeOutput<'IPADAPTER_PARAMS'>
+            _IPADAPTER_PARAMS: ComfyNodeOutput<'IPADAPTER_PARAMS'>
          }
          "controlnet_aux.ShufflePreprocessor": ComfyNode<IN['controlnet_aux.ShufflePreprocessor'], OUT['controlnet_aux.ShufflePreprocessor']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.DensePosePreprocessor": ComfyNode<IN['controlnet_aux.DensePosePreprocessor'], OUT['controlnet_aux.DensePosePreprocessor']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.LeReS-DepthMapPreprocessor": ComfyNode<IN['controlnet_aux.LeReS-DepthMapPreprocessor'], OUT['controlnet_aux.LeReS-DepthMapPreprocessor']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.BinaryPreprocessor": ComfyNode<IN['controlnet_aux.BinaryPreprocessor'], OUT['controlnet_aux.BinaryPreprocessor']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.AnimeFace_SemSegPreprocessor": ComfyNode<IN['controlnet_aux.AnimeFace_SemSegPreprocessor'], OUT['controlnet_aux.AnimeFace_SemSegPreprocessor']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
-            "HasSingle_ABG_CHARACTER_MASK (MASK)": ComfyNodeOutput<'MASK'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
+            "_ABG_CHARACTER_MASK (MASK)": ComfyNodeOutput<'MASK'>
          }
          "controlnet_aux.Zoe-DepthMapPreprocessor": ComfyNode<IN['controlnet_aux.Zoe-DepthMapPreprocessor'], OUT['controlnet_aux.Zoe-DepthMapPreprocessor']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.DepthAnythingPreprocessor": ComfyNode<IN['controlnet_aux.DepthAnythingPreprocessor'], OUT['controlnet_aux.DepthAnythingPreprocessor']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.Zoe_DepthAnythingPreprocessor": ComfyNode<IN['controlnet_aux.Zoe_DepthAnythingPreprocessor'], OUT['controlnet_aux.Zoe_DepthAnythingPreprocessor']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.DepthAnythingV2Preprocessor": ComfyNode<IN['controlnet_aux.DepthAnythingV2Preprocessor'], OUT['controlnet_aux.DepthAnythingV2Preprocessor']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.CannyEdgePreprocessor": ComfyNode<IN['controlnet_aux.CannyEdgePreprocessor'], OUT['controlnet_aux.CannyEdgePreprocessor']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.DWPreprocessor": ComfyNode<IN['controlnet_aux.DWPreprocessor'], OUT['controlnet_aux.DWPreprocessor']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
-            HasSingle_POSE_KEYPOINT: ComfyNodeOutput<'POSE_KEYPOINT'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
+            _POSE_KEYPOINT: ComfyNodeOutput<'POSE_KEYPOINT'>
          }
          "controlnet_aux.AnimalPosePreprocessor": ComfyNode<IN['controlnet_aux.AnimalPosePreprocessor'], OUT['controlnet_aux.AnimalPosePreprocessor']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
-            HasSingle_POSE_KEYPOINT: ComfyNodeOutput<'POSE_KEYPOINT'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
+            _POSE_KEYPOINT: ComfyNodeOutput<'POSE_KEYPOINT'>
          }
          "controlnet_aux.ImageLuminanceDetector": ComfyNode<IN['controlnet_aux.ImageLuminanceDetector'], OUT['controlnet_aux.ImageLuminanceDetector']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.ImageIntensityDetector": ComfyNode<IN['controlnet_aux.ImageIntensityDetector'], OUT['controlnet_aux.ImageIntensityDetector']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.MediaPipe-FaceMeshPreprocessor": ComfyNode<IN['controlnet_aux.MediaPipe-FaceMeshPreprocessor'], OUT['controlnet_aux.MediaPipe-FaceMeshPreprocessor']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.DiffusionEdge_Preprocessor": ComfyNode<IN['controlnet_aux.DiffusionEdge_Preprocessor'], OUT['controlnet_aux.DiffusionEdge_Preprocessor']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.M-LSDPreprocessor": ComfyNode<IN['controlnet_aux.M-LSDPreprocessor'], OUT['controlnet_aux.M-LSDPreprocessor']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.HEDPreprocessor": ComfyNode<IN['controlnet_aux.HEDPreprocessor'], OUT['controlnet_aux.HEDPreprocessor']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.FakeScribblePreprocessor": ComfyNode<IN['controlnet_aux.FakeScribblePreprocessor'], OUT['controlnet_aux.FakeScribblePreprocessor']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.OneFormer-COCO-SemSegPreprocessor": ComfyNode<IN['controlnet_aux.OneFormer-COCO-SemSegPreprocessor'], OUT['controlnet_aux.OneFormer-COCO-SemSegPreprocessor']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.OneFormer-ADE20K-SemSegPreprocessor": ComfyNode<IN['controlnet_aux.OneFormer-ADE20K-SemSegPreprocessor'], OUT['controlnet_aux.OneFormer-ADE20K-SemSegPreprocessor']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.BAE-NormalMapPreprocessor": ComfyNode<IN['controlnet_aux.BAE-NormalMapPreprocessor'], OUT['controlnet_aux.BAE-NormalMapPreprocessor']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.MeshGraphormer-DepthMapPreprocessor": ComfyNode<IN['controlnet_aux.MeshGraphormer-DepthMapPreprocessor'], OUT['controlnet_aux.MeshGraphormer-DepthMapPreprocessor']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
-            HasSingle_INPAINTING_MASK: ComfyNodeOutput<'MASK'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
+            _INPAINTING_MASK: ComfyNodeOutput<'MASK'>
          }
          "controlnet_aux.MeshGraphormer+ImpactDetector-DepthMapPreprocessor": ComfyNode<IN['controlnet_aux.MeshGraphormer+ImpactDetector-DepthMapPreprocessor'], OUT['controlnet_aux.MeshGraphormer+ImpactDetector-DepthMapPreprocessor']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
-            HasSingle_INPAINTING_MASK: ComfyNodeOutput<'MASK'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
+            _INPAINTING_MASK: ComfyNodeOutput<'MASK'>
          }
          "controlnet_aux.DSINE-NormalMapPreprocessor": ComfyNode<IN['controlnet_aux.DSINE-NormalMapPreprocessor'], OUT['controlnet_aux.DSINE-NormalMapPreprocessor']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.MiDaS-NormalMapPreprocessor": ComfyNode<IN['controlnet_aux.MiDaS-NormalMapPreprocessor'], OUT['controlnet_aux.MiDaS-NormalMapPreprocessor']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.MiDaS-DepthMapPreprocessor": ComfyNode<IN['controlnet_aux.MiDaS-DepthMapPreprocessor'], OUT['controlnet_aux.MiDaS-DepthMapPreprocessor']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.AnyLineArtPreprocessor_aux": ComfyNode<IN['controlnet_aux.AnyLineArtPreprocessor_aux'], OUT['controlnet_aux.AnyLineArtPreprocessor_aux']> & {
-            HasSingle_image: ComfyNodeOutput<'IMAGE'>
+            _image: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.SAMPreprocessor": ComfyNode<IN['controlnet_aux.SAMPreprocessor'], OUT['controlnet_aux.SAMPreprocessor']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.UniFormer-SemSegPreprocessor": ComfyNode<IN['controlnet_aux.UniFormer-SemSegPreprocessor'], OUT['controlnet_aux.UniFormer-SemSegPreprocessor']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.SemSegPreprocessor": ComfyNode<IN['controlnet_aux.SemSegPreprocessor'], OUT['controlnet_aux.SemSegPreprocessor']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.PiDiNetPreprocessor": ComfyNode<IN['controlnet_aux.PiDiNetPreprocessor'], OUT['controlnet_aux.PiDiNetPreprocessor']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.InpaintPreprocessor": ComfyNode<IN['controlnet_aux.InpaintPreprocessor'], OUT['controlnet_aux.InpaintPreprocessor']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.LineArtPreprocessor": ComfyNode<IN['controlnet_aux.LineArtPreprocessor'], OUT['controlnet_aux.LineArtPreprocessor']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.OpenposePreprocessor": ComfyNode<IN['controlnet_aux.OpenposePreprocessor'], OUT['controlnet_aux.OpenposePreprocessor']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
-            HasSingle_POSE_KEYPOINT: ComfyNodeOutput<'POSE_KEYPOINT'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
+            _POSE_KEYPOINT: ComfyNodeOutput<'POSE_KEYPOINT'>
          }
          "controlnet_aux.Unimatch_OptFlowPreprocessor": ComfyNode<IN['controlnet_aux.Unimatch_OptFlowPreprocessor'], OUT['controlnet_aux.Unimatch_OptFlowPreprocessor']> & {
-            HasSingle_OPTICAL_FLOW: ComfyNodeOutput<'OPTICAL_FLOW'>
-            HasSingle_PREVIEW_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _OPTICAL_FLOW: ComfyNodeOutput<'OPTICAL_FLOW'>
+            _PREVIEW_IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.MaskOptFlow": ComfyNode<IN['controlnet_aux.MaskOptFlow'], OUT['controlnet_aux.MaskOptFlow']> & {
-            HasSingle_OPTICAL_FLOW: ComfyNodeOutput<'OPTICAL_FLOW'>
-            HasSingle_PREVIEW_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _OPTICAL_FLOW: ComfyNodeOutput<'OPTICAL_FLOW'>
+            _PREVIEW_IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.SavePoseKpsAsJsonFile": ComfyNode<IN['controlnet_aux.SavePoseKpsAsJsonFile'], OUT['controlnet_aux.SavePoseKpsAsJsonFile']> & {
          }
          "controlnet_aux.FacialPartColoringFromPoseKps": ComfyNode<IN['controlnet_aux.FacialPartColoringFromPoseKps'], OUT['controlnet_aux.FacialPartColoringFromPoseKps']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.UpperBodyTrackingFromPoseKps": ComfyNode<IN['controlnet_aux.UpperBodyTrackingFromPoseKps'], OUT['controlnet_aux.UpperBodyTrackingFromPoseKps']> & {
-            HasSingle_tracking: ComfyNodeOutput<'TRACKING'>
-            HasSingle_prompt: ComfyNodeOutput<'STRING'>
+            _tracking: ComfyNodeOutput<'TRACKING'>
+            _prompt: ComfyNodeOutput<'STRING'>
          }
          "controlnet_aux.RenderPeopleKps": ComfyNode<IN['controlnet_aux.RenderPeopleKps'], OUT['controlnet_aux.RenderPeopleKps']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.RenderAnimalKps": ComfyNode<IN['controlnet_aux.RenderAnimalKps'], OUT['controlnet_aux.RenderAnimalKps']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.TEEDPreprocessor": ComfyNode<IN['controlnet_aux.TEEDPreprocessor'], OUT['controlnet_aux.TEEDPreprocessor']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.PyraCannyPreprocessor": ComfyNode<IN['controlnet_aux.PyraCannyPreprocessor'], OUT['controlnet_aux.PyraCannyPreprocessor']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.Metric3D-DepthMapPreprocessor": ComfyNode<IN['controlnet_aux.Metric3D-DepthMapPreprocessor'], OUT['controlnet_aux.Metric3D-DepthMapPreprocessor']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.Metric3D-NormalMapPreprocessor": ComfyNode<IN['controlnet_aux.Metric3D-NormalMapPreprocessor'], OUT['controlnet_aux.Metric3D-NormalMapPreprocessor']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.Manga2Anime_LineArt_Preprocessor": ComfyNode<IN['controlnet_aux.Manga2Anime_LineArt_Preprocessor'], OUT['controlnet_aux.Manga2Anime_LineArt_Preprocessor']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.ScribblePreprocessor": ComfyNode<IN['controlnet_aux.ScribblePreprocessor'], OUT['controlnet_aux.ScribblePreprocessor']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.Scribble_XDoG_Preprocessor": ComfyNode<IN['controlnet_aux.Scribble_XDoG_Preprocessor'], OUT['controlnet_aux.Scribble_XDoG_Preprocessor']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.Scribble_PiDiNet_Preprocessor": ComfyNode<IN['controlnet_aux.Scribble_PiDiNet_Preprocessor'], OUT['controlnet_aux.Scribble_PiDiNet_Preprocessor']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.AnimeLineArtPreprocessor": ComfyNode<IN['controlnet_aux.AnimeLineArtPreprocessor'], OUT['controlnet_aux.AnimeLineArtPreprocessor']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.LineartStandardPreprocessor": ComfyNode<IN['controlnet_aux.LineartStandardPreprocessor'], OUT['controlnet_aux.LineartStandardPreprocessor']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.TilePreprocessor": ComfyNode<IN['controlnet_aux.TilePreprocessor'], OUT['controlnet_aux.TilePreprocessor']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.TTPlanet_TileGF_Preprocessor": ComfyNode<IN['controlnet_aux.TTPlanet_TileGF_Preprocessor'], OUT['controlnet_aux.TTPlanet_TileGF_Preprocessor']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.TTPlanet_TileSimple_Preprocessor": ComfyNode<IN['controlnet_aux.TTPlanet_TileSimple_Preprocessor'], OUT['controlnet_aux.TTPlanet_TileSimple_Preprocessor']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.ColorPreprocessor": ComfyNode<IN['controlnet_aux.ColorPreprocessor'], OUT['controlnet_aux.ColorPreprocessor']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.AIO_Preprocessor": ComfyNode<IN['controlnet_aux.AIO_Preprocessor'], OUT['controlnet_aux.AIO_Preprocessor']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.ControlNetPreprocessorSelector": ComfyNode<IN['controlnet_aux.ControlNetPreprocessorSelector'], OUT['controlnet_aux.ControlNetPreprocessorSelector']> & {
-            HasSingle_preprocessor: ComfyNodeOutput<'E_90ee5994'>
+            _preprocessor: ComfyNodeOutput<'E_90ee5994'>
          }
          "controlnet_aux.PixelPerfectResolution": ComfyNode<IN['controlnet_aux.PixelPerfectResolution'], OUT['controlnet_aux.PixelPerfectResolution']> & {
-            "HasSingle_RESOLUTION (INT)": ComfyNodeOutput<'INT'>
+            "_RESOLUTION (INT)": ComfyNodeOutput<'INT'>
          }
          "controlnet_aux.ImageGenResolutionFromImage": ComfyNode<IN['controlnet_aux.ImageGenResolutionFromImage'], OUT['controlnet_aux.ImageGenResolutionFromImage']> & {
          }
          "controlnet_aux.ImageGenResolutionFromLatent": ComfyNode<IN['controlnet_aux.ImageGenResolutionFromLatent'], OUT['controlnet_aux.ImageGenResolutionFromLatent']> & {
          }
          "controlnet_aux.HintImageEnchance": ComfyNode<IN['controlnet_aux.HintImageEnchance'], OUT['controlnet_aux.HintImageEnchance']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.ExecuteAllControlNetPreprocessors": ComfyNode<IN['controlnet_aux.ExecuteAllControlNetPreprocessors'], OUT['controlnet_aux.ExecuteAllControlNetPreprocessors']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.ControlNetAuxSimpleAddText": ComfyNode<IN['controlnet_aux.ControlNetAuxSimpleAddText'], OUT['controlnet_aux.ControlNetAuxSimpleAddText']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "Marigold.MarigoldModelLoader": ComfyNode<IN['Marigold.MarigoldModelLoader'], OUT['Marigold.MarigoldModelLoader']> & {
-            HasSingle_marigold_model: ComfyNodeOutput<'MARIGOLDMODEL'>
+            _marigold_model: ComfyNodeOutput<'MARIGOLDMODEL'>
          }
          "Marigold.MarigoldDepthEstimation_v2": ComfyNode<IN['Marigold.MarigoldDepthEstimation_v2'], OUT['Marigold.MarigoldDepthEstimation_v2']> & {
-            HasSingle_image: ComfyNodeOutput<'IMAGE'>
+            _image: ComfyNodeOutput<'IMAGE'>
          }
          "Marigold.MarigoldDepthEstimation_v2_video": ComfyNode<IN['Marigold.MarigoldDepthEstimation_v2_video'], OUT['Marigold.MarigoldDepthEstimation_v2_video']> & {
-            HasSingle_image: ComfyNodeOutput<'IMAGE'>
+            _image: ComfyNodeOutput<'IMAGE'>
          }
          "Marigold.MarigoldDepthEstimation": ComfyNode<IN['Marigold.MarigoldDepthEstimation'], OUT['Marigold.MarigoldDepthEstimation']> & {
-            HasSingle_ensembled_image: ComfyNodeOutput<'IMAGE'>
+            _ensembled_image: ComfyNodeOutput<'IMAGE'>
          }
          "Marigold.MarigoldDepthEstimationVideo": ComfyNode<IN['Marigold.MarigoldDepthEstimationVideo'], OUT['Marigold.MarigoldDepthEstimationVideo']> & {
-            HasSingle_ensembled_image: ComfyNodeOutput<'IMAGE'>
+            _ensembled_image: ComfyNodeOutput<'IMAGE'>
          }
          "Marigold.ColorizeDepthmap": ComfyNode<IN['Marigold.ColorizeDepthmap'], OUT['Marigold.ColorizeDepthmap']> & {
-            HasSingle_image: ComfyNodeOutput<'IMAGE'>
+            _image: ComfyNodeOutput<'IMAGE'>
          }
          "Marigold.SaveImageOpenEXR": ComfyNode<IN['Marigold.SaveImageOpenEXR'], OUT['Marigold.SaveImageOpenEXR']> & {
-            HasSingle_file_url: ComfyNodeOutput<'STRING'>
+            _file_url: ComfyNodeOutput<'STRING'>
          }
          "Marigold.RemapDepth": ComfyNode<IN['Marigold.RemapDepth'], OUT['Marigold.RemapDepth']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "Impact_Pack.SAMLoader": ComfyNode<IN['Impact_Pack.SAMLoader'], OUT['Impact_Pack.SAMLoader']> & {
-            HasSingle_SAM_MODEL: ComfyNodeOutput<'SAM_MODEL'>
+            _SAM_MODEL: ComfyNodeOutput<'SAM_MODEL'>
          }
          "Impact_Pack.CLIPSegDetectorProvider": ComfyNode<IN['Impact_Pack.CLIPSegDetectorProvider'], OUT['Impact_Pack.CLIPSegDetectorProvider']> & {
-            HasSingle_BBOX_DETECTOR: ComfyNodeOutput<'BBOX_DETECTOR'>
+            _BBOX_DETECTOR: ComfyNodeOutput<'BBOX_DETECTOR'>
          }
          "Impact_Pack.ONNXDetectorProvider": ComfyNode<IN['Impact_Pack.ONNXDetectorProvider'], OUT['Impact_Pack.ONNXDetectorProvider']> & {
-            HasSingle_BBOX_DETECTOR: ComfyNodeOutput<'BBOX_DETECTOR'>
+            _BBOX_DETECTOR: ComfyNodeOutput<'BBOX_DETECTOR'>
          }
          "Impact_Pack.BitwiseAndMaskForEach": ComfyNode<IN['Impact_Pack.BitwiseAndMaskForEach'], OUT['Impact_Pack.BitwiseAndMaskForEach']> & {
-            HasSingle_SEGS: ComfyNodeOutput<'SEGS'>
+            _SEGS: ComfyNodeOutput<'SEGS'>
          }
          "Impact_Pack.SubtractMaskForEach": ComfyNode<IN['Impact_Pack.SubtractMaskForEach'], OUT['Impact_Pack.SubtractMaskForEach']> & {
-            HasSingle_SEGS: ComfyNodeOutput<'SEGS'>
+            _SEGS: ComfyNodeOutput<'SEGS'>
          }
          "Impact_Pack.DetailerForEach": ComfyNode<IN['Impact_Pack.DetailerForEach'], OUT['Impact_Pack.DetailerForEach']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "Impact_Pack.DetailerForEachDebug": ComfyNode<IN['Impact_Pack.DetailerForEachDebug'], OUT['Impact_Pack.DetailerForEachDebug']> & {
          }
          "Impact_Pack.DetailerForEachPipe": ComfyNode<IN['Impact_Pack.DetailerForEachPipe'], OUT['Impact_Pack.DetailerForEachPipe']> & {
-            HasSingle_segs: ComfyNodeOutput<'SEGS'>
-            HasSingle_basic_pipe: ComfyNodeOutput<'BASIC_PIPE'>
+            _segs: ComfyNodeOutput<'SEGS'>
+            _basic_pipe: ComfyNodeOutput<'BASIC_PIPE'>
          }
          "Impact_Pack.DetailerForEachDebugPipe": ComfyNode<IN['Impact_Pack.DetailerForEachDebugPipe'], OUT['Impact_Pack.DetailerForEachDebugPipe']> & {
-            HasSingle_segs: ComfyNodeOutput<'SEGS'>
-            HasSingle_basic_pipe: ComfyNodeOutput<'BASIC_PIPE'>
+            _segs: ComfyNodeOutput<'SEGS'>
+            _basic_pipe: ComfyNodeOutput<'BASIC_PIPE'>
          }
          "Impact_Pack.DetailerForEachPipeForAnimateDiff": ComfyNode<IN['Impact_Pack.DetailerForEachPipeForAnimateDiff'], OUT['Impact_Pack.DetailerForEachPipeForAnimateDiff']> & {
-            HasSingle_segs: ComfyNodeOutput<'SEGS'>
-            HasSingle_basic_pipe: ComfyNodeOutput<'BASIC_PIPE'>
+            _segs: ComfyNodeOutput<'SEGS'>
+            _basic_pipe: ComfyNodeOutput<'BASIC_PIPE'>
          }
          "Impact_Pack.SAMDetectorCombined": ComfyNode<IN['Impact_Pack.SAMDetectorCombined'], OUT['Impact_Pack.SAMDetectorCombined']> & {
-            HasSingle_MASK: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          "Impact_Pack.SAMDetectorSegmented": ComfyNode<IN['Impact_Pack.SAMDetectorSegmented'], OUT['Impact_Pack.SAMDetectorSegmented']> & {
          }
          "Impact_Pack.FaceDetailer": ComfyNode<IN['Impact_Pack.FaceDetailer'], OUT['Impact_Pack.FaceDetailer']> & {
-            HasSingle_mask: ComfyNodeOutput<'MASK'>
-            HasSingle_detailer_pipe: ComfyNodeOutput<'DETAILER_PIPE'>
+            _mask: ComfyNodeOutput<'MASK'>
+            _detailer_pipe: ComfyNodeOutput<'DETAILER_PIPE'>
          }
          "Impact_Pack.FaceDetailerPipe": ComfyNode<IN['Impact_Pack.FaceDetailerPipe'], OUT['Impact_Pack.FaceDetailerPipe']> & {
-            HasSingle_mask: ComfyNodeOutput<'MASK'>
-            HasSingle_detailer_pipe: ComfyNodeOutput<'DETAILER_PIPE'>
+            _mask: ComfyNodeOutput<'MASK'>
+            _detailer_pipe: ComfyNodeOutput<'DETAILER_PIPE'>
          }
          "Impact_Pack.MaskDetailerPipe": ComfyNode<IN['Impact_Pack.MaskDetailerPipe'], OUT['Impact_Pack.MaskDetailerPipe']> & {
          }
          "Impact_Pack.ToDetailerPipe": ComfyNode<IN['Impact_Pack.ToDetailerPipe'], OUT['Impact_Pack.ToDetailerPipe']> & {
-            HasSingle_detailer_pipe: ComfyNodeOutput<'DETAILER_PIPE'>
+            _detailer_pipe: ComfyNodeOutput<'DETAILER_PIPE'>
          }
          "Impact_Pack.ToDetailerPipeSDXL": ComfyNode<IN['Impact_Pack.ToDetailerPipeSDXL'], OUT['Impact_Pack.ToDetailerPipeSDXL']> & {
-            HasSingle_detailer_pipe: ComfyNodeOutput<'DETAILER_PIPE'>
+            _detailer_pipe: ComfyNodeOutput<'DETAILER_PIPE'>
          }
          "Impact_Pack.FromDetailerPipe": ComfyNode<IN['Impact_Pack.FromDetailerPipe'], OUT['Impact_Pack.FromDetailerPipe']> & {
-            HasSingle_model: ComfyNodeOutput<'MODEL'>
-            HasSingle_clip: ComfyNodeOutput<'CLIP'>
-            HasSingle_vae: ComfyNodeOutput<'VAE'>
-            HasSingle_bbox_detector: ComfyNodeOutput<'BBOX_DETECTOR'>
-            HasSingle_sam_model_opt: ComfyNodeOutput<'SAM_MODEL'>
-            HasSingle_segm_detector_opt: ComfyNodeOutput<'SEGM_DETECTOR'>
-            HasSingle_detailer_hook: ComfyNodeOutput<'DETAILER_HOOK'>
+            _model: ComfyNodeOutput<'MODEL'>
+            _clip: ComfyNodeOutput<'CLIP'>
+            _vae: ComfyNodeOutput<'VAE'>
+            _bbox_detector: ComfyNodeOutput<'BBOX_DETECTOR'>
+            _sam_model_opt: ComfyNodeOutput<'SAM_MODEL'>
+            _segm_detector_opt: ComfyNodeOutput<'SEGM_DETECTOR'>
+            _detailer_hook: ComfyNodeOutput<'DETAILER_HOOK'>
          }
          "Impact_Pack.FromDetailerPipe_v2": ComfyNode<IN['Impact_Pack.FromDetailerPipe_v2'], OUT['Impact_Pack.FromDetailerPipe_v2']> & {
-            HasSingle_detailer_pipe: ComfyNodeOutput<'DETAILER_PIPE'>
-            HasSingle_model: ComfyNodeOutput<'MODEL'>
-            HasSingle_clip: ComfyNodeOutput<'CLIP'>
-            HasSingle_vae: ComfyNodeOutput<'VAE'>
-            HasSingle_bbox_detector: ComfyNodeOutput<'BBOX_DETECTOR'>
-            HasSingle_sam_model_opt: ComfyNodeOutput<'SAM_MODEL'>
-            HasSingle_segm_detector_opt: ComfyNodeOutput<'SEGM_DETECTOR'>
-            HasSingle_detailer_hook: ComfyNodeOutput<'DETAILER_HOOK'>
+            _detailer_pipe: ComfyNodeOutput<'DETAILER_PIPE'>
+            _model: ComfyNodeOutput<'MODEL'>
+            _clip: ComfyNodeOutput<'CLIP'>
+            _vae: ComfyNodeOutput<'VAE'>
+            _bbox_detector: ComfyNodeOutput<'BBOX_DETECTOR'>
+            _sam_model_opt: ComfyNodeOutput<'SAM_MODEL'>
+            _segm_detector_opt: ComfyNodeOutput<'SEGM_DETECTOR'>
+            _detailer_hook: ComfyNodeOutput<'DETAILER_HOOK'>
          }
          "Impact_Pack.FromDetailerPipeSDXL": ComfyNode<IN['Impact_Pack.FromDetailerPipeSDXL'], OUT['Impact_Pack.FromDetailerPipeSDXL']> & {
-            HasSingle_detailer_pipe: ComfyNodeOutput<'DETAILER_PIPE'>
-            HasSingle_vae: ComfyNodeOutput<'VAE'>
-            HasSingle_bbox_detector: ComfyNodeOutput<'BBOX_DETECTOR'>
-            HasSingle_sam_model_opt: ComfyNodeOutput<'SAM_MODEL'>
-            HasSingle_segm_detector_opt: ComfyNodeOutput<'SEGM_DETECTOR'>
-            HasSingle_detailer_hook: ComfyNodeOutput<'DETAILER_HOOK'>
+            _detailer_pipe: ComfyNodeOutput<'DETAILER_PIPE'>
+            _vae: ComfyNodeOutput<'VAE'>
+            _bbox_detector: ComfyNodeOutput<'BBOX_DETECTOR'>
+            _sam_model_opt: ComfyNodeOutput<'SAM_MODEL'>
+            _segm_detector_opt: ComfyNodeOutput<'SEGM_DETECTOR'>
+            _detailer_hook: ComfyNodeOutput<'DETAILER_HOOK'>
          }
          "Impact_Pack.AnyPipeToBasic": ComfyNode<IN['Impact_Pack.AnyPipeToBasic'], OUT['Impact_Pack.AnyPipeToBasic']> & {
-            HasSingle_basic_pipe: ComfyNodeOutput<'BASIC_PIPE'>
+            _basic_pipe: ComfyNodeOutput<'BASIC_PIPE'>
          }
          "Impact_Pack.ToBasicPipe": ComfyNode<IN['Impact_Pack.ToBasicPipe'], OUT['Impact_Pack.ToBasicPipe']> & {
-            HasSingle_basic_pipe: ComfyNodeOutput<'BASIC_PIPE'>
+            _basic_pipe: ComfyNodeOutput<'BASIC_PIPE'>
          }
          "Impact_Pack.FromBasicPipe": ComfyNode<IN['Impact_Pack.FromBasicPipe'], OUT['Impact_Pack.FromBasicPipe']> & {
-            HasSingle_model: ComfyNodeOutput<'MODEL'>
-            HasSingle_clip: ComfyNodeOutput<'CLIP'>
-            HasSingle_vae: ComfyNodeOutput<'VAE'>
+            _model: ComfyNodeOutput<'MODEL'>
+            _clip: ComfyNodeOutput<'CLIP'>
+            _vae: ComfyNodeOutput<'VAE'>
          }
          "Impact_Pack.FromBasicPipe_v2": ComfyNode<IN['Impact_Pack.FromBasicPipe_v2'], OUT['Impact_Pack.FromBasicPipe_v2']> & {
-            HasSingle_basic_pipe: ComfyNodeOutput<'BASIC_PIPE'>
-            HasSingle_model: ComfyNodeOutput<'MODEL'>
-            HasSingle_clip: ComfyNodeOutput<'CLIP'>
-            HasSingle_vae: ComfyNodeOutput<'VAE'>
+            _basic_pipe: ComfyNodeOutput<'BASIC_PIPE'>
+            _model: ComfyNodeOutput<'MODEL'>
+            _clip: ComfyNodeOutput<'CLIP'>
+            _vae: ComfyNodeOutput<'VAE'>
          }
          "Impact_Pack.BasicPipeToDetailerPipe": ComfyNode<IN['Impact_Pack.BasicPipeToDetailerPipe'], OUT['Impact_Pack.BasicPipeToDetailerPipe']> & {
-            HasSingle_detailer_pipe: ComfyNodeOutput<'DETAILER_PIPE'>
+            _detailer_pipe: ComfyNodeOutput<'DETAILER_PIPE'>
          }
          "Impact_Pack.BasicPipeToDetailerPipeSDXL": ComfyNode<IN['Impact_Pack.BasicPipeToDetailerPipeSDXL'], OUT['Impact_Pack.BasicPipeToDetailerPipeSDXL']> & {
-            HasSingle_detailer_pipe: ComfyNodeOutput<'DETAILER_PIPE'>
+            _detailer_pipe: ComfyNodeOutput<'DETAILER_PIPE'>
          }
          "Impact_Pack.DetailerPipeToBasicPipe": ComfyNode<IN['Impact_Pack.DetailerPipeToBasicPipe'], OUT['Impact_Pack.DetailerPipeToBasicPipe']> & {
          }
          "Impact_Pack.EditBasicPipe": ComfyNode<IN['Impact_Pack.EditBasicPipe'], OUT['Impact_Pack.EditBasicPipe']> & {
-            HasSingle_basic_pipe: ComfyNodeOutput<'BASIC_PIPE'>
+            _basic_pipe: ComfyNodeOutput<'BASIC_PIPE'>
          }
          "Impact_Pack.EditDetailerPipe": ComfyNode<IN['Impact_Pack.EditDetailerPipe'], OUT['Impact_Pack.EditDetailerPipe']> & {
-            HasSingle_detailer_pipe: ComfyNodeOutput<'DETAILER_PIPE'>
+            _detailer_pipe: ComfyNodeOutput<'DETAILER_PIPE'>
          }
          "Impact_Pack.EditDetailerPipeSDXL": ComfyNode<IN['Impact_Pack.EditDetailerPipeSDXL'], OUT['Impact_Pack.EditDetailerPipeSDXL']> & {
-            HasSingle_detailer_pipe: ComfyNodeOutput<'DETAILER_PIPE'>
+            _detailer_pipe: ComfyNodeOutput<'DETAILER_PIPE'>
          }
          "Impact_Pack.LatentPixelScale": ComfyNode<IN['Impact_Pack.LatentPixelScale'], OUT['Impact_Pack.LatentPixelScale']> & {
-            HasSingle_LATENT: ComfyNodeOutput<'LATENT'>
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "Impact_Pack.PixelKSampleUpscalerProvider": ComfyNode<IN['Impact_Pack.PixelKSampleUpscalerProvider'], OUT['Impact_Pack.PixelKSampleUpscalerProvider']> & {
-            HasSingle_UPSCALER: ComfyNodeOutput<'UPSCALER'>
+            _UPSCALER: ComfyNodeOutput<'UPSCALER'>
          }
          "Impact_Pack.PixelKSampleUpscalerProviderPipe": ComfyNode<IN['Impact_Pack.PixelKSampleUpscalerProviderPipe'], OUT['Impact_Pack.PixelKSampleUpscalerProviderPipe']> & {
-            HasSingle_UPSCALER: ComfyNodeOutput<'UPSCALER'>
+            _UPSCALER: ComfyNodeOutput<'UPSCALER'>
          }
          "Impact_Pack.IterativeLatentUpscale": ComfyNode<IN['Impact_Pack.IterativeLatentUpscale'], OUT['Impact_Pack.IterativeLatentUpscale']> & {
-            HasSingle_latent: ComfyNodeOutput<'LATENT'>
-            HasSingle_vae: ComfyNodeOutput<'VAE'>
+            _latent: ComfyNodeOutput<'LATENT'>
+            _vae: ComfyNodeOutput<'VAE'>
          }
          "Impact_Pack.IterativeImageUpscale": ComfyNode<IN['Impact_Pack.IterativeImageUpscale'], OUT['Impact_Pack.IterativeImageUpscale']> & {
-            HasSingle_image: ComfyNodeOutput<'IMAGE'>
+            _image: ComfyNodeOutput<'IMAGE'>
          }
          "Impact_Pack.PixelTiledKSampleUpscalerProvider": ComfyNode<IN['Impact_Pack.PixelTiledKSampleUpscalerProvider'], OUT['Impact_Pack.PixelTiledKSampleUpscalerProvider']> & {
-            HasSingle_UPSCALER: ComfyNodeOutput<'UPSCALER'>
+            _UPSCALER: ComfyNodeOutput<'UPSCALER'>
          }
          "Impact_Pack.PixelTiledKSampleUpscalerProviderPipe": ComfyNode<IN['Impact_Pack.PixelTiledKSampleUpscalerProviderPipe'], OUT['Impact_Pack.PixelTiledKSampleUpscalerProviderPipe']> & {
-            HasSingle_UPSCALER: ComfyNodeOutput<'UPSCALER'>
+            _UPSCALER: ComfyNodeOutput<'UPSCALER'>
          }
          "Impact_Pack.TwoSamplersForMaskUpscalerProvider": ComfyNode<IN['Impact_Pack.TwoSamplersForMaskUpscalerProvider'], OUT['Impact_Pack.TwoSamplersForMaskUpscalerProvider']> & {
-            HasSingle_UPSCALER: ComfyNodeOutput<'UPSCALER'>
+            _UPSCALER: ComfyNodeOutput<'UPSCALER'>
          }
          "Impact_Pack.TwoSamplersForMaskUpscalerProviderPipe": ComfyNode<IN['Impact_Pack.TwoSamplersForMaskUpscalerProviderPipe'], OUT['Impact_Pack.TwoSamplersForMaskUpscalerProviderPipe']> & {
-            HasSingle_UPSCALER: ComfyNodeOutput<'UPSCALER'>
+            _UPSCALER: ComfyNodeOutput<'UPSCALER'>
          }
          "Impact_Pack.PixelKSampleHookCombine": ComfyNode<IN['Impact_Pack.PixelKSampleHookCombine'], OUT['Impact_Pack.PixelKSampleHookCombine']> & {
-            HasSingle_PK_HOOK: ComfyNodeOutput<'PK_HOOK'>
+            _PK_HOOK: ComfyNodeOutput<'PK_HOOK'>
          }
          "Impact_Pack.DenoiseScheduleHookProvider": ComfyNode<IN['Impact_Pack.DenoiseScheduleHookProvider'], OUT['Impact_Pack.DenoiseScheduleHookProvider']> & {
-            HasSingle_PK_HOOK: ComfyNodeOutput<'PK_HOOK'>
+            _PK_HOOK: ComfyNodeOutput<'PK_HOOK'>
          }
          "Impact_Pack.StepsScheduleHookProvider": ComfyNode<IN['Impact_Pack.StepsScheduleHookProvider'], OUT['Impact_Pack.StepsScheduleHookProvider']> & {
-            HasSingle_PK_HOOK: ComfyNodeOutput<'PK_HOOK'>
+            _PK_HOOK: ComfyNodeOutput<'PK_HOOK'>
          }
          "Impact_Pack.CfgScheduleHookProvider": ComfyNode<IN['Impact_Pack.CfgScheduleHookProvider'], OUT['Impact_Pack.CfgScheduleHookProvider']> & {
-            HasSingle_PK_HOOK: ComfyNodeOutput<'PK_HOOK'>
+            _PK_HOOK: ComfyNodeOutput<'PK_HOOK'>
          }
          "Impact_Pack.NoiseInjectionHookProvider": ComfyNode<IN['Impact_Pack.NoiseInjectionHookProvider'], OUT['Impact_Pack.NoiseInjectionHookProvider']> & {
-            HasSingle_PK_HOOK: ComfyNodeOutput<'PK_HOOK'>
+            _PK_HOOK: ComfyNodeOutput<'PK_HOOK'>
          }
          "Impact_Pack.UnsamplerHookProvider": ComfyNode<IN['Impact_Pack.UnsamplerHookProvider'], OUT['Impact_Pack.UnsamplerHookProvider']> & {
-            HasSingle_PK_HOOK: ComfyNodeOutput<'PK_HOOK'>
+            _PK_HOOK: ComfyNodeOutput<'PK_HOOK'>
          }
          "Impact_Pack.CoreMLDetailerHookProvider": ComfyNode<IN['Impact_Pack.CoreMLDetailerHookProvider'], OUT['Impact_Pack.CoreMLDetailerHookProvider']> & {
-            HasSingle_DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK'>
+            _DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK'>
          }
          "Impact_Pack.PreviewDetailerHookProvider": ComfyNode<IN['Impact_Pack.PreviewDetailerHookProvider'], OUT['Impact_Pack.PreviewDetailerHookProvider']> & {
-            HasSingle_DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK'>
-            HasSingle_UPSCALER_HOOK: ComfyNodeOutput<'UPSCALER_HOOK'>
+            _DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK'>
+            _UPSCALER_HOOK: ComfyNodeOutput<'UPSCALER_HOOK'>
          }
          "Impact_Pack.DetailerHookCombine": ComfyNode<IN['Impact_Pack.DetailerHookCombine'], OUT['Impact_Pack.DetailerHookCombine']> & {
-            HasSingle_DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK'>
+            _DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK'>
          }
          "Impact_Pack.NoiseInjectionDetailerHookProvider": ComfyNode<IN['Impact_Pack.NoiseInjectionDetailerHookProvider'], OUT['Impact_Pack.NoiseInjectionDetailerHookProvider']> & {
-            HasSingle_DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK'>
+            _DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK'>
          }
          "Impact_Pack.UnsamplerDetailerHookProvider": ComfyNode<IN['Impact_Pack.UnsamplerDetailerHookProvider'], OUT['Impact_Pack.UnsamplerDetailerHookProvider']> & {
-            HasSingle_DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK'>
+            _DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK'>
          }
          "Impact_Pack.DenoiseSchedulerDetailerHookProvider": ComfyNode<IN['Impact_Pack.DenoiseSchedulerDetailerHookProvider'], OUT['Impact_Pack.DenoiseSchedulerDetailerHookProvider']> & {
-            HasSingle_DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK'>
+            _DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK'>
          }
          "Impact_Pack.SEGSOrderedFilterDetailerHookProvider": ComfyNode<IN['Impact_Pack.SEGSOrderedFilterDetailerHookProvider'], OUT['Impact_Pack.SEGSOrderedFilterDetailerHookProvider']> & {
-            HasSingle_DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK'>
+            _DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK'>
          }
          "Impact_Pack.SEGSRangeFilterDetailerHookProvider": ComfyNode<IN['Impact_Pack.SEGSRangeFilterDetailerHookProvider'], OUT['Impact_Pack.SEGSRangeFilterDetailerHookProvider']> & {
-            HasSingle_DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK'>
+            _DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK'>
          }
          "Impact_Pack.SEGSLabelFilterDetailerHookProvider": ComfyNode<IN['Impact_Pack.SEGSLabelFilterDetailerHookProvider'], OUT['Impact_Pack.SEGSLabelFilterDetailerHookProvider']> & {
-            HasSingle_DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK'>
+            _DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK'>
          }
          "Impact_Pack.VariationNoiseDetailerHookProvider": ComfyNode<IN['Impact_Pack.VariationNoiseDetailerHookProvider'], OUT['Impact_Pack.VariationNoiseDetailerHookProvider']> & {
-            HasSingle_DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK'>
+            _DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK'>
          }
          "Impact_Pack.BitwiseAndMask": ComfyNode<IN['Impact_Pack.BitwiseAndMask'], OUT['Impact_Pack.BitwiseAndMask']> & {
-            HasSingle_MASK: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          "Impact_Pack.SubtractMask": ComfyNode<IN['Impact_Pack.SubtractMask'], OUT['Impact_Pack.SubtractMask']> & {
-            HasSingle_MASK: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          "Impact_Pack.AddMask": ComfyNode<IN['Impact_Pack.AddMask'], OUT['Impact_Pack.AddMask']> & {
-            HasSingle_MASK: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          "Impact_Pack.ImpactSegsAndMask": ComfyNode<IN['Impact_Pack.ImpactSegsAndMask'], OUT['Impact_Pack.ImpactSegsAndMask']> & {
-            HasSingle_SEGS: ComfyNodeOutput<'SEGS'>
+            _SEGS: ComfyNodeOutput<'SEGS'>
          }
          "Impact_Pack.ImpactSegsAndMaskForEach": ComfyNode<IN['Impact_Pack.ImpactSegsAndMaskForEach'], OUT['Impact_Pack.ImpactSegsAndMaskForEach']> & {
-            HasSingle_SEGS: ComfyNodeOutput<'SEGS'>
+            _SEGS: ComfyNodeOutput<'SEGS'>
          }
          "Impact_Pack.EmptySegs": ComfyNode<IN['Impact_Pack.EmptySegs'], OUT['Impact_Pack.EmptySegs']> & {
-            HasSingle_SEGS: ComfyNodeOutput<'SEGS'>
+            _SEGS: ComfyNodeOutput<'SEGS'>
          }
          "Impact_Pack.ImpactFlattenMask": ComfyNode<IN['Impact_Pack.ImpactFlattenMask'], OUT['Impact_Pack.ImpactFlattenMask']> & {
-            HasSingle_MASK: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          "Impact_Pack.MediaPipeFaceMeshToSEGS": ComfyNode<IN['Impact_Pack.MediaPipeFaceMeshToSEGS'], OUT['Impact_Pack.MediaPipeFaceMeshToSEGS']> & {
-            HasSingle_SEGS: ComfyNodeOutput<'SEGS'>
+            _SEGS: ComfyNodeOutput<'SEGS'>
          }
          "Impact_Pack.MaskToSEGS": ComfyNode<IN['Impact_Pack.MaskToSEGS'], OUT['Impact_Pack.MaskToSEGS']> & {
-            HasSingle_SEGS: ComfyNodeOutput<'SEGS'>
+            _SEGS: ComfyNodeOutput<'SEGS'>
          }
          "Impact_Pack.MaskToSEGS_for_AnimateDiff": ComfyNode<IN['Impact_Pack.MaskToSEGS_for_AnimateDiff'], OUT['Impact_Pack.MaskToSEGS_for_AnimateDiff']> & {
-            HasSingle_SEGS: ComfyNodeOutput<'SEGS'>
+            _SEGS: ComfyNodeOutput<'SEGS'>
          }
          "Impact_Pack.ToBinaryMask": ComfyNode<IN['Impact_Pack.ToBinaryMask'], OUT['Impact_Pack.ToBinaryMask']> & {
-            HasSingle_MASK: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          "Impact_Pack.MasksToMaskList": ComfyNode<IN['Impact_Pack.MasksToMaskList'], OUT['Impact_Pack.MasksToMaskList']> & {
-            HasSingle_MASK: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          "Impact_Pack.MaskListToMaskBatch": ComfyNode<IN['Impact_Pack.MaskListToMaskBatch'], OUT['Impact_Pack.MaskListToMaskBatch']> & {
-            HasSingle_MASK: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          "Impact_Pack.ImageListToImageBatch": ComfyNode<IN['Impact_Pack.ImageListToImageBatch'], OUT['Impact_Pack.ImageListToImageBatch']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "Impact_Pack.SetDefaultImageForSEGS": ComfyNode<IN['Impact_Pack.SetDefaultImageForSEGS'], OUT['Impact_Pack.SetDefaultImageForSEGS']> & {
-            HasSingle_SEGS: ComfyNodeOutput<'SEGS'>
+            _SEGS: ComfyNodeOutput<'SEGS'>
          }
          "Impact_Pack.RemoveImageFromSEGS": ComfyNode<IN['Impact_Pack.RemoveImageFromSEGS'], OUT['Impact_Pack.RemoveImageFromSEGS']> & {
-            HasSingle_SEGS: ComfyNodeOutput<'SEGS'>
+            _SEGS: ComfyNodeOutput<'SEGS'>
          }
          "Impact_Pack.BboxDetectorSEGS": ComfyNode<IN['Impact_Pack.BboxDetectorSEGS'], OUT['Impact_Pack.BboxDetectorSEGS']> & {
-            HasSingle_SEGS: ComfyNodeOutput<'SEGS'>
+            _SEGS: ComfyNodeOutput<'SEGS'>
          }
          "Impact_Pack.SegmDetectorSEGS": ComfyNode<IN['Impact_Pack.SegmDetectorSEGS'], OUT['Impact_Pack.SegmDetectorSEGS']> & {
-            HasSingle_SEGS: ComfyNodeOutput<'SEGS'>
+            _SEGS: ComfyNodeOutput<'SEGS'>
          }
          "Impact_Pack.ONNXDetectorSEGS": ComfyNode<IN['Impact_Pack.ONNXDetectorSEGS'], OUT['Impact_Pack.ONNXDetectorSEGS']> & {
-            HasSingle_SEGS: ComfyNodeOutput<'SEGS'>
+            _SEGS: ComfyNodeOutput<'SEGS'>
          }
          "Impact_Pack.ImpactSimpleDetectorSEGS_for_AD": ComfyNode<IN['Impact_Pack.ImpactSimpleDetectorSEGS_for_AD'], OUT['Impact_Pack.ImpactSimpleDetectorSEGS_for_AD']> & {
-            HasSingle_SEGS: ComfyNodeOutput<'SEGS'>
+            _SEGS: ComfyNodeOutput<'SEGS'>
          }
          "Impact_Pack.ImpactSimpleDetectorSEGS": ComfyNode<IN['Impact_Pack.ImpactSimpleDetectorSEGS'], OUT['Impact_Pack.ImpactSimpleDetectorSEGS']> & {
-            HasSingle_SEGS: ComfyNodeOutput<'SEGS'>
+            _SEGS: ComfyNodeOutput<'SEGS'>
          }
          "Impact_Pack.ImpactSimpleDetectorSEGSPipe": ComfyNode<IN['Impact_Pack.ImpactSimpleDetectorSEGSPipe'], OUT['Impact_Pack.ImpactSimpleDetectorSEGSPipe']> & {
-            HasSingle_SEGS: ComfyNodeOutput<'SEGS'>
+            _SEGS: ComfyNodeOutput<'SEGS'>
          }
          "Impact_Pack.ImpactControlNetApplySEGS": ComfyNode<IN['Impact_Pack.ImpactControlNetApplySEGS'], OUT['Impact_Pack.ImpactControlNetApplySEGS']> & {
-            HasSingle_SEGS: ComfyNodeOutput<'SEGS'>
+            _SEGS: ComfyNodeOutput<'SEGS'>
          }
          "Impact_Pack.ImpactControlNetApplyAdvancedSEGS": ComfyNode<IN['Impact_Pack.ImpactControlNetApplyAdvancedSEGS'], OUT['Impact_Pack.ImpactControlNetApplyAdvancedSEGS']> & {
-            HasSingle_SEGS: ComfyNodeOutput<'SEGS'>
+            _SEGS: ComfyNodeOutput<'SEGS'>
          }
          "Impact_Pack.ImpactControlNetClearSEGS": ComfyNode<IN['Impact_Pack.ImpactControlNetClearSEGS'], OUT['Impact_Pack.ImpactControlNetClearSEGS']> & {
-            HasSingle_SEGS: ComfyNodeOutput<'SEGS'>
+            _SEGS: ComfyNodeOutput<'SEGS'>
          }
          "Impact_Pack.ImpactIPAdapterApplySEGS": ComfyNode<IN['Impact_Pack.ImpactIPAdapterApplySEGS'], OUT['Impact_Pack.ImpactIPAdapterApplySEGS']> & {
-            HasSingle_SEGS: ComfyNodeOutput<'SEGS'>
+            _SEGS: ComfyNodeOutput<'SEGS'>
          }
          "Impact_Pack.ImpactDecomposeSEGS": ComfyNode<IN['Impact_Pack.ImpactDecomposeSEGS'], OUT['Impact_Pack.ImpactDecomposeSEGS']> & {
-            HasSingle_SEGS_HEADER: ComfyNodeOutput<'SEGS_HEADER'>
-            HasSingle_SEG_ELT: ComfyNodeOutput<'SEG_ELT'>
+            _SEGS_HEADER: ComfyNodeOutput<'SEGS_HEADER'>
+            _SEG_ELT: ComfyNodeOutput<'SEG_ELT'>
          }
          "Impact_Pack.ImpactAssembleSEGS": ComfyNode<IN['Impact_Pack.ImpactAssembleSEGS'], OUT['Impact_Pack.ImpactAssembleSEGS']> & {
-            HasSingle_SEGS: ComfyNodeOutput<'SEGS'>
+            _SEGS: ComfyNodeOutput<'SEGS'>
          }
          "Impact_Pack.ImpactFrom_SEG_ELT": ComfyNode<IN['Impact_Pack.ImpactFrom_SEG_ELT'], OUT['Impact_Pack.ImpactFrom_SEG_ELT']> & {
-            HasSingle_seg_elt: ComfyNodeOutput<'SEG_ELT'>
-            HasSingle_cropped_image: ComfyNodeOutput<'IMAGE'>
-            HasSingle_cropped_mask: ComfyNodeOutput<'MASK'>
-            HasSingle_crop_region: ComfyNodeOutput<'SEG_ELT_crop_region'>
-            HasSingle_bbox: ComfyNodeOutput<'SEG_ELT_bbox'>
-            HasSingle_control_net_wrapper: ComfyNodeOutput<'SEG_ELT_control_net_wrapper'>
-            HasSingle_confidence: ComfyNodeOutput<'FLOAT'>
-            HasSingle_label: ComfyNodeOutput<'STRING'>
+            _seg_elt: ComfyNodeOutput<'SEG_ELT'>
+            _cropped_image: ComfyNodeOutput<'IMAGE'>
+            _cropped_mask: ComfyNodeOutput<'MASK'>
+            _crop_region: ComfyNodeOutput<'SEG_ELT_crop_region'>
+            _bbox: ComfyNodeOutput<'SEG_ELT_bbox'>
+            _control_net_wrapper: ComfyNodeOutput<'SEG_ELT_control_net_wrapper'>
+            _confidence: ComfyNodeOutput<'FLOAT'>
+            _label: ComfyNodeOutput<'STRING'>
          }
          "Impact_Pack.ImpactEdit_SEG_ELT": ComfyNode<IN['Impact_Pack.ImpactEdit_SEG_ELT'], OUT['Impact_Pack.ImpactEdit_SEG_ELT']> & {
-            HasSingle_SEG_ELT: ComfyNodeOutput<'SEG_ELT'>
+            _SEG_ELT: ComfyNodeOutput<'SEG_ELT'>
          }
          "Impact_Pack.ImpactDilate_Mask_SEG_ELT": ComfyNode<IN['Impact_Pack.ImpactDilate_Mask_SEG_ELT'], OUT['Impact_Pack.ImpactDilate_Mask_SEG_ELT']> & {
-            HasSingle_SEG_ELT: ComfyNodeOutput<'SEG_ELT'>
+            _SEG_ELT: ComfyNodeOutput<'SEG_ELT'>
          }
          "Impact_Pack.ImpactDilateMask": ComfyNode<IN['Impact_Pack.ImpactDilateMask'], OUT['Impact_Pack.ImpactDilateMask']> & {
-            HasSingle_MASK: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          "Impact_Pack.ImpactGaussianBlurMask": ComfyNode<IN['Impact_Pack.ImpactGaussianBlurMask'], OUT['Impact_Pack.ImpactGaussianBlurMask']> & {
-            HasSingle_MASK: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          "Impact_Pack.ImpactDilateMaskInSEGS": ComfyNode<IN['Impact_Pack.ImpactDilateMaskInSEGS'], OUT['Impact_Pack.ImpactDilateMaskInSEGS']> & {
-            HasSingle_SEGS: ComfyNodeOutput<'SEGS'>
+            _SEGS: ComfyNodeOutput<'SEGS'>
          }
          "Impact_Pack.ImpactGaussianBlurMaskInSEGS": ComfyNode<IN['Impact_Pack.ImpactGaussianBlurMaskInSEGS'], OUT['Impact_Pack.ImpactGaussianBlurMaskInSEGS']> & {
-            HasSingle_SEGS: ComfyNodeOutput<'SEGS'>
+            _SEGS: ComfyNodeOutput<'SEGS'>
          }
          "Impact_Pack.ImpactScaleBy_BBOX_SEG_ELT": ComfyNode<IN['Impact_Pack.ImpactScaleBy_BBOX_SEG_ELT'], OUT['Impact_Pack.ImpactScaleBy_BBOX_SEG_ELT']> & {
-            HasSingle_SEG_ELT: ComfyNodeOutput<'SEG_ELT'>
+            _SEG_ELT: ComfyNodeOutput<'SEG_ELT'>
          }
          "Impact_Pack.ImpactFrom_SEG_ELT_bbox": ComfyNode<IN['Impact_Pack.ImpactFrom_SEG_ELT_bbox'], OUT['Impact_Pack.ImpactFrom_SEG_ELT_bbox']> & {
          }
          "Impact_Pack.ImpactFrom_SEG_ELT_crop_region": ComfyNode<IN['Impact_Pack.ImpactFrom_SEG_ELT_crop_region'], OUT['Impact_Pack.ImpactFrom_SEG_ELT_crop_region']> & {
          }
          "Impact_Pack.ImpactCount_Elts_in_SEGS": ComfyNode<IN['Impact_Pack.ImpactCount_Elts_in_SEGS'], OUT['Impact_Pack.ImpactCount_Elts_in_SEGS']> & {
-            HasSingle_INT: ComfyNodeOutput<'INT'>
+            _INT: ComfyNodeOutput<'INT'>
          }
          "Impact_Pack.BboxDetectorCombined_v2": ComfyNode<IN['Impact_Pack.BboxDetectorCombined_v2'], OUT['Impact_Pack.BboxDetectorCombined_v2']> & {
-            HasSingle_MASK: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          "Impact_Pack.SegmDetectorCombined_v2": ComfyNode<IN['Impact_Pack.SegmDetectorCombined_v2'], OUT['Impact_Pack.SegmDetectorCombined_v2']> & {
-            HasSingle_MASK: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          "Impact_Pack.SegsToCombinedMask": ComfyNode<IN['Impact_Pack.SegsToCombinedMask'], OUT['Impact_Pack.SegsToCombinedMask']> & {
-            HasSingle_MASK: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          "Impact_Pack.KSamplerProvider": ComfyNode<IN['Impact_Pack.KSamplerProvider'], OUT['Impact_Pack.KSamplerProvider']> & {
-            HasSingle_KSAMPLER: ComfyNodeOutput<'KSAMPLER'>
+            _KSAMPLER: ComfyNodeOutput<'KSAMPLER'>
          }
          "Impact_Pack.TwoSamplersForMask": ComfyNode<IN['Impact_Pack.TwoSamplersForMask'], OUT['Impact_Pack.TwoSamplersForMask']> & {
-            HasSingle_LATENT: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          "Impact_Pack.TiledKSamplerProvider": ComfyNode<IN['Impact_Pack.TiledKSamplerProvider'], OUT['Impact_Pack.TiledKSamplerProvider']> & {
-            HasSingle_KSAMPLER: ComfyNodeOutput<'KSAMPLER'>
+            _KSAMPLER: ComfyNodeOutput<'KSAMPLER'>
          }
          "Impact_Pack.KSamplerAdvancedProvider": ComfyNode<IN['Impact_Pack.KSamplerAdvancedProvider'], OUT['Impact_Pack.KSamplerAdvancedProvider']> & {
-            HasSingle_KSAMPLER_ADVANCED: ComfyNodeOutput<'KSAMPLER_ADVANCED'>
+            _KSAMPLER_ADVANCED: ComfyNodeOutput<'KSAMPLER_ADVANCED'>
          }
          "Impact_Pack.TwoAdvancedSamplersForMask": ComfyNode<IN['Impact_Pack.TwoAdvancedSamplersForMask'], OUT['Impact_Pack.TwoAdvancedSamplersForMask']> & {
-            HasSingle_LATENT: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          "Impact_Pack.ImpactNegativeConditioningPlaceholder": ComfyNode<IN['Impact_Pack.ImpactNegativeConditioningPlaceholder'], OUT['Impact_Pack.ImpactNegativeConditioningPlaceholder']> & {
-            HasSingle_CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
+            _CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
          }
          "Impact_Pack.PreviewBridge": ComfyNode<IN['Impact_Pack.PreviewBridge'], OUT['Impact_Pack.PreviewBridge']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
-            HasSingle_MASK: ComfyNodeOutput<'MASK'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          "Impact_Pack.PreviewBridgeLatent": ComfyNode<IN['Impact_Pack.PreviewBridgeLatent'], OUT['Impact_Pack.PreviewBridgeLatent']> & {
-            HasSingle_LATENT: ComfyNodeOutput<'LATENT'>
-            HasSingle_MASK: ComfyNodeOutput<'MASK'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          "Impact_Pack.ImageSender": ComfyNode<IN['Impact_Pack.ImageSender'], OUT['Impact_Pack.ImageSender']> & {
          }
          "Impact_Pack.ImageReceiver": ComfyNode<IN['Impact_Pack.ImageReceiver'], OUT['Impact_Pack.ImageReceiver']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
-            HasSingle_MASK: ComfyNodeOutput<'MASK'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          "Impact_Pack.LatentSender": ComfyNode<IN['Impact_Pack.LatentSender'], OUT['Impact_Pack.LatentSender']> & {
          }
          "Impact_Pack.LatentReceiver": ComfyNode<IN['Impact_Pack.LatentReceiver'], OUT['Impact_Pack.LatentReceiver']> & {
-            HasSingle_LATENT: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          "Impact_Pack.ImageMaskSwitch": ComfyNode<IN['Impact_Pack.ImageMaskSwitch'], OUT['Impact_Pack.ImageMaskSwitch']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
-            HasSingle_MASK: ComfyNodeOutput<'MASK'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          "Impact_Pack.LatentSwitch": ComfyNode<IN['Impact_Pack.LatentSwitch'], OUT['Impact_Pack.LatentSwitch']> & {
-            HasSingle_selected_value: ComfyNodeOutput<'*'>
-            HasSingle_selected_label: ComfyNodeOutput<'STRING'>
-            HasSingle_selected_index: ComfyNodeOutput<'INT'>
+            _selected_value: ComfyNodeOutput<'*'>
+            _selected_label: ComfyNodeOutput<'STRING'>
+            _selected_index: ComfyNodeOutput<'INT'>
          }
          "Impact_Pack.SEGSSwitch": ComfyNode<IN['Impact_Pack.SEGSSwitch'], OUT['Impact_Pack.SEGSSwitch']> & {
-            HasSingle_selected_value: ComfyNodeOutput<'*'>
-            HasSingle_selected_label: ComfyNodeOutput<'STRING'>
-            HasSingle_selected_index: ComfyNodeOutput<'INT'>
+            _selected_value: ComfyNodeOutput<'*'>
+            _selected_label: ComfyNodeOutput<'STRING'>
+            _selected_index: ComfyNodeOutput<'INT'>
          }
          "Impact_Pack.ImpactSwitch": ComfyNode<IN['Impact_Pack.ImpactSwitch'], OUT['Impact_Pack.ImpactSwitch']> & {
-            HasSingle_selected_value: ComfyNodeOutput<'*'>
-            HasSingle_selected_label: ComfyNodeOutput<'STRING'>
-            HasSingle_selected_index: ComfyNodeOutput<'INT'>
+            _selected_value: ComfyNodeOutput<'*'>
+            _selected_label: ComfyNodeOutput<'STRING'>
+            _selected_index: ComfyNodeOutput<'INT'>
          }
          "Impact_Pack.ImpactInversedSwitch": ComfyNode<IN['Impact_Pack.ImpactInversedSwitch'], OUT['Impact_Pack.ImpactInversedSwitch']> & {
-            "HasSingle_*": ComfyNodeOutput<'*'>
+            "_*": ComfyNodeOutput<'*'>
          }
          "Impact_Pack.ImpactWildcardProcessor": ComfyNode<IN['Impact_Pack.ImpactWildcardProcessor'], OUT['Impact_Pack.ImpactWildcardProcessor']> & {
-            HasSingle_STRING: ComfyNodeOutput<'STRING'>
+            _STRING: ComfyNodeOutput<'STRING'>
          }
          "Impact_Pack.ImpactWildcardEncode": ComfyNode<IN['Impact_Pack.ImpactWildcardEncode'], OUT['Impact_Pack.ImpactWildcardEncode']> & {
-            HasSingle_model: ComfyNodeOutput<'MODEL'>
-            HasSingle_clip: ComfyNodeOutput<'CLIP'>
-            HasSingle_conditioning: ComfyNodeOutput<'CONDITIONING'>
-            HasSingle_populated_text: ComfyNodeOutput<'STRING'>
+            _model: ComfyNodeOutput<'MODEL'>
+            _clip: ComfyNodeOutput<'CLIP'>
+            _conditioning: ComfyNodeOutput<'CONDITIONING'>
+            _populated_text: ComfyNodeOutput<'STRING'>
          }
          "Impact_Pack.SEGSUpscaler": ComfyNode<IN['Impact_Pack.SEGSUpscaler'], OUT['Impact_Pack.SEGSUpscaler']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "Impact_Pack.SEGSUpscalerPipe": ComfyNode<IN['Impact_Pack.SEGSUpscalerPipe'], OUT['Impact_Pack.SEGSUpscalerPipe']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "Impact_Pack.SEGSDetailer": ComfyNode<IN['Impact_Pack.SEGSDetailer'], OUT['Impact_Pack.SEGSDetailer']> & {
-            HasSingle_segs: ComfyNodeOutput<'SEGS'>
-            HasSingle_cnet_images: ComfyNodeOutput<'IMAGE'>
+            _segs: ComfyNodeOutput<'SEGS'>
+            _cnet_images: ComfyNodeOutput<'IMAGE'>
          }
          "Impact_Pack.SEGSPaste": ComfyNode<IN['Impact_Pack.SEGSPaste'], OUT['Impact_Pack.SEGSPaste']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "Impact_Pack.SEGSPreview": ComfyNode<IN['Impact_Pack.SEGSPreview'], OUT['Impact_Pack.SEGSPreview']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "Impact_Pack.SEGSPreviewCNet": ComfyNode<IN['Impact_Pack.SEGSPreviewCNet'], OUT['Impact_Pack.SEGSPreviewCNet']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "Impact_Pack.SEGSToImageList": ComfyNode<IN['Impact_Pack.SEGSToImageList'], OUT['Impact_Pack.SEGSToImageList']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "Impact_Pack.ImpactSEGSToMaskList": ComfyNode<IN['Impact_Pack.ImpactSEGSToMaskList'], OUT['Impact_Pack.ImpactSEGSToMaskList']> & {
-            HasSingle_MASK: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          "Impact_Pack.ImpactSEGSToMaskBatch": ComfyNode<IN['Impact_Pack.ImpactSEGSToMaskBatch'], OUT['Impact_Pack.ImpactSEGSToMaskBatch']> & {
-            HasSingle_MASK: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          "Impact_Pack.ImpactSEGSConcat": ComfyNode<IN['Impact_Pack.ImpactSEGSConcat'], OUT['Impact_Pack.ImpactSEGSConcat']> & {
-            HasSingle_SEGS: ComfyNodeOutput<'SEGS'>
+            _SEGS: ComfyNodeOutput<'SEGS'>
          }
          "Impact_Pack.ImpactSEGSPicker": ComfyNode<IN['Impact_Pack.ImpactSEGSPicker'], OUT['Impact_Pack.ImpactSEGSPicker']> & {
-            HasSingle_SEGS: ComfyNodeOutput<'SEGS'>
+            _SEGS: ComfyNodeOutput<'SEGS'>
          }
          "Impact_Pack.ImpactMakeTileSEGS": ComfyNode<IN['Impact_Pack.ImpactMakeTileSEGS'], OUT['Impact_Pack.ImpactMakeTileSEGS']> & {
-            HasSingle_SEGS: ComfyNodeOutput<'SEGS'>
+            _SEGS: ComfyNodeOutput<'SEGS'>
          }
          "Impact_Pack.ImpactSEGSMerge": ComfyNode<IN['Impact_Pack.ImpactSEGSMerge'], OUT['Impact_Pack.ImpactSEGSMerge']> & {
-            HasSingle_SEGS: ComfyNodeOutput<'SEGS'>
+            _SEGS: ComfyNodeOutput<'SEGS'>
          }
          "Impact_Pack.SEGSDetailerForAnimateDiff": ComfyNode<IN['Impact_Pack.SEGSDetailerForAnimateDiff'], OUT['Impact_Pack.SEGSDetailerForAnimateDiff']> & {
-            HasSingle_segs: ComfyNodeOutput<'SEGS'>
-            HasSingle_cnet_images: ComfyNodeOutput<'IMAGE'>
+            _segs: ComfyNodeOutput<'SEGS'>
+            _cnet_images: ComfyNodeOutput<'IMAGE'>
          }
          "Impact_Pack.ImpactKSamplerBasicPipe": ComfyNode<IN['Impact_Pack.ImpactKSamplerBasicPipe'], OUT['Impact_Pack.ImpactKSamplerBasicPipe']> & {
-            HasSingle_BASIC_PIPE: ComfyNodeOutput<'BASIC_PIPE'>
-            HasSingle_LATENT: ComfyNodeOutput<'LATENT'>
-            HasSingle_VAE: ComfyNodeOutput<'VAE'>
+            _BASIC_PIPE: ComfyNodeOutput<'BASIC_PIPE'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
+            _VAE: ComfyNodeOutput<'VAE'>
          }
          "Impact_Pack.ImpactKSamplerAdvancedBasicPipe": ComfyNode<IN['Impact_Pack.ImpactKSamplerAdvancedBasicPipe'], OUT['Impact_Pack.ImpactKSamplerAdvancedBasicPipe']> & {
-            HasSingle_BASIC_PIPE: ComfyNodeOutput<'BASIC_PIPE'>
-            HasSingle_LATENT: ComfyNodeOutput<'LATENT'>
-            HasSingle_VAE: ComfyNodeOutput<'VAE'>
+            _BASIC_PIPE: ComfyNodeOutput<'BASIC_PIPE'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
+            _VAE: ComfyNodeOutput<'VAE'>
          }
          "Impact_Pack.ReencodeLatent": ComfyNode<IN['Impact_Pack.ReencodeLatent'], OUT['Impact_Pack.ReencodeLatent']> & {
-            HasSingle_LATENT: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          "Impact_Pack.ReencodeLatentPipe": ComfyNode<IN['Impact_Pack.ReencodeLatentPipe'], OUT['Impact_Pack.ReencodeLatentPipe']> & {
-            HasSingle_LATENT: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          "Impact_Pack.ImpactImageBatchToImageList": ComfyNode<IN['Impact_Pack.ImpactImageBatchToImageList'], OUT['Impact_Pack.ImpactImageBatchToImageList']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "Impact_Pack.ImpactMakeImageList": ComfyNode<IN['Impact_Pack.ImpactMakeImageList'], OUT['Impact_Pack.ImpactMakeImageList']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "Impact_Pack.ImpactMakeImageBatch": ComfyNode<IN['Impact_Pack.ImpactMakeImageBatch'], OUT['Impact_Pack.ImpactMakeImageBatch']> & {
-            HasSingle_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "Impact_Pack.ImpactMakeAnyList": ComfyNode<IN['Impact_Pack.ImpactMakeAnyList'], OUT['Impact_Pack.ImpactMakeAnyList']> & {
-            "HasSingle_*": ComfyNodeOutput<'*'>
+            "_*": ComfyNodeOutput<'*'>
          }
          "Impact_Pack.ImpactMakeMaskList": ComfyNode<IN['Impact_Pack.ImpactMakeMaskList'], OUT['Impact_Pack.ImpactMakeMaskList']> & {
-            HasSingle_MASK: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          "Impact_Pack.ImpactMakeMaskBatch": ComfyNode<IN['Impact_Pack.ImpactMakeMaskBatch'], OUT['Impact_Pack.ImpactMakeMaskBatch']> & {
-            HasSingle_MASK: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          "Impact_Pack.RegionalSampler": ComfyNode<IN['Impact_Pack.RegionalSampler'], OUT['Impact_Pack.RegionalSampler']> & {
-            HasSingle_LATENT: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          "Impact_Pack.RegionalSamplerAdvanced": ComfyNode<IN['Impact_Pack.RegionalSamplerAdvanced'], OUT['Impact_Pack.RegionalSamplerAdvanced']> & {
-            HasSingle_LATENT: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          "Impact_Pack.CombineRegionalPrompts": ComfyNode<IN['Impact_Pack.CombineRegionalPrompts'], OUT['Impact_Pack.CombineRegionalPrompts']> & {
-            HasSingle_REGIONAL_PROMPTS: ComfyNodeOutput<'REGIONAL_PROMPTS'>
+            _REGIONAL_PROMPTS: ComfyNodeOutput<'REGIONAL_PROMPTS'>
          }
          "Impact_Pack.RegionalPrompt": ComfyNode<IN['Impact_Pack.RegionalPrompt'], OUT['Impact_Pack.RegionalPrompt']> & {
-            HasSingle_REGIONAL_PROMPTS: ComfyNodeOutput<'REGIONAL_PROMPTS'>
+            _REGIONAL_PROMPTS: ComfyNodeOutput<'REGIONAL_PROMPTS'>
          }
          "Impact_Pack.ImpactCombineConditionings": ComfyNode<IN['Impact_Pack.ImpactCombineConditionings'], OUT['Impact_Pack.ImpactCombineConditionings']> & {
-            HasSingle_CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
+            _CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
          }
          "Impact_Pack.ImpactConcatConditionings": ComfyNode<IN['Impact_Pack.ImpactConcatConditionings'], OUT['Impact_Pack.ImpactConcatConditionings']> & {
-            HasSingle_CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
+            _CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
          }
          "Impact_Pack.ImpactSEGSLabelAssign": ComfyNode<IN['Impact_Pack.ImpactSEGSLabelAssign'], OUT['Impact_Pack.ImpactSEGSLabelAssign']> & {
-            HasSingle_SEGS: ComfyNodeOutput<'SEGS'>
+            _SEGS: ComfyNodeOutput<'SEGS'>
          }
          "Impact_Pack.ImpactSEGSLabelFilter": ComfyNode<IN['Impact_Pack.ImpactSEGSLabelFilter'], OUT['Impact_Pack.ImpactSEGSLabelFilter']> & {
          }
@@ -11785,112 +11785,112 @@ declare global {
          "Impact_Pack.ImpactSEGSOrderedFilter": ComfyNode<IN['Impact_Pack.ImpactSEGSOrderedFilter'], OUT['Impact_Pack.ImpactSEGSOrderedFilter']> & {
          }
          "Impact_Pack.ImpactCompare": ComfyNode<IN['Impact_Pack.ImpactCompare'], OUT['Impact_Pack.ImpactCompare']> & {
-            HasSingle_BOOLEAN: ComfyNodeOutput<'BOOLEAN'>
+            _BOOLEAN: ComfyNodeOutput<'BOOLEAN'>
          }
          "Impact_Pack.ImpactConditionalBranch": ComfyNode<IN['Impact_Pack.ImpactConditionalBranch'], OUT['Impact_Pack.ImpactConditionalBranch']> & {
-            "HasSingle_*": ComfyNodeOutput<'*'>
+            "_*": ComfyNodeOutput<'*'>
          }
          "Impact_Pack.ImpactConditionalBranchSelMode": ComfyNode<IN['Impact_Pack.ImpactConditionalBranchSelMode'], OUT['Impact_Pack.ImpactConditionalBranchSelMode']> & {
-            "HasSingle_*": ComfyNodeOutput<'*'>
+            "_*": ComfyNodeOutput<'*'>
          }
          "Impact_Pack.ImpactIfNone": ComfyNode<IN['Impact_Pack.ImpactIfNone'], OUT['Impact_Pack.ImpactIfNone']> & {
-            HasSingle_signal_opt: ComfyNodeOutput<'*'>
-            HasSingle_bool: ComfyNodeOutput<'BOOLEAN'>
+            _signal_opt: ComfyNodeOutput<'*'>
+            _bool: ComfyNodeOutput<'BOOLEAN'>
          }
          "Impact_Pack.ImpactConvertDataType": ComfyNode<IN['Impact_Pack.ImpactConvertDataType'], OUT['Impact_Pack.ImpactConvertDataType']> & {
-            HasSingle_STRING: ComfyNodeOutput<'STRING'>
-            HasSingle_FLOAT: ComfyNodeOutput<'FLOAT'>
-            HasSingle_INT: ComfyNodeOutput<'INT'>
-            HasSingle_BOOLEAN: ComfyNodeOutput<'BOOLEAN'>
+            _STRING: ComfyNodeOutput<'STRING'>
+            _FLOAT: ComfyNodeOutput<'FLOAT'>
+            _INT: ComfyNodeOutput<'INT'>
+            _BOOLEAN: ComfyNodeOutput<'BOOLEAN'>
          }
          "Impact_Pack.ImpactLogicalOperators": ComfyNode<IN['Impact_Pack.ImpactLogicalOperators'], OUT['Impact_Pack.ImpactLogicalOperators']> & {
-            HasSingle_BOOLEAN: ComfyNodeOutput<'BOOLEAN'>
+            _BOOLEAN: ComfyNodeOutput<'BOOLEAN'>
          }
          "Impact_Pack.ImpactInt": ComfyNode<IN['Impact_Pack.ImpactInt'], OUT['Impact_Pack.ImpactInt']> & {
-            HasSingle_INT: ComfyNodeOutput<'INT'>
+            _INT: ComfyNodeOutput<'INT'>
          }
          "Impact_Pack.ImpactFloat": ComfyNode<IN['Impact_Pack.ImpactFloat'], OUT['Impact_Pack.ImpactFloat']> & {
-            HasSingle_FLOAT: ComfyNodeOutput<'FLOAT'>
+            _FLOAT: ComfyNodeOutput<'FLOAT'>
          }
          "Impact_Pack.ImpactBoolean": ComfyNode<IN['Impact_Pack.ImpactBoolean'], OUT['Impact_Pack.ImpactBoolean']> & {
-            HasSingle_BOOLEAN: ComfyNodeOutput<'BOOLEAN'>
+            _BOOLEAN: ComfyNodeOutput<'BOOLEAN'>
          }
          "Impact_Pack.ImpactValueSender": ComfyNode<IN['Impact_Pack.ImpactValueSender'], OUT['Impact_Pack.ImpactValueSender']> & {
-            HasSingle_signal: ComfyNodeOutput<'*'>
+            _signal: ComfyNodeOutput<'*'>
          }
          "Impact_Pack.ImpactValueReceiver": ComfyNode<IN['Impact_Pack.ImpactValueReceiver'], OUT['Impact_Pack.ImpactValueReceiver']> & {
-            "HasSingle_*": ComfyNodeOutput<'*'>
+            "_*": ComfyNodeOutput<'*'>
          }
          "Impact_Pack.ImpactImageInfo": ComfyNode<IN['Impact_Pack.ImpactImageInfo'], OUT['Impact_Pack.ImpactImageInfo']> & {
          }
          "Impact_Pack.ImpactLatentInfo": ComfyNode<IN['Impact_Pack.ImpactLatentInfo'], OUT['Impact_Pack.ImpactLatentInfo']> & {
          }
          "Impact_Pack.ImpactMinMax": ComfyNode<IN['Impact_Pack.ImpactMinMax'], OUT['Impact_Pack.ImpactMinMax']> & {
-            HasSingle_INT: ComfyNodeOutput<'INT'>
+            _INT: ComfyNodeOutput<'INT'>
          }
          "Impact_Pack.ImpactNeg": ComfyNode<IN['Impact_Pack.ImpactNeg'], OUT['Impact_Pack.ImpactNeg']> & {
-            HasSingle_BOOLEAN: ComfyNodeOutput<'BOOLEAN'>
+            _BOOLEAN: ComfyNodeOutput<'BOOLEAN'>
          }
          "Impact_Pack.ImpactConditionalStopIteration": ComfyNode<IN['Impact_Pack.ImpactConditionalStopIteration'], OUT['Impact_Pack.ImpactConditionalStopIteration']> & {
          }
          "Impact_Pack.ImpactStringSelector": ComfyNode<IN['Impact_Pack.ImpactStringSelector'], OUT['Impact_Pack.ImpactStringSelector']> & {
-            HasSingle_STRING: ComfyNodeOutput<'STRING'>
+            _STRING: ComfyNodeOutput<'STRING'>
          }
          "Impact_Pack.StringListToString": ComfyNode<IN['Impact_Pack.StringListToString'], OUT['Impact_Pack.StringListToString']> & {
-            HasSingle_STRING: ComfyNodeOutput<'STRING'>
+            _STRING: ComfyNodeOutput<'STRING'>
          }
          "Impact_Pack.WildcardPromptFromString": ComfyNode<IN['Impact_Pack.WildcardPromptFromString'], OUT['Impact_Pack.WildcardPromptFromString']> & {
          }
          "Impact_Pack.ImpactExecutionOrderController": ComfyNode<IN['Impact_Pack.ImpactExecutionOrderController'], OUT['Impact_Pack.ImpactExecutionOrderController']> & {
          }
          "Impact_Pack.RemoveNoiseMask": ComfyNode<IN['Impact_Pack.RemoveNoiseMask'], OUT['Impact_Pack.RemoveNoiseMask']> & {
-            HasSingle_LATENT: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          "Impact_Pack.ImpactLogger": ComfyNode<IN['Impact_Pack.ImpactLogger'], OUT['Impact_Pack.ImpactLogger']> & {
          }
          "Impact_Pack.ImpactDummyInput": ComfyNode<IN['Impact_Pack.ImpactDummyInput'], OUT['Impact_Pack.ImpactDummyInput']> & {
-            "HasSingle_*": ComfyNodeOutput<'*'>
+            "_*": ComfyNodeOutput<'*'>
          }
          "Impact_Pack.ImpactQueueTrigger": ComfyNode<IN['Impact_Pack.ImpactQueueTrigger'], OUT['Impact_Pack.ImpactQueueTrigger']> & {
-            HasSingle_signal_opt: ComfyNodeOutput<'*'>
+            _signal_opt: ComfyNodeOutput<'*'>
          }
          "Impact_Pack.ImpactQueueTriggerCountdown": ComfyNode<IN['Impact_Pack.ImpactQueueTriggerCountdown'], OUT['Impact_Pack.ImpactQueueTriggerCountdown']> & {
-            HasSingle_signal_opt: ComfyNodeOutput<'*'>
+            _signal_opt: ComfyNodeOutput<'*'>
          }
          "Impact_Pack.ImpactSetWidgetValue": ComfyNode<IN['Impact_Pack.ImpactSetWidgetValue'], OUT['Impact_Pack.ImpactSetWidgetValue']> & {
-            HasSingle_signal_opt: ComfyNodeOutput<'*'>
+            _signal_opt: ComfyNodeOutput<'*'>
          }
          "Impact_Pack.ImpactNodeSetMuteState": ComfyNode<IN['Impact_Pack.ImpactNodeSetMuteState'], OUT['Impact_Pack.ImpactNodeSetMuteState']> & {
-            HasSingle_signal_opt: ComfyNodeOutput<'*'>
+            _signal_opt: ComfyNodeOutput<'*'>
          }
          "Impact_Pack.ImpactControlBridge": ComfyNode<IN['Impact_Pack.ImpactControlBridge'], OUT['Impact_Pack.ImpactControlBridge']> & {
-            HasSingle_value: ComfyNodeOutput<'*'>
+            _value: ComfyNodeOutput<'*'>
          }
          "Impact_Pack.ImpactIsNotEmptySEGS": ComfyNode<IN['Impact_Pack.ImpactIsNotEmptySEGS'], OUT['Impact_Pack.ImpactIsNotEmptySEGS']> & {
-            HasSingle_BOOLEAN: ComfyNodeOutput<'BOOLEAN'>
+            _BOOLEAN: ComfyNodeOutput<'BOOLEAN'>
          }
          "Impact_Pack.ImpactSleep": ComfyNode<IN['Impact_Pack.ImpactSleep'], OUT['Impact_Pack.ImpactSleep']> & {
-            HasSingle_signal_opt: ComfyNodeOutput<'*'>
+            _signal_opt: ComfyNodeOutput<'*'>
          }
          "Impact_Pack.ImpactRemoteBoolean": ComfyNode<IN['Impact_Pack.ImpactRemoteBoolean'], OUT['Impact_Pack.ImpactRemoteBoolean']> & {
          }
          "Impact_Pack.ImpactRemoteInt": ComfyNode<IN['Impact_Pack.ImpactRemoteInt'], OUT['Impact_Pack.ImpactRemoteInt']> & {
          }
          "Impact_Pack.ImpactHFTransformersClassifierProvider": ComfyNode<IN['Impact_Pack.ImpactHFTransformersClassifierProvider'], OUT['Impact_Pack.ImpactHFTransformersClassifierProvider']> & {
-            HasSingle_TRANSFORMERS_CLASSIFIER: ComfyNodeOutput<'TRANSFORMERS_CLASSIFIER'>
+            _TRANSFORMERS_CLASSIFIER: ComfyNodeOutput<'TRANSFORMERS_CLASSIFIER'>
          }
          "Impact_Pack.ImpactSEGSClassify": ComfyNode<IN['Impact_Pack.ImpactSEGSClassify'], OUT['Impact_Pack.ImpactSEGSClassify']> & {
-            HasSingle_detected_labels: ComfyNodeOutput<'STRING'>
+            _detected_labels: ComfyNodeOutput<'STRING'>
          }
          "Impact_Pack.ImpactSchedulerAdapter": ComfyNode<IN['Impact_Pack.ImpactSchedulerAdapter'], OUT['Impact_Pack.ImpactSchedulerAdapter']> & {
-            HasSingle_scheduler: ComfyNodeOutput<'E_720061fd'>
+            _scheduler: ComfyNodeOutput<'E_720061fd'>
          }
          "Impact_Pack.GITSSchedulerFuncProvider": ComfyNode<IN['Impact_Pack.GITSSchedulerFuncProvider'], OUT['Impact_Pack.GITSSchedulerFuncProvider']> & {
-            HasSingle_SCHEDULER_FUNC: ComfyNodeOutput<'SCHEDULER_FUNC'>
+            _SCHEDULER_FUNC: ComfyNodeOutput<'SCHEDULER_FUNC'>
          }
          "Impact_Pack.UltralyticsDetectorProvider": ComfyNode<IN['Impact_Pack.UltralyticsDetectorProvider'], OUT['Impact_Pack.UltralyticsDetectorProvider']> & {
-            HasSingle_BBOX_DETECTOR: ComfyNodeOutput<'BBOX_DETECTOR'>
-            HasSingle_SEGM_DETECTOR: ComfyNodeOutput<'SEGM_DETECTOR'>
+            _BBOX_DETECTOR: ComfyNodeOutput<'BBOX_DETECTOR'>
+            _SEGM_DETECTOR: ComfyNodeOutput<'SEGM_DETECTOR'>
          }
          UnknownNodeXX: ComfyNode<IN['UnknownNodeXX'], OUT['UnknownNodeXX']> & {
          }
@@ -11900,1099 +11900,1099 @@ declare global {
           * Uses the provided model, positive and negative conditioning to denoise the latent image.
           * displayName="KSampler" category="sampling" name="KSampler" output=[LATENT]
          **/
-         KSampler(p: IN['KSampler'], meta?: ComfyNodeMetadata): Nodes['KSampler']
+         KSampler(p: IN['KSampler'], meta?: ComfyNodeMetadata): Node['KSampler']
          /**
           * Loads a diffusion model checkpoint, diffusion models are used to denoise latents.
           * displayName="Load Checkpoint" category="loaders" name="CheckpointLoaderSimple" output=[MODEL, CLIP, VAE]
          **/
-         CheckpointLoaderSimple(p: IN['CheckpointLoaderSimple'], meta?: ComfyNodeMetadata): Nodes['CheckpointLoaderSimple']
+         CheckpointLoaderSimple(p: IN['CheckpointLoaderSimple'], meta?: ComfyNodeMetadata): Node['CheckpointLoaderSimple']
          /**
           * Encodes a text prompt using a CLIP model into an embedding that can be used to guide the diffusion model towards generating specific images.
           * displayName="CLIP Text Encode (Prompt)" category="conditioning" name="CLIPTextEncode" output=[CONDITIONING]
          **/
-         CLIPTextEncode(p: IN['CLIPTextEncode'], meta?: ComfyNodeMetadata): Nodes['CLIPTextEncode']
+         CLIPTextEncode(p: IN['CLIPTextEncode'], meta?: ComfyNodeMetadata): Node['CLIPTextEncode']
           /** displayName="CLIP Set Last Layer" category="conditioning" name="CLIPSetLastLayer" output=[CLIP] */
-         CLIPSetLastLayer(p: IN['CLIPSetLastLayer'], meta?: ComfyNodeMetadata): Nodes['CLIPSetLastLayer']
+         CLIPSetLastLayer(p: IN['CLIPSetLastLayer'], meta?: ComfyNodeMetadata): Node['CLIPSetLastLayer']
          /**
           * Decodes latent images back into pixel space images.
           * displayName="VAE Decode" category="latent" name="VAEDecode" output=[IMAGE]
          **/
-         VAEDecode(p: IN['VAEDecode'], meta?: ComfyNodeMetadata): Nodes['VAEDecode']
+         VAEDecode(p: IN['VAEDecode'], meta?: ComfyNodeMetadata): Node['VAEDecode']
           /** displayName="VAE Encode" category="latent" name="VAEEncode" output=[LATENT] */
-         VAEEncode(p: IN['VAEEncode'], meta?: ComfyNodeMetadata): Nodes['VAEEncode']
+         VAEEncode(p: IN['VAEEncode'], meta?: ComfyNodeMetadata): Node['VAEEncode']
           /** displayName="VAE Encode (for Inpainting)" category="latent_inpaint" name="VAEEncodeForInpaint" output=[LATENT] */
-         VAEEncodeForInpaint(p: IN['VAEEncodeForInpaint'], meta?: ComfyNodeMetadata): Nodes['VAEEncodeForInpaint']
+         VAEEncodeForInpaint(p: IN['VAEEncodeForInpaint'], meta?: ComfyNodeMetadata): Node['VAEEncodeForInpaint']
           /** displayName="Load VAE" category="loaders" name="VAELoader" output=[VAE] */
-         VAELoader(p: IN['VAELoader'], meta?: ComfyNodeMetadata): Nodes['VAELoader']
+         VAELoader(p: IN['VAELoader'], meta?: ComfyNodeMetadata): Node['VAELoader']
          /**
           * Create a new batch of empty latent images to be denoised via sampling.
           * displayName="Empty Latent Image" category="latent" name="EmptyLatentImage" output=[LATENT]
          **/
-         EmptyLatentImage(p: IN['EmptyLatentImage'], meta?: ComfyNodeMetadata): Nodes['EmptyLatentImage']
+         EmptyLatentImage(p: IN['EmptyLatentImage'], meta?: ComfyNodeMetadata): Node['EmptyLatentImage']
           /** displayName="Upscale Latent" category="latent" name="LatentUpscale" output=[LATENT] */
-         LatentUpscale(p: IN['LatentUpscale'], meta?: ComfyNodeMetadata): Nodes['LatentUpscale']
+         LatentUpscale(p: IN['LatentUpscale'], meta?: ComfyNodeMetadata): Node['LatentUpscale']
           /** displayName="Upscale Latent By" category="latent" name="LatentUpscaleBy" output=[LATENT] */
-         LatentUpscaleBy(p: IN['LatentUpscaleBy'], meta?: ComfyNodeMetadata): Nodes['LatentUpscaleBy']
+         LatentUpscaleBy(p: IN['LatentUpscaleBy'], meta?: ComfyNodeMetadata): Node['LatentUpscaleBy']
           /** displayName="Latent From Batch" category="latent_batch" name="LatentFromBatch" output=[LATENT] */
-         LatentFromBatch(p: IN['LatentFromBatch'], meta?: ComfyNodeMetadata): Nodes['LatentFromBatch']
+         LatentFromBatch(p: IN['LatentFromBatch'], meta?: ComfyNodeMetadata): Node['LatentFromBatch']
           /** displayName="Repeat Latent Batch" category="latent_batch" name="RepeatLatentBatch" output=[LATENT] */
-         RepeatLatentBatch(p: IN['RepeatLatentBatch'], meta?: ComfyNodeMetadata): Nodes['RepeatLatentBatch']
+         RepeatLatentBatch(p: IN['RepeatLatentBatch'], meta?: ComfyNodeMetadata): Node['RepeatLatentBatch']
          /**
           * Saves the input images to your ComfyUI output directory.
           * displayName="Save Image" category="image" name="SaveImage" output=[]
          **/
-         SaveImage(p: IN['SaveImage'], meta?: ComfyNodeMetadata): Nodes['SaveImage']
+         SaveImage(p: IN['SaveImage'], meta?: ComfyNodeMetadata): Node['SaveImage']
          /**
           * Saves the input images to your ComfyUI output directory.
           * displayName="Preview Image" category="image" name="PreviewImage" output=[]
          **/
-         PreviewImage(p: IN['PreviewImage'], meta?: ComfyNodeMetadata): Nodes['PreviewImage']
+         PreviewImage(p: IN['PreviewImage'], meta?: ComfyNodeMetadata): Node['PreviewImage']
           /** displayName="Load Image" category="image" name="LoadImage" output=[IMAGE, MASK] */
-         LoadImage(p: IN['LoadImage'], meta?: ComfyNodeMetadata): Nodes['LoadImage']
+         LoadImage(p: IN['LoadImage'], meta?: ComfyNodeMetadata): Node['LoadImage']
           /** displayName="Load Image (as Mask)" category="mask" name="LoadImageMask" output=[MASK] */
-         LoadImageMask(p: IN['LoadImageMask'], meta?: ComfyNodeMetadata): Nodes['LoadImageMask']
+         LoadImageMask(p: IN['LoadImageMask'], meta?: ComfyNodeMetadata): Node['LoadImageMask']
           /** displayName="Upscale Image" category="image_upscaling" name="ImageScale" output=[IMAGE] */
-         ImageScale(p: IN['ImageScale'], meta?: ComfyNodeMetadata): Nodes['ImageScale']
+         ImageScale(p: IN['ImageScale'], meta?: ComfyNodeMetadata): Node['ImageScale']
           /** displayName="Upscale Image By" category="image_upscaling" name="ImageScaleBy" output=[IMAGE] */
-         ImageScaleBy(p: IN['ImageScaleBy'], meta?: ComfyNodeMetadata): Nodes['ImageScaleBy']
+         ImageScaleBy(p: IN['ImageScaleBy'], meta?: ComfyNodeMetadata): Node['ImageScaleBy']
           /** displayName="Invert Image" category="image" name="ImageInvert" output=[IMAGE] */
-         ImageInvert(p: IN['ImageInvert'], meta?: ComfyNodeMetadata): Nodes['ImageInvert']
+         ImageInvert(p: IN['ImageInvert'], meta?: ComfyNodeMetadata): Node['ImageInvert']
           /** displayName="Batch Images" category="image" name="ImageBatch" output=[IMAGE] */
-         ImageBatch(p: IN['ImageBatch'], meta?: ComfyNodeMetadata): Nodes['ImageBatch']
+         ImageBatch(p: IN['ImageBatch'], meta?: ComfyNodeMetadata): Node['ImageBatch']
           /** displayName="Pad Image for Outpainting" category="image" name="ImagePadForOutpaint" output=[IMAGE, MASK] */
-         ImagePadForOutpaint(p: IN['ImagePadForOutpaint'], meta?: ComfyNodeMetadata): Nodes['ImagePadForOutpaint']
+         ImagePadForOutpaint(p: IN['ImagePadForOutpaint'], meta?: ComfyNodeMetadata): Node['ImagePadForOutpaint']
           /** displayName="EmptyImage" category="image" name="EmptyImage" output=[IMAGE] */
-         EmptyImage(p: IN['EmptyImage'], meta?: ComfyNodeMetadata): Nodes['EmptyImage']
+         EmptyImage(p: IN['EmptyImage'], meta?: ComfyNodeMetadata): Node['EmptyImage']
           /** displayName="ConditioningAverage" category="conditioning" name="ConditioningAverage" output=[CONDITIONING] */
-         ConditioningAverage(p: IN['ConditioningAverage'], meta?: ComfyNodeMetadata): Nodes['ConditioningAverage']
+         ConditioningAverage(p: IN['ConditioningAverage'], meta?: ComfyNodeMetadata): Node['ConditioningAverage']
           /** displayName="Conditioning (Combine)" category="conditioning" name="ConditioningCombine" output=[CONDITIONING] */
-         ConditioningCombine(p: IN['ConditioningCombine'], meta?: ComfyNodeMetadata): Nodes['ConditioningCombine']
+         ConditioningCombine(p: IN['ConditioningCombine'], meta?: ComfyNodeMetadata): Node['ConditioningCombine']
           /** displayName="Conditioning (Concat)" category="conditioning" name="ConditioningConcat" output=[CONDITIONING] */
-         ConditioningConcat(p: IN['ConditioningConcat'], meta?: ComfyNodeMetadata): Nodes['ConditioningConcat']
+         ConditioningConcat(p: IN['ConditioningConcat'], meta?: ComfyNodeMetadata): Node['ConditioningConcat']
           /** displayName="Conditioning (Set Area)" category="conditioning" name="ConditioningSetArea" output=[CONDITIONING] */
-         ConditioningSetArea(p: IN['ConditioningSetArea'], meta?: ComfyNodeMetadata): Nodes['ConditioningSetArea']
+         ConditioningSetArea(p: IN['ConditioningSetArea'], meta?: ComfyNodeMetadata): Node['ConditioningSetArea']
           /** displayName="Conditioning (Set Area with Percentage)" category="conditioning" name="ConditioningSetAreaPercentage" output=[CONDITIONING] */
-         ConditioningSetAreaPercentage(p: IN['ConditioningSetAreaPercentage'], meta?: ComfyNodeMetadata): Nodes['ConditioningSetAreaPercentage']
+         ConditioningSetAreaPercentage(p: IN['ConditioningSetAreaPercentage'], meta?: ComfyNodeMetadata): Node['ConditioningSetAreaPercentage']
           /** displayName="ConditioningSetAreaStrength" category="conditioning" name="ConditioningSetAreaStrength" output=[CONDITIONING] */
-         ConditioningSetAreaStrength(p: IN['ConditioningSetAreaStrength'], meta?: ComfyNodeMetadata): Nodes['ConditioningSetAreaStrength']
+         ConditioningSetAreaStrength(p: IN['ConditioningSetAreaStrength'], meta?: ComfyNodeMetadata): Node['ConditioningSetAreaStrength']
           /** displayName="Conditioning (Set Mask)" category="conditioning" name="ConditioningSetMask" output=[CONDITIONING] */
-         ConditioningSetMask(p: IN['ConditioningSetMask'], meta?: ComfyNodeMetadata): Nodes['ConditioningSetMask']
+         ConditioningSetMask(p: IN['ConditioningSetMask'], meta?: ComfyNodeMetadata): Node['ConditioningSetMask']
           /** displayName="KSampler (Advanced)" category="sampling" name="KSamplerAdvanced" output=[LATENT] */
-         KSamplerAdvanced(p: IN['KSamplerAdvanced'], meta?: ComfyNodeMetadata): Nodes['KSamplerAdvanced']
+         KSamplerAdvanced(p: IN['KSamplerAdvanced'], meta?: ComfyNodeMetadata): Node['KSamplerAdvanced']
           /** displayName="Set Latent Noise Mask" category="latent_inpaint" name="SetLatentNoiseMask" output=[LATENT] */
-         SetLatentNoiseMask(p: IN['SetLatentNoiseMask'], meta?: ComfyNodeMetadata): Nodes['SetLatentNoiseMask']
+         SetLatentNoiseMask(p: IN['SetLatentNoiseMask'], meta?: ComfyNodeMetadata): Node['SetLatentNoiseMask']
           /** displayName="Latent Composite" category="latent" name="LatentComposite" output=[LATENT] */
-         LatentComposite(p: IN['LatentComposite'], meta?: ComfyNodeMetadata): Nodes['LatentComposite']
+         LatentComposite(p: IN['LatentComposite'], meta?: ComfyNodeMetadata): Node['LatentComposite']
           /** displayName="Latent Blend" category="_for_testing" name="LatentBlend" output=[LATENT] */
-         LatentBlend(p: IN['LatentBlend'], meta?: ComfyNodeMetadata): Nodes['LatentBlend']
+         LatentBlend(p: IN['LatentBlend'], meta?: ComfyNodeMetadata): Node['LatentBlend']
           /** displayName="Rotate Latent" category="latent_transform" name="LatentRotate" output=[LATENT] */
-         LatentRotate(p: IN['LatentRotate'], meta?: ComfyNodeMetadata): Nodes['LatentRotate']
+         LatentRotate(p: IN['LatentRotate'], meta?: ComfyNodeMetadata): Node['LatentRotate']
           /** displayName="Flip Latent" category="latent_transform" name="LatentFlip" output=[LATENT] */
-         LatentFlip(p: IN['LatentFlip'], meta?: ComfyNodeMetadata): Nodes['LatentFlip']
+         LatentFlip(p: IN['LatentFlip'], meta?: ComfyNodeMetadata): Node['LatentFlip']
           /** displayName="Crop Latent" category="latent_transform" name="LatentCrop" output=[LATENT] */
-         LatentCrop(p: IN['LatentCrop'], meta?: ComfyNodeMetadata): Nodes['LatentCrop']
+         LatentCrop(p: IN['LatentCrop'], meta?: ComfyNodeMetadata): Node['LatentCrop']
          /**
           * LoRAs are used to modify diffusion and CLIP models, altering the way in which latents are denoised such as applying styles. Multiple LoRA nodes can be linked together.
           * displayName="Load LoRA" category="loaders" name="LoraLoader" output=[MODEL, CLIP]
          **/
-         LoraLoader(p: IN['LoraLoader'], meta?: ComfyNodeMetadata): Nodes['LoraLoader']
+         LoraLoader(p: IN['LoraLoader'], meta?: ComfyNodeMetadata): Node['LoraLoader']
           /** displayName="Load CLIP" category="advanced_loaders" name="CLIPLoader" output=[CLIP] */
-         CLIPLoader(p: IN['CLIPLoader'], meta?: ComfyNodeMetadata): Nodes['CLIPLoader']
+         CLIPLoader(p: IN['CLIPLoader'], meta?: ComfyNodeMetadata): Node['CLIPLoader']
           /** displayName="Load Diffusion Model" category="advanced_loaders" name="UNETLoader" output=[MODEL] */
-         UNETLoader(p: IN['UNETLoader'], meta?: ComfyNodeMetadata): Nodes['UNETLoader']
+         UNETLoader(p: IN['UNETLoader'], meta?: ComfyNodeMetadata): Node['UNETLoader']
           /** displayName="DualCLIPLoader" category="advanced_loaders" name="DualCLIPLoader" output=[CLIP] */
-         DualCLIPLoader(p: IN['DualCLIPLoader'], meta?: ComfyNodeMetadata): Nodes['DualCLIPLoader']
+         DualCLIPLoader(p: IN['DualCLIPLoader'], meta?: ComfyNodeMetadata): Node['DualCLIPLoader']
           /** displayName="CLIP Vision Encode" category="conditioning" name="CLIPVisionEncode" output=[CLIP_VISION_OUTPUT] */
-         CLIPVisionEncode(p: IN['CLIPVisionEncode'], meta?: ComfyNodeMetadata): Nodes['CLIPVisionEncode']
+         CLIPVisionEncode(p: IN['CLIPVisionEncode'], meta?: ComfyNodeMetadata): Node['CLIPVisionEncode']
           /** displayName="Apply Style Model" category="conditioning_style_model" name="StyleModelApply" output=[CONDITIONING] */
-         StyleModelApply(p: IN['StyleModelApply'], meta?: ComfyNodeMetadata): Nodes['StyleModelApply']
+         StyleModelApply(p: IN['StyleModelApply'], meta?: ComfyNodeMetadata): Node['StyleModelApply']
           /** displayName="unCLIPConditioning" category="conditioning" name="unCLIPConditioning" output=[CONDITIONING] */
-         unCLIPConditioning(p: IN['unCLIPConditioning'], meta?: ComfyNodeMetadata): Nodes['unCLIPConditioning']
+         unCLIPConditioning(p: IN['unCLIPConditioning'], meta?: ComfyNodeMetadata): Node['unCLIPConditioning']
           /** displayName="Apply ControlNet (OLD)" category="conditioning_controlnet" name="ControlNetApply" output=[CONDITIONING] */
-         ControlNetApply(p: IN['ControlNetApply'], meta?: ComfyNodeMetadata): Nodes['ControlNetApply']
+         ControlNetApply(p: IN['ControlNetApply'], meta?: ComfyNodeMetadata): Node['ControlNetApply']
           /** displayName="Apply ControlNet" category="conditioning_controlnet" name="ControlNetApplyAdvanced" output=[positive, negative] */
-         ControlNetApplyAdvanced(p: IN['ControlNetApplyAdvanced'], meta?: ComfyNodeMetadata): Nodes['ControlNetApplyAdvanced']
+         ControlNetApplyAdvanced(p: IN['ControlNetApplyAdvanced'], meta?: ComfyNodeMetadata): Node['ControlNetApplyAdvanced']
           /** displayName="Load ControlNet Model" category="loaders" name="ControlNetLoader" output=[CONTROL_NET] */
-         ControlNetLoader(p: IN['ControlNetLoader'], meta?: ComfyNodeMetadata): Nodes['ControlNetLoader']
+         ControlNetLoader(p: IN['ControlNetLoader'], meta?: ComfyNodeMetadata): Node['ControlNetLoader']
           /** displayName="Load ControlNet Model (diff)" category="loaders" name="DiffControlNetLoader" output=[CONTROL_NET] */
-         DiffControlNetLoader(p: IN['DiffControlNetLoader'], meta?: ComfyNodeMetadata): Nodes['DiffControlNetLoader']
+         DiffControlNetLoader(p: IN['DiffControlNetLoader'], meta?: ComfyNodeMetadata): Node['DiffControlNetLoader']
           /** displayName="Load Style Model" category="loaders" name="StyleModelLoader" output=[STYLE_MODEL] */
-         StyleModelLoader(p: IN['StyleModelLoader'], meta?: ComfyNodeMetadata): Nodes['StyleModelLoader']
+         StyleModelLoader(p: IN['StyleModelLoader'], meta?: ComfyNodeMetadata): Node['StyleModelLoader']
           /** displayName="Load CLIP Vision" category="loaders" name="CLIPVisionLoader" output=[CLIP_VISION] */
-         CLIPVisionLoader(p: IN['CLIPVisionLoader'], meta?: ComfyNodeMetadata): Nodes['CLIPVisionLoader']
+         CLIPVisionLoader(p: IN['CLIPVisionLoader'], meta?: ComfyNodeMetadata): Node['CLIPVisionLoader']
           /** displayName="VAE Decode (Tiled)" category="_for_testing" name="VAEDecodeTiled" output=[IMAGE] */
-         VAEDecodeTiled(p: IN['VAEDecodeTiled'], meta?: ComfyNodeMetadata): Nodes['VAEDecodeTiled']
+         VAEDecodeTiled(p: IN['VAEDecodeTiled'], meta?: ComfyNodeMetadata): Node['VAEDecodeTiled']
           /** displayName="VAE Encode (Tiled)" category="_for_testing" name="VAEEncodeTiled" output=[LATENT] */
-         VAEEncodeTiled(p: IN['VAEEncodeTiled'], meta?: ComfyNodeMetadata): Nodes['VAEEncodeTiled']
+         VAEEncodeTiled(p: IN['VAEEncodeTiled'], meta?: ComfyNodeMetadata): Node['VAEEncodeTiled']
           /** displayName="unCLIPCheckpointLoader" category="loaders" name="unCLIPCheckpointLoader" output=[MODEL, CLIP, VAE, CLIP_VISION] */
-         unCLIPCheckpointLoader(p: IN['unCLIPCheckpointLoader'], meta?: ComfyNodeMetadata): Nodes['unCLIPCheckpointLoader']
+         unCLIPCheckpointLoader(p: IN['unCLIPCheckpointLoader'], meta?: ComfyNodeMetadata): Node['unCLIPCheckpointLoader']
           /** displayName="GLIGENLoader" category="loaders" name="GLIGENLoader" output=[GLIGEN] */
-         GLIGENLoader(p: IN['GLIGENLoader'], meta?: ComfyNodeMetadata): Nodes['GLIGENLoader']
+         GLIGENLoader(p: IN['GLIGENLoader'], meta?: ComfyNodeMetadata): Node['GLIGENLoader']
           /** displayName="GLIGENTextBoxApply" category="conditioning_gligen" name="GLIGENTextBoxApply" output=[CONDITIONING] */
-         GLIGENTextBoxApply(p: IN['GLIGENTextBoxApply'], meta?: ComfyNodeMetadata): Nodes['GLIGENTextBoxApply']
+         GLIGENTextBoxApply(p: IN['GLIGENTextBoxApply'], meta?: ComfyNodeMetadata): Node['GLIGENTextBoxApply']
           /** displayName="InpaintModelConditioning" category="conditioning_inpaint" name="InpaintModelConditioning" output=[positive, negative, latent] */
-         InpaintModelConditioning(p: IN['InpaintModelConditioning'], meta?: ComfyNodeMetadata): Nodes['InpaintModelConditioning']
+         InpaintModelConditioning(p: IN['InpaintModelConditioning'], meta?: ComfyNodeMetadata): Node['InpaintModelConditioning']
           /** displayName="Load Checkpoint With Config (DEPRECATED)" category="advanced_loaders" name="CheckpointLoader" output=[MODEL, CLIP, VAE] */
-         CheckpointLoader(p: IN['CheckpointLoader'], meta?: ComfyNodeMetadata): Nodes['CheckpointLoader']
+         CheckpointLoader(p: IN['CheckpointLoader'], meta?: ComfyNodeMetadata): Node['CheckpointLoader']
           /** displayName="DiffusersLoader" category="advanced_loaders_deprecated" name="DiffusersLoader" output=[MODEL, CLIP, VAE] */
-         DiffusersLoader(p: IN['DiffusersLoader'], meta?: ComfyNodeMetadata): Nodes['DiffusersLoader']
+         DiffusersLoader(p: IN['DiffusersLoader'], meta?: ComfyNodeMetadata): Node['DiffusersLoader']
           /** displayName="LoadLatent" category="_for_testing" name="LoadLatent" output=[LATENT] */
-         LoadLatent(p: IN['LoadLatent'], meta?: ComfyNodeMetadata): Nodes['LoadLatent']
+         LoadLatent(p: IN['LoadLatent'], meta?: ComfyNodeMetadata): Node['LoadLatent']
           /** displayName="SaveLatent" category="_for_testing" name="SaveLatent" output=[] */
-         SaveLatent(p: IN['SaveLatent'], meta?: ComfyNodeMetadata): Nodes['SaveLatent']
+         SaveLatent(p: IN['SaveLatent'], meta?: ComfyNodeMetadata): Node['SaveLatent']
           /** displayName="ConditioningZeroOut" category="advanced_conditioning" name="ConditioningZeroOut" output=[CONDITIONING] */
-         ConditioningZeroOut(p: IN['ConditioningZeroOut'], meta?: ComfyNodeMetadata): Nodes['ConditioningZeroOut']
+         ConditioningZeroOut(p: IN['ConditioningZeroOut'], meta?: ComfyNodeMetadata): Node['ConditioningZeroOut']
           /** displayName="ConditioningSetTimestepRange" category="advanced_conditioning" name="ConditioningSetTimestepRange" output=[CONDITIONING] */
-         ConditioningSetTimestepRange(p: IN['ConditioningSetTimestepRange'], meta?: ComfyNodeMetadata): Nodes['ConditioningSetTimestepRange']
+         ConditioningSetTimestepRange(p: IN['ConditioningSetTimestepRange'], meta?: ComfyNodeMetadata): Node['ConditioningSetTimestepRange']
          /**
           * LoRAs are used to modify diffusion and CLIP models, altering the way in which latents are denoised such as applying styles. Multiple LoRA nodes can be linked together.
           * displayName="LoraLoaderModelOnly" category="loaders" name="LoraLoaderModelOnly" output=[MODEL]
          **/
-         LoraLoaderModelOnly(p: IN['LoraLoaderModelOnly'], meta?: ComfyNodeMetadata): Nodes['LoraLoaderModelOnly']
+         LoraLoaderModelOnly(p: IN['LoraLoaderModelOnly'], meta?: ComfyNodeMetadata): Node['LoraLoaderModelOnly']
           /** displayName="LatentAdd" category="latent_advanced" name="LatentAdd" output=[LATENT] */
-         LatentAdd(p: IN['LatentAdd'], meta?: ComfyNodeMetadata): Nodes['LatentAdd']
+         LatentAdd(p: IN['LatentAdd'], meta?: ComfyNodeMetadata): Node['LatentAdd']
           /** displayName="LatentSubtract" category="latent_advanced" name="LatentSubtract" output=[LATENT] */
-         LatentSubtract(p: IN['LatentSubtract'], meta?: ComfyNodeMetadata): Nodes['LatentSubtract']
+         LatentSubtract(p: IN['LatentSubtract'], meta?: ComfyNodeMetadata): Node['LatentSubtract']
           /** displayName="LatentMultiply" category="latent_advanced" name="LatentMultiply" output=[LATENT] */
-         LatentMultiply(p: IN['LatentMultiply'], meta?: ComfyNodeMetadata): Nodes['LatentMultiply']
+         LatentMultiply(p: IN['LatentMultiply'], meta?: ComfyNodeMetadata): Node['LatentMultiply']
           /** displayName="LatentInterpolate" category="latent_advanced" name="LatentInterpolate" output=[LATENT] */
-         LatentInterpolate(p: IN['LatentInterpolate'], meta?: ComfyNodeMetadata): Nodes['LatentInterpolate']
+         LatentInterpolate(p: IN['LatentInterpolate'], meta?: ComfyNodeMetadata): Node['LatentInterpolate']
           /** displayName="LatentBatch" category="latent_batch" name="LatentBatch" output=[LATENT] */
-         LatentBatch(p: IN['LatentBatch'], meta?: ComfyNodeMetadata): Nodes['LatentBatch']
+         LatentBatch(p: IN['LatentBatch'], meta?: ComfyNodeMetadata): Node['LatentBatch']
           /** displayName="LatentBatchSeedBehavior" category="latent_advanced" name="LatentBatchSeedBehavior" output=[LATENT] */
-         LatentBatchSeedBehavior(p: IN['LatentBatchSeedBehavior'], meta?: ComfyNodeMetadata): Nodes['LatentBatchSeedBehavior']
+         LatentBatchSeedBehavior(p: IN['LatentBatchSeedBehavior'], meta?: ComfyNodeMetadata): Node['LatentBatchSeedBehavior']
           /** displayName="LatentApplyOperation" category="latent_advanced_operations" name="LatentApplyOperation" output=[LATENT] */
-         LatentApplyOperation(p: IN['LatentApplyOperation'], meta?: ComfyNodeMetadata): Nodes['LatentApplyOperation']
+         LatentApplyOperation(p: IN['LatentApplyOperation'], meta?: ComfyNodeMetadata): Node['LatentApplyOperation']
           /** displayName="LatentApplyOperationCFG" category="latent_advanced_operations" name="LatentApplyOperationCFG" output=[MODEL] */
-         LatentApplyOperationCFG(p: IN['LatentApplyOperationCFG'], meta?: ComfyNodeMetadata): Nodes['LatentApplyOperationCFG']
+         LatentApplyOperationCFG(p: IN['LatentApplyOperationCFG'], meta?: ComfyNodeMetadata): Node['LatentApplyOperationCFG']
           /** displayName="LatentOperationTonemapReinhard" category="latent_advanced_operations" name="LatentOperationTonemapReinhard" output=[LATENT_OPERATION] */
-         LatentOperationTonemapReinhard(p: IN['LatentOperationTonemapReinhard'], meta?: ComfyNodeMetadata): Nodes['LatentOperationTonemapReinhard']
+         LatentOperationTonemapReinhard(p: IN['LatentOperationTonemapReinhard'], meta?: ComfyNodeMetadata): Node['LatentOperationTonemapReinhard']
           /** displayName="LatentOperationSharpen" category="latent_advanced_operations" name="LatentOperationSharpen" output=[LATENT_OPERATION] */
-         LatentOperationSharpen(p: IN['LatentOperationSharpen'], meta?: ComfyNodeMetadata): Nodes['LatentOperationSharpen']
+         LatentOperationSharpen(p: IN['LatentOperationSharpen'], meta?: ComfyNodeMetadata): Node['LatentOperationSharpen']
           /** displayName="HypernetworkLoader" category="loaders" name="HypernetworkLoader" output=[MODEL] */
-         HypernetworkLoader(p: IN['HypernetworkLoader'], meta?: ComfyNodeMetadata): Nodes['HypernetworkLoader']
+         HypernetworkLoader(p: IN['HypernetworkLoader'], meta?: ComfyNodeMetadata): Node['HypernetworkLoader']
           /** displayName="Load Upscale Model" category="loaders" name="UpscaleModelLoader" output=[UPSCALE_MODEL] */
-         UpscaleModelLoader(p: IN['UpscaleModelLoader'], meta?: ComfyNodeMetadata): Nodes['UpscaleModelLoader']
+         UpscaleModelLoader(p: IN['UpscaleModelLoader'], meta?: ComfyNodeMetadata): Node['UpscaleModelLoader']
           /** displayName="Upscale Image (using Model)" category="image_upscaling" name="ImageUpscaleWithModel" output=[IMAGE] */
-         ImageUpscaleWithModel(p: IN['ImageUpscaleWithModel'], meta?: ComfyNodeMetadata): Nodes['ImageUpscaleWithModel']
+         ImageUpscaleWithModel(p: IN['ImageUpscaleWithModel'], meta?: ComfyNodeMetadata): Node['ImageUpscaleWithModel']
           /** displayName="Image Blend" category="image_postprocessing" name="ImageBlend" output=[IMAGE] */
-         ImageBlend(p: IN['ImageBlend'], meta?: ComfyNodeMetadata): Nodes['ImageBlend']
+         ImageBlend(p: IN['ImageBlend'], meta?: ComfyNodeMetadata): Node['ImageBlend']
           /** displayName="Image Blur" category="image_postprocessing" name="ImageBlur" output=[IMAGE] */
-         ImageBlur(p: IN['ImageBlur'], meta?: ComfyNodeMetadata): Nodes['ImageBlur']
+         ImageBlur(p: IN['ImageBlur'], meta?: ComfyNodeMetadata): Node['ImageBlur']
           /** displayName="Image Quantize" category="image_postprocessing" name="ImageQuantize" output=[IMAGE] */
-         ImageQuantize(p: IN['ImageQuantize'], meta?: ComfyNodeMetadata): Nodes['ImageQuantize']
+         ImageQuantize(p: IN['ImageQuantize'], meta?: ComfyNodeMetadata): Node['ImageQuantize']
           /** displayName="Image Sharpen" category="image_postprocessing" name="ImageSharpen" output=[IMAGE] */
-         ImageSharpen(p: IN['ImageSharpen'], meta?: ComfyNodeMetadata): Nodes['ImageSharpen']
+         ImageSharpen(p: IN['ImageSharpen'], meta?: ComfyNodeMetadata): Node['ImageSharpen']
           /** displayName="Scale Image to Total Pixels" category="image_upscaling" name="ImageScaleToTotalPixels" output=[IMAGE] */
-         ImageScaleToTotalPixels(p: IN['ImageScaleToTotalPixels'], meta?: ComfyNodeMetadata): Nodes['ImageScaleToTotalPixels']
+         ImageScaleToTotalPixels(p: IN['ImageScaleToTotalPixels'], meta?: ComfyNodeMetadata): Node['ImageScaleToTotalPixels']
           /** displayName="LatentCompositeMasked" category="latent" name="LatentCompositeMasked" output=[LATENT] */
-         LatentCompositeMasked(p: IN['LatentCompositeMasked'], meta?: ComfyNodeMetadata): Nodes['LatentCompositeMasked']
+         LatentCompositeMasked(p: IN['LatentCompositeMasked'], meta?: ComfyNodeMetadata): Node['LatentCompositeMasked']
           /** displayName="ImageCompositeMasked" category="image" name="ImageCompositeMasked" output=[IMAGE] */
-         ImageCompositeMasked(p: IN['ImageCompositeMasked'], meta?: ComfyNodeMetadata): Nodes['ImageCompositeMasked']
+         ImageCompositeMasked(p: IN['ImageCompositeMasked'], meta?: ComfyNodeMetadata): Node['ImageCompositeMasked']
           /** displayName="Convert Mask to Image" category="mask" name="MaskToImage" output=[IMAGE] */
-         MaskToImage(p: IN['MaskToImage'], meta?: ComfyNodeMetadata): Nodes['MaskToImage']
+         MaskToImage(p: IN['MaskToImage'], meta?: ComfyNodeMetadata): Node['MaskToImage']
           /** displayName="Convert Image to Mask" category="mask" name="ImageToMask" output=[MASK] */
-         ImageToMask(p: IN['ImageToMask'], meta?: ComfyNodeMetadata): Nodes['ImageToMask']
+         ImageToMask(p: IN['ImageToMask'], meta?: ComfyNodeMetadata): Node['ImageToMask']
           /** displayName="ImageColorToMask" category="mask" name="ImageColorToMask" output=[MASK] */
-         ImageColorToMask(p: IN['ImageColorToMask'], meta?: ComfyNodeMetadata): Nodes['ImageColorToMask']
+         ImageColorToMask(p: IN['ImageColorToMask'], meta?: ComfyNodeMetadata): Node['ImageColorToMask']
           /** displayName="SolidMask" category="mask" name="SolidMask" output=[MASK] */
-         SolidMask(p: IN['SolidMask'], meta?: ComfyNodeMetadata): Nodes['SolidMask']
+         SolidMask(p: IN['SolidMask'], meta?: ComfyNodeMetadata): Node['SolidMask']
           /** displayName="InvertMask" category="mask" name="InvertMask" output=[MASK] */
-         InvertMask(p: IN['InvertMask'], meta?: ComfyNodeMetadata): Nodes['InvertMask']
+         InvertMask(p: IN['InvertMask'], meta?: ComfyNodeMetadata): Node['InvertMask']
           /** displayName="CropMask" category="mask" name="CropMask" output=[MASK] */
-         CropMask(p: IN['CropMask'], meta?: ComfyNodeMetadata): Nodes['CropMask']
+         CropMask(p: IN['CropMask'], meta?: ComfyNodeMetadata): Node['CropMask']
           /** displayName="MaskComposite" category="mask" name="MaskComposite" output=[MASK] */
-         MaskComposite(p: IN['MaskComposite'], meta?: ComfyNodeMetadata): Nodes['MaskComposite']
+         MaskComposite(p: IN['MaskComposite'], meta?: ComfyNodeMetadata): Node['MaskComposite']
           /** displayName="FeatherMask" category="mask" name="FeatherMask" output=[MASK] */
-         FeatherMask(p: IN['FeatherMask'], meta?: ComfyNodeMetadata): Nodes['FeatherMask']
+         FeatherMask(p: IN['FeatherMask'], meta?: ComfyNodeMetadata): Node['FeatherMask']
           /** displayName="GrowMask" category="mask" name="GrowMask" output=[MASK] */
-         GrowMask(p: IN['GrowMask'], meta?: ComfyNodeMetadata): Nodes['GrowMask']
+         GrowMask(p: IN['GrowMask'], meta?: ComfyNodeMetadata): Node['GrowMask']
           /** displayName="ThresholdMask" category="mask" name="ThresholdMask" output=[MASK] */
-         ThresholdMask(p: IN['ThresholdMask'], meta?: ComfyNodeMetadata): Nodes['ThresholdMask']
+         ThresholdMask(p: IN['ThresholdMask'], meta?: ComfyNodeMetadata): Node['ThresholdMask']
           /** displayName="Porter-Duff Image Composite" category="mask_compositing" name="PorterDuffImageComposite" output=[IMAGE, MASK] */
-         PorterDuffImageComposite(p: IN['PorterDuffImageComposite'], meta?: ComfyNodeMetadata): Nodes['PorterDuffImageComposite']
+         PorterDuffImageComposite(p: IN['PorterDuffImageComposite'], meta?: ComfyNodeMetadata): Node['PorterDuffImageComposite']
           /** displayName="Split Image with Alpha" category="mask_compositing" name="SplitImageWithAlpha" output=[IMAGE, MASK] */
-         SplitImageWithAlpha(p: IN['SplitImageWithAlpha'], meta?: ComfyNodeMetadata): Nodes['SplitImageWithAlpha']
+         SplitImageWithAlpha(p: IN['SplitImageWithAlpha'], meta?: ComfyNodeMetadata): Node['SplitImageWithAlpha']
           /** displayName="Join Image with Alpha" category="mask_compositing" name="JoinImageWithAlpha" output=[IMAGE] */
-         JoinImageWithAlpha(p: IN['JoinImageWithAlpha'], meta?: ComfyNodeMetadata): Nodes['JoinImageWithAlpha']
+         JoinImageWithAlpha(p: IN['JoinImageWithAlpha'], meta?: ComfyNodeMetadata): Node['JoinImageWithAlpha']
           /** displayName="Rebatch Latents" category="latent_batch" name="RebatchLatents" output=[LATENT] */
-         RebatchLatents(p: IN['RebatchLatents'], meta?: ComfyNodeMetadata): Nodes['RebatchLatents']
+         RebatchLatents(p: IN['RebatchLatents'], meta?: ComfyNodeMetadata): Node['RebatchLatents']
           /** displayName="Rebatch Images" category="image_batch" name="RebatchImages" output=[IMAGE] */
-         RebatchImages(p: IN['RebatchImages'], meta?: ComfyNodeMetadata): Nodes['RebatchImages']
+         RebatchImages(p: IN['RebatchImages'], meta?: ComfyNodeMetadata): Node['RebatchImages']
           /** displayName="ModelMergeSimple" category="advanced_model_merging" name="ModelMergeSimple" output=[MODEL] */
-         ModelMergeSimple(p: IN['ModelMergeSimple'], meta?: ComfyNodeMetadata): Nodes['ModelMergeSimple']
+         ModelMergeSimple(p: IN['ModelMergeSimple'], meta?: ComfyNodeMetadata): Node['ModelMergeSimple']
           /** displayName="ModelMergeBlocks" category="advanced_model_merging" name="ModelMergeBlocks" output=[MODEL] */
-         ModelMergeBlocks(p: IN['ModelMergeBlocks'], meta?: ComfyNodeMetadata): Nodes['ModelMergeBlocks']
+         ModelMergeBlocks(p: IN['ModelMergeBlocks'], meta?: ComfyNodeMetadata): Node['ModelMergeBlocks']
           /** displayName="ModelMergeSubtract" category="advanced_model_merging" name="ModelMergeSubtract" output=[MODEL] */
-         ModelMergeSubtract(p: IN['ModelMergeSubtract'], meta?: ComfyNodeMetadata): Nodes['ModelMergeSubtract']
+         ModelMergeSubtract(p: IN['ModelMergeSubtract'], meta?: ComfyNodeMetadata): Node['ModelMergeSubtract']
           /** displayName="ModelMergeAdd" category="advanced_model_merging" name="ModelMergeAdd" output=[MODEL] */
-         ModelMergeAdd(p: IN['ModelMergeAdd'], meta?: ComfyNodeMetadata): Nodes['ModelMergeAdd']
+         ModelMergeAdd(p: IN['ModelMergeAdd'], meta?: ComfyNodeMetadata): Node['ModelMergeAdd']
           /** displayName="Save Checkpoint" category="advanced_model_merging" name="CheckpointSave" output=[] */
-         CheckpointSave(p: IN['CheckpointSave'], meta?: ComfyNodeMetadata): Nodes['CheckpointSave']
+         CheckpointSave(p: IN['CheckpointSave'], meta?: ComfyNodeMetadata): Node['CheckpointSave']
           /** displayName="CLIPMergeSimple" category="advanced_model_merging" name="CLIPMergeSimple" output=[CLIP] */
-         CLIPMergeSimple(p: IN['CLIPMergeSimple'], meta?: ComfyNodeMetadata): Nodes['CLIPMergeSimple']
+         CLIPMergeSimple(p: IN['CLIPMergeSimple'], meta?: ComfyNodeMetadata): Node['CLIPMergeSimple']
           /** displayName="CLIPMergeSubtract" category="advanced_model_merging" name="CLIPMergeSubtract" output=[CLIP] */
-         CLIPMergeSubtract(p: IN['CLIPMergeSubtract'], meta?: ComfyNodeMetadata): Nodes['CLIPMergeSubtract']
+         CLIPMergeSubtract(p: IN['CLIPMergeSubtract'], meta?: ComfyNodeMetadata): Node['CLIPMergeSubtract']
           /** displayName="CLIPMergeAdd" category="advanced_model_merging" name="CLIPMergeAdd" output=[CLIP] */
-         CLIPMergeAdd(p: IN['CLIPMergeAdd'], meta?: ComfyNodeMetadata): Nodes['CLIPMergeAdd']
+         CLIPMergeAdd(p: IN['CLIPMergeAdd'], meta?: ComfyNodeMetadata): Node['CLIPMergeAdd']
           /** displayName="CLIPSave" category="advanced_model_merging" name="CLIPSave" output=[] */
-         CLIPSave(p: IN['CLIPSave'], meta?: ComfyNodeMetadata): Nodes['CLIPSave']
+         CLIPSave(p: IN['CLIPSave'], meta?: ComfyNodeMetadata): Node['CLIPSave']
           /** displayName="VAESave" category="advanced_model_merging" name="VAESave" output=[] */
-         VAESave(p: IN['VAESave'], meta?: ComfyNodeMetadata): Nodes['VAESave']
+         VAESave(p: IN['VAESave'], meta?: ComfyNodeMetadata): Node['VAESave']
           /** displayName="ModelSave" category="advanced_model_merging" name="ModelSave" output=[] */
-         ModelSave(p: IN['ModelSave'], meta?: ComfyNodeMetadata): Nodes['ModelSave']
+         ModelSave(p: IN['ModelSave'], meta?: ComfyNodeMetadata): Node['ModelSave']
           /** displayName="TomePatchModel" category="model_patches_unet" name="TomePatchModel" output=[MODEL] */
-         TomePatchModel(p: IN['TomePatchModel'], meta?: ComfyNodeMetadata): Nodes['TomePatchModel']
+         TomePatchModel(p: IN['TomePatchModel'], meta?: ComfyNodeMetadata): Node['TomePatchModel']
           /** displayName="CLIPTextEncodeSDXLRefiner" category="advanced_conditioning" name="CLIPTextEncodeSDXLRefiner" output=[CONDITIONING] */
-         CLIPTextEncodeSDXLRefiner(p: IN['CLIPTextEncodeSDXLRefiner'], meta?: ComfyNodeMetadata): Nodes['CLIPTextEncodeSDXLRefiner']
+         CLIPTextEncodeSDXLRefiner(p: IN['CLIPTextEncodeSDXLRefiner'], meta?: ComfyNodeMetadata): Node['CLIPTextEncodeSDXLRefiner']
           /** displayName="CLIPTextEncodeSDXL" category="advanced_conditioning" name="CLIPTextEncodeSDXL" output=[CONDITIONING] */
-         CLIPTextEncodeSDXL(p: IN['CLIPTextEncodeSDXL'], meta?: ComfyNodeMetadata): Nodes['CLIPTextEncodeSDXL']
+         CLIPTextEncodeSDXL(p: IN['CLIPTextEncodeSDXL'], meta?: ComfyNodeMetadata): Node['CLIPTextEncodeSDXL']
           /** displayName="Canny" category="image_preprocessors" name="Canny" output=[IMAGE] */
-         Canny(p: IN['Canny'], meta?: ComfyNodeMetadata): Nodes['Canny']
+         Canny(p: IN['Canny'], meta?: ComfyNodeMetadata): Node['Canny']
           /** displayName="FreeU" category="model_patches_unet" name="FreeU" output=[MODEL] */
-         FreeU(p: IN['FreeU'], meta?: ComfyNodeMetadata): Nodes['FreeU']
+         FreeU(p: IN['FreeU'], meta?: ComfyNodeMetadata): Node['FreeU']
           /** displayName="FreeU_V2" category="model_patches_unet" name="FreeU_V2" output=[MODEL] */
-         FreeU_V2(p: IN['FreeU_V2'], meta?: ComfyNodeMetadata): Nodes['FreeU_V2']
+         FreeU_V2(p: IN['FreeU_V2'], meta?: ComfyNodeMetadata): Node['FreeU_V2']
           /** displayName="SamplerCustom" category="sampling_custom_sampling" name="SamplerCustom" output=[output, denoised_output] */
-         SamplerCustom(p: IN['SamplerCustom'], meta?: ComfyNodeMetadata): Nodes['SamplerCustom']
+         SamplerCustom(p: IN['SamplerCustom'], meta?: ComfyNodeMetadata): Node['SamplerCustom']
           /** displayName="BasicScheduler" category="sampling_custom_sampling_schedulers" name="BasicScheduler" output=[SIGMAS] */
-         BasicScheduler(p: IN['BasicScheduler'], meta?: ComfyNodeMetadata): Nodes['BasicScheduler']
+         BasicScheduler(p: IN['BasicScheduler'], meta?: ComfyNodeMetadata): Node['BasicScheduler']
           /** displayName="KarrasScheduler" category="sampling_custom_sampling_schedulers" name="KarrasScheduler" output=[SIGMAS] */
-         KarrasScheduler(p: IN['KarrasScheduler'], meta?: ComfyNodeMetadata): Nodes['KarrasScheduler']
+         KarrasScheduler(p: IN['KarrasScheduler'], meta?: ComfyNodeMetadata): Node['KarrasScheduler']
           /** displayName="ExponentialScheduler" category="sampling_custom_sampling_schedulers" name="ExponentialScheduler" output=[SIGMAS] */
-         ExponentialScheduler(p: IN['ExponentialScheduler'], meta?: ComfyNodeMetadata): Nodes['ExponentialScheduler']
+         ExponentialScheduler(p: IN['ExponentialScheduler'], meta?: ComfyNodeMetadata): Node['ExponentialScheduler']
           /** displayName="PolyexponentialScheduler" category="sampling_custom_sampling_schedulers" name="PolyexponentialScheduler" output=[SIGMAS] */
-         PolyexponentialScheduler(p: IN['PolyexponentialScheduler'], meta?: ComfyNodeMetadata): Nodes['PolyexponentialScheduler']
+         PolyexponentialScheduler(p: IN['PolyexponentialScheduler'], meta?: ComfyNodeMetadata): Node['PolyexponentialScheduler']
           /** displayName="LaplaceScheduler" category="sampling_custom_sampling_schedulers" name="LaplaceScheduler" output=[SIGMAS] */
-         LaplaceScheduler(p: IN['LaplaceScheduler'], meta?: ComfyNodeMetadata): Nodes['LaplaceScheduler']
+         LaplaceScheduler(p: IN['LaplaceScheduler'], meta?: ComfyNodeMetadata): Node['LaplaceScheduler']
           /** displayName="VPScheduler" category="sampling_custom_sampling_schedulers" name="VPScheduler" output=[SIGMAS] */
-         VPScheduler(p: IN['VPScheduler'], meta?: ComfyNodeMetadata): Nodes['VPScheduler']
+         VPScheduler(p: IN['VPScheduler'], meta?: ComfyNodeMetadata): Node['VPScheduler']
           /** displayName="BetaSamplingScheduler" category="sampling_custom_sampling_schedulers" name="BetaSamplingScheduler" output=[SIGMAS] */
-         BetaSamplingScheduler(p: IN['BetaSamplingScheduler'], meta?: ComfyNodeMetadata): Nodes['BetaSamplingScheduler']
+         BetaSamplingScheduler(p: IN['BetaSamplingScheduler'], meta?: ComfyNodeMetadata): Node['BetaSamplingScheduler']
           /** displayName="SDTurboScheduler" category="sampling_custom_sampling_schedulers" name="SDTurboScheduler" output=[SIGMAS] */
-         SDTurboScheduler(p: IN['SDTurboScheduler'], meta?: ComfyNodeMetadata): Nodes['SDTurboScheduler']
+         SDTurboScheduler(p: IN['SDTurboScheduler'], meta?: ComfyNodeMetadata): Node['SDTurboScheduler']
           /** displayName="KSamplerSelect" category="sampling_custom_sampling_samplers" name="KSamplerSelect" output=[SAMPLER] */
-         KSamplerSelect(p: IN['KSamplerSelect'], meta?: ComfyNodeMetadata): Nodes['KSamplerSelect']
+         KSamplerSelect(p: IN['KSamplerSelect'], meta?: ComfyNodeMetadata): Node['KSamplerSelect']
           /** displayName="SamplerEulerAncestral" category="sampling_custom_sampling_samplers" name="SamplerEulerAncestral" output=[SAMPLER] */
-         SamplerEulerAncestral(p: IN['SamplerEulerAncestral'], meta?: ComfyNodeMetadata): Nodes['SamplerEulerAncestral']
+         SamplerEulerAncestral(p: IN['SamplerEulerAncestral'], meta?: ComfyNodeMetadata): Node['SamplerEulerAncestral']
           /** displayName="SamplerEulerAncestralCFG++" category="sampling_custom_sampling_samplers" name="SamplerEulerAncestralCFGPP" output=[SAMPLER] */
-         SamplerEulerAncestralCFGPP(p: IN['SamplerEulerAncestralCFGPP'], meta?: ComfyNodeMetadata): Nodes['SamplerEulerAncestralCFGPP']
+         SamplerEulerAncestralCFGPP(p: IN['SamplerEulerAncestralCFGPP'], meta?: ComfyNodeMetadata): Node['SamplerEulerAncestralCFGPP']
           /** displayName="SamplerLMS" category="sampling_custom_sampling_samplers" name="SamplerLMS" output=[SAMPLER] */
-         SamplerLMS(p: IN['SamplerLMS'], meta?: ComfyNodeMetadata): Nodes['SamplerLMS']
+         SamplerLMS(p: IN['SamplerLMS'], meta?: ComfyNodeMetadata): Node['SamplerLMS']
           /** displayName="SamplerDPMPP_3M_SDE" category="sampling_custom_sampling_samplers" name="SamplerDPMPP_3M_SDE" output=[SAMPLER] */
-         SamplerDPMPP_3M_SDE(p: IN['SamplerDPMPP_3M_SDE'], meta?: ComfyNodeMetadata): Nodes['SamplerDPMPP_3M_SDE']
+         SamplerDPMPP_3M_SDE(p: IN['SamplerDPMPP_3M_SDE'], meta?: ComfyNodeMetadata): Node['SamplerDPMPP_3M_SDE']
           /** displayName="SamplerDPMPP_2M_SDE" category="sampling_custom_sampling_samplers" name="SamplerDPMPP_2M_SDE" output=[SAMPLER] */
-         SamplerDPMPP_2M_SDE(p: IN['SamplerDPMPP_2M_SDE'], meta?: ComfyNodeMetadata): Nodes['SamplerDPMPP_2M_SDE']
+         SamplerDPMPP_2M_SDE(p: IN['SamplerDPMPP_2M_SDE'], meta?: ComfyNodeMetadata): Node['SamplerDPMPP_2M_SDE']
           /** displayName="SamplerDPMPP_SDE" category="sampling_custom_sampling_samplers" name="SamplerDPMPP_SDE" output=[SAMPLER] */
-         SamplerDPMPP_SDE(p: IN['SamplerDPMPP_SDE'], meta?: ComfyNodeMetadata): Nodes['SamplerDPMPP_SDE']
+         SamplerDPMPP_SDE(p: IN['SamplerDPMPP_SDE'], meta?: ComfyNodeMetadata): Node['SamplerDPMPP_SDE']
           /** displayName="SamplerDPMPP_2S_Ancestral" category="sampling_custom_sampling_samplers" name="SamplerDPMPP_2S_Ancestral" output=[SAMPLER] */
-         SamplerDPMPP_2S_Ancestral(p: IN['SamplerDPMPP_2S_Ancestral'], meta?: ComfyNodeMetadata): Nodes['SamplerDPMPP_2S_Ancestral']
+         SamplerDPMPP_2S_Ancestral(p: IN['SamplerDPMPP_2S_Ancestral'], meta?: ComfyNodeMetadata): Node['SamplerDPMPP_2S_Ancestral']
           /** displayName="SamplerDPMAdaptative" category="sampling_custom_sampling_samplers" name="SamplerDPMAdaptative" output=[SAMPLER] */
-         SamplerDPMAdaptative(p: IN['SamplerDPMAdaptative'], meta?: ComfyNodeMetadata): Nodes['SamplerDPMAdaptative']
+         SamplerDPMAdaptative(p: IN['SamplerDPMAdaptative'], meta?: ComfyNodeMetadata): Node['SamplerDPMAdaptative']
           /** displayName="SplitSigmas" category="sampling_custom_sampling_sigmas" name="SplitSigmas" output=[high_sigmas, low_sigmas] */
-         SplitSigmas(p: IN['SplitSigmas'], meta?: ComfyNodeMetadata): Nodes['SplitSigmas']
+         SplitSigmas(p: IN['SplitSigmas'], meta?: ComfyNodeMetadata): Node['SplitSigmas']
           /** displayName="SplitSigmasDenoise" category="sampling_custom_sampling_sigmas" name="SplitSigmasDenoise" output=[high_sigmas, low_sigmas] */
-         SplitSigmasDenoise(p: IN['SplitSigmasDenoise'], meta?: ComfyNodeMetadata): Nodes['SplitSigmasDenoise']
+         SplitSigmasDenoise(p: IN['SplitSigmasDenoise'], meta?: ComfyNodeMetadata): Node['SplitSigmasDenoise']
           /** displayName="FlipSigmas" category="sampling_custom_sampling_sigmas" name="FlipSigmas" output=[SIGMAS] */
-         FlipSigmas(p: IN['FlipSigmas'], meta?: ComfyNodeMetadata): Nodes['FlipSigmas']
+         FlipSigmas(p: IN['FlipSigmas'], meta?: ComfyNodeMetadata): Node['FlipSigmas']
           /** displayName="CFGGuider" category="sampling_custom_sampling_guiders" name="CFGGuider" output=[GUIDER] */
-         CFGGuider(p: IN['CFGGuider'], meta?: ComfyNodeMetadata): Nodes['CFGGuider']
+         CFGGuider(p: IN['CFGGuider'], meta?: ComfyNodeMetadata): Node['CFGGuider']
           /** displayName="DualCFGGuider" category="sampling_custom_sampling_guiders" name="DualCFGGuider" output=[GUIDER] */
-         DualCFGGuider(p: IN['DualCFGGuider'], meta?: ComfyNodeMetadata): Nodes['DualCFGGuider']
+         DualCFGGuider(p: IN['DualCFGGuider'], meta?: ComfyNodeMetadata): Node['DualCFGGuider']
           /** displayName="BasicGuider" category="sampling_custom_sampling_guiders" name="BasicGuider" output=[GUIDER] */
-         BasicGuider(p: IN['BasicGuider'], meta?: ComfyNodeMetadata): Nodes['BasicGuider']
+         BasicGuider(p: IN['BasicGuider'], meta?: ComfyNodeMetadata): Node['BasicGuider']
           /** displayName="RandomNoise" category="sampling_custom_sampling_noise" name="RandomNoise" output=[NOISE] */
-         RandomNoise(p: IN['RandomNoise'], meta?: ComfyNodeMetadata): Nodes['RandomNoise']
+         RandomNoise(p: IN['RandomNoise'], meta?: ComfyNodeMetadata): Node['RandomNoise']
           /** displayName="DisableNoise" category="sampling_custom_sampling_noise" name="DisableNoise" output=[NOISE] */
-         DisableNoise(p: IN['DisableNoise'], meta?: ComfyNodeMetadata): Nodes['DisableNoise']
+         DisableNoise(p: IN['DisableNoise'], meta?: ComfyNodeMetadata): Node['DisableNoise']
           /** displayName="AddNoise" category="_for_testing_custom_sampling_noise" name="AddNoise" output=[LATENT] */
-         AddNoise(p: IN['AddNoise'], meta?: ComfyNodeMetadata): Nodes['AddNoise']
+         AddNoise(p: IN['AddNoise'], meta?: ComfyNodeMetadata): Node['AddNoise']
           /** displayName="SamplerCustomAdvanced" category="sampling_custom_sampling" name="SamplerCustomAdvanced" output=[output, denoised_output] */
-         SamplerCustomAdvanced(p: IN['SamplerCustomAdvanced'], meta?: ComfyNodeMetadata): Nodes['SamplerCustomAdvanced']
+         SamplerCustomAdvanced(p: IN['SamplerCustomAdvanced'], meta?: ComfyNodeMetadata): Node['SamplerCustomAdvanced']
           /** displayName="HyperTile" category="model_patches_unet" name="HyperTile" output=[MODEL] */
-         HyperTile(p: IN['HyperTile'], meta?: ComfyNodeMetadata): Nodes['HyperTile']
+         HyperTile(p: IN['HyperTile'], meta?: ComfyNodeMetadata): Node['HyperTile']
           /** displayName="ModelSamplingDiscrete" category="advanced_model" name="ModelSamplingDiscrete" output=[MODEL] */
-         ModelSamplingDiscrete(p: IN['ModelSamplingDiscrete'], meta?: ComfyNodeMetadata): Nodes['ModelSamplingDiscrete']
+         ModelSamplingDiscrete(p: IN['ModelSamplingDiscrete'], meta?: ComfyNodeMetadata): Node['ModelSamplingDiscrete']
           /** displayName="ModelSamplingContinuousEDM" category="advanced_model" name="ModelSamplingContinuousEDM" output=[MODEL] */
-         ModelSamplingContinuousEDM(p: IN['ModelSamplingContinuousEDM'], meta?: ComfyNodeMetadata): Nodes['ModelSamplingContinuousEDM']
+         ModelSamplingContinuousEDM(p: IN['ModelSamplingContinuousEDM'], meta?: ComfyNodeMetadata): Node['ModelSamplingContinuousEDM']
           /** displayName="ModelSamplingContinuousV" category="advanced_model" name="ModelSamplingContinuousV" output=[MODEL] */
-         ModelSamplingContinuousV(p: IN['ModelSamplingContinuousV'], meta?: ComfyNodeMetadata): Nodes['ModelSamplingContinuousV']
+         ModelSamplingContinuousV(p: IN['ModelSamplingContinuousV'], meta?: ComfyNodeMetadata): Node['ModelSamplingContinuousV']
           /** displayName="ModelSamplingStableCascade" category="advanced_model" name="ModelSamplingStableCascade" output=[MODEL] */
-         ModelSamplingStableCascade(p: IN['ModelSamplingStableCascade'], meta?: ComfyNodeMetadata): Nodes['ModelSamplingStableCascade']
+         ModelSamplingStableCascade(p: IN['ModelSamplingStableCascade'], meta?: ComfyNodeMetadata): Node['ModelSamplingStableCascade']
           /** displayName="ModelSamplingSD3" category="advanced_model" name="ModelSamplingSD3" output=[MODEL] */
-         ModelSamplingSD3(p: IN['ModelSamplingSD3'], meta?: ComfyNodeMetadata): Nodes['ModelSamplingSD3']
+         ModelSamplingSD3(p: IN['ModelSamplingSD3'], meta?: ComfyNodeMetadata): Node['ModelSamplingSD3']
           /** displayName="ModelSamplingAuraFlow" category="advanced_model" name="ModelSamplingAuraFlow" output=[MODEL] */
-         ModelSamplingAuraFlow(p: IN['ModelSamplingAuraFlow'], meta?: ComfyNodeMetadata): Nodes['ModelSamplingAuraFlow']
+         ModelSamplingAuraFlow(p: IN['ModelSamplingAuraFlow'], meta?: ComfyNodeMetadata): Node['ModelSamplingAuraFlow']
           /** displayName="ModelSamplingFlux" category="advanced_model" name="ModelSamplingFlux" output=[MODEL] */
-         ModelSamplingFlux(p: IN['ModelSamplingFlux'], meta?: ComfyNodeMetadata): Nodes['ModelSamplingFlux']
+         ModelSamplingFlux(p: IN['ModelSamplingFlux'], meta?: ComfyNodeMetadata): Node['ModelSamplingFlux']
           /** displayName="RescaleCFG" category="advanced_model" name="RescaleCFG" output=[MODEL] */
-         RescaleCFG(p: IN['RescaleCFG'], meta?: ComfyNodeMetadata): Nodes['RescaleCFG']
+         RescaleCFG(p: IN['RescaleCFG'], meta?: ComfyNodeMetadata): Node['RescaleCFG']
           /** displayName="PatchModelAddDownscale (Kohya Deep Shrink)" category="model_patches_unet" name="PatchModelAddDownscale" output=[MODEL] */
-         PatchModelAddDownscale(p: IN['PatchModelAddDownscale'], meta?: ComfyNodeMetadata): Nodes['PatchModelAddDownscale']
+         PatchModelAddDownscale(p: IN['PatchModelAddDownscale'], meta?: ComfyNodeMetadata): Node['PatchModelAddDownscale']
           /** displayName="Image Crop" category="image_transform" name="ImageCrop" output=[IMAGE] */
-         ImageCrop(p: IN['ImageCrop'], meta?: ComfyNodeMetadata): Nodes['ImageCrop']
+         ImageCrop(p: IN['ImageCrop'], meta?: ComfyNodeMetadata): Node['ImageCrop']
           /** displayName="RepeatImageBatch" category="image_batch" name="RepeatImageBatch" output=[IMAGE] */
-         RepeatImageBatch(p: IN['RepeatImageBatch'], meta?: ComfyNodeMetadata): Nodes['RepeatImageBatch']
+         RepeatImageBatch(p: IN['RepeatImageBatch'], meta?: ComfyNodeMetadata): Node['RepeatImageBatch']
           /** displayName="ImageFromBatch" category="image_batch" name="ImageFromBatch" output=[IMAGE] */
-         ImageFromBatch(p: IN['ImageFromBatch'], meta?: ComfyNodeMetadata): Nodes['ImageFromBatch']
+         ImageFromBatch(p: IN['ImageFromBatch'], meta?: ComfyNodeMetadata): Node['ImageFromBatch']
           /** displayName="SaveAnimatedWEBP" category="image_animation" name="SaveAnimatedWEBP" output=[] */
-         SaveAnimatedWEBP(p: IN['SaveAnimatedWEBP'], meta?: ComfyNodeMetadata): Nodes['SaveAnimatedWEBP']
+         SaveAnimatedWEBP(p: IN['SaveAnimatedWEBP'], meta?: ComfyNodeMetadata): Node['SaveAnimatedWEBP']
           /** displayName="SaveAnimatedPNG" category="image_animation" name="SaveAnimatedPNG" output=[] */
-         SaveAnimatedPNG(p: IN['SaveAnimatedPNG'], meta?: ComfyNodeMetadata): Nodes['SaveAnimatedPNG']
+         SaveAnimatedPNG(p: IN['SaveAnimatedPNG'], meta?: ComfyNodeMetadata): Node['SaveAnimatedPNG']
           /** displayName="Image Only Checkpoint Loader (img2vid model)" category="loaders_video_models" name="ImageOnlyCheckpointLoader" output=[MODEL, CLIP_VISION, VAE] */
-         ImageOnlyCheckpointLoader(p: IN['ImageOnlyCheckpointLoader'], meta?: ComfyNodeMetadata): Nodes['ImageOnlyCheckpointLoader']
+         ImageOnlyCheckpointLoader(p: IN['ImageOnlyCheckpointLoader'], meta?: ComfyNodeMetadata): Node['ImageOnlyCheckpointLoader']
           /** displayName="SVD_img2vid_Conditioning" category="conditioning_video_models" name="SVD_img2vid_Conditioning" output=[positive, negative, latent] */
-         SVD_img2vid_Conditioning(p: IN['SVD_img2vid_Conditioning'], meta?: ComfyNodeMetadata): Nodes['SVD_img2vid_Conditioning']
+         SVD_img2vid_Conditioning(p: IN['SVD_img2vid_Conditioning'], meta?: ComfyNodeMetadata): Node['SVD_img2vid_Conditioning']
           /** displayName="VideoLinearCFGGuidance" category="sampling_video_models" name="VideoLinearCFGGuidance" output=[MODEL] */
-         VideoLinearCFGGuidance(p: IN['VideoLinearCFGGuidance'], meta?: ComfyNodeMetadata): Nodes['VideoLinearCFGGuidance']
+         VideoLinearCFGGuidance(p: IN['VideoLinearCFGGuidance'], meta?: ComfyNodeMetadata): Node['VideoLinearCFGGuidance']
           /** displayName="VideoTriangleCFGGuidance" category="sampling_video_models" name="VideoTriangleCFGGuidance" output=[MODEL] */
-         VideoTriangleCFGGuidance(p: IN['VideoTriangleCFGGuidance'], meta?: ComfyNodeMetadata): Nodes['VideoTriangleCFGGuidance']
+         VideoTriangleCFGGuidance(p: IN['VideoTriangleCFGGuidance'], meta?: ComfyNodeMetadata): Node['VideoTriangleCFGGuidance']
           /** displayName="ImageOnlyCheckpointSave" category="advanced_model_merging" name="ImageOnlyCheckpointSave" output=[] */
-         ImageOnlyCheckpointSave(p: IN['ImageOnlyCheckpointSave'], meta?: ComfyNodeMetadata): Nodes['ImageOnlyCheckpointSave']
+         ImageOnlyCheckpointSave(p: IN['ImageOnlyCheckpointSave'], meta?: ComfyNodeMetadata): Node['ImageOnlyCheckpointSave']
           /** displayName="Self-Attention Guidance" category="_for_testing" name="SelfAttentionGuidance" output=[MODEL] */
-         SelfAttentionGuidance(p: IN['SelfAttentionGuidance'], meta?: ComfyNodeMetadata): Nodes['SelfAttentionGuidance']
+         SelfAttentionGuidance(p: IN['SelfAttentionGuidance'], meta?: ComfyNodeMetadata): Node['SelfAttentionGuidance']
           /** displayName="Perp-Neg (DEPRECATED by PerpNegGuider)" category="_for_testing" name="PerpNeg" output=[MODEL] */
-         PerpNeg(p: IN['PerpNeg'], meta?: ComfyNodeMetadata): Nodes['PerpNeg']
+         PerpNeg(p: IN['PerpNeg'], meta?: ComfyNodeMetadata): Node['PerpNeg']
           /** displayName="PerpNegGuider" category="_for_testing" name="PerpNegGuider" output=[GUIDER] */
-         PerpNegGuider(p: IN['PerpNegGuider'], meta?: ComfyNodeMetadata): Nodes['PerpNegGuider']
+         PerpNegGuider(p: IN['PerpNegGuider'], meta?: ComfyNodeMetadata): Node['PerpNegGuider']
           /** displayName="StableZero123_Conditioning" category="conditioning_3d_models" name="StableZero123_Conditioning" output=[positive, negative, latent] */
-         StableZero123_Conditioning(p: IN['StableZero123_Conditioning'], meta?: ComfyNodeMetadata): Nodes['StableZero123_Conditioning']
+         StableZero123_Conditioning(p: IN['StableZero123_Conditioning'], meta?: ComfyNodeMetadata): Node['StableZero123_Conditioning']
           /** displayName="StableZero123_Conditioning_Batched" category="conditioning_3d_models" name="StableZero123_Conditioning_Batched" output=[positive, negative, latent] */
-         StableZero123_Conditioning_Batched(p: IN['StableZero123_Conditioning_Batched'], meta?: ComfyNodeMetadata): Nodes['StableZero123_Conditioning_Batched']
+         StableZero123_Conditioning_Batched(p: IN['StableZero123_Conditioning_Batched'], meta?: ComfyNodeMetadata): Node['StableZero123_Conditioning_Batched']
           /** displayName="SV3D_Conditioning" category="conditioning_3d_models" name="SV3D_Conditioning" output=[positive, negative, latent] */
-         SV3D_Conditioning(p: IN['SV3D_Conditioning'], meta?: ComfyNodeMetadata): Nodes['SV3D_Conditioning']
+         SV3D_Conditioning(p: IN['SV3D_Conditioning'], meta?: ComfyNodeMetadata): Node['SV3D_Conditioning']
           /** displayName="SD_4XUpscale_Conditioning" category="conditioning_upscale_diffusion" name="SD_4XUpscale_Conditioning" output=[positive, negative, latent] */
-         SD_4XUpscale_Conditioning(p: IN['SD_4XUpscale_Conditioning'], meta?: ComfyNodeMetadata): Nodes['SD_4XUpscale_Conditioning']
+         SD_4XUpscale_Conditioning(p: IN['SD_4XUpscale_Conditioning'], meta?: ComfyNodeMetadata): Node['SD_4XUpscale_Conditioning']
           /** displayName="PhotoMakerLoader" category="_for_testing_photomaker" name="PhotoMakerLoader" output=[PHOTOMAKER] */
-         PhotoMakerLoader(p: IN['PhotoMakerLoader'], meta?: ComfyNodeMetadata): Nodes['PhotoMakerLoader']
+         PhotoMakerLoader(p: IN['PhotoMakerLoader'], meta?: ComfyNodeMetadata): Node['PhotoMakerLoader']
           /** displayName="PhotoMakerEncode" category="_for_testing_photomaker" name="PhotoMakerEncode" output=[CONDITIONING] */
-         PhotoMakerEncode(p: IN['PhotoMakerEncode'], meta?: ComfyNodeMetadata): Nodes['PhotoMakerEncode']
+         PhotoMakerEncode(p: IN['PhotoMakerEncode'], meta?: ComfyNodeMetadata): Node['PhotoMakerEncode']
           /** displayName="CLIPTextEncodeControlnet" category="_for_testing_conditioning" name="CLIPTextEncodeControlnet" output=[CONDITIONING] */
-         CLIPTextEncodeControlnet(p: IN['CLIPTextEncodeControlnet'], meta?: ComfyNodeMetadata): Nodes['CLIPTextEncodeControlnet']
+         CLIPTextEncodeControlnet(p: IN['CLIPTextEncodeControlnet'], meta?: ComfyNodeMetadata): Node['CLIPTextEncodeControlnet']
           /** displayName="ImageMorphology" category="image_postprocessing" name="Morphology" output=[IMAGE] */
-         Morphology(p: IN['Morphology'], meta?: ComfyNodeMetadata): Nodes['Morphology']
+         Morphology(p: IN['Morphology'], meta?: ComfyNodeMetadata): Node['Morphology']
           /** displayName="StableCascade_EmptyLatentImage" category="latent_stable_cascade" name="StableCascade_EmptyLatentImage" output=[stage_c, stage_b] */
-         StableCascade_EmptyLatentImage(p: IN['StableCascade_EmptyLatentImage'], meta?: ComfyNodeMetadata): Nodes['StableCascade_EmptyLatentImage']
+         StableCascade_EmptyLatentImage(p: IN['StableCascade_EmptyLatentImage'], meta?: ComfyNodeMetadata): Node['StableCascade_EmptyLatentImage']
           /** displayName="StableCascade_StageB_Conditioning" category="conditioning_stable_cascade" name="StableCascade_StageB_Conditioning" output=[CONDITIONING] */
-         StableCascade_StageB_Conditioning(p: IN['StableCascade_StageB_Conditioning'], meta?: ComfyNodeMetadata): Nodes['StableCascade_StageB_Conditioning']
+         StableCascade_StageB_Conditioning(p: IN['StableCascade_StageB_Conditioning'], meta?: ComfyNodeMetadata): Node['StableCascade_StageB_Conditioning']
           /** displayName="StableCascade_StageC_VAEEncode" category="latent_stable_cascade" name="StableCascade_StageC_VAEEncode" output=[stage_c, stage_b] */
-         StableCascade_StageC_VAEEncode(p: IN['StableCascade_StageC_VAEEncode'], meta?: ComfyNodeMetadata): Nodes['StableCascade_StageC_VAEEncode']
+         StableCascade_StageC_VAEEncode(p: IN['StableCascade_StageC_VAEEncode'], meta?: ComfyNodeMetadata): Node['StableCascade_StageC_VAEEncode']
           /** displayName="StableCascade_SuperResolutionControlnet" category="_for_testing_stable_cascade" name="StableCascade_SuperResolutionControlnet" output=[controlnet_input, stage_c, stage_b] */
-         StableCascade_SuperResolutionControlnet(p: IN['StableCascade_SuperResolutionControlnet'], meta?: ComfyNodeMetadata): Nodes['StableCascade_SuperResolutionControlnet']
+         StableCascade_SuperResolutionControlnet(p: IN['StableCascade_SuperResolutionControlnet'], meta?: ComfyNodeMetadata): Node['StableCascade_SuperResolutionControlnet']
           /** displayName="Differential Diffusion" category="_for_testing" name="DifferentialDiffusion" output=[MODEL] */
-         DifferentialDiffusion(p: IN['DifferentialDiffusion'], meta?: ComfyNodeMetadata): Nodes['DifferentialDiffusion']
+         DifferentialDiffusion(p: IN['DifferentialDiffusion'], meta?: ComfyNodeMetadata): Node['DifferentialDiffusion']
           /** displayName="InstructPixToPixConditioning" category="conditioning_instructpix2pix" name="InstructPixToPixConditioning" output=[positive, negative, latent] */
-         InstructPixToPixConditioning(p: IN['InstructPixToPixConditioning'], meta?: ComfyNodeMetadata): Nodes['InstructPixToPixConditioning']
+         InstructPixToPixConditioning(p: IN['InstructPixToPixConditioning'], meta?: ComfyNodeMetadata): Node['InstructPixToPixConditioning']
           /** displayName="ModelMergeSD1" category="advanced_model_merging_model_specific" name="ModelMergeSD1" output=[MODEL] */
-         ModelMergeSD1(p: IN['ModelMergeSD1'], meta?: ComfyNodeMetadata): Nodes['ModelMergeSD1']
+         ModelMergeSD1(p: IN['ModelMergeSD1'], meta?: ComfyNodeMetadata): Node['ModelMergeSD1']
           /** displayName="ModelMergeSD2" category="advanced_model_merging_model_specific" name="ModelMergeSD2" output=[MODEL] */
-         ModelMergeSD2(p: IN['ModelMergeSD2'], meta?: ComfyNodeMetadata): Nodes['ModelMergeSD2']
+         ModelMergeSD2(p: IN['ModelMergeSD2'], meta?: ComfyNodeMetadata): Node['ModelMergeSD2']
           /** displayName="ModelMergeSDXL" category="advanced_model_merging_model_specific" name="ModelMergeSDXL" output=[MODEL] */
-         ModelMergeSDXL(p: IN['ModelMergeSDXL'], meta?: ComfyNodeMetadata): Nodes['ModelMergeSDXL']
+         ModelMergeSDXL(p: IN['ModelMergeSDXL'], meta?: ComfyNodeMetadata): Node['ModelMergeSDXL']
           /** displayName="ModelMergeSD3_2B" category="advanced_model_merging_model_specific" name="ModelMergeSD3_2B" output=[MODEL] */
-         ModelMergeSD3_2B(p: IN['ModelMergeSD3_2B'], meta?: ComfyNodeMetadata): Nodes['ModelMergeSD3_2B']
+         ModelMergeSD3_2B(p: IN['ModelMergeSD3_2B'], meta?: ComfyNodeMetadata): Node['ModelMergeSD3_2B']
           /** displayName="ModelMergeFlux1" category="advanced_model_merging_model_specific" name="ModelMergeFlux1" output=[MODEL] */
-         ModelMergeFlux1(p: IN['ModelMergeFlux1'], meta?: ComfyNodeMetadata): Nodes['ModelMergeFlux1']
+         ModelMergeFlux1(p: IN['ModelMergeFlux1'], meta?: ComfyNodeMetadata): Node['ModelMergeFlux1']
           /** displayName="ModelMergeSD35_Large" category="advanced_model_merging_model_specific" name="ModelMergeSD35_Large" output=[MODEL] */
-         ModelMergeSD35_Large(p: IN['ModelMergeSD35_Large'], meta?: ComfyNodeMetadata): Nodes['ModelMergeSD35_Large']
+         ModelMergeSD35_Large(p: IN['ModelMergeSD35_Large'], meta?: ComfyNodeMetadata): Node['ModelMergeSD35_Large']
           /** displayName="PerturbedAttentionGuidance" category="model_patches_unet" name="PerturbedAttentionGuidance" output=[MODEL] */
-         PerturbedAttentionGuidance(p: IN['PerturbedAttentionGuidance'], meta?: ComfyNodeMetadata): Nodes['PerturbedAttentionGuidance']
+         PerturbedAttentionGuidance(p: IN['PerturbedAttentionGuidance'], meta?: ComfyNodeMetadata): Node['PerturbedAttentionGuidance']
           /** displayName="AlignYourStepsScheduler" category="sampling_custom_sampling_schedulers" name="AlignYourStepsScheduler" output=[SIGMAS] */
-         AlignYourStepsScheduler(p: IN['AlignYourStepsScheduler'], meta?: ComfyNodeMetadata): Nodes['AlignYourStepsScheduler']
+         AlignYourStepsScheduler(p: IN['AlignYourStepsScheduler'], meta?: ComfyNodeMetadata): Node['AlignYourStepsScheduler']
           /** displayName="UNetSelfAttentionMultiply" category="_for_testing_attention_experiments" name="UNetSelfAttentionMultiply" output=[MODEL] */
-         UNetSelfAttentionMultiply(p: IN['UNetSelfAttentionMultiply'], meta?: ComfyNodeMetadata): Nodes['UNetSelfAttentionMultiply']
+         UNetSelfAttentionMultiply(p: IN['UNetSelfAttentionMultiply'], meta?: ComfyNodeMetadata): Node['UNetSelfAttentionMultiply']
           /** displayName="UNetCrossAttentionMultiply" category="_for_testing_attention_experiments" name="UNetCrossAttentionMultiply" output=[MODEL] */
-         UNetCrossAttentionMultiply(p: IN['UNetCrossAttentionMultiply'], meta?: ComfyNodeMetadata): Nodes['UNetCrossAttentionMultiply']
+         UNetCrossAttentionMultiply(p: IN['UNetCrossAttentionMultiply'], meta?: ComfyNodeMetadata): Node['UNetCrossAttentionMultiply']
           /** displayName="CLIPAttentionMultiply" category="_for_testing_attention_experiments" name="CLIPAttentionMultiply" output=[CLIP] */
-         CLIPAttentionMultiply(p: IN['CLIPAttentionMultiply'], meta?: ComfyNodeMetadata): Nodes['CLIPAttentionMultiply']
+         CLIPAttentionMultiply(p: IN['CLIPAttentionMultiply'], meta?: ComfyNodeMetadata): Node['CLIPAttentionMultiply']
           /** displayName="UNetTemporalAttentionMultiply" category="_for_testing_attention_experiments" name="UNetTemporalAttentionMultiply" output=[MODEL] */
-         UNetTemporalAttentionMultiply(p: IN['UNetTemporalAttentionMultiply'], meta?: ComfyNodeMetadata): Nodes['UNetTemporalAttentionMultiply']
+         UNetTemporalAttentionMultiply(p: IN['UNetTemporalAttentionMultiply'], meta?: ComfyNodeMetadata): Node['UNetTemporalAttentionMultiply']
           /** displayName="SamplerLCMUpscale" category="sampling_custom_sampling_samplers" name="SamplerLCMUpscale" output=[SAMPLER] */
-         SamplerLCMUpscale(p: IN['SamplerLCMUpscale'], meta?: ComfyNodeMetadata): Nodes['SamplerLCMUpscale']
+         SamplerLCMUpscale(p: IN['SamplerLCMUpscale'], meta?: ComfyNodeMetadata): Node['SamplerLCMUpscale']
           /** displayName="SamplerEulerCFG++" category="_for_testing" name="SamplerEulerCFGpp" output=[SAMPLER] */
-         SamplerEulerCFGpp(p: IN['SamplerEulerCFGpp'], meta?: ComfyNodeMetadata): Nodes['SamplerEulerCFGpp']
+         SamplerEulerCFGpp(p: IN['SamplerEulerCFGpp'], meta?: ComfyNodeMetadata): Node['SamplerEulerCFGpp']
           /** displayName="Webcam Capture" category="image" name="WebcamCapture" output=[IMAGE] */
-         WebcamCapture(p: IN['WebcamCapture'], meta?: ComfyNodeMetadata): Nodes['WebcamCapture']
+         WebcamCapture(p: IN['WebcamCapture'], meta?: ComfyNodeMetadata): Node['WebcamCapture']
           /** displayName="EmptyLatentAudio" category="latent_audio" name="EmptyLatentAudio" output=[LATENT] */
-         EmptyLatentAudio(p: IN['EmptyLatentAudio'], meta?: ComfyNodeMetadata): Nodes['EmptyLatentAudio']
+         EmptyLatentAudio(p: IN['EmptyLatentAudio'], meta?: ComfyNodeMetadata): Node['EmptyLatentAudio']
           /** displayName="VAEEncodeAudio" category="latent_audio" name="VAEEncodeAudio" output=[LATENT] */
-         VAEEncodeAudio(p: IN['VAEEncodeAudio'], meta?: ComfyNodeMetadata): Nodes['VAEEncodeAudio']
+         VAEEncodeAudio(p: IN['VAEEncodeAudio'], meta?: ComfyNodeMetadata): Node['VAEEncodeAudio']
           /** displayName="VAEDecodeAudio" category="latent_audio" name="VAEDecodeAudio" output=[AUDIO] */
-         VAEDecodeAudio(p: IN['VAEDecodeAudio'], meta?: ComfyNodeMetadata): Nodes['VAEDecodeAudio']
+         VAEDecodeAudio(p: IN['VAEDecodeAudio'], meta?: ComfyNodeMetadata): Node['VAEDecodeAudio']
           /** displayName="SaveAudio" category="audio" name="SaveAudio" output=[] */
-         SaveAudio(p: IN['SaveAudio'], meta?: ComfyNodeMetadata): Nodes['SaveAudio']
+         SaveAudio(p: IN['SaveAudio'], meta?: ComfyNodeMetadata): Node['SaveAudio']
           /** displayName="LoadAudio" category="audio" name="LoadAudio" output=[AUDIO] */
-         LoadAudio(p: IN['LoadAudio'], meta?: ComfyNodeMetadata): Nodes['LoadAudio']
+         LoadAudio(p: IN['LoadAudio'], meta?: ComfyNodeMetadata): Node['LoadAudio']
           /** displayName="PreviewAudio" category="audio" name="PreviewAudio" output=[] */
-         PreviewAudio(p: IN['PreviewAudio'], meta?: ComfyNodeMetadata): Nodes['PreviewAudio']
+         PreviewAudio(p: IN['PreviewAudio'], meta?: ComfyNodeMetadata): Node['PreviewAudio']
           /** displayName="TripleCLIPLoader" category="advanced_loaders" name="TripleCLIPLoader" output=[CLIP] */
-         TripleCLIPLoader(p: IN['TripleCLIPLoader'], meta?: ComfyNodeMetadata): Nodes['TripleCLIPLoader']
+         TripleCLIPLoader(p: IN['TripleCLIPLoader'], meta?: ComfyNodeMetadata): Node['TripleCLIPLoader']
           /** displayName="EmptySD3LatentImage" category="latent_sd3" name="EmptySD3LatentImage" output=[LATENT] */
-         EmptySD3LatentImage(p: IN['EmptySD3LatentImage'], meta?: ComfyNodeMetadata): Nodes['EmptySD3LatentImage']
+         EmptySD3LatentImage(p: IN['EmptySD3LatentImage'], meta?: ComfyNodeMetadata): Node['EmptySD3LatentImage']
           /** displayName="CLIPTextEncodeSD3" category="advanced_conditioning" name="CLIPTextEncodeSD3" output=[CONDITIONING] */
-         CLIPTextEncodeSD3(p: IN['CLIPTextEncodeSD3'], meta?: ComfyNodeMetadata): Nodes['CLIPTextEncodeSD3']
+         CLIPTextEncodeSD3(p: IN['CLIPTextEncodeSD3'], meta?: ComfyNodeMetadata): Node['CLIPTextEncodeSD3']
           /** displayName="Apply Controlnet with VAE" category="conditioning_controlnet" name="ControlNetApplySD3" output=[positive, negative] */
-         ControlNetApplySD3(p: IN['ControlNetApplySD3'], meta?: ComfyNodeMetadata): Nodes['ControlNetApplySD3']
+         ControlNetApplySD3(p: IN['ControlNetApplySD3'], meta?: ComfyNodeMetadata): Node['ControlNetApplySD3']
           /** displayName="SkipLayerGuidanceSD3" category="advanced_guidance" name="SkipLayerGuidanceSD3" output=[MODEL] */
-         SkipLayerGuidanceSD3(p: IN['SkipLayerGuidanceSD3'], meta?: ComfyNodeMetadata): Nodes['SkipLayerGuidanceSD3']
+         SkipLayerGuidanceSD3(p: IN['SkipLayerGuidanceSD3'], meta?: ComfyNodeMetadata): Node['SkipLayerGuidanceSD3']
           /** displayName="GITSScheduler" category="sampling_custom_sampling_schedulers" name="GITSScheduler" output=[SIGMAS] */
-         GITSScheduler(p: IN['GITSScheduler'], meta?: ComfyNodeMetadata): Nodes['GITSScheduler']
+         GITSScheduler(p: IN['GITSScheduler'], meta?: ComfyNodeMetadata): Node['GITSScheduler']
           /** displayName="SetUnionControlNetType" category="conditioning_controlnet" name="SetUnionControlNetType" output=[CONTROL_NET] */
-         SetUnionControlNetType(p: IN['SetUnionControlNetType'], meta?: ComfyNodeMetadata): Nodes['SetUnionControlNetType']
+         SetUnionControlNetType(p: IN['SetUnionControlNetType'], meta?: ComfyNodeMetadata): Node['SetUnionControlNetType']
           /** displayName="ControlNetInpaintingAliMamaApply" category="conditioning_controlnet" name="ControlNetInpaintingAliMamaApply" output=[positive, negative] */
-         ControlNetInpaintingAliMamaApply(p: IN['ControlNetInpaintingAliMamaApply'], meta?: ComfyNodeMetadata): Nodes['ControlNetInpaintingAliMamaApply']
+         ControlNetInpaintingAliMamaApply(p: IN['ControlNetInpaintingAliMamaApply'], meta?: ComfyNodeMetadata): Node['ControlNetInpaintingAliMamaApply']
           /** displayName="CLIPTextEncodeHunyuanDiT" category="advanced_conditioning" name="CLIPTextEncodeHunyuanDiT" output=[CONDITIONING] */
-         CLIPTextEncodeHunyuanDiT(p: IN['CLIPTextEncodeHunyuanDiT'], meta?: ComfyNodeMetadata): Nodes['CLIPTextEncodeHunyuanDiT']
+         CLIPTextEncodeHunyuanDiT(p: IN['CLIPTextEncodeHunyuanDiT'], meta?: ComfyNodeMetadata): Node['CLIPTextEncodeHunyuanDiT']
           /** displayName="CLIPTextEncodeFlux" category="advanced_conditioning_flux" name="CLIPTextEncodeFlux" output=[CONDITIONING] */
-         CLIPTextEncodeFlux(p: IN['CLIPTextEncodeFlux'], meta?: ComfyNodeMetadata): Nodes['CLIPTextEncodeFlux']
+         CLIPTextEncodeFlux(p: IN['CLIPTextEncodeFlux'], meta?: ComfyNodeMetadata): Node['CLIPTextEncodeFlux']
           /** displayName="FluxGuidance" category="advanced_conditioning_flux" name="FluxGuidance" output=[CONDITIONING] */
-         FluxGuidance(p: IN['FluxGuidance'], meta?: ComfyNodeMetadata): Nodes['FluxGuidance']
+         FluxGuidance(p: IN['FluxGuidance'], meta?: ComfyNodeMetadata): Node['FluxGuidance']
           /** displayName="Extract and Save Lora" category="_for_testing" name="LoraSave" output=[] */
-         LoraSave(p: IN['LoraSave'], meta?: ComfyNodeMetadata): Nodes['LoraSave']
+         LoraSave(p: IN['LoraSave'], meta?: ComfyNodeMetadata): Node['LoraSave']
           /** displayName="TorchCompileModel" category="_for_testing" name="TorchCompileModel" output=[MODEL] */
-         TorchCompileModel(p: IN['TorchCompileModel'], meta?: ComfyNodeMetadata): Nodes['TorchCompileModel']
+         TorchCompileModel(p: IN['TorchCompileModel'], meta?: ComfyNodeMetadata): Node['TorchCompileModel']
           /** displayName="EmptyMochiLatentVideo" category="latent_mochi" name="EmptyMochiLatentVideo" output=[LATENT] */
-         EmptyMochiLatentVideo(p: IN['EmptyMochiLatentVideo'], meta?: ComfyNodeMetadata): Nodes['EmptyMochiLatentVideo']
+         EmptyMochiLatentVideo(p: IN['EmptyMochiLatentVideo'], meta?: ComfyNodeMetadata): Node['EmptyMochiLatentVideo']
           /** displayName="SaveImageWebsocket" category="api_image" name="SaveImageWebsocket" output=[] */
-         "websocket_image_save.SaveImageWebsocket"(p: IN['websocket_image_save.SaveImageWebsocket'], meta?: ComfyNodeMetadata): Nodes['websocket_image_save.SaveImageWebsocket']
+         "websocket_image_save.SaveImageWebsocket"(p: IN['websocket_image_save.SaveImageWebsocket'], meta?: ComfyNodeMetadata): Node['websocket_image_save.SaveImageWebsocket']
           /** displayName="BLIP Model Loader" category="WAS Suite_Loaders" name="BLIP Model Loader" output=[BLIP_MODEL] */
-         "was.BLIP Model Loader"(p: IN['was.BLIP Model Loader'], meta?: ComfyNodeMetadata): Nodes['was.BLIP Model Loader']
+         "was.BLIP Model Loader"(p: IN['was.BLIP Model Loader'], meta?: ComfyNodeMetadata): Node['was.BLIP Model Loader']
           /** displayName="Blend Latents" category="WAS Suite_Latent" name="Blend Latents" output=[LATENT] */
-         "was.Blend Latents"(p: IN['was.Blend Latents'], meta?: ComfyNodeMetadata): Nodes['was.Blend Latents']
+         "was.Blend Latents"(p: IN['was.Blend Latents'], meta?: ComfyNodeMetadata): Node['was.Blend Latents']
           /** displayName="Bus Node" category="WAS Suite_Utilities" name="Bus Node" output=[bus, model, clip, vae, positive, negative] */
-         "was.Bus Node"(p: IN['was.Bus Node'], meta?: ComfyNodeMetadata): Nodes['was.Bus Node']
+         "was.Bus Node"(p: IN['was.Bus Node'], meta?: ComfyNodeMetadata): Node['was.Bus Node']
           /** displayName="Cache Node" category="WAS Suite_IO" name="Cache Node" output=[latent_filename, image_filename, conditioning_filename] */
-         "was.Cache Node"(p: IN['was.Cache Node'], meta?: ComfyNodeMetadata): Nodes['was.Cache Node']
+         "was.Cache Node"(p: IN['was.Cache Node'], meta?: ComfyNodeMetadata): Node['was.Cache Node']
           /** displayName="Checkpoint Loader" category="WAS Suite_Loaders_Advanced" name="Checkpoint Loader" output=[MODEL, CLIP, VAE, NAME_STRING] */
-         "was.Checkpoint Loader"(p: IN['was.Checkpoint Loader'], meta?: ComfyNodeMetadata): Nodes['was.Checkpoint Loader']
+         "was.Checkpoint Loader"(p: IN['was.Checkpoint Loader'], meta?: ComfyNodeMetadata): Node['was.Checkpoint Loader']
           /** displayName="Checkpoint Loader (Simple)" category="WAS Suite_Loaders" name="Checkpoint Loader (Simple)" output=[MODEL, CLIP, VAE, NAME_STRING] */
-         "was.Checkpoint Loader (Simple)"(p: IN['was.Checkpoint Loader (Simple)'], meta?: ComfyNodeMetadata): Nodes['was.Checkpoint Loader (Simple)']
+         "was.Checkpoint Loader (Simple)"(p: IN['was.Checkpoint Loader (Simple)'], meta?: ComfyNodeMetadata): Node['was.Checkpoint Loader (Simple)']
           /** displayName="CLIPTextEncode (NSP)" category="WAS Suite_Conditioning" name="CLIPTextEncode (NSP)" output=[conditioning, parsed_text, raw_text] */
-         "was.CLIPTextEncode (NSP)"(p: IN['was.CLIPTextEncode (NSP)'], meta?: ComfyNodeMetadata): Nodes['was.CLIPTextEncode (NSP)']
+         "was.CLIPTextEncode (NSP)"(p: IN['was.CLIPTextEncode (NSP)'], meta?: ComfyNodeMetadata): Node['was.CLIPTextEncode (NSP)']
           /** displayName="CLIP Input Switch" category="WAS Suite_Logic" name="CLIP Input Switch" output=[CLIP] */
-         "was.CLIP Input Switch"(p: IN['was.CLIP Input Switch'], meta?: ComfyNodeMetadata): Nodes['was.CLIP Input Switch']
+         "was.CLIP Input Switch"(p: IN['was.CLIP Input Switch'], meta?: ComfyNodeMetadata): Node['was.CLIP Input Switch']
           /** displayName="CLIP Vision Input Switch" category="WAS Suite_Logic" name="CLIP Vision Input Switch" output=[CLIP_VISION] */
-         "was.CLIP Vision Input Switch"(p: IN['was.CLIP Vision Input Switch'], meta?: ComfyNodeMetadata): Nodes['was.CLIP Vision Input Switch']
+         "was.CLIP Vision Input Switch"(p: IN['was.CLIP Vision Input Switch'], meta?: ComfyNodeMetadata): Node['was.CLIP Vision Input Switch']
           /** displayName="Conditioning Input Switch" category="WAS Suite_Logic" name="Conditioning Input Switch" output=[CONDITIONING] */
-         "was.Conditioning Input Switch"(p: IN['was.Conditioning Input Switch'], meta?: ComfyNodeMetadata): Nodes['was.Conditioning Input Switch']
+         "was.Conditioning Input Switch"(p: IN['was.Conditioning Input Switch'], meta?: ComfyNodeMetadata): Node['was.Conditioning Input Switch']
           /** displayName="Constant Number" category="WAS Suite_Number" name="Constant Number" output=[NUMBER, FLOAT, INT] */
-         "was.Constant Number"(p: IN['was.Constant Number'], meta?: ComfyNodeMetadata): Nodes['was.Constant Number']
+         "was.Constant Number"(p: IN['was.Constant Number'], meta?: ComfyNodeMetadata): Node['was.Constant Number']
           /** displayName="Create Grid Image" category="WAS Suite_Image_Process" name="Create Grid Image" output=[IMAGE] */
-         "was.Create Grid Image"(p: IN['was.Create Grid Image'], meta?: ComfyNodeMetadata): Nodes['was.Create Grid Image']
+         "was.Create Grid Image"(p: IN['was.Create Grid Image'], meta?: ComfyNodeMetadata): Node['was.Create Grid Image']
           /** displayName="Create Grid Image from Batch" category="WAS Suite_Image_Process" name="Create Grid Image from Batch" output=[IMAGE] */
-         "was.Create Grid Image from Batch"(p: IN['was.Create Grid Image from Batch'], meta?: ComfyNodeMetadata): Nodes['was.Create Grid Image from Batch']
+         "was.Create Grid Image from Batch"(p: IN['was.Create Grid Image from Batch'], meta?: ComfyNodeMetadata): Node['was.Create Grid Image from Batch']
           /** displayName="Create Morph Image" category="WAS Suite_Animation" name="Create Morph Image" output=[image_a_pass, image_b_pass, filepath_text, filename_text] */
-         "was.Create Morph Image"(p: IN['was.Create Morph Image'], meta?: ComfyNodeMetadata): Nodes['was.Create Morph Image']
+         "was.Create Morph Image"(p: IN['was.Create Morph Image'], meta?: ComfyNodeMetadata): Node['was.Create Morph Image']
           /** displayName="Create Morph Image from Path" category="WAS Suite_Animation" name="Create Morph Image from Path" output=[filepath_text, filename_text] */
-         "was.Create Morph Image from Path"(p: IN['was.Create Morph Image from Path'], meta?: ComfyNodeMetadata): Nodes['was.Create Morph Image from Path']
+         "was.Create Morph Image from Path"(p: IN['was.Create Morph Image from Path'], meta?: ComfyNodeMetadata): Node['was.Create Morph Image from Path']
           /** displayName="Create Video from Path" category="WAS Suite_Animation" name="Create Video from Path" output=[filepath_text, filename_text] */
-         "was.Create Video from Path"(p: IN['was.Create Video from Path'], meta?: ComfyNodeMetadata): Nodes['was.Create Video from Path']
+         "was.Create Video from Path"(p: IN['was.Create Video from Path'], meta?: ComfyNodeMetadata): Node['was.Create Video from Path']
           /** displayName="CLIPSeg Masking" category="WAS Suite_Image_Masking" name="CLIPSeg Masking" output=[MASK, MASK_IMAGE] */
-         "was.CLIPSeg Masking"(p: IN['was.CLIPSeg Masking'], meta?: ComfyNodeMetadata): Nodes['was.CLIPSeg Masking']
+         "was.CLIPSeg Masking"(p: IN['was.CLIPSeg Masking'], meta?: ComfyNodeMetadata): Node['was.CLIPSeg Masking']
           /** displayName="CLIPSeg Model Loader" category="WAS Suite_Loaders" name="CLIPSeg Model Loader" output=[clipseg_model] */
-         "was.CLIPSeg Model Loader"(p: IN['was.CLIPSeg Model Loader'], meta?: ComfyNodeMetadata): Nodes['was.CLIPSeg Model Loader']
+         "was.CLIPSeg Model Loader"(p: IN['was.CLIPSeg Model Loader'], meta?: ComfyNodeMetadata): Node['was.CLIPSeg Model Loader']
           /** displayName="CLIPSeg Batch Masking" category="WAS Suite_Image_Masking" name="CLIPSeg Batch Masking" output=[IMAGES_BATCH, MASKS_BATCH, MASK_IMAGES_BATCH] */
-         "was.CLIPSeg Batch Masking"(p: IN['was.CLIPSeg Batch Masking'], meta?: ComfyNodeMetadata): Nodes['was.CLIPSeg Batch Masking']
+         "was.CLIPSeg Batch Masking"(p: IN['was.CLIPSeg Batch Masking'], meta?: ComfyNodeMetadata): Node['was.CLIPSeg Batch Masking']
           /** displayName="Convert Masks to Images" category="WAS Suite_Image_Masking" name="Convert Masks to Images" output=[IMAGES] */
-         "was.Convert Masks to Images"(p: IN['was.Convert Masks to Images'], meta?: ComfyNodeMetadata): Nodes['was.Convert Masks to Images']
+         "was.Convert Masks to Images"(p: IN['was.Convert Masks to Images'], meta?: ComfyNodeMetadata): Node['was.Convert Masks to Images']
           /** displayName="Control Net Model Input Switch" category="WAS Suite_Logic" name="Control Net Model Input Switch" output=[CONTROL_NET] */
-         "was.Control Net Model Input Switch"(p: IN['was.Control Net Model Input Switch'], meta?: ComfyNodeMetadata): Nodes['was.Control Net Model Input Switch']
+         "was.Control Net Model Input Switch"(p: IN['was.Control Net Model Input Switch'], meta?: ComfyNodeMetadata): Node['was.Control Net Model Input Switch']
           /** displayName="Debug Number to Console" category="WAS Suite_Debug" name="Debug Number to Console" output=[NUMBER] */
-         "was.Debug Number to Console"(p: IN['was.Debug Number to Console'], meta?: ComfyNodeMetadata): Nodes['was.Debug Number to Console']
+         "was.Debug Number to Console"(p: IN['was.Debug Number to Console'], meta?: ComfyNodeMetadata): Node['was.Debug Number to Console']
           /** displayName="Dictionary to Console" category="WAS Suite_Debug" name="Dictionary to Console" output=[DICT] */
-         "was.Dictionary to Console"(p: IN['was.Dictionary to Console'], meta?: ComfyNodeMetadata): Nodes['was.Dictionary to Console']
+         "was.Dictionary to Console"(p: IN['was.Dictionary to Console'], meta?: ComfyNodeMetadata): Node['was.Dictionary to Console']
           /** displayName="Diffusers Model Loader" category="WAS Suite_Loaders_Advanced" name="Diffusers Model Loader" output=[MODEL, CLIP, VAE, NAME_STRING] */
-         "was.Diffusers Model Loader"(p: IN['was.Diffusers Model Loader'], meta?: ComfyNodeMetadata): Nodes['was.Diffusers Model Loader']
+         "was.Diffusers Model Loader"(p: IN['was.Diffusers Model Loader'], meta?: ComfyNodeMetadata): Node['was.Diffusers Model Loader']
           /** displayName="Diffusers Hub Model Down-Loader" category="WAS Suite_Loaders_Advanced" name="Diffusers Hub Model Down-Loader" output=[MODEL, CLIP, VAE, NAME_STRING] */
-         "was.Diffusers Hub Model Down-Loader"(p: IN['was.Diffusers Hub Model Down-Loader'], meta?: ComfyNodeMetadata): Nodes['was.Diffusers Hub Model Down-Loader']
+         "was.Diffusers Hub Model Down-Loader"(p: IN['was.Diffusers Hub Model Down-Loader'], meta?: ComfyNodeMetadata): Node['was.Diffusers Hub Model Down-Loader']
           /** displayName="Export API" category="WAS Suite_Debug" name="Export API" output=[] */
-         "was.Export API"(p: IN['was.Export API'], meta?: ComfyNodeMetadata): Nodes['was.Export API']
+         "was.Export API"(p: IN['was.Export API'], meta?: ComfyNodeMetadata): Node['was.Export API']
           /** displayName="Latent Input Switch" category="WAS Suite_Logic" name="Latent Input Switch" output=[LATENT] */
-         "was.Latent Input Switch"(p: IN['was.Latent Input Switch'], meta?: ComfyNodeMetadata): Nodes['was.Latent Input Switch']
+         "was.Latent Input Switch"(p: IN['was.Latent Input Switch'], meta?: ComfyNodeMetadata): Node['was.Latent Input Switch']
           /** displayName="Load Cache" category="WAS Suite_IO" name="Load Cache" output=[LATENT, IMAGE, CONDITIONING] */
-         "was.Load Cache"(p: IN['was.Load Cache'], meta?: ComfyNodeMetadata): Nodes['was.Load Cache']
+         "was.Load Cache"(p: IN['was.Load Cache'], meta?: ComfyNodeMetadata): Node['was.Load Cache']
           /** displayName="Logic Boolean" category="WAS Suite_Logic" name="Logic Boolean" output=[BOOLEAN, NUMBER, INT, FLOAT] */
-         "was.Logic Boolean"(p: IN['was.Logic Boolean'], meta?: ComfyNodeMetadata): Nodes['was.Logic Boolean']
+         "was.Logic Boolean"(p: IN['was.Logic Boolean'], meta?: ComfyNodeMetadata): Node['was.Logic Boolean']
           /** displayName="Logic Boolean Primitive" category="WAS Suite_Logic" name="Logic Boolean Primitive" output=[BOOLEAN] */
-         "was.Logic Boolean Primitive"(p: IN['was.Logic Boolean Primitive'], meta?: ComfyNodeMetadata): Nodes['was.Logic Boolean Primitive']
+         "was.Logic Boolean Primitive"(p: IN['was.Logic Boolean Primitive'], meta?: ComfyNodeMetadata): Node['was.Logic Boolean Primitive']
           /** displayName="Logic Comparison OR" category="WAS Suite_Logic" name="Logic Comparison OR" output=[BOOLEAN] */
-         "was.Logic Comparison OR"(p: IN['was.Logic Comparison OR'], meta?: ComfyNodeMetadata): Nodes['was.Logic Comparison OR']
+         "was.Logic Comparison OR"(p: IN['was.Logic Comparison OR'], meta?: ComfyNodeMetadata): Node['was.Logic Comparison OR']
           /** displayName="Logic Comparison AND" category="WAS Suite_Logic" name="Logic Comparison AND" output=[BOOLEAN] */
-         "was.Logic Comparison AND"(p: IN['was.Logic Comparison AND'], meta?: ComfyNodeMetadata): Nodes['was.Logic Comparison AND']
+         "was.Logic Comparison AND"(p: IN['was.Logic Comparison AND'], meta?: ComfyNodeMetadata): Node['was.Logic Comparison AND']
           /** displayName="Logic Comparison XOR" category="WAS Suite_Logic" name="Logic Comparison XOR" output=[BOOLEAN] */
-         "was.Logic Comparison XOR"(p: IN['was.Logic Comparison XOR'], meta?: ComfyNodeMetadata): Nodes['was.Logic Comparison XOR']
+         "was.Logic Comparison XOR"(p: IN['was.Logic Comparison XOR'], meta?: ComfyNodeMetadata): Node['was.Logic Comparison XOR']
           /** displayName="Logic NOT" category="WAS Suite_Logic" name="Logic NOT" output=[BOOLEAN] */
-         "was.Logic NOT"(p: IN['was.Logic NOT'], meta?: ComfyNodeMetadata): Nodes['was.Logic NOT']
+         "was.Logic NOT"(p: IN['was.Logic NOT'], meta?: ComfyNodeMetadata): Node['was.Logic NOT']
           /** displayName="Lora Loader" category="WAS Suite_Loaders" name="Lora Loader" output=[MODEL, CLIP, NAME_STRING] */
-         "was.Lora Loader"(p: IN['was.Lora Loader'], meta?: ComfyNodeMetadata): Nodes['was.Lora Loader']
+         "was.Lora Loader"(p: IN['was.Lora Loader'], meta?: ComfyNodeMetadata): Node['was.Lora Loader']
           /** displayName="Hex to HSL" category="WAS Suite_Utilities" name="Hex to HSL" output=[hue, saturation, lightness, alpha, hsl] */
-         "was.Hex to HSL"(p: IN['was.Hex to HSL'], meta?: ComfyNodeMetadata): Nodes['was.Hex to HSL']
+         "was.Hex to HSL"(p: IN['was.Hex to HSL'], meta?: ComfyNodeMetadata): Node['was.Hex to HSL']
           /** displayName="HSL to Hex" category="WAS Suite_Utilities" name="HSL to Hex" output=[hex_color] */
-         "was.HSL to Hex"(p: IN['was.HSL to Hex'], meta?: ComfyNodeMetadata): Nodes['was.HSL to Hex']
+         "was.HSL to Hex"(p: IN['was.HSL to Hex'], meta?: ComfyNodeMetadata): Node['was.HSL to Hex']
           /** displayName="Image SSAO (Ambient Occlusion)" category="WAS Suite_Image_Filter" name="Image SSAO (Ambient Occlusion)" output=[composited_images, ssao_images, specular_mask_images] */
-         "was.Image SSAO (Ambient Occlusion)"(p: IN['was.Image SSAO (Ambient Occlusion)'], meta?: ComfyNodeMetadata): Nodes['was.Image SSAO (Ambient Occlusion)']
+         "was.Image SSAO (Ambient Occlusion)"(p: IN['was.Image SSAO (Ambient Occlusion)'], meta?: ComfyNodeMetadata): Node['was.Image SSAO (Ambient Occlusion)']
           /** displayName="Image SSDO (Direct Occlusion)" category="WAS Suite_Image_Filter" name="Image SSDO (Direct Occlusion)" output=[composited_images, ssdo_images, ssdo_image_masks, light_source_image_masks] */
-         "was.Image SSDO (Direct Occlusion)"(p: IN['was.Image SSDO (Direct Occlusion)'], meta?: ComfyNodeMetadata): Nodes['was.Image SSDO (Direct Occlusion)']
+         "was.Image SSDO (Direct Occlusion)"(p: IN['was.Image SSDO (Direct Occlusion)'], meta?: ComfyNodeMetadata): Node['was.Image SSDO (Direct Occlusion)']
           /** displayName="Image Analyze" category="WAS Suite_Image_Analyze" name="Image Analyze" output=[IMAGE] */
-         "was.Image Analyze"(p: IN['was.Image Analyze'], meta?: ComfyNodeMetadata): Nodes['was.Image Analyze']
+         "was.Image Analyze"(p: IN['was.Image Analyze'], meta?: ComfyNodeMetadata): Node['was.Image Analyze']
           /** displayName="Image Aspect Ratio" category="WAS Suite_Logic" name="Image Aspect Ratio" output=[aspect_number, aspect_float, is_landscape_bool, aspect_ratio_common, aspect_type] */
-         "was.Image Aspect Ratio"(p: IN['was.Image Aspect Ratio'], meta?: ComfyNodeMetadata): Nodes['was.Image Aspect Ratio']
+         "was.Image Aspect Ratio"(p: IN['was.Image Aspect Ratio'], meta?: ComfyNodeMetadata): Node['was.Image Aspect Ratio']
           /** displayName="Image Batch" category="WAS Suite_Image" name="Image Batch" output=[image] */
-         "was.Image Batch"(p: IN['was.Image Batch'], meta?: ComfyNodeMetadata): Nodes['was.Image Batch']
+         "was.Image Batch"(p: IN['was.Image Batch'], meta?: ComfyNodeMetadata): Node['was.Image Batch']
           /** displayName="Image Blank" category="WAS Suite_Image" name="Image Blank" output=[IMAGE] */
-         "was.Image Blank"(p: IN['was.Image Blank'], meta?: ComfyNodeMetadata): Nodes['was.Image Blank']
+         "was.Image Blank"(p: IN['was.Image Blank'], meta?: ComfyNodeMetadata): Node['was.Image Blank']
           /** displayName="Image Blend by Mask" category="WAS Suite_Image" name="Image Blend by Mask" output=[IMAGE] */
-         "was.Image Blend by Mask"(p: IN['was.Image Blend by Mask'], meta?: ComfyNodeMetadata): Nodes['was.Image Blend by Mask']
+         "was.Image Blend by Mask"(p: IN['was.Image Blend by Mask'], meta?: ComfyNodeMetadata): Node['was.Image Blend by Mask']
           /** displayName="Image Blend" category="WAS Suite_Image" name="Image Blend" output=[image] */
-         "was.Image Blend"(p: IN['was.Image Blend'], meta?: ComfyNodeMetadata): Nodes['was.Image Blend']
+         "was.Image Blend"(p: IN['was.Image Blend'], meta?: ComfyNodeMetadata): Node['was.Image Blend']
           /** displayName="Image Blending Mode" category="WAS Suite_Image" name="Image Blending Mode" output=[image] */
-         "was.Image Blending Mode"(p: IN['was.Image Blending Mode'], meta?: ComfyNodeMetadata): Nodes['was.Image Blending Mode']
+         "was.Image Blending Mode"(p: IN['was.Image Blending Mode'], meta?: ComfyNodeMetadata): Node['was.Image Blending Mode']
           /** displayName="Image Bloom Filter" category="WAS Suite_Image_Filter" name="Image Bloom Filter" output=[IMAGE] */
-         "was.Image Bloom Filter"(p: IN['was.Image Bloom Filter'], meta?: ComfyNodeMetadata): Nodes['was.Image Bloom Filter']
+         "was.Image Bloom Filter"(p: IN['was.Image Bloom Filter'], meta?: ComfyNodeMetadata): Node['was.Image Bloom Filter']
           /** displayName="Image Canny Filter" category="WAS Suite_Image_Filter" name="Image Canny Filter" output=[images] */
-         "was.Image Canny Filter"(p: IN['was.Image Canny Filter'], meta?: ComfyNodeMetadata): Nodes['was.Image Canny Filter']
+         "was.Image Canny Filter"(p: IN['was.Image Canny Filter'], meta?: ComfyNodeMetadata): Node['was.Image Canny Filter']
           /** displayName="Image Chromatic Aberration" category="WAS Suite_Image_Filter" name="Image Chromatic Aberration" output=[IMAGE] */
-         "was.Image Chromatic Aberration"(p: IN['was.Image Chromatic Aberration'], meta?: ComfyNodeMetadata): Nodes['was.Image Chromatic Aberration']
+         "was.Image Chromatic Aberration"(p: IN['was.Image Chromatic Aberration'], meta?: ComfyNodeMetadata): Node['was.Image Chromatic Aberration']
           /** displayName="Image Color Palette" category="WAS Suite_Image_Analyze" name="Image Color Palette" output=[image, color_palettes] */
-         "was.Image Color Palette"(p: IN['was.Image Color Palette'], meta?: ComfyNodeMetadata): Nodes['was.Image Color Palette']
+         "was.Image Color Palette"(p: IN['was.Image Color Palette'], meta?: ComfyNodeMetadata): Node['was.Image Color Palette']
           /** displayName="Image Crop Face" category="WAS Suite_Image_Process" name="Image Crop Face" output=[IMAGE, CROP_DATA] */
-         "was.Image Crop Face"(p: IN['was.Image Crop Face'], meta?: ComfyNodeMetadata): Nodes['was.Image Crop Face']
+         "was.Image Crop Face"(p: IN['was.Image Crop Face'], meta?: ComfyNodeMetadata): Node['was.Image Crop Face']
           /** displayName="Image Crop Location" category="WAS Suite_Image_Process" name="Image Crop Location" output=[IMAGE, CROP_DATA] */
-         "was.Image Crop Location"(p: IN['was.Image Crop Location'], meta?: ComfyNodeMetadata): Nodes['was.Image Crop Location']
+         "was.Image Crop Location"(p: IN['was.Image Crop Location'], meta?: ComfyNodeMetadata): Node['was.Image Crop Location']
           /** displayName="Image Crop Square Location" category="WAS Suite_Image_Process" name="Image Crop Square Location" output=[IMAGE, CROP_DATA] */
-         "was.Image Crop Square Location"(p: IN['was.Image Crop Square Location'], meta?: ComfyNodeMetadata): Nodes['was.Image Crop Square Location']
+         "was.Image Crop Square Location"(p: IN['was.Image Crop Square Location'], meta?: ComfyNodeMetadata): Node['was.Image Crop Square Location']
           /** displayName="Image Displacement Warp" category="WAS Suite_Image_Transform" name="Image Displacement Warp" output=[images] */
-         "was.Image Displacement Warp"(p: IN['was.Image Displacement Warp'], meta?: ComfyNodeMetadata): Nodes['was.Image Displacement Warp']
+         "was.Image Displacement Warp"(p: IN['was.Image Displacement Warp'], meta?: ComfyNodeMetadata): Node['was.Image Displacement Warp']
           /** displayName="Image Lucy Sharpen" category="WAS Suite_Image_Filter" name="Image Lucy Sharpen" output=[IMAGE] */
-         "was.Image Lucy Sharpen"(p: IN['was.Image Lucy Sharpen'], meta?: ComfyNodeMetadata): Nodes['was.Image Lucy Sharpen']
+         "was.Image Lucy Sharpen"(p: IN['was.Image Lucy Sharpen'], meta?: ComfyNodeMetadata): Node['was.Image Lucy Sharpen']
           /** displayName="Image Paste Face" category="WAS Suite_Image_Process" name="Image Paste Face" output=[IMAGE, MASK_IMAGE] */
-         "was.Image Paste Face"(p: IN['was.Image Paste Face'], meta?: ComfyNodeMetadata): Nodes['was.Image Paste Face']
+         "was.Image Paste Face"(p: IN['was.Image Paste Face'], meta?: ComfyNodeMetadata): Node['was.Image Paste Face']
           /** displayName="Image Paste Crop" category="WAS Suite_Image_Process" name="Image Paste Crop" output=[IMAGE, MASK] */
-         "was.Image Paste Crop"(p: IN['was.Image Paste Crop'], meta?: ComfyNodeMetadata): Nodes['was.Image Paste Crop']
+         "was.Image Paste Crop"(p: IN['was.Image Paste Crop'], meta?: ComfyNodeMetadata): Node['was.Image Paste Crop']
           /** displayName="Image Paste Crop by Location" category="WAS Suite_Image_Process" name="Image Paste Crop by Location" output=[IMAGE, MASK] */
-         "was.Image Paste Crop by Location"(p: IN['was.Image Paste Crop by Location'], meta?: ComfyNodeMetadata): Nodes['was.Image Paste Crop by Location']
+         "was.Image Paste Crop by Location"(p: IN['was.Image Paste Crop by Location'], meta?: ComfyNodeMetadata): Node['was.Image Paste Crop by Location']
           /** displayName="Image Pixelate" category="WAS Suite_Image_Process" name="Image Pixelate" output=[images] */
-         "was.Image Pixelate"(p: IN['was.Image Pixelate'], meta?: ComfyNodeMetadata): Nodes['was.Image Pixelate']
+         "was.Image Pixelate"(p: IN['was.Image Pixelate'], meta?: ComfyNodeMetadata): Node['was.Image Pixelate']
           /** displayName="Image Power Noise" category="WAS Suite_Image_Generate_Noise" name="Image Power Noise" output=[image] */
-         "was.Image Power Noise"(p: IN['was.Image Power Noise'], meta?: ComfyNodeMetadata): Nodes['was.Image Power Noise']
+         "was.Image Power Noise"(p: IN['was.Image Power Noise'], meta?: ComfyNodeMetadata): Node['was.Image Power Noise']
           /** displayName="Image Dragan Photography Filter" category="WAS Suite_Image_Filter" name="Image Dragan Photography Filter" output=[IMAGE] */
-         "was.Image Dragan Photography Filter"(p: IN['was.Image Dragan Photography Filter'], meta?: ComfyNodeMetadata): Nodes['was.Image Dragan Photography Filter']
+         "was.Image Dragan Photography Filter"(p: IN['was.Image Dragan Photography Filter'], meta?: ComfyNodeMetadata): Node['was.Image Dragan Photography Filter']
           /** displayName="Image Edge Detection Filter" category="WAS Suite_Image_Filter" name="Image Edge Detection Filter" output=[IMAGE] */
-         "was.Image Edge Detection Filter"(p: IN['was.Image Edge Detection Filter'], meta?: ComfyNodeMetadata): Nodes['was.Image Edge Detection Filter']
+         "was.Image Edge Detection Filter"(p: IN['was.Image Edge Detection Filter'], meta?: ComfyNodeMetadata): Node['was.Image Edge Detection Filter']
           /** displayName="Image Film Grain" category="WAS Suite_Image_Filter" name="Image Film Grain" output=[IMAGE] */
-         "was.Image Film Grain"(p: IN['was.Image Film Grain'], meta?: ComfyNodeMetadata): Nodes['was.Image Film Grain']
+         "was.Image Film Grain"(p: IN['was.Image Film Grain'], meta?: ComfyNodeMetadata): Node['was.Image Film Grain']
           /** displayName="Image Filter Adjustments" category="WAS Suite_Image_Filter" name="Image Filter Adjustments" output=[IMAGE] */
-         "was.Image Filter Adjustments"(p: IN['was.Image Filter Adjustments'], meta?: ComfyNodeMetadata): Nodes['was.Image Filter Adjustments']
+         "was.Image Filter Adjustments"(p: IN['was.Image Filter Adjustments'], meta?: ComfyNodeMetadata): Node['was.Image Filter Adjustments']
           /** displayName="Image Flip" category="WAS Suite_Image_Transform" name="Image Flip" output=[images] */
-         "was.Image Flip"(p: IN['was.Image Flip'], meta?: ComfyNodeMetadata): Nodes['was.Image Flip']
+         "was.Image Flip"(p: IN['was.Image Flip'], meta?: ComfyNodeMetadata): Node['was.Image Flip']
           /** displayName="Image Gradient Map" category="WAS Suite_Image_Filter" name="Image Gradient Map" output=[IMAGE] */
-         "was.Image Gradient Map"(p: IN['was.Image Gradient Map'], meta?: ComfyNodeMetadata): Nodes['was.Image Gradient Map']
+         "was.Image Gradient Map"(p: IN['was.Image Gradient Map'], meta?: ComfyNodeMetadata): Node['was.Image Gradient Map']
           /** displayName="Image Generate Gradient" category="WAS Suite_Image_Generate" name="Image Generate Gradient" output=[IMAGE] */
-         "was.Image Generate Gradient"(p: IN['was.Image Generate Gradient'], meta?: ComfyNodeMetadata): Nodes['was.Image Generate Gradient']
+         "was.Image Generate Gradient"(p: IN['was.Image Generate Gradient'], meta?: ComfyNodeMetadata): Node['was.Image Generate Gradient']
           /** displayName="Image High Pass Filter" category="WAS Suite_Image_Filter" name="Image High Pass Filter" output=[images] */
-         "was.Image High Pass Filter"(p: IN['was.Image High Pass Filter'], meta?: ComfyNodeMetadata): Nodes['was.Image High Pass Filter']
+         "was.Image High Pass Filter"(p: IN['was.Image High Pass Filter'], meta?: ComfyNodeMetadata): Node['was.Image High Pass Filter']
           /** displayName="Image History Loader" category="WAS Suite_History" name="Image History Loader" output=[image, filename_text] */
-         "was.Image History Loader"(p: IN['was.Image History Loader'], meta?: ComfyNodeMetadata): Nodes['was.Image History Loader']
+         "was.Image History Loader"(p: IN['was.Image History Loader'], meta?: ComfyNodeMetadata): Node['was.Image History Loader']
           /** displayName="Image Input Switch" category="WAS Suite_Logic" name="Image Input Switch" output=[IMAGE] */
-         "was.Image Input Switch"(p: IN['was.Image Input Switch'], meta?: ComfyNodeMetadata): Nodes['was.Image Input Switch']
+         "was.Image Input Switch"(p: IN['was.Image Input Switch'], meta?: ComfyNodeMetadata): Node['was.Image Input Switch']
           /** displayName="Image Levels Adjustment" category="WAS Suite_Image_Adjustment" name="Image Levels Adjustment" output=[IMAGE] */
-         "was.Image Levels Adjustment"(p: IN['was.Image Levels Adjustment'], meta?: ComfyNodeMetadata): Nodes['was.Image Levels Adjustment']
+         "was.Image Levels Adjustment"(p: IN['was.Image Levels Adjustment'], meta?: ComfyNodeMetadata): Node['was.Image Levels Adjustment']
           /** displayName="Image Load" category="WAS Suite_IO" name="Image Load" output=[image, mask, filename_text] */
-         "was.Image Load"(p: IN['was.Image Load'], meta?: ComfyNodeMetadata): Nodes['was.Image Load']
+         "was.Image Load"(p: IN['was.Image Load'], meta?: ComfyNodeMetadata): Node['was.Image Load']
           /** displayName="Image Median Filter" category="WAS Suite_Image_Filter" name="Image Median Filter" output=[IMAGE] */
-         "was.Image Median Filter"(p: IN['was.Image Median Filter'], meta?: ComfyNodeMetadata): Nodes['was.Image Median Filter']
+         "was.Image Median Filter"(p: IN['was.Image Median Filter'], meta?: ComfyNodeMetadata): Node['was.Image Median Filter']
           /** displayName="Image Mix RGB Channels" category="WAS Suite_Image_Process" name="Image Mix RGB Channels" output=[IMAGE] */
-         "was.Image Mix RGB Channels"(p: IN['was.Image Mix RGB Channels'], meta?: ComfyNodeMetadata): Nodes['was.Image Mix RGB Channels']
+         "was.Image Mix RGB Channels"(p: IN['was.Image Mix RGB Channels'], meta?: ComfyNodeMetadata): Node['was.Image Mix RGB Channels']
           /** displayName="Image Monitor Effects Filter" category="WAS Suite_Image_Filter" name="Image Monitor Effects Filter" output=[image] */
-         "was.Image Monitor Effects Filter"(p: IN['was.Image Monitor Effects Filter'], meta?: ComfyNodeMetadata): Nodes['was.Image Monitor Effects Filter']
+         "was.Image Monitor Effects Filter"(p: IN['was.Image Monitor Effects Filter'], meta?: ComfyNodeMetadata): Node['was.Image Monitor Effects Filter']
           /** displayName="Image Nova Filter" category="WAS Suite_Image_Filter" name="Image Nova Filter" output=[IMAGE] */
-         "was.Image Nova Filter"(p: IN['was.Image Nova Filter'], meta?: ComfyNodeMetadata): Nodes['was.Image Nova Filter']
+         "was.Image Nova Filter"(p: IN['was.Image Nova Filter'], meta?: ComfyNodeMetadata): Node['was.Image Nova Filter']
           /** displayName="Image Padding" category="WAS Suite_Image_Transform" name="Image Padding" output=[IMAGE, MASK] */
-         "was.Image Padding"(p: IN['was.Image Padding'], meta?: ComfyNodeMetadata): Nodes['was.Image Padding']
+         "was.Image Padding"(p: IN['was.Image Padding'], meta?: ComfyNodeMetadata): Node['was.Image Padding']
           /** displayName="Image Perlin Noise" category="WAS Suite_Image_Generate_Noise" name="Image Perlin Noise" output=[image] */
-         "was.Image Perlin Noise"(p: IN['was.Image Perlin Noise'], meta?: ComfyNodeMetadata): Nodes['was.Image Perlin Noise']
+         "was.Image Perlin Noise"(p: IN['was.Image Perlin Noise'], meta?: ComfyNodeMetadata): Node['was.Image Perlin Noise']
           /** displayName="Image Rembg (Remove Background)" category="WAS Suite_Image_AI" name="Image Rembg (Remove Background)" output=[images] */
-         "was.Image Rembg (Remove Background)"(p: IN['was.Image Rembg (Remove Background)'], meta?: ComfyNodeMetadata): Nodes['was.Image Rembg (Remove Background)']
+         "was.Image Rembg (Remove Background)"(p: IN['was.Image Rembg (Remove Background)'], meta?: ComfyNodeMetadata): Node['was.Image Rembg (Remove Background)']
           /** displayName="Image Perlin Power Fractal" category="WAS Suite_Image_Generate_Noise" name="Image Perlin Power Fractal" output=[image] */
-         "was.Image Perlin Power Fractal"(p: IN['was.Image Perlin Power Fractal'], meta?: ComfyNodeMetadata): Nodes['was.Image Perlin Power Fractal']
+         "was.Image Perlin Power Fractal"(p: IN['was.Image Perlin Power Fractal'], meta?: ComfyNodeMetadata): Node['was.Image Perlin Power Fractal']
           /** displayName="Image Remove Background (Alpha)" category="WAS Suite_Image_Process" name="Image Remove Background (Alpha)" output=[images] */
-         "was.Image Remove Background (Alpha)"(p: IN['was.Image Remove Background (Alpha)'], meta?: ComfyNodeMetadata): Nodes['was.Image Remove Background (Alpha)']
+         "was.Image Remove Background (Alpha)"(p: IN['was.Image Remove Background (Alpha)'], meta?: ComfyNodeMetadata): Node['was.Image Remove Background (Alpha)']
           /** displayName="Image Remove Color" category="WAS Suite_Image_Process" name="Image Remove Color" output=[IMAGE] */
-         "was.Image Remove Color"(p: IN['was.Image Remove Color'], meta?: ComfyNodeMetadata): Nodes['was.Image Remove Color']
+         "was.Image Remove Color"(p: IN['was.Image Remove Color'], meta?: ComfyNodeMetadata): Node['was.Image Remove Color']
           /** displayName="Image Resize" category="WAS Suite_Image_Transform" name="Image Resize" output=[IMAGE] */
-         "was.Image Resize"(p: IN['was.Image Resize'], meta?: ComfyNodeMetadata): Nodes['was.Image Resize']
+         "was.Image Resize"(p: IN['was.Image Resize'], meta?: ComfyNodeMetadata): Node['was.Image Resize']
           /** displayName="Image Rotate" category="WAS Suite_Image_Transform" name="Image Rotate" output=[images] */
-         "was.Image Rotate"(p: IN['was.Image Rotate'], meta?: ComfyNodeMetadata): Nodes['was.Image Rotate']
+         "was.Image Rotate"(p: IN['was.Image Rotate'], meta?: ComfyNodeMetadata): Node['was.Image Rotate']
           /** displayName="Image Rotate Hue" category="WAS Suite_Image_Adjustment" name="Image Rotate Hue" output=[IMAGE] */
-         "was.Image Rotate Hue"(p: IN['was.Image Rotate Hue'], meta?: ComfyNodeMetadata): Nodes['was.Image Rotate Hue']
+         "was.Image Rotate Hue"(p: IN['was.Image Rotate Hue'], meta?: ComfyNodeMetadata): Node['was.Image Rotate Hue']
           /** displayName="Image Send HTTP" category="WAS Suite_IO" name="Image Send HTTP" output=[status_code, result_text] */
-         "was.Image Send HTTP"(p: IN['was.Image Send HTTP'], meta?: ComfyNodeMetadata): Nodes['was.Image Send HTTP']
+         "was.Image Send HTTP"(p: IN['was.Image Send HTTP'], meta?: ComfyNodeMetadata): Node['was.Image Send HTTP']
           /** displayName="Image Save" category="WAS Suite_IO" name="Image Save" output=[images, files] */
-         "was.Image Save"(p: IN['was.Image Save'], meta?: ComfyNodeMetadata): Nodes['was.Image Save']
+         "was.Image Save"(p: IN['was.Image Save'], meta?: ComfyNodeMetadata): Node['was.Image Save']
           /** displayName="Image Seamless Texture" category="WAS Suite_Image_Process" name="Image Seamless Texture" output=[images] */
-         "was.Image Seamless Texture"(p: IN['was.Image Seamless Texture'], meta?: ComfyNodeMetadata): Nodes['was.Image Seamless Texture']
+         "was.Image Seamless Texture"(p: IN['was.Image Seamless Texture'], meta?: ComfyNodeMetadata): Node['was.Image Seamless Texture']
           /** displayName="Image Select Channel" category="WAS Suite_Image_Process" name="Image Select Channel" output=[IMAGE] */
-         "was.Image Select Channel"(p: IN['was.Image Select Channel'], meta?: ComfyNodeMetadata): Nodes['was.Image Select Channel']
+         "was.Image Select Channel"(p: IN['was.Image Select Channel'], meta?: ComfyNodeMetadata): Node['was.Image Select Channel']
           /** displayName="Image Select Color" category="WAS Suite_Image_Process" name="Image Select Color" output=[IMAGE] */
-         "was.Image Select Color"(p: IN['was.Image Select Color'], meta?: ComfyNodeMetadata): Nodes['was.Image Select Color']
+         "was.Image Select Color"(p: IN['was.Image Select Color'], meta?: ComfyNodeMetadata): Node['was.Image Select Color']
           /** displayName="Image Shadows and Highlights" category="WAS Suite_Image_Adjustment" name="Image Shadows and Highlights" output=[image, shadow_map, highlight_map] */
-         "was.Image Shadows and Highlights"(p: IN['was.Image Shadows and Highlights'], meta?: ComfyNodeMetadata): Nodes['was.Image Shadows and Highlights']
+         "was.Image Shadows and Highlights"(p: IN['was.Image Shadows and Highlights'], meta?: ComfyNodeMetadata): Node['was.Image Shadows and Highlights']
           /** displayName="Image Size to Number" category="WAS Suite_Number_Operations" name="Image Size to Number" output=[width_num, height_num, width_float, height_float, width_int, height_int] */
-         "was.Image Size to Number"(p: IN['was.Image Size to Number'], meta?: ComfyNodeMetadata): Nodes['was.Image Size to Number']
+         "was.Image Size to Number"(p: IN['was.Image Size to Number'], meta?: ComfyNodeMetadata): Node['was.Image Size to Number']
           /** displayName="Image Stitch" category="WAS Suite_Image_Transform" name="Image Stitch" output=[IMAGE] */
-         "was.Image Stitch"(p: IN['was.Image Stitch'], meta?: ComfyNodeMetadata): Nodes['was.Image Stitch']
+         "was.Image Stitch"(p: IN['was.Image Stitch'], meta?: ComfyNodeMetadata): Node['was.Image Stitch']
           /** displayName="Image Style Filter" category="WAS Suite_Image_Filter" name="Image Style Filter" output=[IMAGE] */
-         "was.Image Style Filter"(p: IN['was.Image Style Filter'], meta?: ComfyNodeMetadata): Nodes['was.Image Style Filter']
+         "was.Image Style Filter"(p: IN['was.Image Style Filter'], meta?: ComfyNodeMetadata): Node['was.Image Style Filter']
           /** displayName="Image Threshold" category="WAS Suite_Image_Process" name="Image Threshold" output=[IMAGE] */
-         "was.Image Threshold"(p: IN['was.Image Threshold'], meta?: ComfyNodeMetadata): Nodes['was.Image Threshold']
+         "was.Image Threshold"(p: IN['was.Image Threshold'], meta?: ComfyNodeMetadata): Node['was.Image Threshold']
           /** displayName="Image Tiled" category="WAS Suite_Image_Process" name="Image Tiled" output=[IMAGES] */
-         "was.Image Tiled"(p: IN['was.Image Tiled'], meta?: ComfyNodeMetadata): Nodes['was.Image Tiled']
+         "was.Image Tiled"(p: IN['was.Image Tiled'], meta?: ComfyNodeMetadata): Node['was.Image Tiled']
           /** displayName="Image Transpose" category="WAS Suite_Image_Transform" name="Image Transpose" output=[IMAGE] */
-         "was.Image Transpose"(p: IN['was.Image Transpose'], meta?: ComfyNodeMetadata): Nodes['was.Image Transpose']
+         "was.Image Transpose"(p: IN['was.Image Transpose'], meta?: ComfyNodeMetadata): Node['was.Image Transpose']
           /** displayName="Image fDOF Filter" category="WAS Suite_Image_Filter" name="Image fDOF Filter" output=[IMAGE] */
-         "was.Image fDOF Filter"(p: IN['was.Image fDOF Filter'], meta?: ComfyNodeMetadata): Nodes['was.Image fDOF Filter']
+         "was.Image fDOF Filter"(p: IN['was.Image fDOF Filter'], meta?: ComfyNodeMetadata): Node['was.Image fDOF Filter']
           /** displayName="Image to Latent Mask" category="WAS Suite_Image_Masking" name="Image to Latent Mask" output=[MASKS] */
-         "was.Image to Latent Mask"(p: IN['was.Image to Latent Mask'], meta?: ComfyNodeMetadata): Nodes['was.Image to Latent Mask']
+         "was.Image to Latent Mask"(p: IN['was.Image to Latent Mask'], meta?: ComfyNodeMetadata): Node['was.Image to Latent Mask']
           /** displayName="Image to Noise" category="WAS Suite_Image_Generate_Noise" name="Image to Noise" output=[image] */
-         "was.Image to Noise"(p: IN['was.Image to Noise'], meta?: ComfyNodeMetadata): Nodes['was.Image to Noise']
+         "was.Image to Noise"(p: IN['was.Image to Noise'], meta?: ComfyNodeMetadata): Node['was.Image to Noise']
           /** displayName="Image to Seed" category="WAS Suite_Image_Analyze" name="Image to Seed" output=[INT] */
-         "was.Image to Seed"(p: IN['was.Image to Seed'], meta?: ComfyNodeMetadata): Nodes['was.Image to Seed']
+         "was.Image to Seed"(p: IN['was.Image to Seed'], meta?: ComfyNodeMetadata): Node['was.Image to Seed']
           /** displayName="Images to RGB" category="WAS Suite_Image" name="Images to RGB" output=[IMAGE] */
-         "was.Images to RGB"(p: IN['was.Images to RGB'], meta?: ComfyNodeMetadata): Nodes['was.Images to RGB']
+         "was.Images to RGB"(p: IN['was.Images to RGB'], meta?: ComfyNodeMetadata): Node['was.Images to RGB']
           /** displayName="Images to Linear" category="WAS Suite_Image" name="Images to Linear" output=[IMAGE] */
-         "was.Images to Linear"(p: IN['was.Images to Linear'], meta?: ComfyNodeMetadata): Nodes['was.Images to Linear']
+         "was.Images to Linear"(p: IN['was.Images to Linear'], meta?: ComfyNodeMetadata): Node['was.Images to Linear']
           /** displayName="Integer place counter" category="WAS Suite_Integer" name="Integer place counter" output=[INT_PLACES] */
-         "was.Integer place counter"(p: IN['was.Integer place counter'], meta?: ComfyNodeMetadata): Nodes['was.Integer place counter']
+         "was.Integer place counter"(p: IN['was.Integer place counter'], meta?: ComfyNodeMetadata): Node['was.Integer place counter']
           /** displayName="Image Voronoi Noise Filter" category="WAS Suite_Image_Generate_Noise" name="Image Voronoi Noise Filter" output=[image] */
-         "was.Image Voronoi Noise Filter"(p: IN['was.Image Voronoi Noise Filter'], meta?: ComfyNodeMetadata): Nodes['was.Image Voronoi Noise Filter']
+         "was.Image Voronoi Noise Filter"(p: IN['was.Image Voronoi Noise Filter'], meta?: ComfyNodeMetadata): Node['was.Image Voronoi Noise Filter']
           /** displayName="KSampler (WAS)" category="WAS Suite_Sampling" name="KSampler (WAS)" output=[LATENT] */
-         "was.KSampler (WAS)"(p: IN['was.KSampler (WAS)'], meta?: ComfyNodeMetadata): Nodes['was.KSampler (WAS)']
+         "was.KSampler (WAS)"(p: IN['was.KSampler (WAS)'], meta?: ComfyNodeMetadata): Node['was.KSampler (WAS)']
           /** displayName="KSampler Cycle" category="WAS Suite_Sampling" name="KSampler Cycle" output=[latent(s)] */
-         "was.KSampler Cycle"(p: IN['was.KSampler Cycle'], meta?: ComfyNodeMetadata): Nodes['was.KSampler Cycle']
+         "was.KSampler Cycle"(p: IN['was.KSampler Cycle'], meta?: ComfyNodeMetadata): Node['was.KSampler Cycle']
           /** displayName="Latent Batch" category="WAS Suite_Latent" name="Latent Batch" output=[latent] */
-         "was.Latent Batch"(p: IN['was.Latent Batch'], meta?: ComfyNodeMetadata): Nodes['was.Latent Batch']
+         "was.Latent Batch"(p: IN['was.Latent Batch'], meta?: ComfyNodeMetadata): Node['was.Latent Batch']
           /** displayName="Latent Noise Injection" category="WAS Suite_Latent_Generate" name="Latent Noise Injection" output=[LATENT] */
-         "was.Latent Noise Injection"(p: IN['was.Latent Noise Injection'], meta?: ComfyNodeMetadata): Nodes['was.Latent Noise Injection']
+         "was.Latent Noise Injection"(p: IN['was.Latent Noise Injection'], meta?: ComfyNodeMetadata): Node['was.Latent Noise Injection']
           /** displayName="Latent Size to Number" category="WAS Suite_Number_Operations" name="Latent Size to Number" output=[tensor_w_num, tensor_h_num, tensor_w_float, tensor_h_float, tensor_w_int, tensor_h_int] */
-         "was.Latent Size to Number"(p: IN['was.Latent Size to Number'], meta?: ComfyNodeMetadata): Nodes['was.Latent Size to Number']
+         "was.Latent Size to Number"(p: IN['was.Latent Size to Number'], meta?: ComfyNodeMetadata): Node['was.Latent Size to Number']
           /** displayName="Latent Upscale by Factor (WAS)" category="WAS Suite_Latent_Transform" name="Latent Upscale by Factor (WAS)" output=[LATENT] */
-         "was.Latent Upscale by Factor (WAS)"(p: IN['was.Latent Upscale by Factor (WAS)'], meta?: ComfyNodeMetadata): Nodes['was.Latent Upscale by Factor (WAS)']
+         "was.Latent Upscale by Factor (WAS)"(p: IN['was.Latent Upscale by Factor (WAS)'], meta?: ComfyNodeMetadata): Node['was.Latent Upscale by Factor (WAS)']
           /** displayName="Load Image Batch" category="WAS Suite_IO" name="Load Image Batch" output=[image, filename_text] */
-         "was.Load Image Batch"(p: IN['was.Load Image Batch'], meta?: ComfyNodeMetadata): Nodes['was.Load Image Batch']
+         "was.Load Image Batch"(p: IN['was.Load Image Batch'], meta?: ComfyNodeMetadata): Node['was.Load Image Batch']
           /** displayName="Load Text File" category="WAS Suite_IO" name="Load Text File" output=[STRING, DICT] */
-         "was.Load Text File"(p: IN['was.Load Text File'], meta?: ComfyNodeMetadata): Nodes['was.Load Text File']
+         "was.Load Text File"(p: IN['was.Load Text File'], meta?: ComfyNodeMetadata): Node['was.Load Text File']
           /** displayName="Load Lora" category="WAS Suite_Loaders" name="Load Lora" output=[MODEL, CLIP, NAME_STRING] */
-         "was.Load Lora"(p: IN['was.Load Lora'], meta?: ComfyNodeMetadata): Nodes['was.Load Lora']
+         "was.Load Lora"(p: IN['was.Load Lora'], meta?: ComfyNodeMetadata): Node['was.Load Lora']
           /** displayName="Lora Input Switch" category="WAS Suite_Logic" name="Lora Input Switch" output=[MODEL, CLIP] */
-         "was.Lora Input Switch"(p: IN['was.Lora Input Switch'], meta?: ComfyNodeMetadata): Nodes['was.Lora Input Switch']
+         "was.Lora Input Switch"(p: IN['was.Lora Input Switch'], meta?: ComfyNodeMetadata): Node['was.Lora Input Switch']
           /** displayName="Masks Add" category="WAS Suite_Image_Masking" name="Masks Add" output=[MASKS] */
-         "was.Masks Add"(p: IN['was.Masks Add'], meta?: ComfyNodeMetadata): Nodes['was.Masks Add']
+         "was.Masks Add"(p: IN['was.Masks Add'], meta?: ComfyNodeMetadata): Node['was.Masks Add']
           /** displayName="Masks Subtract" category="WAS Suite_Image_Masking" name="Masks Subtract" output=[MASKS] */
-         "was.Masks Subtract"(p: IN['was.Masks Subtract'], meta?: ComfyNodeMetadata): Nodes['was.Masks Subtract']
+         "was.Masks Subtract"(p: IN['was.Masks Subtract'], meta?: ComfyNodeMetadata): Node['was.Masks Subtract']
           /** displayName="Mask Arbitrary Region" category="WAS Suite_Image_Masking" name="Mask Arbitrary Region" output=[MASKS] */
-         "was.Mask Arbitrary Region"(p: IN['was.Mask Arbitrary Region'], meta?: ComfyNodeMetadata): Nodes['was.Mask Arbitrary Region']
+         "was.Mask Arbitrary Region"(p: IN['was.Mask Arbitrary Region'], meta?: ComfyNodeMetadata): Node['was.Mask Arbitrary Region']
           /** displayName="Mask Batch to Mask" category="WAS Suite_Image_Masking" name="Mask Batch to Mask" output=[MASK] */
-         "was.Mask Batch to Mask"(p: IN['was.Mask Batch to Mask'], meta?: ComfyNodeMetadata): Nodes['was.Mask Batch to Mask']
+         "was.Mask Batch to Mask"(p: IN['was.Mask Batch to Mask'], meta?: ComfyNodeMetadata): Node['was.Mask Batch to Mask']
           /** displayName="Mask Batch" category="WAS Suite_Image_Masking" name="Mask Batch" output=[masks] */
-         "was.Mask Batch"(p: IN['was.Mask Batch'], meta?: ComfyNodeMetadata): Nodes['was.Mask Batch']
+         "was.Mask Batch"(p: IN['was.Mask Batch'], meta?: ComfyNodeMetadata): Node['was.Mask Batch']
           /** displayName="Mask Ceiling Region" category="WAS Suite_Image_Masking" name="Mask Ceiling Region" output=[MASKS] */
-         "was.Mask Ceiling Region"(p: IN['was.Mask Ceiling Region'], meta?: ComfyNodeMetadata): Nodes['was.Mask Ceiling Region']
+         "was.Mask Ceiling Region"(p: IN['was.Mask Ceiling Region'], meta?: ComfyNodeMetadata): Node['was.Mask Ceiling Region']
           /** displayName="Mask Crop Dominant Region" category="WAS Suite_Image_Masking" name="Mask Crop Dominant Region" output=[MASKS] */
-         "was.Mask Crop Dominant Region"(p: IN['was.Mask Crop Dominant Region'], meta?: ComfyNodeMetadata): Nodes['was.Mask Crop Dominant Region']
+         "was.Mask Crop Dominant Region"(p: IN['was.Mask Crop Dominant Region'], meta?: ComfyNodeMetadata): Node['was.Mask Crop Dominant Region']
           /** displayName="Mask Crop Minority Region" category="WAS Suite_Image_Masking" name="Mask Crop Minority Region" output=[MASKS] */
-         "was.Mask Crop Minority Region"(p: IN['was.Mask Crop Minority Region'], meta?: ComfyNodeMetadata): Nodes['was.Mask Crop Minority Region']
+         "was.Mask Crop Minority Region"(p: IN['was.Mask Crop Minority Region'], meta?: ComfyNodeMetadata): Node['was.Mask Crop Minority Region']
           /** displayName="Mask Crop Region" category="WAS Suite_Image_Masking" name="Mask Crop Region" output=[cropped_mask, crop_data, top_int, left_int, right_int, bottom_int, width_int, height_int] */
-         "was.Mask Crop Region"(p: IN['was.Mask Crop Region'], meta?: ComfyNodeMetadata): Nodes['was.Mask Crop Region']
+         "was.Mask Crop Region"(p: IN['was.Mask Crop Region'], meta?: ComfyNodeMetadata): Node['was.Mask Crop Region']
           /** displayName="Mask Paste Region" category="WAS Suite_Image_Masking" name="Mask Paste Region" output=[RESULT_MASK, CROP_MASK] */
-         "was.Mask Paste Region"(p: IN['was.Mask Paste Region'], meta?: ComfyNodeMetadata): Nodes['was.Mask Paste Region']
+         "was.Mask Paste Region"(p: IN['was.Mask Paste Region'], meta?: ComfyNodeMetadata): Node['was.Mask Paste Region']
           /** displayName="Mask Dilate Region" category="WAS Suite_Image_Masking" name="Mask Dilate Region" output=[MASKS] */
-         "was.Mask Dilate Region"(p: IN['was.Mask Dilate Region'], meta?: ComfyNodeMetadata): Nodes['was.Mask Dilate Region']
+         "was.Mask Dilate Region"(p: IN['was.Mask Dilate Region'], meta?: ComfyNodeMetadata): Node['was.Mask Dilate Region']
           /** displayName="Mask Dominant Region" category="WAS Suite_Image_Masking" name="Mask Dominant Region" output=[MASKS] */
-         "was.Mask Dominant Region"(p: IN['was.Mask Dominant Region'], meta?: ComfyNodeMetadata): Nodes['was.Mask Dominant Region']
+         "was.Mask Dominant Region"(p: IN['was.Mask Dominant Region'], meta?: ComfyNodeMetadata): Node['was.Mask Dominant Region']
           /** displayName="Mask Erode Region" category="WAS Suite_Image_Masking" name="Mask Erode Region" output=[MASKS] */
-         "was.Mask Erode Region"(p: IN['was.Mask Erode Region'], meta?: ComfyNodeMetadata): Nodes['was.Mask Erode Region']
+         "was.Mask Erode Region"(p: IN['was.Mask Erode Region'], meta?: ComfyNodeMetadata): Node['was.Mask Erode Region']
           /** displayName="Mask Fill Holes" category="WAS Suite_Image_Masking" name="Mask Fill Holes" output=[MASKS] */
-         "was.Mask Fill Holes"(p: IN['was.Mask Fill Holes'], meta?: ComfyNodeMetadata): Nodes['was.Mask Fill Holes']
+         "was.Mask Fill Holes"(p: IN['was.Mask Fill Holes'], meta?: ComfyNodeMetadata): Node['was.Mask Fill Holes']
           /** displayName="Mask Floor Region" category="WAS Suite_Image_Masking" name="Mask Floor Region" output=[MASKS] */
-         "was.Mask Floor Region"(p: IN['was.Mask Floor Region'], meta?: ComfyNodeMetadata): Nodes['was.Mask Floor Region']
+         "was.Mask Floor Region"(p: IN['was.Mask Floor Region'], meta?: ComfyNodeMetadata): Node['was.Mask Floor Region']
           /** displayName="Mask Gaussian Region" category="WAS Suite_Image_Masking" name="Mask Gaussian Region" output=[MASKS] */
-         "was.Mask Gaussian Region"(p: IN['was.Mask Gaussian Region'], meta?: ComfyNodeMetadata): Nodes['was.Mask Gaussian Region']
+         "was.Mask Gaussian Region"(p: IN['was.Mask Gaussian Region'], meta?: ComfyNodeMetadata): Node['was.Mask Gaussian Region']
           /** displayName="Mask Invert" category="WAS Suite_Image_Masking" name="Mask Invert" output=[MASKS] */
-         "was.Mask Invert"(p: IN['was.Mask Invert'], meta?: ComfyNodeMetadata): Nodes['was.Mask Invert']
+         "was.Mask Invert"(p: IN['was.Mask Invert'], meta?: ComfyNodeMetadata): Node['was.Mask Invert']
           /** displayName="Mask Minority Region" category="WAS Suite_Image_Masking" name="Mask Minority Region" output=[MASKS] */
-         "was.Mask Minority Region"(p: IN['was.Mask Minority Region'], meta?: ComfyNodeMetadata): Nodes['was.Mask Minority Region']
+         "was.Mask Minority Region"(p: IN['was.Mask Minority Region'], meta?: ComfyNodeMetadata): Node['was.Mask Minority Region']
           /** displayName="Mask Smooth Region" category="WAS Suite_Image_Masking" name="Mask Smooth Region" output=[MASKS] */
-         "was.Mask Smooth Region"(p: IN['was.Mask Smooth Region'], meta?: ComfyNodeMetadata): Nodes['was.Mask Smooth Region']
+         "was.Mask Smooth Region"(p: IN['was.Mask Smooth Region'], meta?: ComfyNodeMetadata): Node['was.Mask Smooth Region']
           /** displayName="Mask Threshold Region" category="WAS Suite_Image_Masking" name="Mask Threshold Region" output=[MASKS] */
-         "was.Mask Threshold Region"(p: IN['was.Mask Threshold Region'], meta?: ComfyNodeMetadata): Nodes['was.Mask Threshold Region']
+         "was.Mask Threshold Region"(p: IN['was.Mask Threshold Region'], meta?: ComfyNodeMetadata): Node['was.Mask Threshold Region']
           /** displayName="Masks Combine Regions" category="WAS Suite_Image_Masking" name="Masks Combine Regions" output=[MASK] */
-         "was.Masks Combine Regions"(p: IN['was.Masks Combine Regions'], meta?: ComfyNodeMetadata): Nodes['was.Masks Combine Regions']
+         "was.Masks Combine Regions"(p: IN['was.Masks Combine Regions'], meta?: ComfyNodeMetadata): Node['was.Masks Combine Regions']
           /** displayName="Masks Combine Batch" category="WAS Suite_Image_Masking" name="Masks Combine Batch" output=[MASK] */
-         "was.Masks Combine Batch"(p: IN['was.Masks Combine Batch'], meta?: ComfyNodeMetadata): Nodes['was.Masks Combine Batch']
+         "was.Masks Combine Batch"(p: IN['was.Masks Combine Batch'], meta?: ComfyNodeMetadata): Node['was.Masks Combine Batch']
           /** displayName="MiDaS Model Loader" category="WAS Suite_Loaders" name="MiDaS Model Loader" output=[midas_model] */
-         "was.MiDaS Model Loader"(p: IN['was.MiDaS Model Loader'], meta?: ComfyNodeMetadata): Nodes['was.MiDaS Model Loader']
+         "was.MiDaS Model Loader"(p: IN['was.MiDaS Model Loader'], meta?: ComfyNodeMetadata): Node['was.MiDaS Model Loader']
           /** displayName="MiDaS Depth Approximation" category="WAS Suite_Image_AI" name="MiDaS Depth Approximation" output=[images] */
-         "was.MiDaS Depth Approximation"(p: IN['was.MiDaS Depth Approximation'], meta?: ComfyNodeMetadata): Nodes['was.MiDaS Depth Approximation']
+         "was.MiDaS Depth Approximation"(p: IN['was.MiDaS Depth Approximation'], meta?: ComfyNodeMetadata): Node['was.MiDaS Depth Approximation']
           /** displayName="MiDaS Mask Image" category="WAS Suite_Image_AI" name="MiDaS Mask Image" output=[RESULT, DEPTH] */
-         "was.MiDaS Mask Image"(p: IN['was.MiDaS Mask Image'], meta?: ComfyNodeMetadata): Nodes['was.MiDaS Mask Image']
+         "was.MiDaS Mask Image"(p: IN['was.MiDaS Mask Image'], meta?: ComfyNodeMetadata): Node['was.MiDaS Mask Image']
           /** displayName="Model Input Switch" category="WAS Suite_Logic" name="Model Input Switch" output=[MODEL] */
-         "was.Model Input Switch"(p: IN['was.Model Input Switch'], meta?: ComfyNodeMetadata): Nodes['was.Model Input Switch']
+         "was.Model Input Switch"(p: IN['was.Model Input Switch'], meta?: ComfyNodeMetadata): Node['was.Model Input Switch']
           /** displayName="Number Counter" category="WAS Suite_Number" name="Number Counter" output=[number, float, int] */
-         "was.Number Counter"(p: IN['was.Number Counter'], meta?: ComfyNodeMetadata): Nodes['was.Number Counter']
+         "was.Number Counter"(p: IN['was.Number Counter'], meta?: ComfyNodeMetadata): Node['was.Number Counter']
           /** displayName="Number Operation" category="WAS Suite_Number_Operations" name="Number Operation" output=[NUMBER, FLOAT, INT] */
-         "was.Number Operation"(p: IN['was.Number Operation'], meta?: ComfyNodeMetadata): Nodes['was.Number Operation']
+         "was.Number Operation"(p: IN['was.Number Operation'], meta?: ComfyNodeMetadata): Node['was.Number Operation']
           /** displayName="Number to Float" category="WAS Suite_Number_Operations" name="Number to Float" output=[FLOAT] */
-         "was.Number to Float"(p: IN['was.Number to Float'], meta?: ComfyNodeMetadata): Nodes['was.Number to Float']
+         "was.Number to Float"(p: IN['was.Number to Float'], meta?: ComfyNodeMetadata): Node['was.Number to Float']
           /** displayName="Number Input Switch" category="WAS Suite_Logic" name="Number Input Switch" output=[NUMBER, FLOAT, INT] */
-         "was.Number Input Switch"(p: IN['was.Number Input Switch'], meta?: ComfyNodeMetadata): Nodes['was.Number Input Switch']
+         "was.Number Input Switch"(p: IN['was.Number Input Switch'], meta?: ComfyNodeMetadata): Node['was.Number Input Switch']
           /** displayName="Number Input Condition" category="WAS Suite_Logic" name="Number Input Condition" output=[NUMBER, FLOAT, INT] */
-         "was.Number Input Condition"(p: IN['was.Number Input Condition'], meta?: ComfyNodeMetadata): Nodes['was.Number Input Condition']
+         "was.Number Input Condition"(p: IN['was.Number Input Condition'], meta?: ComfyNodeMetadata): Node['was.Number Input Condition']
           /** displayName="Number Multiple Of" category="WAS Suite_Number_Functions" name="Number Multiple Of" output=[NUMBER, FLOAT, INT] */
-         "was.Number Multiple Of"(p: IN['was.Number Multiple Of'], meta?: ComfyNodeMetadata): Nodes['was.Number Multiple Of']
+         "was.Number Multiple Of"(p: IN['was.Number Multiple Of'], meta?: ComfyNodeMetadata): Node['was.Number Multiple Of']
           /** displayName="Number PI" category="WAS Suite_Number" name="Number PI" output=[NUMBER, FLOAT] */
-         "was.Number PI"(p: IN['was.Number PI'], meta?: ComfyNodeMetadata): Nodes['was.Number PI']
+         "was.Number PI"(p: IN['was.Number PI'], meta?: ComfyNodeMetadata): Node['was.Number PI']
           /** displayName="Number to Int" category="WAS Suite_Number_Operations" name="Number to Int" output=[INT] */
-         "was.Number to Int"(p: IN['was.Number to Int'], meta?: ComfyNodeMetadata): Nodes['was.Number to Int']
+         "was.Number to Int"(p: IN['was.Number to Int'], meta?: ComfyNodeMetadata): Node['was.Number to Int']
           /** displayName="Number to Seed" category="WAS Suite_Number_Operations" name="Number to Seed" output=[SEED] */
-         "was.Number to Seed"(p: IN['was.Number to Seed'], meta?: ComfyNodeMetadata): Nodes['was.Number to Seed']
+         "was.Number to Seed"(p: IN['was.Number to Seed'], meta?: ComfyNodeMetadata): Node['was.Number to Seed']
           /** displayName="Number to String" category="WAS Suite_Number_Operations" name="Number to String" output=[STRING] */
-         "was.Number to String"(p: IN['was.Number to String'], meta?: ComfyNodeMetadata): Nodes['was.Number to String']
+         "was.Number to String"(p: IN['was.Number to String'], meta?: ComfyNodeMetadata): Node['was.Number to String']
           /** displayName="Number to Text" category="WAS Suite_Number_Operations" name="Number to Text" output=[STRING] */
-         "was.Number to Text"(p: IN['was.Number to Text'], meta?: ComfyNodeMetadata): Nodes['was.Number to Text']
+         "was.Number to Text"(p: IN['was.Number to Text'], meta?: ComfyNodeMetadata): Node['was.Number to Text']
           /** displayName="Boolean To Text" category="WAS Suite_Logic" name="Boolean To Text" output=[STRING] */
-         "was.Boolean To Text"(p: IN['was.Boolean To Text'], meta?: ComfyNodeMetadata): Nodes['was.Boolean To Text']
+         "was.Boolean To Text"(p: IN['was.Boolean To Text'], meta?: ComfyNodeMetadata): Node['was.Boolean To Text']
           /** displayName="Prompt Styles Selector" category="WAS Suite_Text" name="Prompt Styles Selector" output=[positive_string, negative_string] */
-         "was.Prompt Styles Selector"(p: IN['was.Prompt Styles Selector'], meta?: ComfyNodeMetadata): Nodes['was.Prompt Styles Selector']
+         "was.Prompt Styles Selector"(p: IN['was.Prompt Styles Selector'], meta?: ComfyNodeMetadata): Node['was.Prompt Styles Selector']
           /** displayName="Prompt Multiple Styles Selector" category="WAS Suite_Text" name="Prompt Multiple Styles Selector" output=[positive_string, negative_string] */
-         "was.Prompt Multiple Styles Selector"(p: IN['was.Prompt Multiple Styles Selector'], meta?: ComfyNodeMetadata): Nodes['was.Prompt Multiple Styles Selector']
+         "was.Prompt Multiple Styles Selector"(p: IN['was.Prompt Multiple Styles Selector'], meta?: ComfyNodeMetadata): Node['was.Prompt Multiple Styles Selector']
           /** displayName="Random Number" category="WAS Suite_Number" name="Random Number" output=[NUMBER, FLOAT, INT] */
-         "was.Random Number"(p: IN['was.Random Number'], meta?: ComfyNodeMetadata): Nodes['was.Random Number']
+         "was.Random Number"(p: IN['was.Random Number'], meta?: ComfyNodeMetadata): Node['was.Random Number']
           /** displayName="Save Text File" category="WAS Suite_IO" name="Save Text File" output=[] */
-         "was.Save Text File"(p: IN['was.Save Text File'], meta?: ComfyNodeMetadata): Nodes['was.Save Text File']
+         "was.Save Text File"(p: IN['was.Save Text File'], meta?: ComfyNodeMetadata): Node['was.Save Text File']
           /** displayName="Seed" category="WAS Suite_Number" name="Seed" output=[seed, number, float, int] */
-         "was.Seed"(p: IN['was.Seed'], meta?: ComfyNodeMetadata): Nodes['was.Seed']
+         "was.Seed"(p: IN['was.Seed'], meta?: ComfyNodeMetadata): Node['was.Seed']
           /** displayName="Tensor Batch to Image" category="WAS Suite_Latent_Transform" name="Tensor Batch to Image" output=[IMAGE] */
-         "was.Tensor Batch to Image"(p: IN['was.Tensor Batch to Image'], meta?: ComfyNodeMetadata): Nodes['was.Tensor Batch to Image']
+         "was.Tensor Batch to Image"(p: IN['was.Tensor Batch to Image'], meta?: ComfyNodeMetadata): Node['was.Tensor Batch to Image']
           /** displayName="BLIP Analyze Image" category="WAS Suite_Text_AI" name="BLIP Analyze Image" output=[FULL_CAPTIONS, CAPTIONS] */
-         "was.BLIP Analyze Image"(p: IN['was.BLIP Analyze Image'], meta?: ComfyNodeMetadata): Nodes['was.BLIP Analyze Image']
+         "was.BLIP Analyze Image"(p: IN['was.BLIP Analyze Image'], meta?: ComfyNodeMetadata): Node['was.BLIP Analyze Image']
           /** displayName="SAM Model Loader" category="WAS Suite_Image_Masking" name="SAM Model Loader" output=[SAM_MODEL] */
-         "was.SAM Model Loader"(p: IN['was.SAM Model Loader'], meta?: ComfyNodeMetadata): Nodes['was.SAM Model Loader']
+         "was.SAM Model Loader"(p: IN['was.SAM Model Loader'], meta?: ComfyNodeMetadata): Node['was.SAM Model Loader']
           /** displayName="SAM Parameters" category="WAS Suite_Image_Masking" name="SAM Parameters" output=[SAM_PARAMETERS] */
-         "was.SAM Parameters"(p: IN['was.SAM Parameters'], meta?: ComfyNodeMetadata): Nodes['was.SAM Parameters']
+         "was.SAM Parameters"(p: IN['was.SAM Parameters'], meta?: ComfyNodeMetadata): Node['was.SAM Parameters']
           /** displayName="SAM Parameters Combine" category="WAS Suite_Image_Masking" name="SAM Parameters Combine" output=[SAM_PARAMETERS] */
-         "was.SAM Parameters Combine"(p: IN['was.SAM Parameters Combine'], meta?: ComfyNodeMetadata): Nodes['was.SAM Parameters Combine']
+         "was.SAM Parameters Combine"(p: IN['was.SAM Parameters Combine'], meta?: ComfyNodeMetadata): Node['was.SAM Parameters Combine']
           /** displayName="SAM Image Mask" category="WAS Suite_Image_Masking" name="SAM Image Mask" output=[IMAGE, MASK] */
-         "was.SAM Image Mask"(p: IN['was.SAM Image Mask'], meta?: ComfyNodeMetadata): Nodes['was.SAM Image Mask']
+         "was.SAM Image Mask"(p: IN['was.SAM Image Mask'], meta?: ComfyNodeMetadata): Node['was.SAM Image Mask']
           /** displayName="Samples Passthrough (Stat System)" category="WAS Suite_Debug" name="Samples Passthrough (Stat System)" output=[samples] */
-         "was.Samples Passthrough (Stat System)"(p: IN['was.Samples Passthrough (Stat System)'], meta?: ComfyNodeMetadata): Nodes['was.Samples Passthrough (Stat System)']
+         "was.Samples Passthrough (Stat System)"(p: IN['was.Samples Passthrough (Stat System)'], meta?: ComfyNodeMetadata): Node['was.Samples Passthrough (Stat System)']
           /** displayName="String to Text" category="WAS Suite_Text_Operations" name="String to Text" output=[STRING] */
-         "was.String to Text"(p: IN['was.String to Text'], meta?: ComfyNodeMetadata): Nodes['was.String to Text']
+         "was.String to Text"(p: IN['was.String to Text'], meta?: ComfyNodeMetadata): Node['was.String to Text']
           /** displayName="Image Bounds" category="WAS Suite_Image_Bound" name="Image Bounds" output=[IMAGE_BOUNDS] */
-         "was.Image Bounds"(p: IN['was.Image Bounds'], meta?: ComfyNodeMetadata): Nodes['was.Image Bounds']
+         "was.Image Bounds"(p: IN['was.Image Bounds'], meta?: ComfyNodeMetadata): Node['was.Image Bounds']
           /** displayName="Inset Image Bounds" category="WAS Suite_Image_Bound" name="Inset Image Bounds" output=[IMAGE_BOUNDS] */
-         "was.Inset Image Bounds"(p: IN['was.Inset Image Bounds'], meta?: ComfyNodeMetadata): Nodes['was.Inset Image Bounds']
+         "was.Inset Image Bounds"(p: IN['was.Inset Image Bounds'], meta?: ComfyNodeMetadata): Node['was.Inset Image Bounds']
           /** displayName="Bounded Image Blend" category="WAS Suite_Image_Bound" name="Bounded Image Blend" output=[IMAGE] */
-         "was.Bounded Image Blend"(p: IN['was.Bounded Image Blend'], meta?: ComfyNodeMetadata): Nodes['was.Bounded Image Blend']
+         "was.Bounded Image Blend"(p: IN['was.Bounded Image Blend'], meta?: ComfyNodeMetadata): Node['was.Bounded Image Blend']
           /** displayName="Bounded Image Blend with Mask" category="WAS Suite_Image_Bound" name="Bounded Image Blend with Mask" output=[IMAGE] */
-         "was.Bounded Image Blend with Mask"(p: IN['was.Bounded Image Blend with Mask'], meta?: ComfyNodeMetadata): Nodes['was.Bounded Image Blend with Mask']
+         "was.Bounded Image Blend with Mask"(p: IN['was.Bounded Image Blend with Mask'], meta?: ComfyNodeMetadata): Node['was.Bounded Image Blend with Mask']
           /** displayName="Bounded Image Crop" category="WAS Suite_Image_Bound" name="Bounded Image Crop" output=[IMAGE] */
-         "was.Bounded Image Crop"(p: IN['was.Bounded Image Crop'], meta?: ComfyNodeMetadata): Nodes['was.Bounded Image Crop']
+         "was.Bounded Image Crop"(p: IN['was.Bounded Image Crop'], meta?: ComfyNodeMetadata): Node['was.Bounded Image Crop']
           /** displayName="Bounded Image Crop with Mask" category="WAS Suite_Image_Bound" name="Bounded Image Crop with Mask" output=[IMAGE, IMAGE_BOUNDS] */
-         "was.Bounded Image Crop with Mask"(p: IN['was.Bounded Image Crop with Mask'], meta?: ComfyNodeMetadata): Nodes['was.Bounded Image Crop with Mask']
+         "was.Bounded Image Crop with Mask"(p: IN['was.Bounded Image Crop with Mask'], meta?: ComfyNodeMetadata): Node['was.Bounded Image Crop with Mask']
           /** displayName="Image Bounds to Console" category="WAS Suite_Debug" name="Image Bounds to Console" output=[IMAGE_BOUNDS] */
-         "was.Image Bounds to Console"(p: IN['was.Image Bounds to Console'], meta?: ComfyNodeMetadata): Nodes['was.Image Bounds to Console']
+         "was.Image Bounds to Console"(p: IN['was.Image Bounds to Console'], meta?: ComfyNodeMetadata): Node['was.Image Bounds to Console']
           /** displayName="Text Dictionary Update" category="WAS Suite_Text" name="Text Dictionary Update" output=[DICT] */
-         "was.Text Dictionary Update"(p: IN['was.Text Dictionary Update'], meta?: ComfyNodeMetadata): Nodes['was.Text Dictionary Update']
+         "was.Text Dictionary Update"(p: IN['was.Text Dictionary Update'], meta?: ComfyNodeMetadata): Node['was.Text Dictionary Update']
           /** displayName="Text Dictionary Get" category="WAS Suite_Text" name="Text Dictionary Get" output=[STRING] */
-         "was.Text Dictionary Get"(p: IN['was.Text Dictionary Get'], meta?: ComfyNodeMetadata): Nodes['was.Text Dictionary Get']
+         "was.Text Dictionary Get"(p: IN['was.Text Dictionary Get'], meta?: ComfyNodeMetadata): Node['was.Text Dictionary Get']
           /** displayName="Text Dictionary Convert" category="WAS Suite_Text" name="Text Dictionary Convert" output=[DICT] */
-         "was.Text Dictionary Convert"(p: IN['was.Text Dictionary Convert'], meta?: ComfyNodeMetadata): Nodes['was.Text Dictionary Convert']
+         "was.Text Dictionary Convert"(p: IN['was.Text Dictionary Convert'], meta?: ComfyNodeMetadata): Node['was.Text Dictionary Convert']
           /** displayName="Text Dictionary New" category="WAS Suite_Text" name="Text Dictionary New" output=[DICT] */
-         "was.Text Dictionary New"(p: IN['was.Text Dictionary New'], meta?: ComfyNodeMetadata): Nodes['was.Text Dictionary New']
+         "was.Text Dictionary New"(p: IN['was.Text Dictionary New'], meta?: ComfyNodeMetadata): Node['was.Text Dictionary New']
           /** displayName="Text Dictionary Keys" category="WAS Suite_Text" name="Text Dictionary Keys" output=[LIST] */
-         "was.Text Dictionary Keys"(p: IN['was.Text Dictionary Keys'], meta?: ComfyNodeMetadata): Nodes['was.Text Dictionary Keys']
+         "was.Text Dictionary Keys"(p: IN['was.Text Dictionary Keys'], meta?: ComfyNodeMetadata): Node['was.Text Dictionary Keys']
           /** displayName="Text Dictionary To Text" category="WAS Suite_Text" name="Text Dictionary To Text" output=[STRING] */
-         "was.Text Dictionary To Text"(p: IN['was.Text Dictionary To Text'], meta?: ComfyNodeMetadata): Nodes['was.Text Dictionary To Text']
+         "was.Text Dictionary To Text"(p: IN['was.Text Dictionary To Text'], meta?: ComfyNodeMetadata): Node['was.Text Dictionary To Text']
           /** displayName="Text Add Tokens" category="WAS Suite_Text_Tokens" name="Text Add Tokens" output=[] */
-         "was.Text Add Tokens"(p: IN['was.Text Add Tokens'], meta?: ComfyNodeMetadata): Nodes['was.Text Add Tokens']
+         "was.Text Add Tokens"(p: IN['was.Text Add Tokens'], meta?: ComfyNodeMetadata): Node['was.Text Add Tokens']
           /** displayName="Text Add Token by Input" category="WAS Suite_Text_Tokens" name="Text Add Token by Input" output=[] */
-         "was.Text Add Token by Input"(p: IN['was.Text Add Token by Input'], meta?: ComfyNodeMetadata): Nodes['was.Text Add Token by Input']
+         "was.Text Add Token by Input"(p: IN['was.Text Add Token by Input'], meta?: ComfyNodeMetadata): Node['was.Text Add Token by Input']
           /** displayName="Text Compare" category="WAS Suite_Text_Search" name="Text Compare" output=[TEXT_A_PASS, TEXT_B_PASS, BOOLEAN, SCORE_NUMBER, COMPARISON_TEXT] */
-         "was.Text Compare"(p: IN['was.Text Compare'], meta?: ComfyNodeMetadata): Nodes['was.Text Compare']
+         "was.Text Compare"(p: IN['was.Text Compare'], meta?: ComfyNodeMetadata): Node['was.Text Compare']
           /** displayName="Text Concatenate" category="WAS Suite_Text" name="Text Concatenate" output=[STRING] */
-         "was.Text Concatenate"(p: IN['was.Text Concatenate'], meta?: ComfyNodeMetadata): Nodes['was.Text Concatenate']
+         "was.Text Concatenate"(p: IN['was.Text Concatenate'], meta?: ComfyNodeMetadata): Node['was.Text Concatenate']
           /** displayName="Text File History Loader" category="WAS Suite_History" name="Text File History Loader" output=[STRING, DICT] */
-         "was.Text File History Loader"(p: IN['was.Text File History Loader'], meta?: ComfyNodeMetadata): Nodes['was.Text File History Loader']
+         "was.Text File History Loader"(p: IN['was.Text File History Loader'], meta?: ComfyNodeMetadata): Node['was.Text File History Loader']
           /** displayName="Text Find and Replace by Dictionary" category="WAS Suite_Text_Search" name="Text Find and Replace by Dictionary" output=[STRING] */
-         "was.Text Find and Replace by Dictionary"(p: IN['was.Text Find and Replace by Dictionary'], meta?: ComfyNodeMetadata): Nodes['was.Text Find and Replace by Dictionary']
+         "was.Text Find and Replace by Dictionary"(p: IN['was.Text Find and Replace by Dictionary'], meta?: ComfyNodeMetadata): Node['was.Text Find and Replace by Dictionary']
           /** displayName="Text Find and Replace Input" category="WAS Suite_Text_Search" name="Text Find and Replace Input" output=[result_text, replacement_count_number, replacement_count_float, replacement_count_int] */
-         "was.Text Find and Replace Input"(p: IN['was.Text Find and Replace Input'], meta?: ComfyNodeMetadata): Nodes['was.Text Find and Replace Input']
+         "was.Text Find and Replace Input"(p: IN['was.Text Find and Replace Input'], meta?: ComfyNodeMetadata): Node['was.Text Find and Replace Input']
           /** displayName="Text Find and Replace" category="WAS Suite_Text_Search" name="Text Find and Replace" output=[result_text, replacement_count_number, replacement_count_float, replacement_count_int] */
-         "was.Text Find and Replace"(p: IN['was.Text Find and Replace'], meta?: ComfyNodeMetadata): Nodes['was.Text Find and Replace']
+         "was.Text Find and Replace"(p: IN['was.Text Find and Replace'], meta?: ComfyNodeMetadata): Node['was.Text Find and Replace']
           /** displayName="Text Find" category="WAS Suite_Text_Search" name="Text Find" output=[found] */
-         "was.Text Find"(p: IN['was.Text Find'], meta?: ComfyNodeMetadata): Nodes['was.Text Find']
+         "was.Text Find"(p: IN['was.Text Find'], meta?: ComfyNodeMetadata): Node['was.Text Find']
           /** displayName="Text Input Switch" category="WAS Suite_Logic" name="Text Input Switch" output=[STRING] */
-         "was.Text Input Switch"(p: IN['was.Text Input Switch'], meta?: ComfyNodeMetadata): Nodes['was.Text Input Switch']
+         "was.Text Input Switch"(p: IN['was.Text Input Switch'], meta?: ComfyNodeMetadata): Node['was.Text Input Switch']
           /** displayName="Text List" category="WAS Suite_Text" name="Text List" output=[LIST] */
-         "was.Text List"(p: IN['was.Text List'], meta?: ComfyNodeMetadata): Nodes['was.Text List']
+         "was.Text List"(p: IN['was.Text List'], meta?: ComfyNodeMetadata): Node['was.Text List']
           /** displayName="Text List Concatenate" category="WAS Suite_Text" name="Text List Concatenate" output=[LIST] */
-         "was.Text List Concatenate"(p: IN['was.Text List Concatenate'], meta?: ComfyNodeMetadata): Nodes['was.Text List Concatenate']
+         "was.Text List Concatenate"(p: IN['was.Text List Concatenate'], meta?: ComfyNodeMetadata): Node['was.Text List Concatenate']
           /** displayName="Text List to Text" category="WAS Suite_Text" name="Text List to Text" output=[STRING] */
-         "was.Text List to Text"(p: IN['was.Text List to Text'], meta?: ComfyNodeMetadata): Nodes['was.Text List to Text']
+         "was.Text List to Text"(p: IN['was.Text List to Text'], meta?: ComfyNodeMetadata): Node['was.Text List to Text']
           /** displayName="Text Load Line From File" category="WAS Suite_Text" name="Text Load Line From File" output=[line_text, dictionary] */
-         "was.Text Load Line From File"(p: IN['was.Text Load Line From File'], meta?: ComfyNodeMetadata): Nodes['was.Text Load Line From File']
+         "was.Text Load Line From File"(p: IN['was.Text Load Line From File'], meta?: ComfyNodeMetadata): Node['was.Text Load Line From File']
           /** displayName="Text Multiline" category="WAS Suite_Text" name="Text Multiline" output=[STRING] */
-         "was.Text Multiline"(p: IN['was.Text Multiline'], meta?: ComfyNodeMetadata): Nodes['was.Text Multiline']
+         "was.Text Multiline"(p: IN['was.Text Multiline'], meta?: ComfyNodeMetadata): Node['was.Text Multiline']
           /** displayName="Text Multiline (Code Compatible)" category="WAS Suite_Text" name="Text Multiline (Code Compatible)" output=[STRING] */
-         "was.Text Multiline (Code Compatible)"(p: IN['was.Text Multiline (Code Compatible)'], meta?: ComfyNodeMetadata): Nodes['was.Text Multiline (Code Compatible)']
+         "was.Text Multiline (Code Compatible)"(p: IN['was.Text Multiline (Code Compatible)'], meta?: ComfyNodeMetadata): Node['was.Text Multiline (Code Compatible)']
           /** displayName="Text Parse A1111 Embeddings" category="WAS Suite_Text_Parse" name="Text Parse A1111 Embeddings" output=[STRING] */
-         "was.Text Parse A1111 Embeddings"(p: IN['was.Text Parse A1111 Embeddings'], meta?: ComfyNodeMetadata): Nodes['was.Text Parse A1111 Embeddings']
+         "was.Text Parse A1111 Embeddings"(p: IN['was.Text Parse A1111 Embeddings'], meta?: ComfyNodeMetadata): Node['was.Text Parse A1111 Embeddings']
           /** displayName="Text Parse Noodle Soup Prompts" category="WAS Suite_Text_Parse" name="Text Parse Noodle Soup Prompts" output=[STRING] */
-         "was.Text Parse Noodle Soup Prompts"(p: IN['was.Text Parse Noodle Soup Prompts'], meta?: ComfyNodeMetadata): Nodes['was.Text Parse Noodle Soup Prompts']
+         "was.Text Parse Noodle Soup Prompts"(p: IN['was.Text Parse Noodle Soup Prompts'], meta?: ComfyNodeMetadata): Node['was.Text Parse Noodle Soup Prompts']
           /** displayName="Text Parse Tokens" category="WAS Suite_Text_Tokens" name="Text Parse Tokens" output=[STRING] */
-         "was.Text Parse Tokens"(p: IN['was.Text Parse Tokens'], meta?: ComfyNodeMetadata): Nodes['was.Text Parse Tokens']
+         "was.Text Parse Tokens"(p: IN['was.Text Parse Tokens'], meta?: ComfyNodeMetadata): Node['was.Text Parse Tokens']
           /** displayName="Text Random Line" category="WAS Suite_Text" name="Text Random Line" output=[STRING] */
-         "was.Text Random Line"(p: IN['was.Text Random Line'], meta?: ComfyNodeMetadata): Nodes['was.Text Random Line']
+         "was.Text Random Line"(p: IN['was.Text Random Line'], meta?: ComfyNodeMetadata): Node['was.Text Random Line']
           /** displayName="Text Random Prompt" category="WAS Suite_Text" name="Text Random Prompt" output=[STRING] */
-         "was.Text Random Prompt"(p: IN['was.Text Random Prompt'], meta?: ComfyNodeMetadata): Nodes['was.Text Random Prompt']
+         "was.Text Random Prompt"(p: IN['was.Text Random Prompt'], meta?: ComfyNodeMetadata): Node['was.Text Random Prompt']
           /** displayName="Text String" category="WAS Suite_Text" name="Text String" output=[TEXT, TEXT_B, TEXT_C, TEXT_D] */
-         "was.Text String"(p: IN['was.Text String'], meta?: ComfyNodeMetadata): Nodes['was.Text String']
+         "was.Text String"(p: IN['was.Text String'], meta?: ComfyNodeMetadata): Node['was.Text String']
           /** displayName="Text Contains" category="WAS Suite_Logic" name="Text Contains" output=[BOOLEAN] */
-         "was.Text Contains"(p: IN['was.Text Contains'], meta?: ComfyNodeMetadata): Nodes['was.Text Contains']
+         "was.Text Contains"(p: IN['was.Text Contains'], meta?: ComfyNodeMetadata): Node['was.Text Contains']
           /** displayName="Text Shuffle" category="WAS Suite_Text_Operations" name="Text Shuffle" output=[STRING] */
-         "was.Text Shuffle"(p: IN['was.Text Shuffle'], meta?: ComfyNodeMetadata): Nodes['was.Text Shuffle']
+         "was.Text Shuffle"(p: IN['was.Text Shuffle'], meta?: ComfyNodeMetadata): Node['was.Text Shuffle']
           /** displayName="Text Sort" category="WAS Suite_Text_Operations" name="Text Sort" output=[STRING] */
-         "was.Text Sort"(p: IN['was.Text Sort'], meta?: ComfyNodeMetadata): Nodes['was.Text Sort']
+         "was.Text Sort"(p: IN['was.Text Sort'], meta?: ComfyNodeMetadata): Node['was.Text Sort']
           /** displayName="Text to Conditioning" category="WAS Suite_Text_Operations" name="Text to Conditioning" output=[CONDITIONING] */
-         "was.Text to Conditioning"(p: IN['was.Text to Conditioning'], meta?: ComfyNodeMetadata): Nodes['was.Text to Conditioning']
+         "was.Text to Conditioning"(p: IN['was.Text to Conditioning'], meta?: ComfyNodeMetadata): Node['was.Text to Conditioning']
           /** displayName="Text to Console" category="WAS Suite_Debug" name="Text to Console" output=[STRING] */
-         "was.Text to Console"(p: IN['was.Text to Console'], meta?: ComfyNodeMetadata): Nodes['was.Text to Console']
+         "was.Text to Console"(p: IN['was.Text to Console'], meta?: ComfyNodeMetadata): Node['was.Text to Console']
           /** displayName="Text to Number" category="WAS Suite_Text_Operations" name="Text to Number" output=[NUMBER] */
-         "was.Text to Number"(p: IN['was.Text to Number'], meta?: ComfyNodeMetadata): Nodes['was.Text to Number']
+         "was.Text to Number"(p: IN['was.Text to Number'], meta?: ComfyNodeMetadata): Node['was.Text to Number']
           /** displayName="Text to String" category="WAS Suite_Text_Operations" name="Text to String" output=[STRING] */
-         "was.Text to String"(p: IN['was.Text to String'], meta?: ComfyNodeMetadata): Nodes['was.Text to String']
+         "was.Text to String"(p: IN['was.Text to String'], meta?: ComfyNodeMetadata): Node['was.Text to String']
           /** displayName="Text String Truncate" category="WAS Suite_Text_Operations" name="Text String Truncate" output=[TEXT, TEXT_B, TEXT_C, TEXT_D] */
-         "was.Text String Truncate"(p: IN['was.Text String Truncate'], meta?: ComfyNodeMetadata): Nodes['was.Text String Truncate']
+         "was.Text String Truncate"(p: IN['was.Text String Truncate'], meta?: ComfyNodeMetadata): Node['was.Text String Truncate']
           /** displayName="True Random.org Number Generator" category="WAS Suite_Number" name="True Random.org Number Generator" output=[NUMBER, FLOAT, INT] */
-         "was.True Random.org Number Generator"(p: IN['was.True Random.org Number Generator'], meta?: ComfyNodeMetadata): Nodes['was.True Random.org Number Generator']
+         "was.True Random.org Number Generator"(p: IN['was.True Random.org Number Generator'], meta?: ComfyNodeMetadata): Node['was.True Random.org Number Generator']
           /** displayName="unCLIP Checkpoint Loader" category="WAS Suite_Loaders" name="unCLIP Checkpoint Loader" output=[MODEL, CLIP, VAE, CLIP_VISION, NAME_STRING] */
-         "was.unCLIP Checkpoint Loader"(p: IN['was.unCLIP Checkpoint Loader'], meta?: ComfyNodeMetadata): Nodes['was.unCLIP Checkpoint Loader']
+         "was.unCLIP Checkpoint Loader"(p: IN['was.unCLIP Checkpoint Loader'], meta?: ComfyNodeMetadata): Node['was.unCLIP Checkpoint Loader']
           /** displayName="Upscale Model Loader" category="WAS Suite_Loaders" name="Upscale Model Loader" output=[UPSCALE_MODEL, MODEL_NAME_TEXT] */
-         "was.Upscale Model Loader"(p: IN['was.Upscale Model Loader'], meta?: ComfyNodeMetadata): Nodes['was.Upscale Model Loader']
+         "was.Upscale Model Loader"(p: IN['was.Upscale Model Loader'], meta?: ComfyNodeMetadata): Node['was.Upscale Model Loader']
           /** displayName="Upscale Model Switch" category="WAS Suite_Logic" name="Upscale Model Switch" output=[UPSCALE_MODEL] */
-         "was.Upscale Model Switch"(p: IN['was.Upscale Model Switch'], meta?: ComfyNodeMetadata): Nodes['was.Upscale Model Switch']
+         "was.Upscale Model Switch"(p: IN['was.Upscale Model Switch'], meta?: ComfyNodeMetadata): Node['was.Upscale Model Switch']
           /** displayName="Write to GIF" category="WAS Suite_Animation_Writer" name="Write to GIF" output=[image_pass, filepath_text, filename_text] */
-         "was.Write to GIF"(p: IN['was.Write to GIF'], meta?: ComfyNodeMetadata): Nodes['was.Write to GIF']
+         "was.Write to GIF"(p: IN['was.Write to GIF'], meta?: ComfyNodeMetadata): Node['was.Write to GIF']
           /** displayName="Write to Video" category="WAS Suite_Animation_Writer" name="Write to Video" output=[IMAGE_PASS, filepath_text, filename_text] */
-         "was.Write to Video"(p: IN['was.Write to Video'], meta?: ComfyNodeMetadata): Nodes['was.Write to Video']
+         "was.Write to Video"(p: IN['was.Write to Video'], meta?: ComfyNodeMetadata): Node['was.Write to Video']
           /** displayName="VAE Input Switch" category="WAS Suite_Logic" name="VAE Input Switch" output=[VAE] */
-         "was.VAE Input Switch"(p: IN['was.VAE Input Switch'], meta?: ComfyNodeMetadata): Nodes['was.VAE Input Switch']
+         "was.VAE Input Switch"(p: IN['was.VAE Input Switch'], meta?: ComfyNodeMetadata): Node['was.VAE Input Switch']
           /** displayName="Video Dump Frames" category="WAS Suite_Animation" name="Video Dump Frames" output=[output_path, processed_count] */
-         "was.Video Dump Frames"(p: IN['was.Video Dump Frames'], meta?: ComfyNodeMetadata): Nodes['was.Video Dump Frames']
+         "was.Video Dump Frames"(p: IN['was.Video Dump Frames'], meta?: ComfyNodeMetadata): Node['was.Video Dump Frames']
           /** displayName="CLIPSEG2" category="image_transformation" name="CLIPSEG2" output=[IMAGE] */
-         "was.CLIPSEG2"(p: IN['was.CLIPSEG2'], meta?: ComfyNodeMetadata): Nodes['was.CLIPSEG2']
+         "was.CLIPSEG2"(p: IN['was.CLIPSEG2'], meta?: ComfyNodeMetadata): Node['was.CLIPSEG2']
           /** displayName="IPAdapter" category="ipadapter" name="IPAdapter" output=[MODEL] */
-         "IPAdapter_plus.IPAdapter"(p: IN['IPAdapter_plus.IPAdapter'], meta?: ComfyNodeMetadata): Nodes['IPAdapter_plus.IPAdapter']
+         "IPAdapter_plus.IPAdapter"(p: IN['IPAdapter_plus.IPAdapter'], meta?: ComfyNodeMetadata): Node['IPAdapter_plus.IPAdapter']
           /** displayName="IPAdapter Advanced" category="ipadapter" name="IPAdapterAdvanced" output=[MODEL] */
-         "IPAdapter_plus.IPAdapterAdvanced"(p: IN['IPAdapter_plus.IPAdapterAdvanced'], meta?: ComfyNodeMetadata): Nodes['IPAdapter_plus.IPAdapterAdvanced']
+         "IPAdapter_plus.IPAdapterAdvanced"(p: IN['IPAdapter_plus.IPAdapterAdvanced'], meta?: ComfyNodeMetadata): Node['IPAdapter_plus.IPAdapterAdvanced']
           /** displayName="IPAdapter Batch (Adv.)" category="ipadapter" name="IPAdapterBatch" output=[MODEL] */
-         "IPAdapter_plus.IPAdapterBatch"(p: IN['IPAdapter_plus.IPAdapterBatch'], meta?: ComfyNodeMetadata): Nodes['IPAdapter_plus.IPAdapterBatch']
+         "IPAdapter_plus.IPAdapterBatch"(p: IN['IPAdapter_plus.IPAdapterBatch'], meta?: ComfyNodeMetadata): Node['IPAdapter_plus.IPAdapterBatch']
           /** displayName="IPAdapter FaceID" category="ipadapter_faceid" name="IPAdapterFaceID" output=[MODEL, face_image] */
-         "IPAdapter_plus.IPAdapterFaceID"(p: IN['IPAdapter_plus.IPAdapterFaceID'], meta?: ComfyNodeMetadata): Nodes['IPAdapter_plus.IPAdapterFaceID']
+         "IPAdapter_plus.IPAdapterFaceID"(p: IN['IPAdapter_plus.IPAdapterFaceID'], meta?: ComfyNodeMetadata): Node['IPAdapter_plus.IPAdapterFaceID']
           /** displayName="IPAdapter FaceID Kolors" category="ipadapter_faceid" name="IPAdapterFaceIDKolors" output=[MODEL, face_image] */
-         "IPAdapter_plus.IPAdapterFaceIDKolors"(p: IN['IPAdapter_plus.IPAdapterFaceIDKolors'], meta?: ComfyNodeMetadata): Nodes['IPAdapter_plus.IPAdapterFaceIDKolors']
+         "IPAdapter_plus.IPAdapterFaceIDKolors"(p: IN['IPAdapter_plus.IPAdapterFaceIDKolors'], meta?: ComfyNodeMetadata): Node['IPAdapter_plus.IPAdapterFaceIDKolors']
           /** displayName="IPAdapter FaceID Batch" category="ipadapter_faceid" name="IPAAdapterFaceIDBatch" output=[MODEL, face_image] */
-         "IPAdapter_plus.IPAAdapterFaceIDBatch"(p: IN['IPAdapter_plus.IPAAdapterFaceIDBatch'], meta?: ComfyNodeMetadata): Nodes['IPAdapter_plus.IPAAdapterFaceIDBatch']
+         "IPAdapter_plus.IPAAdapterFaceIDBatch"(p: IN['IPAdapter_plus.IPAAdapterFaceIDBatch'], meta?: ComfyNodeMetadata): Node['IPAdapter_plus.IPAAdapterFaceIDBatch']
           /** displayName="IPAdapter Tiled" category="ipadapter_tiled" name="IPAdapterTiled" output=[MODEL, tiles, masks] */
-         "IPAdapter_plus.IPAdapterTiled"(p: IN['IPAdapter_plus.IPAdapterTiled'], meta?: ComfyNodeMetadata): Nodes['IPAdapter_plus.IPAdapterTiled']
+         "IPAdapter_plus.IPAdapterTiled"(p: IN['IPAdapter_plus.IPAdapterTiled'], meta?: ComfyNodeMetadata): Node['IPAdapter_plus.IPAdapterTiled']
           /** displayName="IPAdapter Tiled Batch" category="ipadapter_tiled" name="IPAdapterTiledBatch" output=[MODEL, tiles, masks] */
-         "IPAdapter_plus.IPAdapterTiledBatch"(p: IN['IPAdapter_plus.IPAdapterTiledBatch'], meta?: ComfyNodeMetadata): Nodes['IPAdapter_plus.IPAdapterTiledBatch']
+         "IPAdapter_plus.IPAdapterTiledBatch"(p: IN['IPAdapter_plus.IPAdapterTiledBatch'], meta?: ComfyNodeMetadata): Node['IPAdapter_plus.IPAdapterTiledBatch']
           /** displayName="IPAdapter Embeds" category="ipadapter_embeds" name="IPAdapterEmbeds" output=[MODEL] */
-         "IPAdapter_plus.IPAdapterEmbeds"(p: IN['IPAdapter_plus.IPAdapterEmbeds'], meta?: ComfyNodeMetadata): Nodes['IPAdapter_plus.IPAdapterEmbeds']
+         "IPAdapter_plus.IPAdapterEmbeds"(p: IN['IPAdapter_plus.IPAdapterEmbeds'], meta?: ComfyNodeMetadata): Node['IPAdapter_plus.IPAdapterEmbeds']
           /** displayName="IPAdapter Embeds Batch" category="ipadapter_embeds" name="IPAdapterEmbedsBatch" output=[MODEL] */
-         "IPAdapter_plus.IPAdapterEmbedsBatch"(p: IN['IPAdapter_plus.IPAdapterEmbedsBatch'], meta?: ComfyNodeMetadata): Nodes['IPAdapter_plus.IPAdapterEmbedsBatch']
+         "IPAdapter_plus.IPAdapterEmbedsBatch"(p: IN['IPAdapter_plus.IPAdapterEmbedsBatch'], meta?: ComfyNodeMetadata): Node['IPAdapter_plus.IPAdapterEmbedsBatch']
           /** displayName="IPAdapter Style & Composition SDXL" category="ipadapter_style_composition" name="IPAdapterStyleComposition" output=[MODEL] */
-         "IPAdapter_plus.IPAdapterStyleComposition"(p: IN['IPAdapter_plus.IPAdapterStyleComposition'], meta?: ComfyNodeMetadata): Nodes['IPAdapter_plus.IPAdapterStyleComposition']
+         "IPAdapter_plus.IPAdapterStyleComposition"(p: IN['IPAdapter_plus.IPAdapterStyleComposition'], meta?: ComfyNodeMetadata): Node['IPAdapter_plus.IPAdapterStyleComposition']
           /** displayName="IPAdapter Style & Composition Batch SDXL" category="ipadapter_style_composition" name="IPAdapterStyleCompositionBatch" output=[MODEL] */
-         "IPAdapter_plus.IPAdapterStyleCompositionBatch"(p: IN['IPAdapter_plus.IPAdapterStyleCompositionBatch'], meta?: ComfyNodeMetadata): Nodes['IPAdapter_plus.IPAdapterStyleCompositionBatch']
+         "IPAdapter_plus.IPAdapterStyleCompositionBatch"(p: IN['IPAdapter_plus.IPAdapterStyleCompositionBatch'], meta?: ComfyNodeMetadata): Node['IPAdapter_plus.IPAdapterStyleCompositionBatch']
           /** displayName="IPAdapter Mad Scientist" category="ipadapter_dev" name="IPAdapterMS" output=[MODEL] */
-         "IPAdapter_plus.IPAdapterMS"(p: IN['IPAdapter_plus.IPAdapterMS'], meta?: ComfyNodeMetadata): Nodes['IPAdapter_plus.IPAdapterMS']
+         "IPAdapter_plus.IPAdapterMS"(p: IN['IPAdapter_plus.IPAdapterMS'], meta?: ComfyNodeMetadata): Node['IPAdapter_plus.IPAdapterMS']
           /** displayName="IPAdapter ClipVision Enhancer" category="ipadapter_dev" name="IPAdapterClipVisionEnhancer" output=[MODEL] */
-         "IPAdapter_plus.IPAdapterClipVisionEnhancer"(p: IN['IPAdapter_plus.IPAdapterClipVisionEnhancer'], meta?: ComfyNodeMetadata): Nodes['IPAdapter_plus.IPAdapterClipVisionEnhancer']
+         "IPAdapter_plus.IPAdapterClipVisionEnhancer"(p: IN['IPAdapter_plus.IPAdapterClipVisionEnhancer'], meta?: ComfyNodeMetadata): Node['IPAdapter_plus.IPAdapterClipVisionEnhancer']
           /** displayName="IPAdapter ClipVision Enhancer Batch" category="ipadapter_dev" name="IPAdapterClipVisionEnhancerBatch" output=[MODEL] */
-         "IPAdapter_plus.IPAdapterClipVisionEnhancerBatch"(p: IN['IPAdapter_plus.IPAdapterClipVisionEnhancerBatch'], meta?: ComfyNodeMetadata): Nodes['IPAdapter_plus.IPAdapterClipVisionEnhancerBatch']
+         "IPAdapter_plus.IPAdapterClipVisionEnhancerBatch"(p: IN['IPAdapter_plus.IPAdapterClipVisionEnhancerBatch'], meta?: ComfyNodeMetadata): Node['IPAdapter_plus.IPAdapterClipVisionEnhancerBatch']
           /** displayName="IPAdapter from Params" category="ipadapter_params" name="IPAdapterFromParams" output=[MODEL] */
-         "IPAdapter_plus.IPAdapterFromParams"(p: IN['IPAdapter_plus.IPAdapterFromParams'], meta?: ComfyNodeMetadata): Nodes['IPAdapter_plus.IPAdapterFromParams']
+         "IPAdapter_plus.IPAdapterFromParams"(p: IN['IPAdapter_plus.IPAdapterFromParams'], meta?: ComfyNodeMetadata): Node['IPAdapter_plus.IPAdapterFromParams']
           /** displayName="IPAdapter Precise Style Transfer" category="ipadapter" name="IPAdapterPreciseStyleTransfer" output=[MODEL] */
-         "IPAdapter_plus.IPAdapterPreciseStyleTransfer"(p: IN['IPAdapter_plus.IPAdapterPreciseStyleTransfer'], meta?: ComfyNodeMetadata): Nodes['IPAdapter_plus.IPAdapterPreciseStyleTransfer']
+         "IPAdapter_plus.IPAdapterPreciseStyleTransfer"(p: IN['IPAdapter_plus.IPAdapterPreciseStyleTransfer'], meta?: ComfyNodeMetadata): Node['IPAdapter_plus.IPAdapterPreciseStyleTransfer']
           /** displayName="IPAdapter Precise Style Transfer Batch" category="ipadapter" name="IPAdapterPreciseStyleTransferBatch" output=[MODEL] */
-         "IPAdapter_plus.IPAdapterPreciseStyleTransferBatch"(p: IN['IPAdapter_plus.IPAdapterPreciseStyleTransferBatch'], meta?: ComfyNodeMetadata): Nodes['IPAdapter_plus.IPAdapterPreciseStyleTransferBatch']
+         "IPAdapter_plus.IPAdapterPreciseStyleTransferBatch"(p: IN['IPAdapter_plus.IPAdapterPreciseStyleTransferBatch'], meta?: ComfyNodeMetadata): Node['IPAdapter_plus.IPAdapterPreciseStyleTransferBatch']
           /** displayName="IPAdapter Precise Composition" category="ipadapter" name="IPAdapterPreciseComposition" output=[MODEL] */
-         "IPAdapter_plus.IPAdapterPreciseComposition"(p: IN['IPAdapter_plus.IPAdapterPreciseComposition'], meta?: ComfyNodeMetadata): Nodes['IPAdapter_plus.IPAdapterPreciseComposition']
+         "IPAdapter_plus.IPAdapterPreciseComposition"(p: IN['IPAdapter_plus.IPAdapterPreciseComposition'], meta?: ComfyNodeMetadata): Node['IPAdapter_plus.IPAdapterPreciseComposition']
           /** displayName="IPAdapter Precise Composition Batch" category="ipadapter" name="IPAdapterPreciseCompositionBatch" output=[MODEL] */
-         "IPAdapter_plus.IPAdapterPreciseCompositionBatch"(p: IN['IPAdapter_plus.IPAdapterPreciseCompositionBatch'], meta?: ComfyNodeMetadata): Nodes['IPAdapter_plus.IPAdapterPreciseCompositionBatch']
+         "IPAdapter_plus.IPAdapterPreciseCompositionBatch"(p: IN['IPAdapter_plus.IPAdapterPreciseCompositionBatch'], meta?: ComfyNodeMetadata): Node['IPAdapter_plus.IPAdapterPreciseCompositionBatch']
           /** displayName="IPAdapter Unified Loader" category="ipadapter" name="IPAdapterUnifiedLoader" output=[model, ipadapter] */
-         "IPAdapter_plus.IPAdapterUnifiedLoader"(p: IN['IPAdapter_plus.IPAdapterUnifiedLoader'], meta?: ComfyNodeMetadata): Nodes['IPAdapter_plus.IPAdapterUnifiedLoader']
+         "IPAdapter_plus.IPAdapterUnifiedLoader"(p: IN['IPAdapter_plus.IPAdapterUnifiedLoader'], meta?: ComfyNodeMetadata): Node['IPAdapter_plus.IPAdapterUnifiedLoader']
           /** displayName="IPAdapter Unified Loader FaceID" category="ipadapter_faceid" name="IPAdapterUnifiedLoaderFaceID" output=[MODEL, ipadapter] */
-         "IPAdapter_plus.IPAdapterUnifiedLoaderFaceID"(p: IN['IPAdapter_plus.IPAdapterUnifiedLoaderFaceID'], meta?: ComfyNodeMetadata): Nodes['IPAdapter_plus.IPAdapterUnifiedLoaderFaceID']
+         "IPAdapter_plus.IPAdapterUnifiedLoaderFaceID"(p: IN['IPAdapter_plus.IPAdapterUnifiedLoaderFaceID'], meta?: ComfyNodeMetadata): Node['IPAdapter_plus.IPAdapterUnifiedLoaderFaceID']
           /** displayName="IPAdapter Model Loader" category="ipadapter_loaders" name="IPAdapterModelLoader" output=[IPADAPTER] */
-         "IPAdapter_plus.IPAdapterModelLoader"(p: IN['IPAdapter_plus.IPAdapterModelLoader'], meta?: ComfyNodeMetadata): Nodes['IPAdapter_plus.IPAdapterModelLoader']
+         "IPAdapter_plus.IPAdapterModelLoader"(p: IN['IPAdapter_plus.IPAdapterModelLoader'], meta?: ComfyNodeMetadata): Node['IPAdapter_plus.IPAdapterModelLoader']
           /** displayName="IPAdapter InsightFace Loader" category="ipadapter_loaders" name="IPAdapterInsightFaceLoader" output=[INSIGHTFACE] */
-         "IPAdapter_plus.IPAdapterInsightFaceLoader"(p: IN['IPAdapter_plus.IPAdapterInsightFaceLoader'], meta?: ComfyNodeMetadata): Nodes['IPAdapter_plus.IPAdapterInsightFaceLoader']
+         "IPAdapter_plus.IPAdapterInsightFaceLoader"(p: IN['IPAdapter_plus.IPAdapterInsightFaceLoader'], meta?: ComfyNodeMetadata): Node['IPAdapter_plus.IPAdapterInsightFaceLoader']
           /** displayName="IPAdapter Unified Loader Community" category="ipadapter_loaders" name="IPAdapterUnifiedLoaderCommunity" output=[model, ipadapter] */
-         "IPAdapter_plus.IPAdapterUnifiedLoaderCommunity"(p: IN['IPAdapter_plus.IPAdapterUnifiedLoaderCommunity'], meta?: ComfyNodeMetadata): Nodes['IPAdapter_plus.IPAdapterUnifiedLoaderCommunity']
+         "IPAdapter_plus.IPAdapterUnifiedLoaderCommunity"(p: IN['IPAdapter_plus.IPAdapterUnifiedLoaderCommunity'], meta?: ComfyNodeMetadata): Node['IPAdapter_plus.IPAdapterUnifiedLoaderCommunity']
           /** displayName="IPAdapter Encoder" category="ipadapter_embeds" name="IPAdapterEncoder" output=[pos_embed, neg_embed] */
-         "IPAdapter_plus.IPAdapterEncoder"(p: IN['IPAdapter_plus.IPAdapterEncoder'], meta?: ComfyNodeMetadata): Nodes['IPAdapter_plus.IPAdapterEncoder']
+         "IPAdapter_plus.IPAdapterEncoder"(p: IN['IPAdapter_plus.IPAdapterEncoder'], meta?: ComfyNodeMetadata): Node['IPAdapter_plus.IPAdapterEncoder']
           /** displayName="IPAdapter Combine Embeds" category="ipadapter_embeds" name="IPAdapterCombineEmbeds" output=[EMBEDS] */
-         "IPAdapter_plus.IPAdapterCombineEmbeds"(p: IN['IPAdapter_plus.IPAdapterCombineEmbeds'], meta?: ComfyNodeMetadata): Nodes['IPAdapter_plus.IPAdapterCombineEmbeds']
+         "IPAdapter_plus.IPAdapterCombineEmbeds"(p: IN['IPAdapter_plus.IPAdapterCombineEmbeds'], meta?: ComfyNodeMetadata): Node['IPAdapter_plus.IPAdapterCombineEmbeds']
           /** displayName="IPAdapter Noise" category="ipadapter_utils" name="IPAdapterNoise" output=[IMAGE] */
-         "IPAdapter_plus.IPAdapterNoise"(p: IN['IPAdapter_plus.IPAdapterNoise'], meta?: ComfyNodeMetadata): Nodes['IPAdapter_plus.IPAdapterNoise']
+         "IPAdapter_plus.IPAdapterNoise"(p: IN['IPAdapter_plus.IPAdapterNoise'], meta?: ComfyNodeMetadata): Node['IPAdapter_plus.IPAdapterNoise']
           /** displayName="Prep Image For ClipVision" category="ipadapter_utils" name="PrepImageForClipVision" output=[IMAGE] */
-         "IPAdapter_plus.PrepImageForClipVision"(p: IN['IPAdapter_plus.PrepImageForClipVision'], meta?: ComfyNodeMetadata): Nodes['IPAdapter_plus.PrepImageForClipVision']
+         "IPAdapter_plus.PrepImageForClipVision"(p: IN['IPAdapter_plus.PrepImageForClipVision'], meta?: ComfyNodeMetadata): Node['IPAdapter_plus.PrepImageForClipVision']
           /** displayName="IPAdapter Save Embeds" category="ipadapter_embeds" name="IPAdapterSaveEmbeds" output=[] */
-         "IPAdapter_plus.IPAdapterSaveEmbeds"(p: IN['IPAdapter_plus.IPAdapterSaveEmbeds'], meta?: ComfyNodeMetadata): Nodes['IPAdapter_plus.IPAdapterSaveEmbeds']
+         "IPAdapter_plus.IPAdapterSaveEmbeds"(p: IN['IPAdapter_plus.IPAdapterSaveEmbeds'], meta?: ComfyNodeMetadata): Node['IPAdapter_plus.IPAdapterSaveEmbeds']
           /** displayName="IPAdapter Load Embeds" category="ipadapter_embeds" name="IPAdapterLoadEmbeds" output=[EMBEDS] */
-         "IPAdapter_plus.IPAdapterLoadEmbeds"(p: IN['IPAdapter_plus.IPAdapterLoadEmbeds'], meta?: ComfyNodeMetadata): Nodes['IPAdapter_plus.IPAdapterLoadEmbeds']
+         "IPAdapter_plus.IPAdapterLoadEmbeds"(p: IN['IPAdapter_plus.IPAdapterLoadEmbeds'], meta?: ComfyNodeMetadata): Node['IPAdapter_plus.IPAdapterLoadEmbeds']
           /** displayName="IPAdapter Weights" category="ipadapter_weights" name="IPAdapterWeights" output=[weights, weights_invert, total_frames, image_1, image_2, weights_strategy] */
-         "IPAdapter_plus.IPAdapterWeights"(p: IN['IPAdapter_plus.IPAdapterWeights'], meta?: ComfyNodeMetadata): Nodes['IPAdapter_plus.IPAdapterWeights']
+         "IPAdapter_plus.IPAdapterWeights"(p: IN['IPAdapter_plus.IPAdapterWeights'], meta?: ComfyNodeMetadata): Node['IPAdapter_plus.IPAdapterWeights']
           /** displayName="IPAdapter Combine Weights" category="ipadapter_utils" name="IPAdapterCombineWeights" output=[weights, count] */
-         "IPAdapter_plus.IPAdapterCombineWeights"(p: IN['IPAdapter_plus.IPAdapterCombineWeights'], meta?: ComfyNodeMetadata): Nodes['IPAdapter_plus.IPAdapterCombineWeights']
+         "IPAdapter_plus.IPAdapterCombineWeights"(p: IN['IPAdapter_plus.IPAdapterCombineWeights'], meta?: ComfyNodeMetadata): Node['IPAdapter_plus.IPAdapterCombineWeights']
           /** displayName="IPAdapter Weights From Strategy" category="ipadapter_weights" name="IPAdapterWeightsFromStrategy" output=[weights, weights_invert, total_frames, image_1, image_2, weights_strategy] */
-         "IPAdapter_plus.IPAdapterWeightsFromStrategy"(p: IN['IPAdapter_plus.IPAdapterWeightsFromStrategy'], meta?: ComfyNodeMetadata): Nodes['IPAdapter_plus.IPAdapterWeightsFromStrategy']
+         "IPAdapter_plus.IPAdapterWeightsFromStrategy"(p: IN['IPAdapter_plus.IPAdapterWeightsFromStrategy'], meta?: ComfyNodeMetadata): Node['IPAdapter_plus.IPAdapterWeightsFromStrategy']
           /** displayName="Prompt Schedule From Weights Strategy" category="ipadapter_weights" name="IPAdapterPromptScheduleFromWeightsStrategy" output=[prompt_schedule] */
-         "IPAdapter_plus.IPAdapterPromptScheduleFromWeightsStrategy"(p: IN['IPAdapter_plus.IPAdapterPromptScheduleFromWeightsStrategy'], meta?: ComfyNodeMetadata): Nodes['IPAdapter_plus.IPAdapterPromptScheduleFromWeightsStrategy']
+         "IPAdapter_plus.IPAdapterPromptScheduleFromWeightsStrategy"(p: IN['IPAdapter_plus.IPAdapterPromptScheduleFromWeightsStrategy'], meta?: ComfyNodeMetadata): Node['IPAdapter_plus.IPAdapterPromptScheduleFromWeightsStrategy']
           /** displayName="IPAdapter Regional Conditioning" category="ipadapter_params" name="IPAdapterRegionalConditioning" output=[IPADAPTER_PARAMS, POSITIVE, NEGATIVE] */
-         "IPAdapter_plus.IPAdapterRegionalConditioning"(p: IN['IPAdapter_plus.IPAdapterRegionalConditioning'], meta?: ComfyNodeMetadata): Nodes['IPAdapter_plus.IPAdapterRegionalConditioning']
+         "IPAdapter_plus.IPAdapterRegionalConditioning"(p: IN['IPAdapter_plus.IPAdapterRegionalConditioning'], meta?: ComfyNodeMetadata): Node['IPAdapter_plus.IPAdapterRegionalConditioning']
           /** displayName="IPAdapter Combine Params" category="ipadapter_params" name="IPAdapterCombineParams" output=[IPADAPTER_PARAMS] */
-         "IPAdapter_plus.IPAdapterCombineParams"(p: IN['IPAdapter_plus.IPAdapterCombineParams'], meta?: ComfyNodeMetadata): Nodes['IPAdapter_plus.IPAdapterCombineParams']
+         "IPAdapter_plus.IPAdapterCombineParams"(p: IN['IPAdapter_plus.IPAdapterCombineParams'], meta?: ComfyNodeMetadata): Node['IPAdapter_plus.IPAdapterCombineParams']
           /** displayName="Content Shuffle" category="ControlNet Preprocessors_T2IAdapter-only" name="ShufflePreprocessor" output=[IMAGE] */
-         "controlnet_aux.ShufflePreprocessor"(p: IN['controlnet_aux.ShufflePreprocessor'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.ShufflePreprocessor']
+         "controlnet_aux.ShufflePreprocessor"(p: IN['controlnet_aux.ShufflePreprocessor'], meta?: ComfyNodeMetadata): Node['controlnet_aux.ShufflePreprocessor']
           /** displayName="DensePose Estimator" category="ControlNet Preprocessors_Faces and Poses Estimators" name="DensePosePreprocessor" output=[IMAGE] */
-         "controlnet_aux.DensePosePreprocessor"(p: IN['controlnet_aux.DensePosePreprocessor'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.DensePosePreprocessor']
+         "controlnet_aux.DensePosePreprocessor"(p: IN['controlnet_aux.DensePosePreprocessor'], meta?: ComfyNodeMetadata): Node['controlnet_aux.DensePosePreprocessor']
           /** displayName="LeReS Depth Map (enable boost for leres++)" category="ControlNet Preprocessors_Normal and Depth Estimators" name="LeReS-DepthMapPreprocessor" output=[IMAGE] */
-         "controlnet_aux.LeReS-DepthMapPreprocessor"(p: IN['controlnet_aux.LeReS-DepthMapPreprocessor'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.LeReS-DepthMapPreprocessor']
+         "controlnet_aux.LeReS-DepthMapPreprocessor"(p: IN['controlnet_aux.LeReS-DepthMapPreprocessor'], meta?: ComfyNodeMetadata): Node['controlnet_aux.LeReS-DepthMapPreprocessor']
           /** displayName="Binary Lines" category="ControlNet Preprocessors_Line Extractors" name="BinaryPreprocessor" output=[IMAGE] */
-         "controlnet_aux.BinaryPreprocessor"(p: IN['controlnet_aux.BinaryPreprocessor'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.BinaryPreprocessor']
+         "controlnet_aux.BinaryPreprocessor"(p: IN['controlnet_aux.BinaryPreprocessor'], meta?: ComfyNodeMetadata): Node['controlnet_aux.BinaryPreprocessor']
           /** displayName="Anime Face Segmentor" category="ControlNet Preprocessors_Semantic Segmentation" name="AnimeFace_SemSegPreprocessor" output=[IMAGE, ABG_CHARACTER_MASK (MASK)] */
-         "controlnet_aux.AnimeFace_SemSegPreprocessor"(p: IN['controlnet_aux.AnimeFace_SemSegPreprocessor'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.AnimeFace_SemSegPreprocessor']
+         "controlnet_aux.AnimeFace_SemSegPreprocessor"(p: IN['controlnet_aux.AnimeFace_SemSegPreprocessor'], meta?: ComfyNodeMetadata): Node['controlnet_aux.AnimeFace_SemSegPreprocessor']
           /** displayName="Zoe Depth Map" category="ControlNet Preprocessors_Normal and Depth Estimators" name="Zoe-DepthMapPreprocessor" output=[IMAGE] */
-         "controlnet_aux.Zoe-DepthMapPreprocessor"(p: IN['controlnet_aux.Zoe-DepthMapPreprocessor'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.Zoe-DepthMapPreprocessor']
+         "controlnet_aux.Zoe-DepthMapPreprocessor"(p: IN['controlnet_aux.Zoe-DepthMapPreprocessor'], meta?: ComfyNodeMetadata): Node['controlnet_aux.Zoe-DepthMapPreprocessor']
           /** displayName="Depth Anything" category="ControlNet Preprocessors_Normal and Depth Estimators" name="DepthAnythingPreprocessor" output=[IMAGE] */
-         "controlnet_aux.DepthAnythingPreprocessor"(p: IN['controlnet_aux.DepthAnythingPreprocessor'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.DepthAnythingPreprocessor']
+         "controlnet_aux.DepthAnythingPreprocessor"(p: IN['controlnet_aux.DepthAnythingPreprocessor'], meta?: ComfyNodeMetadata): Node['controlnet_aux.DepthAnythingPreprocessor']
           /** displayName="Zoe Depth Anything" category="ControlNet Preprocessors_Normal and Depth Estimators" name="Zoe_DepthAnythingPreprocessor" output=[IMAGE] */
-         "controlnet_aux.Zoe_DepthAnythingPreprocessor"(p: IN['controlnet_aux.Zoe_DepthAnythingPreprocessor'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.Zoe_DepthAnythingPreprocessor']
+         "controlnet_aux.Zoe_DepthAnythingPreprocessor"(p: IN['controlnet_aux.Zoe_DepthAnythingPreprocessor'], meta?: ComfyNodeMetadata): Node['controlnet_aux.Zoe_DepthAnythingPreprocessor']
           /** displayName="Depth Anything V2 - Relative" category="ControlNet Preprocessors_Normal and Depth Estimators" name="DepthAnythingV2Preprocessor" output=[IMAGE] */
-         "controlnet_aux.DepthAnythingV2Preprocessor"(p: IN['controlnet_aux.DepthAnythingV2Preprocessor'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.DepthAnythingV2Preprocessor']
+         "controlnet_aux.DepthAnythingV2Preprocessor"(p: IN['controlnet_aux.DepthAnythingV2Preprocessor'], meta?: ComfyNodeMetadata): Node['controlnet_aux.DepthAnythingV2Preprocessor']
           /** displayName="Canny Edge" category="ControlNet Preprocessors_Line Extractors" name="CannyEdgePreprocessor" output=[IMAGE] */
-         "controlnet_aux.CannyEdgePreprocessor"(p: IN['controlnet_aux.CannyEdgePreprocessor'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.CannyEdgePreprocessor']
+         "controlnet_aux.CannyEdgePreprocessor"(p: IN['controlnet_aux.CannyEdgePreprocessor'], meta?: ComfyNodeMetadata): Node['controlnet_aux.CannyEdgePreprocessor']
           /** displayName="DWPose Estimator" category="ControlNet Preprocessors_Faces and Poses Estimators" name="DWPreprocessor" output=[IMAGE, POSE_KEYPOINT] */
-         "controlnet_aux.DWPreprocessor"(p: IN['controlnet_aux.DWPreprocessor'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.DWPreprocessor']
+         "controlnet_aux.DWPreprocessor"(p: IN['controlnet_aux.DWPreprocessor'], meta?: ComfyNodeMetadata): Node['controlnet_aux.DWPreprocessor']
           /** displayName="AnimalPose Estimator (AP10K)" category="ControlNet Preprocessors_Faces and Poses Estimators" name="AnimalPosePreprocessor" output=[IMAGE, POSE_KEYPOINT] */
-         "controlnet_aux.AnimalPosePreprocessor"(p: IN['controlnet_aux.AnimalPosePreprocessor'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.AnimalPosePreprocessor']
+         "controlnet_aux.AnimalPosePreprocessor"(p: IN['controlnet_aux.AnimalPosePreprocessor'], meta?: ComfyNodeMetadata): Node['controlnet_aux.AnimalPosePreprocessor']
           /** displayName="Image Luminance" category="ControlNet Preprocessors_Recolor" name="ImageLuminanceDetector" output=[IMAGE] */
-         "controlnet_aux.ImageLuminanceDetector"(p: IN['controlnet_aux.ImageLuminanceDetector'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.ImageLuminanceDetector']
+         "controlnet_aux.ImageLuminanceDetector"(p: IN['controlnet_aux.ImageLuminanceDetector'], meta?: ComfyNodeMetadata): Node['controlnet_aux.ImageLuminanceDetector']
           /** displayName="Image Intensity" category="ControlNet Preprocessors_Recolor" name="ImageIntensityDetector" output=[IMAGE] */
-         "controlnet_aux.ImageIntensityDetector"(p: IN['controlnet_aux.ImageIntensityDetector'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.ImageIntensityDetector']
+         "controlnet_aux.ImageIntensityDetector"(p: IN['controlnet_aux.ImageIntensityDetector'], meta?: ComfyNodeMetadata): Node['controlnet_aux.ImageIntensityDetector']
           /** displayName="MediaPipe Face Mesh" category="ControlNet Preprocessors_Faces and Poses Estimators" name="MediaPipe-FaceMeshPreprocessor" output=[IMAGE] */
-         "controlnet_aux.MediaPipe-FaceMeshPreprocessor"(p: IN['controlnet_aux.MediaPipe-FaceMeshPreprocessor'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.MediaPipe-FaceMeshPreprocessor']
+         "controlnet_aux.MediaPipe-FaceMeshPreprocessor"(p: IN['controlnet_aux.MediaPipe-FaceMeshPreprocessor'], meta?: ComfyNodeMetadata): Node['controlnet_aux.MediaPipe-FaceMeshPreprocessor']
           /** displayName="Diffusion Edge (batch size ↑ => speed ↑, VRAM ↑)" category="ControlNet Preprocessors_Line Extractors" name="DiffusionEdge_Preprocessor" output=[IMAGE] */
-         "controlnet_aux.DiffusionEdge_Preprocessor"(p: IN['controlnet_aux.DiffusionEdge_Preprocessor'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.DiffusionEdge_Preprocessor']
+         "controlnet_aux.DiffusionEdge_Preprocessor"(p: IN['controlnet_aux.DiffusionEdge_Preprocessor'], meta?: ComfyNodeMetadata): Node['controlnet_aux.DiffusionEdge_Preprocessor']
           /** displayName="M-LSD Lines" category="ControlNet Preprocessors_Line Extractors" name="M-LSDPreprocessor" output=[IMAGE] */
-         "controlnet_aux.M-LSDPreprocessor"(p: IN['controlnet_aux.M-LSDPreprocessor'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.M-LSDPreprocessor']
+         "controlnet_aux.M-LSDPreprocessor"(p: IN['controlnet_aux.M-LSDPreprocessor'], meta?: ComfyNodeMetadata): Node['controlnet_aux.M-LSDPreprocessor']
           /** displayName="HED Soft-Edge Lines" category="ControlNet Preprocessors_Line Extractors" name="HEDPreprocessor" output=[IMAGE] */
-         "controlnet_aux.HEDPreprocessor"(p: IN['controlnet_aux.HEDPreprocessor'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.HEDPreprocessor']
+         "controlnet_aux.HEDPreprocessor"(p: IN['controlnet_aux.HEDPreprocessor'], meta?: ComfyNodeMetadata): Node['controlnet_aux.HEDPreprocessor']
           /** displayName="Fake Scribble Lines (aka scribble_hed)" category="ControlNet Preprocessors_Line Extractors" name="FakeScribblePreprocessor" output=[IMAGE] */
-         "controlnet_aux.FakeScribblePreprocessor"(p: IN['controlnet_aux.FakeScribblePreprocessor'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.FakeScribblePreprocessor']
+         "controlnet_aux.FakeScribblePreprocessor"(p: IN['controlnet_aux.FakeScribblePreprocessor'], meta?: ComfyNodeMetadata): Node['controlnet_aux.FakeScribblePreprocessor']
           /** displayName="OneFormer COCO Segmentor" category="ControlNet Preprocessors_Semantic Segmentation" name="OneFormer-COCO-SemSegPreprocessor" output=[IMAGE] */
-         "controlnet_aux.OneFormer-COCO-SemSegPreprocessor"(p: IN['controlnet_aux.OneFormer-COCO-SemSegPreprocessor'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.OneFormer-COCO-SemSegPreprocessor']
+         "controlnet_aux.OneFormer-COCO-SemSegPreprocessor"(p: IN['controlnet_aux.OneFormer-COCO-SemSegPreprocessor'], meta?: ComfyNodeMetadata): Node['controlnet_aux.OneFormer-COCO-SemSegPreprocessor']
           /** displayName="OneFormer ADE20K Segmentor" category="ControlNet Preprocessors_Semantic Segmentation" name="OneFormer-ADE20K-SemSegPreprocessor" output=[IMAGE] */
-         "controlnet_aux.OneFormer-ADE20K-SemSegPreprocessor"(p: IN['controlnet_aux.OneFormer-ADE20K-SemSegPreprocessor'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.OneFormer-ADE20K-SemSegPreprocessor']
+         "controlnet_aux.OneFormer-ADE20K-SemSegPreprocessor"(p: IN['controlnet_aux.OneFormer-ADE20K-SemSegPreprocessor'], meta?: ComfyNodeMetadata): Node['controlnet_aux.OneFormer-ADE20K-SemSegPreprocessor']
           /** displayName="BAE Normal Map" category="ControlNet Preprocessors_Normal and Depth Estimators" name="BAE-NormalMapPreprocessor" output=[IMAGE] */
-         "controlnet_aux.BAE-NormalMapPreprocessor"(p: IN['controlnet_aux.BAE-NormalMapPreprocessor'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.BAE-NormalMapPreprocessor']
+         "controlnet_aux.BAE-NormalMapPreprocessor"(p: IN['controlnet_aux.BAE-NormalMapPreprocessor'], meta?: ComfyNodeMetadata): Node['controlnet_aux.BAE-NormalMapPreprocessor']
           /** displayName="MeshGraphormer Hand Refiner" category="ControlNet Preprocessors_Normal and Depth Estimators" name="MeshGraphormer-DepthMapPreprocessor" output=[IMAGE, INPAINTING_MASK] */
-         "controlnet_aux.MeshGraphormer-DepthMapPreprocessor"(p: IN['controlnet_aux.MeshGraphormer-DepthMapPreprocessor'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.MeshGraphormer-DepthMapPreprocessor']
+         "controlnet_aux.MeshGraphormer-DepthMapPreprocessor"(p: IN['controlnet_aux.MeshGraphormer-DepthMapPreprocessor'], meta?: ComfyNodeMetadata): Node['controlnet_aux.MeshGraphormer-DepthMapPreprocessor']
           /** displayName="MeshGraphormer Hand Refiner With External Detector" category="ControlNet Preprocessors_Normal and Depth Estimators" name="MeshGraphormer+ImpactDetector-DepthMapPreprocessor" output=[IMAGE, INPAINTING_MASK] */
-         "controlnet_aux.MeshGraphormer+ImpactDetector-DepthMapPreprocessor"(p: IN['controlnet_aux.MeshGraphormer+ImpactDetector-DepthMapPreprocessor'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.MeshGraphormer+ImpactDetector-DepthMapPreprocessor']
+         "controlnet_aux.MeshGraphormer+ImpactDetector-DepthMapPreprocessor"(p: IN['controlnet_aux.MeshGraphormer+ImpactDetector-DepthMapPreprocessor'], meta?: ComfyNodeMetadata): Node['controlnet_aux.MeshGraphormer+ImpactDetector-DepthMapPreprocessor']
           /** displayName="DSINE Normal Map" category="ControlNet Preprocessors_Normal and Depth Estimators" name="DSINE-NormalMapPreprocessor" output=[IMAGE] */
-         "controlnet_aux.DSINE-NormalMapPreprocessor"(p: IN['controlnet_aux.DSINE-NormalMapPreprocessor'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.DSINE-NormalMapPreprocessor']
+         "controlnet_aux.DSINE-NormalMapPreprocessor"(p: IN['controlnet_aux.DSINE-NormalMapPreprocessor'], meta?: ComfyNodeMetadata): Node['controlnet_aux.DSINE-NormalMapPreprocessor']
           /** displayName="MiDaS Normal Map" category="ControlNet Preprocessors_Normal and Depth Estimators" name="MiDaS-NormalMapPreprocessor" output=[IMAGE] */
-         "controlnet_aux.MiDaS-NormalMapPreprocessor"(p: IN['controlnet_aux.MiDaS-NormalMapPreprocessor'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.MiDaS-NormalMapPreprocessor']
+         "controlnet_aux.MiDaS-NormalMapPreprocessor"(p: IN['controlnet_aux.MiDaS-NormalMapPreprocessor'], meta?: ComfyNodeMetadata): Node['controlnet_aux.MiDaS-NormalMapPreprocessor']
           /** displayName="MiDaS Depth Map" category="ControlNet Preprocessors_Normal and Depth Estimators" name="MiDaS-DepthMapPreprocessor" output=[IMAGE] */
-         "controlnet_aux.MiDaS-DepthMapPreprocessor"(p: IN['controlnet_aux.MiDaS-DepthMapPreprocessor'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.MiDaS-DepthMapPreprocessor']
+         "controlnet_aux.MiDaS-DepthMapPreprocessor"(p: IN['controlnet_aux.MiDaS-DepthMapPreprocessor'], meta?: ComfyNodeMetadata): Node['controlnet_aux.MiDaS-DepthMapPreprocessor']
           /** displayName="AnyLine Lineart" category="ControlNet Preprocessors_Line Extractors" name="AnyLineArtPreprocessor_aux" output=[image] */
-         "controlnet_aux.AnyLineArtPreprocessor_aux"(p: IN['controlnet_aux.AnyLineArtPreprocessor_aux'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.AnyLineArtPreprocessor_aux']
+         "controlnet_aux.AnyLineArtPreprocessor_aux"(p: IN['controlnet_aux.AnyLineArtPreprocessor_aux'], meta?: ComfyNodeMetadata): Node['controlnet_aux.AnyLineArtPreprocessor_aux']
           /** displayName="SAM Segmentor" category="ControlNet Preprocessors_others" name="SAMPreprocessor" output=[IMAGE] */
-         "controlnet_aux.SAMPreprocessor"(p: IN['controlnet_aux.SAMPreprocessor'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.SAMPreprocessor']
+         "controlnet_aux.SAMPreprocessor"(p: IN['controlnet_aux.SAMPreprocessor'], meta?: ComfyNodeMetadata): Node['controlnet_aux.SAMPreprocessor']
           /** displayName="UniFormer Segmentor" category="ControlNet Preprocessors_Semantic Segmentation" name="UniFormer-SemSegPreprocessor" output=[IMAGE] */
-         "controlnet_aux.UniFormer-SemSegPreprocessor"(p: IN['controlnet_aux.UniFormer-SemSegPreprocessor'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.UniFormer-SemSegPreprocessor']
+         "controlnet_aux.UniFormer-SemSegPreprocessor"(p: IN['controlnet_aux.UniFormer-SemSegPreprocessor'], meta?: ComfyNodeMetadata): Node['controlnet_aux.UniFormer-SemSegPreprocessor']
           /** displayName="Semantic Segmentor (legacy, alias for UniFormer)" category="ControlNet Preprocessors_Semantic Segmentation" name="SemSegPreprocessor" output=[IMAGE] */
-         "controlnet_aux.SemSegPreprocessor"(p: IN['controlnet_aux.SemSegPreprocessor'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.SemSegPreprocessor']
+         "controlnet_aux.SemSegPreprocessor"(p: IN['controlnet_aux.SemSegPreprocessor'], meta?: ComfyNodeMetadata): Node['controlnet_aux.SemSegPreprocessor']
           /** displayName="PiDiNet Soft-Edge Lines" category="ControlNet Preprocessors_Line Extractors" name="PiDiNetPreprocessor" output=[IMAGE] */
-         "controlnet_aux.PiDiNetPreprocessor"(p: IN['controlnet_aux.PiDiNetPreprocessor'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.PiDiNetPreprocessor']
+         "controlnet_aux.PiDiNetPreprocessor"(p: IN['controlnet_aux.PiDiNetPreprocessor'], meta?: ComfyNodeMetadata): Node['controlnet_aux.PiDiNetPreprocessor']
           /** displayName="Inpaint Preprocessor" category="ControlNet Preprocessors_others" name="InpaintPreprocessor" output=[IMAGE] */
-         "controlnet_aux.InpaintPreprocessor"(p: IN['controlnet_aux.InpaintPreprocessor'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.InpaintPreprocessor']
+         "controlnet_aux.InpaintPreprocessor"(p: IN['controlnet_aux.InpaintPreprocessor'], meta?: ComfyNodeMetadata): Node['controlnet_aux.InpaintPreprocessor']
           /** displayName="Realistic Lineart" category="ControlNet Preprocessors_Line Extractors" name="LineArtPreprocessor" output=[IMAGE] */
-         "controlnet_aux.LineArtPreprocessor"(p: IN['controlnet_aux.LineArtPreprocessor'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.LineArtPreprocessor']
+         "controlnet_aux.LineArtPreprocessor"(p: IN['controlnet_aux.LineArtPreprocessor'], meta?: ComfyNodeMetadata): Node['controlnet_aux.LineArtPreprocessor']
           /** displayName="OpenPose Pose" category="ControlNet Preprocessors_Faces and Poses Estimators" name="OpenposePreprocessor" output=[IMAGE, POSE_KEYPOINT] */
-         "controlnet_aux.OpenposePreprocessor"(p: IN['controlnet_aux.OpenposePreprocessor'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.OpenposePreprocessor']
+         "controlnet_aux.OpenposePreprocessor"(p: IN['controlnet_aux.OpenposePreprocessor'], meta?: ComfyNodeMetadata): Node['controlnet_aux.OpenposePreprocessor']
           /** displayName="Unimatch Optical Flow" category="ControlNet Preprocessors_Optical Flow" name="Unimatch_OptFlowPreprocessor" output=[OPTICAL_FLOW, PREVIEW_IMAGE] */
-         "controlnet_aux.Unimatch_OptFlowPreprocessor"(p: IN['controlnet_aux.Unimatch_OptFlowPreprocessor'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.Unimatch_OptFlowPreprocessor']
+         "controlnet_aux.Unimatch_OptFlowPreprocessor"(p: IN['controlnet_aux.Unimatch_OptFlowPreprocessor'], meta?: ComfyNodeMetadata): Node['controlnet_aux.Unimatch_OptFlowPreprocessor']
           /** displayName="Mask Optical Flow (DragNUWA)" category="ControlNet Preprocessors_Optical Flow" name="MaskOptFlow" output=[OPTICAL_FLOW, PREVIEW_IMAGE] */
-         "controlnet_aux.MaskOptFlow"(p: IN['controlnet_aux.MaskOptFlow'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.MaskOptFlow']
+         "controlnet_aux.MaskOptFlow"(p: IN['controlnet_aux.MaskOptFlow'], meta?: ComfyNodeMetadata): Node['controlnet_aux.MaskOptFlow']
           /** displayName="Save Pose Keypoints" category="ControlNet Preprocessors_Pose Keypoint Postprocess" name="SavePoseKpsAsJsonFile" output=[] */
-         "controlnet_aux.SavePoseKpsAsJsonFile"(p: IN['controlnet_aux.SavePoseKpsAsJsonFile'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.SavePoseKpsAsJsonFile']
+         "controlnet_aux.SavePoseKpsAsJsonFile"(p: IN['controlnet_aux.SavePoseKpsAsJsonFile'], meta?: ComfyNodeMetadata): Node['controlnet_aux.SavePoseKpsAsJsonFile']
           /** displayName="Colorize Facial Parts from PoseKPS" category="ControlNet Preprocessors_Pose Keypoint Postprocess" name="FacialPartColoringFromPoseKps" output=[IMAGE] */
-         "controlnet_aux.FacialPartColoringFromPoseKps"(p: IN['controlnet_aux.FacialPartColoringFromPoseKps'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.FacialPartColoringFromPoseKps']
+         "controlnet_aux.FacialPartColoringFromPoseKps"(p: IN['controlnet_aux.FacialPartColoringFromPoseKps'], meta?: ComfyNodeMetadata): Node['controlnet_aux.FacialPartColoringFromPoseKps']
           /** displayName="Upper Body Tracking From PoseKps (InstanceDiffusion)" category="ControlNet Preprocessors_Pose Keypoint Postprocess" name="UpperBodyTrackingFromPoseKps" output=[tracking, prompt] */
-         "controlnet_aux.UpperBodyTrackingFromPoseKps"(p: IN['controlnet_aux.UpperBodyTrackingFromPoseKps'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.UpperBodyTrackingFromPoseKps']
+         "controlnet_aux.UpperBodyTrackingFromPoseKps"(p: IN['controlnet_aux.UpperBodyTrackingFromPoseKps'], meta?: ComfyNodeMetadata): Node['controlnet_aux.UpperBodyTrackingFromPoseKps']
           /** displayName="Render Pose JSON (Human)" category="ControlNet Preprocessors_Pose Keypoint Postprocess" name="RenderPeopleKps" output=[IMAGE] */
-         "controlnet_aux.RenderPeopleKps"(p: IN['controlnet_aux.RenderPeopleKps'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.RenderPeopleKps']
+         "controlnet_aux.RenderPeopleKps"(p: IN['controlnet_aux.RenderPeopleKps'], meta?: ComfyNodeMetadata): Node['controlnet_aux.RenderPeopleKps']
           /** displayName="Render Pose JSON (Animal)" category="ControlNet Preprocessors_Pose Keypoint Postprocess" name="RenderAnimalKps" output=[IMAGE] */
-         "controlnet_aux.RenderAnimalKps"(p: IN['controlnet_aux.RenderAnimalKps'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.RenderAnimalKps']
+         "controlnet_aux.RenderAnimalKps"(p: IN['controlnet_aux.RenderAnimalKps'], meta?: ComfyNodeMetadata): Node['controlnet_aux.RenderAnimalKps']
           /** displayName="TEEDPreprocessor" category="ControlNet Preprocessors_Line Extractors" name="TEEDPreprocessor" output=[IMAGE] */
-         "controlnet_aux.TEEDPreprocessor"(p: IN['controlnet_aux.TEEDPreprocessor'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.TEEDPreprocessor']
+         "controlnet_aux.TEEDPreprocessor"(p: IN['controlnet_aux.TEEDPreprocessor'], meta?: ComfyNodeMetadata): Node['controlnet_aux.TEEDPreprocessor']
           /** displayName="PyraCanny" category="ControlNet Preprocessors_Line Extractors" name="PyraCannyPreprocessor" output=[IMAGE] */
-         "controlnet_aux.PyraCannyPreprocessor"(p: IN['controlnet_aux.PyraCannyPreprocessor'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.PyraCannyPreprocessor']
+         "controlnet_aux.PyraCannyPreprocessor"(p: IN['controlnet_aux.PyraCannyPreprocessor'], meta?: ComfyNodeMetadata): Node['controlnet_aux.PyraCannyPreprocessor']
           /** displayName="Metric3D Depth Map" category="ControlNet Preprocessors_Normal and Depth Estimators" name="Metric3D-DepthMapPreprocessor" output=[IMAGE] */
-         "controlnet_aux.Metric3D-DepthMapPreprocessor"(p: IN['controlnet_aux.Metric3D-DepthMapPreprocessor'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.Metric3D-DepthMapPreprocessor']
+         "controlnet_aux.Metric3D-DepthMapPreprocessor"(p: IN['controlnet_aux.Metric3D-DepthMapPreprocessor'], meta?: ComfyNodeMetadata): Node['controlnet_aux.Metric3D-DepthMapPreprocessor']
           /** displayName="Metric3D Normal Map" category="ControlNet Preprocessors_Normal and Depth Estimators" name="Metric3D-NormalMapPreprocessor" output=[IMAGE] */
-         "controlnet_aux.Metric3D-NormalMapPreprocessor"(p: IN['controlnet_aux.Metric3D-NormalMapPreprocessor'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.Metric3D-NormalMapPreprocessor']
+         "controlnet_aux.Metric3D-NormalMapPreprocessor"(p: IN['controlnet_aux.Metric3D-NormalMapPreprocessor'], meta?: ComfyNodeMetadata): Node['controlnet_aux.Metric3D-NormalMapPreprocessor']
           /** displayName="Manga Lineart (aka lineart_anime_denoise)" category="ControlNet Preprocessors_Line Extractors" name="Manga2Anime_LineArt_Preprocessor" output=[IMAGE] */
-         "controlnet_aux.Manga2Anime_LineArt_Preprocessor"(p: IN['controlnet_aux.Manga2Anime_LineArt_Preprocessor'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.Manga2Anime_LineArt_Preprocessor']
+         "controlnet_aux.Manga2Anime_LineArt_Preprocessor"(p: IN['controlnet_aux.Manga2Anime_LineArt_Preprocessor'], meta?: ComfyNodeMetadata): Node['controlnet_aux.Manga2Anime_LineArt_Preprocessor']
           /** displayName="Scribble Lines" category="ControlNet Preprocessors_Line Extractors" name="ScribblePreprocessor" output=[IMAGE] */
-         "controlnet_aux.ScribblePreprocessor"(p: IN['controlnet_aux.ScribblePreprocessor'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.ScribblePreprocessor']
+         "controlnet_aux.ScribblePreprocessor"(p: IN['controlnet_aux.ScribblePreprocessor'], meta?: ComfyNodeMetadata): Node['controlnet_aux.ScribblePreprocessor']
           /** displayName="Scribble XDoG Lines" category="ControlNet Preprocessors_Line Extractors" name="Scribble_XDoG_Preprocessor" output=[IMAGE] */
-         "controlnet_aux.Scribble_XDoG_Preprocessor"(p: IN['controlnet_aux.Scribble_XDoG_Preprocessor'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.Scribble_XDoG_Preprocessor']
+         "controlnet_aux.Scribble_XDoG_Preprocessor"(p: IN['controlnet_aux.Scribble_XDoG_Preprocessor'], meta?: ComfyNodeMetadata): Node['controlnet_aux.Scribble_XDoG_Preprocessor']
           /** displayName="Scribble PiDiNet Lines" category="ControlNet Preprocessors_Line Extractors" name="Scribble_PiDiNet_Preprocessor" output=[IMAGE] */
-         "controlnet_aux.Scribble_PiDiNet_Preprocessor"(p: IN['controlnet_aux.Scribble_PiDiNet_Preprocessor'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.Scribble_PiDiNet_Preprocessor']
+         "controlnet_aux.Scribble_PiDiNet_Preprocessor"(p: IN['controlnet_aux.Scribble_PiDiNet_Preprocessor'], meta?: ComfyNodeMetadata): Node['controlnet_aux.Scribble_PiDiNet_Preprocessor']
           /** displayName="Anime Lineart" category="ControlNet Preprocessors_Line Extractors" name="AnimeLineArtPreprocessor" output=[IMAGE] */
-         "controlnet_aux.AnimeLineArtPreprocessor"(p: IN['controlnet_aux.AnimeLineArtPreprocessor'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.AnimeLineArtPreprocessor']
+         "controlnet_aux.AnimeLineArtPreprocessor"(p: IN['controlnet_aux.AnimeLineArtPreprocessor'], meta?: ComfyNodeMetadata): Node['controlnet_aux.AnimeLineArtPreprocessor']
           /** displayName="Standard Lineart" category="ControlNet Preprocessors_Line Extractors" name="LineartStandardPreprocessor" output=[IMAGE] */
-         "controlnet_aux.LineartStandardPreprocessor"(p: IN['controlnet_aux.LineartStandardPreprocessor'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.LineartStandardPreprocessor']
+         "controlnet_aux.LineartStandardPreprocessor"(p: IN['controlnet_aux.LineartStandardPreprocessor'], meta?: ComfyNodeMetadata): Node['controlnet_aux.LineartStandardPreprocessor']
           /** displayName="Tile" category="ControlNet Preprocessors_tile" name="TilePreprocessor" output=[IMAGE] */
-         "controlnet_aux.TilePreprocessor"(p: IN['controlnet_aux.TilePreprocessor'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.TilePreprocessor']
+         "controlnet_aux.TilePreprocessor"(p: IN['controlnet_aux.TilePreprocessor'], meta?: ComfyNodeMetadata): Node['controlnet_aux.TilePreprocessor']
           /** displayName="TTPlanet Tile GuidedFilter" category="ControlNet Preprocessors_tile" name="TTPlanet_TileGF_Preprocessor" output=[IMAGE] */
-         "controlnet_aux.TTPlanet_TileGF_Preprocessor"(p: IN['controlnet_aux.TTPlanet_TileGF_Preprocessor'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.TTPlanet_TileGF_Preprocessor']
+         "controlnet_aux.TTPlanet_TileGF_Preprocessor"(p: IN['controlnet_aux.TTPlanet_TileGF_Preprocessor'], meta?: ComfyNodeMetadata): Node['controlnet_aux.TTPlanet_TileGF_Preprocessor']
           /** displayName="TTPlanet Tile Simple" category="ControlNet Preprocessors_tile" name="TTPlanet_TileSimple_Preprocessor" output=[IMAGE] */
-         "controlnet_aux.TTPlanet_TileSimple_Preprocessor"(p: IN['controlnet_aux.TTPlanet_TileSimple_Preprocessor'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.TTPlanet_TileSimple_Preprocessor']
+         "controlnet_aux.TTPlanet_TileSimple_Preprocessor"(p: IN['controlnet_aux.TTPlanet_TileSimple_Preprocessor'], meta?: ComfyNodeMetadata): Node['controlnet_aux.TTPlanet_TileSimple_Preprocessor']
           /** displayName="Color Pallete" category="ControlNet Preprocessors_T2IAdapter-only" name="ColorPreprocessor" output=[IMAGE] */
-         "controlnet_aux.ColorPreprocessor"(p: IN['controlnet_aux.ColorPreprocessor'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.ColorPreprocessor']
+         "controlnet_aux.ColorPreprocessor"(p: IN['controlnet_aux.ColorPreprocessor'], meta?: ComfyNodeMetadata): Node['controlnet_aux.ColorPreprocessor']
           /** displayName="AIO Aux Preprocessor" category="ControlNet Preprocessors" name="AIO_Preprocessor" output=[IMAGE] */
-         "controlnet_aux.AIO_Preprocessor"(p: IN['controlnet_aux.AIO_Preprocessor'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.AIO_Preprocessor']
+         "controlnet_aux.AIO_Preprocessor"(p: IN['controlnet_aux.AIO_Preprocessor'], meta?: ComfyNodeMetadata): Node['controlnet_aux.AIO_Preprocessor']
           /** displayName="Preprocessor Selector" category="ControlNet Preprocessors" name="ControlNetPreprocessorSelector" output=[preprocessor] */
-         "controlnet_aux.ControlNetPreprocessorSelector"(p: IN['controlnet_aux.ControlNetPreprocessorSelector'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.ControlNetPreprocessorSelector']
+         "controlnet_aux.ControlNetPreprocessorSelector"(p: IN['controlnet_aux.ControlNetPreprocessorSelector'], meta?: ComfyNodeMetadata): Node['controlnet_aux.ControlNetPreprocessorSelector']
           /** displayName="Pixel Perfect Resolution" category="ControlNet Preprocessors" name="PixelPerfectResolution" output=[RESOLUTION (INT)] */
-         "controlnet_aux.PixelPerfectResolution"(p: IN['controlnet_aux.PixelPerfectResolution'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.PixelPerfectResolution']
+         "controlnet_aux.PixelPerfectResolution"(p: IN['controlnet_aux.PixelPerfectResolution'], meta?: ComfyNodeMetadata): Node['controlnet_aux.PixelPerfectResolution']
           /** displayName="Generation Resolution From Image" category="ControlNet Preprocessors" name="ImageGenResolutionFromImage" output=[IMAGE_GEN_WIDTH (INT), IMAGE_GEN_HEIGHT (INT)] */
-         "controlnet_aux.ImageGenResolutionFromImage"(p: IN['controlnet_aux.ImageGenResolutionFromImage'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.ImageGenResolutionFromImage']
+         "controlnet_aux.ImageGenResolutionFromImage"(p: IN['controlnet_aux.ImageGenResolutionFromImage'], meta?: ComfyNodeMetadata): Node['controlnet_aux.ImageGenResolutionFromImage']
           /** displayName="Generation Resolution From Latent" category="ControlNet Preprocessors" name="ImageGenResolutionFromLatent" output=[IMAGE_GEN_WIDTH (INT), IMAGE_GEN_HEIGHT (INT)] */
-         "controlnet_aux.ImageGenResolutionFromLatent"(p: IN['controlnet_aux.ImageGenResolutionFromLatent'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.ImageGenResolutionFromLatent']
+         "controlnet_aux.ImageGenResolutionFromLatent"(p: IN['controlnet_aux.ImageGenResolutionFromLatent'], meta?: ComfyNodeMetadata): Node['controlnet_aux.ImageGenResolutionFromLatent']
           /** displayName="Enchance And Resize Hint Images" category="ControlNet Preprocessors" name="HintImageEnchance" output=[IMAGE] */
-         "controlnet_aux.HintImageEnchance"(p: IN['controlnet_aux.HintImageEnchance'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.HintImageEnchance']
+         "controlnet_aux.HintImageEnchance"(p: IN['controlnet_aux.HintImageEnchance'], meta?: ComfyNodeMetadata): Node['controlnet_aux.HintImageEnchance']
           /** displayName="Execute All ControlNet Preprocessors" category="ControlNet Preprocessors" name="ExecuteAllControlNetPreprocessors" output=[IMAGE] */
-         "controlnet_aux.ExecuteAllControlNetPreprocessors"(p: IN['controlnet_aux.ExecuteAllControlNetPreprocessors'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.ExecuteAllControlNetPreprocessors']
+         "controlnet_aux.ExecuteAllControlNetPreprocessors"(p: IN['controlnet_aux.ExecuteAllControlNetPreprocessors'], meta?: ComfyNodeMetadata): Node['controlnet_aux.ExecuteAllControlNetPreprocessors']
           /** displayName="ControlNetAuxSimpleAddText" category="ControlNet Preprocessors" name="ControlNetAuxSimpleAddText" output=[IMAGE] */
-         "controlnet_aux.ControlNetAuxSimpleAddText"(p: IN['controlnet_aux.ControlNetAuxSimpleAddText'], meta?: ComfyNodeMetadata): Nodes['controlnet_aux.ControlNetAuxSimpleAddText']
+         "controlnet_aux.ControlNetAuxSimpleAddText"(p: IN['controlnet_aux.ControlNetAuxSimpleAddText'], meta?: ComfyNodeMetadata): Node['controlnet_aux.ControlNetAuxSimpleAddText']
          /**
           * 
           * Diffusion-based monocular depth estimation:  
@@ -13004,7 +13004,7 @@ declare global {
           * 
           * displayName="MarigoldModelLoader" category="Marigold" name="MarigoldModelLoader" output=[marigold_model]
          **/
-         "Marigold.MarigoldModelLoader"(p: IN['Marigold.MarigoldModelLoader'], meta?: ComfyNodeMetadata): Nodes['Marigold.MarigoldModelLoader']
+         "Marigold.MarigoldModelLoader"(p: IN['Marigold.MarigoldModelLoader'], meta?: ComfyNodeMetadata): Node['Marigold.MarigoldModelLoader']
          /**
           * 
           * Diffusion-based monocular depth estimation:  
@@ -13014,7 +13014,7 @@ declare global {
           * 
           * displayName="MarigoldDepthEstimation_v2" category="Marigold" name="MarigoldDepthEstimation_v2" output=[image]
          **/
-         "Marigold.MarigoldDepthEstimation_v2"(p: IN['Marigold.MarigoldDepthEstimation_v2'], meta?: ComfyNodeMetadata): Nodes['Marigold.MarigoldDepthEstimation_v2']
+         "Marigold.MarigoldDepthEstimation_v2"(p: IN['Marigold.MarigoldDepthEstimation_v2'], meta?: ComfyNodeMetadata): Node['Marigold.MarigoldDepthEstimation_v2']
          /**
           * 
           * Diffusion-based monocular depth estimation:  
@@ -13026,7 +13026,7 @@ declare global {
           * 
           * displayName="MarigoldDepthEstimation_v2_video" category="Marigold" name="MarigoldDepthEstimation_v2_video" output=[image]
          **/
-         "Marigold.MarigoldDepthEstimation_v2_video"(p: IN['Marigold.MarigoldDepthEstimation_v2_video'], meta?: ComfyNodeMetadata): Nodes['Marigold.MarigoldDepthEstimation_v2_video']
+         "Marigold.MarigoldDepthEstimation_v2_video"(p: IN['Marigold.MarigoldDepthEstimation_v2_video'], meta?: ComfyNodeMetadata): Node['Marigold.MarigoldDepthEstimation_v2_video']
          /**
           * 
           * Diffusion-based monocular depth estimation:  
@@ -13048,7 +13048,7 @@ declare global {
           * 
           * displayName="MarigoldDepthEstimation" category="Marigold" name="MarigoldDepthEstimation" output=[ensembled_image]
          **/
-         "Marigold.MarigoldDepthEstimation"(p: IN['Marigold.MarigoldDepthEstimation'], meta?: ComfyNodeMetadata): Nodes['Marigold.MarigoldDepthEstimation']
+         "Marigold.MarigoldDepthEstimation"(p: IN['Marigold.MarigoldDepthEstimation'], meta?: ComfyNodeMetadata): Node['Marigold.MarigoldDepthEstimation']
          /**
           * 
           * Diffusion-based monocular depth estimation:  
@@ -13071,395 +13071,395 @@ declare global {
           * 
           * displayName="MarigoldDepthEstimationVideo" category="Marigold" name="MarigoldDepthEstimationVideo" output=[ensembled_image]
          **/
-         "Marigold.MarigoldDepthEstimationVideo"(p: IN['Marigold.MarigoldDepthEstimationVideo'], meta?: ComfyNodeMetadata): Nodes['Marigold.MarigoldDepthEstimationVideo']
+         "Marigold.MarigoldDepthEstimationVideo"(p: IN['Marigold.MarigoldDepthEstimationVideo'], meta?: ComfyNodeMetadata): Node['Marigold.MarigoldDepthEstimationVideo']
           /** displayName="Colorize Depthmap" category="Marigold" name="ColorizeDepthmap" output=[image] */
-         "Marigold.ColorizeDepthmap"(p: IN['Marigold.ColorizeDepthmap'], meta?: ComfyNodeMetadata): Nodes['Marigold.ColorizeDepthmap']
+         "Marigold.ColorizeDepthmap"(p: IN['Marigold.ColorizeDepthmap'], meta?: ComfyNodeMetadata): Node['Marigold.ColorizeDepthmap']
           /** displayName="SaveImageOpenEXR" category="Marigold" name="SaveImageOpenEXR" output=[file_url] */
-         "Marigold.SaveImageOpenEXR"(p: IN['Marigold.SaveImageOpenEXR'], meta?: ComfyNodeMetadata): Nodes['Marigold.SaveImageOpenEXR']
+         "Marigold.SaveImageOpenEXR"(p: IN['Marigold.SaveImageOpenEXR'], meta?: ComfyNodeMetadata): Node['Marigold.SaveImageOpenEXR']
           /** displayName="Remap Depth" category="Marigold" name="RemapDepth" output=[IMAGE] */
-         "Marigold.RemapDepth"(p: IN['Marigold.RemapDepth'], meta?: ComfyNodeMetadata): Nodes['Marigold.RemapDepth']
+         "Marigold.RemapDepth"(p: IN['Marigold.RemapDepth'], meta?: ComfyNodeMetadata): Node['Marigold.RemapDepth']
          /**
           * Load the SAM (Segment Anything) model. This can be used in places that utilize SAM detection functionality, such as SAMDetector or SimpleDetector.
           * The SAM detection functionality in Impact Pack must use the SAM_MODEL loaded through this node.
           * displayName="SAMLoader (Impact)" category="ImpactPack" name="SAMLoader" output=[SAM_MODEL]
          **/
-         "Impact_Pack.SAMLoader"(p: IN['Impact_Pack.SAMLoader'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.SAMLoader']
+         "Impact_Pack.SAMLoader"(p: IN['Impact_Pack.SAMLoader'], meta?: ComfyNodeMetadata): Node['Impact_Pack.SAMLoader']
          /**
           * Provides a detection function using CLIPSeg, which generates masks based on text prompts.
           * To use this node, the CLIPSeg custom node must be installed.
           * displayName="CLIPSegDetectorProvider" category="ImpactPack_Util" name="CLIPSegDetectorProvider" output=[BBOX_DETECTOR]
          **/
-         "Impact_Pack.CLIPSegDetectorProvider"(p: IN['Impact_Pack.CLIPSegDetectorProvider'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.CLIPSegDetectorProvider']
+         "Impact_Pack.CLIPSegDetectorProvider"(p: IN['Impact_Pack.CLIPSegDetectorProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.CLIPSegDetectorProvider']
           /** displayName="ONNXDetectorProvider" category="ImpactPack" name="ONNXDetectorProvider" output=[BBOX_DETECTOR] */
-         "Impact_Pack.ONNXDetectorProvider"(p: IN['Impact_Pack.ONNXDetectorProvider'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ONNXDetectorProvider']
+         "Impact_Pack.ONNXDetectorProvider"(p: IN['Impact_Pack.ONNXDetectorProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ONNXDetectorProvider']
          /**
           * Retains only the overlapping areas between the masks included in base_segs and the mask regions of mask_segs. SEGS with no overlapping mask areas are filtered out.
           * displayName="Pixelwise(SEGS & SEGS)" category="ImpactPack_Operation" name="BitwiseAndMaskForEach" output=[SEGS]
          **/
-         "Impact_Pack.BitwiseAndMaskForEach"(p: IN['Impact_Pack.BitwiseAndMaskForEach'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.BitwiseAndMaskForEach']
+         "Impact_Pack.BitwiseAndMaskForEach"(p: IN['Impact_Pack.BitwiseAndMaskForEach'], meta?: ComfyNodeMetadata): Node['Impact_Pack.BitwiseAndMaskForEach']
          /**
           * Removes only the overlapping areas between the masks included in base_segs and the mask regions of mask_segs. SEGS with no overlapping mask areas are filtered out.
           * displayName="Pixelwise(SEGS - SEGS)" category="ImpactPack_Operation" name="SubtractMaskForEach" output=[SEGS]
          **/
-         "Impact_Pack.SubtractMaskForEach"(p: IN['Impact_Pack.SubtractMaskForEach'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.SubtractMaskForEach']
+         "Impact_Pack.SubtractMaskForEach"(p: IN['Impact_Pack.SubtractMaskForEach'], meta?: ComfyNodeMetadata): Node['Impact_Pack.SubtractMaskForEach']
           /** displayName="Detailer (SEGS)" category="ImpactPack_Detailer" name="DetailerForEach" output=[IMAGE] */
-         "Impact_Pack.DetailerForEach"(p: IN['Impact_Pack.DetailerForEach'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.DetailerForEach']
+         "Impact_Pack.DetailerForEach"(p: IN['Impact_Pack.DetailerForEach'], meta?: ComfyNodeMetadata): Node['Impact_Pack.DetailerForEach']
           /** displayName="DetailerDebug (SEGS)" category="ImpactPack_Detailer" name="DetailerForEachDebug" output=[image, cropped, cropped_refined, cropped_refined_alpha, cnet_images] */
-         "Impact_Pack.DetailerForEachDebug"(p: IN['Impact_Pack.DetailerForEachDebug'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.DetailerForEachDebug']
+         "Impact_Pack.DetailerForEachDebug"(p: IN['Impact_Pack.DetailerForEachDebug'], meta?: ComfyNodeMetadata): Node['Impact_Pack.DetailerForEachDebug']
           /** displayName="Detailer (SEGS/pipe)" category="ImpactPack_Detailer" name="DetailerForEachPipe" output=[image, segs, basic_pipe, cnet_images] */
-         "Impact_Pack.DetailerForEachPipe"(p: IN['Impact_Pack.DetailerForEachPipe'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.DetailerForEachPipe']
+         "Impact_Pack.DetailerForEachPipe"(p: IN['Impact_Pack.DetailerForEachPipe'], meta?: ComfyNodeMetadata): Node['Impact_Pack.DetailerForEachPipe']
           /** displayName="DetailerDebug (SEGS/pipe)" category="ImpactPack_Detailer" name="DetailerForEachDebugPipe" output=[image, segs, basic_pipe, cropped, cropped_refined, cropped_refined_alpha, cnet_images] */
-         "Impact_Pack.DetailerForEachDebugPipe"(p: IN['Impact_Pack.DetailerForEachDebugPipe'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.DetailerForEachDebugPipe']
+         "Impact_Pack.DetailerForEachDebugPipe"(p: IN['Impact_Pack.DetailerForEachDebugPipe'], meta?: ComfyNodeMetadata): Node['Impact_Pack.DetailerForEachDebugPipe']
           /** displayName="Detailer For AnimateDiff (SEGS/pipe)" category="ImpactPack_Detailer" name="DetailerForEachPipeForAnimateDiff" output=[image, segs, basic_pipe, cnet_images] */
-         "Impact_Pack.DetailerForEachPipeForAnimateDiff"(p: IN['Impact_Pack.DetailerForEachPipeForAnimateDiff'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.DetailerForEachPipeForAnimateDiff']
+         "Impact_Pack.DetailerForEachPipeForAnimateDiff"(p: IN['Impact_Pack.DetailerForEachPipeForAnimateDiff'], meta?: ComfyNodeMetadata): Node['Impact_Pack.DetailerForEachPipeForAnimateDiff']
           /** displayName="SAMDetector (combined)" category="ImpactPack_Detector" name="SAMDetectorCombined" output=[MASK] */
-         "Impact_Pack.SAMDetectorCombined"(p: IN['Impact_Pack.SAMDetectorCombined'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.SAMDetectorCombined']
+         "Impact_Pack.SAMDetectorCombined"(p: IN['Impact_Pack.SAMDetectorCombined'], meta?: ComfyNodeMetadata): Node['Impact_Pack.SAMDetectorCombined']
           /** displayName="SAMDetector (segmented)" category="ImpactPack_Detector" name="SAMDetectorSegmented" output=[combined_mask, batch_masks] */
-         "Impact_Pack.SAMDetectorSegmented"(p: IN['Impact_Pack.SAMDetectorSegmented'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.SAMDetectorSegmented']
+         "Impact_Pack.SAMDetectorSegmented"(p: IN['Impact_Pack.SAMDetectorSegmented'], meta?: ComfyNodeMetadata): Node['Impact_Pack.SAMDetectorSegmented']
           /** displayName="FaceDetailer" category="ImpactPack_Simple" name="FaceDetailer" output=[image, cropped_refined, cropped_enhanced_alpha, mask, detailer_pipe, cnet_images] */
-         "Impact_Pack.FaceDetailer"(p: IN['Impact_Pack.FaceDetailer'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.FaceDetailer']
+         "Impact_Pack.FaceDetailer"(p: IN['Impact_Pack.FaceDetailer'], meta?: ComfyNodeMetadata): Node['Impact_Pack.FaceDetailer']
           /** displayName="FaceDetailer (pipe)" category="ImpactPack_Simple" name="FaceDetailerPipe" output=[image, cropped_refined, cropped_enhanced_alpha, mask, detailer_pipe, cnet_images] */
-         "Impact_Pack.FaceDetailerPipe"(p: IN['Impact_Pack.FaceDetailerPipe'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.FaceDetailerPipe']
+         "Impact_Pack.FaceDetailerPipe"(p: IN['Impact_Pack.FaceDetailerPipe'], meta?: ComfyNodeMetadata): Node['Impact_Pack.FaceDetailerPipe']
           /** displayName="MaskDetailer (pipe)" category="ImpactPack_Detailer" name="MaskDetailerPipe" output=[image, cropped_refined, cropped_enhanced_alpha, basic_pipe, refiner_basic_pipe_opt] */
-         "Impact_Pack.MaskDetailerPipe"(p: IN['Impact_Pack.MaskDetailerPipe'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.MaskDetailerPipe']
+         "Impact_Pack.MaskDetailerPipe"(p: IN['Impact_Pack.MaskDetailerPipe'], meta?: ComfyNodeMetadata): Node['Impact_Pack.MaskDetailerPipe']
           /** displayName="ToDetailerPipe" category="ImpactPack_Pipe" name="ToDetailerPipe" output=[detailer_pipe] */
-         "Impact_Pack.ToDetailerPipe"(p: IN['Impact_Pack.ToDetailerPipe'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ToDetailerPipe']
+         "Impact_Pack.ToDetailerPipe"(p: IN['Impact_Pack.ToDetailerPipe'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ToDetailerPipe']
           /** displayName="ToDetailerPipeSDXL" category="ImpactPack_Pipe" name="ToDetailerPipeSDXL" output=[detailer_pipe] */
-         "Impact_Pack.ToDetailerPipeSDXL"(p: IN['Impact_Pack.ToDetailerPipeSDXL'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ToDetailerPipeSDXL']
+         "Impact_Pack.ToDetailerPipeSDXL"(p: IN['Impact_Pack.ToDetailerPipeSDXL'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ToDetailerPipeSDXL']
           /** displayName="FromDetailerPipe" category="ImpactPack_Pipe" name="FromDetailerPipe" output=[model, clip, vae, positive, negative, bbox_detector, sam_model_opt, segm_detector_opt, detailer_hook] */
-         "Impact_Pack.FromDetailerPipe"(p: IN['Impact_Pack.FromDetailerPipe'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.FromDetailerPipe']
+         "Impact_Pack.FromDetailerPipe"(p: IN['Impact_Pack.FromDetailerPipe'], meta?: ComfyNodeMetadata): Node['Impact_Pack.FromDetailerPipe']
           /** displayName="FromDetailerPipe_v2" category="ImpactPack_Pipe" name="FromDetailerPipe_v2" output=[detailer_pipe, model, clip, vae, positive, negative, bbox_detector, sam_model_opt, segm_detector_opt, detailer_hook] */
-         "Impact_Pack.FromDetailerPipe_v2"(p: IN['Impact_Pack.FromDetailerPipe_v2'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.FromDetailerPipe_v2']
+         "Impact_Pack.FromDetailerPipe_v2"(p: IN['Impact_Pack.FromDetailerPipe_v2'], meta?: ComfyNodeMetadata): Node['Impact_Pack.FromDetailerPipe_v2']
           /** displayName="FromDetailer (SDXL/pipe)" category="ImpactPack_Pipe" name="FromDetailerPipeSDXL" output=[detailer_pipe, model, clip, vae, positive, negative, bbox_detector, sam_model_opt, segm_detector_opt, detailer_hook, refiner_model, refiner_clip, refiner_positive, refiner_negative] */
-         "Impact_Pack.FromDetailerPipeSDXL"(p: IN['Impact_Pack.FromDetailerPipeSDXL'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.FromDetailerPipeSDXL']
+         "Impact_Pack.FromDetailerPipeSDXL"(p: IN['Impact_Pack.FromDetailerPipeSDXL'], meta?: ComfyNodeMetadata): Node['Impact_Pack.FromDetailerPipeSDXL']
           /** displayName="Any PIPE -> BasicPipe" category="ImpactPack_Pipe" name="AnyPipeToBasic" output=[basic_pipe] */
-         "Impact_Pack.AnyPipeToBasic"(p: IN['Impact_Pack.AnyPipeToBasic'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.AnyPipeToBasic']
+         "Impact_Pack.AnyPipeToBasic"(p: IN['Impact_Pack.AnyPipeToBasic'], meta?: ComfyNodeMetadata): Node['Impact_Pack.AnyPipeToBasic']
           /** displayName="ToBasicPipe" category="ImpactPack_Pipe" name="ToBasicPipe" output=[basic_pipe] */
-         "Impact_Pack.ToBasicPipe"(p: IN['Impact_Pack.ToBasicPipe'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ToBasicPipe']
+         "Impact_Pack.ToBasicPipe"(p: IN['Impact_Pack.ToBasicPipe'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ToBasicPipe']
           /** displayName="FromBasicPipe" category="ImpactPack_Pipe" name="FromBasicPipe" output=[model, clip, vae, positive, negative] */
-         "Impact_Pack.FromBasicPipe"(p: IN['Impact_Pack.FromBasicPipe'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.FromBasicPipe']
+         "Impact_Pack.FromBasicPipe"(p: IN['Impact_Pack.FromBasicPipe'], meta?: ComfyNodeMetadata): Node['Impact_Pack.FromBasicPipe']
           /** displayName="FromBasicPipe_v2" category="ImpactPack_Pipe" name="FromBasicPipe_v2" output=[basic_pipe, model, clip, vae, positive, negative] */
-         "Impact_Pack.FromBasicPipe_v2"(p: IN['Impact_Pack.FromBasicPipe_v2'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.FromBasicPipe_v2']
+         "Impact_Pack.FromBasicPipe_v2"(p: IN['Impact_Pack.FromBasicPipe_v2'], meta?: ComfyNodeMetadata): Node['Impact_Pack.FromBasicPipe_v2']
           /** displayName="BasicPipe -> DetailerPipe" category="ImpactPack_Pipe" name="BasicPipeToDetailerPipe" output=[detailer_pipe] */
-         "Impact_Pack.BasicPipeToDetailerPipe"(p: IN['Impact_Pack.BasicPipeToDetailerPipe'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.BasicPipeToDetailerPipe']
+         "Impact_Pack.BasicPipeToDetailerPipe"(p: IN['Impact_Pack.BasicPipeToDetailerPipe'], meta?: ComfyNodeMetadata): Node['Impact_Pack.BasicPipeToDetailerPipe']
           /** displayName="BasicPipe -> DetailerPipe (SDXL)" category="ImpactPack_Pipe" name="BasicPipeToDetailerPipeSDXL" output=[detailer_pipe] */
-         "Impact_Pack.BasicPipeToDetailerPipeSDXL"(p: IN['Impact_Pack.BasicPipeToDetailerPipeSDXL'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.BasicPipeToDetailerPipeSDXL']
+         "Impact_Pack.BasicPipeToDetailerPipeSDXL"(p: IN['Impact_Pack.BasicPipeToDetailerPipeSDXL'], meta?: ComfyNodeMetadata): Node['Impact_Pack.BasicPipeToDetailerPipeSDXL']
           /** displayName="DetailerPipe -> BasicPipe" category="ImpactPack_Pipe" name="DetailerPipeToBasicPipe" output=[base_basic_pipe, refiner_basic_pipe] */
-         "Impact_Pack.DetailerPipeToBasicPipe"(p: IN['Impact_Pack.DetailerPipeToBasicPipe'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.DetailerPipeToBasicPipe']
+         "Impact_Pack.DetailerPipeToBasicPipe"(p: IN['Impact_Pack.DetailerPipeToBasicPipe'], meta?: ComfyNodeMetadata): Node['Impact_Pack.DetailerPipeToBasicPipe']
           /** displayName="Edit BasicPipe" category="ImpactPack_Pipe" name="EditBasicPipe" output=[basic_pipe] */
-         "Impact_Pack.EditBasicPipe"(p: IN['Impact_Pack.EditBasicPipe'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.EditBasicPipe']
+         "Impact_Pack.EditBasicPipe"(p: IN['Impact_Pack.EditBasicPipe'], meta?: ComfyNodeMetadata): Node['Impact_Pack.EditBasicPipe']
           /** displayName="Edit DetailerPipe" category="ImpactPack_Pipe" name="EditDetailerPipe" output=[detailer_pipe] */
-         "Impact_Pack.EditDetailerPipe"(p: IN['Impact_Pack.EditDetailerPipe'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.EditDetailerPipe']
+         "Impact_Pack.EditDetailerPipe"(p: IN['Impact_Pack.EditDetailerPipe'], meta?: ComfyNodeMetadata): Node['Impact_Pack.EditDetailerPipe']
           /** displayName="Edit DetailerPipe (SDXL)" category="ImpactPack_Pipe" name="EditDetailerPipeSDXL" output=[detailer_pipe] */
-         "Impact_Pack.EditDetailerPipeSDXL"(p: IN['Impact_Pack.EditDetailerPipeSDXL'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.EditDetailerPipeSDXL']
+         "Impact_Pack.EditDetailerPipeSDXL"(p: IN['Impact_Pack.EditDetailerPipeSDXL'], meta?: ComfyNodeMetadata): Node['Impact_Pack.EditDetailerPipeSDXL']
           /** displayName="Latent Scale (on Pixel Space)" category="ImpactPack_Upscale" name="LatentPixelScale" output=[LATENT, IMAGE] */
-         "Impact_Pack.LatentPixelScale"(p: IN['Impact_Pack.LatentPixelScale'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.LatentPixelScale']
+         "Impact_Pack.LatentPixelScale"(p: IN['Impact_Pack.LatentPixelScale'], meta?: ComfyNodeMetadata): Node['Impact_Pack.LatentPixelScale']
           /** displayName="PixelKSampleUpscalerProvider" category="ImpactPack_Upscale" name="PixelKSampleUpscalerProvider" output=[UPSCALER] */
-         "Impact_Pack.PixelKSampleUpscalerProvider"(p: IN['Impact_Pack.PixelKSampleUpscalerProvider'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.PixelKSampleUpscalerProvider']
+         "Impact_Pack.PixelKSampleUpscalerProvider"(p: IN['Impact_Pack.PixelKSampleUpscalerProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.PixelKSampleUpscalerProvider']
           /** displayName="PixelKSampleUpscalerProviderPipe" category="ImpactPack_Upscale" name="PixelKSampleUpscalerProviderPipe" output=[UPSCALER] */
-         "Impact_Pack.PixelKSampleUpscalerProviderPipe"(p: IN['Impact_Pack.PixelKSampleUpscalerProviderPipe'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.PixelKSampleUpscalerProviderPipe']
+         "Impact_Pack.PixelKSampleUpscalerProviderPipe"(p: IN['Impact_Pack.PixelKSampleUpscalerProviderPipe'], meta?: ComfyNodeMetadata): Node['Impact_Pack.PixelKSampleUpscalerProviderPipe']
           /** displayName="Iterative Upscale (Latent/on Pixel Space)" category="ImpactPack_Upscale" name="IterativeLatentUpscale" output=[latent, vae] */
-         "Impact_Pack.IterativeLatentUpscale"(p: IN['Impact_Pack.IterativeLatentUpscale'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.IterativeLatentUpscale']
+         "Impact_Pack.IterativeLatentUpscale"(p: IN['Impact_Pack.IterativeLatentUpscale'], meta?: ComfyNodeMetadata): Node['Impact_Pack.IterativeLatentUpscale']
           /** displayName="Iterative Upscale (Image)" category="ImpactPack_Upscale" name="IterativeImageUpscale" output=[image] */
-         "Impact_Pack.IterativeImageUpscale"(p: IN['Impact_Pack.IterativeImageUpscale'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.IterativeImageUpscale']
+         "Impact_Pack.IterativeImageUpscale"(p: IN['Impact_Pack.IterativeImageUpscale'], meta?: ComfyNodeMetadata): Node['Impact_Pack.IterativeImageUpscale']
           /** displayName="PixelTiledKSampleUpscalerProvider" category="ImpactPack_Upscale" name="PixelTiledKSampleUpscalerProvider" output=[UPSCALER] */
-         "Impact_Pack.PixelTiledKSampleUpscalerProvider"(p: IN['Impact_Pack.PixelTiledKSampleUpscalerProvider'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.PixelTiledKSampleUpscalerProvider']
+         "Impact_Pack.PixelTiledKSampleUpscalerProvider"(p: IN['Impact_Pack.PixelTiledKSampleUpscalerProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.PixelTiledKSampleUpscalerProvider']
           /** displayName="PixelTiledKSampleUpscalerProviderPipe" category="ImpactPack_Upscale" name="PixelTiledKSampleUpscalerProviderPipe" output=[UPSCALER] */
-         "Impact_Pack.PixelTiledKSampleUpscalerProviderPipe"(p: IN['Impact_Pack.PixelTiledKSampleUpscalerProviderPipe'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.PixelTiledKSampleUpscalerProviderPipe']
+         "Impact_Pack.PixelTiledKSampleUpscalerProviderPipe"(p: IN['Impact_Pack.PixelTiledKSampleUpscalerProviderPipe'], meta?: ComfyNodeMetadata): Node['Impact_Pack.PixelTiledKSampleUpscalerProviderPipe']
           /** displayName="TwoSamplersForMask Upscaler Provider" category="ImpactPack_Upscale" name="TwoSamplersForMaskUpscalerProvider" output=[UPSCALER] */
-         "Impact_Pack.TwoSamplersForMaskUpscalerProvider"(p: IN['Impact_Pack.TwoSamplersForMaskUpscalerProvider'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.TwoSamplersForMaskUpscalerProvider']
+         "Impact_Pack.TwoSamplersForMaskUpscalerProvider"(p: IN['Impact_Pack.TwoSamplersForMaskUpscalerProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.TwoSamplersForMaskUpscalerProvider']
           /** displayName="TwoSamplersForMask Upscaler Provider (pipe)" category="ImpactPack_Upscale" name="TwoSamplersForMaskUpscalerProviderPipe" output=[UPSCALER] */
-         "Impact_Pack.TwoSamplersForMaskUpscalerProviderPipe"(p: IN['Impact_Pack.TwoSamplersForMaskUpscalerProviderPipe'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.TwoSamplersForMaskUpscalerProviderPipe']
+         "Impact_Pack.TwoSamplersForMaskUpscalerProviderPipe"(p: IN['Impact_Pack.TwoSamplersForMaskUpscalerProviderPipe'], meta?: ComfyNodeMetadata): Node['Impact_Pack.TwoSamplersForMaskUpscalerProviderPipe']
           /** displayName="PixelKSampleHookCombine" category="ImpactPack_Upscale" name="PixelKSampleHookCombine" output=[PK_HOOK] */
-         "Impact_Pack.PixelKSampleHookCombine"(p: IN['Impact_Pack.PixelKSampleHookCombine'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.PixelKSampleHookCombine']
+         "Impact_Pack.PixelKSampleHookCombine"(p: IN['Impact_Pack.PixelKSampleHookCombine'], meta?: ComfyNodeMetadata): Node['Impact_Pack.PixelKSampleHookCombine']
           /** displayName="DenoiseScheduleHookProvider" category="ImpactPack_Upscale" name="DenoiseScheduleHookProvider" output=[PK_HOOK] */
-         "Impact_Pack.DenoiseScheduleHookProvider"(p: IN['Impact_Pack.DenoiseScheduleHookProvider'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.DenoiseScheduleHookProvider']
+         "Impact_Pack.DenoiseScheduleHookProvider"(p: IN['Impact_Pack.DenoiseScheduleHookProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.DenoiseScheduleHookProvider']
           /** displayName="StepsScheduleHookProvider" category="ImpactPack_Upscale" name="StepsScheduleHookProvider" output=[PK_HOOK] */
-         "Impact_Pack.StepsScheduleHookProvider"(p: IN['Impact_Pack.StepsScheduleHookProvider'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.StepsScheduleHookProvider']
+         "Impact_Pack.StepsScheduleHookProvider"(p: IN['Impact_Pack.StepsScheduleHookProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.StepsScheduleHookProvider']
           /** displayName="CfgScheduleHookProvider" category="ImpactPack_Upscale" name="CfgScheduleHookProvider" output=[PK_HOOK] */
-         "Impact_Pack.CfgScheduleHookProvider"(p: IN['Impact_Pack.CfgScheduleHookProvider'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.CfgScheduleHookProvider']
+         "Impact_Pack.CfgScheduleHookProvider"(p: IN['Impact_Pack.CfgScheduleHookProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.CfgScheduleHookProvider']
           /** displayName="NoiseInjectionHookProvider" category="ImpactPack_Upscale" name="NoiseInjectionHookProvider" output=[PK_HOOK] */
-         "Impact_Pack.NoiseInjectionHookProvider"(p: IN['Impact_Pack.NoiseInjectionHookProvider'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.NoiseInjectionHookProvider']
+         "Impact_Pack.NoiseInjectionHookProvider"(p: IN['Impact_Pack.NoiseInjectionHookProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.NoiseInjectionHookProvider']
           /** displayName="UnsamplerHookProvider" category="ImpactPack_Upscale" name="UnsamplerHookProvider" output=[PK_HOOK] */
-         "Impact_Pack.UnsamplerHookProvider"(p: IN['Impact_Pack.UnsamplerHookProvider'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.UnsamplerHookProvider']
+         "Impact_Pack.UnsamplerHookProvider"(p: IN['Impact_Pack.UnsamplerHookProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.UnsamplerHookProvider']
           /** displayName="CoreMLDetailerHookProvider" category="ImpactPack_Detailer" name="CoreMLDetailerHookProvider" output=[DETAILER_HOOK] */
-         "Impact_Pack.CoreMLDetailerHookProvider"(p: IN['Impact_Pack.CoreMLDetailerHookProvider'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.CoreMLDetailerHookProvider']
+         "Impact_Pack.CoreMLDetailerHookProvider"(p: IN['Impact_Pack.CoreMLDetailerHookProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.CoreMLDetailerHookProvider']
           /** displayName="PreviewDetailerHookProvider" category="ImpactPack_Util" name="PreviewDetailerHookProvider" output=[DETAILER_HOOK, UPSCALER_HOOK] */
-         "Impact_Pack.PreviewDetailerHookProvider"(p: IN['Impact_Pack.PreviewDetailerHookProvider'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.PreviewDetailerHookProvider']
+         "Impact_Pack.PreviewDetailerHookProvider"(p: IN['Impact_Pack.PreviewDetailerHookProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.PreviewDetailerHookProvider']
           /** displayName="DetailerHookCombine" category="ImpactPack_Upscale" name="DetailerHookCombine" output=[DETAILER_HOOK] */
-         "Impact_Pack.DetailerHookCombine"(p: IN['Impact_Pack.DetailerHookCombine'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.DetailerHookCombine']
+         "Impact_Pack.DetailerHookCombine"(p: IN['Impact_Pack.DetailerHookCombine'], meta?: ComfyNodeMetadata): Node['Impact_Pack.DetailerHookCombine']
           /** displayName="NoiseInjectionDetailerHookProvider" category="ImpactPack_Detailer" name="NoiseInjectionDetailerHookProvider" output=[DETAILER_HOOK] */
-         "Impact_Pack.NoiseInjectionDetailerHookProvider"(p: IN['Impact_Pack.NoiseInjectionDetailerHookProvider'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.NoiseInjectionDetailerHookProvider']
+         "Impact_Pack.NoiseInjectionDetailerHookProvider"(p: IN['Impact_Pack.NoiseInjectionDetailerHookProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.NoiseInjectionDetailerHookProvider']
           /** displayName="UnsamplerDetailerHookProvider" category="ImpactPack_Detailer" name="UnsamplerDetailerHookProvider" output=[DETAILER_HOOK] */
-         "Impact_Pack.UnsamplerDetailerHookProvider"(p: IN['Impact_Pack.UnsamplerDetailerHookProvider'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.UnsamplerDetailerHookProvider']
+         "Impact_Pack.UnsamplerDetailerHookProvider"(p: IN['Impact_Pack.UnsamplerDetailerHookProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.UnsamplerDetailerHookProvider']
           /** displayName="DenoiseSchedulerDetailerHookProvider" category="ImpactPack_Detailer" name="DenoiseSchedulerDetailerHookProvider" output=[DETAILER_HOOK] */
-         "Impact_Pack.DenoiseSchedulerDetailerHookProvider"(p: IN['Impact_Pack.DenoiseSchedulerDetailerHookProvider'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.DenoiseSchedulerDetailerHookProvider']
+         "Impact_Pack.DenoiseSchedulerDetailerHookProvider"(p: IN['Impact_Pack.DenoiseSchedulerDetailerHookProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.DenoiseSchedulerDetailerHookProvider']
           /** displayName="SEGSOrderedFilterDetailerHookProvider" category="ImpactPack_Util" name="SEGSOrderedFilterDetailerHookProvider" output=[DETAILER_HOOK] */
-         "Impact_Pack.SEGSOrderedFilterDetailerHookProvider"(p: IN['Impact_Pack.SEGSOrderedFilterDetailerHookProvider'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.SEGSOrderedFilterDetailerHookProvider']
+         "Impact_Pack.SEGSOrderedFilterDetailerHookProvider"(p: IN['Impact_Pack.SEGSOrderedFilterDetailerHookProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.SEGSOrderedFilterDetailerHookProvider']
           /** displayName="SEGSRangeFilterDetailerHookProvider" category="ImpactPack_Util" name="SEGSRangeFilterDetailerHookProvider" output=[DETAILER_HOOK] */
-         "Impact_Pack.SEGSRangeFilterDetailerHookProvider"(p: IN['Impact_Pack.SEGSRangeFilterDetailerHookProvider'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.SEGSRangeFilterDetailerHookProvider']
+         "Impact_Pack.SEGSRangeFilterDetailerHookProvider"(p: IN['Impact_Pack.SEGSRangeFilterDetailerHookProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.SEGSRangeFilterDetailerHookProvider']
           /** displayName="SEGSLabelFilterDetailerHookProvider" category="ImpactPack_Util" name="SEGSLabelFilterDetailerHookProvider" output=[DETAILER_HOOK] */
-         "Impact_Pack.SEGSLabelFilterDetailerHookProvider"(p: IN['Impact_Pack.SEGSLabelFilterDetailerHookProvider'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.SEGSLabelFilterDetailerHookProvider']
+         "Impact_Pack.SEGSLabelFilterDetailerHookProvider"(p: IN['Impact_Pack.SEGSLabelFilterDetailerHookProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.SEGSLabelFilterDetailerHookProvider']
           /** displayName="VariationNoiseDetailerHookProvider" category="ImpactPack_Detailer" name="VariationNoiseDetailerHookProvider" output=[DETAILER_HOOK] */
-         "Impact_Pack.VariationNoiseDetailerHookProvider"(p: IN['Impact_Pack.VariationNoiseDetailerHookProvider'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.VariationNoiseDetailerHookProvider']
+         "Impact_Pack.VariationNoiseDetailerHookProvider"(p: IN['Impact_Pack.VariationNoiseDetailerHookProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.VariationNoiseDetailerHookProvider']
           /** displayName="Pixelwise(MASK & MASK)" category="ImpactPack_Operation" name="BitwiseAndMask" output=[MASK] */
-         "Impact_Pack.BitwiseAndMask"(p: IN['Impact_Pack.BitwiseAndMask'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.BitwiseAndMask']
+         "Impact_Pack.BitwiseAndMask"(p: IN['Impact_Pack.BitwiseAndMask'], meta?: ComfyNodeMetadata): Node['Impact_Pack.BitwiseAndMask']
           /** displayName="Pixelwise(MASK - MASK)" category="ImpactPack_Operation" name="SubtractMask" output=[MASK] */
-         "Impact_Pack.SubtractMask"(p: IN['Impact_Pack.SubtractMask'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.SubtractMask']
+         "Impact_Pack.SubtractMask"(p: IN['Impact_Pack.SubtractMask'], meta?: ComfyNodeMetadata): Node['Impact_Pack.SubtractMask']
           /** displayName="Pixelwise(MASK + MASK)" category="ImpactPack_Operation" name="AddMask" output=[MASK] */
-         "Impact_Pack.AddMask"(p: IN['Impact_Pack.AddMask'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.AddMask']
+         "Impact_Pack.AddMask"(p: IN['Impact_Pack.AddMask'], meta?: ComfyNodeMetadata): Node['Impact_Pack.AddMask']
           /** displayName="Pixelwise(SEGS & MASK)" category="ImpactPack_Operation" name="ImpactSegsAndMask" output=[SEGS] */
-         "Impact_Pack.ImpactSegsAndMask"(p: IN['Impact_Pack.ImpactSegsAndMask'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactSegsAndMask']
+         "Impact_Pack.ImpactSegsAndMask"(p: IN['Impact_Pack.ImpactSegsAndMask'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactSegsAndMask']
           /** displayName="Pixelwise(SEGS & MASKS ForEach)" category="ImpactPack_Operation" name="ImpactSegsAndMaskForEach" output=[SEGS] */
-         "Impact_Pack.ImpactSegsAndMaskForEach"(p: IN['Impact_Pack.ImpactSegsAndMaskForEach'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactSegsAndMaskForEach']
+         "Impact_Pack.ImpactSegsAndMaskForEach"(p: IN['Impact_Pack.ImpactSegsAndMaskForEach'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactSegsAndMaskForEach']
           /** displayName="EmptySegs" category="ImpactPack_Util" name="EmptySegs" output=[SEGS] */
-         "Impact_Pack.EmptySegs"(p: IN['Impact_Pack.EmptySegs'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.EmptySegs']
+         "Impact_Pack.EmptySegs"(p: IN['Impact_Pack.EmptySegs'], meta?: ComfyNodeMetadata): Node['Impact_Pack.EmptySegs']
           /** displayName="Flatten Mask Batch" category="ImpactPack_Operation" name="ImpactFlattenMask" output=[MASK] */
-         "Impact_Pack.ImpactFlattenMask"(p: IN['Impact_Pack.ImpactFlattenMask'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactFlattenMask']
+         "Impact_Pack.ImpactFlattenMask"(p: IN['Impact_Pack.ImpactFlattenMask'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactFlattenMask']
           /** displayName="MediaPipe FaceMesh to SEGS" category="ImpactPack_Operation" name="MediaPipeFaceMeshToSEGS" output=[SEGS] */
-         "Impact_Pack.MediaPipeFaceMeshToSEGS"(p: IN['Impact_Pack.MediaPipeFaceMeshToSEGS'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.MediaPipeFaceMeshToSEGS']
+         "Impact_Pack.MediaPipeFaceMeshToSEGS"(p: IN['Impact_Pack.MediaPipeFaceMeshToSEGS'], meta?: ComfyNodeMetadata): Node['Impact_Pack.MediaPipeFaceMeshToSEGS']
           /** displayName="MASK to SEGS" category="ImpactPack_Operation" name="MaskToSEGS" output=[SEGS] */
-         "Impact_Pack.MaskToSEGS"(p: IN['Impact_Pack.MaskToSEGS'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.MaskToSEGS']
+         "Impact_Pack.MaskToSEGS"(p: IN['Impact_Pack.MaskToSEGS'], meta?: ComfyNodeMetadata): Node['Impact_Pack.MaskToSEGS']
           /** displayName="MASK to SEGS for AnimateDiff" category="ImpactPack_Operation" name="MaskToSEGS_for_AnimateDiff" output=[SEGS] */
-         "Impact_Pack.MaskToSEGS_for_AnimateDiff"(p: IN['Impact_Pack.MaskToSEGS_for_AnimateDiff'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.MaskToSEGS_for_AnimateDiff']
+         "Impact_Pack.MaskToSEGS_for_AnimateDiff"(p: IN['Impact_Pack.MaskToSEGS_for_AnimateDiff'], meta?: ComfyNodeMetadata): Node['Impact_Pack.MaskToSEGS_for_AnimateDiff']
           /** displayName="ToBinaryMask" category="ImpactPack_Operation" name="ToBinaryMask" output=[MASK] */
-         "Impact_Pack.ToBinaryMask"(p: IN['Impact_Pack.ToBinaryMask'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ToBinaryMask']
+         "Impact_Pack.ToBinaryMask"(p: IN['Impact_Pack.ToBinaryMask'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ToBinaryMask']
           /** displayName="Mask Batch to Mask List" category="ImpactPack_Operation" name="MasksToMaskList" output=[MASK] */
-         "Impact_Pack.MasksToMaskList"(p: IN['Impact_Pack.MasksToMaskList'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.MasksToMaskList']
+         "Impact_Pack.MasksToMaskList"(p: IN['Impact_Pack.MasksToMaskList'], meta?: ComfyNodeMetadata): Node['Impact_Pack.MasksToMaskList']
           /** displayName="Mask List to Mask Batch" category="ImpactPack_Operation" name="MaskListToMaskBatch" output=[MASK] */
-         "Impact_Pack.MaskListToMaskBatch"(p: IN['Impact_Pack.MaskListToMaskBatch'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.MaskListToMaskBatch']
+         "Impact_Pack.MaskListToMaskBatch"(p: IN['Impact_Pack.MaskListToMaskBatch'], meta?: ComfyNodeMetadata): Node['Impact_Pack.MaskListToMaskBatch']
           /** displayName="Image List to Image Batch" category="ImpactPack_Operation" name="ImageListToImageBatch" output=[IMAGE] */
-         "Impact_Pack.ImageListToImageBatch"(p: IN['Impact_Pack.ImageListToImageBatch'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImageListToImageBatch']
+         "Impact_Pack.ImageListToImageBatch"(p: IN['Impact_Pack.ImageListToImageBatch'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImageListToImageBatch']
           /** displayName="Set Default Image for SEGS" category="ImpactPack_Util" name="SetDefaultImageForSEGS" output=[SEGS] */
-         "Impact_Pack.SetDefaultImageForSEGS"(p: IN['Impact_Pack.SetDefaultImageForSEGS'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.SetDefaultImageForSEGS']
+         "Impact_Pack.SetDefaultImageForSEGS"(p: IN['Impact_Pack.SetDefaultImageForSEGS'], meta?: ComfyNodeMetadata): Node['Impact_Pack.SetDefaultImageForSEGS']
           /** displayName="Remove Image from SEGS" category="ImpactPack_Util" name="RemoveImageFromSEGS" output=[SEGS] */
-         "Impact_Pack.RemoveImageFromSEGS"(p: IN['Impact_Pack.RemoveImageFromSEGS'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.RemoveImageFromSEGS']
+         "Impact_Pack.RemoveImageFromSEGS"(p: IN['Impact_Pack.RemoveImageFromSEGS'], meta?: ComfyNodeMetadata): Node['Impact_Pack.RemoveImageFromSEGS']
           /** displayName="BBOX Detector (SEGS)" category="ImpactPack_Detector" name="BboxDetectorSEGS" output=[SEGS] */
-         "Impact_Pack.BboxDetectorSEGS"(p: IN['Impact_Pack.BboxDetectorSEGS'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.BboxDetectorSEGS']
+         "Impact_Pack.BboxDetectorSEGS"(p: IN['Impact_Pack.BboxDetectorSEGS'], meta?: ComfyNodeMetadata): Node['Impact_Pack.BboxDetectorSEGS']
           /** displayName="SEGM Detector (SEGS)" category="ImpactPack_Detector" name="SegmDetectorSEGS" output=[SEGS] */
-         "Impact_Pack.SegmDetectorSEGS"(p: IN['Impact_Pack.SegmDetectorSEGS'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.SegmDetectorSEGS']
+         "Impact_Pack.SegmDetectorSEGS"(p: IN['Impact_Pack.SegmDetectorSEGS'], meta?: ComfyNodeMetadata): Node['Impact_Pack.SegmDetectorSEGS']
           /** displayName="ONNX Detector (SEGS/legacy) - use BBOXDetector" category="ImpactPack_Detector" name="ONNXDetectorSEGS" output=[SEGS] */
-         "Impact_Pack.ONNXDetectorSEGS"(p: IN['Impact_Pack.ONNXDetectorSEGS'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ONNXDetectorSEGS']
+         "Impact_Pack.ONNXDetectorSEGS"(p: IN['Impact_Pack.ONNXDetectorSEGS'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ONNXDetectorSEGS']
           /** displayName="Simple Detector for AnimateDiff (SEGS)" category="ImpactPack_Detector" name="ImpactSimpleDetectorSEGS_for_AD" output=[SEGS] */
-         "Impact_Pack.ImpactSimpleDetectorSEGS_for_AD"(p: IN['Impact_Pack.ImpactSimpleDetectorSEGS_for_AD'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactSimpleDetectorSEGS_for_AD']
+         "Impact_Pack.ImpactSimpleDetectorSEGS_for_AD"(p: IN['Impact_Pack.ImpactSimpleDetectorSEGS_for_AD'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactSimpleDetectorSEGS_for_AD']
           /** displayName="Simple Detector (SEGS)" category="ImpactPack_Detector" name="ImpactSimpleDetectorSEGS" output=[SEGS] */
-         "Impact_Pack.ImpactSimpleDetectorSEGS"(p: IN['Impact_Pack.ImpactSimpleDetectorSEGS'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactSimpleDetectorSEGS']
+         "Impact_Pack.ImpactSimpleDetectorSEGS"(p: IN['Impact_Pack.ImpactSimpleDetectorSEGS'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactSimpleDetectorSEGS']
           /** displayName="Simple Detector (SEGS/pipe)" category="ImpactPack_Detector" name="ImpactSimpleDetectorSEGSPipe" output=[SEGS] */
-         "Impact_Pack.ImpactSimpleDetectorSEGSPipe"(p: IN['Impact_Pack.ImpactSimpleDetectorSEGSPipe'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactSimpleDetectorSEGSPipe']
+         "Impact_Pack.ImpactSimpleDetectorSEGSPipe"(p: IN['Impact_Pack.ImpactSimpleDetectorSEGSPipe'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactSimpleDetectorSEGSPipe']
           /** displayName="ControlNetApply (SEGS) - DEPRECATED" category="ImpactPack_Util" name="ImpactControlNetApplySEGS" output=[SEGS] */
-         "Impact_Pack.ImpactControlNetApplySEGS"(p: IN['Impact_Pack.ImpactControlNetApplySEGS'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactControlNetApplySEGS']
+         "Impact_Pack.ImpactControlNetApplySEGS"(p: IN['Impact_Pack.ImpactControlNetApplySEGS'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactControlNetApplySEGS']
           /** displayName="ControlNetApply (SEGS)" category="ImpactPack_Util" name="ImpactControlNetApplyAdvancedSEGS" output=[SEGS] */
-         "Impact_Pack.ImpactControlNetApplyAdvancedSEGS"(p: IN['Impact_Pack.ImpactControlNetApplyAdvancedSEGS'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactControlNetApplyAdvancedSEGS']
+         "Impact_Pack.ImpactControlNetApplyAdvancedSEGS"(p: IN['Impact_Pack.ImpactControlNetApplyAdvancedSEGS'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactControlNetApplyAdvancedSEGS']
           /** displayName="ImpactControlNetClearSEGS" category="ImpactPack_Util" name="ImpactControlNetClearSEGS" output=[SEGS] */
-         "Impact_Pack.ImpactControlNetClearSEGS"(p: IN['Impact_Pack.ImpactControlNetClearSEGS'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactControlNetClearSEGS']
+         "Impact_Pack.ImpactControlNetClearSEGS"(p: IN['Impact_Pack.ImpactControlNetClearSEGS'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactControlNetClearSEGS']
           /** displayName="IPAdapterApply (SEGS)" category="ImpactPack_Util" name="ImpactIPAdapterApplySEGS" output=[SEGS] */
-         "Impact_Pack.ImpactIPAdapterApplySEGS"(p: IN['Impact_Pack.ImpactIPAdapterApplySEGS'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactIPAdapterApplySEGS']
+         "Impact_Pack.ImpactIPAdapterApplySEGS"(p: IN['Impact_Pack.ImpactIPAdapterApplySEGS'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactIPAdapterApplySEGS']
           /** displayName="Decompose (SEGS)" category="ImpactPack_Util" name="ImpactDecomposeSEGS" output=[SEGS_HEADER, SEG_ELT] */
-         "Impact_Pack.ImpactDecomposeSEGS"(p: IN['Impact_Pack.ImpactDecomposeSEGS'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactDecomposeSEGS']
+         "Impact_Pack.ImpactDecomposeSEGS"(p: IN['Impact_Pack.ImpactDecomposeSEGS'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactDecomposeSEGS']
           /** displayName="Assemble (SEGS)" category="ImpactPack_Util" name="ImpactAssembleSEGS" output=[SEGS] */
-         "Impact_Pack.ImpactAssembleSEGS"(p: IN['Impact_Pack.ImpactAssembleSEGS'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactAssembleSEGS']
+         "Impact_Pack.ImpactAssembleSEGS"(p: IN['Impact_Pack.ImpactAssembleSEGS'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactAssembleSEGS']
           /** displayName="From SEG_ELT" category="ImpactPack_Util" name="ImpactFrom_SEG_ELT" output=[seg_elt, cropped_image, cropped_mask, crop_region, bbox, control_net_wrapper, confidence, label] */
-         "Impact_Pack.ImpactFrom_SEG_ELT"(p: IN['Impact_Pack.ImpactFrom_SEG_ELT'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactFrom_SEG_ELT']
+         "Impact_Pack.ImpactFrom_SEG_ELT"(p: IN['Impact_Pack.ImpactFrom_SEG_ELT'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactFrom_SEG_ELT']
           /** displayName="Edit SEG_ELT" category="ImpactPack_Util" name="ImpactEdit_SEG_ELT" output=[SEG_ELT] */
-         "Impact_Pack.ImpactEdit_SEG_ELT"(p: IN['Impact_Pack.ImpactEdit_SEG_ELT'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactEdit_SEG_ELT']
+         "Impact_Pack.ImpactEdit_SEG_ELT"(p: IN['Impact_Pack.ImpactEdit_SEG_ELT'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactEdit_SEG_ELT']
           /** displayName="Dilate Mask (SEG_ELT)" category="ImpactPack_Util" name="ImpactDilate_Mask_SEG_ELT" output=[SEG_ELT] */
-         "Impact_Pack.ImpactDilate_Mask_SEG_ELT"(p: IN['Impact_Pack.ImpactDilate_Mask_SEG_ELT'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactDilate_Mask_SEG_ELT']
+         "Impact_Pack.ImpactDilate_Mask_SEG_ELT"(p: IN['Impact_Pack.ImpactDilate_Mask_SEG_ELT'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactDilate_Mask_SEG_ELT']
           /** displayName="Dilate Mask" category="ImpactPack_Util" name="ImpactDilateMask" output=[MASK] */
-         "Impact_Pack.ImpactDilateMask"(p: IN['Impact_Pack.ImpactDilateMask'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactDilateMask']
+         "Impact_Pack.ImpactDilateMask"(p: IN['Impact_Pack.ImpactDilateMask'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactDilateMask']
           /** displayName="Gaussian Blur Mask" category="ImpactPack_Util" name="ImpactGaussianBlurMask" output=[MASK] */
-         "Impact_Pack.ImpactGaussianBlurMask"(p: IN['Impact_Pack.ImpactGaussianBlurMask'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactGaussianBlurMask']
+         "Impact_Pack.ImpactGaussianBlurMask"(p: IN['Impact_Pack.ImpactGaussianBlurMask'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactGaussianBlurMask']
           /** displayName="Dilate Mask (SEGS)" category="ImpactPack_Util" name="ImpactDilateMaskInSEGS" output=[SEGS] */
-         "Impact_Pack.ImpactDilateMaskInSEGS"(p: IN['Impact_Pack.ImpactDilateMaskInSEGS'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactDilateMaskInSEGS']
+         "Impact_Pack.ImpactDilateMaskInSEGS"(p: IN['Impact_Pack.ImpactDilateMaskInSEGS'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactDilateMaskInSEGS']
           /** displayName="Gaussian Blur Mask (SEGS)" category="ImpactPack_Util" name="ImpactGaussianBlurMaskInSEGS" output=[SEGS] */
-         "Impact_Pack.ImpactGaussianBlurMaskInSEGS"(p: IN['Impact_Pack.ImpactGaussianBlurMaskInSEGS'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactGaussianBlurMaskInSEGS']
+         "Impact_Pack.ImpactGaussianBlurMaskInSEGS"(p: IN['Impact_Pack.ImpactGaussianBlurMaskInSEGS'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactGaussianBlurMaskInSEGS']
           /** displayName="ScaleBy BBOX (SEG_ELT)" category="ImpactPack_Util" name="ImpactScaleBy_BBOX_SEG_ELT" output=[SEG_ELT] */
-         "Impact_Pack.ImpactScaleBy_BBOX_SEG_ELT"(p: IN['Impact_Pack.ImpactScaleBy_BBOX_SEG_ELT'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactScaleBy_BBOX_SEG_ELT']
+         "Impact_Pack.ImpactScaleBy_BBOX_SEG_ELT"(p: IN['Impact_Pack.ImpactScaleBy_BBOX_SEG_ELT'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactScaleBy_BBOX_SEG_ELT']
           /** displayName="From SEG_ELT bbox" category="ImpactPack_Util" name="ImpactFrom_SEG_ELT_bbox" output=[left, top, right, bottom] */
-         "Impact_Pack.ImpactFrom_SEG_ELT_bbox"(p: IN['Impact_Pack.ImpactFrom_SEG_ELT_bbox'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactFrom_SEG_ELT_bbox']
+         "Impact_Pack.ImpactFrom_SEG_ELT_bbox"(p: IN['Impact_Pack.ImpactFrom_SEG_ELT_bbox'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactFrom_SEG_ELT_bbox']
           /** displayName="From SEG_ELT crop_region" category="ImpactPack_Util" name="ImpactFrom_SEG_ELT_crop_region" output=[left, top, right, bottom] */
-         "Impact_Pack.ImpactFrom_SEG_ELT_crop_region"(p: IN['Impact_Pack.ImpactFrom_SEG_ELT_crop_region'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactFrom_SEG_ELT_crop_region']
+         "Impact_Pack.ImpactFrom_SEG_ELT_crop_region"(p: IN['Impact_Pack.ImpactFrom_SEG_ELT_crop_region'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactFrom_SEG_ELT_crop_region']
           /** displayName="Count Elts in SEGS" category="ImpactPack_Util" name="ImpactCount_Elts_in_SEGS" output=[INT] */
-         "Impact_Pack.ImpactCount_Elts_in_SEGS"(p: IN['Impact_Pack.ImpactCount_Elts_in_SEGS'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactCount_Elts_in_SEGS']
+         "Impact_Pack.ImpactCount_Elts_in_SEGS"(p: IN['Impact_Pack.ImpactCount_Elts_in_SEGS'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactCount_Elts_in_SEGS']
           /** displayName="BBOX Detector (combined)" category="ImpactPack_Detector" name="BboxDetectorCombined_v2" output=[MASK] */
-         "Impact_Pack.BboxDetectorCombined_v2"(p: IN['Impact_Pack.BboxDetectorCombined_v2'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.BboxDetectorCombined_v2']
+         "Impact_Pack.BboxDetectorCombined_v2"(p: IN['Impact_Pack.BboxDetectorCombined_v2'], meta?: ComfyNodeMetadata): Node['Impact_Pack.BboxDetectorCombined_v2']
           /** displayName="SEGM Detector (combined)" category="ImpactPack_Detector" name="SegmDetectorCombined_v2" output=[MASK] */
-         "Impact_Pack.SegmDetectorCombined_v2"(p: IN['Impact_Pack.SegmDetectorCombined_v2'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.SegmDetectorCombined_v2']
+         "Impact_Pack.SegmDetectorCombined_v2"(p: IN['Impact_Pack.SegmDetectorCombined_v2'], meta?: ComfyNodeMetadata): Node['Impact_Pack.SegmDetectorCombined_v2']
           /** displayName="SEGS to MASK (combined)" category="ImpactPack_Operation" name="SegsToCombinedMask" output=[MASK] */
-         "Impact_Pack.SegsToCombinedMask"(p: IN['Impact_Pack.SegsToCombinedMask'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.SegsToCombinedMask']
+         "Impact_Pack.SegsToCombinedMask"(p: IN['Impact_Pack.SegsToCombinedMask'], meta?: ComfyNodeMetadata): Node['Impact_Pack.SegsToCombinedMask']
           /** displayName="KSamplerProvider" category="ImpactPack_Sampler" name="KSamplerProvider" output=[KSAMPLER] */
-         "Impact_Pack.KSamplerProvider"(p: IN['Impact_Pack.KSamplerProvider'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.KSamplerProvider']
+         "Impact_Pack.KSamplerProvider"(p: IN['Impact_Pack.KSamplerProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.KSamplerProvider']
           /** displayName="TwoSamplersForMask" category="ImpactPack_Sampler" name="TwoSamplersForMask" output=[LATENT] */
-         "Impact_Pack.TwoSamplersForMask"(p: IN['Impact_Pack.TwoSamplersForMask'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.TwoSamplersForMask']
+         "Impact_Pack.TwoSamplersForMask"(p: IN['Impact_Pack.TwoSamplersForMask'], meta?: ComfyNodeMetadata): Node['Impact_Pack.TwoSamplersForMask']
           /** displayName="TiledKSamplerProvider" category="ImpactPack_Sampler" name="TiledKSamplerProvider" output=[KSAMPLER] */
-         "Impact_Pack.TiledKSamplerProvider"(p: IN['Impact_Pack.TiledKSamplerProvider'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.TiledKSamplerProvider']
+         "Impact_Pack.TiledKSamplerProvider"(p: IN['Impact_Pack.TiledKSamplerProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.TiledKSamplerProvider']
           /** displayName="KSamplerAdvancedProvider" category="ImpactPack_Sampler" name="KSamplerAdvancedProvider" output=[KSAMPLER_ADVANCED] */
-         "Impact_Pack.KSamplerAdvancedProvider"(p: IN['Impact_Pack.KSamplerAdvancedProvider'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.KSamplerAdvancedProvider']
+         "Impact_Pack.KSamplerAdvancedProvider"(p: IN['Impact_Pack.KSamplerAdvancedProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.KSamplerAdvancedProvider']
           /** displayName="TwoAdvancedSamplersForMask" category="ImpactPack_Sampler" name="TwoAdvancedSamplersForMask" output=[LATENT] */
-         "Impact_Pack.TwoAdvancedSamplersForMask"(p: IN['Impact_Pack.TwoAdvancedSamplersForMask'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.TwoAdvancedSamplersForMask']
+         "Impact_Pack.TwoAdvancedSamplersForMask"(p: IN['Impact_Pack.TwoAdvancedSamplersForMask'], meta?: ComfyNodeMetadata): Node['Impact_Pack.TwoAdvancedSamplersForMask']
           /** displayName="Negative Cond Placeholder" category="ImpactPack_sampling" name="ImpactNegativeConditioningPlaceholder" output=[CONDITIONING] */
-         "Impact_Pack.ImpactNegativeConditioningPlaceholder"(p: IN['Impact_Pack.ImpactNegativeConditioningPlaceholder'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactNegativeConditioningPlaceholder']
+         "Impact_Pack.ImpactNegativeConditioningPlaceholder"(p: IN['Impact_Pack.ImpactNegativeConditioningPlaceholder'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactNegativeConditioningPlaceholder']
          /**
           * This is a feature that allows you to edit and send a Mask over a image.
           * If the block is set to 'is_empty_mask', the execution is stopped when the mask is empty.
           * displayName="Preview Bridge (Image)" category="ImpactPack_Util" name="PreviewBridge" output=[IMAGE, MASK]
          **/
-         "Impact_Pack.PreviewBridge"(p: IN['Impact_Pack.PreviewBridge'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.PreviewBridge']
+         "Impact_Pack.PreviewBridge"(p: IN['Impact_Pack.PreviewBridge'], meta?: ComfyNodeMetadata): Node['Impact_Pack.PreviewBridge']
          /**
           * This is a feature that allows you to edit and send a Mask over a latent image.
           * If the block is set to 'is_empty_mask', the execution is stopped when the mask is empty.
           * displayName="Preview Bridge (Latent)" category="ImpactPack_Util" name="PreviewBridgeLatent" output=[LATENT, MASK]
          **/
-         "Impact_Pack.PreviewBridgeLatent"(p: IN['Impact_Pack.PreviewBridgeLatent'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.PreviewBridgeLatent']
+         "Impact_Pack.PreviewBridgeLatent"(p: IN['Impact_Pack.PreviewBridgeLatent'], meta?: ComfyNodeMetadata): Node['Impact_Pack.PreviewBridgeLatent']
          /**
           * Saves the input images to your ComfyUI output directory.
           * displayName="Image Sender" category="ImpactPack_Util" name="ImageSender" output=[]
          **/
-         "Impact_Pack.ImageSender"(p: IN['Impact_Pack.ImageSender'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImageSender']
+         "Impact_Pack.ImageSender"(p: IN['Impact_Pack.ImageSender'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImageSender']
           /** displayName="Image Receiver" category="ImpactPack_Util" name="ImageReceiver" output=[IMAGE, MASK] */
-         "Impact_Pack.ImageReceiver"(p: IN['Impact_Pack.ImageReceiver'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImageReceiver']
+         "Impact_Pack.ImageReceiver"(p: IN['Impact_Pack.ImageReceiver'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImageReceiver']
           /** displayName="LatentSender" category="ImpactPack_Util" name="LatentSender" output=[] */
-         "Impact_Pack.LatentSender"(p: IN['Impact_Pack.LatentSender'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.LatentSender']
+         "Impact_Pack.LatentSender"(p: IN['Impact_Pack.LatentSender'], meta?: ComfyNodeMetadata): Node['Impact_Pack.LatentSender']
           /** displayName="LatentReceiver" category="ImpactPack_Util" name="LatentReceiver" output=[LATENT] */
-         "Impact_Pack.LatentReceiver"(p: IN['Impact_Pack.LatentReceiver'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.LatentReceiver']
+         "Impact_Pack.LatentReceiver"(p: IN['Impact_Pack.LatentReceiver'], meta?: ComfyNodeMetadata): Node['Impact_Pack.LatentReceiver']
           /** displayName="Switch (images, mask)" category="ImpactPack_Util" name="ImageMaskSwitch" output=[IMAGE, MASK] */
-         "Impact_Pack.ImageMaskSwitch"(p: IN['Impact_Pack.ImageMaskSwitch'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImageMaskSwitch']
+         "Impact_Pack.ImageMaskSwitch"(p: IN['Impact_Pack.ImageMaskSwitch'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImageMaskSwitch']
           /** displayName="Switch (latent/legacy)" category="ImpactPack_Util" name="LatentSwitch" output=[selected_value, selected_label, selected_index] */
-         "Impact_Pack.LatentSwitch"(p: IN['Impact_Pack.LatentSwitch'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.LatentSwitch']
+         "Impact_Pack.LatentSwitch"(p: IN['Impact_Pack.LatentSwitch'], meta?: ComfyNodeMetadata): Node['Impact_Pack.LatentSwitch']
           /** displayName="Switch (SEGS/legacy)" category="ImpactPack_Util" name="SEGSSwitch" output=[selected_value, selected_label, selected_index] */
-         "Impact_Pack.SEGSSwitch"(p: IN['Impact_Pack.SEGSSwitch'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.SEGSSwitch']
+         "Impact_Pack.SEGSSwitch"(p: IN['Impact_Pack.SEGSSwitch'], meta?: ComfyNodeMetadata): Node['Impact_Pack.SEGSSwitch']
           /** displayName="Switch (Any)" category="ImpactPack_Util" name="ImpactSwitch" output=[selected_value, selected_label, selected_index] */
-         "Impact_Pack.ImpactSwitch"(p: IN['Impact_Pack.ImpactSwitch'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactSwitch']
+         "Impact_Pack.ImpactSwitch"(p: IN['Impact_Pack.ImpactSwitch'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactSwitch']
           /** displayName="Inversed Switch (Any)" category="ImpactPack_Util" name="ImpactInversedSwitch" output=[*] */
-         "Impact_Pack.ImpactInversedSwitch"(p: IN['Impact_Pack.ImpactInversedSwitch'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactInversedSwitch']
+         "Impact_Pack.ImpactInversedSwitch"(p: IN['Impact_Pack.ImpactInversedSwitch'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactInversedSwitch']
           /** displayName="ImpactWildcardProcessor" category="ImpactPack_Prompt" name="ImpactWildcardProcessor" output=[STRING] */
-         "Impact_Pack.ImpactWildcardProcessor"(p: IN['Impact_Pack.ImpactWildcardProcessor'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactWildcardProcessor']
+         "Impact_Pack.ImpactWildcardProcessor"(p: IN['Impact_Pack.ImpactWildcardProcessor'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactWildcardProcessor']
           /** displayName="ImpactWildcardEncode" category="ImpactPack_Prompt" name="ImpactWildcardEncode" output=[model, clip, conditioning, populated_text] */
-         "Impact_Pack.ImpactWildcardEncode"(p: IN['Impact_Pack.ImpactWildcardEncode'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactWildcardEncode']
+         "Impact_Pack.ImpactWildcardEncode"(p: IN['Impact_Pack.ImpactWildcardEncode'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactWildcardEncode']
           /** displayName="Upscaler (SEGS)" category="ImpactPack_Upscale" name="SEGSUpscaler" output=[IMAGE] */
-         "Impact_Pack.SEGSUpscaler"(p: IN['Impact_Pack.SEGSUpscaler'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.SEGSUpscaler']
+         "Impact_Pack.SEGSUpscaler"(p: IN['Impact_Pack.SEGSUpscaler'], meta?: ComfyNodeMetadata): Node['Impact_Pack.SEGSUpscaler']
           /** displayName="Upscaler (SEGS/pipe)" category="ImpactPack_Upscale" name="SEGSUpscalerPipe" output=[IMAGE] */
-         "Impact_Pack.SEGSUpscalerPipe"(p: IN['Impact_Pack.SEGSUpscalerPipe'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.SEGSUpscalerPipe']
+         "Impact_Pack.SEGSUpscalerPipe"(p: IN['Impact_Pack.SEGSUpscalerPipe'], meta?: ComfyNodeMetadata): Node['Impact_Pack.SEGSUpscalerPipe']
           /** displayName="SEGSDetailer" category="ImpactPack_Detailer" name="SEGSDetailer" output=[segs, cnet_images] */
-         "Impact_Pack.SEGSDetailer"(p: IN['Impact_Pack.SEGSDetailer'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.SEGSDetailer']
+         "Impact_Pack.SEGSDetailer"(p: IN['Impact_Pack.SEGSDetailer'], meta?: ComfyNodeMetadata): Node['Impact_Pack.SEGSDetailer']
           /** displayName="SEGSPaste" category="ImpactPack_Detailer" name="SEGSPaste" output=[IMAGE] */
-         "Impact_Pack.SEGSPaste"(p: IN['Impact_Pack.SEGSPaste'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.SEGSPaste']
+         "Impact_Pack.SEGSPaste"(p: IN['Impact_Pack.SEGSPaste'], meta?: ComfyNodeMetadata): Node['Impact_Pack.SEGSPaste']
           /** displayName="SEGSPreview" category="ImpactPack_Util" name="SEGSPreview" output=[IMAGE] */
-         "Impact_Pack.SEGSPreview"(p: IN['Impact_Pack.SEGSPreview'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.SEGSPreview']
+         "Impact_Pack.SEGSPreview"(p: IN['Impact_Pack.SEGSPreview'], meta?: ComfyNodeMetadata): Node['Impact_Pack.SEGSPreview']
           /** displayName="SEGSPreview (CNET Image)" category="ImpactPack_Util" name="SEGSPreviewCNet" output=[IMAGE] */
-         "Impact_Pack.SEGSPreviewCNet"(p: IN['Impact_Pack.SEGSPreviewCNet'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.SEGSPreviewCNet']
+         "Impact_Pack.SEGSPreviewCNet"(p: IN['Impact_Pack.SEGSPreviewCNet'], meta?: ComfyNodeMetadata): Node['Impact_Pack.SEGSPreviewCNet']
           /** displayName="SEGSToImageList" category="ImpactPack_Util" name="SEGSToImageList" output=[IMAGE] */
-         "Impact_Pack.SEGSToImageList"(p: IN['Impact_Pack.SEGSToImageList'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.SEGSToImageList']
+         "Impact_Pack.SEGSToImageList"(p: IN['Impact_Pack.SEGSToImageList'], meta?: ComfyNodeMetadata): Node['Impact_Pack.SEGSToImageList']
           /** displayName="SEGS to Mask List" category="ImpactPack_Util" name="ImpactSEGSToMaskList" output=[MASK] */
-         "Impact_Pack.ImpactSEGSToMaskList"(p: IN['Impact_Pack.ImpactSEGSToMaskList'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactSEGSToMaskList']
+         "Impact_Pack.ImpactSEGSToMaskList"(p: IN['Impact_Pack.ImpactSEGSToMaskList'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactSEGSToMaskList']
           /** displayName="SEGS to Mask Batch" category="ImpactPack_Util" name="ImpactSEGSToMaskBatch" output=[MASK] */
-         "Impact_Pack.ImpactSEGSToMaskBatch"(p: IN['Impact_Pack.ImpactSEGSToMaskBatch'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactSEGSToMaskBatch']
+         "Impact_Pack.ImpactSEGSToMaskBatch"(p: IN['Impact_Pack.ImpactSEGSToMaskBatch'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactSEGSToMaskBatch']
           /** displayName="SEGS Concat" category="ImpactPack_Util" name="ImpactSEGSConcat" output=[SEGS] */
-         "Impact_Pack.ImpactSEGSConcat"(p: IN['Impact_Pack.ImpactSEGSConcat'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactSEGSConcat']
+         "Impact_Pack.ImpactSEGSConcat"(p: IN['Impact_Pack.ImpactSEGSConcat'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactSEGSConcat']
           /** displayName="Picker (SEGS)" category="ImpactPack_Util" name="ImpactSEGSPicker" output=[SEGS] */
-         "Impact_Pack.ImpactSEGSPicker"(p: IN['Impact_Pack.ImpactSEGSPicker'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactSEGSPicker']
+         "Impact_Pack.ImpactSEGSPicker"(p: IN['Impact_Pack.ImpactSEGSPicker'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactSEGSPicker']
           /** displayName="Make Tile SEGS" category="ImpactPack___for_testing" name="ImpactMakeTileSEGS" output=[SEGS] */
-         "Impact_Pack.ImpactMakeTileSEGS"(p: IN['Impact_Pack.ImpactMakeTileSEGS'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactMakeTileSEGS']
+         "Impact_Pack.ImpactMakeTileSEGS"(p: IN['Impact_Pack.ImpactMakeTileSEGS'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactMakeTileSEGS']
          /**
           * SEGS contains multiple SEGs. SEGS Merge integrates several SEGs into a single merged SEG. The label is changed to `merged` and the confidence becomes the minimum confidence. The applied controlnet and cropped_image are removed.
           * displayName="SEGS Merge" category="ImpactPack_Util" name="ImpactSEGSMerge" output=[SEGS]
          **/
-         "Impact_Pack.ImpactSEGSMerge"(p: IN['Impact_Pack.ImpactSEGSMerge'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactSEGSMerge']
+         "Impact_Pack.ImpactSEGSMerge"(p: IN['Impact_Pack.ImpactSEGSMerge'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactSEGSMerge']
           /** displayName="SEGSDetailer For AnimateDiff (SEGS/pipe)" category="ImpactPack_Detailer" name="SEGSDetailerForAnimateDiff" output=[segs, cnet_images] */
-         "Impact_Pack.SEGSDetailerForAnimateDiff"(p: IN['Impact_Pack.SEGSDetailerForAnimateDiff'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.SEGSDetailerForAnimateDiff']
+         "Impact_Pack.SEGSDetailerForAnimateDiff"(p: IN['Impact_Pack.SEGSDetailerForAnimateDiff'], meta?: ComfyNodeMetadata): Node['Impact_Pack.SEGSDetailerForAnimateDiff']
           /** displayName="KSampler (pipe)" category="ImpactPack_sampling" name="ImpactKSamplerBasicPipe" output=[BASIC_PIPE, LATENT, VAE] */
-         "Impact_Pack.ImpactKSamplerBasicPipe"(p: IN['Impact_Pack.ImpactKSamplerBasicPipe'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactKSamplerBasicPipe']
+         "Impact_Pack.ImpactKSamplerBasicPipe"(p: IN['Impact_Pack.ImpactKSamplerBasicPipe'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactKSamplerBasicPipe']
           /** displayName="KSampler (Advanced/pipe)" category="ImpactPack_sampling" name="ImpactKSamplerAdvancedBasicPipe" output=[BASIC_PIPE, LATENT, VAE] */
-         "Impact_Pack.ImpactKSamplerAdvancedBasicPipe"(p: IN['Impact_Pack.ImpactKSamplerAdvancedBasicPipe'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactKSamplerAdvancedBasicPipe']
+         "Impact_Pack.ImpactKSamplerAdvancedBasicPipe"(p: IN['Impact_Pack.ImpactKSamplerAdvancedBasicPipe'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactKSamplerAdvancedBasicPipe']
           /** displayName="Reencode Latent" category="ImpactPack_Util" name="ReencodeLatent" output=[LATENT] */
-         "Impact_Pack.ReencodeLatent"(p: IN['Impact_Pack.ReencodeLatent'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ReencodeLatent']
+         "Impact_Pack.ReencodeLatent"(p: IN['Impact_Pack.ReencodeLatent'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ReencodeLatent']
           /** displayName="Reencode Latent (pipe)" category="ImpactPack_Util" name="ReencodeLatentPipe" output=[LATENT] */
-         "Impact_Pack.ReencodeLatentPipe"(p: IN['Impact_Pack.ReencodeLatentPipe'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ReencodeLatentPipe']
+         "Impact_Pack.ReencodeLatentPipe"(p: IN['Impact_Pack.ReencodeLatentPipe'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ReencodeLatentPipe']
           /** displayName="Image Batch to Image List" category="ImpactPack_Util" name="ImpactImageBatchToImageList" output=[IMAGE] */
-         "Impact_Pack.ImpactImageBatchToImageList"(p: IN['Impact_Pack.ImpactImageBatchToImageList'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactImageBatchToImageList']
+         "Impact_Pack.ImpactImageBatchToImageList"(p: IN['Impact_Pack.ImpactImageBatchToImageList'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactImageBatchToImageList']
           /** displayName="Make Image List" category="ImpactPack_Util" name="ImpactMakeImageList" output=[IMAGE] */
-         "Impact_Pack.ImpactMakeImageList"(p: IN['Impact_Pack.ImpactMakeImageList'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactMakeImageList']
+         "Impact_Pack.ImpactMakeImageList"(p: IN['Impact_Pack.ImpactMakeImageList'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactMakeImageList']
           /** displayName="Make Image Batch" category="ImpactPack_Util" name="ImpactMakeImageBatch" output=[IMAGE] */
-         "Impact_Pack.ImpactMakeImageBatch"(p: IN['Impact_Pack.ImpactMakeImageBatch'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactMakeImageBatch']
+         "Impact_Pack.ImpactMakeImageBatch"(p: IN['Impact_Pack.ImpactMakeImageBatch'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactMakeImageBatch']
           /** displayName="Make List (Any)" category="ImpactPack_Util" name="ImpactMakeAnyList" output=[*] */
-         "Impact_Pack.ImpactMakeAnyList"(p: IN['Impact_Pack.ImpactMakeAnyList'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactMakeAnyList']
+         "Impact_Pack.ImpactMakeAnyList"(p: IN['Impact_Pack.ImpactMakeAnyList'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactMakeAnyList']
           /** displayName="Make Mask List" category="ImpactPack_Util" name="ImpactMakeMaskList" output=[MASK] */
-         "Impact_Pack.ImpactMakeMaskList"(p: IN['Impact_Pack.ImpactMakeMaskList'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactMakeMaskList']
+         "Impact_Pack.ImpactMakeMaskList"(p: IN['Impact_Pack.ImpactMakeMaskList'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactMakeMaskList']
           /** displayName="Make Mask Batch" category="ImpactPack_Util" name="ImpactMakeMaskBatch" output=[MASK] */
-         "Impact_Pack.ImpactMakeMaskBatch"(p: IN['Impact_Pack.ImpactMakeMaskBatch'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactMakeMaskBatch']
+         "Impact_Pack.ImpactMakeMaskBatch"(p: IN['Impact_Pack.ImpactMakeMaskBatch'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactMakeMaskBatch']
           /** displayName="RegionalSampler" category="ImpactPack_Regional" name="RegionalSampler" output=[LATENT] */
-         "Impact_Pack.RegionalSampler"(p: IN['Impact_Pack.RegionalSampler'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.RegionalSampler']
+         "Impact_Pack.RegionalSampler"(p: IN['Impact_Pack.RegionalSampler'], meta?: ComfyNodeMetadata): Node['Impact_Pack.RegionalSampler']
           /** displayName="RegionalSamplerAdvanced" category="ImpactPack_Regional" name="RegionalSamplerAdvanced" output=[LATENT] */
-         "Impact_Pack.RegionalSamplerAdvanced"(p: IN['Impact_Pack.RegionalSamplerAdvanced'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.RegionalSamplerAdvanced']
+         "Impact_Pack.RegionalSamplerAdvanced"(p: IN['Impact_Pack.RegionalSamplerAdvanced'], meta?: ComfyNodeMetadata): Node['Impact_Pack.RegionalSamplerAdvanced']
           /** displayName="CombineRegionalPrompts" category="ImpactPack_Regional" name="CombineRegionalPrompts" output=[REGIONAL_PROMPTS] */
-         "Impact_Pack.CombineRegionalPrompts"(p: IN['Impact_Pack.CombineRegionalPrompts'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.CombineRegionalPrompts']
+         "Impact_Pack.CombineRegionalPrompts"(p: IN['Impact_Pack.CombineRegionalPrompts'], meta?: ComfyNodeMetadata): Node['Impact_Pack.CombineRegionalPrompts']
           /** displayName="RegionalPrompt" category="ImpactPack_Regional" name="RegionalPrompt" output=[REGIONAL_PROMPTS] */
-         "Impact_Pack.RegionalPrompt"(p: IN['Impact_Pack.RegionalPrompt'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.RegionalPrompt']
+         "Impact_Pack.RegionalPrompt"(p: IN['Impact_Pack.RegionalPrompt'], meta?: ComfyNodeMetadata): Node['Impact_Pack.RegionalPrompt']
           /** displayName="Combine Conditionings" category="ImpactPack_Util" name="ImpactCombineConditionings" output=[CONDITIONING] */
-         "Impact_Pack.ImpactCombineConditionings"(p: IN['Impact_Pack.ImpactCombineConditionings'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactCombineConditionings']
+         "Impact_Pack.ImpactCombineConditionings"(p: IN['Impact_Pack.ImpactCombineConditionings'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactCombineConditionings']
           /** displayName="Concat Conditionings" category="ImpactPack_Util" name="ImpactConcatConditionings" output=[CONDITIONING] */
-         "Impact_Pack.ImpactConcatConditionings"(p: IN['Impact_Pack.ImpactConcatConditionings'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactConcatConditionings']
+         "Impact_Pack.ImpactConcatConditionings"(p: IN['Impact_Pack.ImpactConcatConditionings'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactConcatConditionings']
           /** displayName="SEGS Assign (label)" category="ImpactPack_Util" name="ImpactSEGSLabelAssign" output=[SEGS] */
-         "Impact_Pack.ImpactSEGSLabelAssign"(p: IN['Impact_Pack.ImpactSEGSLabelAssign'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactSEGSLabelAssign']
+         "Impact_Pack.ImpactSEGSLabelAssign"(p: IN['Impact_Pack.ImpactSEGSLabelAssign'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactSEGSLabelAssign']
           /** displayName="SEGS Filter (label)" category="ImpactPack_Util" name="ImpactSEGSLabelFilter" output=[filtered_SEGS, remained_SEGS] */
-         "Impact_Pack.ImpactSEGSLabelFilter"(p: IN['Impact_Pack.ImpactSEGSLabelFilter'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactSEGSLabelFilter']
+         "Impact_Pack.ImpactSEGSLabelFilter"(p: IN['Impact_Pack.ImpactSEGSLabelFilter'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactSEGSLabelFilter']
           /** displayName="SEGS Filter (range)" category="ImpactPack_Util" name="ImpactSEGSRangeFilter" output=[filtered_SEGS, remained_SEGS] */
-         "Impact_Pack.ImpactSEGSRangeFilter"(p: IN['Impact_Pack.ImpactSEGSRangeFilter'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactSEGSRangeFilter']
+         "Impact_Pack.ImpactSEGSRangeFilter"(p: IN['Impact_Pack.ImpactSEGSRangeFilter'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactSEGSRangeFilter']
           /** displayName="SEGS Filter (ordered)" category="ImpactPack_Util" name="ImpactSEGSOrderedFilter" output=[filtered_SEGS, remained_SEGS] */
-         "Impact_Pack.ImpactSEGSOrderedFilter"(p: IN['Impact_Pack.ImpactSEGSOrderedFilter'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactSEGSOrderedFilter']
+         "Impact_Pack.ImpactSEGSOrderedFilter"(p: IN['Impact_Pack.ImpactSEGSOrderedFilter'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactSEGSOrderedFilter']
           /** displayName="ImpactCompare" category="ImpactPack_Logic" name="ImpactCompare" output=[BOOLEAN] */
-         "Impact_Pack.ImpactCompare"(p: IN['Impact_Pack.ImpactCompare'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactCompare']
+         "Impact_Pack.ImpactCompare"(p: IN['Impact_Pack.ImpactCompare'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactCompare']
           /** displayName="ImpactConditionalBranch" category="ImpactPack_Logic" name="ImpactConditionalBranch" output=[*] */
-         "Impact_Pack.ImpactConditionalBranch"(p: IN['Impact_Pack.ImpactConditionalBranch'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactConditionalBranch']
+         "Impact_Pack.ImpactConditionalBranch"(p: IN['Impact_Pack.ImpactConditionalBranch'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactConditionalBranch']
           /** displayName="ImpactConditionalBranchSelMode" category="ImpactPack_Logic" name="ImpactConditionalBranchSelMode" output=[*] */
-         "Impact_Pack.ImpactConditionalBranchSelMode"(p: IN['Impact_Pack.ImpactConditionalBranchSelMode'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactConditionalBranchSelMode']
+         "Impact_Pack.ImpactConditionalBranchSelMode"(p: IN['Impact_Pack.ImpactConditionalBranchSelMode'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactConditionalBranchSelMode']
           /** displayName="ImpactIfNone" category="ImpactPack_Logic" name="ImpactIfNone" output=[signal_opt, bool] */
-         "Impact_Pack.ImpactIfNone"(p: IN['Impact_Pack.ImpactIfNone'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactIfNone']
+         "Impact_Pack.ImpactIfNone"(p: IN['Impact_Pack.ImpactIfNone'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactIfNone']
           /** displayName="ImpactConvertDataType" category="ImpactPack_Logic" name="ImpactConvertDataType" output=[STRING, FLOAT, INT, BOOLEAN] */
-         "Impact_Pack.ImpactConvertDataType"(p: IN['Impact_Pack.ImpactConvertDataType'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactConvertDataType']
+         "Impact_Pack.ImpactConvertDataType"(p: IN['Impact_Pack.ImpactConvertDataType'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactConvertDataType']
           /** displayName="ImpactLogicalOperators" category="ImpactPack_Logic" name="ImpactLogicalOperators" output=[BOOLEAN] */
-         "Impact_Pack.ImpactLogicalOperators"(p: IN['Impact_Pack.ImpactLogicalOperators'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactLogicalOperators']
+         "Impact_Pack.ImpactLogicalOperators"(p: IN['Impact_Pack.ImpactLogicalOperators'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactLogicalOperators']
           /** displayName="ImpactInt" category="ImpactPack_Logic" name="ImpactInt" output=[INT] */
-         "Impact_Pack.ImpactInt"(p: IN['Impact_Pack.ImpactInt'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactInt']
+         "Impact_Pack.ImpactInt"(p: IN['Impact_Pack.ImpactInt'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactInt']
           /** displayName="ImpactFloat" category="ImpactPack_Logic" name="ImpactFloat" output=[FLOAT] */
-         "Impact_Pack.ImpactFloat"(p: IN['Impact_Pack.ImpactFloat'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactFloat']
+         "Impact_Pack.ImpactFloat"(p: IN['Impact_Pack.ImpactFloat'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactFloat']
           /** displayName="ImpactBoolean" category="ImpactPack_Logic" name="ImpactBoolean" output=[BOOLEAN] */
-         "Impact_Pack.ImpactBoolean"(p: IN['Impact_Pack.ImpactBoolean'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactBoolean']
+         "Impact_Pack.ImpactBoolean"(p: IN['Impact_Pack.ImpactBoolean'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactBoolean']
           /** displayName="ImpactValueSender" category="ImpactPack_Logic" name="ImpactValueSender" output=[signal] */
-         "Impact_Pack.ImpactValueSender"(p: IN['Impact_Pack.ImpactValueSender'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactValueSender']
+         "Impact_Pack.ImpactValueSender"(p: IN['Impact_Pack.ImpactValueSender'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactValueSender']
           /** displayName="ImpactValueReceiver" category="ImpactPack_Logic" name="ImpactValueReceiver" output=[*] */
-         "Impact_Pack.ImpactValueReceiver"(p: IN['Impact_Pack.ImpactValueReceiver'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactValueReceiver']
+         "Impact_Pack.ImpactValueReceiver"(p: IN['Impact_Pack.ImpactValueReceiver'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactValueReceiver']
           /** displayName="ImpactImageInfo" category="ImpactPack_Logic__for_test" name="ImpactImageInfo" output=[batch, height, width, channel] */
-         "Impact_Pack.ImpactImageInfo"(p: IN['Impact_Pack.ImpactImageInfo'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactImageInfo']
+         "Impact_Pack.ImpactImageInfo"(p: IN['Impact_Pack.ImpactImageInfo'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactImageInfo']
           /** displayName="ImpactLatentInfo" category="ImpactPack_Logic__for_test" name="ImpactLatentInfo" output=[batch, height, width, channel] */
-         "Impact_Pack.ImpactLatentInfo"(p: IN['Impact_Pack.ImpactLatentInfo'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactLatentInfo']
+         "Impact_Pack.ImpactLatentInfo"(p: IN['Impact_Pack.ImpactLatentInfo'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactLatentInfo']
           /** displayName="ImpactMinMax" category="ImpactPack_Logic__for_test" name="ImpactMinMax" output=[INT] */
-         "Impact_Pack.ImpactMinMax"(p: IN['Impact_Pack.ImpactMinMax'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactMinMax']
+         "Impact_Pack.ImpactMinMax"(p: IN['Impact_Pack.ImpactMinMax'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactMinMax']
           /** displayName="ImpactNeg" category="ImpactPack_Logic" name="ImpactNeg" output=[BOOLEAN] */
-         "Impact_Pack.ImpactNeg"(p: IN['Impact_Pack.ImpactNeg'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactNeg']
+         "Impact_Pack.ImpactNeg"(p: IN['Impact_Pack.ImpactNeg'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactNeg']
           /** displayName="ImpactConditionalStopIteration" category="ImpactPack_Logic" name="ImpactConditionalStopIteration" output=[] */
-         "Impact_Pack.ImpactConditionalStopIteration"(p: IN['Impact_Pack.ImpactConditionalStopIteration'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactConditionalStopIteration']
+         "Impact_Pack.ImpactConditionalStopIteration"(p: IN['Impact_Pack.ImpactConditionalStopIteration'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactConditionalStopIteration']
           /** displayName="String Selector" category="ImpactPack_Util" name="ImpactStringSelector" output=[STRING] */
-         "Impact_Pack.ImpactStringSelector"(p: IN['Impact_Pack.ImpactStringSelector'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactStringSelector']
+         "Impact_Pack.ImpactStringSelector"(p: IN['Impact_Pack.ImpactStringSelector'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactStringSelector']
           /** displayName="String List to String" category="ImpactPack_Util" name="StringListToString" output=[STRING] */
-         "Impact_Pack.StringListToString"(p: IN['Impact_Pack.StringListToString'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.StringListToString']
+         "Impact_Pack.StringListToString"(p: IN['Impact_Pack.StringListToString'], meta?: ComfyNodeMetadata): Node['Impact_Pack.StringListToString']
           /** displayName="Wildcard Prompt from String" category="ImpactPack_Util" name="WildcardPromptFromString" output=[wildcard, segs_labels] */
-         "Impact_Pack.WildcardPromptFromString"(p: IN['Impact_Pack.WildcardPromptFromString'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.WildcardPromptFromString']
+         "Impact_Pack.WildcardPromptFromString"(p: IN['Impact_Pack.WildcardPromptFromString'], meta?: ComfyNodeMetadata): Node['Impact_Pack.WildcardPromptFromString']
           /** displayName="Execution Order Controller" category="ImpactPack_Util" name="ImpactExecutionOrderController" output=[signal, value] */
-         "Impact_Pack.ImpactExecutionOrderController"(p: IN['Impact_Pack.ImpactExecutionOrderController'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactExecutionOrderController']
+         "Impact_Pack.ImpactExecutionOrderController"(p: IN['Impact_Pack.ImpactExecutionOrderController'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactExecutionOrderController']
           /** displayName="Remove Noise Mask" category="ImpactPack_Util" name="RemoveNoiseMask" output=[LATENT] */
-         "Impact_Pack.RemoveNoiseMask"(p: IN['Impact_Pack.RemoveNoiseMask'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.RemoveNoiseMask']
+         "Impact_Pack.RemoveNoiseMask"(p: IN['Impact_Pack.RemoveNoiseMask'], meta?: ComfyNodeMetadata): Node['Impact_Pack.RemoveNoiseMask']
           /** displayName="ImpactLogger" category="ImpactPack_Debug" name="ImpactLogger" output=[] */
-         "Impact_Pack.ImpactLogger"(p: IN['Impact_Pack.ImpactLogger'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactLogger']
+         "Impact_Pack.ImpactLogger"(p: IN['Impact_Pack.ImpactLogger'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactLogger']
           /** displayName="ImpactDummyInput" category="ImpactPack_Debug" name="ImpactDummyInput" output=[*] */
-         "Impact_Pack.ImpactDummyInput"(p: IN['Impact_Pack.ImpactDummyInput'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactDummyInput']
+         "Impact_Pack.ImpactDummyInput"(p: IN['Impact_Pack.ImpactDummyInput'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactDummyInput']
           /** displayName="Queue Trigger" category="ImpactPack_Logic__for_test" name="ImpactQueueTrigger" output=[signal_opt] */
-         "Impact_Pack.ImpactQueueTrigger"(p: IN['Impact_Pack.ImpactQueueTrigger'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactQueueTrigger']
+         "Impact_Pack.ImpactQueueTrigger"(p: IN['Impact_Pack.ImpactQueueTrigger'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactQueueTrigger']
           /** displayName="Queue Trigger (Countdown)" category="ImpactPack_Logic__for_test" name="ImpactQueueTriggerCountdown" output=[signal_opt, count, total] */
-         "Impact_Pack.ImpactQueueTriggerCountdown"(p: IN['Impact_Pack.ImpactQueueTriggerCountdown'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactQueueTriggerCountdown']
+         "Impact_Pack.ImpactQueueTriggerCountdown"(p: IN['Impact_Pack.ImpactQueueTriggerCountdown'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactQueueTriggerCountdown']
           /** displayName="Set Widget Value" category="ImpactPack_Logic__for_test" name="ImpactSetWidgetValue" output=[signal_opt] */
-         "Impact_Pack.ImpactSetWidgetValue"(p: IN['Impact_Pack.ImpactSetWidgetValue'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactSetWidgetValue']
+         "Impact_Pack.ImpactSetWidgetValue"(p: IN['Impact_Pack.ImpactSetWidgetValue'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactSetWidgetValue']
           /** displayName="Set Mute State" category="ImpactPack_Logic__for_test" name="ImpactNodeSetMuteState" output=[signal_opt] */
-         "Impact_Pack.ImpactNodeSetMuteState"(p: IN['Impact_Pack.ImpactNodeSetMuteState'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactNodeSetMuteState']
+         "Impact_Pack.ImpactNodeSetMuteState"(p: IN['Impact_Pack.ImpactNodeSetMuteState'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactNodeSetMuteState']
          /**
           * When behavior is Stop and mode is active, the input value is passed directly to the output.
           * When behavior is Mute/Bypass and mode is active, the node connected to the output is changed to active state.
@@ -13467,30 +13467,30 @@ declare global {
           * When behavior is Mute/Bypass and mode is Stop/Mute/Bypass, the node connected to the output is changed to Mute/Bypass state.
           * displayName="Control Bridge" category="ImpactPack_Logic" name="ImpactControlBridge" output=[value]
          **/
-         "Impact_Pack.ImpactControlBridge"(p: IN['Impact_Pack.ImpactControlBridge'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactControlBridge']
+         "Impact_Pack.ImpactControlBridge"(p: IN['Impact_Pack.ImpactControlBridge'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactControlBridge']
           /** displayName="SEGS isn't Empty" category="ImpactPack_Logic" name="ImpactIsNotEmptySEGS" output=[BOOLEAN] */
-         "Impact_Pack.ImpactIsNotEmptySEGS"(p: IN['Impact_Pack.ImpactIsNotEmptySEGS'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactIsNotEmptySEGS']
+         "Impact_Pack.ImpactIsNotEmptySEGS"(p: IN['Impact_Pack.ImpactIsNotEmptySEGS'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactIsNotEmptySEGS']
           /** displayName="Sleep" category="ImpactPack_Logic__for_test" name="ImpactSleep" output=[signal_opt] */
-         "Impact_Pack.ImpactSleep"(p: IN['Impact_Pack.ImpactSleep'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactSleep']
+         "Impact_Pack.ImpactSleep"(p: IN['Impact_Pack.ImpactSleep'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactSleep']
           /** displayName="Remote Boolean (on prompt)" category="ImpactPack_Logic__for_test" name="ImpactRemoteBoolean" output=[] */
-         "Impact_Pack.ImpactRemoteBoolean"(p: IN['Impact_Pack.ImpactRemoteBoolean'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactRemoteBoolean']
+         "Impact_Pack.ImpactRemoteBoolean"(p: IN['Impact_Pack.ImpactRemoteBoolean'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactRemoteBoolean']
           /** displayName="Remote Int (on prompt)" category="ImpactPack_Logic__for_test" name="ImpactRemoteInt" output=[] */
-         "Impact_Pack.ImpactRemoteInt"(p: IN['Impact_Pack.ImpactRemoteInt'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactRemoteInt']
+         "Impact_Pack.ImpactRemoteInt"(p: IN['Impact_Pack.ImpactRemoteInt'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactRemoteInt']
           /** displayName="HF Transformers Classifier Provider" category="ImpactPack_HuggingFace" name="ImpactHFTransformersClassifierProvider" output=[TRANSFORMERS_CLASSIFIER] */
-         "Impact_Pack.ImpactHFTransformersClassifierProvider"(p: IN['Impact_Pack.ImpactHFTransformersClassifierProvider'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactHFTransformersClassifierProvider']
+         "Impact_Pack.ImpactHFTransformersClassifierProvider"(p: IN['Impact_Pack.ImpactHFTransformersClassifierProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactHFTransformersClassifierProvider']
           /** displayName="SEGS Classify" category="ImpactPack_HuggingFace" name="ImpactSEGSClassify" output=[filtered_SEGS, remained_SEGS, detected_labels] */
-         "Impact_Pack.ImpactSEGSClassify"(p: IN['Impact_Pack.ImpactSEGSClassify'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactSEGSClassify']
+         "Impact_Pack.ImpactSEGSClassify"(p: IN['Impact_Pack.ImpactSEGSClassify'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactSEGSClassify']
           /** displayName="Impact Scheduler Adapter" category="ImpactPack_Util" name="ImpactSchedulerAdapter" output=[scheduler] */
-         "Impact_Pack.ImpactSchedulerAdapter"(p: IN['Impact_Pack.ImpactSchedulerAdapter'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.ImpactSchedulerAdapter']
+         "Impact_Pack.ImpactSchedulerAdapter"(p: IN['Impact_Pack.ImpactSchedulerAdapter'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactSchedulerAdapter']
           /** displayName="GITSScheduler Func Provider" category="ImpactPack_sampling" name="GITSSchedulerFuncProvider" output=[SCHEDULER_FUNC] */
-         "Impact_Pack.GITSSchedulerFuncProvider"(p: IN['Impact_Pack.GITSSchedulerFuncProvider'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.GITSSchedulerFuncProvider']
+         "Impact_Pack.GITSSchedulerFuncProvider"(p: IN['Impact_Pack.GITSSchedulerFuncProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.GITSSchedulerFuncProvider']
           /** displayName="UltralyticsDetectorProvider" category="ImpactPack" name="UltralyticsDetectorProvider" output=[BBOX_DETECTOR, SEGM_DETECTOR] */
-         "Impact_Pack.UltralyticsDetectorProvider"(p: IN['Impact_Pack.UltralyticsDetectorProvider'], meta?: ComfyNodeMetadata): Nodes['Impact_Pack.UltralyticsDetectorProvider']
+         "Impact_Pack.UltralyticsDetectorProvider"(p: IN['Impact_Pack.UltralyticsDetectorProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.UltralyticsDetectorProvider']
          /**
           * This is a test node
           * displayName="UnknownNodeXX" category="test" name="UnknownNodeXX" output=[]
          **/
-         UnknownNodeXX(p: IN['UnknownNodeXX'], meta?: ComfyNodeMetadata): Nodes['UnknownNodeXX']
+         UnknownNodeXX(p: IN['UnknownNodeXX'], meta?: ComfyNodeMetadata): Node['UnknownNodeXX']
       }
       interface Slots {
          // E_SamplerName
@@ -14775,74 +14775,74 @@ declare global {
          E_cf117469: "bbox/face_yolov8m.pt" | "bbox/hand_yolov8s.pt" | "segm/person_yolov8m-seg.pt"
       }
       export interface HasSingle {
-          SEG_ELT_control_net_wrapper: { 'HasSingle_SEG_ELT_control_net_wrapper': ComfyNodeOutput<'SEG_ELT_control_net_wrapper'> } // prettier-ignore
-          TRANSFORMERS_CLASSIFIER: { 'HasSingle_TRANSFORMERS_CLASSIFIER': ComfyNodeOutput<'TRANSFORMERS_CLASSIFIER'> } // prettier-ignore
-          SEG_ELT_crop_region: { 'HasSingle_SEG_ELT_crop_region': ComfyNodeOutput<'SEG_ELT_crop_region'> } // prettier-ignore
-          CLIP_VISION_OUTPUT: { 'HasSingle_CLIP_VISION_OUTPUT': ComfyNodeOutput<'CLIP_VISION_OUTPUT'> } // prettier-ignore
-          BOOLEAN: { 'HasSingle_BOOLEAN': boolean | ComfyNodeOutput<'BOOLEAN'> } // prettier-ignore
-          SEGS_PREPROCESSOR: { 'HasSingle_SEGS_PREPROCESSOR': ComfyNodeOutput<'SEGS_PREPROCESSOR'> } // prettier-ignore
-          KSAMPLER_ADVANCED: { 'HasSingle_KSAMPLER_ADVANCED': ComfyNodeOutput<'KSAMPLER_ADVANCED'> } // prettier-ignore
-          LATENT_OPERATION: { 'HasSingle_LATENT_OPERATION': ComfyNodeOutput<'LATENT_OPERATION'> } // prettier-ignore
-          IPADAPTER_PARAMS: { 'HasSingle_IPADAPTER_PARAMS': ComfyNodeOutput<'IPADAPTER_PARAMS'> } // prettier-ignore
-          WEIGHTS_STRATEGY: { 'HasSingle_WEIGHTS_STRATEGY': ComfyNodeOutput<'WEIGHTS_STRATEGY'> } // prettier-ignore
-          REGIONAL_PROMPTS: { 'HasSingle_REGIONAL_PROMPTS': ComfyNodeOutput<'REGIONAL_PROMPTS'> } // prettier-ignore
-          STRING: { 'HasSingle_STRING': string | ComfyNodeOutput<'STRING'> } // prettier-ignore
-          FLOAT: { 'HasSingle_FLOAT': number | ComfyNodeOutput<'FLOAT'> } // prettier-ignore
-          SAM_PARAMETERS: { 'HasSingle_SAM_PARAMETERS': ComfyNodeOutput<'SAM_PARAMETERS'> } // prettier-ignore
-          SCHEDULER_FUNC: { 'HasSingle_SCHEDULER_FUNC': ComfyNodeOutput<'SCHEDULER_FUNC'> } // prettier-ignore
-          IPADAPTER_PIPE: { 'HasSingle_IPADAPTER_PIPE': ComfyNodeOutput<'IPADAPTER_PIPE'> } // prettier-ignore
-          UPSCALE_MODEL: { 'HasSingle_UPSCALE_MODEL': ComfyNodeOutput<'UPSCALE_MODEL'> } // prettier-ignore
-          CLIPSEG_MODEL: { 'HasSingle_CLIPSEG_MODEL': ComfyNodeOutput<'CLIPSEG_MODEL'> } // prettier-ignore
-          POSE_KEYPOINT: { 'HasSingle_POSE_KEYPOINT': ComfyNodeOutput<'POSE_KEYPOINT'> } // prettier-ignore
-          BBOX_DETECTOR: { 'HasSingle_BBOX_DETECTOR': ComfyNodeOutput<'BBOX_DETECTOR'> } // prettier-ignore
-          MARIGOLDMODEL: { 'HasSingle_MARIGOLDMODEL': ComfyNodeOutput<'MARIGOLDMODEL'> } // prettier-ignore
-          DETAILER_HOOK: { 'HasSingle_DETAILER_HOOK': ComfyNodeOutput<'DETAILER_HOOK'> } // prettier-ignore
-          DETAILER_PIPE: { 'HasSingle_DETAILER_PIPE': ComfyNodeOutput<'DETAILER_PIPE'> } // prettier-ignore
-          SEGM_DETECTOR: { 'HasSingle_SEGM_DETECTOR': ComfyNodeOutput<'SEGM_DETECTOR'> } // prettier-ignore
-          UPSCALER_HOOK: { 'HasSingle_UPSCALER_HOOK': ComfyNodeOutput<'UPSCALER_HOOK'> } // prettier-ignore
-          INT: { 'HasSingle_INT': number | ComfyNodeOutput<'INT'> } // prettier-ignore
-          CONDITIONING: { 'HasSingle_CONDITIONING': ComfyNodeOutput<'CONDITIONING'> } // prettier-ignore
-          IMAGE_BOUNDS: { 'HasSingle_IMAGE_BOUNDS': ComfyNodeOutput<'IMAGE_BOUNDS'> } // prettier-ignore
-          OPTICAL_FLOW: { 'HasSingle_OPTICAL_FLOW': ComfyNodeOutput<'OPTICAL_FLOW'> } // prettier-ignore
-          SEG_ELT_bbox: { 'HasSingle_SEG_ELT_bbox': ComfyNodeOutput<'SEG_ELT_bbox'> } // prettier-ignore
-          CLIP_VISION: { 'HasSingle_CLIP_VISION': ComfyNodeOutput<'CLIP_VISION'> } // prettier-ignore
-          STYLE_MODEL: { 'HasSingle_STYLE_MODEL': ComfyNodeOutput<'STYLE_MODEL'> } // prettier-ignore
-          CONTROL_NET: { 'HasSingle_CONTROL_NET': ComfyNodeOutput<'CONTROL_NET'> } // prettier-ignore
-          MIDAS_MODEL: { 'HasSingle_MIDAS_MODEL': ComfyNodeOutput<'MIDAS_MODEL'> } // prettier-ignore
-          INSIGHTFACE: { 'HasSingle_INSIGHTFACE': ComfyNodeOutput<'INSIGHTFACE'> } // prettier-ignore
-          SEGS_HEADER: { 'HasSingle_SEGS_HEADER': ComfyNodeOutput<'SEGS_HEADER'> } // prettier-ignore
-          PHOTOMAKER: { 'HasSingle_PHOTOMAKER': ComfyNodeOutput<'PHOTOMAKER'> } // prettier-ignore
-          BLIP_MODEL: { 'HasSingle_BLIP_MODEL': ComfyNodeOutput<'BLIP_MODEL'> } // prettier-ignore
-          BASIC_PIPE: { 'HasSingle_BASIC_PIPE': ComfyNodeOutput<'BASIC_PIPE'> } // prettier-ignore
-          CROP_DATA: { 'HasSingle_CROP_DATA': ComfyNodeOutput<'CROP_DATA'> } // prettier-ignore
-          SAM_MODEL: { 'HasSingle_SAM_MODEL': ComfyNodeOutput<'SAM_MODEL'> } // prettier-ignore
-          IPADAPTER: { 'HasSingle_IPADAPTER': ComfyNodeOutput<'IPADAPTER'> } // prettier-ignore
-          TRACKING: { 'HasSingle_TRACKING': ComfyNodeOutput<'TRACKING'> } // prettier-ignore
-          UPSCALER: { 'HasSingle_UPSCALER': ComfyNodeOutput<'UPSCALER'> } // prettier-ignore
-          KSAMPLER: { 'HasSingle_KSAMPLER': ComfyNodeOutput<'KSAMPLER'> } // prettier-ignore
-          SAMPLER: { 'HasSingle_SAMPLER': ComfyNodeOutput<'SAMPLER'> } // prettier-ignore
-          PK_HOOK: { 'HasSingle_PK_HOOK': ComfyNodeOutput<'PK_HOOK'> } // prettier-ignore
-          SEG_ELT: { 'HasSingle_SEG_ELT': ComfyNodeOutput<'SEG_ELT'> } // prettier-ignore
-          LATENT: { 'HasSingle_LATENT': ComfyNodeOutput<'LATENT'> } // prettier-ignore
-          GLIGEN: { 'HasSingle_GLIGEN': ComfyNodeOutput<'GLIGEN'> } // prettier-ignore
-          SIGMAS: { 'HasSingle_SIGMAS': ComfyNodeOutput<'SIGMAS'> } // prettier-ignore
-          GUIDER: { 'HasSingle_GUIDER': ComfyNodeOutput<'GUIDER'> } // prettier-ignore
-          WEBCAM: { 'HasSingle_WEBCAM': ComfyNodeOutput<'WEBCAM'> } // prettier-ignore
-          NUMBER: { 'HasSingle_NUMBER': ComfyNodeOutput<'NUMBER'> } // prettier-ignore
-          EMBEDS: { 'HasSingle_EMBEDS': ComfyNodeOutput<'EMBEDS'> } // prettier-ignore
-          MODEL: { 'HasSingle_MODEL': ComfyNodeOutput<'MODEL'> } // prettier-ignore
-          IMAGE: { 'HasSingle_IMAGE': ComfyNodeOutput<'IMAGE'> } // prettier-ignore
-          NOISE: { 'HasSingle_NOISE': ComfyNodeOutput<'NOISE'> } // prettier-ignore
-          AUDIO: { 'HasSingle_AUDIO': ComfyNodeOutput<'AUDIO'> } // prettier-ignore
-          CLIP: { 'HasSingle_CLIP': ComfyNodeOutput<'CLIP'> } // prettier-ignore
-          MASK: { 'HasSingle_MASK': ComfyNodeOutput<'MASK'> } // prettier-ignore
-          DICT: { 'HasSingle_DICT': ComfyNodeOutput<'DICT'> } // prettier-ignore
-          LIST: { 'HasSingle_LIST': ComfyNodeOutput<'LIST'> } // prettier-ignore
-          SEED: { 'HasSingle_SEED': ComfyNodeOutput<'SEED'> } // prettier-ignore
-          SEGS: { 'HasSingle_SEGS': ComfyNodeOutput<'SEGS'> } // prettier-ignore
-          VAE: { 'HasSingle_VAE': ComfyNodeOutput<'VAE'> } // prettier-ignore
-          BUS: { 'HasSingle_BUS': ComfyNodeOutput<'BUS'> } // prettier-ignore
-          "*": { 'HasSingle_*': ComfyNodeOutput<'*'> } // prettier-ignore
+          SEG_ELT_control_net_wrapper: { '_SEG_ELT_control_net_wrapper': ComfyNodeOutput<'SEG_ELT_control_net_wrapper'> } // prettier-ignore
+          TRANSFORMERS_CLASSIFIER: { '_TRANSFORMERS_CLASSIFIER': ComfyNodeOutput<'TRANSFORMERS_CLASSIFIER'> } // prettier-ignore
+          SEG_ELT_crop_region: { '_SEG_ELT_crop_region': ComfyNodeOutput<'SEG_ELT_crop_region'> } // prettier-ignore
+          CLIP_VISION_OUTPUT: { '_CLIP_VISION_OUTPUT': ComfyNodeOutput<'CLIP_VISION_OUTPUT'> } // prettier-ignore
+          BOOLEAN: { '_BOOLEAN': boolean | ComfyNodeOutput<'BOOLEAN'> } // prettier-ignore
+          SEGS_PREPROCESSOR: { '_SEGS_PREPROCESSOR': ComfyNodeOutput<'SEGS_PREPROCESSOR'> } // prettier-ignore
+          KSAMPLER_ADVANCED: { '_KSAMPLER_ADVANCED': ComfyNodeOutput<'KSAMPLER_ADVANCED'> } // prettier-ignore
+          LATENT_OPERATION: { '_LATENT_OPERATION': ComfyNodeOutput<'LATENT_OPERATION'> } // prettier-ignore
+          IPADAPTER_PARAMS: { '_IPADAPTER_PARAMS': ComfyNodeOutput<'IPADAPTER_PARAMS'> } // prettier-ignore
+          WEIGHTS_STRATEGY: { '_WEIGHTS_STRATEGY': ComfyNodeOutput<'WEIGHTS_STRATEGY'> } // prettier-ignore
+          REGIONAL_PROMPTS: { '_REGIONAL_PROMPTS': ComfyNodeOutput<'REGIONAL_PROMPTS'> } // prettier-ignore
+          STRING: { '_STRING': string | ComfyNodeOutput<'STRING'> } // prettier-ignore
+          FLOAT: { '_FLOAT': number | ComfyNodeOutput<'FLOAT'> } // prettier-ignore
+          SAM_PARAMETERS: { '_SAM_PARAMETERS': ComfyNodeOutput<'SAM_PARAMETERS'> } // prettier-ignore
+          SCHEDULER_FUNC: { '_SCHEDULER_FUNC': ComfyNodeOutput<'SCHEDULER_FUNC'> } // prettier-ignore
+          IPADAPTER_PIPE: { '_IPADAPTER_PIPE': ComfyNodeOutput<'IPADAPTER_PIPE'> } // prettier-ignore
+          UPSCALE_MODEL: { '_UPSCALE_MODEL': ComfyNodeOutput<'UPSCALE_MODEL'> } // prettier-ignore
+          CLIPSEG_MODEL: { '_CLIPSEG_MODEL': ComfyNodeOutput<'CLIPSEG_MODEL'> } // prettier-ignore
+          POSE_KEYPOINT: { '_POSE_KEYPOINT': ComfyNodeOutput<'POSE_KEYPOINT'> } // prettier-ignore
+          BBOX_DETECTOR: { '_BBOX_DETECTOR': ComfyNodeOutput<'BBOX_DETECTOR'> } // prettier-ignore
+          MARIGOLDMODEL: { '_MARIGOLDMODEL': ComfyNodeOutput<'MARIGOLDMODEL'> } // prettier-ignore
+          DETAILER_HOOK: { '_DETAILER_HOOK': ComfyNodeOutput<'DETAILER_HOOK'> } // prettier-ignore
+          DETAILER_PIPE: { '_DETAILER_PIPE': ComfyNodeOutput<'DETAILER_PIPE'> } // prettier-ignore
+          SEGM_DETECTOR: { '_SEGM_DETECTOR': ComfyNodeOutput<'SEGM_DETECTOR'> } // prettier-ignore
+          UPSCALER_HOOK: { '_UPSCALER_HOOK': ComfyNodeOutput<'UPSCALER_HOOK'> } // prettier-ignore
+          INT: { '_INT': number | ComfyNodeOutput<'INT'> } // prettier-ignore
+          CONDITIONING: { '_CONDITIONING': ComfyNodeOutput<'CONDITIONING'> } // prettier-ignore
+          IMAGE_BOUNDS: { '_IMAGE_BOUNDS': ComfyNodeOutput<'IMAGE_BOUNDS'> } // prettier-ignore
+          OPTICAL_FLOW: { '_OPTICAL_FLOW': ComfyNodeOutput<'OPTICAL_FLOW'> } // prettier-ignore
+          SEG_ELT_bbox: { '_SEG_ELT_bbox': ComfyNodeOutput<'SEG_ELT_bbox'> } // prettier-ignore
+          CLIP_VISION: { '_CLIP_VISION': ComfyNodeOutput<'CLIP_VISION'> } // prettier-ignore
+          STYLE_MODEL: { '_STYLE_MODEL': ComfyNodeOutput<'STYLE_MODEL'> } // prettier-ignore
+          CONTROL_NET: { '_CONTROL_NET': ComfyNodeOutput<'CONTROL_NET'> } // prettier-ignore
+          MIDAS_MODEL: { '_MIDAS_MODEL': ComfyNodeOutput<'MIDAS_MODEL'> } // prettier-ignore
+          INSIGHTFACE: { '_INSIGHTFACE': ComfyNodeOutput<'INSIGHTFACE'> } // prettier-ignore
+          SEGS_HEADER: { '_SEGS_HEADER': ComfyNodeOutput<'SEGS_HEADER'> } // prettier-ignore
+          PHOTOMAKER: { '_PHOTOMAKER': ComfyNodeOutput<'PHOTOMAKER'> } // prettier-ignore
+          BLIP_MODEL: { '_BLIP_MODEL': ComfyNodeOutput<'BLIP_MODEL'> } // prettier-ignore
+          BASIC_PIPE: { '_BASIC_PIPE': ComfyNodeOutput<'BASIC_PIPE'> } // prettier-ignore
+          CROP_DATA: { '_CROP_DATA': ComfyNodeOutput<'CROP_DATA'> } // prettier-ignore
+          SAM_MODEL: { '_SAM_MODEL': ComfyNodeOutput<'SAM_MODEL'> } // prettier-ignore
+          IPADAPTER: { '_IPADAPTER': ComfyNodeOutput<'IPADAPTER'> } // prettier-ignore
+          TRACKING: { '_TRACKING': ComfyNodeOutput<'TRACKING'> } // prettier-ignore
+          UPSCALER: { '_UPSCALER': ComfyNodeOutput<'UPSCALER'> } // prettier-ignore
+          KSAMPLER: { '_KSAMPLER': ComfyNodeOutput<'KSAMPLER'> } // prettier-ignore
+          SAMPLER: { '_SAMPLER': ComfyNodeOutput<'SAMPLER'> } // prettier-ignore
+          PK_HOOK: { '_PK_HOOK': ComfyNodeOutput<'PK_HOOK'> } // prettier-ignore
+          SEG_ELT: { '_SEG_ELT': ComfyNodeOutput<'SEG_ELT'> } // prettier-ignore
+          LATENT: { '_LATENT': ComfyNodeOutput<'LATENT'> } // prettier-ignore
+          GLIGEN: { '_GLIGEN': ComfyNodeOutput<'GLIGEN'> } // prettier-ignore
+          SIGMAS: { '_SIGMAS': ComfyNodeOutput<'SIGMAS'> } // prettier-ignore
+          GUIDER: { '_GUIDER': ComfyNodeOutput<'GUIDER'> } // prettier-ignore
+          WEBCAM: { '_WEBCAM': ComfyNodeOutput<'WEBCAM'> } // prettier-ignore
+          NUMBER: { '_NUMBER': ComfyNodeOutput<'NUMBER'> } // prettier-ignore
+          EMBEDS: { '_EMBEDS': ComfyNodeOutput<'EMBEDS'> } // prettier-ignore
+          MODEL: { '_MODEL': ComfyNodeOutput<'MODEL'> } // prettier-ignore
+          IMAGE: { '_IMAGE': ComfyNodeOutput<'IMAGE'> } // prettier-ignore
+          NOISE: { '_NOISE': ComfyNodeOutput<'NOISE'> } // prettier-ignore
+          AUDIO: { '_AUDIO': ComfyNodeOutput<'AUDIO'> } // prettier-ignore
+          CLIP: { '_CLIP': ComfyNodeOutput<'CLIP'> } // prettier-ignore
+          MASK: { '_MASK': ComfyNodeOutput<'MASK'> } // prettier-ignore
+          DICT: { '_DICT': ComfyNodeOutput<'DICT'> } // prettier-ignore
+          LIST: { '_LIST': ComfyNodeOutput<'LIST'> } // prettier-ignore
+          SEED: { '_SEED': ComfyNodeOutput<'SEED'> } // prettier-ignore
+          SEGS: { '_SEGS': ComfyNodeOutput<'SEGS'> } // prettier-ignore
+          VAE: { '_VAE': ComfyNodeOutput<'VAE'> } // prettier-ignore
+          BUS: { '_BUS': ComfyNodeOutput<'BUS'> } // prettier-ignore
+          "*": { '_*': ComfyNodeOutput<'*'> } // prettier-ignore
       }
       export interface HasSingle_E_90ee5994 { _E_90ee5994: Union['E_90ee5994'] } // prettier-ignore
       export interface HasSingle_E_720061fd { _E_720061fd: Union['E_720061fd'] } // prettier-ignore

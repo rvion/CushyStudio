@@ -262,9 +262,9 @@ const _apply_cnet = (
    strength: number,
    startPct: number,
    endPct: number,
-   image: Comfy.Input.IMAGE,
+   image: Comfy.Signal['IMAGE'],
    cnet_name: Comfy.Slots['ControlNetLoader.control_net_name'],
-   mask: HasSingle_MASK | null,
+   mask: Comfy.HasSingle['MASK'] | null,
 ): void => {
    const run = getCurrentRun()
    const graph = run.nodes

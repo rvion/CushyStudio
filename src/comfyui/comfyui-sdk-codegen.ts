@@ -79,15 +79,13 @@ export function codegenSDK(
    p('}')
 
    // #region NODES -----------------------------------------------------------------------------------------
-   p(`interface Nodes {`)
+   p(`interface Node {`)
    for (const n of nodes) {
       p(
          `   ${escapeJSKey(n.shortestUnambiguousName)}: ComfyNode<IN['${n.shortestUnambiguousName}'], OUT['${n.shortestUnambiguousName}']> & {`,
       )
       for (const hassingle of n.singleOuputs) {
-         p(
-            `      ${escapeJSKey(`HasSingle_${hassingle.nameInCushy}`)}: ComfyNodeOutput<'${hassingle.typeName}'>`,
-         )
+         p(`      ${escapeJSKey(`_${hassingle.nameInCushy}`)}: ComfyNodeOutput<'${hassingle.typeName}'>`)
          // const ifaces = this.singleOuputs.map((i) => `HasSingle_${i.typeName}`)
       }
       p(`   }`)
@@ -109,7 +107,7 @@ export function codegenSDK(
          p(`    /** ${baseDescription} */`) // prettier-ignore
       }
       p(
-         `   ${escapeJSKey(n.shortestUnambiguousName)}(p: IN['${n.shortestUnambiguousName}'], meta?: ComfyNodeMetadata): Nodes['${n.shortestUnambiguousName}']`,
+         `   ${escapeJSKey(n.shortestUnambiguousName)}(p: IN['${n.shortestUnambiguousName}'], meta?: ComfyNodeMetadata): Node['${n.shortestUnambiguousName}']`,
       )
    }
    p(`}`)
@@ -210,7 +208,7 @@ export function codegenSDK(
    // #region HasSingle -------------------------------------------------------------------------------------
    p(`export interface HasSingle {`)
    for (const t of slotTypes) {
-      p(`    ${escapeJSKey(t.comfyType)}: { 'HasSingle_${t.comfyType}': ${t.tsType} } // prettier-ignore`)
+      p(`    ${escapeJSKey(t.comfyType)}: { '_${t.comfyType}': ${t.tsType} } // prettier-ignore`)
    }
    p(`}`)
 

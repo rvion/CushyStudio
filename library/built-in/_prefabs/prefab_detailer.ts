@@ -225,12 +225,14 @@ export const run_refiners_fromImage = (
          const eyesPrompt =
             eyes.prompt || 'eyes, perfect eyes, perfect anatomy, hightly detailed, sharp details'
 
-         const faceMesh = graph.MediaPipe$7FaceMeshPreprocessor({
-            image,
-            max_faces: 10,
-            min_confidence: 0.5,
-            resolution: 512,
-         })
+         const faceMesh =
+            graph.MediaPipe -
+            FaceMeshPreprocessor({
+               image,
+               max_faces: 10,
+               min_confidence: 0.5,
+               resolution: 512,
+            })
          const meshPreview = graph.PreviewImage({ images: faceMesh._IMAGE })
          const segs = graph.MediaPipeFaceMeshToSEGS({
             image: faceMesh._IMAGE,

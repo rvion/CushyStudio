@@ -118,7 +118,7 @@ export const run_cnet_Normal = (
    if (Normal.preprocessor) {
       if (Normal.preprocessor.BAE) {
          const bae = Normal.preprocessor.BAE
-         image = graph['controlnet_aux.BAE$7NormalMapPreprocessor']({
+         image = graph['controlnet_aux.BAE-NormalMapPreprocessor']({
             image: image,
             resolution: resolution,
          })._IMAGE
@@ -126,7 +126,7 @@ export const run_cnet_Normal = (
          else graph.PreviewImage({ images: image })
       } else if (Normal.preprocessor.Midas) {
          const midas = Normal.preprocessor.Midas
-         image = graph['controlnet_aux.MiDaS$7NormalMapPreprocessor']({
+         image = graph['controlnet_aux.MiDaS-NormalMapPreprocessor']({
             image: image,
             resolution: resolution,
             a: midas.a_value,
