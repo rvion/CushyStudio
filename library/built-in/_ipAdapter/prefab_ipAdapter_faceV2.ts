@@ -43,7 +43,7 @@ export function ui_IPAdapterFaceIDV2(): UI_IPAdapterFaceIDV2 {
                      weight_faceidv2: form.float({ default: 0.8, min: -1, max: 3, step: 0.1 }),
                      models: form.fields(
                         {
-                           type: form.enum['IPAdapterUnifiedLoaderFaceID.input.preset']({
+                           type: form.enum['IPAdapterUnifiedLoaderFaceID.preset']({
                               default: 'FACEID PLUS V2',
                            }),
                         },
@@ -59,13 +59,13 @@ export function ui_IPAdapterFaceIDV2(): UI_IPAdapterFaceIDV2 {
                            startAtStepPercent: form.float({ default: 0, min: 0, max: 1, step: 0.1 }),
                            endAtStepPercent: form.float({ default: 1, min: 0, max: 1, step: 0.05 }),
                            lora_strength: form.float({ default: 0.6, min: 0, max: 1, step: 0.1 }),
-                           embedding_combination: form.enum['IPAdapterAdvanced.input.combine_embeds']({
+                           embedding_combination: form.enum['IPAdapterAdvanced.combine_embeds']({
                               default: 'average',
                            }),
-                           weight_type: form.enum['IPAdapterAdvanced.input.weight_type']({
+                           weight_type: form.enum['IPAdapterAdvanced.weight_type']({
                               default: 'linear',
                            }),
-                           embedding_scaling: form.enum['IPAdapterAdvanced.input.embeds_scaling']({
+                           embedding_scaling: form.enum['IPAdapterAdvanced.embeds_scaling']({
                               default: 'V only',
                            }),
                            noise: form.float({ default: 0, min: 0, max: 1, step: 0.1 }),
@@ -157,7 +157,7 @@ export function ui_FaceIDImageInput(form: X.Builder): UI_FaceIDImageInput {
          advanced: form.fields(
             {
                sharpening: form.float({ default: 0, min: 0, max: 1, step: 0.1 }),
-               crop_position: form.enum['PrepImageForClipVision.input.crop_position']({ default: 'top' }),
+               crop_position: form.enum['PrepImageForClipVision.crop_position']({ default: 'top' }),
             },
             {
                startCollapsed: true,
@@ -187,7 +187,7 @@ function ui_extraIpAdapter(form: X.Builder): UI_extraIpAdapter {
    return form.fields(
       {
          weight: form.float({ default: 0.4, min: -1, max: 3, step: 0.1 }),
-         embedding_combination: form.enum['IPAdapterAdvanced.input.combine_embeds']({
+         embedding_combination: form.enum['IPAdapterAdvanced.combine_embeds']({
             default: 'average',
          }),
          ipAdapterSettings: ui_ipadapter_advancedSettings(form, 0.25, 1, 'ease in'),

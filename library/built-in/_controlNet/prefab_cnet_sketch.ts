@@ -9,10 +9,10 @@ export type UI_subform_Sketch = X.XGroup<{
    advanced: X.XGroup<{
       startAtStepPercent: X.XNumber
       endAtStepPercent: X.XNumber
-      crop: X.XEnum<Comfy.Enums['Comfy.Base.LatentUpscale.input.crop']>
-      upscale_method: X.XEnum<Comfy.Enums['Comfy.Base.ImageScale.input.upscale_method']>
+      crop: X.XEnum<Comfy.Enums['LatentUpscale.crop']>
+      upscale_method: X.XEnum<Comfy.Enums['ImageScale.upscale_method']>
    }>
-   cnet_model_name: X.XEnum<Comfy.Enums['Comfy.Base.ControlNetLoader.input.control_net_name']>
+   cnet_model_name: X.XEnum<Comfy.Enums['ControlNetLoader.control_net_name']>
 }>
 export function ui_subform_Sketch(): UI_subform_Sketch {
    const form = getCurrentForm()
@@ -20,7 +20,7 @@ export function ui_subform_Sketch(): UI_subform_Sketch {
       .group({
          label: 'Sketch',
          items: {
-            cnet_model_name: form.enum['Comfy.Base.ControlNetLoader.input.control_net_name']({
+            cnet_model_name: form.enum['ControlNetLoader.control_net_name']({
                label: 'Model',
                default: 't2iadapter_sketch_sd14v1.pth',
             }),
@@ -44,7 +44,7 @@ export const run_cnet_Sketch = (
    image: Comfy.Input.IMAGE,
 ): {
    image: Comfy.Input.IMAGE
-   cnet_name: Comfy.Enums['Comfy.Base.ControlNetLoader.input.control_net_name']
+   cnet_name: Comfy.Enums['ControlNetLoader.control_net_name']
 } => {
    const run = getCurrentRun()
    const graph = run.nodes

@@ -1,6 +1,5 @@
 import type { ComfyUIObjectInfoParsed } from './ComfyUIObjectInfoParsed'
 
-import { ComfyPrimitiveMapping } from '../core/Primitives'
 import { CodeBuffer } from '../utils/codegen/CodeBuffer'
 import { escapeJSKey } from '../utils/codegen/escapeJSKey'
 import { type ComfyUIObjectInfoParsedNodeSchema, wrapQuote } from './ComfyUIObjectInfoParsedNodeSchema'
@@ -84,7 +83,7 @@ export function codegenSDK(
    //    b2.w(`export interface NODES {`)
    // }
    const nodesByModule = groupByAsArray(this.nodes, (n) => n.pythonModule)
-   p('// XXX ' + nodesByModule.length)
+   // p('// XXX ' + nodesByModule.length)
    for (const [pythonModule, nodes] of nodesByModule) {
       p(``)
       p(`// ${pythonModule}`)
@@ -121,9 +120,17 @@ export function codegenSDK(
    p(`// #${''}region 1. Enums`)
    p('namespace Comfy {')
    b.indent()
+   p(`export interface Nodes {`)
+   for (const e of Object.values(this.nodesByNameInCushy)) {
+      const qualifiedType = `${pythonModuleToNamespace(e.pythonModule)}.Nodes['${e.nameInCushy}']`
+      p(`   ${escapeJSKey(e.shortestUnambiguousName)}: ${qualifiedType}`)
+      //
+   }
+   p('}')
    p(`export interface Enums {`)
-   const requirables = this.requirables
+   // const requirables = this.requirables
    for (const e of this.knownUnionByHash.values()) {
+      p('    // ' + e.unionNameInCushy)
       for (const alias of e.enumNames) {
          const enumKey = alias
          // p(`    ${escapeJSKey(enumKey)}: { $Name: ${JSON.stringify(enumKey)}, $Value: Comfy.Union.${e.unionNameInCushy} },`) // prettier-ignore
@@ -212,6 +219,7 @@ export function codegenSDK(
       if (e.values.length > 0) {
          allAcceptableEnums.push(e.unionNameInCushy)
          // p(`   type ${e.hash}=0`)
+         p(`   // ${JSON.stringify(e.enumNames)}`)
          p(`   type ${e.unionNameInCushy} = ${e.values.map((v) => `${JSON.stringify(v)}`).join(' | ')}`)
          // p(`   type ${e.enumNameInCushy} = ${e.values.map((v) => `${JSON.stringify(v)}`).join(' | ')}`)
          // for (const { enumNameAlias, pythonModule } of e.aliases) {

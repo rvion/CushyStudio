@@ -18,25 +18,25 @@ export const prefabModelFlux = (): $prefabModelFlux => {
    // const ckpts = cushy.managerRepository.getKnownCheckpoints()
    return b
       .fields({
-         ckpt_name: b.enum['UNETLoader.input.unet_name']({
+         ckpt_name: b.enum['UNETLoader.unet_name']({
             // @ts-ignore
             default: 'flux1-dev.sft',
          }),
-         weight_type: b.enum['UNETLoader.input.weight_dtype']({
+         weight_type: b.enum['UNETLoader.weight_dtype']({
             label: 'Weight Type',
             default: 'fp8_e4m3fn',
          }),
-         clip1: b.enum
-            .Enum_DualCLIPLoader_clip_name1({
-               // @ts-ignore
-               default: 't5xxl_fp16.safetensors',
-            })
+         clip1: b.enum['DualCLIPLoader.clip_name1']({
+            // @ts-ignore
+            default: 't5xxl_fp16.safetensors',
+         })
             .addRequirementOnComfyManagerModel('google-t5/t5-v1_1-xxl_encoderonly-fp16')
             .addRequirementOnComfyManagerModel('google-t5/t5-v1_1-xxl_encoderonly-fp8_e4m3fn'),
-         clip2: b.enum
-            .Enum_DualCLIPLoader_clip_name2({ default: 'clip_l.safetensors' })
-            .addRequirementOnComfyManagerModel('comfyanonymous/clip_l'),
-         type: b.enum['DualCLIPLoader.input.type']({ default: 'flux' }),
+         clip2: b.enum['DualCLIPLoader.clip_name2']({
+            // @ts-ignore
+            default: 'clip_l.safetensors',
+         }).addRequirementOnComfyManagerModel('comfyanonymous/clip_l'),
+         type: b.enum['DualCLIPLoader.type']({ default: 'flux' }),
          extra: schemaModelExtras({
             defaultVAE: 'FLUX1\\ae.sft',
             vaeActiveByDefault: true,

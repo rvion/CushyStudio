@@ -16,7 +16,7 @@ X.XEnum<Comfy.Enums['$1.input.$2']>
 
 
 <!-- ui.enum.Enum_LatentUpscale_crop -->
-<!-- "Comfy.Base.LatentUpscale.input.crop" -->
+<!-- "Comfy.Base.LatentUpscale.crop" -->
 ```
 .enum.Enum_([A-Za-z0-9]+)_([A-Za-z0-9_]+)\(
 .enum["$1.input.$2"]
@@ -32,5 +32,5 @@ X.XEnum<Comfy.Enums['$1.input.$2']>
 
 ```
 : Enum_([A-Za-z0-9]+)_([A-Za-z0-9_]+)
-: Comfy.Enums['Comfy.Base.$1.input.$2']
+: Comfy.Enums['$1.input.$2']
 ```

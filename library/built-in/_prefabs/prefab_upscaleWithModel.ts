@@ -12,7 +12,7 @@ export function ui_upscaleWithModel(): UI_upscaleWithModel {
    return ui
       .group({
          label: 'Upscale via Model',
-         items: { model: ui.enum['UpscaleModelLoader.input.model_name']({ default: '4x-UltraSharp.pth' }) },
+         items: { model: ui.enum['UpscaleModelLoader.model_name']({ default: '4x-UltraSharp.pth' }) },
          icon: 'mdiArrowExpandAll',
          box: { base: { hue: 180, chroma: 0.1 } },
       })

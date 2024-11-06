@@ -28,7 +28,7 @@ export function ui_subform_Normal(): UI_subform_Normal {
                label: 'Select or Download Models',
                // startCollapsed: true,
                items: {
-                  cnet_model_name: form.enum['ControlNetLoader.input.control_net_name']({
+                  cnet_model_name: form.enum['ControlNetLoader.control_net_name']({
                      label: 'Model',
                      default: 'control_v11p_sd15_normalbae.pth' as any,
                      filter: (x) => x.toString().includes('normal'),
@@ -108,10 +108,10 @@ export const run_cnet_Normal = (
    resolution: number, // 512 | 768 | 1024 = 512,
 ): {
    image: Comfy.Input.IMAGE
-   cnet_name: Comfy.Enums['Comfy.Base.ControlNetLoader.input.control_net_name']
+   cnet_name: Comfy.Enums['ControlNetLoader.control_net_name']
 } => {
-   const run = getCurrentRun()
-   const graph = run.nodes
+   const sdk = getCurrentRun()
+   const graph = sdk.nodes
    const cnet_name = Normal.models.cnet_model_name
 
    // PREPROCESSOR - Normal ===========================================================

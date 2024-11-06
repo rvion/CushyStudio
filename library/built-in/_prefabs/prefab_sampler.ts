@@ -15,8 +15,8 @@ type UiSampleProps = {
    denoise?: number
    steps?: number
    cfg?: number
-   sampler_name?: Comfy.Enums['Comfy.Base.KSampler.input.sampler_name']
-   scheduler?: Comfy.Enums['Comfy.Base.KSampler.input.scheduler']
+   sampler_name?: Comfy.Enums['KSampler.sampler_name']
+   scheduler?: Comfy.Enums['KSampler.scheduler']
    startCollapsed?: boolean
 }
 export function ui_sampler(p?: UiSampleProps): UI_Sampler {
@@ -27,11 +27,11 @@ export function ui_sampler(p?: UiSampleProps): UI_Sampler {
          steps: form.int({ step: 10, default: p?.steps ?? 20, label: 'Steps', min: 0, softMax: 100 }),
          cfg: form.float({ step: 1, label: 'CFG', min: 0, max: 100, softMax: 10, default: p?.cfg ?? 7 }),
          seed: form.seed({}),
-         sampler_name: form.enum['KSampler.input.sampler_name']({
+         sampler_name: form.enum['KSampler.sampler_name']({
             label: 'Sampler',
             default: p?.sampler_name ?? 'euler',
          }),
-         scheduler: form.enum['KSampler.input.scheduler']({
+         scheduler: form.enum['KSampler.scheduler']({
             label: 'Scheduler',
             default: p?.scheduler ?? 'karras',
          }),

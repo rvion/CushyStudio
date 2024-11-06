@@ -18,7 +18,7 @@ export function ui_mask(): UI_Mask {
       collapsed: false,
       items: {
          image: form.image({}),
-         mode: form.enum['LoadImageMask.input.channel']({}),
+         mode: form.enum['LoadImageMask.channel']({}),
          invert: form.bool({}),
          grow: form.int({ default: 0, min: -100, max: 100 }),
          feather: form.int({ default: 0, min: 0, max: 100 }),

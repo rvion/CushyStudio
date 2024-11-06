@@ -26,7 +26,7 @@ export type $schemaModelExtras = X.XChoices<{
 
 export const schemaModelExtras = (
    p: {
-      defaultVAE?: Comfy.Enums['Comfy.Base.VAELoader.input.vae_name']
+      defaultVAE?: Comfy.Enums['VAELoader.vae_name']
       vaeActiveByDefault?: boolean
       // default?: $schemaModelExtras['$Value']
    } = {},
@@ -35,9 +35,9 @@ export const schemaModelExtras = (
    return b
       .choices(
          {
-            checkpointConfig: b.enum['CheckpointLoader.input.config_name']({ label: 'Config' }),
+            checkpointConfig: b.enum['CheckpointLoader.config_name']({ label: 'Config' }),
             rescaleCFG: b.float({ min: 0, max: 2, softMax: 1, default: 0.75 }),
-            vae: b.enum['VAELoader.input.vae_name']({ default: p.defaultVAE }),
+            vae: b.enum['VAELoader.vae_name']({ default: p.defaultVAE }),
             clipSkip: b.int({ label: 'Clip Skip', default: 1, min: 1, max: 5 }),
             freeU: b.empty({ label: 'freeU ' }),
             freeUv2: b.empty({ label: 'freeU (v2)' }),

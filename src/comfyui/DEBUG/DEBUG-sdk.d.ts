@@ -232,12 +232,21 @@ declare global {
            */
           | 'custom_nodes.websocket_image_save'
           /**
+           * SDK Namespace: Comfy.Custom.IPAdapter_plus
+           * Nodes: IPAdapter, IPAdapterAdvanced, IPAdapterBatch, IPAdapterFaceID, IPAdapterFaceIDKolors, IPAAdapterFaceIDBatch, IPAdapterTiled, IPAdapterTiledBatch, IPAdapterEmbeds, IPAdapterEmbedsBatch, IPAdapterStyleComposition, IPAdapterStyleCompositionBatch, IPAdapterMS, IPAdapterClipVisionEnhancer, IPAdapterClipVisionEnhancerBatch, IPAdapterFromParams, IPAdapterPreciseStyleTransfer, IPAdapterPreciseStyleTransferBatch, IPAdapterPreciseComposition, IPAdapterPreciseCompositionBatch, IPAdapterUnifiedLoader, IPAdapterUnifiedLoaderFaceID, IPAdapterModelLoader, IPAdapterInsightFaceLoader, IPAdapterUnifiedLoaderCommunity, IPAdapterEncoder, IPAdapterCombineEmbeds, IPAdapterNoise, PrepImageForClipVision, IPAdapterSaveEmbeds, IPAdapterLoadEmbeds, IPAdapterWeights, IPAdapterCombineWeights, IPAdapterWeightsFromStrategy, IPAdapterPromptScheduleFromWeightsStrategy, IPAdapterRegionalConditioning, IPAdapterCombineParams
+           */
+          | 'custom_nodes.ComfyUI_IPAdapter_plus'
+          /**
+           * SDK Namespace: Comfy.Custom.controlnet_aux
+           * Nodes: ShufflePreprocessor, DensePosePreprocessor, LeReS-DepthMapPreprocessor, BinaryPreprocessor, AnimeFace_SemSegPreprocessor, Zoe-DepthMapPreprocessor, DepthAnythingPreprocessor, Zoe_DepthAnythingPreprocessor, DepthAnythingV2Preprocessor, CannyEdgePreprocessor, DWPreprocessor, AnimalPosePreprocessor, ImageLuminanceDetector, ImageIntensityDetector, MediaPipe-FaceMeshPreprocessor, DiffusionEdge_Preprocessor, M-LSDPreprocessor, HEDPreprocessor, FakeScribblePreprocessor, OneFormer-COCO-SemSegPreprocessor, OneFormer-ADE20K-SemSegPreprocessor, BAE-NormalMapPreprocessor, MeshGraphormer-DepthMapPreprocessor, MeshGraphormer+ImpactDetector-DepthMapPreprocessor, DSINE-NormalMapPreprocessor, MiDaS-NormalMapPreprocessor, MiDaS-DepthMapPreprocessor, AnyLineArtPreprocessor_aux, SAMPreprocessor, UniFormer-SemSegPreprocessor, SemSegPreprocessor, PiDiNetPreprocessor, InpaintPreprocessor, LineArtPreprocessor, OpenposePreprocessor, Unimatch_OptFlowPreprocessor, MaskOptFlow, SavePoseKpsAsJsonFile, FacialPartColoringFromPoseKps, UpperBodyTrackingFromPoseKps, RenderPeopleKps, RenderAnimalKps, TEEDPreprocessor, PyraCannyPreprocessor, Metric3D-DepthMapPreprocessor, Metric3D-NormalMapPreprocessor, Manga2Anime_LineArt_Preprocessor, ScribblePreprocessor, Scribble_XDoG_Preprocessor, Scribble_PiDiNet_Preprocessor, AnimeLineArtPreprocessor, LineartStandardPreprocessor, TilePreprocessor, TTPlanet_TileGF_Preprocessor, TTPlanet_TileSimple_Preprocessor, ColorPreprocessor, AIO_Preprocessor, ControlNetPreprocessorSelector, PixelPerfectResolution, ImageGenResolutionFromImage, ImageGenResolutionFromLatent, HintImageEnchance, ExecuteAllControlNetPreprocessors, ControlNetAuxSimpleAddText
+           */
+          | 'custom_nodes.comfyui_controlnet_aux'
+          /**
            * SDK Namespace: Comfy.Custom.Impact_Pack
            * Nodes: SAMLoader, CLIPSegDetectorProvider, ONNXDetectorProvider, BitwiseAndMaskForEach, SubtractMaskForEach, DetailerForEach, DetailerForEachDebug, DetailerForEachPipe, DetailerForEachDebugPipe, DetailerForEachPipeForAnimateDiff, SAMDetectorCombined, SAMDetectorSegmented, FaceDetailer, FaceDetailerPipe, MaskDetailerPipe, ToDetailerPipe, ToDetailerPipeSDXL, FromDetailerPipe, FromDetailerPipe_v2, FromDetailerPipeSDXL, AnyPipeToBasic, ToBasicPipe, FromBasicPipe, FromBasicPipe_v2, BasicPipeToDetailerPipe, BasicPipeToDetailerPipeSDXL, DetailerPipeToBasicPipe, EditBasicPipe, EditDetailerPipe, EditDetailerPipeSDXL, LatentPixelScale, PixelKSampleUpscalerProvider, PixelKSampleUpscalerProviderPipe, IterativeLatentUpscale, IterativeImageUpscale, PixelTiledKSampleUpscalerProvider, PixelTiledKSampleUpscalerProviderPipe, TwoSamplersForMaskUpscalerProvider, TwoSamplersForMaskUpscalerProviderPipe, PixelKSampleHookCombine, DenoiseScheduleHookProvider, StepsScheduleHookProvider, CfgScheduleHookProvider, NoiseInjectionHookProvider, UnsamplerHookProvider, CoreMLDetailerHookProvider, PreviewDetailerHookProvider, DetailerHookCombine, NoiseInjectionDetailerHookProvider, UnsamplerDetailerHookProvider, DenoiseSchedulerDetailerHookProvider, SEGSOrderedFilterDetailerHookProvider, SEGSRangeFilterDetailerHookProvider, SEGSLabelFilterDetailerHookProvider, VariationNoiseDetailerHookProvider, BitwiseAndMask, SubtractMask, AddMask, ImpactSegsAndMask, ImpactSegsAndMaskForEach, EmptySegs, ImpactFlattenMask, MediaPipeFaceMeshToSEGS, MaskToSEGS, MaskToSEGS_for_AnimateDiff, ToBinaryMask, MasksToMaskList, MaskListToMaskBatch, ImageListToImageBatch, SetDefaultImageForSEGS, RemoveImageFromSEGS, BboxDetectorSEGS, SegmDetectorSEGS, ONNXDetectorSEGS, ImpactSimpleDetectorSEGS_for_AD, ImpactSimpleDetectorSEGS, ImpactSimpleDetectorSEGSPipe, ImpactControlNetApplySEGS, ImpactControlNetApplyAdvancedSEGS, ImpactControlNetClearSEGS, ImpactIPAdapterApplySEGS, ImpactDecomposeSEGS, ImpactAssembleSEGS, ImpactFrom_SEG_ELT, ImpactEdit_SEG_ELT, ImpactDilate_Mask_SEG_ELT, ImpactDilateMask, ImpactGaussianBlurMask, ImpactDilateMaskInSEGS, ImpactGaussianBlurMaskInSEGS, ImpactScaleBy_BBOX_SEG_ELT, ImpactFrom_SEG_ELT_bbox, ImpactFrom_SEG_ELT_crop_region, ImpactCount_Elts_in_SEGS, BboxDetectorCombined_v2, SegmDetectorCombined_v2, SegsToCombinedMask, KSamplerProvider, TwoSamplersForMask, TiledKSamplerProvider, KSamplerAdvancedProvider, TwoAdvancedSamplersForMask, ImpactNegativeConditioningPlaceholder, PreviewBridge, PreviewBridgeLatent, ImageSender, ImageReceiver, LatentSender, LatentReceiver, ImageMaskSwitch, LatentSwitch, SEGSSwitch, ImpactSwitch, ImpactInversedSwitch, ImpactWildcardProcessor, ImpactWildcardEncode, SEGSUpscaler, SEGSUpscalerPipe, SEGSDetailer, SEGSPaste, SEGSPreview, SEGSPreviewCNet, SEGSToImageList, ImpactSEGSToMaskList, ImpactSEGSToMaskBatch, ImpactSEGSConcat, ImpactSEGSPicker, ImpactMakeTileSEGS, ImpactSEGSMerge, SEGSDetailerForAnimateDiff, ImpactKSamplerBasicPipe, ImpactKSamplerAdvancedBasicPipe, ReencodeLatent, ReencodeLatentPipe, ImpactImageBatchToImageList, ImpactMakeImageList, ImpactMakeImageBatch, ImpactMakeAnyList, ImpactMakeMaskList, ImpactMakeMaskBatch, RegionalSampler, RegionalSamplerAdvanced, CombineRegionalPrompts, RegionalPrompt, ImpactCombineConditionings, ImpactConcatConditionings, ImpactSEGSLabelAssign, ImpactSEGSLabelFilter, ImpactSEGSRangeFilter, ImpactSEGSOrderedFilter, ImpactCompare, ImpactConditionalBranch, ImpactConditionalBranchSelMode, ImpactIfNone, ImpactConvertDataType, ImpactLogicalOperators, ImpactInt, ImpactFloat, ImpactBoolean, ImpactValueSender, ImpactValueReceiver, ImpactImageInfo, ImpactLatentInfo, ImpactMinMax, ImpactNeg, ImpactConditionalStopIteration, ImpactStringSelector, StringListToString, WildcardPromptFromString, ImpactExecutionOrderController, RemoveNoiseMask, ImpactLogger, ImpactDummyInput, ImpactQueueTrigger, ImpactQueueTriggerCountdown, ImpactSetWidgetValue, ImpactNodeSetMuteState, ImpactControlBridge, ImpactIsNotEmptySEGS, ImpactSleep, ImpactRemoteBoolean, ImpactRemoteInt, ImpactHFTransformersClassifierProvider, ImpactSEGSClassify, ImpactSchedulerAdapter, GITSSchedulerFuncProvider, UltralyticsDetectorProvider
            */
           | 'custom_nodes.ComfyUI-Impact-Pack'
    }
-   // XXX 46
    
    // nodes
    namespace Comfy.Base {
@@ -417,9 +426,9 @@ declare global {
           /** default=8 min=100 max=100 step=0.1 */
           cfg?: Comfy.Input.FLOAT
           /** */
-          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          sampler_name: Comfy.Union.E_SamplerName
           /** */
-          scheduler: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325
+          scheduler: Comfy.Union.E_SchedulerName
           /** */
           positive: Comfy.Input.CONDITIONING
           /** */
@@ -439,7 +448,7 @@ declare global {
       }
       interface CheckpointLoaderSimple_input {
           /** */
-          ckpt_name: Comfy.Union.E_1f08f73a9a576ae570aa3d82ea94f2bcfc29a8fc
+          ckpt_name: Comfy.Union.E_CkptName
       }
       interface CLIPTextEncode extends HasSingle_CONDITIONING, ComfyNode<CLIPTextEncode_input, CLIPTextEncode_output> {
           nameInComfy: "CLIPTextEncode"
@@ -506,7 +515,7 @@ declare global {
           VAE: ComfyNodeOutput<'VAE', 0>,
       }
       interface VAELoader_input {
-          vae_name: Comfy.Union.E_621a1d2d13812defa70c4b6ec953d17713bd232a
+          vae_name: Comfy.Union.E_VaeName
       }
       interface EmptyLatentImage extends HasSingle_LATENT, ComfyNode<EmptyLatentImage_input, EmptyLatentImage_output> {
           nameInComfy: "EmptyLatentImage"
@@ -530,7 +539,7 @@ declare global {
       }
       interface LatentUpscale_input {
           samples: Comfy.Input.LATENT
-          upscale_method: Comfy.Union.E_6e6cbf6c48411ad480e010b0c9d2434b41af430d
+          upscale_method: Comfy.Union.E_LatentUpscaleMethod
           /** default=512 min=16384 max=16384 step=8 */
           width?: Comfy.Input.INT
           /** default=512 min=16384 max=16384 step=8 */
@@ -545,7 +554,7 @@ declare global {
       }
       interface LatentUpscaleBy_input {
           samples: Comfy.Input.LATENT
-          upscale_method: Comfy.Union.E_6e6cbf6c48411ad480e010b0c9d2434b41af430d
+          upscale_method: Comfy.Union.E_LatentUpscaleMethod
           /** default=1.5 min=8 max=8 step=0.01 */
           scale_by?: Comfy.Input.FLOAT
       }
@@ -601,7 +610,7 @@ declare global {
       }
       interface LoadImage_input {
           /** */
-          image: Comfy.Union.E_26ea5ad8c44c9551fea858fff18017427386b591
+          image: Comfy.Union.E_Image
       }
       interface LoadImageMask extends HasSingle_MASK, ComfyNode<LoadImageMask_input, LoadImageMask_output> {
           nameInComfy: "LoadImageMask"
@@ -611,8 +620,8 @@ declare global {
       }
       interface LoadImageMask_input {
           /** */
-          image: Comfy.Union.E_26ea5ad8c44c9551fea858fff18017427386b591
-          channel: Comfy.Union.E_19d5be39f1fd20a88fdbcb009a06c7df2b0ef998
+          image: Comfy.Union.E_Image
+          channel: Comfy.Union.E_Channel
       }
       interface ImageScale extends HasSingle_IMAGE, ComfyNode<ImageScale_input, ImageScale_output> {
           nameInComfy: "ImageScale"
@@ -622,7 +631,7 @@ declare global {
       }
       interface ImageScale_input {
           image: Comfy.Input.IMAGE
-          upscale_method: Comfy.Union.E_165b455eb22956fc9da6e1b76d49a4077f15d897
+          upscale_method: Comfy.Union.E_ImageUpscaleMethod
           /** default=512 min=16384 max=16384 step=1 */
           width?: Comfy.Input.INT
           /** default=512 min=16384 max=16384 step=1 */
@@ -637,7 +646,7 @@ declare global {
       }
       interface ImageScaleBy_input {
           image: Comfy.Input.IMAGE
-          upscale_method: Comfy.Union.E_165b455eb22956fc9da6e1b76d49a4077f15d897
+          upscale_method: Comfy.Union.E_ImageUpscaleMethod
           /** default=1 min=8 max=8 step=0.01 */
           scale_by?: Comfy.Input.FLOAT
       }
@@ -798,15 +807,15 @@ declare global {
       }
       interface KSamplerAdvanced_input {
           model: Comfy.Input.MODEL
-          add_noise: Comfy.Union.E_449b4cae3566dd9b97c417c352bb08e25b89431b
+          add_noise: Comfy.Union.E_EnableOrDisable
           /** default=0 min=18446744073709552000 max=18446744073709552000 */
           noise_seed?: Comfy.Input.INT
           /** default=20 min=10000 max=10000 */
           steps?: Comfy.Input.INT
           /** default=8 min=100 max=100 step=0.1 */
           cfg?: Comfy.Input.FLOAT
-          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
-          scheduler: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325
+          sampler_name: Comfy.Union.E_SamplerName
+          scheduler: Comfy.Union.E_SchedulerName
           positive: Comfy.Input.CONDITIONING
           negative: Comfy.Input.CONDITIONING
           latent_image: Comfy.Input.LATENT
@@ -814,7 +823,7 @@ declare global {
           start_at_step?: Comfy.Input.INT
           /** default=10000 min=10000 max=10000 */
           end_at_step?: Comfy.Input.INT
-          return_with_leftover_noise: Comfy.Union.E_449b4cae3566dd9b97c417c352bb08e25b89431b
+          return_with_leftover_noise: Comfy.Union.E_EnableOrDisable
       }
       interface SetLatentNoiseMask extends HasSingle_LATENT, ComfyNode<SetLatentNoiseMask_input, SetLatentNoiseMask_output> {
           nameInComfy: "SetLatentNoiseMask"
@@ -862,7 +871,7 @@ declare global {
       }
       interface LatentRotate_input {
           samples: Comfy.Input.LATENT
-          rotation: Comfy.Union.E_061551528c540e0171a9c88a94c7d5375aa31f8a
+          rotation: Comfy.Union.E_Rotation
       }
       interface LatentFlip extends HasSingle_LATENT, ComfyNode<LatentFlip_input, LatentFlip_output> {
           nameInComfy: "LatentFlip"
@@ -872,7 +881,7 @@ declare global {
       }
       interface LatentFlip_input {
           samples: Comfy.Input.LATENT
-          flip_method: Comfy.Union.E_cdf7071acecb5016da941b6e718b82c97248a3e4
+          flip_method: Comfy.Union.E_FlipMethod
       }
       interface LatentCrop extends HasSingle_LATENT, ComfyNode<LatentCrop_input, LatentCrop_output> {
           nameInComfy: "LatentCrop"
@@ -904,7 +913,7 @@ declare global {
           /** */
           clip: Comfy.Input.CLIP
           /** */
-          lora_name: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
+          lora_name: Comfy.Union.E_LoraName
           /** default=1 min=100 max=100 step=0.01 */
           strength_model?: Comfy.Input.FLOAT
           /** default=1 min=100 max=100 step=0.01 */
@@ -917,8 +926,8 @@ declare global {
           CLIP: ComfyNodeOutput<'CLIP', 0>,
       }
       interface CLIPLoader_input {
-          clip_name: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
-          type: Comfy.Union.E_766fb79b4f3904a6716246cfb2a33b7b9e6a08c4
+          clip_name: Comfy.Union.E_LoraName
+          type: Comfy.Union.E_ClipType
       }
       interface UNETLoader extends HasSingle_MODEL, ComfyNode<UNETLoader_input, UNETLoader_output> {
           nameInComfy: "UNETLoader"
@@ -927,8 +936,8 @@ declare global {
           MODEL: ComfyNodeOutput<'MODEL', 0>,
       }
       interface UNETLoader_input {
-          unet_name: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
-          weight_dtype: Comfy.Union.E_21ba65fbb0df707c108b25356a3507e13f21ea58
+          unet_name: Comfy.Union.E_LoraName
+          weight_dtype: Comfy.Union.E_WeightDType
       }
       interface DualCLIPLoader extends HasSingle_CLIP, ComfyNode<DualCLIPLoader_input, DualCLIPLoader_output> {
           nameInComfy: "DualCLIPLoader"
@@ -937,9 +946,9 @@ declare global {
           CLIP: ComfyNodeOutput<'CLIP', 0>,
       }
       interface DualCLIPLoader_input {
-          clip_name1: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
-          clip_name2: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
-          type: Comfy.Union.E_39292df8ce88fd66f0dacf6f9110cfa2594ca25c
+          clip_name1: Comfy.Union.E_LoraName
+          clip_name2: Comfy.Union.E_LoraName
+          type: Comfy.Union.E_DualClipType
       }
       interface CLIPVisionEncode extends HasSingle_CLIP_VISION_OUTPUT, ComfyNode<CLIPVisionEncode_input, CLIPVisionEncode_output> {
           nameInComfy: "CLIPVisionEncode"
@@ -1016,7 +1025,7 @@ declare global {
           CONTROL_NET: ComfyNodeOutput<'CONTROL_NET', 0>,
       }
       interface ControlNetLoader_input {
-          control_net_name: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
+          control_net_name: Comfy.Union.E_LoraName
       }
       interface DiffControlNetLoader extends HasSingle_CONTROL_NET, ComfyNode<DiffControlNetLoader_input, DiffControlNetLoader_output> {
           nameInComfy: "DiffControlNetLoader"
@@ -1026,7 +1035,7 @@ declare global {
       }
       interface DiffControlNetLoader_input {
           model: Comfy.Input.MODEL
-          control_net_name: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
+          control_net_name: Comfy.Union.E_LoraName
       }
       interface StyleModelLoader extends HasSingle_STYLE_MODEL, ComfyNode<StyleModelLoader_input, StyleModelLoader_output> {
           nameInComfy: "StyleModelLoader"
@@ -1035,7 +1044,7 @@ declare global {
           STYLE_MODEL: ComfyNodeOutput<'STYLE_MODEL', 0>,
       }
       interface StyleModelLoader_input {
-          style_model_name: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
+          style_model_name: Comfy.Union.E_LoraName
       }
       interface CLIPVisionLoader extends HasSingle_CLIP_VISION, ComfyNode<CLIPVisionLoader_input, CLIPVisionLoader_output> {
           nameInComfy: "CLIPVisionLoader"
@@ -1044,7 +1053,7 @@ declare global {
           CLIP_VISION: ComfyNodeOutput<'CLIP_VISION', 0>,
       }
       interface CLIPVisionLoader_input {
-          clip_name: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
+          clip_name: Comfy.Union.E_LoraName
       }
       interface VAEDecodeTiled extends HasSingle_IMAGE, ComfyNode<VAEDecodeTiled_input, VAEDecodeTiled_output> {
           nameInComfy: "VAEDecodeTiled"
@@ -1080,7 +1089,7 @@ declare global {
           CLIP_VISION: ComfyNodeOutput<'CLIP_VISION', 3>,
       }
       interface unCLIPCheckpointLoader_input {
-          ckpt_name: Comfy.Union.E_1f08f73a9a576ae570aa3d82ea94f2bcfc29a8fc
+          ckpt_name: Comfy.Union.E_CkptName
       }
       interface GLIGENLoader extends HasSingle_GLIGEN, ComfyNode<GLIGENLoader_input, GLIGENLoader_output> {
           nameInComfy: "GLIGENLoader"
@@ -1089,7 +1098,7 @@ declare global {
           GLIGEN: ComfyNodeOutput<'GLIGEN', 0>,
       }
       interface GLIGENLoader_input {
-          gligen_name: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
+          gligen_name: Comfy.Union.E_LoraName
       }
       interface GLIGENTextBoxApply extends HasSingle_CONDITIONING, ComfyNode<GLIGENTextBoxApply_input, GLIGENTextBoxApply_output> {
           nameInComfy: "GLIGENTextBoxApply"
@@ -1136,8 +1145,8 @@ declare global {
           VAE: ComfyNodeOutput<'VAE', 2>,
       }
       interface CheckpointLoader_input {
-          config_name: Comfy.Union.E_a1972c9480c542a0e8ccafa03c2572ba5fc62160
-          ckpt_name: Comfy.Union.E_1f08f73a9a576ae570aa3d82ea94f2bcfc29a8fc
+          config_name: Comfy.Union.E_CkptConfigName
+          ckpt_name: Comfy.Union.E_CkptName
       }
       interface DiffusersLoader extends HasSingle_MODEL, HasSingle_CLIP, HasSingle_VAE, ComfyNode<DiffusersLoader_input, DiffusersLoader_output> {
           nameInComfy: "DiffusersLoader"
@@ -1148,7 +1157,7 @@ declare global {
           VAE: ComfyNodeOutput<'VAE', 2>,
       }
       interface DiffusersLoader_input {
-          model_path: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
+          model_path: Comfy.Union.E_LoraName
       }
       interface LoadLatent extends HasSingle_LATENT, ComfyNode<LoadLatent_input, LoadLatent_output> {
           nameInComfy: "LoadLatent"
@@ -1157,7 +1166,7 @@ declare global {
           LATENT: ComfyNodeOutput<'LATENT', 0>,
       }
       interface LoadLatent_input {
-          latent: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
+          latent: Comfy.Union.E_LoraName
       }
       interface SaveLatent extends ComfyNode<SaveLatent_input, SaveLatent_output> {
           nameInComfy: "SaveLatent"
@@ -1199,7 +1208,7 @@ declare global {
       }
       interface LoraLoaderModelOnly_input {
           model: Comfy.Input.MODEL
-          lora_name: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
+          lora_name: Comfy.Union.E_LoraName
           /** default=1 min=100 max=100 step=0.01 */
           strength_model?: Comfy.Input.FLOAT
       }
@@ -1360,7 +1369,7 @@ declare global {
       }
       interface HypernetworkLoader_input {
           model: Comfy.Input.MODEL
-          hypernetwork_name: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
+          hypernetwork_name: Comfy.Union.E_LoraName
           /** default=1 min=10 max=10 step=0.01 */
           strength?: Comfy.Input.FLOAT
       }
@@ -1470,7 +1479,7 @@ declare global {
       }
       interface ImageScaleToTotalPixels_input {
           image: Comfy.Input.IMAGE
-          upscale_method: Comfy.Union.E_165b455eb22956fc9da6e1b76d49a4077f15d897
+          upscale_method: Comfy.Union.E_ImageUpscaleMethod
           /** default=1 min=16 max=16 step=0.01 */
           megapixels?: Comfy.Input.FLOAT
       }
@@ -1555,7 +1564,7 @@ declare global {
       }
       interface ImageToMask_input {
           image: Comfy.Input.IMAGE
-          channel: Comfy.Union.E_19d5be39f1fd20a88fdbcb009a06c7df2b0ef998
+          channel: Comfy.Union.E_Channel
       }
       interface ImageColorToMask extends HasSingle_MASK, ComfyNode<ImageColorToMask_input, ImageColorToMask_output> {
           nameInComfy: "ImageColorToMask"
@@ -2124,7 +2133,7 @@ declare global {
       }
       interface BasicScheduler_input {
           model: Comfy.Input.MODEL
-          scheduler: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325
+          scheduler: Comfy.Union.E_SchedulerName
           /** default=20 min=10000 max=10000 */
           steps?: Comfy.Input.INT
           /** default=1 min=1 max=1 step=0.01 */
@@ -2245,7 +2254,7 @@ declare global {
           SAMPLER: ComfyNodeOutput<'SAMPLER', 0>,
       }
       interface KSamplerSelect_input {
-          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          sampler_name: Comfy.Union.E_SamplerName
       }
       interface SamplerEulerAncestral extends HasSingle_SAMPLER, ComfyNode<SamplerEulerAncestral_input, SamplerEulerAncestral_output> {
           nameInComfy: "SamplerEulerAncestral"
@@ -2653,8 +2662,8 @@ declare global {
           end_percent?: Comfy.Input.FLOAT
           /** default=true */
           downscale_after_skip?: Comfy.Input.BOOLEAN
-          downscale_method: Comfy.Union.E_6e6cbf6c48411ad480e010b0c9d2434b41af430d
-          upscale_method: Comfy.Union.E_6e6cbf6c48411ad480e010b0c9d2434b41af430d
+          downscale_method: Comfy.Union.E_LatentUpscaleMethod
+          upscale_method: Comfy.Union.E_LatentUpscaleMethod
       }
    }
    
@@ -2769,7 +2778,7 @@ declare global {
           VAE: ComfyNodeOutput<'VAE', 2>,
       }
       interface ImageOnlyCheckpointLoader_input {
-          ckpt_name: Comfy.Union.E_1f08f73a9a576ae570aa3d82ea94f2bcfc29a8fc
+          ckpt_name: Comfy.Union.E_CkptName
       }
       interface SVD$_img2vid$_Conditioning extends HasSingle_LATENT, ComfyNode<SVD$_img2vid$_Conditioning_input, SVD$_img2vid$_Conditioning_output> {
           nameInComfy: "SVD_img2vid_Conditioning"
@@ -3014,7 +3023,7 @@ declare global {
           PHOTOMAKER: ComfyNodeOutput<'PHOTOMAKER', 0>,
       }
       interface PhotoMakerLoader_input {
-          photomaker_model_name: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
+          photomaker_model_name: Comfy.Union.E_LoraName
       }
       interface PhotoMakerEncode extends HasSingle_CONDITIONING, ComfyNode<PhotoMakerEncode_input, PhotoMakerEncode_output> {
           nameInComfy: "PhotoMakerEncode"
@@ -3837,7 +3846,7 @@ declare global {
           scale_ratio?: Comfy.Input.FLOAT
           /** default=-1 min=1000 max=1000 step=1 */
           scale_steps?: Comfy.Input.INT
-          upscale_method: Comfy.Union.E_6e6cbf6c48411ad480e010b0c9d2434b41af430d
+          upscale_method: Comfy.Union.E_LatentUpscaleMethod
       }
       interface SamplerEulerCFGpp extends HasSingle_SAMPLER, ComfyNode<SamplerEulerCFGpp_input, SamplerEulerCFGpp_output> {
           nameInComfy: "SamplerEulerCFGpp"
@@ -3940,7 +3949,7 @@ declare global {
       }
       interface LoadAudio_input {
           /** */
-          audio: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
+          audio: Comfy.Union.E_LoraName
       }
       interface PreviewAudio extends ComfyNode<PreviewAudio_input, PreviewAudio_output> {
           nameInComfy: "PreviewAudio"
@@ -3973,9 +3982,9 @@ declare global {
           CLIP: ComfyNodeOutput<'CLIP', 0>,
       }
       interface TripleCLIPLoader_input {
-          clip_name1: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
-          clip_name2: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
-          clip_name3: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
+          clip_name1: Comfy.Union.E_LoraName
+          clip_name2: Comfy.Union.E_LoraName
+          clip_name3: Comfy.Union.E_LoraName
       }
       interface EmptySD3LatentImage extends HasSingle_LATENT, ComfyNode<EmptySD3LatentImage_input, EmptySD3LatentImage_output> {
           nameInComfy: "EmptySD3LatentImage"
@@ -4247,6 +4256,1870 @@ declare global {
       }
       interface SaveImageWebsocket_input {
           images: Comfy.Input.IMAGE
+      }
+   }
+   
+   // custom_nodes.ComfyUI_IPAdapter_plus
+   namespace Comfy.Custom.IPAdapter_plus {
+      interface Nodes {
+          /** category="ipadapter" name="IPAdapter" output=[MODEL] */
+         IPAdapter(p: IPAdapter_input, meta?: ComfyNodeMetadata): IPAdapter
+          /** category="ipadapter" name="IPAdapterAdvanced" output=[MODEL] */
+         IPAdapterAdvanced(p: IPAdapterAdvanced_input, meta?: ComfyNodeMetadata): IPAdapterAdvanced
+          /** category="ipadapter" name="IPAdapterBatch" output=[MODEL] */
+         IPAdapterBatch(p: IPAdapterBatch_input, meta?: ComfyNodeMetadata): IPAdapterBatch
+          /** category="ipadapter_faceid" name="IPAdapterFaceID" output=[MODEL, face_image] */
+         IPAdapterFaceID(p: IPAdapterFaceID_input, meta?: ComfyNodeMetadata): IPAdapterFaceID
+          /** category="ipadapter_faceid" name="IPAdapterFaceIDKolors" output=[MODEL, face_image] */
+         IPAdapterFaceIDKolors(p: IPAdapterFaceIDKolors_input, meta?: ComfyNodeMetadata): IPAdapterFaceIDKolors
+          /** category="ipadapter_faceid" name="IPAAdapterFaceIDBatch" output=[MODEL, face_image] */
+         IPAAdapterFaceIDBatch(p: IPAAdapterFaceIDBatch_input, meta?: ComfyNodeMetadata): IPAAdapterFaceIDBatch
+          /** category="ipadapter_tiled" name="IPAdapterTiled" output=[MODEL, tiles, masks] */
+         IPAdapterTiled(p: IPAdapterTiled_input, meta?: ComfyNodeMetadata): IPAdapterTiled
+          /** category="ipadapter_tiled" name="IPAdapterTiledBatch" output=[MODEL, tiles, masks] */
+         IPAdapterTiledBatch(p: IPAdapterTiledBatch_input, meta?: ComfyNodeMetadata): IPAdapterTiledBatch
+          /** category="ipadapter_embeds" name="IPAdapterEmbeds" output=[MODEL] */
+         IPAdapterEmbeds(p: IPAdapterEmbeds_input, meta?: ComfyNodeMetadata): IPAdapterEmbeds
+          /** category="ipadapter_embeds" name="IPAdapterEmbedsBatch" output=[MODEL] */
+         IPAdapterEmbedsBatch(p: IPAdapterEmbedsBatch_input, meta?: ComfyNodeMetadata): IPAdapterEmbedsBatch
+          /** category="ipadapter_style_composition" name="IPAdapterStyleComposition" output=[MODEL] */
+         IPAdapterStyleComposition(p: IPAdapterStyleComposition_input, meta?: ComfyNodeMetadata): IPAdapterStyleComposition
+          /** category="ipadapter_style_composition" name="IPAdapterStyleCompositionBatch" output=[MODEL] */
+         IPAdapterStyleCompositionBatch(p: IPAdapterStyleCompositionBatch_input, meta?: ComfyNodeMetadata): IPAdapterStyleCompositionBatch
+          /** category="ipadapter_dev" name="IPAdapterMS" output=[MODEL] */
+         IPAdapterMS(p: IPAdapterMS_input, meta?: ComfyNodeMetadata): IPAdapterMS
+          /** category="ipadapter_dev" name="IPAdapterClipVisionEnhancer" output=[MODEL] */
+         IPAdapterClipVisionEnhancer(p: IPAdapterClipVisionEnhancer_input, meta?: ComfyNodeMetadata): IPAdapterClipVisionEnhancer
+          /** category="ipadapter_dev" name="IPAdapterClipVisionEnhancerBatch" output=[MODEL] */
+         IPAdapterClipVisionEnhancerBatch(p: IPAdapterClipVisionEnhancerBatch_input, meta?: ComfyNodeMetadata): IPAdapterClipVisionEnhancerBatch
+          /** category="ipadapter_params" name="IPAdapterFromParams" output=[MODEL] */
+         IPAdapterFromParams(p: IPAdapterFromParams_input, meta?: ComfyNodeMetadata): IPAdapterFromParams
+          /** category="ipadapter" name="IPAdapterPreciseStyleTransfer" output=[MODEL] */
+         IPAdapterPreciseStyleTransfer(p: IPAdapterPreciseStyleTransfer_input, meta?: ComfyNodeMetadata): IPAdapterPreciseStyleTransfer
+          /** category="ipadapter" name="IPAdapterPreciseStyleTransferBatch" output=[MODEL] */
+         IPAdapterPreciseStyleTransferBatch(p: IPAdapterPreciseStyleTransferBatch_input, meta?: ComfyNodeMetadata): IPAdapterPreciseStyleTransferBatch
+          /** category="ipadapter" name="IPAdapterPreciseComposition" output=[MODEL] */
+         IPAdapterPreciseComposition(p: IPAdapterPreciseComposition_input, meta?: ComfyNodeMetadata): IPAdapterPreciseComposition
+          /** category="ipadapter" name="IPAdapterPreciseCompositionBatch" output=[MODEL] */
+         IPAdapterPreciseCompositionBatch(p: IPAdapterPreciseCompositionBatch_input, meta?: ComfyNodeMetadata): IPAdapterPreciseCompositionBatch
+          /** category="ipadapter" name="IPAdapterUnifiedLoader" output=[model, ipadapter] */
+         IPAdapterUnifiedLoader(p: IPAdapterUnifiedLoader_input, meta?: ComfyNodeMetadata): IPAdapterUnifiedLoader
+          /** category="ipadapter_faceid" name="IPAdapterUnifiedLoaderFaceID" output=[MODEL, ipadapter] */
+         IPAdapterUnifiedLoaderFaceID(p: IPAdapterUnifiedLoaderFaceID_input, meta?: ComfyNodeMetadata): IPAdapterUnifiedLoaderFaceID
+          /** category="ipadapter_loaders" name="IPAdapterModelLoader" output=[IPADAPTER] */
+         IPAdapterModelLoader(p: IPAdapterModelLoader_input, meta?: ComfyNodeMetadata): IPAdapterModelLoader
+          /** category="ipadapter_loaders" name="IPAdapterInsightFaceLoader" output=[INSIGHTFACE] */
+         IPAdapterInsightFaceLoader(p: IPAdapterInsightFaceLoader_input, meta?: ComfyNodeMetadata): IPAdapterInsightFaceLoader
+          /** category="ipadapter_loaders" name="IPAdapterUnifiedLoaderCommunity" output=[model, ipadapter] */
+         IPAdapterUnifiedLoaderCommunity(p: IPAdapterUnifiedLoaderCommunity_input, meta?: ComfyNodeMetadata): IPAdapterUnifiedLoaderCommunity
+          /** category="ipadapter_embeds" name="IPAdapterEncoder" output=[pos_embed, neg_embed] */
+         IPAdapterEncoder(p: IPAdapterEncoder_input, meta?: ComfyNodeMetadata): IPAdapterEncoder
+          /** category="ipadapter_embeds" name="IPAdapterCombineEmbeds" output=[EMBEDS] */
+         IPAdapterCombineEmbeds(p: IPAdapterCombineEmbeds_input, meta?: ComfyNodeMetadata): IPAdapterCombineEmbeds
+          /** category="ipadapter_utils" name="IPAdapterNoise" output=[IMAGE] */
+         IPAdapterNoise(p: IPAdapterNoise_input, meta?: ComfyNodeMetadata): IPAdapterNoise
+          /** category="ipadapter_utils" name="PrepImageForClipVision" output=[IMAGE] */
+         PrepImageForClipVision(p: PrepImageForClipVision_input, meta?: ComfyNodeMetadata): PrepImageForClipVision
+          /** category="ipadapter_embeds" name="IPAdapterSaveEmbeds" output=[] */
+         IPAdapterSaveEmbeds(p: IPAdapterSaveEmbeds_input, meta?: ComfyNodeMetadata): IPAdapterSaveEmbeds
+          /** category="ipadapter_embeds" name="IPAdapterLoadEmbeds" output=[EMBEDS] */
+         IPAdapterLoadEmbeds(p: IPAdapterLoadEmbeds_input, meta?: ComfyNodeMetadata): IPAdapterLoadEmbeds
+          /** category="ipadapter_weights" name="IPAdapterWeights" output=[weights, weights_invert, total_frames, image_1, image_2, weights_strategy] */
+         IPAdapterWeights(p: IPAdapterWeights_input, meta?: ComfyNodeMetadata): IPAdapterWeights
+          /** category="ipadapter_utils" name="IPAdapterCombineWeights" output=[weights, count] */
+         IPAdapterCombineWeights(p: IPAdapterCombineWeights_input, meta?: ComfyNodeMetadata): IPAdapterCombineWeights
+          /** category="ipadapter_weights" name="IPAdapterWeightsFromStrategy" output=[weights, weights_invert, total_frames, image_1, image_2, weights_strategy] */
+         IPAdapterWeightsFromStrategy(p: IPAdapterWeightsFromStrategy_input, meta?: ComfyNodeMetadata): IPAdapterWeightsFromStrategy
+          /** category="ipadapter_weights" name="IPAdapterPromptScheduleFromWeightsStrategy" output=[prompt_schedule] */
+         IPAdapterPromptScheduleFromWeightsStrategy(p: IPAdapterPromptScheduleFromWeightsStrategy_input, meta?: ComfyNodeMetadata): IPAdapterPromptScheduleFromWeightsStrategy
+          /** category="ipadapter_params" name="IPAdapterRegionalConditioning" output=[IPADAPTER_PARAMS, POSITIVE, NEGATIVE] */
+         IPAdapterRegionalConditioning(p: IPAdapterRegionalConditioning_input, meta?: ComfyNodeMetadata): IPAdapterRegionalConditioning
+          /** category="ipadapter_params" name="IPAdapterCombineParams" output=[IPADAPTER_PARAMS] */
+         IPAdapterCombineParams(p: IPAdapterCombineParams_input, meta?: ComfyNodeMetadata): IPAdapterCombineParams
+      }
+      interface IPAdapter extends HasSingle_MODEL, ComfyNode<IPAdapter_input, IPAdapter_output> {
+          nameInComfy: "IPAdapter"
+      }
+      interface IPAdapter_output {
+          MODEL: ComfyNodeOutput<'MODEL', 0>,
+      }
+      interface IPAdapter_input {
+          model: Comfy.Input.MODEL
+          ipadapter: Comfy.Input.IPADAPTER
+          image: Comfy.Input.IMAGE
+          /** default=1 min=3 max=3 step=0.05 */
+          weight?: Comfy.Input.FLOAT
+          /** default=0 min=1 max=1 step=0.001 */
+          start_at?: Comfy.Input.FLOAT
+          /** default=1 min=1 max=1 step=0.001 */
+          end_at?: Comfy.Input.FLOAT
+          weight_type: Comfy.Union.E_1fcb051d43a7df978808f9920fa8d428961d34f5
+          attn_mask?: Comfy.Input.MASK
+      }
+      interface IPAdapterAdvanced extends HasSingle_MODEL, ComfyNode<IPAdapterAdvanced_input, IPAdapterAdvanced_output> {
+          nameInComfy: "IPAdapterAdvanced"
+      }
+      interface IPAdapterAdvanced_output {
+          MODEL: ComfyNodeOutput<'MODEL', 0>,
+      }
+      interface IPAdapterAdvanced_input {
+          model: Comfy.Input.MODEL
+          ipadapter: Comfy.Input.IPADAPTER
+          image: Comfy.Input.IMAGE
+          /** default=1 min=5 max=5 step=0.05 */
+          weight?: Comfy.Input.FLOAT
+          weight_type: Comfy.Union.E_7308d8ab4ff2021b77b352e491612116709172af
+          combine_embeds: Comfy.Union.E_055d80a7c582bd5b57fd6775414e697be3f0f580
+          /** default=0 min=1 max=1 step=0.001 */
+          start_at?: Comfy.Input.FLOAT
+          /** default=1 min=1 max=1 step=0.001 */
+          end_at?: Comfy.Input.FLOAT
+          embeds_scaling: Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd
+          image_negative?: Comfy.Input.IMAGE
+          attn_mask?: Comfy.Input.MASK
+          clip_vision?: Comfy.Input.CLIP_VISION
+      }
+      interface IPAdapterBatch extends HasSingle_MODEL, ComfyNode<IPAdapterBatch_input, IPAdapterBatch_output> {
+          nameInComfy: "IPAdapterBatch"
+      }
+      interface IPAdapterBatch_output {
+          MODEL: ComfyNodeOutput<'MODEL', 0>,
+      }
+      interface IPAdapterBatch_input {
+          model: Comfy.Input.MODEL
+          ipadapter: Comfy.Input.IPADAPTER
+          image: Comfy.Input.IMAGE
+          /** default=1 min=5 max=5 step=0.05 */
+          weight?: Comfy.Input.FLOAT
+          weight_type: Comfy.Union.E_7308d8ab4ff2021b77b352e491612116709172af
+          /** default=0 min=1 max=1 step=0.001 */
+          start_at?: Comfy.Input.FLOAT
+          /** default=1 min=1 max=1 step=0.001 */
+          end_at?: Comfy.Input.FLOAT
+          embeds_scaling: Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd
+          /** default=0 min=4096 max=4096 */
+          encode_batch_size?: Comfy.Input.INT
+          image_negative?: Comfy.Input.IMAGE
+          attn_mask?: Comfy.Input.MASK
+          clip_vision?: Comfy.Input.CLIP_VISION
+      }
+      interface IPAdapterFaceID extends HasSingle_MODEL, HasSingle_IMAGE, ComfyNode<IPAdapterFaceID_input, IPAdapterFaceID_output> {
+          nameInComfy: "IPAdapterFaceID"
+      }
+      interface IPAdapterFaceID_output {
+          MODEL: ComfyNodeOutput<'MODEL', 0>,
+          face_image: ComfyNodeOutput<'IMAGE', 1>,
+      }
+      interface IPAdapterFaceID_input {
+          model: Comfy.Input.MODEL
+          ipadapter: Comfy.Input.IPADAPTER
+          image: Comfy.Input.IMAGE
+          /** default=1 min=3 max=3 step=0.05 */
+          weight?: Comfy.Input.FLOAT
+          /** default=1 min=5 max=5 step=0.05 */
+          weight_faceidv2?: Comfy.Input.FLOAT
+          weight_type: Comfy.Union.E_7308d8ab4ff2021b77b352e491612116709172af
+          combine_embeds: Comfy.Union.E_055d80a7c582bd5b57fd6775414e697be3f0f580
+          /** default=0 min=1 max=1 step=0.001 */
+          start_at?: Comfy.Input.FLOAT
+          /** default=1 min=1 max=1 step=0.001 */
+          end_at?: Comfy.Input.FLOAT
+          embeds_scaling: Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd
+          image_negative?: Comfy.Input.IMAGE
+          attn_mask?: Comfy.Input.MASK
+          clip_vision?: Comfy.Input.CLIP_VISION
+          insightface?: Comfy.Input.INSIGHTFACE
+      }
+      interface IPAdapterFaceIDKolors extends HasSingle_MODEL, HasSingle_IMAGE, ComfyNode<IPAdapterFaceIDKolors_input, IPAdapterFaceIDKolors_output> {
+          nameInComfy: "IPAdapterFaceIDKolors"
+      }
+      interface IPAdapterFaceIDKolors_output {
+          MODEL: ComfyNodeOutput<'MODEL', 0>,
+          face_image: ComfyNodeOutput<'IMAGE', 1>,
+      }
+      interface IPAdapterFaceIDKolors_input {
+          model: Comfy.Input.MODEL
+          ipadapter: Comfy.Input.IPADAPTER
+          image: Comfy.Input.IMAGE
+          /** default=1 min=3 max=3 step=0.05 */
+          weight?: Comfy.Input.FLOAT
+          /** default=1 min=5 max=5 step=0.05 */
+          weight_faceidv2?: Comfy.Input.FLOAT
+          /** default=1 min=5 max=5 step=0.05 */
+          weight_kolors?: Comfy.Input.FLOAT
+          weight_type: Comfy.Union.E_7308d8ab4ff2021b77b352e491612116709172af
+          combine_embeds: Comfy.Union.E_055d80a7c582bd5b57fd6775414e697be3f0f580
+          /** default=0 min=1 max=1 step=0.001 */
+          start_at?: Comfy.Input.FLOAT
+          /** default=1 min=1 max=1 step=0.001 */
+          end_at?: Comfy.Input.FLOAT
+          embeds_scaling: Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd
+          image_negative?: Comfy.Input.IMAGE
+          attn_mask?: Comfy.Input.MASK
+          clip_vision?: Comfy.Input.CLIP_VISION
+          insightface?: Comfy.Input.INSIGHTFACE
+      }
+      interface IPAAdapterFaceIDBatch extends HasSingle_MODEL, HasSingle_IMAGE, ComfyNode<IPAAdapterFaceIDBatch_input, IPAAdapterFaceIDBatch_output> {
+          nameInComfy: "IPAAdapterFaceIDBatch"
+      }
+      interface IPAAdapterFaceIDBatch_output {
+          MODEL: ComfyNodeOutput<'MODEL', 0>,
+          face_image: ComfyNodeOutput<'IMAGE', 1>,
+      }
+      interface IPAAdapterFaceIDBatch_input {
+          model: Comfy.Input.MODEL
+          ipadapter: Comfy.Input.IPADAPTER
+          image: Comfy.Input.IMAGE
+          /** default=1 min=3 max=3 step=0.05 */
+          weight?: Comfy.Input.FLOAT
+          /** default=1 min=5 max=5 step=0.05 */
+          weight_faceidv2?: Comfy.Input.FLOAT
+          weight_type: Comfy.Union.E_7308d8ab4ff2021b77b352e491612116709172af
+          combine_embeds: Comfy.Union.E_055d80a7c582bd5b57fd6775414e697be3f0f580
+          /** default=0 min=1 max=1 step=0.001 */
+          start_at?: Comfy.Input.FLOAT
+          /** default=1 min=1 max=1 step=0.001 */
+          end_at?: Comfy.Input.FLOAT
+          embeds_scaling: Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd
+          image_negative?: Comfy.Input.IMAGE
+          attn_mask?: Comfy.Input.MASK
+          clip_vision?: Comfy.Input.CLIP_VISION
+          insightface?: Comfy.Input.INSIGHTFACE
+      }
+      interface IPAdapterTiled extends HasSingle_MODEL, HasSingle_IMAGE, HasSingle_MASK, ComfyNode<IPAdapterTiled_input, IPAdapterTiled_output> {
+          nameInComfy: "IPAdapterTiled"
+      }
+      interface IPAdapterTiled_output {
+          MODEL: ComfyNodeOutput<'MODEL', 0>,
+          tiles: ComfyNodeOutput<'IMAGE', 1>,
+          masks: ComfyNodeOutput<'MASK', 2>,
+      }
+      interface IPAdapterTiled_input {
+          model: Comfy.Input.MODEL
+          ipadapter: Comfy.Input.IPADAPTER
+          image: Comfy.Input.IMAGE
+          /** default=1 min=3 max=3 step=0.05 */
+          weight?: Comfy.Input.FLOAT
+          weight_type: Comfy.Union.E_7308d8ab4ff2021b77b352e491612116709172af
+          combine_embeds: Comfy.Union.E_055d80a7c582bd5b57fd6775414e697be3f0f580
+          /** default=0 min=1 max=1 step=0.001 */
+          start_at?: Comfy.Input.FLOAT
+          /** default=1 min=1 max=1 step=0.001 */
+          end_at?: Comfy.Input.FLOAT
+          /** default=0 min=1 max=1 step=0.05 */
+          sharpening?: Comfy.Input.FLOAT
+          embeds_scaling: Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd
+          image_negative?: Comfy.Input.IMAGE
+          attn_mask?: Comfy.Input.MASK
+          clip_vision?: Comfy.Input.CLIP_VISION
+      }
+      interface IPAdapterTiledBatch extends HasSingle_MODEL, HasSingle_IMAGE, HasSingle_MASK, ComfyNode<IPAdapterTiledBatch_input, IPAdapterTiledBatch_output> {
+          nameInComfy: "IPAdapterTiledBatch"
+      }
+      interface IPAdapterTiledBatch_output {
+          MODEL: ComfyNodeOutput<'MODEL', 0>,
+          tiles: ComfyNodeOutput<'IMAGE', 1>,
+          masks: ComfyNodeOutput<'MASK', 2>,
+      }
+      interface IPAdapterTiledBatch_input {
+          model: Comfy.Input.MODEL
+          ipadapter: Comfy.Input.IPADAPTER
+          image: Comfy.Input.IMAGE
+          /** default=1 min=3 max=3 step=0.05 */
+          weight?: Comfy.Input.FLOAT
+          weight_type: Comfy.Union.E_7308d8ab4ff2021b77b352e491612116709172af
+          /** default=0 min=1 max=1 step=0.001 */
+          start_at?: Comfy.Input.FLOAT
+          /** default=1 min=1 max=1 step=0.001 */
+          end_at?: Comfy.Input.FLOAT
+          /** default=0 min=1 max=1 step=0.05 */
+          sharpening?: Comfy.Input.FLOAT
+          embeds_scaling: Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd
+          /** default=0 min=4096 max=4096 */
+          encode_batch_size?: Comfy.Input.INT
+          image_negative?: Comfy.Input.IMAGE
+          attn_mask?: Comfy.Input.MASK
+          clip_vision?: Comfy.Input.CLIP_VISION
+      }
+      interface IPAdapterEmbeds extends HasSingle_MODEL, ComfyNode<IPAdapterEmbeds_input, IPAdapterEmbeds_output> {
+          nameInComfy: "IPAdapterEmbeds"
+      }
+      interface IPAdapterEmbeds_output {
+          MODEL: ComfyNodeOutput<'MODEL', 0>,
+      }
+      interface IPAdapterEmbeds_input {
+          model: Comfy.Input.MODEL
+          ipadapter: Comfy.Input.IPADAPTER
+          pos_embed: Comfy.Input.EMBEDS
+          /** default=1 min=3 max=3 step=0.05 */
+          weight?: Comfy.Input.FLOAT
+          weight_type: Comfy.Union.E_7308d8ab4ff2021b77b352e491612116709172af
+          /** default=0 min=1 max=1 step=0.001 */
+          start_at?: Comfy.Input.FLOAT
+          /** default=1 min=1 max=1 step=0.001 */
+          end_at?: Comfy.Input.FLOAT
+          embeds_scaling: Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd
+          neg_embed?: Comfy.Input.EMBEDS
+          attn_mask?: Comfy.Input.MASK
+          clip_vision?: Comfy.Input.CLIP_VISION
+      }
+      interface IPAdapterEmbedsBatch extends HasSingle_MODEL, ComfyNode<IPAdapterEmbedsBatch_input, IPAdapterEmbedsBatch_output> {
+          nameInComfy: "IPAdapterEmbedsBatch"
+      }
+      interface IPAdapterEmbedsBatch_output {
+          MODEL: ComfyNodeOutput<'MODEL', 0>,
+      }
+      interface IPAdapterEmbedsBatch_input {
+          model: Comfy.Input.MODEL
+          ipadapter: Comfy.Input.IPADAPTER
+          pos_embed: Comfy.Input.EMBEDS
+          /** default=1 min=3 max=3 step=0.05 */
+          weight?: Comfy.Input.FLOAT
+          weight_type: Comfy.Union.E_7308d8ab4ff2021b77b352e491612116709172af
+          /** default=0 min=1 max=1 step=0.001 */
+          start_at?: Comfy.Input.FLOAT
+          /** default=1 min=1 max=1 step=0.001 */
+          end_at?: Comfy.Input.FLOAT
+          embeds_scaling: Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd
+          neg_embed?: Comfy.Input.EMBEDS
+          attn_mask?: Comfy.Input.MASK
+          clip_vision?: Comfy.Input.CLIP_VISION
+      }
+      interface IPAdapterStyleComposition extends HasSingle_MODEL, ComfyNode<IPAdapterStyleComposition_input, IPAdapterStyleComposition_output> {
+          nameInComfy: "IPAdapterStyleComposition"
+      }
+      interface IPAdapterStyleComposition_output {
+          MODEL: ComfyNodeOutput<'MODEL', 0>,
+      }
+      interface IPAdapterStyleComposition_input {
+          model: Comfy.Input.MODEL
+          ipadapter: Comfy.Input.IPADAPTER
+          image_style: Comfy.Input.IMAGE
+          image_composition: Comfy.Input.IMAGE
+          /** default=1 min=5 max=5 step=0.05 */
+          weight_style?: Comfy.Input.FLOAT
+          /** default=1 min=5 max=5 step=0.05 */
+          weight_composition?: Comfy.Input.FLOAT
+          /** default=false */
+          expand_style?: Comfy.Input.BOOLEAN
+          /** default="average" */
+          combine_embeds?: Comfy.Union.E_055d80a7c582bd5b57fd6775414e697be3f0f580
+          /** default=0 min=1 max=1 step=0.001 */
+          start_at?: Comfy.Input.FLOAT
+          /** default=1 min=1 max=1 step=0.001 */
+          end_at?: Comfy.Input.FLOAT
+          embeds_scaling: Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd
+          image_negative?: Comfy.Input.IMAGE
+          attn_mask?: Comfy.Input.MASK
+          clip_vision?: Comfy.Input.CLIP_VISION
+      }
+      interface IPAdapterStyleCompositionBatch extends HasSingle_MODEL, ComfyNode<IPAdapterStyleCompositionBatch_input, IPAdapterStyleCompositionBatch_output> {
+          nameInComfy: "IPAdapterStyleCompositionBatch"
+      }
+      interface IPAdapterStyleCompositionBatch_output {
+          MODEL: ComfyNodeOutput<'MODEL', 0>,
+      }
+      interface IPAdapterStyleCompositionBatch_input {
+          model: Comfy.Input.MODEL
+          ipadapter: Comfy.Input.IPADAPTER
+          image_style: Comfy.Input.IMAGE
+          image_composition: Comfy.Input.IMAGE
+          /** default=1 min=5 max=5 step=0.05 */
+          weight_style?: Comfy.Input.FLOAT
+          /** default=1 min=5 max=5 step=0.05 */
+          weight_composition?: Comfy.Input.FLOAT
+          /** default=false */
+          expand_style?: Comfy.Input.BOOLEAN
+          /** default=0 min=1 max=1 step=0.001 */
+          start_at?: Comfy.Input.FLOAT
+          /** default=1 min=1 max=1 step=0.001 */
+          end_at?: Comfy.Input.FLOAT
+          embeds_scaling: Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd
+          image_negative?: Comfy.Input.IMAGE
+          attn_mask?: Comfy.Input.MASK
+          clip_vision?: Comfy.Input.CLIP_VISION
+      }
+      interface IPAdapterMS extends HasSingle_MODEL, ComfyNode<IPAdapterMS_input, IPAdapterMS_output> {
+          nameInComfy: "IPAdapterMS"
+      }
+      interface IPAdapterMS_output {
+          MODEL: ComfyNodeOutput<'MODEL', 0>,
+      }
+      interface IPAdapterMS_input {
+          model: Comfy.Input.MODEL
+          ipadapter: Comfy.Input.IPADAPTER
+          image: Comfy.Input.IMAGE
+          /** default=1 min=5 max=5 step=0.05 */
+          weight?: Comfy.Input.FLOAT
+          /** default=1 min=5 max=5 step=0.05 */
+          weight_faceidv2?: Comfy.Input.FLOAT
+          weight_type: Comfy.Union.E_7308d8ab4ff2021b77b352e491612116709172af
+          combine_embeds: Comfy.Union.E_055d80a7c582bd5b57fd6775414e697be3f0f580
+          /** default=0 min=1 max=1 step=0.001 */
+          start_at?: Comfy.Input.FLOAT
+          /** default=1 min=1 max=1 step=0.001 */
+          end_at?: Comfy.Input.FLOAT
+          embeds_scaling: Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd
+          /** default="" */
+          layer_weights?: Comfy.Input.STRING
+          image_negative?: Comfy.Input.IMAGE
+          attn_mask?: Comfy.Input.MASK
+          clip_vision?: Comfy.Input.CLIP_VISION
+          insightface?: Comfy.Input.INSIGHTFACE
+      }
+      interface IPAdapterClipVisionEnhancer extends HasSingle_MODEL, ComfyNode<IPAdapterClipVisionEnhancer_input, IPAdapterClipVisionEnhancer_output> {
+          nameInComfy: "IPAdapterClipVisionEnhancer"
+      }
+      interface IPAdapterClipVisionEnhancer_output {
+          MODEL: ComfyNodeOutput<'MODEL', 0>,
+      }
+      interface IPAdapterClipVisionEnhancer_input {
+          model: Comfy.Input.MODEL
+          ipadapter: Comfy.Input.IPADAPTER
+          image: Comfy.Input.IMAGE
+          /** default=1 min=5 max=5 step=0.05 */
+          weight?: Comfy.Input.FLOAT
+          weight_type: Comfy.Union.E_7308d8ab4ff2021b77b352e491612116709172af
+          combine_embeds: Comfy.Union.E_055d80a7c582bd5b57fd6775414e697be3f0f580
+          /** default=0 min=1 max=1 step=0.001 */
+          start_at?: Comfy.Input.FLOAT
+          /** default=1 min=1 max=1 step=0.001 */
+          end_at?: Comfy.Input.FLOAT
+          embeds_scaling: Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd
+          /** default=2 min=16 max=16 */
+          enhance_tiles?: Comfy.Input.INT
+          /** default=1 min=1 max=1 step=0.05 */
+          enhance_ratio?: Comfy.Input.FLOAT
+          image_negative?: Comfy.Input.IMAGE
+          attn_mask?: Comfy.Input.MASK
+          clip_vision?: Comfy.Input.CLIP_VISION
+      }
+      interface IPAdapterClipVisionEnhancerBatch extends HasSingle_MODEL, ComfyNode<IPAdapterClipVisionEnhancerBatch_input, IPAdapterClipVisionEnhancerBatch_output> {
+          nameInComfy: "IPAdapterClipVisionEnhancerBatch"
+      }
+      interface IPAdapterClipVisionEnhancerBatch_output {
+          MODEL: ComfyNodeOutput<'MODEL', 0>,
+      }
+      interface IPAdapterClipVisionEnhancerBatch_input {
+          model: Comfy.Input.MODEL
+          ipadapter: Comfy.Input.IPADAPTER
+          image: Comfy.Input.IMAGE
+          /** default=1 min=5 max=5 step=0.05 */
+          weight?: Comfy.Input.FLOAT
+          weight_type: Comfy.Union.E_7308d8ab4ff2021b77b352e491612116709172af
+          /** default=0 min=1 max=1 step=0.001 */
+          start_at?: Comfy.Input.FLOAT
+          /** default=1 min=1 max=1 step=0.001 */
+          end_at?: Comfy.Input.FLOAT
+          embeds_scaling: Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd
+          /** default=2 min=16 max=16 */
+          enhance_tiles?: Comfy.Input.INT
+          /** default=0.5 min=1 max=1 step=0.05 */
+          enhance_ratio?: Comfy.Input.FLOAT
+          /** default=0 min=4096 max=4096 */
+          encode_batch_size?: Comfy.Input.INT
+          image_negative?: Comfy.Input.IMAGE
+          attn_mask?: Comfy.Input.MASK
+          clip_vision?: Comfy.Input.CLIP_VISION
+      }
+      interface IPAdapterFromParams extends HasSingle_MODEL, ComfyNode<IPAdapterFromParams_input, IPAdapterFromParams_output> {
+          nameInComfy: "IPAdapterFromParams"
+      }
+      interface IPAdapterFromParams_output {
+          MODEL: ComfyNodeOutput<'MODEL', 0>,
+      }
+      interface IPAdapterFromParams_input {
+          model: Comfy.Input.MODEL
+          ipadapter: Comfy.Input.IPADAPTER
+          ipadapter_params: Comfy.Input.IPADAPTER_PARAMS
+          combine_embeds: Comfy.Union.E_055d80a7c582bd5b57fd6775414e697be3f0f580
+          embeds_scaling: Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd
+          image_negative?: Comfy.Input.IMAGE
+          clip_vision?: Comfy.Input.CLIP_VISION
+      }
+      interface IPAdapterPreciseStyleTransfer extends HasSingle_MODEL, ComfyNode<IPAdapterPreciseStyleTransfer_input, IPAdapterPreciseStyleTransfer_output> {
+          nameInComfy: "IPAdapterPreciseStyleTransfer"
+      }
+      interface IPAdapterPreciseStyleTransfer_output {
+          MODEL: ComfyNodeOutput<'MODEL', 0>,
+      }
+      interface IPAdapterPreciseStyleTransfer_input {
+          model: Comfy.Input.MODEL
+          ipadapter: Comfy.Input.IPADAPTER
+          image: Comfy.Input.IMAGE
+          /** default=1 min=5 max=5 step=0.05 */
+          weight?: Comfy.Input.FLOAT
+          /** default=1 min=5 max=5 step=0.05 */
+          style_boost?: Comfy.Input.FLOAT
+          combine_embeds: Comfy.Union.E_055d80a7c582bd5b57fd6775414e697be3f0f580
+          /** default=0 min=1 max=1 step=0.001 */
+          start_at?: Comfy.Input.FLOAT
+          /** default=1 min=1 max=1 step=0.001 */
+          end_at?: Comfy.Input.FLOAT
+          embeds_scaling: Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd
+          image_negative?: Comfy.Input.IMAGE
+          attn_mask?: Comfy.Input.MASK
+          clip_vision?: Comfy.Input.CLIP_VISION
+      }
+      interface IPAdapterPreciseStyleTransferBatch extends HasSingle_MODEL, ComfyNode<IPAdapterPreciseStyleTransferBatch_input, IPAdapterPreciseStyleTransferBatch_output> {
+          nameInComfy: "IPAdapterPreciseStyleTransferBatch"
+      }
+      interface IPAdapterPreciseStyleTransferBatch_output {
+          MODEL: ComfyNodeOutput<'MODEL', 0>,
+      }
+      interface IPAdapterPreciseStyleTransferBatch_input {
+          model: Comfy.Input.MODEL
+          ipadapter: Comfy.Input.IPADAPTER
+          image: Comfy.Input.IMAGE
+          /** default=1 min=5 max=5 step=0.05 */
+          weight?: Comfy.Input.FLOAT
+          /** default=1 min=5 max=5 step=0.05 */
+          style_boost?: Comfy.Input.FLOAT
+          combine_embeds: Comfy.Union.E_055d80a7c582bd5b57fd6775414e697be3f0f580
+          /** default=0 min=1 max=1 step=0.001 */
+          start_at?: Comfy.Input.FLOAT
+          /** default=1 min=1 max=1 step=0.001 */
+          end_at?: Comfy.Input.FLOAT
+          embeds_scaling: Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd
+          image_negative?: Comfy.Input.IMAGE
+          attn_mask?: Comfy.Input.MASK
+          clip_vision?: Comfy.Input.CLIP_VISION
+      }
+      interface IPAdapterPreciseComposition extends HasSingle_MODEL, ComfyNode<IPAdapterPreciseComposition_input, IPAdapterPreciseComposition_output> {
+          nameInComfy: "IPAdapterPreciseComposition"
+      }
+      interface IPAdapterPreciseComposition_output {
+          MODEL: ComfyNodeOutput<'MODEL', 0>,
+      }
+      interface IPAdapterPreciseComposition_input {
+          model: Comfy.Input.MODEL
+          ipadapter: Comfy.Input.IPADAPTER
+          image: Comfy.Input.IMAGE
+          /** default=1 min=5 max=5 step=0.05 */
+          weight?: Comfy.Input.FLOAT
+          /** default=0 min=5 max=5 step=0.05 */
+          composition_boost?: Comfy.Input.FLOAT
+          combine_embeds: Comfy.Union.E_055d80a7c582bd5b57fd6775414e697be3f0f580
+          /** default=0 min=1 max=1 step=0.001 */
+          start_at?: Comfy.Input.FLOAT
+          /** default=1 min=1 max=1 step=0.001 */
+          end_at?: Comfy.Input.FLOAT
+          embeds_scaling: Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd
+          image_negative?: Comfy.Input.IMAGE
+          attn_mask?: Comfy.Input.MASK
+          clip_vision?: Comfy.Input.CLIP_VISION
+      }
+      interface IPAdapterPreciseCompositionBatch extends HasSingle_MODEL, ComfyNode<IPAdapterPreciseCompositionBatch_input, IPAdapterPreciseCompositionBatch_output> {
+          nameInComfy: "IPAdapterPreciseCompositionBatch"
+      }
+      interface IPAdapterPreciseCompositionBatch_output {
+          MODEL: ComfyNodeOutput<'MODEL', 0>,
+      }
+      interface IPAdapterPreciseCompositionBatch_input {
+          model: Comfy.Input.MODEL
+          ipadapter: Comfy.Input.IPADAPTER
+          image: Comfy.Input.IMAGE
+          /** default=1 min=5 max=5 step=0.05 */
+          weight?: Comfy.Input.FLOAT
+          /** default=0 min=5 max=5 step=0.05 */
+          composition_boost?: Comfy.Input.FLOAT
+          combine_embeds: Comfy.Union.E_055d80a7c582bd5b57fd6775414e697be3f0f580
+          /** default=0 min=1 max=1 step=0.001 */
+          start_at?: Comfy.Input.FLOAT
+          /** default=1 min=1 max=1 step=0.001 */
+          end_at?: Comfy.Input.FLOAT
+          embeds_scaling: Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd
+          image_negative?: Comfy.Input.IMAGE
+          attn_mask?: Comfy.Input.MASK
+          clip_vision?: Comfy.Input.CLIP_VISION
+      }
+      interface IPAdapterUnifiedLoader extends HasSingle_MODEL, HasSingle_IPADAPTER, ComfyNode<IPAdapterUnifiedLoader_input, IPAdapterUnifiedLoader_output> {
+          nameInComfy: "IPAdapterUnifiedLoader"
+      }
+      interface IPAdapterUnifiedLoader_output {
+          model: ComfyNodeOutput<'MODEL', 0>,
+          ipadapter: ComfyNodeOutput<'IPADAPTER', 1>,
+      }
+      interface IPAdapterUnifiedLoader_input {
+          model: Comfy.Input.MODEL
+          preset: Comfy.Union.E_17c57a2dd2fbcfa4d9125e24f9614e22372bd34a
+          ipadapter?: Comfy.Input.IPADAPTER
+      }
+      interface IPAdapterUnifiedLoaderFaceID extends HasSingle_MODEL, HasSingle_IPADAPTER, ComfyNode<IPAdapterUnifiedLoaderFaceID_input, IPAdapterUnifiedLoaderFaceID_output> {
+          nameInComfy: "IPAdapterUnifiedLoaderFaceID"
+      }
+      interface IPAdapterUnifiedLoaderFaceID_output {
+          MODEL: ComfyNodeOutput<'MODEL', 0>,
+          ipadapter: ComfyNodeOutput<'IPADAPTER', 1>,
+      }
+      interface IPAdapterUnifiedLoaderFaceID_input {
+          model: Comfy.Input.MODEL
+          preset: Comfy.Union.E_a3e559d09ececb9f9d7ea7907bc20803f01fb398
+          /** default=0.6 min=1 max=1 step=0.01 */
+          lora_strength?: Comfy.Input.FLOAT
+          provider: Comfy.Union.E_5d668a2048c21af6c78eb7cfdb4437296166c713
+          ipadapter?: Comfy.Input.IPADAPTER
+      }
+      interface IPAdapterModelLoader extends HasSingle_IPADAPTER, ComfyNode<IPAdapterModelLoader_input, IPAdapterModelLoader_output> {
+          nameInComfy: "IPAdapterModelLoader"
+      }
+      interface IPAdapterModelLoader_output {
+          IPADAPTER: ComfyNodeOutput<'IPADAPTER', 0>,
+      }
+      interface IPAdapterModelLoader_input {
+          ipadapter_file: Comfy.Union.E_LoraName
+      }
+      interface IPAdapterInsightFaceLoader extends HasSingle_INSIGHTFACE, ComfyNode<IPAdapterInsightFaceLoader_input, IPAdapterInsightFaceLoader_output> {
+          nameInComfy: "IPAdapterInsightFaceLoader"
+      }
+      interface IPAdapterInsightFaceLoader_output {
+          INSIGHTFACE: ComfyNodeOutput<'INSIGHTFACE', 0>,
+      }
+      interface IPAdapterInsightFaceLoader_input {
+          provider: Comfy.Union.E_13cd0468c1723423ffe1fa05a4a7e51caa5b2a17
+          model_name: Comfy.Union.E_8ade6e7081b18f83b376495ecffe0f7d309758e4
+      }
+      interface IPAdapterUnifiedLoaderCommunity extends HasSingle_MODEL, HasSingle_IPADAPTER, ComfyNode<IPAdapterUnifiedLoaderCommunity_input, IPAdapterUnifiedLoaderCommunity_output> {
+          nameInComfy: "IPAdapterUnifiedLoaderCommunity"
+      }
+      interface IPAdapterUnifiedLoaderCommunity_output {
+          model: ComfyNodeOutput<'MODEL', 0>,
+          ipadapter: ComfyNodeOutput<'IPADAPTER', 1>,
+      }
+      interface IPAdapterUnifiedLoaderCommunity_input {
+          model: Comfy.Input.MODEL
+          preset: Comfy.Union.E_a528931a02ae6272b3f532ca266fecea0688e366
+          ipadapter?: Comfy.Input.IPADAPTER
+      }
+      interface IPAdapterEncoder extends ComfyNode<IPAdapterEncoder_input, IPAdapterEncoder_output> {
+          nameInComfy: "IPAdapterEncoder"
+      }
+      interface IPAdapterEncoder_output {
+          pos_embed: ComfyNodeOutput<'EMBEDS', 0>,
+          neg_embed: ComfyNodeOutput<'EMBEDS', 1>,
+      }
+      interface IPAdapterEncoder_input {
+          ipadapter: Comfy.Input.IPADAPTER
+          image: Comfy.Input.IMAGE
+          /** default=1 min=3 max=3 step=0.01 */
+          weight?: Comfy.Input.FLOAT
+          mask?: Comfy.Input.MASK
+          clip_vision?: Comfy.Input.CLIP_VISION
+      }
+      interface IPAdapterCombineEmbeds extends HasSingle_EMBEDS, ComfyNode<IPAdapterCombineEmbeds_input, IPAdapterCombineEmbeds_output> {
+          nameInComfy: "IPAdapterCombineEmbeds"
+      }
+      interface IPAdapterCombineEmbeds_output {
+          EMBEDS: ComfyNodeOutput<'EMBEDS', 0>,
+      }
+      interface IPAdapterCombineEmbeds_input {
+          embed1: Comfy.Input.EMBEDS
+          method: Comfy.Union.E_887e4c8bfd30e7fc47c0d7ccb69d59436094aba6
+          embed2?: Comfy.Input.EMBEDS
+          embed3?: Comfy.Input.EMBEDS
+          embed4?: Comfy.Input.EMBEDS
+          embed5?: Comfy.Input.EMBEDS
+      }
+      interface IPAdapterNoise extends HasSingle_IMAGE, ComfyNode<IPAdapterNoise_input, IPAdapterNoise_output> {
+          nameInComfy: "IPAdapterNoise"
+      }
+      interface IPAdapterNoise_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface IPAdapterNoise_input {
+          type: Comfy.Union.E_9cefb90b6a43ee19ecb81f7e91648388c73fc378
+          /** default=1 min=1 max=1 step=0.05 */
+          strength?: Comfy.Input.FLOAT
+          /** default=0 min=32 max=32 step=1 */
+          blur?: Comfy.Input.INT
+          image_optional?: Comfy.Input.IMAGE
+      }
+      interface PrepImageForClipVision extends HasSingle_IMAGE, ComfyNode<PrepImageForClipVision_input, PrepImageForClipVision_output> {
+          nameInComfy: "PrepImageForClipVision"
+      }
+      interface PrepImageForClipVision_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface PrepImageForClipVision_input {
+          image: Comfy.Input.IMAGE
+          interpolation: Comfy.Union.E_c7d4c5c5d9bd0342cbb8b0fbbc507a005791a174
+          crop_position: Comfy.Union.E_ad4640a4b937a502f6364d06dc306f41f2dd56d2
+          /** default=0 min=1 max=1 step=0.05 */
+          sharpening?: Comfy.Input.FLOAT
+      }
+      interface IPAdapterSaveEmbeds extends ComfyNode<IPAdapterSaveEmbeds_input, IPAdapterSaveEmbeds_output> {
+          nameInComfy: "IPAdapterSaveEmbeds"
+      }
+      interface IPAdapterSaveEmbeds_output {
+      }
+      interface IPAdapterSaveEmbeds_input {
+          embeds: Comfy.Input.EMBEDS
+          /** default="IP_embeds" */
+          filename_prefix?: Comfy.Input.STRING
+      }
+      interface IPAdapterLoadEmbeds extends HasSingle_EMBEDS, ComfyNode<IPAdapterLoadEmbeds_input, IPAdapterLoadEmbeds_output> {
+          nameInComfy: "IPAdapterLoadEmbeds"
+      }
+      interface IPAdapterLoadEmbeds_output {
+          EMBEDS: ComfyNodeOutput<'EMBEDS', 0>,
+      }
+      interface IPAdapterLoadEmbeds_input {
+          embeds: Comfy.Union.E_LoraName
+      }
+      interface IPAdapterWeights extends HasSingle_INT, HasSingle_WEIGHTS_STRATEGY, ComfyNode<IPAdapterWeights_input, IPAdapterWeights_output> {
+          nameInComfy: "IPAdapterWeights"
+      }
+      interface IPAdapterWeights_output {
+          weights: ComfyNodeOutput<'FLOAT', 0>,
+          weights_invert: ComfyNodeOutput<'FLOAT', 1>,
+          total_frames: ComfyNodeOutput<'INT', 2>,
+          image_1: ComfyNodeOutput<'IMAGE', 3>,
+          image_2: ComfyNodeOutput<'IMAGE', 4>,
+          weights_strategy: ComfyNodeOutput<'WEIGHTS_STRATEGY', 5>,
+      }
+      interface IPAdapterWeights_input {
+          /** default="1.0, 0.0" */
+          weights?: Comfy.Input.STRING
+          /** default="linear" */
+          timing?: Comfy.Union.E_0f767df7ea83e64cd689e348c203dfb74aff5773
+          /** default=0 min=9999 max=9999 step=1 */
+          frames?: Comfy.Input.INT
+          /** default=0 min=9999 max=9999 step=1 */
+          start_frame?: Comfy.Input.INT
+          /** default=9999 min=9999 max=9999 step=1 */
+          end_frame?: Comfy.Input.INT
+          /** default=0 min=9999 max=9999 step=1 */
+          add_starting_frames?: Comfy.Input.INT
+          /** default=0 min=9999 max=9999 step=1 */
+          add_ending_frames?: Comfy.Input.INT
+          /** default="full batch" */
+          method?: Comfy.Union.E_45d8f77c56ae5c73ccee61ce4fd889f5858acabf
+          image?: Comfy.Input.IMAGE
+      }
+      interface IPAdapterCombineWeights extends HasSingle_FLOAT, HasSingle_INT, ComfyNode<IPAdapterCombineWeights_input, IPAdapterCombineWeights_output> {
+          nameInComfy: "IPAdapterCombineWeights"
+      }
+      interface IPAdapterCombineWeights_output {
+          weights: ComfyNodeOutput<'FLOAT', 0>,
+          count: ComfyNodeOutput<'INT', 1>,
+      }
+      interface IPAdapterCombineWeights_input {
+          /** default=0 min=1 max=1 step=0.05 */
+          weights_1?: Comfy.Input.FLOAT
+          /** default=0 min=1 max=1 step=0.05 */
+          weights_2?: Comfy.Input.FLOAT
+      }
+      interface IPAdapterWeightsFromStrategy extends HasSingle_INT, HasSingle_WEIGHTS_STRATEGY, ComfyNode<IPAdapterWeightsFromStrategy_input, IPAdapterWeightsFromStrategy_output> {
+          nameInComfy: "IPAdapterWeightsFromStrategy"
+      }
+      interface IPAdapterWeightsFromStrategy_output {
+          weights: ComfyNodeOutput<'FLOAT', 0>,
+          weights_invert: ComfyNodeOutput<'FLOAT', 1>,
+          total_frames: ComfyNodeOutput<'INT', 2>,
+          image_1: ComfyNodeOutput<'IMAGE', 3>,
+          image_2: ComfyNodeOutput<'IMAGE', 4>,
+          weights_strategy: ComfyNodeOutput<'WEIGHTS_STRATEGY', 5>,
+      }
+      interface IPAdapterWeightsFromStrategy_input {
+          weights_strategy: Comfy.Input.WEIGHTS_STRATEGY
+          image?: Comfy.Input.IMAGE
+      }
+      interface IPAdapterPromptScheduleFromWeightsStrategy extends HasSingle_STRING, ComfyNode<IPAdapterPromptScheduleFromWeightsStrategy_input, IPAdapterPromptScheduleFromWeightsStrategy_output> {
+          nameInComfy: "IPAdapterPromptScheduleFromWeightsStrategy"
+      }
+      interface IPAdapterPromptScheduleFromWeightsStrategy_output {
+          prompt_schedule: ComfyNodeOutput<'STRING', 0>,
+      }
+      interface IPAdapterPromptScheduleFromWeightsStrategy_input {
+          weights_strategy: Comfy.Input.WEIGHTS_STRATEGY
+          /** default="" */
+          prompt?: Comfy.Input.STRING
+      }
+      interface IPAdapterRegionalConditioning extends HasSingle_IPADAPTER_PARAMS, ComfyNode<IPAdapterRegionalConditioning_input, IPAdapterRegionalConditioning_output> {
+          nameInComfy: "IPAdapterRegionalConditioning"
+      }
+      interface IPAdapterRegionalConditioning_output {
+          IPADAPTER_PARAMS: ComfyNodeOutput<'IPADAPTER_PARAMS', 0>,
+          POSITIVE: ComfyNodeOutput<'CONDITIONING', 1>,
+          NEGATIVE: ComfyNodeOutput<'CONDITIONING', 2>,
+      }
+      interface IPAdapterRegionalConditioning_input {
+          image: Comfy.Input.IMAGE
+          /** default=1 min=3 max=3 step=0.05 */
+          image_weight?: Comfy.Input.FLOAT
+          /** default=1 min=10 max=10 step=0.05 */
+          prompt_weight?: Comfy.Input.FLOAT
+          weight_type: Comfy.Union.E_7308d8ab4ff2021b77b352e491612116709172af
+          /** default=0 min=1 max=1 step=0.001 */
+          start_at?: Comfy.Input.FLOAT
+          /** default=1 min=1 max=1 step=0.001 */
+          end_at?: Comfy.Input.FLOAT
+          mask?: Comfy.Input.MASK
+          positive?: Comfy.Input.CONDITIONING
+          negative?: Comfy.Input.CONDITIONING
+      }
+      interface IPAdapterCombineParams extends HasSingle_IPADAPTER_PARAMS, ComfyNode<IPAdapterCombineParams_input, IPAdapterCombineParams_output> {
+          nameInComfy: "IPAdapterCombineParams"
+      }
+      interface IPAdapterCombineParams_output {
+          IPADAPTER_PARAMS: ComfyNodeOutput<'IPADAPTER_PARAMS', 0>,
+      }
+      interface IPAdapterCombineParams_input {
+          params_1: Comfy.Input.IPADAPTER_PARAMS
+          params_2: Comfy.Input.IPADAPTER_PARAMS
+          params_3?: Comfy.Input.IPADAPTER_PARAMS
+          params_4?: Comfy.Input.IPADAPTER_PARAMS
+          params_5?: Comfy.Input.IPADAPTER_PARAMS
+      }
+   }
+   
+   // custom_nodes.comfyui_controlnet_aux
+   namespace Comfy.Custom.controlnet_aux {
+      interface Nodes {
+          /** category="ControlNet Preprocessors_T2IAdapter-only" name="ShufflePreprocessor" output=[IMAGE] */
+         ShufflePreprocessor(p: ShufflePreprocessor_input, meta?: ComfyNodeMetadata): ShufflePreprocessor
+          /** category="ControlNet Preprocessors_Faces and Poses Estimators" name="DensePosePreprocessor" output=[IMAGE] */
+         DensePosePreprocessor(p: DensePosePreprocessor_input, meta?: ComfyNodeMetadata): DensePosePreprocessor
+          /** category="ControlNet Preprocessors_Normal and Depth Estimators" name="LeReS-DepthMapPreprocessor" output=[IMAGE] */
+         LeReS$7DepthMapPreprocessor(p: LeReS$7DepthMapPreprocessor_input, meta?: ComfyNodeMetadata): LeReS$7DepthMapPreprocessor
+          /** category="ControlNet Preprocessors_Line Extractors" name="BinaryPreprocessor" output=[IMAGE] */
+         BinaryPreprocessor(p: BinaryPreprocessor_input, meta?: ComfyNodeMetadata): BinaryPreprocessor
+          /** category="ControlNet Preprocessors_Semantic Segmentation" name="AnimeFace_SemSegPreprocessor" output=[IMAGE, ABG_CHARACTER_MASK$_$1MASK$2] */
+         AnimeFace$_SemSegPreprocessor(p: AnimeFace$_SemSegPreprocessor_input, meta?: ComfyNodeMetadata): AnimeFace$_SemSegPreprocessor
+          /** category="ControlNet Preprocessors_Normal and Depth Estimators" name="Zoe-DepthMapPreprocessor" output=[IMAGE] */
+         Zoe$7DepthMapPreprocessor(p: Zoe$7DepthMapPreprocessor_input, meta?: ComfyNodeMetadata): Zoe$7DepthMapPreprocessor
+          /** category="ControlNet Preprocessors_Normal and Depth Estimators" name="DepthAnythingPreprocessor" output=[IMAGE] */
+         DepthAnythingPreprocessor(p: DepthAnythingPreprocessor_input, meta?: ComfyNodeMetadata): DepthAnythingPreprocessor
+          /** category="ControlNet Preprocessors_Normal and Depth Estimators" name="Zoe_DepthAnythingPreprocessor" output=[IMAGE] */
+         Zoe$_DepthAnythingPreprocessor(p: Zoe$_DepthAnythingPreprocessor_input, meta?: ComfyNodeMetadata): Zoe$_DepthAnythingPreprocessor
+          /** category="ControlNet Preprocessors_Normal and Depth Estimators" name="DepthAnythingV2Preprocessor" output=[IMAGE] */
+         DepthAnythingV2Preprocessor(p: DepthAnythingV2Preprocessor_input, meta?: ComfyNodeMetadata): DepthAnythingV2Preprocessor
+          /** category="ControlNet Preprocessors_Line Extractors" name="CannyEdgePreprocessor" output=[IMAGE] */
+         CannyEdgePreprocessor(p: CannyEdgePreprocessor_input, meta?: ComfyNodeMetadata): CannyEdgePreprocessor
+          /** category="ControlNet Preprocessors_Faces and Poses Estimators" name="DWPreprocessor" output=[IMAGE, POSE_KEYPOINT] */
+         DWPreprocessor(p: DWPreprocessor_input, meta?: ComfyNodeMetadata): DWPreprocessor
+          /** category="ControlNet Preprocessors_Faces and Poses Estimators" name="AnimalPosePreprocessor" output=[IMAGE, POSE_KEYPOINT] */
+         AnimalPosePreprocessor(p: AnimalPosePreprocessor_input, meta?: ComfyNodeMetadata): AnimalPosePreprocessor
+          /** category="ControlNet Preprocessors_Recolor" name="ImageLuminanceDetector" output=[IMAGE] */
+         ImageLuminanceDetector(p: ImageLuminanceDetector_input, meta?: ComfyNodeMetadata): ImageLuminanceDetector
+          /** category="ControlNet Preprocessors_Recolor" name="ImageIntensityDetector" output=[IMAGE] */
+         ImageIntensityDetector(p: ImageIntensityDetector_input, meta?: ComfyNodeMetadata): ImageIntensityDetector
+          /** category="ControlNet Preprocessors_Faces and Poses Estimators" name="MediaPipe-FaceMeshPreprocessor" output=[IMAGE] */
+         MediaPipe$7FaceMeshPreprocessor(p: MediaPipe$7FaceMeshPreprocessor_input, meta?: ComfyNodeMetadata): MediaPipe$7FaceMeshPreprocessor
+          /** category="ControlNet Preprocessors_Line Extractors" name="DiffusionEdge_Preprocessor" output=[IMAGE] */
+         DiffusionEdge$_Preprocessor(p: DiffusionEdge$_Preprocessor_input, meta?: ComfyNodeMetadata): DiffusionEdge$_Preprocessor
+          /** category="ControlNet Preprocessors_Line Extractors" name="M-LSDPreprocessor" output=[IMAGE] */
+         M$7LSDPreprocessor(p: M$7LSDPreprocessor_input, meta?: ComfyNodeMetadata): M$7LSDPreprocessor
+          /** category="ControlNet Preprocessors_Line Extractors" name="HEDPreprocessor" output=[IMAGE] */
+         HEDPreprocessor(p: HEDPreprocessor_input, meta?: ComfyNodeMetadata): HEDPreprocessor
+          /** category="ControlNet Preprocessors_Line Extractors" name="FakeScribblePreprocessor" output=[IMAGE] */
+         FakeScribblePreprocessor(p: FakeScribblePreprocessor_input, meta?: ComfyNodeMetadata): FakeScribblePreprocessor
+          /** category="ControlNet Preprocessors_Semantic Segmentation" name="OneFormer-COCO-SemSegPreprocessor" output=[IMAGE] */
+         OneFormer$7COCO$7SemSegPreprocessor(p: OneFormer$7COCO$7SemSegPreprocessor_input, meta?: ComfyNodeMetadata): OneFormer$7COCO$7SemSegPreprocessor
+          /** category="ControlNet Preprocessors_Semantic Segmentation" name="OneFormer-ADE20K-SemSegPreprocessor" output=[IMAGE] */
+         OneFormer$7ADE20K$7SemSegPreprocessor(p: OneFormer$7ADE20K$7SemSegPreprocessor_input, meta?: ComfyNodeMetadata): OneFormer$7ADE20K$7SemSegPreprocessor
+          /** category="ControlNet Preprocessors_Normal and Depth Estimators" name="BAE-NormalMapPreprocessor" output=[IMAGE] */
+         BAE$7NormalMapPreprocessor(p: BAE$7NormalMapPreprocessor_input, meta?: ComfyNodeMetadata): BAE$7NormalMapPreprocessor
+          /** category="ControlNet Preprocessors_Normal and Depth Estimators" name="MeshGraphormer-DepthMapPreprocessor" output=[IMAGE, INPAINTING_MASK] */
+         MeshGraphormer$7DepthMapPreprocessor(p: MeshGraphormer$7DepthMapPreprocessor_input, meta?: ComfyNodeMetadata): MeshGraphormer$7DepthMapPreprocessor
+          /** category="ControlNet Preprocessors_Normal and Depth Estimators" name="MeshGraphormer+ImpactDetector-DepthMapPreprocessor" output=[IMAGE, INPAINTING_MASK] */
+         MeshGraphormer$6ImpactDetector$7DepthMapPreprocessor(p: MeshGraphormer$6ImpactDetector$7DepthMapPreprocessor_input, meta?: ComfyNodeMetadata): MeshGraphormer$6ImpactDetector$7DepthMapPreprocessor
+          /** category="ControlNet Preprocessors_Normal and Depth Estimators" name="DSINE-NormalMapPreprocessor" output=[IMAGE] */
+         DSINE$7NormalMapPreprocessor(p: DSINE$7NormalMapPreprocessor_input, meta?: ComfyNodeMetadata): DSINE$7NormalMapPreprocessor
+          /** category="ControlNet Preprocessors_Normal and Depth Estimators" name="MiDaS-NormalMapPreprocessor" output=[IMAGE] */
+         MiDaS$7NormalMapPreprocessor(p: MiDaS$7NormalMapPreprocessor_input, meta?: ComfyNodeMetadata): MiDaS$7NormalMapPreprocessor
+          /** category="ControlNet Preprocessors_Normal and Depth Estimators" name="MiDaS-DepthMapPreprocessor" output=[IMAGE] */
+         MiDaS$7DepthMapPreprocessor(p: MiDaS$7DepthMapPreprocessor_input, meta?: ComfyNodeMetadata): MiDaS$7DepthMapPreprocessor
+          /** category="ControlNet Preprocessors_Line Extractors" name="AnyLineArtPreprocessor_aux" output=[image] */
+         AnyLineArtPreprocessor$_aux(p: AnyLineArtPreprocessor$_aux_input, meta?: ComfyNodeMetadata): AnyLineArtPreprocessor$_aux
+          /** category="ControlNet Preprocessors_others" name="SAMPreprocessor" output=[IMAGE] */
+         SAMPreprocessor(p: SAMPreprocessor_input, meta?: ComfyNodeMetadata): SAMPreprocessor
+          /** category="ControlNet Preprocessors_Semantic Segmentation" name="UniFormer-SemSegPreprocessor" output=[IMAGE] */
+         UniFormer$7SemSegPreprocessor(p: UniFormer$7SemSegPreprocessor_input, meta?: ComfyNodeMetadata): UniFormer$7SemSegPreprocessor
+          /** category="ControlNet Preprocessors_Semantic Segmentation" name="SemSegPreprocessor" output=[IMAGE] */
+         SemSegPreprocessor(p: SemSegPreprocessor_input, meta?: ComfyNodeMetadata): SemSegPreprocessor
+          /** category="ControlNet Preprocessors_Line Extractors" name="PiDiNetPreprocessor" output=[IMAGE] */
+         PiDiNetPreprocessor(p: PiDiNetPreprocessor_input, meta?: ComfyNodeMetadata): PiDiNetPreprocessor
+          /** category="ControlNet Preprocessors_others" name="InpaintPreprocessor" output=[IMAGE] */
+         InpaintPreprocessor(p: InpaintPreprocessor_input, meta?: ComfyNodeMetadata): InpaintPreprocessor
+          /** category="ControlNet Preprocessors_Line Extractors" name="LineArtPreprocessor" output=[IMAGE] */
+         LineArtPreprocessor(p: LineArtPreprocessor_input, meta?: ComfyNodeMetadata): LineArtPreprocessor
+          /** category="ControlNet Preprocessors_Faces and Poses Estimators" name="OpenposePreprocessor" output=[IMAGE, POSE_KEYPOINT] */
+         OpenposePreprocessor(p: OpenposePreprocessor_input, meta?: ComfyNodeMetadata): OpenposePreprocessor
+          /** category="ControlNet Preprocessors_Optical Flow" name="Unimatch_OptFlowPreprocessor" output=[OPTICAL_FLOW, PREVIEW_IMAGE] */
+         Unimatch$_OptFlowPreprocessor(p: Unimatch$_OptFlowPreprocessor_input, meta?: ComfyNodeMetadata): Unimatch$_OptFlowPreprocessor
+          /** category="ControlNet Preprocessors_Optical Flow" name="MaskOptFlow" output=[OPTICAL_FLOW, PREVIEW_IMAGE] */
+         MaskOptFlow(p: MaskOptFlow_input, meta?: ComfyNodeMetadata): MaskOptFlow
+          /** category="ControlNet Preprocessors_Pose Keypoint Postprocess" name="SavePoseKpsAsJsonFile" output=[] */
+         SavePoseKpsAsJsonFile(p: SavePoseKpsAsJsonFile_input, meta?: ComfyNodeMetadata): SavePoseKpsAsJsonFile
+          /** category="ControlNet Preprocessors_Pose Keypoint Postprocess" name="FacialPartColoringFromPoseKps" output=[IMAGE] */
+         FacialPartColoringFromPoseKps(p: FacialPartColoringFromPoseKps_input, meta?: ComfyNodeMetadata): FacialPartColoringFromPoseKps
+          /** category="ControlNet Preprocessors_Pose Keypoint Postprocess" name="UpperBodyTrackingFromPoseKps" output=[tracking, prompt] */
+         UpperBodyTrackingFromPoseKps(p: UpperBodyTrackingFromPoseKps_input, meta?: ComfyNodeMetadata): UpperBodyTrackingFromPoseKps
+          /** category="ControlNet Preprocessors_Pose Keypoint Postprocess" name="RenderPeopleKps" output=[IMAGE] */
+         RenderPeopleKps(p: RenderPeopleKps_input, meta?: ComfyNodeMetadata): RenderPeopleKps
+          /** category="ControlNet Preprocessors_Pose Keypoint Postprocess" name="RenderAnimalKps" output=[IMAGE] */
+         RenderAnimalKps(p: RenderAnimalKps_input, meta?: ComfyNodeMetadata): RenderAnimalKps
+          /** category="ControlNet Preprocessors_Line Extractors" name="TEEDPreprocessor" output=[IMAGE] */
+         TEEDPreprocessor(p: TEEDPreprocessor_input, meta?: ComfyNodeMetadata): TEEDPreprocessor
+          /** category="ControlNet Preprocessors_Line Extractors" name="PyraCannyPreprocessor" output=[IMAGE] */
+         PyraCannyPreprocessor(p: PyraCannyPreprocessor_input, meta?: ComfyNodeMetadata): PyraCannyPreprocessor
+          /** category="ControlNet Preprocessors_Normal and Depth Estimators" name="Metric3D-DepthMapPreprocessor" output=[IMAGE] */
+         Metric3D$7DepthMapPreprocessor(p: Metric3D$7DepthMapPreprocessor_input, meta?: ComfyNodeMetadata): Metric3D$7DepthMapPreprocessor
+          /** category="ControlNet Preprocessors_Normal and Depth Estimators" name="Metric3D-NormalMapPreprocessor" output=[IMAGE] */
+         Metric3D$7NormalMapPreprocessor(p: Metric3D$7NormalMapPreprocessor_input, meta?: ComfyNodeMetadata): Metric3D$7NormalMapPreprocessor
+          /** category="ControlNet Preprocessors_Line Extractors" name="Manga2Anime_LineArt_Preprocessor" output=[IMAGE] */
+         Manga2Anime$_LineArt$_Preprocessor(p: Manga2Anime$_LineArt$_Preprocessor_input, meta?: ComfyNodeMetadata): Manga2Anime$_LineArt$_Preprocessor
+          /** category="ControlNet Preprocessors_Line Extractors" name="ScribblePreprocessor" output=[IMAGE] */
+         ScribblePreprocessor(p: ScribblePreprocessor_input, meta?: ComfyNodeMetadata): ScribblePreprocessor
+          /** category="ControlNet Preprocessors_Line Extractors" name="Scribble_XDoG_Preprocessor" output=[IMAGE] */
+         Scribble$_XDoG$_Preprocessor(p: Scribble$_XDoG$_Preprocessor_input, meta?: ComfyNodeMetadata): Scribble$_XDoG$_Preprocessor
+          /** category="ControlNet Preprocessors_Line Extractors" name="Scribble_PiDiNet_Preprocessor" output=[IMAGE] */
+         Scribble$_PiDiNet$_Preprocessor(p: Scribble$_PiDiNet$_Preprocessor_input, meta?: ComfyNodeMetadata): Scribble$_PiDiNet$_Preprocessor
+          /** category="ControlNet Preprocessors_Line Extractors" name="AnimeLineArtPreprocessor" output=[IMAGE] */
+         AnimeLineArtPreprocessor(p: AnimeLineArtPreprocessor_input, meta?: ComfyNodeMetadata): AnimeLineArtPreprocessor
+          /** category="ControlNet Preprocessors_Line Extractors" name="LineartStandardPreprocessor" output=[IMAGE] */
+         LineartStandardPreprocessor(p: LineartStandardPreprocessor_input, meta?: ComfyNodeMetadata): LineartStandardPreprocessor
+          /** category="ControlNet Preprocessors_tile" name="TilePreprocessor" output=[IMAGE] */
+         TilePreprocessor(p: TilePreprocessor_input, meta?: ComfyNodeMetadata): TilePreprocessor
+          /** category="ControlNet Preprocessors_tile" name="TTPlanet_TileGF_Preprocessor" output=[IMAGE] */
+         TTPlanet$_TileGF$_Preprocessor(p: TTPlanet$_TileGF$_Preprocessor_input, meta?: ComfyNodeMetadata): TTPlanet$_TileGF$_Preprocessor
+          /** category="ControlNet Preprocessors_tile" name="TTPlanet_TileSimple_Preprocessor" output=[IMAGE] */
+         TTPlanet$_TileSimple$_Preprocessor(p: TTPlanet$_TileSimple$_Preprocessor_input, meta?: ComfyNodeMetadata): TTPlanet$_TileSimple$_Preprocessor
+          /** category="ControlNet Preprocessors_T2IAdapter-only" name="ColorPreprocessor" output=[IMAGE] */
+         ColorPreprocessor(p: ColorPreprocessor_input, meta?: ComfyNodeMetadata): ColorPreprocessor
+          /** category="ControlNet Preprocessors" name="AIO_Preprocessor" output=[IMAGE] */
+         AIO$_Preprocessor(p: AIO$_Preprocessor_input, meta?: ComfyNodeMetadata): AIO$_Preprocessor
+          /** category="ControlNet Preprocessors" name="ControlNetPreprocessorSelector" output=[preprocessor] */
+         ControlNetPreprocessorSelector(p: ControlNetPreprocessorSelector_input, meta?: ComfyNodeMetadata): ControlNetPreprocessorSelector
+          /** category="ControlNet Preprocessors" name="PixelPerfectResolution" output=[RESOLUTION$_$1INT$2] */
+         PixelPerfectResolution(p: PixelPerfectResolution_input, meta?: ComfyNodeMetadata): PixelPerfectResolution
+          /** category="ControlNet Preprocessors" name="ImageGenResolutionFromImage" output=[IMAGE_GEN_WIDTH$_$1INT$2, IMAGE_GEN_HEIGHT$_$1INT$2] */
+         ImageGenResolutionFromImage(p: ImageGenResolutionFromImage_input, meta?: ComfyNodeMetadata): ImageGenResolutionFromImage
+          /** category="ControlNet Preprocessors" name="ImageGenResolutionFromLatent" output=[IMAGE_GEN_WIDTH$_$1INT$2, IMAGE_GEN_HEIGHT$_$1INT$2] */
+         ImageGenResolutionFromLatent(p: ImageGenResolutionFromLatent_input, meta?: ComfyNodeMetadata): ImageGenResolutionFromLatent
+          /** category="ControlNet Preprocessors" name="HintImageEnchance" output=[IMAGE] */
+         HintImageEnchance(p: HintImageEnchance_input, meta?: ComfyNodeMetadata): HintImageEnchance
+          /** category="ControlNet Preprocessors" name="ExecuteAllControlNetPreprocessors" output=[IMAGE] */
+         ExecuteAllControlNetPreprocessors(p: ExecuteAllControlNetPreprocessors_input, meta?: ComfyNodeMetadata): ExecuteAllControlNetPreprocessors
+          /** category="ControlNet Preprocessors" name="ControlNetAuxSimpleAddText" output=[IMAGE] */
+         ControlNetAuxSimpleAddText(p: ControlNetAuxSimpleAddText_input, meta?: ComfyNodeMetadata): ControlNetAuxSimpleAddText
+      }
+      interface ShufflePreprocessor extends HasSingle_IMAGE, ComfyNode<ShufflePreprocessor_input, ShufflePreprocessor_output> {
+          nameInComfy: "ShufflePreprocessor"
+      }
+      interface ShufflePreprocessor_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface ShufflePreprocessor_input {
+          image: Comfy.Input.IMAGE
+          /** default=512 min=16384 max=16384 step=64 */
+          resolution?: Comfy.Input.INT
+          /** default=0 min=18446744073709552000 max=18446744073709552000 */
+          seed?: Comfy.Input.INT
+      }
+      interface DensePosePreprocessor extends HasSingle_IMAGE, ComfyNode<DensePosePreprocessor_input, DensePosePreprocessor_output> {
+          nameInComfy: "DensePosePreprocessor"
+      }
+      interface DensePosePreprocessor_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface DensePosePreprocessor_input {
+          image: Comfy.Input.IMAGE
+          /** default="densepose_r50_fpn_dl.torchscript" */
+          model?: Comfy.Union.E_8de7e678f3a40dd26000add869549d52b40eea76
+          /** default="Viridis (MagicAnimate)" */
+          cmap?: Comfy.Union.E_621dc6c65530de6a1bfd3fab8f84171285b9ddef
+          /** default=512 min=16384 max=16384 step=64 */
+          resolution?: Comfy.Input.INT
+      }
+      interface LeReS$7DepthMapPreprocessor extends HasSingle_IMAGE, ComfyNode<LeReS$7DepthMapPreprocessor_input, LeReS$7DepthMapPreprocessor_output> {
+          nameInComfy: "LeReS-DepthMapPreprocessor"
+      }
+      interface LeReS$7DepthMapPreprocessor_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface LeReS$7DepthMapPreprocessor_input {
+          image: Comfy.Input.IMAGE
+          /** default=0 min=100 max=100 step=0.01 */
+          rm_nearest?: Comfy.Input.FLOAT
+          /** default=0 min=100 max=100 step=0.01 */
+          rm_background?: Comfy.Input.FLOAT
+          /** default="disable" */
+          boost?: Comfy.Union.E_EnableOrDisable
+          /** default=512 min=16384 max=16384 step=64 */
+          resolution?: Comfy.Input.INT
+      }
+      interface BinaryPreprocessor extends HasSingle_IMAGE, ComfyNode<BinaryPreprocessor_input, BinaryPreprocessor_output> {
+          nameInComfy: "BinaryPreprocessor"
+      }
+      interface BinaryPreprocessor_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface BinaryPreprocessor_input {
+          image: Comfy.Input.IMAGE
+          /** default=100 min=255 max=255 step=1 */
+          bin_threshold?: Comfy.Input.INT
+          /** default=512 min=16384 max=16384 step=64 */
+          resolution?: Comfy.Input.INT
+      }
+      interface AnimeFace$_SemSegPreprocessor extends HasSingle_IMAGE, HasSingle_MASK, ComfyNode<AnimeFace$_SemSegPreprocessor_input, AnimeFace$_SemSegPreprocessor_output> {
+          nameInComfy: "AnimeFace_SemSegPreprocessor"
+      }
+      interface AnimeFace$_SemSegPreprocessor_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+          "ABG_CHARACTER_MASK$_$1MASK$2": ComfyNodeOutput<'MASK', 1>,
+      }
+      interface AnimeFace$_SemSegPreprocessor_input {
+          image: Comfy.Input.IMAGE
+          /** default=true */
+          remove_background_using_abg?: Comfy.Input.BOOLEAN
+          /** default=512 min=512 max=512 step=64 */
+          resolution?: Comfy.Input.INT
+      }
+      interface Zoe$7DepthMapPreprocessor extends HasSingle_IMAGE, ComfyNode<Zoe$7DepthMapPreprocessor_input, Zoe$7DepthMapPreprocessor_output> {
+          nameInComfy: "Zoe-DepthMapPreprocessor"
+      }
+      interface Zoe$7DepthMapPreprocessor_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Zoe$7DepthMapPreprocessor_input {
+          image: Comfy.Input.IMAGE
+          /** default=512 min=16384 max=16384 step=64 */
+          resolution?: Comfy.Input.INT
+      }
+      interface DepthAnythingPreprocessor extends HasSingle_IMAGE, ComfyNode<DepthAnythingPreprocessor_input, DepthAnythingPreprocessor_output> {
+          nameInComfy: "DepthAnythingPreprocessor"
+      }
+      interface DepthAnythingPreprocessor_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface DepthAnythingPreprocessor_input {
+          image: Comfy.Input.IMAGE
+          /** default="depth_anything_vitl14.pth" */
+          ckpt_name?: Comfy.Union.E_735dbaeb4a65035d6371a3a8387b694815ffa184
+          /** default=512 min=16384 max=16384 step=64 */
+          resolution?: Comfy.Input.INT
+      }
+      interface Zoe$_DepthAnythingPreprocessor extends HasSingle_IMAGE, ComfyNode<Zoe$_DepthAnythingPreprocessor_input, Zoe$_DepthAnythingPreprocessor_output> {
+          nameInComfy: "Zoe_DepthAnythingPreprocessor"
+      }
+      interface Zoe$_DepthAnythingPreprocessor_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Zoe$_DepthAnythingPreprocessor_input {
+          image: Comfy.Input.IMAGE
+          /** default="indoor" */
+          environment?: Comfy.Union.E_453e00523f8522497b1b3ef1b5cb1e99653f762d
+          /** default=512 min=16384 max=16384 step=64 */
+          resolution?: Comfy.Input.INT
+      }
+      interface DepthAnythingV2Preprocessor extends HasSingle_IMAGE, ComfyNode<DepthAnythingV2Preprocessor_input, DepthAnythingV2Preprocessor_output> {
+          nameInComfy: "DepthAnythingV2Preprocessor"
+      }
+      interface DepthAnythingV2Preprocessor_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface DepthAnythingV2Preprocessor_input {
+          image: Comfy.Input.IMAGE
+          /** default="depth_anything_v2_vitl.pth" */
+          ckpt_name?: Comfy.Union.E_30291c97550ef461f5a79884cd944debc9ba4bcf
+          /** default=512 min=16384 max=16384 step=64 */
+          resolution?: Comfy.Input.INT
+      }
+      interface CannyEdgePreprocessor extends HasSingle_IMAGE, ComfyNode<CannyEdgePreprocessor_input, CannyEdgePreprocessor_output> {
+          nameInComfy: "CannyEdgePreprocessor"
+      }
+      interface CannyEdgePreprocessor_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface CannyEdgePreprocessor_input {
+          image: Comfy.Input.IMAGE
+          /** default=100 min=255 max=255 step=1 */
+          low_threshold?: Comfy.Input.INT
+          /** default=200 min=255 max=255 step=1 */
+          high_threshold?: Comfy.Input.INT
+          /** default=512 min=16384 max=16384 step=64 */
+          resolution?: Comfy.Input.INT
+      }
+      interface DWPreprocessor extends HasSingle_IMAGE, HasSingle_POSE_KEYPOINT, ComfyNode<DWPreprocessor_input, DWPreprocessor_output> {
+          nameInComfy: "DWPreprocessor"
+      }
+      interface DWPreprocessor_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+          POSE_KEYPOINT: ComfyNodeOutput<'POSE_KEYPOINT', 1>,
+      }
+      interface DWPreprocessor_input {
+          image: Comfy.Input.IMAGE
+          /** default="enable" */
+          detect_hand?: Comfy.Union.E_EnableOrDisable
+          /** default="enable" */
+          detect_body?: Comfy.Union.E_EnableOrDisable
+          /** default="enable" */
+          detect_face?: Comfy.Union.E_EnableOrDisable
+          /** default=512 min=16384 max=16384 step=64 */
+          resolution?: Comfy.Input.INT
+          /** default="yolox_l.onnx" */
+          bbox_detector?: Comfy.Union.E_8b9acde8011b3c2e67b20fef1c037f35cac04a7e
+          /** default="dw-ll_ucoco_384_bs5.torchscript.pt" */
+          pose_estimator?: Comfy.Union.E_2f4bf8769543a6cb7a87b5740bb72074f7b687e8
+          /** default="disable" */
+          scale_stick_for_xinsr_cn?: Comfy.Union.E_EnableOrDisable
+      }
+      interface AnimalPosePreprocessor extends HasSingle_IMAGE, HasSingle_POSE_KEYPOINT, ComfyNode<AnimalPosePreprocessor_input, AnimalPosePreprocessor_output> {
+          nameInComfy: "AnimalPosePreprocessor"
+      }
+      interface AnimalPosePreprocessor_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+          POSE_KEYPOINT: ComfyNodeOutput<'POSE_KEYPOINT', 1>,
+      }
+      interface AnimalPosePreprocessor_input {
+          image: Comfy.Input.IMAGE
+          /** default="yolox_l.torchscript.pt" */
+          bbox_detector?: Comfy.Union.E_8b9acde8011b3c2e67b20fef1c037f35cac04a7e
+          /** default="rtmpose-m_ap10k_256_bs5.torchscript.pt" */
+          pose_estimator?: Comfy.Union.E_45e5839ae917502b2b5141cd89c9ca12743f45b4
+          /** default=512 min=16384 max=16384 step=64 */
+          resolution?: Comfy.Input.INT
+      }
+      interface ImageLuminanceDetector extends HasSingle_IMAGE, ComfyNode<ImageLuminanceDetector_input, ImageLuminanceDetector_output> {
+          nameInComfy: "ImageLuminanceDetector"
+      }
+      interface ImageLuminanceDetector_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface ImageLuminanceDetector_input {
+          image: Comfy.Input.IMAGE
+          /** default=1 min=2 max=2 step=0.01 */
+          gamma_correction?: Comfy.Input.FLOAT
+          /** default=512 min=16384 max=16384 step=64 */
+          resolution?: Comfy.Input.INT
+      }
+      interface ImageIntensityDetector extends HasSingle_IMAGE, ComfyNode<ImageIntensityDetector_input, ImageIntensityDetector_output> {
+          nameInComfy: "ImageIntensityDetector"
+      }
+      interface ImageIntensityDetector_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface ImageIntensityDetector_input {
+          image: Comfy.Input.IMAGE
+          /** default=1 min=2 max=2 step=0.01 */
+          gamma_correction?: Comfy.Input.FLOAT
+          /** default=512 min=16384 max=16384 step=64 */
+          resolution?: Comfy.Input.INT
+      }
+      interface MediaPipe$7FaceMeshPreprocessor extends HasSingle_IMAGE, ComfyNode<MediaPipe$7FaceMeshPreprocessor_input, MediaPipe$7FaceMeshPreprocessor_output> {
+          nameInComfy: "MediaPipe-FaceMeshPreprocessor"
+      }
+      interface MediaPipe$7FaceMeshPreprocessor_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface MediaPipe$7FaceMeshPreprocessor_input {
+          image: Comfy.Input.IMAGE
+          /** default=10 min=50 max=50 step=1 */
+          max_faces?: Comfy.Input.INT
+          /** default=0.5 min=1 max=1 step=0.01 */
+          min_confidence?: Comfy.Input.FLOAT
+          /** default=512 min=16384 max=16384 step=64 */
+          resolution?: Comfy.Input.INT
+      }
+      interface DiffusionEdge$_Preprocessor extends HasSingle_IMAGE, ComfyNode<DiffusionEdge$_Preprocessor_input, DiffusionEdge$_Preprocessor_output> {
+          nameInComfy: "DiffusionEdge_Preprocessor"
+      }
+      interface DiffusionEdge$_Preprocessor_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface DiffusionEdge$_Preprocessor_input {
+          image: Comfy.Input.IMAGE
+          /** default="indoor" */
+          environment?: Comfy.Union.E_f2067692a1e679e71041f510afe6eadb4debc349
+          /** default=4 min=16 max=16 step=1 */
+          patch_batch_size?: Comfy.Input.INT
+          /** default=512 min=16384 max=16384 step=64 */
+          resolution?: Comfy.Input.INT
+      }
+      interface M$7LSDPreprocessor extends HasSingle_IMAGE, ComfyNode<M$7LSDPreprocessor_input, M$7LSDPreprocessor_output> {
+          nameInComfy: "M-LSDPreprocessor"
+      }
+      interface M$7LSDPreprocessor_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface M$7LSDPreprocessor_input {
+          image: Comfy.Input.IMAGE
+          /** default=0.1 min=2 max=2 step=0.01 */
+          score_threshold?: Comfy.Input.FLOAT
+          /** default=0.1 min=20 max=20 step=0.01 */
+          dist_threshold?: Comfy.Input.FLOAT
+          /** default=512 min=16384 max=16384 step=64 */
+          resolution?: Comfy.Input.INT
+      }
+      interface HEDPreprocessor extends HasSingle_IMAGE, ComfyNode<HEDPreprocessor_input, HEDPreprocessor_output> {
+          nameInComfy: "HEDPreprocessor"
+      }
+      interface HEDPreprocessor_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface HEDPreprocessor_input {
+          image: Comfy.Input.IMAGE
+          /** default="enable" */
+          safe?: Comfy.Union.E_EnableOrDisable
+          /** default=512 min=16384 max=16384 step=64 */
+          resolution?: Comfy.Input.INT
+      }
+      interface FakeScribblePreprocessor extends HasSingle_IMAGE, ComfyNode<FakeScribblePreprocessor_input, FakeScribblePreprocessor_output> {
+          nameInComfy: "FakeScribblePreprocessor"
+      }
+      interface FakeScribblePreprocessor_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface FakeScribblePreprocessor_input {
+          image: Comfy.Input.IMAGE
+          /** default="enable" */
+          safe?: Comfy.Union.E_EnableOrDisable
+          /** default=512 min=16384 max=16384 step=64 */
+          resolution?: Comfy.Input.INT
+      }
+      interface OneFormer$7COCO$7SemSegPreprocessor extends HasSingle_IMAGE, ComfyNode<OneFormer$7COCO$7SemSegPreprocessor_input, OneFormer$7COCO$7SemSegPreprocessor_output> {
+          nameInComfy: "OneFormer-COCO-SemSegPreprocessor"
+      }
+      interface OneFormer$7COCO$7SemSegPreprocessor_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface OneFormer$7COCO$7SemSegPreprocessor_input {
+          image: Comfy.Input.IMAGE
+          /** default=512 min=16384 max=16384 step=64 */
+          resolution?: Comfy.Input.INT
+      }
+      interface OneFormer$7ADE20K$7SemSegPreprocessor extends HasSingle_IMAGE, ComfyNode<OneFormer$7ADE20K$7SemSegPreprocessor_input, OneFormer$7ADE20K$7SemSegPreprocessor_output> {
+          nameInComfy: "OneFormer-ADE20K-SemSegPreprocessor"
+      }
+      interface OneFormer$7ADE20K$7SemSegPreprocessor_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface OneFormer$7ADE20K$7SemSegPreprocessor_input {
+          image: Comfy.Input.IMAGE
+          /** default=512 min=16384 max=16384 step=64 */
+          resolution?: Comfy.Input.INT
+      }
+      interface BAE$7NormalMapPreprocessor extends HasSingle_IMAGE, ComfyNode<BAE$7NormalMapPreprocessor_input, BAE$7NormalMapPreprocessor_output> {
+          nameInComfy: "BAE-NormalMapPreprocessor"
+      }
+      interface BAE$7NormalMapPreprocessor_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface BAE$7NormalMapPreprocessor_input {
+          image: Comfy.Input.IMAGE
+          /** default=512 min=16384 max=16384 step=64 */
+          resolution?: Comfy.Input.INT
+      }
+      interface MeshGraphormer$7DepthMapPreprocessor extends HasSingle_IMAGE, HasSingle_MASK, ComfyNode<MeshGraphormer$7DepthMapPreprocessor_input, MeshGraphormer$7DepthMapPreprocessor_output> {
+          nameInComfy: "MeshGraphormer-DepthMapPreprocessor"
+      }
+      interface MeshGraphormer$7DepthMapPreprocessor_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+          INPAINTING_MASK: ComfyNodeOutput<'MASK', 1>,
+      }
+      interface MeshGraphormer$7DepthMapPreprocessor_input {
+          image: Comfy.Input.IMAGE
+          /** default=30 min=100 max=100 */
+          mask_bbox_padding?: Comfy.Input.INT
+          /** default=512 min=16384 max=16384 step=64 */
+          resolution?: Comfy.Input.INT
+          /** default="based_on_depth" */
+          mask_type?: Comfy.Union.E_b5caf6278e8db337000bd8531d0a52fd983e6dee
+          /** default=5 min=16384 max=16384 step=1 */
+          mask_expand?: Comfy.Input.INT
+          /** default=88 min=18446744073709552000 max=18446744073709552000 step=1 */
+          rand_seed?: Comfy.Input.INT
+          /** default=0.6 min=1 max=1 step=0.01 */
+          detect_thr?: Comfy.Input.FLOAT
+          /** default=0.6 min=1 max=1 step=0.01 */
+          presence_thr?: Comfy.Input.FLOAT
+      }
+      interface MeshGraphormer$6ImpactDetector$7DepthMapPreprocessor extends HasSingle_IMAGE, HasSingle_MASK, ComfyNode<MeshGraphormer$6ImpactDetector$7DepthMapPreprocessor_input, MeshGraphormer$6ImpactDetector$7DepthMapPreprocessor_output> {
+          nameInComfy: "MeshGraphormer+ImpactDetector-DepthMapPreprocessor"
+      }
+      interface MeshGraphormer$6ImpactDetector$7DepthMapPreprocessor_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+          INPAINTING_MASK: ComfyNodeOutput<'MASK', 1>,
+      }
+      interface MeshGraphormer$6ImpactDetector$7DepthMapPreprocessor_input {
+          image: Comfy.Input.IMAGE
+          bbox_detector: Comfy.Input.BBOX_DETECTOR
+          /** default=0.5 min=1 max=1 step=0.01 */
+          bbox_threshold?: Comfy.Input.FLOAT
+          /** default=10 min=512 max=512 step=1 */
+          bbox_dilation?: Comfy.Input.INT
+          /** default=3 min=10 max=10 step=0.01 */
+          bbox_crop_factor?: Comfy.Input.FLOAT
+          /** default=10 min=16384 max=16384 step=1 */
+          drop_size?: Comfy.Input.INT
+          /** default=30 min=100 max=100 step=1 */
+          mask_bbox_padding?: Comfy.Input.INT
+          /** default="based_on_depth" */
+          mask_type?: Comfy.Union.E_b5caf6278e8db337000bd8531d0a52fd983e6dee
+          /** default=5 min=16384 max=16384 step=1 */
+          mask_expand?: Comfy.Input.INT
+          /** default=88 min=18446744073709552000 max=18446744073709552000 step=1 */
+          rand_seed?: Comfy.Input.INT
+          /** default=512 min=16384 max=16384 step=64 */
+          resolution?: Comfy.Input.INT
+      }
+      interface DSINE$7NormalMapPreprocessor extends HasSingle_IMAGE, ComfyNode<DSINE$7NormalMapPreprocessor_input, DSINE$7NormalMapPreprocessor_output> {
+          nameInComfy: "DSINE-NormalMapPreprocessor"
+      }
+      interface DSINE$7NormalMapPreprocessor_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface DSINE$7NormalMapPreprocessor_input {
+          image: Comfy.Input.IMAGE
+          /** default=60 min=365 max=365 step=0.01 */
+          fov?: Comfy.Input.FLOAT
+          /** default=5 min=20 max=20 step=1 */
+          iterations?: Comfy.Input.INT
+          /** default=512 min=16384 max=16384 step=64 */
+          resolution?: Comfy.Input.INT
+      }
+      interface MiDaS$7NormalMapPreprocessor extends HasSingle_IMAGE, ComfyNode<MiDaS$7NormalMapPreprocessor_input, MiDaS$7NormalMapPreprocessor_output> {
+          nameInComfy: "MiDaS-NormalMapPreprocessor"
+      }
+      interface MiDaS$7NormalMapPreprocessor_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface MiDaS$7NormalMapPreprocessor_input {
+          image: Comfy.Input.IMAGE
+          /** default=6.283185307179586 min=15.707963267948966 max=15.707963267948966 step=0.01 */
+          a?: Comfy.Input.FLOAT
+          /** default=0.1 min=1 max=1 step=0.01 */
+          bg_threshold?: Comfy.Input.FLOAT
+          /** default=512 min=16384 max=16384 step=64 */
+          resolution?: Comfy.Input.INT
+      }
+      interface MiDaS$7DepthMapPreprocessor extends HasSingle_IMAGE, ComfyNode<MiDaS$7DepthMapPreprocessor_input, MiDaS$7DepthMapPreprocessor_output> {
+          nameInComfy: "MiDaS-DepthMapPreprocessor"
+      }
+      interface MiDaS$7DepthMapPreprocessor_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface MiDaS$7DepthMapPreprocessor_input {
+          image: Comfy.Input.IMAGE
+          /** default=6.283185307179586 min=15.707963267948966 max=15.707963267948966 step=0.01 */
+          a?: Comfy.Input.FLOAT
+          /** default=0.1 min=1 max=1 step=0.01 */
+          bg_threshold?: Comfy.Input.FLOAT
+          /** default=512 min=16384 max=16384 step=64 */
+          resolution?: Comfy.Input.INT
+      }
+      interface AnyLineArtPreprocessor$_aux extends HasSingle_IMAGE, ComfyNode<AnyLineArtPreprocessor$_aux_input, AnyLineArtPreprocessor$_aux_output> {
+          nameInComfy: "AnyLineArtPreprocessor_aux"
+      }
+      interface AnyLineArtPreprocessor$_aux_output {
+          image: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface AnyLineArtPreprocessor$_aux_input {
+          image: Comfy.Input.IMAGE
+          /** default="lineart_standard" */
+          merge_with_lineart?: Comfy.Union.E_f2f3bf212fe93f89462ca7fbd01c0beb857e0fa1
+          /** default=1280 min=16384 max=16384 step=8 */
+          resolution?: Comfy.Input.INT
+          /** default=0 min=1 max=1 step=0.01 */
+          lineart_lower_bound?: Comfy.Input.FLOAT
+          /** default=1 min=1 max=1 step=0.01 */
+          lineart_upper_bound?: Comfy.Input.FLOAT
+          /** default=36 min=16384 max=16384 step=1 */
+          object_min_size?: Comfy.Input.INT
+          /** default=1 min=16384 max=16384 step=1 */
+          object_connectivity?: Comfy.Input.INT
+      }
+      interface SAMPreprocessor extends HasSingle_IMAGE, ComfyNode<SAMPreprocessor_input, SAMPreprocessor_output> {
+          nameInComfy: "SAMPreprocessor"
+      }
+      interface SAMPreprocessor_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface SAMPreprocessor_input {
+          image: Comfy.Input.IMAGE
+          /** default=512 min=16384 max=16384 step=64 */
+          resolution?: Comfy.Input.INT
+      }
+      interface UniFormer$7SemSegPreprocessor extends HasSingle_IMAGE, ComfyNode<UniFormer$7SemSegPreprocessor_input, UniFormer$7SemSegPreprocessor_output> {
+          nameInComfy: "UniFormer-SemSegPreprocessor"
+      }
+      interface UniFormer$7SemSegPreprocessor_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface UniFormer$7SemSegPreprocessor_input {
+          image: Comfy.Input.IMAGE
+          /** default=512 min=16384 max=16384 step=64 */
+          resolution?: Comfy.Input.INT
+      }
+      interface SemSegPreprocessor extends HasSingle_IMAGE, ComfyNode<SemSegPreprocessor_input, SemSegPreprocessor_output> {
+          nameInComfy: "SemSegPreprocessor"
+      }
+      interface SemSegPreprocessor_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface SemSegPreprocessor_input {
+          image: Comfy.Input.IMAGE
+          /** default=512 min=16384 max=16384 step=64 */
+          resolution?: Comfy.Input.INT
+      }
+      interface PiDiNetPreprocessor extends HasSingle_IMAGE, ComfyNode<PiDiNetPreprocessor_input, PiDiNetPreprocessor_output> {
+          nameInComfy: "PiDiNetPreprocessor"
+      }
+      interface PiDiNetPreprocessor_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface PiDiNetPreprocessor_input {
+          image: Comfy.Input.IMAGE
+          /** default="enable" */
+          safe?: Comfy.Union.E_EnableOrDisable
+          /** default=512 min=16384 max=16384 step=64 */
+          resolution?: Comfy.Input.INT
+      }
+      interface InpaintPreprocessor extends HasSingle_IMAGE, ComfyNode<InpaintPreprocessor_input, InpaintPreprocessor_output> {
+          nameInComfy: "InpaintPreprocessor"
+      }
+      interface InpaintPreprocessor_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface InpaintPreprocessor_input {
+          image: Comfy.Input.IMAGE
+          mask: Comfy.Input.MASK
+          /** default=false */
+          black_pixel_for_xinsir_cn?: Comfy.Input.BOOLEAN
+      }
+      interface LineArtPreprocessor extends HasSingle_IMAGE, ComfyNode<LineArtPreprocessor_input, LineArtPreprocessor_output> {
+          nameInComfy: "LineArtPreprocessor"
+      }
+      interface LineArtPreprocessor_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface LineArtPreprocessor_input {
+          image: Comfy.Input.IMAGE
+          /** default="disable" */
+          coarse?: Comfy.Union.E_EnableOrDisable
+          /** default=512 min=16384 max=16384 step=64 */
+          resolution?: Comfy.Input.INT
+      }
+      interface OpenposePreprocessor extends HasSingle_IMAGE, HasSingle_POSE_KEYPOINT, ComfyNode<OpenposePreprocessor_input, OpenposePreprocessor_output> {
+          nameInComfy: "OpenposePreprocessor"
+      }
+      interface OpenposePreprocessor_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+          POSE_KEYPOINT: ComfyNodeOutput<'POSE_KEYPOINT', 1>,
+      }
+      interface OpenposePreprocessor_input {
+          image: Comfy.Input.IMAGE
+          /** default="enable" */
+          detect_hand?: Comfy.Union.E_EnableOrDisable
+          /** default="enable" */
+          detect_body?: Comfy.Union.E_EnableOrDisable
+          /** default="enable" */
+          detect_face?: Comfy.Union.E_EnableOrDisable
+          /** default=512 min=16384 max=16384 step=64 */
+          resolution?: Comfy.Input.INT
+          /** default="disable" */
+          scale_stick_for_xinsr_cn?: Comfy.Union.E_EnableOrDisable
+      }
+      interface Unimatch$_OptFlowPreprocessor extends HasSingle_OPTICAL_FLOW, HasSingle_IMAGE, ComfyNode<Unimatch$_OptFlowPreprocessor_input, Unimatch$_OptFlowPreprocessor_output> {
+          nameInComfy: "Unimatch_OptFlowPreprocessor"
+      }
+      interface Unimatch$_OptFlowPreprocessor_output {
+          OPTICAL_FLOW: ComfyNodeOutput<'OPTICAL_FLOW', 0>,
+          PREVIEW_IMAGE: ComfyNodeOutput<'IMAGE', 1>,
+      }
+      interface Unimatch$_OptFlowPreprocessor_input {
+          image: Comfy.Input.IMAGE
+          /** default="gmflow-scale2-regrefine6-mixdata.pth" */
+          ckpt_name?: Comfy.Union.E_988e8378cb5cffff14c5d8060093ba919d87e6f4
+          /** default=false */
+          backward_flow?: Comfy.Input.BOOLEAN
+          /** default=false */
+          bidirectional_flow?: Comfy.Input.BOOLEAN
+      }
+      interface MaskOptFlow extends HasSingle_OPTICAL_FLOW, HasSingle_IMAGE, ComfyNode<MaskOptFlow_input, MaskOptFlow_output> {
+          nameInComfy: "MaskOptFlow"
+      }
+      interface MaskOptFlow_output {
+          OPTICAL_FLOW: ComfyNodeOutput<'OPTICAL_FLOW', 0>,
+          PREVIEW_IMAGE: ComfyNodeOutput<'IMAGE', 1>,
+      }
+      interface MaskOptFlow_input {
+          optical_flow: Comfy.Input.OPTICAL_FLOW
+          mask: Comfy.Input.MASK
+      }
+      interface SavePoseKpsAsJsonFile extends ComfyNode<SavePoseKpsAsJsonFile_input, SavePoseKpsAsJsonFile_output> {
+          nameInComfy: "SavePoseKpsAsJsonFile"
+      }
+      interface SavePoseKpsAsJsonFile_output {
+      }
+      interface SavePoseKpsAsJsonFile_input {
+          pose_kps: Comfy.Input.POSE_KEYPOINT
+          /** default="PoseKeypoint" */
+          filename_prefix?: Comfy.Input.STRING
+      }
+      interface FacialPartColoringFromPoseKps extends HasSingle_IMAGE, ComfyNode<FacialPartColoringFromPoseKps_input, FacialPartColoringFromPoseKps_output> {
+          nameInComfy: "FacialPartColoringFromPoseKps"
+      }
+      interface FacialPartColoringFromPoseKps_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface FacialPartColoringFromPoseKps_input {
+          pose_kps: Comfy.Input.POSE_KEYPOINT
+          /** default="polygon" */
+          mode?: Comfy.Union.E_864516593cf8906cd4bb58dde398b0c37bad51c6
+          /** default="rgb(0, 153, 255)" */
+          skin?: Comfy.Input.STRING
+          /** default="rgb(0, 204, 153)" */
+          left_eye?: Comfy.Input.STRING
+          /** default="rgb(255, 153, 0)" */
+          right_eye?: Comfy.Input.STRING
+          /** default="rgb(255, 102, 255)" */
+          nose?: Comfy.Input.STRING
+          /** default="rgb(102, 0, 51)" */
+          upper_lip?: Comfy.Input.STRING
+          /** default="rgb(255, 204, 255)" */
+          inner_mouth?: Comfy.Input.STRING
+          /** default="rgb(255, 0, 102)" */
+          lower_lip?: Comfy.Input.STRING
+      }
+      interface UpperBodyTrackingFromPoseKps extends HasSingle_TRACKING, HasSingle_STRING, ComfyNode<UpperBodyTrackingFromPoseKps_input, UpperBodyTrackingFromPoseKps_output> {
+          nameInComfy: "UpperBodyTrackingFromPoseKps"
+      }
+      interface UpperBodyTrackingFromPoseKps_output {
+          tracking: ComfyNodeOutput<'TRACKING', 0>,
+          prompt: ComfyNodeOutput<'STRING', 1>,
+      }
+      interface UpperBodyTrackingFromPoseKps_input {
+          pose_kps: Comfy.Input.POSE_KEYPOINT
+          /** default="" */
+          id_include?: Comfy.Input.STRING
+          /** default="256, 256" */
+          Head_width_height?: Comfy.Input.STRING
+          /** default="100, 100" */
+          Neck_width_height?: Comfy.Input.STRING
+          /** default="" */
+          Shoulder_width_height?: Comfy.Input.STRING
+          /** default="350, 450" */
+          Torso_width_height?: Comfy.Input.STRING
+          /** default="128, 256" */
+          RArm_width_height?: Comfy.Input.STRING
+          /** default="128, 256" */
+          RForearm_width_height?: Comfy.Input.STRING
+          /** default="128, 256" */
+          LArm_width_height?: Comfy.Input.STRING
+          /** default="128, 256" */
+          LForearm_width_height?: Comfy.Input.STRING
+      }
+      interface RenderPeopleKps extends HasSingle_IMAGE, ComfyNode<RenderPeopleKps_input, RenderPeopleKps_output> {
+          nameInComfy: "RenderPeopleKps"
+      }
+      interface RenderPeopleKps_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface RenderPeopleKps_input {
+          kps: Comfy.Input.POSE_KEYPOINT
+          /** default=true */
+          render_body?: Comfy.Input.BOOLEAN
+          /** default=true */
+          render_hand?: Comfy.Input.BOOLEAN
+          /** default=true */
+          render_face?: Comfy.Input.BOOLEAN
+      }
+      interface RenderAnimalKps extends HasSingle_IMAGE, ComfyNode<RenderAnimalKps_input, RenderAnimalKps_output> {
+          nameInComfy: "RenderAnimalKps"
+      }
+      interface RenderAnimalKps_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface RenderAnimalKps_input {
+          kps: Comfy.Input.POSE_KEYPOINT
+      }
+      interface TEEDPreprocessor extends HasSingle_IMAGE, ComfyNode<TEEDPreprocessor_input, TEEDPreprocessor_output> {
+          nameInComfy: "TEEDPreprocessor"
+      }
+      interface TEEDPreprocessor_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface TEEDPreprocessor_input {
+          image: Comfy.Input.IMAGE
+          /** default=2 min=10 max=10 step=1 */
+          safe_steps?: Comfy.Input.INT
+          /** default=512 min=16384 max=16384 step=64 */
+          resolution?: Comfy.Input.INT
+      }
+      interface PyraCannyPreprocessor extends HasSingle_IMAGE, ComfyNode<PyraCannyPreprocessor_input, PyraCannyPreprocessor_output> {
+          nameInComfy: "PyraCannyPreprocessor"
+      }
+      interface PyraCannyPreprocessor_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface PyraCannyPreprocessor_input {
+          image: Comfy.Input.IMAGE
+          /** default=64 min=255 max=255 step=1 */
+          low_threshold?: Comfy.Input.INT
+          /** default=128 min=255 max=255 step=1 */
+          high_threshold?: Comfy.Input.INT
+          /** default=512 min=16384 max=16384 step=64 */
+          resolution?: Comfy.Input.INT
+      }
+      interface Metric3D$7DepthMapPreprocessor extends HasSingle_IMAGE, ComfyNode<Metric3D$7DepthMapPreprocessor_input, Metric3D$7DepthMapPreprocessor_output> {
+          nameInComfy: "Metric3D-DepthMapPreprocessor"
+      }
+      interface Metric3D$7DepthMapPreprocessor_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Metric3D$7DepthMapPreprocessor_input {
+          image: Comfy.Input.IMAGE
+          /** default="vit-small" */
+          backbone?: Comfy.Union.E_ecd8eade7f608a502e4587d43bca2d2a4f9b729b
+          /** default=1000 min=16384 max=16384 step=1 */
+          fx?: Comfy.Input.INT
+          /** default=1000 min=16384 max=16384 step=1 */
+          fy?: Comfy.Input.INT
+          /** default=512 min=16384 max=16384 step=64 */
+          resolution?: Comfy.Input.INT
+      }
+      interface Metric3D$7NormalMapPreprocessor extends HasSingle_IMAGE, ComfyNode<Metric3D$7NormalMapPreprocessor_input, Metric3D$7NormalMapPreprocessor_output> {
+          nameInComfy: "Metric3D-NormalMapPreprocessor"
+      }
+      interface Metric3D$7NormalMapPreprocessor_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Metric3D$7NormalMapPreprocessor_input {
+          image: Comfy.Input.IMAGE
+          /** default="vit-small" */
+          backbone?: Comfy.Union.E_ecd8eade7f608a502e4587d43bca2d2a4f9b729b
+          /** default=1000 min=16384 max=16384 step=1 */
+          fx?: Comfy.Input.INT
+          /** default=1000 min=16384 max=16384 step=1 */
+          fy?: Comfy.Input.INT
+          /** default=512 min=16384 max=16384 step=64 */
+          resolution?: Comfy.Input.INT
+      }
+      interface Manga2Anime$_LineArt$_Preprocessor extends HasSingle_IMAGE, ComfyNode<Manga2Anime$_LineArt$_Preprocessor_input, Manga2Anime$_LineArt$_Preprocessor_output> {
+          nameInComfy: "Manga2Anime_LineArt_Preprocessor"
+      }
+      interface Manga2Anime$_LineArt$_Preprocessor_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Manga2Anime$_LineArt$_Preprocessor_input {
+          image: Comfy.Input.IMAGE
+          /** default=512 min=16384 max=16384 step=64 */
+          resolution?: Comfy.Input.INT
+      }
+      interface ScribblePreprocessor extends HasSingle_IMAGE, ComfyNode<ScribblePreprocessor_input, ScribblePreprocessor_output> {
+          nameInComfy: "ScribblePreprocessor"
+      }
+      interface ScribblePreprocessor_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface ScribblePreprocessor_input {
+          image: Comfy.Input.IMAGE
+          /** default=512 min=16384 max=16384 step=64 */
+          resolution?: Comfy.Input.INT
+      }
+      interface Scribble$_XDoG$_Preprocessor extends HasSingle_IMAGE, ComfyNode<Scribble$_XDoG$_Preprocessor_input, Scribble$_XDoG$_Preprocessor_output> {
+          nameInComfy: "Scribble_XDoG_Preprocessor"
+      }
+      interface Scribble$_XDoG$_Preprocessor_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Scribble$_XDoG$_Preprocessor_input {
+          image: Comfy.Input.IMAGE
+          /** default=32 min=64 max=64 step=1 */
+          threshold?: Comfy.Input.INT
+          /** default=512 min=16384 max=16384 step=64 */
+          resolution?: Comfy.Input.INT
+      }
+      interface Scribble$_PiDiNet$_Preprocessor extends HasSingle_IMAGE, ComfyNode<Scribble$_PiDiNet$_Preprocessor_input, Scribble$_PiDiNet$_Preprocessor_output> {
+          nameInComfy: "Scribble_PiDiNet_Preprocessor"
+      }
+      interface Scribble$_PiDiNet$_Preprocessor_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface Scribble$_PiDiNet$_Preprocessor_input {
+          image: Comfy.Input.IMAGE
+          safe?: Comfy.Union.E_EnableOrDisable
+          /** default=512 min=16384 max=16384 step=64 */
+          resolution?: Comfy.Input.INT
+      }
+      interface AnimeLineArtPreprocessor extends HasSingle_IMAGE, ComfyNode<AnimeLineArtPreprocessor_input, AnimeLineArtPreprocessor_output> {
+          nameInComfy: "AnimeLineArtPreprocessor"
+      }
+      interface AnimeLineArtPreprocessor_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface AnimeLineArtPreprocessor_input {
+          image: Comfy.Input.IMAGE
+          /** default=512 min=16384 max=16384 step=64 */
+          resolution?: Comfy.Input.INT
+      }
+      interface LineartStandardPreprocessor extends HasSingle_IMAGE, ComfyNode<LineartStandardPreprocessor_input, LineartStandardPreprocessor_output> {
+          nameInComfy: "LineartStandardPreprocessor"
+      }
+      interface LineartStandardPreprocessor_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface LineartStandardPreprocessor_input {
+          image: Comfy.Input.IMAGE
+          /** default=6 min=100 max=100 step=0.01 */
+          guassian_sigma?: Comfy.Input.FLOAT
+          /** default=8 min=16 max=16 step=1 */
+          intensity_threshold?: Comfy.Input.INT
+          /** default=512 min=16384 max=16384 step=64 */
+          resolution?: Comfy.Input.INT
+      }
+      interface TilePreprocessor extends HasSingle_IMAGE, ComfyNode<TilePreprocessor_input, TilePreprocessor_output> {
+          nameInComfy: "TilePreprocessor"
+      }
+      interface TilePreprocessor_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface TilePreprocessor_input {
+          image: Comfy.Input.IMAGE
+          /** default=3 min=10 max=10 step=1 */
+          pyrUp_iters?: Comfy.Input.INT
+          /** default=512 min=16384 max=16384 step=64 */
+          resolution?: Comfy.Input.INT
+      }
+      interface TTPlanet$_TileGF$_Preprocessor extends HasSingle_IMAGE, ComfyNode<TTPlanet$_TileGF$_Preprocessor_input, TTPlanet$_TileGF$_Preprocessor_output> {
+          nameInComfy: "TTPlanet_TileGF_Preprocessor"
+      }
+      interface TTPlanet$_TileGF$_Preprocessor_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface TTPlanet$_TileGF$_Preprocessor_input {
+          image: Comfy.Input.IMAGE
+          /** default=1 min=8 max=8 step=0.01 */
+          scale_factor?: Comfy.Input.FLOAT
+          /** default=2 min=10 max=10 step=0.01 */
+          blur_strength?: Comfy.Input.FLOAT
+          /** default=7 min=20 max=20 step=1 */
+          radius?: Comfy.Input.INT
+          /** default=0.01 min=0.1 max=0.1 step=0.001 */
+          eps?: Comfy.Input.FLOAT
+          /** default=512 min=16384 max=16384 step=64 */
+          resolution?: Comfy.Input.INT
+      }
+      interface TTPlanet$_TileSimple$_Preprocessor extends HasSingle_IMAGE, ComfyNode<TTPlanet$_TileSimple$_Preprocessor_input, TTPlanet$_TileSimple$_Preprocessor_output> {
+          nameInComfy: "TTPlanet_TileSimple_Preprocessor"
+      }
+      interface TTPlanet$_TileSimple$_Preprocessor_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface TTPlanet$_TileSimple$_Preprocessor_input {
+          image: Comfy.Input.IMAGE
+          /** default=1 min=8 max=8 step=0.01 */
+          scale_factor?: Comfy.Input.FLOAT
+          /** default=2 min=10 max=10 step=0.01 */
+          blur_strength?: Comfy.Input.FLOAT
+      }
+      interface ColorPreprocessor extends HasSingle_IMAGE, ComfyNode<ColorPreprocessor_input, ColorPreprocessor_output> {
+          nameInComfy: "ColorPreprocessor"
+      }
+      interface ColorPreprocessor_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface ColorPreprocessor_input {
+          image: Comfy.Input.IMAGE
+          /** default=512 min=16384 max=16384 step=64 */
+          resolution?: Comfy.Input.INT
+      }
+      interface AIO$_Preprocessor extends HasSingle_IMAGE, ComfyNode<AIO$_Preprocessor_input, AIO$_Preprocessor_output> {
+          nameInComfy: "AIO_Preprocessor"
+      }
+      interface AIO$_Preprocessor_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface AIO$_Preprocessor_input {
+          image: Comfy.Input.IMAGE
+          /** default="none" */
+          preprocessor?: Comfy.Union.E_90ee599494f505c55a1a8cf8009c1a81c6238905
+          /** default=512 min=16384 max=16384 step=64 */
+          resolution?: Comfy.Input.INT
+      }
+      interface ControlNetPreprocessorSelector extends HasSingle_E_90ee599494f505c55a1a8cf8009c1a81c6238905, ComfyNode<ControlNetPreprocessorSelector_input, ControlNetPreprocessorSelector_output> {
+          nameInComfy: "ControlNetPreprocessorSelector"
+      }
+      interface ControlNetPreprocessorSelector_output {
+          preprocessor: ComfyNodeOutput<'E_90ee599494f505c55a1a8cf8009c1a81c6238905', 0>,
+      }
+      interface ControlNetPreprocessorSelector_input {
+          preprocessor: Comfy.Union.E_90ee599494f505c55a1a8cf8009c1a81c6238905
+      }
+      interface PixelPerfectResolution extends HasSingle_INT, ComfyNode<PixelPerfectResolution_input, PixelPerfectResolution_output> {
+          nameInComfy: "PixelPerfectResolution"
+      }
+      interface PixelPerfectResolution_output {
+          "RESOLUTION$_$1INT$2": ComfyNodeOutput<'INT', 0>,
+      }
+      interface PixelPerfectResolution_input {
+          original_image: Comfy.Input.IMAGE
+          /** default=512 min=8192 max=8192 step=8 */
+          image_gen_width?: Comfy.Input.INT
+          /** default=512 min=8192 max=8192 step=8 */
+          image_gen_height?: Comfy.Input.INT
+          /** default="Just Resize" */
+          resize_mode?: Comfy.Union.E_d6af160bb3240c471ff93d5647af03d694fc3360
+      }
+      interface ImageGenResolutionFromImage extends ComfyNode<ImageGenResolutionFromImage_input, ImageGenResolutionFromImage_output> {
+          nameInComfy: "ImageGenResolutionFromImage"
+      }
+      interface ImageGenResolutionFromImage_output {
+          "IMAGE_GEN_WIDTH$_$1INT$2": ComfyNodeOutput<'INT', 0>,
+          "IMAGE_GEN_HEIGHT$_$1INT$2": ComfyNodeOutput<'INT', 1>,
+      }
+      interface ImageGenResolutionFromImage_input {
+          image: Comfy.Input.IMAGE
+      }
+      interface ImageGenResolutionFromLatent extends ComfyNode<ImageGenResolutionFromLatent_input, ImageGenResolutionFromLatent_output> {
+          nameInComfy: "ImageGenResolutionFromLatent"
+      }
+      interface ImageGenResolutionFromLatent_output {
+          "IMAGE_GEN_WIDTH$_$1INT$2": ComfyNodeOutput<'INT', 0>,
+          "IMAGE_GEN_HEIGHT$_$1INT$2": ComfyNodeOutput<'INT', 1>,
+      }
+      interface ImageGenResolutionFromLatent_input {
+          latent: Comfy.Input.LATENT
+      }
+      interface HintImageEnchance extends HasSingle_IMAGE, ComfyNode<HintImageEnchance_input, HintImageEnchance_output> {
+          nameInComfy: "HintImageEnchance"
+      }
+      interface HintImageEnchance_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface HintImageEnchance_input {
+          hint_image: Comfy.Input.IMAGE
+          /** default=512 min=8192 max=8192 step=8 */
+          image_gen_width?: Comfy.Input.INT
+          /** default=512 min=8192 max=8192 step=8 */
+          image_gen_height?: Comfy.Input.INT
+          /** default="Just Resize" */
+          resize_mode?: Comfy.Union.E_d6af160bb3240c471ff93d5647af03d694fc3360
+      }
+      interface ExecuteAllControlNetPreprocessors extends HasSingle_IMAGE, ComfyNode<ExecuteAllControlNetPreprocessors_input, ExecuteAllControlNetPreprocessors_output> {
+          nameInComfy: "ExecuteAllControlNetPreprocessors"
+      }
+      interface ExecuteAllControlNetPreprocessors_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface ExecuteAllControlNetPreprocessors_input {
+          image: Comfy.Input.IMAGE
+          /** default=512 min=16384 max=16384 step=64 */
+          resolution?: Comfy.Input.INT
+      }
+      interface ControlNetAuxSimpleAddText extends HasSingle_IMAGE, ComfyNode<ControlNetAuxSimpleAddText_input, ControlNetAuxSimpleAddText_output> {
+          nameInComfy: "ControlNetAuxSimpleAddText"
+      }
+      interface ControlNetAuxSimpleAddText_output {
+          IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+      }
+      interface ControlNetAuxSimpleAddText_input {
+          image: Comfy.Input.IMAGE
+          /** default="" */
+          text?: Comfy.Input.STRING
       }
    }
    
@@ -4697,7 +6570,7 @@ declare global {
           BBOX_DETECTOR: ComfyNodeOutput<'BBOX_DETECTOR', 0>,
       }
       interface ONNXDetectorProvider_input {
-          model_name: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
+          model_name: Comfy.Union.E_LoraName
       }
       interface BitwiseAndMaskForEach extends HasSingle_SEGS, ComfyNode<BitwiseAndMaskForEach_input, BitwiseAndMaskForEach_output> {
           nameInComfy: "BitwiseAndMaskForEach"
@@ -4743,7 +6616,7 @@ declare global {
           steps?: Comfy.Input.INT
           /** default=8 min=100 max=100 */
           cfg?: Comfy.Input.FLOAT
-          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          sampler_name: Comfy.Union.E_SamplerName
           scheduler: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
           positive: Comfy.Input.CONDITIONING
           negative: Comfy.Input.CONDITIONING
@@ -4794,7 +6667,7 @@ declare global {
           steps?: Comfy.Input.INT
           /** default=8 min=100 max=100 */
           cfg?: Comfy.Input.FLOAT
-          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          sampler_name: Comfy.Union.E_SamplerName
           scheduler: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
           positive: Comfy.Input.CONDITIONING
           negative: Comfy.Input.CONDITIONING
@@ -4841,7 +6714,7 @@ declare global {
           steps?: Comfy.Input.INT
           /** default=8 min=100 max=100 */
           cfg?: Comfy.Input.FLOAT
-          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          sampler_name: Comfy.Union.E_SamplerName
           scheduler: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
           /** default=0.5 min=1 max=1 step=0.01 */
           denoise?: Comfy.Input.FLOAT
@@ -4893,7 +6766,7 @@ declare global {
           steps?: Comfy.Input.INT
           /** default=8 min=100 max=100 */
           cfg?: Comfy.Input.FLOAT
-          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          sampler_name: Comfy.Union.E_SamplerName
           scheduler: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
           /** default=0.5 min=1 max=1 step=0.01 */
           denoise?: Comfy.Input.FLOAT
@@ -4942,7 +6815,7 @@ declare global {
           steps?: Comfy.Input.INT
           /** default=8 min=100 max=100 */
           cfg?: Comfy.Input.FLOAT
-          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          sampler_name: Comfy.Union.E_SamplerName
           scheduler: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
           /** default=0.5 min=1 max=1 step=0.01 */
           denoise?: Comfy.Input.FLOAT
@@ -4971,7 +6844,7 @@ declare global {
           /** */
           image: Comfy.Input.IMAGE
           /** */
-          detection_hint: Comfy.Union.E_40275a874822a8699ee13794e127b63cdd6bfdae
+          detection_hint: Comfy.Union.E_ImpactDetectionHint
           /** default=0 min=512 max=512 step=1 */
           dilation?: Comfy.Input.INT
           /** default=0.93 min=1 max=1 step=0.01 */
@@ -4998,7 +6871,7 @@ declare global {
           /** */
           image: Comfy.Input.IMAGE
           /** */
-          detection_hint: Comfy.Union.E_40275a874822a8699ee13794e127b63cdd6bfdae
+          detection_hint: Comfy.Union.E_ImpactDetectionHint
           /** default=0 min=512 max=512 step=1 */
           dilation?: Comfy.Input.INT
           /** default=0.93 min=1 max=1 step=0.01 */
@@ -5038,7 +6911,7 @@ declare global {
           steps?: Comfy.Input.INT
           /** default=8 min=100 max=100 */
           cfg?: Comfy.Input.FLOAT
-          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          sampler_name: Comfy.Union.E_SamplerName
           scheduler: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
           positive: Comfy.Input.CONDITIONING
           negative: Comfy.Input.CONDITIONING
@@ -5056,7 +6929,7 @@ declare global {
           bbox_dilation?: Comfy.Input.INT
           /** default=3 min=10 max=10 step=0.1 */
           bbox_crop_factor?: Comfy.Input.FLOAT
-          sam_detection_hint: Comfy.Union.E_40275a874822a8699ee13794e127b63cdd6bfdae
+          sam_detection_hint: Comfy.Union.E_ImpactDetectionHint
           /** default=0 min=512 max=512 step=1 */
           sam_dilation?: Comfy.Input.INT
           /** default=0.93 min=1 max=1 step=0.01 */
@@ -5108,7 +6981,7 @@ declare global {
           steps?: Comfy.Input.INT
           /** default=8 min=100 max=100 */
           cfg?: Comfy.Input.FLOAT
-          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          sampler_name: Comfy.Union.E_SamplerName
           scheduler: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
           /** default=0.5 min=1 max=1 step=0.01 */
           denoise?: Comfy.Input.FLOAT
@@ -5124,7 +6997,7 @@ declare global {
           bbox_dilation?: Comfy.Input.INT
           /** default=3 min=10 max=10 step=0.1 */
           bbox_crop_factor?: Comfy.Input.FLOAT
-          sam_detection_hint: Comfy.Union.E_40275a874822a8699ee13794e127b63cdd6bfdae
+          sam_detection_hint: Comfy.Union.E_ImpactDetectionHint
           /** default=0 min=512 max=512 step=1 */
           sam_dilation?: Comfy.Input.INT
           /** default=0.93 min=1 max=1 step=0.01 */
@@ -5174,7 +7047,7 @@ declare global {
           steps?: Comfy.Input.INT
           /** default=8 min=100 max=100 */
           cfg?: Comfy.Input.FLOAT
-          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          sampler_name: Comfy.Union.E_SamplerName
           scheduler: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
           /** default=0.5 min=1 max=1 step=0.01 */
           denoise?: Comfy.Input.FLOAT
@@ -5494,7 +7367,7 @@ declare global {
           steps?: Comfy.Input.INT
           /** default=8 min=100 max=100 */
           cfg?: Comfy.Input.FLOAT
-          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          sampler_name: Comfy.Union.E_SamplerName
           scheduler: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
           positive: Comfy.Input.CONDITIONING
           negative: Comfy.Input.CONDITIONING
@@ -5522,7 +7395,7 @@ declare global {
           steps?: Comfy.Input.INT
           /** default=8 min=100 max=100 */
           cfg?: Comfy.Input.FLOAT
-          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          sampler_name: Comfy.Union.E_SamplerName
           scheduler: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
           /** default=1 min=1 max=1 step=0.01 */
           denoise?: Comfy.Input.FLOAT
@@ -5592,8 +7465,8 @@ declare global {
           steps?: Comfy.Input.INT
           /** default=8 min=100 max=100 */
           cfg?: Comfy.Input.FLOAT
-          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
-          scheduler: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325
+          sampler_name: Comfy.Union.E_SamplerName
+          scheduler: Comfy.Union.E_SchedulerName
           positive: Comfy.Input.CONDITIONING
           negative: Comfy.Input.CONDITIONING
           /** default=1 min=1 max=1 step=0.01 */
@@ -5623,8 +7496,8 @@ declare global {
           steps?: Comfy.Input.INT
           /** default=8 min=100 max=100 */
           cfg?: Comfy.Input.FLOAT
-          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
-          scheduler: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325
+          sampler_name: Comfy.Union.E_SamplerName
+          scheduler: Comfy.Union.E_SchedulerName
           /** default=1 min=1 max=1 step=0.01 */
           denoise?: Comfy.Input.FLOAT
           /** default=512 min=16384 max=16384 step=64 */
@@ -5736,7 +7609,7 @@ declare global {
       }
       interface NoiseInjectionHookProvider_input {
           schedule_for_iteration: Comfy.Union.E_0f7d0d088b6ea936fb25b477722d734706fe8b40
-          source: Comfy.Union.E_3dfc15432d4b952e91053feecd5a5427720957fc
+          source: Comfy.Union.E_CpuOrGpu
           /** default=0 min=18446744073709552000 max=18446744073709552000 */
           seed?: Comfy.Input.INT
           /** default=1 min=200 max=200 step=0.01 */
@@ -5760,9 +7633,9 @@ declare global {
           end_end_at_step?: Comfy.Input.INT
           /** default=1 min=100 max=100 */
           cfg?: Comfy.Input.FLOAT
-          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
-          scheduler: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325
-          normalize: Comfy.Union.E_449b4cae3566dd9b97c417c352bb08e25b89431b
+          sampler_name: Comfy.Union.E_SamplerName
+          scheduler: Comfy.Union.E_SchedulerName
+          normalize: Comfy.Union.E_EnableOrDisable
           positive: Comfy.Input.CONDITIONING
           negative: Comfy.Input.CONDITIONING
           schedule_for_iteration: Comfy.Union.E_0f7d0d088b6ea936fb25b477722d734706fe8b40
@@ -5805,7 +7678,7 @@ declare global {
       }
       interface NoiseInjectionDetailerHookProvider_input {
           schedule_for_cycle: Comfy.Union.E_afbc7832ad78555d4f5646f97ed21b561fe3d1f0
-          source: Comfy.Union.E_3dfc15432d4b952e91053feecd5a5427720957fc
+          source: Comfy.Union.E_CpuOrGpu
           /** default=0 min=18446744073709552000 max=18446744073709552000 */
           seed?: Comfy.Input.INT
           /** default=2 min=200 max=200 step=0.01 */
@@ -5829,9 +7702,9 @@ declare global {
           end_end_at_step?: Comfy.Input.INT
           /** default=1 min=100 max=100 */
           cfg?: Comfy.Input.FLOAT
-          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
-          scheduler: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325
-          normalize: Comfy.Union.E_449b4cae3566dd9b97c417c352bb08e25b89431b
+          sampler_name: Comfy.Union.E_SamplerName
+          scheduler: Comfy.Union.E_SchedulerName
+          normalize: Comfy.Union.E_EnableOrDisable
           positive: Comfy.Input.CONDITIONING
           negative: Comfy.Input.CONDITIONING
           schedule_for_cycle: Comfy.Union.E_afbc7832ad78555d4f5646f97ed21b561fe3d1f0
@@ -6534,7 +8407,7 @@ declare global {
           /** default=8 min=100 max=100 */
           cfg?: Comfy.Input.FLOAT
           /** */
-          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          sampler_name: Comfy.Union.E_SamplerName
           /** */
           scheduler: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
           /** default=1 min=1 max=1 step=0.01 */
@@ -6574,9 +8447,9 @@ declare global {
           /** default=8 min=100 max=100 */
           cfg?: Comfy.Input.FLOAT
           /** */
-          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          sampler_name: Comfy.Union.E_SamplerName
           /** */
-          scheduler: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325
+          scheduler: Comfy.Union.E_SchedulerName
           /** default=1 min=1 max=1 step=0.01 */
           denoise?: Comfy.Input.FLOAT
           /** default=512 min=16384 max=16384 step=64 */
@@ -6598,7 +8471,7 @@ declare global {
           /** default=8 min=100 max=100 */
           cfg?: Comfy.Input.FLOAT
           /** */
-          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          sampler_name: Comfy.Union.E_SamplerName
           /** */
           scheduler: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
           /** default=1 min=10 max=10 step=0.01 */
@@ -6696,7 +8569,7 @@ declare global {
           MASK: ComfyNodeOutput<'MASK', 1>,
       }
       interface ImageReceiver_input {
-          image: Comfy.Union.E_26ea5ad8c44c9551fea858fff18017427386b591
+          image: Comfy.Union.E_Image
           /** default=0 min=9223372036854776000 max=9223372036854776000 step=1 */
           link_id?: Comfy.Input.INT
           /** default=false */
@@ -6726,7 +8599,7 @@ declare global {
           LATENT: ComfyNodeOutput<'LATENT', 0>,
       }
       interface LatentReceiver_input {
-          latent: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
+          latent: Comfy.Union.E_LoraName
           /** default=0 min=9223372036854776000 max=9223372036854776000 step=1 */
           link_id?: Comfy.Input.INT
           /** default=false */
@@ -6868,7 +8741,7 @@ declare global {
           /** default=2 min=100 max=100 step=0.01 */
           rescale_factor?: Comfy.Input.FLOAT
           resampling_method: Comfy.Union.E_bac912b55de8a59480c74aba068f4a3b5f9a0e38
-          supersample: Comfy.Union.E_c1a74591678033a2ccc87aa0add77dab7f001da5
+          supersample: Comfy.Union.E_TrueOrFalse
           /** default=8 min=1024 max=1024 step=8 */
           rounding_modulus?: Comfy.Input.INT
           /** default=0 min=18446744073709552000 max=18446744073709552000 */
@@ -6877,7 +8750,7 @@ declare global {
           steps?: Comfy.Input.INT
           /** default=8 min=100 max=100 */
           cfg?: Comfy.Input.FLOAT
-          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          sampler_name: Comfy.Union.E_SamplerName
           scheduler: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
           positive: Comfy.Input.CONDITIONING
           negative: Comfy.Input.CONDITIONING
@@ -6906,7 +8779,7 @@ declare global {
           /** default=2 min=100 max=100 step=0.01 */
           rescale_factor?: Comfy.Input.FLOAT
           resampling_method: Comfy.Union.E_bac912b55de8a59480c74aba068f4a3b5f9a0e38
-          supersample: Comfy.Union.E_c1a74591678033a2ccc87aa0add77dab7f001da5
+          supersample: Comfy.Union.E_TrueOrFalse
           /** default=8 min=1024 max=1024 step=8 */
           rounding_modulus?: Comfy.Input.INT
           /** default=0 min=18446744073709552000 max=18446744073709552000 */
@@ -6915,7 +8788,7 @@ declare global {
           steps?: Comfy.Input.INT
           /** default=8 min=100 max=100 */
           cfg?: Comfy.Input.FLOAT
-          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          sampler_name: Comfy.Union.E_SamplerName
           scheduler: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
           /** default=0.5 min=1 max=1 step=0.01 */
           denoise?: Comfy.Input.FLOAT
@@ -6951,7 +8824,7 @@ declare global {
           steps?: Comfy.Input.INT
           /** default=8 min=100 max=100 */
           cfg?: Comfy.Input.FLOAT
-          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          sampler_name: Comfy.Union.E_SamplerName
           scheduler: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
           /** default=0.5 min=1 max=1 step=0.01 */
           denoise?: Comfy.Input.FLOAT
@@ -7113,7 +8986,7 @@ declare global {
           steps?: Comfy.Input.INT
           /** default=8 min=100 max=100 */
           cfg?: Comfy.Input.FLOAT
-          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          sampler_name: Comfy.Union.E_SamplerName
           scheduler: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
           /** default=0.5 min=1 max=1 step=0.01 */
           denoise?: Comfy.Input.FLOAT
@@ -7143,7 +9016,7 @@ declare global {
           /** default=8 min=100 max=100 */
           cfg?: Comfy.Input.FLOAT
           /** */
-          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          sampler_name: Comfy.Union.E_SamplerName
           /** */
           scheduler: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
           /** */
@@ -7173,7 +9046,7 @@ declare global {
           /** default=8 min=100 max=100 */
           cfg?: Comfy.Input.FLOAT
           /** */
-          sampler_name: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
+          sampler_name: Comfy.Union.E_SamplerName
           /** */
           scheduler: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
           /** */
@@ -7867,7 +9740,7 @@ declare global {
       }
       interface ImpactSchedulerAdapter_input {
           /** */
-          scheduler: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325
+          scheduler: Comfy.Union.E_SchedulerName
           extra_scheduler: Comfy.Union.E_64bb9134d159ff7e3f573facb7cb2fcfbb2de483
       }
       interface GITSSchedulerFuncProvider extends HasSingle_SCHEDULER_FUNC, ComfyNode<GITSSchedulerFuncProvider_input, GITSSchedulerFuncProvider_output> {
@@ -7895,220 +9768,934 @@ declare global {
    }
    // #region 1. Enums
    namespace Comfy {
+      export interface Nodes {
+         KSampler: Comfy.Base.Nodes['KSampler']
+         CheckpointLoaderSimple: Comfy.Base.Nodes['CheckpointLoaderSimple']
+         CLIPTextEncode: Comfy.Base.Nodes['CLIPTextEncode']
+         CLIPSetLastLayer: Comfy.Base.Nodes['CLIPSetLastLayer']
+         VAEDecode: Comfy.Base.Nodes['VAEDecode']
+         VAEEncode: Comfy.Base.Nodes['VAEEncode']
+         VAEEncodeForInpaint: Comfy.Base.Nodes['VAEEncodeForInpaint']
+         VAELoader: Comfy.Base.Nodes['VAELoader']
+         EmptyLatentImage: Comfy.Base.Nodes['EmptyLatentImage']
+         LatentUpscale: Comfy.Base.Nodes['LatentUpscale']
+         LatentUpscaleBy: Comfy.Base.Nodes['LatentUpscaleBy']
+         LatentFromBatch: Comfy.Base.Nodes['LatentFromBatch']
+         RepeatLatentBatch: Comfy.Base.Nodes['RepeatLatentBatch']
+         SaveImage: Comfy.Base.Nodes['SaveImage']
+         PreviewImage: Comfy.Base.Nodes['PreviewImage']
+         LoadImage: Comfy.Base.Nodes['LoadImage']
+         LoadImageMask: Comfy.Base.Nodes['LoadImageMask']
+         ImageScale: Comfy.Base.Nodes['ImageScale']
+         ImageScaleBy: Comfy.Base.Nodes['ImageScaleBy']
+         ImageInvert: Comfy.Base.Nodes['ImageInvert']
+         ImageBatch: Comfy.Base.Nodes['ImageBatch']
+         ImagePadForOutpaint: Comfy.Base.Nodes['ImagePadForOutpaint']
+         EmptyImage: Comfy.Base.Nodes['EmptyImage']
+         ConditioningAverage: Comfy.Base.Nodes['ConditioningAverage']
+         ConditioningCombine: Comfy.Base.Nodes['ConditioningCombine']
+         ConditioningConcat: Comfy.Base.Nodes['ConditioningConcat']
+         ConditioningSetArea: Comfy.Base.Nodes['ConditioningSetArea']
+         ConditioningSetAreaPercentage: Comfy.Base.Nodes['ConditioningSetAreaPercentage']
+         ConditioningSetAreaStrength: Comfy.Base.Nodes['ConditioningSetAreaStrength']
+         ConditioningSetMask: Comfy.Base.Nodes['ConditioningSetMask']
+         KSamplerAdvanced: Comfy.Base.Nodes['KSamplerAdvanced']
+         SetLatentNoiseMask: Comfy.Base.Nodes['SetLatentNoiseMask']
+         LatentComposite: Comfy.Base.Nodes['LatentComposite']
+         LatentBlend: Comfy.Base.Nodes['LatentBlend']
+         LatentRotate: Comfy.Base.Nodes['LatentRotate']
+         LatentFlip: Comfy.Base.Nodes['LatentFlip']
+         LatentCrop: Comfy.Base.Nodes['LatentCrop']
+         LoraLoader: Comfy.Base.Nodes['LoraLoader']
+         CLIPLoader: Comfy.Base.Nodes['CLIPLoader']
+         UNETLoader: Comfy.Base.Nodes['UNETLoader']
+         DualCLIPLoader: Comfy.Base.Nodes['DualCLIPLoader']
+         CLIPVisionEncode: Comfy.Base.Nodes['CLIPVisionEncode']
+         StyleModelApply: Comfy.Base.Nodes['StyleModelApply']
+         unCLIPConditioning: Comfy.Base.Nodes['unCLIPConditioning']
+         ControlNetApply: Comfy.Base.Nodes['ControlNetApply']
+         ControlNetApplyAdvanced: Comfy.Base.Nodes['ControlNetApplyAdvanced']
+         ControlNetLoader: Comfy.Base.Nodes['ControlNetLoader']
+         DiffControlNetLoader: Comfy.Base.Nodes['DiffControlNetLoader']
+         StyleModelLoader: Comfy.Base.Nodes['StyleModelLoader']
+         CLIPVisionLoader: Comfy.Base.Nodes['CLIPVisionLoader']
+         VAEDecodeTiled: Comfy.Base.Nodes['VAEDecodeTiled']
+         VAEEncodeTiled: Comfy.Base.Nodes['VAEEncodeTiled']
+         unCLIPCheckpointLoader: Comfy.Base.Nodes['unCLIPCheckpointLoader']
+         GLIGENLoader: Comfy.Base.Nodes['GLIGENLoader']
+         GLIGENTextBoxApply: Comfy.Base.Nodes['GLIGENTextBoxApply']
+         InpaintModelConditioning: Comfy.Base.Nodes['InpaintModelConditioning']
+         CheckpointLoader: Comfy.Base.Nodes['CheckpointLoader']
+         DiffusersLoader: Comfy.Base.Nodes['DiffusersLoader']
+         LoadLatent: Comfy.Base.Nodes['LoadLatent']
+         SaveLatent: Comfy.Base.Nodes['SaveLatent']
+         ConditioningZeroOut: Comfy.Base.Nodes['ConditioningZeroOut']
+         ConditioningSetTimestepRange: Comfy.Base.Nodes['ConditioningSetTimestepRange']
+         LoraLoaderModelOnly: Comfy.Base.Nodes['LoraLoaderModelOnly']
+         "Extra.LatentAdd": Comfy.Extra.latent.Nodes['LatentAdd']
+         "Extra.LatentSubtract": Comfy.Extra.latent.Nodes['LatentSubtract']
+         "Extra.LatentMultiply": Comfy.Extra.latent.Nodes['LatentMultiply']
+         "Extra.LatentInterpolate": Comfy.Extra.latent.Nodes['LatentInterpolate']
+         "Extra.LatentBatch": Comfy.Extra.latent.Nodes['LatentBatch']
+         "Extra.LatentBatchSeedBehavior": Comfy.Extra.latent.Nodes['LatentBatchSeedBehavior']
+         "Extra.LatentApplyOperation": Comfy.Extra.latent.Nodes['LatentApplyOperation']
+         "Extra.LatentApplyOperationCFG": Comfy.Extra.latent.Nodes['LatentApplyOperationCFG']
+         "Extra.LatentOperationTonemapReinhard": Comfy.Extra.latent.Nodes['LatentOperationTonemapReinhard']
+         "Extra.LatentOperationSharpen": Comfy.Extra.latent.Nodes['LatentOperationSharpen']
+         "Extra.HypernetworkLoader": Comfy.Extra.hypernetwork.Nodes['HypernetworkLoader']
+         "Extra.UpscaleModelLoader": Comfy.Extra.upscale_model.Nodes['UpscaleModelLoader']
+         "Extra.ImageUpscaleWithModel": Comfy.Extra.upscale_model.Nodes['ImageUpscaleWithModel']
+         "Extra.ImageBlend": Comfy.Extra.post_processing.Nodes['ImageBlend']
+         "Extra.ImageBlur": Comfy.Extra.post_processing.Nodes['ImageBlur']
+         "Extra.ImageQuantize": Comfy.Extra.post_processing.Nodes['ImageQuantize']
+         "Extra.ImageSharpen": Comfy.Extra.post_processing.Nodes['ImageSharpen']
+         "Extra.ImageScaleToTotalPixels": Comfy.Extra.post_processing.Nodes['ImageScaleToTotalPixels']
+         "Extra.LatentCompositeMasked": Comfy.Extra.mask.Nodes['LatentCompositeMasked']
+         "Extra.ImageCompositeMasked": Comfy.Extra.mask.Nodes['ImageCompositeMasked']
+         "Extra.MaskToImage": Comfy.Extra.mask.Nodes['MaskToImage']
+         "Extra.ImageToMask": Comfy.Extra.mask.Nodes['ImageToMask']
+         "Extra.ImageColorToMask": Comfy.Extra.mask.Nodes['ImageColorToMask']
+         "Extra.SolidMask": Comfy.Extra.mask.Nodes['SolidMask']
+         "Extra.InvertMask": Comfy.Extra.mask.Nodes['InvertMask']
+         "Extra.CropMask": Comfy.Extra.mask.Nodes['CropMask']
+         "Extra.MaskComposite": Comfy.Extra.mask.Nodes['MaskComposite']
+         "Extra.FeatherMask": Comfy.Extra.mask.Nodes['FeatherMask']
+         "Extra.GrowMask": Comfy.Extra.mask.Nodes['GrowMask']
+         "Extra.ThresholdMask": Comfy.Extra.mask.Nodes['ThresholdMask']
+         "Extra.PorterDuffImageComposite": Comfy.Extra.compositing.Nodes['PorterDuffImageComposite']
+         "Extra.SplitImageWithAlpha": Comfy.Extra.compositing.Nodes['SplitImageWithAlpha']
+         "Extra.JoinImageWithAlpha": Comfy.Extra.compositing.Nodes['JoinImageWithAlpha']
+         "Extra.RebatchLatents": Comfy.Extra.rebatch.Nodes['RebatchLatents']
+         "Extra.RebatchImages": Comfy.Extra.rebatch.Nodes['RebatchImages']
+         "Extra.ModelMergeSimple": Comfy.Extra.model_merging.Nodes['ModelMergeSimple']
+         "Extra.ModelMergeBlocks": Comfy.Extra.model_merging.Nodes['ModelMergeBlocks']
+         "Extra.ModelMergeSubtract": Comfy.Extra.model_merging.Nodes['ModelMergeSubtract']
+         "Extra.ModelMergeAdd": Comfy.Extra.model_merging.Nodes['ModelMergeAdd']
+         "Extra.CheckpointSave": Comfy.Extra.model_merging.Nodes['CheckpointSave']
+         "Extra.CLIPMergeSimple": Comfy.Extra.model_merging.Nodes['CLIPMergeSimple']
+         "Extra.CLIPMergeSubtract": Comfy.Extra.model_merging.Nodes['CLIPMergeSubtract']
+         "Extra.CLIPMergeAdd": Comfy.Extra.model_merging.Nodes['CLIPMergeAdd']
+         "Extra.CLIPSave": Comfy.Extra.model_merging.Nodes['CLIPSave']
+         "Extra.VAESave": Comfy.Extra.model_merging.Nodes['VAESave']
+         "Extra.ModelSave": Comfy.Extra.model_merging.Nodes['ModelSave']
+         "Extra.TomePatchModel": Comfy.Extra.tomesd.Nodes['TomePatchModel']
+         "Extra.CLIPTextEncodeSDXLRefiner": Comfy.Extra.clip_sdxl.Nodes['CLIPTextEncodeSDXLRefiner']
+         "Extra.CLIPTextEncodeSDXL": Comfy.Extra.clip_sdxl.Nodes['CLIPTextEncodeSDXL']
+         "Extra.Canny": Comfy.Extra.canny.Nodes['Canny']
+         "Extra.FreeU": Comfy.Extra.freelunch.Nodes['FreeU']
+         "Extra.FreeU$_V2": Comfy.Extra.freelunch.Nodes['FreeU$_V2']
+         "Extra.SamplerCustom": Comfy.Extra.custom_sampler.Nodes['SamplerCustom']
+         "Extra.BasicScheduler": Comfy.Extra.custom_sampler.Nodes['BasicScheduler']
+         "Extra.KarrasScheduler": Comfy.Extra.custom_sampler.Nodes['KarrasScheduler']
+         "Extra.ExponentialScheduler": Comfy.Extra.custom_sampler.Nodes['ExponentialScheduler']
+         "Extra.PolyexponentialScheduler": Comfy.Extra.custom_sampler.Nodes['PolyexponentialScheduler']
+         "Extra.LaplaceScheduler": Comfy.Extra.custom_sampler.Nodes['LaplaceScheduler']
+         "Extra.VPScheduler": Comfy.Extra.custom_sampler.Nodes['VPScheduler']
+         "Extra.BetaSamplingScheduler": Comfy.Extra.custom_sampler.Nodes['BetaSamplingScheduler']
+         "Extra.SDTurboScheduler": Comfy.Extra.custom_sampler.Nodes['SDTurboScheduler']
+         "Extra.KSamplerSelect": Comfy.Extra.custom_sampler.Nodes['KSamplerSelect']
+         "Extra.SamplerEulerAncestral": Comfy.Extra.custom_sampler.Nodes['SamplerEulerAncestral']
+         "Extra.SamplerEulerAncestralCFGPP": Comfy.Extra.custom_sampler.Nodes['SamplerEulerAncestralCFGPP']
+         "Extra.SamplerLMS": Comfy.Extra.custom_sampler.Nodes['SamplerLMS']
+         "Extra.SamplerDPMPP$_3M$_SDE": Comfy.Extra.custom_sampler.Nodes['SamplerDPMPP$_3M$_SDE']
+         "Extra.SamplerDPMPP$_2M$_SDE": Comfy.Extra.custom_sampler.Nodes['SamplerDPMPP$_2M$_SDE']
+         "Extra.SamplerDPMPP$_SDE": Comfy.Extra.custom_sampler.Nodes['SamplerDPMPP$_SDE']
+         "Extra.SamplerDPMPP$_2S$_Ancestral": Comfy.Extra.custom_sampler.Nodes['SamplerDPMPP$_2S$_Ancestral']
+         "Extra.SamplerDPMAdaptative": Comfy.Extra.custom_sampler.Nodes['SamplerDPMAdaptative']
+         "Extra.SplitSigmas": Comfy.Extra.custom_sampler.Nodes['SplitSigmas']
+         "Extra.SplitSigmasDenoise": Comfy.Extra.custom_sampler.Nodes['SplitSigmasDenoise']
+         "Extra.FlipSigmas": Comfy.Extra.custom_sampler.Nodes['FlipSigmas']
+         "Extra.CFGGuider": Comfy.Extra.custom_sampler.Nodes['CFGGuider']
+         "Extra.DualCFGGuider": Comfy.Extra.custom_sampler.Nodes['DualCFGGuider']
+         "Extra.BasicGuider": Comfy.Extra.custom_sampler.Nodes['BasicGuider']
+         "Extra.RandomNoise": Comfy.Extra.custom_sampler.Nodes['RandomNoise']
+         "Extra.DisableNoise": Comfy.Extra.custom_sampler.Nodes['DisableNoise']
+         "Extra.AddNoise": Comfy.Extra.custom_sampler.Nodes['AddNoise']
+         "Extra.SamplerCustomAdvanced": Comfy.Extra.custom_sampler.Nodes['SamplerCustomAdvanced']
+         "Extra.HyperTile": Comfy.Extra.hypertile.Nodes['HyperTile']
+         "Extra.ModelSamplingDiscrete": Comfy.Extra.model_advanced.Nodes['ModelSamplingDiscrete']
+         "Extra.ModelSamplingContinuousEDM": Comfy.Extra.model_advanced.Nodes['ModelSamplingContinuousEDM']
+         "Extra.ModelSamplingContinuousV": Comfy.Extra.model_advanced.Nodes['ModelSamplingContinuousV']
+         "Extra.ModelSamplingStableCascade": Comfy.Extra.model_advanced.Nodes['ModelSamplingStableCascade']
+         "Extra.ModelSamplingSD3": Comfy.Extra.model_advanced.Nodes['ModelSamplingSD3']
+         "Extra.ModelSamplingAuraFlow": Comfy.Extra.model_advanced.Nodes['ModelSamplingAuraFlow']
+         "Extra.ModelSamplingFlux": Comfy.Extra.model_advanced.Nodes['ModelSamplingFlux']
+         "Extra.RescaleCFG": Comfy.Extra.model_advanced.Nodes['RescaleCFG']
+         "Extra.PatchModelAddDownscale": Comfy.Extra.model_downscale.Nodes['PatchModelAddDownscale']
+         "Extra.ImageCrop": Comfy.Extra.images.Nodes['ImageCrop']
+         "Extra.RepeatImageBatch": Comfy.Extra.images.Nodes['RepeatImageBatch']
+         "Extra.ImageFromBatch": Comfy.Extra.images.Nodes['ImageFromBatch']
+         "Extra.SaveAnimatedWEBP": Comfy.Extra.images.Nodes['SaveAnimatedWEBP']
+         "Extra.SaveAnimatedPNG": Comfy.Extra.images.Nodes['SaveAnimatedPNG']
+         "Extra.ImageOnlyCheckpointLoader": Comfy.Extra.video_model.Nodes['ImageOnlyCheckpointLoader']
+         "Extra.SVD$_img2vid$_Conditioning": Comfy.Extra.video_model.Nodes['SVD$_img2vid$_Conditioning']
+         "Extra.VideoLinearCFGGuidance": Comfy.Extra.video_model.Nodes['VideoLinearCFGGuidance']
+         "Extra.VideoTriangleCFGGuidance": Comfy.Extra.video_model.Nodes['VideoTriangleCFGGuidance']
+         "Extra.ImageOnlyCheckpointSave": Comfy.Extra.video_model.Nodes['ImageOnlyCheckpointSave']
+         "Extra.SelfAttentionGuidance": Comfy.Extra.sag.Nodes['SelfAttentionGuidance']
+         "Extra.PerpNeg": Comfy.Extra.perpneg.Nodes['PerpNeg']
+         "Extra.PerpNegGuider": Comfy.Extra.perpneg.Nodes['PerpNegGuider']
+         "Extra.StableZero123$_Conditioning": Comfy.Extra.stable3d.Nodes['StableZero123$_Conditioning']
+         "Extra.StableZero123$_Conditioning$_Batched": Comfy.Extra.stable3d.Nodes['StableZero123$_Conditioning$_Batched']
+         "Extra.SV3D$_Conditioning": Comfy.Extra.stable3d.Nodes['SV3D$_Conditioning']
+         "Extra.SD$_4XUpscale$_Conditioning": Comfy.Extra.sdupscale.Nodes['SD$_4XUpscale$_Conditioning']
+         "Extra.PhotoMakerLoader": Comfy.Extra.photomaker.Nodes['PhotoMakerLoader']
+         "Extra.PhotoMakerEncode": Comfy.Extra.photomaker.Nodes['PhotoMakerEncode']
+         "Extra.CLIPTextEncodeControlnet": Comfy.Extra.cond.Nodes['CLIPTextEncodeControlnet']
+         "Extra.Morphology": Comfy.Extra.morphology.Nodes['Morphology']
+         "Extra.StableCascade$_EmptyLatentImage": Comfy.Extra.stable_cascade.Nodes['StableCascade$_EmptyLatentImage']
+         "Extra.StableCascade$_StageB$_Conditioning": Comfy.Extra.stable_cascade.Nodes['StableCascade$_StageB$_Conditioning']
+         "Extra.StableCascade$_StageC$_VAEEncode": Comfy.Extra.stable_cascade.Nodes['StableCascade$_StageC$_VAEEncode']
+         "Extra.StableCascade$_SuperResolutionControlnet": Comfy.Extra.stable_cascade.Nodes['StableCascade$_SuperResolutionControlnet']
+         "Extra.DifferentialDiffusion": Comfy.Extra.differential_diffusion.Nodes['DifferentialDiffusion']
+         "Extra.InstructPixToPixConditioning": Comfy.Extra.ip2p.Nodes['InstructPixToPixConditioning']
+         "Extra.ModelMergeSD1": Comfy.Extra.model_merging_model_specific.Nodes['ModelMergeSD1']
+         "Extra.ModelMergeSD2": Comfy.Extra.model_merging_model_specific.Nodes['ModelMergeSD2']
+         "Extra.ModelMergeSDXL": Comfy.Extra.model_merging_model_specific.Nodes['ModelMergeSDXL']
+         "Extra.ModelMergeSD3$_2B": Comfy.Extra.model_merging_model_specific.Nodes['ModelMergeSD3$_2B']
+         "Extra.ModelMergeFlux1": Comfy.Extra.model_merging_model_specific.Nodes['ModelMergeFlux1']
+         "Extra.ModelMergeSD35$_Large": Comfy.Extra.model_merging_model_specific.Nodes['ModelMergeSD35$_Large']
+         "Extra.PerturbedAttentionGuidance": Comfy.Extra.pag.Nodes['PerturbedAttentionGuidance']
+         "Extra.AlignYourStepsScheduler": Comfy.Extra.align_your_steps.Nodes['AlignYourStepsScheduler']
+         "Extra.UNetSelfAttentionMultiply": Comfy.Extra.attention_multiply.Nodes['UNetSelfAttentionMultiply']
+         "Extra.UNetCrossAttentionMultiply": Comfy.Extra.attention_multiply.Nodes['UNetCrossAttentionMultiply']
+         "Extra.CLIPAttentionMultiply": Comfy.Extra.attention_multiply.Nodes['CLIPAttentionMultiply']
+         "Extra.UNetTemporalAttentionMultiply": Comfy.Extra.attention_multiply.Nodes['UNetTemporalAttentionMultiply']
+         "Extra.SamplerLCMUpscale": Comfy.Extra.advanced_samplers.Nodes['SamplerLCMUpscale']
+         "Extra.SamplerEulerCFGpp": Comfy.Extra.advanced_samplers.Nodes['SamplerEulerCFGpp']
+         "Extra.WebcamCapture": Comfy.Extra.webcam.Nodes['WebcamCapture']
+         "Extra.EmptyLatentAudio": Comfy.Extra.audio.Nodes['EmptyLatentAudio']
+         "Extra.VAEEncodeAudio": Comfy.Extra.audio.Nodes['VAEEncodeAudio']
+         "Extra.VAEDecodeAudio": Comfy.Extra.audio.Nodes['VAEDecodeAudio']
+         "Extra.SaveAudio": Comfy.Extra.audio.Nodes['SaveAudio']
+         "Extra.LoadAudio": Comfy.Extra.audio.Nodes['LoadAudio']
+         "Extra.PreviewAudio": Comfy.Extra.audio.Nodes['PreviewAudio']
+         "Extra.TripleCLIPLoader": Comfy.Extra.sd3.Nodes['TripleCLIPLoader']
+         "Extra.EmptySD3LatentImage": Comfy.Extra.sd3.Nodes['EmptySD3LatentImage']
+         "Extra.CLIPTextEncodeSD3": Comfy.Extra.sd3.Nodes['CLIPTextEncodeSD3']
+         "Extra.ControlNetApplySD3": Comfy.Extra.sd3.Nodes['ControlNetApplySD3']
+         "Extra.SkipLayerGuidanceSD3": Comfy.Extra.sd3.Nodes['SkipLayerGuidanceSD3']
+         "Extra.GITSScheduler": Comfy.Extra.gits.Nodes['GITSScheduler']
+         "Extra.SetUnionControlNetType": Comfy.Extra.controlnet.Nodes['SetUnionControlNetType']
+         "Extra.ControlNetInpaintingAliMamaApply": Comfy.Extra.controlnet.Nodes['ControlNetInpaintingAliMamaApply']
+         "Extra.CLIPTextEncodeHunyuanDiT": Comfy.Extra.hunyuan.Nodes['CLIPTextEncodeHunyuanDiT']
+         "Extra.CLIPTextEncodeFlux": Comfy.Extra.flux.Nodes['CLIPTextEncodeFlux']
+         "Extra.FluxGuidance": Comfy.Extra.flux.Nodes['FluxGuidance']
+         "Extra.LoraSave": Comfy.Extra.lora_extract.Nodes['LoraSave']
+         "Extra.TorchCompileModel": Comfy.Extra.torch_compile.Nodes['TorchCompileModel']
+         "Extra.EmptyMochiLatentVideo": Comfy.Extra.mochi.Nodes['EmptyMochiLatentVideo']
+         "Custom.websocket_image_save.SaveImageWebsocket": Comfy.Custom.websocket_image_save.Nodes['SaveImageWebsocket']
+         "Custom.IPAdapter_plus.IPAdapter": Comfy.Custom.IPAdapter_plus.Nodes['IPAdapter']
+         "Custom.IPAdapter_plus.IPAdapterAdvanced": Comfy.Custom.IPAdapter_plus.Nodes['IPAdapterAdvanced']
+         "Custom.IPAdapter_plus.IPAdapterBatch": Comfy.Custom.IPAdapter_plus.Nodes['IPAdapterBatch']
+         "Custom.IPAdapter_plus.IPAdapterFaceID": Comfy.Custom.IPAdapter_plus.Nodes['IPAdapterFaceID']
+         "Custom.IPAdapter_plus.IPAdapterFaceIDKolors": Comfy.Custom.IPAdapter_plus.Nodes['IPAdapterFaceIDKolors']
+         "Custom.IPAdapter_plus.IPAAdapterFaceIDBatch": Comfy.Custom.IPAdapter_plus.Nodes['IPAAdapterFaceIDBatch']
+         "Custom.IPAdapter_plus.IPAdapterTiled": Comfy.Custom.IPAdapter_plus.Nodes['IPAdapterTiled']
+         "Custom.IPAdapter_plus.IPAdapterTiledBatch": Comfy.Custom.IPAdapter_plus.Nodes['IPAdapterTiledBatch']
+         "Custom.IPAdapter_plus.IPAdapterEmbeds": Comfy.Custom.IPAdapter_plus.Nodes['IPAdapterEmbeds']
+         "Custom.IPAdapter_plus.IPAdapterEmbedsBatch": Comfy.Custom.IPAdapter_plus.Nodes['IPAdapterEmbedsBatch']
+         "Custom.IPAdapter_plus.IPAdapterStyleComposition": Comfy.Custom.IPAdapter_plus.Nodes['IPAdapterStyleComposition']
+         "Custom.IPAdapter_plus.IPAdapterStyleCompositionBatch": Comfy.Custom.IPAdapter_plus.Nodes['IPAdapterStyleCompositionBatch']
+         "Custom.IPAdapter_plus.IPAdapterMS": Comfy.Custom.IPAdapter_plus.Nodes['IPAdapterMS']
+         "Custom.IPAdapter_plus.IPAdapterClipVisionEnhancer": Comfy.Custom.IPAdapter_plus.Nodes['IPAdapterClipVisionEnhancer']
+         "Custom.IPAdapter_plus.IPAdapterClipVisionEnhancerBatch": Comfy.Custom.IPAdapter_plus.Nodes['IPAdapterClipVisionEnhancerBatch']
+         "Custom.IPAdapter_plus.IPAdapterFromParams": Comfy.Custom.IPAdapter_plus.Nodes['IPAdapterFromParams']
+         "Custom.IPAdapter_plus.IPAdapterPreciseStyleTransfer": Comfy.Custom.IPAdapter_plus.Nodes['IPAdapterPreciseStyleTransfer']
+         "Custom.IPAdapter_plus.IPAdapterPreciseStyleTransferBatch": Comfy.Custom.IPAdapter_plus.Nodes['IPAdapterPreciseStyleTransferBatch']
+         "Custom.IPAdapter_plus.IPAdapterPreciseComposition": Comfy.Custom.IPAdapter_plus.Nodes['IPAdapterPreciseComposition']
+         "Custom.IPAdapter_plus.IPAdapterPreciseCompositionBatch": Comfy.Custom.IPAdapter_plus.Nodes['IPAdapterPreciseCompositionBatch']
+         "Custom.IPAdapter_plus.IPAdapterUnifiedLoader": Comfy.Custom.IPAdapter_plus.Nodes['IPAdapterUnifiedLoader']
+         "Custom.IPAdapter_plus.IPAdapterUnifiedLoaderFaceID": Comfy.Custom.IPAdapter_plus.Nodes['IPAdapterUnifiedLoaderFaceID']
+         "Custom.IPAdapter_plus.IPAdapterModelLoader": Comfy.Custom.IPAdapter_plus.Nodes['IPAdapterModelLoader']
+         "Custom.IPAdapter_plus.IPAdapterInsightFaceLoader": Comfy.Custom.IPAdapter_plus.Nodes['IPAdapterInsightFaceLoader']
+         "Custom.IPAdapter_plus.IPAdapterUnifiedLoaderCommunity": Comfy.Custom.IPAdapter_plus.Nodes['IPAdapterUnifiedLoaderCommunity']
+         "Custom.IPAdapter_plus.IPAdapterEncoder": Comfy.Custom.IPAdapter_plus.Nodes['IPAdapterEncoder']
+         "Custom.IPAdapter_plus.IPAdapterCombineEmbeds": Comfy.Custom.IPAdapter_plus.Nodes['IPAdapterCombineEmbeds']
+         "Custom.IPAdapter_plus.IPAdapterNoise": Comfy.Custom.IPAdapter_plus.Nodes['IPAdapterNoise']
+         "Custom.IPAdapter_plus.PrepImageForClipVision": Comfy.Custom.IPAdapter_plus.Nodes['PrepImageForClipVision']
+         "Custom.IPAdapter_plus.IPAdapterSaveEmbeds": Comfy.Custom.IPAdapter_plus.Nodes['IPAdapterSaveEmbeds']
+         "Custom.IPAdapter_plus.IPAdapterLoadEmbeds": Comfy.Custom.IPAdapter_plus.Nodes['IPAdapterLoadEmbeds']
+         "Custom.IPAdapter_plus.IPAdapterWeights": Comfy.Custom.IPAdapter_plus.Nodes['IPAdapterWeights']
+         "Custom.IPAdapter_plus.IPAdapterCombineWeights": Comfy.Custom.IPAdapter_plus.Nodes['IPAdapterCombineWeights']
+         "Custom.IPAdapter_plus.IPAdapterWeightsFromStrategy": Comfy.Custom.IPAdapter_plus.Nodes['IPAdapterWeightsFromStrategy']
+         "Custom.IPAdapter_plus.IPAdapterPromptScheduleFromWeightsStrategy": Comfy.Custom.IPAdapter_plus.Nodes['IPAdapterPromptScheduleFromWeightsStrategy']
+         "Custom.IPAdapter_plus.IPAdapterRegionalConditioning": Comfy.Custom.IPAdapter_plus.Nodes['IPAdapterRegionalConditioning']
+         "Custom.IPAdapter_plus.IPAdapterCombineParams": Comfy.Custom.IPAdapter_plus.Nodes['IPAdapterCombineParams']
+         "Custom.controlnet_aux.ShufflePreprocessor": Comfy.Custom.controlnet_aux.Nodes['ShufflePreprocessor']
+         "Custom.controlnet_aux.DensePosePreprocessor": Comfy.Custom.controlnet_aux.Nodes['DensePosePreprocessor']
+         "Custom.controlnet_aux.LeReS$7DepthMapPreprocessor": Comfy.Custom.controlnet_aux.Nodes['LeReS$7DepthMapPreprocessor']
+         "Custom.controlnet_aux.BinaryPreprocessor": Comfy.Custom.controlnet_aux.Nodes['BinaryPreprocessor']
+         "Custom.controlnet_aux.AnimeFace$_SemSegPreprocessor": Comfy.Custom.controlnet_aux.Nodes['AnimeFace$_SemSegPreprocessor']
+         "Custom.controlnet_aux.Zoe$7DepthMapPreprocessor": Comfy.Custom.controlnet_aux.Nodes['Zoe$7DepthMapPreprocessor']
+         "Custom.controlnet_aux.DepthAnythingPreprocessor": Comfy.Custom.controlnet_aux.Nodes['DepthAnythingPreprocessor']
+         "Custom.controlnet_aux.Zoe$_DepthAnythingPreprocessor": Comfy.Custom.controlnet_aux.Nodes['Zoe$_DepthAnythingPreprocessor']
+         "Custom.controlnet_aux.DepthAnythingV2Preprocessor": Comfy.Custom.controlnet_aux.Nodes['DepthAnythingV2Preprocessor']
+         "Custom.controlnet_aux.CannyEdgePreprocessor": Comfy.Custom.controlnet_aux.Nodes['CannyEdgePreprocessor']
+         "Custom.controlnet_aux.DWPreprocessor": Comfy.Custom.controlnet_aux.Nodes['DWPreprocessor']
+         "Custom.controlnet_aux.AnimalPosePreprocessor": Comfy.Custom.controlnet_aux.Nodes['AnimalPosePreprocessor']
+         "Custom.controlnet_aux.ImageLuminanceDetector": Comfy.Custom.controlnet_aux.Nodes['ImageLuminanceDetector']
+         "Custom.controlnet_aux.ImageIntensityDetector": Comfy.Custom.controlnet_aux.Nodes['ImageIntensityDetector']
+         "Custom.controlnet_aux.MediaPipe$7FaceMeshPreprocessor": Comfy.Custom.controlnet_aux.Nodes['MediaPipe$7FaceMeshPreprocessor']
+         "Custom.controlnet_aux.DiffusionEdge$_Preprocessor": Comfy.Custom.controlnet_aux.Nodes['DiffusionEdge$_Preprocessor']
+         "Custom.controlnet_aux.M$7LSDPreprocessor": Comfy.Custom.controlnet_aux.Nodes['M$7LSDPreprocessor']
+         "Custom.controlnet_aux.HEDPreprocessor": Comfy.Custom.controlnet_aux.Nodes['HEDPreprocessor']
+         "Custom.controlnet_aux.FakeScribblePreprocessor": Comfy.Custom.controlnet_aux.Nodes['FakeScribblePreprocessor']
+         "Custom.controlnet_aux.OneFormer$7COCO$7SemSegPreprocessor": Comfy.Custom.controlnet_aux.Nodes['OneFormer$7COCO$7SemSegPreprocessor']
+         "Custom.controlnet_aux.OneFormer$7ADE20K$7SemSegPreprocessor": Comfy.Custom.controlnet_aux.Nodes['OneFormer$7ADE20K$7SemSegPreprocessor']
+         "Custom.controlnet_aux.BAE$7NormalMapPreprocessor": Comfy.Custom.controlnet_aux.Nodes['BAE$7NormalMapPreprocessor']
+         "Custom.controlnet_aux.MeshGraphormer$7DepthMapPreprocessor": Comfy.Custom.controlnet_aux.Nodes['MeshGraphormer$7DepthMapPreprocessor']
+         "Custom.controlnet_aux.MeshGraphormer$6ImpactDetector$7DepthMapPreprocessor": Comfy.Custom.controlnet_aux.Nodes['MeshGraphormer$6ImpactDetector$7DepthMapPreprocessor']
+         "Custom.controlnet_aux.DSINE$7NormalMapPreprocessor": Comfy.Custom.controlnet_aux.Nodes['DSINE$7NormalMapPreprocessor']
+         "Custom.controlnet_aux.MiDaS$7NormalMapPreprocessor": Comfy.Custom.controlnet_aux.Nodes['MiDaS$7NormalMapPreprocessor']
+         "Custom.controlnet_aux.MiDaS$7DepthMapPreprocessor": Comfy.Custom.controlnet_aux.Nodes['MiDaS$7DepthMapPreprocessor']
+         "Custom.controlnet_aux.AnyLineArtPreprocessor$_aux": Comfy.Custom.controlnet_aux.Nodes['AnyLineArtPreprocessor$_aux']
+         "Custom.controlnet_aux.SAMPreprocessor": Comfy.Custom.controlnet_aux.Nodes['SAMPreprocessor']
+         "Custom.controlnet_aux.UniFormer$7SemSegPreprocessor": Comfy.Custom.controlnet_aux.Nodes['UniFormer$7SemSegPreprocessor']
+         "Custom.controlnet_aux.SemSegPreprocessor": Comfy.Custom.controlnet_aux.Nodes['SemSegPreprocessor']
+         "Custom.controlnet_aux.PiDiNetPreprocessor": Comfy.Custom.controlnet_aux.Nodes['PiDiNetPreprocessor']
+         "Custom.controlnet_aux.InpaintPreprocessor": Comfy.Custom.controlnet_aux.Nodes['InpaintPreprocessor']
+         "Custom.controlnet_aux.LineArtPreprocessor": Comfy.Custom.controlnet_aux.Nodes['LineArtPreprocessor']
+         "Custom.controlnet_aux.OpenposePreprocessor": Comfy.Custom.controlnet_aux.Nodes['OpenposePreprocessor']
+         "Custom.controlnet_aux.Unimatch$_OptFlowPreprocessor": Comfy.Custom.controlnet_aux.Nodes['Unimatch$_OptFlowPreprocessor']
+         "Custom.controlnet_aux.MaskOptFlow": Comfy.Custom.controlnet_aux.Nodes['MaskOptFlow']
+         "Custom.controlnet_aux.SavePoseKpsAsJsonFile": Comfy.Custom.controlnet_aux.Nodes['SavePoseKpsAsJsonFile']
+         "Custom.controlnet_aux.FacialPartColoringFromPoseKps": Comfy.Custom.controlnet_aux.Nodes['FacialPartColoringFromPoseKps']
+         "Custom.controlnet_aux.UpperBodyTrackingFromPoseKps": Comfy.Custom.controlnet_aux.Nodes['UpperBodyTrackingFromPoseKps']
+         "Custom.controlnet_aux.RenderPeopleKps": Comfy.Custom.controlnet_aux.Nodes['RenderPeopleKps']
+         "Custom.controlnet_aux.RenderAnimalKps": Comfy.Custom.controlnet_aux.Nodes['RenderAnimalKps']
+         "Custom.controlnet_aux.TEEDPreprocessor": Comfy.Custom.controlnet_aux.Nodes['TEEDPreprocessor']
+         "Custom.controlnet_aux.PyraCannyPreprocessor": Comfy.Custom.controlnet_aux.Nodes['PyraCannyPreprocessor']
+         "Custom.controlnet_aux.Metric3D$7DepthMapPreprocessor": Comfy.Custom.controlnet_aux.Nodes['Metric3D$7DepthMapPreprocessor']
+         "Custom.controlnet_aux.Metric3D$7NormalMapPreprocessor": Comfy.Custom.controlnet_aux.Nodes['Metric3D$7NormalMapPreprocessor']
+         "Custom.controlnet_aux.Manga2Anime$_LineArt$_Preprocessor": Comfy.Custom.controlnet_aux.Nodes['Manga2Anime$_LineArt$_Preprocessor']
+         "Custom.controlnet_aux.ScribblePreprocessor": Comfy.Custom.controlnet_aux.Nodes['ScribblePreprocessor']
+         "Custom.controlnet_aux.Scribble$_XDoG$_Preprocessor": Comfy.Custom.controlnet_aux.Nodes['Scribble$_XDoG$_Preprocessor']
+         "Custom.controlnet_aux.Scribble$_PiDiNet$_Preprocessor": Comfy.Custom.controlnet_aux.Nodes['Scribble$_PiDiNet$_Preprocessor']
+         "Custom.controlnet_aux.AnimeLineArtPreprocessor": Comfy.Custom.controlnet_aux.Nodes['AnimeLineArtPreprocessor']
+         "Custom.controlnet_aux.LineartStandardPreprocessor": Comfy.Custom.controlnet_aux.Nodes['LineartStandardPreprocessor']
+         "Custom.controlnet_aux.TilePreprocessor": Comfy.Custom.controlnet_aux.Nodes['TilePreprocessor']
+         "Custom.controlnet_aux.TTPlanet$_TileGF$_Preprocessor": Comfy.Custom.controlnet_aux.Nodes['TTPlanet$_TileGF$_Preprocessor']
+         "Custom.controlnet_aux.TTPlanet$_TileSimple$_Preprocessor": Comfy.Custom.controlnet_aux.Nodes['TTPlanet$_TileSimple$_Preprocessor']
+         "Custom.controlnet_aux.ColorPreprocessor": Comfy.Custom.controlnet_aux.Nodes['ColorPreprocessor']
+         "Custom.controlnet_aux.AIO$_Preprocessor": Comfy.Custom.controlnet_aux.Nodes['AIO$_Preprocessor']
+         "Custom.controlnet_aux.ControlNetPreprocessorSelector": Comfy.Custom.controlnet_aux.Nodes['ControlNetPreprocessorSelector']
+         "Custom.controlnet_aux.PixelPerfectResolution": Comfy.Custom.controlnet_aux.Nodes['PixelPerfectResolution']
+         "Custom.controlnet_aux.ImageGenResolutionFromImage": Comfy.Custom.controlnet_aux.Nodes['ImageGenResolutionFromImage']
+         "Custom.controlnet_aux.ImageGenResolutionFromLatent": Comfy.Custom.controlnet_aux.Nodes['ImageGenResolutionFromLatent']
+         "Custom.controlnet_aux.HintImageEnchance": Comfy.Custom.controlnet_aux.Nodes['HintImageEnchance']
+         "Custom.controlnet_aux.ExecuteAllControlNetPreprocessors": Comfy.Custom.controlnet_aux.Nodes['ExecuteAllControlNetPreprocessors']
+         "Custom.controlnet_aux.ControlNetAuxSimpleAddText": Comfy.Custom.controlnet_aux.Nodes['ControlNetAuxSimpleAddText']
+         "Custom.Impact_Pack.SAMLoader": Comfy.Custom.Impact_Pack.Nodes['SAMLoader']
+         "Custom.Impact_Pack.CLIPSegDetectorProvider": Comfy.Custom.Impact_Pack.Nodes['CLIPSegDetectorProvider']
+         "Custom.Impact_Pack.ONNXDetectorProvider": Comfy.Custom.Impact_Pack.Nodes['ONNXDetectorProvider']
+         "Custom.Impact_Pack.BitwiseAndMaskForEach": Comfy.Custom.Impact_Pack.Nodes['BitwiseAndMaskForEach']
+         "Custom.Impact_Pack.SubtractMaskForEach": Comfy.Custom.Impact_Pack.Nodes['SubtractMaskForEach']
+         "Custom.Impact_Pack.DetailerForEach": Comfy.Custom.Impact_Pack.Nodes['DetailerForEach']
+         "Custom.Impact_Pack.DetailerForEachDebug": Comfy.Custom.Impact_Pack.Nodes['DetailerForEachDebug']
+         "Custom.Impact_Pack.DetailerForEachPipe": Comfy.Custom.Impact_Pack.Nodes['DetailerForEachPipe']
+         "Custom.Impact_Pack.DetailerForEachDebugPipe": Comfy.Custom.Impact_Pack.Nodes['DetailerForEachDebugPipe']
+         "Custom.Impact_Pack.DetailerForEachPipeForAnimateDiff": Comfy.Custom.Impact_Pack.Nodes['DetailerForEachPipeForAnimateDiff']
+         "Custom.Impact_Pack.SAMDetectorCombined": Comfy.Custom.Impact_Pack.Nodes['SAMDetectorCombined']
+         "Custom.Impact_Pack.SAMDetectorSegmented": Comfy.Custom.Impact_Pack.Nodes['SAMDetectorSegmented']
+         "Custom.Impact_Pack.FaceDetailer": Comfy.Custom.Impact_Pack.Nodes['FaceDetailer']
+         "Custom.Impact_Pack.FaceDetailerPipe": Comfy.Custom.Impact_Pack.Nodes['FaceDetailerPipe']
+         "Custom.Impact_Pack.MaskDetailerPipe": Comfy.Custom.Impact_Pack.Nodes['MaskDetailerPipe']
+         "Custom.Impact_Pack.ToDetailerPipe": Comfy.Custom.Impact_Pack.Nodes['ToDetailerPipe']
+         "Custom.Impact_Pack.ToDetailerPipeSDXL": Comfy.Custom.Impact_Pack.Nodes['ToDetailerPipeSDXL']
+         "Custom.Impact_Pack.FromDetailerPipe": Comfy.Custom.Impact_Pack.Nodes['FromDetailerPipe']
+         "Custom.Impact_Pack.FromDetailerPipe$_v2": Comfy.Custom.Impact_Pack.Nodes['FromDetailerPipe$_v2']
+         "Custom.Impact_Pack.FromDetailerPipeSDXL": Comfy.Custom.Impact_Pack.Nodes['FromDetailerPipeSDXL']
+         "Custom.Impact_Pack.AnyPipeToBasic": Comfy.Custom.Impact_Pack.Nodes['AnyPipeToBasic']
+         "Custom.Impact_Pack.ToBasicPipe": Comfy.Custom.Impact_Pack.Nodes['ToBasicPipe']
+         "Custom.Impact_Pack.FromBasicPipe": Comfy.Custom.Impact_Pack.Nodes['FromBasicPipe']
+         "Custom.Impact_Pack.FromBasicPipe$_v2": Comfy.Custom.Impact_Pack.Nodes['FromBasicPipe$_v2']
+         "Custom.Impact_Pack.BasicPipeToDetailerPipe": Comfy.Custom.Impact_Pack.Nodes['BasicPipeToDetailerPipe']
+         "Custom.Impact_Pack.BasicPipeToDetailerPipeSDXL": Comfy.Custom.Impact_Pack.Nodes['BasicPipeToDetailerPipeSDXL']
+         "Custom.Impact_Pack.DetailerPipeToBasicPipe": Comfy.Custom.Impact_Pack.Nodes['DetailerPipeToBasicPipe']
+         "Custom.Impact_Pack.EditBasicPipe": Comfy.Custom.Impact_Pack.Nodes['EditBasicPipe']
+         "Custom.Impact_Pack.EditDetailerPipe": Comfy.Custom.Impact_Pack.Nodes['EditDetailerPipe']
+         "Custom.Impact_Pack.EditDetailerPipeSDXL": Comfy.Custom.Impact_Pack.Nodes['EditDetailerPipeSDXL']
+         "Custom.Impact_Pack.LatentPixelScale": Comfy.Custom.Impact_Pack.Nodes['LatentPixelScale']
+         "Custom.Impact_Pack.PixelKSampleUpscalerProvider": Comfy.Custom.Impact_Pack.Nodes['PixelKSampleUpscalerProvider']
+         "Custom.Impact_Pack.PixelKSampleUpscalerProviderPipe": Comfy.Custom.Impact_Pack.Nodes['PixelKSampleUpscalerProviderPipe']
+         "Custom.Impact_Pack.IterativeLatentUpscale": Comfy.Custom.Impact_Pack.Nodes['IterativeLatentUpscale']
+         "Custom.Impact_Pack.IterativeImageUpscale": Comfy.Custom.Impact_Pack.Nodes['IterativeImageUpscale']
+         "Custom.Impact_Pack.PixelTiledKSampleUpscalerProvider": Comfy.Custom.Impact_Pack.Nodes['PixelTiledKSampleUpscalerProvider']
+         "Custom.Impact_Pack.PixelTiledKSampleUpscalerProviderPipe": Comfy.Custom.Impact_Pack.Nodes['PixelTiledKSampleUpscalerProviderPipe']
+         "Custom.Impact_Pack.TwoSamplersForMaskUpscalerProvider": Comfy.Custom.Impact_Pack.Nodes['TwoSamplersForMaskUpscalerProvider']
+         "Custom.Impact_Pack.TwoSamplersForMaskUpscalerProviderPipe": Comfy.Custom.Impact_Pack.Nodes['TwoSamplersForMaskUpscalerProviderPipe']
+         "Custom.Impact_Pack.PixelKSampleHookCombine": Comfy.Custom.Impact_Pack.Nodes['PixelKSampleHookCombine']
+         "Custom.Impact_Pack.DenoiseScheduleHookProvider": Comfy.Custom.Impact_Pack.Nodes['DenoiseScheduleHookProvider']
+         "Custom.Impact_Pack.StepsScheduleHookProvider": Comfy.Custom.Impact_Pack.Nodes['StepsScheduleHookProvider']
+         "Custom.Impact_Pack.CfgScheduleHookProvider": Comfy.Custom.Impact_Pack.Nodes['CfgScheduleHookProvider']
+         "Custom.Impact_Pack.NoiseInjectionHookProvider": Comfy.Custom.Impact_Pack.Nodes['NoiseInjectionHookProvider']
+         "Custom.Impact_Pack.UnsamplerHookProvider": Comfy.Custom.Impact_Pack.Nodes['UnsamplerHookProvider']
+         "Custom.Impact_Pack.CoreMLDetailerHookProvider": Comfy.Custom.Impact_Pack.Nodes['CoreMLDetailerHookProvider']
+         "Custom.Impact_Pack.PreviewDetailerHookProvider": Comfy.Custom.Impact_Pack.Nodes['PreviewDetailerHookProvider']
+         "Custom.Impact_Pack.DetailerHookCombine": Comfy.Custom.Impact_Pack.Nodes['DetailerHookCombine']
+         "Custom.Impact_Pack.NoiseInjectionDetailerHookProvider": Comfy.Custom.Impact_Pack.Nodes['NoiseInjectionDetailerHookProvider']
+         "Custom.Impact_Pack.UnsamplerDetailerHookProvider": Comfy.Custom.Impact_Pack.Nodes['UnsamplerDetailerHookProvider']
+         "Custom.Impact_Pack.DenoiseSchedulerDetailerHookProvider": Comfy.Custom.Impact_Pack.Nodes['DenoiseSchedulerDetailerHookProvider']
+         "Custom.Impact_Pack.SEGSOrderedFilterDetailerHookProvider": Comfy.Custom.Impact_Pack.Nodes['SEGSOrderedFilterDetailerHookProvider']
+         "Custom.Impact_Pack.SEGSRangeFilterDetailerHookProvider": Comfy.Custom.Impact_Pack.Nodes['SEGSRangeFilterDetailerHookProvider']
+         "Custom.Impact_Pack.SEGSLabelFilterDetailerHookProvider": Comfy.Custom.Impact_Pack.Nodes['SEGSLabelFilterDetailerHookProvider']
+         "Custom.Impact_Pack.VariationNoiseDetailerHookProvider": Comfy.Custom.Impact_Pack.Nodes['VariationNoiseDetailerHookProvider']
+         "Custom.Impact_Pack.BitwiseAndMask": Comfy.Custom.Impact_Pack.Nodes['BitwiseAndMask']
+         "Custom.Impact_Pack.SubtractMask": Comfy.Custom.Impact_Pack.Nodes['SubtractMask']
+         "Custom.Impact_Pack.AddMask": Comfy.Custom.Impact_Pack.Nodes['AddMask']
+         "Custom.Impact_Pack.ImpactSegsAndMask": Comfy.Custom.Impact_Pack.Nodes['ImpactSegsAndMask']
+         "Custom.Impact_Pack.ImpactSegsAndMaskForEach": Comfy.Custom.Impact_Pack.Nodes['ImpactSegsAndMaskForEach']
+         "Custom.Impact_Pack.EmptySegs": Comfy.Custom.Impact_Pack.Nodes['EmptySegs']
+         "Custom.Impact_Pack.ImpactFlattenMask": Comfy.Custom.Impact_Pack.Nodes['ImpactFlattenMask']
+         "Custom.Impact_Pack.MediaPipeFaceMeshToSEGS": Comfy.Custom.Impact_Pack.Nodes['MediaPipeFaceMeshToSEGS']
+         "Custom.Impact_Pack.MaskToSEGS": Comfy.Custom.Impact_Pack.Nodes['MaskToSEGS']
+         "Custom.Impact_Pack.MaskToSEGS$_for$_AnimateDiff": Comfy.Custom.Impact_Pack.Nodes['MaskToSEGS$_for$_AnimateDiff']
+         "Custom.Impact_Pack.ToBinaryMask": Comfy.Custom.Impact_Pack.Nodes['ToBinaryMask']
+         "Custom.Impact_Pack.MasksToMaskList": Comfy.Custom.Impact_Pack.Nodes['MasksToMaskList']
+         "Custom.Impact_Pack.MaskListToMaskBatch": Comfy.Custom.Impact_Pack.Nodes['MaskListToMaskBatch']
+         "Custom.Impact_Pack.ImageListToImageBatch": Comfy.Custom.Impact_Pack.Nodes['ImageListToImageBatch']
+         "Custom.Impact_Pack.SetDefaultImageForSEGS": Comfy.Custom.Impact_Pack.Nodes['SetDefaultImageForSEGS']
+         "Custom.Impact_Pack.RemoveImageFromSEGS": Comfy.Custom.Impact_Pack.Nodes['RemoveImageFromSEGS']
+         "Custom.Impact_Pack.BboxDetectorSEGS": Comfy.Custom.Impact_Pack.Nodes['BboxDetectorSEGS']
+         "Custom.Impact_Pack.SegmDetectorSEGS": Comfy.Custom.Impact_Pack.Nodes['SegmDetectorSEGS']
+         "Custom.Impact_Pack.ONNXDetectorSEGS": Comfy.Custom.Impact_Pack.Nodes['ONNXDetectorSEGS']
+         "Custom.Impact_Pack.ImpactSimpleDetectorSEGS$_for$_AD": Comfy.Custom.Impact_Pack.Nodes['ImpactSimpleDetectorSEGS$_for$_AD']
+         "Custom.Impact_Pack.ImpactSimpleDetectorSEGS": Comfy.Custom.Impact_Pack.Nodes['ImpactSimpleDetectorSEGS']
+         "Custom.Impact_Pack.ImpactSimpleDetectorSEGSPipe": Comfy.Custom.Impact_Pack.Nodes['ImpactSimpleDetectorSEGSPipe']
+         "Custom.Impact_Pack.ImpactControlNetApplySEGS": Comfy.Custom.Impact_Pack.Nodes['ImpactControlNetApplySEGS']
+         "Custom.Impact_Pack.ImpactControlNetApplyAdvancedSEGS": Comfy.Custom.Impact_Pack.Nodes['ImpactControlNetApplyAdvancedSEGS']
+         "Custom.Impact_Pack.ImpactControlNetClearSEGS": Comfy.Custom.Impact_Pack.Nodes['ImpactControlNetClearSEGS']
+         "Custom.Impact_Pack.ImpactIPAdapterApplySEGS": Comfy.Custom.Impact_Pack.Nodes['ImpactIPAdapterApplySEGS']
+         "Custom.Impact_Pack.ImpactDecomposeSEGS": Comfy.Custom.Impact_Pack.Nodes['ImpactDecomposeSEGS']
+         "Custom.Impact_Pack.ImpactAssembleSEGS": Comfy.Custom.Impact_Pack.Nodes['ImpactAssembleSEGS']
+         "Custom.Impact_Pack.ImpactFrom$_SEG$_ELT": Comfy.Custom.Impact_Pack.Nodes['ImpactFrom$_SEG$_ELT']
+         "Custom.Impact_Pack.ImpactEdit$_SEG$_ELT": Comfy.Custom.Impact_Pack.Nodes['ImpactEdit$_SEG$_ELT']
+         "Custom.Impact_Pack.ImpactDilate$_Mask$_SEG$_ELT": Comfy.Custom.Impact_Pack.Nodes['ImpactDilate$_Mask$_SEG$_ELT']
+         "Custom.Impact_Pack.ImpactDilateMask": Comfy.Custom.Impact_Pack.Nodes['ImpactDilateMask']
+         "Custom.Impact_Pack.ImpactGaussianBlurMask": Comfy.Custom.Impact_Pack.Nodes['ImpactGaussianBlurMask']
+         "Custom.Impact_Pack.ImpactDilateMaskInSEGS": Comfy.Custom.Impact_Pack.Nodes['ImpactDilateMaskInSEGS']
+         "Custom.Impact_Pack.ImpactGaussianBlurMaskInSEGS": Comfy.Custom.Impact_Pack.Nodes['ImpactGaussianBlurMaskInSEGS']
+         "Custom.Impact_Pack.ImpactScaleBy$_BBOX$_SEG$_ELT": Comfy.Custom.Impact_Pack.Nodes['ImpactScaleBy$_BBOX$_SEG$_ELT']
+         "Custom.Impact_Pack.ImpactFrom$_SEG$_ELT$_bbox": Comfy.Custom.Impact_Pack.Nodes['ImpactFrom$_SEG$_ELT$_bbox']
+         "Custom.Impact_Pack.ImpactFrom$_SEG$_ELT$_crop$_region": Comfy.Custom.Impact_Pack.Nodes['ImpactFrom$_SEG$_ELT$_crop$_region']
+         "Custom.Impact_Pack.ImpactCount$_Elts$_in$_SEGS": Comfy.Custom.Impact_Pack.Nodes['ImpactCount$_Elts$_in$_SEGS']
+         "Custom.Impact_Pack.BboxDetectorCombined$_v2": Comfy.Custom.Impact_Pack.Nodes['BboxDetectorCombined$_v2']
+         "Custom.Impact_Pack.SegmDetectorCombined$_v2": Comfy.Custom.Impact_Pack.Nodes['SegmDetectorCombined$_v2']
+         "Custom.Impact_Pack.SegsToCombinedMask": Comfy.Custom.Impact_Pack.Nodes['SegsToCombinedMask']
+         "Custom.Impact_Pack.KSamplerProvider": Comfy.Custom.Impact_Pack.Nodes['KSamplerProvider']
+         "Custom.Impact_Pack.TwoSamplersForMask": Comfy.Custom.Impact_Pack.Nodes['TwoSamplersForMask']
+         "Custom.Impact_Pack.TiledKSamplerProvider": Comfy.Custom.Impact_Pack.Nodes['TiledKSamplerProvider']
+         "Custom.Impact_Pack.KSamplerAdvancedProvider": Comfy.Custom.Impact_Pack.Nodes['KSamplerAdvancedProvider']
+         "Custom.Impact_Pack.TwoAdvancedSamplersForMask": Comfy.Custom.Impact_Pack.Nodes['TwoAdvancedSamplersForMask']
+         "Custom.Impact_Pack.ImpactNegativeConditioningPlaceholder": Comfy.Custom.Impact_Pack.Nodes['ImpactNegativeConditioningPlaceholder']
+         "Custom.Impact_Pack.PreviewBridge": Comfy.Custom.Impact_Pack.Nodes['PreviewBridge']
+         "Custom.Impact_Pack.PreviewBridgeLatent": Comfy.Custom.Impact_Pack.Nodes['PreviewBridgeLatent']
+         "Custom.Impact_Pack.ImageSender": Comfy.Custom.Impact_Pack.Nodes['ImageSender']
+         "Custom.Impact_Pack.ImageReceiver": Comfy.Custom.Impact_Pack.Nodes['ImageReceiver']
+         "Custom.Impact_Pack.LatentSender": Comfy.Custom.Impact_Pack.Nodes['LatentSender']
+         "Custom.Impact_Pack.LatentReceiver": Comfy.Custom.Impact_Pack.Nodes['LatentReceiver']
+         "Custom.Impact_Pack.ImageMaskSwitch": Comfy.Custom.Impact_Pack.Nodes['ImageMaskSwitch']
+         "Custom.Impact_Pack.LatentSwitch": Comfy.Custom.Impact_Pack.Nodes['LatentSwitch']
+         "Custom.Impact_Pack.SEGSSwitch": Comfy.Custom.Impact_Pack.Nodes['SEGSSwitch']
+         "Custom.Impact_Pack.ImpactSwitch": Comfy.Custom.Impact_Pack.Nodes['ImpactSwitch']
+         "Custom.Impact_Pack.ImpactInversedSwitch": Comfy.Custom.Impact_Pack.Nodes['ImpactInversedSwitch']
+         "Custom.Impact_Pack.ImpactWildcardProcessor": Comfy.Custom.Impact_Pack.Nodes['ImpactWildcardProcessor']
+         "Custom.Impact_Pack.ImpactWildcardEncode": Comfy.Custom.Impact_Pack.Nodes['ImpactWildcardEncode']
+         "Custom.Impact_Pack.SEGSUpscaler": Comfy.Custom.Impact_Pack.Nodes['SEGSUpscaler']
+         "Custom.Impact_Pack.SEGSUpscalerPipe": Comfy.Custom.Impact_Pack.Nodes['SEGSUpscalerPipe']
+         "Custom.Impact_Pack.SEGSDetailer": Comfy.Custom.Impact_Pack.Nodes['SEGSDetailer']
+         "Custom.Impact_Pack.SEGSPaste": Comfy.Custom.Impact_Pack.Nodes['SEGSPaste']
+         "Custom.Impact_Pack.SEGSPreview": Comfy.Custom.Impact_Pack.Nodes['SEGSPreview']
+         "Custom.Impact_Pack.SEGSPreviewCNet": Comfy.Custom.Impact_Pack.Nodes['SEGSPreviewCNet']
+         "Custom.Impact_Pack.SEGSToImageList": Comfy.Custom.Impact_Pack.Nodes['SEGSToImageList']
+         "Custom.Impact_Pack.ImpactSEGSToMaskList": Comfy.Custom.Impact_Pack.Nodes['ImpactSEGSToMaskList']
+         "Custom.Impact_Pack.ImpactSEGSToMaskBatch": Comfy.Custom.Impact_Pack.Nodes['ImpactSEGSToMaskBatch']
+         "Custom.Impact_Pack.ImpactSEGSConcat": Comfy.Custom.Impact_Pack.Nodes['ImpactSEGSConcat']
+         "Custom.Impact_Pack.ImpactSEGSPicker": Comfy.Custom.Impact_Pack.Nodes['ImpactSEGSPicker']
+         "Custom.Impact_Pack.ImpactMakeTileSEGS": Comfy.Custom.Impact_Pack.Nodes['ImpactMakeTileSEGS']
+         "Custom.Impact_Pack.ImpactSEGSMerge": Comfy.Custom.Impact_Pack.Nodes['ImpactSEGSMerge']
+         "Custom.Impact_Pack.SEGSDetailerForAnimateDiff": Comfy.Custom.Impact_Pack.Nodes['SEGSDetailerForAnimateDiff']
+         "Custom.Impact_Pack.ImpactKSamplerBasicPipe": Comfy.Custom.Impact_Pack.Nodes['ImpactKSamplerBasicPipe']
+         "Custom.Impact_Pack.ImpactKSamplerAdvancedBasicPipe": Comfy.Custom.Impact_Pack.Nodes['ImpactKSamplerAdvancedBasicPipe']
+         "Custom.Impact_Pack.ReencodeLatent": Comfy.Custom.Impact_Pack.Nodes['ReencodeLatent']
+         "Custom.Impact_Pack.ReencodeLatentPipe": Comfy.Custom.Impact_Pack.Nodes['ReencodeLatentPipe']
+         "Custom.Impact_Pack.ImpactImageBatchToImageList": Comfy.Custom.Impact_Pack.Nodes['ImpactImageBatchToImageList']
+         "Custom.Impact_Pack.ImpactMakeImageList": Comfy.Custom.Impact_Pack.Nodes['ImpactMakeImageList']
+         "Custom.Impact_Pack.ImpactMakeImageBatch": Comfy.Custom.Impact_Pack.Nodes['ImpactMakeImageBatch']
+         "Custom.Impact_Pack.ImpactMakeAnyList": Comfy.Custom.Impact_Pack.Nodes['ImpactMakeAnyList']
+         "Custom.Impact_Pack.ImpactMakeMaskList": Comfy.Custom.Impact_Pack.Nodes['ImpactMakeMaskList']
+         "Custom.Impact_Pack.ImpactMakeMaskBatch": Comfy.Custom.Impact_Pack.Nodes['ImpactMakeMaskBatch']
+         "Custom.Impact_Pack.RegionalSampler": Comfy.Custom.Impact_Pack.Nodes['RegionalSampler']
+         "Custom.Impact_Pack.RegionalSamplerAdvanced": Comfy.Custom.Impact_Pack.Nodes['RegionalSamplerAdvanced']
+         "Custom.Impact_Pack.CombineRegionalPrompts": Comfy.Custom.Impact_Pack.Nodes['CombineRegionalPrompts']
+         "Custom.Impact_Pack.RegionalPrompt": Comfy.Custom.Impact_Pack.Nodes['RegionalPrompt']
+         "Custom.Impact_Pack.ImpactCombineConditionings": Comfy.Custom.Impact_Pack.Nodes['ImpactCombineConditionings']
+         "Custom.Impact_Pack.ImpactConcatConditionings": Comfy.Custom.Impact_Pack.Nodes['ImpactConcatConditionings']
+         "Custom.Impact_Pack.ImpactSEGSLabelAssign": Comfy.Custom.Impact_Pack.Nodes['ImpactSEGSLabelAssign']
+         "Custom.Impact_Pack.ImpactSEGSLabelFilter": Comfy.Custom.Impact_Pack.Nodes['ImpactSEGSLabelFilter']
+         "Custom.Impact_Pack.ImpactSEGSRangeFilter": Comfy.Custom.Impact_Pack.Nodes['ImpactSEGSRangeFilter']
+         "Custom.Impact_Pack.ImpactSEGSOrderedFilter": Comfy.Custom.Impact_Pack.Nodes['ImpactSEGSOrderedFilter']
+         "Custom.Impact_Pack.ImpactCompare": Comfy.Custom.Impact_Pack.Nodes['ImpactCompare']
+         "Custom.Impact_Pack.ImpactConditionalBranch": Comfy.Custom.Impact_Pack.Nodes['ImpactConditionalBranch']
+         "Custom.Impact_Pack.ImpactConditionalBranchSelMode": Comfy.Custom.Impact_Pack.Nodes['ImpactConditionalBranchSelMode']
+         "Custom.Impact_Pack.ImpactIfNone": Comfy.Custom.Impact_Pack.Nodes['ImpactIfNone']
+         "Custom.Impact_Pack.ImpactConvertDataType": Comfy.Custom.Impact_Pack.Nodes['ImpactConvertDataType']
+         "Custom.Impact_Pack.ImpactLogicalOperators": Comfy.Custom.Impact_Pack.Nodes['ImpactLogicalOperators']
+         "Custom.Impact_Pack.ImpactInt": Comfy.Custom.Impact_Pack.Nodes['ImpactInt']
+         "Custom.Impact_Pack.ImpactFloat": Comfy.Custom.Impact_Pack.Nodes['ImpactFloat']
+         "Custom.Impact_Pack.ImpactBoolean": Comfy.Custom.Impact_Pack.Nodes['ImpactBoolean']
+         "Custom.Impact_Pack.ImpactValueSender": Comfy.Custom.Impact_Pack.Nodes['ImpactValueSender']
+         "Custom.Impact_Pack.ImpactValueReceiver": Comfy.Custom.Impact_Pack.Nodes['ImpactValueReceiver']
+         "Custom.Impact_Pack.ImpactImageInfo": Comfy.Custom.Impact_Pack.Nodes['ImpactImageInfo']
+         "Custom.Impact_Pack.ImpactLatentInfo": Comfy.Custom.Impact_Pack.Nodes['ImpactLatentInfo']
+         "Custom.Impact_Pack.ImpactMinMax": Comfy.Custom.Impact_Pack.Nodes['ImpactMinMax']
+         "Custom.Impact_Pack.ImpactNeg": Comfy.Custom.Impact_Pack.Nodes['ImpactNeg']
+         "Custom.Impact_Pack.ImpactConditionalStopIteration": Comfy.Custom.Impact_Pack.Nodes['ImpactConditionalStopIteration']
+         "Custom.Impact_Pack.ImpactStringSelector": Comfy.Custom.Impact_Pack.Nodes['ImpactStringSelector']
+         "Custom.Impact_Pack.StringListToString": Comfy.Custom.Impact_Pack.Nodes['StringListToString']
+         "Custom.Impact_Pack.WildcardPromptFromString": Comfy.Custom.Impact_Pack.Nodes['WildcardPromptFromString']
+         "Custom.Impact_Pack.ImpactExecutionOrderController": Comfy.Custom.Impact_Pack.Nodes['ImpactExecutionOrderController']
+         "Custom.Impact_Pack.RemoveNoiseMask": Comfy.Custom.Impact_Pack.Nodes['RemoveNoiseMask']
+         "Custom.Impact_Pack.ImpactLogger": Comfy.Custom.Impact_Pack.Nodes['ImpactLogger']
+         "Custom.Impact_Pack.ImpactDummyInput": Comfy.Custom.Impact_Pack.Nodes['ImpactDummyInput']
+         "Custom.Impact_Pack.ImpactQueueTrigger": Comfy.Custom.Impact_Pack.Nodes['ImpactQueueTrigger']
+         "Custom.Impact_Pack.ImpactQueueTriggerCountdown": Comfy.Custom.Impact_Pack.Nodes['ImpactQueueTriggerCountdown']
+         "Custom.Impact_Pack.ImpactSetWidgetValue": Comfy.Custom.Impact_Pack.Nodes['ImpactSetWidgetValue']
+         "Custom.Impact_Pack.ImpactNodeSetMuteState": Comfy.Custom.Impact_Pack.Nodes['ImpactNodeSetMuteState']
+         "Custom.Impact_Pack.ImpactControlBridge": Comfy.Custom.Impact_Pack.Nodes['ImpactControlBridge']
+         "Custom.Impact_Pack.ImpactIsNotEmptySEGS": Comfy.Custom.Impact_Pack.Nodes['ImpactIsNotEmptySEGS']
+         "Custom.Impact_Pack.ImpactSleep": Comfy.Custom.Impact_Pack.Nodes['ImpactSleep']
+         "Custom.Impact_Pack.ImpactRemoteBoolean": Comfy.Custom.Impact_Pack.Nodes['ImpactRemoteBoolean']
+         "Custom.Impact_Pack.ImpactRemoteInt": Comfy.Custom.Impact_Pack.Nodes['ImpactRemoteInt']
+         "Custom.Impact_Pack.ImpactHFTransformersClassifierProvider": Comfy.Custom.Impact_Pack.Nodes['ImpactHFTransformersClassifierProvider']
+         "Custom.Impact_Pack.ImpactSEGSClassify": Comfy.Custom.Impact_Pack.Nodes['ImpactSEGSClassify']
+         "Custom.Impact_Pack.ImpactSchedulerAdapter": Comfy.Custom.Impact_Pack.Nodes['ImpactSchedulerAdapter']
+         "Custom.Impact_Pack.GITSSchedulerFuncProvider": Comfy.Custom.Impact_Pack.Nodes['GITSSchedulerFuncProvider']
+         "Custom.Impact_Pack.UltralyticsDetectorProvider": Comfy.Custom.Impact_Pack.Nodes['UltralyticsDetectorProvider']
+         UnknownNodeXX: Comfy.Base.Nodes['UnknownNodeXX']
+      }
       export interface Enums {
-          "Comfy.Base.KSampler.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
-          "Comfy.Base.KSamplerAdvanced.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
-          "Comfy.Extra.custom_sampler.KSamplerSelect.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
-          "Comfy.Custom.Impact_Pack.DetailerForEach.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
-          "Comfy.Custom.Impact_Pack.DetailerForEachDebug.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
-          "Comfy.Custom.Impact_Pack.DetailerForEachPipe.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
-          "Comfy.Custom.Impact_Pack.DetailerForEachDebugPipe.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
-          "Comfy.Custom.Impact_Pack.DetailerForEachPipeForAnimateDiff.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
-          "Comfy.Custom.Impact_Pack.FaceDetailer.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
-          "Comfy.Custom.Impact_Pack.FaceDetailerPipe.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
-          "Comfy.Custom.Impact_Pack.MaskDetailerPipe.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
-          "Comfy.Custom.Impact_Pack.PixelKSampleUpscalerProvider.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
-          "Comfy.Custom.Impact_Pack.PixelKSampleUpscalerProviderPipe.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
-          "Comfy.Custom.Impact_Pack.PixelTiledKSampleUpscalerProvider.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
-          "Comfy.Custom.Impact_Pack.PixelTiledKSampleUpscalerProviderPipe.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
-          "Comfy.Custom.Impact_Pack.UnsamplerHookProvider.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
-          "Comfy.Custom.Impact_Pack.UnsamplerDetailerHookProvider.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
-          "Comfy.Custom.Impact_Pack.KSamplerProvider.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
-          "Comfy.Custom.Impact_Pack.TiledKSamplerProvider.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
-          "Comfy.Custom.Impact_Pack.KSamplerAdvancedProvider.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
-          "Comfy.Custom.Impact_Pack.SEGSUpscaler.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
-          "Comfy.Custom.Impact_Pack.SEGSUpscalerPipe.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
-          "Comfy.Custom.Impact_Pack.SEGSDetailer.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
-          "Comfy.Custom.Impact_Pack.SEGSDetailerForAnimateDiff.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
-          "Comfy.Custom.Impact_Pack.ImpactKSamplerBasicPipe.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
-          "Comfy.Custom.Impact_Pack.ImpactKSamplerAdvancedBasicPipe.input.sampler_name": Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453
-          "Comfy.Base.KSampler.input.scheduler": Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325
-          "Comfy.Base.KSamplerAdvanced.input.scheduler": Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325
-          "Comfy.Extra.custom_sampler.BasicScheduler.input.scheduler": Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325
-          "Comfy.Custom.Impact_Pack.PixelTiledKSampleUpscalerProvider.input.scheduler": Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325
-          "Comfy.Custom.Impact_Pack.PixelTiledKSampleUpscalerProviderPipe.input.scheduler": Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325
-          "Comfy.Custom.Impact_Pack.UnsamplerHookProvider.input.scheduler": Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325
-          "Comfy.Custom.Impact_Pack.UnsamplerDetailerHookProvider.input.scheduler": Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325
-          "Comfy.Custom.Impact_Pack.TiledKSamplerProvider.input.scheduler": Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325
-          "Comfy.Custom.Impact_Pack.ImpactSchedulerAdapter.input.scheduler": Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325
-          "Comfy.Base.CheckpointLoaderSimple.input.ckpt_name": Comfy.Union.E_1f08f73a9a576ae570aa3d82ea94f2bcfc29a8fc
-          "Comfy.Base.unCLIPCheckpointLoader.input.ckpt_name": Comfy.Union.E_1f08f73a9a576ae570aa3d82ea94f2bcfc29a8fc
-          "Comfy.Base.CheckpointLoader.input.ckpt_name": Comfy.Union.E_1f08f73a9a576ae570aa3d82ea94f2bcfc29a8fc
-          "Comfy.Extra.video_model.ImageOnlyCheckpointLoader.input.ckpt_name": Comfy.Union.E_1f08f73a9a576ae570aa3d82ea94f2bcfc29a8fc
-          "Comfy.Base.VAELoader.input.vae_name": Comfy.Union.E_621a1d2d13812defa70c4b6ec953d17713bd232a
-          "Comfy.Base.LatentUpscale.input.upscale_method": Comfy.Union.E_6e6cbf6c48411ad480e010b0c9d2434b41af430d
-          "Comfy.Base.LatentUpscaleBy.input.upscale_method": Comfy.Union.E_6e6cbf6c48411ad480e010b0c9d2434b41af430d
-          "Comfy.Extra.model_downscale.PatchModelAddDownscale.input.downscale_method": Comfy.Union.E_6e6cbf6c48411ad480e010b0c9d2434b41af430d
-          "Comfy.Extra.model_downscale.PatchModelAddDownscale.input.upscale_method": Comfy.Union.E_6e6cbf6c48411ad480e010b0c9d2434b41af430d
-          "Comfy.Extra.advanced_samplers.SamplerLCMUpscale.input.upscale_method": Comfy.Union.E_6e6cbf6c48411ad480e010b0c9d2434b41af430d
-          "Comfy.Base.LatentUpscale.input.crop": Comfy.Union.E_e2779c2a162ed54d5841127cc2968e8d50f5e431
-          "Comfy.Base.ImageScale.input.crop": Comfy.Union.E_e2779c2a162ed54d5841127cc2968e8d50f5e431
-          "Comfy.Base.LoadImage.input.image": Comfy.Union.E_26ea5ad8c44c9551fea858fff18017427386b591
-          "Comfy.Base.LoadImageMask.input.image": Comfy.Union.E_26ea5ad8c44c9551fea858fff18017427386b591
-          "Comfy.Custom.Impact_Pack.ImageReceiver.input.image": Comfy.Union.E_26ea5ad8c44c9551fea858fff18017427386b591
-          "Comfy.Base.LoadImageMask.input.channel": Comfy.Union.E_19d5be39f1fd20a88fdbcb009a06c7df2b0ef998
-          "Comfy.Extra.mask.ImageToMask.input.channel": Comfy.Union.E_19d5be39f1fd20a88fdbcb009a06c7df2b0ef998
-          "Comfy.Base.ImageScale.input.upscale_method": Comfy.Union.E_165b455eb22956fc9da6e1b76d49a4077f15d897
-          "Comfy.Base.ImageScaleBy.input.upscale_method": Comfy.Union.E_165b455eb22956fc9da6e1b76d49a4077f15d897
-          "Comfy.Extra.post_processing.ImageScaleToTotalPixels.input.upscale_method": Comfy.Union.E_165b455eb22956fc9da6e1b76d49a4077f15d897
-          "Comfy.Base.ConditioningSetMask.input.set_cond_area": Comfy.Union.E_046ed3ef4b2b9a9cfdb62e53a70fe767fb996451
-          "Comfy.Base.KSamplerAdvanced.input.add_noise": Comfy.Union.E_449b4cae3566dd9b97c417c352bb08e25b89431b
-          "Comfy.Base.KSamplerAdvanced.input.return_with_leftover_noise": Comfy.Union.E_449b4cae3566dd9b97c417c352bb08e25b89431b
-          "Comfy.Custom.Impact_Pack.UnsamplerHookProvider.input.normalize": Comfy.Union.E_449b4cae3566dd9b97c417c352bb08e25b89431b
-          "Comfy.Custom.Impact_Pack.UnsamplerDetailerHookProvider.input.normalize": Comfy.Union.E_449b4cae3566dd9b97c417c352bb08e25b89431b
-          "Comfy.Base.LatentRotate.input.rotation": Comfy.Union.E_061551528c540e0171a9c88a94c7d5375aa31f8a
-          "Comfy.Base.LatentFlip.input.flip_method": Comfy.Union.E_cdf7071acecb5016da941b6e718b82c97248a3e4
-          "Comfy.Base.LoraLoader.input.lora_name": Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
-          "Comfy.Base.CLIPLoader.input.clip_name": Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
-          "Comfy.Base.UNETLoader.input.unet_name": Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
-          "Comfy.Base.DualCLIPLoader.input.clip_name1": Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
-          "Comfy.Base.DualCLIPLoader.input.clip_name2": Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
-          "Comfy.Base.ControlNetLoader.input.control_net_name": Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
-          "Comfy.Base.DiffControlNetLoader.input.control_net_name": Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
-          "Comfy.Base.StyleModelLoader.input.style_model_name": Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
-          "Comfy.Base.CLIPVisionLoader.input.clip_name": Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
-          "Comfy.Base.GLIGENLoader.input.gligen_name": Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
-          "Comfy.Base.DiffusersLoader.input.model_path": Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
-          "Comfy.Base.LoadLatent.input.latent": Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
-          "Comfy.Base.LoraLoaderModelOnly.input.lora_name": Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
-          "Comfy.Extra.hypernetwork.HypernetworkLoader.input.hypernetwork_name": Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
-          "Comfy.Extra.photomaker.PhotoMakerLoader.input.photomaker_model_name": Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
-          "Comfy.Extra.audio.LoadAudio.input.audio": Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
-          "Comfy.Extra.sd3.TripleCLIPLoader.input.clip_name1": Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
-          "Comfy.Extra.sd3.TripleCLIPLoader.input.clip_name2": Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
-          "Comfy.Extra.sd3.TripleCLIPLoader.input.clip_name3": Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
-          "Comfy.Custom.Impact_Pack.ONNXDetectorProvider.input.model_name": Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
-          "Comfy.Custom.Impact_Pack.LatentReceiver.input.latent": Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190
-          "Comfy.Base.CLIPLoader.input.type": Comfy.Union.E_766fb79b4f3904a6716246cfb2a33b7b9e6a08c4
-          "Comfy.Base.UNETLoader.input.weight_dtype": Comfy.Union.E_21ba65fbb0df707c108b25356a3507e13f21ea58
-          "Comfy.Base.DualCLIPLoader.input.type": Comfy.Union.E_39292df8ce88fd66f0dacf6f9110cfa2594ca25c
-          "Comfy.Base.CheckpointLoader.input.config_name": Comfy.Union.E_a1972c9480c542a0e8ccafa03c2572ba5fc62160
-          "Comfy.Extra.latent.LatentBatchSeedBehavior.input.seed_behavior": Comfy.Union.E_1d09df0c3ce1b4556d07af26e593d4033efc639b
-          "Comfy.Extra.upscale_model.UpscaleModelLoader.input.model_name": Comfy.Union.E_2504d8563e078c3ed105667cbb6d0ff714d5798b
-          "Comfy.Extra.post_processing.ImageBlend.input.blend_mode": Comfy.Union.E_4ca09d2bc16d4174960bd60a103d4c0911361855
-          "Comfy.Extra.post_processing.ImageQuantize.input.dither": Comfy.Union.E_7c2feaebcf0bbbcda0fe9f3c8cba1cf87002bc0e
-          "Comfy.Extra.mask.MaskComposite.input.operation": Comfy.Union.E_88c0c90dbad3b41c3c4a4f8a89afad7b1c0db2e0
-          "Comfy.Extra.compositing.PorterDuffImageComposite.input.mode": Comfy.Union.E_d954b5ae44db00529f0fd0bfb816e25c12617df8
-          "Comfy.Extra.custom_sampler.SamplerDPMPP$_3M$_SDE.input.noise_device": Comfy.Union.E_928b7403128cb25513cafc463a76a922ba5d4bd0
-          "Comfy.Extra.custom_sampler.SamplerDPMPP$_2M$_SDE.input.noise_device": Comfy.Union.E_928b7403128cb25513cafc463a76a922ba5d4bd0
-          "Comfy.Extra.custom_sampler.SamplerDPMPP$_SDE.input.noise_device": Comfy.Union.E_928b7403128cb25513cafc463a76a922ba5d4bd0
-          "Comfy.Extra.custom_sampler.SamplerDPMPP$_2M$_SDE.input.solver_type": Comfy.Union.E_148e0bc88719e23ec2f2c80871fe45ae759cd7e1
-          "Comfy.Extra.model_advanced.ModelSamplingDiscrete.input.sampling": Comfy.Union.E_e89ec78e24ca5e9c91264b9e9b5ed722d2b509dc
-          "Comfy.Extra.model_advanced.ModelSamplingContinuousEDM.input.sampling": Comfy.Union.E_bf8a83a3d55d70c688644bf18edaf23501f7c168
-          "Comfy.Extra.model_advanced.ModelSamplingContinuousV.input.sampling": Comfy.Union.E_3c3164c6c468d61dfa20092960e3d7854495e50c
-          "Comfy.Extra.images.SaveAnimatedWEBP.input.method": Comfy.Union.E_253b68425542d8144b2b8a7af90f057b41939f63
-          "Comfy.Extra.morphology.Morphology.input.operation": Comfy.Union.E_6ba03252ec9c8111f7381dfb573cd99c2b4d0e3b
-          "Comfy.Extra.align_your_steps.AlignYourStepsScheduler.input.model_type": Comfy.Union.E_ec317371192386ae10cedaee29b315e900386a18
-          "Comfy.Extra.advanced_samplers.SamplerEulerCFGpp.input.version": Comfy.Union.E_a8aa5eb2d828c2e279168c48955c7a0fe3ea011a
-          "Comfy.Extra.sd3.CLIPTextEncodeSD3.input.empty_padding": Comfy.Union.E_270e152a81c37daf152e6cc67675baaafe058bc4
-          "Comfy.Extra.controlnet.SetUnionControlNetType.input.type": Comfy.Union.E_0e92c8b1b6fe90c3e343d8b54b531b9d887eee62
-          "Comfy.Extra.lora_extract.LoraSave.input.lora_type": Comfy.Union.E_b80b6129a942660e31e08221ee04a76f537556ce
-          "Comfy.Extra.torch_compile.TorchCompileModel.input.backend": Comfy.Union.E_4bbca93e426c35d56c43252f1fb21877d5e7a1aa
-          "Comfy.Custom.Impact_Pack.SAMLoader.input.model_name": Comfy.Union.E_40c777392f92d61852ab0f7a429a755abf59b71a
-          "Comfy.Custom.Impact_Pack.SAMLoader.input.device_mode": Comfy.Union.E_2ad445b99254e9b51c963d9f1a75fabe3d01e569
-          "Comfy.Custom.Impact_Pack.ImpactHFTransformersClassifierProvider.input.device_mode": Comfy.Union.E_2ad445b99254e9b51c963d9f1a75fabe3d01e569
-          "Comfy.Custom.Impact_Pack.DetailerForEach.input.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
-          "Comfy.Custom.Impact_Pack.DetailerForEachDebug.input.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
-          "Comfy.Custom.Impact_Pack.DetailerForEachPipe.input.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
-          "Comfy.Custom.Impact_Pack.DetailerForEachDebugPipe.input.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
-          "Comfy.Custom.Impact_Pack.DetailerForEachPipeForAnimateDiff.input.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
-          "Comfy.Custom.Impact_Pack.FaceDetailer.input.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
-          "Comfy.Custom.Impact_Pack.FaceDetailerPipe.input.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
-          "Comfy.Custom.Impact_Pack.MaskDetailerPipe.input.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
-          "Comfy.Custom.Impact_Pack.PixelKSampleUpscalerProvider.input.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
-          "Comfy.Custom.Impact_Pack.PixelKSampleUpscalerProviderPipe.input.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
-          "Comfy.Custom.Impact_Pack.KSamplerProvider.input.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
-          "Comfy.Custom.Impact_Pack.KSamplerAdvancedProvider.input.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
-          "Comfy.Custom.Impact_Pack.SEGSUpscaler.input.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
-          "Comfy.Custom.Impact_Pack.SEGSUpscalerPipe.input.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
-          "Comfy.Custom.Impact_Pack.SEGSDetailer.input.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
-          "Comfy.Custom.Impact_Pack.SEGSDetailerForAnimateDiff.input.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
-          "Comfy.Custom.Impact_Pack.ImpactKSamplerBasicPipe.input.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
-          "Comfy.Custom.Impact_Pack.ImpactKSamplerAdvancedBasicPipe.input.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
-          "Comfy.Custom.Impact_Pack.ImpactSchedulerAdapter.output.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
-          "Comfy.Custom.Impact_Pack.SAMDetectorCombined.input.detection_hint": Comfy.Union.E_40275a874822a8699ee13794e127b63cdd6bfdae
-          "Comfy.Custom.Impact_Pack.SAMDetectorSegmented.input.detection_hint": Comfy.Union.E_40275a874822a8699ee13794e127b63cdd6bfdae
-          "Comfy.Custom.Impact_Pack.FaceDetailer.input.sam_detection_hint": Comfy.Union.E_40275a874822a8699ee13794e127b63cdd6bfdae
-          "Comfy.Custom.Impact_Pack.FaceDetailerPipe.input.sam_detection_hint": Comfy.Union.E_40275a874822a8699ee13794e127b63cdd6bfdae
-          "Comfy.Custom.Impact_Pack.SAMDetectorCombined.input.mask_hint_use_negative": Comfy.Union.E_aa302307a82588b6e514aca43e4cddad342a73fc
-          "Comfy.Custom.Impact_Pack.SAMDetectorSegmented.input.mask_hint_use_negative": Comfy.Union.E_aa302307a82588b6e514aca43e4cddad342a73fc
-          "Comfy.Custom.Impact_Pack.FaceDetailer.input.sam_mask_hint_use_negative": Comfy.Union.E_aa302307a82588b6e514aca43e4cddad342a73fc
-          "Comfy.Custom.Impact_Pack.FaceDetailerPipe.input.sam_mask_hint_use_negative": Comfy.Union.E_aa302307a82588b6e514aca43e4cddad342a73fc
-          "Comfy.Custom.Impact_Pack.ToDetailerPipe.input.Select$_to$_add$_LoRA": Comfy.Union.E_35e403c7628f220c07d5485d6e81fc66b4fc12df
-          "Comfy.Custom.Impact_Pack.ToDetailerPipeSDXL.input.Select$_to$_add$_LoRA": Comfy.Union.E_35e403c7628f220c07d5485d6e81fc66b4fc12df
-          "Comfy.Custom.Impact_Pack.BasicPipeToDetailerPipe.input.Select$_to$_add$_LoRA": Comfy.Union.E_35e403c7628f220c07d5485d6e81fc66b4fc12df
-          "Comfy.Custom.Impact_Pack.BasicPipeToDetailerPipeSDXL.input.Select$_to$_add$_LoRA": Comfy.Union.E_35e403c7628f220c07d5485d6e81fc66b4fc12df
-          "Comfy.Custom.Impact_Pack.EditDetailerPipe.input.Select$_to$_add$_LoRA": Comfy.Union.E_35e403c7628f220c07d5485d6e81fc66b4fc12df
-          "Comfy.Custom.Impact_Pack.EditDetailerPipeSDXL.input.Select$_to$_add$_LoRA": Comfy.Union.E_35e403c7628f220c07d5485d6e81fc66b4fc12df
-          "Comfy.Custom.Impact_Pack.ImpactWildcardEncode.input.Select$_to$_add$_LoRA": Comfy.Union.E_35e403c7628f220c07d5485d6e81fc66b4fc12df
-          "Comfy.Custom.Impact_Pack.ToDetailerPipe.input.Select$_to$_add$_Wildcard": Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26
-          "Comfy.Custom.Impact_Pack.ToDetailerPipeSDXL.input.Select$_to$_add$_Wildcard": Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26
-          "Comfy.Custom.Impact_Pack.BasicPipeToDetailerPipe.input.Select$_to$_add$_Wildcard": Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26
-          "Comfy.Custom.Impact_Pack.BasicPipeToDetailerPipeSDXL.input.Select$_to$_add$_Wildcard": Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26
-          "Comfy.Custom.Impact_Pack.EditDetailerPipe.input.Select$_to$_add$_Wildcard": Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26
-          "Comfy.Custom.Impact_Pack.EditDetailerPipeSDXL.input.Select$_to$_add$_Wildcard": Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26
-          "Comfy.Custom.Impact_Pack.ImpactWildcardProcessor.input.Select$_to$_add$_Wildcard": Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26
-          "Comfy.Custom.Impact_Pack.ImpactWildcardEncode.input.Select$_to$_add$_Wildcard": Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26
-          "Comfy.Custom.Impact_Pack.LatentPixelScale.input.scale_method": Comfy.Union.E_f9c5efbc827613eb902695cd0a25738ee31c607d
-          "Comfy.Custom.Impact_Pack.PixelKSampleUpscalerProvider.input.scale_method": Comfy.Union.E_f9c5efbc827613eb902695cd0a25738ee31c607d
-          "Comfy.Custom.Impact_Pack.PixelKSampleUpscalerProviderPipe.input.scale_method": Comfy.Union.E_f9c5efbc827613eb902695cd0a25738ee31c607d
-          "Comfy.Custom.Impact_Pack.PixelTiledKSampleUpscalerProvider.input.scale_method": Comfy.Union.E_f9c5efbc827613eb902695cd0a25738ee31c607d
-          "Comfy.Custom.Impact_Pack.PixelTiledKSampleUpscalerProviderPipe.input.scale_method": Comfy.Union.E_f9c5efbc827613eb902695cd0a25738ee31c607d
-          "Comfy.Custom.Impact_Pack.TwoSamplersForMaskUpscalerProvider.input.scale_method": Comfy.Union.E_f9c5efbc827613eb902695cd0a25738ee31c607d
-          "Comfy.Custom.Impact_Pack.TwoSamplersForMaskUpscalerProviderPipe.input.scale_method": Comfy.Union.E_f9c5efbc827613eb902695cd0a25738ee31c607d
-          "Comfy.Custom.Impact_Pack.IterativeLatentUpscale.input.step_mode": Comfy.Union.E_4724269c8f643d5efa98f97e1e55a7ddfe6aac6c
-          "Comfy.Custom.Impact_Pack.IterativeImageUpscale.input.step_mode": Comfy.Union.E_4724269c8f643d5efa98f97e1e55a7ddfe6aac6c
-          "Comfy.Custom.Impact_Pack.PixelTiledKSampleUpscalerProvider.input.tiling_strategy": Comfy.Union.E_304f89a0de34643f12756237824e7261db28aaf5
-          "Comfy.Custom.Impact_Pack.PixelTiledKSampleUpscalerProviderPipe.input.tiling_strategy": Comfy.Union.E_304f89a0de34643f12756237824e7261db28aaf5
-          "Comfy.Custom.Impact_Pack.TiledKSamplerProvider.input.tiling_strategy": Comfy.Union.E_304f89a0de34643f12756237824e7261db28aaf5
-          "Comfy.Custom.Impact_Pack.TwoSamplersForMaskUpscalerProvider.input.full_sample_schedule": Comfy.Union.E_de6a9887e0bfe301f572e929959509ed64574d1b
-          "Comfy.Custom.Impact_Pack.TwoSamplersForMaskUpscalerProviderPipe.input.full_sample_schedule": Comfy.Union.E_de6a9887e0bfe301f572e929959509ed64574d1b
-          "Comfy.Custom.Impact_Pack.DenoiseScheduleHookProvider.input.schedule_for_iteration": Comfy.Union.E_0f7d0d088b6ea936fb25b477722d734706fe8b40
-          "Comfy.Custom.Impact_Pack.StepsScheduleHookProvider.input.schedule_for_iteration": Comfy.Union.E_0f7d0d088b6ea936fb25b477722d734706fe8b40
-          "Comfy.Custom.Impact_Pack.CfgScheduleHookProvider.input.schedule_for_iteration": Comfy.Union.E_0f7d0d088b6ea936fb25b477722d734706fe8b40
-          "Comfy.Custom.Impact_Pack.NoiseInjectionHookProvider.input.schedule_for_iteration": Comfy.Union.E_0f7d0d088b6ea936fb25b477722d734706fe8b40
-          "Comfy.Custom.Impact_Pack.UnsamplerHookProvider.input.schedule_for_iteration": Comfy.Union.E_0f7d0d088b6ea936fb25b477722d734706fe8b40
-          "Comfy.Custom.Impact_Pack.DenoiseSchedulerDetailerHookProvider.input.schedule_for_cycle": Comfy.Union.E_0f7d0d088b6ea936fb25b477722d734706fe8b40
-          "Comfy.Custom.Impact_Pack.NoiseInjectionHookProvider.input.source": Comfy.Union.E_3dfc15432d4b952e91053feecd5a5427720957fc
-          "Comfy.Custom.Impact_Pack.NoiseInjectionDetailerHookProvider.input.source": Comfy.Union.E_3dfc15432d4b952e91053feecd5a5427720957fc
-          "Comfy.Custom.Impact_Pack.CoreMLDetailerHookProvider.input.mode": Comfy.Union.E_d4b6506ab5528aeab8952aa9d308dbc242d01e63
-          "Comfy.Custom.Impact_Pack.NoiseInjectionDetailerHookProvider.input.schedule_for_cycle": Comfy.Union.E_afbc7832ad78555d4f5646f97ed21b561fe3d1f0
-          "Comfy.Custom.Impact_Pack.UnsamplerDetailerHookProvider.input.schedule_for_cycle": Comfy.Union.E_afbc7832ad78555d4f5646f97ed21b561fe3d1f0
-          "Comfy.Custom.Impact_Pack.SEGSOrderedFilterDetailerHookProvider.input.target": Comfy.Union.E_87bec9aa0dfe9b9678fd35387106d931d78358cd
-          "Comfy.Custom.Impact_Pack.SEGSRangeFilterDetailerHookProvider.input.target": Comfy.Union.E_aceb55e7f03fcbc2a78383bd8ddff8676e42e536
-          "Comfy.Custom.Impact_Pack.SEGSLabelFilterDetailerHookProvider.input.preset": Comfy.Union.E_cc1f262afc534d382e5c36082cecd4fc2a9c4ffb
-          "Comfy.Custom.Impact_Pack.ImpactSEGSLabelFilter.input.preset": Comfy.Union.E_cc1f262afc534d382e5c36082cecd4fc2a9c4ffb
-          "Comfy.Custom.Impact_Pack.ImpactSimpleDetectorSEGS$_for$_AD.input.masking_mode": Comfy.Union.E_e5ef6b688dbafd88538e80bf002826bade4bb121
-          "Comfy.Custom.Impact_Pack.ImpactSimpleDetectorSEGS$_for$_AD.input.segs_pivot": Comfy.Union.E_651ea09f69db9a1eb817103d1ea8e3ac08b4a319
-          "Comfy.Custom.Impact_Pack.ImpactIPAdapterApplySEGS.input.weight_type": Comfy.Union.E_05cddbad13b094c2641c6bb7d261e15c71efc903
-          "Comfy.Custom.Impact_Pack.ImpactIPAdapterApplySEGS.input.combine_embeds": Comfy.Union.E_055d80a7c582bd5b57fd6775414e697be3f0f580
-          "Comfy.Custom.Impact_Pack.PreviewBridge.input.restore_mask": Comfy.Union.E_f27fae3205ecf36e9f4a68f3867d38e025476963
-          "Comfy.Custom.Impact_Pack.PreviewBridgeLatent.input.restore_mask": Comfy.Union.E_f27fae3205ecf36e9f4a68f3867d38e025476963
-          "Comfy.Custom.Impact_Pack.PreviewBridgeLatent.input.preview_method": Comfy.Union.E_ea287ec9983f05378f2614091804a1b6b95d1c79
-          "Comfy.Custom.Impact_Pack.LatentSender.input.preview_method": Comfy.Union.E_fa4a13687b111fa33a8c8fa375d5321d09b46b27
-          "Comfy.Custom.Impact_Pack.SEGSUpscaler.input.resampling_method": Comfy.Union.E_bac912b55de8a59480c74aba068f4a3b5f9a0e38
-          "Comfy.Custom.Impact_Pack.SEGSUpscalerPipe.input.resampling_method": Comfy.Union.E_bac912b55de8a59480c74aba068f4a3b5f9a0e38
-          "Comfy.Custom.Impact_Pack.SEGSUpscaler.input.supersample": Comfy.Union.E_c1a74591678033a2ccc87aa0add77dab7f001da5
-          "Comfy.Custom.Impact_Pack.SEGSUpscalerPipe.input.supersample": Comfy.Union.E_c1a74591678033a2ccc87aa0add77dab7f001da5
-          "Comfy.Custom.Impact_Pack.ImpactMakeTileSEGS.input.irregular_mask_mode": Comfy.Union.E_5cc1495fe28eac05289d45b29269b31c6edca055
-          "Comfy.Custom.Impact_Pack.ReencodeLatent.input.tile_mode": Comfy.Union.E_d5776f669e41b2ec29cd020ce34a8b7cdf23693d
-          "Comfy.Custom.Impact_Pack.ReencodeLatentPipe.input.tile_mode": Comfy.Union.E_d5776f669e41b2ec29cd020ce34a8b7cdf23693d
-          "Comfy.Custom.Impact_Pack.RegionalSampler.input.seed_2nd_mode": Comfy.Union.E_1e8364b55644fdbf6d28dd3e6197d9fe1777e361
-          "Comfy.Custom.Impact_Pack.RegionalSampler.input.additional_mode": Comfy.Union.E_db19bd49ccd13456a936f2070c088f16070aa0b1
-          "Comfy.Custom.Impact_Pack.RegionalSamplerAdvanced.input.additional_mode": Comfy.Union.E_db19bd49ccd13456a936f2070c088f16070aa0b1
-          "Comfy.Custom.Impact_Pack.RegionalSampler.input.additional_sampler": Comfy.Union.E_3fd6d592305b0bc44ce9c69a23201f8d7a155884
-          "Comfy.Custom.Impact_Pack.RegionalSamplerAdvanced.input.additional_sampler": Comfy.Union.E_3fd6d592305b0bc44ce9c69a23201f8d7a155884
-          "Comfy.Custom.Impact_Pack.RegionalPrompt.input.variation_method": Comfy.Union.E_627d63e970919d713af795854ffd9dd2642f92d2
-          "Comfy.Custom.Impact_Pack.ImpactSEGSRangeFilter.input.target": Comfy.Union.E_10c017f4a76414789a861361dc5cdbfef12e2d7d
-          "Comfy.Custom.Impact_Pack.ImpactSEGSOrderedFilter.input.target": Comfy.Union.E_b1f554e93f550a374a1ff740ad7447a7b34b71be
-          "Comfy.Custom.Impact_Pack.ImpactCompare.input.cmp": Comfy.Union.E_87d3a21083ff67c538309f218241f70a793f619c
-          "Comfy.Custom.Impact_Pack.ImpactLogicalOperators.input.operator": Comfy.Union.E_99d83eba8f2a90cc88da26295981d92d458e4e14
-          "Comfy.Custom.Impact_Pack.ImpactValueReceiver.input.typ": Comfy.Union.E_6c86e4efdc8db8dae17215fbf80825ddaad06ffa
-          "Comfy.Custom.Impact_Pack.ImpactControlBridge.input.behavior": Comfy.Union.E_383642e8f2544ff8678e350c4f1049624ad6589e
-          "Comfy.Custom.Impact_Pack.ImpactHFTransformersClassifierProvider.input.preset_repo_id": Comfy.Union.E_7fd75955db2b2e81b87d8452255b37c2d98fd105
-          "Comfy.Custom.Impact_Pack.ImpactSEGSClassify.input.preset_expr": Comfy.Union.E_01400d675e59295302197d02289e89ead401098e
-          "Comfy.Custom.Impact_Pack.ImpactSchedulerAdapter.input.extra_scheduler": Comfy.Union.E_64bb9134d159ff7e3f573facb7cb2fcfbb2de483
-          "Comfy.Custom.Impact_Pack.UltralyticsDetectorProvider.input.model_name": Comfy.Union.E_cf11746957b2cb2b6379bbd08fe59610b2aae90a
+          // E_SamplerName
+          "KSampler.sampler_name": Comfy.Union.E_SamplerName
+          "KSamplerAdvanced.sampler_name": Comfy.Union.E_SamplerName
+          "Extra.KSamplerSelect.sampler_name": Comfy.Union.E_SamplerName
+          "Custom.Impact_Pack.DetailerForEach.sampler_name": Comfy.Union.E_SamplerName
+          "Custom.Impact_Pack.DetailerForEachDebug.sampler_name": Comfy.Union.E_SamplerName
+          "Custom.Impact_Pack.DetailerForEachPipe.sampler_name": Comfy.Union.E_SamplerName
+          "Custom.Impact_Pack.DetailerForEachDebugPipe.sampler_name": Comfy.Union.E_SamplerName
+          "Custom.Impact_Pack.DetailerForEachPipeForAnimateDiff.sampler_name": Comfy.Union.E_SamplerName
+          "Custom.Impact_Pack.FaceDetailer.sampler_name": Comfy.Union.E_SamplerName
+          "Custom.Impact_Pack.FaceDetailerPipe.sampler_name": Comfy.Union.E_SamplerName
+          "Custom.Impact_Pack.MaskDetailerPipe.sampler_name": Comfy.Union.E_SamplerName
+          "Custom.Impact_Pack.PixelKSampleUpscalerProvider.sampler_name": Comfy.Union.E_SamplerName
+          "Custom.Impact_Pack.PixelKSampleUpscalerProviderPipe.sampler_name": Comfy.Union.E_SamplerName
+          "Custom.Impact_Pack.PixelTiledKSampleUpscalerProvider.sampler_name": Comfy.Union.E_SamplerName
+          "Custom.Impact_Pack.PixelTiledKSampleUpscalerProviderPipe.sampler_name": Comfy.Union.E_SamplerName
+          "Custom.Impact_Pack.UnsamplerHookProvider.sampler_name": Comfy.Union.E_SamplerName
+          "Custom.Impact_Pack.UnsamplerDetailerHookProvider.sampler_name": Comfy.Union.E_SamplerName
+          "Custom.Impact_Pack.KSamplerProvider.sampler_name": Comfy.Union.E_SamplerName
+          "Custom.Impact_Pack.TiledKSamplerProvider.sampler_name": Comfy.Union.E_SamplerName
+          "Custom.Impact_Pack.KSamplerAdvancedProvider.sampler_name": Comfy.Union.E_SamplerName
+          "Custom.Impact_Pack.SEGSUpscaler.sampler_name": Comfy.Union.E_SamplerName
+          "Custom.Impact_Pack.SEGSUpscalerPipe.sampler_name": Comfy.Union.E_SamplerName
+          "Custom.Impact_Pack.SEGSDetailer.sampler_name": Comfy.Union.E_SamplerName
+          "Custom.Impact_Pack.SEGSDetailerForAnimateDiff.sampler_name": Comfy.Union.E_SamplerName
+          "Custom.Impact_Pack.ImpactKSamplerBasicPipe.sampler_name": Comfy.Union.E_SamplerName
+          "Custom.Impact_Pack.ImpactKSamplerAdvancedBasicPipe.sampler_name": Comfy.Union.E_SamplerName
+          // E_SchedulerName
+          "KSampler.scheduler": Comfy.Union.E_SchedulerName
+          "KSamplerAdvanced.scheduler": Comfy.Union.E_SchedulerName
+          "Extra.BasicScheduler.scheduler": Comfy.Union.E_SchedulerName
+          "Custom.Impact_Pack.PixelTiledKSampleUpscalerProvider.scheduler": Comfy.Union.E_SchedulerName
+          "Custom.Impact_Pack.PixelTiledKSampleUpscalerProviderPipe.scheduler": Comfy.Union.E_SchedulerName
+          "Custom.Impact_Pack.UnsamplerHookProvider.scheduler": Comfy.Union.E_SchedulerName
+          "Custom.Impact_Pack.UnsamplerDetailerHookProvider.scheduler": Comfy.Union.E_SchedulerName
+          "Custom.Impact_Pack.TiledKSamplerProvider.scheduler": Comfy.Union.E_SchedulerName
+          "Custom.Impact_Pack.ImpactSchedulerAdapter.scheduler": Comfy.Union.E_SchedulerName
+          // E_CkptName
+          "CheckpointLoaderSimple.ckpt_name": Comfy.Union.E_CkptName
+          "unCLIPCheckpointLoader.ckpt_name": Comfy.Union.E_CkptName
+          "CheckpointLoader.ckpt_name": Comfy.Union.E_CkptName
+          "Extra.ImageOnlyCheckpointLoader.ckpt_name": Comfy.Union.E_CkptName
+          // E_VaeName
+          "VAELoader.vae_name": Comfy.Union.E_VaeName
+          // E_LatentUpscaleMethod
+          "LatentUpscale.upscale_method": Comfy.Union.E_LatentUpscaleMethod
+          "LatentUpscaleBy.upscale_method": Comfy.Union.E_LatentUpscaleMethod
+          "Extra.PatchModelAddDownscale.downscale_method": Comfy.Union.E_LatentUpscaleMethod
+          "Extra.PatchModelAddDownscale.upscale_method": Comfy.Union.E_LatentUpscaleMethod
+          "Extra.SamplerLCMUpscale.upscale_method": Comfy.Union.E_LatentUpscaleMethod
+          // E_e2779c2a162ed54d5841127cc2968e8d50f5e431
+          "LatentUpscale.crop": Comfy.Union.E_e2779c2a162ed54d5841127cc2968e8d50f5e431
+          "ImageScale.crop": Comfy.Union.E_e2779c2a162ed54d5841127cc2968e8d50f5e431
+          // E_Image
+          "LoadImage.image": Comfy.Union.E_Image
+          "LoadImageMask.image": Comfy.Union.E_Image
+          "Custom.Impact_Pack.ImageReceiver.image": Comfy.Union.E_Image
+          // E_Channel
+          "LoadImageMask.channel": Comfy.Union.E_Channel
+          "Extra.ImageToMask.channel": Comfy.Union.E_Channel
+          // E_ImageUpscaleMethod
+          "ImageScale.upscale_method": Comfy.Union.E_ImageUpscaleMethod
+          "ImageScaleBy.upscale_method": Comfy.Union.E_ImageUpscaleMethod
+          "Extra.ImageScaleToTotalPixels.upscale_method": Comfy.Union.E_ImageUpscaleMethod
+          // E_046ed3ef4b2b9a9cfdb62e53a70fe767fb996451
+          "ConditioningSetMask.set_cond_area": Comfy.Union.E_046ed3ef4b2b9a9cfdb62e53a70fe767fb996451
+          // E_EnableOrDisable
+          "KSamplerAdvanced.add_noise": Comfy.Union.E_EnableOrDisable
+          "KSamplerAdvanced.return_with_leftover_noise": Comfy.Union.E_EnableOrDisable
+          "Custom.controlnet_aux.LeReS$7DepthMapPreprocessor.boost": Comfy.Union.E_EnableOrDisable
+          "Custom.controlnet_aux.DWPreprocessor.detect_hand": Comfy.Union.E_EnableOrDisable
+          "Custom.controlnet_aux.DWPreprocessor.detect_body": Comfy.Union.E_EnableOrDisable
+          "Custom.controlnet_aux.DWPreprocessor.detect_face": Comfy.Union.E_EnableOrDisable
+          "Custom.controlnet_aux.DWPreprocessor.scale_stick_for_xinsr_cn": Comfy.Union.E_EnableOrDisable
+          "Custom.controlnet_aux.HEDPreprocessor.safe": Comfy.Union.E_EnableOrDisable
+          "Custom.controlnet_aux.FakeScribblePreprocessor.safe": Comfy.Union.E_EnableOrDisable
+          "Custom.controlnet_aux.PiDiNetPreprocessor.safe": Comfy.Union.E_EnableOrDisable
+          "Custom.controlnet_aux.LineArtPreprocessor.coarse": Comfy.Union.E_EnableOrDisable
+          "Custom.controlnet_aux.OpenposePreprocessor.detect_hand": Comfy.Union.E_EnableOrDisable
+          "Custom.controlnet_aux.OpenposePreprocessor.detect_body": Comfy.Union.E_EnableOrDisable
+          "Custom.controlnet_aux.OpenposePreprocessor.detect_face": Comfy.Union.E_EnableOrDisable
+          "Custom.controlnet_aux.OpenposePreprocessor.scale_stick_for_xinsr_cn": Comfy.Union.E_EnableOrDisable
+          "Custom.controlnet_aux.Scribble$_PiDiNet$_Preprocessor.safe": Comfy.Union.E_EnableOrDisable
+          "Custom.Impact_Pack.UnsamplerHookProvider.normalize": Comfy.Union.E_EnableOrDisable
+          "Custom.Impact_Pack.UnsamplerDetailerHookProvider.normalize": Comfy.Union.E_EnableOrDisable
+          // E_Rotation
+          "LatentRotate.rotation": Comfy.Union.E_Rotation
+          // E_FlipMethod
+          "LatentFlip.flip_method": Comfy.Union.E_FlipMethod
+          // E_LoraName
+          "LoraLoader.lora_name": Comfy.Union.E_LoraName
+          "CLIPLoader.clip_name": Comfy.Union.E_LoraName
+          "UNETLoader.unet_name": Comfy.Union.E_LoraName
+          "DualCLIPLoader.clip_name1": Comfy.Union.E_LoraName
+          "DualCLIPLoader.clip_name2": Comfy.Union.E_LoraName
+          "ControlNetLoader.control_net_name": Comfy.Union.E_LoraName
+          "DiffControlNetLoader.control_net_name": Comfy.Union.E_LoraName
+          "StyleModelLoader.style_model_name": Comfy.Union.E_LoraName
+          "CLIPVisionLoader.clip_name": Comfy.Union.E_LoraName
+          "GLIGENLoader.gligen_name": Comfy.Union.E_LoraName
+          "DiffusersLoader.model_path": Comfy.Union.E_LoraName
+          "LoadLatent.latent": Comfy.Union.E_LoraName
+          "LoraLoaderModelOnly.lora_name": Comfy.Union.E_LoraName
+          "Extra.HypernetworkLoader.hypernetwork_name": Comfy.Union.E_LoraName
+          "Extra.PhotoMakerLoader.photomaker_model_name": Comfy.Union.E_LoraName
+          "Extra.LoadAudio.audio": Comfy.Union.E_LoraName
+          "Extra.TripleCLIPLoader.clip_name1": Comfy.Union.E_LoraName
+          "Extra.TripleCLIPLoader.clip_name2": Comfy.Union.E_LoraName
+          "Extra.TripleCLIPLoader.clip_name3": Comfy.Union.E_LoraName
+          "Custom.IPAdapter_plus.IPAdapterModelLoader.ipadapter_file": Comfy.Union.E_LoraName
+          "Custom.IPAdapter_plus.IPAdapterLoadEmbeds.embeds": Comfy.Union.E_LoraName
+          "Custom.Impact_Pack.ONNXDetectorProvider.model_name": Comfy.Union.E_LoraName
+          "Custom.Impact_Pack.LatentReceiver.latent": Comfy.Union.E_LoraName
+          // E_ClipType
+          "CLIPLoader.type": Comfy.Union.E_ClipType
+          // E_WeightDType
+          "UNETLoader.weight_dtype": Comfy.Union.E_WeightDType
+          // E_DualClipType
+          "DualCLIPLoader.type": Comfy.Union.E_DualClipType
+          // E_CkptConfigName
+          "CheckpointLoader.config_name": Comfy.Union.E_CkptConfigName
+          // E_1d09df0c3ce1b4556d07af26e593d4033efc639b
+          "Extra.LatentBatchSeedBehavior.seed_behavior": Comfy.Union.E_1d09df0c3ce1b4556d07af26e593d4033efc639b
+          // E_2504d8563e078c3ed105667cbb6d0ff714d5798b
+          "Extra.UpscaleModelLoader.model_name": Comfy.Union.E_2504d8563e078c3ed105667cbb6d0ff714d5798b
+          // E_4ca09d2bc16d4174960bd60a103d4c0911361855
+          "Extra.ImageBlend.blend_mode": Comfy.Union.E_4ca09d2bc16d4174960bd60a103d4c0911361855
+          // E_7c2feaebcf0bbbcda0fe9f3c8cba1cf87002bc0e
+          "Extra.ImageQuantize.dither": Comfy.Union.E_7c2feaebcf0bbbcda0fe9f3c8cba1cf87002bc0e
+          // E_88c0c90dbad3b41c3c4a4f8a89afad7b1c0db2e0
+          "Extra.MaskComposite.operation": Comfy.Union.E_88c0c90dbad3b41c3c4a4f8a89afad7b1c0db2e0
+          // E_d954b5ae44db00529f0fd0bfb816e25c12617df8
+          "Extra.PorterDuffImageComposite.mode": Comfy.Union.E_d954b5ae44db00529f0fd0bfb816e25c12617df8
+          // E_928b7403128cb25513cafc463a76a922ba5d4bd0
+          "Extra.SamplerDPMPP$_3M$_SDE.noise_device": Comfy.Union.E_928b7403128cb25513cafc463a76a922ba5d4bd0
+          "Extra.SamplerDPMPP$_2M$_SDE.noise_device": Comfy.Union.E_928b7403128cb25513cafc463a76a922ba5d4bd0
+          "Extra.SamplerDPMPP$_SDE.noise_device": Comfy.Union.E_928b7403128cb25513cafc463a76a922ba5d4bd0
+          // E_148e0bc88719e23ec2f2c80871fe45ae759cd7e1
+          "Extra.SamplerDPMPP$_2M$_SDE.solver_type": Comfy.Union.E_148e0bc88719e23ec2f2c80871fe45ae759cd7e1
+          // E_e89ec78e24ca5e9c91264b9e9b5ed722d2b509dc
+          "Extra.ModelSamplingDiscrete.sampling": Comfy.Union.E_e89ec78e24ca5e9c91264b9e9b5ed722d2b509dc
+          // E_bf8a83a3d55d70c688644bf18edaf23501f7c168
+          "Extra.ModelSamplingContinuousEDM.sampling": Comfy.Union.E_bf8a83a3d55d70c688644bf18edaf23501f7c168
+          // E_3c3164c6c468d61dfa20092960e3d7854495e50c
+          "Extra.ModelSamplingContinuousV.sampling": Comfy.Union.E_3c3164c6c468d61dfa20092960e3d7854495e50c
+          // E_253b68425542d8144b2b8a7af90f057b41939f63
+          "Extra.SaveAnimatedWEBP.method": Comfy.Union.E_253b68425542d8144b2b8a7af90f057b41939f63
+          // E_6ba03252ec9c8111f7381dfb573cd99c2b4d0e3b
+          "Extra.Morphology.operation": Comfy.Union.E_6ba03252ec9c8111f7381dfb573cd99c2b4d0e3b
+          // E_ec317371192386ae10cedaee29b315e900386a18
+          "Extra.AlignYourStepsScheduler.model_type": Comfy.Union.E_ec317371192386ae10cedaee29b315e900386a18
+          // E_a8aa5eb2d828c2e279168c48955c7a0fe3ea011a
+          "Extra.SamplerEulerCFGpp.version": Comfy.Union.E_a8aa5eb2d828c2e279168c48955c7a0fe3ea011a
+          // E_270e152a81c37daf152e6cc67675baaafe058bc4
+          "Extra.CLIPTextEncodeSD3.empty_padding": Comfy.Union.E_270e152a81c37daf152e6cc67675baaafe058bc4
+          // E_0e92c8b1b6fe90c3e343d8b54b531b9d887eee62
+          "Extra.SetUnionControlNetType.type": Comfy.Union.E_0e92c8b1b6fe90c3e343d8b54b531b9d887eee62
+          // E_b80b6129a942660e31e08221ee04a76f537556ce
+          "Extra.LoraSave.lora_type": Comfy.Union.E_b80b6129a942660e31e08221ee04a76f537556ce
+          // E_4bbca93e426c35d56c43252f1fb21877d5e7a1aa
+          "Extra.TorchCompileModel.backend": Comfy.Union.E_4bbca93e426c35d56c43252f1fb21877d5e7a1aa
+          // E_1fcb051d43a7df978808f9920fa8d428961d34f5
+          "Custom.IPAdapter_plus.IPAdapter.weight_type": Comfy.Union.E_1fcb051d43a7df978808f9920fa8d428961d34f5
+          // E_7308d8ab4ff2021b77b352e491612116709172af
+          "Custom.IPAdapter_plus.IPAdapterAdvanced.weight_type": Comfy.Union.E_7308d8ab4ff2021b77b352e491612116709172af
+          "Custom.IPAdapter_plus.IPAdapterBatch.weight_type": Comfy.Union.E_7308d8ab4ff2021b77b352e491612116709172af
+          "Custom.IPAdapter_plus.IPAdapterFaceID.weight_type": Comfy.Union.E_7308d8ab4ff2021b77b352e491612116709172af
+          "Custom.IPAdapter_plus.IPAdapterFaceIDKolors.weight_type": Comfy.Union.E_7308d8ab4ff2021b77b352e491612116709172af
+          "Custom.IPAdapter_plus.IPAAdapterFaceIDBatch.weight_type": Comfy.Union.E_7308d8ab4ff2021b77b352e491612116709172af
+          "Custom.IPAdapter_plus.IPAdapterTiled.weight_type": Comfy.Union.E_7308d8ab4ff2021b77b352e491612116709172af
+          "Custom.IPAdapter_plus.IPAdapterTiledBatch.weight_type": Comfy.Union.E_7308d8ab4ff2021b77b352e491612116709172af
+          "Custom.IPAdapter_plus.IPAdapterEmbeds.weight_type": Comfy.Union.E_7308d8ab4ff2021b77b352e491612116709172af
+          "Custom.IPAdapter_plus.IPAdapterEmbedsBatch.weight_type": Comfy.Union.E_7308d8ab4ff2021b77b352e491612116709172af
+          "Custom.IPAdapter_plus.IPAdapterMS.weight_type": Comfy.Union.E_7308d8ab4ff2021b77b352e491612116709172af
+          "Custom.IPAdapter_plus.IPAdapterClipVisionEnhancer.weight_type": Comfy.Union.E_7308d8ab4ff2021b77b352e491612116709172af
+          "Custom.IPAdapter_plus.IPAdapterClipVisionEnhancerBatch.weight_type": Comfy.Union.E_7308d8ab4ff2021b77b352e491612116709172af
+          "Custom.IPAdapter_plus.IPAdapterRegionalConditioning.weight_type": Comfy.Union.E_7308d8ab4ff2021b77b352e491612116709172af
+          // E_055d80a7c582bd5b57fd6775414e697be3f0f580
+          "Custom.IPAdapter_plus.IPAdapterAdvanced.combine_embeds": Comfy.Union.E_055d80a7c582bd5b57fd6775414e697be3f0f580
+          "Custom.IPAdapter_plus.IPAdapterFaceID.combine_embeds": Comfy.Union.E_055d80a7c582bd5b57fd6775414e697be3f0f580
+          "Custom.IPAdapter_plus.IPAdapterFaceIDKolors.combine_embeds": Comfy.Union.E_055d80a7c582bd5b57fd6775414e697be3f0f580
+          "Custom.IPAdapter_plus.IPAAdapterFaceIDBatch.combine_embeds": Comfy.Union.E_055d80a7c582bd5b57fd6775414e697be3f0f580
+          "Custom.IPAdapter_plus.IPAdapterTiled.combine_embeds": Comfy.Union.E_055d80a7c582bd5b57fd6775414e697be3f0f580
+          "Custom.IPAdapter_plus.IPAdapterStyleComposition.combine_embeds": Comfy.Union.E_055d80a7c582bd5b57fd6775414e697be3f0f580
+          "Custom.IPAdapter_plus.IPAdapterMS.combine_embeds": Comfy.Union.E_055d80a7c582bd5b57fd6775414e697be3f0f580
+          "Custom.IPAdapter_plus.IPAdapterClipVisionEnhancer.combine_embeds": Comfy.Union.E_055d80a7c582bd5b57fd6775414e697be3f0f580
+          "Custom.IPAdapter_plus.IPAdapterFromParams.combine_embeds": Comfy.Union.E_055d80a7c582bd5b57fd6775414e697be3f0f580
+          "Custom.IPAdapter_plus.IPAdapterPreciseStyleTransfer.combine_embeds": Comfy.Union.E_055d80a7c582bd5b57fd6775414e697be3f0f580
+          "Custom.IPAdapter_plus.IPAdapterPreciseStyleTransferBatch.combine_embeds": Comfy.Union.E_055d80a7c582bd5b57fd6775414e697be3f0f580
+          "Custom.IPAdapter_plus.IPAdapterPreciseComposition.combine_embeds": Comfy.Union.E_055d80a7c582bd5b57fd6775414e697be3f0f580
+          "Custom.IPAdapter_plus.IPAdapterPreciseCompositionBatch.combine_embeds": Comfy.Union.E_055d80a7c582bd5b57fd6775414e697be3f0f580
+          "Custom.Impact_Pack.ImpactIPAdapterApplySEGS.combine_embeds": Comfy.Union.E_055d80a7c582bd5b57fd6775414e697be3f0f580
+          // E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd
+          "Custom.IPAdapter_plus.IPAdapterAdvanced.embeds_scaling": Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd
+          "Custom.IPAdapter_plus.IPAdapterBatch.embeds_scaling": Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd
+          "Custom.IPAdapter_plus.IPAdapterFaceID.embeds_scaling": Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd
+          "Custom.IPAdapter_plus.IPAdapterFaceIDKolors.embeds_scaling": Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd
+          "Custom.IPAdapter_plus.IPAAdapterFaceIDBatch.embeds_scaling": Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd
+          "Custom.IPAdapter_plus.IPAdapterTiled.embeds_scaling": Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd
+          "Custom.IPAdapter_plus.IPAdapterTiledBatch.embeds_scaling": Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd
+          "Custom.IPAdapter_plus.IPAdapterEmbeds.embeds_scaling": Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd
+          "Custom.IPAdapter_plus.IPAdapterEmbedsBatch.embeds_scaling": Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd
+          "Custom.IPAdapter_plus.IPAdapterStyleComposition.embeds_scaling": Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd
+          "Custom.IPAdapter_plus.IPAdapterStyleCompositionBatch.embeds_scaling": Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd
+          "Custom.IPAdapter_plus.IPAdapterMS.embeds_scaling": Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd
+          "Custom.IPAdapter_plus.IPAdapterClipVisionEnhancer.embeds_scaling": Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd
+          "Custom.IPAdapter_plus.IPAdapterClipVisionEnhancerBatch.embeds_scaling": Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd
+          "Custom.IPAdapter_plus.IPAdapterFromParams.embeds_scaling": Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd
+          "Custom.IPAdapter_plus.IPAdapterPreciseStyleTransfer.embeds_scaling": Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd
+          "Custom.IPAdapter_plus.IPAdapterPreciseStyleTransferBatch.embeds_scaling": Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd
+          "Custom.IPAdapter_plus.IPAdapterPreciseComposition.embeds_scaling": Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd
+          "Custom.IPAdapter_plus.IPAdapterPreciseCompositionBatch.embeds_scaling": Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd
+          // E_17c57a2dd2fbcfa4d9125e24f9614e22372bd34a
+          "Custom.IPAdapter_plus.IPAdapterUnifiedLoader.preset": Comfy.Union.E_17c57a2dd2fbcfa4d9125e24f9614e22372bd34a
+          // E_a3e559d09ececb9f9d7ea7907bc20803f01fb398
+          "Custom.IPAdapter_plus.IPAdapterUnifiedLoaderFaceID.preset": Comfy.Union.E_a3e559d09ececb9f9d7ea7907bc20803f01fb398
+          // E_5d668a2048c21af6c78eb7cfdb4437296166c713
+          "Custom.IPAdapter_plus.IPAdapterUnifiedLoaderFaceID.provider": Comfy.Union.E_5d668a2048c21af6c78eb7cfdb4437296166c713
+          // E_13cd0468c1723423ffe1fa05a4a7e51caa5b2a17
+          "Custom.IPAdapter_plus.IPAdapterInsightFaceLoader.provider": Comfy.Union.E_13cd0468c1723423ffe1fa05a4a7e51caa5b2a17
+          // E_8ade6e7081b18f83b376495ecffe0f7d309758e4
+          "Custom.IPAdapter_plus.IPAdapterInsightFaceLoader.model_name": Comfy.Union.E_8ade6e7081b18f83b376495ecffe0f7d309758e4
+          // E_a528931a02ae6272b3f532ca266fecea0688e366
+          "Custom.IPAdapter_plus.IPAdapterUnifiedLoaderCommunity.preset": Comfy.Union.E_a528931a02ae6272b3f532ca266fecea0688e366
+          // E_887e4c8bfd30e7fc47c0d7ccb69d59436094aba6
+          "Custom.IPAdapter_plus.IPAdapterCombineEmbeds.method": Comfy.Union.E_887e4c8bfd30e7fc47c0d7ccb69d59436094aba6
+          // E_9cefb90b6a43ee19ecb81f7e91648388c73fc378
+          "Custom.IPAdapter_plus.IPAdapterNoise.type": Comfy.Union.E_9cefb90b6a43ee19ecb81f7e91648388c73fc378
+          // E_c7d4c5c5d9bd0342cbb8b0fbbc507a005791a174
+          "Custom.IPAdapter_plus.PrepImageForClipVision.interpolation": Comfy.Union.E_c7d4c5c5d9bd0342cbb8b0fbbc507a005791a174
+          // E_ad4640a4b937a502f6364d06dc306f41f2dd56d2
+          "Custom.IPAdapter_plus.PrepImageForClipVision.crop_position": Comfy.Union.E_ad4640a4b937a502f6364d06dc306f41f2dd56d2
+          // E_0f767df7ea83e64cd689e348c203dfb74aff5773
+          "Custom.IPAdapter_plus.IPAdapterWeights.timing": Comfy.Union.E_0f767df7ea83e64cd689e348c203dfb74aff5773
+          // E_45d8f77c56ae5c73ccee61ce4fd889f5858acabf
+          "Custom.IPAdapter_plus.IPAdapterWeights.method": Comfy.Union.E_45d8f77c56ae5c73ccee61ce4fd889f5858acabf
+          // E_8de7e678f3a40dd26000add869549d52b40eea76
+          "Custom.controlnet_aux.DensePosePreprocessor.model": Comfy.Union.E_8de7e678f3a40dd26000add869549d52b40eea76
+          // E_621dc6c65530de6a1bfd3fab8f84171285b9ddef
+          "Custom.controlnet_aux.DensePosePreprocessor.cmap": Comfy.Union.E_621dc6c65530de6a1bfd3fab8f84171285b9ddef
+          // E_735dbaeb4a65035d6371a3a8387b694815ffa184
+          "Custom.controlnet_aux.DepthAnythingPreprocessor.ckpt_name": Comfy.Union.E_735dbaeb4a65035d6371a3a8387b694815ffa184
+          // E_453e00523f8522497b1b3ef1b5cb1e99653f762d
+          "Custom.controlnet_aux.Zoe$_DepthAnythingPreprocessor.environment": Comfy.Union.E_453e00523f8522497b1b3ef1b5cb1e99653f762d
+          // E_30291c97550ef461f5a79884cd944debc9ba4bcf
+          "Custom.controlnet_aux.DepthAnythingV2Preprocessor.ckpt_name": Comfy.Union.E_30291c97550ef461f5a79884cd944debc9ba4bcf
+          // E_8b9acde8011b3c2e67b20fef1c037f35cac04a7e
+          "Custom.controlnet_aux.DWPreprocessor.bbox_detector": Comfy.Union.E_8b9acde8011b3c2e67b20fef1c037f35cac04a7e
+          "Custom.controlnet_aux.AnimalPosePreprocessor.bbox_detector": Comfy.Union.E_8b9acde8011b3c2e67b20fef1c037f35cac04a7e
+          // E_2f4bf8769543a6cb7a87b5740bb72074f7b687e8
+          "Custom.controlnet_aux.DWPreprocessor.pose_estimator": Comfy.Union.E_2f4bf8769543a6cb7a87b5740bb72074f7b687e8
+          // E_45e5839ae917502b2b5141cd89c9ca12743f45b4
+          "Custom.controlnet_aux.AnimalPosePreprocessor.pose_estimator": Comfy.Union.E_45e5839ae917502b2b5141cd89c9ca12743f45b4
+          // E_f2067692a1e679e71041f510afe6eadb4debc349
+          "Custom.controlnet_aux.DiffusionEdge$_Preprocessor.environment": Comfy.Union.E_f2067692a1e679e71041f510afe6eadb4debc349
+          // E_b5caf6278e8db337000bd8531d0a52fd983e6dee
+          "Custom.controlnet_aux.MeshGraphormer$7DepthMapPreprocessor.mask_type": Comfy.Union.E_b5caf6278e8db337000bd8531d0a52fd983e6dee
+          "Custom.controlnet_aux.MeshGraphormer$6ImpactDetector$7DepthMapPreprocessor.mask_type": Comfy.Union.E_b5caf6278e8db337000bd8531d0a52fd983e6dee
+          // E_f2f3bf212fe93f89462ca7fbd01c0beb857e0fa1
+          "Custom.controlnet_aux.AnyLineArtPreprocessor$_aux.merge_with_lineart": Comfy.Union.E_f2f3bf212fe93f89462ca7fbd01c0beb857e0fa1
+          // E_988e8378cb5cffff14c5d8060093ba919d87e6f4
+          "Custom.controlnet_aux.Unimatch$_OptFlowPreprocessor.ckpt_name": Comfy.Union.E_988e8378cb5cffff14c5d8060093ba919d87e6f4
+          // E_864516593cf8906cd4bb58dde398b0c37bad51c6
+          "Custom.controlnet_aux.FacialPartColoringFromPoseKps.mode": Comfy.Union.E_864516593cf8906cd4bb58dde398b0c37bad51c6
+          // E_ecd8eade7f608a502e4587d43bca2d2a4f9b729b
+          "Custom.controlnet_aux.Metric3D$7DepthMapPreprocessor.backbone": Comfy.Union.E_ecd8eade7f608a502e4587d43bca2d2a4f9b729b
+          "Custom.controlnet_aux.Metric3D$7NormalMapPreprocessor.backbone": Comfy.Union.E_ecd8eade7f608a502e4587d43bca2d2a4f9b729b
+          // E_90ee599494f505c55a1a8cf8009c1a81c6238905
+          "Custom.controlnet_aux.AIO$_Preprocessor.preprocessor": Comfy.Union.E_90ee599494f505c55a1a8cf8009c1a81c6238905
+          "Custom.controlnet_aux.ControlNetPreprocessorSelector.preprocessor.OUT": Comfy.Union.E_90ee599494f505c55a1a8cf8009c1a81c6238905
+          "Custom.controlnet_aux.ControlNetPreprocessorSelector.preprocessor": Comfy.Union.E_90ee599494f505c55a1a8cf8009c1a81c6238905
+          // E_d6af160bb3240c471ff93d5647af03d694fc3360
+          "Custom.controlnet_aux.PixelPerfectResolution.resize_mode": Comfy.Union.E_d6af160bb3240c471ff93d5647af03d694fc3360
+          "Custom.controlnet_aux.HintImageEnchance.resize_mode": Comfy.Union.E_d6af160bb3240c471ff93d5647af03d694fc3360
+          // E_40c777392f92d61852ab0f7a429a755abf59b71a
+          "Custom.Impact_Pack.SAMLoader.model_name": Comfy.Union.E_40c777392f92d61852ab0f7a429a755abf59b71a
+          // E_2ad445b99254e9b51c963d9f1a75fabe3d01e569
+          "Custom.Impact_Pack.SAMLoader.device_mode": Comfy.Union.E_2ad445b99254e9b51c963d9f1a75fabe3d01e569
+          "Custom.Impact_Pack.ImpactHFTransformersClassifierProvider.device_mode": Comfy.Union.E_2ad445b99254e9b51c963d9f1a75fabe3d01e569
+          // E_720061fdb15e8c451b6aa7ed023644f064ddc57d
+          "Custom.Impact_Pack.DetailerForEach.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
+          "Custom.Impact_Pack.DetailerForEachDebug.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
+          "Custom.Impact_Pack.DetailerForEachPipe.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
+          "Custom.Impact_Pack.DetailerForEachDebugPipe.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
+          "Custom.Impact_Pack.DetailerForEachPipeForAnimateDiff.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
+          "Custom.Impact_Pack.FaceDetailer.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
+          "Custom.Impact_Pack.FaceDetailerPipe.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
+          "Custom.Impact_Pack.MaskDetailerPipe.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
+          "Custom.Impact_Pack.PixelKSampleUpscalerProvider.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
+          "Custom.Impact_Pack.PixelKSampleUpscalerProviderPipe.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
+          "Custom.Impact_Pack.KSamplerProvider.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
+          "Custom.Impact_Pack.KSamplerAdvancedProvider.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
+          "Custom.Impact_Pack.SEGSUpscaler.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
+          "Custom.Impact_Pack.SEGSUpscalerPipe.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
+          "Custom.Impact_Pack.SEGSDetailer.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
+          "Custom.Impact_Pack.SEGSDetailerForAnimateDiff.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
+          "Custom.Impact_Pack.ImpactKSamplerBasicPipe.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
+          "Custom.Impact_Pack.ImpactKSamplerAdvancedBasicPipe.scheduler": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
+          "Custom.Impact_Pack.ImpactSchedulerAdapter.scheduler.OUT": Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d
+          // E_ImpactDetectionHint
+          "Custom.Impact_Pack.SAMDetectorCombined.detection_hint": Comfy.Union.E_ImpactDetectionHint
+          "Custom.Impact_Pack.SAMDetectorSegmented.detection_hint": Comfy.Union.E_ImpactDetectionHint
+          "Custom.Impact_Pack.FaceDetailer.sam_detection_hint": Comfy.Union.E_ImpactDetectionHint
+          "Custom.Impact_Pack.FaceDetailerPipe.sam_detection_hint": Comfy.Union.E_ImpactDetectionHint
+          // E_aa302307a82588b6e514aca43e4cddad342a73fc
+          "Custom.Impact_Pack.SAMDetectorCombined.mask_hint_use_negative": Comfy.Union.E_aa302307a82588b6e514aca43e4cddad342a73fc
+          "Custom.Impact_Pack.SAMDetectorSegmented.mask_hint_use_negative": Comfy.Union.E_aa302307a82588b6e514aca43e4cddad342a73fc
+          "Custom.Impact_Pack.FaceDetailer.sam_mask_hint_use_negative": Comfy.Union.E_aa302307a82588b6e514aca43e4cddad342a73fc
+          "Custom.Impact_Pack.FaceDetailerPipe.sam_mask_hint_use_negative": Comfy.Union.E_aa302307a82588b6e514aca43e4cddad342a73fc
+          // E_35e403c7628f220c07d5485d6e81fc66b4fc12df
+          "Custom.Impact_Pack.ToDetailerPipe.Select$_to$_add$_LoRA": Comfy.Union.E_35e403c7628f220c07d5485d6e81fc66b4fc12df
+          "Custom.Impact_Pack.ToDetailerPipeSDXL.Select$_to$_add$_LoRA": Comfy.Union.E_35e403c7628f220c07d5485d6e81fc66b4fc12df
+          "Custom.Impact_Pack.BasicPipeToDetailerPipe.Select$_to$_add$_LoRA": Comfy.Union.E_35e403c7628f220c07d5485d6e81fc66b4fc12df
+          "Custom.Impact_Pack.BasicPipeToDetailerPipeSDXL.Select$_to$_add$_LoRA": Comfy.Union.E_35e403c7628f220c07d5485d6e81fc66b4fc12df
+          "Custom.Impact_Pack.EditDetailerPipe.Select$_to$_add$_LoRA": Comfy.Union.E_35e403c7628f220c07d5485d6e81fc66b4fc12df
+          "Custom.Impact_Pack.EditDetailerPipeSDXL.Select$_to$_add$_LoRA": Comfy.Union.E_35e403c7628f220c07d5485d6e81fc66b4fc12df
+          "Custom.Impact_Pack.ImpactWildcardEncode.Select$_to$_add$_LoRA": Comfy.Union.E_35e403c7628f220c07d5485d6e81fc66b4fc12df
+          // E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26
+          "Custom.Impact_Pack.ToDetailerPipe.Select$_to$_add$_Wildcard": Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26
+          "Custom.Impact_Pack.ToDetailerPipeSDXL.Select$_to$_add$_Wildcard": Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26
+          "Custom.Impact_Pack.BasicPipeToDetailerPipe.Select$_to$_add$_Wildcard": Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26
+          "Custom.Impact_Pack.BasicPipeToDetailerPipeSDXL.Select$_to$_add$_Wildcard": Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26
+          "Custom.Impact_Pack.EditDetailerPipe.Select$_to$_add$_Wildcard": Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26
+          "Custom.Impact_Pack.EditDetailerPipeSDXL.Select$_to$_add$_Wildcard": Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26
+          "Custom.Impact_Pack.ImpactWildcardProcessor.Select$_to$_add$_Wildcard": Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26
+          "Custom.Impact_Pack.ImpactWildcardEncode.Select$_to$_add$_Wildcard": Comfy.Union.E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26
+          // E_f9c5efbc827613eb902695cd0a25738ee31c607d
+          "Custom.Impact_Pack.LatentPixelScale.scale_method": Comfy.Union.E_f9c5efbc827613eb902695cd0a25738ee31c607d
+          "Custom.Impact_Pack.PixelKSampleUpscalerProvider.scale_method": Comfy.Union.E_f9c5efbc827613eb902695cd0a25738ee31c607d
+          "Custom.Impact_Pack.PixelKSampleUpscalerProviderPipe.scale_method": Comfy.Union.E_f9c5efbc827613eb902695cd0a25738ee31c607d
+          "Custom.Impact_Pack.PixelTiledKSampleUpscalerProvider.scale_method": Comfy.Union.E_f9c5efbc827613eb902695cd0a25738ee31c607d
+          "Custom.Impact_Pack.PixelTiledKSampleUpscalerProviderPipe.scale_method": Comfy.Union.E_f9c5efbc827613eb902695cd0a25738ee31c607d
+          "Custom.Impact_Pack.TwoSamplersForMaskUpscalerProvider.scale_method": Comfy.Union.E_f9c5efbc827613eb902695cd0a25738ee31c607d
+          "Custom.Impact_Pack.TwoSamplersForMaskUpscalerProviderPipe.scale_method": Comfy.Union.E_f9c5efbc827613eb902695cd0a25738ee31c607d
+          // E_4724269c8f643d5efa98f97e1e55a7ddfe6aac6c
+          "Custom.Impact_Pack.IterativeLatentUpscale.step_mode": Comfy.Union.E_4724269c8f643d5efa98f97e1e55a7ddfe6aac6c
+          "Custom.Impact_Pack.IterativeImageUpscale.step_mode": Comfy.Union.E_4724269c8f643d5efa98f97e1e55a7ddfe6aac6c
+          // E_304f89a0de34643f12756237824e7261db28aaf5
+          "Custom.Impact_Pack.PixelTiledKSampleUpscalerProvider.tiling_strategy": Comfy.Union.E_304f89a0de34643f12756237824e7261db28aaf5
+          "Custom.Impact_Pack.PixelTiledKSampleUpscalerProviderPipe.tiling_strategy": Comfy.Union.E_304f89a0de34643f12756237824e7261db28aaf5
+          "Custom.Impact_Pack.TiledKSamplerProvider.tiling_strategy": Comfy.Union.E_304f89a0de34643f12756237824e7261db28aaf5
+          // E_de6a9887e0bfe301f572e929959509ed64574d1b
+          "Custom.Impact_Pack.TwoSamplersForMaskUpscalerProvider.full_sample_schedule": Comfy.Union.E_de6a9887e0bfe301f572e929959509ed64574d1b
+          "Custom.Impact_Pack.TwoSamplersForMaskUpscalerProviderPipe.full_sample_schedule": Comfy.Union.E_de6a9887e0bfe301f572e929959509ed64574d1b
+          // E_0f7d0d088b6ea936fb25b477722d734706fe8b40
+          "Custom.Impact_Pack.DenoiseScheduleHookProvider.schedule_for_iteration": Comfy.Union.E_0f7d0d088b6ea936fb25b477722d734706fe8b40
+          "Custom.Impact_Pack.StepsScheduleHookProvider.schedule_for_iteration": Comfy.Union.E_0f7d0d088b6ea936fb25b477722d734706fe8b40
+          "Custom.Impact_Pack.CfgScheduleHookProvider.schedule_for_iteration": Comfy.Union.E_0f7d0d088b6ea936fb25b477722d734706fe8b40
+          "Custom.Impact_Pack.NoiseInjectionHookProvider.schedule_for_iteration": Comfy.Union.E_0f7d0d088b6ea936fb25b477722d734706fe8b40
+          "Custom.Impact_Pack.UnsamplerHookProvider.schedule_for_iteration": Comfy.Union.E_0f7d0d088b6ea936fb25b477722d734706fe8b40
+          "Custom.Impact_Pack.DenoiseSchedulerDetailerHookProvider.schedule_for_cycle": Comfy.Union.E_0f7d0d088b6ea936fb25b477722d734706fe8b40
+          // E_CpuOrGpu
+          "Custom.Impact_Pack.NoiseInjectionHookProvider.source": Comfy.Union.E_CpuOrGpu
+          "Custom.Impact_Pack.NoiseInjectionDetailerHookProvider.source": Comfy.Union.E_CpuOrGpu
+          // E_d4b6506ab5528aeab8952aa9d308dbc242d01e63
+          "Custom.Impact_Pack.CoreMLDetailerHookProvider.mode": Comfy.Union.E_d4b6506ab5528aeab8952aa9d308dbc242d01e63
+          // E_afbc7832ad78555d4f5646f97ed21b561fe3d1f0
+          "Custom.Impact_Pack.NoiseInjectionDetailerHookProvider.schedule_for_cycle": Comfy.Union.E_afbc7832ad78555d4f5646f97ed21b561fe3d1f0
+          "Custom.Impact_Pack.UnsamplerDetailerHookProvider.schedule_for_cycle": Comfy.Union.E_afbc7832ad78555d4f5646f97ed21b561fe3d1f0
+          // E_87bec9aa0dfe9b9678fd35387106d931d78358cd
+          "Custom.Impact_Pack.SEGSOrderedFilterDetailerHookProvider.target": Comfy.Union.E_87bec9aa0dfe9b9678fd35387106d931d78358cd
+          // E_aceb55e7f03fcbc2a78383bd8ddff8676e42e536
+          "Custom.Impact_Pack.SEGSRangeFilterDetailerHookProvider.target": Comfy.Union.E_aceb55e7f03fcbc2a78383bd8ddff8676e42e536
+          // E_cc1f262afc534d382e5c36082cecd4fc2a9c4ffb
+          "Custom.Impact_Pack.SEGSLabelFilterDetailerHookProvider.preset": Comfy.Union.E_cc1f262afc534d382e5c36082cecd4fc2a9c4ffb
+          "Custom.Impact_Pack.ImpactSEGSLabelFilter.preset": Comfy.Union.E_cc1f262afc534d382e5c36082cecd4fc2a9c4ffb
+          // E_e5ef6b688dbafd88538e80bf002826bade4bb121
+          "Custom.Impact_Pack.ImpactSimpleDetectorSEGS$_for$_AD.masking_mode": Comfy.Union.E_e5ef6b688dbafd88538e80bf002826bade4bb121
+          // E_651ea09f69db9a1eb817103d1ea8e3ac08b4a319
+          "Custom.Impact_Pack.ImpactSimpleDetectorSEGS$_for$_AD.segs_pivot": Comfy.Union.E_651ea09f69db9a1eb817103d1ea8e3ac08b4a319
+          // E_05cddbad13b094c2641c6bb7d261e15c71efc903
+          "Custom.Impact_Pack.ImpactIPAdapterApplySEGS.weight_type": Comfy.Union.E_05cddbad13b094c2641c6bb7d261e15c71efc903
+          // E_f27fae3205ecf36e9f4a68f3867d38e025476963
+          "Custom.Impact_Pack.PreviewBridge.restore_mask": Comfy.Union.E_f27fae3205ecf36e9f4a68f3867d38e025476963
+          "Custom.Impact_Pack.PreviewBridgeLatent.restore_mask": Comfy.Union.E_f27fae3205ecf36e9f4a68f3867d38e025476963
+          // E_ea287ec9983f05378f2614091804a1b6b95d1c79
+          "Custom.Impact_Pack.PreviewBridgeLatent.preview_method": Comfy.Union.E_ea287ec9983f05378f2614091804a1b6b95d1c79
+          // E_fa4a13687b111fa33a8c8fa375d5321d09b46b27
+          "Custom.Impact_Pack.LatentSender.preview_method": Comfy.Union.E_fa4a13687b111fa33a8c8fa375d5321d09b46b27
+          // E_bac912b55de8a59480c74aba068f4a3b5f9a0e38
+          "Custom.Impact_Pack.SEGSUpscaler.resampling_method": Comfy.Union.E_bac912b55de8a59480c74aba068f4a3b5f9a0e38
+          "Custom.Impact_Pack.SEGSUpscalerPipe.resampling_method": Comfy.Union.E_bac912b55de8a59480c74aba068f4a3b5f9a0e38
+          // E_TrueOrFalse
+          "Custom.Impact_Pack.SEGSUpscaler.supersample": Comfy.Union.E_TrueOrFalse
+          "Custom.Impact_Pack.SEGSUpscalerPipe.supersample": Comfy.Union.E_TrueOrFalse
+          // E_5cc1495fe28eac05289d45b29269b31c6edca055
+          "Custom.Impact_Pack.ImpactMakeTileSEGS.irregular_mask_mode": Comfy.Union.E_5cc1495fe28eac05289d45b29269b31c6edca055
+          // E_d5776f669e41b2ec29cd020ce34a8b7cdf23693d
+          "Custom.Impact_Pack.ReencodeLatent.tile_mode": Comfy.Union.E_d5776f669e41b2ec29cd020ce34a8b7cdf23693d
+          "Custom.Impact_Pack.ReencodeLatentPipe.tile_mode": Comfy.Union.E_d5776f669e41b2ec29cd020ce34a8b7cdf23693d
+          // E_1e8364b55644fdbf6d28dd3e6197d9fe1777e361
+          "Custom.Impact_Pack.RegionalSampler.seed_2nd_mode": Comfy.Union.E_1e8364b55644fdbf6d28dd3e6197d9fe1777e361
+          // E_db19bd49ccd13456a936f2070c088f16070aa0b1
+          "Custom.Impact_Pack.RegionalSampler.additional_mode": Comfy.Union.E_db19bd49ccd13456a936f2070c088f16070aa0b1
+          "Custom.Impact_Pack.RegionalSamplerAdvanced.additional_mode": Comfy.Union.E_db19bd49ccd13456a936f2070c088f16070aa0b1
+          // E_3fd6d592305b0bc44ce9c69a23201f8d7a155884
+          "Custom.Impact_Pack.RegionalSampler.additional_sampler": Comfy.Union.E_3fd6d592305b0bc44ce9c69a23201f8d7a155884
+          "Custom.Impact_Pack.RegionalSamplerAdvanced.additional_sampler": Comfy.Union.E_3fd6d592305b0bc44ce9c69a23201f8d7a155884
+          // E_627d63e970919d713af795854ffd9dd2642f92d2
+          "Custom.Impact_Pack.RegionalPrompt.variation_method": Comfy.Union.E_627d63e970919d713af795854ffd9dd2642f92d2
+          // E_10c017f4a76414789a861361dc5cdbfef12e2d7d
+          "Custom.Impact_Pack.ImpactSEGSRangeFilter.target": Comfy.Union.E_10c017f4a76414789a861361dc5cdbfef12e2d7d
+          // E_b1f554e93f550a374a1ff740ad7447a7b34b71be
+          "Custom.Impact_Pack.ImpactSEGSOrderedFilter.target": Comfy.Union.E_b1f554e93f550a374a1ff740ad7447a7b34b71be
+          // E_87d3a21083ff67c538309f218241f70a793f619c
+          "Custom.Impact_Pack.ImpactCompare.cmp": Comfy.Union.E_87d3a21083ff67c538309f218241f70a793f619c
+          // E_99d83eba8f2a90cc88da26295981d92d458e4e14
+          "Custom.Impact_Pack.ImpactLogicalOperators.operator": Comfy.Union.E_99d83eba8f2a90cc88da26295981d92d458e4e14
+          // E_6c86e4efdc8db8dae17215fbf80825ddaad06ffa
+          "Custom.Impact_Pack.ImpactValueReceiver.typ": Comfy.Union.E_6c86e4efdc8db8dae17215fbf80825ddaad06ffa
+          // E_383642e8f2544ff8678e350c4f1049624ad6589e
+          "Custom.Impact_Pack.ImpactControlBridge.behavior": Comfy.Union.E_383642e8f2544ff8678e350c4f1049624ad6589e
+          // E_7fd75955db2b2e81b87d8452255b37c2d98fd105
+          "Custom.Impact_Pack.ImpactHFTransformersClassifierProvider.preset_repo_id": Comfy.Union.E_7fd75955db2b2e81b87d8452255b37c2d98fd105
+          // E_01400d675e59295302197d02289e89ead401098e
+          "Custom.Impact_Pack.ImpactSEGSClassify.preset_expr": Comfy.Union.E_01400d675e59295302197d02289e89ead401098e
+          // E_64bb9134d159ff7e3f573facb7cb2fcfbb2de483
+          "Custom.Impact_Pack.ImpactSchedulerAdapter.extra_scheduler": Comfy.Union.E_64bb9134d159ff7e3f573facb7cb2fcfbb2de483
+          // E_cf11746957b2cb2b6379bbd08fe59610b2aae90a
+          "Custom.Impact_Pack.UltralyticsDetectorProvider.model_name": Comfy.Union.E_cf11746957b2cb2b6379bbd08fe59610b2aae90a
       }
    }
    // #endregion
@@ -8141,13 +10728,22 @@ declare global {
       export interface LATENT_OPERATION extends
          Pick<Comfy.Extra.latent.Nodes, 'LatentOperationTonemapReinhard' | 'LatentOperationSharpen'>
       {}
+      export interface IPADAPTER_PARAMS extends
+         Pick<Comfy.Custom.IPAdapter_plus.Nodes, 'IPAdapterRegionalConditioning' | 'IPAdapterCombineParams'>
+      {}
+      export interface WEIGHTS_STRATEGY extends
+         Pick<Comfy.Custom.IPAdapter_plus.Nodes, 'IPAdapterWeights' | 'IPAdapterWeightsFromStrategy'>
+      {}
       export interface REGIONAL_PROMPTS extends
          Pick<Comfy.Custom.Impact_Pack.Nodes, 'CombineRegionalPrompts' | 'RegionalPrompt'>
       {}
       export interface STRING extends
+         Pick<Comfy.Custom.IPAdapter_plus.Nodes, 'IPAdapterPromptScheduleFromWeightsStrategy'>,
+         Pick<Comfy.Custom.controlnet_aux.Nodes, 'UpperBodyTrackingFromPoseKps'>,
          Pick<Comfy.Custom.Impact_Pack.Nodes, 'ImpactFrom$_SEG$_ELT' | 'LatentSwitch' | 'SEGSSwitch' | 'ImpactSwitch' | 'ImpactWildcardProcessor' | 'ImpactWildcardEncode' | 'ImpactConvertDataType' | 'ImpactStringSelector' | 'StringListToString' | 'WildcardPromptFromString' | 'WildcardPromptFromString' | 'ImpactSEGSClassify'>
       {}
       export interface FLOAT extends
+         Pick<Comfy.Custom.IPAdapter_plus.Nodes, 'IPAdapterWeights' | 'IPAdapterWeights' | 'IPAdapterCombineWeights' | 'IPAdapterWeightsFromStrategy' | 'IPAdapterWeightsFromStrategy'>,
          Pick<Comfy.Custom.Impact_Pack.Nodes, 'ImpactFrom$_SEG$_ELT' | 'ImpactConvertDataType' | 'ImpactFloat'>
       {}
       export interface SCHEDULER_FUNC extends
@@ -8156,6 +10752,9 @@ declare global {
       export interface IPADAPTER_PIPE {} // 🔶 no node can output this type.
       export interface UPSCALE_MODEL extends
          Pick<Comfy.Extra.upscale_model.Nodes, 'UpscaleModelLoader'>
+      {}
+      export interface POSE_KEYPOINT extends
+         Pick<Comfy.Custom.controlnet_aux.Nodes, 'DWPreprocessor' | 'AnimalPosePreprocessor' | 'OpenposePreprocessor'>
       {}
       export interface BBOX_DETECTOR extends
          Pick<Comfy.Custom.Impact_Pack.Nodes, 'CLIPSegDetectorProvider' | 'ONNXDetectorProvider' | 'FromDetailerPipe' | 'FromDetailerPipe$_v2' | 'FromDetailerPipeSDXL' | 'UltralyticsDetectorProvider'>
@@ -8173,6 +10772,8 @@ declare global {
          Pick<Comfy.Custom.Impact_Pack.Nodes, 'PreviewDetailerHookProvider'>
       {}
       export interface INT extends
+         Pick<Comfy.Custom.IPAdapter_plus.Nodes, 'IPAdapterWeights' | 'IPAdapterCombineWeights' | 'IPAdapterWeightsFromStrategy'>,
+         Pick<Comfy.Custom.controlnet_aux.Nodes, 'PixelPerfectResolution' | 'ImageGenResolutionFromImage' | 'ImageGenResolutionFromImage' | 'ImageGenResolutionFromLatent' | 'ImageGenResolutionFromLatent'>,
          Pick<Comfy.Custom.Impact_Pack.Nodes, 'ImpactFrom$_SEG$_ELT$_bbox' | 'ImpactFrom$_SEG$_ELT$_bbox' | 'ImpactFrom$_SEG$_ELT$_bbox' | 'ImpactFrom$_SEG$_ELT$_bbox' | 'ImpactFrom$_SEG$_ELT$_crop$_region' | 'ImpactFrom$_SEG$_ELT$_crop$_region' | 'ImpactFrom$_SEG$_ELT$_crop$_region' | 'ImpactFrom$_SEG$_ELT$_crop$_region' | 'ImpactCount$_Elts$_in$_SEGS' | 'LatentSwitch' | 'SEGSSwitch' | 'ImpactSwitch' | 'ImpactConvertDataType' | 'ImpactInt' | 'ImpactImageInfo' | 'ImpactImageInfo' | 'ImpactImageInfo' | 'ImpactImageInfo' | 'ImpactLatentInfo' | 'ImpactLatentInfo' | 'ImpactLatentInfo' | 'ImpactLatentInfo' | 'ImpactMinMax' | 'ImpactQueueTriggerCountdown' | 'ImpactQueueTriggerCountdown'>
       {}
       export interface CONDITIONING extends
@@ -8189,7 +10790,11 @@ declare global {
          Pick<Comfy.Extra.controlnet.Nodes, 'ControlNetInpaintingAliMamaApply' | 'ControlNetInpaintingAliMamaApply'>,
          Pick<Comfy.Extra.hunyuan.Nodes, 'CLIPTextEncodeHunyuanDiT'>,
          Pick<Comfy.Extra.flux.Nodes, 'CLIPTextEncodeFlux' | 'FluxGuidance'>,
+         Pick<Comfy.Custom.IPAdapter_plus.Nodes, 'IPAdapterRegionalConditioning' | 'IPAdapterRegionalConditioning'>,
          Pick<Comfy.Custom.Impact_Pack.Nodes, 'FromDetailerPipe' | 'FromDetailerPipe' | 'FromDetailerPipe$_v2' | 'FromDetailerPipe$_v2' | 'FromDetailerPipeSDXL' | 'FromDetailerPipeSDXL' | 'FromDetailerPipeSDXL' | 'FromDetailerPipeSDXL' | 'FromBasicPipe' | 'FromBasicPipe' | 'FromBasicPipe$_v2' | 'FromBasicPipe$_v2' | 'ImpactNegativeConditioningPlaceholder' | 'ImpactWildcardEncode' | 'ImpactCombineConditionings' | 'ImpactConcatConditionings'>
+      {}
+      export interface OPTICAL_FLOW extends
+         Pick<Comfy.Custom.controlnet_aux.Nodes, 'Unimatch$_OptFlowPreprocessor' | 'MaskOptFlow'>
       {}
       export interface SEG_ELT_bbox extends
          Pick<Comfy.Custom.Impact_Pack.Nodes, 'ImpactFrom$_SEG$_ELT'>
@@ -8205,6 +10810,9 @@ declare global {
          Pick<Comfy.Base.Nodes, 'ControlNetLoader' | 'DiffControlNetLoader'>,
          Pick<Comfy.Extra.controlnet.Nodes, 'SetUnionControlNetType'>
       {}
+      export interface INSIGHTFACE extends
+         Pick<Comfy.Custom.IPAdapter_plus.Nodes, 'IPAdapterInsightFaceLoader'>
+      {}
       export interface SEGS_HEADER extends
          Pick<Comfy.Custom.Impact_Pack.Nodes, 'ImpactDecomposeSEGS'>
       {}
@@ -8214,8 +10822,14 @@ declare global {
       export interface BASIC_PIPE extends
          Pick<Comfy.Custom.Impact_Pack.Nodes, 'DetailerForEachPipe' | 'DetailerForEachDebugPipe' | 'DetailerForEachPipeForAnimateDiff' | 'MaskDetailerPipe' | 'MaskDetailerPipe' | 'AnyPipeToBasic' | 'ToBasicPipe' | 'FromBasicPipe$_v2' | 'DetailerPipeToBasicPipe' | 'DetailerPipeToBasicPipe' | 'EditBasicPipe' | 'ImpactKSamplerBasicPipe' | 'ImpactKSamplerAdvancedBasicPipe'>
       {}
+      export interface IPADAPTER extends
+         Pick<Comfy.Custom.IPAdapter_plus.Nodes, 'IPAdapterUnifiedLoader' | 'IPAdapterUnifiedLoaderFaceID' | 'IPAdapterModelLoader' | 'IPAdapterUnifiedLoaderCommunity'>
+      {}
       export interface SAM_MODEL extends
          Pick<Comfy.Custom.Impact_Pack.Nodes, 'SAMLoader' | 'FromDetailerPipe' | 'FromDetailerPipe$_v2' | 'FromDetailerPipeSDXL'>
+      {}
+      export interface TRACKING extends
+         Pick<Comfy.Custom.controlnet_aux.Nodes, 'UpperBodyTrackingFromPoseKps'>
       {}
       export interface UPSCALER extends
          Pick<Comfy.Custom.Impact_Pack.Nodes, 'PixelKSampleUpscalerProvider' | 'PixelKSampleUpscalerProviderPipe' | 'PixelTiledKSampleUpscalerProvider' | 'PixelTiledKSampleUpscalerProviderPipe' | 'TwoSamplersForMaskUpscalerProvider' | 'TwoSamplersForMaskUpscalerProviderPipe'>
@@ -8262,6 +10876,9 @@ declare global {
          Pick<Comfy.Extra.perpneg.Nodes, 'PerpNegGuider'>
       {}
       export interface WEBCAM {} // 🔶 no node can output this type.
+      export interface EMBEDS extends
+         Pick<Comfy.Custom.IPAdapter_plus.Nodes, 'IPAdapterEncoder' | 'IPAdapterEncoder' | 'IPAdapterCombineEmbeds' | 'IPAdapterLoadEmbeds'>
+      {}
       export interface MODEL extends
          Pick<Comfy.Base.Nodes, 'CheckpointLoaderSimple' | 'LoraLoader' | 'UNETLoader' | 'unCLIPCheckpointLoader' | 'CheckpointLoader' | 'DiffusersLoader' | 'LoraLoaderModelOnly'>,
          Pick<Comfy.Extra.latent.Nodes, 'LatentApplyOperationCFG'>,
@@ -8281,6 +10898,7 @@ declare global {
          Pick<Comfy.Extra.attention_multiply.Nodes, 'UNetSelfAttentionMultiply' | 'UNetCrossAttentionMultiply' | 'UNetTemporalAttentionMultiply'>,
          Pick<Comfy.Extra.sd3.Nodes, 'SkipLayerGuidanceSD3'>,
          Pick<Comfy.Extra.torch_compile.Nodes, 'TorchCompileModel'>,
+         Pick<Comfy.Custom.IPAdapter_plus.Nodes, 'IPAdapter' | 'IPAdapterAdvanced' | 'IPAdapterBatch' | 'IPAdapterFaceID' | 'IPAdapterFaceIDKolors' | 'IPAAdapterFaceIDBatch' | 'IPAdapterTiled' | 'IPAdapterTiledBatch' | 'IPAdapterEmbeds' | 'IPAdapterEmbedsBatch' | 'IPAdapterStyleComposition' | 'IPAdapterStyleCompositionBatch' | 'IPAdapterMS' | 'IPAdapterClipVisionEnhancer' | 'IPAdapterClipVisionEnhancerBatch' | 'IPAdapterFromParams' | 'IPAdapterPreciseStyleTransfer' | 'IPAdapterPreciseStyleTransferBatch' | 'IPAdapterPreciseComposition' | 'IPAdapterPreciseCompositionBatch' | 'IPAdapterUnifiedLoader' | 'IPAdapterUnifiedLoaderFaceID' | 'IPAdapterUnifiedLoaderCommunity'>,
          Pick<Comfy.Custom.Impact_Pack.Nodes, 'FromDetailerPipe' | 'FromDetailerPipe$_v2' | 'FromDetailerPipeSDXL' | 'FromDetailerPipeSDXL' | 'FromBasicPipe' | 'FromBasicPipe$_v2' | 'ImpactWildcardEncode'>
       {}
       export interface IMAGE extends
@@ -8295,6 +10913,8 @@ declare global {
          Pick<Comfy.Extra.morphology.Nodes, 'Morphology'>,
          Pick<Comfy.Extra.stable_cascade.Nodes, 'StableCascade$_SuperResolutionControlnet'>,
          Pick<Comfy.Extra.webcam.Nodes, 'WebcamCapture'>,
+         Pick<Comfy.Custom.IPAdapter_plus.Nodes, 'IPAdapterFaceID' | 'IPAdapterFaceIDKolors' | 'IPAAdapterFaceIDBatch' | 'IPAdapterTiled' | 'IPAdapterTiledBatch' | 'IPAdapterNoise' | 'PrepImageForClipVision' | 'IPAdapterWeights' | 'IPAdapterWeights' | 'IPAdapterWeightsFromStrategy' | 'IPAdapterWeightsFromStrategy'>,
+         Pick<Comfy.Custom.controlnet_aux.Nodes, 'ShufflePreprocessor' | 'DensePosePreprocessor' | 'LeReS$7DepthMapPreprocessor' | 'BinaryPreprocessor' | 'AnimeFace$_SemSegPreprocessor' | 'Zoe$7DepthMapPreprocessor' | 'DepthAnythingPreprocessor' | 'Zoe$_DepthAnythingPreprocessor' | 'DepthAnythingV2Preprocessor' | 'CannyEdgePreprocessor' | 'DWPreprocessor' | 'AnimalPosePreprocessor' | 'ImageLuminanceDetector' | 'ImageIntensityDetector' | 'MediaPipe$7FaceMeshPreprocessor' | 'DiffusionEdge$_Preprocessor' | 'M$7LSDPreprocessor' | 'HEDPreprocessor' | 'FakeScribblePreprocessor' | 'OneFormer$7COCO$7SemSegPreprocessor' | 'OneFormer$7ADE20K$7SemSegPreprocessor' | 'BAE$7NormalMapPreprocessor' | 'MeshGraphormer$7DepthMapPreprocessor' | 'MeshGraphormer$6ImpactDetector$7DepthMapPreprocessor' | 'DSINE$7NormalMapPreprocessor' | 'MiDaS$7NormalMapPreprocessor' | 'MiDaS$7DepthMapPreprocessor' | 'AnyLineArtPreprocessor$_aux' | 'SAMPreprocessor' | 'UniFormer$7SemSegPreprocessor' | 'SemSegPreprocessor' | 'PiDiNetPreprocessor' | 'InpaintPreprocessor' | 'LineArtPreprocessor' | 'OpenposePreprocessor' | 'Unimatch$_OptFlowPreprocessor' | 'MaskOptFlow' | 'FacialPartColoringFromPoseKps' | 'RenderPeopleKps' | 'RenderAnimalKps' | 'TEEDPreprocessor' | 'PyraCannyPreprocessor' | 'Metric3D$7DepthMapPreprocessor' | 'Metric3D$7NormalMapPreprocessor' | 'Manga2Anime$_LineArt$_Preprocessor' | 'ScribblePreprocessor' | 'Scribble$_XDoG$_Preprocessor' | 'Scribble$_PiDiNet$_Preprocessor' | 'AnimeLineArtPreprocessor' | 'LineartStandardPreprocessor' | 'TilePreprocessor' | 'TTPlanet$_TileGF$_Preprocessor' | 'TTPlanet$_TileSimple$_Preprocessor' | 'ColorPreprocessor' | 'AIO$_Preprocessor' | 'HintImageEnchance' | 'ExecuteAllControlNetPreprocessors' | 'ControlNetAuxSimpleAddText'>,
          Pick<Comfy.Custom.Impact_Pack.Nodes, 'DetailerForEach' | 'DetailerForEachDebug' | 'DetailerForEachDebug' | 'DetailerForEachDebug' | 'DetailerForEachDebug' | 'DetailerForEachDebug' | 'DetailerForEachPipe' | 'DetailerForEachPipe' | 'DetailerForEachDebugPipe' | 'DetailerForEachDebugPipe' | 'DetailerForEachDebugPipe' | 'DetailerForEachDebugPipe' | 'DetailerForEachDebugPipe' | 'DetailerForEachPipeForAnimateDiff' | 'DetailerForEachPipeForAnimateDiff' | 'FaceDetailer' | 'FaceDetailer' | 'FaceDetailer' | 'FaceDetailer' | 'FaceDetailerPipe' | 'FaceDetailerPipe' | 'FaceDetailerPipe' | 'FaceDetailerPipe' | 'MaskDetailerPipe' | 'MaskDetailerPipe' | 'MaskDetailerPipe' | 'LatentPixelScale' | 'IterativeImageUpscale' | 'ImageListToImageBatch' | 'ImpactFrom$_SEG$_ELT' | 'PreviewBridge' | 'ImageReceiver' | 'ImageMaskSwitch' | 'SEGSUpscaler' | 'SEGSUpscalerPipe' | 'SEGSDetailer' | 'SEGSPaste' | 'SEGSPreview' | 'SEGSPreviewCNet' | 'SEGSToImageList' | 'SEGSDetailerForAnimateDiff' | 'ImpactImageBatchToImageList' | 'ImpactMakeImageList' | 'ImpactMakeImageBatch'>
       {}
       export interface NOISE extends
@@ -8317,6 +10937,8 @@ declare global {
          Pick<Comfy.Base.Nodes, 'LoadImage' | 'LoadImageMask' | 'ImagePadForOutpaint'>,
          Pick<Comfy.Extra.mask.Nodes, 'ImageToMask' | 'ImageColorToMask' | 'SolidMask' | 'InvertMask' | 'CropMask' | 'MaskComposite' | 'FeatherMask' | 'GrowMask' | 'ThresholdMask'>,
          Pick<Comfy.Extra.compositing.Nodes, 'PorterDuffImageComposite' | 'SplitImageWithAlpha'>,
+         Pick<Comfy.Custom.IPAdapter_plus.Nodes, 'IPAdapterTiled' | 'IPAdapterTiledBatch'>,
+         Pick<Comfy.Custom.controlnet_aux.Nodes, 'AnimeFace$_SemSegPreprocessor' | 'MeshGraphormer$7DepthMapPreprocessor' | 'MeshGraphormer$6ImpactDetector$7DepthMapPreprocessor'>,
          Pick<Comfy.Custom.Impact_Pack.Nodes, 'SAMDetectorCombined' | 'SAMDetectorSegmented' | 'SAMDetectorSegmented' | 'FaceDetailer' | 'FaceDetailerPipe' | 'BitwiseAndMask' | 'SubtractMask' | 'AddMask' | 'ImpactFlattenMask' | 'ToBinaryMask' | 'MasksToMaskList' | 'MaskListToMaskBatch' | 'ImpactFrom$_SEG$_ELT' | 'ImpactDilateMask' | 'ImpactGaussianBlurMask' | 'BboxDetectorCombined$_v2' | 'SegmDetectorCombined$_v2' | 'SegsToCombinedMask' | 'PreviewBridge' | 'PreviewBridgeLatent' | 'ImageReceiver' | 'ImageMaskSwitch' | 'ImpactSEGSToMaskList' | 'ImpactSEGSToMaskBatch' | 'ImpactMakeMaskList' | 'ImpactMakeMaskBatch'>
       {}
       export interface SEGS extends
@@ -8340,12 +10962,15 @@ declare global {
       type SEGS_PREPROCESSOR = ComfyNodeOutput<'SEGS_PREPROCESSOR'> | HasSingle_SEGS_PREPROCESSOR | ((x: Comfy.Producer.SEGS_PREPROCESSOR) => Comfy.Input.SEGS_PREPROCESSOR)
       type KSAMPLER_ADVANCED = ComfyNodeOutput<'KSAMPLER_ADVANCED'> | HasSingle_KSAMPLER_ADVANCED | ((x: Comfy.Producer.KSAMPLER_ADVANCED) => Comfy.Input.KSAMPLER_ADVANCED)
       type LATENT_OPERATION = ComfyNodeOutput<'LATENT_OPERATION'> | HasSingle_LATENT_OPERATION | ((x: Comfy.Producer.LATENT_OPERATION) => Comfy.Input.LATENT_OPERATION)
+      type IPADAPTER_PARAMS = ComfyNodeOutput<'IPADAPTER_PARAMS'> | HasSingle_IPADAPTER_PARAMS | ((x: Comfy.Producer.IPADAPTER_PARAMS) => Comfy.Input.IPADAPTER_PARAMS)
+      type WEIGHTS_STRATEGY = ComfyNodeOutput<'WEIGHTS_STRATEGY'> | HasSingle_WEIGHTS_STRATEGY | ((x: Comfy.Producer.WEIGHTS_STRATEGY) => Comfy.Input.WEIGHTS_STRATEGY)
       type REGIONAL_PROMPTS = ComfyNodeOutput<'REGIONAL_PROMPTS'> | HasSingle_REGIONAL_PROMPTS | ((x: Comfy.Producer.REGIONAL_PROMPTS) => Comfy.Input.REGIONAL_PROMPTS)
       type STRING = string | ComfyNodeOutput<'STRING'> | HasSingle_STRING | ((x: Comfy.Producer.STRING) => Comfy.Input.STRING)
       type FLOAT = number | ComfyNodeOutput<'FLOAT'> | HasSingle_FLOAT | ((x: Comfy.Producer.FLOAT) => Comfy.Input.FLOAT)
       type SCHEDULER_FUNC = ComfyNodeOutput<'SCHEDULER_FUNC'> | HasSingle_SCHEDULER_FUNC | ((x: Comfy.Producer.SCHEDULER_FUNC) => Comfy.Input.SCHEDULER_FUNC)
       type IPADAPTER_PIPE = ComfyNodeOutput<'IPADAPTER_PIPE'> | HasSingle_IPADAPTER_PIPE | ((x: Comfy.Producer.IPADAPTER_PIPE) => Comfy.Input.IPADAPTER_PIPE)
       type UPSCALE_MODEL = ComfyNodeOutput<'UPSCALE_MODEL'> | HasSingle_UPSCALE_MODEL | ((x: Comfy.Producer.UPSCALE_MODEL) => Comfy.Input.UPSCALE_MODEL)
+      type POSE_KEYPOINT = ComfyNodeOutput<'POSE_KEYPOINT'> | HasSingle_POSE_KEYPOINT | ((x: Comfy.Producer.POSE_KEYPOINT) => Comfy.Input.POSE_KEYPOINT)
       type BBOX_DETECTOR = ComfyNodeOutput<'BBOX_DETECTOR'> | HasSingle_BBOX_DETECTOR | ((x: Comfy.Producer.BBOX_DETECTOR) => Comfy.Input.BBOX_DETECTOR)
       type DETAILER_HOOK = ComfyNodeOutput<'DETAILER_HOOK'> | HasSingle_DETAILER_HOOK | ((x: Comfy.Producer.DETAILER_HOOK) => Comfy.Input.DETAILER_HOOK)
       type DETAILER_PIPE = ComfyNodeOutput<'DETAILER_PIPE'> | HasSingle_DETAILER_PIPE | ((x: Comfy.Producer.DETAILER_PIPE) => Comfy.Input.DETAILER_PIPE)
@@ -8353,14 +10978,18 @@ declare global {
       type UPSCALER_HOOK = ComfyNodeOutput<'UPSCALER_HOOK'> | HasSingle_UPSCALER_HOOK | ((x: Comfy.Producer.UPSCALER_HOOK) => Comfy.Input.UPSCALER_HOOK)
       type INT = number | ComfyNodeOutput<'INT'> | HasSingle_INT | ((x: Comfy.Producer.INT) => Comfy.Input.INT)
       type CONDITIONING = ComfyNodeOutput<'CONDITIONING'> | HasSingle_CONDITIONING | ((x: Comfy.Producer.CONDITIONING) => Comfy.Input.CONDITIONING)
+      type OPTICAL_FLOW = ComfyNodeOutput<'OPTICAL_FLOW'> | HasSingle_OPTICAL_FLOW | ((x: Comfy.Producer.OPTICAL_FLOW) => Comfy.Input.OPTICAL_FLOW)
       type SEG_ELT_bbox = ComfyNodeOutput<'SEG_ELT_bbox'> | HasSingle_SEG_ELT_bbox | ((x: Comfy.Producer.SEG_ELT_bbox) => Comfy.Input.SEG_ELT_bbox)
       type CLIP_VISION = ComfyNodeOutput<'CLIP_VISION'> | HasSingle_CLIP_VISION | ((x: Comfy.Producer.CLIP_VISION) => Comfy.Input.CLIP_VISION)
       type STYLE_MODEL = ComfyNodeOutput<'STYLE_MODEL'> | HasSingle_STYLE_MODEL | ((x: Comfy.Producer.STYLE_MODEL) => Comfy.Input.STYLE_MODEL)
       type CONTROL_NET = ComfyNodeOutput<'CONTROL_NET'> | HasSingle_CONTROL_NET | ((x: Comfy.Producer.CONTROL_NET) => Comfy.Input.CONTROL_NET)
+      type INSIGHTFACE = ComfyNodeOutput<'INSIGHTFACE'> | HasSingle_INSIGHTFACE | ((x: Comfy.Producer.INSIGHTFACE) => Comfy.Input.INSIGHTFACE)
       type SEGS_HEADER = ComfyNodeOutput<'SEGS_HEADER'> | HasSingle_SEGS_HEADER | ((x: Comfy.Producer.SEGS_HEADER) => Comfy.Input.SEGS_HEADER)
       type PHOTOMAKER = ComfyNodeOutput<'PHOTOMAKER'> | HasSingle_PHOTOMAKER | ((x: Comfy.Producer.PHOTOMAKER) => Comfy.Input.PHOTOMAKER)
       type BASIC_PIPE = ComfyNodeOutput<'BASIC_PIPE'> | HasSingle_BASIC_PIPE | ((x: Comfy.Producer.BASIC_PIPE) => Comfy.Input.BASIC_PIPE)
+      type IPADAPTER = ComfyNodeOutput<'IPADAPTER'> | HasSingle_IPADAPTER | ((x: Comfy.Producer.IPADAPTER) => Comfy.Input.IPADAPTER)
       type SAM_MODEL = ComfyNodeOutput<'SAM_MODEL'> | HasSingle_SAM_MODEL | ((x: Comfy.Producer.SAM_MODEL) => Comfy.Input.SAM_MODEL)
+      type TRACKING = ComfyNodeOutput<'TRACKING'> | HasSingle_TRACKING | ((x: Comfy.Producer.TRACKING) => Comfy.Input.TRACKING)
       type UPSCALER = ComfyNodeOutput<'UPSCALER'> | HasSingle_UPSCALER | ((x: Comfy.Producer.UPSCALER) => Comfy.Input.UPSCALER)
       type KSAMPLER = ComfyNodeOutput<'KSAMPLER'> | HasSingle_KSAMPLER | ((x: Comfy.Producer.KSAMPLER) => Comfy.Input.KSAMPLER)
       type SAMPLER = ComfyNodeOutput<'SAMPLER'> | HasSingle_SAMPLER | ((x: Comfy.Producer.SAMPLER) => Comfy.Input.SAMPLER)
@@ -8371,6 +11000,7 @@ declare global {
       type SIGMAS = ComfyNodeOutput<'SIGMAS'> | HasSingle_SIGMAS | ((x: Comfy.Producer.SIGMAS) => Comfy.Input.SIGMAS)
       type GUIDER = ComfyNodeOutput<'GUIDER'> | HasSingle_GUIDER | ((x: Comfy.Producer.GUIDER) => Comfy.Input.GUIDER)
       type WEBCAM = ComfyNodeOutput<'WEBCAM'> | HasSingle_WEBCAM | ((x: Comfy.Producer.WEBCAM) => Comfy.Input.WEBCAM)
+      type EMBEDS = ComfyNodeOutput<'EMBEDS'> | HasSingle_EMBEDS | ((x: Comfy.Producer.EMBEDS) => Comfy.Input.EMBEDS)
       type MODEL = ComfyNodeOutput<'MODEL'> | HasSingle_MODEL | ((x: Comfy.Producer.MODEL) => Comfy.Input.MODEL)
       type IMAGE = ComfyNodeOutput<'IMAGE'> | HasSingle_IMAGE | ((x: Comfy.Producer.IMAGE) => Comfy.Input.IMAGE)
       type NOISE = ComfyNodeOutput<'NOISE'> | HasSingle_NOISE | ((x: Comfy.Producer.NOISE) => Comfy.Input.NOISE)
@@ -8384,85 +11014,226 @@ declare global {
    
    // 6. ENUMS -------------------------------
    namespace Comfy.Union {
-      type E_26c34bf761d4be4554ab944105c5a3c017c99453 = "ddim" | "ddpm" | "deis" | "dpm_2" | "dpm_2_ancestral" | "dpm_adaptive" | "dpm_fast" | "dpmpp_2m" | "dpmpp_2m_cfg_pp" | "dpmpp_2m_sde" | "dpmpp_2m_sde_gpu" | "dpmpp_2s_ancestral" | "dpmpp_2s_ancestral_cfg_pp" | "dpmpp_3m_sde" | "dpmpp_3m_sde_gpu" | "dpmpp_sde" | "dpmpp_sde_gpu" | "euler" | "euler_ancestral" | "euler_ancestral_cfg_pp" | "euler_cfg_pp" | "heun" | "heunpp2" | "ipndm" | "ipndm_v" | "lcm" | "lms" | "uni_pc" | "uni_pc_bh2"
-      type E_5f9267c2d2054f64bc3de0d20b47cf75f7038325 = "beta" | "ddim_uniform" | "exponential" | "karras" | "linear_quadratic" | "normal" | "sgm_uniform" | "simple"
-      type E_1f08f73a9a576ae570aa3d82ea94f2bcfc29a8fc = "AOM3A3_orangemixs.safetensors" | "photon_v1.safetensors"
-      type E_621a1d2d13812defa70c4b6ec953d17713bd232a = "vae-ft-mse-840000-ema-pruned.safetensors"
-      type E_6e6cbf6c48411ad480e010b0c9d2434b41af430d = "area" | "bicubic" | "bilinear" | "bislerp" | "nearest-exact"
+      // ["KSampler.sampler_name","KSamplerAdvanced.sampler_name","Extra.KSamplerSelect.sampler_name","Custom.Impact_Pack.DetailerForEach.sampler_name","Custom.Impact_Pack.DetailerForEachDebug.sampler_name","Custom.Impact_Pack.DetailerForEachPipe.sampler_name","Custom.Impact_Pack.DetailerForEachDebugPipe.sampler_name","Custom.Impact_Pack.DetailerForEachPipeForAnimateDiff.sampler_name","Custom.Impact_Pack.FaceDetailer.sampler_name","Custom.Impact_Pack.FaceDetailerPipe.sampler_name","Custom.Impact_Pack.MaskDetailerPipe.sampler_name","Custom.Impact_Pack.PixelKSampleUpscalerProvider.sampler_name","Custom.Impact_Pack.PixelKSampleUpscalerProviderPipe.sampler_name","Custom.Impact_Pack.PixelTiledKSampleUpscalerProvider.sampler_name","Custom.Impact_Pack.PixelTiledKSampleUpscalerProviderPipe.sampler_name","Custom.Impact_Pack.UnsamplerHookProvider.sampler_name","Custom.Impact_Pack.UnsamplerDetailerHookProvider.sampler_name","Custom.Impact_Pack.KSamplerProvider.sampler_name","Custom.Impact_Pack.TiledKSamplerProvider.sampler_name","Custom.Impact_Pack.KSamplerAdvancedProvider.sampler_name","Custom.Impact_Pack.SEGSUpscaler.sampler_name","Custom.Impact_Pack.SEGSUpscalerPipe.sampler_name","Custom.Impact_Pack.SEGSDetailer.sampler_name","Custom.Impact_Pack.SEGSDetailerForAnimateDiff.sampler_name","Custom.Impact_Pack.ImpactKSamplerBasicPipe.sampler_name","Custom.Impact_Pack.ImpactKSamplerAdvancedBasicPipe.sampler_name"]
+      type E_SamplerName = "ddim" | "ddpm" | "deis" | "dpm_2" | "dpm_2_ancestral" | "dpm_adaptive" | "dpm_fast" | "dpmpp_2m" | "dpmpp_2m_cfg_pp" | "dpmpp_2m_sde" | "dpmpp_2m_sde_gpu" | "dpmpp_2s_ancestral" | "dpmpp_2s_ancestral_cfg_pp" | "dpmpp_3m_sde" | "dpmpp_3m_sde_gpu" | "dpmpp_sde" | "dpmpp_sde_gpu" | "euler" | "euler_ancestral" | "euler_ancestral_cfg_pp" | "euler_cfg_pp" | "heun" | "heunpp2" | "ipndm" | "ipndm_v" | "lcm" | "lms" | "uni_pc" | "uni_pc_bh2"
+      // ["KSampler.scheduler","KSamplerAdvanced.scheduler","Extra.BasicScheduler.scheduler","Custom.Impact_Pack.PixelTiledKSampleUpscalerProvider.scheduler","Custom.Impact_Pack.PixelTiledKSampleUpscalerProviderPipe.scheduler","Custom.Impact_Pack.UnsamplerHookProvider.scheduler","Custom.Impact_Pack.UnsamplerDetailerHookProvider.scheduler","Custom.Impact_Pack.TiledKSamplerProvider.scheduler","Custom.Impact_Pack.ImpactSchedulerAdapter.scheduler"]
+      type E_SchedulerName = "beta" | "ddim_uniform" | "exponential" | "karras" | "linear_quadratic" | "normal" | "sgm_uniform" | "simple"
+      // ["CheckpointLoaderSimple.ckpt_name","unCLIPCheckpointLoader.ckpt_name","CheckpointLoader.ckpt_name","Extra.ImageOnlyCheckpointLoader.ckpt_name"]
+      type E_CkptName = "AOM3A3_orangemixs.safetensors" | "photon_v1.safetensors"
+      // ["VAELoader.vae_name"]
+      type E_VaeName = "vae-ft-mse-840000-ema-pruned.safetensors"
+      // ["LatentUpscale.upscale_method","LatentUpscaleBy.upscale_method","Extra.PatchModelAddDownscale.downscale_method","Extra.PatchModelAddDownscale.upscale_method","Extra.SamplerLCMUpscale.upscale_method"]
+      type E_LatentUpscaleMethod = "area" | "bicubic" | "bilinear" | "bislerp" | "nearest-exact"
+      // ["LatentUpscale.crop","ImageScale.crop"]
       type E_e2779c2a162ed54d5841127cc2968e8d50f5e431 = "center" | "disabled"
-      type E_26ea5ad8c44c9551fea858fff18017427386b591 = "example.png"
-      type E_19d5be39f1fd20a88fdbcb009a06c7df2b0ef998 = "alpha" | "blue" | "green" | "red"
-      type E_165b455eb22956fc9da6e1b76d49a4077f15d897 = "area" | "bicubic" | "bilinear" | "lanczos" | "nearest-exact"
+      // ["LoadImage.image","LoadImageMask.image","Custom.Impact_Pack.ImageReceiver.image"]
+      type E_Image = "example.png"
+      // ["LoadImageMask.channel","Extra.ImageToMask.channel"]
+      type E_Channel = "alpha" | "blue" | "green" | "red"
+      // ["ImageScale.upscale_method","ImageScaleBy.upscale_method","Extra.ImageScaleToTotalPixels.upscale_method"]
+      type E_ImageUpscaleMethod = "area" | "bicubic" | "bilinear" | "lanczos" | "nearest-exact"
+      // ["ConditioningSetMask.set_cond_area"]
       type E_046ed3ef4b2b9a9cfdb62e53a70fe767fb996451 = "default" | "mask bounds"
-      type E_449b4cae3566dd9b97c417c352bb08e25b89431b = "disable" | "enable"
-      type E_061551528c540e0171a9c88a94c7d5375aa31f8a = "180 degrees" | "270 degrees" | "90 degrees" | "none"
-      type E_cdf7071acecb5016da941b6e718b82c97248a3e4 = "x-axis: vertically" | "y-axis: horizontally"
-      type E_779f30207c92fb9c40d7af879864067c0972d190 = '🔴' // never
-      type E_766fb79b4f3904a6716246cfb2a33b7b9e6a08c4 = "mochi" | "sd3" | "stable_audio" | "stable_cascade" | "stable_diffusion"
-      type E_21ba65fbb0df707c108b25356a3507e13f21ea58 = "default" | "fp8_e4m3fn" | "fp8_e4m3fn_fast" | "fp8_e5m2"
-      type E_39292df8ce88fd66f0dacf6f9110cfa2594ca25c = "flux" | "sd3" | "sdxl"
-      type E_a1972c9480c542a0e8ccafa03c2572ba5fc62160 = "anything_v3.yaml" | "v1-inference.yaml" | "v1-inference_clip_skip_2.yaml" | "v1-inference_clip_skip_2_fp16.yaml" | "v1-inference_fp16.yaml" | "v1-inpainting-inference.yaml" | "v2-inference-v.yaml" | "v2-inference-v_fp32.yaml" | "v2-inference.yaml" | "v2-inference_fp32.yaml" | "v2-inpainting-inference.yaml"
+      // ["KSamplerAdvanced.add_noise","KSamplerAdvanced.return_with_leftover_noise","Custom.controlnet_aux.LeReS$7DepthMapPreprocessor.boost","Custom.controlnet_aux.DWPreprocessor.detect_hand","Custom.controlnet_aux.DWPreprocessor.detect_body","Custom.controlnet_aux.DWPreprocessor.detect_face","Custom.controlnet_aux.DWPreprocessor.scale_stick_for_xinsr_cn","Custom.controlnet_aux.HEDPreprocessor.safe","Custom.controlnet_aux.FakeScribblePreprocessor.safe","Custom.controlnet_aux.PiDiNetPreprocessor.safe","Custom.controlnet_aux.LineArtPreprocessor.coarse","Custom.controlnet_aux.OpenposePreprocessor.detect_hand","Custom.controlnet_aux.OpenposePreprocessor.detect_body","Custom.controlnet_aux.OpenposePreprocessor.detect_face","Custom.controlnet_aux.OpenposePreprocessor.scale_stick_for_xinsr_cn","Custom.controlnet_aux.Scribble$_PiDiNet$_Preprocessor.safe","Custom.Impact_Pack.UnsamplerHookProvider.normalize","Custom.Impact_Pack.UnsamplerDetailerHookProvider.normalize"]
+      type E_EnableOrDisable = "disable" | "enable"
+      // ["LatentRotate.rotation"]
+      type E_Rotation = "180 degrees" | "270 degrees" | "90 degrees" | "none"
+      // ["LatentFlip.flip_method"]
+      type E_FlipMethod = "x-axis: vertically" | "y-axis: horizontally"
+      type E_LoraName = '🔴' // never
+      // ["CLIPLoader.type"]
+      type E_ClipType = "mochi" | "sd3" | "stable_audio" | "stable_cascade" | "stable_diffusion"
+      // ["UNETLoader.weight_dtype"]
+      type E_WeightDType = "default" | "fp8_e4m3fn" | "fp8_e4m3fn_fast" | "fp8_e5m2"
+      // ["DualCLIPLoader.type"]
+      type E_DualClipType = "flux" | "sd3" | "sdxl"
+      // ["CheckpointLoader.config_name"]
+      type E_CkptConfigName = "anything_v3.yaml" | "v1-inference.yaml" | "v1-inference_clip_skip_2.yaml" | "v1-inference_clip_skip_2_fp16.yaml" | "v1-inference_fp16.yaml" | "v1-inpainting-inference.yaml" | "v2-inference-v.yaml" | "v2-inference-v_fp32.yaml" | "v2-inference.yaml" | "v2-inference_fp32.yaml" | "v2-inpainting-inference.yaml"
+      // ["Extra.LatentBatchSeedBehavior.seed_behavior"]
       type E_1d09df0c3ce1b4556d07af26e593d4033efc639b = "fixed" | "random"
+      // ["Extra.UpscaleModelLoader.model_name"]
       type E_2504d8563e078c3ed105667cbb6d0ff714d5798b = "RealESRGAN_x4plus.pth" | "RealESRGAN_x4plus_anime_6B.pth"
+      // ["Extra.ImageBlend.blend_mode"]
       type E_4ca09d2bc16d4174960bd60a103d4c0911361855 = "difference" | "multiply" | "normal" | "overlay" | "screen" | "soft_light"
+      // ["Extra.ImageQuantize.dither"]
       type E_7c2feaebcf0bbbcda0fe9f3c8cba1cf87002bc0e = "bayer-16" | "bayer-2" | "bayer-4" | "bayer-8" | "floyd-steinberg" | "none"
+      // ["Extra.MaskComposite.operation"]
       type E_88c0c90dbad3b41c3c4a4f8a89afad7b1c0db2e0 = "add" | "and" | "multiply" | "or" | "subtract" | "xor"
+      // ["Extra.PorterDuffImageComposite.mode"]
       type E_d954b5ae44db00529f0fd0bfb816e25c12617df8 = "ADD" | "CLEAR" | "DARKEN" | "DST" | "DST_ATOP" | "DST_IN" | "DST_OUT" | "DST_OVER" | "LIGHTEN" | "MULTIPLY" | "OVERLAY" | "SCREEN" | "SRC" | "SRC_ATOP" | "SRC_IN" | "SRC_OUT" | "SRC_OVER" | "XOR"
+      // ["Extra.SamplerDPMPP$_3M$_SDE.noise_device","Extra.SamplerDPMPP$_2M$_SDE.noise_device","Extra.SamplerDPMPP$_SDE.noise_device"]
       type E_928b7403128cb25513cafc463a76a922ba5d4bd0 = "cpu" | "gpu"
+      // ["Extra.SamplerDPMPP$_2M$_SDE.solver_type"]
       type E_148e0bc88719e23ec2f2c80871fe45ae759cd7e1 = "heun" | "midpoint"
+      // ["Extra.ModelSamplingDiscrete.sampling"]
       type E_e89ec78e24ca5e9c91264b9e9b5ed722d2b509dc = "eps" | "lcm" | "v_prediction" | "x0"
+      // ["Extra.ModelSamplingContinuousEDM.sampling"]
       type E_bf8a83a3d55d70c688644bf18edaf23501f7c168 = "edm_playground_v2.5" | "eps" | "v_prediction"
+      // ["Extra.ModelSamplingContinuousV.sampling"]
       type E_3c3164c6c468d61dfa20092960e3d7854495e50c = "v_prediction"
+      // ["Extra.SaveAnimatedWEBP.method"]
       type E_253b68425542d8144b2b8a7af90f057b41939f63 = "default" | "fastest" | "slowest"
+      // ["Extra.Morphology.operation"]
       type E_6ba03252ec9c8111f7381dfb573cd99c2b4d0e3b = "bottom_hat" | "close" | "dilate" | "erode" | "gradient" | "open" | "top_hat"
+      // ["Extra.AlignYourStepsScheduler.model_type"]
       type E_ec317371192386ae10cedaee29b315e900386a18 = "SD1" | "SDXL" | "SVD"
+      // ["Extra.SamplerEulerCFGpp.version"]
       type E_a8aa5eb2d828c2e279168c48955c7a0fe3ea011a = "alternative" | "regular"
+      // ["Extra.CLIPTextEncodeSD3.empty_padding"]
       type E_270e152a81c37daf152e6cc67675baaafe058bc4 = "empty_prompt" | "none"
+      // ["Extra.SetUnionControlNetType.type"]
       type E_0e92c8b1b6fe90c3e343d8b54b531b9d887eee62 = "auto" | "canny/lineart/anime_lineart/mlsd" | "depth" | "hed/pidi/scribble/ted" | "normal" | "openpose" | "repaint" | "segment" | "tile"
+      // ["Extra.LoraSave.lora_type"]
       type E_b80b6129a942660e31e08221ee04a76f537556ce = "full_diff" | "standard"
+      // ["Extra.TorchCompileModel.backend"]
       type E_4bbca93e426c35d56c43252f1fb21877d5e7a1aa = "cudagraphs" | "inductor"
-      type E_40c777392f92d61852ab0f7a429a755abf59b71a = "ESAM" | "sam_vit_b_01ec64.pth"
-      type E_2ad445b99254e9b51c963d9f1a75fabe3d01e569 = "AUTO" | "CPU" | "Prefer GPU"
-      type E_720061fdb15e8c451b6aa7ed023644f064ddc57d = "AYS SD1" | "AYS SDXL" | "AYS SVD" | "GITS[coeff=1.2]" | "beta" | "ddim_uniform" | "exponential" | "karras" | "linear_quadratic" | "normal" | "sgm_uniform" | "simple"
-      type E_40275a874822a8699ee13794e127b63cdd6bfdae = "center-1" | "diamond-4" | "horizontal-2" | "mask-area" | "mask-point-bbox" | "mask-points" | "none" | "rect-4" | "vertical-2"
-      type E_aa302307a82588b6e514aca43e4cddad342a73fc = "False" | "Outter" | "Small"
-      type E_35e403c7628f220c07d5485d6e81fc66b4fc12df = "Select the LoRA to add to the text"
-      type E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26 = "Select the Wildcard to add to the text"
-      type E_f9c5efbc827613eb902695cd0a25738ee31c607d = "area" | "bilinear" | "lanczos" | "nearest-exact"
-      type E_4724269c8f643d5efa98f97e1e55a7ddfe6aac6c = "geometric" | "simple"
-      type E_304f89a0de34643f12756237824e7261db28aaf5 = "padded" | "random" | "simple"
-      type E_de6a9887e0bfe301f572e929959509ed64574d1b = "interleave1" | "interleave1+last1" | "interleave2" | "interleave2+last1" | "interleave3" | "interleave3+last1" | "last1" | "last2" | "none"
-      type E_0f7d0d088b6ea936fb25b477722d734706fe8b40 = "simple"
-      type E_3dfc15432d4b952e91053feecd5a5427720957fc = "CPU" | "GPU"
-      type E_d4b6506ab5528aeab8952aa9d308dbc242d01e63 = "512x512" | "512x768" | "768x512" | "768x768"
-      type E_afbc7832ad78555d4f5646f97ed21b561fe3d1f0 = "from_start" | "skip_start"
-      type E_87bec9aa0dfe9b9678fd35387106d931d78358cd = "area(=w*h)" | "height" | "width" | "x1" | "x2" | "y1" | "y2"
-      type E_aceb55e7f03fcbc2a78383bd8ddff8676e42e536 = "area(=w*h)" | "height" | "length_percent" | "width" | "x1" | "x2" | "y1" | "y2"
-      type E_cc1f262afc534d382e5c36082cecd4fc2a9c4ffb = "airplane" | "all" | "apple" | "backpack" | "banana" | "baseball bat" | "baseball glove" | "bear" | "bed" | "bench" | "bicycle" | "bird" | "boat" | "book" | "bottle" | "bowl" | "broccoli" | "bus" | "cake" | "car" | "carrot" | "cat" | "cell phone" | "chair" | "clock" | "couch" | "cow" | "cup" | "dining table" | "dog" | "donut" | "elephant" | "eyebrows" | "eyes" | "face" | "fire hydrant" | "fork" | "frisbee" | "giraffe" | "hair drier" | "hand" | "handbag" | "horse" | "hot dog" | "keyboard" | "kite" | "knife" | "laptop" | "left_eye" | "left_eyebrow" | "left_pupil" | "long_sleeved_dress" | "long_sleeved_outwear" | "long_sleeved_shirt" | "microwave" | "motorcycle" | "mouse" | "mouth" | "orange" | "oven" | "parking meter" | "person" | "pizza" | "potted plant" | "pupils" | "refrigerator" | "remote" | "right_eye" | "right_eyebrow" | "right_pupil" | "sandwich" | "scissors" | "sheep" | "short_sleeved_dress" | "short_sleeved_outwear" | "short_sleeved_shirt" | "shorts" | "sink" | "skateboard" | "skirt" | "skis" | "sling" | "sling_dress" | "snowboard" | "spoon" | "sports ball" | "stop sign" | "suitcase" | "surfboard" | "teddy bear" | "tennis racket" | "tie" | "toaster" | "toilet" | "toothbrush" | "traffic light" | "train" | "trousers" | "truck" | "tv" | "umbrella" | "vase" | "vest" | "vest_dress" | "wine glass" | "zebra"
-      type E_e5ef6b688dbafd88538e80bf002826bade4bb121 = "Combine neighboring frames" | "Don't combine" | "Pivot SEGS"
-      type E_651ea09f69db9a1eb817103d1ea8e3ac08b4a319 = "1st frame mask" | "Combined mask"
-      type E_05cddbad13b094c2641c6bb7d261e15c71efc903 = "channel penalty" | "linear" | "original"
+      // ["Custom.IPAdapter_plus.IPAdapter.weight_type"]
+      type E_1fcb051d43a7df978808f9920fa8d428961d34f5 = "prompt is more important" | "standard" | "style transfer"
+      // ["Custom.IPAdapter_plus.IPAdapterAdvanced.weight_type","Custom.IPAdapter_plus.IPAdapterBatch.weight_type","Custom.IPAdapter_plus.IPAdapterFaceID.weight_type","Custom.IPAdapter_plus.IPAdapterFaceIDKolors.weight_type","Custom.IPAdapter_plus.IPAAdapterFaceIDBatch.weight_type","Custom.IPAdapter_plus.IPAdapterTiled.weight_type","Custom.IPAdapter_plus.IPAdapterTiledBatch.weight_type","Custom.IPAdapter_plus.IPAdapterEmbeds.weight_type","Custom.IPAdapter_plus.IPAdapterEmbedsBatch.weight_type","Custom.IPAdapter_plus.IPAdapterMS.weight_type","Custom.IPAdapter_plus.IPAdapterClipVisionEnhancer.weight_type","Custom.IPAdapter_plus.IPAdapterClipVisionEnhancerBatch.weight_type","Custom.IPAdapter_plus.IPAdapterRegionalConditioning.weight_type"]
+      type E_7308d8ab4ff2021b77b352e491612116709172af = "composition" | "composition precise" | "ease in" | "ease in-out" | "ease out" | "linear" | "reverse in-out" | "strong middle" | "strong style transfer" | "style and composition" | "style transfer" | "style transfer precise" | "weak input" | "weak middle" | "weak output"
+      // ["Custom.IPAdapter_plus.IPAdapterAdvanced.combine_embeds","Custom.IPAdapter_plus.IPAdapterFaceID.combine_embeds","Custom.IPAdapter_plus.IPAdapterFaceIDKolors.combine_embeds","Custom.IPAdapter_plus.IPAAdapterFaceIDBatch.combine_embeds","Custom.IPAdapter_plus.IPAdapterTiled.combine_embeds","Custom.IPAdapter_plus.IPAdapterStyleComposition.combine_embeds","Custom.IPAdapter_plus.IPAdapterMS.combine_embeds","Custom.IPAdapter_plus.IPAdapterClipVisionEnhancer.combine_embeds","Custom.IPAdapter_plus.IPAdapterFromParams.combine_embeds","Custom.IPAdapter_plus.IPAdapterPreciseStyleTransfer.combine_embeds","Custom.IPAdapter_plus.IPAdapterPreciseStyleTransferBatch.combine_embeds","Custom.IPAdapter_plus.IPAdapterPreciseComposition.combine_embeds","Custom.IPAdapter_plus.IPAdapterPreciseCompositionBatch.combine_embeds","Custom.Impact_Pack.ImpactIPAdapterApplySEGS.combine_embeds"]
       type E_055d80a7c582bd5b57fd6775414e697be3f0f580 = "add" | "average" | "concat" | "norm average" | "subtract"
+      // ["Custom.IPAdapter_plus.IPAdapterAdvanced.embeds_scaling","Custom.IPAdapter_plus.IPAdapterBatch.embeds_scaling","Custom.IPAdapter_plus.IPAdapterFaceID.embeds_scaling","Custom.IPAdapter_plus.IPAdapterFaceIDKolors.embeds_scaling","Custom.IPAdapter_plus.IPAAdapterFaceIDBatch.embeds_scaling","Custom.IPAdapter_plus.IPAdapterTiled.embeds_scaling","Custom.IPAdapter_plus.IPAdapterTiledBatch.embeds_scaling","Custom.IPAdapter_plus.IPAdapterEmbeds.embeds_scaling","Custom.IPAdapter_plus.IPAdapterEmbedsBatch.embeds_scaling","Custom.IPAdapter_plus.IPAdapterStyleComposition.embeds_scaling","Custom.IPAdapter_plus.IPAdapterStyleCompositionBatch.embeds_scaling","Custom.IPAdapter_plus.IPAdapterMS.embeds_scaling","Custom.IPAdapter_plus.IPAdapterClipVisionEnhancer.embeds_scaling","Custom.IPAdapter_plus.IPAdapterClipVisionEnhancerBatch.embeds_scaling","Custom.IPAdapter_plus.IPAdapterFromParams.embeds_scaling","Custom.IPAdapter_plus.IPAdapterPreciseStyleTransfer.embeds_scaling","Custom.IPAdapter_plus.IPAdapterPreciseStyleTransferBatch.embeds_scaling","Custom.IPAdapter_plus.IPAdapterPreciseComposition.embeds_scaling","Custom.IPAdapter_plus.IPAdapterPreciseCompositionBatch.embeds_scaling"]
+      type E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd = "K+V" | "K+V w/ C penalty" | "K+mean(V) w/ C penalty" | "V only"
+      // ["Custom.IPAdapter_plus.IPAdapterUnifiedLoader.preset"]
+      type E_17c57a2dd2fbcfa4d9125e24f9614e22372bd34a = "FULL FACE - SD1.5 only (portraits stronger)" | "LIGHT - SD1.5 only (low strength)" | "PLUS (high strength)" | "PLUS FACE (portraits)" | "STANDARD (medium strength)" | "VIT-G (medium strength)"
+      // ["Custom.IPAdapter_plus.IPAdapterUnifiedLoaderFaceID.preset"]
+      type E_a3e559d09ececb9f9d7ea7907bc20803f01fb398 = "FACEID" | "FACEID PLUS - SD1.5 only" | "FACEID PLUS V2" | "FACEID PORTRAIT (style transfer)" | "FACEID PORTRAIT UNNORM - SDXL only (strong)"
+      // ["Custom.IPAdapter_plus.IPAdapterUnifiedLoaderFaceID.provider"]
+      type E_5d668a2048c21af6c78eb7cfdb4437296166c713 = "CPU" | "CUDA" | "CoreML" | "DirectML" | "OpenVINO" | "ROCM"
+      // ["Custom.IPAdapter_plus.IPAdapterInsightFaceLoader.provider"]
+      type E_13cd0468c1723423ffe1fa05a4a7e51caa5b2a17 = "CPU" | "CUDA" | "ROCM"
+      // ["Custom.IPAdapter_plus.IPAdapterInsightFaceLoader.model_name"]
+      type E_8ade6e7081b18f83b376495ecffe0f7d309758e4 = "antelopev2" | "buffalo_l"
+      // ["Custom.IPAdapter_plus.IPAdapterUnifiedLoaderCommunity.preset"]
+      type E_a528931a02ae6272b3f532ca266fecea0688e366 = "Composition" | "Kolors"
+      // ["Custom.IPAdapter_plus.IPAdapterCombineEmbeds.method"]
+      type E_887e4c8bfd30e7fc47c0d7ccb69d59436094aba6 = "add" | "average" | "concat" | "max" | "min" | "norm average" | "subtract"
+      // ["Custom.IPAdapter_plus.IPAdapterNoise.type"]
+      type E_9cefb90b6a43ee19ecb81f7e91648388c73fc378 = "dissolve" | "fade" | "gaussian" | "shuffle"
+      // ["Custom.IPAdapter_plus.PrepImageForClipVision.interpolation"]
+      type E_c7d4c5c5d9bd0342cbb8b0fbbc507a005791a174 = "BICUBIC" | "BILINEAR" | "BOX" | "HAMMING" | "LANCZOS" | "NEAREST"
+      // ["Custom.IPAdapter_plus.PrepImageForClipVision.crop_position"]
+      type E_ad4640a4b937a502f6364d06dc306f41f2dd56d2 = "bottom" | "center" | "left" | "pad" | "right" | "top"
+      // ["Custom.IPAdapter_plus.IPAdapterWeights.timing"]
+      type E_0f767df7ea83e64cd689e348c203dfb74aff5773 = "custom" | "ease_in" | "ease_in_out" | "ease_out" | "linear" | "random"
+      // ["Custom.IPAdapter_plus.IPAdapterWeights.method"]
+      type E_45d8f77c56ae5c73ccee61ce4fd889f5858acabf = "alternate batches" | "full batch" | "shift batches"
+      // ["Custom.controlnet_aux.DensePosePreprocessor.model"]
+      type E_8de7e678f3a40dd26000add869549d52b40eea76 = "densepose_r101_fpn_dl.torchscript" | "densepose_r50_fpn_dl.torchscript"
+      // ["Custom.controlnet_aux.DensePosePreprocessor.cmap"]
+      type E_621dc6c65530de6a1bfd3fab8f84171285b9ddef = "Parula (CivitAI)" | "Viridis (MagicAnimate)"
+      // ["Custom.controlnet_aux.DepthAnythingPreprocessor.ckpt_name"]
+      type E_735dbaeb4a65035d6371a3a8387b694815ffa184 = "depth_anything_vitb14.pth" | "depth_anything_vitl14.pth" | "depth_anything_vits14.pth"
+      // ["Custom.controlnet_aux.Zoe$_DepthAnythingPreprocessor.environment"]
+      type E_453e00523f8522497b1b3ef1b5cb1e99653f762d = "indoor" | "outdoor"
+      // ["Custom.controlnet_aux.DepthAnythingV2Preprocessor.ckpt_name"]
+      type E_30291c97550ef461f5a79884cd944debc9ba4bcf = "depth_anything_v2_vitb.pth" | "depth_anything_v2_vitg.pth" | "depth_anything_v2_vitl.pth" | "depth_anything_v2_vits.pth"
+      // ["Custom.controlnet_aux.DWPreprocessor.bbox_detector","Custom.controlnet_aux.AnimalPosePreprocessor.bbox_detector"]
+      type E_8b9acde8011b3c2e67b20fef1c037f35cac04a7e = "yolo_nas_l_fp16.onnx" | "yolo_nas_m_fp16.onnx" | "yolo_nas_s_fp16.onnx" | "yolox_l.onnx" | "yolox_l.torchscript.pt"
+      // ["Custom.controlnet_aux.DWPreprocessor.pose_estimator"]
+      type E_2f4bf8769543a6cb7a87b5740bb72074f7b687e8 = "dw-ll_ucoco.onnx" | "dw-ll_ucoco_384.onnx" | "dw-ll_ucoco_384_bs5.torchscript.pt"
+      // ["Custom.controlnet_aux.AnimalPosePreprocessor.pose_estimator"]
+      type E_45e5839ae917502b2b5141cd89c9ca12743f45b4 = "rtmpose-m_ap10k_256.onnx" | "rtmpose-m_ap10k_256_bs5.torchscript.pt"
+      // ["Custom.controlnet_aux.DiffusionEdge$_Preprocessor.environment"]
+      type E_f2067692a1e679e71041f510afe6eadb4debc349 = "indoor" | "natrual" | "urban"
+      // ["Custom.controlnet_aux.MeshGraphormer$7DepthMapPreprocessor.mask_type","Custom.controlnet_aux.MeshGraphormer$6ImpactDetector$7DepthMapPreprocessor.mask_type"]
+      type E_b5caf6278e8db337000bd8531d0a52fd983e6dee = "based_on_depth" | "original" | "tight_bboxes"
+      // ["Custom.controlnet_aux.AnyLineArtPreprocessor$_aux.merge_with_lineart"]
+      type E_f2f3bf212fe93f89462ca7fbd01c0beb857e0fa1 = "lineart_anime" | "lineart_realisitic" | "lineart_standard" | "manga_line"
+      // ["Custom.controlnet_aux.Unimatch$_OptFlowPreprocessor.ckpt_name"]
+      type E_988e8378cb5cffff14c5d8060093ba919d87e6f4 = "gmflow-scale1-mixdata.pth" | "gmflow-scale2-mixdata.pth" | "gmflow-scale2-regrefine6-mixdata.pth"
+      // ["Custom.controlnet_aux.FacialPartColoringFromPoseKps.mode"]
+      type E_864516593cf8906cd4bb58dde398b0c37bad51c6 = "point" | "polygon"
+      // ["Custom.controlnet_aux.Metric3D$7DepthMapPreprocessor.backbone","Custom.controlnet_aux.Metric3D$7NormalMapPreprocessor.backbone"]
+      type E_ecd8eade7f608a502e4587d43bca2d2a4f9b729b = "vit-giant2" | "vit-large" | "vit-small"
+      // ["Custom.controlnet_aux.AIO$_Preprocessor.preprocessor","Custom.controlnet_aux.ControlNetPreprocessorSelector.preprocessor.OUT","Custom.controlnet_aux.ControlNetPreprocessorSelector.preprocessor"]
+      type E_90ee599494f505c55a1a8cf8009c1a81c6238905 = "AnimalPosePreprocessor" | "AnimeFace_SemSegPreprocessor" | "AnimeLineArtPreprocessor" | "AnyLineArtPreprocessor_aux" | "BAE-NormalMapPreprocessor" | "BinaryPreprocessor" | "CannyEdgePreprocessor" | "ColorPreprocessor" | "DSINE-NormalMapPreprocessor" | "DWPreprocessor" | "DensePosePreprocessor" | "DepthAnythingPreprocessor" | "DepthAnythingV2Preprocessor" | "FakeScribblePreprocessor" | "HEDPreprocessor" | "ImageIntensityDetector" | "ImageLuminanceDetector" | "LeReS-DepthMapPreprocessor" | "LineArtPreprocessor" | "LineartStandardPreprocessor" | "M-LSDPreprocessor" | "Manga2Anime_LineArt_Preprocessor" | "MediaPipe-FaceMeshPreprocessor" | "MeshGraphormer-DepthMapPreprocessor" | "Metric3D-DepthMapPreprocessor" | "Metric3D-NormalMapPreprocessor" | "MiDaS-DepthMapPreprocessor" | "MiDaS-NormalMapPreprocessor" | "OneFormer-ADE20K-SemSegPreprocessor" | "OneFormer-COCO-SemSegPreprocessor" | "OpenposePreprocessor" | "PiDiNetPreprocessor" | "PyraCannyPreprocessor" | "SAMPreprocessor" | "ScribblePreprocessor" | "Scribble_PiDiNet_Preprocessor" | "Scribble_XDoG_Preprocessor" | "SemSegPreprocessor" | "ShufflePreprocessor" | "TEEDPreprocessor" | "TTPlanet_TileGF_Preprocessor" | "TTPlanet_TileSimple_Preprocessor" | "TilePreprocessor" | "UniFormer-SemSegPreprocessor" | "Zoe-DepthMapPreprocessor" | "Zoe_DepthAnythingPreprocessor" | "none"
+      // ["Custom.controlnet_aux.PixelPerfectResolution.resize_mode","Custom.controlnet_aux.HintImageEnchance.resize_mode"]
+      type E_d6af160bb3240c471ff93d5647af03d694fc3360 = "Crop and Resize" | "Just Resize" | "Resize and Fill"
+      // ["Custom.Impact_Pack.SAMLoader.model_name"]
+      type E_40c777392f92d61852ab0f7a429a755abf59b71a = "ESAM" | "sam_vit_b_01ec64.pth"
+      // ["Custom.Impact_Pack.SAMLoader.device_mode","Custom.Impact_Pack.ImpactHFTransformersClassifierProvider.device_mode"]
+      type E_2ad445b99254e9b51c963d9f1a75fabe3d01e569 = "AUTO" | "CPU" | "Prefer GPU"
+      // ["Custom.Impact_Pack.DetailerForEach.scheduler","Custom.Impact_Pack.DetailerForEachDebug.scheduler","Custom.Impact_Pack.DetailerForEachPipe.scheduler","Custom.Impact_Pack.DetailerForEachDebugPipe.scheduler","Custom.Impact_Pack.DetailerForEachPipeForAnimateDiff.scheduler","Custom.Impact_Pack.FaceDetailer.scheduler","Custom.Impact_Pack.FaceDetailerPipe.scheduler","Custom.Impact_Pack.MaskDetailerPipe.scheduler","Custom.Impact_Pack.PixelKSampleUpscalerProvider.scheduler","Custom.Impact_Pack.PixelKSampleUpscalerProviderPipe.scheduler","Custom.Impact_Pack.KSamplerProvider.scheduler","Custom.Impact_Pack.KSamplerAdvancedProvider.scheduler","Custom.Impact_Pack.SEGSUpscaler.scheduler","Custom.Impact_Pack.SEGSUpscalerPipe.scheduler","Custom.Impact_Pack.SEGSDetailer.scheduler","Custom.Impact_Pack.SEGSDetailerForAnimateDiff.scheduler","Custom.Impact_Pack.ImpactKSamplerBasicPipe.scheduler","Custom.Impact_Pack.ImpactKSamplerAdvancedBasicPipe.scheduler","Custom.Impact_Pack.ImpactSchedulerAdapter.scheduler.OUT"]
+      type E_720061fdb15e8c451b6aa7ed023644f064ddc57d = "AYS SD1" | "AYS SDXL" | "AYS SVD" | "GITS[coeff=1.2]" | "beta" | "ddim_uniform" | "exponential" | "karras" | "linear_quadratic" | "normal" | "sgm_uniform" | "simple"
+      // ["Custom.Impact_Pack.SAMDetectorCombined.detection_hint","Custom.Impact_Pack.SAMDetectorSegmented.detection_hint","Custom.Impact_Pack.FaceDetailer.sam_detection_hint","Custom.Impact_Pack.FaceDetailerPipe.sam_detection_hint"]
+      type E_ImpactDetectionHint = "center-1" | "diamond-4" | "horizontal-2" | "mask-area" | "mask-point-bbox" | "mask-points" | "none" | "rect-4" | "vertical-2"
+      // ["Custom.Impact_Pack.SAMDetectorCombined.mask_hint_use_negative","Custom.Impact_Pack.SAMDetectorSegmented.mask_hint_use_negative","Custom.Impact_Pack.FaceDetailer.sam_mask_hint_use_negative","Custom.Impact_Pack.FaceDetailerPipe.sam_mask_hint_use_negative"]
+      type E_aa302307a82588b6e514aca43e4cddad342a73fc = "False" | "Outter" | "Small"
+      // ["Custom.Impact_Pack.ToDetailerPipe.Select$_to$_add$_LoRA","Custom.Impact_Pack.ToDetailerPipeSDXL.Select$_to$_add$_LoRA","Custom.Impact_Pack.BasicPipeToDetailerPipe.Select$_to$_add$_LoRA","Custom.Impact_Pack.BasicPipeToDetailerPipeSDXL.Select$_to$_add$_LoRA","Custom.Impact_Pack.EditDetailerPipe.Select$_to$_add$_LoRA","Custom.Impact_Pack.EditDetailerPipeSDXL.Select$_to$_add$_LoRA","Custom.Impact_Pack.ImpactWildcardEncode.Select$_to$_add$_LoRA"]
+      type E_35e403c7628f220c07d5485d6e81fc66b4fc12df = "Select the LoRA to add to the text"
+      // ["Custom.Impact_Pack.ToDetailerPipe.Select$_to$_add$_Wildcard","Custom.Impact_Pack.ToDetailerPipeSDXL.Select$_to$_add$_Wildcard","Custom.Impact_Pack.BasicPipeToDetailerPipe.Select$_to$_add$_Wildcard","Custom.Impact_Pack.BasicPipeToDetailerPipeSDXL.Select$_to$_add$_Wildcard","Custom.Impact_Pack.EditDetailerPipe.Select$_to$_add$_Wildcard","Custom.Impact_Pack.EditDetailerPipeSDXL.Select$_to$_add$_Wildcard","Custom.Impact_Pack.ImpactWildcardProcessor.Select$_to$_add$_Wildcard","Custom.Impact_Pack.ImpactWildcardEncode.Select$_to$_add$_Wildcard"]
+      type E_6064bbaf780c2c055e640cd3feaaf15ad2f2bb26 = "Select the Wildcard to add to the text"
+      // ["Custom.Impact_Pack.LatentPixelScale.scale_method","Custom.Impact_Pack.PixelKSampleUpscalerProvider.scale_method","Custom.Impact_Pack.PixelKSampleUpscalerProviderPipe.scale_method","Custom.Impact_Pack.PixelTiledKSampleUpscalerProvider.scale_method","Custom.Impact_Pack.PixelTiledKSampleUpscalerProviderPipe.scale_method","Custom.Impact_Pack.TwoSamplersForMaskUpscalerProvider.scale_method","Custom.Impact_Pack.TwoSamplersForMaskUpscalerProviderPipe.scale_method"]
+      type E_f9c5efbc827613eb902695cd0a25738ee31c607d = "area" | "bilinear" | "lanczos" | "nearest-exact"
+      // ["Custom.Impact_Pack.IterativeLatentUpscale.step_mode","Custom.Impact_Pack.IterativeImageUpscale.step_mode"]
+      type E_4724269c8f643d5efa98f97e1e55a7ddfe6aac6c = "geometric" | "simple"
+      // ["Custom.Impact_Pack.PixelTiledKSampleUpscalerProvider.tiling_strategy","Custom.Impact_Pack.PixelTiledKSampleUpscalerProviderPipe.tiling_strategy","Custom.Impact_Pack.TiledKSamplerProvider.tiling_strategy"]
+      type E_304f89a0de34643f12756237824e7261db28aaf5 = "padded" | "random" | "simple"
+      // ["Custom.Impact_Pack.TwoSamplersForMaskUpscalerProvider.full_sample_schedule","Custom.Impact_Pack.TwoSamplersForMaskUpscalerProviderPipe.full_sample_schedule"]
+      type E_de6a9887e0bfe301f572e929959509ed64574d1b = "interleave1" | "interleave1+last1" | "interleave2" | "interleave2+last1" | "interleave3" | "interleave3+last1" | "last1" | "last2" | "none"
+      // ["Custom.Impact_Pack.DenoiseScheduleHookProvider.schedule_for_iteration","Custom.Impact_Pack.StepsScheduleHookProvider.schedule_for_iteration","Custom.Impact_Pack.CfgScheduleHookProvider.schedule_for_iteration","Custom.Impact_Pack.NoiseInjectionHookProvider.schedule_for_iteration","Custom.Impact_Pack.UnsamplerHookProvider.schedule_for_iteration","Custom.Impact_Pack.DenoiseSchedulerDetailerHookProvider.schedule_for_cycle"]
+      type E_0f7d0d088b6ea936fb25b477722d734706fe8b40 = "simple"
+      // ["Custom.Impact_Pack.NoiseInjectionHookProvider.source","Custom.Impact_Pack.NoiseInjectionDetailerHookProvider.source"]
+      type E_CpuOrGpu = "CPU" | "GPU"
+      // ["Custom.Impact_Pack.CoreMLDetailerHookProvider.mode"]
+      type E_d4b6506ab5528aeab8952aa9d308dbc242d01e63 = "512x512" | "512x768" | "768x512" | "768x768"
+      // ["Custom.Impact_Pack.NoiseInjectionDetailerHookProvider.schedule_for_cycle","Custom.Impact_Pack.UnsamplerDetailerHookProvider.schedule_for_cycle"]
+      type E_afbc7832ad78555d4f5646f97ed21b561fe3d1f0 = "from_start" | "skip_start"
+      // ["Custom.Impact_Pack.SEGSOrderedFilterDetailerHookProvider.target"]
+      type E_87bec9aa0dfe9b9678fd35387106d931d78358cd = "area(=w*h)" | "height" | "width" | "x1" | "x2" | "y1" | "y2"
+      // ["Custom.Impact_Pack.SEGSRangeFilterDetailerHookProvider.target"]
+      type E_aceb55e7f03fcbc2a78383bd8ddff8676e42e536 = "area(=w*h)" | "height" | "length_percent" | "width" | "x1" | "x2" | "y1" | "y2"
+      // ["Custom.Impact_Pack.SEGSLabelFilterDetailerHookProvider.preset","Custom.Impact_Pack.ImpactSEGSLabelFilter.preset"]
+      type E_cc1f262afc534d382e5c36082cecd4fc2a9c4ffb = "airplane" | "all" | "apple" | "backpack" | "banana" | "baseball bat" | "baseball glove" | "bear" | "bed" | "bench" | "bicycle" | "bird" | "boat" | "book" | "bottle" | "bowl" | "broccoli" | "bus" | "cake" | "car" | "carrot" | "cat" | "cell phone" | "chair" | "clock" | "couch" | "cow" | "cup" | "dining table" | "dog" | "donut" | "elephant" | "eyebrows" | "eyes" | "face" | "fire hydrant" | "fork" | "frisbee" | "giraffe" | "hair drier" | "hand" | "handbag" | "horse" | "hot dog" | "keyboard" | "kite" | "knife" | "laptop" | "left_eye" | "left_eyebrow" | "left_pupil" | "long_sleeved_dress" | "long_sleeved_outwear" | "long_sleeved_shirt" | "microwave" | "motorcycle" | "mouse" | "mouth" | "orange" | "oven" | "parking meter" | "person" | "pizza" | "potted plant" | "pupils" | "refrigerator" | "remote" | "right_eye" | "right_eyebrow" | "right_pupil" | "sandwich" | "scissors" | "sheep" | "short_sleeved_dress" | "short_sleeved_outwear" | "short_sleeved_shirt" | "shorts" | "sink" | "skateboard" | "skirt" | "skis" | "sling" | "sling_dress" | "snowboard" | "spoon" | "sports ball" | "stop sign" | "suitcase" | "surfboard" | "teddy bear" | "tennis racket" | "tie" | "toaster" | "toilet" | "toothbrush" | "traffic light" | "train" | "trousers" | "truck" | "tv" | "umbrella" | "vase" | "vest" | "vest_dress" | "wine glass" | "zebra"
+      // ["Custom.Impact_Pack.ImpactSimpleDetectorSEGS$_for$_AD.masking_mode"]
+      type E_e5ef6b688dbafd88538e80bf002826bade4bb121 = "Combine neighboring frames" | "Don't combine" | "Pivot SEGS"
+      // ["Custom.Impact_Pack.ImpactSimpleDetectorSEGS$_for$_AD.segs_pivot"]
+      type E_651ea09f69db9a1eb817103d1ea8e3ac08b4a319 = "1st frame mask" | "Combined mask"
+      // ["Custom.Impact_Pack.ImpactIPAdapterApplySEGS.weight_type"]
+      type E_05cddbad13b094c2641c6bb7d261e15c71efc903 = "channel penalty" | "linear" | "original"
+      // ["Custom.Impact_Pack.PreviewBridge.restore_mask","Custom.Impact_Pack.PreviewBridgeLatent.restore_mask"]
       type E_f27fae3205ecf36e9f4a68f3867d38e025476963 = "always" | "if_same_size" | "never"
+      // ["Custom.Impact_Pack.PreviewBridgeLatent.preview_method"]
       type E_ea287ec9983f05378f2614091804a1b6b95d1c79 = "Latent2RGB-FLUX.1" | "Latent2RGB-Playground-2.5" | "Latent2RGB-SC-B" | "Latent2RGB-SC-Prior" | "Latent2RGB-SD-X4" | "Latent2RGB-SD15" | "Latent2RGB-SD3" | "Latent2RGB-SDXL" | "TAEF1" | "TAESD15" | "TAESD3" | "TAESDXL"
+      // ["Custom.Impact_Pack.LatentSender.preview_method"]
       type E_fa4a13687b111fa33a8c8fa375d5321d09b46b27 = "Latent2RGB-SD15" | "Latent2RGB-SDXL" | "TAESD15" | "TAESDXL"
+      // ["Custom.Impact_Pack.SEGSUpscaler.resampling_method","Custom.Impact_Pack.SEGSUpscalerPipe.resampling_method"]
       type E_bac912b55de8a59480c74aba068f4a3b5f9a0e38 = "bicubic" | "bilinear" | "lanczos" | "nearest"
-      type E_c1a74591678033a2ccc87aa0add77dab7f001da5 = "false" | "true"
+      // ["Custom.Impact_Pack.SEGSUpscaler.supersample","Custom.Impact_Pack.SEGSUpscalerPipe.supersample"]
+      type E_TrueOrFalse = "false" | "true"
+      // ["Custom.Impact_Pack.ImpactMakeTileSEGS.irregular_mask_mode"]
       type E_5cc1495fe28eac05289d45b29269b31c6edca055 = "All random fast" | "All random quality" | "Reuse fast" | "Reuse quality"
+      // ["Custom.Impact_Pack.ReencodeLatent.tile_mode","Custom.Impact_Pack.ReencodeLatentPipe.tile_mode"]
       type E_d5776f669e41b2ec29cd020ce34a8b7cdf23693d = "Both" | "Decode(input) only" | "Encode(output) only" | "None"
+      // ["Custom.Impact_Pack.RegionalSampler.seed_2nd_mode"]
       type E_1e8364b55644fdbf6d28dd3e6197d9fe1777e361 = "decrement" | "fixed" | "ignore" | "increment" | "randomize" | "seed+seed_2nd" | "seed-seed_2nd"
+      // ["Custom.Impact_Pack.RegionalSampler.additional_mode","Custom.Impact_Pack.RegionalSamplerAdvanced.additional_mode"]
       type E_db19bd49ccd13456a936f2070c088f16070aa0b1 = "DISABLE" | "ratio additional" | "ratio between"
+      // ["Custom.Impact_Pack.RegionalSampler.additional_sampler","Custom.Impact_Pack.RegionalSamplerAdvanced.additional_sampler"]
       type E_3fd6d592305b0bc44ce9c69a23201f8d7a155884 = "AUTO" | "ddpm" | "dpm_2" | "dpm_fast" | "dpmpp_2m" | "euler" | "heun" | "heunpp2"
+      // ["Custom.Impact_Pack.RegionalPrompt.variation_method"]
       type E_627d63e970919d713af795854ffd9dd2642f92d2 = "linear" | "slerp"
+      // ["Custom.Impact_Pack.ImpactSEGSRangeFilter.target"]
       type E_10c017f4a76414789a861361dc5cdbfef12e2d7d = "area(=w*h)" | "confidence(0-100)" | "height" | "length_percent" | "width" | "x1" | "x2" | "y1" | "y2"
+      // ["Custom.Impact_Pack.ImpactSEGSOrderedFilter.target"]
       type E_b1f554e93f550a374a1ff740ad7447a7b34b71be = "area(=w*h)" | "confidence" | "height" | "width" | "x1" | "x2" | "y1" | "y2"
+      // ["Custom.Impact_Pack.ImpactCompare.cmp"]
       type E_87d3a21083ff67c538309f218241f70a793f619c = "a < b" | "a <= b" | "a <> b" | "a = b" | "a > b" | "a >= b" | "ff" | "tt"
+      // ["Custom.Impact_Pack.ImpactLogicalOperators.operator"]
       type E_99d83eba8f2a90cc88da26295981d92d458e4e14 = "and" | "or" | "xor"
+      // ["Custom.Impact_Pack.ImpactValueReceiver.typ"]
       type E_6c86e4efdc8db8dae17215fbf80825ddaad06ffa = "BOOLEAN" | "FLOAT" | "INT" | "STRING"
+      // ["Custom.Impact_Pack.ImpactControlBridge.behavior"]
       type E_383642e8f2544ff8678e350c4f1049624ad6589e = "Bypass" | "Mute" | "Stop"
+      // ["Custom.Impact_Pack.ImpactHFTransformersClassifierProvider.preset_repo_id"]
       type E_7fd75955db2b2e81b87d8452255b37c2d98fd105 = "Leilab/gender_class" | "Manual repo id" | "NTQAI/pedestrian_gender_recognition" | "ProjectPersonal/GenderClassifier" | "cledoux42/GenderNew_v002" | "crangana/trained-gender" | "ivensamdh/genderage2" | "rizvandwiki/gender-classification-2"
+      // ["Custom.Impact_Pack.ImpactSEGSClassify.preset_expr"]
       type E_01400d675e59295302197d02289e89ead401098e = "#Female < #Male" | "#Female > #Male" | "Age16to25 > 0.1" | "Age50to69 > 0.1" | "Manual expr" | "female > 0.5" | "male > 0.5"
+      // ["Custom.Impact_Pack.ImpactSchedulerAdapter.extra_scheduler"]
       type E_64bb9134d159ff7e3f573facb7cb2fcfbb2de483 = "AYS SD1" | "AYS SDXL" | "AYS SVD" | "GITS[coeff=1.2]" | "None"
+      // ["Custom.Impact_Pack.UltralyticsDetectorProvider.model_name"]
       type E_cf11746957b2cb2b6379bbd08fe59610b2aae90a = "bbox/face_yolov8m.pt" | "bbox/hand_yolov8s.pt" | "segm/person_yolov8m-seg.pt"
    }
    
@@ -8475,12 +11246,15 @@ declare global {
    export interface HasSingle_SEGS_PREPROCESSOR { _SEGS_PREPROCESSOR: ComfyNodeOutput<'SEGS_PREPROCESSOR'> } // prettier-ignore
    export interface HasSingle_KSAMPLER_ADVANCED { _KSAMPLER_ADVANCED: ComfyNodeOutput<'KSAMPLER_ADVANCED'> } // prettier-ignore
    export interface HasSingle_LATENT_OPERATION { _LATENT_OPERATION: ComfyNodeOutput<'LATENT_OPERATION'> } // prettier-ignore
+   export interface HasSingle_IPADAPTER_PARAMS { _IPADAPTER_PARAMS: ComfyNodeOutput<'IPADAPTER_PARAMS'> } // prettier-ignore
+   export interface HasSingle_WEIGHTS_STRATEGY { _WEIGHTS_STRATEGY: ComfyNodeOutput<'WEIGHTS_STRATEGY'> } // prettier-ignore
    export interface HasSingle_REGIONAL_PROMPTS { _REGIONAL_PROMPTS: ComfyNodeOutput<'REGIONAL_PROMPTS'> } // prettier-ignore
    export interface HasSingle_STRING { _STRING: string | ComfyNodeOutput<'STRING'> } // prettier-ignore
    export interface HasSingle_FLOAT { _FLOAT: number | ComfyNodeOutput<'FLOAT'> } // prettier-ignore
    export interface HasSingle_SCHEDULER_FUNC { _SCHEDULER_FUNC: ComfyNodeOutput<'SCHEDULER_FUNC'> } // prettier-ignore
    export interface HasSingle_IPADAPTER_PIPE { _IPADAPTER_PIPE: ComfyNodeOutput<'IPADAPTER_PIPE'> } // prettier-ignore
    export interface HasSingle_UPSCALE_MODEL { _UPSCALE_MODEL: ComfyNodeOutput<'UPSCALE_MODEL'> } // prettier-ignore
+   export interface HasSingle_POSE_KEYPOINT { _POSE_KEYPOINT: ComfyNodeOutput<'POSE_KEYPOINT'> } // prettier-ignore
    export interface HasSingle_BBOX_DETECTOR { _BBOX_DETECTOR: ComfyNodeOutput<'BBOX_DETECTOR'> } // prettier-ignore
    export interface HasSingle_DETAILER_HOOK { _DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK'> } // prettier-ignore
    export interface HasSingle_DETAILER_PIPE { _DETAILER_PIPE: ComfyNodeOutput<'DETAILER_PIPE'> } // prettier-ignore
@@ -8488,14 +11262,18 @@ declare global {
    export interface HasSingle_UPSCALER_HOOK { _UPSCALER_HOOK: ComfyNodeOutput<'UPSCALER_HOOK'> } // prettier-ignore
    export interface HasSingle_INT { _INT: number | ComfyNodeOutput<'INT'> } // prettier-ignore
    export interface HasSingle_CONDITIONING { _CONDITIONING: ComfyNodeOutput<'CONDITIONING'> } // prettier-ignore
+   export interface HasSingle_OPTICAL_FLOW { _OPTICAL_FLOW: ComfyNodeOutput<'OPTICAL_FLOW'> } // prettier-ignore
    export interface HasSingle_SEG_ELT_bbox { _SEG_ELT_bbox: ComfyNodeOutput<'SEG_ELT_bbox'> } // prettier-ignore
    export interface HasSingle_CLIP_VISION { _CLIP_VISION: ComfyNodeOutput<'CLIP_VISION'> } // prettier-ignore
    export interface HasSingle_STYLE_MODEL { _STYLE_MODEL: ComfyNodeOutput<'STYLE_MODEL'> } // prettier-ignore
    export interface HasSingle_CONTROL_NET { _CONTROL_NET: ComfyNodeOutput<'CONTROL_NET'> } // prettier-ignore
+   export interface HasSingle_INSIGHTFACE { _INSIGHTFACE: ComfyNodeOutput<'INSIGHTFACE'> } // prettier-ignore
    export interface HasSingle_SEGS_HEADER { _SEGS_HEADER: ComfyNodeOutput<'SEGS_HEADER'> } // prettier-ignore
    export interface HasSingle_PHOTOMAKER { _PHOTOMAKER: ComfyNodeOutput<'PHOTOMAKER'> } // prettier-ignore
    export interface HasSingle_BASIC_PIPE { _BASIC_PIPE: ComfyNodeOutput<'BASIC_PIPE'> } // prettier-ignore
+   export interface HasSingle_IPADAPTER { _IPADAPTER: ComfyNodeOutput<'IPADAPTER'> } // prettier-ignore
    export interface HasSingle_SAM_MODEL { _SAM_MODEL: ComfyNodeOutput<'SAM_MODEL'> } // prettier-ignore
+   export interface HasSingle_TRACKING { _TRACKING: ComfyNodeOutput<'TRACKING'> } // prettier-ignore
    export interface HasSingle_UPSCALER { _UPSCALER: ComfyNodeOutput<'UPSCALER'> } // prettier-ignore
    export interface HasSingle_KSAMPLER { _KSAMPLER: ComfyNodeOutput<'KSAMPLER'> } // prettier-ignore
    export interface HasSingle_SAMPLER { _SAMPLER: ComfyNodeOutput<'SAMPLER'> } // prettier-ignore
@@ -8506,6 +11284,7 @@ declare global {
    export interface HasSingle_SIGMAS { _SIGMAS: ComfyNodeOutput<'SIGMAS'> } // prettier-ignore
    export interface HasSingle_GUIDER { _GUIDER: ComfyNodeOutput<'GUIDER'> } // prettier-ignore
    export interface HasSingle_WEBCAM { _WEBCAM: ComfyNodeOutput<'WEBCAM'> } // prettier-ignore
+   export interface HasSingle_EMBEDS { _EMBEDS: ComfyNodeOutput<'EMBEDS'> } // prettier-ignore
    export interface HasSingle_MODEL { _MODEL: ComfyNodeOutput<'MODEL'> } // prettier-ignore
    export interface HasSingle_IMAGE { _IMAGE: ComfyNodeOutput<'IMAGE'> } // prettier-ignore
    export interface HasSingle_NOISE { _NOISE: ComfyNodeOutput<'NOISE'> } // prettier-ignore
@@ -8515,6 +11294,7 @@ declare global {
    export interface HasSingle_MASK { _MASK: ComfyNodeOutput<'MASK'> } // prettier-ignore
    export interface HasSingle_SEGS { _SEGS: ComfyNodeOutput<'SEGS'> } // prettier-ignore
    export interface HasSingle_VAE { _VAE: ComfyNodeOutput<'VAE'> } // prettier-ignore
+   export interface HasSingle_E_90ee599494f505c55a1a8cf8009c1a81c6238905 { _E_90ee599494f505c55a1a8cf8009c1a81c6238905: Comfy.Union.E_90ee599494f505c55a1a8cf8009c1a81c6238905 } // prettier-ignore
    export interface HasSingle_E_720061fdb15e8c451b6aa7ed023644f064ddc57d { _E_720061fdb15e8c451b6aa7ed023644f064ddc57d: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d } // prettier-ignore
    
    // 8.2 NODE UI helpers --------------------
@@ -8524,15 +11304,15 @@ declare global {
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
-        scheduler: { kind: 'enum', type: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325 }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_SamplerName }
+        scheduler: { kind: 'enum', type: Comfy.Union.E_SchedulerName }
         // positive: { kind: 'object', type: CONDITIONING }
         // negative: { kind: 'object', type: CONDITIONING }
         // latent_image: { kind: 'object', type: LATENT }
         denoise: { kind: 'number', type: number }
     }
     CheckpointLoaderSimple: {
-        ckpt_name: { kind: 'enum', type: Comfy.Union.E_1f08f73a9a576ae570aa3d82ea94f2bcfc29a8fc }
+        ckpt_name: { kind: 'enum', type: Comfy.Union.E_CkptName }
     }
     CLIPTextEncode: {
         text: { kind: 'string', type: string }
@@ -8557,7 +11337,7 @@ declare global {
         grow_mask_by: { kind: 'number', type: number }
     }
     VAELoader: {
-        vae_name: { kind: 'enum', type: Comfy.Union.E_621a1d2d13812defa70c4b6ec953d17713bd232a }
+        vae_name: { kind: 'enum', type: Comfy.Union.E_VaeName }
     }
     EmptyLatentImage: {
         width: { kind: 'number', type: number }
@@ -8566,14 +11346,14 @@ declare global {
     }
     LatentUpscale: {
         // samples: { kind: 'object', type: LATENT }
-        upscale_method: { kind: 'enum', type: Comfy.Union.E_6e6cbf6c48411ad480e010b0c9d2434b41af430d }
+        upscale_method: { kind: 'enum', type: Comfy.Union.E_LatentUpscaleMethod }
         width: { kind: 'number', type: number }
         height: { kind: 'number', type: number }
         crop: { kind: 'enum', type: Comfy.Union.E_e2779c2a162ed54d5841127cc2968e8d50f5e431 }
     }
     LatentUpscaleBy: {
         // samples: { kind: 'object', type: LATENT }
-        upscale_method: { kind: 'enum', type: Comfy.Union.E_6e6cbf6c48411ad480e010b0c9d2434b41af430d }
+        upscale_method: { kind: 'enum', type: Comfy.Union.E_LatentUpscaleMethod }
         scale_by: { kind: 'number', type: number }
     }
     LatentFromBatch: {
@@ -8593,22 +11373,22 @@ declare global {
         // images: { kind: 'object', type: IMAGE }
     }
     LoadImage: {
-        image: { kind: 'enum', type: Comfy.Union.E_26ea5ad8c44c9551fea858fff18017427386b591 }
+        image: { kind: 'enum', type: Comfy.Union.E_Image }
     }
     LoadImageMask: {
-        image: { kind: 'enum', type: Comfy.Union.E_26ea5ad8c44c9551fea858fff18017427386b591 }
-        channel: { kind: 'enum', type: Comfy.Union.E_19d5be39f1fd20a88fdbcb009a06c7df2b0ef998 }
+        image: { kind: 'enum', type: Comfy.Union.E_Image }
+        channel: { kind: 'enum', type: Comfy.Union.E_Channel }
     }
     ImageScale: {
         // image: { kind: 'object', type: IMAGE }
-        upscale_method: { kind: 'enum', type: Comfy.Union.E_165b455eb22956fc9da6e1b76d49a4077f15d897 }
+        upscale_method: { kind: 'enum', type: Comfy.Union.E_ImageUpscaleMethod }
         width: { kind: 'number', type: number }
         height: { kind: 'number', type: number }
         crop: { kind: 'enum', type: Comfy.Union.E_e2779c2a162ed54d5841127cc2968e8d50f5e431 }
     }
     ImageScaleBy: {
         // image: { kind: 'object', type: IMAGE }
-        upscale_method: { kind: 'enum', type: Comfy.Union.E_165b455eb22956fc9da6e1b76d49a4077f15d897 }
+        upscale_method: { kind: 'enum', type: Comfy.Union.E_ImageUpscaleMethod }
         scale_by: { kind: 'number', type: number }
     }
     ImageInvert: {
@@ -8673,18 +11453,18 @@ declare global {
     }
     KSamplerAdvanced: {
         // model: { kind: 'object', type: MODEL }
-        add_noise: { kind: 'enum', type: Comfy.Union.E_449b4cae3566dd9b97c417c352bb08e25b89431b }
+        add_noise: { kind: 'enum', type: Comfy.Union.E_EnableOrDisable }
         noise_seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
-        scheduler: { kind: 'enum', type: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325 }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_SamplerName }
+        scheduler: { kind: 'enum', type: Comfy.Union.E_SchedulerName }
         // positive: { kind: 'object', type: CONDITIONING }
         // negative: { kind: 'object', type: CONDITIONING }
         // latent_image: { kind: 'object', type: LATENT }
         start_at_step: { kind: 'number', type: number }
         end_at_step: { kind: 'number', type: number }
-        return_with_leftover_noise: { kind: 'enum', type: Comfy.Union.E_449b4cae3566dd9b97c417c352bb08e25b89431b }
+        return_with_leftover_noise: { kind: 'enum', type: Comfy.Union.E_EnableOrDisable }
     }
     SetLatentNoiseMask: {
         // samples: { kind: 'object', type: LATENT }
@@ -8704,11 +11484,11 @@ declare global {
     }
     LatentRotate: {
         // samples: { kind: 'object', type: LATENT }
-        rotation: { kind: 'enum', type: Comfy.Union.E_061551528c540e0171a9c88a94c7d5375aa31f8a }
+        rotation: { kind: 'enum', type: Comfy.Union.E_Rotation }
     }
     LatentFlip: {
         // samples: { kind: 'object', type: LATENT }
-        flip_method: { kind: 'enum', type: Comfy.Union.E_cdf7071acecb5016da941b6e718b82c97248a3e4 }
+        flip_method: { kind: 'enum', type: Comfy.Union.E_FlipMethod }
     }
     LatentCrop: {
         // samples: { kind: 'object', type: LATENT }
@@ -8720,22 +11500,22 @@ declare global {
     LoraLoader: {
         // model: { kind: 'object', type: MODEL }
         // clip: { kind: 'object', type: CLIP }
-        lora_name: { kind: 'enum', type: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 }
+        lora_name: { kind: 'enum', type: Comfy.Union.E_LoraName }
         strength_model: { kind: 'number', type: number }
         strength_clip: { kind: 'number', type: number }
     }
     CLIPLoader: {
-        clip_name: { kind: 'enum', type: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 }
-        type: { kind: 'enum', type: Comfy.Union.E_766fb79b4f3904a6716246cfb2a33b7b9e6a08c4 }
+        clip_name: { kind: 'enum', type: Comfy.Union.E_LoraName }
+        type: { kind: 'enum', type: Comfy.Union.E_ClipType }
     }
     UNETLoader: {
-        unet_name: { kind: 'enum', type: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 }
-        weight_dtype: { kind: 'enum', type: Comfy.Union.E_21ba65fbb0df707c108b25356a3507e13f21ea58 }
+        unet_name: { kind: 'enum', type: Comfy.Union.E_LoraName }
+        weight_dtype: { kind: 'enum', type: Comfy.Union.E_WeightDType }
     }
     DualCLIPLoader: {
-        clip_name1: { kind: 'enum', type: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 }
-        clip_name2: { kind: 'enum', type: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 }
-        type: { kind: 'enum', type: Comfy.Union.E_39292df8ce88fd66f0dacf6f9110cfa2594ca25c }
+        clip_name1: { kind: 'enum', type: Comfy.Union.E_LoraName }
+        clip_name2: { kind: 'enum', type: Comfy.Union.E_LoraName }
+        type: { kind: 'enum', type: Comfy.Union.E_DualClipType }
     }
     CLIPVisionEncode: {
         // clip_vision: { kind: 'object', type: CLIP_VISION }
@@ -8769,17 +11549,17 @@ declare global {
         // vae: { kind: 'object', type: VAE }
     }
     ControlNetLoader: {
-        control_net_name: { kind: 'enum', type: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 }
+        control_net_name: { kind: 'enum', type: Comfy.Union.E_LoraName }
     }
     DiffControlNetLoader: {
         // model: { kind: 'object', type: MODEL }
-        control_net_name: { kind: 'enum', type: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 }
+        control_net_name: { kind: 'enum', type: Comfy.Union.E_LoraName }
     }
     StyleModelLoader: {
-        style_model_name: { kind: 'enum', type: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 }
+        style_model_name: { kind: 'enum', type: Comfy.Union.E_LoraName }
     }
     CLIPVisionLoader: {
-        clip_name: { kind: 'enum', type: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 }
+        clip_name: { kind: 'enum', type: Comfy.Union.E_LoraName }
     }
     VAEDecodeTiled: {
         // samples: { kind: 'object', type: LATENT }
@@ -8792,10 +11572,10 @@ declare global {
         tile_size: { kind: 'number', type: number }
     }
     unCLIPCheckpointLoader: {
-        ckpt_name: { kind: 'enum', type: Comfy.Union.E_1f08f73a9a576ae570aa3d82ea94f2bcfc29a8fc }
+        ckpt_name: { kind: 'enum', type: Comfy.Union.E_CkptName }
     }
     GLIGENLoader: {
-        gligen_name: { kind: 'enum', type: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 }
+        gligen_name: { kind: 'enum', type: Comfy.Union.E_LoraName }
     }
     GLIGENTextBoxApply: {
         // conditioning_to: { kind: 'object', type: CONDITIONING }
@@ -8815,14 +11595,14 @@ declare global {
         // mask: { kind: 'object', type: MASK }
     }
     CheckpointLoader: {
-        config_name: { kind: 'enum', type: Comfy.Union.E_a1972c9480c542a0e8ccafa03c2572ba5fc62160 }
-        ckpt_name: { kind: 'enum', type: Comfy.Union.E_1f08f73a9a576ae570aa3d82ea94f2bcfc29a8fc }
+        config_name: { kind: 'enum', type: Comfy.Union.E_CkptConfigName }
+        ckpt_name: { kind: 'enum', type: Comfy.Union.E_CkptName }
     }
     DiffusersLoader: {
-        model_path: { kind: 'enum', type: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 }
+        model_path: { kind: 'enum', type: Comfy.Union.E_LoraName }
     }
     LoadLatent: {
-        latent: { kind: 'enum', type: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 }
+        latent: { kind: 'enum', type: Comfy.Union.E_LoraName }
     }
     SaveLatent: {
         // samples: { kind: 'object', type: LATENT }
@@ -8838,7 +11618,7 @@ declare global {
     }
     LoraLoaderModelOnly: {
         // model: { kind: 'object', type: MODEL }
-        lora_name: { kind: 'enum', type: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 }
+        lora_name: { kind: 'enum', type: Comfy.Union.E_LoraName }
         strength_model: { kind: 'number', type: number }
     }
     LatentAdd: {
@@ -8884,7 +11664,7 @@ declare global {
     }
     HypernetworkLoader: {
         // model: { kind: 'object', type: MODEL }
-        hypernetwork_name: { kind: 'enum', type: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 }
+        hypernetwork_name: { kind: 'enum', type: Comfy.Union.E_LoraName }
         strength: { kind: 'number', type: number }
     }
     UpscaleModelLoader: {
@@ -8918,7 +11698,7 @@ declare global {
     }
     ImageScaleToTotalPixels: {
         // image: { kind: 'object', type: IMAGE }
-        upscale_method: { kind: 'enum', type: Comfy.Union.E_165b455eb22956fc9da6e1b76d49a4077f15d897 }
+        upscale_method: { kind: 'enum', type: Comfy.Union.E_ImageUpscaleMethod }
         megapixels: { kind: 'number', type: number }
     }
     LatentCompositeMasked: {
@@ -8942,7 +11722,7 @@ declare global {
     }
     ImageToMask: {
         // image: { kind: 'object', type: IMAGE }
-        channel: { kind: 'enum', type: Comfy.Union.E_19d5be39f1fd20a88fdbcb009a06c7df2b0ef998 }
+        channel: { kind: 'enum', type: Comfy.Union.E_Channel }
     }
     ImageColorToMask: {
         // image: { kind: 'object', type: IMAGE }
@@ -9115,7 +11895,7 @@ declare global {
     }
     BasicScheduler: {
         // model: { kind: 'object', type: MODEL }
-        scheduler: { kind: 'enum', type: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325 }
+        scheduler: { kind: 'enum', type: Comfy.Union.E_SchedulerName }
         steps: { kind: 'number', type: number }
         denoise: { kind: 'number', type: number }
     }
@@ -9161,7 +11941,7 @@ declare global {
         denoise: { kind: 'number', type: number }
     }
     KSamplerSelect: {
-        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_SamplerName }
     }
     SamplerEulerAncestral: {
         eta: { kind: 'number', type: number }
@@ -9308,8 +12088,8 @@ declare global {
         start_percent: { kind: 'number', type: number }
         end_percent: { kind: 'number', type: number }
         downscale_after_skip: { kind: 'boolean', type: boolean }
-        downscale_method: { kind: 'enum', type: Comfy.Union.E_6e6cbf6c48411ad480e010b0c9d2434b41af430d }
-        upscale_method: { kind: 'enum', type: Comfy.Union.E_6e6cbf6c48411ad480e010b0c9d2434b41af430d }
+        downscale_method: { kind: 'enum', type: Comfy.Union.E_LatentUpscaleMethod }
+        upscale_method: { kind: 'enum', type: Comfy.Union.E_LatentUpscaleMethod }
     }
     ImageCrop: {
         // image: { kind: 'object', type: IMAGE }
@@ -9342,7 +12122,7 @@ declare global {
         compress_level: { kind: 'number', type: number }
     }
     ImageOnlyCheckpointLoader: {
-        ckpt_name: { kind: 'enum', type: Comfy.Union.E_1f08f73a9a576ae570aa3d82ea94f2bcfc29a8fc }
+        ckpt_name: { kind: 'enum', type: Comfy.Union.E_CkptName }
     }
     SVD$_img2vid$_Conditioning: {
         // clip_vision: { kind: 'object', type: CLIP_VISION }
@@ -9426,7 +12206,7 @@ declare global {
         noise_augmentation: { kind: 'number', type: number }
     }
     PhotoMakerLoader: {
-        photomaker_model_name: { kind: 'enum', type: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 }
+        photomaker_model_name: { kind: 'enum', type: Comfy.Union.E_LoraName }
     }
     PhotoMakerEncode: {
         // photomaker: { kind: 'object', type: PHOTOMAKER }
@@ -9757,7 +12537,7 @@ declare global {
     SamplerLCMUpscale: {
         scale_ratio: { kind: 'number', type: number }
         scale_steps: { kind: 'number', type: number }
-        upscale_method: { kind: 'enum', type: Comfy.Union.E_6e6cbf6c48411ad480e010b0c9d2434b41af430d }
+        upscale_method: { kind: 'enum', type: Comfy.Union.E_LatentUpscaleMethod }
     }
     SamplerEulerCFGpp: {
         version: { kind: 'enum', type: Comfy.Union.E_a8aa5eb2d828c2e279168c48955c7a0fe3ea011a }
@@ -9785,15 +12565,15 @@ declare global {
         filename_prefix: { kind: 'string', type: string }
     }
     LoadAudio: {
-        audio: { kind: 'enum', type: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 }
+        audio: { kind: 'enum', type: Comfy.Union.E_LoraName }
     }
     PreviewAudio: {
         // audio: { kind: 'object', type: AUDIO }
     }
     TripleCLIPLoader: {
-        clip_name1: { kind: 'enum', type: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 }
-        clip_name2: { kind: 'enum', type: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 }
-        clip_name3: { kind: 'enum', type: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 }
+        clip_name1: { kind: 'enum', type: Comfy.Union.E_LoraName }
+        clip_name2: { kind: 'enum', type: Comfy.Union.E_LoraName }
+        clip_name3: { kind: 'enum', type: Comfy.Union.E_LoraName }
     }
     EmptySD3LatentImage: {
         width: { kind: 'number', type: number }
@@ -9880,6 +12660,752 @@ declare global {
     SaveImageWebsocket: {
         // images: { kind: 'object', type: IMAGE }
     }
+    IPAdapter: {
+        // model: { kind: 'object', type: MODEL }
+        // ipadapter: { kind: 'object', type: IPADAPTER }
+        // image: { kind: 'object', type: IMAGE }
+        weight: { kind: 'number', type: number }
+        start_at: { kind: 'number', type: number }
+        end_at: { kind: 'number', type: number }
+        weight_type: { kind: 'enum', type: Comfy.Union.E_1fcb051d43a7df978808f9920fa8d428961d34f5 }
+        // attn_mask: { kind: 'object', type: MASK }
+    }
+    IPAdapterAdvanced: {
+        // model: { kind: 'object', type: MODEL }
+        // ipadapter: { kind: 'object', type: IPADAPTER }
+        // image: { kind: 'object', type: IMAGE }
+        weight: { kind: 'number', type: number }
+        weight_type: { kind: 'enum', type: Comfy.Union.E_7308d8ab4ff2021b77b352e491612116709172af }
+        combine_embeds: { kind: 'enum', type: Comfy.Union.E_055d80a7c582bd5b57fd6775414e697be3f0f580 }
+        start_at: { kind: 'number', type: number }
+        end_at: { kind: 'number', type: number }
+        embeds_scaling: { kind: 'enum', type: Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd }
+        // image_negative: { kind: 'object', type: IMAGE }
+        // attn_mask: { kind: 'object', type: MASK }
+        // clip_vision: { kind: 'object', type: CLIP_VISION }
+    }
+    IPAdapterBatch: {
+        // model: { kind: 'object', type: MODEL }
+        // ipadapter: { kind: 'object', type: IPADAPTER }
+        // image: { kind: 'object', type: IMAGE }
+        weight: { kind: 'number', type: number }
+        weight_type: { kind: 'enum', type: Comfy.Union.E_7308d8ab4ff2021b77b352e491612116709172af }
+        start_at: { kind: 'number', type: number }
+        end_at: { kind: 'number', type: number }
+        embeds_scaling: { kind: 'enum', type: Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd }
+        encode_batch_size: { kind: 'number', type: number }
+        // image_negative: { kind: 'object', type: IMAGE }
+        // attn_mask: { kind: 'object', type: MASK }
+        // clip_vision: { kind: 'object', type: CLIP_VISION }
+    }
+    IPAdapterFaceID: {
+        // model: { kind: 'object', type: MODEL }
+        // ipadapter: { kind: 'object', type: IPADAPTER }
+        // image: { kind: 'object', type: IMAGE }
+        weight: { kind: 'number', type: number }
+        weight_faceidv2: { kind: 'number', type: number }
+        weight_type: { kind: 'enum', type: Comfy.Union.E_7308d8ab4ff2021b77b352e491612116709172af }
+        combine_embeds: { kind: 'enum', type: Comfy.Union.E_055d80a7c582bd5b57fd6775414e697be3f0f580 }
+        start_at: { kind: 'number', type: number }
+        end_at: { kind: 'number', type: number }
+        embeds_scaling: { kind: 'enum', type: Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd }
+        // image_negative: { kind: 'object', type: IMAGE }
+        // attn_mask: { kind: 'object', type: MASK }
+        // clip_vision: { kind: 'object', type: CLIP_VISION }
+        // insightface: { kind: 'object', type: INSIGHTFACE }
+    }
+    IPAdapterFaceIDKolors: {
+        // model: { kind: 'object', type: MODEL }
+        // ipadapter: { kind: 'object', type: IPADAPTER }
+        // image: { kind: 'object', type: IMAGE }
+        weight: { kind: 'number', type: number }
+        weight_faceidv2: { kind: 'number', type: number }
+        weight_kolors: { kind: 'number', type: number }
+        weight_type: { kind: 'enum', type: Comfy.Union.E_7308d8ab4ff2021b77b352e491612116709172af }
+        combine_embeds: { kind: 'enum', type: Comfy.Union.E_055d80a7c582bd5b57fd6775414e697be3f0f580 }
+        start_at: { kind: 'number', type: number }
+        end_at: { kind: 'number', type: number }
+        embeds_scaling: { kind: 'enum', type: Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd }
+        // image_negative: { kind: 'object', type: IMAGE }
+        // attn_mask: { kind: 'object', type: MASK }
+        // clip_vision: { kind: 'object', type: CLIP_VISION }
+        // insightface: { kind: 'object', type: INSIGHTFACE }
+    }
+    IPAAdapterFaceIDBatch: {
+        // model: { kind: 'object', type: MODEL }
+        // ipadapter: { kind: 'object', type: IPADAPTER }
+        // image: { kind: 'object', type: IMAGE }
+        weight: { kind: 'number', type: number }
+        weight_faceidv2: { kind: 'number', type: number }
+        weight_type: { kind: 'enum', type: Comfy.Union.E_7308d8ab4ff2021b77b352e491612116709172af }
+        combine_embeds: { kind: 'enum', type: Comfy.Union.E_055d80a7c582bd5b57fd6775414e697be3f0f580 }
+        start_at: { kind: 'number', type: number }
+        end_at: { kind: 'number', type: number }
+        embeds_scaling: { kind: 'enum', type: Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd }
+        // image_negative: { kind: 'object', type: IMAGE }
+        // attn_mask: { kind: 'object', type: MASK }
+        // clip_vision: { kind: 'object', type: CLIP_VISION }
+        // insightface: { kind: 'object', type: INSIGHTFACE }
+    }
+    IPAdapterTiled: {
+        // model: { kind: 'object', type: MODEL }
+        // ipadapter: { kind: 'object', type: IPADAPTER }
+        // image: { kind: 'object', type: IMAGE }
+        weight: { kind: 'number', type: number }
+        weight_type: { kind: 'enum', type: Comfy.Union.E_7308d8ab4ff2021b77b352e491612116709172af }
+        combine_embeds: { kind: 'enum', type: Comfy.Union.E_055d80a7c582bd5b57fd6775414e697be3f0f580 }
+        start_at: { kind: 'number', type: number }
+        end_at: { kind: 'number', type: number }
+        sharpening: { kind: 'number', type: number }
+        embeds_scaling: { kind: 'enum', type: Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd }
+        // image_negative: { kind: 'object', type: IMAGE }
+        // attn_mask: { kind: 'object', type: MASK }
+        // clip_vision: { kind: 'object', type: CLIP_VISION }
+    }
+    IPAdapterTiledBatch: {
+        // model: { kind: 'object', type: MODEL }
+        // ipadapter: { kind: 'object', type: IPADAPTER }
+        // image: { kind: 'object', type: IMAGE }
+        weight: { kind: 'number', type: number }
+        weight_type: { kind: 'enum', type: Comfy.Union.E_7308d8ab4ff2021b77b352e491612116709172af }
+        start_at: { kind: 'number', type: number }
+        end_at: { kind: 'number', type: number }
+        sharpening: { kind: 'number', type: number }
+        embeds_scaling: { kind: 'enum', type: Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd }
+        encode_batch_size: { kind: 'number', type: number }
+        // image_negative: { kind: 'object', type: IMAGE }
+        // attn_mask: { kind: 'object', type: MASK }
+        // clip_vision: { kind: 'object', type: CLIP_VISION }
+    }
+    IPAdapterEmbeds: {
+        // model: { kind: 'object', type: MODEL }
+        // ipadapter: { kind: 'object', type: IPADAPTER }
+        // pos_embed: { kind: 'object', type: EMBEDS }
+        weight: { kind: 'number', type: number }
+        weight_type: { kind: 'enum', type: Comfy.Union.E_7308d8ab4ff2021b77b352e491612116709172af }
+        start_at: { kind: 'number', type: number }
+        end_at: { kind: 'number', type: number }
+        embeds_scaling: { kind: 'enum', type: Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd }
+        // neg_embed: { kind: 'object', type: EMBEDS }
+        // attn_mask: { kind: 'object', type: MASK }
+        // clip_vision: { kind: 'object', type: CLIP_VISION }
+    }
+    IPAdapterEmbedsBatch: {
+        // model: { kind: 'object', type: MODEL }
+        // ipadapter: { kind: 'object', type: IPADAPTER }
+        // pos_embed: { kind: 'object', type: EMBEDS }
+        weight: { kind: 'number', type: number }
+        weight_type: { kind: 'enum', type: Comfy.Union.E_7308d8ab4ff2021b77b352e491612116709172af }
+        start_at: { kind: 'number', type: number }
+        end_at: { kind: 'number', type: number }
+        embeds_scaling: { kind: 'enum', type: Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd }
+        // neg_embed: { kind: 'object', type: EMBEDS }
+        // attn_mask: { kind: 'object', type: MASK }
+        // clip_vision: { kind: 'object', type: CLIP_VISION }
+    }
+    IPAdapterStyleComposition: {
+        // model: { kind: 'object', type: MODEL }
+        // ipadapter: { kind: 'object', type: IPADAPTER }
+        // image_style: { kind: 'object', type: IMAGE }
+        // image_composition: { kind: 'object', type: IMAGE }
+        weight_style: { kind: 'number', type: number }
+        weight_composition: { kind: 'number', type: number }
+        expand_style: { kind: 'boolean', type: boolean }
+        combine_embeds: { kind: 'enum', type: Comfy.Union.E_055d80a7c582bd5b57fd6775414e697be3f0f580 }
+        start_at: { kind: 'number', type: number }
+        end_at: { kind: 'number', type: number }
+        embeds_scaling: { kind: 'enum', type: Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd }
+        // image_negative: { kind: 'object', type: IMAGE }
+        // attn_mask: { kind: 'object', type: MASK }
+        // clip_vision: { kind: 'object', type: CLIP_VISION }
+    }
+    IPAdapterStyleCompositionBatch: {
+        // model: { kind: 'object', type: MODEL }
+        // ipadapter: { kind: 'object', type: IPADAPTER }
+        // image_style: { kind: 'object', type: IMAGE }
+        // image_composition: { kind: 'object', type: IMAGE }
+        weight_style: { kind: 'number', type: number }
+        weight_composition: { kind: 'number', type: number }
+        expand_style: { kind: 'boolean', type: boolean }
+        start_at: { kind: 'number', type: number }
+        end_at: { kind: 'number', type: number }
+        embeds_scaling: { kind: 'enum', type: Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd }
+        // image_negative: { kind: 'object', type: IMAGE }
+        // attn_mask: { kind: 'object', type: MASK }
+        // clip_vision: { kind: 'object', type: CLIP_VISION }
+    }
+    IPAdapterMS: {
+        // model: { kind: 'object', type: MODEL }
+        // ipadapter: { kind: 'object', type: IPADAPTER }
+        // image: { kind: 'object', type: IMAGE }
+        weight: { kind: 'number', type: number }
+        weight_faceidv2: { kind: 'number', type: number }
+        weight_type: { kind: 'enum', type: Comfy.Union.E_7308d8ab4ff2021b77b352e491612116709172af }
+        combine_embeds: { kind: 'enum', type: Comfy.Union.E_055d80a7c582bd5b57fd6775414e697be3f0f580 }
+        start_at: { kind: 'number', type: number }
+        end_at: { kind: 'number', type: number }
+        embeds_scaling: { kind: 'enum', type: Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd }
+        layer_weights: { kind: 'string', type: string }
+        // image_negative: { kind: 'object', type: IMAGE }
+        // attn_mask: { kind: 'object', type: MASK }
+        // clip_vision: { kind: 'object', type: CLIP_VISION }
+        // insightface: { kind: 'object', type: INSIGHTFACE }
+    }
+    IPAdapterClipVisionEnhancer: {
+        // model: { kind: 'object', type: MODEL }
+        // ipadapter: { kind: 'object', type: IPADAPTER }
+        // image: { kind: 'object', type: IMAGE }
+        weight: { kind: 'number', type: number }
+        weight_type: { kind: 'enum', type: Comfy.Union.E_7308d8ab4ff2021b77b352e491612116709172af }
+        combine_embeds: { kind: 'enum', type: Comfy.Union.E_055d80a7c582bd5b57fd6775414e697be3f0f580 }
+        start_at: { kind: 'number', type: number }
+        end_at: { kind: 'number', type: number }
+        embeds_scaling: { kind: 'enum', type: Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd }
+        enhance_tiles: { kind: 'number', type: number }
+        enhance_ratio: { kind: 'number', type: number }
+        // image_negative: { kind: 'object', type: IMAGE }
+        // attn_mask: { kind: 'object', type: MASK }
+        // clip_vision: { kind: 'object', type: CLIP_VISION }
+    }
+    IPAdapterClipVisionEnhancerBatch: {
+        // model: { kind: 'object', type: MODEL }
+        // ipadapter: { kind: 'object', type: IPADAPTER }
+        // image: { kind: 'object', type: IMAGE }
+        weight: { kind: 'number', type: number }
+        weight_type: { kind: 'enum', type: Comfy.Union.E_7308d8ab4ff2021b77b352e491612116709172af }
+        start_at: { kind: 'number', type: number }
+        end_at: { kind: 'number', type: number }
+        embeds_scaling: { kind: 'enum', type: Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd }
+        enhance_tiles: { kind: 'number', type: number }
+        enhance_ratio: { kind: 'number', type: number }
+        encode_batch_size: { kind: 'number', type: number }
+        // image_negative: { kind: 'object', type: IMAGE }
+        // attn_mask: { kind: 'object', type: MASK }
+        // clip_vision: { kind: 'object', type: CLIP_VISION }
+    }
+    IPAdapterFromParams: {
+        // model: { kind: 'object', type: MODEL }
+        // ipadapter: { kind: 'object', type: IPADAPTER }
+        // ipadapter_params: { kind: 'object', type: IPADAPTER_PARAMS }
+        combine_embeds: { kind: 'enum', type: Comfy.Union.E_055d80a7c582bd5b57fd6775414e697be3f0f580 }
+        embeds_scaling: { kind: 'enum', type: Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd }
+        // image_negative: { kind: 'object', type: IMAGE }
+        // clip_vision: { kind: 'object', type: CLIP_VISION }
+    }
+    IPAdapterPreciseStyleTransfer: {
+        // model: { kind: 'object', type: MODEL }
+        // ipadapter: { kind: 'object', type: IPADAPTER }
+        // image: { kind: 'object', type: IMAGE }
+        weight: { kind: 'number', type: number }
+        style_boost: { kind: 'number', type: number }
+        combine_embeds: { kind: 'enum', type: Comfy.Union.E_055d80a7c582bd5b57fd6775414e697be3f0f580 }
+        start_at: { kind: 'number', type: number }
+        end_at: { kind: 'number', type: number }
+        embeds_scaling: { kind: 'enum', type: Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd }
+        // image_negative: { kind: 'object', type: IMAGE }
+        // attn_mask: { kind: 'object', type: MASK }
+        // clip_vision: { kind: 'object', type: CLIP_VISION }
+    }
+    IPAdapterPreciseStyleTransferBatch: {
+        // model: { kind: 'object', type: MODEL }
+        // ipadapter: { kind: 'object', type: IPADAPTER }
+        // image: { kind: 'object', type: IMAGE }
+        weight: { kind: 'number', type: number }
+        style_boost: { kind: 'number', type: number }
+        combine_embeds: { kind: 'enum', type: Comfy.Union.E_055d80a7c582bd5b57fd6775414e697be3f0f580 }
+        start_at: { kind: 'number', type: number }
+        end_at: { kind: 'number', type: number }
+        embeds_scaling: { kind: 'enum', type: Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd }
+        // image_negative: { kind: 'object', type: IMAGE }
+        // attn_mask: { kind: 'object', type: MASK }
+        // clip_vision: { kind: 'object', type: CLIP_VISION }
+    }
+    IPAdapterPreciseComposition: {
+        // model: { kind: 'object', type: MODEL }
+        // ipadapter: { kind: 'object', type: IPADAPTER }
+        // image: { kind: 'object', type: IMAGE }
+        weight: { kind: 'number', type: number }
+        composition_boost: { kind: 'number', type: number }
+        combine_embeds: { kind: 'enum', type: Comfy.Union.E_055d80a7c582bd5b57fd6775414e697be3f0f580 }
+        start_at: { kind: 'number', type: number }
+        end_at: { kind: 'number', type: number }
+        embeds_scaling: { kind: 'enum', type: Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd }
+        // image_negative: { kind: 'object', type: IMAGE }
+        // attn_mask: { kind: 'object', type: MASK }
+        // clip_vision: { kind: 'object', type: CLIP_VISION }
+    }
+    IPAdapterPreciseCompositionBatch: {
+        // model: { kind: 'object', type: MODEL }
+        // ipadapter: { kind: 'object', type: IPADAPTER }
+        // image: { kind: 'object', type: IMAGE }
+        weight: { kind: 'number', type: number }
+        composition_boost: { kind: 'number', type: number }
+        combine_embeds: { kind: 'enum', type: Comfy.Union.E_055d80a7c582bd5b57fd6775414e697be3f0f580 }
+        start_at: { kind: 'number', type: number }
+        end_at: { kind: 'number', type: number }
+        embeds_scaling: { kind: 'enum', type: Comfy.Union.E_434e3bb71d1c82c37d581b584d02ff9d3124ecbd }
+        // image_negative: { kind: 'object', type: IMAGE }
+        // attn_mask: { kind: 'object', type: MASK }
+        // clip_vision: { kind: 'object', type: CLIP_VISION }
+    }
+    IPAdapterUnifiedLoader: {
+        // model: { kind: 'object', type: MODEL }
+        preset: { kind: 'enum', type: Comfy.Union.E_17c57a2dd2fbcfa4d9125e24f9614e22372bd34a }
+        // ipadapter: { kind: 'object', type: IPADAPTER }
+    }
+    IPAdapterUnifiedLoaderFaceID: {
+        // model: { kind: 'object', type: MODEL }
+        preset: { kind: 'enum', type: Comfy.Union.E_a3e559d09ececb9f9d7ea7907bc20803f01fb398 }
+        lora_strength: { kind: 'number', type: number }
+        provider: { kind: 'enum', type: Comfy.Union.E_5d668a2048c21af6c78eb7cfdb4437296166c713 }
+        // ipadapter: { kind: 'object', type: IPADAPTER }
+    }
+    IPAdapterModelLoader: {
+        ipadapter_file: { kind: 'enum', type: Comfy.Union.E_LoraName }
+    }
+    IPAdapterInsightFaceLoader: {
+        provider: { kind: 'enum', type: Comfy.Union.E_13cd0468c1723423ffe1fa05a4a7e51caa5b2a17 }
+        model_name: { kind: 'enum', type: Comfy.Union.E_8ade6e7081b18f83b376495ecffe0f7d309758e4 }
+    }
+    IPAdapterUnifiedLoaderCommunity: {
+        // model: { kind: 'object', type: MODEL }
+        preset: { kind: 'enum', type: Comfy.Union.E_a528931a02ae6272b3f532ca266fecea0688e366 }
+        // ipadapter: { kind: 'object', type: IPADAPTER }
+    }
+    IPAdapterEncoder: {
+        // ipadapter: { kind: 'object', type: IPADAPTER }
+        // image: { kind: 'object', type: IMAGE }
+        weight: { kind: 'number', type: number }
+        // mask: { kind: 'object', type: MASK }
+        // clip_vision: { kind: 'object', type: CLIP_VISION }
+    }
+    IPAdapterCombineEmbeds: {
+        // embed1: { kind: 'object', type: EMBEDS }
+        method: { kind: 'enum', type: Comfy.Union.E_887e4c8bfd30e7fc47c0d7ccb69d59436094aba6 }
+        // embed2: { kind: 'object', type: EMBEDS }
+        // embed3: { kind: 'object', type: EMBEDS }
+        // embed4: { kind: 'object', type: EMBEDS }
+        // embed5: { kind: 'object', type: EMBEDS }
+    }
+    IPAdapterNoise: {
+        type: { kind: 'enum', type: Comfy.Union.E_9cefb90b6a43ee19ecb81f7e91648388c73fc378 }
+        strength: { kind: 'number', type: number }
+        blur: { kind: 'number', type: number }
+        // image_optional: { kind: 'object', type: IMAGE }
+    }
+    PrepImageForClipVision: {
+        // image: { kind: 'object', type: IMAGE }
+        interpolation: { kind: 'enum', type: Comfy.Union.E_c7d4c5c5d9bd0342cbb8b0fbbc507a005791a174 }
+        crop_position: { kind: 'enum', type: Comfy.Union.E_ad4640a4b937a502f6364d06dc306f41f2dd56d2 }
+        sharpening: { kind: 'number', type: number }
+    }
+    IPAdapterSaveEmbeds: {
+        // embeds: { kind: 'object', type: EMBEDS }
+        filename_prefix: { kind: 'string', type: string }
+    }
+    IPAdapterLoadEmbeds: {
+        embeds: { kind: 'enum', type: Comfy.Union.E_LoraName }
+    }
+    IPAdapterWeights: {
+        weights: { kind: 'string', type: string }
+        timing: { kind: 'enum', type: Comfy.Union.E_0f767df7ea83e64cd689e348c203dfb74aff5773 }
+        frames: { kind: 'number', type: number }
+        start_frame: { kind: 'number', type: number }
+        end_frame: { kind: 'number', type: number }
+        add_starting_frames: { kind: 'number', type: number }
+        add_ending_frames: { kind: 'number', type: number }
+        method: { kind: 'enum', type: Comfy.Union.E_45d8f77c56ae5c73ccee61ce4fd889f5858acabf }
+        // image: { kind: 'object', type: IMAGE }
+    }
+    IPAdapterCombineWeights: {
+        weights_1: { kind: 'number', type: number }
+        weights_2: { kind: 'number', type: number }
+    }
+    IPAdapterWeightsFromStrategy: {
+        // weights_strategy: { kind: 'object', type: WEIGHTS_STRATEGY }
+        // image: { kind: 'object', type: IMAGE }
+    }
+    IPAdapterPromptScheduleFromWeightsStrategy: {
+        // weights_strategy: { kind: 'object', type: WEIGHTS_STRATEGY }
+        prompt: { kind: 'string', type: string }
+    }
+    IPAdapterRegionalConditioning: {
+        // image: { kind: 'object', type: IMAGE }
+        image_weight: { kind: 'number', type: number }
+        prompt_weight: { kind: 'number', type: number }
+        weight_type: { kind: 'enum', type: Comfy.Union.E_7308d8ab4ff2021b77b352e491612116709172af }
+        start_at: { kind: 'number', type: number }
+        end_at: { kind: 'number', type: number }
+        // mask: { kind: 'object', type: MASK }
+        // positive: { kind: 'object', type: CONDITIONING }
+        // negative: { kind: 'object', type: CONDITIONING }
+    }
+    IPAdapterCombineParams: {
+        // params_1: { kind: 'object', type: IPADAPTER_PARAMS }
+        // params_2: { kind: 'object', type: IPADAPTER_PARAMS }
+        // params_3: { kind: 'object', type: IPADAPTER_PARAMS }
+        // params_4: { kind: 'object', type: IPADAPTER_PARAMS }
+        // params_5: { kind: 'object', type: IPADAPTER_PARAMS }
+    }
+    ShufflePreprocessor: {
+        // image: { kind: 'object', type: IMAGE }
+        resolution: { kind: 'number', type: number }
+        seed: { kind: 'number', type: number }
+    }
+    DensePosePreprocessor: {
+        // image: { kind: 'object', type: IMAGE }
+        model: { kind: 'enum', type: Comfy.Union.E_8de7e678f3a40dd26000add869549d52b40eea76 }
+        cmap: { kind: 'enum', type: Comfy.Union.E_621dc6c65530de6a1bfd3fab8f84171285b9ddef }
+        resolution: { kind: 'number', type: number }
+    }
+    LeReS$7DepthMapPreprocessor: {
+        // image: { kind: 'object', type: IMAGE }
+        rm_nearest: { kind: 'number', type: number }
+        rm_background: { kind: 'number', type: number }
+        boost: { kind: 'enum', type: Comfy.Union.E_EnableOrDisable }
+        resolution: { kind: 'number', type: number }
+    }
+    BinaryPreprocessor: {
+        // image: { kind: 'object', type: IMAGE }
+        bin_threshold: { kind: 'number', type: number }
+        resolution: { kind: 'number', type: number }
+    }
+    AnimeFace$_SemSegPreprocessor: {
+        // image: { kind: 'object', type: IMAGE }
+        remove_background_using_abg: { kind: 'boolean', type: boolean }
+        resolution: { kind: 'number', type: number }
+    }
+    Zoe$7DepthMapPreprocessor: {
+        // image: { kind: 'object', type: IMAGE }
+        resolution: { kind: 'number', type: number }
+    }
+    DepthAnythingPreprocessor: {
+        // image: { kind: 'object', type: IMAGE }
+        ckpt_name: { kind: 'enum', type: Comfy.Union.E_735dbaeb4a65035d6371a3a8387b694815ffa184 }
+        resolution: { kind: 'number', type: number }
+    }
+    Zoe$_DepthAnythingPreprocessor: {
+        // image: { kind: 'object', type: IMAGE }
+        environment: { kind: 'enum', type: Comfy.Union.E_453e00523f8522497b1b3ef1b5cb1e99653f762d }
+        resolution: { kind: 'number', type: number }
+    }
+    DepthAnythingV2Preprocessor: {
+        // image: { kind: 'object', type: IMAGE }
+        ckpt_name: { kind: 'enum', type: Comfy.Union.E_30291c97550ef461f5a79884cd944debc9ba4bcf }
+        resolution: { kind: 'number', type: number }
+    }
+    CannyEdgePreprocessor: {
+        // image: { kind: 'object', type: IMAGE }
+        low_threshold: { kind: 'number', type: number }
+        high_threshold: { kind: 'number', type: number }
+        resolution: { kind: 'number', type: number }
+    }
+    DWPreprocessor: {
+        // image: { kind: 'object', type: IMAGE }
+        detect_hand: { kind: 'enum', type: Comfy.Union.E_EnableOrDisable }
+        detect_body: { kind: 'enum', type: Comfy.Union.E_EnableOrDisable }
+        detect_face: { kind: 'enum', type: Comfy.Union.E_EnableOrDisable }
+        resolution: { kind: 'number', type: number }
+        bbox_detector: { kind: 'enum', type: Comfy.Union.E_8b9acde8011b3c2e67b20fef1c037f35cac04a7e }
+        pose_estimator: { kind: 'enum', type: Comfy.Union.E_2f4bf8769543a6cb7a87b5740bb72074f7b687e8 }
+        scale_stick_for_xinsr_cn: { kind: 'enum', type: Comfy.Union.E_EnableOrDisable }
+    }
+    AnimalPosePreprocessor: {
+        // image: { kind: 'object', type: IMAGE }
+        bbox_detector: { kind: 'enum', type: Comfy.Union.E_8b9acde8011b3c2e67b20fef1c037f35cac04a7e }
+        pose_estimator: { kind: 'enum', type: Comfy.Union.E_45e5839ae917502b2b5141cd89c9ca12743f45b4 }
+        resolution: { kind: 'number', type: number }
+    }
+    ImageLuminanceDetector: {
+        // image: { kind: 'object', type: IMAGE }
+        gamma_correction: { kind: 'number', type: number }
+        resolution: { kind: 'number', type: number }
+    }
+    ImageIntensityDetector: {
+        // image: { kind: 'object', type: IMAGE }
+        gamma_correction: { kind: 'number', type: number }
+        resolution: { kind: 'number', type: number }
+    }
+    MediaPipe$7FaceMeshPreprocessor: {
+        // image: { kind: 'object', type: IMAGE }
+        max_faces: { kind: 'number', type: number }
+        min_confidence: { kind: 'number', type: number }
+        resolution: { kind: 'number', type: number }
+    }
+    DiffusionEdge$_Preprocessor: {
+        // image: { kind: 'object', type: IMAGE }
+        environment: { kind: 'enum', type: Comfy.Union.E_f2067692a1e679e71041f510afe6eadb4debc349 }
+        patch_batch_size: { kind: 'number', type: number }
+        resolution: { kind: 'number', type: number }
+    }
+    M$7LSDPreprocessor: {
+        // image: { kind: 'object', type: IMAGE }
+        score_threshold: { kind: 'number', type: number }
+        dist_threshold: { kind: 'number', type: number }
+        resolution: { kind: 'number', type: number }
+    }
+    HEDPreprocessor: {
+        // image: { kind: 'object', type: IMAGE }
+        safe: { kind: 'enum', type: Comfy.Union.E_EnableOrDisable }
+        resolution: { kind: 'number', type: number }
+    }
+    FakeScribblePreprocessor: {
+        // image: { kind: 'object', type: IMAGE }
+        safe: { kind: 'enum', type: Comfy.Union.E_EnableOrDisable }
+        resolution: { kind: 'number', type: number }
+    }
+    OneFormer$7COCO$7SemSegPreprocessor: {
+        // image: { kind: 'object', type: IMAGE }
+        resolution: { kind: 'number', type: number }
+    }
+    OneFormer$7ADE20K$7SemSegPreprocessor: {
+        // image: { kind: 'object', type: IMAGE }
+        resolution: { kind: 'number', type: number }
+    }
+    BAE$7NormalMapPreprocessor: {
+        // image: { kind: 'object', type: IMAGE }
+        resolution: { kind: 'number', type: number }
+    }
+    MeshGraphormer$7DepthMapPreprocessor: {
+        // image: { kind: 'object', type: IMAGE }
+        mask_bbox_padding: { kind: 'number', type: number }
+        resolution: { kind: 'number', type: number }
+        mask_type: { kind: 'enum', type: Comfy.Union.E_b5caf6278e8db337000bd8531d0a52fd983e6dee }
+        mask_expand: { kind: 'number', type: number }
+        rand_seed: { kind: 'number', type: number }
+        detect_thr: { kind: 'number', type: number }
+        presence_thr: { kind: 'number', type: number }
+    }
+    MeshGraphormer$6ImpactDetector$7DepthMapPreprocessor: {
+        // image: { kind: 'object', type: IMAGE }
+        // bbox_detector: { kind: 'object', type: BBOX_DETECTOR }
+        bbox_threshold: { kind: 'number', type: number }
+        bbox_dilation: { kind: 'number', type: number }
+        bbox_crop_factor: { kind: 'number', type: number }
+        drop_size: { kind: 'number', type: number }
+        mask_bbox_padding: { kind: 'number', type: number }
+        mask_type: { kind: 'enum', type: Comfy.Union.E_b5caf6278e8db337000bd8531d0a52fd983e6dee }
+        mask_expand: { kind: 'number', type: number }
+        rand_seed: { kind: 'number', type: number }
+        resolution: { kind: 'number', type: number }
+    }
+    DSINE$7NormalMapPreprocessor: {
+        // image: { kind: 'object', type: IMAGE }
+        fov: { kind: 'number', type: number }
+        iterations: { kind: 'number', type: number }
+        resolution: { kind: 'number', type: number }
+    }
+    MiDaS$7NormalMapPreprocessor: {
+        // image: { kind: 'object', type: IMAGE }
+        a: { kind: 'number', type: number }
+        bg_threshold: { kind: 'number', type: number }
+        resolution: { kind: 'number', type: number }
+    }
+    MiDaS$7DepthMapPreprocessor: {
+        // image: { kind: 'object', type: IMAGE }
+        a: { kind: 'number', type: number }
+        bg_threshold: { kind: 'number', type: number }
+        resolution: { kind: 'number', type: number }
+    }
+    AnyLineArtPreprocessor$_aux: {
+        // image: { kind: 'object', type: IMAGE }
+        merge_with_lineart: { kind: 'enum', type: Comfy.Union.E_f2f3bf212fe93f89462ca7fbd01c0beb857e0fa1 }
+        resolution: { kind: 'number', type: number }
+        lineart_lower_bound: { kind: 'number', type: number }
+        lineart_upper_bound: { kind: 'number', type: number }
+        object_min_size: { kind: 'number', type: number }
+        object_connectivity: { kind: 'number', type: number }
+    }
+    SAMPreprocessor: {
+        // image: { kind: 'object', type: IMAGE }
+        resolution: { kind: 'number', type: number }
+    }
+    UniFormer$7SemSegPreprocessor: {
+        // image: { kind: 'object', type: IMAGE }
+        resolution: { kind: 'number', type: number }
+    }
+    SemSegPreprocessor: {
+        // image: { kind: 'object', type: IMAGE }
+        resolution: { kind: 'number', type: number }
+    }
+    PiDiNetPreprocessor: {
+        // image: { kind: 'object', type: IMAGE }
+        safe: { kind: 'enum', type: Comfy.Union.E_EnableOrDisable }
+        resolution: { kind: 'number', type: number }
+    }
+    InpaintPreprocessor: {
+        // image: { kind: 'object', type: IMAGE }
+        // mask: { kind: 'object', type: MASK }
+        black_pixel_for_xinsir_cn: { kind: 'boolean', type: boolean }
+    }
+    LineArtPreprocessor: {
+        // image: { kind: 'object', type: IMAGE }
+        coarse: { kind: 'enum', type: Comfy.Union.E_EnableOrDisable }
+        resolution: { kind: 'number', type: number }
+    }
+    OpenposePreprocessor: {
+        // image: { kind: 'object', type: IMAGE }
+        detect_hand: { kind: 'enum', type: Comfy.Union.E_EnableOrDisable }
+        detect_body: { kind: 'enum', type: Comfy.Union.E_EnableOrDisable }
+        detect_face: { kind: 'enum', type: Comfy.Union.E_EnableOrDisable }
+        resolution: { kind: 'number', type: number }
+        scale_stick_for_xinsr_cn: { kind: 'enum', type: Comfy.Union.E_EnableOrDisable }
+    }
+    Unimatch$_OptFlowPreprocessor: {
+        // image: { kind: 'object', type: IMAGE }
+        ckpt_name: { kind: 'enum', type: Comfy.Union.E_988e8378cb5cffff14c5d8060093ba919d87e6f4 }
+        backward_flow: { kind: 'boolean', type: boolean }
+        bidirectional_flow: { kind: 'boolean', type: boolean }
+    }
+    MaskOptFlow: {
+        // optical_flow: { kind: 'object', type: OPTICAL_FLOW }
+        // mask: { kind: 'object', type: MASK }
+    }
+    SavePoseKpsAsJsonFile: {
+        // pose_kps: { kind: 'object', type: POSE_KEYPOINT }
+        filename_prefix: { kind: 'string', type: string }
+    }
+    FacialPartColoringFromPoseKps: {
+        // pose_kps: { kind: 'object', type: POSE_KEYPOINT }
+        mode: { kind: 'enum', type: Comfy.Union.E_864516593cf8906cd4bb58dde398b0c37bad51c6 }
+        skin: { kind: 'string', type: string }
+        left_eye: { kind: 'string', type: string }
+        right_eye: { kind: 'string', type: string }
+        nose: { kind: 'string', type: string }
+        upper_lip: { kind: 'string', type: string }
+        inner_mouth: { kind: 'string', type: string }
+        lower_lip: { kind: 'string', type: string }
+    }
+    UpperBodyTrackingFromPoseKps: {
+        // pose_kps: { kind: 'object', type: POSE_KEYPOINT }
+        id_include: { kind: 'string', type: string }
+        Head_width_height: { kind: 'string', type: string }
+        Neck_width_height: { kind: 'string', type: string }
+        Shoulder_width_height: { kind: 'string', type: string }
+        Torso_width_height: { kind: 'string', type: string }
+        RArm_width_height: { kind: 'string', type: string }
+        RForearm_width_height: { kind: 'string', type: string }
+        LArm_width_height: { kind: 'string', type: string }
+        LForearm_width_height: { kind: 'string', type: string }
+    }
+    RenderPeopleKps: {
+        // kps: { kind: 'object', type: POSE_KEYPOINT }
+        render_body: { kind: 'boolean', type: boolean }
+        render_hand: { kind: 'boolean', type: boolean }
+        render_face: { kind: 'boolean', type: boolean }
+    }
+    RenderAnimalKps: {
+        // kps: { kind: 'object', type: POSE_KEYPOINT }
+    }
+    TEEDPreprocessor: {
+        // image: { kind: 'object', type: IMAGE }
+        safe_steps: { kind: 'number', type: number }
+        resolution: { kind: 'number', type: number }
+    }
+    PyraCannyPreprocessor: {
+        // image: { kind: 'object', type: IMAGE }
+        low_threshold: { kind: 'number', type: number }
+        high_threshold: { kind: 'number', type: number }
+        resolution: { kind: 'number', type: number }
+    }
+    Metric3D$7DepthMapPreprocessor: {
+        // image: { kind: 'object', type: IMAGE }
+        backbone: { kind: 'enum', type: Comfy.Union.E_ecd8eade7f608a502e4587d43bca2d2a4f9b729b }
+        fx: { kind: 'number', type: number }
+        fy: { kind: 'number', type: number }
+        resolution: { kind: 'number', type: number }
+    }
+    Metric3D$7NormalMapPreprocessor: {
+        // image: { kind: 'object', type: IMAGE }
+        backbone: { kind: 'enum', type: Comfy.Union.E_ecd8eade7f608a502e4587d43bca2d2a4f9b729b }
+        fx: { kind: 'number', type: number }
+        fy: { kind: 'number', type: number }
+        resolution: { kind: 'number', type: number }
+    }
+    Manga2Anime$_LineArt$_Preprocessor: {
+        // image: { kind: 'object', type: IMAGE }
+        resolution: { kind: 'number', type: number }
+    }
+    ScribblePreprocessor: {
+        // image: { kind: 'object', type: IMAGE }
+        resolution: { kind: 'number', type: number }
+    }
+    Scribble$_XDoG$_Preprocessor: {
+        // image: { kind: 'object', type: IMAGE }
+        threshold: { kind: 'number', type: number }
+        resolution: { kind: 'number', type: number }
+    }
+    Scribble$_PiDiNet$_Preprocessor: {
+        // image: { kind: 'object', type: IMAGE }
+        safe: { kind: 'enum', type: Comfy.Union.E_EnableOrDisable }
+        resolution: { kind: 'number', type: number }
+    }
+    AnimeLineArtPreprocessor: {
+        // image: { kind: 'object', type: IMAGE }
+        resolution: { kind: 'number', type: number }
+    }
+    LineartStandardPreprocessor: {
+        // image: { kind: 'object', type: IMAGE }
+        guassian_sigma: { kind: 'number', type: number }
+        intensity_threshold: { kind: 'number', type: number }
+        resolution: { kind: 'number', type: number }
+    }
+    TilePreprocessor: {
+        // image: { kind: 'object', type: IMAGE }
+        pyrUp_iters: { kind: 'number', type: number }
+        resolution: { kind: 'number', type: number }
+    }
+    TTPlanet$_TileGF$_Preprocessor: {
+        // image: { kind: 'object', type: IMAGE }
+        scale_factor: { kind: 'number', type: number }
+        blur_strength: { kind: 'number', type: number }
+        radius: { kind: 'number', type: number }
+        eps: { kind: 'number', type: number }
+        resolution: { kind: 'number', type: number }
+    }
+    TTPlanet$_TileSimple$_Preprocessor: {
+        // image: { kind: 'object', type: IMAGE }
+        scale_factor: { kind: 'number', type: number }
+        blur_strength: { kind: 'number', type: number }
+    }
+    ColorPreprocessor: {
+        // image: { kind: 'object', type: IMAGE }
+        resolution: { kind: 'number', type: number }
+    }
+    AIO$_Preprocessor: {
+        // image: { kind: 'object', type: IMAGE }
+        preprocessor: { kind: 'enum', type: Comfy.Union.E_90ee599494f505c55a1a8cf8009c1a81c6238905 }
+        resolution: { kind: 'number', type: number }
+    }
+    ControlNetPreprocessorSelector: {
+        preprocessor: { kind: 'enum', type: Comfy.Union.E_90ee599494f505c55a1a8cf8009c1a81c6238905 }
+    }
+    PixelPerfectResolution: {
+        // original_image: { kind: 'object', type: IMAGE }
+        image_gen_width: { kind: 'number', type: number }
+        image_gen_height: { kind: 'number', type: number }
+        resize_mode: { kind: 'enum', type: Comfy.Union.E_d6af160bb3240c471ff93d5647af03d694fc3360 }
+    }
+    ImageGenResolutionFromImage: {
+        // image: { kind: 'object', type: IMAGE }
+    }
+    ImageGenResolutionFromLatent: {
+        // latent: { kind: 'object', type: LATENT }
+    }
+    HintImageEnchance: {
+        // hint_image: { kind: 'object', type: IMAGE }
+        image_gen_width: { kind: 'number', type: number }
+        image_gen_height: { kind: 'number', type: number }
+        resize_mode: { kind: 'enum', type: Comfy.Union.E_d6af160bb3240c471ff93d5647af03d694fc3360 }
+    }
+    ExecuteAllControlNetPreprocessors: {
+        // image: { kind: 'object', type: IMAGE }
+        resolution: { kind: 'number', type: number }
+    }
+    ControlNetAuxSimpleAddText: {
+        // image: { kind: 'object', type: IMAGE }
+        text: { kind: 'string', type: string }
+    }
     SAMLoader: {
         model_name: { kind: 'enum', type: Comfy.Union.E_40c777392f92d61852ab0f7a429a755abf59b71a }
         device_mode: { kind: 'enum', type: Comfy.Union.E_2ad445b99254e9b51c963d9f1a75fabe3d01e569 }
@@ -9891,7 +13417,7 @@ declare global {
         dilation_factor: { kind: 'number', type: number }
     }
     ONNXDetectorProvider: {
-        model_name: { kind: 'enum', type: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 }
+        model_name: { kind: 'enum', type: Comfy.Union.E_LoraName }
     }
     BitwiseAndMaskForEach: {
         // base_segs: { kind: 'object', type: SEGS }
@@ -9913,7 +13439,7 @@ declare global {
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_SamplerName }
         scheduler: { kind: 'enum', type: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d }
         // positive: { kind: 'object', type: CONDITIONING }
         // negative: { kind: 'object', type: CONDITIONING }
@@ -9940,7 +13466,7 @@ declare global {
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_SamplerName }
         scheduler: { kind: 'enum', type: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d }
         // positive: { kind: 'object', type: CONDITIONING }
         // negative: { kind: 'object', type: CONDITIONING }
@@ -9964,7 +13490,7 @@ declare global {
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_SamplerName }
         scheduler: { kind: 'enum', type: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d }
         denoise: { kind: 'number', type: number }
         feather: { kind: 'number', type: number }
@@ -9989,7 +13515,7 @@ declare global {
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_SamplerName }
         scheduler: { kind: 'enum', type: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d }
         denoise: { kind: 'number', type: number }
         feather: { kind: 'number', type: number }
@@ -10014,7 +13540,7 @@ declare global {
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_SamplerName }
         scheduler: { kind: 'enum', type: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d }
         denoise: { kind: 'number', type: number }
         feather: { kind: 'number', type: number }
@@ -10029,7 +13555,7 @@ declare global {
         // sam_model: { kind: 'object', type: SAM_MODEL }
         // segs: { kind: 'object', type: SEGS }
         // image: { kind: 'object', type: IMAGE }
-        detection_hint: { kind: 'enum', type: Comfy.Union.E_40275a874822a8699ee13794e127b63cdd6bfdae }
+        detection_hint: { kind: 'enum', type: Comfy.Union.E_ImpactDetectionHint }
         dilation: { kind: 'number', type: number }
         threshold: { kind: 'number', type: number }
         bbox_expansion: { kind: 'number', type: number }
@@ -10040,7 +13566,7 @@ declare global {
         // sam_model: { kind: 'object', type: SAM_MODEL }
         // segs: { kind: 'object', type: SEGS }
         // image: { kind: 'object', type: IMAGE }
-        detection_hint: { kind: 'enum', type: Comfy.Union.E_40275a874822a8699ee13794e127b63cdd6bfdae }
+        detection_hint: { kind: 'enum', type: Comfy.Union.E_ImpactDetectionHint }
         dilation: { kind: 'number', type: number }
         threshold: { kind: 'number', type: number }
         bbox_expansion: { kind: 'number', type: number }
@@ -10058,7 +13584,7 @@ declare global {
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_SamplerName }
         scheduler: { kind: 'enum', type: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d }
         // positive: { kind: 'object', type: CONDITIONING }
         // negative: { kind: 'object', type: CONDITIONING }
@@ -10069,7 +13595,7 @@ declare global {
         bbox_threshold: { kind: 'number', type: number }
         bbox_dilation: { kind: 'number', type: number }
         bbox_crop_factor: { kind: 'number', type: number }
-        sam_detection_hint: { kind: 'enum', type: Comfy.Union.E_40275a874822a8699ee13794e127b63cdd6bfdae }
+        sam_detection_hint: { kind: 'enum', type: Comfy.Union.E_ImpactDetectionHint }
         sam_dilation: { kind: 'number', type: number }
         sam_threshold: { kind: 'number', type: number }
         sam_bbox_expansion: { kind: 'number', type: number }
@@ -10095,7 +13621,7 @@ declare global {
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_SamplerName }
         scheduler: { kind: 'enum', type: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d }
         denoise: { kind: 'number', type: number }
         feather: { kind: 'number', type: number }
@@ -10104,7 +13630,7 @@ declare global {
         bbox_threshold: { kind: 'number', type: number }
         bbox_dilation: { kind: 'number', type: number }
         bbox_crop_factor: { kind: 'number', type: number }
-        sam_detection_hint: { kind: 'enum', type: Comfy.Union.E_40275a874822a8699ee13794e127b63cdd6bfdae }
+        sam_detection_hint: { kind: 'enum', type: Comfy.Union.E_ImpactDetectionHint }
         sam_dilation: { kind: 'number', type: number }
         sam_threshold: { kind: 'number', type: number }
         sam_bbox_expansion: { kind: 'number', type: number }
@@ -10128,7 +13654,7 @@ declare global {
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_SamplerName }
         scheduler: { kind: 'enum', type: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d }
         denoise: { kind: 'number', type: number }
         feather: { kind: 'number', type: number }
@@ -10283,7 +13809,7 @@ declare global {
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_SamplerName }
         scheduler: { kind: 'enum', type: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d }
         // positive: { kind: 'object', type: CONDITIONING }
         // negative: { kind: 'object', type: CONDITIONING }
@@ -10299,7 +13825,7 @@ declare global {
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_SamplerName }
         scheduler: { kind: 'enum', type: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d }
         denoise: { kind: 'number', type: number }
         use_tiled_vae: { kind: 'boolean', type: boolean }
@@ -10335,8 +13861,8 @@ declare global {
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
-        scheduler: { kind: 'enum', type: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325 }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_SamplerName }
+        scheduler: { kind: 'enum', type: Comfy.Union.E_SchedulerName }
         // positive: { kind: 'object', type: CONDITIONING }
         // negative: { kind: 'object', type: CONDITIONING }
         denoise: { kind: 'number', type: number }
@@ -10353,8 +13879,8 @@ declare global {
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
-        scheduler: { kind: 'enum', type: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325 }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_SamplerName }
+        scheduler: { kind: 'enum', type: Comfy.Union.E_SchedulerName }
         denoise: { kind: 'number', type: number }
         tile_width: { kind: 'number', type: number }
         tile_height: { kind: 'number', type: number }
@@ -10413,7 +13939,7 @@ declare global {
     }
     NoiseInjectionHookProvider: {
         schedule_for_iteration: { kind: 'enum', type: Comfy.Union.E_0f7d0d088b6ea936fb25b477722d734706fe8b40 }
-        source: { kind: 'enum', type: Comfy.Union.E_3dfc15432d4b952e91053feecd5a5427720957fc }
+        source: { kind: 'enum', type: Comfy.Union.E_CpuOrGpu }
         seed: { kind: 'number', type: number }
         start_strength: { kind: 'number', type: number }
         end_strength: { kind: 'number', type: number }
@@ -10424,9 +13950,9 @@ declare global {
         start_end_at_step: { kind: 'number', type: number }
         end_end_at_step: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
-        scheduler: { kind: 'enum', type: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325 }
-        normalize: { kind: 'enum', type: Comfy.Union.E_449b4cae3566dd9b97c417c352bb08e25b89431b }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_SamplerName }
+        scheduler: { kind: 'enum', type: Comfy.Union.E_SchedulerName }
+        normalize: { kind: 'enum', type: Comfy.Union.E_EnableOrDisable }
         // positive: { kind: 'object', type: CONDITIONING }
         // negative: { kind: 'object', type: CONDITIONING }
         schedule_for_iteration: { kind: 'enum', type: Comfy.Union.E_0f7d0d088b6ea936fb25b477722d734706fe8b40 }
@@ -10443,7 +13969,7 @@ declare global {
     }
     NoiseInjectionDetailerHookProvider: {
         schedule_for_cycle: { kind: 'enum', type: Comfy.Union.E_afbc7832ad78555d4f5646f97ed21b561fe3d1f0 }
-        source: { kind: 'enum', type: Comfy.Union.E_3dfc15432d4b952e91053feecd5a5427720957fc }
+        source: { kind: 'enum', type: Comfy.Union.E_CpuOrGpu }
         seed: { kind: 'number', type: number }
         start_strength: { kind: 'number', type: number }
         end_strength: { kind: 'number', type: number }
@@ -10454,9 +13980,9 @@ declare global {
         start_end_at_step: { kind: 'number', type: number }
         end_end_at_step: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
-        scheduler: { kind: 'enum', type: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325 }
-        normalize: { kind: 'enum', type: Comfy.Union.E_449b4cae3566dd9b97c417c352bb08e25b89431b }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_SamplerName }
+        scheduler: { kind: 'enum', type: Comfy.Union.E_SchedulerName }
+        normalize: { kind: 'enum', type: Comfy.Union.E_EnableOrDisable }
         // positive: { kind: 'object', type: CONDITIONING }
         // negative: { kind: 'object', type: CONDITIONING }
         schedule_for_cycle: { kind: 'enum', type: Comfy.Union.E_afbc7832ad78555d4f5646f97ed21b561fe3d1f0 }
@@ -10748,7 +14274,7 @@ declare global {
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_SamplerName }
         scheduler: { kind: 'enum', type: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d }
         denoise: { kind: 'number', type: number }
         // basic_pipe: { kind: 'object', type: BASIC_PIPE }
@@ -10764,8 +14290,8 @@ declare global {
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
-        scheduler: { kind: 'enum', type: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325 }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_SamplerName }
+        scheduler: { kind: 'enum', type: Comfy.Union.E_SchedulerName }
         denoise: { kind: 'number', type: number }
         tile_width: { kind: 'number', type: number }
         tile_height: { kind: 'number', type: number }
@@ -10774,7 +14300,7 @@ declare global {
     }
     KSamplerAdvancedProvider: {
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_SamplerName }
         scheduler: { kind: 'enum', type: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d }
         sigma_factor: { kind: 'number', type: number }
         // basic_pipe: { kind: 'object', type: BASIC_PIPE }
@@ -10813,7 +14339,7 @@ declare global {
         link_id: { kind: 'number', type: number }
     }
     ImageReceiver: {
-        image: { kind: 'enum', type: Comfy.Union.E_26ea5ad8c44c9551fea858fff18017427386b591 }
+        image: { kind: 'enum', type: Comfy.Union.E_Image }
         link_id: { kind: 'number', type: number }
         save_to_workflow: { kind: 'boolean', type: boolean }
         image_data: { kind: 'string', type: string }
@@ -10826,7 +14352,7 @@ declare global {
         preview_method: { kind: 'enum', type: Comfy.Union.E_fa4a13687b111fa33a8c8fa375d5321d09b46b27 }
     }
     LatentReceiver: {
-        latent: { kind: 'enum', type: Comfy.Union.E_779f30207c92fb9c40d7af879864067c0972d190 }
+        latent: { kind: 'enum', type: Comfy.Union.E_LoraName }
         link_id: { kind: 'number', type: number }
         trigger_always: { kind: 'boolean', type: boolean }
     }
@@ -10886,12 +14412,12 @@ declare global {
         // vae: { kind: 'object', type: VAE }
         rescale_factor: { kind: 'number', type: number }
         resampling_method: { kind: 'enum', type: Comfy.Union.E_bac912b55de8a59480c74aba068f4a3b5f9a0e38 }
-        supersample: { kind: 'enum', type: Comfy.Union.E_c1a74591678033a2ccc87aa0add77dab7f001da5 }
+        supersample: { kind: 'enum', type: Comfy.Union.E_TrueOrFalse }
         rounding_modulus: { kind: 'number', type: number }
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_SamplerName }
         scheduler: { kind: 'enum', type: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d }
         // positive: { kind: 'object', type: CONDITIONING }
         // negative: { kind: 'object', type: CONDITIONING }
@@ -10909,12 +14435,12 @@ declare global {
         // basic_pipe: { kind: 'object', type: BASIC_PIPE }
         rescale_factor: { kind: 'number', type: number }
         resampling_method: { kind: 'enum', type: Comfy.Union.E_bac912b55de8a59480c74aba068f4a3b5f9a0e38 }
-        supersample: { kind: 'enum', type: Comfy.Union.E_c1a74591678033a2ccc87aa0add77dab7f001da5 }
+        supersample: { kind: 'enum', type: Comfy.Union.E_TrueOrFalse }
         rounding_modulus: { kind: 'number', type: number }
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_SamplerName }
         scheduler: { kind: 'enum', type: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d }
         denoise: { kind: 'number', type: number }
         feather: { kind: 'number', type: number }
@@ -10933,7 +14459,7 @@ declare global {
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_SamplerName }
         scheduler: { kind: 'enum', type: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d }
         denoise: { kind: 'number', type: number }
         noise_mask: { kind: 'boolean', type: boolean }
@@ -11004,7 +14530,7 @@ declare global {
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_SamplerName }
         scheduler: { kind: 'enum', type: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d }
         denoise: { kind: 'number', type: number }
         // basic_pipe: { kind: 'object', type: BASIC_PIPE }
@@ -11018,7 +14544,7 @@ declare global {
         seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_SamplerName }
         scheduler: { kind: 'enum', type: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d }
         // latent_image: { kind: 'object', type: LATENT }
         denoise: { kind: 'number', type: number }
@@ -11030,7 +14556,7 @@ declare global {
         noise_seed: { kind: 'number', type: number }
         steps: { kind: 'number', type: number }
         cfg: { kind: 'number', type: number }
-        sampler_name: { kind: 'enum', type: Comfy.Union.E_26c34bf761d4be4554ab944105c5a3c017c99453 }
+        sampler_name: { kind: 'enum', type: Comfy.Union.E_SamplerName }
         scheduler: { kind: 'enum', type: Comfy.Union.E_720061fdb15e8c451b6aa7ed023644f064ddc57d }
         // latent_image: { kind: 'object', type: LATENT }
         start_at_step: { kind: 'number', type: number }
@@ -11292,7 +14818,7 @@ declare global {
         // ref_image_opt: { kind: 'object', type: IMAGE }
     }
     ImpactSchedulerAdapter: {
-        scheduler: { kind: 'enum', type: Comfy.Union.E_5f9267c2d2054f64bc3de0d20b47cf75f7038325 }
+        scheduler: { kind: 'enum', type: Comfy.Union.E_SchedulerName }
         extra_scheduler: { kind: 'enum', type: Comfy.Union.E_64bb9134d159ff7e3f573facb7cb2fcfbb2de483 }
     }
     GITSSchedulerFuncProvider: {
@@ -11309,5 +14835,5 @@ declare global {
    // 9. INDEX -------------------------------
    // TODO rename to ObjecInfoContent
    export type Schemas = {[k in ComfyNodeType]: ComfyNodeSchemaJSON}
-   export type ComfyNodeType = 'KSampler' | 'CheckpointLoaderSimple' | 'CLIPTextEncode' | 'CLIPSetLastLayer' | 'VAEDecode' | 'VAEEncode' | 'VAEEncodeForInpaint' | 'VAELoader' | 'EmptyLatentImage' | 'LatentUpscale' | 'LatentUpscaleBy' | 'LatentFromBatch' | 'RepeatLatentBatch' | 'SaveImage' | 'PreviewImage' | 'LoadImage' | 'LoadImageMask' | 'ImageScale' | 'ImageScaleBy' | 'ImageInvert' | 'ImageBatch' | 'ImagePadForOutpaint' | 'EmptyImage' | 'ConditioningAverage' | 'ConditioningCombine' | 'ConditioningConcat' | 'ConditioningSetArea' | 'ConditioningSetAreaPercentage' | 'ConditioningSetAreaStrength' | 'ConditioningSetMask' | 'KSamplerAdvanced' | 'SetLatentNoiseMask' | 'LatentComposite' | 'LatentBlend' | 'LatentRotate' | 'LatentFlip' | 'LatentCrop' | 'LoraLoader' | 'CLIPLoader' | 'UNETLoader' | 'DualCLIPLoader' | 'CLIPVisionEncode' | 'StyleModelApply' | 'unCLIPConditioning' | 'ControlNetApply' | 'ControlNetApplyAdvanced' | 'ControlNetLoader' | 'DiffControlNetLoader' | 'StyleModelLoader' | 'CLIPVisionLoader' | 'VAEDecodeTiled' | 'VAEEncodeTiled' | 'unCLIPCheckpointLoader' | 'GLIGENLoader' | 'GLIGENTextBoxApply' | 'InpaintModelConditioning' | 'CheckpointLoader' | 'DiffusersLoader' | 'LoadLatent' | 'SaveLatent' | 'ConditioningZeroOut' | 'ConditioningSetTimestepRange' | 'LoraLoaderModelOnly' | 'LatentAdd' | 'LatentSubtract' | 'LatentMultiply' | 'LatentInterpolate' | 'LatentBatch' | 'LatentBatchSeedBehavior' | 'LatentApplyOperation' | 'LatentApplyOperationCFG' | 'LatentOperationTonemapReinhard' | 'LatentOperationSharpen' | 'HypernetworkLoader' | 'UpscaleModelLoader' | 'ImageUpscaleWithModel' | 'ImageBlend' | 'ImageBlur' | 'ImageQuantize' | 'ImageSharpen' | 'ImageScaleToTotalPixels' | 'LatentCompositeMasked' | 'ImageCompositeMasked' | 'MaskToImage' | 'ImageToMask' | 'ImageColorToMask' | 'SolidMask' | 'InvertMask' | 'CropMask' | 'MaskComposite' | 'FeatherMask' | 'GrowMask' | 'ThresholdMask' | 'PorterDuffImageComposite' | 'SplitImageWithAlpha' | 'JoinImageWithAlpha' | 'RebatchLatents' | 'RebatchImages' | 'ModelMergeSimple' | 'ModelMergeBlocks' | 'ModelMergeSubtract' | 'ModelMergeAdd' | 'CheckpointSave' | 'CLIPMergeSimple' | 'CLIPMergeSubtract' | 'CLIPMergeAdd' | 'CLIPSave' | 'VAESave' | 'ModelSave' | 'TomePatchModel' | 'CLIPTextEncodeSDXLRefiner' | 'CLIPTextEncodeSDXL' | 'Canny' | 'FreeU' | 'FreeU$_V2' | 'SamplerCustom' | 'BasicScheduler' | 'KarrasScheduler' | 'ExponentialScheduler' | 'PolyexponentialScheduler' | 'LaplaceScheduler' | 'VPScheduler' | 'BetaSamplingScheduler' | 'SDTurboScheduler' | 'KSamplerSelect' | 'SamplerEulerAncestral' | 'SamplerEulerAncestralCFGPP' | 'SamplerLMS' | 'SamplerDPMPP$_3M$_SDE' | 'SamplerDPMPP$_2M$_SDE' | 'SamplerDPMPP$_SDE' | 'SamplerDPMPP$_2S$_Ancestral' | 'SamplerDPMAdaptative' | 'SplitSigmas' | 'SplitSigmasDenoise' | 'FlipSigmas' | 'CFGGuider' | 'DualCFGGuider' | 'BasicGuider' | 'RandomNoise' | 'DisableNoise' | 'AddNoise' | 'SamplerCustomAdvanced' | 'HyperTile' | 'ModelSamplingDiscrete' | 'ModelSamplingContinuousEDM' | 'ModelSamplingContinuousV' | 'ModelSamplingStableCascade' | 'ModelSamplingSD3' | 'ModelSamplingAuraFlow' | 'ModelSamplingFlux' | 'RescaleCFG' | 'PatchModelAddDownscale' | 'ImageCrop' | 'RepeatImageBatch' | 'ImageFromBatch' | 'SaveAnimatedWEBP' | 'SaveAnimatedPNG' | 'ImageOnlyCheckpointLoader' | 'SVD$_img2vid$_Conditioning' | 'VideoLinearCFGGuidance' | 'VideoTriangleCFGGuidance' | 'ImageOnlyCheckpointSave' | 'SelfAttentionGuidance' | 'PerpNeg' | 'PerpNegGuider' | 'StableZero123$_Conditioning' | 'StableZero123$_Conditioning$_Batched' | 'SV3D$_Conditioning' | 'SD$_4XUpscale$_Conditioning' | 'PhotoMakerLoader' | 'PhotoMakerEncode' | 'CLIPTextEncodeControlnet' | 'Morphology' | 'StableCascade$_EmptyLatentImage' | 'StableCascade$_StageB$_Conditioning' | 'StableCascade$_StageC$_VAEEncode' | 'StableCascade$_SuperResolutionControlnet' | 'DifferentialDiffusion' | 'InstructPixToPixConditioning' | 'ModelMergeSD1' | 'ModelMergeSD2' | 'ModelMergeSDXL' | 'ModelMergeSD3$_2B' | 'ModelMergeFlux1' | 'ModelMergeSD35$_Large' | 'PerturbedAttentionGuidance' | 'AlignYourStepsScheduler' | 'UNetSelfAttentionMultiply' | 'UNetCrossAttentionMultiply' | 'CLIPAttentionMultiply' | 'UNetTemporalAttentionMultiply' | 'SamplerLCMUpscale' | 'SamplerEulerCFGpp' | 'WebcamCapture' | 'EmptyLatentAudio' | 'VAEEncodeAudio' | 'VAEDecodeAudio' | 'SaveAudio' | 'LoadAudio' | 'PreviewAudio' | 'TripleCLIPLoader' | 'EmptySD3LatentImage' | 'CLIPTextEncodeSD3' | 'ControlNetApplySD3' | 'SkipLayerGuidanceSD3' | 'GITSScheduler' | 'SetUnionControlNetType' | 'ControlNetInpaintingAliMamaApply' | 'CLIPTextEncodeHunyuanDiT' | 'CLIPTextEncodeFlux' | 'FluxGuidance' | 'LoraSave' | 'TorchCompileModel' | 'EmptyMochiLatentVideo' | 'SaveImageWebsocket' | 'SAMLoader' | 'CLIPSegDetectorProvider' | 'ONNXDetectorProvider' | 'BitwiseAndMaskForEach' | 'SubtractMaskForEach' | 'DetailerForEach' | 'DetailerForEachDebug' | 'DetailerForEachPipe' | 'DetailerForEachDebugPipe' | 'DetailerForEachPipeForAnimateDiff' | 'SAMDetectorCombined' | 'SAMDetectorSegmented' | 'FaceDetailer' | 'FaceDetailerPipe' | 'MaskDetailerPipe' | 'ToDetailerPipe' | 'ToDetailerPipeSDXL' | 'FromDetailerPipe' | 'FromDetailerPipe$_v2' | 'FromDetailerPipeSDXL' | 'AnyPipeToBasic' | 'ToBasicPipe' | 'FromBasicPipe' | 'FromBasicPipe$_v2' | 'BasicPipeToDetailerPipe' | 'BasicPipeToDetailerPipeSDXL' | 'DetailerPipeToBasicPipe' | 'EditBasicPipe' | 'EditDetailerPipe' | 'EditDetailerPipeSDXL' | 'LatentPixelScale' | 'PixelKSampleUpscalerProvider' | 'PixelKSampleUpscalerProviderPipe' | 'IterativeLatentUpscale' | 'IterativeImageUpscale' | 'PixelTiledKSampleUpscalerProvider' | 'PixelTiledKSampleUpscalerProviderPipe' | 'TwoSamplersForMaskUpscalerProvider' | 'TwoSamplersForMaskUpscalerProviderPipe' | 'PixelKSampleHookCombine' | 'DenoiseScheduleHookProvider' | 'StepsScheduleHookProvider' | 'CfgScheduleHookProvider' | 'NoiseInjectionHookProvider' | 'UnsamplerHookProvider' | 'CoreMLDetailerHookProvider' | 'PreviewDetailerHookProvider' | 'DetailerHookCombine' | 'NoiseInjectionDetailerHookProvider' | 'UnsamplerDetailerHookProvider' | 'DenoiseSchedulerDetailerHookProvider' | 'SEGSOrderedFilterDetailerHookProvider' | 'SEGSRangeFilterDetailerHookProvider' | 'SEGSLabelFilterDetailerHookProvider' | 'VariationNoiseDetailerHookProvider' | 'BitwiseAndMask' | 'SubtractMask' | 'AddMask' | 'ImpactSegsAndMask' | 'ImpactSegsAndMaskForEach' | 'EmptySegs' | 'ImpactFlattenMask' | 'MediaPipeFaceMeshToSEGS' | 'MaskToSEGS' | 'MaskToSEGS$_for$_AnimateDiff' | 'ToBinaryMask' | 'MasksToMaskList' | 'MaskListToMaskBatch' | 'ImageListToImageBatch' | 'SetDefaultImageForSEGS' | 'RemoveImageFromSEGS' | 'BboxDetectorSEGS' | 'SegmDetectorSEGS' | 'ONNXDetectorSEGS' | 'ImpactSimpleDetectorSEGS$_for$_AD' | 'ImpactSimpleDetectorSEGS' | 'ImpactSimpleDetectorSEGSPipe' | 'ImpactControlNetApplySEGS' | 'ImpactControlNetApplyAdvancedSEGS' | 'ImpactControlNetClearSEGS' | 'ImpactIPAdapterApplySEGS' | 'ImpactDecomposeSEGS' | 'ImpactAssembleSEGS' | 'ImpactFrom$_SEG$_ELT' | 'ImpactEdit$_SEG$_ELT' | 'ImpactDilate$_Mask$_SEG$_ELT' | 'ImpactDilateMask' | 'ImpactGaussianBlurMask' | 'ImpactDilateMaskInSEGS' | 'ImpactGaussianBlurMaskInSEGS' | 'ImpactScaleBy$_BBOX$_SEG$_ELT' | 'ImpactFrom$_SEG$_ELT$_bbox' | 'ImpactFrom$_SEG$_ELT$_crop$_region' | 'ImpactCount$_Elts$_in$_SEGS' | 'BboxDetectorCombined$_v2' | 'SegmDetectorCombined$_v2' | 'SegsToCombinedMask' | 'KSamplerProvider' | 'TwoSamplersForMask' | 'TiledKSamplerProvider' | 'KSamplerAdvancedProvider' | 'TwoAdvancedSamplersForMask' | 'ImpactNegativeConditioningPlaceholder' | 'PreviewBridge' | 'PreviewBridgeLatent' | 'ImageSender' | 'ImageReceiver' | 'LatentSender' | 'LatentReceiver' | 'ImageMaskSwitch' | 'LatentSwitch' | 'SEGSSwitch' | 'ImpactSwitch' | 'ImpactInversedSwitch' | 'ImpactWildcardProcessor' | 'ImpactWildcardEncode' | 'SEGSUpscaler' | 'SEGSUpscalerPipe' | 'SEGSDetailer' | 'SEGSPaste' | 'SEGSPreview' | 'SEGSPreviewCNet' | 'SEGSToImageList' | 'ImpactSEGSToMaskList' | 'ImpactSEGSToMaskBatch' | 'ImpactSEGSConcat' | 'ImpactSEGSPicker' | 'ImpactMakeTileSEGS' | 'ImpactSEGSMerge' | 'SEGSDetailerForAnimateDiff' | 'ImpactKSamplerBasicPipe' | 'ImpactKSamplerAdvancedBasicPipe' | 'ReencodeLatent' | 'ReencodeLatentPipe' | 'ImpactImageBatchToImageList' | 'ImpactMakeImageList' | 'ImpactMakeImageBatch' | 'ImpactMakeAnyList' | 'ImpactMakeMaskList' | 'ImpactMakeMaskBatch' | 'RegionalSampler' | 'RegionalSamplerAdvanced' | 'CombineRegionalPrompts' | 'RegionalPrompt' | 'ImpactCombineConditionings' | 'ImpactConcatConditionings' | 'ImpactSEGSLabelAssign' | 'ImpactSEGSLabelFilter' | 'ImpactSEGSRangeFilter' | 'ImpactSEGSOrderedFilter' | 'ImpactCompare' | 'ImpactConditionalBranch' | 'ImpactConditionalBranchSelMode' | 'ImpactIfNone' | 'ImpactConvertDataType' | 'ImpactLogicalOperators' | 'ImpactInt' | 'ImpactFloat' | 'ImpactBoolean' | 'ImpactValueSender' | 'ImpactValueReceiver' | 'ImpactImageInfo' | 'ImpactLatentInfo' | 'ImpactMinMax' | 'ImpactNeg' | 'ImpactConditionalStopIteration' | 'ImpactStringSelector' | 'StringListToString' | 'WildcardPromptFromString' | 'ImpactExecutionOrderController' | 'RemoveNoiseMask' | 'ImpactLogger' | 'ImpactDummyInput' | 'ImpactQueueTrigger' | 'ImpactQueueTriggerCountdown' | 'ImpactSetWidgetValue' | 'ImpactNodeSetMuteState' | 'ImpactControlBridge' | 'ImpactIsNotEmptySEGS' | 'ImpactSleep' | 'ImpactRemoteBoolean' | 'ImpactRemoteInt' | 'ImpactHFTransformersClassifierProvider' | 'ImpactSEGSClassify' | 'ImpactSchedulerAdapter' | 'GITSSchedulerFuncProvider' | 'UltralyticsDetectorProvider' | 'UnknownNodeXX'
+   export type ComfyNodeType = 'KSampler' | 'CheckpointLoaderSimple' | 'CLIPTextEncode' | 'CLIPSetLastLayer' | 'VAEDecode' | 'VAEEncode' | 'VAEEncodeForInpaint' | 'VAELoader' | 'EmptyLatentImage' | 'LatentUpscale' | 'LatentUpscaleBy' | 'LatentFromBatch' | 'RepeatLatentBatch' | 'SaveImage' | 'PreviewImage' | 'LoadImage' | 'LoadImageMask' | 'ImageScale' | 'ImageScaleBy' | 'ImageInvert' | 'ImageBatch' | 'ImagePadForOutpaint' | 'EmptyImage' | 'ConditioningAverage' | 'ConditioningCombine' | 'ConditioningConcat' | 'ConditioningSetArea' | 'ConditioningSetAreaPercentage' | 'ConditioningSetAreaStrength' | 'ConditioningSetMask' | 'KSamplerAdvanced' | 'SetLatentNoiseMask' | 'LatentComposite' | 'LatentBlend' | 'LatentRotate' | 'LatentFlip' | 'LatentCrop' | 'LoraLoader' | 'CLIPLoader' | 'UNETLoader' | 'DualCLIPLoader' | 'CLIPVisionEncode' | 'StyleModelApply' | 'unCLIPConditioning' | 'ControlNetApply' | 'ControlNetApplyAdvanced' | 'ControlNetLoader' | 'DiffControlNetLoader' | 'StyleModelLoader' | 'CLIPVisionLoader' | 'VAEDecodeTiled' | 'VAEEncodeTiled' | 'unCLIPCheckpointLoader' | 'GLIGENLoader' | 'GLIGENTextBoxApply' | 'InpaintModelConditioning' | 'CheckpointLoader' | 'DiffusersLoader' | 'LoadLatent' | 'SaveLatent' | 'ConditioningZeroOut' | 'ConditioningSetTimestepRange' | 'LoraLoaderModelOnly' | 'LatentAdd' | 'LatentSubtract' | 'LatentMultiply' | 'LatentInterpolate' | 'LatentBatch' | 'LatentBatchSeedBehavior' | 'LatentApplyOperation' | 'LatentApplyOperationCFG' | 'LatentOperationTonemapReinhard' | 'LatentOperationSharpen' | 'HypernetworkLoader' | 'UpscaleModelLoader' | 'ImageUpscaleWithModel' | 'ImageBlend' | 'ImageBlur' | 'ImageQuantize' | 'ImageSharpen' | 'ImageScaleToTotalPixels' | 'LatentCompositeMasked' | 'ImageCompositeMasked' | 'MaskToImage' | 'ImageToMask' | 'ImageColorToMask' | 'SolidMask' | 'InvertMask' | 'CropMask' | 'MaskComposite' | 'FeatherMask' | 'GrowMask' | 'ThresholdMask' | 'PorterDuffImageComposite' | 'SplitImageWithAlpha' | 'JoinImageWithAlpha' | 'RebatchLatents' | 'RebatchImages' | 'ModelMergeSimple' | 'ModelMergeBlocks' | 'ModelMergeSubtract' | 'ModelMergeAdd' | 'CheckpointSave' | 'CLIPMergeSimple' | 'CLIPMergeSubtract' | 'CLIPMergeAdd' | 'CLIPSave' | 'VAESave' | 'ModelSave' | 'TomePatchModel' | 'CLIPTextEncodeSDXLRefiner' | 'CLIPTextEncodeSDXL' | 'Canny' | 'FreeU' | 'FreeU$_V2' | 'SamplerCustom' | 'BasicScheduler' | 'KarrasScheduler' | 'ExponentialScheduler' | 'PolyexponentialScheduler' | 'LaplaceScheduler' | 'VPScheduler' | 'BetaSamplingScheduler' | 'SDTurboScheduler' | 'KSamplerSelect' | 'SamplerEulerAncestral' | 'SamplerEulerAncestralCFGPP' | 'SamplerLMS' | 'SamplerDPMPP$_3M$_SDE' | 'SamplerDPMPP$_2M$_SDE' | 'SamplerDPMPP$_SDE' | 'SamplerDPMPP$_2S$_Ancestral' | 'SamplerDPMAdaptative' | 'SplitSigmas' | 'SplitSigmasDenoise' | 'FlipSigmas' | 'CFGGuider' | 'DualCFGGuider' | 'BasicGuider' | 'RandomNoise' | 'DisableNoise' | 'AddNoise' | 'SamplerCustomAdvanced' | 'HyperTile' | 'ModelSamplingDiscrete' | 'ModelSamplingContinuousEDM' | 'ModelSamplingContinuousV' | 'ModelSamplingStableCascade' | 'ModelSamplingSD3' | 'ModelSamplingAuraFlow' | 'ModelSamplingFlux' | 'RescaleCFG' | 'PatchModelAddDownscale' | 'ImageCrop' | 'RepeatImageBatch' | 'ImageFromBatch' | 'SaveAnimatedWEBP' | 'SaveAnimatedPNG' | 'ImageOnlyCheckpointLoader' | 'SVD$_img2vid$_Conditioning' | 'VideoLinearCFGGuidance' | 'VideoTriangleCFGGuidance' | 'ImageOnlyCheckpointSave' | 'SelfAttentionGuidance' | 'PerpNeg' | 'PerpNegGuider' | 'StableZero123$_Conditioning' | 'StableZero123$_Conditioning$_Batched' | 'SV3D$_Conditioning' | 'SD$_4XUpscale$_Conditioning' | 'PhotoMakerLoader' | 'PhotoMakerEncode' | 'CLIPTextEncodeControlnet' | 'Morphology' | 'StableCascade$_EmptyLatentImage' | 'StableCascade$_StageB$_Conditioning' | 'StableCascade$_StageC$_VAEEncode' | 'StableCascade$_SuperResolutionControlnet' | 'DifferentialDiffusion' | 'InstructPixToPixConditioning' | 'ModelMergeSD1' | 'ModelMergeSD2' | 'ModelMergeSDXL' | 'ModelMergeSD3$_2B' | 'ModelMergeFlux1' | 'ModelMergeSD35$_Large' | 'PerturbedAttentionGuidance' | 'AlignYourStepsScheduler' | 'UNetSelfAttentionMultiply' | 'UNetCrossAttentionMultiply' | 'CLIPAttentionMultiply' | 'UNetTemporalAttentionMultiply' | 'SamplerLCMUpscale' | 'SamplerEulerCFGpp' | 'WebcamCapture' | 'EmptyLatentAudio' | 'VAEEncodeAudio' | 'VAEDecodeAudio' | 'SaveAudio' | 'LoadAudio' | 'PreviewAudio' | 'TripleCLIPLoader' | 'EmptySD3LatentImage' | 'CLIPTextEncodeSD3' | 'ControlNetApplySD3' | 'SkipLayerGuidanceSD3' | 'GITSScheduler' | 'SetUnionControlNetType' | 'ControlNetInpaintingAliMamaApply' | 'CLIPTextEncodeHunyuanDiT' | 'CLIPTextEncodeFlux' | 'FluxGuidance' | 'LoraSave' | 'TorchCompileModel' | 'EmptyMochiLatentVideo' | 'SaveImageWebsocket' | 'IPAdapter' | 'IPAdapterAdvanced' | 'IPAdapterBatch' | 'IPAdapterFaceID' | 'IPAdapterFaceIDKolors' | 'IPAAdapterFaceIDBatch' | 'IPAdapterTiled' | 'IPAdapterTiledBatch' | 'IPAdapterEmbeds' | 'IPAdapterEmbedsBatch' | 'IPAdapterStyleComposition' | 'IPAdapterStyleCompositionBatch' | 'IPAdapterMS' | 'IPAdapterClipVisionEnhancer' | 'IPAdapterClipVisionEnhancerBatch' | 'IPAdapterFromParams' | 'IPAdapterPreciseStyleTransfer' | 'IPAdapterPreciseStyleTransferBatch' | 'IPAdapterPreciseComposition' | 'IPAdapterPreciseCompositionBatch' | 'IPAdapterUnifiedLoader' | 'IPAdapterUnifiedLoaderFaceID' | 'IPAdapterModelLoader' | 'IPAdapterInsightFaceLoader' | 'IPAdapterUnifiedLoaderCommunity' | 'IPAdapterEncoder' | 'IPAdapterCombineEmbeds' | 'IPAdapterNoise' | 'PrepImageForClipVision' | 'IPAdapterSaveEmbeds' | 'IPAdapterLoadEmbeds' | 'IPAdapterWeights' | 'IPAdapterCombineWeights' | 'IPAdapterWeightsFromStrategy' | 'IPAdapterPromptScheduleFromWeightsStrategy' | 'IPAdapterRegionalConditioning' | 'IPAdapterCombineParams' | 'ShufflePreprocessor' | 'DensePosePreprocessor' | 'LeReS$7DepthMapPreprocessor' | 'BinaryPreprocessor' | 'AnimeFace$_SemSegPreprocessor' | 'Zoe$7DepthMapPreprocessor' | 'DepthAnythingPreprocessor' | 'Zoe$_DepthAnythingPreprocessor' | 'DepthAnythingV2Preprocessor' | 'CannyEdgePreprocessor' | 'DWPreprocessor' | 'AnimalPosePreprocessor' | 'ImageLuminanceDetector' | 'ImageIntensityDetector' | 'MediaPipe$7FaceMeshPreprocessor' | 'DiffusionEdge$_Preprocessor' | 'M$7LSDPreprocessor' | 'HEDPreprocessor' | 'FakeScribblePreprocessor' | 'OneFormer$7COCO$7SemSegPreprocessor' | 'OneFormer$7ADE20K$7SemSegPreprocessor' | 'BAE$7NormalMapPreprocessor' | 'MeshGraphormer$7DepthMapPreprocessor' | 'MeshGraphormer$6ImpactDetector$7DepthMapPreprocessor' | 'DSINE$7NormalMapPreprocessor' | 'MiDaS$7NormalMapPreprocessor' | 'MiDaS$7DepthMapPreprocessor' | 'AnyLineArtPreprocessor$_aux' | 'SAMPreprocessor' | 'UniFormer$7SemSegPreprocessor' | 'SemSegPreprocessor' | 'PiDiNetPreprocessor' | 'InpaintPreprocessor' | 'LineArtPreprocessor' | 'OpenposePreprocessor' | 'Unimatch$_OptFlowPreprocessor' | 'MaskOptFlow' | 'SavePoseKpsAsJsonFile' | 'FacialPartColoringFromPoseKps' | 'UpperBodyTrackingFromPoseKps' | 'RenderPeopleKps' | 'RenderAnimalKps' | 'TEEDPreprocessor' | 'PyraCannyPreprocessor' | 'Metric3D$7DepthMapPreprocessor' | 'Metric3D$7NormalMapPreprocessor' | 'Manga2Anime$_LineArt$_Preprocessor' | 'ScribblePreprocessor' | 'Scribble$_XDoG$_Preprocessor' | 'Scribble$_PiDiNet$_Preprocessor' | 'AnimeLineArtPreprocessor' | 'LineartStandardPreprocessor' | 'TilePreprocessor' | 'TTPlanet$_TileGF$_Preprocessor' | 'TTPlanet$_TileSimple$_Preprocessor' | 'ColorPreprocessor' | 'AIO$_Preprocessor' | 'ControlNetPreprocessorSelector' | 'PixelPerfectResolution' | 'ImageGenResolutionFromImage' | 'ImageGenResolutionFromLatent' | 'HintImageEnchance' | 'ExecuteAllControlNetPreprocessors' | 'ControlNetAuxSimpleAddText' | 'SAMLoader' | 'CLIPSegDetectorProvider' | 'ONNXDetectorProvider' | 'BitwiseAndMaskForEach' | 'SubtractMaskForEach' | 'DetailerForEach' | 'DetailerForEachDebug' | 'DetailerForEachPipe' | 'DetailerForEachDebugPipe' | 'DetailerForEachPipeForAnimateDiff' | 'SAMDetectorCombined' | 'SAMDetectorSegmented' | 'FaceDetailer' | 'FaceDetailerPipe' | 'MaskDetailerPipe' | 'ToDetailerPipe' | 'ToDetailerPipeSDXL' | 'FromDetailerPipe' | 'FromDetailerPipe$_v2' | 'FromDetailerPipeSDXL' | 'AnyPipeToBasic' | 'ToBasicPipe' | 'FromBasicPipe' | 'FromBasicPipe$_v2' | 'BasicPipeToDetailerPipe' | 'BasicPipeToDetailerPipeSDXL' | 'DetailerPipeToBasicPipe' | 'EditBasicPipe' | 'EditDetailerPipe' | 'EditDetailerPipeSDXL' | 'LatentPixelScale' | 'PixelKSampleUpscalerProvider' | 'PixelKSampleUpscalerProviderPipe' | 'IterativeLatentUpscale' | 'IterativeImageUpscale' | 'PixelTiledKSampleUpscalerProvider' | 'PixelTiledKSampleUpscalerProviderPipe' | 'TwoSamplersForMaskUpscalerProvider' | 'TwoSamplersForMaskUpscalerProviderPipe' | 'PixelKSampleHookCombine' | 'DenoiseScheduleHookProvider' | 'StepsScheduleHookProvider' | 'CfgScheduleHookProvider' | 'NoiseInjectionHookProvider' | 'UnsamplerHookProvider' | 'CoreMLDetailerHookProvider' | 'PreviewDetailerHookProvider' | 'DetailerHookCombine' | 'NoiseInjectionDetailerHookProvider' | 'UnsamplerDetailerHookProvider' | 'DenoiseSchedulerDetailerHookProvider' | 'SEGSOrderedFilterDetailerHookProvider' | 'SEGSRangeFilterDetailerHookProvider' | 'SEGSLabelFilterDetailerHookProvider' | 'VariationNoiseDetailerHookProvider' | 'BitwiseAndMask' | 'SubtractMask' | 'AddMask' | 'ImpactSegsAndMask' | 'ImpactSegsAndMaskForEach' | 'EmptySegs' | 'ImpactFlattenMask' | 'MediaPipeFaceMeshToSEGS' | 'MaskToSEGS' | 'MaskToSEGS$_for$_AnimateDiff' | 'ToBinaryMask' | 'MasksToMaskList' | 'MaskListToMaskBatch' | 'ImageListToImageBatch' | 'SetDefaultImageForSEGS' | 'RemoveImageFromSEGS' | 'BboxDetectorSEGS' | 'SegmDetectorSEGS' | 'ONNXDetectorSEGS' | 'ImpactSimpleDetectorSEGS$_for$_AD' | 'ImpactSimpleDetectorSEGS' | 'ImpactSimpleDetectorSEGSPipe' | 'ImpactControlNetApplySEGS' | 'ImpactControlNetApplyAdvancedSEGS' | 'ImpactControlNetClearSEGS' | 'ImpactIPAdapterApplySEGS' | 'ImpactDecomposeSEGS' | 'ImpactAssembleSEGS' | 'ImpactFrom$_SEG$_ELT' | 'ImpactEdit$_SEG$_ELT' | 'ImpactDilate$_Mask$_SEG$_ELT' | 'ImpactDilateMask' | 'ImpactGaussianBlurMask' | 'ImpactDilateMaskInSEGS' | 'ImpactGaussianBlurMaskInSEGS' | 'ImpactScaleBy$_BBOX$_SEG$_ELT' | 'ImpactFrom$_SEG$_ELT$_bbox' | 'ImpactFrom$_SEG$_ELT$_crop$_region' | 'ImpactCount$_Elts$_in$_SEGS' | 'BboxDetectorCombined$_v2' | 'SegmDetectorCombined$_v2' | 'SegsToCombinedMask' | 'KSamplerProvider' | 'TwoSamplersForMask' | 'TiledKSamplerProvider' | 'KSamplerAdvancedProvider' | 'TwoAdvancedSamplersForMask' | 'ImpactNegativeConditioningPlaceholder' | 'PreviewBridge' | 'PreviewBridgeLatent' | 'ImageSender' | 'ImageReceiver' | 'LatentSender' | 'LatentReceiver' | 'ImageMaskSwitch' | 'LatentSwitch' | 'SEGSSwitch' | 'ImpactSwitch' | 'ImpactInversedSwitch' | 'ImpactWildcardProcessor' | 'ImpactWildcardEncode' | 'SEGSUpscaler' | 'SEGSUpscalerPipe' | 'SEGSDetailer' | 'SEGSPaste' | 'SEGSPreview' | 'SEGSPreviewCNet' | 'SEGSToImageList' | 'ImpactSEGSToMaskList' | 'ImpactSEGSToMaskBatch' | 'ImpactSEGSConcat' | 'ImpactSEGSPicker' | 'ImpactMakeTileSEGS' | 'ImpactSEGSMerge' | 'SEGSDetailerForAnimateDiff' | 'ImpactKSamplerBasicPipe' | 'ImpactKSamplerAdvancedBasicPipe' | 'ReencodeLatent' | 'ReencodeLatentPipe' | 'ImpactImageBatchToImageList' | 'ImpactMakeImageList' | 'ImpactMakeImageBatch' | 'ImpactMakeAnyList' | 'ImpactMakeMaskList' | 'ImpactMakeMaskBatch' | 'RegionalSampler' | 'RegionalSamplerAdvanced' | 'CombineRegionalPrompts' | 'RegionalPrompt' | 'ImpactCombineConditionings' | 'ImpactConcatConditionings' | 'ImpactSEGSLabelAssign' | 'ImpactSEGSLabelFilter' | 'ImpactSEGSRangeFilter' | 'ImpactSEGSOrderedFilter' | 'ImpactCompare' | 'ImpactConditionalBranch' | 'ImpactConditionalBranchSelMode' | 'ImpactIfNone' | 'ImpactConvertDataType' | 'ImpactLogicalOperators' | 'ImpactInt' | 'ImpactFloat' | 'ImpactBoolean' | 'ImpactValueSender' | 'ImpactValueReceiver' | 'ImpactImageInfo' | 'ImpactLatentInfo' | 'ImpactMinMax' | 'ImpactNeg' | 'ImpactConditionalStopIteration' | 'ImpactStringSelector' | 'StringListToString' | 'WildcardPromptFromString' | 'ImpactExecutionOrderController' | 'RemoveNoiseMask' | 'ImpactLogger' | 'ImpactDummyInput' | 'ImpactQueueTrigger' | 'ImpactQueueTriggerCountdown' | 'ImpactSetWidgetValue' | 'ImpactNodeSetMuteState' | 'ImpactControlBridge' | 'ImpactIsNotEmptySEGS' | 'ImpactSleep' | 'ImpactRemoteBoolean' | 'ImpactRemoteInt' | 'ImpactHFTransformersClassifierProvider' | 'ImpactSEGSClassify' | 'ImpactSchedulerAdapter' | 'GITSSchedulerFuncProvider' | 'UltralyticsDetectorProvider' | 'UnknownNodeXX'
 }

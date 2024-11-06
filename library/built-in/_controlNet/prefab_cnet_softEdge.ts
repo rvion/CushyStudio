@@ -22,7 +22,7 @@ export function ui_subform_SoftEdge(): UI_subform_SoftEdge {
          items: {
             ...cnet_ui_common(form),
             preprocessor: ui_subform_SoftEdge_Preprocessor(),
-            cnet_model_name: form.enum['ControlNetLoader.input.control_net_name']({
+            cnet_model_name: form.enum['ControlNetLoader.control_net_name']({
                label: 'Model',
                default: 'control_v11p_sd15_softedge.pth' as any,
                extraDefaults: ['control_v11p_sd15_softedge.pth'],
@@ -83,7 +83,7 @@ export const run_cnet_SoftEdge = (
    resolution: number, // 512 | 768 | 1024 = 512,
 ): {
    image: Comfy.Input.IMAGE
-   cnet_name: Comfy.Enums['Comfy.Base.ControlNetLoader.input.control_net_name']
+   cnet_name: Comfy.Enums['ControlNetLoader.control_net_name']
 } => {
    const run = getCurrentRun()
    const graph = run.nodes

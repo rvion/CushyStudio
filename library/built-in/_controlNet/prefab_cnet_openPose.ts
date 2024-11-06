@@ -22,7 +22,7 @@ export function ui_subform_OpenPose(): UI_subform_OpenPose {
          {
             ...cnet_ui_common(form),
             preprocessor: ui_subform_OpenPose_Preprocessor(),
-            cnet_model_name: form.enum['ControlNetLoader.input.control_net_name']({
+            cnet_model_name: form.enum['ControlNetLoader.control_net_name']({
                label: 'Model',
                // @ts-ignore
                default: 't2iadapter_openpose_sd14v1.pth',
@@ -50,8 +50,10 @@ type UI_subform_OpenPose_Preprocessor = X.XChoice<{
       detect_body: X.XBool
       detect_face: X.XBool
       detect_hand: X.XBool
-      bbox_detector: X.XEnum<Enum_DWPreprocessor$_Provider$_for$_SEGS_$3$3Inspire_bbox_detector>
-      pose_estimator: X.XEnum<Enum_DWPreprocessor$_Provider$_for$_SEGS_$3$3Inspire_pose_estimator>
+      // 'DWPreprocessor$_Provider$_for$_SEGS_$3$3Inspire_bbox_detector'
+      bbox_detector: X.XEnum<Comfy.Enums['Custom.controlnet_aux.DWPreprocessor.bbox_detector']>
+      // 'DWPreprocessor$_Provider$_for$_SEGS_$3$3Inspire_pose_estimator'
+      pose_estimator: X.XEnum<Comfy.Enums['DWPreprocessor$_Provider$_for$_SEGS_$3$3Inspire_pose_estimator']>
       saveProcessedImage: X.XBool
    }>
    OpenPose: X.XGroup<{
@@ -75,11 +77,11 @@ function ui_subform_OpenPose_Preprocessor(): UI_subform_OpenPose_Preprocessor {
                detect_body: form.bool({ default: true }),
                detect_face: form.bool({ default: true }),
                detect_hand: form.bool({ default: true }),
-               bbox_detector: form.enum['DWPreprocessor.input.bbox_detector']({
+               bbox_detector: form.enum['DWPreprocessor.bbox_detector']({
                   label: 'Model',
                   default: 'yolox_l.onnx',
                }),
-               pose_estimator: form.enum['DWPreprocessor.input.pose_estimator']({
+               pose_estimator: form.enum['DWPreprocessor.pose_estimator']({
                   label: 'Model',
                   default: 'dw-ll_ucoco_384.onnx',
                }),
@@ -109,10 +111,10 @@ export const run_cnet_openPose = (
    resolution: number, // 512 | 768 | 1024 = 512,
 ): {
    image: Comfy.Input.IMAGE
-   cnet_name: Comfy.Enums['Comfy.Base.ControlNetLoader.input.control_net_name']
+   cnet_name: Comfy.Enums['ControlNetLoader.control_net_name']
 } => {
-   const run = getCurrentRun()
-   const graph = run.nodes
+   const sdk = getCurrentRun()
+   const graph = sdk.nodes
    const cnet_name = openPose.cnet_model_name
 
    let returnImage = image
@@ -129,7 +131,7 @@ export const run_cnet_openPose = (
    if (openPose.preprocessor) {
       var opPP = openPose.preprocessor
       if (opPP.OpenPose) {
-         returnImage = graph.OpenposePreprocessor({
+         returnImage = graph['Custom.controlnet_aux.OpenposePreprocessor']({
             image: image,
             detect_body: opPP.OpenPose.detect_body ? 'enable' : 'disable',
             detect_face: opPP.OpenPose.detect_face ? 'enable' : 'disable',
@@ -140,7 +142,7 @@ export const run_cnet_openPose = (
             graph.SaveImage({ images: returnImage, filename_prefix: 'cnet\\pose\\' })
          else graph.PreviewImage({ images: returnImage })
       } else if (opPP.DWPose) {
-         returnImage = graph.DWPreprocessor({
+         returnImage = graph['Custom.controlnet_aux.DWPreprocessor']({
             image: image,
             detect_body: opPP.DWPose.detect_body ? 'enable' : 'disable',
             detect_face: opPP.DWPose.detect_face ? 'enable' : 'disable',

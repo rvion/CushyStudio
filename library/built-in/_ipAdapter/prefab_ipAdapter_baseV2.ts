@@ -16,7 +16,7 @@ export const ui_ipadapter_advancedSettings = (
    form: X.Builder,
    start: number = 0,
    end: number = 1,
-   weight_type: Comfy.Enums['Comfy.Base.IPAdapterAdvanced.input.weight_type'] = 'linear',
+   weight_type: Comfy.Enums['IPAdapterAdvanced.weight_type'] = 'linear',
 ): UI_ipadapter_advancedSettings => {
    return form.fields(
       {
@@ -28,8 +28,8 @@ export const ui_ipadapter_advancedSettings = (
                tooltip: 'This defines the region of the generated image the IPAdapter will apply to',
             })
             .optional(),
-         weight_type: form.enum['IPAdapterAdvanced.input.weight_type']({ default: weight_type }),
-         embedding_scaling: form.enum['IPAdapterAdvanced.input.embeds_scaling']({ default: 'V only' }),
+         weight_type: form.enum['IPAdapterAdvanced.weight_type']({ default: weight_type }),
+         embedding_scaling: form.enum['IPAdapterAdvanced.embeds_scaling']({ default: 'V only' }),
          noise: form.float({ default: 0, min: 0, max: 1, step: 0.1 }),
          unfold_batch: form.bool({ default: false }),
       },
@@ -58,7 +58,7 @@ export function ui_IPAdapterImageInput(form: X.Builder): UI_IPAdapterImageInput 
          advanced: form.fields(
             {
                imageWeight: form.float({ default: 1, min: 0, max: 2, step: 0.1 }),
-               embedding_combination: form.enum['IPAdapterAdvanced.input.combine_embeds']({
+               embedding_combination: form.enum['IPAdapterAdvanced.combine_embeds']({
                   default: 'average',
                }),
                imageAttentionMask: form
@@ -116,7 +116,7 @@ export function ui_IPAdapterV2(): UI_IPAdapterV2 {
                   adapterStrength: form.float({ default: 0.8, min: 0, max: 2, step: 0.1 }),
                   models: form.fields(
                      {
-                        type: form.enum['IPAdapterUnifiedLoader.input.preset']({
+                        type: form.enum['IPAdapterUnifiedLoader.preset']({
                            default: 'STANDARD (medium strength)',
                         }),
                      },

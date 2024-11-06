@@ -176,7 +176,7 @@ export const Panel_InstallRequirementsUI = observer(function Panel_InstallRequir
                //                 // add the new value (BRITTLE)
                //
                //                 // ⏸️ const enumInfo = st.schema.knownEnumsByName //
-               //                 // ⏸️     .get(p.widget.input.enumName)
+               //                 // ⏸️     .get(p.widget.enumName)
                //                 // ⏸️ enumInfo?.values.push(mi.filename)
                //             }}
                //             key={mi.name}

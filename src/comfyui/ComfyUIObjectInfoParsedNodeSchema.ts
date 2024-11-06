@@ -4,6 +4,7 @@ import type { ComfyInputOpts, ComfyNodeSchemaJSON } from './ComfyUIObjectInfoTyp
 import { ComfyPrimitiveMapping } from '../core/Primitives'
 import { CodeBuffer } from '../utils/codegen/CodeBuffer'
 import { escapeJSKey } from '../utils/codegen/escapeJSKey'
+import { pythonModuleToShortestUnambiguousPrefix } from './pythonModuleToNamespace'
 
 export type NodeOwnEnum = { in: 'input' | 'output'; ownName: string; enum: ComfyUnionInfo }
 /**
@@ -15,7 +16,7 @@ export class ComfyUIObjectInfoParsedNodeSchema {
 
    constructor(
       public raw: ComfyNodeSchemaJSON,
-      public ownEnums: NodeOwnEnum[], // <-- TODO: remove
+      // public ownEnums: NodeOwnEnum[], // <-- TODO: remove
       public nameInComfy: string,
       public nameInCushy: string,
       public category: string,
@@ -24,6 +25,10 @@ export class ComfyUIObjectInfoParsedNodeSchema {
       public pythonModule: string,
    ) {
       this.category = this.category.replaceAll('/', '_')
+   }
+
+   get shortestUnambiguousName(): string {
+      return `${pythonModuleToShortestUnambiguousPrefix(this.pythonModule)}${this.nameInCushy}`
    }
 
    codegenUI(): string {

@@ -35,10 +35,10 @@ export function ui_model_kohyaDeepShrink(form: X.Builder): UI_model_kohyaDeepShr
                startPercent: form.float({ default: 0, min: 0, max: 1, step: 0.05 }),
                endPercent: form.float({ default: 0.35, min: 0, max: 1, step: 0.05 }),
                downscaleAfterSkip: form.bool({ default: false }),
-               downscaleMethod: form.enum['PatchModelAddDownscale.input.downscale_method']({
+               downscaleMethod: form.enum['PatchModelAddDownscale.downscale_method']({
                   default: 'bislerp',
                }),
-               upscaleMethod: form.enum['PatchModelAddDownscale.input.upscale_method']({
+               upscaleMethod: form.enum['PatchModelAddDownscale.upscale_method']({
                   default: 'bicubic',
                }),
             },

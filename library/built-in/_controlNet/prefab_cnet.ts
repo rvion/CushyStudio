@@ -263,7 +263,7 @@ const _apply_cnet = (
    startPct: number,
    endPct: number,
    image: Comfy.Input.IMAGE,
-   cnet_name: Comfy.Enums['Comfy.Base.ControlNetLoader.input.control_net_name'],
+   cnet_name: Comfy.Enums['ControlNetLoader.control_net_name'],
    mask: HasSingle_MASK | null,
 ): void => {
    const run = getCurrentRun()

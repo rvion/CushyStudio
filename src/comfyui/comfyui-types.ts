@@ -2,7 +2,7 @@ import type { ComfyInputOpts } from './ComfyUIObjectInfoTypes'
 
 export type ComfyUnionHash = string //  '26c34bf761d4be4554ab944105c5a3c017c99453
 export type ComfyUnionName = string // 'E_26c34bf761d4be4554ab944105c5a3c017c99453'
-export type ComfyEnumName = string //  'Comfy.Custom.Impact_Pack.CfgScheduleHookProvider.input.schedule_for_iteration'
+export type ComfyEnumName = string //  'Comfy.Custom.Impact_Pack.CfgScheduleHookProvider.schedule_for_iteration'
 export type ComfyUnionValue = string | boolean | number
 
 export type NodeNameInComfy = string

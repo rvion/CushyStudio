@@ -5,8 +5,8 @@ export type UI_cnet_ui_common = {
    advanced: X.XGroup<{
       startAtStepPercent: X.XNumber
       endAtStepPercent: X.XNumber
-      crop: X.XEnum<Comfy.Enums['Comfy.Base.LatentUpscale.input.crop']>
-      upscale_method: X.XEnum<Comfy.Enums['Comfy.Base.ImageScale.input.upscale_method']>
+      crop: X.XEnum<Comfy.Enums['LatentUpscale.crop']>
+      upscale_method: X.XEnum<Comfy.Enums['ImageScale.upscale_method']>
    }>
 }
 export function cnet_ui_common(ui: X.Builder): UI_cnet_ui_common {
@@ -18,11 +18,11 @@ export function cnet_ui_common(ui: X.Builder): UI_cnet_ui_common {
          items: {
             startAtStepPercent: ui.float({ default: 0, min: 0, max: 1, step: 0.1 }),
             endAtStepPercent: ui.float({ default: 1, min: 0, max: 1, step: 0.1 }),
-            crop: ui.enum['Comfy.Base.LatentUpscale.input.crop']({
+            crop: ui.enum['LatentUpscale.crop']({
                label: 'Image Prep Crop mode',
                default: 'disabled',
             }),
-            upscale_method: ui.enum['Comfy.Base.ImageScale.input.upscale_method']({
+            upscale_method: ui.enum['ImageScale.upscale_method']({
                label: 'Scale method',
                default: 'lanczos',
             }),

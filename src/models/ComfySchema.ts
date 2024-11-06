@@ -71,9 +71,9 @@ export class ComfySchemaL extends BaseInst<TABLES['comfy_schema']> {
    hasLora = (loraName: string): boolean => this.getLoras().includes(loraName as Enum_LoraLoader_lora_name)
 
    /** return the list of all loras available */
-   getLoras = (): Enum_LoraLoader_lora_name[] => {
+   getLoras = (): Comfy.Enums['LoraLoader.lora_name'][] => {
       const candidates = this.knownEnumsByName.get('Enum_LoraLoader_lora_name')?.values ?? []
-      return candidates as Enum_LoraLoader_lora_name[]
+      return candidates as Comfy.Enums['LoraLoader.lora_name'][]
    }
 
    // IMAGES --------------------------------------------------------------

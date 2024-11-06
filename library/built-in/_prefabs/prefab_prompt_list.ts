@@ -39,7 +39,7 @@ export const ui_promptList = (): PromptLisT$ => {
                   prompt: form.prompt(),
                   mask: form.image({}),
                   invert: form.bool({}),
-                  mode: form.enum['LoadImageMask.input.channel']({}),
+                  mode: form.enum['LoadImageMask.channel']({}),
                   blur: form.float({ default: 6, min: 0, max: 2048, softMax: 24, step: 1 }),
                },
                {

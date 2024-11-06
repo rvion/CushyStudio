@@ -4905,6 +4905,2611 @@
 ,       "category": "api/image"
 ,       "output_node": true
     }
+,   "IPAdapter": {
+        "input": {
+            "required": {
+                "model": ["MODEL"]
+,               "ipadapter": ["IPADAPTER"]
+,               "image": ["IMAGE"]
+,               "weight": ["FLOAT",{"default":1,"min":-1,"max":3,"step":0.05}]
+,               "start_at": ["FLOAT",{"default":0,"min":0,"max":1,"step":0.001}]
+,               "end_at": ["FLOAT",{"default":1,"min":0,"max":1,"step":0.001}]
+,               "weight_type": [["standard","prompt is more important","style transfer"]]
+            }
+,           "optional": {
+                "attn_mask": ["MASK"]
+            }
+        }
+,       "input_order": {
+            "required": ["model","ipadapter","image","weight","start_at","end_at","weight_type"]
+,           "optional": ["attn_mask"]
+        }
+,       "output": ["MODEL"]
+,       "output_is_list": [false]
+,       "output_name": ["MODEL"]
+,       "name": "IPAdapter"
+,       "display_name": "IPAdapter"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI_IPAdapter_plus"
+,       "category": "ipadapter"
+,       "output_node": false
+    }
+,   "IPAdapterAdvanced": {
+        "input": {
+            "required": {
+                "model": ["MODEL"]
+,               "ipadapter": ["IPADAPTER"]
+,               "image": ["IMAGE"]
+,               "weight": ["FLOAT",{"default":1,"min":-1,"max":5,"step":0.05}]
+,               "weight_type": [["linear","ease in","ease out","ease in-out","reverse in-out","weak input","weak output","weak middle","strong middle","style transfer","composition","strong style transfer","style and composition","style transfer precise","composition precise"]]
+,               "combine_embeds": [["concat","add","subtract","average","norm average"]]
+,               "start_at": ["FLOAT",{"default":0,"min":0,"max":1,"step":0.001}]
+,               "end_at": ["FLOAT",{"default":1,"min":0,"max":1,"step":0.001}]
+,               "embeds_scaling": [["V only","K+V","K+V w/ C penalty","K+mean(V) w/ C penalty"]]
+            }
+,           "optional": {
+                "image_negative": ["IMAGE"]
+,               "attn_mask": ["MASK"]
+,               "clip_vision": ["CLIP_VISION"]
+            }
+        }
+,       "input_order": {
+            "required": ["model","ipadapter","image","weight","weight_type","combine_embeds","start_at","end_at","embeds_scaling"]
+,           "optional": ["image_negative","attn_mask","clip_vision"]
+        }
+,       "output": ["MODEL"]
+,       "output_is_list": [false]
+,       "output_name": ["MODEL"]
+,       "name": "IPAdapterAdvanced"
+,       "display_name": "IPAdapter Advanced"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI_IPAdapter_plus"
+,       "category": "ipadapter"
+,       "output_node": false
+    }
+,   "IPAdapterBatch": {
+        "input": {
+            "required": {
+                "model": ["MODEL"]
+,               "ipadapter": ["IPADAPTER"]
+,               "image": ["IMAGE"]
+,               "weight": ["FLOAT",{"default":1,"min":-1,"max":5,"step":0.05}]
+,               "weight_type": [["linear","ease in","ease out","ease in-out","reverse in-out","weak input","weak output","weak middle","strong middle","style transfer","composition","strong style transfer","style and composition","style transfer precise","composition precise"]]
+,               "start_at": ["FLOAT",{"default":0,"min":0,"max":1,"step":0.001}]
+,               "end_at": ["FLOAT",{"default":1,"min":0,"max":1,"step":0.001}]
+,               "embeds_scaling": [["V only","K+V","K+V w/ C penalty","K+mean(V) w/ C penalty"]]
+,               "encode_batch_size": ["INT",{"default":0,"min":0,"max":4096}]
+            }
+,           "optional": {
+                "image_negative": ["IMAGE"]
+,               "attn_mask": ["MASK"]
+,               "clip_vision": ["CLIP_VISION"]
+            }
+        }
+,       "input_order": {
+            "required": ["model","ipadapter","image","weight","weight_type","start_at","end_at","embeds_scaling","encode_batch_size"]
+,           "optional": ["image_negative","attn_mask","clip_vision"]
+        }
+,       "output": ["MODEL"]
+,       "output_is_list": [false]
+,       "output_name": ["MODEL"]
+,       "name": "IPAdapterBatch"
+,       "display_name": "IPAdapter Batch (Adv.)"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI_IPAdapter_plus"
+,       "category": "ipadapter"
+,       "output_node": false
+    }
+,   "IPAdapterFaceID": {
+        "input": {
+            "required": {
+                "model": ["MODEL"]
+,               "ipadapter": ["IPADAPTER"]
+,               "image": ["IMAGE"]
+,               "weight": ["FLOAT",{"default":1,"min":-1,"max":3,"step":0.05}]
+,               "weight_faceidv2": ["FLOAT",{"default":1,"min":-1,"max":5,"step":0.05}]
+,               "weight_type": [["linear","ease in","ease out","ease in-out","reverse in-out","weak input","weak output","weak middle","strong middle","style transfer","composition","strong style transfer","style and composition","style transfer precise","composition precise"]]
+,               "combine_embeds": [["concat","add","subtract","average","norm average"]]
+,               "start_at": ["FLOAT",{"default":0,"min":0,"max":1,"step":0.001}]
+,               "end_at": ["FLOAT",{"default":1,"min":0,"max":1,"step":0.001}]
+,               "embeds_scaling": [["V only","K+V","K+V w/ C penalty","K+mean(V) w/ C penalty"]]
+            }
+,           "optional": {
+                "image_negative": ["IMAGE"]
+,               "attn_mask": ["MASK"]
+,               "clip_vision": ["CLIP_VISION"]
+,               "insightface": ["INSIGHTFACE"]
+            }
+        }
+,       "input_order": {
+            "required": ["model","ipadapter","image","weight","weight_faceidv2","weight_type","combine_embeds","start_at","end_at","embeds_scaling"]
+,           "optional": ["image_negative","attn_mask","clip_vision","insightface"]
+        }
+,       "output": ["MODEL","IMAGE"]
+,       "output_is_list": [false,false]
+,       "output_name": ["MODEL","face_image"]
+,       "name": "IPAdapterFaceID"
+,       "display_name": "IPAdapter FaceID"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI_IPAdapter_plus"
+,       "category": "ipadapter/faceid"
+,       "output_node": false
+    }
+,   "IPAdapterFaceIDKolors": {
+        "input": {
+            "required": {
+                "model": ["MODEL"]
+,               "ipadapter": ["IPADAPTER"]
+,               "image": ["IMAGE"]
+,               "weight": ["FLOAT",{"default":1,"min":-1,"max":3,"step":0.05}]
+,               "weight_faceidv2": ["FLOAT",{"default":1,"min":-1,"max":5,"step":0.05}]
+,               "weight_kolors": ["FLOAT",{"default":1,"min":-1,"max":5,"step":0.05}]
+,               "weight_type": [["linear","ease in","ease out","ease in-out","reverse in-out","weak input","weak output","weak middle","strong middle","style transfer","composition","strong style transfer","style and composition","style transfer precise","composition precise"]]
+,               "combine_embeds": [["concat","add","subtract","average","norm average"]]
+,               "start_at": ["FLOAT",{"default":0,"min":0,"max":1,"step":0.001}]
+,               "end_at": ["FLOAT",{"default":1,"min":0,"max":1,"step":0.001}]
+,               "embeds_scaling": [["V only","K+V","K+V w/ C penalty","K+mean(V) w/ C penalty"]]
+            }
+,           "optional": {
+                "image_negative": ["IMAGE"]
+,               "attn_mask": ["MASK"]
+,               "clip_vision": ["CLIP_VISION"]
+,               "insightface": ["INSIGHTFACE"]
+            }
+        }
+,       "input_order": {
+            "required": ["model","ipadapter","image","weight","weight_faceidv2","weight_kolors","weight_type","combine_embeds","start_at","end_at","embeds_scaling"]
+,           "optional": ["image_negative","attn_mask","clip_vision","insightface"]
+        }
+,       "output": ["MODEL","IMAGE"]
+,       "output_is_list": [false,false]
+,       "output_name": ["MODEL","face_image"]
+,       "name": "IPAdapterFaceIDKolors"
+,       "display_name": "IPAdapter FaceID Kolors"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI_IPAdapter_plus"
+,       "category": "ipadapter/faceid"
+,       "output_node": false
+    }
+,   "IPAAdapterFaceIDBatch": {
+        "input": {
+            "required": {
+                "model": ["MODEL"]
+,               "ipadapter": ["IPADAPTER"]
+,               "image": ["IMAGE"]
+,               "weight": ["FLOAT",{"default":1,"min":-1,"max":3,"step":0.05}]
+,               "weight_faceidv2": ["FLOAT",{"default":1,"min":-1,"max":5,"step":0.05}]
+,               "weight_type": [["linear","ease in","ease out","ease in-out","reverse in-out","weak input","weak output","weak middle","strong middle","style transfer","composition","strong style transfer","style and composition","style transfer precise","composition precise"]]
+,               "combine_embeds": [["concat","add","subtract","average","norm average"]]
+,               "start_at": ["FLOAT",{"default":0,"min":0,"max":1,"step":0.001}]
+,               "end_at": ["FLOAT",{"default":1,"min":0,"max":1,"step":0.001}]
+,               "embeds_scaling": [["V only","K+V","K+V w/ C penalty","K+mean(V) w/ C penalty"]]
+            }
+,           "optional": {
+                "image_negative": ["IMAGE"]
+,               "attn_mask": ["MASK"]
+,               "clip_vision": ["CLIP_VISION"]
+,               "insightface": ["INSIGHTFACE"]
+            }
+        }
+,       "input_order": {
+            "required": ["model","ipadapter","image","weight","weight_faceidv2","weight_type","combine_embeds","start_at","end_at","embeds_scaling"]
+,           "optional": ["image_negative","attn_mask","clip_vision","insightface"]
+        }
+,       "output": ["MODEL","IMAGE"]
+,       "output_is_list": [false,false]
+,       "output_name": ["MODEL","face_image"]
+,       "name": "IPAAdapterFaceIDBatch"
+,       "display_name": "IPAdapter FaceID Batch"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI_IPAdapter_plus"
+,       "category": "ipadapter/faceid"
+,       "output_node": false
+    }
+,   "IPAdapterTiled": {
+        "input": {
+            "required": {
+                "model": ["MODEL"]
+,               "ipadapter": ["IPADAPTER"]
+,               "image": ["IMAGE"]
+,               "weight": ["FLOAT",{"default":1,"min":-1,"max":3,"step":0.05}]
+,               "weight_type": [["linear","ease in","ease out","ease in-out","reverse in-out","weak input","weak output","weak middle","strong middle","style transfer","composition","strong style transfer","style and composition","style transfer precise","composition precise"]]
+,               "combine_embeds": [["concat","add","subtract","average","norm average"]]
+,               "start_at": ["FLOAT",{"default":0,"min":0,"max":1,"step":0.001}]
+,               "end_at": ["FLOAT",{"default":1,"min":0,"max":1,"step":0.001}]
+,               "sharpening": ["FLOAT",{"default":0,"min":0,"max":1,"step":0.05}]
+,               "embeds_scaling": [["V only","K+V","K+V w/ C penalty","K+mean(V) w/ C penalty"]]
+            }
+,           "optional": {
+                "image_negative": ["IMAGE"]
+,               "attn_mask": ["MASK"]
+,               "clip_vision": ["CLIP_VISION"]
+            }
+        }
+,       "input_order": {
+            "required": ["model","ipadapter","image","weight","weight_type","combine_embeds","start_at","end_at","sharpening","embeds_scaling"]
+,           "optional": ["image_negative","attn_mask","clip_vision"]
+        }
+,       "output": ["MODEL","IMAGE","MASK"]
+,       "output_is_list": [false,false,false]
+,       "output_name": ["MODEL","tiles","masks"]
+,       "name": "IPAdapterTiled"
+,       "display_name": "IPAdapter Tiled"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI_IPAdapter_plus"
+,       "category": "ipadapter/tiled"
+,       "output_node": false
+    }
+,   "IPAdapterTiledBatch": {
+        "input": {
+            "required": {
+                "model": ["MODEL"]
+,               "ipadapter": ["IPADAPTER"]
+,               "image": ["IMAGE"]
+,               "weight": ["FLOAT",{"default":1,"min":-1,"max":3,"step":0.05}]
+,               "weight_type": [["linear","ease in","ease out","ease in-out","reverse in-out","weak input","weak output","weak middle","strong middle","style transfer","composition","strong style transfer","style and composition","style transfer precise","composition precise"]]
+,               "start_at": ["FLOAT",{"default":0,"min":0,"max":1,"step":0.001}]
+,               "end_at": ["FLOAT",{"default":1,"min":0,"max":1,"step":0.001}]
+,               "sharpening": ["FLOAT",{"default":0,"min":0,"max":1,"step":0.05}]
+,               "embeds_scaling": [["V only","K+V","K+V w/ C penalty","K+mean(V) w/ C penalty"]]
+,               "encode_batch_size": ["INT",{"default":0,"min":0,"max":4096}]
+            }
+,           "optional": {
+                "image_negative": ["IMAGE"]
+,               "attn_mask": ["MASK"]
+,               "clip_vision": ["CLIP_VISION"]
+            }
+        }
+,       "input_order": {
+            "required": ["model","ipadapter","image","weight","weight_type","start_at","end_at","sharpening","embeds_scaling","encode_batch_size"]
+,           "optional": ["image_negative","attn_mask","clip_vision"]
+        }
+,       "output": ["MODEL","IMAGE","MASK"]
+,       "output_is_list": [false,false,false]
+,       "output_name": ["MODEL","tiles","masks"]
+,       "name": "IPAdapterTiledBatch"
+,       "display_name": "IPAdapter Tiled Batch"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI_IPAdapter_plus"
+,       "category": "ipadapter/tiled"
+,       "output_node": false
+    }
+,   "IPAdapterEmbeds": {
+        "input": {
+            "required": {
+                "model": ["MODEL"]
+,               "ipadapter": ["IPADAPTER"]
+,               "pos_embed": ["EMBEDS"]
+,               "weight": ["FLOAT",{"default":1,"min":-1,"max":3,"step":0.05}]
+,               "weight_type": [["linear","ease in","ease out","ease in-out","reverse in-out","weak input","weak output","weak middle","strong middle","style transfer","composition","strong style transfer","style and composition","style transfer precise","composition precise"]]
+,               "start_at": ["FLOAT",{"default":0,"min":0,"max":1,"step":0.001}]
+,               "end_at": ["FLOAT",{"default":1,"min":0,"max":1,"step":0.001}]
+,               "embeds_scaling": [["V only","K+V","K+V w/ C penalty","K+mean(V) w/ C penalty"]]
+            }
+,           "optional": {
+                "neg_embed": ["EMBEDS"]
+,               "attn_mask": ["MASK"]
+,               "clip_vision": ["CLIP_VISION"]
+            }
+        }
+,       "input_order": {
+            "required": ["model","ipadapter","pos_embed","weight","weight_type","start_at","end_at","embeds_scaling"]
+,           "optional": ["neg_embed","attn_mask","clip_vision"]
+        }
+,       "output": ["MODEL"]
+,       "output_is_list": [false]
+,       "output_name": ["MODEL"]
+,       "name": "IPAdapterEmbeds"
+,       "display_name": "IPAdapter Embeds"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI_IPAdapter_plus"
+,       "category": "ipadapter/embeds"
+,       "output_node": false
+    }
+,   "IPAdapterEmbedsBatch": {
+        "input": {
+            "required": {
+                "model": ["MODEL"]
+,               "ipadapter": ["IPADAPTER"]
+,               "pos_embed": ["EMBEDS"]
+,               "weight": ["FLOAT",{"default":1,"min":-1,"max":3,"step":0.05}]
+,               "weight_type": [["linear","ease in","ease out","ease in-out","reverse in-out","weak input","weak output","weak middle","strong middle","style transfer","composition","strong style transfer","style and composition","style transfer precise","composition precise"]]
+,               "start_at": ["FLOAT",{"default":0,"min":0,"max":1,"step":0.001}]
+,               "end_at": ["FLOAT",{"default":1,"min":0,"max":1,"step":0.001}]
+,               "embeds_scaling": [["V only","K+V","K+V w/ C penalty","K+mean(V) w/ C penalty"]]
+            }
+,           "optional": {
+                "neg_embed": ["EMBEDS"]
+,               "attn_mask": ["MASK"]
+,               "clip_vision": ["CLIP_VISION"]
+            }
+        }
+,       "input_order": {
+            "required": ["model","ipadapter","pos_embed","weight","weight_type","start_at","end_at","embeds_scaling"]
+,           "optional": ["neg_embed","attn_mask","clip_vision"]
+        }
+,       "output": ["MODEL"]
+,       "output_is_list": [false]
+,       "output_name": ["MODEL"]
+,       "name": "IPAdapterEmbedsBatch"
+,       "display_name": "IPAdapter Embeds Batch"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI_IPAdapter_plus"
+,       "category": "ipadapter/embeds"
+,       "output_node": false
+    }
+,   "IPAdapterStyleComposition": {
+        "input": {
+            "required": {
+                "model": ["MODEL"]
+,               "ipadapter": ["IPADAPTER"]
+,               "image_style": ["IMAGE"]
+,               "image_composition": ["IMAGE"]
+,               "weight_style": ["FLOAT",{"default":1,"min":-1,"max":5,"step":0.05}]
+,               "weight_composition": ["FLOAT",{"default":1,"min":-1,"max":5,"step":0.05}]
+,               "expand_style": ["BOOLEAN",{"default":false}]
+,               "combine_embeds": [["concat","add","subtract","average","norm average"],{"default":"average"}]
+,               "start_at": ["FLOAT",{"default":0,"min":0,"max":1,"step":0.001}]
+,               "end_at": ["FLOAT",{"default":1,"min":0,"max":1,"step":0.001}]
+,               "embeds_scaling": [["V only","K+V","K+V w/ C penalty","K+mean(V) w/ C penalty"]]
+            }
+,           "optional": {
+                "image_negative": ["IMAGE"]
+,               "attn_mask": ["MASK"]
+,               "clip_vision": ["CLIP_VISION"]
+            }
+        }
+,       "input_order": {
+            "required": ["model","ipadapter","image_style","image_composition","weight_style","weight_composition","expand_style","combine_embeds","start_at","end_at","embeds_scaling"]
+,           "optional": ["image_negative","attn_mask","clip_vision"]
+        }
+,       "output": ["MODEL"]
+,       "output_is_list": [false]
+,       "output_name": ["MODEL"]
+,       "name": "IPAdapterStyleComposition"
+,       "display_name": "IPAdapter Style & Composition SDXL"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI_IPAdapter_plus"
+,       "category": "ipadapter/style_composition"
+,       "output_node": false
+    }
+,   "IPAdapterStyleCompositionBatch": {
+        "input": {
+            "required": {
+                "model": ["MODEL"]
+,               "ipadapter": ["IPADAPTER"]
+,               "image_style": ["IMAGE"]
+,               "image_composition": ["IMAGE"]
+,               "weight_style": ["FLOAT",{"default":1,"min":-1,"max":5,"step":0.05}]
+,               "weight_composition": ["FLOAT",{"default":1,"min":-1,"max":5,"step":0.05}]
+,               "expand_style": ["BOOLEAN",{"default":false}]
+,               "start_at": ["FLOAT",{"default":0,"min":0,"max":1,"step":0.001}]
+,               "end_at": ["FLOAT",{"default":1,"min":0,"max":1,"step":0.001}]
+,               "embeds_scaling": [["V only","K+V","K+V w/ C penalty","K+mean(V) w/ C penalty"]]
+            }
+,           "optional": {
+                "image_negative": ["IMAGE"]
+,               "attn_mask": ["MASK"]
+,               "clip_vision": ["CLIP_VISION"]
+            }
+        }
+,       "input_order": {
+            "required": ["model","ipadapter","image_style","image_composition","weight_style","weight_composition","expand_style","start_at","end_at","embeds_scaling"]
+,           "optional": ["image_negative","attn_mask","clip_vision"]
+        }
+,       "output": ["MODEL"]
+,       "output_is_list": [false]
+,       "output_name": ["MODEL"]
+,       "name": "IPAdapterStyleCompositionBatch"
+,       "display_name": "IPAdapter Style & Composition Batch SDXL"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI_IPAdapter_plus"
+,       "category": "ipadapter/style_composition"
+,       "output_node": false
+    }
+,   "IPAdapterMS": {
+        "input": {
+            "required": {
+                "model": ["MODEL"]
+,               "ipadapter": ["IPADAPTER"]
+,               "image": ["IMAGE"]
+,               "weight": ["FLOAT",{"default":1,"min":-1,"max":5,"step":0.05}]
+,               "weight_faceidv2": ["FLOAT",{"default":1,"min":-1,"max":5,"step":0.05}]
+,               "weight_type": [["linear","ease in","ease out","ease in-out","reverse in-out","weak input","weak output","weak middle","strong middle","style transfer","composition","strong style transfer","style and composition","style transfer precise","composition precise"]]
+,               "combine_embeds": [["concat","add","subtract","average","norm average"]]
+,               "start_at": ["FLOAT",{"default":0,"min":0,"max":1,"step":0.001}]
+,               "end_at": ["FLOAT",{"default":1,"min":0,"max":1,"step":0.001}]
+,               "embeds_scaling": [["V only","K+V","K+V w/ C penalty","K+mean(V) w/ C penalty"]]
+,               "layer_weights": ["STRING",{"default":"","multiline":true}]
+            }
+,           "optional": {
+                "image_negative": ["IMAGE"]
+,               "attn_mask": ["MASK"]
+,               "clip_vision": ["CLIP_VISION"]
+,               "insightface": ["INSIGHTFACE"]
+            }
+        }
+,       "input_order": {
+            "required": ["model","ipadapter","image","weight","weight_faceidv2","weight_type","combine_embeds","start_at","end_at","embeds_scaling","layer_weights"]
+,           "optional": ["image_negative","attn_mask","clip_vision","insightface"]
+        }
+,       "output": ["MODEL"]
+,       "output_is_list": [false]
+,       "output_name": ["MODEL"]
+,       "name": "IPAdapterMS"
+,       "display_name": "IPAdapter Mad Scientist"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI_IPAdapter_plus"
+,       "category": "ipadapter/dev"
+,       "output_node": false
+    }
+,   "IPAdapterClipVisionEnhancer": {
+        "input": {
+            "required": {
+                "model": ["MODEL"]
+,               "ipadapter": ["IPADAPTER"]
+,               "image": ["IMAGE"]
+,               "weight": ["FLOAT",{"default":1,"min":-1,"max":5,"step":0.05}]
+,               "weight_type": [["linear","ease in","ease out","ease in-out","reverse in-out","weak input","weak output","weak middle","strong middle","style transfer","composition","strong style transfer","style and composition","style transfer precise","composition precise"]]
+,               "combine_embeds": [["concat","add","subtract","average","norm average"]]
+,               "start_at": ["FLOAT",{"default":0,"min":0,"max":1,"step":0.001}]
+,               "end_at": ["FLOAT",{"default":1,"min":0,"max":1,"step":0.001}]
+,               "embeds_scaling": [["V only","K+V","K+V w/ C penalty","K+mean(V) w/ C penalty"]]
+,               "enhance_tiles": ["INT",{"default":2,"min":1,"max":16}]
+,               "enhance_ratio": ["FLOAT",{"default":1,"min":0,"max":1,"step":0.05}]
+            }
+,           "optional": {
+                "image_negative": ["IMAGE"]
+,               "attn_mask": ["MASK"]
+,               "clip_vision": ["CLIP_VISION"]
+            }
+        }
+,       "input_order": {
+            "required": ["model","ipadapter","image","weight","weight_type","combine_embeds","start_at","end_at","embeds_scaling","enhance_tiles","enhance_ratio"]
+,           "optional": ["image_negative","attn_mask","clip_vision"]
+        }
+,       "output": ["MODEL"]
+,       "output_is_list": [false]
+,       "output_name": ["MODEL"]
+,       "name": "IPAdapterClipVisionEnhancer"
+,       "display_name": "IPAdapter ClipVision Enhancer"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI_IPAdapter_plus"
+,       "category": "ipadapter/dev"
+,       "output_node": false
+    }
+,   "IPAdapterClipVisionEnhancerBatch": {
+        "input": {
+            "required": {
+                "model": ["MODEL"]
+,               "ipadapter": ["IPADAPTER"]
+,               "image": ["IMAGE"]
+,               "weight": ["FLOAT",{"default":1,"min":-1,"max":5,"step":0.05}]
+,               "weight_type": [["linear","ease in","ease out","ease in-out","reverse in-out","weak input","weak output","weak middle","strong middle","style transfer","composition","strong style transfer","style and composition","style transfer precise","composition precise"]]
+,               "start_at": ["FLOAT",{"default":0,"min":0,"max":1,"step":0.001}]
+,               "end_at": ["FLOAT",{"default":1,"min":0,"max":1,"step":0.001}]
+,               "embeds_scaling": [["V only","K+V","K+V w/ C penalty","K+mean(V) w/ C penalty"]]
+,               "enhance_tiles": ["INT",{"default":2,"min":1,"max":16}]
+,               "enhance_ratio": ["FLOAT",{"default":0.5,"min":0,"max":1,"step":0.05}]
+,               "encode_batch_size": ["INT",{"default":0,"min":0,"max":4096}]
+            }
+,           "optional": {
+                "image_negative": ["IMAGE"]
+,               "attn_mask": ["MASK"]
+,               "clip_vision": ["CLIP_VISION"]
+            }
+        }
+,       "input_order": {
+            "required": ["model","ipadapter","image","weight","weight_type","start_at","end_at","embeds_scaling","enhance_tiles","enhance_ratio","encode_batch_size"]
+,           "optional": ["image_negative","attn_mask","clip_vision"]
+        }
+,       "output": ["MODEL"]
+,       "output_is_list": [false]
+,       "output_name": ["MODEL"]
+,       "name": "IPAdapterClipVisionEnhancerBatch"
+,       "display_name": "IPAdapter ClipVision Enhancer Batch"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI_IPAdapter_plus"
+,       "category": "ipadapter/dev"
+,       "output_node": false
+    }
+,   "IPAdapterFromParams": {
+        "input": {
+            "required": {
+                "model": ["MODEL"]
+,               "ipadapter": ["IPADAPTER"]
+,               "ipadapter_params": ["IPADAPTER_PARAMS"]
+,               "combine_embeds": [["concat","add","subtract","average","norm average"]]
+,               "embeds_scaling": [["V only","K+V","K+V w/ C penalty","K+mean(V) w/ C penalty"]]
+            }
+,           "optional": {
+                "image_negative": ["IMAGE"]
+,               "clip_vision": ["CLIP_VISION"]
+            }
+        }
+,       "input_order": {
+            "required": ["model","ipadapter","ipadapter_params","combine_embeds","embeds_scaling"]
+,           "optional": ["image_negative","clip_vision"]
+        }
+,       "output": ["MODEL"]
+,       "output_is_list": [false]
+,       "output_name": ["MODEL"]
+,       "name": "IPAdapterFromParams"
+,       "display_name": "IPAdapter from Params"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI_IPAdapter_plus"
+,       "category": "ipadapter/params"
+,       "output_node": false
+    }
+,   "IPAdapterPreciseStyleTransfer": {
+        "input": {
+            "required": {
+                "model": ["MODEL"]
+,               "ipadapter": ["IPADAPTER"]
+,               "image": ["IMAGE"]
+,               "weight": ["FLOAT",{"default":1,"min":-1,"max":5,"step":0.05}]
+,               "style_boost": ["FLOAT",{"default":1,"min":-5,"max":5,"step":0.05}]
+,               "combine_embeds": [["concat","add","subtract","average","norm average"]]
+,               "start_at": ["FLOAT",{"default":0,"min":0,"max":1,"step":0.001}]
+,               "end_at": ["FLOAT",{"default":1,"min":0,"max":1,"step":0.001}]
+,               "embeds_scaling": [["V only","K+V","K+V w/ C penalty","K+mean(V) w/ C penalty"]]
+            }
+,           "optional": {
+                "image_negative": ["IMAGE"]
+,               "attn_mask": ["MASK"]
+,               "clip_vision": ["CLIP_VISION"]
+            }
+        }
+,       "input_order": {
+            "required": ["model","ipadapter","image","weight","style_boost","combine_embeds","start_at","end_at","embeds_scaling"]
+,           "optional": ["image_negative","attn_mask","clip_vision"]
+        }
+,       "output": ["MODEL"]
+,       "output_is_list": [false]
+,       "output_name": ["MODEL"]
+,       "name": "IPAdapterPreciseStyleTransfer"
+,       "display_name": "IPAdapter Precise Style Transfer"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI_IPAdapter_plus"
+,       "category": "ipadapter"
+,       "output_node": false
+    }
+,   "IPAdapterPreciseStyleTransferBatch": {
+        "input": {
+            "required": {
+                "model": ["MODEL"]
+,               "ipadapter": ["IPADAPTER"]
+,               "image": ["IMAGE"]
+,               "weight": ["FLOAT",{"default":1,"min":-1,"max":5,"step":0.05}]
+,               "style_boost": ["FLOAT",{"default":1,"min":-5,"max":5,"step":0.05}]
+,               "combine_embeds": [["concat","add","subtract","average","norm average"]]
+,               "start_at": ["FLOAT",{"default":0,"min":0,"max":1,"step":0.001}]
+,               "end_at": ["FLOAT",{"default":1,"min":0,"max":1,"step":0.001}]
+,               "embeds_scaling": [["V only","K+V","K+V w/ C penalty","K+mean(V) w/ C penalty"]]
+            }
+,           "optional": {
+                "image_negative": ["IMAGE"]
+,               "attn_mask": ["MASK"]
+,               "clip_vision": ["CLIP_VISION"]
+            }
+        }
+,       "input_order": {
+            "required": ["model","ipadapter","image","weight","style_boost","combine_embeds","start_at","end_at","embeds_scaling"]
+,           "optional": ["image_negative","attn_mask","clip_vision"]
+        }
+,       "output": ["MODEL"]
+,       "output_is_list": [false]
+,       "output_name": ["MODEL"]
+,       "name": "IPAdapterPreciseStyleTransferBatch"
+,       "display_name": "IPAdapter Precise Style Transfer Batch"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI_IPAdapter_plus"
+,       "category": "ipadapter"
+,       "output_node": false
+    }
+,   "IPAdapterPreciseComposition": {
+        "input": {
+            "required": {
+                "model": ["MODEL"]
+,               "ipadapter": ["IPADAPTER"]
+,               "image": ["IMAGE"]
+,               "weight": ["FLOAT",{"default":1,"min":-1,"max":5,"step":0.05}]
+,               "composition_boost": ["FLOAT",{"default":0,"min":-5,"max":5,"step":0.05}]
+,               "combine_embeds": [["concat","add","subtract","average","norm average"]]
+,               "start_at": ["FLOAT",{"default":0,"min":0,"max":1,"step":0.001}]
+,               "end_at": ["FLOAT",{"default":1,"min":0,"max":1,"step":0.001}]
+,               "embeds_scaling": [["V only","K+V","K+V w/ C penalty","K+mean(V) w/ C penalty"]]
+            }
+,           "optional": {
+                "image_negative": ["IMAGE"]
+,               "attn_mask": ["MASK"]
+,               "clip_vision": ["CLIP_VISION"]
+            }
+        }
+,       "input_order": {
+            "required": ["model","ipadapter","image","weight","composition_boost","combine_embeds","start_at","end_at","embeds_scaling"]
+,           "optional": ["image_negative","attn_mask","clip_vision"]
+        }
+,       "output": ["MODEL"]
+,       "output_is_list": [false]
+,       "output_name": ["MODEL"]
+,       "name": "IPAdapterPreciseComposition"
+,       "display_name": "IPAdapter Precise Composition"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI_IPAdapter_plus"
+,       "category": "ipadapter"
+,       "output_node": false
+    }
+,   "IPAdapterPreciseCompositionBatch": {
+        "input": {
+            "required": {
+                "model": ["MODEL"]
+,               "ipadapter": ["IPADAPTER"]
+,               "image": ["IMAGE"]
+,               "weight": ["FLOAT",{"default":1,"min":-1,"max":5,"step":0.05}]
+,               "composition_boost": ["FLOAT",{"default":0,"min":-5,"max":5,"step":0.05}]
+,               "combine_embeds": [["concat","add","subtract","average","norm average"]]
+,               "start_at": ["FLOAT",{"default":0,"min":0,"max":1,"step":0.001}]
+,               "end_at": ["FLOAT",{"default":1,"min":0,"max":1,"step":0.001}]
+,               "embeds_scaling": [["V only","K+V","K+V w/ C penalty","K+mean(V) w/ C penalty"]]
+            }
+,           "optional": {
+                "image_negative": ["IMAGE"]
+,               "attn_mask": ["MASK"]
+,               "clip_vision": ["CLIP_VISION"]
+            }
+        }
+,       "input_order": {
+            "required": ["model","ipadapter","image","weight","composition_boost","combine_embeds","start_at","end_at","embeds_scaling"]
+,           "optional": ["image_negative","attn_mask","clip_vision"]
+        }
+,       "output": ["MODEL"]
+,       "output_is_list": [false]
+,       "output_name": ["MODEL"]
+,       "name": "IPAdapterPreciseCompositionBatch"
+,       "display_name": "IPAdapter Precise Composition Batch"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI_IPAdapter_plus"
+,       "category": "ipadapter"
+,       "output_node": false
+    }
+,   "IPAdapterUnifiedLoader": {
+        "input": {
+            "required": {
+                "model": ["MODEL"]
+,               "preset": [["LIGHT - SD1.5 only (low strength)","STANDARD (medium strength)","VIT-G (medium strength)","PLUS (high strength)","PLUS FACE (portraits)","FULL FACE - SD1.5 only (portraits stronger)"]]
+            }
+,           "optional": {
+                "ipadapter": ["IPADAPTER"]
+            }
+        }
+,       "input_order": {
+            "required": ["model","preset"]
+,           "optional": ["ipadapter"]
+        }
+,       "output": ["MODEL","IPADAPTER"]
+,       "output_is_list": [false,false]
+,       "output_name": ["model","ipadapter"]
+,       "name": "IPAdapterUnifiedLoader"
+,       "display_name": "IPAdapter Unified Loader"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI_IPAdapter_plus"
+,       "category": "ipadapter"
+,       "output_node": false
+    }
+,   "IPAdapterUnifiedLoaderFaceID": {
+        "input": {
+            "required": {
+                "model": ["MODEL"]
+,               "preset": [["FACEID","FACEID PLUS - SD1.5 only","FACEID PLUS V2","FACEID PORTRAIT (style transfer)","FACEID PORTRAIT UNNORM - SDXL only (strong)"]]
+,               "lora_strength": ["FLOAT",{"default":0.6,"min":0,"max":1,"step":0.01}]
+,               "provider": [["CPU","CUDA","ROCM","DirectML","OpenVINO","CoreML"]]
+            }
+,           "optional": {
+                "ipadapter": ["IPADAPTER"]
+            }
+        }
+,       "input_order": {
+            "required": ["model","preset","lora_strength","provider"]
+,           "optional": ["ipadapter"]
+        }
+,       "output": ["MODEL","IPADAPTER"]
+,       "output_is_list": [false,false]
+,       "output_name": ["MODEL","ipadapter"]
+,       "name": "IPAdapterUnifiedLoaderFaceID"
+,       "display_name": "IPAdapter Unified Loader FaceID"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI_IPAdapter_plus"
+,       "category": "ipadapter/faceid"
+,       "output_node": false
+    }
+,   "IPAdapterModelLoader": {
+        "input": {
+            "required": {
+                "ipadapter_file": [[]]
+            }
+        }
+,       "input_order": {
+            "required": ["ipadapter_file"]
+        }
+,       "output": ["IPADAPTER"]
+,       "output_is_list": [false]
+,       "output_name": ["IPADAPTER"]
+,       "name": "IPAdapterModelLoader"
+,       "display_name": "IPAdapter Model Loader"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI_IPAdapter_plus"
+,       "category": "ipadapter/loaders"
+,       "output_node": false
+    }
+,   "IPAdapterInsightFaceLoader": {
+        "input": {
+            "required": {
+                "provider": [["CPU","CUDA","ROCM"]]
+,               "model_name": [["buffalo_l","antelopev2"]]
+            }
+        }
+,       "input_order": {
+            "required": ["provider","model_name"]
+        }
+,       "output": ["INSIGHTFACE"]
+,       "output_is_list": [false]
+,       "output_name": ["INSIGHTFACE"]
+,       "name": "IPAdapterInsightFaceLoader"
+,       "display_name": "IPAdapter InsightFace Loader"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI_IPAdapter_plus"
+,       "category": "ipadapter/loaders"
+,       "output_node": false
+    }
+,   "IPAdapterUnifiedLoaderCommunity": {
+        "input": {
+            "required": {
+                "model": ["MODEL"]
+,               "preset": [["Composition","Kolors"]]
+            }
+,           "optional": {
+                "ipadapter": ["IPADAPTER"]
+            }
+        }
+,       "input_order": {
+            "required": ["model","preset"]
+,           "optional": ["ipadapter"]
+        }
+,       "output": ["MODEL","IPADAPTER"]
+,       "output_is_list": [false,false]
+,       "output_name": ["model","ipadapter"]
+,       "name": "IPAdapterUnifiedLoaderCommunity"
+,       "display_name": "IPAdapter Unified Loader Community"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI_IPAdapter_plus"
+,       "category": "ipadapter/loaders"
+,       "output_node": false
+    }
+,   "IPAdapterEncoder": {
+        "input": {
+            "required": {
+                "ipadapter": ["IPADAPTER"]
+,               "image": ["IMAGE"]
+,               "weight": ["FLOAT",{"default":1,"min":-1,"max":3,"step":0.01}]
+            }
+,           "optional": {
+                "mask": ["MASK"]
+,               "clip_vision": ["CLIP_VISION"]
+            }
+        }
+,       "input_order": {
+            "required": ["ipadapter","image","weight"]
+,           "optional": ["mask","clip_vision"]
+        }
+,       "output": ["EMBEDS","EMBEDS"]
+,       "output_is_list": [false,false]
+,       "output_name": ["pos_embed","neg_embed"]
+,       "name": "IPAdapterEncoder"
+,       "display_name": "IPAdapter Encoder"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI_IPAdapter_plus"
+,       "category": "ipadapter/embeds"
+,       "output_node": false
+    }
+,   "IPAdapterCombineEmbeds": {
+        "input": {
+            "required": {
+                "embed1": ["EMBEDS"]
+,               "method": [["concat","add","subtract","average","norm average","max","min"]]
+            }
+,           "optional": {
+                "embed2": ["EMBEDS"]
+,               "embed3": ["EMBEDS"]
+,               "embed4": ["EMBEDS"]
+,               "embed5": ["EMBEDS"]
+            }
+        }
+,       "input_order": {
+            "required": ["embed1","method"]
+,           "optional": ["embed2","embed3","embed4","embed5"]
+        }
+,       "output": ["EMBEDS"]
+,       "output_is_list": [false]
+,       "output_name": ["EMBEDS"]
+,       "name": "IPAdapterCombineEmbeds"
+,       "display_name": "IPAdapter Combine Embeds"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI_IPAdapter_plus"
+,       "category": "ipadapter/embeds"
+,       "output_node": false
+    }
+,   "IPAdapterNoise": {
+        "input": {
+            "required": {
+                "type": [["fade","dissolve","gaussian","shuffle"]]
+,               "strength": ["FLOAT",{"default":1,"min":0,"max":1,"step":0.05}]
+,               "blur": ["INT",{"default":0,"min":0,"max":32,"step":1}]
+            }
+,           "optional": {
+                "image_optional": ["IMAGE"]
+            }
+        }
+,       "input_order": {
+            "required": ["type","strength","blur"]
+,           "optional": ["image_optional"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "IPAdapterNoise"
+,       "display_name": "IPAdapter Noise"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI_IPAdapter_plus"
+,       "category": "ipadapter/utils"
+,       "output_node": false
+    }
+,   "PrepImageForClipVision": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+,               "interpolation": [["LANCZOS","BICUBIC","HAMMING","BILINEAR","BOX","NEAREST"]]
+,               "crop_position": [["top","bottom","left","right","center","pad"]]
+,               "sharpening": ["FLOAT",{"default":0,"min":0,"max":1,"step":0.05}]
+            }
+        }
+,       "input_order": {
+            "required": ["image","interpolation","crop_position","sharpening"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "PrepImageForClipVision"
+,       "display_name": "Prep Image For ClipVision"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI_IPAdapter_plus"
+,       "category": "ipadapter/utils"
+,       "output_node": false
+    }
+,   "IPAdapterSaveEmbeds": {
+        "input": {
+            "required": {
+                "embeds": ["EMBEDS"]
+,               "filename_prefix": ["STRING",{"default":"IP_embeds"}]
+            }
+        }
+,       "input_order": {
+            "required": ["embeds","filename_prefix"]
+        }
+,       "output": []
+,       "output_is_list": []
+,       "output_name": []
+,       "name": "IPAdapterSaveEmbeds"
+,       "display_name": "IPAdapter Save Embeds"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI_IPAdapter_plus"
+,       "category": "ipadapter/embeds"
+,       "output_node": true
+    }
+,   "IPAdapterLoadEmbeds": {
+        "input": {
+            "required": {
+                "embeds": [[]]
+            }
+        }
+,       "input_order": {
+            "required": ["embeds"]
+        }
+,       "output": ["EMBEDS"]
+,       "output_is_list": [false]
+,       "output_name": ["EMBEDS"]
+,       "name": "IPAdapterLoadEmbeds"
+,       "display_name": "IPAdapter Load Embeds"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI_IPAdapter_plus"
+,       "category": "ipadapter/embeds"
+,       "output_node": false
+    }
+,   "IPAdapterWeights": {
+        "input": {
+            "required": {
+                "weights": ["STRING",{"default":"1.0, 0.0","multiline":true}]
+,               "timing": [["custom","linear","ease_in_out","ease_in","ease_out","random"],{"default":"linear"}]
+,               "frames": ["INT",{"default":0,"min":0,"max":9999,"step":1}]
+,               "start_frame": ["INT",{"default":0,"min":0,"max":9999,"step":1}]
+,               "end_frame": ["INT",{"default":9999,"min":0,"max":9999,"step":1}]
+,               "add_starting_frames": ["INT",{"default":0,"min":0,"max":9999,"step":1}]
+,               "add_ending_frames": ["INT",{"default":0,"min":0,"max":9999,"step":1}]
+,               "method": [["full batch","shift batches","alternate batches"],{"default":"full batch"}]
+            }
+,           "optional": {
+                "image": ["IMAGE"]
+            }
+        }
+,       "input_order": {
+            "required": ["weights","timing","frames","start_frame","end_frame","add_starting_frames","add_ending_frames","method"]
+,           "optional": ["image"]
+        }
+,       "output": ["FLOAT","FLOAT","INT","IMAGE","IMAGE","WEIGHTS_STRATEGY"]
+,       "output_is_list": [false,false,false,false,false,false]
+,       "output_name": ["weights","weights_invert","total_frames","image_1","image_2","weights_strategy"]
+,       "name": "IPAdapterWeights"
+,       "display_name": "IPAdapter Weights"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI_IPAdapter_plus"
+,       "category": "ipadapter/weights"
+,       "output_node": false
+    }
+,   "IPAdapterCombineWeights": {
+        "input": {
+            "required": {
+                "weights_1": ["FLOAT",{"default":0,"min":0,"max":1,"step":0.05}]
+,               "weights_2": ["FLOAT",{"default":0,"min":0,"max":1,"step":0.05}]
+            }
+        }
+,       "input_order": {
+            "required": ["weights_1","weights_2"]
+        }
+,       "output": ["FLOAT","INT"]
+,       "output_is_list": [false,false]
+,       "output_name": ["weights","count"]
+,       "name": "IPAdapterCombineWeights"
+,       "display_name": "IPAdapter Combine Weights"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI_IPAdapter_plus"
+,       "category": "ipadapter/utils"
+,       "output_node": false
+    }
+,   "IPAdapterWeightsFromStrategy": {
+        "input": {
+            "required": {
+                "weights_strategy": ["WEIGHTS_STRATEGY"]
+            }
+,           "optional": {
+                "image": ["IMAGE"]
+            }
+        }
+,       "input_order": {
+            "required": ["weights_strategy"]
+,           "optional": ["image"]
+        }
+,       "output": ["FLOAT","FLOAT","INT","IMAGE","IMAGE","WEIGHTS_STRATEGY"]
+,       "output_is_list": [false,false,false,false,false,false]
+,       "output_name": ["weights","weights_invert","total_frames","image_1","image_2","weights_strategy"]
+,       "name": "IPAdapterWeightsFromStrategy"
+,       "display_name": "IPAdapter Weights From Strategy"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI_IPAdapter_plus"
+,       "category": "ipadapter/weights"
+,       "output_node": false
+    }
+,   "IPAdapterPromptScheduleFromWeightsStrategy": {
+        "input": {
+            "required": {
+                "weights_strategy": ["WEIGHTS_STRATEGY"]
+,               "prompt": ["STRING",{"default":"","multiline":true}]
+            }
+        }
+,       "input_order": {
+            "required": ["weights_strategy","prompt"]
+        }
+,       "output": ["STRING"]
+,       "output_is_list": [false]
+,       "output_name": ["prompt_schedule"]
+,       "name": "IPAdapterPromptScheduleFromWeightsStrategy"
+,       "display_name": "Prompt Schedule From Weights Strategy"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI_IPAdapter_plus"
+,       "category": "ipadapter/weights"
+,       "output_node": false
+    }
+,   "IPAdapterRegionalConditioning": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+,               "image_weight": ["FLOAT",{"default":1,"min":-1,"max":3,"step":0.05}]
+,               "prompt_weight": ["FLOAT",{"default":1,"min":0,"max":10,"step":0.05}]
+,               "weight_type": [["linear","ease in","ease out","ease in-out","reverse in-out","weak input","weak output","weak middle","strong middle","style transfer","composition","strong style transfer","style and composition","style transfer precise","composition precise"]]
+,               "start_at": ["FLOAT",{"default":0,"min":0,"max":1,"step":0.001}]
+,               "end_at": ["FLOAT",{"default":1,"min":0,"max":1,"step":0.001}]
+            }
+,           "optional": {
+                "mask": ["MASK"]
+,               "positive": ["CONDITIONING"]
+,               "negative": ["CONDITIONING"]
+            }
+        }
+,       "input_order": {
+            "required": ["image","image_weight","prompt_weight","weight_type","start_at","end_at"]
+,           "optional": ["mask","positive","negative"]
+        }
+,       "output": ["IPADAPTER_PARAMS","CONDITIONING","CONDITIONING"]
+,       "output_is_list": [false,false,false]
+,       "output_name": ["IPADAPTER_PARAMS","POSITIVE","NEGATIVE"]
+,       "name": "IPAdapterRegionalConditioning"
+,       "display_name": "IPAdapter Regional Conditioning"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI_IPAdapter_plus"
+,       "category": "ipadapter/params"
+,       "output_node": false
+    }
+,   "IPAdapterCombineParams": {
+        "input": {
+            "required": {
+                "params_1": ["IPADAPTER_PARAMS"]
+,               "params_2": ["IPADAPTER_PARAMS"]
+            }
+,           "optional": {
+                "params_3": ["IPADAPTER_PARAMS"]
+,               "params_4": ["IPADAPTER_PARAMS"]
+,               "params_5": ["IPADAPTER_PARAMS"]
+            }
+        }
+,       "input_order": {
+            "required": ["params_1","params_2"]
+,           "optional": ["params_3","params_4","params_5"]
+        }
+,       "output": ["IPADAPTER_PARAMS"]
+,       "output_is_list": [false]
+,       "output_name": ["IPADAPTER_PARAMS"]
+,       "name": "IPAdapterCombineParams"
+,       "display_name": "IPAdapter Combine Params"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI_IPAdapter_plus"
+,       "category": "ipadapter/params"
+,       "output_node": false
+    }
+,   "ShufflePreprocessor": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+,           "optional": {
+                "resolution": ["INT",{"default":512,"min":64,"max":16384,"step":64}]
+,               "seed": ["INT",{"default":0,"min":0,"max":18446744073709552000}]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+,           "optional": ["resolution","seed"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ShufflePreprocessor"
+,       "display_name": "Content Shuffle"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/T2IAdapter-only"
+,       "output_node": false
+    }
+,   "DensePosePreprocessor": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+,           "optional": {
+                "model": [["densepose_r50_fpn_dl.torchscript","densepose_r101_fpn_dl.torchscript"],{"default":"densepose_r50_fpn_dl.torchscript"}]
+,               "cmap": [["Viridis (MagicAnimate)","Parula (CivitAI)"],{"default":"Viridis (MagicAnimate)"}]
+,               "resolution": ["INT",{"default":512,"min":64,"max":16384,"step":64}]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+,           "optional": ["model","cmap","resolution"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "DensePosePreprocessor"
+,       "display_name": "DensePose Estimator"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/Faces and Poses Estimators"
+,       "output_node": false
+    }
+,   "LeReS-DepthMapPreprocessor": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+,           "optional": {
+                "rm_nearest": ["FLOAT",{"default":0,"min":0,"max":100,"step":0.01}]
+,               "rm_background": ["FLOAT",{"default":0,"min":0,"max":100,"step":0.01}]
+,               "boost": [["disable","enable"],{"default":"disable"}]
+,               "resolution": ["INT",{"default":512,"min":64,"max":16384,"step":64}]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+,           "optional": ["rm_nearest","rm_background","boost","resolution"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "LeReS-DepthMapPreprocessor"
+,       "display_name": "LeReS Depth Map (enable boost for leres++)"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/Normal and Depth Estimators"
+,       "output_node": false
+    }
+,   "BinaryPreprocessor": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+,           "optional": {
+                "bin_threshold": ["INT",{"default":100,"min":0,"max":255,"step":1}]
+,               "resolution": ["INT",{"default":512,"min":64,"max":16384,"step":64}]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+,           "optional": ["bin_threshold","resolution"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "BinaryPreprocessor"
+,       "display_name": "Binary Lines"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/Line Extractors"
+,       "output_node": false
+    }
+,   "AnimeFace_SemSegPreprocessor": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+,           "optional": {
+                "remove_background_using_abg": ["BOOLEAN",{"default":true}]
+,               "resolution": ["INT",{"default":512,"min":512,"max":512,"step":64}]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+,           "optional": ["remove_background_using_abg","resolution"]
+        }
+,       "output": ["IMAGE","MASK"]
+,       "output_is_list": [false,false]
+,       "output_name": ["IMAGE","ABG_CHARACTER_MASK (MASK)"]
+,       "name": "AnimeFace_SemSegPreprocessor"
+,       "display_name": "Anime Face Segmentor"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/Semantic Segmentation"
+,       "output_node": false
+    }
+,   "Zoe-DepthMapPreprocessor": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+,           "optional": {
+                "resolution": ["INT",{"default":512,"min":64,"max":16384,"step":64}]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+,           "optional": ["resolution"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "Zoe-DepthMapPreprocessor"
+,       "display_name": "Zoe Depth Map"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/Normal and Depth Estimators"
+,       "output_node": false
+    }
+,   "DepthAnythingPreprocessor": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+,           "optional": {
+                "ckpt_name": [["depth_anything_vitl14.pth","depth_anything_vitb14.pth","depth_anything_vits14.pth"],{"default":"depth_anything_vitl14.pth"}]
+,               "resolution": ["INT",{"default":512,"min":64,"max":16384,"step":64}]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+,           "optional": ["ckpt_name","resolution"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "DepthAnythingPreprocessor"
+,       "display_name": "Depth Anything"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/Normal and Depth Estimators"
+,       "output_node": false
+    }
+,   "Zoe_DepthAnythingPreprocessor": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+,           "optional": {
+                "environment": [["indoor","outdoor"],{"default":"indoor"}]
+,               "resolution": ["INT",{"default":512,"min":64,"max":16384,"step":64}]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+,           "optional": ["environment","resolution"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "Zoe_DepthAnythingPreprocessor"
+,       "display_name": "Zoe Depth Anything"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/Normal and Depth Estimators"
+,       "output_node": false
+    }
+,   "DepthAnythingV2Preprocessor": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+,           "optional": {
+                "ckpt_name": [["depth_anything_v2_vitg.pth","depth_anything_v2_vitl.pth","depth_anything_v2_vitb.pth","depth_anything_v2_vits.pth"],{"default":"depth_anything_v2_vitl.pth"}]
+,               "resolution": ["INT",{"default":512,"min":64,"max":16384,"step":64}]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+,           "optional": ["ckpt_name","resolution"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "DepthAnythingV2Preprocessor"
+,       "display_name": "Depth Anything V2 - Relative"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/Normal and Depth Estimators"
+,       "output_node": false
+    }
+,   "CannyEdgePreprocessor": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+,           "optional": {
+                "low_threshold": ["INT",{"default":100,"min":0,"max":255,"step":1}]
+,               "high_threshold": ["INT",{"default":200,"min":0,"max":255,"step":1}]
+,               "resolution": ["INT",{"default":512,"min":64,"max":16384,"step":64}]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+,           "optional": ["low_threshold","high_threshold","resolution"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "CannyEdgePreprocessor"
+,       "display_name": "Canny Edge"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/Line Extractors"
+,       "output_node": false
+    }
+,   "DWPreprocessor": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+,           "optional": {
+                "detect_hand": [["enable","disable"],{"default":"enable"}]
+,               "detect_body": [["enable","disable"],{"default":"enable"}]
+,               "detect_face": [["enable","disable"],{"default":"enable"}]
+,               "resolution": ["INT",{"default":512,"min":64,"max":16384,"step":64}]
+,               "bbox_detector": [["yolox_l.torchscript.pt","yolox_l.onnx","yolo_nas_l_fp16.onnx","yolo_nas_m_fp16.onnx","yolo_nas_s_fp16.onnx"],{"default":"yolox_l.onnx"}]
+,               "pose_estimator": [["dw-ll_ucoco_384_bs5.torchscript.pt","dw-ll_ucoco_384.onnx","dw-ll_ucoco.onnx"],{"default":"dw-ll_ucoco_384_bs5.torchscript.pt"}]
+,               "scale_stick_for_xinsr_cn": [["disable","enable"],{"default":"disable"}]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+,           "optional": ["detect_hand","detect_body","detect_face","resolution","bbox_detector","pose_estimator","scale_stick_for_xinsr_cn"]
+        }
+,       "output": ["IMAGE","POSE_KEYPOINT"]
+,       "output_is_list": [false,false]
+,       "output_name": ["IMAGE","POSE_KEYPOINT"]
+,       "name": "DWPreprocessor"
+,       "display_name": "DWPose Estimator"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/Faces and Poses Estimators"
+,       "output_node": false
+    }
+,   "AnimalPosePreprocessor": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+,           "optional": {
+                "bbox_detector": [["yolox_l.torchscript.pt","yolox_l.onnx","yolo_nas_l_fp16.onnx","yolo_nas_m_fp16.onnx","yolo_nas_s_fp16.onnx"],{"default":"yolox_l.torchscript.pt"}]
+,               "pose_estimator": [["rtmpose-m_ap10k_256_bs5.torchscript.pt","rtmpose-m_ap10k_256.onnx"],{"default":"rtmpose-m_ap10k_256_bs5.torchscript.pt"}]
+,               "resolution": ["INT",{"default":512,"min":64,"max":16384,"step":64}]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+,           "optional": ["bbox_detector","pose_estimator","resolution"]
+        }
+,       "output": ["IMAGE","POSE_KEYPOINT"]
+,       "output_is_list": [false,false]
+,       "output_name": ["IMAGE","POSE_KEYPOINT"]
+,       "name": "AnimalPosePreprocessor"
+,       "display_name": "AnimalPose Estimator (AP10K)"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/Faces and Poses Estimators"
+,       "output_node": false
+    }
+,   "ImageLuminanceDetector": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+,           "optional": {
+                "gamma_correction": ["FLOAT",{"default":1,"min":0.1,"max":2,"step":0.01}]
+,               "resolution": ["INT",{"default":512,"min":64,"max":16384,"step":64}]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+,           "optional": ["gamma_correction","resolution"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageLuminanceDetector"
+,       "display_name": "Image Luminance"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/Recolor"
+,       "output_node": false
+    }
+,   "ImageIntensityDetector": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+,           "optional": {
+                "gamma_correction": ["FLOAT",{"default":1,"min":0.1,"max":2,"step":0.01}]
+,               "resolution": ["INT",{"default":512,"min":64,"max":16384,"step":64}]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+,           "optional": ["gamma_correction","resolution"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageIntensityDetector"
+,       "display_name": "Image Intensity"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/Recolor"
+,       "output_node": false
+    }
+,   "MediaPipe-FaceMeshPreprocessor": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+,           "optional": {
+                "max_faces": ["INT",{"default":10,"min":1,"max":50,"step":1}]
+,               "min_confidence": ["FLOAT",{"default":0.5,"min":0.1,"max":1,"step":0.01}]
+,               "resolution": ["INT",{"default":512,"min":64,"max":16384,"step":64}]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+,           "optional": ["max_faces","min_confidence","resolution"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "MediaPipe-FaceMeshPreprocessor"
+,       "display_name": "MediaPipe Face Mesh"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/Faces and Poses Estimators"
+,       "output_node": false
+    }
+,   "DiffusionEdge_Preprocessor": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+,           "optional": {
+                "environment": [["indoor","urban","natrual"],{"default":"indoor"}]
+,               "patch_batch_size": ["INT",{"default":4,"min":1,"max":16,"step":1}]
+,               "resolution": ["INT",{"default":512,"min":64,"max":16384,"step":64}]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+,           "optional": ["environment","patch_batch_size","resolution"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "DiffusionEdge_Preprocessor"
+,       "display_name": "Diffusion Edge (batch size ↑ => speed ↑, VRAM ↑)"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/Line Extractors"
+,       "output_node": false
+    }
+,   "M-LSDPreprocessor": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+,           "optional": {
+                "score_threshold": ["FLOAT",{"default":0.1,"min":0.01,"max":2,"step":0.01}]
+,               "dist_threshold": ["FLOAT",{"default":0.1,"min":0.01,"max":20,"step":0.01}]
+,               "resolution": ["INT",{"default":512,"min":64,"max":16384,"step":64}]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+,           "optional": ["score_threshold","dist_threshold","resolution"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "M-LSDPreprocessor"
+,       "display_name": "M-LSD Lines"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/Line Extractors"
+,       "output_node": false
+    }
+,   "HEDPreprocessor": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+,           "optional": {
+                "safe": [["enable","disable"],{"default":"enable"}]
+,               "resolution": ["INT",{"default":512,"min":64,"max":16384,"step":64}]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+,           "optional": ["safe","resolution"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "HEDPreprocessor"
+,       "display_name": "HED Soft-Edge Lines"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/Line Extractors"
+,       "output_node": false
+    }
+,   "FakeScribblePreprocessor": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+,           "optional": {
+                "safe": [["enable","disable"],{"default":"enable"}]
+,               "resolution": ["INT",{"default":512,"min":64,"max":16384,"step":64}]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+,           "optional": ["safe","resolution"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "FakeScribblePreprocessor"
+,       "display_name": "Fake Scribble Lines (aka scribble_hed)"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/Line Extractors"
+,       "output_node": false
+    }
+,   "OneFormer-COCO-SemSegPreprocessor": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+,           "optional": {
+                "resolution": ["INT",{"default":512,"min":64,"max":16384,"step":64}]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+,           "optional": ["resolution"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "OneFormer-COCO-SemSegPreprocessor"
+,       "display_name": "OneFormer COCO Segmentor"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/Semantic Segmentation"
+,       "output_node": false
+    }
+,   "OneFormer-ADE20K-SemSegPreprocessor": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+,           "optional": {
+                "resolution": ["INT",{"default":512,"min":64,"max":16384,"step":64}]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+,           "optional": ["resolution"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "OneFormer-ADE20K-SemSegPreprocessor"
+,       "display_name": "OneFormer ADE20K Segmentor"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/Semantic Segmentation"
+,       "output_node": false
+    }
+,   "BAE-NormalMapPreprocessor": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+,           "optional": {
+                "resolution": ["INT",{"default":512,"min":64,"max":16384,"step":64}]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+,           "optional": ["resolution"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "BAE-NormalMapPreprocessor"
+,       "display_name": "BAE Normal Map"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/Normal and Depth Estimators"
+,       "output_node": false
+    }
+,   "MeshGraphormer-DepthMapPreprocessor": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+,           "optional": {
+                "mask_bbox_padding": ["INT",{"default":30,"min":0,"max":100}]
+,               "resolution": ["INT",{"default":512,"min":64,"max":16384,"step":64}]
+,               "mask_type": [["based_on_depth","tight_bboxes","original"],{"default":"based_on_depth"}]
+,               "mask_expand": ["INT",{"default":5,"min":-16384,"max":16384,"step":1}]
+,               "rand_seed": ["INT",{"default":88,"min":0,"max":18446744073709552000,"step":1}]
+,               "detect_thr": ["FLOAT",{"default":0.6,"min":0.1,"max":1,"step":0.01}]
+,               "presence_thr": ["FLOAT",{"default":0.6,"min":0.1,"max":1,"step":0.01}]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+,           "optional": ["mask_bbox_padding","resolution","mask_type","mask_expand","rand_seed","detect_thr","presence_thr"]
+        }
+,       "output": ["IMAGE","MASK"]
+,       "output_is_list": [false,false]
+,       "output_name": ["IMAGE","INPAINTING_MASK"]
+,       "name": "MeshGraphormer-DepthMapPreprocessor"
+,       "display_name": "MeshGraphormer Hand Refiner"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/Normal and Depth Estimators"
+,       "output_node": false
+    }
+,   "MeshGraphormer+ImpactDetector-DepthMapPreprocessor": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+,               "bbox_detector": ["BBOX_DETECTOR"]
+            }
+,           "optional": {
+                "bbox_threshold": ["FLOAT",{"default":0.5,"min":0.1,"max":1,"step":0.01}]
+,               "bbox_dilation": ["INT",{"default":10,"min":-512,"max":512,"step":1}]
+,               "bbox_crop_factor": ["FLOAT",{"default":3,"min":1,"max":10,"step":0.01}]
+,               "drop_size": ["INT",{"default":10,"min":1,"max":16384,"step":1}]
+,               "mask_bbox_padding": ["INT",{"default":30,"min":0,"max":100,"step":1}]
+,               "mask_type": [["based_on_depth","tight_bboxes","original"],{"default":"based_on_depth"}]
+,               "mask_expand": ["INT",{"default":5,"min":-16384,"max":16384,"step":1}]
+,               "rand_seed": ["INT",{"default":88,"min":0,"max":18446744073709552000,"step":1}]
+,               "resolution": ["INT",{"default":512,"min":64,"max":16384,"step":64}]
+            }
+        }
+,       "input_order": {
+            "required": ["image","bbox_detector"]
+,           "optional": ["bbox_threshold","bbox_dilation","bbox_crop_factor","drop_size","mask_bbox_padding","mask_type","mask_expand","rand_seed","resolution"]
+        }
+,       "output": ["IMAGE","MASK"]
+,       "output_is_list": [false,false]
+,       "output_name": ["IMAGE","INPAINTING_MASK"]
+,       "name": "MeshGraphormer+ImpactDetector-DepthMapPreprocessor"
+,       "display_name": "MeshGraphormer Hand Refiner With External Detector"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/Normal and Depth Estimators"
+,       "output_node": false
+    }
+,   "DSINE-NormalMapPreprocessor": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+,           "optional": {
+                "fov": ["FLOAT",{"default":60,"min":0,"max":365,"step":0.01}]
+,               "iterations": ["INT",{"default":5,"min":1,"max":20,"step":1}]
+,               "resolution": ["INT",{"default":512,"min":64,"max":16384,"step":64}]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+,           "optional": ["fov","iterations","resolution"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "DSINE-NormalMapPreprocessor"
+,       "display_name": "DSINE Normal Map"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/Normal and Depth Estimators"
+,       "output_node": false
+    }
+,   "MiDaS-NormalMapPreprocessor": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+,           "optional": {
+                "a": ["FLOAT",{"default":6.283185307179586,"min":0,"max":15.707963267948966,"step":0.01}]
+,               "bg_threshold": ["FLOAT",{"default":0.1,"min":0,"max":1,"step":0.01}]
+,               "resolution": ["INT",{"default":512,"min":64,"max":16384,"step":64}]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+,           "optional": ["a","bg_threshold","resolution"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "MiDaS-NormalMapPreprocessor"
+,       "display_name": "MiDaS Normal Map"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/Normal and Depth Estimators"
+,       "output_node": false
+    }
+,   "MiDaS-DepthMapPreprocessor": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+,           "optional": {
+                "a": ["FLOAT",{"default":6.283185307179586,"min":0,"max":15.707963267948966,"step":0.01}]
+,               "bg_threshold": ["FLOAT",{"default":0.1,"min":0,"max":1,"step":0.01}]
+,               "resolution": ["INT",{"default":512,"min":64,"max":16384,"step":64}]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+,           "optional": ["a","bg_threshold","resolution"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "MiDaS-DepthMapPreprocessor"
+,       "display_name": "MiDaS Depth Map"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/Normal and Depth Estimators"
+,       "output_node": false
+    }
+,   "AnyLineArtPreprocessor_aux": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+,           "optional": {
+                "merge_with_lineart": [["lineart_standard","lineart_realisitic","lineart_anime","manga_line"],{"default":"lineart_standard"}]
+,               "resolution": ["INT",{"default":1280,"min":64,"max":16384,"step":8}]
+,               "lineart_lower_bound": ["FLOAT",{"default":0,"min":0,"max":1,"step":0.01}]
+,               "lineart_upper_bound": ["FLOAT",{"default":1,"min":0,"max":1,"step":0.01}]
+,               "object_min_size": ["INT",{"default":36,"min":1,"max":16384,"step":1}]
+,               "object_connectivity": ["INT",{"default":1,"min":1,"max":16384,"step":1}]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+,           "optional": ["merge_with_lineart","resolution","lineart_lower_bound","lineart_upper_bound","object_min_size","object_connectivity"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["image"]
+,       "name": "AnyLineArtPreprocessor_aux"
+,       "display_name": "AnyLine Lineart"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/Line Extractors"
+,       "output_node": false
+    }
+,   "SAMPreprocessor": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+,           "optional": {
+                "resolution": ["INT",{"default":512,"min":64,"max":16384,"step":64}]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+,           "optional": ["resolution"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "SAMPreprocessor"
+,       "display_name": "SAM Segmentor"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/others"
+,       "output_node": false
+    }
+,   "UniFormer-SemSegPreprocessor": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+,           "optional": {
+                "resolution": ["INT",{"default":512,"min":64,"max":16384,"step":64}]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+,           "optional": ["resolution"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "UniFormer-SemSegPreprocessor"
+,       "display_name": "UniFormer Segmentor"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/Semantic Segmentation"
+,       "output_node": false
+    }
+,   "SemSegPreprocessor": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+,           "optional": {
+                "resolution": ["INT",{"default":512,"min":64,"max":16384,"step":64}]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+,           "optional": ["resolution"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "SemSegPreprocessor"
+,       "display_name": "Semantic Segmentor (legacy, alias for UniFormer)"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/Semantic Segmentation"
+,       "output_node": false
+    }
+,   "PiDiNetPreprocessor": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+,           "optional": {
+                "safe": [["enable","disable"],{"default":"enable"}]
+,               "resolution": ["INT",{"default":512,"min":64,"max":16384,"step":64}]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+,           "optional": ["safe","resolution"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "PiDiNetPreprocessor"
+,       "display_name": "PiDiNet Soft-Edge Lines"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/Line Extractors"
+,       "output_node": false
+    }
+,   "InpaintPreprocessor": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+,               "mask": ["MASK"]
+            }
+,           "optional": {
+                "black_pixel_for_xinsir_cn": ["BOOLEAN",{"default":false}]
+            }
+        }
+,       "input_order": {
+            "required": ["image","mask"]
+,           "optional": ["black_pixel_for_xinsir_cn"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "InpaintPreprocessor"
+,       "display_name": "Inpaint Preprocessor"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/others"
+,       "output_node": false
+    }
+,   "LineArtPreprocessor": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+,           "optional": {
+                "coarse": [["disable","enable"],{"default":"disable"}]
+,               "resolution": ["INT",{"default":512,"min":64,"max":16384,"step":64}]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+,           "optional": ["coarse","resolution"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "LineArtPreprocessor"
+,       "display_name": "Realistic Lineart"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/Line Extractors"
+,       "output_node": false
+    }
+,   "OpenposePreprocessor": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+,           "optional": {
+                "detect_hand": [["enable","disable"],{"default":"enable"}]
+,               "detect_body": [["enable","disable"],{"default":"enable"}]
+,               "detect_face": [["enable","disable"],{"default":"enable"}]
+,               "resolution": ["INT",{"default":512,"min":64,"max":16384,"step":64}]
+,               "scale_stick_for_xinsr_cn": [["disable","enable"],{"default":"disable"}]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+,           "optional": ["detect_hand","detect_body","detect_face","resolution","scale_stick_for_xinsr_cn"]
+        }
+,       "output": ["IMAGE","POSE_KEYPOINT"]
+,       "output_is_list": [false,false]
+,       "output_name": ["IMAGE","POSE_KEYPOINT"]
+,       "name": "OpenposePreprocessor"
+,       "display_name": "OpenPose Pose"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/Faces and Poses Estimators"
+,       "output_node": false
+    }
+,   "Unimatch_OptFlowPreprocessor": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+,               "ckpt_name": [["gmflow-scale1-mixdata.pth","gmflow-scale2-mixdata.pth","gmflow-scale2-regrefine6-mixdata.pth"],{"default":"gmflow-scale2-regrefine6-mixdata.pth"}]
+,               "backward_flow": ["BOOLEAN",{"default":false}]
+,               "bidirectional_flow": ["BOOLEAN",{"default":false}]
+            }
+        }
+,       "input_order": {
+            "required": ["image","ckpt_name","backward_flow","bidirectional_flow"]
+        }
+,       "output": ["OPTICAL_FLOW","IMAGE"]
+,       "output_is_list": [false,false]
+,       "output_name": ["OPTICAL_FLOW","PREVIEW_IMAGE"]
+,       "name": "Unimatch_OptFlowPreprocessor"
+,       "display_name": "Unimatch Optical Flow"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/Optical Flow"
+,       "output_node": false
+    }
+,   "MaskOptFlow": {
+        "input": {
+            "required": {
+                "optical_flow": ["OPTICAL_FLOW"]
+,               "mask": ["MASK"]
+            }
+        }
+,       "input_order": {
+            "required": ["optical_flow","mask"]
+        }
+,       "output": ["OPTICAL_FLOW","IMAGE"]
+,       "output_is_list": [false,false]
+,       "output_name": ["OPTICAL_FLOW","PREVIEW_IMAGE"]
+,       "name": "MaskOptFlow"
+,       "display_name": "Mask Optical Flow (DragNUWA)"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/Optical Flow"
+,       "output_node": false
+    }
+,   "SavePoseKpsAsJsonFile": {
+        "input": {
+            "required": {
+                "pose_kps": ["POSE_KEYPOINT"]
+,               "filename_prefix": ["STRING",{"default":"PoseKeypoint"}]
+            }
+        }
+,       "input_order": {
+            "required": ["pose_kps","filename_prefix"]
+        }
+,       "output": []
+,       "output_is_list": []
+,       "output_name": []
+,       "name": "SavePoseKpsAsJsonFile"
+,       "display_name": "Save Pose Keypoints"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/Pose Keypoint Postprocess"
+,       "output_node": true
+    }
+,   "FacialPartColoringFromPoseKps": {
+        "input": {
+            "required": {
+                "pose_kps": ["POSE_KEYPOINT"]
+,               "mode": [["point","polygon"],{"default":"polygon"}]
+,               "skin": ["STRING",{"default":"rgb(0, 153, 255)","multiline":false}]
+,               "left_eye": ["STRING",{"default":"rgb(0, 204, 153)","multiline":false}]
+,               "right_eye": ["STRING",{"default":"rgb(255, 153, 0)","multiline":false}]
+,               "nose": ["STRING",{"default":"rgb(255, 102, 255)","multiline":false}]
+,               "upper_lip": ["STRING",{"default":"rgb(102, 0, 51)","multiline":false}]
+,               "inner_mouth": ["STRING",{"default":"rgb(255, 204, 255)","multiline":false}]
+,               "lower_lip": ["STRING",{"default":"rgb(255, 0, 102)","multiline":false}]
+            }
+        }
+,       "input_order": {
+            "required": ["pose_kps","mode","skin","left_eye","right_eye","nose","upper_lip","inner_mouth","lower_lip"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "FacialPartColoringFromPoseKps"
+,       "display_name": "Colorize Facial Parts from PoseKPS"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/Pose Keypoint Postprocess"
+,       "output_node": false
+    }
+,   "UpperBodyTrackingFromPoseKps": {
+        "input": {
+            "required": {
+                "pose_kps": ["POSE_KEYPOINT"]
+,               "id_include": ["STRING",{"default":"","multiline":false}]
+,               "Head_width_height": ["STRING",{"default":"256, 256","multiline":false}]
+,               "Neck_width_height": ["STRING",{"default":"100, 100","multiline":false}]
+,               "Shoulder_width_height": ["STRING",{"default":"","multiline":false}]
+,               "Torso_width_height": ["STRING",{"default":"350, 450","multiline":false}]
+,               "RArm_width_height": ["STRING",{"default":"128, 256","multiline":false}]
+,               "RForearm_width_height": ["STRING",{"default":"128, 256","multiline":false}]
+,               "LArm_width_height": ["STRING",{"default":"128, 256","multiline":false}]
+,               "LForearm_width_height": ["STRING",{"default":"128, 256","multiline":false}]
+            }
+        }
+,       "input_order": {
+            "required": ["pose_kps","id_include","Head_width_height","Neck_width_height","Shoulder_width_height","Torso_width_height","RArm_width_height","RForearm_width_height","LArm_width_height","LForearm_width_height"]
+        }
+,       "output": ["TRACKING","STRING"]
+,       "output_is_list": [false,false]
+,       "output_name": ["tracking","prompt"]
+,       "name": "UpperBodyTrackingFromPoseKps"
+,       "display_name": "Upper Body Tracking From PoseKps (InstanceDiffusion)"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/Pose Keypoint Postprocess"
+,       "output_node": false
+    }
+,   "RenderPeopleKps": {
+        "input": {
+            "required": {
+                "kps": ["POSE_KEYPOINT"]
+,               "render_body": ["BOOLEAN",{"default":true}]
+,               "render_hand": ["BOOLEAN",{"default":true}]
+,               "render_face": ["BOOLEAN",{"default":true}]
+            }
+        }
+,       "input_order": {
+            "required": ["kps","render_body","render_hand","render_face"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "RenderPeopleKps"
+,       "display_name": "Render Pose JSON (Human)"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/Pose Keypoint Postprocess"
+,       "output_node": false
+    }
+,   "RenderAnimalKps": {
+        "input": {
+            "required": {
+                "kps": ["POSE_KEYPOINT"]
+            }
+        }
+,       "input_order": {
+            "required": ["kps"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "RenderAnimalKps"
+,       "display_name": "Render Pose JSON (Animal)"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/Pose Keypoint Postprocess"
+,       "output_node": false
+    }
+,   "TEEDPreprocessor": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+,           "optional": {
+                "safe_steps": ["INT",{"default":2,"min":0,"max":10,"step":1}]
+,               "resolution": ["INT",{"default":512,"min":64,"max":16384,"step":64}]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+,           "optional": ["safe_steps","resolution"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "TEEDPreprocessor"
+,       "display_name": "TEEDPreprocessor"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/Line Extractors"
+,       "output_node": false
+    }
+,   "PyraCannyPreprocessor": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+,           "optional": {
+                "low_threshold": ["INT",{"default":64,"min":0,"max":255,"step":1}]
+,               "high_threshold": ["INT",{"default":128,"min":0,"max":255,"step":1}]
+,               "resolution": ["INT",{"default":512,"min":64,"max":16384,"step":64}]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+,           "optional": ["low_threshold","high_threshold","resolution"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "PyraCannyPreprocessor"
+,       "display_name": "PyraCanny"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/Line Extractors"
+,       "output_node": false
+    }
+,   "Metric3D-DepthMapPreprocessor": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+,           "optional": {
+                "backbone": [["vit-small","vit-large","vit-giant2"],{"default":"vit-small"}]
+,               "fx": ["INT",{"default":1000,"min":1,"max":16384,"step":1}]
+,               "fy": ["INT",{"default":1000,"min":1,"max":16384,"step":1}]
+,               "resolution": ["INT",{"default":512,"min":64,"max":16384,"step":64}]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+,           "optional": ["backbone","fx","fy","resolution"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "Metric3D-DepthMapPreprocessor"
+,       "display_name": "Metric3D Depth Map"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/Normal and Depth Estimators"
+,       "output_node": false
+    }
+,   "Metric3D-NormalMapPreprocessor": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+,           "optional": {
+                "backbone": [["vit-small","vit-large","vit-giant2"],{"default":"vit-small"}]
+,               "fx": ["INT",{"default":1000,"min":1,"max":16384,"step":1}]
+,               "fy": ["INT",{"default":1000,"min":1,"max":16384,"step":1}]
+,               "resolution": ["INT",{"default":512,"min":64,"max":16384,"step":64}]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+,           "optional": ["backbone","fx","fy","resolution"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "Metric3D-NormalMapPreprocessor"
+,       "display_name": "Metric3D Normal Map"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/Normal and Depth Estimators"
+,       "output_node": false
+    }
+,   "Manga2Anime_LineArt_Preprocessor": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+,           "optional": {
+                "resolution": ["INT",{"default":512,"min":64,"max":16384,"step":64}]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+,           "optional": ["resolution"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "Manga2Anime_LineArt_Preprocessor"
+,       "display_name": "Manga Lineart (aka lineart_anime_denoise)"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/Line Extractors"
+,       "output_node": false
+    }
+,   "ScribblePreprocessor": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+,           "optional": {
+                "resolution": ["INT",{"default":512,"min":64,"max":16384,"step":64}]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+,           "optional": ["resolution"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ScribblePreprocessor"
+,       "display_name": "Scribble Lines"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/Line Extractors"
+,       "output_node": false
+    }
+,   "Scribble_XDoG_Preprocessor": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+,           "optional": {
+                "threshold": ["INT",{"default":32,"min":1,"max":64,"step":1}]
+,               "resolution": ["INT",{"default":512,"min":64,"max":16384,"step":64}]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+,           "optional": ["threshold","resolution"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "Scribble_XDoG_Preprocessor"
+,       "display_name": "Scribble XDoG Lines"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/Line Extractors"
+,       "output_node": false
+    }
+,   "Scribble_PiDiNet_Preprocessor": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+,           "optional": {
+                "safe": [["enable","disable"]]
+,               "resolution": ["INT",{"default":512,"min":64,"max":16384,"step":64}]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+,           "optional": ["safe","resolution"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "Scribble_PiDiNet_Preprocessor"
+,       "display_name": "Scribble PiDiNet Lines"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/Line Extractors"
+,       "output_node": false
+    }
+,   "AnimeLineArtPreprocessor": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+,           "optional": {
+                "resolution": ["INT",{"default":512,"min":64,"max":16384,"step":64}]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+,           "optional": ["resolution"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "AnimeLineArtPreprocessor"
+,       "display_name": "Anime Lineart"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/Line Extractors"
+,       "output_node": false
+    }
+,   "LineartStandardPreprocessor": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+,           "optional": {
+                "guassian_sigma": ["FLOAT",{"default":6,"min":0,"max":100,"step":0.01}]
+,               "intensity_threshold": ["INT",{"default":8,"min":0,"max":16,"step":1}]
+,               "resolution": ["INT",{"default":512,"min":64,"max":16384,"step":64}]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+,           "optional": ["guassian_sigma","intensity_threshold","resolution"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "LineartStandardPreprocessor"
+,       "display_name": "Standard Lineart"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/Line Extractors"
+,       "output_node": false
+    }
+,   "TilePreprocessor": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+,           "optional": {
+                "pyrUp_iters": ["INT",{"default":3,"min":1,"max":10,"step":1}]
+,               "resolution": ["INT",{"default":512,"min":64,"max":16384,"step":64}]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+,           "optional": ["pyrUp_iters","resolution"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "TilePreprocessor"
+,       "display_name": "Tile"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/tile"
+,       "output_node": false
+    }
+,   "TTPlanet_TileGF_Preprocessor": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+,           "optional": {
+                "scale_factor": ["FLOAT",{"default":1,"min":1,"max":8,"step":0.01}]
+,               "blur_strength": ["FLOAT",{"default":2,"min":1,"max":10,"step":0.01}]
+,               "radius": ["INT",{"default":7,"min":1,"max":20,"step":1}]
+,               "eps": ["FLOAT",{"default":0.01,"min":0.001,"max":0.1,"step":0.001}]
+,               "resolution": ["INT",{"default":512,"min":64,"max":16384,"step":64}]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+,           "optional": ["scale_factor","blur_strength","radius","eps","resolution"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "TTPlanet_TileGF_Preprocessor"
+,       "display_name": "TTPlanet Tile GuidedFilter"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/tile"
+,       "output_node": false
+    }
+,   "TTPlanet_TileSimple_Preprocessor": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+,           "optional": {
+                "scale_factor": ["FLOAT",{"default":1,"min":1,"max":8,"step":0.01}]
+,               "blur_strength": ["FLOAT",{"default":2,"min":1,"max":10,"step":0.01}]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+,           "optional": ["scale_factor","blur_strength"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "TTPlanet_TileSimple_Preprocessor"
+,       "display_name": "TTPlanet Tile Simple"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/tile"
+,       "output_node": false
+    }
+,   "ColorPreprocessor": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+,           "optional": {
+                "resolution": ["INT",{"default":512,"min":64,"max":16384,"step":64}]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+,           "optional": ["resolution"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ColorPreprocessor"
+,       "display_name": "Color Pallete"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors/T2IAdapter-only"
+,       "output_node": false
+    }
+,   "AIO_Preprocessor": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+,           "optional": {
+                "preprocessor": [["none","ShufflePreprocessor","DensePosePreprocessor","LeReS-DepthMapPreprocessor","BinaryPreprocessor","AnimeFace_SemSegPreprocessor","Zoe-DepthMapPreprocessor","DepthAnythingPreprocessor","Zoe_DepthAnythingPreprocessor","DepthAnythingV2Preprocessor","CannyEdgePreprocessor","DWPreprocessor","AnimalPosePreprocessor","ImageLuminanceDetector","ImageIntensityDetector","MediaPipe-FaceMeshPreprocessor","M-LSDPreprocessor","HEDPreprocessor","FakeScribblePreprocessor","OneFormer-COCO-SemSegPreprocessor","OneFormer-ADE20K-SemSegPreprocessor","BAE-NormalMapPreprocessor","MeshGraphormer-DepthMapPreprocessor","DSINE-NormalMapPreprocessor","MiDaS-NormalMapPreprocessor","MiDaS-DepthMapPreprocessor","AnyLineArtPreprocessor_aux","SAMPreprocessor","UniFormer-SemSegPreprocessor","SemSegPreprocessor","PiDiNetPreprocessor","LineArtPreprocessor","OpenposePreprocessor","TEEDPreprocessor","PyraCannyPreprocessor","Metric3D-DepthMapPreprocessor","Metric3D-NormalMapPreprocessor","Manga2Anime_LineArt_Preprocessor","ScribblePreprocessor","Scribble_XDoG_Preprocessor","Scribble_PiDiNet_Preprocessor","AnimeLineArtPreprocessor","LineartStandardPreprocessor","TilePreprocessor","TTPlanet_TileGF_Preprocessor","TTPlanet_TileSimple_Preprocessor","ColorPreprocessor"],{"default":"none"}]
+,               "resolution": ["INT",{"default":512,"min":64,"max":16384,"step":64}]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+,           "optional": ["preprocessor","resolution"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "AIO_Preprocessor"
+,       "display_name": "AIO Aux Preprocessor"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors"
+,       "output_node": false
+    }
+,   "ControlNetPreprocessorSelector": {
+        "input": {
+            "required": {
+                "preprocessor": [["none","ShufflePreprocessor","DensePosePreprocessor","LeReS-DepthMapPreprocessor","BinaryPreprocessor","AnimeFace_SemSegPreprocessor","Zoe-DepthMapPreprocessor","DepthAnythingPreprocessor","Zoe_DepthAnythingPreprocessor","DepthAnythingV2Preprocessor","CannyEdgePreprocessor","DWPreprocessor","AnimalPosePreprocessor","ImageLuminanceDetector","ImageIntensityDetector","MediaPipe-FaceMeshPreprocessor","M-LSDPreprocessor","HEDPreprocessor","FakeScribblePreprocessor","OneFormer-COCO-SemSegPreprocessor","OneFormer-ADE20K-SemSegPreprocessor","BAE-NormalMapPreprocessor","MeshGraphormer-DepthMapPreprocessor","DSINE-NormalMapPreprocessor","MiDaS-NormalMapPreprocessor","MiDaS-DepthMapPreprocessor","AnyLineArtPreprocessor_aux","SAMPreprocessor","UniFormer-SemSegPreprocessor","SemSegPreprocessor","PiDiNetPreprocessor","LineArtPreprocessor","OpenposePreprocessor","TEEDPreprocessor","PyraCannyPreprocessor","Metric3D-DepthMapPreprocessor","Metric3D-NormalMapPreprocessor","Manga2Anime_LineArt_Preprocessor","ScribblePreprocessor","Scribble_XDoG_Preprocessor","Scribble_PiDiNet_Preprocessor","AnimeLineArtPreprocessor","LineartStandardPreprocessor","TilePreprocessor","TTPlanet_TileGF_Preprocessor","TTPlanet_TileSimple_Preprocessor","ColorPreprocessor"]]
+            }
+        }
+,       "input_order": {
+            "required": ["preprocessor"]
+        }
+,       "output": [["none","ShufflePreprocessor","DensePosePreprocessor","LeReS-DepthMapPreprocessor","BinaryPreprocessor","AnimeFace_SemSegPreprocessor","Zoe-DepthMapPreprocessor","DepthAnythingPreprocessor","Zoe_DepthAnythingPreprocessor","DepthAnythingV2Preprocessor","CannyEdgePreprocessor","DWPreprocessor","AnimalPosePreprocessor","ImageLuminanceDetector","ImageIntensityDetector","MediaPipe-FaceMeshPreprocessor","M-LSDPreprocessor","HEDPreprocessor","FakeScribblePreprocessor","OneFormer-COCO-SemSegPreprocessor","OneFormer-ADE20K-SemSegPreprocessor","BAE-NormalMapPreprocessor","MeshGraphormer-DepthMapPreprocessor","DSINE-NormalMapPreprocessor","MiDaS-NormalMapPreprocessor","MiDaS-DepthMapPreprocessor","AnyLineArtPreprocessor_aux","SAMPreprocessor","UniFormer-SemSegPreprocessor","SemSegPreprocessor","PiDiNetPreprocessor","LineArtPreprocessor","OpenposePreprocessor","TEEDPreprocessor","PyraCannyPreprocessor","Metric3D-DepthMapPreprocessor","Metric3D-NormalMapPreprocessor","Manga2Anime_LineArt_Preprocessor","ScribblePreprocessor","Scribble_XDoG_Preprocessor","Scribble_PiDiNet_Preprocessor","AnimeLineArtPreprocessor","LineartStandardPreprocessor","TilePreprocessor","TTPlanet_TileGF_Preprocessor","TTPlanet_TileSimple_Preprocessor","ColorPreprocessor"]]
+,       "output_is_list": [false]
+,       "output_name": ["preprocessor"]
+,       "name": "ControlNetPreprocessorSelector"
+,       "display_name": "Preprocessor Selector"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors"
+,       "output_node": false
+    }
+,   "PixelPerfectResolution": {
+        "input": {
+            "required": {
+                "original_image": ["IMAGE"]
+,               "image_gen_width": ["INT",{"default":512,"min":64,"max":8192,"step":8}]
+,               "image_gen_height": ["INT",{"default":512,"min":64,"max":8192,"step":8}]
+,               "resize_mode": [["Just Resize","Crop and Resize","Resize and Fill"],{"default":"Just Resize"}]
+            }
+        }
+,       "input_order": {
+            "required": ["original_image","image_gen_width","image_gen_height","resize_mode"]
+        }
+,       "output": ["INT"]
+,       "output_is_list": [false]
+,       "output_name": ["RESOLUTION (INT)"]
+,       "name": "PixelPerfectResolution"
+,       "display_name": "Pixel Perfect Resolution"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors"
+,       "output_node": false
+    }
+,   "ImageGenResolutionFromImage": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+        }
+,       "output": ["INT","INT"]
+,       "output_is_list": [false,false]
+,       "output_name": ["IMAGE_GEN_WIDTH (INT)","IMAGE_GEN_HEIGHT (INT)"]
+,       "name": "ImageGenResolutionFromImage"
+,       "display_name": "Generation Resolution From Image"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors"
+,       "output_node": false
+    }
+,   "ImageGenResolutionFromLatent": {
+        "input": {
+            "required": {
+                "latent": ["LATENT"]
+            }
+        }
+,       "input_order": {
+            "required": ["latent"]
+        }
+,       "output": ["INT","INT"]
+,       "output_is_list": [false,false]
+,       "output_name": ["IMAGE_GEN_WIDTH (INT)","IMAGE_GEN_HEIGHT (INT)"]
+,       "name": "ImageGenResolutionFromLatent"
+,       "display_name": "Generation Resolution From Latent"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors"
+,       "output_node": false
+    }
+,   "HintImageEnchance": {
+        "input": {
+            "required": {
+                "hint_image": ["IMAGE"]
+,               "image_gen_width": ["INT",{"default":512,"min":64,"max":8192,"step":8}]
+,               "image_gen_height": ["INT",{"default":512,"min":64,"max":8192,"step":8}]
+,               "resize_mode": [["Just Resize","Crop and Resize","Resize and Fill"],{"default":"Just Resize"}]
+            }
+        }
+,       "input_order": {
+            "required": ["hint_image","image_gen_width","image_gen_height","resize_mode"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "HintImageEnchance"
+,       "display_name": "Enchance And Resize Hint Images"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors"
+,       "output_node": false
+    }
+,   "ExecuteAllControlNetPreprocessors": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+,           "optional": {
+                "resolution": ["INT",{"default":512,"min":64,"max":16384,"step":64}]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+,           "optional": ["resolution"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ExecuteAllControlNetPreprocessors"
+,       "display_name": "Execute All ControlNet Preprocessors"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors"
+,       "output_node": false
+    }
+,   "ControlNetAuxSimpleAddText": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+,               "text": ["STRING",{"default":"","multiline":false}]
+            }
+        }
+,       "input_order": {
+            "required": ["image","text"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ControlNetAuxSimpleAddText"
+,       "display_name": "ControlNetAuxSimpleAddText"
+,       "description": ""
+,       "python_module": "custom_nodes.comfyui_controlnet_aux"
+,       "category": "ControlNet Preprocessors"
+,       "output_node": false
+    }
 ,   "SAMLoader": {
         "input": {
             "required": {

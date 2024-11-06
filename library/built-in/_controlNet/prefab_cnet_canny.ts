@@ -6,14 +6,14 @@ import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
 export type UI_subform_Canny = X.XGroup<{
    preprocessor: UI_subform_Canny_Preprocessor
    models: X.XGroup<{
-      cnet_model_name: X.XEnum<Comfy.Enums['Comfy.Base.ControlNetLoader.input.control_net_name']>
+      cnet_model_name: X.XEnum<Comfy.Enums['ControlNetLoader.control_net_name']>
    }>
    strength: X.XNumber
    advanced: X.XGroup<{
       startAtStepPercent: X.XNumber
       endAtStepPercent: X.XNumber
-      crop: X.XEnum<Comfy.Enums['Comfy.Base.LatentUpscale.input.crop']>
-      upscale_method: X.XEnum<Comfy.Enums['Comfy.Base.ImageScale.input.upscale_method']>
+      crop: X.XEnum<Comfy.Enums['LatentUpscale.crop']>
+      upscale_method: X.XEnum<Comfy.Enums['ImageScale.upscale_method']>
    }>
 }>
 
@@ -29,8 +29,9 @@ export function ui_subform_Canny(): UI_subform_Canny {
                label: 'Select or Download Models',
                // startCollapsed: true,
                items: {
-                  cnet_model_name: ui.enum['Comfy.Base.ControlNetLoader.input.control_net_name']({
+                  cnet_model_name: ui.enum['ControlNetLoader.control_net_name']({
                      label: 'Model',
+                     // @ts-ignore
                      default: 't2iadapter_canny_sd14v1.pth',
                      filter: (name) => name.toString().includes('canny'),
                   }),
@@ -75,20 +76,20 @@ function ui_subform_Canny_Preprocessor(ui: X.Builder): UI_subform_Canny_Preproce
 // 🅿️ Canny RUN ===================================================
 export const run_cnet_canny = (
    canny: OutputFor<typeof ui_subform_Canny>,
-   image: _IMAGE,
+   image: Comfy.Input.IMAGE,
    resolution: number, // 512 | 768 | 1024 = 512,
 ): {
-   image: _IMAGE
-   cnet_name: Enum_ControlNetLoader_control_net_name
+   image: Comfy.Input.IMAGE
+   cnet_name: Comfy.Enums['ControlNetLoader.control_net_name']
 } => {
-   const run = getCurrentRun()
-   const graph = run.nodes
+   const sdk = getCurrentRun()
+   const graph = sdk.nodes
    const cnet_name = canny.models.cnet_model_name
 
    // PREPROCESSOR - CANNY ===========================================================
    if (canny.preprocessor) {
-      var canPP = canny.preprocessor
-      image = graph.CannyEdgePreprocessor({
+      const canPP = canny.preprocessor
+      image = graph['Custom.controlnet_aux.CannyEdgePreprocessor']({
          image: image,
          low_threshold: canPP.lowThreshold,
          high_threshold: canPP.highThreshold,

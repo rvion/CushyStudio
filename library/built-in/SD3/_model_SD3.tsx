@@ -17,13 +17,13 @@ export const prefabModelSD3 = (): $prefabModelSD3 => {
    // const ckpts = cushy.managerRepository.getKnownCheckpoints()
    return b
       .fields({
-         ckpt_name: b.enum['CheckpointLoaderSimple.input.ckpt_name']({ label: 'Checkpoint' }),
-         clip1: b.enum['TripleCLIPLoader.input.clip_name1']({
+         ckpt_name: b.enum['CheckpointLoaderSimple.ckpt_name']({ label: 'Checkpoint' }),
+         clip1: b.enum['TripleCLIPLoader.clip_name1']({
             // @ts-ignore
             default: 't5xxl_fp16.safetensors',
          }),
-         clip2: b.enum['TripleCLIPLoader.input.clip_name2']({ default: 'clip_l.safetensors' }),
-         clip3: b.enum['TripleCLIPLoader.input.clip_name3']({
+         clip2: b.enum['TripleCLIPLoader.clip_name2']({ default: 'clip_l.safetensors' }),
+         clip3: b.enum['TripleCLIPLoader.clip_name3']({
             // @ts-ignore
             default: 'clip_g.safetensors',
          }),

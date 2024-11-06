@@ -29,7 +29,7 @@ export function ui_subform_Tile(): UI_subform_Tile {
                label: 'Select or Download Models',
                // startCollapsed: true,
                items: {
-                  cnet_model_name: form.enum['ControlNetLoader.input.control_net_name']({
+                  cnet_model_name: form.enum['ControlNetLoader.control_net_name']({
                      label: 'Model',
                      default: 'control_v11u_sd15_tile_fp16.safetensors',
                      filter: (name) => name.toString().includes('_tile'),
@@ -84,7 +84,7 @@ export const run_cnet_Tile = (
    resolution: number, // 512 | 768 | 1024 = 512,
 ): {
    image: Comfy.Input.IMAGE
-   cnet_name: Comfy.Enums['Comfy.Base.ControlNetLoader.input.control_net_name']
+   cnet_name: Comfy.Enums['ControlNetLoader.control_net_name']
 } => {
    const run = getCurrentRun()
    const graph = run.nodes

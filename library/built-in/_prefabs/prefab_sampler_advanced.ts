@@ -70,8 +70,8 @@ export function ui_sampler_advanced(p?: {
    denoise?: number
    steps?: number
    cfg?: number
-   sampler_name?: Comfy.Enums['Comfy.Base.KSampler.input.sampler_name']
-   scheduler?: Comfy.Enums['Comfy.Base.KSampler.input.scheduler']
+   sampler_name?: Comfy.Enums['KSampler.sampler_name']
+   scheduler?: Comfy.Enums['KSampler.scheduler']
    startCollapsed?: boolean
    sharedSampler?: boolean
 }): UI_Sampler_Advanced {
@@ -80,11 +80,11 @@ export function ui_sampler_advanced(p?: {
       {
          sampler_name: p?.sharedSampler
             ? // ⏸️ shared_samplerName()
-              form.enum['KSampler.input.sampler_name']({
+              form.enum['KSampler.sampler_name']({
                  label: 'Sampler',
                  default: 'dpmpp_sde',
               })
-            : form.enum['KSampler.input.sampler_name']({
+            : form.enum['KSampler.sampler_name']({
                  label: 'Sampler',
                  default: p?.sampler_name ?? 'euler',
               }),
@@ -161,7 +161,7 @@ export function ui_sampler_advanced(p?: {
                      min: 0,
                      softMax: 100,
                   }),
-                  scheduler: form.enum['KSampler.input.scheduler']({
+                  scheduler: form.enum['KSampler.scheduler']({
                      label: 'Scheduler',
                      default: p?.scheduler ?? 'karras',
                   }),
@@ -175,7 +175,7 @@ export function ui_sampler_advanced(p?: {
                      label: 'Denoise',
                   }),
                   steps: form.int({ step: 1, default: p?.steps ?? 10, label: 'Steps', min: 0, softMax: 100 }),
-                  modelType: form.enum['AlignYourStepsScheduler.input.model_type']({ default: 'SDXL' }),
+                  modelType: form.enum['AlignYourStepsScheduler.model_type']({ default: 'SDXL' }),
                }),
                karrasCustom: form.auto.KarrasScheduler(),
                ExponentialCustom: form.auto.ExponentialScheduler(),
