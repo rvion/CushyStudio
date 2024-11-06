@@ -133,7 +133,7 @@ app({
          const positiveCond = graph.CLIPTextEncode({ clip, text: prompt })
          const negativeCond = graph.CLIPTextEncode({ clip, text: negativeText })
          const seed = startingSeed++
-         let latent: Comfy.Input.LATENT = graph.EmptyLatentImage({ height, width })
+         let latent: Comfy.Signal['LATENT'] = graph.EmptyLatentImage({ height, width })
          latent = graph.KSampler({
             seed,
             latent_image: latent,
@@ -154,7 +154,7 @@ app({
          }
 
          // post processing
-         let image: Comfy.Input.IMAGE = graph.VAEDecode({ samples: latent, vae })
+         let image: Comfy.Signal['IMAGE'] = graph.VAEDecode({ samples: latent, vae })
          if (ui.secondPass || isXL) image = graph.Image_Resize({ image: image, rescale_factor: 0.33, mode: 'rescale', resampling: 'lanczos', supersample: 'false', }) // prettier-ignore
          const maskL = await run.Images.createFromURL(bang(stsAssets[`mask-${kind}`]))
          let maskImg = await maskL.loadInWorkflow() //.loadInWorkflowAsMask('alpha')

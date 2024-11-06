@@ -34,7 +34,7 @@ export async function run_mask(
 ): Promise<HasSingle_MASK | null> {
    const p = x
    const graph = getCurrentRun().nodes
-   let mask: Comfy.Input.MASK = await (imageOverride ?? p.image).loadInWorkflowAsMask(p.mode)
+   let mask: Comfy.Signal['MASK'] = await (imageOverride ?? p.image).loadInWorkflowAsMask(p.mode)
    if (p.invert) mask = graph.InvertMask({ mask: mask })
    if (p.grow) mask = graph.GrowMask({ mask: mask, expand: p.grow })
    if (p.feather)

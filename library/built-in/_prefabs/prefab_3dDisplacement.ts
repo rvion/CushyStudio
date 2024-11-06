@@ -9,7 +9,7 @@ export type UI_3dDisplacement = X.XGroup<{
       MiDaS: X.XEmpty
       Zoe: X.XEmpty
       LeReS: X.XEmpty
-      Marigold: ReturnType<X.Builder['auto']['MarigoldDepthEstimation']>
+      Marigold: ReturnType<X.Builder['auto']['Marigold.MarigoldDepthEstimation']>
    }>
 }>
 
@@ -29,7 +29,7 @@ export function ui_3dDisplacement(): UI_3dDisplacement {
                   MiDaS: form.empty(),
                   Zoe: form.empty(),
                   LeReS: form.empty(),
-                  Marigold: form.auto.MarigoldDepthEstimation(),
+                  Marigold: form.auto['Marigold.MarigoldDepthEstimation'](),
                },
                { default: 'Marigold', appearance: 'tab' },
             ),
@@ -52,7 +52,7 @@ export function run_Dispacement2(startImg: string | MediaImageL): void {
 export function run_Dispacement1(
    //
    show3d: OutputFor<typeof ui_3dDisplacement>,
-   finalImage: Comfy.Input.IMAGE,
+   finalImage: Comfy.Signal['IMAGE'],
 ): void {
    const run = getCurrentRun()
    const graph = run.nodes

@@ -133,14 +133,14 @@ export async function run_cnet(
 ): Promise<Cnet_return> {
    const run = getCurrentRun()
    const cnetList = opts // opts?.controlNetList
-   let args: Cnet_args = { ...ctx }
+   const args: Cnet_args = { ...ctx }
 
    if (cnetList) {
       for (const cnetImage of cnetList) {
-         let image: Comfy.Input.IMAGE = (await run.loadImageAnswer(cnetImage.image))._IMAGE
+         let image: Comfy.Signal['IMAGE'] = (await run.loadImageAnswer(cnetImage.image))._IMAGE
          const mask = await run_mask(cnetImage.mask)
          const { width, height } = ctx
-         let resolution = Math.min(width, height)
+         const resolution = Math.min(width, height)
 
          // TODO: make configurable
          if (cnetImage.resize) {

@@ -133,23 +133,23 @@ export function ui_refiners(): UI_Refiners {
 export const run_refiners_fromLatent = (
    //
    ui: OutputFor<typeof ui_refiners>,
-   latent: Comfy.Input.LATENT = getCurrentRun().AUTO,
-): Comfy.Input.IMAGE => {
+   latent: Comfy.Signal['LATENT'] = getCurrentRun().AUTO,
+): Comfy.Signal['IMAGE'] => {
    const run = getCurrentRun()
    const graph = run.nodes
-   const image: Comfy.Input.IMAGE = graph.VAEDecode({ samples: latent, vae: run.AUTO })
+   const image: Comfy.Signal['IMAGE'] = graph.VAEDecode({ samples: latent, vae: run.AUTO })
    return run_refiners_fromImage(ui, image)
 }
 
 export const run_refiners_fromImage = (
    //
    ui: OutputFor<typeof ui_refiners>,
-   finalImage: Comfy.Input.IMAGE = getCurrentRun().AUTO,
-   ckpt?: Comfy.Input.MODEL,
+   finalImage: Comfy.Signal['IMAGE'] = getCurrentRun().AUTO,
+   ckpt?: Comfy.Signal['MODEL'],
    maxRes?: number,
    face_prompt_override?: Maybe<string>,
    eye_prompt_override?: Maybe<string>,
-): Comfy.Input.IMAGE => {
+): Comfy.Signal['IMAGE'] => {
    const run = getCurrentRun()
    const graph = run.nodes
    // run.add_saveImage(run.AUTO, 'base')

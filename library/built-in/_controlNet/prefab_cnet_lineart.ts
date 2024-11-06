@@ -113,10 +113,10 @@ export function ui_subform_Lineart_Manga(): UI_subform_Lineart_Manga {
 // 🅿️ Lineart RUN ===================================================
 export const run_cnet_Lineart = (
    Lineart: OutputFor<typeof ui_subform_Lineart>,
-   image: Comfy.Input.IMAGE,
+   image: Comfy.Signal['IMAGE'],
    resolution: number, // 512 | 768 | 1024 = 512,
 ): {
-   image: Comfy.Input.IMAGE
+   image: Comfy.Signal['IMAGE']
    cnet_name: Comfy.Slots['ControlNetLoader.control_net_name']
 } => {
    const sdk = getCurrentRun()
@@ -139,7 +139,7 @@ export const run_cnet_Lineart = (
       // Manga
       else if (Lineart.preprocessor.Manga) {
          const manga = Lineart.preprocessor.Manga
-         image = graph['controlnet_aux.Manga2Anime$_LineArt$_Preprocessor']({
+         image = graph['controlnet_aux.Manga2Anime_LineArt_Preprocessor']({
             image: image,
             resolution: resolution,
          })._IMAGE

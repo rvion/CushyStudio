@@ -111,19 +111,19 @@ export function ui_cnet(): UI_cnet {
 
 // RUN -----------------------------------------------------------
 export type Cnet_args = {
-   positive: Comfy.Input.CONDITIONING
-   negative: Comfy.Input.CONDITIONING
+   positive: Comfy.Signal['CONDITIONING']
+   negative: Comfy.Signal['CONDITIONING']
    width: number
    height: number
-   ckptPos: Comfy.Input.MODEL
+   ckptPos: Comfy.Signal['MODEL']
 }
 
 export type Cnet_return = {
-   cnet_positive: Comfy.Input.CONDITIONING
-   cnet_negative: Comfy.Input.CONDITIONING
-   post_cnet_positive: Comfy.Input.CONDITIONING
-   post_cnet_negative: Comfy.Input.CONDITIONING
-   ckpt_return: Comfy.Input.MODEL
+   cnet_positive: Comfy.Signal['CONDITIONING']
+   cnet_negative: Comfy.Signal['CONDITIONING']
+   post_cnet_positive: Comfy.Signal['CONDITIONING']
+   post_cnet_negative: Comfy.Signal['CONDITIONING']
+   ckpt_return: Comfy.Signal['MODEL']
 }
 
 export async function run_cnet(
@@ -137,7 +137,7 @@ export async function run_cnet(
 
    if (cnetList) {
       for (const cnetImage of cnetList) {
-         let image: Comfy.Input.IMAGE = (await run.loadImageAnswer(cnetImage.image))._IMAGE
+         let image: Comfy.Signal['IMAGE'] = (await run.loadImageAnswer(cnetImage.image))._IMAGE
          const mask = await run_mask(cnetImage.mask)
          const { width, height } = ctx
          let resolution = Math.min(width, height)
@@ -262,7 +262,7 @@ const _apply_cnet = (
    strength: number,
    startPct: number,
    endPct: number,
-   image: Comfy.Input.IMAGE,
+   image: Comfy.Signal['IMAGE'],
    cnet_name: Comfy.Slots['ControlNetLoader.control_net_name'],
    mask: HasSingle_MASK | null,
 ): void => {

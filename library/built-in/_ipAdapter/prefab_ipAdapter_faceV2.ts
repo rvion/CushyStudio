@@ -207,12 +207,12 @@ function ui_extraIpAdapter(form: X.Builder): UI_extraIpAdapter {
 // 🅿️ FaceID RUN
 export const run_FaceIDV2 = async (
    ui: OutputFor<typeof ui_IPAdapterFaceIDV2>,
-   ckpt: Comfy.Input.MODEL,
+   ckpt: Comfy.Signal['MODEL'],
    // cnet_args: Cnet_argsV2,
-   previousIPAdapter?: Comfy.Input.IPADAPTER | undefined,
+   previousIPAdapter?: Comfy.Signal['IPADAPTER'] | undefined,
 ): Promise<{
-   ip_adapted_model: Comfy.Input.MODEL
-   ip_adapter: Comfy.Input.IPADAPTER | undefined
+   ip_adapted_model: Comfy.Signal['MODEL']
+   ip_adapter: Comfy.Signal['IPADAPTER'] | undefined
 }> => {
    const run = getCurrentRun()
    const graph = run.nodes
@@ -220,9 +220,9 @@ export const run_FaceIDV2 = async (
       return { ip_adapted_model: ckpt, ip_adapter: previousIPAdapter }
    }
 
-   let ip_adapter: Comfy.Input.IPADAPTER
-   let ip_adapter_out: Comfy.Input.IPADAPTER
-   let ckpt_pos: Comfy.Input.MODEL = ckpt
+   let ip_adapter: Comfy.Signal['IPADAPTER']
+   let ip_adapter_out: Comfy.Signal['IPADAPTER']
+   let ckpt_pos: Comfy.Signal['MODEL'] = ckpt
 
    const ip_adapter_loader = graph['IPAdapter_plus.IPAdapterUnifiedLoaderFaceID']({
       model: ckpt,
@@ -234,7 +234,7 @@ export const run_FaceIDV2 = async (
    ip_adapter = ip_adapter_loader._IPADAPTER
    ckpt_pos = ip_adapter_loader._MODEL
 
-   let image: Comfy.Input.IMAGE = await run.loadImageAnswer(ui.baseImage.image)
+   let image: Comfy.Signal['IMAGE'] = await run.loadImageAnswer(ui.baseImage.image)
    image = graph['IPAdapter_plus.PrepImageForClipVision']({
       image,
       crop_position: 'center',
@@ -243,7 +243,7 @@ export const run_FaceIDV2 = async (
    })
    const preview = graph.PreviewImage({ images: image })
 
-   let adapterAttentionMask: Comfy.Input.MASK | undefined
+   let adapterAttentionMask: Comfy.Signal['MASK'] | undefined
    if (ui.settings.advancedSettings.adapterAttentionMask) {
       const maskLoad = await run.loadImageAnswer(ui.settings.advancedSettings.adapterAttentionMask)
       const maskClipped = graph['IPAdapter_plus.PrepImageForClipVision']({

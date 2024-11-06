@@ -22,7 +22,7 @@ export const ui_latent_v2 = (form: X.Builder): UI_latent_v2 => {
 export const run_latent_v2 = async (p: {
    run: Runtime
    opts: OutputFor<typeof ui_latent_v2>
-   vae: Comfy.Input.VAE
+   vae: Comfy.Signal['VAE']
 }): Promise<{
    latent: HasSingle_LATENT
    width: number | ComfyNodeOutput<'INT', number>

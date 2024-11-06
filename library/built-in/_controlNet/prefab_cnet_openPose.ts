@@ -105,10 +105,10 @@ function ui_subform_OpenPose_Preprocessor(): UI_subform_OpenPose_Preprocessor {
 // 🅿️ OPEN POSE RUN ===================================================
 export const run_cnet_openPose = (
    openPose: OutputFor<typeof ui_subform_OpenPose>,
-   image: Comfy.Input.IMAGE,
+   image: Comfy.Signal['IMAGE'],
    resolution: number, // 512 | 768 | 1024 = 512,
 ): {
-   image: Comfy.Input.IMAGE
+   image: Comfy.Signal['IMAGE']
    cnet_name: Comfy.Slots['ControlNetLoader.control_net_name']
 } => {
    const sdk = getCurrentRun()

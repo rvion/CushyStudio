@@ -113,10 +113,10 @@ export function ui_subform_Scribble_XDoG_Lines(): UI_subform_Scribble_XDoG_Lines
 
 export const run_cnet_Scribble = (
    Scribble: OutputFor<typeof ui_subform_Scribble>,
-   image: Comfy.Input.IMAGE,
+   image: Comfy.Signal['IMAGE'],
    resolution: number, // 512 | 768 | 1024 = 512,
 ): {
-   image: Comfy.Input.IMAGE
+   image: Comfy.Signal['IMAGE']
    cnet_name: Comfy.Slots['ControlNetLoader.control_net_name']
 } => {
    const run = getCurrentRun()

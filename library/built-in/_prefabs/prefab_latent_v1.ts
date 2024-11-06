@@ -18,7 +18,7 @@ export function ui_latent_v1(): X.XGroup<{
 
 export const run_latent_v1 = async (p: {
    opts: OutputFor<typeof ui_latent_v1>
-   vae: Comfy.Input.VAE
+   vae: Comfy.Signal['VAE']
 }): Promise<{
    latent: HasSingle_LATENT
    width: number

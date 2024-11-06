@@ -113,9 +113,9 @@ export function ui_IPAdapterFaceID(): UI_IPAdapterFaceID {
 export const run_cnet_IPAdapterFaceID = (
    IPAdapter: OutputFor<typeof ui_IPAdapterFaceID>,
    cnet_args: Cnet_args,
-   image: Comfy.Input.IMAGE,
+   image: Comfy.Signal['IMAGE'],
 ): {
-   ip_adapted_model: Comfy.Input.MODEL
+   ip_adapted_model: Comfy.Signal['MODEL']
 } => {
    const run = getCurrentRun()
    const graph = run.nodes

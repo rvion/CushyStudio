@@ -60,14 +60,14 @@ export const ui_promptList = (): PromptLisT$ => {
 
 export const run_promptList = async (p: {
    opts: OutputFor<typeof ui_promptList>
-   conditioning: Comfy.Input.CONDITIONING
+   conditioning: Comfy.Signal['CONDITIONING']
    width?: number
    height?: number
    encoderTypeSDXL?: boolean
    promptPreface?: string
    promptSuffix?: string
 }): Promise<{
-   conditioning: Comfy.Input.CONDITIONING
+   conditioning: Comfy.Signal['CONDITIONING']
 }> => {
    const run = getCurrentRun()
    const graph = run.nodes

@@ -23,7 +23,7 @@ export const ui_upscaleWithModel_v2 = (): X.XSelectMany_<Enum_UpscaleModelLoader
 
 export const run_upscaleWithModel_v2 = (
    ui: NonNullable<OutputFor<typeof ui_upscaleWithModel_v2>>,
-   p?: { image?: Comfy.Input.IMAGE },
+   p?: { image?: Comfy.Signal['IMAGE'] },
 ): void => {
    const run = getCurrentRun()
    const graph: ComfyWorkflowBuilder = run.nodes

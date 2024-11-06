@@ -34,11 +34,11 @@ app({
       let clip = ckpt
       let vae = ckpt
 
-      // let positive: Comfy.Input.CONDITIONING = run_prompt(flow, { richPrompt: form.mainPos, clip: ckpt, ckpt: ckpt }).conditionning
-      let positive: Comfy.Input.CONDITIONING = graph.ConditioningZeroOut({
+      // let positive: Comfy.Signal['CONDITIONING'] = run_prompt(flow, { richPrompt: form.mainPos, clip: ckpt, ckpt: ckpt }).conditionning
+      let positive: Comfy.Signal['CONDITIONING'] = graph.ConditioningZeroOut({
          conditioning: graph.CLIPTextEncode({ clip: clip, text: '' }),
       })
-      let negative: Comfy.Input.CONDITIONING = run_prompt({
+      let negative: Comfy.Signal['CONDITIONING'] = run_prompt({
          prompt: form.mainNeg,
          clip: ckpt,
          ckpt: ckpt,

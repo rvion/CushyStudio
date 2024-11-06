@@ -50,15 +50,15 @@ export const prefabModelSD15andSDXL = (
 }
 
 export function evalModelSD15andSDXL(doc: $prefabModelSD15andSDXL['$Value']): {
-   ckpt: Comfy.Input.MODEL
-   vae: Comfy.Input.VAE
-   clip: Comfy.Input.CLIP
+   ckpt: Comfy.Signal['MODEL']
+   vae: Comfy.Signal['VAE']
+   clip: Comfy.Signal['CLIP']
 } {
    const run = getCurrentRun()
    const graph = run.nodes
-   let ckpt: Comfy.Input.MODEL
-   let clip: Comfy.Input.CLIP
-   let vae: Comfy.Input.VAE | undefined = undefined
+   let ckpt: Comfy.Signal['MODEL']
+   let clip: Comfy.Signal['CLIP']
+   let vae: Comfy.Signal['VAE'] | undefined = undefined
 
    // SD15/SD2 Specific Part ------------------------
    if (doc.extra.checkpointConfig) {

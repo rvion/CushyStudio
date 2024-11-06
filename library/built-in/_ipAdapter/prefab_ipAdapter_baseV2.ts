@@ -149,12 +149,12 @@ export function ui_IPAdapterV2(): UI_IPAdapterV2 {
 // 🅿️ IPAdapter RUN ===================================================
 export const run_IPAdapterV2 = async (
    ui: OutputFor<typeof ui_IPAdapterV2>,
-   ckpt: Comfy.Input.MODEL,
+   ckpt: Comfy.Signal['MODEL'],
    // cnet_args: Cnet_argsV2,
-   previousIPAdapter?: Comfy.Input.IPADAPTER | undefined,
+   previousIPAdapter?: Comfy.Signal['IPADAPTER'] | undefined,
 ): Promise<{
-   ip_adapted_model: Comfy.Input.MODEL
-   ip_adapter: Comfy.Input.IPADAPTER | undefined
+   ip_adapted_model: Comfy.Signal['MODEL']
+   ip_adapter: Comfy.Signal['IPADAPTER'] | undefined
 }> => {
    const run = getCurrentRun()
    const graph = run.nodes
@@ -162,9 +162,9 @@ export const run_IPAdapterV2 = async (
       return { ip_adapted_model: ckpt, ip_adapter: previousIPAdapter }
    }
 
-   let ip_adapter: Comfy.Input.IPADAPTER
-   let ip_adapter_out: Comfy.Input.IPADAPTER
-   let ckpt_pos: Comfy.Input.MODEL = ckpt
+   let ip_adapter: Comfy.Signal['IPADAPTER']
+   let ip_adapter_out: Comfy.Signal['IPADAPTER']
+   let ckpt_pos: Comfy.Signal['MODEL'] = ckpt
    if (previousIPAdapter) {
       ip_adapter = previousIPAdapter
       ip_adapter_out = previousIPAdapter
@@ -178,12 +178,12 @@ export const run_IPAdapterV2 = async (
       ckpt_pos = ip_adapter_loader._MODEL
    }
 
-   let pos_embed: Comfy.Input.EMBEDS | null = null
-   let neg_embed: Comfy.Input.EMBEDS | null = null
+   let pos_embed: Comfy.Signal['EMBEDS'] | null = null
+   let neg_embed: Comfy.Signal['EMBEDS'] | null = null
    let i: number = 0
    for (const ex of ui.images) {
       const extra = await run.loadImageAnswer(ex.image)
-      let mask: Comfy.Input.MASK | undefined
+      let mask: Comfy.Signal['MASK'] | undefined
       if (ex.advanced.imageAttentionMask) {
          const maskLoad = await run.loadImageAnswer(ex.advanced.imageAttentionMask)
          const maskClipped = graph.PrepImageForClipVision({

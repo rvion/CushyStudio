@@ -76,8 +76,8 @@ export const schemaModelExtras = (
 }
 
 // ------------
-type XX1 = { vae: Comfy.Input.VAE | undefined; clip: _CLIP; ckpt: Comfy.Input.MODEL }
-type XX2 = { vae: _VAE; clip: _CLIP; ckpt: Comfy.Input.MODEL }
+type XX1 = { vae: Comfy.Signal['VAE'] | undefined; clip: _CLIP; ckpt: Comfy.Signal['MODEL'] }
+type XX2 = { vae: _VAE; clip: _CLIP; ckpt: Comfy.Signal['MODEL'] }
 
 export function evalModelExtras_part1(
    //
@@ -121,10 +121,10 @@ export function evalModelExtras_part1(
 
 export const evalModelExtras_part2 = (
    extra: $schemaModelExtras['$Value'],
-   ckpt: Comfy.Input.MODEL,
+   ckpt: Comfy.Signal['MODEL'],
    forHiRes?: boolean,
    kohyaScale?: number,
-): Comfy.Input.MODEL => {
+): Comfy.Signal['MODEL'] => {
    const run = getCurrentRun()
    const graph = run.nodes
    // 5. Optional SAG - Self Attention Guidance

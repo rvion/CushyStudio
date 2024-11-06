@@ -79,10 +79,10 @@ export function ui_subform_SoftEdge_Preprocessor_Options(
 // 🅿️ SoftEdge RUN ===================================================
 export const run_cnet_SoftEdge = (
    SoftEdge: OutputFor<typeof ui_subform_SoftEdge>,
-   image: Comfy.Input.IMAGE,
+   image: Comfy.Signal['IMAGE'],
    resolution: number, // 512 | 768 | 1024 = 512,
 ): {
-   image: Comfy.Input.IMAGE
+   image: Comfy.Signal['IMAGE']
    cnet_name: Comfy.Slots['ControlNetLoader.control_net_name']
 } => {
    const run = getCurrentRun()

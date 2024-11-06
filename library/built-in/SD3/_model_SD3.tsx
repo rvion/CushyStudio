@@ -35,15 +35,15 @@ export const prefabModelSD3 = (): $prefabModelSD3 => {
 }
 
 export function eval_model_SD3(doc: $prefabModelSD3['$Value']): {
-   ckpt: Comfy.Input.MODEL
-   vae: Comfy.Input.VAE
-   clip: Comfy.Input.CLIP
+   ckpt: Comfy.Signal['MODEL']
+   vae: Comfy.Signal['VAE']
+   clip: Comfy.Signal['CLIP']
 } {
    const run = getCurrentRun()
    const graph = run.nodes
-   let ckpt: Comfy.Input.MODEL
-   let clip: Comfy.Input.CLIP
-   let vae: Comfy.Input.VAE | undefined = undefined
+   let ckpt: Comfy.Signal['MODEL']
+   let clip: Comfy.Signal['CLIP']
+   let vae: Comfy.Signal['VAE'] | undefined = undefined
 
    // SD3 Specific Part ------------------------
    const ckptLoader = graph.CheckpointLoaderSimple({

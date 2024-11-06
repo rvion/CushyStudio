@@ -56,8 +56,8 @@ export const ui_ipadapter_standalone = () => {
 // 🅿️ IPAdapter RUN ===================================================
 export const run_ipadapter_standalone = async (
    ui: OutputFor<typeof ui_ipadapter_standalone>,
-   ckpt: Comfy.Input.MODEL,
-): Promise<{ ip_adapted_model: Comfy.Input.MODEL }> => {
+   ckpt: Comfy.Signal['MODEL'],
+): Promise<{ ip_adapted_model: Comfy.Signal['MODEL'] }> => {
    const run = getCurrentRun()
    const graph = run.nodes
 
@@ -65,13 +65,13 @@ export const run_ipadapter_standalone = async (
       ipadapter_file: ui.cnet_model_name,
    })
 
-   const image: Comfy.Input.IMAGE = await run.loadImageAnswer(ui.image)
+   const image: Comfy.Signal['IMAGE'] = await run.loadImageAnswer(ui.image)
    const image_ = graph['IPAdapter_plus.IPAdapterEncoder']({
       ipadapter: ip_model,
       image,
    }).outputs
-   let pos_embed: Comfy.Input.EMBEDS = image_.pos_embed
-   let neg_embed: Comfy.Input.EMBEDS = image_.neg_embed
+   let pos_embed: Comfy.Signal['EMBEDS'] = image_.pos_embed
+   let neg_embed: Comfy.Signal['EMBEDS'] = image_.neg_embed
 
    const ip_clip_name = graph.CLIPVisionLoader({ clip_name: ui.clip_name })
    for (const ex of ui.extra) {
