@@ -25,10 +25,10 @@ import { MenuUtilsUI } from './MenuUtilsUI'
 import { menuPanels } from './MenuWindowUI'
 import { PerspectivePickerUI } from './PerspectivePickerUI'
 
-const viewMenu = defineMenu({
-   title: 'View',
-   entries: () => [menuCommands],
-})
+// const viewMenu = defineMenu({
+//    title: 'View',
+//    entries: () => [menuCommands],
+// })
 
 const editMenu: Menu = defineMenu({
    title: 'Edit',
@@ -79,6 +79,9 @@ const helpMenu: Menu = defineMenu({
    title: 'Help',
    entries: (b) => [
       //
+      menuCommands,
+
+      b.Divider,
       b.SimpleMenuAction({
          label: 'Github',
          icon: 'mdiGithub',
@@ -251,7 +254,7 @@ const mainMenu = defineMenu({
       cushyMenu,
       menuPanels,
       editMenu,
-      viewMenu,
+      // viewMenu,
       helpMenu,
    ],
    // horizontalMenuGroup: true,
