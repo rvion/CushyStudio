@@ -279,7 +279,7 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
          {/* <MenuEditUI /> */}
          {/* <MenuAboutUI /> */}
          {/* <MenuDebugUI /> */}
-         <PerspectivePickerUI tw='mx-auto self-center' />
+         <PerspectivePickerUI tw='mx-2' />
 
          <SpacerUI />
          <UpdateBtnUI updater={cushy.updater} />
