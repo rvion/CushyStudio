@@ -19,13 +19,16 @@ import { MenuUtilsUI } from './MenuUtilsUI'
 import { menuPanels } from './MenuWindowUI'
 import { PerspectivePickerUI } from './PerspectivePickerUI'
 
+const viewMenu = defineMenu({
+   title: 'View',
+   entries: () => [menuPanels, menuCommands],
+})
+
 const mainMenu = defineMenu({
    title: 'mainMenu',
    entries: () => [
       //
-      menuPanels,
-      menuCommands,
-      menuComfyUI2,
+      viewMenu,
    ],
    // horizontalMenuGroup: true,
 })
