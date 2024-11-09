@@ -75,8 +75,8 @@ const editMenu: Menu = defineMenu({
 
 */
 
-const aboutMenu: Menu = defineMenu({
-   title: 'About',
+const helpMenu: Menu = defineMenu({
+   title: 'Help',
    entries: (b) => [
       //
       b.SimpleMenuAction({
@@ -252,7 +252,7 @@ const mainMenu = defineMenu({
       menuPanels,
       editMenu,
       viewMenu,
-      aboutMenu,
+      helpMenu,
    ],
    // horizontalMenuGroup: true,
 })
