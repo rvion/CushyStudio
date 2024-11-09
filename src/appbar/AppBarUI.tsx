@@ -38,13 +38,93 @@ const editMenu: Menu = defineMenu({
    ],
 })
 
+/* 
+
+/>
+               <MenuItem
+                  
+               />
+               <MenuItem
+                  onClick={() => {
+                     void window.require('electron').shell.openExternal('https://www.CushyStudio.com/blog')
+                  }}
+                  icon={'mdiPost'}
+                  label='Blog'
+               />
+               {cushy.auth.isConnected ? (
+                  <MenuItem //
+                     icon='mdiLogout'
+                     onClick={() => cushy.auth.logout()}
+                     label='Logout'
+                  />
+               ) : (
+                  <MenuItem //
+                     icon='mdiLogin'
+                     onClick={() => void cushy.auth.startLoginFlowWithGithub()}
+                     label='Login with Github'
+                  />
+               )}
+
+
+
+*/
+
+const aboutMenu: Menu = defineMenu({
+   title: 'About',
+   entries: (b) => [
+      //
+      b.SimpleMenuAction({
+         label: 'Github',
+         icon: 'mdiGithub',
+         onClick: () => {
+            void window.require('electron').shell.openExternal('https://github.com/rvion/CushyStudio#readme')
+         },
+      }),
+      b.SimpleMenuAction({
+         label: 'Documentation',
+         icon: 'mdiWeb',
+         onClick: () => {
+            void window.require('electron').shell.openExternal('https://www.CushyStudio.com')
+         },
+      }),
+      b.SimpleMenuAction({
+         label: 'Blog',
+         icon: 'mdiPost',
+         onClick: () => {
+            void window.require('electron').shell.openExternal('https://www.CushyStudio.com/blog')
+         },
+      }),
+      cushy.auth.isConnected
+         ? b.SimpleMenuAction({
+              icon: 'mdiLogout',
+              label: 'Logout',
+              onClick: () => cushy.auth.logout(),
+           })
+         : b.SimpleMenuAction({
+              icon: 'mdiLogin',
+              label: 'Login with Github',
+              onClick: () => void cushy.auth.startLoginFlowWithGithub(),
+           }),
+   ],
+
+   // TODO(bird): Properly do this
+   /**<RevealUI content={() => <JsonViewUI value={cushy.auth.user} />}>
+                  <MenuItem //
+                     icon='mdiInformation'
+                     label={cushy.auth.user?.email ?? '<no-email>'}
+                  />
+               </RevealUI> */
+})
+
 const mainMenu = defineMenu({
    title: 'mainMenu',
    entries: () => [
       //
+      <Button.Ghost></Button.Ghost>,
       menuPanels,
       editMenu,
       viewMenu,
+      aboutMenu,
    ],
    // horizontalMenuGroup: true,
 })
@@ -72,7 +152,7 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
          {/* <MenuComfyUI /> */}
          <MenuAppsUI />
          {/* <MenuEditUI /> */}
-         <MenuAboutUI />
+         {/* <MenuAboutUI /> */}
          <MenuDebugUI />
          <PerspectivePickerUI tw='mx-auto self-center' />
 
