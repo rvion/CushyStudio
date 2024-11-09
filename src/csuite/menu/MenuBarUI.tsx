@@ -103,7 +103,7 @@ export const MenuBarUI = observer(function MenuBar({
 
          return (
             <RevealUI //
-               tw='inline-flex'
+               tw='inline-flex select-none'
                key={entry.id}
                ref={ABC.ref}
                trigger='menubarItem'
