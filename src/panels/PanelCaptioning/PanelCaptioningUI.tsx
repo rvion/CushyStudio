@@ -39,11 +39,13 @@ export const PanelCaptioningUI = observer(function PanelCaptioningUI_(p: {}) {
                tw='flex h-full w-full items-center justify-center overflow-auto'
                base={{ contrast: 0.1 }}
             >
-               <img // Active Image
-                  tw='h-full w-full select-none object-contain'
-                  draggable={false}
-                  src={`file://${doc.folderPath}/${doc.imageNameWithExt}`}
-               />
+               {doc.folderPath && (
+                  <img // Active Image
+                     tw='h-full w-full select-none object-contain'
+                     draggable={false}
+                     src={`file://${doc.folderPath}/${doc.imageNameWithExt}`}
+                  />
+               )}
             </Frame>
             <BasicShelfUI anchor='right'>
                <Frame line tw='flex flex-row'>
