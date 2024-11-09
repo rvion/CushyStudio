@@ -82,7 +82,7 @@ export const _MenuItem = observer(function DropdownItem_(p: MenuItemProps) {
          tw={[
             //
             '_MenuItem ',
-            'flex cursor-pointer items-center gap-2 whitespace-nowrap px-2 py-0.5',
+            'flex cursor-pointer select-none items-center gap-2 whitespace-nowrap px-2 py-0.5',
             // Grid this so we have a consistent icon width and every label lines up
             'grid grid-cols-[18px_1fr]',
          ]}
