@@ -65,7 +65,7 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
          >
             <img style={{ width: '1.3rem' }} src={assets.CushyLogo_512_png} alt='' />
          </Button.Ghost>
-         <div tw='px-1'>CushyStudio</div>
+         {/* <div tw='px-1'>CushyStudio</div> */}
          <mainMenu.MenuBarUI />
          {/* <MenuPanelsUI /> */}
          {/* <MenuCommandsUI /> */}
