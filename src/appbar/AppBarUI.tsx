@@ -27,7 +27,8 @@ const viewMenu = defineMenu({
 const editMenu: Menu = defineMenu({
    title: 'Edit',
    entries: (b) => [
-      <Frame base={{ contrast: 0.1 }} tw='h-[1px]'></Frame>,
+      b.Divider,
+      // <Frame base={{ contrast: 0.1 }} tw='h-[1px]'></Frame>,
       // Should have commands that open menus that we can re-use in spots.
       b.SimpleMenuAction({
          label: 'Preferences',
