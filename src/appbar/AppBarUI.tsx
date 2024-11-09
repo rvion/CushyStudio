@@ -22,7 +22,7 @@ import { MenuNSFWCheckerUI } from './MenuNSFWChecker'
 import { MenuSettingsUI } from './MenuSettingsUI'
 import { menuCommands } from './MenuShortcuts'
 import { MenuUtilsUI } from './MenuUtilsUI'
-import { menuPanels } from './MenuWindowUI'
+import { menuView } from './MenuWindowUI'
 import { PerspectivePickerUI } from './PerspectivePickerUI'
 
 // const viewMenu = defineMenu({
@@ -252,7 +252,7 @@ const mainMenu = defineMenu({
    entries: () => [
       //
       cushyMenu,
-      menuPanels,
+      menuView,
       editMenu,
       // viewMenu,
       helpMenu,

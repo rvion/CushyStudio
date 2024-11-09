@@ -18,14 +18,14 @@ const groupBy = <X extends any, Key extends string>(
    arr.reduce<Record<string, X[]>>((a, b, i) => ((a[getKey(b, i, arr)] ||= []).push(b), a), {})
 
 // const XXX = ['Civitai', 'Squoosh']
-export const menuPanels: Menu = defineMenu({
-   title: 'Panels',
+export const menuView: Menu = defineMenu({
+   title: 'View',
    entries: (): MenuEntry[] => {
       const byCategory = groupBy(allPanels, (v) => v.category)
       return [
          // Alphabetically
          defineMenu({
-            title: 'Alphabetically',
+            title: 'All Panels',
             entries: () =>
                allPanels
                   .flatMap((panel) => panel.menuEntries)
