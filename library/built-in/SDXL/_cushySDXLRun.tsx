@@ -24,13 +24,13 @@ import { _evalPrompt } from './_evalPrompt'
 
 export async function _cushySDXLRun(
    //
-   run: Runtime<$CushySDXLUI['$Field']>,
+   sdk: Runtime<$CushySDXLUI['$Field']>,
    ui: FIELD['$Value'],
    ctx: DraftExecutionContext,
 ): Promise<void> {
-   const graph = run.nodes
+   const graph = sdk.nodes
    // #region  MODEL, clip skip, vae, etc.
-   let { ckpt, vae, clip: clip_ } = evalModelSD15andSDXL(ui.model)
+   const { ckpt, vae, clip: clip_ } = evalModelSD15andSDXL(ui.model)
 
    // #region PROMPT ENGINE -- POSITIVE
    const mergeConditionning = (
@@ -147,14 +147,14 @@ export async function _cushySDXLRun(
       height: height,
       cfg: ui.sampler?.textEncoderType.FLUX ? ui.sampler.guidanceType?.CFG : undefined,
    }
-   latent = run_sampler_advanced(run, ui.sampler, ctx_sampler_advanced).output
+   latent = run_sampler_advanced(sdk, ui.sampler, ctx_sampler_advanced).output
 
    // RECURSIVE PASS ----------------------------------------------------------------------------
    const extra = ui.extra
    if (extra.recursiveImgToImg) {
       for (let i = 0; i < extra.recursiveImgToImg.loops; i++) {
          latent = run_sampler_advanced(
-            run,
+            sdk,
             {
                seed: ui.sampler.seed + i,
                guidanceType: { CFG: extra.recursiveImgToImg.cfg },
@@ -209,7 +209,7 @@ export async function _cushySDXLRun(
               })
       if (mask) latent = graph.SetLatentNoiseMask({ mask, samples: latent })
       latent = run_sampler(
-         run,
+         sdk,
          {
             seed: ui.sampler.seed,
             cfg:
@@ -255,7 +255,7 @@ export async function _cushySDXLRun(
       finalImage = run_upscaleWithModel(ui.extra.upscaleWithModel, { image: finalImage })
 
    const saveFormat = run_customSave(ui.customSave)
-   await run.PROMPT({ saveFormat })
+   await sdk.PROMPT({ saveFormat })
 
    if (show3d) run_Dispacement2('base')
 

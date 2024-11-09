@@ -1,4 +1,4 @@
-import type { ModelInfo } from '../../manager/model-list/model-list-loader-types'
+import type { ComfyManagerModelInfo } from '../types/ComfyManagerModelInfo'
 
 import { observer } from 'mobx-react-lite'
 
@@ -9,7 +9,7 @@ import { renderStatus } from './renderStatus'
 export const Button_InstalModelViaManagerUI = observer(function Button_InstalModelViaManagerUI_(p: {
    //
    optional: boolean
-   modelInfo: ModelInfo
+   modelInfo: ComfyManagerModelInfo
 }) {
    const mi = p.modelInfo
    const st = useSt()

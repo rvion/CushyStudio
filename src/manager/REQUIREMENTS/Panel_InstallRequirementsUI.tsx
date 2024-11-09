@@ -1,4 +1,4 @@
-import type { PluginInfo } from '../../manager/custom-node-list/custom-node-list-types'
+import type { ComfyManagerPluginInfo } from '../types/ComfyManagerPluginInfo'
 import type { Requirements } from './Requirements'
 
 import { observer } from 'mobx-react-lite'
@@ -63,7 +63,8 @@ export const Panel_InstallRequirementsUI = observer(function Panel_InstallRequir
             {rr.map((req) => {
                // ------------------------------------------------
                if (req.type === 'customNodesByNameInCushy') {
-                  const plugins: PluginInfo[] = repo.plugins_byNodeNameInCushy.get(req.nodeName) ?? []
+                  const plugins: ComfyManagerPluginInfo[] =
+                     repo.plugins_byNodeNameInCushy.get(req.nodeName) ?? []
                   if (plugins.length == 0)
                      return <MessageErrorUI markdown={`node plugin **${req.nodeName}** not found`} />
                   if (plugins.length === 1)

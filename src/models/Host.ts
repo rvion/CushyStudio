@@ -1,9 +1,9 @@
 import type { EmbeddingName } from '../comfyui/comfyui-types'
 import type { LiveDB } from '../db/LiveDB'
-import type { PluginInfo } from '../manager/custom-node-list/custom-node-list-types'
-import type { KnownCustomNode_File } from '../manager/custom-node-list/KnownCustomNode_File'
-import type { KnownCustomNode_Title } from '../manager/custom-node-list/KnownCustomNode_Title'
+import type { KnownComfyPluginTitle } from '../manager/generated/KnownComfyPluginTitle'
+import type { KnownComfyPluginURL } from '../manager/generated/KnownComfyPluginURL'
 import type { Requirements } from '../manager/REQUIREMENTS/Requirements'
+import type { ComfyManagerPluginInfo } from '../manager/types/ComfyManagerPluginInfo'
 import type { ComfySchemaL } from './ComfySchema'
 
 import { copyFileSync, existsSync, mkdirSync, writeFileSync } from 'fs'
@@ -40,20 +40,20 @@ export class HostL extends BaseInst<TABLES['host']> {
       for (const req of requirements) {
          if (req.optional) continue
          if (req.type === 'customNodesByNameInCushy') {
-            const plugins: PluginInfo[] = repo.plugins_byNodeNameInCushy.get(req.nodeName) ?? []
+            const plugins: ComfyManagerPluginInfo[] = repo.plugins_byNodeNameInCushy.get(req.nodeName) ?? []
             if (!plugins.find((i) => this.manager.isPluginInstalled(i.title))) {
                // console.log(`[❌ A] ${JSON.stringify(req)} NOT MATCHED`)
                return false
             }
          } else if (req.type === 'customNodesByTitle') {
-            const plugin: PluginInfo | undefined = repo.plugins_byTitle.get(req.title)
+            const plugin: ComfyManagerPluginInfo | undefined = repo.plugins_byTitle.get(req.title)
             if (plugin == null) continue
             if (!this.manager.isPluginInstalled(plugin.title)) {
                // console.log(`[❌ B] ${JSON.stringify(req)} NOT MATCHED`)
                return false
             }
          } else if (req.type === 'customNodesByURI') {
-            const plugin: PluginInfo | undefined = repo.plugins_byFile.get(req.uri)
+            const plugin: ComfyManagerPluginInfo | undefined = repo.plugins_byFile.get(req.uri)
             if (plugin == null) continue
             if (!this.manager.isPluginInstalled(plugin.title)) {
                // console.log(`[❌ C] ${JSON.stringify(req)} NOT MATCHED`)
@@ -185,21 +185,21 @@ export class HostL extends BaseInst<TABLES['host']> {
       return true
    }
 
-   installCustomNodeByFile = async (customNodeFile: KnownCustomNode_File): Promise<boolean> => {
+   installCustomNodeByFile = async (customNodeFile: KnownComfyPluginURL): Promise<boolean> => {
       const manager = this.manager.repository
-      const plugin: PluginInfo | undefined = manager.plugins_byFile.get(customNodeFile)
+      const plugin: ComfyManagerPluginInfo | undefined = manager.plugins_byFile.get(customNodeFile)
       if (plugin == null) throw new Error(`Unknown custom node for file: "${customNodeFile}"`)
       return this.manager.installPlugin(plugin)
    }
 
-   installCustomNodeByTitle = async (customNodeTitle: KnownCustomNode_Title): Promise<boolean> => {
+   installCustomNodeByTitle = async (customNodeTitle: KnownComfyPluginTitle): Promise<boolean> => {
       const manager = this.manager.repository
-      const plugin: PluginInfo | undefined = manager.plugins_byTitle.get(customNodeTitle)
+      const plugin: ComfyManagerPluginInfo | undefined = manager.plugins_byTitle.get(customNodeTitle)
       if (plugin == null) throw new Error(`Unknown custom node for title: "${customNodeTitle}"`)
       return this.manager.installPlugin(plugin)
    }
 
-   installCustomNode = async (customNode: PluginInfo): Promise<boolean> => {
+   installCustomNode = async (customNode: ComfyManagerPluginInfo): Promise<boolean> => {
       return this.manager.installPlugin(customNode)
    }
 

@@ -1,6 +1,6 @@
 import type { ComfyUIAPIRequest } from '../comfyui/comfyui-prompt-api'
 import type { LiteGraphJSON } from '../core/LiteGraph'
-import type { KnownCustomNode_CushyName } from '../manager/extension-node-map/KnownCustomNode_CushyName'
+import type { KnownComfyCustomNodeName } from '../manager/generated/KnownComfyCustomNodeName'
 import type { ExifData } from '../utils/png/_parseExifData'
 import type { PromptToCodeOpts } from './ComfyImporter'
 
@@ -110,7 +110,7 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: {
                            type: 'customNodesByNameInCushy',
                            nodeName: convertComfyModuleAndNodeNameToCushyQualifiedNodeKey(
                               error.node.type,
-                           ) as KnownCustomNode_CushyName,
+                           ) as KnownComfyCustomNodeName,
                         },
                      ]}
                   />

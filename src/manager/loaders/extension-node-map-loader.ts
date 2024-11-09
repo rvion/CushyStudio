@@ -1,21 +1,24 @@
 import type { NodeNameInComfy } from '../../comfyui/comfyui-types'
 import type { ComfyManagerRepository } from '../ComfyManagerRepository'
-import type { KnownCustomNode_File } from '../custom-node-list/KnownCustomNode_File'
-import type { ENMInfos, ExtensionNodeMapFile } from './extension-node-map-types'
-import type { KnownCustomNode_CushyName } from './KnownCustomNode_CushyName'
+import type { KnownComfyCustomNodeName } from '../generated/KnownComfyCustomNodeName'
+import type { KnownComfyPluginURL } from '../generated/KnownComfyPluginURL'
+import type { ComfyManagerFilePluginContent } from '../types/ComfyManagerFilePluginContent'
 import type { ValueError } from '@sinclair/typebox/value'
 
 import { Value } from '@sinclair/typebox/value'
 import { readFileSync, writeFileSync } from 'fs'
 
 import { convertComfyModuleAndNodeNameToCushyQualifiedNodeKey } from '../../core/normalizeJSIdentifier'
-import { ENMInfos_Schema } from './extension-node-map-types'
+import {
+   type ComfyManagerPluginContentMetadata,
+   ComfyManagerPluginContentMetadata_typebox,
+} from '../types/ComfyManagerPluginContentMetadata'
 
 export const _getCustomNodeRegistry = (DB: ComfyManagerRepository): void => {
    const totalCustomNodeSeen = 0
 
    // 1. read file
-   const extensionNodeMapFile: ExtensionNodeMapFile = JSON.parse(
+   const extensionNodeMapFile: ComfyManagerFilePluginContent = JSON.parse(
       readFileSync('src/manager/extension-node-map/extension-node-map.json', 'utf8'),
    )
 
@@ -23,11 +26,11 @@ export const _getCustomNodeRegistry = (DB: ComfyManagerRepository): void => {
    type ENMEntry = {
       url: string
       comfyNodeNames: NodeNameInComfy[]
-      meta: ENMInfos
+      meta: ComfyManagerPluginContentMetadata
    }
 
    const enmEntries: ENMEntry[] = Object.entries(extensionNodeMapFile).map(
-      (x: [url: string, infos: [NodeNameInComfy[], ENMInfos]]): ENMEntry => {
+      (x: [url: string, infos: [NodeNameInComfy[], ComfyManagerPluginContentMetadata]]): ENMEntry => {
          const url = x[0]
          const [comfyNodeNames, meta] = x[1]
          return {
@@ -43,9 +46,11 @@ export const _getCustomNodeRegistry = (DB: ComfyManagerRepository): void => {
    for (const enmEntry of enmEntries) {
       // JSON CHECKS ------------------------------------------------------------
       if (!hasErrors && DB.opts.check) {
-         const valid = Value.Check(ENMInfos_Schema, enmEntry.meta)
+         const valid = Value.Check(ComfyManagerPluginContentMetadata_typebox, enmEntry.meta)
          if (!valid) {
-            const errors: ValueError[] = [...Value.Errors(ENMInfos_Schema, enmEntry.meta)]
+            const errors: ValueError[] = [
+               ...Value.Errors(ComfyManagerPluginContentMetadata_typebox, enmEntry.meta),
+            ]
             console.error(`❌ extensionNodeMap doesn't match schema:`, enmEntry.meta)
             // console.error(`❌ errors`, errors)
             for (const i of errors) console.log(`❌`, JSON.stringify(i))
@@ -54,11 +59,11 @@ export const _getCustomNodeRegistry = (DB: ComfyManagerRepository): void => {
       }
 
       // 3.1 ensure there is a plugin associated to this file
-      const plugin = DB.plugins_byFile.get(enmEntry.url as KnownCustomNode_File)
+      const plugin = DB.plugins_byFile.get(enmEntry.url as KnownComfyPluginURL)
       if (plugin == null) throw new Error(`[❌] plugin not found for ${enmEntry.url}`)
 
       // 3.2 ensure we have a list of nodes for this plugin
-      const nodesInPlugin: KnownCustomNode_CushyName[] = DB.customNodes_byPluginName.get(plugin.title) ?? []
+      const nodesInPlugin: KnownComfyCustomNodeName[] = DB.customNodes_byPluginName.get(plugin.title) ?? []
       DB.customNodes_byPluginName.set(plugin.title, nodesInPlugin)
 
       // INITIALIZATION ------------------------------------------------------------
@@ -80,7 +85,7 @@ export const _getCustomNodeRegistry = (DB: ComfyManagerRepository): void => {
          else prevEntry2.push(plugin)
 
          // 4.3. index the node in the plugin (file is only giving index by files...)
-         nodesInPlugin.push(nodeNameInCushy as KnownCustomNode_CushyName)
+         nodesInPlugin.push(nodeNameInCushy as KnownComfyCustomNodeName)
       }
    }
 
@@ -104,11 +109,11 @@ export const _getCustomNodeRegistry = (DB: ComfyManagerRepository): void => {
          a.toLowerCase().localeCompare(b.toLowerCase()),
       )
       out += '// prettier-ignore\n'
-      out += 'export type KnownCustomNode_CushyName =\n'
+      out += 'export type KnownComfyCustomNodeName =\n'
       for (const nodeName of sortedCushyNames) out += `    | ${JSON.stringify(nodeName)}\n`
       out += '\n'
 
-      writeFileSync('src/manager/extension-node-map/KnownCustomNode_CushyName.ts', out + '\n', 'utf-8')
+      writeFileSync('src/manager/generated/KnownComfyCustomNodeName.ts', out + '\n', 'utf-8')
    }
 
    // // INDEXING CHECKS ------------------------------------------------------------
@@ -133,9 +138,9 @@ export const _getCustomNodeRegistry = (DB: ComfyManagerRepository): void => {
 }
 
 // // need to be an array, because multiple custom nodes can have the same name
-// type CustomNodeURL_by_NodeNameInComfy = Map<NodeNameInComfy, KnownCustomNode_File[]>
-// type CustomNodeURL_by_NodeNameInCushy = Map<NodeNameInCushy, KnownCustomNode_File[]>
-// type CustomNodes_by_PluginTitle = Map<KnownCustomNode_File, NodeNameInCushy[]>
+// type CustomNodeURL_by_NodeNameInComfy = Map<NodeNameInComfy, KnownComfyPluginURL[]>
+// type CustomNodeURL_by_NodeNameInCushy = Map<NodeNameInCushy, KnownComfyPluginURL[]>
+// type CustomNodes_by_PluginTitle = Map<KnownComfyPluginURL, NodeNameInCushy[]>
 
 // type CustomNodeRegistry = {
 //     byNodeNameInComfy: CustomNodeURL_by_NodeNameInComfy

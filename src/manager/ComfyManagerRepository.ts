@@ -1,22 +1,27 @@
 import type { NodeNameInComfy, NodeNameInCushy } from '../comfyui/comfyui-types'
-import type { PluginInfo } from './custom-node-list/custom-node-list-types'
-import type { KnownCustomNode_File } from './custom-node-list/KnownCustomNode_File'
-import type { KnownCustomNode_Title } from './custom-node-list/KnownCustomNode_Title'
-import type { KnownCustomNode_CushyName } from './extension-node-map/KnownCustomNode_CushyName'
-import type { KnownModel_Name } from './model-list/KnownModel_Name'
-import type { ModelInfo } from './model-list/model-list-loader-types'
+import type { KnownComfyCustomNodeName } from './generated/KnownComfyCustomNodeName'
+import type { KnownComfyPluginTitle } from './generated/KnownComfyPluginTitle'
+import type { KnownComfyPluginURL } from './generated/KnownComfyPluginURL'
+import type { KnownModel_Name } from './generated/KnownModel_Name'
+import type { ComfyManagerModelInfo } from './types/ComfyManagerModelInfo'
+import type { ComfyManagerPluginInfo } from './types/ComfyManagerPluginInfo'
 
-import { _getKnownPlugins } from './custom-node-list/custom-node-list-loader'
-import { _getCustomNodeRegistry } from './extension-node-map/extension-node-map-loader'
-import { _getKnownModels } from './model-list/model-list-loader'
+import { _getKnownPlugins } from './loaders/custom-node-list-loader'
+import { _getCustomNodeRegistry } from './loaders/extension-node-map-loader'
+import { _getKnownModels } from './loaders/model-list-loader'
 
 export class ComfyManagerRepository {
-   plugins_byTitle = new Map<KnownCustomNode_Title, PluginInfo>()
-   plugins_byFile = new Map<KnownCustomNode_File, PluginInfo>()
-   plugins_byNodeNameInComfy = new Map<NodeNameInComfy, PluginInfo[]>()
-   plugins_byNodeNameInCushy = new Map<NodeNameInCushy, PluginInfo[]>()
-   customNodes_byPluginName = new Map<KnownCustomNode_Title, KnownCustomNode_CushyName[]>()
-   knownModels = new Map<KnownModel_Name, ModelInfo>()
+   // plugins, indexed
+   plugins_byTitle = new Map<KnownComfyPluginTitle, ComfyManagerPluginInfo>()
+   plugins_byFile = new Map<KnownComfyPluginURL, ComfyManagerPluginInfo>()
+   plugins_byNodeNameInComfy = new Map<NodeNameInComfy, ComfyManagerPluginInfo[]>()
+   plugins_byNodeNameInCushy = new Map<NodeNameInCushy, ComfyManagerPluginInfo[]>()
+
+   // custom nodes
+   customNodes_byPluginName = new Map<KnownComfyPluginTitle, KnownComfyCustomNodeName[]>()
+
+   // Models
+   knownModels = new Map<KnownModel_Name, ComfyManagerModelInfo>()
 
    constructor(
       public opts: {
@@ -26,6 +31,7 @@ export class ComfyManagerRepository {
       } = {},
    ) {
       this.plugins_byFile.set('https://github.com/comfyanonymous/ComfyUI' as any, {
+         id: 'BUILTIN',
          author: 'comfyanonymous',
          description: 'built-in',
          title: 'built-in' as any,
@@ -38,7 +44,7 @@ export class ComfyManagerRepository {
       _getKnownModels(this)
    }
 
-   getKnownCheckpoints = (): ModelInfo[] => {
+   getKnownCheckpoints = (): ComfyManagerModelInfo[] => {
       // for (const mi of knownModels.values()) {
       //     console.log(`[🧐] `, mi.type === 'checkpoint' ? '✅' : '❌', mi.name)
       // }
@@ -49,7 +55,7 @@ export class ComfyManagerRepository {
     * try to replicate the logic of ComfyUIManager to extract the final
     * file path of a downloaded managed model
     */
-   getModelInfoFinalFilePath = (mi: ModelInfo): string => {
+   getModelInfoFinalFilePath = (mi: ComfyManagerModelInfo): string => {
       /**
        * the wide data-lt once told:
        *
@@ -73,7 +79,7 @@ export class ComfyManagerRepository {
       else return `models/${mi.save_path}/${mi.filename}`
    }
 
-   getModelInfoEnumName = (mi: ModelInfo, prefix: string = ''): { win: string; nix: string } => {
+   getModelInfoEnumName = (mi: ComfyManagerModelInfo, prefix: string = ''): { win: string; nix: string } => {
       const relPath = this.getModelInfoFinalFilePath(mi)
 
       const winPath = relPath.replace(/\//g, '\\')
@@ -94,7 +100,7 @@ export class ComfyManagerRepository {
    //
 }
 
-// getPluginsContaintingNode = (nodeNameInCushy: KnownCustomNode_CushyName): PluginInfo[] => {
+// getPluginsContaintingNode = (nodeNameInCushy: KnownComfyCustomNodeName): PluginInfo[] => {
 //     const x = _getKnownPlugins()
 //     const y = getCustomNodeRegistry()
 //     // const cushyNames = Array.isArray(customNodesByNameInCushy) ? customNodesByNameInCushy : [customNodesByNameInCushy]

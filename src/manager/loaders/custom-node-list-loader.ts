@@ -1,11 +1,12 @@
 import type { ComfyManagerRepository } from '../ComfyManagerRepository'
-import type { CustomNodeFile, PluginInfo } from './custom-node-list-types'
+import type { ComfyManagerFilePluginList } from '../types/ComfyManagerFilePluginList'
+import type { ComfyManagerPluginInfo } from '../types/ComfyManagerPluginInfo'
 import type { ValueError } from '@sinclair/typebox/value'
 
 import { Value } from '@sinclair/typebox/value'
 import { readFileSync, writeFileSync } from 'fs'
 
-import { CustomNodesInfo_Schema } from './custom-node-list-types'
+import { CustomNodesInfo_Schema } from '../types/ComfyManagerPluginInfo'
 
 export type GetKnownPluginProps = {
    //
@@ -18,9 +19,9 @@ export const _getKnownPlugins = (DB: ComfyManagerRepository): void => {
    let totalFileSeen = 0
    let totalPluginSeen = 0
 
-   const knownPluginFile: CustomNodeFile =      JSON.parse(readFileSync('src/manager/custom-node-list/custom-node-list.json',       'utf8')) // prettier-ignore
-   const knownPluginFileExtra: CustomNodeFile = JSON.parse(readFileSync('src/manager/custom-node-list/custom-node-list.extra.json', 'utf8')) // prettier-ignore
-   const knownPluginList: PluginInfo[] = knownPluginFile.custom_nodes.concat(
+   const knownPluginFile: ComfyManagerFilePluginList =      JSON.parse(readFileSync('src/manager/json/custom-node-list.json',       'utf8')) // prettier-ignore
+   const knownPluginFileExtra: ComfyManagerFilePluginList = JSON.parse(readFileSync('src/manager/json/custom-node-list.extra.json', 'utf8')) // prettier-ignore
+   const knownPluginList: ComfyManagerPluginInfo[] = knownPluginFile.custom_nodes.concat(
       knownPluginFileExtra.custom_nodes,
    )
 
@@ -56,23 +57,30 @@ export const _getKnownPlugins = (DB: ComfyManagerRepository): void => {
    if (DB.opts.genTypes) {
       let out1 = ''
       // TitleType
-      const allTitles = [...DB.plugins_byTitle.keys()]
-      const sortedPluginTitles = allTitles.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
+      const allPlugins = [...DB.plugins_byTitle.values()]
+      const allPluginsSortedByTitles = allPlugins.sort((a, b) =>
+         (a.title ?? '❌missing-title')
+            .toLowerCase()
+            .localeCompare((b.title ?? '❌missing-title').toLowerCase()),
+      )
       out1 += '// prettier-ignore\n'
-      out1 += 'export type KnownCustomNode_Title =\n'
-      for (const pluginTitle of sortedPluginTitles) out1 += `    | ${JSON.stringify(pluginTitle)}\n`
+      out1 += 'export type KnownComfyPluginTitle =\n'
+      for (const plugin of allPluginsSortedByTitles) {
+         out1 += `    /** ${plugin.id} - ${plugin.reference} */\n`
+         out1 += `    | ${JSON.stringify(plugin.title)}\n`
+      }
       out1 += '\n'
-      writeFileSync('src/manager/custom-node-list/KnownCustomNode_Title.ts', out1 + '\n', 'utf-8')
+      writeFileSync('src/manager/generated/KnownComfyPluginTitle.ts', out1 + '\n', 'utf-8')
 
       // FileType
       let out2 = ''
       const allFileNames = [...DB.plugins_byFile.keys()]
       const sortedFileNames = allFileNames.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
       out2 += '// prettier-ignore\n'
-      out2 += 'export type KnownCustomNode_File =\n'
+      out2 += 'export type KnownComfyPluginURL =\n'
       for (const fileName of sortedFileNames) out2 += `    | ${JSON.stringify(fileName)}\n`
       out2 += '\n'
-      writeFileSync('src/manager/custom-node-list/KnownCustomNode_File.ts', out2 + '\n', 'utf-8')
+      writeFileSync('src/manager/generated/KnownComfyPluginURL.ts', out2 + '\n', 'utf-8')
    }
 
    // INDEXING CHECKS ------------------------------------------------------------

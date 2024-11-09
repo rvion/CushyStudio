@@ -1,5 +1,5 @@
 // prettier-ignore
-export type KnownCustomNode_CushyName =
+export type KnownComfyCustomNodeName =
     | "☁️BizyAir Nodes.BizyAir_MinusZoneChatGLM3TextEncode"
     | "☁️BizyAir Nodes.BizyAirBAE_NormalMapPreprocessor"
     | "☁️BizyAir Nodes.BizyAirBinaryPreprocessor"
@@ -12577,5 +12577,3 @@ export type KnownCustomNode_CushyName =
     | "ZZX Nodes.StreamRecorder"
     | "ZZX Nodes.VideoFormatConverter"
     | "ZZX Nodes.ZZX_PaintsUndo"
-
-

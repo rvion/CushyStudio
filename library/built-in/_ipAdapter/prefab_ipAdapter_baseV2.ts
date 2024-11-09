@@ -28,8 +28,10 @@ export const ui_ipadapter_advancedSettings = (
                tooltip: 'This defines the region of the generated image the IPAdapter will apply to',
             })
             .optional(),
-         weight_type: form.enum['IPAdapterAdvanced.weight_type']({ default: weight_type }),
-         embedding_scaling: form.enum['IPAdapterAdvanced.embeds_scaling']({ default: 'V only' }),
+         weight_type: form.enum['IPAdapter_plus.IPAdapterAdvanced.weight_type']({ default: weight_type }),
+         embedding_scaling: form.enum['IPAdapter_plus.IPAdapterAdvanced.embeds_scaling']({
+            default: 'V only',
+         }),
          noise: form.float({ default: 0, min: 0, max: 1, step: 0.1 }),
          unfold_batch: form.bool({ default: false }),
       },
@@ -47,7 +49,7 @@ export type UI_IPAdapterImageInput = X.XGroup<{
    image: X.XImage
    advanced: X.XGroup<{
       imageWeight: X.XNumber
-      embedding_combination: X.XEnum<'ImpactIPAdapterApplySEGS.combine_embeds'>
+      embedding_combination: X.XEnum<'Impact_Pack.ImpactIPAdapterApplySEGS.combine_embeds'>
       imageAttentionMask: X.XOptional<X.XImage>
    }>
 }>
@@ -58,7 +60,7 @@ export function ui_IPAdapterImageInput(form: X.Builder): UI_IPAdapterImageInput 
          advanced: form.fields(
             {
                imageWeight: form.float({ default: 1, min: 0, max: 2, step: 0.1 }),
-               embedding_combination: form.enum['IPAdapterAdvanced.combine_embeds']({
+               embedding_combination: form.enum['IPAdapter_plus.IPAdapterAdvanced.combine_embeds']({
                   default: 'average',
                }),
                imageAttentionMask: form
@@ -229,7 +231,7 @@ export const run_IPAdapterV2 = async (
    if (pos_embed == null || neg_embed == null) {
       throw new Error('No embedding pipe generated.')
    }
-   const ip_adapted_model = graph.IPAdapterEmbeds({
+   const ip_adapted_model = graph['IPAdapter_plus.IPAdapterEmbeds']({
       ipadapter: ip_adapter,
       pos_embed,
       neg_embed,

@@ -3209,6 +3209,16 @@
             "description": "NODES:(Down)load MoGe Model, MoGe Process"
         },
         {
+            "author": "kijai",
+            "title": "ComfyUI-GIMM-VFI",
+            "reference": "https://github.com/kijai/ComfyUI-GIMM-VFI",
+            "files": [
+                "https://github.com/kijai/ComfyUI-GIMM-VFI"
+            ],
+            "install_type": "git-clone",
+            "description": "ComfyUI nodes to use GIMM-VFI frame interpolation"
+        },
+        {
             "author": "hhhzzyang",
             "title": "Comfyui-Lama",
             "id": "lama",
@@ -9119,6 +9129,16 @@
             "description": "ComfyUI LayerDivider is custom nodes that generating layered psd files inside ComfyUI[w/Please follow readme and run install_windows_portable_win_py311_cu121 for ComfyUI embedded python.]"
         },
         {
+            "author": "jtydhr88",
+            "title": "ComfyUI-Hunyuan3D-1-wrapper",
+            "reference": "https://github.com/jtydhr88/ComfyUI-Hunyuan3D-1-wrapper",
+            "files": [
+                "https://github.com/jtydhr88/ComfyUI-Hunyuan3D-1-wrapper"
+            ],
+            "install_type": "git-clone",
+            "description": "ComfyUI Hunyuan3D-1-wrapper is a custom node that allows you to run [a/Tencent/Hunyuan3D-1](https://github.com/Tencent/Hunyuan3D-1) in ComfyUI as a wrapper."
+        },
+        {
             "author": "SeaArtLab",
             "title": "ComfyUI-Long-CLIP",
             "reference": "https://github.com/SeaArtLab/ComfyUI-Long-CLIP",
@@ -13426,7 +13446,7 @@
                 "https://github.com/FuouM/ComfyUI-FirstOrderMM"
             ],
             "install_type": "git-clone",
-            "description": "Run [a/First Order Motion Model](https://github.com/AliaksandrSiarohin/first-order-model) for Image Animation in ComfyUI."
+            "description": "ComfyUI-native nodes to run First Order Motion Model for Image Animation and its non-diffusion-based successors. [a/https://github.com/AliaksandrSiarohin/first-order-model](https://github.com/AliaksandrSiarohin/first-order-model)"
         },
         {
             "author": "Fuou Marinas",
@@ -14212,6 +14232,15 @@
             ],
             "install_type": "git-clone",
             "description": "Wrapped Joy Caption alpha 2 node for comfyui from [a/https://huggingface.co/spaces/fancyfeast/joy-caption-alpha-two](https://huggingface.co/spaces/fancyfeast/joy-caption-alpha-two) Easy use, for GPU with less 19G, please use nf4 for better balanced speed and result. This Node also took a reference from /chflame163/ComfyUI_LayerStyle and [a/https://huggingface.co/John6666/joy-caption-alpha-two-cli-mod](https://huggingface.co/John6666/joy-caption-alpha-two-cli-mod)"
+        },
+        {
+            "author": "TTPlanetPig",
+            "reference": "https://github.com/TTPlanetPig/Comfyui_Hunyuan3D",
+            "files": [
+                "https://github.com/TTPlanetPig/Comfyui_Hunyuan3D"
+            ],
+            "install_type": "git-clone",
+            "description": "NODES:TTP_Hunyuan3DNode, TTP_SquareImage, TTP_GIFViewer"
         },
         {
             "author": "camenduru",
@@ -16070,6 +16099,16 @@
             "description": "NODES:Caching CLIP Text Encode for FLUX.\nRandom nodes for ComfyUI for various purposes."
         },
         {
+            "author": "ARZUMATA",
+            "title": "ComfyUI-Qwen2",
+            "reference": "https://github.com/ARZUMATA/ComfyUI-ARZUMATA-Qwen2",
+            "files": [
+                "https://github.com/ARZUMATA/ComfyUI-ARZUMATA-Qwen2"
+            ],
+            "install_type": "git-clone",
+            "description": "Qwen2 Nodes for ComfyUI.\nI needed to run Qwen2 on ComfyUI to use it in my workflow for batching images and captioning and none of the implementations I found on the web worked the way I wanted.[w/May contain bugs.]"
+        },
+        {
             "author": "Rinsanga1",
             "title": "comfyui-florence2xy",
             "reference": "https://github.com/Rinsanga1/comfyui-florence2xy",
@@ -16476,12 +16515,13 @@
        {
            "author": "Blonicx",
            "title": "ComfyUI-Rework-X",
+           "id": "rework-x",
            "reference": "https://github.com/Blonicx/ComfyUI-X-Rework",
            "files": [
-              "https://github.com/Blonicx/ComfyUI-X-Rework"
+               "https://github.com/Blonicx/ComfyUI-X-Rework"
            ],
-           "description": "This tool is their to help ComfyUI User to make the generation of Images easier and help to train own Models! The Extension is currently under development and gets new Features every Week.",
-           "install_type": "git-clone"
+           "install_type": "git-clone",
+           "description": "This is a plugin for ComfyUI that adds new Util Nodes and makes Lora training in ComfyUI abel. Except that it adds a new Features for Images."
        },
        {
            "author": "1zhangyy1",
@@ -16524,6 +16564,78 @@
            "description": "This project is a ComfyUI version of [a/https://github.com/cozheyuanzhangde/Invariant-TemplateMatching](https://github.com/cozheyuanzhangde/Invariant-TemplateMatching).",
            "install_type": "git-clone"
        },
+       {
+           "author": "w00dycomfyuirun",
+           "title": "ComfyUI_Appstore",
+           "id": "ComfyUI_Appstore",
+           "reference": "https://github.com/ronaldzgithub/ComfyUI_Appstore",
+           "files": [
+               "https://github.com/ronaldzgithub/ComfyUI_Appstore"
+           ],
+           "install_type": "git-clone",
+           "description": "ComfyUI_Appstore, a tool that converts ComfyUI workflows into web apps on huaxiaobao.net with one click, and supports payments, like ComfyUI_Bxb (Bxb) does. Providing a way for the comfyui authors to get profit from."
+       },
+       {
+           "author": "kycg",
+           "title": "Kw_Json_Lora_CivitAIDownloader",
+           "reference": "https://github.com/kycg/comfyui-Lora-auto-downloader",
+           "files": [
+              "https://github.com/kycg/comfyui-Lora-auto-downloader"
+           ],
+           "description": "This tool allows you to download models from CivitAI based on a JSON configuration that defines LORA and checkpoint models. It uses token-based authentication to download files from specified URLs and saves them to specified directories. based on CivitAIDownloader",
+           "install_type": "git-clone"
+       },
+       {
+           "author": "VangengLab",
+           "title": "ComfyUI-LivePortrait_v2",
+           "reference": "https://github.com/VangengLab/ComfyUI-LivePortrait_v2",
+           "files": [
+               "https://github.com/VangengLab/ComfyUI-LivePortrait_v2"
+           ],
+           "install_type": "git-clone",
+           "description": "We developed a custom_node for Liveportrait_v2 that enables flexible use on Comfyui to drive animal image-based emoji generation from videos."
+       },
+       {
+           "author": "VangengLab",
+           "title": "ComfyUI-LivePortrait_v3",
+           "reference": "https://github.com/VangengLab/ComfyUI-LivePortrait_v3",
+           "files": [
+               "https://github.com/VangengLab/ComfyUI-LivePortrait_v3"
+           ],
+           "install_type": "git-clone",
+           "description": "We developed a custom_node for Liveportrait_v3 that enables flexible use on Comfyui to drive image-based emoji generation from photos."
+       },
+       {
+            "author": "wTechArtist",
+            "title": "ComfyUI-StableDelight-weiweiliang",
+            "reference": "https://github.com/wTechArtist/ComfyUI-StableDelight-weiweiliang",
+            "files": [
+                "https://github.com/wTechArtist/ComfyUI-StableDelight-weiweiliang"
+            ],
+            "install_type": "git-clone",
+            "description": "Nodes:StableDelight-weiweiliang"
+        },
+        {
+            "author": "ryanontheinside",
+            "title": "Doom",
+            "reference": "https://github.com/ryanontheinside/ComfyUI_Doom",
+            "files": [
+                "https://github.com/ryanontheinside/ComfyUI_Doom"
+            ],
+            "install_type": "git-clone",
+            "description": "Play Doom in ComfyUI."
+        },
+        {
+            "author": "Comflowy",
+            "title": "Comflowy's Custom Nodes",
+            "id": "comflowy",
+            "reference": "https://github.com/6174/comflowy-nodes",
+            "files": [
+                "https://github.com/6174/comflowy-nodes"
+            ],
+            "install_type": "git-clone",
+            "description": "Custom nodes for ComfyUI by Comflowy."
+        },
 
 
 

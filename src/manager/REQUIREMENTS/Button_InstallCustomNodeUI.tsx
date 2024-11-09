@@ -1,4 +1,4 @@
-import type { PluginInfo } from '../../manager/custom-node-list/custom-node-list-types'
+import type { ComfyManagerPluginInfo } from '../types/ComfyManagerPluginInfo'
 
 import { observer } from 'mobx-react-lite'
 import { useState } from 'react'
@@ -11,7 +11,7 @@ import { renderStatus } from './renderStatus'
 
 export const Button_InstallCustomNodeUI = observer(function Button_InstallCustomNodeUI_(p: {
    optional: boolean
-   plugin: PluginInfo
+   plugin: ComfyManagerPluginInfo
 }) {
    const st = useSt()
    const { plugin } = p

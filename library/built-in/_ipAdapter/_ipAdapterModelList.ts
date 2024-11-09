@@ -1,4 +1,4 @@
-import type { KnownModel_Name } from '../../../src/manager/model-list/KnownModel_Name'
+import type { KnownModel_Name } from '../../../src/manager/generated/KnownModel_Name'
 
 export const ipAdapterModelList: KnownModel_Name[] = [
    'ip-adapter_sd15.safetensors',

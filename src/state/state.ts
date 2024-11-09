@@ -16,7 +16,7 @@ import type { RegionMonitor } from '../csuite/regions/RegionMonitor'
 import type { TreeNode } from '../csuite/tree/TreeNode'
 import type { Timestamp } from '../csuite/types/Timestamp'
 import type { LiveDB } from '../db/LiveDB'
-import type { ModelInfo } from '../manager/model-list/model-list-loader-types'
+import type { ComfyManagerModelInfo } from '../manager/types/ComfyManagerModelInfo'
 import type { ComfySchemaL } from '../models/ComfySchema'
 import type { ComfyWorkflowL } from '../models/ComfyWorkflow'
 import type { CushyAppL } from '../models/CushyApp'
@@ -210,7 +210,7 @@ export class STATE {
       return openInVSCode(filePathWithinWorkspace)
    }
 
-   getKnownCheckpoints(): ModelInfo[] {
+   getKnownCheckpoints(): ComfyManagerModelInfo[] {
       return this.managerRepository.getKnownCheckpoints()
    }
 

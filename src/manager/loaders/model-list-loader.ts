@@ -1,29 +1,23 @@
 import type { ComfyManagerRepository } from '../ComfyManagerRepository'
-import type { KnownModel_Name } from './KnownModel_Name'
-import type { ModelInfo } from './model-list-loader-types'
+import type { KnownModel_Name } from '../generated/KnownModel_Name'
+import type { ComfyManagerFileModelInfo } from '../types/ComfyManagerFileModelInfo'
 import type { ValueError } from '@sinclair/typebox/value'
 
 import { Value } from '@sinclair/typebox/value'
 // https://github.com/ltdrdata/ComfyUI-Manager/blob/main/model-list.json
 import { readFileSync, writeFileSync } from 'fs'
 
-import { ModelInfo_Schema } from './model-list-loader-types'
-
-export type ModelFile = {
-   models: ModelInfo[]
-}
+import { extraModels } from '../json/model-list.extra'
+import { ComfyManagerModelInfo_typebox } from '../types/ComfyManagerModelInfo'
 
 export const _getKnownModels = (
    DB: ComfyManagerRepository /* {
 } */,
 ): void => {
-   const knownModelsFile: ModelFile = JSON.parse(
+   const knownModelsFile: ComfyManagerFileModelInfo = JSON.parse(
       readFileSync('src/manager/model-list/model-list.json', 'utf8'),
    )
-   const knownModelsFileExtra: ModelFile = JSON.parse(
-      readFileSync('src/manager/model-list/model-list.extra.json', 'utf8'),
-   )
-   const knownModelList = knownModelsFile.models.concat(knownModelsFileExtra.models)
+   const knownModelList = knownModelsFile.models.concat(extraModels.models)
 
    let hasErrors = false
 
@@ -33,9 +27,9 @@ export const _getKnownModels = (
 
       // JSON CHECKS -----------------------------------------------------------
       if (!hasErrors && DB.opts.check) {
-         const valid = Value.Check(ModelInfo_Schema, modelInfo)
+         const valid = Value.Check(ComfyManagerModelInfo_typebox, modelInfo)
          if (!valid) {
-            const errors: ValueError[] = [...Value.Errors(ModelInfo_Schema, modelInfo)]
+            const errors: ValueError[] = [...Value.Errors(ComfyManagerModelInfo_typebox, modelInfo)]
             console.error(`❌ model doesn't match schema:`, modelInfo)
             console.error(`❌ errors`, errors)
             for (const i of errors) console.log(`❌`, JSON.stringify(i))
@@ -66,7 +60,7 @@ export const _getKnownModels = (
       for (const [cat, count] of Object.entries(uniqCategories))
          out1 += `    ${JSON.stringify(cat).padEnd(20)},  // x ${count.toString().padStart(3)}\n`
       out1 += ']\n'
-      writeFileSync('src/manager/model-list/KnownModel_Type.ts', out1 + '\n', 'utf-8')
+      writeFileSync('src/manager/generated/KnownModel_Type.ts', out1 + '\n', 'utf-8')
 
       // #region savepath
       let out4 = ''
@@ -87,7 +81,7 @@ export const _getKnownModels = (
       for (const [cat, count] of Object.entries(uniqSavePath))
          out4 += `    ${JSON.stringify(cat).padEnd(50)},  // x ${count.toString().padStart(3)}\n`
       out4 += ']\n'
-      writeFileSync('src/manager/model-list/KnownModel_SavePath.ts', out4 + '\n', 'utf-8')
+      writeFileSync('src/manager/generated/KnownModel_SavePath.ts', out4 + '\n', 'utf-8')
 
       // #region base
       let out2 = ''
@@ -108,7 +102,7 @@ export const _getKnownModels = (
       for (const [cat, count] of Object.entries(uniqBases))
          out2 += `    ${JSON.stringify(cat).padEnd(20)},  // x ${count.toString().padStart(3)}\n`
       out2 += ']\n'
-      writeFileSync('src/manager/model-list/KnownModel_Base.ts', out2 + '\n', 'utf-8')
+      writeFileSync('src/manager/generated/KnownModel_Base.ts', out2 + '\n', 'utf-8')
 
       // #region KnownModel_Name
       let out3 = ''
@@ -125,7 +119,7 @@ export const _getKnownModels = (
          out3 += `    | ${JSON.stringify(mi.name)}\n`
       }
       out3 += '\n'
-      writeFileSync('src/manager/model-list/KnownModel_Name.ts', out3 + '\n', 'utf-8')
+      writeFileSync('src/manager/generated/KnownModel_Name.ts', out3 + '\n', 'utf-8')
 
       // #region KnownModel_FileName
       let out99 = ''
@@ -139,7 +133,7 @@ export const _getKnownModels = (
          out99 += `    | ${JSON.stringify(mi.filename)}\n`
       }
       out99 += '\n'
-      writeFileSync('src/manager/model-list/KnownModel_FileName.ts', out99 + '\n', 'utf-8')
+      writeFileSync('src/manager/generated/KnownModel_FileName.ts', out99 + '\n', 'utf-8')
    }
 
    // INDEXING CHECKS ------------------------------------------------------------
