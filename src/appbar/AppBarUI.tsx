@@ -1,10 +1,16 @@
 import { observer } from 'mobx-react-lite'
 
+import { activityManager } from '../csuite/activity/ActivityManager'
 import { Button } from '../csuite/button/Button'
 import { SpacerUI } from '../csuite/components/SpacerUI'
 import { Frame } from '../csuite/frame/Frame'
+import { Ikon, IkonOf } from '../csuite/icons/iconHelpers'
 import { defineMenu, type Menu } from '../csuite/menu/Menu'
+import { PanelUI } from '../csuite/panel/PanelUI'
+import { DBStatsUI } from '../db/gui/DBStats'
+import { quickBench } from '../db/quickBench'
 import { cmd_fav_toggleFavBar } from '../operators/commands/cmd_favorites'
+import { DEMO_ACTIVITY } from '../operators/useDebugActivity'
 import { ConnectionInfoUI } from '../panels/host/HostWebsocketIndicatorUI'
 import { UpdateBtnUI } from '../updater/UpdateBtnUI'
 import { assets } from '../utils/assets/assets'
@@ -116,11 +122,133 @@ const aboutMenu: Menu = defineMenu({
                </RevealUI> */
 })
 
+const cushyMenu = defineMenu({
+   title: '',
+   icon: 'cdiCushyStudio',
+   entries: (b) => [
+      b.SimpleMenuAction({
+         label: 'Show Dev Playground Page',
+         icon: 'mdiPlayNetwork',
+         onClick: () => cushy.layout.open('Playground', {}),
+      }),
+      b.SimpleMenuAction({
+         label: 'Reset Layout',
+         icon: 'mdiAutoFix',
+         onClick: () => cushy.layout.resetCurrent(),
+      }),
+      b.SimpleMenuAction({
+         icon: 'mdiAutoFix',
+         onClick: () => cushy.layout.fixTabsWithNegativeArea(),
+         label: 'Fix Tabs with negative size',
+      }),
+
+      b.SimpleMenuAction({
+         icon: 'mdiVideo',
+         onClick: () => cushy.resizeWindowForVideoCapture(),
+         label: 'set screen size to 1920 x 1080',
+      }),
+
+      b.SimpleMenuAction({
+         icon: 'mdiLaptop',
+         onClick: () => cushy.resizeWindowForLaptop(),
+         label: 'set screen size to 1280 x 720',
+      }),
+
+      b.SimpleMenuAction({
+         icon: 'mdiBug',
+         onClick: () => cushy.electron.toggleDevTools(),
+         label: 'console',
+      }),
+
+      b.SimpleMenuAction({
+         icon: 'mdiBug',
+         onClick: () => activityManager.start(DEMO_ACTIVITY),
+         label: 'Start debug activity',
+      }),
+
+      b.SimpleMenuAction({
+         icon: 'mdiSync',
+         onClick: () => cushy.reloadCushyMainWindow(),
+         label: 'Reload',
+      }),
+
+      b.Divider,
+      b.SimpleMenuAction({
+         onClick: async () =>
+            cushy.layout.addCustomV2(
+               () => (
+                  <PanelUI>
+                     <PanelUI.Header title='DB Stats' />
+                     <DBStatsUI />
+                  </PanelUI>
+               ),
+               {},
+            ),
+         icon: 'mdiAccount',
+         label: 'print DB stats',
+      }),
+
+      b.SimpleMenuAction({
+         onClick: () => quickBench.printAllStats(),
+         icon: 'mdiAccountOutline',
+         label: 'print QuickBench stats',
+      }),
+
+      b.SimpleMenuAction({
+         onClick: cushy.auth.__testCB,
+         icon: 'mdiAccount',
+         label: 'Test Auth CB page',
+      }),
+
+      b.Divider,
+      b.SimpleMenuAction({
+         onClick: () => cushy.wipeOuputTopLevelImages(),
+         icon: 'mdiImageBroken',
+         label: 'remove all images',
+      }),
+
+      b.SimpleMenuAction({
+         onClick: () => cushy.wipeOuputTopLevelImages(),
+         icon: 'mdiImageBroken',
+         label: 'remove top-level images',
+      }),
+
+      b.Divider,
+      b.SimpleMenuAction({
+         icon: 'mdiSync',
+         label: 'Reset DB',
+         onClick: () => {
+            cushy.db.reset()
+            cushy.reloadCushyMainWindow()
+         },
+      }),
+
+      b.SimpleMenuAction({
+         icon: 'mdiSync',
+         onClick: () => cushy.fullReset_eraseConfigAndSchemaFilesAndDB(),
+         label: 'Full Reset',
+      }),
+
+      b.Divider,
+      b.SimpleMenuAction({
+         icon: 'mdiStorageTankOutline',
+         onClick: cushy.db.migrate,
+         label: 'Migrate',
+      }),
+
+      b.SimpleMenuAction({
+         icon: 'mdiHomeGroup',
+         onClick: cushy.db.runCodegen,
+         label: 'CodeGen',
+      }),
+   ],
+})
+
 const mainMenu = defineMenu({
    title: 'mainMenu',
    entries: () => [
       //
-      <Button.Ghost></Button.Ghost>,
+      cushyMenu,
       menuPanels,
       editMenu,
       viewMenu,
@@ -139,12 +267,6 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
          id='CushyAppBar'
       >
          {/* <PanelHeaderUI tw='flex items-center px-2 overflow-auto'> */}
-         <Button.Ghost // TODO(bird_d): Toggle FavBar button here should be temporary, just to save space for now.
-            square
-            onClick={cmd_fav_toggleFavBar.execute}
-         >
-            <img style={{ width: '1.3rem' }} src={assets.CushyLogo_512_png} alt='' />
-         </Button.Ghost>
          {/* <div tw='px-1'>CushyStudio</div> */}
          <mainMenu.MenuBarUI />
          {/* <MenuPanelsUI /> */}
@@ -153,7 +275,7 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
          <MenuAppsUI />
          {/* <MenuEditUI /> */}
          {/* <MenuAboutUI /> */}
-         <MenuDebugUI />
+         {/* <MenuDebugUI /> */}
          <PerspectivePickerUI tw='mx-auto self-center' />
 
          <SpacerUI />
