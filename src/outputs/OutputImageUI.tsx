@@ -14,7 +14,8 @@ export const OutputImagePreviewUI = observer(function OutputImagePreviewUI_(p: {
    return (
       <ImageUI //
          img={p.output}
-         size={32}
+         size={32} // TODO(bird_d): Should probably use a config
+         style={{ width: '100%', height: '100%' }}
       />
    )
 })
