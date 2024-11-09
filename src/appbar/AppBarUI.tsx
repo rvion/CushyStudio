@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite'
 import { Button } from '../csuite/button/Button'
 import { SpacerUI } from '../csuite/components/SpacerUI'
 import { Frame } from '../csuite/frame/Frame'
-import { defineMenu } from '../csuite/menu/Menu'
+import { defineMenu, type Menu } from '../csuite/menu/Menu'
 import { cmd_fav_toggleFavBar } from '../operators/commands/cmd_favorites'
 import { ConnectionInfoUI } from '../panels/host/HostWebsocketIndicatorUI'
 import { UpdateBtnUI } from '../updater/UpdateBtnUI'
@@ -21,13 +21,28 @@ import { PerspectivePickerUI } from './PerspectivePickerUI'
 
 const viewMenu = defineMenu({
    title: 'View',
-   entries: () => [menuPanels, menuCommands],
+   entries: () => [menuCommands],
+})
+
+const editMenu: Menu = defineMenu({
+   title: 'Edit',
+   entries: (b) => [
+      <Frame base={{ contrast: 0.1 }} tw='h-[1px]'></Frame>,
+      // Should have commands that open menus that we can re-use in spots.
+      b.SimpleMenuAction({
+         label: 'Preferences',
+         onClick: () => cushy.layout.open('Config', {}),
+         // icon: 'mdiCog',
+      }),
+   ],
 })
 
 const mainMenu = defineMenu({
    title: 'mainMenu',
    entries: () => [
       //
+      menuPanels,
+      editMenu,
       viewMenu,
    ],
    // horizontalMenuGroup: true,
@@ -56,9 +71,6 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
          {/* <MenuComfyUI /> */}
          <MenuAppsUI />
          {/* <MenuEditUI /> */}
-         <MenuSettingsUI // TODO(bird_d): Should go inside "Edit" eventually, the nesting is probably inconvienient for now.
-         />
-         {/* <MenuWindowUI /> */}
          <MenuAboutUI />
          <MenuDebugUI />
          <PerspectivePickerUI tw='mx-auto self-center' />
