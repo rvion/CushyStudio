@@ -56,7 +56,6 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
          <MenuSettingsUI // TODO(bird_d): Should go inside "Edit" eventually, the nesting is probably inconvienient for now.
          />
          {/* <MenuWindowUI /> */}
-         <MenuUtilsUI />
          <MenuAboutUI />
          <MenuDebugUI />
          <PerspectivePickerUI tw='mx-auto self-center' />
