@@ -1,7 +1,6 @@
 import { observer } from 'mobx-react-lite'
 
 import { ToggleButtonUI } from '../../csuite/checkbox/InputBoolToggleButtonUI'
-import { DebugControlsUI } from '../../csuite/debug/DebugControlsUI'
 import { Frame } from '../../csuite/frame/Frame'
 import { DebugShortcutsFloatingUI } from './DebugShortcutsFloatingUI'
 
@@ -21,7 +20,7 @@ export const FooterBarUI = observer(function FooterBarUI_(p: {}) {
             icon='mdiKeyboard'
             toggleGroup='footer-conf'
          />
-         <DebugControlsUI />
+
          <div tw='flex-1' />
          {/* {tooltipStuff.deepest && <div>{tooltipStuff.deepest.text}</div>} */}
          {cushy.showCommandHistory && <DebugShortcutsFloatingUI />}

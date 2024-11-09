@@ -2,26 +2,25 @@ import { observer } from 'mobx-react-lite'
 
 import { BadgeListUI } from '../../csuite/badge/BadgeListUI'
 import { BadgeUI } from '../../csuite/badge/BadgeUI'
-import { Button } from '../../csuite/button/Button'
+import { DebugControlsUI } from '../../csuite/debug/DebugControlsUI'
 import { Frame } from '../../csuite/frame/Frame'
 
+/* TODO(bird_d): Add Interface options for positioning 
+   - Set position on screen
+   - History amount
+   - Command Matching History amount
+*/
+
 export const DebugShortcutsFloatingUI = observer(function DebugShortcutsFloating(p: {}) {
+   const theme = cushy.theme.value
+
    return (
-      <div tw='absolute bottom-2 right-2 opacity-90'>
-         <div tw='flex'>
-            <div tw='flex flex-1'>
-               <BadgeListUI //
-                  getKey={(x, ix) => ix.toString()}
-                  autoHue
-                  badges={cushy.commands.inputHistory.slice(-5)}
-               />
-            </div>
-            <Button //
-               onClick={() => (cushy.showCommandHistory = !cushy.showCommandHistory)}
-               icon='mdiClose'
-               children='Close'
-            />
-         </div>
+      <Frame //
+         tw='pointer-events-none absolute bottom-14 right-4 flex flex-col gap-2 p-2 opacity-80'
+         roundness={theme.inputRoundness}
+         dropShadow={theme.inputShadow}
+      >
+         <DebugControlsUI />
 
          <Frame {...p}>
             <table
@@ -59,6 +58,6 @@ export const DebugShortcutsFloatingUI = observer(function DebugShortcutsFloating
                </tbody>
             </table>
          </Frame>
-      </div>
+      </Frame>
    )
 })
