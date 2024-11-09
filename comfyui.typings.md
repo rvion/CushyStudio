@@ -10,252 +10,202 @@ declare global {
       // #region PythonModulesAvaialbles
       export type PythonModulesAvaialbles = 
          /**
-          * SDK Namespace: Comfy.Base
           * Nodes: KSampler, CheckpointLoaderSimple, CLIPTextEncode, CLIPSetLastLayer, VAEDecode, VAEEncode, VAEEncodeForInpaint, VAELoader, EmptyLatentImage, LatentUpscale, LatentUpscaleBy, LatentFromBatch, RepeatLatentBatch, SaveImage, PreviewImage, LoadImage, LoadImageMask, ImageScale, ImageScaleBy, ImageInvert, ImageBatch, ImagePadForOutpaint, EmptyImage, ConditioningAverage, ConditioningCombine, ConditioningConcat, ConditioningSetArea, ConditioningSetAreaPercentage, ConditioningSetAreaStrength, ConditioningSetMask, KSamplerAdvanced, SetLatentNoiseMask, LatentComposite, LatentBlend, LatentRotate, LatentFlip, LatentCrop, LoraLoader, CLIPLoader, UNETLoader, DualCLIPLoader, CLIPVisionEncode, StyleModelApply, unCLIPConditioning, ControlNetApply, ControlNetApplyAdvanced, ControlNetLoader, DiffControlNetLoader, StyleModelLoader, CLIPVisionLoader, VAEDecodeTiled, VAEEncodeTiled, unCLIPCheckpointLoader, GLIGENLoader, GLIGENTextBoxApply, InpaintModelConditioning, CheckpointLoader, DiffusersLoader, LoadLatent, SaveLatent, ConditioningZeroOut, ConditioningSetTimestepRange, LoraLoaderModelOnly, UnknownNodeXX
           */
          | 'nodes'
          /**
-          * SDK Namespace: Comfy.Extra.latent
           * Nodes: LatentAdd, LatentSubtract, LatentMultiply, LatentInterpolate, LatentBatch, LatentBatchSeedBehavior, LatentApplyOperation, LatentApplyOperationCFG, LatentOperationTonemapReinhard, LatentOperationSharpen
           */
          | 'comfy_extras.nodes_latent'
          /**
-          * SDK Namespace: Comfy.Extra.hypernetwork
           * Nodes: HypernetworkLoader
           */
          | 'comfy_extras.nodes_hypernetwork'
          /**
-          * SDK Namespace: Comfy.Extra.upscale_model
           * Nodes: UpscaleModelLoader, ImageUpscaleWithModel
           */
          | 'comfy_extras.nodes_upscale_model'
          /**
-          * SDK Namespace: Comfy.Extra.post_processing
           * Nodes: ImageBlend, ImageBlur, ImageQuantize, ImageSharpen, ImageScaleToTotalPixels
           */
          | 'comfy_extras.nodes_post_processing'
          /**
-          * SDK Namespace: Comfy.Extra.mask
           * Nodes: LatentCompositeMasked, ImageCompositeMasked, MaskToImage, ImageToMask, ImageColorToMask, SolidMask, InvertMask, CropMask, MaskComposite, FeatherMask, GrowMask, ThresholdMask
           */
          | 'comfy_extras.nodes_mask'
          /**
-          * SDK Namespace: Comfy.Extra.compositing
           * Nodes: PorterDuffImageComposite, SplitImageWithAlpha, JoinImageWithAlpha
           */
          | 'comfy_extras.nodes_compositing'
          /**
-          * SDK Namespace: Comfy.Extra.rebatch
           * Nodes: RebatchLatents, RebatchImages
           */
          | 'comfy_extras.nodes_rebatch'
          /**
-          * SDK Namespace: Comfy.Extra.model_merging
           * Nodes: ModelMergeSimple, ModelMergeBlocks, ModelMergeSubtract, ModelMergeAdd, CheckpointSave, CLIPMergeSimple, CLIPMergeSubtract, CLIPMergeAdd, CLIPSave, VAESave, ModelSave
           */
          | 'comfy_extras.nodes_model_merging'
          /**
-          * SDK Namespace: Comfy.Extra.tomesd
           * Nodes: TomePatchModel
           */
          | 'comfy_extras.nodes_tomesd'
          /**
-          * SDK Namespace: Comfy.Extra.clip_sdxl
           * Nodes: CLIPTextEncodeSDXLRefiner, CLIPTextEncodeSDXL
           */
          | 'comfy_extras.nodes_clip_sdxl'
          /**
-          * SDK Namespace: Comfy.Extra.canny
           * Nodes: Canny
           */
          | 'comfy_extras.nodes_canny'
          /**
-          * SDK Namespace: Comfy.Extra.freelunch
           * Nodes: FreeU, FreeU_V2
           */
          | 'comfy_extras.nodes_freelunch'
          /**
-          * SDK Namespace: Comfy.Extra.custom_sampler
           * Nodes: SamplerCustom, BasicScheduler, KarrasScheduler, ExponentialScheduler, PolyexponentialScheduler, LaplaceScheduler, VPScheduler, BetaSamplingScheduler, SDTurboScheduler, KSamplerSelect, SamplerEulerAncestral, SamplerEulerAncestralCFGPP, SamplerLMS, SamplerDPMPP_3M_SDE, SamplerDPMPP_2M_SDE, SamplerDPMPP_SDE, SamplerDPMPP_2S_Ancestral, SamplerDPMAdaptative, SplitSigmas, SplitSigmasDenoise, FlipSigmas, CFGGuider, DualCFGGuider, BasicGuider, RandomNoise, DisableNoise, AddNoise, SamplerCustomAdvanced
           */
          | 'comfy_extras.nodes_custom_sampler'
          /**
-          * SDK Namespace: Comfy.Extra.hypertile
           * Nodes: HyperTile
           */
          | 'comfy_extras.nodes_hypertile'
          /**
-          * SDK Namespace: Comfy.Extra.model_advanced
           * Nodes: ModelSamplingDiscrete, ModelSamplingContinuousEDM, ModelSamplingContinuousV, ModelSamplingStableCascade, ModelSamplingSD3, ModelSamplingAuraFlow, ModelSamplingFlux, RescaleCFG
           */
          | 'comfy_extras.nodes_model_advanced'
          /**
-          * SDK Namespace: Comfy.Extra.model_downscale
           * Nodes: PatchModelAddDownscale
           */
          | 'comfy_extras.nodes_model_downscale'
          /**
-          * SDK Namespace: Comfy.Extra.images
           * Nodes: ImageCrop, RepeatImageBatch, ImageFromBatch, SaveAnimatedWEBP, SaveAnimatedPNG
           */
          | 'comfy_extras.nodes_images'
          /**
-          * SDK Namespace: Comfy.Extra.video_model
           * Nodes: ImageOnlyCheckpointLoader, SVD_img2vid_Conditioning, VideoLinearCFGGuidance, VideoTriangleCFGGuidance, ImageOnlyCheckpointSave
           */
          | 'comfy_extras.nodes_video_model'
          /**
-          * SDK Namespace: Comfy.Extra.sag
           * Nodes: SelfAttentionGuidance
           */
          | 'comfy_extras.nodes_sag'
          /**
-          * SDK Namespace: Comfy.Extra.perpneg
           * Nodes: PerpNeg, PerpNegGuider
           */
          | 'comfy_extras.nodes_perpneg'
          /**
-          * SDK Namespace: Comfy.Extra.stable3d
           * Nodes: StableZero123_Conditioning, StableZero123_Conditioning_Batched, SV3D_Conditioning
           */
          | 'comfy_extras.nodes_stable3d'
          /**
-          * SDK Namespace: Comfy.Extra.sdupscale
           * Nodes: SD_4XUpscale_Conditioning
           */
          | 'comfy_extras.nodes_sdupscale'
          /**
-          * SDK Namespace: Comfy.Extra.photomaker
           * Nodes: PhotoMakerLoader, PhotoMakerEncode
           */
          | 'comfy_extras.nodes_photomaker'
          /**
-          * SDK Namespace: Comfy.Extra.cond
           * Nodes: CLIPTextEncodeControlnet
           */
          | 'comfy_extras.nodes_cond'
          /**
-          * SDK Namespace: Comfy.Extra.morphology
           * Nodes: Morphology
           */
          | 'comfy_extras.nodes_morphology'
          /**
-          * SDK Namespace: Comfy.Extra.stable_cascade
           * Nodes: StableCascade_EmptyLatentImage, StableCascade_StageB_Conditioning, StableCascade_StageC_VAEEncode, StableCascade_SuperResolutionControlnet
           */
          | 'comfy_extras.nodes_stable_cascade'
          /**
-          * SDK Namespace: Comfy.Extra.differential_diffusion
           * Nodes: DifferentialDiffusion
           */
          | 'comfy_extras.nodes_differential_diffusion'
          /**
-          * SDK Namespace: Comfy.Extra.ip2p
           * Nodes: InstructPixToPixConditioning
           */
          | 'comfy_extras.nodes_ip2p'
          /**
-          * SDK Namespace: Comfy.Extra.model_merging_model_specific
           * Nodes: ModelMergeSD1, ModelMergeSD2, ModelMergeSDXL, ModelMergeSD3_2B, ModelMergeFlux1, ModelMergeSD35_Large
           */
          | 'comfy_extras.nodes_model_merging_model_specific'
          /**
-          * SDK Namespace: Comfy.Extra.pag
           * Nodes: PerturbedAttentionGuidance
           */
          | 'comfy_extras.nodes_pag'
          /**
-          * SDK Namespace: Comfy.Extra.align_your_steps
           * Nodes: AlignYourStepsScheduler
           */
          | 'comfy_extras.nodes_align_your_steps'
          /**
-          * SDK Namespace: Comfy.Extra.attention_multiply
           * Nodes: UNetSelfAttentionMultiply, UNetCrossAttentionMultiply, CLIPAttentionMultiply, UNetTemporalAttentionMultiply
           */
          | 'comfy_extras.nodes_attention_multiply'
          /**
-          * SDK Namespace: Comfy.Extra.advanced_samplers
           * Nodes: SamplerLCMUpscale, SamplerEulerCFGpp
           */
          | 'comfy_extras.nodes_advanced_samplers'
          /**
-          * SDK Namespace: Comfy.Extra.webcam
           * Nodes: WebcamCapture
           */
          | 'comfy_extras.nodes_webcam'
          /**
-          * SDK Namespace: Comfy.Extra.audio
           * Nodes: EmptyLatentAudio, VAEEncodeAudio, VAEDecodeAudio, SaveAudio, LoadAudio, PreviewAudio
           */
          | 'comfy_extras.nodes_audio'
          /**
-          * SDK Namespace: Comfy.Extra.sd3
           * Nodes: TripleCLIPLoader, EmptySD3LatentImage, CLIPTextEncodeSD3, ControlNetApplySD3, SkipLayerGuidanceSD3
           */
          | 'comfy_extras.nodes_sd3'
          /**
-          * SDK Namespace: Comfy.Extra.gits
           * Nodes: GITSScheduler
           */
          | 'comfy_extras.nodes_gits'
          /**
-          * SDK Namespace: Comfy.Extra.controlnet
           * Nodes: SetUnionControlNetType, ControlNetInpaintingAliMamaApply
           */
          | 'comfy_extras.nodes_controlnet'
          /**
-          * SDK Namespace: Comfy.Extra.hunyuan
           * Nodes: CLIPTextEncodeHunyuanDiT
           */
          | 'comfy_extras.nodes_hunyuan'
          /**
-          * SDK Namespace: Comfy.Extra.flux
           * Nodes: CLIPTextEncodeFlux, FluxGuidance
           */
          | 'comfy_extras.nodes_flux'
          /**
-          * SDK Namespace: Comfy.Extra.lora_extract
           * Nodes: LoraSave
           */
          | 'comfy_extras.nodes_lora_extract'
          /**
-          * SDK Namespace: Comfy.Extra.torch_compile
           * Nodes: TorchCompileModel
           */
          | 'comfy_extras.nodes_torch_compile'
          /**
-          * SDK Namespace: Comfy.Extra.mochi
           * Nodes: EmptyMochiLatentVideo
           */
          | 'comfy_extras.nodes_mochi'
          /**
-          * SDK Namespace: Comfy.Custom.websocket_image_save
           * Nodes: SaveImageWebsocket
           */
          | 'custom_nodes.websocket_image_save'
          /**
-          * SDK Namespace: Comfy.Custom.was
           * Nodes: BLIP Model Loader, Blend Latents, Bus Node, Cache Node, Checkpoint Loader, Checkpoint Loader (Simple), CLIPTextEncode (NSP), CLIP Input Switch, CLIP Vision Input Switch, Conditioning Input Switch, Constant Number, Create Grid Image, Create Grid Image from Batch, Create Morph Image, Create Morph Image from Path, Create Video from Path, CLIPSeg Masking, CLIPSeg Model Loader, CLIPSeg Batch Masking, Convert Masks to Images, Control Net Model Input Switch, Debug Number to Console, Dictionary to Console, Diffusers Model Loader, Diffusers Hub Model Down-Loader, Export API, Latent Input Switch, Load Cache, Logic Boolean, Logic Boolean Primitive, Logic Comparison OR, Logic Comparison AND, Logic Comparison XOR, Logic NOT, Lora Loader, Hex to HSL, HSL to Hex, Image SSAO (Ambient Occlusion), Image SSDO (Direct Occlusion), Image Analyze, Image Aspect Ratio, Image Batch, Image Blank, Image Blend by Mask, Image Blend, Image Blending Mode, Image Bloom Filter, Image Canny Filter, Image Chromatic Aberration, Image Color Palette, Image Crop Face, Image Crop Location, Image Crop Square Location, Image Displacement Warp, Image Lucy Sharpen, Image Paste Face, Image Paste Crop, Image Paste Crop by Location, Image Pixelate, Image Power Noise, Image Dragan Photography Filter, Image Edge Detection Filter, Image Film Grain, Image Filter Adjustments, Image Flip, Image Gradient Map, Image Generate Gradient, Image High Pass Filter, Image History Loader, Image Input Switch, Image Levels Adjustment, Image Load, Image Median Filter, Image Mix RGB Channels, Image Monitor Effects Filter, Image Nova Filter, Image Padding, Image Perlin Noise, Image Rembg (Remove Background), Image Perlin Power Fractal, Image Remove Background (Alpha), Image Remove Color, Image Resize, Image Rotate, Image Rotate Hue, Image Send HTTP, Image Save, Image Seamless Texture, Image Select Channel, Image Select Color, Image Shadows and Highlights, Image Size to Number, Image Stitch, Image Style Filter, Image Threshold, Image Tiled, Image Transpose, Image fDOF Filter, Image to Latent Mask, Image to Noise, Image to Seed, Images to RGB, Images to Linear, Integer place counter, Image Voronoi Noise Filter, KSampler (WAS), KSampler Cycle, Latent Batch, Latent Noise Injection, Latent Size to Number, Latent Upscale by Factor (WAS), Load Image Batch, Load Text File, Load Lora, Lora Input Switch, Masks Add, Masks Subtract, Mask Arbitrary Region, Mask Batch to Mask, Mask Batch, Mask Ceiling Region, Mask Crop Dominant Region, Mask Crop Minority Region, Mask Crop Region, Mask Paste Region, Mask Dilate Region, Mask Dominant Region, Mask Erode Region, Mask Fill Holes, Mask Floor Region, Mask Gaussian Region, Mask Invert, Mask Minority Region, Mask Smooth Region, Mask Threshold Region, Masks Combine Regions, Masks Combine Batch, MiDaS Model Loader, MiDaS Depth Approximation, MiDaS Mask Image, Model Input Switch, Number Counter, Number Operation, Number to Float, Number Input Switch, Number Input Condition, Number Multiple Of, Number PI, Number to Int, Number to Seed, Number to String, Number to Text, Boolean To Text, Prompt Styles Selector, Prompt Multiple Styles Selector, Random Number, Save Text File, Seed, Tensor Batch to Image, BLIP Analyze Image, SAM Model Loader, SAM Parameters, SAM Parameters Combine, SAM Image Mask, Samples Passthrough (Stat System), String to Text, Image Bounds, Inset Image Bounds, Bounded Image Blend, Bounded Image Blend with Mask, Bounded Image Crop, Bounded Image Crop with Mask, Image Bounds to Console, Text Dictionary Update, Text Dictionary Get, Text Dictionary Convert, Text Dictionary New, Text Dictionary Keys, Text Dictionary To Text, Text Add Tokens, Text Add Token by Input, Text Compare, Text Concatenate, Text File History Loader, Text Find and Replace by Dictionary, Text Find and Replace Input, Text Find and Replace, Text Find, Text Input Switch, Text List, Text List Concatenate, Text List to Text, Text Load Line From File, Text Multiline, Text Multiline (Code Compatible), Text Parse A1111 Embeddings, Text Parse Noodle Soup Prompts, Text Parse Tokens, Text Random Line, Text Random Prompt, Text String, Text Contains, Text Shuffle, Text Sort, Text to Conditioning, Text to Console, Text to Number, Text to String, Text String Truncate, True Random.org Number Generator, unCLIP Checkpoint Loader, Upscale Model Loader, Upscale Model Switch, Write to GIF, Write to Video, VAE Input Switch, Video Dump Frames, CLIPSEG2
           */
          | 'custom_nodes.was-node-suite-comfyui'
          /**
-          * SDK Namespace: Comfy.Custom.IPAdapter_plus
           * Nodes: IPAdapter, IPAdapterAdvanced, IPAdapterBatch, IPAdapterFaceID, IPAdapterFaceIDKolors, IPAAdapterFaceIDBatch, IPAdapterTiled, IPAdapterTiledBatch, IPAdapterEmbeds, IPAdapterEmbedsBatch, IPAdapterStyleComposition, IPAdapterStyleCompositionBatch, IPAdapterMS, IPAdapterClipVisionEnhancer, IPAdapterClipVisionEnhancerBatch, IPAdapterFromParams, IPAdapterPreciseStyleTransfer, IPAdapterPreciseStyleTransferBatch, IPAdapterPreciseComposition, IPAdapterPreciseCompositionBatch, IPAdapterUnifiedLoader, IPAdapterUnifiedLoaderFaceID, IPAdapterModelLoader, IPAdapterInsightFaceLoader, IPAdapterUnifiedLoaderCommunity, IPAdapterEncoder, IPAdapterCombineEmbeds, IPAdapterNoise, PrepImageForClipVision, IPAdapterSaveEmbeds, IPAdapterLoadEmbeds, IPAdapterWeights, IPAdapterCombineWeights, IPAdapterWeightsFromStrategy, IPAdapterPromptScheduleFromWeightsStrategy, IPAdapterRegionalConditioning, IPAdapterCombineParams
           */
          | 'custom_nodes.ComfyUI_IPAdapter_plus'
          /**
-          * SDK Namespace: Comfy.Custom.controlnet_aux
           * Nodes: ShufflePreprocessor, DensePosePreprocessor, LeReS-DepthMapPreprocessor, BinaryPreprocessor, AnimeFace_SemSegPreprocessor, Zoe-DepthMapPreprocessor, DepthAnythingPreprocessor, Zoe_DepthAnythingPreprocessor, DepthAnythingV2Preprocessor, CannyEdgePreprocessor, DWPreprocessor, AnimalPosePreprocessor, ImageLuminanceDetector, ImageIntensityDetector, MediaPipe-FaceMeshPreprocessor, DiffusionEdge_Preprocessor, M-LSDPreprocessor, HEDPreprocessor, FakeScribblePreprocessor, OneFormer-COCO-SemSegPreprocessor, OneFormer-ADE20K-SemSegPreprocessor, BAE-NormalMapPreprocessor, MeshGraphormer-DepthMapPreprocessor, MeshGraphormer+ImpactDetector-DepthMapPreprocessor, DSINE-NormalMapPreprocessor, MiDaS-NormalMapPreprocessor, MiDaS-DepthMapPreprocessor, AnyLineArtPreprocessor_aux, SAMPreprocessor, UniFormer-SemSegPreprocessor, SemSegPreprocessor, PiDiNetPreprocessor, InpaintPreprocessor, LineArtPreprocessor, OpenposePreprocessor, Unimatch_OptFlowPreprocessor, MaskOptFlow, SavePoseKpsAsJsonFile, FacialPartColoringFromPoseKps, UpperBodyTrackingFromPoseKps, RenderPeopleKps, RenderAnimalKps, TEEDPreprocessor, PyraCannyPreprocessor, Metric3D-DepthMapPreprocessor, Metric3D-NormalMapPreprocessor, Manga2Anime_LineArt_Preprocessor, ScribblePreprocessor, Scribble_XDoG_Preprocessor, Scribble_PiDiNet_Preprocessor, AnimeLineArtPreprocessor, LineartStandardPreprocessor, TilePreprocessor, TTPlanet_TileGF_Preprocessor, TTPlanet_TileSimple_Preprocessor, ColorPreprocessor, AIO_Preprocessor, ControlNetPreprocessorSelector, PixelPerfectResolution, ImageGenResolutionFromImage, ImageGenResolutionFromLatent, HintImageEnchance, ExecuteAllControlNetPreprocessors, ControlNetAuxSimpleAddText
           */
          | 'custom_nodes.comfyui_controlnet_aux'
          /**
-          * SDK Namespace: Comfy.Custom.Marigold
           * Nodes: MarigoldModelLoader, MarigoldDepthEstimation_v2, MarigoldDepthEstimation_v2_video, MarigoldDepthEstimation, MarigoldDepthEstimationVideo, ColorizeDepthmap, SaveImageOpenEXR, RemapDepth
           */
          | 'custom_nodes.ComfyUI-Marigold'
          /**
-          * SDK Namespace: Comfy.Custom.Impact_Pack
           * Nodes: SAMLoader, CLIPSegDetectorProvider, ONNXDetectorProvider, BitwiseAndMaskForEach, SubtractMaskForEach, DetailerForEach, DetailerForEachDebug, DetailerForEachPipe, DetailerForEachDebugPipe, DetailerForEachPipeForAnimateDiff, SAMDetectorCombined, SAMDetectorSegmented, FaceDetailer, FaceDetailerPipe, MaskDetailerPipe, ToDetailerPipe, ToDetailerPipeSDXL, FromDetailerPipe, FromDetailerPipe_v2, FromDetailerPipeSDXL, AnyPipeToBasic, ToBasicPipe, FromBasicPipe, FromBasicPipe_v2, BasicPipeToDetailerPipe, BasicPipeToDetailerPipeSDXL, DetailerPipeToBasicPipe, EditBasicPipe, EditDetailerPipe, EditDetailerPipeSDXL, LatentPixelScale, PixelKSampleUpscalerProvider, PixelKSampleUpscalerProviderPipe, IterativeLatentUpscale, IterativeImageUpscale, PixelTiledKSampleUpscalerProvider, PixelTiledKSampleUpscalerProviderPipe, TwoSamplersForMaskUpscalerProvider, TwoSamplersForMaskUpscalerProviderPipe, PixelKSampleHookCombine, DenoiseScheduleHookProvider, StepsScheduleHookProvider, CfgScheduleHookProvider, NoiseInjectionHookProvider, UnsamplerHookProvider, CoreMLDetailerHookProvider, PreviewDetailerHookProvider, DetailerHookCombine, NoiseInjectionDetailerHookProvider, UnsamplerDetailerHookProvider, DenoiseSchedulerDetailerHookProvider, SEGSOrderedFilterDetailerHookProvider, SEGSRangeFilterDetailerHookProvider, SEGSLabelFilterDetailerHookProvider, VariationNoiseDetailerHookProvider, BitwiseAndMask, SubtractMask, AddMask, ImpactSegsAndMask, ImpactSegsAndMaskForEach, EmptySegs, ImpactFlattenMask, MediaPipeFaceMeshToSEGS, MaskToSEGS, MaskToSEGS_for_AnimateDiff, ToBinaryMask, MasksToMaskList, MaskListToMaskBatch, ImageListToImageBatch, SetDefaultImageForSEGS, RemoveImageFromSEGS, BboxDetectorSEGS, SegmDetectorSEGS, ONNXDetectorSEGS, ImpactSimpleDetectorSEGS_for_AD, ImpactSimpleDetectorSEGS, ImpactSimpleDetectorSEGSPipe, ImpactControlNetApplySEGS, ImpactControlNetApplyAdvancedSEGS, ImpactControlNetClearSEGS, ImpactIPAdapterApplySEGS, ImpactDecomposeSEGS, ImpactAssembleSEGS, ImpactFrom_SEG_ELT, ImpactEdit_SEG_ELT, ImpactDilate_Mask_SEG_ELT, ImpactDilateMask, ImpactGaussianBlurMask, ImpactDilateMaskInSEGS, ImpactGaussianBlurMaskInSEGS, ImpactScaleBy_BBOX_SEG_ELT, ImpactFrom_SEG_ELT_bbox, ImpactFrom_SEG_ELT_crop_region, ImpactCount_Elts_in_SEGS, BboxDetectorCombined_v2, SegmDetectorCombined_v2, SegsToCombinedMask, KSamplerProvider, TwoSamplersForMask, TiledKSamplerProvider, KSamplerAdvancedProvider, TwoAdvancedSamplersForMask, ImpactNegativeConditioningPlaceholder, PreviewBridge, PreviewBridgeLatent, ImageSender, ImageReceiver, LatentSender, LatentReceiver, ImageMaskSwitch, LatentSwitch, SEGSSwitch, ImpactSwitch, ImpactInversedSwitch, ImpactWildcardProcessor, ImpactWildcardEncode, SEGSUpscaler, SEGSUpscalerPipe, SEGSDetailer, SEGSPaste, SEGSPreview, SEGSPreviewCNet, SEGSToImageList, ImpactSEGSToMaskList, ImpactSEGSToMaskBatch, ImpactSEGSConcat, ImpactSEGSPicker, ImpactMakeTileSEGS, ImpactSEGSMerge, SEGSDetailerForAnimateDiff, ImpactKSamplerBasicPipe, ImpactKSamplerAdvancedBasicPipe, ReencodeLatent, ReencodeLatentPipe, ImpactImageBatchToImageList, ImpactMakeImageList, ImpactMakeImageBatch, ImpactMakeAnyList, ImpactMakeMaskList, ImpactMakeMaskBatch, RegionalSampler, RegionalSamplerAdvanced, CombineRegionalPrompts, RegionalPrompt, ImpactCombineConditionings, ImpactConcatConditionings, ImpactSEGSLabelAssign, ImpactSEGSLabelFilter, ImpactSEGSRangeFilter, ImpactSEGSOrderedFilter, ImpactCompare, ImpactConditionalBranch, ImpactConditionalBranchSelMode, ImpactIfNone, ImpactConvertDataType, ImpactLogicalOperators, ImpactInt, ImpactFloat, ImpactBoolean, ImpactValueSender, ImpactValueReceiver, ImpactImageInfo, ImpactLatentInfo, ImpactMinMax, ImpactNeg, ImpactConditionalStopIteration, ImpactStringSelector, StringListToString, WildcardPromptFromString, ImpactExecutionOrderController, RemoveNoiseMask, ImpactLogger, ImpactDummyInput, ImpactQueueTrigger, ImpactQueueTriggerCountdown, ImpactSetWidgetValue, ImpactNodeSetMuteState, ImpactControlBridge, ImpactIsNotEmptySEGS, ImpactSleep, ImpactRemoteBoolean, ImpactRemoteInt, ImpactHFTransformersClassifierProvider, ImpactSEGSClassify, ImpactSchedulerAdapter, GITSSchedulerFuncProvider, UltralyticsDetectorProvider
           */
          | 'custom_nodes.ComfyUI-Impact-Pack'
@@ -9767,7 +9717,7 @@ declare global {
             _CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
          }
          InpaintModelConditioning: ComfyNode<IN['InpaintModelConditioning'], OUT['InpaintModelConditioning']> & {
-            _latent: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          CheckpointLoader: ComfyNode<IN['CheckpointLoader'], OUT['CheckpointLoader']> & {
             _MODEL: ComfyNodeOutput<'MODEL'>
@@ -10076,7 +10026,7 @@ declare global {
             _VAE: ComfyNodeOutput<'VAE'>
          }
          SVD_img2vid_Conditioning: ComfyNode<IN['SVD_img2vid_Conditioning'], OUT['SVD_img2vid_Conditioning']> & {
-            _latent: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          VideoLinearCFGGuidance: ComfyNode<IN['VideoLinearCFGGuidance'], OUT['VideoLinearCFGGuidance']> & {
             _MODEL: ComfyNodeOutput<'MODEL'>
@@ -10096,16 +10046,16 @@ declare global {
             _GUIDER: ComfyNodeOutput<'GUIDER'>
          }
          StableZero123_Conditioning: ComfyNode<IN['StableZero123_Conditioning'], OUT['StableZero123_Conditioning']> & {
-            _latent: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          StableZero123_Conditioning_Batched: ComfyNode<IN['StableZero123_Conditioning_Batched'], OUT['StableZero123_Conditioning_Batched']> & {
-            _latent: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          SV3D_Conditioning: ComfyNode<IN['SV3D_Conditioning'], OUT['SV3D_Conditioning']> & {
-            _latent: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          SD_4XUpscale_Conditioning: ComfyNode<IN['SD_4XUpscale_Conditioning'], OUT['SD_4XUpscale_Conditioning']> & {
-            _latent: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          PhotoMakerLoader: ComfyNode<IN['PhotoMakerLoader'], OUT['PhotoMakerLoader']> & {
             _PHOTOMAKER: ComfyNodeOutput<'PHOTOMAKER'>
@@ -10127,13 +10077,13 @@ declare global {
          StableCascade_StageC_VAEEncode: ComfyNode<IN['StableCascade_StageC_VAEEncode'], OUT['StableCascade_StageC_VAEEncode']> & {
          }
          StableCascade_SuperResolutionControlnet: ComfyNode<IN['StableCascade_SuperResolutionControlnet'], OUT['StableCascade_SuperResolutionControlnet']> & {
-            _controlnet_input: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          DifferentialDiffusion: ComfyNode<IN['DifferentialDiffusion'], OUT['DifferentialDiffusion']> & {
             _MODEL: ComfyNodeOutput<'MODEL'>
          }
          InstructPixToPixConditioning: ComfyNode<IN['InstructPixToPixConditioning'], OUT['InstructPixToPixConditioning']> & {
-            _latent: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          ModelMergeSD1: ComfyNode<IN['ModelMergeSD1'], OUT['ModelMergeSD1']> & {
             _MODEL: ComfyNodeOutput<'MODEL'>
@@ -10244,10 +10194,10 @@ declare global {
             _LATENT: ComfyNodeOutput<'LATENT'>
          }
          "was.Bus Node": ComfyNode<IN['was.Bus Node'], OUT['was.Bus Node']> & {
-            _bus: ComfyNodeOutput<'BUS'>
-            _model: ComfyNodeOutput<'MODEL'>
-            _clip: ComfyNodeOutput<'CLIP'>
-            _vae: ComfyNodeOutput<'VAE'>
+            _BUS: ComfyNodeOutput<'BUS'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
+            _CLIP: ComfyNodeOutput<'CLIP'>
+            _VAE: ComfyNodeOutput<'VAE'>
          }
          "was.Cache Node": ComfyNode<IN['was.Cache Node'], OUT['was.Cache Node']> & {
          }
@@ -10255,16 +10205,16 @@ declare global {
             _MODEL: ComfyNodeOutput<'MODEL'>
             _CLIP: ComfyNodeOutput<'CLIP'>
             _VAE: ComfyNodeOutput<'VAE'>
-            _NAME_STRING: ComfyNodeOutput<'STRING'>
+            _STRING: ComfyNodeOutput<'STRING'>
          }
          "was.Checkpoint Loader (Simple)": ComfyNode<IN['was.Checkpoint Loader (Simple)'], OUT['was.Checkpoint Loader (Simple)']> & {
             _MODEL: ComfyNodeOutput<'MODEL'>
             _CLIP: ComfyNodeOutput<'CLIP'>
             _VAE: ComfyNodeOutput<'VAE'>
-            _NAME_STRING: ComfyNodeOutput<'STRING'>
+            _STRING: ComfyNodeOutput<'STRING'>
          }
          "was.CLIPTextEncode (NSP)": ComfyNode<IN['was.CLIPTextEncode (NSP)'], OUT['was.CLIPTextEncode (NSP)']> & {
-            _conditioning: ComfyNodeOutput<'CONDITIONING'>
+            _CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
          }
          "was.CLIP Input Switch": ComfyNode<IN['was.CLIP Input Switch'], OUT['was.CLIP Input Switch']> & {
             _CLIP: ComfyNodeOutput<'CLIP'>
@@ -10294,16 +10244,16 @@ declare global {
          }
          "was.CLIPSeg Masking": ComfyNode<IN['was.CLIPSeg Masking'], OUT['was.CLIPSeg Masking']> & {
             _MASK: ComfyNodeOutput<'MASK'>
-            _MASK_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.CLIPSeg Model Loader": ComfyNode<IN['was.CLIPSeg Model Loader'], OUT['was.CLIPSeg Model Loader']> & {
-            _clipseg_model: ComfyNodeOutput<'CLIPSEG_MODEL'>
+            _CLIPSEG_MODEL: ComfyNodeOutput<'CLIPSEG_MODEL'>
          }
          "was.CLIPSeg Batch Masking": ComfyNode<IN['was.CLIPSeg Batch Masking'], OUT['was.CLIPSeg Batch Masking']> & {
-            _MASKS_BATCH: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          "was.Convert Masks to Images": ComfyNode<IN['was.Convert Masks to Images'], OUT['was.Convert Masks to Images']> & {
-            _IMAGES: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Control Net Model Input Switch": ComfyNode<IN['was.Control Net Model Input Switch'], OUT['was.Control Net Model Input Switch']> & {
             _CONTROL_NET: ComfyNodeOutput<'CONTROL_NET'>
@@ -10318,13 +10268,13 @@ declare global {
             _MODEL: ComfyNodeOutput<'MODEL'>
             _CLIP: ComfyNodeOutput<'CLIP'>
             _VAE: ComfyNodeOutput<'VAE'>
-            _NAME_STRING: ComfyNodeOutput<'STRING'>
+            _STRING: ComfyNodeOutput<'STRING'>
          }
          "was.Diffusers Hub Model Down-Loader": ComfyNode<IN['was.Diffusers Hub Model Down-Loader'], OUT['was.Diffusers Hub Model Down-Loader']> & {
             _MODEL: ComfyNodeOutput<'MODEL'>
             _CLIP: ComfyNodeOutput<'CLIP'>
             _VAE: ComfyNodeOutput<'VAE'>
-            _NAME_STRING: ComfyNodeOutput<'STRING'>
+            _STRING: ComfyNodeOutput<'STRING'>
          }
          "was.Export API": ComfyNode<IN['was.Export API'], OUT['was.Export API']> & {
          }
@@ -10360,14 +10310,14 @@ declare global {
          "was.Lora Loader": ComfyNode<IN['was.Lora Loader'], OUT['was.Lora Loader']> & {
             _MODEL: ComfyNodeOutput<'MODEL'>
             _CLIP: ComfyNodeOutput<'CLIP'>
-            _NAME_STRING: ComfyNodeOutput<'STRING'>
+            _STRING: ComfyNodeOutput<'STRING'>
          }
          "was.Hex to HSL": ComfyNode<IN['was.Hex to HSL'], OUT['was.Hex to HSL']> & {
-            _alpha: ComfyNodeOutput<'FLOAT'>
-            _hsl: ComfyNodeOutput<'STRING'>
+            _FLOAT: ComfyNodeOutput<'FLOAT'>
+            _STRING: ComfyNodeOutput<'STRING'>
          }
          "was.HSL to Hex": ComfyNode<IN['was.HSL to Hex'], OUT['was.HSL to Hex']> & {
-            _hex_color: ComfyNodeOutput<'STRING'>
+            _STRING: ComfyNodeOutput<'STRING'>
          }
          "was.Image SSAO (Ambient Occlusion)": ComfyNode<IN['was.Image SSAO (Ambient Occlusion)'], OUT['was.Image SSAO (Ambient Occlusion)']> & {
          }
@@ -10377,10 +10327,10 @@ declare global {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Aspect Ratio": ComfyNode<IN['was.Image Aspect Ratio'], OUT['was.Image Aspect Ratio']> & {
-            _aspect_float: ComfyNodeOutput<'FLOAT'>
+            _FLOAT: ComfyNodeOutput<'FLOAT'>
          }
          "was.Image Batch": ComfyNode<IN['was.Image Batch'], OUT['was.Image Batch']> & {
-            _image: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Blank": ComfyNode<IN['was.Image Blank'], OUT['was.Image Blank']> & {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
@@ -10389,23 +10339,23 @@ declare global {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Blend": ComfyNode<IN['was.Image Blend'], OUT['was.Image Blend']> & {
-            _image: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Blending Mode": ComfyNode<IN['was.Image Blending Mode'], OUT['was.Image Blending Mode']> & {
-            _image: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Bloom Filter": ComfyNode<IN['was.Image Bloom Filter'], OUT['was.Image Bloom Filter']> & {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Canny Filter": ComfyNode<IN['was.Image Canny Filter'], OUT['was.Image Canny Filter']> & {
-            _images: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Chromatic Aberration": ComfyNode<IN['was.Image Chromatic Aberration'], OUT['was.Image Chromatic Aberration']> & {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Color Palette": ComfyNode<IN['was.Image Color Palette'], OUT['was.Image Color Palette']> & {
-            _image: ComfyNodeOutput<'IMAGE'>
-            _color_palettes: ComfyNodeOutput<'LIST'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
+            _LIST: ComfyNodeOutput<'LIST'>
          }
          "was.Image Crop Face": ComfyNode<IN['was.Image Crop Face'], OUT['was.Image Crop Face']> & {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
@@ -10420,7 +10370,7 @@ declare global {
             _CROP_DATA: ComfyNodeOutput<'CROP_DATA'>
          }
          "was.Image Displacement Warp": ComfyNode<IN['was.Image Displacement Warp'], OUT['was.Image Displacement Warp']> & {
-            _images: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Lucy Sharpen": ComfyNode<IN['was.Image Lucy Sharpen'], OUT['was.Image Lucy Sharpen']> & {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
@@ -10432,10 +10382,10 @@ declare global {
          "was.Image Paste Crop by Location": ComfyNode<IN['was.Image Paste Crop by Location'], OUT['was.Image Paste Crop by Location']> & {
          }
          "was.Image Pixelate": ComfyNode<IN['was.Image Pixelate'], OUT['was.Image Pixelate']> & {
-            _images: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Power Noise": ComfyNode<IN['was.Image Power Noise'], OUT['was.Image Power Noise']> & {
-            _image: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Dragan Photography Filter": ComfyNode<IN['was.Image Dragan Photography Filter'], OUT['was.Image Dragan Photography Filter']> & {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
@@ -10450,7 +10400,7 @@ declare global {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Flip": ComfyNode<IN['was.Image Flip'], OUT['was.Image Flip']> & {
-            _images: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Gradient Map": ComfyNode<IN['was.Image Gradient Map'], OUT['was.Image Gradient Map']> & {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
@@ -10459,11 +10409,11 @@ declare global {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image High Pass Filter": ComfyNode<IN['was.Image High Pass Filter'], OUT['was.Image High Pass Filter']> & {
-            _images: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image History Loader": ComfyNode<IN['was.Image History Loader'], OUT['was.Image History Loader']> & {
-            _image: ComfyNodeOutput<'IMAGE'>
-            _filename_text: ComfyNodeOutput<'STRING'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
+            _STRING: ComfyNodeOutput<'STRING'>
          }
          "was.Image Input Switch": ComfyNode<IN['was.Image Input Switch'], OUT['was.Image Input Switch']> & {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
@@ -10472,9 +10422,9 @@ declare global {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Load": ComfyNode<IN['was.Image Load'], OUT['was.Image Load']> & {
-            _image: ComfyNodeOutput<'IMAGE'>
-            _mask: ComfyNodeOutput<'MASK'>
-            _filename_text: ComfyNodeOutput<'STRING'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
+            _MASK: ComfyNodeOutput<'MASK'>
+            _STRING: ComfyNodeOutput<'STRING'>
          }
          "was.Image Median Filter": ComfyNode<IN['was.Image Median Filter'], OUT['was.Image Median Filter']> & {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
@@ -10483,7 +10433,7 @@ declare global {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Monitor Effects Filter": ComfyNode<IN['was.Image Monitor Effects Filter'], OUT['was.Image Monitor Effects Filter']> & {
-            _image: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Nova Filter": ComfyNode<IN['was.Image Nova Filter'], OUT['was.Image Nova Filter']> & {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
@@ -10491,16 +10441,16 @@ declare global {
          "was.Image Padding": ComfyNode<IN['was.Image Padding'], OUT['was.Image Padding']> & {
          }
          "was.Image Perlin Noise": ComfyNode<IN['was.Image Perlin Noise'], OUT['was.Image Perlin Noise']> & {
-            _image: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Rembg (Remove Background)": ComfyNode<IN['was.Image Rembg (Remove Background)'], OUT['was.Image Rembg (Remove Background)']> & {
-            _images: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Perlin Power Fractal": ComfyNode<IN['was.Image Perlin Power Fractal'], OUT['was.Image Perlin Power Fractal']> & {
-            _image: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Remove Background (Alpha)": ComfyNode<IN['was.Image Remove Background (Alpha)'], OUT['was.Image Remove Background (Alpha)']> & {
-            _images: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Remove Color": ComfyNode<IN['was.Image Remove Color'], OUT['was.Image Remove Color']> & {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
@@ -10509,21 +10459,21 @@ declare global {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Rotate": ComfyNode<IN['was.Image Rotate'], OUT['was.Image Rotate']> & {
-            _images: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Rotate Hue": ComfyNode<IN['was.Image Rotate Hue'], OUT['was.Image Rotate Hue']> & {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Send HTTP": ComfyNode<IN['was.Image Send HTTP'], OUT['was.Image Send HTTP']> & {
-            _status_code: ComfyNodeOutput<'INT'>
-            _result_text: ComfyNodeOutput<'STRING'>
+            _INT: ComfyNodeOutput<'INT'>
+            _STRING: ComfyNodeOutput<'STRING'>
          }
          "was.Image Save": ComfyNode<IN['was.Image Save'], OUT['was.Image Save']> & {
-            _images: ComfyNodeOutput<'IMAGE'>
-            _files: ComfyNodeOutput<'STRING'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
+            _STRING: ComfyNodeOutput<'STRING'>
          }
          "was.Image Seamless Texture": ComfyNode<IN['was.Image Seamless Texture'], OUT['was.Image Seamless Texture']> & {
-            _images: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Select Channel": ComfyNode<IN['was.Image Select Channel'], OUT['was.Image Select Channel']> & {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
@@ -10545,7 +10495,7 @@ declare global {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Tiled": ComfyNode<IN['was.Image Tiled'], OUT['was.Image Tiled']> & {
-            _IMAGES: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image Transpose": ComfyNode<IN['was.Image Transpose'], OUT['was.Image Transpose']> & {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
@@ -10554,10 +10504,10 @@ declare global {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image to Latent Mask": ComfyNode<IN['was.Image to Latent Mask'], OUT['was.Image to Latent Mask']> & {
-            _MASKS: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          "was.Image to Noise": ComfyNode<IN['was.Image to Noise'], OUT['was.Image to Noise']> & {
-            _image: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Image to Seed": ComfyNode<IN['was.Image to Seed'], OUT['was.Image to Seed']> & {
             _INT: ComfyNodeOutput<'INT'>
@@ -10569,19 +10519,19 @@ declare global {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Integer place counter": ComfyNode<IN['was.Integer place counter'], OUT['was.Integer place counter']> & {
-            _INT_PLACES: ComfyNodeOutput<'INT'>
+            _INT: ComfyNodeOutput<'INT'>
          }
          "was.Image Voronoi Noise Filter": ComfyNode<IN['was.Image Voronoi Noise Filter'], OUT['was.Image Voronoi Noise Filter']> & {
-            _image: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.KSampler (WAS)": ComfyNode<IN['was.KSampler (WAS)'], OUT['was.KSampler (WAS)']> & {
             _LATENT: ComfyNodeOutput<'LATENT'>
          }
          "was.KSampler Cycle": ComfyNode<IN['was.KSampler Cycle'], OUT['was.KSampler Cycle']> & {
-            "_latent(s)": ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          "was.Latent Batch": ComfyNode<IN['was.Latent Batch'], OUT['was.Latent Batch']> & {
-            _latent: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          "was.Latent Noise Injection": ComfyNode<IN['was.Latent Noise Injection'], OUT['was.Latent Noise Injection']> & {
             _LATENT: ComfyNodeOutput<'LATENT'>
@@ -10592,8 +10542,8 @@ declare global {
             _LATENT: ComfyNodeOutput<'LATENT'>
          }
          "was.Load Image Batch": ComfyNode<IN['was.Load Image Batch'], OUT['was.Load Image Batch']> & {
-            _image: ComfyNodeOutput<'IMAGE'>
-            _filename_text: ComfyNodeOutput<'STRING'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
+            _STRING: ComfyNodeOutput<'STRING'>
          }
          "was.Load Text File": ComfyNode<IN['was.Load Text File'], OUT['was.Load Text File']> & {
             _STRING: ComfyNodeOutput<'STRING'>
@@ -10602,71 +10552,71 @@ declare global {
          "was.Load Lora": ComfyNode<IN['was.Load Lora'], OUT['was.Load Lora']> & {
             _MODEL: ComfyNodeOutput<'MODEL'>
             _CLIP: ComfyNodeOutput<'CLIP'>
-            _NAME_STRING: ComfyNodeOutput<'STRING'>
+            _STRING: ComfyNodeOutput<'STRING'>
          }
          "was.Lora Input Switch": ComfyNode<IN['was.Lora Input Switch'], OUT['was.Lora Input Switch']> & {
             _MODEL: ComfyNodeOutput<'MODEL'>
             _CLIP: ComfyNodeOutput<'CLIP'>
          }
          "was.Masks Add": ComfyNode<IN['was.Masks Add'], OUT['was.Masks Add']> & {
-            _MASKS: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          "was.Masks Subtract": ComfyNode<IN['was.Masks Subtract'], OUT['was.Masks Subtract']> & {
-            _MASKS: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          "was.Mask Arbitrary Region": ComfyNode<IN['was.Mask Arbitrary Region'], OUT['was.Mask Arbitrary Region']> & {
-            _MASKS: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          "was.Mask Batch to Mask": ComfyNode<IN['was.Mask Batch to Mask'], OUT['was.Mask Batch to Mask']> & {
             _MASK: ComfyNodeOutput<'MASK'>
          }
          "was.Mask Batch": ComfyNode<IN['was.Mask Batch'], OUT['was.Mask Batch']> & {
-            _masks: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          "was.Mask Ceiling Region": ComfyNode<IN['was.Mask Ceiling Region'], OUT['was.Mask Ceiling Region']> & {
-            _MASKS: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          "was.Mask Crop Dominant Region": ComfyNode<IN['was.Mask Crop Dominant Region'], OUT['was.Mask Crop Dominant Region']> & {
-            _MASKS: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          "was.Mask Crop Minority Region": ComfyNode<IN['was.Mask Crop Minority Region'], OUT['was.Mask Crop Minority Region']> & {
-            _MASKS: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          "was.Mask Crop Region": ComfyNode<IN['was.Mask Crop Region'], OUT['was.Mask Crop Region']> & {
-            _cropped_mask: ComfyNodeOutput<'MASK'>
-            _crop_data: ComfyNodeOutput<'CROP_DATA'>
+            _MASK: ComfyNodeOutput<'MASK'>
+            _CROP_DATA: ComfyNodeOutput<'CROP_DATA'>
          }
          "was.Mask Paste Region": ComfyNode<IN['was.Mask Paste Region'], OUT['was.Mask Paste Region']> & {
          }
          "was.Mask Dilate Region": ComfyNode<IN['was.Mask Dilate Region'], OUT['was.Mask Dilate Region']> & {
-            _MASKS: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          "was.Mask Dominant Region": ComfyNode<IN['was.Mask Dominant Region'], OUT['was.Mask Dominant Region']> & {
-            _MASKS: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          "was.Mask Erode Region": ComfyNode<IN['was.Mask Erode Region'], OUT['was.Mask Erode Region']> & {
-            _MASKS: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          "was.Mask Fill Holes": ComfyNode<IN['was.Mask Fill Holes'], OUT['was.Mask Fill Holes']> & {
-            _MASKS: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          "was.Mask Floor Region": ComfyNode<IN['was.Mask Floor Region'], OUT['was.Mask Floor Region']> & {
-            _MASKS: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          "was.Mask Gaussian Region": ComfyNode<IN['was.Mask Gaussian Region'], OUT['was.Mask Gaussian Region']> & {
-            _MASKS: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          "was.Mask Invert": ComfyNode<IN['was.Mask Invert'], OUT['was.Mask Invert']> & {
-            _MASKS: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          "was.Mask Minority Region": ComfyNode<IN['was.Mask Minority Region'], OUT['was.Mask Minority Region']> & {
-            _MASKS: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          "was.Mask Smooth Region": ComfyNode<IN['was.Mask Smooth Region'], OUT['was.Mask Smooth Region']> & {
-            _MASKS: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          "was.Mask Threshold Region": ComfyNode<IN['was.Mask Threshold Region'], OUT['was.Mask Threshold Region']> & {
-            _MASKS: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          "was.Masks Combine Regions": ComfyNode<IN['was.Masks Combine Regions'], OUT['was.Masks Combine Regions']> & {
             _MASK: ComfyNodeOutput<'MASK'>
@@ -10675,10 +10625,10 @@ declare global {
             _MASK: ComfyNodeOutput<'MASK'>
          }
          "was.MiDaS Model Loader": ComfyNode<IN['was.MiDaS Model Loader'], OUT['was.MiDaS Model Loader']> & {
-            _midas_model: ComfyNodeOutput<'MIDAS_MODEL'>
+            _MIDAS_MODEL: ComfyNodeOutput<'MIDAS_MODEL'>
          }
          "was.MiDaS Depth Approximation": ComfyNode<IN['was.MiDaS Depth Approximation'], OUT['was.MiDaS Depth Approximation']> & {
-            _images: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.MiDaS Mask Image": ComfyNode<IN['was.MiDaS Mask Image'], OUT['was.MiDaS Mask Image']> & {
          }
@@ -10686,9 +10636,9 @@ declare global {
             _MODEL: ComfyNodeOutput<'MODEL'>
          }
          "was.Number Counter": ComfyNode<IN['was.Number Counter'], OUT['was.Number Counter']> & {
-            _number: ComfyNodeOutput<'NUMBER'>
-            _float: ComfyNodeOutput<'FLOAT'>
-            _int: ComfyNodeOutput<'INT'>
+            _NUMBER: ComfyNodeOutput<'NUMBER'>
+            _FLOAT: ComfyNodeOutput<'FLOAT'>
+            _INT: ComfyNodeOutput<'INT'>
          }
          "was.Number Operation": ComfyNode<IN['was.Number Operation'], OUT['was.Number Operation']> & {
             _NUMBER: ComfyNodeOutput<'NUMBER'>
@@ -10744,10 +10694,10 @@ declare global {
          "was.Save Text File": ComfyNode<IN['was.Save Text File'], OUT['was.Save Text File']> & {
          }
          "was.Seed": ComfyNode<IN['was.Seed'], OUT['was.Seed']> & {
-            _seed: ComfyNodeOutput<'SEED'>
-            _number: ComfyNodeOutput<'NUMBER'>
-            _float: ComfyNodeOutput<'FLOAT'>
-            _int: ComfyNodeOutput<'INT'>
+            _SEED: ComfyNodeOutput<'SEED'>
+            _NUMBER: ComfyNodeOutput<'NUMBER'>
+            _FLOAT: ComfyNodeOutput<'FLOAT'>
+            _INT: ComfyNodeOutput<'INT'>
          }
          "was.Tensor Batch to Image": ComfyNode<IN['was.Tensor Batch to Image'], OUT['was.Tensor Batch to Image']> & {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
@@ -10768,7 +10718,7 @@ declare global {
             _MASK: ComfyNodeOutput<'MASK'>
          }
          "was.Samples Passthrough (Stat System)": ComfyNode<IN['was.Samples Passthrough (Stat System)'], OUT['was.Samples Passthrough (Stat System)']> & {
-            _samples: ComfyNodeOutput<'LATENT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
          }
          "was.String to Text": ComfyNode<IN['was.String to Text'], OUT['was.String to Text']> & {
             _STRING: ComfyNodeOutput<'STRING'>
@@ -10819,7 +10769,7 @@ declare global {
          }
          "was.Text Compare": ComfyNode<IN['was.Text Compare'], OUT['was.Text Compare']> & {
             _BOOLEAN: ComfyNodeOutput<'BOOLEAN'>
-            _SCORE_NUMBER: ComfyNodeOutput<'NUMBER'>
+            _NUMBER: ComfyNodeOutput<'NUMBER'>
          }
          "was.Text Concatenate": ComfyNode<IN['was.Text Concatenate'], OUT['was.Text Concatenate']> & {
             _STRING: ComfyNodeOutput<'STRING'>
@@ -10832,19 +10782,19 @@ declare global {
             _STRING: ComfyNodeOutput<'STRING'>
          }
          "was.Text Find and Replace Input": ComfyNode<IN['was.Text Find and Replace Input'], OUT['was.Text Find and Replace Input']> & {
-            _result_text: ComfyNodeOutput<'STRING'>
-            _replacement_count_number: ComfyNodeOutput<'NUMBER'>
-            _replacement_count_float: ComfyNodeOutput<'FLOAT'>
-            _replacement_count_int: ComfyNodeOutput<'INT'>
+            _STRING: ComfyNodeOutput<'STRING'>
+            _NUMBER: ComfyNodeOutput<'NUMBER'>
+            _FLOAT: ComfyNodeOutput<'FLOAT'>
+            _INT: ComfyNodeOutput<'INT'>
          }
          "was.Text Find and Replace": ComfyNode<IN['was.Text Find and Replace'], OUT['was.Text Find and Replace']> & {
-            _result_text: ComfyNodeOutput<'STRING'>
-            _replacement_count_number: ComfyNodeOutput<'NUMBER'>
-            _replacement_count_float: ComfyNodeOutput<'FLOAT'>
-            _replacement_count_int: ComfyNodeOutput<'INT'>
+            _STRING: ComfyNodeOutput<'STRING'>
+            _NUMBER: ComfyNodeOutput<'NUMBER'>
+            _FLOAT: ComfyNodeOutput<'FLOAT'>
+            _INT: ComfyNodeOutput<'INT'>
          }
          "was.Text Find": ComfyNode<IN['was.Text Find'], OUT['was.Text Find']> & {
-            _found: ComfyNodeOutput<'BOOLEAN'>
+            _BOOLEAN: ComfyNodeOutput<'BOOLEAN'>
          }
          "was.Text Input Switch": ComfyNode<IN['was.Text Input Switch'], OUT['was.Text Input Switch']> & {
             _STRING: ComfyNodeOutput<'STRING'>
@@ -10859,8 +10809,8 @@ declare global {
             _STRING: ComfyNodeOutput<'STRING'>
          }
          "was.Text Load Line From File": ComfyNode<IN['was.Text Load Line From File'], OUT['was.Text Load Line From File']> & {
-            _line_text: ComfyNodeOutput<'STRING'>
-            _dictionary: ComfyNodeOutput<'DICT'>
+            _STRING: ComfyNodeOutput<'STRING'>
+            _DICT: ComfyNodeOutput<'DICT'>
          }
          "was.Text Multiline": ComfyNode<IN['was.Text Multiline'], OUT['was.Text Multiline']> & {
             _STRING: ComfyNodeOutput<'STRING'>
@@ -10918,27 +10868,27 @@ declare global {
             _CLIP: ComfyNodeOutput<'CLIP'>
             _VAE: ComfyNodeOutput<'VAE'>
             _CLIP_VISION: ComfyNodeOutput<'CLIP_VISION'>
-            _NAME_STRING: ComfyNodeOutput<'STRING'>
+            _STRING: ComfyNodeOutput<'STRING'>
          }
          "was.Upscale Model Loader": ComfyNode<IN['was.Upscale Model Loader'], OUT['was.Upscale Model Loader']> & {
             _UPSCALE_MODEL: ComfyNodeOutput<'UPSCALE_MODEL'>
-            _MODEL_NAME_TEXT: ComfyNodeOutput<'STRING'>
+            _STRING: ComfyNodeOutput<'STRING'>
          }
          "was.Upscale Model Switch": ComfyNode<IN['was.Upscale Model Switch'], OUT['was.Upscale Model Switch']> & {
             _UPSCALE_MODEL: ComfyNodeOutput<'UPSCALE_MODEL'>
          }
          "was.Write to GIF": ComfyNode<IN['was.Write to GIF'], OUT['was.Write to GIF']> & {
-            _image_pass: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.Write to Video": ComfyNode<IN['was.Write to Video'], OUT['was.Write to Video']> & {
-            _IMAGE_PASS: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "was.VAE Input Switch": ComfyNode<IN['was.VAE Input Switch'], OUT['was.VAE Input Switch']> & {
             _VAE: ComfyNodeOutput<'VAE'>
          }
          "was.Video Dump Frames": ComfyNode<IN['was.Video Dump Frames'], OUT['was.Video Dump Frames']> & {
-            _output_path: ComfyNodeOutput<'STRING'>
-            _processed_count: ComfyNodeOutput<'NUMBER'>
+            _STRING: ComfyNodeOutput<'STRING'>
+            _NUMBER: ComfyNodeOutput<'NUMBER'>
          }
          "was.CLIPSEG2": ComfyNode<IN['was.CLIPSEG2'], OUT['was.CLIPSEG2']> & {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
@@ -10954,25 +10904,25 @@ declare global {
          }
          "IPAdapter_plus.IPAdapterFaceID": ComfyNode<IN['IPAdapter_plus.IPAdapterFaceID'], OUT['IPAdapter_plus.IPAdapterFaceID']> & {
             _MODEL: ComfyNodeOutput<'MODEL'>
-            _face_image: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "IPAdapter_plus.IPAdapterFaceIDKolors": ComfyNode<IN['IPAdapter_plus.IPAdapterFaceIDKolors'], OUT['IPAdapter_plus.IPAdapterFaceIDKolors']> & {
             _MODEL: ComfyNodeOutput<'MODEL'>
-            _face_image: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "IPAdapter_plus.IPAAdapterFaceIDBatch": ComfyNode<IN['IPAdapter_plus.IPAAdapterFaceIDBatch'], OUT['IPAdapter_plus.IPAAdapterFaceIDBatch']> & {
             _MODEL: ComfyNodeOutput<'MODEL'>
-            _face_image: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "IPAdapter_plus.IPAdapterTiled": ComfyNode<IN['IPAdapter_plus.IPAdapterTiled'], OUT['IPAdapter_plus.IPAdapterTiled']> & {
             _MODEL: ComfyNodeOutput<'MODEL'>
-            _tiles: ComfyNodeOutput<'IMAGE'>
-            _masks: ComfyNodeOutput<'MASK'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          "IPAdapter_plus.IPAdapterTiledBatch": ComfyNode<IN['IPAdapter_plus.IPAdapterTiledBatch'], OUT['IPAdapter_plus.IPAdapterTiledBatch']> & {
             _MODEL: ComfyNodeOutput<'MODEL'>
-            _tiles: ComfyNodeOutput<'IMAGE'>
-            _masks: ComfyNodeOutput<'MASK'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          "IPAdapter_plus.IPAdapterEmbeds": ComfyNode<IN['IPAdapter_plus.IPAdapterEmbeds'], OUT['IPAdapter_plus.IPAdapterEmbeds']> & {
             _MODEL: ComfyNodeOutput<'MODEL'>
@@ -11011,12 +10961,12 @@ declare global {
             _MODEL: ComfyNodeOutput<'MODEL'>
          }
          "IPAdapter_plus.IPAdapterUnifiedLoader": ComfyNode<IN['IPAdapter_plus.IPAdapterUnifiedLoader'], OUT['IPAdapter_plus.IPAdapterUnifiedLoader']> & {
-            _model: ComfyNodeOutput<'MODEL'>
-            _ipadapter: ComfyNodeOutput<'IPADAPTER'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
+            _IPADAPTER: ComfyNodeOutput<'IPADAPTER'>
          }
          "IPAdapter_plus.IPAdapterUnifiedLoaderFaceID": ComfyNode<IN['IPAdapter_plus.IPAdapterUnifiedLoaderFaceID'], OUT['IPAdapter_plus.IPAdapterUnifiedLoaderFaceID']> & {
             _MODEL: ComfyNodeOutput<'MODEL'>
-            _ipadapter: ComfyNodeOutput<'IPADAPTER'>
+            _IPADAPTER: ComfyNodeOutput<'IPADAPTER'>
          }
          "IPAdapter_plus.IPAdapterModelLoader": ComfyNode<IN['IPAdapter_plus.IPAdapterModelLoader'], OUT['IPAdapter_plus.IPAdapterModelLoader']> & {
             _IPADAPTER: ComfyNodeOutput<'IPADAPTER'>
@@ -11025,8 +10975,8 @@ declare global {
             _INSIGHTFACE: ComfyNodeOutput<'INSIGHTFACE'>
          }
          "IPAdapter_plus.IPAdapterUnifiedLoaderCommunity": ComfyNode<IN['IPAdapter_plus.IPAdapterUnifiedLoaderCommunity'], OUT['IPAdapter_plus.IPAdapterUnifiedLoaderCommunity']> & {
-            _model: ComfyNodeOutput<'MODEL'>
-            _ipadapter: ComfyNodeOutput<'IPADAPTER'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
+            _IPADAPTER: ComfyNodeOutput<'IPADAPTER'>
          }
          "IPAdapter_plus.IPAdapterEncoder": ComfyNode<IN['IPAdapter_plus.IPAdapterEncoder'], OUT['IPAdapter_plus.IPAdapterEncoder']> & {
          }
@@ -11045,19 +10995,19 @@ declare global {
             _EMBEDS: ComfyNodeOutput<'EMBEDS'>
          }
          "IPAdapter_plus.IPAdapterWeights": ComfyNode<IN['IPAdapter_plus.IPAdapterWeights'], OUT['IPAdapter_plus.IPAdapterWeights']> & {
-            _total_frames: ComfyNodeOutput<'INT'>
-            _weights_strategy: ComfyNodeOutput<'WEIGHTS_STRATEGY'>
+            _INT: ComfyNodeOutput<'INT'>
+            _WEIGHTS_STRATEGY: ComfyNodeOutput<'WEIGHTS_STRATEGY'>
          }
          "IPAdapter_plus.IPAdapterCombineWeights": ComfyNode<IN['IPAdapter_plus.IPAdapterCombineWeights'], OUT['IPAdapter_plus.IPAdapterCombineWeights']> & {
-            _weights: ComfyNodeOutput<'FLOAT'>
-            _count: ComfyNodeOutput<'INT'>
+            _FLOAT: ComfyNodeOutput<'FLOAT'>
+            _INT: ComfyNodeOutput<'INT'>
          }
          "IPAdapter_plus.IPAdapterWeightsFromStrategy": ComfyNode<IN['IPAdapter_plus.IPAdapterWeightsFromStrategy'], OUT['IPAdapter_plus.IPAdapterWeightsFromStrategy']> & {
-            _total_frames: ComfyNodeOutput<'INT'>
-            _weights_strategy: ComfyNodeOutput<'WEIGHTS_STRATEGY'>
+            _INT: ComfyNodeOutput<'INT'>
+            _WEIGHTS_STRATEGY: ComfyNodeOutput<'WEIGHTS_STRATEGY'>
          }
          "IPAdapter_plus.IPAdapterPromptScheduleFromWeightsStrategy": ComfyNode<IN['IPAdapter_plus.IPAdapterPromptScheduleFromWeightsStrategy'], OUT['IPAdapter_plus.IPAdapterPromptScheduleFromWeightsStrategy']> & {
-            _prompt_schedule: ComfyNodeOutput<'STRING'>
+            _STRING: ComfyNodeOutput<'STRING'>
          }
          "IPAdapter_plus.IPAdapterRegionalConditioning": ComfyNode<IN['IPAdapter_plus.IPAdapterRegionalConditioning'], OUT['IPAdapter_plus.IPAdapterRegionalConditioning']> & {
             _IPADAPTER_PARAMS: ComfyNodeOutput<'IPADAPTER_PARAMS'>
@@ -11079,7 +11029,7 @@ declare global {
          }
          "controlnet_aux.AnimeFace_SemSegPreprocessor": ComfyNode<IN['controlnet_aux.AnimeFace_SemSegPreprocessor'], OUT['controlnet_aux.AnimeFace_SemSegPreprocessor']> & {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
-            "_ABG_CHARACTER_MASK (MASK)": ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          "controlnet_aux.Zoe-DepthMapPreprocessor": ComfyNode<IN['controlnet_aux.Zoe-DepthMapPreprocessor'], OUT['controlnet_aux.Zoe-DepthMapPreprocessor']> & {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
@@ -11136,11 +11086,11 @@ declare global {
          }
          "controlnet_aux.MeshGraphormer-DepthMapPreprocessor": ComfyNode<IN['controlnet_aux.MeshGraphormer-DepthMapPreprocessor'], OUT['controlnet_aux.MeshGraphormer-DepthMapPreprocessor']> & {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
-            _INPAINTING_MASK: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          "controlnet_aux.MeshGraphormer+ImpactDetector-DepthMapPreprocessor": ComfyNode<IN['controlnet_aux.MeshGraphormer+ImpactDetector-DepthMapPreprocessor'], OUT['controlnet_aux.MeshGraphormer+ImpactDetector-DepthMapPreprocessor']> & {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
-            _INPAINTING_MASK: ComfyNodeOutput<'MASK'>
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          "controlnet_aux.DSINE-NormalMapPreprocessor": ComfyNode<IN['controlnet_aux.DSINE-NormalMapPreprocessor'], OUT['controlnet_aux.DSINE-NormalMapPreprocessor']> & {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
@@ -11152,7 +11102,7 @@ declare global {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.AnyLineArtPreprocessor_aux": ComfyNode<IN['controlnet_aux.AnyLineArtPreprocessor_aux'], OUT['controlnet_aux.AnyLineArtPreprocessor_aux']> & {
-            _image: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.SAMPreprocessor": ComfyNode<IN['controlnet_aux.SAMPreprocessor'], OUT['controlnet_aux.SAMPreprocessor']> & {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
@@ -11178,11 +11128,11 @@ declare global {
          }
          "controlnet_aux.Unimatch_OptFlowPreprocessor": ComfyNode<IN['controlnet_aux.Unimatch_OptFlowPreprocessor'], OUT['controlnet_aux.Unimatch_OptFlowPreprocessor']> & {
             _OPTICAL_FLOW: ComfyNodeOutput<'OPTICAL_FLOW'>
-            _PREVIEW_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.MaskOptFlow": ComfyNode<IN['controlnet_aux.MaskOptFlow'], OUT['controlnet_aux.MaskOptFlow']> & {
             _OPTICAL_FLOW: ComfyNodeOutput<'OPTICAL_FLOW'>
-            _PREVIEW_IMAGE: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.SavePoseKpsAsJsonFile": ComfyNode<IN['controlnet_aux.SavePoseKpsAsJsonFile'], OUT['controlnet_aux.SavePoseKpsAsJsonFile']> & {
          }
@@ -11190,8 +11140,8 @@ declare global {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.UpperBodyTrackingFromPoseKps": ComfyNode<IN['controlnet_aux.UpperBodyTrackingFromPoseKps'], OUT['controlnet_aux.UpperBodyTrackingFromPoseKps']> & {
-            _tracking: ComfyNodeOutput<'TRACKING'>
-            _prompt: ComfyNodeOutput<'STRING'>
+            _TRACKING: ComfyNodeOutput<'TRACKING'>
+            _STRING: ComfyNodeOutput<'STRING'>
          }
          "controlnet_aux.RenderPeopleKps": ComfyNode<IN['controlnet_aux.RenderPeopleKps'], OUT['controlnet_aux.RenderPeopleKps']> & {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
@@ -11245,10 +11195,10 @@ declare global {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "controlnet_aux.ControlNetPreprocessorSelector": ComfyNode<IN['controlnet_aux.ControlNetPreprocessorSelector'], OUT['controlnet_aux.ControlNetPreprocessorSelector']> & {
-            _preprocessor: ComfyNodeOutput<'E_90ee5994'>
+            _E_90ee5994: ComfyNodeOutput<'E_90ee5994'>
          }
          "controlnet_aux.PixelPerfectResolution": ComfyNode<IN['controlnet_aux.PixelPerfectResolution'], OUT['controlnet_aux.PixelPerfectResolution']> & {
-            "_RESOLUTION (INT)": ComfyNodeOutput<'INT'>
+            _INT: ComfyNodeOutput<'INT'>
          }
          "controlnet_aux.ImageGenResolutionFromImage": ComfyNode<IN['controlnet_aux.ImageGenResolutionFromImage'], OUT['controlnet_aux.ImageGenResolutionFromImage']> & {
          }
@@ -11264,25 +11214,25 @@ declare global {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "Marigold.MarigoldModelLoader": ComfyNode<IN['Marigold.MarigoldModelLoader'], OUT['Marigold.MarigoldModelLoader']> & {
-            _marigold_model: ComfyNodeOutput<'MARIGOLDMODEL'>
+            _MARIGOLDMODEL: ComfyNodeOutput<'MARIGOLDMODEL'>
          }
          "Marigold.MarigoldDepthEstimation_v2": ComfyNode<IN['Marigold.MarigoldDepthEstimation_v2'], OUT['Marigold.MarigoldDepthEstimation_v2']> & {
-            _image: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "Marigold.MarigoldDepthEstimation_v2_video": ComfyNode<IN['Marigold.MarigoldDepthEstimation_v2_video'], OUT['Marigold.MarigoldDepthEstimation_v2_video']> & {
-            _image: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "Marigold.MarigoldDepthEstimation": ComfyNode<IN['Marigold.MarigoldDepthEstimation'], OUT['Marigold.MarigoldDepthEstimation']> & {
-            _ensembled_image: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "Marigold.MarigoldDepthEstimationVideo": ComfyNode<IN['Marigold.MarigoldDepthEstimationVideo'], OUT['Marigold.MarigoldDepthEstimationVideo']> & {
-            _ensembled_image: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "Marigold.ColorizeDepthmap": ComfyNode<IN['Marigold.ColorizeDepthmap'], OUT['Marigold.ColorizeDepthmap']> & {
-            _image: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "Marigold.SaveImageOpenEXR": ComfyNode<IN['Marigold.SaveImageOpenEXR'], OUT['Marigold.SaveImageOpenEXR']> & {
-            _file_url: ComfyNodeOutput<'STRING'>
+            _STRING: ComfyNodeOutput<'STRING'>
          }
          "Marigold.RemapDepth": ComfyNode<IN['Marigold.RemapDepth'], OUT['Marigold.RemapDepth']> & {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
@@ -11308,16 +11258,16 @@ declare global {
          "Impact_Pack.DetailerForEachDebug": ComfyNode<IN['Impact_Pack.DetailerForEachDebug'], OUT['Impact_Pack.DetailerForEachDebug']> & {
          }
          "Impact_Pack.DetailerForEachPipe": ComfyNode<IN['Impact_Pack.DetailerForEachPipe'], OUT['Impact_Pack.DetailerForEachPipe']> & {
-            _segs: ComfyNodeOutput<'SEGS'>
-            _basic_pipe: ComfyNodeOutput<'BASIC_PIPE'>
+            _SEGS: ComfyNodeOutput<'SEGS'>
+            _BASIC_PIPE: ComfyNodeOutput<'BASIC_PIPE'>
          }
          "Impact_Pack.DetailerForEachDebugPipe": ComfyNode<IN['Impact_Pack.DetailerForEachDebugPipe'], OUT['Impact_Pack.DetailerForEachDebugPipe']> & {
-            _segs: ComfyNodeOutput<'SEGS'>
-            _basic_pipe: ComfyNodeOutput<'BASIC_PIPE'>
+            _SEGS: ComfyNodeOutput<'SEGS'>
+            _BASIC_PIPE: ComfyNodeOutput<'BASIC_PIPE'>
          }
          "Impact_Pack.DetailerForEachPipeForAnimateDiff": ComfyNode<IN['Impact_Pack.DetailerForEachPipeForAnimateDiff'], OUT['Impact_Pack.DetailerForEachPipeForAnimateDiff']> & {
-            _segs: ComfyNodeOutput<'SEGS'>
-            _basic_pipe: ComfyNodeOutput<'BASIC_PIPE'>
+            _SEGS: ComfyNodeOutput<'SEGS'>
+            _BASIC_PIPE: ComfyNodeOutput<'BASIC_PIPE'>
          }
          "Impact_Pack.SAMDetectorCombined": ComfyNode<IN['Impact_Pack.SAMDetectorCombined'], OUT['Impact_Pack.SAMDetectorCombined']> & {
             _MASK: ComfyNodeOutput<'MASK'>
@@ -11325,81 +11275,81 @@ declare global {
          "Impact_Pack.SAMDetectorSegmented": ComfyNode<IN['Impact_Pack.SAMDetectorSegmented'], OUT['Impact_Pack.SAMDetectorSegmented']> & {
          }
          "Impact_Pack.FaceDetailer": ComfyNode<IN['Impact_Pack.FaceDetailer'], OUT['Impact_Pack.FaceDetailer']> & {
-            _mask: ComfyNodeOutput<'MASK'>
-            _detailer_pipe: ComfyNodeOutput<'DETAILER_PIPE'>
+            _MASK: ComfyNodeOutput<'MASK'>
+            _DETAILER_PIPE: ComfyNodeOutput<'DETAILER_PIPE'>
          }
          "Impact_Pack.FaceDetailerPipe": ComfyNode<IN['Impact_Pack.FaceDetailerPipe'], OUT['Impact_Pack.FaceDetailerPipe']> & {
-            _mask: ComfyNodeOutput<'MASK'>
-            _detailer_pipe: ComfyNodeOutput<'DETAILER_PIPE'>
+            _MASK: ComfyNodeOutput<'MASK'>
+            _DETAILER_PIPE: ComfyNodeOutput<'DETAILER_PIPE'>
          }
          "Impact_Pack.MaskDetailerPipe": ComfyNode<IN['Impact_Pack.MaskDetailerPipe'], OUT['Impact_Pack.MaskDetailerPipe']> & {
          }
          "Impact_Pack.ToDetailerPipe": ComfyNode<IN['Impact_Pack.ToDetailerPipe'], OUT['Impact_Pack.ToDetailerPipe']> & {
-            _detailer_pipe: ComfyNodeOutput<'DETAILER_PIPE'>
+            _DETAILER_PIPE: ComfyNodeOutput<'DETAILER_PIPE'>
          }
          "Impact_Pack.ToDetailerPipeSDXL": ComfyNode<IN['Impact_Pack.ToDetailerPipeSDXL'], OUT['Impact_Pack.ToDetailerPipeSDXL']> & {
-            _detailer_pipe: ComfyNodeOutput<'DETAILER_PIPE'>
+            _DETAILER_PIPE: ComfyNodeOutput<'DETAILER_PIPE'>
          }
          "Impact_Pack.FromDetailerPipe": ComfyNode<IN['Impact_Pack.FromDetailerPipe'], OUT['Impact_Pack.FromDetailerPipe']> & {
-            _model: ComfyNodeOutput<'MODEL'>
-            _clip: ComfyNodeOutput<'CLIP'>
-            _vae: ComfyNodeOutput<'VAE'>
-            _bbox_detector: ComfyNodeOutput<'BBOX_DETECTOR'>
-            _sam_model_opt: ComfyNodeOutput<'SAM_MODEL'>
-            _segm_detector_opt: ComfyNodeOutput<'SEGM_DETECTOR'>
-            _detailer_hook: ComfyNodeOutput<'DETAILER_HOOK'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
+            _CLIP: ComfyNodeOutput<'CLIP'>
+            _VAE: ComfyNodeOutput<'VAE'>
+            _BBOX_DETECTOR: ComfyNodeOutput<'BBOX_DETECTOR'>
+            _SAM_MODEL: ComfyNodeOutput<'SAM_MODEL'>
+            _SEGM_DETECTOR: ComfyNodeOutput<'SEGM_DETECTOR'>
+            _DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK'>
          }
          "Impact_Pack.FromDetailerPipe_v2": ComfyNode<IN['Impact_Pack.FromDetailerPipe_v2'], OUT['Impact_Pack.FromDetailerPipe_v2']> & {
-            _detailer_pipe: ComfyNodeOutput<'DETAILER_PIPE'>
-            _model: ComfyNodeOutput<'MODEL'>
-            _clip: ComfyNodeOutput<'CLIP'>
-            _vae: ComfyNodeOutput<'VAE'>
-            _bbox_detector: ComfyNodeOutput<'BBOX_DETECTOR'>
-            _sam_model_opt: ComfyNodeOutput<'SAM_MODEL'>
-            _segm_detector_opt: ComfyNodeOutput<'SEGM_DETECTOR'>
-            _detailer_hook: ComfyNodeOutput<'DETAILER_HOOK'>
+            _DETAILER_PIPE: ComfyNodeOutput<'DETAILER_PIPE'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
+            _CLIP: ComfyNodeOutput<'CLIP'>
+            _VAE: ComfyNodeOutput<'VAE'>
+            _BBOX_DETECTOR: ComfyNodeOutput<'BBOX_DETECTOR'>
+            _SAM_MODEL: ComfyNodeOutput<'SAM_MODEL'>
+            _SEGM_DETECTOR: ComfyNodeOutput<'SEGM_DETECTOR'>
+            _DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK'>
          }
          "Impact_Pack.FromDetailerPipeSDXL": ComfyNode<IN['Impact_Pack.FromDetailerPipeSDXL'], OUT['Impact_Pack.FromDetailerPipeSDXL']> & {
-            _detailer_pipe: ComfyNodeOutput<'DETAILER_PIPE'>
-            _vae: ComfyNodeOutput<'VAE'>
-            _bbox_detector: ComfyNodeOutput<'BBOX_DETECTOR'>
-            _sam_model_opt: ComfyNodeOutput<'SAM_MODEL'>
-            _segm_detector_opt: ComfyNodeOutput<'SEGM_DETECTOR'>
-            _detailer_hook: ComfyNodeOutput<'DETAILER_HOOK'>
+            _DETAILER_PIPE: ComfyNodeOutput<'DETAILER_PIPE'>
+            _VAE: ComfyNodeOutput<'VAE'>
+            _BBOX_DETECTOR: ComfyNodeOutput<'BBOX_DETECTOR'>
+            _SAM_MODEL: ComfyNodeOutput<'SAM_MODEL'>
+            _SEGM_DETECTOR: ComfyNodeOutput<'SEGM_DETECTOR'>
+            _DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK'>
          }
          "Impact_Pack.AnyPipeToBasic": ComfyNode<IN['Impact_Pack.AnyPipeToBasic'], OUT['Impact_Pack.AnyPipeToBasic']> & {
-            _basic_pipe: ComfyNodeOutput<'BASIC_PIPE'>
+            _BASIC_PIPE: ComfyNodeOutput<'BASIC_PIPE'>
          }
          "Impact_Pack.ToBasicPipe": ComfyNode<IN['Impact_Pack.ToBasicPipe'], OUT['Impact_Pack.ToBasicPipe']> & {
-            _basic_pipe: ComfyNodeOutput<'BASIC_PIPE'>
+            _BASIC_PIPE: ComfyNodeOutput<'BASIC_PIPE'>
          }
          "Impact_Pack.FromBasicPipe": ComfyNode<IN['Impact_Pack.FromBasicPipe'], OUT['Impact_Pack.FromBasicPipe']> & {
-            _model: ComfyNodeOutput<'MODEL'>
-            _clip: ComfyNodeOutput<'CLIP'>
-            _vae: ComfyNodeOutput<'VAE'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
+            _CLIP: ComfyNodeOutput<'CLIP'>
+            _VAE: ComfyNodeOutput<'VAE'>
          }
          "Impact_Pack.FromBasicPipe_v2": ComfyNode<IN['Impact_Pack.FromBasicPipe_v2'], OUT['Impact_Pack.FromBasicPipe_v2']> & {
-            _basic_pipe: ComfyNodeOutput<'BASIC_PIPE'>
-            _model: ComfyNodeOutput<'MODEL'>
-            _clip: ComfyNodeOutput<'CLIP'>
-            _vae: ComfyNodeOutput<'VAE'>
+            _BASIC_PIPE: ComfyNodeOutput<'BASIC_PIPE'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
+            _CLIP: ComfyNodeOutput<'CLIP'>
+            _VAE: ComfyNodeOutput<'VAE'>
          }
          "Impact_Pack.BasicPipeToDetailerPipe": ComfyNode<IN['Impact_Pack.BasicPipeToDetailerPipe'], OUT['Impact_Pack.BasicPipeToDetailerPipe']> & {
-            _detailer_pipe: ComfyNodeOutput<'DETAILER_PIPE'>
+            _DETAILER_PIPE: ComfyNodeOutput<'DETAILER_PIPE'>
          }
          "Impact_Pack.BasicPipeToDetailerPipeSDXL": ComfyNode<IN['Impact_Pack.BasicPipeToDetailerPipeSDXL'], OUT['Impact_Pack.BasicPipeToDetailerPipeSDXL']> & {
-            _detailer_pipe: ComfyNodeOutput<'DETAILER_PIPE'>
+            _DETAILER_PIPE: ComfyNodeOutput<'DETAILER_PIPE'>
          }
          "Impact_Pack.DetailerPipeToBasicPipe": ComfyNode<IN['Impact_Pack.DetailerPipeToBasicPipe'], OUT['Impact_Pack.DetailerPipeToBasicPipe']> & {
          }
          "Impact_Pack.EditBasicPipe": ComfyNode<IN['Impact_Pack.EditBasicPipe'], OUT['Impact_Pack.EditBasicPipe']> & {
-            _basic_pipe: ComfyNodeOutput<'BASIC_PIPE'>
+            _BASIC_PIPE: ComfyNodeOutput<'BASIC_PIPE'>
          }
          "Impact_Pack.EditDetailerPipe": ComfyNode<IN['Impact_Pack.EditDetailerPipe'], OUT['Impact_Pack.EditDetailerPipe']> & {
-            _detailer_pipe: ComfyNodeOutput<'DETAILER_PIPE'>
+            _DETAILER_PIPE: ComfyNodeOutput<'DETAILER_PIPE'>
          }
          "Impact_Pack.EditDetailerPipeSDXL": ComfyNode<IN['Impact_Pack.EditDetailerPipeSDXL'], OUT['Impact_Pack.EditDetailerPipeSDXL']> & {
-            _detailer_pipe: ComfyNodeOutput<'DETAILER_PIPE'>
+            _DETAILER_PIPE: ComfyNodeOutput<'DETAILER_PIPE'>
          }
          "Impact_Pack.LatentPixelScale": ComfyNode<IN['Impact_Pack.LatentPixelScale'], OUT['Impact_Pack.LatentPixelScale']> & {
             _LATENT: ComfyNodeOutput<'LATENT'>
@@ -11412,11 +11362,11 @@ declare global {
             _UPSCALER: ComfyNodeOutput<'UPSCALER'>
          }
          "Impact_Pack.IterativeLatentUpscale": ComfyNode<IN['Impact_Pack.IterativeLatentUpscale'], OUT['Impact_Pack.IterativeLatentUpscale']> & {
-            _latent: ComfyNodeOutput<'LATENT'>
-            _vae: ComfyNodeOutput<'VAE'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
+            _VAE: ComfyNodeOutput<'VAE'>
          }
          "Impact_Pack.IterativeImageUpscale": ComfyNode<IN['Impact_Pack.IterativeImageUpscale'], OUT['Impact_Pack.IterativeImageUpscale']> & {
-            _image: ComfyNodeOutput<'IMAGE'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "Impact_Pack.PixelTiledKSampleUpscalerProvider": ComfyNode<IN['Impact_Pack.PixelTiledKSampleUpscalerProvider'], OUT['Impact_Pack.PixelTiledKSampleUpscalerProvider']> & {
             _UPSCALER: ComfyNodeOutput<'UPSCALER'>
@@ -11565,14 +11515,14 @@ declare global {
             _SEGS: ComfyNodeOutput<'SEGS'>
          }
          "Impact_Pack.ImpactFrom_SEG_ELT": ComfyNode<IN['Impact_Pack.ImpactFrom_SEG_ELT'], OUT['Impact_Pack.ImpactFrom_SEG_ELT']> & {
-            _seg_elt: ComfyNodeOutput<'SEG_ELT'>
-            _cropped_image: ComfyNodeOutput<'IMAGE'>
-            _cropped_mask: ComfyNodeOutput<'MASK'>
-            _crop_region: ComfyNodeOutput<'SEG_ELT_crop_region'>
-            _bbox: ComfyNodeOutput<'SEG_ELT_bbox'>
-            _control_net_wrapper: ComfyNodeOutput<'SEG_ELT_control_net_wrapper'>
-            _confidence: ComfyNodeOutput<'FLOAT'>
-            _label: ComfyNodeOutput<'STRING'>
+            _SEG_ELT: ComfyNodeOutput<'SEG_ELT'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
+            _MASK: ComfyNodeOutput<'MASK'>
+            _SEG_ELT_crop_region: ComfyNodeOutput<'SEG_ELT_crop_region'>
+            _SEG_ELT_bbox: ComfyNodeOutput<'SEG_ELT_bbox'>
+            _SEG_ELT_control_net_wrapper: ComfyNodeOutput<'SEG_ELT_control_net_wrapper'>
+            _FLOAT: ComfyNodeOutput<'FLOAT'>
+            _STRING: ComfyNodeOutput<'STRING'>
          }
          "Impact_Pack.ImpactEdit_SEG_ELT": ComfyNode<IN['Impact_Pack.ImpactEdit_SEG_ELT'], OUT['Impact_Pack.ImpactEdit_SEG_ELT']> & {
             _SEG_ELT: ComfyNodeOutput<'SEG_ELT'>
@@ -11653,19 +11603,19 @@ declare global {
             _MASK: ComfyNodeOutput<'MASK'>
          }
          "Impact_Pack.LatentSwitch": ComfyNode<IN['Impact_Pack.LatentSwitch'], OUT['Impact_Pack.LatentSwitch']> & {
-            _selected_value: ComfyNodeOutput<'*'>
-            _selected_label: ComfyNodeOutput<'STRING'>
-            _selected_index: ComfyNodeOutput<'INT'>
+            "_*": ComfyNodeOutput<'*'>
+            _STRING: ComfyNodeOutput<'STRING'>
+            _INT: ComfyNodeOutput<'INT'>
          }
          "Impact_Pack.SEGSSwitch": ComfyNode<IN['Impact_Pack.SEGSSwitch'], OUT['Impact_Pack.SEGSSwitch']> & {
-            _selected_value: ComfyNodeOutput<'*'>
-            _selected_label: ComfyNodeOutput<'STRING'>
-            _selected_index: ComfyNodeOutput<'INT'>
+            "_*": ComfyNodeOutput<'*'>
+            _STRING: ComfyNodeOutput<'STRING'>
+            _INT: ComfyNodeOutput<'INT'>
          }
          "Impact_Pack.ImpactSwitch": ComfyNode<IN['Impact_Pack.ImpactSwitch'], OUT['Impact_Pack.ImpactSwitch']> & {
-            _selected_value: ComfyNodeOutput<'*'>
-            _selected_label: ComfyNodeOutput<'STRING'>
-            _selected_index: ComfyNodeOutput<'INT'>
+            "_*": ComfyNodeOutput<'*'>
+            _STRING: ComfyNodeOutput<'STRING'>
+            _INT: ComfyNodeOutput<'INT'>
          }
          "Impact_Pack.ImpactInversedSwitch": ComfyNode<IN['Impact_Pack.ImpactInversedSwitch'], OUT['Impact_Pack.ImpactInversedSwitch']> & {
             "_*": ComfyNodeOutput<'*'>
@@ -11674,10 +11624,10 @@ declare global {
             _STRING: ComfyNodeOutput<'STRING'>
          }
          "Impact_Pack.ImpactWildcardEncode": ComfyNode<IN['Impact_Pack.ImpactWildcardEncode'], OUT['Impact_Pack.ImpactWildcardEncode']> & {
-            _model: ComfyNodeOutput<'MODEL'>
-            _clip: ComfyNodeOutput<'CLIP'>
-            _conditioning: ComfyNodeOutput<'CONDITIONING'>
-            _populated_text: ComfyNodeOutput<'STRING'>
+            _MODEL: ComfyNodeOutput<'MODEL'>
+            _CLIP: ComfyNodeOutput<'CLIP'>
+            _CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
+            _STRING: ComfyNodeOutput<'STRING'>
          }
          "Impact_Pack.SEGSUpscaler": ComfyNode<IN['Impact_Pack.SEGSUpscaler'], OUT['Impact_Pack.SEGSUpscaler']> & {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
@@ -11686,8 +11636,8 @@ declare global {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "Impact_Pack.SEGSDetailer": ComfyNode<IN['Impact_Pack.SEGSDetailer'], OUT['Impact_Pack.SEGSDetailer']> & {
-            _segs: ComfyNodeOutput<'SEGS'>
-            _cnet_images: ComfyNodeOutput<'IMAGE'>
+            _SEGS: ComfyNodeOutput<'SEGS'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "Impact_Pack.SEGSPaste": ComfyNode<IN['Impact_Pack.SEGSPaste'], OUT['Impact_Pack.SEGSPaste']> & {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
@@ -11720,8 +11670,8 @@ declare global {
             _SEGS: ComfyNodeOutput<'SEGS'>
          }
          "Impact_Pack.SEGSDetailerForAnimateDiff": ComfyNode<IN['Impact_Pack.SEGSDetailerForAnimateDiff'], OUT['Impact_Pack.SEGSDetailerForAnimateDiff']> & {
-            _segs: ComfyNodeOutput<'SEGS'>
-            _cnet_images: ComfyNodeOutput<'IMAGE'>
+            _SEGS: ComfyNodeOutput<'SEGS'>
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
          "Impact_Pack.ImpactKSamplerBasicPipe": ComfyNode<IN['Impact_Pack.ImpactKSamplerBasicPipe'], OUT['Impact_Pack.ImpactKSamplerBasicPipe']> & {
             _BASIC_PIPE: ComfyNodeOutput<'BASIC_PIPE'>
@@ -11794,8 +11744,8 @@ declare global {
             "_*": ComfyNodeOutput<'*'>
          }
          "Impact_Pack.ImpactIfNone": ComfyNode<IN['Impact_Pack.ImpactIfNone'], OUT['Impact_Pack.ImpactIfNone']> & {
-            _signal_opt: ComfyNodeOutput<'*'>
-            _bool: ComfyNodeOutput<'BOOLEAN'>
+            "_*": ComfyNodeOutput<'*'>
+            _BOOLEAN: ComfyNodeOutput<'BOOLEAN'>
          }
          "Impact_Pack.ImpactConvertDataType": ComfyNode<IN['Impact_Pack.ImpactConvertDataType'], OUT['Impact_Pack.ImpactConvertDataType']> & {
             _STRING: ComfyNodeOutput<'STRING'>
@@ -11816,7 +11766,7 @@ declare global {
             _BOOLEAN: ComfyNodeOutput<'BOOLEAN'>
          }
          "Impact_Pack.ImpactValueSender": ComfyNode<IN['Impact_Pack.ImpactValueSender'], OUT['Impact_Pack.ImpactValueSender']> & {
-            _signal: ComfyNodeOutput<'*'>
+            "_*": ComfyNodeOutput<'*'>
          }
          "Impact_Pack.ImpactValueReceiver": ComfyNode<IN['Impact_Pack.ImpactValueReceiver'], OUT['Impact_Pack.ImpactValueReceiver']> & {
             "_*": ComfyNodeOutput<'*'>
@@ -11852,25 +11802,25 @@ declare global {
             "_*": ComfyNodeOutput<'*'>
          }
          "Impact_Pack.ImpactQueueTrigger": ComfyNode<IN['Impact_Pack.ImpactQueueTrigger'], OUT['Impact_Pack.ImpactQueueTrigger']> & {
-            _signal_opt: ComfyNodeOutput<'*'>
+            "_*": ComfyNodeOutput<'*'>
          }
          "Impact_Pack.ImpactQueueTriggerCountdown": ComfyNode<IN['Impact_Pack.ImpactQueueTriggerCountdown'], OUT['Impact_Pack.ImpactQueueTriggerCountdown']> & {
-            _signal_opt: ComfyNodeOutput<'*'>
+            "_*": ComfyNodeOutput<'*'>
          }
          "Impact_Pack.ImpactSetWidgetValue": ComfyNode<IN['Impact_Pack.ImpactSetWidgetValue'], OUT['Impact_Pack.ImpactSetWidgetValue']> & {
-            _signal_opt: ComfyNodeOutput<'*'>
+            "_*": ComfyNodeOutput<'*'>
          }
          "Impact_Pack.ImpactNodeSetMuteState": ComfyNode<IN['Impact_Pack.ImpactNodeSetMuteState'], OUT['Impact_Pack.ImpactNodeSetMuteState']> & {
-            _signal_opt: ComfyNodeOutput<'*'>
+            "_*": ComfyNodeOutput<'*'>
          }
          "Impact_Pack.ImpactControlBridge": ComfyNode<IN['Impact_Pack.ImpactControlBridge'], OUT['Impact_Pack.ImpactControlBridge']> & {
-            _value: ComfyNodeOutput<'*'>
+            "_*": ComfyNodeOutput<'*'>
          }
          "Impact_Pack.ImpactIsNotEmptySEGS": ComfyNode<IN['Impact_Pack.ImpactIsNotEmptySEGS'], OUT['Impact_Pack.ImpactIsNotEmptySEGS']> & {
             _BOOLEAN: ComfyNodeOutput<'BOOLEAN'>
          }
          "Impact_Pack.ImpactSleep": ComfyNode<IN['Impact_Pack.ImpactSleep'], OUT['Impact_Pack.ImpactSleep']> & {
-            _signal_opt: ComfyNodeOutput<'*'>
+            "_*": ComfyNodeOutput<'*'>
          }
          "Impact_Pack.ImpactRemoteBoolean": ComfyNode<IN['Impact_Pack.ImpactRemoteBoolean'], OUT['Impact_Pack.ImpactRemoteBoolean']> & {
          }
@@ -11880,10 +11830,10 @@ declare global {
             _TRANSFORMERS_CLASSIFIER: ComfyNodeOutput<'TRANSFORMERS_CLASSIFIER'>
          }
          "Impact_Pack.ImpactSEGSClassify": ComfyNode<IN['Impact_Pack.ImpactSEGSClassify'], OUT['Impact_Pack.ImpactSEGSClassify']> & {
-            _detected_labels: ComfyNodeOutput<'STRING'>
+            _STRING: ComfyNodeOutput<'STRING'>
          }
          "Impact_Pack.ImpactSchedulerAdapter": ComfyNode<IN['Impact_Pack.ImpactSchedulerAdapter'], OUT['Impact_Pack.ImpactSchedulerAdapter']> & {
-            _scheduler: ComfyNodeOutput<'E_720061fd'>
+            _E_720061fd: ComfyNodeOutput<'E_720061fd'>
          }
          "Impact_Pack.GITSSchedulerFuncProvider": ComfyNode<IN['Impact_Pack.GITSSchedulerFuncProvider'], OUT['Impact_Pack.GITSSchedulerFuncProvider']> & {
             _SCHEDULER_FUNC: ComfyNodeOutput<'SCHEDULER_FUNC'>
@@ -20461,7 +20411,7 @@ declare global {
       }
       // TODO rename to ObjecInfoContent
       export type Schemas = {[k in ComfyNodeType]: ComfyNodeSchemaJSON}
-      export type ComfyNodeType = 'KSampler' | 'CheckpointLoaderSimple' | 'CLIPTextEncode' | 'CLIPSetLastLayer' | 'VAEDecode' | 'VAEEncode' | 'VAEEncodeForInpaint' | 'VAELoader' | 'EmptyLatentImage' | 'LatentUpscale' | 'LatentUpscaleBy' | 'LatentFromBatch' | 'RepeatLatentBatch' | 'SaveImage' | 'PreviewImage' | 'LoadImage' | 'LoadImageMask' | 'ImageScale' | 'ImageScaleBy' | 'ImageInvert' | 'ImageBatch' | 'ImagePadForOutpaint' | 'EmptyImage' | 'ConditioningAverage' | 'ConditioningCombine' | 'ConditioningConcat' | 'ConditioningSetArea' | 'ConditioningSetAreaPercentage' | 'ConditioningSetAreaStrength' | 'ConditioningSetMask' | 'KSamplerAdvanced' | 'SetLatentNoiseMask' | 'LatentComposite' | 'LatentBlend' | 'LatentRotate' | 'LatentFlip' | 'LatentCrop' | 'LoraLoader' | 'CLIPLoader' | 'UNETLoader' | 'DualCLIPLoader' | 'CLIPVisionEncode' | 'StyleModelApply' | 'unCLIPConditioning' | 'ControlNetApply' | 'ControlNetApplyAdvanced' | 'ControlNetLoader' | 'DiffControlNetLoader' | 'StyleModelLoader' | 'CLIPVisionLoader' | 'VAEDecodeTiled' | 'VAEEncodeTiled' | 'unCLIPCheckpointLoader' | 'GLIGENLoader' | 'GLIGENTextBoxApply' | 'InpaintModelConditioning' | 'CheckpointLoader' | 'DiffusersLoader' | 'LoadLatent' | 'SaveLatent' | 'ConditioningZeroOut' | 'ConditioningSetTimestepRange' | 'LoraLoaderModelOnly' | 'LatentAdd' | 'LatentSubtract' | 'LatentMultiply' | 'LatentInterpolate' | 'LatentBatch' | 'LatentBatchSeedBehavior' | 'LatentApplyOperation' | 'LatentApplyOperationCFG' | 'LatentOperationTonemapReinhard' | 'LatentOperationSharpen' | 'HypernetworkLoader' | 'UpscaleModelLoader' | 'ImageUpscaleWithModel' | 'ImageBlend' | 'ImageBlur' | 'ImageQuantize' | 'ImageSharpen' | 'ImageScaleToTotalPixels' | 'LatentCompositeMasked' | 'ImageCompositeMasked' | 'MaskToImage' | 'ImageToMask' | 'ImageColorToMask' | 'SolidMask' | 'InvertMask' | 'CropMask' | 'MaskComposite' | 'FeatherMask' | 'GrowMask' | 'ThresholdMask' | 'PorterDuffImageComposite' | 'SplitImageWithAlpha' | 'JoinImageWithAlpha' | 'RebatchLatents' | 'RebatchImages' | 'ModelMergeSimple' | 'ModelMergeBlocks' | 'ModelMergeSubtract' | 'ModelMergeAdd' | 'CheckpointSave' | 'CLIPMergeSimple' | 'CLIPMergeSubtract' | 'CLIPMergeAdd' | 'CLIPSave' | 'VAESave' | 'ModelSave' | 'TomePatchModel' | 'CLIPTextEncodeSDXLRefiner' | 'CLIPTextEncodeSDXL' | 'Canny' | 'FreeU' | 'FreeU_V2' | 'SamplerCustom' | 'BasicScheduler' | 'KarrasScheduler' | 'ExponentialScheduler' | 'PolyexponentialScheduler' | 'LaplaceScheduler' | 'VPScheduler' | 'BetaSamplingScheduler' | 'SDTurboScheduler' | 'KSamplerSelect' | 'SamplerEulerAncestral' | 'SamplerEulerAncestralCFGPP' | 'SamplerLMS' | 'SamplerDPMPP_3M_SDE' | 'SamplerDPMPP_2M_SDE' | 'SamplerDPMPP_SDE' | 'SamplerDPMPP_2S_Ancestral' | 'SamplerDPMAdaptative' | 'SplitSigmas' | 'SplitSigmasDenoise' | 'FlipSigmas' | 'CFGGuider' | 'DualCFGGuider' | 'BasicGuider' | 'RandomNoise' | 'DisableNoise' | 'AddNoise' | 'SamplerCustomAdvanced' | 'HyperTile' | 'ModelSamplingDiscrete' | 'ModelSamplingContinuousEDM' | 'ModelSamplingContinuousV' | 'ModelSamplingStableCascade' | 'ModelSamplingSD3' | 'ModelSamplingAuraFlow' | 'ModelSamplingFlux' | 'RescaleCFG' | 'PatchModelAddDownscale' | 'ImageCrop' | 'RepeatImageBatch' | 'ImageFromBatch' | 'SaveAnimatedWEBP' | 'SaveAnimatedPNG' | 'ImageOnlyCheckpointLoader' | 'SVD_img2vid_Conditioning' | 'VideoLinearCFGGuidance' | 'VideoTriangleCFGGuidance' | 'ImageOnlyCheckpointSave' | 'SelfAttentionGuidance' | 'PerpNeg' | 'PerpNegGuider' | 'StableZero123_Conditioning' | 'StableZero123_Conditioning_Batched' | 'SV3D_Conditioning' | 'SD_4XUpscale_Conditioning' | 'PhotoMakerLoader' | 'PhotoMakerEncode' | 'CLIPTextEncodeControlnet' | 'Morphology' | 'StableCascade_EmptyLatentImage' | 'StableCascade_StageB_Conditioning' | 'StableCascade_StageC_VAEEncode' | 'StableCascade_SuperResolutionControlnet' | 'DifferentialDiffusion' | 'InstructPixToPixConditioning' | 'ModelMergeSD1' | 'ModelMergeSD2' | 'ModelMergeSDXL' | 'ModelMergeSD3_2B' | 'ModelMergeFlux1' | 'ModelMergeSD35_Large' | 'PerturbedAttentionGuidance' | 'AlignYourStepsScheduler' | 'UNetSelfAttentionMultiply' | 'UNetCrossAttentionMultiply' | 'CLIPAttentionMultiply' | 'UNetTemporalAttentionMultiply' | 'SamplerLCMUpscale' | 'SamplerEulerCFGpp' | 'WebcamCapture' | 'EmptyLatentAudio' | 'VAEEncodeAudio' | 'VAEDecodeAudio' | 'SaveAudio' | 'LoadAudio' | 'PreviewAudio' | 'TripleCLIPLoader' | 'EmptySD3LatentImage' | 'CLIPTextEncodeSD3' | 'ControlNetApplySD3' | 'SkipLayerGuidanceSD3' | 'GITSScheduler' | 'SetUnionControlNetType' | 'ControlNetInpaintingAliMamaApply' | 'CLIPTextEncodeHunyuanDiT' | 'CLIPTextEncodeFlux' | 'FluxGuidance' | 'LoraSave' | 'TorchCompileModel' | 'EmptyMochiLatentVideo' | 'SaveImageWebsocket' | 'BLIP Model Loader' | 'Blend Latents' | 'Bus Node' | 'Cache Node' | 'Checkpoint Loader' | 'Checkpoint Loader (Simple)' | 'CLIPTextEncode (NSP)' | 'CLIP Input Switch' | 'CLIP Vision Input Switch' | 'Conditioning Input Switch' | 'Constant Number' | 'Create Grid Image' | 'Create Grid Image from Batch' | 'Create Morph Image' | 'Create Morph Image from Path' | 'Create Video from Path' | 'CLIPSeg Masking' | 'CLIPSeg Model Loader' | 'CLIPSeg Batch Masking' | 'Convert Masks to Images' | 'Control Net Model Input Switch' | 'Debug Number to Console' | 'Dictionary to Console' | 'Diffusers Model Loader' | 'Diffusers Hub Model Down-Loader' | 'Export API' | 'Latent Input Switch' | 'Load Cache' | 'Logic Boolean' | 'Logic Boolean Primitive' | 'Logic Comparison OR' | 'Logic Comparison AND' | 'Logic Comparison XOR' | 'Logic NOT' | 'Lora Loader' | 'Hex to HSL' | 'HSL to Hex' | 'Image SSAO (Ambient Occlusion)' | 'Image SSDO (Direct Occlusion)' | 'Image Analyze' | 'Image Aspect Ratio' | 'Image Batch' | 'Image Blank' | 'Image Blend by Mask' | 'Image Blend' | 'Image Blending Mode' | 'Image Bloom Filter' | 'Image Canny Filter' | 'Image Chromatic Aberration' | 'Image Color Palette' | 'Image Crop Face' | 'Image Crop Location' | 'Image Crop Square Location' | 'Image Displacement Warp' | 'Image Lucy Sharpen' | 'Image Paste Face' | 'Image Paste Crop' | 'Image Paste Crop by Location' | 'Image Pixelate' | 'Image Power Noise' | 'Image Dragan Photography Filter' | 'Image Edge Detection Filter' | 'Image Film Grain' | 'Image Filter Adjustments' | 'Image Flip' | 'Image Gradient Map' | 'Image Generate Gradient' | 'Image High Pass Filter' | 'Image History Loader' | 'Image Input Switch' | 'Image Levels Adjustment' | 'Image Load' | 'Image Median Filter' | 'Image Mix RGB Channels' | 'Image Monitor Effects Filter' | 'Image Nova Filter' | 'Image Padding' | 'Image Perlin Noise' | 'Image Rembg (Remove Background)' | 'Image Perlin Power Fractal' | 'Image Remove Background (Alpha)' | 'Image Remove Color' | 'Image Resize' | 'Image Rotate' | 'Image Rotate Hue' | 'Image Send HTTP' | 'Image Save' | 'Image Seamless Texture' | 'Image Select Channel' | 'Image Select Color' | 'Image Shadows and Highlights' | 'Image Size to Number' | 'Image Stitch' | 'Image Style Filter' | 'Image Threshold' | 'Image Tiled' | 'Image Transpose' | 'Image fDOF Filter' | 'Image to Latent Mask' | 'Image to Noise' | 'Image to Seed' | 'Images to RGB' | 'Images to Linear' | 'Integer place counter' | 'Image Voronoi Noise Filter' | 'KSampler (WAS)' | 'KSampler Cycle' | 'Latent Batch' | 'Latent Noise Injection' | 'Latent Size to Number' | 'Latent Upscale by Factor (WAS)' | 'Load Image Batch' | 'Load Text File' | 'Load Lora' | 'Lora Input Switch' | 'Masks Add' | 'Masks Subtract' | 'Mask Arbitrary Region' | 'Mask Batch to Mask' | 'Mask Batch' | 'Mask Ceiling Region' | 'Mask Crop Dominant Region' | 'Mask Crop Minority Region' | 'Mask Crop Region' | 'Mask Paste Region' | 'Mask Dilate Region' | 'Mask Dominant Region' | 'Mask Erode Region' | 'Mask Fill Holes' | 'Mask Floor Region' | 'Mask Gaussian Region' | 'Mask Invert' | 'Mask Minority Region' | 'Mask Smooth Region' | 'Mask Threshold Region' | 'Masks Combine Regions' | 'Masks Combine Batch' | 'MiDaS Model Loader' | 'MiDaS Depth Approximation' | 'MiDaS Mask Image' | 'Model Input Switch' | 'Number Counter' | 'Number Operation' | 'Number to Float' | 'Number Input Switch' | 'Number Input Condition' | 'Number Multiple Of' | 'Number PI' | 'Number to Int' | 'Number to Seed' | 'Number to String' | 'Number to Text' | 'Boolean To Text' | 'Prompt Styles Selector' | 'Prompt Multiple Styles Selector' | 'Random Number' | 'Save Text File' | 'Seed' | 'Tensor Batch to Image' | 'BLIP Analyze Image' | 'SAM Model Loader' | 'SAM Parameters' | 'SAM Parameters Combine' | 'SAM Image Mask' | 'Samples Passthrough (Stat System)' | 'String to Text' | 'Image Bounds' | 'Inset Image Bounds' | 'Bounded Image Blend' | 'Bounded Image Blend with Mask' | 'Bounded Image Crop' | 'Bounded Image Crop with Mask' | 'Image Bounds to Console' | 'Text Dictionary Update' | 'Text Dictionary Get' | 'Text Dictionary Convert' | 'Text Dictionary New' | 'Text Dictionary Keys' | 'Text Dictionary To Text' | 'Text Add Tokens' | 'Text Add Token by Input' | 'Text Compare' | 'Text Concatenate' | 'Text File History Loader' | 'Text Find and Replace by Dictionary' | 'Text Find and Replace Input' | 'Text Find and Replace' | 'Text Find' | 'Text Input Switch' | 'Text List' | 'Text List Concatenate' | 'Text List to Text' | 'Text Load Line From File' | 'Text Multiline' | 'Text Multiline (Code Compatible)' | 'Text Parse A1111 Embeddings' | 'Text Parse Noodle Soup Prompts' | 'Text Parse Tokens' | 'Text Random Line' | 'Text Random Prompt' | 'Text String' | 'Text Contains' | 'Text Shuffle' | 'Text Sort' | 'Text to Conditioning' | 'Text to Console' | 'Text to Number' | 'Text to String' | 'Text String Truncate' | 'True Random.org Number Generator' | 'unCLIP Checkpoint Loader' | 'Upscale Model Loader' | 'Upscale Model Switch' | 'Write to GIF' | 'Write to Video' | 'VAE Input Switch' | 'Video Dump Frames' | 'CLIPSEG2' | 'IPAdapter' | 'IPAdapterAdvanced' | 'IPAdapterBatch' | 'IPAdapterFaceID' | 'IPAdapterFaceIDKolors' | 'IPAAdapterFaceIDBatch' | 'IPAdapterTiled' | 'IPAdapterTiledBatch' | 'IPAdapterEmbeds' | 'IPAdapterEmbedsBatch' | 'IPAdapterStyleComposition' | 'IPAdapterStyleCompositionBatch' | 'IPAdapterMS' | 'IPAdapterClipVisionEnhancer' | 'IPAdapterClipVisionEnhancerBatch' | 'IPAdapterFromParams' | 'IPAdapterPreciseStyleTransfer' | 'IPAdapterPreciseStyleTransferBatch' | 'IPAdapterPreciseComposition' | 'IPAdapterPreciseCompositionBatch' | 'IPAdapterUnifiedLoader' | 'IPAdapterUnifiedLoaderFaceID' | 'IPAdapterModelLoader' | 'IPAdapterInsightFaceLoader' | 'IPAdapterUnifiedLoaderCommunity' | 'IPAdapterEncoder' | 'IPAdapterCombineEmbeds' | 'IPAdapterNoise' | 'PrepImageForClipVision' | 'IPAdapterSaveEmbeds' | 'IPAdapterLoadEmbeds' | 'IPAdapterWeights' | 'IPAdapterCombineWeights' | 'IPAdapterWeightsFromStrategy' | 'IPAdapterPromptScheduleFromWeightsStrategy' | 'IPAdapterRegionalConditioning' | 'IPAdapterCombineParams' | 'ShufflePreprocessor' | 'DensePosePreprocessor' | 'LeReS-DepthMapPreprocessor' | 'BinaryPreprocessor' | 'AnimeFace_SemSegPreprocessor' | 'Zoe-DepthMapPreprocessor' | 'DepthAnythingPreprocessor' | 'Zoe_DepthAnythingPreprocessor' | 'DepthAnythingV2Preprocessor' | 'CannyEdgePreprocessor' | 'DWPreprocessor' | 'AnimalPosePreprocessor' | 'ImageLuminanceDetector' | 'ImageIntensityDetector' | 'MediaPipe-FaceMeshPreprocessor' | 'DiffusionEdge_Preprocessor' | 'M-LSDPreprocessor' | 'HEDPreprocessor' | 'FakeScribblePreprocessor' | 'OneFormer-COCO-SemSegPreprocessor' | 'OneFormer-ADE20K-SemSegPreprocessor' | 'BAE-NormalMapPreprocessor' | 'MeshGraphormer-DepthMapPreprocessor' | 'MeshGraphormer+ImpactDetector-DepthMapPreprocessor' | 'DSINE-NormalMapPreprocessor' | 'MiDaS-NormalMapPreprocessor' | 'MiDaS-DepthMapPreprocessor' | 'AnyLineArtPreprocessor_aux' | 'SAMPreprocessor' | 'UniFormer-SemSegPreprocessor' | 'SemSegPreprocessor' | 'PiDiNetPreprocessor' | 'InpaintPreprocessor' | 'LineArtPreprocessor' | 'OpenposePreprocessor' | 'Unimatch_OptFlowPreprocessor' | 'MaskOptFlow' | 'SavePoseKpsAsJsonFile' | 'FacialPartColoringFromPoseKps' | 'UpperBodyTrackingFromPoseKps' | 'RenderPeopleKps' | 'RenderAnimalKps' | 'TEEDPreprocessor' | 'PyraCannyPreprocessor' | 'Metric3D-DepthMapPreprocessor' | 'Metric3D-NormalMapPreprocessor' | 'Manga2Anime_LineArt_Preprocessor' | 'ScribblePreprocessor' | 'Scribble_XDoG_Preprocessor' | 'Scribble_PiDiNet_Preprocessor' | 'AnimeLineArtPreprocessor' | 'LineartStandardPreprocessor' | 'TilePreprocessor' | 'TTPlanet_TileGF_Preprocessor' | 'TTPlanet_TileSimple_Preprocessor' | 'ColorPreprocessor' | 'AIO_Preprocessor' | 'ControlNetPreprocessorSelector' | 'PixelPerfectResolution' | 'ImageGenResolutionFromImage' | 'ImageGenResolutionFromLatent' | 'HintImageEnchance' | 'ExecuteAllControlNetPreprocessors' | 'ControlNetAuxSimpleAddText' | 'MarigoldModelLoader' | 'MarigoldDepthEstimation_v2' | 'MarigoldDepthEstimation_v2_video' | 'MarigoldDepthEstimation' | 'MarigoldDepthEstimationVideo' | 'ColorizeDepthmap' | 'SaveImageOpenEXR' | 'RemapDepth' | 'SAMLoader' | 'CLIPSegDetectorProvider' | 'ONNXDetectorProvider' | 'BitwiseAndMaskForEach' | 'SubtractMaskForEach' | 'DetailerForEach' | 'DetailerForEachDebug' | 'DetailerForEachPipe' | 'DetailerForEachDebugPipe' | 'DetailerForEachPipeForAnimateDiff' | 'SAMDetectorCombined' | 'SAMDetectorSegmented' | 'FaceDetailer' | 'FaceDetailerPipe' | 'MaskDetailerPipe' | 'ToDetailerPipe' | 'ToDetailerPipeSDXL' | 'FromDetailerPipe' | 'FromDetailerPipe_v2' | 'FromDetailerPipeSDXL' | 'AnyPipeToBasic' | 'ToBasicPipe' | 'FromBasicPipe' | 'FromBasicPipe_v2' | 'BasicPipeToDetailerPipe' | 'BasicPipeToDetailerPipeSDXL' | 'DetailerPipeToBasicPipe' | 'EditBasicPipe' | 'EditDetailerPipe' | 'EditDetailerPipeSDXL' | 'LatentPixelScale' | 'PixelKSampleUpscalerProvider' | 'PixelKSampleUpscalerProviderPipe' | 'IterativeLatentUpscale' | 'IterativeImageUpscale' | 'PixelTiledKSampleUpscalerProvider' | 'PixelTiledKSampleUpscalerProviderPipe' | 'TwoSamplersForMaskUpscalerProvider' | 'TwoSamplersForMaskUpscalerProviderPipe' | 'PixelKSampleHookCombine' | 'DenoiseScheduleHookProvider' | 'StepsScheduleHookProvider' | 'CfgScheduleHookProvider' | 'NoiseInjectionHookProvider' | 'UnsamplerHookProvider' | 'CoreMLDetailerHookProvider' | 'PreviewDetailerHookProvider' | 'DetailerHookCombine' | 'NoiseInjectionDetailerHookProvider' | 'UnsamplerDetailerHookProvider' | 'DenoiseSchedulerDetailerHookProvider' | 'SEGSOrderedFilterDetailerHookProvider' | 'SEGSRangeFilterDetailerHookProvider' | 'SEGSLabelFilterDetailerHookProvider' | 'VariationNoiseDetailerHookProvider' | 'BitwiseAndMask' | 'SubtractMask' | 'AddMask' | 'ImpactSegsAndMask' | 'ImpactSegsAndMaskForEach' | 'EmptySegs' | 'ImpactFlattenMask' | 'MediaPipeFaceMeshToSEGS' | 'MaskToSEGS' | 'MaskToSEGS_for_AnimateDiff' | 'ToBinaryMask' | 'MasksToMaskList' | 'MaskListToMaskBatch' | 'ImageListToImageBatch' | 'SetDefaultImageForSEGS' | 'RemoveImageFromSEGS' | 'BboxDetectorSEGS' | 'SegmDetectorSEGS' | 'ONNXDetectorSEGS' | 'ImpactSimpleDetectorSEGS_for_AD' | 'ImpactSimpleDetectorSEGS' | 'ImpactSimpleDetectorSEGSPipe' | 'ImpactControlNetApplySEGS' | 'ImpactControlNetApplyAdvancedSEGS' | 'ImpactControlNetClearSEGS' | 'ImpactIPAdapterApplySEGS' | 'ImpactDecomposeSEGS' | 'ImpactAssembleSEGS' | 'ImpactFrom_SEG_ELT' | 'ImpactEdit_SEG_ELT' | 'ImpactDilate_Mask_SEG_ELT' | 'ImpactDilateMask' | 'ImpactGaussianBlurMask' | 'ImpactDilateMaskInSEGS' | 'ImpactGaussianBlurMaskInSEGS' | 'ImpactScaleBy_BBOX_SEG_ELT' | 'ImpactFrom_SEG_ELT_bbox' | 'ImpactFrom_SEG_ELT_crop_region' | 'ImpactCount_Elts_in_SEGS' | 'BboxDetectorCombined_v2' | 'SegmDetectorCombined_v2' | 'SegsToCombinedMask' | 'KSamplerProvider' | 'TwoSamplersForMask' | 'TiledKSamplerProvider' | 'KSamplerAdvancedProvider' | 'TwoAdvancedSamplersForMask' | 'ImpactNegativeConditioningPlaceholder' | 'PreviewBridge' | 'PreviewBridgeLatent' | 'ImageSender' | 'ImageReceiver' | 'LatentSender' | 'LatentReceiver' | 'ImageMaskSwitch' | 'LatentSwitch' | 'SEGSSwitch' | 'ImpactSwitch' | 'ImpactInversedSwitch' | 'ImpactWildcardProcessor' | 'ImpactWildcardEncode' | 'SEGSUpscaler' | 'SEGSUpscalerPipe' | 'SEGSDetailer' | 'SEGSPaste' | 'SEGSPreview' | 'SEGSPreviewCNet' | 'SEGSToImageList' | 'ImpactSEGSToMaskList' | 'ImpactSEGSToMaskBatch' | 'ImpactSEGSConcat' | 'ImpactSEGSPicker' | 'ImpactMakeTileSEGS' | 'ImpactSEGSMerge' | 'SEGSDetailerForAnimateDiff' | 'ImpactKSamplerBasicPipe' | 'ImpactKSamplerAdvancedBasicPipe' | 'ReencodeLatent' | 'ReencodeLatentPipe' | 'ImpactImageBatchToImageList' | 'ImpactMakeImageList' | 'ImpactMakeImageBatch' | 'ImpactMakeAnyList' | 'ImpactMakeMaskList' | 'ImpactMakeMaskBatch' | 'RegionalSampler' | 'RegionalSamplerAdvanced' | 'CombineRegionalPrompts' | 'RegionalPrompt' | 'ImpactCombineConditionings' | 'ImpactConcatConditionings' | 'ImpactSEGSLabelAssign' | 'ImpactSEGSLabelFilter' | 'ImpactSEGSRangeFilter' | 'ImpactSEGSOrderedFilter' | 'ImpactCompare' | 'ImpactConditionalBranch' | 'ImpactConditionalBranchSelMode' | 'ImpactIfNone' | 'ImpactConvertDataType' | 'ImpactLogicalOperators' | 'ImpactInt' | 'ImpactFloat' | 'ImpactBoolean' | 'ImpactValueSender' | 'ImpactValueReceiver' | 'ImpactImageInfo' | 'ImpactLatentInfo' | 'ImpactMinMax' | 'ImpactNeg' | 'ImpactConditionalStopIteration' | 'ImpactStringSelector' | 'StringListToString' | 'WildcardPromptFromString' | 'ImpactExecutionOrderController' | 'RemoveNoiseMask' | 'ImpactLogger' | 'ImpactDummyInput' | 'ImpactQueueTrigger' | 'ImpactQueueTriggerCountdown' | 'ImpactSetWidgetValue' | 'ImpactNodeSetMuteState' | 'ImpactControlBridge' | 'ImpactIsNotEmptySEGS' | 'ImpactSleep' | 'ImpactRemoteBoolean' | 'ImpactRemoteInt' | 'ImpactHFTransformersClassifierProvider' | 'ImpactSEGSClassify' | 'ImpactSchedulerAdapter' | 'GITSSchedulerFuncProvider' | 'UltralyticsDetectorProvider' | 'UnknownNodeXX'
+      export type ComfyNodeType = 'KSampler' | 'CheckpointLoaderSimple' | 'CLIPTextEncode' | 'CLIPSetLastLayer' | 'VAEDecode' | 'VAEEncode' | 'VAEEncodeForInpaint' | 'VAELoader' | 'EmptyLatentImage' | 'LatentUpscale' | 'LatentUpscaleBy' | 'LatentFromBatch' | 'RepeatLatentBatch' | 'SaveImage' | 'PreviewImage' | 'LoadImage' | 'LoadImageMask' | 'ImageScale' | 'ImageScaleBy' | 'ImageInvert' | 'ImageBatch' | 'ImagePadForOutpaint' | 'EmptyImage' | 'ConditioningAverage' | 'ConditioningCombine' | 'ConditioningConcat' | 'ConditioningSetArea' | 'ConditioningSetAreaPercentage' | 'ConditioningSetAreaStrength' | 'ConditioningSetMask' | 'KSamplerAdvanced' | 'SetLatentNoiseMask' | 'LatentComposite' | 'LatentBlend' | 'LatentRotate' | 'LatentFlip' | 'LatentCrop' | 'LoraLoader' | 'CLIPLoader' | 'UNETLoader' | 'DualCLIPLoader' | 'CLIPVisionEncode' | 'StyleModelApply' | 'unCLIPConditioning' | 'ControlNetApply' | 'ControlNetApplyAdvanced' | 'ControlNetLoader' | 'DiffControlNetLoader' | 'StyleModelLoader' | 'CLIPVisionLoader' | 'VAEDecodeTiled' | 'VAEEncodeTiled' | 'unCLIPCheckpointLoader' | 'GLIGENLoader' | 'GLIGENTextBoxApply' | 'InpaintModelConditioning' | 'CheckpointLoader' | 'DiffusersLoader' | 'LoadLatent' | 'SaveLatent' | 'ConditioningZeroOut' | 'ConditioningSetTimestepRange' | 'LoraLoaderModelOnly' | 'LatentAdd' | 'LatentSubtract' | 'LatentMultiply' | 'LatentInterpolate' | 'LatentBatch' | 'LatentBatchSeedBehavior' | 'LatentApplyOperation' | 'LatentApplyOperationCFG' | 'LatentOperationTonemapReinhard' | 'LatentOperationSharpen' | 'HypernetworkLoader' | 'UpscaleModelLoader' | 'ImageUpscaleWithModel' | 'ImageBlend' | 'ImageBlur' | 'ImageQuantize' | 'ImageSharpen' | 'ImageScaleToTotalPixels' | 'LatentCompositeMasked' | 'ImageCompositeMasked' | 'MaskToImage' | 'ImageToMask' | 'ImageColorToMask' | 'SolidMask' | 'InvertMask' | 'CropMask' | 'MaskComposite' | 'FeatherMask' | 'GrowMask' | 'ThresholdMask' | 'PorterDuffImageComposite' | 'SplitImageWithAlpha' | 'JoinImageWithAlpha' | 'RebatchLatents' | 'RebatchImages' | 'ModelMergeSimple' | 'ModelMergeBlocks' | 'ModelMergeSubtract' | 'ModelMergeAdd' | 'CheckpointSave' | 'CLIPMergeSimple' | 'CLIPMergeSubtract' | 'CLIPMergeAdd' | 'CLIPSave' | 'VAESave' | 'ModelSave' | 'TomePatchModel' | 'CLIPTextEncodeSDXLRefiner' | 'CLIPTextEncodeSDXL' | 'Canny' | 'FreeU' | 'FreeU_V2' | 'SamplerCustom' | 'BasicScheduler' | 'KarrasScheduler' | 'ExponentialScheduler' | 'PolyexponentialScheduler' | 'LaplaceScheduler' | 'VPScheduler' | 'BetaSamplingScheduler' | 'SDTurboScheduler' | 'KSamplerSelect' | 'SamplerEulerAncestral' | 'SamplerEulerAncestralCFGPP' | 'SamplerLMS' | 'SamplerDPMPP_3M_SDE' | 'SamplerDPMPP_2M_SDE' | 'SamplerDPMPP_SDE' | 'SamplerDPMPP_2S_Ancestral' | 'SamplerDPMAdaptative' | 'SplitSigmas' | 'SplitSigmasDenoise' | 'FlipSigmas' | 'CFGGuider' | 'DualCFGGuider' | 'BasicGuider' | 'RandomNoise' | 'DisableNoise' | 'AddNoise' | 'SamplerCustomAdvanced' | 'HyperTile' | 'ModelSamplingDiscrete' | 'ModelSamplingContinuousEDM' | 'ModelSamplingContinuousV' | 'ModelSamplingStableCascade' | 'ModelSamplingSD3' | 'ModelSamplingAuraFlow' | 'ModelSamplingFlux' | 'RescaleCFG' | 'PatchModelAddDownscale' | 'ImageCrop' | 'RepeatImageBatch' | 'ImageFromBatch' | 'SaveAnimatedWEBP' | 'SaveAnimatedPNG' | 'ImageOnlyCheckpointLoader' | 'SVD_img2vid_Conditioning' | 'VideoLinearCFGGuidance' | 'VideoTriangleCFGGuidance' | 'ImageOnlyCheckpointSave' | 'SelfAttentionGuidance' | 'PerpNeg' | 'PerpNegGuider' | 'StableZero123_Conditioning' | 'StableZero123_Conditioning_Batched' | 'SV3D_Conditioning' | 'SD_4XUpscale_Conditioning' | 'PhotoMakerLoader' | 'PhotoMakerEncode' | 'CLIPTextEncodeControlnet' | 'Morphology' | 'StableCascade_EmptyLatentImage' | 'StableCascade_StageB_Conditioning' | 'StableCascade_StageC_VAEEncode' | 'StableCascade_SuperResolutionControlnet' | 'DifferentialDiffusion' | 'InstructPixToPixConditioning' | 'ModelMergeSD1' | 'ModelMergeSD2' | 'ModelMergeSDXL' | 'ModelMergeSD3_2B' | 'ModelMergeFlux1' | 'ModelMergeSD35_Large' | 'PerturbedAttentionGuidance' | 'AlignYourStepsScheduler' | 'UNetSelfAttentionMultiply' | 'UNetCrossAttentionMultiply' | 'CLIPAttentionMultiply' | 'UNetTemporalAttentionMultiply' | 'SamplerLCMUpscale' | 'SamplerEulerCFGpp' | 'WebcamCapture' | 'EmptyLatentAudio' | 'VAEEncodeAudio' | 'VAEDecodeAudio' | 'SaveAudio' | 'LoadAudio' | 'PreviewAudio' | 'TripleCLIPLoader' | 'EmptySD3LatentImage' | 'CLIPTextEncodeSD3' | 'ControlNetApplySD3' | 'SkipLayerGuidanceSD3' | 'GITSScheduler' | 'SetUnionControlNetType' | 'ControlNetInpaintingAliMamaApply' | 'CLIPTextEncodeHunyuanDiT' | 'CLIPTextEncodeFlux' | 'FluxGuidance' | 'LoraSave' | 'TorchCompileModel' | 'EmptyMochiLatentVideo' | 'websocket_image_save.SaveImageWebsocket' | 'was.BLIP Model Loader' | 'was.Blend Latents' | 'was.Bus Node' | 'was.Cache Node' | 'was.Checkpoint Loader' | 'was.Checkpoint Loader (Simple)' | 'was.CLIPTextEncode (NSP)' | 'was.CLIP Input Switch' | 'was.CLIP Vision Input Switch' | 'was.Conditioning Input Switch' | 'was.Constant Number' | 'was.Create Grid Image' | 'was.Create Grid Image from Batch' | 'was.Create Morph Image' | 'was.Create Morph Image from Path' | 'was.Create Video from Path' | 'was.CLIPSeg Masking' | 'was.CLIPSeg Model Loader' | 'was.CLIPSeg Batch Masking' | 'was.Convert Masks to Images' | 'was.Control Net Model Input Switch' | 'was.Debug Number to Console' | 'was.Dictionary to Console' | 'was.Diffusers Model Loader' | 'was.Diffusers Hub Model Down-Loader' | 'was.Export API' | 'was.Latent Input Switch' | 'was.Load Cache' | 'was.Logic Boolean' | 'was.Logic Boolean Primitive' | 'was.Logic Comparison OR' | 'was.Logic Comparison AND' | 'was.Logic Comparison XOR' | 'was.Logic NOT' | 'was.Lora Loader' | 'was.Hex to HSL' | 'was.HSL to Hex' | 'was.Image SSAO (Ambient Occlusion)' | 'was.Image SSDO (Direct Occlusion)' | 'was.Image Analyze' | 'was.Image Aspect Ratio' | 'was.Image Batch' | 'was.Image Blank' | 'was.Image Blend by Mask' | 'was.Image Blend' | 'was.Image Blending Mode' | 'was.Image Bloom Filter' | 'was.Image Canny Filter' | 'was.Image Chromatic Aberration' | 'was.Image Color Palette' | 'was.Image Crop Face' | 'was.Image Crop Location' | 'was.Image Crop Square Location' | 'was.Image Displacement Warp' | 'was.Image Lucy Sharpen' | 'was.Image Paste Face' | 'was.Image Paste Crop' | 'was.Image Paste Crop by Location' | 'was.Image Pixelate' | 'was.Image Power Noise' | 'was.Image Dragan Photography Filter' | 'was.Image Edge Detection Filter' | 'was.Image Film Grain' | 'was.Image Filter Adjustments' | 'was.Image Flip' | 'was.Image Gradient Map' | 'was.Image Generate Gradient' | 'was.Image High Pass Filter' | 'was.Image History Loader' | 'was.Image Input Switch' | 'was.Image Levels Adjustment' | 'was.Image Load' | 'was.Image Median Filter' | 'was.Image Mix RGB Channels' | 'was.Image Monitor Effects Filter' | 'was.Image Nova Filter' | 'was.Image Padding' | 'was.Image Perlin Noise' | 'was.Image Rembg (Remove Background)' | 'was.Image Perlin Power Fractal' | 'was.Image Remove Background (Alpha)' | 'was.Image Remove Color' | 'was.Image Resize' | 'was.Image Rotate' | 'was.Image Rotate Hue' | 'was.Image Send HTTP' | 'was.Image Save' | 'was.Image Seamless Texture' | 'was.Image Select Channel' | 'was.Image Select Color' | 'was.Image Shadows and Highlights' | 'was.Image Size to Number' | 'was.Image Stitch' | 'was.Image Style Filter' | 'was.Image Threshold' | 'was.Image Tiled' | 'was.Image Transpose' | 'was.Image fDOF Filter' | 'was.Image to Latent Mask' | 'was.Image to Noise' | 'was.Image to Seed' | 'was.Images to RGB' | 'was.Images to Linear' | 'was.Integer place counter' | 'was.Image Voronoi Noise Filter' | 'was.KSampler (WAS)' | 'was.KSampler Cycle' | 'was.Latent Batch' | 'was.Latent Noise Injection' | 'was.Latent Size to Number' | 'was.Latent Upscale by Factor (WAS)' | 'was.Load Image Batch' | 'was.Load Text File' | 'was.Load Lora' | 'was.Lora Input Switch' | 'was.Masks Add' | 'was.Masks Subtract' | 'was.Mask Arbitrary Region' | 'was.Mask Batch to Mask' | 'was.Mask Batch' | 'was.Mask Ceiling Region' | 'was.Mask Crop Dominant Region' | 'was.Mask Crop Minority Region' | 'was.Mask Crop Region' | 'was.Mask Paste Region' | 'was.Mask Dilate Region' | 'was.Mask Dominant Region' | 'was.Mask Erode Region' | 'was.Mask Fill Holes' | 'was.Mask Floor Region' | 'was.Mask Gaussian Region' | 'was.Mask Invert' | 'was.Mask Minority Region' | 'was.Mask Smooth Region' | 'was.Mask Threshold Region' | 'was.Masks Combine Regions' | 'was.Masks Combine Batch' | 'was.MiDaS Model Loader' | 'was.MiDaS Depth Approximation' | 'was.MiDaS Mask Image' | 'was.Model Input Switch' | 'was.Number Counter' | 'was.Number Operation' | 'was.Number to Float' | 'was.Number Input Switch' | 'was.Number Input Condition' | 'was.Number Multiple Of' | 'was.Number PI' | 'was.Number to Int' | 'was.Number to Seed' | 'was.Number to String' | 'was.Number to Text' | 'was.Boolean To Text' | 'was.Prompt Styles Selector' | 'was.Prompt Multiple Styles Selector' | 'was.Random Number' | 'was.Save Text File' | 'was.Seed' | 'was.Tensor Batch to Image' | 'was.BLIP Analyze Image' | 'was.SAM Model Loader' | 'was.SAM Parameters' | 'was.SAM Parameters Combine' | 'was.SAM Image Mask' | 'was.Samples Passthrough (Stat System)' | 'was.String to Text' | 'was.Image Bounds' | 'was.Inset Image Bounds' | 'was.Bounded Image Blend' | 'was.Bounded Image Blend with Mask' | 'was.Bounded Image Crop' | 'was.Bounded Image Crop with Mask' | 'was.Image Bounds to Console' | 'was.Text Dictionary Update' | 'was.Text Dictionary Get' | 'was.Text Dictionary Convert' | 'was.Text Dictionary New' | 'was.Text Dictionary Keys' | 'was.Text Dictionary To Text' | 'was.Text Add Tokens' | 'was.Text Add Token by Input' | 'was.Text Compare' | 'was.Text Concatenate' | 'was.Text File History Loader' | 'was.Text Find and Replace by Dictionary' | 'was.Text Find and Replace Input' | 'was.Text Find and Replace' | 'was.Text Find' | 'was.Text Input Switch' | 'was.Text List' | 'was.Text List Concatenate' | 'was.Text List to Text' | 'was.Text Load Line From File' | 'was.Text Multiline' | 'was.Text Multiline (Code Compatible)' | 'was.Text Parse A1111 Embeddings' | 'was.Text Parse Noodle Soup Prompts' | 'was.Text Parse Tokens' | 'was.Text Random Line' | 'was.Text Random Prompt' | 'was.Text String' | 'was.Text Contains' | 'was.Text Shuffle' | 'was.Text Sort' | 'was.Text to Conditioning' | 'was.Text to Console' | 'was.Text to Number' | 'was.Text to String' | 'was.Text String Truncate' | 'was.True Random.org Number Generator' | 'was.unCLIP Checkpoint Loader' | 'was.Upscale Model Loader' | 'was.Upscale Model Switch' | 'was.Write to GIF' | 'was.Write to Video' | 'was.VAE Input Switch' | 'was.Video Dump Frames' | 'was.CLIPSEG2' | 'IPAdapter_plus.IPAdapter' | 'IPAdapter_plus.IPAdapterAdvanced' | 'IPAdapter_plus.IPAdapterBatch' | 'IPAdapter_plus.IPAdapterFaceID' | 'IPAdapter_plus.IPAdapterFaceIDKolors' | 'IPAdapter_plus.IPAAdapterFaceIDBatch' | 'IPAdapter_plus.IPAdapterTiled' | 'IPAdapter_plus.IPAdapterTiledBatch' | 'IPAdapter_plus.IPAdapterEmbeds' | 'IPAdapter_plus.IPAdapterEmbedsBatch' | 'IPAdapter_plus.IPAdapterStyleComposition' | 'IPAdapter_plus.IPAdapterStyleCompositionBatch' | 'IPAdapter_plus.IPAdapterMS' | 'IPAdapter_plus.IPAdapterClipVisionEnhancer' | 'IPAdapter_plus.IPAdapterClipVisionEnhancerBatch' | 'IPAdapter_plus.IPAdapterFromParams' | 'IPAdapter_plus.IPAdapterPreciseStyleTransfer' | 'IPAdapter_plus.IPAdapterPreciseStyleTransferBatch' | 'IPAdapter_plus.IPAdapterPreciseComposition' | 'IPAdapter_plus.IPAdapterPreciseCompositionBatch' | 'IPAdapter_plus.IPAdapterUnifiedLoader' | 'IPAdapter_plus.IPAdapterUnifiedLoaderFaceID' | 'IPAdapter_plus.IPAdapterModelLoader' | 'IPAdapter_plus.IPAdapterInsightFaceLoader' | 'IPAdapter_plus.IPAdapterUnifiedLoaderCommunity' | 'IPAdapter_plus.IPAdapterEncoder' | 'IPAdapter_plus.IPAdapterCombineEmbeds' | 'IPAdapter_plus.IPAdapterNoise' | 'IPAdapter_plus.PrepImageForClipVision' | 'IPAdapter_plus.IPAdapterSaveEmbeds' | 'IPAdapter_plus.IPAdapterLoadEmbeds' | 'IPAdapter_plus.IPAdapterWeights' | 'IPAdapter_plus.IPAdapterCombineWeights' | 'IPAdapter_plus.IPAdapterWeightsFromStrategy' | 'IPAdapter_plus.IPAdapterPromptScheduleFromWeightsStrategy' | 'IPAdapter_plus.IPAdapterRegionalConditioning' | 'IPAdapter_plus.IPAdapterCombineParams' | 'controlnet_aux.ShufflePreprocessor' | 'controlnet_aux.DensePosePreprocessor' | 'controlnet_aux.LeReS-DepthMapPreprocessor' | 'controlnet_aux.BinaryPreprocessor' | 'controlnet_aux.AnimeFace_SemSegPreprocessor' | 'controlnet_aux.Zoe-DepthMapPreprocessor' | 'controlnet_aux.DepthAnythingPreprocessor' | 'controlnet_aux.Zoe_DepthAnythingPreprocessor' | 'controlnet_aux.DepthAnythingV2Preprocessor' | 'controlnet_aux.CannyEdgePreprocessor' | 'controlnet_aux.DWPreprocessor' | 'controlnet_aux.AnimalPosePreprocessor' | 'controlnet_aux.ImageLuminanceDetector' | 'controlnet_aux.ImageIntensityDetector' | 'controlnet_aux.MediaPipe-FaceMeshPreprocessor' | 'controlnet_aux.DiffusionEdge_Preprocessor' | 'controlnet_aux.M-LSDPreprocessor' | 'controlnet_aux.HEDPreprocessor' | 'controlnet_aux.FakeScribblePreprocessor' | 'controlnet_aux.OneFormer-COCO-SemSegPreprocessor' | 'controlnet_aux.OneFormer-ADE20K-SemSegPreprocessor' | 'controlnet_aux.BAE-NormalMapPreprocessor' | 'controlnet_aux.MeshGraphormer-DepthMapPreprocessor' | 'controlnet_aux.MeshGraphormer+ImpactDetector-DepthMapPreprocessor' | 'controlnet_aux.DSINE-NormalMapPreprocessor' | 'controlnet_aux.MiDaS-NormalMapPreprocessor' | 'controlnet_aux.MiDaS-DepthMapPreprocessor' | 'controlnet_aux.AnyLineArtPreprocessor_aux' | 'controlnet_aux.SAMPreprocessor' | 'controlnet_aux.UniFormer-SemSegPreprocessor' | 'controlnet_aux.SemSegPreprocessor' | 'controlnet_aux.PiDiNetPreprocessor' | 'controlnet_aux.InpaintPreprocessor' | 'controlnet_aux.LineArtPreprocessor' | 'controlnet_aux.OpenposePreprocessor' | 'controlnet_aux.Unimatch_OptFlowPreprocessor' | 'controlnet_aux.MaskOptFlow' | 'controlnet_aux.SavePoseKpsAsJsonFile' | 'controlnet_aux.FacialPartColoringFromPoseKps' | 'controlnet_aux.UpperBodyTrackingFromPoseKps' | 'controlnet_aux.RenderPeopleKps' | 'controlnet_aux.RenderAnimalKps' | 'controlnet_aux.TEEDPreprocessor' | 'controlnet_aux.PyraCannyPreprocessor' | 'controlnet_aux.Metric3D-DepthMapPreprocessor' | 'controlnet_aux.Metric3D-NormalMapPreprocessor' | 'controlnet_aux.Manga2Anime_LineArt_Preprocessor' | 'controlnet_aux.ScribblePreprocessor' | 'controlnet_aux.Scribble_XDoG_Preprocessor' | 'controlnet_aux.Scribble_PiDiNet_Preprocessor' | 'controlnet_aux.AnimeLineArtPreprocessor' | 'controlnet_aux.LineartStandardPreprocessor' | 'controlnet_aux.TilePreprocessor' | 'controlnet_aux.TTPlanet_TileGF_Preprocessor' | 'controlnet_aux.TTPlanet_TileSimple_Preprocessor' | 'controlnet_aux.ColorPreprocessor' | 'controlnet_aux.AIO_Preprocessor' | 'controlnet_aux.ControlNetPreprocessorSelector' | 'controlnet_aux.PixelPerfectResolution' | 'controlnet_aux.ImageGenResolutionFromImage' | 'controlnet_aux.ImageGenResolutionFromLatent' | 'controlnet_aux.HintImageEnchance' | 'controlnet_aux.ExecuteAllControlNetPreprocessors' | 'controlnet_aux.ControlNetAuxSimpleAddText' | 'Marigold.MarigoldModelLoader' | 'Marigold.MarigoldDepthEstimation_v2' | 'Marigold.MarigoldDepthEstimation_v2_video' | 'Marigold.MarigoldDepthEstimation' | 'Marigold.MarigoldDepthEstimationVideo' | 'Marigold.ColorizeDepthmap' | 'Marigold.SaveImageOpenEXR' | 'Marigold.RemapDepth' | 'Impact_Pack.SAMLoader' | 'Impact_Pack.CLIPSegDetectorProvider' | 'Impact_Pack.ONNXDetectorProvider' | 'Impact_Pack.BitwiseAndMaskForEach' | 'Impact_Pack.SubtractMaskForEach' | 'Impact_Pack.DetailerForEach' | 'Impact_Pack.DetailerForEachDebug' | 'Impact_Pack.DetailerForEachPipe' | 'Impact_Pack.DetailerForEachDebugPipe' | 'Impact_Pack.DetailerForEachPipeForAnimateDiff' | 'Impact_Pack.SAMDetectorCombined' | 'Impact_Pack.SAMDetectorSegmented' | 'Impact_Pack.FaceDetailer' | 'Impact_Pack.FaceDetailerPipe' | 'Impact_Pack.MaskDetailerPipe' | 'Impact_Pack.ToDetailerPipe' | 'Impact_Pack.ToDetailerPipeSDXL' | 'Impact_Pack.FromDetailerPipe' | 'Impact_Pack.FromDetailerPipe_v2' | 'Impact_Pack.FromDetailerPipeSDXL' | 'Impact_Pack.AnyPipeToBasic' | 'Impact_Pack.ToBasicPipe' | 'Impact_Pack.FromBasicPipe' | 'Impact_Pack.FromBasicPipe_v2' | 'Impact_Pack.BasicPipeToDetailerPipe' | 'Impact_Pack.BasicPipeToDetailerPipeSDXL' | 'Impact_Pack.DetailerPipeToBasicPipe' | 'Impact_Pack.EditBasicPipe' | 'Impact_Pack.EditDetailerPipe' | 'Impact_Pack.EditDetailerPipeSDXL' | 'Impact_Pack.LatentPixelScale' | 'Impact_Pack.PixelKSampleUpscalerProvider' | 'Impact_Pack.PixelKSampleUpscalerProviderPipe' | 'Impact_Pack.IterativeLatentUpscale' | 'Impact_Pack.IterativeImageUpscale' | 'Impact_Pack.PixelTiledKSampleUpscalerProvider' | 'Impact_Pack.PixelTiledKSampleUpscalerProviderPipe' | 'Impact_Pack.TwoSamplersForMaskUpscalerProvider' | 'Impact_Pack.TwoSamplersForMaskUpscalerProviderPipe' | 'Impact_Pack.PixelKSampleHookCombine' | 'Impact_Pack.DenoiseScheduleHookProvider' | 'Impact_Pack.StepsScheduleHookProvider' | 'Impact_Pack.CfgScheduleHookProvider' | 'Impact_Pack.NoiseInjectionHookProvider' | 'Impact_Pack.UnsamplerHookProvider' | 'Impact_Pack.CoreMLDetailerHookProvider' | 'Impact_Pack.PreviewDetailerHookProvider' | 'Impact_Pack.DetailerHookCombine' | 'Impact_Pack.NoiseInjectionDetailerHookProvider' | 'Impact_Pack.UnsamplerDetailerHookProvider' | 'Impact_Pack.DenoiseSchedulerDetailerHookProvider' | 'Impact_Pack.SEGSOrderedFilterDetailerHookProvider' | 'Impact_Pack.SEGSRangeFilterDetailerHookProvider' | 'Impact_Pack.SEGSLabelFilterDetailerHookProvider' | 'Impact_Pack.VariationNoiseDetailerHookProvider' | 'Impact_Pack.BitwiseAndMask' | 'Impact_Pack.SubtractMask' | 'Impact_Pack.AddMask' | 'Impact_Pack.ImpactSegsAndMask' | 'Impact_Pack.ImpactSegsAndMaskForEach' | 'Impact_Pack.EmptySegs' | 'Impact_Pack.ImpactFlattenMask' | 'Impact_Pack.MediaPipeFaceMeshToSEGS' | 'Impact_Pack.MaskToSEGS' | 'Impact_Pack.MaskToSEGS_for_AnimateDiff' | 'Impact_Pack.ToBinaryMask' | 'Impact_Pack.MasksToMaskList' | 'Impact_Pack.MaskListToMaskBatch' | 'Impact_Pack.ImageListToImageBatch' | 'Impact_Pack.SetDefaultImageForSEGS' | 'Impact_Pack.RemoveImageFromSEGS' | 'Impact_Pack.BboxDetectorSEGS' | 'Impact_Pack.SegmDetectorSEGS' | 'Impact_Pack.ONNXDetectorSEGS' | 'Impact_Pack.ImpactSimpleDetectorSEGS_for_AD' | 'Impact_Pack.ImpactSimpleDetectorSEGS' | 'Impact_Pack.ImpactSimpleDetectorSEGSPipe' | 'Impact_Pack.ImpactControlNetApplySEGS' | 'Impact_Pack.ImpactControlNetApplyAdvancedSEGS' | 'Impact_Pack.ImpactControlNetClearSEGS' | 'Impact_Pack.ImpactIPAdapterApplySEGS' | 'Impact_Pack.ImpactDecomposeSEGS' | 'Impact_Pack.ImpactAssembleSEGS' | 'Impact_Pack.ImpactFrom_SEG_ELT' | 'Impact_Pack.ImpactEdit_SEG_ELT' | 'Impact_Pack.ImpactDilate_Mask_SEG_ELT' | 'Impact_Pack.ImpactDilateMask' | 'Impact_Pack.ImpactGaussianBlurMask' | 'Impact_Pack.ImpactDilateMaskInSEGS' | 'Impact_Pack.ImpactGaussianBlurMaskInSEGS' | 'Impact_Pack.ImpactScaleBy_BBOX_SEG_ELT' | 'Impact_Pack.ImpactFrom_SEG_ELT_bbox' | 'Impact_Pack.ImpactFrom_SEG_ELT_crop_region' | 'Impact_Pack.ImpactCount_Elts_in_SEGS' | 'Impact_Pack.BboxDetectorCombined_v2' | 'Impact_Pack.SegmDetectorCombined_v2' | 'Impact_Pack.SegsToCombinedMask' | 'Impact_Pack.KSamplerProvider' | 'Impact_Pack.TwoSamplersForMask' | 'Impact_Pack.TiledKSamplerProvider' | 'Impact_Pack.KSamplerAdvancedProvider' | 'Impact_Pack.TwoAdvancedSamplersForMask' | 'Impact_Pack.ImpactNegativeConditioningPlaceholder' | 'Impact_Pack.PreviewBridge' | 'Impact_Pack.PreviewBridgeLatent' | 'Impact_Pack.ImageSender' | 'Impact_Pack.ImageReceiver' | 'Impact_Pack.LatentSender' | 'Impact_Pack.LatentReceiver' | 'Impact_Pack.ImageMaskSwitch' | 'Impact_Pack.LatentSwitch' | 'Impact_Pack.SEGSSwitch' | 'Impact_Pack.ImpactSwitch' | 'Impact_Pack.ImpactInversedSwitch' | 'Impact_Pack.ImpactWildcardProcessor' | 'Impact_Pack.ImpactWildcardEncode' | 'Impact_Pack.SEGSUpscaler' | 'Impact_Pack.SEGSUpscalerPipe' | 'Impact_Pack.SEGSDetailer' | 'Impact_Pack.SEGSPaste' | 'Impact_Pack.SEGSPreview' | 'Impact_Pack.SEGSPreviewCNet' | 'Impact_Pack.SEGSToImageList' | 'Impact_Pack.ImpactSEGSToMaskList' | 'Impact_Pack.ImpactSEGSToMaskBatch' | 'Impact_Pack.ImpactSEGSConcat' | 'Impact_Pack.ImpactSEGSPicker' | 'Impact_Pack.ImpactMakeTileSEGS' | 'Impact_Pack.ImpactSEGSMerge' | 'Impact_Pack.SEGSDetailerForAnimateDiff' | 'Impact_Pack.ImpactKSamplerBasicPipe' | 'Impact_Pack.ImpactKSamplerAdvancedBasicPipe' | 'Impact_Pack.ReencodeLatent' | 'Impact_Pack.ReencodeLatentPipe' | 'Impact_Pack.ImpactImageBatchToImageList' | 'Impact_Pack.ImpactMakeImageList' | 'Impact_Pack.ImpactMakeImageBatch' | 'Impact_Pack.ImpactMakeAnyList' | 'Impact_Pack.ImpactMakeMaskList' | 'Impact_Pack.ImpactMakeMaskBatch' | 'Impact_Pack.RegionalSampler' | 'Impact_Pack.RegionalSamplerAdvanced' | 'Impact_Pack.CombineRegionalPrompts' | 'Impact_Pack.RegionalPrompt' | 'Impact_Pack.ImpactCombineConditionings' | 'Impact_Pack.ImpactConcatConditionings' | 'Impact_Pack.ImpactSEGSLabelAssign' | 'Impact_Pack.ImpactSEGSLabelFilter' | 'Impact_Pack.ImpactSEGSRangeFilter' | 'Impact_Pack.ImpactSEGSOrderedFilter' | 'Impact_Pack.ImpactCompare' | 'Impact_Pack.ImpactConditionalBranch' | 'Impact_Pack.ImpactConditionalBranchSelMode' | 'Impact_Pack.ImpactIfNone' | 'Impact_Pack.ImpactConvertDataType' | 'Impact_Pack.ImpactLogicalOperators' | 'Impact_Pack.ImpactInt' | 'Impact_Pack.ImpactFloat' | 'Impact_Pack.ImpactBoolean' | 'Impact_Pack.ImpactValueSender' | 'Impact_Pack.ImpactValueReceiver' | 'Impact_Pack.ImpactImageInfo' | 'Impact_Pack.ImpactLatentInfo' | 'Impact_Pack.ImpactMinMax' | 'Impact_Pack.ImpactNeg' | 'Impact_Pack.ImpactConditionalStopIteration' | 'Impact_Pack.ImpactStringSelector' | 'Impact_Pack.StringListToString' | 'Impact_Pack.WildcardPromptFromString' | 'Impact_Pack.ImpactExecutionOrderController' | 'Impact_Pack.RemoveNoiseMask' | 'Impact_Pack.ImpactLogger' | 'Impact_Pack.ImpactDummyInput' | 'Impact_Pack.ImpactQueueTrigger' | 'Impact_Pack.ImpactQueueTriggerCountdown' | 'Impact_Pack.ImpactSetWidgetValue' | 'Impact_Pack.ImpactNodeSetMuteState' | 'Impact_Pack.ImpactControlBridge' | 'Impact_Pack.ImpactIsNotEmptySEGS' | 'Impact_Pack.ImpactSleep' | 'Impact_Pack.ImpactRemoteBoolean' | 'Impact_Pack.ImpactRemoteInt' | 'Impact_Pack.ImpactHFTransformersClassifierProvider' | 'Impact_Pack.ImpactSEGSClassify' | 'Impact_Pack.ImpactSchedulerAdapter' | 'Impact_Pack.GITSSchedulerFuncProvider' | 'Impact_Pack.UltralyticsDetectorProvider' | 'UnknownNodeXX'
    }
 }
 

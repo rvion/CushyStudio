@@ -1,3 +1,4 @@
+import { _defaultModel } from '../../../src/csuite/fields/enum/_trustMedefault'
 import {
    type $schemaModelExtras,
    evalModelExtras_part1,
@@ -18,19 +19,15 @@ export const prefabModelSD3 = (): $prefabModelSD3 => {
    return b
       .fields({
          ckpt_name: b.enum['CheckpointLoaderSimple.ckpt_name']({ label: 'Checkpoint' }),
-         clip1: b.enum['TripleCLIPLoader.clip_name1']({
-            // @ts-ignore
-            default: 't5xxl_fp16.safetensors',
-         }),
-         clip2: b.enum['TripleCLIPLoader.clip_name2']({ default: 'clip_l.safetensors' }),
-         clip3: b.enum['TripleCLIPLoader.clip_name3']({
-            // @ts-ignore
-            default: 'clip_g.safetensors',
-         }),
+         clip1: b.enum['TripleCLIPLoader.clip_name1']({ default: _defaultModel('google_t5-v1_1-xxl_encoderonly-fp16.safetensors'), }), // prettier-ignore
+         clip2: b.enum['TripleCLIPLoader.clip_name2']({ default: _defaultModel('clip_l.safetensors') }),
+         clip3: b.enum['TripleCLIPLoader.clip_name3']({ default: _defaultModel('clip_vision_g.safetensors') }), // prettier-ignore
          extra: schemaModelExtras(),
       })
       .addRequirements([
-         //
+         { type: 'modelInManager', modelName: 'google-t5/t5-v1_1-xxl_encoderonly-fp16' },
+         { type: 'modelInManager', modelName: 'comfyanonymous/clip_l' },
+         { type: 'modelInManager', modelName: 'CLIPVision model (stabilityai/clip_vision_g)' },
       ])
 }
 
@@ -42,7 +39,6 @@ export function eval_model_SD3(doc: $prefabModelSD3['$Value']): {
    const run = getCurrentRun()
    const graph = run.nodes
    let ckpt: Comfy.Signal['MODEL']
-   let clip: Comfy.Signal['CLIP']
    let vae: Comfy.Signal['VAE'] | undefined = undefined
 
    // SD3 Specific Part ------------------------
@@ -56,7 +52,7 @@ export function eval_model_SD3(doc: $prefabModelSD3['$Value']): {
       clip_name2: doc.clip2,
       clip_name3: doc.clip3,
    })
-   clip = clipLoader._CLIP
+   const clip: Comfy.Signal['CLIP'] = clipLoader._CLIP
    ckpt = graph.ModelSamplingSD3({ model: ckpt, shift: 3 })
 
    return evalModelExtras_part1(doc.extra, { vae, clip, ckpt })

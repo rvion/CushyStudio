@@ -9,7 +9,7 @@ export type KnownModel_Type =
     | "zero123"            // x   5
     | "embeddings"         // x   4
     | "VAE"                // x   8
-    | "diffusion_model"    // x  44
+    | "diffusion_model"    // x  45
     | "clip"               // x  18
     | "lora"               // x  35
     | "unclip"             // x   2
@@ -45,6 +45,8 @@ export type KnownModel_Type =
     | "SegGPT"             // x   1
     | "depth-pro"          // x   1
     | "LLM"                // x   3
+    | "PuLID"              // x   2
+    | "MoGe"               // x   2
 
 export const knownModel_Type: KnownModel_Type[] = [
     "TAESD"             ,  // x   8
@@ -56,7 +58,7 @@ export const knownModel_Type: KnownModel_Type[] = [
     "zero123"           ,  // x   5
     "embeddings"        ,  // x   4
     "VAE"               ,  // x   8
-    "diffusion_model"   ,  // x  44
+    "diffusion_model"   ,  // x  45
     "clip"              ,  // x  18
     "lora"              ,  // x  35
     "unclip"            ,  // x   2
@@ -92,5 +94,7 @@ export const knownModel_Type: KnownModel_Type[] = [
     "SegGPT"            ,  // x   1
     "depth-pro"         ,  // x   1
     "LLM"               ,  // x   3
+    "PuLID"             ,  // x   2
+    "MoGe"              ,  // x   2
 ]
 

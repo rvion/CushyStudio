@@ -99,7 +99,7 @@ export async function _cushySDXLRun(
    const imgCtx = ctx.image
    let { latent, width, height } = imgCtx
       ? /* 🔴 HACKY  */
-        await (async (): Promise<{ latent: _LATENT; height: number; width: number }> => ({
+        await (async (): Promise<{ latent: Comfy.Signal['LATENT']; height: number; width: number }> => ({
            latent: graph.VAEEncode({ pixels: await imgCtx.loadInWorkflow(), vae }),
            height: imgCtx.height,
            width: imgCtx.width,
@@ -107,7 +107,7 @@ export async function _cushySDXLRun(
       : await run_latent_v3({ opts: ui.latent, vae })
 
    // #region mask
-   let mask: Maybe<_MASK>
+   let mask: Maybe<Comfy.Signal['MASK']>
    if (ui.extra.mask) mask = await run_mask(ui.extra.mask, ctx.mask)
    if (mask) latent = graph.SetLatentNoiseMask({ mask, samples: latent })
 

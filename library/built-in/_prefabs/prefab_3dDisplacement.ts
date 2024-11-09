@@ -57,25 +57,19 @@ export function run_Dispacement1(
    const run = getCurrentRun()
    const graph = run.nodes
    run.add_previewImage(finalImage).storeAs('base')
-   const depth = (():
-      | Comfy.Custom.controlnet_aux.MiDaS-DepthMapPreprocessor
-      | Comfy.Custom.controlnet_aux.Zoe-DepthMapPreprocessor
-      | Comfy.Custom.controlnet_aux.LeReS-DepthMapPreprocessor
-      | Comfy.Custom.Marigold.MarigoldDepthEstimation => {
-      if (show3d.depth.MiDaS)
-         return graph['controlnet_aux.MiDaS-DepthMapPreprocessor']({ image: finalImage })
+   const depth = ((): Comfy.Signal['IMAGE'] => {
+      if (show3d.depth.MiDaS) return graph['controlnet_aux.MiDaS-DepthMapPreprocessor']({ image: finalImage })
       if (show3d.depth.Zoe) return graph['controlnet_aux.Zoe-DepthMapPreprocessor']({ image: finalImage })
-      if (show3d.depth.LeReS)
-         return graph['controlnet_aux.LeReS-DepthMapPreprocessor']({ image: finalImage })
+      if (show3d.depth.LeReS) return graph['controlnet_aux.LeReS-DepthMapPreprocessor']({ image: finalImage })
       if (show3d.depth.Marigold) return graph['Marigold.MarigoldDepthEstimation']({ image: finalImage })
       throw new Error('❌ show3d activated, but no depth option choosen')
    })()
    run.add_previewImage(depth).storeAs('depth')
 
    const normal = (():
-      | Comfy.Custom.controlnet_aux.MiDaS-NormalMapPreprocessor
-      | Comfy.Custom.controlnet_aux.BAE-NormalMapPreprocessor
-      | Comfy.Base.EmptyImage => {
+      | Comfy.Node['controlnet_aux.MiDaS-NormalMapPreprocessor']
+      | Comfy.Node['controlnet_aux.BAE-NormalMapPreprocessor']
+      | Comfy.Node['EmptyImage'] => {
       if (show3d.normal === 'MiDaS')
          return graph['controlnet_aux.MiDaS-NormalMapPreprocessor']({ image: finalImage })
       if (show3d.normal === 'BAE')

@@ -47,7 +47,7 @@ export const _getKnownModels = (
 
    // CODEGEN ------------------------------------------------------------
    if (DB.opts.genTypes) {
-      // type ---------------------------
+      // #region type
       let out1 = ''
       const uniqCategories: { [key: string]: number } = knownModelList.reduce(
          (acc, cur) => {
@@ -68,7 +68,7 @@ export const _getKnownModels = (
       out1 += ']\n'
       writeFileSync('src/manager/model-list/KnownModel_Type.ts', out1 + '\n', 'utf-8')
 
-      // savepath ---------------------------
+      // #region savepath
       let out4 = ''
       const uniqSavePath: { [key: string]: number } = knownModelList.reduce(
          (acc, cur) => {
@@ -89,7 +89,7 @@ export const _getKnownModels = (
       out4 += ']\n'
       writeFileSync('src/manager/model-list/KnownModel_SavePath.ts', out4 + '\n', 'utf-8')
 
-      // base ---------------------------
+      // #region base
       let out2 = ''
       const uniqBases: { [key: string]: number } = knownModelList.reduce(
          (acc, cur) => {
@@ -110,7 +110,7 @@ export const _getKnownModels = (
       out2 += ']\n'
       writeFileSync('src/manager/model-list/KnownModel_Base.ts', out2 + '\n', 'utf-8')
 
-      // KnownModel_Name ----------------------
+      // #region KnownModel_Name
       let out3 = ''
       const sortedModels = knownModelList.sort((a, b) =>
          a.name.toLowerCase().localeCompare(b.name.toLowerCase()),
@@ -126,6 +126,20 @@ export const _getKnownModels = (
       }
       out3 += '\n'
       writeFileSync('src/manager/model-list/KnownModel_Name.ts', out3 + '\n', 'utf-8')
+
+      // #region KnownModel_FileName
+      let out99 = ''
+      out99 += `// prettier-ignore\n`
+      out99 += 'export type KnownModel_FileName =\n'
+      for (const mi of sortedModels) {
+         out99 += `    /** ${mi.description}\n`
+         out99 += `     * ${mi.size} - ${mi.url}\n`
+         out99 += `     * see ${mi.reference}\n`
+         out99 += `     */\n`
+         out99 += `    | ${JSON.stringify(mi.filename)}\n`
+      }
+      out99 += '\n'
+      writeFileSync('src/manager/model-list/KnownModel_FileName.ts', out99 + '\n', 'utf-8')
    }
 
    // INDEXING CHECKS ------------------------------------------------------------

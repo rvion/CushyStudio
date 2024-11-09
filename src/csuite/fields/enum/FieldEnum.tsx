@@ -14,10 +14,10 @@ import { _extractDefaultValue } from './_extractDefaultValue'
 import { WidgetEnumUI } from './WidgetEnumUI'
 
 // #region Config
-export type Field_enum_config<ENUM_NAME extends keyof Comfy.Slots> = FieldConfig<
+export type Field_enum_config<O extends ComfyUnionValue> = FieldConfig<
    {
       enumName: string
-      default?: Comfy.Slots[ENUM_NAME]
+      default?: O
       extraDefaults?: string[]
       filter?: (v: ComfyUnionValue) => boolean
       appearance?: 'select' | 'tab'
@@ -27,32 +27,32 @@ export type Field_enum_config<ENUM_NAME extends keyof Comfy.Slots> = FieldConfig
        */
       wrap?: boolean
    },
-   Field_enum_types<ENUM_NAME>
+   Field_enum_types<O>
 >
 
 // #region Serial
-export type Field_enum_serial<ENUM_NAME extends keyof Comfy.Slots> = FieldSerial<{
+export type Field_enum_serial<O extends ComfyUnionValue> = FieldSerial<{
    $: 'enum'
-   val?: Comfy.Slots[ENUM_NAME]
+   val?: O
 }>
 
 // #region Value
-export type Field_enum_value<ENUM_NAME extends keyof Comfy.Slots> = Comfy.Slots[ENUM_NAME] // Requirable[T]
+export type Field_enum_value<O extends ComfyUnionValue> = O // Requirable[T]
 
 // #region Types
-export type Field_enum_types<ENUM_NAME extends keyof Comfy.Slots> = {
+export type Field_enum_types<O extends ComfyUnionValue> = {
    $Type: 'enum'
-   $Config: Field_enum_config<ENUM_NAME>
-   $Serial: Field_enum_serial<ENUM_NAME>
-   $Value: Field_enum_value<ENUM_NAME>
-   $Unchecked: Field_enum_value<ENUM_NAME> | undefined
-   $Field: Field_enum<ENUM_NAME>
+   $Config: Field_enum_config<O>
+   $Serial: Field_enum_serial<O>
+   $Value: Field_enum_value<O>
+   $Unchecked: Field_enum_value<O> | undefined
+   $Field: Field_enum<O>
    $Child: never
-   $Reflect: Field_enum_types<ENUM_NAME>
+   $Reflect: Field_enum_types<O>
 }
 
 // #region State
-export class Field_enum<ENUM_NAME extends keyof Comfy.Slots> extends Field<Field_enum_types<ENUM_NAME>> {
+export class Field_enum<O extends ComfyUnionValue> extends Field<Field_enum_types<O>> {
    // #region Static
    static readonly type: 'enum' = 'enum'
    static readonly emptySerial: Field_enum_serial<any> = { $: 'enum' }
@@ -66,7 +66,7 @@ export class Field_enum<ENUM_NAME extends keyof Comfy.Slots> extends Field<Field
    DefaultHeaderUI = WidgetEnumUI
    DefaultBodyUI: undefined = undefined
 
-   get defaultValue(): Field_enum_value<ENUM_NAME> {
+   get defaultValue(): Field_enum_value<O> {
       return this.config.default ?? (this.possibleValues[0] as any)
    }
 
@@ -87,9 +87,9 @@ export class Field_enum<ENUM_NAME extends keyof Comfy.Slots> extends Field<Field
       repo: Repository,
       root: Field | null,
       parent: Field | null,
-      schema: BaseSchema<Field_enum<ENUM_NAME>>,
+      schema: BaseSchema<Field_enum<O>>,
       initialMountKey: string,
-      serial?: Field_enum_serial<ENUM_NAME>,
+      serial?: Field_enum_serial<O>,
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
       this.init(serial, {
@@ -115,12 +115,12 @@ export class Field_enum<ENUM_NAME extends keyof Comfy.Slots> extends Field<Field
       return cushy.schema.knownEnumsByName.get(this.config.enumName as any)?.values ?? []
    }
 
-   private _isValidValue(v: any): v is Comfy.Slots[ENUM_NAME] {
+   private _isValidValue(v: any): v is O {
       const isValidDef = this.possibleValues.includes(v)
       return isValidDef
    }
 
-   protected setOwnSerial(next: Field_enum_serial<ENUM_NAME>): void {
+   protected setOwnSerial(next: Field_enum_serial<O>): void {
       // handle default
       if (next?.val === undefined) {
          const def = _extractDefaultValue(this.config)
@@ -129,7 +129,7 @@ export class Field_enum<ENUM_NAME extends keyof Comfy.Slots> extends Field<Field
             // ⏸️ if (!this._isValidValue(def)) {
             // ⏸️     throw new Error(`Invalid default value ${def} for enum ${this.config.enumName}`)
             // ⏸️ }
-            const nextXX = def as any as Comfy.Slots[ENUM_NAME]
+            const nextXX = def as any as O
             // 🔴 ping @globi
             // @ts-ignore
             next = produce(next, (draft) => void (draft.val = nextXX))
@@ -147,24 +147,24 @@ export class Field_enum<ENUM_NAME extends keyof Comfy.Slots> extends Field<Field
    }
 
    // #region value
-   get value(): Field_enum_value<ENUM_NAME> {
+   get value(): Field_enum_value<O> {
       return this.status.finalValue
    }
 
-   set value(next: Field_enum_value<ENUM_NAME>) {
+   set value(next: Field_enum_value<O>) {
       if (this.serial.val === next) return
       this.runInValuePatch((draft) => (draft.val = next))
    }
 
-   get value_or_fail(): Field_enum_value<ENUM_NAME> {
+   get value_or_fail(): Field_enum_value<O> {
       return this.status.finalValue /* 🔴 */
    }
 
-   get value_or_zero(): Field_enum_value<ENUM_NAME> {
+   get value_or_zero(): Field_enum_value<O> {
       return this.status.finalValue /* 🔴 */
    }
 
-   get value_unchecked(): Field_enum_value<ENUM_NAME> {
+   get value_unchecked(): Field_enum_value<O> {
       return this.status.finalValue /* 🔴 */
    }
 }

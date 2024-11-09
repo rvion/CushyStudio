@@ -3,6 +3,7 @@ import { run_prompt } from '../built-in/_prefabs/prefab_prompt'
 app({
    ui: (b) =>
       b.fields({
+         ckpt: b.enum['CheckpointLoader.ckpt_name'](),
          demo: b.regional({
             height: 512,
             width: 512,
@@ -27,24 +28,26 @@ app({
          mainNeg: b.prompt({}),
       }),
 
-   run: async (flow, form) => {
-      const graph = flow.nodes
+   run: async (sdk, ui) => {
+      const graph = sdk.nodes
 
-      let ckpt = graph.CheckpointLoaderSimple({ ckpt_name: 'revAnimated_v122.safetensors' })
-      let clip = ckpt
-      let vae = ckpt
+      const ckpt = graph.CheckpointLoaderSimple({
+         ckpt_name: ui.ckpt,
+      })
+      const clip = ckpt
+      const vae = ckpt
 
       // let positive: Comfy.Signal['CONDITIONING'] = run_prompt(flow, { richPrompt: form.mainPos, clip: ckpt, ckpt: ckpt }).conditionning
       let positive: Comfy.Signal['CONDITIONING'] = graph.ConditioningZeroOut({
          conditioning: graph.CLIPTextEncode({ clip: clip, text: '' }),
       })
-      let negative: Comfy.Signal['CONDITIONING'] = run_prompt({
-         prompt: form.mainNeg,
+      const negative: Comfy.Signal['CONDITIONING'] = run_prompt({
+         prompt: ui.mainNeg,
          clip: ckpt,
          ckpt: ckpt,
       }).conditioning
 
-      for (const { shape: x, value: item } of form.demo.items) {
+      for (const { shape: x, value: item } of ui.demo.items) {
          const y = run_prompt({ prompt: item.prompt, clip: ckpt, ckpt: ckpt })
          const localConditionning = graph.ConditioningSetArea({
             conditioning: y.conditioning,
@@ -71,7 +74,7 @@ app({
          images: graph.VAEDecode({
             vae,
             samples: graph.KSampler({
-               seed: flow.randomSeed(),
+               seed: sdk.randomSeed(),
                model: ckpt,
                sampler_name: 'ddim',
                scheduler: 'ddim_uniform',
@@ -79,12 +82,12 @@ app({
                negative: negative,
                latent_image: graph.EmptyLatentImage({
                   batch_size: 1,
-                  width: form.demo.area.width,
-                  height: form.demo.area.height,
+                  width: ui.demo.area.width,
+                  height: ui.demo.area.height,
                }),
             }),
          }),
       })
-      await flow.PROMPT()
+      await sdk.PROMPT()
    },
 })

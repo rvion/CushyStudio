@@ -30,6 +30,7 @@ app({
             markdown: ``,
          }),
          ckpt_name: b.enum['CheckpointLoaderSimple.ckpt_name']({
+            // @ts-ignore
             default: 'revAnimated_v122.safetensors',
             label: 'Checkpoint',
          }),

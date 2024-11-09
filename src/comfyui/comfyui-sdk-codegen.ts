@@ -3,7 +3,6 @@ import type { ComfyUIObjectInfoParsed } from './ComfyUIObjectInfoParsed'
 import { CodeBuffer } from '../utils/codegen/CodeBuffer'
 import { escapeJSKey } from '../utils/codegen/escapeJSKey'
 import { type ComfyUIObjectInfoParsedNodeSchema, wrapQuote } from './ComfyUIObjectInfoParsedNodeSchema'
-import { pythonModuleToNamespace } from './pythonModuleToNamespace'
 
 export function codegenSDK(
    this: ComfyUIObjectInfoParsed,
@@ -35,7 +34,7 @@ export function codegenSDK(
    b.indent()
    for (const [k, v] of this.pythonModules.entries()) {
       p(`/**`)
-      p(` * SDK Namespace: ${pythonModuleToNamespace(k)}`)
+      // p(` * SDK Namespace: ${pythonModuleToNamespace(k)}`)
       p(` * Nodes: ${v.join(', ')}`)
       p(` */`)
       p(`| ${wrapQuote(k)}`)
@@ -85,7 +84,7 @@ export function codegenSDK(
          `   ${escapeJSKey(n.shortestUnambiguousName)}: ComfyNode<IN['${n.shortestUnambiguousName}'], OUT['${n.shortestUnambiguousName}']> & {`,
       )
       for (const hassingle of n.singleOuputs) {
-         p(`      ${escapeJSKey(`_${hassingle.nameInCushy}`)}: ComfyNodeOutput<'${hassingle.typeName}'>`)
+         p(`      ${escapeJSKey(`_${hassingle.typeName}`)}: ComfyNodeOutput<'${hassingle.typeName}'>`)
          // const ifaces = this.singleOuputs.map((i) => `HasSingle_${i.typeName}`)
       }
       p(`   }`)

@@ -1,6 +1,11 @@
-export const convertComfyNodeNameToCushyNodeNameValidInJS = (name: string): string => {
-   return name
-   return normalizeJSIdentifier(name, ' ')
+import { pythonModuleToShortestUnambiguousPrefix } from '../comfyui/pythonModuleToNamespace'
+
+export const convertComfyModuleAndNodeNameToCushyQualifiedNodeKey = (
+   pythonModule: string,
+   nameInComfy: string,
+): string => {
+   return `${pythonModuleToShortestUnambiguousPrefix(pythonModule)}${nameInComfy}`
+   // return normalizeJSIdentifier(name, ' ')
 }
 
 export const convetComfySlotNameToCushySlotNameValidInJS = (name: string): string => {

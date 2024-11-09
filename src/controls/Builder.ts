@@ -168,7 +168,7 @@ declare global {
       type XMarkdown = CushySchema<Field_markdown>
 
       type XPrompt = CushySchema<Field_prompt>
-      type XEnum<ENUM_NAME extends keyof Comfy.Slots> = CushySchema<Field_enum<ENUM_NAME>>
+      type XEnum<ENUM_NAME extends keyof Comfy.Slots> = CushySchema<Field_enum<Comfy.Slots[ENUM_NAME]>>
       type XOrbit = CushySchema<Field_orbit>
       type XImage = CushySchema<Field_image>
       type XCustom<T> = CushySchema<Field_custom<T>>

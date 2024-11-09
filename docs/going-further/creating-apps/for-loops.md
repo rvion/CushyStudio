@@ -8,7 +8,7 @@ description: CushyApps supports any kind of control flow. This page show how to 
 Key learnings:
 
 * [x] You can add for loops in your apps to repeat various set of nodes.
-* [x] Using `let latent: _LATENT = ...`  is a great way to allow to cary a "Latent" signal
+* [x] Using `let latent: Comfy.Signal['LATENT'] = ...`  is a great way to allow to cary a "Latent" signal
 {% endhint %}
 
 ## Objective&#x20;
@@ -45,7 +45,7 @@ app({
         const ckpt = graph.CheckpointLoaderSimple({ ckpt_name: ui.model })
         // 2. here, I'm using the _LATENT annotation to allow to assign any node
         // that produce a latent, and not just an EmptyLatentImage node.
-        let latent: _LATENT = graph.EmptyLatentImage({})
+        let latent: Comfy.Signal['LATENT'] = graph.EmptyLatentImage({})
 
         // 3. moving embeddigns node definition outside of the Ksampler,
         // as variable, so they can be used in the loop below
@@ -100,12 +100,12 @@ app({
      run: async (run, ui) => {
          const workflow = run.workflow
          const graph = workflow.builder
- 
+
          const ckpt = graph.CheckpointLoaderSimple({ ckpt_name: ui.model })
 +        // 2. here, I'm using the _LATENT annotation to allow to assign any node
 +        // that produce a latent, and not just an EmptyLatentImage node.
-         let latent: _LATENT = graph.EmptyLatentImage({})
- 
+         let latent: Comfy.Signal['LATENT'] = graph.EmptyLatentImage({})
+
 +        // 3. moving embeddigns node definition outside of the Ksampler,
 +        // as variable, so they can be used in the loop below
 +        const pos = graph.CLIPTextEncode({ clip: ckpt, text: ui.positive })

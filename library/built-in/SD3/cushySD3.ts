@@ -25,19 +25,19 @@ app({
    run: async (run, ui, ctx) => {
       const graph = run.nodes
       // #region  MODEL, clip skip, vae, etc.
-      let { ckpt, vae, clip } = eval_model_SD3(ui.model)
+      const { ckpt, vae, clip } = eval_model_SD3(ui.model)
 
       // #region  PROMPT ENGINE
       let positiveText = ui.positive.text
       if (ui.extra.promtPlus) positiveText += run_advancedPrompt(ui.extra.promtPlus)
       const posPrompt = run_prompt({ prompt: { text: positiveText }, clip, ckpt, printWildcards: true })
       const clipPos = posPrompt.clip
-      let ckptPos = posPrompt.ckpt
+      const ckptPos = posPrompt.ckpt
       let positive: Comfy.Signal['CONDITIONING'] = posPrompt.conditioning // graph.CLIPTextEncode({ clip: clipPos, text: finalText })
       if (ui.extra.regionalPrompt)
          positive = run_regionalPrompting_v1(ui.extra.regionalPrompt, { conditionning: positive, clip })
       const negPrompt = run_prompt({ prompt: ui.negative, clip, ckpt })
-      let negative: Comfy.Signal['CONDITIONING'] = graph.CLIPTextEncode({
+      const negative: Comfy.Signal['CONDITIONING'] = graph.CLIPTextEncode({
          clip,
          text: negPrompt.promptIncludingBreaks,
       })
@@ -46,7 +46,7 @@ app({
       const imgCtx = ctx.image
       let { latent, width, height } = imgCtx
          ? /* 🔴 HACKY  */
-           await (async (): Promise<{ latent: _LATENT; height: number; width: number }> => ({
+           await (async (): Promise<{ latent: Comfy.Signal['LATENT']; height: number; width: number }> => ({
               latent: graph.VAEEncode({ pixels: await imgCtx.loadInWorkflow(), vae }),
               height: imgCtx.height,
               width: imgCtx.width,
@@ -54,7 +54,7 @@ app({
          : await run_latent_v3({ opts: ui.latent, vae })
 
       // #region mask
-      let mask: Maybe<_MASK>
+      let mask: Maybe<Comfy.Signal['MASK']>
       if (ui.extra.mask) mask = await run_mask(ui.extra.mask, ctx.mask)
       if (mask) latent = graph.SetLatentNoiseMask({ mask, samples: latent })
 

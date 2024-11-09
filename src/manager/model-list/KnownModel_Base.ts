@@ -1,8 +1,8 @@
 // prettier-ignore
 export type KnownModel_Base =
-    | "FLUX.1"             // x  38
+    | "FLUX.1"             // x  39
     | "SD3"                // x   8
-    | "SDXL"               // x  88
+    | "SDXL"               // x  89
     | "SD1.x"              // x  25
     | "upscale"            // x  12
     | "inswapper"          // x  12
@@ -51,11 +51,13 @@ export type KnownModel_Base =
     | "depth-pro"          // x   1
     | "lotus"              // x   7
     | "ChatGLM3"           // x   3
+    | "FLUX"               // x   1
+    | "MoGe"               // x   2
 
 export const knownModel_Base: KnownModel_Base[] = [
-    "FLUX.1"            ,  // x  38
+    "FLUX.1"            ,  // x  39
     "SD3"               ,  // x   8
-    "SDXL"              ,  // x  88
+    "SDXL"              ,  // x  89
     "SD1.x"             ,  // x  25
     "upscale"           ,  // x  12
     "inswapper"         ,  // x  12
@@ -104,5 +106,7 @@ export const knownModel_Base: KnownModel_Base[] = [
     "depth-pro"         ,  // x   1
     "lotus"             ,  // x   7
     "ChatGLM3"          ,  // x   3
+    "FLUX"              ,  // x   1
+    "MoGe"              ,  // x   2
 ]
 

@@ -95,7 +95,7 @@ export type KnownModel_SavePath =
     | "depthanything"                                    // x   6
     | "checkpoints/PixArt-Sigma"                         // x   1
     | "checkpoints/hunyuan_dit_comfyui"                  // x   3
-    | "diffusion_models/FLUX1"                           // x  25
+    | "diffusion_models/FLUX1"                           // x  26
     | "vae/FLUX1"                                        // x   1
     | "checkpoints/FLUX1"                                // x   2
     | "custom_nodes/comfyui-SegGPT"                      // x   1
@@ -104,6 +104,8 @@ export type KnownModel_SavePath =
     | "diffusion_models"                                 // x   7
     | "diffusion_models/kolors"                          // x   2
     | "LLM"                                              // x   3
+    | "pulid"                                            // x   2
+    | "MoGe"                                             // x   2
     | "custom_nodes/ComfyUI-BRIA_AI-RMBG/RMBG-1.4"       // x   1
 
 export const knownModel_SavePath: KnownModel_SavePath[] = [
@@ -202,7 +204,7 @@ export const knownModel_SavePath: KnownModel_SavePath[] = [
     "depthanything"                                   ,  // x   6
     "checkpoints/PixArt-Sigma"                        ,  // x   1
     "checkpoints/hunyuan_dit_comfyui"                 ,  // x   3
-    "diffusion_models/FLUX1"                          ,  // x  25
+    "diffusion_models/FLUX1"                          ,  // x  26
     "vae/FLUX1"                                       ,  // x   1
     "checkpoints/FLUX1"                               ,  // x   2
     "custom_nodes/comfyui-SegGPT"                     ,  // x   1
@@ -211,6 +213,8 @@ export const knownModel_SavePath: KnownModel_SavePath[] = [
     "diffusion_models"                                ,  // x   7
     "diffusion_models/kolors"                         ,  // x   2
     "LLM"                                             ,  // x   3
+    "pulid"                                           ,  // x   2
+    "MoGe"                                            ,  // x   2
     "custom_nodes/ComfyUI-BRIA_AI-RMBG/RMBG-1.4"      ,  // x   1
 ]
 

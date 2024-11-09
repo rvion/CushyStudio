@@ -38,6 +38,7 @@ export const prefabModelFlux = (): $prefabModelFlux => {
          }).addRequirementOnComfyManagerModel('comfyanonymous/clip_l'),
          type: b.enum['DualCLIPLoader.type']({ default: 'flux' }),
          extra: schemaModelExtras({
+            // @ts-ignore
             defaultVAE: 'FLUX1\\ae.sft',
             vaeActiveByDefault: true,
          }),

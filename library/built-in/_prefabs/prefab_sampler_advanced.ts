@@ -327,7 +327,7 @@ export const run_sampler_advanced = (
    ui: OutputFor<typeof ui_sampler_advanced>,
    ctx: Ctx_sampler_advanced,
    blankLatent?: boolean,
-): { output: _LATENT; denoised_output: Comfy.Signal['LATENT'] } => {
+): { output: Comfy.Signal['LATENT']; denoised_output: Comfy.Signal['LATENT'] } => {
    const graph = run.nodes
    let ckpt = ctx.ckpt
    const posCondition2string = ui.guidanceType.DualCFG

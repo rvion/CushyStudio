@@ -1,5 +1,8 @@
 SHORT TERM TODO:
 
+    ☐ Finish migration
+        ☐ fix generated enums tied to the manager
+
     ☐ Improve ComfyUI Codegen
         ☐ Namesapce all the custom nodes in dedicatd interfaces
         ☐ change the way to construct / access the root workflow

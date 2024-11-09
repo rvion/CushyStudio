@@ -4,7 +4,7 @@ import type { ComfyUIObjectInfoParsedNodeSchema } from '../comfyui/ComfyUIObject
 import type { TEdge } from '../csuite/utils/toposort'
 import type { STATE } from '../state/state'
 
-import { convertComfyNodeNameToCushyNodeNameValidInJS } from '../core/normalizeJSIdentifier'
+import { convertComfyModuleAndNodeNameToCushyQualifiedNodeKey } from '../core/normalizeJSIdentifier'
 import { ComfyPrimitiveMapping } from '../core/Primitives'
 import { bang } from '../csuite/utils/bang'
 import { toposort } from '../csuite/utils/toposort'
@@ -167,7 +167,8 @@ export class ComfyImporter {
       for (const nodeID of sortedNodes) {
          // @ts-ignore
          const node = flow[nodeID]!
-         const classType = convertComfyNodeNameToCushyNodeNameValidInJS(node.class_type)
+         // FIXME
+         const classType = convertComfyModuleAndNodeNameToCushyQualifiedNodeKey(node.class_type)
          const varName = this.mkVarNameForNodeType(classType, []) //`${classType}_${nodeID}`
 
          generatedName.set(nodeID, varName)

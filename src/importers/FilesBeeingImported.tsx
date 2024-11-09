@@ -9,7 +9,7 @@ import { observer, useLocalObservable } from 'mobx-react-lite'
 import { useState } from 'react'
 
 import { convertLiteGraphToPrompt } from '../comfyui/litegraphToApiRequestPayload'
-import { convertComfyNodeNameToCushyNodeNameValidInJS } from '../core/normalizeJSIdentifier'
+import { convertComfyModuleAndNodeNameToCushyQualifiedNodeKey } from '../core/normalizeJSIdentifier'
 import { UnknownCustomNode } from '../core/UnknownCustomNode'
 import { MessageErrorUI } from '../csuite'
 import { Button } from '../csuite/button/Button'
@@ -108,7 +108,7 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: {
                         //
                         {
                            type: 'customNodesByNameInCushy',
-                           nodeName: convertComfyNodeNameToCushyNodeNameValidInJS(
+                           nodeName: convertComfyModuleAndNodeNameToCushyQualifiedNodeKey(
                               error.node.type,
                            ) as KnownCustomNode_CushyName,
                         },

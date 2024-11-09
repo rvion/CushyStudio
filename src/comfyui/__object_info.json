@@ -4978,9 +4978,9 @@
 ,   "Cache Node": {
         "input": {
             "required": {
-                "latent_suffix": ["STRING",{"default":"34340291_cache","multiline":false}]
-,               "image_suffix": ["STRING",{"default":"52917647_cache","multiline":false}]
-,               "conditioning_suffix": ["STRING",{"default":"15568934_cache","multiline":false}]
+                "latent_suffix": ["STRING",{"default":"16758521_cache","multiline":false}]
+,               "image_suffix": ["STRING",{"default":"15894843_cache","multiline":false}]
+,               "conditioning_suffix": ["STRING",{"default":"69437092_cache","multiline":false}]
             }
 ,           "optional": {
                 "output_path": ["STRING",{"default":"/home/runner/ComfyUI/custom_nodes/was-node-suite-comfyui/cache","multiline":false}]

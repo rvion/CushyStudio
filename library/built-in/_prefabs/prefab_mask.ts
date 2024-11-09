@@ -23,7 +23,6 @@ export function ui_mask(): UI_Mask {
          grow: form.int({ default: 0, min: -100, max: 100 }),
          feather: form.int({ default: 0, min: 0, max: 100 }),
          preview: form.bool({}),
-         // interrogate: form.bool({}),
       },
    })
 }
@@ -31,7 +30,7 @@ export function ui_mask(): UI_Mask {
 export async function run_mask(
    x: OutputFor<typeof ui_mask>,
    imageOverride?: Maybe<MediaImageL>,
-): Promise<HasSingle_MASK | null> {
+): Promise<Comfy.Signal['MASK'] | null> {
    const p = x
    const graph = getCurrentRun().nodes
    let mask: Comfy.Signal['MASK'] = await (imageOverride ?? p.image).loadInWorkflowAsMask(p.mode)

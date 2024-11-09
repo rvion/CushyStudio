@@ -14,7 +14,7 @@ import crypto from 'crypto'
 import { observable, toJS } from 'mobx'
 
 import {
-   convertComfyNodeNameToCushyNodeNameValidInJS,
+   convertComfyModuleAndNodeNameToCushyQualifiedNodeKey,
    convetComfySlotNameToCushySlotNameValidInJS,
    normalizeJSIdentifier,
 } from '../core/normalizeJSIdentifier'
@@ -27,7 +27,7 @@ import { escapeJSKey } from '../utils/codegen/escapeJSKey'
 import { codegenSDK } from './comfyui-sdk-codegen'
 import { ComfyUIObjectInfoParsedNodeSchema } from './ComfyUIObjectInfoParsedNodeSchema'
 import { getUnionNameBasedOnFirstFoundEnumName } from './getUnionNameBasedOnFirstFoundEnumName'
-import { pythonModuleToNamespace, pythonModuleToShortestUnambiguousPrefix } from './pythonModuleToNamespace'
+import { pythonModuleToShortestUnambiguousPrefix } from './pythonModuleToNamespace'
 
 export class ComfyUIObjectInfoParsed {
    codegenDTS = codegenSDK.bind(this)
@@ -78,7 +78,10 @@ export class ComfyUIObjectInfoParsed {
          const nodeDef = VV
          // console.chanel?.append(`[${nodeNameInComfy}]`)
          // apply prefix
-         const nodeNameInCushy = convertComfyNodeNameToCushyNodeNameValidInJS(nodeNameInComfy)
+         const nodeNameInCushy = convertComfyModuleAndNodeNameToCushyQualifiedNodeKey(
+            pythonModule,
+            nodeNameInComfy,
+         )
          // console.log('>>', nodeTypeDef.category, nodeNameInCushy)
 
          if (typeof nodeDef.output === 'string') {
@@ -136,7 +139,7 @@ export class ComfyUIObjectInfoParsed {
             }
             // 2. ENUM
             else if (Array.isArray(slotType)) {
-               const uniqueEnumName = `${pythonModuleToShortestUnambiguousPrefix(pythonModule)}${nodeNameInCushy}.${outputNameInCushy}.OUT`
+               const uniqueEnumName = `${node.nameInCushy}.${outputNameInCushy}.OUT`
                const RESX = this.processEnumNameOrValue({
                   pythonModule,
                   enumName: uniqueEnumName,

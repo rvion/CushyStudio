@@ -8,9 +8,9 @@ export function pythonModuleToShortestUnambiguousPrefix(pythonModule: string): s
    throw new Error(`unexpected pythonModule: ${pythonModule}`)
 }
 
-export function pythonModuleToNamespace(pythonModule: string): string {
-   return `Comfy.${pythonModuleToNamespace_(pythonModule)}`
-}
+// export function pythonModuleToNamespace(pythonModule: string): string {
+//    return `Comfy.${pythonModuleToNamespace_(pythonModule)}`
+// }
 
 function pythonModuleToNamespace_(pythonModule: string): string {
    if (pythonModule === 'nodes') return 'Base'

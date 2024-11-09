@@ -8,7 +8,7 @@ import type { ValueError } from '@sinclair/typebox/value'
 import { Value } from '@sinclair/typebox/value'
 import { readFileSync, writeFileSync } from 'fs'
 
-import { convertComfyNodeNameToCushyNodeNameValidInJS } from '../../core/normalizeJSIdentifier'
+import { convertComfyModuleAndNodeNameToCushyQualifiedNodeKey } from '../../core/normalizeJSIdentifier'
 import { ENMInfos_Schema } from './extension-node-map-types'
 
 export const _getCustomNodeRegistry = (DB: ComfyManagerRepository): void => {
@@ -70,7 +70,11 @@ export const _getCustomNodeRegistry = (DB: ComfyManagerRepository): void => {
          else prevEntry1.push(plugin)
 
          // 4.2 index by nodeNameInCushy
-         const nodeNameInCushy = convertComfyNodeNameToCushyNodeNameValidInJS(nodeNameInComfy)
+         // const nodeNameInCushy = convertComfyNodeNameToCushyNodeNameValidInJS(nodeNameInComfy)
+         const nodeNameInCushy = convertComfyModuleAndNodeNameToCushyQualifiedNodeKey(
+            plugin.title,
+            nodeNameInComfy,
+         )
          const prevEntry2 = DB.plugins_byNodeNameInCushy.get(nodeNameInCushy)
          if (prevEntry2 == null) DB.plugins_byNodeNameInCushy.set(nodeNameInCushy, [plugin])
          else prevEntry2.push(plugin)
@@ -101,7 +105,7 @@ export const _getCustomNodeRegistry = (DB: ComfyManagerRepository): void => {
       )
       out += '// prettier-ignore\n'
       out += 'export type KnownCustomNode_CushyName =\n'
-      for (const fileName of sortedCushyNames) out += `    | ${JSON.stringify(fileName)}\n`
+      for (const nodeName of sortedCushyNames) out += `    | ${JSON.stringify(nodeName)}\n`
       out += '\n'
 
       writeFileSync('src/manager/extension-node-map/KnownCustomNode_CushyName.ts', out + '\n', 'utf-8')
