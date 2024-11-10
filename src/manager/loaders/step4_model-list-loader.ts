@@ -15,7 +15,7 @@ export const _getKnownModels = (
 } */,
 ): void => {
    const knownModelsFile: ComfyManagerFileModelInfo = JSON.parse(
-      readFileSync('src/manager/model-list/model-list.json', 'utf8'),
+      readFileSync('src/manager/json/model-list.json', 'utf8'),
    )
    const knownModelList = knownModelsFile.models.concat(extraModels.models)
 
