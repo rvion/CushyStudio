@@ -43,7 +43,7 @@ export async function DownloadComfyManagerJSONs(): Promise<void> {
    async function SYNC_githubStats(): Promise<void> {
       console.log(wrapBox(`[🎹] synchronizing githubStats.json...`))
       await downloadFile(
-         'https://github.com/ltdrdata/ComfyUI-Manager/blob/main/github-stats.json',
+         'https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/refs/heads/main/github-stats.json',
          'src/manager/json/github-stats.json',
       )
    }
