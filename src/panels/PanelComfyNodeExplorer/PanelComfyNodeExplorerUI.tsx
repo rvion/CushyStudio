@@ -57,10 +57,11 @@ export const PanelComfyNodeExplorerUI = observer(function PanelComfyNodeExplorer
                            {/* {name} */}
                         </td>
                         <td>
-                           {repo.plugins_byNodeNameInComfy
+                           🔴
+                           {/* {repo.plugins_byNodeNameInComfy
                               .get(node.nameInComfy)
                               ?.map((x) => x.title)
-                              .join(', ')}
+                              .join(', ')} */}
                         </td>
                         <td tw='whitespace-pre-wrap'>
                            <div tw='flex flex-wrap gap-0.5'>

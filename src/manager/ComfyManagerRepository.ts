@@ -6,9 +6,12 @@ import type { KnownModel_Name } from './generated/KnownModel_Name'
 import type { ComfyManagerModelInfo } from './types/ComfyManagerModelInfo'
 import type { ComfyManagerPluginInfo } from './types/ComfyManagerPluginInfo'
 
-import { _getKnownPlugins } from './loaders/custom-node-list-loader'
-import { _getCustomNodeRegistry } from './loaders/extension-node-map-loader'
-import { _getKnownModels } from './loaders/model-list-loader'
+import chalk from 'chalk'
+
+import { DownloadComfyManagerJSONs } from './loaders/step1_downloadComfyManagerJSONs'
+import { _getKnownPlugins } from './loaders/step2_custom-node-list-loader'
+import { _getCustomNodeRegistry } from './loaders/step3_extension-node-map-loader'
+import { _getKnownModels } from './loaders/step4_model-list-loader'
 
 export class ComfyManagerRepository {
    // plugins, indexed
@@ -23,9 +26,22 @@ export class ComfyManagerRepository {
    // Models
    knownModels = new Map<KnownModel_Name, ComfyManagerModelInfo>()
 
+   static async DownloadAndUpdate(download: boolean): Promise<ComfyManagerRepository> {
+      if (download) {
+         console.log('\n' + chalk.bold(`1. Downloading comfy-manager JSONs...`))
+         await DownloadComfyManagerJSONs()
+      } else {
+         console.log('\n' + `1. Downloading comfy-manager JSONs... ${chalk.bold('[SKIPPED]')}`)
+      }
+      // should take care of the code generation
+      return new ComfyManagerRepository({
+         check: true,
+         genTypes: true,
+      })
+   }
+
    constructor(
       public opts: {
-         //
          check?: boolean
          genTypes?: boolean
       } = {},
@@ -39,8 +55,14 @@ export class ComfyManagerRepository {
          reference: '',
          install_type: '',
       })
+
+      console.log('\n' + chalk.bold(`2. Parsing/custom-node-list.json...`))
       _getKnownPlugins(this)
+
+      console.log('\n' + chalk.bold(`3. Parsing/Fixing extension-node-map.json...`))
       _getCustomNodeRegistry(this)
+
+      console.log('\n' + chalk.bold(`4. Parsing/model-list.json...`))
       _getKnownModels(this)
    }
 

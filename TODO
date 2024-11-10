@@ -1,5 +1,10 @@
 SHORT TERM TODO:
 
+    ☐ fix reveal bug reported by bird_d
+        ☐ panel steps
+            ☐ open config
+                ☐ click anywhere on tooltip
+
     ☐ Finish migration
         ☐ fix generated enums tied to the manager
 

@@ -2,67 +2,90 @@ import type { NodeNameInComfy } from '../../comfyui/comfyui-types'
 import type { ComfyManagerRepository } from '../ComfyManagerRepository'
 import type { KnownComfyCustomNodeName } from '../generated/KnownComfyCustomNodeName'
 import type { KnownComfyPluginURL } from '../generated/KnownComfyPluginURL'
-import type { ComfyManagerFilePluginContent } from '../types/ComfyManagerFilePluginContent'
-import type { ValueError } from '@sinclair/typebox/value'
+import type { ComfyManagerPluginInfo } from '../types/ComfyManagerPluginInfo'
 
-import { Value } from '@sinclair/typebox/value'
 import { readFileSync, writeFileSync } from 'fs'
+import * as v from 'valibot'
 
 import { convertComfyModuleAndNodeNameToCushyQualifiedNodeKey } from '../../core/normalizeJSIdentifier'
+import { printValibotResultInConsole } from '../../csuite/utils/printValibotResult'
+import { githubRegexpV2 } from '../_utils/githubRegexes'
 import {
-   type ComfyManagerPluginContentMetadata,
-   ComfyManagerPluginContentMetadata_typebox,
-} from '../types/ComfyManagerPluginContentMetadata'
+   type ComfyManagerFilePluginContent,
+   ComfyManagerFilePluginContent_valibot,
+} from '../types/ComfyManagerFilePluginContent'
+import { type ComfyManagerPluginContentMetadata } from '../types/ComfyManagerPluginContentMetadata'
 
 export const _getCustomNodeRegistry = (DB: ComfyManagerRepository): void => {
    const totalCustomNodeSeen = 0
 
    // 1. read file
    const extensionNodeMapFile: ComfyManagerFilePluginContent = JSON.parse(
-      readFileSync('src/manager/extension-node-map/extension-node-map.json', 'utf8'),
+      readFileSync('src/manager/json/extension-node-map.json', 'utf8'),
    )
 
+   // validate file is well-formed
+   const res = v.safeParse(ComfyManagerFilePluginContent_valibot, extensionNodeMapFile)
+   let hasErrors = false
+   if (DB.opts.check) {
+      if (!res.success) {
+         hasErrors = true
+         printValibotResultInConsole(res)
+         process.exit(1)
+      }
+   }
+
    // 2. process file into something slightly more practical to use
-   type ENMEntry = {
+   type ComfyManagerFilePluginContent_asObject = {
       url: string
       comfyNodeNames: NodeNameInComfy[]
       meta: ComfyManagerPluginContentMetadata
+      /** should be what we will received once the plugin in installed  */
+      pythonModule: string
+      /** plugin that contains this url listed in files */
+      plugin: ComfyManagerPluginInfo
    }
 
-   const enmEntries: ENMEntry[] = Object.entries(extensionNodeMapFile).map(
-      (x: [url: string, infos: [NodeNameInComfy[], ComfyManagerPluginContentMetadata]]): ENMEntry => {
+   const enmEntries: ComfyManagerFilePluginContent_asObject[] = Object.entries(extensionNodeMapFile).map(
+      (
+         x: [url: string, infos: [NodeNameInComfy[], ComfyManagerPluginContentMetadata]],
+      ): ComfyManagerFilePluginContent_asObject => {
          const url = x[0]
          const [comfyNodeNames, meta] = x[1]
+         const confyPlugin = DB.plugins_byFile.get(url as KnownComfyPluginURL)
+         if (confyPlugin == null) throw new Error(`[❌] plugin not found for ${url}`)
          return {
             url,
             comfyNodeNames,
             meta,
+            plugin: confyPlugin,
+            pythonModule: reverseEngineerWhatComfyWillSendAsPythonModuleValueOnceInstalled(
+               confyPlugin,
+               url,
+               meta,
+            ),
          }
       },
    )
 
-   let hasErrors = false
    // 3. for each file
    for (const enmEntry of enmEntries) {
       // JSON CHECKS ------------------------------------------------------------
-      if (!hasErrors && DB.opts.check) {
-         const valid = Value.Check(ComfyManagerPluginContentMetadata_typebox, enmEntry.meta)
-         if (!valid) {
-            const errors: ValueError[] = [
-               ...Value.Errors(ComfyManagerPluginContentMetadata_typebox, enmEntry.meta),
-            ]
-            console.error(`❌ extensionNodeMap doesn't match schema:`, enmEntry.meta)
-            // console.error(`❌ errors`, errors)
-            for (const i of errors) console.log(`❌`, JSON.stringify(i))
-            hasErrors = true
-         }
-      }
+      // if (!hasErrors && DB.opts.check) {
+      //    const valid = Value.Check(ComfyManagerPluginContentMetadata_typebox, enmEntry.meta)
+      //    if (!valid) {
+      //       const errors: ValueError[] = [
+      //          ...Value.Errors(ComfyManagerPluginContentMetadata_typebox, enmEntry.meta),
+      //       ]
+      //       console.error(`❌ extensionNodeMap doesn't match schema:`, enmEntry.meta)
+      //       // console.error(`❌ errors`, errors)
+      //       for (const i of errors) console.log(`❌`, JSON.stringify(i))
+      //       hasErrors = true
+      //    }
+      // }
 
-      // 3.1 ensure there is a plugin associated to this file
-      const plugin = DB.plugins_byFile.get(enmEntry.url as KnownComfyPluginURL)
-      if (plugin == null) throw new Error(`[❌] plugin not found for ${enmEntry.url}`)
-
-      // 3.2 ensure we have a list of nodes for this plugin
+      // 3 ensure we have a list of nodes for this plugin
+      const plugin = enmEntry.plugin
       const nodesInPlugin: KnownComfyCustomNodeName[] = DB.customNodes_byPluginName.get(plugin.title) ?? []
       DB.customNodes_byPluginName.set(plugin.title, nodesInPlugin)
 
@@ -70,16 +93,19 @@ export const _getCustomNodeRegistry = (DB: ComfyManagerRepository): void => {
       // 4. for each node in file
       for (const nodeNameInComfy of enmEntry.comfyNodeNames) {
          // 4.1. index the plugin for this node name
-         const prevEntry1 = DB.plugins_byNodeNameInComfy.get(nodeNameInComfy)
-         if (prevEntry1 == null) DB.plugins_byNodeNameInComfy.set(nodeNameInComfy, [plugin])
-         else prevEntry1.push(plugin)
+         // const prevEntry1 = DB.plugins_byNodeNameInComfy.get(nodeNameInComfy)
+         // if (prevEntry1 == null) DB.plugins_byNodeNameInComfy.set(nodeNameInComfy, [plugin])
+         // else prevEntry1.push(plugin)
 
          // 4.2 index by nodeNameInCushy
          // const nodeNameInCushy = convertComfyNodeNameToCushyNodeNameValidInJS(nodeNameInComfy)
+
          const nodeNameInCushy = convertComfyModuleAndNodeNameToCushyQualifiedNodeKey(
-            plugin.title,
+            enmEntry.pythonModule,
             nodeNameInComfy,
          )
+         // console.log(`[🤠] nodeNameInCushy=`, JSON.stringify(nodeNameInCushy), enmEntry.pythonModule)
+         // process.exit(2)
          const prevEntry2 = DB.plugins_byNodeNameInCushy.get(nodeNameInCushy)
          if (prevEntry2 == null) DB.plugins_byNodeNameInCushy.set(nodeNameInCushy, [plugin])
          else prevEntry2.push(plugin)
@@ -88,15 +114,15 @@ export const _getCustomNodeRegistry = (DB: ComfyManagerRepository): void => {
          nodesInPlugin.push(nodeNameInCushy as KnownComfyCustomNodeName)
       }
    }
-
+   // process.exit(1)
    // 5. log duplicates
    if (DB.opts.check) {
-      for (const [k, v] of DB.plugins_byNodeNameInComfy.entries()) {
-         if (v.length > 1) {
-            if (DB.opts.check) console.log(`❌ DUPLICATE: ${k}`)
-            for (const file of v) console.log(`    | ${file.author}/${file.title}`)
-         }
-      }
+      // for (const [k, v] of DB.plugins_byNodeNameInComfy.entries()) {
+      //    if (v.length > 1) {
+      //       if (DB.opts.check) console.log(`❌ DUPLICATE: ${k}`)
+      //       for (const file of v) console.log(`    | ${file.author}/${file.title}`)
+      //    }
+      // }
    }
 
    // 6. CODEGEN ------------------------------------------------------------
@@ -149,3 +175,22 @@ export const _getCustomNodeRegistry = (DB: ComfyManagerRepository): void => {
 // }
 
 // let DB: Maybe<CustomNodeRegistry> = null // = knownCustomNodesFile.custom_nodes
+
+function reverseEngineerWhatComfyWillSendAsPythonModuleValueOnceInstalled(
+   plugin: ComfyManagerPluginInfo,
+   url: string,
+   meta: ComfyManagerPluginContentMetadata,
+): string {
+   const repoName = plugin.reference.match(githubRegexpV2)?.[2]
+   // console.log(`[🤠] ${plugin.reference} => ${repoName}`)
+   if (repoName) {
+      // console.log(`[🤠] got via repoName`, plugin.reference, `custom_nodes.${repoName}`)
+      return `custom_nodes.${repoName}`
+   }
+   if (plugin.id) {
+      // console.log(`[🤠] got via repoName`, plugin.id, `custom_nodes.${plugin.id}`)
+      return `custom_nodes.${plugin.id}`
+   }
+   const pythonModule = '🔴'
+   return pythonModule
+}
