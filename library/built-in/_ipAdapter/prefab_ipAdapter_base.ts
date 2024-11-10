@@ -15,7 +15,7 @@ import { ui_ipadapter_modelSelection } from './ui_ipadapter_modelSelection'
 export type UI_subform_IPAdapter = X.XGroup<
    {
       models: X.XGroup<{
-         cnet_model_name: X.XEnum<Enum_AV_IPAdapterPipe_ip_adapter_name>
+         cnet_model_name: X.XEnum<'IPAdapter_plus.IPAdapterModelLoader.ipadapter_file'>
          clip_name: X.XEnum<'CLIPVisionLoader.clip_name'>
       }>
       help: X.XMarkdown
@@ -57,20 +57,25 @@ export function run_cnet_IPAdapter(
    const ip = IPAdapter
    //crop the image to the right size
    //todo: make these editable
-   image = graph.PrepImageForClipVision({
+   image = graph['IPAdapter_plus.PrepImageForClipVision']({
       image,
       interpolation: 'LANCZOS',
       crop_position: 'center',
       sharpening: 0,
    })._IMAGE
-   const ip_model = graph.IPAdapterModelLoader({ ipadapter_file: ip.models.cnet_model_name })
+   const ip_model = graph['IPAdapter_plus.IPAdapterModelLoader']({
+      ipadapter_file: ip.models.cnet_model_name,
+   })
    const ip_clip_name = graph.CLIPVisionLoader({ clip_name: ip.models.clip_name })
+   const image_ = graph['IPAdapter_plus.IPAdapterEncoder']({
+      ipadapter: ip_model,
+      image,
+      clip_vision: ip_clip_name,
+   }).outputs
+   const pos_embed: Comfy.Signal['EMBEDS'] = image_.pos_embed
+   const neg_embed: Comfy.Signal['EMBEDS'] = image_.neg_embed
 
-   let image_ = graph.IPAdapterEncoder({ ipadapter: ip_model, image, clip_vision: ip_clip_name }).outputs
-   let pos_embed: Comfy.Signal['EMBEDS'] = image_.pos_embed
-   let neg_embed: Comfy.Signal['EMBEDS'] = image_.neg_embed
-
-   const ip_adapted_model = graph.IPAdapterEmbeds({
+   const ip_adapted_model = graph['IPAdapter_plus.IPAdapterEmbeds']({
       ipadapter: ip_model,
       clip_vision: ip_clip_name,
       pos_embed,

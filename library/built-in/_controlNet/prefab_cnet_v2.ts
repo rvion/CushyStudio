@@ -72,7 +72,10 @@ export function ui_cnet(): UI_cnet {
                      image: form.image({}),
                      mask: ui_mask()
                         .addRequirements([
-                           { type: 'customNodesByNameInCushy', nodeName: 'ACN_AdvancedControlNetApply' },
+                           {
+                              type: 'customNodesByNameInCushy',
+                              nodeName: 'Advanced_ControlNet.ACN_AdvancedControlNetApply',
+                           },
                         ])
                         .withConfig({ tooltip: 'Applies controlnet only to the masked area.' }),
                      resize: form.bool({ default: true }),

@@ -102,6 +102,7 @@ export function _cushySDXLSchema(b: X.Builder): $CushySDXLUI {
          .optional(true)
          .list({ min: 1, icon: 'mdiMinusBoxOutline' }),
       model: prefabModelSD15andSDXL({
+         // @ts-ignore
          ckpt_name: 'albedobaseXL_v21.safetensors',
       }).addRequirements({
          // just for Lorn

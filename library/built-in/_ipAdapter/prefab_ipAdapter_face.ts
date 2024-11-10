@@ -43,7 +43,7 @@ export type UI_IPAdapterFaceID = X.XGroup<{
    help: X.XMarkdown
    models: X.XGroup<{
       lora: X.XEnum<'LoraLoader.lora_name'>
-      cnet_model_name: X.XEnum<'IPAdapter_plus.IPAdapterInsightFaceLoader.model_name'>
+      cnet_model_name: X.XEnum<'IPAdapter_plus.IPAdapterModelLoader.ipadapter_file'>
       clip_name: X.XEnum<'CLIPVisionLoader.clip_name'>
    }>
    lora_strength: X.XNumber
