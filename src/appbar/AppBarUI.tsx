@@ -130,10 +130,22 @@ const cushyMenu = defineMenu({
    icon: 'cdiCushyStudio',
    entries: (b) => [
       b.SimpleMenuAction({
-         label: 'Show Dev Playground Page',
+         label: 'Open Dev Playground',
          icon: 'mdiPlayNetwork',
          onClick: () => cushy.layout.open('Playground', {}),
       }),
+      b.SimpleMenuAction({
+         icon: 'mdiBug',
+         onClick: () => cushy.electron.toggleDevTools(),
+         label: 'Toggle Electron Dev Tools',
+      }),
+      b.SimpleMenuAction({
+         icon: 'mdiSync',
+         onClick: () => cushy.reloadCushyMainWindow(),
+         label: 'Reload',
+      }),
+
+      b.Divider,
       b.SimpleMenuAction({
          label: 'Reset Layout',
          icon: 'mdiAutoFix',
@@ -159,20 +171,8 @@ const cushyMenu = defineMenu({
 
       b.SimpleMenuAction({
          icon: 'mdiBug',
-         onClick: () => cushy.electron.toggleDevTools(),
-         label: 'console',
-      }),
-
-      b.SimpleMenuAction({
-         icon: 'mdiBug',
          onClick: () => activityManager.start(DEMO_ACTIVITY),
          label: 'Start debug activity',
-      }),
-
-      b.SimpleMenuAction({
-         icon: 'mdiSync',
-         onClick: () => cushy.reloadCushyMainWindow(),
-         label: 'Reload',
       }),
 
       b.Divider,
