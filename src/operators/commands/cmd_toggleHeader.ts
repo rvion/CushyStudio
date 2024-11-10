@@ -11,10 +11,20 @@ export const ctx_menu = new CommandContext<Menu>('OverMenu', () => {
    const x = new Menu({
       title: 'test',
       entries: (builder): MenuEntry[] => [
-         builder.SimpleMenuAction({ label: 'A', onClick: () => console.log(`[🤠] A`) }),
-         builder.SimpleMenuAction({ label: 'B', onClick: () => console.log(`[🤠] B`) }),
-         builder.SimpleMenuAction({ label: 'C', onClick: () => console.log(`[🤠] C`) }),
-         builder.SimpleMenuAction({ label: 'D', onClick: () => console.log(`[🤠] D`) }),
+         builder.SimpleMenuAction({
+            label: '0. Long name example should be correct',
+            onClick: () => console.log(`[🤠] 0`),
+         }),
+         builder.SimpleMenuAction({
+            label: '1. What about a long on the right?',
+            onClick: () => console.log(`[🤠] 1`),
+         }),
+         builder.SimpleMenuAction({ label: '2', onClick: () => console.log(`[🤠] 2`) }),
+         builder.SimpleMenuAction({ label: '3', onClick: () => console.log(`[🤠] 3`) }),
+         builder.SimpleMenuAction({ label: '4', onClick: () => console.log(`[🤠] 4`) }),
+         builder.SimpleMenuAction({ label: '5', onClick: () => console.log(`[🤠] 5`) }),
+         builder.SimpleMenuAction({ label: '6', onClick: () => console.log(`[🤠] 6`) }),
+         builder.SimpleMenuAction({ label: '7', onClick: () => console.log(`[🤠] 7`) }),
       ],
       icon: 'mdiKeyboardCaps',
    })

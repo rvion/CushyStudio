@@ -24,6 +24,29 @@ export type MenuUIProps = {
    startY: number
 } & React.HTMLAttributes<HTMLDivElement>
 
+// Used to keep things more consistent compared to positioning entries around a circle based on amount of entries
+function positionFromIndex(index: number, distance: number): { x: number; y: number } {
+   switch (index) {
+      case 0:
+         return { x: -1 * distance, y: 0 }
+      case 1:
+         return { x: 1 * distance, y: 0 }
+      case 2:
+         return { x: 0, y: 1.33 * distance }
+      case 3:
+         return { x: 0, y: -1.33 * distance }
+      case 4:
+         return { x: -0.77 * distance, y: -0.77 * distance }
+      case 5:
+         return { x: 0.77 * distance, y: -0.77 * distance }
+      case 6:
+         return { x: -0.77 * distance, y: 0.77 * distance }
+      case 7:
+         return { x: 0.77 * distance, y: 0.77 * distance }
+   }
+   return { x: 0, y: 0 }
+}
+
 export const MenuPieUI = observer(function MenuPieUI_({
    // own props
    menu,
@@ -39,6 +62,7 @@ export const MenuPieUI = observer(function MenuPieUI_({
    // rest (so custom JSX magic can work)
    ...rest
 }: MenuUIProps) {
+   const [selected, setSelected] = React.useState<number>(-1)
    const position = { x: startX, y: startY }
 
    console.log('[FD] :', position)
@@ -47,8 +71,7 @@ export const MenuPieUI = observer(function MenuPieUI_({
       <div
          tabIndex={tabIndex ?? -1}
          autoFocus={autoFocus ?? true}
-         tw='absolute'
-         style={{ top: startY, left: startX }}
+         tw='absolute left-0 top-0 h-full w-full'
          // TODO: this should be handled by the menu activity instead.
          onKeyDown={(ev) => {
             // call the original onKeyDown
@@ -70,20 +93,26 @@ export const MenuPieUI = observer(function MenuPieUI_({
             }
          }}
          {...rest}
-      >
-         <div tw='absolute bg-red-500 ' style={{ transform: 'translate(-50%, -50%)' }}>
-            {menu.entriesWithKb.map(({ entry: entry, char, charIx }, ix) => {
-               const angle = (ix / menu.entriesWithKb.length) * 2 * Math.PI + Math.PI
-               const radius = 100 // Distance from center
+         onMouseMove={(ev) => {
+            const step = 360 / menu.entriesWithKb.length
+            const dx = ev.screenX - startX
+            const dy = ev.screenY - startY
 
-               // Calculate x, y positions based on angle
-               const x = radius * Math.cos(angle)
-               const y = radius * Math.sin(angle)
+            const angle = (Math.atan2(dy, dx) * (180 / Math.PI) + 180) % 360 // Normalize to 0-360 degrees
+
+            const index = (Math.floor((angle + step / 2) / step) + 2) % menu.entriesWithKb.length
+            console.log('[FD] - ', angle, index)
+         }}
+      >
+         <div // Pivot
+            tw='absolute'
+            style={{ top: startY, left: startX }}
+         >
+            {menu.entriesWithKb.map(({ entry: entry, char, charIx }, ix) => {
+               const { x, y } = positionFromIndex(ix, 100)
 
                const style = {
-                  transform: `translate(${x - 50}%, ${y - 25}%)`,
-                  width: '200px',
-                  height: '100px',
+                  transform: `translate(${x}px, ${y}px)`,
                }
 
                // TODO(bird_d): Make sure to implement div for 2/3/4/etc.
@@ -91,14 +120,21 @@ export const MenuPieUI = observer(function MenuPieUI_({
                if (entry instanceof SimpleMenuAction) {
                   return (
                      <div //
-                        tw='absolute left-0 top-0'
+                        tw='pointer-events-none absolute select-none'
                         style={style}
                      >
                         <PieMenuItem //
-                           tw='_SimpleMenuAction'
+                           tw={[
+                              //
+                              '_SimpleMenuAction absolute',
+                              x >= 0 ? 'left-0' : 'right-0',
+                           ]}
                            key={ix}
-                           localShortcut={char}
+                           localShortcut={`${ix}`}
                            label={entry.opts.label}
+                           style={{
+                              transform: 'translate(0, -50%)',
+                           }}
                            // children={formatMenuLabel(charIx, entry.opts.label)}
                            icon={entry.opts.icon}
                            onClick={async () => {
@@ -113,7 +149,7 @@ export const MenuPieUI = observer(function MenuPieUI_({
                if (entry instanceof SimpleMenuModal) {
                   return (
                      <PieMenuItem //
-                        tw='_SimpleMenuModal min-w-60'
+                        tw='_SimpleMenuModal min-w-60 select-none pointer-events-none'
                         style={style}
                         key={ix}
                         icon={entry.p.icon}
@@ -140,7 +176,7 @@ export const MenuPieUI = observer(function MenuPieUI_({
                if (isBoundCommand(entry) || isCommand(entry)) {
                   return (
                      <PieMenuItem
-                        tw='min-w-60'
+                        tw='min-w-60 select-none pointer-events-none'
                         style={style}
                         key={ix}
                         label={entry.label}
