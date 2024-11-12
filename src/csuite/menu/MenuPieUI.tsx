@@ -127,7 +127,7 @@ export const MenuPieUI = observer(function MenuPieUI_({
                            tw={[
                               //
                               '_SimpleMenuAction absolute',
-                              x >= 0 ? 'left-0' : 'right-0',
+                              x >= 0 ? '' : 'right-0',
                            ]}
                            key={ix}
                            localShortcut={`${ix}`}

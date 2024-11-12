@@ -12,7 +12,7 @@ export const ctx_menu = new CommandContext<Menu>('OverMenu', () => {
       title: 'test',
       entries: (builder): MenuEntry[] => [
          builder.SimpleMenuAction({
-            label: '0. Long name example should be correct',
+            label: '0. really long name tho what if it just kept going lmao, the quick brown fox jumped over the lazy dog',
             onClick: () => console.log(`[🤠] 0`),
          }),
          builder.SimpleMenuAction({
