@@ -33,7 +33,7 @@ const _Button = observer(
       // ensure any unmounting of this component will properly clean-up
       useEffect(() => uist.release, [])
 
-      const { size, look, subtle, borderless, iconSize, onClick, square: square_, ...rest } = p
+      const { size, look, subtle, borderless, iconSize, onClick, square: square_, style, ...rest } = p
       const theme = cushy.theme.value
       const csuite = cushy.csuite
       const square = square_ ?? (p.icon != null && p.children == null)
@@ -73,6 +73,11 @@ const _Button = observer(
             square={square}
             onClick={uist.onClick}
             iconSize={iconSize ?? '1.1rem'}
+            style={{
+               //
+               fontSize: `${theme.inputText}pt`,
+               ...style,
+            }}
             {...rest}
             tw={[
                'inline-flex',
