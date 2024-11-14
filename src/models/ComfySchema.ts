@@ -68,7 +68,7 @@ export class ComfySchemaL extends BaseInst<TABLES['comfy_schema']> {
 
    // LORA --------------------------------------------------------------
    /** check if the given lora name is present in the Enum_LoraLoader_lora_name enum */
-   hasLora = (loraName: string): boolean => this.getLoras().includes(loraName as Enum_LoraLoader_lora_name)
+   hasLora = (loraName: string): boolean => this.getLoras().includes(loraName as Comfy.Slots['LoraLoader.lora_name']) // prettier-ignore
 
    /** return the list of all loras available */
    getLoras = (): Comfy.Slots['LoraLoader.lora_name'][] => {
@@ -88,14 +88,14 @@ export class ComfySchemaL extends BaseInst<TABLES['comfy_schema']> {
    unsafely_addImageInSchemaWithoutReloading = (imgName: string): void => {
       const enumInfo = this.knownEnumsByName.get('Enum_LoadImage_image')
       if (enumInfo == null) throw new Error(`Enum_LoadImage_image not found`)
-      enumInfo.values.push(imgName as Enum_LoadImage_image)
+      enumInfo.values.push(imgName as Comfy.Slots['LoadImage.image'])
    }
 
    // CHECKPOINT --------------------------------------------------------------
    hasCheckpoint = (ckptName: string): boolean => this.getCheckpoints().includes(ckptName as Enum_CheckpointLoaderSimple_ckpt_name) // prettier-ignore
-   getCheckpoints = (): Enum_CheckpointLoaderSimple_ckpt_name[] => {
+   getCheckpoints = (): Comfy.Slots['CheckpointLoaderSimple.ckpt_name'][] => {
       const candidates = this.knownEnumsByName.get('Enum_CheckpointLoaderSimple_ckpt_name')?.values ?? []
-      return candidates as Enum_CheckpointLoaderSimple_ckpt_name[]
+      return candidates as Comfy.Slots['CheckpointLoaderSimple.ckpt_name'][]
    }
 
    // ENUM --------------------------------------------------------------

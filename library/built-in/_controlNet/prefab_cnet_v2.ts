@@ -74,7 +74,7 @@ export function ui_cnet(): UI_cnet {
                         .addRequirements([
                            {
                               type: 'customNodesByNameInCushy',
-                              nodeName: 'Advanced_ControlNet.ACN_AdvancedControlNetApply',
+                              nodeName: 'Advanced-ControlNet.ACN_AdvancedControlNetApply',
                            },
                         ])
                         .withConfig({ tooltip: 'Applies controlnet only to the masked area.' }),

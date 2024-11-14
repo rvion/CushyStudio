@@ -1,14 +1,12 @@
-import type {
-   LiteGraphJSON,
-   LiteGraphLink,
-   LiteGraphLinkID,
-   LiteGraphNode,
-   LiteGraphNodeInput,
-} from '../core/LiteGraph'
 import type { ComfySchemaL } from '../models/ComfySchema'
 import type { ComfyUIAPIRequest, ComfyUIAPIRequest_Node } from './comfyui-prompt-api'
 import type { NodeInputExt } from './comfyui-types'
 import type { ComfyUIObjectInfoParsedNodeSchema } from './ComfyUIObjectInfoParsedNodeSchema'
+import type { LiteGraphJSON } from './litegraph/LiteGraphJSON'
+import type { LiteGraphLink } from './litegraph/LiteGraphLink'
+import type { LiteGraphLinkID } from './litegraph/LiteGraphLinkID'
+import type { LiteGraphNode } from './litegraph/LiteGraphNode'
+import type { LiteGraphNodeInput } from './litegraph/LiteGraphNodeInput'
 
 import { howManyWidgetValuesForThisInputType, howManyWidgetValuesForThisSchemaType } from '../core/Primitives'
 import { UnknownCustomNode } from '../core/UnknownCustomNode'

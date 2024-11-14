@@ -1,5 +1,5 @@
 import type { ComfyUIAPIRequest } from '../../comfyui/comfyui-prompt-api'
-import type { ComfyWorkflowJSON } from '../../core/LiteGraph'
+import type { ComfyWorkflowJSON } from '../../comfyui/litegraph/LiteGraphJSON'
 
 import { observer } from 'mobx-react-lite'
 

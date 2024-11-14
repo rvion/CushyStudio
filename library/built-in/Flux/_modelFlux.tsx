@@ -79,10 +79,11 @@ export const evalModelFlux = (
    const run = getCurrentRun()
    const graph = run.nodes
    const vae: Comfy.Signal['VAE'] | undefined = undefined
-   const ckptLoader: Comfy.Signal['MODEL'] = graph.UNETLoader({
+   const ckptLoader: Comfy.Node['UNETLoader'] = graph.UNETLoader({
       unet_name: doc.ckpt_name,
       weight_dtype: doc.weight_type,
    })
+
    const ckpt = ckptLoader._MODEL
    const clipLoader = graph.DualCLIPLoader({
       clip_name1: doc.clip1,

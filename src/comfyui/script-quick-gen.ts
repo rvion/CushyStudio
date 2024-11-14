@@ -8,6 +8,8 @@ import fs from 'fs'
 import { readableStringify } from '../csuite/formatters/stringifyReadable'
 import { ComfyUIObjectInfoParsed } from './ComfyUIObjectInfoParsed'
 
+const inputObjectInfoPath = 'src/comfyui/examples/object_info.json'
+
 // eslint-disable-next-line no-constant-condition
 if (true) {
    const controller = new AbortController()
@@ -16,7 +18,7 @@ if (true) {
       const raw = await fetch('http://192.168.1.19:8188/object_info', { signal: controller.signal })
       console.log(raw)
       const result = await raw.json()
-      fs.writeFileSync('src/comfyui/__object_info.json', readableStringify(result, 3), 'utf8')
+      fs.writeFileSync(inputObjectInfoPath, readableStringify(result, 3), 'utf8')
    } catch (error) {
       console.error('Fetch request timed out or failed:', error)
    } finally {
@@ -26,7 +28,6 @@ if (true) {
 
 // find . -name 'object_info.json'
 // const inputObjectInfoPath = 'schema/hosts/Z3LBuTxBOybwVxlb5bbCk/object_info.json'
-const inputObjectInfoPath = 'src/comfyui/__object_info.json'
 const inputEmbeddingsPath = 'schema/hosts/Z3LBuTxBOybwVxlb5bbCk/embeddings.json'
 
 // const targetDebugFolder = `src/comfyui/DEBUG`

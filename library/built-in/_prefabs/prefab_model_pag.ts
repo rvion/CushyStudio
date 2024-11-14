@@ -48,5 +48,10 @@ export const ui_model_pag = (form: X.Builder): UI_model_pag => {
             },
          },
       )
-      .addRequirements([{ type: 'customNodesByNameInCushy', nodeName: 'PerturbedAttention' }])
+      .addRequirements([
+         {
+            type: 'customNodesByNameInCushy',
+            nodeName: 'sd-perturbed-attention.PerturbedAttention',
+         },
+      ])
 }

@@ -27,7 +27,7 @@ export function getUnionNameBasedOnFirstFoundEnumName(
    if (enumName === 'CheckpointLoader.config_name') return 'E_CkptConfigName'
 
    // Impact-Specific
-   if (enumName === 'Impact_Pack.SAMDetectorCombined.detection_hint') return 'E_ImpactDetectionHint'
+   if (enumName === 'Impact-Pack.SAMDetectorCombined.detection_hint') return 'E_ImpactDetectionHint'
 
    // Misc
    if (hashContent === 'false|true') return 'E_TrueOrFalse'

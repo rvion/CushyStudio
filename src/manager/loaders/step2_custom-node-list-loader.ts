@@ -3,6 +3,7 @@ import type { KnownComfyPluginTitle } from '../generated/KnownComfyPluginTitle'
 import type { ComfyManagerPluginID } from '../types/ComfyManagerPluginID'
 import type { ComfyManagerPluginInfo } from '../types/ComfyManagerPluginInfo'
 
+import chalk from 'chalk'
 import { readFileSync, writeFileSync } from 'fs'
 import * as v from 'valibot'
 
@@ -83,7 +84,9 @@ export const _getKnownPlugins = (DB: ComfyManagerRepository): void => {
          out1 += `    | ${JSON.stringify(plugin.title)}\n`
       }
       out1 += '\n'
-      writeFileSync('src/manager/generated/KnownComfyPluginTitle.ts', out1 + '\n', 'utf-8')
+      const out1Path = 'src/manager/generated/KnownComfyPluginTitle.ts'
+      writeFileSync(out1Path, out1 + '\n', 'utf-8')
+      console.log(`   > generated: ${chalk.blue.underline(out1Path)}`)
 
       // FileType
       let out2 = ''
@@ -93,7 +96,9 @@ export const _getKnownPlugins = (DB: ComfyManagerRepository): void => {
       out2 += 'export type KnownComfyPluginURL =\n'
       for (const fileName of sortedFileNames) out2 += `    | ${JSON.stringify(fileName)}\n`
       // out2 += '\n'
-      writeFileSync('src/manager/generated/KnownComfyPluginURL.ts', out2, 'utf-8')
+      const out2Path = 'src/manager/generated/KnownComfyPluginURL.ts'
+      writeFileSync(out2Path, out2, 'utf-8')
+      console.log(`   > generated: ${chalk.blue.underline(out2Path)}`)
    }
 
    // INDEXING CHECKS ------------------------------------------------------------

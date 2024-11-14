@@ -47,12 +47,12 @@ export class ComfyManagerRepository {
       } = {},
    ) {
       this.plugins_byFile.set('https://github.com/comfyanonymous/ComfyUI' as any, {
-         id: 'BUILTIN',
+         id: 'nodes',
          author: 'comfyanonymous',
          description: 'built-in',
          title: 'built-in' as any,
          files: [],
-         reference: '',
+         reference: 'https://github.com/comfyanonymous/ComfyUI',
          install_type: '',
       })
 

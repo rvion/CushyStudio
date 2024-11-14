@@ -19,7 +19,7 @@ export type UI_IPAdapterFaceIDV2 = X.XGroup<{
          startAtStepPercent: X.XNumber
          endAtStepPercent: X.XNumber
          lora_strength: X.XNumber
-         embedding_combination: X.XEnum<'Impact_Pack.ImpactIPAdapterApplySEGS.combine_embeds'>
+         embedding_combination: X.XEnum<'Impact-Pack.ImpactIPAdapterApplySEGS.combine_embeds'>
          weight_type: X.XEnum<'IPAdapter_plus.IPAdapterAdvanced.weight_type'>
          embedding_scaling: X.XEnum<'IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'>
          noise: X.XNumber

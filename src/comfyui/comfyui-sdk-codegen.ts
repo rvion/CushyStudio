@@ -15,7 +15,7 @@ export function codegenSDK(
    const p = b.w
 
    // #region Core Imports ----------------------------------------------------------------------------------
-   p(`import type { ComfyNode } from '${prefix}core/ComfyNode'`)
+   p(`import type { ComfyNode } from '${prefix}comfyui/livegraph/ComfyNode'`)
    p(`import type { ComfyNodeMetadata } from '${prefix}types/ComfyNodeID'`)
    p(`import type { ComfyNodeOutput } from '${prefix}core/Slot'`)
    p(`import type { ComfyNodeSchemaJSON } from '${prefix}comfyui/ComfyUIObjectInfoTypes'`)

@@ -1,4 +1,4 @@
-import type { LiteGraphJSON } from '../../core/LiteGraph'
+import type { LiteGraphJSON } from '../../comfyui/litegraph/LiteGraphJSON'
 
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'

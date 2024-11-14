@@ -1,5 +1,5 @@
 import type { ComfyUIAPIRequest } from '../comfyui/comfyui-prompt-api'
-import type { LiteGraphJSON } from '../core/LiteGraph'
+import type { LiteGraphJSON } from '../comfyui/litegraph/LiteGraphJSON'
 import type { CushyScriptL } from '../models/CushyScript'
 import type { STATE } from '../state/state'
 import type { AppMetadata } from './AppManifest'

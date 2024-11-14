@@ -1,4 +1,4 @@
-import type { ComfyNode } from './ComfyNode'
+import type { ComfyNode } from '../comfyui/livegraph/ComfyNode'
 
 export class ComfyNodeOutput<
    //

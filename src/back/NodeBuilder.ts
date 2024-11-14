@@ -3,7 +3,7 @@ import type { ComfyNodeMetadata } from '../types/ComfyNodeID'
 
 import { observable } from 'mobx'
 
-import { ComfyNode } from '../core/ComfyNode'
+import { ComfyNode } from '../comfyui/livegraph/ComfyNode'
 
 export interface ComfyWorkflowBuilder extends Comfy.Builder {}
 export class ComfyWorkflowBuilder {

@@ -4978,9 +4978,9 @@
 ,   "Cache Node": {
         "input": {
             "required": {
-                "latent_suffix": ["STRING",{"default":"16758521_cache","multiline":false}]
-,               "image_suffix": ["STRING",{"default":"15894843_cache","multiline":false}]
-,               "conditioning_suffix": ["STRING",{"default":"69437092_cache","multiline":false}]
+                "latent_suffix": ["STRING",{"default":"66522007_cache","multiline":false}]
+,               "image_suffix": ["STRING",{"default":"61027347_cache","multiline":false}]
+,               "conditioning_suffix": ["STRING",{"default":"81970010_cache","multiline":false}]
             }
 ,           "optional": {
                 "output_path": ["STRING",{"default":"/home/runner/ComfyUI/custom_nodes/was-node-suite-comfyui/cache","multiline":false}]
@@ -10851,6 +10851,204 @@
 ,       "description": ""
 ,       "python_module": "custom_nodes.ComfyUI_IPAdapter_plus"
 ,       "category": "ipadapter/params"
+,       "output_node": false
+    }
+,   "NNLatentUpscale": {
+        "input": {
+            "required": {
+                "latent": ["LATENT"]
+,               "version": [["SDXL","SD 1.x"]]
+,               "upscale": ["FLOAT",{"default":1.5,"min":1,"max":2,"step":0.01,"display":"number"}]
+            }
+        }
+,       "input_order": {
+            "required": ["latent","version","upscale"]
+        }
+,       "output": ["LATENT"]
+,       "output_is_list": [false]
+,       "output_name": ["LATENT"]
+,       "name": "NNLatentUpscale"
+,       "display_name": "NNLatentUpscale"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUi_NNLatentUpscale"
+,       "category": "latent"
+,       "output_node": false
+    }
+,   "PerturbedAttention": {
+        "input": {
+            "required": {
+                "model": ["MODEL"]
+,               "scale": ["FLOAT",{"default":3,"min":0,"max":100,"step":0.1,"round":0.01}]
+,               "adaptive_scale": ["FLOAT",{"default":0,"min":0,"max":1,"step":0.001,"round":0.0001}]
+,               "unet_block": [["input","middle","output"],{"default":"middle"}]
+,               "unet_block_id": ["INT",{"default":0}]
+,               "sigma_start": ["FLOAT",{"default":-1,"min":-1,"max":10000,"step":0.01,"round":false}]
+,               "sigma_end": ["FLOAT",{"default":-1,"min":-1,"max":10000,"step":0.01,"round":false}]
+,               "rescale": ["FLOAT",{"default":0,"min":0,"max":1,"step":0.01}]
+,               "rescale_mode": [["full","partial","snf"],{"default":"full"}]
+            }
+,           "optional": {
+                "unet_block_list": ["STRING",{"default":""}]
+            }
+        }
+,       "input_order": {
+            "required": ["model","scale","adaptive_scale","unet_block","unet_block_id","sigma_start","sigma_end","rescale","rescale_mode"]
+,           "optional": ["unet_block_list"]
+        }
+,       "output": ["MODEL"]
+,       "output_is_list": [false]
+,       "output_name": ["MODEL"]
+,       "name": "PerturbedAttention"
+,       "display_name": "Perturbed-Attention Guidance (Advanced)"
+,       "description": ""
+,       "python_module": "custom_nodes.sd-perturbed-attention"
+,       "category": "model_patches/unet"
+,       "output_node": false
+    }
+,   "SmoothedEnergyGuidanceAdvanced": {
+        "input": {
+            "required": {
+                "model": ["MODEL"]
+,               "scale": ["FLOAT",{"default":3,"min":0,"max":100,"step":0.1,"round":0.01}]
+,               "blur_sigma": ["FLOAT",{"default":-1,"min":-1,"max":9999,"step":0.01,"round":0.001}]
+,               "unet_block": [["input","middle","output"],{"default":"middle"}]
+,               "unet_block_id": ["INT",{"default":0}]
+,               "sigma_start": ["FLOAT",{"default":-1,"min":-1,"max":10000,"step":0.01,"round":false}]
+,               "sigma_end": ["FLOAT",{"default":-1,"min":-1,"max":10000,"step":0.01,"round":false}]
+,               "rescale": ["FLOAT",{"default":0,"min":0,"max":1,"step":0.01}]
+,               "rescale_mode": [["full","partial","snf"],{"default":"full"}]
+            }
+,           "optional": {
+                "unet_block_list": ["STRING",{"default":""}]
+            }
+        }
+,       "input_order": {
+            "required": ["model","scale","blur_sigma","unet_block","unet_block_id","sigma_start","sigma_end","rescale","rescale_mode"]
+,           "optional": ["unet_block_list"]
+        }
+,       "output": ["MODEL"]
+,       "output_is_list": [false]
+,       "output_name": ["MODEL"]
+,       "name": "SmoothedEnergyGuidanceAdvanced"
+,       "display_name": "Smoothed Energy Guidance (Advanced)"
+,       "description": ""
+,       "python_module": "custom_nodes.sd-perturbed-attention"
+,       "category": "model_patches/unet"
+,       "output_node": false
+    }
+,   "TRTAttachPag": {
+        "input": {
+            "required": {
+                "model": ["MODEL"]
+,               "unet_block": [["input","middle","output"],{"default":"middle"}]
+,               "unet_block_id": ["INT",{"default":0}]
+            }
+,           "optional": {
+                "unet_block_list": ["STRING",{"default":""}]
+            }
+        }
+,       "input_order": {
+            "required": ["model","unet_block","unet_block_id"]
+,           "optional": ["unet_block_list"]
+        }
+,       "output": ["MODEL"]
+,       "output_is_list": [false]
+,       "output_name": ["MODEL"]
+,       "name": "TRTAttachPag"
+,       "display_name": "TensorRT Attach PAG"
+,       "description": ""
+,       "python_module": "custom_nodes.sd-perturbed-attention"
+,       "category": "TensorRT"
+,       "output_node": false
+    }
+,   "TRTPerturbedAttention": {
+        "input": {
+            "required": {
+                "model_base": ["MODEL"]
+,               "model_pag": ["MODEL"]
+,               "scale": ["FLOAT",{"default":3,"min":0,"max":100,"step":0.1,"round":0.01}]
+,               "adaptive_scale": ["FLOAT",{"default":0,"min":0,"max":1,"step":0.001,"round":0.0001}]
+,               "sigma_start": ["FLOAT",{"default":-1,"min":-1,"max":10000,"step":0.01,"round":false}]
+,               "sigma_end": ["FLOAT",{"default":-1,"min":-1,"max":10000,"step":0.01,"round":false}]
+,               "rescale": ["FLOAT",{"default":0,"min":0,"max":1,"step":0.01}]
+,               "rescale_mode": [["full","partial"],{"default":"full"}]
+            }
+        }
+,       "input_order": {
+            "required": ["model_base","model_pag","scale","adaptive_scale","sigma_start","sigma_end","rescale","rescale_mode"]
+        }
+,       "output": ["MODEL"]
+,       "output_is_list": [false]
+,       "output_name": ["MODEL"]
+,       "name": "TRTPerturbedAttention"
+,       "display_name": "TensorRT Perturbed-Attention Guidance"
+,       "description": ""
+,       "python_module": "custom_nodes.sd-perturbed-attention"
+,       "category": "TensorRT"
+,       "output_node": false
+    }
+,   "CivitAI_Lora_Loader": {
+        "input": {
+            "required": {
+                "model": ["MODEL"]
+,               "clip": ["CLIP"]
+,               "lora_air": ["STRING",{"default":"{model_id}@{model_version}","multiline":false}]
+,               "lora_name": [["none"]]
+,               "strength_model": ["FLOAT",{"default":1,"min":-10,"max":10,"step":0.01}]
+,               "strength_clip": ["FLOAT",{"default":1,"min":-10,"max":10,"step":0.01}]
+            }
+,           "optional": {
+                "api_key": ["STRING",{"default":"","multiline":false}]
+,               "download_chunks": ["INT",{"default":4,"min":1,"max":12,"step":1}]
+,               "download_path": [["models/loras"]]
+            }
+,           "hidden": {
+                "extra_pnginfo": "EXTRA_PNGINFO"
+            }
+        }
+,       "input_order": {
+            "required": ["model","clip","lora_air","lora_name","strength_model","strength_clip"]
+,           "optional": ["api_key","download_chunks","download_path"]
+,           "hidden": ["extra_pnginfo"]
+        }
+,       "output": ["MODEL","CLIP"]
+,       "output_is_list": [false,false]
+,       "output_name": ["MODEL","CLIP"]
+,       "name": "CivitAI_Lora_Loader"
+,       "display_name": "CivitAI Lora Loader"
+,       "description": ""
+,       "python_module": "custom_nodes.civitai_comfy_nodes"
+,       "category": "CivitAI/Loaders"
+,       "output_node": false
+    }
+,   "CivitAI_Checkpoint_Loader": {
+        "input": {
+            "required": {
+                "ckpt_air": ["STRING",{"default":"{model_id}@{model_version}","multiline":false}]
+,               "ckpt_name": [["none","AOM3A3_orangemixs.safetensors","photon_v1.safetensors"]]
+            }
+,           "optional": {
+                "api_key": ["STRING",{"default":"","multiline":false}]
+,               "download_chunks": ["INT",{"default":4,"min":1,"max":12,"step":1}]
+,               "download_path": [["models/checkpoints"]]
+            }
+,           "hidden": {
+                "extra_pnginfo": "EXTRA_PNGINFO"
+            }
+        }
+,       "input_order": {
+            "required": ["ckpt_air","ckpt_name"]
+,           "optional": ["api_key","download_chunks","download_path"]
+,           "hidden": ["extra_pnginfo"]
+        }
+,       "output": ["MODEL","CLIP","VAE"]
+,       "output_is_list": [false,false,false]
+,       "output_name": ["MODEL","CLIP","VAE"]
+,       "name": "CivitAI_Checkpoint_Loader"
+,       "display_name": "CivitAI Checkpoint Loader"
+,       "description": ""
+,       "python_module": "custom_nodes.civitai_comfy_nodes"
+,       "category": "CivitAI/Loaders"
 ,       "output_node": false
     }
 ,   "ShufflePreprocessor": {

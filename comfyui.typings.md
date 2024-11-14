@@ -1,6 +1,6 @@
 # Example ComfyUI Typings
 ```ts
-import type { ComfyNode } from '../src/core/ComfyNode'
+import type { ComfyNode } from '../src/comfyui/livegraph/ComfyNode'
 import type { ComfyNodeMetadata } from '../src/types/ComfyNodeID'
 import type { ComfyNodeOutput } from '../src/core/Slot'
 import type { ComfyNodeSchemaJSON } from '../src/comfyui/ComfyUIObjectInfoTypes'
@@ -197,6 +197,18 @@ declare global {
           * Nodes: IPAdapter, IPAdapterAdvanced, IPAdapterBatch, IPAdapterFaceID, IPAdapterFaceIDKolors, IPAAdapterFaceIDBatch, IPAdapterTiled, IPAdapterTiledBatch, IPAdapterEmbeds, IPAdapterEmbedsBatch, IPAdapterStyleComposition, IPAdapterStyleCompositionBatch, IPAdapterMS, IPAdapterClipVisionEnhancer, IPAdapterClipVisionEnhancerBatch, IPAdapterFromParams, IPAdapterPreciseStyleTransfer, IPAdapterPreciseStyleTransferBatch, IPAdapterPreciseComposition, IPAdapterPreciseCompositionBatch, IPAdapterUnifiedLoader, IPAdapterUnifiedLoaderFaceID, IPAdapterModelLoader, IPAdapterInsightFaceLoader, IPAdapterUnifiedLoaderCommunity, IPAdapterEncoder, IPAdapterCombineEmbeds, IPAdapterNoise, PrepImageForClipVision, IPAdapterSaveEmbeds, IPAdapterLoadEmbeds, IPAdapterWeights, IPAdapterCombineWeights, IPAdapterWeightsFromStrategy, IPAdapterPromptScheduleFromWeightsStrategy, IPAdapterRegionalConditioning, IPAdapterCombineParams
           */
          | 'custom_nodes.ComfyUI_IPAdapter_plus'
+         /**
+          * Nodes: NNLatentUpscale
+          */
+         | 'custom_nodes.ComfyUi_NNLatentUpscale'
+         /**
+          * Nodes: PerturbedAttention, SmoothedEnergyGuidanceAdvanced, TRTAttachPag, TRTPerturbedAttention
+          */
+         | 'custom_nodes.sd-perturbed-attention'
+         /**
+          * Nodes: CivitAI_Lora_Loader, CivitAI_Checkpoint_Loader
+          */
+         | 'custom_nodes.civitai_comfy_nodes'
          /**
           * Nodes: ShufflePreprocessor, DensePosePreprocessor, LeReS-DepthMapPreprocessor, BinaryPreprocessor, AnimeFace_SemSegPreprocessor, Zoe-DepthMapPreprocessor, DepthAnythingPreprocessor, Zoe_DepthAnythingPreprocessor, DepthAnythingV2Preprocessor, CannyEdgePreprocessor, DWPreprocessor, AnimalPosePreprocessor, ImageLuminanceDetector, ImageIntensityDetector, MediaPipe-FaceMeshPreprocessor, DiffusionEdge_Preprocessor, M-LSDPreprocessor, HEDPreprocessor, FakeScribblePreprocessor, OneFormer-COCO-SemSegPreprocessor, OneFormer-ADE20K-SemSegPreprocessor, BAE-NormalMapPreprocessor, MeshGraphormer-DepthMapPreprocessor, MeshGraphormer+ImpactDetector-DepthMapPreprocessor, DSINE-NormalMapPreprocessor, MiDaS-NormalMapPreprocessor, MiDaS-DepthMapPreprocessor, AnyLineArtPreprocessor_aux, SAMPreprocessor, UniFormer-SemSegPreprocessor, SemSegPreprocessor, PiDiNetPreprocessor, InpaintPreprocessor, LineArtPreprocessor, OpenposePreprocessor, Unimatch_OptFlowPreprocessor, MaskOptFlow, SavePoseKpsAsJsonFile, FacialPartColoringFromPoseKps, UpperBodyTrackingFromPoseKps, RenderPeopleKps, RenderAnimalKps, TEEDPreprocessor, PyraCannyPreprocessor, Metric3D-DepthMapPreprocessor, Metric3D-NormalMapPreprocessor, Manga2Anime_LineArt_Preprocessor, ScribblePreprocessor, Scribble_XDoG_Preprocessor, Scribble_PiDiNet_Preprocessor, AnimeLineArtPreprocessor, LineartStandardPreprocessor, TilePreprocessor, TTPlanet_TileGF_Preprocessor, TTPlanet_TileSimple_Preprocessor, ColorPreprocessor, AIO_Preprocessor, ControlNetPreprocessorSelector, PixelPerfectResolution, ImageGenResolutionFromImage, ImageGenResolutionFromLatent, HintImageEnchance, ExecuteAllControlNetPreprocessors, ControlNetAuxSimpleAddText
           */
@@ -4399,6 +4411,105 @@ declare global {
              params_4?: Signal['IPADAPTER_PARAMS']
              params_5?: Signal['IPADAPTER_PARAMS']
          },
+         "ComfyUi_NNLatentUpscale.NNLatentUpscale": {
+             latent: Signal['LATENT']
+             version: Signal['E_8ad80a1d']
+             /** default=1.5 min=2 max=2 step=0.01 */
+             upscale?: Signal['FLOAT']
+         },
+         "sd-perturbed-attention.PerturbedAttention": {
+             model: Signal['MODEL']
+             /** default=3 min=100 max=100 step=0.1 */
+             scale?: Signal['FLOAT']
+             /** default=0 min=1 max=1 step=0.001 */
+             adaptive_scale?: Signal['FLOAT']
+             /** default="middle" */
+             unet_block?: Signal['E_5fc845cd']
+             /** default=0 */
+             unet_block_id?: Signal['INT']
+             /** default=-1 min=10000 max=10000 step=0.01 */
+             sigma_start?: Signal['FLOAT']
+             /** default=-1 min=10000 max=10000 step=0.01 */
+             sigma_end?: Signal['FLOAT']
+             /** default=0 min=1 max=1 step=0.01 */
+             rescale?: Signal['FLOAT']
+             /** default="full" */
+             rescale_mode?: Signal['E_b7de8175']
+             /** default="" */
+             unet_block_list?: Signal['STRING']
+         },
+         "sd-perturbed-attention.SmoothedEnergyGuidanceAdvanced": {
+             model: Signal['MODEL']
+             /** default=3 min=100 max=100 step=0.1 */
+             scale?: Signal['FLOAT']
+             /** default=-1 min=9999 max=9999 step=0.01 */
+             blur_sigma?: Signal['FLOAT']
+             /** default="middle" */
+             unet_block?: Signal['E_5fc845cd']
+             /** default=0 */
+             unet_block_id?: Signal['INT']
+             /** default=-1 min=10000 max=10000 step=0.01 */
+             sigma_start?: Signal['FLOAT']
+             /** default=-1 min=10000 max=10000 step=0.01 */
+             sigma_end?: Signal['FLOAT']
+             /** default=0 min=1 max=1 step=0.01 */
+             rescale?: Signal['FLOAT']
+             /** default="full" */
+             rescale_mode?: Signal['E_b7de8175']
+             /** default="" */
+             unet_block_list?: Signal['STRING']
+         },
+         "sd-perturbed-attention.TRTAttachPag": {
+             model: Signal['MODEL']
+             /** default="middle" */
+             unet_block?: Signal['E_5fc845cd']
+             /** default=0 */
+             unet_block_id?: Signal['INT']
+             /** default="" */
+             unet_block_list?: Signal['STRING']
+         },
+         "sd-perturbed-attention.TRTPerturbedAttention": {
+             model_base: Signal['MODEL']
+             model_pag: Signal['MODEL']
+             /** default=3 min=100 max=100 step=0.1 */
+             scale?: Signal['FLOAT']
+             /** default=0 min=1 max=1 step=0.001 */
+             adaptive_scale?: Signal['FLOAT']
+             /** default=-1 min=10000 max=10000 step=0.01 */
+             sigma_start?: Signal['FLOAT']
+             /** default=-1 min=10000 max=10000 step=0.01 */
+             sigma_end?: Signal['FLOAT']
+             /** default=0 min=1 max=1 step=0.01 */
+             rescale?: Signal['FLOAT']
+             /** default="full" */
+             rescale_mode?: Signal['E_72c64673']
+         },
+         "civitai_comfy_nodes.CivitAI_Lora_Loader": {
+             model: Signal['MODEL']
+             clip: Signal['CLIP']
+             /** default="{model_id}@{model_version}" */
+             lora_air?: Signal['STRING']
+             lora_name: Signal['E_71f8e797']
+             /** default=1 min=10 max=10 step=0.01 */
+             strength_model?: Signal['FLOAT']
+             /** default=1 min=10 max=10 step=0.01 */
+             strength_clip?: Signal['FLOAT']
+             /** default="" */
+             api_key?: Signal['STRING']
+             /** default=4 min=12 max=12 step=1 */
+             download_chunks?: Signal['INT']
+             download_path?: Signal['E_6c0bcc99']
+         },
+         "civitai_comfy_nodes.CivitAI_Checkpoint_Loader": {
+             /** default="{model_id}@{model_version}" */
+             ckpt_air?: Signal['STRING']
+             ckpt_name: Signal['E_2c7b3727']
+             /** default="" */
+             api_key?: Signal['STRING']
+             /** default=4 min=12 max=12 step=1 */
+             download_chunks?: Signal['INT']
+             download_path?: Signal['E_3d793aac']
+         },
          "controlnet_aux.ShufflePreprocessor": {
              image: Signal['IMAGE']
              /** default=512 min=16384 max=16384 step=64 */
@@ -5042,13 +5153,13 @@ declare global {
              /** default=true */
              clamp?: Signal['BOOLEAN']
          },
-         "Impact_Pack.SAMLoader": {
+         "Impact-Pack.SAMLoader": {
              /** */
              model_name: Signal['E_40c77739']
              /** */
              device_mode: Signal['E_2ad445b9']
          },
-         "Impact_Pack.CLIPSegDetectorProvider": {
+         "Impact-Pack.CLIPSegDetectorProvider": {
              /** */
              text: Signal['STRING']
              /** default=7 min=15 max=15 step=0.1 */
@@ -5058,18 +5169,18 @@ declare global {
              /** default=4 min=10 max=10 step=1 */
              dilation_factor?: Signal['INT']
          },
-         "Impact_Pack.ONNXDetectorProvider": {
+         "Impact-Pack.ONNXDetectorProvider": {
              model_name: Signal['E_LoraName']
          },
-         "Impact_Pack.BitwiseAndMaskForEach": {
+         "Impact-Pack.BitwiseAndMaskForEach": {
              base_segs: Signal['SEGS']
              mask_segs: Signal['SEGS']
          },
-         "Impact_Pack.SubtractMaskForEach": {
+         "Impact-Pack.SubtractMaskForEach": {
              base_segs: Signal['SEGS']
              mask_segs: Signal['SEGS']
          },
-         "Impact_Pack.DetailerForEach": {
+         "Impact-Pack.DetailerForEach": {
              image: Signal['IMAGE']
              segs: Signal['SEGS']
              model: Signal['MODEL']
@@ -5110,7 +5221,7 @@ declare global {
              noise_mask_feather?: Signal['INT']
              scheduler_func_opt?: Signal['SCHEDULER_FUNC']
          },
-         "Impact_Pack.DetailerForEachDebug": {
+         "Impact-Pack.DetailerForEachDebug": {
              image: Signal['IMAGE']
              segs: Signal['SEGS']
              model: Signal['MODEL']
@@ -5151,7 +5262,7 @@ declare global {
              noise_mask_feather?: Signal['INT']
              scheduler_func_opt?: Signal['SCHEDULER_FUNC']
          },
-         "Impact_Pack.DetailerForEachPipe": {
+         "Impact-Pack.DetailerForEachPipe": {
              image: Signal['IMAGE']
              segs: Signal['SEGS']
              /** default=512 min=16384 max=16384 step=8 */
@@ -5191,7 +5302,7 @@ declare global {
              noise_mask_feather?: Signal['INT']
              scheduler_func_opt?: Signal['SCHEDULER_FUNC']
          },
-         "Impact_Pack.DetailerForEachDebugPipe": {
+         "Impact-Pack.DetailerForEachDebugPipe": {
              image: Signal['IMAGE']
              segs: Signal['SEGS']
              /** default=512 min=16384 max=16384 step=8 */
@@ -5231,7 +5342,7 @@ declare global {
              noise_mask_feather?: Signal['INT']
              scheduler_func_opt?: Signal['SCHEDULER_FUNC']
          },
-         "Impact_Pack.DetailerForEachPipeForAnimateDiff": {
+         "Impact-Pack.DetailerForEachPipeForAnimateDiff": {
              image_frames: Signal['IMAGE']
              segs: Signal['SEGS']
              /** default=512 min=16384 max=16384 step=8 */
@@ -5261,7 +5372,7 @@ declare global {
              noise_mask_feather?: Signal['INT']
              scheduler_func_opt?: Signal['SCHEDULER_FUNC']
          },
-         "Impact_Pack.SAMDetectorCombined": {
+         "Impact-Pack.SAMDetectorCombined": {
              /** */
              sam_model: Signal['SAM_MODEL']
              /** */
@@ -5281,7 +5392,7 @@ declare global {
              /** */
              mask_hint_use_negative: Signal['E_aa302307']
          },
-         "Impact_Pack.SAMDetectorSegmented": {
+         "Impact-Pack.SAMDetectorSegmented": {
              /** */
              sam_model: Signal['SAM_MODEL']
              /** */
@@ -5301,7 +5412,7 @@ declare global {
              /** */
              mask_hint_use_negative: Signal['E_aa302307']
          },
-         "Impact_Pack.FaceDetailer": {
+         "Impact-Pack.FaceDetailer": {
              image: Signal['IMAGE']
              model: Signal['MODEL']
              clip: Signal['CLIP']
@@ -5362,7 +5473,7 @@ declare global {
              noise_mask_feather?: Signal['INT']
              scheduler_func_opt?: Signal['SCHEDULER_FUNC']
          },
-         "Impact_Pack.FaceDetailerPipe": {
+         "Impact-Pack.FaceDetailerPipe": {
              image: Signal['IMAGE']
              detailer_pipe: Signal['DETAILER_PIPE']
              /** default=512 min=16384 max=16384 step=8 */
@@ -5415,7 +5526,7 @@ declare global {
              noise_mask_feather?: Signal['INT']
              scheduler_func_opt?: Signal['SCHEDULER_FUNC']
          },
-         "Impact_Pack.MaskDetailerPipe": {
+         "Impact-Pack.MaskDetailerPipe": {
              image: Signal['IMAGE']
              mask: Signal['MASK']
              basic_pipe: Signal['BASIC_PIPE']
@@ -5461,7 +5572,7 @@ declare global {
              contour_fill?: Signal['BOOLEAN']
              scheduler_func_opt?: Signal['SCHEDULER_FUNC']
          },
-         "Impact_Pack.ToDetailerPipe": {
+         "Impact-Pack.ToDetailerPipe": {
              model: Signal['MODEL']
              clip: Signal['CLIP']
              vae: Signal['VAE']
@@ -5476,7 +5587,7 @@ declare global {
              segm_detector_opt?: Signal['SEGM_DETECTOR']
              detailer_hook?: Signal['DETAILER_HOOK']
          },
-         "Impact_Pack.ToDetailerPipeSDXL": {
+         "Impact-Pack.ToDetailerPipeSDXL": {
              model: Signal['MODEL']
              clip: Signal['CLIP']
              vae: Signal['VAE']
@@ -5495,32 +5606,32 @@ declare global {
              segm_detector_opt?: Signal['SEGM_DETECTOR']
              detailer_hook?: Signal['DETAILER_HOOK']
          },
-         "Impact_Pack.FromDetailerPipe": {
+         "Impact-Pack.FromDetailerPipe": {
              detailer_pipe: Signal['DETAILER_PIPE']
          },
-         "Impact_Pack.FromDetailerPipe_v2": {
+         "Impact-Pack.FromDetailerPipe_v2": {
              detailer_pipe: Signal['DETAILER_PIPE']
          },
-         "Impact_Pack.FromDetailerPipeSDXL": {
+         "Impact-Pack.FromDetailerPipeSDXL": {
              detailer_pipe: Signal['DETAILER_PIPE']
          },
-         "Impact_Pack.AnyPipeToBasic": {
+         "Impact-Pack.AnyPipeToBasic": {
              any_pipe: Signal['*']
          },
-         "Impact_Pack.ToBasicPipe": {
+         "Impact-Pack.ToBasicPipe": {
              model: Signal['MODEL']
              clip: Signal['CLIP']
              vae: Signal['VAE']
              positive: Signal['CONDITIONING']
              negative: Signal['CONDITIONING']
          },
-         "Impact_Pack.FromBasicPipe": {
+         "Impact-Pack.FromBasicPipe": {
              basic_pipe: Signal['BASIC_PIPE']
          },
-         "Impact_Pack.FromBasicPipe_v2": {
+         "Impact-Pack.FromBasicPipe_v2": {
              basic_pipe: Signal['BASIC_PIPE']
          },
-         "Impact_Pack.BasicPipeToDetailerPipe": {
+         "Impact-Pack.BasicPipeToDetailerPipe": {
              basic_pipe: Signal['BASIC_PIPE']
              bbox_detector: Signal['BBOX_DETECTOR']
              /** */
@@ -5531,7 +5642,7 @@ declare global {
              segm_detector_opt?: Signal['SEGM_DETECTOR']
              detailer_hook?: Signal['DETAILER_HOOK']
          },
-         "Impact_Pack.BasicPipeToDetailerPipeSDXL": {
+         "Impact-Pack.BasicPipeToDetailerPipeSDXL": {
              base_basic_pipe: Signal['BASIC_PIPE']
              refiner_basic_pipe: Signal['BASIC_PIPE']
              bbox_detector: Signal['BBOX_DETECTOR']
@@ -5543,10 +5654,10 @@ declare global {
              segm_detector_opt?: Signal['SEGM_DETECTOR']
              detailer_hook?: Signal['DETAILER_HOOK']
          },
-         "Impact_Pack.DetailerPipeToBasicPipe": {
+         "Impact-Pack.DetailerPipeToBasicPipe": {
              detailer_pipe: Signal['DETAILER_PIPE']
          },
-         "Impact_Pack.EditBasicPipe": {
+         "Impact-Pack.EditBasicPipe": {
              basic_pipe: Signal['BASIC_PIPE']
              model?: Signal['MODEL']
              clip?: Signal['CLIP']
@@ -5554,7 +5665,7 @@ declare global {
              positive?: Signal['CONDITIONING']
              negative?: Signal['CONDITIONING']
          },
-         "Impact_Pack.EditDetailerPipe": {
+         "Impact-Pack.EditDetailerPipe": {
              detailer_pipe: Signal['DETAILER_PIPE']
              /** */
              wildcard: Signal['STRING']
@@ -5570,7 +5681,7 @@ declare global {
              segm_detector?: Signal['SEGM_DETECTOR']
              detailer_hook?: Signal['DETAILER_HOOK']
          },
-         "Impact_Pack.EditDetailerPipeSDXL": {
+         "Impact-Pack.EditDetailerPipeSDXL": {
              detailer_pipe: Signal['DETAILER_PIPE']
              /** */
              wildcard: Signal['STRING']
@@ -5590,7 +5701,7 @@ declare global {
              segm_detector?: Signal['SEGM_DETECTOR']
              detailer_hook?: Signal['DETAILER_HOOK']
          },
-         "Impact_Pack.LatentPixelScale": {
+         "Impact-Pack.LatentPixelScale": {
              samples: Signal['LATENT']
              scale_method: Signal['E_f9c5efbc']
              /** default=1.5 min=10000 max=10000 step=0.1 */
@@ -5600,7 +5711,7 @@ declare global {
              use_tiled_vae?: Signal['BOOLEAN']
              upscale_model_opt?: Signal['UPSCALE_MODEL']
          },
-         "Impact_Pack.PixelKSampleUpscalerProvider": {
+         "Impact-Pack.PixelKSampleUpscalerProvider": {
              scale_method: Signal['E_f9c5efbc']
              model: Signal['MODEL']
              vae: Signal['VAE']
@@ -5624,7 +5735,7 @@ declare global {
              pk_hook_opt?: Signal['PK_HOOK']
              scheduler_func_opt?: Signal['SCHEDULER_FUNC']
          },
-         "Impact_Pack.PixelKSampleUpscalerProviderPipe": {
+         "Impact-Pack.PixelKSampleUpscalerProviderPipe": {
              scale_method: Signal['E_f9c5efbc']
              /** default=0 min=18446744073709552000 max=18446744073709552000 */
              seed?: Signal['INT']
@@ -5648,7 +5759,7 @@ declare global {
              /** default=1 min=1 max=1 step=0.01 */
              tile_cnet_strength?: Signal['FLOAT']
          },
-         "Impact_Pack.IterativeLatentUpscale": {
+         "Impact-Pack.IterativeLatentUpscale": {
              samples: Signal['LATENT']
              /** default=1.5 min=10000 max=10000 step=0.1 */
              upscale_factor?: Signal['FLOAT']
@@ -5660,7 +5771,7 @@ declare global {
              /** default="simple" */
              step_mode?: Signal['E_4724269c']
          },
-         "Impact_Pack.IterativeImageUpscale": {
+         "Impact-Pack.IterativeImageUpscale": {
              pixels: Signal['IMAGE']
              /** default=1.5 min=10000 max=10000 step=0.1 */
              upscale_factor?: Signal['FLOAT']
@@ -5673,7 +5784,7 @@ declare global {
              /** default="simple" */
              step_mode?: Signal['E_4724269c']
          },
-         "Impact_Pack.PixelTiledKSampleUpscalerProvider": {
+         "Impact-Pack.PixelTiledKSampleUpscalerProvider": {
              scale_method: Signal['E_f9c5efbc']
              model: Signal['MODEL']
              vae: Signal['VAE']
@@ -5700,7 +5811,7 @@ declare global {
              /** default=1 min=1 max=1 step=0.01 */
              tile_cnet_strength?: Signal['FLOAT']
          },
-         "Impact_Pack.PixelTiledKSampleUpscalerProviderPipe": {
+         "Impact-Pack.PixelTiledKSampleUpscalerProviderPipe": {
              scale_method: Signal['E_f9c5efbc']
              /** default=0 min=18446744073709552000 max=18446744073709552000 */
              seed?: Signal['INT']
@@ -5724,7 +5835,7 @@ declare global {
              /** default=1 min=1 max=1 step=0.01 */
              tile_cnet_strength?: Signal['FLOAT']
          },
-         "Impact_Pack.TwoSamplersForMaskUpscalerProvider": {
+         "Impact-Pack.TwoSamplersForMaskUpscalerProvider": {
              scale_method: Signal['E_f9c5efbc']
              full_sample_schedule: Signal['E_de6a9887']
              /** default=false */
@@ -5741,7 +5852,7 @@ declare global {
              pk_hook_mask_opt?: Signal['PK_HOOK']
              pk_hook_full_opt?: Signal['PK_HOOK']
          },
-         "Impact_Pack.TwoSamplersForMaskUpscalerProviderPipe": {
+         "Impact-Pack.TwoSamplersForMaskUpscalerProviderPipe": {
              scale_method: Signal['E_f9c5efbc']
              full_sample_schedule: Signal['E_de6a9887']
              /** default=false */
@@ -5758,26 +5869,26 @@ declare global {
              pk_hook_mask_opt?: Signal['PK_HOOK']
              pk_hook_full_opt?: Signal['PK_HOOK']
          },
-         "Impact_Pack.PixelKSampleHookCombine": {
+         "Impact-Pack.PixelKSampleHookCombine": {
              hook1: Signal['PK_HOOK']
              hook2: Signal['PK_HOOK']
          },
-         "Impact_Pack.DenoiseScheduleHookProvider": {
+         "Impact-Pack.DenoiseScheduleHookProvider": {
              schedule_for_iteration: Signal['E_0f7d0d08']
              /** default=0.2 min=1 max=1 step=0.01 */
              target_denoise?: Signal['FLOAT']
          },
-         "Impact_Pack.StepsScheduleHookProvider": {
+         "Impact-Pack.StepsScheduleHookProvider": {
              schedule_for_iteration: Signal['E_0f7d0d08']
              /** default=20 min=10000 max=10000 */
              target_steps?: Signal['INT']
          },
-         "Impact_Pack.CfgScheduleHookProvider": {
+         "Impact-Pack.CfgScheduleHookProvider": {
              schedule_for_iteration: Signal['E_0f7d0d08']
              /** default=3 min=100 max=100 */
              target_cfg?: Signal['FLOAT']
          },
-         "Impact_Pack.NoiseInjectionHookProvider": {
+         "Impact-Pack.NoiseInjectionHookProvider": {
              schedule_for_iteration: Signal['E_0f7d0d08']
              source: Signal['E_CpuOrGpu']
              /** default=0 min=18446744073709552000 max=18446744073709552000 */
@@ -5787,7 +5898,7 @@ declare global {
              /** default=1 min=200 max=200 step=0.01 */
              end_strength?: Signal['FLOAT']
          },
-         "Impact_Pack.UnsamplerHookProvider": {
+         "Impact-Pack.UnsamplerHookProvider": {
              model: Signal['MODEL']
              /** default=25 min=10000 max=10000 */
              steps?: Signal['INT']
@@ -5804,18 +5915,18 @@ declare global {
              negative: Signal['CONDITIONING']
              schedule_for_iteration: Signal['E_0f7d0d08']
          },
-         "Impact_Pack.CoreMLDetailerHookProvider": {
+         "Impact-Pack.CoreMLDetailerHookProvider": {
              mode: Signal['E_d4b6506a']
          },
-         "Impact_Pack.PreviewDetailerHookProvider": {
+         "Impact-Pack.PreviewDetailerHookProvider": {
              /** default=95 min=100 max=100 */
              quality?: Signal['INT']
          },
-         "Impact_Pack.DetailerHookCombine": {
+         "Impact-Pack.DetailerHookCombine": {
              hook1: Signal['DETAILER_HOOK']
              hook2: Signal['DETAILER_HOOK']
          },
-         "Impact_Pack.NoiseInjectionDetailerHookProvider": {
+         "Impact-Pack.NoiseInjectionDetailerHookProvider": {
              schedule_for_cycle: Signal['E_afbc7832']
              source: Signal['E_CpuOrGpu']
              /** default=0 min=18446744073709552000 max=18446744073709552000 */
@@ -5825,7 +5936,7 @@ declare global {
              /** default=1 min=200 max=200 step=0.01 */
              end_strength?: Signal['FLOAT']
          },
-         "Impact_Pack.UnsamplerDetailerHookProvider": {
+         "Impact-Pack.UnsamplerDetailerHookProvider": {
              model: Signal['MODEL']
              /** default=25 min=10000 max=10000 */
              steps?: Signal['INT']
@@ -5842,12 +5953,12 @@ declare global {
              negative: Signal['CONDITIONING']
              schedule_for_cycle: Signal['E_afbc7832']
          },
-         "Impact_Pack.DenoiseSchedulerDetailerHookProvider": {
+         "Impact-Pack.DenoiseSchedulerDetailerHookProvider": {
              schedule_for_cycle: Signal['E_0f7d0d08']
              /** default=0.3 min=1 max=1 step=0.01 */
              target_denoise?: Signal['FLOAT']
          },
-         "Impact_Pack.SEGSOrderedFilterDetailerHookProvider": {
+         "Impact-Pack.SEGSOrderedFilterDetailerHookProvider": {
              target: Signal['E_87bec9aa']
              /** default=true */
              order?: Signal['BOOLEAN']
@@ -5856,7 +5967,7 @@ declare global {
              /** default=1 min=9223372036854776000 max=9223372036854776000 step=1 */
              take_count?: Signal['INT']
          },
-         "Impact_Pack.SEGSRangeFilterDetailerHookProvider": {
+         "Impact-Pack.SEGSRangeFilterDetailerHookProvider": {
              target: Signal['E_aceb55e7']
              /** default=true */
              mode?: Signal['BOOLEAN']
@@ -5865,44 +5976,44 @@ declare global {
              /** default=67108864 min=9223372036854776000 max=9223372036854776000 step=1 */
              max_value?: Signal['INT']
          },
-         "Impact_Pack.SEGSLabelFilterDetailerHookProvider": {
+         "Impact-Pack.SEGSLabelFilterDetailerHookProvider": {
              segs: Signal['SEGS']
              preset: Signal['E_cc1f262a']
              /** */
              labels: Signal['STRING']
          },
-         "Impact_Pack.VariationNoiseDetailerHookProvider": {
+         "Impact-Pack.VariationNoiseDetailerHookProvider": {
              /** default=0 min=18446744073709552000 max=18446744073709552000 */
              seed?: Signal['INT']
              /** default=0 min=1 max=1 step=0.01 */
              strength?: Signal['FLOAT']
          },
-         "Impact_Pack.BitwiseAndMask": {
+         "Impact-Pack.BitwiseAndMask": {
              mask1: Signal['MASK']
              mask2: Signal['MASK']
          },
-         "Impact_Pack.SubtractMask": {
+         "Impact-Pack.SubtractMask": {
              mask1: Signal['MASK']
              mask2: Signal['MASK']
          },
-         "Impact_Pack.AddMask": {
+         "Impact-Pack.AddMask": {
              mask1: Signal['MASK']
              mask2: Signal['MASK']
          },
-         "Impact_Pack.ImpactSegsAndMask": {
+         "Impact-Pack.ImpactSegsAndMask": {
              segs: Signal['SEGS']
              mask: Signal['MASK']
          },
-         "Impact_Pack.ImpactSegsAndMaskForEach": {
+         "Impact-Pack.ImpactSegsAndMaskForEach": {
              segs: Signal['SEGS']
              masks: Signal['MASK']
          },
-         "Impact_Pack.EmptySegs": {
+         "Impact-Pack.EmptySegs": {
          },
-         "Impact_Pack.ImpactFlattenMask": {
+         "Impact-Pack.ImpactFlattenMask": {
              masks: Signal['MASK']
          },
-         "Impact_Pack.MediaPipeFaceMeshToSEGS": {
+         "Impact-Pack.MediaPipeFaceMeshToSEGS": {
              image: Signal['IMAGE']
              /** default=3 min=100 max=100 step=0.1 */
              crop_factor?: Signal['FLOAT']
@@ -5931,7 +6042,7 @@ declare global {
              /** default=false */
              right_pupil?: Signal['BOOLEAN']
          },
-         "Impact_Pack.MaskToSEGS": {
+         "Impact-Pack.MaskToSEGS": {
              mask: Signal['MASK']
              /** default=false */
              combined?: Signal['BOOLEAN']
@@ -5944,7 +6055,7 @@ declare global {
              /** default=false */
              contour_fill?: Signal['BOOLEAN']
          },
-         "Impact_Pack.MaskToSEGS_for_AnimateDiff": {
+         "Impact-Pack.MaskToSEGS_for_AnimateDiff": {
              mask: Signal['MASK']
              /** default=false */
              combined?: Signal['BOOLEAN']
@@ -5957,30 +6068,30 @@ declare global {
              /** default=false */
              contour_fill?: Signal['BOOLEAN']
          },
-         "Impact_Pack.ToBinaryMask": {
+         "Impact-Pack.ToBinaryMask": {
              mask: Signal['MASK']
              /** default=20 min=255 max=255 */
              threshold?: Signal['INT']
          },
-         "Impact_Pack.MasksToMaskList": {
+         "Impact-Pack.MasksToMaskList": {
              masks: Signal['MASK']
          },
-         "Impact_Pack.MaskListToMaskBatch": {
+         "Impact-Pack.MaskListToMaskBatch": {
              mask: Signal['MASK']
          },
-         "Impact_Pack.ImageListToImageBatch": {
+         "Impact-Pack.ImageListToImageBatch": {
              images: Signal['IMAGE']
          },
-         "Impact_Pack.SetDefaultImageForSEGS": {
+         "Impact-Pack.SetDefaultImageForSEGS": {
              segs: Signal['SEGS']
              image: Signal['IMAGE']
              /** default=true */
              override?: Signal['BOOLEAN']
          },
-         "Impact_Pack.RemoveImageFromSEGS": {
+         "Impact-Pack.RemoveImageFromSEGS": {
              segs: Signal['SEGS']
          },
-         "Impact_Pack.BboxDetectorSEGS": {
+         "Impact-Pack.BboxDetectorSEGS": {
              bbox_detector: Signal['BBOX_DETECTOR']
              image: Signal['IMAGE']
              /** default=0.5 min=1 max=1 step=0.01 */
@@ -5995,7 +6106,7 @@ declare global {
              labels?: Signal['STRING']
              detailer_hook?: Signal['DETAILER_HOOK']
          },
-         "Impact_Pack.SegmDetectorSEGS": {
+         "Impact-Pack.SegmDetectorSEGS": {
              segm_detector: Signal['SEGM_DETECTOR']
              image: Signal['IMAGE']
              /** default=0.5 min=1 max=1 step=0.01 */
@@ -6010,7 +6121,7 @@ declare global {
              labels?: Signal['STRING']
              detailer_hook?: Signal['DETAILER_HOOK']
          },
-         "Impact_Pack.ONNXDetectorSEGS": {
+         "Impact-Pack.ONNXDetectorSEGS": {
              bbox_detector: Signal['BBOX_DETECTOR']
              image: Signal['IMAGE']
              /** default=0.5 min=1 max=1 step=0.01 */
@@ -6025,7 +6136,7 @@ declare global {
              labels?: Signal['STRING']
              detailer_hook?: Signal['DETAILER_HOOK']
          },
-         "Impact_Pack.ImpactSimpleDetectorSEGS_for_AD": {
+         "Impact-Pack.ImpactSimpleDetectorSEGS_for_AD": {
              bbox_detector: Signal['BBOX_DETECTOR']
              image_frames: Signal['IMAGE']
              /** default=0.5 min=1 max=1 step=0.01 */
@@ -6050,7 +6161,7 @@ declare global {
              sam_model_opt?: Signal['SAM_MODEL']
              segm_detector_opt?: Signal['SEGM_DETECTOR']
          },
-         "Impact_Pack.ImpactSimpleDetectorSEGS": {
+         "Impact-Pack.ImpactSimpleDetectorSEGS": {
              bbox_detector: Signal['BBOX_DETECTOR']
              image: Signal['IMAGE']
              /** default=0.5 min=1 max=1 step=0.01 */
@@ -6075,7 +6186,7 @@ declare global {
              sam_model_opt?: Signal['SAM_MODEL']
              segm_detector_opt?: Signal['SEGM_DETECTOR']
          },
-         "Impact_Pack.ImpactSimpleDetectorSEGSPipe": {
+         "Impact-Pack.ImpactSimpleDetectorSEGSPipe": {
              detailer_pipe: Signal['DETAILER_PIPE']
              image: Signal['IMAGE']
              /** default=0.5 min=1 max=1 step=0.01 */
@@ -6097,7 +6208,7 @@ declare global {
              /** default=0 min=512 max=512 step=1 */
              post_dilation?: Signal['INT']
          },
-         "Impact_Pack.ImpactControlNetApplySEGS": {
+         "Impact-Pack.ImpactControlNetApplySEGS": {
              segs: Signal['SEGS']
              control_net: Signal['CONTROL_NET']
              /** default=1 min=10 max=10 step=0.01 */
@@ -6105,7 +6216,7 @@ declare global {
              segs_preprocessor?: Signal['SEGS_PREPROCESSOR']
              control_image?: Signal['IMAGE']
          },
-         "Impact_Pack.ImpactControlNetApplyAdvancedSEGS": {
+         "Impact-Pack.ImpactControlNetApplyAdvancedSEGS": {
              segs: Signal['SEGS']
              control_net: Signal['CONTROL_NET']
              /** default=1 min=10 max=10 step=0.01 */
@@ -6118,10 +6229,10 @@ declare global {
              control_image?: Signal['IMAGE']
              vae?: Signal['VAE']
          },
-         "Impact_Pack.ImpactControlNetClearSEGS": {
+         "Impact-Pack.ImpactControlNetClearSEGS": {
              segs: Signal['SEGS']
          },
-         "Impact_Pack.ImpactIPAdapterApplySEGS": {
+         "Impact-Pack.ImpactIPAdapterApplySEGS": {
              segs: Signal['SEGS']
              ipadapter_pipe: Signal['IPADAPTER_PIPE']
              /** default=0.7 min=3 max=3 step=0.05 */
@@ -6146,17 +6257,17 @@ declare global {
              combine_embeds?: Signal['E_055d80a7']
              neg_image?: Signal['IMAGE']
          },
-         "Impact_Pack.ImpactDecomposeSEGS": {
+         "Impact-Pack.ImpactDecomposeSEGS": {
              segs: Signal['SEGS']
          },
-         "Impact_Pack.ImpactAssembleSEGS": {
+         "Impact-Pack.ImpactAssembleSEGS": {
              seg_header: Signal['SEGS_HEADER']
              seg_elt: Signal['SEG_ELT']
          },
-         "Impact_Pack.ImpactFrom_SEG_ELT": {
+         "Impact-Pack.ImpactFrom_SEG_ELT": {
              seg_elt: Signal['SEG_ELT']
          },
-         "Impact_Pack.ImpactEdit_SEG_ELT": {
+         "Impact-Pack.ImpactEdit_SEG_ELT": {
              seg_elt: Signal['SEG_ELT']
              cropped_image_opt?: Signal['IMAGE']
              cropped_mask_opt?: Signal['MASK']
@@ -6168,50 +6279,50 @@ declare global {
              /** */
              label_opt?: Signal['STRING']
          },
-         "Impact_Pack.ImpactDilate_Mask_SEG_ELT": {
+         "Impact-Pack.ImpactDilate_Mask_SEG_ELT": {
              seg_elt: Signal['SEG_ELT']
              /** default=10 min=512 max=512 step=1 */
              dilation?: Signal['INT']
          },
-         "Impact_Pack.ImpactDilateMask": {
+         "Impact-Pack.ImpactDilateMask": {
              mask: Signal['MASK']
              /** default=10 min=512 max=512 step=1 */
              dilation?: Signal['INT']
          },
-         "Impact_Pack.ImpactGaussianBlurMask": {
+         "Impact-Pack.ImpactGaussianBlurMask": {
              mask: Signal['MASK']
              /** default=10 min=100 max=100 step=1 */
              kernel_size?: Signal['INT']
              /** default=10 min=100 max=100 step=0.1 */
              sigma?: Signal['FLOAT']
          },
-         "Impact_Pack.ImpactDilateMaskInSEGS": {
+         "Impact-Pack.ImpactDilateMaskInSEGS": {
              segs: Signal['SEGS']
              /** default=10 min=512 max=512 step=1 */
              dilation?: Signal['INT']
          },
-         "Impact_Pack.ImpactGaussianBlurMaskInSEGS": {
+         "Impact-Pack.ImpactGaussianBlurMaskInSEGS": {
              segs: Signal['SEGS']
              /** default=10 min=100 max=100 step=1 */
              kernel_size?: Signal['INT']
              /** default=10 min=100 max=100 step=0.1 */
              sigma?: Signal['FLOAT']
          },
-         "Impact_Pack.ImpactScaleBy_BBOX_SEG_ELT": {
+         "Impact-Pack.ImpactScaleBy_BBOX_SEG_ELT": {
              seg: Signal['SEG_ELT']
              /** default=1 min=8 max=8 step=0.01 */
              scale_by?: Signal['FLOAT']
          },
-         "Impact_Pack.ImpactFrom_SEG_ELT_bbox": {
+         "Impact-Pack.ImpactFrom_SEG_ELT_bbox": {
              bbox: Signal['SEG_ELT_bbox']
          },
-         "Impact_Pack.ImpactFrom_SEG_ELT_crop_region": {
+         "Impact-Pack.ImpactFrom_SEG_ELT_crop_region": {
              crop_region: Signal['SEG_ELT_crop_region']
          },
-         "Impact_Pack.ImpactCount_Elts_in_SEGS": {
+         "Impact-Pack.ImpactCount_Elts_in_SEGS": {
              segs: Signal['SEGS']
          },
-         "Impact_Pack.BboxDetectorCombined_v2": {
+         "Impact-Pack.BboxDetectorCombined_v2": {
              bbox_detector: Signal['BBOX_DETECTOR']
              image: Signal['IMAGE']
              /** default=0.5 min=1 max=1 step=0.01 */
@@ -6219,7 +6330,7 @@ declare global {
              /** default=4 min=512 max=512 step=1 */
              dilation?: Signal['INT']
          },
-         "Impact_Pack.SegmDetectorCombined_v2": {
+         "Impact-Pack.SegmDetectorCombined_v2": {
              segm_detector: Signal['SEGM_DETECTOR']
              image: Signal['IMAGE']
              /** default=0.5 min=1 max=1 step=0.01 */
@@ -6227,10 +6338,10 @@ declare global {
              /** default=0 min=512 max=512 step=1 */
              dilation?: Signal['INT']
          },
-         "Impact_Pack.SegsToCombinedMask": {
+         "Impact-Pack.SegsToCombinedMask": {
              segs: Signal['SEGS']
          },
-         "Impact_Pack.KSamplerProvider": {
+         "Impact-Pack.KSamplerProvider": {
              /** default=0 min=18446744073709552000 max=18446744073709552000 */
              seed?: Signal['INT']
              /** default=20 min=10000 max=10000 */
@@ -6248,7 +6359,7 @@ declare global {
              /** */
              scheduler_func_opt?: Signal['SCHEDULER_FUNC']
          },
-         "Impact_Pack.TwoSamplersForMask": {
+         "Impact-Pack.TwoSamplersForMask": {
              /** */
              latent_image: Signal['LATENT']
              /** */
@@ -6258,7 +6369,7 @@ declare global {
              /** */
              mask: Signal['MASK']
          },
-         "Impact_Pack.TiledKSamplerProvider": {
+         "Impact-Pack.TiledKSamplerProvider": {
              /** default=0 min=18446744073709552000 max=18446744073709552000 */
              seed?: Signal['INT']
              /** default=20 min=10000 max=10000 */
@@ -6280,7 +6391,7 @@ declare global {
              /** */
              basic_pipe: Signal['BASIC_PIPE']
          },
-         "Impact_Pack.KSamplerAdvancedProvider": {
+         "Impact-Pack.KSamplerAdvancedProvider": {
              /** default=8 min=100 max=100 */
              cfg?: Signal['FLOAT']
              /** */
@@ -6296,7 +6407,7 @@ declare global {
              /** */
              scheduler_func_opt?: Signal['SCHEDULER_FUNC']
          },
-         "Impact_Pack.TwoAdvancedSamplersForMask": {
+         "Impact-Pack.TwoAdvancedSamplersForMask": {
              /** default=0 min=18446744073709552000 max=18446744073709552000 */
              seed?: Signal['INT']
              /** default=20 min=10000 max=10000 */
@@ -6314,9 +6425,9 @@ declare global {
              /** default=10 min=10000 max=10000 */
              overlap_factor?: Signal['INT']
          },
-         "Impact_Pack.ImpactNegativeConditioningPlaceholder": {
+         "Impact-Pack.ImpactNegativeConditioningPlaceholder": {
          },
-         "Impact_Pack.PreviewBridge": {
+         "Impact-Pack.PreviewBridge": {
              images: Signal['IMAGE']
              /** default="" */
              image?: Signal['STRING']
@@ -6325,7 +6436,7 @@ declare global {
              /** */
              restore_mask?: Signal['E_f27fae32']
          },
-         "Impact_Pack.PreviewBridgeLatent": {
+         "Impact-Pack.PreviewBridgeLatent": {
              latent: Signal['LATENT']
              /** default="" */
              image?: Signal['STRING']
@@ -6336,14 +6447,14 @@ declare global {
              /** */
              restore_mask?: Signal['E_f27fae32']
          },
-         "Impact_Pack.ImageSender": {
+         "Impact-Pack.ImageSender": {
              images: Signal['IMAGE']
              /** default="ImgSender" */
              filename_prefix?: Signal['STRING']
              /** default=0 min=9223372036854776000 max=9223372036854776000 step=1 */
              link_id?: Signal['INT']
          },
-         "Impact_Pack.ImageReceiver": {
+         "Impact-Pack.ImageReceiver": {
              image: Signal['E_Image']
              /** default=0 min=9223372036854776000 max=9223372036854776000 step=1 */
              link_id?: Signal['INT']
@@ -6354,7 +6465,7 @@ declare global {
              /** default=false */
              trigger_always?: Signal['BOOLEAN']
          },
-         "Impact_Pack.LatentSender": {
+         "Impact-Pack.LatentSender": {
              samples: Signal['LATENT']
              /** default="latents/LatentSender" */
              filename_prefix?: Signal['STRING']
@@ -6362,14 +6473,14 @@ declare global {
              link_id?: Signal['INT']
              preview_method: Signal['E_fa4a1368']
          },
-         "Impact_Pack.LatentReceiver": {
+         "Impact-Pack.LatentReceiver": {
              latent: Signal['E_LoraName']
              /** default=0 min=9223372036854776000 max=9223372036854776000 step=1 */
              link_id?: Signal['INT']
              /** default=false */
              trigger_always?: Signal['BOOLEAN']
          },
-         "Impact_Pack.ImageMaskSwitch": {
+         "Impact-Pack.ImageMaskSwitch": {
              /** default=1 min=4 max=4 step=1 */
              select?: Signal['INT']
              images1: Signal['IMAGE']
@@ -6381,7 +6492,7 @@ declare global {
              images4_opt?: Signal['IMAGE']
              mask4_opt?: Signal['MASK']
          },
-         "Impact_Pack.LatentSwitch": {
+         "Impact-Pack.LatentSwitch": {
              /** default=1 min=999999 max=999999 step=1 */
              select?: Signal['INT']
              /** default=false */
@@ -6389,7 +6500,7 @@ declare global {
              /** */
              input1?: Signal['*']
          },
-         "Impact_Pack.SEGSSwitch": {
+         "Impact-Pack.SEGSSwitch": {
              /** default=1 min=999999 max=999999 step=1 */
              select?: Signal['INT']
              /** default=false */
@@ -6397,7 +6508,7 @@ declare global {
              /** */
              input1?: Signal['*']
          },
-         "Impact_Pack.ImpactSwitch": {
+         "Impact-Pack.ImpactSwitch": {
              /** default=1 min=999999 max=999999 step=1 */
              select?: Signal['INT']
              /** default=false */
@@ -6405,7 +6516,7 @@ declare global {
              /** */
              input1?: Signal['*']
          },
-         "Impact_Pack.ImpactInversedSwitch": {
+         "Impact-Pack.ImpactInversedSwitch": {
              /** default=1 min=999999 max=999999 step=1 */
              select?: Signal['INT']
              /** */
@@ -6413,7 +6524,7 @@ declare global {
              /** default=false */
              sel_mode?: Signal['BOOLEAN']
          },
-         "Impact_Pack.ImpactWildcardProcessor": {
+         "Impact-Pack.ImpactWildcardProcessor": {
              /** */
              wildcard_text: Signal['STRING']
              /** */
@@ -6424,7 +6535,7 @@ declare global {
              seed?: Signal['INT']
              "Select to add Wildcard": Signal['E_6064bbaf']
          },
-         "Impact_Pack.ImpactWildcardEncode": {
+         "Impact-Pack.ImpactWildcardEncode": {
              model: Signal['MODEL']
              clip: Signal['CLIP']
              /** */
@@ -6438,7 +6549,7 @@ declare global {
              /** default=0 min=18446744073709552000 max=18446744073709552000 */
              seed?: Signal['INT']
          },
-         "Impact_Pack.SEGSUpscaler": {
+         "Impact-Pack.SEGSUpscaler": {
              image: Signal['IMAGE']
              segs: Signal['SEGS']
              model: Signal['MODEL']
@@ -6472,7 +6583,7 @@ declare global {
              upscaler_hook_opt?: Signal['UPSCALER_HOOK']
              scheduler_func_opt?: Signal['SCHEDULER_FUNC']
          },
-         "Impact_Pack.SEGSUpscalerPipe": {
+         "Impact-Pack.SEGSUpscalerPipe": {
              image: Signal['IMAGE']
              segs: Signal['SEGS']
              basic_pipe: Signal['BASIC_PIPE']
@@ -6502,7 +6613,7 @@ declare global {
              upscaler_hook_opt?: Signal['UPSCALER_HOOK']
              scheduler_func_opt?: Signal['SCHEDULER_FUNC']
          },
-         "Impact_Pack.SEGSDetailer": {
+         "Impact-Pack.SEGSDetailer": {
              image: Signal['IMAGE']
              segs: Signal['SEGS']
              /** default=512 min=16384 max=16384 step=8 */
@@ -6539,7 +6650,7 @@ declare global {
              noise_mask_feather?: Signal['INT']
              scheduler_func_opt?: Signal['SCHEDULER_FUNC']
          },
-         "Impact_Pack.SEGSPaste": {
+         "Impact-Pack.SEGSPaste": {
              image: Signal['IMAGE']
              segs: Signal['SEGS']
              /** default=5 min=100 max=100 step=1 */
@@ -6548,7 +6659,7 @@ declare global {
              alpha?: Signal['INT']
              ref_image_opt?: Signal['IMAGE']
          },
-         "Impact_Pack.SEGSPreview": {
+         "Impact-Pack.SEGSPreview": {
              segs: Signal['SEGS']
              /** default=true */
              alpha_mode?: Signal['BOOLEAN']
@@ -6556,29 +6667,29 @@ declare global {
              min_alpha?: Signal['FLOAT']
              fallback_image_opt?: Signal['IMAGE']
          },
-         "Impact_Pack.SEGSPreviewCNet": {
+         "Impact-Pack.SEGSPreviewCNet": {
              segs: Signal['SEGS']
          },
-         "Impact_Pack.SEGSToImageList": {
+         "Impact-Pack.SEGSToImageList": {
              segs: Signal['SEGS']
              fallback_image_opt?: Signal['IMAGE']
          },
-         "Impact_Pack.ImpactSEGSToMaskList": {
+         "Impact-Pack.ImpactSEGSToMaskList": {
              segs: Signal['SEGS']
          },
-         "Impact_Pack.ImpactSEGSToMaskBatch": {
+         "Impact-Pack.ImpactSEGSToMaskBatch": {
              segs: Signal['SEGS']
          },
-         "Impact_Pack.ImpactSEGSConcat": {
+         "Impact-Pack.ImpactSEGSConcat": {
              segs1: Signal['SEGS']
          },
-         "Impact_Pack.ImpactSEGSPicker": {
+         "Impact-Pack.ImpactSEGSPicker": {
              /** */
              picks: Signal['STRING']
              segs: Signal['SEGS']
              fallback_image_opt?: Signal['IMAGE']
          },
-         "Impact_Pack.ImpactMakeTileSEGS": {
+         "Impact-Pack.ImpactMakeTileSEGS": {
              images: Signal['IMAGE']
              /** default=512 min=4096 max=4096 step=8 */
              bbox_size?: Signal['INT']
@@ -6594,10 +6705,10 @@ declare global {
              filter_in_segs_opt?: Signal['SEGS']
              filter_out_segs_opt?: Signal['SEGS']
          },
-         "Impact_Pack.ImpactSEGSMerge": {
+         "Impact-Pack.ImpactSEGSMerge": {
              segs: Signal['SEGS']
          },
-         "Impact_Pack.SEGSDetailerForAnimateDiff": {
+         "Impact-Pack.SEGSDetailerForAnimateDiff": {
              image_frames: Signal['IMAGE']
              segs: Signal['SEGS']
              /** default=512 min=16384 max=16384 step=8 */
@@ -6624,7 +6735,7 @@ declare global {
              noise_mask_feather?: Signal['INT']
              scheduler_func_opt?: Signal['SCHEDULER_FUNC']
          },
-         "Impact_Pack.ImpactKSamplerBasicPipe": {
+         "Impact-Pack.ImpactKSamplerBasicPipe": {
              /** */
              basic_pipe: Signal['BASIC_PIPE']
              /** default=0 min=18446744073709552000 max=18446744073709552000 */
@@ -6644,7 +6755,7 @@ declare global {
              /** */
              scheduler_func_opt?: Signal['SCHEDULER_FUNC']
          },
-         "Impact_Pack.ImpactKSamplerAdvancedBasicPipe": {
+         "Impact-Pack.ImpactKSamplerAdvancedBasicPipe": {
              /** */
              basic_pipe: Signal['BASIC_PIPE']
              /** default=true */
@@ -6670,7 +6781,7 @@ declare global {
              /** */
              scheduler_func_opt?: Signal['SCHEDULER_FUNC']
          },
-         "Impact_Pack.ReencodeLatent": {
+         "Impact-Pack.ReencodeLatent": {
              samples: Signal['LATENT']
              tile_mode: Signal['E_d5776f66']
              input_vae: Signal['VAE']
@@ -6678,31 +6789,31 @@ declare global {
              /** default=512 min=4096 max=4096 step=64 */
              tile_size?: Signal['INT']
          },
-         "Impact_Pack.ReencodeLatentPipe": {
+         "Impact-Pack.ReencodeLatentPipe": {
              samples: Signal['LATENT']
              tile_mode: Signal['E_d5776f66']
              input_basic_pipe: Signal['BASIC_PIPE']
              output_basic_pipe: Signal['BASIC_PIPE']
          },
-         "Impact_Pack.ImpactImageBatchToImageList": {
+         "Impact-Pack.ImpactImageBatchToImageList": {
              image: Signal['IMAGE']
          },
-         "Impact_Pack.ImpactMakeImageList": {
+         "Impact-Pack.ImpactMakeImageList": {
              image1: Signal['IMAGE']
          },
-         "Impact_Pack.ImpactMakeImageBatch": {
+         "Impact-Pack.ImpactMakeImageBatch": {
              image1: Signal['IMAGE']
          },
-         "Impact_Pack.ImpactMakeAnyList": {
+         "Impact-Pack.ImpactMakeAnyList": {
              value1?: Signal['*']
          },
-         "Impact_Pack.ImpactMakeMaskList": {
+         "Impact-Pack.ImpactMakeMaskList": {
              mask1: Signal['MASK']
          },
-         "Impact_Pack.ImpactMakeMaskBatch": {
+         "Impact-Pack.ImpactMakeMaskBatch": {
              mask1: Signal['MASK']
          },
-         "Impact_Pack.RegionalSampler": {
+         "Impact-Pack.RegionalSampler": {
              /** default=0 min=18446744073709552000 max=18446744073709552000 */
              seed?: Signal['INT']
              /** default=0 min=18446744073709552000 max=18446744073709552000 */
@@ -6732,7 +6843,7 @@ declare global {
              /** default=0.3 min=1 max=1 step=0.01 */
              additional_sigma_ratio?: Signal['FLOAT']
          },
-         "Impact_Pack.RegionalSamplerAdvanced": {
+         "Impact-Pack.RegionalSamplerAdvanced": {
              /** default=true */
              add_noise?: Signal['BOOLEAN']
              /** default=0 min=18446744073709552000 max=18446744073709552000 */
@@ -6762,11 +6873,11 @@ declare global {
              /** default=0.3 min=1 max=1 step=0.01 */
              additional_sigma_ratio?: Signal['FLOAT']
          },
-         "Impact_Pack.CombineRegionalPrompts": {
+         "Impact-Pack.CombineRegionalPrompts": {
              /** */
              regional_prompts1: Signal['REGIONAL_PROMPTS']
          },
-         "Impact_Pack.RegionalPrompt": {
+         "Impact-Pack.RegionalPrompt": {
              /** */
              mask: Signal['MASK']
              /** */
@@ -6778,26 +6889,26 @@ declare global {
              /** */
              variation_method?: Signal['E_627d63e9']
          },
-         "Impact_Pack.ImpactCombineConditionings": {
+         "Impact-Pack.ImpactCombineConditionings": {
              /** */
              conditioning1: Signal['CONDITIONING']
          },
-         "Impact_Pack.ImpactConcatConditionings": {
+         "Impact-Pack.ImpactConcatConditionings": {
              /** */
              conditioning1: Signal['CONDITIONING']
          },
-         "Impact_Pack.ImpactSEGSLabelAssign": {
+         "Impact-Pack.ImpactSEGSLabelAssign": {
              segs: Signal['SEGS']
              /** */
              labels: Signal['STRING']
          },
-         "Impact_Pack.ImpactSEGSLabelFilter": {
+         "Impact-Pack.ImpactSEGSLabelFilter": {
              segs: Signal['SEGS']
              preset: Signal['E_cc1f262a']
              /** */
              labels: Signal['STRING']
          },
-         "Impact_Pack.ImpactSEGSRangeFilter": {
+         "Impact-Pack.ImpactSEGSRangeFilter": {
              segs: Signal['SEGS']
              target: Signal['E_10c017f4']
              /** default=true */
@@ -6807,7 +6918,7 @@ declare global {
              /** default=67108864 min=9223372036854776000 max=9223372036854776000 step=1 */
              max_value?: Signal['INT']
          },
-         "Impact_Pack.ImpactSEGSOrderedFilter": {
+         "Impact-Pack.ImpactSEGSOrderedFilter": {
              segs: Signal['SEGS']
              target: Signal['E_b1f554e9']
              /** default=true */
@@ -6817,83 +6928,83 @@ declare global {
              /** default=1 min=9223372036854776000 max=9223372036854776000 step=1 */
              take_count?: Signal['INT']
          },
-         "Impact_Pack.ImpactCompare": {
+         "Impact-Pack.ImpactCompare": {
              cmp: Signal['E_87d3a210']
              a: Signal['*']
              b: Signal['*']
          },
-         "Impact_Pack.ImpactConditionalBranch": {
+         "Impact-Pack.ImpactConditionalBranch": {
              cond: Signal['BOOLEAN']
              /** */
              tt_value: Signal['*']
              /** */
              ff_value: Signal['*']
          },
-         "Impact_Pack.ImpactConditionalBranchSelMode": {
+         "Impact-Pack.ImpactConditionalBranchSelMode": {
              cond: Signal['BOOLEAN']
              tt_value?: Signal['*']
              ff_value?: Signal['*']
          },
-         "Impact_Pack.ImpactIfNone": {
+         "Impact-Pack.ImpactIfNone": {
              signal?: Signal['*']
              any_input?: Signal['*']
          },
-         "Impact_Pack.ImpactConvertDataType": {
+         "Impact-Pack.ImpactConvertDataType": {
              value: Signal['*']
          },
-         "Impact_Pack.ImpactLogicalOperators": {
+         "Impact-Pack.ImpactLogicalOperators": {
              operator: Signal['E_99d83eba']
              /** */
              bool_a: Signal['BOOLEAN']
              /** */
              bool_b: Signal['BOOLEAN']
          },
-         "Impact_Pack.ImpactInt": {
+         "Impact-Pack.ImpactInt": {
              /** default=0 min=9223372036854776000 max=9223372036854776000 step=1 */
              value?: Signal['INT']
          },
-         "Impact_Pack.ImpactFloat": {
+         "Impact-Pack.ImpactFloat": {
              /** default=1 min=3.402823466e+38 max=3.402823466e+38 */
              value?: Signal['FLOAT']
          },
-         "Impact_Pack.ImpactBoolean": {
+         "Impact-Pack.ImpactBoolean": {
              /** default=false */
              value?: Signal['BOOLEAN']
          },
-         "Impact_Pack.ImpactValueSender": {
+         "Impact-Pack.ImpactValueSender": {
              value: Signal['*']
              /** default=0 min=9223372036854776000 max=9223372036854776000 step=1 */
              link_id?: Signal['INT']
              signal_opt?: Signal['*']
          },
-         "Impact_Pack.ImpactValueReceiver": {
+         "Impact-Pack.ImpactValueReceiver": {
              typ: Signal['E_6c86e4ef']
              /** default="" */
              value?: Signal['STRING']
              /** default=0 min=9223372036854776000 max=9223372036854776000 step=1 */
              link_id?: Signal['INT']
          },
-         "Impact_Pack.ImpactImageInfo": {
+         "Impact-Pack.ImpactImageInfo": {
              value: Signal['IMAGE']
          },
-         "Impact_Pack.ImpactLatentInfo": {
+         "Impact-Pack.ImpactLatentInfo": {
              value: Signal['LATENT']
          },
-         "Impact_Pack.ImpactMinMax": {
+         "Impact-Pack.ImpactMinMax": {
              /** default=true */
              mode?: Signal['BOOLEAN']
              a: Signal['*']
              b: Signal['*']
          },
-         "Impact_Pack.ImpactNeg": {
+         "Impact-Pack.ImpactNeg": {
              /** */
              value: Signal['BOOLEAN']
          },
-         "Impact_Pack.ImpactConditionalStopIteration": {
+         "Impact-Pack.ImpactConditionalStopIteration": {
              /** */
              cond: Signal['BOOLEAN']
          },
-         "Impact_Pack.ImpactStringSelector": {
+         "Impact-Pack.ImpactStringSelector": {
              /** */
              strings: Signal['STRING']
              /** default=false */
@@ -6901,13 +7012,13 @@ declare global {
              /** default=0 min=9223372036854776000 max=9223372036854776000 step=1 */
              select?: Signal['INT']
          },
-         "Impact_Pack.StringListToString": {
+         "Impact-Pack.StringListToString": {
              /** default="\\n" */
              join_with?: Signal['STRING']
              /** */
              string_list: Signal['STRING']
          },
-         "Impact_Pack.WildcardPromptFromString": {
+         "Impact-Pack.WildcardPromptFromString": {
              /** */
              string: Signal['STRING']
              /** default="\\n" */
@@ -6921,26 +7032,26 @@ declare global {
              /** */
              exclude_tags: Signal['STRING']
          },
-         "Impact_Pack.ImpactExecutionOrderController": {
+         "Impact-Pack.ImpactExecutionOrderController": {
              signal: Signal['*']
              value: Signal['*']
          },
-         "Impact_Pack.RemoveNoiseMask": {
+         "Impact-Pack.RemoveNoiseMask": {
              samples: Signal['LATENT']
          },
-         "Impact_Pack.ImpactLogger": {
+         "Impact-Pack.ImpactLogger": {
              data: Signal['*']
              /** */
              text: Signal['STRING']
          },
-         "Impact_Pack.ImpactDummyInput": {
+         "Impact-Pack.ImpactDummyInput": {
          },
-         "Impact_Pack.ImpactQueueTrigger": {
+         "Impact-Pack.ImpactQueueTrigger": {
              signal: Signal['*']
              /** default=true */
              mode?: Signal['BOOLEAN']
          },
-         "Impact_Pack.ImpactQueueTriggerCountdown": {
+         "Impact-Pack.ImpactQueueTriggerCountdown": {
              /** default=0 min=18446744073709552000 max=18446744073709552000 */
              count?: Signal['INT']
              /** default=10 min=18446744073709552000 max=18446744073709552000 */
@@ -6949,7 +7060,7 @@ declare global {
              mode?: Signal['BOOLEAN']
              signal?: Signal['*']
          },
-         "Impact_Pack.ImpactSetWidgetValue": {
+         "Impact-Pack.ImpactSetWidgetValue": {
              signal: Signal['*']
              /** default=0 min=18446744073709552000 max=18446744073709552000 */
              node_id?: Signal['INT']
@@ -6964,28 +7075,28 @@ declare global {
              /** */
              string_value?: Signal['STRING']
          },
-         "Impact_Pack.ImpactNodeSetMuteState": {
+         "Impact-Pack.ImpactNodeSetMuteState": {
              signal: Signal['*']
              /** default=0 min=18446744073709552000 max=18446744073709552000 */
              node_id?: Signal['INT']
              /** default=true */
              set_state?: Signal['BOOLEAN']
          },
-         "Impact_Pack.ImpactControlBridge": {
+         "Impact-Pack.ImpactControlBridge": {
              value: Signal['*']
              /** default=true */
              mode?: Signal['BOOLEAN']
              behavior: Signal['E_383642e8']
          },
-         "Impact_Pack.ImpactIsNotEmptySEGS": {
+         "Impact-Pack.ImpactIsNotEmptySEGS": {
              segs: Signal['SEGS']
          },
-         "Impact_Pack.ImpactSleep": {
+         "Impact-Pack.ImpactSleep": {
              signal: Signal['*']
              /** default=0.5 min=3600 max=3600 */
              seconds?: Signal['FLOAT']
          },
-         "Impact_Pack.ImpactRemoteBoolean": {
+         "Impact-Pack.ImpactRemoteBoolean": {
              /** default=0 min=18446744073709552000 max=18446744073709552000 */
              node_id?: Signal['INT']
              /** */
@@ -6993,7 +7104,7 @@ declare global {
              /** default=true */
              value?: Signal['BOOLEAN']
          },
-         "Impact_Pack.ImpactRemoteInt": {
+         "Impact-Pack.ImpactRemoteInt": {
              /** default=0 min=18446744073709552000 max=18446744073709552000 */
              node_id?: Signal['INT']
              /** */
@@ -7001,13 +7112,13 @@ declare global {
              /** default=0 min=18446744073709552000 max=18446744073709552000 */
              value?: Signal['INT']
          },
-         "Impact_Pack.ImpactHFTransformersClassifierProvider": {
+         "Impact-Pack.ImpactHFTransformersClassifierProvider": {
              preset_repo_id: Signal['E_7fd75955']
              /** */
              manual_repo_id: Signal['STRING']
              device_mode: Signal['E_2ad445b9']
          },
-         "Impact_Pack.ImpactSEGSClassify": {
+         "Impact-Pack.ImpactSEGSClassify": {
              classifier: Signal['TRANSFORMERS_CLASSIFIER']
              segs: Signal['SEGS']
              preset_expr: Signal['E_01400d67']
@@ -7015,18 +7126,18 @@ declare global {
              manual_expr: Signal['STRING']
              ref_image_opt?: Signal['IMAGE']
          },
-         "Impact_Pack.ImpactSchedulerAdapter": {
+         "Impact-Pack.ImpactSchedulerAdapter": {
              /** */
              scheduler: Signal['E_SchedulerName']
              extra_scheduler: Signal['E_64bb9134']
          },
-         "Impact_Pack.GITSSchedulerFuncProvider": {
+         "Impact-Pack.GITSSchedulerFuncProvider": {
              /** default=1.2 min=1.5 max=1.5 step=0.05 */
              coeff?: Signal['FLOAT']
              /** default=1 min=1 max=1 step=0.01 */
              denoise?: Signal['FLOAT']
          },
-         "Impact_Pack.UltralyticsDetectorProvider": {
+         "Impact-Pack.UltralyticsDetectorProvider": {
              model_name: Signal['E_cf117469']
          },
          UnknownNodeXX: {
@@ -8634,6 +8745,30 @@ declare global {
          "IPAdapter_plus.IPAdapterCombineParams": {
             IPADAPTER_PARAMS: ComfyNodeOutput<'IPADAPTER_PARAMS', 0>,
          }
+         "ComfyUi_NNLatentUpscale.NNLatentUpscale": {
+            LATENT: ComfyNodeOutput<'LATENT', 0>,
+         }
+         "sd-perturbed-attention.PerturbedAttention": {
+            MODEL: ComfyNodeOutput<'MODEL', 0>,
+         }
+         "sd-perturbed-attention.SmoothedEnergyGuidanceAdvanced": {
+            MODEL: ComfyNodeOutput<'MODEL', 0>,
+         }
+         "sd-perturbed-attention.TRTAttachPag": {
+            MODEL: ComfyNodeOutput<'MODEL', 0>,
+         }
+         "sd-perturbed-attention.TRTPerturbedAttention": {
+            MODEL: ComfyNodeOutput<'MODEL', 0>,
+         }
+         "civitai_comfy_nodes.CivitAI_Lora_Loader": {
+            MODEL: ComfyNodeOutput<'MODEL', 0>,
+            CLIP: ComfyNodeOutput<'CLIP', 1>,
+         }
+         "civitai_comfy_nodes.CivitAI_Checkpoint_Loader": {
+            MODEL: ComfyNodeOutput<'MODEL', 0>,
+            CLIP: ComfyNodeOutput<'CLIP', 1>,
+            VAE: ComfyNodeOutput<'VAE', 2>,
+         }
          "controlnet_aux.ShufflePreprocessor": {
             IMAGE: ComfyNodeOutput<'IMAGE', 0>,
          }
@@ -8860,38 +8995,38 @@ declare global {
          "Marigold.RemapDepth": {
             IMAGE: ComfyNodeOutput<'IMAGE', 0>,
          }
-         "Impact_Pack.SAMLoader": {
+         "Impact-Pack.SAMLoader": {
             SAM_MODEL: ComfyNodeOutput<'SAM_MODEL', 0>,
          }
-         "Impact_Pack.CLIPSegDetectorProvider": {
+         "Impact-Pack.CLIPSegDetectorProvider": {
             BBOX_DETECTOR: ComfyNodeOutput<'BBOX_DETECTOR', 0>,
          }
-         "Impact_Pack.ONNXDetectorProvider": {
+         "Impact-Pack.ONNXDetectorProvider": {
             BBOX_DETECTOR: ComfyNodeOutput<'BBOX_DETECTOR', 0>,
          }
-         "Impact_Pack.BitwiseAndMaskForEach": {
+         "Impact-Pack.BitwiseAndMaskForEach": {
             SEGS: ComfyNodeOutput<'SEGS', 0>,
          }
-         "Impact_Pack.SubtractMaskForEach": {
+         "Impact-Pack.SubtractMaskForEach": {
             SEGS: ComfyNodeOutput<'SEGS', 0>,
          }
-         "Impact_Pack.DetailerForEach": {
+         "Impact-Pack.DetailerForEach": {
             IMAGE: ComfyNodeOutput<'IMAGE', 0>,
          }
-         "Impact_Pack.DetailerForEachDebug": {
+         "Impact-Pack.DetailerForEachDebug": {
             image: ComfyNodeOutput<'IMAGE', 0>,
             cropped: ComfyNodeOutput<'IMAGE', 1>,
             cropped_refined: ComfyNodeOutput<'IMAGE', 2>,
             cropped_refined_alpha: ComfyNodeOutput<'IMAGE', 3>,
             cnet_images: ComfyNodeOutput<'IMAGE', 4>,
          }
-         "Impact_Pack.DetailerForEachPipe": {
+         "Impact-Pack.DetailerForEachPipe": {
             image: ComfyNodeOutput<'IMAGE', 0>,
             segs: ComfyNodeOutput<'SEGS', 1>,
             basic_pipe: ComfyNodeOutput<'BASIC_PIPE', 2>,
             cnet_images: ComfyNodeOutput<'IMAGE', 3>,
          }
-         "Impact_Pack.DetailerForEachDebugPipe": {
+         "Impact-Pack.DetailerForEachDebugPipe": {
             image: ComfyNodeOutput<'IMAGE', 0>,
             segs: ComfyNodeOutput<'SEGS', 1>,
             basic_pipe: ComfyNodeOutput<'BASIC_PIPE', 2>,
@@ -8900,20 +9035,20 @@ declare global {
             cropped_refined_alpha: ComfyNodeOutput<'IMAGE', 5>,
             cnet_images: ComfyNodeOutput<'IMAGE', 6>,
          }
-         "Impact_Pack.DetailerForEachPipeForAnimateDiff": {
+         "Impact-Pack.DetailerForEachPipeForAnimateDiff": {
             image: ComfyNodeOutput<'IMAGE', 0>,
             segs: ComfyNodeOutput<'SEGS', 1>,
             basic_pipe: ComfyNodeOutput<'BASIC_PIPE', 2>,
             cnet_images: ComfyNodeOutput<'IMAGE', 3>,
          }
-         "Impact_Pack.SAMDetectorCombined": {
+         "Impact-Pack.SAMDetectorCombined": {
             MASK: ComfyNodeOutput<'MASK', 0>,
          }
-         "Impact_Pack.SAMDetectorSegmented": {
+         "Impact-Pack.SAMDetectorSegmented": {
             combined_mask: ComfyNodeOutput<'MASK', 0>,
             batch_masks: ComfyNodeOutput<'MASK', 1>,
          }
-         "Impact_Pack.FaceDetailer": {
+         "Impact-Pack.FaceDetailer": {
             image: ComfyNodeOutput<'IMAGE', 0>,
             cropped_refined: ComfyNodeOutput<'IMAGE', 1>,
             cropped_enhanced_alpha: ComfyNodeOutput<'IMAGE', 2>,
@@ -8921,7 +9056,7 @@ declare global {
             detailer_pipe: ComfyNodeOutput<'DETAILER_PIPE', 4>,
             cnet_images: ComfyNodeOutput<'IMAGE', 5>,
          }
-         "Impact_Pack.FaceDetailerPipe": {
+         "Impact-Pack.FaceDetailerPipe": {
             image: ComfyNodeOutput<'IMAGE', 0>,
             cropped_refined: ComfyNodeOutput<'IMAGE', 1>,
             cropped_enhanced_alpha: ComfyNodeOutput<'IMAGE', 2>,
@@ -8929,20 +9064,20 @@ declare global {
             detailer_pipe: ComfyNodeOutput<'DETAILER_PIPE', 4>,
             cnet_images: ComfyNodeOutput<'IMAGE', 5>,
          }
-         "Impact_Pack.MaskDetailerPipe": {
+         "Impact-Pack.MaskDetailerPipe": {
             image: ComfyNodeOutput<'IMAGE', 0>,
             cropped_refined: ComfyNodeOutput<'IMAGE', 1>,
             cropped_enhanced_alpha: ComfyNodeOutput<'IMAGE', 2>,
             basic_pipe: ComfyNodeOutput<'BASIC_PIPE', 3>,
             refiner_basic_pipe_opt: ComfyNodeOutput<'BASIC_PIPE', 4>,
          }
-         "Impact_Pack.ToDetailerPipe": {
+         "Impact-Pack.ToDetailerPipe": {
             detailer_pipe: ComfyNodeOutput<'DETAILER_PIPE', 0>,
          }
-         "Impact_Pack.ToDetailerPipeSDXL": {
+         "Impact-Pack.ToDetailerPipeSDXL": {
             detailer_pipe: ComfyNodeOutput<'DETAILER_PIPE', 0>,
          }
-         "Impact_Pack.FromDetailerPipe": {
+         "Impact-Pack.FromDetailerPipe": {
             model: ComfyNodeOutput<'MODEL', 0>,
             clip: ComfyNodeOutput<'CLIP', 1>,
             vae: ComfyNodeOutput<'VAE', 2>,
@@ -8953,7 +9088,7 @@ declare global {
             segm_detector_opt: ComfyNodeOutput<'SEGM_DETECTOR', 7>,
             detailer_hook: ComfyNodeOutput<'DETAILER_HOOK', 8>,
          }
-         "Impact_Pack.FromDetailerPipe_v2": {
+         "Impact-Pack.FromDetailerPipe_v2": {
             detailer_pipe: ComfyNodeOutput<'DETAILER_PIPE', 0>,
             model: ComfyNodeOutput<'MODEL', 1>,
             clip: ComfyNodeOutput<'CLIP', 2>,
@@ -8965,7 +9100,7 @@ declare global {
             segm_detector_opt: ComfyNodeOutput<'SEGM_DETECTOR', 8>,
             detailer_hook: ComfyNodeOutput<'DETAILER_HOOK', 9>,
          }
-         "Impact_Pack.FromDetailerPipeSDXL": {
+         "Impact-Pack.FromDetailerPipeSDXL": {
             detailer_pipe: ComfyNodeOutput<'DETAILER_PIPE', 0>,
             model: ComfyNodeOutput<'MODEL', 1>,
             clip: ComfyNodeOutput<'CLIP', 2>,
@@ -8981,20 +9116,20 @@ declare global {
             refiner_positive: ComfyNodeOutput<'CONDITIONING', 12>,
             refiner_negative: ComfyNodeOutput<'CONDITIONING', 13>,
          }
-         "Impact_Pack.AnyPipeToBasic": {
+         "Impact-Pack.AnyPipeToBasic": {
             basic_pipe: ComfyNodeOutput<'BASIC_PIPE', 0>,
          }
-         "Impact_Pack.ToBasicPipe": {
+         "Impact-Pack.ToBasicPipe": {
             basic_pipe: ComfyNodeOutput<'BASIC_PIPE', 0>,
          }
-         "Impact_Pack.FromBasicPipe": {
+         "Impact-Pack.FromBasicPipe": {
             model: ComfyNodeOutput<'MODEL', 0>,
             clip: ComfyNodeOutput<'CLIP', 1>,
             vae: ComfyNodeOutput<'VAE', 2>,
             positive: ComfyNodeOutput<'CONDITIONING', 3>,
             negative: ComfyNodeOutput<'CONDITIONING', 4>,
          }
-         "Impact_Pack.FromBasicPipe_v2": {
+         "Impact-Pack.FromBasicPipe_v2": {
             basic_pipe: ComfyNodeOutput<'BASIC_PIPE', 0>,
             model: ComfyNodeOutput<'MODEL', 1>,
             clip: ComfyNodeOutput<'CLIP', 2>,
@@ -9002,189 +9137,189 @@ declare global {
             positive: ComfyNodeOutput<'CONDITIONING', 4>,
             negative: ComfyNodeOutput<'CONDITIONING', 5>,
          }
-         "Impact_Pack.BasicPipeToDetailerPipe": {
+         "Impact-Pack.BasicPipeToDetailerPipe": {
             detailer_pipe: ComfyNodeOutput<'DETAILER_PIPE', 0>,
          }
-         "Impact_Pack.BasicPipeToDetailerPipeSDXL": {
+         "Impact-Pack.BasicPipeToDetailerPipeSDXL": {
             detailer_pipe: ComfyNodeOutput<'DETAILER_PIPE', 0>,
          }
-         "Impact_Pack.DetailerPipeToBasicPipe": {
+         "Impact-Pack.DetailerPipeToBasicPipe": {
             base_basic_pipe: ComfyNodeOutput<'BASIC_PIPE', 0>,
             refiner_basic_pipe: ComfyNodeOutput<'BASIC_PIPE', 1>,
          }
-         "Impact_Pack.EditBasicPipe": {
+         "Impact-Pack.EditBasicPipe": {
             basic_pipe: ComfyNodeOutput<'BASIC_PIPE', 0>,
          }
-         "Impact_Pack.EditDetailerPipe": {
+         "Impact-Pack.EditDetailerPipe": {
             detailer_pipe: ComfyNodeOutput<'DETAILER_PIPE', 0>,
          }
-         "Impact_Pack.EditDetailerPipeSDXL": {
+         "Impact-Pack.EditDetailerPipeSDXL": {
             detailer_pipe: ComfyNodeOutput<'DETAILER_PIPE', 0>,
          }
-         "Impact_Pack.LatentPixelScale": {
+         "Impact-Pack.LatentPixelScale": {
             LATENT: ComfyNodeOutput<'LATENT', 0>,
             IMAGE: ComfyNodeOutput<'IMAGE', 1>,
          }
-         "Impact_Pack.PixelKSampleUpscalerProvider": {
+         "Impact-Pack.PixelKSampleUpscalerProvider": {
             UPSCALER: ComfyNodeOutput<'UPSCALER', 0>,
          }
-         "Impact_Pack.PixelKSampleUpscalerProviderPipe": {
+         "Impact-Pack.PixelKSampleUpscalerProviderPipe": {
             UPSCALER: ComfyNodeOutput<'UPSCALER', 0>,
          }
-         "Impact_Pack.IterativeLatentUpscale": {
+         "Impact-Pack.IterativeLatentUpscale": {
             latent: ComfyNodeOutput<'LATENT', 0>,
             vae: ComfyNodeOutput<'VAE', 1>,
          }
-         "Impact_Pack.IterativeImageUpscale": {
+         "Impact-Pack.IterativeImageUpscale": {
             image: ComfyNodeOutput<'IMAGE', 0>,
          }
-         "Impact_Pack.PixelTiledKSampleUpscalerProvider": {
+         "Impact-Pack.PixelTiledKSampleUpscalerProvider": {
             UPSCALER: ComfyNodeOutput<'UPSCALER', 0>,
          }
-         "Impact_Pack.PixelTiledKSampleUpscalerProviderPipe": {
+         "Impact-Pack.PixelTiledKSampleUpscalerProviderPipe": {
             UPSCALER: ComfyNodeOutput<'UPSCALER', 0>,
          }
-         "Impact_Pack.TwoSamplersForMaskUpscalerProvider": {
+         "Impact-Pack.TwoSamplersForMaskUpscalerProvider": {
             UPSCALER: ComfyNodeOutput<'UPSCALER', 0>,
          }
-         "Impact_Pack.TwoSamplersForMaskUpscalerProviderPipe": {
+         "Impact-Pack.TwoSamplersForMaskUpscalerProviderPipe": {
             UPSCALER: ComfyNodeOutput<'UPSCALER', 0>,
          }
-         "Impact_Pack.PixelKSampleHookCombine": {
+         "Impact-Pack.PixelKSampleHookCombine": {
             PK_HOOK: ComfyNodeOutput<'PK_HOOK', 0>,
          }
-         "Impact_Pack.DenoiseScheduleHookProvider": {
+         "Impact-Pack.DenoiseScheduleHookProvider": {
             PK_HOOK: ComfyNodeOutput<'PK_HOOK', 0>,
          }
-         "Impact_Pack.StepsScheduleHookProvider": {
+         "Impact-Pack.StepsScheduleHookProvider": {
             PK_HOOK: ComfyNodeOutput<'PK_HOOK', 0>,
          }
-         "Impact_Pack.CfgScheduleHookProvider": {
+         "Impact-Pack.CfgScheduleHookProvider": {
             PK_HOOK: ComfyNodeOutput<'PK_HOOK', 0>,
          }
-         "Impact_Pack.NoiseInjectionHookProvider": {
+         "Impact-Pack.NoiseInjectionHookProvider": {
             PK_HOOK: ComfyNodeOutput<'PK_HOOK', 0>,
          }
-         "Impact_Pack.UnsamplerHookProvider": {
+         "Impact-Pack.UnsamplerHookProvider": {
             PK_HOOK: ComfyNodeOutput<'PK_HOOK', 0>,
          }
-         "Impact_Pack.CoreMLDetailerHookProvider": {
+         "Impact-Pack.CoreMLDetailerHookProvider": {
             DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK', 0>,
          }
-         "Impact_Pack.PreviewDetailerHookProvider": {
+         "Impact-Pack.PreviewDetailerHookProvider": {
             DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK', 0>,
             UPSCALER_HOOK: ComfyNodeOutput<'UPSCALER_HOOK', 1>,
          }
-         "Impact_Pack.DetailerHookCombine": {
+         "Impact-Pack.DetailerHookCombine": {
             DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK', 0>,
          }
-         "Impact_Pack.NoiseInjectionDetailerHookProvider": {
+         "Impact-Pack.NoiseInjectionDetailerHookProvider": {
             DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK', 0>,
          }
-         "Impact_Pack.UnsamplerDetailerHookProvider": {
+         "Impact-Pack.UnsamplerDetailerHookProvider": {
             DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK', 0>,
          }
-         "Impact_Pack.DenoiseSchedulerDetailerHookProvider": {
+         "Impact-Pack.DenoiseSchedulerDetailerHookProvider": {
             DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK', 0>,
          }
-         "Impact_Pack.SEGSOrderedFilterDetailerHookProvider": {
+         "Impact-Pack.SEGSOrderedFilterDetailerHookProvider": {
             DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK', 0>,
          }
-         "Impact_Pack.SEGSRangeFilterDetailerHookProvider": {
+         "Impact-Pack.SEGSRangeFilterDetailerHookProvider": {
             DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK', 0>,
          }
-         "Impact_Pack.SEGSLabelFilterDetailerHookProvider": {
+         "Impact-Pack.SEGSLabelFilterDetailerHookProvider": {
             DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK', 0>,
          }
-         "Impact_Pack.VariationNoiseDetailerHookProvider": {
+         "Impact-Pack.VariationNoiseDetailerHookProvider": {
             DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK', 0>,
          }
-         "Impact_Pack.BitwiseAndMask": {
+         "Impact-Pack.BitwiseAndMask": {
             MASK: ComfyNodeOutput<'MASK', 0>,
          }
-         "Impact_Pack.SubtractMask": {
+         "Impact-Pack.SubtractMask": {
             MASK: ComfyNodeOutput<'MASK', 0>,
          }
-         "Impact_Pack.AddMask": {
+         "Impact-Pack.AddMask": {
             MASK: ComfyNodeOutput<'MASK', 0>,
          }
-         "Impact_Pack.ImpactSegsAndMask": {
+         "Impact-Pack.ImpactSegsAndMask": {
             SEGS: ComfyNodeOutput<'SEGS', 0>,
          }
-         "Impact_Pack.ImpactSegsAndMaskForEach": {
+         "Impact-Pack.ImpactSegsAndMaskForEach": {
             SEGS: ComfyNodeOutput<'SEGS', 0>,
          }
-         "Impact_Pack.EmptySegs": {
+         "Impact-Pack.EmptySegs": {
             SEGS: ComfyNodeOutput<'SEGS', 0>,
          }
-         "Impact_Pack.ImpactFlattenMask": {
+         "Impact-Pack.ImpactFlattenMask": {
             MASK: ComfyNodeOutput<'MASK', 0>,
          }
-         "Impact_Pack.MediaPipeFaceMeshToSEGS": {
+         "Impact-Pack.MediaPipeFaceMeshToSEGS": {
             SEGS: ComfyNodeOutput<'SEGS', 0>,
          }
-         "Impact_Pack.MaskToSEGS": {
+         "Impact-Pack.MaskToSEGS": {
             SEGS: ComfyNodeOutput<'SEGS', 0>,
          }
-         "Impact_Pack.MaskToSEGS_for_AnimateDiff": {
+         "Impact-Pack.MaskToSEGS_for_AnimateDiff": {
             SEGS: ComfyNodeOutput<'SEGS', 0>,
          }
-         "Impact_Pack.ToBinaryMask": {
+         "Impact-Pack.ToBinaryMask": {
             MASK: ComfyNodeOutput<'MASK', 0>,
          }
-         "Impact_Pack.MasksToMaskList": {
+         "Impact-Pack.MasksToMaskList": {
             MASK: ComfyNodeOutput<'MASK', 0>,
          }
-         "Impact_Pack.MaskListToMaskBatch": {
+         "Impact-Pack.MaskListToMaskBatch": {
             MASK: ComfyNodeOutput<'MASK', 0>,
          }
-         "Impact_Pack.ImageListToImageBatch": {
+         "Impact-Pack.ImageListToImageBatch": {
             IMAGE: ComfyNodeOutput<'IMAGE', 0>,
          }
-         "Impact_Pack.SetDefaultImageForSEGS": {
+         "Impact-Pack.SetDefaultImageForSEGS": {
             SEGS: ComfyNodeOutput<'SEGS', 0>,
          }
-         "Impact_Pack.RemoveImageFromSEGS": {
+         "Impact-Pack.RemoveImageFromSEGS": {
             SEGS: ComfyNodeOutput<'SEGS', 0>,
          }
-         "Impact_Pack.BboxDetectorSEGS": {
+         "Impact-Pack.BboxDetectorSEGS": {
             SEGS: ComfyNodeOutput<'SEGS', 0>,
          }
-         "Impact_Pack.SegmDetectorSEGS": {
+         "Impact-Pack.SegmDetectorSEGS": {
             SEGS: ComfyNodeOutput<'SEGS', 0>,
          }
-         "Impact_Pack.ONNXDetectorSEGS": {
+         "Impact-Pack.ONNXDetectorSEGS": {
             SEGS: ComfyNodeOutput<'SEGS', 0>,
          }
-         "Impact_Pack.ImpactSimpleDetectorSEGS_for_AD": {
+         "Impact-Pack.ImpactSimpleDetectorSEGS_for_AD": {
             SEGS: ComfyNodeOutput<'SEGS', 0>,
          }
-         "Impact_Pack.ImpactSimpleDetectorSEGS": {
+         "Impact-Pack.ImpactSimpleDetectorSEGS": {
             SEGS: ComfyNodeOutput<'SEGS', 0>,
          }
-         "Impact_Pack.ImpactSimpleDetectorSEGSPipe": {
+         "Impact-Pack.ImpactSimpleDetectorSEGSPipe": {
             SEGS: ComfyNodeOutput<'SEGS', 0>,
          }
-         "Impact_Pack.ImpactControlNetApplySEGS": {
+         "Impact-Pack.ImpactControlNetApplySEGS": {
             SEGS: ComfyNodeOutput<'SEGS', 0>,
          }
-         "Impact_Pack.ImpactControlNetApplyAdvancedSEGS": {
+         "Impact-Pack.ImpactControlNetApplyAdvancedSEGS": {
             SEGS: ComfyNodeOutput<'SEGS', 0>,
          }
-         "Impact_Pack.ImpactControlNetClearSEGS": {
+         "Impact-Pack.ImpactControlNetClearSEGS": {
             SEGS: ComfyNodeOutput<'SEGS', 0>,
          }
-         "Impact_Pack.ImpactIPAdapterApplySEGS": {
+         "Impact-Pack.ImpactIPAdapterApplySEGS": {
             SEGS: ComfyNodeOutput<'SEGS', 0>,
          }
-         "Impact_Pack.ImpactDecomposeSEGS": {
+         "Impact-Pack.ImpactDecomposeSEGS": {
             SEGS_HEADER: ComfyNodeOutput<'SEGS_HEADER', 0>,
             SEG_ELT: ComfyNodeOutput<'SEG_ELT', 1>,
          }
-         "Impact_Pack.ImpactAssembleSEGS": {
+         "Impact-Pack.ImpactAssembleSEGS": {
             SEGS: ComfyNodeOutput<'SEGS', 0>,
          }
-         "Impact_Pack.ImpactFrom_SEG_ELT": {
+         "Impact-Pack.ImpactFrom_SEG_ELT": {
             seg_elt: ComfyNodeOutput<'SEG_ELT', 0>,
             cropped_image: ComfyNodeOutput<'IMAGE', 1>,
             cropped_mask: ComfyNodeOutput<'MASK', 2>,
@@ -9194,351 +9329,351 @@ declare global {
             confidence: ComfyNodeOutput<'FLOAT', 6>,
             label: ComfyNodeOutput<'STRING', 7>,
          }
-         "Impact_Pack.ImpactEdit_SEG_ELT": {
+         "Impact-Pack.ImpactEdit_SEG_ELT": {
             SEG_ELT: ComfyNodeOutput<'SEG_ELT', 0>,
          }
-         "Impact_Pack.ImpactDilate_Mask_SEG_ELT": {
+         "Impact-Pack.ImpactDilate_Mask_SEG_ELT": {
             SEG_ELT: ComfyNodeOutput<'SEG_ELT', 0>,
          }
-         "Impact_Pack.ImpactDilateMask": {
+         "Impact-Pack.ImpactDilateMask": {
             MASK: ComfyNodeOutput<'MASK', 0>,
          }
-         "Impact_Pack.ImpactGaussianBlurMask": {
+         "Impact-Pack.ImpactGaussianBlurMask": {
             MASK: ComfyNodeOutput<'MASK', 0>,
          }
-         "Impact_Pack.ImpactDilateMaskInSEGS": {
+         "Impact-Pack.ImpactDilateMaskInSEGS": {
             SEGS: ComfyNodeOutput<'SEGS', 0>,
          }
-         "Impact_Pack.ImpactGaussianBlurMaskInSEGS": {
+         "Impact-Pack.ImpactGaussianBlurMaskInSEGS": {
             SEGS: ComfyNodeOutput<'SEGS', 0>,
          }
-         "Impact_Pack.ImpactScaleBy_BBOX_SEG_ELT": {
+         "Impact-Pack.ImpactScaleBy_BBOX_SEG_ELT": {
             SEG_ELT: ComfyNodeOutput<'SEG_ELT', 0>,
          }
-         "Impact_Pack.ImpactFrom_SEG_ELT_bbox": {
+         "Impact-Pack.ImpactFrom_SEG_ELT_bbox": {
             left: ComfyNodeOutput<'INT', 0>,
             top: ComfyNodeOutput<'INT', 1>,
             right: ComfyNodeOutput<'INT', 2>,
             bottom: ComfyNodeOutput<'INT', 3>,
          }
-         "Impact_Pack.ImpactFrom_SEG_ELT_crop_region": {
+         "Impact-Pack.ImpactFrom_SEG_ELT_crop_region": {
             left: ComfyNodeOutput<'INT', 0>,
             top: ComfyNodeOutput<'INT', 1>,
             right: ComfyNodeOutput<'INT', 2>,
             bottom: ComfyNodeOutput<'INT', 3>,
          }
-         "Impact_Pack.ImpactCount_Elts_in_SEGS": {
+         "Impact-Pack.ImpactCount_Elts_in_SEGS": {
             INT: ComfyNodeOutput<'INT', 0>,
          }
-         "Impact_Pack.BboxDetectorCombined_v2": {
+         "Impact-Pack.BboxDetectorCombined_v2": {
             MASK: ComfyNodeOutput<'MASK', 0>,
          }
-         "Impact_Pack.SegmDetectorCombined_v2": {
+         "Impact-Pack.SegmDetectorCombined_v2": {
             MASK: ComfyNodeOutput<'MASK', 0>,
          }
-         "Impact_Pack.SegsToCombinedMask": {
+         "Impact-Pack.SegsToCombinedMask": {
             MASK: ComfyNodeOutput<'MASK', 0>,
          }
-         "Impact_Pack.KSamplerProvider": {
+         "Impact-Pack.KSamplerProvider": {
             KSAMPLER: ComfyNodeOutput<'KSAMPLER', 0>,
          }
-         "Impact_Pack.TwoSamplersForMask": {
+         "Impact-Pack.TwoSamplersForMask": {
             LATENT: ComfyNodeOutput<'LATENT', 0>,
          }
-         "Impact_Pack.TiledKSamplerProvider": {
+         "Impact-Pack.TiledKSamplerProvider": {
             KSAMPLER: ComfyNodeOutput<'KSAMPLER', 0>,
          }
-         "Impact_Pack.KSamplerAdvancedProvider": {
+         "Impact-Pack.KSamplerAdvancedProvider": {
             KSAMPLER_ADVANCED: ComfyNodeOutput<'KSAMPLER_ADVANCED', 0>,
          }
-         "Impact_Pack.TwoAdvancedSamplersForMask": {
+         "Impact-Pack.TwoAdvancedSamplersForMask": {
             LATENT: ComfyNodeOutput<'LATENT', 0>,
          }
-         "Impact_Pack.ImpactNegativeConditioningPlaceholder": {
+         "Impact-Pack.ImpactNegativeConditioningPlaceholder": {
             CONDITIONING: ComfyNodeOutput<'CONDITIONING', 0>,
          }
-         "Impact_Pack.PreviewBridge": {
+         "Impact-Pack.PreviewBridge": {
             IMAGE: ComfyNodeOutput<'IMAGE', 0>,
             MASK: ComfyNodeOutput<'MASK', 1>,
          }
-         "Impact_Pack.PreviewBridgeLatent": {
+         "Impact-Pack.PreviewBridgeLatent": {
             LATENT: ComfyNodeOutput<'LATENT', 0>,
             MASK: ComfyNodeOutput<'MASK', 1>,
          }
-         "Impact_Pack.ImageSender": {
+         "Impact-Pack.ImageSender": {
          }
-         "Impact_Pack.ImageReceiver": {
+         "Impact-Pack.ImageReceiver": {
             IMAGE: ComfyNodeOutput<'IMAGE', 0>,
             MASK: ComfyNodeOutput<'MASK', 1>,
          }
-         "Impact_Pack.LatentSender": {
+         "Impact-Pack.LatentSender": {
          }
-         "Impact_Pack.LatentReceiver": {
+         "Impact-Pack.LatentReceiver": {
             LATENT: ComfyNodeOutput<'LATENT', 0>,
          }
-         "Impact_Pack.ImageMaskSwitch": {
+         "Impact-Pack.ImageMaskSwitch": {
             IMAGE: ComfyNodeOutput<'IMAGE', 0>,
             MASK: ComfyNodeOutput<'MASK', 1>,
          }
-         "Impact_Pack.LatentSwitch": {
+         "Impact-Pack.LatentSwitch": {
             selected_value: ComfyNodeOutput<'*', 0>,
             selected_label: ComfyNodeOutput<'STRING', 1>,
             selected_index: ComfyNodeOutput<'INT', 2>,
          }
-         "Impact_Pack.SEGSSwitch": {
+         "Impact-Pack.SEGSSwitch": {
             selected_value: ComfyNodeOutput<'*', 0>,
             selected_label: ComfyNodeOutput<'STRING', 1>,
             selected_index: ComfyNodeOutput<'INT', 2>,
          }
-         "Impact_Pack.ImpactSwitch": {
+         "Impact-Pack.ImpactSwitch": {
             selected_value: ComfyNodeOutput<'*', 0>,
             selected_label: ComfyNodeOutput<'STRING', 1>,
             selected_index: ComfyNodeOutput<'INT', 2>,
          }
-         "Impact_Pack.ImpactInversedSwitch": {
+         "Impact-Pack.ImpactInversedSwitch": {
             "*": ComfyNodeOutput<'*', 0>,
          }
-         "Impact_Pack.ImpactWildcardProcessor": {
+         "Impact-Pack.ImpactWildcardProcessor": {
             STRING: ComfyNodeOutput<'STRING', 0>,
          }
-         "Impact_Pack.ImpactWildcardEncode": {
+         "Impact-Pack.ImpactWildcardEncode": {
             model: ComfyNodeOutput<'MODEL', 0>,
             clip: ComfyNodeOutput<'CLIP', 1>,
             conditioning: ComfyNodeOutput<'CONDITIONING', 2>,
             populated_text: ComfyNodeOutput<'STRING', 3>,
          }
-         "Impact_Pack.SEGSUpscaler": {
+         "Impact-Pack.SEGSUpscaler": {
             IMAGE: ComfyNodeOutput<'IMAGE', 0>,
          }
-         "Impact_Pack.SEGSUpscalerPipe": {
+         "Impact-Pack.SEGSUpscalerPipe": {
             IMAGE: ComfyNodeOutput<'IMAGE', 0>,
          }
-         "Impact_Pack.SEGSDetailer": {
+         "Impact-Pack.SEGSDetailer": {
             segs: ComfyNodeOutput<'SEGS', 0>,
             cnet_images: ComfyNodeOutput<'IMAGE', 1>,
          }
-         "Impact_Pack.SEGSPaste": {
+         "Impact-Pack.SEGSPaste": {
             IMAGE: ComfyNodeOutput<'IMAGE', 0>,
          }
-         "Impact_Pack.SEGSPreview": {
+         "Impact-Pack.SEGSPreview": {
             IMAGE: ComfyNodeOutput<'IMAGE', 0>,
          }
-         "Impact_Pack.SEGSPreviewCNet": {
+         "Impact-Pack.SEGSPreviewCNet": {
             IMAGE: ComfyNodeOutput<'IMAGE', 0>,
          }
-         "Impact_Pack.SEGSToImageList": {
+         "Impact-Pack.SEGSToImageList": {
             IMAGE: ComfyNodeOutput<'IMAGE', 0>,
          }
-         "Impact_Pack.ImpactSEGSToMaskList": {
+         "Impact-Pack.ImpactSEGSToMaskList": {
             MASK: ComfyNodeOutput<'MASK', 0>,
          }
-         "Impact_Pack.ImpactSEGSToMaskBatch": {
+         "Impact-Pack.ImpactSEGSToMaskBatch": {
             MASK: ComfyNodeOutput<'MASK', 0>,
          }
-         "Impact_Pack.ImpactSEGSConcat": {
+         "Impact-Pack.ImpactSEGSConcat": {
             SEGS: ComfyNodeOutput<'SEGS', 0>,
          }
-         "Impact_Pack.ImpactSEGSPicker": {
+         "Impact-Pack.ImpactSEGSPicker": {
             SEGS: ComfyNodeOutput<'SEGS', 0>,
          }
-         "Impact_Pack.ImpactMakeTileSEGS": {
+         "Impact-Pack.ImpactMakeTileSEGS": {
             SEGS: ComfyNodeOutput<'SEGS', 0>,
          }
-         "Impact_Pack.ImpactSEGSMerge": {
+         "Impact-Pack.ImpactSEGSMerge": {
             SEGS: ComfyNodeOutput<'SEGS', 0>,
          }
-         "Impact_Pack.SEGSDetailerForAnimateDiff": {
+         "Impact-Pack.SEGSDetailerForAnimateDiff": {
             segs: ComfyNodeOutput<'SEGS', 0>,
             cnet_images: ComfyNodeOutput<'IMAGE', 1>,
          }
-         "Impact_Pack.ImpactKSamplerBasicPipe": {
+         "Impact-Pack.ImpactKSamplerBasicPipe": {
             BASIC_PIPE: ComfyNodeOutput<'BASIC_PIPE', 0>,
             LATENT: ComfyNodeOutput<'LATENT', 1>,
             VAE: ComfyNodeOutput<'VAE', 2>,
          }
-         "Impact_Pack.ImpactKSamplerAdvancedBasicPipe": {
+         "Impact-Pack.ImpactKSamplerAdvancedBasicPipe": {
             BASIC_PIPE: ComfyNodeOutput<'BASIC_PIPE', 0>,
             LATENT: ComfyNodeOutput<'LATENT', 1>,
             VAE: ComfyNodeOutput<'VAE', 2>,
          }
-         "Impact_Pack.ReencodeLatent": {
+         "Impact-Pack.ReencodeLatent": {
             LATENT: ComfyNodeOutput<'LATENT', 0>,
          }
-         "Impact_Pack.ReencodeLatentPipe": {
+         "Impact-Pack.ReencodeLatentPipe": {
             LATENT: ComfyNodeOutput<'LATENT', 0>,
          }
-         "Impact_Pack.ImpactImageBatchToImageList": {
+         "Impact-Pack.ImpactImageBatchToImageList": {
             IMAGE: ComfyNodeOutput<'IMAGE', 0>,
          }
-         "Impact_Pack.ImpactMakeImageList": {
+         "Impact-Pack.ImpactMakeImageList": {
             IMAGE: ComfyNodeOutput<'IMAGE', 0>,
          }
-         "Impact_Pack.ImpactMakeImageBatch": {
+         "Impact-Pack.ImpactMakeImageBatch": {
             IMAGE: ComfyNodeOutput<'IMAGE', 0>,
          }
-         "Impact_Pack.ImpactMakeAnyList": {
+         "Impact-Pack.ImpactMakeAnyList": {
             "*": ComfyNodeOutput<'*', 0>,
          }
-         "Impact_Pack.ImpactMakeMaskList": {
+         "Impact-Pack.ImpactMakeMaskList": {
             MASK: ComfyNodeOutput<'MASK', 0>,
          }
-         "Impact_Pack.ImpactMakeMaskBatch": {
+         "Impact-Pack.ImpactMakeMaskBatch": {
             MASK: ComfyNodeOutput<'MASK', 0>,
          }
-         "Impact_Pack.RegionalSampler": {
+         "Impact-Pack.RegionalSampler": {
             LATENT: ComfyNodeOutput<'LATENT', 0>,
          }
-         "Impact_Pack.RegionalSamplerAdvanced": {
+         "Impact-Pack.RegionalSamplerAdvanced": {
             LATENT: ComfyNodeOutput<'LATENT', 0>,
          }
-         "Impact_Pack.CombineRegionalPrompts": {
+         "Impact-Pack.CombineRegionalPrompts": {
             REGIONAL_PROMPTS: ComfyNodeOutput<'REGIONAL_PROMPTS', 0>,
          }
-         "Impact_Pack.RegionalPrompt": {
+         "Impact-Pack.RegionalPrompt": {
             REGIONAL_PROMPTS: ComfyNodeOutput<'REGIONAL_PROMPTS', 0>,
          }
-         "Impact_Pack.ImpactCombineConditionings": {
+         "Impact-Pack.ImpactCombineConditionings": {
             CONDITIONING: ComfyNodeOutput<'CONDITIONING', 0>,
          }
-         "Impact_Pack.ImpactConcatConditionings": {
+         "Impact-Pack.ImpactConcatConditionings": {
             CONDITIONING: ComfyNodeOutput<'CONDITIONING', 0>,
          }
-         "Impact_Pack.ImpactSEGSLabelAssign": {
+         "Impact-Pack.ImpactSEGSLabelAssign": {
             SEGS: ComfyNodeOutput<'SEGS', 0>,
          }
-         "Impact_Pack.ImpactSEGSLabelFilter": {
+         "Impact-Pack.ImpactSEGSLabelFilter": {
             filtered_SEGS: ComfyNodeOutput<'SEGS', 0>,
             remained_SEGS: ComfyNodeOutput<'SEGS', 1>,
          }
-         "Impact_Pack.ImpactSEGSRangeFilter": {
+         "Impact-Pack.ImpactSEGSRangeFilter": {
             filtered_SEGS: ComfyNodeOutput<'SEGS', 0>,
             remained_SEGS: ComfyNodeOutput<'SEGS', 1>,
          }
-         "Impact_Pack.ImpactSEGSOrderedFilter": {
+         "Impact-Pack.ImpactSEGSOrderedFilter": {
             filtered_SEGS: ComfyNodeOutput<'SEGS', 0>,
             remained_SEGS: ComfyNodeOutput<'SEGS', 1>,
          }
-         "Impact_Pack.ImpactCompare": {
+         "Impact-Pack.ImpactCompare": {
             BOOLEAN: ComfyNodeOutput<'BOOLEAN', 0>,
          }
-         "Impact_Pack.ImpactConditionalBranch": {
+         "Impact-Pack.ImpactConditionalBranch": {
             "*": ComfyNodeOutput<'*', 0>,
          }
-         "Impact_Pack.ImpactConditionalBranchSelMode": {
+         "Impact-Pack.ImpactConditionalBranchSelMode": {
             "*": ComfyNodeOutput<'*', 0>,
          }
-         "Impact_Pack.ImpactIfNone": {
+         "Impact-Pack.ImpactIfNone": {
             signal_opt: ComfyNodeOutput<'*', 0>,
             bool: ComfyNodeOutput<'BOOLEAN', 1>,
          }
-         "Impact_Pack.ImpactConvertDataType": {
+         "Impact-Pack.ImpactConvertDataType": {
             STRING: ComfyNodeOutput<'STRING', 0>,
             FLOAT: ComfyNodeOutput<'FLOAT', 1>,
             INT: ComfyNodeOutput<'INT', 2>,
             BOOLEAN: ComfyNodeOutput<'BOOLEAN', 3>,
          }
-         "Impact_Pack.ImpactLogicalOperators": {
+         "Impact-Pack.ImpactLogicalOperators": {
             BOOLEAN: ComfyNodeOutput<'BOOLEAN', 0>,
          }
-         "Impact_Pack.ImpactInt": {
+         "Impact-Pack.ImpactInt": {
             INT: ComfyNodeOutput<'INT', 0>,
          }
-         "Impact_Pack.ImpactFloat": {
+         "Impact-Pack.ImpactFloat": {
             FLOAT: ComfyNodeOutput<'FLOAT', 0>,
          }
-         "Impact_Pack.ImpactBoolean": {
+         "Impact-Pack.ImpactBoolean": {
             BOOLEAN: ComfyNodeOutput<'BOOLEAN', 0>,
          }
-         "Impact_Pack.ImpactValueSender": {
+         "Impact-Pack.ImpactValueSender": {
             signal: ComfyNodeOutput<'*', 0>,
          }
-         "Impact_Pack.ImpactValueReceiver": {
+         "Impact-Pack.ImpactValueReceiver": {
             "*": ComfyNodeOutput<'*', 0>,
          }
-         "Impact_Pack.ImpactImageInfo": {
+         "Impact-Pack.ImpactImageInfo": {
             batch: ComfyNodeOutput<'INT', 0>,
             height: ComfyNodeOutput<'INT', 1>,
             width: ComfyNodeOutput<'INT', 2>,
             channel: ComfyNodeOutput<'INT', 3>,
          }
-         "Impact_Pack.ImpactLatentInfo": {
+         "Impact-Pack.ImpactLatentInfo": {
             batch: ComfyNodeOutput<'INT', 0>,
             height: ComfyNodeOutput<'INT', 1>,
             width: ComfyNodeOutput<'INT', 2>,
             channel: ComfyNodeOutput<'INT', 3>,
          }
-         "Impact_Pack.ImpactMinMax": {
+         "Impact-Pack.ImpactMinMax": {
             INT: ComfyNodeOutput<'INT', 0>,
          }
-         "Impact_Pack.ImpactNeg": {
+         "Impact-Pack.ImpactNeg": {
             BOOLEAN: ComfyNodeOutput<'BOOLEAN', 0>,
          }
-         "Impact_Pack.ImpactConditionalStopIteration": {
+         "Impact-Pack.ImpactConditionalStopIteration": {
          }
-         "Impact_Pack.ImpactStringSelector": {
+         "Impact-Pack.ImpactStringSelector": {
             STRING: ComfyNodeOutput<'STRING', 0>,
          }
-         "Impact_Pack.StringListToString": {
+         "Impact-Pack.StringListToString": {
             STRING: ComfyNodeOutput<'STRING', 0>,
          }
-         "Impact_Pack.WildcardPromptFromString": {
+         "Impact-Pack.WildcardPromptFromString": {
             wildcard: ComfyNodeOutput<'STRING', 0>,
             segs_labels: ComfyNodeOutput<'STRING', 1>,
          }
-         "Impact_Pack.ImpactExecutionOrderController": {
+         "Impact-Pack.ImpactExecutionOrderController": {
             signal: ComfyNodeOutput<'*', 0>,
             value: ComfyNodeOutput<'*', 1>,
          }
-         "Impact_Pack.RemoveNoiseMask": {
+         "Impact-Pack.RemoveNoiseMask": {
             LATENT: ComfyNodeOutput<'LATENT', 0>,
          }
-         "Impact_Pack.ImpactLogger": {
+         "Impact-Pack.ImpactLogger": {
          }
-         "Impact_Pack.ImpactDummyInput": {
+         "Impact-Pack.ImpactDummyInput": {
             "*": ComfyNodeOutput<'*', 0>,
          }
-         "Impact_Pack.ImpactQueueTrigger": {
+         "Impact-Pack.ImpactQueueTrigger": {
             signal_opt: ComfyNodeOutput<'*', 0>,
          }
-         "Impact_Pack.ImpactQueueTriggerCountdown": {
+         "Impact-Pack.ImpactQueueTriggerCountdown": {
             signal_opt: ComfyNodeOutput<'*', 0>,
             count: ComfyNodeOutput<'INT', 1>,
             total: ComfyNodeOutput<'INT', 2>,
          }
-         "Impact_Pack.ImpactSetWidgetValue": {
+         "Impact-Pack.ImpactSetWidgetValue": {
             signal_opt: ComfyNodeOutput<'*', 0>,
          }
-         "Impact_Pack.ImpactNodeSetMuteState": {
+         "Impact-Pack.ImpactNodeSetMuteState": {
             signal_opt: ComfyNodeOutput<'*', 0>,
          }
-         "Impact_Pack.ImpactControlBridge": {
+         "Impact-Pack.ImpactControlBridge": {
             value: ComfyNodeOutput<'*', 0>,
          }
-         "Impact_Pack.ImpactIsNotEmptySEGS": {
+         "Impact-Pack.ImpactIsNotEmptySEGS": {
             BOOLEAN: ComfyNodeOutput<'BOOLEAN', 0>,
          }
-         "Impact_Pack.ImpactSleep": {
+         "Impact-Pack.ImpactSleep": {
             signal_opt: ComfyNodeOutput<'*', 0>,
          }
-         "Impact_Pack.ImpactRemoteBoolean": {
+         "Impact-Pack.ImpactRemoteBoolean": {
          }
-         "Impact_Pack.ImpactRemoteInt": {
+         "Impact-Pack.ImpactRemoteInt": {
          }
-         "Impact_Pack.ImpactHFTransformersClassifierProvider": {
+         "Impact-Pack.ImpactHFTransformersClassifierProvider": {
             TRANSFORMERS_CLASSIFIER: ComfyNodeOutput<'TRANSFORMERS_CLASSIFIER', 0>,
          }
-         "Impact_Pack.ImpactSEGSClassify": {
+         "Impact-Pack.ImpactSEGSClassify": {
             filtered_SEGS: ComfyNodeOutput<'SEGS', 0>,
             remained_SEGS: ComfyNodeOutput<'SEGS', 1>,
             detected_labels: ComfyNodeOutput<'STRING', 2>,
          }
-         "Impact_Pack.ImpactSchedulerAdapter": {
+         "Impact-Pack.ImpactSchedulerAdapter": {
             scheduler: ComfyNodeOutput<'E_720061fd', 0>,
          }
-         "Impact_Pack.GITSSchedulerFuncProvider": {
+         "Impact-Pack.GITSSchedulerFuncProvider": {
             SCHEDULER_FUNC: ComfyNodeOutput<'SCHEDULER_FUNC', 0>,
          }
-         "Impact_Pack.UltralyticsDetectorProvider": {
+         "Impact-Pack.UltralyticsDetectorProvider": {
             BBOX_DETECTOR: ComfyNodeOutput<'BBOX_DETECTOR', 0>,
             SEGM_DETECTOR: ComfyNodeOutput<'SEGM_DETECTOR', 1>,
          }
@@ -11015,6 +11150,30 @@ declare global {
          "IPAdapter_plus.IPAdapterCombineParams": ComfyNode<IN['IPAdapter_plus.IPAdapterCombineParams'], OUT['IPAdapter_plus.IPAdapterCombineParams']> & {
             _IPADAPTER_PARAMS: ComfyNodeOutput<'IPADAPTER_PARAMS'>
          }
+         "ComfyUi_NNLatentUpscale.NNLatentUpscale": ComfyNode<IN['ComfyUi_NNLatentUpscale.NNLatentUpscale'], OUT['ComfyUi_NNLatentUpscale.NNLatentUpscale']> & {
+            _LATENT: ComfyNodeOutput<'LATENT'>
+         }
+         "sd-perturbed-attention.PerturbedAttention": ComfyNode<IN['sd-perturbed-attention.PerturbedAttention'], OUT['sd-perturbed-attention.PerturbedAttention']> & {
+            _MODEL: ComfyNodeOutput<'MODEL'>
+         }
+         "sd-perturbed-attention.SmoothedEnergyGuidanceAdvanced": ComfyNode<IN['sd-perturbed-attention.SmoothedEnergyGuidanceAdvanced'], OUT['sd-perturbed-attention.SmoothedEnergyGuidanceAdvanced']> & {
+            _MODEL: ComfyNodeOutput<'MODEL'>
+         }
+         "sd-perturbed-attention.TRTAttachPag": ComfyNode<IN['sd-perturbed-attention.TRTAttachPag'], OUT['sd-perturbed-attention.TRTAttachPag']> & {
+            _MODEL: ComfyNodeOutput<'MODEL'>
+         }
+         "sd-perturbed-attention.TRTPerturbedAttention": ComfyNode<IN['sd-perturbed-attention.TRTPerturbedAttention'], OUT['sd-perturbed-attention.TRTPerturbedAttention']> & {
+            _MODEL: ComfyNodeOutput<'MODEL'>
+         }
+         "civitai_comfy_nodes.CivitAI_Lora_Loader": ComfyNode<IN['civitai_comfy_nodes.CivitAI_Lora_Loader'], OUT['civitai_comfy_nodes.CivitAI_Lora_Loader']> & {
+            _MODEL: ComfyNodeOutput<'MODEL'>
+            _CLIP: ComfyNodeOutput<'CLIP'>
+         }
+         "civitai_comfy_nodes.CivitAI_Checkpoint_Loader": ComfyNode<IN['civitai_comfy_nodes.CivitAI_Checkpoint_Loader'], OUT['civitai_comfy_nodes.CivitAI_Checkpoint_Loader']> & {
+            _MODEL: ComfyNodeOutput<'MODEL'>
+            _CLIP: ComfyNodeOutput<'CLIP'>
+            _VAE: ComfyNodeOutput<'VAE'>
+         }
          "controlnet_aux.ShufflePreprocessor": ComfyNode<IN['controlnet_aux.ShufflePreprocessor'], OUT['controlnet_aux.ShufflePreprocessor']> & {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
@@ -11237,60 +11396,60 @@ declare global {
          "Marigold.RemapDepth": ComfyNode<IN['Marigold.RemapDepth'], OUT['Marigold.RemapDepth']> & {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
-         "Impact_Pack.SAMLoader": ComfyNode<IN['Impact_Pack.SAMLoader'], OUT['Impact_Pack.SAMLoader']> & {
+         "Impact-Pack.SAMLoader": ComfyNode<IN['Impact-Pack.SAMLoader'], OUT['Impact-Pack.SAMLoader']> & {
             _SAM_MODEL: ComfyNodeOutput<'SAM_MODEL'>
          }
-         "Impact_Pack.CLIPSegDetectorProvider": ComfyNode<IN['Impact_Pack.CLIPSegDetectorProvider'], OUT['Impact_Pack.CLIPSegDetectorProvider']> & {
+         "Impact-Pack.CLIPSegDetectorProvider": ComfyNode<IN['Impact-Pack.CLIPSegDetectorProvider'], OUT['Impact-Pack.CLIPSegDetectorProvider']> & {
             _BBOX_DETECTOR: ComfyNodeOutput<'BBOX_DETECTOR'>
          }
-         "Impact_Pack.ONNXDetectorProvider": ComfyNode<IN['Impact_Pack.ONNXDetectorProvider'], OUT['Impact_Pack.ONNXDetectorProvider']> & {
+         "Impact-Pack.ONNXDetectorProvider": ComfyNode<IN['Impact-Pack.ONNXDetectorProvider'], OUT['Impact-Pack.ONNXDetectorProvider']> & {
             _BBOX_DETECTOR: ComfyNodeOutput<'BBOX_DETECTOR'>
          }
-         "Impact_Pack.BitwiseAndMaskForEach": ComfyNode<IN['Impact_Pack.BitwiseAndMaskForEach'], OUT['Impact_Pack.BitwiseAndMaskForEach']> & {
+         "Impact-Pack.BitwiseAndMaskForEach": ComfyNode<IN['Impact-Pack.BitwiseAndMaskForEach'], OUT['Impact-Pack.BitwiseAndMaskForEach']> & {
             _SEGS: ComfyNodeOutput<'SEGS'>
          }
-         "Impact_Pack.SubtractMaskForEach": ComfyNode<IN['Impact_Pack.SubtractMaskForEach'], OUT['Impact_Pack.SubtractMaskForEach']> & {
+         "Impact-Pack.SubtractMaskForEach": ComfyNode<IN['Impact-Pack.SubtractMaskForEach'], OUT['Impact-Pack.SubtractMaskForEach']> & {
             _SEGS: ComfyNodeOutput<'SEGS'>
          }
-         "Impact_Pack.DetailerForEach": ComfyNode<IN['Impact_Pack.DetailerForEach'], OUT['Impact_Pack.DetailerForEach']> & {
+         "Impact-Pack.DetailerForEach": ComfyNode<IN['Impact-Pack.DetailerForEach'], OUT['Impact-Pack.DetailerForEach']> & {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
-         "Impact_Pack.DetailerForEachDebug": ComfyNode<IN['Impact_Pack.DetailerForEachDebug'], OUT['Impact_Pack.DetailerForEachDebug']> & {
+         "Impact-Pack.DetailerForEachDebug": ComfyNode<IN['Impact-Pack.DetailerForEachDebug'], OUT['Impact-Pack.DetailerForEachDebug']> & {
          }
-         "Impact_Pack.DetailerForEachPipe": ComfyNode<IN['Impact_Pack.DetailerForEachPipe'], OUT['Impact_Pack.DetailerForEachPipe']> & {
+         "Impact-Pack.DetailerForEachPipe": ComfyNode<IN['Impact-Pack.DetailerForEachPipe'], OUT['Impact-Pack.DetailerForEachPipe']> & {
             _SEGS: ComfyNodeOutput<'SEGS'>
             _BASIC_PIPE: ComfyNodeOutput<'BASIC_PIPE'>
          }
-         "Impact_Pack.DetailerForEachDebugPipe": ComfyNode<IN['Impact_Pack.DetailerForEachDebugPipe'], OUT['Impact_Pack.DetailerForEachDebugPipe']> & {
+         "Impact-Pack.DetailerForEachDebugPipe": ComfyNode<IN['Impact-Pack.DetailerForEachDebugPipe'], OUT['Impact-Pack.DetailerForEachDebugPipe']> & {
             _SEGS: ComfyNodeOutput<'SEGS'>
             _BASIC_PIPE: ComfyNodeOutput<'BASIC_PIPE'>
          }
-         "Impact_Pack.DetailerForEachPipeForAnimateDiff": ComfyNode<IN['Impact_Pack.DetailerForEachPipeForAnimateDiff'], OUT['Impact_Pack.DetailerForEachPipeForAnimateDiff']> & {
+         "Impact-Pack.DetailerForEachPipeForAnimateDiff": ComfyNode<IN['Impact-Pack.DetailerForEachPipeForAnimateDiff'], OUT['Impact-Pack.DetailerForEachPipeForAnimateDiff']> & {
             _SEGS: ComfyNodeOutput<'SEGS'>
             _BASIC_PIPE: ComfyNodeOutput<'BASIC_PIPE'>
          }
-         "Impact_Pack.SAMDetectorCombined": ComfyNode<IN['Impact_Pack.SAMDetectorCombined'], OUT['Impact_Pack.SAMDetectorCombined']> & {
+         "Impact-Pack.SAMDetectorCombined": ComfyNode<IN['Impact-Pack.SAMDetectorCombined'], OUT['Impact-Pack.SAMDetectorCombined']> & {
             _MASK: ComfyNodeOutput<'MASK'>
          }
-         "Impact_Pack.SAMDetectorSegmented": ComfyNode<IN['Impact_Pack.SAMDetectorSegmented'], OUT['Impact_Pack.SAMDetectorSegmented']> & {
+         "Impact-Pack.SAMDetectorSegmented": ComfyNode<IN['Impact-Pack.SAMDetectorSegmented'], OUT['Impact-Pack.SAMDetectorSegmented']> & {
          }
-         "Impact_Pack.FaceDetailer": ComfyNode<IN['Impact_Pack.FaceDetailer'], OUT['Impact_Pack.FaceDetailer']> & {
-            _MASK: ComfyNodeOutput<'MASK'>
-            _DETAILER_PIPE: ComfyNodeOutput<'DETAILER_PIPE'>
-         }
-         "Impact_Pack.FaceDetailerPipe": ComfyNode<IN['Impact_Pack.FaceDetailerPipe'], OUT['Impact_Pack.FaceDetailerPipe']> & {
+         "Impact-Pack.FaceDetailer": ComfyNode<IN['Impact-Pack.FaceDetailer'], OUT['Impact-Pack.FaceDetailer']> & {
             _MASK: ComfyNodeOutput<'MASK'>
             _DETAILER_PIPE: ComfyNodeOutput<'DETAILER_PIPE'>
          }
-         "Impact_Pack.MaskDetailerPipe": ComfyNode<IN['Impact_Pack.MaskDetailerPipe'], OUT['Impact_Pack.MaskDetailerPipe']> & {
-         }
-         "Impact_Pack.ToDetailerPipe": ComfyNode<IN['Impact_Pack.ToDetailerPipe'], OUT['Impact_Pack.ToDetailerPipe']> & {
+         "Impact-Pack.FaceDetailerPipe": ComfyNode<IN['Impact-Pack.FaceDetailerPipe'], OUT['Impact-Pack.FaceDetailerPipe']> & {
+            _MASK: ComfyNodeOutput<'MASK'>
             _DETAILER_PIPE: ComfyNodeOutput<'DETAILER_PIPE'>
          }
-         "Impact_Pack.ToDetailerPipeSDXL": ComfyNode<IN['Impact_Pack.ToDetailerPipeSDXL'], OUT['Impact_Pack.ToDetailerPipeSDXL']> & {
+         "Impact-Pack.MaskDetailerPipe": ComfyNode<IN['Impact-Pack.MaskDetailerPipe'], OUT['Impact-Pack.MaskDetailerPipe']> & {
+         }
+         "Impact-Pack.ToDetailerPipe": ComfyNode<IN['Impact-Pack.ToDetailerPipe'], OUT['Impact-Pack.ToDetailerPipe']> & {
             _DETAILER_PIPE: ComfyNodeOutput<'DETAILER_PIPE'>
          }
-         "Impact_Pack.FromDetailerPipe": ComfyNode<IN['Impact_Pack.FromDetailerPipe'], OUT['Impact_Pack.FromDetailerPipe']> & {
+         "Impact-Pack.ToDetailerPipeSDXL": ComfyNode<IN['Impact-Pack.ToDetailerPipeSDXL'], OUT['Impact-Pack.ToDetailerPipeSDXL']> & {
+            _DETAILER_PIPE: ComfyNodeOutput<'DETAILER_PIPE'>
+         }
+         "Impact-Pack.FromDetailerPipe": ComfyNode<IN['Impact-Pack.FromDetailerPipe'], OUT['Impact-Pack.FromDetailerPipe']> & {
             _MODEL: ComfyNodeOutput<'MODEL'>
             _CLIP: ComfyNodeOutput<'CLIP'>
             _VAE: ComfyNodeOutput<'VAE'>
@@ -11299,7 +11458,7 @@ declare global {
             _SEGM_DETECTOR: ComfyNodeOutput<'SEGM_DETECTOR'>
             _DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK'>
          }
-         "Impact_Pack.FromDetailerPipe_v2": ComfyNode<IN['Impact_Pack.FromDetailerPipe_v2'], OUT['Impact_Pack.FromDetailerPipe_v2']> & {
+         "Impact-Pack.FromDetailerPipe_v2": ComfyNode<IN['Impact-Pack.FromDetailerPipe_v2'], OUT['Impact-Pack.FromDetailerPipe_v2']> & {
             _DETAILER_PIPE: ComfyNodeOutput<'DETAILER_PIPE'>
             _MODEL: ComfyNodeOutput<'MODEL'>
             _CLIP: ComfyNodeOutput<'CLIP'>
@@ -11309,7 +11468,7 @@ declare global {
             _SEGM_DETECTOR: ComfyNodeOutput<'SEGM_DETECTOR'>
             _DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK'>
          }
-         "Impact_Pack.FromDetailerPipeSDXL": ComfyNode<IN['Impact_Pack.FromDetailerPipeSDXL'], OUT['Impact_Pack.FromDetailerPipeSDXL']> & {
+         "Impact-Pack.FromDetailerPipeSDXL": ComfyNode<IN['Impact-Pack.FromDetailerPipeSDXL'], OUT['Impact-Pack.FromDetailerPipeSDXL']> & {
             _DETAILER_PIPE: ComfyNodeOutput<'DETAILER_PIPE'>
             _VAE: ComfyNodeOutput<'VAE'>
             _BBOX_DETECTOR: ComfyNodeOutput<'BBOX_DETECTOR'>
@@ -11317,204 +11476,204 @@ declare global {
             _SEGM_DETECTOR: ComfyNodeOutput<'SEGM_DETECTOR'>
             _DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK'>
          }
-         "Impact_Pack.AnyPipeToBasic": ComfyNode<IN['Impact_Pack.AnyPipeToBasic'], OUT['Impact_Pack.AnyPipeToBasic']> & {
+         "Impact-Pack.AnyPipeToBasic": ComfyNode<IN['Impact-Pack.AnyPipeToBasic'], OUT['Impact-Pack.AnyPipeToBasic']> & {
             _BASIC_PIPE: ComfyNodeOutput<'BASIC_PIPE'>
          }
-         "Impact_Pack.ToBasicPipe": ComfyNode<IN['Impact_Pack.ToBasicPipe'], OUT['Impact_Pack.ToBasicPipe']> & {
+         "Impact-Pack.ToBasicPipe": ComfyNode<IN['Impact-Pack.ToBasicPipe'], OUT['Impact-Pack.ToBasicPipe']> & {
             _BASIC_PIPE: ComfyNodeOutput<'BASIC_PIPE'>
          }
-         "Impact_Pack.FromBasicPipe": ComfyNode<IN['Impact_Pack.FromBasicPipe'], OUT['Impact_Pack.FromBasicPipe']> & {
+         "Impact-Pack.FromBasicPipe": ComfyNode<IN['Impact-Pack.FromBasicPipe'], OUT['Impact-Pack.FromBasicPipe']> & {
             _MODEL: ComfyNodeOutput<'MODEL'>
             _CLIP: ComfyNodeOutput<'CLIP'>
             _VAE: ComfyNodeOutput<'VAE'>
          }
-         "Impact_Pack.FromBasicPipe_v2": ComfyNode<IN['Impact_Pack.FromBasicPipe_v2'], OUT['Impact_Pack.FromBasicPipe_v2']> & {
+         "Impact-Pack.FromBasicPipe_v2": ComfyNode<IN['Impact-Pack.FromBasicPipe_v2'], OUT['Impact-Pack.FromBasicPipe_v2']> & {
             _BASIC_PIPE: ComfyNodeOutput<'BASIC_PIPE'>
             _MODEL: ComfyNodeOutput<'MODEL'>
             _CLIP: ComfyNodeOutput<'CLIP'>
             _VAE: ComfyNodeOutput<'VAE'>
          }
-         "Impact_Pack.BasicPipeToDetailerPipe": ComfyNode<IN['Impact_Pack.BasicPipeToDetailerPipe'], OUT['Impact_Pack.BasicPipeToDetailerPipe']> & {
+         "Impact-Pack.BasicPipeToDetailerPipe": ComfyNode<IN['Impact-Pack.BasicPipeToDetailerPipe'], OUT['Impact-Pack.BasicPipeToDetailerPipe']> & {
             _DETAILER_PIPE: ComfyNodeOutput<'DETAILER_PIPE'>
          }
-         "Impact_Pack.BasicPipeToDetailerPipeSDXL": ComfyNode<IN['Impact_Pack.BasicPipeToDetailerPipeSDXL'], OUT['Impact_Pack.BasicPipeToDetailerPipeSDXL']> & {
+         "Impact-Pack.BasicPipeToDetailerPipeSDXL": ComfyNode<IN['Impact-Pack.BasicPipeToDetailerPipeSDXL'], OUT['Impact-Pack.BasicPipeToDetailerPipeSDXL']> & {
             _DETAILER_PIPE: ComfyNodeOutput<'DETAILER_PIPE'>
          }
-         "Impact_Pack.DetailerPipeToBasicPipe": ComfyNode<IN['Impact_Pack.DetailerPipeToBasicPipe'], OUT['Impact_Pack.DetailerPipeToBasicPipe']> & {
+         "Impact-Pack.DetailerPipeToBasicPipe": ComfyNode<IN['Impact-Pack.DetailerPipeToBasicPipe'], OUT['Impact-Pack.DetailerPipeToBasicPipe']> & {
          }
-         "Impact_Pack.EditBasicPipe": ComfyNode<IN['Impact_Pack.EditBasicPipe'], OUT['Impact_Pack.EditBasicPipe']> & {
+         "Impact-Pack.EditBasicPipe": ComfyNode<IN['Impact-Pack.EditBasicPipe'], OUT['Impact-Pack.EditBasicPipe']> & {
             _BASIC_PIPE: ComfyNodeOutput<'BASIC_PIPE'>
          }
-         "Impact_Pack.EditDetailerPipe": ComfyNode<IN['Impact_Pack.EditDetailerPipe'], OUT['Impact_Pack.EditDetailerPipe']> & {
+         "Impact-Pack.EditDetailerPipe": ComfyNode<IN['Impact-Pack.EditDetailerPipe'], OUT['Impact-Pack.EditDetailerPipe']> & {
             _DETAILER_PIPE: ComfyNodeOutput<'DETAILER_PIPE'>
          }
-         "Impact_Pack.EditDetailerPipeSDXL": ComfyNode<IN['Impact_Pack.EditDetailerPipeSDXL'], OUT['Impact_Pack.EditDetailerPipeSDXL']> & {
+         "Impact-Pack.EditDetailerPipeSDXL": ComfyNode<IN['Impact-Pack.EditDetailerPipeSDXL'], OUT['Impact-Pack.EditDetailerPipeSDXL']> & {
             _DETAILER_PIPE: ComfyNodeOutput<'DETAILER_PIPE'>
          }
-         "Impact_Pack.LatentPixelScale": ComfyNode<IN['Impact_Pack.LatentPixelScale'], OUT['Impact_Pack.LatentPixelScale']> & {
+         "Impact-Pack.LatentPixelScale": ComfyNode<IN['Impact-Pack.LatentPixelScale'], OUT['Impact-Pack.LatentPixelScale']> & {
             _LATENT: ComfyNodeOutput<'LATENT'>
             _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
-         "Impact_Pack.PixelKSampleUpscalerProvider": ComfyNode<IN['Impact_Pack.PixelKSampleUpscalerProvider'], OUT['Impact_Pack.PixelKSampleUpscalerProvider']> & {
+         "Impact-Pack.PixelKSampleUpscalerProvider": ComfyNode<IN['Impact-Pack.PixelKSampleUpscalerProvider'], OUT['Impact-Pack.PixelKSampleUpscalerProvider']> & {
             _UPSCALER: ComfyNodeOutput<'UPSCALER'>
          }
-         "Impact_Pack.PixelKSampleUpscalerProviderPipe": ComfyNode<IN['Impact_Pack.PixelKSampleUpscalerProviderPipe'], OUT['Impact_Pack.PixelKSampleUpscalerProviderPipe']> & {
+         "Impact-Pack.PixelKSampleUpscalerProviderPipe": ComfyNode<IN['Impact-Pack.PixelKSampleUpscalerProviderPipe'], OUT['Impact-Pack.PixelKSampleUpscalerProviderPipe']> & {
             _UPSCALER: ComfyNodeOutput<'UPSCALER'>
          }
-         "Impact_Pack.IterativeLatentUpscale": ComfyNode<IN['Impact_Pack.IterativeLatentUpscale'], OUT['Impact_Pack.IterativeLatentUpscale']> & {
+         "Impact-Pack.IterativeLatentUpscale": ComfyNode<IN['Impact-Pack.IterativeLatentUpscale'], OUT['Impact-Pack.IterativeLatentUpscale']> & {
             _LATENT: ComfyNodeOutput<'LATENT'>
             _VAE: ComfyNodeOutput<'VAE'>
          }
-         "Impact_Pack.IterativeImageUpscale": ComfyNode<IN['Impact_Pack.IterativeImageUpscale'], OUT['Impact_Pack.IterativeImageUpscale']> & {
+         "Impact-Pack.IterativeImageUpscale": ComfyNode<IN['Impact-Pack.IterativeImageUpscale'], OUT['Impact-Pack.IterativeImageUpscale']> & {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
-         "Impact_Pack.PixelTiledKSampleUpscalerProvider": ComfyNode<IN['Impact_Pack.PixelTiledKSampleUpscalerProvider'], OUT['Impact_Pack.PixelTiledKSampleUpscalerProvider']> & {
+         "Impact-Pack.PixelTiledKSampleUpscalerProvider": ComfyNode<IN['Impact-Pack.PixelTiledKSampleUpscalerProvider'], OUT['Impact-Pack.PixelTiledKSampleUpscalerProvider']> & {
             _UPSCALER: ComfyNodeOutput<'UPSCALER'>
          }
-         "Impact_Pack.PixelTiledKSampleUpscalerProviderPipe": ComfyNode<IN['Impact_Pack.PixelTiledKSampleUpscalerProviderPipe'], OUT['Impact_Pack.PixelTiledKSampleUpscalerProviderPipe']> & {
+         "Impact-Pack.PixelTiledKSampleUpscalerProviderPipe": ComfyNode<IN['Impact-Pack.PixelTiledKSampleUpscalerProviderPipe'], OUT['Impact-Pack.PixelTiledKSampleUpscalerProviderPipe']> & {
             _UPSCALER: ComfyNodeOutput<'UPSCALER'>
          }
-         "Impact_Pack.TwoSamplersForMaskUpscalerProvider": ComfyNode<IN['Impact_Pack.TwoSamplersForMaskUpscalerProvider'], OUT['Impact_Pack.TwoSamplersForMaskUpscalerProvider']> & {
+         "Impact-Pack.TwoSamplersForMaskUpscalerProvider": ComfyNode<IN['Impact-Pack.TwoSamplersForMaskUpscalerProvider'], OUT['Impact-Pack.TwoSamplersForMaskUpscalerProvider']> & {
             _UPSCALER: ComfyNodeOutput<'UPSCALER'>
          }
-         "Impact_Pack.TwoSamplersForMaskUpscalerProviderPipe": ComfyNode<IN['Impact_Pack.TwoSamplersForMaskUpscalerProviderPipe'], OUT['Impact_Pack.TwoSamplersForMaskUpscalerProviderPipe']> & {
+         "Impact-Pack.TwoSamplersForMaskUpscalerProviderPipe": ComfyNode<IN['Impact-Pack.TwoSamplersForMaskUpscalerProviderPipe'], OUT['Impact-Pack.TwoSamplersForMaskUpscalerProviderPipe']> & {
             _UPSCALER: ComfyNodeOutput<'UPSCALER'>
          }
-         "Impact_Pack.PixelKSampleHookCombine": ComfyNode<IN['Impact_Pack.PixelKSampleHookCombine'], OUT['Impact_Pack.PixelKSampleHookCombine']> & {
+         "Impact-Pack.PixelKSampleHookCombine": ComfyNode<IN['Impact-Pack.PixelKSampleHookCombine'], OUT['Impact-Pack.PixelKSampleHookCombine']> & {
             _PK_HOOK: ComfyNodeOutput<'PK_HOOK'>
          }
-         "Impact_Pack.DenoiseScheduleHookProvider": ComfyNode<IN['Impact_Pack.DenoiseScheduleHookProvider'], OUT['Impact_Pack.DenoiseScheduleHookProvider']> & {
+         "Impact-Pack.DenoiseScheduleHookProvider": ComfyNode<IN['Impact-Pack.DenoiseScheduleHookProvider'], OUT['Impact-Pack.DenoiseScheduleHookProvider']> & {
             _PK_HOOK: ComfyNodeOutput<'PK_HOOK'>
          }
-         "Impact_Pack.StepsScheduleHookProvider": ComfyNode<IN['Impact_Pack.StepsScheduleHookProvider'], OUT['Impact_Pack.StepsScheduleHookProvider']> & {
+         "Impact-Pack.StepsScheduleHookProvider": ComfyNode<IN['Impact-Pack.StepsScheduleHookProvider'], OUT['Impact-Pack.StepsScheduleHookProvider']> & {
             _PK_HOOK: ComfyNodeOutput<'PK_HOOK'>
          }
-         "Impact_Pack.CfgScheduleHookProvider": ComfyNode<IN['Impact_Pack.CfgScheduleHookProvider'], OUT['Impact_Pack.CfgScheduleHookProvider']> & {
+         "Impact-Pack.CfgScheduleHookProvider": ComfyNode<IN['Impact-Pack.CfgScheduleHookProvider'], OUT['Impact-Pack.CfgScheduleHookProvider']> & {
             _PK_HOOK: ComfyNodeOutput<'PK_HOOK'>
          }
-         "Impact_Pack.NoiseInjectionHookProvider": ComfyNode<IN['Impact_Pack.NoiseInjectionHookProvider'], OUT['Impact_Pack.NoiseInjectionHookProvider']> & {
+         "Impact-Pack.NoiseInjectionHookProvider": ComfyNode<IN['Impact-Pack.NoiseInjectionHookProvider'], OUT['Impact-Pack.NoiseInjectionHookProvider']> & {
             _PK_HOOK: ComfyNodeOutput<'PK_HOOK'>
          }
-         "Impact_Pack.UnsamplerHookProvider": ComfyNode<IN['Impact_Pack.UnsamplerHookProvider'], OUT['Impact_Pack.UnsamplerHookProvider']> & {
+         "Impact-Pack.UnsamplerHookProvider": ComfyNode<IN['Impact-Pack.UnsamplerHookProvider'], OUT['Impact-Pack.UnsamplerHookProvider']> & {
             _PK_HOOK: ComfyNodeOutput<'PK_HOOK'>
          }
-         "Impact_Pack.CoreMLDetailerHookProvider": ComfyNode<IN['Impact_Pack.CoreMLDetailerHookProvider'], OUT['Impact_Pack.CoreMLDetailerHookProvider']> & {
+         "Impact-Pack.CoreMLDetailerHookProvider": ComfyNode<IN['Impact-Pack.CoreMLDetailerHookProvider'], OUT['Impact-Pack.CoreMLDetailerHookProvider']> & {
             _DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK'>
          }
-         "Impact_Pack.PreviewDetailerHookProvider": ComfyNode<IN['Impact_Pack.PreviewDetailerHookProvider'], OUT['Impact_Pack.PreviewDetailerHookProvider']> & {
+         "Impact-Pack.PreviewDetailerHookProvider": ComfyNode<IN['Impact-Pack.PreviewDetailerHookProvider'], OUT['Impact-Pack.PreviewDetailerHookProvider']> & {
             _DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK'>
             _UPSCALER_HOOK: ComfyNodeOutput<'UPSCALER_HOOK'>
          }
-         "Impact_Pack.DetailerHookCombine": ComfyNode<IN['Impact_Pack.DetailerHookCombine'], OUT['Impact_Pack.DetailerHookCombine']> & {
+         "Impact-Pack.DetailerHookCombine": ComfyNode<IN['Impact-Pack.DetailerHookCombine'], OUT['Impact-Pack.DetailerHookCombine']> & {
             _DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK'>
          }
-         "Impact_Pack.NoiseInjectionDetailerHookProvider": ComfyNode<IN['Impact_Pack.NoiseInjectionDetailerHookProvider'], OUT['Impact_Pack.NoiseInjectionDetailerHookProvider']> & {
+         "Impact-Pack.NoiseInjectionDetailerHookProvider": ComfyNode<IN['Impact-Pack.NoiseInjectionDetailerHookProvider'], OUT['Impact-Pack.NoiseInjectionDetailerHookProvider']> & {
             _DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK'>
          }
-         "Impact_Pack.UnsamplerDetailerHookProvider": ComfyNode<IN['Impact_Pack.UnsamplerDetailerHookProvider'], OUT['Impact_Pack.UnsamplerDetailerHookProvider']> & {
+         "Impact-Pack.UnsamplerDetailerHookProvider": ComfyNode<IN['Impact-Pack.UnsamplerDetailerHookProvider'], OUT['Impact-Pack.UnsamplerDetailerHookProvider']> & {
             _DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK'>
          }
-         "Impact_Pack.DenoiseSchedulerDetailerHookProvider": ComfyNode<IN['Impact_Pack.DenoiseSchedulerDetailerHookProvider'], OUT['Impact_Pack.DenoiseSchedulerDetailerHookProvider']> & {
+         "Impact-Pack.DenoiseSchedulerDetailerHookProvider": ComfyNode<IN['Impact-Pack.DenoiseSchedulerDetailerHookProvider'], OUT['Impact-Pack.DenoiseSchedulerDetailerHookProvider']> & {
             _DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK'>
          }
-         "Impact_Pack.SEGSOrderedFilterDetailerHookProvider": ComfyNode<IN['Impact_Pack.SEGSOrderedFilterDetailerHookProvider'], OUT['Impact_Pack.SEGSOrderedFilterDetailerHookProvider']> & {
+         "Impact-Pack.SEGSOrderedFilterDetailerHookProvider": ComfyNode<IN['Impact-Pack.SEGSOrderedFilterDetailerHookProvider'], OUT['Impact-Pack.SEGSOrderedFilterDetailerHookProvider']> & {
             _DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK'>
          }
-         "Impact_Pack.SEGSRangeFilterDetailerHookProvider": ComfyNode<IN['Impact_Pack.SEGSRangeFilterDetailerHookProvider'], OUT['Impact_Pack.SEGSRangeFilterDetailerHookProvider']> & {
+         "Impact-Pack.SEGSRangeFilterDetailerHookProvider": ComfyNode<IN['Impact-Pack.SEGSRangeFilterDetailerHookProvider'], OUT['Impact-Pack.SEGSRangeFilterDetailerHookProvider']> & {
             _DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK'>
          }
-         "Impact_Pack.SEGSLabelFilterDetailerHookProvider": ComfyNode<IN['Impact_Pack.SEGSLabelFilterDetailerHookProvider'], OUT['Impact_Pack.SEGSLabelFilterDetailerHookProvider']> & {
+         "Impact-Pack.SEGSLabelFilterDetailerHookProvider": ComfyNode<IN['Impact-Pack.SEGSLabelFilterDetailerHookProvider'], OUT['Impact-Pack.SEGSLabelFilterDetailerHookProvider']> & {
             _DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK'>
          }
-         "Impact_Pack.VariationNoiseDetailerHookProvider": ComfyNode<IN['Impact_Pack.VariationNoiseDetailerHookProvider'], OUT['Impact_Pack.VariationNoiseDetailerHookProvider']> & {
+         "Impact-Pack.VariationNoiseDetailerHookProvider": ComfyNode<IN['Impact-Pack.VariationNoiseDetailerHookProvider'], OUT['Impact-Pack.VariationNoiseDetailerHookProvider']> & {
             _DETAILER_HOOK: ComfyNodeOutput<'DETAILER_HOOK'>
          }
-         "Impact_Pack.BitwiseAndMask": ComfyNode<IN['Impact_Pack.BitwiseAndMask'], OUT['Impact_Pack.BitwiseAndMask']> & {
+         "Impact-Pack.BitwiseAndMask": ComfyNode<IN['Impact-Pack.BitwiseAndMask'], OUT['Impact-Pack.BitwiseAndMask']> & {
             _MASK: ComfyNodeOutput<'MASK'>
          }
-         "Impact_Pack.SubtractMask": ComfyNode<IN['Impact_Pack.SubtractMask'], OUT['Impact_Pack.SubtractMask']> & {
+         "Impact-Pack.SubtractMask": ComfyNode<IN['Impact-Pack.SubtractMask'], OUT['Impact-Pack.SubtractMask']> & {
             _MASK: ComfyNodeOutput<'MASK'>
          }
-         "Impact_Pack.AddMask": ComfyNode<IN['Impact_Pack.AddMask'], OUT['Impact_Pack.AddMask']> & {
+         "Impact-Pack.AddMask": ComfyNode<IN['Impact-Pack.AddMask'], OUT['Impact-Pack.AddMask']> & {
             _MASK: ComfyNodeOutput<'MASK'>
          }
-         "Impact_Pack.ImpactSegsAndMask": ComfyNode<IN['Impact_Pack.ImpactSegsAndMask'], OUT['Impact_Pack.ImpactSegsAndMask']> & {
+         "Impact-Pack.ImpactSegsAndMask": ComfyNode<IN['Impact-Pack.ImpactSegsAndMask'], OUT['Impact-Pack.ImpactSegsAndMask']> & {
             _SEGS: ComfyNodeOutput<'SEGS'>
          }
-         "Impact_Pack.ImpactSegsAndMaskForEach": ComfyNode<IN['Impact_Pack.ImpactSegsAndMaskForEach'], OUT['Impact_Pack.ImpactSegsAndMaskForEach']> & {
+         "Impact-Pack.ImpactSegsAndMaskForEach": ComfyNode<IN['Impact-Pack.ImpactSegsAndMaskForEach'], OUT['Impact-Pack.ImpactSegsAndMaskForEach']> & {
             _SEGS: ComfyNodeOutput<'SEGS'>
          }
-         "Impact_Pack.EmptySegs": ComfyNode<IN['Impact_Pack.EmptySegs'], OUT['Impact_Pack.EmptySegs']> & {
+         "Impact-Pack.EmptySegs": ComfyNode<IN['Impact-Pack.EmptySegs'], OUT['Impact-Pack.EmptySegs']> & {
             _SEGS: ComfyNodeOutput<'SEGS'>
          }
-         "Impact_Pack.ImpactFlattenMask": ComfyNode<IN['Impact_Pack.ImpactFlattenMask'], OUT['Impact_Pack.ImpactFlattenMask']> & {
+         "Impact-Pack.ImpactFlattenMask": ComfyNode<IN['Impact-Pack.ImpactFlattenMask'], OUT['Impact-Pack.ImpactFlattenMask']> & {
             _MASK: ComfyNodeOutput<'MASK'>
          }
-         "Impact_Pack.MediaPipeFaceMeshToSEGS": ComfyNode<IN['Impact_Pack.MediaPipeFaceMeshToSEGS'], OUT['Impact_Pack.MediaPipeFaceMeshToSEGS']> & {
+         "Impact-Pack.MediaPipeFaceMeshToSEGS": ComfyNode<IN['Impact-Pack.MediaPipeFaceMeshToSEGS'], OUT['Impact-Pack.MediaPipeFaceMeshToSEGS']> & {
             _SEGS: ComfyNodeOutput<'SEGS'>
          }
-         "Impact_Pack.MaskToSEGS": ComfyNode<IN['Impact_Pack.MaskToSEGS'], OUT['Impact_Pack.MaskToSEGS']> & {
+         "Impact-Pack.MaskToSEGS": ComfyNode<IN['Impact-Pack.MaskToSEGS'], OUT['Impact-Pack.MaskToSEGS']> & {
             _SEGS: ComfyNodeOutput<'SEGS'>
          }
-         "Impact_Pack.MaskToSEGS_for_AnimateDiff": ComfyNode<IN['Impact_Pack.MaskToSEGS_for_AnimateDiff'], OUT['Impact_Pack.MaskToSEGS_for_AnimateDiff']> & {
+         "Impact-Pack.MaskToSEGS_for_AnimateDiff": ComfyNode<IN['Impact-Pack.MaskToSEGS_for_AnimateDiff'], OUT['Impact-Pack.MaskToSEGS_for_AnimateDiff']> & {
             _SEGS: ComfyNodeOutput<'SEGS'>
          }
-         "Impact_Pack.ToBinaryMask": ComfyNode<IN['Impact_Pack.ToBinaryMask'], OUT['Impact_Pack.ToBinaryMask']> & {
+         "Impact-Pack.ToBinaryMask": ComfyNode<IN['Impact-Pack.ToBinaryMask'], OUT['Impact-Pack.ToBinaryMask']> & {
             _MASK: ComfyNodeOutput<'MASK'>
          }
-         "Impact_Pack.MasksToMaskList": ComfyNode<IN['Impact_Pack.MasksToMaskList'], OUT['Impact_Pack.MasksToMaskList']> & {
+         "Impact-Pack.MasksToMaskList": ComfyNode<IN['Impact-Pack.MasksToMaskList'], OUT['Impact-Pack.MasksToMaskList']> & {
             _MASK: ComfyNodeOutput<'MASK'>
          }
-         "Impact_Pack.MaskListToMaskBatch": ComfyNode<IN['Impact_Pack.MaskListToMaskBatch'], OUT['Impact_Pack.MaskListToMaskBatch']> & {
+         "Impact-Pack.MaskListToMaskBatch": ComfyNode<IN['Impact-Pack.MaskListToMaskBatch'], OUT['Impact-Pack.MaskListToMaskBatch']> & {
             _MASK: ComfyNodeOutput<'MASK'>
          }
-         "Impact_Pack.ImageListToImageBatch": ComfyNode<IN['Impact_Pack.ImageListToImageBatch'], OUT['Impact_Pack.ImageListToImageBatch']> & {
+         "Impact-Pack.ImageListToImageBatch": ComfyNode<IN['Impact-Pack.ImageListToImageBatch'], OUT['Impact-Pack.ImageListToImageBatch']> & {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
-         "Impact_Pack.SetDefaultImageForSEGS": ComfyNode<IN['Impact_Pack.SetDefaultImageForSEGS'], OUT['Impact_Pack.SetDefaultImageForSEGS']> & {
+         "Impact-Pack.SetDefaultImageForSEGS": ComfyNode<IN['Impact-Pack.SetDefaultImageForSEGS'], OUT['Impact-Pack.SetDefaultImageForSEGS']> & {
             _SEGS: ComfyNodeOutput<'SEGS'>
          }
-         "Impact_Pack.RemoveImageFromSEGS": ComfyNode<IN['Impact_Pack.RemoveImageFromSEGS'], OUT['Impact_Pack.RemoveImageFromSEGS']> & {
+         "Impact-Pack.RemoveImageFromSEGS": ComfyNode<IN['Impact-Pack.RemoveImageFromSEGS'], OUT['Impact-Pack.RemoveImageFromSEGS']> & {
             _SEGS: ComfyNodeOutput<'SEGS'>
          }
-         "Impact_Pack.BboxDetectorSEGS": ComfyNode<IN['Impact_Pack.BboxDetectorSEGS'], OUT['Impact_Pack.BboxDetectorSEGS']> & {
+         "Impact-Pack.BboxDetectorSEGS": ComfyNode<IN['Impact-Pack.BboxDetectorSEGS'], OUT['Impact-Pack.BboxDetectorSEGS']> & {
             _SEGS: ComfyNodeOutput<'SEGS'>
          }
-         "Impact_Pack.SegmDetectorSEGS": ComfyNode<IN['Impact_Pack.SegmDetectorSEGS'], OUT['Impact_Pack.SegmDetectorSEGS']> & {
+         "Impact-Pack.SegmDetectorSEGS": ComfyNode<IN['Impact-Pack.SegmDetectorSEGS'], OUT['Impact-Pack.SegmDetectorSEGS']> & {
             _SEGS: ComfyNodeOutput<'SEGS'>
          }
-         "Impact_Pack.ONNXDetectorSEGS": ComfyNode<IN['Impact_Pack.ONNXDetectorSEGS'], OUT['Impact_Pack.ONNXDetectorSEGS']> & {
+         "Impact-Pack.ONNXDetectorSEGS": ComfyNode<IN['Impact-Pack.ONNXDetectorSEGS'], OUT['Impact-Pack.ONNXDetectorSEGS']> & {
             _SEGS: ComfyNodeOutput<'SEGS'>
          }
-         "Impact_Pack.ImpactSimpleDetectorSEGS_for_AD": ComfyNode<IN['Impact_Pack.ImpactSimpleDetectorSEGS_for_AD'], OUT['Impact_Pack.ImpactSimpleDetectorSEGS_for_AD']> & {
+         "Impact-Pack.ImpactSimpleDetectorSEGS_for_AD": ComfyNode<IN['Impact-Pack.ImpactSimpleDetectorSEGS_for_AD'], OUT['Impact-Pack.ImpactSimpleDetectorSEGS_for_AD']> & {
             _SEGS: ComfyNodeOutput<'SEGS'>
          }
-         "Impact_Pack.ImpactSimpleDetectorSEGS": ComfyNode<IN['Impact_Pack.ImpactSimpleDetectorSEGS'], OUT['Impact_Pack.ImpactSimpleDetectorSEGS']> & {
+         "Impact-Pack.ImpactSimpleDetectorSEGS": ComfyNode<IN['Impact-Pack.ImpactSimpleDetectorSEGS'], OUT['Impact-Pack.ImpactSimpleDetectorSEGS']> & {
             _SEGS: ComfyNodeOutput<'SEGS'>
          }
-         "Impact_Pack.ImpactSimpleDetectorSEGSPipe": ComfyNode<IN['Impact_Pack.ImpactSimpleDetectorSEGSPipe'], OUT['Impact_Pack.ImpactSimpleDetectorSEGSPipe']> & {
+         "Impact-Pack.ImpactSimpleDetectorSEGSPipe": ComfyNode<IN['Impact-Pack.ImpactSimpleDetectorSEGSPipe'], OUT['Impact-Pack.ImpactSimpleDetectorSEGSPipe']> & {
             _SEGS: ComfyNodeOutput<'SEGS'>
          }
-         "Impact_Pack.ImpactControlNetApplySEGS": ComfyNode<IN['Impact_Pack.ImpactControlNetApplySEGS'], OUT['Impact_Pack.ImpactControlNetApplySEGS']> & {
+         "Impact-Pack.ImpactControlNetApplySEGS": ComfyNode<IN['Impact-Pack.ImpactControlNetApplySEGS'], OUT['Impact-Pack.ImpactControlNetApplySEGS']> & {
             _SEGS: ComfyNodeOutput<'SEGS'>
          }
-         "Impact_Pack.ImpactControlNetApplyAdvancedSEGS": ComfyNode<IN['Impact_Pack.ImpactControlNetApplyAdvancedSEGS'], OUT['Impact_Pack.ImpactControlNetApplyAdvancedSEGS']> & {
+         "Impact-Pack.ImpactControlNetApplyAdvancedSEGS": ComfyNode<IN['Impact-Pack.ImpactControlNetApplyAdvancedSEGS'], OUT['Impact-Pack.ImpactControlNetApplyAdvancedSEGS']> & {
             _SEGS: ComfyNodeOutput<'SEGS'>
          }
-         "Impact_Pack.ImpactControlNetClearSEGS": ComfyNode<IN['Impact_Pack.ImpactControlNetClearSEGS'], OUT['Impact_Pack.ImpactControlNetClearSEGS']> & {
+         "Impact-Pack.ImpactControlNetClearSEGS": ComfyNode<IN['Impact-Pack.ImpactControlNetClearSEGS'], OUT['Impact-Pack.ImpactControlNetClearSEGS']> & {
             _SEGS: ComfyNodeOutput<'SEGS'>
          }
-         "Impact_Pack.ImpactIPAdapterApplySEGS": ComfyNode<IN['Impact_Pack.ImpactIPAdapterApplySEGS'], OUT['Impact_Pack.ImpactIPAdapterApplySEGS']> & {
+         "Impact-Pack.ImpactIPAdapterApplySEGS": ComfyNode<IN['Impact-Pack.ImpactIPAdapterApplySEGS'], OUT['Impact-Pack.ImpactIPAdapterApplySEGS']> & {
             _SEGS: ComfyNodeOutput<'SEGS'>
          }
-         "Impact_Pack.ImpactDecomposeSEGS": ComfyNode<IN['Impact_Pack.ImpactDecomposeSEGS'], OUT['Impact_Pack.ImpactDecomposeSEGS']> & {
+         "Impact-Pack.ImpactDecomposeSEGS": ComfyNode<IN['Impact-Pack.ImpactDecomposeSEGS'], OUT['Impact-Pack.ImpactDecomposeSEGS']> & {
             _SEGS_HEADER: ComfyNodeOutput<'SEGS_HEADER'>
             _SEG_ELT: ComfyNodeOutput<'SEG_ELT'>
          }
-         "Impact_Pack.ImpactAssembleSEGS": ComfyNode<IN['Impact_Pack.ImpactAssembleSEGS'], OUT['Impact_Pack.ImpactAssembleSEGS']> & {
+         "Impact-Pack.ImpactAssembleSEGS": ComfyNode<IN['Impact-Pack.ImpactAssembleSEGS'], OUT['Impact-Pack.ImpactAssembleSEGS']> & {
             _SEGS: ComfyNodeOutput<'SEGS'>
          }
-         "Impact_Pack.ImpactFrom_SEG_ELT": ComfyNode<IN['Impact_Pack.ImpactFrom_SEG_ELT'], OUT['Impact_Pack.ImpactFrom_SEG_ELT']> & {
+         "Impact-Pack.ImpactFrom_SEG_ELT": ComfyNode<IN['Impact-Pack.ImpactFrom_SEG_ELT'], OUT['Impact-Pack.ImpactFrom_SEG_ELT']> & {
             _SEG_ELT: ComfyNodeOutput<'SEG_ELT'>
             _IMAGE: ComfyNodeOutput<'IMAGE'>
             _MASK: ComfyNodeOutput<'MASK'>
@@ -11524,321 +11683,321 @@ declare global {
             _FLOAT: ComfyNodeOutput<'FLOAT'>
             _STRING: ComfyNodeOutput<'STRING'>
          }
-         "Impact_Pack.ImpactEdit_SEG_ELT": ComfyNode<IN['Impact_Pack.ImpactEdit_SEG_ELT'], OUT['Impact_Pack.ImpactEdit_SEG_ELT']> & {
+         "Impact-Pack.ImpactEdit_SEG_ELT": ComfyNode<IN['Impact-Pack.ImpactEdit_SEG_ELT'], OUT['Impact-Pack.ImpactEdit_SEG_ELT']> & {
             _SEG_ELT: ComfyNodeOutput<'SEG_ELT'>
          }
-         "Impact_Pack.ImpactDilate_Mask_SEG_ELT": ComfyNode<IN['Impact_Pack.ImpactDilate_Mask_SEG_ELT'], OUT['Impact_Pack.ImpactDilate_Mask_SEG_ELT']> & {
+         "Impact-Pack.ImpactDilate_Mask_SEG_ELT": ComfyNode<IN['Impact-Pack.ImpactDilate_Mask_SEG_ELT'], OUT['Impact-Pack.ImpactDilate_Mask_SEG_ELT']> & {
             _SEG_ELT: ComfyNodeOutput<'SEG_ELT'>
          }
-         "Impact_Pack.ImpactDilateMask": ComfyNode<IN['Impact_Pack.ImpactDilateMask'], OUT['Impact_Pack.ImpactDilateMask']> & {
+         "Impact-Pack.ImpactDilateMask": ComfyNode<IN['Impact-Pack.ImpactDilateMask'], OUT['Impact-Pack.ImpactDilateMask']> & {
             _MASK: ComfyNodeOutput<'MASK'>
          }
-         "Impact_Pack.ImpactGaussianBlurMask": ComfyNode<IN['Impact_Pack.ImpactGaussianBlurMask'], OUT['Impact_Pack.ImpactGaussianBlurMask']> & {
+         "Impact-Pack.ImpactGaussianBlurMask": ComfyNode<IN['Impact-Pack.ImpactGaussianBlurMask'], OUT['Impact-Pack.ImpactGaussianBlurMask']> & {
             _MASK: ComfyNodeOutput<'MASK'>
          }
-         "Impact_Pack.ImpactDilateMaskInSEGS": ComfyNode<IN['Impact_Pack.ImpactDilateMaskInSEGS'], OUT['Impact_Pack.ImpactDilateMaskInSEGS']> & {
+         "Impact-Pack.ImpactDilateMaskInSEGS": ComfyNode<IN['Impact-Pack.ImpactDilateMaskInSEGS'], OUT['Impact-Pack.ImpactDilateMaskInSEGS']> & {
             _SEGS: ComfyNodeOutput<'SEGS'>
          }
-         "Impact_Pack.ImpactGaussianBlurMaskInSEGS": ComfyNode<IN['Impact_Pack.ImpactGaussianBlurMaskInSEGS'], OUT['Impact_Pack.ImpactGaussianBlurMaskInSEGS']> & {
+         "Impact-Pack.ImpactGaussianBlurMaskInSEGS": ComfyNode<IN['Impact-Pack.ImpactGaussianBlurMaskInSEGS'], OUT['Impact-Pack.ImpactGaussianBlurMaskInSEGS']> & {
             _SEGS: ComfyNodeOutput<'SEGS'>
          }
-         "Impact_Pack.ImpactScaleBy_BBOX_SEG_ELT": ComfyNode<IN['Impact_Pack.ImpactScaleBy_BBOX_SEG_ELT'], OUT['Impact_Pack.ImpactScaleBy_BBOX_SEG_ELT']> & {
+         "Impact-Pack.ImpactScaleBy_BBOX_SEG_ELT": ComfyNode<IN['Impact-Pack.ImpactScaleBy_BBOX_SEG_ELT'], OUT['Impact-Pack.ImpactScaleBy_BBOX_SEG_ELT']> & {
             _SEG_ELT: ComfyNodeOutput<'SEG_ELT'>
          }
-         "Impact_Pack.ImpactFrom_SEG_ELT_bbox": ComfyNode<IN['Impact_Pack.ImpactFrom_SEG_ELT_bbox'], OUT['Impact_Pack.ImpactFrom_SEG_ELT_bbox']> & {
+         "Impact-Pack.ImpactFrom_SEG_ELT_bbox": ComfyNode<IN['Impact-Pack.ImpactFrom_SEG_ELT_bbox'], OUT['Impact-Pack.ImpactFrom_SEG_ELT_bbox']> & {
          }
-         "Impact_Pack.ImpactFrom_SEG_ELT_crop_region": ComfyNode<IN['Impact_Pack.ImpactFrom_SEG_ELT_crop_region'], OUT['Impact_Pack.ImpactFrom_SEG_ELT_crop_region']> & {
+         "Impact-Pack.ImpactFrom_SEG_ELT_crop_region": ComfyNode<IN['Impact-Pack.ImpactFrom_SEG_ELT_crop_region'], OUT['Impact-Pack.ImpactFrom_SEG_ELT_crop_region']> & {
          }
-         "Impact_Pack.ImpactCount_Elts_in_SEGS": ComfyNode<IN['Impact_Pack.ImpactCount_Elts_in_SEGS'], OUT['Impact_Pack.ImpactCount_Elts_in_SEGS']> & {
+         "Impact-Pack.ImpactCount_Elts_in_SEGS": ComfyNode<IN['Impact-Pack.ImpactCount_Elts_in_SEGS'], OUT['Impact-Pack.ImpactCount_Elts_in_SEGS']> & {
             _INT: ComfyNodeOutput<'INT'>
          }
-         "Impact_Pack.BboxDetectorCombined_v2": ComfyNode<IN['Impact_Pack.BboxDetectorCombined_v2'], OUT['Impact_Pack.BboxDetectorCombined_v2']> & {
+         "Impact-Pack.BboxDetectorCombined_v2": ComfyNode<IN['Impact-Pack.BboxDetectorCombined_v2'], OUT['Impact-Pack.BboxDetectorCombined_v2']> & {
             _MASK: ComfyNodeOutput<'MASK'>
          }
-         "Impact_Pack.SegmDetectorCombined_v2": ComfyNode<IN['Impact_Pack.SegmDetectorCombined_v2'], OUT['Impact_Pack.SegmDetectorCombined_v2']> & {
+         "Impact-Pack.SegmDetectorCombined_v2": ComfyNode<IN['Impact-Pack.SegmDetectorCombined_v2'], OUT['Impact-Pack.SegmDetectorCombined_v2']> & {
             _MASK: ComfyNodeOutput<'MASK'>
          }
-         "Impact_Pack.SegsToCombinedMask": ComfyNode<IN['Impact_Pack.SegsToCombinedMask'], OUT['Impact_Pack.SegsToCombinedMask']> & {
+         "Impact-Pack.SegsToCombinedMask": ComfyNode<IN['Impact-Pack.SegsToCombinedMask'], OUT['Impact-Pack.SegsToCombinedMask']> & {
             _MASK: ComfyNodeOutput<'MASK'>
          }
-         "Impact_Pack.KSamplerProvider": ComfyNode<IN['Impact_Pack.KSamplerProvider'], OUT['Impact_Pack.KSamplerProvider']> & {
+         "Impact-Pack.KSamplerProvider": ComfyNode<IN['Impact-Pack.KSamplerProvider'], OUT['Impact-Pack.KSamplerProvider']> & {
             _KSAMPLER: ComfyNodeOutput<'KSAMPLER'>
          }
-         "Impact_Pack.TwoSamplersForMask": ComfyNode<IN['Impact_Pack.TwoSamplersForMask'], OUT['Impact_Pack.TwoSamplersForMask']> & {
+         "Impact-Pack.TwoSamplersForMask": ComfyNode<IN['Impact-Pack.TwoSamplersForMask'], OUT['Impact-Pack.TwoSamplersForMask']> & {
             _LATENT: ComfyNodeOutput<'LATENT'>
          }
-         "Impact_Pack.TiledKSamplerProvider": ComfyNode<IN['Impact_Pack.TiledKSamplerProvider'], OUT['Impact_Pack.TiledKSamplerProvider']> & {
+         "Impact-Pack.TiledKSamplerProvider": ComfyNode<IN['Impact-Pack.TiledKSamplerProvider'], OUT['Impact-Pack.TiledKSamplerProvider']> & {
             _KSAMPLER: ComfyNodeOutput<'KSAMPLER'>
          }
-         "Impact_Pack.KSamplerAdvancedProvider": ComfyNode<IN['Impact_Pack.KSamplerAdvancedProvider'], OUT['Impact_Pack.KSamplerAdvancedProvider']> & {
+         "Impact-Pack.KSamplerAdvancedProvider": ComfyNode<IN['Impact-Pack.KSamplerAdvancedProvider'], OUT['Impact-Pack.KSamplerAdvancedProvider']> & {
             _KSAMPLER_ADVANCED: ComfyNodeOutput<'KSAMPLER_ADVANCED'>
          }
-         "Impact_Pack.TwoAdvancedSamplersForMask": ComfyNode<IN['Impact_Pack.TwoAdvancedSamplersForMask'], OUT['Impact_Pack.TwoAdvancedSamplersForMask']> & {
+         "Impact-Pack.TwoAdvancedSamplersForMask": ComfyNode<IN['Impact-Pack.TwoAdvancedSamplersForMask'], OUT['Impact-Pack.TwoAdvancedSamplersForMask']> & {
             _LATENT: ComfyNodeOutput<'LATENT'>
          }
-         "Impact_Pack.ImpactNegativeConditioningPlaceholder": ComfyNode<IN['Impact_Pack.ImpactNegativeConditioningPlaceholder'], OUT['Impact_Pack.ImpactNegativeConditioningPlaceholder']> & {
+         "Impact-Pack.ImpactNegativeConditioningPlaceholder": ComfyNode<IN['Impact-Pack.ImpactNegativeConditioningPlaceholder'], OUT['Impact-Pack.ImpactNegativeConditioningPlaceholder']> & {
             _CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
          }
-         "Impact_Pack.PreviewBridge": ComfyNode<IN['Impact_Pack.PreviewBridge'], OUT['Impact_Pack.PreviewBridge']> & {
+         "Impact-Pack.PreviewBridge": ComfyNode<IN['Impact-Pack.PreviewBridge'], OUT['Impact-Pack.PreviewBridge']> & {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
             _MASK: ComfyNodeOutput<'MASK'>
          }
-         "Impact_Pack.PreviewBridgeLatent": ComfyNode<IN['Impact_Pack.PreviewBridgeLatent'], OUT['Impact_Pack.PreviewBridgeLatent']> & {
+         "Impact-Pack.PreviewBridgeLatent": ComfyNode<IN['Impact-Pack.PreviewBridgeLatent'], OUT['Impact-Pack.PreviewBridgeLatent']> & {
             _LATENT: ComfyNodeOutput<'LATENT'>
             _MASK: ComfyNodeOutput<'MASK'>
          }
-         "Impact_Pack.ImageSender": ComfyNode<IN['Impact_Pack.ImageSender'], OUT['Impact_Pack.ImageSender']> & {
+         "Impact-Pack.ImageSender": ComfyNode<IN['Impact-Pack.ImageSender'], OUT['Impact-Pack.ImageSender']> & {
          }
-         "Impact_Pack.ImageReceiver": ComfyNode<IN['Impact_Pack.ImageReceiver'], OUT['Impact_Pack.ImageReceiver']> & {
+         "Impact-Pack.ImageReceiver": ComfyNode<IN['Impact-Pack.ImageReceiver'], OUT['Impact-Pack.ImageReceiver']> & {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
             _MASK: ComfyNodeOutput<'MASK'>
          }
-         "Impact_Pack.LatentSender": ComfyNode<IN['Impact_Pack.LatentSender'], OUT['Impact_Pack.LatentSender']> & {
+         "Impact-Pack.LatentSender": ComfyNode<IN['Impact-Pack.LatentSender'], OUT['Impact-Pack.LatentSender']> & {
          }
-         "Impact_Pack.LatentReceiver": ComfyNode<IN['Impact_Pack.LatentReceiver'], OUT['Impact_Pack.LatentReceiver']> & {
+         "Impact-Pack.LatentReceiver": ComfyNode<IN['Impact-Pack.LatentReceiver'], OUT['Impact-Pack.LatentReceiver']> & {
             _LATENT: ComfyNodeOutput<'LATENT'>
          }
-         "Impact_Pack.ImageMaskSwitch": ComfyNode<IN['Impact_Pack.ImageMaskSwitch'], OUT['Impact_Pack.ImageMaskSwitch']> & {
+         "Impact-Pack.ImageMaskSwitch": ComfyNode<IN['Impact-Pack.ImageMaskSwitch'], OUT['Impact-Pack.ImageMaskSwitch']> & {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
             _MASK: ComfyNodeOutput<'MASK'>
          }
-         "Impact_Pack.LatentSwitch": ComfyNode<IN['Impact_Pack.LatentSwitch'], OUT['Impact_Pack.LatentSwitch']> & {
+         "Impact-Pack.LatentSwitch": ComfyNode<IN['Impact-Pack.LatentSwitch'], OUT['Impact-Pack.LatentSwitch']> & {
             "_*": ComfyNodeOutput<'*'>
             _STRING: ComfyNodeOutput<'STRING'>
             _INT: ComfyNodeOutput<'INT'>
          }
-         "Impact_Pack.SEGSSwitch": ComfyNode<IN['Impact_Pack.SEGSSwitch'], OUT['Impact_Pack.SEGSSwitch']> & {
+         "Impact-Pack.SEGSSwitch": ComfyNode<IN['Impact-Pack.SEGSSwitch'], OUT['Impact-Pack.SEGSSwitch']> & {
             "_*": ComfyNodeOutput<'*'>
             _STRING: ComfyNodeOutput<'STRING'>
             _INT: ComfyNodeOutput<'INT'>
          }
-         "Impact_Pack.ImpactSwitch": ComfyNode<IN['Impact_Pack.ImpactSwitch'], OUT['Impact_Pack.ImpactSwitch']> & {
+         "Impact-Pack.ImpactSwitch": ComfyNode<IN['Impact-Pack.ImpactSwitch'], OUT['Impact-Pack.ImpactSwitch']> & {
             "_*": ComfyNodeOutput<'*'>
             _STRING: ComfyNodeOutput<'STRING'>
             _INT: ComfyNodeOutput<'INT'>
          }
-         "Impact_Pack.ImpactInversedSwitch": ComfyNode<IN['Impact_Pack.ImpactInversedSwitch'], OUT['Impact_Pack.ImpactInversedSwitch']> & {
+         "Impact-Pack.ImpactInversedSwitch": ComfyNode<IN['Impact-Pack.ImpactInversedSwitch'], OUT['Impact-Pack.ImpactInversedSwitch']> & {
             "_*": ComfyNodeOutput<'*'>
          }
-         "Impact_Pack.ImpactWildcardProcessor": ComfyNode<IN['Impact_Pack.ImpactWildcardProcessor'], OUT['Impact_Pack.ImpactWildcardProcessor']> & {
+         "Impact-Pack.ImpactWildcardProcessor": ComfyNode<IN['Impact-Pack.ImpactWildcardProcessor'], OUT['Impact-Pack.ImpactWildcardProcessor']> & {
             _STRING: ComfyNodeOutput<'STRING'>
          }
-         "Impact_Pack.ImpactWildcardEncode": ComfyNode<IN['Impact_Pack.ImpactWildcardEncode'], OUT['Impact_Pack.ImpactWildcardEncode']> & {
+         "Impact-Pack.ImpactWildcardEncode": ComfyNode<IN['Impact-Pack.ImpactWildcardEncode'], OUT['Impact-Pack.ImpactWildcardEncode']> & {
             _MODEL: ComfyNodeOutput<'MODEL'>
             _CLIP: ComfyNodeOutput<'CLIP'>
             _CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
             _STRING: ComfyNodeOutput<'STRING'>
          }
-         "Impact_Pack.SEGSUpscaler": ComfyNode<IN['Impact_Pack.SEGSUpscaler'], OUT['Impact_Pack.SEGSUpscaler']> & {
+         "Impact-Pack.SEGSUpscaler": ComfyNode<IN['Impact-Pack.SEGSUpscaler'], OUT['Impact-Pack.SEGSUpscaler']> & {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
-         "Impact_Pack.SEGSUpscalerPipe": ComfyNode<IN['Impact_Pack.SEGSUpscalerPipe'], OUT['Impact_Pack.SEGSUpscalerPipe']> & {
+         "Impact-Pack.SEGSUpscalerPipe": ComfyNode<IN['Impact-Pack.SEGSUpscalerPipe'], OUT['Impact-Pack.SEGSUpscalerPipe']> & {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
-         "Impact_Pack.SEGSDetailer": ComfyNode<IN['Impact_Pack.SEGSDetailer'], OUT['Impact_Pack.SEGSDetailer']> & {
+         "Impact-Pack.SEGSDetailer": ComfyNode<IN['Impact-Pack.SEGSDetailer'], OUT['Impact-Pack.SEGSDetailer']> & {
             _SEGS: ComfyNodeOutput<'SEGS'>
             _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
-         "Impact_Pack.SEGSPaste": ComfyNode<IN['Impact_Pack.SEGSPaste'], OUT['Impact_Pack.SEGSPaste']> & {
+         "Impact-Pack.SEGSPaste": ComfyNode<IN['Impact-Pack.SEGSPaste'], OUT['Impact-Pack.SEGSPaste']> & {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
-         "Impact_Pack.SEGSPreview": ComfyNode<IN['Impact_Pack.SEGSPreview'], OUT['Impact_Pack.SEGSPreview']> & {
+         "Impact-Pack.SEGSPreview": ComfyNode<IN['Impact-Pack.SEGSPreview'], OUT['Impact-Pack.SEGSPreview']> & {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
-         "Impact_Pack.SEGSPreviewCNet": ComfyNode<IN['Impact_Pack.SEGSPreviewCNet'], OUT['Impact_Pack.SEGSPreviewCNet']> & {
+         "Impact-Pack.SEGSPreviewCNet": ComfyNode<IN['Impact-Pack.SEGSPreviewCNet'], OUT['Impact-Pack.SEGSPreviewCNet']> & {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
-         "Impact_Pack.SEGSToImageList": ComfyNode<IN['Impact_Pack.SEGSToImageList'], OUT['Impact_Pack.SEGSToImageList']> & {
+         "Impact-Pack.SEGSToImageList": ComfyNode<IN['Impact-Pack.SEGSToImageList'], OUT['Impact-Pack.SEGSToImageList']> & {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
-         "Impact_Pack.ImpactSEGSToMaskList": ComfyNode<IN['Impact_Pack.ImpactSEGSToMaskList'], OUT['Impact_Pack.ImpactSEGSToMaskList']> & {
+         "Impact-Pack.ImpactSEGSToMaskList": ComfyNode<IN['Impact-Pack.ImpactSEGSToMaskList'], OUT['Impact-Pack.ImpactSEGSToMaskList']> & {
             _MASK: ComfyNodeOutput<'MASK'>
          }
-         "Impact_Pack.ImpactSEGSToMaskBatch": ComfyNode<IN['Impact_Pack.ImpactSEGSToMaskBatch'], OUT['Impact_Pack.ImpactSEGSToMaskBatch']> & {
+         "Impact-Pack.ImpactSEGSToMaskBatch": ComfyNode<IN['Impact-Pack.ImpactSEGSToMaskBatch'], OUT['Impact-Pack.ImpactSEGSToMaskBatch']> & {
             _MASK: ComfyNodeOutput<'MASK'>
          }
-         "Impact_Pack.ImpactSEGSConcat": ComfyNode<IN['Impact_Pack.ImpactSEGSConcat'], OUT['Impact_Pack.ImpactSEGSConcat']> & {
+         "Impact-Pack.ImpactSEGSConcat": ComfyNode<IN['Impact-Pack.ImpactSEGSConcat'], OUT['Impact-Pack.ImpactSEGSConcat']> & {
             _SEGS: ComfyNodeOutput<'SEGS'>
          }
-         "Impact_Pack.ImpactSEGSPicker": ComfyNode<IN['Impact_Pack.ImpactSEGSPicker'], OUT['Impact_Pack.ImpactSEGSPicker']> & {
+         "Impact-Pack.ImpactSEGSPicker": ComfyNode<IN['Impact-Pack.ImpactSEGSPicker'], OUT['Impact-Pack.ImpactSEGSPicker']> & {
             _SEGS: ComfyNodeOutput<'SEGS'>
          }
-         "Impact_Pack.ImpactMakeTileSEGS": ComfyNode<IN['Impact_Pack.ImpactMakeTileSEGS'], OUT['Impact_Pack.ImpactMakeTileSEGS']> & {
+         "Impact-Pack.ImpactMakeTileSEGS": ComfyNode<IN['Impact-Pack.ImpactMakeTileSEGS'], OUT['Impact-Pack.ImpactMakeTileSEGS']> & {
             _SEGS: ComfyNodeOutput<'SEGS'>
          }
-         "Impact_Pack.ImpactSEGSMerge": ComfyNode<IN['Impact_Pack.ImpactSEGSMerge'], OUT['Impact_Pack.ImpactSEGSMerge']> & {
+         "Impact-Pack.ImpactSEGSMerge": ComfyNode<IN['Impact-Pack.ImpactSEGSMerge'], OUT['Impact-Pack.ImpactSEGSMerge']> & {
             _SEGS: ComfyNodeOutput<'SEGS'>
          }
-         "Impact_Pack.SEGSDetailerForAnimateDiff": ComfyNode<IN['Impact_Pack.SEGSDetailerForAnimateDiff'], OUT['Impact_Pack.SEGSDetailerForAnimateDiff']> & {
+         "Impact-Pack.SEGSDetailerForAnimateDiff": ComfyNode<IN['Impact-Pack.SEGSDetailerForAnimateDiff'], OUT['Impact-Pack.SEGSDetailerForAnimateDiff']> & {
             _SEGS: ComfyNodeOutput<'SEGS'>
             _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
-         "Impact_Pack.ImpactKSamplerBasicPipe": ComfyNode<IN['Impact_Pack.ImpactKSamplerBasicPipe'], OUT['Impact_Pack.ImpactKSamplerBasicPipe']> & {
+         "Impact-Pack.ImpactKSamplerBasicPipe": ComfyNode<IN['Impact-Pack.ImpactKSamplerBasicPipe'], OUT['Impact-Pack.ImpactKSamplerBasicPipe']> & {
             _BASIC_PIPE: ComfyNodeOutput<'BASIC_PIPE'>
             _LATENT: ComfyNodeOutput<'LATENT'>
             _VAE: ComfyNodeOutput<'VAE'>
          }
-         "Impact_Pack.ImpactKSamplerAdvancedBasicPipe": ComfyNode<IN['Impact_Pack.ImpactKSamplerAdvancedBasicPipe'], OUT['Impact_Pack.ImpactKSamplerAdvancedBasicPipe']> & {
+         "Impact-Pack.ImpactKSamplerAdvancedBasicPipe": ComfyNode<IN['Impact-Pack.ImpactKSamplerAdvancedBasicPipe'], OUT['Impact-Pack.ImpactKSamplerAdvancedBasicPipe']> & {
             _BASIC_PIPE: ComfyNodeOutput<'BASIC_PIPE'>
             _LATENT: ComfyNodeOutput<'LATENT'>
             _VAE: ComfyNodeOutput<'VAE'>
          }
-         "Impact_Pack.ReencodeLatent": ComfyNode<IN['Impact_Pack.ReencodeLatent'], OUT['Impact_Pack.ReencodeLatent']> & {
+         "Impact-Pack.ReencodeLatent": ComfyNode<IN['Impact-Pack.ReencodeLatent'], OUT['Impact-Pack.ReencodeLatent']> & {
             _LATENT: ComfyNodeOutput<'LATENT'>
          }
-         "Impact_Pack.ReencodeLatentPipe": ComfyNode<IN['Impact_Pack.ReencodeLatentPipe'], OUT['Impact_Pack.ReencodeLatentPipe']> & {
+         "Impact-Pack.ReencodeLatentPipe": ComfyNode<IN['Impact-Pack.ReencodeLatentPipe'], OUT['Impact-Pack.ReencodeLatentPipe']> & {
             _LATENT: ComfyNodeOutput<'LATENT'>
          }
-         "Impact_Pack.ImpactImageBatchToImageList": ComfyNode<IN['Impact_Pack.ImpactImageBatchToImageList'], OUT['Impact_Pack.ImpactImageBatchToImageList']> & {
+         "Impact-Pack.ImpactImageBatchToImageList": ComfyNode<IN['Impact-Pack.ImpactImageBatchToImageList'], OUT['Impact-Pack.ImpactImageBatchToImageList']> & {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
-         "Impact_Pack.ImpactMakeImageList": ComfyNode<IN['Impact_Pack.ImpactMakeImageList'], OUT['Impact_Pack.ImpactMakeImageList']> & {
+         "Impact-Pack.ImpactMakeImageList": ComfyNode<IN['Impact-Pack.ImpactMakeImageList'], OUT['Impact-Pack.ImpactMakeImageList']> & {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
-         "Impact_Pack.ImpactMakeImageBatch": ComfyNode<IN['Impact_Pack.ImpactMakeImageBatch'], OUT['Impact_Pack.ImpactMakeImageBatch']> & {
+         "Impact-Pack.ImpactMakeImageBatch": ComfyNode<IN['Impact-Pack.ImpactMakeImageBatch'], OUT['Impact-Pack.ImpactMakeImageBatch']> & {
             _IMAGE: ComfyNodeOutput<'IMAGE'>
          }
-         "Impact_Pack.ImpactMakeAnyList": ComfyNode<IN['Impact_Pack.ImpactMakeAnyList'], OUT['Impact_Pack.ImpactMakeAnyList']> & {
+         "Impact-Pack.ImpactMakeAnyList": ComfyNode<IN['Impact-Pack.ImpactMakeAnyList'], OUT['Impact-Pack.ImpactMakeAnyList']> & {
             "_*": ComfyNodeOutput<'*'>
          }
-         "Impact_Pack.ImpactMakeMaskList": ComfyNode<IN['Impact_Pack.ImpactMakeMaskList'], OUT['Impact_Pack.ImpactMakeMaskList']> & {
+         "Impact-Pack.ImpactMakeMaskList": ComfyNode<IN['Impact-Pack.ImpactMakeMaskList'], OUT['Impact-Pack.ImpactMakeMaskList']> & {
             _MASK: ComfyNodeOutput<'MASK'>
          }
-         "Impact_Pack.ImpactMakeMaskBatch": ComfyNode<IN['Impact_Pack.ImpactMakeMaskBatch'], OUT['Impact_Pack.ImpactMakeMaskBatch']> & {
+         "Impact-Pack.ImpactMakeMaskBatch": ComfyNode<IN['Impact-Pack.ImpactMakeMaskBatch'], OUT['Impact-Pack.ImpactMakeMaskBatch']> & {
             _MASK: ComfyNodeOutput<'MASK'>
          }
-         "Impact_Pack.RegionalSampler": ComfyNode<IN['Impact_Pack.RegionalSampler'], OUT['Impact_Pack.RegionalSampler']> & {
+         "Impact-Pack.RegionalSampler": ComfyNode<IN['Impact-Pack.RegionalSampler'], OUT['Impact-Pack.RegionalSampler']> & {
             _LATENT: ComfyNodeOutput<'LATENT'>
          }
-         "Impact_Pack.RegionalSamplerAdvanced": ComfyNode<IN['Impact_Pack.RegionalSamplerAdvanced'], OUT['Impact_Pack.RegionalSamplerAdvanced']> & {
+         "Impact-Pack.RegionalSamplerAdvanced": ComfyNode<IN['Impact-Pack.RegionalSamplerAdvanced'], OUT['Impact-Pack.RegionalSamplerAdvanced']> & {
             _LATENT: ComfyNodeOutput<'LATENT'>
          }
-         "Impact_Pack.CombineRegionalPrompts": ComfyNode<IN['Impact_Pack.CombineRegionalPrompts'], OUT['Impact_Pack.CombineRegionalPrompts']> & {
+         "Impact-Pack.CombineRegionalPrompts": ComfyNode<IN['Impact-Pack.CombineRegionalPrompts'], OUT['Impact-Pack.CombineRegionalPrompts']> & {
             _REGIONAL_PROMPTS: ComfyNodeOutput<'REGIONAL_PROMPTS'>
          }
-         "Impact_Pack.RegionalPrompt": ComfyNode<IN['Impact_Pack.RegionalPrompt'], OUT['Impact_Pack.RegionalPrompt']> & {
+         "Impact-Pack.RegionalPrompt": ComfyNode<IN['Impact-Pack.RegionalPrompt'], OUT['Impact-Pack.RegionalPrompt']> & {
             _REGIONAL_PROMPTS: ComfyNodeOutput<'REGIONAL_PROMPTS'>
          }
-         "Impact_Pack.ImpactCombineConditionings": ComfyNode<IN['Impact_Pack.ImpactCombineConditionings'], OUT['Impact_Pack.ImpactCombineConditionings']> & {
+         "Impact-Pack.ImpactCombineConditionings": ComfyNode<IN['Impact-Pack.ImpactCombineConditionings'], OUT['Impact-Pack.ImpactCombineConditionings']> & {
             _CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
          }
-         "Impact_Pack.ImpactConcatConditionings": ComfyNode<IN['Impact_Pack.ImpactConcatConditionings'], OUT['Impact_Pack.ImpactConcatConditionings']> & {
+         "Impact-Pack.ImpactConcatConditionings": ComfyNode<IN['Impact-Pack.ImpactConcatConditionings'], OUT['Impact-Pack.ImpactConcatConditionings']> & {
             _CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
          }
-         "Impact_Pack.ImpactSEGSLabelAssign": ComfyNode<IN['Impact_Pack.ImpactSEGSLabelAssign'], OUT['Impact_Pack.ImpactSEGSLabelAssign']> & {
+         "Impact-Pack.ImpactSEGSLabelAssign": ComfyNode<IN['Impact-Pack.ImpactSEGSLabelAssign'], OUT['Impact-Pack.ImpactSEGSLabelAssign']> & {
             _SEGS: ComfyNodeOutput<'SEGS'>
          }
-         "Impact_Pack.ImpactSEGSLabelFilter": ComfyNode<IN['Impact_Pack.ImpactSEGSLabelFilter'], OUT['Impact_Pack.ImpactSEGSLabelFilter']> & {
+         "Impact-Pack.ImpactSEGSLabelFilter": ComfyNode<IN['Impact-Pack.ImpactSEGSLabelFilter'], OUT['Impact-Pack.ImpactSEGSLabelFilter']> & {
          }
-         "Impact_Pack.ImpactSEGSRangeFilter": ComfyNode<IN['Impact_Pack.ImpactSEGSRangeFilter'], OUT['Impact_Pack.ImpactSEGSRangeFilter']> & {
+         "Impact-Pack.ImpactSEGSRangeFilter": ComfyNode<IN['Impact-Pack.ImpactSEGSRangeFilter'], OUT['Impact-Pack.ImpactSEGSRangeFilter']> & {
          }
-         "Impact_Pack.ImpactSEGSOrderedFilter": ComfyNode<IN['Impact_Pack.ImpactSEGSOrderedFilter'], OUT['Impact_Pack.ImpactSEGSOrderedFilter']> & {
+         "Impact-Pack.ImpactSEGSOrderedFilter": ComfyNode<IN['Impact-Pack.ImpactSEGSOrderedFilter'], OUT['Impact-Pack.ImpactSEGSOrderedFilter']> & {
          }
-         "Impact_Pack.ImpactCompare": ComfyNode<IN['Impact_Pack.ImpactCompare'], OUT['Impact_Pack.ImpactCompare']> & {
+         "Impact-Pack.ImpactCompare": ComfyNode<IN['Impact-Pack.ImpactCompare'], OUT['Impact-Pack.ImpactCompare']> & {
             _BOOLEAN: ComfyNodeOutput<'BOOLEAN'>
          }
-         "Impact_Pack.ImpactConditionalBranch": ComfyNode<IN['Impact_Pack.ImpactConditionalBranch'], OUT['Impact_Pack.ImpactConditionalBranch']> & {
+         "Impact-Pack.ImpactConditionalBranch": ComfyNode<IN['Impact-Pack.ImpactConditionalBranch'], OUT['Impact-Pack.ImpactConditionalBranch']> & {
             "_*": ComfyNodeOutput<'*'>
          }
-         "Impact_Pack.ImpactConditionalBranchSelMode": ComfyNode<IN['Impact_Pack.ImpactConditionalBranchSelMode'], OUT['Impact_Pack.ImpactConditionalBranchSelMode']> & {
+         "Impact-Pack.ImpactConditionalBranchSelMode": ComfyNode<IN['Impact-Pack.ImpactConditionalBranchSelMode'], OUT['Impact-Pack.ImpactConditionalBranchSelMode']> & {
             "_*": ComfyNodeOutput<'*'>
          }
-         "Impact_Pack.ImpactIfNone": ComfyNode<IN['Impact_Pack.ImpactIfNone'], OUT['Impact_Pack.ImpactIfNone']> & {
+         "Impact-Pack.ImpactIfNone": ComfyNode<IN['Impact-Pack.ImpactIfNone'], OUT['Impact-Pack.ImpactIfNone']> & {
             "_*": ComfyNodeOutput<'*'>
             _BOOLEAN: ComfyNodeOutput<'BOOLEAN'>
          }
-         "Impact_Pack.ImpactConvertDataType": ComfyNode<IN['Impact_Pack.ImpactConvertDataType'], OUT['Impact_Pack.ImpactConvertDataType']> & {
+         "Impact-Pack.ImpactConvertDataType": ComfyNode<IN['Impact-Pack.ImpactConvertDataType'], OUT['Impact-Pack.ImpactConvertDataType']> & {
             _STRING: ComfyNodeOutput<'STRING'>
             _FLOAT: ComfyNodeOutput<'FLOAT'>
             _INT: ComfyNodeOutput<'INT'>
             _BOOLEAN: ComfyNodeOutput<'BOOLEAN'>
          }
-         "Impact_Pack.ImpactLogicalOperators": ComfyNode<IN['Impact_Pack.ImpactLogicalOperators'], OUT['Impact_Pack.ImpactLogicalOperators']> & {
+         "Impact-Pack.ImpactLogicalOperators": ComfyNode<IN['Impact-Pack.ImpactLogicalOperators'], OUT['Impact-Pack.ImpactLogicalOperators']> & {
             _BOOLEAN: ComfyNodeOutput<'BOOLEAN'>
          }
-         "Impact_Pack.ImpactInt": ComfyNode<IN['Impact_Pack.ImpactInt'], OUT['Impact_Pack.ImpactInt']> & {
+         "Impact-Pack.ImpactInt": ComfyNode<IN['Impact-Pack.ImpactInt'], OUT['Impact-Pack.ImpactInt']> & {
             _INT: ComfyNodeOutput<'INT'>
          }
-         "Impact_Pack.ImpactFloat": ComfyNode<IN['Impact_Pack.ImpactFloat'], OUT['Impact_Pack.ImpactFloat']> & {
+         "Impact-Pack.ImpactFloat": ComfyNode<IN['Impact-Pack.ImpactFloat'], OUT['Impact-Pack.ImpactFloat']> & {
             _FLOAT: ComfyNodeOutput<'FLOAT'>
          }
-         "Impact_Pack.ImpactBoolean": ComfyNode<IN['Impact_Pack.ImpactBoolean'], OUT['Impact_Pack.ImpactBoolean']> & {
+         "Impact-Pack.ImpactBoolean": ComfyNode<IN['Impact-Pack.ImpactBoolean'], OUT['Impact-Pack.ImpactBoolean']> & {
             _BOOLEAN: ComfyNodeOutput<'BOOLEAN'>
          }
-         "Impact_Pack.ImpactValueSender": ComfyNode<IN['Impact_Pack.ImpactValueSender'], OUT['Impact_Pack.ImpactValueSender']> & {
+         "Impact-Pack.ImpactValueSender": ComfyNode<IN['Impact-Pack.ImpactValueSender'], OUT['Impact-Pack.ImpactValueSender']> & {
             "_*": ComfyNodeOutput<'*'>
          }
-         "Impact_Pack.ImpactValueReceiver": ComfyNode<IN['Impact_Pack.ImpactValueReceiver'], OUT['Impact_Pack.ImpactValueReceiver']> & {
+         "Impact-Pack.ImpactValueReceiver": ComfyNode<IN['Impact-Pack.ImpactValueReceiver'], OUT['Impact-Pack.ImpactValueReceiver']> & {
             "_*": ComfyNodeOutput<'*'>
          }
-         "Impact_Pack.ImpactImageInfo": ComfyNode<IN['Impact_Pack.ImpactImageInfo'], OUT['Impact_Pack.ImpactImageInfo']> & {
+         "Impact-Pack.ImpactImageInfo": ComfyNode<IN['Impact-Pack.ImpactImageInfo'], OUT['Impact-Pack.ImpactImageInfo']> & {
          }
-         "Impact_Pack.ImpactLatentInfo": ComfyNode<IN['Impact_Pack.ImpactLatentInfo'], OUT['Impact_Pack.ImpactLatentInfo']> & {
+         "Impact-Pack.ImpactLatentInfo": ComfyNode<IN['Impact-Pack.ImpactLatentInfo'], OUT['Impact-Pack.ImpactLatentInfo']> & {
          }
-         "Impact_Pack.ImpactMinMax": ComfyNode<IN['Impact_Pack.ImpactMinMax'], OUT['Impact_Pack.ImpactMinMax']> & {
+         "Impact-Pack.ImpactMinMax": ComfyNode<IN['Impact-Pack.ImpactMinMax'], OUT['Impact-Pack.ImpactMinMax']> & {
             _INT: ComfyNodeOutput<'INT'>
          }
-         "Impact_Pack.ImpactNeg": ComfyNode<IN['Impact_Pack.ImpactNeg'], OUT['Impact_Pack.ImpactNeg']> & {
+         "Impact-Pack.ImpactNeg": ComfyNode<IN['Impact-Pack.ImpactNeg'], OUT['Impact-Pack.ImpactNeg']> & {
             _BOOLEAN: ComfyNodeOutput<'BOOLEAN'>
          }
-         "Impact_Pack.ImpactConditionalStopIteration": ComfyNode<IN['Impact_Pack.ImpactConditionalStopIteration'], OUT['Impact_Pack.ImpactConditionalStopIteration']> & {
+         "Impact-Pack.ImpactConditionalStopIteration": ComfyNode<IN['Impact-Pack.ImpactConditionalStopIteration'], OUT['Impact-Pack.ImpactConditionalStopIteration']> & {
          }
-         "Impact_Pack.ImpactStringSelector": ComfyNode<IN['Impact_Pack.ImpactStringSelector'], OUT['Impact_Pack.ImpactStringSelector']> & {
+         "Impact-Pack.ImpactStringSelector": ComfyNode<IN['Impact-Pack.ImpactStringSelector'], OUT['Impact-Pack.ImpactStringSelector']> & {
             _STRING: ComfyNodeOutput<'STRING'>
          }
-         "Impact_Pack.StringListToString": ComfyNode<IN['Impact_Pack.StringListToString'], OUT['Impact_Pack.StringListToString']> & {
+         "Impact-Pack.StringListToString": ComfyNode<IN['Impact-Pack.StringListToString'], OUT['Impact-Pack.StringListToString']> & {
             _STRING: ComfyNodeOutput<'STRING'>
          }
-         "Impact_Pack.WildcardPromptFromString": ComfyNode<IN['Impact_Pack.WildcardPromptFromString'], OUT['Impact_Pack.WildcardPromptFromString']> & {
+         "Impact-Pack.WildcardPromptFromString": ComfyNode<IN['Impact-Pack.WildcardPromptFromString'], OUT['Impact-Pack.WildcardPromptFromString']> & {
          }
-         "Impact_Pack.ImpactExecutionOrderController": ComfyNode<IN['Impact_Pack.ImpactExecutionOrderController'], OUT['Impact_Pack.ImpactExecutionOrderController']> & {
+         "Impact-Pack.ImpactExecutionOrderController": ComfyNode<IN['Impact-Pack.ImpactExecutionOrderController'], OUT['Impact-Pack.ImpactExecutionOrderController']> & {
          }
-         "Impact_Pack.RemoveNoiseMask": ComfyNode<IN['Impact_Pack.RemoveNoiseMask'], OUT['Impact_Pack.RemoveNoiseMask']> & {
+         "Impact-Pack.RemoveNoiseMask": ComfyNode<IN['Impact-Pack.RemoveNoiseMask'], OUT['Impact-Pack.RemoveNoiseMask']> & {
             _LATENT: ComfyNodeOutput<'LATENT'>
          }
-         "Impact_Pack.ImpactLogger": ComfyNode<IN['Impact_Pack.ImpactLogger'], OUT['Impact_Pack.ImpactLogger']> & {
+         "Impact-Pack.ImpactLogger": ComfyNode<IN['Impact-Pack.ImpactLogger'], OUT['Impact-Pack.ImpactLogger']> & {
          }
-         "Impact_Pack.ImpactDummyInput": ComfyNode<IN['Impact_Pack.ImpactDummyInput'], OUT['Impact_Pack.ImpactDummyInput']> & {
+         "Impact-Pack.ImpactDummyInput": ComfyNode<IN['Impact-Pack.ImpactDummyInput'], OUT['Impact-Pack.ImpactDummyInput']> & {
             "_*": ComfyNodeOutput<'*'>
          }
-         "Impact_Pack.ImpactQueueTrigger": ComfyNode<IN['Impact_Pack.ImpactQueueTrigger'], OUT['Impact_Pack.ImpactQueueTrigger']> & {
+         "Impact-Pack.ImpactQueueTrigger": ComfyNode<IN['Impact-Pack.ImpactQueueTrigger'], OUT['Impact-Pack.ImpactQueueTrigger']> & {
             "_*": ComfyNodeOutput<'*'>
          }
-         "Impact_Pack.ImpactQueueTriggerCountdown": ComfyNode<IN['Impact_Pack.ImpactQueueTriggerCountdown'], OUT['Impact_Pack.ImpactQueueTriggerCountdown']> & {
+         "Impact-Pack.ImpactQueueTriggerCountdown": ComfyNode<IN['Impact-Pack.ImpactQueueTriggerCountdown'], OUT['Impact-Pack.ImpactQueueTriggerCountdown']> & {
             "_*": ComfyNodeOutput<'*'>
          }
-         "Impact_Pack.ImpactSetWidgetValue": ComfyNode<IN['Impact_Pack.ImpactSetWidgetValue'], OUT['Impact_Pack.ImpactSetWidgetValue']> & {
+         "Impact-Pack.ImpactSetWidgetValue": ComfyNode<IN['Impact-Pack.ImpactSetWidgetValue'], OUT['Impact-Pack.ImpactSetWidgetValue']> & {
             "_*": ComfyNodeOutput<'*'>
          }
-         "Impact_Pack.ImpactNodeSetMuteState": ComfyNode<IN['Impact_Pack.ImpactNodeSetMuteState'], OUT['Impact_Pack.ImpactNodeSetMuteState']> & {
+         "Impact-Pack.ImpactNodeSetMuteState": ComfyNode<IN['Impact-Pack.ImpactNodeSetMuteState'], OUT['Impact-Pack.ImpactNodeSetMuteState']> & {
             "_*": ComfyNodeOutput<'*'>
          }
-         "Impact_Pack.ImpactControlBridge": ComfyNode<IN['Impact_Pack.ImpactControlBridge'], OUT['Impact_Pack.ImpactControlBridge']> & {
+         "Impact-Pack.ImpactControlBridge": ComfyNode<IN['Impact-Pack.ImpactControlBridge'], OUT['Impact-Pack.ImpactControlBridge']> & {
             "_*": ComfyNodeOutput<'*'>
          }
-         "Impact_Pack.ImpactIsNotEmptySEGS": ComfyNode<IN['Impact_Pack.ImpactIsNotEmptySEGS'], OUT['Impact_Pack.ImpactIsNotEmptySEGS']> & {
+         "Impact-Pack.ImpactIsNotEmptySEGS": ComfyNode<IN['Impact-Pack.ImpactIsNotEmptySEGS'], OUT['Impact-Pack.ImpactIsNotEmptySEGS']> & {
             _BOOLEAN: ComfyNodeOutput<'BOOLEAN'>
          }
-         "Impact_Pack.ImpactSleep": ComfyNode<IN['Impact_Pack.ImpactSleep'], OUT['Impact_Pack.ImpactSleep']> & {
+         "Impact-Pack.ImpactSleep": ComfyNode<IN['Impact-Pack.ImpactSleep'], OUT['Impact-Pack.ImpactSleep']> & {
             "_*": ComfyNodeOutput<'*'>
          }
-         "Impact_Pack.ImpactRemoteBoolean": ComfyNode<IN['Impact_Pack.ImpactRemoteBoolean'], OUT['Impact_Pack.ImpactRemoteBoolean']> & {
+         "Impact-Pack.ImpactRemoteBoolean": ComfyNode<IN['Impact-Pack.ImpactRemoteBoolean'], OUT['Impact-Pack.ImpactRemoteBoolean']> & {
          }
-         "Impact_Pack.ImpactRemoteInt": ComfyNode<IN['Impact_Pack.ImpactRemoteInt'], OUT['Impact_Pack.ImpactRemoteInt']> & {
+         "Impact-Pack.ImpactRemoteInt": ComfyNode<IN['Impact-Pack.ImpactRemoteInt'], OUT['Impact-Pack.ImpactRemoteInt']> & {
          }
-         "Impact_Pack.ImpactHFTransformersClassifierProvider": ComfyNode<IN['Impact_Pack.ImpactHFTransformersClassifierProvider'], OUT['Impact_Pack.ImpactHFTransformersClassifierProvider']> & {
+         "Impact-Pack.ImpactHFTransformersClassifierProvider": ComfyNode<IN['Impact-Pack.ImpactHFTransformersClassifierProvider'], OUT['Impact-Pack.ImpactHFTransformersClassifierProvider']> & {
             _TRANSFORMERS_CLASSIFIER: ComfyNodeOutput<'TRANSFORMERS_CLASSIFIER'>
          }
-         "Impact_Pack.ImpactSEGSClassify": ComfyNode<IN['Impact_Pack.ImpactSEGSClassify'], OUT['Impact_Pack.ImpactSEGSClassify']> & {
+         "Impact-Pack.ImpactSEGSClassify": ComfyNode<IN['Impact-Pack.ImpactSEGSClassify'], OUT['Impact-Pack.ImpactSEGSClassify']> & {
             _STRING: ComfyNodeOutput<'STRING'>
          }
-         "Impact_Pack.ImpactSchedulerAdapter": ComfyNode<IN['Impact_Pack.ImpactSchedulerAdapter'], OUT['Impact_Pack.ImpactSchedulerAdapter']> & {
+         "Impact-Pack.ImpactSchedulerAdapter": ComfyNode<IN['Impact-Pack.ImpactSchedulerAdapter'], OUT['Impact-Pack.ImpactSchedulerAdapter']> & {
             _E_720061fd: ComfyNodeOutput<'E_720061fd'>
          }
-         "Impact_Pack.GITSSchedulerFuncProvider": ComfyNode<IN['Impact_Pack.GITSSchedulerFuncProvider'], OUT['Impact_Pack.GITSSchedulerFuncProvider']> & {
+         "Impact-Pack.GITSSchedulerFuncProvider": ComfyNode<IN['Impact-Pack.GITSSchedulerFuncProvider'], OUT['Impact-Pack.GITSSchedulerFuncProvider']> & {
             _SCHEDULER_FUNC: ComfyNodeOutput<'SCHEDULER_FUNC'>
          }
-         "Impact_Pack.UltralyticsDetectorProvider": ComfyNode<IN['Impact_Pack.UltralyticsDetectorProvider'], OUT['Impact_Pack.UltralyticsDetectorProvider']> & {
+         "Impact-Pack.UltralyticsDetectorProvider": ComfyNode<IN['Impact-Pack.UltralyticsDetectorProvider'], OUT['Impact-Pack.UltralyticsDetectorProvider']> & {
             _BBOX_DETECTOR: ComfyNodeOutput<'BBOX_DETECTOR'>
             _SEGM_DETECTOR: ComfyNodeOutput<'SEGM_DETECTOR'>
          }
@@ -12815,6 +12974,20 @@ declare global {
          "IPAdapter_plus.IPAdapterRegionalConditioning"(p: IN['IPAdapter_plus.IPAdapterRegionalConditioning'], meta?: ComfyNodeMetadata): Node['IPAdapter_plus.IPAdapterRegionalConditioning']
           /** displayName="IPAdapter Combine Params" category="ipadapter_params" name="IPAdapterCombineParams" output=[IPADAPTER_PARAMS] */
          "IPAdapter_plus.IPAdapterCombineParams"(p: IN['IPAdapter_plus.IPAdapterCombineParams'], meta?: ComfyNodeMetadata): Node['IPAdapter_plus.IPAdapterCombineParams']
+          /** displayName="NNLatentUpscale" category="latent" name="NNLatentUpscale" output=[LATENT] */
+         "ComfyUi_NNLatentUpscale.NNLatentUpscale"(p: IN['ComfyUi_NNLatentUpscale.NNLatentUpscale'], meta?: ComfyNodeMetadata): Node['ComfyUi_NNLatentUpscale.NNLatentUpscale']
+          /** displayName="Perturbed-Attention Guidance (Advanced)" category="model_patches_unet" name="PerturbedAttention" output=[MODEL] */
+         "sd-perturbed-attention.PerturbedAttention"(p: IN['sd-perturbed-attention.PerturbedAttention'], meta?: ComfyNodeMetadata): Node['sd-perturbed-attention.PerturbedAttention']
+          /** displayName="Smoothed Energy Guidance (Advanced)" category="model_patches_unet" name="SmoothedEnergyGuidanceAdvanced" output=[MODEL] */
+         "sd-perturbed-attention.SmoothedEnergyGuidanceAdvanced"(p: IN['sd-perturbed-attention.SmoothedEnergyGuidanceAdvanced'], meta?: ComfyNodeMetadata): Node['sd-perturbed-attention.SmoothedEnergyGuidanceAdvanced']
+          /** displayName="TensorRT Attach PAG" category="TensorRT" name="TRTAttachPag" output=[MODEL] */
+         "sd-perturbed-attention.TRTAttachPag"(p: IN['sd-perturbed-attention.TRTAttachPag'], meta?: ComfyNodeMetadata): Node['sd-perturbed-attention.TRTAttachPag']
+          /** displayName="TensorRT Perturbed-Attention Guidance" category="TensorRT" name="TRTPerturbedAttention" output=[MODEL] */
+         "sd-perturbed-attention.TRTPerturbedAttention"(p: IN['sd-perturbed-attention.TRTPerturbedAttention'], meta?: ComfyNodeMetadata): Node['sd-perturbed-attention.TRTPerturbedAttention']
+          /** displayName="CivitAI Lora Loader" category="CivitAI_Loaders" name="CivitAI_Lora_Loader" output=[MODEL, CLIP] */
+         "civitai_comfy_nodes.CivitAI_Lora_Loader"(p: IN['civitai_comfy_nodes.CivitAI_Lora_Loader'], meta?: ComfyNodeMetadata): Node['civitai_comfy_nodes.CivitAI_Lora_Loader']
+          /** displayName="CivitAI Checkpoint Loader" category="CivitAI_Loaders" name="CivitAI_Checkpoint_Loader" output=[MODEL, CLIP, VAE] */
+         "civitai_comfy_nodes.CivitAI_Checkpoint_Loader"(p: IN['civitai_comfy_nodes.CivitAI_Checkpoint_Loader'], meta?: ComfyNodeMetadata): Node['civitai_comfy_nodes.CivitAI_Checkpoint_Loader']
           /** displayName="Content Shuffle" category="ControlNet Preprocessors_T2IAdapter-only" name="ShufflePreprocessor" output=[IMAGE] */
          "controlnet_aux.ShufflePreprocessor"(p: IN['controlnet_aux.ShufflePreprocessor'], meta?: ComfyNodeMetadata): Node['controlnet_aux.ShufflePreprocessor']
           /** displayName="DensePose Estimator" category="ControlNet Preprocessors_Faces and Poses Estimators" name="DensePosePreprocessor" output=[IMAGE] */
@@ -13033,383 +13206,383 @@ declare global {
           * The SAM detection functionality in Impact Pack must use the SAM_MODEL loaded through this node.
           * displayName="SAMLoader (Impact)" category="ImpactPack" name="SAMLoader" output=[SAM_MODEL]
          **/
-         "Impact_Pack.SAMLoader"(p: IN['Impact_Pack.SAMLoader'], meta?: ComfyNodeMetadata): Node['Impact_Pack.SAMLoader']
+         "Impact-Pack.SAMLoader"(p: IN['Impact-Pack.SAMLoader'], meta?: ComfyNodeMetadata): Node['Impact-Pack.SAMLoader']
          /**
           * Provides a detection function using CLIPSeg, which generates masks based on text prompts.
           * To use this node, the CLIPSeg custom node must be installed.
           * displayName="CLIPSegDetectorProvider" category="ImpactPack_Util" name="CLIPSegDetectorProvider" output=[BBOX_DETECTOR]
          **/
-         "Impact_Pack.CLIPSegDetectorProvider"(p: IN['Impact_Pack.CLIPSegDetectorProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.CLIPSegDetectorProvider']
+         "Impact-Pack.CLIPSegDetectorProvider"(p: IN['Impact-Pack.CLIPSegDetectorProvider'], meta?: ComfyNodeMetadata): Node['Impact-Pack.CLIPSegDetectorProvider']
           /** displayName="ONNXDetectorProvider" category="ImpactPack" name="ONNXDetectorProvider" output=[BBOX_DETECTOR] */
-         "Impact_Pack.ONNXDetectorProvider"(p: IN['Impact_Pack.ONNXDetectorProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ONNXDetectorProvider']
+         "Impact-Pack.ONNXDetectorProvider"(p: IN['Impact-Pack.ONNXDetectorProvider'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ONNXDetectorProvider']
          /**
           * Retains only the overlapping areas between the masks included in base_segs and the mask regions of mask_segs. SEGS with no overlapping mask areas are filtered out.
           * displayName="Pixelwise(SEGS & SEGS)" category="ImpactPack_Operation" name="BitwiseAndMaskForEach" output=[SEGS]
          **/
-         "Impact_Pack.BitwiseAndMaskForEach"(p: IN['Impact_Pack.BitwiseAndMaskForEach'], meta?: ComfyNodeMetadata): Node['Impact_Pack.BitwiseAndMaskForEach']
+         "Impact-Pack.BitwiseAndMaskForEach"(p: IN['Impact-Pack.BitwiseAndMaskForEach'], meta?: ComfyNodeMetadata): Node['Impact-Pack.BitwiseAndMaskForEach']
          /**
           * Removes only the overlapping areas between the masks included in base_segs and the mask regions of mask_segs. SEGS with no overlapping mask areas are filtered out.
           * displayName="Pixelwise(SEGS - SEGS)" category="ImpactPack_Operation" name="SubtractMaskForEach" output=[SEGS]
          **/
-         "Impact_Pack.SubtractMaskForEach"(p: IN['Impact_Pack.SubtractMaskForEach'], meta?: ComfyNodeMetadata): Node['Impact_Pack.SubtractMaskForEach']
+         "Impact-Pack.SubtractMaskForEach"(p: IN['Impact-Pack.SubtractMaskForEach'], meta?: ComfyNodeMetadata): Node['Impact-Pack.SubtractMaskForEach']
           /** displayName="Detailer (SEGS)" category="ImpactPack_Detailer" name="DetailerForEach" output=[IMAGE] */
-         "Impact_Pack.DetailerForEach"(p: IN['Impact_Pack.DetailerForEach'], meta?: ComfyNodeMetadata): Node['Impact_Pack.DetailerForEach']
+         "Impact-Pack.DetailerForEach"(p: IN['Impact-Pack.DetailerForEach'], meta?: ComfyNodeMetadata): Node['Impact-Pack.DetailerForEach']
           /** displayName="DetailerDebug (SEGS)" category="ImpactPack_Detailer" name="DetailerForEachDebug" output=[image, cropped, cropped_refined, cropped_refined_alpha, cnet_images] */
-         "Impact_Pack.DetailerForEachDebug"(p: IN['Impact_Pack.DetailerForEachDebug'], meta?: ComfyNodeMetadata): Node['Impact_Pack.DetailerForEachDebug']
+         "Impact-Pack.DetailerForEachDebug"(p: IN['Impact-Pack.DetailerForEachDebug'], meta?: ComfyNodeMetadata): Node['Impact-Pack.DetailerForEachDebug']
           /** displayName="Detailer (SEGS/pipe)" category="ImpactPack_Detailer" name="DetailerForEachPipe" output=[image, segs, basic_pipe, cnet_images] */
-         "Impact_Pack.DetailerForEachPipe"(p: IN['Impact_Pack.DetailerForEachPipe'], meta?: ComfyNodeMetadata): Node['Impact_Pack.DetailerForEachPipe']
+         "Impact-Pack.DetailerForEachPipe"(p: IN['Impact-Pack.DetailerForEachPipe'], meta?: ComfyNodeMetadata): Node['Impact-Pack.DetailerForEachPipe']
           /** displayName="DetailerDebug (SEGS/pipe)" category="ImpactPack_Detailer" name="DetailerForEachDebugPipe" output=[image, segs, basic_pipe, cropped, cropped_refined, cropped_refined_alpha, cnet_images] */
-         "Impact_Pack.DetailerForEachDebugPipe"(p: IN['Impact_Pack.DetailerForEachDebugPipe'], meta?: ComfyNodeMetadata): Node['Impact_Pack.DetailerForEachDebugPipe']
+         "Impact-Pack.DetailerForEachDebugPipe"(p: IN['Impact-Pack.DetailerForEachDebugPipe'], meta?: ComfyNodeMetadata): Node['Impact-Pack.DetailerForEachDebugPipe']
           /** displayName="Detailer For AnimateDiff (SEGS/pipe)" category="ImpactPack_Detailer" name="DetailerForEachPipeForAnimateDiff" output=[image, segs, basic_pipe, cnet_images] */
-         "Impact_Pack.DetailerForEachPipeForAnimateDiff"(p: IN['Impact_Pack.DetailerForEachPipeForAnimateDiff'], meta?: ComfyNodeMetadata): Node['Impact_Pack.DetailerForEachPipeForAnimateDiff']
+         "Impact-Pack.DetailerForEachPipeForAnimateDiff"(p: IN['Impact-Pack.DetailerForEachPipeForAnimateDiff'], meta?: ComfyNodeMetadata): Node['Impact-Pack.DetailerForEachPipeForAnimateDiff']
           /** displayName="SAMDetector (combined)" category="ImpactPack_Detector" name="SAMDetectorCombined" output=[MASK] */
-         "Impact_Pack.SAMDetectorCombined"(p: IN['Impact_Pack.SAMDetectorCombined'], meta?: ComfyNodeMetadata): Node['Impact_Pack.SAMDetectorCombined']
+         "Impact-Pack.SAMDetectorCombined"(p: IN['Impact-Pack.SAMDetectorCombined'], meta?: ComfyNodeMetadata): Node['Impact-Pack.SAMDetectorCombined']
           /** displayName="SAMDetector (segmented)" category="ImpactPack_Detector" name="SAMDetectorSegmented" output=[combined_mask, batch_masks] */
-         "Impact_Pack.SAMDetectorSegmented"(p: IN['Impact_Pack.SAMDetectorSegmented'], meta?: ComfyNodeMetadata): Node['Impact_Pack.SAMDetectorSegmented']
+         "Impact-Pack.SAMDetectorSegmented"(p: IN['Impact-Pack.SAMDetectorSegmented'], meta?: ComfyNodeMetadata): Node['Impact-Pack.SAMDetectorSegmented']
           /** displayName="FaceDetailer" category="ImpactPack_Simple" name="FaceDetailer" output=[image, cropped_refined, cropped_enhanced_alpha, mask, detailer_pipe, cnet_images] */
-         "Impact_Pack.FaceDetailer"(p: IN['Impact_Pack.FaceDetailer'], meta?: ComfyNodeMetadata): Node['Impact_Pack.FaceDetailer']
+         "Impact-Pack.FaceDetailer"(p: IN['Impact-Pack.FaceDetailer'], meta?: ComfyNodeMetadata): Node['Impact-Pack.FaceDetailer']
           /** displayName="FaceDetailer (pipe)" category="ImpactPack_Simple" name="FaceDetailerPipe" output=[image, cropped_refined, cropped_enhanced_alpha, mask, detailer_pipe, cnet_images] */
-         "Impact_Pack.FaceDetailerPipe"(p: IN['Impact_Pack.FaceDetailerPipe'], meta?: ComfyNodeMetadata): Node['Impact_Pack.FaceDetailerPipe']
+         "Impact-Pack.FaceDetailerPipe"(p: IN['Impact-Pack.FaceDetailerPipe'], meta?: ComfyNodeMetadata): Node['Impact-Pack.FaceDetailerPipe']
           /** displayName="MaskDetailer (pipe)" category="ImpactPack_Detailer" name="MaskDetailerPipe" output=[image, cropped_refined, cropped_enhanced_alpha, basic_pipe, refiner_basic_pipe_opt] */
-         "Impact_Pack.MaskDetailerPipe"(p: IN['Impact_Pack.MaskDetailerPipe'], meta?: ComfyNodeMetadata): Node['Impact_Pack.MaskDetailerPipe']
+         "Impact-Pack.MaskDetailerPipe"(p: IN['Impact-Pack.MaskDetailerPipe'], meta?: ComfyNodeMetadata): Node['Impact-Pack.MaskDetailerPipe']
           /** displayName="ToDetailerPipe" category="ImpactPack_Pipe" name="ToDetailerPipe" output=[detailer_pipe] */
-         "Impact_Pack.ToDetailerPipe"(p: IN['Impact_Pack.ToDetailerPipe'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ToDetailerPipe']
+         "Impact-Pack.ToDetailerPipe"(p: IN['Impact-Pack.ToDetailerPipe'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ToDetailerPipe']
           /** displayName="ToDetailerPipeSDXL" category="ImpactPack_Pipe" name="ToDetailerPipeSDXL" output=[detailer_pipe] */
-         "Impact_Pack.ToDetailerPipeSDXL"(p: IN['Impact_Pack.ToDetailerPipeSDXL'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ToDetailerPipeSDXL']
+         "Impact-Pack.ToDetailerPipeSDXL"(p: IN['Impact-Pack.ToDetailerPipeSDXL'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ToDetailerPipeSDXL']
           /** displayName="FromDetailerPipe" category="ImpactPack_Pipe" name="FromDetailerPipe" output=[model, clip, vae, positive, negative, bbox_detector, sam_model_opt, segm_detector_opt, detailer_hook] */
-         "Impact_Pack.FromDetailerPipe"(p: IN['Impact_Pack.FromDetailerPipe'], meta?: ComfyNodeMetadata): Node['Impact_Pack.FromDetailerPipe']
+         "Impact-Pack.FromDetailerPipe"(p: IN['Impact-Pack.FromDetailerPipe'], meta?: ComfyNodeMetadata): Node['Impact-Pack.FromDetailerPipe']
           /** displayName="FromDetailerPipe_v2" category="ImpactPack_Pipe" name="FromDetailerPipe_v2" output=[detailer_pipe, model, clip, vae, positive, negative, bbox_detector, sam_model_opt, segm_detector_opt, detailer_hook] */
-         "Impact_Pack.FromDetailerPipe_v2"(p: IN['Impact_Pack.FromDetailerPipe_v2'], meta?: ComfyNodeMetadata): Node['Impact_Pack.FromDetailerPipe_v2']
+         "Impact-Pack.FromDetailerPipe_v2"(p: IN['Impact-Pack.FromDetailerPipe_v2'], meta?: ComfyNodeMetadata): Node['Impact-Pack.FromDetailerPipe_v2']
           /** displayName="FromDetailer (SDXL/pipe)" category="ImpactPack_Pipe" name="FromDetailerPipeSDXL" output=[detailer_pipe, model, clip, vae, positive, negative, bbox_detector, sam_model_opt, segm_detector_opt, detailer_hook, refiner_model, refiner_clip, refiner_positive, refiner_negative] */
-         "Impact_Pack.FromDetailerPipeSDXL"(p: IN['Impact_Pack.FromDetailerPipeSDXL'], meta?: ComfyNodeMetadata): Node['Impact_Pack.FromDetailerPipeSDXL']
+         "Impact-Pack.FromDetailerPipeSDXL"(p: IN['Impact-Pack.FromDetailerPipeSDXL'], meta?: ComfyNodeMetadata): Node['Impact-Pack.FromDetailerPipeSDXL']
           /** displayName="Any PIPE -> BasicPipe" category="ImpactPack_Pipe" name="AnyPipeToBasic" output=[basic_pipe] */
-         "Impact_Pack.AnyPipeToBasic"(p: IN['Impact_Pack.AnyPipeToBasic'], meta?: ComfyNodeMetadata): Node['Impact_Pack.AnyPipeToBasic']
+         "Impact-Pack.AnyPipeToBasic"(p: IN['Impact-Pack.AnyPipeToBasic'], meta?: ComfyNodeMetadata): Node['Impact-Pack.AnyPipeToBasic']
           /** displayName="ToBasicPipe" category="ImpactPack_Pipe" name="ToBasicPipe" output=[basic_pipe] */
-         "Impact_Pack.ToBasicPipe"(p: IN['Impact_Pack.ToBasicPipe'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ToBasicPipe']
+         "Impact-Pack.ToBasicPipe"(p: IN['Impact-Pack.ToBasicPipe'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ToBasicPipe']
           /** displayName="FromBasicPipe" category="ImpactPack_Pipe" name="FromBasicPipe" output=[model, clip, vae, positive, negative] */
-         "Impact_Pack.FromBasicPipe"(p: IN['Impact_Pack.FromBasicPipe'], meta?: ComfyNodeMetadata): Node['Impact_Pack.FromBasicPipe']
+         "Impact-Pack.FromBasicPipe"(p: IN['Impact-Pack.FromBasicPipe'], meta?: ComfyNodeMetadata): Node['Impact-Pack.FromBasicPipe']
           /** displayName="FromBasicPipe_v2" category="ImpactPack_Pipe" name="FromBasicPipe_v2" output=[basic_pipe, model, clip, vae, positive, negative] */
-         "Impact_Pack.FromBasicPipe_v2"(p: IN['Impact_Pack.FromBasicPipe_v2'], meta?: ComfyNodeMetadata): Node['Impact_Pack.FromBasicPipe_v2']
+         "Impact-Pack.FromBasicPipe_v2"(p: IN['Impact-Pack.FromBasicPipe_v2'], meta?: ComfyNodeMetadata): Node['Impact-Pack.FromBasicPipe_v2']
           /** displayName="BasicPipe -> DetailerPipe" category="ImpactPack_Pipe" name="BasicPipeToDetailerPipe" output=[detailer_pipe] */
-         "Impact_Pack.BasicPipeToDetailerPipe"(p: IN['Impact_Pack.BasicPipeToDetailerPipe'], meta?: ComfyNodeMetadata): Node['Impact_Pack.BasicPipeToDetailerPipe']
+         "Impact-Pack.BasicPipeToDetailerPipe"(p: IN['Impact-Pack.BasicPipeToDetailerPipe'], meta?: ComfyNodeMetadata): Node['Impact-Pack.BasicPipeToDetailerPipe']
           /** displayName="BasicPipe -> DetailerPipe (SDXL)" category="ImpactPack_Pipe" name="BasicPipeToDetailerPipeSDXL" output=[detailer_pipe] */
-         "Impact_Pack.BasicPipeToDetailerPipeSDXL"(p: IN['Impact_Pack.BasicPipeToDetailerPipeSDXL'], meta?: ComfyNodeMetadata): Node['Impact_Pack.BasicPipeToDetailerPipeSDXL']
+         "Impact-Pack.BasicPipeToDetailerPipeSDXL"(p: IN['Impact-Pack.BasicPipeToDetailerPipeSDXL'], meta?: ComfyNodeMetadata): Node['Impact-Pack.BasicPipeToDetailerPipeSDXL']
           /** displayName="DetailerPipe -> BasicPipe" category="ImpactPack_Pipe" name="DetailerPipeToBasicPipe" output=[base_basic_pipe, refiner_basic_pipe] */
-         "Impact_Pack.DetailerPipeToBasicPipe"(p: IN['Impact_Pack.DetailerPipeToBasicPipe'], meta?: ComfyNodeMetadata): Node['Impact_Pack.DetailerPipeToBasicPipe']
+         "Impact-Pack.DetailerPipeToBasicPipe"(p: IN['Impact-Pack.DetailerPipeToBasicPipe'], meta?: ComfyNodeMetadata): Node['Impact-Pack.DetailerPipeToBasicPipe']
           /** displayName="Edit BasicPipe" category="ImpactPack_Pipe" name="EditBasicPipe" output=[basic_pipe] */
-         "Impact_Pack.EditBasicPipe"(p: IN['Impact_Pack.EditBasicPipe'], meta?: ComfyNodeMetadata): Node['Impact_Pack.EditBasicPipe']
+         "Impact-Pack.EditBasicPipe"(p: IN['Impact-Pack.EditBasicPipe'], meta?: ComfyNodeMetadata): Node['Impact-Pack.EditBasicPipe']
           /** displayName="Edit DetailerPipe" category="ImpactPack_Pipe" name="EditDetailerPipe" output=[detailer_pipe] */
-         "Impact_Pack.EditDetailerPipe"(p: IN['Impact_Pack.EditDetailerPipe'], meta?: ComfyNodeMetadata): Node['Impact_Pack.EditDetailerPipe']
+         "Impact-Pack.EditDetailerPipe"(p: IN['Impact-Pack.EditDetailerPipe'], meta?: ComfyNodeMetadata): Node['Impact-Pack.EditDetailerPipe']
           /** displayName="Edit DetailerPipe (SDXL)" category="ImpactPack_Pipe" name="EditDetailerPipeSDXL" output=[detailer_pipe] */
-         "Impact_Pack.EditDetailerPipeSDXL"(p: IN['Impact_Pack.EditDetailerPipeSDXL'], meta?: ComfyNodeMetadata): Node['Impact_Pack.EditDetailerPipeSDXL']
+         "Impact-Pack.EditDetailerPipeSDXL"(p: IN['Impact-Pack.EditDetailerPipeSDXL'], meta?: ComfyNodeMetadata): Node['Impact-Pack.EditDetailerPipeSDXL']
           /** displayName="Latent Scale (on Pixel Space)" category="ImpactPack_Upscale" name="LatentPixelScale" output=[LATENT, IMAGE] */
-         "Impact_Pack.LatentPixelScale"(p: IN['Impact_Pack.LatentPixelScale'], meta?: ComfyNodeMetadata): Node['Impact_Pack.LatentPixelScale']
+         "Impact-Pack.LatentPixelScale"(p: IN['Impact-Pack.LatentPixelScale'], meta?: ComfyNodeMetadata): Node['Impact-Pack.LatentPixelScale']
           /** displayName="PixelKSampleUpscalerProvider" category="ImpactPack_Upscale" name="PixelKSampleUpscalerProvider" output=[UPSCALER] */
-         "Impact_Pack.PixelKSampleUpscalerProvider"(p: IN['Impact_Pack.PixelKSampleUpscalerProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.PixelKSampleUpscalerProvider']
+         "Impact-Pack.PixelKSampleUpscalerProvider"(p: IN['Impact-Pack.PixelKSampleUpscalerProvider'], meta?: ComfyNodeMetadata): Node['Impact-Pack.PixelKSampleUpscalerProvider']
           /** displayName="PixelKSampleUpscalerProviderPipe" category="ImpactPack_Upscale" name="PixelKSampleUpscalerProviderPipe" output=[UPSCALER] */
-         "Impact_Pack.PixelKSampleUpscalerProviderPipe"(p: IN['Impact_Pack.PixelKSampleUpscalerProviderPipe'], meta?: ComfyNodeMetadata): Node['Impact_Pack.PixelKSampleUpscalerProviderPipe']
+         "Impact-Pack.PixelKSampleUpscalerProviderPipe"(p: IN['Impact-Pack.PixelKSampleUpscalerProviderPipe'], meta?: ComfyNodeMetadata): Node['Impact-Pack.PixelKSampleUpscalerProviderPipe']
           /** displayName="Iterative Upscale (Latent/on Pixel Space)" category="ImpactPack_Upscale" name="IterativeLatentUpscale" output=[latent, vae] */
-         "Impact_Pack.IterativeLatentUpscale"(p: IN['Impact_Pack.IterativeLatentUpscale'], meta?: ComfyNodeMetadata): Node['Impact_Pack.IterativeLatentUpscale']
+         "Impact-Pack.IterativeLatentUpscale"(p: IN['Impact-Pack.IterativeLatentUpscale'], meta?: ComfyNodeMetadata): Node['Impact-Pack.IterativeLatentUpscale']
           /** displayName="Iterative Upscale (Image)" category="ImpactPack_Upscale" name="IterativeImageUpscale" output=[image] */
-         "Impact_Pack.IterativeImageUpscale"(p: IN['Impact_Pack.IterativeImageUpscale'], meta?: ComfyNodeMetadata): Node['Impact_Pack.IterativeImageUpscale']
+         "Impact-Pack.IterativeImageUpscale"(p: IN['Impact-Pack.IterativeImageUpscale'], meta?: ComfyNodeMetadata): Node['Impact-Pack.IterativeImageUpscale']
           /** displayName="PixelTiledKSampleUpscalerProvider" category="ImpactPack_Upscale" name="PixelTiledKSampleUpscalerProvider" output=[UPSCALER] */
-         "Impact_Pack.PixelTiledKSampleUpscalerProvider"(p: IN['Impact_Pack.PixelTiledKSampleUpscalerProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.PixelTiledKSampleUpscalerProvider']
+         "Impact-Pack.PixelTiledKSampleUpscalerProvider"(p: IN['Impact-Pack.PixelTiledKSampleUpscalerProvider'], meta?: ComfyNodeMetadata): Node['Impact-Pack.PixelTiledKSampleUpscalerProvider']
           /** displayName="PixelTiledKSampleUpscalerProviderPipe" category="ImpactPack_Upscale" name="PixelTiledKSampleUpscalerProviderPipe" output=[UPSCALER] */
-         "Impact_Pack.PixelTiledKSampleUpscalerProviderPipe"(p: IN['Impact_Pack.PixelTiledKSampleUpscalerProviderPipe'], meta?: ComfyNodeMetadata): Node['Impact_Pack.PixelTiledKSampleUpscalerProviderPipe']
+         "Impact-Pack.PixelTiledKSampleUpscalerProviderPipe"(p: IN['Impact-Pack.PixelTiledKSampleUpscalerProviderPipe'], meta?: ComfyNodeMetadata): Node['Impact-Pack.PixelTiledKSampleUpscalerProviderPipe']
           /** displayName="TwoSamplersForMask Upscaler Provider" category="ImpactPack_Upscale" name="TwoSamplersForMaskUpscalerProvider" output=[UPSCALER] */
-         "Impact_Pack.TwoSamplersForMaskUpscalerProvider"(p: IN['Impact_Pack.TwoSamplersForMaskUpscalerProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.TwoSamplersForMaskUpscalerProvider']
+         "Impact-Pack.TwoSamplersForMaskUpscalerProvider"(p: IN['Impact-Pack.TwoSamplersForMaskUpscalerProvider'], meta?: ComfyNodeMetadata): Node['Impact-Pack.TwoSamplersForMaskUpscalerProvider']
           /** displayName="TwoSamplersForMask Upscaler Provider (pipe)" category="ImpactPack_Upscale" name="TwoSamplersForMaskUpscalerProviderPipe" output=[UPSCALER] */
-         "Impact_Pack.TwoSamplersForMaskUpscalerProviderPipe"(p: IN['Impact_Pack.TwoSamplersForMaskUpscalerProviderPipe'], meta?: ComfyNodeMetadata): Node['Impact_Pack.TwoSamplersForMaskUpscalerProviderPipe']
+         "Impact-Pack.TwoSamplersForMaskUpscalerProviderPipe"(p: IN['Impact-Pack.TwoSamplersForMaskUpscalerProviderPipe'], meta?: ComfyNodeMetadata): Node['Impact-Pack.TwoSamplersForMaskUpscalerProviderPipe']
           /** displayName="PixelKSampleHookCombine" category="ImpactPack_Upscale" name="PixelKSampleHookCombine" output=[PK_HOOK] */
-         "Impact_Pack.PixelKSampleHookCombine"(p: IN['Impact_Pack.PixelKSampleHookCombine'], meta?: ComfyNodeMetadata): Node['Impact_Pack.PixelKSampleHookCombine']
+         "Impact-Pack.PixelKSampleHookCombine"(p: IN['Impact-Pack.PixelKSampleHookCombine'], meta?: ComfyNodeMetadata): Node['Impact-Pack.PixelKSampleHookCombine']
           /** displayName="DenoiseScheduleHookProvider" category="ImpactPack_Upscale" name="DenoiseScheduleHookProvider" output=[PK_HOOK] */
-         "Impact_Pack.DenoiseScheduleHookProvider"(p: IN['Impact_Pack.DenoiseScheduleHookProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.DenoiseScheduleHookProvider']
+         "Impact-Pack.DenoiseScheduleHookProvider"(p: IN['Impact-Pack.DenoiseScheduleHookProvider'], meta?: ComfyNodeMetadata): Node['Impact-Pack.DenoiseScheduleHookProvider']
           /** displayName="StepsScheduleHookProvider" category="ImpactPack_Upscale" name="StepsScheduleHookProvider" output=[PK_HOOK] */
-         "Impact_Pack.StepsScheduleHookProvider"(p: IN['Impact_Pack.StepsScheduleHookProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.StepsScheduleHookProvider']
+         "Impact-Pack.StepsScheduleHookProvider"(p: IN['Impact-Pack.StepsScheduleHookProvider'], meta?: ComfyNodeMetadata): Node['Impact-Pack.StepsScheduleHookProvider']
           /** displayName="CfgScheduleHookProvider" category="ImpactPack_Upscale" name="CfgScheduleHookProvider" output=[PK_HOOK] */
-         "Impact_Pack.CfgScheduleHookProvider"(p: IN['Impact_Pack.CfgScheduleHookProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.CfgScheduleHookProvider']
+         "Impact-Pack.CfgScheduleHookProvider"(p: IN['Impact-Pack.CfgScheduleHookProvider'], meta?: ComfyNodeMetadata): Node['Impact-Pack.CfgScheduleHookProvider']
           /** displayName="NoiseInjectionHookProvider" category="ImpactPack_Upscale" name="NoiseInjectionHookProvider" output=[PK_HOOK] */
-         "Impact_Pack.NoiseInjectionHookProvider"(p: IN['Impact_Pack.NoiseInjectionHookProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.NoiseInjectionHookProvider']
+         "Impact-Pack.NoiseInjectionHookProvider"(p: IN['Impact-Pack.NoiseInjectionHookProvider'], meta?: ComfyNodeMetadata): Node['Impact-Pack.NoiseInjectionHookProvider']
           /** displayName="UnsamplerHookProvider" category="ImpactPack_Upscale" name="UnsamplerHookProvider" output=[PK_HOOK] */
-         "Impact_Pack.UnsamplerHookProvider"(p: IN['Impact_Pack.UnsamplerHookProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.UnsamplerHookProvider']
+         "Impact-Pack.UnsamplerHookProvider"(p: IN['Impact-Pack.UnsamplerHookProvider'], meta?: ComfyNodeMetadata): Node['Impact-Pack.UnsamplerHookProvider']
           /** displayName="CoreMLDetailerHookProvider" category="ImpactPack_Detailer" name="CoreMLDetailerHookProvider" output=[DETAILER_HOOK] */
-         "Impact_Pack.CoreMLDetailerHookProvider"(p: IN['Impact_Pack.CoreMLDetailerHookProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.CoreMLDetailerHookProvider']
+         "Impact-Pack.CoreMLDetailerHookProvider"(p: IN['Impact-Pack.CoreMLDetailerHookProvider'], meta?: ComfyNodeMetadata): Node['Impact-Pack.CoreMLDetailerHookProvider']
           /** displayName="PreviewDetailerHookProvider" category="ImpactPack_Util" name="PreviewDetailerHookProvider" output=[DETAILER_HOOK, UPSCALER_HOOK] */
-         "Impact_Pack.PreviewDetailerHookProvider"(p: IN['Impact_Pack.PreviewDetailerHookProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.PreviewDetailerHookProvider']
+         "Impact-Pack.PreviewDetailerHookProvider"(p: IN['Impact-Pack.PreviewDetailerHookProvider'], meta?: ComfyNodeMetadata): Node['Impact-Pack.PreviewDetailerHookProvider']
           /** displayName="DetailerHookCombine" category="ImpactPack_Upscale" name="DetailerHookCombine" output=[DETAILER_HOOK] */
-         "Impact_Pack.DetailerHookCombine"(p: IN['Impact_Pack.DetailerHookCombine'], meta?: ComfyNodeMetadata): Node['Impact_Pack.DetailerHookCombine']
+         "Impact-Pack.DetailerHookCombine"(p: IN['Impact-Pack.DetailerHookCombine'], meta?: ComfyNodeMetadata): Node['Impact-Pack.DetailerHookCombine']
           /** displayName="NoiseInjectionDetailerHookProvider" category="ImpactPack_Detailer" name="NoiseInjectionDetailerHookProvider" output=[DETAILER_HOOK] */
-         "Impact_Pack.NoiseInjectionDetailerHookProvider"(p: IN['Impact_Pack.NoiseInjectionDetailerHookProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.NoiseInjectionDetailerHookProvider']
+         "Impact-Pack.NoiseInjectionDetailerHookProvider"(p: IN['Impact-Pack.NoiseInjectionDetailerHookProvider'], meta?: ComfyNodeMetadata): Node['Impact-Pack.NoiseInjectionDetailerHookProvider']
           /** displayName="UnsamplerDetailerHookProvider" category="ImpactPack_Detailer" name="UnsamplerDetailerHookProvider" output=[DETAILER_HOOK] */
-         "Impact_Pack.UnsamplerDetailerHookProvider"(p: IN['Impact_Pack.UnsamplerDetailerHookProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.UnsamplerDetailerHookProvider']
+         "Impact-Pack.UnsamplerDetailerHookProvider"(p: IN['Impact-Pack.UnsamplerDetailerHookProvider'], meta?: ComfyNodeMetadata): Node['Impact-Pack.UnsamplerDetailerHookProvider']
           /** displayName="DenoiseSchedulerDetailerHookProvider" category="ImpactPack_Detailer" name="DenoiseSchedulerDetailerHookProvider" output=[DETAILER_HOOK] */
-         "Impact_Pack.DenoiseSchedulerDetailerHookProvider"(p: IN['Impact_Pack.DenoiseSchedulerDetailerHookProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.DenoiseSchedulerDetailerHookProvider']
+         "Impact-Pack.DenoiseSchedulerDetailerHookProvider"(p: IN['Impact-Pack.DenoiseSchedulerDetailerHookProvider'], meta?: ComfyNodeMetadata): Node['Impact-Pack.DenoiseSchedulerDetailerHookProvider']
           /** displayName="SEGSOrderedFilterDetailerHookProvider" category="ImpactPack_Util" name="SEGSOrderedFilterDetailerHookProvider" output=[DETAILER_HOOK] */
-         "Impact_Pack.SEGSOrderedFilterDetailerHookProvider"(p: IN['Impact_Pack.SEGSOrderedFilterDetailerHookProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.SEGSOrderedFilterDetailerHookProvider']
+         "Impact-Pack.SEGSOrderedFilterDetailerHookProvider"(p: IN['Impact-Pack.SEGSOrderedFilterDetailerHookProvider'], meta?: ComfyNodeMetadata): Node['Impact-Pack.SEGSOrderedFilterDetailerHookProvider']
           /** displayName="SEGSRangeFilterDetailerHookProvider" category="ImpactPack_Util" name="SEGSRangeFilterDetailerHookProvider" output=[DETAILER_HOOK] */
-         "Impact_Pack.SEGSRangeFilterDetailerHookProvider"(p: IN['Impact_Pack.SEGSRangeFilterDetailerHookProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.SEGSRangeFilterDetailerHookProvider']
+         "Impact-Pack.SEGSRangeFilterDetailerHookProvider"(p: IN['Impact-Pack.SEGSRangeFilterDetailerHookProvider'], meta?: ComfyNodeMetadata): Node['Impact-Pack.SEGSRangeFilterDetailerHookProvider']
           /** displayName="SEGSLabelFilterDetailerHookProvider" category="ImpactPack_Util" name="SEGSLabelFilterDetailerHookProvider" output=[DETAILER_HOOK] */
-         "Impact_Pack.SEGSLabelFilterDetailerHookProvider"(p: IN['Impact_Pack.SEGSLabelFilterDetailerHookProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.SEGSLabelFilterDetailerHookProvider']
+         "Impact-Pack.SEGSLabelFilterDetailerHookProvider"(p: IN['Impact-Pack.SEGSLabelFilterDetailerHookProvider'], meta?: ComfyNodeMetadata): Node['Impact-Pack.SEGSLabelFilterDetailerHookProvider']
           /** displayName="VariationNoiseDetailerHookProvider" category="ImpactPack_Detailer" name="VariationNoiseDetailerHookProvider" output=[DETAILER_HOOK] */
-         "Impact_Pack.VariationNoiseDetailerHookProvider"(p: IN['Impact_Pack.VariationNoiseDetailerHookProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.VariationNoiseDetailerHookProvider']
+         "Impact-Pack.VariationNoiseDetailerHookProvider"(p: IN['Impact-Pack.VariationNoiseDetailerHookProvider'], meta?: ComfyNodeMetadata): Node['Impact-Pack.VariationNoiseDetailerHookProvider']
           /** displayName="Pixelwise(MASK & MASK)" category="ImpactPack_Operation" name="BitwiseAndMask" output=[MASK] */
-         "Impact_Pack.BitwiseAndMask"(p: IN['Impact_Pack.BitwiseAndMask'], meta?: ComfyNodeMetadata): Node['Impact_Pack.BitwiseAndMask']
+         "Impact-Pack.BitwiseAndMask"(p: IN['Impact-Pack.BitwiseAndMask'], meta?: ComfyNodeMetadata): Node['Impact-Pack.BitwiseAndMask']
           /** displayName="Pixelwise(MASK - MASK)" category="ImpactPack_Operation" name="SubtractMask" output=[MASK] */
-         "Impact_Pack.SubtractMask"(p: IN['Impact_Pack.SubtractMask'], meta?: ComfyNodeMetadata): Node['Impact_Pack.SubtractMask']
+         "Impact-Pack.SubtractMask"(p: IN['Impact-Pack.SubtractMask'], meta?: ComfyNodeMetadata): Node['Impact-Pack.SubtractMask']
           /** displayName="Pixelwise(MASK + MASK)" category="ImpactPack_Operation" name="AddMask" output=[MASK] */
-         "Impact_Pack.AddMask"(p: IN['Impact_Pack.AddMask'], meta?: ComfyNodeMetadata): Node['Impact_Pack.AddMask']
+         "Impact-Pack.AddMask"(p: IN['Impact-Pack.AddMask'], meta?: ComfyNodeMetadata): Node['Impact-Pack.AddMask']
           /** displayName="Pixelwise(SEGS & MASK)" category="ImpactPack_Operation" name="ImpactSegsAndMask" output=[SEGS] */
-         "Impact_Pack.ImpactSegsAndMask"(p: IN['Impact_Pack.ImpactSegsAndMask'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactSegsAndMask']
+         "Impact-Pack.ImpactSegsAndMask"(p: IN['Impact-Pack.ImpactSegsAndMask'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactSegsAndMask']
           /** displayName="Pixelwise(SEGS & MASKS ForEach)" category="ImpactPack_Operation" name="ImpactSegsAndMaskForEach" output=[SEGS] */
-         "Impact_Pack.ImpactSegsAndMaskForEach"(p: IN['Impact_Pack.ImpactSegsAndMaskForEach'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactSegsAndMaskForEach']
+         "Impact-Pack.ImpactSegsAndMaskForEach"(p: IN['Impact-Pack.ImpactSegsAndMaskForEach'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactSegsAndMaskForEach']
           /** displayName="EmptySegs" category="ImpactPack_Util" name="EmptySegs" output=[SEGS] */
-         "Impact_Pack.EmptySegs"(p: IN['Impact_Pack.EmptySegs'], meta?: ComfyNodeMetadata): Node['Impact_Pack.EmptySegs']
+         "Impact-Pack.EmptySegs"(p: IN['Impact-Pack.EmptySegs'], meta?: ComfyNodeMetadata): Node['Impact-Pack.EmptySegs']
           /** displayName="Flatten Mask Batch" category="ImpactPack_Operation" name="ImpactFlattenMask" output=[MASK] */
-         "Impact_Pack.ImpactFlattenMask"(p: IN['Impact_Pack.ImpactFlattenMask'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactFlattenMask']
+         "Impact-Pack.ImpactFlattenMask"(p: IN['Impact-Pack.ImpactFlattenMask'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactFlattenMask']
           /** displayName="MediaPipe FaceMesh to SEGS" category="ImpactPack_Operation" name="MediaPipeFaceMeshToSEGS" output=[SEGS] */
-         "Impact_Pack.MediaPipeFaceMeshToSEGS"(p: IN['Impact_Pack.MediaPipeFaceMeshToSEGS'], meta?: ComfyNodeMetadata): Node['Impact_Pack.MediaPipeFaceMeshToSEGS']
+         "Impact-Pack.MediaPipeFaceMeshToSEGS"(p: IN['Impact-Pack.MediaPipeFaceMeshToSEGS'], meta?: ComfyNodeMetadata): Node['Impact-Pack.MediaPipeFaceMeshToSEGS']
           /** displayName="MASK to SEGS" category="ImpactPack_Operation" name="MaskToSEGS" output=[SEGS] */
-         "Impact_Pack.MaskToSEGS"(p: IN['Impact_Pack.MaskToSEGS'], meta?: ComfyNodeMetadata): Node['Impact_Pack.MaskToSEGS']
+         "Impact-Pack.MaskToSEGS"(p: IN['Impact-Pack.MaskToSEGS'], meta?: ComfyNodeMetadata): Node['Impact-Pack.MaskToSEGS']
           /** displayName="MASK to SEGS for AnimateDiff" category="ImpactPack_Operation" name="MaskToSEGS_for_AnimateDiff" output=[SEGS] */
-         "Impact_Pack.MaskToSEGS_for_AnimateDiff"(p: IN['Impact_Pack.MaskToSEGS_for_AnimateDiff'], meta?: ComfyNodeMetadata): Node['Impact_Pack.MaskToSEGS_for_AnimateDiff']
+         "Impact-Pack.MaskToSEGS_for_AnimateDiff"(p: IN['Impact-Pack.MaskToSEGS_for_AnimateDiff'], meta?: ComfyNodeMetadata): Node['Impact-Pack.MaskToSEGS_for_AnimateDiff']
           /** displayName="ToBinaryMask" category="ImpactPack_Operation" name="ToBinaryMask" output=[MASK] */
-         "Impact_Pack.ToBinaryMask"(p: IN['Impact_Pack.ToBinaryMask'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ToBinaryMask']
+         "Impact-Pack.ToBinaryMask"(p: IN['Impact-Pack.ToBinaryMask'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ToBinaryMask']
           /** displayName="Mask Batch to Mask List" category="ImpactPack_Operation" name="MasksToMaskList" output=[MASK] */
-         "Impact_Pack.MasksToMaskList"(p: IN['Impact_Pack.MasksToMaskList'], meta?: ComfyNodeMetadata): Node['Impact_Pack.MasksToMaskList']
+         "Impact-Pack.MasksToMaskList"(p: IN['Impact-Pack.MasksToMaskList'], meta?: ComfyNodeMetadata): Node['Impact-Pack.MasksToMaskList']
           /** displayName="Mask List to Mask Batch" category="ImpactPack_Operation" name="MaskListToMaskBatch" output=[MASK] */
-         "Impact_Pack.MaskListToMaskBatch"(p: IN['Impact_Pack.MaskListToMaskBatch'], meta?: ComfyNodeMetadata): Node['Impact_Pack.MaskListToMaskBatch']
+         "Impact-Pack.MaskListToMaskBatch"(p: IN['Impact-Pack.MaskListToMaskBatch'], meta?: ComfyNodeMetadata): Node['Impact-Pack.MaskListToMaskBatch']
           /** displayName="Image List to Image Batch" category="ImpactPack_Operation" name="ImageListToImageBatch" output=[IMAGE] */
-         "Impact_Pack.ImageListToImageBatch"(p: IN['Impact_Pack.ImageListToImageBatch'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImageListToImageBatch']
+         "Impact-Pack.ImageListToImageBatch"(p: IN['Impact-Pack.ImageListToImageBatch'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImageListToImageBatch']
           /** displayName="Set Default Image for SEGS" category="ImpactPack_Util" name="SetDefaultImageForSEGS" output=[SEGS] */
-         "Impact_Pack.SetDefaultImageForSEGS"(p: IN['Impact_Pack.SetDefaultImageForSEGS'], meta?: ComfyNodeMetadata): Node['Impact_Pack.SetDefaultImageForSEGS']
+         "Impact-Pack.SetDefaultImageForSEGS"(p: IN['Impact-Pack.SetDefaultImageForSEGS'], meta?: ComfyNodeMetadata): Node['Impact-Pack.SetDefaultImageForSEGS']
           /** displayName="Remove Image from SEGS" category="ImpactPack_Util" name="RemoveImageFromSEGS" output=[SEGS] */
-         "Impact_Pack.RemoveImageFromSEGS"(p: IN['Impact_Pack.RemoveImageFromSEGS'], meta?: ComfyNodeMetadata): Node['Impact_Pack.RemoveImageFromSEGS']
+         "Impact-Pack.RemoveImageFromSEGS"(p: IN['Impact-Pack.RemoveImageFromSEGS'], meta?: ComfyNodeMetadata): Node['Impact-Pack.RemoveImageFromSEGS']
           /** displayName="BBOX Detector (SEGS)" category="ImpactPack_Detector" name="BboxDetectorSEGS" output=[SEGS] */
-         "Impact_Pack.BboxDetectorSEGS"(p: IN['Impact_Pack.BboxDetectorSEGS'], meta?: ComfyNodeMetadata): Node['Impact_Pack.BboxDetectorSEGS']
+         "Impact-Pack.BboxDetectorSEGS"(p: IN['Impact-Pack.BboxDetectorSEGS'], meta?: ComfyNodeMetadata): Node['Impact-Pack.BboxDetectorSEGS']
           /** displayName="SEGM Detector (SEGS)" category="ImpactPack_Detector" name="SegmDetectorSEGS" output=[SEGS] */
-         "Impact_Pack.SegmDetectorSEGS"(p: IN['Impact_Pack.SegmDetectorSEGS'], meta?: ComfyNodeMetadata): Node['Impact_Pack.SegmDetectorSEGS']
+         "Impact-Pack.SegmDetectorSEGS"(p: IN['Impact-Pack.SegmDetectorSEGS'], meta?: ComfyNodeMetadata): Node['Impact-Pack.SegmDetectorSEGS']
           /** displayName="ONNX Detector (SEGS/legacy) - use BBOXDetector" category="ImpactPack_Detector" name="ONNXDetectorSEGS" output=[SEGS] */
-         "Impact_Pack.ONNXDetectorSEGS"(p: IN['Impact_Pack.ONNXDetectorSEGS'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ONNXDetectorSEGS']
+         "Impact-Pack.ONNXDetectorSEGS"(p: IN['Impact-Pack.ONNXDetectorSEGS'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ONNXDetectorSEGS']
           /** displayName="Simple Detector for AnimateDiff (SEGS)" category="ImpactPack_Detector" name="ImpactSimpleDetectorSEGS_for_AD" output=[SEGS] */
-         "Impact_Pack.ImpactSimpleDetectorSEGS_for_AD"(p: IN['Impact_Pack.ImpactSimpleDetectorSEGS_for_AD'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactSimpleDetectorSEGS_for_AD']
+         "Impact-Pack.ImpactSimpleDetectorSEGS_for_AD"(p: IN['Impact-Pack.ImpactSimpleDetectorSEGS_for_AD'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactSimpleDetectorSEGS_for_AD']
           /** displayName="Simple Detector (SEGS)" category="ImpactPack_Detector" name="ImpactSimpleDetectorSEGS" output=[SEGS] */
-         "Impact_Pack.ImpactSimpleDetectorSEGS"(p: IN['Impact_Pack.ImpactSimpleDetectorSEGS'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactSimpleDetectorSEGS']
+         "Impact-Pack.ImpactSimpleDetectorSEGS"(p: IN['Impact-Pack.ImpactSimpleDetectorSEGS'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactSimpleDetectorSEGS']
           /** displayName="Simple Detector (SEGS/pipe)" category="ImpactPack_Detector" name="ImpactSimpleDetectorSEGSPipe" output=[SEGS] */
-         "Impact_Pack.ImpactSimpleDetectorSEGSPipe"(p: IN['Impact_Pack.ImpactSimpleDetectorSEGSPipe'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactSimpleDetectorSEGSPipe']
+         "Impact-Pack.ImpactSimpleDetectorSEGSPipe"(p: IN['Impact-Pack.ImpactSimpleDetectorSEGSPipe'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactSimpleDetectorSEGSPipe']
           /** displayName="ControlNetApply (SEGS) - DEPRECATED" category="ImpactPack_Util" name="ImpactControlNetApplySEGS" output=[SEGS] */
-         "Impact_Pack.ImpactControlNetApplySEGS"(p: IN['Impact_Pack.ImpactControlNetApplySEGS'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactControlNetApplySEGS']
+         "Impact-Pack.ImpactControlNetApplySEGS"(p: IN['Impact-Pack.ImpactControlNetApplySEGS'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactControlNetApplySEGS']
           /** displayName="ControlNetApply (SEGS)" category="ImpactPack_Util" name="ImpactControlNetApplyAdvancedSEGS" output=[SEGS] */
-         "Impact_Pack.ImpactControlNetApplyAdvancedSEGS"(p: IN['Impact_Pack.ImpactControlNetApplyAdvancedSEGS'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactControlNetApplyAdvancedSEGS']
+         "Impact-Pack.ImpactControlNetApplyAdvancedSEGS"(p: IN['Impact-Pack.ImpactControlNetApplyAdvancedSEGS'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactControlNetApplyAdvancedSEGS']
           /** displayName="ImpactControlNetClearSEGS" category="ImpactPack_Util" name="ImpactControlNetClearSEGS" output=[SEGS] */
-         "Impact_Pack.ImpactControlNetClearSEGS"(p: IN['Impact_Pack.ImpactControlNetClearSEGS'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactControlNetClearSEGS']
+         "Impact-Pack.ImpactControlNetClearSEGS"(p: IN['Impact-Pack.ImpactControlNetClearSEGS'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactControlNetClearSEGS']
           /** displayName="IPAdapterApply (SEGS)" category="ImpactPack_Util" name="ImpactIPAdapterApplySEGS" output=[SEGS] */
-         "Impact_Pack.ImpactIPAdapterApplySEGS"(p: IN['Impact_Pack.ImpactIPAdapterApplySEGS'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactIPAdapterApplySEGS']
+         "Impact-Pack.ImpactIPAdapterApplySEGS"(p: IN['Impact-Pack.ImpactIPAdapterApplySEGS'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactIPAdapterApplySEGS']
           /** displayName="Decompose (SEGS)" category="ImpactPack_Util" name="ImpactDecomposeSEGS" output=[SEGS_HEADER, SEG_ELT] */
-         "Impact_Pack.ImpactDecomposeSEGS"(p: IN['Impact_Pack.ImpactDecomposeSEGS'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactDecomposeSEGS']
+         "Impact-Pack.ImpactDecomposeSEGS"(p: IN['Impact-Pack.ImpactDecomposeSEGS'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactDecomposeSEGS']
           /** displayName="Assemble (SEGS)" category="ImpactPack_Util" name="ImpactAssembleSEGS" output=[SEGS] */
-         "Impact_Pack.ImpactAssembleSEGS"(p: IN['Impact_Pack.ImpactAssembleSEGS'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactAssembleSEGS']
+         "Impact-Pack.ImpactAssembleSEGS"(p: IN['Impact-Pack.ImpactAssembleSEGS'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactAssembleSEGS']
           /** displayName="From SEG_ELT" category="ImpactPack_Util" name="ImpactFrom_SEG_ELT" output=[seg_elt, cropped_image, cropped_mask, crop_region, bbox, control_net_wrapper, confidence, label] */
-         "Impact_Pack.ImpactFrom_SEG_ELT"(p: IN['Impact_Pack.ImpactFrom_SEG_ELT'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactFrom_SEG_ELT']
+         "Impact-Pack.ImpactFrom_SEG_ELT"(p: IN['Impact-Pack.ImpactFrom_SEG_ELT'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactFrom_SEG_ELT']
           /** displayName="Edit SEG_ELT" category="ImpactPack_Util" name="ImpactEdit_SEG_ELT" output=[SEG_ELT] */
-         "Impact_Pack.ImpactEdit_SEG_ELT"(p: IN['Impact_Pack.ImpactEdit_SEG_ELT'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactEdit_SEG_ELT']
+         "Impact-Pack.ImpactEdit_SEG_ELT"(p: IN['Impact-Pack.ImpactEdit_SEG_ELT'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactEdit_SEG_ELT']
           /** displayName="Dilate Mask (SEG_ELT)" category="ImpactPack_Util" name="ImpactDilate_Mask_SEG_ELT" output=[SEG_ELT] */
-         "Impact_Pack.ImpactDilate_Mask_SEG_ELT"(p: IN['Impact_Pack.ImpactDilate_Mask_SEG_ELT'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactDilate_Mask_SEG_ELT']
+         "Impact-Pack.ImpactDilate_Mask_SEG_ELT"(p: IN['Impact-Pack.ImpactDilate_Mask_SEG_ELT'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactDilate_Mask_SEG_ELT']
           /** displayName="Dilate Mask" category="ImpactPack_Util" name="ImpactDilateMask" output=[MASK] */
-         "Impact_Pack.ImpactDilateMask"(p: IN['Impact_Pack.ImpactDilateMask'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactDilateMask']
+         "Impact-Pack.ImpactDilateMask"(p: IN['Impact-Pack.ImpactDilateMask'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactDilateMask']
           /** displayName="Gaussian Blur Mask" category="ImpactPack_Util" name="ImpactGaussianBlurMask" output=[MASK] */
-         "Impact_Pack.ImpactGaussianBlurMask"(p: IN['Impact_Pack.ImpactGaussianBlurMask'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactGaussianBlurMask']
+         "Impact-Pack.ImpactGaussianBlurMask"(p: IN['Impact-Pack.ImpactGaussianBlurMask'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactGaussianBlurMask']
           /** displayName="Dilate Mask (SEGS)" category="ImpactPack_Util" name="ImpactDilateMaskInSEGS" output=[SEGS] */
-         "Impact_Pack.ImpactDilateMaskInSEGS"(p: IN['Impact_Pack.ImpactDilateMaskInSEGS'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactDilateMaskInSEGS']
+         "Impact-Pack.ImpactDilateMaskInSEGS"(p: IN['Impact-Pack.ImpactDilateMaskInSEGS'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactDilateMaskInSEGS']
           /** displayName="Gaussian Blur Mask (SEGS)" category="ImpactPack_Util" name="ImpactGaussianBlurMaskInSEGS" output=[SEGS] */
-         "Impact_Pack.ImpactGaussianBlurMaskInSEGS"(p: IN['Impact_Pack.ImpactGaussianBlurMaskInSEGS'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactGaussianBlurMaskInSEGS']
+         "Impact-Pack.ImpactGaussianBlurMaskInSEGS"(p: IN['Impact-Pack.ImpactGaussianBlurMaskInSEGS'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactGaussianBlurMaskInSEGS']
           /** displayName="ScaleBy BBOX (SEG_ELT)" category="ImpactPack_Util" name="ImpactScaleBy_BBOX_SEG_ELT" output=[SEG_ELT] */
-         "Impact_Pack.ImpactScaleBy_BBOX_SEG_ELT"(p: IN['Impact_Pack.ImpactScaleBy_BBOX_SEG_ELT'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactScaleBy_BBOX_SEG_ELT']
+         "Impact-Pack.ImpactScaleBy_BBOX_SEG_ELT"(p: IN['Impact-Pack.ImpactScaleBy_BBOX_SEG_ELT'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactScaleBy_BBOX_SEG_ELT']
           /** displayName="From SEG_ELT bbox" category="ImpactPack_Util" name="ImpactFrom_SEG_ELT_bbox" output=[left, top, right, bottom] */
-         "Impact_Pack.ImpactFrom_SEG_ELT_bbox"(p: IN['Impact_Pack.ImpactFrom_SEG_ELT_bbox'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactFrom_SEG_ELT_bbox']
+         "Impact-Pack.ImpactFrom_SEG_ELT_bbox"(p: IN['Impact-Pack.ImpactFrom_SEG_ELT_bbox'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactFrom_SEG_ELT_bbox']
           /** displayName="From SEG_ELT crop_region" category="ImpactPack_Util" name="ImpactFrom_SEG_ELT_crop_region" output=[left, top, right, bottom] */
-         "Impact_Pack.ImpactFrom_SEG_ELT_crop_region"(p: IN['Impact_Pack.ImpactFrom_SEG_ELT_crop_region'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactFrom_SEG_ELT_crop_region']
+         "Impact-Pack.ImpactFrom_SEG_ELT_crop_region"(p: IN['Impact-Pack.ImpactFrom_SEG_ELT_crop_region'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactFrom_SEG_ELT_crop_region']
           /** displayName="Count Elts in SEGS" category="ImpactPack_Util" name="ImpactCount_Elts_in_SEGS" output=[INT] */
-         "Impact_Pack.ImpactCount_Elts_in_SEGS"(p: IN['Impact_Pack.ImpactCount_Elts_in_SEGS'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactCount_Elts_in_SEGS']
+         "Impact-Pack.ImpactCount_Elts_in_SEGS"(p: IN['Impact-Pack.ImpactCount_Elts_in_SEGS'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactCount_Elts_in_SEGS']
           /** displayName="BBOX Detector (combined)" category="ImpactPack_Detector" name="BboxDetectorCombined_v2" output=[MASK] */
-         "Impact_Pack.BboxDetectorCombined_v2"(p: IN['Impact_Pack.BboxDetectorCombined_v2'], meta?: ComfyNodeMetadata): Node['Impact_Pack.BboxDetectorCombined_v2']
+         "Impact-Pack.BboxDetectorCombined_v2"(p: IN['Impact-Pack.BboxDetectorCombined_v2'], meta?: ComfyNodeMetadata): Node['Impact-Pack.BboxDetectorCombined_v2']
           /** displayName="SEGM Detector (combined)" category="ImpactPack_Detector" name="SegmDetectorCombined_v2" output=[MASK] */
-         "Impact_Pack.SegmDetectorCombined_v2"(p: IN['Impact_Pack.SegmDetectorCombined_v2'], meta?: ComfyNodeMetadata): Node['Impact_Pack.SegmDetectorCombined_v2']
+         "Impact-Pack.SegmDetectorCombined_v2"(p: IN['Impact-Pack.SegmDetectorCombined_v2'], meta?: ComfyNodeMetadata): Node['Impact-Pack.SegmDetectorCombined_v2']
           /** displayName="SEGS to MASK (combined)" category="ImpactPack_Operation" name="SegsToCombinedMask" output=[MASK] */
-         "Impact_Pack.SegsToCombinedMask"(p: IN['Impact_Pack.SegsToCombinedMask'], meta?: ComfyNodeMetadata): Node['Impact_Pack.SegsToCombinedMask']
+         "Impact-Pack.SegsToCombinedMask"(p: IN['Impact-Pack.SegsToCombinedMask'], meta?: ComfyNodeMetadata): Node['Impact-Pack.SegsToCombinedMask']
           /** displayName="KSamplerProvider" category="ImpactPack_Sampler" name="KSamplerProvider" output=[KSAMPLER] */
-         "Impact_Pack.KSamplerProvider"(p: IN['Impact_Pack.KSamplerProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.KSamplerProvider']
+         "Impact-Pack.KSamplerProvider"(p: IN['Impact-Pack.KSamplerProvider'], meta?: ComfyNodeMetadata): Node['Impact-Pack.KSamplerProvider']
           /** displayName="TwoSamplersForMask" category="ImpactPack_Sampler" name="TwoSamplersForMask" output=[LATENT] */
-         "Impact_Pack.TwoSamplersForMask"(p: IN['Impact_Pack.TwoSamplersForMask'], meta?: ComfyNodeMetadata): Node['Impact_Pack.TwoSamplersForMask']
+         "Impact-Pack.TwoSamplersForMask"(p: IN['Impact-Pack.TwoSamplersForMask'], meta?: ComfyNodeMetadata): Node['Impact-Pack.TwoSamplersForMask']
           /** displayName="TiledKSamplerProvider" category="ImpactPack_Sampler" name="TiledKSamplerProvider" output=[KSAMPLER] */
-         "Impact_Pack.TiledKSamplerProvider"(p: IN['Impact_Pack.TiledKSamplerProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.TiledKSamplerProvider']
+         "Impact-Pack.TiledKSamplerProvider"(p: IN['Impact-Pack.TiledKSamplerProvider'], meta?: ComfyNodeMetadata): Node['Impact-Pack.TiledKSamplerProvider']
           /** displayName="KSamplerAdvancedProvider" category="ImpactPack_Sampler" name="KSamplerAdvancedProvider" output=[KSAMPLER_ADVANCED] */
-         "Impact_Pack.KSamplerAdvancedProvider"(p: IN['Impact_Pack.KSamplerAdvancedProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.KSamplerAdvancedProvider']
+         "Impact-Pack.KSamplerAdvancedProvider"(p: IN['Impact-Pack.KSamplerAdvancedProvider'], meta?: ComfyNodeMetadata): Node['Impact-Pack.KSamplerAdvancedProvider']
           /** displayName="TwoAdvancedSamplersForMask" category="ImpactPack_Sampler" name="TwoAdvancedSamplersForMask" output=[LATENT] */
-         "Impact_Pack.TwoAdvancedSamplersForMask"(p: IN['Impact_Pack.TwoAdvancedSamplersForMask'], meta?: ComfyNodeMetadata): Node['Impact_Pack.TwoAdvancedSamplersForMask']
+         "Impact-Pack.TwoAdvancedSamplersForMask"(p: IN['Impact-Pack.TwoAdvancedSamplersForMask'], meta?: ComfyNodeMetadata): Node['Impact-Pack.TwoAdvancedSamplersForMask']
           /** displayName="Negative Cond Placeholder" category="ImpactPack_sampling" name="ImpactNegativeConditioningPlaceholder" output=[CONDITIONING] */
-         "Impact_Pack.ImpactNegativeConditioningPlaceholder"(p: IN['Impact_Pack.ImpactNegativeConditioningPlaceholder'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactNegativeConditioningPlaceholder']
+         "Impact-Pack.ImpactNegativeConditioningPlaceholder"(p: IN['Impact-Pack.ImpactNegativeConditioningPlaceholder'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactNegativeConditioningPlaceholder']
          /**
           * This is a feature that allows you to edit and send a Mask over a image.
           * If the block is set to 'is_empty_mask', the execution is stopped when the mask is empty.
           * displayName="Preview Bridge (Image)" category="ImpactPack_Util" name="PreviewBridge" output=[IMAGE, MASK]
          **/
-         "Impact_Pack.PreviewBridge"(p: IN['Impact_Pack.PreviewBridge'], meta?: ComfyNodeMetadata): Node['Impact_Pack.PreviewBridge']
+         "Impact-Pack.PreviewBridge"(p: IN['Impact-Pack.PreviewBridge'], meta?: ComfyNodeMetadata): Node['Impact-Pack.PreviewBridge']
          /**
           * This is a feature that allows you to edit and send a Mask over a latent image.
           * If the block is set to 'is_empty_mask', the execution is stopped when the mask is empty.
           * displayName="Preview Bridge (Latent)" category="ImpactPack_Util" name="PreviewBridgeLatent" output=[LATENT, MASK]
          **/
-         "Impact_Pack.PreviewBridgeLatent"(p: IN['Impact_Pack.PreviewBridgeLatent'], meta?: ComfyNodeMetadata): Node['Impact_Pack.PreviewBridgeLatent']
+         "Impact-Pack.PreviewBridgeLatent"(p: IN['Impact-Pack.PreviewBridgeLatent'], meta?: ComfyNodeMetadata): Node['Impact-Pack.PreviewBridgeLatent']
          /**
           * Saves the input images to your ComfyUI output directory.
           * displayName="Image Sender" category="ImpactPack_Util" name="ImageSender" output=[]
          **/
-         "Impact_Pack.ImageSender"(p: IN['Impact_Pack.ImageSender'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImageSender']
+         "Impact-Pack.ImageSender"(p: IN['Impact-Pack.ImageSender'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImageSender']
           /** displayName="Image Receiver" category="ImpactPack_Util" name="ImageReceiver" output=[IMAGE, MASK] */
-         "Impact_Pack.ImageReceiver"(p: IN['Impact_Pack.ImageReceiver'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImageReceiver']
+         "Impact-Pack.ImageReceiver"(p: IN['Impact-Pack.ImageReceiver'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImageReceiver']
           /** displayName="LatentSender" category="ImpactPack_Util" name="LatentSender" output=[] */
-         "Impact_Pack.LatentSender"(p: IN['Impact_Pack.LatentSender'], meta?: ComfyNodeMetadata): Node['Impact_Pack.LatentSender']
+         "Impact-Pack.LatentSender"(p: IN['Impact-Pack.LatentSender'], meta?: ComfyNodeMetadata): Node['Impact-Pack.LatentSender']
           /** displayName="LatentReceiver" category="ImpactPack_Util" name="LatentReceiver" output=[LATENT] */
-         "Impact_Pack.LatentReceiver"(p: IN['Impact_Pack.LatentReceiver'], meta?: ComfyNodeMetadata): Node['Impact_Pack.LatentReceiver']
+         "Impact-Pack.LatentReceiver"(p: IN['Impact-Pack.LatentReceiver'], meta?: ComfyNodeMetadata): Node['Impact-Pack.LatentReceiver']
           /** displayName="Switch (images, mask)" category="ImpactPack_Util" name="ImageMaskSwitch" output=[IMAGE, MASK] */
-         "Impact_Pack.ImageMaskSwitch"(p: IN['Impact_Pack.ImageMaskSwitch'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImageMaskSwitch']
+         "Impact-Pack.ImageMaskSwitch"(p: IN['Impact-Pack.ImageMaskSwitch'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImageMaskSwitch']
           /** displayName="Switch (latent/legacy)" category="ImpactPack_Util" name="LatentSwitch" output=[selected_value, selected_label, selected_index] */
-         "Impact_Pack.LatentSwitch"(p: IN['Impact_Pack.LatentSwitch'], meta?: ComfyNodeMetadata): Node['Impact_Pack.LatentSwitch']
+         "Impact-Pack.LatentSwitch"(p: IN['Impact-Pack.LatentSwitch'], meta?: ComfyNodeMetadata): Node['Impact-Pack.LatentSwitch']
           /** displayName="Switch (SEGS/legacy)" category="ImpactPack_Util" name="SEGSSwitch" output=[selected_value, selected_label, selected_index] */
-         "Impact_Pack.SEGSSwitch"(p: IN['Impact_Pack.SEGSSwitch'], meta?: ComfyNodeMetadata): Node['Impact_Pack.SEGSSwitch']
+         "Impact-Pack.SEGSSwitch"(p: IN['Impact-Pack.SEGSSwitch'], meta?: ComfyNodeMetadata): Node['Impact-Pack.SEGSSwitch']
           /** displayName="Switch (Any)" category="ImpactPack_Util" name="ImpactSwitch" output=[selected_value, selected_label, selected_index] */
-         "Impact_Pack.ImpactSwitch"(p: IN['Impact_Pack.ImpactSwitch'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactSwitch']
+         "Impact-Pack.ImpactSwitch"(p: IN['Impact-Pack.ImpactSwitch'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactSwitch']
           /** displayName="Inversed Switch (Any)" category="ImpactPack_Util" name="ImpactInversedSwitch" output=[*] */
-         "Impact_Pack.ImpactInversedSwitch"(p: IN['Impact_Pack.ImpactInversedSwitch'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactInversedSwitch']
+         "Impact-Pack.ImpactInversedSwitch"(p: IN['Impact-Pack.ImpactInversedSwitch'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactInversedSwitch']
           /** displayName="ImpactWildcardProcessor" category="ImpactPack_Prompt" name="ImpactWildcardProcessor" output=[STRING] */
-         "Impact_Pack.ImpactWildcardProcessor"(p: IN['Impact_Pack.ImpactWildcardProcessor'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactWildcardProcessor']
+         "Impact-Pack.ImpactWildcardProcessor"(p: IN['Impact-Pack.ImpactWildcardProcessor'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactWildcardProcessor']
           /** displayName="ImpactWildcardEncode" category="ImpactPack_Prompt" name="ImpactWildcardEncode" output=[model, clip, conditioning, populated_text] */
-         "Impact_Pack.ImpactWildcardEncode"(p: IN['Impact_Pack.ImpactWildcardEncode'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactWildcardEncode']
+         "Impact-Pack.ImpactWildcardEncode"(p: IN['Impact-Pack.ImpactWildcardEncode'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactWildcardEncode']
           /** displayName="Upscaler (SEGS)" category="ImpactPack_Upscale" name="SEGSUpscaler" output=[IMAGE] */
-         "Impact_Pack.SEGSUpscaler"(p: IN['Impact_Pack.SEGSUpscaler'], meta?: ComfyNodeMetadata): Node['Impact_Pack.SEGSUpscaler']
+         "Impact-Pack.SEGSUpscaler"(p: IN['Impact-Pack.SEGSUpscaler'], meta?: ComfyNodeMetadata): Node['Impact-Pack.SEGSUpscaler']
           /** displayName="Upscaler (SEGS/pipe)" category="ImpactPack_Upscale" name="SEGSUpscalerPipe" output=[IMAGE] */
-         "Impact_Pack.SEGSUpscalerPipe"(p: IN['Impact_Pack.SEGSUpscalerPipe'], meta?: ComfyNodeMetadata): Node['Impact_Pack.SEGSUpscalerPipe']
+         "Impact-Pack.SEGSUpscalerPipe"(p: IN['Impact-Pack.SEGSUpscalerPipe'], meta?: ComfyNodeMetadata): Node['Impact-Pack.SEGSUpscalerPipe']
           /** displayName="SEGSDetailer" category="ImpactPack_Detailer" name="SEGSDetailer" output=[segs, cnet_images] */
-         "Impact_Pack.SEGSDetailer"(p: IN['Impact_Pack.SEGSDetailer'], meta?: ComfyNodeMetadata): Node['Impact_Pack.SEGSDetailer']
+         "Impact-Pack.SEGSDetailer"(p: IN['Impact-Pack.SEGSDetailer'], meta?: ComfyNodeMetadata): Node['Impact-Pack.SEGSDetailer']
           /** displayName="SEGSPaste" category="ImpactPack_Detailer" name="SEGSPaste" output=[IMAGE] */
-         "Impact_Pack.SEGSPaste"(p: IN['Impact_Pack.SEGSPaste'], meta?: ComfyNodeMetadata): Node['Impact_Pack.SEGSPaste']
+         "Impact-Pack.SEGSPaste"(p: IN['Impact-Pack.SEGSPaste'], meta?: ComfyNodeMetadata): Node['Impact-Pack.SEGSPaste']
           /** displayName="SEGSPreview" category="ImpactPack_Util" name="SEGSPreview" output=[IMAGE] */
-         "Impact_Pack.SEGSPreview"(p: IN['Impact_Pack.SEGSPreview'], meta?: ComfyNodeMetadata): Node['Impact_Pack.SEGSPreview']
+         "Impact-Pack.SEGSPreview"(p: IN['Impact-Pack.SEGSPreview'], meta?: ComfyNodeMetadata): Node['Impact-Pack.SEGSPreview']
           /** displayName="SEGSPreview (CNET Image)" category="ImpactPack_Util" name="SEGSPreviewCNet" output=[IMAGE] */
-         "Impact_Pack.SEGSPreviewCNet"(p: IN['Impact_Pack.SEGSPreviewCNet'], meta?: ComfyNodeMetadata): Node['Impact_Pack.SEGSPreviewCNet']
+         "Impact-Pack.SEGSPreviewCNet"(p: IN['Impact-Pack.SEGSPreviewCNet'], meta?: ComfyNodeMetadata): Node['Impact-Pack.SEGSPreviewCNet']
           /** displayName="SEGSToImageList" category="ImpactPack_Util" name="SEGSToImageList" output=[IMAGE] */
-         "Impact_Pack.SEGSToImageList"(p: IN['Impact_Pack.SEGSToImageList'], meta?: ComfyNodeMetadata): Node['Impact_Pack.SEGSToImageList']
+         "Impact-Pack.SEGSToImageList"(p: IN['Impact-Pack.SEGSToImageList'], meta?: ComfyNodeMetadata): Node['Impact-Pack.SEGSToImageList']
           /** displayName="SEGS to Mask List" category="ImpactPack_Util" name="ImpactSEGSToMaskList" output=[MASK] */
-         "Impact_Pack.ImpactSEGSToMaskList"(p: IN['Impact_Pack.ImpactSEGSToMaskList'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactSEGSToMaskList']
+         "Impact-Pack.ImpactSEGSToMaskList"(p: IN['Impact-Pack.ImpactSEGSToMaskList'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactSEGSToMaskList']
           /** displayName="SEGS to Mask Batch" category="ImpactPack_Util" name="ImpactSEGSToMaskBatch" output=[MASK] */
-         "Impact_Pack.ImpactSEGSToMaskBatch"(p: IN['Impact_Pack.ImpactSEGSToMaskBatch'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactSEGSToMaskBatch']
+         "Impact-Pack.ImpactSEGSToMaskBatch"(p: IN['Impact-Pack.ImpactSEGSToMaskBatch'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactSEGSToMaskBatch']
           /** displayName="SEGS Concat" category="ImpactPack_Util" name="ImpactSEGSConcat" output=[SEGS] */
-         "Impact_Pack.ImpactSEGSConcat"(p: IN['Impact_Pack.ImpactSEGSConcat'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactSEGSConcat']
+         "Impact-Pack.ImpactSEGSConcat"(p: IN['Impact-Pack.ImpactSEGSConcat'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactSEGSConcat']
           /** displayName="Picker (SEGS)" category="ImpactPack_Util" name="ImpactSEGSPicker" output=[SEGS] */
-         "Impact_Pack.ImpactSEGSPicker"(p: IN['Impact_Pack.ImpactSEGSPicker'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactSEGSPicker']
+         "Impact-Pack.ImpactSEGSPicker"(p: IN['Impact-Pack.ImpactSEGSPicker'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactSEGSPicker']
           /** displayName="Make Tile SEGS" category="ImpactPack___for_testing" name="ImpactMakeTileSEGS" output=[SEGS] */
-         "Impact_Pack.ImpactMakeTileSEGS"(p: IN['Impact_Pack.ImpactMakeTileSEGS'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactMakeTileSEGS']
+         "Impact-Pack.ImpactMakeTileSEGS"(p: IN['Impact-Pack.ImpactMakeTileSEGS'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactMakeTileSEGS']
          /**
           * SEGS contains multiple SEGs. SEGS Merge integrates several SEGs into a single merged SEG. The label is changed to `merged` and the confidence becomes the minimum confidence. The applied controlnet and cropped_image are removed.
           * displayName="SEGS Merge" category="ImpactPack_Util" name="ImpactSEGSMerge" output=[SEGS]
          **/
-         "Impact_Pack.ImpactSEGSMerge"(p: IN['Impact_Pack.ImpactSEGSMerge'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactSEGSMerge']
+         "Impact-Pack.ImpactSEGSMerge"(p: IN['Impact-Pack.ImpactSEGSMerge'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactSEGSMerge']
           /** displayName="SEGSDetailer For AnimateDiff (SEGS/pipe)" category="ImpactPack_Detailer" name="SEGSDetailerForAnimateDiff" output=[segs, cnet_images] */
-         "Impact_Pack.SEGSDetailerForAnimateDiff"(p: IN['Impact_Pack.SEGSDetailerForAnimateDiff'], meta?: ComfyNodeMetadata): Node['Impact_Pack.SEGSDetailerForAnimateDiff']
+         "Impact-Pack.SEGSDetailerForAnimateDiff"(p: IN['Impact-Pack.SEGSDetailerForAnimateDiff'], meta?: ComfyNodeMetadata): Node['Impact-Pack.SEGSDetailerForAnimateDiff']
           /** displayName="KSampler (pipe)" category="ImpactPack_sampling" name="ImpactKSamplerBasicPipe" output=[BASIC_PIPE, LATENT, VAE] */
-         "Impact_Pack.ImpactKSamplerBasicPipe"(p: IN['Impact_Pack.ImpactKSamplerBasicPipe'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactKSamplerBasicPipe']
+         "Impact-Pack.ImpactKSamplerBasicPipe"(p: IN['Impact-Pack.ImpactKSamplerBasicPipe'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactKSamplerBasicPipe']
           /** displayName="KSampler (Advanced/pipe)" category="ImpactPack_sampling" name="ImpactKSamplerAdvancedBasicPipe" output=[BASIC_PIPE, LATENT, VAE] */
-         "Impact_Pack.ImpactKSamplerAdvancedBasicPipe"(p: IN['Impact_Pack.ImpactKSamplerAdvancedBasicPipe'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactKSamplerAdvancedBasicPipe']
+         "Impact-Pack.ImpactKSamplerAdvancedBasicPipe"(p: IN['Impact-Pack.ImpactKSamplerAdvancedBasicPipe'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactKSamplerAdvancedBasicPipe']
           /** displayName="Reencode Latent" category="ImpactPack_Util" name="ReencodeLatent" output=[LATENT] */
-         "Impact_Pack.ReencodeLatent"(p: IN['Impact_Pack.ReencodeLatent'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ReencodeLatent']
+         "Impact-Pack.ReencodeLatent"(p: IN['Impact-Pack.ReencodeLatent'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ReencodeLatent']
           /** displayName="Reencode Latent (pipe)" category="ImpactPack_Util" name="ReencodeLatentPipe" output=[LATENT] */
-         "Impact_Pack.ReencodeLatentPipe"(p: IN['Impact_Pack.ReencodeLatentPipe'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ReencodeLatentPipe']
+         "Impact-Pack.ReencodeLatentPipe"(p: IN['Impact-Pack.ReencodeLatentPipe'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ReencodeLatentPipe']
           /** displayName="Image Batch to Image List" category="ImpactPack_Util" name="ImpactImageBatchToImageList" output=[IMAGE] */
-         "Impact_Pack.ImpactImageBatchToImageList"(p: IN['Impact_Pack.ImpactImageBatchToImageList'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactImageBatchToImageList']
+         "Impact-Pack.ImpactImageBatchToImageList"(p: IN['Impact-Pack.ImpactImageBatchToImageList'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactImageBatchToImageList']
           /** displayName="Make Image List" category="ImpactPack_Util" name="ImpactMakeImageList" output=[IMAGE] */
-         "Impact_Pack.ImpactMakeImageList"(p: IN['Impact_Pack.ImpactMakeImageList'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactMakeImageList']
+         "Impact-Pack.ImpactMakeImageList"(p: IN['Impact-Pack.ImpactMakeImageList'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactMakeImageList']
           /** displayName="Make Image Batch" category="ImpactPack_Util" name="ImpactMakeImageBatch" output=[IMAGE] */
-         "Impact_Pack.ImpactMakeImageBatch"(p: IN['Impact_Pack.ImpactMakeImageBatch'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactMakeImageBatch']
+         "Impact-Pack.ImpactMakeImageBatch"(p: IN['Impact-Pack.ImpactMakeImageBatch'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactMakeImageBatch']
           /** displayName="Make List (Any)" category="ImpactPack_Util" name="ImpactMakeAnyList" output=[*] */
-         "Impact_Pack.ImpactMakeAnyList"(p: IN['Impact_Pack.ImpactMakeAnyList'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactMakeAnyList']
+         "Impact-Pack.ImpactMakeAnyList"(p: IN['Impact-Pack.ImpactMakeAnyList'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactMakeAnyList']
           /** displayName="Make Mask List" category="ImpactPack_Util" name="ImpactMakeMaskList" output=[MASK] */
-         "Impact_Pack.ImpactMakeMaskList"(p: IN['Impact_Pack.ImpactMakeMaskList'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactMakeMaskList']
+         "Impact-Pack.ImpactMakeMaskList"(p: IN['Impact-Pack.ImpactMakeMaskList'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactMakeMaskList']
           /** displayName="Make Mask Batch" category="ImpactPack_Util" name="ImpactMakeMaskBatch" output=[MASK] */
-         "Impact_Pack.ImpactMakeMaskBatch"(p: IN['Impact_Pack.ImpactMakeMaskBatch'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactMakeMaskBatch']
+         "Impact-Pack.ImpactMakeMaskBatch"(p: IN['Impact-Pack.ImpactMakeMaskBatch'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactMakeMaskBatch']
           /** displayName="RegionalSampler" category="ImpactPack_Regional" name="RegionalSampler" output=[LATENT] */
-         "Impact_Pack.RegionalSampler"(p: IN['Impact_Pack.RegionalSampler'], meta?: ComfyNodeMetadata): Node['Impact_Pack.RegionalSampler']
+         "Impact-Pack.RegionalSampler"(p: IN['Impact-Pack.RegionalSampler'], meta?: ComfyNodeMetadata): Node['Impact-Pack.RegionalSampler']
           /** displayName="RegionalSamplerAdvanced" category="ImpactPack_Regional" name="RegionalSamplerAdvanced" output=[LATENT] */
-         "Impact_Pack.RegionalSamplerAdvanced"(p: IN['Impact_Pack.RegionalSamplerAdvanced'], meta?: ComfyNodeMetadata): Node['Impact_Pack.RegionalSamplerAdvanced']
+         "Impact-Pack.RegionalSamplerAdvanced"(p: IN['Impact-Pack.RegionalSamplerAdvanced'], meta?: ComfyNodeMetadata): Node['Impact-Pack.RegionalSamplerAdvanced']
           /** displayName="CombineRegionalPrompts" category="ImpactPack_Regional" name="CombineRegionalPrompts" output=[REGIONAL_PROMPTS] */
-         "Impact_Pack.CombineRegionalPrompts"(p: IN['Impact_Pack.CombineRegionalPrompts'], meta?: ComfyNodeMetadata): Node['Impact_Pack.CombineRegionalPrompts']
+         "Impact-Pack.CombineRegionalPrompts"(p: IN['Impact-Pack.CombineRegionalPrompts'], meta?: ComfyNodeMetadata): Node['Impact-Pack.CombineRegionalPrompts']
           /** displayName="RegionalPrompt" category="ImpactPack_Regional" name="RegionalPrompt" output=[REGIONAL_PROMPTS] */
-         "Impact_Pack.RegionalPrompt"(p: IN['Impact_Pack.RegionalPrompt'], meta?: ComfyNodeMetadata): Node['Impact_Pack.RegionalPrompt']
+         "Impact-Pack.RegionalPrompt"(p: IN['Impact-Pack.RegionalPrompt'], meta?: ComfyNodeMetadata): Node['Impact-Pack.RegionalPrompt']
           /** displayName="Combine Conditionings" category="ImpactPack_Util" name="ImpactCombineConditionings" output=[CONDITIONING] */
-         "Impact_Pack.ImpactCombineConditionings"(p: IN['Impact_Pack.ImpactCombineConditionings'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactCombineConditionings']
+         "Impact-Pack.ImpactCombineConditionings"(p: IN['Impact-Pack.ImpactCombineConditionings'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactCombineConditionings']
           /** displayName="Concat Conditionings" category="ImpactPack_Util" name="ImpactConcatConditionings" output=[CONDITIONING] */
-         "Impact_Pack.ImpactConcatConditionings"(p: IN['Impact_Pack.ImpactConcatConditionings'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactConcatConditionings']
+         "Impact-Pack.ImpactConcatConditionings"(p: IN['Impact-Pack.ImpactConcatConditionings'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactConcatConditionings']
           /** displayName="SEGS Assign (label)" category="ImpactPack_Util" name="ImpactSEGSLabelAssign" output=[SEGS] */
-         "Impact_Pack.ImpactSEGSLabelAssign"(p: IN['Impact_Pack.ImpactSEGSLabelAssign'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactSEGSLabelAssign']
+         "Impact-Pack.ImpactSEGSLabelAssign"(p: IN['Impact-Pack.ImpactSEGSLabelAssign'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactSEGSLabelAssign']
           /** displayName="SEGS Filter (label)" category="ImpactPack_Util" name="ImpactSEGSLabelFilter" output=[filtered_SEGS, remained_SEGS] */
-         "Impact_Pack.ImpactSEGSLabelFilter"(p: IN['Impact_Pack.ImpactSEGSLabelFilter'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactSEGSLabelFilter']
+         "Impact-Pack.ImpactSEGSLabelFilter"(p: IN['Impact-Pack.ImpactSEGSLabelFilter'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactSEGSLabelFilter']
           /** displayName="SEGS Filter (range)" category="ImpactPack_Util" name="ImpactSEGSRangeFilter" output=[filtered_SEGS, remained_SEGS] */
-         "Impact_Pack.ImpactSEGSRangeFilter"(p: IN['Impact_Pack.ImpactSEGSRangeFilter'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactSEGSRangeFilter']
+         "Impact-Pack.ImpactSEGSRangeFilter"(p: IN['Impact-Pack.ImpactSEGSRangeFilter'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactSEGSRangeFilter']
           /** displayName="SEGS Filter (ordered)" category="ImpactPack_Util" name="ImpactSEGSOrderedFilter" output=[filtered_SEGS, remained_SEGS] */
-         "Impact_Pack.ImpactSEGSOrderedFilter"(p: IN['Impact_Pack.ImpactSEGSOrderedFilter'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactSEGSOrderedFilter']
+         "Impact-Pack.ImpactSEGSOrderedFilter"(p: IN['Impact-Pack.ImpactSEGSOrderedFilter'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactSEGSOrderedFilter']
           /** displayName="ImpactCompare" category="ImpactPack_Logic" name="ImpactCompare" output=[BOOLEAN] */
-         "Impact_Pack.ImpactCompare"(p: IN['Impact_Pack.ImpactCompare'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactCompare']
+         "Impact-Pack.ImpactCompare"(p: IN['Impact-Pack.ImpactCompare'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactCompare']
           /** displayName="ImpactConditionalBranch" category="ImpactPack_Logic" name="ImpactConditionalBranch" output=[*] */
-         "Impact_Pack.ImpactConditionalBranch"(p: IN['Impact_Pack.ImpactConditionalBranch'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactConditionalBranch']
+         "Impact-Pack.ImpactConditionalBranch"(p: IN['Impact-Pack.ImpactConditionalBranch'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactConditionalBranch']
           /** displayName="ImpactConditionalBranchSelMode" category="ImpactPack_Logic" name="ImpactConditionalBranchSelMode" output=[*] */
-         "Impact_Pack.ImpactConditionalBranchSelMode"(p: IN['Impact_Pack.ImpactConditionalBranchSelMode'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactConditionalBranchSelMode']
+         "Impact-Pack.ImpactConditionalBranchSelMode"(p: IN['Impact-Pack.ImpactConditionalBranchSelMode'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactConditionalBranchSelMode']
           /** displayName="ImpactIfNone" category="ImpactPack_Logic" name="ImpactIfNone" output=[signal_opt, bool] */
-         "Impact_Pack.ImpactIfNone"(p: IN['Impact_Pack.ImpactIfNone'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactIfNone']
+         "Impact-Pack.ImpactIfNone"(p: IN['Impact-Pack.ImpactIfNone'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactIfNone']
           /** displayName="ImpactConvertDataType" category="ImpactPack_Logic" name="ImpactConvertDataType" output=[STRING, FLOAT, INT, BOOLEAN] */
-         "Impact_Pack.ImpactConvertDataType"(p: IN['Impact_Pack.ImpactConvertDataType'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactConvertDataType']
+         "Impact-Pack.ImpactConvertDataType"(p: IN['Impact-Pack.ImpactConvertDataType'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactConvertDataType']
           /** displayName="ImpactLogicalOperators" category="ImpactPack_Logic" name="ImpactLogicalOperators" output=[BOOLEAN] */
-         "Impact_Pack.ImpactLogicalOperators"(p: IN['Impact_Pack.ImpactLogicalOperators'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactLogicalOperators']
+         "Impact-Pack.ImpactLogicalOperators"(p: IN['Impact-Pack.ImpactLogicalOperators'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactLogicalOperators']
           /** displayName="ImpactInt" category="ImpactPack_Logic" name="ImpactInt" output=[INT] */
-         "Impact_Pack.ImpactInt"(p: IN['Impact_Pack.ImpactInt'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactInt']
+         "Impact-Pack.ImpactInt"(p: IN['Impact-Pack.ImpactInt'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactInt']
           /** displayName="ImpactFloat" category="ImpactPack_Logic" name="ImpactFloat" output=[FLOAT] */
-         "Impact_Pack.ImpactFloat"(p: IN['Impact_Pack.ImpactFloat'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactFloat']
+         "Impact-Pack.ImpactFloat"(p: IN['Impact-Pack.ImpactFloat'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactFloat']
           /** displayName="ImpactBoolean" category="ImpactPack_Logic" name="ImpactBoolean" output=[BOOLEAN] */
-         "Impact_Pack.ImpactBoolean"(p: IN['Impact_Pack.ImpactBoolean'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactBoolean']
+         "Impact-Pack.ImpactBoolean"(p: IN['Impact-Pack.ImpactBoolean'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactBoolean']
           /** displayName="ImpactValueSender" category="ImpactPack_Logic" name="ImpactValueSender" output=[signal] */
-         "Impact_Pack.ImpactValueSender"(p: IN['Impact_Pack.ImpactValueSender'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactValueSender']
+         "Impact-Pack.ImpactValueSender"(p: IN['Impact-Pack.ImpactValueSender'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactValueSender']
           /** displayName="ImpactValueReceiver" category="ImpactPack_Logic" name="ImpactValueReceiver" output=[*] */
-         "Impact_Pack.ImpactValueReceiver"(p: IN['Impact_Pack.ImpactValueReceiver'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactValueReceiver']
+         "Impact-Pack.ImpactValueReceiver"(p: IN['Impact-Pack.ImpactValueReceiver'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactValueReceiver']
           /** displayName="ImpactImageInfo" category="ImpactPack_Logic__for_test" name="ImpactImageInfo" output=[batch, height, width, channel] */
-         "Impact_Pack.ImpactImageInfo"(p: IN['Impact_Pack.ImpactImageInfo'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactImageInfo']
+         "Impact-Pack.ImpactImageInfo"(p: IN['Impact-Pack.ImpactImageInfo'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactImageInfo']
           /** displayName="ImpactLatentInfo" category="ImpactPack_Logic__for_test" name="ImpactLatentInfo" output=[batch, height, width, channel] */
-         "Impact_Pack.ImpactLatentInfo"(p: IN['Impact_Pack.ImpactLatentInfo'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactLatentInfo']
+         "Impact-Pack.ImpactLatentInfo"(p: IN['Impact-Pack.ImpactLatentInfo'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactLatentInfo']
           /** displayName="ImpactMinMax" category="ImpactPack_Logic__for_test" name="ImpactMinMax" output=[INT] */
-         "Impact_Pack.ImpactMinMax"(p: IN['Impact_Pack.ImpactMinMax'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactMinMax']
+         "Impact-Pack.ImpactMinMax"(p: IN['Impact-Pack.ImpactMinMax'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactMinMax']
           /** displayName="ImpactNeg" category="ImpactPack_Logic" name="ImpactNeg" output=[BOOLEAN] */
-         "Impact_Pack.ImpactNeg"(p: IN['Impact_Pack.ImpactNeg'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactNeg']
+         "Impact-Pack.ImpactNeg"(p: IN['Impact-Pack.ImpactNeg'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactNeg']
           /** displayName="ImpactConditionalStopIteration" category="ImpactPack_Logic" name="ImpactConditionalStopIteration" output=[] */
-         "Impact_Pack.ImpactConditionalStopIteration"(p: IN['Impact_Pack.ImpactConditionalStopIteration'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactConditionalStopIteration']
+         "Impact-Pack.ImpactConditionalStopIteration"(p: IN['Impact-Pack.ImpactConditionalStopIteration'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactConditionalStopIteration']
           /** displayName="String Selector" category="ImpactPack_Util" name="ImpactStringSelector" output=[STRING] */
-         "Impact_Pack.ImpactStringSelector"(p: IN['Impact_Pack.ImpactStringSelector'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactStringSelector']
+         "Impact-Pack.ImpactStringSelector"(p: IN['Impact-Pack.ImpactStringSelector'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactStringSelector']
           /** displayName="String List to String" category="ImpactPack_Util" name="StringListToString" output=[STRING] */
-         "Impact_Pack.StringListToString"(p: IN['Impact_Pack.StringListToString'], meta?: ComfyNodeMetadata): Node['Impact_Pack.StringListToString']
+         "Impact-Pack.StringListToString"(p: IN['Impact-Pack.StringListToString'], meta?: ComfyNodeMetadata): Node['Impact-Pack.StringListToString']
           /** displayName="Wildcard Prompt from String" category="ImpactPack_Util" name="WildcardPromptFromString" output=[wildcard, segs_labels] */
-         "Impact_Pack.WildcardPromptFromString"(p: IN['Impact_Pack.WildcardPromptFromString'], meta?: ComfyNodeMetadata): Node['Impact_Pack.WildcardPromptFromString']
+         "Impact-Pack.WildcardPromptFromString"(p: IN['Impact-Pack.WildcardPromptFromString'], meta?: ComfyNodeMetadata): Node['Impact-Pack.WildcardPromptFromString']
           /** displayName="Execution Order Controller" category="ImpactPack_Util" name="ImpactExecutionOrderController" output=[signal, value] */
-         "Impact_Pack.ImpactExecutionOrderController"(p: IN['Impact_Pack.ImpactExecutionOrderController'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactExecutionOrderController']
+         "Impact-Pack.ImpactExecutionOrderController"(p: IN['Impact-Pack.ImpactExecutionOrderController'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactExecutionOrderController']
           /** displayName="Remove Noise Mask" category="ImpactPack_Util" name="RemoveNoiseMask" output=[LATENT] */
-         "Impact_Pack.RemoveNoiseMask"(p: IN['Impact_Pack.RemoveNoiseMask'], meta?: ComfyNodeMetadata): Node['Impact_Pack.RemoveNoiseMask']
+         "Impact-Pack.RemoveNoiseMask"(p: IN['Impact-Pack.RemoveNoiseMask'], meta?: ComfyNodeMetadata): Node['Impact-Pack.RemoveNoiseMask']
           /** displayName="ImpactLogger" category="ImpactPack_Debug" name="ImpactLogger" output=[] */
-         "Impact_Pack.ImpactLogger"(p: IN['Impact_Pack.ImpactLogger'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactLogger']
+         "Impact-Pack.ImpactLogger"(p: IN['Impact-Pack.ImpactLogger'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactLogger']
           /** displayName="ImpactDummyInput" category="ImpactPack_Debug" name="ImpactDummyInput" output=[*] */
-         "Impact_Pack.ImpactDummyInput"(p: IN['Impact_Pack.ImpactDummyInput'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactDummyInput']
+         "Impact-Pack.ImpactDummyInput"(p: IN['Impact-Pack.ImpactDummyInput'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactDummyInput']
           /** displayName="Queue Trigger" category="ImpactPack_Logic__for_test" name="ImpactQueueTrigger" output=[signal_opt] */
-         "Impact_Pack.ImpactQueueTrigger"(p: IN['Impact_Pack.ImpactQueueTrigger'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactQueueTrigger']
+         "Impact-Pack.ImpactQueueTrigger"(p: IN['Impact-Pack.ImpactQueueTrigger'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactQueueTrigger']
           /** displayName="Queue Trigger (Countdown)" category="ImpactPack_Logic__for_test" name="ImpactQueueTriggerCountdown" output=[signal_opt, count, total] */
-         "Impact_Pack.ImpactQueueTriggerCountdown"(p: IN['Impact_Pack.ImpactQueueTriggerCountdown'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactQueueTriggerCountdown']
+         "Impact-Pack.ImpactQueueTriggerCountdown"(p: IN['Impact-Pack.ImpactQueueTriggerCountdown'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactQueueTriggerCountdown']
           /** displayName="Set Widget Value" category="ImpactPack_Logic__for_test" name="ImpactSetWidgetValue" output=[signal_opt] */
-         "Impact_Pack.ImpactSetWidgetValue"(p: IN['Impact_Pack.ImpactSetWidgetValue'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactSetWidgetValue']
+         "Impact-Pack.ImpactSetWidgetValue"(p: IN['Impact-Pack.ImpactSetWidgetValue'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactSetWidgetValue']
           /** displayName="Set Mute State" category="ImpactPack_Logic__for_test" name="ImpactNodeSetMuteState" output=[signal_opt] */
-         "Impact_Pack.ImpactNodeSetMuteState"(p: IN['Impact_Pack.ImpactNodeSetMuteState'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactNodeSetMuteState']
+         "Impact-Pack.ImpactNodeSetMuteState"(p: IN['Impact-Pack.ImpactNodeSetMuteState'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactNodeSetMuteState']
          /**
           * When behavior is Stop and mode is active, the input value is passed directly to the output.
           * When behavior is Mute/Bypass and mode is active, the node connected to the output is changed to active state.
@@ -13417,25 +13590,25 @@ declare global {
           * When behavior is Mute/Bypass and mode is Stop/Mute/Bypass, the node connected to the output is changed to Mute/Bypass state.
           * displayName="Control Bridge" category="ImpactPack_Logic" name="ImpactControlBridge" output=[value]
          **/
-         "Impact_Pack.ImpactControlBridge"(p: IN['Impact_Pack.ImpactControlBridge'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactControlBridge']
+         "Impact-Pack.ImpactControlBridge"(p: IN['Impact-Pack.ImpactControlBridge'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactControlBridge']
           /** displayName="SEGS isn't Empty" category="ImpactPack_Logic" name="ImpactIsNotEmptySEGS" output=[BOOLEAN] */
-         "Impact_Pack.ImpactIsNotEmptySEGS"(p: IN['Impact_Pack.ImpactIsNotEmptySEGS'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactIsNotEmptySEGS']
+         "Impact-Pack.ImpactIsNotEmptySEGS"(p: IN['Impact-Pack.ImpactIsNotEmptySEGS'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactIsNotEmptySEGS']
           /** displayName="Sleep" category="ImpactPack_Logic__for_test" name="ImpactSleep" output=[signal_opt] */
-         "Impact_Pack.ImpactSleep"(p: IN['Impact_Pack.ImpactSleep'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactSleep']
+         "Impact-Pack.ImpactSleep"(p: IN['Impact-Pack.ImpactSleep'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactSleep']
           /** displayName="Remote Boolean (on prompt)" category="ImpactPack_Logic__for_test" name="ImpactRemoteBoolean" output=[] */
-         "Impact_Pack.ImpactRemoteBoolean"(p: IN['Impact_Pack.ImpactRemoteBoolean'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactRemoteBoolean']
+         "Impact-Pack.ImpactRemoteBoolean"(p: IN['Impact-Pack.ImpactRemoteBoolean'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactRemoteBoolean']
           /** displayName="Remote Int (on prompt)" category="ImpactPack_Logic__for_test" name="ImpactRemoteInt" output=[] */
-         "Impact_Pack.ImpactRemoteInt"(p: IN['Impact_Pack.ImpactRemoteInt'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactRemoteInt']
+         "Impact-Pack.ImpactRemoteInt"(p: IN['Impact-Pack.ImpactRemoteInt'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactRemoteInt']
           /** displayName="HF Transformers Classifier Provider" category="ImpactPack_HuggingFace" name="ImpactHFTransformersClassifierProvider" output=[TRANSFORMERS_CLASSIFIER] */
-         "Impact_Pack.ImpactHFTransformersClassifierProvider"(p: IN['Impact_Pack.ImpactHFTransformersClassifierProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactHFTransformersClassifierProvider']
+         "Impact-Pack.ImpactHFTransformersClassifierProvider"(p: IN['Impact-Pack.ImpactHFTransformersClassifierProvider'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactHFTransformersClassifierProvider']
           /** displayName="SEGS Classify" category="ImpactPack_HuggingFace" name="ImpactSEGSClassify" output=[filtered_SEGS, remained_SEGS, detected_labels] */
-         "Impact_Pack.ImpactSEGSClassify"(p: IN['Impact_Pack.ImpactSEGSClassify'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactSEGSClassify']
+         "Impact-Pack.ImpactSEGSClassify"(p: IN['Impact-Pack.ImpactSEGSClassify'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactSEGSClassify']
           /** displayName="Impact Scheduler Adapter" category="ImpactPack_Util" name="ImpactSchedulerAdapter" output=[scheduler] */
-         "Impact_Pack.ImpactSchedulerAdapter"(p: IN['Impact_Pack.ImpactSchedulerAdapter'], meta?: ComfyNodeMetadata): Node['Impact_Pack.ImpactSchedulerAdapter']
+         "Impact-Pack.ImpactSchedulerAdapter"(p: IN['Impact-Pack.ImpactSchedulerAdapter'], meta?: ComfyNodeMetadata): Node['Impact-Pack.ImpactSchedulerAdapter']
           /** displayName="GITSScheduler Func Provider" category="ImpactPack_sampling" name="GITSSchedulerFuncProvider" output=[SCHEDULER_FUNC] */
-         "Impact_Pack.GITSSchedulerFuncProvider"(p: IN['Impact_Pack.GITSSchedulerFuncProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.GITSSchedulerFuncProvider']
+         "Impact-Pack.GITSSchedulerFuncProvider"(p: IN['Impact-Pack.GITSSchedulerFuncProvider'], meta?: ComfyNodeMetadata): Node['Impact-Pack.GITSSchedulerFuncProvider']
           /** displayName="UltralyticsDetectorProvider" category="ImpactPack" name="UltralyticsDetectorProvider" output=[BBOX_DETECTOR, SEGM_DETECTOR] */
-         "Impact_Pack.UltralyticsDetectorProvider"(p: IN['Impact_Pack.UltralyticsDetectorProvider'], meta?: ComfyNodeMetadata): Node['Impact_Pack.UltralyticsDetectorProvider']
+         "Impact-Pack.UltralyticsDetectorProvider"(p: IN['Impact-Pack.UltralyticsDetectorProvider'], meta?: ComfyNodeMetadata): Node['Impact-Pack.UltralyticsDetectorProvider']
          /**
           * This is a test node
           * displayName="UnknownNodeXX" category="test" name="UnknownNodeXX" output=[]
@@ -13449,41 +13622,41 @@ declare global {
          "KSamplerSelect.sampler_name": Union['E_SamplerName']
          "was.KSampler (WAS).sampler_name": Union['E_SamplerName']
          "was.KSampler Cycle.sampler_name": Union['E_SamplerName']
-         "Impact_Pack.DetailerForEach.sampler_name": Union['E_SamplerName']
-         "Impact_Pack.DetailerForEachDebug.sampler_name": Union['E_SamplerName']
-         "Impact_Pack.DetailerForEachPipe.sampler_name": Union['E_SamplerName']
-         "Impact_Pack.DetailerForEachDebugPipe.sampler_name": Union['E_SamplerName']
-         "Impact_Pack.DetailerForEachPipeForAnimateDiff.sampler_name": Union['E_SamplerName']
-         "Impact_Pack.FaceDetailer.sampler_name": Union['E_SamplerName']
-         "Impact_Pack.FaceDetailerPipe.sampler_name": Union['E_SamplerName']
-         "Impact_Pack.MaskDetailerPipe.sampler_name": Union['E_SamplerName']
-         "Impact_Pack.PixelKSampleUpscalerProvider.sampler_name": Union['E_SamplerName']
-         "Impact_Pack.PixelKSampleUpscalerProviderPipe.sampler_name": Union['E_SamplerName']
-         "Impact_Pack.PixelTiledKSampleUpscalerProvider.sampler_name": Union['E_SamplerName']
-         "Impact_Pack.PixelTiledKSampleUpscalerProviderPipe.sampler_name": Union['E_SamplerName']
-         "Impact_Pack.UnsamplerHookProvider.sampler_name": Union['E_SamplerName']
-         "Impact_Pack.UnsamplerDetailerHookProvider.sampler_name": Union['E_SamplerName']
-         "Impact_Pack.KSamplerProvider.sampler_name": Union['E_SamplerName']
-         "Impact_Pack.TiledKSamplerProvider.sampler_name": Union['E_SamplerName']
-         "Impact_Pack.KSamplerAdvancedProvider.sampler_name": Union['E_SamplerName']
-         "Impact_Pack.SEGSUpscaler.sampler_name": Union['E_SamplerName']
-         "Impact_Pack.SEGSUpscalerPipe.sampler_name": Union['E_SamplerName']
-         "Impact_Pack.SEGSDetailer.sampler_name": Union['E_SamplerName']
-         "Impact_Pack.SEGSDetailerForAnimateDiff.sampler_name": Union['E_SamplerName']
-         "Impact_Pack.ImpactKSamplerBasicPipe.sampler_name": Union['E_SamplerName']
-         "Impact_Pack.ImpactKSamplerAdvancedBasicPipe.sampler_name": Union['E_SamplerName']
+         "Impact-Pack.DetailerForEach.sampler_name": Union['E_SamplerName']
+         "Impact-Pack.DetailerForEachDebug.sampler_name": Union['E_SamplerName']
+         "Impact-Pack.DetailerForEachPipe.sampler_name": Union['E_SamplerName']
+         "Impact-Pack.DetailerForEachDebugPipe.sampler_name": Union['E_SamplerName']
+         "Impact-Pack.DetailerForEachPipeForAnimateDiff.sampler_name": Union['E_SamplerName']
+         "Impact-Pack.FaceDetailer.sampler_name": Union['E_SamplerName']
+         "Impact-Pack.FaceDetailerPipe.sampler_name": Union['E_SamplerName']
+         "Impact-Pack.MaskDetailerPipe.sampler_name": Union['E_SamplerName']
+         "Impact-Pack.PixelKSampleUpscalerProvider.sampler_name": Union['E_SamplerName']
+         "Impact-Pack.PixelKSampleUpscalerProviderPipe.sampler_name": Union['E_SamplerName']
+         "Impact-Pack.PixelTiledKSampleUpscalerProvider.sampler_name": Union['E_SamplerName']
+         "Impact-Pack.PixelTiledKSampleUpscalerProviderPipe.sampler_name": Union['E_SamplerName']
+         "Impact-Pack.UnsamplerHookProvider.sampler_name": Union['E_SamplerName']
+         "Impact-Pack.UnsamplerDetailerHookProvider.sampler_name": Union['E_SamplerName']
+         "Impact-Pack.KSamplerProvider.sampler_name": Union['E_SamplerName']
+         "Impact-Pack.TiledKSamplerProvider.sampler_name": Union['E_SamplerName']
+         "Impact-Pack.KSamplerAdvancedProvider.sampler_name": Union['E_SamplerName']
+         "Impact-Pack.SEGSUpscaler.sampler_name": Union['E_SamplerName']
+         "Impact-Pack.SEGSUpscalerPipe.sampler_name": Union['E_SamplerName']
+         "Impact-Pack.SEGSDetailer.sampler_name": Union['E_SamplerName']
+         "Impact-Pack.SEGSDetailerForAnimateDiff.sampler_name": Union['E_SamplerName']
+         "Impact-Pack.ImpactKSamplerBasicPipe.sampler_name": Union['E_SamplerName']
+         "Impact-Pack.ImpactKSamplerAdvancedBasicPipe.sampler_name": Union['E_SamplerName']
          // E_SchedulerName
          "KSampler.scheduler": Union['E_SchedulerName']
          "KSamplerAdvanced.scheduler": Union['E_SchedulerName']
          "BasicScheduler.scheduler": Union['E_SchedulerName']
          "was.KSampler (WAS).scheduler": Union['E_SchedulerName']
          "was.KSampler Cycle.scheduler": Union['E_SchedulerName']
-         "Impact_Pack.PixelTiledKSampleUpscalerProvider.scheduler": Union['E_SchedulerName']
-         "Impact_Pack.PixelTiledKSampleUpscalerProviderPipe.scheduler": Union['E_SchedulerName']
-         "Impact_Pack.UnsamplerHookProvider.scheduler": Union['E_SchedulerName']
-         "Impact_Pack.UnsamplerDetailerHookProvider.scheduler": Union['E_SchedulerName']
-         "Impact_Pack.TiledKSamplerProvider.scheduler": Union['E_SchedulerName']
-         "Impact_Pack.ImpactSchedulerAdapter.scheduler": Union['E_SchedulerName']
+         "Impact-Pack.PixelTiledKSampleUpscalerProvider.scheduler": Union['E_SchedulerName']
+         "Impact-Pack.PixelTiledKSampleUpscalerProviderPipe.scheduler": Union['E_SchedulerName']
+         "Impact-Pack.UnsamplerHookProvider.scheduler": Union['E_SchedulerName']
+         "Impact-Pack.UnsamplerDetailerHookProvider.scheduler": Union['E_SchedulerName']
+         "Impact-Pack.TiledKSamplerProvider.scheduler": Union['E_SchedulerName']
+         "Impact-Pack.ImpactSchedulerAdapter.scheduler": Union['E_SchedulerName']
          // E_CkptName
          "CheckpointLoaderSimple.ckpt_name": Union['E_CkptName']
          "unCLIPCheckpointLoader.ckpt_name": Union['E_CkptName']
@@ -13506,7 +13679,7 @@ declare global {
          // E_Image
          "LoadImage.image": Union['E_Image']
          "LoadImageMask.image": Union['E_Image']
-         "Impact_Pack.ImageReceiver.image": Union['E_Image']
+         "Impact-Pack.ImageReceiver.image": Union['E_Image']
          // E_Channel
          "LoadImageMask.channel": Union['E_Channel']
          "ImageToMask.channel": Union['E_Channel']
@@ -13539,8 +13712,8 @@ declare global {
          "controlnet_aux.OpenposePreprocessor.detect_face": Union['E_EnableOrDisable']
          "controlnet_aux.OpenposePreprocessor.scale_stick_for_xinsr_cn": Union['E_EnableOrDisable']
          "controlnet_aux.Scribble_PiDiNet_Preprocessor.safe": Union['E_EnableOrDisable']
-         "Impact_Pack.UnsamplerHookProvider.normalize": Union['E_EnableOrDisable']
-         "Impact_Pack.UnsamplerDetailerHookProvider.normalize": Union['E_EnableOrDisable']
+         "Impact-Pack.UnsamplerHookProvider.normalize": Union['E_EnableOrDisable']
+         "Impact-Pack.UnsamplerDetailerHookProvider.normalize": Union['E_EnableOrDisable']
          // E_Rotation
          "LatentRotate.rotation": Union['E_Rotation']
          // E_FlipMethod
@@ -13568,8 +13741,8 @@ declare global {
          "was.Diffusers Model Loader.model_path": Union['E_LoraName']
          "IPAdapter_plus.IPAdapterModelLoader.ipadapter_file": Union['E_LoraName']
          "IPAdapter_plus.IPAdapterLoadEmbeds.embeds": Union['E_LoraName']
-         "Impact_Pack.ONNXDetectorProvider.model_name": Union['E_LoraName']
-         "Impact_Pack.LatentReceiver.latent": Union['E_LoraName']
+         "Impact-Pack.ONNXDetectorProvider.model_name": Union['E_LoraName']
+         "Impact-Pack.LatentReceiver.latent": Union['E_LoraName']
          // E_ClipType
          "CLIPLoader.type": Union['E_ClipType']
          // E_WeightDType
@@ -13662,8 +13835,8 @@ declare global {
          "was.Text Add Tokens.print_current_tokens": Union['E_TrueOrFalse']
          "was.Text Add Token by Input.print_current_tokens": Union['E_TrueOrFalse']
          "was.Text Concatenate.clean_whitespace": Union['E_TrueOrFalse']
-         "Impact_Pack.SEGSUpscaler.supersample": Union['E_TrueOrFalse']
-         "Impact_Pack.SEGSUpscalerPipe.supersample": Union['E_TrueOrFalse']
+         "Impact-Pack.SEGSUpscaler.supersample": Union['E_TrueOrFalse']
+         "Impact-Pack.SEGSUpscalerPipe.supersample": Union['E_TrueOrFalse']
          // E_3f15cd9d
          "was.Create Morph Image.filetype": Union['E_3f15cd9d']
          "was.Create Morph Image from Path.filetype": Union['E_3f15cd9d']
@@ -13724,8 +13897,8 @@ declare global {
          // E_bac912b5
          "was.Image Resize.resampling": Union['E_bac912b5']
          "was.KSampler Cycle.scale_sampling": Union['E_bac912b5']
-         "Impact_Pack.SEGSUpscaler.resampling_method": Union['E_bac912b5']
-         "Impact_Pack.SEGSUpscalerPipe.resampling_method": Union['E_bac912b5']
+         "Impact-Pack.SEGSUpscaler.resampling_method": Union['E_bac912b5']
+         "Impact-Pack.SEGSUpscalerPipe.resampling_method": Union['E_bac912b5']
          // E_b4cc3177
          "was.Image Rotate.mode": Union['E_b4cc3177']
          // E_678c8597
@@ -13817,7 +13990,7 @@ declare global {
          "IPAdapter_plus.IPAdapterPreciseStyleTransferBatch.combine_embeds": Union['E_055d80a7']
          "IPAdapter_plus.IPAdapterPreciseComposition.combine_embeds": Union['E_055d80a7']
          "IPAdapter_plus.IPAdapterPreciseCompositionBatch.combine_embeds": Union['E_055d80a7']
-         "Impact_Pack.ImpactIPAdapterApplySEGS.combine_embeds": Union['E_055d80a7']
+         "Impact-Pack.ImpactIPAdapterApplySEGS.combine_embeds": Union['E_055d80a7']
          // E_434e3bb7
          "IPAdapter_plus.IPAdapterAdvanced.embeds_scaling": Union['E_434e3bb7']
          "IPAdapter_plus.IPAdapterBatch.embeds_scaling": Union['E_434e3bb7']
@@ -13862,6 +14035,25 @@ declare global {
          "IPAdapter_plus.IPAdapterWeights.timing": Union['E_0f767df7']
          // E_45d8f77c
          "IPAdapter_plus.IPAdapterWeights.method": Union['E_45d8f77c']
+         // E_8ad80a1d
+         "ComfyUi_NNLatentUpscale.NNLatentUpscale.version": Union['E_8ad80a1d']
+         // E_5fc845cd
+         "sd-perturbed-attention.PerturbedAttention.unet_block": Union['E_5fc845cd']
+         "sd-perturbed-attention.SmoothedEnergyGuidanceAdvanced.unet_block": Union['E_5fc845cd']
+         "sd-perturbed-attention.TRTAttachPag.unet_block": Union['E_5fc845cd']
+         // E_b7de8175
+         "sd-perturbed-attention.PerturbedAttention.rescale_mode": Union['E_b7de8175']
+         "sd-perturbed-attention.SmoothedEnergyGuidanceAdvanced.rescale_mode": Union['E_b7de8175']
+         // E_72c64673
+         "sd-perturbed-attention.TRTPerturbedAttention.rescale_mode": Union['E_72c64673']
+         // E_71f8e797
+         "civitai_comfy_nodes.CivitAI_Lora_Loader.lora_name": Union['E_71f8e797']
+         // E_6c0bcc99
+         "civitai_comfy_nodes.CivitAI_Lora_Loader.download_path": Union['E_6c0bcc99']
+         // E_2c7b3727
+         "civitai_comfy_nodes.CivitAI_Checkpoint_Loader.ckpt_name": Union['E_2c7b3727']
+         // E_3d793aac
+         "civitai_comfy_nodes.CivitAI_Checkpoint_Loader.download_path": Union['E_3d793aac']
          // E_8de7e678
          "controlnet_aux.DensePosePreprocessor.model": Union['E_8de7e678']
          // E_621dc6c6
@@ -13918,217 +14110,217 @@ declare global {
          // E_e09dd9c0
          "Marigold.ColorizeDepthmap.colorize_method": Union['E_e09dd9c0']
          // E_40c77739
-         "Impact_Pack.SAMLoader.model_name": Union['E_40c77739']
+         "Impact-Pack.SAMLoader.model_name": Union['E_40c77739']
          // E_2ad445b9
-         "Impact_Pack.SAMLoader.device_mode": Union['E_2ad445b9']
-         "Impact_Pack.ImpactHFTransformersClassifierProvider.device_mode": Union['E_2ad445b9']
+         "Impact-Pack.SAMLoader.device_mode": Union['E_2ad445b9']
+         "Impact-Pack.ImpactHFTransformersClassifierProvider.device_mode": Union['E_2ad445b9']
          // E_720061fd
-         "Impact_Pack.DetailerForEach.scheduler": Union['E_720061fd']
-         "Impact_Pack.DetailerForEachDebug.scheduler": Union['E_720061fd']
-         "Impact_Pack.DetailerForEachPipe.scheduler": Union['E_720061fd']
-         "Impact_Pack.DetailerForEachDebugPipe.scheduler": Union['E_720061fd']
-         "Impact_Pack.DetailerForEachPipeForAnimateDiff.scheduler": Union['E_720061fd']
-         "Impact_Pack.FaceDetailer.scheduler": Union['E_720061fd']
-         "Impact_Pack.FaceDetailerPipe.scheduler": Union['E_720061fd']
-         "Impact_Pack.MaskDetailerPipe.scheduler": Union['E_720061fd']
-         "Impact_Pack.PixelKSampleUpscalerProvider.scheduler": Union['E_720061fd']
-         "Impact_Pack.PixelKSampleUpscalerProviderPipe.scheduler": Union['E_720061fd']
-         "Impact_Pack.KSamplerProvider.scheduler": Union['E_720061fd']
-         "Impact_Pack.KSamplerAdvancedProvider.scheduler": Union['E_720061fd']
-         "Impact_Pack.SEGSUpscaler.scheduler": Union['E_720061fd']
-         "Impact_Pack.SEGSUpscalerPipe.scheduler": Union['E_720061fd']
-         "Impact_Pack.SEGSDetailer.scheduler": Union['E_720061fd']
-         "Impact_Pack.SEGSDetailerForAnimateDiff.scheduler": Union['E_720061fd']
-         "Impact_Pack.ImpactKSamplerBasicPipe.scheduler": Union['E_720061fd']
-         "Impact_Pack.ImpactKSamplerAdvancedBasicPipe.scheduler": Union['E_720061fd']
-         "Impact_Pack.ImpactSchedulerAdapter.scheduler.OUT": Union['E_720061fd']
+         "Impact-Pack.DetailerForEach.scheduler": Union['E_720061fd']
+         "Impact-Pack.DetailerForEachDebug.scheduler": Union['E_720061fd']
+         "Impact-Pack.DetailerForEachPipe.scheduler": Union['E_720061fd']
+         "Impact-Pack.DetailerForEachDebugPipe.scheduler": Union['E_720061fd']
+         "Impact-Pack.DetailerForEachPipeForAnimateDiff.scheduler": Union['E_720061fd']
+         "Impact-Pack.FaceDetailer.scheduler": Union['E_720061fd']
+         "Impact-Pack.FaceDetailerPipe.scheduler": Union['E_720061fd']
+         "Impact-Pack.MaskDetailerPipe.scheduler": Union['E_720061fd']
+         "Impact-Pack.PixelKSampleUpscalerProvider.scheduler": Union['E_720061fd']
+         "Impact-Pack.PixelKSampleUpscalerProviderPipe.scheduler": Union['E_720061fd']
+         "Impact-Pack.KSamplerProvider.scheduler": Union['E_720061fd']
+         "Impact-Pack.KSamplerAdvancedProvider.scheduler": Union['E_720061fd']
+         "Impact-Pack.SEGSUpscaler.scheduler": Union['E_720061fd']
+         "Impact-Pack.SEGSUpscalerPipe.scheduler": Union['E_720061fd']
+         "Impact-Pack.SEGSDetailer.scheduler": Union['E_720061fd']
+         "Impact-Pack.SEGSDetailerForAnimateDiff.scheduler": Union['E_720061fd']
+         "Impact-Pack.ImpactKSamplerBasicPipe.scheduler": Union['E_720061fd']
+         "Impact-Pack.ImpactKSamplerAdvancedBasicPipe.scheduler": Union['E_720061fd']
+         "Impact-Pack.ImpactSchedulerAdapter.scheduler.OUT": Union['E_720061fd']
          // E_ImpactDetectionHint
-         "Impact_Pack.SAMDetectorCombined.detection_hint": Union['E_ImpactDetectionHint']
-         "Impact_Pack.SAMDetectorSegmented.detection_hint": Union['E_ImpactDetectionHint']
-         "Impact_Pack.FaceDetailer.sam_detection_hint": Union['E_ImpactDetectionHint']
-         "Impact_Pack.FaceDetailerPipe.sam_detection_hint": Union['E_ImpactDetectionHint']
+         "Impact-Pack.SAMDetectorCombined.detection_hint": Union['E_ImpactDetectionHint']
+         "Impact-Pack.SAMDetectorSegmented.detection_hint": Union['E_ImpactDetectionHint']
+         "Impact-Pack.FaceDetailer.sam_detection_hint": Union['E_ImpactDetectionHint']
+         "Impact-Pack.FaceDetailerPipe.sam_detection_hint": Union['E_ImpactDetectionHint']
          // E_aa302307
-         "Impact_Pack.SAMDetectorCombined.mask_hint_use_negative": Union['E_aa302307']
-         "Impact_Pack.SAMDetectorSegmented.mask_hint_use_negative": Union['E_aa302307']
-         "Impact_Pack.FaceDetailer.sam_mask_hint_use_negative": Union['E_aa302307']
-         "Impact_Pack.FaceDetailerPipe.sam_mask_hint_use_negative": Union['E_aa302307']
+         "Impact-Pack.SAMDetectorCombined.mask_hint_use_negative": Union['E_aa302307']
+         "Impact-Pack.SAMDetectorSegmented.mask_hint_use_negative": Union['E_aa302307']
+         "Impact-Pack.FaceDetailer.sam_mask_hint_use_negative": Union['E_aa302307']
+         "Impact-Pack.FaceDetailerPipe.sam_mask_hint_use_negative": Union['E_aa302307']
          // E_35e403c7
-         "Impact_Pack.ToDetailerPipe.Select to add LoRA": Union['E_35e403c7']
-         "Impact_Pack.ToDetailerPipeSDXL.Select to add LoRA": Union['E_35e403c7']
-         "Impact_Pack.BasicPipeToDetailerPipe.Select to add LoRA": Union['E_35e403c7']
-         "Impact_Pack.BasicPipeToDetailerPipeSDXL.Select to add LoRA": Union['E_35e403c7']
-         "Impact_Pack.EditDetailerPipe.Select to add LoRA": Union['E_35e403c7']
-         "Impact_Pack.EditDetailerPipeSDXL.Select to add LoRA": Union['E_35e403c7']
-         "Impact_Pack.ImpactWildcardEncode.Select to add LoRA": Union['E_35e403c7']
+         "Impact-Pack.ToDetailerPipe.Select to add LoRA": Union['E_35e403c7']
+         "Impact-Pack.ToDetailerPipeSDXL.Select to add LoRA": Union['E_35e403c7']
+         "Impact-Pack.BasicPipeToDetailerPipe.Select to add LoRA": Union['E_35e403c7']
+         "Impact-Pack.BasicPipeToDetailerPipeSDXL.Select to add LoRA": Union['E_35e403c7']
+         "Impact-Pack.EditDetailerPipe.Select to add LoRA": Union['E_35e403c7']
+         "Impact-Pack.EditDetailerPipeSDXL.Select to add LoRA": Union['E_35e403c7']
+         "Impact-Pack.ImpactWildcardEncode.Select to add LoRA": Union['E_35e403c7']
          // E_6064bbaf
-         "Impact_Pack.ToDetailerPipe.Select to add Wildcard": Union['E_6064bbaf']
-         "Impact_Pack.ToDetailerPipeSDXL.Select to add Wildcard": Union['E_6064bbaf']
-         "Impact_Pack.BasicPipeToDetailerPipe.Select to add Wildcard": Union['E_6064bbaf']
-         "Impact_Pack.BasicPipeToDetailerPipeSDXL.Select to add Wildcard": Union['E_6064bbaf']
-         "Impact_Pack.EditDetailerPipe.Select to add Wildcard": Union['E_6064bbaf']
-         "Impact_Pack.EditDetailerPipeSDXL.Select to add Wildcard": Union['E_6064bbaf']
-         "Impact_Pack.ImpactWildcardProcessor.Select to add Wildcard": Union['E_6064bbaf']
-         "Impact_Pack.ImpactWildcardEncode.Select to add Wildcard": Union['E_6064bbaf']
+         "Impact-Pack.ToDetailerPipe.Select to add Wildcard": Union['E_6064bbaf']
+         "Impact-Pack.ToDetailerPipeSDXL.Select to add Wildcard": Union['E_6064bbaf']
+         "Impact-Pack.BasicPipeToDetailerPipe.Select to add Wildcard": Union['E_6064bbaf']
+         "Impact-Pack.BasicPipeToDetailerPipeSDXL.Select to add Wildcard": Union['E_6064bbaf']
+         "Impact-Pack.EditDetailerPipe.Select to add Wildcard": Union['E_6064bbaf']
+         "Impact-Pack.EditDetailerPipeSDXL.Select to add Wildcard": Union['E_6064bbaf']
+         "Impact-Pack.ImpactWildcardProcessor.Select to add Wildcard": Union['E_6064bbaf']
+         "Impact-Pack.ImpactWildcardEncode.Select to add Wildcard": Union['E_6064bbaf']
          // E_f9c5efbc
-         "Impact_Pack.LatentPixelScale.scale_method": Union['E_f9c5efbc']
-         "Impact_Pack.PixelKSampleUpscalerProvider.scale_method": Union['E_f9c5efbc']
-         "Impact_Pack.PixelKSampleUpscalerProviderPipe.scale_method": Union['E_f9c5efbc']
-         "Impact_Pack.PixelTiledKSampleUpscalerProvider.scale_method": Union['E_f9c5efbc']
-         "Impact_Pack.PixelTiledKSampleUpscalerProviderPipe.scale_method": Union['E_f9c5efbc']
-         "Impact_Pack.TwoSamplersForMaskUpscalerProvider.scale_method": Union['E_f9c5efbc']
-         "Impact_Pack.TwoSamplersForMaskUpscalerProviderPipe.scale_method": Union['E_f9c5efbc']
+         "Impact-Pack.LatentPixelScale.scale_method": Union['E_f9c5efbc']
+         "Impact-Pack.PixelKSampleUpscalerProvider.scale_method": Union['E_f9c5efbc']
+         "Impact-Pack.PixelKSampleUpscalerProviderPipe.scale_method": Union['E_f9c5efbc']
+         "Impact-Pack.PixelTiledKSampleUpscalerProvider.scale_method": Union['E_f9c5efbc']
+         "Impact-Pack.PixelTiledKSampleUpscalerProviderPipe.scale_method": Union['E_f9c5efbc']
+         "Impact-Pack.TwoSamplersForMaskUpscalerProvider.scale_method": Union['E_f9c5efbc']
+         "Impact-Pack.TwoSamplersForMaskUpscalerProviderPipe.scale_method": Union['E_f9c5efbc']
          // E_4724269c
-         "Impact_Pack.IterativeLatentUpscale.step_mode": Union['E_4724269c']
-         "Impact_Pack.IterativeImageUpscale.step_mode": Union['E_4724269c']
+         "Impact-Pack.IterativeLatentUpscale.step_mode": Union['E_4724269c']
+         "Impact-Pack.IterativeImageUpscale.step_mode": Union['E_4724269c']
          // E_304f89a0
-         "Impact_Pack.PixelTiledKSampleUpscalerProvider.tiling_strategy": Union['E_304f89a0']
-         "Impact_Pack.PixelTiledKSampleUpscalerProviderPipe.tiling_strategy": Union['E_304f89a0']
-         "Impact_Pack.TiledKSamplerProvider.tiling_strategy": Union['E_304f89a0']
+         "Impact-Pack.PixelTiledKSampleUpscalerProvider.tiling_strategy": Union['E_304f89a0']
+         "Impact-Pack.PixelTiledKSampleUpscalerProviderPipe.tiling_strategy": Union['E_304f89a0']
+         "Impact-Pack.TiledKSamplerProvider.tiling_strategy": Union['E_304f89a0']
          // E_de6a9887
-         "Impact_Pack.TwoSamplersForMaskUpscalerProvider.full_sample_schedule": Union['E_de6a9887']
-         "Impact_Pack.TwoSamplersForMaskUpscalerProviderPipe.full_sample_schedule": Union['E_de6a9887']
+         "Impact-Pack.TwoSamplersForMaskUpscalerProvider.full_sample_schedule": Union['E_de6a9887']
+         "Impact-Pack.TwoSamplersForMaskUpscalerProviderPipe.full_sample_schedule": Union['E_de6a9887']
          // E_0f7d0d08
-         "Impact_Pack.DenoiseScheduleHookProvider.schedule_for_iteration": Union['E_0f7d0d08']
-         "Impact_Pack.StepsScheduleHookProvider.schedule_for_iteration": Union['E_0f7d0d08']
-         "Impact_Pack.CfgScheduleHookProvider.schedule_for_iteration": Union['E_0f7d0d08']
-         "Impact_Pack.NoiseInjectionHookProvider.schedule_for_iteration": Union['E_0f7d0d08']
-         "Impact_Pack.UnsamplerHookProvider.schedule_for_iteration": Union['E_0f7d0d08']
-         "Impact_Pack.DenoiseSchedulerDetailerHookProvider.schedule_for_cycle": Union['E_0f7d0d08']
+         "Impact-Pack.DenoiseScheduleHookProvider.schedule_for_iteration": Union['E_0f7d0d08']
+         "Impact-Pack.StepsScheduleHookProvider.schedule_for_iteration": Union['E_0f7d0d08']
+         "Impact-Pack.CfgScheduleHookProvider.schedule_for_iteration": Union['E_0f7d0d08']
+         "Impact-Pack.NoiseInjectionHookProvider.schedule_for_iteration": Union['E_0f7d0d08']
+         "Impact-Pack.UnsamplerHookProvider.schedule_for_iteration": Union['E_0f7d0d08']
+         "Impact-Pack.DenoiseSchedulerDetailerHookProvider.schedule_for_cycle": Union['E_0f7d0d08']
          // E_CpuOrGpu
-         "Impact_Pack.NoiseInjectionHookProvider.source": Union['E_CpuOrGpu']
-         "Impact_Pack.NoiseInjectionDetailerHookProvider.source": Union['E_CpuOrGpu']
+         "Impact-Pack.NoiseInjectionHookProvider.source": Union['E_CpuOrGpu']
+         "Impact-Pack.NoiseInjectionDetailerHookProvider.source": Union['E_CpuOrGpu']
          // E_d4b6506a
-         "Impact_Pack.CoreMLDetailerHookProvider.mode": Union['E_d4b6506a']
+         "Impact-Pack.CoreMLDetailerHookProvider.mode": Union['E_d4b6506a']
          // E_afbc7832
-         "Impact_Pack.NoiseInjectionDetailerHookProvider.schedule_for_cycle": Union['E_afbc7832']
-         "Impact_Pack.UnsamplerDetailerHookProvider.schedule_for_cycle": Union['E_afbc7832']
+         "Impact-Pack.NoiseInjectionDetailerHookProvider.schedule_for_cycle": Union['E_afbc7832']
+         "Impact-Pack.UnsamplerDetailerHookProvider.schedule_for_cycle": Union['E_afbc7832']
          // E_87bec9aa
-         "Impact_Pack.SEGSOrderedFilterDetailerHookProvider.target": Union['E_87bec9aa']
+         "Impact-Pack.SEGSOrderedFilterDetailerHookProvider.target": Union['E_87bec9aa']
          // E_aceb55e7
-         "Impact_Pack.SEGSRangeFilterDetailerHookProvider.target": Union['E_aceb55e7']
+         "Impact-Pack.SEGSRangeFilterDetailerHookProvider.target": Union['E_aceb55e7']
          // E_cc1f262a
-         "Impact_Pack.SEGSLabelFilterDetailerHookProvider.preset": Union['E_cc1f262a']
-         "Impact_Pack.ImpactSEGSLabelFilter.preset": Union['E_cc1f262a']
+         "Impact-Pack.SEGSLabelFilterDetailerHookProvider.preset": Union['E_cc1f262a']
+         "Impact-Pack.ImpactSEGSLabelFilter.preset": Union['E_cc1f262a']
          // E_e5ef6b68
-         "Impact_Pack.ImpactSimpleDetectorSEGS_for_AD.masking_mode": Union['E_e5ef6b68']
+         "Impact-Pack.ImpactSimpleDetectorSEGS_for_AD.masking_mode": Union['E_e5ef6b68']
          // E_651ea09f
-         "Impact_Pack.ImpactSimpleDetectorSEGS_for_AD.segs_pivot": Union['E_651ea09f']
+         "Impact-Pack.ImpactSimpleDetectorSEGS_for_AD.segs_pivot": Union['E_651ea09f']
          // E_05cddbad
-         "Impact_Pack.ImpactIPAdapterApplySEGS.weight_type": Union['E_05cddbad']
+         "Impact-Pack.ImpactIPAdapterApplySEGS.weight_type": Union['E_05cddbad']
          // E_f27fae32
-         "Impact_Pack.PreviewBridge.restore_mask": Union['E_f27fae32']
-         "Impact_Pack.PreviewBridgeLatent.restore_mask": Union['E_f27fae32']
+         "Impact-Pack.PreviewBridge.restore_mask": Union['E_f27fae32']
+         "Impact-Pack.PreviewBridgeLatent.restore_mask": Union['E_f27fae32']
          // E_ea287ec9
-         "Impact_Pack.PreviewBridgeLatent.preview_method": Union['E_ea287ec9']
+         "Impact-Pack.PreviewBridgeLatent.preview_method": Union['E_ea287ec9']
          // E_fa4a1368
-         "Impact_Pack.LatentSender.preview_method": Union['E_fa4a1368']
+         "Impact-Pack.LatentSender.preview_method": Union['E_fa4a1368']
          // E_5cc1495f
-         "Impact_Pack.ImpactMakeTileSEGS.irregular_mask_mode": Union['E_5cc1495f']
+         "Impact-Pack.ImpactMakeTileSEGS.irregular_mask_mode": Union['E_5cc1495f']
          // E_d5776f66
-         "Impact_Pack.ReencodeLatent.tile_mode": Union['E_d5776f66']
-         "Impact_Pack.ReencodeLatentPipe.tile_mode": Union['E_d5776f66']
+         "Impact-Pack.ReencodeLatent.tile_mode": Union['E_d5776f66']
+         "Impact-Pack.ReencodeLatentPipe.tile_mode": Union['E_d5776f66']
          // E_1e8364b5
-         "Impact_Pack.RegionalSampler.seed_2nd_mode": Union['E_1e8364b5']
+         "Impact-Pack.RegionalSampler.seed_2nd_mode": Union['E_1e8364b5']
          // E_db19bd49
-         "Impact_Pack.RegionalSampler.additional_mode": Union['E_db19bd49']
-         "Impact_Pack.RegionalSamplerAdvanced.additional_mode": Union['E_db19bd49']
+         "Impact-Pack.RegionalSampler.additional_mode": Union['E_db19bd49']
+         "Impact-Pack.RegionalSamplerAdvanced.additional_mode": Union['E_db19bd49']
          // E_3fd6d592
-         "Impact_Pack.RegionalSampler.additional_sampler": Union['E_3fd6d592']
-         "Impact_Pack.RegionalSamplerAdvanced.additional_sampler": Union['E_3fd6d592']
+         "Impact-Pack.RegionalSampler.additional_sampler": Union['E_3fd6d592']
+         "Impact-Pack.RegionalSamplerAdvanced.additional_sampler": Union['E_3fd6d592']
          // E_627d63e9
-         "Impact_Pack.RegionalPrompt.variation_method": Union['E_627d63e9']
+         "Impact-Pack.RegionalPrompt.variation_method": Union['E_627d63e9']
          // E_10c017f4
-         "Impact_Pack.ImpactSEGSRangeFilter.target": Union['E_10c017f4']
+         "Impact-Pack.ImpactSEGSRangeFilter.target": Union['E_10c017f4']
          // E_b1f554e9
-         "Impact_Pack.ImpactSEGSOrderedFilter.target": Union['E_b1f554e9']
+         "Impact-Pack.ImpactSEGSOrderedFilter.target": Union['E_b1f554e9']
          // E_87d3a210
-         "Impact_Pack.ImpactCompare.cmp": Union['E_87d3a210']
+         "Impact-Pack.ImpactCompare.cmp": Union['E_87d3a210']
          // E_99d83eba
-         "Impact_Pack.ImpactLogicalOperators.operator": Union['E_99d83eba']
+         "Impact-Pack.ImpactLogicalOperators.operator": Union['E_99d83eba']
          // E_6c86e4ef
-         "Impact_Pack.ImpactValueReceiver.typ": Union['E_6c86e4ef']
+         "Impact-Pack.ImpactValueReceiver.typ": Union['E_6c86e4ef']
          // E_383642e8
-         "Impact_Pack.ImpactControlBridge.behavior": Union['E_383642e8']
+         "Impact-Pack.ImpactControlBridge.behavior": Union['E_383642e8']
          // E_7fd75955
-         "Impact_Pack.ImpactHFTransformersClassifierProvider.preset_repo_id": Union['E_7fd75955']
+         "Impact-Pack.ImpactHFTransformersClassifierProvider.preset_repo_id": Union['E_7fd75955']
          // E_01400d67
-         "Impact_Pack.ImpactSEGSClassify.preset_expr": Union['E_01400d67']
+         "Impact-Pack.ImpactSEGSClassify.preset_expr": Union['E_01400d67']
          // E_64bb9134
-         "Impact_Pack.ImpactSchedulerAdapter.extra_scheduler": Union['E_64bb9134']
+         "Impact-Pack.ImpactSchedulerAdapter.extra_scheduler": Union['E_64bb9134']
          // E_cf117469
-         "Impact_Pack.UltralyticsDetectorProvider.model_name": Union['E_cf117469']
+         "Impact-Pack.UltralyticsDetectorProvider.model_name": Union['E_cf117469']
       }
       type Embeddings = 'EasyNegative' | 'bad-artist-anime' | 'bad-artist' | 'bad_prompt_version2' | 'badquality' | 'charturnerv2' | 'ng_deepnegative_v1_75t' | 'realisticvision-negative-embedding'
       
       interface Producer {
-         SEG_ELT_control_net_wrapper: Pick<Builder, 'Impact_Pack.ImpactFrom_SEG_ELT'>
-         TRANSFORMERS_CLASSIFIER: Pick<Builder, 'Impact_Pack.ImpactHFTransformersClassifierProvider'>
-         SEG_ELT_crop_region: Pick<Builder, 'Impact_Pack.ImpactFrom_SEG_ELT'>
+         SEG_ELT_control_net_wrapper: Pick<Builder, 'Impact-Pack.ImpactFrom_SEG_ELT'>
+         TRANSFORMERS_CLASSIFIER: Pick<Builder, 'Impact-Pack.ImpactHFTransformersClassifierProvider'>
+         SEG_ELT_crop_region: Pick<Builder, 'Impact-Pack.ImpactFrom_SEG_ELT'>
          CLIP_VISION_OUTPUT: Pick<Builder, 'CLIPVisionEncode'>
-         BOOLEAN: Pick<Builder, 'was.Logic Boolean' | 'was.Logic Boolean Primitive' | 'was.Logic Comparison OR' | 'was.Logic Comparison AND' | 'was.Logic Comparison XOR' | 'was.Logic NOT' | 'was.Text Compare' | 'was.Text Find' | 'was.Text Contains' | 'Impact_Pack.ImpactCompare' | 'Impact_Pack.ImpactIfNone' | 'Impact_Pack.ImpactConvertDataType' | 'Impact_Pack.ImpactLogicalOperators' | 'Impact_Pack.ImpactBoolean' | 'Impact_Pack.ImpactNeg' | 'Impact_Pack.ImpactIsNotEmptySEGS'>
+         BOOLEAN: Pick<Builder, 'was.Logic Boolean' | 'was.Logic Boolean Primitive' | 'was.Logic Comparison OR' | 'was.Logic Comparison AND' | 'was.Logic Comparison XOR' | 'was.Logic NOT' | 'was.Text Compare' | 'was.Text Find' | 'was.Text Contains' | 'Impact-Pack.ImpactCompare' | 'Impact-Pack.ImpactIfNone' | 'Impact-Pack.ImpactConvertDataType' | 'Impact-Pack.ImpactLogicalOperators' | 'Impact-Pack.ImpactBoolean' | 'Impact-Pack.ImpactNeg' | 'Impact-Pack.ImpactIsNotEmptySEGS'>
          SEGS_PREPROCESSOR: {}, // no node can output this type.
-         KSAMPLER_ADVANCED: Pick<Builder, 'Impact_Pack.KSamplerAdvancedProvider'>
+         KSAMPLER_ADVANCED: Pick<Builder, 'Impact-Pack.KSamplerAdvancedProvider'>
          LATENT_OPERATION: Pick<Builder, 'LatentOperationTonemapReinhard' | 'LatentOperationSharpen'>
          IPADAPTER_PARAMS: Pick<Builder, 'IPAdapter_plus.IPAdapterRegionalConditioning' | 'IPAdapter_plus.IPAdapterCombineParams'>
          WEIGHTS_STRATEGY: Pick<Builder, 'IPAdapter_plus.IPAdapterWeights' | 'IPAdapter_plus.IPAdapterWeightsFromStrategy'>
-         REGIONAL_PROMPTS: Pick<Builder, 'Impact_Pack.CombineRegionalPrompts' | 'Impact_Pack.RegionalPrompt'>
-         STRING: Pick<Builder, 'was.Cache Node' | 'was.Cache Node' | 'was.Cache Node' | 'was.Checkpoint Loader' | 'was.Checkpoint Loader (Simple)' | 'was.CLIPTextEncode (NSP)' | 'was.CLIPTextEncode (NSP)' | 'was.Create Morph Image' | 'was.Create Morph Image' | 'was.Create Morph Image from Path' | 'was.Create Morph Image from Path' | 'was.Create Video from Path' | 'was.Create Video from Path' | 'was.Diffusers Model Loader' | 'was.Diffusers Hub Model Down-Loader' | 'was.Lora Loader' | 'was.Hex to HSL' | 'was.HSL to Hex' | 'was.Image Aspect Ratio' | 'was.Image Aspect Ratio' | 'was.Image History Loader' | 'was.Image Load' | 'was.Image Send HTTP' | 'was.Image Save' | 'was.Load Image Batch' | 'was.Load Text File' | 'was.Load Lora' | 'was.Number to String' | 'was.Number to Text' | 'was.Boolean To Text' | 'was.Prompt Styles Selector' | 'was.Prompt Styles Selector' | 'was.Prompt Multiple Styles Selector' | 'was.Prompt Multiple Styles Selector' | 'was.BLIP Analyze Image' | 'was.BLIP Analyze Image' | 'was.String to Text' | 'was.Text Dictionary Get' | 'was.Text Dictionary To Text' | 'was.Text Compare' | 'was.Text Compare' | 'was.Text Compare' | 'was.Text Concatenate' | 'was.Text File History Loader' | 'was.Text Find and Replace by Dictionary' | 'was.Text Find and Replace Input' | 'was.Text Find and Replace' | 'was.Text Input Switch' | 'was.Text List to Text' | 'was.Text Load Line From File' | 'was.Text Multiline' | 'was.Text Multiline (Code Compatible)' | 'was.Text Parse A1111 Embeddings' | 'was.Text Parse Noodle Soup Prompts' | 'was.Text Parse Tokens' | 'was.Text Random Line' | 'was.Text Random Prompt' | 'was.Text String' | 'was.Text String' | 'was.Text String' | 'was.Text String' | 'was.Text Shuffle' | 'was.Text Sort' | 'was.Text to Console' | 'was.Text to String' | 'was.Text String Truncate' | 'was.Text String Truncate' | 'was.Text String Truncate' | 'was.Text String Truncate' | 'was.unCLIP Checkpoint Loader' | 'was.Upscale Model Loader' | 'was.Write to GIF' | 'was.Write to GIF' | 'was.Write to Video' | 'was.Write to Video' | 'was.Video Dump Frames' | 'IPAdapter_plus.IPAdapterPromptScheduleFromWeightsStrategy' | 'controlnet_aux.UpperBodyTrackingFromPoseKps' | 'Marigold.SaveImageOpenEXR' | 'Impact_Pack.ImpactFrom_SEG_ELT' | 'Impact_Pack.LatentSwitch' | 'Impact_Pack.SEGSSwitch' | 'Impact_Pack.ImpactSwitch' | 'Impact_Pack.ImpactWildcardProcessor' | 'Impact_Pack.ImpactWildcardEncode' | 'Impact_Pack.ImpactConvertDataType' | 'Impact_Pack.ImpactStringSelector' | 'Impact_Pack.StringListToString' | 'Impact_Pack.WildcardPromptFromString' | 'Impact_Pack.WildcardPromptFromString' | 'Impact_Pack.ImpactSEGSClassify'>
-         FLOAT: Pick<Builder, 'was.Constant Number' | 'was.Logic Boolean' | 'was.Hex to HSL' | 'was.Image Aspect Ratio' | 'was.Image Size to Number' | 'was.Image Size to Number' | 'was.Latent Size to Number' | 'was.Latent Size to Number' | 'was.Number Counter' | 'was.Number Operation' | 'was.Number to Float' | 'was.Number Input Switch' | 'was.Number Input Condition' | 'was.Number Multiple Of' | 'was.Number PI' | 'was.Random Number' | 'was.Seed' | 'was.Text Find and Replace Input' | 'was.Text Find and Replace' | 'was.True Random.org Number Generator' | 'IPAdapter_plus.IPAdapterWeights' | 'IPAdapter_plus.IPAdapterWeights' | 'IPAdapter_plus.IPAdapterCombineWeights' | 'IPAdapter_plus.IPAdapterWeightsFromStrategy' | 'IPAdapter_plus.IPAdapterWeightsFromStrategy' | 'Impact_Pack.ImpactFrom_SEG_ELT' | 'Impact_Pack.ImpactConvertDataType' | 'Impact_Pack.ImpactFloat'>
+         REGIONAL_PROMPTS: Pick<Builder, 'Impact-Pack.CombineRegionalPrompts' | 'Impact-Pack.RegionalPrompt'>
+         STRING: Pick<Builder, 'was.Cache Node' | 'was.Cache Node' | 'was.Cache Node' | 'was.Checkpoint Loader' | 'was.Checkpoint Loader (Simple)' | 'was.CLIPTextEncode (NSP)' | 'was.CLIPTextEncode (NSP)' | 'was.Create Morph Image' | 'was.Create Morph Image' | 'was.Create Morph Image from Path' | 'was.Create Morph Image from Path' | 'was.Create Video from Path' | 'was.Create Video from Path' | 'was.Diffusers Model Loader' | 'was.Diffusers Hub Model Down-Loader' | 'was.Lora Loader' | 'was.Hex to HSL' | 'was.HSL to Hex' | 'was.Image Aspect Ratio' | 'was.Image Aspect Ratio' | 'was.Image History Loader' | 'was.Image Load' | 'was.Image Send HTTP' | 'was.Image Save' | 'was.Load Image Batch' | 'was.Load Text File' | 'was.Load Lora' | 'was.Number to String' | 'was.Number to Text' | 'was.Boolean To Text' | 'was.Prompt Styles Selector' | 'was.Prompt Styles Selector' | 'was.Prompt Multiple Styles Selector' | 'was.Prompt Multiple Styles Selector' | 'was.BLIP Analyze Image' | 'was.BLIP Analyze Image' | 'was.String to Text' | 'was.Text Dictionary Get' | 'was.Text Dictionary To Text' | 'was.Text Compare' | 'was.Text Compare' | 'was.Text Compare' | 'was.Text Concatenate' | 'was.Text File History Loader' | 'was.Text Find and Replace by Dictionary' | 'was.Text Find and Replace Input' | 'was.Text Find and Replace' | 'was.Text Input Switch' | 'was.Text List to Text' | 'was.Text Load Line From File' | 'was.Text Multiline' | 'was.Text Multiline (Code Compatible)' | 'was.Text Parse A1111 Embeddings' | 'was.Text Parse Noodle Soup Prompts' | 'was.Text Parse Tokens' | 'was.Text Random Line' | 'was.Text Random Prompt' | 'was.Text String' | 'was.Text String' | 'was.Text String' | 'was.Text String' | 'was.Text Shuffle' | 'was.Text Sort' | 'was.Text to Console' | 'was.Text to String' | 'was.Text String Truncate' | 'was.Text String Truncate' | 'was.Text String Truncate' | 'was.Text String Truncate' | 'was.unCLIP Checkpoint Loader' | 'was.Upscale Model Loader' | 'was.Write to GIF' | 'was.Write to GIF' | 'was.Write to Video' | 'was.Write to Video' | 'was.Video Dump Frames' | 'IPAdapter_plus.IPAdapterPromptScheduleFromWeightsStrategy' | 'controlnet_aux.UpperBodyTrackingFromPoseKps' | 'Marigold.SaveImageOpenEXR' | 'Impact-Pack.ImpactFrom_SEG_ELT' | 'Impact-Pack.LatentSwitch' | 'Impact-Pack.SEGSSwitch' | 'Impact-Pack.ImpactSwitch' | 'Impact-Pack.ImpactWildcardProcessor' | 'Impact-Pack.ImpactWildcardEncode' | 'Impact-Pack.ImpactConvertDataType' | 'Impact-Pack.ImpactStringSelector' | 'Impact-Pack.StringListToString' | 'Impact-Pack.WildcardPromptFromString' | 'Impact-Pack.WildcardPromptFromString' | 'Impact-Pack.ImpactSEGSClassify'>
+         FLOAT: Pick<Builder, 'was.Constant Number' | 'was.Logic Boolean' | 'was.Hex to HSL' | 'was.Image Aspect Ratio' | 'was.Image Size to Number' | 'was.Image Size to Number' | 'was.Latent Size to Number' | 'was.Latent Size to Number' | 'was.Number Counter' | 'was.Number Operation' | 'was.Number to Float' | 'was.Number Input Switch' | 'was.Number Input Condition' | 'was.Number Multiple Of' | 'was.Number PI' | 'was.Random Number' | 'was.Seed' | 'was.Text Find and Replace Input' | 'was.Text Find and Replace' | 'was.True Random.org Number Generator' | 'IPAdapter_plus.IPAdapterWeights' | 'IPAdapter_plus.IPAdapterWeights' | 'IPAdapter_plus.IPAdapterCombineWeights' | 'IPAdapter_plus.IPAdapterWeightsFromStrategy' | 'IPAdapter_plus.IPAdapterWeightsFromStrategy' | 'Impact-Pack.ImpactFrom_SEG_ELT' | 'Impact-Pack.ImpactConvertDataType' | 'Impact-Pack.ImpactFloat'>
          SAM_PARAMETERS: Pick<Builder, 'was.SAM Parameters' | 'was.SAM Parameters Combine'>
-         SCHEDULER_FUNC: Pick<Builder, 'Impact_Pack.GITSSchedulerFuncProvider'>
+         SCHEDULER_FUNC: Pick<Builder, 'Impact-Pack.GITSSchedulerFuncProvider'>
          IPADAPTER_PIPE: {}, // no node can output this type.
          UPSCALE_MODEL: Pick<Builder, 'UpscaleModelLoader' | 'was.Upscale Model Loader' | 'was.Upscale Model Switch'>
          CLIPSEG_MODEL: Pick<Builder, 'was.CLIPSeg Model Loader'>
          POSE_KEYPOINT: Pick<Builder, 'controlnet_aux.DWPreprocessor' | 'controlnet_aux.AnimalPosePreprocessor' | 'controlnet_aux.OpenposePreprocessor'>
-         BBOX_DETECTOR: Pick<Builder, 'Impact_Pack.CLIPSegDetectorProvider' | 'Impact_Pack.ONNXDetectorProvider' | 'Impact_Pack.FromDetailerPipe' | 'Impact_Pack.FromDetailerPipe_v2' | 'Impact_Pack.FromDetailerPipeSDXL' | 'Impact_Pack.UltralyticsDetectorProvider'>
+         BBOX_DETECTOR: Pick<Builder, 'Impact-Pack.CLIPSegDetectorProvider' | 'Impact-Pack.ONNXDetectorProvider' | 'Impact-Pack.FromDetailerPipe' | 'Impact-Pack.FromDetailerPipe_v2' | 'Impact-Pack.FromDetailerPipeSDXL' | 'Impact-Pack.UltralyticsDetectorProvider'>
          MARIGOLDMODEL: Pick<Builder, 'Marigold.MarigoldModelLoader'>
-         DETAILER_HOOK: Pick<Builder, 'Impact_Pack.FromDetailerPipe' | 'Impact_Pack.FromDetailerPipe_v2' | 'Impact_Pack.FromDetailerPipeSDXL' | 'Impact_Pack.CoreMLDetailerHookProvider' | 'Impact_Pack.PreviewDetailerHookProvider' | 'Impact_Pack.DetailerHookCombine' | 'Impact_Pack.NoiseInjectionDetailerHookProvider' | 'Impact_Pack.UnsamplerDetailerHookProvider' | 'Impact_Pack.DenoiseSchedulerDetailerHookProvider' | 'Impact_Pack.SEGSOrderedFilterDetailerHookProvider' | 'Impact_Pack.SEGSRangeFilterDetailerHookProvider' | 'Impact_Pack.SEGSLabelFilterDetailerHookProvider' | 'Impact_Pack.VariationNoiseDetailerHookProvider'>
-         DETAILER_PIPE: Pick<Builder, 'Impact_Pack.FaceDetailer' | 'Impact_Pack.FaceDetailerPipe' | 'Impact_Pack.ToDetailerPipe' | 'Impact_Pack.ToDetailerPipeSDXL' | 'Impact_Pack.FromDetailerPipe_v2' | 'Impact_Pack.FromDetailerPipeSDXL' | 'Impact_Pack.BasicPipeToDetailerPipe' | 'Impact_Pack.BasicPipeToDetailerPipeSDXL' | 'Impact_Pack.EditDetailerPipe' | 'Impact_Pack.EditDetailerPipeSDXL'>
-         SEGM_DETECTOR: Pick<Builder, 'Impact_Pack.FromDetailerPipe' | 'Impact_Pack.FromDetailerPipe_v2' | 'Impact_Pack.FromDetailerPipeSDXL' | 'Impact_Pack.UltralyticsDetectorProvider'>
-         UPSCALER_HOOK: Pick<Builder, 'Impact_Pack.PreviewDetailerHookProvider'>
-         INT: Pick<Builder, 'was.Constant Number' | 'was.Logic Boolean' | 'was.Hex to HSL' | 'was.Hex to HSL' | 'was.Hex to HSL' | 'was.Image Send HTTP' | 'was.Image Size to Number' | 'was.Image Size to Number' | 'was.Image to Seed' | 'was.Integer place counter' | 'was.Latent Size to Number' | 'was.Latent Size to Number' | 'was.Mask Crop Region' | 'was.Mask Crop Region' | 'was.Mask Crop Region' | 'was.Mask Crop Region' | 'was.Mask Crop Region' | 'was.Mask Crop Region' | 'was.Number Counter' | 'was.Number Operation' | 'was.Number Input Switch' | 'was.Number Input Condition' | 'was.Number Multiple Of' | 'was.Number to Int' | 'was.Random Number' | 'was.Seed' | 'was.Text Find and Replace Input' | 'was.Text Find and Replace' | 'was.True Random.org Number Generator' | 'IPAdapter_plus.IPAdapterWeights' | 'IPAdapter_plus.IPAdapterCombineWeights' | 'IPAdapter_plus.IPAdapterWeightsFromStrategy' | 'controlnet_aux.PixelPerfectResolution' | 'controlnet_aux.ImageGenResolutionFromImage' | 'controlnet_aux.ImageGenResolutionFromImage' | 'controlnet_aux.ImageGenResolutionFromLatent' | 'controlnet_aux.ImageGenResolutionFromLatent' | 'Impact_Pack.ImpactFrom_SEG_ELT_bbox' | 'Impact_Pack.ImpactFrom_SEG_ELT_bbox' | 'Impact_Pack.ImpactFrom_SEG_ELT_bbox' | 'Impact_Pack.ImpactFrom_SEG_ELT_bbox' | 'Impact_Pack.ImpactFrom_SEG_ELT_crop_region' | 'Impact_Pack.ImpactFrom_SEG_ELT_crop_region' | 'Impact_Pack.ImpactFrom_SEG_ELT_crop_region' | 'Impact_Pack.ImpactFrom_SEG_ELT_crop_region' | 'Impact_Pack.ImpactCount_Elts_in_SEGS' | 'Impact_Pack.LatentSwitch' | 'Impact_Pack.SEGSSwitch' | 'Impact_Pack.ImpactSwitch' | 'Impact_Pack.ImpactConvertDataType' | 'Impact_Pack.ImpactInt' | 'Impact_Pack.ImpactImageInfo' | 'Impact_Pack.ImpactImageInfo' | 'Impact_Pack.ImpactImageInfo' | 'Impact_Pack.ImpactImageInfo' | 'Impact_Pack.ImpactLatentInfo' | 'Impact_Pack.ImpactLatentInfo' | 'Impact_Pack.ImpactLatentInfo' | 'Impact_Pack.ImpactLatentInfo' | 'Impact_Pack.ImpactMinMax' | 'Impact_Pack.ImpactQueueTriggerCountdown' | 'Impact_Pack.ImpactQueueTriggerCountdown'>
-         CONDITIONING: Pick<Builder, 'CLIPTextEncode' | 'ConditioningAverage' | 'ConditioningCombine' | 'ConditioningConcat' | 'ConditioningSetArea' | 'ConditioningSetAreaPercentage' | 'ConditioningSetAreaStrength' | 'ConditioningSetMask' | 'StyleModelApply' | 'unCLIPConditioning' | 'ControlNetApply' | 'ControlNetApplyAdvanced' | 'ControlNetApplyAdvanced' | 'GLIGENTextBoxApply' | 'InpaintModelConditioning' | 'InpaintModelConditioning' | 'ConditioningZeroOut' | 'ConditioningSetTimestepRange' | 'CLIPTextEncodeSDXLRefiner' | 'CLIPTextEncodeSDXL' | 'SVD_img2vid_Conditioning' | 'SVD_img2vid_Conditioning' | 'StableZero123_Conditioning' | 'StableZero123_Conditioning' | 'StableZero123_Conditioning_Batched' | 'StableZero123_Conditioning_Batched' | 'SV3D_Conditioning' | 'SV3D_Conditioning' | 'SD_4XUpscale_Conditioning' | 'SD_4XUpscale_Conditioning' | 'PhotoMakerEncode' | 'CLIPTextEncodeControlnet' | 'StableCascade_StageB_Conditioning' | 'InstructPixToPixConditioning' | 'InstructPixToPixConditioning' | 'CLIPTextEncodeSD3' | 'ControlNetApplySD3' | 'ControlNetApplySD3' | 'ControlNetInpaintingAliMamaApply' | 'ControlNetInpaintingAliMamaApply' | 'CLIPTextEncodeHunyuanDiT' | 'CLIPTextEncodeFlux' | 'FluxGuidance' | 'was.Bus Node' | 'was.Bus Node' | 'was.CLIPTextEncode (NSP)' | 'was.Conditioning Input Switch' | 'was.Load Cache' | 'was.Text to Conditioning' | 'IPAdapter_plus.IPAdapterRegionalConditioning' | 'IPAdapter_plus.IPAdapterRegionalConditioning' | 'Impact_Pack.FromDetailerPipe' | 'Impact_Pack.FromDetailerPipe' | 'Impact_Pack.FromDetailerPipe_v2' | 'Impact_Pack.FromDetailerPipe_v2' | 'Impact_Pack.FromDetailerPipeSDXL' | 'Impact_Pack.FromDetailerPipeSDXL' | 'Impact_Pack.FromDetailerPipeSDXL' | 'Impact_Pack.FromDetailerPipeSDXL' | 'Impact_Pack.FromBasicPipe' | 'Impact_Pack.FromBasicPipe' | 'Impact_Pack.FromBasicPipe_v2' | 'Impact_Pack.FromBasicPipe_v2' | 'Impact_Pack.ImpactNegativeConditioningPlaceholder' | 'Impact_Pack.ImpactWildcardEncode' | 'Impact_Pack.ImpactCombineConditionings' | 'Impact_Pack.ImpactConcatConditionings'>
+         DETAILER_HOOK: Pick<Builder, 'Impact-Pack.FromDetailerPipe' | 'Impact-Pack.FromDetailerPipe_v2' | 'Impact-Pack.FromDetailerPipeSDXL' | 'Impact-Pack.CoreMLDetailerHookProvider' | 'Impact-Pack.PreviewDetailerHookProvider' | 'Impact-Pack.DetailerHookCombine' | 'Impact-Pack.NoiseInjectionDetailerHookProvider' | 'Impact-Pack.UnsamplerDetailerHookProvider' | 'Impact-Pack.DenoiseSchedulerDetailerHookProvider' | 'Impact-Pack.SEGSOrderedFilterDetailerHookProvider' | 'Impact-Pack.SEGSRangeFilterDetailerHookProvider' | 'Impact-Pack.SEGSLabelFilterDetailerHookProvider' | 'Impact-Pack.VariationNoiseDetailerHookProvider'>
+         DETAILER_PIPE: Pick<Builder, 'Impact-Pack.FaceDetailer' | 'Impact-Pack.FaceDetailerPipe' | 'Impact-Pack.ToDetailerPipe' | 'Impact-Pack.ToDetailerPipeSDXL' | 'Impact-Pack.FromDetailerPipe_v2' | 'Impact-Pack.FromDetailerPipeSDXL' | 'Impact-Pack.BasicPipeToDetailerPipe' | 'Impact-Pack.BasicPipeToDetailerPipeSDXL' | 'Impact-Pack.EditDetailerPipe' | 'Impact-Pack.EditDetailerPipeSDXL'>
+         SEGM_DETECTOR: Pick<Builder, 'Impact-Pack.FromDetailerPipe' | 'Impact-Pack.FromDetailerPipe_v2' | 'Impact-Pack.FromDetailerPipeSDXL' | 'Impact-Pack.UltralyticsDetectorProvider'>
+         UPSCALER_HOOK: Pick<Builder, 'Impact-Pack.PreviewDetailerHookProvider'>
+         INT: Pick<Builder, 'was.Constant Number' | 'was.Logic Boolean' | 'was.Hex to HSL' | 'was.Hex to HSL' | 'was.Hex to HSL' | 'was.Image Send HTTP' | 'was.Image Size to Number' | 'was.Image Size to Number' | 'was.Image to Seed' | 'was.Integer place counter' | 'was.Latent Size to Number' | 'was.Latent Size to Number' | 'was.Mask Crop Region' | 'was.Mask Crop Region' | 'was.Mask Crop Region' | 'was.Mask Crop Region' | 'was.Mask Crop Region' | 'was.Mask Crop Region' | 'was.Number Counter' | 'was.Number Operation' | 'was.Number Input Switch' | 'was.Number Input Condition' | 'was.Number Multiple Of' | 'was.Number to Int' | 'was.Random Number' | 'was.Seed' | 'was.Text Find and Replace Input' | 'was.Text Find and Replace' | 'was.True Random.org Number Generator' | 'IPAdapter_plus.IPAdapterWeights' | 'IPAdapter_plus.IPAdapterCombineWeights' | 'IPAdapter_plus.IPAdapterWeightsFromStrategy' | 'controlnet_aux.PixelPerfectResolution' | 'controlnet_aux.ImageGenResolutionFromImage' | 'controlnet_aux.ImageGenResolutionFromImage' | 'controlnet_aux.ImageGenResolutionFromLatent' | 'controlnet_aux.ImageGenResolutionFromLatent' | 'Impact-Pack.ImpactFrom_SEG_ELT_bbox' | 'Impact-Pack.ImpactFrom_SEG_ELT_bbox' | 'Impact-Pack.ImpactFrom_SEG_ELT_bbox' | 'Impact-Pack.ImpactFrom_SEG_ELT_bbox' | 'Impact-Pack.ImpactFrom_SEG_ELT_crop_region' | 'Impact-Pack.ImpactFrom_SEG_ELT_crop_region' | 'Impact-Pack.ImpactFrom_SEG_ELT_crop_region' | 'Impact-Pack.ImpactFrom_SEG_ELT_crop_region' | 'Impact-Pack.ImpactCount_Elts_in_SEGS' | 'Impact-Pack.LatentSwitch' | 'Impact-Pack.SEGSSwitch' | 'Impact-Pack.ImpactSwitch' | 'Impact-Pack.ImpactConvertDataType' | 'Impact-Pack.ImpactInt' | 'Impact-Pack.ImpactImageInfo' | 'Impact-Pack.ImpactImageInfo' | 'Impact-Pack.ImpactImageInfo' | 'Impact-Pack.ImpactImageInfo' | 'Impact-Pack.ImpactLatentInfo' | 'Impact-Pack.ImpactLatentInfo' | 'Impact-Pack.ImpactLatentInfo' | 'Impact-Pack.ImpactLatentInfo' | 'Impact-Pack.ImpactMinMax' | 'Impact-Pack.ImpactQueueTriggerCountdown' | 'Impact-Pack.ImpactQueueTriggerCountdown'>
+         CONDITIONING: Pick<Builder, 'CLIPTextEncode' | 'ConditioningAverage' | 'ConditioningCombine' | 'ConditioningConcat' | 'ConditioningSetArea' | 'ConditioningSetAreaPercentage' | 'ConditioningSetAreaStrength' | 'ConditioningSetMask' | 'StyleModelApply' | 'unCLIPConditioning' | 'ControlNetApply' | 'ControlNetApplyAdvanced' | 'ControlNetApplyAdvanced' | 'GLIGENTextBoxApply' | 'InpaintModelConditioning' | 'InpaintModelConditioning' | 'ConditioningZeroOut' | 'ConditioningSetTimestepRange' | 'CLIPTextEncodeSDXLRefiner' | 'CLIPTextEncodeSDXL' | 'SVD_img2vid_Conditioning' | 'SVD_img2vid_Conditioning' | 'StableZero123_Conditioning' | 'StableZero123_Conditioning' | 'StableZero123_Conditioning_Batched' | 'StableZero123_Conditioning_Batched' | 'SV3D_Conditioning' | 'SV3D_Conditioning' | 'SD_4XUpscale_Conditioning' | 'SD_4XUpscale_Conditioning' | 'PhotoMakerEncode' | 'CLIPTextEncodeControlnet' | 'StableCascade_StageB_Conditioning' | 'InstructPixToPixConditioning' | 'InstructPixToPixConditioning' | 'CLIPTextEncodeSD3' | 'ControlNetApplySD3' | 'ControlNetApplySD3' | 'ControlNetInpaintingAliMamaApply' | 'ControlNetInpaintingAliMamaApply' | 'CLIPTextEncodeHunyuanDiT' | 'CLIPTextEncodeFlux' | 'FluxGuidance' | 'was.Bus Node' | 'was.Bus Node' | 'was.CLIPTextEncode (NSP)' | 'was.Conditioning Input Switch' | 'was.Load Cache' | 'was.Text to Conditioning' | 'IPAdapter_plus.IPAdapterRegionalConditioning' | 'IPAdapter_plus.IPAdapterRegionalConditioning' | 'Impact-Pack.FromDetailerPipe' | 'Impact-Pack.FromDetailerPipe' | 'Impact-Pack.FromDetailerPipe_v2' | 'Impact-Pack.FromDetailerPipe_v2' | 'Impact-Pack.FromDetailerPipeSDXL' | 'Impact-Pack.FromDetailerPipeSDXL' | 'Impact-Pack.FromDetailerPipeSDXL' | 'Impact-Pack.FromDetailerPipeSDXL' | 'Impact-Pack.FromBasicPipe' | 'Impact-Pack.FromBasicPipe' | 'Impact-Pack.FromBasicPipe_v2' | 'Impact-Pack.FromBasicPipe_v2' | 'Impact-Pack.ImpactNegativeConditioningPlaceholder' | 'Impact-Pack.ImpactWildcardEncode' | 'Impact-Pack.ImpactCombineConditionings' | 'Impact-Pack.ImpactConcatConditionings'>
          IMAGE_BOUNDS: Pick<Builder, 'was.Image Bounds' | 'was.Inset Image Bounds' | 'was.Bounded Image Crop with Mask' | 'was.Image Bounds to Console'>
          OPTICAL_FLOW: Pick<Builder, 'controlnet_aux.Unimatch_OptFlowPreprocessor' | 'controlnet_aux.MaskOptFlow'>
-         SEG_ELT_bbox: Pick<Builder, 'Impact_Pack.ImpactFrom_SEG_ELT'>
+         SEG_ELT_bbox: Pick<Builder, 'Impact-Pack.ImpactFrom_SEG_ELT'>
          CLIP_VISION: Pick<Builder, 'CLIPVisionLoader' | 'unCLIPCheckpointLoader' | 'ImageOnlyCheckpointLoader' | 'was.CLIP Vision Input Switch' | 'was.unCLIP Checkpoint Loader'>
          STYLE_MODEL: Pick<Builder, 'StyleModelLoader'>
          CONTROL_NET: Pick<Builder, 'ControlNetLoader' | 'DiffControlNetLoader' | 'SetUnionControlNetType' | 'was.Control Net Model Input Switch'>
          MIDAS_MODEL: Pick<Builder, 'was.MiDaS Model Loader'>
          INSIGHTFACE: Pick<Builder, 'IPAdapter_plus.IPAdapterInsightFaceLoader'>
-         SEGS_HEADER: Pick<Builder, 'Impact_Pack.ImpactDecomposeSEGS'>
+         SEGS_HEADER: Pick<Builder, 'Impact-Pack.ImpactDecomposeSEGS'>
          PHOTOMAKER: Pick<Builder, 'PhotoMakerLoader'>
          BLIP_MODEL: Pick<Builder, 'was.BLIP Model Loader'>
-         BASIC_PIPE: Pick<Builder, 'Impact_Pack.DetailerForEachPipe' | 'Impact_Pack.DetailerForEachDebugPipe' | 'Impact_Pack.DetailerForEachPipeForAnimateDiff' | 'Impact_Pack.MaskDetailerPipe' | 'Impact_Pack.MaskDetailerPipe' | 'Impact_Pack.AnyPipeToBasic' | 'Impact_Pack.ToBasicPipe' | 'Impact_Pack.FromBasicPipe_v2' | 'Impact_Pack.DetailerPipeToBasicPipe' | 'Impact_Pack.DetailerPipeToBasicPipe' | 'Impact_Pack.EditBasicPipe' | 'Impact_Pack.ImpactKSamplerBasicPipe' | 'Impact_Pack.ImpactKSamplerAdvancedBasicPipe'>
+         BASIC_PIPE: Pick<Builder, 'Impact-Pack.DetailerForEachPipe' | 'Impact-Pack.DetailerForEachDebugPipe' | 'Impact-Pack.DetailerForEachPipeForAnimateDiff' | 'Impact-Pack.MaskDetailerPipe' | 'Impact-Pack.MaskDetailerPipe' | 'Impact-Pack.AnyPipeToBasic' | 'Impact-Pack.ToBasicPipe' | 'Impact-Pack.FromBasicPipe_v2' | 'Impact-Pack.DetailerPipeToBasicPipe' | 'Impact-Pack.DetailerPipeToBasicPipe' | 'Impact-Pack.EditBasicPipe' | 'Impact-Pack.ImpactKSamplerBasicPipe' | 'Impact-Pack.ImpactKSamplerAdvancedBasicPipe'>
          CROP_DATA: Pick<Builder, 'was.Image Crop Face' | 'was.Image Crop Location' | 'was.Image Crop Square Location' | 'was.Mask Crop Region'>
-         SAM_MODEL: Pick<Builder, 'was.SAM Model Loader' | 'Impact_Pack.SAMLoader' | 'Impact_Pack.FromDetailerPipe' | 'Impact_Pack.FromDetailerPipe_v2' | 'Impact_Pack.FromDetailerPipeSDXL'>
+         SAM_MODEL: Pick<Builder, 'was.SAM Model Loader' | 'Impact-Pack.SAMLoader' | 'Impact-Pack.FromDetailerPipe' | 'Impact-Pack.FromDetailerPipe_v2' | 'Impact-Pack.FromDetailerPipeSDXL'>
          IPADAPTER: Pick<Builder, 'IPAdapter_plus.IPAdapterUnifiedLoader' | 'IPAdapter_plus.IPAdapterUnifiedLoaderFaceID' | 'IPAdapter_plus.IPAdapterModelLoader' | 'IPAdapter_plus.IPAdapterUnifiedLoaderCommunity'>
          TRACKING: Pick<Builder, 'controlnet_aux.UpperBodyTrackingFromPoseKps'>
-         UPSCALER: Pick<Builder, 'Impact_Pack.PixelKSampleUpscalerProvider' | 'Impact_Pack.PixelKSampleUpscalerProviderPipe' | 'Impact_Pack.PixelTiledKSampleUpscalerProvider' | 'Impact_Pack.PixelTiledKSampleUpscalerProviderPipe' | 'Impact_Pack.TwoSamplersForMaskUpscalerProvider' | 'Impact_Pack.TwoSamplersForMaskUpscalerProviderPipe'>
-         KSAMPLER: Pick<Builder, 'Impact_Pack.KSamplerProvider' | 'Impact_Pack.TiledKSamplerProvider'>
+         UPSCALER: Pick<Builder, 'Impact-Pack.PixelKSampleUpscalerProvider' | 'Impact-Pack.PixelKSampleUpscalerProviderPipe' | 'Impact-Pack.PixelTiledKSampleUpscalerProvider' | 'Impact-Pack.PixelTiledKSampleUpscalerProviderPipe' | 'Impact-Pack.TwoSamplersForMaskUpscalerProvider' | 'Impact-Pack.TwoSamplersForMaskUpscalerProviderPipe'>
+         KSAMPLER: Pick<Builder, 'Impact-Pack.KSamplerProvider' | 'Impact-Pack.TiledKSamplerProvider'>
          SAMPLER: Pick<Builder, 'KSamplerSelect' | 'SamplerEulerAncestral' | 'SamplerEulerAncestralCFGPP' | 'SamplerLMS' | 'SamplerDPMPP_3M_SDE' | 'SamplerDPMPP_2M_SDE' | 'SamplerDPMPP_SDE' | 'SamplerDPMPP_2S_Ancestral' | 'SamplerDPMAdaptative' | 'SamplerLCMUpscale' | 'SamplerEulerCFGpp'>
-         PK_HOOK: Pick<Builder, 'Impact_Pack.PixelKSampleHookCombine' | 'Impact_Pack.DenoiseScheduleHookProvider' | 'Impact_Pack.StepsScheduleHookProvider' | 'Impact_Pack.CfgScheduleHookProvider' | 'Impact_Pack.NoiseInjectionHookProvider' | 'Impact_Pack.UnsamplerHookProvider'>
-         SEG_ELT: Pick<Builder, 'Impact_Pack.ImpactDecomposeSEGS' | 'Impact_Pack.ImpactFrom_SEG_ELT' | 'Impact_Pack.ImpactEdit_SEG_ELT' | 'Impact_Pack.ImpactDilate_Mask_SEG_ELT' | 'Impact_Pack.ImpactScaleBy_BBOX_SEG_ELT'>
-         LATENT: Pick<Builder, 'KSampler' | 'VAEEncode' | 'VAEEncodeForInpaint' | 'EmptyLatentImage' | 'LatentUpscale' | 'LatentUpscaleBy' | 'LatentFromBatch' | 'RepeatLatentBatch' | 'KSamplerAdvanced' | 'SetLatentNoiseMask' | 'LatentComposite' | 'LatentBlend' | 'LatentRotate' | 'LatentFlip' | 'LatentCrop' | 'VAEEncodeTiled' | 'InpaintModelConditioning' | 'LoadLatent' | 'LatentAdd' | 'LatentSubtract' | 'LatentMultiply' | 'LatentInterpolate' | 'LatentBatch' | 'LatentBatchSeedBehavior' | 'LatentApplyOperation' | 'LatentCompositeMasked' | 'RebatchLatents' | 'SamplerCustom' | 'SamplerCustom' | 'AddNoise' | 'SamplerCustomAdvanced' | 'SamplerCustomAdvanced' | 'SVD_img2vid_Conditioning' | 'StableZero123_Conditioning' | 'StableZero123_Conditioning_Batched' | 'SV3D_Conditioning' | 'SD_4XUpscale_Conditioning' | 'StableCascade_EmptyLatentImage' | 'StableCascade_EmptyLatentImage' | 'StableCascade_StageC_VAEEncode' | 'StableCascade_StageC_VAEEncode' | 'StableCascade_SuperResolutionControlnet' | 'StableCascade_SuperResolutionControlnet' | 'InstructPixToPixConditioning' | 'EmptyLatentAudio' | 'VAEEncodeAudio' | 'EmptySD3LatentImage' | 'EmptyMochiLatentVideo' | 'was.Blend Latents' | 'was.Latent Input Switch' | 'was.Load Cache' | 'was.KSampler (WAS)' | 'was.KSampler Cycle' | 'was.Latent Batch' | 'was.Latent Noise Injection' | 'was.Latent Upscale by Factor (WAS)' | 'was.Samples Passthrough (Stat System)' | 'Impact_Pack.LatentPixelScale' | 'Impact_Pack.IterativeLatentUpscale' | 'Impact_Pack.TwoSamplersForMask' | 'Impact_Pack.TwoAdvancedSamplersForMask' | 'Impact_Pack.PreviewBridgeLatent' | 'Impact_Pack.LatentReceiver' | 'Impact_Pack.ImpactKSamplerBasicPipe' | 'Impact_Pack.ImpactKSamplerAdvancedBasicPipe' | 'Impact_Pack.ReencodeLatent' | 'Impact_Pack.ReencodeLatentPipe' | 'Impact_Pack.RegionalSampler' | 'Impact_Pack.RegionalSamplerAdvanced' | 'Impact_Pack.RemoveNoiseMask'>
+         PK_HOOK: Pick<Builder, 'Impact-Pack.PixelKSampleHookCombine' | 'Impact-Pack.DenoiseScheduleHookProvider' | 'Impact-Pack.StepsScheduleHookProvider' | 'Impact-Pack.CfgScheduleHookProvider' | 'Impact-Pack.NoiseInjectionHookProvider' | 'Impact-Pack.UnsamplerHookProvider'>
+         SEG_ELT: Pick<Builder, 'Impact-Pack.ImpactDecomposeSEGS' | 'Impact-Pack.ImpactFrom_SEG_ELT' | 'Impact-Pack.ImpactEdit_SEG_ELT' | 'Impact-Pack.ImpactDilate_Mask_SEG_ELT' | 'Impact-Pack.ImpactScaleBy_BBOX_SEG_ELT'>
+         LATENT: Pick<Builder, 'KSampler' | 'VAEEncode' | 'VAEEncodeForInpaint' | 'EmptyLatentImage' | 'LatentUpscale' | 'LatentUpscaleBy' | 'LatentFromBatch' | 'RepeatLatentBatch' | 'KSamplerAdvanced' | 'SetLatentNoiseMask' | 'LatentComposite' | 'LatentBlend' | 'LatentRotate' | 'LatentFlip' | 'LatentCrop' | 'VAEEncodeTiled' | 'InpaintModelConditioning' | 'LoadLatent' | 'LatentAdd' | 'LatentSubtract' | 'LatentMultiply' | 'LatentInterpolate' | 'LatentBatch' | 'LatentBatchSeedBehavior' | 'LatentApplyOperation' | 'LatentCompositeMasked' | 'RebatchLatents' | 'SamplerCustom' | 'SamplerCustom' | 'AddNoise' | 'SamplerCustomAdvanced' | 'SamplerCustomAdvanced' | 'SVD_img2vid_Conditioning' | 'StableZero123_Conditioning' | 'StableZero123_Conditioning_Batched' | 'SV3D_Conditioning' | 'SD_4XUpscale_Conditioning' | 'StableCascade_EmptyLatentImage' | 'StableCascade_EmptyLatentImage' | 'StableCascade_StageC_VAEEncode' | 'StableCascade_StageC_VAEEncode' | 'StableCascade_SuperResolutionControlnet' | 'StableCascade_SuperResolutionControlnet' | 'InstructPixToPixConditioning' | 'EmptyLatentAudio' | 'VAEEncodeAudio' | 'EmptySD3LatentImage' | 'EmptyMochiLatentVideo' | 'was.Blend Latents' | 'was.Latent Input Switch' | 'was.Load Cache' | 'was.KSampler (WAS)' | 'was.KSampler Cycle' | 'was.Latent Batch' | 'was.Latent Noise Injection' | 'was.Latent Upscale by Factor (WAS)' | 'was.Samples Passthrough (Stat System)' | 'ComfyUi_NNLatentUpscale.NNLatentUpscale' | 'Impact-Pack.LatentPixelScale' | 'Impact-Pack.IterativeLatentUpscale' | 'Impact-Pack.TwoSamplersForMask' | 'Impact-Pack.TwoAdvancedSamplersForMask' | 'Impact-Pack.PreviewBridgeLatent' | 'Impact-Pack.LatentReceiver' | 'Impact-Pack.ImpactKSamplerBasicPipe' | 'Impact-Pack.ImpactKSamplerAdvancedBasicPipe' | 'Impact-Pack.ReencodeLatent' | 'Impact-Pack.ReencodeLatentPipe' | 'Impact-Pack.RegionalSampler' | 'Impact-Pack.RegionalSamplerAdvanced' | 'Impact-Pack.RemoveNoiseMask'>
          GLIGEN: Pick<Builder, 'GLIGENLoader'>
          SIGMAS: Pick<Builder, 'BasicScheduler' | 'KarrasScheduler' | 'ExponentialScheduler' | 'PolyexponentialScheduler' | 'LaplaceScheduler' | 'VPScheduler' | 'BetaSamplingScheduler' | 'SDTurboScheduler' | 'SplitSigmas' | 'SplitSigmas' | 'SplitSigmasDenoise' | 'SplitSigmasDenoise' | 'FlipSigmas' | 'AlignYourStepsScheduler' | 'GITSScheduler'>
          GUIDER: Pick<Builder, 'CFGGuider' | 'DualCFGGuider' | 'BasicGuider' | 'PerpNegGuider'>
          WEBCAM: {}, // no node can output this type.
          NUMBER: Pick<Builder, 'was.Constant Number' | 'was.Debug Number to Console' | 'was.Logic Boolean' | 'was.Image Aspect Ratio' | 'was.Image Aspect Ratio' | 'was.Image Size to Number' | 'was.Image Size to Number' | 'was.Latent Size to Number' | 'was.Latent Size to Number' | 'was.Number Counter' | 'was.Number Operation' | 'was.Number Input Switch' | 'was.Number Input Condition' | 'was.Number Multiple Of' | 'was.Number PI' | 'was.Random Number' | 'was.Seed' | 'was.Text Compare' | 'was.Text Find and Replace Input' | 'was.Text Find and Replace' | 'was.Text to Number' | 'was.True Random.org Number Generator' | 'was.Video Dump Frames'>
          EMBEDS: Pick<Builder, 'IPAdapter_plus.IPAdapterEncoder' | 'IPAdapter_plus.IPAdapterEncoder' | 'IPAdapter_plus.IPAdapterCombineEmbeds' | 'IPAdapter_plus.IPAdapterLoadEmbeds'>
-         MODEL: Pick<Builder, 'CheckpointLoaderSimple' | 'LoraLoader' | 'UNETLoader' | 'unCLIPCheckpointLoader' | 'CheckpointLoader' | 'DiffusersLoader' | 'LoraLoaderModelOnly' | 'LatentApplyOperationCFG' | 'HypernetworkLoader' | 'ModelMergeSimple' | 'ModelMergeBlocks' | 'ModelMergeSubtract' | 'ModelMergeAdd' | 'TomePatchModel' | 'FreeU' | 'FreeU_V2' | 'HyperTile' | 'ModelSamplingDiscrete' | 'ModelSamplingContinuousEDM' | 'ModelSamplingContinuousV' | 'ModelSamplingStableCascade' | 'ModelSamplingSD3' | 'ModelSamplingAuraFlow' | 'ModelSamplingFlux' | 'RescaleCFG' | 'PatchModelAddDownscale' | 'ImageOnlyCheckpointLoader' | 'VideoLinearCFGGuidance' | 'VideoTriangleCFGGuidance' | 'SelfAttentionGuidance' | 'PerpNeg' | 'DifferentialDiffusion' | 'ModelMergeSD1' | 'ModelMergeSD2' | 'ModelMergeSDXL' | 'ModelMergeSD3_2B' | 'ModelMergeFlux1' | 'ModelMergeSD35_Large' | 'PerturbedAttentionGuidance' | 'UNetSelfAttentionMultiply' | 'UNetCrossAttentionMultiply' | 'UNetTemporalAttentionMultiply' | 'SkipLayerGuidanceSD3' | 'TorchCompileModel' | 'was.Bus Node' | 'was.Checkpoint Loader' | 'was.Checkpoint Loader (Simple)' | 'was.Diffusers Model Loader' | 'was.Diffusers Hub Model Down-Loader' | 'was.Lora Loader' | 'was.Load Lora' | 'was.Lora Input Switch' | 'was.Model Input Switch' | 'was.unCLIP Checkpoint Loader' | 'IPAdapter_plus.IPAdapter' | 'IPAdapter_plus.IPAdapterAdvanced' | 'IPAdapter_plus.IPAdapterBatch' | 'IPAdapter_plus.IPAdapterFaceID' | 'IPAdapter_plus.IPAdapterFaceIDKolors' | 'IPAdapter_plus.IPAAdapterFaceIDBatch' | 'IPAdapter_plus.IPAdapterTiled' | 'IPAdapter_plus.IPAdapterTiledBatch' | 'IPAdapter_plus.IPAdapterEmbeds' | 'IPAdapter_plus.IPAdapterEmbedsBatch' | 'IPAdapter_plus.IPAdapterStyleComposition' | 'IPAdapter_plus.IPAdapterStyleCompositionBatch' | 'IPAdapter_plus.IPAdapterMS' | 'IPAdapter_plus.IPAdapterClipVisionEnhancer' | 'IPAdapter_plus.IPAdapterClipVisionEnhancerBatch' | 'IPAdapter_plus.IPAdapterFromParams' | 'IPAdapter_plus.IPAdapterPreciseStyleTransfer' | 'IPAdapter_plus.IPAdapterPreciseStyleTransferBatch' | 'IPAdapter_plus.IPAdapterPreciseComposition' | 'IPAdapter_plus.IPAdapterPreciseCompositionBatch' | 'IPAdapter_plus.IPAdapterUnifiedLoader' | 'IPAdapter_plus.IPAdapterUnifiedLoaderFaceID' | 'IPAdapter_plus.IPAdapterUnifiedLoaderCommunity' | 'Impact_Pack.FromDetailerPipe' | 'Impact_Pack.FromDetailerPipe_v2' | 'Impact_Pack.FromDetailerPipeSDXL' | 'Impact_Pack.FromDetailerPipeSDXL' | 'Impact_Pack.FromBasicPipe' | 'Impact_Pack.FromBasicPipe_v2' | 'Impact_Pack.ImpactWildcardEncode'>
-         IMAGE: Pick<Builder, 'VAEDecode' | 'LoadImage' | 'ImageScale' | 'ImageScaleBy' | 'ImageInvert' | 'ImageBatch' | 'ImagePadForOutpaint' | 'EmptyImage' | 'VAEDecodeTiled' | 'ImageUpscaleWithModel' | 'ImageBlend' | 'ImageBlur' | 'ImageQuantize' | 'ImageSharpen' | 'ImageScaleToTotalPixels' | 'ImageCompositeMasked' | 'MaskToImage' | 'PorterDuffImageComposite' | 'SplitImageWithAlpha' | 'JoinImageWithAlpha' | 'RebatchImages' | 'Canny' | 'ImageCrop' | 'RepeatImageBatch' | 'ImageFromBatch' | 'Morphology' | 'StableCascade_SuperResolutionControlnet' | 'WebcamCapture' | 'was.Create Grid Image' | 'was.Create Grid Image from Batch' | 'was.Create Morph Image' | 'was.Create Morph Image' | 'was.CLIPSeg Masking' | 'was.CLIPSeg Batch Masking' | 'was.CLIPSeg Batch Masking' | 'was.Convert Masks to Images' | 'was.Load Cache' | 'was.Image SSAO (Ambient Occlusion)' | 'was.Image SSAO (Ambient Occlusion)' | 'was.Image SSAO (Ambient Occlusion)' | 'was.Image SSDO (Direct Occlusion)' | 'was.Image SSDO (Direct Occlusion)' | 'was.Image SSDO (Direct Occlusion)' | 'was.Image SSDO (Direct Occlusion)' | 'was.Image Analyze' | 'was.Image Batch' | 'was.Image Blank' | 'was.Image Blend by Mask' | 'was.Image Blend' | 'was.Image Blending Mode' | 'was.Image Bloom Filter' | 'was.Image Canny Filter' | 'was.Image Chromatic Aberration' | 'was.Image Color Palette' | 'was.Image Crop Face' | 'was.Image Crop Location' | 'was.Image Crop Square Location' | 'was.Image Displacement Warp' | 'was.Image Lucy Sharpen' | 'was.Image Paste Face' | 'was.Image Paste Face' | 'was.Image Paste Crop' | 'was.Image Paste Crop' | 'was.Image Paste Crop by Location' | 'was.Image Paste Crop by Location' | 'was.Image Pixelate' | 'was.Image Power Noise' | 'was.Image Dragan Photography Filter' | 'was.Image Edge Detection Filter' | 'was.Image Film Grain' | 'was.Image Filter Adjustments' | 'was.Image Flip' | 'was.Image Gradient Map' | 'was.Image Generate Gradient' | 'was.Image High Pass Filter' | 'was.Image History Loader' | 'was.Image Input Switch' | 'was.Image Levels Adjustment' | 'was.Image Load' | 'was.Image Median Filter' | 'was.Image Mix RGB Channels' | 'was.Image Monitor Effects Filter' | 'was.Image Nova Filter' | 'was.Image Padding' | 'was.Image Padding' | 'was.Image Perlin Noise' | 'was.Image Rembg (Remove Background)' | 'was.Image Perlin Power Fractal' | 'was.Image Remove Background (Alpha)' | 'was.Image Remove Color' | 'was.Image Resize' | 'was.Image Rotate' | 'was.Image Rotate Hue' | 'was.Image Save' | 'was.Image Seamless Texture' | 'was.Image Select Channel' | 'was.Image Select Color' | 'was.Image Shadows and Highlights' | 'was.Image Shadows and Highlights' | 'was.Image Shadows and Highlights' | 'was.Image Stitch' | 'was.Image Style Filter' | 'was.Image Threshold' | 'was.Image Tiled' | 'was.Image Transpose' | 'was.Image fDOF Filter' | 'was.Image to Noise' | 'was.Images to RGB' | 'was.Images to Linear' | 'was.Image Voronoi Noise Filter' | 'was.Load Image Batch' | 'was.MiDaS Depth Approximation' | 'was.MiDaS Mask Image' | 'was.MiDaS Mask Image' | 'was.Tensor Batch to Image' | 'was.SAM Image Mask' | 'was.Bounded Image Blend' | 'was.Bounded Image Blend with Mask' | 'was.Bounded Image Crop' | 'was.Bounded Image Crop with Mask' | 'was.Write to GIF' | 'was.Write to Video' | 'was.CLIPSEG2' | 'IPAdapter_plus.IPAdapterFaceID' | 'IPAdapter_plus.IPAdapterFaceIDKolors' | 'IPAdapter_plus.IPAAdapterFaceIDBatch' | 'IPAdapter_plus.IPAdapterTiled' | 'IPAdapter_plus.IPAdapterTiledBatch' | 'IPAdapter_plus.IPAdapterNoise' | 'IPAdapter_plus.PrepImageForClipVision' | 'IPAdapter_plus.IPAdapterWeights' | 'IPAdapter_plus.IPAdapterWeights' | 'IPAdapter_plus.IPAdapterWeightsFromStrategy' | 'IPAdapter_plus.IPAdapterWeightsFromStrategy' | 'controlnet_aux.ShufflePreprocessor' | 'controlnet_aux.DensePosePreprocessor' | 'controlnet_aux.LeReS-DepthMapPreprocessor' | 'controlnet_aux.BinaryPreprocessor' | 'controlnet_aux.AnimeFace_SemSegPreprocessor' | 'controlnet_aux.Zoe-DepthMapPreprocessor' | 'controlnet_aux.DepthAnythingPreprocessor' | 'controlnet_aux.Zoe_DepthAnythingPreprocessor' | 'controlnet_aux.DepthAnythingV2Preprocessor' | 'controlnet_aux.CannyEdgePreprocessor' | 'controlnet_aux.DWPreprocessor' | 'controlnet_aux.AnimalPosePreprocessor' | 'controlnet_aux.ImageLuminanceDetector' | 'controlnet_aux.ImageIntensityDetector' | 'controlnet_aux.MediaPipe-FaceMeshPreprocessor' | 'controlnet_aux.DiffusionEdge_Preprocessor' | 'controlnet_aux.M-LSDPreprocessor' | 'controlnet_aux.HEDPreprocessor' | 'controlnet_aux.FakeScribblePreprocessor' | 'controlnet_aux.OneFormer-COCO-SemSegPreprocessor' | 'controlnet_aux.OneFormer-ADE20K-SemSegPreprocessor' | 'controlnet_aux.BAE-NormalMapPreprocessor' | 'controlnet_aux.MeshGraphormer-DepthMapPreprocessor' | 'controlnet_aux.MeshGraphormer+ImpactDetector-DepthMapPreprocessor' | 'controlnet_aux.DSINE-NormalMapPreprocessor' | 'controlnet_aux.MiDaS-NormalMapPreprocessor' | 'controlnet_aux.MiDaS-DepthMapPreprocessor' | 'controlnet_aux.AnyLineArtPreprocessor_aux' | 'controlnet_aux.SAMPreprocessor' | 'controlnet_aux.UniFormer-SemSegPreprocessor' | 'controlnet_aux.SemSegPreprocessor' | 'controlnet_aux.PiDiNetPreprocessor' | 'controlnet_aux.InpaintPreprocessor' | 'controlnet_aux.LineArtPreprocessor' | 'controlnet_aux.OpenposePreprocessor' | 'controlnet_aux.Unimatch_OptFlowPreprocessor' | 'controlnet_aux.MaskOptFlow' | 'controlnet_aux.FacialPartColoringFromPoseKps' | 'controlnet_aux.RenderPeopleKps' | 'controlnet_aux.RenderAnimalKps' | 'controlnet_aux.TEEDPreprocessor' | 'controlnet_aux.PyraCannyPreprocessor' | 'controlnet_aux.Metric3D-DepthMapPreprocessor' | 'controlnet_aux.Metric3D-NormalMapPreprocessor' | 'controlnet_aux.Manga2Anime_LineArt_Preprocessor' | 'controlnet_aux.ScribblePreprocessor' | 'controlnet_aux.Scribble_XDoG_Preprocessor' | 'controlnet_aux.Scribble_PiDiNet_Preprocessor' | 'controlnet_aux.AnimeLineArtPreprocessor' | 'controlnet_aux.LineartStandardPreprocessor' | 'controlnet_aux.TilePreprocessor' | 'controlnet_aux.TTPlanet_TileGF_Preprocessor' | 'controlnet_aux.TTPlanet_TileSimple_Preprocessor' | 'controlnet_aux.ColorPreprocessor' | 'controlnet_aux.AIO_Preprocessor' | 'controlnet_aux.HintImageEnchance' | 'controlnet_aux.ExecuteAllControlNetPreprocessors' | 'controlnet_aux.ControlNetAuxSimpleAddText' | 'Marigold.MarigoldDepthEstimation_v2' | 'Marigold.MarigoldDepthEstimation_v2_video' | 'Marigold.MarigoldDepthEstimation' | 'Marigold.MarigoldDepthEstimationVideo' | 'Marigold.ColorizeDepthmap' | 'Marigold.RemapDepth' | 'Impact_Pack.DetailerForEach' | 'Impact_Pack.DetailerForEachDebug' | 'Impact_Pack.DetailerForEachDebug' | 'Impact_Pack.DetailerForEachDebug' | 'Impact_Pack.DetailerForEachDebug' | 'Impact_Pack.DetailerForEachDebug' | 'Impact_Pack.DetailerForEachPipe' | 'Impact_Pack.DetailerForEachPipe' | 'Impact_Pack.DetailerForEachDebugPipe' | 'Impact_Pack.DetailerForEachDebugPipe' | 'Impact_Pack.DetailerForEachDebugPipe' | 'Impact_Pack.DetailerForEachDebugPipe' | 'Impact_Pack.DetailerForEachDebugPipe' | 'Impact_Pack.DetailerForEachPipeForAnimateDiff' | 'Impact_Pack.DetailerForEachPipeForAnimateDiff' | 'Impact_Pack.FaceDetailer' | 'Impact_Pack.FaceDetailer' | 'Impact_Pack.FaceDetailer' | 'Impact_Pack.FaceDetailer' | 'Impact_Pack.FaceDetailerPipe' | 'Impact_Pack.FaceDetailerPipe' | 'Impact_Pack.FaceDetailerPipe' | 'Impact_Pack.FaceDetailerPipe' | 'Impact_Pack.MaskDetailerPipe' | 'Impact_Pack.MaskDetailerPipe' | 'Impact_Pack.MaskDetailerPipe' | 'Impact_Pack.LatentPixelScale' | 'Impact_Pack.IterativeImageUpscale' | 'Impact_Pack.ImageListToImageBatch' | 'Impact_Pack.ImpactFrom_SEG_ELT' | 'Impact_Pack.PreviewBridge' | 'Impact_Pack.ImageReceiver' | 'Impact_Pack.ImageMaskSwitch' | 'Impact_Pack.SEGSUpscaler' | 'Impact_Pack.SEGSUpscalerPipe' | 'Impact_Pack.SEGSDetailer' | 'Impact_Pack.SEGSPaste' | 'Impact_Pack.SEGSPreview' | 'Impact_Pack.SEGSPreviewCNet' | 'Impact_Pack.SEGSToImageList' | 'Impact_Pack.SEGSDetailerForAnimateDiff' | 'Impact_Pack.ImpactImageBatchToImageList' | 'Impact_Pack.ImpactMakeImageList' | 'Impact_Pack.ImpactMakeImageBatch'>
+         MODEL: Pick<Builder, 'CheckpointLoaderSimple' | 'LoraLoader' | 'UNETLoader' | 'unCLIPCheckpointLoader' | 'CheckpointLoader' | 'DiffusersLoader' | 'LoraLoaderModelOnly' | 'LatentApplyOperationCFG' | 'HypernetworkLoader' | 'ModelMergeSimple' | 'ModelMergeBlocks' | 'ModelMergeSubtract' | 'ModelMergeAdd' | 'TomePatchModel' | 'FreeU' | 'FreeU_V2' | 'HyperTile' | 'ModelSamplingDiscrete' | 'ModelSamplingContinuousEDM' | 'ModelSamplingContinuousV' | 'ModelSamplingStableCascade' | 'ModelSamplingSD3' | 'ModelSamplingAuraFlow' | 'ModelSamplingFlux' | 'RescaleCFG' | 'PatchModelAddDownscale' | 'ImageOnlyCheckpointLoader' | 'VideoLinearCFGGuidance' | 'VideoTriangleCFGGuidance' | 'SelfAttentionGuidance' | 'PerpNeg' | 'DifferentialDiffusion' | 'ModelMergeSD1' | 'ModelMergeSD2' | 'ModelMergeSDXL' | 'ModelMergeSD3_2B' | 'ModelMergeFlux1' | 'ModelMergeSD35_Large' | 'PerturbedAttentionGuidance' | 'UNetSelfAttentionMultiply' | 'UNetCrossAttentionMultiply' | 'UNetTemporalAttentionMultiply' | 'SkipLayerGuidanceSD3' | 'TorchCompileModel' | 'was.Bus Node' | 'was.Checkpoint Loader' | 'was.Checkpoint Loader (Simple)' | 'was.Diffusers Model Loader' | 'was.Diffusers Hub Model Down-Loader' | 'was.Lora Loader' | 'was.Load Lora' | 'was.Lora Input Switch' | 'was.Model Input Switch' | 'was.unCLIP Checkpoint Loader' | 'IPAdapter_plus.IPAdapter' | 'IPAdapter_plus.IPAdapterAdvanced' | 'IPAdapter_plus.IPAdapterBatch' | 'IPAdapter_plus.IPAdapterFaceID' | 'IPAdapter_plus.IPAdapterFaceIDKolors' | 'IPAdapter_plus.IPAAdapterFaceIDBatch' | 'IPAdapter_plus.IPAdapterTiled' | 'IPAdapter_plus.IPAdapterTiledBatch' | 'IPAdapter_plus.IPAdapterEmbeds' | 'IPAdapter_plus.IPAdapterEmbedsBatch' | 'IPAdapter_plus.IPAdapterStyleComposition' | 'IPAdapter_plus.IPAdapterStyleCompositionBatch' | 'IPAdapter_plus.IPAdapterMS' | 'IPAdapter_plus.IPAdapterClipVisionEnhancer' | 'IPAdapter_plus.IPAdapterClipVisionEnhancerBatch' | 'IPAdapter_plus.IPAdapterFromParams' | 'IPAdapter_plus.IPAdapterPreciseStyleTransfer' | 'IPAdapter_plus.IPAdapterPreciseStyleTransferBatch' | 'IPAdapter_plus.IPAdapterPreciseComposition' | 'IPAdapter_plus.IPAdapterPreciseCompositionBatch' | 'IPAdapter_plus.IPAdapterUnifiedLoader' | 'IPAdapter_plus.IPAdapterUnifiedLoaderFaceID' | 'IPAdapter_plus.IPAdapterUnifiedLoaderCommunity' | 'sd-perturbed-attention.PerturbedAttention' | 'sd-perturbed-attention.SmoothedEnergyGuidanceAdvanced' | 'sd-perturbed-attention.TRTAttachPag' | 'sd-perturbed-attention.TRTPerturbedAttention' | 'civitai_comfy_nodes.CivitAI_Lora_Loader' | 'civitai_comfy_nodes.CivitAI_Checkpoint_Loader' | 'Impact-Pack.FromDetailerPipe' | 'Impact-Pack.FromDetailerPipe_v2' | 'Impact-Pack.FromDetailerPipeSDXL' | 'Impact-Pack.FromDetailerPipeSDXL' | 'Impact-Pack.FromBasicPipe' | 'Impact-Pack.FromBasicPipe_v2' | 'Impact-Pack.ImpactWildcardEncode'>
+         IMAGE: Pick<Builder, 'VAEDecode' | 'LoadImage' | 'ImageScale' | 'ImageScaleBy' | 'ImageInvert' | 'ImageBatch' | 'ImagePadForOutpaint' | 'EmptyImage' | 'VAEDecodeTiled' | 'ImageUpscaleWithModel' | 'ImageBlend' | 'ImageBlur' | 'ImageQuantize' | 'ImageSharpen' | 'ImageScaleToTotalPixels' | 'ImageCompositeMasked' | 'MaskToImage' | 'PorterDuffImageComposite' | 'SplitImageWithAlpha' | 'JoinImageWithAlpha' | 'RebatchImages' | 'Canny' | 'ImageCrop' | 'RepeatImageBatch' | 'ImageFromBatch' | 'Morphology' | 'StableCascade_SuperResolutionControlnet' | 'WebcamCapture' | 'was.Create Grid Image' | 'was.Create Grid Image from Batch' | 'was.Create Morph Image' | 'was.Create Morph Image' | 'was.CLIPSeg Masking' | 'was.CLIPSeg Batch Masking' | 'was.CLIPSeg Batch Masking' | 'was.Convert Masks to Images' | 'was.Load Cache' | 'was.Image SSAO (Ambient Occlusion)' | 'was.Image SSAO (Ambient Occlusion)' | 'was.Image SSAO (Ambient Occlusion)' | 'was.Image SSDO (Direct Occlusion)' | 'was.Image SSDO (Direct Occlusion)' | 'was.Image SSDO (Direct Occlusion)' | 'was.Image SSDO (Direct Occlusion)' | 'was.Image Analyze' | 'was.Image Batch' | 'was.Image Blank' | 'was.Image Blend by Mask' | 'was.Image Blend' | 'was.Image Blending Mode' | 'was.Image Bloom Filter' | 'was.Image Canny Filter' | 'was.Image Chromatic Aberration' | 'was.Image Color Palette' | 'was.Image Crop Face' | 'was.Image Crop Location' | 'was.Image Crop Square Location' | 'was.Image Displacement Warp' | 'was.Image Lucy Sharpen' | 'was.Image Paste Face' | 'was.Image Paste Face' | 'was.Image Paste Crop' | 'was.Image Paste Crop' | 'was.Image Paste Crop by Location' | 'was.Image Paste Crop by Location' | 'was.Image Pixelate' | 'was.Image Power Noise' | 'was.Image Dragan Photography Filter' | 'was.Image Edge Detection Filter' | 'was.Image Film Grain' | 'was.Image Filter Adjustments' | 'was.Image Flip' | 'was.Image Gradient Map' | 'was.Image Generate Gradient' | 'was.Image High Pass Filter' | 'was.Image History Loader' | 'was.Image Input Switch' | 'was.Image Levels Adjustment' | 'was.Image Load' | 'was.Image Median Filter' | 'was.Image Mix RGB Channels' | 'was.Image Monitor Effects Filter' | 'was.Image Nova Filter' | 'was.Image Padding' | 'was.Image Padding' | 'was.Image Perlin Noise' | 'was.Image Rembg (Remove Background)' | 'was.Image Perlin Power Fractal' | 'was.Image Remove Background (Alpha)' | 'was.Image Remove Color' | 'was.Image Resize' | 'was.Image Rotate' | 'was.Image Rotate Hue' | 'was.Image Save' | 'was.Image Seamless Texture' | 'was.Image Select Channel' | 'was.Image Select Color' | 'was.Image Shadows and Highlights' | 'was.Image Shadows and Highlights' | 'was.Image Shadows and Highlights' | 'was.Image Stitch' | 'was.Image Style Filter' | 'was.Image Threshold' | 'was.Image Tiled' | 'was.Image Transpose' | 'was.Image fDOF Filter' | 'was.Image to Noise' | 'was.Images to RGB' | 'was.Images to Linear' | 'was.Image Voronoi Noise Filter' | 'was.Load Image Batch' | 'was.MiDaS Depth Approximation' | 'was.MiDaS Mask Image' | 'was.MiDaS Mask Image' | 'was.Tensor Batch to Image' | 'was.SAM Image Mask' | 'was.Bounded Image Blend' | 'was.Bounded Image Blend with Mask' | 'was.Bounded Image Crop' | 'was.Bounded Image Crop with Mask' | 'was.Write to GIF' | 'was.Write to Video' | 'was.CLIPSEG2' | 'IPAdapter_plus.IPAdapterFaceID' | 'IPAdapter_plus.IPAdapterFaceIDKolors' | 'IPAdapter_plus.IPAAdapterFaceIDBatch' | 'IPAdapter_plus.IPAdapterTiled' | 'IPAdapter_plus.IPAdapterTiledBatch' | 'IPAdapter_plus.IPAdapterNoise' | 'IPAdapter_plus.PrepImageForClipVision' | 'IPAdapter_plus.IPAdapterWeights' | 'IPAdapter_plus.IPAdapterWeights' | 'IPAdapter_plus.IPAdapterWeightsFromStrategy' | 'IPAdapter_plus.IPAdapterWeightsFromStrategy' | 'controlnet_aux.ShufflePreprocessor' | 'controlnet_aux.DensePosePreprocessor' | 'controlnet_aux.LeReS-DepthMapPreprocessor' | 'controlnet_aux.BinaryPreprocessor' | 'controlnet_aux.AnimeFace_SemSegPreprocessor' | 'controlnet_aux.Zoe-DepthMapPreprocessor' | 'controlnet_aux.DepthAnythingPreprocessor' | 'controlnet_aux.Zoe_DepthAnythingPreprocessor' | 'controlnet_aux.DepthAnythingV2Preprocessor' | 'controlnet_aux.CannyEdgePreprocessor' | 'controlnet_aux.DWPreprocessor' | 'controlnet_aux.AnimalPosePreprocessor' | 'controlnet_aux.ImageLuminanceDetector' | 'controlnet_aux.ImageIntensityDetector' | 'controlnet_aux.MediaPipe-FaceMeshPreprocessor' | 'controlnet_aux.DiffusionEdge_Preprocessor' | 'controlnet_aux.M-LSDPreprocessor' | 'controlnet_aux.HEDPreprocessor' | 'controlnet_aux.FakeScribblePreprocessor' | 'controlnet_aux.OneFormer-COCO-SemSegPreprocessor' | 'controlnet_aux.OneFormer-ADE20K-SemSegPreprocessor' | 'controlnet_aux.BAE-NormalMapPreprocessor' | 'controlnet_aux.MeshGraphormer-DepthMapPreprocessor' | 'controlnet_aux.MeshGraphormer+ImpactDetector-DepthMapPreprocessor' | 'controlnet_aux.DSINE-NormalMapPreprocessor' | 'controlnet_aux.MiDaS-NormalMapPreprocessor' | 'controlnet_aux.MiDaS-DepthMapPreprocessor' | 'controlnet_aux.AnyLineArtPreprocessor_aux' | 'controlnet_aux.SAMPreprocessor' | 'controlnet_aux.UniFormer-SemSegPreprocessor' | 'controlnet_aux.SemSegPreprocessor' | 'controlnet_aux.PiDiNetPreprocessor' | 'controlnet_aux.InpaintPreprocessor' | 'controlnet_aux.LineArtPreprocessor' | 'controlnet_aux.OpenposePreprocessor' | 'controlnet_aux.Unimatch_OptFlowPreprocessor' | 'controlnet_aux.MaskOptFlow' | 'controlnet_aux.FacialPartColoringFromPoseKps' | 'controlnet_aux.RenderPeopleKps' | 'controlnet_aux.RenderAnimalKps' | 'controlnet_aux.TEEDPreprocessor' | 'controlnet_aux.PyraCannyPreprocessor' | 'controlnet_aux.Metric3D-DepthMapPreprocessor' | 'controlnet_aux.Metric3D-NormalMapPreprocessor' | 'controlnet_aux.Manga2Anime_LineArt_Preprocessor' | 'controlnet_aux.ScribblePreprocessor' | 'controlnet_aux.Scribble_XDoG_Preprocessor' | 'controlnet_aux.Scribble_PiDiNet_Preprocessor' | 'controlnet_aux.AnimeLineArtPreprocessor' | 'controlnet_aux.LineartStandardPreprocessor' | 'controlnet_aux.TilePreprocessor' | 'controlnet_aux.TTPlanet_TileGF_Preprocessor' | 'controlnet_aux.TTPlanet_TileSimple_Preprocessor' | 'controlnet_aux.ColorPreprocessor' | 'controlnet_aux.AIO_Preprocessor' | 'controlnet_aux.HintImageEnchance' | 'controlnet_aux.ExecuteAllControlNetPreprocessors' | 'controlnet_aux.ControlNetAuxSimpleAddText' | 'Marigold.MarigoldDepthEstimation_v2' | 'Marigold.MarigoldDepthEstimation_v2_video' | 'Marigold.MarigoldDepthEstimation' | 'Marigold.MarigoldDepthEstimationVideo' | 'Marigold.ColorizeDepthmap' | 'Marigold.RemapDepth' | 'Impact-Pack.DetailerForEach' | 'Impact-Pack.DetailerForEachDebug' | 'Impact-Pack.DetailerForEachDebug' | 'Impact-Pack.DetailerForEachDebug' | 'Impact-Pack.DetailerForEachDebug' | 'Impact-Pack.DetailerForEachDebug' | 'Impact-Pack.DetailerForEachPipe' | 'Impact-Pack.DetailerForEachPipe' | 'Impact-Pack.DetailerForEachDebugPipe' | 'Impact-Pack.DetailerForEachDebugPipe' | 'Impact-Pack.DetailerForEachDebugPipe' | 'Impact-Pack.DetailerForEachDebugPipe' | 'Impact-Pack.DetailerForEachDebugPipe' | 'Impact-Pack.DetailerForEachPipeForAnimateDiff' | 'Impact-Pack.DetailerForEachPipeForAnimateDiff' | 'Impact-Pack.FaceDetailer' | 'Impact-Pack.FaceDetailer' | 'Impact-Pack.FaceDetailer' | 'Impact-Pack.FaceDetailer' | 'Impact-Pack.FaceDetailerPipe' | 'Impact-Pack.FaceDetailerPipe' | 'Impact-Pack.FaceDetailerPipe' | 'Impact-Pack.FaceDetailerPipe' | 'Impact-Pack.MaskDetailerPipe' | 'Impact-Pack.MaskDetailerPipe' | 'Impact-Pack.MaskDetailerPipe' | 'Impact-Pack.LatentPixelScale' | 'Impact-Pack.IterativeImageUpscale' | 'Impact-Pack.ImageListToImageBatch' | 'Impact-Pack.ImpactFrom_SEG_ELT' | 'Impact-Pack.PreviewBridge' | 'Impact-Pack.ImageReceiver' | 'Impact-Pack.ImageMaskSwitch' | 'Impact-Pack.SEGSUpscaler' | 'Impact-Pack.SEGSUpscalerPipe' | 'Impact-Pack.SEGSDetailer' | 'Impact-Pack.SEGSPaste' | 'Impact-Pack.SEGSPreview' | 'Impact-Pack.SEGSPreviewCNet' | 'Impact-Pack.SEGSToImageList' | 'Impact-Pack.SEGSDetailerForAnimateDiff' | 'Impact-Pack.ImpactImageBatchToImageList' | 'Impact-Pack.ImpactMakeImageList' | 'Impact-Pack.ImpactMakeImageBatch'>
          NOISE: Pick<Builder, 'RandomNoise' | 'DisableNoise'>
          AUDIO: Pick<Builder, 'VAEDecodeAudio' | 'LoadAudio'>
-         CLIP: Pick<Builder, 'CheckpointLoaderSimple' | 'CLIPSetLastLayer' | 'LoraLoader' | 'CLIPLoader' | 'DualCLIPLoader' | 'unCLIPCheckpointLoader' | 'CheckpointLoader' | 'DiffusersLoader' | 'CLIPMergeSimple' | 'CLIPMergeSubtract' | 'CLIPMergeAdd' | 'CLIPAttentionMultiply' | 'TripleCLIPLoader' | 'was.Bus Node' | 'was.Checkpoint Loader' | 'was.Checkpoint Loader (Simple)' | 'was.CLIP Input Switch' | 'was.Diffusers Model Loader' | 'was.Diffusers Hub Model Down-Loader' | 'was.Lora Loader' | 'was.Load Lora' | 'was.Lora Input Switch' | 'was.unCLIP Checkpoint Loader' | 'Impact_Pack.FromDetailerPipe' | 'Impact_Pack.FromDetailerPipe_v2' | 'Impact_Pack.FromDetailerPipeSDXL' | 'Impact_Pack.FromDetailerPipeSDXL' | 'Impact_Pack.FromBasicPipe' | 'Impact_Pack.FromBasicPipe_v2' | 'Impact_Pack.ImpactWildcardEncode'>
-         MASK: Pick<Builder, 'LoadImage' | 'LoadImageMask' | 'ImagePadForOutpaint' | 'ImageToMask' | 'ImageColorToMask' | 'SolidMask' | 'InvertMask' | 'CropMask' | 'MaskComposite' | 'FeatherMask' | 'GrowMask' | 'ThresholdMask' | 'PorterDuffImageComposite' | 'SplitImageWithAlpha' | 'was.CLIPSeg Masking' | 'was.CLIPSeg Batch Masking' | 'was.Image Load' | 'was.Image to Latent Mask' | 'was.Masks Add' | 'was.Masks Subtract' | 'was.Mask Arbitrary Region' | 'was.Mask Batch to Mask' | 'was.Mask Batch' | 'was.Mask Ceiling Region' | 'was.Mask Crop Dominant Region' | 'was.Mask Crop Minority Region' | 'was.Mask Crop Region' | 'was.Mask Paste Region' | 'was.Mask Paste Region' | 'was.Mask Dilate Region' | 'was.Mask Dominant Region' | 'was.Mask Erode Region' | 'was.Mask Fill Holes' | 'was.Mask Floor Region' | 'was.Mask Gaussian Region' | 'was.Mask Invert' | 'was.Mask Minority Region' | 'was.Mask Smooth Region' | 'was.Mask Threshold Region' | 'was.Masks Combine Regions' | 'was.Masks Combine Batch' | 'was.SAM Image Mask' | 'IPAdapter_plus.IPAdapterTiled' | 'IPAdapter_plus.IPAdapterTiledBatch' | 'controlnet_aux.AnimeFace_SemSegPreprocessor' | 'controlnet_aux.MeshGraphormer-DepthMapPreprocessor' | 'controlnet_aux.MeshGraphormer+ImpactDetector-DepthMapPreprocessor' | 'Impact_Pack.SAMDetectorCombined' | 'Impact_Pack.SAMDetectorSegmented' | 'Impact_Pack.SAMDetectorSegmented' | 'Impact_Pack.FaceDetailer' | 'Impact_Pack.FaceDetailerPipe' | 'Impact_Pack.BitwiseAndMask' | 'Impact_Pack.SubtractMask' | 'Impact_Pack.AddMask' | 'Impact_Pack.ImpactFlattenMask' | 'Impact_Pack.ToBinaryMask' | 'Impact_Pack.MasksToMaskList' | 'Impact_Pack.MaskListToMaskBatch' | 'Impact_Pack.ImpactFrom_SEG_ELT' | 'Impact_Pack.ImpactDilateMask' | 'Impact_Pack.ImpactGaussianBlurMask' | 'Impact_Pack.BboxDetectorCombined_v2' | 'Impact_Pack.SegmDetectorCombined_v2' | 'Impact_Pack.SegsToCombinedMask' | 'Impact_Pack.PreviewBridge' | 'Impact_Pack.PreviewBridgeLatent' | 'Impact_Pack.ImageReceiver' | 'Impact_Pack.ImageMaskSwitch' | 'Impact_Pack.ImpactSEGSToMaskList' | 'Impact_Pack.ImpactSEGSToMaskBatch' | 'Impact_Pack.ImpactMakeMaskList' | 'Impact_Pack.ImpactMakeMaskBatch'>
+         CLIP: Pick<Builder, 'CheckpointLoaderSimple' | 'CLIPSetLastLayer' | 'LoraLoader' | 'CLIPLoader' | 'DualCLIPLoader' | 'unCLIPCheckpointLoader' | 'CheckpointLoader' | 'DiffusersLoader' | 'CLIPMergeSimple' | 'CLIPMergeSubtract' | 'CLIPMergeAdd' | 'CLIPAttentionMultiply' | 'TripleCLIPLoader' | 'was.Bus Node' | 'was.Checkpoint Loader' | 'was.Checkpoint Loader (Simple)' | 'was.CLIP Input Switch' | 'was.Diffusers Model Loader' | 'was.Diffusers Hub Model Down-Loader' | 'was.Lora Loader' | 'was.Load Lora' | 'was.Lora Input Switch' | 'was.unCLIP Checkpoint Loader' | 'civitai_comfy_nodes.CivitAI_Lora_Loader' | 'civitai_comfy_nodes.CivitAI_Checkpoint_Loader' | 'Impact-Pack.FromDetailerPipe' | 'Impact-Pack.FromDetailerPipe_v2' | 'Impact-Pack.FromDetailerPipeSDXL' | 'Impact-Pack.FromDetailerPipeSDXL' | 'Impact-Pack.FromBasicPipe' | 'Impact-Pack.FromBasicPipe_v2' | 'Impact-Pack.ImpactWildcardEncode'>
+         MASK: Pick<Builder, 'LoadImage' | 'LoadImageMask' | 'ImagePadForOutpaint' | 'ImageToMask' | 'ImageColorToMask' | 'SolidMask' | 'InvertMask' | 'CropMask' | 'MaskComposite' | 'FeatherMask' | 'GrowMask' | 'ThresholdMask' | 'PorterDuffImageComposite' | 'SplitImageWithAlpha' | 'was.CLIPSeg Masking' | 'was.CLIPSeg Batch Masking' | 'was.Image Load' | 'was.Image to Latent Mask' | 'was.Masks Add' | 'was.Masks Subtract' | 'was.Mask Arbitrary Region' | 'was.Mask Batch to Mask' | 'was.Mask Batch' | 'was.Mask Ceiling Region' | 'was.Mask Crop Dominant Region' | 'was.Mask Crop Minority Region' | 'was.Mask Crop Region' | 'was.Mask Paste Region' | 'was.Mask Paste Region' | 'was.Mask Dilate Region' | 'was.Mask Dominant Region' | 'was.Mask Erode Region' | 'was.Mask Fill Holes' | 'was.Mask Floor Region' | 'was.Mask Gaussian Region' | 'was.Mask Invert' | 'was.Mask Minority Region' | 'was.Mask Smooth Region' | 'was.Mask Threshold Region' | 'was.Masks Combine Regions' | 'was.Masks Combine Batch' | 'was.SAM Image Mask' | 'IPAdapter_plus.IPAdapterTiled' | 'IPAdapter_plus.IPAdapterTiledBatch' | 'controlnet_aux.AnimeFace_SemSegPreprocessor' | 'controlnet_aux.MeshGraphormer-DepthMapPreprocessor' | 'controlnet_aux.MeshGraphormer+ImpactDetector-DepthMapPreprocessor' | 'Impact-Pack.SAMDetectorCombined' | 'Impact-Pack.SAMDetectorSegmented' | 'Impact-Pack.SAMDetectorSegmented' | 'Impact-Pack.FaceDetailer' | 'Impact-Pack.FaceDetailerPipe' | 'Impact-Pack.BitwiseAndMask' | 'Impact-Pack.SubtractMask' | 'Impact-Pack.AddMask' | 'Impact-Pack.ImpactFlattenMask' | 'Impact-Pack.ToBinaryMask' | 'Impact-Pack.MasksToMaskList' | 'Impact-Pack.MaskListToMaskBatch' | 'Impact-Pack.ImpactFrom_SEG_ELT' | 'Impact-Pack.ImpactDilateMask' | 'Impact-Pack.ImpactGaussianBlurMask' | 'Impact-Pack.BboxDetectorCombined_v2' | 'Impact-Pack.SegmDetectorCombined_v2' | 'Impact-Pack.SegsToCombinedMask' | 'Impact-Pack.PreviewBridge' | 'Impact-Pack.PreviewBridgeLatent' | 'Impact-Pack.ImageReceiver' | 'Impact-Pack.ImageMaskSwitch' | 'Impact-Pack.ImpactSEGSToMaskList' | 'Impact-Pack.ImpactSEGSToMaskBatch' | 'Impact-Pack.ImpactMakeMaskList' | 'Impact-Pack.ImpactMakeMaskBatch'>
          DICT: Pick<Builder, 'was.Dictionary to Console' | 'was.Load Text File' | 'was.Text Dictionary Update' | 'was.Text Dictionary Convert' | 'was.Text Dictionary New' | 'was.Text File History Loader' | 'was.Text Load Line From File'>
          LIST: Pick<Builder, 'was.Image Color Palette' | 'was.Text Dictionary Keys' | 'was.Text List' | 'was.Text List Concatenate'>
          SEED: Pick<Builder, 'was.Number to Seed' | 'was.Seed'>
-         SEGS: Pick<Builder, 'Impact_Pack.BitwiseAndMaskForEach' | 'Impact_Pack.SubtractMaskForEach' | 'Impact_Pack.DetailerForEachPipe' | 'Impact_Pack.DetailerForEachDebugPipe' | 'Impact_Pack.DetailerForEachPipeForAnimateDiff' | 'Impact_Pack.ImpactSegsAndMask' | 'Impact_Pack.ImpactSegsAndMaskForEach' | 'Impact_Pack.EmptySegs' | 'Impact_Pack.MediaPipeFaceMeshToSEGS' | 'Impact_Pack.MaskToSEGS' | 'Impact_Pack.MaskToSEGS_for_AnimateDiff' | 'Impact_Pack.SetDefaultImageForSEGS' | 'Impact_Pack.RemoveImageFromSEGS' | 'Impact_Pack.BboxDetectorSEGS' | 'Impact_Pack.SegmDetectorSEGS' | 'Impact_Pack.ONNXDetectorSEGS' | 'Impact_Pack.ImpactSimpleDetectorSEGS_for_AD' | 'Impact_Pack.ImpactSimpleDetectorSEGS' | 'Impact_Pack.ImpactSimpleDetectorSEGSPipe' | 'Impact_Pack.ImpactControlNetApplySEGS' | 'Impact_Pack.ImpactControlNetApplyAdvancedSEGS' | 'Impact_Pack.ImpactControlNetClearSEGS' | 'Impact_Pack.ImpactIPAdapterApplySEGS' | 'Impact_Pack.ImpactAssembleSEGS' | 'Impact_Pack.ImpactDilateMaskInSEGS' | 'Impact_Pack.ImpactGaussianBlurMaskInSEGS' | 'Impact_Pack.SEGSDetailer' | 'Impact_Pack.ImpactSEGSConcat' | 'Impact_Pack.ImpactSEGSPicker' | 'Impact_Pack.ImpactMakeTileSEGS' | 'Impact_Pack.ImpactSEGSMerge' | 'Impact_Pack.SEGSDetailerForAnimateDiff' | 'Impact_Pack.ImpactSEGSLabelAssign' | 'Impact_Pack.ImpactSEGSLabelFilter' | 'Impact_Pack.ImpactSEGSLabelFilter' | 'Impact_Pack.ImpactSEGSRangeFilter' | 'Impact_Pack.ImpactSEGSRangeFilter' | 'Impact_Pack.ImpactSEGSOrderedFilter' | 'Impact_Pack.ImpactSEGSOrderedFilter' | 'Impact_Pack.ImpactSEGSClassify' | 'Impact_Pack.ImpactSEGSClassify'>
-         VAE: Pick<Builder, 'CheckpointLoaderSimple' | 'VAELoader' | 'unCLIPCheckpointLoader' | 'CheckpointLoader' | 'DiffusersLoader' | 'ImageOnlyCheckpointLoader' | 'was.Bus Node' | 'was.Checkpoint Loader' | 'was.Checkpoint Loader (Simple)' | 'was.Diffusers Model Loader' | 'was.Diffusers Hub Model Down-Loader' | 'was.unCLIP Checkpoint Loader' | 'was.VAE Input Switch' | 'Impact_Pack.FromDetailerPipe' | 'Impact_Pack.FromDetailerPipe_v2' | 'Impact_Pack.FromDetailerPipeSDXL' | 'Impact_Pack.FromBasicPipe' | 'Impact_Pack.FromBasicPipe_v2' | 'Impact_Pack.IterativeLatentUpscale' | 'Impact_Pack.ImpactKSamplerBasicPipe' | 'Impact_Pack.ImpactKSamplerAdvancedBasicPipe'>
+         SEGS: Pick<Builder, 'Impact-Pack.BitwiseAndMaskForEach' | 'Impact-Pack.SubtractMaskForEach' | 'Impact-Pack.DetailerForEachPipe' | 'Impact-Pack.DetailerForEachDebugPipe' | 'Impact-Pack.DetailerForEachPipeForAnimateDiff' | 'Impact-Pack.ImpactSegsAndMask' | 'Impact-Pack.ImpactSegsAndMaskForEach' | 'Impact-Pack.EmptySegs' | 'Impact-Pack.MediaPipeFaceMeshToSEGS' | 'Impact-Pack.MaskToSEGS' | 'Impact-Pack.MaskToSEGS_for_AnimateDiff' | 'Impact-Pack.SetDefaultImageForSEGS' | 'Impact-Pack.RemoveImageFromSEGS' | 'Impact-Pack.BboxDetectorSEGS' | 'Impact-Pack.SegmDetectorSEGS' | 'Impact-Pack.ONNXDetectorSEGS' | 'Impact-Pack.ImpactSimpleDetectorSEGS_for_AD' | 'Impact-Pack.ImpactSimpleDetectorSEGS' | 'Impact-Pack.ImpactSimpleDetectorSEGSPipe' | 'Impact-Pack.ImpactControlNetApplySEGS' | 'Impact-Pack.ImpactControlNetApplyAdvancedSEGS' | 'Impact-Pack.ImpactControlNetClearSEGS' | 'Impact-Pack.ImpactIPAdapterApplySEGS' | 'Impact-Pack.ImpactAssembleSEGS' | 'Impact-Pack.ImpactDilateMaskInSEGS' | 'Impact-Pack.ImpactGaussianBlurMaskInSEGS' | 'Impact-Pack.SEGSDetailer' | 'Impact-Pack.ImpactSEGSConcat' | 'Impact-Pack.ImpactSEGSPicker' | 'Impact-Pack.ImpactMakeTileSEGS' | 'Impact-Pack.ImpactSEGSMerge' | 'Impact-Pack.SEGSDetailerForAnimateDiff' | 'Impact-Pack.ImpactSEGSLabelAssign' | 'Impact-Pack.ImpactSEGSLabelFilter' | 'Impact-Pack.ImpactSEGSLabelFilter' | 'Impact-Pack.ImpactSEGSRangeFilter' | 'Impact-Pack.ImpactSEGSRangeFilter' | 'Impact-Pack.ImpactSEGSOrderedFilter' | 'Impact-Pack.ImpactSEGSOrderedFilter' | 'Impact-Pack.ImpactSEGSClassify' | 'Impact-Pack.ImpactSEGSClassify'>
+         VAE: Pick<Builder, 'CheckpointLoaderSimple' | 'VAELoader' | 'unCLIPCheckpointLoader' | 'CheckpointLoader' | 'DiffusersLoader' | 'ImageOnlyCheckpointLoader' | 'was.Bus Node' | 'was.Checkpoint Loader' | 'was.Checkpoint Loader (Simple)' | 'was.Diffusers Model Loader' | 'was.Diffusers Hub Model Down-Loader' | 'was.unCLIP Checkpoint Loader' | 'was.VAE Input Switch' | 'civitai_comfy_nodes.CivitAI_Checkpoint_Loader' | 'Impact-Pack.FromDetailerPipe' | 'Impact-Pack.FromDetailerPipe_v2' | 'Impact-Pack.FromDetailerPipeSDXL' | 'Impact-Pack.FromBasicPipe' | 'Impact-Pack.FromBasicPipe_v2' | 'Impact-Pack.IterativeLatentUpscale' | 'Impact-Pack.ImpactKSamplerBasicPipe' | 'Impact-Pack.ImpactKSamplerAdvancedBasicPipe'>
          BUS: Pick<Builder, 'was.Bus Node'>
-         "*": Pick<Builder, 'Impact_Pack.LatentSwitch' | 'Impact_Pack.SEGSSwitch' | 'Impact_Pack.ImpactSwitch' | 'Impact_Pack.ImpactInversedSwitch' | 'Impact_Pack.ImpactMakeAnyList' | 'Impact_Pack.ImpactConditionalBranch' | 'Impact_Pack.ImpactConditionalBranchSelMode' | 'Impact_Pack.ImpactIfNone' | 'Impact_Pack.ImpactValueSender' | 'Impact_Pack.ImpactValueReceiver' | 'Impact_Pack.ImpactExecutionOrderController' | 'Impact_Pack.ImpactExecutionOrderController' | 'Impact_Pack.ImpactDummyInput' | 'Impact_Pack.ImpactQueueTrigger' | 'Impact_Pack.ImpactQueueTriggerCountdown' | 'Impact_Pack.ImpactSetWidgetValue' | 'Impact_Pack.ImpactNodeSetMuteState' | 'Impact_Pack.ImpactControlBridge' | 'Impact_Pack.ImpactSleep'>
+         "*": Pick<Builder, 'Impact-Pack.LatentSwitch' | 'Impact-Pack.SEGSSwitch' | 'Impact-Pack.ImpactSwitch' | 'Impact-Pack.ImpactInversedSwitch' | 'Impact-Pack.ImpactMakeAnyList' | 'Impact-Pack.ImpactConditionalBranch' | 'Impact-Pack.ImpactConditionalBranchSelMode' | 'Impact-Pack.ImpactIfNone' | 'Impact-Pack.ImpactValueSender' | 'Impact-Pack.ImpactValueReceiver' | 'Impact-Pack.ImpactExecutionOrderController' | 'Impact-Pack.ImpactExecutionOrderController' | 'Impact-Pack.ImpactDummyInput' | 'Impact-Pack.ImpactQueueTrigger' | 'Impact-Pack.ImpactQueueTriggerCountdown' | 'Impact-Pack.ImpactSetWidgetValue' | 'Impact-Pack.ImpactNodeSetMuteState' | 'Impact-Pack.ImpactControlBridge' | 'Impact-Pack.ImpactSleep'>
       }
       interface Signal {
          // Injected `Bottom` signal
@@ -14314,6 +14506,14 @@ declare global {
          E_ad4640a4: Union['E_ad4640a4'] | ComfyNodeOutput<'E_ad4640a4'> 
          E_0f767df7: Union['E_0f767df7'] | ComfyNodeOutput<'E_0f767df7'> 
          E_45d8f77c: Union['E_45d8f77c'] | ComfyNodeOutput<'E_45d8f77c'> 
+         E_8ad80a1d: Union['E_8ad80a1d'] | ComfyNodeOutput<'E_8ad80a1d'> 
+         E_5fc845cd: Union['E_5fc845cd'] | ComfyNodeOutput<'E_5fc845cd'> 
+         E_b7de8175: Union['E_b7de8175'] | ComfyNodeOutput<'E_b7de8175'> 
+         E_72c64673: Union['E_72c64673'] | ComfyNodeOutput<'E_72c64673'> 
+         E_71f8e797: Union['E_71f8e797'] | ComfyNodeOutput<'E_71f8e797'> 
+         E_6c0bcc99: Union['E_6c0bcc99'] | ComfyNodeOutput<'E_6c0bcc99'> 
+         E_2c7b3727: Union['E_2c7b3727'] | ComfyNodeOutput<'E_2c7b3727'> 
+         E_3d793aac: Union['E_3d793aac'] | ComfyNodeOutput<'E_3d793aac'> 
          E_8de7e678: Union['E_8de7e678'] | ComfyNodeOutput<'E_8de7e678'> 
          E_621dc6c6: Union['E_621dc6c6'] | ComfyNodeOutput<'E_621dc6c6'> 
          E_735dbaeb: Union['E_735dbaeb'] | ComfyNodeOutput<'E_735dbaeb'> 
@@ -14380,9 +14580,9 @@ declare global {
       }
       
       interface Union {
-         // ["KSampler.sampler_name","KSamplerAdvanced.sampler_name","KSamplerSelect.sampler_name","was.KSampler (WAS).sampler_name","was.KSampler Cycle.sampler_name","Impact_Pack.DetailerForEach.sampler_name","Impact_Pack.DetailerForEachDebug.sampler_name","Impact_Pack.DetailerForEachPipe.sampler_name","Impact_Pack.DetailerForEachDebugPipe.sampler_name","Impact_Pack.DetailerForEachPipeForAnimateDiff.sampler_name","Impact_Pack.FaceDetailer.sampler_name","Impact_Pack.FaceDetailerPipe.sampler_name","Impact_Pack.MaskDetailerPipe.sampler_name","Impact_Pack.PixelKSampleUpscalerProvider.sampler_name","Impact_Pack.PixelKSampleUpscalerProviderPipe.sampler_name","Impact_Pack.PixelTiledKSampleUpscalerProvider.sampler_name","Impact_Pack.PixelTiledKSampleUpscalerProviderPipe.sampler_name","Impact_Pack.UnsamplerHookProvider.sampler_name","Impact_Pack.UnsamplerDetailerHookProvider.sampler_name","Impact_Pack.KSamplerProvider.sampler_name","Impact_Pack.TiledKSamplerProvider.sampler_name","Impact_Pack.KSamplerAdvancedProvider.sampler_name","Impact_Pack.SEGSUpscaler.sampler_name","Impact_Pack.SEGSUpscalerPipe.sampler_name","Impact_Pack.SEGSDetailer.sampler_name","Impact_Pack.SEGSDetailerForAnimateDiff.sampler_name","Impact_Pack.ImpactKSamplerBasicPipe.sampler_name","Impact_Pack.ImpactKSamplerAdvancedBasicPipe.sampler_name"]
+         // ["KSampler.sampler_name","KSamplerAdvanced.sampler_name","KSamplerSelect.sampler_name","was.KSampler (WAS).sampler_name","was.KSampler Cycle.sampler_name","Impact-Pack.DetailerForEach.sampler_name","Impact-Pack.DetailerForEachDebug.sampler_name","Impact-Pack.DetailerForEachPipe.sampler_name","Impact-Pack.DetailerForEachDebugPipe.sampler_name","Impact-Pack.DetailerForEachPipeForAnimateDiff.sampler_name","Impact-Pack.FaceDetailer.sampler_name","Impact-Pack.FaceDetailerPipe.sampler_name","Impact-Pack.MaskDetailerPipe.sampler_name","Impact-Pack.PixelKSampleUpscalerProvider.sampler_name","Impact-Pack.PixelKSampleUpscalerProviderPipe.sampler_name","Impact-Pack.PixelTiledKSampleUpscalerProvider.sampler_name","Impact-Pack.PixelTiledKSampleUpscalerProviderPipe.sampler_name","Impact-Pack.UnsamplerHookProvider.sampler_name","Impact-Pack.UnsamplerDetailerHookProvider.sampler_name","Impact-Pack.KSamplerProvider.sampler_name","Impact-Pack.TiledKSamplerProvider.sampler_name","Impact-Pack.KSamplerAdvancedProvider.sampler_name","Impact-Pack.SEGSUpscaler.sampler_name","Impact-Pack.SEGSUpscalerPipe.sampler_name","Impact-Pack.SEGSDetailer.sampler_name","Impact-Pack.SEGSDetailerForAnimateDiff.sampler_name","Impact-Pack.ImpactKSamplerBasicPipe.sampler_name","Impact-Pack.ImpactKSamplerAdvancedBasicPipe.sampler_name"]
          E_SamplerName: "ddim" | "ddpm" | "deis" | "dpm_2" | "dpm_2_ancestral" | "dpm_adaptive" | "dpm_fast" | "dpmpp_2m" | "dpmpp_2m_cfg_pp" | "dpmpp_2m_sde" | "dpmpp_2m_sde_gpu" | "dpmpp_2s_ancestral" | "dpmpp_2s_ancestral_cfg_pp" | "dpmpp_3m_sde" | "dpmpp_3m_sde_gpu" | "dpmpp_sde" | "dpmpp_sde_gpu" | "euler" | "euler_ancestral" | "euler_ancestral_cfg_pp" | "euler_cfg_pp" | "heun" | "heunpp2" | "ipndm" | "ipndm_v" | "lcm" | "lms" | "uni_pc" | "uni_pc_bh2"
-         // ["KSampler.scheduler","KSamplerAdvanced.scheduler","BasicScheduler.scheduler","was.KSampler (WAS).scheduler","was.KSampler Cycle.scheduler","Impact_Pack.PixelTiledKSampleUpscalerProvider.scheduler","Impact_Pack.PixelTiledKSampleUpscalerProviderPipe.scheduler","Impact_Pack.UnsamplerHookProvider.scheduler","Impact_Pack.UnsamplerDetailerHookProvider.scheduler","Impact_Pack.TiledKSamplerProvider.scheduler","Impact_Pack.ImpactSchedulerAdapter.scheduler"]
+         // ["KSampler.scheduler","KSamplerAdvanced.scheduler","BasicScheduler.scheduler","was.KSampler (WAS).scheduler","was.KSampler Cycle.scheduler","Impact-Pack.PixelTiledKSampleUpscalerProvider.scheduler","Impact-Pack.PixelTiledKSampleUpscalerProviderPipe.scheduler","Impact-Pack.UnsamplerHookProvider.scheduler","Impact-Pack.UnsamplerDetailerHookProvider.scheduler","Impact-Pack.TiledKSamplerProvider.scheduler","Impact-Pack.ImpactSchedulerAdapter.scheduler"]
          E_SchedulerName: "beta" | "ddim_uniform" | "exponential" | "karras" | "linear_quadratic" | "normal" | "sgm_uniform" | "simple"
          // ["CheckpointLoaderSimple.ckpt_name","unCLIPCheckpointLoader.ckpt_name","CheckpointLoader.ckpt_name","ImageOnlyCheckpointLoader.ckpt_name","was.Checkpoint Loader.ckpt_name","was.Checkpoint Loader (Simple).ckpt_name","was.unCLIP Checkpoint Loader.ckpt_name"]
          E_CkptName: "AOM3A3_orangemixs.safetensors" | "photon_v1.safetensors"
@@ -14392,7 +14592,7 @@ declare global {
          E_LatentUpscaleMethod: "area" | "bicubic" | "bilinear" | "bislerp" | "nearest-exact"
          // ["LatentUpscale.crop","ImageScale.crop"]
          E_e2779c2a: "center" | "disabled"
-         // ["LoadImage.image","LoadImageMask.image","Impact_Pack.ImageReceiver.image"]
+         // ["LoadImage.image","LoadImageMask.image","Impact-Pack.ImageReceiver.image"]
          E_Image: "example.png"
          // ["LoadImageMask.channel","ImageToMask.channel","was.Image to Latent Mask.channel"]
          E_Channel: "alpha" | "blue" | "green" | "red"
@@ -14400,7 +14600,7 @@ declare global {
          E_ImageUpscaleMethod: "area" | "bicubic" | "bilinear" | "lanczos" | "nearest-exact"
          // ["ConditioningSetMask.set_cond_area"]
          E_046ed3ef: "default" | "mask bounds"
-         // ["KSamplerAdvanced.add_noise","KSamplerAdvanced.return_with_leftover_noise","was.KSampler Cycle.tiled_vae","was.KSampler Cycle.scale_denoise","was.KSampler Cycle.pos_add_strength_scaling","was.KSampler Cycle.neg_add_strength_scaling","was.KSampler Cycle.steps_scaling","controlnet_aux.LeReS-DepthMapPreprocessor.boost","controlnet_aux.DWPreprocessor.detect_hand","controlnet_aux.DWPreprocessor.detect_body","controlnet_aux.DWPreprocessor.detect_face","controlnet_aux.DWPreprocessor.scale_stick_for_xinsr_cn","controlnet_aux.HEDPreprocessor.safe","controlnet_aux.FakeScribblePreprocessor.safe","controlnet_aux.PiDiNetPreprocessor.safe","controlnet_aux.LineArtPreprocessor.coarse","controlnet_aux.OpenposePreprocessor.detect_hand","controlnet_aux.OpenposePreprocessor.detect_body","controlnet_aux.OpenposePreprocessor.detect_face","controlnet_aux.OpenposePreprocessor.scale_stick_for_xinsr_cn","controlnet_aux.Scribble_PiDiNet_Preprocessor.safe","Impact_Pack.UnsamplerHookProvider.normalize","Impact_Pack.UnsamplerDetailerHookProvider.normalize"]
+         // ["KSamplerAdvanced.add_noise","KSamplerAdvanced.return_with_leftover_noise","was.KSampler Cycle.tiled_vae","was.KSampler Cycle.scale_denoise","was.KSampler Cycle.pos_add_strength_scaling","was.KSampler Cycle.neg_add_strength_scaling","was.KSampler Cycle.steps_scaling","controlnet_aux.LeReS-DepthMapPreprocessor.boost","controlnet_aux.DWPreprocessor.detect_hand","controlnet_aux.DWPreprocessor.detect_body","controlnet_aux.DWPreprocessor.detect_face","controlnet_aux.DWPreprocessor.scale_stick_for_xinsr_cn","controlnet_aux.HEDPreprocessor.safe","controlnet_aux.FakeScribblePreprocessor.safe","controlnet_aux.PiDiNetPreprocessor.safe","controlnet_aux.LineArtPreprocessor.coarse","controlnet_aux.OpenposePreprocessor.detect_hand","controlnet_aux.OpenposePreprocessor.detect_body","controlnet_aux.OpenposePreprocessor.detect_face","controlnet_aux.OpenposePreprocessor.scale_stick_for_xinsr_cn","controlnet_aux.Scribble_PiDiNet_Preprocessor.safe","Impact-Pack.UnsamplerHookProvider.normalize","Impact-Pack.UnsamplerDetailerHookProvider.normalize"]
          E_EnableOrDisable: "disable" | "enable"
          // ["LatentRotate.rotation"]
          E_Rotation: "180 degrees" | "270 degrees" | "90 degrees" | "none"
@@ -14461,7 +14661,7 @@ declare global {
          E_46b52173: "Noodle Soup Prompts" | "Wildcards"
          // ["was.Constant Number.number_type","was.Random Number.number_type"]
          E_d775619a: "bool" | "float" | "integer"
-         // ["was.Create Grid Image.include_subfolders","was.Image Canny Filter.enable_threshold","was.Image Dragan Photography Filter.colorize","was.Image Filter Adjustments.detail_enhance","was.Image Gradient Map.flip_left_right","was.Image High Pass Filter.color_output","was.Image High Pass Filter.neutral_background","was.Image Load.RGBA","was.Image Load.filename_text_extension","was.Image Padding.feather_second_pass","was.Image Resize.supersample","was.Image Save.filename_number_start","was.Image Save.optimize_image","was.Image Save.lossless_webp","was.Image Save.show_history","was.Image Save.show_history_by_prefix","was.Image Save.embed_workflow","was.Image Save.show_previews","was.Image Seamless Texture.tiled","was.Latent Upscale by Factor (WAS).align","was.Load Image Batch.allow_RGBA_output","was.Load Image Batch.filename_text_extension","was.MiDaS Depth Approximation.use_cpu","was.MiDaS Depth Approximation.invert_depth","was.MiDaS Mask Image.use_cpu","was.MiDaS Mask Image.threshold","was.Number Input Condition.return_boolean","was.Text Add Tokens.print_current_tokens","was.Text Add Token by Input.print_current_tokens","was.Text Concatenate.clean_whitespace","Impact_Pack.SEGSUpscaler.supersample","Impact_Pack.SEGSUpscalerPipe.supersample"]
+         // ["was.Create Grid Image.include_subfolders","was.Image Canny Filter.enable_threshold","was.Image Dragan Photography Filter.colorize","was.Image Filter Adjustments.detail_enhance","was.Image Gradient Map.flip_left_right","was.Image High Pass Filter.color_output","was.Image High Pass Filter.neutral_background","was.Image Load.RGBA","was.Image Load.filename_text_extension","was.Image Padding.feather_second_pass","was.Image Resize.supersample","was.Image Save.filename_number_start","was.Image Save.optimize_image","was.Image Save.lossless_webp","was.Image Save.show_history","was.Image Save.show_history_by_prefix","was.Image Save.embed_workflow","was.Image Save.show_previews","was.Image Seamless Texture.tiled","was.Latent Upscale by Factor (WAS).align","was.Load Image Batch.allow_RGBA_output","was.Load Image Batch.filename_text_extension","was.MiDaS Depth Approximation.use_cpu","was.MiDaS Depth Approximation.invert_depth","was.MiDaS Mask Image.use_cpu","was.MiDaS Mask Image.threshold","was.Number Input Condition.return_boolean","was.Text Add Tokens.print_current_tokens","was.Text Add Token by Input.print_current_tokens","was.Text Concatenate.clean_whitespace","Impact-Pack.SEGSUpscaler.supersample","Impact-Pack.SEGSUpscalerPipe.supersample"]
          E_TrueOrFalse: "false" | "true"
          // ["was.Create Morph Image.filetype","was.Create Morph Image from Path.filetype"]
          E_3f15cd9d: "APNG" | "GIF"
@@ -14505,7 +14705,7 @@ declare global {
          E_e6a365a2: "background" | "foreground"
          // ["was.Image Resize.mode"]
          E_79dc3a66: "rescale" | "resize"
-         // ["was.Image Resize.resampling","was.KSampler Cycle.scale_sampling","Impact_Pack.SEGSUpscaler.resampling_method","Impact_Pack.SEGSUpscalerPipe.resampling_method"]
+         // ["was.Image Resize.resampling","was.KSampler Cycle.scale_sampling","Impact-Pack.SEGSUpscaler.resampling_method","Impact-Pack.SEGSUpscalerPipe.resampling_method"]
          E_bac912b5: "bicubic" | "bilinear" | "lanczos" | "nearest"
          // ["was.Image Rotate.mode"]
          E_b4cc3177: "internal" | "transpose"
@@ -14569,7 +14769,7 @@ declare global {
          E_1fcb051d: "prompt is more important" | "standard" | "style transfer"
          // ["IPAdapter_plus.IPAdapterAdvanced.weight_type","IPAdapter_plus.IPAdapterBatch.weight_type","IPAdapter_plus.IPAdapterFaceID.weight_type","IPAdapter_plus.IPAdapterFaceIDKolors.weight_type","IPAdapter_plus.IPAAdapterFaceIDBatch.weight_type","IPAdapter_plus.IPAdapterTiled.weight_type","IPAdapter_plus.IPAdapterTiledBatch.weight_type","IPAdapter_plus.IPAdapterEmbeds.weight_type","IPAdapter_plus.IPAdapterEmbedsBatch.weight_type","IPAdapter_plus.IPAdapterMS.weight_type","IPAdapter_plus.IPAdapterClipVisionEnhancer.weight_type","IPAdapter_plus.IPAdapterClipVisionEnhancerBatch.weight_type","IPAdapter_plus.IPAdapterRegionalConditioning.weight_type"]
          E_7308d8ab: "composition" | "composition precise" | "ease in" | "ease in-out" | "ease out" | "linear" | "reverse in-out" | "strong middle" | "strong style transfer" | "style and composition" | "style transfer" | "style transfer precise" | "weak input" | "weak middle" | "weak output"
-         // ["IPAdapter_plus.IPAdapterAdvanced.combine_embeds","IPAdapter_plus.IPAdapterFaceID.combine_embeds","IPAdapter_plus.IPAdapterFaceIDKolors.combine_embeds","IPAdapter_plus.IPAAdapterFaceIDBatch.combine_embeds","IPAdapter_plus.IPAdapterTiled.combine_embeds","IPAdapter_plus.IPAdapterStyleComposition.combine_embeds","IPAdapter_plus.IPAdapterMS.combine_embeds","IPAdapter_plus.IPAdapterClipVisionEnhancer.combine_embeds","IPAdapter_plus.IPAdapterFromParams.combine_embeds","IPAdapter_plus.IPAdapterPreciseStyleTransfer.combine_embeds","IPAdapter_plus.IPAdapterPreciseStyleTransferBatch.combine_embeds","IPAdapter_plus.IPAdapterPreciseComposition.combine_embeds","IPAdapter_plus.IPAdapterPreciseCompositionBatch.combine_embeds","Impact_Pack.ImpactIPAdapterApplySEGS.combine_embeds"]
+         // ["IPAdapter_plus.IPAdapterAdvanced.combine_embeds","IPAdapter_plus.IPAdapterFaceID.combine_embeds","IPAdapter_plus.IPAdapterFaceIDKolors.combine_embeds","IPAdapter_plus.IPAAdapterFaceIDBatch.combine_embeds","IPAdapter_plus.IPAdapterTiled.combine_embeds","IPAdapter_plus.IPAdapterStyleComposition.combine_embeds","IPAdapter_plus.IPAdapterMS.combine_embeds","IPAdapter_plus.IPAdapterClipVisionEnhancer.combine_embeds","IPAdapter_plus.IPAdapterFromParams.combine_embeds","IPAdapter_plus.IPAdapterPreciseStyleTransfer.combine_embeds","IPAdapter_plus.IPAdapterPreciseStyleTransferBatch.combine_embeds","IPAdapter_plus.IPAdapterPreciseComposition.combine_embeds","IPAdapter_plus.IPAdapterPreciseCompositionBatch.combine_embeds","Impact-Pack.ImpactIPAdapterApplySEGS.combine_embeds"]
          E_055d80a7: "add" | "average" | "concat" | "norm average" | "subtract"
          // ["IPAdapter_plus.IPAdapterAdvanced.embeds_scaling","IPAdapter_plus.IPAdapterBatch.embeds_scaling","IPAdapter_plus.IPAdapterFaceID.embeds_scaling","IPAdapter_plus.IPAdapterFaceIDKolors.embeds_scaling","IPAdapter_plus.IPAAdapterFaceIDBatch.embeds_scaling","IPAdapter_plus.IPAdapterTiled.embeds_scaling","IPAdapter_plus.IPAdapterTiledBatch.embeds_scaling","IPAdapter_plus.IPAdapterEmbeds.embeds_scaling","IPAdapter_plus.IPAdapterEmbedsBatch.embeds_scaling","IPAdapter_plus.IPAdapterStyleComposition.embeds_scaling","IPAdapter_plus.IPAdapterStyleCompositionBatch.embeds_scaling","IPAdapter_plus.IPAdapterMS.embeds_scaling","IPAdapter_plus.IPAdapterClipVisionEnhancer.embeds_scaling","IPAdapter_plus.IPAdapterClipVisionEnhancerBatch.embeds_scaling","IPAdapter_plus.IPAdapterFromParams.embeds_scaling","IPAdapter_plus.IPAdapterPreciseStyleTransfer.embeds_scaling","IPAdapter_plus.IPAdapterPreciseStyleTransferBatch.embeds_scaling","IPAdapter_plus.IPAdapterPreciseComposition.embeds_scaling","IPAdapter_plus.IPAdapterPreciseCompositionBatch.embeds_scaling"]
          E_434e3bb7: "K+V" | "K+V w/ C penalty" | "K+mean(V) w/ C penalty" | "V only"
@@ -14597,6 +14797,22 @@ declare global {
          E_0f767df7: "custom" | "ease_in" | "ease_in_out" | "ease_out" | "linear" | "random"
          // ["IPAdapter_plus.IPAdapterWeights.method"]
          E_45d8f77c: "alternate batches" | "full batch" | "shift batches"
+         // ["ComfyUi_NNLatentUpscale.NNLatentUpscale.version"]
+         E_8ad80a1d: "SD 1.x" | "SDXL"
+         // ["sd-perturbed-attention.PerturbedAttention.unet_block","sd-perturbed-attention.SmoothedEnergyGuidanceAdvanced.unet_block","sd-perturbed-attention.TRTAttachPag.unet_block"]
+         E_5fc845cd: "input" | "middle" | "output"
+         // ["sd-perturbed-attention.PerturbedAttention.rescale_mode","sd-perturbed-attention.SmoothedEnergyGuidanceAdvanced.rescale_mode"]
+         E_b7de8175: "full" | "partial" | "snf"
+         // ["sd-perturbed-attention.TRTPerturbedAttention.rescale_mode"]
+         E_72c64673: "full" | "partial"
+         // ["civitai_comfy_nodes.CivitAI_Lora_Loader.lora_name"]
+         E_71f8e797: "none"
+         // ["civitai_comfy_nodes.CivitAI_Lora_Loader.download_path"]
+         E_6c0bcc99: "models/loras"
+         // ["civitai_comfy_nodes.CivitAI_Checkpoint_Loader.ckpt_name"]
+         E_2c7b3727: "AOM3A3_orangemixs.safetensors" | "none" | "photon_v1.safetensors"
+         // ["civitai_comfy_nodes.CivitAI_Checkpoint_Loader.download_path"]
+         E_3d793aac: "models/checkpoints"
          // ["controlnet_aux.DensePosePreprocessor.model"]
          E_8de7e678: "densepose_r101_fpn_dl.torchscript" | "densepose_r50_fpn_dl.torchscript"
          // ["controlnet_aux.DensePosePreprocessor.cmap"]
@@ -14643,85 +14859,85 @@ declare global {
          E_df621c64: "bf16" | "fp16" | "fp32"
          // ["Marigold.ColorizeDepthmap.colorize_method"]
          E_e09dd9c0: "Spectral" | "afmhot" | "brg" | "cividis" | "copper" | "gist_earth" | "gist_ncar" | "gist_rainbow" | "hsv" | "inferno" | "jet" | "magma" | "plasma" | "rainbow" | "seismic" | "terrain" | "turbo" | "twilight" | "viridis"
-         // ["Impact_Pack.SAMLoader.model_name"]
+         // ["Impact-Pack.SAMLoader.model_name"]
          E_40c77739: "ESAM" | "sam_vit_b_01ec64.pth"
-         // ["Impact_Pack.SAMLoader.device_mode","Impact_Pack.ImpactHFTransformersClassifierProvider.device_mode"]
+         // ["Impact-Pack.SAMLoader.device_mode","Impact-Pack.ImpactHFTransformersClassifierProvider.device_mode"]
          E_2ad445b9: "AUTO" | "CPU" | "Prefer GPU"
-         // ["Impact_Pack.DetailerForEach.scheduler","Impact_Pack.DetailerForEachDebug.scheduler","Impact_Pack.DetailerForEachPipe.scheduler","Impact_Pack.DetailerForEachDebugPipe.scheduler","Impact_Pack.DetailerForEachPipeForAnimateDiff.scheduler","Impact_Pack.FaceDetailer.scheduler","Impact_Pack.FaceDetailerPipe.scheduler","Impact_Pack.MaskDetailerPipe.scheduler","Impact_Pack.PixelKSampleUpscalerProvider.scheduler","Impact_Pack.PixelKSampleUpscalerProviderPipe.scheduler","Impact_Pack.KSamplerProvider.scheduler","Impact_Pack.KSamplerAdvancedProvider.scheduler","Impact_Pack.SEGSUpscaler.scheduler","Impact_Pack.SEGSUpscalerPipe.scheduler","Impact_Pack.SEGSDetailer.scheduler","Impact_Pack.SEGSDetailerForAnimateDiff.scheduler","Impact_Pack.ImpactKSamplerBasicPipe.scheduler","Impact_Pack.ImpactKSamplerAdvancedBasicPipe.scheduler","Impact_Pack.ImpactSchedulerAdapter.scheduler.OUT"]
+         // ["Impact-Pack.DetailerForEach.scheduler","Impact-Pack.DetailerForEachDebug.scheduler","Impact-Pack.DetailerForEachPipe.scheduler","Impact-Pack.DetailerForEachDebugPipe.scheduler","Impact-Pack.DetailerForEachPipeForAnimateDiff.scheduler","Impact-Pack.FaceDetailer.scheduler","Impact-Pack.FaceDetailerPipe.scheduler","Impact-Pack.MaskDetailerPipe.scheduler","Impact-Pack.PixelKSampleUpscalerProvider.scheduler","Impact-Pack.PixelKSampleUpscalerProviderPipe.scheduler","Impact-Pack.KSamplerProvider.scheduler","Impact-Pack.KSamplerAdvancedProvider.scheduler","Impact-Pack.SEGSUpscaler.scheduler","Impact-Pack.SEGSUpscalerPipe.scheduler","Impact-Pack.SEGSDetailer.scheduler","Impact-Pack.SEGSDetailerForAnimateDiff.scheduler","Impact-Pack.ImpactKSamplerBasicPipe.scheduler","Impact-Pack.ImpactKSamplerAdvancedBasicPipe.scheduler","Impact-Pack.ImpactSchedulerAdapter.scheduler.OUT"]
          E_720061fd: "AYS SD1" | "AYS SDXL" | "AYS SVD" | "GITS[coeff=1.2]" | "beta" | "ddim_uniform" | "exponential" | "karras" | "linear_quadratic" | "normal" | "sgm_uniform" | "simple"
-         // ["Impact_Pack.SAMDetectorCombined.detection_hint","Impact_Pack.SAMDetectorSegmented.detection_hint","Impact_Pack.FaceDetailer.sam_detection_hint","Impact_Pack.FaceDetailerPipe.sam_detection_hint"]
+         // ["Impact-Pack.SAMDetectorCombined.detection_hint","Impact-Pack.SAMDetectorSegmented.detection_hint","Impact-Pack.FaceDetailer.sam_detection_hint","Impact-Pack.FaceDetailerPipe.sam_detection_hint"]
          E_ImpactDetectionHint: "center-1" | "diamond-4" | "horizontal-2" | "mask-area" | "mask-point-bbox" | "mask-points" | "none" | "rect-4" | "vertical-2"
-         // ["Impact_Pack.SAMDetectorCombined.mask_hint_use_negative","Impact_Pack.SAMDetectorSegmented.mask_hint_use_negative","Impact_Pack.FaceDetailer.sam_mask_hint_use_negative","Impact_Pack.FaceDetailerPipe.sam_mask_hint_use_negative"]
+         // ["Impact-Pack.SAMDetectorCombined.mask_hint_use_negative","Impact-Pack.SAMDetectorSegmented.mask_hint_use_negative","Impact-Pack.FaceDetailer.sam_mask_hint_use_negative","Impact-Pack.FaceDetailerPipe.sam_mask_hint_use_negative"]
          E_aa302307: "False" | "Outter" | "Small"
-         // ["Impact_Pack.ToDetailerPipe.Select to add LoRA","Impact_Pack.ToDetailerPipeSDXL.Select to add LoRA","Impact_Pack.BasicPipeToDetailerPipe.Select to add LoRA","Impact_Pack.BasicPipeToDetailerPipeSDXL.Select to add LoRA","Impact_Pack.EditDetailerPipe.Select to add LoRA","Impact_Pack.EditDetailerPipeSDXL.Select to add LoRA","Impact_Pack.ImpactWildcardEncode.Select to add LoRA"]
+         // ["Impact-Pack.ToDetailerPipe.Select to add LoRA","Impact-Pack.ToDetailerPipeSDXL.Select to add LoRA","Impact-Pack.BasicPipeToDetailerPipe.Select to add LoRA","Impact-Pack.BasicPipeToDetailerPipeSDXL.Select to add LoRA","Impact-Pack.EditDetailerPipe.Select to add LoRA","Impact-Pack.EditDetailerPipeSDXL.Select to add LoRA","Impact-Pack.ImpactWildcardEncode.Select to add LoRA"]
          E_35e403c7: "Select the LoRA to add to the text"
-         // ["Impact_Pack.ToDetailerPipe.Select to add Wildcard","Impact_Pack.ToDetailerPipeSDXL.Select to add Wildcard","Impact_Pack.BasicPipeToDetailerPipe.Select to add Wildcard","Impact_Pack.BasicPipeToDetailerPipeSDXL.Select to add Wildcard","Impact_Pack.EditDetailerPipe.Select to add Wildcard","Impact_Pack.EditDetailerPipeSDXL.Select to add Wildcard","Impact_Pack.ImpactWildcardProcessor.Select to add Wildcard","Impact_Pack.ImpactWildcardEncode.Select to add Wildcard"]
+         // ["Impact-Pack.ToDetailerPipe.Select to add Wildcard","Impact-Pack.ToDetailerPipeSDXL.Select to add Wildcard","Impact-Pack.BasicPipeToDetailerPipe.Select to add Wildcard","Impact-Pack.BasicPipeToDetailerPipeSDXL.Select to add Wildcard","Impact-Pack.EditDetailerPipe.Select to add Wildcard","Impact-Pack.EditDetailerPipeSDXL.Select to add Wildcard","Impact-Pack.ImpactWildcardProcessor.Select to add Wildcard","Impact-Pack.ImpactWildcardEncode.Select to add Wildcard"]
          E_6064bbaf: "Select the Wildcard to add to the text"
-         // ["Impact_Pack.LatentPixelScale.scale_method","Impact_Pack.PixelKSampleUpscalerProvider.scale_method","Impact_Pack.PixelKSampleUpscalerProviderPipe.scale_method","Impact_Pack.PixelTiledKSampleUpscalerProvider.scale_method","Impact_Pack.PixelTiledKSampleUpscalerProviderPipe.scale_method","Impact_Pack.TwoSamplersForMaskUpscalerProvider.scale_method","Impact_Pack.TwoSamplersForMaskUpscalerProviderPipe.scale_method"]
+         // ["Impact-Pack.LatentPixelScale.scale_method","Impact-Pack.PixelKSampleUpscalerProvider.scale_method","Impact-Pack.PixelKSampleUpscalerProviderPipe.scale_method","Impact-Pack.PixelTiledKSampleUpscalerProvider.scale_method","Impact-Pack.PixelTiledKSampleUpscalerProviderPipe.scale_method","Impact-Pack.TwoSamplersForMaskUpscalerProvider.scale_method","Impact-Pack.TwoSamplersForMaskUpscalerProviderPipe.scale_method"]
          E_f9c5efbc: "area" | "bilinear" | "lanczos" | "nearest-exact"
-         // ["Impact_Pack.IterativeLatentUpscale.step_mode","Impact_Pack.IterativeImageUpscale.step_mode"]
+         // ["Impact-Pack.IterativeLatentUpscale.step_mode","Impact-Pack.IterativeImageUpscale.step_mode"]
          E_4724269c: "geometric" | "simple"
-         // ["Impact_Pack.PixelTiledKSampleUpscalerProvider.tiling_strategy","Impact_Pack.PixelTiledKSampleUpscalerProviderPipe.tiling_strategy","Impact_Pack.TiledKSamplerProvider.tiling_strategy"]
+         // ["Impact-Pack.PixelTiledKSampleUpscalerProvider.tiling_strategy","Impact-Pack.PixelTiledKSampleUpscalerProviderPipe.tiling_strategy","Impact-Pack.TiledKSamplerProvider.tiling_strategy"]
          E_304f89a0: "padded" | "random" | "simple"
-         // ["Impact_Pack.TwoSamplersForMaskUpscalerProvider.full_sample_schedule","Impact_Pack.TwoSamplersForMaskUpscalerProviderPipe.full_sample_schedule"]
+         // ["Impact-Pack.TwoSamplersForMaskUpscalerProvider.full_sample_schedule","Impact-Pack.TwoSamplersForMaskUpscalerProviderPipe.full_sample_schedule"]
          E_de6a9887: "interleave1" | "interleave1+last1" | "interleave2" | "interleave2+last1" | "interleave3" | "interleave3+last1" | "last1" | "last2" | "none"
-         // ["Impact_Pack.DenoiseScheduleHookProvider.schedule_for_iteration","Impact_Pack.StepsScheduleHookProvider.schedule_for_iteration","Impact_Pack.CfgScheduleHookProvider.schedule_for_iteration","Impact_Pack.NoiseInjectionHookProvider.schedule_for_iteration","Impact_Pack.UnsamplerHookProvider.schedule_for_iteration","Impact_Pack.DenoiseSchedulerDetailerHookProvider.schedule_for_cycle"]
+         // ["Impact-Pack.DenoiseScheduleHookProvider.schedule_for_iteration","Impact-Pack.StepsScheduleHookProvider.schedule_for_iteration","Impact-Pack.CfgScheduleHookProvider.schedule_for_iteration","Impact-Pack.NoiseInjectionHookProvider.schedule_for_iteration","Impact-Pack.UnsamplerHookProvider.schedule_for_iteration","Impact-Pack.DenoiseSchedulerDetailerHookProvider.schedule_for_cycle"]
          E_0f7d0d08: "simple"
-         // ["Impact_Pack.NoiseInjectionHookProvider.source","Impact_Pack.NoiseInjectionDetailerHookProvider.source"]
+         // ["Impact-Pack.NoiseInjectionHookProvider.source","Impact-Pack.NoiseInjectionDetailerHookProvider.source"]
          E_CpuOrGpu: "CPU" | "GPU"
-         // ["Impact_Pack.CoreMLDetailerHookProvider.mode"]
+         // ["Impact-Pack.CoreMLDetailerHookProvider.mode"]
          E_d4b6506a: "512x512" | "512x768" | "768x512" | "768x768"
-         // ["Impact_Pack.NoiseInjectionDetailerHookProvider.schedule_for_cycle","Impact_Pack.UnsamplerDetailerHookProvider.schedule_for_cycle"]
+         // ["Impact-Pack.NoiseInjectionDetailerHookProvider.schedule_for_cycle","Impact-Pack.UnsamplerDetailerHookProvider.schedule_for_cycle"]
          E_afbc7832: "from_start" | "skip_start"
-         // ["Impact_Pack.SEGSOrderedFilterDetailerHookProvider.target"]
+         // ["Impact-Pack.SEGSOrderedFilterDetailerHookProvider.target"]
          E_87bec9aa: "area(=w*h)" | "height" | "width" | "x1" | "x2" | "y1" | "y2"
-         // ["Impact_Pack.SEGSRangeFilterDetailerHookProvider.target"]
+         // ["Impact-Pack.SEGSRangeFilterDetailerHookProvider.target"]
          E_aceb55e7: "area(=w*h)" | "height" | "length_percent" | "width" | "x1" | "x2" | "y1" | "y2"
-         // ["Impact_Pack.SEGSLabelFilterDetailerHookProvider.preset","Impact_Pack.ImpactSEGSLabelFilter.preset"]
+         // ["Impact-Pack.SEGSLabelFilterDetailerHookProvider.preset","Impact-Pack.ImpactSEGSLabelFilter.preset"]
          E_cc1f262a: "airplane" | "all" | "apple" | "backpack" | "banana" | "baseball bat" | "baseball glove" | "bear" | "bed" | "bench" | "bicycle" | "bird" | "boat" | "book" | "bottle" | "bowl" | "broccoli" | "bus" | "cake" | "car" | "carrot" | "cat" | "cell phone" | "chair" | "clock" | "couch" | "cow" | "cup" | "dining table" | "dog" | "donut" | "elephant" | "eyebrows" | "eyes" | "face" | "fire hydrant" | "fork" | "frisbee" | "giraffe" | "hair drier" | "hand" | "handbag" | "horse" | "hot dog" | "keyboard" | "kite" | "knife" | "laptop" | "left_eye" | "left_eyebrow" | "left_pupil" | "long_sleeved_dress" | "long_sleeved_outwear" | "long_sleeved_shirt" | "microwave" | "motorcycle" | "mouse" | "mouth" | "orange" | "oven" | "parking meter" | "person" | "pizza" | "potted plant" | "pupils" | "refrigerator" | "remote" | "right_eye" | "right_eyebrow" | "right_pupil" | "sandwich" | "scissors" | "sheep" | "short_sleeved_dress" | "short_sleeved_outwear" | "short_sleeved_shirt" | "shorts" | "sink" | "skateboard" | "skirt" | "skis" | "sling" | "sling_dress" | "snowboard" | "spoon" | "sports ball" | "stop sign" | "suitcase" | "surfboard" | "teddy bear" | "tennis racket" | "tie" | "toaster" | "toilet" | "toothbrush" | "traffic light" | "train" | "trousers" | "truck" | "tv" | "umbrella" | "vase" | "vest" | "vest_dress" | "wine glass" | "zebra"
-         // ["Impact_Pack.ImpactSimpleDetectorSEGS_for_AD.masking_mode"]
+         // ["Impact-Pack.ImpactSimpleDetectorSEGS_for_AD.masking_mode"]
          E_e5ef6b68: "Combine neighboring frames" | "Don't combine" | "Pivot SEGS"
-         // ["Impact_Pack.ImpactSimpleDetectorSEGS_for_AD.segs_pivot"]
+         // ["Impact-Pack.ImpactSimpleDetectorSEGS_for_AD.segs_pivot"]
          E_651ea09f: "1st frame mask" | "Combined mask"
-         // ["Impact_Pack.ImpactIPAdapterApplySEGS.weight_type"]
+         // ["Impact-Pack.ImpactIPAdapterApplySEGS.weight_type"]
          E_05cddbad: "channel penalty" | "linear" | "original"
-         // ["Impact_Pack.PreviewBridge.restore_mask","Impact_Pack.PreviewBridgeLatent.restore_mask"]
+         // ["Impact-Pack.PreviewBridge.restore_mask","Impact-Pack.PreviewBridgeLatent.restore_mask"]
          E_f27fae32: "always" | "if_same_size" | "never"
-         // ["Impact_Pack.PreviewBridgeLatent.preview_method"]
+         // ["Impact-Pack.PreviewBridgeLatent.preview_method"]
          E_ea287ec9: "Latent2RGB-FLUX.1" | "Latent2RGB-Playground-2.5" | "Latent2RGB-SC-B" | "Latent2RGB-SC-Prior" | "Latent2RGB-SD-X4" | "Latent2RGB-SD15" | "Latent2RGB-SD3" | "Latent2RGB-SDXL" | "TAEF1" | "TAESD15" | "TAESD3" | "TAESDXL"
-         // ["Impact_Pack.LatentSender.preview_method"]
+         // ["Impact-Pack.LatentSender.preview_method"]
          E_fa4a1368: "Latent2RGB-SD15" | "Latent2RGB-SDXL" | "TAESD15" | "TAESDXL"
-         // ["Impact_Pack.ImpactMakeTileSEGS.irregular_mask_mode"]
+         // ["Impact-Pack.ImpactMakeTileSEGS.irregular_mask_mode"]
          E_5cc1495f: "All random fast" | "All random quality" | "Reuse fast" | "Reuse quality"
-         // ["Impact_Pack.ReencodeLatent.tile_mode","Impact_Pack.ReencodeLatentPipe.tile_mode"]
+         // ["Impact-Pack.ReencodeLatent.tile_mode","Impact-Pack.ReencodeLatentPipe.tile_mode"]
          E_d5776f66: "Both" | "Decode(input) only" | "Encode(output) only" | "None"
-         // ["Impact_Pack.RegionalSampler.seed_2nd_mode"]
+         // ["Impact-Pack.RegionalSampler.seed_2nd_mode"]
          E_1e8364b5: "decrement" | "fixed" | "ignore" | "increment" | "randomize" | "seed+seed_2nd" | "seed-seed_2nd"
-         // ["Impact_Pack.RegionalSampler.additional_mode","Impact_Pack.RegionalSamplerAdvanced.additional_mode"]
+         // ["Impact-Pack.RegionalSampler.additional_mode","Impact-Pack.RegionalSamplerAdvanced.additional_mode"]
          E_db19bd49: "DISABLE" | "ratio additional" | "ratio between"
-         // ["Impact_Pack.RegionalSampler.additional_sampler","Impact_Pack.RegionalSamplerAdvanced.additional_sampler"]
+         // ["Impact-Pack.RegionalSampler.additional_sampler","Impact-Pack.RegionalSamplerAdvanced.additional_sampler"]
          E_3fd6d592: "AUTO" | "ddpm" | "dpm_2" | "dpm_fast" | "dpmpp_2m" | "euler" | "heun" | "heunpp2"
-         // ["Impact_Pack.RegionalPrompt.variation_method"]
+         // ["Impact-Pack.RegionalPrompt.variation_method"]
          E_627d63e9: "linear" | "slerp"
-         // ["Impact_Pack.ImpactSEGSRangeFilter.target"]
+         // ["Impact-Pack.ImpactSEGSRangeFilter.target"]
          E_10c017f4: "area(=w*h)" | "confidence(0-100)" | "height" | "length_percent" | "width" | "x1" | "x2" | "y1" | "y2"
-         // ["Impact_Pack.ImpactSEGSOrderedFilter.target"]
+         // ["Impact-Pack.ImpactSEGSOrderedFilter.target"]
          E_b1f554e9: "area(=w*h)" | "confidence" | "height" | "width" | "x1" | "x2" | "y1" | "y2"
-         // ["Impact_Pack.ImpactCompare.cmp"]
+         // ["Impact-Pack.ImpactCompare.cmp"]
          E_87d3a210: "a < b" | "a <= b" | "a <> b" | "a = b" | "a > b" | "a >= b" | "ff" | "tt"
-         // ["Impact_Pack.ImpactLogicalOperators.operator"]
+         // ["Impact-Pack.ImpactLogicalOperators.operator"]
          E_99d83eba: "and" | "or" | "xor"
-         // ["Impact_Pack.ImpactValueReceiver.typ"]
+         // ["Impact-Pack.ImpactValueReceiver.typ"]
          E_6c86e4ef: "BOOLEAN" | "FLOAT" | "INT" | "STRING"
-         // ["Impact_Pack.ImpactControlBridge.behavior"]
+         // ["Impact-Pack.ImpactControlBridge.behavior"]
          E_383642e8: "Bypass" | "Mute" | "Stop"
-         // ["Impact_Pack.ImpactHFTransformersClassifierProvider.preset_repo_id"]
+         // ["Impact-Pack.ImpactHFTransformersClassifierProvider.preset_repo_id"]
          E_7fd75955: "Leilab/gender_class" | "Manual repo id" | "NTQAI/pedestrian_gender_recognition" | "ProjectPersonal/GenderClassifier" | "cledoux42/GenderNew_v002" | "crangana/trained-gender" | "ivensamdh/genderage2" | "rizvandwiki/gender-classification-2"
-         // ["Impact_Pack.ImpactSEGSClassify.preset_expr"]
+         // ["Impact-Pack.ImpactSEGSClassify.preset_expr"]
          E_01400d67: "#Female < #Male" | "#Female > #Male" | "Age16to25 > 0.1" | "Age50to69 > 0.1" | "Manual expr" | "female > 0.5" | "male > 0.5"
-         // ["Impact_Pack.ImpactSchedulerAdapter.extra_scheduler"]
+         // ["Impact-Pack.ImpactSchedulerAdapter.extra_scheduler"]
          E_64bb9134: "AYS SD1" | "AYS SDXL" | "AYS SVD" | "GITS[coeff=1.2]" | "None"
-         // ["Impact_Pack.UltralyticsDetectorProvider.model_name"]
+         // ["Impact-Pack.UltralyticsDetectorProvider.model_name"]
          E_cf117469: "bbox/face_yolov8m.pt" | "bbox/hand_yolov8s.pt" | "segm/person_yolov8m-seg.pt"
       }
       export interface HasSingle {
@@ -18292,6 +18508,76 @@ declare global {
             // params_5: { kind: 'object', type: IPADAPTER_PARAMS }
          }
       
+         "ComfyUi_NNLatentUpscale.NNLatentUpscale": {
+            // latent: { kind: 'object', type: LATENT }
+            version: { kind: 'enum', type: Union['E_8ad80a1d'] }
+            upscale: { kind: 'number', type: number }
+         }
+      
+         "sd-perturbed-attention.PerturbedAttention": {
+            // model: { kind: 'object', type: MODEL }
+            scale: { kind: 'number', type: number }
+            adaptive_scale: { kind: 'number', type: number }
+            unet_block: { kind: 'enum', type: Union['E_5fc845cd'] }
+            unet_block_id: { kind: 'number', type: number }
+            sigma_start: { kind: 'number', type: number }
+            sigma_end: { kind: 'number', type: number }
+            rescale: { kind: 'number', type: number }
+            rescale_mode: { kind: 'enum', type: Union['E_b7de8175'] }
+            unet_block_list: { kind: 'string', type: string }
+         }
+      
+         "sd-perturbed-attention.SmoothedEnergyGuidanceAdvanced": {
+            // model: { kind: 'object', type: MODEL }
+            scale: { kind: 'number', type: number }
+            blur_sigma: { kind: 'number', type: number }
+            unet_block: { kind: 'enum', type: Union['E_5fc845cd'] }
+            unet_block_id: { kind: 'number', type: number }
+            sigma_start: { kind: 'number', type: number }
+            sigma_end: { kind: 'number', type: number }
+            rescale: { kind: 'number', type: number }
+            rescale_mode: { kind: 'enum', type: Union['E_b7de8175'] }
+            unet_block_list: { kind: 'string', type: string }
+         }
+      
+         "sd-perturbed-attention.TRTAttachPag": {
+            // model: { kind: 'object', type: MODEL }
+            unet_block: { kind: 'enum', type: Union['E_5fc845cd'] }
+            unet_block_id: { kind: 'number', type: number }
+            unet_block_list: { kind: 'string', type: string }
+         }
+      
+         "sd-perturbed-attention.TRTPerturbedAttention": {
+            // model_base: { kind: 'object', type: MODEL }
+            // model_pag: { kind: 'object', type: MODEL }
+            scale: { kind: 'number', type: number }
+            adaptive_scale: { kind: 'number', type: number }
+            sigma_start: { kind: 'number', type: number }
+            sigma_end: { kind: 'number', type: number }
+            rescale: { kind: 'number', type: number }
+            rescale_mode: { kind: 'enum', type: Union['E_72c64673'] }
+         }
+      
+         "civitai_comfy_nodes.CivitAI_Lora_Loader": {
+            // model: { kind: 'object', type: MODEL }
+            // clip: { kind: 'object', type: CLIP }
+            lora_air: { kind: 'string', type: string }
+            lora_name: { kind: 'enum', type: Union['E_71f8e797'] }
+            strength_model: { kind: 'number', type: number }
+            strength_clip: { kind: 'number', type: number }
+            api_key: { kind: 'string', type: string }
+            download_chunks: { kind: 'number', type: number }
+            download_path: { kind: 'enum', type: Union['E_6c0bcc99'] }
+         }
+      
+         "civitai_comfy_nodes.CivitAI_Checkpoint_Loader": {
+            ckpt_air: { kind: 'string', type: string }
+            ckpt_name: { kind: 'enum', type: Union['E_2c7b3727'] }
+            api_key: { kind: 'string', type: string }
+            download_chunks: { kind: 'number', type: number }
+            download_path: { kind: 'enum', type: Union['E_3d793aac'] }
+         }
+      
          "controlnet_aux.ShufflePreprocessor": {
             // image: { kind: 'object', type: IMAGE }
             resolution: { kind: 'number', type: number }
@@ -18796,33 +19082,33 @@ declare global {
             clamp: { kind: 'boolean', type: boolean }
          }
       
-         "Impact_Pack.SAMLoader": {
+         "Impact-Pack.SAMLoader": {
             model_name: { kind: 'enum', type: Union['E_40c77739'] }
             device_mode: { kind: 'enum', type: Union['E_2ad445b9'] }
          }
       
-         "Impact_Pack.CLIPSegDetectorProvider": {
+         "Impact-Pack.CLIPSegDetectorProvider": {
             text: { kind: 'string', type: string }
             blur: { kind: 'number', type: number }
             threshold: { kind: 'number', type: number }
             dilation_factor: { kind: 'number', type: number }
          }
       
-         "Impact_Pack.ONNXDetectorProvider": {
+         "Impact-Pack.ONNXDetectorProvider": {
             model_name: { kind: 'enum', type: Union['E_LoraName'] }
          }
       
-         "Impact_Pack.BitwiseAndMaskForEach": {
+         "Impact-Pack.BitwiseAndMaskForEach": {
             // base_segs: { kind: 'object', type: SEGS }
             // mask_segs: { kind: 'object', type: SEGS }
          }
       
-         "Impact_Pack.SubtractMaskForEach": {
+         "Impact-Pack.SubtractMaskForEach": {
             // base_segs: { kind: 'object', type: SEGS }
             // mask_segs: { kind: 'object', type: SEGS }
          }
       
-         "Impact_Pack.DetailerForEach": {
+         "Impact-Pack.DetailerForEach": {
             // image: { kind: 'object', type: IMAGE }
             // segs: { kind: 'object', type: SEGS }
             // model: { kind: 'object', type: MODEL }
@@ -18850,7 +19136,7 @@ declare global {
             // scheduler_func_opt: { kind: 'object', type: SCHEDULER_FUNC }
          }
       
-         "Impact_Pack.DetailerForEachDebug": {
+         "Impact-Pack.DetailerForEachDebug": {
             // image: { kind: 'object', type: IMAGE }
             // segs: { kind: 'object', type: SEGS }
             // model: { kind: 'object', type: MODEL }
@@ -18878,7 +19164,7 @@ declare global {
             // scheduler_func_opt: { kind: 'object', type: SCHEDULER_FUNC }
          }
       
-         "Impact_Pack.DetailerForEachPipe": {
+         "Impact-Pack.DetailerForEachPipe": {
             // image: { kind: 'object', type: IMAGE }
             // segs: { kind: 'object', type: SEGS }
             guide_size: { kind: 'number', type: number }
@@ -18904,7 +19190,7 @@ declare global {
             // scheduler_func_opt: { kind: 'object', type: SCHEDULER_FUNC }
          }
       
-         "Impact_Pack.DetailerForEachDebugPipe": {
+         "Impact-Pack.DetailerForEachDebugPipe": {
             // image: { kind: 'object', type: IMAGE }
             // segs: { kind: 'object', type: SEGS }
             guide_size: { kind: 'number', type: number }
@@ -18930,7 +19216,7 @@ declare global {
             // scheduler_func_opt: { kind: 'object', type: SCHEDULER_FUNC }
          }
       
-         "Impact_Pack.DetailerForEachPipeForAnimateDiff": {
+         "Impact-Pack.DetailerForEachPipeForAnimateDiff": {
             // image_frames: { kind: 'object', type: IMAGE }
             // segs: { kind: 'object', type: SEGS }
             guide_size: { kind: 'number', type: number }
@@ -18951,7 +19237,7 @@ declare global {
             // scheduler_func_opt: { kind: 'object', type: SCHEDULER_FUNC }
          }
       
-         "Impact_Pack.SAMDetectorCombined": {
+         "Impact-Pack.SAMDetectorCombined": {
             // sam_model: { kind: 'object', type: SAM_MODEL }
             // segs: { kind: 'object', type: SEGS }
             // image: { kind: 'object', type: IMAGE }
@@ -18963,7 +19249,7 @@ declare global {
             mask_hint_use_negative: { kind: 'enum', type: Union['E_aa302307'] }
          }
       
-         "Impact_Pack.SAMDetectorSegmented": {
+         "Impact-Pack.SAMDetectorSegmented": {
             // sam_model: { kind: 'object', type: SAM_MODEL }
             // segs: { kind: 'object', type: SEGS }
             // image: { kind: 'object', type: IMAGE }
@@ -18975,7 +19261,7 @@ declare global {
             mask_hint_use_negative: { kind: 'enum', type: Union['E_aa302307'] }
          }
       
-         "Impact_Pack.FaceDetailer": {
+         "Impact-Pack.FaceDetailer": {
             // image: { kind: 'object', type: IMAGE }
             // model: { kind: 'object', type: MODEL }
             // clip: { kind: 'object', type: CLIP }
@@ -19015,7 +19301,7 @@ declare global {
             // scheduler_func_opt: { kind: 'object', type: SCHEDULER_FUNC }
          }
       
-         "Impact_Pack.FaceDetailerPipe": {
+         "Impact-Pack.FaceDetailerPipe": {
             // image: { kind: 'object', type: IMAGE }
             // detailer_pipe: { kind: 'object', type: DETAILER_PIPE }
             guide_size: { kind: 'number', type: number }
@@ -19047,7 +19333,7 @@ declare global {
             // scheduler_func_opt: { kind: 'object', type: SCHEDULER_FUNC }
          }
       
-         "Impact_Pack.MaskDetailerPipe": {
+         "Impact-Pack.MaskDetailerPipe": {
             // image: { kind: 'object', type: IMAGE }
             // mask: { kind: 'object', type: MASK }
             // basic_pipe: { kind: 'object', type: BASIC_PIPE }
@@ -19076,7 +19362,7 @@ declare global {
             // scheduler_func_opt: { kind: 'object', type: SCHEDULER_FUNC }
          }
       
-         "Impact_Pack.ToDetailerPipe": {
+         "Impact-Pack.ToDetailerPipe": {
             // model: { kind: 'object', type: MODEL }
             // clip: { kind: 'object', type: CLIP }
             // vae: { kind: 'object', type: VAE }
@@ -19091,7 +19377,7 @@ declare global {
             // detailer_hook: { kind: 'object', type: DETAILER_HOOK }
          }
       
-         "Impact_Pack.ToDetailerPipeSDXL": {
+         "Impact-Pack.ToDetailerPipeSDXL": {
             // model: { kind: 'object', type: MODEL }
             // clip: { kind: 'object', type: CLIP }
             // vae: { kind: 'object', type: VAE }
@@ -19110,23 +19396,23 @@ declare global {
             // detailer_hook: { kind: 'object', type: DETAILER_HOOK }
          }
       
-         "Impact_Pack.FromDetailerPipe": {
+         "Impact-Pack.FromDetailerPipe": {
             // detailer_pipe: { kind: 'object', type: DETAILER_PIPE }
          }
       
-         "Impact_Pack.FromDetailerPipe_v2": {
+         "Impact-Pack.FromDetailerPipe_v2": {
             // detailer_pipe: { kind: 'object', type: DETAILER_PIPE }
          }
       
-         "Impact_Pack.FromDetailerPipeSDXL": {
+         "Impact-Pack.FromDetailerPipeSDXL": {
             // detailer_pipe: { kind: 'object', type: DETAILER_PIPE }
          }
       
-         "Impact_Pack.AnyPipeToBasic": {
+         "Impact-Pack.AnyPipeToBasic": {
             // any_pipe: { kind: 'object', type: * }
          }
       
-         "Impact_Pack.ToBasicPipe": {
+         "Impact-Pack.ToBasicPipe": {
             // model: { kind: 'object', type: MODEL }
             // clip: { kind: 'object', type: CLIP }
             // vae: { kind: 'object', type: VAE }
@@ -19134,15 +19420,15 @@ declare global {
             // negative: { kind: 'object', type: CONDITIONING }
          }
       
-         "Impact_Pack.FromBasicPipe": {
+         "Impact-Pack.FromBasicPipe": {
             // basic_pipe: { kind: 'object', type: BASIC_PIPE }
          }
       
-         "Impact_Pack.FromBasicPipe_v2": {
+         "Impact-Pack.FromBasicPipe_v2": {
             // basic_pipe: { kind: 'object', type: BASIC_PIPE }
          }
       
-         "Impact_Pack.BasicPipeToDetailerPipe": {
+         "Impact-Pack.BasicPipeToDetailerPipe": {
             // basic_pipe: { kind: 'object', type: BASIC_PIPE }
             // bbox_detector: { kind: 'object', type: BBOX_DETECTOR }
             wildcard: { kind: 'string', type: string }
@@ -19153,7 +19439,7 @@ declare global {
             // detailer_hook: { kind: 'object', type: DETAILER_HOOK }
          }
       
-         "Impact_Pack.BasicPipeToDetailerPipeSDXL": {
+         "Impact-Pack.BasicPipeToDetailerPipeSDXL": {
             // base_basic_pipe: { kind: 'object', type: BASIC_PIPE }
             // refiner_basic_pipe: { kind: 'object', type: BASIC_PIPE }
             // bbox_detector: { kind: 'object', type: BBOX_DETECTOR }
@@ -19165,11 +19451,11 @@ declare global {
             // detailer_hook: { kind: 'object', type: DETAILER_HOOK }
          }
       
-         "Impact_Pack.DetailerPipeToBasicPipe": {
+         "Impact-Pack.DetailerPipeToBasicPipe": {
             // detailer_pipe: { kind: 'object', type: DETAILER_PIPE }
          }
       
-         "Impact_Pack.EditBasicPipe": {
+         "Impact-Pack.EditBasicPipe": {
             // basic_pipe: { kind: 'object', type: BASIC_PIPE }
             // model: { kind: 'object', type: MODEL }
             // clip: { kind: 'object', type: CLIP }
@@ -19178,7 +19464,7 @@ declare global {
             // negative: { kind: 'object', type: CONDITIONING }
          }
       
-         "Impact_Pack.EditDetailerPipe": {
+         "Impact-Pack.EditDetailerPipe": {
             // detailer_pipe: { kind: 'object', type: DETAILER_PIPE }
             wildcard: { kind: 'string', type: string }
             "Select to add LoRA": { kind: 'enum', type: Union['E_35e403c7'] }
@@ -19194,7 +19480,7 @@ declare global {
             // detailer_hook: { kind: 'object', type: DETAILER_HOOK }
          }
       
-         "Impact_Pack.EditDetailerPipeSDXL": {
+         "Impact-Pack.EditDetailerPipeSDXL": {
             // detailer_pipe: { kind: 'object', type: DETAILER_PIPE }
             wildcard: { kind: 'string', type: string }
             "Select to add LoRA": { kind: 'enum', type: Union['E_35e403c7'] }
@@ -19214,7 +19500,7 @@ declare global {
             // detailer_hook: { kind: 'object', type: DETAILER_HOOK }
          }
       
-         "Impact_Pack.LatentPixelScale": {
+         "Impact-Pack.LatentPixelScale": {
             // samples: { kind: 'object', type: LATENT }
             scale_method: { kind: 'enum', type: Union['E_f9c5efbc'] }
             scale_factor: { kind: 'number', type: number }
@@ -19223,7 +19509,7 @@ declare global {
             // upscale_model_opt: { kind: 'object', type: UPSCALE_MODEL }
          }
       
-         "Impact_Pack.PixelKSampleUpscalerProvider": {
+         "Impact-Pack.PixelKSampleUpscalerProvider": {
             scale_method: { kind: 'enum', type: Union['E_f9c5efbc'] }
             // model: { kind: 'object', type: MODEL }
             // vae: { kind: 'object', type: VAE }
@@ -19242,7 +19528,7 @@ declare global {
             // scheduler_func_opt: { kind: 'object', type: SCHEDULER_FUNC }
          }
       
-         "Impact_Pack.PixelKSampleUpscalerProviderPipe": {
+         "Impact-Pack.PixelKSampleUpscalerProviderPipe": {
             scale_method: { kind: 'enum', type: Union['E_f9c5efbc'] }
             seed: { kind: 'number', type: number }
             steps: { kind: 'number', type: number }
@@ -19260,7 +19546,7 @@ declare global {
             tile_cnet_strength: { kind: 'number', type: number }
          }
       
-         "Impact_Pack.IterativeLatentUpscale": {
+         "Impact-Pack.IterativeLatentUpscale": {
             // samples: { kind: 'object', type: LATENT }
             upscale_factor: { kind: 'number', type: number }
             steps: { kind: 'number', type: number }
@@ -19269,7 +19555,7 @@ declare global {
             step_mode: { kind: 'enum', type: Union['E_4724269c'] }
          }
       
-         "Impact_Pack.IterativeImageUpscale": {
+         "Impact-Pack.IterativeImageUpscale": {
             // pixels: { kind: 'object', type: IMAGE }
             upscale_factor: { kind: 'number', type: number }
             steps: { kind: 'number', type: number }
@@ -19279,7 +19565,7 @@ declare global {
             step_mode: { kind: 'enum', type: Union['E_4724269c'] }
          }
       
-         "Impact_Pack.PixelTiledKSampleUpscalerProvider": {
+         "Impact-Pack.PixelTiledKSampleUpscalerProvider": {
             scale_method: { kind: 'enum', type: Union['E_f9c5efbc'] }
             // model: { kind: 'object', type: MODEL }
             // vae: { kind: 'object', type: VAE }
@@ -19300,7 +19586,7 @@ declare global {
             tile_cnet_strength: { kind: 'number', type: number }
          }
       
-         "Impact_Pack.PixelTiledKSampleUpscalerProviderPipe": {
+         "Impact-Pack.PixelTiledKSampleUpscalerProviderPipe": {
             scale_method: { kind: 'enum', type: Union['E_f9c5efbc'] }
             seed: { kind: 'number', type: number }
             steps: { kind: 'number', type: number }
@@ -19318,7 +19604,7 @@ declare global {
             tile_cnet_strength: { kind: 'number', type: number }
          }
       
-         "Impact_Pack.TwoSamplersForMaskUpscalerProvider": {
+         "Impact-Pack.TwoSamplersForMaskUpscalerProvider": {
             scale_method: { kind: 'enum', type: Union['E_f9c5efbc'] }
             full_sample_schedule: { kind: 'enum', type: Union['E_de6a9887'] }
             use_tiled_vae: { kind: 'boolean', type: boolean }
@@ -19334,7 +19620,7 @@ declare global {
             // pk_hook_full_opt: { kind: 'object', type: PK_HOOK }
          }
       
-         "Impact_Pack.TwoSamplersForMaskUpscalerProviderPipe": {
+         "Impact-Pack.TwoSamplersForMaskUpscalerProviderPipe": {
             scale_method: { kind: 'enum', type: Union['E_f9c5efbc'] }
             full_sample_schedule: { kind: 'enum', type: Union['E_de6a9887'] }
             use_tiled_vae: { kind: 'boolean', type: boolean }
@@ -19350,27 +19636,27 @@ declare global {
             // pk_hook_full_opt: { kind: 'object', type: PK_HOOK }
          }
       
-         "Impact_Pack.PixelKSampleHookCombine": {
+         "Impact-Pack.PixelKSampleHookCombine": {
             // hook1: { kind: 'object', type: PK_HOOK }
             // hook2: { kind: 'object', type: PK_HOOK }
          }
       
-         "Impact_Pack.DenoiseScheduleHookProvider": {
+         "Impact-Pack.DenoiseScheduleHookProvider": {
             schedule_for_iteration: { kind: 'enum', type: Union['E_0f7d0d08'] }
             target_denoise: { kind: 'number', type: number }
          }
       
-         "Impact_Pack.StepsScheduleHookProvider": {
+         "Impact-Pack.StepsScheduleHookProvider": {
             schedule_for_iteration: { kind: 'enum', type: Union['E_0f7d0d08'] }
             target_steps: { kind: 'number', type: number }
          }
       
-         "Impact_Pack.CfgScheduleHookProvider": {
+         "Impact-Pack.CfgScheduleHookProvider": {
             schedule_for_iteration: { kind: 'enum', type: Union['E_0f7d0d08'] }
             target_cfg: { kind: 'number', type: number }
          }
       
-         "Impact_Pack.NoiseInjectionHookProvider": {
+         "Impact-Pack.NoiseInjectionHookProvider": {
             schedule_for_iteration: { kind: 'enum', type: Union['E_0f7d0d08'] }
             source: { kind: 'enum', type: Union['E_CpuOrGpu'] }
             seed: { kind: 'number', type: number }
@@ -19378,7 +19664,7 @@ declare global {
             end_strength: { kind: 'number', type: number }
          }
       
-         "Impact_Pack.UnsamplerHookProvider": {
+         "Impact-Pack.UnsamplerHookProvider": {
             // model: { kind: 'object', type: MODEL }
             steps: { kind: 'number', type: number }
             start_end_at_step: { kind: 'number', type: number }
@@ -19392,20 +19678,20 @@ declare global {
             schedule_for_iteration: { kind: 'enum', type: Union['E_0f7d0d08'] }
          }
       
-         "Impact_Pack.CoreMLDetailerHookProvider": {
+         "Impact-Pack.CoreMLDetailerHookProvider": {
             mode: { kind: 'enum', type: Union['E_d4b6506a'] }
          }
       
-         "Impact_Pack.PreviewDetailerHookProvider": {
+         "Impact-Pack.PreviewDetailerHookProvider": {
             quality: { kind: 'number', type: number }
          }
       
-         "Impact_Pack.DetailerHookCombine": {
+         "Impact-Pack.DetailerHookCombine": {
             // hook1: { kind: 'object', type: DETAILER_HOOK }
             // hook2: { kind: 'object', type: DETAILER_HOOK }
          }
       
-         "Impact_Pack.NoiseInjectionDetailerHookProvider": {
+         "Impact-Pack.NoiseInjectionDetailerHookProvider": {
             schedule_for_cycle: { kind: 'enum', type: Union['E_afbc7832'] }
             source: { kind: 'enum', type: Union['E_CpuOrGpu'] }
             seed: { kind: 'number', type: number }
@@ -19413,7 +19699,7 @@ declare global {
             end_strength: { kind: 'number', type: number }
          }
       
-         "Impact_Pack.UnsamplerDetailerHookProvider": {
+         "Impact-Pack.UnsamplerDetailerHookProvider": {
             // model: { kind: 'object', type: MODEL }
             steps: { kind: 'number', type: number }
             start_end_at_step: { kind: 'number', type: number }
@@ -19427,69 +19713,69 @@ declare global {
             schedule_for_cycle: { kind: 'enum', type: Union['E_afbc7832'] }
          }
       
-         "Impact_Pack.DenoiseSchedulerDetailerHookProvider": {
+         "Impact-Pack.DenoiseSchedulerDetailerHookProvider": {
             schedule_for_cycle: { kind: 'enum', type: Union['E_0f7d0d08'] }
             target_denoise: { kind: 'number', type: number }
          }
       
-         "Impact_Pack.SEGSOrderedFilterDetailerHookProvider": {
+         "Impact-Pack.SEGSOrderedFilterDetailerHookProvider": {
             target: { kind: 'enum', type: Union['E_87bec9aa'] }
             order: { kind: 'boolean', type: boolean }
             take_start: { kind: 'number', type: number }
             take_count: { kind: 'number', type: number }
          }
       
-         "Impact_Pack.SEGSRangeFilterDetailerHookProvider": {
+         "Impact-Pack.SEGSRangeFilterDetailerHookProvider": {
             target: { kind: 'enum', type: Union['E_aceb55e7'] }
             mode: { kind: 'boolean', type: boolean }
             min_value: { kind: 'number', type: number }
             max_value: { kind: 'number', type: number }
          }
       
-         "Impact_Pack.SEGSLabelFilterDetailerHookProvider": {
+         "Impact-Pack.SEGSLabelFilterDetailerHookProvider": {
             // segs: { kind: 'object', type: SEGS }
             preset: { kind: 'enum', type: Union['E_cc1f262a'] }
             labels: { kind: 'string', type: string }
          }
       
-         "Impact_Pack.VariationNoiseDetailerHookProvider": {
+         "Impact-Pack.VariationNoiseDetailerHookProvider": {
             seed: { kind: 'number', type: number }
             strength: { kind: 'number', type: number }
          }
       
-         "Impact_Pack.BitwiseAndMask": {
+         "Impact-Pack.BitwiseAndMask": {
             // mask1: { kind: 'object', type: MASK }
             // mask2: { kind: 'object', type: MASK }
          }
       
-         "Impact_Pack.SubtractMask": {
+         "Impact-Pack.SubtractMask": {
             // mask1: { kind: 'object', type: MASK }
             // mask2: { kind: 'object', type: MASK }
          }
       
-         "Impact_Pack.AddMask": {
+         "Impact-Pack.AddMask": {
             // mask1: { kind: 'object', type: MASK }
             // mask2: { kind: 'object', type: MASK }
          }
       
-         "Impact_Pack.ImpactSegsAndMask": {
+         "Impact-Pack.ImpactSegsAndMask": {
             // segs: { kind: 'object', type: SEGS }
             // mask: { kind: 'object', type: MASK }
          }
       
-         "Impact_Pack.ImpactSegsAndMaskForEach": {
+         "Impact-Pack.ImpactSegsAndMaskForEach": {
             // segs: { kind: 'object', type: SEGS }
             // masks: { kind: 'object', type: MASK }
          }
       
-         "Impact_Pack.EmptySegs": {
+         "Impact-Pack.EmptySegs": {
          }
       
-         "Impact_Pack.ImpactFlattenMask": {
+         "Impact-Pack.ImpactFlattenMask": {
             // masks: { kind: 'object', type: MASK }
          }
       
-         "Impact_Pack.MediaPipeFaceMeshToSEGS": {
+         "Impact-Pack.MediaPipeFaceMeshToSEGS": {
             // image: { kind: 'object', type: IMAGE }
             crop_factor: { kind: 'number', type: number }
             bbox_fill: { kind: 'boolean', type: boolean }
@@ -19506,7 +19792,7 @@ declare global {
             right_pupil: { kind: 'boolean', type: boolean }
          }
       
-         "Impact_Pack.MaskToSEGS": {
+         "Impact-Pack.MaskToSEGS": {
             // mask: { kind: 'object', type: MASK }
             combined: { kind: 'boolean', type: boolean }
             crop_factor: { kind: 'number', type: number }
@@ -19515,7 +19801,7 @@ declare global {
             contour_fill: { kind: 'boolean', type: boolean }
          }
       
-         "Impact_Pack.MaskToSEGS_for_AnimateDiff": {
+         "Impact-Pack.MaskToSEGS_for_AnimateDiff": {
             // mask: { kind: 'object', type: MASK }
             combined: { kind: 'boolean', type: boolean }
             crop_factor: { kind: 'number', type: number }
@@ -19524,34 +19810,34 @@ declare global {
             contour_fill: { kind: 'boolean', type: boolean }
          }
       
-         "Impact_Pack.ToBinaryMask": {
+         "Impact-Pack.ToBinaryMask": {
             // mask: { kind: 'object', type: MASK }
             threshold: { kind: 'number', type: number }
          }
       
-         "Impact_Pack.MasksToMaskList": {
+         "Impact-Pack.MasksToMaskList": {
             // masks: { kind: 'object', type: MASK }
          }
       
-         "Impact_Pack.MaskListToMaskBatch": {
+         "Impact-Pack.MaskListToMaskBatch": {
             // mask: { kind: 'object', type: MASK }
          }
       
-         "Impact_Pack.ImageListToImageBatch": {
+         "Impact-Pack.ImageListToImageBatch": {
             // images: { kind: 'object', type: IMAGE }
          }
       
-         "Impact_Pack.SetDefaultImageForSEGS": {
+         "Impact-Pack.SetDefaultImageForSEGS": {
             // segs: { kind: 'object', type: SEGS }
             // image: { kind: 'object', type: IMAGE }
             override: { kind: 'boolean', type: boolean }
          }
       
-         "Impact_Pack.RemoveImageFromSEGS": {
+         "Impact-Pack.RemoveImageFromSEGS": {
             // segs: { kind: 'object', type: SEGS }
          }
       
-         "Impact_Pack.BboxDetectorSEGS": {
+         "Impact-Pack.BboxDetectorSEGS": {
             // bbox_detector: { kind: 'object', type: BBOX_DETECTOR }
             // image: { kind: 'object', type: IMAGE }
             threshold: { kind: 'number', type: number }
@@ -19562,7 +19848,7 @@ declare global {
             // detailer_hook: { kind: 'object', type: DETAILER_HOOK }
          }
       
-         "Impact_Pack.SegmDetectorSEGS": {
+         "Impact-Pack.SegmDetectorSEGS": {
             // segm_detector: { kind: 'object', type: SEGM_DETECTOR }
             // image: { kind: 'object', type: IMAGE }
             threshold: { kind: 'number', type: number }
@@ -19573,7 +19859,7 @@ declare global {
             // detailer_hook: { kind: 'object', type: DETAILER_HOOK }
          }
       
-         "Impact_Pack.ONNXDetectorSEGS": {
+         "Impact-Pack.ONNXDetectorSEGS": {
             // bbox_detector: { kind: 'object', type: BBOX_DETECTOR }
             // image: { kind: 'object', type: IMAGE }
             threshold: { kind: 'number', type: number }
@@ -19584,7 +19870,7 @@ declare global {
             // detailer_hook: { kind: 'object', type: DETAILER_HOOK }
          }
       
-         "Impact_Pack.ImpactSimpleDetectorSEGS_for_AD": {
+         "Impact-Pack.ImpactSimpleDetectorSEGS_for_AD": {
             // bbox_detector: { kind: 'object', type: BBOX_DETECTOR }
             // image_frames: { kind: 'object', type: IMAGE }
             bbox_threshold: { kind: 'number', type: number }
@@ -19601,7 +19887,7 @@ declare global {
             // segm_detector_opt: { kind: 'object', type: SEGM_DETECTOR }
          }
       
-         "Impact_Pack.ImpactSimpleDetectorSEGS": {
+         "Impact-Pack.ImpactSimpleDetectorSEGS": {
             // bbox_detector: { kind: 'object', type: BBOX_DETECTOR }
             // image: { kind: 'object', type: IMAGE }
             bbox_threshold: { kind: 'number', type: number }
@@ -19617,7 +19903,7 @@ declare global {
             // segm_detector_opt: { kind: 'object', type: SEGM_DETECTOR }
          }
       
-         "Impact_Pack.ImpactSimpleDetectorSEGSPipe": {
+         "Impact-Pack.ImpactSimpleDetectorSEGSPipe": {
             // detailer_pipe: { kind: 'object', type: DETAILER_PIPE }
             // image: { kind: 'object', type: IMAGE }
             bbox_threshold: { kind: 'number', type: number }
@@ -19631,7 +19917,7 @@ declare global {
             post_dilation: { kind: 'number', type: number }
          }
       
-         "Impact_Pack.ImpactControlNetApplySEGS": {
+         "Impact-Pack.ImpactControlNetApplySEGS": {
             // segs: { kind: 'object', type: SEGS }
             // control_net: { kind: 'object', type: CONTROL_NET }
             strength: { kind: 'number', type: number }
@@ -19639,7 +19925,7 @@ declare global {
             // control_image: { kind: 'object', type: IMAGE }
          }
       
-         "Impact_Pack.ImpactControlNetApplyAdvancedSEGS": {
+         "Impact-Pack.ImpactControlNetApplyAdvancedSEGS": {
             // segs: { kind: 'object', type: SEGS }
             // control_net: { kind: 'object', type: CONTROL_NET }
             strength: { kind: 'number', type: number }
@@ -19650,11 +19936,11 @@ declare global {
             // vae: { kind: 'object', type: VAE }
          }
       
-         "Impact_Pack.ImpactControlNetClearSEGS": {
+         "Impact-Pack.ImpactControlNetClearSEGS": {
             // segs: { kind: 'object', type: SEGS }
          }
       
-         "Impact_Pack.ImpactIPAdapterApplySEGS": {
+         "Impact-Pack.ImpactIPAdapterApplySEGS": {
             // segs: { kind: 'object', type: SEGS }
             // ipadapter_pipe: { kind: 'object', type: IPADAPTER_PIPE }
             weight: { kind: 'number', type: number }
@@ -19671,20 +19957,20 @@ declare global {
             // neg_image: { kind: 'object', type: IMAGE }
          }
       
-         "Impact_Pack.ImpactDecomposeSEGS": {
+         "Impact-Pack.ImpactDecomposeSEGS": {
             // segs: { kind: 'object', type: SEGS }
          }
       
-         "Impact_Pack.ImpactAssembleSEGS": {
+         "Impact-Pack.ImpactAssembleSEGS": {
             // seg_header: { kind: 'object', type: SEGS_HEADER }
             // seg_elt: { kind: 'object', type: SEG_ELT }
          }
       
-         "Impact_Pack.ImpactFrom_SEG_ELT": {
+         "Impact-Pack.ImpactFrom_SEG_ELT": {
             // seg_elt: { kind: 'object', type: SEG_ELT }
          }
       
-         "Impact_Pack.ImpactEdit_SEG_ELT": {
+         "Impact-Pack.ImpactEdit_SEG_ELT": {
             // seg_elt: { kind: 'object', type: SEG_ELT }
             // cropped_image_opt: { kind: 'object', type: IMAGE }
             // cropped_mask_opt: { kind: 'object', type: MASK }
@@ -19695,69 +19981,69 @@ declare global {
             label_opt: { kind: 'string', type: string }
          }
       
-         "Impact_Pack.ImpactDilate_Mask_SEG_ELT": {
+         "Impact-Pack.ImpactDilate_Mask_SEG_ELT": {
             // seg_elt: { kind: 'object', type: SEG_ELT }
             dilation: { kind: 'number', type: number }
          }
       
-         "Impact_Pack.ImpactDilateMask": {
+         "Impact-Pack.ImpactDilateMask": {
             // mask: { kind: 'object', type: MASK }
             dilation: { kind: 'number', type: number }
          }
       
-         "Impact_Pack.ImpactGaussianBlurMask": {
+         "Impact-Pack.ImpactGaussianBlurMask": {
             // mask: { kind: 'object', type: MASK }
             kernel_size: { kind: 'number', type: number }
             sigma: { kind: 'number', type: number }
          }
       
-         "Impact_Pack.ImpactDilateMaskInSEGS": {
+         "Impact-Pack.ImpactDilateMaskInSEGS": {
             // segs: { kind: 'object', type: SEGS }
             dilation: { kind: 'number', type: number }
          }
       
-         "Impact_Pack.ImpactGaussianBlurMaskInSEGS": {
+         "Impact-Pack.ImpactGaussianBlurMaskInSEGS": {
             // segs: { kind: 'object', type: SEGS }
             kernel_size: { kind: 'number', type: number }
             sigma: { kind: 'number', type: number }
          }
       
-         "Impact_Pack.ImpactScaleBy_BBOX_SEG_ELT": {
+         "Impact-Pack.ImpactScaleBy_BBOX_SEG_ELT": {
             // seg: { kind: 'object', type: SEG_ELT }
             scale_by: { kind: 'number', type: number }
          }
       
-         "Impact_Pack.ImpactFrom_SEG_ELT_bbox": {
+         "Impact-Pack.ImpactFrom_SEG_ELT_bbox": {
             // bbox: { kind: 'object', type: SEG_ELT_bbox }
          }
       
-         "Impact_Pack.ImpactFrom_SEG_ELT_crop_region": {
+         "Impact-Pack.ImpactFrom_SEG_ELT_crop_region": {
             // crop_region: { kind: 'object', type: SEG_ELT_crop_region }
          }
       
-         "Impact_Pack.ImpactCount_Elts_in_SEGS": {
+         "Impact-Pack.ImpactCount_Elts_in_SEGS": {
             // segs: { kind: 'object', type: SEGS }
          }
       
-         "Impact_Pack.BboxDetectorCombined_v2": {
+         "Impact-Pack.BboxDetectorCombined_v2": {
             // bbox_detector: { kind: 'object', type: BBOX_DETECTOR }
             // image: { kind: 'object', type: IMAGE }
             threshold: { kind: 'number', type: number }
             dilation: { kind: 'number', type: number }
          }
       
-         "Impact_Pack.SegmDetectorCombined_v2": {
+         "Impact-Pack.SegmDetectorCombined_v2": {
             // segm_detector: { kind: 'object', type: SEGM_DETECTOR }
             // image: { kind: 'object', type: IMAGE }
             threshold: { kind: 'number', type: number }
             dilation: { kind: 'number', type: number }
          }
       
-         "Impact_Pack.SegsToCombinedMask": {
+         "Impact-Pack.SegsToCombinedMask": {
             // segs: { kind: 'object', type: SEGS }
          }
       
-         "Impact_Pack.KSamplerProvider": {
+         "Impact-Pack.KSamplerProvider": {
             seed: { kind: 'number', type: number }
             steps: { kind: 'number', type: number }
             cfg: { kind: 'number', type: number }
@@ -19768,14 +20054,14 @@ declare global {
             // scheduler_func_opt: { kind: 'object', type: SCHEDULER_FUNC }
          }
       
-         "Impact_Pack.TwoSamplersForMask": {
+         "Impact-Pack.TwoSamplersForMask": {
             // latent_image: { kind: 'object', type: LATENT }
             // base_sampler: { kind: 'object', type: KSAMPLER }
             // mask_sampler: { kind: 'object', type: KSAMPLER }
             // mask: { kind: 'object', type: MASK }
          }
       
-         "Impact_Pack.TiledKSamplerProvider": {
+         "Impact-Pack.TiledKSamplerProvider": {
             seed: { kind: 'number', type: number }
             steps: { kind: 'number', type: number }
             cfg: { kind: 'number', type: number }
@@ -19788,7 +20074,7 @@ declare global {
             // basic_pipe: { kind: 'object', type: BASIC_PIPE }
          }
       
-         "Impact_Pack.KSamplerAdvancedProvider": {
+         "Impact-Pack.KSamplerAdvancedProvider": {
             cfg: { kind: 'number', type: number }
             sampler_name: { kind: 'enum', type: Union['E_SamplerName'] }
             scheduler: { kind: 'enum', type: Union['E_720061fd'] }
@@ -19798,7 +20084,7 @@ declare global {
             // scheduler_func_opt: { kind: 'object', type: SCHEDULER_FUNC }
          }
       
-         "Impact_Pack.TwoAdvancedSamplersForMask": {
+         "Impact-Pack.TwoAdvancedSamplersForMask": {
             seed: { kind: 'number', type: number }
             steps: { kind: 'number', type: number }
             denoise: { kind: 'number', type: number }
@@ -19809,17 +20095,17 @@ declare global {
             overlap_factor: { kind: 'number', type: number }
          }
       
-         "Impact_Pack.ImpactNegativeConditioningPlaceholder": {
+         "Impact-Pack.ImpactNegativeConditioningPlaceholder": {
          }
       
-         "Impact_Pack.PreviewBridge": {
+         "Impact-Pack.PreviewBridge": {
             // images: { kind: 'object', type: IMAGE }
             image: { kind: 'string', type: string }
             block: { kind: 'boolean', type: boolean }
             restore_mask: { kind: 'enum', type: Union['E_f27fae32'] }
          }
       
-         "Impact_Pack.PreviewBridgeLatent": {
+         "Impact-Pack.PreviewBridgeLatent": {
             // latent: { kind: 'object', type: LATENT }
             image: { kind: 'string', type: string }
             preview_method: { kind: 'enum', type: Union['E_ea287ec9'] }
@@ -19828,13 +20114,13 @@ declare global {
             restore_mask: { kind: 'enum', type: Union['E_f27fae32'] }
          }
       
-         "Impact_Pack.ImageSender": {
+         "Impact-Pack.ImageSender": {
             // images: { kind: 'object', type: IMAGE }
             filename_prefix: { kind: 'string', type: string }
             link_id: { kind: 'number', type: number }
          }
       
-         "Impact_Pack.ImageReceiver": {
+         "Impact-Pack.ImageReceiver": {
             image: { kind: 'enum', type: Union['E_Image'] }
             link_id: { kind: 'number', type: number }
             save_to_workflow: { kind: 'boolean', type: boolean }
@@ -19842,20 +20128,20 @@ declare global {
             trigger_always: { kind: 'boolean', type: boolean }
          }
       
-         "Impact_Pack.LatentSender": {
+         "Impact-Pack.LatentSender": {
             // samples: { kind: 'object', type: LATENT }
             filename_prefix: { kind: 'string', type: string }
             link_id: { kind: 'number', type: number }
             preview_method: { kind: 'enum', type: Union['E_fa4a1368'] }
          }
       
-         "Impact_Pack.LatentReceiver": {
+         "Impact-Pack.LatentReceiver": {
             latent: { kind: 'enum', type: Union['E_LoraName'] }
             link_id: { kind: 'number', type: number }
             trigger_always: { kind: 'boolean', type: boolean }
          }
       
-         "Impact_Pack.ImageMaskSwitch": {
+         "Impact-Pack.ImageMaskSwitch": {
             select: { kind: 'number', type: number }
             // images1: { kind: 'object', type: IMAGE }
             // mask1_opt: { kind: 'object', type: MASK }
@@ -19867,31 +20153,31 @@ declare global {
             // mask4_opt: { kind: 'object', type: MASK }
          }
       
-         "Impact_Pack.LatentSwitch": {
+         "Impact-Pack.LatentSwitch": {
             select: { kind: 'number', type: number }
             sel_mode: { kind: 'boolean', type: boolean }
             // input1: { kind: 'object', type: * }
          }
       
-         "Impact_Pack.SEGSSwitch": {
+         "Impact-Pack.SEGSSwitch": {
             select: { kind: 'number', type: number }
             sel_mode: { kind: 'boolean', type: boolean }
             // input1: { kind: 'object', type: * }
          }
       
-         "Impact_Pack.ImpactSwitch": {
+         "Impact-Pack.ImpactSwitch": {
             select: { kind: 'number', type: number }
             sel_mode: { kind: 'boolean', type: boolean }
             // input1: { kind: 'object', type: * }
          }
       
-         "Impact_Pack.ImpactInversedSwitch": {
+         "Impact-Pack.ImpactInversedSwitch": {
             select: { kind: 'number', type: number }
             // input: { kind: 'object', type: * }
             sel_mode: { kind: 'boolean', type: boolean }
          }
       
-         "Impact_Pack.ImpactWildcardProcessor": {
+         "Impact-Pack.ImpactWildcardProcessor": {
             wildcard_text: { kind: 'string', type: string }
             populated_text: { kind: 'string', type: string }
             mode: { kind: 'boolean', type: boolean }
@@ -19899,7 +20185,7 @@ declare global {
             "Select to add Wildcard": { kind: 'enum', type: Union['E_6064bbaf'] }
          }
       
-         "Impact_Pack.ImpactWildcardEncode": {
+         "Impact-Pack.ImpactWildcardEncode": {
             // model: { kind: 'object', type: MODEL }
             // clip: { kind: 'object', type: CLIP }
             wildcard_text: { kind: 'string', type: string }
@@ -19910,7 +20196,7 @@ declare global {
             seed: { kind: 'number', type: number }
          }
       
-         "Impact_Pack.SEGSUpscaler": {
+         "Impact-Pack.SEGSUpscaler": {
             // image: { kind: 'object', type: IMAGE }
             // segs: { kind: 'object', type: SEGS }
             // model: { kind: 'object', type: MODEL }
@@ -19936,7 +20222,7 @@ declare global {
             // scheduler_func_opt: { kind: 'object', type: SCHEDULER_FUNC }
          }
       
-         "Impact_Pack.SEGSUpscalerPipe": {
+         "Impact-Pack.SEGSUpscalerPipe": {
             // image: { kind: 'object', type: IMAGE }
             // segs: { kind: 'object', type: SEGS }
             // basic_pipe: { kind: 'object', type: BASIC_PIPE }
@@ -19958,7 +20244,7 @@ declare global {
             // scheduler_func_opt: { kind: 'object', type: SCHEDULER_FUNC }
          }
       
-         "Impact_Pack.SEGSDetailer": {
+         "Impact-Pack.SEGSDetailer": {
             // image: { kind: 'object', type: IMAGE }
             // segs: { kind: 'object', type: SEGS }
             guide_size: { kind: 'number', type: number }
@@ -19982,7 +20268,7 @@ declare global {
             // scheduler_func_opt: { kind: 'object', type: SCHEDULER_FUNC }
          }
       
-         "Impact_Pack.SEGSPaste": {
+         "Impact-Pack.SEGSPaste": {
             // image: { kind: 'object', type: IMAGE }
             // segs: { kind: 'object', type: SEGS }
             feather: { kind: 'number', type: number }
@@ -19990,41 +20276,41 @@ declare global {
             // ref_image_opt: { kind: 'object', type: IMAGE }
          }
       
-         "Impact_Pack.SEGSPreview": {
+         "Impact-Pack.SEGSPreview": {
             // segs: { kind: 'object', type: SEGS }
             alpha_mode: { kind: 'boolean', type: boolean }
             min_alpha: { kind: 'number', type: number }
             // fallback_image_opt: { kind: 'object', type: IMAGE }
          }
       
-         "Impact_Pack.SEGSPreviewCNet": {
+         "Impact-Pack.SEGSPreviewCNet": {
             // segs: { kind: 'object', type: SEGS }
          }
       
-         "Impact_Pack.SEGSToImageList": {
+         "Impact-Pack.SEGSToImageList": {
             // segs: { kind: 'object', type: SEGS }
             // fallback_image_opt: { kind: 'object', type: IMAGE }
          }
       
-         "Impact_Pack.ImpactSEGSToMaskList": {
+         "Impact-Pack.ImpactSEGSToMaskList": {
             // segs: { kind: 'object', type: SEGS }
          }
       
-         "Impact_Pack.ImpactSEGSToMaskBatch": {
+         "Impact-Pack.ImpactSEGSToMaskBatch": {
             // segs: { kind: 'object', type: SEGS }
          }
       
-         "Impact_Pack.ImpactSEGSConcat": {
+         "Impact-Pack.ImpactSEGSConcat": {
             // segs1: { kind: 'object', type: SEGS }
          }
       
-         "Impact_Pack.ImpactSEGSPicker": {
+         "Impact-Pack.ImpactSEGSPicker": {
             picks: { kind: 'string', type: string }
             // segs: { kind: 'object', type: SEGS }
             // fallback_image_opt: { kind: 'object', type: IMAGE }
          }
       
-         "Impact_Pack.ImpactMakeTileSEGS": {
+         "Impact-Pack.ImpactMakeTileSEGS": {
             // images: { kind: 'object', type: IMAGE }
             bbox_size: { kind: 'number', type: number }
             crop_factor: { kind: 'number', type: number }
@@ -20036,11 +20322,11 @@ declare global {
             // filter_out_segs_opt: { kind: 'object', type: SEGS }
          }
       
-         "Impact_Pack.ImpactSEGSMerge": {
+         "Impact-Pack.ImpactSEGSMerge": {
             // segs: { kind: 'object', type: SEGS }
          }
       
-         "Impact_Pack.SEGSDetailerForAnimateDiff": {
+         "Impact-Pack.SEGSDetailerForAnimateDiff": {
             // image_frames: { kind: 'object', type: IMAGE }
             // segs: { kind: 'object', type: SEGS }
             guide_size: { kind: 'number', type: number }
@@ -20059,7 +20345,7 @@ declare global {
             // scheduler_func_opt: { kind: 'object', type: SCHEDULER_FUNC }
          }
       
-         "Impact_Pack.ImpactKSamplerBasicPipe": {
+         "Impact-Pack.ImpactKSamplerBasicPipe": {
             // basic_pipe: { kind: 'object', type: BASIC_PIPE }
             seed: { kind: 'number', type: number }
             steps: { kind: 'number', type: number }
@@ -20071,7 +20357,7 @@ declare global {
             // scheduler_func_opt: { kind: 'object', type: SCHEDULER_FUNC }
          }
       
-         "Impact_Pack.ImpactKSamplerAdvancedBasicPipe": {
+         "Impact-Pack.ImpactKSamplerAdvancedBasicPipe": {
             // basic_pipe: { kind: 'object', type: BASIC_PIPE }
             add_noise: { kind: 'boolean', type: boolean }
             noise_seed: { kind: 'number', type: number }
@@ -20086,7 +20372,7 @@ declare global {
             // scheduler_func_opt: { kind: 'object', type: SCHEDULER_FUNC }
          }
       
-         "Impact_Pack.ReencodeLatent": {
+         "Impact-Pack.ReencodeLatent": {
             // samples: { kind: 'object', type: LATENT }
             tile_mode: { kind: 'enum', type: Union['E_d5776f66'] }
             // input_vae: { kind: 'object', type: VAE }
@@ -20094,38 +20380,38 @@ declare global {
             tile_size: { kind: 'number', type: number }
          }
       
-         "Impact_Pack.ReencodeLatentPipe": {
+         "Impact-Pack.ReencodeLatentPipe": {
             // samples: { kind: 'object', type: LATENT }
             tile_mode: { kind: 'enum', type: Union['E_d5776f66'] }
             // input_basic_pipe: { kind: 'object', type: BASIC_PIPE }
             // output_basic_pipe: { kind: 'object', type: BASIC_PIPE }
          }
       
-         "Impact_Pack.ImpactImageBatchToImageList": {
+         "Impact-Pack.ImpactImageBatchToImageList": {
             // image: { kind: 'object', type: IMAGE }
          }
       
-         "Impact_Pack.ImpactMakeImageList": {
+         "Impact-Pack.ImpactMakeImageList": {
             // image1: { kind: 'object', type: IMAGE }
          }
       
-         "Impact_Pack.ImpactMakeImageBatch": {
+         "Impact-Pack.ImpactMakeImageBatch": {
             // image1: { kind: 'object', type: IMAGE }
          }
       
-         "Impact_Pack.ImpactMakeAnyList": {
+         "Impact-Pack.ImpactMakeAnyList": {
             // value1: { kind: 'object', type: * }
          }
       
-         "Impact_Pack.ImpactMakeMaskList": {
+         "Impact-Pack.ImpactMakeMaskList": {
             // mask1: { kind: 'object', type: MASK }
          }
       
-         "Impact_Pack.ImpactMakeMaskBatch": {
+         "Impact-Pack.ImpactMakeMaskBatch": {
             // mask1: { kind: 'object', type: MASK }
          }
       
-         "Impact_Pack.RegionalSampler": {
+         "Impact-Pack.RegionalSampler": {
             seed: { kind: 'number', type: number }
             seed_2nd: { kind: 'number', type: number }
             seed_2nd_mode: { kind: 'enum', type: Union['E_1e8364b5'] }
@@ -20142,7 +20428,7 @@ declare global {
             additional_sigma_ratio: { kind: 'number', type: number }
          }
       
-         "Impact_Pack.RegionalSamplerAdvanced": {
+         "Impact-Pack.RegionalSamplerAdvanced": {
             add_noise: { kind: 'boolean', type: boolean }
             noise_seed: { kind: 'number', type: number }
             steps: { kind: 'number', type: number }
@@ -20159,11 +20445,11 @@ declare global {
             additional_sigma_ratio: { kind: 'number', type: number }
          }
       
-         "Impact_Pack.CombineRegionalPrompts": {
+         "Impact-Pack.CombineRegionalPrompts": {
             // regional_prompts1: { kind: 'object', type: REGIONAL_PROMPTS }
          }
       
-         "Impact_Pack.RegionalPrompt": {
+         "Impact-Pack.RegionalPrompt": {
             // mask: { kind: 'object', type: MASK }
             // advanced_sampler: { kind: 'object', type: KSAMPLER_ADVANCED }
             variation_seed: { kind: 'number', type: number }
@@ -20171,26 +20457,26 @@ declare global {
             variation_method: { kind: 'enum', type: Union['E_627d63e9'] }
          }
       
-         "Impact_Pack.ImpactCombineConditionings": {
+         "Impact-Pack.ImpactCombineConditionings": {
             // conditioning1: { kind: 'object', type: CONDITIONING }
          }
       
-         "Impact_Pack.ImpactConcatConditionings": {
+         "Impact-Pack.ImpactConcatConditionings": {
             // conditioning1: { kind: 'object', type: CONDITIONING }
          }
       
-         "Impact_Pack.ImpactSEGSLabelAssign": {
+         "Impact-Pack.ImpactSEGSLabelAssign": {
             // segs: { kind: 'object', type: SEGS }
             labels: { kind: 'string', type: string }
          }
       
-         "Impact_Pack.ImpactSEGSLabelFilter": {
+         "Impact-Pack.ImpactSEGSLabelFilter": {
             // segs: { kind: 'object', type: SEGS }
             preset: { kind: 'enum', type: Union['E_cc1f262a'] }
             labels: { kind: 'string', type: string }
          }
       
-         "Impact_Pack.ImpactSEGSRangeFilter": {
+         "Impact-Pack.ImpactSEGSRangeFilter": {
             // segs: { kind: 'object', type: SEGS }
             target: { kind: 'enum', type: Union['E_10c017f4'] }
             mode: { kind: 'boolean', type: boolean }
@@ -20198,7 +20484,7 @@ declare global {
             max_value: { kind: 'number', type: number }
          }
       
-         "Impact_Pack.ImpactSEGSOrderedFilter": {
+         "Impact-Pack.ImpactSEGSOrderedFilter": {
             // segs: { kind: 'object', type: SEGS }
             target: { kind: 'enum', type: Union['E_b1f554e9'] }
             order: { kind: 'boolean', type: boolean }
@@ -20206,97 +20492,97 @@ declare global {
             take_count: { kind: 'number', type: number }
          }
       
-         "Impact_Pack.ImpactCompare": {
+         "Impact-Pack.ImpactCompare": {
             cmp: { kind: 'enum', type: Union['E_87d3a210'] }
             // a: { kind: 'object', type: * }
             // b: { kind: 'object', type: * }
          }
       
-         "Impact_Pack.ImpactConditionalBranch": {
+         "Impact-Pack.ImpactConditionalBranch": {
             cond: { kind: 'boolean', type: boolean }
             // tt_value: { kind: 'object', type: * }
             // ff_value: { kind: 'object', type: * }
          }
       
-         "Impact_Pack.ImpactConditionalBranchSelMode": {
+         "Impact-Pack.ImpactConditionalBranchSelMode": {
             cond: { kind: 'boolean', type: boolean }
             // tt_value: { kind: 'object', type: * }
             // ff_value: { kind: 'object', type: * }
          }
       
-         "Impact_Pack.ImpactIfNone": {
+         "Impact-Pack.ImpactIfNone": {
             // signal: { kind: 'object', type: * }
             // any_input: { kind: 'object', type: * }
          }
       
-         "Impact_Pack.ImpactConvertDataType": {
+         "Impact-Pack.ImpactConvertDataType": {
             // value: { kind: 'object', type: * }
          }
       
-         "Impact_Pack.ImpactLogicalOperators": {
+         "Impact-Pack.ImpactLogicalOperators": {
             operator: { kind: 'enum', type: Union['E_99d83eba'] }
             bool_a: { kind: 'boolean', type: boolean }
             bool_b: { kind: 'boolean', type: boolean }
          }
       
-         "Impact_Pack.ImpactInt": {
+         "Impact-Pack.ImpactInt": {
             value: { kind: 'number', type: number }
          }
       
-         "Impact_Pack.ImpactFloat": {
+         "Impact-Pack.ImpactFloat": {
             value: { kind: 'number', type: number }
          }
       
-         "Impact_Pack.ImpactBoolean": {
+         "Impact-Pack.ImpactBoolean": {
             value: { kind: 'boolean', type: boolean }
          }
       
-         "Impact_Pack.ImpactValueSender": {
+         "Impact-Pack.ImpactValueSender": {
             // value: { kind: 'object', type: * }
             link_id: { kind: 'number', type: number }
             // signal_opt: { kind: 'object', type: * }
          }
       
-         "Impact_Pack.ImpactValueReceiver": {
+         "Impact-Pack.ImpactValueReceiver": {
             typ: { kind: 'enum', type: Union['E_6c86e4ef'] }
             value: { kind: 'string', type: string }
             link_id: { kind: 'number', type: number }
          }
       
-         "Impact_Pack.ImpactImageInfo": {
+         "Impact-Pack.ImpactImageInfo": {
             // value: { kind: 'object', type: IMAGE }
          }
       
-         "Impact_Pack.ImpactLatentInfo": {
+         "Impact-Pack.ImpactLatentInfo": {
             // value: { kind: 'object', type: LATENT }
          }
       
-         "Impact_Pack.ImpactMinMax": {
+         "Impact-Pack.ImpactMinMax": {
             mode: { kind: 'boolean', type: boolean }
             // a: { kind: 'object', type: * }
             // b: { kind: 'object', type: * }
          }
       
-         "Impact_Pack.ImpactNeg": {
+         "Impact-Pack.ImpactNeg": {
             value: { kind: 'boolean', type: boolean }
          }
       
-         "Impact_Pack.ImpactConditionalStopIteration": {
+         "Impact-Pack.ImpactConditionalStopIteration": {
             cond: { kind: 'boolean', type: boolean }
          }
       
-         "Impact_Pack.ImpactStringSelector": {
+         "Impact-Pack.ImpactStringSelector": {
             strings: { kind: 'string', type: string }
             multiline: { kind: 'boolean', type: boolean }
             select: { kind: 'number', type: number }
          }
       
-         "Impact_Pack.StringListToString": {
+         "Impact-Pack.StringListToString": {
             join_with: { kind: 'string', type: string }
             string_list: { kind: 'string', type: string }
          }
       
-         "Impact_Pack.WildcardPromptFromString": {
+         "Impact-Pack.WildcardPromptFromString": {
             string: { kind: 'string', type: string }
             delimiter: { kind: 'string', type: string }
             prefix_all: { kind: 'string', type: string }
@@ -20305,36 +20591,36 @@ declare global {
             exclude_tags: { kind: 'string', type: string }
          }
       
-         "Impact_Pack.ImpactExecutionOrderController": {
+         "Impact-Pack.ImpactExecutionOrderController": {
             // signal: { kind: 'object', type: * }
             // value: { kind: 'object', type: * }
          }
       
-         "Impact_Pack.RemoveNoiseMask": {
+         "Impact-Pack.RemoveNoiseMask": {
             // samples: { kind: 'object', type: LATENT }
          }
       
-         "Impact_Pack.ImpactLogger": {
+         "Impact-Pack.ImpactLogger": {
             // data: { kind: 'object', type: * }
             text: { kind: 'string', type: string }
          }
       
-         "Impact_Pack.ImpactDummyInput": {
+         "Impact-Pack.ImpactDummyInput": {
          }
       
-         "Impact_Pack.ImpactQueueTrigger": {
+         "Impact-Pack.ImpactQueueTrigger": {
             // signal: { kind: 'object', type: * }
             mode: { kind: 'boolean', type: boolean }
          }
       
-         "Impact_Pack.ImpactQueueTriggerCountdown": {
+         "Impact-Pack.ImpactQueueTriggerCountdown": {
             count: { kind: 'number', type: number }
             total: { kind: 'number', type: number }
             mode: { kind: 'boolean', type: boolean }
             // signal: { kind: 'object', type: * }
          }
       
-         "Impact_Pack.ImpactSetWidgetValue": {
+         "Impact-Pack.ImpactSetWidgetValue": {
             // signal: { kind: 'object', type: * }
             node_id: { kind: 'number', type: number }
             widget_name: { kind: 'string', type: string }
@@ -20344,46 +20630,46 @@ declare global {
             string_value: { kind: 'string', type: string }
          }
       
-         "Impact_Pack.ImpactNodeSetMuteState": {
+         "Impact-Pack.ImpactNodeSetMuteState": {
             // signal: { kind: 'object', type: * }
             node_id: { kind: 'number', type: number }
             set_state: { kind: 'boolean', type: boolean }
          }
       
-         "Impact_Pack.ImpactControlBridge": {
+         "Impact-Pack.ImpactControlBridge": {
             // value: { kind: 'object', type: * }
             mode: { kind: 'boolean', type: boolean }
             behavior: { kind: 'enum', type: Union['E_383642e8'] }
          }
       
-         "Impact_Pack.ImpactIsNotEmptySEGS": {
+         "Impact-Pack.ImpactIsNotEmptySEGS": {
             // segs: { kind: 'object', type: SEGS }
          }
       
-         "Impact_Pack.ImpactSleep": {
+         "Impact-Pack.ImpactSleep": {
             // signal: { kind: 'object', type: * }
             seconds: { kind: 'number', type: number }
          }
       
-         "Impact_Pack.ImpactRemoteBoolean": {
+         "Impact-Pack.ImpactRemoteBoolean": {
             node_id: { kind: 'number', type: number }
             widget_name: { kind: 'string', type: string }
             value: { kind: 'boolean', type: boolean }
          }
       
-         "Impact_Pack.ImpactRemoteInt": {
+         "Impact-Pack.ImpactRemoteInt": {
             node_id: { kind: 'number', type: number }
             widget_name: { kind: 'string', type: string }
             value: { kind: 'number', type: number }
          }
       
-         "Impact_Pack.ImpactHFTransformersClassifierProvider": {
+         "Impact-Pack.ImpactHFTransformersClassifierProvider": {
             preset_repo_id: { kind: 'enum', type: Union['E_7fd75955'] }
             manual_repo_id: { kind: 'string', type: string }
             device_mode: { kind: 'enum', type: Union['E_2ad445b9'] }
          }
       
-         "Impact_Pack.ImpactSEGSClassify": {
+         "Impact-Pack.ImpactSEGSClassify": {
             // classifier: { kind: 'object', type: TRANSFORMERS_CLASSIFIER }
             // segs: { kind: 'object', type: SEGS }
             preset_expr: { kind: 'enum', type: Union['E_01400d67'] }
@@ -20391,17 +20677,17 @@ declare global {
             // ref_image_opt: { kind: 'object', type: IMAGE }
          }
       
-         "Impact_Pack.ImpactSchedulerAdapter": {
+         "Impact-Pack.ImpactSchedulerAdapter": {
             scheduler: { kind: 'enum', type: Union['E_SchedulerName'] }
             extra_scheduler: { kind: 'enum', type: Union['E_64bb9134'] }
          }
       
-         "Impact_Pack.GITSSchedulerFuncProvider": {
+         "Impact-Pack.GITSSchedulerFuncProvider": {
             coeff: { kind: 'number', type: number }
             denoise: { kind: 'number', type: number }
          }
       
-         "Impact_Pack.UltralyticsDetectorProvider": {
+         "Impact-Pack.UltralyticsDetectorProvider": {
             model_name: { kind: 'enum', type: Union['E_cf117469'] }
          }
       
@@ -20411,7 +20697,7 @@ declare global {
       }
       // TODO rename to ObjecInfoContent
       export type Schemas = {[k in ComfyNodeType]: ComfyNodeSchemaJSON}
-      export type ComfyNodeType = 'KSampler' | 'CheckpointLoaderSimple' | 'CLIPTextEncode' | 'CLIPSetLastLayer' | 'VAEDecode' | 'VAEEncode' | 'VAEEncodeForInpaint' | 'VAELoader' | 'EmptyLatentImage' | 'LatentUpscale' | 'LatentUpscaleBy' | 'LatentFromBatch' | 'RepeatLatentBatch' | 'SaveImage' | 'PreviewImage' | 'LoadImage' | 'LoadImageMask' | 'ImageScale' | 'ImageScaleBy' | 'ImageInvert' | 'ImageBatch' | 'ImagePadForOutpaint' | 'EmptyImage' | 'ConditioningAverage' | 'ConditioningCombine' | 'ConditioningConcat' | 'ConditioningSetArea' | 'ConditioningSetAreaPercentage' | 'ConditioningSetAreaStrength' | 'ConditioningSetMask' | 'KSamplerAdvanced' | 'SetLatentNoiseMask' | 'LatentComposite' | 'LatentBlend' | 'LatentRotate' | 'LatentFlip' | 'LatentCrop' | 'LoraLoader' | 'CLIPLoader' | 'UNETLoader' | 'DualCLIPLoader' | 'CLIPVisionEncode' | 'StyleModelApply' | 'unCLIPConditioning' | 'ControlNetApply' | 'ControlNetApplyAdvanced' | 'ControlNetLoader' | 'DiffControlNetLoader' | 'StyleModelLoader' | 'CLIPVisionLoader' | 'VAEDecodeTiled' | 'VAEEncodeTiled' | 'unCLIPCheckpointLoader' | 'GLIGENLoader' | 'GLIGENTextBoxApply' | 'InpaintModelConditioning' | 'CheckpointLoader' | 'DiffusersLoader' | 'LoadLatent' | 'SaveLatent' | 'ConditioningZeroOut' | 'ConditioningSetTimestepRange' | 'LoraLoaderModelOnly' | 'LatentAdd' | 'LatentSubtract' | 'LatentMultiply' | 'LatentInterpolate' | 'LatentBatch' | 'LatentBatchSeedBehavior' | 'LatentApplyOperation' | 'LatentApplyOperationCFG' | 'LatentOperationTonemapReinhard' | 'LatentOperationSharpen' | 'HypernetworkLoader' | 'UpscaleModelLoader' | 'ImageUpscaleWithModel' | 'ImageBlend' | 'ImageBlur' | 'ImageQuantize' | 'ImageSharpen' | 'ImageScaleToTotalPixels' | 'LatentCompositeMasked' | 'ImageCompositeMasked' | 'MaskToImage' | 'ImageToMask' | 'ImageColorToMask' | 'SolidMask' | 'InvertMask' | 'CropMask' | 'MaskComposite' | 'FeatherMask' | 'GrowMask' | 'ThresholdMask' | 'PorterDuffImageComposite' | 'SplitImageWithAlpha' | 'JoinImageWithAlpha' | 'RebatchLatents' | 'RebatchImages' | 'ModelMergeSimple' | 'ModelMergeBlocks' | 'ModelMergeSubtract' | 'ModelMergeAdd' | 'CheckpointSave' | 'CLIPMergeSimple' | 'CLIPMergeSubtract' | 'CLIPMergeAdd' | 'CLIPSave' | 'VAESave' | 'ModelSave' | 'TomePatchModel' | 'CLIPTextEncodeSDXLRefiner' | 'CLIPTextEncodeSDXL' | 'Canny' | 'FreeU' | 'FreeU_V2' | 'SamplerCustom' | 'BasicScheduler' | 'KarrasScheduler' | 'ExponentialScheduler' | 'PolyexponentialScheduler' | 'LaplaceScheduler' | 'VPScheduler' | 'BetaSamplingScheduler' | 'SDTurboScheduler' | 'KSamplerSelect' | 'SamplerEulerAncestral' | 'SamplerEulerAncestralCFGPP' | 'SamplerLMS' | 'SamplerDPMPP_3M_SDE' | 'SamplerDPMPP_2M_SDE' | 'SamplerDPMPP_SDE' | 'SamplerDPMPP_2S_Ancestral' | 'SamplerDPMAdaptative' | 'SplitSigmas' | 'SplitSigmasDenoise' | 'FlipSigmas' | 'CFGGuider' | 'DualCFGGuider' | 'BasicGuider' | 'RandomNoise' | 'DisableNoise' | 'AddNoise' | 'SamplerCustomAdvanced' | 'HyperTile' | 'ModelSamplingDiscrete' | 'ModelSamplingContinuousEDM' | 'ModelSamplingContinuousV' | 'ModelSamplingStableCascade' | 'ModelSamplingSD3' | 'ModelSamplingAuraFlow' | 'ModelSamplingFlux' | 'RescaleCFG' | 'PatchModelAddDownscale' | 'ImageCrop' | 'RepeatImageBatch' | 'ImageFromBatch' | 'SaveAnimatedWEBP' | 'SaveAnimatedPNG' | 'ImageOnlyCheckpointLoader' | 'SVD_img2vid_Conditioning' | 'VideoLinearCFGGuidance' | 'VideoTriangleCFGGuidance' | 'ImageOnlyCheckpointSave' | 'SelfAttentionGuidance' | 'PerpNeg' | 'PerpNegGuider' | 'StableZero123_Conditioning' | 'StableZero123_Conditioning_Batched' | 'SV3D_Conditioning' | 'SD_4XUpscale_Conditioning' | 'PhotoMakerLoader' | 'PhotoMakerEncode' | 'CLIPTextEncodeControlnet' | 'Morphology' | 'StableCascade_EmptyLatentImage' | 'StableCascade_StageB_Conditioning' | 'StableCascade_StageC_VAEEncode' | 'StableCascade_SuperResolutionControlnet' | 'DifferentialDiffusion' | 'InstructPixToPixConditioning' | 'ModelMergeSD1' | 'ModelMergeSD2' | 'ModelMergeSDXL' | 'ModelMergeSD3_2B' | 'ModelMergeFlux1' | 'ModelMergeSD35_Large' | 'PerturbedAttentionGuidance' | 'AlignYourStepsScheduler' | 'UNetSelfAttentionMultiply' | 'UNetCrossAttentionMultiply' | 'CLIPAttentionMultiply' | 'UNetTemporalAttentionMultiply' | 'SamplerLCMUpscale' | 'SamplerEulerCFGpp' | 'WebcamCapture' | 'EmptyLatentAudio' | 'VAEEncodeAudio' | 'VAEDecodeAudio' | 'SaveAudio' | 'LoadAudio' | 'PreviewAudio' | 'TripleCLIPLoader' | 'EmptySD3LatentImage' | 'CLIPTextEncodeSD3' | 'ControlNetApplySD3' | 'SkipLayerGuidanceSD3' | 'GITSScheduler' | 'SetUnionControlNetType' | 'ControlNetInpaintingAliMamaApply' | 'CLIPTextEncodeHunyuanDiT' | 'CLIPTextEncodeFlux' | 'FluxGuidance' | 'LoraSave' | 'TorchCompileModel' | 'EmptyMochiLatentVideo' | 'websocket_image_save.SaveImageWebsocket' | 'was.BLIP Model Loader' | 'was.Blend Latents' | 'was.Bus Node' | 'was.Cache Node' | 'was.Checkpoint Loader' | 'was.Checkpoint Loader (Simple)' | 'was.CLIPTextEncode (NSP)' | 'was.CLIP Input Switch' | 'was.CLIP Vision Input Switch' | 'was.Conditioning Input Switch' | 'was.Constant Number' | 'was.Create Grid Image' | 'was.Create Grid Image from Batch' | 'was.Create Morph Image' | 'was.Create Morph Image from Path' | 'was.Create Video from Path' | 'was.CLIPSeg Masking' | 'was.CLIPSeg Model Loader' | 'was.CLIPSeg Batch Masking' | 'was.Convert Masks to Images' | 'was.Control Net Model Input Switch' | 'was.Debug Number to Console' | 'was.Dictionary to Console' | 'was.Diffusers Model Loader' | 'was.Diffusers Hub Model Down-Loader' | 'was.Export API' | 'was.Latent Input Switch' | 'was.Load Cache' | 'was.Logic Boolean' | 'was.Logic Boolean Primitive' | 'was.Logic Comparison OR' | 'was.Logic Comparison AND' | 'was.Logic Comparison XOR' | 'was.Logic NOT' | 'was.Lora Loader' | 'was.Hex to HSL' | 'was.HSL to Hex' | 'was.Image SSAO (Ambient Occlusion)' | 'was.Image SSDO (Direct Occlusion)' | 'was.Image Analyze' | 'was.Image Aspect Ratio' | 'was.Image Batch' | 'was.Image Blank' | 'was.Image Blend by Mask' | 'was.Image Blend' | 'was.Image Blending Mode' | 'was.Image Bloom Filter' | 'was.Image Canny Filter' | 'was.Image Chromatic Aberration' | 'was.Image Color Palette' | 'was.Image Crop Face' | 'was.Image Crop Location' | 'was.Image Crop Square Location' | 'was.Image Displacement Warp' | 'was.Image Lucy Sharpen' | 'was.Image Paste Face' | 'was.Image Paste Crop' | 'was.Image Paste Crop by Location' | 'was.Image Pixelate' | 'was.Image Power Noise' | 'was.Image Dragan Photography Filter' | 'was.Image Edge Detection Filter' | 'was.Image Film Grain' | 'was.Image Filter Adjustments' | 'was.Image Flip' | 'was.Image Gradient Map' | 'was.Image Generate Gradient' | 'was.Image High Pass Filter' | 'was.Image History Loader' | 'was.Image Input Switch' | 'was.Image Levels Adjustment' | 'was.Image Load' | 'was.Image Median Filter' | 'was.Image Mix RGB Channels' | 'was.Image Monitor Effects Filter' | 'was.Image Nova Filter' | 'was.Image Padding' | 'was.Image Perlin Noise' | 'was.Image Rembg (Remove Background)' | 'was.Image Perlin Power Fractal' | 'was.Image Remove Background (Alpha)' | 'was.Image Remove Color' | 'was.Image Resize' | 'was.Image Rotate' | 'was.Image Rotate Hue' | 'was.Image Send HTTP' | 'was.Image Save' | 'was.Image Seamless Texture' | 'was.Image Select Channel' | 'was.Image Select Color' | 'was.Image Shadows and Highlights' | 'was.Image Size to Number' | 'was.Image Stitch' | 'was.Image Style Filter' | 'was.Image Threshold' | 'was.Image Tiled' | 'was.Image Transpose' | 'was.Image fDOF Filter' | 'was.Image to Latent Mask' | 'was.Image to Noise' | 'was.Image to Seed' | 'was.Images to RGB' | 'was.Images to Linear' | 'was.Integer place counter' | 'was.Image Voronoi Noise Filter' | 'was.KSampler (WAS)' | 'was.KSampler Cycle' | 'was.Latent Batch' | 'was.Latent Noise Injection' | 'was.Latent Size to Number' | 'was.Latent Upscale by Factor (WAS)' | 'was.Load Image Batch' | 'was.Load Text File' | 'was.Load Lora' | 'was.Lora Input Switch' | 'was.Masks Add' | 'was.Masks Subtract' | 'was.Mask Arbitrary Region' | 'was.Mask Batch to Mask' | 'was.Mask Batch' | 'was.Mask Ceiling Region' | 'was.Mask Crop Dominant Region' | 'was.Mask Crop Minority Region' | 'was.Mask Crop Region' | 'was.Mask Paste Region' | 'was.Mask Dilate Region' | 'was.Mask Dominant Region' | 'was.Mask Erode Region' | 'was.Mask Fill Holes' | 'was.Mask Floor Region' | 'was.Mask Gaussian Region' | 'was.Mask Invert' | 'was.Mask Minority Region' | 'was.Mask Smooth Region' | 'was.Mask Threshold Region' | 'was.Masks Combine Regions' | 'was.Masks Combine Batch' | 'was.MiDaS Model Loader' | 'was.MiDaS Depth Approximation' | 'was.MiDaS Mask Image' | 'was.Model Input Switch' | 'was.Number Counter' | 'was.Number Operation' | 'was.Number to Float' | 'was.Number Input Switch' | 'was.Number Input Condition' | 'was.Number Multiple Of' | 'was.Number PI' | 'was.Number to Int' | 'was.Number to Seed' | 'was.Number to String' | 'was.Number to Text' | 'was.Boolean To Text' | 'was.Prompt Styles Selector' | 'was.Prompt Multiple Styles Selector' | 'was.Random Number' | 'was.Save Text File' | 'was.Seed' | 'was.Tensor Batch to Image' | 'was.BLIP Analyze Image' | 'was.SAM Model Loader' | 'was.SAM Parameters' | 'was.SAM Parameters Combine' | 'was.SAM Image Mask' | 'was.Samples Passthrough (Stat System)' | 'was.String to Text' | 'was.Image Bounds' | 'was.Inset Image Bounds' | 'was.Bounded Image Blend' | 'was.Bounded Image Blend with Mask' | 'was.Bounded Image Crop' | 'was.Bounded Image Crop with Mask' | 'was.Image Bounds to Console' | 'was.Text Dictionary Update' | 'was.Text Dictionary Get' | 'was.Text Dictionary Convert' | 'was.Text Dictionary New' | 'was.Text Dictionary Keys' | 'was.Text Dictionary To Text' | 'was.Text Add Tokens' | 'was.Text Add Token by Input' | 'was.Text Compare' | 'was.Text Concatenate' | 'was.Text File History Loader' | 'was.Text Find and Replace by Dictionary' | 'was.Text Find and Replace Input' | 'was.Text Find and Replace' | 'was.Text Find' | 'was.Text Input Switch' | 'was.Text List' | 'was.Text List Concatenate' | 'was.Text List to Text' | 'was.Text Load Line From File' | 'was.Text Multiline' | 'was.Text Multiline (Code Compatible)' | 'was.Text Parse A1111 Embeddings' | 'was.Text Parse Noodle Soup Prompts' | 'was.Text Parse Tokens' | 'was.Text Random Line' | 'was.Text Random Prompt' | 'was.Text String' | 'was.Text Contains' | 'was.Text Shuffle' | 'was.Text Sort' | 'was.Text to Conditioning' | 'was.Text to Console' | 'was.Text to Number' | 'was.Text to String' | 'was.Text String Truncate' | 'was.True Random.org Number Generator' | 'was.unCLIP Checkpoint Loader' | 'was.Upscale Model Loader' | 'was.Upscale Model Switch' | 'was.Write to GIF' | 'was.Write to Video' | 'was.VAE Input Switch' | 'was.Video Dump Frames' | 'was.CLIPSEG2' | 'IPAdapter_plus.IPAdapter' | 'IPAdapter_plus.IPAdapterAdvanced' | 'IPAdapter_plus.IPAdapterBatch' | 'IPAdapter_plus.IPAdapterFaceID' | 'IPAdapter_plus.IPAdapterFaceIDKolors' | 'IPAdapter_plus.IPAAdapterFaceIDBatch' | 'IPAdapter_plus.IPAdapterTiled' | 'IPAdapter_plus.IPAdapterTiledBatch' | 'IPAdapter_plus.IPAdapterEmbeds' | 'IPAdapter_plus.IPAdapterEmbedsBatch' | 'IPAdapter_plus.IPAdapterStyleComposition' | 'IPAdapter_plus.IPAdapterStyleCompositionBatch' | 'IPAdapter_plus.IPAdapterMS' | 'IPAdapter_plus.IPAdapterClipVisionEnhancer' | 'IPAdapter_plus.IPAdapterClipVisionEnhancerBatch' | 'IPAdapter_plus.IPAdapterFromParams' | 'IPAdapter_plus.IPAdapterPreciseStyleTransfer' | 'IPAdapter_plus.IPAdapterPreciseStyleTransferBatch' | 'IPAdapter_plus.IPAdapterPreciseComposition' | 'IPAdapter_plus.IPAdapterPreciseCompositionBatch' | 'IPAdapter_plus.IPAdapterUnifiedLoader' | 'IPAdapter_plus.IPAdapterUnifiedLoaderFaceID' | 'IPAdapter_plus.IPAdapterModelLoader' | 'IPAdapter_plus.IPAdapterInsightFaceLoader' | 'IPAdapter_plus.IPAdapterUnifiedLoaderCommunity' | 'IPAdapter_plus.IPAdapterEncoder' | 'IPAdapter_plus.IPAdapterCombineEmbeds' | 'IPAdapter_plus.IPAdapterNoise' | 'IPAdapter_plus.PrepImageForClipVision' | 'IPAdapter_plus.IPAdapterSaveEmbeds' | 'IPAdapter_plus.IPAdapterLoadEmbeds' | 'IPAdapter_plus.IPAdapterWeights' | 'IPAdapter_plus.IPAdapterCombineWeights' | 'IPAdapter_plus.IPAdapterWeightsFromStrategy' | 'IPAdapter_plus.IPAdapterPromptScheduleFromWeightsStrategy' | 'IPAdapter_plus.IPAdapterRegionalConditioning' | 'IPAdapter_plus.IPAdapterCombineParams' | 'controlnet_aux.ShufflePreprocessor' | 'controlnet_aux.DensePosePreprocessor' | 'controlnet_aux.LeReS-DepthMapPreprocessor' | 'controlnet_aux.BinaryPreprocessor' | 'controlnet_aux.AnimeFace_SemSegPreprocessor' | 'controlnet_aux.Zoe-DepthMapPreprocessor' | 'controlnet_aux.DepthAnythingPreprocessor' | 'controlnet_aux.Zoe_DepthAnythingPreprocessor' | 'controlnet_aux.DepthAnythingV2Preprocessor' | 'controlnet_aux.CannyEdgePreprocessor' | 'controlnet_aux.DWPreprocessor' | 'controlnet_aux.AnimalPosePreprocessor' | 'controlnet_aux.ImageLuminanceDetector' | 'controlnet_aux.ImageIntensityDetector' | 'controlnet_aux.MediaPipe-FaceMeshPreprocessor' | 'controlnet_aux.DiffusionEdge_Preprocessor' | 'controlnet_aux.M-LSDPreprocessor' | 'controlnet_aux.HEDPreprocessor' | 'controlnet_aux.FakeScribblePreprocessor' | 'controlnet_aux.OneFormer-COCO-SemSegPreprocessor' | 'controlnet_aux.OneFormer-ADE20K-SemSegPreprocessor' | 'controlnet_aux.BAE-NormalMapPreprocessor' | 'controlnet_aux.MeshGraphormer-DepthMapPreprocessor' | 'controlnet_aux.MeshGraphormer+ImpactDetector-DepthMapPreprocessor' | 'controlnet_aux.DSINE-NormalMapPreprocessor' | 'controlnet_aux.MiDaS-NormalMapPreprocessor' | 'controlnet_aux.MiDaS-DepthMapPreprocessor' | 'controlnet_aux.AnyLineArtPreprocessor_aux' | 'controlnet_aux.SAMPreprocessor' | 'controlnet_aux.UniFormer-SemSegPreprocessor' | 'controlnet_aux.SemSegPreprocessor' | 'controlnet_aux.PiDiNetPreprocessor' | 'controlnet_aux.InpaintPreprocessor' | 'controlnet_aux.LineArtPreprocessor' | 'controlnet_aux.OpenposePreprocessor' | 'controlnet_aux.Unimatch_OptFlowPreprocessor' | 'controlnet_aux.MaskOptFlow' | 'controlnet_aux.SavePoseKpsAsJsonFile' | 'controlnet_aux.FacialPartColoringFromPoseKps' | 'controlnet_aux.UpperBodyTrackingFromPoseKps' | 'controlnet_aux.RenderPeopleKps' | 'controlnet_aux.RenderAnimalKps' | 'controlnet_aux.TEEDPreprocessor' | 'controlnet_aux.PyraCannyPreprocessor' | 'controlnet_aux.Metric3D-DepthMapPreprocessor' | 'controlnet_aux.Metric3D-NormalMapPreprocessor' | 'controlnet_aux.Manga2Anime_LineArt_Preprocessor' | 'controlnet_aux.ScribblePreprocessor' | 'controlnet_aux.Scribble_XDoG_Preprocessor' | 'controlnet_aux.Scribble_PiDiNet_Preprocessor' | 'controlnet_aux.AnimeLineArtPreprocessor' | 'controlnet_aux.LineartStandardPreprocessor' | 'controlnet_aux.TilePreprocessor' | 'controlnet_aux.TTPlanet_TileGF_Preprocessor' | 'controlnet_aux.TTPlanet_TileSimple_Preprocessor' | 'controlnet_aux.ColorPreprocessor' | 'controlnet_aux.AIO_Preprocessor' | 'controlnet_aux.ControlNetPreprocessorSelector' | 'controlnet_aux.PixelPerfectResolution' | 'controlnet_aux.ImageGenResolutionFromImage' | 'controlnet_aux.ImageGenResolutionFromLatent' | 'controlnet_aux.HintImageEnchance' | 'controlnet_aux.ExecuteAllControlNetPreprocessors' | 'controlnet_aux.ControlNetAuxSimpleAddText' | 'Marigold.MarigoldModelLoader' | 'Marigold.MarigoldDepthEstimation_v2' | 'Marigold.MarigoldDepthEstimation_v2_video' | 'Marigold.MarigoldDepthEstimation' | 'Marigold.MarigoldDepthEstimationVideo' | 'Marigold.ColorizeDepthmap' | 'Marigold.SaveImageOpenEXR' | 'Marigold.RemapDepth' | 'Impact_Pack.SAMLoader' | 'Impact_Pack.CLIPSegDetectorProvider' | 'Impact_Pack.ONNXDetectorProvider' | 'Impact_Pack.BitwiseAndMaskForEach' | 'Impact_Pack.SubtractMaskForEach' | 'Impact_Pack.DetailerForEach' | 'Impact_Pack.DetailerForEachDebug' | 'Impact_Pack.DetailerForEachPipe' | 'Impact_Pack.DetailerForEachDebugPipe' | 'Impact_Pack.DetailerForEachPipeForAnimateDiff' | 'Impact_Pack.SAMDetectorCombined' | 'Impact_Pack.SAMDetectorSegmented' | 'Impact_Pack.FaceDetailer' | 'Impact_Pack.FaceDetailerPipe' | 'Impact_Pack.MaskDetailerPipe' | 'Impact_Pack.ToDetailerPipe' | 'Impact_Pack.ToDetailerPipeSDXL' | 'Impact_Pack.FromDetailerPipe' | 'Impact_Pack.FromDetailerPipe_v2' | 'Impact_Pack.FromDetailerPipeSDXL' | 'Impact_Pack.AnyPipeToBasic' | 'Impact_Pack.ToBasicPipe' | 'Impact_Pack.FromBasicPipe' | 'Impact_Pack.FromBasicPipe_v2' | 'Impact_Pack.BasicPipeToDetailerPipe' | 'Impact_Pack.BasicPipeToDetailerPipeSDXL' | 'Impact_Pack.DetailerPipeToBasicPipe' | 'Impact_Pack.EditBasicPipe' | 'Impact_Pack.EditDetailerPipe' | 'Impact_Pack.EditDetailerPipeSDXL' | 'Impact_Pack.LatentPixelScale' | 'Impact_Pack.PixelKSampleUpscalerProvider' | 'Impact_Pack.PixelKSampleUpscalerProviderPipe' | 'Impact_Pack.IterativeLatentUpscale' | 'Impact_Pack.IterativeImageUpscale' | 'Impact_Pack.PixelTiledKSampleUpscalerProvider' | 'Impact_Pack.PixelTiledKSampleUpscalerProviderPipe' | 'Impact_Pack.TwoSamplersForMaskUpscalerProvider' | 'Impact_Pack.TwoSamplersForMaskUpscalerProviderPipe' | 'Impact_Pack.PixelKSampleHookCombine' | 'Impact_Pack.DenoiseScheduleHookProvider' | 'Impact_Pack.StepsScheduleHookProvider' | 'Impact_Pack.CfgScheduleHookProvider' | 'Impact_Pack.NoiseInjectionHookProvider' | 'Impact_Pack.UnsamplerHookProvider' | 'Impact_Pack.CoreMLDetailerHookProvider' | 'Impact_Pack.PreviewDetailerHookProvider' | 'Impact_Pack.DetailerHookCombine' | 'Impact_Pack.NoiseInjectionDetailerHookProvider' | 'Impact_Pack.UnsamplerDetailerHookProvider' | 'Impact_Pack.DenoiseSchedulerDetailerHookProvider' | 'Impact_Pack.SEGSOrderedFilterDetailerHookProvider' | 'Impact_Pack.SEGSRangeFilterDetailerHookProvider' | 'Impact_Pack.SEGSLabelFilterDetailerHookProvider' | 'Impact_Pack.VariationNoiseDetailerHookProvider' | 'Impact_Pack.BitwiseAndMask' | 'Impact_Pack.SubtractMask' | 'Impact_Pack.AddMask' | 'Impact_Pack.ImpactSegsAndMask' | 'Impact_Pack.ImpactSegsAndMaskForEach' | 'Impact_Pack.EmptySegs' | 'Impact_Pack.ImpactFlattenMask' | 'Impact_Pack.MediaPipeFaceMeshToSEGS' | 'Impact_Pack.MaskToSEGS' | 'Impact_Pack.MaskToSEGS_for_AnimateDiff' | 'Impact_Pack.ToBinaryMask' | 'Impact_Pack.MasksToMaskList' | 'Impact_Pack.MaskListToMaskBatch' | 'Impact_Pack.ImageListToImageBatch' | 'Impact_Pack.SetDefaultImageForSEGS' | 'Impact_Pack.RemoveImageFromSEGS' | 'Impact_Pack.BboxDetectorSEGS' | 'Impact_Pack.SegmDetectorSEGS' | 'Impact_Pack.ONNXDetectorSEGS' | 'Impact_Pack.ImpactSimpleDetectorSEGS_for_AD' | 'Impact_Pack.ImpactSimpleDetectorSEGS' | 'Impact_Pack.ImpactSimpleDetectorSEGSPipe' | 'Impact_Pack.ImpactControlNetApplySEGS' | 'Impact_Pack.ImpactControlNetApplyAdvancedSEGS' | 'Impact_Pack.ImpactControlNetClearSEGS' | 'Impact_Pack.ImpactIPAdapterApplySEGS' | 'Impact_Pack.ImpactDecomposeSEGS' | 'Impact_Pack.ImpactAssembleSEGS' | 'Impact_Pack.ImpactFrom_SEG_ELT' | 'Impact_Pack.ImpactEdit_SEG_ELT' | 'Impact_Pack.ImpactDilate_Mask_SEG_ELT' | 'Impact_Pack.ImpactDilateMask' | 'Impact_Pack.ImpactGaussianBlurMask' | 'Impact_Pack.ImpactDilateMaskInSEGS' | 'Impact_Pack.ImpactGaussianBlurMaskInSEGS' | 'Impact_Pack.ImpactScaleBy_BBOX_SEG_ELT' | 'Impact_Pack.ImpactFrom_SEG_ELT_bbox' | 'Impact_Pack.ImpactFrom_SEG_ELT_crop_region' | 'Impact_Pack.ImpactCount_Elts_in_SEGS' | 'Impact_Pack.BboxDetectorCombined_v2' | 'Impact_Pack.SegmDetectorCombined_v2' | 'Impact_Pack.SegsToCombinedMask' | 'Impact_Pack.KSamplerProvider' | 'Impact_Pack.TwoSamplersForMask' | 'Impact_Pack.TiledKSamplerProvider' | 'Impact_Pack.KSamplerAdvancedProvider' | 'Impact_Pack.TwoAdvancedSamplersForMask' | 'Impact_Pack.ImpactNegativeConditioningPlaceholder' | 'Impact_Pack.PreviewBridge' | 'Impact_Pack.PreviewBridgeLatent' | 'Impact_Pack.ImageSender' | 'Impact_Pack.ImageReceiver' | 'Impact_Pack.LatentSender' | 'Impact_Pack.LatentReceiver' | 'Impact_Pack.ImageMaskSwitch' | 'Impact_Pack.LatentSwitch' | 'Impact_Pack.SEGSSwitch' | 'Impact_Pack.ImpactSwitch' | 'Impact_Pack.ImpactInversedSwitch' | 'Impact_Pack.ImpactWildcardProcessor' | 'Impact_Pack.ImpactWildcardEncode' | 'Impact_Pack.SEGSUpscaler' | 'Impact_Pack.SEGSUpscalerPipe' | 'Impact_Pack.SEGSDetailer' | 'Impact_Pack.SEGSPaste' | 'Impact_Pack.SEGSPreview' | 'Impact_Pack.SEGSPreviewCNet' | 'Impact_Pack.SEGSToImageList' | 'Impact_Pack.ImpactSEGSToMaskList' | 'Impact_Pack.ImpactSEGSToMaskBatch' | 'Impact_Pack.ImpactSEGSConcat' | 'Impact_Pack.ImpactSEGSPicker' | 'Impact_Pack.ImpactMakeTileSEGS' | 'Impact_Pack.ImpactSEGSMerge' | 'Impact_Pack.SEGSDetailerForAnimateDiff' | 'Impact_Pack.ImpactKSamplerBasicPipe' | 'Impact_Pack.ImpactKSamplerAdvancedBasicPipe' | 'Impact_Pack.ReencodeLatent' | 'Impact_Pack.ReencodeLatentPipe' | 'Impact_Pack.ImpactImageBatchToImageList' | 'Impact_Pack.ImpactMakeImageList' | 'Impact_Pack.ImpactMakeImageBatch' | 'Impact_Pack.ImpactMakeAnyList' | 'Impact_Pack.ImpactMakeMaskList' | 'Impact_Pack.ImpactMakeMaskBatch' | 'Impact_Pack.RegionalSampler' | 'Impact_Pack.RegionalSamplerAdvanced' | 'Impact_Pack.CombineRegionalPrompts' | 'Impact_Pack.RegionalPrompt' | 'Impact_Pack.ImpactCombineConditionings' | 'Impact_Pack.ImpactConcatConditionings' | 'Impact_Pack.ImpactSEGSLabelAssign' | 'Impact_Pack.ImpactSEGSLabelFilter' | 'Impact_Pack.ImpactSEGSRangeFilter' | 'Impact_Pack.ImpactSEGSOrderedFilter' | 'Impact_Pack.ImpactCompare' | 'Impact_Pack.ImpactConditionalBranch' | 'Impact_Pack.ImpactConditionalBranchSelMode' | 'Impact_Pack.ImpactIfNone' | 'Impact_Pack.ImpactConvertDataType' | 'Impact_Pack.ImpactLogicalOperators' | 'Impact_Pack.ImpactInt' | 'Impact_Pack.ImpactFloat' | 'Impact_Pack.ImpactBoolean' | 'Impact_Pack.ImpactValueSender' | 'Impact_Pack.ImpactValueReceiver' | 'Impact_Pack.ImpactImageInfo' | 'Impact_Pack.ImpactLatentInfo' | 'Impact_Pack.ImpactMinMax' | 'Impact_Pack.ImpactNeg' | 'Impact_Pack.ImpactConditionalStopIteration' | 'Impact_Pack.ImpactStringSelector' | 'Impact_Pack.StringListToString' | 'Impact_Pack.WildcardPromptFromString' | 'Impact_Pack.ImpactExecutionOrderController' | 'Impact_Pack.RemoveNoiseMask' | 'Impact_Pack.ImpactLogger' | 'Impact_Pack.ImpactDummyInput' | 'Impact_Pack.ImpactQueueTrigger' | 'Impact_Pack.ImpactQueueTriggerCountdown' | 'Impact_Pack.ImpactSetWidgetValue' | 'Impact_Pack.ImpactNodeSetMuteState' | 'Impact_Pack.ImpactControlBridge' | 'Impact_Pack.ImpactIsNotEmptySEGS' | 'Impact_Pack.ImpactSleep' | 'Impact_Pack.ImpactRemoteBoolean' | 'Impact_Pack.ImpactRemoteInt' | 'Impact_Pack.ImpactHFTransformersClassifierProvider' | 'Impact_Pack.ImpactSEGSClassify' | 'Impact_Pack.ImpactSchedulerAdapter' | 'Impact_Pack.GITSSchedulerFuncProvider' | 'Impact_Pack.UltralyticsDetectorProvider' | 'UnknownNodeXX'
+      export type ComfyNodeType = 'KSampler' | 'CheckpointLoaderSimple' | 'CLIPTextEncode' | 'CLIPSetLastLayer' | 'VAEDecode' | 'VAEEncode' | 'VAEEncodeForInpaint' | 'VAELoader' | 'EmptyLatentImage' | 'LatentUpscale' | 'LatentUpscaleBy' | 'LatentFromBatch' | 'RepeatLatentBatch' | 'SaveImage' | 'PreviewImage' | 'LoadImage' | 'LoadImageMask' | 'ImageScale' | 'ImageScaleBy' | 'ImageInvert' | 'ImageBatch' | 'ImagePadForOutpaint' | 'EmptyImage' | 'ConditioningAverage' | 'ConditioningCombine' | 'ConditioningConcat' | 'ConditioningSetArea' | 'ConditioningSetAreaPercentage' | 'ConditioningSetAreaStrength' | 'ConditioningSetMask' | 'KSamplerAdvanced' | 'SetLatentNoiseMask' | 'LatentComposite' | 'LatentBlend' | 'LatentRotate' | 'LatentFlip' | 'LatentCrop' | 'LoraLoader' | 'CLIPLoader' | 'UNETLoader' | 'DualCLIPLoader' | 'CLIPVisionEncode' | 'StyleModelApply' | 'unCLIPConditioning' | 'ControlNetApply' | 'ControlNetApplyAdvanced' | 'ControlNetLoader' | 'DiffControlNetLoader' | 'StyleModelLoader' | 'CLIPVisionLoader' | 'VAEDecodeTiled' | 'VAEEncodeTiled' | 'unCLIPCheckpointLoader' | 'GLIGENLoader' | 'GLIGENTextBoxApply' | 'InpaintModelConditioning' | 'CheckpointLoader' | 'DiffusersLoader' | 'LoadLatent' | 'SaveLatent' | 'ConditioningZeroOut' | 'ConditioningSetTimestepRange' | 'LoraLoaderModelOnly' | 'LatentAdd' | 'LatentSubtract' | 'LatentMultiply' | 'LatentInterpolate' | 'LatentBatch' | 'LatentBatchSeedBehavior' | 'LatentApplyOperation' | 'LatentApplyOperationCFG' | 'LatentOperationTonemapReinhard' | 'LatentOperationSharpen' | 'HypernetworkLoader' | 'UpscaleModelLoader' | 'ImageUpscaleWithModel' | 'ImageBlend' | 'ImageBlur' | 'ImageQuantize' | 'ImageSharpen' | 'ImageScaleToTotalPixels' | 'LatentCompositeMasked' | 'ImageCompositeMasked' | 'MaskToImage' | 'ImageToMask' | 'ImageColorToMask' | 'SolidMask' | 'InvertMask' | 'CropMask' | 'MaskComposite' | 'FeatherMask' | 'GrowMask' | 'ThresholdMask' | 'PorterDuffImageComposite' | 'SplitImageWithAlpha' | 'JoinImageWithAlpha' | 'RebatchLatents' | 'RebatchImages' | 'ModelMergeSimple' | 'ModelMergeBlocks' | 'ModelMergeSubtract' | 'ModelMergeAdd' | 'CheckpointSave' | 'CLIPMergeSimple' | 'CLIPMergeSubtract' | 'CLIPMergeAdd' | 'CLIPSave' | 'VAESave' | 'ModelSave' | 'TomePatchModel' | 'CLIPTextEncodeSDXLRefiner' | 'CLIPTextEncodeSDXL' | 'Canny' | 'FreeU' | 'FreeU_V2' | 'SamplerCustom' | 'BasicScheduler' | 'KarrasScheduler' | 'ExponentialScheduler' | 'PolyexponentialScheduler' | 'LaplaceScheduler' | 'VPScheduler' | 'BetaSamplingScheduler' | 'SDTurboScheduler' | 'KSamplerSelect' | 'SamplerEulerAncestral' | 'SamplerEulerAncestralCFGPP' | 'SamplerLMS' | 'SamplerDPMPP_3M_SDE' | 'SamplerDPMPP_2M_SDE' | 'SamplerDPMPP_SDE' | 'SamplerDPMPP_2S_Ancestral' | 'SamplerDPMAdaptative' | 'SplitSigmas' | 'SplitSigmasDenoise' | 'FlipSigmas' | 'CFGGuider' | 'DualCFGGuider' | 'BasicGuider' | 'RandomNoise' | 'DisableNoise' | 'AddNoise' | 'SamplerCustomAdvanced' | 'HyperTile' | 'ModelSamplingDiscrete' | 'ModelSamplingContinuousEDM' | 'ModelSamplingContinuousV' | 'ModelSamplingStableCascade' | 'ModelSamplingSD3' | 'ModelSamplingAuraFlow' | 'ModelSamplingFlux' | 'RescaleCFG' | 'PatchModelAddDownscale' | 'ImageCrop' | 'RepeatImageBatch' | 'ImageFromBatch' | 'SaveAnimatedWEBP' | 'SaveAnimatedPNG' | 'ImageOnlyCheckpointLoader' | 'SVD_img2vid_Conditioning' | 'VideoLinearCFGGuidance' | 'VideoTriangleCFGGuidance' | 'ImageOnlyCheckpointSave' | 'SelfAttentionGuidance' | 'PerpNeg' | 'PerpNegGuider' | 'StableZero123_Conditioning' | 'StableZero123_Conditioning_Batched' | 'SV3D_Conditioning' | 'SD_4XUpscale_Conditioning' | 'PhotoMakerLoader' | 'PhotoMakerEncode' | 'CLIPTextEncodeControlnet' | 'Morphology' | 'StableCascade_EmptyLatentImage' | 'StableCascade_StageB_Conditioning' | 'StableCascade_StageC_VAEEncode' | 'StableCascade_SuperResolutionControlnet' | 'DifferentialDiffusion' | 'InstructPixToPixConditioning' | 'ModelMergeSD1' | 'ModelMergeSD2' | 'ModelMergeSDXL' | 'ModelMergeSD3_2B' | 'ModelMergeFlux1' | 'ModelMergeSD35_Large' | 'PerturbedAttentionGuidance' | 'AlignYourStepsScheduler' | 'UNetSelfAttentionMultiply' | 'UNetCrossAttentionMultiply' | 'CLIPAttentionMultiply' | 'UNetTemporalAttentionMultiply' | 'SamplerLCMUpscale' | 'SamplerEulerCFGpp' | 'WebcamCapture' | 'EmptyLatentAudio' | 'VAEEncodeAudio' | 'VAEDecodeAudio' | 'SaveAudio' | 'LoadAudio' | 'PreviewAudio' | 'TripleCLIPLoader' | 'EmptySD3LatentImage' | 'CLIPTextEncodeSD3' | 'ControlNetApplySD3' | 'SkipLayerGuidanceSD3' | 'GITSScheduler' | 'SetUnionControlNetType' | 'ControlNetInpaintingAliMamaApply' | 'CLIPTextEncodeHunyuanDiT' | 'CLIPTextEncodeFlux' | 'FluxGuidance' | 'LoraSave' | 'TorchCompileModel' | 'EmptyMochiLatentVideo' | 'websocket_image_save.SaveImageWebsocket' | 'was.BLIP Model Loader' | 'was.Blend Latents' | 'was.Bus Node' | 'was.Cache Node' | 'was.Checkpoint Loader' | 'was.Checkpoint Loader (Simple)' | 'was.CLIPTextEncode (NSP)' | 'was.CLIP Input Switch' | 'was.CLIP Vision Input Switch' | 'was.Conditioning Input Switch' | 'was.Constant Number' | 'was.Create Grid Image' | 'was.Create Grid Image from Batch' | 'was.Create Morph Image' | 'was.Create Morph Image from Path' | 'was.Create Video from Path' | 'was.CLIPSeg Masking' | 'was.CLIPSeg Model Loader' | 'was.CLIPSeg Batch Masking' | 'was.Convert Masks to Images' | 'was.Control Net Model Input Switch' | 'was.Debug Number to Console' | 'was.Dictionary to Console' | 'was.Diffusers Model Loader' | 'was.Diffusers Hub Model Down-Loader' | 'was.Export API' | 'was.Latent Input Switch' | 'was.Load Cache' | 'was.Logic Boolean' | 'was.Logic Boolean Primitive' | 'was.Logic Comparison OR' | 'was.Logic Comparison AND' | 'was.Logic Comparison XOR' | 'was.Logic NOT' | 'was.Lora Loader' | 'was.Hex to HSL' | 'was.HSL to Hex' | 'was.Image SSAO (Ambient Occlusion)' | 'was.Image SSDO (Direct Occlusion)' | 'was.Image Analyze' | 'was.Image Aspect Ratio' | 'was.Image Batch' | 'was.Image Blank' | 'was.Image Blend by Mask' | 'was.Image Blend' | 'was.Image Blending Mode' | 'was.Image Bloom Filter' | 'was.Image Canny Filter' | 'was.Image Chromatic Aberration' | 'was.Image Color Palette' | 'was.Image Crop Face' | 'was.Image Crop Location' | 'was.Image Crop Square Location' | 'was.Image Displacement Warp' | 'was.Image Lucy Sharpen' | 'was.Image Paste Face' | 'was.Image Paste Crop' | 'was.Image Paste Crop by Location' | 'was.Image Pixelate' | 'was.Image Power Noise' | 'was.Image Dragan Photography Filter' | 'was.Image Edge Detection Filter' | 'was.Image Film Grain' | 'was.Image Filter Adjustments' | 'was.Image Flip' | 'was.Image Gradient Map' | 'was.Image Generate Gradient' | 'was.Image High Pass Filter' | 'was.Image History Loader' | 'was.Image Input Switch' | 'was.Image Levels Adjustment' | 'was.Image Load' | 'was.Image Median Filter' | 'was.Image Mix RGB Channels' | 'was.Image Monitor Effects Filter' | 'was.Image Nova Filter' | 'was.Image Padding' | 'was.Image Perlin Noise' | 'was.Image Rembg (Remove Background)' | 'was.Image Perlin Power Fractal' | 'was.Image Remove Background (Alpha)' | 'was.Image Remove Color' | 'was.Image Resize' | 'was.Image Rotate' | 'was.Image Rotate Hue' | 'was.Image Send HTTP' | 'was.Image Save' | 'was.Image Seamless Texture' | 'was.Image Select Channel' | 'was.Image Select Color' | 'was.Image Shadows and Highlights' | 'was.Image Size to Number' | 'was.Image Stitch' | 'was.Image Style Filter' | 'was.Image Threshold' | 'was.Image Tiled' | 'was.Image Transpose' | 'was.Image fDOF Filter' | 'was.Image to Latent Mask' | 'was.Image to Noise' | 'was.Image to Seed' | 'was.Images to RGB' | 'was.Images to Linear' | 'was.Integer place counter' | 'was.Image Voronoi Noise Filter' | 'was.KSampler (WAS)' | 'was.KSampler Cycle' | 'was.Latent Batch' | 'was.Latent Noise Injection' | 'was.Latent Size to Number' | 'was.Latent Upscale by Factor (WAS)' | 'was.Load Image Batch' | 'was.Load Text File' | 'was.Load Lora' | 'was.Lora Input Switch' | 'was.Masks Add' | 'was.Masks Subtract' | 'was.Mask Arbitrary Region' | 'was.Mask Batch to Mask' | 'was.Mask Batch' | 'was.Mask Ceiling Region' | 'was.Mask Crop Dominant Region' | 'was.Mask Crop Minority Region' | 'was.Mask Crop Region' | 'was.Mask Paste Region' | 'was.Mask Dilate Region' | 'was.Mask Dominant Region' | 'was.Mask Erode Region' | 'was.Mask Fill Holes' | 'was.Mask Floor Region' | 'was.Mask Gaussian Region' | 'was.Mask Invert' | 'was.Mask Minority Region' | 'was.Mask Smooth Region' | 'was.Mask Threshold Region' | 'was.Masks Combine Regions' | 'was.Masks Combine Batch' | 'was.MiDaS Model Loader' | 'was.MiDaS Depth Approximation' | 'was.MiDaS Mask Image' | 'was.Model Input Switch' | 'was.Number Counter' | 'was.Number Operation' | 'was.Number to Float' | 'was.Number Input Switch' | 'was.Number Input Condition' | 'was.Number Multiple Of' | 'was.Number PI' | 'was.Number to Int' | 'was.Number to Seed' | 'was.Number to String' | 'was.Number to Text' | 'was.Boolean To Text' | 'was.Prompt Styles Selector' | 'was.Prompt Multiple Styles Selector' | 'was.Random Number' | 'was.Save Text File' | 'was.Seed' | 'was.Tensor Batch to Image' | 'was.BLIP Analyze Image' | 'was.SAM Model Loader' | 'was.SAM Parameters' | 'was.SAM Parameters Combine' | 'was.SAM Image Mask' | 'was.Samples Passthrough (Stat System)' | 'was.String to Text' | 'was.Image Bounds' | 'was.Inset Image Bounds' | 'was.Bounded Image Blend' | 'was.Bounded Image Blend with Mask' | 'was.Bounded Image Crop' | 'was.Bounded Image Crop with Mask' | 'was.Image Bounds to Console' | 'was.Text Dictionary Update' | 'was.Text Dictionary Get' | 'was.Text Dictionary Convert' | 'was.Text Dictionary New' | 'was.Text Dictionary Keys' | 'was.Text Dictionary To Text' | 'was.Text Add Tokens' | 'was.Text Add Token by Input' | 'was.Text Compare' | 'was.Text Concatenate' | 'was.Text File History Loader' | 'was.Text Find and Replace by Dictionary' | 'was.Text Find and Replace Input' | 'was.Text Find and Replace' | 'was.Text Find' | 'was.Text Input Switch' | 'was.Text List' | 'was.Text List Concatenate' | 'was.Text List to Text' | 'was.Text Load Line From File' | 'was.Text Multiline' | 'was.Text Multiline (Code Compatible)' | 'was.Text Parse A1111 Embeddings' | 'was.Text Parse Noodle Soup Prompts' | 'was.Text Parse Tokens' | 'was.Text Random Line' | 'was.Text Random Prompt' | 'was.Text String' | 'was.Text Contains' | 'was.Text Shuffle' | 'was.Text Sort' | 'was.Text to Conditioning' | 'was.Text to Console' | 'was.Text to Number' | 'was.Text to String' | 'was.Text String Truncate' | 'was.True Random.org Number Generator' | 'was.unCLIP Checkpoint Loader' | 'was.Upscale Model Loader' | 'was.Upscale Model Switch' | 'was.Write to GIF' | 'was.Write to Video' | 'was.VAE Input Switch' | 'was.Video Dump Frames' | 'was.CLIPSEG2' | 'IPAdapter_plus.IPAdapter' | 'IPAdapter_plus.IPAdapterAdvanced' | 'IPAdapter_plus.IPAdapterBatch' | 'IPAdapter_plus.IPAdapterFaceID' | 'IPAdapter_plus.IPAdapterFaceIDKolors' | 'IPAdapter_plus.IPAAdapterFaceIDBatch' | 'IPAdapter_plus.IPAdapterTiled' | 'IPAdapter_plus.IPAdapterTiledBatch' | 'IPAdapter_plus.IPAdapterEmbeds' | 'IPAdapter_plus.IPAdapterEmbedsBatch' | 'IPAdapter_plus.IPAdapterStyleComposition' | 'IPAdapter_plus.IPAdapterStyleCompositionBatch' | 'IPAdapter_plus.IPAdapterMS' | 'IPAdapter_plus.IPAdapterClipVisionEnhancer' | 'IPAdapter_plus.IPAdapterClipVisionEnhancerBatch' | 'IPAdapter_plus.IPAdapterFromParams' | 'IPAdapter_plus.IPAdapterPreciseStyleTransfer' | 'IPAdapter_plus.IPAdapterPreciseStyleTransferBatch' | 'IPAdapter_plus.IPAdapterPreciseComposition' | 'IPAdapter_plus.IPAdapterPreciseCompositionBatch' | 'IPAdapter_plus.IPAdapterUnifiedLoader' | 'IPAdapter_plus.IPAdapterUnifiedLoaderFaceID' | 'IPAdapter_plus.IPAdapterModelLoader' | 'IPAdapter_plus.IPAdapterInsightFaceLoader' | 'IPAdapter_plus.IPAdapterUnifiedLoaderCommunity' | 'IPAdapter_plus.IPAdapterEncoder' | 'IPAdapter_plus.IPAdapterCombineEmbeds' | 'IPAdapter_plus.IPAdapterNoise' | 'IPAdapter_plus.PrepImageForClipVision' | 'IPAdapter_plus.IPAdapterSaveEmbeds' | 'IPAdapter_plus.IPAdapterLoadEmbeds' | 'IPAdapter_plus.IPAdapterWeights' | 'IPAdapter_plus.IPAdapterCombineWeights' | 'IPAdapter_plus.IPAdapterWeightsFromStrategy' | 'IPAdapter_plus.IPAdapterPromptScheduleFromWeightsStrategy' | 'IPAdapter_plus.IPAdapterRegionalConditioning' | 'IPAdapter_plus.IPAdapterCombineParams' | 'ComfyUi_NNLatentUpscale.NNLatentUpscale' | 'sd-perturbed-attention.PerturbedAttention' | 'sd-perturbed-attention.SmoothedEnergyGuidanceAdvanced' | 'sd-perturbed-attention.TRTAttachPag' | 'sd-perturbed-attention.TRTPerturbedAttention' | 'civitai_comfy_nodes.CivitAI_Lora_Loader' | 'civitai_comfy_nodes.CivitAI_Checkpoint_Loader' | 'controlnet_aux.ShufflePreprocessor' | 'controlnet_aux.DensePosePreprocessor' | 'controlnet_aux.LeReS-DepthMapPreprocessor' | 'controlnet_aux.BinaryPreprocessor' | 'controlnet_aux.AnimeFace_SemSegPreprocessor' | 'controlnet_aux.Zoe-DepthMapPreprocessor' | 'controlnet_aux.DepthAnythingPreprocessor' | 'controlnet_aux.Zoe_DepthAnythingPreprocessor' | 'controlnet_aux.DepthAnythingV2Preprocessor' | 'controlnet_aux.CannyEdgePreprocessor' | 'controlnet_aux.DWPreprocessor' | 'controlnet_aux.AnimalPosePreprocessor' | 'controlnet_aux.ImageLuminanceDetector' | 'controlnet_aux.ImageIntensityDetector' | 'controlnet_aux.MediaPipe-FaceMeshPreprocessor' | 'controlnet_aux.DiffusionEdge_Preprocessor' | 'controlnet_aux.M-LSDPreprocessor' | 'controlnet_aux.HEDPreprocessor' | 'controlnet_aux.FakeScribblePreprocessor' | 'controlnet_aux.OneFormer-COCO-SemSegPreprocessor' | 'controlnet_aux.OneFormer-ADE20K-SemSegPreprocessor' | 'controlnet_aux.BAE-NormalMapPreprocessor' | 'controlnet_aux.MeshGraphormer-DepthMapPreprocessor' | 'controlnet_aux.MeshGraphormer+ImpactDetector-DepthMapPreprocessor' | 'controlnet_aux.DSINE-NormalMapPreprocessor' | 'controlnet_aux.MiDaS-NormalMapPreprocessor' | 'controlnet_aux.MiDaS-DepthMapPreprocessor' | 'controlnet_aux.AnyLineArtPreprocessor_aux' | 'controlnet_aux.SAMPreprocessor' | 'controlnet_aux.UniFormer-SemSegPreprocessor' | 'controlnet_aux.SemSegPreprocessor' | 'controlnet_aux.PiDiNetPreprocessor' | 'controlnet_aux.InpaintPreprocessor' | 'controlnet_aux.LineArtPreprocessor' | 'controlnet_aux.OpenposePreprocessor' | 'controlnet_aux.Unimatch_OptFlowPreprocessor' | 'controlnet_aux.MaskOptFlow' | 'controlnet_aux.SavePoseKpsAsJsonFile' | 'controlnet_aux.FacialPartColoringFromPoseKps' | 'controlnet_aux.UpperBodyTrackingFromPoseKps' | 'controlnet_aux.RenderPeopleKps' | 'controlnet_aux.RenderAnimalKps' | 'controlnet_aux.TEEDPreprocessor' | 'controlnet_aux.PyraCannyPreprocessor' | 'controlnet_aux.Metric3D-DepthMapPreprocessor' | 'controlnet_aux.Metric3D-NormalMapPreprocessor' | 'controlnet_aux.Manga2Anime_LineArt_Preprocessor' | 'controlnet_aux.ScribblePreprocessor' | 'controlnet_aux.Scribble_XDoG_Preprocessor' | 'controlnet_aux.Scribble_PiDiNet_Preprocessor' | 'controlnet_aux.AnimeLineArtPreprocessor' | 'controlnet_aux.LineartStandardPreprocessor' | 'controlnet_aux.TilePreprocessor' | 'controlnet_aux.TTPlanet_TileGF_Preprocessor' | 'controlnet_aux.TTPlanet_TileSimple_Preprocessor' | 'controlnet_aux.ColorPreprocessor' | 'controlnet_aux.AIO_Preprocessor' | 'controlnet_aux.ControlNetPreprocessorSelector' | 'controlnet_aux.PixelPerfectResolution' | 'controlnet_aux.ImageGenResolutionFromImage' | 'controlnet_aux.ImageGenResolutionFromLatent' | 'controlnet_aux.HintImageEnchance' | 'controlnet_aux.ExecuteAllControlNetPreprocessors' | 'controlnet_aux.ControlNetAuxSimpleAddText' | 'Marigold.MarigoldModelLoader' | 'Marigold.MarigoldDepthEstimation_v2' | 'Marigold.MarigoldDepthEstimation_v2_video' | 'Marigold.MarigoldDepthEstimation' | 'Marigold.MarigoldDepthEstimationVideo' | 'Marigold.ColorizeDepthmap' | 'Marigold.SaveImageOpenEXR' | 'Marigold.RemapDepth' | 'Impact-Pack.SAMLoader' | 'Impact-Pack.CLIPSegDetectorProvider' | 'Impact-Pack.ONNXDetectorProvider' | 'Impact-Pack.BitwiseAndMaskForEach' | 'Impact-Pack.SubtractMaskForEach' | 'Impact-Pack.DetailerForEach' | 'Impact-Pack.DetailerForEachDebug' | 'Impact-Pack.DetailerForEachPipe' | 'Impact-Pack.DetailerForEachDebugPipe' | 'Impact-Pack.DetailerForEachPipeForAnimateDiff' | 'Impact-Pack.SAMDetectorCombined' | 'Impact-Pack.SAMDetectorSegmented' | 'Impact-Pack.FaceDetailer' | 'Impact-Pack.FaceDetailerPipe' | 'Impact-Pack.MaskDetailerPipe' | 'Impact-Pack.ToDetailerPipe' | 'Impact-Pack.ToDetailerPipeSDXL' | 'Impact-Pack.FromDetailerPipe' | 'Impact-Pack.FromDetailerPipe_v2' | 'Impact-Pack.FromDetailerPipeSDXL' | 'Impact-Pack.AnyPipeToBasic' | 'Impact-Pack.ToBasicPipe' | 'Impact-Pack.FromBasicPipe' | 'Impact-Pack.FromBasicPipe_v2' | 'Impact-Pack.BasicPipeToDetailerPipe' | 'Impact-Pack.BasicPipeToDetailerPipeSDXL' | 'Impact-Pack.DetailerPipeToBasicPipe' | 'Impact-Pack.EditBasicPipe' | 'Impact-Pack.EditDetailerPipe' | 'Impact-Pack.EditDetailerPipeSDXL' | 'Impact-Pack.LatentPixelScale' | 'Impact-Pack.PixelKSampleUpscalerProvider' | 'Impact-Pack.PixelKSampleUpscalerProviderPipe' | 'Impact-Pack.IterativeLatentUpscale' | 'Impact-Pack.IterativeImageUpscale' | 'Impact-Pack.PixelTiledKSampleUpscalerProvider' | 'Impact-Pack.PixelTiledKSampleUpscalerProviderPipe' | 'Impact-Pack.TwoSamplersForMaskUpscalerProvider' | 'Impact-Pack.TwoSamplersForMaskUpscalerProviderPipe' | 'Impact-Pack.PixelKSampleHookCombine' | 'Impact-Pack.DenoiseScheduleHookProvider' | 'Impact-Pack.StepsScheduleHookProvider' | 'Impact-Pack.CfgScheduleHookProvider' | 'Impact-Pack.NoiseInjectionHookProvider' | 'Impact-Pack.UnsamplerHookProvider' | 'Impact-Pack.CoreMLDetailerHookProvider' | 'Impact-Pack.PreviewDetailerHookProvider' | 'Impact-Pack.DetailerHookCombine' | 'Impact-Pack.NoiseInjectionDetailerHookProvider' | 'Impact-Pack.UnsamplerDetailerHookProvider' | 'Impact-Pack.DenoiseSchedulerDetailerHookProvider' | 'Impact-Pack.SEGSOrderedFilterDetailerHookProvider' | 'Impact-Pack.SEGSRangeFilterDetailerHookProvider' | 'Impact-Pack.SEGSLabelFilterDetailerHookProvider' | 'Impact-Pack.VariationNoiseDetailerHookProvider' | 'Impact-Pack.BitwiseAndMask' | 'Impact-Pack.SubtractMask' | 'Impact-Pack.AddMask' | 'Impact-Pack.ImpactSegsAndMask' | 'Impact-Pack.ImpactSegsAndMaskForEach' | 'Impact-Pack.EmptySegs' | 'Impact-Pack.ImpactFlattenMask' | 'Impact-Pack.MediaPipeFaceMeshToSEGS' | 'Impact-Pack.MaskToSEGS' | 'Impact-Pack.MaskToSEGS_for_AnimateDiff' | 'Impact-Pack.ToBinaryMask' | 'Impact-Pack.MasksToMaskList' | 'Impact-Pack.MaskListToMaskBatch' | 'Impact-Pack.ImageListToImageBatch' | 'Impact-Pack.SetDefaultImageForSEGS' | 'Impact-Pack.RemoveImageFromSEGS' | 'Impact-Pack.BboxDetectorSEGS' | 'Impact-Pack.SegmDetectorSEGS' | 'Impact-Pack.ONNXDetectorSEGS' | 'Impact-Pack.ImpactSimpleDetectorSEGS_for_AD' | 'Impact-Pack.ImpactSimpleDetectorSEGS' | 'Impact-Pack.ImpactSimpleDetectorSEGSPipe' | 'Impact-Pack.ImpactControlNetApplySEGS' | 'Impact-Pack.ImpactControlNetApplyAdvancedSEGS' | 'Impact-Pack.ImpactControlNetClearSEGS' | 'Impact-Pack.ImpactIPAdapterApplySEGS' | 'Impact-Pack.ImpactDecomposeSEGS' | 'Impact-Pack.ImpactAssembleSEGS' | 'Impact-Pack.ImpactFrom_SEG_ELT' | 'Impact-Pack.ImpactEdit_SEG_ELT' | 'Impact-Pack.ImpactDilate_Mask_SEG_ELT' | 'Impact-Pack.ImpactDilateMask' | 'Impact-Pack.ImpactGaussianBlurMask' | 'Impact-Pack.ImpactDilateMaskInSEGS' | 'Impact-Pack.ImpactGaussianBlurMaskInSEGS' | 'Impact-Pack.ImpactScaleBy_BBOX_SEG_ELT' | 'Impact-Pack.ImpactFrom_SEG_ELT_bbox' | 'Impact-Pack.ImpactFrom_SEG_ELT_crop_region' | 'Impact-Pack.ImpactCount_Elts_in_SEGS' | 'Impact-Pack.BboxDetectorCombined_v2' | 'Impact-Pack.SegmDetectorCombined_v2' | 'Impact-Pack.SegsToCombinedMask' | 'Impact-Pack.KSamplerProvider' | 'Impact-Pack.TwoSamplersForMask' | 'Impact-Pack.TiledKSamplerProvider' | 'Impact-Pack.KSamplerAdvancedProvider' | 'Impact-Pack.TwoAdvancedSamplersForMask' | 'Impact-Pack.ImpactNegativeConditioningPlaceholder' | 'Impact-Pack.PreviewBridge' | 'Impact-Pack.PreviewBridgeLatent' | 'Impact-Pack.ImageSender' | 'Impact-Pack.ImageReceiver' | 'Impact-Pack.LatentSender' | 'Impact-Pack.LatentReceiver' | 'Impact-Pack.ImageMaskSwitch' | 'Impact-Pack.LatentSwitch' | 'Impact-Pack.SEGSSwitch' | 'Impact-Pack.ImpactSwitch' | 'Impact-Pack.ImpactInversedSwitch' | 'Impact-Pack.ImpactWildcardProcessor' | 'Impact-Pack.ImpactWildcardEncode' | 'Impact-Pack.SEGSUpscaler' | 'Impact-Pack.SEGSUpscalerPipe' | 'Impact-Pack.SEGSDetailer' | 'Impact-Pack.SEGSPaste' | 'Impact-Pack.SEGSPreview' | 'Impact-Pack.SEGSPreviewCNet' | 'Impact-Pack.SEGSToImageList' | 'Impact-Pack.ImpactSEGSToMaskList' | 'Impact-Pack.ImpactSEGSToMaskBatch' | 'Impact-Pack.ImpactSEGSConcat' | 'Impact-Pack.ImpactSEGSPicker' | 'Impact-Pack.ImpactMakeTileSEGS' | 'Impact-Pack.ImpactSEGSMerge' | 'Impact-Pack.SEGSDetailerForAnimateDiff' | 'Impact-Pack.ImpactKSamplerBasicPipe' | 'Impact-Pack.ImpactKSamplerAdvancedBasicPipe' | 'Impact-Pack.ReencodeLatent' | 'Impact-Pack.ReencodeLatentPipe' | 'Impact-Pack.ImpactImageBatchToImageList' | 'Impact-Pack.ImpactMakeImageList' | 'Impact-Pack.ImpactMakeImageBatch' | 'Impact-Pack.ImpactMakeAnyList' | 'Impact-Pack.ImpactMakeMaskList' | 'Impact-Pack.ImpactMakeMaskBatch' | 'Impact-Pack.RegionalSampler' | 'Impact-Pack.RegionalSamplerAdvanced' | 'Impact-Pack.CombineRegionalPrompts' | 'Impact-Pack.RegionalPrompt' | 'Impact-Pack.ImpactCombineConditionings' | 'Impact-Pack.ImpactConcatConditionings' | 'Impact-Pack.ImpactSEGSLabelAssign' | 'Impact-Pack.ImpactSEGSLabelFilter' | 'Impact-Pack.ImpactSEGSRangeFilter' | 'Impact-Pack.ImpactSEGSOrderedFilter' | 'Impact-Pack.ImpactCompare' | 'Impact-Pack.ImpactConditionalBranch' | 'Impact-Pack.ImpactConditionalBranchSelMode' | 'Impact-Pack.ImpactIfNone' | 'Impact-Pack.ImpactConvertDataType' | 'Impact-Pack.ImpactLogicalOperators' | 'Impact-Pack.ImpactInt' | 'Impact-Pack.ImpactFloat' | 'Impact-Pack.ImpactBoolean' | 'Impact-Pack.ImpactValueSender' | 'Impact-Pack.ImpactValueReceiver' | 'Impact-Pack.ImpactImageInfo' | 'Impact-Pack.ImpactLatentInfo' | 'Impact-Pack.ImpactMinMax' | 'Impact-Pack.ImpactNeg' | 'Impact-Pack.ImpactConditionalStopIteration' | 'Impact-Pack.ImpactStringSelector' | 'Impact-Pack.StringListToString' | 'Impact-Pack.WildcardPromptFromString' | 'Impact-Pack.ImpactExecutionOrderController' | 'Impact-Pack.RemoveNoiseMask' | 'Impact-Pack.ImpactLogger' | 'Impact-Pack.ImpactDummyInput' | 'Impact-Pack.ImpactQueueTrigger' | 'Impact-Pack.ImpactQueueTriggerCountdown' | 'Impact-Pack.ImpactSetWidgetValue' | 'Impact-Pack.ImpactNodeSetMuteState' | 'Impact-Pack.ImpactControlBridge' | 'Impact-Pack.ImpactIsNotEmptySEGS' | 'Impact-Pack.ImpactSleep' | 'Impact-Pack.ImpactRemoteBoolean' | 'Impact-Pack.ImpactRemoteInt' | 'Impact-Pack.ImpactHFTransformersClassifierProvider' | 'Impact-Pack.ImpactSEGSClassify' | 'Impact-Pack.ImpactSchedulerAdapter' | 'Impact-Pack.GITSSchedulerFuncProvider' | 'Impact-Pack.UltralyticsDetectorProvider' | 'UnknownNodeXX'
    }
 }
 

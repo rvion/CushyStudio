@@ -4,6 +4,7 @@ import type { ComfyManagerFileModelInfo } from '../types/ComfyManagerFileModelIn
 import type { ValueError } from '@sinclair/typebox/value'
 
 import { Value } from '@sinclair/typebox/value'
+import chalk from 'chalk'
 // https://github.com/ltdrdata/ComfyUI-Manager/blob/main/model-list.json
 import { readFileSync, writeFileSync } from 'fs'
 
@@ -60,7 +61,9 @@ export const _getKnownModels = (
       for (const [cat, count] of Object.entries(uniqCategories))
          out1 += `    ${JSON.stringify(cat).padEnd(20)},  // x ${count.toString().padStart(3)}\n`
       out1 += ']\n'
-      writeFileSync('src/manager/generated/KnownModel_Type.ts', out1 + '\n', 'utf-8')
+      const out1Path = 'src/manager/generated/KnownModel_Type.ts'
+      writeFileSync(out1Path, out1 + '\n', 'utf-8')
+      console.log(`   > generated: ${chalk.blue.underline(out1Path)}`)
 
       // #region savepath
       let out4 = ''
@@ -81,7 +84,9 @@ export const _getKnownModels = (
       for (const [cat, count] of Object.entries(uniqSavePath))
          out4 += `    ${JSON.stringify(cat).padEnd(50)},  // x ${count.toString().padStart(3)}\n`
       out4 += ']\n'
-      writeFileSync('src/manager/generated/KnownModel_SavePath.ts', out4 + '\n', 'utf-8')
+      const out4Path = 'src/manager/generated/KnownModel_SavePath.ts'
+      writeFileSync(out4Path, out4 + '\n', 'utf-8')
+      console.log(`   > generated: ${chalk.blue.underline(out4Path)}`)
 
       // #region base
       let out2 = ''
@@ -102,7 +107,9 @@ export const _getKnownModels = (
       for (const [cat, count] of Object.entries(uniqBases))
          out2 += `    ${JSON.stringify(cat).padEnd(20)},  // x ${count.toString().padStart(3)}\n`
       out2 += ']\n'
-      writeFileSync('src/manager/generated/KnownModel_Base.ts', out2 + '\n', 'utf-8')
+      const out2Path = 'src/manager/generated/KnownModel_Base.ts'
+      writeFileSync(out2Path, out2 + '\n', 'utf-8')
+      console.log(`   > generated: ${chalk.blue.underline(out2Path)}`)
 
       // #region KnownModel_Name
       let out3 = ''
@@ -119,7 +126,9 @@ export const _getKnownModels = (
          out3 += `    | ${JSON.stringify(mi.name)}\n`
       }
       out3 += '\n'
-      writeFileSync('src/manager/generated/KnownModel_Name.ts', out3 + '\n', 'utf-8')
+      const out3Path = 'src/manager/generated/KnownModel_Name.ts'
+      writeFileSync(out3Path, out3 + '\n', 'utf-8')
+      console.log(`   > generated: ${chalk.blue.underline(out3Path)}`)
 
       // #region KnownModel_FileName
       let out99 = ''
@@ -133,7 +142,9 @@ export const _getKnownModels = (
          out99 += `    | ${JSON.stringify(mi.filename)}\n`
       }
       out99 += '\n'
-      writeFileSync('src/manager/generated/KnownModel_FileName.ts', out99 + '\n', 'utf-8')
+      const out99Path = 'src/manager/generated/KnownModel_FileName.ts'
+      writeFileSync(out99Path, out99 + '\n', 'utf-8')
+      console.log(`   > generated: ${chalk.blue.underline(out99Path)}`)
    }
 
    // INDEXING CHECKS ------------------------------------------------------------

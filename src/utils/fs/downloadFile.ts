@@ -14,7 +14,12 @@ import { stdout } from 'process'
  * | })()
  * |
  */
-export function downloadFile(url: string, outputPath: AbsolutePath | string): Promise<true> {
+export function downloadFile(
+   //
+   url: string,
+   outputPath: AbsolutePath | string,
+   logPrefix = '  - ',
+): Promise<true> {
    const baseDir = dirname(outputPath)
    mkdirSync(baseDir, { recursive: true })
 
@@ -51,7 +56,7 @@ export function downloadFile(url: string, outputPath: AbsolutePath | string): Pr
                const percentage = Math.round((downloaded / totalSize) * 100)
                if (percentage >= lastLoggedPercentage + 1) {
                   // console.log(`${percentage}% downloaded`)
-                  stdout.write(`\r${percentage}% downloaded`)
+                  stdout.write(`\r${logPrefix}${percentage}% downloaded`)
                   lastLoggedPercentage = percentage
                }
             })
@@ -62,7 +67,7 @@ export function downloadFile(url: string, outputPath: AbsolutePath | string): Pr
          response.pipe(fileStream)
 
          fileStream.on('finish', () => {
-            console.log(` 🟢`)
+            console.log(` (DONE)`)
             fileStream.close()
             resolve(true)
          })

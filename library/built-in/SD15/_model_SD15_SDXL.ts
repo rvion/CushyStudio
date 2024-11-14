@@ -70,10 +70,10 @@ export function evalModelSD15andSDXL(doc: $prefabModelSD15andSDXL['$Value']): {
       clip = ckptLoader._CLIP
       vae = ckptLoader._VAE
    } else if (doc.extra.civitai_ckpt_air) {
-      const ckptLoader = graph.CivitAI_Checkpoint_Loader({
+      const ckptLoader = graph['civitai_comfy_nodes.CivitAI_Checkpoint_Loader']({
          ckpt_name: doc.ckpt_name,
          ckpt_air: doc.extra.civitai_ckpt_air,
-         download_path: 'models\\checkpoints',
+         download_path: 'models/checkpoints',
       })
       ckpt = ckptLoader._MODEL
       clip = ckptLoader._CLIP

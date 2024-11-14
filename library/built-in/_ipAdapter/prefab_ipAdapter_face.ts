@@ -50,24 +50,24 @@ export type UI_IPAdapterFaceID = X.XGroup<{
 }>
 
 export function ui_IPAdapterFaceID(): UI_IPAdapterFaceID {
-   const form = getCurrentForm()
-   return form
+   const b = getCurrentForm()
+   return b
       .group({
          label: 'FaceID IPAdapter',
          items: {
-            help: form.markdown({ startCollapsed: true, markdown: ipAdapterDoc }),
-            models: form.fields(
+            help: b.markdown({ startCollapsed: true, markdown: ipAdapterDoc }),
+            models: b.fields(
                {
-                  ...ui_ipadapter_CLIPSelection(form),
+                  ...ui_ipadapter_CLIPSelection(b),
                   ...ui_ipadapter_modelSelection(
-                     form,
+                     b,
                      // @ts-ignore
                      'ip-adapter-faceid-plusv2_sd15.bin',
                      //'ip-adapter-plus-face_sd15.safetensors',
                      // 'ip-adapter-faceid-plus_sd15.bin',
                      ipAdapter_faceID_ClipModelList,
                   ),
-                  lora: form.enum['LoraLoader.lora_name']({
+                  lora: b.enum['LoraLoader.lora_name']({
                      // enumName: 'Enum_AV_CheckpointModelsToParametersPipe_lora_1_name',
                      // @ts-ignore
                      default: 'ip-adapter-faceid-plusv2_sd15_lora.safetensors',
@@ -82,25 +82,25 @@ export function ui_IPAdapterFaceID(): UI_IPAdapterFaceID {
                { label: 'Select or Download Models' },
             ),
 
-            lora_strength: form.float({ default: 0.5, min: 0, max: 2, step: 0.1 }),
-            ...ui_subform_IPAdapter_common(form),
-            reinforce: form
+            lora_strength: b.float({ default: 0.5, min: 0, max: 2, step: 0.1 }),
+            ...ui_subform_IPAdapter_common(b),
+            reinforce: b
                .group({
                   startCollapsed: true,
                   label: 'Reinforce With Additional IPAdapter',
                   tooltip:
                      'Enabling will apply an additional IPAdapter. This usually makes faces more accurate, but pulls along more features from the face image.',
                   items: {
-                     help: form.markdown({
+                     help: b.markdown({
                         startCollapsed: true,
                         markdown: `Recommended to select a model with "face" in it but NOT "faceID". So ip-adapter-plus-face_sd15 for example.\nAlso keep the strength pretty low. Like 0.3 unless you want the image dominated by the face image style.`,
                      }),
                      ...ui_ipadapter_modelSelection(
-                        form,
+                        b,
                         'ip-adapter-plus-face_sd15.safetensors',
                         ipAdapterModelList,
                      ),
-                     ...ui_subform_IPAdapter_common(form, 0.3),
+                     ...ui_subform_IPAdapter_common(b, 0.3),
                   },
                })
                .optional(),

@@ -72,7 +72,10 @@ app({
       // if (ui.highResFix.saveIntermediaryImage) {
       //     graph.SaveImage({ images: graph.VAEDecode({ samples: latent, vae }) })
       // }
-      const ckpt2 = graph.CheckpointLoaderSimple({ ckpt_name: 'revAnimated_v121.safetensors' })
+      const ckpt2 = graph.CheckpointLoaderSimple({
+         // @ts-ignore
+         ckpt_name: 'revAnimated_v121.safetensors',
+      })
       latent = graph.LatentUpscale({
          samples: latent,
          crop: 'disabled',

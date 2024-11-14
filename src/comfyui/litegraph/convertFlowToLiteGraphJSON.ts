@@ -1,78 +1,16 @@
-import type { ComfyWorkflowL } from '../models/ComfyWorkflow'
-import type { ComfyNode } from './ComfyNode'
+import type { ComfyWorkflowL } from '../../models/ComfyWorkflow'
+import type { ComfyNode } from '../livegraph/ComfyNode'
+import type { LiteGraphJSON } from './LiteGraphJSON'
+import type { LiteGraphLink } from './LiteGraphLink'
+import type { LiteGraphNode } from './LiteGraphNode'
+import type { LiteGraphNodeInput } from './LiteGraphNodeInput'
+import type { LiteGraphNodeOutput } from './LiteGraphNodeOutput'
 
 import { toJS } from 'mobx'
 
-import { bang } from '../csuite/utils/bang'
-
-/** comfy workflows are simply LiteGraphs workflows */
-export type ComfyWorkflowJSON = LiteGraphJSON
-
-/** litegraph workflow are stored... in a very unpractical format */
-export type LiteGraphJSON = {
-   last_node_id: number
-   last_link_id: number
-   nodes: LiteGraphNode[]
-   links: LiteGraphLink[]
-   groups: []
-   config: {}
-   extra: {}
-   version: 0.4
-}
-
-// prettier-ignore
-export type LiteGraphLink = [
-    linkId: LiteGraphLinkID , // 9,      - linkId
-    fromNodeId: number      , // 8,      - fromNodeId
-    fromNodeOutputIx: number, // 0,      - fromNodeOutputIx
-    toNodeId: number        , // 9,      - toNodeId
-    toNodeInputIx: number   , // 0,      - toNodeInputIx
-    linkType: string        , // IMAGE"  - type
-]
-
-export type LiteGraphLinkID = Branded<number, { LiteGraphLinkID: true }>
-const asLiteGraphLinkID = (id: number): LiteGraphLinkID => id as LiteGraphLinkID
-
-export type LiteGraphSlotIndex = Branded<number, { LiteGraphSlotIndex: true }>
-export const asLiteGraphSlotIndex = (id: number): LiteGraphSlotIndex => id as LiteGraphSlotIndex
-
-export type LiteGraphNodeInput = {
-   name: string // 'clip'
-   type: string // 'CLIP'
-   link: LiteGraphLinkID | null // 5
-   widget?: {
-      name: string // 'select'
-      config: any // 🔴
-   }
-}
-
-export type LiteGraphNodeOutput = {
-   // ❌9 name: string // 'CONDITIONING'
-   type: string // 'CONDITIONING'
-   links: LiteGraphLinkID[]
-   slot_index: LiteGraphSlotIndex
-   name: string
-}
-
-export type LiteGraphNode = {
-   id: number //5
-   type: string // 'CLIPTextEncode'
-   pos: [number, number]
-   size: { '0': number; '1': number }
-   flags?: {}
-   order?: number
-   /**
-    * 1 = ?????
-    * 2 = muted
-    * */
-   mode?: number
-   inputs?: LiteGraphNodeInput[]
-   outputs: LiteGraphNodeOutput[]
-
-   isVirtualNode?: boolean // frontend only
-   properties?: {}
-   widgets_values: any[]
-}
+import { bang } from '../../csuite/utils/bang'
+import { asLiteGraphLinkID, type LiteGraphLinkID } from './LiteGraphLinkID'
+import { asLiteGraphSlotIndex } from './LiteGraphSlotIndex'
 
 export const convertFlowToLiteGraphJSON = (graph: ComfyWorkflowL): LiteGraphJSON => {
    const ctx = new LiteGraphCtx(graph)

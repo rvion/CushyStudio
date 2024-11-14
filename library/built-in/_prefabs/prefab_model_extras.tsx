@@ -53,7 +53,10 @@ export const schemaModelExtras = (
                   placeHolder: 'e.g. 43331@176425',
                })
                .addRequirements([
-                  { type: 'customNodesByNameInCushy', nodeName: 'CivitAI_Checkpoint_Loader' },
+                  {
+                     type: 'customNodesByNameInCushy',
+                     nodeName: 'civitai_comfy_nodes.CivitAI_Checkpoint_Loader',
+                  },
                ]),
          },
          {
@@ -76,8 +79,8 @@ export const schemaModelExtras = (
 }
 
 // ------------
-type XX1 = { vae: Comfy.Signal['VAE'] | undefined; clip: _CLIP; ckpt: Comfy.Signal['MODEL'] }
-type XX2 = { vae: _VAE; clip: _CLIP; ckpt: Comfy.Signal['MODEL'] }
+type XX1 = { vae: Comfy.Signal['VAE'] | undefined; clip: Comfy.Signal['CLIP']; ckpt: Comfy.Signal['MODEL'] }
+type XX2 = { vae: Comfy.Signal['VAE']; clip: Comfy.Signal['CLIP']; ckpt: Comfy.Signal['MODEL'] }
 
 export function evalModelExtras_part1(
    //
@@ -138,7 +141,7 @@ export const evalModelExtras_part2 = (
 
    // 6. Optional PAG - Perturbed Attention Guidance
    if (extra.pag && ((!forHiRes && extra.pag.include.base) || (forHiRes && extra.pag.include.hiRes))) {
-      ckpt = graph.PerturbedAttention({
+      ckpt = graph['sd-perturbed-attention.PerturbedAttention']({
          scale: extra.pag.scale,
          model: ckpt,
          adaptive_scale: extra.pag.adaptiveScale,

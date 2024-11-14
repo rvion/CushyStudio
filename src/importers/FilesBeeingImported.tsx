@@ -1,5 +1,5 @@
 import type { ComfyUIAPIRequest } from '../comfyui/comfyui-prompt-api'
-import type { LiteGraphJSON } from '../core/LiteGraph'
+import type { LiteGraphJSON } from '../comfyui/litegraph/LiteGraphJSON'
 import type { KnownComfyCustomNodeName } from '../manager/generated/KnownComfyCustomNodeName'
 import type { ExifData } from '../utils/png/_parseExifData'
 import type { PromptToCodeOpts } from './ComfyImporter'

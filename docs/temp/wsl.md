@@ -1454,10 +1454,46 @@ still not working; adding firewall rule
 ```shell
 # add direwall rule to allow incoming requests on 8188
 netsh advfirewall firewall add rule name="Allow Port 8188" protocol=TCP dir=in localport=8188 action=allow
+
 # add port forwarding rule so any incoming request on 8188 will be forwarded to 127.0.0.1
 netsh interface portproxy add v4tov4 listenport=8188 listenaddress=0.0.0.0 connectport=8188 connectaddress=127.0.0.1
+
+# CORRECT 👇
+hostname -I
+172.26.146.98 172.17.0.1
+netsh interface portproxy add v4tov4 listenport=8188 listenaddress=0.0.0.0 connectport=8188 connectaddress=172.26.146.98
+netsh interface portproxy show all
+# alt (bad,)
+# netsh interface portproxy add v4tov4 listenport=8188 listenaddress=0.0.0.0 connectport=8188 connectaddress=localhost
+
 # show the port forwarding rules
 netsh interface portproxy show all
+```
+
+```
+TODO:
+```
+
+
+if need be, you can reset firewall rules like that:
+
+```shell
+netsh interface portproxy reset
+netsh interface portproxy show all
+```
+
+## ensure firewal is running
+
+```shell
+Get-Service iphlpsvc
+```
+
+```shell
+# debugging comand to disable firewall
+Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
+
+# debugging comand to re-enable it
+Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled True
 ```
 
 <!-- 192.168.1.19 -->
@@ -1471,6 +1507,8 @@ docker volume create test
 docker stop comfyui
 docker rm comfy
 docker run -it --rm --name comfyui --gpus all -p 8188:8188 -v test:/home/runner -e CLI_ARGS="--listen 0.0.0.0" yanwk/comfyui-boot:cu121
+
+# docker run -it --rm --name comfyui --gpus all -p 0.0.0.0:8188:8188 -v test:/home/runner -e CLI_ARGS="--listen 0.0.0.0" yanwk/comfyui-boot:cu121
 ```
 
 

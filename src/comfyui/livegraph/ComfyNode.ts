@@ -1,20 +1,20 @@
-import type { ComfyUIAPIRequest_Node } from '../comfyui/comfyui-prompt-api'
-import type { NodeInputExt, NodeOutputExt } from '../comfyui/comfyui-types'
-import type { ComfyUIObjectInfoParsedNodeSchema } from '../comfyui/ComfyUIObjectInfoParsedNodeSchema'
-import type { ComfyWorkflowL, ProgressReport } from '../models/ComfyWorkflow'
-import type { ComfyNodeID, ComfyNodeMetadata } from '../types/ComfyNodeID'
-import type { NodeProgress } from '../types/ComfyWsApi'
+import type { ComfyWorkflowL, ProgressReport } from '../../models/ComfyWorkflow'
+import type { ComfyNodeID, ComfyNodeMetadata } from '../../types/ComfyNodeID'
+import type { NodeProgress } from '../../types/ComfyWsApi'
+import type { ComfyUIAPIRequest_Node } from '../comfyui-prompt-api'
+import type { NodeInputExt, NodeOutputExt } from '../comfyui-types'
+import type { ComfyUIObjectInfoParsedNodeSchema } from '../ComfyUIObjectInfoParsedNodeSchema'
 import type { ReactNode } from 'react'
 
 import { configure, extendObservable, makeAutoObservable } from 'mobx'
 import { createElement } from 'react'
 
-import { ComfyDefaultNodeWhenUnknown_Name } from '../models/ComfyDefaultNodeWhenUnknown'
-import { nodeLineHeight, NodeSlotSize, NodeTitleHeight } from '../widgets/graph/NodeSlotSize'
-import { auto_ } from './autoValue'
-import { comfyColors } from './Colors'
+import { auto_ } from '../../core/autoValue'
+import { comfyColors } from '../../core/Colors'
+import { ComfyNodeOutput } from '../../core/Slot'
+import { ComfyDefaultNodeWhenUnknown_Name } from '../../models/ComfyDefaultNodeWhenUnknown'
+import { nodeLineHeight, NodeSlotSize, NodeTitleHeight } from '../../widgets/graph/NodeSlotSize'
 import { NodeStatusEmojiUI } from './NodeStatusEmojiUI'
-import { ComfyNodeOutput } from './Slot'
 
 // configure({ enforceActions: 'always' })
 configure({

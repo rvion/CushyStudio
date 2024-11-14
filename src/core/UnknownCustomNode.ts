@@ -1,4 +1,4 @@
-import type { LiteGraphNode } from './LiteGraph'
+import type { LiteGraphNode } from '../comfyui/litegraph/LiteGraphNode'
 
 export class UnknownCustomNode extends Error {
    constructor(public node: LiteGraphNode) {

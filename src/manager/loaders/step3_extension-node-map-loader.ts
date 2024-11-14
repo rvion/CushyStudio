@@ -4,6 +4,7 @@ import type { KnownComfyCustomNodeName } from '../generated/KnownComfyCustomNode
 import type { KnownComfyPluginURL } from '../generated/KnownComfyPluginURL'
 import type { ComfyManagerPluginInfo } from '../types/ComfyManagerPluginInfo'
 
+import chalk from 'chalk'
 import { readFileSync, writeFileSync } from 'fs'
 import * as v from 'valibot'
 
@@ -136,17 +137,24 @@ export const _getCustomNodeRegistry = (DB: ComfyManagerRepository): void => {
       )
       out += '// prettier-ignore\n'
       out += 'export type KnownComfyCustomNodeName =\n'
-      for (const nodeName of sortedCushyNames) out += `    | ${JSON.stringify(nodeName)}\n`
+      for (const nodeName of sortedCushyNames) {
+         if (nodeName === 'sd_perturbed_attention.PerturbedAttention') {
+            console.log(`[🤠] 🔴`, DB.plugins_byNodeNameInCushy.get(nodeName))
+         }
+         out += `    | ${JSON.stringify(nodeName)}\n`
+      }
       out += '\n'
 
-      writeFileSync('src/manager/generated/KnownComfyCustomNodeName.ts', out + '\n', 'utf-8')
+      const outPath = 'src/manager/generated/KnownComfyCustomNodeName.ts'
+      writeFileSync(outPath, out + '\n', 'utf-8')
+      console.log(`   > generated: ${chalk.blue.underline(outPath)}`)
    }
 
    // // INDEXING CHECKS ------------------------------------------------------------
    if (DB.opts.check) {
       //
       // console.log(`${knownModelList.length} models found`)
-      console.log(`${totalCustomNodeSeen} CustomNodes unique names processed`)
+      console.log(`   - ${totalCustomNodeSeen} CustomNodes unique names processed`)
       // console.log(`${CustomNodeURL.byNodeNameInComfy.size} CustomNodes registered in map`)
       // if (totalPluginSeen !== CustomNodeURL.byNodeNameInComfy.size)
       //     console.log(`❌ some customNodes are either duplicated or have overlapping titles`)
@@ -181,6 +189,13 @@ function reverseEngineerWhatComfyWillSendAsPythonModuleValueOnceInstalled(
    url: string,
    meta: ComfyManagerPluginContentMetadata,
 ): string {
+   if (plugin.id === 'nodes' && plugin.reference === 'https://github.com/comfyanonymous/ComfyUI')
+      return 'nodes'
+
+   // if (meta.pythonModule) {
+   //    // console.log(`[🤠] got via pythonModule`, meta.pythonModule)
+   //    return meta.pythonModule
+   // }
    const repoName = plugin.reference.match(githubRegexpV2)?.[2]
    // console.log(`[🤠] ${plugin.reference} => ${repoName}`)
    if (repoName) {

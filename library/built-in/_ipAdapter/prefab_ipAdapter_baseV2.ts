@@ -49,7 +49,7 @@ export type UI_IPAdapterImageInput = X.XGroup<{
    image: X.XImage
    advanced: X.XGroup<{
       imageWeight: X.XNumber
-      embedding_combination: X.XEnum<'Impact_Pack.ImpactIPAdapterApplySEGS.combine_embeds'>
+      embedding_combination: X.XEnum<'Impact-Pack.ImpactIPAdapterApplySEGS.combine_embeds'>
       imageAttentionMask: X.XOptional<X.XImage>
    }>
 }>
@@ -99,7 +99,7 @@ export type UI_IPAdapterV2 = X.XGroup<{
    settings: X.XGroup<{
       adapterStrength: X.XNumber
       models: X.XGroup<{
-         type: X.XEnum<Enum_AV_StyleApply_preset>
+         type: X.XEnum<'IPAdapter_plus.IPAdapterUnifiedLoader.preset'>
       }>
       advancedSettings: UI_ipadapter_advancedSettings
    }>
@@ -118,7 +118,7 @@ export function ui_IPAdapterV2(): UI_IPAdapterV2 {
                   adapterStrength: form.float({ default: 0.8, min: 0, max: 2, step: 0.1 }),
                   models: form.fields(
                      {
-                        type: form.enum['IPAdapterUnifiedLoader.preset']({
+                        type: form.enum['IPAdapter_plus.IPAdapterUnifiedLoader.preset']({
                            default: 'STANDARD (medium strength)',
                         }),
                      },
@@ -171,7 +171,7 @@ export const run_IPAdapterV2 = async (
       ip_adapter = previousIPAdapter
       ip_adapter_out = previousIPAdapter
    } else {
-      const ip_adapter_loader = graph.IPAdapterUnifiedLoader({
+      const ip_adapter_loader = graph['IPAdapter_plus.IPAdapterUnifiedLoader']({
          model: ckpt,
          ipadapter: previousIPAdapter,
          preset: ui.settings.models.type,
@@ -188,7 +188,7 @@ export const run_IPAdapterV2 = async (
       let mask: Comfy.Signal['MASK'] | undefined
       if (ex.advanced.imageAttentionMask) {
          const maskLoad = await run.loadImageAnswer(ex.advanced.imageAttentionMask)
-         const maskClipped = graph.PrepImageForClipVision({
+         const maskClipped = graph['IPAdapter_plus.PrepImageForClipVision']({
             image: maskLoad,
             crop_position: 'center',
             sharpening: 0,
@@ -196,8 +196,8 @@ export const run_IPAdapterV2 = async (
          })
          mask = graph.ImageToMask({ image: maskClipped._IMAGE, channel: 'red' })
       }
-      const Image = graph.IPAdapterEncoder({
-         image: graph.PrepImageForClipVision({
+      const Image = graph['IPAdapter_plus.IPAdapterEncoder']({
+         image: graph['IPAdapter_plus.PrepImageForClipVision']({
             image: extra._IMAGE,
             crop_position: 'center',
             sharpening: 0,
@@ -209,14 +209,14 @@ export const run_IPAdapterV2 = async (
       })
       if (pos_embed && neg_embed) {
          // merge pos
-         const combinedPos = graph.IPAdapterCombineEmbeds({
+         const combinedPos = graph['IPAdapter_plus.IPAdapterCombineEmbeds']({
             embed1: pos_embed,
             embed2: Image.outputs.pos_embed,
             method: ex.advanced.embedding_combination,
          })
          pos_embed = combinedPos.outputs.EMBEDS
          // merge neg
-         const combinedNeg = graph.IPAdapterCombineEmbeds({
+         const combinedNeg = graph['IPAdapter_plus.IPAdapterCombineEmbeds']({
             embed1: neg_embed,
             embed2: Image.outputs.neg_embed,
             method: ex.advanced.embedding_combination,
