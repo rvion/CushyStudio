@@ -157,4 +157,8 @@ export class PanelCaptioningState {
          writeFileSync(this.captionFilePath, content)
       }
    }
+
+   updateCaptions(): void {
+      this.updateCaptionFile(this.captionsFileContent)
+   }
 }

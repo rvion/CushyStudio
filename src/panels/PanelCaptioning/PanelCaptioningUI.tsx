@@ -117,7 +117,10 @@ export const PanelCaptioningUI = observer(function PanelCaptioningUI_(p: {}) {
                                        base={{ contrast: isSelected ? 0.1 : 0 }}
                                        onClick={() => (doc.activeCaptionIndex = ix)}
                                        tooltip={caption}
-                                       setValue={(val) => (doc.captions[doc.activeCaptionIndex] = val)}
+                                       setValue={(val) => {
+                                          doc.captions[doc.activeCaptionIndex] = val
+                                          doc.updateCaptions()
+                                       }}
                                        getValue={() => {
                                           const text = doc.captions[doc.activeCaptionIndex]
                                           if (text === undefined) return 'USER SHOULD NOT SEE THIS'
