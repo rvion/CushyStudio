@@ -87,6 +87,8 @@ export const CushyUI = observer(function CushyUI_() {
                '--appbar': appBarComputed.variables.background,
                '--foobar1': inactiveTabColors.variables.color,
                '--foobar2': inactiveTabColors.variables.background,
+               // TODO(bird_d): This feels hacky, probably okay for now? A lot of the csuite stuff I'm assuming needs to not use cushy.theme.value
+               fontSize: `${cushy.theme.value.inputText}pt`,
             }}
             tabIndex={-1}
             // ❌ onClick={(ev) => {
