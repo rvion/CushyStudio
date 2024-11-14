@@ -353,7 +353,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                   placeholder={p.placeholder}
                   style={{
                      fontFamily: 'monospace',
-                     fontSize: `${theme.inputText}px`,
+                     fontSize: `${theme.inputText}pt`,
                      zIndex: 2,
                      background: 'transparent',
                      MozWindowDragging: 'no-drag',
