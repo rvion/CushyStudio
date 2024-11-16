@@ -49,6 +49,7 @@ export class ComfyUIObjectInfoParsedNodeSchema {
          // 2/3
          else if (i.isEnum) {
             p(`      ${escapeJSKey(i.nameInComfy)}: { kind: 'enum', type: Union['${i.type}'] }`)
+            // p(`      ${escapeJSKey(i.nameInComfy)}: { kind: 'enum', type: '${this.nameInCushy}.${i.nameInComfy}' }`) // prettier-ignore
          }
          // 3/3
          else {

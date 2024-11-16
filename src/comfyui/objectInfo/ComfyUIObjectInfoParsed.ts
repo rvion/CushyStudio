@@ -1,11 +1,14 @@
 import type {
    ComfyEnumName,
+   ComfyNodeSlotTypeName,
+   ComfyPythonModule,
    ComfyUnionHash,
    ComfyUnionInfo,
    ComfyUnionName,
    ComfyUnionValue,
    NodeInputExt,
    NodeNameInComfy,
+   NodeNameInCushy,
    NodeOutputExt,
 } from '../comfyui-types'
 import type { ComfyEnumDef, ComfyNodeSchemaJSON, ComfySchemaJSON } from './ComfyUIObjectInfoTypes'
@@ -49,10 +52,15 @@ export class ComfyUIObjectInfoParsed {
    knownUnionByHash = new Map<ComfyUnionHash, ComfyUnionInfo>()
    knownUnionByName = new Map<ComfyUnionName, ComfyUnionInfo>()
    nodes: ComfyUIObjectInfoParsedNodeSchema[] = []
-   nodesByNameInComfy: { [key: string]: ComfyUIObjectInfoParsedNodeSchema } = {}
-   nodesByNameInCushy: { [key: string]: ComfyUIObjectInfoParsedNodeSchema } = {}
-   nodesByProduction: { [key: string]: ComfyUIObjectInfoParsedNodeSchema[] } = {}
-   enumsAppearingInOutput = new Set<string>()
+   pythonModuleByNodeNameInCushy: Map<NodeNameInCushy, ComfyPythonModule> = new Map()
+   pythonModuleByNodeNameInComfy: Map<NodeNameInComfy, ComfyPythonModule> = new Map()
+   nodesByNameInComfy: { [key: NodeNameInComfy]: ComfyUIObjectInfoParsedNodeSchema } = {}
+   nodesByNameInCushy: { [key: NodeNameInCushy]: ComfyUIObjectInfoParsedNodeSchema } = {}
+   nodesByProduction: { [key: ComfyNodeSlotTypeName]: ComfyUIObjectInfoParsedNodeSchema[] } = {}
+
+   // some nodes output anonymous unions. we need to keep track of them for codegen
+   enumsAppearingInOutput = new Set<ComfyNodeSlotTypeName>()
+
    pythonModules = new Map<string, NodeNameInComfy[]>()
    // get host(): HostL { return this.hostRef.item } // prettier-ignore
    // get hostName(): string { return this.hostRef.item.data.name } // prettier-ignore
@@ -84,6 +92,8 @@ export class ComfyUIObjectInfoParsed {
             console.log(`[❌ ERROR] nodeDef ${nodeDef.name} has an invalid output definition: ${JSON.stringify(nodeDef.output)}`) // prettier-ignore
             nodeDef.output = []
          }
+         this.pythonModuleByNodeNameInCushy.set(nodeNameInCushy, pythonModule)
+         this.pythonModuleByNodeNameInComfy.set(nodeNameInComfy, pythonModule)
 
          const inputs: NodeInputExt[] = []
          const outputs: NodeOutputExt[] = []
@@ -126,7 +136,7 @@ export class ComfyUIObjectInfoParsed {
             outputNamer[outputNameInComfy]++
             // console.log('>>', outputNameInComfy, outputNameInCushy)
 
-            let slotTypeName: string
+            let slotTypeName: ComfyNodeSlotTypeName // keyof Comfy.Signal
 
             // 1. Primitive
             if (typeof slotType === 'string') {

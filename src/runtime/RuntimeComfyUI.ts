@@ -19,7 +19,7 @@ export class RuntimeComfyUI {
       seed?: number /** for wildcard */
       onLora: (
          //
-         lora: Enum_LoraLoader_lora_name,
+         lora: Comfy.Slots['LoraLoader.lora_name'],
          strength_clip: number,
          strength_model: number,
       ) => void
@@ -49,7 +49,7 @@ export class RuntimeComfyUI {
       p: {
          //
          from?: MediaImageL
-         chekpointName?: Enum_CheckpointLoaderSimple_ckpt_name
+         chekpointName?: Comfy.Slots['CheckpointLoaderSimple.ckpt_name']
          positivePrompt?: string
          /** min:0, max:1 */
          denoise?: number
@@ -68,7 +68,7 @@ export class RuntimeComfyUI {
       const latent = p.from //
          ? builder.VAEEncode({
               vae: model,
-              pixels: builder.Base64ImageInput({
+              pixels: builder['A8R8_ComfyUI_nodes.Base64ImageInput']({
                  // @ts-ignore 🔴 temporarilly ignored because it depends on some custom ComfyUI node that may not be present
                  bas64_image: p.from.url.replace('data:image/png;base64,', ''),
               }),
@@ -111,7 +111,7 @@ export class RuntimeComfyUI {
    }
 
    /** return the the list of every available checkpoints */
-   get allCheckpoints(): Enum_CheckpointLoaderSimple_ckpt_name[] {
+   get allCheckpoints(): Comfy.Slots['CheckpointLoaderSimple.ckpt_name'][] {
       return this.schema.getCheckpoints()
    }
 
@@ -120,8 +120,9 @@ export class RuntimeComfyUI {
     * 🔴 UNFINISHED: need a new config entry for that
     * 2023-12-21 for now, it just returns a random checkpoint
     * */
-   get favoriteCheckpiont(): Enum_CheckpointLoaderSimple_ckpt_name {
+   get favoriteCheckpiont(): Comfy.Slots['CheckpointLoaderSimple.ckpt_name'] {
       if (this.allCheckpoints.length == 0) throw new Error(`❌ no ComfUI checkpoints available at all`)
+      // @ts-ignore
       if (this.allCheckpoints.includes('revAnimated_v122.safetensors')) return 'revAnimated_v122.safetensors'
       // @ts-ignore 🔴 temporarilly ignored because it depends on some custom ComfyUI node that may not be present
       if (this.allCheckpoints.includes('lyriel_v15.safetensors')) return 'lyriel_v15.safetensors'

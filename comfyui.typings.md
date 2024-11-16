@@ -182,13 +182,25 @@ declare global {
          */
          | 'comfy_extras.nodes_webcam'
          /**
+         * Nodes: Base64ImageInput, Base64ImageOutput, AttentionCouple, AttentionCoupleRegion, AttentionCoupleRegions
+         */
+         | 'custom_nodes.A8R8_ComfyUI_nodes'
+         /**
          * Nodes: CivitAI_Lora_Loader, CivitAI_Checkpoint_Loader
          */
          | 'custom_nodes.civitai_comfy_nodes'
          /**
+         * Nodes: CLIPSeg, CombineSegMasks
+         */
+         | 'custom_nodes.clipseg'
+         /**
          * Nodes: ShufflePreprocessor, DensePosePreprocessor, LeReS-DepthMapPreprocessor, BinaryPreprocessor, AnimeFace_SemSegPreprocessor, Zoe-DepthMapPreprocessor, DepthAnythingPreprocessor, Zoe_DepthAnythingPreprocessor, DepthAnythingV2Preprocessor, CannyEdgePreprocessor, DWPreprocessor, AnimalPosePreprocessor, ImageLuminanceDetector, ImageIntensityDetector, MediaPipe-FaceMeshPreprocessor, DiffusionEdge_Preprocessor, M-LSDPreprocessor, HEDPreprocessor, FakeScribblePreprocessor, OneFormer-COCO-SemSegPreprocessor, OneFormer-ADE20K-SemSegPreprocessor, BAE-NormalMapPreprocessor, MeshGraphormer-DepthMapPreprocessor, MeshGraphormer+ImpactDetector-DepthMapPreprocessor, DSINE-NormalMapPreprocessor, MiDaS-NormalMapPreprocessor, MiDaS-DepthMapPreprocessor, AnyLineArtPreprocessor_aux, SAMPreprocessor, UniFormer-SemSegPreprocessor, SemSegPreprocessor, PiDiNetPreprocessor, InpaintPreprocessor, LineArtPreprocessor, OpenposePreprocessor, Unimatch_OptFlowPreprocessor, MaskOptFlow, SavePoseKpsAsJsonFile, FacialPartColoringFromPoseKps, UpperBodyTrackingFromPoseKps, RenderPeopleKps, RenderAnimalKps, TEEDPreprocessor, PyraCannyPreprocessor, Metric3D-DepthMapPreprocessor, Metric3D-NormalMapPreprocessor, Manga2Anime_LineArt_Preprocessor, ScribblePreprocessor, Scribble_XDoG_Preprocessor, Scribble_PiDiNet_Preprocessor, AnimeLineArtPreprocessor, LineartStandardPreprocessor, TilePreprocessor, TTPlanet_TileGF_Preprocessor, TTPlanet_TileSimple_Preprocessor, ColorPreprocessor, AIO_Preprocessor, ControlNetPreprocessorSelector, PixelPerfectResolution, ImageGenResolutionFromImage, ImageGenResolutionFromLatent, HintImageEnchance, ExecuteAllControlNetPreprocessors, ControlNetAuxSimpleAddText
          */
          | 'custom_nodes.comfyui_controlnet_aux'
+         /**
+         * Nodes: Lerp, SinWave, InvSinWave, CosWave, InvCosWave, SquareWave, SawtoothWave, TriangleWave, AbsCosWave, AbsSinWave, PromptSchedule, ValueSchedule, PromptScheduleNodeFlow, PromptScheduleNodeFlowEnd, PromptScheduleEncodeSDXL, StringSchedule, BatchPromptSchedule, BatchValueSchedule, BatchPromptScheduleEncodeSDXL, BatchStringSchedule, BatchValueScheduleLatentInput, BatchPromptScheduleSDXLLatentInput, BatchPromptScheduleLatentInput, ImagesFromBatchSchedule, StringConcatenate, Init FizzFrame, FizzFrame, FizzFrameConcatenate, ConcatStringSingle, convertKeyframeKeysToBatchKeys, CalculateFrameOffset
+         */
+         | 'custom_nodes.ComfyUI_FizzNodes'
          /**
          * Nodes: IPAdapter, IPAdapterAdvanced, IPAdapterBatch, IPAdapterFaceID, IPAdapterFaceIDKolors, IPAAdapterFaceIDBatch, IPAdapterTiled, IPAdapterTiledBatch, IPAdapterEmbeds, IPAdapterEmbedsBatch, IPAdapterStyleComposition, IPAdapterStyleCompositionBatch, IPAdapterMS, IPAdapterClipVisionEnhancer, IPAdapterClipVisionEnhancerBatch, IPAdapterFromParams, IPAdapterPreciseStyleTransfer, IPAdapterPreciseStyleTransferBatch, IPAdapterPreciseComposition, IPAdapterPreciseCompositionBatch, IPAdapterUnifiedLoader, IPAdapterUnifiedLoaderFaceID, IPAdapterModelLoader, IPAdapterInsightFaceLoader, IPAdapterUnifiedLoaderCommunity, IPAdapterEncoder, IPAdapterCombineEmbeds, IPAdapterNoise, PrepImageForClipVision, IPAdapterSaveEmbeds, IPAdapterLoadEmbeds, IPAdapterWeights, IPAdapterCombineWeights, IPAdapterWeightsFromStrategy, IPAdapterPromptScheduleFromWeightsStrategy, IPAdapterRegionalConditioning, IPAdapterCombineParams
          */
@@ -201,6 +213,10 @@ declare global {
          * Nodes: AlphaChanelAdd, AlphaChanelAddByMask, AlphaChanelAsMask, AlphaChanelRestore, AlphaChanelRemove, ClipClamp, ClipVisionClamp, ClipVisionOutputClamp, ConditioningClamp, ControlNetClamp, GligenClamp, ImageClamp, LatentClamp, MaskClamp, ModelClamp, StyleModelClamp, UpscaleModelClamp, VaeClamp, ImageBatchGet, ImageBatchCopy, ImageBatchRemove, ImageBatchFork, ImageBatchJoin, ImageBatchPermute, ImageCompositeAbsolute, ImageCompositeAbsoluteByContainer, ImageCompositeRelative, ImageCompositeRelativeByContainer, ImageContainer, ImageContainerInheritanceAdd, ImageContainerInheritanceScale, ImageContainerInheritanceMax, ImageContainerInheritanceSum, ImageDrawArc, ImageDrawArcByContainer, ImageDrawChord, ImageDrawChordByContainer, ImageDrawEllipse, ImageDrawEllipseByContainer, ImageDrawLine, ImageDrawLineByContainer, ImageDrawPieslice, ImageDrawPiesliceByContainer, ImageDrawRectangle, ImageDrawRectangleByContainer, ImageDrawRectangleRounded, ImageDrawRectangleRoundedByContainer, ImageDrawPolygon, ImageEffectsAdjustment, ImageEffectsGrayscale, ImageEffectsNegative, ImageEffectsSepia, ImageEffectsLensZoomBurst, ImageEffectsLensChromaticAberration, ImageEffectsLensBokeh, ImageEffectsLensOpticAxis, ImageEffectsLensVignette, ImageFilterSmooth, ImageFilterSmoothMore, ImageFilterBlur, ImageFilterBoxBlur, ImageFilterGaussianBlur, ImageFilterGaussianBlurAdvanced, ImageFilterStackBlur, ImageFilterMedianBlur, ImageFilterBilateralBlur, ImageFilterContour, ImageFilterDetail, ImageFilterEdgeEnhance, ImageFilterEdgeEnhanceMore, ImageFilterEmboss, ImageFilterFindEdges, ImageFilterSharpen, ImageFilterRank, ImageFilterMin, ImageFilterMax, ImageFilterMode, ImageNoiseBeta, ImageNoiseBinomial, ImageNoiseBytes, ImageNoiseGaussian, ImageSegmentation, ImageSegmentationCustom, ImageSegmentationCustomAdvanced, ImageText, ImageTextOutlined, ImageTextMultiline, ImageTextMultilineOutlined, ImageTransformResizeAbsolute, ImageTransformResizeRelative, ImageTransformResizeClip, ImageTransformCropAbsolute, ImageTransformCropRelative, ImageTransformCropCorners, ImageTransformPaddingAbsolute, ImageTransformPaddingRelative, ImageTransformRotate, ImageTransformTranspose
          */
          | 'custom_nodes.ComfyUI-Allor'
+         /**
+         * Nodes: ADE_AnimateDiffLoRALoader, ADE_AnimateDiffSamplingSettings, ADE_AnimateDiffKeyframe, ADE_MultivalDynamic, ADE_MultivalDynamicFloatInput, ADE_MultivalDynamicFloats, ADE_MultivalScaledMask, ADE_MultivalConvertToMask, ADE_StandardStaticContextOptions, ADE_StandardUniformContextOptions, ADE_LoopedUniformContextOptions, ADE_ViewsOnlyContextOptions, ADE_BatchedContextOptions, ADE_AnimateDiffUniformContextOptions, ADE_VisualizeContextOptionsK, ADE_VisualizeContextOptionsKAdv, ADE_VisualizeContextOptionsSCustom, ADE_StandardStaticViewOptions, ADE_StandardUniformViewOptions, ADE_LoopedUniformViewOptions, ADE_ContextExtras_Set, ADE_ContextExtras_ContextRef, ADE_ContextExtras_ContextRef_ModeFirst, ADE_ContextExtras_ContextRef_ModeSliding, ADE_ContextExtras_ContextRef_ModeIndexes, ADE_ContextExtras_ContextRef_TuneAttn, ADE_ContextExtras_ContextRef_TuneAttnAdain, ADE_ContextExtras_ContextRef_Keyframe, ADE_ContextExtras_ContextRef_KeyframeInterpolation, ADE_ContextExtras_ContextRef_KeyframeFromList, ADE_ContextExtras_NaiveReuse, ADE_ContextExtras_NaiveReuse_Keyframe, ADE_ContextExtras_NaiveReuse_KeyframeInterpolation, ADE_ContextExtras_NaiveReuse_KeyframeFromList, ADE_IterationOptsDefault, ADE_IterationOptsFreeInit, ADE_RegisterLoraHook, ADE_RegisterLoraHookModelOnly, ADE_RegisterModelAsLoraHook, ADE_RegisterModelAsLoraHookModelOnly, ADE_CombineLoraHooks, ADE_CombineLoraHooksFour, ADE_CombineLoraHooksEight, ADE_SetLoraHookKeyframe, ADE_AttachLoraHookToCLIP, ADE_LoraHookKeyframe, ADE_LoraHookKeyframeInterpolation, ADE_LoraHookKeyframeFromStrengthList, ADE_AttachLoraHookToConditioning, ADE_PairedConditioningSetMask, ADE_ConditioningSetMask, ADE_PairedConditioningSetMaskAndCombine, ADE_ConditioningSetMaskAndCombine, ADE_PairedConditioningSetUnmaskedAndCombine, ADE_ConditioningSetUnmaskedAndCombine, ADE_PairedConditioningCombine, ADE_ConditioningCombine, ADE_TimestepsConditioning, ADE_NoiseLayerAdd, ADE_NoiseLayerAddWeighted, ADE_NoiseLayerReplace, ADE_AnimateDiffSettings, ADE_AdjustPESweetspotStretch, ADE_AdjustPEFullStretch, ADE_AdjustPEManual, ADE_AdjustWeightAllAdd, ADE_AdjustWeightAllMult, ADE_AdjustWeightIndivAdd, ADE_AdjustWeightIndivMult, ADE_AdjustWeightIndivAttnAdd, ADE_AdjustWeightIndivAttnMult, ADE_CustomCFGSimple, ADE_CustomCFG, ADE_CustomCFGKeyframeSimple, ADE_CustomCFGKeyframe, ADE_CustomCFGKeyframeInterpolation, ADE_CustomCFGKeyframeFromList, ADE_CFGExtrasPAGSimple, ADE_CFGExtrasPAG, ADE_CFGExtrasRescaleCFGSimple, ADE_CFGExtrasRescaleCFG, ADE_SigmaSchedule, ADE_RawSigmaSchedule, ADE_SigmaScheduleWeightedAverage, ADE_SigmaScheduleWeightedAverageInterp, ADE_SigmaScheduleSplitAndCombine, ADE_SigmaScheduleToSigmas, ADE_NoisedImageInjection, ADE_NoisedImageInjectOptions, ADE_PromptScheduling, ADE_PromptSchedulingLatents, ADE_ValueScheduling, ADE_ValueSchedulingLatents, ADE_ValuesReplace, ADE_FloatToFloats, ADE_ADBlockCombo, ADE_ADBlockIndiv, ADE_PerBlockHighLevel, ADE_PerBlock_SD15_MidLevel, ADE_PerBlock_SD15_LowLevel, ADE_PerBlock_SD15_FromFloats, ADE_PerBlock_SDXL_MidLevel, ADE_PerBlock_SDXL_LowLevel, ADE_PerBlock_SDXL_FromFloats, ADE_AnimateDiffUnload, ADE_EmptyLatentImageLarge, CheckpointLoaderSimpleWithNoiseSelect, ADE_PerturbedAttentionGuidanceMultival, ADE_RescaleCFGMultival, ADE_AnimateDiffLoaderGen1, ADE_AnimateDiffLoaderWithContext, ADE_UseEvolvedSampling, ADE_ApplyAnimateDiffModelSimple, ADE_ApplyAnimateDiffModel, ADE_LoadAnimateDiffModel, ADE_ApplyAnimateLCMI2VModel, ADE_LoadAnimateLCMI2VModel, ADE_UpscaleAndVAEEncode, ADE_InjectI2VIntoAnimateDiffModel, ADE_ApplyAnimateDiffModelWithCameraCtrl, ADE_LoadAnimateDiffModelWithCameraCtrl, ADE_CameraCtrlAnimateDiffKeyframe, ADE_LoadCameraPoses, ADE_LoadCameraPosesFromPath, ADE_CameraPoseBasic, ADE_CameraPoseCombo, ADE_CameraPoseAdvanced, ADE_CameraManualPoseAppend, ADE_ReplaceCameraParameters, ADE_ReplaceOriginalPoseAspectRatio, ADE_ApplyAnimateDiffModelWithPIA, ADE_InputPIA_Multival, ADE_InputPIA_PaperPresets, ADE_PIA_AnimateDiffKeyframe, ADE_InjectPIAIntoAnimateDiffModel, AnimateDiffLoaderV1, ADE_AnimateDiffLoaderV1Advanced, ADE_AnimateDiffCombine, ADE_AnimateDiffModelSettings_Release, ADE_AnimateDiffModelSettingsSimple, ADE_AnimateDiffModelSettings, ADE_AnimateDiffModelSettingsAdvancedAttnStrengths
+         */
+         | 'custom_nodes.ComfyUI-AnimateDiff-Evolved'
          /**
          * Nodes: BRIA_RMBG_ModelLoader_Zho, BRIA_RMBG_Zho
          */
@@ -231,6 +247,47 @@ declare global {
          | 'nodes'
       // #endregion
       interface IN {
+         "A8R8_ComfyUI_nodes.AttentionCouple": {
+             model: Signal['MODEL']
+             base_prompt: Signal['CONDITIONING']
+             /** default=0.3 min=1 max=1 step=0.1 */
+             global_prompt_weight?: Signal['FLOAT']
+             /** */
+             regions: Signal['ATTENTION_COUPLE_REGION']
+             /** default=1024 min=undefined step=8 */
+             width?: Signal['INT']
+             /** default=1024 min=undefined step=8 */
+             height?: Signal['INT']
+             /** default=false */
+             ip_adapter_active?: Signal['BOOLEAN']
+         },
+         "A8R8_ComfyUI_nodes.AttentionCoupleRegion": {
+             cond: Signal['CONDITIONING']
+             mask: Signal['MASK']
+             /** default=1 min=1 max=1 step=0.01 */
+             weight?: Signal['FLOAT']
+         },
+         "A8R8_ComfyUI_nodes.AttentionCoupleRegions": {
+             region_1?: Signal['ATTENTION_COUPLE_REGION']
+             region_2?: Signal['ATTENTION_COUPLE_REGION']
+             region_3?: Signal['ATTENTION_COUPLE_REGION']
+             region_4?: Signal['ATTENTION_COUPLE_REGION']
+             region_5?: Signal['ATTENTION_COUPLE_REGION']
+             region_6?: Signal['ATTENTION_COUPLE_REGION']
+             region_7?: Signal['ATTENTION_COUPLE_REGION']
+             region_8?: Signal['ATTENTION_COUPLE_REGION']
+             region_9?: Signal['ATTENTION_COUPLE_REGION']
+             region_10?: Signal['ATTENTION_COUPLE_REGION']
+             region_11?: Signal['ATTENTION_COUPLE_REGION']
+             regions?: Signal['ATTENTION_COUPLE_REGION']
+         },
+         "A8R8_ComfyUI_nodes.Base64ImageInput": {
+             /** default="" */
+             base64_image?: Signal['STRING']
+         },
+         "A8R8_ComfyUI_nodes.Base64ImageOutput": {
+             images: Signal['IMAGE']
+         },
          AddNoise: {
              model: Signal['MODEL']
              noise: Signal['NOISE']
@@ -1431,6 +1488,1584 @@ declare global {
          "Allor.VaeClamp": {
              vae: Signal['VAE']
          },
+         "AnimateDiff-Evolved.ADE_ADBlockCombo": {
+             effect?: Signal['MULTIVAL']
+             scale?: Signal['MULTIVAL']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_ADBlockIndiv": {
+             effect?: Signal['MULTIVAL']
+             scale_0?: Signal['MULTIVAL']
+             scale_1?: Signal['MULTIVAL']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_AdjustPEFullStretch": {
+             /** default=0 min=9007199254740991 max=9007199254740991 */
+             pe_stretch?: Signal['INT']
+             /** default=false */
+             print_adjustment?: Signal['BOOLEAN']
+             prev_pe_adjust?: Signal['PE_ADJUST']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_AdjustPEManual": {
+             /** default=0 min=undefined step=1 */
+             cap_initial_pe_length?: Signal['INT']
+             /** default=0 min=undefined step=1 */
+             interpolate_pe_to_length?: Signal['INT']
+             /** default=0 min=undefined step=1 */
+             initial_pe_idx_offset?: Signal['INT']
+             /** default=0 min=undefined step=1 */
+             final_pe_idx_offset?: Signal['INT']
+             /** default=false */
+             print_adjustment?: Signal['BOOLEAN']
+             prev_pe_adjust?: Signal['PE_ADJUST']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_AdjustPESweetspotStretch": {
+             /** default=16 min=9007199254740991 max=9007199254740991 */
+             sweetspot?: Signal['INT']
+             /** default=16 min=9007199254740991 max=9007199254740991 */
+             new_sweetspot?: Signal['INT']
+             /** default=false */
+             print_adjustment?: Signal['BOOLEAN']
+             prev_pe_adjust?: Signal['PE_ADJUST']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_AdjustWeightAllAdd": {
+             /** default=0 min=2 max=2 step=0.000001 */
+             all_ADD?: Signal['FLOAT']
+             /** default=false */
+             print_adjustment?: Signal['BOOLEAN']
+             prev_weight_adjust?: Signal['WEIGHT_ADJUST']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_AdjustWeightAllMult": {
+             /** default=1 min=2 max=2 step=0.000001 */
+             all_MULT?: Signal['FLOAT']
+             /** default=false */
+             print_adjustment?: Signal['BOOLEAN']
+             prev_weight_adjust?: Signal['WEIGHT_ADJUST']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_AdjustWeightIndivAdd": {
+             /** default=0 min=2 max=2 step=0.000001 */
+             pe_ADD?: Signal['FLOAT']
+             /** default=0 min=2 max=2 step=0.000001 */
+             attn_ADD?: Signal['FLOAT']
+             /** default=0 min=2 max=2 step=0.000001 */
+             other_ADD?: Signal['FLOAT']
+             /** default=false */
+             print_adjustment?: Signal['BOOLEAN']
+             prev_weight_adjust?: Signal['WEIGHT_ADJUST']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_AdjustWeightIndivAttnAdd": {
+             /** default=0 min=2 max=2 step=0.000001 */
+             pe_ADD?: Signal['FLOAT']
+             /** default=0 min=2 max=2 step=0.000001 */
+             attn_ADD?: Signal['FLOAT']
+             /** default=0 min=2 max=2 step=0.000001 */
+             attn_q_ADD?: Signal['FLOAT']
+             /** default=0 min=2 max=2 step=0.000001 */
+             attn_k_ADD?: Signal['FLOAT']
+             /** default=0 min=2 max=2 step=0.000001 */
+             attn_v_ADD?: Signal['FLOAT']
+             /** default=0 min=2 max=2 step=0.000001 */
+             attn_out_weight_ADD?: Signal['FLOAT']
+             /** default=0 min=2 max=2 step=0.000001 */
+             attn_out_bias_ADD?: Signal['FLOAT']
+             /** default=0 min=2 max=2 step=0.000001 */
+             other_ADD?: Signal['FLOAT']
+             /** default=false */
+             print_adjustment?: Signal['BOOLEAN']
+             prev_weight_adjust?: Signal['WEIGHT_ADJUST']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_AdjustWeightIndivAttnMult": {
+             /** default=1 min=2 max=2 step=0.000001 */
+             pe_MULT?: Signal['FLOAT']
+             /** default=1 min=2 max=2 step=0.000001 */
+             attn_MULT?: Signal['FLOAT']
+             /** default=1 min=2 max=2 step=0.000001 */
+             attn_q_MULT?: Signal['FLOAT']
+             /** default=1 min=2 max=2 step=0.000001 */
+             attn_k_MULT?: Signal['FLOAT']
+             /** default=1 min=2 max=2 step=0.000001 */
+             attn_v_MULT?: Signal['FLOAT']
+             /** default=1 min=2 max=2 step=0.000001 */
+             attn_out_weight_MULT?: Signal['FLOAT']
+             /** default=1 min=2 max=2 step=0.000001 */
+             attn_out_bias_MULT?: Signal['FLOAT']
+             /** default=1 min=2 max=2 step=0.000001 */
+             other_MULT?: Signal['FLOAT']
+             /** default=false */
+             print_adjustment?: Signal['BOOLEAN']
+             prev_weight_adjust?: Signal['WEIGHT_ADJUST']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_AdjustWeightIndivMult": {
+             /** default=1 min=2 max=2 step=0.000001 */
+             pe_MULT?: Signal['FLOAT']
+             /** default=1 min=2 max=2 step=0.000001 */
+             attn_MULT?: Signal['FLOAT']
+             /** default=1 min=2 max=2 step=0.000001 */
+             other_MULT?: Signal['FLOAT']
+             /** default=false */
+             print_adjustment?: Signal['BOOLEAN']
+             prev_weight_adjust?: Signal['WEIGHT_ADJUST']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_AnimateDiffCombine": {
+             images: Signal['IMAGE']
+             /** default=8 min=24 max=24 step=1 */
+             frame_rate?: Signal['INT']
+             /** default=0 min=100 max=100 step=1 */
+             loop_count?: Signal['INT']
+             /** default="AnimateDiff" */
+             filename_prefix?: Signal['STRING']
+             format: Signal['E_4a59f490']
+             /** default=false */
+             pingpong?: Signal['BOOLEAN']
+             /** default=true */
+             save_image?: Signal['BOOLEAN']
+             /** */
+             deprecation_warning?: Signal['ADEWARN']
+         },
+         "AnimateDiff-Evolved.ADE_AnimateDiffKeyframe": {
+             /** default=0 min=1 max=1 step=0.001 */
+             start_percent?: Signal['FLOAT']
+             prev_ad_keyframes?: Signal['AD_KEYFRAMES']
+             scale_multival?: Signal['MULTIVAL']
+             effect_multival?: Signal['MULTIVAL']
+             /** default=true */
+             inherit_missing?: Signal['BOOLEAN']
+             /** default=1 min=9007199254740991 max=9007199254740991 */
+             guarantee_steps?: Signal['INT']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_AnimateDiffLoaderGen1": {
+             model: Signal['MODEL']
+             model_name: Signal['E_LoraName']
+             /** default="autoselect" */
+             beta_schedule?: Signal['E_092dd1cc']
+             context_options?: Signal['CONTEXT_OPTIONS']
+             motion_lora?: Signal['MOTION_LORA']
+             ad_settings?: Signal['AD_SETTINGS']
+             ad_keyframes?: Signal['AD_KEYFRAMES']
+             sample_settings?: Signal['SAMPLE_SETTINGS']
+             scale_multival?: Signal['MULTIVAL']
+             effect_multival?: Signal['MULTIVAL']
+             per_block?: Signal['PER_BLOCK']
+         },
+         "AnimateDiff-Evolved.ADE_AnimateDiffLoaderV1Advanced": {
+             model: Signal['MODEL']
+             latents: Signal['LATENT']
+             model_name: Signal['E_LoraName']
+             /** default=false */
+             unlimited_area_hack?: Signal['BOOLEAN']
+             /** default=16 min=1000 max=1000 */
+             context_length?: Signal['INT']
+             /** default=1 min=1000 max=1000 */
+             context_stride?: Signal['INT']
+             /** default=4 min=1000 max=1000 */
+             context_overlap?: Signal['INT']
+             context_schedule: Signal['E_8146160c']
+             /** default=false */
+             closed_loop?: Signal['BOOLEAN']
+             beta_schedule: Signal['E_092dd1cc']
+             /** */
+             deprecation_warning?: Signal['ADEWARN']
+         },
+         "AnimateDiff-Evolved.ADE_AnimateDiffLoaderWithContext": {
+             model: Signal['MODEL']
+             model_name: Signal['E_LoraName']
+             /** default="autoselect" */
+             beta_schedule?: Signal['E_092dd1cc']
+             context_options?: Signal['CONTEXT_OPTIONS']
+             motion_lora?: Signal['MOTION_LORA']
+             ad_settings?: Signal['AD_SETTINGS']
+             sample_settings?: Signal['SAMPLE_SETTINGS']
+             /** default=1 min=undefined step=0.001 */
+             motion_scale?: Signal['FLOAT']
+             /** default=true */
+             apply_v2_models_properly?: Signal['BOOLEAN']
+             ad_keyframes?: Signal['AD_KEYFRAMES']
+         },
+         "AnimateDiff-Evolved.ADE_AnimateDiffLoRALoader": {
+             name: Signal['E_LoraName']
+             /** default=1 min=10 max=10 step=0.001 */
+             strength?: Signal['FLOAT']
+             prev_motion_lora?: Signal['MOTION_LORA']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_AnimateDiffModelSettings": {
+             /** default=1 min=10 max=10 step=0.0001 */
+             pe_strength?: Signal['FLOAT']
+             /** default=1 min=10 max=10 step=0.0001 */
+             attn_strength?: Signal['FLOAT']
+             /** default=1 min=10 max=10 step=0.0001 */
+             other_strength?: Signal['FLOAT']
+             /** default=0 min=undefined step=1 */
+             motion_pe_stretch?: Signal['INT']
+             /** default=0 min=undefined step=1 */
+             cap_initial_pe_length?: Signal['INT']
+             /** default=0 min=undefined step=1 */
+             interpolate_pe_to_length?: Signal['INT']
+             /** default=0 min=undefined step=1 */
+             initial_pe_idx_offset?: Signal['INT']
+             /** default=0 min=undefined step=1 */
+             final_pe_idx_offset?: Signal['INT']
+             mask_motion_scale?: Signal['MASK']
+             /** default=1 min=undefined step=0.001 */
+             min_motion_scale?: Signal['FLOAT']
+             /** default=1 min=undefined step=0.001 */
+             max_motion_scale?: Signal['FLOAT']
+             /** */
+             deprecation_warning?: Signal['ADEWARN']
+         },
+         "AnimateDiff-Evolved.ADE_AnimateDiffModelSettings_Release": {
+             /** default=1 min=undefined step=0.001 */
+             min_motion_scale?: Signal['FLOAT']
+             /** default=1 min=undefined step=0.001 */
+             max_motion_scale?: Signal['FLOAT']
+             mask_motion_scale?: Signal['MASK']
+             /** */
+             deprecation_warning?: Signal['ADEWARN']
+         },
+         "AnimateDiff-Evolved.ADE_AnimateDiffModelSettingsAdvancedAttnStrengths": {
+             /** default=1 min=10 max=10 step=0.0001 */
+             pe_strength?: Signal['FLOAT']
+             /** default=1 min=10 max=10 step=0.0001 */
+             attn_strength?: Signal['FLOAT']
+             /** default=1 min=10 max=10 step=0.0001 */
+             attn_q_strength?: Signal['FLOAT']
+             /** default=1 min=10 max=10 step=0.0001 */
+             attn_k_strength?: Signal['FLOAT']
+             /** default=1 min=10 max=10 step=0.0001 */
+             attn_v_strength?: Signal['FLOAT']
+             /** default=1 min=10 max=10 step=0.0001 */
+             attn_out_weight_strength?: Signal['FLOAT']
+             /** default=1 min=10 max=10 step=0.0001 */
+             attn_out_bias_strength?: Signal['FLOAT']
+             /** default=1 min=10 max=10 step=0.0001 */
+             other_strength?: Signal['FLOAT']
+             /** default=0 min=undefined step=1 */
+             motion_pe_stretch?: Signal['INT']
+             /** default=0 min=undefined step=1 */
+             cap_initial_pe_length?: Signal['INT']
+             /** default=0 min=undefined step=1 */
+             interpolate_pe_to_length?: Signal['INT']
+             /** default=0 min=undefined step=1 */
+             initial_pe_idx_offset?: Signal['INT']
+             /** default=0 min=undefined step=1 */
+             final_pe_idx_offset?: Signal['INT']
+             mask_motion_scale?: Signal['MASK']
+             /** default=1 min=undefined step=0.001 */
+             min_motion_scale?: Signal['FLOAT']
+             /** default=1 min=undefined step=0.001 */
+             max_motion_scale?: Signal['FLOAT']
+             /** */
+             deprecation_warning?: Signal['ADEWARN']
+         },
+         "AnimateDiff-Evolved.ADE_AnimateDiffModelSettingsSimple": {
+             /** default=0 min=undefined step=1 */
+             motion_pe_stretch?: Signal['INT']
+             mask_motion_scale?: Signal['MASK']
+             /** default=1 min=undefined step=0.001 */
+             min_motion_scale?: Signal['FLOAT']
+             /** default=1 min=undefined step=0.001 */
+             max_motion_scale?: Signal['FLOAT']
+             /** */
+             deprecation_warning?: Signal['ADEWARN']
+         },
+         "AnimateDiff-Evolved.ADE_AnimateDiffSamplingSettings": {
+             /** default=0 min=9007199254740991 max=9007199254740991 */
+             batch_offset?: Signal['INT']
+             noise_type: Signal['E_df934b3b']
+             seed_gen: Signal['E_73f92fde']
+             /** default=0 min=9007199254740991 max=9007199254740991 */
+             seed_offset?: Signal['INT']
+             noise_layers?: Signal['NOISE_LAYERS']
+             iteration_opts?: Signal['ITERATION_OPTS']
+             /** default=0 min=18446744073709552000 max=18446744073709552000 */
+             seed_override?: Signal['INT']
+             /** default=false */
+             adapt_denoise_steps?: Signal['BOOLEAN']
+             custom_cfg?: Signal['CUSTOM_CFG']
+             sigma_schedule?: Signal['SIGMA_SCHEDULE']
+             image_inject?: Signal['IMAGE_INJECT']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_AnimateDiffSettings": {
+             pe_adjust?: Signal['PE_ADJUST']
+             weight_adjust?: Signal['WEIGHT_ADJUST']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_AnimateDiffUniformContextOptions": {
+             /** default=16 min=128 max=128 */
+             context_length?: Signal['INT']
+             /** default=1 min=32 max=32 */
+             context_stride?: Signal['INT']
+             /** default=4 min=128 max=128 */
+             context_overlap?: Signal['INT']
+             context_schedule: Signal['E_8146160c']
+             /** default=false */
+             closed_loop?: Signal['BOOLEAN']
+             /** default="flat" */
+             fuse_method?: Signal['E_07ba75c0']
+             /** default=false */
+             use_on_equal_length?: Signal['BOOLEAN']
+             /** default=0 min=1 max=1 step=0.001 */
+             start_percent?: Signal['FLOAT']
+             /** default=1 min=9007199254740991 max=9007199254740991 */
+             guarantee_steps?: Signal['INT']
+             prev_context?: Signal['CONTEXT_OPTIONS']
+             view_opts?: Signal['VIEW_OPTS']
+             /** */
+             deprecation_warning?: Signal['ADEWARN']
+         },
+         "AnimateDiff-Evolved.ADE_AnimateDiffUnload": {
+             model: Signal['MODEL']
+         },
+         "AnimateDiff-Evolved.ADE_ApplyAnimateDiffModel": {
+             motion_model: Signal['MOTION_MODEL_ADE']
+             /** default=0 min=1 max=1 step=0.001 */
+             start_percent?: Signal['FLOAT']
+             /** default=1 min=1 max=1 step=0.001 */
+             end_percent?: Signal['FLOAT']
+             motion_lora?: Signal['MOTION_LORA']
+             scale_multival?: Signal['MULTIVAL']
+             effect_multival?: Signal['MULTIVAL']
+             ad_keyframes?: Signal['AD_KEYFRAMES']
+             prev_m_models?: Signal['M_MODELS']
+             per_block?: Signal['PER_BLOCK']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_ApplyAnimateDiffModelSimple": {
+             motion_model: Signal['MOTION_MODEL_ADE']
+             motion_lora?: Signal['MOTION_LORA']
+             scale_multival?: Signal['MULTIVAL']
+             effect_multival?: Signal['MULTIVAL']
+             ad_keyframes?: Signal['AD_KEYFRAMES']
+             per_block?: Signal['PER_BLOCK']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_ApplyAnimateDiffModelWithCameraCtrl": {
+             motion_model: Signal['MOTION_MODEL_ADE']
+             cameractrl_poses: Signal['CAMERACTRL_POSES']
+             /** default=0 min=1 max=1 step=0.001 */
+             start_percent?: Signal['FLOAT']
+             /** default=1 min=1 max=1 step=0.001 */
+             end_percent?: Signal['FLOAT']
+             motion_lora?: Signal['MOTION_LORA']
+             scale_multival?: Signal['MULTIVAL']
+             effect_multival?: Signal['MULTIVAL']
+             cameractrl_multival?: Signal['MULTIVAL']
+             ad_keyframes?: Signal['AD_KEYFRAMES']
+             prev_m_models?: Signal['M_MODELS']
+             per_block?: Signal['PER_BLOCK']
+         },
+         "AnimateDiff-Evolved.ADE_ApplyAnimateDiffModelWithPIA": {
+             motion_model: Signal['MOTION_MODEL_ADE']
+             image: Signal['IMAGE']
+             vae: Signal['VAE']
+             /** default=0 min=1 max=1 step=0.001 */
+             start_percent?: Signal['FLOAT']
+             /** default=1 min=1 max=1 step=0.001 */
+             end_percent?: Signal['FLOAT']
+             pia_input?: Signal['PIA_INPUT']
+             motion_lora?: Signal['MOTION_LORA']
+             scale_multival?: Signal['MULTIVAL']
+             effect_multival?: Signal['MULTIVAL']
+             ad_keyframes?: Signal['AD_KEYFRAMES']
+             prev_m_models?: Signal['M_MODELS']
+             per_block?: Signal['PER_BLOCK']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_ApplyAnimateLCMI2VModel": {
+             motion_model: Signal['MOTION_MODEL_ADE']
+             ref_latent: Signal['LATENT']
+             /** default=0 min=10 max=10 step=0.001 */
+             ref_drift?: Signal['FLOAT']
+             /** default=false */
+             apply_ref_when_disabled?: Signal['BOOLEAN']
+             /** default=0 min=1 max=1 step=0.001 */
+             start_percent?: Signal['FLOAT']
+             /** default=1 min=1 max=1 step=0.001 */
+             end_percent?: Signal['FLOAT']
+             motion_lora?: Signal['MOTION_LORA']
+             scale_multival?: Signal['MULTIVAL']
+             effect_multival?: Signal['MULTIVAL']
+             ad_keyframes?: Signal['AD_KEYFRAMES']
+             prev_m_models?: Signal['M_MODELS']
+             per_block?: Signal['PER_BLOCK']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_AttachLoraHookToCLIP": {
+             clip: Signal['CLIP']
+             lora_hook: Signal['LORA_HOOK']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_AttachLoraHookToConditioning": {
+             conditioning: Signal['CONDITIONING']
+             lora_hook: Signal['LORA_HOOK']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_BatchedContextOptions": {
+             /** default=16 min=128 max=128 */
+             context_length?: Signal['INT']
+             /** default=0 min=1 max=1 step=0.001 */
+             start_percent?: Signal['FLOAT']
+             /** default=1 min=9007199254740991 max=9007199254740991 */
+             guarantee_steps?: Signal['INT']
+             prev_context?: Signal['CONTEXT_OPTIONS']
+         },
+         "AnimateDiff-Evolved.ADE_CameraCtrlAnimateDiffKeyframe": {
+             /** default=0 min=1 max=1 step=0.001 */
+             start_percent?: Signal['FLOAT']
+             prev_ad_keyframes?: Signal['AD_KEYFRAMES']
+             scale_multival?: Signal['MULTIVAL']
+             effect_multival?: Signal['MULTIVAL']
+             cameractrl_multival?: Signal['MULTIVAL']
+             /** default=true */
+             inherit_missing?: Signal['BOOLEAN']
+             /** default=1 min=9007199254740991 max=9007199254740991 */
+             guarantee_steps?: Signal['INT']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_CameraManualPoseAppend": {
+             poses_first: Signal['CAMERACTRL_POSES']
+             poses_last: Signal['CAMERACTRL_POSES']
+         },
+         "AnimateDiff-Evolved.ADE_CameraPoseAdvanced": {
+             motion_type1: Signal['E_849d2970']
+             /** default=1 min=10 max=10 step=0.01 */
+             strength1?: Signal['FLOAT']
+             motion_type2: Signal['E_849d2970']
+             /** default=1 min=10 max=10 step=0.01 */
+             strength2?: Signal['FLOAT']
+             motion_type3: Signal['E_849d2970']
+             /** default=1 min=10 max=10 step=0.01 */
+             strength3?: Signal['FLOAT']
+             motion_type4: Signal['E_849d2970']
+             /** default=1 min=10 max=10 step=0.01 */
+             strength4?: Signal['FLOAT']
+             motion_type5: Signal['E_849d2970']
+             /** default=1 min=10 max=10 step=0.01 */
+             strength5?: Signal['FLOAT']
+             motion_type6: Signal['E_849d2970']
+             /** default=1 min=10 max=10 step=0.01 */
+             strength6?: Signal['FLOAT']
+             /** default=1 min=100 max=100 step=0.01 */
+             speed?: Signal['FLOAT']
+             /** default=16 */
+             frame_length?: Signal['INT']
+             prev_poses?: Signal['CAMERACTRL_POSES']
+         },
+         "AnimateDiff-Evolved.ADE_CameraPoseBasic": {
+             motion_type: Signal['E_849d2970']
+             /** default=1 min=100 max=100 step=0.01 */
+             speed?: Signal['FLOAT']
+             /** default=16 */
+             frame_length?: Signal['INT']
+             prev_poses?: Signal['CAMERACTRL_POSES']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_CameraPoseCombo": {
+             motion_type1: Signal['E_849d2970']
+             motion_type2: Signal['E_849d2970']
+             motion_type3: Signal['E_849d2970']
+             motion_type4: Signal['E_849d2970']
+             motion_type5: Signal['E_849d2970']
+             motion_type6: Signal['E_849d2970']
+             /** default=1 min=100 max=100 step=0.01 */
+             speed?: Signal['FLOAT']
+             /** default=16 */
+             frame_length?: Signal['INT']
+             prev_poses?: Signal['CAMERACTRL_POSES']
+         },
+         "AnimateDiff-Evolved.ADE_CFGExtrasPAG": {
+             scale_multival: Signal['MULTIVAL']
+             prev_extras?: Signal['CFG_EXTRAS']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_CFGExtrasPAGSimple": {
+             /** default=3 min=100 max=100 step=0.1 */
+             scale?: Signal['FLOAT']
+             prev_extras?: Signal['CFG_EXTRAS']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_CFGExtrasRescaleCFG": {
+             mult_multival: Signal['MULTIVAL']
+             prev_extras?: Signal['CFG_EXTRAS']
+         },
+         "AnimateDiff-Evolved.ADE_CFGExtrasRescaleCFGSimple": {
+             /** default=0.7 min=1 max=1 step=0.01 */
+             multiplier?: Signal['FLOAT']
+             prev_extras?: Signal['CFG_EXTRAS']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_CombineLoraHooks": {
+             lora_hook_A?: Signal['LORA_HOOK']
+             lora_hook_B?: Signal['LORA_HOOK']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_CombineLoraHooksEight": {
+             lora_hook_A?: Signal['LORA_HOOK']
+             lora_hook_B?: Signal['LORA_HOOK']
+             lora_hook_C?: Signal['LORA_HOOK']
+             lora_hook_D?: Signal['LORA_HOOK']
+             lora_hook_E?: Signal['LORA_HOOK']
+             lora_hook_F?: Signal['LORA_HOOK']
+             lora_hook_G?: Signal['LORA_HOOK']
+             lora_hook_H?: Signal['LORA_HOOK']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_CombineLoraHooksFour": {
+             lora_hook_A?: Signal['LORA_HOOK']
+             lora_hook_B?: Signal['LORA_HOOK']
+             lora_hook_C?: Signal['LORA_HOOK']
+             lora_hook_D?: Signal['LORA_HOOK']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_ConditioningCombine": {
+             cond_A: Signal['CONDITIONING']
+             cond_B: Signal['CONDITIONING']
+         },
+         "AnimateDiff-Evolved.ADE_ConditioningSetMask": {
+             cond_ADD: Signal['CONDITIONING']
+             /** default=1 min=10 max=10 step=0.01 */
+             strength?: Signal['FLOAT']
+             set_cond_area: Signal['E_046ed3ef']
+             opt_mask?: Signal['MASK']
+             opt_lora_hook?: Signal['LORA_HOOK']
+             opt_timesteps?: Signal['TIMESTEPS_COND']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_ConditioningSetMaskAndCombine": {
+             cond: Signal['CONDITIONING']
+             cond_ADD: Signal['CONDITIONING']
+             /** default=1 min=10 max=10 step=0.01 */
+             strength?: Signal['FLOAT']
+             set_cond_area: Signal['E_046ed3ef']
+             opt_mask?: Signal['MASK']
+             opt_lora_hook?: Signal['LORA_HOOK']
+             opt_timesteps?: Signal['TIMESTEPS_COND']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_ConditioningSetUnmaskedAndCombine": {
+             cond: Signal['CONDITIONING']
+             cond_DEFAULT: Signal['CONDITIONING']
+             opt_lora_hook?: Signal['LORA_HOOK']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_ContextExtras_ContextRef": {
+             prev_extras?: Signal['CONTEXT_EXTRAS']
+             strength_multival?: Signal['MULTIVAL']
+             contextref_mode?: Signal['CONTEXTREF_MODE']
+             contextref_tune?: Signal['CONTEXTREF_TUNE']
+             contextref_kf?: Signal['CONTEXTREF_KEYFRAME']
+             /** default=0 min=1 max=1 step=0.001 */
+             start_percent?: Signal['FLOAT']
+             /** default=0.25 min=1 max=1 step=0.001 */
+             end_percent?: Signal['FLOAT']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_Keyframe": {
+             prev_kf?: Signal['CONTEXTREF_KEYFRAME']
+             mult_multival?: Signal['MULTIVAL']
+             mode_replace?: Signal['CONTEXTREF_MODE']
+             tune_replace?: Signal['CONTEXTREF_TUNE']
+             /** default=1 min=1 max=1 step=0.001 */
+             mult?: Signal['FLOAT']
+             /** default=0 min=1 max=1 step=0.001 */
+             start_percent?: Signal['FLOAT']
+             /** default=1 min=9007199254740991 max=9007199254740991 */
+             guarantee_steps?: Signal['INT']
+             /** default=true */
+             inherit_missing?: Signal['BOOLEAN']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_KeyframeFromList": {
+             /** default=-1 min=undefined step=0.001 */
+             mults_float?: Signal['FLOAT']
+             /** default=0 min=1 max=1 step=0.001 */
+             start_percent?: Signal['FLOAT']
+             /** default=1 min=1 max=1 step=0.001 */
+             end_percent?: Signal['FLOAT']
+             /** default=true */
+             inherit_missing?: Signal['BOOLEAN']
+             /** default=false */
+             print_keyframes?: Signal['BOOLEAN']
+             prev_kf?: Signal['CONTEXTREF_KEYFRAME']
+             mult_multival?: Signal['MULTIVAL']
+             mode_replace?: Signal['CONTEXTREF_MODE']
+             tune_replace?: Signal['CONTEXTREF_TUNE']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_KeyframeInterpolation": {
+             /** default=0 min=1 max=1 step=0.001 */
+             start_percent?: Signal['FLOAT']
+             /** default=1 min=1 max=1 step=0.001 */
+             end_percent?: Signal['FLOAT']
+             /** default=1 min=1 max=1 step=0.001 */
+             mult_start?: Signal['FLOAT']
+             /** default=1 min=1 max=1 step=0.001 */
+             mult_end?: Signal['FLOAT']
+             interpolation: Signal['E_7c7d86e6']
+             /** default=50 min=100 max=100 step=1 */
+             intervals?: Signal['INT']
+             /** default=true */
+             inherit_missing?: Signal['BOOLEAN']
+             /** default=false */
+             print_keyframes?: Signal['BOOLEAN']
+             prev_kf?: Signal['CONTEXTREF_KEYFRAME']
+             mult_multival?: Signal['MULTIVAL']
+             mode_replace?: Signal['CONTEXTREF_MODE']
+             tune_replace?: Signal['CONTEXTREF_TUNE']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_ModeFirst": {
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_ModeIndexes": {
+             /** default="" */
+             switch_on_idxs?: Signal['STRING']
+             /** default=true */
+             always_include_0?: Signal['BOOLEAN']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_ModeSliding": {
+             /** default=2 min=9007199254740991 max=9007199254740991 step=1 */
+             sliding_width?: Signal['INT']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_TuneAttn": {
+             /** default=1 min=1 max=1 step=0.01 */
+             attn_style_fidelity?: Signal['FLOAT']
+             /** default=1 min=1 max=1 step=0.01 */
+             attn_ref_weight?: Signal['FLOAT']
+             /** default=1 min=1 max=1 step=0.01 */
+             attn_strength?: Signal['FLOAT']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_TuneAttnAdain": {
+             /** default=1 min=1 max=1 step=0.01 */
+             attn_style_fidelity?: Signal['FLOAT']
+             /** default=1 min=1 max=1 step=0.01 */
+             attn_ref_weight?: Signal['FLOAT']
+             /** default=1 min=1 max=1 step=0.01 */
+             attn_strength?: Signal['FLOAT']
+             /** default=1 min=1 max=1 step=0.01 */
+             adain_style_fidelity?: Signal['FLOAT']
+             /** default=1 min=1 max=1 step=0.01 */
+             adain_ref_weight?: Signal['FLOAT']
+             /** default=1 min=1 max=1 step=0.01 */
+             adain_strength?: Signal['FLOAT']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_ContextExtras_NaiveReuse": {
+             prev_extras?: Signal['CONTEXT_EXTRAS']
+             strength_multival?: Signal['MULTIVAL']
+             naivereuse_kf?: Signal['NAIVEREUSE_KEYFRAME']
+             /** default=0 min=1 max=1 step=0.001 */
+             start_percent?: Signal['FLOAT']
+             /** default=0.15 min=1 max=1 step=0.001 */
+             end_percent?: Signal['FLOAT']
+             /** default=0.95 min=1 max=1 step=0.001 */
+             weighted_mean?: Signal['FLOAT']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_ContextExtras_NaiveReuse_Keyframe": {
+             prev_kf?: Signal['NAIVEREUSE_KEYFRAME']
+             mult_multival?: Signal['MULTIVAL']
+             /** default=1 min=1 max=1 step=0.001 */
+             mult?: Signal['FLOAT']
+             /** default=0 min=1 max=1 step=0.001 */
+             start_percent?: Signal['FLOAT']
+             /** default=1 min=9007199254740991 max=9007199254740991 */
+             guarantee_steps?: Signal['INT']
+             /** default=true */
+             inherit_missing?: Signal['BOOLEAN']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_ContextExtras_NaiveReuse_KeyframeFromList": {
+             /** default=-1 min=undefined step=0.001 */
+             mults_float?: Signal['FLOAT']
+             /** default=0 min=1 max=1 step=0.001 */
+             start_percent?: Signal['FLOAT']
+             /** default=1 min=1 max=1 step=0.001 */
+             end_percent?: Signal['FLOAT']
+             /** default=true */
+             inherit_missing?: Signal['BOOLEAN']
+             /** default=false */
+             print_keyframes?: Signal['BOOLEAN']
+             prev_kf?: Signal['NAIVEREUSE_KEYFRAME']
+             mult_multival?: Signal['MULTIVAL']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_ContextExtras_NaiveReuse_KeyframeInterpolation": {
+             /** default=0 min=1 max=1 step=0.001 */
+             start_percent?: Signal['FLOAT']
+             /** default=1 min=1 max=1 step=0.001 */
+             end_percent?: Signal['FLOAT']
+             /** default=1 min=1 max=1 step=0.001 */
+             mult_start?: Signal['FLOAT']
+             /** default=1 min=1 max=1 step=0.001 */
+             mult_end?: Signal['FLOAT']
+             interpolation: Signal['E_7c7d86e6']
+             /** default=50 min=100 max=100 step=1 */
+             intervals?: Signal['INT']
+             /** default=true */
+             inherit_missing?: Signal['BOOLEAN']
+             /** default=false */
+             print_keyframes?: Signal['BOOLEAN']
+             prev_kf?: Signal['NAIVEREUSE_KEYFRAME']
+             mult_multival?: Signal['MULTIVAL']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_ContextExtras_Set": {
+             context_opts: Signal['CONTEXT_OPTIONS']
+             context_extras: Signal['CONTEXT_EXTRAS']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_CustomCFG": {
+             cfg_multival: Signal['MULTIVAL']
+             cfg_extras?: Signal['CFG_EXTRAS']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_CustomCFGKeyframe": {
+             cfg_multival: Signal['MULTIVAL']
+             /** default=0 min=1 max=1 step=0.001 */
+             start_percent?: Signal['FLOAT']
+             /** default=1 min=9007199254740991 max=9007199254740991 */
+             guarantee_steps?: Signal['INT']
+             prev_custom_cfg?: Signal['CUSTOM_CFG']
+             cfg_extras?: Signal['CFG_EXTRAS']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_CustomCFGKeyframeFromList": {
+             /** default=-1 min=undefined step=0.001 */
+             cfgs_float?: Signal['FLOAT']
+             /** default=0 min=1 max=1 step=0.001 */
+             start_percent?: Signal['FLOAT']
+             /** default=1 min=1 max=1 step=0.001 */
+             end_percent?: Signal['FLOAT']
+             /** default=false */
+             print_keyframes?: Signal['BOOLEAN']
+             prev_custom_cfg?: Signal['CUSTOM_CFG']
+             cfg_extras?: Signal['CFG_EXTRAS']
+         },
+         "AnimateDiff-Evolved.ADE_CustomCFGKeyframeInterpolation": {
+             /** default=0 min=1 max=1 step=0.001 */
+             start_percent?: Signal['FLOAT']
+             /** default=1 min=1 max=1 step=0.001 */
+             end_percent?: Signal['FLOAT']
+             /** default=8 min=100 max=100 step=0.1 */
+             cfg_start?: Signal['FLOAT']
+             /** default=8 min=100 max=100 step=0.1 */
+             cfg_end?: Signal['FLOAT']
+             interpolation: Signal['E_7c7d86e6']
+             /** default=50 min=100 max=100 step=1 */
+             intervals?: Signal['INT']
+             /** default=false */
+             print_keyframes?: Signal['BOOLEAN']
+             prev_custom_cfg?: Signal['CUSTOM_CFG']
+             cfg_extras?: Signal['CFG_EXTRAS']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_CustomCFGKeyframeSimple": {
+             /** default=8 min=100 max=100 step=0.1 */
+             cfg?: Signal['FLOAT']
+             /** default=0 min=1 max=1 step=0.001 */
+             start_percent?: Signal['FLOAT']
+             /** default=1 min=9007199254740991 max=9007199254740991 */
+             guarantee_steps?: Signal['INT']
+             prev_custom_cfg?: Signal['CUSTOM_CFG']
+             cfg_extras?: Signal['CFG_EXTRAS']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_CustomCFGSimple": {
+             /** default=8 min=100 max=100 step=0.1 */
+             cfg?: Signal['FLOAT']
+             cfg_extras?: Signal['CFG_EXTRAS']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_EmptyLatentImageLarge": {
+             /** default=512 min=16384 max=16384 step=8 */
+             width?: Signal['INT']
+             /** default=512 min=16384 max=16384 step=8 */
+             height?: Signal['INT']
+             /** default=1 min=262144 max=262144 */
+             batch_size?: Signal['INT']
+         },
+         "AnimateDiff-Evolved.ADE_FloatToFloats": {
+             /** default=39 */
+             FLOAT?: Signal['FLOAT']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_InjectI2VIntoAnimateDiffModel": {
+             model_name: Signal['E_LoraName']
+             motion_model: Signal['MOTION_MODEL_ADE']
+             ad_settings?: Signal['AD_SETTINGS']
+             /** */
+             deprecation_warning?: Signal['ADEWARN']
+         },
+         "AnimateDiff-Evolved.ADE_InjectPIAIntoAnimateDiffModel": {
+             model_name: Signal['E_LoraName']
+             motion_model: Signal['MOTION_MODEL_ADE']
+             ad_settings?: Signal['AD_SETTINGS']
+             /** */
+             deprecation_warning?: Signal['ADEWARN']
+         },
+         "AnimateDiff-Evolved.ADE_InputPIA_Multival": {
+             multival: Signal['MULTIVAL']
+         },
+         "AnimateDiff-Evolved.ADE_InputPIA_PaperPresets": {
+             preset: Signal['E_6e63de3c']
+             /** default=0 min=9007199254740991 max=9007199254740991 step=1 */
+             batch_index?: Signal['INT']
+             mult_multival?: Signal['MULTIVAL']
+             /** default=false */
+             print_values?: Signal['BOOLEAN']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_IterationOptsDefault": {
+             /** default=1 min=undefined */
+             iterations?: Signal['INT']
+             /** default=0 min=9007199254740991 max=9007199254740991 */
+             iter_batch_offset?: Signal['INT']
+             /** default=0 min=9007199254740991 max=9007199254740991 */
+             iter_seed_offset?: Signal['INT']
+         },
+         "AnimateDiff-Evolved.ADE_IterationOptsFreeInit": {
+             /** default=2 min=undefined */
+             iterations?: Signal['INT']
+             filter: Signal['E_c2afaefb']
+             /** default=0.25 min=1 max=1 step=0.001 */
+             d_s?: Signal['FLOAT']
+             /** default=0.25 min=1 max=1 step=0.001 */
+             d_t?: Signal['FLOAT']
+             /** default=4 min=100 max=100 */
+             n_butterworth?: Signal['INT']
+             /** default=999 min=999 max=999 */
+             sigma_step?: Signal['INT']
+             /** default=false */
+             apply_to_1st_iter?: Signal['BOOLEAN']
+             init_type: Signal['E_694440e4']
+             /** default=0 min=9007199254740991 max=9007199254740991 */
+             iter_batch_offset?: Signal['INT']
+             /** default=1 min=9007199254740991 max=9007199254740991 */
+             iter_seed_offset?: Signal['INT']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_LoadAnimateDiffModel": {
+             model_name: Signal['E_LoraName']
+             ad_settings?: Signal['AD_SETTINGS']
+         },
+         "AnimateDiff-Evolved.ADE_LoadAnimateDiffModelWithCameraCtrl": {
+             model_name: Signal['E_LoraName']
+             camera_ctrl: Signal['E_LoraName']
+             ad_settings?: Signal['AD_SETTINGS']
+         },
+         "AnimateDiff-Evolved.ADE_LoadAnimateLCMI2VModel": {
+             model_name: Signal['E_LoraName']
+             ad_settings?: Signal['AD_SETTINGS']
+         },
+         "AnimateDiff-Evolved.ADE_LoadCameraPoses": {
+             pose_filename: Signal['E_LoraName']
+         },
+         "AnimateDiff-Evolved.ADE_LoadCameraPosesFromPath": {
+             /** default="X://path/to/pose_file.txt" */
+             file_path?: Signal['STRING']
+         },
+         "AnimateDiff-Evolved.ADE_LoopedUniformContextOptions": {
+             /** default=16 min=128 max=128 */
+             context_length?: Signal['INT']
+             /** default=1 min=32 max=32 */
+             context_stride?: Signal['INT']
+             /** default=4 min=128 max=128 */
+             context_overlap?: Signal['INT']
+             /** default=false */
+             closed_loop?: Signal['BOOLEAN']
+             fuse_method?: Signal['E_07ba75c0']
+             /** default=false */
+             use_on_equal_length?: Signal['BOOLEAN']
+             /** default=0 min=1 max=1 step=0.001 */
+             start_percent?: Signal['FLOAT']
+             /** default=1 min=9007199254740991 max=9007199254740991 */
+             guarantee_steps?: Signal['INT']
+             prev_context?: Signal['CONTEXT_OPTIONS']
+             view_opts?: Signal['VIEW_OPTS']
+         },
+         "AnimateDiff-Evolved.ADE_LoopedUniformViewOptions": {
+             /** default=16 min=128 max=128 */
+             view_length?: Signal['INT']
+             /** default=1 min=32 max=32 */
+             view_stride?: Signal['INT']
+             /** default=4 min=128 max=128 */
+             view_overlap?: Signal['INT']
+             /** default=false */
+             closed_loop?: Signal['BOOLEAN']
+             fuse_method?: Signal['E_07ba75c0']
+             /** default=false */
+             use_on_equal_length?: Signal['BOOLEAN']
+         },
+         "AnimateDiff-Evolved.ADE_LoraHookKeyframe": {
+             /** default=1 min=20 max=20 step=0.01 */
+             strength_model?: Signal['FLOAT']
+             /** default=0 min=1 max=1 step=0.001 */
+             start_percent?: Signal['FLOAT']
+             /** default=1 min=9007199254740991 max=9007199254740991 */
+             guarantee_steps?: Signal['INT']
+             prev_hook_kf?: Signal['LORA_HOOK_KEYFRAMES']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_LoraHookKeyframeFromStrengthList": {
+             /** default=-1 min=undefined step=0.001 */
+             strengths_float?: Signal['FLOAT']
+             /** default=0 min=1 max=1 step=0.001 */
+             start_percent?: Signal['FLOAT']
+             /** default=1 min=1 max=1 step=0.001 */
+             end_percent?: Signal['FLOAT']
+             /** default=false */
+             print_keyframes?: Signal['BOOLEAN']
+             prev_hook_kf?: Signal['LORA_HOOK_KEYFRAMES']
+         },
+         "AnimateDiff-Evolved.ADE_LoraHookKeyframeInterpolation": {
+             /** default=0 min=1 max=1 step=0.001 */
+             start_percent?: Signal['FLOAT']
+             /** default=1 min=1 max=1 step=0.001 */
+             end_percent?: Signal['FLOAT']
+             /** default=1 min=10 max=10 step=0.001 */
+             strength_start?: Signal['FLOAT']
+             /** default=1 min=10 max=10 step=0.001 */
+             strength_end?: Signal['FLOAT']
+             interpolation: Signal['E_7c7d86e6']
+             /** default=5 min=100 max=100 step=1 */
+             intervals?: Signal['INT']
+             /** default=false */
+             print_keyframes?: Signal['BOOLEAN']
+             prev_hook_kf?: Signal['LORA_HOOK_KEYFRAMES']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_MultivalConvertToMask": {
+             multival: Signal['MULTIVAL']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_MultivalDynamic": {
+             /** default=1 min=undefined step=0.001 */
+             float_val?: Signal['FLOAT']
+             mask_optional?: Signal['MASK']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_MultivalDynamicFloatInput": {
+             /** default=1 min=10 max=10 step=0.001 */
+             float_val?: Signal['FLOAT']
+             mask_optional?: Signal['MASK']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_MultivalDynamicFloats": {
+             /** default=1 min=10 max=10 step=0.001 */
+             floats?: Signal['FLOATS']
+             mask_optional?: Signal['MASK']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_MultivalScaledMask": {
+             /** default=0 min=undefined step=0.001 */
+             min_float_val?: Signal['FLOAT']
+             /** default=1 min=undefined step=0.001 */
+             max_float_val?: Signal['FLOAT']
+             mask: Signal['MASK']
+             scaling?: Signal['E_e981387a']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_NoisedImageInjection": {
+             image: Signal['IMAGE']
+             vae: Signal['VAE']
+             mask_opt?: Signal['MASK']
+             /** default=false */
+             invert_mask?: Signal['BOOLEAN']
+             /** default=true */
+             resize_image?: Signal['BOOLEAN']
+             /** default=0 min=1 max=1 step=0.001 */
+             start_percent?: Signal['FLOAT']
+             /** default=1 min=9007199254740991 max=9007199254740991 */
+             guarantee_steps?: Signal['INT']
+             img_inject_opts?: Signal['IMAGE_INJECT_OPTIONS']
+             strength_multival?: Signal['MULTIVAL']
+             prev_image_inject?: Signal['IMAGE_INJECT']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_NoisedImageInjectOptions": {
+             /** default=0 min=16384 max=16384 step=1 */
+             composite_x?: Signal['INT']
+             /** default=0 min=16384 max=16384 step=1 */
+             composite_y?: Signal['INT']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_NoiseLayerAdd": {
+             /** default=0 min=9007199254740991 max=9007199254740991 */
+             batch_offset?: Signal['INT']
+             noise_type: Signal['E_df934b3b']
+             seed_gen_override: Signal['E_b5e69c34']
+             /** default=0 min=9007199254740991 max=9007199254740991 */
+             seed_offset?: Signal['INT']
+             /** default=0.5 min=10 max=10 step=0.001 */
+             noise_weight?: Signal['FLOAT']
+             prev_noise_layers?: Signal['NOISE_LAYERS']
+             mask_optional?: Signal['MASK']
+             /** default=0 min=18446744073709552000 max=18446744073709552000 */
+             seed_override?: Signal['INT']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_NoiseLayerAddWeighted": {
+             /** default=0 min=9007199254740991 max=9007199254740991 */
+             batch_offset?: Signal['INT']
+             noise_type: Signal['E_df934b3b']
+             seed_gen_override: Signal['E_b5e69c34']
+             /** default=0 min=9007199254740991 max=9007199254740991 */
+             seed_offset?: Signal['INT']
+             /** default=0.5 min=10 max=10 step=0.001 */
+             noise_weight?: Signal['FLOAT']
+             /** default=1 min=undefined step=0.001 */
+             balance_multiplier?: Signal['FLOAT']
+             prev_noise_layers?: Signal['NOISE_LAYERS']
+             mask_optional?: Signal['MASK']
+             /** default=0 min=18446744073709552000 max=18446744073709552000 */
+             seed_override?: Signal['INT']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_NoiseLayerReplace": {
+             /** default=0 min=9007199254740991 max=9007199254740991 */
+             batch_offset?: Signal['INT']
+             noise_type: Signal['E_df934b3b']
+             seed_gen_override: Signal['E_b5e69c34']
+             /** default=0 min=9007199254740991 max=9007199254740991 */
+             seed_offset?: Signal['INT']
+             prev_noise_layers?: Signal['NOISE_LAYERS']
+             mask_optional?: Signal['MASK']
+             /** default=0 min=18446744073709552000 max=18446744073709552000 */
+             seed_override?: Signal['INT']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_PairedConditioningCombine": {
+             positive_A: Signal['CONDITIONING']
+             negative_A: Signal['CONDITIONING']
+             positive_B: Signal['CONDITIONING']
+             negative_B: Signal['CONDITIONING']
+         },
+         "AnimateDiff-Evolved.ADE_PairedConditioningSetMask": {
+             positive_ADD: Signal['CONDITIONING']
+             negative_ADD: Signal['CONDITIONING']
+             /** default=1 min=10 max=10 step=0.01 */
+             strength?: Signal['FLOAT']
+             set_cond_area: Signal['E_046ed3ef']
+             opt_mask?: Signal['MASK']
+             opt_lora_hook?: Signal['LORA_HOOK']
+             opt_timesteps?: Signal['TIMESTEPS_COND']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_PairedConditioningSetMaskAndCombine": {
+             positive: Signal['CONDITIONING']
+             negative: Signal['CONDITIONING']
+             positive_ADD: Signal['CONDITIONING']
+             negative_ADD: Signal['CONDITIONING']
+             /** default=1 min=10 max=10 step=0.01 */
+             strength?: Signal['FLOAT']
+             set_cond_area: Signal['E_046ed3ef']
+             opt_mask?: Signal['MASK']
+             opt_lora_hook?: Signal['LORA_HOOK']
+             opt_timesteps?: Signal['TIMESTEPS_COND']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_PairedConditioningSetUnmaskedAndCombine": {
+             positive: Signal['CONDITIONING']
+             negative: Signal['CONDITIONING']
+             positive_DEFAULT: Signal['CONDITIONING']
+             negative_DEFAULT: Signal['CONDITIONING']
+             opt_lora_hook?: Signal['LORA_HOOK']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_PerBlock_SD15_FromFloats": {
+             effect_21_floats?: Signal['FLOATS']
+             scale_21_floats?: Signal['FLOATS']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_PerBlock_SD15_LowLevel": {
+             down_0__0?: Signal['AD_BLOCK']
+             down_0__1?: Signal['AD_BLOCK']
+             down_1__0?: Signal['AD_BLOCK']
+             down_1__1?: Signal['AD_BLOCK']
+             down_2__0?: Signal['AD_BLOCK']
+             down_2__1?: Signal['AD_BLOCK']
+             down_3__0?: Signal['AD_BLOCK']
+             down_3__1?: Signal['AD_BLOCK']
+             mid?: Signal['AD_BLOCK']
+             up_0__0?: Signal['AD_BLOCK']
+             up_0__1?: Signal['AD_BLOCK']
+             up_0__2?: Signal['AD_BLOCK']
+             up_1__0?: Signal['AD_BLOCK']
+             up_1__1?: Signal['AD_BLOCK']
+             up_1__2?: Signal['AD_BLOCK']
+             up_2__0?: Signal['AD_BLOCK']
+             up_2__1?: Signal['AD_BLOCK']
+             up_2__2?: Signal['AD_BLOCK']
+             up_3__0?: Signal['AD_BLOCK']
+             up_3__1?: Signal['AD_BLOCK']
+             up_3__2?: Signal['AD_BLOCK']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_PerBlock_SD15_MidLevel": {
+             down_0?: Signal['AD_BLOCK']
+             down_1?: Signal['AD_BLOCK']
+             down_2?: Signal['AD_BLOCK']
+             down_3?: Signal['AD_BLOCK']
+             mid?: Signal['AD_BLOCK']
+             up_0?: Signal['AD_BLOCK']
+             up_1?: Signal['AD_BLOCK']
+             up_2?: Signal['AD_BLOCK']
+             up_3?: Signal['AD_BLOCK']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_PerBlock_SDXL_FromFloats": {
+             effect_16_floats?: Signal['FLOATS']
+             scale_16_floats?: Signal['FLOATS']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_PerBlock_SDXL_LowLevel": {
+             down_0__0?: Signal['AD_BLOCK']
+             down_0__1?: Signal['AD_BLOCK']
+             down_1__0?: Signal['AD_BLOCK']
+             down_1__1?: Signal['AD_BLOCK']
+             down_2__0?: Signal['AD_BLOCK']
+             down_2__1?: Signal['AD_BLOCK']
+             mid?: Signal['AD_BLOCK']
+             up_0__0?: Signal['AD_BLOCK']
+             up_0__1?: Signal['AD_BLOCK']
+             up_0__2?: Signal['AD_BLOCK']
+             up_1__0?: Signal['AD_BLOCK']
+             up_1__1?: Signal['AD_BLOCK']
+             up_1__2?: Signal['AD_BLOCK']
+             up_2__0?: Signal['AD_BLOCK']
+             up_2__1?: Signal['AD_BLOCK']
+             up_2__2?: Signal['AD_BLOCK']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_PerBlock_SDXL_MidLevel": {
+             down_0?: Signal['AD_BLOCK']
+             down_1?: Signal['AD_BLOCK']
+             down_2?: Signal['AD_BLOCK']
+             mid?: Signal['AD_BLOCK']
+             up_0?: Signal['AD_BLOCK']
+             up_1?: Signal['AD_BLOCK']
+             up_2?: Signal['AD_BLOCK']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_PerBlockHighLevel": {
+             down?: Signal['AD_BLOCK']
+             mid?: Signal['AD_BLOCK']
+             up?: Signal['AD_BLOCK']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_PerturbedAttentionGuidanceMultival": {
+             model: Signal['MODEL']
+             scale_multival: Signal['MULTIVAL']
+         },
+         "AnimateDiff-Evolved.ADE_PIA_AnimateDiffKeyframe": {
+             /** default=0 min=1 max=1 step=0.001 */
+             start_percent?: Signal['FLOAT']
+             prev_ad_keyframes?: Signal['AD_KEYFRAMES']
+             scale_multival?: Signal['MULTIVAL']
+             effect_multival?: Signal['MULTIVAL']
+             pia_input?: Signal['PIA_INPUT']
+             /** default=true */
+             inherit_missing?: Signal['BOOLEAN']
+             /** default=1 min=9007199254740991 max=9007199254740991 */
+             guarantee_steps?: Signal['INT']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_PromptScheduling": {
+             /** default="" */
+             prompts?: Signal['STRING']
+             clip: Signal['CLIP']
+             /** default="" */
+             prepend_text?: Signal['STRING']
+             /** default="" */
+             append_text?: Signal['STRING']
+             values_replace?: Signal['VALUES_REPLACE']
+             /** default=false */
+             print_schedule?: Signal['BOOLEAN']
+             /** default=0 min=9007199254740991 max=9007199254740991 step=1 */
+             max_length?: Signal['INT']
+             tensor_interp?: Signal['E_a154f844']
+         },
+         "AnimateDiff-Evolved.ADE_PromptSchedulingLatents": {
+             /** default="" */
+             prompts?: Signal['STRING']
+             clip: Signal['CLIP']
+             latent: Signal['LATENT']
+             /** default="" */
+             prepend_text?: Signal['STRING']
+             /** default="" */
+             append_text?: Signal['STRING']
+             values_replace?: Signal['VALUES_REPLACE']
+             /** default=false */
+             print_schedule?: Signal['BOOLEAN']
+             tensor_interp?: Signal['E_a154f844']
+         },
+         "AnimateDiff-Evolved.ADE_RawSigmaSchedule": {
+             raw_beta_schedule: Signal['E_0d50dafa']
+             /** default=0.00085 min=1 max=1 step=0.000001 */
+             linear_start?: Signal['FLOAT']
+             /** default=0.012 min=1 max=1 step=0.000001 */
+             linear_end?: Signal['FLOAT']
+             sampling: Signal['E_7c132641']
+             /** default=50 min=1000 max=1000 */
+             lcm_original_timesteps?: Signal['INT']
+             /** default=false */
+             lcm_zsnr?: Signal['BOOLEAN']
+         },
+         "AnimateDiff-Evolved.ADE_RegisterLoraHook": {
+             model: Signal['MODEL']
+             clip: Signal['CLIP']
+             lora_name: Signal['E_LoraName']
+             /** default=1 min=20 max=20 step=0.01 */
+             strength_model?: Signal['FLOAT']
+             /** default=1 min=20 max=20 step=0.01 */
+             strength_clip?: Signal['FLOAT']
+         },
+         "AnimateDiff-Evolved.ADE_RegisterLoraHookModelOnly": {
+             model: Signal['MODEL']
+             lora_name: Signal['E_LoraName']
+             /** default=1 min=20 max=20 step=0.01 */
+             strength_model?: Signal['FLOAT']
+         },
+         "AnimateDiff-Evolved.ADE_RegisterModelAsLoraHook": {
+             model: Signal['MODEL']
+             clip: Signal['CLIP']
+             ckpt_name: Signal['E_CkptName']
+             /** default=1 min=20 max=20 step=0.01 */
+             strength_model?: Signal['FLOAT']
+             /** default=1 min=20 max=20 step=0.01 */
+             strength_clip?: Signal['FLOAT']
+         },
+         "AnimateDiff-Evolved.ADE_RegisterModelAsLoraHookModelOnly": {
+             model: Signal['MODEL']
+             ckpt_name: Signal['E_CkptName']
+             /** default=1 min=20 max=20 step=0.01 */
+             strength_model?: Signal['FLOAT']
+         },
+         "AnimateDiff-Evolved.ADE_ReplaceCameraParameters": {
+             poses: Signal['CAMERACTRL_POSES']
+             /** default=0.474812461 min=1 max=1 step=1e-9 */
+             fx?: Signal['FLOAT']
+             /** default=0.844111024 min=1 max=1 step=1e-9 */
+             fy?: Signal['FLOAT']
+             /** default=0.5 min=1 max=1 step=0.01 */
+             cx?: Signal['FLOAT']
+             /** default=0.5 min=1 max=1 step=0.01 */
+             cy?: Signal['FLOAT']
+         },
+         "AnimateDiff-Evolved.ADE_ReplaceOriginalPoseAspectRatio": {
+             poses: Signal['CAMERACTRL_POSES']
+             /** default=1280 min=9007199254740991 max=9007199254740991 */
+             orig_pose_width?: Signal['INT']
+             /** default=720 min=9007199254740991 max=9007199254740991 */
+             orig_pose_height?: Signal['INT']
+         },
+         "AnimateDiff-Evolved.ADE_RescaleCFGMultival": {
+             model: Signal['MODEL']
+             mult_multival: Signal['MULTIVAL']
+         },
+         "AnimateDiff-Evolved.ADE_SetLoraHookKeyframe": {
+             lora_hook: Signal['LORA_HOOK']
+             hook_kf: Signal['LORA_HOOK_KEYFRAMES']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_SigmaSchedule": {
+             beta_schedule: Signal['E_851da0f5']
+         },
+         "AnimateDiff-Evolved.ADE_SigmaScheduleSplitAndCombine": {
+             schedule_Start: Signal['SIGMA_SCHEDULE']
+             schedule_End: Signal['SIGMA_SCHEDULE']
+             /** default=0.5 min=1 max=1 step=0.001 */
+             idx_split_percent?: Signal['FLOAT']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_SigmaScheduleToSigmas": {
+             sigma_schedule: Signal['SIGMA_SCHEDULE']
+             scheduler: Signal['E_SchedulerName']
+             /** default=20 min=10000 max=10000 */
+             steps?: Signal['INT']
+             /** default=1 min=1 max=1 step=0.01 */
+             denoise?: Signal['FLOAT']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_SigmaScheduleWeightedAverage": {
+             schedule_A: Signal['SIGMA_SCHEDULE']
+             schedule_B: Signal['SIGMA_SCHEDULE']
+             /** default=0.5 min=1 max=1 step=0.001 */
+             weight_A?: Signal['FLOAT']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_SigmaScheduleWeightedAverageInterp": {
+             schedule_A: Signal['SIGMA_SCHEDULE']
+             schedule_B: Signal['SIGMA_SCHEDULE']
+             /** default=0.5 min=1 max=1 step=0.001 */
+             weight_A_Start?: Signal['FLOAT']
+             /** default=0.5 min=1 max=1 step=0.001 */
+             weight_A_End?: Signal['FLOAT']
+             interpolation: Signal['E_7c7d86e6']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_StandardStaticContextOptions": {
+             /** default=16 min=128 max=128 */
+             context_length?: Signal['INT']
+             /** default=4 min=128 max=128 */
+             context_overlap?: Signal['INT']
+             fuse_method?: Signal['E_68a33fb1']
+             /** default=false */
+             use_on_equal_length?: Signal['BOOLEAN']
+             /** default=0 min=1 max=1 step=0.001 */
+             start_percent?: Signal['FLOAT']
+             /** default=1 min=9007199254740991 max=9007199254740991 */
+             guarantee_steps?: Signal['INT']
+             prev_context?: Signal['CONTEXT_OPTIONS']
+             view_opts?: Signal['VIEW_OPTS']
+         },
+         "AnimateDiff-Evolved.ADE_StandardStaticViewOptions": {
+             /** default=16 min=128 max=128 */
+             view_length?: Signal['INT']
+             /** default=4 min=128 max=128 */
+             view_overlap?: Signal['INT']
+             fuse_method?: Signal['E_07ba75c0']
+         },
+         "AnimateDiff-Evolved.ADE_StandardUniformContextOptions": {
+             /** default=16 min=128 max=128 */
+             context_length?: Signal['INT']
+             /** default=1 min=32 max=32 */
+             context_stride?: Signal['INT']
+             /** default=4 min=128 max=128 */
+             context_overlap?: Signal['INT']
+             fuse_method?: Signal['E_07ba75c0']
+             /** default=false */
+             use_on_equal_length?: Signal['BOOLEAN']
+             /** default=0 min=1 max=1 step=0.001 */
+             start_percent?: Signal['FLOAT']
+             /** default=1 min=9007199254740991 max=9007199254740991 */
+             guarantee_steps?: Signal['INT']
+             prev_context?: Signal['CONTEXT_OPTIONS']
+             view_opts?: Signal['VIEW_OPTS']
+         },
+         "AnimateDiff-Evolved.ADE_StandardUniformViewOptions": {
+             /** default=16 min=128 max=128 */
+             view_length?: Signal['INT']
+             /** default=1 min=32 max=32 */
+             view_stride?: Signal['INT']
+             /** default=4 min=128 max=128 */
+             view_overlap?: Signal['INT']
+             fuse_method?: Signal['E_07ba75c0']
+         },
+         "AnimateDiff-Evolved.ADE_TimestepsConditioning": {
+             /** default=0 min=1 max=1 step=0.001 */
+             start_percent?: Signal['FLOAT']
+             /** default=1 min=1 max=1 step=0.001 */
+             end_percent?: Signal['FLOAT']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_UpscaleAndVAEEncode": {
+             image: Signal['IMAGE']
+             vae: Signal['VAE']
+             latent_size: Signal['LATENT']
+             scale_method: Signal['E_ImageUpscaleMethod']
+             /** default="center" */
+             crop?: Signal['E_e2779c2a']
+         },
+         "AnimateDiff-Evolved.ADE_UseEvolvedSampling": {
+             model: Signal['MODEL']
+             /** default="autoselect" */
+             beta_schedule?: Signal['E_092dd1cc']
+             m_models?: Signal['M_MODELS']
+             context_options?: Signal['CONTEXT_OPTIONS']
+             sample_settings?: Signal['SAMPLE_SETTINGS']
+         },
+         "AnimateDiff-Evolved.ADE_ValueScheduling": {
+             /** default="" */
+             values?: Signal['STRING']
+             /** default=false */
+             print_schedule?: Signal['BOOLEAN']
+             /** default=0 min=9007199254740991 max=9007199254740991 step=1 */
+             max_length?: Signal['INT']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_ValueSchedulingLatents": {
+             /** default="" */
+             values?: Signal['STRING']
+             latent: Signal['LATENT']
+             /** default=false */
+             print_schedule?: Signal['BOOLEAN']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_ValuesReplace": {
+             /** default="" */
+             value_key?: Signal['STRING']
+             floats: Signal['FLOATS']
+             prev_replace?: Signal['VALUES_REPLACE']
+             /** */
+             autosize?: Signal['ADEAUTOSIZE']
+         },
+         "AnimateDiff-Evolved.ADE_ViewsOnlyContextOptions": {
+             view_opts_req: Signal['VIEW_OPTS']
+             /** default=0 min=1 max=1 step=0.001 */
+             start_percent?: Signal['FLOAT']
+             /** default=1 min=9007199254740991 max=9007199254740991 */
+             guarantee_steps?: Signal['INT']
+             prev_context?: Signal['CONTEXT_OPTIONS']
+         },
+         "AnimateDiff-Evolved.ADE_VisualizeContextOptionsK": {
+             model: Signal['MODEL']
+             context_opts: Signal['CONTEXT_OPTIONS']
+             sampler_name: Signal['E_SamplerName']
+             scheduler: Signal['E_SchedulerName']
+             /** default=1440 min=16384 max=16384 */
+             visual_width?: Signal['INT']
+             /** default=32 min=9007199254740991 max=9007199254740991 */
+             latents_length?: Signal['INT']
+             /** default=20 min=9007199254740991 max=9007199254740991 */
+             steps?: Signal['INT']
+             /** default=1 min=1 max=1 step=0.01 */
+             denoise?: Signal['FLOAT']
+         },
+         "AnimateDiff-Evolved.ADE_VisualizeContextOptionsKAdv": {
+             model: Signal['MODEL']
+             context_opts: Signal['CONTEXT_OPTIONS']
+             sampler_name: Signal['E_SamplerName']
+             scheduler: Signal['E_SchedulerName']
+             /** default=1440 min=16384 max=16384 */
+             visual_width?: Signal['INT']
+             /** default=32 min=9007199254740991 max=9007199254740991 */
+             latents_length?: Signal['INT']
+             /** default=20 min=9007199254740991 max=9007199254740991 */
+             steps?: Signal['INT']
+             /** default=0 min=9007199254740991 max=9007199254740991 */
+             start_step?: Signal['INT']
+             /** default=20 min=9007199254740991 max=9007199254740991 */
+             end_step?: Signal['INT']
+         },
+         "AnimateDiff-Evolved.ADE_VisualizeContextOptionsSCustom": {
+             model: Signal['MODEL']
+             context_opts: Signal['CONTEXT_OPTIONS']
+             sigmas: Signal['SIGMAS']
+             /** default=1440 min=16384 max=16384 */
+             visual_width?: Signal['INT']
+             /** default=32 min=9007199254740991 max=9007199254740991 */
+             latents_length?: Signal['INT']
+         },
+         "AnimateDiff-Evolved.AnimateDiffLoaderV1": {
+             model: Signal['MODEL']
+             latents: Signal['LATENT']
+             model_name: Signal['E_LoraName']
+             /** default=false */
+             unlimited_area_hack?: Signal['BOOLEAN']
+             beta_schedule: Signal['E_092dd1cc']
+             /** */
+             deprecation_warning?: Signal['ADEWARN']
+         },
+         "AnimateDiff-Evolved.CheckpointLoaderSimpleWithNoiseSelect": {
+             ckpt_name: Signal['E_CkptName']
+             /** default="use existing" */
+             beta_schedule?: Signal['E_092dd1cc']
+             /** default=false */
+             use_custom_scale_factor?: Signal['BOOLEAN']
+             /** default=0.18215 min=1 max=1 step=0.00001 */
+             scale_factor?: Signal['FLOAT']
+         },
          BasicGuider: {
              model: Signal['MODEL']
              conditioning: Signal['CONDITIONING']
@@ -1549,6 +3184,23 @@ declare global {
              /** default="clip/ComfyUI" */
              filename_prefix?: Signal['STRING']
          },
+         "clipseg.CLIPSeg": {
+             image: Signal['IMAGE']
+             /** */
+             text: Signal['STRING']
+             /** default=7 min=15 max=15 step=0.1 */
+             blur?: Signal['FLOAT']
+             /** default=0.4 min=1 max=1 step=0.05 */
+             threshold?: Signal['FLOAT']
+             /** default=4 min=10 max=10 step=1 */
+             dilation_factor?: Signal['INT']
+         },
+         "clipseg.CombineSegMasks": {
+             input_image: Signal['IMAGE']
+             mask_1: Signal['MASK']
+             mask_2: Signal['MASK']
+             mask_3?: Signal['MASK']
+         },
          CLIPSetLastLayer: {
              clip: Signal['CLIP']
              /** default=-1 min=-1 max=-1 step=1 */
@@ -1627,7 +3279,7 @@ declare global {
              image: Signal['IMAGE']
          },
          CLIPVisionLoader: {
-             clip_name: Signal['E_LoraName']
+             clip_name: Signal['E_daae7c6f']
          },
          ConditioningAverage: {
              conditioning_to: Signal['CONDITIONING']
@@ -2361,6 +4013,512 @@ declare global {
              right?: Signal['INT']
              /** default=0 min=16384 max=16384 step=1 */
              bottom?: Signal['INT']
+         },
+         "FizzNodes.AbsCosWave": {
+             /** default=1 min=9999 max=9999 step=1 */
+             phase?: Signal['FLOAT']
+             /** default=0.5 min=9999 max=9999 step=0.1 */
+             amplitude?: Signal['FLOAT']
+             /** default=0 min=9999 max=9999 step=1 */
+             x_translation?: Signal['FLOAT']
+             /** default=0.5 min=9999 max=9999 step=0.05 */
+             max_value?: Signal['FLOAT']
+             /** default=1 min=9999 max=9999 step=1 */
+             current_frame?: Signal['INT']
+         },
+         "FizzNodes.AbsSinWave": {
+             /** default=1 min=9999 max=9999 step=1 */
+             phase?: Signal['FLOAT']
+             /** default=0.5 min=9999 max=9999 step=0.1 */
+             amplitude?: Signal['FLOAT']
+             /** default=0 min=9999 max=9999 step=1 */
+             x_translation?: Signal['FLOAT']
+             /** default=0.5 min=9999 max=9999 step=0.05 */
+             max_value?: Signal['FLOAT']
+             /** default=1 min=9999 max=9999 step=1 */
+             current_frame?: Signal['INT']
+         },
+         "FizzNodes.BatchPromptSchedule": {
+             /** default="\"0\" :\"\",\n\"11\" :\"\",\n\"23\" :\"\",\n\"35\" :\"\",\n\"47\" :\"\",\n\"59\" :\"\",\n\"71\" :\"\",\n\"83\" :\"\",\n\"95\" :\"\",\n\"107\" :\"\",\n\"119\" :\"\"\n" */
+             text?: Signal['STRING']
+             clip: Signal['CLIP']
+             /** default=120 min=999999 max=999999 step=1 */
+             max_frames?: Signal['INT']
+             /** default=false */
+             print_output?: Signal['BOOLEAN']
+             /** */
+             pre_text?: Signal['STRING']
+             /** */
+             app_text?: Signal['STRING']
+             /** default=0 min=9999 max=9999 step=1 */
+             start_frame?: Signal['INT']
+             /** default=0 min=9999 max=9999 step=1 */
+             end_frame?: Signal['INT']
+             /** default=0 min=9999 max=9999 step=0.1 */
+             pw_a?: Signal['FLOAT']
+             /** default=0 min=9999 max=9999 step=0.1 */
+             pw_b?: Signal['FLOAT']
+             /** default=0 min=9999 max=9999 step=0.1 */
+             pw_c?: Signal['FLOAT']
+             /** default=0 min=9999 max=9999 step=0.1 */
+             pw_d?: Signal['FLOAT']
+         },
+         "FizzNodes.BatchPromptScheduleEncodeSDXL": {
+             /** default=1024 min=8192 max=8192 */
+             width?: Signal['INT']
+             /** default=1024 min=8192 max=8192 */
+             height?: Signal['INT']
+             /** default=0 min=8192 max=8192 */
+             crop_w?: Signal['INT']
+             /** default=0 min=8192 max=8192 */
+             crop_h?: Signal['INT']
+             /** default=1024 min=8192 max=8192 */
+             target_width?: Signal['INT']
+             /** default=1024 min=8192 max=8192 */
+             target_height?: Signal['INT']
+             /** */
+             text_g: Signal['STRING']
+             clip: Signal['CLIP']
+             /** */
+             text_l: Signal['STRING']
+             /** default=120 min=999999 max=999999 step=1 */
+             max_frames?: Signal['INT']
+             /** default=false */
+             print_output?: Signal['BOOLEAN']
+             /** */
+             pre_text_G?: Signal['STRING']
+             /** */
+             app_text_G?: Signal['STRING']
+             /** */
+             pre_text_L?: Signal['STRING']
+             /** */
+             app_text_L?: Signal['STRING']
+             /** default=0 min=9999 max=9999 step=0.1 */
+             pw_a?: Signal['FLOAT']
+             /** default=0 min=9999 max=9999 step=0.1 */
+             pw_b?: Signal['FLOAT']
+             /** default=0 min=9999 max=9999 step=0.1 */
+             pw_c?: Signal['FLOAT']
+             /** default=0 min=9999 max=9999 step=0.1 */
+             pw_d?: Signal['FLOAT']
+             /** default=0 min=9999 max=9999 step=1 */
+             start_frame?: Signal['INT']
+             /** default=120 min=9999 max=9999 step=1 */
+             end_frame?: Signal['INT']
+         },
+         "FizzNodes.BatchPromptScheduleLatentInput": {
+             /** default="\"0\" :\"\",\n\"11\" :\"\",\n\"23\" :\"\",\n\"35\" :\"\",\n\"47\" :\"\",\n\"59\" :\"\",\n\"71\" :\"\",\n\"83\" :\"\",\n\"95\" :\"\",\n\"107\" :\"\",\n\"119\" :\"\"\n" */
+             text?: Signal['STRING']
+             clip: Signal['CLIP']
+             num_latents: Signal['LATENT']
+             /** default=false */
+             print_output?: Signal['BOOLEAN']
+             /** */
+             pre_text?: Signal['STRING']
+             /** */
+             app_text?: Signal['STRING']
+             /** default=0 min=9999 max=9999 step=1 */
+             start_frame?: Signal['INT']
+             /** default=0 min=9999 max=9999 step=1 */
+             end_frame?: Signal['INT']
+             /** default=0 min=9999 max=9999 step=0.1 */
+             pw_a?: Signal['FLOAT']
+             /** default=0 min=9999 max=9999 step=0.1 */
+             pw_b?: Signal['FLOAT']
+             /** default=0 min=9999 max=9999 step=0.1 */
+             pw_c?: Signal['FLOAT']
+             /** default=0 min=9999 max=9999 step=0.1 */
+             pw_d?: Signal['FLOAT']
+         },
+         "FizzNodes.BatchPromptScheduleSDXLLatentInput": {
+             /** default=1024 min=8192 max=8192 */
+             width?: Signal['INT']
+             /** default=1024 min=8192 max=8192 */
+             height?: Signal['INT']
+             /** default=0 min=8192 max=8192 */
+             crop_w?: Signal['INT']
+             /** default=0 min=8192 max=8192 */
+             crop_h?: Signal['INT']
+             /** default=1024 min=8192 max=8192 */
+             target_width?: Signal['INT']
+             /** default=1024 min=8192 max=8192 */
+             target_height?: Signal['INT']
+             /** */
+             text_g: Signal['STRING']
+             clip: Signal['CLIP']
+             /** */
+             text_l: Signal['STRING']
+             num_latents: Signal['LATENT']
+             /** default=false */
+             print_output?: Signal['BOOLEAN']
+             /** */
+             pre_text_G?: Signal['STRING']
+             /** */
+             app_text_G?: Signal['STRING']
+             /** */
+             pre_text_L?: Signal['STRING']
+             /** */
+             app_text_L?: Signal['STRING']
+             /** default=0 min=9999 max=9999 step=0.1 */
+             pw_a?: Signal['FLOAT']
+             /** default=0 min=9999 max=9999 step=0.1 */
+             pw_b?: Signal['FLOAT']
+             /** default=0 min=9999 max=9999 step=0.1 */
+             pw_c?: Signal['FLOAT']
+             /** default=0 min=9999 max=9999 step=0.1 */
+             pw_d?: Signal['FLOAT']
+             /** default=0 min=9999 max=9999 step=1 */
+             start_frame?: Signal['INT']
+             /** default=120 min=9999 max=9999 step=1 */
+             end_frame?: Signal['INT']
+         },
+         "FizzNodes.BatchStringSchedule": {
+             /** default="\"0\" :\"\",\n\"11\" :\"\",\n\"23\" :\"\",\n\"35\" :\"\",\n\"47\" :\"\",\n\"59\" :\"\",\n\"71\" :\"\",\n\"83\" :\"\",\n\"95\" :\"\",\n\"107\" :\"\",\n\"119\" :\"\"\n" */
+             text?: Signal['STRING']
+             /** default=120 min=999999 max=999999 step=1 */
+             max_frames?: Signal['INT']
+             /** default=false */
+             print_output?: Signal['BOOLEAN']
+             /** */
+             pre_text?: Signal['STRING']
+             /** */
+             app_text?: Signal['STRING']
+             /** default=0 min=9999 max=9999 step=0.1 */
+             pw_a?: Signal['FLOAT']
+             /** default=0 min=9999 max=9999 step=0.1 */
+             pw_b?: Signal['FLOAT']
+             /** default=0 min=9999 max=9999 step=0.1 */
+             pw_c?: Signal['FLOAT']
+             /** default=0 min=9999 max=9999 step=0.1 */
+             pw_d?: Signal['FLOAT']
+         },
+         "FizzNodes.BatchValueSchedule": {
+             /** default="0:(0),\n11:(0),\n23:(0),\n35:(0),\n47:(0),\n59:(0),\n71:(0),\n83:(0),\n95:(0),\n107:(0),\n119:(0)\n" */
+             text?: Signal['STRING']
+             /** default=120 min=999999 max=999999 step=1 */
+             max_frames?: Signal['INT']
+             /** default=false */
+             print_output?: Signal['BOOLEAN']
+         },
+         "FizzNodes.BatchValueScheduleLatentInput": {
+             /** default="0:(0),\n11:(0),\n23:(0),\n35:(0),\n47:(0),\n59:(0),\n71:(0),\n83:(0),\n95:(0),\n107:(0),\n119:(0)\n" */
+             text?: Signal['STRING']
+             num_latents: Signal['LATENT']
+             /** default=false */
+             print_output?: Signal['BOOLEAN']
+         },
+         "FizzNodes.CalculateFrameOffset": {
+             /** default=0 min=undefined */
+             current_frame?: Signal['INT']
+             /** default=18 min=undefined */
+             max_frames?: Signal['INT']
+             /** default=4 min=undefined */
+             num_latent_inputs?: Signal['INT']
+             /** default=4 min=undefined */
+             index?: Signal['INT']
+         },
+         "FizzNodes.ConcatStringSingle": {
+             /** default="" */
+             string_a?: Signal['STRING']
+             /** default="" */
+             string_b?: Signal['STRING']
+         },
+         "FizzNodes.convertKeyframeKeysToBatchKeys": {
+             /** default=0 */
+             input?: Signal['INT']
+             /** default=16 */
+             num_latents?: Signal['INT']
+         },
+         "FizzNodes.CosWave": {
+             /** default=1 min=9999 max=9999 step=1 */
+             phase?: Signal['FLOAT']
+             /** default=0.5 min=9999 max=9999 step=0.1 */
+             amplitude?: Signal['FLOAT']
+             /** default=0 min=9999 max=9999 step=1 */
+             x_translation?: Signal['FLOAT']
+             /** default=0.5 min=9999 max=9999 step=0.05 */
+             y_translation?: Signal['FLOAT']
+             /** default=1 min=9999 max=9999 step=1 */
+             current_frame?: Signal['INT']
+         },
+         "FizzNodes.FizzFrame": {
+             /** default=0 min=undefined */
+             frame?: Signal['INT']
+             /** */
+             previous_frame: Signal['FIZZFRAME']
+             /** */
+             positive_text: Signal['STRING']
+             /** */
+             negative_text?: Signal['STRING']
+         },
+         "FizzNodes.FizzFrameConcatenate": {
+             /** */
+             frame: Signal['FIZZFRAME']
+         },
+         "FizzNodes.ImagesFromBatchSchedule": {
+             images: Signal['IMAGE']
+             /** default="\"0\" :\"\",\n\"11\" :\"\",\n\"23\" :\"\",\n\"35\" :\"\",\n\"47\" :\"\",\n\"59\" :\"\",\n\"71\" :\"\",\n\"83\" :\"\",\n\"95\" :\"\",\n\"107\" :\"\",\n\"119\" :\"\"\n" */
+             text?: Signal['STRING']
+             /** default=0 min=999999 max=999999 step=1 */
+             current_frame?: Signal['INT']
+             /** default=120 min=999999 max=999999 step=1 */
+             max_frames?: Signal['INT']
+             /** default=false */
+             print_output?: Signal['BOOLEAN']
+         },
+         "FizzNodes.Init FizzFrame": {
+             /** default=0 min=undefined */
+             frame?: Signal['INT']
+             /** */
+             positive_text: Signal['STRING']
+             /** */
+             negative_text?: Signal['STRING']
+             /** */
+             general_positive?: Signal['STRING']
+             /** */
+             general_negative?: Signal['STRING']
+             /** */
+             previous_frame?: Signal['FIZZFRAME']
+             clip?: Signal['CLIP']
+         },
+         "FizzNodes.InvCosWave": {
+             /** default=1 min=9999 max=9999 step=1 */
+             phase?: Signal['FLOAT']
+             /** default=0.5 min=9999 max=9999 step=0.1 */
+             amplitude?: Signal['FLOAT']
+             /** default=0 min=9999 max=9999 step=1 */
+             x_translation?: Signal['FLOAT']
+             /** default=0.5 min=9999 max=9999 step=0.05 */
+             y_translation?: Signal['FLOAT']
+             /** default=1 min=9999 max=9999 step=1 */
+             current_frame?: Signal['INT']
+         },
+         "FizzNodes.InvSinWave": {
+             /** default=1 min=9999 max=9999 step=1 */
+             phase?: Signal['FLOAT']
+             /** default=0.5 min=9999 max=9999 step=0.1 */
+             amplitude?: Signal['FLOAT']
+             /** default=0 min=9999 max=9999 step=1 */
+             x_translation?: Signal['FLOAT']
+             /** default=0.5 min=9999 max=9999 step=0.05 */
+             y_translation?: Signal['FLOAT']
+             /** default=1 min=9999 max=9999 step=1 */
+             current_frame?: Signal['INT']
+         },
+         "FizzNodes.Lerp": {
+             /** default=1 min=9999 max=9999 step=1 */
+             num_Images?: Signal['FLOAT']
+             /** default=1 min=10 max=10 step=0.01 */
+             strength?: Signal['FLOAT']
+             /** default=1 min=9999 max=9999 step=1 */
+             current_frame?: Signal['INT']
+         },
+         "FizzNodes.PromptSchedule": {
+             /** default="\"0\" :\"\",\n\"11\" :\"\",\n\"23\" :\"\",\n\"35\" :\"\",\n\"47\" :\"\",\n\"59\" :\"\",\n\"71\" :\"\",\n\"83\" :\"\",\n\"95\" :\"\",\n\"107\" :\"\",\n\"119\" :\"\"\n" */
+             text?: Signal['STRING']
+             clip: Signal['CLIP']
+             /** default=120 min=999999 max=999999 step=1 */
+             max_frames?: Signal['INT']
+             /** default=0 min=999999 max=999999 step=1 */
+             current_frame?: Signal['INT']
+             /** default=false */
+             print_output?: Signal['BOOLEAN']
+             /** */
+             pre_text?: Signal['STRING']
+             /** */
+             app_text?: Signal['STRING']
+             /** default=0 min=9999 max=9999 step=0.1 */
+             pw_a?: Signal['FLOAT']
+             /** default=0 min=9999 max=9999 step=0.1 */
+             pw_b?: Signal['FLOAT']
+             /** default=0 min=9999 max=9999 step=0.1 */
+             pw_c?: Signal['FLOAT']
+             /** default=0 min=9999 max=9999 step=0.1 */
+             pw_d?: Signal['FLOAT']
+         },
+         "FizzNodes.PromptScheduleEncodeSDXL": {
+             /** default=1024 min=8192 max=8192 */
+             width?: Signal['INT']
+             /** default=1024 min=8192 max=8192 */
+             height?: Signal['INT']
+             /** default=0 min=8192 max=8192 */
+             crop_w?: Signal['INT']
+             /** default=0 min=8192 max=8192 */
+             crop_h?: Signal['INT']
+             /** default=1024 min=8192 max=8192 */
+             target_width?: Signal['INT']
+             /** default=1024 min=8192 max=8192 */
+             target_height?: Signal['INT']
+             /** */
+             text_g: Signal['STRING']
+             clip: Signal['CLIP']
+             /** */
+             text_l: Signal['STRING']
+             /** default=120 min=999999 max=999999 step=1 */
+             max_frames?: Signal['INT']
+             /** default=0 min=999999 max=999999 step=1 */
+             current_frame?: Signal['INT']
+             /** default=false */
+             print_output?: Signal['BOOLEAN']
+             /** */
+             pre_text_G?: Signal['STRING']
+             /** */
+             app_text_G?: Signal['STRING']
+             /** */
+             pre_text_L?: Signal['STRING']
+             /** */
+             app_text_L?: Signal['STRING']
+             /** default=0 min=9999 max=9999 step=0.1 */
+             pw_a?: Signal['FLOAT']
+             /** default=0 min=9999 max=9999 step=0.1 */
+             pw_b?: Signal['FLOAT']
+             /** default=0 min=9999 max=9999 step=0.1 */
+             pw_c?: Signal['FLOAT']
+             /** default=0 min=9999 max=9999 step=0.1 */
+             pw_d?: Signal['FLOAT']
+         },
+         "FizzNodes.PromptScheduleNodeFlow": {
+             /** */
+             text: Signal['STRING']
+             /** default=24 min=9999 max=9999 step=1 */
+             num_frames?: Signal['INT']
+             /** */
+             in_text?: Signal['STRING']
+             /** default=0 min=999999 max=999999 step=1 */
+             max_frames?: Signal['INT']
+         },
+         "FizzNodes.PromptScheduleNodeFlowEnd": {
+             /** */
+             text: Signal['STRING']
+             clip: Signal['CLIP']
+             /** default=0 min=999999 max=999999 step=1 */
+             max_frames?: Signal['INT']
+             /** default=false */
+             print_output?: Signal['BOOLEAN']
+             /** default=0 min=999999 max=999999 step=1 */
+             current_frame?: Signal['INT']
+             /** */
+             pre_text?: Signal['STRING']
+             /** */
+             app_text?: Signal['STRING']
+             /** default=0 min=9999 max=9999 step=0.1 */
+             pw_a?: Signal['FLOAT']
+             /** default=0 min=9999 max=9999 step=0.1 */
+             pw_b?: Signal['FLOAT']
+             /** default=0 min=9999 max=9999 step=0.1 */
+             pw_c?: Signal['FLOAT']
+             /** default=0 min=9999 max=9999 step=0.1 */
+             pw_d?: Signal['FLOAT']
+         },
+         "FizzNodes.SawtoothWave": {
+             /** default=1 min=9999 max=9999 step=1 */
+             phase?: Signal['FLOAT']
+             /** default=0.5 min=9999 max=9999 step=0.1 */
+             step_increment?: Signal['FLOAT']
+             /** default=0 min=9999 max=9999 step=1 */
+             x_translation?: Signal['FLOAT']
+             /** default=0.5 min=9999 max=9999 step=0.05 */
+             start_value?: Signal['FLOAT']
+             /** default=1 min=9999 max=9999 step=1 */
+             current_frame?: Signal['INT']
+         },
+         "FizzNodes.SinWave": {
+             /** default=1 min=9999 max=9999 step=1 */
+             phase?: Signal['FLOAT']
+             /** default=0.5 min=9999 max=9999 step=0.1 */
+             amplitude?: Signal['FLOAT']
+             /** default=0 min=9999 max=9999 step=1 */
+             x_translation?: Signal['FLOAT']
+             /** default=0.5 min=9999 max=9999 step=0.05 */
+             y_translation?: Signal['FLOAT']
+             /** default=1 min=9999 max=9999 step=1 */
+             current_frame?: Signal['INT']
+         },
+         "FizzNodes.SquareWave": {
+             /** default=1 min=9999 max=9999 step=1 */
+             phase?: Signal['FLOAT']
+             /** default=0.5 min=9999 max=9999 step=0.1 */
+             amplitude?: Signal['FLOAT']
+             /** default=0 min=9999 max=9999 step=1 */
+             x_translation?: Signal['FLOAT']
+             /** default=0.5 min=9999 max=9999 step=0.05 */
+             y_translation?: Signal['FLOAT']
+             /** default=1 min=9999 max=9999 step=1 */
+             current_frame?: Signal['INT']
+         },
+         "FizzNodes.StringConcatenate": {
+             /** default="" */
+             text_a?: Signal['STRING']
+             /** default=0 */
+             frame_a?: Signal['INT']
+             /** default="" */
+             text_b?: Signal['STRING']
+             /** default=12 */
+             frame_b?: Signal['INT']
+             /** default="" */
+             text_c?: Signal['STRING']
+             /** default=24 */
+             frame_c?: Signal['INT']
+             /** default="" */
+             text_d?: Signal['STRING']
+             /** default=36 */
+             frame_d?: Signal['INT']
+             /** default="" */
+             text_e?: Signal['STRING']
+             /** default=48 */
+             frame_e?: Signal['INT']
+             /** default="" */
+             text_f?: Signal['STRING']
+             /** default=60 */
+             frame_f?: Signal['INT']
+             /** default="" */
+             text_g?: Signal['STRING']
+             /** default=72 */
+             frame_g?: Signal['INT']
+         },
+         "FizzNodes.StringSchedule": {
+             /** default="\"0\" :\"\",\n\"11\" :\"\",\n\"23\" :\"\",\n\"35\" :\"\",\n\"47\" :\"\",\n\"59\" :\"\",\n\"71\" :\"\",\n\"83\" :\"\",\n\"95\" :\"\",\n\"107\" :\"\",\n\"119\" :\"\"\n" */
+             text?: Signal['STRING']
+             /** default=120 min=999999 max=999999 step=1 */
+             max_frames?: Signal['INT']
+             /** default=0 min=999999 max=999999 step=1 */
+             current_frame?: Signal['INT']
+             /** default=false */
+             print_output?: Signal['BOOLEAN']
+             /** */
+             pre_text?: Signal['STRING']
+             /** */
+             app_text?: Signal['STRING']
+             /** default=0 min=9999 max=9999 step=0.1 */
+             pw_a?: Signal['FLOAT']
+             /** default=0 min=9999 max=9999 step=0.1 */
+             pw_b?: Signal['FLOAT']
+             /** default=0 min=9999 max=9999 step=0.1 */
+             pw_c?: Signal['FLOAT']
+             /** default=0 min=9999 max=9999 step=0.1 */
+             pw_d?: Signal['FLOAT']
+         },
+         "FizzNodes.TriangleWave": {
+             /** default=1 min=9999 max=9999 step=1 */
+             phase?: Signal['FLOAT']
+             /** default=0.5 min=9999 max=9999 step=0.1 */
+             amplitude?: Signal['FLOAT']
+             /** default=0 min=9999 max=9999 step=1 */
+             x_translation?: Signal['FLOAT']
+             /** default=0.5 min=9999 max=9999 step=0.05 */
+             y_translation?: Signal['FLOAT']
+             /** default=1 min=9999 max=9999 step=1 */
+             current_frame?: Signal['INT']
+         },
+         "FizzNodes.ValueSchedule": {
+             /** default="0:(0),\n11:(0),\n23:(0),\n35:(0),\n47:(0),\n59:(0),\n71:(0),\n83:(0),\n95:(0),\n107:(0),\n119:(0)\n" */
+             text?: Signal['STRING']
+             /** default=120 min=999999 max=999999 step=1 */
+             max_frames?: Signal['INT']
+             /** default=0 min=999999 max=999999 step=1 */
+             current_frame?: Signal['INT']
+             /** default=false */
+             print_output?: Signal['BOOLEAN']
          },
          FlipSigmas: {
              sigmas: Signal['SIGMAS']
@@ -8346,6 +10504,20 @@ declare global {
       }
       
       interface OUT {
+         "A8R8_ComfyUI_nodes.AttentionCouple": {
+            model: ComfyNodeOutput<'MODEL', 0>,
+         }
+         "A8R8_ComfyUI_nodes.AttentionCoupleRegion": {
+            region: ComfyNodeOutput<'ATTENTION_COUPLE_REGION', 0>,
+         }
+         "A8R8_ComfyUI_nodes.AttentionCoupleRegions": {
+            regions: ComfyNodeOutput<'ATTENTION_COUPLE_REGION', 0>,
+         }
+         "A8R8_ComfyUI_nodes.Base64ImageInput": {
+            IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+         }
+         "A8R8_ComfyUI_nodes.Base64ImageOutput": {
+         }
          AddNoise: {
             LATENT: ComfyNodeOutput<'LATENT', 0>,
          }
@@ -8649,6 +10821,454 @@ declare global {
          "Allor.VaeClamp": {
             VAE: ComfyNodeOutput<'VAE', 0>,
          }
+         "AnimateDiff-Evolved.ADE_ADBlockCombo": {
+            AD_BLOCK: ComfyNodeOutput<'AD_BLOCK', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_ADBlockIndiv": {
+            AD_BLOCK: ComfyNodeOutput<'AD_BLOCK', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_AdjustPEFullStretch": {
+            PE_ADJUST: ComfyNodeOutput<'PE_ADJUST', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_AdjustPEManual": {
+            PE_ADJUST: ComfyNodeOutput<'PE_ADJUST', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_AdjustPESweetspotStretch": {
+            PE_ADJUST: ComfyNodeOutput<'PE_ADJUST', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_AdjustWeightAllAdd": {
+            WEIGHT_ADJUST: ComfyNodeOutput<'WEIGHT_ADJUST', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_AdjustWeightAllMult": {
+            WEIGHT_ADJUST: ComfyNodeOutput<'WEIGHT_ADJUST', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_AdjustWeightIndivAdd": {
+            WEIGHT_ADJUST: ComfyNodeOutput<'WEIGHT_ADJUST', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_AdjustWeightIndivAttnAdd": {
+            WEIGHT_ADJUST: ComfyNodeOutput<'WEIGHT_ADJUST', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_AdjustWeightIndivAttnMult": {
+            WEIGHT_ADJUST: ComfyNodeOutput<'WEIGHT_ADJUST', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_AdjustWeightIndivMult": {
+            WEIGHT_ADJUST: ComfyNodeOutput<'WEIGHT_ADJUST', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_AnimateDiffCombine": {
+            GIF: ComfyNodeOutput<'GIF', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_AnimateDiffKeyframe": {
+            AD_KEYFRAMES: ComfyNodeOutput<'AD_KEYFRAMES', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_AnimateDiffLoaderGen1": {
+            MODEL: ComfyNodeOutput<'MODEL', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_AnimateDiffLoaderV1Advanced": {
+            MODEL: ComfyNodeOutput<'MODEL', 0>,
+            LATENT: ComfyNodeOutput<'LATENT', 1>,
+         }
+         "AnimateDiff-Evolved.ADE_AnimateDiffLoaderWithContext": {
+            MODEL: ComfyNodeOutput<'MODEL', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_AnimateDiffLoRALoader": {
+            MOTION_LORA: ComfyNodeOutput<'MOTION_LORA', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_AnimateDiffModelSettings": {
+            AD_SETTINGS: ComfyNodeOutput<'AD_SETTINGS', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_AnimateDiffModelSettings_Release": {
+            AD_SETTINGS: ComfyNodeOutput<'AD_SETTINGS', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_AnimateDiffModelSettingsAdvancedAttnStrengths": {
+            AD_SETTINGS: ComfyNodeOutput<'AD_SETTINGS', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_AnimateDiffModelSettingsSimple": {
+            AD_SETTINGS: ComfyNodeOutput<'AD_SETTINGS', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_AnimateDiffSamplingSettings": {
+            settings: ComfyNodeOutput<'SAMPLE_SETTINGS', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_AnimateDiffSettings": {
+            AD_SETTINGS: ComfyNodeOutput<'AD_SETTINGS', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_AnimateDiffUniformContextOptions": {
+            CONTEXT_OPTS: ComfyNodeOutput<'CONTEXT_OPTIONS', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_AnimateDiffUnload": {
+            MODEL: ComfyNodeOutput<'MODEL', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_ApplyAnimateDiffModel": {
+            M_MODELS: ComfyNodeOutput<'M_MODELS', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_ApplyAnimateDiffModelSimple": {
+            M_MODELS: ComfyNodeOutput<'M_MODELS', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_ApplyAnimateDiffModelWithCameraCtrl": {
+            M_MODELS: ComfyNodeOutput<'M_MODELS', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_ApplyAnimateDiffModelWithPIA": {
+            M_MODELS: ComfyNodeOutput<'M_MODELS', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_ApplyAnimateLCMI2VModel": {
+            M_MODELS: ComfyNodeOutput<'M_MODELS', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_AttachLoraHookToCLIP": {
+            hook_CLIP: ComfyNodeOutput<'CLIP', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_AttachLoraHookToConditioning": {
+            CONDITIONING: ComfyNodeOutput<'CONDITIONING', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_BatchedContextOptions": {
+            CONTEXT_OPTS: ComfyNodeOutput<'CONTEXT_OPTIONS', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_CameraCtrlAnimateDiffKeyframe": {
+            AD_KEYFRAMES: ComfyNodeOutput<'AD_KEYFRAMES', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_CameraManualPoseAppend": {
+            CAMERACTRL_POSES: ComfyNodeOutput<'CAMERACTRL_POSES', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_CameraPoseAdvanced": {
+            CAMERACTRL_POSES: ComfyNodeOutput<'CAMERACTRL_POSES', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_CameraPoseBasic": {
+            CAMERACTRL_POSES: ComfyNodeOutput<'CAMERACTRL_POSES', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_CameraPoseCombo": {
+            CAMERACTRL_POSES: ComfyNodeOutput<'CAMERACTRL_POSES', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_CFGExtrasPAG": {
+            CFG_EXTRAS: ComfyNodeOutput<'CFG_EXTRAS', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_CFGExtrasPAGSimple": {
+            CFG_EXTRAS: ComfyNodeOutput<'CFG_EXTRAS', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_CFGExtrasRescaleCFG": {
+            CFG_EXTRAS: ComfyNodeOutput<'CFG_EXTRAS', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_CFGExtrasRescaleCFGSimple": {
+            CFG_EXTRAS: ComfyNodeOutput<'CFG_EXTRAS', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_CombineLoraHooks": {
+            LORA_HOOK: ComfyNodeOutput<'LORA_HOOK', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_CombineLoraHooksEight": {
+            LORA_HOOK: ComfyNodeOutput<'LORA_HOOK', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_CombineLoraHooksFour": {
+            LORA_HOOK: ComfyNodeOutput<'LORA_HOOK', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_ConditioningCombine": {
+            CONDITIONING: ComfyNodeOutput<'CONDITIONING', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_ConditioningSetMask": {
+            CONDITIONING: ComfyNodeOutput<'CONDITIONING', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_ConditioningSetMaskAndCombine": {
+            CONDITIONING: ComfyNodeOutput<'CONDITIONING', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_ConditioningSetUnmaskedAndCombine": {
+            CONDITIONING: ComfyNodeOutput<'CONDITIONING', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_ContextExtras_ContextRef": {
+            CONTEXT_EXTRAS: ComfyNodeOutput<'CONTEXT_EXTRAS', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_Keyframe": {
+            CONTEXTREF_KF: ComfyNodeOutput<'CONTEXTREF_KEYFRAME', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_KeyframeFromList": {
+            CONTEXTREF_KF: ComfyNodeOutput<'CONTEXTREF_KEYFRAME', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_KeyframeInterpolation": {
+            CONTEXTREF_KF: ComfyNodeOutput<'CONTEXTREF_KEYFRAME', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_ModeFirst": {
+            CONTEXTREF_MODE: ComfyNodeOutput<'CONTEXTREF_MODE', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_ModeIndexes": {
+            CONTEXTREF_MODE: ComfyNodeOutput<'CONTEXTREF_MODE', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_ModeSliding": {
+            CONTEXTREF_MODE: ComfyNodeOutput<'CONTEXTREF_MODE', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_TuneAttn": {
+            CONTEXTREF_TUNE: ComfyNodeOutput<'CONTEXTREF_TUNE', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_TuneAttnAdain": {
+            CONTEXTREF_TUNE: ComfyNodeOutput<'CONTEXTREF_TUNE', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_ContextExtras_NaiveReuse": {
+            CONTEXT_EXTRAS: ComfyNodeOutput<'CONTEXT_EXTRAS', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_ContextExtras_NaiveReuse_Keyframe": {
+            NAIVEREUSE_KF: ComfyNodeOutput<'NAIVEREUSE_KEYFRAME', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_ContextExtras_NaiveReuse_KeyframeFromList": {
+            NAIVEREUSE_KF: ComfyNodeOutput<'NAIVEREUSE_KEYFRAME', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_ContextExtras_NaiveReuse_KeyframeInterpolation": {
+            NAIVEREUSE_KF: ComfyNodeOutput<'NAIVEREUSE_KEYFRAME', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_ContextExtras_Set": {
+            CONTEXT_OPTS: ComfyNodeOutput<'CONTEXT_OPTIONS', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_CustomCFG": {
+            CUSTOM_CFG: ComfyNodeOutput<'CUSTOM_CFG', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_CustomCFGKeyframe": {
+            CUSTOM_CFG: ComfyNodeOutput<'CUSTOM_CFG', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_CustomCFGKeyframeFromList": {
+            CUSTOM_CFG: ComfyNodeOutput<'CUSTOM_CFG', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_CustomCFGKeyframeInterpolation": {
+            CUSTOM_CFG: ComfyNodeOutput<'CUSTOM_CFG', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_CustomCFGKeyframeSimple": {
+            CUSTOM_CFG: ComfyNodeOutput<'CUSTOM_CFG', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_CustomCFGSimple": {
+            CUSTOM_CFG: ComfyNodeOutput<'CUSTOM_CFG', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_EmptyLatentImageLarge": {
+            LATENT: ComfyNodeOutput<'LATENT', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_FloatToFloats": {
+            FLOATS: ComfyNodeOutput<'FLOATS', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_InjectI2VIntoAnimateDiffModel": {
+            MOTION_MODEL: ComfyNodeOutput<'MOTION_MODEL_ADE', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_InjectPIAIntoAnimateDiffModel": {
+            MOTION_MODEL: ComfyNodeOutput<'MOTION_MODEL_ADE', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_InputPIA_Multival": {
+            PIA_INPUT: ComfyNodeOutput<'PIA_INPUT', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_InputPIA_PaperPresets": {
+            PIA_INPUT: ComfyNodeOutput<'PIA_INPUT', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_IterationOptsDefault": {
+            ITERATION_OPTS: ComfyNodeOutput<'ITERATION_OPTS', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_IterationOptsFreeInit": {
+            ITERATION_OPTS: ComfyNodeOutput<'ITERATION_OPTS', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_LoadAnimateDiffModel": {
+            MOTION_MODEL: ComfyNodeOutput<'MOTION_MODEL_ADE', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_LoadAnimateDiffModelWithCameraCtrl": {
+            MOTION_MODEL: ComfyNodeOutput<'MOTION_MODEL_ADE', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_LoadAnimateLCMI2VModel": {
+            MOTION_MODEL: ComfyNodeOutput<'MOTION_MODEL_ADE', 0>,
+            encoder_only: ComfyNodeOutput<'MOTION_MODEL_ADE', 1>,
+         }
+         "AnimateDiff-Evolved.ADE_LoadCameraPoses": {
+            CAMERACTRL_POSES: ComfyNodeOutput<'CAMERACTRL_POSES', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_LoadCameraPosesFromPath": {
+            CAMERACTRL_POSES: ComfyNodeOutput<'CAMERACTRL_POSES', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_LoopedUniformContextOptions": {
+            CONTEXT_OPTS: ComfyNodeOutput<'CONTEXT_OPTIONS', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_LoopedUniformViewOptions": {
+            VIEW_OPTS: ComfyNodeOutput<'VIEW_OPTS', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_LoraHookKeyframe": {
+            HOOK_KF: ComfyNodeOutput<'LORA_HOOK_KEYFRAMES', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_LoraHookKeyframeFromStrengthList": {
+            HOOK_KF: ComfyNodeOutput<'LORA_HOOK_KEYFRAMES', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_LoraHookKeyframeInterpolation": {
+            HOOK_KF: ComfyNodeOutput<'LORA_HOOK_KEYFRAMES', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_MultivalConvertToMask": {
+            MASK: ComfyNodeOutput<'MASK', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_MultivalDynamic": {
+            MULTIVAL: ComfyNodeOutput<'MULTIVAL', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_MultivalDynamicFloatInput": {
+            MULTIVAL: ComfyNodeOutput<'MULTIVAL', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_MultivalDynamicFloats": {
+            MULTIVAL: ComfyNodeOutput<'MULTIVAL', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_MultivalScaledMask": {
+            MULTIVAL: ComfyNodeOutput<'MULTIVAL', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_NoisedImageInjection": {
+            IMAGE_INJECT: ComfyNodeOutput<'IMAGE_INJECT', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_NoisedImageInjectOptions": {
+            IMG_INJECT_OPTS: ComfyNodeOutput<'IMAGE_INJECT_OPTIONS', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_NoiseLayerAdd": {
+            NOISE_LAYERS: ComfyNodeOutput<'NOISE_LAYERS', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_NoiseLayerAddWeighted": {
+            NOISE_LAYERS: ComfyNodeOutput<'NOISE_LAYERS', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_NoiseLayerReplace": {
+            NOISE_LAYERS: ComfyNodeOutput<'NOISE_LAYERS', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_PairedConditioningCombine": {
+            positive: ComfyNodeOutput<'CONDITIONING', 0>,
+            negative: ComfyNodeOutput<'CONDITIONING', 1>,
+         }
+         "AnimateDiff-Evolved.ADE_PairedConditioningSetMask": {
+            positive: ComfyNodeOutput<'CONDITIONING', 0>,
+            negative: ComfyNodeOutput<'CONDITIONING', 1>,
+         }
+         "AnimateDiff-Evolved.ADE_PairedConditioningSetMaskAndCombine": {
+            positive: ComfyNodeOutput<'CONDITIONING', 0>,
+            negative: ComfyNodeOutput<'CONDITIONING', 1>,
+         }
+         "AnimateDiff-Evolved.ADE_PairedConditioningSetUnmaskedAndCombine": {
+            positive: ComfyNodeOutput<'CONDITIONING', 0>,
+            negative: ComfyNodeOutput<'CONDITIONING', 1>,
+         }
+         "AnimateDiff-Evolved.ADE_PerBlock_SD15_FromFloats": {
+            PER_BLOCK: ComfyNodeOutput<'PER_BLOCK', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_PerBlock_SD15_LowLevel": {
+            PER_BLOCK: ComfyNodeOutput<'PER_BLOCK', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_PerBlock_SD15_MidLevel": {
+            PER_BLOCK: ComfyNodeOutput<'PER_BLOCK', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_PerBlock_SDXL_FromFloats": {
+            PER_BLOCK: ComfyNodeOutput<'PER_BLOCK', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_PerBlock_SDXL_LowLevel": {
+            PER_BLOCK: ComfyNodeOutput<'PER_BLOCK', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_PerBlock_SDXL_MidLevel": {
+            PER_BLOCK: ComfyNodeOutput<'PER_BLOCK', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_PerBlockHighLevel": {
+            PER_BLOCK: ComfyNodeOutput<'PER_BLOCK', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_PerturbedAttentionGuidanceMultival": {
+            MODEL: ComfyNodeOutput<'MODEL', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_PIA_AnimateDiffKeyframe": {
+            AD_KEYFRAMES: ComfyNodeOutput<'AD_KEYFRAMES', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_PromptScheduling": {
+            CONDITIONING: ComfyNodeOutput<'CONDITIONING', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_PromptSchedulingLatents": {
+            CONDITIONING: ComfyNodeOutput<'CONDITIONING', 0>,
+            LATENT: ComfyNodeOutput<'LATENT', 1>,
+         }
+         "AnimateDiff-Evolved.ADE_RawSigmaSchedule": {
+            SIGMA_SCHEDULE: ComfyNodeOutput<'SIGMA_SCHEDULE', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_RegisterLoraHook": {
+            MODEL: ComfyNodeOutput<'MODEL', 0>,
+            CLIP: ComfyNodeOutput<'CLIP', 1>,
+            LORA_HOOK: ComfyNodeOutput<'LORA_HOOK', 2>,
+         }
+         "AnimateDiff-Evolved.ADE_RegisterLoraHookModelOnly": {
+            MODEL: ComfyNodeOutput<'MODEL', 0>,
+            LORA_HOOK: ComfyNodeOutput<'LORA_HOOK', 1>,
+         }
+         "AnimateDiff-Evolved.ADE_RegisterModelAsLoraHook": {
+            MODEL: ComfyNodeOutput<'MODEL', 0>,
+            CLIP: ComfyNodeOutput<'CLIP', 1>,
+            LORA_HOOK: ComfyNodeOutput<'LORA_HOOK', 2>,
+         }
+         "AnimateDiff-Evolved.ADE_RegisterModelAsLoraHookModelOnly": {
+            MODEL: ComfyNodeOutput<'MODEL', 0>,
+            LORA_HOOK: ComfyNodeOutput<'LORA_HOOK', 1>,
+         }
+         "AnimateDiff-Evolved.ADE_ReplaceCameraParameters": {
+            CAMERACTRL_POSES: ComfyNodeOutput<'CAMERACTRL_POSES', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_ReplaceOriginalPoseAspectRatio": {
+            CAMERACTRL_POSES: ComfyNodeOutput<'CAMERACTRL_POSES', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_RescaleCFGMultival": {
+            MODEL: ComfyNodeOutput<'MODEL', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_SetLoraHookKeyframe": {
+            LORA_HOOK: ComfyNodeOutput<'LORA_HOOK', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_SigmaSchedule": {
+            SIGMA_SCHEDULE: ComfyNodeOutput<'SIGMA_SCHEDULE', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_SigmaScheduleSplitAndCombine": {
+            SIGMA_SCHEDULE: ComfyNodeOutput<'SIGMA_SCHEDULE', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_SigmaScheduleToSigmas": {
+            SIGMAS: ComfyNodeOutput<'SIGMAS', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_SigmaScheduleWeightedAverage": {
+            SIGMA_SCHEDULE: ComfyNodeOutput<'SIGMA_SCHEDULE', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_SigmaScheduleWeightedAverageInterp": {
+            SIGMA_SCHEDULE: ComfyNodeOutput<'SIGMA_SCHEDULE', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_StandardStaticContextOptions": {
+            CONTEXT_OPTS: ComfyNodeOutput<'CONTEXT_OPTIONS', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_StandardStaticViewOptions": {
+            VIEW_OPTS: ComfyNodeOutput<'VIEW_OPTS', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_StandardUniformContextOptions": {
+            CONTEXT_OPTS: ComfyNodeOutput<'CONTEXT_OPTIONS', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_StandardUniformViewOptions": {
+            VIEW_OPTS: ComfyNodeOutput<'VIEW_OPTS', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_TimestepsConditioning": {
+            TIMESTEPS_COND: ComfyNodeOutput<'TIMESTEPS_COND', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_UpscaleAndVAEEncode": {
+            LATENT: ComfyNodeOutput<'LATENT', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_UseEvolvedSampling": {
+            MODEL: ComfyNodeOutput<'MODEL', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_ValueScheduling": {
+            FLOAT: ComfyNodeOutput<'FLOAT', 0>,
+            FLOATS: ComfyNodeOutput<'FLOATS', 1>,
+            INT: ComfyNodeOutput<'INT', 2>,
+            INTS: ComfyNodeOutput<'INTS', 3>,
+         }
+         "AnimateDiff-Evolved.ADE_ValueSchedulingLatents": {
+            FLOAT: ComfyNodeOutput<'FLOAT', 0>,
+            FLOATS: ComfyNodeOutput<'FLOATS', 1>,
+            INT: ComfyNodeOutput<'INT', 2>,
+            INTS: ComfyNodeOutput<'INTS', 3>,
+         }
+         "AnimateDiff-Evolved.ADE_ValuesReplace": {
+            VALUES_REPLACE: ComfyNodeOutput<'VALUES_REPLACE', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_ViewsOnlyContextOptions": {
+            CONTEXT_OPTS: ComfyNodeOutput<'CONTEXT_OPTIONS', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_VisualizeContextOptionsK": {
+            IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_VisualizeContextOptionsKAdv": {
+            IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+         }
+         "AnimateDiff-Evolved.ADE_VisualizeContextOptionsSCustom": {
+            IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+         }
+         "AnimateDiff-Evolved.AnimateDiffLoaderV1": {
+            MODEL: ComfyNodeOutput<'MODEL', 0>,
+            LATENT: ComfyNodeOutput<'LATENT', 1>,
+         }
+         "AnimateDiff-Evolved.CheckpointLoaderSimpleWithNoiseSelect": {
+            MODEL: ComfyNodeOutput<'MODEL', 0>,
+            CLIP: ComfyNodeOutput<'CLIP', 1>,
+            VAE: ComfyNodeOutput<'VAE', 2>,
+         }
          BasicGuider: {
             GUIDER: ComfyNodeOutput<'GUIDER', 0>,
          }
@@ -8708,6 +11328,16 @@ declare global {
             CLIP: ComfyNodeOutput<'CLIP', 0>,
          }
          CLIPSave: {
+         }
+         "clipseg.CLIPSeg": {
+            Mask: ComfyNodeOutput<'MASK', 0>,
+            "Heatmap Mask": ComfyNodeOutput<'IMAGE', 1>,
+            "BW Mask": ComfyNodeOutput<'IMAGE', 2>,
+         }
+         "clipseg.CombineSegMasks": {
+            "Combined Mask": ComfyNodeOutput<'MASK', 0>,
+            "Heatmap Mask": ComfyNodeOutput<'IMAGE', 1>,
+            "BW Mask": ComfyNodeOutput<'IMAGE', 2>,
          }
          CLIPSetLastLayer: {
             CLIP: ComfyNodeOutput<'CLIP', 0>,
@@ -9029,6 +11659,129 @@ declare global {
          }
          FeatherMask: {
             MASK: ComfyNodeOutput<'MASK', 0>,
+         }
+         "FizzNodes.AbsCosWave": {
+            FLOAT: ComfyNodeOutput<'FLOAT', 0>,
+            INT: ComfyNodeOutput<'INT', 1>,
+         }
+         "FizzNodes.AbsSinWave": {
+            FLOAT: ComfyNodeOutput<'FLOAT', 0>,
+            INT: ComfyNodeOutput<'INT', 1>,
+         }
+         "FizzNodes.BatchPromptSchedule": {
+            POS: ComfyNodeOutput<'CONDITIONING', 0>,
+            NEG: ComfyNodeOutput<'CONDITIONING', 1>,
+         }
+         "FizzNodes.BatchPromptScheduleEncodeSDXL": {
+            POS: ComfyNodeOutput<'CONDITIONING', 0>,
+            NEG: ComfyNodeOutput<'CONDITIONING', 1>,
+         }
+         "FizzNodes.BatchPromptScheduleLatentInput": {
+            POS: ComfyNodeOutput<'CONDITIONING', 0>,
+            NEG: ComfyNodeOutput<'CONDITIONING', 1>,
+            INPUT_LATENTS: ComfyNodeOutput<'LATENT', 2>,
+         }
+         "FizzNodes.BatchPromptScheduleSDXLLatentInput": {
+            POS: ComfyNodeOutput<'CONDITIONING', 0>,
+            NEG: ComfyNodeOutput<'CONDITIONING', 1>,
+            INPUT_LATENTS: ComfyNodeOutput<'LATENT', 2>,
+         }
+         "FizzNodes.BatchStringSchedule": {
+            POS: ComfyNodeOutput<'STRING', 0>,
+            NEG: ComfyNodeOutput<'STRING', 1>,
+         }
+         "FizzNodes.BatchValueSchedule": {
+            FLOAT: ComfyNodeOutput<'FLOAT', 0>,
+            INT: ComfyNodeOutput<'INT', 1>,
+         }
+         "FizzNodes.BatchValueScheduleLatentInput": {
+            FLOAT: ComfyNodeOutput<'FLOAT', 0>,
+            INT: ComfyNodeOutput<'INT', 1>,
+            LATENT: ComfyNodeOutput<'LATENT', 2>,
+         }
+         "FizzNodes.CalculateFrameOffset": {
+            INT: ComfyNodeOutput<'INT', 0>,
+         }
+         "FizzNodes.ConcatStringSingle": {
+            STRING: ComfyNodeOutput<'STRING', 0>,
+         }
+         "FizzNodes.convertKeyframeKeysToBatchKeys": {
+            INT: ComfyNodeOutput<'INT', 0>,
+         }
+         "FizzNodes.CosWave": {
+            FLOAT: ComfyNodeOutput<'FLOAT', 0>,
+            INT: ComfyNodeOutput<'INT', 1>,
+         }
+         "FizzNodes.FizzFrame": {
+            FIZZFRAME: ComfyNodeOutput<'FIZZFRAME', 0>,
+            POS_COND: ComfyNodeOutput<'CONDITIONING', 1>,
+            NEG_COND: ComfyNodeOutput<'CONDITIONING', 2>,
+         }
+         "FizzNodes.FizzFrameConcatenate": {
+            STRING: ComfyNodeOutput<'STRING', 0>,
+         }
+         "FizzNodes.ImagesFromBatchSchedule": {
+            IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+         }
+         "FizzNodes.Init FizzFrame": {
+            FIZZFRAME: ComfyNodeOutput<'FIZZFRAME', 0>,
+            POS_COND: ComfyNodeOutput<'CONDITIONING', 1>,
+            NEG_COND: ComfyNodeOutput<'CONDITIONING', 2>,
+         }
+         "FizzNodes.InvCosWave": {
+            FLOAT: ComfyNodeOutput<'FLOAT', 0>,
+            INT: ComfyNodeOutput<'INT', 1>,
+         }
+         "FizzNodes.InvSinWave": {
+            FLOAT: ComfyNodeOutput<'FLOAT', 0>,
+            INT: ComfyNodeOutput<'INT', 1>,
+         }
+         "FizzNodes.Lerp": {
+            FLOAT: ComfyNodeOutput<'FLOAT', 0>,
+            INT: ComfyNodeOutput<'INT', 1>,
+         }
+         "FizzNodes.PromptSchedule": {
+            POS: ComfyNodeOutput<'CONDITIONING', 0>,
+            NEG: ComfyNodeOutput<'CONDITIONING', 1>,
+         }
+         "FizzNodes.PromptScheduleEncodeSDXL": {
+            POS: ComfyNodeOutput<'CONDITIONING', 0>,
+            NEG: ComfyNodeOutput<'CONDITIONING', 1>,
+         }
+         "FizzNodes.PromptScheduleNodeFlow": {
+            INT: ComfyNodeOutput<'INT', 0>,
+            STRING: ComfyNodeOutput<'STRING', 1>,
+         }
+         "FizzNodes.PromptScheduleNodeFlowEnd": {
+            POS: ComfyNodeOutput<'CONDITIONING', 0>,
+            NEG: ComfyNodeOutput<'CONDITIONING', 1>,
+         }
+         "FizzNodes.SawtoothWave": {
+            FLOAT: ComfyNodeOutput<'FLOAT', 0>,
+            INT: ComfyNodeOutput<'INT', 1>,
+         }
+         "FizzNodes.SinWave": {
+            FLOAT: ComfyNodeOutput<'FLOAT', 0>,
+            INT: ComfyNodeOutput<'INT', 1>,
+         }
+         "FizzNodes.SquareWave": {
+            FLOAT: ComfyNodeOutput<'FLOAT', 0>,
+            INT: ComfyNodeOutput<'INT', 1>,
+         }
+         "FizzNodes.StringConcatenate": {
+            STRING: ComfyNodeOutput<'STRING', 0>,
+         }
+         "FizzNodes.StringSchedule": {
+            POS: ComfyNodeOutput<'STRING', 0>,
+            NEG: ComfyNodeOutput<'STRING', 1>,
+         }
+         "FizzNodes.TriangleWave": {
+            FLOAT: ComfyNodeOutput<'FLOAT', 0>,
+            INT: ComfyNodeOutput<'INT', 1>,
+         }
+         "FizzNodes.ValueSchedule": {
+            FLOAT: ComfyNodeOutput<'FLOAT', 0>,
+            INT: ComfyNodeOutput<'INT', 1>,
          }
          FlipSigmas: {
             SIGMAS: ComfyNodeOutput<'SIGMAS', 0>,
@@ -11186,6 +13939,20 @@ declare global {
          }
       }
       interface Node {
+         "A8R8_ComfyUI_nodes.AttentionCouple": ComfyNode<IN['A8R8_ComfyUI_nodes.AttentionCouple'], OUT['A8R8_ComfyUI_nodes.AttentionCouple']> & {
+            _MODEL: ComfyNodeOutput<'MODEL'>
+         }
+         "A8R8_ComfyUI_nodes.AttentionCoupleRegion": ComfyNode<IN['A8R8_ComfyUI_nodes.AttentionCoupleRegion'], OUT['A8R8_ComfyUI_nodes.AttentionCoupleRegion']> & {
+            _ATTENTION_COUPLE_REGION: ComfyNodeOutput<'ATTENTION_COUPLE_REGION'>
+         }
+         "A8R8_ComfyUI_nodes.AttentionCoupleRegions": ComfyNode<IN['A8R8_ComfyUI_nodes.AttentionCoupleRegions'], OUT['A8R8_ComfyUI_nodes.AttentionCoupleRegions']> & {
+            _ATTENTION_COUPLE_REGION: ComfyNodeOutput<'ATTENTION_COUPLE_REGION'>
+         }
+         "A8R8_ComfyUI_nodes.Base64ImageInput": ComfyNode<IN['A8R8_ComfyUI_nodes.Base64ImageInput'], OUT['A8R8_ComfyUI_nodes.Base64ImageInput']> & {
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
+         }
+         "A8R8_ComfyUI_nodes.Base64ImageOutput": ComfyNode<IN['A8R8_ComfyUI_nodes.Base64ImageOutput'], OUT['A8R8_ComfyUI_nodes.Base64ImageOutput']> & {
+         }
          AddNoise: ComfyNode<IN['AddNoise'], OUT['AddNoise']> & {
             _LATENT: ComfyNodeOutput<'LATENT'>
          }
@@ -11487,6 +14254,444 @@ declare global {
          "Allor.VaeClamp": ComfyNode<IN['Allor.VaeClamp'], OUT['Allor.VaeClamp']> & {
             _VAE: ComfyNodeOutput<'VAE'>
          }
+         "AnimateDiff-Evolved.ADE_ADBlockCombo": ComfyNode<IN['AnimateDiff-Evolved.ADE_ADBlockCombo'], OUT['AnimateDiff-Evolved.ADE_ADBlockCombo']> & {
+            _AD_BLOCK: ComfyNodeOutput<'AD_BLOCK'>
+         }
+         "AnimateDiff-Evolved.ADE_ADBlockIndiv": ComfyNode<IN['AnimateDiff-Evolved.ADE_ADBlockIndiv'], OUT['AnimateDiff-Evolved.ADE_ADBlockIndiv']> & {
+            _AD_BLOCK: ComfyNodeOutput<'AD_BLOCK'>
+         }
+         "AnimateDiff-Evolved.ADE_AdjustPEFullStretch": ComfyNode<IN['AnimateDiff-Evolved.ADE_AdjustPEFullStretch'], OUT['AnimateDiff-Evolved.ADE_AdjustPEFullStretch']> & {
+            _PE_ADJUST: ComfyNodeOutput<'PE_ADJUST'>
+         }
+         "AnimateDiff-Evolved.ADE_AdjustPEManual": ComfyNode<IN['AnimateDiff-Evolved.ADE_AdjustPEManual'], OUT['AnimateDiff-Evolved.ADE_AdjustPEManual']> & {
+            _PE_ADJUST: ComfyNodeOutput<'PE_ADJUST'>
+         }
+         "AnimateDiff-Evolved.ADE_AdjustPESweetspotStretch": ComfyNode<IN['AnimateDiff-Evolved.ADE_AdjustPESweetspotStretch'], OUT['AnimateDiff-Evolved.ADE_AdjustPESweetspotStretch']> & {
+            _PE_ADJUST: ComfyNodeOutput<'PE_ADJUST'>
+         }
+         "AnimateDiff-Evolved.ADE_AdjustWeightAllAdd": ComfyNode<IN['AnimateDiff-Evolved.ADE_AdjustWeightAllAdd'], OUT['AnimateDiff-Evolved.ADE_AdjustWeightAllAdd']> & {
+            _WEIGHT_ADJUST: ComfyNodeOutput<'WEIGHT_ADJUST'>
+         }
+         "AnimateDiff-Evolved.ADE_AdjustWeightAllMult": ComfyNode<IN['AnimateDiff-Evolved.ADE_AdjustWeightAllMult'], OUT['AnimateDiff-Evolved.ADE_AdjustWeightAllMult']> & {
+            _WEIGHT_ADJUST: ComfyNodeOutput<'WEIGHT_ADJUST'>
+         }
+         "AnimateDiff-Evolved.ADE_AdjustWeightIndivAdd": ComfyNode<IN['AnimateDiff-Evolved.ADE_AdjustWeightIndivAdd'], OUT['AnimateDiff-Evolved.ADE_AdjustWeightIndivAdd']> & {
+            _WEIGHT_ADJUST: ComfyNodeOutput<'WEIGHT_ADJUST'>
+         }
+         "AnimateDiff-Evolved.ADE_AdjustWeightIndivAttnAdd": ComfyNode<IN['AnimateDiff-Evolved.ADE_AdjustWeightIndivAttnAdd'], OUT['AnimateDiff-Evolved.ADE_AdjustWeightIndivAttnAdd']> & {
+            _WEIGHT_ADJUST: ComfyNodeOutput<'WEIGHT_ADJUST'>
+         }
+         "AnimateDiff-Evolved.ADE_AdjustWeightIndivAttnMult": ComfyNode<IN['AnimateDiff-Evolved.ADE_AdjustWeightIndivAttnMult'], OUT['AnimateDiff-Evolved.ADE_AdjustWeightIndivAttnMult']> & {
+            _WEIGHT_ADJUST: ComfyNodeOutput<'WEIGHT_ADJUST'>
+         }
+         "AnimateDiff-Evolved.ADE_AdjustWeightIndivMult": ComfyNode<IN['AnimateDiff-Evolved.ADE_AdjustWeightIndivMult'], OUT['AnimateDiff-Evolved.ADE_AdjustWeightIndivMult']> & {
+            _WEIGHT_ADJUST: ComfyNodeOutput<'WEIGHT_ADJUST'>
+         }
+         "AnimateDiff-Evolved.ADE_AnimateDiffCombine": ComfyNode<IN['AnimateDiff-Evolved.ADE_AnimateDiffCombine'], OUT['AnimateDiff-Evolved.ADE_AnimateDiffCombine']> & {
+            _GIF: ComfyNodeOutput<'GIF'>
+         }
+         "AnimateDiff-Evolved.ADE_AnimateDiffKeyframe": ComfyNode<IN['AnimateDiff-Evolved.ADE_AnimateDiffKeyframe'], OUT['AnimateDiff-Evolved.ADE_AnimateDiffKeyframe']> & {
+            _AD_KEYFRAMES: ComfyNodeOutput<'AD_KEYFRAMES'>
+         }
+         "AnimateDiff-Evolved.ADE_AnimateDiffLoaderGen1": ComfyNode<IN['AnimateDiff-Evolved.ADE_AnimateDiffLoaderGen1'], OUT['AnimateDiff-Evolved.ADE_AnimateDiffLoaderGen1']> & {
+            _MODEL: ComfyNodeOutput<'MODEL'>
+         }
+         "AnimateDiff-Evolved.ADE_AnimateDiffLoaderV1Advanced": ComfyNode<IN['AnimateDiff-Evolved.ADE_AnimateDiffLoaderV1Advanced'], OUT['AnimateDiff-Evolved.ADE_AnimateDiffLoaderV1Advanced']> & {
+            _MODEL: ComfyNodeOutput<'MODEL'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
+         }
+         "AnimateDiff-Evolved.ADE_AnimateDiffLoaderWithContext": ComfyNode<IN['AnimateDiff-Evolved.ADE_AnimateDiffLoaderWithContext'], OUT['AnimateDiff-Evolved.ADE_AnimateDiffLoaderWithContext']> & {
+            _MODEL: ComfyNodeOutput<'MODEL'>
+         }
+         "AnimateDiff-Evolved.ADE_AnimateDiffLoRALoader": ComfyNode<IN['AnimateDiff-Evolved.ADE_AnimateDiffLoRALoader'], OUT['AnimateDiff-Evolved.ADE_AnimateDiffLoRALoader']> & {
+            _MOTION_LORA: ComfyNodeOutput<'MOTION_LORA'>
+         }
+         "AnimateDiff-Evolved.ADE_AnimateDiffModelSettings": ComfyNode<IN['AnimateDiff-Evolved.ADE_AnimateDiffModelSettings'], OUT['AnimateDiff-Evolved.ADE_AnimateDiffModelSettings']> & {
+            _AD_SETTINGS: ComfyNodeOutput<'AD_SETTINGS'>
+         }
+         "AnimateDiff-Evolved.ADE_AnimateDiffModelSettings_Release": ComfyNode<IN['AnimateDiff-Evolved.ADE_AnimateDiffModelSettings_Release'], OUT['AnimateDiff-Evolved.ADE_AnimateDiffModelSettings_Release']> & {
+            _AD_SETTINGS: ComfyNodeOutput<'AD_SETTINGS'>
+         }
+         "AnimateDiff-Evolved.ADE_AnimateDiffModelSettingsAdvancedAttnStrengths": ComfyNode<IN['AnimateDiff-Evolved.ADE_AnimateDiffModelSettingsAdvancedAttnStrengths'], OUT['AnimateDiff-Evolved.ADE_AnimateDiffModelSettingsAdvancedAttnStrengths']> & {
+            _AD_SETTINGS: ComfyNodeOutput<'AD_SETTINGS'>
+         }
+         "AnimateDiff-Evolved.ADE_AnimateDiffModelSettingsSimple": ComfyNode<IN['AnimateDiff-Evolved.ADE_AnimateDiffModelSettingsSimple'], OUT['AnimateDiff-Evolved.ADE_AnimateDiffModelSettingsSimple']> & {
+            _AD_SETTINGS: ComfyNodeOutput<'AD_SETTINGS'>
+         }
+         "AnimateDiff-Evolved.ADE_AnimateDiffSamplingSettings": ComfyNode<IN['AnimateDiff-Evolved.ADE_AnimateDiffSamplingSettings'], OUT['AnimateDiff-Evolved.ADE_AnimateDiffSamplingSettings']> & {
+            _SAMPLE_SETTINGS: ComfyNodeOutput<'SAMPLE_SETTINGS'>
+         }
+         "AnimateDiff-Evolved.ADE_AnimateDiffSettings": ComfyNode<IN['AnimateDiff-Evolved.ADE_AnimateDiffSettings'], OUT['AnimateDiff-Evolved.ADE_AnimateDiffSettings']> & {
+            _AD_SETTINGS: ComfyNodeOutput<'AD_SETTINGS'>
+         }
+         "AnimateDiff-Evolved.ADE_AnimateDiffUniformContextOptions": ComfyNode<IN['AnimateDiff-Evolved.ADE_AnimateDiffUniformContextOptions'], OUT['AnimateDiff-Evolved.ADE_AnimateDiffUniformContextOptions']> & {
+            _CONTEXT_OPTIONS: ComfyNodeOutput<'CONTEXT_OPTIONS'>
+         }
+         "AnimateDiff-Evolved.ADE_AnimateDiffUnload": ComfyNode<IN['AnimateDiff-Evolved.ADE_AnimateDiffUnload'], OUT['AnimateDiff-Evolved.ADE_AnimateDiffUnload']> & {
+            _MODEL: ComfyNodeOutput<'MODEL'>
+         }
+         "AnimateDiff-Evolved.ADE_ApplyAnimateDiffModel": ComfyNode<IN['AnimateDiff-Evolved.ADE_ApplyAnimateDiffModel'], OUT['AnimateDiff-Evolved.ADE_ApplyAnimateDiffModel']> & {
+            _M_MODELS: ComfyNodeOutput<'M_MODELS'>
+         }
+         "AnimateDiff-Evolved.ADE_ApplyAnimateDiffModelSimple": ComfyNode<IN['AnimateDiff-Evolved.ADE_ApplyAnimateDiffModelSimple'], OUT['AnimateDiff-Evolved.ADE_ApplyAnimateDiffModelSimple']> & {
+            _M_MODELS: ComfyNodeOutput<'M_MODELS'>
+         }
+         "AnimateDiff-Evolved.ADE_ApplyAnimateDiffModelWithCameraCtrl": ComfyNode<IN['AnimateDiff-Evolved.ADE_ApplyAnimateDiffModelWithCameraCtrl'], OUT['AnimateDiff-Evolved.ADE_ApplyAnimateDiffModelWithCameraCtrl']> & {
+            _M_MODELS: ComfyNodeOutput<'M_MODELS'>
+         }
+         "AnimateDiff-Evolved.ADE_ApplyAnimateDiffModelWithPIA": ComfyNode<IN['AnimateDiff-Evolved.ADE_ApplyAnimateDiffModelWithPIA'], OUT['AnimateDiff-Evolved.ADE_ApplyAnimateDiffModelWithPIA']> & {
+            _M_MODELS: ComfyNodeOutput<'M_MODELS'>
+         }
+         "AnimateDiff-Evolved.ADE_ApplyAnimateLCMI2VModel": ComfyNode<IN['AnimateDiff-Evolved.ADE_ApplyAnimateLCMI2VModel'], OUT['AnimateDiff-Evolved.ADE_ApplyAnimateLCMI2VModel']> & {
+            _M_MODELS: ComfyNodeOutput<'M_MODELS'>
+         }
+         "AnimateDiff-Evolved.ADE_AttachLoraHookToCLIP": ComfyNode<IN['AnimateDiff-Evolved.ADE_AttachLoraHookToCLIP'], OUT['AnimateDiff-Evolved.ADE_AttachLoraHookToCLIP']> & {
+            _CLIP: ComfyNodeOutput<'CLIP'>
+         }
+         "AnimateDiff-Evolved.ADE_AttachLoraHookToConditioning": ComfyNode<IN['AnimateDiff-Evolved.ADE_AttachLoraHookToConditioning'], OUT['AnimateDiff-Evolved.ADE_AttachLoraHookToConditioning']> & {
+            _CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
+         }
+         "AnimateDiff-Evolved.ADE_BatchedContextOptions": ComfyNode<IN['AnimateDiff-Evolved.ADE_BatchedContextOptions'], OUT['AnimateDiff-Evolved.ADE_BatchedContextOptions']> & {
+            _CONTEXT_OPTIONS: ComfyNodeOutput<'CONTEXT_OPTIONS'>
+         }
+         "AnimateDiff-Evolved.ADE_CameraCtrlAnimateDiffKeyframe": ComfyNode<IN['AnimateDiff-Evolved.ADE_CameraCtrlAnimateDiffKeyframe'], OUT['AnimateDiff-Evolved.ADE_CameraCtrlAnimateDiffKeyframe']> & {
+            _AD_KEYFRAMES: ComfyNodeOutput<'AD_KEYFRAMES'>
+         }
+         "AnimateDiff-Evolved.ADE_CameraManualPoseAppend": ComfyNode<IN['AnimateDiff-Evolved.ADE_CameraManualPoseAppend'], OUT['AnimateDiff-Evolved.ADE_CameraManualPoseAppend']> & {
+            _CAMERACTRL_POSES: ComfyNodeOutput<'CAMERACTRL_POSES'>
+         }
+         "AnimateDiff-Evolved.ADE_CameraPoseAdvanced": ComfyNode<IN['AnimateDiff-Evolved.ADE_CameraPoseAdvanced'], OUT['AnimateDiff-Evolved.ADE_CameraPoseAdvanced']> & {
+            _CAMERACTRL_POSES: ComfyNodeOutput<'CAMERACTRL_POSES'>
+         }
+         "AnimateDiff-Evolved.ADE_CameraPoseBasic": ComfyNode<IN['AnimateDiff-Evolved.ADE_CameraPoseBasic'], OUT['AnimateDiff-Evolved.ADE_CameraPoseBasic']> & {
+            _CAMERACTRL_POSES: ComfyNodeOutput<'CAMERACTRL_POSES'>
+         }
+         "AnimateDiff-Evolved.ADE_CameraPoseCombo": ComfyNode<IN['AnimateDiff-Evolved.ADE_CameraPoseCombo'], OUT['AnimateDiff-Evolved.ADE_CameraPoseCombo']> & {
+            _CAMERACTRL_POSES: ComfyNodeOutput<'CAMERACTRL_POSES'>
+         }
+         "AnimateDiff-Evolved.ADE_CFGExtrasPAG": ComfyNode<IN['AnimateDiff-Evolved.ADE_CFGExtrasPAG'], OUT['AnimateDiff-Evolved.ADE_CFGExtrasPAG']> & {
+            _CFG_EXTRAS: ComfyNodeOutput<'CFG_EXTRAS'>
+         }
+         "AnimateDiff-Evolved.ADE_CFGExtrasPAGSimple": ComfyNode<IN['AnimateDiff-Evolved.ADE_CFGExtrasPAGSimple'], OUT['AnimateDiff-Evolved.ADE_CFGExtrasPAGSimple']> & {
+            _CFG_EXTRAS: ComfyNodeOutput<'CFG_EXTRAS'>
+         }
+         "AnimateDiff-Evolved.ADE_CFGExtrasRescaleCFG": ComfyNode<IN['AnimateDiff-Evolved.ADE_CFGExtrasRescaleCFG'], OUT['AnimateDiff-Evolved.ADE_CFGExtrasRescaleCFG']> & {
+            _CFG_EXTRAS: ComfyNodeOutput<'CFG_EXTRAS'>
+         }
+         "AnimateDiff-Evolved.ADE_CFGExtrasRescaleCFGSimple": ComfyNode<IN['AnimateDiff-Evolved.ADE_CFGExtrasRescaleCFGSimple'], OUT['AnimateDiff-Evolved.ADE_CFGExtrasRescaleCFGSimple']> & {
+            _CFG_EXTRAS: ComfyNodeOutput<'CFG_EXTRAS'>
+         }
+         "AnimateDiff-Evolved.ADE_CombineLoraHooks": ComfyNode<IN['AnimateDiff-Evolved.ADE_CombineLoraHooks'], OUT['AnimateDiff-Evolved.ADE_CombineLoraHooks']> & {
+            _LORA_HOOK: ComfyNodeOutput<'LORA_HOOK'>
+         }
+         "AnimateDiff-Evolved.ADE_CombineLoraHooksEight": ComfyNode<IN['AnimateDiff-Evolved.ADE_CombineLoraHooksEight'], OUT['AnimateDiff-Evolved.ADE_CombineLoraHooksEight']> & {
+            _LORA_HOOK: ComfyNodeOutput<'LORA_HOOK'>
+         }
+         "AnimateDiff-Evolved.ADE_CombineLoraHooksFour": ComfyNode<IN['AnimateDiff-Evolved.ADE_CombineLoraHooksFour'], OUT['AnimateDiff-Evolved.ADE_CombineLoraHooksFour']> & {
+            _LORA_HOOK: ComfyNodeOutput<'LORA_HOOK'>
+         }
+         "AnimateDiff-Evolved.ADE_ConditioningCombine": ComfyNode<IN['AnimateDiff-Evolved.ADE_ConditioningCombine'], OUT['AnimateDiff-Evolved.ADE_ConditioningCombine']> & {
+            _CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
+         }
+         "AnimateDiff-Evolved.ADE_ConditioningSetMask": ComfyNode<IN['AnimateDiff-Evolved.ADE_ConditioningSetMask'], OUT['AnimateDiff-Evolved.ADE_ConditioningSetMask']> & {
+            _CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
+         }
+         "AnimateDiff-Evolved.ADE_ConditioningSetMaskAndCombine": ComfyNode<IN['AnimateDiff-Evolved.ADE_ConditioningSetMaskAndCombine'], OUT['AnimateDiff-Evolved.ADE_ConditioningSetMaskAndCombine']> & {
+            _CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
+         }
+         "AnimateDiff-Evolved.ADE_ConditioningSetUnmaskedAndCombine": ComfyNode<IN['AnimateDiff-Evolved.ADE_ConditioningSetUnmaskedAndCombine'], OUT['AnimateDiff-Evolved.ADE_ConditioningSetUnmaskedAndCombine']> & {
+            _CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
+         }
+         "AnimateDiff-Evolved.ADE_ContextExtras_ContextRef": ComfyNode<IN['AnimateDiff-Evolved.ADE_ContextExtras_ContextRef'], OUT['AnimateDiff-Evolved.ADE_ContextExtras_ContextRef']> & {
+            _CONTEXT_EXTRAS: ComfyNodeOutput<'CONTEXT_EXTRAS'>
+         }
+         "AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_Keyframe": ComfyNode<IN['AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_Keyframe'], OUT['AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_Keyframe']> & {
+            _CONTEXTREF_KEYFRAME: ComfyNodeOutput<'CONTEXTREF_KEYFRAME'>
+         }
+         "AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_KeyframeFromList": ComfyNode<IN['AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_KeyframeFromList'], OUT['AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_KeyframeFromList']> & {
+            _CONTEXTREF_KEYFRAME: ComfyNodeOutput<'CONTEXTREF_KEYFRAME'>
+         }
+         "AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_KeyframeInterpolation": ComfyNode<IN['AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_KeyframeInterpolation'], OUT['AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_KeyframeInterpolation']> & {
+            _CONTEXTREF_KEYFRAME: ComfyNodeOutput<'CONTEXTREF_KEYFRAME'>
+         }
+         "AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_ModeFirst": ComfyNode<IN['AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_ModeFirst'], OUT['AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_ModeFirst']> & {
+            _CONTEXTREF_MODE: ComfyNodeOutput<'CONTEXTREF_MODE'>
+         }
+         "AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_ModeIndexes": ComfyNode<IN['AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_ModeIndexes'], OUT['AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_ModeIndexes']> & {
+            _CONTEXTREF_MODE: ComfyNodeOutput<'CONTEXTREF_MODE'>
+         }
+         "AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_ModeSliding": ComfyNode<IN['AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_ModeSliding'], OUT['AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_ModeSliding']> & {
+            _CONTEXTREF_MODE: ComfyNodeOutput<'CONTEXTREF_MODE'>
+         }
+         "AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_TuneAttn": ComfyNode<IN['AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_TuneAttn'], OUT['AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_TuneAttn']> & {
+            _CONTEXTREF_TUNE: ComfyNodeOutput<'CONTEXTREF_TUNE'>
+         }
+         "AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_TuneAttnAdain": ComfyNode<IN['AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_TuneAttnAdain'], OUT['AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_TuneAttnAdain']> & {
+            _CONTEXTREF_TUNE: ComfyNodeOutput<'CONTEXTREF_TUNE'>
+         }
+         "AnimateDiff-Evolved.ADE_ContextExtras_NaiveReuse": ComfyNode<IN['AnimateDiff-Evolved.ADE_ContextExtras_NaiveReuse'], OUT['AnimateDiff-Evolved.ADE_ContextExtras_NaiveReuse']> & {
+            _CONTEXT_EXTRAS: ComfyNodeOutput<'CONTEXT_EXTRAS'>
+         }
+         "AnimateDiff-Evolved.ADE_ContextExtras_NaiveReuse_Keyframe": ComfyNode<IN['AnimateDiff-Evolved.ADE_ContextExtras_NaiveReuse_Keyframe'], OUT['AnimateDiff-Evolved.ADE_ContextExtras_NaiveReuse_Keyframe']> & {
+            _NAIVEREUSE_KEYFRAME: ComfyNodeOutput<'NAIVEREUSE_KEYFRAME'>
+         }
+         "AnimateDiff-Evolved.ADE_ContextExtras_NaiveReuse_KeyframeFromList": ComfyNode<IN['AnimateDiff-Evolved.ADE_ContextExtras_NaiveReuse_KeyframeFromList'], OUT['AnimateDiff-Evolved.ADE_ContextExtras_NaiveReuse_KeyframeFromList']> & {
+            _NAIVEREUSE_KEYFRAME: ComfyNodeOutput<'NAIVEREUSE_KEYFRAME'>
+         }
+         "AnimateDiff-Evolved.ADE_ContextExtras_NaiveReuse_KeyframeInterpolation": ComfyNode<IN['AnimateDiff-Evolved.ADE_ContextExtras_NaiveReuse_KeyframeInterpolation'], OUT['AnimateDiff-Evolved.ADE_ContextExtras_NaiveReuse_KeyframeInterpolation']> & {
+            _NAIVEREUSE_KEYFRAME: ComfyNodeOutput<'NAIVEREUSE_KEYFRAME'>
+         }
+         "AnimateDiff-Evolved.ADE_ContextExtras_Set": ComfyNode<IN['AnimateDiff-Evolved.ADE_ContextExtras_Set'], OUT['AnimateDiff-Evolved.ADE_ContextExtras_Set']> & {
+            _CONTEXT_OPTIONS: ComfyNodeOutput<'CONTEXT_OPTIONS'>
+         }
+         "AnimateDiff-Evolved.ADE_CustomCFG": ComfyNode<IN['AnimateDiff-Evolved.ADE_CustomCFG'], OUT['AnimateDiff-Evolved.ADE_CustomCFG']> & {
+            _CUSTOM_CFG: ComfyNodeOutput<'CUSTOM_CFG'>
+         }
+         "AnimateDiff-Evolved.ADE_CustomCFGKeyframe": ComfyNode<IN['AnimateDiff-Evolved.ADE_CustomCFGKeyframe'], OUT['AnimateDiff-Evolved.ADE_CustomCFGKeyframe']> & {
+            _CUSTOM_CFG: ComfyNodeOutput<'CUSTOM_CFG'>
+         }
+         "AnimateDiff-Evolved.ADE_CustomCFGKeyframeFromList": ComfyNode<IN['AnimateDiff-Evolved.ADE_CustomCFGKeyframeFromList'], OUT['AnimateDiff-Evolved.ADE_CustomCFGKeyframeFromList']> & {
+            _CUSTOM_CFG: ComfyNodeOutput<'CUSTOM_CFG'>
+         }
+         "AnimateDiff-Evolved.ADE_CustomCFGKeyframeInterpolation": ComfyNode<IN['AnimateDiff-Evolved.ADE_CustomCFGKeyframeInterpolation'], OUT['AnimateDiff-Evolved.ADE_CustomCFGKeyframeInterpolation']> & {
+            _CUSTOM_CFG: ComfyNodeOutput<'CUSTOM_CFG'>
+         }
+         "AnimateDiff-Evolved.ADE_CustomCFGKeyframeSimple": ComfyNode<IN['AnimateDiff-Evolved.ADE_CustomCFGKeyframeSimple'], OUT['AnimateDiff-Evolved.ADE_CustomCFGKeyframeSimple']> & {
+            _CUSTOM_CFG: ComfyNodeOutput<'CUSTOM_CFG'>
+         }
+         "AnimateDiff-Evolved.ADE_CustomCFGSimple": ComfyNode<IN['AnimateDiff-Evolved.ADE_CustomCFGSimple'], OUT['AnimateDiff-Evolved.ADE_CustomCFGSimple']> & {
+            _CUSTOM_CFG: ComfyNodeOutput<'CUSTOM_CFG'>
+         }
+         "AnimateDiff-Evolved.ADE_EmptyLatentImageLarge": ComfyNode<IN['AnimateDiff-Evolved.ADE_EmptyLatentImageLarge'], OUT['AnimateDiff-Evolved.ADE_EmptyLatentImageLarge']> & {
+            _LATENT: ComfyNodeOutput<'LATENT'>
+         }
+         "AnimateDiff-Evolved.ADE_FloatToFloats": ComfyNode<IN['AnimateDiff-Evolved.ADE_FloatToFloats'], OUT['AnimateDiff-Evolved.ADE_FloatToFloats']> & {
+            _FLOATS: ComfyNodeOutput<'FLOATS'>
+         }
+         "AnimateDiff-Evolved.ADE_InjectI2VIntoAnimateDiffModel": ComfyNode<IN['AnimateDiff-Evolved.ADE_InjectI2VIntoAnimateDiffModel'], OUT['AnimateDiff-Evolved.ADE_InjectI2VIntoAnimateDiffModel']> & {
+            _MOTION_MODEL_ADE: ComfyNodeOutput<'MOTION_MODEL_ADE'>
+         }
+         "AnimateDiff-Evolved.ADE_InjectPIAIntoAnimateDiffModel": ComfyNode<IN['AnimateDiff-Evolved.ADE_InjectPIAIntoAnimateDiffModel'], OUT['AnimateDiff-Evolved.ADE_InjectPIAIntoAnimateDiffModel']> & {
+            _MOTION_MODEL_ADE: ComfyNodeOutput<'MOTION_MODEL_ADE'>
+         }
+         "AnimateDiff-Evolved.ADE_InputPIA_Multival": ComfyNode<IN['AnimateDiff-Evolved.ADE_InputPIA_Multival'], OUT['AnimateDiff-Evolved.ADE_InputPIA_Multival']> & {
+            _PIA_INPUT: ComfyNodeOutput<'PIA_INPUT'>
+         }
+         "AnimateDiff-Evolved.ADE_InputPIA_PaperPresets": ComfyNode<IN['AnimateDiff-Evolved.ADE_InputPIA_PaperPresets'], OUT['AnimateDiff-Evolved.ADE_InputPIA_PaperPresets']> & {
+            _PIA_INPUT: ComfyNodeOutput<'PIA_INPUT'>
+         }
+         "AnimateDiff-Evolved.ADE_IterationOptsDefault": ComfyNode<IN['AnimateDiff-Evolved.ADE_IterationOptsDefault'], OUT['AnimateDiff-Evolved.ADE_IterationOptsDefault']> & {
+            _ITERATION_OPTS: ComfyNodeOutput<'ITERATION_OPTS'>
+         }
+         "AnimateDiff-Evolved.ADE_IterationOptsFreeInit": ComfyNode<IN['AnimateDiff-Evolved.ADE_IterationOptsFreeInit'], OUT['AnimateDiff-Evolved.ADE_IterationOptsFreeInit']> & {
+            _ITERATION_OPTS: ComfyNodeOutput<'ITERATION_OPTS'>
+         }
+         "AnimateDiff-Evolved.ADE_LoadAnimateDiffModel": ComfyNode<IN['AnimateDiff-Evolved.ADE_LoadAnimateDiffModel'], OUT['AnimateDiff-Evolved.ADE_LoadAnimateDiffModel']> & {
+            _MOTION_MODEL_ADE: ComfyNodeOutput<'MOTION_MODEL_ADE'>
+         }
+         "AnimateDiff-Evolved.ADE_LoadAnimateDiffModelWithCameraCtrl": ComfyNode<IN['AnimateDiff-Evolved.ADE_LoadAnimateDiffModelWithCameraCtrl'], OUT['AnimateDiff-Evolved.ADE_LoadAnimateDiffModelWithCameraCtrl']> & {
+            _MOTION_MODEL_ADE: ComfyNodeOutput<'MOTION_MODEL_ADE'>
+         }
+         "AnimateDiff-Evolved.ADE_LoadAnimateLCMI2VModel": ComfyNode<IN['AnimateDiff-Evolved.ADE_LoadAnimateLCMI2VModel'], OUT['AnimateDiff-Evolved.ADE_LoadAnimateLCMI2VModel']> & {
+         }
+         "AnimateDiff-Evolved.ADE_LoadCameraPoses": ComfyNode<IN['AnimateDiff-Evolved.ADE_LoadCameraPoses'], OUT['AnimateDiff-Evolved.ADE_LoadCameraPoses']> & {
+            _CAMERACTRL_POSES: ComfyNodeOutput<'CAMERACTRL_POSES'>
+         }
+         "AnimateDiff-Evolved.ADE_LoadCameraPosesFromPath": ComfyNode<IN['AnimateDiff-Evolved.ADE_LoadCameraPosesFromPath'], OUT['AnimateDiff-Evolved.ADE_LoadCameraPosesFromPath']> & {
+            _CAMERACTRL_POSES: ComfyNodeOutput<'CAMERACTRL_POSES'>
+         }
+         "AnimateDiff-Evolved.ADE_LoopedUniformContextOptions": ComfyNode<IN['AnimateDiff-Evolved.ADE_LoopedUniformContextOptions'], OUT['AnimateDiff-Evolved.ADE_LoopedUniformContextOptions']> & {
+            _CONTEXT_OPTIONS: ComfyNodeOutput<'CONTEXT_OPTIONS'>
+         }
+         "AnimateDiff-Evolved.ADE_LoopedUniformViewOptions": ComfyNode<IN['AnimateDiff-Evolved.ADE_LoopedUniformViewOptions'], OUT['AnimateDiff-Evolved.ADE_LoopedUniformViewOptions']> & {
+            _VIEW_OPTS: ComfyNodeOutput<'VIEW_OPTS'>
+         }
+         "AnimateDiff-Evolved.ADE_LoraHookKeyframe": ComfyNode<IN['AnimateDiff-Evolved.ADE_LoraHookKeyframe'], OUT['AnimateDiff-Evolved.ADE_LoraHookKeyframe']> & {
+            _LORA_HOOK_KEYFRAMES: ComfyNodeOutput<'LORA_HOOK_KEYFRAMES'>
+         }
+         "AnimateDiff-Evolved.ADE_LoraHookKeyframeFromStrengthList": ComfyNode<IN['AnimateDiff-Evolved.ADE_LoraHookKeyframeFromStrengthList'], OUT['AnimateDiff-Evolved.ADE_LoraHookKeyframeFromStrengthList']> & {
+            _LORA_HOOK_KEYFRAMES: ComfyNodeOutput<'LORA_HOOK_KEYFRAMES'>
+         }
+         "AnimateDiff-Evolved.ADE_LoraHookKeyframeInterpolation": ComfyNode<IN['AnimateDiff-Evolved.ADE_LoraHookKeyframeInterpolation'], OUT['AnimateDiff-Evolved.ADE_LoraHookKeyframeInterpolation']> & {
+            _LORA_HOOK_KEYFRAMES: ComfyNodeOutput<'LORA_HOOK_KEYFRAMES'>
+         }
+         "AnimateDiff-Evolved.ADE_MultivalConvertToMask": ComfyNode<IN['AnimateDiff-Evolved.ADE_MultivalConvertToMask'], OUT['AnimateDiff-Evolved.ADE_MultivalConvertToMask']> & {
+            _MASK: ComfyNodeOutput<'MASK'>
+         }
+         "AnimateDiff-Evolved.ADE_MultivalDynamic": ComfyNode<IN['AnimateDiff-Evolved.ADE_MultivalDynamic'], OUT['AnimateDiff-Evolved.ADE_MultivalDynamic']> & {
+            _MULTIVAL: ComfyNodeOutput<'MULTIVAL'>
+         }
+         "AnimateDiff-Evolved.ADE_MultivalDynamicFloatInput": ComfyNode<IN['AnimateDiff-Evolved.ADE_MultivalDynamicFloatInput'], OUT['AnimateDiff-Evolved.ADE_MultivalDynamicFloatInput']> & {
+            _MULTIVAL: ComfyNodeOutput<'MULTIVAL'>
+         }
+         "AnimateDiff-Evolved.ADE_MultivalDynamicFloats": ComfyNode<IN['AnimateDiff-Evolved.ADE_MultivalDynamicFloats'], OUT['AnimateDiff-Evolved.ADE_MultivalDynamicFloats']> & {
+            _MULTIVAL: ComfyNodeOutput<'MULTIVAL'>
+         }
+         "AnimateDiff-Evolved.ADE_MultivalScaledMask": ComfyNode<IN['AnimateDiff-Evolved.ADE_MultivalScaledMask'], OUT['AnimateDiff-Evolved.ADE_MultivalScaledMask']> & {
+            _MULTIVAL: ComfyNodeOutput<'MULTIVAL'>
+         }
+         "AnimateDiff-Evolved.ADE_NoisedImageInjection": ComfyNode<IN['AnimateDiff-Evolved.ADE_NoisedImageInjection'], OUT['AnimateDiff-Evolved.ADE_NoisedImageInjection']> & {
+            _IMAGE_INJECT: ComfyNodeOutput<'IMAGE_INJECT'>
+         }
+         "AnimateDiff-Evolved.ADE_NoisedImageInjectOptions": ComfyNode<IN['AnimateDiff-Evolved.ADE_NoisedImageInjectOptions'], OUT['AnimateDiff-Evolved.ADE_NoisedImageInjectOptions']> & {
+            _IMAGE_INJECT_OPTIONS: ComfyNodeOutput<'IMAGE_INJECT_OPTIONS'>
+         }
+         "AnimateDiff-Evolved.ADE_NoiseLayerAdd": ComfyNode<IN['AnimateDiff-Evolved.ADE_NoiseLayerAdd'], OUT['AnimateDiff-Evolved.ADE_NoiseLayerAdd']> & {
+            _NOISE_LAYERS: ComfyNodeOutput<'NOISE_LAYERS'>
+         }
+         "AnimateDiff-Evolved.ADE_NoiseLayerAddWeighted": ComfyNode<IN['AnimateDiff-Evolved.ADE_NoiseLayerAddWeighted'], OUT['AnimateDiff-Evolved.ADE_NoiseLayerAddWeighted']> & {
+            _NOISE_LAYERS: ComfyNodeOutput<'NOISE_LAYERS'>
+         }
+         "AnimateDiff-Evolved.ADE_NoiseLayerReplace": ComfyNode<IN['AnimateDiff-Evolved.ADE_NoiseLayerReplace'], OUT['AnimateDiff-Evolved.ADE_NoiseLayerReplace']> & {
+            _NOISE_LAYERS: ComfyNodeOutput<'NOISE_LAYERS'>
+         }
+         "AnimateDiff-Evolved.ADE_PairedConditioningCombine": ComfyNode<IN['AnimateDiff-Evolved.ADE_PairedConditioningCombine'], OUT['AnimateDiff-Evolved.ADE_PairedConditioningCombine']> & {
+         }
+         "AnimateDiff-Evolved.ADE_PairedConditioningSetMask": ComfyNode<IN['AnimateDiff-Evolved.ADE_PairedConditioningSetMask'], OUT['AnimateDiff-Evolved.ADE_PairedConditioningSetMask']> & {
+         }
+         "AnimateDiff-Evolved.ADE_PairedConditioningSetMaskAndCombine": ComfyNode<IN['AnimateDiff-Evolved.ADE_PairedConditioningSetMaskAndCombine'], OUT['AnimateDiff-Evolved.ADE_PairedConditioningSetMaskAndCombine']> & {
+         }
+         "AnimateDiff-Evolved.ADE_PairedConditioningSetUnmaskedAndCombine": ComfyNode<IN['AnimateDiff-Evolved.ADE_PairedConditioningSetUnmaskedAndCombine'], OUT['AnimateDiff-Evolved.ADE_PairedConditioningSetUnmaskedAndCombine']> & {
+         }
+         "AnimateDiff-Evolved.ADE_PerBlock_SD15_FromFloats": ComfyNode<IN['AnimateDiff-Evolved.ADE_PerBlock_SD15_FromFloats'], OUT['AnimateDiff-Evolved.ADE_PerBlock_SD15_FromFloats']> & {
+            _PER_BLOCK: ComfyNodeOutput<'PER_BLOCK'>
+         }
+         "AnimateDiff-Evolved.ADE_PerBlock_SD15_LowLevel": ComfyNode<IN['AnimateDiff-Evolved.ADE_PerBlock_SD15_LowLevel'], OUT['AnimateDiff-Evolved.ADE_PerBlock_SD15_LowLevel']> & {
+            _PER_BLOCK: ComfyNodeOutput<'PER_BLOCK'>
+         }
+         "AnimateDiff-Evolved.ADE_PerBlock_SD15_MidLevel": ComfyNode<IN['AnimateDiff-Evolved.ADE_PerBlock_SD15_MidLevel'], OUT['AnimateDiff-Evolved.ADE_PerBlock_SD15_MidLevel']> & {
+            _PER_BLOCK: ComfyNodeOutput<'PER_BLOCK'>
+         }
+         "AnimateDiff-Evolved.ADE_PerBlock_SDXL_FromFloats": ComfyNode<IN['AnimateDiff-Evolved.ADE_PerBlock_SDXL_FromFloats'], OUT['AnimateDiff-Evolved.ADE_PerBlock_SDXL_FromFloats']> & {
+            _PER_BLOCK: ComfyNodeOutput<'PER_BLOCK'>
+         }
+         "AnimateDiff-Evolved.ADE_PerBlock_SDXL_LowLevel": ComfyNode<IN['AnimateDiff-Evolved.ADE_PerBlock_SDXL_LowLevel'], OUT['AnimateDiff-Evolved.ADE_PerBlock_SDXL_LowLevel']> & {
+            _PER_BLOCK: ComfyNodeOutput<'PER_BLOCK'>
+         }
+         "AnimateDiff-Evolved.ADE_PerBlock_SDXL_MidLevel": ComfyNode<IN['AnimateDiff-Evolved.ADE_PerBlock_SDXL_MidLevel'], OUT['AnimateDiff-Evolved.ADE_PerBlock_SDXL_MidLevel']> & {
+            _PER_BLOCK: ComfyNodeOutput<'PER_BLOCK'>
+         }
+         "AnimateDiff-Evolved.ADE_PerBlockHighLevel": ComfyNode<IN['AnimateDiff-Evolved.ADE_PerBlockHighLevel'], OUT['AnimateDiff-Evolved.ADE_PerBlockHighLevel']> & {
+            _PER_BLOCK: ComfyNodeOutput<'PER_BLOCK'>
+         }
+         "AnimateDiff-Evolved.ADE_PerturbedAttentionGuidanceMultival": ComfyNode<IN['AnimateDiff-Evolved.ADE_PerturbedAttentionGuidanceMultival'], OUT['AnimateDiff-Evolved.ADE_PerturbedAttentionGuidanceMultival']> & {
+            _MODEL: ComfyNodeOutput<'MODEL'>
+         }
+         "AnimateDiff-Evolved.ADE_PIA_AnimateDiffKeyframe": ComfyNode<IN['AnimateDiff-Evolved.ADE_PIA_AnimateDiffKeyframe'], OUT['AnimateDiff-Evolved.ADE_PIA_AnimateDiffKeyframe']> & {
+            _AD_KEYFRAMES: ComfyNodeOutput<'AD_KEYFRAMES'>
+         }
+         "AnimateDiff-Evolved.ADE_PromptScheduling": ComfyNode<IN['AnimateDiff-Evolved.ADE_PromptScheduling'], OUT['AnimateDiff-Evolved.ADE_PromptScheduling']> & {
+            _CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
+         }
+         "AnimateDiff-Evolved.ADE_PromptSchedulingLatents": ComfyNode<IN['AnimateDiff-Evolved.ADE_PromptSchedulingLatents'], OUT['AnimateDiff-Evolved.ADE_PromptSchedulingLatents']> & {
+            _CONDITIONING: ComfyNodeOutput<'CONDITIONING'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
+         }
+         "AnimateDiff-Evolved.ADE_RawSigmaSchedule": ComfyNode<IN['AnimateDiff-Evolved.ADE_RawSigmaSchedule'], OUT['AnimateDiff-Evolved.ADE_RawSigmaSchedule']> & {
+            _SIGMA_SCHEDULE: ComfyNodeOutput<'SIGMA_SCHEDULE'>
+         }
+         "AnimateDiff-Evolved.ADE_RegisterLoraHook": ComfyNode<IN['AnimateDiff-Evolved.ADE_RegisterLoraHook'], OUT['AnimateDiff-Evolved.ADE_RegisterLoraHook']> & {
+            _MODEL: ComfyNodeOutput<'MODEL'>
+            _CLIP: ComfyNodeOutput<'CLIP'>
+            _LORA_HOOK: ComfyNodeOutput<'LORA_HOOK'>
+         }
+         "AnimateDiff-Evolved.ADE_RegisterLoraHookModelOnly": ComfyNode<IN['AnimateDiff-Evolved.ADE_RegisterLoraHookModelOnly'], OUT['AnimateDiff-Evolved.ADE_RegisterLoraHookModelOnly']> & {
+            _MODEL: ComfyNodeOutput<'MODEL'>
+            _LORA_HOOK: ComfyNodeOutput<'LORA_HOOK'>
+         }
+         "AnimateDiff-Evolved.ADE_RegisterModelAsLoraHook": ComfyNode<IN['AnimateDiff-Evolved.ADE_RegisterModelAsLoraHook'], OUT['AnimateDiff-Evolved.ADE_RegisterModelAsLoraHook']> & {
+            _MODEL: ComfyNodeOutput<'MODEL'>
+            _CLIP: ComfyNodeOutput<'CLIP'>
+            _LORA_HOOK: ComfyNodeOutput<'LORA_HOOK'>
+         }
+         "AnimateDiff-Evolved.ADE_RegisterModelAsLoraHookModelOnly": ComfyNode<IN['AnimateDiff-Evolved.ADE_RegisterModelAsLoraHookModelOnly'], OUT['AnimateDiff-Evolved.ADE_RegisterModelAsLoraHookModelOnly']> & {
+            _MODEL: ComfyNodeOutput<'MODEL'>
+            _LORA_HOOK: ComfyNodeOutput<'LORA_HOOK'>
+         }
+         "AnimateDiff-Evolved.ADE_ReplaceCameraParameters": ComfyNode<IN['AnimateDiff-Evolved.ADE_ReplaceCameraParameters'], OUT['AnimateDiff-Evolved.ADE_ReplaceCameraParameters']> & {
+            _CAMERACTRL_POSES: ComfyNodeOutput<'CAMERACTRL_POSES'>
+         }
+         "AnimateDiff-Evolved.ADE_ReplaceOriginalPoseAspectRatio": ComfyNode<IN['AnimateDiff-Evolved.ADE_ReplaceOriginalPoseAspectRatio'], OUT['AnimateDiff-Evolved.ADE_ReplaceOriginalPoseAspectRatio']> & {
+            _CAMERACTRL_POSES: ComfyNodeOutput<'CAMERACTRL_POSES'>
+         }
+         "AnimateDiff-Evolved.ADE_RescaleCFGMultival": ComfyNode<IN['AnimateDiff-Evolved.ADE_RescaleCFGMultival'], OUT['AnimateDiff-Evolved.ADE_RescaleCFGMultival']> & {
+            _MODEL: ComfyNodeOutput<'MODEL'>
+         }
+         "AnimateDiff-Evolved.ADE_SetLoraHookKeyframe": ComfyNode<IN['AnimateDiff-Evolved.ADE_SetLoraHookKeyframe'], OUT['AnimateDiff-Evolved.ADE_SetLoraHookKeyframe']> & {
+            _LORA_HOOK: ComfyNodeOutput<'LORA_HOOK'>
+         }
+         "AnimateDiff-Evolved.ADE_SigmaSchedule": ComfyNode<IN['AnimateDiff-Evolved.ADE_SigmaSchedule'], OUT['AnimateDiff-Evolved.ADE_SigmaSchedule']> & {
+            _SIGMA_SCHEDULE: ComfyNodeOutput<'SIGMA_SCHEDULE'>
+         }
+         "AnimateDiff-Evolved.ADE_SigmaScheduleSplitAndCombine": ComfyNode<IN['AnimateDiff-Evolved.ADE_SigmaScheduleSplitAndCombine'], OUT['AnimateDiff-Evolved.ADE_SigmaScheduleSplitAndCombine']> & {
+            _SIGMA_SCHEDULE: ComfyNodeOutput<'SIGMA_SCHEDULE'>
+         }
+         "AnimateDiff-Evolved.ADE_SigmaScheduleToSigmas": ComfyNode<IN['AnimateDiff-Evolved.ADE_SigmaScheduleToSigmas'], OUT['AnimateDiff-Evolved.ADE_SigmaScheduleToSigmas']> & {
+            _SIGMAS: ComfyNodeOutput<'SIGMAS'>
+         }
+         "AnimateDiff-Evolved.ADE_SigmaScheduleWeightedAverage": ComfyNode<IN['AnimateDiff-Evolved.ADE_SigmaScheduleWeightedAverage'], OUT['AnimateDiff-Evolved.ADE_SigmaScheduleWeightedAverage']> & {
+            _SIGMA_SCHEDULE: ComfyNodeOutput<'SIGMA_SCHEDULE'>
+         }
+         "AnimateDiff-Evolved.ADE_SigmaScheduleWeightedAverageInterp": ComfyNode<IN['AnimateDiff-Evolved.ADE_SigmaScheduleWeightedAverageInterp'], OUT['AnimateDiff-Evolved.ADE_SigmaScheduleWeightedAverageInterp']> & {
+            _SIGMA_SCHEDULE: ComfyNodeOutput<'SIGMA_SCHEDULE'>
+         }
+         "AnimateDiff-Evolved.ADE_StandardStaticContextOptions": ComfyNode<IN['AnimateDiff-Evolved.ADE_StandardStaticContextOptions'], OUT['AnimateDiff-Evolved.ADE_StandardStaticContextOptions']> & {
+            _CONTEXT_OPTIONS: ComfyNodeOutput<'CONTEXT_OPTIONS'>
+         }
+         "AnimateDiff-Evolved.ADE_StandardStaticViewOptions": ComfyNode<IN['AnimateDiff-Evolved.ADE_StandardStaticViewOptions'], OUT['AnimateDiff-Evolved.ADE_StandardStaticViewOptions']> & {
+            _VIEW_OPTS: ComfyNodeOutput<'VIEW_OPTS'>
+         }
+         "AnimateDiff-Evolved.ADE_StandardUniformContextOptions": ComfyNode<IN['AnimateDiff-Evolved.ADE_StandardUniformContextOptions'], OUT['AnimateDiff-Evolved.ADE_StandardUniformContextOptions']> & {
+            _CONTEXT_OPTIONS: ComfyNodeOutput<'CONTEXT_OPTIONS'>
+         }
+         "AnimateDiff-Evolved.ADE_StandardUniformViewOptions": ComfyNode<IN['AnimateDiff-Evolved.ADE_StandardUniformViewOptions'], OUT['AnimateDiff-Evolved.ADE_StandardUniformViewOptions']> & {
+            _VIEW_OPTS: ComfyNodeOutput<'VIEW_OPTS'>
+         }
+         "AnimateDiff-Evolved.ADE_TimestepsConditioning": ComfyNode<IN['AnimateDiff-Evolved.ADE_TimestepsConditioning'], OUT['AnimateDiff-Evolved.ADE_TimestepsConditioning']> & {
+            _TIMESTEPS_COND: ComfyNodeOutput<'TIMESTEPS_COND'>
+         }
+         "AnimateDiff-Evolved.ADE_UpscaleAndVAEEncode": ComfyNode<IN['AnimateDiff-Evolved.ADE_UpscaleAndVAEEncode'], OUT['AnimateDiff-Evolved.ADE_UpscaleAndVAEEncode']> & {
+            _LATENT: ComfyNodeOutput<'LATENT'>
+         }
+         "AnimateDiff-Evolved.ADE_UseEvolvedSampling": ComfyNode<IN['AnimateDiff-Evolved.ADE_UseEvolvedSampling'], OUT['AnimateDiff-Evolved.ADE_UseEvolvedSampling']> & {
+            _MODEL: ComfyNodeOutput<'MODEL'>
+         }
+         "AnimateDiff-Evolved.ADE_ValueScheduling": ComfyNode<IN['AnimateDiff-Evolved.ADE_ValueScheduling'], OUT['AnimateDiff-Evolved.ADE_ValueScheduling']> & {
+            _FLOAT: ComfyNodeOutput<'FLOAT'>
+            _FLOATS: ComfyNodeOutput<'FLOATS'>
+            _INT: ComfyNodeOutput<'INT'>
+            _INTS: ComfyNodeOutput<'INTS'>
+         }
+         "AnimateDiff-Evolved.ADE_ValueSchedulingLatents": ComfyNode<IN['AnimateDiff-Evolved.ADE_ValueSchedulingLatents'], OUT['AnimateDiff-Evolved.ADE_ValueSchedulingLatents']> & {
+            _FLOAT: ComfyNodeOutput<'FLOAT'>
+            _FLOATS: ComfyNodeOutput<'FLOATS'>
+            _INT: ComfyNodeOutput<'INT'>
+            _INTS: ComfyNodeOutput<'INTS'>
+         }
+         "AnimateDiff-Evolved.ADE_ValuesReplace": ComfyNode<IN['AnimateDiff-Evolved.ADE_ValuesReplace'], OUT['AnimateDiff-Evolved.ADE_ValuesReplace']> & {
+            _VALUES_REPLACE: ComfyNodeOutput<'VALUES_REPLACE'>
+         }
+         "AnimateDiff-Evolved.ADE_ViewsOnlyContextOptions": ComfyNode<IN['AnimateDiff-Evolved.ADE_ViewsOnlyContextOptions'], OUT['AnimateDiff-Evolved.ADE_ViewsOnlyContextOptions']> & {
+            _CONTEXT_OPTIONS: ComfyNodeOutput<'CONTEXT_OPTIONS'>
+         }
+         "AnimateDiff-Evolved.ADE_VisualizeContextOptionsK": ComfyNode<IN['AnimateDiff-Evolved.ADE_VisualizeContextOptionsK'], OUT['AnimateDiff-Evolved.ADE_VisualizeContextOptionsK']> & {
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
+         }
+         "AnimateDiff-Evolved.ADE_VisualizeContextOptionsKAdv": ComfyNode<IN['AnimateDiff-Evolved.ADE_VisualizeContextOptionsKAdv'], OUT['AnimateDiff-Evolved.ADE_VisualizeContextOptionsKAdv']> & {
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
+         }
+         "AnimateDiff-Evolved.ADE_VisualizeContextOptionsSCustom": ComfyNode<IN['AnimateDiff-Evolved.ADE_VisualizeContextOptionsSCustom'], OUT['AnimateDiff-Evolved.ADE_VisualizeContextOptionsSCustom']> & {
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
+         }
+         "AnimateDiff-Evolved.AnimateDiffLoaderV1": ComfyNode<IN['AnimateDiff-Evolved.AnimateDiffLoaderV1'], OUT['AnimateDiff-Evolved.AnimateDiffLoaderV1']> & {
+            _MODEL: ComfyNodeOutput<'MODEL'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
+         }
+         "AnimateDiff-Evolved.CheckpointLoaderSimpleWithNoiseSelect": ComfyNode<IN['AnimateDiff-Evolved.CheckpointLoaderSimpleWithNoiseSelect'], OUT['AnimateDiff-Evolved.CheckpointLoaderSimpleWithNoiseSelect']> & {
+            _MODEL: ComfyNodeOutput<'MODEL'>
+            _CLIP: ComfyNodeOutput<'CLIP'>
+            _VAE: ComfyNodeOutput<'VAE'>
+         }
          BasicGuider: ComfyNode<IN['BasicGuider'], OUT['BasicGuider']> & {
             _GUIDER: ComfyNodeOutput<'GUIDER'>
          }
@@ -11546,6 +14751,12 @@ declare global {
             _CLIP: ComfyNodeOutput<'CLIP'>
          }
          CLIPSave: ComfyNode<IN['CLIPSave'], OUT['CLIPSave']> & {
+         }
+         "clipseg.CLIPSeg": ComfyNode<IN['clipseg.CLIPSeg'], OUT['clipseg.CLIPSeg']> & {
+            _MASK: ComfyNodeOutput<'MASK'>
+         }
+         "clipseg.CombineSegMasks": ComfyNode<IN['clipseg.CombineSegMasks'], OUT['clipseg.CombineSegMasks']> & {
+            _MASK: ComfyNodeOutput<'MASK'>
          }
          CLIPSetLastLayer: ComfyNode<IN['CLIPSetLastLayer'], OUT['CLIPSetLastLayer']> & {
             _CLIP: ComfyNodeOutput<'CLIP'>
@@ -11857,6 +15068,107 @@ declare global {
          }
          FeatherMask: ComfyNode<IN['FeatherMask'], OUT['FeatherMask']> & {
             _MASK: ComfyNodeOutput<'MASK'>
+         }
+         "FizzNodes.AbsCosWave": ComfyNode<IN['FizzNodes.AbsCosWave'], OUT['FizzNodes.AbsCosWave']> & {
+            _FLOAT: ComfyNodeOutput<'FLOAT'>
+            _INT: ComfyNodeOutput<'INT'>
+         }
+         "FizzNodes.AbsSinWave": ComfyNode<IN['FizzNodes.AbsSinWave'], OUT['FizzNodes.AbsSinWave']> & {
+            _FLOAT: ComfyNodeOutput<'FLOAT'>
+            _INT: ComfyNodeOutput<'INT'>
+         }
+         "FizzNodes.BatchPromptSchedule": ComfyNode<IN['FizzNodes.BatchPromptSchedule'], OUT['FizzNodes.BatchPromptSchedule']> & {
+         }
+         "FizzNodes.BatchPromptScheduleEncodeSDXL": ComfyNode<IN['FizzNodes.BatchPromptScheduleEncodeSDXL'], OUT['FizzNodes.BatchPromptScheduleEncodeSDXL']> & {
+         }
+         "FizzNodes.BatchPromptScheduleLatentInput": ComfyNode<IN['FizzNodes.BatchPromptScheduleLatentInput'], OUT['FizzNodes.BatchPromptScheduleLatentInput']> & {
+            _LATENT: ComfyNodeOutput<'LATENT'>
+         }
+         "FizzNodes.BatchPromptScheduleSDXLLatentInput": ComfyNode<IN['FizzNodes.BatchPromptScheduleSDXLLatentInput'], OUT['FizzNodes.BatchPromptScheduleSDXLLatentInput']> & {
+            _LATENT: ComfyNodeOutput<'LATENT'>
+         }
+         "FizzNodes.BatchStringSchedule": ComfyNode<IN['FizzNodes.BatchStringSchedule'], OUT['FizzNodes.BatchStringSchedule']> & {
+         }
+         "FizzNodes.BatchValueSchedule": ComfyNode<IN['FizzNodes.BatchValueSchedule'], OUT['FizzNodes.BatchValueSchedule']> & {
+            _FLOAT: ComfyNodeOutput<'FLOAT'>
+            _INT: ComfyNodeOutput<'INT'>
+         }
+         "FizzNodes.BatchValueScheduleLatentInput": ComfyNode<IN['FizzNodes.BatchValueScheduleLatentInput'], OUT['FizzNodes.BatchValueScheduleLatentInput']> & {
+            _FLOAT: ComfyNodeOutput<'FLOAT'>
+            _INT: ComfyNodeOutput<'INT'>
+            _LATENT: ComfyNodeOutput<'LATENT'>
+         }
+         "FizzNodes.CalculateFrameOffset": ComfyNode<IN['FizzNodes.CalculateFrameOffset'], OUT['FizzNodes.CalculateFrameOffset']> & {
+            _INT: ComfyNodeOutput<'INT'>
+         }
+         "FizzNodes.ConcatStringSingle": ComfyNode<IN['FizzNodes.ConcatStringSingle'], OUT['FizzNodes.ConcatStringSingle']> & {
+            _STRING: ComfyNodeOutput<'STRING'>
+         }
+         "FizzNodes.convertKeyframeKeysToBatchKeys": ComfyNode<IN['FizzNodes.convertKeyframeKeysToBatchKeys'], OUT['FizzNodes.convertKeyframeKeysToBatchKeys']> & {
+            _INT: ComfyNodeOutput<'INT'>
+         }
+         "FizzNodes.CosWave": ComfyNode<IN['FizzNodes.CosWave'], OUT['FizzNodes.CosWave']> & {
+            _FLOAT: ComfyNodeOutput<'FLOAT'>
+            _INT: ComfyNodeOutput<'INT'>
+         }
+         "FizzNodes.FizzFrame": ComfyNode<IN['FizzNodes.FizzFrame'], OUT['FizzNodes.FizzFrame']> & {
+            _FIZZFRAME: ComfyNodeOutput<'FIZZFRAME'>
+         }
+         "FizzNodes.FizzFrameConcatenate": ComfyNode<IN['FizzNodes.FizzFrameConcatenate'], OUT['FizzNodes.FizzFrameConcatenate']> & {
+            _STRING: ComfyNodeOutput<'STRING'>
+         }
+         "FizzNodes.ImagesFromBatchSchedule": ComfyNode<IN['FizzNodes.ImagesFromBatchSchedule'], OUT['FizzNodes.ImagesFromBatchSchedule']> & {
+            _IMAGE: ComfyNodeOutput<'IMAGE'>
+         }
+         "FizzNodes.Init FizzFrame": ComfyNode<IN['FizzNodes.Init FizzFrame'], OUT['FizzNodes.Init FizzFrame']> & {
+            _FIZZFRAME: ComfyNodeOutput<'FIZZFRAME'>
+         }
+         "FizzNodes.InvCosWave": ComfyNode<IN['FizzNodes.InvCosWave'], OUT['FizzNodes.InvCosWave']> & {
+            _FLOAT: ComfyNodeOutput<'FLOAT'>
+            _INT: ComfyNodeOutput<'INT'>
+         }
+         "FizzNodes.InvSinWave": ComfyNode<IN['FizzNodes.InvSinWave'], OUT['FizzNodes.InvSinWave']> & {
+            _FLOAT: ComfyNodeOutput<'FLOAT'>
+            _INT: ComfyNodeOutput<'INT'>
+         }
+         "FizzNodes.Lerp": ComfyNode<IN['FizzNodes.Lerp'], OUT['FizzNodes.Lerp']> & {
+            _FLOAT: ComfyNodeOutput<'FLOAT'>
+            _INT: ComfyNodeOutput<'INT'>
+         }
+         "FizzNodes.PromptSchedule": ComfyNode<IN['FizzNodes.PromptSchedule'], OUT['FizzNodes.PromptSchedule']> & {
+         }
+         "FizzNodes.PromptScheduleEncodeSDXL": ComfyNode<IN['FizzNodes.PromptScheduleEncodeSDXL'], OUT['FizzNodes.PromptScheduleEncodeSDXL']> & {
+         }
+         "FizzNodes.PromptScheduleNodeFlow": ComfyNode<IN['FizzNodes.PromptScheduleNodeFlow'], OUT['FizzNodes.PromptScheduleNodeFlow']> & {
+            _INT: ComfyNodeOutput<'INT'>
+            _STRING: ComfyNodeOutput<'STRING'>
+         }
+         "FizzNodes.PromptScheduleNodeFlowEnd": ComfyNode<IN['FizzNodes.PromptScheduleNodeFlowEnd'], OUT['FizzNodes.PromptScheduleNodeFlowEnd']> & {
+         }
+         "FizzNodes.SawtoothWave": ComfyNode<IN['FizzNodes.SawtoothWave'], OUT['FizzNodes.SawtoothWave']> & {
+            _FLOAT: ComfyNodeOutput<'FLOAT'>
+            _INT: ComfyNodeOutput<'INT'>
+         }
+         "FizzNodes.SinWave": ComfyNode<IN['FizzNodes.SinWave'], OUT['FizzNodes.SinWave']> & {
+            _FLOAT: ComfyNodeOutput<'FLOAT'>
+            _INT: ComfyNodeOutput<'INT'>
+         }
+         "FizzNodes.SquareWave": ComfyNode<IN['FizzNodes.SquareWave'], OUT['FizzNodes.SquareWave']> & {
+            _FLOAT: ComfyNodeOutput<'FLOAT'>
+            _INT: ComfyNodeOutput<'INT'>
+         }
+         "FizzNodes.StringConcatenate": ComfyNode<IN['FizzNodes.StringConcatenate'], OUT['FizzNodes.StringConcatenate']> & {
+            _STRING: ComfyNodeOutput<'STRING'>
+         }
+         "FizzNodes.StringSchedule": ComfyNode<IN['FizzNodes.StringSchedule'], OUT['FizzNodes.StringSchedule']> & {
+         }
+         "FizzNodes.TriangleWave": ComfyNode<IN['FizzNodes.TriangleWave'], OUT['FizzNodes.TriangleWave']> & {
+            _FLOAT: ComfyNodeOutput<'FLOAT'>
+            _INT: ComfyNodeOutput<'INT'>
+         }
+         "FizzNodes.ValueSchedule": ComfyNode<IN['FizzNodes.ValueSchedule'], OUT['FizzNodes.ValueSchedule']> & {
+            _FLOAT: ComfyNodeOutput<'FLOAT'>
+            _INT: ComfyNodeOutput<'INT'>
          }
          FlipSigmas: ComfyNode<IN['FlipSigmas'], OUT['FlipSigmas']> & {
             _SIGMAS: ComfyNodeOutput<'SIGMAS'>
@@ -13812,6 +17124,16 @@ declare global {
          }
       }
       interface Builder {
+          /** displayName="Attention Couple" category="A8R8" name="AttentionCouple" output=[model] */
+         "A8R8_ComfyUI_nodes.AttentionCouple"(p: IN['A8R8_ComfyUI_nodes.AttentionCouple'], meta?: ComfyNodeMetadata): Node['A8R8_ComfyUI_nodes.AttentionCouple']
+          /** displayName="Attention Couple Region" category="A8R8" name="AttentionCoupleRegion" output=[region] */
+         "A8R8_ComfyUI_nodes.AttentionCoupleRegion"(p: IN['A8R8_ComfyUI_nodes.AttentionCoupleRegion'], meta?: ComfyNodeMetadata): Node['A8R8_ComfyUI_nodes.AttentionCoupleRegion']
+          /** displayName="Attention Couple Regions" category="A8R8" name="AttentionCoupleRegions" output=[regions] */
+         "A8R8_ComfyUI_nodes.AttentionCoupleRegions"(p: IN['A8R8_ComfyUI_nodes.AttentionCoupleRegions'], meta?: ComfyNodeMetadata): Node['A8R8_ComfyUI_nodes.AttentionCoupleRegions']
+          /** displayName="Base64Image Input Node" category="A8R8" name="Base64ImageInput" output=[IMAGE] */
+         "A8R8_ComfyUI_nodes.Base64ImageInput"(p: IN['A8R8_ComfyUI_nodes.Base64ImageInput'], meta?: ComfyNodeMetadata): Node['A8R8_ComfyUI_nodes.Base64ImageInput']
+          /** displayName="Base64Image Output Node" category="A8R8" name="Base64ImageOutput" output=[] */
+         "A8R8_ComfyUI_nodes.Base64ImageOutput"(p: IN['A8R8_ComfyUI_nodes.Base64ImageOutput'], meta?: ComfyNodeMetadata): Node['A8R8_ComfyUI_nodes.Base64ImageOutput']
           /** displayName="AddNoise" category="_for_testing_custom_sampling_noise" name="AddNoise" output=[LATENT] */
          AddNoise(p: IN['AddNoise'], meta?: ComfyNodeMetadata): Node['AddNoise']
           /** displayName="AlignYourStepsScheduler" category="sampling_custom_sampling_schedulers" name="AlignYourStepsScheduler" output=[SIGMAS] */
@@ -14012,6 +17334,311 @@ declare global {
          "Allor.UpscaleModelClamp"(p: IN['Allor.UpscaleModelClamp'], meta?: ComfyNodeMetadata): Node['Allor.UpscaleModelClamp']
           /** displayName="VaeClamp" category="clamp" name="VaeClamp" output=[VAE] */
          "Allor.VaeClamp"(p: IN['Allor.VaeClamp'], meta?: ComfyNodeMetadata): Node['Allor.VaeClamp']
+          /** displayName="AD Block 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_per block" name="ADE_ADBlockCombo" output=[AD_BLOCK] */
+         "AnimateDiff-Evolved.ADE_ADBlockCombo"(p: IN['AnimateDiff-Evolved.ADE_ADBlockCombo'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_ADBlockCombo']
+          /** displayName="AD Block+ 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_per block" name="ADE_ADBlockIndiv" output=[AD_BLOCK] */
+         "AnimateDiff-Evolved.ADE_ADBlockIndiv"(p: IN['AnimateDiff-Evolved.ADE_ADBlockIndiv'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_ADBlockIndiv']
+          /** displayName="Adjust PE [Full Stretch] 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_ad settings_pe adjust" name="ADE_AdjustPEFullStretch" output=[PE_ADJUST] */
+         "AnimateDiff-Evolved.ADE_AdjustPEFullStretch"(p: IN['AnimateDiff-Evolved.ADE_AdjustPEFullStretch'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_AdjustPEFullStretch']
+          /** displayName="Adjust PE [Manual] 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_ad settings_pe adjust" name="ADE_AdjustPEManual" output=[PE_ADJUST] */
+         "AnimateDiff-Evolved.ADE_AdjustPEManual"(p: IN['AnimateDiff-Evolved.ADE_AdjustPEManual'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_AdjustPEManual']
+          /** displayName="Adjust PE [Sweetspot] 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_ad settings_pe adjust" name="ADE_AdjustPESweetspotStretch" output=[PE_ADJUST] */
+         "AnimateDiff-Evolved.ADE_AdjustPESweetspotStretch"(p: IN['AnimateDiff-Evolved.ADE_AdjustPESweetspotStretch'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_AdjustPESweetspotStretch']
+          /** displayName="Adjust Weight [All◆Add] 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_ad settings_weight adjust" name="ADE_AdjustWeightAllAdd" output=[WEIGHT_ADJUST] */
+         "AnimateDiff-Evolved.ADE_AdjustWeightAllAdd"(p: IN['AnimateDiff-Evolved.ADE_AdjustWeightAllAdd'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_AdjustWeightAllAdd']
+          /** displayName="Adjust Weight [All◆Mult] 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_ad settings_weight adjust" name="ADE_AdjustWeightAllMult" output=[WEIGHT_ADJUST] */
+         "AnimateDiff-Evolved.ADE_AdjustWeightAllMult"(p: IN['AnimateDiff-Evolved.ADE_AdjustWeightAllMult'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_AdjustWeightAllMult']
+          /** displayName="Adjust Weight [Indiv◆Add] 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_ad settings_weight adjust" name="ADE_AdjustWeightIndivAdd" output=[WEIGHT_ADJUST] */
+         "AnimateDiff-Evolved.ADE_AdjustWeightIndivAdd"(p: IN['AnimateDiff-Evolved.ADE_AdjustWeightIndivAdd'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_AdjustWeightIndivAdd']
+          /** displayName="Adjust Weight [Indiv-Attn◆Add] 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_ad settings_weight adjust" name="ADE_AdjustWeightIndivAttnAdd" output=[WEIGHT_ADJUST] */
+         "AnimateDiff-Evolved.ADE_AdjustWeightIndivAttnAdd"(p: IN['AnimateDiff-Evolved.ADE_AdjustWeightIndivAttnAdd'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_AdjustWeightIndivAttnAdd']
+          /** displayName="Adjust Weight [Indiv-Attn◆Mult] 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_ad settings_weight adjust" name="ADE_AdjustWeightIndivAttnMult" output=[WEIGHT_ADJUST] */
+         "AnimateDiff-Evolved.ADE_AdjustWeightIndivAttnMult"(p: IN['AnimateDiff-Evolved.ADE_AdjustWeightIndivAttnMult'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_AdjustWeightIndivAttnMult']
+          /** displayName="Adjust Weight [Indiv◆Mult] 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_ad settings_weight adjust" name="ADE_AdjustWeightIndivMult" output=[WEIGHT_ADJUST] */
+         "AnimateDiff-Evolved.ADE_AdjustWeightIndivMult"(p: IN['AnimateDiff-Evolved.ADE_AdjustWeightIndivMult'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_AdjustWeightIndivMult']
+          /** displayName="🚫AnimateDiff Combine [DEPRECATED, Use Video Combine (VHS) Instead!] 🎭🅐🅓" category="" name="ADE_AnimateDiffCombine" output=[GIF] */
+         "AnimateDiff-Evolved.ADE_AnimateDiffCombine"(p: IN['AnimateDiff-Evolved.ADE_AnimateDiffCombine'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_AnimateDiffCombine']
+          /** displayName="AnimateDiff Keyframe 🎭🅐🅓" category="Animate Diff 🎭🅐🅓" name="ADE_AnimateDiffKeyframe" output=[AD_KEYFRAMES] */
+         "AnimateDiff-Evolved.ADE_AnimateDiffKeyframe"(p: IN['AnimateDiff-Evolved.ADE_AnimateDiffKeyframe'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_AnimateDiffKeyframe']
+          /** displayName="AnimateDiff Loader 🎭🅐🅓①" category="Animate Diff 🎭🅐🅓_① Gen1 nodes ①" name="ADE_AnimateDiffLoaderGen1" output=[MODEL] */
+         "AnimateDiff-Evolved.ADE_AnimateDiffLoaderGen1"(p: IN['AnimateDiff-Evolved.ADE_AnimateDiffLoaderGen1'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_AnimateDiffLoaderGen1']
+          /** displayName="🚫AnimateDiff Loader (Advanced) [DEPRECATED] 🎭🅐🅓" category="" name="ADE_AnimateDiffLoaderV1Advanced" output=[MODEL, LATENT] */
+         "AnimateDiff-Evolved.ADE_AnimateDiffLoaderV1Advanced"(p: IN['AnimateDiff-Evolved.ADE_AnimateDiffLoaderV1Advanced'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_AnimateDiffLoaderV1Advanced']
+          /** displayName="AnimateDiff Loader [Legacy] 🎭🅐🅓①" category="Animate Diff 🎭🅐🅓_① Gen1 nodes ①" name="ADE_AnimateDiffLoaderWithContext" output=[MODEL] */
+         "AnimateDiff-Evolved.ADE_AnimateDiffLoaderWithContext"(p: IN['AnimateDiff-Evolved.ADE_AnimateDiffLoaderWithContext'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_AnimateDiffLoaderWithContext']
+          /** displayName="Load AnimateDiff LoRA 🎭🅐🅓" category="Animate Diff 🎭🅐🅓" name="ADE_AnimateDiffLoRALoader" output=[MOTION_LORA] */
+         "AnimateDiff-Evolved.ADE_AnimateDiffLoRALoader"(p: IN['AnimateDiff-Evolved.ADE_AnimateDiffLoRALoader'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_AnimateDiffLoRALoader']
+          /** displayName="🚫[DEPR] Motion Model Settings (Advanced) 🎭🅐🅓①" category="" name="ADE_AnimateDiffModelSettings" output=[AD_SETTINGS] */
+         "AnimateDiff-Evolved.ADE_AnimateDiffModelSettings"(p: IN['AnimateDiff-Evolved.ADE_AnimateDiffModelSettings'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_AnimateDiffModelSettings']
+          /** displayName="🚫[DEPR] Motion Model Settings 🎭🅐🅓①" category="" name="ADE_AnimateDiffModelSettings_Release" output=[AD_SETTINGS] */
+         "AnimateDiff-Evolved.ADE_AnimateDiffModelSettings_Release"(p: IN['AnimateDiff-Evolved.ADE_AnimateDiffModelSettings_Release'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_AnimateDiffModelSettings_Release']
+          /** displayName="🚫[DEPR] Motion Model Settings (Adv. Attn) 🎭🅐🅓①" category="" name="ADE_AnimateDiffModelSettingsAdvancedAttnStrengths" output=[AD_SETTINGS] */
+         "AnimateDiff-Evolved.ADE_AnimateDiffModelSettingsAdvancedAttnStrengths"(p: IN['AnimateDiff-Evolved.ADE_AnimateDiffModelSettingsAdvancedAttnStrengths'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_AnimateDiffModelSettingsAdvancedAttnStrengths']
+          /** displayName="🚫[DEPR] Motion Model Settings (Simple) 🎭🅐🅓①" category="" name="ADE_AnimateDiffModelSettingsSimple" output=[AD_SETTINGS] */
+         "AnimateDiff-Evolved.ADE_AnimateDiffModelSettingsSimple"(p: IN['AnimateDiff-Evolved.ADE_AnimateDiffModelSettingsSimple'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_AnimateDiffModelSettingsSimple']
+          /** displayName="Sample Settings 🎭🅐🅓" category="Animate Diff 🎭🅐🅓" name="ADE_AnimateDiffSamplingSettings" output=[settings] */
+         "AnimateDiff-Evolved.ADE_AnimateDiffSamplingSettings"(p: IN['AnimateDiff-Evolved.ADE_AnimateDiffSamplingSettings'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_AnimateDiffSamplingSettings']
+          /** displayName="AnimateDiff Settings 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_ad settings" name="ADE_AnimateDiffSettings" output=[AD_SETTINGS] */
+         "AnimateDiff-Evolved.ADE_AnimateDiffSettings"(p: IN['AnimateDiff-Evolved.ADE_AnimateDiffSettings'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_AnimateDiffSettings']
+          /** displayName="Context Options◆Looped Uniform 🎭🅐🅓" category="" name="ADE_AnimateDiffUniformContextOptions" output=[CONTEXT_OPTS] */
+         "AnimateDiff-Evolved.ADE_AnimateDiffUniformContextOptions"(p: IN['AnimateDiff-Evolved.ADE_AnimateDiffUniformContextOptions'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_AnimateDiffUniformContextOptions']
+          /** displayName="AnimateDiff Unload 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_extras" name="ADE_AnimateDiffUnload" output=[MODEL] */
+         "AnimateDiff-Evolved.ADE_AnimateDiffUnload"(p: IN['AnimateDiff-Evolved.ADE_AnimateDiffUnload'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_AnimateDiffUnload']
+          /** displayName="Apply AnimateDiff Model (Adv.) 🎭🅐🅓②" category="Animate Diff 🎭🅐🅓_② Gen2 nodes ②" name="ADE_ApplyAnimateDiffModel" output=[M_MODELS] */
+         "AnimateDiff-Evolved.ADE_ApplyAnimateDiffModel"(p: IN['AnimateDiff-Evolved.ADE_ApplyAnimateDiffModel'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_ApplyAnimateDiffModel']
+          /** displayName="Apply AnimateDiff Model 🎭🅐🅓②" category="Animate Diff 🎭🅐🅓_② Gen2 nodes ②" name="ADE_ApplyAnimateDiffModelSimple" output=[M_MODELS] */
+         "AnimateDiff-Evolved.ADE_ApplyAnimateDiffModelSimple"(p: IN['AnimateDiff-Evolved.ADE_ApplyAnimateDiffModelSimple'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_ApplyAnimateDiffModelSimple']
+          /** displayName="Apply AnimateDiff+CameraCtrl Model 🎭🅐🅓②" category="Animate Diff 🎭🅐🅓_② Gen2 nodes ②_CameraCtrl" name="ADE_ApplyAnimateDiffModelWithCameraCtrl" output=[M_MODELS] */
+         "AnimateDiff-Evolved.ADE_ApplyAnimateDiffModelWithCameraCtrl"(p: IN['AnimateDiff-Evolved.ADE_ApplyAnimateDiffModelWithCameraCtrl'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_ApplyAnimateDiffModelWithCameraCtrl']
+          /** displayName="Apply AnimateDiff-PIA Model 🎭🅐🅓②" category="Animate Diff 🎭🅐🅓_② Gen2 nodes ②_PIA" name="ADE_ApplyAnimateDiffModelWithPIA" output=[M_MODELS] */
+         "AnimateDiff-Evolved.ADE_ApplyAnimateDiffModelWithPIA"(p: IN['AnimateDiff-Evolved.ADE_ApplyAnimateDiffModelWithPIA'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_ApplyAnimateDiffModelWithPIA']
+          /** displayName="Apply AnimateLCM-I2V Model 🎭🅐🅓②" category="Animate Diff 🎭🅐🅓_② Gen2 nodes ②_AnimateLCM-I2V" name="ADE_ApplyAnimateLCMI2VModel" output=[M_MODELS] */
+         "AnimateDiff-Evolved.ADE_ApplyAnimateLCMI2VModel"(p: IN['AnimateDiff-Evolved.ADE_ApplyAnimateLCMI2VModel'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_ApplyAnimateLCMI2VModel']
+          /** displayName="Set CLIP LoRA Hook 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_conditioning" name="ADE_AttachLoraHookToCLIP" output=[hook_CLIP] */
+         "AnimateDiff-Evolved.ADE_AttachLoraHookToCLIP"(p: IN['AnimateDiff-Evolved.ADE_AttachLoraHookToCLIP'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_AttachLoraHookToCLIP']
+          /** displayName="Set Model LoRA Hook 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_conditioning_single cond ops" name="ADE_AttachLoraHookToConditioning" output=[CONDITIONING] */
+         "AnimateDiff-Evolved.ADE_AttachLoraHookToConditioning"(p: IN['AnimateDiff-Evolved.ADE_AttachLoraHookToConditioning'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_AttachLoraHookToConditioning']
+          /** displayName="Context Options◆Batched [Non-AD] 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_context opts" name="ADE_BatchedContextOptions" output=[CONTEXT_OPTS] */
+         "AnimateDiff-Evolved.ADE_BatchedContextOptions"(p: IN['AnimateDiff-Evolved.ADE_BatchedContextOptions'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_BatchedContextOptions']
+          /** displayName="AnimateDiff+CameraCtrl Keyframe 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_② Gen2 nodes ②_CameraCtrl" name="ADE_CameraCtrlAnimateDiffKeyframe" output=[AD_KEYFRAMES] */
+         "AnimateDiff-Evolved.ADE_CameraCtrlAnimateDiffKeyframe"(p: IN['AnimateDiff-Evolved.ADE_CameraCtrlAnimateDiffKeyframe'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_CameraCtrlAnimateDiffKeyframe']
+          /** displayName="Manual Append CameraCtrl Poses 🎭🅐🅓②" category="Animate Diff 🎭🅐🅓_② Gen2 nodes ②_CameraCtrl_poses" name="ADE_CameraManualPoseAppend" output=[CAMERACTRL_POSES] */
+         "AnimateDiff-Evolved.ADE_CameraManualPoseAppend"(p: IN['AnimateDiff-Evolved.ADE_CameraManualPoseAppend'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_CameraManualPoseAppend']
+          /** displayName="Create CameraCtrl Poses (Adv.) 🎭🅐🅓②" category="Animate Diff 🎭🅐🅓_② Gen2 nodes ②_CameraCtrl_poses" name="ADE_CameraPoseAdvanced" output=[CAMERACTRL_POSES] */
+         "AnimateDiff-Evolved.ADE_CameraPoseAdvanced"(p: IN['AnimateDiff-Evolved.ADE_CameraPoseAdvanced'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_CameraPoseAdvanced']
+          /** displayName="Create CameraCtrl Poses 🎭🅐🅓②" category="Animate Diff 🎭🅐🅓_② Gen2 nodes ②_CameraCtrl_poses" name="ADE_CameraPoseBasic" output=[CAMERACTRL_POSES] */
+         "AnimateDiff-Evolved.ADE_CameraPoseBasic"(p: IN['AnimateDiff-Evolved.ADE_CameraPoseBasic'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_CameraPoseBasic']
+          /** displayName="Create CameraCtrl Poses (Combo) 🎭🅐🅓②" category="Animate Diff 🎭🅐🅓_② Gen2 nodes ②_CameraCtrl_poses" name="ADE_CameraPoseCombo" output=[CAMERACTRL_POSES] */
+         "AnimateDiff-Evolved.ADE_CameraPoseCombo"(p: IN['AnimateDiff-Evolved.ADE_CameraPoseCombo'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_CameraPoseCombo']
+          /** displayName="CFG Extras◆PAG [Multival] 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_sample settings_cfg extras" name="ADE_CFGExtrasPAG" output=[CFG_EXTRAS] */
+         "AnimateDiff-Evolved.ADE_CFGExtrasPAG"(p: IN['AnimateDiff-Evolved.ADE_CFGExtrasPAG'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_CFGExtrasPAG']
+          /** displayName="CFG Extras◆PAG 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_sample settings_cfg extras" name="ADE_CFGExtrasPAGSimple" output=[CFG_EXTRAS] */
+         "AnimateDiff-Evolved.ADE_CFGExtrasPAGSimple"(p: IN['AnimateDiff-Evolved.ADE_CFGExtrasPAGSimple'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_CFGExtrasPAGSimple']
+          /** displayName="CFG Extras◆RescaleCFG [Multival] 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_sample settings_cfg extras" name="ADE_CFGExtrasRescaleCFG" output=[CFG_EXTRAS] */
+         "AnimateDiff-Evolved.ADE_CFGExtrasRescaleCFG"(p: IN['AnimateDiff-Evolved.ADE_CFGExtrasRescaleCFG'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_CFGExtrasRescaleCFG']
+          /** displayName="CFG Extras◆RescaleCFG 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_sample settings_cfg extras" name="ADE_CFGExtrasRescaleCFGSimple" output=[CFG_EXTRAS] */
+         "AnimateDiff-Evolved.ADE_CFGExtrasRescaleCFGSimple"(p: IN['AnimateDiff-Evolved.ADE_CFGExtrasRescaleCFGSimple'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_CFGExtrasRescaleCFGSimple']
+          /** displayName="Combine LoRA Hooks [2] 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_conditioning_combine lora hooks" name="ADE_CombineLoraHooks" output=[LORA_HOOK] */
+         "AnimateDiff-Evolved.ADE_CombineLoraHooks"(p: IN['AnimateDiff-Evolved.ADE_CombineLoraHooks'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_CombineLoraHooks']
+          /** displayName="Combine LoRA Hooks [8] 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_conditioning_combine lora hooks" name="ADE_CombineLoraHooksEight" output=[LORA_HOOK] */
+         "AnimateDiff-Evolved.ADE_CombineLoraHooksEight"(p: IN['AnimateDiff-Evolved.ADE_CombineLoraHooksEight'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_CombineLoraHooksEight']
+          /** displayName="Combine LoRA Hooks [4] 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_conditioning_combine lora hooks" name="ADE_CombineLoraHooksFour" output=[LORA_HOOK] */
+         "AnimateDiff-Evolved.ADE_CombineLoraHooksFour"(p: IN['AnimateDiff-Evolved.ADE_CombineLoraHooksFour'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_CombineLoraHooksFour']
+          /** displayName="Manual Combine Cond 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_conditioning_single cond ops" name="ADE_ConditioningCombine" output=[CONDITIONING] */
+         "AnimateDiff-Evolved.ADE_ConditioningCombine"(p: IN['AnimateDiff-Evolved.ADE_ConditioningCombine'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_ConditioningCombine']
+          /** displayName="Set Props on Cond 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_conditioning_single cond ops" name="ADE_ConditioningSetMask" output=[CONDITIONING] */
+         "AnimateDiff-Evolved.ADE_ConditioningSetMask"(p: IN['AnimateDiff-Evolved.ADE_ConditioningSetMask'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_ConditioningSetMask']
+          /** displayName="Set Props and Combine Cond 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_conditioning_single cond ops" name="ADE_ConditioningSetMaskAndCombine" output=[CONDITIONING] */
+         "AnimateDiff-Evolved.ADE_ConditioningSetMaskAndCombine"(p: IN['AnimateDiff-Evolved.ADE_ConditioningSetMaskAndCombine'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_ConditioningSetMaskAndCombine']
+          /** displayName="Set Unmasked Cond 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_conditioning_single cond ops" name="ADE_ConditioningSetUnmaskedAndCombine" output=[CONDITIONING] */
+         "AnimateDiff-Evolved.ADE_ConditioningSetUnmaskedAndCombine"(p: IN['AnimateDiff-Evolved.ADE_ConditioningSetUnmaskedAndCombine'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_ConditioningSetUnmaskedAndCombine']
+          /** displayName="Context Extras◆ContextRef 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_context opts_context extras" name="ADE_ContextExtras_ContextRef" output=[CONTEXT_EXTRAS] */
+         "AnimateDiff-Evolved.ADE_ContextExtras_ContextRef"(p: IN['AnimateDiff-Evolved.ADE_ContextExtras_ContextRef'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_ContextExtras_ContextRef']
+          /** displayName="ContextRef Keyframe 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_context opts_context extras_contextref" name="ADE_ContextExtras_ContextRef_Keyframe" output=[CONTEXTREF_KF] */
+         "AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_Keyframe"(p: IN['AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_Keyframe'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_Keyframe']
+          /** displayName="ContextRef Keyframes From List 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_context opts_context extras_contextref" name="ADE_ContextExtras_ContextRef_KeyframeFromList" output=[CONTEXTREF_KF] */
+         "AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_KeyframeFromList"(p: IN['AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_KeyframeFromList'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_KeyframeFromList']
+          /** displayName="ContextRef Keyframes Interp. 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_context opts_context extras_contextref" name="ADE_ContextExtras_ContextRef_KeyframeInterpolation" output=[CONTEXTREF_KF] */
+         "AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_KeyframeInterpolation"(p: IN['AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_KeyframeInterpolation'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_KeyframeInterpolation']
+          /** displayName="ContextRef Mode◆First 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_context opts_context extras_contextref" name="ADE_ContextExtras_ContextRef_ModeFirst" output=[CONTEXTREF_MODE] */
+         "AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_ModeFirst"(p: IN['AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_ModeFirst'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_ModeFirst']
+          /** displayName="ContextRef Mode◆Indexes 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_context opts_context extras_contextref" name="ADE_ContextExtras_ContextRef_ModeIndexes" output=[CONTEXTREF_MODE] */
+         "AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_ModeIndexes"(p: IN['AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_ModeIndexes'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_ModeIndexes']
+          /** displayName="ContextRef Mode◆Sliding 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_context opts_context extras_contextref" name="ADE_ContextExtras_ContextRef_ModeSliding" output=[CONTEXTREF_MODE] */
+         "AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_ModeSliding"(p: IN['AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_ModeSliding'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_ModeSliding']
+          /** displayName="ContextRef Tune◆Attn 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_context opts_context extras_contextref" name="ADE_ContextExtras_ContextRef_TuneAttn" output=[CONTEXTREF_TUNE] */
+         "AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_TuneAttn"(p: IN['AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_TuneAttn'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_TuneAttn']
+          /** displayName="ContextRef Tune◆Attn+Adain 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_context opts_context extras_contextref" name="ADE_ContextExtras_ContextRef_TuneAttnAdain" output=[CONTEXTREF_TUNE] */
+         "AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_TuneAttnAdain"(p: IN['AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_TuneAttnAdain'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_TuneAttnAdain']
+          /** displayName="Context Extras◆NaiveReuse 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_context opts_context extras" name="ADE_ContextExtras_NaiveReuse" output=[CONTEXT_EXTRAS] */
+         "AnimateDiff-Evolved.ADE_ContextExtras_NaiveReuse"(p: IN['AnimateDiff-Evolved.ADE_ContextExtras_NaiveReuse'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_ContextExtras_NaiveReuse']
+          /** displayName="NaiveReuse Keyframe 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_context opts_context extras_naivereuse" name="ADE_ContextExtras_NaiveReuse_Keyframe" output=[NAIVEREUSE_KF] */
+         "AnimateDiff-Evolved.ADE_ContextExtras_NaiveReuse_Keyframe"(p: IN['AnimateDiff-Evolved.ADE_ContextExtras_NaiveReuse_Keyframe'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_ContextExtras_NaiveReuse_Keyframe']
+          /** displayName="NaiveReuse Keyframes From List 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_context opts_context extras_naivereuse" name="ADE_ContextExtras_NaiveReuse_KeyframeFromList" output=[NAIVEREUSE_KF] */
+         "AnimateDiff-Evolved.ADE_ContextExtras_NaiveReuse_KeyframeFromList"(p: IN['AnimateDiff-Evolved.ADE_ContextExtras_NaiveReuse_KeyframeFromList'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_ContextExtras_NaiveReuse_KeyframeFromList']
+          /** displayName="NaiveReuse Keyframes Interp. 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_context opts_context extras_naivereuse" name="ADE_ContextExtras_NaiveReuse_KeyframeInterpolation" output=[NAIVEREUSE_KF] */
+         "AnimateDiff-Evolved.ADE_ContextExtras_NaiveReuse_KeyframeInterpolation"(p: IN['AnimateDiff-Evolved.ADE_ContextExtras_NaiveReuse_KeyframeInterpolation'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_ContextExtras_NaiveReuse_KeyframeInterpolation']
+          /** displayName="Set Context Extras 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_context opts_context extras" name="ADE_ContextExtras_Set" output=[CONTEXT_OPTS] */
+         "AnimateDiff-Evolved.ADE_ContextExtras_Set"(p: IN['AnimateDiff-Evolved.ADE_ContextExtras_Set'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_ContextExtras_Set']
+          /** displayName="Custom CFG [Multival] 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_sample settings_custom cfg" name="ADE_CustomCFG" output=[CUSTOM_CFG] */
+         "AnimateDiff-Evolved.ADE_CustomCFG"(p: IN['AnimateDiff-Evolved.ADE_CustomCFG'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_CustomCFG']
+          /** displayName="Custom CFG Keyframe [Multival] 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_sample settings_custom cfg" name="ADE_CustomCFGKeyframe" output=[CUSTOM_CFG] */
+         "AnimateDiff-Evolved.ADE_CustomCFGKeyframe"(p: IN['AnimateDiff-Evolved.ADE_CustomCFGKeyframe'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_CustomCFGKeyframe']
+          /** displayName="Custom CFG Keyframes From List 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_sample settings_custom cfg" name="ADE_CustomCFGKeyframeFromList" output=[CUSTOM_CFG] */
+         "AnimateDiff-Evolved.ADE_CustomCFGKeyframeFromList"(p: IN['AnimateDiff-Evolved.ADE_CustomCFGKeyframeFromList'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_CustomCFGKeyframeFromList']
+          /** displayName="Custom CFG Keyframes Interp. 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_sample settings_custom cfg" name="ADE_CustomCFGKeyframeInterpolation" output=[CUSTOM_CFG] */
+         "AnimateDiff-Evolved.ADE_CustomCFGKeyframeInterpolation"(p: IN['AnimateDiff-Evolved.ADE_CustomCFGKeyframeInterpolation'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_CustomCFGKeyframeInterpolation']
+          /** displayName="Custom CFG Keyframe 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_sample settings_custom cfg" name="ADE_CustomCFGKeyframeSimple" output=[CUSTOM_CFG] */
+         "AnimateDiff-Evolved.ADE_CustomCFGKeyframeSimple"(p: IN['AnimateDiff-Evolved.ADE_CustomCFGKeyframeSimple'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_CustomCFGKeyframeSimple']
+          /** displayName="Custom CFG 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_sample settings_custom cfg" name="ADE_CustomCFGSimple" output=[CUSTOM_CFG] */
+         "AnimateDiff-Evolved.ADE_CustomCFGSimple"(p: IN['AnimateDiff-Evolved.ADE_CustomCFGSimple'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_CustomCFGSimple']
+          /** displayName="Empty Latent Image (Big Batch) 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_extras" name="ADE_EmptyLatentImageLarge" output=[LATENT] */
+         "AnimateDiff-Evolved.ADE_EmptyLatentImageLarge"(p: IN['AnimateDiff-Evolved.ADE_EmptyLatentImageLarge'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_EmptyLatentImageLarge']
+          /** displayName="Float to Floats 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_scheduling" name="ADE_FloatToFloats" output=[FLOATS] */
+         "AnimateDiff-Evolved.ADE_FloatToFloats"(p: IN['AnimateDiff-Evolved.ADE_FloatToFloats'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_FloatToFloats']
+          /** displayName="🧪Inject I2V into AnimateDiff Model 🎭🅐🅓②" category="Animate Diff 🎭🅐🅓_② Gen2 nodes ②_AnimateLCM-I2V_🧪experimental" name="ADE_InjectI2VIntoAnimateDiffModel" output=[MOTION_MODEL] */
+         "AnimateDiff-Evolved.ADE_InjectI2VIntoAnimateDiffModel"(p: IN['AnimateDiff-Evolved.ADE_InjectI2VIntoAnimateDiffModel'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_InjectI2VIntoAnimateDiffModel']
+          /** displayName="🧪Inject PIA into AnimateDiff Model 🎭🅐🅓②" category="Animate Diff 🎭🅐🅓_② Gen2 nodes ②_PIA_🧪experimental" name="ADE_InjectPIAIntoAnimateDiffModel" output=[MOTION_MODEL] */
+         "AnimateDiff-Evolved.ADE_InjectPIAIntoAnimateDiffModel"(p: IN['AnimateDiff-Evolved.ADE_InjectPIAIntoAnimateDiffModel'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_InjectPIAIntoAnimateDiffModel']
+          /** displayName="PIA Input [Multival] 🎭🅐🅓②" category="Animate Diff 🎭🅐🅓_② Gen2 nodes ②_PIA" name="ADE_InputPIA_Multival" output=[PIA_INPUT] */
+         "AnimateDiff-Evolved.ADE_InputPIA_Multival"(p: IN['AnimateDiff-Evolved.ADE_InputPIA_Multival'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_InputPIA_Multival']
+          /** displayName="PIA Input [Paper Presets] 🎭🅐🅓②" category="Animate Diff 🎭🅐🅓_② Gen2 nodes ②_PIA" name="ADE_InputPIA_PaperPresets" output=[PIA_INPUT] */
+         "AnimateDiff-Evolved.ADE_InputPIA_PaperPresets"(p: IN['AnimateDiff-Evolved.ADE_InputPIA_PaperPresets'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_InputPIA_PaperPresets']
+          /** displayName="Default Iteration Options 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_iteration opts" name="ADE_IterationOptsDefault" output=[ITERATION_OPTS] */
+         "AnimateDiff-Evolved.ADE_IterationOptsDefault"(p: IN['AnimateDiff-Evolved.ADE_IterationOptsDefault'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_IterationOptsDefault']
+          /** displayName="FreeInit Iteration Options 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_iteration opts" name="ADE_IterationOptsFreeInit" output=[ITERATION_OPTS] */
+         "AnimateDiff-Evolved.ADE_IterationOptsFreeInit"(p: IN['AnimateDiff-Evolved.ADE_IterationOptsFreeInit'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_IterationOptsFreeInit']
+          /** displayName="Load AnimateDiff Model 🎭🅐🅓②" category="Animate Diff 🎭🅐🅓_② Gen2 nodes ②" name="ADE_LoadAnimateDiffModel" output=[MOTION_MODEL] */
+         "AnimateDiff-Evolved.ADE_LoadAnimateDiffModel"(p: IN['AnimateDiff-Evolved.ADE_LoadAnimateDiffModel'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_LoadAnimateDiffModel']
+          /** displayName="Load AnimateDiff+CameraCtrl Model 🎭🅐🅓②" category="Animate Diff 🎭🅐🅓_② Gen2 nodes ②_CameraCtrl" name="ADE_LoadAnimateDiffModelWithCameraCtrl" output=[MOTION_MODEL] */
+         "AnimateDiff-Evolved.ADE_LoadAnimateDiffModelWithCameraCtrl"(p: IN['AnimateDiff-Evolved.ADE_LoadAnimateDiffModelWithCameraCtrl'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_LoadAnimateDiffModelWithCameraCtrl']
+          /** displayName="Load AnimateLCM-I2V Model 🎭🅐🅓②" category="Animate Diff 🎭🅐🅓_② Gen2 nodes ②_AnimateLCM-I2V" name="ADE_LoadAnimateLCMI2VModel" output=[MOTION_MODEL, encoder_only] */
+         "AnimateDiff-Evolved.ADE_LoadAnimateLCMI2VModel"(p: IN['AnimateDiff-Evolved.ADE_LoadAnimateLCMI2VModel'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_LoadAnimateLCMI2VModel']
+          /** displayName="Load CameraCtrl Poses (File) 🎭🅐🅓②" category="Animate Diff 🎭🅐🅓_② Gen2 nodes ②_CameraCtrl_poses" name="ADE_LoadCameraPoses" output=[CAMERACTRL_POSES] */
+         "AnimateDiff-Evolved.ADE_LoadCameraPoses"(p: IN['AnimateDiff-Evolved.ADE_LoadCameraPoses'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_LoadCameraPoses']
+          /** displayName="Load CameraCtrl Poses (Path) 🎭🅐🅓②" category="Animate Diff 🎭🅐🅓_② Gen2 nodes ②_CameraCtrl_poses" name="ADE_LoadCameraPosesFromPath" output=[CAMERACTRL_POSES] */
+         "AnimateDiff-Evolved.ADE_LoadCameraPosesFromPath"(p: IN['AnimateDiff-Evolved.ADE_LoadCameraPosesFromPath'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_LoadCameraPosesFromPath']
+          /** displayName="Context Options◆Looped Uniform 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_context opts" name="ADE_LoopedUniformContextOptions" output=[CONTEXT_OPTS] */
+         "AnimateDiff-Evolved.ADE_LoopedUniformContextOptions"(p: IN['AnimateDiff-Evolved.ADE_LoopedUniformContextOptions'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_LoopedUniformContextOptions']
+          /** displayName="View Options◆Looped Uniform 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_context opts_view opts" name="ADE_LoopedUniformViewOptions" output=[VIEW_OPTS] */
+         "AnimateDiff-Evolved.ADE_LoopedUniformViewOptions"(p: IN['AnimateDiff-Evolved.ADE_LoopedUniformViewOptions'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_LoopedUniformViewOptions']
+          /** displayName="LoRA Hook Keyframe 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_conditioning_schedule lora hooks" name="ADE_LoraHookKeyframe" output=[HOOK_KF] */
+         "AnimateDiff-Evolved.ADE_LoraHookKeyframe"(p: IN['AnimateDiff-Evolved.ADE_LoraHookKeyframe'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_LoraHookKeyframe']
+          /** displayName="LoRA Hook Keyframes From List 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_conditioning_schedule lora hooks" name="ADE_LoraHookKeyframeFromStrengthList" output=[HOOK_KF] */
+         "AnimateDiff-Evolved.ADE_LoraHookKeyframeFromStrengthList"(p: IN['AnimateDiff-Evolved.ADE_LoraHookKeyframeFromStrengthList'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_LoraHookKeyframeFromStrengthList']
+          /** displayName="LoRA Hook Keyframes Interp. 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_conditioning_schedule lora hooks" name="ADE_LoraHookKeyframeInterpolation" output=[HOOK_KF] */
+         "AnimateDiff-Evolved.ADE_LoraHookKeyframeInterpolation"(p: IN['AnimateDiff-Evolved.ADE_LoraHookKeyframeInterpolation'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_LoraHookKeyframeInterpolation']
+          /** displayName="Multival to Mask 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_multival" name="ADE_MultivalConvertToMask" output=[MASK] */
+         "AnimateDiff-Evolved.ADE_MultivalConvertToMask"(p: IN['AnimateDiff-Evolved.ADE_MultivalConvertToMask'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_MultivalConvertToMask']
+          /** displayName="Multival 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_multival" name="ADE_MultivalDynamic" output=[MULTIVAL] */
+         "AnimateDiff-Evolved.ADE_MultivalDynamic"(p: IN['AnimateDiff-Evolved.ADE_MultivalDynamic'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_MultivalDynamic']
+          /** displayName="Multival [Float List] 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_multival" name="ADE_MultivalDynamicFloatInput" output=[MULTIVAL] */
+         "AnimateDiff-Evolved.ADE_MultivalDynamicFloatInput"(p: IN['AnimateDiff-Evolved.ADE_MultivalDynamicFloatInput'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_MultivalDynamicFloatInput']
+          /** displayName="Multival [Floats] 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_multival" name="ADE_MultivalDynamicFloats" output=[MULTIVAL] */
+         "AnimateDiff-Evolved.ADE_MultivalDynamicFloats"(p: IN['AnimateDiff-Evolved.ADE_MultivalDynamicFloats'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_MultivalDynamicFloats']
+          /** displayName="Multival Scaled Mask 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_multival" name="ADE_MultivalScaledMask" output=[MULTIVAL] */
+         "AnimateDiff-Evolved.ADE_MultivalScaledMask"(p: IN['AnimateDiff-Evolved.ADE_MultivalScaledMask'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_MultivalScaledMask']
+          /** displayName="Image Injection 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_sample settings_image inject" name="ADE_NoisedImageInjection" output=[IMAGE_INJECT] */
+         "AnimateDiff-Evolved.ADE_NoisedImageInjection"(p: IN['AnimateDiff-Evolved.ADE_NoisedImageInjection'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_NoisedImageInjection']
+          /** displayName="Image Injection Options 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_sample settings_image inject" name="ADE_NoisedImageInjectOptions" output=[IMG_INJECT_OPTS] */
+         "AnimateDiff-Evolved.ADE_NoisedImageInjectOptions"(p: IN['AnimateDiff-Evolved.ADE_NoisedImageInjectOptions'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_NoisedImageInjectOptions']
+          /** displayName="Noise Layer [Add] 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_noise layers" name="ADE_NoiseLayerAdd" output=[NOISE_LAYERS] */
+         "AnimateDiff-Evolved.ADE_NoiseLayerAdd"(p: IN['AnimateDiff-Evolved.ADE_NoiseLayerAdd'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_NoiseLayerAdd']
+          /** displayName="Noise Layer [Add Weighted] 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_noise layers" name="ADE_NoiseLayerAddWeighted" output=[NOISE_LAYERS] */
+         "AnimateDiff-Evolved.ADE_NoiseLayerAddWeighted"(p: IN['AnimateDiff-Evolved.ADE_NoiseLayerAddWeighted'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_NoiseLayerAddWeighted']
+          /** displayName="Noise Layer [Replace] 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_noise layers" name="ADE_NoiseLayerReplace" output=[NOISE_LAYERS] */
+         "AnimateDiff-Evolved.ADE_NoiseLayerReplace"(p: IN['AnimateDiff-Evolved.ADE_NoiseLayerReplace'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_NoiseLayerReplace']
+          /** displayName="Manual Combine Conds 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_conditioning" name="ADE_PairedConditioningCombine" output=[positive, negative] */
+         "AnimateDiff-Evolved.ADE_PairedConditioningCombine"(p: IN['AnimateDiff-Evolved.ADE_PairedConditioningCombine'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_PairedConditioningCombine']
+          /** displayName="Set Props on Conds 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_conditioning" name="ADE_PairedConditioningSetMask" output=[positive, negative] */
+         "AnimateDiff-Evolved.ADE_PairedConditioningSetMask"(p: IN['AnimateDiff-Evolved.ADE_PairedConditioningSetMask'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_PairedConditioningSetMask']
+          /** displayName="Set Props and Combine Conds 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_conditioning" name="ADE_PairedConditioningSetMaskAndCombine" output=[positive, negative] */
+         "AnimateDiff-Evolved.ADE_PairedConditioningSetMaskAndCombine"(p: IN['AnimateDiff-Evolved.ADE_PairedConditioningSetMaskAndCombine'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_PairedConditioningSetMaskAndCombine']
+          /** displayName="Set Unmasked Conds 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_conditioning" name="ADE_PairedConditioningSetUnmaskedAndCombine" output=[positive, negative] */
+         "AnimateDiff-Evolved.ADE_PairedConditioningSetUnmaskedAndCombine"(p: IN['AnimateDiff-Evolved.ADE_PairedConditioningSetUnmaskedAndCombine'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_PairedConditioningSetUnmaskedAndCombine']
+         /**
+          * <div><div id=VHS_shortdesc style="font-size: .8em">Use Floats from Value Schedules to select SD1.5 effect/scale values for blocks.</div></div><div>SD1.5 Motion Modules contain 21 blocks:</div><div>idx 0 - start of down blocks (down_0__0)</div><div>idx 7 - end of down blocks   (down_3__1)</div><div>idx 8 - mid block            (mid)</div><div>idx 9 - start of up blocks   (up_0__0)</div><div>idx 20 - end of up blocks    (up_3__2)</div>
+          * displayName="AD Per Block Floats (SD1.5) 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_per block" name="ADE_PerBlock_SD15_FromFloats" output=[PER_BLOCK]
+         **/
+         "AnimateDiff-Evolved.ADE_PerBlock_SD15_FromFloats"(p: IN['AnimateDiff-Evolved.ADE_PerBlock_SD15_FromFloats'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_PerBlock_SD15_FromFloats']
+          /** displayName="AD Per Block++ (SD1.5) 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_per block" name="ADE_PerBlock_SD15_LowLevel" output=[PER_BLOCK] */
+         "AnimateDiff-Evolved.ADE_PerBlock_SD15_LowLevel"(p: IN['AnimateDiff-Evolved.ADE_PerBlock_SD15_LowLevel'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_PerBlock_SD15_LowLevel']
+          /** displayName="AD Per Block+ (SD1.5) 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_per block" name="ADE_PerBlock_SD15_MidLevel" output=[PER_BLOCK] */
+         "AnimateDiff-Evolved.ADE_PerBlock_SD15_MidLevel"(p: IN['AnimateDiff-Evolved.ADE_PerBlock_SD15_MidLevel'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_PerBlock_SD15_MidLevel']
+         /**
+          * <div><div id=VHS_shortdesc style="font-size: .8em">Use Floats from Value Schedules to select SDXL effect/scale values for blocks.</div></div><div>SDXL Motion Modules contain 16 blocks:</div><div>idx 0 - start of down blocks (down_0__0)</div><div>idx 5 - end of down blocks   (down_2__1)</div><div>idx 6 - mid block            (mid)</div><div>idx 7 - start of up blocks   (up_0__0)</div><div>idx 15 - end of up blocks    (up_2__2)</div>
+          * displayName="AD Per Block Floats (SDXL) 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_per block" name="ADE_PerBlock_SDXL_FromFloats" output=[PER_BLOCK]
+         **/
+         "AnimateDiff-Evolved.ADE_PerBlock_SDXL_FromFloats"(p: IN['AnimateDiff-Evolved.ADE_PerBlock_SDXL_FromFloats'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_PerBlock_SDXL_FromFloats']
+          /** displayName="AD Per Block++ (SDXL) 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_per block" name="ADE_PerBlock_SDXL_LowLevel" output=[PER_BLOCK] */
+         "AnimateDiff-Evolved.ADE_PerBlock_SDXL_LowLevel"(p: IN['AnimateDiff-Evolved.ADE_PerBlock_SDXL_LowLevel'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_PerBlock_SDXL_LowLevel']
+          /** displayName="AD Per Block+ (SDXL) 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_per block" name="ADE_PerBlock_SDXL_MidLevel" output=[PER_BLOCK] */
+         "AnimateDiff-Evolved.ADE_PerBlock_SDXL_MidLevel"(p: IN['AnimateDiff-Evolved.ADE_PerBlock_SDXL_MidLevel'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_PerBlock_SDXL_MidLevel']
+          /** displayName="AD Per Block 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_per block" name="ADE_PerBlockHighLevel" output=[PER_BLOCK] */
+         "AnimateDiff-Evolved.ADE_PerBlockHighLevel"(p: IN['AnimateDiff-Evolved.ADE_PerBlockHighLevel'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_PerBlockHighLevel']
+          /** displayName="PerturbedAttnGuide [Multival] 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_extras" name="ADE_PerturbedAttentionGuidanceMultival" output=[MODEL] */
+         "AnimateDiff-Evolved.ADE_PerturbedAttentionGuidanceMultival"(p: IN['AnimateDiff-Evolved.ADE_PerturbedAttentionGuidanceMultival'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_PerturbedAttentionGuidanceMultival']
+          /** displayName="AnimateDiff-PIA Keyframe 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_② Gen2 nodes ②_PIA" name="ADE_PIA_AnimateDiffKeyframe" output=[AD_KEYFRAMES] */
+         "AnimateDiff-Evolved.ADE_PIA_AnimateDiffKeyframe"(p: IN['AnimateDiff-Evolved.ADE_PIA_AnimateDiffKeyframe'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_PIA_AnimateDiffKeyframe']
+         /**
+          * <div><div id=VHS_shortdesc style="font-size: .8em">Encode a schedule of prompts with automatic interpolation.</div></div><div><div vhs_title="Format" style="display: flex; font-size: 0.8em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">Format: <div>Scheduling supports two formats: JSON and pythonic.</div><div><div vhs_title="JSON" style="display: flex; font-size: 0.8em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">JSON: <div>"idx": "your prompt here", ...</div></div></div><div vhs_title="pythonic" style="display: flex; font-size: 0.8em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">pythonic: <div>idx = "your prompt here", ...</div></div></div></div><div>The idx is the index of the frame - first frame is 0, last frame is max_frames-1. An idx may be the following:</div><div><div vhs_title="allowed idxs" style="display: flex; font-size: 0.8em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">allowed idxs: <div vhs_title="single" style="display: flex; font-size: 1em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">single: A positive integer (e.g. 0, 2) schedules value for frame. A negative integer (e.g. -1, -5) schedules value for frame from the end (-1 would be the last frame). A decimal (e.g. 0.5, 1.0) selects frame based relative location in whole schedule (0.5 would be halfway, 1.0 would be last frame).</div></div><div vhs_title="range" style="display: flex; font-size: 1em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">range: Using rules above, single:single chooses uninterpolated prompts from start idx (included) to end idx (excluded). Examples -> 0:12, 0:-5, 2:0.5</div></div><div vhs_title="hold" style="display: flex; font-size: 1em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">hold: Putting a colon after a single idx stops interpolation until the next provided index. Examples -> 0:, 0.5:, 16: </div></div></div></div></div><div>The prompts themselves should be surrounded by double quotes ("your prompt here"). Portions of prompts can use value schedules provided values_replace.</div><div><div vhs_title="JSON" style="display: flex; font-size: 0.8em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">JSON: <div>"0": "blue rock on mountain",</div><div>"16": "green rock in lake"</div></div></div><div vhs_title="pythonic" style="display: flex; font-size: 0.8em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">pythonic: <div>0 = "blue rock on mountain",</div><div>16 = "green rock in lake"</div></div></div></div></div></div></div><div><div vhs_title="Inputs" style="display: flex; font-size: 0.8em" class="VHS_collapse VHS_precollapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">Inputs: <div vhs_title="prompts" style="display: flex; font-size: 0.8em" class="VHS_collapse VHS_precollapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">prompts: Write your prompts here.</div></div><div vhs_title="clip" style="display: flex; font-size: 0.8em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">clip: CLIP to use for encoding prompts.</div></div><div vhs_title="values_replace" style="display: flex; font-size: 0.8em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">values_replace: OPTIONAL, replaces keys from value_replace keys with provided value schedules. Keys in the prompt are written as `some_key`, surrounded by the ` characters.</div></div><div vhs_title="prepend_text" style="display: flex; font-size: 0.8em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">prepend_text: OPTIONAL, adds text before all prompts.</div></div><div vhs_title="append_text" style="display: flex; font-size: 0.8em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">append_text: OPTIONAL, adds text after all prompts.</div></div><div vhs_title="max_length" style="display: flex; font-size: 0.8em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">max_length: Used to select the intended length of schedule. If set to 0, will use the largest index in the schedule as max_length, but will disable relative indexes (negative and decimal).</div></div><div vhs_title="tensor_interp" style="display: flex; font-size: 0.8em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">tensor_interp: Selects method of interpolating prompt conds - defaults to lerp.</div></div><div vhs_title="print_schedule" style="display: flex; font-size: 0.8em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">print_schedule: When True, prints output values for each frame.</div></div></div></div></div><div><div vhs_title="Outputs" style="display: flex; font-size: 0.8em" class="VHS_collapse VHS_precollapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">Outputs: <div vhs_title="CONDITIONING" style="display: flex; font-size: 0.8em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">CONDITIONING: Encoded prompts.</div></div></div></div></div>
+          * displayName="Prompt Scheduling 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_scheduling" name="ADE_PromptScheduling" output=[CONDITIONING]
+         **/
+         "AnimateDiff-Evolved.ADE_PromptScheduling"(p: IN['AnimateDiff-Evolved.ADE_PromptScheduling'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_PromptScheduling']
+         /**
+          * <div><div id=VHS_shortdesc style="font-size: .8em">Encode a schedule of prompts with automatic interpolation, its length matching passed-in latent count.</div></div><div><div vhs_title="Format" style="display: flex; font-size: 0.8em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">Format: <div>Scheduling supports two formats: JSON and pythonic.</div><div><div vhs_title="JSON" style="display: flex; font-size: 0.8em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">JSON: <div>"idx": "your prompt here", ...</div></div></div><div vhs_title="pythonic" style="display: flex; font-size: 0.8em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">pythonic: <div>idx = "your prompt here", ...</div></div></div></div><div>The idx is the index of the frame - first frame is 0, last frame is max_frames-1. An idx may be the following:</div><div><div vhs_title="allowed idxs" style="display: flex; font-size: 0.8em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">allowed idxs: <div vhs_title="single" style="display: flex; font-size: 1em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">single: A positive integer (e.g. 0, 2) schedules value for frame. A negative integer (e.g. -1, -5) schedules value for frame from the end (-1 would be the last frame). A decimal (e.g. 0.5, 1.0) selects frame based relative location in whole schedule (0.5 would be halfway, 1.0 would be last frame).</div></div><div vhs_title="range" style="display: flex; font-size: 1em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">range: Using rules above, single:single chooses uninterpolated prompts from start idx (included) to end idx (excluded). Examples -> 0:12, 0:-5, 2:0.5</div></div><div vhs_title="hold" style="display: flex; font-size: 1em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">hold: Putting a colon after a single idx stops interpolation until the next provided index. Examples -> 0:, 0.5:, 16: </div></div></div></div></div><div>The prompts themselves should be surrounded by double quotes ("your prompt here"). Portions of prompts can use value schedules provided values_replace.</div><div><div vhs_title="JSON" style="display: flex; font-size: 0.8em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">JSON: <div>"0": "blue rock on mountain",</div><div>"16": "green rock in lake"</div></div></div><div vhs_title="pythonic" style="display: flex; font-size: 0.8em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">pythonic: <div>0 = "blue rock on mountain",</div><div>16 = "green rock in lake"</div></div></div></div></div></div></div><div><div vhs_title="Inputs" style="display: flex; font-size: 0.8em" class="VHS_collapse VHS_precollapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">Inputs: <div vhs_title="prompts" style="display: flex; font-size: 0.8em" class="VHS_collapse VHS_precollapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">prompts: Write your prompts here.</div></div><div vhs_title="clip" style="display: flex; font-size: 0.8em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">clip: CLIP to use for encoding prompts.</div></div><div vhs_title="latent" style="display: flex; font-size: 0.8em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">latent: Used to get the amount of frames (max_length) to use for scheduling.</div></div><div vhs_title="values_replace" style="display: flex; font-size: 0.8em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">values_replace: OPTIONAL, replaces keys from value_replace keys with provided value schedules. Keys in the prompt are written as `some_key`, surrounded by the ` characters.</div></div><div vhs_title="prepend_text" style="display: flex; font-size: 0.8em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">prepend_text: OPTIONAL, adds text before all prompts.</div></div><div vhs_title="append_text" style="display: flex; font-size: 0.8em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">append_text: OPTIONAL, adds text after all prompts.</div></div><div vhs_title="tensor_interp" style="display: flex; font-size: 0.8em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">tensor_interp: Selects method of interpolating prompt conds - defaults to lerp.</div></div><div vhs_title="print_schedule" style="display: flex; font-size: 0.8em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">print_schedule: When True, prints output values for each frame.</div></div></div></div></div><div><div vhs_title="Outputs" style="display: flex; font-size: 0.8em" class="VHS_collapse VHS_precollapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">Outputs: <div vhs_title="CONDITIONING" style="display: flex; font-size: 0.8em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">CONDITIONING: Encoded prompts.</div></div><div vhs_title="LATENT" style="display: flex; font-size: 0.8em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">LATENT: Unmodified input latents; can be used as pipe, or can be ignored.</div></div></div></div></div>
+          * displayName="Prompt Scheduling [Latents] 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_scheduling" name="ADE_PromptSchedulingLatents" output=[CONDITIONING, LATENT]
+         **/
+         "AnimateDiff-Evolved.ADE_PromptSchedulingLatents"(p: IN['AnimateDiff-Evolved.ADE_PromptSchedulingLatents'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_PromptSchedulingLatents']
+          /** displayName="Create Raw Sigma Schedule 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_sample settings_sigma schedule" name="ADE_RawSigmaSchedule" output=[SIGMA_SCHEDULE] */
+         "AnimateDiff-Evolved.ADE_RawSigmaSchedule"(p: IN['AnimateDiff-Evolved.ADE_RawSigmaSchedule'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_RawSigmaSchedule']
+          /** displayName="Register LoRA Hook 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_conditioning_register lora hooks" name="ADE_RegisterLoraHook" output=[MODEL, CLIP, LORA_HOOK] */
+         "AnimateDiff-Evolved.ADE_RegisterLoraHook"(p: IN['AnimateDiff-Evolved.ADE_RegisterLoraHook'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_RegisterLoraHook']
+          /** displayName="Register LoRA Hook (Model Only) 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_conditioning_register lora hooks" name="ADE_RegisterLoraHookModelOnly" output=[MODEL, LORA_HOOK] */
+         "AnimateDiff-Evolved.ADE_RegisterLoraHookModelOnly"(p: IN['AnimateDiff-Evolved.ADE_RegisterLoraHookModelOnly'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_RegisterLoraHookModelOnly']
+          /** displayName="Register Model as LoRA Hook 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_conditioning_register lora hooks" name="ADE_RegisterModelAsLoraHook" output=[MODEL, CLIP, LORA_HOOK] */
+         "AnimateDiff-Evolved.ADE_RegisterModelAsLoraHook"(p: IN['AnimateDiff-Evolved.ADE_RegisterModelAsLoraHook'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_RegisterModelAsLoraHook']
+          /** displayName="Register Model as LoRA Hook (MO) 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_conditioning_register lora hooks" name="ADE_RegisterModelAsLoraHookModelOnly" output=[MODEL, LORA_HOOK] */
+         "AnimateDiff-Evolved.ADE_RegisterModelAsLoraHookModelOnly"(p: IN['AnimateDiff-Evolved.ADE_RegisterModelAsLoraHookModelOnly'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_RegisterModelAsLoraHookModelOnly']
+          /** displayName="Replace Camera Parameters 🎭🅐🅓②" category="Animate Diff 🎭🅐🅓_② Gen2 nodes ②_CameraCtrl_poses" name="ADE_ReplaceCameraParameters" output=[CAMERACTRL_POSES] */
+         "AnimateDiff-Evolved.ADE_ReplaceCameraParameters"(p: IN['AnimateDiff-Evolved.ADE_ReplaceCameraParameters'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_ReplaceCameraParameters']
+          /** displayName="Replace Orig. Pose Aspect Ratio 🎭🅐🅓②" category="Animate Diff 🎭🅐🅓_② Gen2 nodes ②_CameraCtrl_poses" name="ADE_ReplaceOriginalPoseAspectRatio" output=[CAMERACTRL_POSES] */
+         "AnimateDiff-Evolved.ADE_ReplaceOriginalPoseAspectRatio"(p: IN['AnimateDiff-Evolved.ADE_ReplaceOriginalPoseAspectRatio'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_ReplaceOriginalPoseAspectRatio']
+          /** displayName="RescaleCFG [Multival] 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_extras" name="ADE_RescaleCFGMultival" output=[MODEL] */
+         "AnimateDiff-Evolved.ADE_RescaleCFGMultival"(p: IN['AnimateDiff-Evolved.ADE_RescaleCFGMultival'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_RescaleCFGMultival']
+          /** displayName="Set LoRA Hook Keyframes 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_conditioning" name="ADE_SetLoraHookKeyframe" output=[LORA_HOOK] */
+         "AnimateDiff-Evolved.ADE_SetLoraHookKeyframe"(p: IN['AnimateDiff-Evolved.ADE_SetLoraHookKeyframe'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_SetLoraHookKeyframe']
+          /** displayName="Create Sigma Schedule 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_sample settings_sigma schedule" name="ADE_SigmaSchedule" output=[SIGMA_SCHEDULE] */
+         "AnimateDiff-Evolved.ADE_SigmaSchedule"(p: IN['AnimateDiff-Evolved.ADE_SigmaSchedule'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_SigmaSchedule']
+          /** displayName="Sigma Schedule Split Combine 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_sample settings_sigma schedule" name="ADE_SigmaScheduleSplitAndCombine" output=[SIGMA_SCHEDULE] */
+         "AnimateDiff-Evolved.ADE_SigmaScheduleSplitAndCombine"(p: IN['AnimateDiff-Evolved.ADE_SigmaScheduleSplitAndCombine'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_SigmaScheduleSplitAndCombine']
+          /** displayName="Sigma Schedule To Sigmas 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_sample settings_sigma schedule" name="ADE_SigmaScheduleToSigmas" output=[SIGMAS] */
+         "AnimateDiff-Evolved.ADE_SigmaScheduleToSigmas"(p: IN['AnimateDiff-Evolved.ADE_SigmaScheduleToSigmas'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_SigmaScheduleToSigmas']
+          /** displayName="Sigma Schedule Weighted Mean 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_sample settings_sigma schedule" name="ADE_SigmaScheduleWeightedAverage" output=[SIGMA_SCHEDULE] */
+         "AnimateDiff-Evolved.ADE_SigmaScheduleWeightedAverage"(p: IN['AnimateDiff-Evolved.ADE_SigmaScheduleWeightedAverage'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_SigmaScheduleWeightedAverage']
+          /** displayName="Sigma Schedule Interp. Mean 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_sample settings_sigma schedule" name="ADE_SigmaScheduleWeightedAverageInterp" output=[SIGMA_SCHEDULE] */
+         "AnimateDiff-Evolved.ADE_SigmaScheduleWeightedAverageInterp"(p: IN['AnimateDiff-Evolved.ADE_SigmaScheduleWeightedAverageInterp'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_SigmaScheduleWeightedAverageInterp']
+          /** displayName="Context Options◆Standard Static 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_context opts" name="ADE_StandardStaticContextOptions" output=[CONTEXT_OPTS] */
+         "AnimateDiff-Evolved.ADE_StandardStaticContextOptions"(p: IN['AnimateDiff-Evolved.ADE_StandardStaticContextOptions'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_StandardStaticContextOptions']
+          /** displayName="View Options◆Standard Static 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_context opts_view opts" name="ADE_StandardStaticViewOptions" output=[VIEW_OPTS] */
+         "AnimateDiff-Evolved.ADE_StandardStaticViewOptions"(p: IN['AnimateDiff-Evolved.ADE_StandardStaticViewOptions'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_StandardStaticViewOptions']
+          /** displayName="Context Options◆Standard Uniform 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_context opts" name="ADE_StandardUniformContextOptions" output=[CONTEXT_OPTS] */
+         "AnimateDiff-Evolved.ADE_StandardUniformContextOptions"(p: IN['AnimateDiff-Evolved.ADE_StandardUniformContextOptions'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_StandardUniformContextOptions']
+          /** displayName="View Options◆Standard Uniform 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_context opts_view opts" name="ADE_StandardUniformViewOptions" output=[VIEW_OPTS] */
+         "AnimateDiff-Evolved.ADE_StandardUniformViewOptions"(p: IN['AnimateDiff-Evolved.ADE_StandardUniformViewOptions'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_StandardUniformViewOptions']
+          /** displayName="Timesteps Conditioning 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_conditioning" name="ADE_TimestepsConditioning" output=[TIMESTEPS_COND] */
+         "AnimateDiff-Evolved.ADE_TimestepsConditioning"(p: IN['AnimateDiff-Evolved.ADE_TimestepsConditioning'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_TimestepsConditioning']
+          /** displayName="Scale Ref Image and VAE Encode 🎭🅐🅓②" category="Animate Diff 🎭🅐🅓_② Gen2 nodes ②_AnimateLCM-I2V" name="ADE_UpscaleAndVAEEncode" output=[LATENT] */
+         "AnimateDiff-Evolved.ADE_UpscaleAndVAEEncode"(p: IN['AnimateDiff-Evolved.ADE_UpscaleAndVAEEncode'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_UpscaleAndVAEEncode']
+          /** displayName="Use Evolved Sampling 🎭🅐🅓②" category="Animate Diff 🎭🅐🅓_② Gen2 nodes ②" name="ADE_UseEvolvedSampling" output=[MODEL] */
+         "AnimateDiff-Evolved.ADE_UseEvolvedSampling"(p: IN['AnimateDiff-Evolved.ADE_UseEvolvedSampling'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_UseEvolvedSampling']
+         /**
+          * <div><div id=VHS_shortdesc style="font-size: .8em">Create a list of values, its length matching passed-in latent count.</div></div><div><div vhs_title="Format" style="display: flex; font-size: 0.8em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">Format: <div>Scheduling supports two formats: JSON and pythonic.</div><div><div vhs_title="JSON" style="display: flex; font-size: 0.8em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">JSON: <div>"idx": float/int_value, ...</div></div></div><div vhs_title="pythonic" style="display: flex; font-size: 0.8em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">pythonic: <div>idx = float/int_value, ...</div></div></div></div><div>The idx is the index of the frame - first frame is 0, last frame is max_frames-1. An idx may be the following:</div><div><div vhs_title="allowed idxs" style="display: flex; font-size: 0.8em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">allowed idxs: <div vhs_title="single" style="display: flex; font-size: 1em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">single: A positive integer (e.g. 0, 2) schedules value for frame. A negative integer (e.g. -1, -5) schedules value for frame from the end (-1 would be the last frame). A decimal (e.g. 0.5, 1.0) selects frame based relative location in whole schedule (0.5 would be halfway, 1.0 would be last frame).</div></div><div vhs_title="range" style="display: flex; font-size: 1em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">range: Using rules above, single:single chooses uninterpolated prompts from start idx (included) to end idx (excluded). Examples -> 0:12, 0:-5, 2:0.5</div></div><div vhs_title="hold" style="display: flex; font-size: 1em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">hold: Putting a colon after a single idx stops interpolation until the next provided index. Examples -> 0:, 0.5:, 16: </div></div></div></div></div><div>The values can be written without any special formatting.</div><div><div vhs_title="JSON" style="display: flex; font-size: 0.8em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">JSON: <div>"0": 1.0,</div><div>"16": 1.3</div></div></div><div vhs_title="pythonic" style="display: flex; font-size: 0.8em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">pythonic: <div>0 = 1.0,</div><div>16 = 1.3</div></div></div></div></div></div></div><div><div vhs_title="Inputs" style="display: flex; font-size: 0.8em" class="VHS_collapse VHS_precollapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">Inputs: <div vhs_title="values" style="display: flex; font-size: 0.8em" class="VHS_collapse VHS_precollapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">values: Write your values here.</div></div><div vhs_title="max_length" style="display: flex; font-size: 0.8em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">max_length: Used to select the intended length of schedule. If set to 0, will use the largest index in the schedule as max_length, but will disable relative indexes (negative and decimal).</div></div><div vhs_title="print_schedule" style="display: flex; font-size: 0.8em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">print_schedule: When True, prints output values for each frame.</div></div></div></div></div>
+          * displayName="Value Scheduling 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_scheduling" name="ADE_ValueScheduling" output=[FLOAT, FLOATS, INT, INTS]
+         **/
+         "AnimateDiff-Evolved.ADE_ValueScheduling"(p: IN['AnimateDiff-Evolved.ADE_ValueScheduling'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_ValueScheduling']
+         /**
+          * <div><div id=VHS_shortdesc style="font-size: .8em">Create a list of values, its length matching passed-in latent count.</div></div><div><div vhs_title="Format" style="display: flex; font-size: 0.8em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">Format: <div>Scheduling supports two formats: JSON and pythonic.</div><div><div vhs_title="JSON" style="display: flex; font-size: 0.8em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">JSON: <div>"idx": float/int_value, ...</div></div></div><div vhs_title="pythonic" style="display: flex; font-size: 0.8em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">pythonic: <div>idx = float/int_value, ...</div></div></div></div><div>The idx is the index of the frame - first frame is 0, last frame is max_frames-1. An idx may be the following:</div><div><div vhs_title="allowed idxs" style="display: flex; font-size: 0.8em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">allowed idxs: <div vhs_title="single" style="display: flex; font-size: 1em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">single: A positive integer (e.g. 0, 2) schedules value for frame. A negative integer (e.g. -1, -5) schedules value for frame from the end (-1 would be the last frame). A decimal (e.g. 0.5, 1.0) selects frame based relative location in whole schedule (0.5 would be halfway, 1.0 would be last frame).</div></div><div vhs_title="range" style="display: flex; font-size: 1em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">range: Using rules above, single:single chooses uninterpolated prompts from start idx (included) to end idx (excluded). Examples -> 0:12, 0:-5, 2:0.5</div></div><div vhs_title="hold" style="display: flex; font-size: 1em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">hold: Putting a colon after a single idx stops interpolation until the next provided index. Examples -> 0:, 0.5:, 16: </div></div></div></div></div><div>The values can be written without any special formatting.</div><div><div vhs_title="JSON" style="display: flex; font-size: 0.8em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">JSON: <div>"0": 1.0,</div><div>"16": 1.3</div></div></div><div vhs_title="pythonic" style="display: flex; font-size: 0.8em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">pythonic: <div>0 = 1.0,</div><div>16 = 1.3</div></div></div></div></div></div></div><div><div vhs_title="Inputs" style="display: flex; font-size: 0.8em" class="VHS_collapse VHS_precollapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">Inputs: <div vhs_title="values" style="display: flex; font-size: 0.8em" class="VHS_collapse VHS_precollapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">values: Write your values here.</div></div><div vhs_title="latent" style="display: flex; font-size: 0.8em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">latent: Used to get the amount of frames (max_length) to use for scheduling.</div></div><div vhs_title="print_schedule" style="display: flex; font-size: 0.8em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">print_schedule: When True, prints output values for each frame.</div></div></div></div></div>
+          * displayName="Value Scheduling [Latents] 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_scheduling" name="ADE_ValueSchedulingLatents" output=[FLOAT, FLOATS, INT, INTS]
+         **/
+         "AnimateDiff-Evolved.ADE_ValueSchedulingLatents"(p: IN['AnimateDiff-Evolved.ADE_ValueSchedulingLatents'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_ValueSchedulingLatents']
+         /**
+          * <div><div id=VHS_shortdesc style="font-size: .8em">Add a values schedule bound to a key to be used in Prompt Scheduling node.</div></div><div><div vhs_title="Inputs" style="display: flex; font-size: 0.8em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">Inputs: <div vhs_title="value_key" style="display: flex; font-size: 0.8em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">value_key: Key to use for value schedule in Prompt Scheduling node. Can only contain a-z, A-Z, 0-9, and _ characters. In Prompt Scheduling, keys can be referred to as `some_key`, where the key is surrounded by ` characters.</div></div><div vhs_title="floats" style="display: flex; font-size: 0.8em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">floats: List of floats, likely outputted by a Value Scheduling node.</div></div><div vhs_title="prev_replace" style="display: flex; font-size: 0.8em" class="VHS_collapse"><div style="color: #AAA; height: 1.5em;">[<span style="font-family: monospace">-</span>]</div><div style="width: 100%">prev_replace: OPTIONAL, other values_replace can be chained.</div></div></div></div></div>
+          * displayName="Add Values Replace 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_scheduling" name="ADE_ValuesReplace" output=[VALUES_REPLACE]
+         **/
+         "AnimateDiff-Evolved.ADE_ValuesReplace"(p: IN['AnimateDiff-Evolved.ADE_ValuesReplace'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_ValuesReplace']
+          /** displayName="Context Options◆Views Only [VRAM⇈] 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_context opts" name="ADE_ViewsOnlyContextOptions" output=[CONTEXT_OPTS] */
+         "AnimateDiff-Evolved.ADE_ViewsOnlyContextOptions"(p: IN['AnimateDiff-Evolved.ADE_ViewsOnlyContextOptions'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_ViewsOnlyContextOptions']
+          /** displayName="Visualize Context Options (K.) 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_context opts_visualize" name="ADE_VisualizeContextOptionsK" output=[IMAGE] */
+         "AnimateDiff-Evolved.ADE_VisualizeContextOptionsK"(p: IN['AnimateDiff-Evolved.ADE_VisualizeContextOptionsK'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_VisualizeContextOptionsK']
+          /** displayName="Visualize Context Options (K.Adv.) 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_context opts_visualize" name="ADE_VisualizeContextOptionsKAdv" output=[IMAGE] */
+         "AnimateDiff-Evolved.ADE_VisualizeContextOptionsKAdv"(p: IN['AnimateDiff-Evolved.ADE_VisualizeContextOptionsKAdv'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_VisualizeContextOptionsKAdv']
+          /** displayName="Visualize Context Options (S.Cus.) 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_context opts_visualize" name="ADE_VisualizeContextOptionsSCustom" output=[IMAGE] */
+         "AnimateDiff-Evolved.ADE_VisualizeContextOptionsSCustom"(p: IN['AnimateDiff-Evolved.ADE_VisualizeContextOptionsSCustom'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.ADE_VisualizeContextOptionsSCustom']
+          /** displayName="🚫AnimateDiff Loader [DEPRECATED] 🎭🅐🅓" category="" name="AnimateDiffLoaderV1" output=[MODEL, LATENT] */
+         "AnimateDiff-Evolved.AnimateDiffLoaderV1"(p: IN['AnimateDiff-Evolved.AnimateDiffLoaderV1'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.AnimateDiffLoaderV1']
+          /** displayName="Load Checkpoint w/ Noise Select 🎭🅐🅓" category="Animate Diff 🎭🅐🅓_extras" name="CheckpointLoaderSimpleWithNoiseSelect" output=[MODEL, CLIP, VAE] */
+         "AnimateDiff-Evolved.CheckpointLoaderSimpleWithNoiseSelect"(p: IN['AnimateDiff-Evolved.CheckpointLoaderSimpleWithNoiseSelect'], meta?: ComfyNodeMetadata): Node['AnimateDiff-Evolved.CheckpointLoaderSimpleWithNoiseSelect']
           /** displayName="BasicGuider" category="sampling_custom_sampling_guiders" name="BasicGuider" output=[GUIDER] */
          BasicGuider(p: IN['BasicGuider'], meta?: ComfyNodeMetadata): Node['BasicGuider']
           /** displayName="BasicScheduler" category="sampling_custom_sampling_schedulers" name="BasicScheduler" output=[SIGMAS] */
@@ -14051,6 +17678,10 @@ declare global {
          CLIPMergeSubtract(p: IN['CLIPMergeSubtract'], meta?: ComfyNodeMetadata): Node['CLIPMergeSubtract']
           /** displayName="CLIPSave" category="advanced_model_merging" name="CLIPSave" output=[] */
          CLIPSave(p: IN['CLIPSave'], meta?: ComfyNodeMetadata): Node['CLIPSave']
+          /** displayName="CLIPSeg" category="image" name="CLIPSeg" output=[Mask, Heatmap Mask, BW Mask] */
+         "clipseg.CLIPSeg"(p: IN['clipseg.CLIPSeg'], meta?: ComfyNodeMetadata): Node['clipseg.CLIPSeg']
+          /** displayName="CombineSegMasks" category="image" name="CombineSegMasks" output=[Combined Mask, Heatmap Mask, BW Mask] */
+         "clipseg.CombineSegMasks"(p: IN['clipseg.CombineSegMasks'], meta?: ComfyNodeMetadata): Node['clipseg.CombineSegMasks']
           /** displayName="CLIP Set Last Layer" category="conditioning" name="CLIPSetLastLayer" output=[CLIP] */
          CLIPSetLastLayer(p: IN['CLIPSetLastLayer'], meta?: ComfyNodeMetadata): Node['CLIPSetLastLayer']
          /**
@@ -14261,6 +17892,68 @@ declare global {
          ExponentialScheduler(p: IN['ExponentialScheduler'], meta?: ComfyNodeMetadata): Node['ExponentialScheduler']
           /** displayName="FeatherMask" category="mask" name="FeatherMask" output=[MASK] */
          FeatherMask(p: IN['FeatherMask'], meta?: ComfyNodeMetadata): Node['FeatherMask']
+          /** displayName="AbsCosWave 📅🅕🅝" category="FizzNodes 📅🅕🅝_WaveNodes" name="AbsCosWave" output=[FLOAT, INT] */
+         "FizzNodes.AbsCosWave"(p: IN['FizzNodes.AbsCosWave'], meta?: ComfyNodeMetadata): Node['FizzNodes.AbsCosWave']
+          /** displayName="AbsSinWave 📅🅕🅝" category="FizzNodes 📅🅕🅝_WaveNodes" name="AbsSinWave" output=[FLOAT, INT] */
+         "FizzNodes.AbsSinWave"(p: IN['FizzNodes.AbsSinWave'], meta?: ComfyNodeMetadata): Node['FizzNodes.AbsSinWave']
+          /** displayName="Batch Prompt Schedule 📅🅕🅝" category="FizzNodes 📅🅕🅝_BatchScheduleNodes" name="BatchPromptSchedule" output=[POS, NEG] */
+         "FizzNodes.BatchPromptSchedule"(p: IN['FizzNodes.BatchPromptSchedule'], meta?: ComfyNodeMetadata): Node['FizzNodes.BatchPromptSchedule']
+          /** displayName="Batch Prompt Schedule SDXL 📅🅕🅝" category="FizzNodes 📅🅕🅝_BatchScheduleNodes" name="BatchPromptScheduleEncodeSDXL" output=[POS, NEG] */
+         "FizzNodes.BatchPromptScheduleEncodeSDXL"(p: IN['FizzNodes.BatchPromptScheduleEncodeSDXL'], meta?: ComfyNodeMetadata): Node['FizzNodes.BatchPromptScheduleEncodeSDXL']
+          /** displayName="Batch Prompt Schedule (Latent Input) 📅🅕🅝" category="FizzNodes 📅🅕🅝_BatchScheduleNodes" name="BatchPromptScheduleLatentInput" output=[POS, NEG, INPUT_LATENTS] */
+         "FizzNodes.BatchPromptScheduleLatentInput"(p: IN['FizzNodes.BatchPromptScheduleLatentInput'], meta?: ComfyNodeMetadata): Node['FizzNodes.BatchPromptScheduleLatentInput']
+          /** displayName="Batch Prompt Schedule SDXL (Latent Input) 📅🅕🅝" category="FizzNodes 📅🅕🅝_BatchScheduleNodes" name="BatchPromptScheduleSDXLLatentInput" output=[POS, NEG, INPUT_LATENTS] */
+         "FizzNodes.BatchPromptScheduleSDXLLatentInput"(p: IN['FizzNodes.BatchPromptScheduleSDXLLatentInput'], meta?: ComfyNodeMetadata): Node['FizzNodes.BatchPromptScheduleSDXLLatentInput']
+          /** displayName="Batch String Schedule 📅🅕🅝" category="FizzNodes 📅🅕🅝_BatchScheduleNodes" name="BatchStringSchedule" output=[POS, NEG] */
+         "FizzNodes.BatchStringSchedule"(p: IN['FizzNodes.BatchStringSchedule'], meta?: ComfyNodeMetadata): Node['FizzNodes.BatchStringSchedule']
+          /** displayName="Batch Value Schedule 📅🅕🅝" category="FizzNodes 📅🅕🅝_BatchScheduleNodes" name="BatchValueSchedule" output=[FLOAT, INT] */
+         "FizzNodes.BatchValueSchedule"(p: IN['FizzNodes.BatchValueSchedule'], meta?: ComfyNodeMetadata): Node['FizzNodes.BatchValueSchedule']
+          /** displayName="Batch Value Schedule (Latent Input) 📅🅕🅝" category="FizzNodes 📅🅕🅝_BatchScheduleNodes" name="BatchValueScheduleLatentInput" output=[FLOAT, INT, LATENT] */
+         "FizzNodes.BatchValueScheduleLatentInput"(p: IN['FizzNodes.BatchValueScheduleLatentInput'], meta?: ComfyNodeMetadata): Node['FizzNodes.BatchValueScheduleLatentInput']
+          /** displayName="Calculate Frame Offset 📅🅕🅝" category="FizzNodes 📅🅕🅝_HelperNodes" name="CalculateFrameOffset" output=[INT] */
+         "FizzNodes.CalculateFrameOffset"(p: IN['FizzNodes.CalculateFrameOffset'], meta?: ComfyNodeMetadata): Node['FizzNodes.CalculateFrameOffset']
+          /** displayName="Concat String (Single) 📅🅕🅝" category="FizzNodes 📅🅕🅝_HelperNodes" name="ConcatStringSingle" output=[STRING] */
+         "FizzNodes.ConcatStringSingle"(p: IN['FizzNodes.ConcatStringSingle'], meta?: ComfyNodeMetadata): Node['FizzNodes.ConcatStringSingle']
+          /** displayName="Keyframe Keys To Batch Keys 📅🅕🅝" category="FizzNodes 📅🅕🅝_HelperNodes" name="convertKeyframeKeysToBatchKeys" output=[INT] */
+         "FizzNodes.convertKeyframeKeysToBatchKeys"(p: IN['FizzNodes.convertKeyframeKeysToBatchKeys'], meta?: ComfyNodeMetadata): Node['FizzNodes.convertKeyframeKeysToBatchKeys']
+          /** displayName="CosWave 📅🅕🅝" category="FizzNodes 📅🅕🅝_WaveNodes" name="CosWave" output=[FLOAT, INT] */
+         "FizzNodes.CosWave"(p: IN['FizzNodes.CosWave'], meta?: ComfyNodeMetadata): Node['FizzNodes.CosWave']
+          /** displayName="Node Frame 📅🅕🅝" category="FizzNodes 📅🅕🅝_FrameNodes" name="FizzFrame" output=[FIZZFRAME, POS_COND, NEG_COND] */
+         "FizzNodes.FizzFrame"(p: IN['FizzNodes.FizzFrame'], meta?: ComfyNodeMetadata): Node['FizzNodes.FizzFrame']
+          /** displayName="Frame Concatenate 📅🅕🅝" category="FizzNodes 📅🅕🅝_FrameNodes" name="FizzFrameConcatenate" output=[STRING] */
+         "FizzNodes.FizzFrameConcatenate"(p: IN['FizzNodes.FizzFrameConcatenate'], meta?: ComfyNodeMetadata): Node['FizzNodes.FizzFrameConcatenate']
+          /** displayName="Image Select Schedule 📅🅕🅝" category="FizzNodes 📅🅕🅝_ScheduleNodes" name="ImagesFromBatchSchedule" output=[IMAGE] */
+         "FizzNodes.ImagesFromBatchSchedule"(p: IN['FizzNodes.ImagesFromBatchSchedule'], meta?: ComfyNodeMetadata): Node['FizzNodes.ImagesFromBatchSchedule']
+          /** displayName="Init Node Frame 📅🅕🅝" category="FizzNodes 📅🅕🅝_FrameNodes" name="Init FizzFrame" output=[FIZZFRAME, POS_COND, NEG_COND] */
+         "FizzNodes.Init FizzFrame"(p: IN['FizzNodes.Init FizzFrame'], meta?: ComfyNodeMetadata): Node['FizzNodes.Init FizzFrame']
+          /** displayName="InvCosWave 📅🅕🅝" category="FizzNodes 📅🅕🅝_WaveNodes" name="InvCosWave" output=[FLOAT, INT] */
+         "FizzNodes.InvCosWave"(p: IN['FizzNodes.InvCosWave'], meta?: ComfyNodeMetadata): Node['FizzNodes.InvCosWave']
+          /** displayName="InvSinWave 📅🅕🅝" category="FizzNodes 📅🅕🅝_WaveNodes" name="InvSinWave" output=[FLOAT, INT] */
+         "FizzNodes.InvSinWave"(p: IN['FizzNodes.InvSinWave'], meta?: ComfyNodeMetadata): Node['FizzNodes.InvSinWave']
+          /** displayName="Lerp 📅🅕🅝" category="FizzNodes 📅🅕🅝_WaveNodes" name="Lerp" output=[FLOAT, INT] */
+         "FizzNodes.Lerp"(p: IN['FizzNodes.Lerp'], meta?: ComfyNodeMetadata): Node['FizzNodes.Lerp']
+          /** displayName="Prompt Schedule 📅🅕🅝" category="FizzNodes 📅🅕🅝_ScheduleNodes" name="PromptSchedule" output=[POS, NEG] */
+         "FizzNodes.PromptSchedule"(p: IN['FizzNodes.PromptSchedule'], meta?: ComfyNodeMetadata): Node['FizzNodes.PromptSchedule']
+          /** displayName="Prompt Schedule SDXL 📅🅕🅝" category="FizzNodes 📅🅕🅝_ScheduleNodes" name="PromptScheduleEncodeSDXL" output=[POS, NEG] */
+         "FizzNodes.PromptScheduleEncodeSDXL"(p: IN['FizzNodes.PromptScheduleEncodeSDXL'], meta?: ComfyNodeMetadata): Node['FizzNodes.PromptScheduleEncodeSDXL']
+          /** displayName="Prompt Schedule NodeFlow 📅🅕🅝" category="FizzNodes 📅🅕🅝_ScheduleNodes" name="PromptScheduleNodeFlow" output=[INT, STRING] */
+         "FizzNodes.PromptScheduleNodeFlow"(p: IN['FizzNodes.PromptScheduleNodeFlow'], meta?: ComfyNodeMetadata): Node['FizzNodes.PromptScheduleNodeFlow']
+          /** displayName="Prompt Schedule NodeFlow End 📅🅕🅝" category="FizzNodes 📅🅕🅝_ScheduleNodes" name="PromptScheduleNodeFlowEnd" output=[POS, NEG] */
+         "FizzNodes.PromptScheduleNodeFlowEnd"(p: IN['FizzNodes.PromptScheduleNodeFlowEnd'], meta?: ComfyNodeMetadata): Node['FizzNodes.PromptScheduleNodeFlowEnd']
+          /** displayName="SawtoothWave 📅🅕🅝" category="FizzNodes 📅🅕🅝_WaveNodes" name="SawtoothWave" output=[FLOAT, INT] */
+         "FizzNodes.SawtoothWave"(p: IN['FizzNodes.SawtoothWave'], meta?: ComfyNodeMetadata): Node['FizzNodes.SawtoothWave']
+          /** displayName="SinWave 📅🅕🅝" category="FizzNodes 📅🅕🅝_WaveNodes" name="SinWave" output=[FLOAT, INT] */
+         "FizzNodes.SinWave"(p: IN['FizzNodes.SinWave'], meta?: ComfyNodeMetadata): Node['FizzNodes.SinWave']
+          /** displayName="SquareWave 📅🅕🅝" category="FizzNodes 📅🅕🅝_WaveNodes" name="SquareWave" output=[FLOAT, INT] */
+         "FizzNodes.SquareWave"(p: IN['FizzNodes.SquareWave'], meta?: ComfyNodeMetadata): Node['FizzNodes.SquareWave']
+          /** displayName="String Concatenate 📅🅕🅝" category="FizzNodes 📅🅕🅝_FrameNodes" name="StringConcatenate" output=[STRING] */
+         "FizzNodes.StringConcatenate"(p: IN['FizzNodes.StringConcatenate'], meta?: ComfyNodeMetadata): Node['FizzNodes.StringConcatenate']
+          /** displayName="String Schedule 📅🅕🅝" category="FizzNodes 📅🅕🅝_ScheduleNodes" name="StringSchedule" output=[POS, NEG] */
+         "FizzNodes.StringSchedule"(p: IN['FizzNodes.StringSchedule'], meta?: ComfyNodeMetadata): Node['FizzNodes.StringSchedule']
+          /** displayName="TriangleWave 📅🅕🅝" category="FizzNodes 📅🅕🅝_WaveNodes" name="TriangleWave" output=[FLOAT, INT] */
+         "FizzNodes.TriangleWave"(p: IN['FizzNodes.TriangleWave'], meta?: ComfyNodeMetadata): Node['FizzNodes.TriangleWave']
+          /** displayName="Value Schedule 📅🅕🅝" category="FizzNodes 📅🅕🅝_ScheduleNodes" name="ValueSchedule" output=[FLOAT, INT] */
+         "FizzNodes.ValueSchedule"(p: IN['FizzNodes.ValueSchedule'], meta?: ComfyNodeMetadata): Node['FizzNodes.ValueSchedule']
           /** displayName="FlipSigmas" category="sampling_custom_sampling_sigmas" name="FlipSigmas" output=[SIGMAS] */
          FlipSigmas(p: IN['FlipSigmas'], meta?: ComfyNodeMetadata): Node['FlipSigmas']
           /** displayName="FluxGuidance" category="advanced_conditioning_flux" name="FluxGuidance" output=[CONDITIONING] */
@@ -15627,6 +19320,8 @@ declare global {
          "KSampler.sampler_name": Union['E_SamplerName']
          "KSamplerAdvanced.sampler_name": Union['E_SamplerName']
          "KSamplerSelect.sampler_name": Union['E_SamplerName']
+         "AnimateDiff-Evolved.ADE_VisualizeContextOptionsK.sampler_name": Union['E_SamplerName']
+         "AnimateDiff-Evolved.ADE_VisualizeContextOptionsKAdv.sampler_name": Union['E_SamplerName']
          "was.KSampler (WAS).sampler_name": Union['E_SamplerName']
          "was.KSampler Cycle.sampler_name": Union['E_SamplerName']
          "Impact-Pack.DetailerForEach.sampler_name": Union['E_SamplerName']
@@ -15656,6 +19351,9 @@ declare global {
          "KSampler.scheduler": Union['E_SchedulerName']
          "KSamplerAdvanced.scheduler": Union['E_SchedulerName']
          "BasicScheduler.scheduler": Union['E_SchedulerName']
+         "AnimateDiff-Evolved.ADE_VisualizeContextOptionsK.scheduler": Union['E_SchedulerName']
+         "AnimateDiff-Evolved.ADE_VisualizeContextOptionsKAdv.scheduler": Union['E_SchedulerName']
+         "AnimateDiff-Evolved.ADE_SigmaScheduleToSigmas.scheduler": Union['E_SchedulerName']
          "was.KSampler (WAS).scheduler": Union['E_SchedulerName']
          "was.KSampler Cycle.scheduler": Union['E_SchedulerName']
          "Impact-Pack.PixelTiledKSampleUpscalerProvider.scheduler": Union['E_SchedulerName']
@@ -15669,6 +19367,9 @@ declare global {
          "unCLIPCheckpointLoader.ckpt_name": Union['E_CkptName']
          "CheckpointLoader.ckpt_name": Union['E_CkptName']
          "ImageOnlyCheckpointLoader.ckpt_name": Union['E_CkptName']
+         "AnimateDiff-Evolved.ADE_RegisterModelAsLoraHook.ckpt_name": Union['E_CkptName']
+         "AnimateDiff-Evolved.ADE_RegisterModelAsLoraHookModelOnly.ckpt_name": Union['E_CkptName']
+         "AnimateDiff-Evolved.CheckpointLoaderSimpleWithNoiseSelect.ckpt_name": Union['E_CkptName']
          "was.Checkpoint Loader.ckpt_name": Union['E_CkptName']
          "was.Checkpoint Loader (Simple).ckpt_name": Union['E_CkptName']
          "was.unCLIP Checkpoint Loader.ckpt_name": Union['E_CkptName']
@@ -15683,6 +19384,7 @@ declare global {
          // E_e2779c2a
          "LatentUpscale.crop": Union['E_e2779c2a']
          "ImageScale.crop": Union['E_e2779c2a']
+         "AnimateDiff-Evolved.ADE_UpscaleAndVAEEncode.crop": Union['E_e2779c2a']
          // E_Image
          "LoadImage.image": Union['E_Image']
          "LoadImageMask.image": Union['E_Image']
@@ -15695,8 +19397,13 @@ declare global {
          "ImageScale.upscale_method": Union['E_ImageUpscaleMethod']
          "ImageScaleBy.upscale_method": Union['E_ImageUpscaleMethod']
          "ImageScaleToTotalPixels.upscale_method": Union['E_ImageUpscaleMethod']
+         "AnimateDiff-Evolved.ADE_UpscaleAndVAEEncode.scale_method": Union['E_ImageUpscaleMethod']
          // E_046ed3ef
          "ConditioningSetMask.set_cond_area": Union['E_046ed3ef']
+         "AnimateDiff-Evolved.ADE_PairedConditioningSetMask.set_cond_area": Union['E_046ed3ef']
+         "AnimateDiff-Evolved.ADE_ConditioningSetMask.set_cond_area": Union['E_046ed3ef']
+         "AnimateDiff-Evolved.ADE_PairedConditioningSetMaskAndCombine.set_cond_area": Union['E_046ed3ef']
+         "AnimateDiff-Evolved.ADE_ConditioningSetMaskAndCombine.set_cond_area": Union['E_046ed3ef']
          // E_EnableOrDisable
          "KSamplerAdvanced.add_noise": Union['E_EnableOrDisable']
          "KSamplerAdvanced.return_with_leftover_noise": Union['E_EnableOrDisable']
@@ -15734,7 +19441,6 @@ declare global {
          "ControlNetLoader.control_net_name": Union['E_LoraName']
          "DiffControlNetLoader.control_net_name": Union['E_LoraName']
          "StyleModelLoader.style_model_name": Union['E_LoraName']
-         "CLIPVisionLoader.clip_name": Union['E_LoraName']
          "GLIGENLoader.gligen_name": Union['E_LoraName']
          "DiffusersLoader.model_path": Union['E_LoraName']
          "LoadLatent.latent": Union['E_LoraName']
@@ -15745,6 +19451,20 @@ declare global {
          "TripleCLIPLoader.clip_name1": Union['E_LoraName']
          "TripleCLIPLoader.clip_name2": Union['E_LoraName']
          "TripleCLIPLoader.clip_name3": Union['E_LoraName']
+         "AnimateDiff-Evolved.ADE_AnimateDiffLoRALoader.name": Union['E_LoraName']
+         "AnimateDiff-Evolved.ADE_RegisterLoraHook.lora_name": Union['E_LoraName']
+         "AnimateDiff-Evolved.ADE_RegisterLoraHookModelOnly.lora_name": Union['E_LoraName']
+         "AnimateDiff-Evolved.ADE_AnimateDiffLoaderGen1.model_name": Union['E_LoraName']
+         "AnimateDiff-Evolved.ADE_AnimateDiffLoaderWithContext.model_name": Union['E_LoraName']
+         "AnimateDiff-Evolved.ADE_LoadAnimateDiffModel.model_name": Union['E_LoraName']
+         "AnimateDiff-Evolved.ADE_LoadAnimateLCMI2VModel.model_name": Union['E_LoraName']
+         "AnimateDiff-Evolved.ADE_InjectI2VIntoAnimateDiffModel.model_name": Union['E_LoraName']
+         "AnimateDiff-Evolved.ADE_LoadAnimateDiffModelWithCameraCtrl.model_name": Union['E_LoraName']
+         "AnimateDiff-Evolved.ADE_LoadAnimateDiffModelWithCameraCtrl.camera_ctrl": Union['E_LoraName']
+         "AnimateDiff-Evolved.ADE_LoadCameraPoses.pose_filename": Union['E_LoraName']
+         "AnimateDiff-Evolved.ADE_InjectPIAIntoAnimateDiffModel.model_name": Union['E_LoraName']
+         "AnimateDiff-Evolved.AnimateDiffLoaderV1.model_name": Union['E_LoraName']
+         "AnimateDiff-Evolved.ADE_AnimateDiffLoaderV1Advanced.model_name": Union['E_LoraName']
          "was.Diffusers Model Loader.model_path": Union['E_LoraName']
          "IPAdapter_plus.IPAdapterModelLoader.ipadapter_file": Union['E_LoraName']
          "IPAdapter_plus.IPAdapterLoadEmbeds.embeds": Union['E_LoraName']
@@ -15762,6 +19482,8 @@ declare global {
          "UNETLoader.weight_dtype": Union['E_WeightDType']
          // E_DualClipType
          "DualCLIPLoader.type": Union['E_DualClipType']
+         // E_daae7c6f
+         "CLIPVisionLoader.clip_name": Union['E_daae7c6f']
          // E_CkptConfigName
          "CheckpointLoader.config_name": Union['E_CkptConfigName']
          "was.Checkpoint Loader.config_name": Union['E_CkptConfigName']
@@ -15807,6 +19529,75 @@ declare global {
          "LoraSave.lora_type": Union['E_b80b6129']
          // E_4bbca93e
          "TorchCompileModel.backend": Union['E_4bbca93e']
+         // E_df934b3b
+         "AnimateDiff-Evolved.ADE_AnimateDiffSamplingSettings.noise_type": Union['E_df934b3b']
+         "AnimateDiff-Evolved.ADE_NoiseLayerAdd.noise_type": Union['E_df934b3b']
+         "AnimateDiff-Evolved.ADE_NoiseLayerAddWeighted.noise_type": Union['E_df934b3b']
+         "AnimateDiff-Evolved.ADE_NoiseLayerReplace.noise_type": Union['E_df934b3b']
+         // E_73f92fde
+         "AnimateDiff-Evolved.ADE_AnimateDiffSamplingSettings.seed_gen": Union['E_73f92fde']
+         // E_e981387a
+         "AnimateDiff-Evolved.ADE_MultivalScaledMask.scaling": Union['E_e981387a']
+         // E_68a33fb1
+         "AnimateDiff-Evolved.ADE_StandardStaticContextOptions.fuse_method": Union['E_68a33fb1']
+         // E_07ba75c0
+         "AnimateDiff-Evolved.ADE_StandardUniformContextOptions.fuse_method": Union['E_07ba75c0']
+         "AnimateDiff-Evolved.ADE_LoopedUniformContextOptions.fuse_method": Union['E_07ba75c0']
+         "AnimateDiff-Evolved.ADE_AnimateDiffUniformContextOptions.fuse_method": Union['E_07ba75c0']
+         "AnimateDiff-Evolved.ADE_StandardStaticViewOptions.fuse_method": Union['E_07ba75c0']
+         "AnimateDiff-Evolved.ADE_StandardUniformViewOptions.fuse_method": Union['E_07ba75c0']
+         "AnimateDiff-Evolved.ADE_LoopedUniformViewOptions.fuse_method": Union['E_07ba75c0']
+         // E_8146160c
+         "AnimateDiff-Evolved.ADE_AnimateDiffUniformContextOptions.context_schedule": Union['E_8146160c']
+         "AnimateDiff-Evolved.ADE_AnimateDiffLoaderV1Advanced.context_schedule": Union['E_8146160c']
+         // E_7c7d86e6
+         "AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_KeyframeInterpolation.interpolation": Union['E_7c7d86e6']
+         "AnimateDiff-Evolved.ADE_ContextExtras_NaiveReuse_KeyframeInterpolation.interpolation": Union['E_7c7d86e6']
+         "AnimateDiff-Evolved.ADE_LoraHookKeyframeInterpolation.interpolation": Union['E_7c7d86e6']
+         "AnimateDiff-Evolved.ADE_CustomCFGKeyframeInterpolation.interpolation": Union['E_7c7d86e6']
+         "AnimateDiff-Evolved.ADE_SigmaScheduleWeightedAverageInterp.interpolation": Union['E_7c7d86e6']
+         // E_c2afaefb
+         "AnimateDiff-Evolved.ADE_IterationOptsFreeInit.filter": Union['E_c2afaefb']
+         // E_694440e4
+         "AnimateDiff-Evolved.ADE_IterationOptsFreeInit.init_type": Union['E_694440e4']
+         // E_b5e69c34
+         "AnimateDiff-Evolved.ADE_NoiseLayerAdd.seed_gen_override": Union['E_b5e69c34']
+         "AnimateDiff-Evolved.ADE_NoiseLayerAddWeighted.seed_gen_override": Union['E_b5e69c34']
+         "AnimateDiff-Evolved.ADE_NoiseLayerReplace.seed_gen_override": Union['E_b5e69c34']
+         // E_851da0f5
+         "AnimateDiff-Evolved.ADE_SigmaSchedule.beta_schedule": Union['E_851da0f5']
+         // E_0d50dafa
+         "AnimateDiff-Evolved.ADE_RawSigmaSchedule.raw_beta_schedule": Union['E_0d50dafa']
+         // E_7c132641
+         "AnimateDiff-Evolved.ADE_RawSigmaSchedule.sampling": Union['E_7c132641']
+         // E_a154f844
+         "AnimateDiff-Evolved.ADE_PromptScheduling.tensor_interp": Union['E_a154f844']
+         "AnimateDiff-Evolved.ADE_PromptSchedulingLatents.tensor_interp": Union['E_a154f844']
+         // E_092dd1cc
+         "AnimateDiff-Evolved.CheckpointLoaderSimpleWithNoiseSelect.beta_schedule": Union['E_092dd1cc']
+         "AnimateDiff-Evolved.ADE_AnimateDiffLoaderGen1.beta_schedule": Union['E_092dd1cc']
+         "AnimateDiff-Evolved.ADE_AnimateDiffLoaderWithContext.beta_schedule": Union['E_092dd1cc']
+         "AnimateDiff-Evolved.ADE_UseEvolvedSampling.beta_schedule": Union['E_092dd1cc']
+         "AnimateDiff-Evolved.AnimateDiffLoaderV1.beta_schedule": Union['E_092dd1cc']
+         "AnimateDiff-Evolved.ADE_AnimateDiffLoaderV1Advanced.beta_schedule": Union['E_092dd1cc']
+         // E_849d2970
+         "AnimateDiff-Evolved.ADE_CameraPoseBasic.motion_type": Union['E_849d2970']
+         "AnimateDiff-Evolved.ADE_CameraPoseCombo.motion_type1": Union['E_849d2970']
+         "AnimateDiff-Evolved.ADE_CameraPoseCombo.motion_type2": Union['E_849d2970']
+         "AnimateDiff-Evolved.ADE_CameraPoseCombo.motion_type3": Union['E_849d2970']
+         "AnimateDiff-Evolved.ADE_CameraPoseCombo.motion_type4": Union['E_849d2970']
+         "AnimateDiff-Evolved.ADE_CameraPoseCombo.motion_type5": Union['E_849d2970']
+         "AnimateDiff-Evolved.ADE_CameraPoseCombo.motion_type6": Union['E_849d2970']
+         "AnimateDiff-Evolved.ADE_CameraPoseAdvanced.motion_type1": Union['E_849d2970']
+         "AnimateDiff-Evolved.ADE_CameraPoseAdvanced.motion_type2": Union['E_849d2970']
+         "AnimateDiff-Evolved.ADE_CameraPoseAdvanced.motion_type3": Union['E_849d2970']
+         "AnimateDiff-Evolved.ADE_CameraPoseAdvanced.motion_type4": Union['E_849d2970']
+         "AnimateDiff-Evolved.ADE_CameraPoseAdvanced.motion_type5": Union['E_849d2970']
+         "AnimateDiff-Evolved.ADE_CameraPoseAdvanced.motion_type6": Union['E_849d2970']
+         // E_6e63de3c
+         "AnimateDiff-Evolved.ADE_InputPIA_PaperPresets.preset": Union['E_6e63de3c']
+         // E_4a59f490
+         "AnimateDiff-Evolved.ADE_AnimateDiffCombine.format": Union['E_4a59f490']
          // E_48c2dd07
          "was.BLIP Model Loader.device": Union['E_48c2dd07']
          // E_3f378803
@@ -16374,22 +20165,39 @@ declare global {
       
       interface Producer {
          SEG_ELT_control_net_wrapper: Pick<Builder, 'Impact-Pack.ImpactFrom_SEG_ELT'>
+         ATTENTION_COUPLE_REGION: Pick<Builder, 'A8R8_ComfyUI_nodes.AttentionCoupleRegion' | 'A8R8_ComfyUI_nodes.AttentionCoupleRegions'>
          TRANSFORMERS_CLASSIFIER: Pick<Builder, 'Impact-Pack.ImpactHFTransformersClassifierProvider'>
+         IMAGE_INJECT_OPTIONS: Pick<Builder, 'AnimateDiff-Evolved.ADE_NoisedImageInjectOptions'>
+         CONTEXTREF_KEYFRAME: Pick<Builder, 'AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_Keyframe' | 'AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_KeyframeInterpolation' | 'AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_KeyframeFromList'>
+         NAIVEREUSE_KEYFRAME: Pick<Builder, 'AnimateDiff-Evolved.ADE_ContextExtras_NaiveReuse_Keyframe' | 'AnimateDiff-Evolved.ADE_ContextExtras_NaiveReuse_KeyframeInterpolation' | 'AnimateDiff-Evolved.ADE_ContextExtras_NaiveReuse_KeyframeFromList'>
+         LORA_HOOK_KEYFRAMES: Pick<Builder, 'AnimateDiff-Evolved.ADE_LoraHookKeyframe' | 'AnimateDiff-Evolved.ADE_LoraHookKeyframeInterpolation' | 'AnimateDiff-Evolved.ADE_LoraHookKeyframeFromStrengthList'>
          SEG_ELT_crop_region: Pick<Builder, 'Impact-Pack.ImpactFrom_SEG_ELT'>
          CLIP_VISION_OUTPUT: Pick<Builder, 'CLIPVisionEncode' | 'Allor.ClipVisionOutputClamp'>
          BOOLEAN: Pick<Builder, 'was.Logic Boolean' | 'was.Logic Boolean Primitive' | 'was.Logic Comparison OR' | 'was.Logic Comparison AND' | 'was.Logic Comparison XOR' | 'was.Logic NOT' | 'was.Text Compare' | 'was.Text Find' | 'was.Text Contains' | 'Impact-Pack.ImpactCompare' | 'Impact-Pack.ImpactIfNone' | 'Impact-Pack.ImpactConvertDataType' | 'Impact-Pack.ImpactLogicalOperators' | 'Impact-Pack.ImpactBoolean' | 'Impact-Pack.ImpactNeg' | 'Impact-Pack.ImpactIsNotEmptySEGS'>
          SEGS_PREPROCESSOR: {}, // no node can output this type.
          KSAMPLER_ADVANCED: Pick<Builder, 'Impact-Pack.KSamplerAdvancedProvider'>
          LATENT_OPERATION: Pick<Builder, 'LatentOperationTonemapReinhard' | 'LatentOperationSharpen'>
+         MOTION_MODEL_ADE: Pick<Builder, 'AnimateDiff-Evolved.ADE_LoadAnimateDiffModel' | 'AnimateDiff-Evolved.ADE_LoadAnimateLCMI2VModel' | 'AnimateDiff-Evolved.ADE_LoadAnimateLCMI2VModel' | 'AnimateDiff-Evolved.ADE_InjectI2VIntoAnimateDiffModel' | 'AnimateDiff-Evolved.ADE_LoadAnimateDiffModelWithCameraCtrl' | 'AnimateDiff-Evolved.ADE_InjectPIAIntoAnimateDiffModel'>
+         CAMERACTRL_POSES: Pick<Builder, 'AnimateDiff-Evolved.ADE_LoadCameraPoses' | 'AnimateDiff-Evolved.ADE_LoadCameraPosesFromPath' | 'AnimateDiff-Evolved.ADE_CameraPoseBasic' | 'AnimateDiff-Evolved.ADE_CameraPoseCombo' | 'AnimateDiff-Evolved.ADE_CameraPoseAdvanced' | 'AnimateDiff-Evolved.ADE_CameraManualPoseAppend' | 'AnimateDiff-Evolved.ADE_ReplaceCameraParameters' | 'AnimateDiff-Evolved.ADE_ReplaceOriginalPoseAspectRatio'>
          IPADAPTER_PARAMS: Pick<Builder, 'IPAdapter_plus.IPAdapterRegionalConditioning' | 'IPAdapter_plus.IPAdapterCombineParams'>
          WEIGHTS_STRATEGY: Pick<Builder, 'IPAdapter_plus.IPAdapterWeights' | 'IPAdapter_plus.IPAdapterWeightsFromStrategy'>
          REGIONAL_PROMPTS: Pick<Builder, 'Impact-Pack.CombineRegionalPrompts' | 'Impact-Pack.RegionalPrompt'>
-         STRING: Pick<Builder, 'was.Cache Node' | 'was.Cache Node' | 'was.Cache Node' | 'was.Checkpoint Loader' | 'was.Checkpoint Loader (Simple)' | 'was.CLIPTextEncode (NSP)' | 'was.CLIPTextEncode (NSP)' | 'was.Create Morph Image' | 'was.Create Morph Image' | 'was.Create Morph Image from Path' | 'was.Create Morph Image from Path' | 'was.Create Video from Path' | 'was.Create Video from Path' | 'was.Diffusers Model Loader' | 'was.Diffusers Hub Model Down-Loader' | 'was.Lora Loader' | 'was.Hex to HSL' | 'was.HSL to Hex' | 'was.Image Aspect Ratio' | 'was.Image Aspect Ratio' | 'was.Image History Loader' | 'was.Image Load' | 'was.Image Send HTTP' | 'was.Image Save' | 'was.Load Image Batch' | 'was.Load Text File' | 'was.Load Lora' | 'was.Number to String' | 'was.Number to Text' | 'was.Boolean To Text' | 'was.Prompt Styles Selector' | 'was.Prompt Styles Selector' | 'was.Prompt Multiple Styles Selector' | 'was.Prompt Multiple Styles Selector' | 'was.BLIP Analyze Image' | 'was.BLIP Analyze Image' | 'was.String to Text' | 'was.Text Dictionary Get' | 'was.Text Dictionary To Text' | 'was.Text Compare' | 'was.Text Compare' | 'was.Text Compare' | 'was.Text Concatenate' | 'was.Text File History Loader' | 'was.Text Find and Replace by Dictionary' | 'was.Text Find and Replace Input' | 'was.Text Find and Replace' | 'was.Text Input Switch' | 'was.Text List to Text' | 'was.Text Load Line From File' | 'was.Text Multiline' | 'was.Text Multiline (Code Compatible)' | 'was.Text Parse A1111 Embeddings' | 'was.Text Parse Noodle Soup Prompts' | 'was.Text Parse Tokens' | 'was.Text Random Line' | 'was.Text Random Prompt' | 'was.Text String' | 'was.Text String' | 'was.Text String' | 'was.Text String' | 'was.Text Shuffle' | 'was.Text Sort' | 'was.Text to Console' | 'was.Text to String' | 'was.Text String Truncate' | 'was.Text String Truncate' | 'was.Text String Truncate' | 'was.Text String Truncate' | 'was.unCLIP Checkpoint Loader' | 'was.Upscale Model Loader' | 'was.Write to GIF' | 'was.Write to GIF' | 'was.Write to Video' | 'was.Write to Video' | 'was.Video Dump Frames' | 'IPAdapter_plus.IPAdapterPromptScheduleFromWeightsStrategy' | 'controlnet_aux.UpperBodyTrackingFromPoseKps' | 'Marigold.SaveImageOpenEXR' | 'Impact-Pack.ImpactFrom_SEG_ELT' | 'Impact-Pack.LatentSwitch' | 'Impact-Pack.SEGSSwitch' | 'Impact-Pack.ImpactSwitch' | 'Impact-Pack.ImpactWildcardProcessor' | 'Impact-Pack.ImpactWildcardEncode' | 'Impact-Pack.ImpactConvertDataType' | 'Impact-Pack.ImpactStringSelector' | 'Impact-Pack.StringListToString' | 'Impact-Pack.WildcardPromptFromString' | 'Impact-Pack.WildcardPromptFromString' | 'Impact-Pack.ImpactSEGSClassify'>
-         FLOAT: Pick<Builder, 'was.Constant Number' | 'was.Logic Boolean' | 'was.Hex to HSL' | 'was.Image Aspect Ratio' | 'was.Image Size to Number' | 'was.Image Size to Number' | 'was.Latent Size to Number' | 'was.Latent Size to Number' | 'was.Number Counter' | 'was.Number Operation' | 'was.Number to Float' | 'was.Number Input Switch' | 'was.Number Input Condition' | 'was.Number Multiple Of' | 'was.Number PI' | 'was.Random Number' | 'was.Seed' | 'was.Text Find and Replace Input' | 'was.Text Find and Replace' | 'was.True Random.org Number Generator' | 'IPAdapter_plus.IPAdapterWeights' | 'IPAdapter_plus.IPAdapterWeights' | 'IPAdapter_plus.IPAdapterCombineWeights' | 'IPAdapter_plus.IPAdapterWeightsFromStrategy' | 'IPAdapter_plus.IPAdapterWeightsFromStrategy' | 'Impact-Pack.ImpactFrom_SEG_ELT' | 'Impact-Pack.ImpactConvertDataType' | 'Impact-Pack.ImpactFloat'>
+         STRING: Pick<Builder, 'was.Cache Node' | 'was.Cache Node' | 'was.Cache Node' | 'was.Checkpoint Loader' | 'was.Checkpoint Loader (Simple)' | 'was.CLIPTextEncode (NSP)' | 'was.CLIPTextEncode (NSP)' | 'was.Create Morph Image' | 'was.Create Morph Image' | 'was.Create Morph Image from Path' | 'was.Create Morph Image from Path' | 'was.Create Video from Path' | 'was.Create Video from Path' | 'was.Diffusers Model Loader' | 'was.Diffusers Hub Model Down-Loader' | 'was.Lora Loader' | 'was.Hex to HSL' | 'was.HSL to Hex' | 'was.Image Aspect Ratio' | 'was.Image Aspect Ratio' | 'was.Image History Loader' | 'was.Image Load' | 'was.Image Send HTTP' | 'was.Image Save' | 'was.Load Image Batch' | 'was.Load Text File' | 'was.Load Lora' | 'was.Number to String' | 'was.Number to Text' | 'was.Boolean To Text' | 'was.Prompt Styles Selector' | 'was.Prompt Styles Selector' | 'was.Prompt Multiple Styles Selector' | 'was.Prompt Multiple Styles Selector' | 'was.BLIP Analyze Image' | 'was.BLIP Analyze Image' | 'was.String to Text' | 'was.Text Dictionary Get' | 'was.Text Dictionary To Text' | 'was.Text Compare' | 'was.Text Compare' | 'was.Text Compare' | 'was.Text Concatenate' | 'was.Text File History Loader' | 'was.Text Find and Replace by Dictionary' | 'was.Text Find and Replace Input' | 'was.Text Find and Replace' | 'was.Text Input Switch' | 'was.Text List to Text' | 'was.Text Load Line From File' | 'was.Text Multiline' | 'was.Text Multiline (Code Compatible)' | 'was.Text Parse A1111 Embeddings' | 'was.Text Parse Noodle Soup Prompts' | 'was.Text Parse Tokens' | 'was.Text Random Line' | 'was.Text Random Prompt' | 'was.Text String' | 'was.Text String' | 'was.Text String' | 'was.Text String' | 'was.Text Shuffle' | 'was.Text Sort' | 'was.Text to Console' | 'was.Text to String' | 'was.Text String Truncate' | 'was.Text String Truncate' | 'was.Text String Truncate' | 'was.Text String Truncate' | 'was.unCLIP Checkpoint Loader' | 'was.Upscale Model Loader' | 'was.Write to GIF' | 'was.Write to GIF' | 'was.Write to Video' | 'was.Write to Video' | 'was.Video Dump Frames' | 'FizzNodes.PromptScheduleNodeFlow' | 'FizzNodes.StringSchedule' | 'FizzNodes.StringSchedule' | 'FizzNodes.BatchStringSchedule' | 'FizzNodes.BatchStringSchedule' | 'FizzNodes.StringConcatenate' | 'FizzNodes.FizzFrameConcatenate' | 'FizzNodes.ConcatStringSingle' | 'IPAdapter_plus.IPAdapterPromptScheduleFromWeightsStrategy' | 'controlnet_aux.UpperBodyTrackingFromPoseKps' | 'Marigold.SaveImageOpenEXR' | 'Impact-Pack.ImpactFrom_SEG_ELT' | 'Impact-Pack.LatentSwitch' | 'Impact-Pack.SEGSSwitch' | 'Impact-Pack.ImpactSwitch' | 'Impact-Pack.ImpactWildcardProcessor' | 'Impact-Pack.ImpactWildcardEncode' | 'Impact-Pack.ImpactConvertDataType' | 'Impact-Pack.ImpactStringSelector' | 'Impact-Pack.StringListToString' | 'Impact-Pack.WildcardPromptFromString' | 'Impact-Pack.WildcardPromptFromString' | 'Impact-Pack.ImpactSEGSClassify'>
+         SAMPLE_SETTINGS: Pick<Builder, 'AnimateDiff-Evolved.ADE_AnimateDiffSamplingSettings'>
+         CONTEXT_OPTIONS: Pick<Builder, 'AnimateDiff-Evolved.ADE_StandardStaticContextOptions' | 'AnimateDiff-Evolved.ADE_StandardUniformContextOptions' | 'AnimateDiff-Evolved.ADE_LoopedUniformContextOptions' | 'AnimateDiff-Evolved.ADE_ViewsOnlyContextOptions' | 'AnimateDiff-Evolved.ADE_BatchedContextOptions' | 'AnimateDiff-Evolved.ADE_AnimateDiffUniformContextOptions' | 'AnimateDiff-Evolved.ADE_ContextExtras_Set'>
+         CONTEXTREF_MODE: Pick<Builder, 'AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_ModeFirst' | 'AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_ModeSliding' | 'AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_ModeIndexes'>
+         CONTEXTREF_TUNE: Pick<Builder, 'AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_TuneAttn' | 'AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_TuneAttnAdain'>
+         FLOAT: Pick<Builder, 'AnimateDiff-Evolved.ADE_ValueScheduling' | 'AnimateDiff-Evolved.ADE_ValueSchedulingLatents' | 'was.Constant Number' | 'was.Logic Boolean' | 'was.Hex to HSL' | 'was.Image Aspect Ratio' | 'was.Image Size to Number' | 'was.Image Size to Number' | 'was.Latent Size to Number' | 'was.Latent Size to Number' | 'was.Number Counter' | 'was.Number Operation' | 'was.Number to Float' | 'was.Number Input Switch' | 'was.Number Input Condition' | 'was.Number Multiple Of' | 'was.Number PI' | 'was.Random Number' | 'was.Seed' | 'was.Text Find and Replace Input' | 'was.Text Find and Replace' | 'was.True Random.org Number Generator' | 'FizzNodes.Lerp' | 'FizzNodes.SinWave' | 'FizzNodes.InvSinWave' | 'FizzNodes.CosWave' | 'FizzNodes.InvCosWave' | 'FizzNodes.SquareWave' | 'FizzNodes.SawtoothWave' | 'FizzNodes.TriangleWave' | 'FizzNodes.AbsCosWave' | 'FizzNodes.AbsSinWave' | 'FizzNodes.ValueSchedule' | 'FizzNodes.BatchValueSchedule' | 'FizzNodes.BatchValueScheduleLatentInput' | 'IPAdapter_plus.IPAdapterWeights' | 'IPAdapter_plus.IPAdapterWeights' | 'IPAdapter_plus.IPAdapterCombineWeights' | 'IPAdapter_plus.IPAdapterWeightsFromStrategy' | 'IPAdapter_plus.IPAdapterWeightsFromStrategy' | 'Impact-Pack.ImpactFrom_SEG_ELT' | 'Impact-Pack.ImpactConvertDataType' | 'Impact-Pack.ImpactFloat'>
+         ITERATION_OPTS: Pick<Builder, 'AnimateDiff-Evolved.ADE_IterationOptsDefault' | 'AnimateDiff-Evolved.ADE_IterationOptsFreeInit'>
+         SIGMA_SCHEDULE: Pick<Builder, 'AnimateDiff-Evolved.ADE_SigmaSchedule' | 'AnimateDiff-Evolved.ADE_RawSigmaSchedule' | 'AnimateDiff-Evolved.ADE_SigmaScheduleWeightedAverage' | 'AnimateDiff-Evolved.ADE_SigmaScheduleWeightedAverageInterp' | 'AnimateDiff-Evolved.ADE_SigmaScheduleSplitAndCombine'>
+         CONTEXT_EXTRAS: Pick<Builder, 'AnimateDiff-Evolved.ADE_ContextExtras_ContextRef' | 'AnimateDiff-Evolved.ADE_ContextExtras_NaiveReuse'>
+         TIMESTEPS_COND: Pick<Builder, 'AnimateDiff-Evolved.ADE_TimestepsConditioning'>
+         VALUES_REPLACE: Pick<Builder, 'AnimateDiff-Evolved.ADE_ValuesReplace'>
          SAM_PARAMETERS: Pick<Builder, 'was.SAM Parameters' | 'was.SAM Parameters Combine'>
          SCHEDULER_FUNC: Pick<Builder, 'Impact-Pack.GITSSchedulerFuncProvider'>
          IPADAPTER_PIPE: {}, // no node can output this type.
          UPSCALE_MODEL: Pick<Builder, 'UpscaleModelLoader' | 'was.Upscale Model Loader' | 'was.Upscale Model Switch' | 'Allor.UpscaleModelClamp'>
+         WEIGHT_ADJUST: Pick<Builder, 'AnimateDiff-Evolved.ADE_AdjustWeightAllAdd' | 'AnimateDiff-Evolved.ADE_AdjustWeightAllMult' | 'AnimateDiff-Evolved.ADE_AdjustWeightIndivAdd' | 'AnimateDiff-Evolved.ADE_AdjustWeightIndivMult' | 'AnimateDiff-Evolved.ADE_AdjustWeightIndivAttnAdd' | 'AnimateDiff-Evolved.ADE_AdjustWeightIndivAttnMult'>
          CLIPSEG_MODEL: Pick<Builder, 'was.CLIPSeg Model Loader'>
          POSE_KEYPOINT: Pick<Builder, 'controlnet_aux.DWPreprocessor' | 'controlnet_aux.AnimalPosePreprocessor' | 'controlnet_aux.OpenposePreprocessor'>
          BBOX_DETECTOR: Pick<Builder, 'Impact-Pack.CLIPSegDetectorProvider' | 'Impact-Pack.ONNXDetectorProvider' | 'Impact-Pack.FromDetailerPipe' | 'Impact-Pack.FromDetailerPipe_v2' | 'Impact-Pack.FromDetailerPipeSDXL' | 'Impact-Pack.UltralyticsDetectorProvider'>
@@ -16398,48 +20206,69 @@ declare global {
          DETAILER_PIPE: Pick<Builder, 'Impact-Pack.FaceDetailer' | 'Impact-Pack.FaceDetailerPipe' | 'Impact-Pack.ToDetailerPipe' | 'Impact-Pack.ToDetailerPipeSDXL' | 'Impact-Pack.FromDetailerPipe_v2' | 'Impact-Pack.FromDetailerPipeSDXL' | 'Impact-Pack.BasicPipeToDetailerPipe' | 'Impact-Pack.BasicPipeToDetailerPipeSDXL' | 'Impact-Pack.EditDetailerPipe' | 'Impact-Pack.EditDetailerPipeSDXL'>
          SEGM_DETECTOR: Pick<Builder, 'Impact-Pack.FromDetailerPipe' | 'Impact-Pack.FromDetailerPipe_v2' | 'Impact-Pack.FromDetailerPipeSDXL' | 'Impact-Pack.UltralyticsDetectorProvider'>
          UPSCALER_HOOK: Pick<Builder, 'Impact-Pack.PreviewDetailerHookProvider'>
-         INT: Pick<Builder, 'was.Constant Number' | 'was.Logic Boolean' | 'was.Hex to HSL' | 'was.Hex to HSL' | 'was.Hex to HSL' | 'was.Image Send HTTP' | 'was.Image Size to Number' | 'was.Image Size to Number' | 'was.Image to Seed' | 'was.Integer place counter' | 'was.Latent Size to Number' | 'was.Latent Size to Number' | 'was.Mask Crop Region' | 'was.Mask Crop Region' | 'was.Mask Crop Region' | 'was.Mask Crop Region' | 'was.Mask Crop Region' | 'was.Mask Crop Region' | 'was.Number Counter' | 'was.Number Operation' | 'was.Number Input Switch' | 'was.Number Input Condition' | 'was.Number Multiple Of' | 'was.Number to Int' | 'was.Random Number' | 'was.Seed' | 'was.Text Find and Replace Input' | 'was.Text Find and Replace' | 'was.True Random.org Number Generator' | 'IPAdapter_plus.IPAdapterWeights' | 'IPAdapter_plus.IPAdapterCombineWeights' | 'IPAdapter_plus.IPAdapterWeightsFromStrategy' | 'controlnet_aux.PixelPerfectResolution' | 'controlnet_aux.ImageGenResolutionFromImage' | 'controlnet_aux.ImageGenResolutionFromImage' | 'controlnet_aux.ImageGenResolutionFromLatent' | 'controlnet_aux.ImageGenResolutionFromLatent' | 'Impact-Pack.ImpactFrom_SEG_ELT_bbox' | 'Impact-Pack.ImpactFrom_SEG_ELT_bbox' | 'Impact-Pack.ImpactFrom_SEG_ELT_bbox' | 'Impact-Pack.ImpactFrom_SEG_ELT_bbox' | 'Impact-Pack.ImpactFrom_SEG_ELT_crop_region' | 'Impact-Pack.ImpactFrom_SEG_ELT_crop_region' | 'Impact-Pack.ImpactFrom_SEG_ELT_crop_region' | 'Impact-Pack.ImpactFrom_SEG_ELT_crop_region' | 'Impact-Pack.ImpactCount_Elts_in_SEGS' | 'Impact-Pack.LatentSwitch' | 'Impact-Pack.SEGSSwitch' | 'Impact-Pack.ImpactSwitch' | 'Impact-Pack.ImpactConvertDataType' | 'Impact-Pack.ImpactInt' | 'Impact-Pack.ImpactImageInfo' | 'Impact-Pack.ImpactImageInfo' | 'Impact-Pack.ImpactImageInfo' | 'Impact-Pack.ImpactImageInfo' | 'Impact-Pack.ImpactLatentInfo' | 'Impact-Pack.ImpactLatentInfo' | 'Impact-Pack.ImpactLatentInfo' | 'Impact-Pack.ImpactLatentInfo' | 'Impact-Pack.ImpactMinMax' | 'Impact-Pack.ImpactQueueTriggerCountdown' | 'Impact-Pack.ImpactQueueTriggerCountdown'>
-         CONDITIONING: Pick<Builder, 'CLIPTextEncode' | 'ConditioningAverage' | 'ConditioningCombine' | 'ConditioningConcat' | 'ConditioningSetArea' | 'ConditioningSetAreaPercentage' | 'ConditioningSetAreaStrength' | 'ConditioningSetMask' | 'StyleModelApply' | 'unCLIPConditioning' | 'ControlNetApply' | 'ControlNetApplyAdvanced' | 'ControlNetApplyAdvanced' | 'GLIGENTextBoxApply' | 'InpaintModelConditioning' | 'InpaintModelConditioning' | 'ConditioningZeroOut' | 'ConditioningSetTimestepRange' | 'CLIPTextEncodeSDXLRefiner' | 'CLIPTextEncodeSDXL' | 'SVD_img2vid_Conditioning' | 'SVD_img2vid_Conditioning' | 'StableZero123_Conditioning' | 'StableZero123_Conditioning' | 'StableZero123_Conditioning_Batched' | 'StableZero123_Conditioning_Batched' | 'SV3D_Conditioning' | 'SV3D_Conditioning' | 'SD_4XUpscale_Conditioning' | 'SD_4XUpscale_Conditioning' | 'PhotoMakerEncode' | 'CLIPTextEncodeControlnet' | 'StableCascade_StageB_Conditioning' | 'InstructPixToPixConditioning' | 'InstructPixToPixConditioning' | 'CLIPTextEncodeSD3' | 'ControlNetApplySD3' | 'ControlNetApplySD3' | 'ControlNetInpaintingAliMamaApply' | 'ControlNetInpaintingAliMamaApply' | 'CLIPTextEncodeHunyuanDiT' | 'CLIPTextEncodeFlux' | 'FluxGuidance' | 'was.Bus Node' | 'was.Bus Node' | 'was.CLIPTextEncode (NSP)' | 'was.Conditioning Input Switch' | 'was.Load Cache' | 'was.Text to Conditioning' | 'IPAdapter_plus.IPAdapterRegionalConditioning' | 'IPAdapter_plus.IPAdapterRegionalConditioning' | 'Impact-Pack.FromDetailerPipe' | 'Impact-Pack.FromDetailerPipe' | 'Impact-Pack.FromDetailerPipe_v2' | 'Impact-Pack.FromDetailerPipe_v2' | 'Impact-Pack.FromDetailerPipeSDXL' | 'Impact-Pack.FromDetailerPipeSDXL' | 'Impact-Pack.FromDetailerPipeSDXL' | 'Impact-Pack.FromDetailerPipeSDXL' | 'Impact-Pack.FromBasicPipe' | 'Impact-Pack.FromBasicPipe' | 'Impact-Pack.FromBasicPipe_v2' | 'Impact-Pack.FromBasicPipe_v2' | 'Impact-Pack.ImpactNegativeConditioningPlaceholder' | 'Impact-Pack.ImpactWildcardEncode' | 'Impact-Pack.ImpactCombineConditionings' | 'Impact-Pack.ImpactConcatConditionings' | 'Allor.ConditioningClamp'>
+         INT: Pick<Builder, 'AnimateDiff-Evolved.ADE_ValueScheduling' | 'AnimateDiff-Evolved.ADE_ValueSchedulingLatents' | 'was.Constant Number' | 'was.Logic Boolean' | 'was.Hex to HSL' | 'was.Hex to HSL' | 'was.Hex to HSL' | 'was.Image Send HTTP' | 'was.Image Size to Number' | 'was.Image Size to Number' | 'was.Image to Seed' | 'was.Integer place counter' | 'was.Latent Size to Number' | 'was.Latent Size to Number' | 'was.Mask Crop Region' | 'was.Mask Crop Region' | 'was.Mask Crop Region' | 'was.Mask Crop Region' | 'was.Mask Crop Region' | 'was.Mask Crop Region' | 'was.Number Counter' | 'was.Number Operation' | 'was.Number Input Switch' | 'was.Number Input Condition' | 'was.Number Multiple Of' | 'was.Number to Int' | 'was.Random Number' | 'was.Seed' | 'was.Text Find and Replace Input' | 'was.Text Find and Replace' | 'was.True Random.org Number Generator' | 'FizzNodes.Lerp' | 'FizzNodes.SinWave' | 'FizzNodes.InvSinWave' | 'FizzNodes.CosWave' | 'FizzNodes.InvCosWave' | 'FizzNodes.SquareWave' | 'FizzNodes.SawtoothWave' | 'FizzNodes.TriangleWave' | 'FizzNodes.AbsCosWave' | 'FizzNodes.AbsSinWave' | 'FizzNodes.ValueSchedule' | 'FizzNodes.PromptScheduleNodeFlow' | 'FizzNodes.BatchValueSchedule' | 'FizzNodes.BatchValueScheduleLatentInput' | 'FizzNodes.convertKeyframeKeysToBatchKeys' | 'FizzNodes.CalculateFrameOffset' | 'IPAdapter_plus.IPAdapterWeights' | 'IPAdapter_plus.IPAdapterCombineWeights' | 'IPAdapter_plus.IPAdapterWeightsFromStrategy' | 'controlnet_aux.PixelPerfectResolution' | 'controlnet_aux.ImageGenResolutionFromImage' | 'controlnet_aux.ImageGenResolutionFromImage' | 'controlnet_aux.ImageGenResolutionFromLatent' | 'controlnet_aux.ImageGenResolutionFromLatent' | 'Impact-Pack.ImpactFrom_SEG_ELT_bbox' | 'Impact-Pack.ImpactFrom_SEG_ELT_bbox' | 'Impact-Pack.ImpactFrom_SEG_ELT_bbox' | 'Impact-Pack.ImpactFrom_SEG_ELT_bbox' | 'Impact-Pack.ImpactFrom_SEG_ELT_crop_region' | 'Impact-Pack.ImpactFrom_SEG_ELT_crop_region' | 'Impact-Pack.ImpactFrom_SEG_ELT_crop_region' | 'Impact-Pack.ImpactFrom_SEG_ELT_crop_region' | 'Impact-Pack.ImpactCount_Elts_in_SEGS' | 'Impact-Pack.LatentSwitch' | 'Impact-Pack.SEGSSwitch' | 'Impact-Pack.ImpactSwitch' | 'Impact-Pack.ImpactConvertDataType' | 'Impact-Pack.ImpactInt' | 'Impact-Pack.ImpactImageInfo' | 'Impact-Pack.ImpactImageInfo' | 'Impact-Pack.ImpactImageInfo' | 'Impact-Pack.ImpactImageInfo' | 'Impact-Pack.ImpactLatentInfo' | 'Impact-Pack.ImpactLatentInfo' | 'Impact-Pack.ImpactLatentInfo' | 'Impact-Pack.ImpactLatentInfo' | 'Impact-Pack.ImpactMinMax' | 'Impact-Pack.ImpactQueueTriggerCountdown' | 'Impact-Pack.ImpactQueueTriggerCountdown'>
+         CONDITIONING: Pick<Builder, 'CLIPTextEncode' | 'ConditioningAverage' | 'ConditioningCombine' | 'ConditioningConcat' | 'ConditioningSetArea' | 'ConditioningSetAreaPercentage' | 'ConditioningSetAreaStrength' | 'ConditioningSetMask' | 'StyleModelApply' | 'unCLIPConditioning' | 'ControlNetApply' | 'ControlNetApplyAdvanced' | 'ControlNetApplyAdvanced' | 'GLIGENTextBoxApply' | 'InpaintModelConditioning' | 'InpaintModelConditioning' | 'ConditioningZeroOut' | 'ConditioningSetTimestepRange' | 'CLIPTextEncodeSDXLRefiner' | 'CLIPTextEncodeSDXL' | 'SVD_img2vid_Conditioning' | 'SVD_img2vid_Conditioning' | 'StableZero123_Conditioning' | 'StableZero123_Conditioning' | 'StableZero123_Conditioning_Batched' | 'StableZero123_Conditioning_Batched' | 'SV3D_Conditioning' | 'SV3D_Conditioning' | 'SD_4XUpscale_Conditioning' | 'SD_4XUpscale_Conditioning' | 'PhotoMakerEncode' | 'CLIPTextEncodeControlnet' | 'StableCascade_StageB_Conditioning' | 'InstructPixToPixConditioning' | 'InstructPixToPixConditioning' | 'CLIPTextEncodeSD3' | 'ControlNetApplySD3' | 'ControlNetApplySD3' | 'ControlNetInpaintingAliMamaApply' | 'ControlNetInpaintingAliMamaApply' | 'CLIPTextEncodeHunyuanDiT' | 'CLIPTextEncodeFlux' | 'FluxGuidance' | 'AnimateDiff-Evolved.ADE_AttachLoraHookToConditioning' | 'AnimateDiff-Evolved.ADE_PairedConditioningSetMask' | 'AnimateDiff-Evolved.ADE_PairedConditioningSetMask' | 'AnimateDiff-Evolved.ADE_ConditioningSetMask' | 'AnimateDiff-Evolved.ADE_PairedConditioningSetMaskAndCombine' | 'AnimateDiff-Evolved.ADE_PairedConditioningSetMaskAndCombine' | 'AnimateDiff-Evolved.ADE_ConditioningSetMaskAndCombine' | 'AnimateDiff-Evolved.ADE_PairedConditioningSetUnmaskedAndCombine' | 'AnimateDiff-Evolved.ADE_PairedConditioningSetUnmaskedAndCombine' | 'AnimateDiff-Evolved.ADE_ConditioningSetUnmaskedAndCombine' | 'AnimateDiff-Evolved.ADE_PairedConditioningCombine' | 'AnimateDiff-Evolved.ADE_PairedConditioningCombine' | 'AnimateDiff-Evolved.ADE_ConditioningCombine' | 'AnimateDiff-Evolved.ADE_PromptScheduling' | 'AnimateDiff-Evolved.ADE_PromptSchedulingLatents' | 'was.Bus Node' | 'was.Bus Node' | 'was.CLIPTextEncode (NSP)' | 'was.Conditioning Input Switch' | 'was.Load Cache' | 'was.Text to Conditioning' | 'FizzNodes.PromptSchedule' | 'FizzNodes.PromptSchedule' | 'FizzNodes.PromptScheduleNodeFlowEnd' | 'FizzNodes.PromptScheduleNodeFlowEnd' | 'FizzNodes.PromptScheduleEncodeSDXL' | 'FizzNodes.PromptScheduleEncodeSDXL' | 'FizzNodes.BatchPromptSchedule' | 'FizzNodes.BatchPromptSchedule' | 'FizzNodes.BatchPromptScheduleEncodeSDXL' | 'FizzNodes.BatchPromptScheduleEncodeSDXL' | 'FizzNodes.BatchPromptScheduleSDXLLatentInput' | 'FizzNodes.BatchPromptScheduleSDXLLatentInput' | 'FizzNodes.BatchPromptScheduleLatentInput' | 'FizzNodes.BatchPromptScheduleLatentInput' | 'FizzNodes.Init FizzFrame' | 'FizzNodes.Init FizzFrame' | 'FizzNodes.FizzFrame' | 'FizzNodes.FizzFrame' | 'IPAdapter_plus.IPAdapterRegionalConditioning' | 'IPAdapter_plus.IPAdapterRegionalConditioning' | 'Impact-Pack.FromDetailerPipe' | 'Impact-Pack.FromDetailerPipe' | 'Impact-Pack.FromDetailerPipe_v2' | 'Impact-Pack.FromDetailerPipe_v2' | 'Impact-Pack.FromDetailerPipeSDXL' | 'Impact-Pack.FromDetailerPipeSDXL' | 'Impact-Pack.FromDetailerPipeSDXL' | 'Impact-Pack.FromDetailerPipeSDXL' | 'Impact-Pack.FromBasicPipe' | 'Impact-Pack.FromBasicPipe' | 'Impact-Pack.FromBasicPipe_v2' | 'Impact-Pack.FromBasicPipe_v2' | 'Impact-Pack.ImpactNegativeConditioningPlaceholder' | 'Impact-Pack.ImpactWildcardEncode' | 'Impact-Pack.ImpactCombineConditionings' | 'Impact-Pack.ImpactConcatConditionings' | 'Allor.ConditioningClamp'>
+         NOISE_LAYERS: Pick<Builder, 'AnimateDiff-Evolved.ADE_NoiseLayerAdd' | 'AnimateDiff-Evolved.ADE_NoiseLayerAddWeighted' | 'AnimateDiff-Evolved.ADE_NoiseLayerReplace'>
+         IMAGE_INJECT: Pick<Builder, 'AnimateDiff-Evolved.ADE_NoisedImageInjection'>
+         AD_KEYFRAMES: Pick<Builder, 'AnimateDiff-Evolved.ADE_AnimateDiffKeyframe' | 'AnimateDiff-Evolved.ADE_CameraCtrlAnimateDiffKeyframe' | 'AnimateDiff-Evolved.ADE_PIA_AnimateDiffKeyframe'>
          IMAGE_BOUNDS: Pick<Builder, 'was.Image Bounds' | 'was.Inset Image Bounds' | 'was.Bounded Image Crop with Mask' | 'was.Image Bounds to Console'>
          OPTICAL_FLOW: Pick<Builder, 'controlnet_aux.Unimatch_OptFlowPreprocessor' | 'controlnet_aux.MaskOptFlow'>
          SEG_ELT_bbox: Pick<Builder, 'Impact-Pack.ImpactFrom_SEG_ELT'>
          CLIP_VISION: Pick<Builder, 'CLIPVisionLoader' | 'unCLIPCheckpointLoader' | 'ImageOnlyCheckpointLoader' | 'was.CLIP Vision Input Switch' | 'was.unCLIP Checkpoint Loader' | 'Allor.ClipVisionClamp'>
          STYLE_MODEL: Pick<Builder, 'StyleModelLoader' | 'Allor.StyleModelClamp'>
          CONTROL_NET: Pick<Builder, 'ControlNetLoader' | 'DiffControlNetLoader' | 'SetUnionControlNetType' | 'was.Control Net Model Input Switch' | 'Allor.ControlNetClamp'>
+         MOTION_LORA: Pick<Builder, 'AnimateDiff-Evolved.ADE_AnimateDiffLoRALoader'>
+         ADEAUTOSIZE: {}, // no node can output this type.
+         AD_SETTINGS: Pick<Builder, 'AnimateDiff-Evolved.ADE_AnimateDiffSettings' | 'AnimateDiff-Evolved.ADE_AnimateDiffModelSettings_Release' | 'AnimateDiff-Evolved.ADE_AnimateDiffModelSettingsSimple' | 'AnimateDiff-Evolved.ADE_AnimateDiffModelSettings' | 'AnimateDiff-Evolved.ADE_AnimateDiffModelSettingsAdvancedAttnStrengths'>
          MIDAS_MODEL: Pick<Builder, 'was.MiDaS Model Loader'>
          INSIGHTFACE: Pick<Builder, 'IPAdapter_plus.IPAdapterInsightFaceLoader'>
          SEGS_HEADER: Pick<Builder, 'Impact-Pack.ImpactDecomposeSEGS'>
          PHOTOMAKER: Pick<Builder, 'PhotoMakerLoader'>
+         CUSTOM_CFG: Pick<Builder, 'AnimateDiff-Evolved.ADE_CustomCFGSimple' | 'AnimateDiff-Evolved.ADE_CustomCFG' | 'AnimateDiff-Evolved.ADE_CustomCFGKeyframeSimple' | 'AnimateDiff-Evolved.ADE_CustomCFGKeyframe' | 'AnimateDiff-Evolved.ADE_CustomCFGKeyframeInterpolation' | 'AnimateDiff-Evolved.ADE_CustomCFGKeyframeFromList'>
+         CFG_EXTRAS: Pick<Builder, 'AnimateDiff-Evolved.ADE_CFGExtrasPAGSimple' | 'AnimateDiff-Evolved.ADE_CFGExtrasPAG' | 'AnimateDiff-Evolved.ADE_CFGExtrasRescaleCFGSimple' | 'AnimateDiff-Evolved.ADE_CFGExtrasRescaleCFG'>
          BLIP_MODEL: Pick<Builder, 'was.BLIP Model Loader'>
          BASIC_PIPE: Pick<Builder, 'Impact-Pack.DetailerForEachPipe' | 'Impact-Pack.DetailerForEachDebugPipe' | 'Impact-Pack.DetailerForEachPipeForAnimateDiff' | 'Impact-Pack.MaskDetailerPipe' | 'Impact-Pack.MaskDetailerPipe' | 'Impact-Pack.AnyPipeToBasic' | 'Impact-Pack.ToBasicPipe' | 'Impact-Pack.FromBasicPipe_v2' | 'Impact-Pack.DetailerPipeToBasicPipe' | 'Impact-Pack.DetailerPipeToBasicPipe' | 'Impact-Pack.EditBasicPipe' | 'Impact-Pack.ImpactKSamplerBasicPipe' | 'Impact-Pack.ImpactKSamplerAdvancedBasicPipe'>
+         VIEW_OPTS: Pick<Builder, 'AnimateDiff-Evolved.ADE_StandardStaticViewOptions' | 'AnimateDiff-Evolved.ADE_StandardUniformViewOptions' | 'AnimateDiff-Evolved.ADE_LoopedUniformViewOptions'>
+         LORA_HOOK: Pick<Builder, 'AnimateDiff-Evolved.ADE_RegisterLoraHook' | 'AnimateDiff-Evolved.ADE_RegisterLoraHookModelOnly' | 'AnimateDiff-Evolved.ADE_RegisterModelAsLoraHook' | 'AnimateDiff-Evolved.ADE_RegisterModelAsLoraHookModelOnly' | 'AnimateDiff-Evolved.ADE_CombineLoraHooks' | 'AnimateDiff-Evolved.ADE_CombineLoraHooksFour' | 'AnimateDiff-Evolved.ADE_CombineLoraHooksEight' | 'AnimateDiff-Evolved.ADE_SetLoraHookKeyframe'>
+         PE_ADJUST: Pick<Builder, 'AnimateDiff-Evolved.ADE_AdjustPESweetspotStretch' | 'AnimateDiff-Evolved.ADE_AdjustPEFullStretch' | 'AnimateDiff-Evolved.ADE_AdjustPEManual'>
+         PER_BLOCK: Pick<Builder, 'AnimateDiff-Evolved.ADE_PerBlockHighLevel' | 'AnimateDiff-Evolved.ADE_PerBlock_SD15_MidLevel' | 'AnimateDiff-Evolved.ADE_PerBlock_SD15_LowLevel' | 'AnimateDiff-Evolved.ADE_PerBlock_SD15_FromFloats' | 'AnimateDiff-Evolved.ADE_PerBlock_SDXL_MidLevel' | 'AnimateDiff-Evolved.ADE_PerBlock_SDXL_LowLevel' | 'AnimateDiff-Evolved.ADE_PerBlock_SDXL_FromFloats'>
+         PIA_INPUT: Pick<Builder, 'AnimateDiff-Evolved.ADE_InputPIA_Multival' | 'AnimateDiff-Evolved.ADE_InputPIA_PaperPresets'>
          CROP_DATA: Pick<Builder, 'was.Image Crop Face' | 'was.Image Crop Location' | 'was.Image Crop Square Location' | 'was.Mask Crop Region'>
          SAM_MODEL: Pick<Builder, 'was.SAM Model Loader' | 'Impact-Pack.SAMLoader' | 'Impact-Pack.FromDetailerPipe' | 'Impact-Pack.FromDetailerPipe_v2' | 'Impact-Pack.FromDetailerPipeSDXL'>
+         FIZZFRAME: Pick<Builder, 'FizzNodes.Init FizzFrame' | 'FizzNodes.FizzFrame'>
          IPADAPTER: Pick<Builder, 'IPAdapter_plus.IPAdapterUnifiedLoader' | 'IPAdapter_plus.IPAdapterUnifiedLoaderFaceID' | 'IPAdapter_plus.IPAdapterModelLoader' | 'IPAdapter_plus.IPAdapterUnifiedLoaderCommunity'>
          RMBGMODEL: Pick<Builder, 'BRIA_AI-RMBG.BRIA_RMBG_ModelLoader_Zho'>
+         MULTIVAL: Pick<Builder, 'AnimateDiff-Evolved.ADE_MultivalDynamic' | 'AnimateDiff-Evolved.ADE_MultivalDynamicFloatInput' | 'AnimateDiff-Evolved.ADE_MultivalDynamicFloats' | 'AnimateDiff-Evolved.ADE_MultivalScaledMask'>
+         AD_BLOCK: Pick<Builder, 'AnimateDiff-Evolved.ADE_ADBlockCombo' | 'AnimateDiff-Evolved.ADE_ADBlockIndiv'>
+         M_MODELS: Pick<Builder, 'AnimateDiff-Evolved.ADE_ApplyAnimateDiffModelSimple' | 'AnimateDiff-Evolved.ADE_ApplyAnimateDiffModel' | 'AnimateDiff-Evolved.ADE_ApplyAnimateLCMI2VModel' | 'AnimateDiff-Evolved.ADE_ApplyAnimateDiffModelWithCameraCtrl' | 'AnimateDiff-Evolved.ADE_ApplyAnimateDiffModelWithPIA'>
          TRACKING: Pick<Builder, 'controlnet_aux.UpperBodyTrackingFromPoseKps'>
          UPSCALER: Pick<Builder, 'Impact-Pack.PixelKSampleUpscalerProvider' | 'Impact-Pack.PixelKSampleUpscalerProviderPipe' | 'Impact-Pack.PixelTiledKSampleUpscalerProvider' | 'Impact-Pack.PixelTiledKSampleUpscalerProviderPipe' | 'Impact-Pack.TwoSamplersForMaskUpscalerProvider' | 'Impact-Pack.TwoSamplersForMaskUpscalerProviderPipe'>
          KSAMPLER: Pick<Builder, 'Impact-Pack.KSamplerProvider' | 'Impact-Pack.TiledKSamplerProvider'>
          SAMPLER: Pick<Builder, 'KSamplerSelect' | 'SamplerEulerAncestral' | 'SamplerEulerAncestralCFGPP' | 'SamplerLMS' | 'SamplerDPMPP_3M_SDE' | 'SamplerDPMPP_2M_SDE' | 'SamplerDPMPP_SDE' | 'SamplerDPMPP_2S_Ancestral' | 'SamplerDPMAdaptative' | 'SamplerLCMUpscale' | 'SamplerEulerCFGpp'>
+         ADEWARN: {}, // no node can output this type.
          PK_HOOK: Pick<Builder, 'Impact-Pack.PixelKSampleHookCombine' | 'Impact-Pack.DenoiseScheduleHookProvider' | 'Impact-Pack.StepsScheduleHookProvider' | 'Impact-Pack.CfgScheduleHookProvider' | 'Impact-Pack.NoiseInjectionHookProvider' | 'Impact-Pack.UnsamplerHookProvider'>
          SEG_ELT: Pick<Builder, 'Impact-Pack.ImpactDecomposeSEGS' | 'Impact-Pack.ImpactFrom_SEG_ELT' | 'Impact-Pack.ImpactEdit_SEG_ELT' | 'Impact-Pack.ImpactDilate_Mask_SEG_ELT' | 'Impact-Pack.ImpactScaleBy_BBOX_SEG_ELT'>
-         LATENT: Pick<Builder, 'KSampler' | 'VAEEncode' | 'VAEEncodeForInpaint' | 'EmptyLatentImage' | 'LatentUpscale' | 'LatentUpscaleBy' | 'LatentFromBatch' | 'RepeatLatentBatch' | 'KSamplerAdvanced' | 'SetLatentNoiseMask' | 'LatentComposite' | 'LatentBlend' | 'LatentRotate' | 'LatentFlip' | 'LatentCrop' | 'VAEEncodeTiled' | 'InpaintModelConditioning' | 'LoadLatent' | 'LatentAdd' | 'LatentSubtract' | 'LatentMultiply' | 'LatentInterpolate' | 'LatentBatch' | 'LatentBatchSeedBehavior' | 'LatentApplyOperation' | 'LatentCompositeMasked' | 'RebatchLatents' | 'SamplerCustom' | 'SamplerCustom' | 'AddNoise' | 'SamplerCustomAdvanced' | 'SamplerCustomAdvanced' | 'SVD_img2vid_Conditioning' | 'StableZero123_Conditioning' | 'StableZero123_Conditioning_Batched' | 'SV3D_Conditioning' | 'SD_4XUpscale_Conditioning' | 'StableCascade_EmptyLatentImage' | 'StableCascade_EmptyLatentImage' | 'StableCascade_StageC_VAEEncode' | 'StableCascade_StageC_VAEEncode' | 'StableCascade_SuperResolutionControlnet' | 'StableCascade_SuperResolutionControlnet' | 'InstructPixToPixConditioning' | 'EmptyLatentAudio' | 'VAEEncodeAudio' | 'EmptySD3LatentImage' | 'EmptyMochiLatentVideo' | 'was.Blend Latents' | 'was.Latent Input Switch' | 'was.Load Cache' | 'was.KSampler (WAS)' | 'was.KSampler Cycle' | 'was.Latent Batch' | 'was.Latent Noise Injection' | 'was.Latent Upscale by Factor (WAS)' | 'was.Samples Passthrough (Stat System)' | 'NNLatentUpscale.NNLatentUpscale' | 'Impact-Pack.LatentPixelScale' | 'Impact-Pack.IterativeLatentUpscale' | 'Impact-Pack.TwoSamplersForMask' | 'Impact-Pack.TwoAdvancedSamplersForMask' | 'Impact-Pack.PreviewBridgeLatent' | 'Impact-Pack.LatentReceiver' | 'Impact-Pack.ImpactKSamplerBasicPipe' | 'Impact-Pack.ImpactKSamplerAdvancedBasicPipe' | 'Impact-Pack.ReencodeLatent' | 'Impact-Pack.ReencodeLatentPipe' | 'Impact-Pack.RegionalSampler' | 'Impact-Pack.RegionalSamplerAdvanced' | 'Impact-Pack.RemoveNoiseMask' | 'Allor.LatentClamp'>
+         LATENT: Pick<Builder, 'KSampler' | 'VAEEncode' | 'VAEEncodeForInpaint' | 'EmptyLatentImage' | 'LatentUpscale' | 'LatentUpscaleBy' | 'LatentFromBatch' | 'RepeatLatentBatch' | 'KSamplerAdvanced' | 'SetLatentNoiseMask' | 'LatentComposite' | 'LatentBlend' | 'LatentRotate' | 'LatentFlip' | 'LatentCrop' | 'VAEEncodeTiled' | 'InpaintModelConditioning' | 'LoadLatent' | 'LatentAdd' | 'LatentSubtract' | 'LatentMultiply' | 'LatentInterpolate' | 'LatentBatch' | 'LatentBatchSeedBehavior' | 'LatentApplyOperation' | 'LatentCompositeMasked' | 'RebatchLatents' | 'SamplerCustom' | 'SamplerCustom' | 'AddNoise' | 'SamplerCustomAdvanced' | 'SamplerCustomAdvanced' | 'SVD_img2vid_Conditioning' | 'StableZero123_Conditioning' | 'StableZero123_Conditioning_Batched' | 'SV3D_Conditioning' | 'SD_4XUpscale_Conditioning' | 'StableCascade_EmptyLatentImage' | 'StableCascade_EmptyLatentImage' | 'StableCascade_StageC_VAEEncode' | 'StableCascade_StageC_VAEEncode' | 'StableCascade_SuperResolutionControlnet' | 'StableCascade_SuperResolutionControlnet' | 'InstructPixToPixConditioning' | 'EmptyLatentAudio' | 'VAEEncodeAudio' | 'EmptySD3LatentImage' | 'EmptyMochiLatentVideo' | 'AnimateDiff-Evolved.ADE_PromptSchedulingLatents' | 'AnimateDiff-Evolved.ADE_EmptyLatentImageLarge' | 'AnimateDiff-Evolved.ADE_UpscaleAndVAEEncode' | 'AnimateDiff-Evolved.AnimateDiffLoaderV1' | 'AnimateDiff-Evolved.ADE_AnimateDiffLoaderV1Advanced' | 'was.Blend Latents' | 'was.Latent Input Switch' | 'was.Load Cache' | 'was.KSampler (WAS)' | 'was.KSampler Cycle' | 'was.Latent Batch' | 'was.Latent Noise Injection' | 'was.Latent Upscale by Factor (WAS)' | 'was.Samples Passthrough (Stat System)' | 'FizzNodes.BatchValueScheduleLatentInput' | 'FizzNodes.BatchPromptScheduleSDXLLatentInput' | 'FizzNodes.BatchPromptScheduleLatentInput' | 'NNLatentUpscale.NNLatentUpscale' | 'Impact-Pack.LatentPixelScale' | 'Impact-Pack.IterativeLatentUpscale' | 'Impact-Pack.TwoSamplersForMask' | 'Impact-Pack.TwoAdvancedSamplersForMask' | 'Impact-Pack.PreviewBridgeLatent' | 'Impact-Pack.LatentReceiver' | 'Impact-Pack.ImpactKSamplerBasicPipe' | 'Impact-Pack.ImpactKSamplerAdvancedBasicPipe' | 'Impact-Pack.ReencodeLatent' | 'Impact-Pack.ReencodeLatentPipe' | 'Impact-Pack.RegionalSampler' | 'Impact-Pack.RegionalSamplerAdvanced' | 'Impact-Pack.RemoveNoiseMask' | 'Allor.LatentClamp'>
          GLIGEN: Pick<Builder, 'GLIGENLoader' | 'Allor.GligenClamp'>
-         SIGMAS: Pick<Builder, 'BasicScheduler' | 'KarrasScheduler' | 'ExponentialScheduler' | 'PolyexponentialScheduler' | 'LaplaceScheduler' | 'VPScheduler' | 'BetaSamplingScheduler' | 'SDTurboScheduler' | 'SplitSigmas' | 'SplitSigmas' | 'SplitSigmasDenoise' | 'SplitSigmasDenoise' | 'FlipSigmas' | 'AlignYourStepsScheduler' | 'GITSScheduler'>
+         SIGMAS: Pick<Builder, 'BasicScheduler' | 'KarrasScheduler' | 'ExponentialScheduler' | 'PolyexponentialScheduler' | 'LaplaceScheduler' | 'VPScheduler' | 'BetaSamplingScheduler' | 'SDTurboScheduler' | 'SplitSigmas' | 'SplitSigmas' | 'SplitSigmasDenoise' | 'SplitSigmasDenoise' | 'FlipSigmas' | 'AlignYourStepsScheduler' | 'GITSScheduler' | 'AnimateDiff-Evolved.ADE_SigmaScheduleToSigmas'>
          GUIDER: Pick<Builder, 'CFGGuider' | 'DualCFGGuider' | 'BasicGuider' | 'PerpNegGuider'>
          WEBCAM: {}, // no node can output this type.
+         FLOATS: Pick<Builder, 'AnimateDiff-Evolved.ADE_ValueScheduling' | 'AnimateDiff-Evolved.ADE_ValueSchedulingLatents' | 'AnimateDiff-Evolved.ADE_FloatToFloats'>
          NUMBER: Pick<Builder, 'was.Constant Number' | 'was.Debug Number to Console' | 'was.Logic Boolean' | 'was.Image Aspect Ratio' | 'was.Image Aspect Ratio' | 'was.Image Size to Number' | 'was.Image Size to Number' | 'was.Latent Size to Number' | 'was.Latent Size to Number' | 'was.Number Counter' | 'was.Number Operation' | 'was.Number Input Switch' | 'was.Number Input Condition' | 'was.Number Multiple Of' | 'was.Number PI' | 'was.Random Number' | 'was.Seed' | 'was.Text Compare' | 'was.Text Find and Replace Input' | 'was.Text Find and Replace' | 'was.Text to Number' | 'was.True Random.org Number Generator' | 'was.Video Dump Frames'>
          EMBEDS: Pick<Builder, 'IPAdapter_plus.IPAdapterEncoder' | 'IPAdapter_plus.IPAdapterEncoder' | 'IPAdapter_plus.IPAdapterCombineEmbeds' | 'IPAdapter_plus.IPAdapterLoadEmbeds'>
-         MODEL: Pick<Builder, 'CheckpointLoaderSimple' | 'LoraLoader' | 'UNETLoader' | 'unCLIPCheckpointLoader' | 'CheckpointLoader' | 'DiffusersLoader' | 'LoraLoaderModelOnly' | 'LatentApplyOperationCFG' | 'HypernetworkLoader' | 'ModelMergeSimple' | 'ModelMergeBlocks' | 'ModelMergeSubtract' | 'ModelMergeAdd' | 'TomePatchModel' | 'FreeU' | 'FreeU_V2' | 'HyperTile' | 'ModelSamplingDiscrete' | 'ModelSamplingContinuousEDM' | 'ModelSamplingContinuousV' | 'ModelSamplingStableCascade' | 'ModelSamplingSD3' | 'ModelSamplingAuraFlow' | 'ModelSamplingFlux' | 'RescaleCFG' | 'PatchModelAddDownscale' | 'ImageOnlyCheckpointLoader' | 'VideoLinearCFGGuidance' | 'VideoTriangleCFGGuidance' | 'SelfAttentionGuidance' | 'PerpNeg' | 'DifferentialDiffusion' | 'ModelMergeSD1' | 'ModelMergeSD2' | 'ModelMergeSDXL' | 'ModelMergeSD3_2B' | 'ModelMergeFlux1' | 'ModelMergeSD35_Large' | 'PerturbedAttentionGuidance' | 'UNetSelfAttentionMultiply' | 'UNetCrossAttentionMultiply' | 'UNetTemporalAttentionMultiply' | 'SkipLayerGuidanceSD3' | 'TorchCompileModel' | 'was.Bus Node' | 'was.Checkpoint Loader' | 'was.Checkpoint Loader (Simple)' | 'was.Diffusers Model Loader' | 'was.Diffusers Hub Model Down-Loader' | 'was.Lora Loader' | 'was.Load Lora' | 'was.Lora Input Switch' | 'was.Model Input Switch' | 'was.unCLIP Checkpoint Loader' | 'IPAdapter_plus.IPAdapter' | 'IPAdapter_plus.IPAdapterAdvanced' | 'IPAdapter_plus.IPAdapterBatch' | 'IPAdapter_plus.IPAdapterFaceID' | 'IPAdapter_plus.IPAdapterFaceIDKolors' | 'IPAdapter_plus.IPAAdapterFaceIDBatch' | 'IPAdapter_plus.IPAdapterTiled' | 'IPAdapter_plus.IPAdapterTiledBatch' | 'IPAdapter_plus.IPAdapterEmbeds' | 'IPAdapter_plus.IPAdapterEmbedsBatch' | 'IPAdapter_plus.IPAdapterStyleComposition' | 'IPAdapter_plus.IPAdapterStyleCompositionBatch' | 'IPAdapter_plus.IPAdapterMS' | 'IPAdapter_plus.IPAdapterClipVisionEnhancer' | 'IPAdapter_plus.IPAdapterClipVisionEnhancerBatch' | 'IPAdapter_plus.IPAdapterFromParams' | 'IPAdapter_plus.IPAdapterPreciseStyleTransfer' | 'IPAdapter_plus.IPAdapterPreciseStyleTransferBatch' | 'IPAdapter_plus.IPAdapterPreciseComposition' | 'IPAdapter_plus.IPAdapterPreciseCompositionBatch' | 'IPAdapter_plus.IPAdapterUnifiedLoader' | 'IPAdapter_plus.IPAdapterUnifiedLoaderFaceID' | 'IPAdapter_plus.IPAdapterUnifiedLoaderCommunity' | 'sd-perturbed-attention.PerturbedAttention' | 'sd-perturbed-attention.SmoothedEnergyGuidanceAdvanced' | 'sd-perturbed-attention.TRTAttachPag' | 'sd-perturbed-attention.TRTPerturbedAttention' | 'civitai_comfy_nodes.CivitAI_Lora_Loader' | 'civitai_comfy_nodes.CivitAI_Checkpoint_Loader' | 'Impact-Pack.FromDetailerPipe' | 'Impact-Pack.FromDetailerPipe_v2' | 'Impact-Pack.FromDetailerPipeSDXL' | 'Impact-Pack.FromDetailerPipeSDXL' | 'Impact-Pack.FromBasicPipe' | 'Impact-Pack.FromBasicPipe_v2' | 'Impact-Pack.ImpactWildcardEncode' | 'Allor.ModelClamp'>
-         IMAGE: Pick<Builder, 'VAEDecode' | 'LoadImage' | 'ImageScale' | 'ImageScaleBy' | 'ImageInvert' | 'ImageBatch' | 'ImagePadForOutpaint' | 'EmptyImage' | 'VAEDecodeTiled' | 'ImageUpscaleWithModel' | 'ImageBlend' | 'ImageBlur' | 'ImageQuantize' | 'ImageSharpen' | 'ImageScaleToTotalPixels' | 'ImageCompositeMasked' | 'MaskToImage' | 'PorterDuffImageComposite' | 'SplitImageWithAlpha' | 'JoinImageWithAlpha' | 'RebatchImages' | 'Canny' | 'ImageCrop' | 'RepeatImageBatch' | 'ImageFromBatch' | 'Morphology' | 'StableCascade_SuperResolutionControlnet' | 'WebcamCapture' | 'was.Create Grid Image' | 'was.Create Grid Image from Batch' | 'was.Create Morph Image' | 'was.Create Morph Image' | 'was.CLIPSeg Masking' | 'was.CLIPSeg Batch Masking' | 'was.CLIPSeg Batch Masking' | 'was.Convert Masks to Images' | 'was.Load Cache' | 'was.Image SSAO (Ambient Occlusion)' | 'was.Image SSAO (Ambient Occlusion)' | 'was.Image SSAO (Ambient Occlusion)' | 'was.Image SSDO (Direct Occlusion)' | 'was.Image SSDO (Direct Occlusion)' | 'was.Image SSDO (Direct Occlusion)' | 'was.Image SSDO (Direct Occlusion)' | 'was.Image Analyze' | 'was.Image Batch' | 'was.Image Blank' | 'was.Image Blend by Mask' | 'was.Image Blend' | 'was.Image Blending Mode' | 'was.Image Bloom Filter' | 'was.Image Canny Filter' | 'was.Image Chromatic Aberration' | 'was.Image Color Palette' | 'was.Image Crop Face' | 'was.Image Crop Location' | 'was.Image Crop Square Location' | 'was.Image Displacement Warp' | 'was.Image Lucy Sharpen' | 'was.Image Paste Face' | 'was.Image Paste Face' | 'was.Image Paste Crop' | 'was.Image Paste Crop' | 'was.Image Paste Crop by Location' | 'was.Image Paste Crop by Location' | 'was.Image Pixelate' | 'was.Image Power Noise' | 'was.Image Dragan Photography Filter' | 'was.Image Edge Detection Filter' | 'was.Image Film Grain' | 'was.Image Filter Adjustments' | 'was.Image Flip' | 'was.Image Gradient Map' | 'was.Image Generate Gradient' | 'was.Image High Pass Filter' | 'was.Image History Loader' | 'was.Image Input Switch' | 'was.Image Levels Adjustment' | 'was.Image Load' | 'was.Image Median Filter' | 'was.Image Mix RGB Channels' | 'was.Image Monitor Effects Filter' | 'was.Image Nova Filter' | 'was.Image Padding' | 'was.Image Padding' | 'was.Image Perlin Noise' | 'was.Image Rembg (Remove Background)' | 'was.Image Perlin Power Fractal' | 'was.Image Remove Background (Alpha)' | 'was.Image Remove Color' | 'was.Image Resize' | 'was.Image Rotate' | 'was.Image Rotate Hue' | 'was.Image Save' | 'was.Image Seamless Texture' | 'was.Image Select Channel' | 'was.Image Select Color' | 'was.Image Shadows and Highlights' | 'was.Image Shadows and Highlights' | 'was.Image Shadows and Highlights' | 'was.Image Stitch' | 'was.Image Style Filter' | 'was.Image Threshold' | 'was.Image Tiled' | 'was.Image Transpose' | 'was.Image fDOF Filter' | 'was.Image to Noise' | 'was.Images to RGB' | 'was.Images to Linear' | 'was.Image Voronoi Noise Filter' | 'was.Load Image Batch' | 'was.MiDaS Depth Approximation' | 'was.MiDaS Mask Image' | 'was.MiDaS Mask Image' | 'was.Tensor Batch to Image' | 'was.SAM Image Mask' | 'was.Bounded Image Blend' | 'was.Bounded Image Blend with Mask' | 'was.Bounded Image Crop' | 'was.Bounded Image Crop with Mask' | 'was.Write to GIF' | 'was.Write to Video' | 'was.CLIPSEG2' | 'IPAdapter_plus.IPAdapterFaceID' | 'IPAdapter_plus.IPAdapterFaceIDKolors' | 'IPAdapter_plus.IPAAdapterFaceIDBatch' | 'IPAdapter_plus.IPAdapterTiled' | 'IPAdapter_plus.IPAdapterTiledBatch' | 'IPAdapter_plus.IPAdapterNoise' | 'IPAdapter_plus.PrepImageForClipVision' | 'IPAdapter_plus.IPAdapterWeights' | 'IPAdapter_plus.IPAdapterWeights' | 'IPAdapter_plus.IPAdapterWeightsFromStrategy' | 'IPAdapter_plus.IPAdapterWeightsFromStrategy' | 'controlnet_aux.ShufflePreprocessor' | 'controlnet_aux.DensePosePreprocessor' | 'controlnet_aux.LeReS-DepthMapPreprocessor' | 'controlnet_aux.BinaryPreprocessor' | 'controlnet_aux.AnimeFace_SemSegPreprocessor' | 'controlnet_aux.Zoe-DepthMapPreprocessor' | 'controlnet_aux.DepthAnythingPreprocessor' | 'controlnet_aux.Zoe_DepthAnythingPreprocessor' | 'controlnet_aux.DepthAnythingV2Preprocessor' | 'controlnet_aux.CannyEdgePreprocessor' | 'controlnet_aux.DWPreprocessor' | 'controlnet_aux.AnimalPosePreprocessor' | 'controlnet_aux.ImageLuminanceDetector' | 'controlnet_aux.ImageIntensityDetector' | 'controlnet_aux.MediaPipe-FaceMeshPreprocessor' | 'controlnet_aux.DiffusionEdge_Preprocessor' | 'controlnet_aux.M-LSDPreprocessor' | 'controlnet_aux.HEDPreprocessor' | 'controlnet_aux.FakeScribblePreprocessor' | 'controlnet_aux.OneFormer-COCO-SemSegPreprocessor' | 'controlnet_aux.OneFormer-ADE20K-SemSegPreprocessor' | 'controlnet_aux.BAE-NormalMapPreprocessor' | 'controlnet_aux.MeshGraphormer-DepthMapPreprocessor' | 'controlnet_aux.MeshGraphormer+ImpactDetector-DepthMapPreprocessor' | 'controlnet_aux.DSINE-NormalMapPreprocessor' | 'controlnet_aux.MiDaS-NormalMapPreprocessor' | 'controlnet_aux.MiDaS-DepthMapPreprocessor' | 'controlnet_aux.AnyLineArtPreprocessor_aux' | 'controlnet_aux.SAMPreprocessor' | 'controlnet_aux.UniFormer-SemSegPreprocessor' | 'controlnet_aux.SemSegPreprocessor' | 'controlnet_aux.PiDiNetPreprocessor' | 'controlnet_aux.InpaintPreprocessor' | 'controlnet_aux.LineArtPreprocessor' | 'controlnet_aux.OpenposePreprocessor' | 'controlnet_aux.Unimatch_OptFlowPreprocessor' | 'controlnet_aux.MaskOptFlow' | 'controlnet_aux.FacialPartColoringFromPoseKps' | 'controlnet_aux.RenderPeopleKps' | 'controlnet_aux.RenderAnimalKps' | 'controlnet_aux.TEEDPreprocessor' | 'controlnet_aux.PyraCannyPreprocessor' | 'controlnet_aux.Metric3D-DepthMapPreprocessor' | 'controlnet_aux.Metric3D-NormalMapPreprocessor' | 'controlnet_aux.Manga2Anime_LineArt_Preprocessor' | 'controlnet_aux.ScribblePreprocessor' | 'controlnet_aux.Scribble_XDoG_Preprocessor' | 'controlnet_aux.Scribble_PiDiNet_Preprocessor' | 'controlnet_aux.AnimeLineArtPreprocessor' | 'controlnet_aux.LineartStandardPreprocessor' | 'controlnet_aux.TilePreprocessor' | 'controlnet_aux.TTPlanet_TileGF_Preprocessor' | 'controlnet_aux.TTPlanet_TileSimple_Preprocessor' | 'controlnet_aux.ColorPreprocessor' | 'controlnet_aux.AIO_Preprocessor' | 'controlnet_aux.HintImageEnchance' | 'controlnet_aux.ExecuteAllControlNetPreprocessors' | 'controlnet_aux.ControlNetAuxSimpleAddText' | 'Marigold.MarigoldDepthEstimation_v2' | 'Marigold.MarigoldDepthEstimation_v2_video' | 'Marigold.MarigoldDepthEstimation' | 'Marigold.MarigoldDepthEstimationVideo' | 'Marigold.ColorizeDepthmap' | 'Marigold.RemapDepth' | 'Impact-Pack.DetailerForEach' | 'Impact-Pack.DetailerForEachDebug' | 'Impact-Pack.DetailerForEachDebug' | 'Impact-Pack.DetailerForEachDebug' | 'Impact-Pack.DetailerForEachDebug' | 'Impact-Pack.DetailerForEachDebug' | 'Impact-Pack.DetailerForEachPipe' | 'Impact-Pack.DetailerForEachPipe' | 'Impact-Pack.DetailerForEachDebugPipe' | 'Impact-Pack.DetailerForEachDebugPipe' | 'Impact-Pack.DetailerForEachDebugPipe' | 'Impact-Pack.DetailerForEachDebugPipe' | 'Impact-Pack.DetailerForEachDebugPipe' | 'Impact-Pack.DetailerForEachPipeForAnimateDiff' | 'Impact-Pack.DetailerForEachPipeForAnimateDiff' | 'Impact-Pack.FaceDetailer' | 'Impact-Pack.FaceDetailer' | 'Impact-Pack.FaceDetailer' | 'Impact-Pack.FaceDetailer' | 'Impact-Pack.FaceDetailerPipe' | 'Impact-Pack.FaceDetailerPipe' | 'Impact-Pack.FaceDetailerPipe' | 'Impact-Pack.FaceDetailerPipe' | 'Impact-Pack.MaskDetailerPipe' | 'Impact-Pack.MaskDetailerPipe' | 'Impact-Pack.MaskDetailerPipe' | 'Impact-Pack.LatentPixelScale' | 'Impact-Pack.IterativeImageUpscale' | 'Impact-Pack.ImageListToImageBatch' | 'Impact-Pack.ImpactFrom_SEG_ELT' | 'Impact-Pack.PreviewBridge' | 'Impact-Pack.ImageReceiver' | 'Impact-Pack.ImageMaskSwitch' | 'Impact-Pack.SEGSUpscaler' | 'Impact-Pack.SEGSUpscalerPipe' | 'Impact-Pack.SEGSDetailer' | 'Impact-Pack.SEGSPaste' | 'Impact-Pack.SEGSPreview' | 'Impact-Pack.SEGSPreviewCNet' | 'Impact-Pack.SEGSToImageList' | 'Impact-Pack.SEGSDetailerForAnimateDiff' | 'Impact-Pack.ImpactImageBatchToImageList' | 'Impact-Pack.ImpactMakeImageList' | 'Impact-Pack.ImpactMakeImageBatch' | 'BRIA_AI-RMBG.BRIA_RMBG_Zho' | 'Allor.AlphaChanelAdd' | 'Allor.AlphaChanelAddByMask' | 'Allor.AlphaChanelRestore' | 'Allor.AlphaChanelRemove' | 'Allor.ImageClamp' | 'Allor.ImageBatchGet' | 'Allor.ImageBatchCopy' | 'Allor.ImageBatchRemove' | 'Allor.ImageBatchFork' | 'Allor.ImageBatchFork' | 'Allor.ImageBatchJoin' | 'Allor.ImageBatchPermute' | 'Allor.ImageCompositeAbsolute' | 'Allor.ImageCompositeAbsoluteByContainer' | 'Allor.ImageCompositeRelative' | 'Allor.ImageCompositeRelativeByContainer' | 'Allor.ImageContainer' | 'Allor.ImageContainerInheritanceAdd' | 'Allor.ImageContainerInheritanceScale' | 'Allor.ImageContainerInheritanceMax' | 'Allor.ImageContainerInheritanceSum' | 'Allor.ImageDrawArc' | 'Allor.ImageDrawArcByContainer' | 'Allor.ImageDrawChord' | 'Allor.ImageDrawChordByContainer' | 'Allor.ImageDrawEllipse' | 'Allor.ImageDrawEllipseByContainer' | 'Allor.ImageDrawLine' | 'Allor.ImageDrawLineByContainer' | 'Allor.ImageDrawPieslice' | 'Allor.ImageDrawPiesliceByContainer' | 'Allor.ImageDrawRectangle' | 'Allor.ImageDrawRectangleByContainer' | 'Allor.ImageDrawRectangleRounded' | 'Allor.ImageDrawRectangleRoundedByContainer' | 'Allor.ImageDrawPolygon' | 'Allor.ImageEffectsAdjustment' | 'Allor.ImageEffectsGrayscale' | 'Allor.ImageEffectsNegative' | 'Allor.ImageEffectsSepia' | 'Allor.ImageEffectsLensZoomBurst' | 'Allor.ImageEffectsLensChromaticAberration' | 'Allor.ImageEffectsLensBokeh' | 'Allor.ImageEffectsLensOpticAxis' | 'Allor.ImageEffectsLensVignette' | 'Allor.ImageFilterSmooth' | 'Allor.ImageFilterSmoothMore' | 'Allor.ImageFilterBlur' | 'Allor.ImageFilterBoxBlur' | 'Allor.ImageFilterGaussianBlur' | 'Allor.ImageFilterGaussianBlurAdvanced' | 'Allor.ImageFilterStackBlur' | 'Allor.ImageFilterMedianBlur' | 'Allor.ImageFilterBilateralBlur' | 'Allor.ImageFilterContour' | 'Allor.ImageFilterDetail' | 'Allor.ImageFilterEdgeEnhance' | 'Allor.ImageFilterEdgeEnhanceMore' | 'Allor.ImageFilterEmboss' | 'Allor.ImageFilterFindEdges' | 'Allor.ImageFilterSharpen' | 'Allor.ImageFilterRank' | 'Allor.ImageFilterMin' | 'Allor.ImageFilterMax' | 'Allor.ImageFilterMode' | 'Allor.ImageNoiseBeta' | 'Allor.ImageNoiseBinomial' | 'Allor.ImageNoiseBytes' | 'Allor.ImageNoiseGaussian' | 'Allor.ImageSegmentation' | 'Allor.ImageSegmentationCustom' | 'Allor.ImageSegmentationCustomAdvanced' | 'Allor.ImageText' | 'Allor.ImageTextOutlined' | 'Allor.ImageTextMultiline' | 'Allor.ImageTextMultilineOutlined' | 'Allor.ImageTransformResizeAbsolute' | 'Allor.ImageTransformResizeRelative' | 'Allor.ImageTransformResizeClip' | 'Allor.ImageTransformCropAbsolute' | 'Allor.ImageTransformCropRelative' | 'Allor.ImageTransformCropCorners' | 'Allor.ImageTransformPaddingAbsolute' | 'Allor.ImageTransformPaddingRelative' | 'Allor.ImageTransformRotate' | 'Allor.ImageTransformTranspose'>
+         MODEL: Pick<Builder, 'CheckpointLoaderSimple' | 'LoraLoader' | 'UNETLoader' | 'unCLIPCheckpointLoader' | 'CheckpointLoader' | 'DiffusersLoader' | 'LoraLoaderModelOnly' | 'LatentApplyOperationCFG' | 'HypernetworkLoader' | 'ModelMergeSimple' | 'ModelMergeBlocks' | 'ModelMergeSubtract' | 'ModelMergeAdd' | 'TomePatchModel' | 'FreeU' | 'FreeU_V2' | 'HyperTile' | 'ModelSamplingDiscrete' | 'ModelSamplingContinuousEDM' | 'ModelSamplingContinuousV' | 'ModelSamplingStableCascade' | 'ModelSamplingSD3' | 'ModelSamplingAuraFlow' | 'ModelSamplingFlux' | 'RescaleCFG' | 'PatchModelAddDownscale' | 'ImageOnlyCheckpointLoader' | 'VideoLinearCFGGuidance' | 'VideoTriangleCFGGuidance' | 'SelfAttentionGuidance' | 'PerpNeg' | 'DifferentialDiffusion' | 'ModelMergeSD1' | 'ModelMergeSD2' | 'ModelMergeSDXL' | 'ModelMergeSD3_2B' | 'ModelMergeFlux1' | 'ModelMergeSD35_Large' | 'PerturbedAttentionGuidance' | 'UNetSelfAttentionMultiply' | 'UNetCrossAttentionMultiply' | 'UNetTemporalAttentionMultiply' | 'SkipLayerGuidanceSD3' | 'TorchCompileModel' | 'AnimateDiff-Evolved.ADE_RegisterLoraHook' | 'AnimateDiff-Evolved.ADE_RegisterLoraHookModelOnly' | 'AnimateDiff-Evolved.ADE_RegisterModelAsLoraHook' | 'AnimateDiff-Evolved.ADE_RegisterModelAsLoraHookModelOnly' | 'AnimateDiff-Evolved.ADE_AnimateDiffUnload' | 'AnimateDiff-Evolved.CheckpointLoaderSimpleWithNoiseSelect' | 'AnimateDiff-Evolved.ADE_PerturbedAttentionGuidanceMultival' | 'AnimateDiff-Evolved.ADE_RescaleCFGMultival' | 'AnimateDiff-Evolved.ADE_AnimateDiffLoaderGen1' | 'AnimateDiff-Evolved.ADE_AnimateDiffLoaderWithContext' | 'AnimateDiff-Evolved.ADE_UseEvolvedSampling' | 'AnimateDiff-Evolved.AnimateDiffLoaderV1' | 'AnimateDiff-Evolved.ADE_AnimateDiffLoaderV1Advanced' | 'was.Bus Node' | 'was.Checkpoint Loader' | 'was.Checkpoint Loader (Simple)' | 'was.Diffusers Model Loader' | 'was.Diffusers Hub Model Down-Loader' | 'was.Lora Loader' | 'was.Load Lora' | 'was.Lora Input Switch' | 'was.Model Input Switch' | 'was.unCLIP Checkpoint Loader' | 'A8R8_ComfyUI_nodes.AttentionCouple' | 'IPAdapter_plus.IPAdapter' | 'IPAdapter_plus.IPAdapterAdvanced' | 'IPAdapter_plus.IPAdapterBatch' | 'IPAdapter_plus.IPAdapterFaceID' | 'IPAdapter_plus.IPAdapterFaceIDKolors' | 'IPAdapter_plus.IPAAdapterFaceIDBatch' | 'IPAdapter_plus.IPAdapterTiled' | 'IPAdapter_plus.IPAdapterTiledBatch' | 'IPAdapter_plus.IPAdapterEmbeds' | 'IPAdapter_plus.IPAdapterEmbedsBatch' | 'IPAdapter_plus.IPAdapterStyleComposition' | 'IPAdapter_plus.IPAdapterStyleCompositionBatch' | 'IPAdapter_plus.IPAdapterMS' | 'IPAdapter_plus.IPAdapterClipVisionEnhancer' | 'IPAdapter_plus.IPAdapterClipVisionEnhancerBatch' | 'IPAdapter_plus.IPAdapterFromParams' | 'IPAdapter_plus.IPAdapterPreciseStyleTransfer' | 'IPAdapter_plus.IPAdapterPreciseStyleTransferBatch' | 'IPAdapter_plus.IPAdapterPreciseComposition' | 'IPAdapter_plus.IPAdapterPreciseCompositionBatch' | 'IPAdapter_plus.IPAdapterUnifiedLoader' | 'IPAdapter_plus.IPAdapterUnifiedLoaderFaceID' | 'IPAdapter_plus.IPAdapterUnifiedLoaderCommunity' | 'sd-perturbed-attention.PerturbedAttention' | 'sd-perturbed-attention.SmoothedEnergyGuidanceAdvanced' | 'sd-perturbed-attention.TRTAttachPag' | 'sd-perturbed-attention.TRTPerturbedAttention' | 'civitai_comfy_nodes.CivitAI_Lora_Loader' | 'civitai_comfy_nodes.CivitAI_Checkpoint_Loader' | 'Impact-Pack.FromDetailerPipe' | 'Impact-Pack.FromDetailerPipe_v2' | 'Impact-Pack.FromDetailerPipeSDXL' | 'Impact-Pack.FromDetailerPipeSDXL' | 'Impact-Pack.FromBasicPipe' | 'Impact-Pack.FromBasicPipe_v2' | 'Impact-Pack.ImpactWildcardEncode' | 'Allor.ModelClamp'>
+         IMAGE: Pick<Builder, 'VAEDecode' | 'LoadImage' | 'ImageScale' | 'ImageScaleBy' | 'ImageInvert' | 'ImageBatch' | 'ImagePadForOutpaint' | 'EmptyImage' | 'VAEDecodeTiled' | 'ImageUpscaleWithModel' | 'ImageBlend' | 'ImageBlur' | 'ImageQuantize' | 'ImageSharpen' | 'ImageScaleToTotalPixels' | 'ImageCompositeMasked' | 'MaskToImage' | 'PorterDuffImageComposite' | 'SplitImageWithAlpha' | 'JoinImageWithAlpha' | 'RebatchImages' | 'Canny' | 'ImageCrop' | 'RepeatImageBatch' | 'ImageFromBatch' | 'Morphology' | 'StableCascade_SuperResolutionControlnet' | 'WebcamCapture' | 'AnimateDiff-Evolved.ADE_VisualizeContextOptionsK' | 'AnimateDiff-Evolved.ADE_VisualizeContextOptionsKAdv' | 'AnimateDiff-Evolved.ADE_VisualizeContextOptionsSCustom' | 'was.Create Grid Image' | 'was.Create Grid Image from Batch' | 'was.Create Morph Image' | 'was.Create Morph Image' | 'was.CLIPSeg Masking' | 'was.CLIPSeg Batch Masking' | 'was.CLIPSeg Batch Masking' | 'was.Convert Masks to Images' | 'was.Load Cache' | 'was.Image SSAO (Ambient Occlusion)' | 'was.Image SSAO (Ambient Occlusion)' | 'was.Image SSAO (Ambient Occlusion)' | 'was.Image SSDO (Direct Occlusion)' | 'was.Image SSDO (Direct Occlusion)' | 'was.Image SSDO (Direct Occlusion)' | 'was.Image SSDO (Direct Occlusion)' | 'was.Image Analyze' | 'was.Image Batch' | 'was.Image Blank' | 'was.Image Blend by Mask' | 'was.Image Blend' | 'was.Image Blending Mode' | 'was.Image Bloom Filter' | 'was.Image Canny Filter' | 'was.Image Chromatic Aberration' | 'was.Image Color Palette' | 'was.Image Crop Face' | 'was.Image Crop Location' | 'was.Image Crop Square Location' | 'was.Image Displacement Warp' | 'was.Image Lucy Sharpen' | 'was.Image Paste Face' | 'was.Image Paste Face' | 'was.Image Paste Crop' | 'was.Image Paste Crop' | 'was.Image Paste Crop by Location' | 'was.Image Paste Crop by Location' | 'was.Image Pixelate' | 'was.Image Power Noise' | 'was.Image Dragan Photography Filter' | 'was.Image Edge Detection Filter' | 'was.Image Film Grain' | 'was.Image Filter Adjustments' | 'was.Image Flip' | 'was.Image Gradient Map' | 'was.Image Generate Gradient' | 'was.Image High Pass Filter' | 'was.Image History Loader' | 'was.Image Input Switch' | 'was.Image Levels Adjustment' | 'was.Image Load' | 'was.Image Median Filter' | 'was.Image Mix RGB Channels' | 'was.Image Monitor Effects Filter' | 'was.Image Nova Filter' | 'was.Image Padding' | 'was.Image Padding' | 'was.Image Perlin Noise' | 'was.Image Rembg (Remove Background)' | 'was.Image Perlin Power Fractal' | 'was.Image Remove Background (Alpha)' | 'was.Image Remove Color' | 'was.Image Resize' | 'was.Image Rotate' | 'was.Image Rotate Hue' | 'was.Image Save' | 'was.Image Seamless Texture' | 'was.Image Select Channel' | 'was.Image Select Color' | 'was.Image Shadows and Highlights' | 'was.Image Shadows and Highlights' | 'was.Image Shadows and Highlights' | 'was.Image Stitch' | 'was.Image Style Filter' | 'was.Image Threshold' | 'was.Image Tiled' | 'was.Image Transpose' | 'was.Image fDOF Filter' | 'was.Image to Noise' | 'was.Images to RGB' | 'was.Images to Linear' | 'was.Image Voronoi Noise Filter' | 'was.Load Image Batch' | 'was.MiDaS Depth Approximation' | 'was.MiDaS Mask Image' | 'was.MiDaS Mask Image' | 'was.Tensor Batch to Image' | 'was.SAM Image Mask' | 'was.Bounded Image Blend' | 'was.Bounded Image Blend with Mask' | 'was.Bounded Image Crop' | 'was.Bounded Image Crop with Mask' | 'was.Write to GIF' | 'was.Write to Video' | 'was.CLIPSEG2' | 'clipseg.CLIPSeg' | 'clipseg.CLIPSeg' | 'clipseg.CombineSegMasks' | 'clipseg.CombineSegMasks' | 'A8R8_ComfyUI_nodes.Base64ImageInput' | 'FizzNodes.ImagesFromBatchSchedule' | 'IPAdapter_plus.IPAdapterFaceID' | 'IPAdapter_plus.IPAdapterFaceIDKolors' | 'IPAdapter_plus.IPAAdapterFaceIDBatch' | 'IPAdapter_plus.IPAdapterTiled' | 'IPAdapter_plus.IPAdapterTiledBatch' | 'IPAdapter_plus.IPAdapterNoise' | 'IPAdapter_plus.PrepImageForClipVision' | 'IPAdapter_plus.IPAdapterWeights' | 'IPAdapter_plus.IPAdapterWeights' | 'IPAdapter_plus.IPAdapterWeightsFromStrategy' | 'IPAdapter_plus.IPAdapterWeightsFromStrategy' | 'controlnet_aux.ShufflePreprocessor' | 'controlnet_aux.DensePosePreprocessor' | 'controlnet_aux.LeReS-DepthMapPreprocessor' | 'controlnet_aux.BinaryPreprocessor' | 'controlnet_aux.AnimeFace_SemSegPreprocessor' | 'controlnet_aux.Zoe-DepthMapPreprocessor' | 'controlnet_aux.DepthAnythingPreprocessor' | 'controlnet_aux.Zoe_DepthAnythingPreprocessor' | 'controlnet_aux.DepthAnythingV2Preprocessor' | 'controlnet_aux.CannyEdgePreprocessor' | 'controlnet_aux.DWPreprocessor' | 'controlnet_aux.AnimalPosePreprocessor' | 'controlnet_aux.ImageLuminanceDetector' | 'controlnet_aux.ImageIntensityDetector' | 'controlnet_aux.MediaPipe-FaceMeshPreprocessor' | 'controlnet_aux.DiffusionEdge_Preprocessor' | 'controlnet_aux.M-LSDPreprocessor' | 'controlnet_aux.HEDPreprocessor' | 'controlnet_aux.FakeScribblePreprocessor' | 'controlnet_aux.OneFormer-COCO-SemSegPreprocessor' | 'controlnet_aux.OneFormer-ADE20K-SemSegPreprocessor' | 'controlnet_aux.BAE-NormalMapPreprocessor' | 'controlnet_aux.MeshGraphormer-DepthMapPreprocessor' | 'controlnet_aux.MeshGraphormer+ImpactDetector-DepthMapPreprocessor' | 'controlnet_aux.DSINE-NormalMapPreprocessor' | 'controlnet_aux.MiDaS-NormalMapPreprocessor' | 'controlnet_aux.MiDaS-DepthMapPreprocessor' | 'controlnet_aux.AnyLineArtPreprocessor_aux' | 'controlnet_aux.SAMPreprocessor' | 'controlnet_aux.UniFormer-SemSegPreprocessor' | 'controlnet_aux.SemSegPreprocessor' | 'controlnet_aux.PiDiNetPreprocessor' | 'controlnet_aux.InpaintPreprocessor' | 'controlnet_aux.LineArtPreprocessor' | 'controlnet_aux.OpenposePreprocessor' | 'controlnet_aux.Unimatch_OptFlowPreprocessor' | 'controlnet_aux.MaskOptFlow' | 'controlnet_aux.FacialPartColoringFromPoseKps' | 'controlnet_aux.RenderPeopleKps' | 'controlnet_aux.RenderAnimalKps' | 'controlnet_aux.TEEDPreprocessor' | 'controlnet_aux.PyraCannyPreprocessor' | 'controlnet_aux.Metric3D-DepthMapPreprocessor' | 'controlnet_aux.Metric3D-NormalMapPreprocessor' | 'controlnet_aux.Manga2Anime_LineArt_Preprocessor' | 'controlnet_aux.ScribblePreprocessor' | 'controlnet_aux.Scribble_XDoG_Preprocessor' | 'controlnet_aux.Scribble_PiDiNet_Preprocessor' | 'controlnet_aux.AnimeLineArtPreprocessor' | 'controlnet_aux.LineartStandardPreprocessor' | 'controlnet_aux.TilePreprocessor' | 'controlnet_aux.TTPlanet_TileGF_Preprocessor' | 'controlnet_aux.TTPlanet_TileSimple_Preprocessor' | 'controlnet_aux.ColorPreprocessor' | 'controlnet_aux.AIO_Preprocessor' | 'controlnet_aux.HintImageEnchance' | 'controlnet_aux.ExecuteAllControlNetPreprocessors' | 'controlnet_aux.ControlNetAuxSimpleAddText' | 'Marigold.MarigoldDepthEstimation_v2' | 'Marigold.MarigoldDepthEstimation_v2_video' | 'Marigold.MarigoldDepthEstimation' | 'Marigold.MarigoldDepthEstimationVideo' | 'Marigold.ColorizeDepthmap' | 'Marigold.RemapDepth' | 'Impact-Pack.DetailerForEach' | 'Impact-Pack.DetailerForEachDebug' | 'Impact-Pack.DetailerForEachDebug' | 'Impact-Pack.DetailerForEachDebug' | 'Impact-Pack.DetailerForEachDebug' | 'Impact-Pack.DetailerForEachDebug' | 'Impact-Pack.DetailerForEachPipe' | 'Impact-Pack.DetailerForEachPipe' | 'Impact-Pack.DetailerForEachDebugPipe' | 'Impact-Pack.DetailerForEachDebugPipe' | 'Impact-Pack.DetailerForEachDebugPipe' | 'Impact-Pack.DetailerForEachDebugPipe' | 'Impact-Pack.DetailerForEachDebugPipe' | 'Impact-Pack.DetailerForEachPipeForAnimateDiff' | 'Impact-Pack.DetailerForEachPipeForAnimateDiff' | 'Impact-Pack.FaceDetailer' | 'Impact-Pack.FaceDetailer' | 'Impact-Pack.FaceDetailer' | 'Impact-Pack.FaceDetailer' | 'Impact-Pack.FaceDetailerPipe' | 'Impact-Pack.FaceDetailerPipe' | 'Impact-Pack.FaceDetailerPipe' | 'Impact-Pack.FaceDetailerPipe' | 'Impact-Pack.MaskDetailerPipe' | 'Impact-Pack.MaskDetailerPipe' | 'Impact-Pack.MaskDetailerPipe' | 'Impact-Pack.LatentPixelScale' | 'Impact-Pack.IterativeImageUpscale' | 'Impact-Pack.ImageListToImageBatch' | 'Impact-Pack.ImpactFrom_SEG_ELT' | 'Impact-Pack.PreviewBridge' | 'Impact-Pack.ImageReceiver' | 'Impact-Pack.ImageMaskSwitch' | 'Impact-Pack.SEGSUpscaler' | 'Impact-Pack.SEGSUpscalerPipe' | 'Impact-Pack.SEGSDetailer' | 'Impact-Pack.SEGSPaste' | 'Impact-Pack.SEGSPreview' | 'Impact-Pack.SEGSPreviewCNet' | 'Impact-Pack.SEGSToImageList' | 'Impact-Pack.SEGSDetailerForAnimateDiff' | 'Impact-Pack.ImpactImageBatchToImageList' | 'Impact-Pack.ImpactMakeImageList' | 'Impact-Pack.ImpactMakeImageBatch' | 'BRIA_AI-RMBG.BRIA_RMBG_Zho' | 'Allor.AlphaChanelAdd' | 'Allor.AlphaChanelAddByMask' | 'Allor.AlphaChanelRestore' | 'Allor.AlphaChanelRemove' | 'Allor.ImageClamp' | 'Allor.ImageBatchGet' | 'Allor.ImageBatchCopy' | 'Allor.ImageBatchRemove' | 'Allor.ImageBatchFork' | 'Allor.ImageBatchFork' | 'Allor.ImageBatchJoin' | 'Allor.ImageBatchPermute' | 'Allor.ImageCompositeAbsolute' | 'Allor.ImageCompositeAbsoluteByContainer' | 'Allor.ImageCompositeRelative' | 'Allor.ImageCompositeRelativeByContainer' | 'Allor.ImageContainer' | 'Allor.ImageContainerInheritanceAdd' | 'Allor.ImageContainerInheritanceScale' | 'Allor.ImageContainerInheritanceMax' | 'Allor.ImageContainerInheritanceSum' | 'Allor.ImageDrawArc' | 'Allor.ImageDrawArcByContainer' | 'Allor.ImageDrawChord' | 'Allor.ImageDrawChordByContainer' | 'Allor.ImageDrawEllipse' | 'Allor.ImageDrawEllipseByContainer' | 'Allor.ImageDrawLine' | 'Allor.ImageDrawLineByContainer' | 'Allor.ImageDrawPieslice' | 'Allor.ImageDrawPiesliceByContainer' | 'Allor.ImageDrawRectangle' | 'Allor.ImageDrawRectangleByContainer' | 'Allor.ImageDrawRectangleRounded' | 'Allor.ImageDrawRectangleRoundedByContainer' | 'Allor.ImageDrawPolygon' | 'Allor.ImageEffectsAdjustment' | 'Allor.ImageEffectsGrayscale' | 'Allor.ImageEffectsNegative' | 'Allor.ImageEffectsSepia' | 'Allor.ImageEffectsLensZoomBurst' | 'Allor.ImageEffectsLensChromaticAberration' | 'Allor.ImageEffectsLensBokeh' | 'Allor.ImageEffectsLensOpticAxis' | 'Allor.ImageEffectsLensVignette' | 'Allor.ImageFilterSmooth' | 'Allor.ImageFilterSmoothMore' | 'Allor.ImageFilterBlur' | 'Allor.ImageFilterBoxBlur' | 'Allor.ImageFilterGaussianBlur' | 'Allor.ImageFilterGaussianBlurAdvanced' | 'Allor.ImageFilterStackBlur' | 'Allor.ImageFilterMedianBlur' | 'Allor.ImageFilterBilateralBlur' | 'Allor.ImageFilterContour' | 'Allor.ImageFilterDetail' | 'Allor.ImageFilterEdgeEnhance' | 'Allor.ImageFilterEdgeEnhanceMore' | 'Allor.ImageFilterEmboss' | 'Allor.ImageFilterFindEdges' | 'Allor.ImageFilterSharpen' | 'Allor.ImageFilterRank' | 'Allor.ImageFilterMin' | 'Allor.ImageFilterMax' | 'Allor.ImageFilterMode' | 'Allor.ImageNoiseBeta' | 'Allor.ImageNoiseBinomial' | 'Allor.ImageNoiseBytes' | 'Allor.ImageNoiseGaussian' | 'Allor.ImageSegmentation' | 'Allor.ImageSegmentationCustom' | 'Allor.ImageSegmentationCustomAdvanced' | 'Allor.ImageText' | 'Allor.ImageTextOutlined' | 'Allor.ImageTextMultiline' | 'Allor.ImageTextMultilineOutlined' | 'Allor.ImageTransformResizeAbsolute' | 'Allor.ImageTransformResizeRelative' | 'Allor.ImageTransformResizeClip' | 'Allor.ImageTransformCropAbsolute' | 'Allor.ImageTransformCropRelative' | 'Allor.ImageTransformCropCorners' | 'Allor.ImageTransformPaddingAbsolute' | 'Allor.ImageTransformPaddingRelative' | 'Allor.ImageTransformRotate' | 'Allor.ImageTransformTranspose'>
          NOISE: Pick<Builder, 'RandomNoise' | 'DisableNoise'>
          AUDIO: Pick<Builder, 'VAEDecodeAudio' | 'LoadAudio'>
-         CLIP: Pick<Builder, 'CheckpointLoaderSimple' | 'CLIPSetLastLayer' | 'LoraLoader' | 'CLIPLoader' | 'DualCLIPLoader' | 'unCLIPCheckpointLoader' | 'CheckpointLoader' | 'DiffusersLoader' | 'CLIPMergeSimple' | 'CLIPMergeSubtract' | 'CLIPMergeAdd' | 'CLIPAttentionMultiply' | 'TripleCLIPLoader' | 'was.Bus Node' | 'was.Checkpoint Loader' | 'was.Checkpoint Loader (Simple)' | 'was.CLIP Input Switch' | 'was.Diffusers Model Loader' | 'was.Diffusers Hub Model Down-Loader' | 'was.Lora Loader' | 'was.Load Lora' | 'was.Lora Input Switch' | 'was.unCLIP Checkpoint Loader' | 'civitai_comfy_nodes.CivitAI_Lora_Loader' | 'civitai_comfy_nodes.CivitAI_Checkpoint_Loader' | 'Impact-Pack.FromDetailerPipe' | 'Impact-Pack.FromDetailerPipe_v2' | 'Impact-Pack.FromDetailerPipeSDXL' | 'Impact-Pack.FromDetailerPipeSDXL' | 'Impact-Pack.FromBasicPipe' | 'Impact-Pack.FromBasicPipe_v2' | 'Impact-Pack.ImpactWildcardEncode' | 'Allor.ClipClamp'>
-         MASK: Pick<Builder, 'LoadImage' | 'LoadImageMask' | 'ImagePadForOutpaint' | 'ImageToMask' | 'ImageColorToMask' | 'SolidMask' | 'InvertMask' | 'CropMask' | 'MaskComposite' | 'FeatherMask' | 'GrowMask' | 'ThresholdMask' | 'PorterDuffImageComposite' | 'SplitImageWithAlpha' | 'was.CLIPSeg Masking' | 'was.CLIPSeg Batch Masking' | 'was.Image Load' | 'was.Image to Latent Mask' | 'was.Masks Add' | 'was.Masks Subtract' | 'was.Mask Arbitrary Region' | 'was.Mask Batch to Mask' | 'was.Mask Batch' | 'was.Mask Ceiling Region' | 'was.Mask Crop Dominant Region' | 'was.Mask Crop Minority Region' | 'was.Mask Crop Region' | 'was.Mask Paste Region' | 'was.Mask Paste Region' | 'was.Mask Dilate Region' | 'was.Mask Dominant Region' | 'was.Mask Erode Region' | 'was.Mask Fill Holes' | 'was.Mask Floor Region' | 'was.Mask Gaussian Region' | 'was.Mask Invert' | 'was.Mask Minority Region' | 'was.Mask Smooth Region' | 'was.Mask Threshold Region' | 'was.Masks Combine Regions' | 'was.Masks Combine Batch' | 'was.SAM Image Mask' | 'IPAdapter_plus.IPAdapterTiled' | 'IPAdapter_plus.IPAdapterTiledBatch' | 'controlnet_aux.AnimeFace_SemSegPreprocessor' | 'controlnet_aux.MeshGraphormer-DepthMapPreprocessor' | 'controlnet_aux.MeshGraphormer+ImpactDetector-DepthMapPreprocessor' | 'Impact-Pack.SAMDetectorCombined' | 'Impact-Pack.SAMDetectorSegmented' | 'Impact-Pack.SAMDetectorSegmented' | 'Impact-Pack.FaceDetailer' | 'Impact-Pack.FaceDetailerPipe' | 'Impact-Pack.BitwiseAndMask' | 'Impact-Pack.SubtractMask' | 'Impact-Pack.AddMask' | 'Impact-Pack.ImpactFlattenMask' | 'Impact-Pack.ToBinaryMask' | 'Impact-Pack.MasksToMaskList' | 'Impact-Pack.MaskListToMaskBatch' | 'Impact-Pack.ImpactFrom_SEG_ELT' | 'Impact-Pack.ImpactDilateMask' | 'Impact-Pack.ImpactGaussianBlurMask' | 'Impact-Pack.BboxDetectorCombined_v2' | 'Impact-Pack.SegmDetectorCombined_v2' | 'Impact-Pack.SegsToCombinedMask' | 'Impact-Pack.PreviewBridge' | 'Impact-Pack.PreviewBridgeLatent' | 'Impact-Pack.ImageReceiver' | 'Impact-Pack.ImageMaskSwitch' | 'Impact-Pack.ImpactSEGSToMaskList' | 'Impact-Pack.ImpactSEGSToMaskBatch' | 'Impact-Pack.ImpactMakeMaskList' | 'Impact-Pack.ImpactMakeMaskBatch' | 'BRIA_AI-RMBG.BRIA_RMBG_Zho' | 'Allor.AlphaChanelAsMask' | 'Allor.MaskClamp' | 'Allor.ImageEffectsLensOpticAxis' | 'Allor.ImageEffectsLensVignette'>
+         CLIP: Pick<Builder, 'CheckpointLoaderSimple' | 'CLIPSetLastLayer' | 'LoraLoader' | 'CLIPLoader' | 'DualCLIPLoader' | 'unCLIPCheckpointLoader' | 'CheckpointLoader' | 'DiffusersLoader' | 'CLIPMergeSimple' | 'CLIPMergeSubtract' | 'CLIPMergeAdd' | 'CLIPAttentionMultiply' | 'TripleCLIPLoader' | 'AnimateDiff-Evolved.ADE_RegisterLoraHook' | 'AnimateDiff-Evolved.ADE_RegisterModelAsLoraHook' | 'AnimateDiff-Evolved.ADE_AttachLoraHookToCLIP' | 'AnimateDiff-Evolved.CheckpointLoaderSimpleWithNoiseSelect' | 'was.Bus Node' | 'was.Checkpoint Loader' | 'was.Checkpoint Loader (Simple)' | 'was.CLIP Input Switch' | 'was.Diffusers Model Loader' | 'was.Diffusers Hub Model Down-Loader' | 'was.Lora Loader' | 'was.Load Lora' | 'was.Lora Input Switch' | 'was.unCLIP Checkpoint Loader' | 'civitai_comfy_nodes.CivitAI_Lora_Loader' | 'civitai_comfy_nodes.CivitAI_Checkpoint_Loader' | 'Impact-Pack.FromDetailerPipe' | 'Impact-Pack.FromDetailerPipe_v2' | 'Impact-Pack.FromDetailerPipeSDXL' | 'Impact-Pack.FromDetailerPipeSDXL' | 'Impact-Pack.FromBasicPipe' | 'Impact-Pack.FromBasicPipe_v2' | 'Impact-Pack.ImpactWildcardEncode' | 'Allor.ClipClamp'>
+         MASK: Pick<Builder, 'LoadImage' | 'LoadImageMask' | 'ImagePadForOutpaint' | 'ImageToMask' | 'ImageColorToMask' | 'SolidMask' | 'InvertMask' | 'CropMask' | 'MaskComposite' | 'FeatherMask' | 'GrowMask' | 'ThresholdMask' | 'PorterDuffImageComposite' | 'SplitImageWithAlpha' | 'AnimateDiff-Evolved.ADE_MultivalConvertToMask' | 'was.CLIPSeg Masking' | 'was.CLIPSeg Batch Masking' | 'was.Image Load' | 'was.Image to Latent Mask' | 'was.Masks Add' | 'was.Masks Subtract' | 'was.Mask Arbitrary Region' | 'was.Mask Batch to Mask' | 'was.Mask Batch' | 'was.Mask Ceiling Region' | 'was.Mask Crop Dominant Region' | 'was.Mask Crop Minority Region' | 'was.Mask Crop Region' | 'was.Mask Paste Region' | 'was.Mask Paste Region' | 'was.Mask Dilate Region' | 'was.Mask Dominant Region' | 'was.Mask Erode Region' | 'was.Mask Fill Holes' | 'was.Mask Floor Region' | 'was.Mask Gaussian Region' | 'was.Mask Invert' | 'was.Mask Minority Region' | 'was.Mask Smooth Region' | 'was.Mask Threshold Region' | 'was.Masks Combine Regions' | 'was.Masks Combine Batch' | 'was.SAM Image Mask' | 'clipseg.CLIPSeg' | 'clipseg.CombineSegMasks' | 'IPAdapter_plus.IPAdapterTiled' | 'IPAdapter_plus.IPAdapterTiledBatch' | 'controlnet_aux.AnimeFace_SemSegPreprocessor' | 'controlnet_aux.MeshGraphormer-DepthMapPreprocessor' | 'controlnet_aux.MeshGraphormer+ImpactDetector-DepthMapPreprocessor' | 'Impact-Pack.SAMDetectorCombined' | 'Impact-Pack.SAMDetectorSegmented' | 'Impact-Pack.SAMDetectorSegmented' | 'Impact-Pack.FaceDetailer' | 'Impact-Pack.FaceDetailerPipe' | 'Impact-Pack.BitwiseAndMask' | 'Impact-Pack.SubtractMask' | 'Impact-Pack.AddMask' | 'Impact-Pack.ImpactFlattenMask' | 'Impact-Pack.ToBinaryMask' | 'Impact-Pack.MasksToMaskList' | 'Impact-Pack.MaskListToMaskBatch' | 'Impact-Pack.ImpactFrom_SEG_ELT' | 'Impact-Pack.ImpactDilateMask' | 'Impact-Pack.ImpactGaussianBlurMask' | 'Impact-Pack.BboxDetectorCombined_v2' | 'Impact-Pack.SegmDetectorCombined_v2' | 'Impact-Pack.SegsToCombinedMask' | 'Impact-Pack.PreviewBridge' | 'Impact-Pack.PreviewBridgeLatent' | 'Impact-Pack.ImageReceiver' | 'Impact-Pack.ImageMaskSwitch' | 'Impact-Pack.ImpactSEGSToMaskList' | 'Impact-Pack.ImpactSEGSToMaskBatch' | 'Impact-Pack.ImpactMakeMaskList' | 'Impact-Pack.ImpactMakeMaskBatch' | 'BRIA_AI-RMBG.BRIA_RMBG_Zho' | 'Allor.AlphaChanelAsMask' | 'Allor.MaskClamp' | 'Allor.ImageEffectsLensOpticAxis' | 'Allor.ImageEffectsLensVignette'>
+         INTS: Pick<Builder, 'AnimateDiff-Evolved.ADE_ValueScheduling' | 'AnimateDiff-Evolved.ADE_ValueSchedulingLatents'>
          DICT: Pick<Builder, 'was.Dictionary to Console' | 'was.Load Text File' | 'was.Text Dictionary Update' | 'was.Text Dictionary Convert' | 'was.Text Dictionary New' | 'was.Text File History Loader' | 'was.Text Load Line From File'>
          LIST: Pick<Builder, 'was.Image Color Palette' | 'was.Text Dictionary Keys' | 'was.Text List' | 'was.Text List Concatenate'>
          SEED: Pick<Builder, 'was.Number to Seed' | 'was.Seed'>
          SEGS: Pick<Builder, 'Impact-Pack.BitwiseAndMaskForEach' | 'Impact-Pack.SubtractMaskForEach' | 'Impact-Pack.DetailerForEachPipe' | 'Impact-Pack.DetailerForEachDebugPipe' | 'Impact-Pack.DetailerForEachPipeForAnimateDiff' | 'Impact-Pack.ImpactSegsAndMask' | 'Impact-Pack.ImpactSegsAndMaskForEach' | 'Impact-Pack.EmptySegs' | 'Impact-Pack.MediaPipeFaceMeshToSEGS' | 'Impact-Pack.MaskToSEGS' | 'Impact-Pack.MaskToSEGS_for_AnimateDiff' | 'Impact-Pack.SetDefaultImageForSEGS' | 'Impact-Pack.RemoveImageFromSEGS' | 'Impact-Pack.BboxDetectorSEGS' | 'Impact-Pack.SegmDetectorSEGS' | 'Impact-Pack.ONNXDetectorSEGS' | 'Impact-Pack.ImpactSimpleDetectorSEGS_for_AD' | 'Impact-Pack.ImpactSimpleDetectorSEGS' | 'Impact-Pack.ImpactSimpleDetectorSEGSPipe' | 'Impact-Pack.ImpactControlNetApplySEGS' | 'Impact-Pack.ImpactControlNetApplyAdvancedSEGS' | 'Impact-Pack.ImpactControlNetClearSEGS' | 'Impact-Pack.ImpactIPAdapterApplySEGS' | 'Impact-Pack.ImpactAssembleSEGS' | 'Impact-Pack.ImpactDilateMaskInSEGS' | 'Impact-Pack.ImpactGaussianBlurMaskInSEGS' | 'Impact-Pack.SEGSDetailer' | 'Impact-Pack.ImpactSEGSConcat' | 'Impact-Pack.ImpactSEGSPicker' | 'Impact-Pack.ImpactMakeTileSEGS' | 'Impact-Pack.ImpactSEGSMerge' | 'Impact-Pack.SEGSDetailerForAnimateDiff' | 'Impact-Pack.ImpactSEGSLabelAssign' | 'Impact-Pack.ImpactSEGSLabelFilter' | 'Impact-Pack.ImpactSEGSLabelFilter' | 'Impact-Pack.ImpactSEGSRangeFilter' | 'Impact-Pack.ImpactSEGSRangeFilter' | 'Impact-Pack.ImpactSEGSOrderedFilter' | 'Impact-Pack.ImpactSEGSOrderedFilter' | 'Impact-Pack.ImpactSEGSClassify' | 'Impact-Pack.ImpactSEGSClassify'>
-         VAE: Pick<Builder, 'CheckpointLoaderSimple' | 'VAELoader' | 'unCLIPCheckpointLoader' | 'CheckpointLoader' | 'DiffusersLoader' | 'ImageOnlyCheckpointLoader' | 'was.Bus Node' | 'was.Checkpoint Loader' | 'was.Checkpoint Loader (Simple)' | 'was.Diffusers Model Loader' | 'was.Diffusers Hub Model Down-Loader' | 'was.unCLIP Checkpoint Loader' | 'was.VAE Input Switch' | 'civitai_comfy_nodes.CivitAI_Checkpoint_Loader' | 'Impact-Pack.FromDetailerPipe' | 'Impact-Pack.FromDetailerPipe_v2' | 'Impact-Pack.FromDetailerPipeSDXL' | 'Impact-Pack.FromBasicPipe' | 'Impact-Pack.FromBasicPipe_v2' | 'Impact-Pack.IterativeLatentUpscale' | 'Impact-Pack.ImpactKSamplerBasicPipe' | 'Impact-Pack.ImpactKSamplerAdvancedBasicPipe' | 'Allor.VaeClamp'>
+         VAE: Pick<Builder, 'CheckpointLoaderSimple' | 'VAELoader' | 'unCLIPCheckpointLoader' | 'CheckpointLoader' | 'DiffusersLoader' | 'ImageOnlyCheckpointLoader' | 'AnimateDiff-Evolved.CheckpointLoaderSimpleWithNoiseSelect' | 'was.Bus Node' | 'was.Checkpoint Loader' | 'was.Checkpoint Loader (Simple)' | 'was.Diffusers Model Loader' | 'was.Diffusers Hub Model Down-Loader' | 'was.unCLIP Checkpoint Loader' | 'was.VAE Input Switch' | 'civitai_comfy_nodes.CivitAI_Checkpoint_Loader' | 'Impact-Pack.FromDetailerPipe' | 'Impact-Pack.FromDetailerPipe_v2' | 'Impact-Pack.FromDetailerPipeSDXL' | 'Impact-Pack.FromBasicPipe' | 'Impact-Pack.FromBasicPipe_v2' | 'Impact-Pack.IterativeLatentUpscale' | 'Impact-Pack.ImpactKSamplerBasicPipe' | 'Impact-Pack.ImpactKSamplerAdvancedBasicPipe' | 'Allor.VaeClamp'>
+         GIF: Pick<Builder, 'AnimateDiff-Evolved.ADE_AnimateDiffCombine'>
          BUS: Pick<Builder, 'was.Bus Node'>
          "*": Pick<Builder, 'Impact-Pack.LatentSwitch' | 'Impact-Pack.SEGSSwitch' | 'Impact-Pack.ImpactSwitch' | 'Impact-Pack.ImpactInversedSwitch' | 'Impact-Pack.ImpactMakeAnyList' | 'Impact-Pack.ImpactConditionalBranch' | 'Impact-Pack.ImpactConditionalBranchSelMode' | 'Impact-Pack.ImpactIfNone' | 'Impact-Pack.ImpactValueSender' | 'Impact-Pack.ImpactValueReceiver' | 'Impact-Pack.ImpactExecutionOrderController' | 'Impact-Pack.ImpactExecutionOrderController' | 'Impact-Pack.ImpactDummyInput' | 'Impact-Pack.ImpactQueueTrigger' | 'Impact-Pack.ImpactQueueTriggerCountdown' | 'Impact-Pack.ImpactSetWidgetValue' | 'Impact-Pack.ImpactNodeSetMuteState' | 'Impact-Pack.ImpactControlBridge' | 'Impact-Pack.ImpactSleep'>
       }
@@ -16449,22 +20278,39 @@ declare global {
          
          // Named signals found across all nodes
          SEG_ELT_control_net_wrapper: ComfyNodeOutput<'SEG_ELT_control_net_wrapper'> | HasSingle['SEG_ELT_control_net_wrapper'] | ((x: Producer['SEG_ELT_control_net_wrapper']) => Signal['SEG_ELT_control_net_wrapper'])
+         ATTENTION_COUPLE_REGION: ComfyNodeOutput<'ATTENTION_COUPLE_REGION'> | HasSingle['ATTENTION_COUPLE_REGION'] | ((x: Producer['ATTENTION_COUPLE_REGION']) => Signal['ATTENTION_COUPLE_REGION'])
          TRANSFORMERS_CLASSIFIER: ComfyNodeOutput<'TRANSFORMERS_CLASSIFIER'> | HasSingle['TRANSFORMERS_CLASSIFIER'] | ((x: Producer['TRANSFORMERS_CLASSIFIER']) => Signal['TRANSFORMERS_CLASSIFIER'])
+         IMAGE_INJECT_OPTIONS: ComfyNodeOutput<'IMAGE_INJECT_OPTIONS'> | HasSingle['IMAGE_INJECT_OPTIONS'] | ((x: Producer['IMAGE_INJECT_OPTIONS']) => Signal['IMAGE_INJECT_OPTIONS'])
+         CONTEXTREF_KEYFRAME: ComfyNodeOutput<'CONTEXTREF_KEYFRAME'> | HasSingle['CONTEXTREF_KEYFRAME'] | ((x: Producer['CONTEXTREF_KEYFRAME']) => Signal['CONTEXTREF_KEYFRAME'])
+         NAIVEREUSE_KEYFRAME: ComfyNodeOutput<'NAIVEREUSE_KEYFRAME'> | HasSingle['NAIVEREUSE_KEYFRAME'] | ((x: Producer['NAIVEREUSE_KEYFRAME']) => Signal['NAIVEREUSE_KEYFRAME'])
+         LORA_HOOK_KEYFRAMES: ComfyNodeOutput<'LORA_HOOK_KEYFRAMES'> | HasSingle['LORA_HOOK_KEYFRAMES'] | ((x: Producer['LORA_HOOK_KEYFRAMES']) => Signal['LORA_HOOK_KEYFRAMES'])
          SEG_ELT_crop_region: ComfyNodeOutput<'SEG_ELT_crop_region'> | HasSingle['SEG_ELT_crop_region'] | ((x: Producer['SEG_ELT_crop_region']) => Signal['SEG_ELT_crop_region'])
          CLIP_VISION_OUTPUT: ComfyNodeOutput<'CLIP_VISION_OUTPUT'> | HasSingle['CLIP_VISION_OUTPUT'] | ((x: Producer['CLIP_VISION_OUTPUT']) => Signal['CLIP_VISION_OUTPUT'])
          BOOLEAN: boolean | ComfyNodeOutput<'BOOLEAN'> | HasSingle['BOOLEAN'] | ((x: Producer['BOOLEAN']) => Signal['BOOLEAN'])
          SEGS_PREPROCESSOR: ComfyNodeOutput<'SEGS_PREPROCESSOR'> | HasSingle['SEGS_PREPROCESSOR'] | ((x: Producer['SEGS_PREPROCESSOR']) => Signal['SEGS_PREPROCESSOR'])
          KSAMPLER_ADVANCED: ComfyNodeOutput<'KSAMPLER_ADVANCED'> | HasSingle['KSAMPLER_ADVANCED'] | ((x: Producer['KSAMPLER_ADVANCED']) => Signal['KSAMPLER_ADVANCED'])
          LATENT_OPERATION: ComfyNodeOutput<'LATENT_OPERATION'> | HasSingle['LATENT_OPERATION'] | ((x: Producer['LATENT_OPERATION']) => Signal['LATENT_OPERATION'])
+         MOTION_MODEL_ADE: ComfyNodeOutput<'MOTION_MODEL_ADE'> | HasSingle['MOTION_MODEL_ADE'] | ((x: Producer['MOTION_MODEL_ADE']) => Signal['MOTION_MODEL_ADE'])
+         CAMERACTRL_POSES: ComfyNodeOutput<'CAMERACTRL_POSES'> | HasSingle['CAMERACTRL_POSES'] | ((x: Producer['CAMERACTRL_POSES']) => Signal['CAMERACTRL_POSES'])
          IPADAPTER_PARAMS: ComfyNodeOutput<'IPADAPTER_PARAMS'> | HasSingle['IPADAPTER_PARAMS'] | ((x: Producer['IPADAPTER_PARAMS']) => Signal['IPADAPTER_PARAMS'])
          WEIGHTS_STRATEGY: ComfyNodeOutput<'WEIGHTS_STRATEGY'> | HasSingle['WEIGHTS_STRATEGY'] | ((x: Producer['WEIGHTS_STRATEGY']) => Signal['WEIGHTS_STRATEGY'])
          REGIONAL_PROMPTS: ComfyNodeOutput<'REGIONAL_PROMPTS'> | HasSingle['REGIONAL_PROMPTS'] | ((x: Producer['REGIONAL_PROMPTS']) => Signal['REGIONAL_PROMPTS'])
          STRING: string | ComfyNodeOutput<'STRING'> | HasSingle['STRING'] | ((x: Producer['STRING']) => Signal['STRING'])
+         SAMPLE_SETTINGS: ComfyNodeOutput<'SAMPLE_SETTINGS'> | HasSingle['SAMPLE_SETTINGS'] | ((x: Producer['SAMPLE_SETTINGS']) => Signal['SAMPLE_SETTINGS'])
+         CONTEXT_OPTIONS: ComfyNodeOutput<'CONTEXT_OPTIONS'> | HasSingle['CONTEXT_OPTIONS'] | ((x: Producer['CONTEXT_OPTIONS']) => Signal['CONTEXT_OPTIONS'])
+         CONTEXTREF_MODE: ComfyNodeOutput<'CONTEXTREF_MODE'> | HasSingle['CONTEXTREF_MODE'] | ((x: Producer['CONTEXTREF_MODE']) => Signal['CONTEXTREF_MODE'])
+         CONTEXTREF_TUNE: ComfyNodeOutput<'CONTEXTREF_TUNE'> | HasSingle['CONTEXTREF_TUNE'] | ((x: Producer['CONTEXTREF_TUNE']) => Signal['CONTEXTREF_TUNE'])
          FLOAT: number | ComfyNodeOutput<'FLOAT'> | HasSingle['FLOAT'] | ((x: Producer['FLOAT']) => Signal['FLOAT'])
+         ITERATION_OPTS: ComfyNodeOutput<'ITERATION_OPTS'> | HasSingle['ITERATION_OPTS'] | ((x: Producer['ITERATION_OPTS']) => Signal['ITERATION_OPTS'])
+         SIGMA_SCHEDULE: ComfyNodeOutput<'SIGMA_SCHEDULE'> | HasSingle['SIGMA_SCHEDULE'] | ((x: Producer['SIGMA_SCHEDULE']) => Signal['SIGMA_SCHEDULE'])
+         CONTEXT_EXTRAS: ComfyNodeOutput<'CONTEXT_EXTRAS'> | HasSingle['CONTEXT_EXTRAS'] | ((x: Producer['CONTEXT_EXTRAS']) => Signal['CONTEXT_EXTRAS'])
+         TIMESTEPS_COND: ComfyNodeOutput<'TIMESTEPS_COND'> | HasSingle['TIMESTEPS_COND'] | ((x: Producer['TIMESTEPS_COND']) => Signal['TIMESTEPS_COND'])
+         VALUES_REPLACE: ComfyNodeOutput<'VALUES_REPLACE'> | HasSingle['VALUES_REPLACE'] | ((x: Producer['VALUES_REPLACE']) => Signal['VALUES_REPLACE'])
          SAM_PARAMETERS: ComfyNodeOutput<'SAM_PARAMETERS'> | HasSingle['SAM_PARAMETERS'] | ((x: Producer['SAM_PARAMETERS']) => Signal['SAM_PARAMETERS'])
          SCHEDULER_FUNC: ComfyNodeOutput<'SCHEDULER_FUNC'> | HasSingle['SCHEDULER_FUNC'] | ((x: Producer['SCHEDULER_FUNC']) => Signal['SCHEDULER_FUNC'])
          IPADAPTER_PIPE: ComfyNodeOutput<'IPADAPTER_PIPE'> | HasSingle['IPADAPTER_PIPE'] | ((x: Producer['IPADAPTER_PIPE']) => Signal['IPADAPTER_PIPE'])
          UPSCALE_MODEL: ComfyNodeOutput<'UPSCALE_MODEL'> | HasSingle['UPSCALE_MODEL'] | ((x: Producer['UPSCALE_MODEL']) => Signal['UPSCALE_MODEL'])
+         WEIGHT_ADJUST: ComfyNodeOutput<'WEIGHT_ADJUST'> | HasSingle['WEIGHT_ADJUST'] | ((x: Producer['WEIGHT_ADJUST']) => Signal['WEIGHT_ADJUST'])
          CLIPSEG_MODEL: ComfyNodeOutput<'CLIPSEG_MODEL'> | HasSingle['CLIPSEG_MODEL'] | ((x: Producer['CLIPSEG_MODEL']) => Signal['CLIPSEG_MODEL'])
          POSE_KEYPOINT: ComfyNodeOutput<'POSE_KEYPOINT'> | HasSingle['POSE_KEYPOINT'] | ((x: Producer['POSE_KEYPOINT']) => Signal['POSE_KEYPOINT'])
          BBOX_DETECTOR: ComfyNodeOutput<'BBOX_DETECTOR'> | HasSingle['BBOX_DETECTOR'] | ((x: Producer['BBOX_DETECTOR']) => Signal['BBOX_DETECTOR'])
@@ -16475,26 +20321,44 @@ declare global {
          UPSCALER_HOOK: ComfyNodeOutput<'UPSCALER_HOOK'> | HasSingle['UPSCALER_HOOK'] | ((x: Producer['UPSCALER_HOOK']) => Signal['UPSCALER_HOOK'])
          INT: number | ComfyNodeOutput<'INT'> | HasSingle['INT'] | ((x: Producer['INT']) => Signal['INT'])
          CONDITIONING: ComfyNodeOutput<'CONDITIONING'> | HasSingle['CONDITIONING'] | ((x: Producer['CONDITIONING']) => Signal['CONDITIONING'])
+         NOISE_LAYERS: ComfyNodeOutput<'NOISE_LAYERS'> | HasSingle['NOISE_LAYERS'] | ((x: Producer['NOISE_LAYERS']) => Signal['NOISE_LAYERS'])
+         IMAGE_INJECT: ComfyNodeOutput<'IMAGE_INJECT'> | HasSingle['IMAGE_INJECT'] | ((x: Producer['IMAGE_INJECT']) => Signal['IMAGE_INJECT'])
+         AD_KEYFRAMES: ComfyNodeOutput<'AD_KEYFRAMES'> | HasSingle['AD_KEYFRAMES'] | ((x: Producer['AD_KEYFRAMES']) => Signal['AD_KEYFRAMES'])
          IMAGE_BOUNDS: ComfyNodeOutput<'IMAGE_BOUNDS'> | HasSingle['IMAGE_BOUNDS'] | ((x: Producer['IMAGE_BOUNDS']) => Signal['IMAGE_BOUNDS'])
          OPTICAL_FLOW: ComfyNodeOutput<'OPTICAL_FLOW'> | HasSingle['OPTICAL_FLOW'] | ((x: Producer['OPTICAL_FLOW']) => Signal['OPTICAL_FLOW'])
          SEG_ELT_bbox: ComfyNodeOutput<'SEG_ELT_bbox'> | HasSingle['SEG_ELT_bbox'] | ((x: Producer['SEG_ELT_bbox']) => Signal['SEG_ELT_bbox'])
          CLIP_VISION: ComfyNodeOutput<'CLIP_VISION'> | HasSingle['CLIP_VISION'] | ((x: Producer['CLIP_VISION']) => Signal['CLIP_VISION'])
          STYLE_MODEL: ComfyNodeOutput<'STYLE_MODEL'> | HasSingle['STYLE_MODEL'] | ((x: Producer['STYLE_MODEL']) => Signal['STYLE_MODEL'])
          CONTROL_NET: ComfyNodeOutput<'CONTROL_NET'> | HasSingle['CONTROL_NET'] | ((x: Producer['CONTROL_NET']) => Signal['CONTROL_NET'])
+         MOTION_LORA: ComfyNodeOutput<'MOTION_LORA'> | HasSingle['MOTION_LORA'] | ((x: Producer['MOTION_LORA']) => Signal['MOTION_LORA'])
+         ADEAUTOSIZE: ComfyNodeOutput<'ADEAUTOSIZE'> | HasSingle['ADEAUTOSIZE'] | ((x: Producer['ADEAUTOSIZE']) => Signal['ADEAUTOSIZE'])
+         AD_SETTINGS: ComfyNodeOutput<'AD_SETTINGS'> | HasSingle['AD_SETTINGS'] | ((x: Producer['AD_SETTINGS']) => Signal['AD_SETTINGS'])
          MIDAS_MODEL: ComfyNodeOutput<'MIDAS_MODEL'> | HasSingle['MIDAS_MODEL'] | ((x: Producer['MIDAS_MODEL']) => Signal['MIDAS_MODEL'])
          INSIGHTFACE: ComfyNodeOutput<'INSIGHTFACE'> | HasSingle['INSIGHTFACE'] | ((x: Producer['INSIGHTFACE']) => Signal['INSIGHTFACE'])
          SEGS_HEADER: ComfyNodeOutput<'SEGS_HEADER'> | HasSingle['SEGS_HEADER'] | ((x: Producer['SEGS_HEADER']) => Signal['SEGS_HEADER'])
          PHOTOMAKER: ComfyNodeOutput<'PHOTOMAKER'> | HasSingle['PHOTOMAKER'] | ((x: Producer['PHOTOMAKER']) => Signal['PHOTOMAKER'])
+         CUSTOM_CFG: ComfyNodeOutput<'CUSTOM_CFG'> | HasSingle['CUSTOM_CFG'] | ((x: Producer['CUSTOM_CFG']) => Signal['CUSTOM_CFG'])
+         CFG_EXTRAS: ComfyNodeOutput<'CFG_EXTRAS'> | HasSingle['CFG_EXTRAS'] | ((x: Producer['CFG_EXTRAS']) => Signal['CFG_EXTRAS'])
          BLIP_MODEL: ComfyNodeOutput<'BLIP_MODEL'> | HasSingle['BLIP_MODEL'] | ((x: Producer['BLIP_MODEL']) => Signal['BLIP_MODEL'])
          BASIC_PIPE: ComfyNodeOutput<'BASIC_PIPE'> | HasSingle['BASIC_PIPE'] | ((x: Producer['BASIC_PIPE']) => Signal['BASIC_PIPE'])
+         VIEW_OPTS: ComfyNodeOutput<'VIEW_OPTS'> | HasSingle['VIEW_OPTS'] | ((x: Producer['VIEW_OPTS']) => Signal['VIEW_OPTS'])
+         LORA_HOOK: ComfyNodeOutput<'LORA_HOOK'> | HasSingle['LORA_HOOK'] | ((x: Producer['LORA_HOOK']) => Signal['LORA_HOOK'])
+         PE_ADJUST: ComfyNodeOutput<'PE_ADJUST'> | HasSingle['PE_ADJUST'] | ((x: Producer['PE_ADJUST']) => Signal['PE_ADJUST'])
+         PER_BLOCK: ComfyNodeOutput<'PER_BLOCK'> | HasSingle['PER_BLOCK'] | ((x: Producer['PER_BLOCK']) => Signal['PER_BLOCK'])
+         PIA_INPUT: ComfyNodeOutput<'PIA_INPUT'> | HasSingle['PIA_INPUT'] | ((x: Producer['PIA_INPUT']) => Signal['PIA_INPUT'])
          CROP_DATA: ComfyNodeOutput<'CROP_DATA'> | HasSingle['CROP_DATA'] | ((x: Producer['CROP_DATA']) => Signal['CROP_DATA'])
          SAM_MODEL: ComfyNodeOutput<'SAM_MODEL'> | HasSingle['SAM_MODEL'] | ((x: Producer['SAM_MODEL']) => Signal['SAM_MODEL'])
+         FIZZFRAME: ComfyNodeOutput<'FIZZFRAME'> | HasSingle['FIZZFRAME'] | ((x: Producer['FIZZFRAME']) => Signal['FIZZFRAME'])
          IPADAPTER: ComfyNodeOutput<'IPADAPTER'> | HasSingle['IPADAPTER'] | ((x: Producer['IPADAPTER']) => Signal['IPADAPTER'])
          RMBGMODEL: ComfyNodeOutput<'RMBGMODEL'> | HasSingle['RMBGMODEL'] | ((x: Producer['RMBGMODEL']) => Signal['RMBGMODEL'])
+         MULTIVAL: ComfyNodeOutput<'MULTIVAL'> | HasSingle['MULTIVAL'] | ((x: Producer['MULTIVAL']) => Signal['MULTIVAL'])
+         AD_BLOCK: ComfyNodeOutput<'AD_BLOCK'> | HasSingle['AD_BLOCK'] | ((x: Producer['AD_BLOCK']) => Signal['AD_BLOCK'])
+         M_MODELS: ComfyNodeOutput<'M_MODELS'> | HasSingle['M_MODELS'] | ((x: Producer['M_MODELS']) => Signal['M_MODELS'])
          TRACKING: ComfyNodeOutput<'TRACKING'> | HasSingle['TRACKING'] | ((x: Producer['TRACKING']) => Signal['TRACKING'])
          UPSCALER: ComfyNodeOutput<'UPSCALER'> | HasSingle['UPSCALER'] | ((x: Producer['UPSCALER']) => Signal['UPSCALER'])
          KSAMPLER: ComfyNodeOutput<'KSAMPLER'> | HasSingle['KSAMPLER'] | ((x: Producer['KSAMPLER']) => Signal['KSAMPLER'])
          SAMPLER: ComfyNodeOutput<'SAMPLER'> | HasSingle['SAMPLER'] | ((x: Producer['SAMPLER']) => Signal['SAMPLER'])
+         ADEWARN: ComfyNodeOutput<'ADEWARN'> | HasSingle['ADEWARN'] | ((x: Producer['ADEWARN']) => Signal['ADEWARN'])
          PK_HOOK: ComfyNodeOutput<'PK_HOOK'> | HasSingle['PK_HOOK'] | ((x: Producer['PK_HOOK']) => Signal['PK_HOOK'])
          SEG_ELT: ComfyNodeOutput<'SEG_ELT'> | HasSingle['SEG_ELT'] | ((x: Producer['SEG_ELT']) => Signal['SEG_ELT'])
          LATENT: ComfyNodeOutput<'LATENT'> | HasSingle['LATENT'] | ((x: Producer['LATENT']) => Signal['LATENT'])
@@ -16502,6 +20366,7 @@ declare global {
          SIGMAS: ComfyNodeOutput<'SIGMAS'> | HasSingle['SIGMAS'] | ((x: Producer['SIGMAS']) => Signal['SIGMAS'])
          GUIDER: ComfyNodeOutput<'GUIDER'> | HasSingle['GUIDER'] | ((x: Producer['GUIDER']) => Signal['GUIDER'])
          WEBCAM: ComfyNodeOutput<'WEBCAM'> | HasSingle['WEBCAM'] | ((x: Producer['WEBCAM']) => Signal['WEBCAM'])
+         FLOATS: ComfyNodeOutput<'FLOATS'> | HasSingle['FLOATS'] | ((x: Producer['FLOATS']) => Signal['FLOATS'])
          NUMBER: ComfyNodeOutput<'NUMBER'> | HasSingle['NUMBER'] | ((x: Producer['NUMBER']) => Signal['NUMBER'])
          EMBEDS: ComfyNodeOutput<'EMBEDS'> | HasSingle['EMBEDS'] | ((x: Producer['EMBEDS']) => Signal['EMBEDS'])
          MODEL: ComfyNodeOutput<'MODEL'> | HasSingle['MODEL'] | ((x: Producer['MODEL']) => Signal['MODEL'])
@@ -16510,11 +20375,13 @@ declare global {
          AUDIO: ComfyNodeOutput<'AUDIO'> | HasSingle['AUDIO'] | ((x: Producer['AUDIO']) => Signal['AUDIO'])
          CLIP: ComfyNodeOutput<'CLIP'> | HasSingle['CLIP'] | ((x: Producer['CLIP']) => Signal['CLIP'])
          MASK: ComfyNodeOutput<'MASK'> | HasSingle['MASK'] | ((x: Producer['MASK']) => Signal['MASK'])
+         INTS: ComfyNodeOutput<'INTS'> | HasSingle['INTS'] | ((x: Producer['INTS']) => Signal['INTS'])
          DICT: ComfyNodeOutput<'DICT'> | HasSingle['DICT'] | ((x: Producer['DICT']) => Signal['DICT'])
          LIST: ComfyNodeOutput<'LIST'> | HasSingle['LIST'] | ((x: Producer['LIST']) => Signal['LIST'])
          SEED: ComfyNodeOutput<'SEED'> | HasSingle['SEED'] | ((x: Producer['SEED']) => Signal['SEED'])
          SEGS: ComfyNodeOutput<'SEGS'> | HasSingle['SEGS'] | ((x: Producer['SEGS']) => Signal['SEGS'])
          VAE: ComfyNodeOutput<'VAE'> | HasSingle['VAE'] | ((x: Producer['VAE']) => Signal['VAE'])
+         GIF: ComfyNodeOutput<'GIF'> | HasSingle['GIF'] | ((x: Producer['GIF']) => Signal['GIF'])
          BUS: ComfyNodeOutput<'BUS'> | HasSingle['BUS'] | ((x: Producer['BUS']) => Signal['BUS'])
          "*": ComfyNodeOutput<'*'> | HasSingle['*'] | ((x: Producer['*']) => Signal['*'])
          
@@ -16536,6 +20403,7 @@ declare global {
          E_ClipType: Union['E_ClipType'] | ComfyNodeOutput<'E_ClipType'> 
          E_WeightDType: Union['E_WeightDType'] | ComfyNodeOutput<'E_WeightDType'> 
          E_DualClipType: Union['E_DualClipType'] | ComfyNodeOutput<'E_DualClipType'> 
+         E_daae7c6f: Union['E_daae7c6f'] | ComfyNodeOutput<'E_daae7c6f'> 
          E_CkptConfigName: Union['E_CkptConfigName'] | ComfyNodeOutput<'E_CkptConfigName'> 
          E_1d09df0c: Union['E_1d09df0c'] | ComfyNodeOutput<'E_1d09df0c'> 
          E_0a165440: Union['E_0a165440'] | ComfyNodeOutput<'E_0a165440'> 
@@ -16556,6 +20424,24 @@ declare global {
          E_0e92c8b1: Union['E_0e92c8b1'] | ComfyNodeOutput<'E_0e92c8b1'> 
          E_b80b6129: Union['E_b80b6129'] | ComfyNodeOutput<'E_b80b6129'> 
          E_4bbca93e: Union['E_4bbca93e'] | ComfyNodeOutput<'E_4bbca93e'> 
+         E_df934b3b: Union['E_df934b3b'] | ComfyNodeOutput<'E_df934b3b'> 
+         E_73f92fde: Union['E_73f92fde'] | ComfyNodeOutput<'E_73f92fde'> 
+         E_e981387a: Union['E_e981387a'] | ComfyNodeOutput<'E_e981387a'> 
+         E_68a33fb1: Union['E_68a33fb1'] | ComfyNodeOutput<'E_68a33fb1'> 
+         E_07ba75c0: Union['E_07ba75c0'] | ComfyNodeOutput<'E_07ba75c0'> 
+         E_8146160c: Union['E_8146160c'] | ComfyNodeOutput<'E_8146160c'> 
+         E_7c7d86e6: Union['E_7c7d86e6'] | ComfyNodeOutput<'E_7c7d86e6'> 
+         E_c2afaefb: Union['E_c2afaefb'] | ComfyNodeOutput<'E_c2afaefb'> 
+         E_694440e4: Union['E_694440e4'] | ComfyNodeOutput<'E_694440e4'> 
+         E_b5e69c34: Union['E_b5e69c34'] | ComfyNodeOutput<'E_b5e69c34'> 
+         E_851da0f5: Union['E_851da0f5'] | ComfyNodeOutput<'E_851da0f5'> 
+         E_0d50dafa: Union['E_0d50dafa'] | ComfyNodeOutput<'E_0d50dafa'> 
+         E_7c132641: Union['E_7c132641'] | ComfyNodeOutput<'E_7c132641'> 
+         E_a154f844: Union['E_a154f844'] | ComfyNodeOutput<'E_a154f844'> 
+         E_092dd1cc: Union['E_092dd1cc'] | ComfyNodeOutput<'E_092dd1cc'> 
+         E_849d2970: Union['E_849d2970'] | ComfyNodeOutput<'E_849d2970'> 
+         E_6e63de3c: Union['E_6e63de3c'] | ComfyNodeOutput<'E_6e63de3c'> 
+         E_4a59f490: Union['E_4a59f490'] | ComfyNodeOutput<'E_4a59f490'> 
          E_48c2dd07: Union['E_48c2dd07'] | ComfyNodeOutput<'E_48c2dd07'> 
          E_3f378803: Union['E_3f378803'] | ComfyNodeOutput<'E_3f378803'> 
          E_46b52173: Union['E_46b52173'] | ComfyNodeOutput<'E_46b52173'> 
@@ -16724,25 +20610,25 @@ declare global {
       }
       
       interface Union {
-         // ["KSampler.sampler_name","KSamplerAdvanced.sampler_name","KSamplerSelect.sampler_name","was.KSampler (WAS).sampler_name","was.KSampler Cycle.sampler_name","Impact-Pack.DetailerForEach.sampler_name","Impact-Pack.DetailerForEachDebug.sampler_name","Impact-Pack.DetailerForEachPipe.sampler_name","Impact-Pack.DetailerForEachDebugPipe.sampler_name","Impact-Pack.DetailerForEachPipeForAnimateDiff.sampler_name","Impact-Pack.FaceDetailer.sampler_name","Impact-Pack.FaceDetailerPipe.sampler_name","Impact-Pack.MaskDetailerPipe.sampler_name","Impact-Pack.PixelKSampleUpscalerProvider.sampler_name","Impact-Pack.PixelKSampleUpscalerProviderPipe.sampler_name","Impact-Pack.PixelTiledKSampleUpscalerProvider.sampler_name","Impact-Pack.PixelTiledKSampleUpscalerProviderPipe.sampler_name","Impact-Pack.UnsamplerHookProvider.sampler_name","Impact-Pack.UnsamplerDetailerHookProvider.sampler_name","Impact-Pack.KSamplerProvider.sampler_name","Impact-Pack.TiledKSamplerProvider.sampler_name","Impact-Pack.KSamplerAdvancedProvider.sampler_name","Impact-Pack.SEGSUpscaler.sampler_name","Impact-Pack.SEGSUpscalerPipe.sampler_name","Impact-Pack.SEGSDetailer.sampler_name","Impact-Pack.SEGSDetailerForAnimateDiff.sampler_name","Impact-Pack.ImpactKSamplerBasicPipe.sampler_name","Impact-Pack.ImpactKSamplerAdvancedBasicPipe.sampler_name"]
+         // ["KSampler.sampler_name","KSamplerAdvanced.sampler_name","KSamplerSelect.sampler_name","AnimateDiff-Evolved.ADE_VisualizeContextOptionsK.sampler_name","AnimateDiff-Evolved.ADE_VisualizeContextOptionsKAdv.sampler_name","was.KSampler (WAS).sampler_name","was.KSampler Cycle.sampler_name","Impact-Pack.DetailerForEach.sampler_name","Impact-Pack.DetailerForEachDebug.sampler_name","Impact-Pack.DetailerForEachPipe.sampler_name","Impact-Pack.DetailerForEachDebugPipe.sampler_name","Impact-Pack.DetailerForEachPipeForAnimateDiff.sampler_name","Impact-Pack.FaceDetailer.sampler_name","Impact-Pack.FaceDetailerPipe.sampler_name","Impact-Pack.MaskDetailerPipe.sampler_name","Impact-Pack.PixelKSampleUpscalerProvider.sampler_name","Impact-Pack.PixelKSampleUpscalerProviderPipe.sampler_name","Impact-Pack.PixelTiledKSampleUpscalerProvider.sampler_name","Impact-Pack.PixelTiledKSampleUpscalerProviderPipe.sampler_name","Impact-Pack.UnsamplerHookProvider.sampler_name","Impact-Pack.UnsamplerDetailerHookProvider.sampler_name","Impact-Pack.KSamplerProvider.sampler_name","Impact-Pack.TiledKSamplerProvider.sampler_name","Impact-Pack.KSamplerAdvancedProvider.sampler_name","Impact-Pack.SEGSUpscaler.sampler_name","Impact-Pack.SEGSUpscalerPipe.sampler_name","Impact-Pack.SEGSDetailer.sampler_name","Impact-Pack.SEGSDetailerForAnimateDiff.sampler_name","Impact-Pack.ImpactKSamplerBasicPipe.sampler_name","Impact-Pack.ImpactKSamplerAdvancedBasicPipe.sampler_name"]
          E_SamplerName: "ddim" | "ddpm" | "deis" | "dpm_2" | "dpm_2_ancestral" | "dpm_adaptive" | "dpm_fast" | "dpmpp_2m" | "dpmpp_2m_cfg_pp" | "dpmpp_2m_sde" | "dpmpp_2m_sde_gpu" | "dpmpp_2s_ancestral" | "dpmpp_2s_ancestral_cfg_pp" | "dpmpp_3m_sde" | "dpmpp_3m_sde_gpu" | "dpmpp_sde" | "dpmpp_sde_gpu" | "euler" | "euler_ancestral" | "euler_ancestral_cfg_pp" | "euler_cfg_pp" | "heun" | "heunpp2" | "ipndm" | "ipndm_v" | "lcm" | "lms" | "uni_pc" | "uni_pc_bh2"
-         // ["KSampler.scheduler","KSamplerAdvanced.scheduler","BasicScheduler.scheduler","was.KSampler (WAS).scheduler","was.KSampler Cycle.scheduler","Impact-Pack.PixelTiledKSampleUpscalerProvider.scheduler","Impact-Pack.PixelTiledKSampleUpscalerProviderPipe.scheduler","Impact-Pack.UnsamplerHookProvider.scheduler","Impact-Pack.UnsamplerDetailerHookProvider.scheduler","Impact-Pack.TiledKSamplerProvider.scheduler","Impact-Pack.ImpactSchedulerAdapter.scheduler"]
+         // ["KSampler.scheduler","KSamplerAdvanced.scheduler","BasicScheduler.scheduler","AnimateDiff-Evolved.ADE_VisualizeContextOptionsK.scheduler","AnimateDiff-Evolved.ADE_VisualizeContextOptionsKAdv.scheduler","AnimateDiff-Evolved.ADE_SigmaScheduleToSigmas.scheduler","was.KSampler (WAS).scheduler","was.KSampler Cycle.scheduler","Impact-Pack.PixelTiledKSampleUpscalerProvider.scheduler","Impact-Pack.PixelTiledKSampleUpscalerProviderPipe.scheduler","Impact-Pack.UnsamplerHookProvider.scheduler","Impact-Pack.UnsamplerDetailerHookProvider.scheduler","Impact-Pack.TiledKSamplerProvider.scheduler","Impact-Pack.ImpactSchedulerAdapter.scheduler"]
          E_SchedulerName: "beta" | "ddim_uniform" | "exponential" | "karras" | "linear_quadratic" | "normal" | "sgm_uniform" | "simple"
-         // ["CheckpointLoaderSimple.ckpt_name","unCLIPCheckpointLoader.ckpt_name","CheckpointLoader.ckpt_name","ImageOnlyCheckpointLoader.ckpt_name","was.Checkpoint Loader.ckpt_name","was.Checkpoint Loader (Simple).ckpt_name","was.unCLIP Checkpoint Loader.ckpt_name"]
+         // ["CheckpointLoaderSimple.ckpt_name","unCLIPCheckpointLoader.ckpt_name","CheckpointLoader.ckpt_name","ImageOnlyCheckpointLoader.ckpt_name","AnimateDiff-Evolved.ADE_RegisterModelAsLoraHook.ckpt_name","AnimateDiff-Evolved.ADE_RegisterModelAsLoraHookModelOnly.ckpt_name","AnimateDiff-Evolved.CheckpointLoaderSimpleWithNoiseSelect.ckpt_name","was.Checkpoint Loader.ckpt_name","was.Checkpoint Loader (Simple).ckpt_name","was.unCLIP Checkpoint Loader.ckpt_name"]
          E_CkptName: "AOM3A3_orangemixs.safetensors" | "photon_v1.safetensors"
          // ["VAELoader.vae_name"]
          E_VaeName: "vae-ft-mse-840000-ema-pruned.safetensors"
          // ["LatentUpscale.upscale_method","LatentUpscaleBy.upscale_method","PatchModelAddDownscale.downscale_method","PatchModelAddDownscale.upscale_method","SamplerLCMUpscale.upscale_method"]
          E_LatentUpscaleMethod: "area" | "bicubic" | "bilinear" | "bislerp" | "nearest-exact"
-         // ["LatentUpscale.crop","ImageScale.crop"]
+         // ["LatentUpscale.crop","ImageScale.crop","AnimateDiff-Evolved.ADE_UpscaleAndVAEEncode.crop"]
          E_e2779c2a: "center" | "disabled"
          // ["LoadImage.image","LoadImageMask.image","Impact-Pack.ImageReceiver.image"]
          E_Image: "example.png"
          // ["LoadImageMask.channel","ImageToMask.channel","was.Image to Latent Mask.channel"]
          E_Channel: "alpha" | "blue" | "green" | "red"
-         // ["ImageScale.upscale_method","ImageScaleBy.upscale_method","ImageScaleToTotalPixels.upscale_method"]
+         // ["ImageScale.upscale_method","ImageScaleBy.upscale_method","ImageScaleToTotalPixels.upscale_method","AnimateDiff-Evolved.ADE_UpscaleAndVAEEncode.scale_method"]
          E_ImageUpscaleMethod: "area" | "bicubic" | "bilinear" | "lanczos" | "nearest-exact"
-         // ["ConditioningSetMask.set_cond_area"]
+         // ["ConditioningSetMask.set_cond_area","AnimateDiff-Evolved.ADE_PairedConditioningSetMask.set_cond_area","AnimateDiff-Evolved.ADE_ConditioningSetMask.set_cond_area","AnimateDiff-Evolved.ADE_PairedConditioningSetMaskAndCombine.set_cond_area","AnimateDiff-Evolved.ADE_ConditioningSetMaskAndCombine.set_cond_area"]
          E_046ed3ef: "default" | "mask bounds"
          // ["KSamplerAdvanced.add_noise","KSamplerAdvanced.return_with_leftover_noise","was.KSampler Cycle.tiled_vae","was.KSampler Cycle.scale_denoise","was.KSampler Cycle.pos_add_strength_scaling","was.KSampler Cycle.neg_add_strength_scaling","was.KSampler Cycle.steps_scaling","controlnet_aux.LeReS-DepthMapPreprocessor.boost","controlnet_aux.DWPreprocessor.detect_hand","controlnet_aux.DWPreprocessor.detect_body","controlnet_aux.DWPreprocessor.detect_face","controlnet_aux.DWPreprocessor.scale_stick_for_xinsr_cn","controlnet_aux.HEDPreprocessor.safe","controlnet_aux.FakeScribblePreprocessor.safe","controlnet_aux.PiDiNetPreprocessor.safe","controlnet_aux.LineArtPreprocessor.coarse","controlnet_aux.OpenposePreprocessor.detect_hand","controlnet_aux.OpenposePreprocessor.detect_body","controlnet_aux.OpenposePreprocessor.detect_face","controlnet_aux.OpenposePreprocessor.scale_stick_for_xinsr_cn","controlnet_aux.Scribble_PiDiNet_Preprocessor.safe","Impact-Pack.UnsamplerHookProvider.normalize","Impact-Pack.UnsamplerDetailerHookProvider.normalize"]
          E_EnableOrDisable: "disable" | "enable"
@@ -16757,6 +20643,8 @@ declare global {
          E_WeightDType: "default" | "fp8_e4m3fn" | "fp8_e4m3fn_fast" | "fp8_e5m2"
          // ["DualCLIPLoader.type"]
          E_DualClipType: "flux" | "sd3" | "sdxl"
+         // ["CLIPVisionLoader.clip_name"]
+         E_daae7c6f: "clip-vit-large-patch14.safetensors"
          // ["CheckpointLoader.config_name","was.Checkpoint Loader.config_name"]
          E_CkptConfigName: "anything_v3.yaml" | "v1-inference.yaml" | "v1-inference_clip_skip_2.yaml" | "v1-inference_clip_skip_2_fp16.yaml" | "v1-inference_fp16.yaml" | "v1-inpainting-inference.yaml" | "v2-inference-v.yaml" | "v2-inference-v_fp32.yaml" | "v2-inference.yaml" | "v2-inference_fp32.yaml" | "v2-inpainting-inference.yaml"
          // ["LatentBatchSeedBehavior.seed_behavior","was.True Random.org Number Generator.mode"]
@@ -16797,6 +20685,42 @@ declare global {
          E_b80b6129: "full_diff" | "standard"
          // ["TorchCompileModel.backend"]
          E_4bbca93e: "cudagraphs" | "inductor"
+         // ["AnimateDiff-Evolved.ADE_AnimateDiffSamplingSettings.noise_type","AnimateDiff-Evolved.ADE_NoiseLayerAdd.noise_type","AnimateDiff-Evolved.ADE_NoiseLayerAddWeighted.noise_type","AnimateDiff-Evolved.ADE_NoiseLayerReplace.noise_type"]
+         E_df934b3b: "FreeNoise" | "constant" | "default" | "empty" | "repeated_context"
+         // ["AnimateDiff-Evolved.ADE_AnimateDiffSamplingSettings.seed_gen"]
+         E_73f92fde: "auto1111" | "auto1111 [gpu]" | "comfy" | "comfy [gpu]"
+         // ["AnimateDiff-Evolved.ADE_MultivalScaledMask.scaling"]
+         E_e981387a: "absolute" | "relative"
+         // ["AnimateDiff-Evolved.ADE_StandardStaticContextOptions.fuse_method"]
+         E_68a33fb1: "delayed reverse sawtooth" | "flat" | "gauss-sigma" | "gauss-sigma inverse" | "pyramid" | "pyramid-sigma" | "pyramid-sigma inverse" | "random" | "relative"
+         // ["AnimateDiff-Evolved.ADE_StandardUniformContextOptions.fuse_method","AnimateDiff-Evolved.ADE_LoopedUniformContextOptions.fuse_method","AnimateDiff-Evolved.ADE_AnimateDiffUniformContextOptions.fuse_method","AnimateDiff-Evolved.ADE_StandardStaticViewOptions.fuse_method","AnimateDiff-Evolved.ADE_StandardUniformViewOptions.fuse_method","AnimateDiff-Evolved.ADE_LoopedUniformViewOptions.fuse_method"]
+         E_07ba75c0: "delayed reverse sawtooth" | "flat" | "gauss-sigma" | "gauss-sigma inverse" | "pyramid" | "pyramid-sigma" | "pyramid-sigma inverse" | "random"
+         // ["AnimateDiff-Evolved.ADE_AnimateDiffUniformContextOptions.context_schedule","AnimateDiff-Evolved.ADE_AnimateDiffLoaderV1Advanced.context_schedule"]
+         E_8146160c: "uniform"
+         // ["AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_KeyframeInterpolation.interpolation","AnimateDiff-Evolved.ADE_ContextExtras_NaiveReuse_KeyframeInterpolation.interpolation","AnimateDiff-Evolved.ADE_LoraHookKeyframeInterpolation.interpolation","AnimateDiff-Evolved.ADE_CustomCFGKeyframeInterpolation.interpolation","AnimateDiff-Evolved.ADE_SigmaScheduleWeightedAverageInterp.interpolation"]
+         E_7c7d86e6: "ease_in" | "ease_in_out" | "ease_out" | "linear"
+         // ["AnimateDiff-Evolved.ADE_IterationOptsFreeInit.filter"]
+         E_c2afaefb: "box" | "butterworth" | "gaussian" | "ideal"
+         // ["AnimateDiff-Evolved.ADE_IterationOptsFreeInit.init_type"]
+         E_694440e4: "DinkInit_v1" | "FreeInit [model sigma]" | "FreeInit [sampler sigma]"
+         // ["AnimateDiff-Evolved.ADE_NoiseLayerAdd.seed_gen_override","AnimateDiff-Evolved.ADE_NoiseLayerAddWeighted.seed_gen_override","AnimateDiff-Evolved.ADE_NoiseLayerReplace.seed_gen_override"]
+         E_b5e69c34: "auto1111" | "auto1111 [gpu]" | "comfy" | "comfy [gpu]" | "use existing"
+         // ["AnimateDiff-Evolved.ADE_SigmaSchedule.beta_schedule"]
+         E_851da0f5: "avg(sqrt_linear,linear)" | "cosine" | "lcm" | "lcm >> sqrt_linear" | "lcm avg(sqrt_linear,linear)" | "lcm[100_ots]" | "linear (AnimateDiff-SDXL)" | "linear (HotshotXL/default)" | "sqrt" | "sqrt_linear (AnimateDiff)" | "squaredcos_cap_v2"
+         // ["AnimateDiff-Evolved.ADE_RawSigmaSchedule.raw_beta_schedule"]
+         E_0d50dafa: "cosine" | "linear" | "sqrt" | "sqrt_linear" | "squaredcos_cap_v2"
+         // ["AnimateDiff-Evolved.ADE_RawSigmaSchedule.sampling"]
+         E_7c132641: "eps" | "lcm" | "v_prediction"
+         // ["AnimateDiff-Evolved.ADE_PromptScheduling.tensor_interp","AnimateDiff-Evolved.ADE_PromptSchedulingLatents.tensor_interp"]
+         E_a154f844: "lerp" | "slerp"
+         // ["AnimateDiff-Evolved.CheckpointLoaderSimpleWithNoiseSelect.beta_schedule","AnimateDiff-Evolved.ADE_AnimateDiffLoaderGen1.beta_schedule","AnimateDiff-Evolved.ADE_AnimateDiffLoaderWithContext.beta_schedule","AnimateDiff-Evolved.ADE_UseEvolvedSampling.beta_schedule","AnimateDiff-Evolved.AnimateDiffLoaderV1.beta_schedule","AnimateDiff-Evolved.ADE_AnimateDiffLoaderV1Advanced.beta_schedule"]
+         E_092dd1cc: "autoselect" | "avg(sqrt_linear,linear)" | "cosine" | "lcm" | "lcm >> sqrt_linear" | "lcm avg(sqrt_linear,linear)" | "lcm[100_ots]" | "linear (AnimateDiff-SDXL)" | "linear (HotshotXL/default)" | "sqrt" | "sqrt_linear (AnimateDiff)" | "squaredcos_cap_v2" | "use existing"
+         // ["AnimateDiff-Evolved.ADE_CameraPoseBasic.motion_type","AnimateDiff-Evolved.ADE_CameraPoseCombo.motion_type1","AnimateDiff-Evolved.ADE_CameraPoseCombo.motion_type2","AnimateDiff-Evolved.ADE_CameraPoseCombo.motion_type3","AnimateDiff-Evolved.ADE_CameraPoseCombo.motion_type4","AnimateDiff-Evolved.ADE_CameraPoseCombo.motion_type5","AnimateDiff-Evolved.ADE_CameraPoseCombo.motion_type6","AnimateDiff-Evolved.ADE_CameraPoseAdvanced.motion_type1","AnimateDiff-Evolved.ADE_CameraPoseAdvanced.motion_type2","AnimateDiff-Evolved.ADE_CameraPoseAdvanced.motion_type3","AnimateDiff-Evolved.ADE_CameraPoseAdvanced.motion_type4","AnimateDiff-Evolved.ADE_CameraPoseAdvanced.motion_type5","AnimateDiff-Evolved.ADE_CameraPoseAdvanced.motion_type6"]
+         E_849d2970: "Pan Down" | "Pan Left" | "Pan Right" | "Pan Up" | "Roll Anticlockwise" | "Roll Clockwise" | "Static" | "Tilt Down" | "Tilt Left" | "Tilt Right" | "Tilt Up" | "Zoom In" | "Zoom Out"
+         // ["AnimateDiff-Evolved.ADE_InputPIA_PaperPresets.preset"]
+         E_6e63de3c: "Animation (Large Motion)" | "Animation (Medium Motion)" | "Animation (Small Motion)" | "Loop (Large Motion)" | "Loop (Medium Motion)" | "Loop (Small Motion)" | "Style Transfer (Large Motion)" | "Style Transfer (Medium Motion)" | "Style Transfer (Small Motion)"
+         // ["AnimateDiff-Evolved.ADE_AnimateDiffCombine.format"]
+         E_4a59f490: "image/gif" | "image/webp" | "video/av1-webm" | "video/h264-mp4" | "video/h265-mp4" | "video/webm"
          // ["was.BLIP Model Loader.device"]
          E_48c2dd07: "cpu" | "cuda"
          // ["was.Blend Latents.operation"]
@@ -17130,22 +21054,39 @@ declare global {
       }
       export interface HasSingle {
           SEG_ELT_control_net_wrapper: { '_SEG_ELT_control_net_wrapper': ComfyNodeOutput<'SEG_ELT_control_net_wrapper'> } // prettier-ignore
+          ATTENTION_COUPLE_REGION: { '_ATTENTION_COUPLE_REGION': ComfyNodeOutput<'ATTENTION_COUPLE_REGION'> } // prettier-ignore
           TRANSFORMERS_CLASSIFIER: { '_TRANSFORMERS_CLASSIFIER': ComfyNodeOutput<'TRANSFORMERS_CLASSIFIER'> } // prettier-ignore
+          IMAGE_INJECT_OPTIONS: { '_IMAGE_INJECT_OPTIONS': ComfyNodeOutput<'IMAGE_INJECT_OPTIONS'> } // prettier-ignore
+          CONTEXTREF_KEYFRAME: { '_CONTEXTREF_KEYFRAME': ComfyNodeOutput<'CONTEXTREF_KEYFRAME'> } // prettier-ignore
+          NAIVEREUSE_KEYFRAME: { '_NAIVEREUSE_KEYFRAME': ComfyNodeOutput<'NAIVEREUSE_KEYFRAME'> } // prettier-ignore
+          LORA_HOOK_KEYFRAMES: { '_LORA_HOOK_KEYFRAMES': ComfyNodeOutput<'LORA_HOOK_KEYFRAMES'> } // prettier-ignore
           SEG_ELT_crop_region: { '_SEG_ELT_crop_region': ComfyNodeOutput<'SEG_ELT_crop_region'> } // prettier-ignore
           CLIP_VISION_OUTPUT: { '_CLIP_VISION_OUTPUT': ComfyNodeOutput<'CLIP_VISION_OUTPUT'> } // prettier-ignore
           BOOLEAN: { '_BOOLEAN': boolean | ComfyNodeOutput<'BOOLEAN'> } // prettier-ignore
           SEGS_PREPROCESSOR: { '_SEGS_PREPROCESSOR': ComfyNodeOutput<'SEGS_PREPROCESSOR'> } // prettier-ignore
           KSAMPLER_ADVANCED: { '_KSAMPLER_ADVANCED': ComfyNodeOutput<'KSAMPLER_ADVANCED'> } // prettier-ignore
           LATENT_OPERATION: { '_LATENT_OPERATION': ComfyNodeOutput<'LATENT_OPERATION'> } // prettier-ignore
+          MOTION_MODEL_ADE: { '_MOTION_MODEL_ADE': ComfyNodeOutput<'MOTION_MODEL_ADE'> } // prettier-ignore
+          CAMERACTRL_POSES: { '_CAMERACTRL_POSES': ComfyNodeOutput<'CAMERACTRL_POSES'> } // prettier-ignore
           IPADAPTER_PARAMS: { '_IPADAPTER_PARAMS': ComfyNodeOutput<'IPADAPTER_PARAMS'> } // prettier-ignore
           WEIGHTS_STRATEGY: { '_WEIGHTS_STRATEGY': ComfyNodeOutput<'WEIGHTS_STRATEGY'> } // prettier-ignore
           REGIONAL_PROMPTS: { '_REGIONAL_PROMPTS': ComfyNodeOutput<'REGIONAL_PROMPTS'> } // prettier-ignore
           STRING: { '_STRING': string | ComfyNodeOutput<'STRING'> } // prettier-ignore
+          SAMPLE_SETTINGS: { '_SAMPLE_SETTINGS': ComfyNodeOutput<'SAMPLE_SETTINGS'> } // prettier-ignore
+          CONTEXT_OPTIONS: { '_CONTEXT_OPTIONS': ComfyNodeOutput<'CONTEXT_OPTIONS'> } // prettier-ignore
+          CONTEXTREF_MODE: { '_CONTEXTREF_MODE': ComfyNodeOutput<'CONTEXTREF_MODE'> } // prettier-ignore
+          CONTEXTREF_TUNE: { '_CONTEXTREF_TUNE': ComfyNodeOutput<'CONTEXTREF_TUNE'> } // prettier-ignore
           FLOAT: { '_FLOAT': number | ComfyNodeOutput<'FLOAT'> } // prettier-ignore
+          ITERATION_OPTS: { '_ITERATION_OPTS': ComfyNodeOutput<'ITERATION_OPTS'> } // prettier-ignore
+          SIGMA_SCHEDULE: { '_SIGMA_SCHEDULE': ComfyNodeOutput<'SIGMA_SCHEDULE'> } // prettier-ignore
+          CONTEXT_EXTRAS: { '_CONTEXT_EXTRAS': ComfyNodeOutput<'CONTEXT_EXTRAS'> } // prettier-ignore
+          TIMESTEPS_COND: { '_TIMESTEPS_COND': ComfyNodeOutput<'TIMESTEPS_COND'> } // prettier-ignore
+          VALUES_REPLACE: { '_VALUES_REPLACE': ComfyNodeOutput<'VALUES_REPLACE'> } // prettier-ignore
           SAM_PARAMETERS: { '_SAM_PARAMETERS': ComfyNodeOutput<'SAM_PARAMETERS'> } // prettier-ignore
           SCHEDULER_FUNC: { '_SCHEDULER_FUNC': ComfyNodeOutput<'SCHEDULER_FUNC'> } // prettier-ignore
           IPADAPTER_PIPE: { '_IPADAPTER_PIPE': ComfyNodeOutput<'IPADAPTER_PIPE'> } // prettier-ignore
           UPSCALE_MODEL: { '_UPSCALE_MODEL': ComfyNodeOutput<'UPSCALE_MODEL'> } // prettier-ignore
+          WEIGHT_ADJUST: { '_WEIGHT_ADJUST': ComfyNodeOutput<'WEIGHT_ADJUST'> } // prettier-ignore
           CLIPSEG_MODEL: { '_CLIPSEG_MODEL': ComfyNodeOutput<'CLIPSEG_MODEL'> } // prettier-ignore
           POSE_KEYPOINT: { '_POSE_KEYPOINT': ComfyNodeOutput<'POSE_KEYPOINT'> } // prettier-ignore
           BBOX_DETECTOR: { '_BBOX_DETECTOR': ComfyNodeOutput<'BBOX_DETECTOR'> } // prettier-ignore
@@ -17156,26 +21097,44 @@ declare global {
           UPSCALER_HOOK: { '_UPSCALER_HOOK': ComfyNodeOutput<'UPSCALER_HOOK'> } // prettier-ignore
           INT: { '_INT': number | ComfyNodeOutput<'INT'> } // prettier-ignore
           CONDITIONING: { '_CONDITIONING': ComfyNodeOutput<'CONDITIONING'> } // prettier-ignore
+          NOISE_LAYERS: { '_NOISE_LAYERS': ComfyNodeOutput<'NOISE_LAYERS'> } // prettier-ignore
+          IMAGE_INJECT: { '_IMAGE_INJECT': ComfyNodeOutput<'IMAGE_INJECT'> } // prettier-ignore
+          AD_KEYFRAMES: { '_AD_KEYFRAMES': ComfyNodeOutput<'AD_KEYFRAMES'> } // prettier-ignore
           IMAGE_BOUNDS: { '_IMAGE_BOUNDS': ComfyNodeOutput<'IMAGE_BOUNDS'> } // prettier-ignore
           OPTICAL_FLOW: { '_OPTICAL_FLOW': ComfyNodeOutput<'OPTICAL_FLOW'> } // prettier-ignore
           SEG_ELT_bbox: { '_SEG_ELT_bbox': ComfyNodeOutput<'SEG_ELT_bbox'> } // prettier-ignore
           CLIP_VISION: { '_CLIP_VISION': ComfyNodeOutput<'CLIP_VISION'> } // prettier-ignore
           STYLE_MODEL: { '_STYLE_MODEL': ComfyNodeOutput<'STYLE_MODEL'> } // prettier-ignore
           CONTROL_NET: { '_CONTROL_NET': ComfyNodeOutput<'CONTROL_NET'> } // prettier-ignore
+          MOTION_LORA: { '_MOTION_LORA': ComfyNodeOutput<'MOTION_LORA'> } // prettier-ignore
+          ADEAUTOSIZE: { '_ADEAUTOSIZE': ComfyNodeOutput<'ADEAUTOSIZE'> } // prettier-ignore
+          AD_SETTINGS: { '_AD_SETTINGS': ComfyNodeOutput<'AD_SETTINGS'> } // prettier-ignore
           MIDAS_MODEL: { '_MIDAS_MODEL': ComfyNodeOutput<'MIDAS_MODEL'> } // prettier-ignore
           INSIGHTFACE: { '_INSIGHTFACE': ComfyNodeOutput<'INSIGHTFACE'> } // prettier-ignore
           SEGS_HEADER: { '_SEGS_HEADER': ComfyNodeOutput<'SEGS_HEADER'> } // prettier-ignore
           PHOTOMAKER: { '_PHOTOMAKER': ComfyNodeOutput<'PHOTOMAKER'> } // prettier-ignore
+          CUSTOM_CFG: { '_CUSTOM_CFG': ComfyNodeOutput<'CUSTOM_CFG'> } // prettier-ignore
+          CFG_EXTRAS: { '_CFG_EXTRAS': ComfyNodeOutput<'CFG_EXTRAS'> } // prettier-ignore
           BLIP_MODEL: { '_BLIP_MODEL': ComfyNodeOutput<'BLIP_MODEL'> } // prettier-ignore
           BASIC_PIPE: { '_BASIC_PIPE': ComfyNodeOutput<'BASIC_PIPE'> } // prettier-ignore
+          VIEW_OPTS: { '_VIEW_OPTS': ComfyNodeOutput<'VIEW_OPTS'> } // prettier-ignore
+          LORA_HOOK: { '_LORA_HOOK': ComfyNodeOutput<'LORA_HOOK'> } // prettier-ignore
+          PE_ADJUST: { '_PE_ADJUST': ComfyNodeOutput<'PE_ADJUST'> } // prettier-ignore
+          PER_BLOCK: { '_PER_BLOCK': ComfyNodeOutput<'PER_BLOCK'> } // prettier-ignore
+          PIA_INPUT: { '_PIA_INPUT': ComfyNodeOutput<'PIA_INPUT'> } // prettier-ignore
           CROP_DATA: { '_CROP_DATA': ComfyNodeOutput<'CROP_DATA'> } // prettier-ignore
           SAM_MODEL: { '_SAM_MODEL': ComfyNodeOutput<'SAM_MODEL'> } // prettier-ignore
+          FIZZFRAME: { '_FIZZFRAME': ComfyNodeOutput<'FIZZFRAME'> } // prettier-ignore
           IPADAPTER: { '_IPADAPTER': ComfyNodeOutput<'IPADAPTER'> } // prettier-ignore
           RMBGMODEL: { '_RMBGMODEL': ComfyNodeOutput<'RMBGMODEL'> } // prettier-ignore
+          MULTIVAL: { '_MULTIVAL': ComfyNodeOutput<'MULTIVAL'> } // prettier-ignore
+          AD_BLOCK: { '_AD_BLOCK': ComfyNodeOutput<'AD_BLOCK'> } // prettier-ignore
+          M_MODELS: { '_M_MODELS': ComfyNodeOutput<'M_MODELS'> } // prettier-ignore
           TRACKING: { '_TRACKING': ComfyNodeOutput<'TRACKING'> } // prettier-ignore
           UPSCALER: { '_UPSCALER': ComfyNodeOutput<'UPSCALER'> } // prettier-ignore
           KSAMPLER: { '_KSAMPLER': ComfyNodeOutput<'KSAMPLER'> } // prettier-ignore
           SAMPLER: { '_SAMPLER': ComfyNodeOutput<'SAMPLER'> } // prettier-ignore
+          ADEWARN: { '_ADEWARN': ComfyNodeOutput<'ADEWARN'> } // prettier-ignore
           PK_HOOK: { '_PK_HOOK': ComfyNodeOutput<'PK_HOOK'> } // prettier-ignore
           SEG_ELT: { '_SEG_ELT': ComfyNodeOutput<'SEG_ELT'> } // prettier-ignore
           LATENT: { '_LATENT': ComfyNodeOutput<'LATENT'> } // prettier-ignore
@@ -17183,6 +21142,7 @@ declare global {
           SIGMAS: { '_SIGMAS': ComfyNodeOutput<'SIGMAS'> } // prettier-ignore
           GUIDER: { '_GUIDER': ComfyNodeOutput<'GUIDER'> } // prettier-ignore
           WEBCAM: { '_WEBCAM': ComfyNodeOutput<'WEBCAM'> } // prettier-ignore
+          FLOATS: { '_FLOATS': ComfyNodeOutput<'FLOATS'> } // prettier-ignore
           NUMBER: { '_NUMBER': ComfyNodeOutput<'NUMBER'> } // prettier-ignore
           EMBEDS: { '_EMBEDS': ComfyNodeOutput<'EMBEDS'> } // prettier-ignore
           MODEL: { '_MODEL': ComfyNodeOutput<'MODEL'> } // prettier-ignore
@@ -17191,11 +21151,13 @@ declare global {
           AUDIO: { '_AUDIO': ComfyNodeOutput<'AUDIO'> } // prettier-ignore
           CLIP: { '_CLIP': ComfyNodeOutput<'CLIP'> } // prettier-ignore
           MASK: { '_MASK': ComfyNodeOutput<'MASK'> } // prettier-ignore
+          INTS: { '_INTS': ComfyNodeOutput<'INTS'> } // prettier-ignore
           DICT: { '_DICT': ComfyNodeOutput<'DICT'> } // prettier-ignore
           LIST: { '_LIST': ComfyNodeOutput<'LIST'> } // prettier-ignore
           SEED: { '_SEED': ComfyNodeOutput<'SEED'> } // prettier-ignore
           SEGS: { '_SEGS': ComfyNodeOutput<'SEGS'> } // prettier-ignore
           VAE: { '_VAE': ComfyNodeOutput<'VAE'> } // prettier-ignore
+          GIF: { '_GIF': ComfyNodeOutput<'GIF'> } // prettier-ignore
           BUS: { '_BUS': ComfyNodeOutput<'BUS'> } // prettier-ignore
           "*": { '_*': ComfyNodeOutput<'*'> } // prettier-ignore
       }
@@ -17511,7 +21473,7 @@ declare global {
          }
       
          CLIPVisionLoader: {
-            clip_name: { kind: 'enum', type: Union['E_LoraName'] }
+            clip_name: { kind: 'enum', type: Union['E_daae7c6f'] }
          }
       
          VAEDecodeTiled: {
@@ -18773,6 +22735,1288 @@ declare global {
             height: { kind: 'number', type: number }
             length: { kind: 'number', type: number }
             batch_size: { kind: 'number', type: number }
+         }
+      
+         "AnimateDiff-Evolved.ADE_AnimateDiffLoRALoader": {
+            name: { kind: 'enum', type: Union['E_LoraName'] }
+            strength: { kind: 'number', type: number }
+            // prev_motion_lora: { kind: 'object', type: MOTION_LORA }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_AnimateDiffSamplingSettings": {
+            batch_offset: { kind: 'number', type: number }
+            noise_type: { kind: 'enum', type: Union['E_df934b3b'] }
+            seed_gen: { kind: 'enum', type: Union['E_73f92fde'] }
+            seed_offset: { kind: 'number', type: number }
+            // noise_layers: { kind: 'object', type: NOISE_LAYERS }
+            // iteration_opts: { kind: 'object', type: ITERATION_OPTS }
+            seed_override: { kind: 'number', type: number }
+            adapt_denoise_steps: { kind: 'boolean', type: boolean }
+            // custom_cfg: { kind: 'object', type: CUSTOM_CFG }
+            // sigma_schedule: { kind: 'object', type: SIGMA_SCHEDULE }
+            // image_inject: { kind: 'object', type: IMAGE_INJECT }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_AnimateDiffKeyframe": {
+            start_percent: { kind: 'number', type: number }
+            // prev_ad_keyframes: { kind: 'object', type: AD_KEYFRAMES }
+            // scale_multival: { kind: 'object', type: MULTIVAL }
+            // effect_multival: { kind: 'object', type: MULTIVAL }
+            inherit_missing: { kind: 'boolean', type: boolean }
+            guarantee_steps: { kind: 'number', type: number }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_MultivalDynamic": {
+            float_val: { kind: 'number', type: number }
+            // mask_optional: { kind: 'object', type: MASK }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_MultivalDynamicFloatInput": {
+            float_val: { kind: 'number', type: number }
+            // mask_optional: { kind: 'object', type: MASK }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_MultivalDynamicFloats": {
+            // floats: { kind: 'object', type: FLOATS }
+            // mask_optional: { kind: 'object', type: MASK }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_MultivalScaledMask": {
+            min_float_val: { kind: 'number', type: number }
+            max_float_val: { kind: 'number', type: number }
+            // mask: { kind: 'object', type: MASK }
+            scaling: { kind: 'enum', type: Union['E_e981387a'] }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_MultivalConvertToMask": {
+            // multival: { kind: 'object', type: MULTIVAL }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_StandardStaticContextOptions": {
+            context_length: { kind: 'number', type: number }
+            context_overlap: { kind: 'number', type: number }
+            fuse_method: { kind: 'enum', type: Union['E_68a33fb1'] }
+            use_on_equal_length: { kind: 'boolean', type: boolean }
+            start_percent: { kind: 'number', type: number }
+            guarantee_steps: { kind: 'number', type: number }
+            // prev_context: { kind: 'object', type: CONTEXT_OPTIONS }
+            // view_opts: { kind: 'object', type: VIEW_OPTS }
+         }
+      
+         "AnimateDiff-Evolved.ADE_StandardUniformContextOptions": {
+            context_length: { kind: 'number', type: number }
+            context_stride: { kind: 'number', type: number }
+            context_overlap: { kind: 'number', type: number }
+            fuse_method: { kind: 'enum', type: Union['E_07ba75c0'] }
+            use_on_equal_length: { kind: 'boolean', type: boolean }
+            start_percent: { kind: 'number', type: number }
+            guarantee_steps: { kind: 'number', type: number }
+            // prev_context: { kind: 'object', type: CONTEXT_OPTIONS }
+            // view_opts: { kind: 'object', type: VIEW_OPTS }
+         }
+      
+         "AnimateDiff-Evolved.ADE_LoopedUniformContextOptions": {
+            context_length: { kind: 'number', type: number }
+            context_stride: { kind: 'number', type: number }
+            context_overlap: { kind: 'number', type: number }
+            closed_loop: { kind: 'boolean', type: boolean }
+            fuse_method: { kind: 'enum', type: Union['E_07ba75c0'] }
+            use_on_equal_length: { kind: 'boolean', type: boolean }
+            start_percent: { kind: 'number', type: number }
+            guarantee_steps: { kind: 'number', type: number }
+            // prev_context: { kind: 'object', type: CONTEXT_OPTIONS }
+            // view_opts: { kind: 'object', type: VIEW_OPTS }
+         }
+      
+         "AnimateDiff-Evolved.ADE_ViewsOnlyContextOptions": {
+            // view_opts_req: { kind: 'object', type: VIEW_OPTS }
+            start_percent: { kind: 'number', type: number }
+            guarantee_steps: { kind: 'number', type: number }
+            // prev_context: { kind: 'object', type: CONTEXT_OPTIONS }
+         }
+      
+         "AnimateDiff-Evolved.ADE_BatchedContextOptions": {
+            context_length: { kind: 'number', type: number }
+            start_percent: { kind: 'number', type: number }
+            guarantee_steps: { kind: 'number', type: number }
+            // prev_context: { kind: 'object', type: CONTEXT_OPTIONS }
+         }
+      
+         "AnimateDiff-Evolved.ADE_AnimateDiffUniformContextOptions": {
+            context_length: { kind: 'number', type: number }
+            context_stride: { kind: 'number', type: number }
+            context_overlap: { kind: 'number', type: number }
+            context_schedule: { kind: 'enum', type: Union['E_8146160c'] }
+            closed_loop: { kind: 'boolean', type: boolean }
+            fuse_method: { kind: 'enum', type: Union['E_07ba75c0'] }
+            use_on_equal_length: { kind: 'boolean', type: boolean }
+            start_percent: { kind: 'number', type: number }
+            guarantee_steps: { kind: 'number', type: number }
+            // prev_context: { kind: 'object', type: CONTEXT_OPTIONS }
+            // view_opts: { kind: 'object', type: VIEW_OPTS }
+            // deprecation_warning: { kind: 'object', type: ADEWARN }
+         }
+      
+         "AnimateDiff-Evolved.ADE_VisualizeContextOptionsK": {
+            // model: { kind: 'object', type: MODEL }
+            // context_opts: { kind: 'object', type: CONTEXT_OPTIONS }
+            sampler_name: { kind: 'enum', type: Union['E_SamplerName'] }
+            scheduler: { kind: 'enum', type: Union['E_SchedulerName'] }
+            visual_width: { kind: 'number', type: number }
+            latents_length: { kind: 'number', type: number }
+            steps: { kind: 'number', type: number }
+            denoise: { kind: 'number', type: number }
+         }
+      
+         "AnimateDiff-Evolved.ADE_VisualizeContextOptionsKAdv": {
+            // model: { kind: 'object', type: MODEL }
+            // context_opts: { kind: 'object', type: CONTEXT_OPTIONS }
+            sampler_name: { kind: 'enum', type: Union['E_SamplerName'] }
+            scheduler: { kind: 'enum', type: Union['E_SchedulerName'] }
+            visual_width: { kind: 'number', type: number }
+            latents_length: { kind: 'number', type: number }
+            steps: { kind: 'number', type: number }
+            start_step: { kind: 'number', type: number }
+            end_step: { kind: 'number', type: number }
+         }
+      
+         "AnimateDiff-Evolved.ADE_VisualizeContextOptionsSCustom": {
+            // model: { kind: 'object', type: MODEL }
+            // context_opts: { kind: 'object', type: CONTEXT_OPTIONS }
+            // sigmas: { kind: 'object', type: SIGMAS }
+            visual_width: { kind: 'number', type: number }
+            latents_length: { kind: 'number', type: number }
+         }
+      
+         "AnimateDiff-Evolved.ADE_StandardStaticViewOptions": {
+            view_length: { kind: 'number', type: number }
+            view_overlap: { kind: 'number', type: number }
+            fuse_method: { kind: 'enum', type: Union['E_07ba75c0'] }
+         }
+      
+         "AnimateDiff-Evolved.ADE_StandardUniformViewOptions": {
+            view_length: { kind: 'number', type: number }
+            view_stride: { kind: 'number', type: number }
+            view_overlap: { kind: 'number', type: number }
+            fuse_method: { kind: 'enum', type: Union['E_07ba75c0'] }
+         }
+      
+         "AnimateDiff-Evolved.ADE_LoopedUniformViewOptions": {
+            view_length: { kind: 'number', type: number }
+            view_stride: { kind: 'number', type: number }
+            view_overlap: { kind: 'number', type: number }
+            closed_loop: { kind: 'boolean', type: boolean }
+            fuse_method: { kind: 'enum', type: Union['E_07ba75c0'] }
+            use_on_equal_length: { kind: 'boolean', type: boolean }
+         }
+      
+         "AnimateDiff-Evolved.ADE_ContextExtras_Set": {
+            // context_opts: { kind: 'object', type: CONTEXT_OPTIONS }
+            // context_extras: { kind: 'object', type: CONTEXT_EXTRAS }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_ContextExtras_ContextRef": {
+            // prev_extras: { kind: 'object', type: CONTEXT_EXTRAS }
+            // strength_multival: { kind: 'object', type: MULTIVAL }
+            // contextref_mode: { kind: 'object', type: CONTEXTREF_MODE }
+            // contextref_tune: { kind: 'object', type: CONTEXTREF_TUNE }
+            // contextref_kf: { kind: 'object', type: CONTEXTREF_KEYFRAME }
+            start_percent: { kind: 'number', type: number }
+            end_percent: { kind: 'number', type: number }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_ModeFirst": {
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_ModeSliding": {
+            sliding_width: { kind: 'number', type: number }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_ModeIndexes": {
+            switch_on_idxs: { kind: 'string', type: string }
+            always_include_0: { kind: 'boolean', type: boolean }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_TuneAttn": {
+            attn_style_fidelity: { kind: 'number', type: number }
+            attn_ref_weight: { kind: 'number', type: number }
+            attn_strength: { kind: 'number', type: number }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_TuneAttnAdain": {
+            attn_style_fidelity: { kind: 'number', type: number }
+            attn_ref_weight: { kind: 'number', type: number }
+            attn_strength: { kind: 'number', type: number }
+            adain_style_fidelity: { kind: 'number', type: number }
+            adain_ref_weight: { kind: 'number', type: number }
+            adain_strength: { kind: 'number', type: number }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_Keyframe": {
+            // prev_kf: { kind: 'object', type: CONTEXTREF_KEYFRAME }
+            // mult_multival: { kind: 'object', type: MULTIVAL }
+            // mode_replace: { kind: 'object', type: CONTEXTREF_MODE }
+            // tune_replace: { kind: 'object', type: CONTEXTREF_TUNE }
+            mult: { kind: 'number', type: number }
+            start_percent: { kind: 'number', type: number }
+            guarantee_steps: { kind: 'number', type: number }
+            inherit_missing: { kind: 'boolean', type: boolean }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_KeyframeInterpolation": {
+            start_percent: { kind: 'number', type: number }
+            end_percent: { kind: 'number', type: number }
+            mult_start: { kind: 'number', type: number }
+            mult_end: { kind: 'number', type: number }
+            interpolation: { kind: 'enum', type: Union['E_7c7d86e6'] }
+            intervals: { kind: 'number', type: number }
+            inherit_missing: { kind: 'boolean', type: boolean }
+            print_keyframes: { kind: 'boolean', type: boolean }
+            // prev_kf: { kind: 'object', type: CONTEXTREF_KEYFRAME }
+            // mult_multival: { kind: 'object', type: MULTIVAL }
+            // mode_replace: { kind: 'object', type: CONTEXTREF_MODE }
+            // tune_replace: { kind: 'object', type: CONTEXTREF_TUNE }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_KeyframeFromList": {
+            mults_float: { kind: 'number', type: number }
+            start_percent: { kind: 'number', type: number }
+            end_percent: { kind: 'number', type: number }
+            inherit_missing: { kind: 'boolean', type: boolean }
+            print_keyframes: { kind: 'boolean', type: boolean }
+            // prev_kf: { kind: 'object', type: CONTEXTREF_KEYFRAME }
+            // mult_multival: { kind: 'object', type: MULTIVAL }
+            // mode_replace: { kind: 'object', type: CONTEXTREF_MODE }
+            // tune_replace: { kind: 'object', type: CONTEXTREF_TUNE }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_ContextExtras_NaiveReuse": {
+            // prev_extras: { kind: 'object', type: CONTEXT_EXTRAS }
+            // strength_multival: { kind: 'object', type: MULTIVAL }
+            // naivereuse_kf: { kind: 'object', type: NAIVEREUSE_KEYFRAME }
+            start_percent: { kind: 'number', type: number }
+            end_percent: { kind: 'number', type: number }
+            weighted_mean: { kind: 'number', type: number }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_ContextExtras_NaiveReuse_Keyframe": {
+            // prev_kf: { kind: 'object', type: NAIVEREUSE_KEYFRAME }
+            // mult_multival: { kind: 'object', type: MULTIVAL }
+            mult: { kind: 'number', type: number }
+            start_percent: { kind: 'number', type: number }
+            guarantee_steps: { kind: 'number', type: number }
+            inherit_missing: { kind: 'boolean', type: boolean }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_ContextExtras_NaiveReuse_KeyframeInterpolation": {
+            start_percent: { kind: 'number', type: number }
+            end_percent: { kind: 'number', type: number }
+            mult_start: { kind: 'number', type: number }
+            mult_end: { kind: 'number', type: number }
+            interpolation: { kind: 'enum', type: Union['E_7c7d86e6'] }
+            intervals: { kind: 'number', type: number }
+            inherit_missing: { kind: 'boolean', type: boolean }
+            print_keyframes: { kind: 'boolean', type: boolean }
+            // prev_kf: { kind: 'object', type: NAIVEREUSE_KEYFRAME }
+            // mult_multival: { kind: 'object', type: MULTIVAL }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_ContextExtras_NaiveReuse_KeyframeFromList": {
+            mults_float: { kind: 'number', type: number }
+            start_percent: { kind: 'number', type: number }
+            end_percent: { kind: 'number', type: number }
+            inherit_missing: { kind: 'boolean', type: boolean }
+            print_keyframes: { kind: 'boolean', type: boolean }
+            // prev_kf: { kind: 'object', type: NAIVEREUSE_KEYFRAME }
+            // mult_multival: { kind: 'object', type: MULTIVAL }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_IterationOptsDefault": {
+            iterations: { kind: 'number', type: number }
+            iter_batch_offset: { kind: 'number', type: number }
+            iter_seed_offset: { kind: 'number', type: number }
+         }
+      
+         "AnimateDiff-Evolved.ADE_IterationOptsFreeInit": {
+            iterations: { kind: 'number', type: number }
+            filter: { kind: 'enum', type: Union['E_c2afaefb'] }
+            d_s: { kind: 'number', type: number }
+            d_t: { kind: 'number', type: number }
+            n_butterworth: { kind: 'number', type: number }
+            sigma_step: { kind: 'number', type: number }
+            apply_to_1st_iter: { kind: 'boolean', type: boolean }
+            init_type: { kind: 'enum', type: Union['E_694440e4'] }
+            iter_batch_offset: { kind: 'number', type: number }
+            iter_seed_offset: { kind: 'number', type: number }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_RegisterLoraHook": {
+            // model: { kind: 'object', type: MODEL }
+            // clip: { kind: 'object', type: CLIP }
+            lora_name: { kind: 'enum', type: Union['E_LoraName'] }
+            strength_model: { kind: 'number', type: number }
+            strength_clip: { kind: 'number', type: number }
+         }
+      
+         "AnimateDiff-Evolved.ADE_RegisterLoraHookModelOnly": {
+            // model: { kind: 'object', type: MODEL }
+            lora_name: { kind: 'enum', type: Union['E_LoraName'] }
+            strength_model: { kind: 'number', type: number }
+         }
+      
+         "AnimateDiff-Evolved.ADE_RegisterModelAsLoraHook": {
+            // model: { kind: 'object', type: MODEL }
+            // clip: { kind: 'object', type: CLIP }
+            ckpt_name: { kind: 'enum', type: Union['E_CkptName'] }
+            strength_model: { kind: 'number', type: number }
+            strength_clip: { kind: 'number', type: number }
+         }
+      
+         "AnimateDiff-Evolved.ADE_RegisterModelAsLoraHookModelOnly": {
+            // model: { kind: 'object', type: MODEL }
+            ckpt_name: { kind: 'enum', type: Union['E_CkptName'] }
+            strength_model: { kind: 'number', type: number }
+         }
+      
+         "AnimateDiff-Evolved.ADE_CombineLoraHooks": {
+            // lora_hook_A: { kind: 'object', type: LORA_HOOK }
+            // lora_hook_B: { kind: 'object', type: LORA_HOOK }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_CombineLoraHooksFour": {
+            // lora_hook_A: { kind: 'object', type: LORA_HOOK }
+            // lora_hook_B: { kind: 'object', type: LORA_HOOK }
+            // lora_hook_C: { kind: 'object', type: LORA_HOOK }
+            // lora_hook_D: { kind: 'object', type: LORA_HOOK }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_CombineLoraHooksEight": {
+            // lora_hook_A: { kind: 'object', type: LORA_HOOK }
+            // lora_hook_B: { kind: 'object', type: LORA_HOOK }
+            // lora_hook_C: { kind: 'object', type: LORA_HOOK }
+            // lora_hook_D: { kind: 'object', type: LORA_HOOK }
+            // lora_hook_E: { kind: 'object', type: LORA_HOOK }
+            // lora_hook_F: { kind: 'object', type: LORA_HOOK }
+            // lora_hook_G: { kind: 'object', type: LORA_HOOK }
+            // lora_hook_H: { kind: 'object', type: LORA_HOOK }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_SetLoraHookKeyframe": {
+            // lora_hook: { kind: 'object', type: LORA_HOOK }
+            // hook_kf: { kind: 'object', type: LORA_HOOK_KEYFRAMES }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_AttachLoraHookToCLIP": {
+            // clip: { kind: 'object', type: CLIP }
+            // lora_hook: { kind: 'object', type: LORA_HOOK }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_LoraHookKeyframe": {
+            strength_model: { kind: 'number', type: number }
+            start_percent: { kind: 'number', type: number }
+            guarantee_steps: { kind: 'number', type: number }
+            // prev_hook_kf: { kind: 'object', type: LORA_HOOK_KEYFRAMES }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_LoraHookKeyframeInterpolation": {
+            start_percent: { kind: 'number', type: number }
+            end_percent: { kind: 'number', type: number }
+            strength_start: { kind: 'number', type: number }
+            strength_end: { kind: 'number', type: number }
+            interpolation: { kind: 'enum', type: Union['E_7c7d86e6'] }
+            intervals: { kind: 'number', type: number }
+            print_keyframes: { kind: 'boolean', type: boolean }
+            // prev_hook_kf: { kind: 'object', type: LORA_HOOK_KEYFRAMES }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_LoraHookKeyframeFromStrengthList": {
+            strengths_float: { kind: 'number', type: number }
+            start_percent: { kind: 'number', type: number }
+            end_percent: { kind: 'number', type: number }
+            print_keyframes: { kind: 'boolean', type: boolean }
+            // prev_hook_kf: { kind: 'object', type: LORA_HOOK_KEYFRAMES }
+         }
+      
+         "AnimateDiff-Evolved.ADE_AttachLoraHookToConditioning": {
+            // conditioning: { kind: 'object', type: CONDITIONING }
+            // lora_hook: { kind: 'object', type: LORA_HOOK }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_PairedConditioningSetMask": {
+            // positive_ADD: { kind: 'object', type: CONDITIONING }
+            // negative_ADD: { kind: 'object', type: CONDITIONING }
+            strength: { kind: 'number', type: number }
+            set_cond_area: { kind: 'enum', type: Union['E_046ed3ef'] }
+            // opt_mask: { kind: 'object', type: MASK }
+            // opt_lora_hook: { kind: 'object', type: LORA_HOOK }
+            // opt_timesteps: { kind: 'object', type: TIMESTEPS_COND }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_ConditioningSetMask": {
+            // cond_ADD: { kind: 'object', type: CONDITIONING }
+            strength: { kind: 'number', type: number }
+            set_cond_area: { kind: 'enum', type: Union['E_046ed3ef'] }
+            // opt_mask: { kind: 'object', type: MASK }
+            // opt_lora_hook: { kind: 'object', type: LORA_HOOK }
+            // opt_timesteps: { kind: 'object', type: TIMESTEPS_COND }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_PairedConditioningSetMaskAndCombine": {
+            // positive: { kind: 'object', type: CONDITIONING }
+            // negative: { kind: 'object', type: CONDITIONING }
+            // positive_ADD: { kind: 'object', type: CONDITIONING }
+            // negative_ADD: { kind: 'object', type: CONDITIONING }
+            strength: { kind: 'number', type: number }
+            set_cond_area: { kind: 'enum', type: Union['E_046ed3ef'] }
+            // opt_mask: { kind: 'object', type: MASK }
+            // opt_lora_hook: { kind: 'object', type: LORA_HOOK }
+            // opt_timesteps: { kind: 'object', type: TIMESTEPS_COND }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_ConditioningSetMaskAndCombine": {
+            // cond: { kind: 'object', type: CONDITIONING }
+            // cond_ADD: { kind: 'object', type: CONDITIONING }
+            strength: { kind: 'number', type: number }
+            set_cond_area: { kind: 'enum', type: Union['E_046ed3ef'] }
+            // opt_mask: { kind: 'object', type: MASK }
+            // opt_lora_hook: { kind: 'object', type: LORA_HOOK }
+            // opt_timesteps: { kind: 'object', type: TIMESTEPS_COND }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_PairedConditioningSetUnmaskedAndCombine": {
+            // positive: { kind: 'object', type: CONDITIONING }
+            // negative: { kind: 'object', type: CONDITIONING }
+            // positive_DEFAULT: { kind: 'object', type: CONDITIONING }
+            // negative_DEFAULT: { kind: 'object', type: CONDITIONING }
+            // opt_lora_hook: { kind: 'object', type: LORA_HOOK }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_ConditioningSetUnmaskedAndCombine": {
+            // cond: { kind: 'object', type: CONDITIONING }
+            // cond_DEFAULT: { kind: 'object', type: CONDITIONING }
+            // opt_lora_hook: { kind: 'object', type: LORA_HOOK }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_PairedConditioningCombine": {
+            // positive_A: { kind: 'object', type: CONDITIONING }
+            // negative_A: { kind: 'object', type: CONDITIONING }
+            // positive_B: { kind: 'object', type: CONDITIONING }
+            // negative_B: { kind: 'object', type: CONDITIONING }
+         }
+      
+         "AnimateDiff-Evolved.ADE_ConditioningCombine": {
+            // cond_A: { kind: 'object', type: CONDITIONING }
+            // cond_B: { kind: 'object', type: CONDITIONING }
+         }
+      
+         "AnimateDiff-Evolved.ADE_TimestepsConditioning": {
+            start_percent: { kind: 'number', type: number }
+            end_percent: { kind: 'number', type: number }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_NoiseLayerAdd": {
+            batch_offset: { kind: 'number', type: number }
+            noise_type: { kind: 'enum', type: Union['E_df934b3b'] }
+            seed_gen_override: { kind: 'enum', type: Union['E_b5e69c34'] }
+            seed_offset: { kind: 'number', type: number }
+            noise_weight: { kind: 'number', type: number }
+            // prev_noise_layers: { kind: 'object', type: NOISE_LAYERS }
+            // mask_optional: { kind: 'object', type: MASK }
+            seed_override: { kind: 'number', type: number }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_NoiseLayerAddWeighted": {
+            batch_offset: { kind: 'number', type: number }
+            noise_type: { kind: 'enum', type: Union['E_df934b3b'] }
+            seed_gen_override: { kind: 'enum', type: Union['E_b5e69c34'] }
+            seed_offset: { kind: 'number', type: number }
+            noise_weight: { kind: 'number', type: number }
+            balance_multiplier: { kind: 'number', type: number }
+            // prev_noise_layers: { kind: 'object', type: NOISE_LAYERS }
+            // mask_optional: { kind: 'object', type: MASK }
+            seed_override: { kind: 'number', type: number }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_NoiseLayerReplace": {
+            batch_offset: { kind: 'number', type: number }
+            noise_type: { kind: 'enum', type: Union['E_df934b3b'] }
+            seed_gen_override: { kind: 'enum', type: Union['E_b5e69c34'] }
+            seed_offset: { kind: 'number', type: number }
+            // prev_noise_layers: { kind: 'object', type: NOISE_LAYERS }
+            // mask_optional: { kind: 'object', type: MASK }
+            seed_override: { kind: 'number', type: number }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_AnimateDiffSettings": {
+            // pe_adjust: { kind: 'object', type: PE_ADJUST }
+            // weight_adjust: { kind: 'object', type: WEIGHT_ADJUST }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_AdjustPESweetspotStretch": {
+            sweetspot: { kind: 'number', type: number }
+            new_sweetspot: { kind: 'number', type: number }
+            print_adjustment: { kind: 'boolean', type: boolean }
+            // prev_pe_adjust: { kind: 'object', type: PE_ADJUST }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_AdjustPEFullStretch": {
+            pe_stretch: { kind: 'number', type: number }
+            print_adjustment: { kind: 'boolean', type: boolean }
+            // prev_pe_adjust: { kind: 'object', type: PE_ADJUST }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_AdjustPEManual": {
+            cap_initial_pe_length: { kind: 'number', type: number }
+            interpolate_pe_to_length: { kind: 'number', type: number }
+            initial_pe_idx_offset: { kind: 'number', type: number }
+            final_pe_idx_offset: { kind: 'number', type: number }
+            print_adjustment: { kind: 'boolean', type: boolean }
+            // prev_pe_adjust: { kind: 'object', type: PE_ADJUST }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_AdjustWeightAllAdd": {
+            all_ADD: { kind: 'number', type: number }
+            print_adjustment: { kind: 'boolean', type: boolean }
+            // prev_weight_adjust: { kind: 'object', type: WEIGHT_ADJUST }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_AdjustWeightAllMult": {
+            all_MULT: { kind: 'number', type: number }
+            print_adjustment: { kind: 'boolean', type: boolean }
+            // prev_weight_adjust: { kind: 'object', type: WEIGHT_ADJUST }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_AdjustWeightIndivAdd": {
+            pe_ADD: { kind: 'number', type: number }
+            attn_ADD: { kind: 'number', type: number }
+            other_ADD: { kind: 'number', type: number }
+            print_adjustment: { kind: 'boolean', type: boolean }
+            // prev_weight_adjust: { kind: 'object', type: WEIGHT_ADJUST }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_AdjustWeightIndivMult": {
+            pe_MULT: { kind: 'number', type: number }
+            attn_MULT: { kind: 'number', type: number }
+            other_MULT: { kind: 'number', type: number }
+            print_adjustment: { kind: 'boolean', type: boolean }
+            // prev_weight_adjust: { kind: 'object', type: WEIGHT_ADJUST }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_AdjustWeightIndivAttnAdd": {
+            pe_ADD: { kind: 'number', type: number }
+            attn_ADD: { kind: 'number', type: number }
+            attn_q_ADD: { kind: 'number', type: number }
+            attn_k_ADD: { kind: 'number', type: number }
+            attn_v_ADD: { kind: 'number', type: number }
+            attn_out_weight_ADD: { kind: 'number', type: number }
+            attn_out_bias_ADD: { kind: 'number', type: number }
+            other_ADD: { kind: 'number', type: number }
+            print_adjustment: { kind: 'boolean', type: boolean }
+            // prev_weight_adjust: { kind: 'object', type: WEIGHT_ADJUST }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_AdjustWeightIndivAttnMult": {
+            pe_MULT: { kind: 'number', type: number }
+            attn_MULT: { kind: 'number', type: number }
+            attn_q_MULT: { kind: 'number', type: number }
+            attn_k_MULT: { kind: 'number', type: number }
+            attn_v_MULT: { kind: 'number', type: number }
+            attn_out_weight_MULT: { kind: 'number', type: number }
+            attn_out_bias_MULT: { kind: 'number', type: number }
+            other_MULT: { kind: 'number', type: number }
+            print_adjustment: { kind: 'boolean', type: boolean }
+            // prev_weight_adjust: { kind: 'object', type: WEIGHT_ADJUST }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_CustomCFGSimple": {
+            cfg: { kind: 'number', type: number }
+            // cfg_extras: { kind: 'object', type: CFG_EXTRAS }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_CustomCFG": {
+            // cfg_multival: { kind: 'object', type: MULTIVAL }
+            // cfg_extras: { kind: 'object', type: CFG_EXTRAS }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_CustomCFGKeyframeSimple": {
+            cfg: { kind: 'number', type: number }
+            start_percent: { kind: 'number', type: number }
+            guarantee_steps: { kind: 'number', type: number }
+            // prev_custom_cfg: { kind: 'object', type: CUSTOM_CFG }
+            // cfg_extras: { kind: 'object', type: CFG_EXTRAS }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_CustomCFGKeyframe": {
+            // cfg_multival: { kind: 'object', type: MULTIVAL }
+            start_percent: { kind: 'number', type: number }
+            guarantee_steps: { kind: 'number', type: number }
+            // prev_custom_cfg: { kind: 'object', type: CUSTOM_CFG }
+            // cfg_extras: { kind: 'object', type: CFG_EXTRAS }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_CustomCFGKeyframeInterpolation": {
+            start_percent: { kind: 'number', type: number }
+            end_percent: { kind: 'number', type: number }
+            cfg_start: { kind: 'number', type: number }
+            cfg_end: { kind: 'number', type: number }
+            interpolation: { kind: 'enum', type: Union['E_7c7d86e6'] }
+            intervals: { kind: 'number', type: number }
+            print_keyframes: { kind: 'boolean', type: boolean }
+            // prev_custom_cfg: { kind: 'object', type: CUSTOM_CFG }
+            // cfg_extras: { kind: 'object', type: CFG_EXTRAS }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_CustomCFGKeyframeFromList": {
+            cfgs_float: { kind: 'number', type: number }
+            start_percent: { kind: 'number', type: number }
+            end_percent: { kind: 'number', type: number }
+            print_keyframes: { kind: 'boolean', type: boolean }
+            // prev_custom_cfg: { kind: 'object', type: CUSTOM_CFG }
+            // cfg_extras: { kind: 'object', type: CFG_EXTRAS }
+         }
+      
+         "AnimateDiff-Evolved.ADE_CFGExtrasPAGSimple": {
+            scale: { kind: 'number', type: number }
+            // prev_extras: { kind: 'object', type: CFG_EXTRAS }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_CFGExtrasPAG": {
+            // scale_multival: { kind: 'object', type: MULTIVAL }
+            // prev_extras: { kind: 'object', type: CFG_EXTRAS }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_CFGExtrasRescaleCFGSimple": {
+            multiplier: { kind: 'number', type: number }
+            // prev_extras: { kind: 'object', type: CFG_EXTRAS }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_CFGExtrasRescaleCFG": {
+            // mult_multival: { kind: 'object', type: MULTIVAL }
+            // prev_extras: { kind: 'object', type: CFG_EXTRAS }
+         }
+      
+         "AnimateDiff-Evolved.ADE_SigmaSchedule": {
+            beta_schedule: { kind: 'enum', type: Union['E_851da0f5'] }
+         }
+      
+         "AnimateDiff-Evolved.ADE_RawSigmaSchedule": {
+            raw_beta_schedule: { kind: 'enum', type: Union['E_0d50dafa'] }
+            linear_start: { kind: 'number', type: number }
+            linear_end: { kind: 'number', type: number }
+            sampling: { kind: 'enum', type: Union['E_7c132641'] }
+            lcm_original_timesteps: { kind: 'number', type: number }
+            lcm_zsnr: { kind: 'boolean', type: boolean }
+         }
+      
+         "AnimateDiff-Evolved.ADE_SigmaScheduleWeightedAverage": {
+            // schedule_A: { kind: 'object', type: SIGMA_SCHEDULE }
+            // schedule_B: { kind: 'object', type: SIGMA_SCHEDULE }
+            weight_A: { kind: 'number', type: number }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_SigmaScheduleWeightedAverageInterp": {
+            // schedule_A: { kind: 'object', type: SIGMA_SCHEDULE }
+            // schedule_B: { kind: 'object', type: SIGMA_SCHEDULE }
+            weight_A_Start: { kind: 'number', type: number }
+            weight_A_End: { kind: 'number', type: number }
+            interpolation: { kind: 'enum', type: Union['E_7c7d86e6'] }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_SigmaScheduleSplitAndCombine": {
+            // schedule_Start: { kind: 'object', type: SIGMA_SCHEDULE }
+            // schedule_End: { kind: 'object', type: SIGMA_SCHEDULE }
+            idx_split_percent: { kind: 'number', type: number }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_SigmaScheduleToSigmas": {
+            // sigma_schedule: { kind: 'object', type: SIGMA_SCHEDULE }
+            scheduler: { kind: 'enum', type: Union['E_SchedulerName'] }
+            steps: { kind: 'number', type: number }
+            denoise: { kind: 'number', type: number }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_NoisedImageInjection": {
+            // image: { kind: 'object', type: IMAGE }
+            // vae: { kind: 'object', type: VAE }
+            // mask_opt: { kind: 'object', type: MASK }
+            invert_mask: { kind: 'boolean', type: boolean }
+            resize_image: { kind: 'boolean', type: boolean }
+            start_percent: { kind: 'number', type: number }
+            guarantee_steps: { kind: 'number', type: number }
+            // img_inject_opts: { kind: 'object', type: IMAGE_INJECT_OPTIONS }
+            // strength_multival: { kind: 'object', type: MULTIVAL }
+            // prev_image_inject: { kind: 'object', type: IMAGE_INJECT }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_NoisedImageInjectOptions": {
+            composite_x: { kind: 'number', type: number }
+            composite_y: { kind: 'number', type: number }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_PromptScheduling": {
+            prompts: { kind: 'string', type: string }
+            // clip: { kind: 'object', type: CLIP }
+            prepend_text: { kind: 'string', type: string }
+            append_text: { kind: 'string', type: string }
+            // values_replace: { kind: 'object', type: VALUES_REPLACE }
+            print_schedule: { kind: 'boolean', type: boolean }
+            max_length: { kind: 'number', type: number }
+            tensor_interp: { kind: 'enum', type: Union['E_a154f844'] }
+         }
+      
+         "AnimateDiff-Evolved.ADE_PromptSchedulingLatents": {
+            prompts: { kind: 'string', type: string }
+            // clip: { kind: 'object', type: CLIP }
+            // latent: { kind: 'object', type: LATENT }
+            prepend_text: { kind: 'string', type: string }
+            append_text: { kind: 'string', type: string }
+            // values_replace: { kind: 'object', type: VALUES_REPLACE }
+            print_schedule: { kind: 'boolean', type: boolean }
+            tensor_interp: { kind: 'enum', type: Union['E_a154f844'] }
+         }
+      
+         "AnimateDiff-Evolved.ADE_ValueScheduling": {
+            values: { kind: 'string', type: string }
+            print_schedule: { kind: 'boolean', type: boolean }
+            max_length: { kind: 'number', type: number }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_ValueSchedulingLatents": {
+            values: { kind: 'string', type: string }
+            // latent: { kind: 'object', type: LATENT }
+            print_schedule: { kind: 'boolean', type: boolean }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_ValuesReplace": {
+            value_key: { kind: 'string', type: string }
+            // floats: { kind: 'object', type: FLOATS }
+            // prev_replace: { kind: 'object', type: VALUES_REPLACE }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_FloatToFloats": {
+            FLOAT: { kind: 'number', type: number }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_ADBlockCombo": {
+            // effect: { kind: 'object', type: MULTIVAL }
+            // scale: { kind: 'object', type: MULTIVAL }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_ADBlockIndiv": {
+            // effect: { kind: 'object', type: MULTIVAL }
+            // scale_0: { kind: 'object', type: MULTIVAL }
+            // scale_1: { kind: 'object', type: MULTIVAL }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_PerBlockHighLevel": {
+            // down: { kind: 'object', type: AD_BLOCK }
+            // mid: { kind: 'object', type: AD_BLOCK }
+            // up: { kind: 'object', type: AD_BLOCK }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_PerBlock_SD15_MidLevel": {
+            // down_0: { kind: 'object', type: AD_BLOCK }
+            // down_1: { kind: 'object', type: AD_BLOCK }
+            // down_2: { kind: 'object', type: AD_BLOCK }
+            // down_3: { kind: 'object', type: AD_BLOCK }
+            // mid: { kind: 'object', type: AD_BLOCK }
+            // up_0: { kind: 'object', type: AD_BLOCK }
+            // up_1: { kind: 'object', type: AD_BLOCK }
+            // up_2: { kind: 'object', type: AD_BLOCK }
+            // up_3: { kind: 'object', type: AD_BLOCK }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_PerBlock_SD15_LowLevel": {
+            // down_0__0: { kind: 'object', type: AD_BLOCK }
+            // down_0__1: { kind: 'object', type: AD_BLOCK }
+            // down_1__0: { kind: 'object', type: AD_BLOCK }
+            // down_1__1: { kind: 'object', type: AD_BLOCK }
+            // down_2__0: { kind: 'object', type: AD_BLOCK }
+            // down_2__1: { kind: 'object', type: AD_BLOCK }
+            // down_3__0: { kind: 'object', type: AD_BLOCK }
+            // down_3__1: { kind: 'object', type: AD_BLOCK }
+            // mid: { kind: 'object', type: AD_BLOCK }
+            // up_0__0: { kind: 'object', type: AD_BLOCK }
+            // up_0__1: { kind: 'object', type: AD_BLOCK }
+            // up_0__2: { kind: 'object', type: AD_BLOCK }
+            // up_1__0: { kind: 'object', type: AD_BLOCK }
+            // up_1__1: { kind: 'object', type: AD_BLOCK }
+            // up_1__2: { kind: 'object', type: AD_BLOCK }
+            // up_2__0: { kind: 'object', type: AD_BLOCK }
+            // up_2__1: { kind: 'object', type: AD_BLOCK }
+            // up_2__2: { kind: 'object', type: AD_BLOCK }
+            // up_3__0: { kind: 'object', type: AD_BLOCK }
+            // up_3__1: { kind: 'object', type: AD_BLOCK }
+            // up_3__2: { kind: 'object', type: AD_BLOCK }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_PerBlock_SD15_FromFloats": {
+            // effect_21_floats: { kind: 'object', type: FLOATS }
+            // scale_21_floats: { kind: 'object', type: FLOATS }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_PerBlock_SDXL_MidLevel": {
+            // down_0: { kind: 'object', type: AD_BLOCK }
+            // down_1: { kind: 'object', type: AD_BLOCK }
+            // down_2: { kind: 'object', type: AD_BLOCK }
+            // mid: { kind: 'object', type: AD_BLOCK }
+            // up_0: { kind: 'object', type: AD_BLOCK }
+            // up_1: { kind: 'object', type: AD_BLOCK }
+            // up_2: { kind: 'object', type: AD_BLOCK }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_PerBlock_SDXL_LowLevel": {
+            // down_0__0: { kind: 'object', type: AD_BLOCK }
+            // down_0__1: { kind: 'object', type: AD_BLOCK }
+            // down_1__0: { kind: 'object', type: AD_BLOCK }
+            // down_1__1: { kind: 'object', type: AD_BLOCK }
+            // down_2__0: { kind: 'object', type: AD_BLOCK }
+            // down_2__1: { kind: 'object', type: AD_BLOCK }
+            // mid: { kind: 'object', type: AD_BLOCK }
+            // up_0__0: { kind: 'object', type: AD_BLOCK }
+            // up_0__1: { kind: 'object', type: AD_BLOCK }
+            // up_0__2: { kind: 'object', type: AD_BLOCK }
+            // up_1__0: { kind: 'object', type: AD_BLOCK }
+            // up_1__1: { kind: 'object', type: AD_BLOCK }
+            // up_1__2: { kind: 'object', type: AD_BLOCK }
+            // up_2__0: { kind: 'object', type: AD_BLOCK }
+            // up_2__1: { kind: 'object', type: AD_BLOCK }
+            // up_2__2: { kind: 'object', type: AD_BLOCK }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_PerBlock_SDXL_FromFloats": {
+            // effect_16_floats: { kind: 'object', type: FLOATS }
+            // scale_16_floats: { kind: 'object', type: FLOATS }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_AnimateDiffUnload": {
+            // model: { kind: 'object', type: MODEL }
+         }
+      
+         "AnimateDiff-Evolved.ADE_EmptyLatentImageLarge": {
+            width: { kind: 'number', type: number }
+            height: { kind: 'number', type: number }
+            batch_size: { kind: 'number', type: number }
+         }
+      
+         "AnimateDiff-Evolved.CheckpointLoaderSimpleWithNoiseSelect": {
+            ckpt_name: { kind: 'enum', type: Union['E_CkptName'] }
+            beta_schedule: { kind: 'enum', type: Union['E_092dd1cc'] }
+            use_custom_scale_factor: { kind: 'boolean', type: boolean }
+            scale_factor: { kind: 'number', type: number }
+         }
+      
+         "AnimateDiff-Evolved.ADE_PerturbedAttentionGuidanceMultival": {
+            // model: { kind: 'object', type: MODEL }
+            // scale_multival: { kind: 'object', type: MULTIVAL }
+         }
+      
+         "AnimateDiff-Evolved.ADE_RescaleCFGMultival": {
+            // model: { kind: 'object', type: MODEL }
+            // mult_multival: { kind: 'object', type: MULTIVAL }
+         }
+      
+         "AnimateDiff-Evolved.ADE_AnimateDiffLoaderGen1": {
+            // model: { kind: 'object', type: MODEL }
+            model_name: { kind: 'enum', type: Union['E_LoraName'] }
+            beta_schedule: { kind: 'enum', type: Union['E_092dd1cc'] }
+            // context_options: { kind: 'object', type: CONTEXT_OPTIONS }
+            // motion_lora: { kind: 'object', type: MOTION_LORA }
+            // ad_settings: { kind: 'object', type: AD_SETTINGS }
+            // ad_keyframes: { kind: 'object', type: AD_KEYFRAMES }
+            // sample_settings: { kind: 'object', type: SAMPLE_SETTINGS }
+            // scale_multival: { kind: 'object', type: MULTIVAL }
+            // effect_multival: { kind: 'object', type: MULTIVAL }
+            // per_block: { kind: 'object', type: PER_BLOCK }
+         }
+      
+         "AnimateDiff-Evolved.ADE_AnimateDiffLoaderWithContext": {
+            // model: { kind: 'object', type: MODEL }
+            model_name: { kind: 'enum', type: Union['E_LoraName'] }
+            beta_schedule: { kind: 'enum', type: Union['E_092dd1cc'] }
+            // context_options: { kind: 'object', type: CONTEXT_OPTIONS }
+            // motion_lora: { kind: 'object', type: MOTION_LORA }
+            // ad_settings: { kind: 'object', type: AD_SETTINGS }
+            // sample_settings: { kind: 'object', type: SAMPLE_SETTINGS }
+            motion_scale: { kind: 'number', type: number }
+            apply_v2_models_properly: { kind: 'boolean', type: boolean }
+            // ad_keyframes: { kind: 'object', type: AD_KEYFRAMES }
+         }
+      
+         "AnimateDiff-Evolved.ADE_UseEvolvedSampling": {
+            // model: { kind: 'object', type: MODEL }
+            beta_schedule: { kind: 'enum', type: Union['E_092dd1cc'] }
+            // m_models: { kind: 'object', type: M_MODELS }
+            // context_options: { kind: 'object', type: CONTEXT_OPTIONS }
+            // sample_settings: { kind: 'object', type: SAMPLE_SETTINGS }
+         }
+      
+         "AnimateDiff-Evolved.ADE_ApplyAnimateDiffModelSimple": {
+            // motion_model: { kind: 'object', type: MOTION_MODEL_ADE }
+            // motion_lora: { kind: 'object', type: MOTION_LORA }
+            // scale_multival: { kind: 'object', type: MULTIVAL }
+            // effect_multival: { kind: 'object', type: MULTIVAL }
+            // ad_keyframes: { kind: 'object', type: AD_KEYFRAMES }
+            // per_block: { kind: 'object', type: PER_BLOCK }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_ApplyAnimateDiffModel": {
+            // motion_model: { kind: 'object', type: MOTION_MODEL_ADE }
+            start_percent: { kind: 'number', type: number }
+            end_percent: { kind: 'number', type: number }
+            // motion_lora: { kind: 'object', type: MOTION_LORA }
+            // scale_multival: { kind: 'object', type: MULTIVAL }
+            // effect_multival: { kind: 'object', type: MULTIVAL }
+            // ad_keyframes: { kind: 'object', type: AD_KEYFRAMES }
+            // prev_m_models: { kind: 'object', type: M_MODELS }
+            // per_block: { kind: 'object', type: PER_BLOCK }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_LoadAnimateDiffModel": {
+            model_name: { kind: 'enum', type: Union['E_LoraName'] }
+            // ad_settings: { kind: 'object', type: AD_SETTINGS }
+         }
+      
+         "AnimateDiff-Evolved.ADE_ApplyAnimateLCMI2VModel": {
+            // motion_model: { kind: 'object', type: MOTION_MODEL_ADE }
+            // ref_latent: { kind: 'object', type: LATENT }
+            ref_drift: { kind: 'number', type: number }
+            apply_ref_when_disabled: { kind: 'boolean', type: boolean }
+            start_percent: { kind: 'number', type: number }
+            end_percent: { kind: 'number', type: number }
+            // motion_lora: { kind: 'object', type: MOTION_LORA }
+            // scale_multival: { kind: 'object', type: MULTIVAL }
+            // effect_multival: { kind: 'object', type: MULTIVAL }
+            // ad_keyframes: { kind: 'object', type: AD_KEYFRAMES }
+            // prev_m_models: { kind: 'object', type: M_MODELS }
+            // per_block: { kind: 'object', type: PER_BLOCK }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_LoadAnimateLCMI2VModel": {
+            model_name: { kind: 'enum', type: Union['E_LoraName'] }
+            // ad_settings: { kind: 'object', type: AD_SETTINGS }
+         }
+      
+         "AnimateDiff-Evolved.ADE_UpscaleAndVAEEncode": {
+            // image: { kind: 'object', type: IMAGE }
+            // vae: { kind: 'object', type: VAE }
+            // latent_size: { kind: 'object', type: LATENT }
+            scale_method: { kind: 'enum', type: Union['E_ImageUpscaleMethod'] }
+            crop: { kind: 'enum', type: Union['E_e2779c2a'] }
+         }
+      
+         "AnimateDiff-Evolved.ADE_InjectI2VIntoAnimateDiffModel": {
+            model_name: { kind: 'enum', type: Union['E_LoraName'] }
+            // motion_model: { kind: 'object', type: MOTION_MODEL_ADE }
+            // ad_settings: { kind: 'object', type: AD_SETTINGS }
+            // deprecation_warning: { kind: 'object', type: ADEWARN }
+         }
+      
+         "AnimateDiff-Evolved.ADE_ApplyAnimateDiffModelWithCameraCtrl": {
+            // motion_model: { kind: 'object', type: MOTION_MODEL_ADE }
+            // cameractrl_poses: { kind: 'object', type: CAMERACTRL_POSES }
+            start_percent: { kind: 'number', type: number }
+            end_percent: { kind: 'number', type: number }
+            // motion_lora: { kind: 'object', type: MOTION_LORA }
+            // scale_multival: { kind: 'object', type: MULTIVAL }
+            // effect_multival: { kind: 'object', type: MULTIVAL }
+            // cameractrl_multival: { kind: 'object', type: MULTIVAL }
+            // ad_keyframes: { kind: 'object', type: AD_KEYFRAMES }
+            // prev_m_models: { kind: 'object', type: M_MODELS }
+            // per_block: { kind: 'object', type: PER_BLOCK }
+         }
+      
+         "AnimateDiff-Evolved.ADE_LoadAnimateDiffModelWithCameraCtrl": {
+            model_name: { kind: 'enum', type: Union['E_LoraName'] }
+            camera_ctrl: { kind: 'enum', type: Union['E_LoraName'] }
+            // ad_settings: { kind: 'object', type: AD_SETTINGS }
+         }
+      
+         "AnimateDiff-Evolved.ADE_CameraCtrlAnimateDiffKeyframe": {
+            start_percent: { kind: 'number', type: number }
+            // prev_ad_keyframes: { kind: 'object', type: AD_KEYFRAMES }
+            // scale_multival: { kind: 'object', type: MULTIVAL }
+            // effect_multival: { kind: 'object', type: MULTIVAL }
+            // cameractrl_multival: { kind: 'object', type: MULTIVAL }
+            inherit_missing: { kind: 'boolean', type: boolean }
+            guarantee_steps: { kind: 'number', type: number }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_LoadCameraPoses": {
+            pose_filename: { kind: 'enum', type: Union['E_LoraName'] }
+         }
+      
+         "AnimateDiff-Evolved.ADE_LoadCameraPosesFromPath": {
+            file_path: { kind: 'string', type: string }
+         }
+      
+         "AnimateDiff-Evolved.ADE_CameraPoseBasic": {
+            motion_type: { kind: 'enum', type: Union['E_849d2970'] }
+            speed: { kind: 'number', type: number }
+            frame_length: { kind: 'number', type: number }
+            // prev_poses: { kind: 'object', type: CAMERACTRL_POSES }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_CameraPoseCombo": {
+            motion_type1: { kind: 'enum', type: Union['E_849d2970'] }
+            motion_type2: { kind: 'enum', type: Union['E_849d2970'] }
+            motion_type3: { kind: 'enum', type: Union['E_849d2970'] }
+            motion_type4: { kind: 'enum', type: Union['E_849d2970'] }
+            motion_type5: { kind: 'enum', type: Union['E_849d2970'] }
+            motion_type6: { kind: 'enum', type: Union['E_849d2970'] }
+            speed: { kind: 'number', type: number }
+            frame_length: { kind: 'number', type: number }
+            // prev_poses: { kind: 'object', type: CAMERACTRL_POSES }
+         }
+      
+         "AnimateDiff-Evolved.ADE_CameraPoseAdvanced": {
+            motion_type1: { kind: 'enum', type: Union['E_849d2970'] }
+            strength1: { kind: 'number', type: number }
+            motion_type2: { kind: 'enum', type: Union['E_849d2970'] }
+            strength2: { kind: 'number', type: number }
+            motion_type3: { kind: 'enum', type: Union['E_849d2970'] }
+            strength3: { kind: 'number', type: number }
+            motion_type4: { kind: 'enum', type: Union['E_849d2970'] }
+            strength4: { kind: 'number', type: number }
+            motion_type5: { kind: 'enum', type: Union['E_849d2970'] }
+            strength5: { kind: 'number', type: number }
+            motion_type6: { kind: 'enum', type: Union['E_849d2970'] }
+            strength6: { kind: 'number', type: number }
+            speed: { kind: 'number', type: number }
+            frame_length: { kind: 'number', type: number }
+            // prev_poses: { kind: 'object', type: CAMERACTRL_POSES }
+         }
+      
+         "AnimateDiff-Evolved.ADE_CameraManualPoseAppend": {
+            // poses_first: { kind: 'object', type: CAMERACTRL_POSES }
+            // poses_last: { kind: 'object', type: CAMERACTRL_POSES }
+         }
+      
+         "AnimateDiff-Evolved.ADE_ReplaceCameraParameters": {
+            // poses: { kind: 'object', type: CAMERACTRL_POSES }
+            fx: { kind: 'number', type: number }
+            fy: { kind: 'number', type: number }
+            cx: { kind: 'number', type: number }
+            cy: { kind: 'number', type: number }
+         }
+      
+         "AnimateDiff-Evolved.ADE_ReplaceOriginalPoseAspectRatio": {
+            // poses: { kind: 'object', type: CAMERACTRL_POSES }
+            orig_pose_width: { kind: 'number', type: number }
+            orig_pose_height: { kind: 'number', type: number }
+         }
+      
+         "AnimateDiff-Evolved.ADE_ApplyAnimateDiffModelWithPIA": {
+            // motion_model: { kind: 'object', type: MOTION_MODEL_ADE }
+            // image: { kind: 'object', type: IMAGE }
+            // vae: { kind: 'object', type: VAE }
+            start_percent: { kind: 'number', type: number }
+            end_percent: { kind: 'number', type: number }
+            // pia_input: { kind: 'object', type: PIA_INPUT }
+            // motion_lora: { kind: 'object', type: MOTION_LORA }
+            // scale_multival: { kind: 'object', type: MULTIVAL }
+            // effect_multival: { kind: 'object', type: MULTIVAL }
+            // ad_keyframes: { kind: 'object', type: AD_KEYFRAMES }
+            // prev_m_models: { kind: 'object', type: M_MODELS }
+            // per_block: { kind: 'object', type: PER_BLOCK }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_InputPIA_Multival": {
+            // multival: { kind: 'object', type: MULTIVAL }
+         }
+      
+         "AnimateDiff-Evolved.ADE_InputPIA_PaperPresets": {
+            preset: { kind: 'enum', type: Union['E_6e63de3c'] }
+            batch_index: { kind: 'number', type: number }
+            // mult_multival: { kind: 'object', type: MULTIVAL }
+            print_values: { kind: 'boolean', type: boolean }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_PIA_AnimateDiffKeyframe": {
+            start_percent: { kind: 'number', type: number }
+            // prev_ad_keyframes: { kind: 'object', type: AD_KEYFRAMES }
+            // scale_multival: { kind: 'object', type: MULTIVAL }
+            // effect_multival: { kind: 'object', type: MULTIVAL }
+            // pia_input: { kind: 'object', type: PIA_INPUT }
+            inherit_missing: { kind: 'boolean', type: boolean }
+            guarantee_steps: { kind: 'number', type: number }
+            // autosize: { kind: 'object', type: ADEAUTOSIZE }
+         }
+      
+         "AnimateDiff-Evolved.ADE_InjectPIAIntoAnimateDiffModel": {
+            model_name: { kind: 'enum', type: Union['E_LoraName'] }
+            // motion_model: { kind: 'object', type: MOTION_MODEL_ADE }
+            // ad_settings: { kind: 'object', type: AD_SETTINGS }
+            // deprecation_warning: { kind: 'object', type: ADEWARN }
+         }
+      
+         "AnimateDiff-Evolved.AnimateDiffLoaderV1": {
+            // model: { kind: 'object', type: MODEL }
+            // latents: { kind: 'object', type: LATENT }
+            model_name: { kind: 'enum', type: Union['E_LoraName'] }
+            unlimited_area_hack: { kind: 'boolean', type: boolean }
+            beta_schedule: { kind: 'enum', type: Union['E_092dd1cc'] }
+            // deprecation_warning: { kind: 'object', type: ADEWARN }
+         }
+      
+         "AnimateDiff-Evolved.ADE_AnimateDiffLoaderV1Advanced": {
+            // model: { kind: 'object', type: MODEL }
+            // latents: { kind: 'object', type: LATENT }
+            model_name: { kind: 'enum', type: Union['E_LoraName'] }
+            unlimited_area_hack: { kind: 'boolean', type: boolean }
+            context_length: { kind: 'number', type: number }
+            context_stride: { kind: 'number', type: number }
+            context_overlap: { kind: 'number', type: number }
+            context_schedule: { kind: 'enum', type: Union['E_8146160c'] }
+            closed_loop: { kind: 'boolean', type: boolean }
+            beta_schedule: { kind: 'enum', type: Union['E_092dd1cc'] }
+            // deprecation_warning: { kind: 'object', type: ADEWARN }
+         }
+      
+         "AnimateDiff-Evolved.ADE_AnimateDiffCombine": {
+            // images: { kind: 'object', type: IMAGE }
+            frame_rate: { kind: 'number', type: number }
+            loop_count: { kind: 'number', type: number }
+            filename_prefix: { kind: 'string', type: string }
+            format: { kind: 'enum', type: Union['E_4a59f490'] }
+            pingpong: { kind: 'boolean', type: boolean }
+            save_image: { kind: 'boolean', type: boolean }
+            // deprecation_warning: { kind: 'object', type: ADEWARN }
+         }
+      
+         "AnimateDiff-Evolved.ADE_AnimateDiffModelSettings_Release": {
+            min_motion_scale: { kind: 'number', type: number }
+            max_motion_scale: { kind: 'number', type: number }
+            // mask_motion_scale: { kind: 'object', type: MASK }
+            // deprecation_warning: { kind: 'object', type: ADEWARN }
+         }
+      
+         "AnimateDiff-Evolved.ADE_AnimateDiffModelSettingsSimple": {
+            motion_pe_stretch: { kind: 'number', type: number }
+            // mask_motion_scale: { kind: 'object', type: MASK }
+            min_motion_scale: { kind: 'number', type: number }
+            max_motion_scale: { kind: 'number', type: number }
+            // deprecation_warning: { kind: 'object', type: ADEWARN }
+         }
+      
+         "AnimateDiff-Evolved.ADE_AnimateDiffModelSettings": {
+            pe_strength: { kind: 'number', type: number }
+            attn_strength: { kind: 'number', type: number }
+            other_strength: { kind: 'number', type: number }
+            motion_pe_stretch: { kind: 'number', type: number }
+            cap_initial_pe_length: { kind: 'number', type: number }
+            interpolate_pe_to_length: { kind: 'number', type: number }
+            initial_pe_idx_offset: { kind: 'number', type: number }
+            final_pe_idx_offset: { kind: 'number', type: number }
+            // mask_motion_scale: { kind: 'object', type: MASK }
+            min_motion_scale: { kind: 'number', type: number }
+            max_motion_scale: { kind: 'number', type: number }
+            // deprecation_warning: { kind: 'object', type: ADEWARN }
+         }
+      
+         "AnimateDiff-Evolved.ADE_AnimateDiffModelSettingsAdvancedAttnStrengths": {
+            pe_strength: { kind: 'number', type: number }
+            attn_strength: { kind: 'number', type: number }
+            attn_q_strength: { kind: 'number', type: number }
+            attn_k_strength: { kind: 'number', type: number }
+            attn_v_strength: { kind: 'number', type: number }
+            attn_out_weight_strength: { kind: 'number', type: number }
+            attn_out_bias_strength: { kind: 'number', type: number }
+            other_strength: { kind: 'number', type: number }
+            motion_pe_stretch: { kind: 'number', type: number }
+            cap_initial_pe_length: { kind: 'number', type: number }
+            interpolate_pe_to_length: { kind: 'number', type: number }
+            initial_pe_idx_offset: { kind: 'number', type: number }
+            final_pe_idx_offset: { kind: 'number', type: number }
+            // mask_motion_scale: { kind: 'object', type: MASK }
+            min_motion_scale: { kind: 'number', type: number }
+            max_motion_scale: { kind: 'number', type: number }
+            // deprecation_warning: { kind: 'object', type: ADEWARN }
          }
       
          "websocket_image_save.SaveImageWebsocket": {
@@ -20271,6 +25515,381 @@ declare global {
             text: { kind: 'string', type: string }
             use_cuda: { kind: 'boolean', type: boolean }
             // clipseg_model: { kind: 'object', type: CLIPSEG_MODEL }
+         }
+      
+         "clipseg.CLIPSeg": {
+            // image: { kind: 'object', type: IMAGE }
+            text: { kind: 'string', type: string }
+            blur: { kind: 'number', type: number }
+            threshold: { kind: 'number', type: number }
+            dilation_factor: { kind: 'number', type: number }
+         }
+      
+         "clipseg.CombineSegMasks": {
+            // input_image: { kind: 'object', type: IMAGE }
+            // mask_1: { kind: 'object', type: MASK }
+            // mask_2: { kind: 'object', type: MASK }
+            // mask_3: { kind: 'object', type: MASK }
+         }
+      
+         "A8R8_ComfyUI_nodes.Base64ImageInput": {
+            base64_image: { kind: 'string', type: string }
+         }
+      
+         "A8R8_ComfyUI_nodes.Base64ImageOutput": {
+            // images: { kind: 'object', type: IMAGE }
+         }
+      
+         "A8R8_ComfyUI_nodes.AttentionCouple": {
+            // model: { kind: 'object', type: MODEL }
+            // base_prompt: { kind: 'object', type: CONDITIONING }
+            global_prompt_weight: { kind: 'number', type: number }
+            // regions: { kind: 'object', type: ATTENTION_COUPLE_REGION }
+            width: { kind: 'number', type: number }
+            height: { kind: 'number', type: number }
+            ip_adapter_active: { kind: 'boolean', type: boolean }
+         }
+      
+         "A8R8_ComfyUI_nodes.AttentionCoupleRegion": {
+            // cond: { kind: 'object', type: CONDITIONING }
+            // mask: { kind: 'object', type: MASK }
+            weight: { kind: 'number', type: number }
+         }
+      
+         "A8R8_ComfyUI_nodes.AttentionCoupleRegions": {
+            // region_1: { kind: 'object', type: ATTENTION_COUPLE_REGION }
+            // region_2: { kind: 'object', type: ATTENTION_COUPLE_REGION }
+            // region_3: { kind: 'object', type: ATTENTION_COUPLE_REGION }
+            // region_4: { kind: 'object', type: ATTENTION_COUPLE_REGION }
+            // region_5: { kind: 'object', type: ATTENTION_COUPLE_REGION }
+            // region_6: { kind: 'object', type: ATTENTION_COUPLE_REGION }
+            // region_7: { kind: 'object', type: ATTENTION_COUPLE_REGION }
+            // region_8: { kind: 'object', type: ATTENTION_COUPLE_REGION }
+            // region_9: { kind: 'object', type: ATTENTION_COUPLE_REGION }
+            // region_10: { kind: 'object', type: ATTENTION_COUPLE_REGION }
+            // region_11: { kind: 'object', type: ATTENTION_COUPLE_REGION }
+            // regions: { kind: 'object', type: ATTENTION_COUPLE_REGION }
+         }
+      
+         "FizzNodes.Lerp": {
+            num_Images: { kind: 'number', type: number }
+            strength: { kind: 'number', type: number }
+            current_frame: { kind: 'number', type: number }
+         }
+      
+         "FizzNodes.SinWave": {
+            phase: { kind: 'number', type: number }
+            amplitude: { kind: 'number', type: number }
+            x_translation: { kind: 'number', type: number }
+            y_translation: { kind: 'number', type: number }
+            current_frame: { kind: 'number', type: number }
+         }
+      
+         "FizzNodes.InvSinWave": {
+            phase: { kind: 'number', type: number }
+            amplitude: { kind: 'number', type: number }
+            x_translation: { kind: 'number', type: number }
+            y_translation: { kind: 'number', type: number }
+            current_frame: { kind: 'number', type: number }
+         }
+      
+         "FizzNodes.CosWave": {
+            phase: { kind: 'number', type: number }
+            amplitude: { kind: 'number', type: number }
+            x_translation: { kind: 'number', type: number }
+            y_translation: { kind: 'number', type: number }
+            current_frame: { kind: 'number', type: number }
+         }
+      
+         "FizzNodes.InvCosWave": {
+            phase: { kind: 'number', type: number }
+            amplitude: { kind: 'number', type: number }
+            x_translation: { kind: 'number', type: number }
+            y_translation: { kind: 'number', type: number }
+            current_frame: { kind: 'number', type: number }
+         }
+      
+         "FizzNodes.SquareWave": {
+            phase: { kind: 'number', type: number }
+            amplitude: { kind: 'number', type: number }
+            x_translation: { kind: 'number', type: number }
+            y_translation: { kind: 'number', type: number }
+            current_frame: { kind: 'number', type: number }
+         }
+      
+         "FizzNodes.SawtoothWave": {
+            phase: { kind: 'number', type: number }
+            step_increment: { kind: 'number', type: number }
+            x_translation: { kind: 'number', type: number }
+            start_value: { kind: 'number', type: number }
+            current_frame: { kind: 'number', type: number }
+         }
+      
+         "FizzNodes.TriangleWave": {
+            phase: { kind: 'number', type: number }
+            amplitude: { kind: 'number', type: number }
+            x_translation: { kind: 'number', type: number }
+            y_translation: { kind: 'number', type: number }
+            current_frame: { kind: 'number', type: number }
+         }
+      
+         "FizzNodes.AbsCosWave": {
+            phase: { kind: 'number', type: number }
+            amplitude: { kind: 'number', type: number }
+            x_translation: { kind: 'number', type: number }
+            max_value: { kind: 'number', type: number }
+            current_frame: { kind: 'number', type: number }
+         }
+      
+         "FizzNodes.AbsSinWave": {
+            phase: { kind: 'number', type: number }
+            amplitude: { kind: 'number', type: number }
+            x_translation: { kind: 'number', type: number }
+            max_value: { kind: 'number', type: number }
+            current_frame: { kind: 'number', type: number }
+         }
+      
+         "FizzNodes.PromptSchedule": {
+            text: { kind: 'string', type: string }
+            // clip: { kind: 'object', type: CLIP }
+            max_frames: { kind: 'number', type: number }
+            current_frame: { kind: 'number', type: number }
+            print_output: { kind: 'boolean', type: boolean }
+            pre_text: { kind: 'string', type: string }
+            app_text: { kind: 'string', type: string }
+            pw_a: { kind: 'number', type: number }
+            pw_b: { kind: 'number', type: number }
+            pw_c: { kind: 'number', type: number }
+            pw_d: { kind: 'number', type: number }
+         }
+      
+         "FizzNodes.ValueSchedule": {
+            text: { kind: 'string', type: string }
+            max_frames: { kind: 'number', type: number }
+            current_frame: { kind: 'number', type: number }
+            print_output: { kind: 'boolean', type: boolean }
+         }
+      
+         "FizzNodes.PromptScheduleNodeFlow": {
+            text: { kind: 'string', type: string }
+            num_frames: { kind: 'number', type: number }
+            in_text: { kind: 'string', type: string }
+            max_frames: { kind: 'number', type: number }
+         }
+      
+         "FizzNodes.PromptScheduleNodeFlowEnd": {
+            text: { kind: 'string', type: string }
+            // clip: { kind: 'object', type: CLIP }
+            max_frames: { kind: 'number', type: number }
+            print_output: { kind: 'boolean', type: boolean }
+            current_frame: { kind: 'number', type: number }
+            pre_text: { kind: 'string', type: string }
+            app_text: { kind: 'string', type: string }
+            pw_a: { kind: 'number', type: number }
+            pw_b: { kind: 'number', type: number }
+            pw_c: { kind: 'number', type: number }
+            pw_d: { kind: 'number', type: number }
+         }
+      
+         "FizzNodes.PromptScheduleEncodeSDXL": {
+            width: { kind: 'number', type: number }
+            height: { kind: 'number', type: number }
+            crop_w: { kind: 'number', type: number }
+            crop_h: { kind: 'number', type: number }
+            target_width: { kind: 'number', type: number }
+            target_height: { kind: 'number', type: number }
+            text_g: { kind: 'string', type: string }
+            // clip: { kind: 'object', type: CLIP }
+            text_l: { kind: 'string', type: string }
+            max_frames: { kind: 'number', type: number }
+            current_frame: { kind: 'number', type: number }
+            print_output: { kind: 'boolean', type: boolean }
+            pre_text_G: { kind: 'string', type: string }
+            app_text_G: { kind: 'string', type: string }
+            pre_text_L: { kind: 'string', type: string }
+            app_text_L: { kind: 'string', type: string }
+            pw_a: { kind: 'number', type: number }
+            pw_b: { kind: 'number', type: number }
+            pw_c: { kind: 'number', type: number }
+            pw_d: { kind: 'number', type: number }
+         }
+      
+         "FizzNodes.StringSchedule": {
+            text: { kind: 'string', type: string }
+            max_frames: { kind: 'number', type: number }
+            current_frame: { kind: 'number', type: number }
+            print_output: { kind: 'boolean', type: boolean }
+            pre_text: { kind: 'string', type: string }
+            app_text: { kind: 'string', type: string }
+            pw_a: { kind: 'number', type: number }
+            pw_b: { kind: 'number', type: number }
+            pw_c: { kind: 'number', type: number }
+            pw_d: { kind: 'number', type: number }
+         }
+      
+         "FizzNodes.BatchPromptSchedule": {
+            text: { kind: 'string', type: string }
+            // clip: { kind: 'object', type: CLIP }
+            max_frames: { kind: 'number', type: number }
+            print_output: { kind: 'boolean', type: boolean }
+            pre_text: { kind: 'string', type: string }
+            app_text: { kind: 'string', type: string }
+            start_frame: { kind: 'number', type: number }
+            end_frame: { kind: 'number', type: number }
+            pw_a: { kind: 'number', type: number }
+            pw_b: { kind: 'number', type: number }
+            pw_c: { kind: 'number', type: number }
+            pw_d: { kind: 'number', type: number }
+         }
+      
+         "FizzNodes.BatchValueSchedule": {
+            text: { kind: 'string', type: string }
+            max_frames: { kind: 'number', type: number }
+            print_output: { kind: 'boolean', type: boolean }
+         }
+      
+         "FizzNodes.BatchPromptScheduleEncodeSDXL": {
+            width: { kind: 'number', type: number }
+            height: { kind: 'number', type: number }
+            crop_w: { kind: 'number', type: number }
+            crop_h: { kind: 'number', type: number }
+            target_width: { kind: 'number', type: number }
+            target_height: { kind: 'number', type: number }
+            text_g: { kind: 'string', type: string }
+            // clip: { kind: 'object', type: CLIP }
+            text_l: { kind: 'string', type: string }
+            max_frames: { kind: 'number', type: number }
+            print_output: { kind: 'boolean', type: boolean }
+            pre_text_G: { kind: 'string', type: string }
+            app_text_G: { kind: 'string', type: string }
+            pre_text_L: { kind: 'string', type: string }
+            app_text_L: { kind: 'string', type: string }
+            pw_a: { kind: 'number', type: number }
+            pw_b: { kind: 'number', type: number }
+            pw_c: { kind: 'number', type: number }
+            pw_d: { kind: 'number', type: number }
+            start_frame: { kind: 'number', type: number }
+            end_frame: { kind: 'number', type: number }
+         }
+      
+         "FizzNodes.BatchStringSchedule": {
+            text: { kind: 'string', type: string }
+            max_frames: { kind: 'number', type: number }
+            print_output: { kind: 'boolean', type: boolean }
+            pre_text: { kind: 'string', type: string }
+            app_text: { kind: 'string', type: string }
+            pw_a: { kind: 'number', type: number }
+            pw_b: { kind: 'number', type: number }
+            pw_c: { kind: 'number', type: number }
+            pw_d: { kind: 'number', type: number }
+         }
+      
+         "FizzNodes.BatchValueScheduleLatentInput": {
+            text: { kind: 'string', type: string }
+            // num_latents: { kind: 'object', type: LATENT }
+            print_output: { kind: 'boolean', type: boolean }
+         }
+      
+         "FizzNodes.BatchPromptScheduleSDXLLatentInput": {
+            width: { kind: 'number', type: number }
+            height: { kind: 'number', type: number }
+            crop_w: { kind: 'number', type: number }
+            crop_h: { kind: 'number', type: number }
+            target_width: { kind: 'number', type: number }
+            target_height: { kind: 'number', type: number }
+            text_g: { kind: 'string', type: string }
+            // clip: { kind: 'object', type: CLIP }
+            text_l: { kind: 'string', type: string }
+            // num_latents: { kind: 'object', type: LATENT }
+            print_output: { kind: 'boolean', type: boolean }
+            pre_text_G: { kind: 'string', type: string }
+            app_text_G: { kind: 'string', type: string }
+            pre_text_L: { kind: 'string', type: string }
+            app_text_L: { kind: 'string', type: string }
+            pw_a: { kind: 'number', type: number }
+            pw_b: { kind: 'number', type: number }
+            pw_c: { kind: 'number', type: number }
+            pw_d: { kind: 'number', type: number }
+            start_frame: { kind: 'number', type: number }
+            end_frame: { kind: 'number', type: number }
+         }
+      
+         "FizzNodes.BatchPromptScheduleLatentInput": {
+            text: { kind: 'string', type: string }
+            // clip: { kind: 'object', type: CLIP }
+            // num_latents: { kind: 'object', type: LATENT }
+            print_output: { kind: 'boolean', type: boolean }
+            pre_text: { kind: 'string', type: string }
+            app_text: { kind: 'string', type: string }
+            start_frame: { kind: 'number', type: number }
+            end_frame: { kind: 'number', type: number }
+            pw_a: { kind: 'number', type: number }
+            pw_b: { kind: 'number', type: number }
+            pw_c: { kind: 'number', type: number }
+            pw_d: { kind: 'number', type: number }
+         }
+      
+         "FizzNodes.ImagesFromBatchSchedule": {
+            // images: { kind: 'object', type: IMAGE }
+            text: { kind: 'string', type: string }
+            current_frame: { kind: 'number', type: number }
+            max_frames: { kind: 'number', type: number }
+            print_output: { kind: 'boolean', type: boolean }
+         }
+      
+         "FizzNodes.StringConcatenate": {
+            text_a: { kind: 'string', type: string }
+            frame_a: { kind: 'number', type: number }
+            text_b: { kind: 'string', type: string }
+            frame_b: { kind: 'number', type: number }
+            text_c: { kind: 'string', type: string }
+            frame_c: { kind: 'number', type: number }
+            text_d: { kind: 'string', type: string }
+            frame_d: { kind: 'number', type: number }
+            text_e: { kind: 'string', type: string }
+            frame_e: { kind: 'number', type: number }
+            text_f: { kind: 'string', type: string }
+            frame_f: { kind: 'number', type: number }
+            text_g: { kind: 'string', type: string }
+            frame_g: { kind: 'number', type: number }
+         }
+      
+         "FizzNodes.Init FizzFrame": {
+            frame: { kind: 'number', type: number }
+            positive_text: { kind: 'string', type: string }
+            negative_text: { kind: 'string', type: string }
+            general_positive: { kind: 'string', type: string }
+            general_negative: { kind: 'string', type: string }
+            // previous_frame: { kind: 'object', type: FIZZFRAME }
+            // clip: { kind: 'object', type: CLIP }
+         }
+      
+         "FizzNodes.FizzFrame": {
+            frame: { kind: 'number', type: number }
+            // previous_frame: { kind: 'object', type: FIZZFRAME }
+            positive_text: { kind: 'string', type: string }
+            negative_text: { kind: 'string', type: string }
+         }
+      
+         "FizzNodes.FizzFrameConcatenate": {
+            // frame: { kind: 'object', type: FIZZFRAME }
+         }
+      
+         "FizzNodes.ConcatStringSingle": {
+            string_a: { kind: 'string', type: string }
+            string_b: { kind: 'string', type: string }
+         }
+      
+         "FizzNodes.convertKeyframeKeysToBatchKeys": {
+            input: { kind: 'number', type: number }
+            num_latents: { kind: 'number', type: number }
+         }
+      
+         "FizzNodes.CalculateFrameOffset": {
+            current_frame: { kind: 'number', type: number }
+            max_frames: { kind: 'number', type: number }
+            num_latent_inputs: { kind: 'number', type: number }
+            index: { kind: 'number', type: number }
          }
       
          "IPAdapter_plus.IPAdapter": {
@@ -23777,7 +29396,7 @@ declare global {
       }
       // TODO rename to ObjecInfoContent
       export type Schemas = {[k in ComfyNodeType]: ComfyNodeSchemaJSON}
-      export type ComfyNodeType = 'KSampler' | 'CheckpointLoaderSimple' | 'CLIPTextEncode' | 'CLIPSetLastLayer' | 'VAEDecode' | 'VAEEncode' | 'VAEEncodeForInpaint' | 'VAELoader' | 'EmptyLatentImage' | 'LatentUpscale' | 'LatentUpscaleBy' | 'LatentFromBatch' | 'RepeatLatentBatch' | 'SaveImage' | 'PreviewImage' | 'LoadImage' | 'LoadImageMask' | 'ImageScale' | 'ImageScaleBy' | 'ImageInvert' | 'ImageBatch' | 'ImagePadForOutpaint' | 'EmptyImage' | 'ConditioningAverage' | 'ConditioningCombine' | 'ConditioningConcat' | 'ConditioningSetArea' | 'ConditioningSetAreaPercentage' | 'ConditioningSetAreaStrength' | 'ConditioningSetMask' | 'KSamplerAdvanced' | 'SetLatentNoiseMask' | 'LatentComposite' | 'LatentBlend' | 'LatentRotate' | 'LatentFlip' | 'LatentCrop' | 'LoraLoader' | 'CLIPLoader' | 'UNETLoader' | 'DualCLIPLoader' | 'CLIPVisionEncode' | 'StyleModelApply' | 'unCLIPConditioning' | 'ControlNetApply' | 'ControlNetApplyAdvanced' | 'ControlNetLoader' | 'DiffControlNetLoader' | 'StyleModelLoader' | 'CLIPVisionLoader' | 'VAEDecodeTiled' | 'VAEEncodeTiled' | 'unCLIPCheckpointLoader' | 'GLIGENLoader' | 'GLIGENTextBoxApply' | 'InpaintModelConditioning' | 'CheckpointLoader' | 'DiffusersLoader' | 'LoadLatent' | 'SaveLatent' | 'ConditioningZeroOut' | 'ConditioningSetTimestepRange' | 'LoraLoaderModelOnly' | 'LatentAdd' | 'LatentSubtract' | 'LatentMultiply' | 'LatentInterpolate' | 'LatentBatch' | 'LatentBatchSeedBehavior' | 'LatentApplyOperation' | 'LatentApplyOperationCFG' | 'LatentOperationTonemapReinhard' | 'LatentOperationSharpen' | 'HypernetworkLoader' | 'UpscaleModelLoader' | 'ImageUpscaleWithModel' | 'ImageBlend' | 'ImageBlur' | 'ImageQuantize' | 'ImageSharpen' | 'ImageScaleToTotalPixels' | 'LatentCompositeMasked' | 'ImageCompositeMasked' | 'MaskToImage' | 'ImageToMask' | 'ImageColorToMask' | 'SolidMask' | 'InvertMask' | 'CropMask' | 'MaskComposite' | 'FeatherMask' | 'GrowMask' | 'ThresholdMask' | 'PorterDuffImageComposite' | 'SplitImageWithAlpha' | 'JoinImageWithAlpha' | 'RebatchLatents' | 'RebatchImages' | 'ModelMergeSimple' | 'ModelMergeBlocks' | 'ModelMergeSubtract' | 'ModelMergeAdd' | 'CheckpointSave' | 'CLIPMergeSimple' | 'CLIPMergeSubtract' | 'CLIPMergeAdd' | 'CLIPSave' | 'VAESave' | 'ModelSave' | 'TomePatchModel' | 'CLIPTextEncodeSDXLRefiner' | 'CLIPTextEncodeSDXL' | 'Canny' | 'FreeU' | 'FreeU_V2' | 'SamplerCustom' | 'BasicScheduler' | 'KarrasScheduler' | 'ExponentialScheduler' | 'PolyexponentialScheduler' | 'LaplaceScheduler' | 'VPScheduler' | 'BetaSamplingScheduler' | 'SDTurboScheduler' | 'KSamplerSelect' | 'SamplerEulerAncestral' | 'SamplerEulerAncestralCFGPP' | 'SamplerLMS' | 'SamplerDPMPP_3M_SDE' | 'SamplerDPMPP_2M_SDE' | 'SamplerDPMPP_SDE' | 'SamplerDPMPP_2S_Ancestral' | 'SamplerDPMAdaptative' | 'SplitSigmas' | 'SplitSigmasDenoise' | 'FlipSigmas' | 'CFGGuider' | 'DualCFGGuider' | 'BasicGuider' | 'RandomNoise' | 'DisableNoise' | 'AddNoise' | 'SamplerCustomAdvanced' | 'HyperTile' | 'ModelSamplingDiscrete' | 'ModelSamplingContinuousEDM' | 'ModelSamplingContinuousV' | 'ModelSamplingStableCascade' | 'ModelSamplingSD3' | 'ModelSamplingAuraFlow' | 'ModelSamplingFlux' | 'RescaleCFG' | 'PatchModelAddDownscale' | 'ImageCrop' | 'RepeatImageBatch' | 'ImageFromBatch' | 'SaveAnimatedWEBP' | 'SaveAnimatedPNG' | 'ImageOnlyCheckpointLoader' | 'SVD_img2vid_Conditioning' | 'VideoLinearCFGGuidance' | 'VideoTriangleCFGGuidance' | 'ImageOnlyCheckpointSave' | 'SelfAttentionGuidance' | 'PerpNeg' | 'PerpNegGuider' | 'StableZero123_Conditioning' | 'StableZero123_Conditioning_Batched' | 'SV3D_Conditioning' | 'SD_4XUpscale_Conditioning' | 'PhotoMakerLoader' | 'PhotoMakerEncode' | 'CLIPTextEncodeControlnet' | 'Morphology' | 'StableCascade_EmptyLatentImage' | 'StableCascade_StageB_Conditioning' | 'StableCascade_StageC_VAEEncode' | 'StableCascade_SuperResolutionControlnet' | 'DifferentialDiffusion' | 'InstructPixToPixConditioning' | 'ModelMergeSD1' | 'ModelMergeSD2' | 'ModelMergeSDXL' | 'ModelMergeSD3_2B' | 'ModelMergeFlux1' | 'ModelMergeSD35_Large' | 'PerturbedAttentionGuidance' | 'AlignYourStepsScheduler' | 'UNetSelfAttentionMultiply' | 'UNetCrossAttentionMultiply' | 'CLIPAttentionMultiply' | 'UNetTemporalAttentionMultiply' | 'SamplerLCMUpscale' | 'SamplerEulerCFGpp' | 'WebcamCapture' | 'EmptyLatentAudio' | 'VAEEncodeAudio' | 'VAEDecodeAudio' | 'SaveAudio' | 'LoadAudio' | 'PreviewAudio' | 'TripleCLIPLoader' | 'EmptySD3LatentImage' | 'CLIPTextEncodeSD3' | 'ControlNetApplySD3' | 'SkipLayerGuidanceSD3' | 'GITSScheduler' | 'SetUnionControlNetType' | 'ControlNetInpaintingAliMamaApply' | 'CLIPTextEncodeHunyuanDiT' | 'CLIPTextEncodeFlux' | 'FluxGuidance' | 'LoraSave' | 'TorchCompileModel' | 'EmptyMochiLatentVideo' | 'websocket_image_save.SaveImageWebsocket' | 'was.BLIP Model Loader' | 'was.Blend Latents' | 'was.Bus Node' | 'was.Cache Node' | 'was.Checkpoint Loader' | 'was.Checkpoint Loader (Simple)' | 'was.CLIPTextEncode (NSP)' | 'was.CLIP Input Switch' | 'was.CLIP Vision Input Switch' | 'was.Conditioning Input Switch' | 'was.Constant Number' | 'was.Create Grid Image' | 'was.Create Grid Image from Batch' | 'was.Create Morph Image' | 'was.Create Morph Image from Path' | 'was.Create Video from Path' | 'was.CLIPSeg Masking' | 'was.CLIPSeg Model Loader' | 'was.CLIPSeg Batch Masking' | 'was.Convert Masks to Images' | 'was.Control Net Model Input Switch' | 'was.Debug Number to Console' | 'was.Dictionary to Console' | 'was.Diffusers Model Loader' | 'was.Diffusers Hub Model Down-Loader' | 'was.Export API' | 'was.Latent Input Switch' | 'was.Load Cache' | 'was.Logic Boolean' | 'was.Logic Boolean Primitive' | 'was.Logic Comparison OR' | 'was.Logic Comparison AND' | 'was.Logic Comparison XOR' | 'was.Logic NOT' | 'was.Lora Loader' | 'was.Hex to HSL' | 'was.HSL to Hex' | 'was.Image SSAO (Ambient Occlusion)' | 'was.Image SSDO (Direct Occlusion)' | 'was.Image Analyze' | 'was.Image Aspect Ratio' | 'was.Image Batch' | 'was.Image Blank' | 'was.Image Blend by Mask' | 'was.Image Blend' | 'was.Image Blending Mode' | 'was.Image Bloom Filter' | 'was.Image Canny Filter' | 'was.Image Chromatic Aberration' | 'was.Image Color Palette' | 'was.Image Crop Face' | 'was.Image Crop Location' | 'was.Image Crop Square Location' | 'was.Image Displacement Warp' | 'was.Image Lucy Sharpen' | 'was.Image Paste Face' | 'was.Image Paste Crop' | 'was.Image Paste Crop by Location' | 'was.Image Pixelate' | 'was.Image Power Noise' | 'was.Image Dragan Photography Filter' | 'was.Image Edge Detection Filter' | 'was.Image Film Grain' | 'was.Image Filter Adjustments' | 'was.Image Flip' | 'was.Image Gradient Map' | 'was.Image Generate Gradient' | 'was.Image High Pass Filter' | 'was.Image History Loader' | 'was.Image Input Switch' | 'was.Image Levels Adjustment' | 'was.Image Load' | 'was.Image Median Filter' | 'was.Image Mix RGB Channels' | 'was.Image Monitor Effects Filter' | 'was.Image Nova Filter' | 'was.Image Padding' | 'was.Image Perlin Noise' | 'was.Image Rembg (Remove Background)' | 'was.Image Perlin Power Fractal' | 'was.Image Remove Background (Alpha)' | 'was.Image Remove Color' | 'was.Image Resize' | 'was.Image Rotate' | 'was.Image Rotate Hue' | 'was.Image Send HTTP' | 'was.Image Save' | 'was.Image Seamless Texture' | 'was.Image Select Channel' | 'was.Image Select Color' | 'was.Image Shadows and Highlights' | 'was.Image Size to Number' | 'was.Image Stitch' | 'was.Image Style Filter' | 'was.Image Threshold' | 'was.Image Tiled' | 'was.Image Transpose' | 'was.Image fDOF Filter' | 'was.Image to Latent Mask' | 'was.Image to Noise' | 'was.Image to Seed' | 'was.Images to RGB' | 'was.Images to Linear' | 'was.Integer place counter' | 'was.Image Voronoi Noise Filter' | 'was.KSampler (WAS)' | 'was.KSampler Cycle' | 'was.Latent Batch' | 'was.Latent Noise Injection' | 'was.Latent Size to Number' | 'was.Latent Upscale by Factor (WAS)' | 'was.Load Image Batch' | 'was.Load Text File' | 'was.Load Lora' | 'was.Lora Input Switch' | 'was.Masks Add' | 'was.Masks Subtract' | 'was.Mask Arbitrary Region' | 'was.Mask Batch to Mask' | 'was.Mask Batch' | 'was.Mask Ceiling Region' | 'was.Mask Crop Dominant Region' | 'was.Mask Crop Minority Region' | 'was.Mask Crop Region' | 'was.Mask Paste Region' | 'was.Mask Dilate Region' | 'was.Mask Dominant Region' | 'was.Mask Erode Region' | 'was.Mask Fill Holes' | 'was.Mask Floor Region' | 'was.Mask Gaussian Region' | 'was.Mask Invert' | 'was.Mask Minority Region' | 'was.Mask Smooth Region' | 'was.Mask Threshold Region' | 'was.Masks Combine Regions' | 'was.Masks Combine Batch' | 'was.MiDaS Model Loader' | 'was.MiDaS Depth Approximation' | 'was.MiDaS Mask Image' | 'was.Model Input Switch' | 'was.Number Counter' | 'was.Number Operation' | 'was.Number to Float' | 'was.Number Input Switch' | 'was.Number Input Condition' | 'was.Number Multiple Of' | 'was.Number PI' | 'was.Number to Int' | 'was.Number to Seed' | 'was.Number to String' | 'was.Number to Text' | 'was.Boolean To Text' | 'was.Prompt Styles Selector' | 'was.Prompt Multiple Styles Selector' | 'was.Random Number' | 'was.Save Text File' | 'was.Seed' | 'was.Tensor Batch to Image' | 'was.BLIP Analyze Image' | 'was.SAM Model Loader' | 'was.SAM Parameters' | 'was.SAM Parameters Combine' | 'was.SAM Image Mask' | 'was.Samples Passthrough (Stat System)' | 'was.String to Text' | 'was.Image Bounds' | 'was.Inset Image Bounds' | 'was.Bounded Image Blend' | 'was.Bounded Image Blend with Mask' | 'was.Bounded Image Crop' | 'was.Bounded Image Crop with Mask' | 'was.Image Bounds to Console' | 'was.Text Dictionary Update' | 'was.Text Dictionary Get' | 'was.Text Dictionary Convert' | 'was.Text Dictionary New' | 'was.Text Dictionary Keys' | 'was.Text Dictionary To Text' | 'was.Text Add Tokens' | 'was.Text Add Token by Input' | 'was.Text Compare' | 'was.Text Concatenate' | 'was.Text File History Loader' | 'was.Text Find and Replace by Dictionary' | 'was.Text Find and Replace Input' | 'was.Text Find and Replace' | 'was.Text Find' | 'was.Text Input Switch' | 'was.Text List' | 'was.Text List Concatenate' | 'was.Text List to Text' | 'was.Text Load Line From File' | 'was.Text Multiline' | 'was.Text Multiline (Code Compatible)' | 'was.Text Parse A1111 Embeddings' | 'was.Text Parse Noodle Soup Prompts' | 'was.Text Parse Tokens' | 'was.Text Random Line' | 'was.Text Random Prompt' | 'was.Text String' | 'was.Text Contains' | 'was.Text Shuffle' | 'was.Text Sort' | 'was.Text to Conditioning' | 'was.Text to Console' | 'was.Text to Number' | 'was.Text to String' | 'was.Text String Truncate' | 'was.True Random.org Number Generator' | 'was.unCLIP Checkpoint Loader' | 'was.Upscale Model Loader' | 'was.Upscale Model Switch' | 'was.Write to GIF' | 'was.Write to Video' | 'was.VAE Input Switch' | 'was.Video Dump Frames' | 'was.CLIPSEG2' | 'IPAdapter_plus.IPAdapter' | 'IPAdapter_plus.IPAdapterAdvanced' | 'IPAdapter_plus.IPAdapterBatch' | 'IPAdapter_plus.IPAdapterFaceID' | 'IPAdapter_plus.IPAdapterFaceIDKolors' | 'IPAdapter_plus.IPAAdapterFaceIDBatch' | 'IPAdapter_plus.IPAdapterTiled' | 'IPAdapter_plus.IPAdapterTiledBatch' | 'IPAdapter_plus.IPAdapterEmbeds' | 'IPAdapter_plus.IPAdapterEmbedsBatch' | 'IPAdapter_plus.IPAdapterStyleComposition' | 'IPAdapter_plus.IPAdapterStyleCompositionBatch' | 'IPAdapter_plus.IPAdapterMS' | 'IPAdapter_plus.IPAdapterClipVisionEnhancer' | 'IPAdapter_plus.IPAdapterClipVisionEnhancerBatch' | 'IPAdapter_plus.IPAdapterFromParams' | 'IPAdapter_plus.IPAdapterPreciseStyleTransfer' | 'IPAdapter_plus.IPAdapterPreciseStyleTransferBatch' | 'IPAdapter_plus.IPAdapterPreciseComposition' | 'IPAdapter_plus.IPAdapterPreciseCompositionBatch' | 'IPAdapter_plus.IPAdapterUnifiedLoader' | 'IPAdapter_plus.IPAdapterUnifiedLoaderFaceID' | 'IPAdapter_plus.IPAdapterModelLoader' | 'IPAdapter_plus.IPAdapterInsightFaceLoader' | 'IPAdapter_plus.IPAdapterUnifiedLoaderCommunity' | 'IPAdapter_plus.IPAdapterEncoder' | 'IPAdapter_plus.IPAdapterCombineEmbeds' | 'IPAdapter_plus.IPAdapterNoise' | 'IPAdapter_plus.PrepImageForClipVision' | 'IPAdapter_plus.IPAdapterSaveEmbeds' | 'IPAdapter_plus.IPAdapterLoadEmbeds' | 'IPAdapter_plus.IPAdapterWeights' | 'IPAdapter_plus.IPAdapterCombineWeights' | 'IPAdapter_plus.IPAdapterWeightsFromStrategy' | 'IPAdapter_plus.IPAdapterPromptScheduleFromWeightsStrategy' | 'IPAdapter_plus.IPAdapterRegionalConditioning' | 'IPAdapter_plus.IPAdapterCombineParams' | 'NNLatentUpscale.NNLatentUpscale' | 'sd-perturbed-attention.PerturbedAttention' | 'sd-perturbed-attention.SmoothedEnergyGuidanceAdvanced' | 'sd-perturbed-attention.TRTAttachPag' | 'sd-perturbed-attention.TRTPerturbedAttention' | 'civitai_comfy_nodes.CivitAI_Lora_Loader' | 'civitai_comfy_nodes.CivitAI_Checkpoint_Loader' | 'controlnet_aux.ShufflePreprocessor' | 'controlnet_aux.DensePosePreprocessor' | 'controlnet_aux.LeReS-DepthMapPreprocessor' | 'controlnet_aux.BinaryPreprocessor' | 'controlnet_aux.AnimeFace_SemSegPreprocessor' | 'controlnet_aux.Zoe-DepthMapPreprocessor' | 'controlnet_aux.DepthAnythingPreprocessor' | 'controlnet_aux.Zoe_DepthAnythingPreprocessor' | 'controlnet_aux.DepthAnythingV2Preprocessor' | 'controlnet_aux.CannyEdgePreprocessor' | 'controlnet_aux.DWPreprocessor' | 'controlnet_aux.AnimalPosePreprocessor' | 'controlnet_aux.ImageLuminanceDetector' | 'controlnet_aux.ImageIntensityDetector' | 'controlnet_aux.MediaPipe-FaceMeshPreprocessor' | 'controlnet_aux.DiffusionEdge_Preprocessor' | 'controlnet_aux.M-LSDPreprocessor' | 'controlnet_aux.HEDPreprocessor' | 'controlnet_aux.FakeScribblePreprocessor' | 'controlnet_aux.OneFormer-COCO-SemSegPreprocessor' | 'controlnet_aux.OneFormer-ADE20K-SemSegPreprocessor' | 'controlnet_aux.BAE-NormalMapPreprocessor' | 'controlnet_aux.MeshGraphormer-DepthMapPreprocessor' | 'controlnet_aux.MeshGraphormer+ImpactDetector-DepthMapPreprocessor' | 'controlnet_aux.DSINE-NormalMapPreprocessor' | 'controlnet_aux.MiDaS-NormalMapPreprocessor' | 'controlnet_aux.MiDaS-DepthMapPreprocessor' | 'controlnet_aux.AnyLineArtPreprocessor_aux' | 'controlnet_aux.SAMPreprocessor' | 'controlnet_aux.UniFormer-SemSegPreprocessor' | 'controlnet_aux.SemSegPreprocessor' | 'controlnet_aux.PiDiNetPreprocessor' | 'controlnet_aux.InpaintPreprocessor' | 'controlnet_aux.LineArtPreprocessor' | 'controlnet_aux.OpenposePreprocessor' | 'controlnet_aux.Unimatch_OptFlowPreprocessor' | 'controlnet_aux.MaskOptFlow' | 'controlnet_aux.SavePoseKpsAsJsonFile' | 'controlnet_aux.FacialPartColoringFromPoseKps' | 'controlnet_aux.UpperBodyTrackingFromPoseKps' | 'controlnet_aux.RenderPeopleKps' | 'controlnet_aux.RenderAnimalKps' | 'controlnet_aux.TEEDPreprocessor' | 'controlnet_aux.PyraCannyPreprocessor' | 'controlnet_aux.Metric3D-DepthMapPreprocessor' | 'controlnet_aux.Metric3D-NormalMapPreprocessor' | 'controlnet_aux.Manga2Anime_LineArt_Preprocessor' | 'controlnet_aux.ScribblePreprocessor' | 'controlnet_aux.Scribble_XDoG_Preprocessor' | 'controlnet_aux.Scribble_PiDiNet_Preprocessor' | 'controlnet_aux.AnimeLineArtPreprocessor' | 'controlnet_aux.LineartStandardPreprocessor' | 'controlnet_aux.TilePreprocessor' | 'controlnet_aux.TTPlanet_TileGF_Preprocessor' | 'controlnet_aux.TTPlanet_TileSimple_Preprocessor' | 'controlnet_aux.ColorPreprocessor' | 'controlnet_aux.AIO_Preprocessor' | 'controlnet_aux.ControlNetPreprocessorSelector' | 'controlnet_aux.PixelPerfectResolution' | 'controlnet_aux.ImageGenResolutionFromImage' | 'controlnet_aux.ImageGenResolutionFromLatent' | 'controlnet_aux.HintImageEnchance' | 'controlnet_aux.ExecuteAllControlNetPreprocessors' | 'controlnet_aux.ControlNetAuxSimpleAddText' | 'Marigold.MarigoldModelLoader' | 'Marigold.MarigoldDepthEstimation_v2' | 'Marigold.MarigoldDepthEstimation_v2_video' | 'Marigold.MarigoldDepthEstimation' | 'Marigold.MarigoldDepthEstimationVideo' | 'Marigold.ColorizeDepthmap' | 'Marigold.SaveImageOpenEXR' | 'Marigold.RemapDepth' | 'Impact-Pack.SAMLoader' | 'Impact-Pack.CLIPSegDetectorProvider' | 'Impact-Pack.ONNXDetectorProvider' | 'Impact-Pack.BitwiseAndMaskForEach' | 'Impact-Pack.SubtractMaskForEach' | 'Impact-Pack.DetailerForEach' | 'Impact-Pack.DetailerForEachDebug' | 'Impact-Pack.DetailerForEachPipe' | 'Impact-Pack.DetailerForEachDebugPipe' | 'Impact-Pack.DetailerForEachPipeForAnimateDiff' | 'Impact-Pack.SAMDetectorCombined' | 'Impact-Pack.SAMDetectorSegmented' | 'Impact-Pack.FaceDetailer' | 'Impact-Pack.FaceDetailerPipe' | 'Impact-Pack.MaskDetailerPipe' | 'Impact-Pack.ToDetailerPipe' | 'Impact-Pack.ToDetailerPipeSDXL' | 'Impact-Pack.FromDetailerPipe' | 'Impact-Pack.FromDetailerPipe_v2' | 'Impact-Pack.FromDetailerPipeSDXL' | 'Impact-Pack.AnyPipeToBasic' | 'Impact-Pack.ToBasicPipe' | 'Impact-Pack.FromBasicPipe' | 'Impact-Pack.FromBasicPipe_v2' | 'Impact-Pack.BasicPipeToDetailerPipe' | 'Impact-Pack.BasicPipeToDetailerPipeSDXL' | 'Impact-Pack.DetailerPipeToBasicPipe' | 'Impact-Pack.EditBasicPipe' | 'Impact-Pack.EditDetailerPipe' | 'Impact-Pack.EditDetailerPipeSDXL' | 'Impact-Pack.LatentPixelScale' | 'Impact-Pack.PixelKSampleUpscalerProvider' | 'Impact-Pack.PixelKSampleUpscalerProviderPipe' | 'Impact-Pack.IterativeLatentUpscale' | 'Impact-Pack.IterativeImageUpscale' | 'Impact-Pack.PixelTiledKSampleUpscalerProvider' | 'Impact-Pack.PixelTiledKSampleUpscalerProviderPipe' | 'Impact-Pack.TwoSamplersForMaskUpscalerProvider' | 'Impact-Pack.TwoSamplersForMaskUpscalerProviderPipe' | 'Impact-Pack.PixelKSampleHookCombine' | 'Impact-Pack.DenoiseScheduleHookProvider' | 'Impact-Pack.StepsScheduleHookProvider' | 'Impact-Pack.CfgScheduleHookProvider' | 'Impact-Pack.NoiseInjectionHookProvider' | 'Impact-Pack.UnsamplerHookProvider' | 'Impact-Pack.CoreMLDetailerHookProvider' | 'Impact-Pack.PreviewDetailerHookProvider' | 'Impact-Pack.DetailerHookCombine' | 'Impact-Pack.NoiseInjectionDetailerHookProvider' | 'Impact-Pack.UnsamplerDetailerHookProvider' | 'Impact-Pack.DenoiseSchedulerDetailerHookProvider' | 'Impact-Pack.SEGSOrderedFilterDetailerHookProvider' | 'Impact-Pack.SEGSRangeFilterDetailerHookProvider' | 'Impact-Pack.SEGSLabelFilterDetailerHookProvider' | 'Impact-Pack.VariationNoiseDetailerHookProvider' | 'Impact-Pack.BitwiseAndMask' | 'Impact-Pack.SubtractMask' | 'Impact-Pack.AddMask' | 'Impact-Pack.ImpactSegsAndMask' | 'Impact-Pack.ImpactSegsAndMaskForEach' | 'Impact-Pack.EmptySegs' | 'Impact-Pack.ImpactFlattenMask' | 'Impact-Pack.MediaPipeFaceMeshToSEGS' | 'Impact-Pack.MaskToSEGS' | 'Impact-Pack.MaskToSEGS_for_AnimateDiff' | 'Impact-Pack.ToBinaryMask' | 'Impact-Pack.MasksToMaskList' | 'Impact-Pack.MaskListToMaskBatch' | 'Impact-Pack.ImageListToImageBatch' | 'Impact-Pack.SetDefaultImageForSEGS' | 'Impact-Pack.RemoveImageFromSEGS' | 'Impact-Pack.BboxDetectorSEGS' | 'Impact-Pack.SegmDetectorSEGS' | 'Impact-Pack.ONNXDetectorSEGS' | 'Impact-Pack.ImpactSimpleDetectorSEGS_for_AD' | 'Impact-Pack.ImpactSimpleDetectorSEGS' | 'Impact-Pack.ImpactSimpleDetectorSEGSPipe' | 'Impact-Pack.ImpactControlNetApplySEGS' | 'Impact-Pack.ImpactControlNetApplyAdvancedSEGS' | 'Impact-Pack.ImpactControlNetClearSEGS' | 'Impact-Pack.ImpactIPAdapterApplySEGS' | 'Impact-Pack.ImpactDecomposeSEGS' | 'Impact-Pack.ImpactAssembleSEGS' | 'Impact-Pack.ImpactFrom_SEG_ELT' | 'Impact-Pack.ImpactEdit_SEG_ELT' | 'Impact-Pack.ImpactDilate_Mask_SEG_ELT' | 'Impact-Pack.ImpactDilateMask' | 'Impact-Pack.ImpactGaussianBlurMask' | 'Impact-Pack.ImpactDilateMaskInSEGS' | 'Impact-Pack.ImpactGaussianBlurMaskInSEGS' | 'Impact-Pack.ImpactScaleBy_BBOX_SEG_ELT' | 'Impact-Pack.ImpactFrom_SEG_ELT_bbox' | 'Impact-Pack.ImpactFrom_SEG_ELT_crop_region' | 'Impact-Pack.ImpactCount_Elts_in_SEGS' | 'Impact-Pack.BboxDetectorCombined_v2' | 'Impact-Pack.SegmDetectorCombined_v2' | 'Impact-Pack.SegsToCombinedMask' | 'Impact-Pack.KSamplerProvider' | 'Impact-Pack.TwoSamplersForMask' | 'Impact-Pack.TiledKSamplerProvider' | 'Impact-Pack.KSamplerAdvancedProvider' | 'Impact-Pack.TwoAdvancedSamplersForMask' | 'Impact-Pack.ImpactNegativeConditioningPlaceholder' | 'Impact-Pack.PreviewBridge' | 'Impact-Pack.PreviewBridgeLatent' | 'Impact-Pack.ImageSender' | 'Impact-Pack.ImageReceiver' | 'Impact-Pack.LatentSender' | 'Impact-Pack.LatentReceiver' | 'Impact-Pack.ImageMaskSwitch' | 'Impact-Pack.LatentSwitch' | 'Impact-Pack.SEGSSwitch' | 'Impact-Pack.ImpactSwitch' | 'Impact-Pack.ImpactInversedSwitch' | 'Impact-Pack.ImpactWildcardProcessor' | 'Impact-Pack.ImpactWildcardEncode' | 'Impact-Pack.SEGSUpscaler' | 'Impact-Pack.SEGSUpscalerPipe' | 'Impact-Pack.SEGSDetailer' | 'Impact-Pack.SEGSPaste' | 'Impact-Pack.SEGSPreview' | 'Impact-Pack.SEGSPreviewCNet' | 'Impact-Pack.SEGSToImageList' | 'Impact-Pack.ImpactSEGSToMaskList' | 'Impact-Pack.ImpactSEGSToMaskBatch' | 'Impact-Pack.ImpactSEGSConcat' | 'Impact-Pack.ImpactSEGSPicker' | 'Impact-Pack.ImpactMakeTileSEGS' | 'Impact-Pack.ImpactSEGSMerge' | 'Impact-Pack.SEGSDetailerForAnimateDiff' | 'Impact-Pack.ImpactKSamplerBasicPipe' | 'Impact-Pack.ImpactKSamplerAdvancedBasicPipe' | 'Impact-Pack.ReencodeLatent' | 'Impact-Pack.ReencodeLatentPipe' | 'Impact-Pack.ImpactImageBatchToImageList' | 'Impact-Pack.ImpactMakeImageList' | 'Impact-Pack.ImpactMakeImageBatch' | 'Impact-Pack.ImpactMakeAnyList' | 'Impact-Pack.ImpactMakeMaskList' | 'Impact-Pack.ImpactMakeMaskBatch' | 'Impact-Pack.RegionalSampler' | 'Impact-Pack.RegionalSamplerAdvanced' | 'Impact-Pack.CombineRegionalPrompts' | 'Impact-Pack.RegionalPrompt' | 'Impact-Pack.ImpactCombineConditionings' | 'Impact-Pack.ImpactConcatConditionings' | 'Impact-Pack.ImpactSEGSLabelAssign' | 'Impact-Pack.ImpactSEGSLabelFilter' | 'Impact-Pack.ImpactSEGSRangeFilter' | 'Impact-Pack.ImpactSEGSOrderedFilter' | 'Impact-Pack.ImpactCompare' | 'Impact-Pack.ImpactConditionalBranch' | 'Impact-Pack.ImpactConditionalBranchSelMode' | 'Impact-Pack.ImpactIfNone' | 'Impact-Pack.ImpactConvertDataType' | 'Impact-Pack.ImpactLogicalOperators' | 'Impact-Pack.ImpactInt' | 'Impact-Pack.ImpactFloat' | 'Impact-Pack.ImpactBoolean' | 'Impact-Pack.ImpactValueSender' | 'Impact-Pack.ImpactValueReceiver' | 'Impact-Pack.ImpactImageInfo' | 'Impact-Pack.ImpactLatentInfo' | 'Impact-Pack.ImpactMinMax' | 'Impact-Pack.ImpactNeg' | 'Impact-Pack.ImpactConditionalStopIteration' | 'Impact-Pack.ImpactStringSelector' | 'Impact-Pack.StringListToString' | 'Impact-Pack.WildcardPromptFromString' | 'Impact-Pack.ImpactExecutionOrderController' | 'Impact-Pack.RemoveNoiseMask' | 'Impact-Pack.ImpactLogger' | 'Impact-Pack.ImpactDummyInput' | 'Impact-Pack.ImpactQueueTrigger' | 'Impact-Pack.ImpactQueueTriggerCountdown' | 'Impact-Pack.ImpactSetWidgetValue' | 'Impact-Pack.ImpactNodeSetMuteState' | 'Impact-Pack.ImpactControlBridge' | 'Impact-Pack.ImpactIsNotEmptySEGS' | 'Impact-Pack.ImpactSleep' | 'Impact-Pack.ImpactRemoteBoolean' | 'Impact-Pack.ImpactRemoteInt' | 'Impact-Pack.ImpactHFTransformersClassifierProvider' | 'Impact-Pack.ImpactSEGSClassify' | 'Impact-Pack.ImpactSchedulerAdapter' | 'Impact-Pack.GITSSchedulerFuncProvider' | 'Impact-Pack.UltralyticsDetectorProvider' | 'BRIA_AI-RMBG.BRIA_RMBG_ModelLoader_Zho' | 'BRIA_AI-RMBG.BRIA_RMBG_Zho' | 'Allor.AlphaChanelAdd' | 'Allor.AlphaChanelAddByMask' | 'Allor.AlphaChanelAsMask' | 'Allor.AlphaChanelRestore' | 'Allor.AlphaChanelRemove' | 'Allor.ClipClamp' | 'Allor.ClipVisionClamp' | 'Allor.ClipVisionOutputClamp' | 'Allor.ConditioningClamp' | 'Allor.ControlNetClamp' | 'Allor.GligenClamp' | 'Allor.ImageClamp' | 'Allor.LatentClamp' | 'Allor.MaskClamp' | 'Allor.ModelClamp' | 'Allor.StyleModelClamp' | 'Allor.UpscaleModelClamp' | 'Allor.VaeClamp' | 'Allor.ImageBatchGet' | 'Allor.ImageBatchCopy' | 'Allor.ImageBatchRemove' | 'Allor.ImageBatchFork' | 'Allor.ImageBatchJoin' | 'Allor.ImageBatchPermute' | 'Allor.ImageCompositeAbsolute' | 'Allor.ImageCompositeAbsoluteByContainer' | 'Allor.ImageCompositeRelative' | 'Allor.ImageCompositeRelativeByContainer' | 'Allor.ImageContainer' | 'Allor.ImageContainerInheritanceAdd' | 'Allor.ImageContainerInheritanceScale' | 'Allor.ImageContainerInheritanceMax' | 'Allor.ImageContainerInheritanceSum' | 'Allor.ImageDrawArc' | 'Allor.ImageDrawArcByContainer' | 'Allor.ImageDrawChord' | 'Allor.ImageDrawChordByContainer' | 'Allor.ImageDrawEllipse' | 'Allor.ImageDrawEllipseByContainer' | 'Allor.ImageDrawLine' | 'Allor.ImageDrawLineByContainer' | 'Allor.ImageDrawPieslice' | 'Allor.ImageDrawPiesliceByContainer' | 'Allor.ImageDrawRectangle' | 'Allor.ImageDrawRectangleByContainer' | 'Allor.ImageDrawRectangleRounded' | 'Allor.ImageDrawRectangleRoundedByContainer' | 'Allor.ImageDrawPolygon' | 'Allor.ImageEffectsAdjustment' | 'Allor.ImageEffectsGrayscale' | 'Allor.ImageEffectsNegative' | 'Allor.ImageEffectsSepia' | 'Allor.ImageEffectsLensZoomBurst' | 'Allor.ImageEffectsLensChromaticAberration' | 'Allor.ImageEffectsLensBokeh' | 'Allor.ImageEffectsLensOpticAxis' | 'Allor.ImageEffectsLensVignette' | 'Allor.ImageFilterSmooth' | 'Allor.ImageFilterSmoothMore' | 'Allor.ImageFilterBlur' | 'Allor.ImageFilterBoxBlur' | 'Allor.ImageFilterGaussianBlur' | 'Allor.ImageFilterGaussianBlurAdvanced' | 'Allor.ImageFilterStackBlur' | 'Allor.ImageFilterMedianBlur' | 'Allor.ImageFilterBilateralBlur' | 'Allor.ImageFilterContour' | 'Allor.ImageFilterDetail' | 'Allor.ImageFilterEdgeEnhance' | 'Allor.ImageFilterEdgeEnhanceMore' | 'Allor.ImageFilterEmboss' | 'Allor.ImageFilterFindEdges' | 'Allor.ImageFilterSharpen' | 'Allor.ImageFilterRank' | 'Allor.ImageFilterMin' | 'Allor.ImageFilterMax' | 'Allor.ImageFilterMode' | 'Allor.ImageNoiseBeta' | 'Allor.ImageNoiseBinomial' | 'Allor.ImageNoiseBytes' | 'Allor.ImageNoiseGaussian' | 'Allor.ImageSegmentation' | 'Allor.ImageSegmentationCustom' | 'Allor.ImageSegmentationCustomAdvanced' | 'Allor.ImageText' | 'Allor.ImageTextOutlined' | 'Allor.ImageTextMultiline' | 'Allor.ImageTextMultilineOutlined' | 'Allor.ImageTransformResizeAbsolute' | 'Allor.ImageTransformResizeRelative' | 'Allor.ImageTransformResizeClip' | 'Allor.ImageTransformCropAbsolute' | 'Allor.ImageTransformCropRelative' | 'Allor.ImageTransformCropCorners' | 'Allor.ImageTransformPaddingAbsolute' | 'Allor.ImageTransformPaddingRelative' | 'Allor.ImageTransformRotate' | 'Allor.ImageTransformTranspose' | 'UnknownNodeXX'
+      export type ComfyNodeType = 'KSampler' | 'CheckpointLoaderSimple' | 'CLIPTextEncode' | 'CLIPSetLastLayer' | 'VAEDecode' | 'VAEEncode' | 'VAEEncodeForInpaint' | 'VAELoader' | 'EmptyLatentImage' | 'LatentUpscale' | 'LatentUpscaleBy' | 'LatentFromBatch' | 'RepeatLatentBatch' | 'SaveImage' | 'PreviewImage' | 'LoadImage' | 'LoadImageMask' | 'ImageScale' | 'ImageScaleBy' | 'ImageInvert' | 'ImageBatch' | 'ImagePadForOutpaint' | 'EmptyImage' | 'ConditioningAverage' | 'ConditioningCombine' | 'ConditioningConcat' | 'ConditioningSetArea' | 'ConditioningSetAreaPercentage' | 'ConditioningSetAreaStrength' | 'ConditioningSetMask' | 'KSamplerAdvanced' | 'SetLatentNoiseMask' | 'LatentComposite' | 'LatentBlend' | 'LatentRotate' | 'LatentFlip' | 'LatentCrop' | 'LoraLoader' | 'CLIPLoader' | 'UNETLoader' | 'DualCLIPLoader' | 'CLIPVisionEncode' | 'StyleModelApply' | 'unCLIPConditioning' | 'ControlNetApply' | 'ControlNetApplyAdvanced' | 'ControlNetLoader' | 'DiffControlNetLoader' | 'StyleModelLoader' | 'CLIPVisionLoader' | 'VAEDecodeTiled' | 'VAEEncodeTiled' | 'unCLIPCheckpointLoader' | 'GLIGENLoader' | 'GLIGENTextBoxApply' | 'InpaintModelConditioning' | 'CheckpointLoader' | 'DiffusersLoader' | 'LoadLatent' | 'SaveLatent' | 'ConditioningZeroOut' | 'ConditioningSetTimestepRange' | 'LoraLoaderModelOnly' | 'LatentAdd' | 'LatentSubtract' | 'LatentMultiply' | 'LatentInterpolate' | 'LatentBatch' | 'LatentBatchSeedBehavior' | 'LatentApplyOperation' | 'LatentApplyOperationCFG' | 'LatentOperationTonemapReinhard' | 'LatentOperationSharpen' | 'HypernetworkLoader' | 'UpscaleModelLoader' | 'ImageUpscaleWithModel' | 'ImageBlend' | 'ImageBlur' | 'ImageQuantize' | 'ImageSharpen' | 'ImageScaleToTotalPixels' | 'LatentCompositeMasked' | 'ImageCompositeMasked' | 'MaskToImage' | 'ImageToMask' | 'ImageColorToMask' | 'SolidMask' | 'InvertMask' | 'CropMask' | 'MaskComposite' | 'FeatherMask' | 'GrowMask' | 'ThresholdMask' | 'PorterDuffImageComposite' | 'SplitImageWithAlpha' | 'JoinImageWithAlpha' | 'RebatchLatents' | 'RebatchImages' | 'ModelMergeSimple' | 'ModelMergeBlocks' | 'ModelMergeSubtract' | 'ModelMergeAdd' | 'CheckpointSave' | 'CLIPMergeSimple' | 'CLIPMergeSubtract' | 'CLIPMergeAdd' | 'CLIPSave' | 'VAESave' | 'ModelSave' | 'TomePatchModel' | 'CLIPTextEncodeSDXLRefiner' | 'CLIPTextEncodeSDXL' | 'Canny' | 'FreeU' | 'FreeU_V2' | 'SamplerCustom' | 'BasicScheduler' | 'KarrasScheduler' | 'ExponentialScheduler' | 'PolyexponentialScheduler' | 'LaplaceScheduler' | 'VPScheduler' | 'BetaSamplingScheduler' | 'SDTurboScheduler' | 'KSamplerSelect' | 'SamplerEulerAncestral' | 'SamplerEulerAncestralCFGPP' | 'SamplerLMS' | 'SamplerDPMPP_3M_SDE' | 'SamplerDPMPP_2M_SDE' | 'SamplerDPMPP_SDE' | 'SamplerDPMPP_2S_Ancestral' | 'SamplerDPMAdaptative' | 'SplitSigmas' | 'SplitSigmasDenoise' | 'FlipSigmas' | 'CFGGuider' | 'DualCFGGuider' | 'BasicGuider' | 'RandomNoise' | 'DisableNoise' | 'AddNoise' | 'SamplerCustomAdvanced' | 'HyperTile' | 'ModelSamplingDiscrete' | 'ModelSamplingContinuousEDM' | 'ModelSamplingContinuousV' | 'ModelSamplingStableCascade' | 'ModelSamplingSD3' | 'ModelSamplingAuraFlow' | 'ModelSamplingFlux' | 'RescaleCFG' | 'PatchModelAddDownscale' | 'ImageCrop' | 'RepeatImageBatch' | 'ImageFromBatch' | 'SaveAnimatedWEBP' | 'SaveAnimatedPNG' | 'ImageOnlyCheckpointLoader' | 'SVD_img2vid_Conditioning' | 'VideoLinearCFGGuidance' | 'VideoTriangleCFGGuidance' | 'ImageOnlyCheckpointSave' | 'SelfAttentionGuidance' | 'PerpNeg' | 'PerpNegGuider' | 'StableZero123_Conditioning' | 'StableZero123_Conditioning_Batched' | 'SV3D_Conditioning' | 'SD_4XUpscale_Conditioning' | 'PhotoMakerLoader' | 'PhotoMakerEncode' | 'CLIPTextEncodeControlnet' | 'Morphology' | 'StableCascade_EmptyLatentImage' | 'StableCascade_StageB_Conditioning' | 'StableCascade_StageC_VAEEncode' | 'StableCascade_SuperResolutionControlnet' | 'DifferentialDiffusion' | 'InstructPixToPixConditioning' | 'ModelMergeSD1' | 'ModelMergeSD2' | 'ModelMergeSDXL' | 'ModelMergeSD3_2B' | 'ModelMergeFlux1' | 'ModelMergeSD35_Large' | 'PerturbedAttentionGuidance' | 'AlignYourStepsScheduler' | 'UNetSelfAttentionMultiply' | 'UNetCrossAttentionMultiply' | 'CLIPAttentionMultiply' | 'UNetTemporalAttentionMultiply' | 'SamplerLCMUpscale' | 'SamplerEulerCFGpp' | 'WebcamCapture' | 'EmptyLatentAudio' | 'VAEEncodeAudio' | 'VAEDecodeAudio' | 'SaveAudio' | 'LoadAudio' | 'PreviewAudio' | 'TripleCLIPLoader' | 'EmptySD3LatentImage' | 'CLIPTextEncodeSD3' | 'ControlNetApplySD3' | 'SkipLayerGuidanceSD3' | 'GITSScheduler' | 'SetUnionControlNetType' | 'ControlNetInpaintingAliMamaApply' | 'CLIPTextEncodeHunyuanDiT' | 'CLIPTextEncodeFlux' | 'FluxGuidance' | 'LoraSave' | 'TorchCompileModel' | 'EmptyMochiLatentVideo' | 'AnimateDiff-Evolved.ADE_AnimateDiffLoRALoader' | 'AnimateDiff-Evolved.ADE_AnimateDiffSamplingSettings' | 'AnimateDiff-Evolved.ADE_AnimateDiffKeyframe' | 'AnimateDiff-Evolved.ADE_MultivalDynamic' | 'AnimateDiff-Evolved.ADE_MultivalDynamicFloatInput' | 'AnimateDiff-Evolved.ADE_MultivalDynamicFloats' | 'AnimateDiff-Evolved.ADE_MultivalScaledMask' | 'AnimateDiff-Evolved.ADE_MultivalConvertToMask' | 'AnimateDiff-Evolved.ADE_StandardStaticContextOptions' | 'AnimateDiff-Evolved.ADE_StandardUniformContextOptions' | 'AnimateDiff-Evolved.ADE_LoopedUniformContextOptions' | 'AnimateDiff-Evolved.ADE_ViewsOnlyContextOptions' | 'AnimateDiff-Evolved.ADE_BatchedContextOptions' | 'AnimateDiff-Evolved.ADE_AnimateDiffUniformContextOptions' | 'AnimateDiff-Evolved.ADE_VisualizeContextOptionsK' | 'AnimateDiff-Evolved.ADE_VisualizeContextOptionsKAdv' | 'AnimateDiff-Evolved.ADE_VisualizeContextOptionsSCustom' | 'AnimateDiff-Evolved.ADE_StandardStaticViewOptions' | 'AnimateDiff-Evolved.ADE_StandardUniformViewOptions' | 'AnimateDiff-Evolved.ADE_LoopedUniformViewOptions' | 'AnimateDiff-Evolved.ADE_ContextExtras_Set' | 'AnimateDiff-Evolved.ADE_ContextExtras_ContextRef' | 'AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_ModeFirst' | 'AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_ModeSliding' | 'AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_ModeIndexes' | 'AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_TuneAttn' | 'AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_TuneAttnAdain' | 'AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_Keyframe' | 'AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_KeyframeInterpolation' | 'AnimateDiff-Evolved.ADE_ContextExtras_ContextRef_KeyframeFromList' | 'AnimateDiff-Evolved.ADE_ContextExtras_NaiveReuse' | 'AnimateDiff-Evolved.ADE_ContextExtras_NaiveReuse_Keyframe' | 'AnimateDiff-Evolved.ADE_ContextExtras_NaiveReuse_KeyframeInterpolation' | 'AnimateDiff-Evolved.ADE_ContextExtras_NaiveReuse_KeyframeFromList' | 'AnimateDiff-Evolved.ADE_IterationOptsDefault' | 'AnimateDiff-Evolved.ADE_IterationOptsFreeInit' | 'AnimateDiff-Evolved.ADE_RegisterLoraHook' | 'AnimateDiff-Evolved.ADE_RegisterLoraHookModelOnly' | 'AnimateDiff-Evolved.ADE_RegisterModelAsLoraHook' | 'AnimateDiff-Evolved.ADE_RegisterModelAsLoraHookModelOnly' | 'AnimateDiff-Evolved.ADE_CombineLoraHooks' | 'AnimateDiff-Evolved.ADE_CombineLoraHooksFour' | 'AnimateDiff-Evolved.ADE_CombineLoraHooksEight' | 'AnimateDiff-Evolved.ADE_SetLoraHookKeyframe' | 'AnimateDiff-Evolved.ADE_AttachLoraHookToCLIP' | 'AnimateDiff-Evolved.ADE_LoraHookKeyframe' | 'AnimateDiff-Evolved.ADE_LoraHookKeyframeInterpolation' | 'AnimateDiff-Evolved.ADE_LoraHookKeyframeFromStrengthList' | 'AnimateDiff-Evolved.ADE_AttachLoraHookToConditioning' | 'AnimateDiff-Evolved.ADE_PairedConditioningSetMask' | 'AnimateDiff-Evolved.ADE_ConditioningSetMask' | 'AnimateDiff-Evolved.ADE_PairedConditioningSetMaskAndCombine' | 'AnimateDiff-Evolved.ADE_ConditioningSetMaskAndCombine' | 'AnimateDiff-Evolved.ADE_PairedConditioningSetUnmaskedAndCombine' | 'AnimateDiff-Evolved.ADE_ConditioningSetUnmaskedAndCombine' | 'AnimateDiff-Evolved.ADE_PairedConditioningCombine' | 'AnimateDiff-Evolved.ADE_ConditioningCombine' | 'AnimateDiff-Evolved.ADE_TimestepsConditioning' | 'AnimateDiff-Evolved.ADE_NoiseLayerAdd' | 'AnimateDiff-Evolved.ADE_NoiseLayerAddWeighted' | 'AnimateDiff-Evolved.ADE_NoiseLayerReplace' | 'AnimateDiff-Evolved.ADE_AnimateDiffSettings' | 'AnimateDiff-Evolved.ADE_AdjustPESweetspotStretch' | 'AnimateDiff-Evolved.ADE_AdjustPEFullStretch' | 'AnimateDiff-Evolved.ADE_AdjustPEManual' | 'AnimateDiff-Evolved.ADE_AdjustWeightAllAdd' | 'AnimateDiff-Evolved.ADE_AdjustWeightAllMult' | 'AnimateDiff-Evolved.ADE_AdjustWeightIndivAdd' | 'AnimateDiff-Evolved.ADE_AdjustWeightIndivMult' | 'AnimateDiff-Evolved.ADE_AdjustWeightIndivAttnAdd' | 'AnimateDiff-Evolved.ADE_AdjustWeightIndivAttnMult' | 'AnimateDiff-Evolved.ADE_CustomCFGSimple' | 'AnimateDiff-Evolved.ADE_CustomCFG' | 'AnimateDiff-Evolved.ADE_CustomCFGKeyframeSimple' | 'AnimateDiff-Evolved.ADE_CustomCFGKeyframe' | 'AnimateDiff-Evolved.ADE_CustomCFGKeyframeInterpolation' | 'AnimateDiff-Evolved.ADE_CustomCFGKeyframeFromList' | 'AnimateDiff-Evolved.ADE_CFGExtrasPAGSimple' | 'AnimateDiff-Evolved.ADE_CFGExtrasPAG' | 'AnimateDiff-Evolved.ADE_CFGExtrasRescaleCFGSimple' | 'AnimateDiff-Evolved.ADE_CFGExtrasRescaleCFG' | 'AnimateDiff-Evolved.ADE_SigmaSchedule' | 'AnimateDiff-Evolved.ADE_RawSigmaSchedule' | 'AnimateDiff-Evolved.ADE_SigmaScheduleWeightedAverage' | 'AnimateDiff-Evolved.ADE_SigmaScheduleWeightedAverageInterp' | 'AnimateDiff-Evolved.ADE_SigmaScheduleSplitAndCombine' | 'AnimateDiff-Evolved.ADE_SigmaScheduleToSigmas' | 'AnimateDiff-Evolved.ADE_NoisedImageInjection' | 'AnimateDiff-Evolved.ADE_NoisedImageInjectOptions' | 'AnimateDiff-Evolved.ADE_PromptScheduling' | 'AnimateDiff-Evolved.ADE_PromptSchedulingLatents' | 'AnimateDiff-Evolved.ADE_ValueScheduling' | 'AnimateDiff-Evolved.ADE_ValueSchedulingLatents' | 'AnimateDiff-Evolved.ADE_ValuesReplace' | 'AnimateDiff-Evolved.ADE_FloatToFloats' | 'AnimateDiff-Evolved.ADE_ADBlockCombo' | 'AnimateDiff-Evolved.ADE_ADBlockIndiv' | 'AnimateDiff-Evolved.ADE_PerBlockHighLevel' | 'AnimateDiff-Evolved.ADE_PerBlock_SD15_MidLevel' | 'AnimateDiff-Evolved.ADE_PerBlock_SD15_LowLevel' | 'AnimateDiff-Evolved.ADE_PerBlock_SD15_FromFloats' | 'AnimateDiff-Evolved.ADE_PerBlock_SDXL_MidLevel' | 'AnimateDiff-Evolved.ADE_PerBlock_SDXL_LowLevel' | 'AnimateDiff-Evolved.ADE_PerBlock_SDXL_FromFloats' | 'AnimateDiff-Evolved.ADE_AnimateDiffUnload' | 'AnimateDiff-Evolved.ADE_EmptyLatentImageLarge' | 'AnimateDiff-Evolved.CheckpointLoaderSimpleWithNoiseSelect' | 'AnimateDiff-Evolved.ADE_PerturbedAttentionGuidanceMultival' | 'AnimateDiff-Evolved.ADE_RescaleCFGMultival' | 'AnimateDiff-Evolved.ADE_AnimateDiffLoaderGen1' | 'AnimateDiff-Evolved.ADE_AnimateDiffLoaderWithContext' | 'AnimateDiff-Evolved.ADE_UseEvolvedSampling' | 'AnimateDiff-Evolved.ADE_ApplyAnimateDiffModelSimple' | 'AnimateDiff-Evolved.ADE_ApplyAnimateDiffModel' | 'AnimateDiff-Evolved.ADE_LoadAnimateDiffModel' | 'AnimateDiff-Evolved.ADE_ApplyAnimateLCMI2VModel' | 'AnimateDiff-Evolved.ADE_LoadAnimateLCMI2VModel' | 'AnimateDiff-Evolved.ADE_UpscaleAndVAEEncode' | 'AnimateDiff-Evolved.ADE_InjectI2VIntoAnimateDiffModel' | 'AnimateDiff-Evolved.ADE_ApplyAnimateDiffModelWithCameraCtrl' | 'AnimateDiff-Evolved.ADE_LoadAnimateDiffModelWithCameraCtrl' | 'AnimateDiff-Evolved.ADE_CameraCtrlAnimateDiffKeyframe' | 'AnimateDiff-Evolved.ADE_LoadCameraPoses' | 'AnimateDiff-Evolved.ADE_LoadCameraPosesFromPath' | 'AnimateDiff-Evolved.ADE_CameraPoseBasic' | 'AnimateDiff-Evolved.ADE_CameraPoseCombo' | 'AnimateDiff-Evolved.ADE_CameraPoseAdvanced' | 'AnimateDiff-Evolved.ADE_CameraManualPoseAppend' | 'AnimateDiff-Evolved.ADE_ReplaceCameraParameters' | 'AnimateDiff-Evolved.ADE_ReplaceOriginalPoseAspectRatio' | 'AnimateDiff-Evolved.ADE_ApplyAnimateDiffModelWithPIA' | 'AnimateDiff-Evolved.ADE_InputPIA_Multival' | 'AnimateDiff-Evolved.ADE_InputPIA_PaperPresets' | 'AnimateDiff-Evolved.ADE_PIA_AnimateDiffKeyframe' | 'AnimateDiff-Evolved.ADE_InjectPIAIntoAnimateDiffModel' | 'AnimateDiff-Evolved.AnimateDiffLoaderV1' | 'AnimateDiff-Evolved.ADE_AnimateDiffLoaderV1Advanced' | 'AnimateDiff-Evolved.ADE_AnimateDiffCombine' | 'AnimateDiff-Evolved.ADE_AnimateDiffModelSettings_Release' | 'AnimateDiff-Evolved.ADE_AnimateDiffModelSettingsSimple' | 'AnimateDiff-Evolved.ADE_AnimateDiffModelSettings' | 'AnimateDiff-Evolved.ADE_AnimateDiffModelSettingsAdvancedAttnStrengths' | 'websocket_image_save.SaveImageWebsocket' | 'was.BLIP Model Loader' | 'was.Blend Latents' | 'was.Bus Node' | 'was.Cache Node' | 'was.Checkpoint Loader' | 'was.Checkpoint Loader (Simple)' | 'was.CLIPTextEncode (NSP)' | 'was.CLIP Input Switch' | 'was.CLIP Vision Input Switch' | 'was.Conditioning Input Switch' | 'was.Constant Number' | 'was.Create Grid Image' | 'was.Create Grid Image from Batch' | 'was.Create Morph Image' | 'was.Create Morph Image from Path' | 'was.Create Video from Path' | 'was.CLIPSeg Masking' | 'was.CLIPSeg Model Loader' | 'was.CLIPSeg Batch Masking' | 'was.Convert Masks to Images' | 'was.Control Net Model Input Switch' | 'was.Debug Number to Console' | 'was.Dictionary to Console' | 'was.Diffusers Model Loader' | 'was.Diffusers Hub Model Down-Loader' | 'was.Export API' | 'was.Latent Input Switch' | 'was.Load Cache' | 'was.Logic Boolean' | 'was.Logic Boolean Primitive' | 'was.Logic Comparison OR' | 'was.Logic Comparison AND' | 'was.Logic Comparison XOR' | 'was.Logic NOT' | 'was.Lora Loader' | 'was.Hex to HSL' | 'was.HSL to Hex' | 'was.Image SSAO (Ambient Occlusion)' | 'was.Image SSDO (Direct Occlusion)' | 'was.Image Analyze' | 'was.Image Aspect Ratio' | 'was.Image Batch' | 'was.Image Blank' | 'was.Image Blend by Mask' | 'was.Image Blend' | 'was.Image Blending Mode' | 'was.Image Bloom Filter' | 'was.Image Canny Filter' | 'was.Image Chromatic Aberration' | 'was.Image Color Palette' | 'was.Image Crop Face' | 'was.Image Crop Location' | 'was.Image Crop Square Location' | 'was.Image Displacement Warp' | 'was.Image Lucy Sharpen' | 'was.Image Paste Face' | 'was.Image Paste Crop' | 'was.Image Paste Crop by Location' | 'was.Image Pixelate' | 'was.Image Power Noise' | 'was.Image Dragan Photography Filter' | 'was.Image Edge Detection Filter' | 'was.Image Film Grain' | 'was.Image Filter Adjustments' | 'was.Image Flip' | 'was.Image Gradient Map' | 'was.Image Generate Gradient' | 'was.Image High Pass Filter' | 'was.Image History Loader' | 'was.Image Input Switch' | 'was.Image Levels Adjustment' | 'was.Image Load' | 'was.Image Median Filter' | 'was.Image Mix RGB Channels' | 'was.Image Monitor Effects Filter' | 'was.Image Nova Filter' | 'was.Image Padding' | 'was.Image Perlin Noise' | 'was.Image Rembg (Remove Background)' | 'was.Image Perlin Power Fractal' | 'was.Image Remove Background (Alpha)' | 'was.Image Remove Color' | 'was.Image Resize' | 'was.Image Rotate' | 'was.Image Rotate Hue' | 'was.Image Send HTTP' | 'was.Image Save' | 'was.Image Seamless Texture' | 'was.Image Select Channel' | 'was.Image Select Color' | 'was.Image Shadows and Highlights' | 'was.Image Size to Number' | 'was.Image Stitch' | 'was.Image Style Filter' | 'was.Image Threshold' | 'was.Image Tiled' | 'was.Image Transpose' | 'was.Image fDOF Filter' | 'was.Image to Latent Mask' | 'was.Image to Noise' | 'was.Image to Seed' | 'was.Images to RGB' | 'was.Images to Linear' | 'was.Integer place counter' | 'was.Image Voronoi Noise Filter' | 'was.KSampler (WAS)' | 'was.KSampler Cycle' | 'was.Latent Batch' | 'was.Latent Noise Injection' | 'was.Latent Size to Number' | 'was.Latent Upscale by Factor (WAS)' | 'was.Load Image Batch' | 'was.Load Text File' | 'was.Load Lora' | 'was.Lora Input Switch' | 'was.Masks Add' | 'was.Masks Subtract' | 'was.Mask Arbitrary Region' | 'was.Mask Batch to Mask' | 'was.Mask Batch' | 'was.Mask Ceiling Region' | 'was.Mask Crop Dominant Region' | 'was.Mask Crop Minority Region' | 'was.Mask Crop Region' | 'was.Mask Paste Region' | 'was.Mask Dilate Region' | 'was.Mask Dominant Region' | 'was.Mask Erode Region' | 'was.Mask Fill Holes' | 'was.Mask Floor Region' | 'was.Mask Gaussian Region' | 'was.Mask Invert' | 'was.Mask Minority Region' | 'was.Mask Smooth Region' | 'was.Mask Threshold Region' | 'was.Masks Combine Regions' | 'was.Masks Combine Batch' | 'was.MiDaS Model Loader' | 'was.MiDaS Depth Approximation' | 'was.MiDaS Mask Image' | 'was.Model Input Switch' | 'was.Number Counter' | 'was.Number Operation' | 'was.Number to Float' | 'was.Number Input Switch' | 'was.Number Input Condition' | 'was.Number Multiple Of' | 'was.Number PI' | 'was.Number to Int' | 'was.Number to Seed' | 'was.Number to String' | 'was.Number to Text' | 'was.Boolean To Text' | 'was.Prompt Styles Selector' | 'was.Prompt Multiple Styles Selector' | 'was.Random Number' | 'was.Save Text File' | 'was.Seed' | 'was.Tensor Batch to Image' | 'was.BLIP Analyze Image' | 'was.SAM Model Loader' | 'was.SAM Parameters' | 'was.SAM Parameters Combine' | 'was.SAM Image Mask' | 'was.Samples Passthrough (Stat System)' | 'was.String to Text' | 'was.Image Bounds' | 'was.Inset Image Bounds' | 'was.Bounded Image Blend' | 'was.Bounded Image Blend with Mask' | 'was.Bounded Image Crop' | 'was.Bounded Image Crop with Mask' | 'was.Image Bounds to Console' | 'was.Text Dictionary Update' | 'was.Text Dictionary Get' | 'was.Text Dictionary Convert' | 'was.Text Dictionary New' | 'was.Text Dictionary Keys' | 'was.Text Dictionary To Text' | 'was.Text Add Tokens' | 'was.Text Add Token by Input' | 'was.Text Compare' | 'was.Text Concatenate' | 'was.Text File History Loader' | 'was.Text Find and Replace by Dictionary' | 'was.Text Find and Replace Input' | 'was.Text Find and Replace' | 'was.Text Find' | 'was.Text Input Switch' | 'was.Text List' | 'was.Text List Concatenate' | 'was.Text List to Text' | 'was.Text Load Line From File' | 'was.Text Multiline' | 'was.Text Multiline (Code Compatible)' | 'was.Text Parse A1111 Embeddings' | 'was.Text Parse Noodle Soup Prompts' | 'was.Text Parse Tokens' | 'was.Text Random Line' | 'was.Text Random Prompt' | 'was.Text String' | 'was.Text Contains' | 'was.Text Shuffle' | 'was.Text Sort' | 'was.Text to Conditioning' | 'was.Text to Console' | 'was.Text to Number' | 'was.Text to String' | 'was.Text String Truncate' | 'was.True Random.org Number Generator' | 'was.unCLIP Checkpoint Loader' | 'was.Upscale Model Loader' | 'was.Upscale Model Switch' | 'was.Write to GIF' | 'was.Write to Video' | 'was.VAE Input Switch' | 'was.Video Dump Frames' | 'was.CLIPSEG2' | 'clipseg.CLIPSeg' | 'clipseg.CombineSegMasks' | 'A8R8_ComfyUI_nodes.Base64ImageInput' | 'A8R8_ComfyUI_nodes.Base64ImageOutput' | 'A8R8_ComfyUI_nodes.AttentionCouple' | 'A8R8_ComfyUI_nodes.AttentionCoupleRegion' | 'A8R8_ComfyUI_nodes.AttentionCoupleRegions' | 'FizzNodes.Lerp' | 'FizzNodes.SinWave' | 'FizzNodes.InvSinWave' | 'FizzNodes.CosWave' | 'FizzNodes.InvCosWave' | 'FizzNodes.SquareWave' | 'FizzNodes.SawtoothWave' | 'FizzNodes.TriangleWave' | 'FizzNodes.AbsCosWave' | 'FizzNodes.AbsSinWave' | 'FizzNodes.PromptSchedule' | 'FizzNodes.ValueSchedule' | 'FizzNodes.PromptScheduleNodeFlow' | 'FizzNodes.PromptScheduleNodeFlowEnd' | 'FizzNodes.PromptScheduleEncodeSDXL' | 'FizzNodes.StringSchedule' | 'FizzNodes.BatchPromptSchedule' | 'FizzNodes.BatchValueSchedule' | 'FizzNodes.BatchPromptScheduleEncodeSDXL' | 'FizzNodes.BatchStringSchedule' | 'FizzNodes.BatchValueScheduleLatentInput' | 'FizzNodes.BatchPromptScheduleSDXLLatentInput' | 'FizzNodes.BatchPromptScheduleLatentInput' | 'FizzNodes.ImagesFromBatchSchedule' | 'FizzNodes.StringConcatenate' | 'FizzNodes.Init FizzFrame' | 'FizzNodes.FizzFrame' | 'FizzNodes.FizzFrameConcatenate' | 'FizzNodes.ConcatStringSingle' | 'FizzNodes.convertKeyframeKeysToBatchKeys' | 'FizzNodes.CalculateFrameOffset' | 'IPAdapter_plus.IPAdapter' | 'IPAdapter_plus.IPAdapterAdvanced' | 'IPAdapter_plus.IPAdapterBatch' | 'IPAdapter_plus.IPAdapterFaceID' | 'IPAdapter_plus.IPAdapterFaceIDKolors' | 'IPAdapter_plus.IPAAdapterFaceIDBatch' | 'IPAdapter_plus.IPAdapterTiled' | 'IPAdapter_plus.IPAdapterTiledBatch' | 'IPAdapter_plus.IPAdapterEmbeds' | 'IPAdapter_plus.IPAdapterEmbedsBatch' | 'IPAdapter_plus.IPAdapterStyleComposition' | 'IPAdapter_plus.IPAdapterStyleCompositionBatch' | 'IPAdapter_plus.IPAdapterMS' | 'IPAdapter_plus.IPAdapterClipVisionEnhancer' | 'IPAdapter_plus.IPAdapterClipVisionEnhancerBatch' | 'IPAdapter_plus.IPAdapterFromParams' | 'IPAdapter_plus.IPAdapterPreciseStyleTransfer' | 'IPAdapter_plus.IPAdapterPreciseStyleTransferBatch' | 'IPAdapter_plus.IPAdapterPreciseComposition' | 'IPAdapter_plus.IPAdapterPreciseCompositionBatch' | 'IPAdapter_plus.IPAdapterUnifiedLoader' | 'IPAdapter_plus.IPAdapterUnifiedLoaderFaceID' | 'IPAdapter_plus.IPAdapterModelLoader' | 'IPAdapter_plus.IPAdapterInsightFaceLoader' | 'IPAdapter_plus.IPAdapterUnifiedLoaderCommunity' | 'IPAdapter_plus.IPAdapterEncoder' | 'IPAdapter_plus.IPAdapterCombineEmbeds' | 'IPAdapter_plus.IPAdapterNoise' | 'IPAdapter_plus.PrepImageForClipVision' | 'IPAdapter_plus.IPAdapterSaveEmbeds' | 'IPAdapter_plus.IPAdapterLoadEmbeds' | 'IPAdapter_plus.IPAdapterWeights' | 'IPAdapter_plus.IPAdapterCombineWeights' | 'IPAdapter_plus.IPAdapterWeightsFromStrategy' | 'IPAdapter_plus.IPAdapterPromptScheduleFromWeightsStrategy' | 'IPAdapter_plus.IPAdapterRegionalConditioning' | 'IPAdapter_plus.IPAdapterCombineParams' | 'NNLatentUpscale.NNLatentUpscale' | 'sd-perturbed-attention.PerturbedAttention' | 'sd-perturbed-attention.SmoothedEnergyGuidanceAdvanced' | 'sd-perturbed-attention.TRTAttachPag' | 'sd-perturbed-attention.TRTPerturbedAttention' | 'civitai_comfy_nodes.CivitAI_Lora_Loader' | 'civitai_comfy_nodes.CivitAI_Checkpoint_Loader' | 'controlnet_aux.ShufflePreprocessor' | 'controlnet_aux.DensePosePreprocessor' | 'controlnet_aux.LeReS-DepthMapPreprocessor' | 'controlnet_aux.BinaryPreprocessor' | 'controlnet_aux.AnimeFace_SemSegPreprocessor' | 'controlnet_aux.Zoe-DepthMapPreprocessor' | 'controlnet_aux.DepthAnythingPreprocessor' | 'controlnet_aux.Zoe_DepthAnythingPreprocessor' | 'controlnet_aux.DepthAnythingV2Preprocessor' | 'controlnet_aux.CannyEdgePreprocessor' | 'controlnet_aux.DWPreprocessor' | 'controlnet_aux.AnimalPosePreprocessor' | 'controlnet_aux.ImageLuminanceDetector' | 'controlnet_aux.ImageIntensityDetector' | 'controlnet_aux.MediaPipe-FaceMeshPreprocessor' | 'controlnet_aux.DiffusionEdge_Preprocessor' | 'controlnet_aux.M-LSDPreprocessor' | 'controlnet_aux.HEDPreprocessor' | 'controlnet_aux.FakeScribblePreprocessor' | 'controlnet_aux.OneFormer-COCO-SemSegPreprocessor' | 'controlnet_aux.OneFormer-ADE20K-SemSegPreprocessor' | 'controlnet_aux.BAE-NormalMapPreprocessor' | 'controlnet_aux.MeshGraphormer-DepthMapPreprocessor' | 'controlnet_aux.MeshGraphormer+ImpactDetector-DepthMapPreprocessor' | 'controlnet_aux.DSINE-NormalMapPreprocessor' | 'controlnet_aux.MiDaS-NormalMapPreprocessor' | 'controlnet_aux.MiDaS-DepthMapPreprocessor' | 'controlnet_aux.AnyLineArtPreprocessor_aux' | 'controlnet_aux.SAMPreprocessor' | 'controlnet_aux.UniFormer-SemSegPreprocessor' | 'controlnet_aux.SemSegPreprocessor' | 'controlnet_aux.PiDiNetPreprocessor' | 'controlnet_aux.InpaintPreprocessor' | 'controlnet_aux.LineArtPreprocessor' | 'controlnet_aux.OpenposePreprocessor' | 'controlnet_aux.Unimatch_OptFlowPreprocessor' | 'controlnet_aux.MaskOptFlow' | 'controlnet_aux.SavePoseKpsAsJsonFile' | 'controlnet_aux.FacialPartColoringFromPoseKps' | 'controlnet_aux.UpperBodyTrackingFromPoseKps' | 'controlnet_aux.RenderPeopleKps' | 'controlnet_aux.RenderAnimalKps' | 'controlnet_aux.TEEDPreprocessor' | 'controlnet_aux.PyraCannyPreprocessor' | 'controlnet_aux.Metric3D-DepthMapPreprocessor' | 'controlnet_aux.Metric3D-NormalMapPreprocessor' | 'controlnet_aux.Manga2Anime_LineArt_Preprocessor' | 'controlnet_aux.ScribblePreprocessor' | 'controlnet_aux.Scribble_XDoG_Preprocessor' | 'controlnet_aux.Scribble_PiDiNet_Preprocessor' | 'controlnet_aux.AnimeLineArtPreprocessor' | 'controlnet_aux.LineartStandardPreprocessor' | 'controlnet_aux.TilePreprocessor' | 'controlnet_aux.TTPlanet_TileGF_Preprocessor' | 'controlnet_aux.TTPlanet_TileSimple_Preprocessor' | 'controlnet_aux.ColorPreprocessor' | 'controlnet_aux.AIO_Preprocessor' | 'controlnet_aux.ControlNetPreprocessorSelector' | 'controlnet_aux.PixelPerfectResolution' | 'controlnet_aux.ImageGenResolutionFromImage' | 'controlnet_aux.ImageGenResolutionFromLatent' | 'controlnet_aux.HintImageEnchance' | 'controlnet_aux.ExecuteAllControlNetPreprocessors' | 'controlnet_aux.ControlNetAuxSimpleAddText' | 'Marigold.MarigoldModelLoader' | 'Marigold.MarigoldDepthEstimation_v2' | 'Marigold.MarigoldDepthEstimation_v2_video' | 'Marigold.MarigoldDepthEstimation' | 'Marigold.MarigoldDepthEstimationVideo' | 'Marigold.ColorizeDepthmap' | 'Marigold.SaveImageOpenEXR' | 'Marigold.RemapDepth' | 'Impact-Pack.SAMLoader' | 'Impact-Pack.CLIPSegDetectorProvider' | 'Impact-Pack.ONNXDetectorProvider' | 'Impact-Pack.BitwiseAndMaskForEach' | 'Impact-Pack.SubtractMaskForEach' | 'Impact-Pack.DetailerForEach' | 'Impact-Pack.DetailerForEachDebug' | 'Impact-Pack.DetailerForEachPipe' | 'Impact-Pack.DetailerForEachDebugPipe' | 'Impact-Pack.DetailerForEachPipeForAnimateDiff' | 'Impact-Pack.SAMDetectorCombined' | 'Impact-Pack.SAMDetectorSegmented' | 'Impact-Pack.FaceDetailer' | 'Impact-Pack.FaceDetailerPipe' | 'Impact-Pack.MaskDetailerPipe' | 'Impact-Pack.ToDetailerPipe' | 'Impact-Pack.ToDetailerPipeSDXL' | 'Impact-Pack.FromDetailerPipe' | 'Impact-Pack.FromDetailerPipe_v2' | 'Impact-Pack.FromDetailerPipeSDXL' | 'Impact-Pack.AnyPipeToBasic' | 'Impact-Pack.ToBasicPipe' | 'Impact-Pack.FromBasicPipe' | 'Impact-Pack.FromBasicPipe_v2' | 'Impact-Pack.BasicPipeToDetailerPipe' | 'Impact-Pack.BasicPipeToDetailerPipeSDXL' | 'Impact-Pack.DetailerPipeToBasicPipe' | 'Impact-Pack.EditBasicPipe' | 'Impact-Pack.EditDetailerPipe' | 'Impact-Pack.EditDetailerPipeSDXL' | 'Impact-Pack.LatentPixelScale' | 'Impact-Pack.PixelKSampleUpscalerProvider' | 'Impact-Pack.PixelKSampleUpscalerProviderPipe' | 'Impact-Pack.IterativeLatentUpscale' | 'Impact-Pack.IterativeImageUpscale' | 'Impact-Pack.PixelTiledKSampleUpscalerProvider' | 'Impact-Pack.PixelTiledKSampleUpscalerProviderPipe' | 'Impact-Pack.TwoSamplersForMaskUpscalerProvider' | 'Impact-Pack.TwoSamplersForMaskUpscalerProviderPipe' | 'Impact-Pack.PixelKSampleHookCombine' | 'Impact-Pack.DenoiseScheduleHookProvider' | 'Impact-Pack.StepsScheduleHookProvider' | 'Impact-Pack.CfgScheduleHookProvider' | 'Impact-Pack.NoiseInjectionHookProvider' | 'Impact-Pack.UnsamplerHookProvider' | 'Impact-Pack.CoreMLDetailerHookProvider' | 'Impact-Pack.PreviewDetailerHookProvider' | 'Impact-Pack.DetailerHookCombine' | 'Impact-Pack.NoiseInjectionDetailerHookProvider' | 'Impact-Pack.UnsamplerDetailerHookProvider' | 'Impact-Pack.DenoiseSchedulerDetailerHookProvider' | 'Impact-Pack.SEGSOrderedFilterDetailerHookProvider' | 'Impact-Pack.SEGSRangeFilterDetailerHookProvider' | 'Impact-Pack.SEGSLabelFilterDetailerHookProvider' | 'Impact-Pack.VariationNoiseDetailerHookProvider' | 'Impact-Pack.BitwiseAndMask' | 'Impact-Pack.SubtractMask' | 'Impact-Pack.AddMask' | 'Impact-Pack.ImpactSegsAndMask' | 'Impact-Pack.ImpactSegsAndMaskForEach' | 'Impact-Pack.EmptySegs' | 'Impact-Pack.ImpactFlattenMask' | 'Impact-Pack.MediaPipeFaceMeshToSEGS' | 'Impact-Pack.MaskToSEGS' | 'Impact-Pack.MaskToSEGS_for_AnimateDiff' | 'Impact-Pack.ToBinaryMask' | 'Impact-Pack.MasksToMaskList' | 'Impact-Pack.MaskListToMaskBatch' | 'Impact-Pack.ImageListToImageBatch' | 'Impact-Pack.SetDefaultImageForSEGS' | 'Impact-Pack.RemoveImageFromSEGS' | 'Impact-Pack.BboxDetectorSEGS' | 'Impact-Pack.SegmDetectorSEGS' | 'Impact-Pack.ONNXDetectorSEGS' | 'Impact-Pack.ImpactSimpleDetectorSEGS_for_AD' | 'Impact-Pack.ImpactSimpleDetectorSEGS' | 'Impact-Pack.ImpactSimpleDetectorSEGSPipe' | 'Impact-Pack.ImpactControlNetApplySEGS' | 'Impact-Pack.ImpactControlNetApplyAdvancedSEGS' | 'Impact-Pack.ImpactControlNetClearSEGS' | 'Impact-Pack.ImpactIPAdapterApplySEGS' | 'Impact-Pack.ImpactDecomposeSEGS' | 'Impact-Pack.ImpactAssembleSEGS' | 'Impact-Pack.ImpactFrom_SEG_ELT' | 'Impact-Pack.ImpactEdit_SEG_ELT' | 'Impact-Pack.ImpactDilate_Mask_SEG_ELT' | 'Impact-Pack.ImpactDilateMask' | 'Impact-Pack.ImpactGaussianBlurMask' | 'Impact-Pack.ImpactDilateMaskInSEGS' | 'Impact-Pack.ImpactGaussianBlurMaskInSEGS' | 'Impact-Pack.ImpactScaleBy_BBOX_SEG_ELT' | 'Impact-Pack.ImpactFrom_SEG_ELT_bbox' | 'Impact-Pack.ImpactFrom_SEG_ELT_crop_region' | 'Impact-Pack.ImpactCount_Elts_in_SEGS' | 'Impact-Pack.BboxDetectorCombined_v2' | 'Impact-Pack.SegmDetectorCombined_v2' | 'Impact-Pack.SegsToCombinedMask' | 'Impact-Pack.KSamplerProvider' | 'Impact-Pack.TwoSamplersForMask' | 'Impact-Pack.TiledKSamplerProvider' | 'Impact-Pack.KSamplerAdvancedProvider' | 'Impact-Pack.TwoAdvancedSamplersForMask' | 'Impact-Pack.ImpactNegativeConditioningPlaceholder' | 'Impact-Pack.PreviewBridge' | 'Impact-Pack.PreviewBridgeLatent' | 'Impact-Pack.ImageSender' | 'Impact-Pack.ImageReceiver' | 'Impact-Pack.LatentSender' | 'Impact-Pack.LatentReceiver' | 'Impact-Pack.ImageMaskSwitch' | 'Impact-Pack.LatentSwitch' | 'Impact-Pack.SEGSSwitch' | 'Impact-Pack.ImpactSwitch' | 'Impact-Pack.ImpactInversedSwitch' | 'Impact-Pack.ImpactWildcardProcessor' | 'Impact-Pack.ImpactWildcardEncode' | 'Impact-Pack.SEGSUpscaler' | 'Impact-Pack.SEGSUpscalerPipe' | 'Impact-Pack.SEGSDetailer' | 'Impact-Pack.SEGSPaste' | 'Impact-Pack.SEGSPreview' | 'Impact-Pack.SEGSPreviewCNet' | 'Impact-Pack.SEGSToImageList' | 'Impact-Pack.ImpactSEGSToMaskList' | 'Impact-Pack.ImpactSEGSToMaskBatch' | 'Impact-Pack.ImpactSEGSConcat' | 'Impact-Pack.ImpactSEGSPicker' | 'Impact-Pack.ImpactMakeTileSEGS' | 'Impact-Pack.ImpactSEGSMerge' | 'Impact-Pack.SEGSDetailerForAnimateDiff' | 'Impact-Pack.ImpactKSamplerBasicPipe' | 'Impact-Pack.ImpactKSamplerAdvancedBasicPipe' | 'Impact-Pack.ReencodeLatent' | 'Impact-Pack.ReencodeLatentPipe' | 'Impact-Pack.ImpactImageBatchToImageList' | 'Impact-Pack.ImpactMakeImageList' | 'Impact-Pack.ImpactMakeImageBatch' | 'Impact-Pack.ImpactMakeAnyList' | 'Impact-Pack.ImpactMakeMaskList' | 'Impact-Pack.ImpactMakeMaskBatch' | 'Impact-Pack.RegionalSampler' | 'Impact-Pack.RegionalSamplerAdvanced' | 'Impact-Pack.CombineRegionalPrompts' | 'Impact-Pack.RegionalPrompt' | 'Impact-Pack.ImpactCombineConditionings' | 'Impact-Pack.ImpactConcatConditionings' | 'Impact-Pack.ImpactSEGSLabelAssign' | 'Impact-Pack.ImpactSEGSLabelFilter' | 'Impact-Pack.ImpactSEGSRangeFilter' | 'Impact-Pack.ImpactSEGSOrderedFilter' | 'Impact-Pack.ImpactCompare' | 'Impact-Pack.ImpactConditionalBranch' | 'Impact-Pack.ImpactConditionalBranchSelMode' | 'Impact-Pack.ImpactIfNone' | 'Impact-Pack.ImpactConvertDataType' | 'Impact-Pack.ImpactLogicalOperators' | 'Impact-Pack.ImpactInt' | 'Impact-Pack.ImpactFloat' | 'Impact-Pack.ImpactBoolean' | 'Impact-Pack.ImpactValueSender' | 'Impact-Pack.ImpactValueReceiver' | 'Impact-Pack.ImpactImageInfo' | 'Impact-Pack.ImpactLatentInfo' | 'Impact-Pack.ImpactMinMax' | 'Impact-Pack.ImpactNeg' | 'Impact-Pack.ImpactConditionalStopIteration' | 'Impact-Pack.ImpactStringSelector' | 'Impact-Pack.StringListToString' | 'Impact-Pack.WildcardPromptFromString' | 'Impact-Pack.ImpactExecutionOrderController' | 'Impact-Pack.RemoveNoiseMask' | 'Impact-Pack.ImpactLogger' | 'Impact-Pack.ImpactDummyInput' | 'Impact-Pack.ImpactQueueTrigger' | 'Impact-Pack.ImpactQueueTriggerCountdown' | 'Impact-Pack.ImpactSetWidgetValue' | 'Impact-Pack.ImpactNodeSetMuteState' | 'Impact-Pack.ImpactControlBridge' | 'Impact-Pack.ImpactIsNotEmptySEGS' | 'Impact-Pack.ImpactSleep' | 'Impact-Pack.ImpactRemoteBoolean' | 'Impact-Pack.ImpactRemoteInt' | 'Impact-Pack.ImpactHFTransformersClassifierProvider' | 'Impact-Pack.ImpactSEGSClassify' | 'Impact-Pack.ImpactSchedulerAdapter' | 'Impact-Pack.GITSSchedulerFuncProvider' | 'Impact-Pack.UltralyticsDetectorProvider' | 'BRIA_AI-RMBG.BRIA_RMBG_ModelLoader_Zho' | 'BRIA_AI-RMBG.BRIA_RMBG_Zho' | 'Allor.AlphaChanelAdd' | 'Allor.AlphaChanelAddByMask' | 'Allor.AlphaChanelAsMask' | 'Allor.AlphaChanelRestore' | 'Allor.AlphaChanelRemove' | 'Allor.ClipClamp' | 'Allor.ClipVisionClamp' | 'Allor.ClipVisionOutputClamp' | 'Allor.ConditioningClamp' | 'Allor.ControlNetClamp' | 'Allor.GligenClamp' | 'Allor.ImageClamp' | 'Allor.LatentClamp' | 'Allor.MaskClamp' | 'Allor.ModelClamp' | 'Allor.StyleModelClamp' | 'Allor.UpscaleModelClamp' | 'Allor.VaeClamp' | 'Allor.ImageBatchGet' | 'Allor.ImageBatchCopy' | 'Allor.ImageBatchRemove' | 'Allor.ImageBatchFork' | 'Allor.ImageBatchJoin' | 'Allor.ImageBatchPermute' | 'Allor.ImageCompositeAbsolute' | 'Allor.ImageCompositeAbsoluteByContainer' | 'Allor.ImageCompositeRelative' | 'Allor.ImageCompositeRelativeByContainer' | 'Allor.ImageContainer' | 'Allor.ImageContainerInheritanceAdd' | 'Allor.ImageContainerInheritanceScale' | 'Allor.ImageContainerInheritanceMax' | 'Allor.ImageContainerInheritanceSum' | 'Allor.ImageDrawArc' | 'Allor.ImageDrawArcByContainer' | 'Allor.ImageDrawChord' | 'Allor.ImageDrawChordByContainer' | 'Allor.ImageDrawEllipse' | 'Allor.ImageDrawEllipseByContainer' | 'Allor.ImageDrawLine' | 'Allor.ImageDrawLineByContainer' | 'Allor.ImageDrawPieslice' | 'Allor.ImageDrawPiesliceByContainer' | 'Allor.ImageDrawRectangle' | 'Allor.ImageDrawRectangleByContainer' | 'Allor.ImageDrawRectangleRounded' | 'Allor.ImageDrawRectangleRoundedByContainer' | 'Allor.ImageDrawPolygon' | 'Allor.ImageEffectsAdjustment' | 'Allor.ImageEffectsGrayscale' | 'Allor.ImageEffectsNegative' | 'Allor.ImageEffectsSepia' | 'Allor.ImageEffectsLensZoomBurst' | 'Allor.ImageEffectsLensChromaticAberration' | 'Allor.ImageEffectsLensBokeh' | 'Allor.ImageEffectsLensOpticAxis' | 'Allor.ImageEffectsLensVignette' | 'Allor.ImageFilterSmooth' | 'Allor.ImageFilterSmoothMore' | 'Allor.ImageFilterBlur' | 'Allor.ImageFilterBoxBlur' | 'Allor.ImageFilterGaussianBlur' | 'Allor.ImageFilterGaussianBlurAdvanced' | 'Allor.ImageFilterStackBlur' | 'Allor.ImageFilterMedianBlur' | 'Allor.ImageFilterBilateralBlur' | 'Allor.ImageFilterContour' | 'Allor.ImageFilterDetail' | 'Allor.ImageFilterEdgeEnhance' | 'Allor.ImageFilterEdgeEnhanceMore' | 'Allor.ImageFilterEmboss' | 'Allor.ImageFilterFindEdges' | 'Allor.ImageFilterSharpen' | 'Allor.ImageFilterRank' | 'Allor.ImageFilterMin' | 'Allor.ImageFilterMax' | 'Allor.ImageFilterMode' | 'Allor.ImageNoiseBeta' | 'Allor.ImageNoiseBinomial' | 'Allor.ImageNoiseBytes' | 'Allor.ImageNoiseGaussian' | 'Allor.ImageSegmentation' | 'Allor.ImageSegmentationCustom' | 'Allor.ImageSegmentationCustomAdvanced' | 'Allor.ImageText' | 'Allor.ImageTextOutlined' | 'Allor.ImageTextMultiline' | 'Allor.ImageTextMultilineOutlined' | 'Allor.ImageTransformResizeAbsolute' | 'Allor.ImageTransformResizeRelative' | 'Allor.ImageTransformResizeClip' | 'Allor.ImageTransformCropAbsolute' | 'Allor.ImageTransformCropRelative' | 'Allor.ImageTransformCropCorners' | 'Allor.ImageTransformPaddingAbsolute' | 'Allor.ImageTransformPaddingRelative' | 'Allor.ImageTransformRotate' | 'Allor.ImageTransformTranspose' | 'UnknownNodeXX'
    }
 }
 

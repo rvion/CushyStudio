@@ -44,7 +44,7 @@ import { fromZodError } from 'zod-validation-error'
 import { asAppPath } from '../cards/asAppPath'
 import { Library } from '../cards/Library'
 import { recursivelyFindAppsInFolder } from '../cards/walkLib'
-import { STANDARD_HOST_ID, vIRTUAL_HOST_ID__BASE } from '../config/ComfyHostDef'
+import { STANDARD_HOST_ID } from '../config/ComfyHostDef'
 import { type ConfigFile } from '../config/ConfigFile'
 import { mkConfigFile } from '../config/mkConfigFile'
 import { builder, cushyFactory, type CushyFactory } from '../controls/Builder'
@@ -599,7 +599,7 @@ export class STATE {
       // 🔴 ensure getters are called at least once so we upsert the two core virtual hosts
       // 💬 2024-10-26 rvion: this is just bad
       // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-      this.virtualHostBase
+      // this.virtualHostBase
       // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       // this.virtualHostFull
       // eslint-disable-next-line @typescript-eslint/no-unused-expressions
@@ -669,22 +669,22 @@ export class STATE {
    get mainComfyHostID(): HostID {
       return (
          this.configFile.value.mainComfyHostID ?? //
-         vIRTUAL_HOST_ID__BASE
+         STANDARD_HOST_ID
       )
    }
 
-   get virtualHostBase(): HostL {
-      return this.db.host.upsert({
-         id: asHostID(vIRTUAL_HOST_ID__BASE),
-         hostname: 'localhost',
-         useHttps: SQLITE_false,
-         port: 8188,
-         name: 'virtual-ComfyUI-base',
-         isLocal: SQLITE_true,
-         isVirtual: SQLITE_true,
-         isReadonly: SQLITE_true,
-      })
-   }
+   // get virtualHostBase(): HostL {
+   //    return this.db.host.upsert({
+   //       id: asHostID(vIRTUAL_HOST_ID__BASE),
+   //       hostname: 'localhost',
+   //       useHttps: SQLITE_false,
+   //       port: 8188,
+   //       name: 'virtual-ComfyUI-base',
+   //       isLocal: SQLITE_true,
+   //       isVirtual: SQLITE_true,
+   //       isReadonly: SQLITE_true,
+   //    })
+   // }
 
    get standardHost(): HostL {
       return this.db.host.upsert({
@@ -743,7 +743,7 @@ export class STATE {
    /** main host */
    get mainHost(): HostL {
       const selectedHost = this.db.host.get(this.mainComfyHostID)
-      return selectedHost ?? this.virtualHostBase
+      return selectedHost ?? this.standardHost
    }
 
    /** todo: rename */

@@ -17,9 +17,10 @@ import { produce } from 'immer'
 import { Field } from '../../model/Field'
 import { makeLabelFromPrimitiveValue } from '../../utils/makeLabelFromFieldName'
 import { isProbablySerialChoices, registerFieldClass } from '../WidgetUI.DI'
-import { WidgetChoices_SelectHeaderUI } from './WidgetChoices_SelectHeaderUI'
-import { WidgetChoices_TabHeaderUI } from './WidgetChoices_TabHeaderUI'
-import { WidgetChoices_BodyUI, WidgetChoices_HeaderUI } from './WidgetChoicesUI'
+import { WidgetChoices_BodyUI } from './WidgetChoices_BodyUI'
+import { WidgetChoices_HeaderButtonsUI } from './WidgetChoices_HeaderButtonsUI'
+import { WidgetChoices_HeaderSelectUI } from './WidgetChoices_HeaderSelectUI'
+import { WidgetChoices_HeaderUI } from './WidgetChoicesUI'
 
 type ActiveBranchesByName<T> = { [key in keyof T]?: true }
 // type ActiveBranchesByNameDefault<T> = { [key in keyof T]?: true }
@@ -147,8 +148,8 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
    }
 
    // #region UI
-   UITab: ProplessFC = () => <WidgetChoices_TabHeaderUI field={this} />
-   UISelect: ProplessFC = () => <WidgetChoices_SelectHeaderUI field={this} />
+   UITab: ProplessFC = () => <WidgetChoices_HeaderButtonsUI field={this} />
+   UISelect: ProplessFC = () => <WidgetChoices_HeaderSelectUI field={this} />
    UIChildren: ProplessFC = () => <WidgetChoices_BodyUI field={this} justify={false} />
    DefaultHeaderUI = WidgetChoices_HeaderUI
    DefaultBodyUI = WidgetChoices_BodyUI

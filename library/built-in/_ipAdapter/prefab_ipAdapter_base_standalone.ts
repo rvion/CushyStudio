@@ -1,3 +1,5 @@
+import type { CushySchema } from '../../../src/controls/Schema'
+import type { Field_list } from '../../../src/csuite/fields/list/FieldList'
 import type { OutputFor } from '../_prefabs/_prefabs'
 
 import { ipAdapterDoc } from './_ipAdapterDoc'
@@ -19,7 +21,7 @@ export type UI_ipadapter_standalone = X.XGroup<{
       noise: X.XNumber
       unfold_batch: X.XBool
    }>
-   cnet_model_name: X.XEnum<Enum_AV_IPAdapterPipe_ip_adapter_name>
+   cnet_model_name: X.XEnum<'IPAdapter_plus.IPAdapterModelLoader.ipadapter_file'>
    clip_name: X.XEnum<'CLIPVisionLoader.clip_name'>
    help: X.XMarkdown
    image: X.XImage
@@ -27,7 +29,7 @@ export type UI_ipadapter_standalone = X.XGroup<{
    embedding_scaling: X.XEnum<'IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'>
 }>
 
-export const ui_ipadapter_standalone = () => {
+export const ui_ipadapter_standalone = (): UI_ipadapter_standalone => {
    const form = getCurrentForm()
    return form
       .group({
@@ -40,7 +42,12 @@ export const ui_ipadapter_standalone = () => {
                default: 'V only',
             }),
             ...ui_ipadapter_CLIPSelection(form),
-            ...ui_ipadapter_modelSelection(form, 'ip-adapter-plus_sd15.safetensors', ipAdapterModelList),
+            ...ui_ipadapter_modelSelection(
+               form,
+               // @ts-ignore
+               'ip-adapter-plus_sd15.safetensors',
+               ipAdapterModelList,
+            ),
             ...ui_subform_IPAdapter_common(form),
          },
       })
@@ -95,7 +102,7 @@ export const run_ipadapter_standalone = async (
       })
       neg_embed = combinedNeg.outputs.EMBEDS
    }
-   const ip_adapted_model = graph.IPAdapterEmbeds({
+   const ip_adapted_model = graph['IPAdapter_plus.IPAdapterEmbeds']({
       ipadapter: ip_model,
       clip_vision: ip_clip_name,
       pos_embed,

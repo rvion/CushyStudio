@@ -169,6 +169,7 @@ declare global {
 
       type XPrompt = CushySchema<Field_prompt>
       type XEnum<ENUM_NAME extends keyof Comfy.Slots> = CushySchema<Field_enum<Comfy.Slots[ENUM_NAME]>>
+      type XEnumOf<O extends ComfyUnionValue> = CushySchema<Field_enum<O>>
       type XOrbit = CushySchema<Field_orbit>
       type XImage = CushySchema<Field_image>
       type XCustom<T> = CushySchema<Field_custom<T>>

@@ -616,7 +616,7 @@ export class Runtime<FIELD extends Field = any> {
       return seed
    }
 
-   loadImageAnswerAsEnum = (img: MediaImageL): Promise<Enum_LoadImage_image> => {
+   loadImageAnswerAsEnum = (img: MediaImageL): Promise<Comfy.Slots['LoadImage.image']> => {
       return img.uploadAndReturnEnumName()
    }
 

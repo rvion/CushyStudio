@@ -168,7 +168,12 @@ export class ComfyNode<
       // dynamically add properties for every outputs
       const outputs: { [key: string]: any } = {}
       for (const x of this.$schema.outputs) {
-         const output = new ComfyNodeOutput(this, ix++, x.nameInCushy)
+         const output = new ComfyNodeOutput(
+            this,
+            ix++,
+            x.typeName as keyof Comfy.Signal /* <-- 🔶 this needs to be checked */,
+            x.nameInComfy,
+         )
          outputs[x.nameInCushy] = output
          this.$outputs.push(output)
          // console.log(`  - .${x.nameInCushy} as ComfyNodeOutput(${ix})`)

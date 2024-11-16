@@ -37,7 +37,10 @@ app({
    run: async (run, ui) => {
       const graph = run.nodes
 
-      const checkpointLoaderSimpleWithNoiseSelect = graph.CheckpointLoaderSimpleWithNoiseSelect({
+      const checkpointLoaderSimpleWithNoiseSelect = graph[
+         'AnimateDiff-Evolved.CheckpointLoaderSimpleWithNoiseSelect'
+      ]({
+         // @ts-ignore
          ckpt_name: 'deliberate_v2.safetensors',
          beta_schedule: 'sqrt_linear (AnimateDiff)',
       })
@@ -46,14 +49,17 @@ app({
          text: '(bad quality, worst quality:1.2)',
          clip: checkpointLoaderSimpleWithNoiseSelect,
       })
-      const aDE_AnimateDiffUniformContextOptions = graph.ADE_AnimateDiffUniformContextOptions({
+      const aDE_AnimateDiffUniformContextOptions = graph[
+         'AnimateDiff-Evolved.ADE_AnimateDiffUniformContextOptions'
+      ]({
          context_length: 16,
          context_stride: 1,
          context_overlap: 4,
          context_schedule: 'uniform',
          closed_loop: false,
       })
-      const aDE_AnimateDiffLoaderWithContext = graph.ADE_AnimateDiffLoaderWithContext({
+      const aDE_AnimateDiffLoaderWithContext = graph['AnimateDiff-Evolved.ADE_AnimateDiffLoaderWithContext']({
+         // @ts-ignore
          model_name: 'mm_sd_v15_v2.ckpt',
          beta_schedule: 'sqrt_linear (AnimateDiff)',
          model: checkpointLoaderSimpleWithNoiseSelect,
@@ -64,7 +70,7 @@ app({
             return `"${entry.shape.x}" : "${entry.value.text}"`
          })
          .join(',\n')
-      const batchPromptSchedule = graph.BatchPromptSchedule({
+      const batchPromptSchedule = graph['FizzNodes.BatchPromptSchedule']({
          text: text, //'"0" :"spring day, blossoms, flowers, cloudy",\n"25" :"summer day, sunny, leaves",\n"50" :"fall day, colorful leaves dancing in the wind",\n"75" :"winter day, snowing, cold, jacket"\n',
          max_frames: 120,
          pre_text: ui.preText, //' (Masterpiece, best quality:1.2), closeup, close-up, a girl in a forest',
@@ -75,12 +81,12 @@ app({
          pw_d: 0,
          clip: checkpointLoaderSimpleWithNoiseSelect,
       })
-      const aDE_EmptyLatentImageLarge = graph.ADE_EmptyLatentImageLarge({
+      const aDE_EmptyLatentImageLarge = graph['AnimateDiff-Evolved.ADE_EmptyLatentImageLarge']({
          width: 512,
          height: 512,
          batch_size: ui.timeline.items.length, //100,
       })
-      let kSampler = graph.KSampler({
+      const kSampler = graph.KSampler({
          seed: ui.seed ?? run.randomSeed(),
          steps: ui.samplerSteps,
          cfg: 7,
@@ -94,7 +100,7 @@ app({
       })
       let vAEDecode
       if (ui.removeBG) {
-         vAEDecode = graph.Image_Rembg_$1Remove_Background$2({
+         vAEDecode = graph['was.Image Rembg (Remove Background)']({
             images: graph.VAEDecode({ samples: kSampler, vae: vAE }),
             model: 'u2net',
             background_color: 'black',
@@ -116,9 +122,7 @@ app({
       //     // ad_gif_preview__0: '/view?filename=AnimateDiff_00001_.gif&subfolder=&type=output&format=image%2Fgif',
       //     images: vAEDecode.IMAGE,
       // })
-      const gif = graph.Write_to_GIF({
-         image: vAEDecode,
-      })
+      const gif = graph['was.Write to GIF']({ image: vAEDecode })
       await run.PROMPT()
       await run.Videos.output_video_ffmpegGeneratedImagesTogether(undefined, 30, { transparent: ui.removeBG })
    },

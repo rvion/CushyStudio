@@ -97,6 +97,7 @@ export async function _cushySDXLRun(
 
    // #region START IMAGE
    const imgCtx = ctx.image
+   // eslint-disable-next-line prefer-const
    let { latent, width, height } = imgCtx
       ? /* 🔴 HACKY  */
         await (async (): Promise<{ latent: Comfy.Signal['LATENT']; height: number; width: number }> => ({

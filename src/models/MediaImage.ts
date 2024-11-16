@@ -280,17 +280,17 @@ export class MediaImageL extends BaseInst<TABLES['media_image']> {
    }
 
    /** get the expected enum name */
-   get enumName(): Enum_LoadImage_image {
+   get enumName(): Comfy.Slots['LoadImage.image'] {
       // return `${this.baseNameWithoutExtension}-${this.data.hash}${this.extension}`
-      return `${this.data.hash}${this.extension}` as Enum_LoadImage_image
+      return `${this.data.hash}${this.extension}` as Comfy.Slots['LoadImage.image']
    }
 
-   uploadAndReturnEnumName = async (): Promise<Enum_LoadImage_image> => {
+   uploadAndReturnEnumName = async (): Promise<Comfy.Slots['LoadImage.image']> => {
       const finalName = await this.st.uploader.upload_Image(this, { type: 'input', override: true })
       return finalName
    }
 
-   loadInWorkflow = async (workflow_?: ComfyWorkflowL): Promise<LoadImage> => {
+   loadInWorkflow = async (workflow_?: ComfyWorkflowL): Promise<Comfy.Node['LoadImage']> => {
       const workflow = workflow_ ?? getCurrentRun_IMPL().workflow
       const enumName = await this.uploadAndReturnEnumName()
       const img = workflow.builder.LoadImage({ image: enumName })
@@ -300,13 +300,13 @@ export class MediaImageL extends BaseInst<TABLES['media_image']> {
    /** load an image as mask in a comfy workflow beeing created */
    loadInWorkflowAsMask = async (
       /** "alpha" | "blue" | "green" | "red" */
-      channel: Enum_LoadImageMask_channel,
+      channel: Comfy.Slots['LoadImageMask.channel'],
       /** workflow to load image as mask into (default to current workflow) */
       workflow_?: ComfyWorkflowL,
-   ): Promise<LoadImageMask> => {
+   ): Promise<Comfy.Node['LoadImageMask']> => {
       const workflow = workflow_ ?? getCurrentRun_IMPL().workflow
       const enumName = await this.uploadAndReturnEnumName()
-      const mask: LoadImageMask = workflow.builder.LoadImageMask({ image: enumName, channel })
+      const mask: Comfy.Node['LoadImageMask'] = workflow.builder.LoadImageMask({ image: enumName, channel })
       return mask
    }
 

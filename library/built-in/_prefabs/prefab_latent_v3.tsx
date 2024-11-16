@@ -19,9 +19,9 @@ export type UI_LatentV3 = X.XLink<
          image: X.XImage
          resize: X.XOptional<
             X.XGroup<{
-               mode: X.XEnum<'UpscaleImagemode'>
-               supersample: X.XEnum<'ImageDrawRectangleRounded.top_left_corner'>
-               resampling: X.XEnum<'Impact-Pack.SEGSUpscaler.resampling_method'>
+               mode: X.XEnumOf<'resize' | 'rescale'>
+               supersample: X.XEnumOf<'false' | 'true'>
+               resampling: X.XEnumOf<'bicubic' | 'bilinear' | 'lanczos' | 'nearest'>
                rescale_factor: X.XNumber
                resize_width: X.XNumber
                resize_height: X.XNumber
@@ -52,7 +52,6 @@ export function ui_latent_v3(p: { size?: Field_size_config } = {}): UI_LatentV3 
                {
                   batchSize,
                   image: form.image({ label: false, justifyLabel: false }),
-                  // fixme ERROR here, auto return unions templated with enver
                   resize: form.auto['was.Image Resize']().optional(),
                },
                { collapsed: false, border: false },

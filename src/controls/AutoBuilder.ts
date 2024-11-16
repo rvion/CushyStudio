@@ -6,6 +6,8 @@ import type { CushySchemaBuilder } from './Builder'
 
 type KK = IAutoBuilder['KSampler']
 
+type FOO = Comfy.FormHelper['KSampler']['sampler_name']
+
 type AutoWidget<T> = T extends { kind: any; type: infer TPE }
    ? T['kind'] extends 'number'
       ? X.XNumber
@@ -18,7 +20,9 @@ type AutoWidget<T> = T extends { kind: any; type: infer TPE }
             : T['kind'] extends 'enum'
               ? // check perf implications here
                 //         VVV
-                X.XEnum<TPE & keyof Comfy.Slots>
+                T['type'] extends ComfyUnionValue
+                 ? X.XEnumOf<T['type']>
+                 : never
               : any
    : any
 

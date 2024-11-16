@@ -11,6 +11,7 @@ const PLUGINS_TO_INSTALL: KnownComfyPluginTitle[] = [
    // some good background removal
    'TEMP_ComfyUI-BRIA_AI-RMBG',
    'Allor Plugin',
+   'CLIPSeg',
 ]
 
 // #region state

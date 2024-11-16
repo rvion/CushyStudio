@@ -1,5 +1,6 @@
-import type { Cnet_args, Cnet_return, run_cnet } from '../_controlNet/prefab_cnet'
+import type { Cnet_args, Cnet_return } from '../_controlNet/prefab_cnet'
 
+import { run_cnet } from '../_controlNet/prefab_cnet'
 import { eval_extra2 } from '../_extra/extra2'
 import { run_IPAdapterV2 } from '../_ipAdapter/prefab_ipAdapter_baseV2'
 import { run_FaceIDV2 } from '../_ipAdapter/prefab_ipAdapter_faceV2'
@@ -155,7 +156,7 @@ app({
                     height: height * HRF.scaleFactor,
                     width: width * HRF.scaleFactor,
                  })
-               : graph['ComfyUi_NNLatentUpscale.NNLatentUpscale']({
+               : graph['NNLatentUpscale.NNLatentUpscale']({
                     latent,
                     version: HRF.upscaleMethod == 'Neural XL' ? 'SDXL' : 'SD 1.x',
                     upscale: HRF.scaleFactor,
@@ -196,7 +197,7 @@ app({
       // REMOVE BACKGROUND ---------------------------------------------------------------------
       if (ui.extra.removeBG) {
          const sub = run_rembg_v1(ui.extra.removeBG, finalImage)
-         if (sub.length > 0) finalImage = graph.AlphaChanelRemove({ images: sub[0]! })
+         if (sub.length > 0) finalImage = graph['Allor.AlphaChanelRemove']({ images: sub[0]! })
       }
 
       // SHOW 3D -------------------------------------------------------------------------------

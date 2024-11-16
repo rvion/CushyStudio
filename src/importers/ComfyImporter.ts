@@ -168,7 +168,8 @@ export class ComfyImporter {
          // @ts-ignore
          const node = flow[nodeID]!
          // FIXME
-         const classType = convertComfyModuleAndNodeNameToCushyQualifiedNodeKey(node.class_type)
+         const pythonModule = cushy.schema.pythonModuleByNodeNameInComfy.get(node.class_type) ?? 'unknown'
+         const classType = convertComfyModuleAndNodeNameToCushyQualifiedNodeKey(pythonModule, node.class_type)
          const varName = this.mkVarNameForNodeType(classType, []) //`${classType}_${nodeID}`
 
          generatedName.set(nodeID, varName)

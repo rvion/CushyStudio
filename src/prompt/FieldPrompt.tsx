@@ -211,7 +211,7 @@ export class Field_prompt extends Field<Field_prompt_types> {
    compile = (p: {
       /** for wildcard */
       seed?: number
-      onLora: (lora: Enum_LoraLoader_lora_name) => void
+      onLora: (lora: Comfy.Slots['LoraLoader.lora_name']) => void
       /** @default true */
       printWildcards?: boolean
    }): CompiledPrompt =>

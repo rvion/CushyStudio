@@ -20,21 +20,24 @@ export class RuntimeImages {
 
    // ----------------------------------------------------------------------------------------
    // simple to use functions
-   loadAsImage = async (relPathOrDataURL: string, workflow?: ComfyWorkflowL): Promise<LoadImage> => {
+   loadAsImage = async (
+      relPathOrDataURL: string,
+      workflow?: ComfyWorkflowL,
+   ): Promise<Comfy.Node['LoadImage']> => {
       const img = this.createFromDataURLOrPath(relPathOrDataURL)
       return img.loadInWorkflow(workflow)
    }
 
    loadAsMask = async (
       relPathOrDataURL: string,
-      channel: Enum_LoadImageMask_channel,
+      channel: Comfy.Slots['LoadImageMask.channel'],
       workflow?: ComfyWorkflowL,
-   ): Promise<LoadImageMask> => {
+   ): Promise<Comfy.Node['LoadImageMask']> => {
       const img = this.createFromDataURLOrPath(relPathOrDataURL)
       return img.loadInWorkflowAsMask(channel, workflow)
    }
 
-   loadAsEnum = async (relPathOrDataURL: string): Promise<Enum_LoadImage_image> => {
+   loadAsEnum = async (relPathOrDataURL: string): Promise<Comfy.Slots['LoadImage.image']> => {
       const img = this.createFromDataURLOrPath(relPathOrDataURL)
       return img.uploadAndReturnEnumName()
    }

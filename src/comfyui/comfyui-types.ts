@@ -4,9 +4,17 @@ export type ComfyUnionHash = string //  '26c34bf761d4be4554ab944105c5a3c017c9945
 export type ComfyUnionName = string // 'E_26c34bf761d4be4554ab944105c5a3c017c99453'
 export type ComfyEnumName = string //  'Comfy.Custom.Impact_Pack.CfgScheduleHookProvider.schedule_for_iteration'
 export type ComfyUnionValue = string | boolean | number
-
+export type ComfyPythonModule = string
 export type NodeNameInComfy = string
 export type NodeNameInCushy = string
+
+/**
+ * the textual name of the a slot type
+ * (slot = input or output of a node)
+ *
+ * = keyof Comfy.Signal
+ */
+export type ComfyNodeSlotTypeName = Tagged<string, 'ComfyNodeSlotTypeName'>
 
 // export type QualifiedNodeNameInCushy = {}
 
@@ -24,7 +32,7 @@ export type NodeInputExt = {
 }
 
 export type NodeOutputExt = {
-   typeName: string
+   typeName: ComfyNodeSlotTypeName // keyof Comfy.Signal // string
    nameInCushy: string
    nameInComfy: string
    isPrimitive: boolean

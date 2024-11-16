@@ -1,4 +1,11 @@
-import type { ComfyUnionInfo, ComfyUnionValue, EmbeddingName } from '../comfyui/comfyui-types'
+import type {
+   ComfyPythonModule,
+   ComfyUnionInfo,
+   ComfyUnionValue,
+   EmbeddingName,
+   NodeNameInComfy,
+   NodeNameInCushy,
+} from '../comfyui/comfyui-types'
 import type { ComfyUIObjectInfoParsedNodeSchema } from '../comfyui/objectInfo/ComfyUIObjectInfoParsedNodeSchema'
 import type { LiveDB } from '../db/LiveDB'
 import type { TABLES } from '../db/TYPES.gen'
@@ -42,6 +49,8 @@ export class ComfySchemaL extends BaseInst<TABLES['comfy_schema']> {
    })
 
    // forward to underlying parsedObjectInfo
+   get pythonModuleByNodeNameInCushy(): Map<NodeNameInCushy, ComfyPythonModule> { return this.parseObjectInfo.pythonModuleByNodeNameInCushy } // prettier-ignore
+   get pythonModuleByNodeNameInComfy(): Map<NodeNameInComfy, ComfyPythonModule> { return this.parseObjectInfo.pythonModuleByNodeNameInComfy } // prettier-ignore
    get knownEnumsByName(): Map<string, ComfyUnionInfo> { return this.parseObjectInfo.knownUnionByEnumName } // prettier-ignore
    get nodes(): ComfyUIObjectInfoParsedNodeSchema[] { return this.parseObjectInfo.nodes } // prettier-ignore
    get nodesByNameInCushy(): Record<string, ComfyUIObjectInfoParsedNodeSchema> { return this.parseObjectInfo.nodesByNameInCushy } // prettier-ignore
@@ -79,6 +88,7 @@ export class ComfySchemaL extends BaseInst<TABLES['comfy_schema']> {
    // IMAGES --------------------------------------------------------------
    hasImage = (imgName: string): boolean =>
       this.getImages().includes(imgName as Comfy.Slots['LoadImage.image'])
+
    getImages = (): Comfy.Slots['LoadImage.image'][] => {
       const candidates = this.knownEnumsByName.get('Enum_LoadImage_image')?.values ?? []
       return candidates as Comfy.Slots['LoadImage.image'][]

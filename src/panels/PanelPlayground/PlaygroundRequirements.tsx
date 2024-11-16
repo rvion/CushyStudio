@@ -19,8 +19,8 @@ export const PlaygroundRequirementsHeader = observer(function PlaygroundRequirem
                // { type: 'modelInManager', modelName: 'stabilityai/control-lora-depth-rank256.safetensors' },
                // { type: 'modelInManager', modelName: 'controlnet-SargeZT/controlnet-sd-xl-1.0-depth-16bit-zoe' },
                //
-               { type: 'customNodesByNameInCushy', nodeName: '_0246$5Cloud' },
-               { type: 'customNodesByNameInCushy', nodeName: 'SDXLPromptStylerAdvanced' },
+               { type: 'customNodesByNameInCushy', nodeName: '0246.0246.Cloud' },
+               { type: 'customNodesByNameInCushy', nodeName: 'sdxl_prompt_styler.SDXLPromptStylerAdvanced' },
                //
                { type: 'customNodesByTitle', title: 'Allor Plugin' },
                { type: 'customNodesByURI', uri: 'https://civitai.com/api/download/models/24154' },
@@ -46,8 +46,8 @@ export const PlaygroundRequirements = observer(function PlaygroundRequirements_(
                // { type: 'modelInManager', modelName: 'stabilityai/control-lora-depth-rank256.safetensors' },
                // { type: 'modelInManager', modelName: 'controlnet-SargeZT/controlnet-sd-xl-1.0-depth-16bit-zoe' },
                //
-               { type: 'customNodesByNameInCushy', nodeName: '_0246$5Cloud' },
-               { type: 'customNodesByNameInCushy', nodeName: 'SDXLPromptStylerAdvanced' },
+               { type: 'customNodesByNameInCushy', nodeName: '0246.0246.Cloud' },
+               { type: 'customNodesByNameInCushy', nodeName: 'sdxl_prompt_styler.SDXLPromptStylerAdvanced' },
                //
                { type: 'customNodesByTitle', title: 'Allor Plugin' },
                { type: 'customNodesByURI', uri: 'https://civitai.com/api/download/models/24154' },

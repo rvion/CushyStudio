@@ -25,7 +25,7 @@ export type UI_IPAdapterFaceID = X.XGroup<{
             noise: X.XNumber
             unfold_batch: X.XBool
          }>
-         cnet_model_name: X.XEnum<'IPAdapter_plus.IPAdapterInsightFaceLoader.model_name'>
+         cnet_model_name: X.XEnum<'IPAdapter_plus.IPAdapterModelLoader.ipadapter_file'>
          help: X.XMarkdown
       }>
    >
@@ -97,6 +97,7 @@ export function ui_IPAdapterFaceID(): UI_IPAdapterFaceID {
                      }),
                      ...ui_ipadapter_modelSelection(
                         b,
+                        // @ts-ignore
                         'ip-adapter-plus-face_sd15.safetensors',
                         ipAdapterModelList,
                      ),
@@ -132,12 +133,10 @@ export const run_cnet_IPAdapterFaceID = (
 
    const ip_clip_name = graph.CLIPVisionLoader({ clip_name: ip.models.clip_name })
    const faceIDnode = graph['IPAdapter_plus.IPAdapterFaceID']({
-      ipadapter: graph['IPAdapter_plus.IPAdapterModelLoader']({
-         ipadapter_file: ip.models.cnet_model_name,
-      }),
+      ipadapter: graph['IPAdapter_plus.IPAdapterModelLoader']({ ipadapter_file: ip.models.cnet_model_name }),
       clip_vision: ip_clip_name,
       insightface: (t) =>
-         t.IPAdapterInsightFaceLoader({
+         t['IPAdapter_plus.IPAdapterInsightFaceLoader']({
             provider: 'CPU',
             // 🔴        VVVVVV review that
             model_name: 'antelopev2',
