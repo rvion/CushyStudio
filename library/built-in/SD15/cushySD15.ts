@@ -1,4 +1,5 @@
-import { Cnet_args, Cnet_return, run_cnet } from '../_controlNet/prefab_cnet'
+import type { Cnet_args, Cnet_return, run_cnet } from '../_controlNet/prefab_cnet'
+
 import { eval_extra2 } from '../_extra/extra2'
 import { run_IPAdapterV2 } from '../_ipAdapter/prefab_ipAdapter_baseV2'
 import { run_FaceIDV2 } from '../_ipAdapter/prefab_ipAdapter_faceV2'
@@ -28,7 +29,7 @@ app({
    run: async (run, ui, ctx) => {
       const graph = run.nodes
       // #region  MODEL, clip skip, vae, etc.
-      let { ckpt, vae, clip } = evalModelSD15andSDXL(ui.model)
+      const { ckpt, vae, clip } = evalModelSD15andSDXL(ui.model)
 
       // #region  PROMPT ENGINE
       let positiveText = ui.positive.text
@@ -47,6 +48,7 @@ app({
 
       // #region START IMAGE
       const imgCtx = ctx.image
+      // eslint-disable-next-line prefer-const
       let { latent, width, height } = imgCtx
          ? /* 🔴 HACKY  */
            await (async (): Promise<{ latent: Comfy.Signal['LATENT']; height: number; width: number }> => ({
@@ -153,7 +155,7 @@ app({
                     height: height * HRF.scaleFactor,
                     width: width * HRF.scaleFactor,
                  })
-               : graph.NNLatentUpscale({
+               : graph['ComfyUi_NNLatentUpscale.NNLatentUpscale']({
                     latent,
                     version: HRF.upscaleMethod == 'Neural XL' ? 'SDXL' : 'SD 1.x',
                     upscale: HRF.scaleFactor,

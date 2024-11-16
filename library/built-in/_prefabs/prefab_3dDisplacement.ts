@@ -37,8 +37,8 @@ export function ui_3dDisplacement(): UI_3dDisplacement {
       })
       .addRequirements([
          //
-         { type: 'customNodesByNameInCushy', nodeName: 'Zoe-DepthMapPreprocessor' },
-         { type: 'customNodesByNameInCushy', nodeName: 'MarigoldDepthEstimation' },
+         { type: 'customNodesByNameInCushy', nodeName: 'controlnet_aux.Zoe-DepthMapPreprocessor' },
+         { type: 'customNodesByNameInCushy', nodeName: 'Marigold.MarigoldDepthEstimation' },
       ])
 }
 

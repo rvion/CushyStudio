@@ -16,16 +16,14 @@ export const prefabModelSD15andSDXL = (
    } = {},
 ): $prefabModelSD15andSDXL => {
    const b = getCurrentForm()
-   const ckpts = cushy.managerRepository.getKnownCheckpoints()
+   const ckpts = cushy.comfyAddons.getKnownCheckpoints()
    return b.fields(
       {
-         ckpt_name: b.enum
-            .Enum_CheckpointLoaderSimple_ckpt_name({
-               label: 'Checkpoint',
-               // default: p.ckpt_name ?? 'revAnimated_v122.safetensors', 🔴
-               default: p.ckpt_name ?? undefined,
-            })
-            .addRequirements(ckpts.map((x) => ({ type: 'modelCustom', infos: x }))),
+         ckpt_name: b.enum['CheckpointLoaderSimple.ckpt_name']({
+            label: 'Checkpoint',
+            // default: p.ckpt_name ?? 'revAnimated_v122.safetensors', 🔴
+            default: p.ckpt_name ?? undefined,
+         }).addRequirements(ckpts.map((x) => ({ type: 'modelCustom', infos: x }))),
          extra: schemaModelExtras(),
       },
       {

@@ -19,9 +19,9 @@ export type UI_LatentV3 = X.XLink<
          image: X.XImage
          resize: X.XOptional<
             X.XGroup<{
-               mode: X.XEnum<'CR.Upscale_Image_mode'>
+               mode: X.XEnum<'UpscaleImagemode'>
                supersample: X.XEnum<'ImageDrawRectangleRounded.top_left_corner'>
-               resampling: X.XEnum<'SEGSUpscaler.resampling_method'>
+               resampling: X.XEnum<'Impact-Pack.SEGSUpscaler.resampling_method'>
                rescale_factor: X.XNumber
                resize_width: X.XNumber
                resize_height: X.XNumber
@@ -52,7 +52,8 @@ export function ui_latent_v3(p: { size?: Field_size_config } = {}): UI_LatentV3 
                {
                   batchSize,
                   image: form.image({ label: false, justifyLabel: false }),
-                  resize: form.auto.Image_Resize().optional(),
+                  // fixme ERROR here, auto return unions templated with enver
+                  resize: form.auto['was.Image Resize']().optional(),
                },
                { collapsed: false, border: false },
             ),
@@ -106,7 +107,7 @@ export const run_latent_v3 = async (p: {
       const _img = run.loadImage(opts.image.image.id)
       let image: Comfy.Signal['IMAGE'] = await _img.loadInWorkflow()
       if (opts.image.resize) {
-         image = graph.Image_Resize({ image, ...opts.image.resize })
+         image = graph['was.Image Resize']({ image, ...opts.image.resize })
          if (opts.image.resize.mode === 'rescale') {
             width = _img.width * opts.image.resize.rescale_factor
             height = _img.height * opts.image.resize.rescale_factor

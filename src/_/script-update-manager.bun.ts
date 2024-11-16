@@ -1,6 +1,6 @@
 import chalk from 'chalk'
 
-import { ComfyManagerRepository } from '../ComfyManagerRepository'
+import { ComfyManagerRepository } from '../manager/ComfyManagerRepository'
 
 const skipDL = process.argv.includes('--skip-download')
 

@@ -9,7 +9,7 @@ export function codegenSDK(
    {
       // options with their defaults
       prefix = '../src/',
-   }: { prefix?: string },
+   }: { prefix?: string } = {},
 ): string {
    const b = new CodeBuffer()
    const p = b.w
@@ -32,22 +32,25 @@ export function codegenSDK(
    p(`// #${''}region PythonModulesAvaialbles`)
    p(`export type PythonModulesAvaialbles = `)
    b.indent()
-   for (const [k, v] of this.pythonModules.entries()) {
+   for (const [k, v] of this.pythonModules
+      .entries()
+      .toArray()
+      .toSorted((a, b) => a[0].localeCompare(b[0]))) {
       p(`/**`)
       // p(` * SDK Namespace: ${pythonModuleToNamespace(k)}`)
-      p(` * Nodes: ${v.join(', ')}`)
-      p(` */`)
+      p(`* Nodes: ${v.join(', ')}`)
+      p(`*/`)
       p(`| ${wrapQuote(k)}`)
    }
    b.deindent()
    p(`// #${''}endregion`)
 
    // #region INPUTS ----------------------------------------------------------------------------------------
-   const nodes = this.nodes
+   const nodes = this.nodes.toSorted((a, b) => a.nameInCushy.localeCompare(b.nameInCushy))
    p(`interface IN {`)
    b.indent()
    for (const n of nodes) {
-      p(`${escapeJSKey(n.shortestUnambiguousName)}: {`)
+      p(`${escapeJSKey(n.nameInCushy)}: {`)
       for (const i of n.inputs) {
          const opts = typeof i.opts === 'string' ? null : i.opts
          const type = `Signal['${i.type}']`
@@ -68,7 +71,7 @@ export function codegenSDK(
    p(`interface OUT {`)
    b.indent()
    for (const n of nodes) {
-      p(`${escapeJSKey(n.shortestUnambiguousName)}: {`)
+      p(`${escapeJSKey(n.nameInCushy)}: {`)
       n.outputs.forEach((i, ix) => {
          p(`   ${escapeJSKey(i.nameInComfy)}: ComfyNodeOutput<'${i.typeName}', ${ix}>,`)
       })
@@ -80,9 +83,7 @@ export function codegenSDK(
    // #region NODES -----------------------------------------------------------------------------------------
    p(`interface Node {`)
    for (const n of nodes) {
-      p(
-         `   ${escapeJSKey(n.shortestUnambiguousName)}: ComfyNode<IN['${n.shortestUnambiguousName}'], OUT['${n.shortestUnambiguousName}']> & {`,
-      )
+      p(`   ${escapeJSKey(n.nameInCushy)}: ComfyNode<IN['${n.nameInCushy}'], OUT['${n.nameInCushy}']> & {`)
       for (const hassingle of n.singleOuputs) {
          p(`      ${escapeJSKey(`_${hassingle.typeName}`)}: ComfyNodeOutput<'${hassingle.typeName}'>`)
          // const ifaces = this.singleOuputs.map((i) => `HasSingle_${i.typeName}`)
@@ -106,7 +107,7 @@ export function codegenSDK(
          p(`    /** ${baseDescription} */`) // prettier-ignore
       }
       p(
-         `   ${escapeJSKey(n.shortestUnambiguousName)}(p: IN['${n.shortestUnambiguousName}'], meta?: ComfyNodeMetadata): Node['${n.shortestUnambiguousName}']`,
+         `   ${escapeJSKey(n.nameInCushy)}(p: IN['${n.nameInCushy}'], meta?: ComfyNodeMetadata): Node['${n.nameInCushy}']`,
       )
    }
    p(`}`)
@@ -156,7 +157,7 @@ export function codegenSDK(
 
       // 1/2 Empty Interface
       if (allProducingNodes) {
-         p(`${escapeJSKey(tp.comfyType)}: Pick<Builder, ${allProducingNodes.map((i) => `'${i.shortestUnambiguousName}'`).join(' | ')}>`) // prettier-ignore
+         p(`${escapeJSKey(tp.comfyType)}: Pick<Builder, ${allProducingNodes.map((i) => `'${i.nameInCushy}'`).join(' | ')}>`) // prettier-ignore
       }
       // 2/2 Empty Interface
       else {

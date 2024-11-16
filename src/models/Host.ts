@@ -35,8 +35,7 @@ export class HostL extends BaseInst<TABLES['host']> {
    // comfyUIIframeRef = createRef<HTMLIFrameElement>()
 
    matchRequirements = (requirements: Requirements[]): boolean => {
-      const manager = this.manager
-      const repo = manager.repository
+      const repo = cushy.comfyAddons
       for (const req of requirements) {
          if (req.optional) continue
          if (req.type === 'customNodesByNameInCushy') {
@@ -186,14 +185,14 @@ export class HostL extends BaseInst<TABLES['host']> {
    }
 
    installCustomNodeByFile = async (customNodeFile: KnownComfyPluginURL): Promise<boolean> => {
-      const manager = this.manager.repository
+      const manager = cushy.comfyAddons
       const plugin: ComfyManagerPluginInfo | undefined = manager.plugins_byFile.get(customNodeFile)
       if (plugin == null) throw new Error(`Unknown custom node for file: "${customNodeFile}"`)
       return this.manager.installPlugin(plugin)
    }
 
    installCustomNodeByTitle = async (customNodeTitle: KnownComfyPluginTitle): Promise<boolean> => {
-      const manager = this.manager.repository
+      const manager = cushy.comfyAddons
       const plugin: ComfyManagerPluginInfo | undefined = manager.plugins_byTitle.get(customNodeTitle)
       if (plugin == null) throw new Error(`Unknown custom node for title: "${customNodeTitle}"`)
       return this.manager.installPlugin(plugin)

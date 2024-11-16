@@ -57,8 +57,8 @@ export type Ctx_sampler = {
    ckpt: Comfy.Signal['MODEL']
    clip: Comfy.Signal['CLIP']
    latent: Comfy.Signal['LATENT']
-   positive: string | _CONDITIONING
-   negative: string | _CONDITIONING
+   positive: string | Comfy.Signal['CONDITIONING']
+   negative: string | Comfy.Signal['CONDITIONING']
    preview?: boolean
    vae: Comfy.Signal['VAE']
 }
@@ -69,7 +69,7 @@ export const run_sampler = (
    run: Runtime,
    opts: OutputFor<typeof ui_sampler>,
    ctx: Ctx_sampler,
-): { latent: KSampler } => {
+): { latent: Comfy.Node['KSampler'] } => {
    const graph = run.nodes
    // flow.output_text(`run_sampler with seed : ${opts.seed}`)
    const latent = graph.KSampler({

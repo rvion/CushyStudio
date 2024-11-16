@@ -30,17 +30,20 @@ export class ComfyUIObjectInfoParsedNodeSchema {
       public outputs: NodeOutputExt[],
       public pythonModule: string,
    ) {
+      if (this.nameInCushy !== this.nameInCushy) {
+         throw new Error(`[🔴] invariant violation: ${this.nameInCushy}  !== ${this.nameInCushy}`)
+      }
       this.category = this.category.replaceAll('/', '_')
    }
 
-   get shortestUnambiguousName(): string {
-      return `${pythonModuleToShortestUnambiguousPrefix(this.pythonModule)}${this.nameInComfy}`
-   }
+   // get nameInCushy(): string {
+   //    return `${pythonModuleToShortestUnambiguousPrefix(this.pythonModule)}${this.nameInComfy}`
+   // }
 
    codegenUI(): string {
       const b = new CodeBuffer()
       const p = b.w
-      p(`   ${escapeJSKey(this.shortestUnambiguousName)}: {`)
+      p(`   ${escapeJSKey(this.nameInCushy)}: {`)
       this.inputs.forEach((i, ix) => {
          // 1/3
          if (i.isPrimitive) {

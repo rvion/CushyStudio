@@ -12,7 +12,7 @@ export const PanelComfyNodeExplorerUI = observer(function PanelComfyNodeExplorer
    const st = useSt()
    const pj = st.getProject()
    const search = useMemo(() => new ComfyNodeExplorerState(pj), [])
-   const repo = st.managerRepository
+   const repo = st.comfyAddons
    return (
       <div className='_MD flex flex-col'>
          <table

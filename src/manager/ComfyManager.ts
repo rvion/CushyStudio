@@ -17,10 +17,14 @@ import { toastError, toastSuccess } from '../csuite/utils/toasts'
 
 export class ComfyManager {
    get repository(): ComfyManagerRepository {
-      return this.host.st.managerRepository
+      return cushy.comfyAddons
    }
 
-   constructor(public host: HostL) {
+   constructor(
+      public host: {
+         getServerHostHTTP: () => string
+      },
+   ) {
       makeAutoObservable(this, {
          host: false,
          repository: false,
@@ -45,12 +49,37 @@ export class ComfyManager {
 
    // utils ------------------------------------------------------------------------------
    getModelInfoFinalFilePath = (mi: ComfyManagerModelInfo): string => {
-      return this.repository.getModelInfoFinalFilePath(mi)
+      return cushy.comfyAddons.getModelInfoFinalFilePath(mi)
+   }
+
+   waitForHostToBeBackOnline(maxAttempt: 10): Promise<true> {
+      return new Promise<true>((yes, no) => {
+         let attempt = 0
+         let abortCtrl: AbortController
+         const interval = setInterval(async () => {
+            attempt++
+            if (attempt > maxAttempt) {
+               console.log(`   - failure`)
+               clearInterval(interval)
+               no()
+            }
+            if (abortCtrl) abortCtrl.abort()
+            const url = this.host.getServerHostHTTP()
+            abortCtrl = new AbortController()
+            try {
+               console.log(`   - trying...`)
+               await fetch(url, { signal: abortCtrl.signal })
+               clearInterval(interval)
+               yes(true)
+            } catch {
+               /* empty */
+            }
+         }, 1000)
+      })
    }
 
    // actions ---------------------------------------------------------------------------
-   // @server.PromptServer.instance.routes.get("/manager/reboot")
-   rebootComfyUI = async (): Promise<unknown> => {
+   rebootComfyUIAndUpdateHostPluginsAndModelsAfter10Seconds(): Promise<void> {
       // 🔴 bad code
       setTimeout(() => void this.updateHostPluginsAndModels(), 10_000)
       // curl 'http://192.168.1.19:8188/api/manager/reboot' \
@@ -61,6 +90,11 @@ export class ComfyManager {
       //     -H 'Connection: keep-alive' \
       //     -H 'Referer: http://192.168.1.19:8188/' \
       //     -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) cushystudio-shell/32.1.2 Chrome/128.0.6613.162 Electron/32.1.2 Safari/537.36'
+      return this.fetchGetJSON('/manager/reboot')
+   }
+
+   // @server.PromptServer.instance.routes.get("/manager/reboot")
+   rebootComfyUI = async (): Promise<unknown> => {
       return this.fetchGetJSON('/manager/reboot')
    }
 
@@ -159,6 +193,7 @@ export class ComfyManager {
    installPlugin = async (model: ComfyManagerPluginInfo): Promise<boolean> => {
       try {
          const status = await this.fetchPost('/customnode/install', model)
+         console.log('✅ Custom Node installed')
          toastSuccess('Custom Node installed')
          return true
       } catch (exception) {
@@ -185,9 +220,9 @@ export class ComfyManager {
    private fetchGetJSON = async <Out>(endopint: string): Promise<Out> => {
       const url = this.host.getServerHostHTTP() + endopint
       const response = await fetch(url)
-      const status = await response.json()
-      console.log(`[👀]`, status)
-      return status
+      const jsonResult = await response.json()
+      // console.log(`[👀]`, jsonResult)
+      return jsonResult
    }
    private fetchGetText = async (endopint: string): Promise<string> => {
       const url = this.host.getServerHostHTTP() + endopint

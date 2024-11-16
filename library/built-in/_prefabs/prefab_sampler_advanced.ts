@@ -273,9 +273,9 @@ export function ui_sampler_advanced(p?: {
 export type Ctx_sampler_advanced = {
    ckpt: Comfy.Signal['MODEL']
    clip: Comfy.Signal['CLIP']
-   latent: Comfy.Signal['LATENT'] | HasSingle_LATENT
-   positive: string | _CONDITIONING
-   negative: string | _CONDITIONING
+   latent: Comfy.Signal['LATENT']
+   positive: string | Comfy.Signal['CONDITIONING']
+   negative: string | Comfy.Signal['CONDITIONING']
    width?: number
    height?: number
    preview?: boolean
@@ -329,7 +329,7 @@ export const run_sampler_advanced = (
    blankLatent?: boolean,
 ): { output: Comfy.Signal['LATENT']; denoised_output: Comfy.Signal['LATENT'] } => {
    const graph = run.nodes
-   let ckpt = ctx.ckpt
+   const ckpt = ctx.ckpt
    const posCondition2string = ui.guidanceType.DualCFG
       ? run_prompt({ prompt: ui.guidanceType.DualCFG.dualCFGPositive2, printWildcards: true })
       : undefined
@@ -394,8 +394,8 @@ export const run_sampler_advanced = (
       negCondition = encodeText(run, ctx.clip, ctx.negative, 'FLUX', ctx.width, ctx.height)
       if (posCondition2string) console.log('ERROR: Dual CFG not tested or st up for flux')
    } else {
-      posCondition = ctx.positive as _CONDITIONING
-      negCondition = ctx.negative as _CONDITIONING
+      posCondition = ctx.positive as Comfy.Signal['CONDITIONING']
+      negCondition = ctx.negative as Comfy.Signal['CONDITIONING']
    }
 
    const noise = graph.RandomNoise({ noise_seed: ui.seed }).outputs.NOISE

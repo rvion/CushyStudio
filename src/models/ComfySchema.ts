@@ -92,7 +92,7 @@ export class ComfySchemaL extends BaseInst<TABLES['comfy_schema']> {
    }
 
    // CHECKPOINT --------------------------------------------------------------
-   hasCheckpoint = (ckptName: string): boolean => this.getCheckpoints().includes(ckptName as Enum_CheckpointLoaderSimple_ckpt_name) // prettier-ignore
+   hasCheckpoint = (ckptName: string): boolean => this.getCheckpoints().includes(ckptName as Comfy.Slots['CheckpointLoaderSimple.ckpt_name']) // prettier-ignore
    getCheckpoints = (): Comfy.Slots['CheckpointLoaderSimple.ckpt_name'][] => {
       const candidates = this.knownEnumsByName.get('Enum_CheckpointLoaderSimple_ckpt_name')?.values ?? []
       return candidates as Comfy.Slots['CheckpointLoaderSimple.ckpt_name'][]

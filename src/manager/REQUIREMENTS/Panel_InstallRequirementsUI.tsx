@@ -50,7 +50,7 @@ export const Panel_InstallRequirementsUI = observer(function Panel_InstallRequir
    const rr = p.requirements
    const host = useSt().mainHost
    const manager = host.manager
-   const repo = manager.repository
+   const repo = cushy.comfyAddons
    return (
       <div tw='flex flex-col gap-2 p-2'>
          <MessageWarningUI
@@ -96,7 +96,7 @@ export const Panel_InstallRequirementsUI = observer(function Panel_InstallRequir
                }
                // ------------------------------------------------
                if (req.type === 'customNodesByTitle') {
-                  const plugin = manager.repository.plugins_byTitle.get(req.title)
+                  const plugin = cushy.comfyAddons.plugins_byTitle.get(req.title)
                   if (!plugin) {
                      console.log(`[❌] no plugin found with title "${req.title}"`)
                      return (
@@ -108,7 +108,7 @@ export const Panel_InstallRequirementsUI = observer(function Panel_InstallRequir
 
                // ------------------------------------------------
                if (req.type === 'customNodesByURI') {
-                  const plugin = manager.repository.plugins_byFile.get(req.uri)
+                  const plugin = cushy.comfyAddons.plugins_byFile.get(req.uri)
                   if (!plugin) {
                      console.log(`[❌] no plugin found with uri "${req.uri}"`)
                      return <MessageErrorUI markdown={`no plugin found with URI **${req.uri}** not found`} />

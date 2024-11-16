@@ -24,6 +24,7 @@ export const convertLiteGraphToPrompt = (
    const ERR = (...args: any[]): void => console.error('[🔥] converter 🔴 :', ...args)
    console.groupCollapsed('[🔥] converter')
    try {
+      // 1. cache primitives
       const PRIMITIVE_VALUES: { [key: string]: any } = {}
       for (const node of workflow.nodes) {
          // Don't serialize Note nodes (those are like comments)
@@ -35,11 +36,12 @@ export const convertLiteGraphToPrompt = (
                // debugger // 🔴
                continue
             }
-            LOG(`found primitive ${node.type}#${node.id} with value ${bang(node.widgets_values[0])}`)
-            PRIMITIVE_VALUES[node.id] = bang(node.widgets_values[0])
+            LOG(`found primitive ${node.type}#${node.id} with value ${bang(widgetValues[0])}`)
+            PRIMITIVE_VALUES[node.id] = bang(widgetValues[0])
             // debugger
          }
       }
+      // 2. others
       for (const node of workflow.nodes) {
          const NODE_HEADER = `💎 node ${node.type}#${node.id}`
          const FIELD_PREFIX = `${NODE_HEADER} | `
@@ -109,6 +111,8 @@ export const convertLiteGraphToPrompt = (
 
             // don't handle the non-primitive links
             if (MUST_CONSUME) {
+               if (node.widgets_values == null) throw new Error(`node ${node.id}(${node.type}) has no widgets_values`) // prettier-ignore
+               if (node.widgets_values.length < offset+1) throw new Error(`node ${node.id}(${node.type}) has not enough widgets_values`) // prettier-ignore
                const _value = node.widgets_values[offset]
                LOG(
                   `${FIELD_PREFIX} 🟰 ${field.nameInComfy} = ${_value} [VALUE] (consume ${MUST_CONSUME} fields)`,

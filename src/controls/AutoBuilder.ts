@@ -4,6 +4,8 @@ import type { Field_string_config } from '../csuite/fields/string/FieldString'
 import type { FieldConfig } from '../csuite/model/FieldConfig'
 import type { CushySchemaBuilder } from './Builder'
 
+type KK = IAutoBuilder['KSampler']
+
 type AutoWidget<T> = T extends { kind: any; type: infer TPE }
    ? T['kind'] extends 'number'
       ? X.XNumber

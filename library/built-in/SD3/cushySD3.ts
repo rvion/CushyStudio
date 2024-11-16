@@ -44,6 +44,7 @@ app({
 
       // #region START IMAGE
       const imgCtx = ctx.image
+      // eslint-disable-next-line prefer-const
       let { latent, width, height } = imgCtx
          ? /* 🔴 HACKY  */
            await (async (): Promise<{ latent: Comfy.Signal['LATENT']; height: number; width: number }> => ({
@@ -150,7 +151,7 @@ app({
                     height: height * HRF.scaleFactor,
                     width: width * HRF.scaleFactor,
                  })
-               : graph.NNLatentUpscale({
+               : graph['ComfyUi_NNLatentUpscale.NNLatentUpscale']({
                     latent,
                     version: HRF.upscaleMethod == 'Neural XL' ? 'SDXL' : 'SD 1.x',
                     upscale: HRF.scaleFactor,

@@ -27,7 +27,7 @@ export function ui_upscaleWithModel(): UI_upscaleWithModel {
          // { type: 'modelInManager', modelName: '4x_NMKD-Siax_200k' },
          // // 8x
          // { type: 'modelInManager', modelName: '8x_NMKD-Superscale_150000_G' },
-         ...Array.from(cushy.managerRepository.knownModels.values())
+         ...Array.from(cushy.comfyAddons.knownModels.values())
             .filter((t) => t.type === 'upscale')
             .map((t): Requirements => ({ type: 'modelInManager', modelName: t.name, optional: true })),
       ])

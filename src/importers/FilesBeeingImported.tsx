@@ -109,6 +109,7 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: {
                         {
                            type: 'customNodesByNameInCushy',
                            nodeName: convertComfyModuleAndNodeNameToCushyQualifiedNodeKey(
+                              'unknown',
                               error.node.type,
                            ) as KnownComfyCustomNodeName,
                         },

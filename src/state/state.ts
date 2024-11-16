@@ -121,7 +121,7 @@ export class STATE {
    uploader: Uploader
    supabase: SupabaseClient<Database>
    auth: AuthState
-   managerRepository = new ComfyManagerRepository({ check: false, genTypes: false })
+   comfyAddons = new ComfyManagerRepository({ check: false, genTypes: false })
    search: SearchManager = new SearchManager(this)
    forms: CushyFactory = cushyFactory
    repository = getGlobalRepository()
@@ -211,7 +211,7 @@ export class STATE {
    }
 
    getKnownCheckpoints(): ComfyManagerModelInfo[] {
-      return this.managerRepository.getKnownCheckpoints()
+      return this.comfyAddons.getKnownCheckpoints()
    }
 
    reloadCushyMainWindow(): void {

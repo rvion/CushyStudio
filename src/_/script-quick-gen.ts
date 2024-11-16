@@ -5,8 +5,8 @@
 // so we can monitor what it does.
 import fs from 'fs'
 
+import { ComfyUIObjectInfoParsed } from '../comfyui/ComfyUIObjectInfoParsed'
 import { readableStringify } from '../csuite/formatters/stringifyReadable'
-import { ComfyUIObjectInfoParsed } from './ComfyUIObjectInfoParsed'
 
 const inputObjectInfoPath = 'src/comfyui/examples/object_info.json'
 
@@ -29,17 +29,6 @@ if (true) {
 // find . -name 'object_info.json'
 // const inputObjectInfoPath = 'schema/hosts/Z3LBuTxBOybwVxlb5bbCk/object_info.json'
 const inputEmbeddingsPath = 'schema/hosts/Z3LBuTxBOybwVxlb5bbCk/embeddings.json'
-
-// const targetDebugFolder = `src/comfyui/DEBUG`
-// const _oldTxtFilePath = 'schema/hosts/Z3LBuTxBOybwVxlb5bbCk/sdk.dts.txt'
-// const _oldDTSFilePath = 'schema/global.d.ts'
-
-// step 1. clean the target folder
-// if (fs.existsSync(targetDebugFolder)) {
-//    console.log(`[🤠] folder "${targetDebugFolder}" already exists: deleting...`)
-//    fs.rmdirSync(targetDebugFolder, { recursive: true })
-// }
-// fs.mkdirSync(targetDebugFolder)
 
 // step 2. read the object_info.json and embeddings files
 const embeddings = JSON.parse(fs.readFileSync(inputEmbeddingsPath, 'utf-8'))

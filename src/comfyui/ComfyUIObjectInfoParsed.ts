@@ -16,7 +16,6 @@ import { observable, toJS } from 'mobx'
 import {
    convertComfyModuleAndNodeNameToCushyQualifiedNodeKey,
    convetComfySlotNameToCushySlotNameValidInJS,
-   normalizeJSIdentifier,
 } from '../core/normalizeJSIdentifier'
 import { ComfyPrimitiveMapping, ComfyPrimitives } from '../core/Primitives'
 import {
@@ -198,7 +197,7 @@ export class ComfyUIObjectInfoParsed {
          ]
          for (const ipt of allInputs) {
             const inputNameInComfy = ipt.name
-            const inputNameInCushy = normalizeJSIdentifier(ipt.name, '_')
+            // const inputNameInCushy = normalizeJSIdentifier(ipt.name, '_')
             const typeDef = ipt.spec
             const slotType = typeDef[0]
             const slotOpts = typeDef[1]

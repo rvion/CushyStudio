@@ -4978,9 +4978,9 @@
 ,   "Cache Node": {
         "input": {
             "required": {
-                "latent_suffix": ["STRING",{"default":"66522007_cache","multiline":false}]
-,               "image_suffix": ["STRING",{"default":"61027347_cache","multiline":false}]
-,               "conditioning_suffix": ["STRING",{"default":"81970010_cache","multiline":false}]
+                "latent_suffix": ["STRING",{"default":"65923833_cache","multiline":false}]
+,               "image_suffix": ["STRING",{"default":"76277115_cache","multiline":false}]
+,               "conditioning_suffix": ["STRING",{"default":"41869238_cache","multiline":false}]
             }
 ,           "optional": {
                 "output_path": ["STRING",{"default":"/home/runner/ComfyUI/custom_nodes/was-node-suite-comfyui/cache","multiline":false}]
@@ -17493,6 +17493,2397 @@
 ,       "description": ""
 ,       "python_module": "custom_nodes.ComfyUI-Impact-Pack"
 ,       "category": "ImpactPack"
+,       "output_node": false
+    }
+,   "BRIA_RMBG_ModelLoader_Zho": {
+        "input": {
+            "required": {
+            }
+        }
+,       "input_order": {
+            "required": []
+        }
+,       "output": ["RMBGMODEL"]
+,       "output_is_list": [false]
+,       "output_name": ["rmbgmodel"]
+,       "name": "BRIA_RMBG_ModelLoader_Zho"
+,       "display_name": "🧹BRIA_RMBG Model Loader"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-BRIA_AI-RMBG"
+,       "category": "🧹BRIA RMBG"
+,       "output_node": false
+    }
+,   "BRIA_RMBG_Zho": {
+        "input": {
+            "required": {
+                "rmbgmodel": ["RMBGMODEL"]
+,               "image": ["IMAGE"]
+            }
+        }
+,       "input_order": {
+            "required": ["rmbgmodel","image"]
+        }
+,       "output": ["IMAGE","MASK"]
+,       "output_is_list": [false,false]
+,       "output_name": ["image","mask"]
+,       "name": "BRIA_RMBG_Zho"
+,       "display_name": "🧹BRIA RMBG"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-BRIA_AI-RMBG"
+,       "category": "🧹BRIA RMBG"
+,       "output_node": false
+    }
+,   "AlphaChanelAdd": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+            }
+        }
+,       "input_order": {
+            "required": ["images"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "AlphaChanelAdd"
+,       "display_name": "AlphaChanelAdd"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/alpha"
+,       "output_node": false
+    }
+,   "AlphaChanelAddByMask": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+,               "mask": ["MASK"]
+,               "method": [["default","invert"]]
+            }
+        }
+,       "input_order": {
+            "required": ["images","mask","method"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "AlphaChanelAddByMask"
+,       "display_name": "AlphaChanelAddByMask"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/alpha"
+,       "output_node": false
+    }
+,   "AlphaChanelAsMask": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+,               "method": [["default","invert"]]
+            }
+        }
+,       "input_order": {
+            "required": ["images","method"]
+        }
+,       "output": ["MASK"]
+,       "output_is_list": [false]
+,       "output_name": ["MASK"]
+,       "name": "AlphaChanelAsMask"
+,       "display_name": "AlphaChanelAsMask"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/alpha"
+,       "output_node": false
+    }
+,   "AlphaChanelRestore": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+            }
+        }
+,       "input_order": {
+            "required": ["images"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "AlphaChanelRestore"
+,       "display_name": "AlphaChanelRestore"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/alpha"
+,       "output_node": false
+    }
+,   "AlphaChanelRemove": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+            }
+        }
+,       "input_order": {
+            "required": ["images"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "AlphaChanelRemove"
+,       "display_name": "AlphaChanelRemove"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/alpha"
+,       "output_node": false
+    }
+,   "ClipClamp": {
+        "input": {
+            "required": {
+                "clip": ["CLIP"]
+            }
+        }
+,       "input_order": {
+            "required": ["clip"]
+        }
+,       "output": ["CLIP"]
+,       "output_is_list": [false]
+,       "output_name": ["CLIP"]
+,       "name": "ClipClamp"
+,       "display_name": "ClipClamp"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "clamp"
+,       "output_node": false
+    }
+,   "ClipVisionClamp": {
+        "input": {
+            "required": {
+                "clip_vision": ["CLIP_VISION"]
+            }
+        }
+,       "input_order": {
+            "required": ["clip_vision"]
+        }
+,       "output": ["CLIP_VISION"]
+,       "output_is_list": [false]
+,       "output_name": ["CLIP_VISION"]
+,       "name": "ClipVisionClamp"
+,       "display_name": "ClipVisionClamp"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "clamp"
+,       "output_node": false
+    }
+,   "ClipVisionOutputClamp": {
+        "input": {
+            "required": {
+                "clip_vision_output": ["CLIP_VISION_OUTPUT"]
+            }
+        }
+,       "input_order": {
+            "required": ["clip_vision_output"]
+        }
+,       "output": ["CLIP_VISION_OUTPUT"]
+,       "output_is_list": [false]
+,       "output_name": ["CLIP_VISION_OUTPUT"]
+,       "name": "ClipVisionOutputClamp"
+,       "display_name": "ClipVisionOutputClamp"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "clamp"
+,       "output_node": false
+    }
+,   "ConditioningClamp": {
+        "input": {
+            "required": {
+                "conditioning": ["CONDITIONING"]
+            }
+        }
+,       "input_order": {
+            "required": ["conditioning"]
+        }
+,       "output": ["CONDITIONING"]
+,       "output_is_list": [false]
+,       "output_name": ["CONDITIONING"]
+,       "name": "ConditioningClamp"
+,       "display_name": "ConditioningClamp"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "clamp"
+,       "output_node": false
+    }
+,   "ControlNetClamp": {
+        "input": {
+            "required": {
+                "control_net_clamp": ["CONTROL_NET"]
+            }
+        }
+,       "input_order": {
+            "required": ["control_net_clamp"]
+        }
+,       "output": ["CONTROL_NET"]
+,       "output_is_list": [false]
+,       "output_name": ["CONTROL_NET"]
+,       "name": "ControlNetClamp"
+,       "display_name": "ControlNetClamp"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "clamp"
+,       "output_node": false
+    }
+,   "GligenClamp": {
+        "input": {
+            "required": {
+                "gligen": ["GLIGEN"]
+            }
+        }
+,       "input_order": {
+            "required": ["gligen"]
+        }
+,       "output": ["GLIGEN"]
+,       "output_is_list": [false]
+,       "output_name": ["GLIGEN"]
+,       "name": "GligenClamp"
+,       "display_name": "GligenClamp"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "clamp"
+,       "output_node": false
+    }
+,   "ImageClamp": {
+        "input": {
+            "required": {
+                "image": ["IMAGE"]
+            }
+        }
+,       "input_order": {
+            "required": ["image"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageClamp"
+,       "display_name": "ImageClamp"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "clamp"
+,       "output_node": false
+    }
+,   "LatentClamp": {
+        "input": {
+            "required": {
+                "latent": ["LATENT"]
+            }
+        }
+,       "input_order": {
+            "required": ["latent"]
+        }
+,       "output": ["LATENT"]
+,       "output_is_list": [false]
+,       "output_name": ["LATENT"]
+,       "name": "LatentClamp"
+,       "display_name": "LatentClamp"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "clamp"
+,       "output_node": false
+    }
+,   "MaskClamp": {
+        "input": {
+            "required": {
+                "mask": ["MASK"]
+            }
+        }
+,       "input_order": {
+            "required": ["mask"]
+        }
+,       "output": ["MASK"]
+,       "output_is_list": [false]
+,       "output_name": ["MASK"]
+,       "name": "MaskClamp"
+,       "display_name": "MaskClamp"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "clamp"
+,       "output_node": false
+    }
+,   "ModelClamp": {
+        "input": {
+            "required": {
+                "model": ["MODEL"]
+            }
+        }
+,       "input_order": {
+            "required": ["model"]
+        }
+,       "output": ["MODEL"]
+,       "output_is_list": [false]
+,       "output_name": ["MODEL"]
+,       "name": "ModelClamp"
+,       "display_name": "ModelClamp"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "clamp"
+,       "output_node": false
+    }
+,   "StyleModelClamp": {
+        "input": {
+            "required": {
+                "style_model": ["STYLE_MODEL"]
+            }
+        }
+,       "input_order": {
+            "required": ["style_model"]
+        }
+,       "output": ["STYLE_MODEL"]
+,       "output_is_list": [false]
+,       "output_name": ["STYLE_MODEL"]
+,       "name": "StyleModelClamp"
+,       "display_name": "StyleModelClamp"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "clamp"
+,       "output_node": false
+    }
+,   "UpscaleModelClamp": {
+        "input": {
+            "required": {
+                "upscale_model": ["UPSCALE_MODEL"]
+            }
+        }
+,       "input_order": {
+            "required": ["upscale_model"]
+        }
+,       "output": ["UPSCALE_MODEL"]
+,       "output_is_list": [false]
+,       "output_name": ["UPSCALE_MODEL"]
+,       "name": "UpscaleModelClamp"
+,       "display_name": "UpscaleModelClamp"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "clamp"
+,       "output_node": false
+    }
+,   "VaeClamp": {
+        "input": {
+            "required": {
+                "vae": ["VAE"]
+            }
+        }
+,       "input_order": {
+            "required": ["vae"]
+        }
+,       "output": ["VAE"]
+,       "output_is_list": [false]
+,       "output_name": ["VAE"]
+,       "name": "VaeClamp"
+,       "display_name": "VaeClamp"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "clamp"
+,       "output_node": false
+    }
+,   "ImageBatchGet": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+,               "index": ["INT",{"default":1,"min":1,"step":1}]
+            }
+        }
+,       "input_order": {
+            "required": ["images","index"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageBatchGet"
+,       "display_name": "ImageBatchGet"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/batch"
+,       "output_node": false
+    }
+,   "ImageBatchCopy": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+,               "index": ["INT",{"default":1,"min":1,"step":1}]
+,               "quantity": ["INT",{"default":1,"min":2,"step":1}]
+            }
+        }
+,       "input_order": {
+            "required": ["images","index","quantity"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageBatchCopy"
+,       "display_name": "ImageBatchCopy"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/batch"
+,       "output_node": false
+    }
+,   "ImageBatchRemove": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+,               "index": ["INT",{"default":1,"min":1,"step":1}]
+            }
+        }
+,       "input_order": {
+            "required": ["images","index"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageBatchRemove"
+,       "display_name": "ImageBatchRemove"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/batch"
+,       "output_node": false
+    }
+,   "ImageBatchFork": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+,               "priority": [["first","second"]]
+            }
+        }
+,       "input_order": {
+            "required": ["images","priority"]
+        }
+,       "output": ["IMAGE","IMAGE"]
+,       "output_is_list": [false,false]
+,       "output_name": ["IMAGE","IMAGE"]
+,       "name": "ImageBatchFork"
+,       "display_name": "ImageBatchFork"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/batch"
+,       "output_node": false
+    }
+,   "ImageBatchJoin": {
+        "input": {
+            "required": {
+                "images_a": ["IMAGE"]
+,               "images_b": ["IMAGE"]
+            }
+        }
+,       "input_order": {
+            "required": ["images_a","images_b"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageBatchJoin"
+,       "display_name": "ImageBatchJoin"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/batch"
+,       "output_node": false
+    }
+,   "ImageBatchPermute": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+,               "permute": ["STRING",{"multiline":false}]
+,               "start_with_zero": ["BOOLEAN"]
+            }
+        }
+,       "input_order": {
+            "required": ["images","permute","start_with_zero"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageBatchPermute"
+,       "display_name": "ImageBatchPermute"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/batch"
+,       "output_node": false
+    }
+,   "ImageCompositeAbsolute": {
+        "input": {
+            "required": {
+                "images_a": ["IMAGE"]
+,               "images_b": ["IMAGE"]
+,               "images_a_x": ["INT",{"default":0,"step":1}]
+,               "images_a_y": ["INT",{"default":0,"step":1}]
+,               "images_b_x": ["INT",{"default":0,"step":1}]
+,               "images_b_y": ["INT",{"default":0,"step":1}]
+,               "container_width": ["INT",{"default":0,"step":1}]
+,               "container_height": ["INT",{"default":0,"step":1}]
+,               "background": [["images_a","images_b"]]
+,               "method": [["pair","matrix"]]
+            }
+        }
+,       "input_order": {
+            "required": ["images_a","images_b","images_a_x","images_a_y","images_b_x","images_b_y","container_width","container_height","background","method"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageCompositeAbsolute"
+,       "display_name": "ImageCompositeAbsolute"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/composite"
+,       "output_node": false
+    }
+,   "ImageCompositeAbsoluteByContainer": {
+        "input": {
+            "required": {
+                "container": ["IMAGE"]
+,               "images_a": ["IMAGE"]
+,               "images_b": ["IMAGE"]
+,               "images_a_x": ["INT",{"default":0,"step":1}]
+,               "images_a_y": ["INT",{"default":0,"step":1}]
+,               "images_b_x": ["INT",{"default":0,"step":1}]
+,               "images_b_y": ["INT",{"default":0,"step":1}]
+,               "background": [["images_a","images_b"]]
+,               "method": [["pair","matrix"]]
+            }
+        }
+,       "input_order": {
+            "required": ["container","images_a","images_b","images_a_x","images_a_y","images_b_x","images_b_y","background","method"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageCompositeAbsoluteByContainer"
+,       "display_name": "ImageCompositeAbsoluteByContainer"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/composite"
+,       "output_node": false
+    }
+,   "ImageCompositeRelative": {
+        "input": {
+            "required": {
+                "images_a": ["IMAGE"]
+,               "images_b": ["IMAGE"]
+,               "images_a_x": ["FLOAT",{"default":0,"max":1,"step":0.01}]
+,               "images_a_y": ["FLOAT",{"default":0,"max":1,"step":0.01}]
+,               "images_b_x": ["FLOAT",{"default":0,"max":1,"step":0.01}]
+,               "images_b_y": ["FLOAT",{"default":0,"max":1,"step":0.01}]
+,               "background": [["images_a","images_b"]]
+,               "container_size_type": [["max","sum","sum_width","sum_height"]]
+,               "method": [["pair","matrix"]]
+            }
+        }
+,       "input_order": {
+            "required": ["images_a","images_b","images_a_x","images_a_y","images_b_x","images_b_y","background","container_size_type","method"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageCompositeRelative"
+,       "display_name": "ImageCompositeRelative"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/composite"
+,       "output_node": false
+    }
+,   "ImageCompositeRelativeByContainer": {
+        "input": {
+            "required": {
+                "container": ["IMAGE"]
+,               "images_a": ["IMAGE"]
+,               "images_b": ["IMAGE"]
+,               "images_a_x": ["FLOAT",{"default":0,"max":1,"step":0.01}]
+,               "images_a_y": ["FLOAT",{"default":0,"max":1,"step":0.01}]
+,               "images_b_x": ["FLOAT",{"default":0,"max":1,"step":0.01}]
+,               "images_b_y": ["FLOAT",{"default":0,"max":1,"step":0.01}]
+,               "background": [["images_a","images_b"]]
+,               "method": [["pair","matrix"]]
+            }
+        }
+,       "input_order": {
+            "required": ["container","images_a","images_b","images_a_x","images_a_y","images_b_x","images_b_y","background","method"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageCompositeRelativeByContainer"
+,       "display_name": "ImageCompositeRelativeByContainer"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/composite"
+,       "output_node": false
+    }
+,   "ImageContainer": {
+        "input": {
+            "required": {
+                "width": ["INT",{"default":512,"min":1,"step":1}]
+,               "height": ["INT",{"default":512,"min":1,"step":1}]
+,               "red": ["INT",{"default":255,"max":255,"step":1}]
+,               "green": ["INT",{"default":255,"max":255,"step":1}]
+,               "blue": ["INT",{"default":255,"max":255,"step":1}]
+,               "alpha": ["FLOAT",{"default":0,"max":1,"step":0.01}]
+            }
+        }
+,       "input_order": {
+            "required": ["width","height","red","green","blue","alpha"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageContainer"
+,       "display_name": "ImageContainer"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/container"
+,       "output_node": false
+    }
+,   "ImageContainerInheritanceAdd": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+,               "add_width": ["INT",{"default":0,"step":1}]
+,               "add_height": ["INT",{"default":0,"step":1}]
+,               "red": ["INT",{"default":255,"max":255,"step":1}]
+,               "green": ["INT",{"default":255,"max":255,"step":1}]
+,               "blue": ["INT",{"default":255,"max":255,"step":1}]
+,               "alpha": ["FLOAT",{"default":0,"max":1,"step":0.01}]
+,               "method": [["single","for_each"]]
+            }
+        }
+,       "input_order": {
+            "required": ["images","add_width","add_height","red","green","blue","alpha","method"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageContainerInheritanceAdd"
+,       "display_name": "ImageContainerInheritanceAdd"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/container"
+,       "output_node": false
+    }
+,   "ImageContainerInheritanceScale": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+,               "scale_width": ["FLOAT",{"default":1,"step":0.1}]
+,               "scale_height": ["FLOAT",{"default":1,"step":0.1}]
+,               "red": ["INT",{"default":255,"max":255,"step":1}]
+,               "green": ["INT",{"default":255,"max":255,"step":1}]
+,               "blue": ["INT",{"default":255,"max":255,"step":1}]
+,               "alpha": ["FLOAT",{"default":0,"max":1,"step":0.01}]
+,               "method": [["single","for_each"]]
+            }
+        }
+,       "input_order": {
+            "required": ["images","scale_width","scale_height","red","green","blue","alpha","method"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageContainerInheritanceScale"
+,       "display_name": "ImageContainerInheritanceScale"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/container"
+,       "output_node": false
+    }
+,   "ImageContainerInheritanceMax": {
+        "input": {
+            "required": {
+                "images_a": ["IMAGE"]
+,               "images_b": ["IMAGE"]
+,               "red": ["INT",{"default":255,"max":255,"step":1}]
+,               "green": ["INT",{"default":255,"max":255,"step":1}]
+,               "blue": ["INT",{"default":255,"max":255,"step":1}]
+,               "alpha": ["FLOAT",{"default":0,"max":1,"step":0.01}]
+,               "method": [["single","for_each_pair","for_each_matrix"]]
+            }
+        }
+,       "input_order": {
+            "required": ["images_a","images_b","red","green","blue","alpha","method"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageContainerInheritanceMax"
+,       "display_name": "ImageContainerInheritanceMax"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/container"
+,       "output_node": false
+    }
+,   "ImageContainerInheritanceSum": {
+        "input": {
+            "required": {
+                "images_a": ["IMAGE"]
+,               "images_b": ["IMAGE"]
+,               "red": ["INT",{"default":255,"max":255,"step":1}]
+,               "green": ["INT",{"default":255,"max":255,"step":1}]
+,               "blue": ["INT",{"default":255,"max":255,"step":1}]
+,               "alpha": ["FLOAT",{"default":0,"max":1,"step":0.01}]
+,               "container_size_type": [["sum","sum_width","sum_height"]]
+,               "method": [["single","for_each_pair","for_each_matrix"]]
+            }
+        }
+,       "input_order": {
+            "required": ["images_a","images_b","red","green","blue","alpha","container_size_type","method"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageContainerInheritanceSum"
+,       "display_name": "ImageContainerInheritanceSum"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/container"
+,       "output_node": false
+    }
+,   "ImageDrawArc": {
+        "input": {
+            "required": {
+                "width": ["INT",{"default":256,"min":1,"step":1}]
+,               "height": ["INT",{"default":256,"min":1,"step":1}]
+,               "size": ["INT",{"default":1,"min":1,"step":1}]
+,               "start_x": ["FLOAT",{"default":0,"max":1,"step":0.01}]
+,               "start_y": ["FLOAT",{"default":0,"max":1,"step":0.01}]
+,               "end_x": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "end_y": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "start": ["INT",{"default":0,"max":360,"step":1}]
+,               "end": ["INT",{"default":180,"max":360,"step":1}]
+,               "red": ["INT",{"default":255,"max":255,"step":1}]
+,               "green": ["INT",{"default":255,"max":255,"step":1}]
+,               "blue": ["INT",{"default":255,"max":255,"step":1}]
+,               "alpha": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "SSAA": ["INT",{"default":4,"min":1,"max":16,"step":1}]
+,               "method": [["lanczos","bicubic","hamming","bilinear","box","nearest"]]
+            }
+        }
+,       "input_order": {
+            "required": ["width","height","size","start_x","start_y","end_x","end_y","start","end","red","green","blue","alpha","SSAA","method"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageDrawArc"
+,       "display_name": "ImageDrawArc"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/draw"
+,       "output_node": false
+    }
+,   "ImageDrawArcByContainer": {
+        "input": {
+            "required": {
+                "container": ["IMAGE"]
+,               "size": ["INT",{"default":1,"min":1,"step":1}]
+,               "start_x": ["FLOAT",{"default":0,"max":1,"step":0.01}]
+,               "start_y": ["FLOAT",{"default":0,"max":1,"step":0.01}]
+,               "end_x": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "end_y": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "start": ["INT",{"default":0,"max":360,"step":1}]
+,               "end": ["INT",{"default":180,"max":360,"step":1}]
+,               "red": ["INT",{"default":255,"max":255,"step":1}]
+,               "green": ["INT",{"default":255,"max":255,"step":1}]
+,               "blue": ["INT",{"default":255,"max":255,"step":1}]
+,               "alpha": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "SSAA": ["INT",{"default":4,"min":1,"max":16,"step":1}]
+,               "method": [["lanczos","bicubic","hamming","bilinear","box","nearest"]]
+            }
+        }
+,       "input_order": {
+            "required": ["container","size","start_x","start_y","end_x","end_y","start","end","red","green","blue","alpha","SSAA","method"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageDrawArcByContainer"
+,       "display_name": "ImageDrawArcByContainer"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/draw"
+,       "output_node": false
+    }
+,   "ImageDrawChord": {
+        "input": {
+            "required": {
+                "width": ["INT",{"default":256,"min":1,"step":1}]
+,               "height": ["INT",{"default":256,"min":1,"step":1}]
+,               "size": ["INT",{"default":1,"min":1,"step":1}]
+,               "start_x": ["FLOAT",{"default":0,"max":1,"step":0.01}]
+,               "start_y": ["FLOAT",{"default":0,"max":1,"step":0.01}]
+,               "end_x": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "end_y": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "start": ["INT",{"default":0,"max":360,"step":1}]
+,               "end": ["INT",{"default":180,"max":360,"step":1}]
+,               "red": ["INT",{"default":255,"max":255,"step":1}]
+,               "green": ["INT",{"default":255,"max":255,"step":1}]
+,               "blue": ["INT",{"default":255,"max":255,"step":1}]
+,               "alpha": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "SSAA": ["INT",{"default":4,"min":1,"max":16,"step":1}]
+,               "method": [["lanczos","bicubic","hamming","bilinear","box","nearest"]]
+            }
+        }
+,       "input_order": {
+            "required": ["width","height","size","start_x","start_y","end_x","end_y","start","end","red","green","blue","alpha","SSAA","method"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageDrawChord"
+,       "display_name": "ImageDrawChord"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/draw"
+,       "output_node": false
+    }
+,   "ImageDrawChordByContainer": {
+        "input": {
+            "required": {
+                "container": ["IMAGE"]
+,               "size": ["INT",{"default":1,"min":1,"step":1}]
+,               "start_x": ["FLOAT",{"default":0,"max":1,"step":0.01}]
+,               "start_y": ["FLOAT",{"default":0,"max":1,"step":0.01}]
+,               "end_x": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "end_y": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "start": ["INT",{"default":0,"max":360,"step":1}]
+,               "end": ["INT",{"default":180,"max":360,"step":1}]
+,               "red": ["INT",{"default":255,"max":255,"step":1}]
+,               "green": ["INT",{"default":255,"max":255,"step":1}]
+,               "blue": ["INT",{"default":255,"max":255,"step":1}]
+,               "alpha": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "SSAA": ["INT",{"default":4,"min":1,"max":16,"step":1}]
+,               "method": [["lanczos","bicubic","hamming","bilinear","box","nearest"]]
+            }
+        }
+,       "input_order": {
+            "required": ["container","size","start_x","start_y","end_x","end_y","start","end","red","green","blue","alpha","SSAA","method"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageDrawChordByContainer"
+,       "display_name": "ImageDrawChordByContainer"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/draw"
+,       "output_node": false
+    }
+,   "ImageDrawEllipse": {
+        "input": {
+            "required": {
+                "width": ["INT",{"default":256,"min":1,"step":1}]
+,               "height": ["INT",{"default":256,"min":1,"step":1}]
+,               "start_x": ["FLOAT",{"default":0,"max":1,"step":0.01}]
+,               "start_y": ["FLOAT",{"default":0,"max":1,"step":0.01}]
+,               "end_x": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "end_y": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "outline_size": ["INT",{"default":1,"step":1}]
+,               "outline_red": ["INT",{"default":0,"max":255,"step":1}]
+,               "outline_green": ["INT",{"default":0,"max":255,"step":1}]
+,               "outline_blue": ["INT",{"default":0,"max":255,"step":1}]
+,               "outline_alpha": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "fill_red": ["INT",{"default":255,"max":255,"step":1}]
+,               "fill_green": ["INT",{"default":255,"max":255,"step":1}]
+,               "fill_blue": ["INT",{"default":255,"max":255,"step":1}]
+,               "fill_alpha": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "SSAA": ["INT",{"default":4,"min":1,"max":16,"step":1}]
+,               "method": [["lanczos","bicubic","hamming","bilinear","box","nearest"]]
+            }
+        }
+,       "input_order": {
+            "required": ["width","height","start_x","start_y","end_x","end_y","outline_size","outline_red","outline_green","outline_blue","outline_alpha","fill_red","fill_green","fill_blue","fill_alpha","SSAA","method"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageDrawEllipse"
+,       "display_name": "ImageDrawEllipse"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/draw"
+,       "output_node": false
+    }
+,   "ImageDrawEllipseByContainer": {
+        "input": {
+            "required": {
+                "container": ["IMAGE"]
+,               "start_x": ["FLOAT",{"default":0,"max":1,"step":0.01}]
+,               "start_y": ["FLOAT",{"default":0,"max":1,"step":0.01}]
+,               "end_x": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "end_y": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "outline_size": ["INT",{"default":1,"step":1}]
+,               "outline_red": ["INT",{"default":0,"max":255,"step":1}]
+,               "outline_green": ["INT",{"default":0,"max":255,"step":1}]
+,               "outline_blue": ["INT",{"default":0,"max":255,"step":1}]
+,               "outline_alpha": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "fill_red": ["INT",{"default":255,"max":255,"step":1}]
+,               "fill_green": ["INT",{"default":255,"max":255,"step":1}]
+,               "fill_blue": ["INT",{"default":255,"max":255,"step":1}]
+,               "fill_alpha": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "SSAA": ["INT",{"default":4,"min":1,"max":16,"step":1}]
+,               "method": [["lanczos","bicubic","hamming","bilinear","box","nearest"]]
+            }
+        }
+,       "input_order": {
+            "required": ["container","start_x","start_y","end_x","end_y","outline_size","outline_red","outline_green","outline_blue","outline_alpha","fill_red","fill_green","fill_blue","fill_alpha","SSAA","method"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageDrawEllipseByContainer"
+,       "display_name": "ImageDrawEllipseByContainer"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/draw"
+,       "output_node": false
+    }
+,   "ImageDrawLine": {
+        "input": {
+            "required": {
+                "width": ["INT",{"default":256,"min":1,"step":1}]
+,               "height": ["INT",{"default":256,"min":1,"step":1}]
+,               "size": ["INT",{"default":1,"min":1,"step":1}]
+,               "start_x": ["FLOAT",{"default":0,"max":1,"step":0.01}]
+,               "start_y": ["FLOAT",{"default":0,"max":1,"step":0.01}]
+,               "end_x": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "end_y": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "red": ["INT",{"default":255,"max":255,"step":1}]
+,               "green": ["INT",{"default":255,"max":255,"step":1}]
+,               "blue": ["INT",{"default":255,"max":255,"step":1}]
+,               "alpha": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "SSAA": ["INT",{"default":4,"min":1,"max":16,"step":1}]
+,               "method": [["lanczos","bicubic","hamming","bilinear","box","nearest"]]
+            }
+        }
+,       "input_order": {
+            "required": ["width","height","size","start_x","start_y","end_x","end_y","red","green","blue","alpha","SSAA","method"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageDrawLine"
+,       "display_name": "ImageDrawLine"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/draw"
+,       "output_node": false
+    }
+,   "ImageDrawLineByContainer": {
+        "input": {
+            "required": {
+                "container": ["IMAGE"]
+,               "size": ["INT",{"default":1,"min":1,"step":1}]
+,               "start_x": ["FLOAT",{"default":0,"max":1,"step":0.01}]
+,               "start_y": ["FLOAT",{"default":0,"max":1,"step":0.01}]
+,               "end_x": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "end_y": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "red": ["INT",{"default":255,"max":255,"step":1}]
+,               "green": ["INT",{"default":255,"max":255,"step":1}]
+,               "blue": ["INT",{"default":255,"max":255,"step":1}]
+,               "alpha": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "SSAA": ["INT",{"default":4,"min":1,"max":16,"step":1}]
+,               "method": [["lanczos","bicubic","hamming","bilinear","box","nearest"]]
+            }
+        }
+,       "input_order": {
+            "required": ["container","size","start_x","start_y","end_x","end_y","red","green","blue","alpha","SSAA","method"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageDrawLineByContainer"
+,       "display_name": "ImageDrawLineByContainer"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/draw"
+,       "output_node": false
+    }
+,   "ImageDrawPieslice": {
+        "input": {
+            "required": {
+                "width": ["INT",{"default":256,"min":1,"step":1}]
+,               "height": ["INT",{"default":256,"min":1,"step":1}]
+,               "start_x": ["FLOAT",{"default":0,"max":1,"step":0.01}]
+,               "start_y": ["FLOAT",{"default":0,"max":1,"step":0.01}]
+,               "end_x": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "end_y": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "start": ["INT",{"default":0,"max":360,"step":1}]
+,               "end": ["INT",{"default":240,"max":360,"step":1}]
+,               "outline_size": ["INT",{"default":1,"step":1}]
+,               "outline_red": ["INT",{"default":0,"max":255,"step":1}]
+,               "outline_green": ["INT",{"default":0,"max":255,"step":1}]
+,               "outline_blue": ["INT",{"default":0,"max":255,"step":1}]
+,               "outline_alpha": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "fill_red": ["INT",{"default":255,"max":255,"step":1}]
+,               "fill_green": ["INT",{"default":255,"max":255,"step":1}]
+,               "fill_blue": ["INT",{"default":255,"max":255,"step":1}]
+,               "fill_alpha": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "SSAA": ["INT",{"default":4,"min":1,"max":16,"step":1}]
+,               "method": [["lanczos","bicubic","hamming","bilinear","box","nearest"]]
+            }
+        }
+,       "input_order": {
+            "required": ["width","height","start_x","start_y","end_x","end_y","start","end","outline_size","outline_red","outline_green","outline_blue","outline_alpha","fill_red","fill_green","fill_blue","fill_alpha","SSAA","method"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageDrawPieslice"
+,       "display_name": "ImageDrawPieslice"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/draw"
+,       "output_node": false
+    }
+,   "ImageDrawPiesliceByContainer": {
+        "input": {
+            "required": {
+                "container": ["IMAGE"]
+,               "start_x": ["FLOAT",{"default":0,"max":1,"step":0.01}]
+,               "start_y": ["FLOAT",{"default":0,"max":1,"step":0.01}]
+,               "end_x": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "end_y": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "start": ["INT",{"default":0,"max":360,"step":1}]
+,               "end": ["INT",{"default":240,"max":360,"step":1}]
+,               "outline_size": ["INT",{"default":1,"step":1}]
+,               "outline_red": ["INT",{"default":0,"max":255,"step":1}]
+,               "outline_green": ["INT",{"default":0,"max":255,"step":1}]
+,               "outline_blue": ["INT",{"default":0,"max":255,"step":1}]
+,               "outline_alpha": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "fill_red": ["INT",{"default":255,"max":255,"step":1}]
+,               "fill_green": ["INT",{"default":255,"max":255,"step":1}]
+,               "fill_blue": ["INT",{"default":255,"max":255,"step":1}]
+,               "fill_alpha": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "SSAA": ["INT",{"default":4,"min":1,"max":16,"step":1}]
+,               "method": [["lanczos","bicubic","hamming","bilinear","box","nearest"]]
+            }
+        }
+,       "input_order": {
+            "required": ["container","start_x","start_y","end_x","end_y","start","end","outline_size","outline_red","outline_green","outline_blue","outline_alpha","fill_red","fill_green","fill_blue","fill_alpha","SSAA","method"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageDrawPiesliceByContainer"
+,       "display_name": "ImageDrawPiesliceByContainer"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/draw"
+,       "output_node": false
+    }
+,   "ImageDrawRectangle": {
+        "input": {
+            "required": {
+                "width": ["INT",{"default":256,"min":1,"step":1}]
+,               "height": ["INT",{"default":256,"min":1,"step":1}]
+,               "start_x": ["FLOAT",{"default":0.1,"max":1,"step":0.01}]
+,               "start_y": ["FLOAT",{"default":0.2,"max":1,"step":0.01}]
+,               "end_x": ["FLOAT",{"default":0.9,"max":1,"step":0.01}]
+,               "end_y": ["FLOAT",{"default":0.8,"max":1,"step":0.01}]
+,               "outline_size": ["INT",{"default":1,"step":1}]
+,               "outline_red": ["INT",{"default":0,"max":255,"step":1}]
+,               "outline_green": ["INT",{"default":0,"max":255,"step":1}]
+,               "outline_blue": ["INT",{"default":0,"max":255,"step":1}]
+,               "outline_alpha": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "fill_red": ["INT",{"default":255,"max":255,"step":1}]
+,               "fill_green": ["INT",{"default":255,"max":255,"step":1}]
+,               "fill_blue": ["INT",{"default":255,"max":255,"step":1}]
+,               "fill_alpha": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "SSAA": ["INT",{"default":4,"min":1,"max":16,"step":1}]
+,               "method": [["lanczos","bicubic","hamming","bilinear","box","nearest"]]
+            }
+        }
+,       "input_order": {
+            "required": ["width","height","start_x","start_y","end_x","end_y","outline_size","outline_red","outline_green","outline_blue","outline_alpha","fill_red","fill_green","fill_blue","fill_alpha","SSAA","method"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageDrawRectangle"
+,       "display_name": "ImageDrawRectangle"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/draw"
+,       "output_node": false
+    }
+,   "ImageDrawRectangleByContainer": {
+        "input": {
+            "required": {
+                "container": ["IMAGE"]
+,               "start_x": ["FLOAT",{"default":0.1,"max":1,"step":0.01}]
+,               "start_y": ["FLOAT",{"default":0.2,"max":1,"step":0.01}]
+,               "end_x": ["FLOAT",{"default":0.9,"max":1,"step":0.01}]
+,               "end_y": ["FLOAT",{"default":0.8,"max":1,"step":0.01}]
+,               "outline_size": ["INT",{"default":1,"step":1}]
+,               "outline_red": ["INT",{"default":0,"max":255,"step":1}]
+,               "outline_green": ["INT",{"default":0,"max":255,"step":1}]
+,               "outline_blue": ["INT",{"default":0,"max":255,"step":1}]
+,               "outline_alpha": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "fill_red": ["INT",{"default":255,"max":255,"step":1}]
+,               "fill_green": ["INT",{"default":255,"max":255,"step":1}]
+,               "fill_blue": ["INT",{"default":255,"max":255,"step":1}]
+,               "fill_alpha": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "SSAA": ["INT",{"default":4,"min":1,"max":16,"step":1}]
+,               "method": [["lanczos","bicubic","hamming","bilinear","box","nearest"]]
+            }
+        }
+,       "input_order": {
+            "required": ["container","start_x","start_y","end_x","end_y","outline_size","outline_red","outline_green","outline_blue","outline_alpha","fill_red","fill_green","fill_blue","fill_alpha","SSAA","method"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageDrawRectangleByContainer"
+,       "display_name": "ImageDrawRectangleByContainer"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/draw"
+,       "output_node": false
+    }
+,   "ImageDrawRectangleRounded": {
+        "input": {
+            "required": {
+                "width": ["INT",{"default":256,"min":1,"step":1}]
+,               "height": ["INT",{"default":256,"min":1,"step":1}]
+,               "start_x": ["FLOAT",{"default":0.1,"max":1,"step":0.01}]
+,               "start_y": ["FLOAT",{"default":0.2,"max":1,"step":0.01}]
+,               "end_x": ["FLOAT",{"default":0.9,"max":1,"step":0.01}]
+,               "end_y": ["FLOAT",{"default":0.8,"max":1,"step":0.01}]
+,               "radius": ["INT",{"default":180,"max":360,"step":1}]
+,               "outline_size": ["INT",{"default":1,"step":1}]
+,               "outline_red": ["INT",{"default":0,"max":255,"step":1}]
+,               "outline_green": ["INT",{"default":0,"max":255,"step":1}]
+,               "outline_blue": ["INT",{"default":0,"max":255,"step":1}]
+,               "outline_alpha": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "fill_red": ["INT",{"default":255,"max":255,"step":1}]
+,               "fill_green": ["INT",{"default":255,"max":255,"step":1}]
+,               "fill_blue": ["INT",{"default":255,"max":255,"step":1}]
+,               "fill_alpha": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "top_left_corner": [["true","false"]]
+,               "top_right_corner": [["true","false"]]
+,               "bottom_right_corner": [["true","false"]]
+,               "bottom_left_corner": [["true","false"]]
+,               "SSAA": ["INT",{"default":4,"min":1,"max":16,"step":1}]
+,               "method": [["lanczos","bicubic","hamming","bilinear","box","nearest"]]
+            }
+        }
+,       "input_order": {
+            "required": ["width","height","start_x","start_y","end_x","end_y","radius","outline_size","outline_red","outline_green","outline_blue","outline_alpha","fill_red","fill_green","fill_blue","fill_alpha","top_left_corner","top_right_corner","bottom_right_corner","bottom_left_corner","SSAA","method"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageDrawRectangleRounded"
+,       "display_name": "ImageDrawRectangleRounded"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/draw"
+,       "output_node": false
+    }
+,   "ImageDrawRectangleRoundedByContainer": {
+        "input": {
+            "required": {
+                "container": ["IMAGE"]
+,               "start_x": ["FLOAT",{"default":0.1,"max":1,"step":0.01}]
+,               "start_y": ["FLOAT",{"default":0.2,"max":1,"step":0.01}]
+,               "end_x": ["FLOAT",{"default":0.9,"max":1,"step":0.01}]
+,               "end_y": ["FLOAT",{"default":0.8,"max":1,"step":0.01}]
+,               "radius": ["INT",{"default":180,"max":360,"step":1}]
+,               "outline_size": ["INT",{"default":1,"step":1}]
+,               "outline_red": ["INT",{"default":0,"max":255,"step":1}]
+,               "outline_green": ["INT",{"default":0,"max":255,"step":1}]
+,               "outline_blue": ["INT",{"default":0,"max":255,"step":1}]
+,               "outline_alpha": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "fill_red": ["INT",{"default":255,"max":255,"step":1}]
+,               "fill_green": ["INT",{"default":255,"max":255,"step":1}]
+,               "fill_blue": ["INT",{"default":255,"max":255,"step":1}]
+,               "fill_alpha": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "top_left_corner": [["true","false"]]
+,               "top_right_corner": [["true","false"]]
+,               "bottom_right_corner": [["true","false"]]
+,               "bottom_left_corner": [["true","false"]]
+,               "SSAA": ["INT",{"default":4,"min":1,"max":16,"step":1}]
+,               "method": [["lanczos","bicubic","hamming","bilinear","box","nearest"]]
+            }
+        }
+,       "input_order": {
+            "required": ["container","start_x","start_y","end_x","end_y","radius","outline_size","outline_red","outline_green","outline_blue","outline_alpha","fill_red","fill_green","fill_blue","fill_alpha","top_left_corner","top_right_corner","bottom_right_corner","bottom_left_corner","SSAA","method"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageDrawRectangleRoundedByContainer"
+,       "display_name": "ImageDrawRectangleRoundedByContainer"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/draw"
+,       "output_node": false
+    }
+,   "ImageDrawPolygon": {
+        "input": {
+            "required": {
+                "size": ["INT",{"default":256,"min":1,"step":1}]
+,               "sides": ["INT",{"default":5,"min":3,"step":1}]
+,               "rotation": ["INT",{"default":0,"max":360,"step":1}]
+,               "outline_size": ["INT",{"default":1,"step":1}]
+,               "outline_red": ["INT",{"default":0,"max":255,"step":1}]
+,               "outline_green": ["INT",{"default":0,"max":255,"step":1}]
+,               "outline_blue": ["INT",{"default":0,"max":255,"step":1}]
+,               "outline_alpha": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "fill_red": ["INT",{"default":255,"max":255,"step":1}]
+,               "fill_green": ["INT",{"default":255,"max":255,"step":1}]
+,               "fill_blue": ["INT",{"default":255,"max":255,"step":1}]
+,               "fill_alpha": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "SSAA": ["INT",{"default":4,"min":1,"max":16,"step":1}]
+,               "method": [["lanczos","bicubic","hamming","bilinear","box","nearest"]]
+            }
+        }
+,       "input_order": {
+            "required": ["size","sides","rotation","outline_size","outline_red","outline_green","outline_blue","outline_alpha","fill_red","fill_green","fill_blue","fill_alpha","SSAA","method"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageDrawPolygon"
+,       "display_name": "ImageDrawPolygon"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/draw"
+,       "output_node": false
+    }
+,   "ImageEffectsAdjustment": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+,               "brightness": ["FLOAT",{"default":1,"step":0.01}]
+,               "contrast": ["FLOAT",{"default":1,"step":0.01}]
+,               "saturation": ["FLOAT",{"default":1,"step":0.01}]
+,               "hue": ["FLOAT",{"default":0.5,"max":1,"step":0.01}]
+,               "gamma": ["FLOAT",{"default":1,"step":0.01}]
+,               "sharpness": ["FLOAT",{"default":1,"step":0.01}]
+,               "red": ["FLOAT",{"default":1,"step":0.01}]
+,               "green": ["FLOAT",{"default":1,"step":0.01}]
+,               "blue": ["FLOAT",{"default":1,"step":0.01}]
+            }
+        }
+,       "input_order": {
+            "required": ["images","brightness","contrast","saturation","hue","gamma","sharpness","red","green","blue"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageEffectsAdjustment"
+,       "display_name": "ImageEffectsAdjustment"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/effects"
+,       "output_node": false
+    }
+,   "ImageEffectsGrayscale": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+            }
+        }
+,       "input_order": {
+            "required": ["images"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageEffectsGrayscale"
+,       "display_name": "ImageEffectsGrayscale"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/effects"
+,       "output_node": false
+    }
+,   "ImageEffectsNegative": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+            }
+        }
+,       "input_order": {
+            "required": ["images"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageEffectsNegative"
+,       "display_name": "ImageEffectsNegative"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/effects"
+,       "output_node": false
+    }
+,   "ImageEffectsSepia": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+            }
+        }
+,       "input_order": {
+            "required": ["images"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageEffectsSepia"
+,       "display_name": "ImageEffectsSepia"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/effects"
+,       "output_node": false
+    }
+,   "ImageEffectsLensZoomBurst": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+,               "scale": ["FLOAT",{"default":1.5,"min":1,"step":0.01}]
+,               "samples": ["INT",{"default":100,"min":1}]
+,               "position_x": ["FLOAT",{"default":0.5,"max":1,"step":0.01}]
+,               "position_y": ["FLOAT",{"default":0.5,"max":1,"step":0.01}]
+,               "rotation": ["FLOAT",{"default":0,"min":0,"max":360}]
+,               "method": [["circle","point"]]
+,               "stabilization": [["true","false"]]
+            }
+        }
+,       "input_order": {
+            "required": ["images","scale","samples","position_x","position_y","rotation","method","stabilization"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageEffectsLensZoomBurst"
+,       "display_name": "ImageEffectsLensZoomBurst"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/effects/lens"
+,       "output_node": false
+    }
+,   "ImageEffectsLensChromaticAberration": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+,               "shift": ["INT",{"default":10,"step":1}]
+,               "method": [["reflect","edge","constant"]]
+,               "shift_type": ["INT",{"default":1,"min":1,"max":4,"step":1}]
+,               "mixing_type": ["INT",{"default":1,"min":1,"max":4,"step":1}]
+,               "transpose": [["none","rotate","reflect"]]
+,               "colors": [["rb","rg","gb"]]
+,               "lens_curvy": ["FLOAT",{"default":1,"max":15,"step":0.1}]
+            }
+        }
+,       "input_order": {
+            "required": ["images","shift","method","shift_type","mixing_type","transpose","colors","lens_curvy"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageEffectsLensChromaticAberration"
+,       "display_name": "ImageEffectsLensChromaticAberration"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/effects/lens"
+,       "output_node": false
+    }
+,   "ImageEffectsLensBokeh": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+,               "blades_shape": ["INT",{"default":5,"min":3}]
+,               "blades_radius": ["INT",{"default":10,"min":1}]
+,               "blades_rotation": ["FLOAT",{"default":0,"min":0,"max":360}]
+,               "blur_size": ["INT",{"default":10,"min":1,"step":2}]
+,               "blur_type": [["bilateral","stack","none"]]
+,               "method": [["dilate","filter"]]
+            }
+        }
+,       "input_order": {
+            "required": ["images","blades_shape","blades_radius","blades_rotation","blur_size","blur_type","method"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageEffectsLensBokeh"
+,       "display_name": "ImageEffectsLensBokeh"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/effects/lens"
+,       "output_node": false
+    }
+,   "ImageEffectsLensOpticAxis": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+,               "lens_shape": [["circle","square","rectangle","corners"]]
+,               "lens_edge": [["around","symmetric"]]
+,               "lens_curvy": ["FLOAT",{"default":4,"max":15,"step":0.1}]
+,               "lens_zoom": ["FLOAT",{"default":2,"step":0.1}]
+,               "lens_aperture": ["FLOAT",{"default":0.5,"max":10,"step":0.1}]
+,               "blur_intensity": ["INT",{"default":30,"min":2,"step":2}]
+            }
+        }
+,       "input_order": {
+            "required": ["images","lens_shape","lens_edge","lens_curvy","lens_zoom","lens_aperture","blur_intensity"]
+        }
+,       "output": ["IMAGE","MASK"]
+,       "output_is_list": [false,false]
+,       "output_name": ["IMAGE","MASK"]
+,       "name": "ImageEffectsLensOpticAxis"
+,       "display_name": "ImageEffectsLensOpticAxis"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/effects/lens"
+,       "output_node": false
+    }
+,   "ImageEffectsLensVignette": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+,               "lens_shape": [["circle","rectangle"]]
+,               "lens_edge": [["around","symmetric"]]
+,               "lens_curvy": ["FLOAT",{"default":3,"max":15,"step":0.1}]
+,               "lens_zoom": ["FLOAT",{"default":0,"step":0.1}]
+,               "brightness": ["FLOAT",{"default":0.25,"max":1,"step":0.01}]
+,               "saturation": ["FLOAT",{"default":0.5,"max":1,"step":0.01}]
+            }
+        }
+,       "input_order": {
+            "required": ["images","lens_shape","lens_edge","lens_curvy","lens_zoom","brightness","saturation"]
+        }
+,       "output": ["IMAGE","MASK"]
+,       "output_is_list": [false,false]
+,       "output_name": ["IMAGE","MASK"]
+,       "name": "ImageEffectsLensVignette"
+,       "display_name": "ImageEffectsLensVignette"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/effects/lens"
+,       "output_node": false
+    }
+,   "ImageFilterSmooth": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+            }
+        }
+,       "input_order": {
+            "required": ["images"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageFilterSmooth"
+,       "display_name": "ImageFilterSmooth"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/filter"
+,       "output_node": false
+    }
+,   "ImageFilterSmoothMore": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+            }
+        }
+,       "input_order": {
+            "required": ["images"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageFilterSmoothMore"
+,       "display_name": "ImageFilterSmoothMore"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/filter"
+,       "output_node": false
+    }
+,   "ImageFilterBlur": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+,               "size_x": ["INT",{"default":10,"min":1}]
+,               "size_y": ["INT",{"default":10,"min":1}]
+            }
+        }
+,       "input_order": {
+            "required": ["images","size_x","size_y"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageFilterBlur"
+,       "display_name": "ImageFilterBlur"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/filter"
+,       "output_node": false
+    }
+,   "ImageFilterBoxBlur": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+,               "size_x": ["INT",{"default":10,"min":1}]
+,               "size_y": ["INT",{"default":10,"min":1}]
+            }
+        }
+,       "input_order": {
+            "required": ["images","size_x","size_y"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageFilterBoxBlur"
+,       "display_name": "ImageFilterBoxBlur"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/filter"
+,       "output_node": false
+    }
+,   "ImageFilterGaussianBlur": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+,               "size_x": ["INT",{"default":10,"min":2,"step":2}]
+,               "size_y": ["INT",{"default":10,"min":2,"step":2}]
+            }
+        }
+,       "input_order": {
+            "required": ["images","size_x","size_y"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageFilterGaussianBlur"
+,       "display_name": "ImageFilterGaussianBlur"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/filter"
+,       "output_node": false
+    }
+,   "ImageFilterGaussianBlurAdvanced": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+,               "size_x": ["INT",{"default":10,"min":2,"step":2}]
+,               "size_y": ["INT",{"default":10,"min":2,"step":2}]
+,               "sigma_x": ["INT",{"default":0}]
+,               "sigma_y": ["INT",{"default":0}]
+            }
+        }
+,       "input_order": {
+            "required": ["images","size_x","size_y","sigma_x","sigma_y"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageFilterGaussianBlurAdvanced"
+,       "display_name": "ImageFilterGaussianBlurAdvanced"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/filter"
+,       "output_node": false
+    }
+,   "ImageFilterStackBlur": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+,               "size_x": ["INT",{"default":10,"min":1,"step":2}]
+,               "size_y": ["INT",{"default":10,"min":1,"step":2}]
+            }
+        }
+,       "input_order": {
+            "required": ["images","size_x","size_y"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageFilterStackBlur"
+,       "display_name": "ImageFilterStackBlur"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/filter"
+,       "output_node": false
+    }
+,   "ImageFilterMedianBlur": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+,               "size": ["INT",{"default":10,"min":1,"step":2}]
+            }
+        }
+,       "input_order": {
+            "required": ["images","size"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageFilterMedianBlur"
+,       "display_name": "ImageFilterMedianBlur"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/filter"
+,       "output_node": false
+    }
+,   "ImageFilterBilateralBlur": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+,               "size": ["INT",{"default":10,"min":1,"step":2}]
+,               "sigma_color": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "sigma_intensity": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+            }
+        }
+,       "input_order": {
+            "required": ["images","size","sigma_color","sigma_intensity"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageFilterBilateralBlur"
+,       "display_name": "ImageFilterBilateralBlur"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/filter"
+,       "output_node": false
+    }
+,   "ImageFilterContour": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+            }
+        }
+,       "input_order": {
+            "required": ["images"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageFilterContour"
+,       "display_name": "ImageFilterContour"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/filter"
+,       "output_node": false
+    }
+,   "ImageFilterDetail": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+            }
+        }
+,       "input_order": {
+            "required": ["images"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageFilterDetail"
+,       "display_name": "ImageFilterDetail"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/filter"
+,       "output_node": false
+    }
+,   "ImageFilterEdgeEnhance": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+            }
+        }
+,       "input_order": {
+            "required": ["images"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageFilterEdgeEnhance"
+,       "display_name": "ImageFilterEdgeEnhance"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/filter"
+,       "output_node": false
+    }
+,   "ImageFilterEdgeEnhanceMore": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+            }
+        }
+,       "input_order": {
+            "required": ["images"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageFilterEdgeEnhanceMore"
+,       "display_name": "ImageFilterEdgeEnhanceMore"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/filter"
+,       "output_node": false
+    }
+,   "ImageFilterEmboss": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+            }
+        }
+,       "input_order": {
+            "required": ["images"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageFilterEmboss"
+,       "display_name": "ImageFilterEmboss"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/filter"
+,       "output_node": false
+    }
+,   "ImageFilterFindEdges": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+            }
+        }
+,       "input_order": {
+            "required": ["images"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageFilterFindEdges"
+,       "display_name": "ImageFilterFindEdges"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/filter"
+,       "output_node": false
+    }
+,   "ImageFilterSharpen": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+            }
+        }
+,       "input_order": {
+            "required": ["images"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageFilterSharpen"
+,       "display_name": "ImageFilterSharpen"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/filter"
+,       "output_node": false
+    }
+,   "ImageFilterRank": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+,               "size": ["INT",{"default":2,"min":0,"step":2}]
+,               "rank": ["INT",{"default":1,"step":1}]
+            }
+        }
+,       "input_order": {
+            "required": ["images","size","rank"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageFilterRank"
+,       "display_name": "ImageFilterRank"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/filter"
+,       "output_node": false
+    }
+,   "ImageFilterMin": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+,               "size": ["INT",{"default":2,"min":0,"step":2}]
+            }
+        }
+,       "input_order": {
+            "required": ["images","size"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageFilterMin"
+,       "display_name": "ImageFilterMin"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/filter"
+,       "output_node": false
+    }
+,   "ImageFilterMax": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+,               "size": ["INT",{"default":2,"min":0,"step":2}]
+            }
+        }
+,       "input_order": {
+            "required": ["images","size"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageFilterMax"
+,       "display_name": "ImageFilterMax"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/filter"
+,       "output_node": false
+    }
+,   "ImageFilterMode": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+,               "size": ["INT",{"default":2,"min":0,"step":2}]
+            }
+        }
+,       "input_order": {
+            "required": ["images","size"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageFilterMode"
+,       "display_name": "ImageFilterMode"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/filter"
+,       "output_node": false
+    }
+,   "ImageNoiseBeta": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+,               "a": ["INT",{"default":1,"min":1}]
+,               "b": ["INT",{"default":1,"min":1}]
+,               "monochromatic": [["false","true"]]
+,               "invert": [["false","true"]]
+,               "channels": [["rgb","rgba","rg","rb","ra","gb","ga","ba","r","g","b","a"]]
+            }
+        }
+,       "input_order": {
+            "required": ["images","a","b","monochromatic","invert","channels"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageNoiseBeta"
+,       "display_name": "ImageNoiseBeta"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/noise"
+,       "output_node": false
+    }
+,   "ImageNoiseBinomial": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+,               "n": ["INT",{"default":128,"min":1,"max":255}]
+,               "p": ["FLOAT",{"default":0.5,"max":1,"step":0.01}]
+,               "monochromatic": [["false","true"]]
+,               "invert": [["false","true"]]
+,               "channels": [["rgb","rgba","rg","rb","ra","gb","ga","ba","r","g","b","a"]]
+            }
+        }
+,       "input_order": {
+            "required": ["images","n","p","monochromatic","invert","channels"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageNoiseBinomial"
+,       "display_name": "ImageNoiseBinomial"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/noise"
+,       "output_node": false
+    }
+,   "ImageNoiseBytes": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+,               "monochromatic": [["false","true"]]
+,               "invert": [["false","true"]]
+,               "channels": [["rgb","rgba","rg","rb","ra","gb","ga","ba","r","g","b","a"]]
+            }
+        }
+,       "input_order": {
+            "required": ["images","monochromatic","invert","channels"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageNoiseBytes"
+,       "display_name": "ImageNoiseBytes"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/noise"
+,       "output_node": false
+    }
+,   "ImageNoiseGaussian": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+,               "strength": ["FLOAT",{"default":0.5,"step":0.01}]
+,               "monochromatic": [["false","true"]]
+,               "invert": [["false","true"]]
+,               "channels": [["rgb","rgba","rg","rb","ra","gb","ga","ba","r","g","b","a"]]
+            }
+        }
+,       "input_order": {
+            "required": ["images","strength","monochromatic","invert","channels"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageNoiseGaussian"
+,       "display_name": "ImageNoiseGaussian"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/noise"
+,       "output_node": false
+    }
+,   "ImageSegmentation": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+,               "model": [["u2net","u2netp","u2net_human_seg","u2net_cloth_seg","silueta","isnet-general-use","isnetis","modnet-p","modnet-w"]]
+,               "alpha_matting": [["true","false"]]
+,               "alpha_matting_foreground_threshold": ["INT",{"default":240,"max":250,"step":5}]
+,               "alpha_matting_background_threshold": ["INT",{"default":20,"max":250,"step":5}]
+,               "alpha_matting_erode_size": ["INT",{"default":10,"step":1}]
+,               "post_process_mask": [["false","true"]]
+            }
+        }
+,       "input_order": {
+            "required": ["images","model","alpha_matting","alpha_matting_foreground_threshold","alpha_matting_background_threshold","alpha_matting_erode_size","post_process_mask"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageSegmentation"
+,       "display_name": "ImageSegmentation"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/segmentation"
+,       "output_node": false
+    }
+,   "ImageSegmentationCustom": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+,               "model": [[]]
+,               "alpha_matting": [["true","false"]]
+,               "alpha_matting_foreground_threshold": ["INT",{"default":240,"max":250,"step":5}]
+,               "alpha_matting_background_threshold": ["INT",{"default":20,"max":250,"step":5}]
+,               "alpha_matting_erode_size": ["INT",{"default":10,"step":1}]
+,               "post_process_mask": [["false","true"]]
+,               "mean": ["FLOAT",{"default":0.485,"max":1,"step":0.01}]
+,               "std": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "size": ["INT",{"default":1024,"step":8}]
+            }
+        }
+,       "input_order": {
+            "required": ["images","model","alpha_matting","alpha_matting_foreground_threshold","alpha_matting_background_threshold","alpha_matting_erode_size","post_process_mask","mean","std","size"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageSegmentationCustom"
+,       "display_name": "ImageSegmentationCustom"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/segmentation"
+,       "output_node": false
+    }
+,   "ImageSegmentationCustomAdvanced": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+,               "model": [[]]
+,               "alpha_matting": [["true","false"]]
+,               "alpha_matting_foreground_threshold": ["INT",{"default":240,"max":250,"step":5}]
+,               "alpha_matting_background_threshold": ["INT",{"default":20,"max":250,"step":5}]
+,               "alpha_matting_erode_size": ["INT",{"default":10,"step":1}]
+,               "post_process_mask": [["false","true"]]
+,               "mean_r": ["FLOAT",{"default":0.485,"max":1,"step":0.01}]
+,               "mean_g": ["FLOAT",{"default":0.456,"max":1,"step":0.01}]
+,               "mean_b": ["FLOAT",{"default":0.406,"max":1,"step":0.01}]
+,               "std_r": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "std_g": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "std_b": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "width": ["INT",{"default":1024,"step":8}]
+,               "height": ["INT",{"default":1024,"step":8}]
+            }
+        }
+,       "input_order": {
+            "required": ["images","model","alpha_matting","alpha_matting_foreground_threshold","alpha_matting_background_threshold","alpha_matting_erode_size","post_process_mask","mean_r","mean_g","mean_b","std_r","std_g","std_b","width","height"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageSegmentationCustomAdvanced"
+,       "display_name": "ImageSegmentationCustomAdvanced"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/segmentation"
+,       "output_node": false
+    }
+,   "ImageText": {
+        "input": {
+            "required": {
+                "text": ["STRING",{"multiline":false}]
+,               "font": [[]]
+,               "size": ["INT",{"default":28,"min":1,"step":1}]
+,               "red": ["INT",{"default":255,"max":255,"step":1}]
+,               "green": ["INT",{"default":255,"max":255,"step":1}]
+,               "blue": ["INT",{"default":255,"max":255,"step":1}]
+,               "alpha": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "margin_x": ["INT",{"default":0,"step":1}]
+,               "margin_y": ["INT",{"default":0,"step":1}]
+            }
+        }
+,       "input_order": {
+            "required": ["text","font","size","red","green","blue","alpha","margin_x","margin_y"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageText"
+,       "display_name": "ImageText"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/draw"
+,       "output_node": false
+    }
+,   "ImageTextOutlined": {
+        "input": {
+            "required": {
+                "text": ["STRING",{"multiline":false}]
+,               "font": [[]]
+,               "size": ["INT",{"default":28,"min":1,"step":1}]
+,               "red": ["INT",{"default":255,"max":255,"step":1}]
+,               "green": ["INT",{"default":255,"max":255,"step":1}]
+,               "blue": ["INT",{"default":255,"max":255,"step":1}]
+,               "outline_size": ["INT",{"default":1,"step":1}]
+,               "outline_red": ["INT",{"default":0,"max":255,"step":1}]
+,               "outline_green": ["INT",{"default":0,"max":255,"step":1}]
+,               "outline_blue": ["INT",{"default":0,"max":255,"step":1}]
+,               "alpha": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "margin_x": ["INT",{"default":0,"step":1}]
+,               "margin_y": ["INT",{"default":0,"step":1}]
+            }
+        }
+,       "input_order": {
+            "required": ["text","font","size","red","green","blue","outline_size","outline_red","outline_green","outline_blue","alpha","margin_x","margin_y"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageTextOutlined"
+,       "display_name": "ImageTextOutlined"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/draw"
+,       "output_node": false
+    }
+,   "ImageTextMultiline": {
+        "input": {
+            "required": {
+                "text": ["STRING",{"multiline":true}]
+,               "font": [[]]
+,               "align": [["left","center","right"]]
+,               "size": ["INT",{"default":28,"min":1,"step":1}]
+,               "red": ["INT",{"default":255,"max":255,"step":1}]
+,               "green": ["INT",{"default":255,"max":255,"step":1}]
+,               "blue": ["INT",{"default":255,"max":255,"step":1}]
+,               "alpha": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "margin_x": ["INT",{"default":0,"step":1}]
+,               "margin_y": ["INT",{"default":0,"step":1}]
+            }
+        }
+,       "input_order": {
+            "required": ["text","font","align","size","red","green","blue","alpha","margin_x","margin_y"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageTextMultiline"
+,       "display_name": "ImageTextMultiline"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/draw"
+,       "output_node": false
+    }
+,   "ImageTextMultilineOutlined": {
+        "input": {
+            "required": {
+                "text": ["STRING",{"multiline":true}]
+,               "font": [[]]
+,               "align": [["left","center","right"]]
+,               "size": ["INT",{"default":28,"min":1,"step":1}]
+,               "red": ["INT",{"default":255,"max":255,"step":1}]
+,               "green": ["INT",{"default":255,"max":255,"step":1}]
+,               "blue": ["INT",{"default":255,"max":255,"step":1}]
+,               "outline_size": ["INT",{"default":1,"step":1}]
+,               "outline_red": ["INT",{"default":0,"max":255,"step":1}]
+,               "outline_green": ["INT",{"default":0,"max":255,"step":1}]
+,               "outline_blue": ["INT",{"default":0,"max":255,"step":1}]
+,               "alpha": ["FLOAT",{"default":1,"max":1,"step":0.01}]
+,               "margin_x": ["INT",{"default":0,"step":1}]
+,               "margin_y": ["INT",{"default":0,"step":1}]
+            }
+        }
+,       "input_order": {
+            "required": ["text","font","align","size","red","green","blue","outline_size","outline_red","outline_green","outline_blue","alpha","margin_x","margin_y"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageTextMultilineOutlined"
+,       "display_name": "ImageTextMultilineOutlined"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/draw"
+,       "output_node": false
+    }
+,   "ImageTransformResizeAbsolute": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+,               "width": ["INT",{"default":256,"min":1,"step":1}]
+,               "height": ["INT",{"default":256,"min":1,"step":1}]
+,               "method": [["lanczos","bicubic","hamming","bilinear","box","nearest"]]
+            }
+        }
+,       "input_order": {
+            "required": ["images","width","height","method"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageTransformResizeAbsolute"
+,       "display_name": "ImageTransformResizeAbsolute"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/transform"
+,       "output_node": false
+    }
+,   "ImageTransformResizeRelative": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+,               "scale_width": ["FLOAT",{"default":1,"step":0.1}]
+,               "scale_height": ["FLOAT",{"default":1,"step":0.1}]
+,               "method": [["lanczos","bicubic","hamming","bilinear","box","nearest"]]
+            }
+        }
+,       "input_order": {
+            "required": ["images","scale_width","scale_height","method"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageTransformResizeRelative"
+,       "display_name": "ImageTransformResizeRelative"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/transform"
+,       "output_node": false
+    }
+,   "ImageTransformResizeClip": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+,               "max_width": ["INT",{"default":1024}]
+,               "max_height": ["INT",{"default":1024}]
+,               "min_width": ["INT",{"default":0}]
+,               "min_height": ["INT",{"default":0}]
+,               "method": [["lanczos","bicubic","hamming","bilinear","box","nearest"]]
+            }
+        }
+,       "input_order": {
+            "required": ["images","max_width","max_height","min_width","min_height","method"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageTransformResizeClip"
+,       "display_name": "ImageTransformResizeClip"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/transform"
+,       "output_node": false
+    }
+,   "ImageTransformCropAbsolute": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+,               "start_x": ["INT",{"default":0,"step":1}]
+,               "start_y": ["INT",{"default":0,"step":1}]
+,               "end_x": ["INT",{"default":128,"step":1}]
+,               "end_y": ["INT",{"default":128,"step":1}]
+            }
+        }
+,       "input_order": {
+            "required": ["images","start_x","start_y","end_x","end_y"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageTransformCropAbsolute"
+,       "display_name": "ImageTransformCropAbsolute"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/transform"
+,       "output_node": false
+    }
+,   "ImageTransformCropRelative": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+,               "start_x": ["FLOAT",{"default":0.25,"max":1,"step":0.01}]
+,               "start_y": ["FLOAT",{"default":0.25,"max":1,"step":0.01}]
+,               "end_x": ["FLOAT",{"default":0.75,"max":1,"step":0.01}]
+,               "end_y": ["FLOAT",{"default":0.75,"max":1,"step":0.01}]
+            }
+        }
+,       "input_order": {
+            "required": ["images","start_x","start_y","end_x","end_y"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageTransformCropRelative"
+,       "display_name": "ImageTransformCropRelative"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/transform"
+,       "output_node": false
+    }
+,   "ImageTransformCropCorners": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+,               "radius": ["INT",{"default":180,"max":360,"step":1}]
+,               "top_left_corner": [["true","false"]]
+,               "top_right_corner": [["true","false"]]
+,               "bottom_right_corner": [["true","false"]]
+,               "bottom_left_corner": [["true","false"]]
+,               "SSAA": ["INT",{"default":4,"min":1,"max":16,"step":1}]
+,               "method": [["lanczos","bicubic","hamming","bilinear","box","nearest"]]
+            }
+        }
+,       "input_order": {
+            "required": ["images","radius","top_left_corner","top_right_corner","bottom_right_corner","bottom_left_corner","SSAA","method"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageTransformCropCorners"
+,       "display_name": "ImageTransformCropCorners"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/transform"
+,       "output_node": false
+    }
+,   "ImageTransformPaddingAbsolute": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+,               "add_width": ["INT",{"default":64,"min":0}]
+,               "add_height": ["INT",{"default":64,"min":0}]
+,               "method": [["reflect","edge","constant"]]
+            }
+        }
+,       "input_order": {
+            "required": ["images","add_width","add_height","method"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageTransformPaddingAbsolute"
+,       "display_name": "ImageTransformPaddingAbsolute"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/transform"
+,       "output_node": false
+    }
+,   "ImageTransformPaddingRelative": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+,               "scale_width": ["FLOAT",{"default":0.25,"step":0.1}]
+,               "scale_height": ["FLOAT",{"default":0.25,"step":0.1}]
+,               "method": [["reflect","edge","constant"]]
+            }
+        }
+,       "input_order": {
+            "required": ["images","scale_width","scale_height","method"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageTransformPaddingRelative"
+,       "display_name": "ImageTransformPaddingRelative"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/transform"
+,       "output_node": false
+    }
+,   "ImageTransformRotate": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+,               "angle": ["FLOAT",{"default":35,"max":360,"step":0.1}]
+,               "expand": [["true","false"]]
+,               "SSAA": ["INT",{"default":4,"min":1,"max":16,"step":1}]
+,               "method": [["lanczos","bicubic","hamming","bilinear","box","nearest"]]
+            }
+        }
+,       "input_order": {
+            "required": ["images","angle","expand","SSAA","method"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageTransformRotate"
+,       "display_name": "ImageTransformRotate"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/transform"
+,       "output_node": false
+    }
+,   "ImageTransformTranspose": {
+        "input": {
+            "required": {
+                "images": ["IMAGE"]
+,               "method": [["flip_horizontally","flip_vertically","rotate_90","rotate_180","rotate_270","transpose","transverse"]]
+            }
+        }
+,       "input_order": {
+            "required": ["images","method"]
+        }
+,       "output": ["IMAGE"]
+,       "output_is_list": [false]
+,       "output_name": ["IMAGE"]
+,       "name": "ImageTransformTranspose"
+,       "display_name": "ImageTransformTranspose"
+,       "description": ""
+,       "python_module": "custom_nodes.ComfyUI-Allor"
+,       "category": "image/transform"
 ,       "output_node": false
     }
 }

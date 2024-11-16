@@ -54,7 +54,7 @@ export const QuickHostActionsUI = observer(function QuickHostActionsUI_(p: {
          <Button //
             children='Restart ComfyUI'
             look='warning'
-            onClick={() => host.manager.rebootComfyUI()}
+            onClick={() => host.manager.rebootComfyUIAndUpdateHostPluginsAndModelsAfter10Seconds()}
          />
       </div>
    )

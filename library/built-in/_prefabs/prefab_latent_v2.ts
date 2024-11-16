@@ -1,4 +1,4 @@
-import type { ComfyNodeOutput } from '../../../src/core/Slot'
+import type { ComfyNodeOutput } from '../../../src/comfyui/livegraph/ComfyNodeOutput'
 import type { Runtime } from '../../../src/runtime/Runtime'
 import type { OutputFor } from './_prefabs'
 

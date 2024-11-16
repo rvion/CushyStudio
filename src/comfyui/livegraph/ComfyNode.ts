@@ -11,9 +11,9 @@ import { createElement } from 'react'
 
 import { auto_ } from '../../core/autoValue'
 import { comfyColors } from '../../core/Colors'
-import { ComfyNodeOutput } from '../../core/Slot'
 import { ComfyDefaultNodeWhenUnknown_Name } from '../../models/ComfyDefaultNodeWhenUnknown'
 import { nodeLineHeight, NodeSlotSize, NodeTitleHeight } from '../../widgets/graph/NodeSlotSize'
+import { ComfyNodeOutput } from './ComfyNodeOutput'
 import { NodeStatusEmojiUI } from './NodeStatusEmojiUI'
 
 // configure({ enforceActions: 'always' })

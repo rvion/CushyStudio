@@ -58,6 +58,7 @@ app({
       const H = 380
       const workflow = run.workflow
       const graph = workflow.builder
+      // eslint-disable-next-line prefer-const
       let { ckpt, clip, vae } = evalModelSD15andSDXL(ui.model)
       if (ui.ipadapter) ckpt = (await run_ipadapter_standalone(ui.ipadapter, ckpt)).ip_adapted_model
       const isXL = ui.mode === 'xl'
@@ -155,9 +156,9 @@ app({
 
          // post processing
          let image: Comfy.Signal['IMAGE'] = graph.VAEDecode({ samples: latent, vae })
-         if (ui.secondPass || isXL) image = graph.Image_Resize({ image: image, rescale_factor: 0.33, mode: 'rescale', resampling: 'lanczos', supersample: 'false', }) // prettier-ignore
+         if (ui.secondPass || isXL) image = graph['was.Image Resize']({ image: image, rescale_factor: 0.33, mode: 'rescale', resampling: 'lanczos', supersample: 'false', }) // prettier-ignore
          const maskL = await run.Images.createFromURL(bang(stsAssets[`mask-${kind}`]))
-         let maskImg = await maskL.loadInWorkflow() //.loadInWorkflowAsMask('alpha')
+         const maskImg = await maskL.loadInWorkflow() //.loadInWorkflowAsMask('alpha')
          // image = graph.ImageCrop({ image, x: 0, y: 0, width: 500, height: 380 })
          image = graph.JoinImageWithAlpha({ alpha: maskImg, image: image })
          // image = graph.Prune_By_Mask({ image, mask: maskImg })
