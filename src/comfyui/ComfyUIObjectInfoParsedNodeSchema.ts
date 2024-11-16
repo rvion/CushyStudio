@@ -4,7 +4,6 @@ import type { ComfyInputOpts, ComfyNodeSchemaJSON } from './ComfyUIObjectInfoTyp
 import { ComfyPrimitiveMapping } from '../core/Primitives'
 import { CodeBuffer } from '../utils/codegen/CodeBuffer'
 import { escapeJSKey } from '../utils/codegen/escapeJSKey'
-import { pythonModuleToShortestUnambiguousPrefix } from './pythonModuleToNamespace'
 
 export type NodeOwnEnum = { in: 'input' | 'output'; ownName: string; enum: ComfyUnionInfo }
 /**

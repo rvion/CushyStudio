@@ -8,11 +8,6 @@ export const convertComfyModuleAndNodeNameToCushyQualifiedNodeKey = (
    // return normalizeJSIdentifier(name, ' ')
 }
 
-export const convetComfySlotNameToCushySlotNameValidInJS = (name: string): string => {
-   return name
-   return normalizeJSIdentifier(name, '_')
-}
-
 /**
  * There is sadly no perfect normalization for JS identifiers.
  * ComfyUI node names tend to use spaces ' '.

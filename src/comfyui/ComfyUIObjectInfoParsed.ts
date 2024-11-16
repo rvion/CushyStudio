@@ -13,10 +13,7 @@ import type { ComfyEnumDef, ComfyNodeSchemaJSON, ComfySchemaJSON } from './Comfy
 import crypto from 'crypto'
 import { observable, toJS } from 'mobx'
 
-import {
-   convertComfyModuleAndNodeNameToCushyQualifiedNodeKey,
-   convetComfySlotNameToCushySlotNameValidInJS,
-} from '../core/normalizeJSIdentifier'
+import { convertComfyModuleAndNodeNameToCushyQualifiedNodeKey } from '../core/normalizeJSIdentifier'
 import { ComfyPrimitiveMapping, ComfyPrimitives } from '../core/Primitives'
 import {
    ComfyDefaultNodeWhenUnknown_Name,
@@ -123,7 +120,7 @@ export class ComfyUIObjectInfoParsed {
                nodeDef.output_name[ix] || //
                (typeof slotType === 'string' ? slotType : `input_${ix}`)
 
-            const outputNameInComfy = convetComfySlotNameToCushySlotNameValidInJS(rawOutputSlotName)
+            const outputNameInComfy = rawOutputSlotName
             const at = (outputNamer[outputNameInComfy] ??= 0)
             const outputNameInCushy = at === 0 ? outputNameInComfy : `${outputNameInComfy}_${at}`
             outputNamer[outputNameInComfy]++
@@ -133,7 +130,7 @@ export class ComfyUIObjectInfoParsed {
 
             // 1. Primitive
             if (typeof slotType === 'string') {
-               slotTypeName = convetComfySlotNameToCushySlotNameValidInJS(slotType)
+               slotTypeName = slotType
                this.knownSlotTypes.add(slotTypeName)
             }
             // 2. ENUM
@@ -218,7 +215,7 @@ export class ComfyUIObjectInfoParsed {
             }
             // 2/4
             else if (typeof slotType === 'string') {
-               inputTypeNameInCushy = convetComfySlotNameToCushySlotNameValidInJS(slotType)
+               inputTypeNameInCushy = slotType
                this.knownSlotTypes.add(inputTypeNameInCushy)
             }
             // 3/4
