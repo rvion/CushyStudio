@@ -1,8 +1,11 @@
-import type { ComfyUIObjectInfoParsed } from './ComfyUIObjectInfoParsed'
+import type { ComfyUIObjectInfoParsed } from '../objectInfo/ComfyUIObjectInfoParsed'
 
-import { CodeBuffer } from '../utils/codegen/CodeBuffer'
-import { escapeJSKey } from '../utils/codegen/escapeJSKey'
-import { type ComfyUIObjectInfoParsedNodeSchema, wrapQuote } from './ComfyUIObjectInfoParsedNodeSchema'
+import { CodeBuffer } from '../../utils/codegen/CodeBuffer'
+import { escapeJSKey } from '../../utils/codegen/escapeJSKey'
+import {
+   type ComfyUIObjectInfoParsedNodeSchema,
+   wrapQuote,
+} from '../objectInfo/ComfyUIObjectInfoParsedNodeSchema'
 
 export function codegenSDK(
    this: ComfyUIObjectInfoParsed,
@@ -16,9 +19,9 @@ export function codegenSDK(
 
    // #region Core Imports ----------------------------------------------------------------------------------
    p(`import type { ComfyNode } from '${prefix}comfyui/livegraph/ComfyNode'`)
+   p(`import type { ComfyNodeOutput } from '${prefix}comfyui/livegraph/ComfyNodeOutput'`)
    p(`import type { ComfyNodeMetadata } from '${prefix}types/ComfyNodeID'`)
-   p(`import type { ComfyNodeOutput } from '${prefix}core/Slot'`)
-   p(`import type { ComfyNodeSchemaJSON } from '${prefix}comfyui/ComfyUIObjectInfoTypes'`)
+   p(`import type { ComfyNodeSchemaJSON } from '${prefix}comfyui/objectInfo/ComfyUIObjectInfoTypes'`)
    p(``)
 
    p(`declare global {`)
@@ -32,10 +35,9 @@ export function codegenSDK(
    p(`// #${''}region PythonModulesAvaialbles`)
    p(`export type PythonModulesAvaialbles = `)
    b.indent()
-   for (const [k, v] of this.pythonModules
-      .entries()
-      .toArray()
-      .toSorted((a, b) => a[0].localeCompare(b[0]))) {
+   const pythonModulesArr: [string, string[]][] = Array.from(this.pythonModules.entries()) //
+      .toSorted((a, b) => a[0].localeCompare(b[0]))
+   for (const [k, v] of pythonModulesArr) {
       p(`/**`)
       // p(` * SDK Namespace: ${pythonModuleToNamespace(k)}`)
       p(`* Nodes: ${v.join(', ')}`)
@@ -73,7 +75,7 @@ export function codegenSDK(
    for (const n of nodes) {
       p(`${escapeJSKey(n.nameInCushy)}: {`)
       n.outputs.forEach((i, ix) => {
-         p(`   ${escapeJSKey(i.nameInComfy)}: ComfyNodeOutput<'${i.typeName}', ${ix}>,`)
+         p(`   ${escapeJSKey(i.nameInCushy)}: ComfyNodeOutput<'${i.typeName}', ${ix}>,`)
       })
       p(`}`)
    }

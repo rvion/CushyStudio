@@ -1,4 +1,4 @@
-export function pythonModuleToShortestUnambiguousPrefix(pythonModule: string): string {
+export function pythonModuleToPrefix(pythonModule: string): string {
    if (pythonModule === 'nodes') return ''
    if (pythonModule.startsWith('comfy_extras.')) return '' //''
    if (pythonModule.startsWith('custom_nodes.')) {

@@ -8,7 +8,7 @@ import chalk from 'chalk'
 import { readFileSync, writeFileSync } from 'fs'
 import * as v from 'valibot'
 
-import { convertComfyModuleAndNodeNameToCushyQualifiedNodeKey } from '../../core/normalizeJSIdentifier'
+import { convertComfyModuleAndNodeNameToCushyQualifiedNodeKey } from '../../comfyui/codegen/_convertComfyModuleAndNodeNameToCushyQualifiedNodeKey'
 import { printValibotResultInConsole } from '../../csuite/utils/printValibotResult'
 import { githubRegexpV2 } from '../_utils/githubRegexes'
 import {

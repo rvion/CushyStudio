@@ -3,16 +3,16 @@ import type { ComfyNodeID, ComfyNodeMetadata } from '../../types/ComfyNodeID'
 import type { NodeProgress } from '../../types/ComfyWsApi'
 import type { ComfyUIAPIRequest_Node } from '../comfyui-prompt-api'
 import type { NodeInputExt, NodeOutputExt } from '../comfyui-types'
-import type { ComfyUIObjectInfoParsedNodeSchema } from '../ComfyUIObjectInfoParsedNodeSchema'
+import type { ComfyUIObjectInfoParsedNodeSchema } from '../objectInfo/ComfyUIObjectInfoParsedNodeSchema'
 import type { ReactNode } from 'react'
 
 import { configure, extendObservable, makeAutoObservable } from 'mobx'
 import { createElement } from 'react'
 
-import { auto_ } from '../../core/autoValue'
 import { comfyColors } from '../../core/Colors'
 import { ComfyDefaultNodeWhenUnknown_Name } from '../../models/ComfyDefaultNodeWhenUnknown'
 import { nodeLineHeight, NodeSlotSize, NodeTitleHeight } from '../../widgets/graph/NodeSlotSize'
+import { auto_ } from './autoValue'
 import { ComfyNodeOutput } from './ComfyNodeOutput'
 import { NodeStatusEmojiUI } from './NodeStatusEmojiUI'
 

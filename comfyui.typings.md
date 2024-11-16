@@ -1,9 +1,9 @@
 # Example ComfyUI Typings
 ```ts
 import type { ComfyNode } from '../src/comfyui/livegraph/ComfyNode'
+import type { ComfyNodeOutput } from '../src/comfyui/livegraph/ComfyNodeOutput'
 import type { ComfyNodeMetadata } from '../src/types/ComfyNodeID'
-import type { ComfyNodeOutput } from '../src/core/Slot'
-import type { ComfyNodeSchemaJSON } from '../src/comfyui/ComfyUIObjectInfoTypes'
+import type { ComfyNodeSchemaJSON } from '../src/comfyui/objectInfo/ComfyUIObjectInfoTypes'
 
 declare global {
    namespace Comfy {
@@ -8390,7 +8390,7 @@ declare global {
          }
          "Allor.ImageBatchFork": {
             IMAGE: ComfyNodeOutput<'IMAGE', 0>,
-            IMAGE: ComfyNodeOutput<'IMAGE', 1>,
+            IMAGE_1: ComfyNodeOutput<'IMAGE', 1>,
          }
          "Allor.ImageBatchGet": {
             IMAGE: ComfyNodeOutput<'IMAGE', 0>,

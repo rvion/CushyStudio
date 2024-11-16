@@ -1,4 +1,4 @@
-import type { ComfyUIObjectInfoParsedNodeSchema } from '../../comfyui/ComfyUIObjectInfoParsedNodeSchema'
+import type { ComfyUIObjectInfoParsedNodeSchema } from '../../comfyui/objectInfo/ComfyUIObjectInfoParsedNodeSchema'
 import type { ProjectL } from '../../models/Project'
 
 import { makeAutoObservable } from 'mobx'

@@ -1,9 +1,9 @@
-import type { ComfyUnionInfo, NodeInputExt, NodeOutputExt } from './comfyui-types'
+import type { ComfyUnionInfo, NodeInputExt, NodeOutputExt } from '../comfyui-types'
 import type { ComfyInputOpts, ComfyNodeSchemaJSON } from './ComfyUIObjectInfoTypes'
 
-import { ComfyPrimitiveMapping } from '../core/Primitives'
-import { CodeBuffer } from '../utils/codegen/CodeBuffer'
-import { escapeJSKey } from '../utils/codegen/escapeJSKey'
+import { ComfyPrimitiveMapping } from '../../core/Primitives'
+import { CodeBuffer } from '../../utils/codegen/CodeBuffer'
+import { escapeJSKey } from '../../utils/codegen/escapeJSKey'
 
 export type NodeOwnEnum = { in: 'input' | 'output'; ownName: string; enum: ComfyUnionInfo }
 /**
@@ -34,10 +34,6 @@ export class ComfyUIObjectInfoParsedNodeSchema {
       }
       this.category = this.category.replaceAll('/', '_')
    }
-
-   // get nameInCushy(): string {
-   //    return `${pythonModuleToShortestUnambiguousPrefix(this.pythonModule)}${this.nameInComfy}`
-   // }
 
    codegenUI(): string {
       const b = new CodeBuffer()

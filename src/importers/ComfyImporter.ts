@@ -1,10 +1,10 @@
 import type { ComfyUIAPIRequest } from '../comfyui/comfyui-prompt-api'
 import type { NodeInputExt } from '../comfyui/comfyui-types'
-import type { ComfyUIObjectInfoParsedNodeSchema } from '../comfyui/ComfyUIObjectInfoParsedNodeSchema'
+import type { ComfyUIObjectInfoParsedNodeSchema } from '../comfyui/objectInfo/ComfyUIObjectInfoParsedNodeSchema'
 import type { TEdge } from '../csuite/utils/toposort'
 import type { STATE } from '../state/state'
 
-import { convertComfyModuleAndNodeNameToCushyQualifiedNodeKey } from '../core/normalizeJSIdentifier'
+import { convertComfyModuleAndNodeNameToCushyQualifiedNodeKey } from '../comfyui/codegen/_convertComfyModuleAndNodeNameToCushyQualifiedNodeKey'
 import { ComfyPrimitiveMapping } from '../core/Primitives'
 import { bang } from '../csuite/utils/bang'
 import { toposort } from '../csuite/utils/toposort'

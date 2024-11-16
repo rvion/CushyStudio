@@ -1,4 +1,4 @@
-import type { ComfyInputOpts } from './ComfyUIObjectInfoTypes'
+import type { ComfyInputOpts } from './objectInfo/ComfyUIObjectInfoTypes'
 
 export type ComfyUnionHash = string //  '26c34bf761d4be4554ab944105c5a3c017c99453
 export type ComfyUnionName = string // 'E_26c34bf761d4be4554ab944105c5a3c017c99453'

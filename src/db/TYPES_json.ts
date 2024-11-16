@@ -1,7 +1,7 @@
 import type { Status } from '../back/Status'
 import type { ComfyUIAPIRequest } from '../comfyui/comfyui-prompt-api'
 import type { EmbeddingName } from '../comfyui/comfyui-types'
-import type { ComfySchemaJSON } from '../comfyui/ComfyUIObjectInfoTypes'
+import type { ComfySchemaJSON } from '../comfyui/objectInfo/ComfyUIObjectInfoTypes'
 import type { AnyFieldSerial } from '../csuite/model/EntitySerial'
 import type { ImageInfos_ComfyGenerated } from '../models/ImageInfos_ComfyGenerated'
 import type { SafetyResult } from '../safety/Safety'

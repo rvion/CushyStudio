@@ -10,7 +10,7 @@ import { copyFileSync, existsSync, mkdirSync, writeFileSync } from 'fs'
 import * as v from 'valibot'
 
 import { ResilientWebSocketClient } from '../back/ResilientWebsocket'
-import { ComfySchemaJSON_valibot } from '../comfyui/ComfyUIObjectInfoTypes'
+import { ComfySchemaJSON_valibot } from '../comfyui/objectInfo/ComfyUIObjectInfoTypes'
 import { extractErrorMessage } from '../csuite/formatters/extractErrorMessage'
 import { readableStringify } from '../csuite/formatters/stringifyReadable'
 import { toastError, toastSuccess } from '../csuite/utils/toasts'

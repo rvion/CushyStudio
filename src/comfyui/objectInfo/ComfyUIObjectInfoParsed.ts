@@ -7,23 +7,23 @@ import type {
    NodeInputExt,
    NodeNameInComfy,
    NodeOutputExt,
-} from './comfyui-types'
+} from '../comfyui-types'
 import type { ComfyEnumDef, ComfyNodeSchemaJSON, ComfySchemaJSON } from './ComfyUIObjectInfoTypes'
 
 import crypto from 'crypto'
 import { observable, toJS } from 'mobx'
 
-import { convertComfyModuleAndNodeNameToCushyQualifiedNodeKey } from '../core/normalizeJSIdentifier'
-import { ComfyPrimitiveMapping, ComfyPrimitives } from '../core/Primitives'
+import { ComfyPrimitiveMapping, ComfyPrimitives } from '../../core/Primitives'
 import {
    ComfyDefaultNodeWhenUnknown_Name,
    ComfyDefaultNodeWhenUnknown_Schema,
-} from '../models/ComfyDefaultNodeWhenUnknown'
-import { escapeJSKey } from '../utils/codegen/escapeJSKey'
-import { codegenSDK } from './comfyui-sdk-codegen'
+} from '../../models/ComfyDefaultNodeWhenUnknown'
+import { escapeJSKey } from '../../utils/codegen/escapeJSKey'
+import { convertComfyModuleAndNodeNameToCushyQualifiedNodeKey } from '../codegen/_convertComfyModuleAndNodeNameToCushyQualifiedNodeKey'
+import { pythonModuleToPrefix } from '../codegen/_pythonModuleToNamespace'
+import { codegenSDK } from '../codegen/comfyui-sdk-codegen'
+import { getUnionNameBasedOnFirstFoundEnumName } from '../getUnionNameBasedOnFirstFoundEnumName'
 import { ComfyUIObjectInfoParsedNodeSchema } from './ComfyUIObjectInfoParsedNodeSchema'
-import { getUnionNameBasedOnFirstFoundEnumName } from './getUnionNameBasedOnFirstFoundEnumName'
-import { pythonModuleToShortestUnambiguousPrefix } from './pythonModuleToNamespace'
 
 export class ComfyUIObjectInfoParsed {
    codegenDTS = codegenSDK.bind(this)
@@ -220,7 +220,7 @@ export class ComfyUIObjectInfoParsed {
             }
             // 3/4
             else if (Array.isArray(slotType)) {
-               const uniqueEnumName = `${pythonModuleToShortestUnambiguousPrefix(pythonModule)}${nodeNameInComfy}.${inputNameInComfy}`
+               const uniqueEnumName = `${pythonModuleToPrefix(pythonModule)}${nodeNameInComfy}.${inputNameInComfy}`
                const RESX = this.processEnumNameOrValue({
                   pythonModule,
                   enumName: uniqueEnumName,

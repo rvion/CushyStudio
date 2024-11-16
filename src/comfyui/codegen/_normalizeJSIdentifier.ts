@@ -1,13 +1,3 @@
-import { pythonModuleToShortestUnambiguousPrefix } from '../comfyui/pythonModuleToNamespace'
-
-export const convertComfyModuleAndNodeNameToCushyQualifiedNodeKey = (
-   pythonModule: string,
-   nameInComfy: string,
-): string => {
-   return `${pythonModuleToShortestUnambiguousPrefix(pythonModule)}${nameInComfy}`
-   // return normalizeJSIdentifier(name, ' ')
-}
-
 /**
  * There is sadly no perfect normalization for JS identifiers.
  * ComfyUI node names tend to use spaces ' '.

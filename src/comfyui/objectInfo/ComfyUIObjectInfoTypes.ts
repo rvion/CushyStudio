@@ -1,19 +1,15 @@
 // Import all valibot functions under the namespace 'v'
 import * as v from 'valibot'
 
-// --------------------------------------------------------------------
-// ComfySchemaJSON Schema and Type
-
+// #region ComfySchemaJSON
+export type ComfySchemaJSON = v.InferInput<typeof ComfySchemaJSON_valibot>
 export const ComfySchemaJSON_valibot = v.record(
    v.string(),
    v.lazy(() => ComfyNodeSchemaJSON_valibot),
 )
 
-export type ComfySchemaJSON = v.InferInput<typeof ComfySchemaJSON_valibot>
-
-// --------------------------------------------------------------------
-// ComfyNodeSchemaJSON Schema and Type
-
+// #region ComfyNodeSchemaJSON
+export type ComfyNodeSchemaJSON = v.InferInput<typeof ComfyNodeSchemaJSON_valibot>
 export const ComfyNodeSchemaJSON_valibot = v.strictObject({
    input: v.strictObject({
       required: v.optional(
@@ -58,11 +54,9 @@ export const ComfyNodeSchemaJSON_valibot = v.strictObject({
    experimental: v.optional(v.boolean()),
 })
 
-export type ComfyNodeSchemaJSON = v.InferInput<typeof ComfyNodeSchemaJSON_valibot>
+// #region  ComfyInputSpec
 
-// --------------------------------------------------------------------
-// ComfyInputSpec Schema and Type
-
+export type ComfyInputSpec = v.InferInput<typeof ComfyInputSpec_valibot>
 export const ComfyInputSpec_valibot = v.union([
    v.tuple([v.lazy(() => ComfyInputType_valibot), v.lazy(() => ComfyInputOpts_valibot)]),
    v.tuple([v.lazy(() => ComfyInputType_valibot)]),
@@ -72,11 +66,8 @@ export const ComfyInputSpec_valibot = v.union([
 ])
 // .description('ComfyInputSpec')
 
-export type ComfyInputSpec = v.InferInput<typeof ComfyInputSpec_valibot>
-
-// --------------------------------------------------------------------
-// ComfyInputHiddenEntry Schema and Type
-
+// #region  ComfyInputHiddenEntry
+export type ComfyInputHiddenEntrySpec = v.InferInput<typeof ComfyInputHiddenEntry_valibot>
 export const ComfyInputHiddenEntry_valibot = v.union([
    //
    v.string(),
@@ -86,22 +77,16 @@ export const ComfyInputHiddenEntry_valibot = v.union([
    v.array(v.record(v.string(), v.any())),
 ]) //'ComfyInputHiddenEntry'
 
-export type ComfyInputHiddenEntrySpec = v.InferInput<typeof ComfyInputHiddenEntry_valibot>
-
-// --------------------------------------------------------------------
-// ComfyInputType Schema and Type
-
+// #region  ComfyInputType
+export type ComfyInputType = v.InferInput<typeof ComfyInputType_valibot>
 export const ComfyInputType_valibot = v.union([
    v.string(), //, 'node name or primitive'),
    v.lazy(() => ComfyEnumDef_valibot),
 ])
 // .description('ComfyInputType')
 
-export type ComfyInputType = v.InferInput<typeof ComfyInputType_valibot>
-
-// --------------------------------------------------------------------
-// ComfyEnumDef Schema and Type
-
+// #region  ComfyEnumDef
+export type ComfyEnumDef = v.InferInput<typeof ComfyEnumDef_valibot>
 export const ComfyEnumDef_valibot = v.array(
    v.union([
       v.string(),
@@ -115,11 +100,8 @@ export const ComfyEnumDef_valibot = v.array(
 )
 // .description('enum')
 
-export type ComfyEnumDef = v.InferInput<typeof ComfyEnumDef_valibot>
-
-// --------------------------------------------------------------------
-// ComfyInputOpts Schema and Type
-
+// #region  ComfyInputOpts
+export type ComfyInputOpts = v.InferInput<typeof ComfyInputOpts_valibot>
 export const ComfyInputOpts_valibot = v.union([
    v.string(),
    v.strictObject({
@@ -137,5 +119,3 @@ export const ComfyInputOpts_valibot = v.union([
    }),
 ])
 // .description('ComfyInputOpts')
-
-export type ComfyInputOpts = v.InferInput<typeof ComfyInputOpts_valibot>

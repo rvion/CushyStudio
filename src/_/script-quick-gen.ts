@@ -5,7 +5,7 @@
 // so we can monitor what it does.
 import fs from 'fs'
 
-import { ComfyUIObjectInfoParsed } from '../comfyui/ComfyUIObjectInfoParsed'
+import { ComfyUIObjectInfoParsed } from '../comfyui/objectInfo/ComfyUIObjectInfoParsed'
 import { readableStringify } from '../csuite/formatters/stringifyReadable'
 
 const inputObjectInfoPath = 'src/comfyui/examples/object_info.json'

@@ -1,12 +1,12 @@
 import type { ComfyUnionInfo, ComfyUnionValue, EmbeddingName } from '../comfyui/comfyui-types'
-import type { ComfyUIObjectInfoParsedNodeSchema } from '../comfyui/ComfyUIObjectInfoParsedNodeSchema'
+import type { ComfyUIObjectInfoParsedNodeSchema } from '../comfyui/objectInfo/ComfyUIObjectInfoParsedNodeSchema'
 import type { LiveDB } from '../db/LiveDB'
 import type { TABLES } from '../db/TYPES.gen'
 import type { HostL } from './Host'
 
 import { observable } from 'mobx'
 
-import { ComfyUIObjectInfoParsed } from '../comfyui/ComfyUIObjectInfoParsed'
+import { ComfyUIObjectInfoParsed } from '../comfyui/objectInfo/ComfyUIObjectInfoParsed'
 import { BaseInst } from '../db/BaseInst'
 import { LiveRef } from '../db/LiveRef'
 import { LiveTable } from '../db/LiveTable'
