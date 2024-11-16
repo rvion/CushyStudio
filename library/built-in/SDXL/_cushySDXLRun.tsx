@@ -202,7 +202,7 @@ export async function _cushySDXLRun(
                  height: height * HRF.scaleFactor,
                  width: width * HRF.scaleFactor,
               })
-            : graph.NNLatentUpscale({
+            : graph['NNLatentUpscale.NNLatentUpscale']({
                  latent,
                  version: HRF.upscaleMethod == 'Neural XL' ? 'SDXL' : 'SD 1.x',
                  upscale: HRF.scaleFactor,
@@ -242,7 +242,7 @@ export async function _cushySDXLRun(
    // REMOVE BACKGROUND ---------------------------------------------------------------------
    if (ui.extra.removeBG) {
       const sub = run_rembg_v1(ui.extra.removeBG, finalImage)
-      if (sub.length > 0) finalImage = graph.AlphaChanelRemove({ images: sub[0]! })
+      if (sub.length > 0) finalImage = graph['Allor.AlphaChanelRemove']({ images: sub[0]! })
    }
 
    // SHOW 3D -------------------------------------------------------------------------------

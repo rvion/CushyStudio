@@ -10,6 +10,9 @@ export function pythonModuleToPrefix(pythonModule: string): string {
             // remove common ~comfyui prefixes and suffixes
             .replace(/^comfyui[-_]/i, '')
             .replace(/[-_]comfyui$/i, '')
+            // remove common ~comfy prefixes and suffixes
+            .replace(/^comfy[-_]/i, '')
+            .replace(/[-_]comfy$/i, '')
             // remove common ~nodes prefixes and suffixes
             .replace(/^nodes[-_]/i, '')
             .replace(/[-_]node[-_]suite$/i, '') + '.'
