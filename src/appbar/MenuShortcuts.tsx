@@ -8,9 +8,11 @@ import { PanelShortcuts } from '../panels/PanelShortcuts/PanelShortcuts'
 export const menuCommands = defineMenu({
    title: 'Commands',
    // entries: () => [...allLayoutCommands],
-   entries: (): MenuEntry[] => {
+   entries: (b): MenuEntry[] => {
       return [
          PanelShortcuts.defaultCommand,
+
+         b.Divider,
          ...commandManager.knownContexts.map(
             (c) =>
                new Menu({

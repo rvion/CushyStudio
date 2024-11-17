@@ -24,6 +24,7 @@ import {
    cmd_nav_openGallery3,
    cmd_nav_openIcons,
 } from './operators/commands/cmd_goTo'
+import { cmd_wm_PieMenu } from './operators/commands/cmd_toggleHeader'
 import { allCanvasCommands } from './panels/PanelCanvas/commands/canvasCommands'
 import {
    cmd_captioning_selectNextImage,
@@ -54,4 +55,5 @@ export const allCommands = [
    ...allTreeCommands,
    ...allScreencastCommands,
    ...CommandsCaptions,
+   cmd_wm_PieMenu,
 ]

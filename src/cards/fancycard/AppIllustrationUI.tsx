@@ -7,7 +7,7 @@ export const AppIllustrationUI = observer(function AppIllustrationUI_(p: {
    className?: string
    onClick?: () => void
    app: Maybe<CushyAppL>
-   size: string
+   size?: string
 }) {
    const app = p.app
    if (app == null)

@@ -5,10 +5,12 @@ import { observer } from 'mobx-react-lite'
 import { type ReactNode, useState } from 'react'
 
 import { ComboUI } from '../accelerators/ComboUI'
+import { useCSuite } from '../ctx/useCSuite'
 import { Frame } from '../frame/Frame'
 import { Ikon, IkonOf } from '../icons/iconHelpers'
 import { formatMenuLabel } from '../menu/formatMenuLabel'
-import { MenuDivider } from './MenuDivider'
+
+// import { MenuDivider } from './MenuDivider'
 
 export type MenuItemProps = {
    // behaviour
@@ -37,9 +39,11 @@ export type MenuItemProps = {
 
    // tooltips
    tooltip?: string
+
+   style?: React.CSSProperties
 }
 
-export const _MenuItem = observer(function DropdownItem_(p: MenuItemProps) {
+export const _PieMenuItem = observer(function _PieMenuItem_(p: MenuItemProps) {
    // prettier-ignore
    const {
         // behaviour
@@ -60,6 +64,8 @@ export const _MenuItem = observer(function DropdownItem_(p: MenuItemProps) {
          ? disabled()
          : disabled
 
+   const csuite = useCSuite()
+
    return (
       <Frame
          loading={p.loading ?? isExecuting}
@@ -68,6 +74,9 @@ export const _MenuItem = observer(function DropdownItem_(p: MenuItemProps) {
             contrast: active ? 0.1 : 0,
             chroma: active ? 0.1 : undefined,
          }}
+         dropShadow={cushy.theme.value.inputShadow}
+         roundness={csuite.inputRoundness}
+         border={csuite.inputBorder}
          // hover={{ contrast: 0.15, chroma: 0.2, hueShift: 180 }}
          hover={15}
          onClick={async (ev) => {
@@ -78,11 +87,11 @@ export const _MenuItem = observer(function DropdownItem_(p: MenuItemProps) {
             setExecuting(false)
             return res
          }}
-         style={{ lineHeight: '1.6rem' }}
+         style={p.style}
          tw={[
             //
             '_MenuItem ',
-            'flex cursor-pointer select-none items-center gap-2 whitespace-nowrap px-2 py-0.5',
+            'flex cursor-pointer items-center gap-2 whitespace-nowrap p-2',
             // Grid this so we have a consistent icon width and every label lines up
             'grid grid-cols-[18px_1fr]',
          ]}
@@ -116,7 +125,7 @@ export const _MenuItem = observer(function DropdownItem_(p: MenuItemProps) {
    )
 })
 
-export const MenuItem = Object.assign(_MenuItem, {
+export const PieMenuItem = Object.assign(_PieMenuItem, {
    // name: 'BasicShelfUI',
-   Divider: MenuDivider,
+   //    Divider: MenuDivider,
 })

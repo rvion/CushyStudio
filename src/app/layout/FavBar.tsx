@@ -8,6 +8,7 @@ import { AppIllustrationUI } from '../../cards/fancycard/AppIllustrationUI'
 import { DraftIllustrationUI } from '../../cards/fancycard/DraftIllustration'
 import { Button } from '../../csuite/button/Button'
 import { Frame } from '../../csuite/frame/Frame'
+import { InputStringUI } from '../../csuite/input-string/InputStringUI'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { CreateAppPopupUI } from '../../panels/PanelWelcome/CreateAppBtnUI'
 import { useSt } from '../../state/stateContext'
@@ -18,9 +19,9 @@ const FavBarContainer = observer(function FavBarContainer_(p: { children?: React
    return (
       <div // Favorite app container
          tw={[
+            //
             'flex w-full flex-col rounded',
             'items-center  justify-center gap-1 p-1 text-center',
-            'text-shadow',
          ]}
       >
          {p.children}
@@ -42,40 +43,44 @@ export const FavBarUI = observer(function FavBarUI_(p: {
    const size = conf.size
    const appIcons = conf.appIcons
    const sizeStr = size + 'px'
-   const tempSize = `${size + 10}px`
+   const tempSize = `${size}px`
+
+   const ree = ['1', '2', '3', '4', '5', '6', '1', '2', '3', '4', '5', '6', '1', '2', '3', '4', '5', '6']
    return (
       <>
-         <Frame
+         <Frame //
             base={cushy.theme.value.appbar ?? { contrast: -0.077 }}
-            tw='relative box-content flex flex-col overflow-hidden px-1'
-            style={{ flexDirection: p.direction, scrollBehavior: 'inherit' }}
+            tw='flex overflow-auto px-1'
+            // style={{ width: `${size + 20}px` }}
          >
-            <Frame
+            <Frame //
                base={{ contrast: -0.1 }}
-               tw='inset-0 flex flex-1 select-none flex-col overflow-hidden p-1'
+               tw='flex flex-1 flex-grow flex-col overflow-auto p-1 '
                roundness={'5px'}
             >
                {/* <PanelHeaderUI>{conf.renderAsConfigBtn()}</PanelHeaderUI> */}
                <Button
                   //
-                  tw='my-0.5 flex items-center justify-center self-center'
+                  tw='my-0.5 flex flex-shrink-0 items-center justify-center self-center'
+                  tooltip='SD1.5'
                   base={{ hue: 0, chromaBlend: 2, contrast: 0.3 }}
                   style={{ width: tempSize, height: tempSize }}
                   onClick={() =>
                      cushy.db.cushy_app.get('library/built-in/SD15/cushySD15.ts:0')?.openLastOrCreateDraft()
                   }
                >
-                  <div>SD1.5</div>
+                  <span tw='truncate'>SD1.5</span>
                </Button>
                <Button
-                  tw='my-0.5 flex items-center justify-center self-center'
+                  tw='my-0.5 flex flex-shrink-0 items-center justify-center self-center'
+                  tooltip='SDXL'
                   base={{ hue: 90, chromaBlend: 2, contrast: 0.3 }}
                   style={{ width: tempSize, height: tempSize }}
                   onClick={() =>
                      cushy.db.cushy_app.get('library/built-in/SDXL/cushySDXL.tsx:0')?.openLastOrCreateDraft()
                   }
                >
-                  SDXL
+                  <span tw='truncate'>SDXL</span>
                </Button>
                {/* <AppIllustrationUI //
                         // className={'!rounded-none'}
@@ -83,14 +88,15 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                         app={cushy.db.cushy_app.get('library/built-in/SDXL/cushySDXL.tsx:1')}
                     /> */}
                <Button
-                  tw='my-0.5 flex items-center justify-center self-center'
+                  tw='my-0.5 flex flex-shrink-0 items-center justify-center self-center'
+                  tooltip='NoobAI'
                   base={{ hue: 90, chromaBlend: 2, contrast: 0.3 }}
                   style={{
                      width: tempSize,
                      height: tempSize,
                      background: `url(${cushy.db.cushy_app.get('library/built-in/SDXL/cushySDXL.tsx:1')?.illustrationPathWithFileProtocol})`,
                      backgroundSize: 'cover',
-                     textShadow: '0 0 10px black',
+                     textShadow: '0 1px 10px black',
                      fontWeight: 'bold',
                      color: 'white',
                      fontSize: '1rem',
@@ -99,39 +105,42 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                      cushy.db.cushy_app.get('library/built-in/SDXL/cushySDXL.tsx:1')?.openLastOrCreateDraft()
                   }
                >
-                  NoobAI
+                  <span tw='truncate'>NoobAI</span>
                </Button>
                <Button
-                  tw='my-0.5 flex items-center justify-center self-center'
+                  tw='my-0.5 flex flex-shrink-0 items-center justify-center self-center'
+                  tooltip='SD3'
                   base={{ hue: 180, chromaBlend: 2, contrast: 0.3 }}
                   style={{ width: tempSize, height: tempSize }}
                   onClick={() =>
                      cushy.db.cushy_app.get('library/built-in/SD3/cushySD3.ts:0')?.openLastOrCreateDraft()
                   }
                >
-                  SD3
+                  <span tw='truncate'>SD3</span>
                </Button>
                <Button
-                  tw='my-0.5 flex items-center justify-center self-center'
+                  tw='my-0.5 flex flex-shrink-0 items-center justify-center self-center truncate'
+                  tooltip='Cascade'
                   base={{ hue: 210, chromaBlend: 2, contrast: 0.3 }}
                   style={{ width: tempSize, height: tempSize }}
                   onClick={() => cushy.db.cushy_app.get('library/built-in/Cascade/cushyCascade.ts:0')?.openLastOrCreateDraft()} // prettier-ignore
                >
-                  Cascade
+                  <span tw='truncate'>Cascade</span>
                </Button>
                <Button
-                  tw='my-0.5 flex items-center justify-center self-center'
+                  tw='my-0.5 flex flex-shrink-0 items-center justify-center self-center'
+                  tooltip='FLUX'
                   base={{ hue: 270, chromaBlend: 2, contrast: 0.3 }}
                   style={{ width: tempSize, height: tempSize }}
                   onClick={() =>
                      cushy.db.cushy_app.get('library/built-in/Flux/cushyFlux.ts:0')?.openLastOrCreateDraft()
                   }
                >
-                  FLUX
+                  <span tw='truncate'>FLUX</span>
                </Button>
                <Button
                   tooltip='Slay the Spire Card Generator'
-                  tw='my-0.5 flex items-center justify-center self-center'
+                  tw='my-0.5 flex flex-shrink-0 items-center justify-center self-center'
                   base={{ hue: 270, chromaBlend: 2, contrast: 0.3 }}
                   style={{ width: tempSize, height: tempSize }}
                   onClick={() =>
@@ -140,7 +149,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                         ?.openLastOrCreateDraft()
                   }
                >
-                  StS
+                  <span tw='truncate'>StS</span>
                </Button>
                <RevealUI
                   tw='my-0.5 self-center hover:brightness-125'
@@ -152,130 +161,44 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                   <Button
                      square
                      style={{ width: tempSize, height: tempSize, fontSize: sizeStr }}
-                     tw='content-center items-center'
+                     tw='flex-shrink-0 content-center items-center'
                      icon='mdiPlus'
                      iconSize={tempSize}
                   />
                </RevealUI>
                {/* Lot of divs, but it makes it so the scrolling container is rounded on the inside. */}
-               <div tw='flex w-full flex-col items-center overflow-hidden rounded pb-1'>
-                  <div tw='items-center justify-center overflow-hidden rounded'>
-                     <div tw='hide-vertical-scroll flex h-full flex-col items-center gap-1 overflow-scroll'>
-                        {/* ------------------------------------------------------------------------ */}
-                        {st.favoriteApps.length > 0 && (
-                           <FavBarContainer /* icon='apps' */>
-                              {st.favoriteApps.map((app) => (
-                                 <Frame
-                                    border={20}
-                                    hover
-                                    // tw='rounded border border-base-300 overflow-clip box-content'
-                                    key={app.id}
-                                    style={{ width: tempSize, height: tempSize }}
-                                 >
-                                    <RevealUI
-                                       showDelay={0}
-                                       trigger='hover'
-                                       placement='right'
-                                       content={() => <AppDraftsQuickListUI app={app} />}
-                                    >
-                                       <AppIllustrationUI //
-                                          className={'!rounded-none'}
-                                          size={tempSize}
-                                          app={app}
-                                       />
-                                    </RevealUI>
-                                 </Frame>
-                              ))}
-                           </FavBarContainer>
-                        )}
-                        {/* ------------------------------------------------------------------------ */}
-                        {/* {st.favoriteDrafts.length > 0 && (
-                                    <FavBarContainer icon='history_edu'>
-                                        {st.favoriteDrafts.map((draft) => (
-                                            <div tw='rounded border border-base-300 overflow-clip' key={draft.id}>
-                                                <RevealUI
-                                                    trigger='hover'
-                                                    showDelay={0}
-                                                    placement='right'
-                                                    content={() => (
-                                                        <Frame base={5}>
-                                                            <div className='MENU-HEADER'>
-                                                                <div //Container
-                                                                    tw='flex p-1 rounded w-full'
-                                                                >
-                                                                    <AppIllustrationUI size='2rem' app={draft.app} />
-                                                                    <div tw='flex-1 text-xs text-center self-center p-2'>
-                                                                        {draft.app.name}
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div className='MENU-CONTENT'>
-                                                                <div //Container
-                                                                    tw='flex-column p-1 rounded text-center items-center'
-                                                                >
-                                                                    <div tw='text-xs'>{draft.data.title}</div>
-                                                                    <div tw='flex self-center text-center justify-center p-1'>
-                                                                        <DraftIllustrationUI size='12rem' draft={draft} />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </Frame>
-                                                    )}
-                                                >
-                                                    <Frame
-                                                        hover
-                                                        border
-                                                        tw='relative hover:brightness-125'
-                                                        onClick={() => draft.openOrFocusTab()}
-                                                    >
-                                                        {draft.data.illustration ? (
-                                                            <CachedResizedImage
-                                                                style={{ width: size, height: size }}
-                                                                src={fileURLToPath(draft.data.illustration)}
-                                                                size={size}
-                                                            />
-                                                        ) : (
-                                                            <DraftIllustrationUI
-                                                                className={'!rounded-none'}
-                                                                size={sizeStr}
-                                                                draft={draft}
-                                                            />
-                                                        )}
-                                                        {appIcons.value && (
-                                                            <div style={{ opacity: appIcons.value * 0.01 }}>
-                                                                <AppIllustrationUI
-                                                                    size={`${size / 2.5}px`}
-                                                                    app={draft.app}
-                                                                    className='rounded-full border border-base-300'
-                                                                    tw={['absolute bottom-0.5 right-0.5']}
-                                                                />
-                                                            </div>
-                                                        )}
-                                                    </Frame>
-                                                </RevealUI>
-                                            </div>
-                                        ))}
-                                    </FavBarContainer>
-                                )} */}
-                     </div>
-                  </div>
-               </div>
+
+               {/* ------------------------------------------------------------------------ */}
+               {st.favoriteApps.length > 0 && (
+                  <>
+                     {st.favoriteApps.map((app) => (
+                        <Frame
+                           border={20}
+                           tooltip={app.name}
+                           roundness={cushy.theme.value.inputRoundness}
+                           key={app.id}
+                           style={{ width: tempSize, height: tempSize }}
+                           tw='flex overflow-clip object-contain'
+                        >
+                           <RevealUI
+                              // showDelay={0}
+                              trigger='click'
+                              placement='right'
+                              content={() => <AppDraftsQuickListUI app={app} />}
+                              shell='popover'
+                           >
+                              <AppIllustrationUI //
+                                 className={'!rounded-none'}
+                                 app={app}
+                              />
+                           </RevealUI>
+                        </Frame>
+                     ))}
+                  </>
+               )}
+               {/* ------------------------------------------------------------------------ */}
             </Frame>
          </Frame>
-         {/* {conf.fields.tree.value && (
-                <div tw='relative w-96 flex flex-col overflow-auto'>
-                    <div tw='absolute insert-0 w-96'>
-                        <TreeUI autofocus shortcut='mod+2' title='File Explorer' tw='overflow-auto' treeView={st.tree2View} />
-                    </div>
-                </div>
-            )}
-            {conf.fields.apps.value && (
-                <div tw='relative w-96 flex flex-col overflow-auto'>
-                    <div tw='absolute insert-0 w-96'>
-                        <TreeUI autofocus shortcut='mod+1' title='Apps and Drafts' tw='overflow-auto' treeView={st.tree1View} />
-                    </div>
-                </div>
-            )} */}
       </>
    )
 })
@@ -292,25 +215,22 @@ export const AppDraftsQuickListUI = observer(function AppDraftsQuickListUI_(p: {
               return draft.name.toLowerCase().indexOf(filterText) != -1
            })
    return (
-      <div className='MENU-ROOT'>
-         <div className='MENU-HEADER'>
+      <>
+         <Frame tw='flex w-full flex-1 flex-grow' line>
             <Button
                tw={[app.isFavorite ? '!text-yellow-500' : null, '!peer-hover:text-red-500']}
                onClick={() => app.setFavorite(!app.isFavorite)}
                icon='mdiStar'
                square
             />
-            <div tw='border-base-100 flex-1 flex-grow content-center justify-center border-l border-r pt-1 text-center'>
-               {app.name}
-            </div>
+            <span tw='flex-grow truncate text-center'>{app.name}</span>
             <Button //
                onClick={() => app.createDraft()}
-               size='sm'
                icon='mdiPlus'
                square
             />
-         </div>
-         <div className='MENU-CONTENT' tw='flex max-w-md flex-col gap-1'>
+         </Frame>
+         <Frame tw='flex max-w-md flex-col gap-1'>
             {app.description ? (
                <div //Description
                   tw='flex-1 rounded p-1 text-sm italic'
@@ -321,36 +241,37 @@ export const AppDraftsQuickListUI = observer(function AppDraftsQuickListUI_(p: {
             <div //App Grid Container
                tw='flex-col rounded p-2'
             >
-               <div //Filter Input
-                  tw='flex rounded pb-2'
-               >
-                  <input
+               <Frame line>
+                  <InputStringUI
                      tw='csuite-basic-input w-full rounded-r-none'
-                     value={filterText}
-                     onChange={(ev) => setFilterText(ev.currentTarget.value)}
+                     setValue={(val) => {
+                        setFilterText(val)
+                     }}
+                     getValue={() => filterText}
                      placeholder='Filter Drafts'
-                  ></input>
+                  ></InputStringUI>
                   <Button icon='mdiCancel' onClick={(ev) => setFilterText('')}></Button>
-               </div>
-               <div //App Grid Container
-                  tw='grid max-h-96 grid-cols-3 gap-2 overflow-scroll'
+               </Frame>
+               <Frame //App Grid Container
+                  base={{ contrast: -0.1 }}
+                  tw='grid h-[20.5rem] grid-cols-3 gap-1 overflow-auto p-1'
                >
                   {filteredApps.map((draft) => (
-                     <div
+                     <Button //
+                        size='inside'
                         key={draft.id}
-                        tw='border-base-100 flex cursor-pointer justify-center rounded-md border p-1 brightness-95 hover:brightness-110'
                      >
                         <div key={draft.id} onClick={() => draft.openOrFocusTab()}>
                            <div tw='flex justify-center self-center p-1 text-center'>
-                              <DraftIllustrationUI size='8rem' draft={draft} />
+                              <DraftIllustrationUI size='7.77rem' draft={draft} />
                            </div>
-                           <div tw='max-w-32 overflow-clip truncate text-center text-sm'>{draft.name}</div>
+                           <span tw='truncate text-center'>{draft.name}</span>
                         </div>
-                     </div>
+                     </Button>
                   ))}
-               </div>
+               </Frame>
             </div>
-         </div>
-      </div>
+         </Frame>
+      </>
    )
 })

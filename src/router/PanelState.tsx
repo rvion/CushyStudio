@@ -8,6 +8,7 @@ import type { PanelPersistedJSON } from './PanelPersistedJSON'
 import type { PanelName } from './PANELS'
 import type * as FL from 'flexlayout-react'
 
+import { makeObservable } from 'mobx'
 import { useMemo } from 'react'
 
 import { bang } from '../csuite/utils/bang'
@@ -18,11 +19,15 @@ import { PanelPersistentStore } from './PanelPersistentStore'
 export type PanelURI = string
 
 export class PanelState<PROPS extends object = any> {
+   showHeader: boolean = true
+
    constructor(
       public flexLayoutTabNode: FL.TabNode,
       public uri: PanelURI,
       public def: Panel<PROPS>,
-   ) {}
+   ) {
+      makeObservable(this, { showHeader: true })
+   }
 
    patchAttributes(attributes: {
       // borders

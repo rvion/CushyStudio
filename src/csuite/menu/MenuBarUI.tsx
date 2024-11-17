@@ -3,6 +3,7 @@ import type { RevealStateLazy } from '../reveal/RevealStateLazy'
 import { observer } from 'mobx-react-lite'
 import React from 'react'
 
+import { Frame } from '../frame/Frame'
 import { isBoundCommand } from '../introspect/_isBoundCommand'
 import { isCommand } from '../introspect/_isCommand'
 import { isMenu } from '../introspect/_isMenu'
@@ -102,7 +103,7 @@ export const MenuBarUI = observer(function MenuBar({
 
          return (
             <RevealUI //
-               tw='inline-flex'
+               tw='inline-flex select-none'
                key={entry.id}
                ref={ABC.ref}
                trigger='menubarItem'
@@ -112,7 +113,15 @@ export const MenuBarUI = observer(function MenuBar({
                placement='bottomStart'
                content={() => <MenuUI menu={entry.init(menu.allocatedKeys)} />}
             >
-               <div tw='px-1'>{formatMenuLabel(charIx, label)}</div>
+               <Frame //
+                  tw='px-1'
+                  line
+                  icon={entry.icon}
+                  hover
+                  roundness={cushy.theme.value.inputRoundness}
+               >
+                  {formatMenuLabel(charIx, label)}
+               </Frame>
                {/* <MenuItem //
                     key={ix}
                     localShortcut={char}

@@ -18,7 +18,7 @@ export const PanelCaptioningUI = observer(function PanelCaptioningUI_(p: {}) {
    const doc = useCaptioningState()
    // const misc = usePanel().usePersistentStore<{ showDebug: boolean }>('misc', () => ({ showDebug: false }))
    return (
-      <>
+      <PanelUI>
          <PanelHeaderUI>
             <SpacerUI />
 
@@ -36,16 +36,18 @@ export const PanelCaptioningUI = observer(function PanelCaptioningUI_(p: {}) {
                {misc.data.showDebug ?? <pre tw='text-xs w-96 overflow-visible'>{doc.debug}</pre>}
             </div> */}
             <Frame //
-               tw='flex w-full items-center justify-center'
+               tw='flex h-full w-full items-center justify-center overflow-auto'
                base={{ contrast: 0.1 }}
             >
-               <img // Active Image
-                  tw='select-none'
-                  draggable={false}
-                  src={`file://${doc.folderPath}/${doc.imageNameWithExt}`}
-               />
+               {doc.folderPath && (
+                  <img // Active Image
+                     tw='h-full w-full select-none object-contain'
+                     draggable={false}
+                     src={`file://${doc.folderPath}/${doc.imageNameWithExt}`}
+                  />
+               )}
             </Frame>
-            <BasicShelfUI tw='flex flex-col !gap-2 overflow-clip p-2' anchor='right'>
+            <BasicShelfUI anchor='right'>
                <Frame line tw='flex flex-row'>
                   <Button
                      tooltip={doc.folderPath ?? 'no folder selected'}
@@ -115,7 +117,10 @@ export const PanelCaptioningUI = observer(function PanelCaptioningUI_(p: {}) {
                                        base={{ contrast: isSelected ? 0.1 : 0 }}
                                        onClick={() => (doc.activeCaptionIndex = ix)}
                                        tooltip={caption}
-                                       setValue={(val) => (doc.captions[doc.activeCaptionIndex] = val)}
+                                       setValue={(val) => {
+                                          doc.captions[doc.activeCaptionIndex] = val
+                                          doc.updateCaptions()
+                                       }}
                                        getValue={() => {
                                           const text = doc.captions[doc.activeCaptionIndex]
                                           if (text === undefined) return 'USER SHOULD NOT SEE THIS'
@@ -168,6 +173,6 @@ export const PanelCaptioningUI = observer(function PanelCaptioningUI_(p: {}) {
                )}
             </BasicShelfUI>
          </PanelUI.Content>
-      </>
+      </PanelUI>
    )
 })

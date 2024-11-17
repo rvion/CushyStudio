@@ -24,7 +24,6 @@ export const PanelGalleryUI = observer(function PanelGalleryUI_(p: PanelGalleryP
    const panel = usePanel<PanelGalleryProps>()
    return (
       <UI.Panel //
-         tw='!overflow-clip'
          className={p.className}
          style={{ background: conf.value.galleryBgColor ?? undefined }}
       >
@@ -40,7 +39,9 @@ export const PanelGalleryUI = observer(function PanelGalleryUI_(p: PanelGalleryP
             <SpacerUI />
             <GalleryPreferencesUI />
          </UI.Panel.Header>
-         <GalleryImageGridUI onClick={p.onClick} />
+         <UI.Panel.Content>
+            <GalleryImageGridUI onClick={p.onClick} />
+         </UI.Panel.Content>
       </UI.Panel>
    )
 })

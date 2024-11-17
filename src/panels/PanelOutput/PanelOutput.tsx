@@ -50,7 +50,7 @@ export const PanelStepUI = observer(function PanelStepUI_(p: PanelStepUI) {
          ]}
       >
          {/* STEP HEADER ====================================================================== */}
-         <PanelHeaderUI>
+         {/* <PanelHeaderUI>
             {PanelOutputConf.renderAsConfigBtn({ title: 'Output' })}
             <div>
                {step.name} {p.stepID == null ? '(latest)' : null}
@@ -75,7 +75,7 @@ export const PanelStepUI = observer(function PanelStepUI_(p: PanelStepUI) {
                   step={step}
                />
             )}
-         </div>
+         </div> */}
 
          {/* alt 1. hovered or focused output */}
          <div tw={['flex flex-grow overflow-auto']}>

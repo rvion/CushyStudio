@@ -2,6 +2,7 @@ import type { Field } from '../model/Field'
 import type { Command } from '@codemirror/view'
 import type { FC } from 'react'
 
+import { MenuDivider } from '../dropdown/MenuDivider'
 import { SimpleMenuAction, type SimpleMenuActionProps } from './SimpleMenuAction'
 
 /** class that will be injected in most places where you are expected to return a menu */
@@ -21,6 +22,8 @@ export class MenuBuilder<Ctx> {
    SimpleMenuAction(p: SimpleMenuActionProps): SimpleMenuAction {
       return new SimpleMenuAction(p)
    }
+
+   Divider = MenuDivider
 }
 
 export const menuBuilder = new MenuBuilder()

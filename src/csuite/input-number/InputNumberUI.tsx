@@ -353,6 +353,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                   placeholder={p.placeholder}
                   style={{
                      fontFamily: 'monospace',
+                     fontSize: `${theme.inputText}pt`,
                      zIndex: 2,
                      background: 'transparent',
                      MozWindowDragging: 'no-drag',
@@ -418,12 +419,15 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                      {p.text && (
                         <div /* Inner Label Text - Not shown while editing */
                            tw={['z-10 w-full truncate border-0 border-transparent pr-1 text-left outline-0']}
+                           style={{ fontSize: `${theme.inputText}pt` }}
                         >
                            {p.text}
                         </div>
                      )}
                      {/* I couldn't make the input not take up a ton of space so I'm just using this when we're not editing now. */}
-                     <div style={{ fontFamily: 'monospace' }}>{p.value}</div>
+                     <div style={{ fontFamily: 'monospace', fontSize: `${theme.inputText}pt` }}>
+                        {p.value}
+                     </div>
                      {!isEditing && p.suffix ? <div tw='pl-0.5'>{p.suffix}</div> : <></>}
                   </>
                )}
