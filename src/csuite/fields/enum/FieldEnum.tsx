@@ -1,4 +1,4 @@
-import type { ComfyUnionValue } from '../../../comfyui/comfyui-types'
+import type { ComfyNodeSlotName, ComfyUnionValue } from '../../../comfyui/comfyui-types'
 import type { CleanedEnumResult } from '../../../types/EnumUtils'
 import type { BaseSchema } from '../../model/BaseSchema'
 import type { FieldConfig } from '../../model/FieldConfig'
@@ -16,7 +16,7 @@ import { WidgetEnumUI } from './WidgetEnumUI'
 // #region Config
 export type Field_enum_config<O extends ComfyUnionValue> = FieldConfig<
    {
-      enumName: string
+      slotName: ComfyNodeSlotName
       default?: O
       extraDefaults?: string[]
       filter?: (v: ComfyUnionValue) => boolean
@@ -57,7 +57,7 @@ export class Field_enum<O extends ComfyUnionValue> extends Field<Field_enum_type
    static readonly type: 'enum' = 'enum'
    static readonly emptySerial: Field_enum_serial<any> = { $: 'enum' }
    static codegenValueType(config: Field_enum_config<any>): string {
-      const knownValues = cushy.schema.knownEnumsByName.get(config.enumName)?.values ?? []
+      const knownValues = cushy.schema.knownUnionBySlotName.get(config.slotName)?.values ?? []
       return knownValues.map((v) => JSON.stringify(v)).join(' | ')
    }
    static migrateSerial(): undefined {}
@@ -112,7 +112,7 @@ export class Field_enum<O extends ComfyUnionValue> extends Field<Field_enum_type
    }
 
    get possibleValues(): ComfyUnionValue[] {
-      return cushy.schema.knownEnumsByName.get(this.config.enumName as any)?.values ?? []
+      return cushy.schema.knownUnionBySlotName.get(this.config.slotName as any)?.values ?? []
    }
 
    private _isValidValue(v: any): v is O {
@@ -143,7 +143,7 @@ export class Field_enum<O extends ComfyUnionValue> extends Field<Field_enum_type
    }
 
    get status(): CleanedEnumResult<any> {
-      return cushy.fixEnumValue(this.serial.val as any, this.config.enumName)
+      return cushy.fixEnumValue(this.serial.val as any, this.config.slotName)
    }
 
    // #region value

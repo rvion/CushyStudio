@@ -16,6 +16,10 @@ export const prefabModelSD15andSDXL = (
    } = {},
 ): $prefabModelSD15andSDXL => {
    const b = getCurrentForm()
+   // console.log('A', cushy)
+   // console.log('B', cushy?.comfyAddons)
+   // console.log('C', cushy?.comfyAddons?.getKnownCheckpoints)
+
    const ckpts = cushy.comfyAddons.getKnownCheckpoints()
    return b.fields(
       {

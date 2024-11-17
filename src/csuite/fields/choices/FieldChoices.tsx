@@ -20,7 +20,7 @@ import { isProbablySerialChoices, registerFieldClass } from '../WidgetUI.DI'
 import { WidgetChoices_BodyUI } from './WidgetChoices_BodyUI'
 import { WidgetChoices_HeaderButtonsUI } from './WidgetChoices_HeaderButtonsUI'
 import { WidgetChoices_HeaderSelectUI } from './WidgetChoices_HeaderSelectUI'
-import { WidgetChoices_HeaderUI } from './WidgetChoicesUI'
+import { WidgetChoices_HeaderUI } from './WidgetChoices_HeaderUI'
 
 type ActiveBranchesByName<T> = { [key in keyof T]?: true }
 // type ActiveBranchesByNameDefault<T> = { [key in keyof T]?: true }

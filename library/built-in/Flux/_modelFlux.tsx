@@ -58,12 +58,12 @@ export const prefabModelFlux = (): $prefabModelFlux => {
    //         w.setValue({
    //             FLUX: {
    //                 type: 'flux',
-   //                 ckpt_name: 'flux1-dev.sft' as Enum_UNETLoader_unet_name,
+   //                 ckpt_name: 'flux1-dev.sft' as Comfy.Slots['UNETLoader.unet_name'],
    //                 weight_type: 'fp8_e4m3fn',
-   //                 clip1: 't5xxl_fp16.safetensors' as Enum_DualCLIPLoader_clip_name1,
-   //                 clip2: 'clip_l.safetensors' as Enum_DualCLIPLoader_clip_name2,
+   //                 clip1: 't5xxl_fp16.safetensors' as Comfy.Slots['DualCLIPLoader.clip_name1'],
+   //                 clip2: 'clip_l.safetensors' as Comfy.Slots['DualCLIPLoader.clip_name2'],
    //             },
-   //             extra: { vae: 'ae.sft' as Enum_VAELoader_vae_name },
+   //             extra: { vae: 'ae.sft' as Comfy.Slots['VAELoader.vae_name'] },
    //         })
    //     },
    // })

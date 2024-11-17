@@ -42,18 +42,18 @@ export class ComfyUIObjectInfoParsedNodeSchema {
       this.inputs.forEach((i, ix) => {
          // 1/3
          if (i.isPrimitive) {
-            const tsType = ComfyPrimitiveMapping[i.type]
+            const tsType = ComfyPrimitiveMapping[i.typeName]
             if (tsType == null) return console.log(`[🔶] invariant violation`)
             p(`      ${escapeJSKey(i.nameInComfy)}: { kind: '${tsType}', type: ${tsType} }`)
          }
          // 2/3
          else if (i.isEnum) {
-            p(`      ${escapeJSKey(i.nameInComfy)}: { kind: 'enum', type: Union['${i.type}'] }`)
+            p(`      ${escapeJSKey(i.nameInComfy)}: { kind: 'enum', type: Union['${i.typeName}'] }`)
             // p(`      ${escapeJSKey(i.nameInComfy)}: { kind: 'enum', type: '${this.nameInCushy}.${i.nameInComfy}' }`) // prettier-ignore
          }
          // 3/3
          else {
-            p(`      // ${escapeJSKey(i.nameInComfy)}: { kind: 'object', type: ${i.type} }`)
+            p(`      // ${escapeJSKey(i.nameInComfy)}: { kind: 'object', type: ${i.typeName} }`)
          }
       })
       p(`   }`)

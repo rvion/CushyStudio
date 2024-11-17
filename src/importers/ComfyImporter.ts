@@ -275,7 +275,7 @@ export class ComfyImporter {
          const inputName = x.name
          const prefix = inputGroupName ? `ui.${inputGroupName}` : 'ui'
          if (s == null) return `null`
-         if (s.type === 'Enum_LoadImage_image')
+         if (s.typeName === 'E_Image')
             return `await run.loadImageAnswerAsEnum(${prefix}${asJSAccessor(inputName)})`
          return `${prefix}${asJSAccessor(inputName)}`
       }
@@ -285,22 +285,21 @@ export class ComfyImporter {
          // no schema, let's try to infer the type from the value
          if (s == null) return `${formVarInUIFn}.${x.typeofValue}({default: ${jsEscapeStr(x.default)}})`
 
-         if (x.name === 'seed' && s.type === 'INT')
+         if (x.name === 'seed' && s.typeName === 'INT')
             return `${formVarInUIFn}.seed({default: ${jsEscapeStr(x.default)}})`
-         if (s.type === 'Enum_LoadImage_image')
-            return `${formVarInUIFn}.image({default: ${jsEscapeStr(x.default)}})`
-         if (s.type.startsWith('Enum_'))
-            return `${formVarInUIFn}.enum.${s.type}({default: ${jsEscapeStr(x.default)} })`
+         if (s.typeName === 'E_Image') return `${formVarInUIFn}.image({default: ${jsEscapeStr(x.default)}})`
+         if (s.typeName.startsWith('Enum_'))
+            return `${formVarInUIFn}.enum.${s.typeName}({default: ${jsEscapeStr(x.default)} })`
 
-         if (s.type in ComfyPrimitiveMapping) {
+         if (s.typeName in ComfyPrimitiveMapping) {
             let builderFnName = ((): string => {
-               const typeLower = s.type.toLowerCase()
+               const typeLower = s.typeName.toLowerCase()
                if (typeLower === 'boolean') return 'boolean'
                if (typeLower === 'float') return 'float'
                if (typeLower === 'int') return 'int'
                if (typeLower === 'integer') return 'int'
                if (typeLower === 'string') return 'string'
-               return ComfyPrimitiveMapping[s.type] ?? 'str'
+               return ComfyPrimitiveMapping[s.typeName] ?? 'str'
             })()
 
             if (!s.required && builderFnName != 'boolean') builderFnName += 'Opt'

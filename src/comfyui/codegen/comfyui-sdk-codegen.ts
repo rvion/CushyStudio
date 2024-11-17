@@ -55,7 +55,7 @@ export function codegenSDK(
       p(`${escapeJSKey(n.nameInCushy)}: {`)
       for (const i of n.inputs) {
          const opts = typeof i.opts === 'string' ? null : i.opts
-         const type = `Signal['${i.type}']`
+         const type = `Signal['${i.typeName}']`
          // const type = i.type.startsWith('E_') //
          //    ? `Union['${i.type}']`
          //    : `Signal['${i.type}']`

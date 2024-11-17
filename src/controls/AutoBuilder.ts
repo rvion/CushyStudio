@@ -100,7 +100,7 @@ export class AutoBuilder {
                   }
                   // PRIMITIVES ------------------------------------------
                   if (field.isPrimitive) {
-                     const typeLower = field.type.toLowerCase()
+                     const typeLower = field.typeName.toLowerCase()
                      // boolean ------------------------------------------
                      if (typeLower === 'boolean') {
                         items[field.nameInComfy] = formBuilder.bool({
@@ -194,16 +194,16 @@ export class AutoBuilder {
                   else if (field.isEnum) {
                      // console.log(`[👗] 🌈 Enum: ${field.type}`, { field })
                      const enumFn: Maybe<(p: Field_enum_config<any>) => void> = (formBuilder.enum as any)[
-                        field.type
+                        field.typeName
                      ]
                      if (enumFn == null) {
-                        console.log(`[👗] ❌ Unknown enum: ${field.type}`)
+                        console.log(`[👗] ❌ Unknown enum: ${field.typeName}`)
                         continue
                      }
 
                      items[field.nameInComfy] = enumFn({
                         label: field.nameInComfy,
-                        enumName: field.type,
+                        slotName: field.slotName,
                         default: opts?.default,
                      })
                   } else {

@@ -32,7 +32,7 @@ Start from the default app, and enhance it to allow for a configurable number of
 app({
     metadata: { name: 'demo for-loops', description: 'my app description' },
     ui: (form) => ({
-        model: form.enum.Enum_CheckpointLoaderSimple_ckpt_name({}),
+        model: form.enum['CheckpointLoaderSimple.ckpt_name']({}),
         positive: form.string({ default: 'masterpiece, tree' }),
         seed: form.seed({}),
         // 1. add new UI control to display how many loops you want
@@ -91,7 +91,7 @@ app({
 
 ```diff
 app({
-         model: form.enum.Enum_CheckpointLoaderSimple_ckpt_name({}),
+         model: form.enum['CheckpointLoaderSimple.ckpt_name']({}),
          positive: form.string({ default: 'masterpiece, tree' }),
          seed: form.seed({}),
 +        // 1. add new UI control to display how many loops you want

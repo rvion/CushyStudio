@@ -121,8 +121,8 @@ export const convertLiteGraphToPrompt = (
                offset += MUST_CONSUME
             } else {
                if (!fieldNamesWithLinks.has(field.nameInComfy))
-                  throw new Error(`🔴, ${field.type}, ${field.nameInComfy}, ${MUST_CONSUME}`)
-               LOG(`${FIELD_PREFIX} 👻 ${field.nameInComfy} [LINK] ${field.type}`)
+                  throw new Error(`🔴, ${field.typeName}, ${field.nameInComfy}, ${MUST_CONSUME}`)
+               LOG(`${FIELD_PREFIX} 👻 ${field.nameInComfy} [LINK] ${field.typeName}`)
             }
          }
 

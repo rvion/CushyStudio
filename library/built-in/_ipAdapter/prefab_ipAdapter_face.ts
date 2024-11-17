@@ -68,7 +68,6 @@ export function ui_IPAdapterFaceID(): UI_IPAdapterFaceID {
                      ipAdapter_faceID_ClipModelList,
                   ),
                   lora: b.enum['LoraLoader.lora_name']({
-                     // enumName: 'Enum_AV_CheckpointModelsToParametersPipe_lora_1_name',
                      // @ts-ignore
                      default: 'ip-adapter-faceid-plusv2_sd15_lora.safetensors',
                      label: 'Face ID Lora',

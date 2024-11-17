@@ -5,7 +5,7 @@ import type { ResilientWebSocketClient } from '../back/ResilientWebsocket'
 import type { ActionTagMethodList } from '../cards/App'
 import type { GithubRepoName } from '../cards/githubRepo'
 import type { GithubUserName } from '../cards/GithubUser'
-import type { ComfyUnionValue } from '../comfyui/comfyui-types'
+import type { ComfyNodeSlotName, ComfyUnionValue } from '../comfyui/comfyui-types'
 import type { PreferedFormLayout } from '../config/ConfigFile'
 import type { JsonFile } from '../core/JsonFile'
 import type { Activity } from '../csuite/activity/Activity'
@@ -413,10 +413,10 @@ export class STATE {
    fixEnumValue = (
       //
       candidateValue: Maybe<ComfyUnionValue>,
-      enumName: string,
+      slotName: ComfyNodeSlotName,
    ): CleanedEnumResult<any> => {
       // 0. retrieve enum dev
-      const possibleValues = this.schema.knownEnumsByName.get(enumName)?.values ?? []
+      const possibleValues = this.schema.knownUnionBySlotName.get(slotName)?.values ?? []
 
       // 1. when enum is empty
       if (possibleValues.length == 0) {

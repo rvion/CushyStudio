@@ -23,11 +23,11 @@ export const ComfyPrimitives: string[] = Object.keys(ComfyPrimitiveMapping)
  * (e.g. a seed or an enum that has not been turned into a primitive)
  */
 export const howManyWidgetValuesForThisSchemaType = (input: NodeInputExt): number => {
-   if (input.type === 'INT') {
+   if (input.typeName === 'INT') {
       if (input.nameInComfy === 'seed' || input.nameInComfy === 'noise_seed') return 2
    }
    if (input.isPrimitive) return 1
-   if (input.type.startsWith('Enum_')) return 1
+   if (input.typeName.startsWith('Enum_')) return 1
    // console.log(343, input)
    return 0
 }

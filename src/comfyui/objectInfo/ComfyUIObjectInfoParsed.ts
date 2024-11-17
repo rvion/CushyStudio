@@ -1,16 +1,3 @@
-import type {
-   ComfyEnumName,
-   ComfyNodeSlotTypeName,
-   ComfyPythonModule,
-   ComfyUnionHash,
-   ComfyUnionInfo,
-   ComfyUnionName,
-   ComfyUnionValue,
-   NodeInputExt,
-   NodeNameInComfy,
-   NodeNameInCushy,
-   NodeOutputExt,
-} from '../comfyui-types'
 import type { ComfyEnumDef, ComfyNodeSchemaJSON, ComfySchemaJSON } from './ComfyUIObjectInfoTypes'
 
 import crypto from 'crypto'
@@ -23,8 +10,22 @@ import {
 } from '../../models/ComfyDefaultNodeWhenUnknown'
 import { escapeJSKey } from '../../utils/codegen/escapeJSKey'
 import { convertComfyModuleAndNodeNameToCushyQualifiedNodeKey } from '../codegen/_convertComfyModuleAndNodeNameToCushyQualifiedNodeKey'
-import { pythonModuleToPrefix } from '../codegen/_pythonModuleToNamespace'
 import { codegenSDK } from '../codegen/comfyui-sdk-codegen'
+import {
+   asComfyNodeSlotName,
+   asComfyNodeSlotTypeName,
+   type ComfyNodeSlotName,
+   type ComfyNodeSlotTypeName,
+   type ComfyPythonModule,
+   type ComfyUnionHash,
+   type ComfyUnionInfo,
+   type ComfyUnionName,
+   type ComfyUnionValue,
+   type NodeInputExt,
+   type NodeNameInComfy,
+   type NodeNameInCushy,
+   type NodeOutputExt,
+} from '../comfyui-types'
 import { getUnionNameBasedOnFirstFoundEnumName } from '../getUnionNameBasedOnFirstFoundEnumName'
 import { ComfyUIObjectInfoParsedNodeSchema } from './ComfyUIObjectInfoParsedNodeSchema'
 
@@ -47,8 +48,8 @@ export class ComfyUIObjectInfoParsed {
    }
 
    // #region props
-   knownSlotTypes = new Set<string>()
-   knownUnionByEnumName = new Map<ComfyEnumName, ComfyUnionInfo>()
+   knownSlotTypes = new Set<ComfyNodeSlotTypeName>()
+   knownUnionBySlotName = new Map<ComfyNodeSlotName, ComfyUnionInfo>()
    knownUnionByHash = new Map<ComfyUnionHash, ComfyUnionInfo>()
    knownUnionByName = new Map<ComfyUnionName, ComfyUnionInfo>()
    nodes: ComfyUIObjectInfoParsedNodeSchema[] = []
@@ -56,7 +57,7 @@ export class ComfyUIObjectInfoParsed {
    pythonModuleByNodeNameInComfy: Map<NodeNameInComfy, ComfyPythonModule> = new Map()
    nodesByNameInComfy: { [key: NodeNameInComfy]: ComfyUIObjectInfoParsedNodeSchema } = {}
    nodesByNameInCushy: { [key: NodeNameInCushy]: ComfyUIObjectInfoParsedNodeSchema } = {}
-   nodesByProduction: { [key: ComfyNodeSlotTypeName]: ComfyUIObjectInfoParsedNodeSchema[] } = {}
+   nodesByProduction: { [key in ComfyNodeSlotTypeName]?: ComfyUIObjectInfoParsedNodeSchema[] } = {}
 
    // some nodes output anonymous unions. we need to keep track of them for codegen
    enumsAppearingInOutput = new Set<ComfyNodeSlotTypeName>()
@@ -117,41 +118,34 @@ export class ComfyUIObjectInfoParsed {
          this.nodes.push(node)
 
          // #region OUTPUTS ----------------------------------------------------------------------
-         const outputNamer: { [key: string]: number } = {}
-         // console.info(JSON.stringify(nodeDef.output))
-         // [⏸️ debug] if (typeof nodeDef.output.entries !== 'function') {
-         // [⏸️ debug]     console.log(`[🧐] `, nodeDef)
-         // [⏸️ debug]     console.log(`[🧐] `, nodeDef.output)
-         // [⏸️ debug]     console.log(`[🧐] `, nodeDef.output.entries)
-         // [⏸️ debug]     debugger
-         // [⏸️ debug] }
+         const nameCountDict: { [key: string]: number } = {}
          for (const [ix, slotType] of nodeDef.output.entries()) {
             const rawOutputSlotName =
                nodeDef.output_name[ix] || //
                (typeof slotType === 'string' ? slotType : `input_${ix}`)
 
             const outputNameInComfy = rawOutputSlotName
-            const at = (outputNamer[outputNameInComfy] ??= 0)
+            const at = (nameCountDict[outputNameInComfy] ??= 0)
             const outputNameInCushy = at === 0 ? outputNameInComfy : `${outputNameInComfy}_${at}`
-            outputNamer[outputNameInComfy]++
+            nameCountDict[outputNameInComfy]++
             // console.log('>>', outputNameInComfy, outputNameInCushy)
 
             let slotTypeName: ComfyNodeSlotTypeName // keyof Comfy.Signal
+            const outputSlotName = asComfyNodeSlotName(`${node.nameInCushy}.${outputNameInCushy}.OUT`)
 
             // 1. Primitive
             if (typeof slotType === 'string') {
-               slotTypeName = slotType
+               slotTypeName = asComfyNodeSlotTypeName(slotType)
                this.knownSlotTypes.add(slotTypeName)
             }
             // 2. ENUM
             else if (Array.isArray(slotType)) {
-               const uniqueEnumName = `${node.nameInCushy}.${outputNameInCushy}.OUT`
-               const RESX = this.processEnumNameOrValue({
+               const RESX = this.processSlot({
                   pythonModule,
-                  enumName: uniqueEnumName,
-                  comfyEnumDef: slotType,
+                  slotName: outputSlotName,
+                  comfyUnionDef: slotType,
                })
-               slotTypeName = RESX.unionNameInCushy
+               slotTypeName = asComfyNodeSlotTypeName(RESX.unionNameInCushy)
                // ownEnums.push({ in: 'output', ownName: uniqueEnumName, enum: RESX })
                this.enumsAppearingInOutput.add(slotTypeName)
             }
@@ -171,6 +165,7 @@ export class ComfyUIObjectInfoParsed {
             // const nameInComfy = at === 0 ? slotType : `${slotType}_${at}`
             // const nameInCushy = normalizeJSIdentifier(nameInComfy)
             outputs.push({
+               slotName: outputSlotName,
                typeName: slotTypeName,
                nameInComfy: outputNameInComfy,
                nameInCushy: outputNameInCushy,
@@ -210,33 +205,34 @@ export class ComfyUIObjectInfoParsed {
             const slotOpts = typeDef[1]
 
             /** name of the type in cushy */
-            let inputTypeNameInCushy: string | undefined
+            let inputTypeNameInCushy: ComfyNodeSlotTypeName
+            const inputSlotName = asComfyNodeSlotName(`${node.nameInCushy}.${inputNameInComfy}`)
 
             // 1/4
             if (slotType == null) {
-               const uniqueEnumName = `INVALID_null`
-               const RESX = this.processEnumNameOrValue({
+               // const inputSlotName = `${node.nameInCushy}.❌null❌`
+               // const inputSlotName = asComfyNodeSlotName('INVALID_null') // TODO: rename everywhere
+               const RESX = this.processSlot({
                   pythonModule,
-                  enumName: uniqueEnumName,
-                  comfyEnumDef: ['❌'],
+                  slotName: inputSlotName,
+                  comfyUnionDef: ['❌'],
                })
-               inputTypeNameInCushy = RESX.unionNameInCushy
+               inputTypeNameInCushy = asComfyNodeSlotTypeName(RESX.unionNameInCushy)
                // ownEnums.push({ in: 'input', ownName: RESX.ownName, enum: RESX.enum })
             }
             // 2/4
             else if (typeof slotType === 'string') {
-               inputTypeNameInCushy = slotType
+               inputTypeNameInCushy = asComfyNodeSlotTypeName(slotType)
                this.knownSlotTypes.add(inputTypeNameInCushy)
             }
             // 3/4
             else if (Array.isArray(slotType)) {
-               const uniqueEnumName = `${pythonModuleToPrefix(pythonModule)}${nodeNameInComfy}.${inputNameInComfy}`
-               const RESX = this.processEnumNameOrValue({
+               const RESX = this.processSlot({
                   pythonModule,
-                  enumName: uniqueEnumName,
-                  comfyEnumDef: slotType,
+                  slotName: inputSlotName,
+                  comfyUnionDef: slotType,
                })
-               inputTypeNameInCushy = RESX.unionNameInCushy
+               inputTypeNameInCushy = asComfyNodeSlotTypeName(RESX.unionNameInCushy)
                // ownEnums.push({ in: 'input', ownName: RESX.ownName, enum: RESX.enum })
             }
             // 4/4
@@ -250,10 +246,11 @@ export class ComfyUIObjectInfoParsed {
 
             if (inputTypeNameInCushy) {
                node.inputs.push({
+                  slotName: inputSlotName,
                   required: ipt.required,
                   nameInComfy: inputNameInComfy,
                   nameInComfyEscaped: escapeJSKey(inputNameInComfy),
-                  type: inputTypeNameInCushy,
+                  typeName: inputTypeNameInCushy,
                   opts: slotOpts,
                   isPrimitive: ComfyPrimitives.includes(inputTypeNameInCushy),
                   isEnum: this.knownUnionByName.has(inputTypeNameInCushy),
@@ -273,16 +270,16 @@ export class ComfyUIObjectInfoParsed {
       // this.updateComponents()
    }
 
-   // #region processEnumNameOrValue
-   processEnumNameOrValue = (p: {
+   // #region processSlot
+   processSlot = (p: {
       //
       pythonModule: string
-      enumName: string
-      comfyEnumDef: ComfyEnumDef
+      slotName: ComfyNodeSlotName
+      comfyUnionDef: ComfyEnumDef
    }): ComfyUnionInfo => {
       // 1. build enum
       const enumValues: ComfyUnionValue[] = []
-      for (const enumValue of p.comfyEnumDef) {
+      for (const enumValue of p.comfyUnionDef) {
          if (typeof enumValue === 'string') enumValues.push(enumValue)
          else if (typeof enumValue === 'boolean') enumValues.push(enumValue)
          else if (typeof enumValue === 'number') enumValues.push(enumValue)
@@ -298,7 +295,7 @@ export class ComfyUIObjectInfoParsed {
       // 3. retrieve or create an EnumInfo
       let unionInfo: Maybe<ComfyUnionInfo> = this.knownUnionByHash.get(hash)
       if (unionInfo == null) {
-         const unionNameInCushy = getUnionNameBasedOnFirstFoundEnumName(p.enumName, hash, hashContent)
+         const unionNameInCushy = getUnionNameBasedOnFirstFoundEnumName(p.slotName, hash, hashContent)
          // 💬 2024-09-30 rvion:
          // | 🔴 making that observable seems wrong; huge perf problem at instanciation.
          // case 3.A. PRE-EXISTING
@@ -313,17 +310,17 @@ export class ComfyUIObjectInfoParsed {
       }
       // else {
       // case 3.B. PRE-EXISTING
-      unionInfo.enumNames.push(p.enumName)
+      unionInfo.enumNames.push(p.slotName)
       // enumInfo.qualifiedNames.push({
       //    pythonModule: p.pythonModule,
       //    enumNameAlias: p.candidateName,
       // })
       // }
 
-      // ❌ if (p.candidateName === 'Enum_DualCLIPLoader_clip_name1') debugger
+      // ❌ if (p.candidateName === 'DualCLIPLoader.clip_name1') debugger
 
       // 4.sore enum by name
-      this.knownUnionByEnumName.set(p.enumName, unionInfo)
+      this.knownUnionBySlotName.set(p.slotName, unionInfo)
       return unionInfo
       // {
       //    typeName: unionInfo.unionNameInCushy,

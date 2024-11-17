@@ -20161,7 +20161,7 @@ declare global {
          // E_23ace60e
          "Allor.ImageTransformTranspose.method": Union['E_23ace60e']
       }
-      type Embeddings = 'EasyNegative' | 'bad-artist-anime' | 'bad-artist' | 'bad_prompt_version2' | 'badquality' | 'charturnerv2' | 'ng_deepnegative_v1_75t' | 'realisticvision-negative-embedding'
+      type Embeddings = 'easynegative' | 'ng_deepnegative_v1_75t'
       
       interface Producer {
          SEG_ELT_control_net_wrapper: Pick<Builder, 'Impact-Pack.ImpactFrom_SEG_ELT'>
@@ -20623,7 +20623,7 @@ declare global {
          // ["LatentUpscale.crop","ImageScale.crop","AnimateDiff-Evolved.ADE_UpscaleAndVAEEncode.crop"]
          E_e2779c2a: "center" | "disabled"
          // ["LoadImage.image","LoadImageMask.image","Impact-Pack.ImageReceiver.image"]
-         E_Image: "example.png"
+         E_Image: "0224c37cb73fecb629f22bcd7476231f528f89cf.webp" | "example.png" | "sOA4nLYCSC1J0KN64N5qJnZDcwO8hq64pcv0xLLtg.png"
          // ["LoadImageMask.channel","ImageToMask.channel","was.Image to Latent Mask.channel"]
          E_Channel: "alpha" | "blue" | "green" | "red"
          // ["ImageScale.upscale_method","ImageScaleBy.upscale_method","ImageScaleToTotalPixels.upscale_method","AnimateDiff-Evolved.ADE_UpscaleAndVAEEncode.scale_method"]

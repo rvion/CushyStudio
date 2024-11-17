@@ -54,20 +54,21 @@ const convertNodeToLiteGraphNode = (ctx: LiteGraphCtx, node: ComfyNode<any>): Li
          const nodeUidNumber = bang(ctx.graph.nodes.find((n) => n.uid === raw[0])?.uidNumber)
          inputs.push({
             name: ipt.nameInComfy,
-            type: ipt.type,
+            type: ipt.typeName,
             link: ctx.allocateLink(
                nodeUidNumber,
                raw[1],
                node.uidNumber,
                asLiteGraphSlotIndex(ipt.index),
-               ipt.type,
+               ipt.typeName,
             ),
          })
       } else {
          widgets_values.push(raw)
       }
       // add the fake noise_seed field
-      const isSeed = ipt.type === 'INT' && (ipt.nameInComfy === 'seed' || ipt.nameInComfy === 'noise_seed')
+      const isSeed =
+         ipt.typeName === 'INT' && (ipt.nameInComfy === 'seed' || ipt.nameInComfy === 'noise_seed')
       if (isSeed) widgets_values.push(false)
    }
    const outputs = node.$schema.outputs.map(

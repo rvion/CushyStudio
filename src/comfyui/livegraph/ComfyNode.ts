@@ -355,7 +355,7 @@ export class ComfyNode<
       const input = this.$schema.inputs.find((i: NodeInputExt) => i.nameInComfy === name)
       // console.log('>>name', name, input)
       if (input == null) throw new Error('🔴 input not found asdf')
-      return input.type
+      return input.typeName
    }
 
    private _getOutputForTypeOrCrash(type: string): ComfyNodeOutput<any> {

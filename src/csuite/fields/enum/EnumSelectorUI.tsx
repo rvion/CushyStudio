@@ -1,4 +1,4 @@
-import type { ComfyEnumName, ComfyUnionValue } from '../../../comfyui/comfyui-types'
+import type { ComfyNodeSlotName, ComfyUnionValue } from '../../../comfyui/comfyui-types'
 import type { CleanedEnumResult } from '../../../types/EnumUtils'
 
 import { observer } from 'mobx-react-lite'
@@ -16,11 +16,11 @@ export const EnumSelectorUI = observer(function EnumSelectorUI_(p: {
    onChange: (v: ComfyUnionValue | null) => void
    clearable?: Maybe<() => void>
    disabled?: boolean
-   enumName: ComfyEnumName
+   slotName: ComfyNodeSlotName
 }) {
    const project = useSt().project
    const schema = project.schema
-   const options: ComfyUnionValue[] = schema.knownEnumsByName.get(p.enumName)?.values ?? [] // schema.getEnumOptionsForSelectPicker(p.enumName)
+   const options: ComfyUnionValue[] = schema.knownUnionBySlotName.get(p.slotName)?.values ?? []
 
    // const valueIsValid = (p.value != null || p.isOptional) && options.some((x) => x.value === p.value)
    const value = p.value()
@@ -64,7 +64,7 @@ export const EnumSelectorUI = observer(function EnumSelectorUI_(p: {
                   </div>
                </RevealUI>
             ) : null}
-            {value.ENUM_HAS_NO_VALUES ? <div tw='text-red-500'>NO VALUE FOR {p.enumName}</div> : null}
+            {value.ENUM_HAS_NO_VALUES ? <div tw='text-red-500'>NO VALUE FOR {p.slotName}</div> : null}
          </div>
       </div>
    )

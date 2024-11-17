@@ -1,4 +1,5 @@
 import type {
+   ComfyNodeSlotName,
    ComfyPythonModule,
    ComfyUnionInfo,
    ComfyUnionValue,
@@ -51,7 +52,7 @@ export class ComfySchemaL extends BaseInst<TABLES['comfy_schema']> {
    // forward to underlying parsedObjectInfo
    get pythonModuleByNodeNameInCushy(): Map<NodeNameInCushy, ComfyPythonModule> { return this.parseObjectInfo.pythonModuleByNodeNameInCushy } // prettier-ignore
    get pythonModuleByNodeNameInComfy(): Map<NodeNameInComfy, ComfyPythonModule> { return this.parseObjectInfo.pythonModuleByNodeNameInComfy } // prettier-ignore
-   get knownEnumsByName(): Map<string, ComfyUnionInfo> { return this.parseObjectInfo.knownUnionByEnumName } // prettier-ignore
+   get knownUnionBySlotName(): Map<ComfyNodeSlotName, ComfyUnionInfo> { return this.parseObjectInfo.knownUnionBySlotName } // prettier-ignore
    get nodes(): ComfyUIObjectInfoParsedNodeSchema[] { return this.parseObjectInfo.nodes } // prettier-ignore
    get nodesByNameInCushy(): Record<string, ComfyUIObjectInfoParsedNodeSchema> { return this.parseObjectInfo.nodesByNameInCushy } // prettier-ignore
    get nodesByNameInComfy(): Record<string, ComfyUIObjectInfoParsedNodeSchema> { return this.parseObjectInfo.nodesByNameInComfy } // prettier-ignore
@@ -81,7 +82,7 @@ export class ComfySchemaL extends BaseInst<TABLES['comfy_schema']> {
 
    /** return the list of all loras available */
    getLoras = (): Comfy.Slots['LoraLoader.lora_name'][] => {
-      const candidates = this.knownEnumsByName.get('Enum_LoraLoader_lora_name')?.values ?? []
+      const candidates = this.knownUnionBySlotName.get('LoraLoader.lora_name')?.values ?? []
       return candidates as Comfy.Slots['LoraLoader.lora_name'][]
    }
 
@@ -90,30 +91,22 @@ export class ComfySchemaL extends BaseInst<TABLES['comfy_schema']> {
       this.getImages().includes(imgName as Comfy.Slots['LoadImage.image'])
 
    getImages = (): Comfy.Slots['LoadImage.image'][] => {
-      const candidates = this.knownEnumsByName.get('Enum_LoadImage_image')?.values ?? []
+      const candidates = this.knownUnionBySlotName.get('LoadImage.image')?.values ?? []
       return candidates as Comfy.Slots['LoadImage.image'][]
    }
 
    /** only use this function after an upload success, when you say this asset is now part of ComfyUI */
    unsafely_addImageInSchemaWithoutReloading = (imgName: string): void => {
-      const enumInfo = this.knownEnumsByName.get('Enum_LoadImage_image')
-      if (enumInfo == null) throw new Error(`Enum_LoadImage_image not found`)
+      const enumInfo = this.knownUnionBySlotName.get('LoadImage.image')
+      if (enumInfo == null) throw new Error(`LoadImage.image not found`)
       enumInfo.values.push(imgName as Comfy.Slots['LoadImage.image'])
    }
 
    // CHECKPOINT --------------------------------------------------------------
    hasCheckpoint = (ckptName: string): boolean => this.getCheckpoints().includes(ckptName as Comfy.Slots['CheckpointLoaderSimple.ckpt_name']) // prettier-ignore
    getCheckpoints = (): Comfy.Slots['CheckpointLoaderSimple.ckpt_name'][] => {
-      const candidates = this.knownEnumsByName.get('Enum_CheckpointLoaderSimple_ckpt_name')?.values ?? []
+      const candidates = this.knownUnionBySlotName.get('CheckpointLoaderSimple.ckpt_name')?.values ?? []
       return candidates as Comfy.Slots['CheckpointLoaderSimple.ckpt_name'][]
-   }
-
-   // ENUM --------------------------------------------------------------
-   getEnumOptionsForSelectPicker = (
-      enumName: string,
-   ): { asOptionLabel: string; value: ComfyUnionValue }[] => {
-      const candidates = this.knownEnumsByName.get(enumName)?.values ?? []
-      return candidates.map((x) => ({ asOptionLabel: x.toString(), value: x }))
    }
 
    onHydrate = (): void => {

@@ -330,7 +330,7 @@
 ,   "LoadImage": {
         "input": {
             "required": {
-                "image": [["example.png"],{"image_upload":true}]
+                "image": [["0224c37cb73fecb629f22bcd7476231f528f89cf.webp","example.png","sOA4nLYCSC1J0KN64N5qJnZDcwO8hq64pcv0xLLtg.png"],{"image_upload":true}]
             }
         }
 ,       "input_order": {
@@ -349,7 +349,7 @@
 ,   "LoadImageMask": {
         "input": {
             "required": {
-                "image": [["example.png"],{"image_upload":true}]
+                "image": [["0224c37cb73fecb629f22bcd7476231f528f89cf.webp","example.png","sOA4nLYCSC1J0KN64N5qJnZDcwO8hq64pcv0xLLtg.png"],{"image_upload":true}]
 ,               "channel": [["alpha","red","green","blue"]]
             }
         }
@@ -8761,9 +8761,9 @@
 ,   "Cache Node": {
         "input": {
             "required": {
-                "latent_suffix": ["STRING",{"default":"96855035_cache","multiline":false}]
-,               "image_suffix": ["STRING",{"default":"32842830_cache","multiline":false}]
-,               "conditioning_suffix": ["STRING",{"default":"94836977_cache","multiline":false}]
+                "latent_suffix": ["STRING",{"default":"70256294_cache","multiline":false}]
+,               "image_suffix": ["STRING",{"default":"25335608_cache","multiline":false}]
+,               "conditioning_suffix": ["STRING",{"default":"72433317_cache","multiline":false}]
             }
 ,           "optional": {
                 "output_path": ["STRING",{"default":"/home/runner/ComfyUI/custom_nodes/was-node-suite-comfyui/cache","multiline":false}]
@@ -20350,7 +20350,7 @@
 ,   "ImageReceiver": {
         "input": {
             "required": {
-                "image": [["example.png"]]
+                "image": [["0224c37cb73fecb629f22bcd7476231f528f89cf.webp","example.png","sOA4nLYCSC1J0KN64N5qJnZDcwO8hq64pcv0xLLtg.png"]]
 ,               "link_id": ["INT",{"default":0,"min":0,"max":9223372036854776000,"step":1}]
 ,               "save_to_workflow": ["BOOLEAN",{"default":false}]
 ,               "image_data": ["STRING",{"multiline":false}]
