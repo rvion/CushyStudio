@@ -109,6 +109,9 @@ export class ComfyManager {
    fetchModelList = (): Promise<ComfyManagerAPIModelList> => {
       return this.fetchGetJSON<ComfyManagerAPIModelList>('/externalmodel/getlist?mode=cache')
    }
+   fetchLogs = (): Promise<any> => {
+      return this.fetchGetJSON<any>('/internal/logs')
+   }
 
    isModelInstalled = (name: KnownModel_Name): boolean => {
       return this.modelList?.models.some((x) => x.name === name && x.installed === 'True') ?? false

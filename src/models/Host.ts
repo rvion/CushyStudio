@@ -73,15 +73,15 @@ export class HostL extends BaseInst<TABLES['host']> {
    // Rotating srever logs --------------------------------------------
    private wantLog: boolean = true
 
-   enableServerLogs(): Promise<any> {
-      this.wantLog = true
-      return this.manager.configureLogging(this.wantLog)
-   }
+   // enableServerLogs(): Promise<any> {
+   //    this.wantLog = true
+   //    return this.manager.configureLogging(this.wantLog)
+   // }
 
-   disableServerLogs = (): Promise<unknown> => {
-      this.wantLog = false
-      return this.manager.configureLogging(this.wantLog)
-   }
+   // disableServerLogs = (): Promise<unknown> => {
+   //    this.wantLog = false
+   //    return this.manager.configureLogging(this.wantLog)
+   // }
 
    toggleServerLogs = (): Promise<unknown> => {
       this.wantLog = !this.wantLog
