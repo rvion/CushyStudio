@@ -288,7 +288,7 @@ export class ComfyImporter {
          if (x.name === 'seed' && s.typeName === 'INT')
             return `${formVarInUIFn}.seed({default: ${jsEscapeStr(x.default)}})`
          if (s.typeName === 'E_Image') return `${formVarInUIFn}.image({default: ${jsEscapeStr(x.default)}})`
-         if (s.typeName.startsWith('Enum_'))
+         if (s.typeName.startsWith('E_'))
             return `${formVarInUIFn}.enum.${s.typeName}({default: ${jsEscapeStr(x.default)} })`
 
          if (s.typeName in ComfyPrimitiveMapping) {

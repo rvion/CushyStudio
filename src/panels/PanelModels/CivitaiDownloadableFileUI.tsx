@@ -130,7 +130,7 @@ export const CivitaiDownloadableFileUI = observer(function CivitaiDownloadableFi
                   Download
                </Button>
                <RevealUI content={() => <JsonViewUI value={mi} />}>
-                  <div tw='btn btn-sm btn-link'>show ComfyManager payload</div>
+                  <Button>show ComfyManager payload</Button>
                </RevealUI>
             </div>
             <div tw='text-sm'>url: {file.downloadUrl}</div>

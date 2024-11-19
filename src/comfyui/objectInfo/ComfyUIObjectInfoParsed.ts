@@ -1,7 +1,7 @@
 import type { ComfyEnumDef, ComfyNodeSchemaJSON, ComfySchemaJSON } from './ComfyUIObjectInfoTypes'
 
 import crypto from 'crypto'
-import { observable, toJS } from 'mobx'
+import { isObservable, observable, toJS } from 'mobx'
 
 import { ComfyPrimitiveMapping, ComfyPrimitives } from '../../core/Primitives'
 import {
@@ -10,6 +10,7 @@ import {
 } from '../../models/ComfyDefaultNodeWhenUnknown'
 import { escapeJSKey } from '../../utils/codegen/escapeJSKey'
 import { convertComfyModuleAndNodeNameToCushyQualifiedNodeKey } from '../codegen/_convertComfyModuleAndNodeNameToCushyQualifiedNodeKey'
+import { getUnionNameBasedOnFirstFoundEnumName } from '../codegen/_getUnionNameBasedOnFirstFoundEnumName'
 import { codegenSDK } from '../codegen/comfyui-sdk-codegen'
 import {
    asComfyNodeSlotName,
@@ -26,7 +27,6 @@ import {
    type NodeNameInCushy,
    type NodeOutputExt,
 } from '../comfyui-types'
-import { getUnionNameBasedOnFirstFoundEnumName } from '../getUnionNameBasedOnFirstFoundEnumName'
 import { ComfyUIObjectInfoParsedNodeSchema } from './ComfyUIObjectInfoParsedNodeSchema'
 
 export class ComfyUIObjectInfoParsed {
@@ -44,6 +44,8 @@ export class ComfyUIObjectInfoParsed {
          embeddings: string[]
       },
    ) {
+      // eslint-disable-next-line no-debugger
+      if (isObservable(data.spec)) debugger
       this.onUpdate()
    }
 

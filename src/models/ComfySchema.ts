@@ -57,8 +57,14 @@ export class ComfySchemaL extends BaseInst<TABLES['comfy_schema']> {
    get nodesByNameInCushy(): Record<string, ComfyUIObjectInfoParsedNodeSchema> { return this.parseObjectInfo.nodesByNameInCushy } // prettier-ignore
    get nodesByNameInComfy(): Record<string, ComfyUIObjectInfoParsedNodeSchema> { return this.parseObjectInfo.nodesByNameInComfy } // prettier-ignore
 
+   isInvalid: boolean = false
    onUpdate = (): void => {
-      this.parseObjectInfo = new ComfyUIObjectInfoParsed(this.data)
+      try {
+         this.parseObjectInfo = new ComfyUIObjectInfoParsed(this.data)
+      } catch (error) {
+         this.isInvalid = true
+         console.error(`❌ [ComfySchemaL.onUpdate] `, error)
+      }
    }
 
    /**

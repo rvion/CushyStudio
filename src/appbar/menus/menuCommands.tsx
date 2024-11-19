@@ -1,12 +1,13 @@
-import type { Command } from '../csuite/commands/Command'
-import type { MenuEntry } from '../csuite/menu/MenuEntry'
+import type { Command } from '../../csuite/commands/Command'
+import type { MenuEntry } from '../../csuite/menu/MenuEntry'
 
-import { commandManager } from '../csuite/commands/CommandManager'
-import { defineMenu, Menu } from '../csuite/menu/Menu'
-import { PanelShortcuts } from '../panels/PanelShortcuts/PanelShortcuts'
+import { commandManager } from '../../csuite/commands/CommandManager'
+import { defineMenu, Menu } from '../../csuite/menu/Menu'
+import { PanelShortcuts } from '../../panels/PanelShortcuts/PanelShortcuts'
 
 export const menuCommands = defineMenu({
    title: 'Commands',
+   icon: 'mdiKeyboard',
    // entries: () => [...allLayoutCommands],
    entries: (b): MenuEntry[] => {
       return [

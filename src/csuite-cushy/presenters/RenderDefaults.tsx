@@ -60,6 +60,11 @@ export const defaultPresenterRule = <FIELD extends Field>(field: FIELD): Display
          if (field.isOfType('group', 'list', 'choices')) apply({ Title: catalog.Title.h4 })
          if (!field.isOfType('optional', 'link', 'list', 'shared')) apply({ Shell: catalog.Shell.Right })
       }
+
+      // hide group head in choices
+      if (field.parent?.type === 'choices' && field.type === 'group') {
+         apply({ Head: false })
+      }
    }
 
    return slots

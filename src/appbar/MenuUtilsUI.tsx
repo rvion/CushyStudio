@@ -5,15 +5,6 @@ import { Dropdown } from '../csuite/dropdown/Dropdown'
 import { MenuItem } from '../csuite/dropdown/MenuItem'
 import { useSt } from '../state/stateContext'
 
-// const cmd_posemy = new Command({
-//
-// })
-// const MenuUtilsV2 = new Menu({
-//     title: 'Utils',
-//     icon: 'mdiPuzzle',
-//     entries: () => [],
-// })
-
 export const MenuUtilsUI = observer(function MenuUtilsUI_(p: {}) {
    const st = useSt()
    return (

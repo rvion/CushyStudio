@@ -62,7 +62,7 @@ export const cmd_open_copyImageAs_menu: Command<MediaImageL> = command({
    label: 'Copy Image as...',
    combos: 'mod+shift+c',
    ctx: ctx_image,
-   action: (image: MediaImageL) => menu_copyImageAs.open(image),
+   action: (image: MediaImageL) => menu_copyImageAs.open({ image }),
 })
 
 const form_foo = lazy_viaProxy(() =>
@@ -80,21 +80,21 @@ const form_foo = lazy_viaProxy(() =>
    ),
 )
 
-export const menu_imageActions: MenuTemplate<MediaImageL> = defineMenuTemplate({
+export const menu_imageActions: MenuTemplate<{ image: MediaImageL }> = defineMenuTemplate({
    title: 'image actions',
-   entries: (image: MediaImageL) => [
+   entries: (p: { image: MediaImageL }) => [
       //
-      cmd_copyImage.bind(image),
-      menu_copyImageAs.bind(image),
+      cmd_copyImage.bind(p.image),
+      menu_copyImageAs.bind(p),
    ],
 })
 
-export const menu_copyImageAs: MenuTemplate<MediaImageL> = defineMenuTemplate({
+export const menu_copyImageAs: MenuTemplate<{ image: MediaImageL }> = defineMenuTemplate({
    title: 'Save image as',
-   entries: (image: MediaImageL) => [
-      cmd_copyImage_as_PNG.bind(image),
-      cmd_copyImage_as_WEBP.bind(image),
-      cmd_copyImage_as_JPG.bind(image),
+   entries: (p: { image: MediaImageL }) => [
+      cmd_copyImage_as_PNG.bind(p.image),
+      cmd_copyImage_as_WEBP.bind(p.image),
+      cmd_copyImage_as_JPG.bind(p.image),
       form_foo.fields.quality,
    ],
 })

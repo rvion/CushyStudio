@@ -31,7 +31,7 @@
 ,   "CheckpointLoaderSimple": {
         "input": {
             "required": {
-                "ckpt_name": [["AOM3A3_orangemixs.safetensors","photon_v1.safetensors"],{"tooltip":"The name of the checkpoint (model) to load."}]
+                "ckpt_name": [["AOM3A3_orangemixs.safetensors","noobaiXLNAIXL_vPred06Version.safetensors","photon_v1.safetensors"],{"tooltip":"The name of the checkpoint (model) to load."}]
             }
         }
 ,       "input_order": {
@@ -330,7 +330,7 @@
 ,   "LoadImage": {
         "input": {
             "required": {
-                "image": [["0224c37cb73fecb629f22bcd7476231f528f89cf.webp","example.png","sOA4nLYCSC1J0KN64N5qJnZDcwO8hq64pcv0xLLtg.png"],{"image_upload":true}]
+                "image": [["0224c37cb73fecb629f22bcd7476231f528f89cf.webp","250e9bfb0bf682919e899fb57fee4c289f0549d4.png","example.png","sOA4nLYCSC1J0KN64N5qJnZDcwO8hq64pcv0xLLtg.png"],{"image_upload":true}]
             }
         }
 ,       "input_order": {
@@ -349,7 +349,7 @@
 ,   "LoadImageMask": {
         "input": {
             "required": {
-                "image": [["0224c37cb73fecb629f22bcd7476231f528f89cf.webp","example.png","sOA4nLYCSC1J0KN64N5qJnZDcwO8hq64pcv0xLLtg.png"],{"image_upload":true}]
+                "image": [["0224c37cb73fecb629f22bcd7476231f528f89cf.webp","250e9bfb0bf682919e899fb57fee4c289f0549d4.png","example.png","sOA4nLYCSC1J0KN64N5qJnZDcwO8hq64pcv0xLLtg.png"],{"image_upload":true}]
 ,               "channel": [["alpha","red","green","blue"]]
             }
         }
@@ -1126,7 +1126,7 @@
 ,   "unCLIPCheckpointLoader": {
         "input": {
             "required": {
-                "ckpt_name": [["AOM3A3_orangemixs.safetensors","photon_v1.safetensors"]]
+                "ckpt_name": [["AOM3A3_orangemixs.safetensors","noobaiXLNAIXL_vPred06Version.safetensors","photon_v1.safetensors"]]
             }
         }
 ,       "input_order": {
@@ -1214,7 +1214,7 @@
         "input": {
             "required": {
                 "config_name": [["anything_v3.yaml","v1-inference.yaml","v1-inference_clip_skip_2.yaml","v1-inference_clip_skip_2_fp16.yaml","v1-inference_fp16.yaml","v1-inpainting-inference.yaml","v2-inference-v.yaml","v2-inference-v_fp32.yaml","v2-inference.yaml","v2-inference_fp32.yaml","v2-inpainting-inference.yaml"]]
-,               "ckpt_name": [["AOM3A3_orangemixs.safetensors","photon_v1.safetensors"]]
+,               "ckpt_name": [["AOM3A3_orangemixs.safetensors","noobaiXLNAIXL_vPred06Version.safetensors","photon_v1.safetensors"]]
             }
         }
 ,       "input_order": {
@@ -1234,7 +1234,7 @@
 ,   "DiffusersLoader": {
         "input": {
             "required": {
-                "model_path": [[]]
+                "model_path": [["Marigold"]]
             }
         }
 ,       "input_order": {
@@ -3419,7 +3419,7 @@
 ,   "ImageOnlyCheckpointLoader": {
         "input": {
             "required": {
-                "ckpt_name": [["AOM3A3_orangemixs.safetensors","photon_v1.safetensors"]]
+                "ckpt_name": [["AOM3A3_orangemixs.safetensors","noobaiXLNAIXL_vPred06Version.safetensors","photon_v1.safetensors"]]
             }
         }
 ,       "input_order": {
@@ -5919,7 +5919,7 @@
             "required": {
                 "model": ["MODEL"]
 ,               "clip": ["CLIP"]
-,               "ckpt_name": [["AOM3A3_orangemixs.safetensors","photon_v1.safetensors"]]
+,               "ckpt_name": [["AOM3A3_orangemixs.safetensors","noobaiXLNAIXL_vPred06Version.safetensors","photon_v1.safetensors"]]
 ,               "strength_model": ["FLOAT",{"default":1,"min":-20,"max":20,"step":0.01}]
 ,               "strength_clip": ["FLOAT",{"default":1,"min":-20,"max":20,"step":0.01}]
             }
@@ -5941,7 +5941,7 @@
         "input": {
             "required": {
                 "model": ["MODEL"]
-,               "ckpt_name": [["AOM3A3_orangemixs.safetensors","photon_v1.safetensors"]]
+,               "ckpt_name": [["AOM3A3_orangemixs.safetensors","noobaiXLNAIXL_vPred06Version.safetensors","photon_v1.safetensors"]]
 ,               "strength_model": ["FLOAT",{"default":1,"min":-20,"max":20,"step":0.01}]
             }
         }
@@ -7704,7 +7704,7 @@
 ,   "CheckpointLoaderSimpleWithNoiseSelect": {
         "input": {
             "required": {
-                "ckpt_name": [["AOM3A3_orangemixs.safetensors","photon_v1.safetensors"]]
+                "ckpt_name": [["AOM3A3_orangemixs.safetensors","noobaiXLNAIXL_vPred06Version.safetensors","photon_v1.safetensors"]]
 ,               "beta_schedule": [["autoselect","use existing","sqrt_linear (AnimateDiff)","linear (AnimateDiff-SDXL)","linear (HotshotXL/default)","avg(sqrt_linear,linear)","lcm avg(sqrt_linear,linear)","lcm","lcm[100_ots]","lcm >> sqrt_linear","sqrt","cosine","squaredcos_cap_v2"],{"default":"use existing"}]
             }
 ,           "optional": {
@@ -8761,9 +8761,9 @@
 ,   "Cache Node": {
         "input": {
             "required": {
-                "latent_suffix": ["STRING",{"default":"70256294_cache","multiline":false}]
-,               "image_suffix": ["STRING",{"default":"25335608_cache","multiline":false}]
-,               "conditioning_suffix": ["STRING",{"default":"72433317_cache","multiline":false}]
+                "latent_suffix": ["STRING",{"default":"78936446_cache","multiline":false}]
+,               "image_suffix": ["STRING",{"default":"64548653_cache","multiline":false}]
+,               "conditioning_suffix": ["STRING",{"default":"75347029_cache","multiline":false}]
             }
 ,           "optional": {
                 "output_path": ["STRING",{"default":"/home/runner/ComfyUI/custom_nodes/was-node-suite-comfyui/cache","multiline":false}]
@@ -8790,7 +8790,7 @@
         "input": {
             "required": {
                 "config_name": [["anything_v3.yaml","v1-inference.yaml","v1-inference_clip_skip_2.yaml","v1-inference_clip_skip_2_fp16.yaml","v1-inference_fp16.yaml","v1-inpainting-inference.yaml","v2-inference-v.yaml","v2-inference-v_fp32.yaml","v2-inference.yaml","v2-inference_fp32.yaml","v2-inpainting-inference.yaml"]]
-,               "ckpt_name": [["AOM3A3_orangemixs.safetensors","photon_v1.safetensors"]]
+,               "ckpt_name": [["AOM3A3_orangemixs.safetensors","noobaiXLNAIXL_vPred06Version.safetensors","photon_v1.safetensors"]]
             }
         }
 ,       "input_order": {
@@ -8809,7 +8809,7 @@
 ,   "Checkpoint Loader (Simple)": {
         "input": {
             "required": {
-                "ckpt_name": [["AOM3A3_orangemixs.safetensors","photon_v1.safetensors"]]
+                "ckpt_name": [["AOM3A3_orangemixs.safetensors","noobaiXLNAIXL_vPred06Version.safetensors","photon_v1.safetensors"]]
             }
         }
 ,       "input_order": {
@@ -9228,7 +9228,7 @@
 ,   "Diffusers Model Loader": {
         "input": {
             "required": {
-                "model_path": [[]]
+                "model_path": [["Marigold"]]
             }
         }
 ,       "input_order": {
@@ -13390,7 +13390,7 @@
 ,   "unCLIP Checkpoint Loader": {
         "input": {
             "required": {
-                "ckpt_name": [["AOM3A3_orangemixs.safetensors","photon_v1.safetensors"]]
+                "ckpt_name": [["AOM3A3_orangemixs.safetensors","noobaiXLNAIXL_vPred06Version.safetensors","photon_v1.safetensors"]]
             }
         }
 ,       "input_order": {
@@ -15801,7 +15801,7 @@
         "input": {
             "required": {
                 "ckpt_air": ["STRING",{"default":"{model_id}@{model_version}","multiline":false}]
-,               "ckpt_name": [["none","AOM3A3_orangemixs.safetensors","photon_v1.safetensors"]]
+,               "ckpt_name": [["none","AOM3A3_orangemixs.safetensors","noobaiXLNAIXL_vPred06Version.safetensors","photon_v1.safetensors"]]
             }
 ,           "optional": {
                 "api_key": ["STRING",{"default":"","multiline":false}]
@@ -20350,7 +20350,7 @@
 ,   "ImageReceiver": {
         "input": {
             "required": {
-                "image": [["0224c37cb73fecb629f22bcd7476231f528f89cf.webp","example.png","sOA4nLYCSC1J0KN64N5qJnZDcwO8hq64pcv0xLLtg.png"]]
+                "image": [["0224c37cb73fecb629f22bcd7476231f528f89cf.webp","250e9bfb0bf682919e899fb57fee4c289f0549d4.png","example.png","sOA4nLYCSC1J0KN64N5qJnZDcwO8hq64pcv0xLLtg.png"]]
 ,               "link_id": ["INT",{"default":0,"min":0,"max":9223372036854776000,"step":1}]
 ,               "save_to_workflow": ["BOOLEAN",{"default":false}]
 ,               "image_data": ["STRING",{"multiline":false}]

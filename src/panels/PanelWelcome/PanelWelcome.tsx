@@ -53,7 +53,11 @@ export const PanelWelcomeUI = observer(function PanelWelcomeUI_(p: {}) {
             <div tw='flex flex-wrap gap-2'>
                {[
                   //
-                  'library/built-in/CushyDiffusion.ts',
+                  // 'library/built-in/CushyDiffusion.ts',
+                  'library/built-in/SDXL/cushySDXL.tsx',
+                  'library/built-in/SD3/cushySD3.ts',
+                  'library/built-in/Cascade/cushyCascade.ts',
+                  'library/built-in/Flux/cushyFlux.ts',
                   'library/built-in/quick-actions/quick-add-gradient-background.ts',
                ].map((path) => (
                   <StandaloneAppBtnUI //

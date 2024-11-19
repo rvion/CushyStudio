@@ -5,6 +5,7 @@ import { useState } from 'react'
 
 import { Button } from '../../csuite/button/Button'
 import { Frame } from '../../csuite/frame/Frame'
+import { Ikon } from '../../csuite/icons/iconHelpers'
 import { useAsyncAction } from '../../importers/usePromise'
 import { useSt } from '../../state/stateContext'
 import { renderStatus } from './renderStatus'
@@ -22,17 +23,13 @@ export const Button_InstallCustomNodeUI = observer(function Button_InstallCustom
    const [isExpanded, setIsExpanded] = useState<boolean>(false)
 
    return (
-      <Frame base tw={[isInstalled ? 'bg-success-1' : null, 'flex-col rounded p-2']}>
-         <div tw='flex pb-2' /* Contains everything but description */>
+      <Frame border base tw={[isInstalled ? 'bg-success-1' : null, 'flex-col rounded p-2']}>
+         <div tw='flex pb-1' /* Contains everything but description */>
             <div tw='flex-1 flex-col' /* Node info container */>
-               <div tw='flex items-center gap-1 p-0.5' /* Title container */>
-                  <span tw='whitespace-nowrap text-xl font-bold text-blue-500'>
-                     <span className='material-symbols-outlined'>account_tree</span>
-                  </span>
+               <div tw='flex items-center gap-1 ' /* Title container */>
+                  <Ikon.mdiGlobeModel tw='text-3xl text-blue-500' />
                   <div tw='flex-col self-start' /* Title and Author */>
-                     <div style={{ lineHeight: '1rem' }}>
-                        <span className='text-primary text-base font-bold'>NODES: {plugin.title}</span>
-                     </div>
+                     <span className='text-primary text-base font-bold'>NODES: {plugin.title}</span>
                      <div tw='pl-0 text-xs opacity-75'>{plugin.author}</div>
                   </div>
                   {/* {isInstalled ? <span tw='text-green-500'>Installed</span> : <span tw='text-red-500'>Custom Nodes Required</span>} */}

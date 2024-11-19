@@ -3125,7 +3125,7 @@ declare global {
          "civitai_comfy_nodes.CivitAI_Checkpoint_Loader": {
              /** default="{model_id}@{model_version}" */
              ckpt_air?: Signal['STRING']
-             ckpt_name: Signal['E_2c7b3727']
+             ckpt_name: Signal['E_153b0a51']
              /** default="" */
              api_key?: Signal['STRING']
              /** default=4 min=12 max=12 step=1 */
@@ -3934,7 +3934,7 @@ declare global {
              model: Signal['MODEL']
          },
          DiffusersLoader: {
-             model_path: Signal['E_LoraName']
+             model_path: Signal['E_d1ac9d0d']
          },
          DisableNoise: {
          },
@@ -9026,7 +9026,7 @@ declare global {
              revision?: Signal['STRING']
          },
          "was.Diffusers Model Loader": {
-             model_path: Signal['E_LoraName']
+             model_path: Signal['E_d1ac9d0d']
          },
          "was.Export API": {
              save_prompt_api: Signal['E_8d401757']
@@ -19442,7 +19442,6 @@ declare global {
          "DiffControlNetLoader.control_net_name": Union['E_LoraName']
          "StyleModelLoader.style_model_name": Union['E_LoraName']
          "GLIGENLoader.gligen_name": Union['E_LoraName']
-         "DiffusersLoader.model_path": Union['E_LoraName']
          "LoadLatent.latent": Union['E_LoraName']
          "LoraLoaderModelOnly.lora_name": Union['E_LoraName']
          "HypernetworkLoader.hypernetwork_name": Union['E_LoraName']
@@ -19465,7 +19464,6 @@ declare global {
          "AnimateDiff-Evolved.ADE_InjectPIAIntoAnimateDiffModel.model_name": Union['E_LoraName']
          "AnimateDiff-Evolved.AnimateDiffLoaderV1.model_name": Union['E_LoraName']
          "AnimateDiff-Evolved.ADE_AnimateDiffLoaderV1Advanced.model_name": Union['E_LoraName']
-         "was.Diffusers Model Loader.model_path": Union['E_LoraName']
          "IPAdapter_plus.IPAdapterModelLoader.ipadapter_file": Union['E_LoraName']
          "IPAdapter_plus.IPAdapterLoadEmbeds.embeds": Union['E_LoraName']
          "Impact-Pack.ONNXDetectorProvider.model_name": Union['E_LoraName']
@@ -19487,6 +19485,9 @@ declare global {
          // E_CkptConfigName
          "CheckpointLoader.config_name": Union['E_CkptConfigName']
          "was.Checkpoint Loader.config_name": Union['E_CkptConfigName']
+         // E_d1ac9d0d
+         "DiffusersLoader.model_path": Union['E_d1ac9d0d']
+         "was.Diffusers Model Loader.model_path": Union['E_d1ac9d0d']
          // E_1d09df0c
          "LatentBatchSeedBehavior.seed_behavior": Union['E_1d09df0c']
          "was.True Random.org Number Generator.mode": Union['E_1d09df0c']
@@ -19882,8 +19883,8 @@ declare global {
          "civitai_comfy_nodes.CivitAI_Lora_Loader.lora_name": Union['E_71f8e797']
          // E_6c0bcc99
          "civitai_comfy_nodes.CivitAI_Lora_Loader.download_path": Union['E_6c0bcc99']
-         // E_2c7b3727
-         "civitai_comfy_nodes.CivitAI_Checkpoint_Loader.ckpt_name": Union['E_2c7b3727']
+         // E_153b0a51
+         "civitai_comfy_nodes.CivitAI_Checkpoint_Loader.ckpt_name": Union['E_153b0a51']
          // E_3d793aac
          "civitai_comfy_nodes.CivitAI_Checkpoint_Loader.download_path": Union['E_3d793aac']
          // E_8de7e678
@@ -20405,6 +20406,7 @@ declare global {
          E_DualClipType: Union['E_DualClipType'] | ComfyNodeOutput<'E_DualClipType'> 
          E_daae7c6f: Union['E_daae7c6f'] | ComfyNodeOutput<'E_daae7c6f'> 
          E_CkptConfigName: Union['E_CkptConfigName'] | ComfyNodeOutput<'E_CkptConfigName'> 
+         E_d1ac9d0d: Union['E_d1ac9d0d'] | ComfyNodeOutput<'E_d1ac9d0d'> 
          E_1d09df0c: Union['E_1d09df0c'] | ComfyNodeOutput<'E_1d09df0c'> 
          E_0a165440: Union['E_0a165440'] | ComfyNodeOutput<'E_0a165440'> 
          E_4ca09d2b: Union['E_4ca09d2b'] | ComfyNodeOutput<'E_4ca09d2b'> 
@@ -20520,7 +20522,7 @@ declare global {
          E_72c64673: Union['E_72c64673'] | ComfyNodeOutput<'E_72c64673'> 
          E_71f8e797: Union['E_71f8e797'] | ComfyNodeOutput<'E_71f8e797'> 
          E_6c0bcc99: Union['E_6c0bcc99'] | ComfyNodeOutput<'E_6c0bcc99'> 
-         E_2c7b3727: Union['E_2c7b3727'] | ComfyNodeOutput<'E_2c7b3727'> 
+         E_153b0a51: Union['E_153b0a51'] | ComfyNodeOutput<'E_153b0a51'> 
          E_3d793aac: Union['E_3d793aac'] | ComfyNodeOutput<'E_3d793aac'> 
          E_8de7e678: Union['E_8de7e678'] | ComfyNodeOutput<'E_8de7e678'> 
          E_621dc6c6: Union['E_621dc6c6'] | ComfyNodeOutput<'E_621dc6c6'> 
@@ -20615,7 +20617,7 @@ declare global {
          // ["KSampler.scheduler","KSamplerAdvanced.scheduler","BasicScheduler.scheduler","AnimateDiff-Evolved.ADE_VisualizeContextOptionsK.scheduler","AnimateDiff-Evolved.ADE_VisualizeContextOptionsKAdv.scheduler","AnimateDiff-Evolved.ADE_SigmaScheduleToSigmas.scheduler","was.KSampler (WAS).scheduler","was.KSampler Cycle.scheduler","Impact-Pack.PixelTiledKSampleUpscalerProvider.scheduler","Impact-Pack.PixelTiledKSampleUpscalerProviderPipe.scheduler","Impact-Pack.UnsamplerHookProvider.scheduler","Impact-Pack.UnsamplerDetailerHookProvider.scheduler","Impact-Pack.TiledKSamplerProvider.scheduler","Impact-Pack.ImpactSchedulerAdapter.scheduler"]
          E_SchedulerName: "beta" | "ddim_uniform" | "exponential" | "karras" | "linear_quadratic" | "normal" | "sgm_uniform" | "simple"
          // ["CheckpointLoaderSimple.ckpt_name","unCLIPCheckpointLoader.ckpt_name","CheckpointLoader.ckpt_name","ImageOnlyCheckpointLoader.ckpt_name","AnimateDiff-Evolved.ADE_RegisterModelAsLoraHook.ckpt_name","AnimateDiff-Evolved.ADE_RegisterModelAsLoraHookModelOnly.ckpt_name","AnimateDiff-Evolved.CheckpointLoaderSimpleWithNoiseSelect.ckpt_name","was.Checkpoint Loader.ckpt_name","was.Checkpoint Loader (Simple).ckpt_name","was.unCLIP Checkpoint Loader.ckpt_name"]
-         E_CkptName: "AOM3A3_orangemixs.safetensors" | "photon_v1.safetensors"
+         E_CkptName: "AOM3A3_orangemixs.safetensors" | "noobaiXLNAIXL_vPred06Version.safetensors" | "photon_v1.safetensors"
          // ["VAELoader.vae_name"]
          E_VaeName: "vae-ft-mse-840000-ema-pruned.safetensors"
          // ["LatentUpscale.upscale_method","LatentUpscaleBy.upscale_method","PatchModelAddDownscale.downscale_method","PatchModelAddDownscale.upscale_method","SamplerLCMUpscale.upscale_method"]
@@ -20623,7 +20625,7 @@ declare global {
          // ["LatentUpscale.crop","ImageScale.crop","AnimateDiff-Evolved.ADE_UpscaleAndVAEEncode.crop"]
          E_e2779c2a: "center" | "disabled"
          // ["LoadImage.image","LoadImageMask.image","Impact-Pack.ImageReceiver.image"]
-         E_Image: "0224c37cb73fecb629f22bcd7476231f528f89cf.webp" | "example.png" | "sOA4nLYCSC1J0KN64N5qJnZDcwO8hq64pcv0xLLtg.png"
+         E_Image: "0224c37cb73fecb629f22bcd7476231f528f89cf.webp" | "250e9bfb0bf682919e899fb57fee4c289f0549d4.png" | "example.png" | "sOA4nLYCSC1J0KN64N5qJnZDcwO8hq64pcv0xLLtg.png"
          // ["LoadImageMask.channel","ImageToMask.channel","was.Image to Latent Mask.channel"]
          E_Channel: "alpha" | "blue" | "green" | "red"
          // ["ImageScale.upscale_method","ImageScaleBy.upscale_method","ImageScaleToTotalPixels.upscale_method","AnimateDiff-Evolved.ADE_UpscaleAndVAEEncode.scale_method"]
@@ -20647,6 +20649,8 @@ declare global {
          E_daae7c6f: "clip-vit-large-patch14.safetensors"
          // ["CheckpointLoader.config_name","was.Checkpoint Loader.config_name"]
          E_CkptConfigName: "anything_v3.yaml" | "v1-inference.yaml" | "v1-inference_clip_skip_2.yaml" | "v1-inference_clip_skip_2_fp16.yaml" | "v1-inference_fp16.yaml" | "v1-inpainting-inference.yaml" | "v2-inference-v.yaml" | "v2-inference-v_fp32.yaml" | "v2-inference.yaml" | "v2-inference_fp32.yaml" | "v2-inpainting-inference.yaml"
+         // ["DiffusersLoader.model_path","was.Diffusers Model Loader.model_path"]
+         E_d1ac9d0d: "Marigold"
          // ["LatentBatchSeedBehavior.seed_behavior","was.True Random.org Number Generator.mode"]
          E_1d09df0c: "fixed" | "random"
          // ["UpscaleModelLoader.model_name","was.Upscale Model Loader.model_name"]
@@ -20878,7 +20882,7 @@ declare global {
          // ["civitai_comfy_nodes.CivitAI_Lora_Loader.download_path"]
          E_6c0bcc99: "models/loras"
          // ["civitai_comfy_nodes.CivitAI_Checkpoint_Loader.ckpt_name"]
-         E_2c7b3727: "AOM3A3_orangemixs.safetensors" | "none" | "photon_v1.safetensors"
+         E_153b0a51: "AOM3A3_orangemixs.safetensors" | "none" | "noobaiXLNAIXL_vPred06Version.safetensors" | "photon_v1.safetensors"
          // ["civitai_comfy_nodes.CivitAI_Checkpoint_Loader.download_path"]
          E_3d793aac: "models/checkpoints"
          // ["controlnet_aux.DensePosePreprocessor.model"]
@@ -21521,7 +21525,7 @@ declare global {
          }
       
          DiffusersLoader: {
-            model_path: { kind: 'enum', type: Union['E_LoraName'] }
+            model_path: { kind: 'enum', type: Union['E_d1ac9d0d'] }
          }
       
          LoadLatent: {
@@ -24201,7 +24205,7 @@ declare global {
          }
       
          "was.Diffusers Model Loader": {
-            model_path: { kind: 'enum', type: Union['E_LoraName'] }
+            model_path: { kind: 'enum', type: Union['E_d1ac9d0d'] }
          }
       
          "was.Diffusers Hub Model Down-Loader": {
@@ -26380,7 +26384,7 @@ declare global {
       
          "civitai_comfy_nodes.CivitAI_Checkpoint_Loader": {
             ckpt_air: { kind: 'string', type: string }
-            ckpt_name: { kind: 'enum', type: Union['E_2c7b3727'] }
+            ckpt_name: { kind: 'enum', type: Union['E_153b0a51'] }
             api_key: { kind: 'string', type: string }
             download_chunks: { kind: 'number', type: number }
             download_path: { kind: 'enum', type: Union['E_3d793aac'] }

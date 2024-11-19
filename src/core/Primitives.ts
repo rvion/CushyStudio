@@ -27,7 +27,8 @@ export const howManyWidgetValuesForThisSchemaType = (input: NodeInputExt): numbe
       if (input.nameInComfy === 'seed' || input.nameInComfy === 'noise_seed') return 2
    }
    if (input.isPrimitive) return 1
-   if (input.typeName.startsWith('Enum_')) return 1
+   // 🔴
+   if (input.typeName.startsWith('E_')) return 1
    // console.log(343, input)
    return 0
 }

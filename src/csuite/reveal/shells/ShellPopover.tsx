@@ -16,7 +16,7 @@ export const ShellPopoverUI = observer(function ShellPopoverUI_(p: RevealShellPr
          className={reveal.p.shellClassName}
          tw={[
             //
-            '_RevealUI pointer-events-auto',
+            '_RevealUI pointer-events-auto ',
             false && '!bg-green-400 p-5', // 🔶 debug
             // when we click inside the popup, anchor is blurred but we don't want to close via onAnchorBlur
             // we need some class to check that we're indeed focusing on a child of the popup

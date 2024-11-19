@@ -1,6 +1,8 @@
 SHORT TERM TODO:
 
-    ☐ tename Comfy.Slots to Comfy.UnionFor
+    ☐ regular click on image should just reveal the global "Output" and pin the image inside.
+    ☐ close menu on item click
+    ✘ rename Comfy.Slots to Comfy.UnionFor @cancelled(24-11-17 15:07)
     ☐ fix reveal bug reported by bird_d
         ☐ panel steps
             ☐ open config

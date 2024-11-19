@@ -26,6 +26,9 @@ export function getUnionNameBasedOnFirstFoundEnumName(
    if (enumName === 'DualCLIPLoader.type') return 'E_DualClipType'
    if (enumName === 'CheckpointLoader.config_name') return 'E_CkptConfigName'
 
+   // civitai_comfy_nodes
+   if (enumName === 'civitai_comfy_nodes.CivitAI_Checkpoint_Loader.ckpt_name') return 'E_CivitAICkptName'
+
    // Impact-Specific
    if (enumName === 'Impact-Pack.SAMDetectorCombined.detection_hint') return 'E_ImpactDetectionHint'
 

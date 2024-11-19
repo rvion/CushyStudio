@@ -103,6 +103,7 @@ export const _getKnownModels = (
       for (const [cat, count] of Object.entries(uniqBases))
          out2 += `    | ${JSON.stringify(cat).padEnd(20)} // x ${count.toString().padStart(3)}\n`
       out2 += '\n'
+      out2 += '// prettier-ignore\n'
       out2 += 'export const knownModel_Base: KnownModel_Base[] = [\n'
       for (const [cat, count] of Object.entries(uniqBases))
          out2 += `    ${JSON.stringify(cat).padEnd(20)},  // x ${count.toString().padStart(3)}\n`

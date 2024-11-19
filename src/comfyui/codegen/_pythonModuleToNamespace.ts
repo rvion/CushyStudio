@@ -1,4 +1,5 @@
 export function pythonModuleToPrefix(pythonModule: string): string {
+   // if (pythonModule == null) console.error(`[🔴🔴🔴🔴🔴🔴] `, pythonModule)
    if (pythonModule === 'nodes') return ''
    if (pythonModule.startsWith('comfy_extras.')) return '' //''
    if (pythonModule.startsWith('custom_nodes.')) {

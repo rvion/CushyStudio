@@ -12,7 +12,7 @@ import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
 import { mergeStylesTsEfficient } from '../../csuite/utils/mergeStylesTsEfficient'
 import { DraftMenuActionsUI } from './DraftMenuActionsUI'
 import { DraftMenuDataBlockUI } from './DraftMenuJump'
-import { DraftMenuLooksUI } from './DraftMenuLooksUI'
+import { DraftMenuLooks } from './DraftMenuLooksUI'
 import OverflowingRowUI from './OverflowingRowUI'
 import { PublishAppBtnUI } from './PublishAppBtnUI'
 import { RunOrAutorunUI } from './RunOrAutorunUI'
@@ -38,7 +38,8 @@ export const DraftHeaderUI = observer(function DraftHeader({
          {...rest}
       >
          <PanelHeaderUI>
-            <DraftMenuLooksUI draft={draft} title={app.name} />
+            <DraftMenuLooks.DropDownUI draft={draft} title={app.name} />
+            {/* <DraftMenuLooksUI draft={draft} title={app.name} /> */}
             <DraftMenuActionsUI draft={draft} title={'Actions' /* app.name */} />
             <SpacerUI />
             <Frame

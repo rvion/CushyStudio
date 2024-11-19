@@ -63,9 +63,9 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                />
                <Button
                   icon='mdiDelete'
-                  disabled={host.isReadonly}
+                  // disabled={host.isReadonly}
                   onClick={() => {
-                     if (host.isReadonly) return
+                     // if (host.isReadonly) return
                      runInAction(() => {
                         host.schema.delete({})
                         host.delete({})

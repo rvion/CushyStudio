@@ -5,7 +5,7 @@ import type { MenuBuilder } from './MenuBuilder'
 import type { MenuEntry } from './MenuEntry'
 
 import { nanoid } from 'nanoid'
-import { createElement, type DependencyList, useMemo } from 'react'
+import { createElement, type DependencyList, memo, useMemo } from 'react'
 
 import { Menu } from './Menu'
 import { MenuInstance } from './MenuInstance'
@@ -30,12 +30,12 @@ export type MenuTemplateProps<Props> = {
 }
 
 export class MenuTemplate<PROPS> {
-   id: MenuTemplateID
-
    constructor(public def: MenuTemplateProps<PROPS>) {
       this.id = def.id ?? nanoid()
       menuManager.registerMenuTemplate(this)
    }
+
+   id: MenuTemplateID
 
    /** menut title */
    get title(): string {
@@ -43,18 +43,18 @@ export class MenuTemplate<PROPS> {
    }
 
    /** MenuUI JSX.Elemnt */
-   UI = (p: { props: PROPS }): JSX.Element => {
-      const menu = useMemo(() => this.bind(p.props), [p.props])
+   MenuEntriesUI = memo((p: PROPS): JSX.Element => {
+      const menu = useMemo(() => this.bind(p), [p])
       const menuInst = useMemo(() => new MenuInstance(menu), [menu])
       return createElement(MenuUI, { menu: menuInst })
-   }
+   })
 
    /** Menu with a root anchro */
-   DropDownUI = (p: { props: PROPS }): JSX.Element => {
-      const menu = useMemo(() => this.bind(p.props), [p.props])
+   DropDownUI = memo((p: PROPS): JSX.Element => {
+      const menu = useMemo(() => this.bind(p), [p])
       const menuInst = useMemo(() => new MenuInstance(menu), [menu])
       return createElement(MenuRootUI, { menu: menuInst })
-   }
+   })
 
    /** bind a menu to give props */
    bind = (

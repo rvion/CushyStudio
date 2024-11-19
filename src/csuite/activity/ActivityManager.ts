@@ -15,9 +15,9 @@ export class ActivityManager {
       makeAutoObservable(this)
       commandManager.useSpy((inputToken, ev) => {
          const routine = this.current()
-         console.log(`[💩] commandManager intercepted a key (${inputToken})`)
+         // console.log(`[💩] commandManager intercepted a key (${inputToken})`)
          if (routine == null) return
-         console.log(`[💩] currrent activity live; forwarding ev to it`)
+         // console.log(`[💩] currrent activity live; forwarding ev to it`)
          routine.activity.onKeyDown?.(ev, routine)
       })
    }

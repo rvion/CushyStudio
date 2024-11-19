@@ -335,7 +335,7 @@ export class HostL extends BaseInst<TABLES['host']> {
          const res = v.safeParse(ComfySchemaJSON_valibot, object_info_json)
          // const res = ComfySchemaJSON_valibot..safeParse(object_info_json) //{ KSampler: schema$['KSampler'] })
          if (res.success) {
-            console.log('🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢 valid schema')
+            // console.log('🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢 valid schema')
          } else {
             console.log('🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 invalid schema')
             for (const issue of res.issues) {

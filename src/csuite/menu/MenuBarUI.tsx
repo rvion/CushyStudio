@@ -151,7 +151,7 @@ export const MenuBarUI = observer(function MenuBar({
       <RevealUI
          // tabIndex={tabIndex ?? -1}
          // autoFocus={autoFocus ?? true}
-         tw='flex w-fit'
+         tw='flex w-fit gap-1'
          // TODO: this should be handled by the menu activity instead.
          hasBackdrop
          showBackdrop

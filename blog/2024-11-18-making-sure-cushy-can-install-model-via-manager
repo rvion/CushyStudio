@@ -1,0 +1,30 @@
+Attempt to install missing model
+    - failure (403 forbidden)
+
+```shell
+# log into docker container running comfy
+wsl
+docker ps
+docker exec -it comfyui bash
+# attempt to use vim... fail
+cat /etc/*-release
+# google: how to install vim on thumbleweed
+^D
+docker exec -u root -it comfyui bash
+zypper install vim
+^D
+docker exec -it comfyui bash
+vim ComfyUI/custom_nodes/ComfyUI-Manager/config.ini
+
+# set "bypass_ssl = True" (default: "bypass_ssl = False" by )
+sed -i 's/bypass_ssl = False/bypass_ssl = True/' \
+    ComfyUI/custom_nodes/ComfyUI-Manager/config.ini
+
+# set "preview_method = auto" (default "preview_method = none")
+sed -i 's/preview_method = none/preview_method = auto/' \
+    ComfyUI/custom_nodes/ComfyUI-Manager/config.ini
+
+# set "security_level = weak" (default: "security_level = normal")
+sed -i 's/security_level = normal/security_level = weak/' \
+    ComfyUI/custom_nodes/ComfyUI-Manager/config.ini
+```

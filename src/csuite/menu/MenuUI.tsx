@@ -71,6 +71,7 @@ export const MenuUI = observer(function MenuUI_({
                      label={entry.opts.label}
                      // children={formatMenuLabel(charIx, entry.opts.label)}
                      icon={entry.opts.icon}
+                     beforeShortcut={entry.opts.beforeShortcut}
                      onClick={async () => {
                         await entry.opts.onClick?.()
                         menu.onStop()

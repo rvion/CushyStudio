@@ -54,6 +54,7 @@ export type KnownModel_Base =
     | "FLUX"               // x   1
     | "MoGe"               // x   2
 
+// prettier-ignore
 export const knownModel_Base: KnownModel_Base[] = [
     "FLUX.1"            ,  // x  39
     "SD3"               ,  // x   8

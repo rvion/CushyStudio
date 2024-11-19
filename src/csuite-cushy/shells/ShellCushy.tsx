@@ -43,7 +43,7 @@ const CushyShellUI = observer(function CushySHell(
                blurAnchor: true,
                clickAnchor: true,
             }}
-            content={() => <fieldActionMenu.UI props={{ field: p.field, provenance }} />}
+            content={() => <fieldActionMenu.MenuEntriesUI field={p.field} provenance={provenance} />}
          >
             {utils.renderFCOrNodeWithWrapper(p.HEADER, {}, p.Head, p)}
          </RevealUI>
