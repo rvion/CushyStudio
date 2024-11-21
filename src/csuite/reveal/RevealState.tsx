@@ -344,7 +344,7 @@ export class RevealState {
 
       /* 🔥 */ if (this.isVisible) return
       /* 🔥 */ if (!this.shouldShowOnAnchorHover) return
-      /* 🔥 */ if (RevealState.shared.current) return this.open('mouse-enter-anchor-(no-parent-open)')
+      // /* 🔥 */ if (RevealState.shared.current) return this.open('mouse-enter-anchor-(no-parent-open)')
       this._resetAllAnchorTimouts()
       this.enterAnchorTimeoutId = setTimeout(
          () => this.open('mouse-enter-anchor-(with-parent-open)'),
