@@ -30,16 +30,15 @@ import { useSyncForwardedRef } from './useSyncForwardedRef'
 
 export const RevealUI = observer(
    forwardRef(function RevealUI_(p: RevealProps, ref2?: ForwardedRef<RevealStateLazy>) {
-      const anchorRef = useRef<HTMLDivElement>(null)
-      const shellRef = useRef<HTMLDivElement>(null)
-
-      useSyncForwardedRef(p.sharedAnchorRef, anchorRef)
-
       const parents_: RevealStateLazy[] = p.parentRevealState?.tower ?? useRevealOrNull()?.tower ?? []
       const parents: RevealStateLazy[] = p.useSeparateTower ? [] : parents_
 
       // Eagerly retrieving parents is OK here cause as a children, we expects our parents to exist.
-      const lazyState = useMemoAction(() => new RevealStateLazy(p, parents, anchorRef, shellRef), []) // prettier-ignore
+      const lazyState = useMemoAction(() => new RevealStateLazy(p, parents), []) // prettier-ignore
+      const anchorRef = lazyState.anchorRef
+      const shellRef = lazyState.shellRef
+      useSyncForwardedRef(p.sharedAnchorRef, anchorRef)
+
       const reveal = lazyState.state
       // const nextTower = lazyState.towerContext // (() => ({ tower: [...parents, lazyState] }), [])
       useEffectToRegisterInGlobalRevealStack(lazyState)

@@ -1,4 +1,5 @@
 import type { NO_PROPS } from '../types/NO_PROPS'
+import type { ObservableRef } from '../utils/observableRef'
 import type { RevealStateLazy } from './RevealStateLazy'
 import type { RevealContentProps } from './shells/ShellProps'
 import type { CSSProperties, FC, ReactNode } from 'react'
@@ -135,8 +136,8 @@ export class RevealState {
 
    p: RevealProps
    readonly parents: RevealState[]
-   anchorRef: React.RefObject<HTMLDivElement> // 🚨 ref do not work when observables!
-   shellRef: React.RefObject<HTMLDivElement> // 🚨 ref do not work when observable!
+   anchorRef: ObservableRef<HTMLDivElement>
+   shellRef: ObservableRef<HTMLDivElement>
 
    constructor(public lazyState: RevealStateLazy) {
       this.p = { ...lazyState.p }
