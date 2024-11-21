@@ -17,6 +17,7 @@ export type DropdownProps = {
    content?: () => ReactNode
    button?: ReactNode
    expand?: boolean
+   debugName?: string
 }
 
 /**
@@ -31,6 +32,7 @@ export const Dropdown = observerWC(
             tw={[p.className]}
             hideTriggers={{ shellClick: true, backdropClick: true, escapeKey: true }}
             content={() => <Frame tabIndex={0} tw='z-[1] flex flex-col' children={p.content?.()} />}
+            debugName={p.debugName}
             children={
                p.button ?? (
                   <Button
