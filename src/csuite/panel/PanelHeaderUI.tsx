@@ -43,6 +43,7 @@ export const PanelHeaderUI = observer(function PanelHeader({
 
    return (
       <RevealUI
+         debugName='<Show-Header>'
          trigger='rightClick'
          relativeTo='mouse'
          content={() => (

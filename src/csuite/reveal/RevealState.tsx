@@ -741,7 +741,12 @@ export class RevealState {
 
    log(msg: string): void {
       if (!DEBUG_REVEAL) return
-      console.log(`🎩 ${'    '.repeat(this.depth)} | uid=${this.uid.toString().padStart(2)}`, msg)
+      const emoji = `🎩 `
+      const prefix = `${'    '.repeat(this.depth)}${this.depth > 1 ? ` | ` : ''}`
+      const uid = this.p.debugName
+         ? `uid=${this.p.debugName}-${this.uid.toString()}`
+         : `uid=${this.uid.toString().padStart(2)}`
+      console.log(`${emoji}${prefix}${uid}`, msg)
       // console.log(`🎩 ${'    '.repeat(this.ix)} depth=${this.ix.toString()} | uid=${this.uid.toString().padStart(2)}`, msg)
    }
 

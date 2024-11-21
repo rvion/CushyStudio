@@ -151,6 +151,9 @@ export type RevealOpenReason =
    | 'default-visible'
 
 export type RevealProps = {
+   /** used to identify reveal when src/csuite/reveal/DEBUG_REVEAL.tsx set to true */
+   debugName?: string
+
    /** @since 2024-07-23 */
    relativeTo?: `#${string}` | 'mouse' | 'anchor'
 
