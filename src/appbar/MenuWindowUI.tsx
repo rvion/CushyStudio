@@ -20,9 +20,18 @@ const groupBy = <X extends any, Key extends string>(
 // const XXX = ['Civitai', 'Squoosh']
 export const menuView: Menu = defineMenu({
    title: 'View',
-   entries: (): MenuEntry[] => {
+   entries: (b): MenuEntry[] => {
       const byCategory = groupBy(allPanels, (v) => v.category)
       return [
+         // By categories
+         ...Object.entries(byCategory).map(([category, panels]) => {
+            return defineMenu({
+               title: capitalize(category),
+               entries: () => panels.flatMap((p) => p.menuEntries),
+               icon: getPanelCategoryIcon(category as PanelCategory),
+            })
+         }),
+         b.Divider,
          // Alphabetically
          defineMenu({
             title: 'All Panels',
@@ -32,16 +41,6 @@ export const menuView: Menu = defineMenu({
                   .toSorted((a, b) => a.title.localeCompare(b.title)),
             icon: 'mdiSortAlphabeticalVariant',
          }),
-
-         // By categories
-         ...Object.entries(byCategory).map(([category, panels]) => {
-            return defineMenu({
-               title: capitalize(category),
-               entries: () => panels.flatMap((p) => p.menuEntries),
-               icon: getPanelCategoryIcon(category as PanelCategory),
-            })
-         }),
-
          // menuWithoutProps({
          //     title: 'FooBar',
          //     entries: () => allPanels.filter((v) => !XXX.includes(v.name)).flatMap((panel) => panel.menuEntries),
