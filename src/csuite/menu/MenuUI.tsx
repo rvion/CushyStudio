@@ -130,6 +130,7 @@ export const MenuUI = observer(function MenuUI_({
                   <RevealUI //
                      key={ix}
                      trigger='hover'
+                     showDelay={200}
                      hideTriggers={{}}
                      tw='!block min-w-60'
                      placement='rightStart'
