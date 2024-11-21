@@ -171,13 +171,7 @@ export const RevealUI = observer(
       return (
          <div //
             // 'inline-flex',
-            tw={
-               /* twMerge */ [
-                  'UI-Reveal 🔶NOT-CLONED🔶',
-                  reveal?.defaultCursor ?? 'cursor-pointer',
-                  p.className,
-               ]
-            }
+            tw={['UI-Reveal 🔶NOT-CLONED🔶', reveal?.defaultCursor ?? 'cursor-pointer', p.className]}
             ref={anchorRef}
             style={p.style}
             onContextMenu={lazyState.onContextMenu}
@@ -191,9 +185,7 @@ export const RevealUI = observer(
             {...p.anchorProps}
          >
             {p.children /* anchor */}
-            {/* <RevealCtx.Provider value={nextTower}> */}
             <MkTooltip lazyState={lazyState} />
-            {/* </RevealCtx.Provider> */}
          </div>
       )
    }),
@@ -235,7 +227,6 @@ const MkTooltip = observer(({ lazyState }: { lazyState: RevealStateLazy }) => {
    const element = document.getElementById('tooltip-root')!
 
    const pos = select.tooltipPosition
-   // const p = select.p
    const hiddenContent = createElement(select.contentFn)
 
    let revealedContent = (
