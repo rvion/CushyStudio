@@ -11,6 +11,7 @@ export const ShellPopoverUI = observer(function ShellPopoverUI_(p: RevealShellPr
       <Frame
          // make sure the shell intercept focus events
          // when  see _ShellForFocusEvents
+         ref={p.shellRef}
          tabIndex={0}
          shadow
          className={reveal.p.shellClassName}

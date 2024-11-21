@@ -28,6 +28,7 @@ export class RevealStateLazy {
       public p: RevealProps,
       public parentsLazy: RevealStateLazy[],
       public anchorRef: React.RefObject<HTMLDivElement>,
+      public shellRef: React.RefObject<HTMLDivElement>,
    ) {
       // if (DEBUG_REVEAL) console.log(`💙 new RevealStateLazy (lazyId: ${this.uid} / props: ${p.placement})`)
       this.tower = [...parentsLazy, this]
@@ -36,6 +37,7 @@ export class RevealStateLazy {
       makeAutoObservable(this, {
          p: false,
          anchorRef: false, // 🚨 ref do not work when observables!
+         shellRef: false, // 🚨 ref do not work when observables!
       })
    }
 

@@ -15,10 +15,12 @@ export const ModalShellUI = observer(function ModalShellUI_(p: {
    children?: React.ReactNode
    onClick?: (ev: React.MouseEvent<unknown, MouseEvent>) => void
    close: () => void
+   shellRef?: React.RefObject<HTMLDivElement>
 }) {
    return (
       <Frame
          border
+         ref={p.shellRef}
          style={p.style}
          className={p.className}
          col

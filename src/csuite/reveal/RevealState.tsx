@@ -136,11 +136,13 @@ export class RevealState {
    p: RevealProps
    readonly parents: RevealState[]
    anchorRef: React.RefObject<HTMLDivElement> // 🚨 ref do not work when observables!
+   shellRef: React.RefObject<HTMLDivElement> // 🚨 ref do not work when observable!
 
    constructor(public lazyState: RevealStateLazy) {
       this.p = { ...lazyState.p }
       this.parents = lazyState.parentsLazy.map((lazy) => lazy.getRevealState())
       this.anchorRef = lazyState.anchorRef
+      this.shellRef = lazyState.shellRef
       this.uid = lazyState.uid
       // see comment above
       this.contentFn = (): ReactNode => {
@@ -318,8 +320,8 @@ export class RevealState {
       return out
    }
    tooltipPosition: RevealComputedPosition = { top: 0, left: 0 }
-   setPosition = (rect: DOMRect | null): void => {
-      this.tooltipPosition = computePlacement(this.placement, rect)
+   setPosition = (rect: DOMRect | null, shell: DOMRect | null): void => {
+      this.tooltipPosition = computePlacement(this.placement, rect, shell)
    }
 
    // lock --------------------------------------------

@@ -7,6 +7,7 @@ export type RevealShellProps = {
    pos: RevealComputedPosition
    reveal: RevealState
    children?: ReactNode
+   shellRef: React.RefObject<HTMLDivElement>
 }
 
 export type RevealContentProps = {

@@ -31,13 +31,15 @@ import { useSyncForwardedRef } from './useSyncForwardedRef'
 export const RevealUI = observer(
    forwardRef(function RevealUI_(p: RevealProps, ref2?: ForwardedRef<RevealStateLazy>) {
       const anchorRef = useRef<HTMLDivElement>(null)
+      const shellRef = useRef<HTMLDivElement>(null)
+
       useSyncForwardedRef(p.sharedAnchorRef, anchorRef)
 
       const parents_: RevealStateLazy[] = p.parentRevealState?.tower ?? useRevealOrNull()?.tower ?? []
       const parents: RevealStateLazy[] = p.useSeparateTower ? [] : parents_
 
       // Eagerly retrieving parents is OK here cause as a children, we expects our parents to exist.
-      const lazyState = useMemoAction(() => new RevealStateLazy(p, parents, anchorRef), []) // prettier-ignore
+      const lazyState = useMemoAction(() => new RevealStateLazy(p, parents, anchorRef, shellRef), []) // prettier-ignore
       const reveal = lazyState.state
       // const nextTower = lazyState.towerContext // (() => ({ tower: [...parents, lazyState] }), [])
       useEffectToRegisterInGlobalRevealStack(lazyState)
@@ -87,18 +89,16 @@ export const RevealUI = observer(
             const x = regionMonitor.mouseX
             const y = regionMonitor.mouseY
             const vDomRect = new VirtualDomRect({ x, y, width: 1, height: 1 })
-            reveal.setPosition(vDomRect)
+            reveal.setPosition(vDomRect, null)
          }
 
          // 2. place around anchor
          else if (relTo == null || relTo === 'anchor') {
             const element = anchorRef.current
-            if (element) {
-               const rect = element.getBoundingClientRect()
-               reveal.setPosition(rect)
-            } else {
-               reveal.setPosition(null)
-            }
+            reveal.setPosition(
+               element?.getBoundingClientRect() ?? null,
+               shellRef.current?.getBoundingClientRect() ?? null,
+            )
          }
 
          // 3. place somewhere else
@@ -110,7 +110,8 @@ export const RevealUI = observer(
             // and use 2 as a fallback case.
             if (element == null) return
             const rect = element.getBoundingClientRect()
-            reveal.setPosition(rect)
+            reveal.setPosition(rect, shellRef.current?.getBoundingClientRect() ?? null)
+
             // in that case, let's add a return here
          }
       }, [reveal?.isVisible])
@@ -237,7 +238,7 @@ const mkTooltip = (lazyState: Maybe<RevealStateLazy>): Maybe<JSX.Element> => {
    }
 
    let revealedContent = (
-      <ShellUI pos={pos} reveal={select}>
+      <ShellUI pos={pos} reveal={select} shellRef={lazyState.shellRef}>
          {hiddenContent}
       </ShellUI>
    )
