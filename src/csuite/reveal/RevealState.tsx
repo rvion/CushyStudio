@@ -643,6 +643,7 @@ export class RevealState {
 
    onAnchorKeyDown = (ev: React.KeyboardEvent): void => {
       this.logEv(ev, `AnchorOrShell.onKeyDown (⏳: ${this.delaySinceLastOpenClose})`)
+      this.p.onAnchorKeyDown?.(ev)
 
       // 🔶 without delay: press 'Enter' in option list => toggle => close popup => calls onAnchorKeyDown 'Enter' with visible now false => re-opens :(
       if (this.PREVENT_DOUBLE_OPEN_CLOSE_DELAY) return

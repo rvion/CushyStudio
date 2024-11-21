@@ -171,6 +171,7 @@ export type RevealProps = {
    title?: React.ReactNode // only for popup
 
    // callbacks if we need to add side effects after reveal/hide
+   onAnchorKeyDown?: (ev: React.KeyboardEvent) => void
    onRevealed?: (rst: RevealState) => void
    onBeforeHide?: (ev: RevealCloseEvent) => void
    onHidden?: (reason: RevealHideReason) => void
