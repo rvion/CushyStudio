@@ -42,21 +42,7 @@ export const MenuUI = observer(function MenuUI_({
          onKeyDown={(ev) => {
             // call the original onKeyDown
             onKeyDown?.(ev)
-
-            // handle the shortcut key
-            const key = ev.key
-            for (const entry of menu.entriesWithKb) {
-               if (entry.char === key) {
-                  if (entry.entry instanceof SimpleMenuAction) entry.entry.opts.onClick?.()
-                  // if (entry.entry instanceof SimpleMenuEntryPopup) entry.entry.onPick()
-                  else if (isBoundCommand(entry.entry)) void entry.entry.execute()
-                  else if (isCommand(entry.entry)) void entry.entry.execute()
-                  menu.onStop()
-                  ev.stopPropagation()
-                  ev.preventDefault()
-                  return
-               }
-            }
+            menu.processKey(ev)
          }}
          {...rest}
       >
