@@ -354,8 +354,8 @@ export class RevealState {
 
    onMouseLeaveAnchor = (ev: React.MouseEvent<unknown>): void => {
       this.logEv(ev, `anchor.onMouseLeave`)
-      if (!this.shouldHideOnAnchorOrTooltipMouseLeave) return
       this._resetAllAnchorTimouts()
+      if (!this.shouldHideOnAnchorOrTooltipMouseLeave) return
       this.leaveAnchorTimeoutId = setTimeout(() => this.close('mouseOutside'), this.hideDelay)
    }
 
