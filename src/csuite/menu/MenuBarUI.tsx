@@ -1,7 +1,7 @@
 import type { RevealStateLazy } from '../reveal/RevealStateLazy'
 
 import { observer } from 'mobx-react-lite'
-import React from 'react'
+import React, { useId } from 'react'
 
 import { Frame } from '../frame/Frame'
 import { isBoundCommand } from '../introspect/_isBoundCommand'
@@ -108,15 +108,19 @@ export const MenuBarUI = observer(function MenuBar({
                key={entry.id}
                ref={ABC.ref}
                trigger='menubarItem'
+               showDelay={0}
+               debugName={label}
                revealGroup={uid}
                hasBackdrop={false}
                showBackdrop={false}
-               // hideTriggers={{clic}}
                placement='bottomStart'
                content={() => <MenuUI menu={entry.init(menu.allocatedKeys)} />}
+               onRevealed={(x) => x.anchorRef.current?.focus()}
+               onAnchorKeyDown={(ev) => menu.processKey(ev)}
             >
                <Frame //
                   tw='px-1'
+                  tabIndex={-1}
                   line
                   icon={entry.icon}
                   hover
@@ -149,53 +153,59 @@ export const MenuBarUI = observer(function MenuBar({
       //     return { entry }
       // }
    })
-   return (
-      <RevealUI
-         // tabIndex={tabIndex ?? -1}
-         // autoFocus={autoFocus ?? true}
-         tw='flex w-fit gap-1'
-         // TODO: this should be handled by the menu activity instead.
-         hasBackdrop
-         showBackdrop
-         placement='above-no-clamp'
-         trigger='none'
-         content={() => ENTRIES}
-         hideTriggers={{ backdropClick: true }}
-         anchorProps={{
-            onKeyDown: (ev) => {
-               console.log(
-                  `[🤠] COUCOU`,
-                  ev.key,
-                  menu.entriesWithKb.map((i) => i.char),
-               )
-               // call the original onKeyDown
-               onKeyDown?.(ev)
+   // return '🟢'
+   return <span tw='flex w-fit gap-1'>{ENTRIES}</span>
+   // return (
+   //    <RevealUI
+   //       // tabIndex={tabIndex ?? -1}
+   //       // autoFocus={autoFocus ?? true}
+   //       tw='flex w-fit gap-1'
+   //       debugName='MenuBarUI'
+   //       // TODO: this should be handled by the menu activity instead.
+   //       hasBackdrop
+   //       // showBackdrop
+   //       // backdropColor='red'
+   //       placement='above-no-clamp'
+   //       shell={'popover'}
+   //       trigger='click'
+   //       content={() => <span tw='flex w-fit gap-1'>{ENTRIES}</span>}
+   //       hideTriggers={{ backdropClick: true }}
+   //       anchorProps={{
+   //          onKeyDown: (ev) => {
+   //             console.log(
+   //                `[🤠] COUCOU`,
+   //                ev.key,
+   //                menu.entriesWithKb.map((i) => i.char),
+   //             )
+   //             // call the original onKeyDown
+   //             onKeyDown?.(ev)
 
-               // handle the shortcut key
-               const key = ev.key
-               for (const entry of menu.entriesWithKb) {
-                  if (entry.char === key) {
-                     if (entry.entry instanceof SimpleMenuAction) entry.entry.opts.onClick?.()
-                     // if (entry.entry instanceof SimpleMenuEntryPopup) entry.entry.onPick()
-                     else if (isBoundCommand(entry.entry)) void entry.entry.execute()
-                     else if (isCommand(entry.entry)) void entry.entry.execute()
-                     else if (isMenu(entry.entry)) {
-                        if (entry.ref == null) console.log(`[🔴] no REFFOR`, entry)
-                        else if (entry.ref.current == null) console.log(`[🔴] no entry ref current`)
-                        else
-                           void entry.ref.current.getRevealState().open('programmatically-via-open-function')
-                     }
-                     menu.onStop()
-                     ev.stopPropagation()
-                     ev.preventDefault()
-                     return
-                  }
-               }
-            },
-            // {...rest}
-         }}
-      >
-         {ENTRIES}
-      </RevealUI>
-   )
+   //             // handle the shortcut key
+   //             const key = ev.key
+   //             for (const entry of menu.entriesWithKb) {
+   //                if (entry.char === key) {
+   //                   if (entry.entry instanceof SimpleMenuAction) entry.entry.opts.onClick?.()
+   //                   // if (entry.entry instanceof SimpleMenuEntryPopup) entry.entry.onPick()
+   //                   else if (isBoundCommand(entry.entry)) void entry.entry.execute()
+   //                   else if (isCommand(entry.entry)) void entry.entry.execute()
+   //                   else if (isMenu(entry.entry)) {
+   //                      if (entry.ref == null) console.log(`[🔴] no REFFOR`, entry)
+   //                      else if (entry.ref.current == null) console.log(`[🔴] no entry ref current`)
+   //                      else
+   //                         void entry.ref.current.getRevealState().open('programmatically-via-open-function')
+   //                   }
+   //                   menu.onStop()
+   //                   ev.stopPropagation()
+   //                   ev.preventDefault()
+   //                   return
+   //                }
+   //             }
+   //          },
+   //          // {...rest}
+   //       }}
+   //    >
+   //       {/* {ENTRIES} */}
+   //       <span tw='pointer-events-none flex w-fit gap-1'>{ENTRIES}</span>
+   //    </RevealUI>
+   // )
 })
