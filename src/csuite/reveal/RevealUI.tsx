@@ -6,7 +6,6 @@ import { observer } from 'mobx-react-lite'
 import React, { cloneElement, createElement, forwardRef, useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 
-// import { twMerge } from 'tailwind-merge'
 import { cls } from '../../widgets/misc/cls'
 import { regionMonitor } from '../regions/RegionMonitor'
 import { objectAssignTsEfficient_t_t } from '../utils/objectAssignTsEfficient'
@@ -40,7 +39,7 @@ export const RevealUI = observer(
       // Eagerly retrieving parents is OK here cause as a children, we expects our parents to exist.
       const lazyState = useMemoAction(() => new RevealStateLazy(p, parents, anchorRef), []) // prettier-ignore
       const reveal = lazyState.state
-      const nextTower = lazyState.towerContext // (() => ({ tower: [...parents, lazyState] }), [])
+      // const nextTower = lazyState.towerContext // (() => ({ tower: [...parents, lazyState] }), [])
       useEffectToRegisterInGlobalRevealStack(lazyState)
 
       // 🔴 2024-08-08 domi: isn't this broken/useless?
@@ -58,8 +57,7 @@ export const RevealUI = observer(
       // TODO: can we just make that part of the lazyState initialization instead
       useEffectAction(() => {
          if (reveal == null) return
-         if (p.content !== reveal.p.content)
-            reveal.contentFn = (): JSX.Element => createElement(p.content, reveal.revealContentProps)
+         if (p.content !== reveal.p.content) reveal.contentFn = (): JSX.Element => createElement(p.content, reveal.revealContentProps) // prettier-ignore
          if (p.showBackdrop !== reveal.p.showBackdrop) reveal.p.showBackdrop = p.showBackdrop
          if (p.hasBackdrop !== reveal.p.hasBackdrop) reveal.p.hasBackdrop = p.hasBackdrop
          if (p.backdropColor !== reveal.p.backdropColor) reveal.p.backdropColor = p.backdropColor
@@ -163,20 +161,10 @@ export const RevealUI = observer(
                     {mkTooltip(lazyState)}
                 </>
             )
-         return (
-            <RevealCtx.Provider //
-               value={nextTower}
-            >
-               {clonedChildren}
-            </RevealCtx.Provider>
-         )
+         return clonedChildren
       }
 
-      if (p.children == null) {
-         return (
-            <RevealCtx.Provider value={nextTower}>{mkTooltip(lazyState) /* tooltip */}</RevealCtx.Provider>
-         )
-      }
+      if (p.children == null) return mkTooltip(lazyState)
 
       // this span could be bypassed by cloning the child element and injecting props,
       // assuming the child will mount them
@@ -203,10 +191,10 @@ export const RevealUI = observer(
             {...p.anchorProps}
          >
             {p.children /* anchor */}
-            <RevealCtx.Provider value={nextTower}>
-               {/*  */}
-               {mkTooltip(lazyState) /* tooltip */}
-            </RevealCtx.Provider>
+            {/* <RevealCtx.Provider value={nextTower}> */}
+            {/*  */}
+            {mkTooltip(lazyState) /* tooltip */}
+            {/* </RevealCtx.Provider> */}
          </div>
       )
    }),
@@ -214,7 +202,7 @@ export const RevealUI = observer(
 
 RevealUI.displayName = 'RevealUI'
 
-const mkTooltip = (lazyState: Maybe<RevealStateLazy>): Maybe<ReactPortal> => {
+const mkTooltip = (lazyState: Maybe<RevealStateLazy>): Maybe<JSX.Element> => {
    if (lazyState == null) return null
    const select = lazyState.state
 
@@ -259,5 +247,10 @@ const mkTooltip = (lazyState: Maybe<RevealStateLazy>): Maybe<ReactPortal> => {
       revealedContent = <RevealBackdropUI reveal={select}>{revealedContent}</RevealBackdropUI>
    }
 
-   return createPortal(revealedContent, element)
+   return (
+      <RevealCtx.Provider value={lazyState.towerContext}>
+         {createPortal(revealedContent, element)}
+      </RevealCtx.Provider>
+   )
+   // return createPortal(revealedContent, element)
 }
