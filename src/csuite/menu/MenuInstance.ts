@@ -8,6 +8,8 @@ import { nanoid } from 'nanoid'
 import { createElement, type UIEvent } from 'react'
 
 import { Command } from '../commands/Command'
+import { isBoundCommand } from '../introspect/_isBoundCommand'
+import { isCommand } from '../introspect/_isCommand'
 import { isMenu } from '../introspect/_isMenu'
 import { menuBuilder } from './MenuBuilder'
 import { MenuUI } from './MenuUI'
@@ -41,6 +43,34 @@ export class MenuInstance implements Activity {
          uid: false,
          UI: false,
       })
+   }
+
+   processKey = (ev: React.KeyboardEvent<Element>): void => {
+      const key = ev.key
+      console.log(
+         `[🤠] `,
+         key,
+         this.entriesWithKb.length,
+         this.entriesWithKb.findIndex((t) => t.char === key),
+      )
+      // handle the shortcut key
+      for (const entry of this.entriesWithKb) {
+         if (entry.char === key) {
+            if (entry.entry instanceof SimpleMenuAction) entry.entry.opts.onClick?.()
+            // if (entry.entry instanceof SimpleMenuEntryPopup) entry.entry.onPick()
+            else if (isBoundCommand(entry.entry)) void entry.entry.execute()
+            else if (isCommand(entry.entry)) void entry.entry.execute()
+            else if (isMenu(entry.entry)) {
+               if (entry.ref == null) console.log(`[🔴] no REFFOR`, entry)
+               else if (entry.ref.current == null) console.log(`[🔴] no entry ref current`)
+               else void entry.ref.current.getRevealState().open('programmatically-via-open-function')
+            }
+            this.onStop()
+            ev.stopPropagation()
+            ev.preventDefault()
+            return
+         }
+      }
    }
 
    get entries(): MenuEntry[] {
