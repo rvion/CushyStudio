@@ -1,9 +1,9 @@
 import type { RevealProps } from './RevealProps'
 import type { RevealShellProps } from './shells/ShellProps'
-import type { ForwardedRef, ReactNode, ReactPortal } from 'react'
+import type { ForwardedRef, ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
-import React, { cloneElement, createElement, forwardRef, useEffect, useRef } from 'react'
+import React, { cloneElement, createElement, forwardRef, useEffect, useMemo } from 'react'
 import { createPortal } from 'react-dom'
 
 import { cls } from '../../widgets/misc/cls'
@@ -158,13 +158,13 @@ export const RevealUI = observer(
                 },
                 <>
                     {child.props.children}
-                    {mkTooltip(lazyState)}
+                    <MkTooltip lazyState={lazyState} />
                 </>
             )
          return clonedChildren
       }
 
-      if (p.children == null) return mkTooltip(lazyState)
+      if (p.children == null) return <MkTooltip lazyState={lazyState} />
 
       // this span could be bypassed by cloning the child element and injecting props,
       // assuming the child will mount them
@@ -192,8 +192,7 @@ export const RevealUI = observer(
          >
             {p.children /* anchor */}
             {/* <RevealCtx.Provider value={nextTower}> */}
-            {/*  */}
-            {mkTooltip(lazyState) /* tooltip */}
+            <MkTooltip lazyState={lazyState} />
             {/* </RevealCtx.Provider> */}
          </div>
       )
@@ -202,9 +201,29 @@ export const RevealUI = observer(
 
 RevealUI.displayName = 'RevealUI'
 
-const mkTooltip = (lazyState: Maybe<RevealStateLazy>): Maybe<JSX.Element> => {
-   if (lazyState == null) return null
+const MkTooltip = observer(({ lazyState }: { lazyState: RevealStateLazy }) => {
    const select = lazyState.state
+   const p = lazyState.p
+   const ShellUI: React.FC<RevealShellProps> = useMemo(
+      () =>
+         (props: RevealShellProps): ReactNode => {
+            const shell = p.shell
+            if (shell === 'popover') return <ShellPopoverUI {...props} />
+            if (shell === 'none') return <ShellNoneUI {...props} />
+            //
+            if (shell === 'popup') return <ShellPopupUI {...props} />
+            if (shell === 'popup-xs') return <ShellPopupXSUI {...props} />
+            if (shell === 'popup-sm') return <ShellPopupSMUI {...props} />
+            if (shell === 'popup-lg') return <ShellPopupLGUI {...props} />
+            if (shell === 'popup-xl') return <ShellPopupXLUI {...props} />
+
+            if (!shell) return <ShellPopoverUI {...props} />
+
+            const Shell = shell as React.FC<RevealShellProps>
+            return <Shell {...props} />
+         },
+      [p.shell],
+   )
 
    // ensure uist initialized
    if (select == null) return null
@@ -216,25 +235,8 @@ const mkTooltip = (lazyState: Maybe<RevealStateLazy>): Maybe<JSX.Element> => {
    const element = document.getElementById('tooltip-root')!
 
    const pos = select.tooltipPosition
-   const p = select.p
+   // const p = select.p
    const hiddenContent = createElement(select.contentFn)
-
-   const ShellUI: React.FC<RevealShellProps> = (props: RevealShellProps): ReactNode => {
-      const shell = p.shell
-      if (shell === 'popover') return <ShellPopoverUI {...props} />
-      if (shell === 'none') return <ShellNoneUI {...props} />
-      //
-      if (shell === 'popup') return <ShellPopupUI {...props} />
-      if (shell === 'popup-xs') return <ShellPopupXSUI {...props} />
-      if (shell === 'popup-sm') return <ShellPopupSMUI {...props} />
-      if (shell === 'popup-lg') return <ShellPopupLGUI {...props} />
-      if (shell === 'popup-xl') return <ShellPopupXLUI {...props} />
-
-      if (!shell) return <ShellPopoverUI {...props} />
-
-      const Shell = shell as React.FC<RevealShellProps>
-      return <Shell {...props} />
-   }
 
    let revealedContent = (
       <ShellUI pos={pos} reveal={select} shellRef={lazyState.shellRef}>
@@ -253,4 +255,4 @@ const mkTooltip = (lazyState: Maybe<RevealStateLazy>): Maybe<JSX.Element> => {
       </RevealCtx.Provider>
    )
    // return createPortal(revealedContent, element)
-}
+})
