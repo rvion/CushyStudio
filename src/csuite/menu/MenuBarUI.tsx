@@ -27,6 +27,7 @@ export const MenuBarUI = observer(function MenuBar({
    // rest (so custom JSX magic can work)
    ...rest
 }: MenuUIProps) {
+   const uid = useId()
    const ENTRIES = menu.entriesWithKb.map((ABC, ix) => {
       const { entry: entry, char, charIx } = ABC
       // 1. simple menu action
@@ -107,6 +108,7 @@ export const MenuBarUI = observer(function MenuBar({
                key={entry.id}
                ref={ABC.ref}
                trigger='menubarItem'
+               revealGroup={uid}
                hasBackdrop={false}
                showBackdrop={false}
                // hideTriggers={{clic}}
