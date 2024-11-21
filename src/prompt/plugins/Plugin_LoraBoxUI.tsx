@@ -5,8 +5,10 @@ import { observer } from 'mobx-react-lite'
 
 import { openExternal } from '../../app/layout/openExternal'
 import { Button } from '../../csuite/button/Button'
+import { MenuDivider } from '../../csuite/dropdown/MenuDivider'
 import { Frame } from '../../csuite/frame/Frame'
 import { InputNumberUI } from '../../csuite/input-number/InputNumberUI'
+import { InputStringUI } from '../../csuite/input-string/InputStringUI'
 import { InputLegacy } from '../../csuite/inputs/shims'
 import { MessageErrorUI } from '../../csuite/messages/MessageErrorUI'
 import { SelectUI } from '../../csuite/select/SelectUI'
@@ -78,41 +80,42 @@ const LoraBoxUI = observer(function LoraBoxUI_(p: {
    const associatedText = loraMetadata?.text ?? ''
    const associatedUrl = loraMetadata?.url ?? ''
    const weighted = p.weightedASTNode
+   const theme = cushy.theme.value
 
    // const numbers = def.ref.node.getChildren('Number')
    return (
       <Frame base={5} tw='rounded p-2'>
-         <div //Header
-            tw='border-base-200 mb-2 flex h-10 w-full items-center border-b pb-2'
+         <Frame //Join Lora selection and Delete Button
+            align
+            expand
+            border={theme.inputBorder}
+            dropShadow={theme.inputShadow}
+            roundness={theme.inputRoundness}
          >
-            <div //Join Lora selection and Delete Button
-               tw='join flex-1'
-            >
-               <SelectUI<string>
-                  tw='join-item'
-                  value={() => loraName}
-                  options={() => st.schema.getLoras()}
-                  onOptionToggled={(val) => {
-                     node.nameNode?.setText(val)
-                     // p.uist.editorView?.dispatch({
-                     //     changes: {
-                     //         from: node.from,
-                     //         to: node.to,
-                     //         insert: val.indexOf(' ') > -1 ? `@"${val}"` : `@${val}`,
-                     //     },
-                     // })
-                  }}
-                  getLabelText={(t): string => t}
-                  OptionLabelUI={(v) => <div>{v}</div>}
-               />
-               <Button //
-                  tw='WIDGET-FIELD join-item w-8'
-                  size='xs'
-                  icon='mdiDeleteForever'
-                  onClick={p.onDelete}
-               />
-            </div>
-            {/* {node.name}
+            <SelectUI<string>
+               value={() => loraName}
+               options={() => st.schema.getLoras()}
+               onOptionToggled={(val) => {
+                  node.nameNode?.setText(val)
+                  // p.uist.editorView?.dispatch({
+                  //     changes: {
+                  //         from: node.from,
+                  //         to: node.to,
+                  //         insert: val.indexOf(' ') > -1 ? `@"${val}"` : `@${val}`,
+                  //     },
+                  // })
+               }}
+               getLabelText={(t): string => t}
+               OptionLabelUI={(v) => <div>{v}</div>}
+            />
+            <Button //
+               tw='WIDGET-FIELD join-item w-8'
+               size='xs'
+               icon='mdiDeleteForever'
+               onClick={p.onDelete}
+            />
+         </Frame>
+         {/* {node.name}
                 <div tw='flex-0 flex-grow'></div>
                 <Button //
                     size='xs'
@@ -120,11 +123,10 @@ const LoraBoxUI = observer(function LoraBoxUI_(p: {
                     onClick={p.onDelete}
                     tw='h-full'
                 /> */}
-         </div>
+         <MenuDivider />
          {/* {node.name} */}
-         <div tw='flex items-center gap-1'>
-            <div tw='w-32'>Model Strength</div>
-            <div tw='flex flex-grow items-center'>
+         <div tw='flex flex-col items-center gap-1 w-full flex-grow'>
+            <div tw='flex flex-grow flex-row gap-1 w-full'>
                <InputNumberUI
                   value={node.strength_model ?? 1}
                   mode='float'
@@ -132,6 +134,7 @@ const LoraBoxUI = observer(function LoraBoxUI_(p: {
                   min={-2}
                   max={2}
                   hideSlider
+                  text='Model Strength'
                   onValueChange={(v) => {
                      const num1 = node.getChild('Number', 0)
                      if (num1) num1.setNumber(v)
@@ -147,11 +150,6 @@ const LoraBoxUI = observer(function LoraBoxUI_(p: {
                      }
                   }}
                />
-            </div>
-         </div>
-         <div tw='flex items-center gap-1'>
-            <div tw='w-32'>Clip Strength</div>
-            <div tw='flex flex-grow items-center'>
                <InputNumberUI
                   value={node.strength_clip ?? 1}
                   mode='float'
@@ -159,6 +157,7 @@ const LoraBoxUI = observer(function LoraBoxUI_(p: {
                   min={-2}
                   max={2}
                   hideSlider
+                  text='Clip Strength'
                   onValueChange={(v) => {
                      const num2 = node.getChild('Number', 1)
                      if (num2) num2.setNumber(v)
@@ -176,17 +175,21 @@ const LoraBoxUI = observer(function LoraBoxUI_(p: {
                   }}
                />
             </div>
-         </div>
-         <div tw='flex items-center gap-1'>
-            <div tw='w-32'>Trigger Words*</div>
-            <div tw='join flex flex-grow'>
-               <InputLegacy
+            <Frame //
+               tw='w-full'
+               align
+               expand
+               border={theme.inputBorder}
+               dropShadow={theme.inputShadow}
+               roundness={theme.inputRoundness}
+            >
+               <InputStringUI
                   //
-                  tw='h-input join-item rounded'
+                  tw='flex-grow px-2'
                   type='text'
-                  value={associatedText}
-                  onChange={(ev) => {
-                     const nextText = ev.target.value
+                  getValue={() => associatedText}
+                  placeholder='Trigger Words'
+                  setValue={(val) => {
                      st.configFile.update((prev) => {
                         // ensure prev.loraPrompts
                         if (!prev.loraPrompts) prev.loraPrompts = {}
@@ -194,51 +197,58 @@ const LoraBoxUI = observer(function LoraBoxUI_(p: {
                         // ensure entry for lora name
                         let entry = lp[loraName]
                         if (!entry) entry = lp[loraName] = { text: '' }
-                        entry.text = nextText
+                        entry.text = val
                      })
                   }}
                />
                <InputNumberUI //
-                  tw='join-item'
+                  tooltip='Trigger word(s) strength'
                   value={weighted?.weight ?? 1.0}
                   mode='float'
                   step={0.1}
                   min={-2}
                   max={2}
                   hideSlider
+                  text='Strength'
                   onValueChange={(v) => {
                      if (weighted) weighted.weight = v
                      else node.wrapWithWeighted(v)
                   }}
                />
-            </div>
-         </div>
-         <div tw='text-xs italic opacity-50'>
-            *: Only trigger words will be multiplied by weights; to change the lora model and clip strength,
-            use [x,y] syntax
-         </div>
-         <div tw='flex items-center gap-1'>
-            <Button size='input' icon='mdiOpenInNew' onClick={() => openExternal(associatedUrl)}>
-               Associated URL
-            </Button>
-            <InputLegacy
-               type='text'
+            </Frame>
+            <Frame
+               //
                tw='w-full'
-               placeholder='Associated URL....'
-               value={associatedUrl}
-               onChange={(ev) => {
-                  const nextURL = ev.target.value
-                  st.configFile.update((prev) => {
-                     // ensure prev.loraPrompts
-                     if (!prev.loraPrompts) prev.loraPrompts = {}
-                     const lp = prev.loraPrompts
-                     // ensure entry for lora name
-                     let entry = lp[loraName]
-                     if (!entry) entry = lp[loraName] = { url: '' }
-                     entry.url = nextURL
-                  })
-               }}
-            />
+               align
+               expand
+               border={theme.inputBorder}
+               dropShadow={theme.inputShadow}
+               roundness={theme.inputRoundness}
+            >
+               <InputStringUI // TODO(bird_d): Get this from the lora metadata itself?
+                  type='text'
+                  tw='w-full'
+                  placeholder='Associated URL....'
+                  getValue={() => associatedUrl}
+                  setValue={(val) => {
+                     st.configFile.update((prev) => {
+                        // ensure prev.loraPrompts
+                        if (!prev.loraPrompts) prev.loraPrompts = {}
+                        const lp = prev.loraPrompts
+                        // ensure entry for lora name
+                        let entry = lp[loraName]
+                        if (!entry) entry = lp[loraName] = { url: '' }
+                        entry.url = val
+                     })
+                  }}
+               />
+               <Button
+                  //
+                  tooltip='Open associated URL in external browser'
+                  icon='mdiOpenInNew'
+                  onClick={() => openExternal(associatedUrl)}
+               />
+            </Frame>
          </div>
       </Frame>
    )
