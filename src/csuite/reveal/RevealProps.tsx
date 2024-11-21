@@ -76,6 +76,7 @@ export const revealPresets = {
    menubarItem: preset({
       show: {
          anchorClick: true,
+         keyboardEnterOrLetterWhenAnchorFocused: true,
          anchorHover: (reveal, RevealState) => {
             // console.log(`[🎩🔴1] RevealState.shared.current is ${RevealState.shared.current?.uid} at depth ${RevealState.shared.current?.depth}`)
             const current = RevealState.shared.current
