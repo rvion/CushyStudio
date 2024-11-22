@@ -1,8 +1,10 @@
 import type { RevealStateLazy } from '../reveal/RevealStateLazy'
+import type { MenuInstance } from './MenuInstance'
 
 import { observer } from 'mobx-react-lite'
 import React, { useId } from 'react'
 
+import { uniqueIDByMemoryRef } from '../../router/uniqueIDByMemoryRef'
 import { Frame } from '../frame/Frame'
 import { isBoundCommand } from '../introspect/_isBoundCommand'
 import { isCommand } from '../introspect/_isCommand'
@@ -28,8 +30,8 @@ export const MenuBarUI = observer(function MenuBar({
    ...rest
 }: MenuUIProps) {
    const uid = useId()
-   const ENTRIES = menu.entriesWithKb.map((ABC, ix) => {
-      const { entry: entry, char, charIx } = ABC
+   const ENTRIES = menu.entriesWithKb.map((menuEntryWithKey, ix) => {
+      const { entry: entry, charIx } = menuEntryWithKey
       // 1. simple menu action
       if (entry instanceof SimpleMenuAction) {
          return <div key={ix}>❌ TODO</div>
@@ -95,18 +97,12 @@ export const MenuBarUI = observer(function MenuBar({
       // bound menu
       else if (isMenu(entry)) {
          const label = entry.title
-
-         // 🔴 wrong place
-         if (ABC.ref == null) {
-            ABC.ref = React.createRef<RevealStateLazy>()
-            // console.log(`[🔴🔴🔴]`, ABC)
-         }
-
+         const menuInstance: MenuInstance = menu.stableInit(entry) // entry.init(menu.allocatedKeys)
          return (
             <RevealUI //
                tw='inline-flex select-none'
                key={entry.id}
-               ref={ABC.ref}
+               ref={menuInstance.revealRef}
                trigger='menubarItem'
                showDelay={0}
                debugName={label}
@@ -114,9 +110,20 @@ export const MenuBarUI = observer(function MenuBar({
                hasBackdrop={false}
                showBackdrop={false}
                placement='bottomStart'
-               content={() => <MenuUI menu={entry.init(menu.allocatedKeys)} />}
-               onRevealed={(x) => x.anchorRef.current?.focus()}
+               content={() => <MenuUI menu={menuInstance} />}
                onAnchorKeyDown={(ev) => menu.processKey(ev)}
+               onRevealed={(reveal) => {
+                  menuInstance.menuUIRef.onMount((z) => z.focus())
+                  //    menuInstance.menuUIRef.onMount((z) => {
+                  //    // console.log(`[🤠] A`, document.activeElement)
+                  //    // console.log(`[🤠] B`, shell)
+                  //    z.focus()
+                  //    // console.log(`[🤠] C `, document.activeElement)
+                  //    setTimeout(() => {
+                  //       console.log(`[🤠] D `, document.activeElement)
+                  //    }, 100)
+                  // })
+               }}
             >
                <Frame //
                   tw='px-1'
@@ -138,74 +145,12 @@ export const MenuBarUI = observer(function MenuBar({
             </RevealUI>
          )
       }
-
       //
       else if (isWidget(entry)) {
          return entry.UI()
       }
 
-      //
       return renderFCOrNode(entry, {})
-
-      // else if (React.isValidElement(entry)) {
-      //     return <React.Fragment key={ix}>{createElement(entry)}</React.Fragment>
-      // } else {
-      //     return { entry }
-      // }
    })
-   // return '🟢'
    return <span tw='flex w-fit gap-1'>{ENTRIES}</span>
-   // return (
-   //    <RevealUI
-   //       // tabIndex={tabIndex ?? -1}
-   //       // autoFocus={autoFocus ?? true}
-   //       tw='flex w-fit gap-1'
-   //       debugName='MenuBarUI'
-   //       // TODO: this should be handled by the menu activity instead.
-   //       hasBackdrop
-   //       // showBackdrop
-   //       // backdropColor='red'
-   //       placement='above-no-clamp'
-   //       shell={'popover'}
-   //       trigger='click'
-   //       content={() => <span tw='flex w-fit gap-1'>{ENTRIES}</span>}
-   //       hideTriggers={{ backdropClick: true }}
-   //       anchorProps={{
-   //          onKeyDown: (ev) => {
-   //             console.log(
-   //                `[🤠] COUCOU`,
-   //                ev.key,
-   //                menu.entriesWithKb.map((i) => i.char),
-   //             )
-   //             // call the original onKeyDown
-   //             onKeyDown?.(ev)
-
-   //             // handle the shortcut key
-   //             const key = ev.key
-   //             for (const entry of menu.entriesWithKb) {
-   //                if (entry.char === key) {
-   //                   if (entry.entry instanceof SimpleMenuAction) entry.entry.opts.onClick?.()
-   //                   // if (entry.entry instanceof SimpleMenuEntryPopup) entry.entry.onPick()
-   //                   else if (isBoundCommand(entry.entry)) void entry.entry.execute()
-   //                   else if (isCommand(entry.entry)) void entry.entry.execute()
-   //                   else if (isMenu(entry.entry)) {
-   //                      if (entry.ref == null) console.log(`[🔴] no REFFOR`, entry)
-   //                      else if (entry.ref.current == null) console.log(`[🔴] no entry ref current`)
-   //                      else
-   //                         void entry.ref.current.getRevealState().open('programmatically-via-open-function')
-   //                   }
-   //                   menu.onStop()
-   //                   ev.stopPropagation()
-   //                   ev.preventDefault()
-   //                   return
-   //                }
-   //             }
-   //          },
-   //          // {...rest}
-   //       }}
-   //    >
-   //       {/* {ENTRIES} */}
-   //       <span tw='pointer-events-none flex w-fit gap-1'>{ENTRIES}</span>
-   //    </RevealUI>
-   // )
 })

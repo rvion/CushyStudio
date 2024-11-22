@@ -33,5 +33,4 @@ export type MenuEntryWithKey = {
     * (value kept around to speed up later processing to add underline at the right position)
     * */
    charIx?: number
-   ref?: React.RefObject<RevealStateLazy>
 }

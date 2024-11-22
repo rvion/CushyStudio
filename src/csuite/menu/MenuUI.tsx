@@ -35,6 +35,7 @@ export const MenuUI = observer(function MenuUI_({
 }: MenuUIProps) {
    return (
       <div
+         ref={menu.menuUIRef}
          tabIndex={tabIndex ?? -1}
          autoFocus={autoFocus ?? true}
          tw='w-fit'
@@ -113,15 +114,18 @@ export const MenuUI = observer(function MenuUI_({
             // bound menu
             else if (isMenu(entry)) {
                const label = entry.title
+               const entryMenuInstance = menu.stableInit(entry)
                return (
                   <RevealUI //
                      key={ix}
+                     ref={entryMenuInstance.revealRef}
                      trigger='hover'
                      showDelay={200}
                      hideTriggers={{}}
                      tw='!block min-w-60'
-                     placement='rightStart'
-                     content={() => <MenuUI menu={entry.init(menu.allocatedKeys)} />}
+                     placement='autoRight'
+                     content={() => <MenuUI menu={entryMenuInstance} />}
+                     onRevealed={() => entryMenuInstance.menuUIRef.onMount((z) => z.focus())}
                   >
                      <MenuItem //
                         disabled={entry.def.disabled}
