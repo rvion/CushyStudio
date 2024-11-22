@@ -50,7 +50,7 @@ export class TreeFile implements ITreeEntry {
    actions: TreeEntryAction[] = [
       {
          name: 'add Draft',
-         icon: 'find_in_page', //'play_arrow',
+         icon: 'mdiTabSearch', //'play_arrow',
          mode: 'small',
          onClick: async (): Promise<ScriptExtractionResult | undefined> => {
             if (this.file == null) return

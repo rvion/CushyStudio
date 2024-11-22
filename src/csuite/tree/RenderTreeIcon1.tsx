@@ -4,6 +4,7 @@ import type { TreeNode } from './TreeNode'
 import { observer } from 'mobx-react-lite'
 
 import { Button } from '../button/Button'
+import { IkonOf } from '../icons/iconHelpers'
 
 export const TreeIcon1UI = observer(function TreeIcon1UI_(p: TreeEntryAction & { node: TreeNode }) {
    const action = p
@@ -19,7 +20,7 @@ export const TreeIcon1UI = observer(function TreeIcon1UI_(p: TreeEntryAction & {
             action.onClick?.(p.node)
          }}
       >
-         <span className='material-symbols-outlined'>{action.icon}</span>
+         <IkonOf name={action.icon} />
       </Button>
    )
 })
