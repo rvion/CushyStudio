@@ -73,8 +73,8 @@ export const LoraBoxUI = observer(function LoraBoxUI_(p: {
                    /> */}
          <MenuDivider />
          {/* {node.name} */}
-         <div tw='flex flex-col items-center gap-1 w-full flex-grow'>
-            <div tw='flex flex-grow flex-row gap-1 w-full'>
+         <div tw='flex w-full flex-grow flex-col items-center gap-1'>
+            <div tw='flex w-full flex-grow flex-row gap-1'>
                <InputNumberUI
                   value={node.strength_model ?? 1}
                   mode='float'
