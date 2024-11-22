@@ -36,9 +36,23 @@ export const PanelHeaderUI = observer(function PanelHeader({
    //
 } & FrameProps) {
    const state = usePanel()
+   const theme = cushy.theme.value
 
    if (!state.showHeader) {
-      return false
+      return (
+         <Button
+            tw='absolute -top-1 !rounded-t-none opacity-80'
+            style={{ right: theme.inputRoundness > 30 ? `${theme.inputRoundness}px` : '30px' }}
+            size='xs'
+            square
+            // subtle
+            borderless
+            icon='mdiChevronDown'
+            onClick={() => {
+               state.showHeader = !state.showHeader
+            }}
+         />
+      )
    }
 
    return (
