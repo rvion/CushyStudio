@@ -6,6 +6,7 @@ import { makeAutoObservable } from 'mobx'
 import { basename } from 'pathe'
 
 import { shouldSkip } from '../../../../cards/shouldSkip'
+import { Ikon } from '../../../../csuite/icons/iconHelpers'
 import { asRelativePath } from '../../../../utils/fs/pathUtils'
 import { TreeFile } from './TreeFile'
 
@@ -37,21 +38,38 @@ export class TreeFolder implements ITreeEntry<RelativePath> {
 
    isFolder: boolean = true
 
-   onPrimaryAction = (n: TreeNode) => {
+   onPrimaryAction = (n: TreeNode): void => {
       n.toggle()
    }
 
    get actions(): TreeEntryAction[] {
       if (this.path === 'library/installed')
-         return [{ name: 'Find More...', icon: 'cloud_download', onClick: () => {}, mode: 'full' }]
+         return [
+            {
+               name: 'Find More...',
+               icon: 'cloud_download',
+               onClick: (): void => {},
+               mode: 'full',
+            },
+         ]
       if (this.path === 'library/local')
-         return [{ name: 'create...', icon: 'add', onClick: () => {}, mode: 'full' }]
+         return [
+            {
+               name: 'create...',
+               icon: 'add',
+               onClick: (): void => {},
+               mode: 'full',
+            },
+         ]
       return []
    }
-   get icon() { return <span className='material-symbols-outlined text-yellow-700'>folder</span> } // prettier-ignore
-   get iconExpanded() { return <span className='material-symbols-outlined text-yellow-700'>folder_open</span> } // prettier-ignore
+   get icon(): JSX.Element {
+      return <Ikon.mdiFolder tw='text-yellow-700' />
+   }
+   get iconExpanded(): JSX.Element {
+      return <Ikon.mdiFolderOpen tw='text-yellow-700' />
+   }
 
-   // prettier-ignore
    // get icon() {
    //     // if (this.path === 'library/installed')            return <span className='material-symbols-outlined text-red-500'>get_app</span>
    //     // if (this.path === 'library/local')                return <span className='material-symbols-outlined text-blue-500'>privacy_tip</span>

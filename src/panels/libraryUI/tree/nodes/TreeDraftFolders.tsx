@@ -6,6 +6,7 @@ import type { STATE } from '../../../../state/state'
 
 import { basename } from 'pathe'
 
+import { Ikon } from '../../../../csuite/icons/iconHelpers'
 import { TreeDraft } from './TreeDraft'
 
 export class TreeDraftFolder implements ITreeEntry<VirtualFolder<DraftL>> {
@@ -20,11 +21,11 @@ export class TreeDraftFolder implements ITreeEntry<VirtualFolder<DraftL>> {
    }
 
    get icon(): JSX.Element {
-      return <span className='material-symbols-outlined text-yellow-700'>folder</span>
+      return <Ikon.mdiFolder tw='text-yellow-700' />
    }
 
    get iconExpanded(): JSX.Element {
-      return <span className='material-symbols-outlined text-yellow-700'>folder_open</span>
+      return <Ikon.mdiFolderOpen tw='text-yellow-700' />
    }
 
    onPrimaryAction(n: TreeNode): void {
