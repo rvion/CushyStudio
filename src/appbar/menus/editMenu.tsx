@@ -10,15 +10,10 @@ export const editMenu: Menu = defineMenu({
       // b.Divider,
       // <Frame base={{ contrast: 0.1 }} tw='h-[1px]'></Frame>,
       // Should have commands that open menus that we can re-use in spots.
+      b.Divider,
       b.SimpleMenuAction({
          label: 'Preferences',
          onClick: () => cushy.layout.open('Config', {}),
-         // icon: 'mdiCog',
-      }),
-      b.Divider,
-      b.SimpleMenuAction({
-         label: 'Hosts',
-         onClick: () => cushy.layout.open('Hosts', {}),
          // icon: 'mdiCog',
       }),
    ],

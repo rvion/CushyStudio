@@ -89,7 +89,7 @@ export const themeConf: ThemeConf['$Field'] = cushyFactory.document(
             // ui.ratio({ default: 0.05 }).optional(true),
             inputRoundness: ui.int({ default: 5, min: 0 }),
             // TODO(bird_d): Stopgap, should be split for panels/widget labels/widget text.
-            inputText: ui.float({ default: 11, min: 8, max: 20, suffix: 'pt' }),
+            inputText: ui.float({ default: 11, min: 8, max: 20, step: 1, suffix: 'pt' }),
          },
          {
             label: 'Theme',
