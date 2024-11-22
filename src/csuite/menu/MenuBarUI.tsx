@@ -120,7 +120,7 @@ export const MenuBarUI = observer(function MenuBar({
             >
                <Frame //
                   tw='px-1'
-                  tabIndex={-1}
+                  tabIndex={0}
                   line
                   icon={entry.icon}
                   hover
