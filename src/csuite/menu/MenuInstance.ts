@@ -97,17 +97,30 @@ export class MenuInstance implements Activity {
       for (const entryWithKey of this.entriesWithKb) {
          const { char, entry } = entryWithKey
          if (char === key) {
-            if (entry instanceof SimpleMenuAction) entry.opts.onClick?.()
+            if (entry instanceof SimpleMenuAction) {
+               entry.opts.onClick?.()
+               this.close()
+            }
             // if (entry.entry instanceof SimpleMenuEntryPopup) entry.entry.onPick()
-            else if (isBoundCommand(entry)) void entry.execute()
-            else if (isCommand(entry)) void entry.execute()
+            else if (isBoundCommand(entry)) {
+               void entry.execute()
+               this.close()
+            }
+            //
+            else if (isCommand(entry)) {
+               void entry.execute()
+               this.close()
+            }
+            //
             else if (isMenu(entry)) {
                const instance = this.stableInit(entry)
                if (instance.revealRef == null) console.log(`[🔴] no REFFOR`, entryWithKey)
                else if (instance.revealRef.current == null) console.log(`[🔴] no entry ref current`)
                else
                   void instance.revealRef.current.getRevealState().open('programmatically-via-open-function')
+               // NO this.close() here !
             }
+
             this.onStop()
             ev.stopPropagation()
             ev.preventDefault()
