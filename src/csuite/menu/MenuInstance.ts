@@ -128,6 +128,7 @@ export class MenuInstance implements Activity {
    ): Maybe<{ char: string; pos: number }> => {
       let ix = 0
       for (const char of [...label]) {
+         if (char === ' ') continue
          const key = char.toLowerCase()
          if (!allocatedKeys.has(key)) {
             allocatedKeys.add(key)
