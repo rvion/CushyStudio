@@ -98,6 +98,7 @@ export const MenuUI = observer(function MenuUI_({
                      tw='min-w-60'
                      key={ix}
                      label={entry.label}
+                     localShortcut={char}
                      labelAcceleratorIx={charIx}
                      globalShortcut={isCommand(entry) ? entry.firstCombo : char}
                      icon={entry.icon}
