@@ -50,7 +50,7 @@ export const UpdateBtnUI = observer(function UpdateBtnUI_(p: {
 export const UpdaterAnchorUI = observer(function UpdaterAnchorUI_(p: { updater: GitManagedFolder }) {
    const updater = p.updater
    const status = updater.status
-   if (status === FolderGitStatus.Unknown) return <Loader />
+   if (status === FolderGitStatus.Unknown) return <Loader size='xs' />
    if (status === FolderGitStatus.DoesNotExist) return <GitInstallUI updater={updater} />
    if (status === FolderGitStatus.NotADirectory) return <div>❓ unexpected file</div>
    if (status === FolderGitStatus.FolderWithoutGit) return null // <GitInitBtnUI updater={updater} />
