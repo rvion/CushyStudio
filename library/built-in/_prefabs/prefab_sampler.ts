@@ -7,16 +7,16 @@ export type UI_Sampler = X.XGroup<{
    steps: X.XNumber
    cfg: X.XNumber
    seed: X.XSeed
-   sampler_name: X.XEnum<Enum_KSampler_sampler_name>
-   scheduler: X.XEnum<Enum_KSampler_scheduler>
+   sampler_name: X.XEnum<'KSampler.sampler_name'>
+   scheduler: X.XEnum<'KSampler.scheduler'>
 }>
 
 type UiSampleProps = {
    denoise?: number
    steps?: number
    cfg?: number
-   sampler_name?: Enum_KSampler_sampler_name
-   scheduler?: Enum_KSampler_scheduler
+   sampler_name?: Comfy.Slots['KSampler.sampler_name']
+   scheduler?: Comfy.Slots['KSampler.scheduler']
    startCollapsed?: boolean
 }
 export function ui_sampler(p?: UiSampleProps): UI_Sampler {
@@ -27,11 +27,11 @@ export function ui_sampler(p?: UiSampleProps): UI_Sampler {
          steps: form.int({ step: 10, default: p?.steps ?? 20, label: 'Steps', min: 0, softMax: 100 }),
          cfg: form.float({ step: 1, label: 'CFG', min: 0, max: 100, softMax: 10, default: p?.cfg ?? 7 }),
          seed: form.seed({}),
-         sampler_name: form.enum.Enum_KSampler_sampler_name({
+         sampler_name: form.enum['KSampler.sampler_name']({
             label: 'Sampler',
             default: p?.sampler_name ?? 'euler',
          }),
-         scheduler: form.enum.Enum_KSampler_scheduler({
+         scheduler: form.enum['KSampler.scheduler']({
             label: 'Scheduler',
             default: p?.scheduler ?? 'karras',
          }),
@@ -54,13 +54,13 @@ export function ui_sampler(p?: UiSampleProps): UI_Sampler {
 
 // CTX -----------------------------------------------------------
 export type Ctx_sampler = {
-   ckpt: _MODEL
-   clip: _CLIP
-   latent: _LATENT
-   positive: string | _CONDITIONING
-   negative: string | _CONDITIONING
+   ckpt: Comfy.Signal['MODEL']
+   clip: Comfy.Signal['CLIP']
+   latent: Comfy.Signal['LATENT']
+   positive: string | Comfy.Signal['CONDITIONING']
+   negative: string | Comfy.Signal['CONDITIONING']
    preview?: boolean
-   vae: _VAE
+   vae: Comfy.Signal['VAE']
 }
 
 // RUN -----------------------------------------------------------
@@ -69,7 +69,7 @@ export const run_sampler = (
    run: Runtime,
    opts: OutputFor<typeof ui_sampler>,
    ctx: Ctx_sampler,
-): { latent: KSampler } => {
+): { latent: Comfy.Node['KSampler'] } => {
    const graph = run.nodes
    // flow.output_text(`run_sampler with seed : ${opts.seed}`)
    const latent = graph.KSampler({

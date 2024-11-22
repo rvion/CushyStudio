@@ -9,8 +9,8 @@ export type UI_model_kohyaDeepShrink = X.XGroup<{
       startPercent: X.XNumber
       endPercent: X.XNumber
       downscaleAfterSkip: X.XBool
-      downscaleMethod: X.XEnum<Enum_LatentUpscale_upscale_method>
-      upscaleMethod: X.XEnum<Enum_LatentUpscale_upscale_method>
+      downscaleMethod: X.XEnum<'LatentUpscale.upscale_method'>
+      upscaleMethod: X.XEnum<'LatentUpscale.upscale_method'>
    }>
 }>
 
@@ -35,10 +35,12 @@ export function ui_model_kohyaDeepShrink(form: X.Builder): UI_model_kohyaDeepShr
                startPercent: form.float({ default: 0, min: 0, max: 1, step: 0.05 }),
                endPercent: form.float({ default: 0.35, min: 0, max: 1, step: 0.05 }),
                downscaleAfterSkip: form.bool({ default: false }),
-               downscaleMethod: form.enum.Enum_PatchModelAddDownscale_downscale_method({
+               downscaleMethod: form.enum['PatchModelAddDownscale.downscale_method']({
                   default: 'bislerp',
                }),
-               upscaleMethod: form.enum.Enum_PatchModelAddDownscale_upscale_method({ default: 'bicubic' }),
+               upscaleMethod: form.enum['PatchModelAddDownscale.upscale_method']({
+                  default: 'bicubic',
+               }),
             },
             {
                startCollapsed: true,
@@ -62,10 +64,10 @@ export function ui_model_kohyaDeepShrink(form: X.Builder): UI_model_kohyaDeepShr
 /** https://www.reddit.com/r/StableDiffusion/comments/18ld5sj/kohya_deep_shrink_explain_to_me_like_im_5_years/  */
 export const run_model_kohyaDeepShrink = (
    ui: UI_model_kohyaDeepShrink['$Value'],
-   ckpt: _MODEL,
+   ckpt: Comfy.Signal['MODEL'],
    forHiRes?: boolean,
    kohyaScale?: number,
-): _MODEL => {
+): Comfy.Signal['MODEL'] => {
    const run = getCurrentRun()
    const graph = run.nodes
 

@@ -5,13 +5,13 @@ import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
 // 🅿️ SoftEdge FORM ===================================================
 export type UI_subform_SoftEdge = X.XGroup<{
    preprocessor: UI_subform_SoftEdge_Preprocessor
-   cnet_model_name: X.XEnum<Enum_ControlNetLoader_control_net_name>
+   cnet_model_name: X.XEnum<'ControlNetLoader.control_net_name'>
    strength: X.XNumber
    advanced: X.XGroup<{
       startAtStepPercent: X.XNumber
       endAtStepPercent: X.XNumber
-      crop: X.XEnum<Enum_LatentUpscale_crop>
-      upscale_method: X.XEnum<Enum_ImageScale_upscale_method>
+      crop: X.XEnum<'LatentUpscale.crop'>
+      upscale_method: X.XEnum<'ImageScale.upscale_method'>
    }>
 }>
 export function ui_subform_SoftEdge(): UI_subform_SoftEdge {
@@ -22,7 +22,7 @@ export function ui_subform_SoftEdge(): UI_subform_SoftEdge {
          items: {
             ...cnet_ui_common(form),
             preprocessor: ui_subform_SoftEdge_Preprocessor(),
-            cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
+            cnet_model_name: form.enum['ControlNetLoader.control_net_name']({
                label: 'Model',
                default: 'control_v11p_sd15_softedge.pth' as any,
                extraDefaults: ['control_v11p_sd15_softedge.pth'],
@@ -79,11 +79,11 @@ export function ui_subform_SoftEdge_Preprocessor_Options(
 // 🅿️ SoftEdge RUN ===================================================
 export const run_cnet_SoftEdge = (
    SoftEdge: OutputFor<typeof ui_subform_SoftEdge>,
-   image: _IMAGE,
+   image: Comfy.Signal['IMAGE'],
    resolution: number, // 512 | 768 | 1024 = 512,
 ): {
-   image: _IMAGE
-   cnet_name: Enum_ControlNetLoader_control_net_name
+   image: Comfy.Signal['IMAGE']
+   cnet_name: Comfy.Slots['ControlNetLoader.control_net_name']
 } => {
    const run = getCurrentRun()
    const graph = run.nodes
@@ -91,8 +91,8 @@ export const run_cnet_SoftEdge = (
 
    // PREPROCESSOR - SoftEdge ===========================================================
    if (SoftEdge.preprocessor.Pidinet) {
-      var pid = SoftEdge.preprocessor.Pidinet
-      image = graph.PiDiNetPreprocessor({
+      const pid = SoftEdge.preprocessor.Pidinet
+      image = graph['controlnet_aux.PiDiNetPreprocessor']({
          image: image,
          resolution: resolution,
          safe: pid.safe ? 'enable' : 'disable',
@@ -100,8 +100,8 @@ export const run_cnet_SoftEdge = (
       if (pid.saveProcessedImage) graph.SaveImage({ images: image, filename_prefix: 'cnet\\SoftEdge\\pid' })
       else graph.PreviewImage({ images: image })
    } else if (SoftEdge.preprocessor.HED) {
-      var hed = SoftEdge.preprocessor.HED
-      image = graph.HEDPreprocessor({
+      const hed = SoftEdge.preprocessor.HED
+      image = graph['controlnet_aux.HEDPreprocessor']({
          image: image,
          resolution: resolution,
          safe: !hed || hed?.safe ? 'enable' : 'disable',

@@ -1,4 +1,4 @@
-import type { ComfyNodeOutput } from '../../../src/core/Slot'
+import type { ComfyNodeOutput } from '../../../src/comfyui/livegraph/ComfyNodeOutput'
 import type { Runtime } from '../../../src/runtime/Runtime'
 import type { OutputFor } from './_prefabs'
 
@@ -22,9 +22,9 @@ export const ui_latent_v2 = (form: X.Builder): UI_latent_v2 => {
 export const run_latent_v2 = async (p: {
    run: Runtime
    opts: OutputFor<typeof ui_latent_v2>
-   vae: _VAE
+   vae: Comfy.Signal['VAE']
 }): Promise<{
-   latent: HasSingle_LATENT
+   latent: Comfy.HasSingle['LATENT']
    width: number | ComfyNodeOutput<'INT', number>
    height: number | ComfyNodeOutput<'INT', number>
 }> => {
@@ -35,7 +35,7 @@ export const run_latent_v2 = async (p: {
    // misc calculatiosn
    let width: number | ComfyNodeOutput<'INT'> = 1 // 🔴
    let height: number | ComfyNodeOutput<'INT'> = 1 // 🔴
-   let latent: HasSingle_LATENT
+   let latent: Comfy.HasSingle['LATENT']
 
    // 🔴
    // case 1. start form image
@@ -48,7 +48,7 @@ export const run_latent_v2 = async (p: {
       //     max_width: width,
       //     max_height: height,
       // })
-      const image = await graph.Image_Resize({
+      const image = await graph['was.Image Resize']({
          image: imageRaw,
          resampling: 'lanczos',
          resize_width: width,
@@ -56,7 +56,7 @@ export const run_latent_v2 = async (p: {
          mode: 'resize',
          supersample: 'false',
       })
-      const size = graph.Image_Size_to_Number({ image })
+      const size = graph['was.Image Size to Number']({ image })
       width = size.outputs.width_int
       height = size.outputs.height_int
 

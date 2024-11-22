@@ -18,18 +18,20 @@ app({
       b.fields({
          models: b.group({
             items: {
-               stage_a_vae: b.enum.Enum_VAELoader_vae_name({
+               stage_a_vae: b.enum['VAELoader.vae_name']({
+                  // @ts-ignore
                   default: 'Stable-Cascade\\stage_a.safetensors',
                }),
-               stage_b: b.enum.Enum_UNETLoader_unet_name({
+               stage_b: b.enum['UNETLoader.unet_name']({
+                  // @ts-ignore
                   default: 'Stable-Cascade\\stage_b_bf16.safetensors',
                }),
-               stage_b_type: b.enum.Enum_UNETLoader_weight_dtype({ default: 'default' }),
-               stage_c: b.enum.Enum_UNETLoader_unet_name({
+               stage_b_type: b.enum['UNETLoader.weight_dtype']({ default: 'default' }),
+               stage_c: b.enum['UNETLoader.unet_name']({
                   // @ts-ignore
                   default: 'Stable-Cascade\\stage_c_bf16.safetensors',
                }),
-               stage_c_type: b.enum.Enum_UNETLoader_weight_dtype({ default: 'default' }),
+               stage_c_type: b.enum['UNETLoader.weight_dtype']({ default: 'default' }),
             },
          }),
          startingLatent: b.fields({
@@ -39,9 +41,10 @@ app({
             batch_size: b.int({ default: 1, min: 1, max: 64 }),
          }),
          clip: b.fields({
-            type: b.enum.Enum_CLIPLoader_type({ default: 'stable_cascade' }),
-            clip_name: b.enum.Enum_CLIPLoader_clip_name({
+            type: b.enum['CLIPLoader.type']({ default: 'stable_cascade' }),
+            clip_name: b.enum['CLIPLoader.clip_name']({
                extraDefaults: ['stabilityai/stable-cascade/text_encoder/model.safetensors'],
+               // @ts-ignore
                default: 'Stable-Cascade\\model.safetensors',
             }),
          }),
@@ -57,8 +60,8 @@ app({
                seed: b.seed({ default: 762626426130783 }),
                steps: b.int({ default: 20, min: 1, max: 10000 }),
                cfg: b.float({ default: 4, min: 0, max: 100, step: 0.1 }),
-               sampler_name: b.enum.Enum_KSampler_sampler_name({ default: 'euler_ancestral' }),
-               scheduler: b.enum.Enum_KSampler_scheduler({ default: 'simple' }),
+               sampler_name: b.enum['KSampler.sampler_name']({ default: 'euler_ancestral' }),
+               scheduler: b.enum['KSampler.scheduler']({ default: 'simple' }),
                denoise: b.float({ default: 1, min: 0, max: 1, step: 0.01 }),
             },
          }),
@@ -67,8 +70,8 @@ app({
                seed_1: b.int({ default: 150623345818947, min: 0, max: 18446744073709552000 }),
                steps_1: b.int({ default: 10, min: 1, max: 10000 }),
                cfg_1: b.float({ default: 1.1, min: 0, max: 100, step: 0.1 }),
-               sampler_name_1: b.enum.Enum_KSampler_sampler_name({ default: 'euler_ancestral' }),
-               scheduler_1: b.enum.Enum_KSampler_scheduler({ default: 'simple' }),
+               sampler_name_1: b.enum['KSampler.sampler_name']({ default: 'euler_ancestral' }),
+               scheduler_1: b.enum['KSampler.scheduler']({ default: 'simple' }),
                denoise_1: b.float({ default: 1, min: 0, max: 1, step: 0.01 }),
             },
          }),
@@ -89,7 +92,7 @@ app({
 
       // latent
       const latentOpts = ui.startingLatent
-      const stableCascade$_EmptyLatent_2 = graph.StableCascade$_EmptyLatentImage({
+      const stableCascade_EmptyLatent_2 = graph['StableCascade_EmptyLatentImage']({
          width: latentOpts.width,
          height: latentOpts.height,
          compression: latentOpts.compression,
@@ -108,12 +111,12 @@ app({
          model: stagec,
          positive: posEmbedding.outputs.CONDITIONING,
          negative: negEmbedding.outputs.CONDITIONING,
-         latent_image: stableCascade$_EmptyLatent_2.outputs.stage_c,
+         latent_image: stableCascade_EmptyLatent_2.outputs.stage_c,
       })
       const conditioningZeroOut_2 = graph.ConditioningZeroOut({
          conditioning: posEmbedding.outputs.CONDITIONING,
       })
-      const stableCascade$_StageB$_Conditioning_2 = graph.StableCascade$_StageB$_Conditioning({
+      const stableCascade_StageB_Conditioning_2 = graph['StableCascade_StageB_Conditioning']({
          conditioning: conditioningZeroOut_2.outputs.CONDITIONING,
          stage_c: kSampler_4.outputs.LATENT,
       })
@@ -125,9 +128,9 @@ app({
          scheduler: ui.KSampler_1.scheduler_1,
          denoise: ui.KSampler_1.denoise_1,
          model: stageb.outputs.MODEL,
-         positive: stableCascade$_StageB$_Conditioning_2.outputs.CONDITIONING,
+         positive: stableCascade_StageB_Conditioning_2.outputs.CONDITIONING,
          negative: conditioningZeroOut_2.outputs.CONDITIONING,
-         latent_image: stableCascade$_EmptyLatent_2.outputs.stage_b,
+         latent_image: stableCascade_EmptyLatent_2.outputs.stage_b,
       })
       const vAEDecode_2 = graph.VAEDecode({ samples: kSampler_5.outputs.LATENT, vae: vae.outputs.VAE })
       const save_2 = graph.SaveImage({

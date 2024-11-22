@@ -43,7 +43,7 @@ export type UI_Mask = X.XChoice<{
     noMask: X.XGroup<SchemaDict>
     mask: X.XGroup<{
         image: X.XImage
-        mode: X.XEnum<Enum_LoadImageMask_channel>
+        mode: X.XEnum<'LoadImageMask.channel'>
         invert: X.XBool
         grow: X.XNumber
         feather: X.XNumber

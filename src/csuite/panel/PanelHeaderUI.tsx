@@ -2,6 +2,7 @@ import { observer } from 'mobx-react-lite'
 
 import { usePanel } from '../../router/usePanel'
 import { Button } from '../button/Button'
+import { MenuItem } from '../dropdown/MenuItem'
 import { Frame, type FrameProps } from '../frame/Frame'
 import { RevealUI } from '../reveal/RevealUI'
 
@@ -42,15 +43,15 @@ export const PanelHeaderUI = observer(function PanelHeader({
 
    return (
       <RevealUI
+         debugName='<Show-Header>'
          trigger='rightClick'
          relativeTo='mouse'
          content={() => (
-            <Button //
+            <MenuItem //
+               label='Show Header'
                icon={state.showHeader ? 'mdiCheck' : 'mdiCheckboxBlank'}
                onClick={() => (state.showHeader = !state.showHeader)}
-            >
-               Show Header
-            </Button>
+            />
          )}
       >
          <Frame // Container

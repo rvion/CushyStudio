@@ -193,7 +193,7 @@ export class BaseSchema<
 
    /** wrap field schema to list stuff */
    list(config: Omit<Field_list_config<this>, 'element'> = {}): Apply<Schemaᐸ_ᐳ['List'], this> {
-      return this.list_({ defaultLength: config.min ?? 0, ...config })
+      return this.list_({ defaultLength: config.defaultLength ?? config.min ?? 0, ...config })
    }
 
    /** wrap field schema to list stuff */

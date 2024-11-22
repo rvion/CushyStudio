@@ -10,7 +10,6 @@ import type { FC } from 'react'
 import * as FL from 'flexlayout-react'
 import { Actions, Model as FlexLayoutModel } from 'flexlayout-react'
 import { action, isObservable, makeAutoObservable, runInAction } from 'mobx'
-import { nanoid } from 'nanoid'
 import { createElement, createRef, type RefObject } from 'react'
 
 import { hashJSONObjectToNumber } from '../csuite/hashUtils/hash'
@@ -26,6 +25,7 @@ import { LayoutUI } from './LayoutUI'
 import { PanelContainerUI } from './PanelContainerUI'
 import { panels } from './PANELS'
 import { type TraversalNextStep, type TraverseFn, traverseLayoutNode } from './traverseLayoutNode'
+import { uniqueIDByMemoryRef } from './uniqueIDByMemoryRef'
 
 export type TabsetExt = 'active' | 'hoverd' | FL.TabSetNode
 
@@ -48,16 +48,6 @@ type TabsetID = string
 type PerspectiveDataForSelect = {
    label: string
    value: string
-}
-
-const memoryRefByUniqueID = new WeakMap<object, string>()
-export const uniqueIDByMemoryRef = (x: object): string => {
-   let id = memoryRefByUniqueID.get(x)
-   if (id == null) {
-      id = nanoid()
-      memoryRefByUniqueID.set(x, id)
-   }
-   return id
 }
 
 export class CushyLayoutManager {

@@ -1,7 +1,7 @@
-import type { LiteGraphJSON } from '../core/LiteGraph'
+import type { ComfyUIAPIRequest } from '../comfyui/comfyui-prompt-api'
+import type { LiteGraphJSON } from '../comfyui/litegraph/LiteGraphJSON'
 import type { CushyScriptL } from '../models/CushyScript'
 import type { STATE } from '../state/state'
-import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 import type { AppMetadata } from './AppManifest'
 import type { Library } from './Library'
 import type { BuildContext, Metafile, OutputFile } from 'esbuild'
@@ -10,8 +10,8 @@ import { readFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
 import path, { basename, dirname } from 'pathe'
 
+import { convertLiteGraphToPrompt } from '../comfyui/litegraphToApiRequestPayload'
 import { createEsbuildContextFor } from '../compiler/transpiler'
-import { convertLiteGraphToPrompt } from '../core/litegraphToPrompt'
 import { bang } from '../csuite/utils/bang'
 import { exhaust } from '../csuite/utils/exhaust'
 import { ManualPromise } from '../csuite/utils/ManualPromise'
@@ -110,7 +110,7 @@ export class LibraryFile {
    private metafile?: Maybe<Metafile> = null
 
    liteGraphJSON?: Maybe<LiteGraphJSON> = null
-   promptJSON?: Maybe<ComfyPromptJSON> = null
+   promptJSON?: Maybe<ComfyUIAPIRequest> = null
    png?: Maybe<AbsolutePath> = null
 
    get script(): Maybe<CushyScriptL> {
@@ -366,7 +366,7 @@ export class LibraryFile {
       }
 
       // 2. promptJSON
-      let promptJSON: ComfyPromptJSON
+      let promptJSON: ComfyUIAPIRequest
       try {
          promptJSON = convertLiteGraphToPrompt(this.st.schema, workflowJSON)
       } catch (error) {

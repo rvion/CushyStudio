@@ -4,7 +4,7 @@ import type { OutputFor } from './_prefabs'
 import { run_prompt } from './prefab_prompt'
 
 export type UI_Sampler_Advanced = X.XGroup<{
-   sampler_name: X.XEnum<Enum_KSampler_sampler_name>
+   sampler_name: X.XEnum<'KSampler.sampler_name'>
    guidanceType: X.XChoice<{
       CFG: X.XNumber
       DualCFG: X.XGroup<{
@@ -21,12 +21,12 @@ export type UI_Sampler_Advanced = X.XGroup<{
       basic: X.XGroup<{
          denoise: X.XNumber
          steps: X.XNumber
-         scheduler: X.XEnum<Enum_KSampler_scheduler>
+         scheduler: X.XEnum<'KSampler.scheduler'>
       }>
       AlignYourStep: X.XGroup<{
          denoise: X.XNumber
          steps: X.XNumber
-         modelType: X.XEnum<Enum_AlignYourStepsScheduler_model_type>
+         modelType: X.XEnum<'AlignYourStepsScheduler.model_type'>
       }>
       karrasCustom: X.XGroup<{
          steps: X.XNumber
@@ -70,8 +70,8 @@ export function ui_sampler_advanced(p?: {
    denoise?: number
    steps?: number
    cfg?: number
-   sampler_name?: Enum_KSampler_sampler_name
-   scheduler?: Enum_KSampler_scheduler
+   sampler_name?: Comfy.Slots['KSampler.sampler_name']
+   scheduler?: Comfy.Slots['KSampler.scheduler']
    startCollapsed?: boolean
    sharedSampler?: boolean
 }): UI_Sampler_Advanced {
@@ -80,11 +80,11 @@ export function ui_sampler_advanced(p?: {
       {
          sampler_name: p?.sharedSampler
             ? // ⏸️ shared_samplerName()
-              form.enum.Enum_KSampler_sampler_name({
+              form.enum['KSampler.sampler_name']({
                  label: 'Sampler',
                  default: 'dpmpp_sde',
               })
-            : form.enum.Enum_KSampler_sampler_name({
+            : form.enum['KSampler.sampler_name']({
                  label: 'Sampler',
                  default: p?.sampler_name ?? 'euler',
               }),
@@ -161,7 +161,7 @@ export function ui_sampler_advanced(p?: {
                      min: 0,
                      softMax: 100,
                   }),
-                  scheduler: form.enum.Enum_KSampler_scheduler({
+                  scheduler: form.enum['KSampler.scheduler']({
                      label: 'Scheduler',
                      default: p?.scheduler ?? 'karras',
                   }),
@@ -175,7 +175,7 @@ export function ui_sampler_advanced(p?: {
                      label: 'Denoise',
                   }),
                   steps: form.int({ step: 1, default: p?.steps ?? 10, label: 'Steps', min: 0, softMax: 100 }),
-                  modelType: form.enum.Enum_AlignYourStepsScheduler_model_type({ default: 'SDXL' }),
+                  modelType: form.enum['AlignYourStepsScheduler.model_type']({ default: 'SDXL' }),
                }),
                karrasCustom: form.auto.KarrasScheduler(),
                ExponentialCustom: form.auto.ExponentialScheduler(),
@@ -271,27 +271,27 @@ export function ui_sampler_advanced(p?: {
 
 // CTX -----------------------------------------------------------
 export type Ctx_sampler_advanced = {
-   ckpt: _MODEL
-   clip: _CLIP
-   latent: _LATENT | HasSingle_LATENT
-   positive: string | _CONDITIONING
-   negative: string | _CONDITIONING
+   ckpt: Comfy.Signal['MODEL']
+   clip: Comfy.Signal['CLIP']
+   latent: Comfy.Signal['LATENT']
+   positive: string | Comfy.Signal['CONDITIONING']
+   negative: string | Comfy.Signal['CONDITIONING']
    width?: number
    height?: number
    preview?: boolean
    cfg?: number //for flux
-   vae: _VAE
+   vae: Comfy.Signal['VAE']
 }
 
 export const encodeText = (
    run: Runtime,
-   clip: _CLIP,
+   clip: Comfy.Signal['CLIP'],
    text: string,
    encodingType: 'SDXL' | 'CLIP' | 'FLUX' | 'SD3',
    cfg?: number,
    width?: number,
    height?: number,
-): _CONDITIONING => {
+): Comfy.Signal['CONDITIONING'] => {
    const graph = run.nodes
    if (encodingType == 'FLUX' && !cfg) {
       cfg = 3.5 //default cfg in case not passed
@@ -327,16 +327,16 @@ export const run_sampler_advanced = (
    ui: OutputFor<typeof ui_sampler_advanced>,
    ctx: Ctx_sampler_advanced,
    blankLatent?: boolean,
-): { output: _LATENT; denoised_output: _LATENT } => {
+): { output: Comfy.Signal['LATENT']; denoised_output: Comfy.Signal['LATENT'] } => {
    const graph = run.nodes
-   let ckpt = ctx.ckpt
+   const ckpt = ctx.ckpt
    const posCondition2string = ui.guidanceType.DualCFG
       ? run_prompt({ prompt: ui.guidanceType.DualCFG.dualCFGPositive2, printWildcards: true })
       : undefined
    // flow.output_text(`run_sampler with seed : ${opts.seed}`)
-   let posCondition: _CONDITIONING
-   let negCondition: _CONDITIONING
-   let posCondition2: _CONDITIONING | undefined
+   let posCondition: Comfy.Signal['CONDITIONING']
+   let negCondition: Comfy.Signal['CONDITIONING']
+   let posCondition2: Comfy.Signal['CONDITIONING'] | undefined
    if (
       (ui.textEncoderType.CLIP || ui.textEncoderType.SD3) &&
       typeof ctx.positive === 'string' &&
@@ -394,12 +394,12 @@ export const run_sampler_advanced = (
       negCondition = encodeText(run, ctx.clip, ctx.negative, 'FLUX', ctx.width, ctx.height)
       if (posCondition2string) console.log('ERROR: Dual CFG not tested or st up for flux')
    } else {
-      posCondition = ctx.positive as _CONDITIONING
-      negCondition = ctx.negative as _CONDITIONING
+      posCondition = ctx.positive as Comfy.Signal['CONDITIONING']
+      negCondition = ctx.negative as Comfy.Signal['CONDITIONING']
    }
 
    const noise = graph.RandomNoise({ noise_seed: ui.seed }).outputs.NOISE
-   let guider: _GUIDER
+   let guider: Comfy.Signal['GUIDER']
    if (ui.guidanceType.DualCFG) {
       if (!posCondition2) throw new Error('Second conditioning not defined')
       guider = graph.DualCFGGuider({
@@ -436,7 +436,7 @@ export const run_sampler_advanced = (
       }
    else throw new Error('❌ Guider type not known')
 
-   let sigmas: _SIGMAS
+   let sigmas: Comfy.Signal['SIGMAS']
    if (ui.sigmasType.basic) {
       sigmas = graph.BasicScheduler({
          scheduler: ui.sigmasType.basic.scheduler,

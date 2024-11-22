@@ -22,7 +22,7 @@ export class PanelState<PROPS extends object = any> {
    showHeader: boolean = true
 
    constructor(
-      public flexLayoutTabNode: FL.TabNode,
+      public flexLayoutTabNode: FL.TabNode | null,
       public uri: PanelURI,
       public def: Panel<PROPS>,
    ) {
@@ -71,6 +71,7 @@ export class PanelState<PROPS extends object = any> {
    }
 
    getExtraData(): any {
+      if (this.flexLayoutTabNode == null) return Object.freeze({})
       return this.flexLayoutTabNode.getExtraData()
    }
 
@@ -78,14 +79,16 @@ export class PanelState<PROPS extends object = any> {
       return cushy.layout
    }
 
-   get parentTabset(): FL.TabSetNode {
+   get parentTabset(): FL.TabSetNode | null {
+      if (this.flexLayoutTabNode == null) return null
       const parent1 = this.flexLayoutTabNode.getParent()
       if (parent1?.getType() !== 'tabset') throw new Error('❌ tab parent is not a tabset')
       const tabset = parent1 as FL.TabSetNode
       return tabset
    }
 
-   get parentRow(): FL.RowNode {
+   get parentRow(): FL.RowNode | null {
+      if (this.parentTabset == null) return null
       const parent2 = this.parentTabset.getParent()
       if (parent2?.getType() !== 'row') throw new Error('❌ tabset parent is not a row')
       const row = parent2 as FL.RowNode
@@ -94,17 +97,17 @@ export class PanelState<PROPS extends object = any> {
 
    /** widen this tab tabset */
    widen(): void {
-      this.layout.widenTabset(this.parentTabset)
+      if (this.parentTabset) this.layout.widenTabset(this.parentTabset)
    }
 
    /** widen this tab tabset */
    shrink(): void {
-      this.layout.shrinkTabset(this.parentTabset)
+      if (this.parentTabset) this.layout.shrinkTabset(this.parentTabset)
    }
 
    /** reset tabset size */
    resetSize(): void {
-      this.layout.resetTabsetSize(this.parentTabset)
+      if (this.parentTabset) this.layout.resetTabsetSize(this.parentTabset)
    }
 
    get model(): FL.Model {
@@ -125,6 +128,7 @@ export class PanelState<PROPS extends object = any> {
    }
 
    get panelName(): PanelName {
+      if (this.flexLayoutTabNode == null) return 'Welcome' // 🔴
       const panelName = this.flexLayoutTabNode.getComponent() as Maybe<PanelName>
       return bang(panelName)
    }
@@ -137,6 +141,7 @@ export class PanelState<PROPS extends object = any> {
     *   FlexLayout.Actions.updateNodeAttributes(node.getId(), {config:myConfigObject}));
     */
    getConfig(): PanelPersistedJSON<PROPS> {
+      if (this.flexLayoutTabNode == null) return Object.freeze({ $props: {} }) as any
       return this.flexLayoutTabNode.getConfig()
    }
 

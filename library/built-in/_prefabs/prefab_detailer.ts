@@ -13,11 +13,11 @@ export type UI_Refiners = X.XGroup<{
    refinerType: X.XChoices<{
       faces: X.XGroup<{
          prompt: X.XString
-         detector: X.XEnum<Enum_UltralyticsDetectorProvider_model_name>
+         detector: X.XEnum<'Impact-Pack.UltralyticsDetectorProvider.model_name'>
       }>
       hands: X.XGroup<{
          prompt: X.XString
-         detector: X.XEnum<Enum_UltralyticsDetectorProvider_model_name>
+         detector: X.XEnum<'Impact-Pack.UltralyticsDetectorProvider.model_name'>
       }>
       eyes: X.XGroup<{ prompt: X.XString }>
    }>
@@ -25,8 +25,8 @@ export type UI_Refiners = X.XGroup<{
       sampler: UI_Sampler
       sam: X.XOptional<
          X.XGroup<{
-            model_name: X.XEnum<Enum_SAMLoader_model_name>
-            device_mode: X.XEnum<Enum_BLIPCaption_device_mode>
+            model_name: X.XEnum<'Impact-Pack.SAMLoader.model_name'>
+            device_mode: X.XEnum<'Impact-Pack.SAMLoader.device_mode'>
          }>
       >
    }>
@@ -43,7 +43,7 @@ export function ui_refiners(): UI_Refiners {
                      .fields(
                         {
                            prompt: form.string({ default: facePositiveDefault, textarea: true }),
-                           detector: form.enum.Enum_UltralyticsDetectorProvider_model_name({
+                           detector: form.enum['Impact-Pack.UltralyticsDetectorProvider.model_name']({
                               default: 'bbox/face_yolov8m.pt',
                            }),
                         },
@@ -64,7 +64,7 @@ export function ui_refiners(): UI_Refiners {
                      .fields(
                         {
                            prompt: form.string({ default: handPositiveDefault, textarea: true }),
-                           detector: form.enum.Enum_UltralyticsDetectorProvider_model_name({
+                           detector: form.enum['Impact-Pack.UltralyticsDetectorProvider.model_name']({
                               default: 'bbox/hand_yolov8s.pt',
                            }),
                         },
@@ -98,15 +98,13 @@ export function ui_refiners(): UI_Refiners {
                sam: form
                   .fields(
                      {
-                        model_name: form.enum.Enum_SAMLoader_model_name({ default: 'sam_vit_b_01ec64.pth' }),
-                        device_mode: form.enum.Enum_SAMLoader_device_mode({ default: 'AUTO' }),
+                        model_name: form.enum['Impact-Pack.SAMLoader.model_name']({ default: 'sam_vit_b_01ec64.pth', }), // prettier-ignore
+                        device_mode: form.enum['Impact-Pack.SAMLoader.device_mode']({ default: 'AUTO' }), // prettier-ignore
                      },
                      {
                         startCollapsed: true,
                         tooltip: 'Enabling defines the bounding boxes more clearly rather than a square box',
-                        summary: (ui) => {
-                           return `model:${ui.model_name}`
-                        },
+                        summary: (ui) => `model:${ui.model_name}`,
                      },
                   )
                   .optional(),
@@ -135,23 +133,23 @@ export function ui_refiners(): UI_Refiners {
 export const run_refiners_fromLatent = (
    //
    ui: OutputFor<typeof ui_refiners>,
-   latent: _LATENT = getCurrentRun().AUTO,
-): _IMAGE => {
+   latent: Comfy.Signal['LATENT'] = getCurrentRun().AUTO,
+): Comfy.Signal['IMAGE'] => {
    const run = getCurrentRun()
    const graph = run.nodes
-   const image: _IMAGE = graph.VAEDecode({ samples: latent, vae: run.AUTO })
+   const image: Comfy.Signal['IMAGE'] = graph.VAEDecode({ samples: latent, vae: run.AUTO })
    return run_refiners_fromImage(ui, image)
 }
 
 export const run_refiners_fromImage = (
    //
    ui: OutputFor<typeof ui_refiners>,
-   finalImage: _IMAGE = getCurrentRun().AUTO,
-   ckpt?: _MODEL,
+   finalImage: Comfy.Signal['IMAGE'] = getCurrentRun().AUTO,
+   ckpt?: Comfy.Signal['MODEL'],
    maxRes?: number,
    face_prompt_override?: Maybe<string>,
    eye_prompt_override?: Maybe<string>,
-): _IMAGE => {
+): Comfy.Signal['IMAGE'] => {
    const run = getCurrentRun()
    const graph = run.nodes
    // run.add_saveImage(run.AUTO, 'base')
@@ -159,17 +157,17 @@ export const run_refiners_fromImage = (
    const { faces, hands, eyes } = ui.refinerType
    if (faces || hands || eyes) {
       run.add_previewImage(finalImage)
-      image = graph.ImpactImageBatchToImageList({ image: finalImage })._IMAGE
-      let samLoader: SAMLoader | undefined
+      image = graph['Impact-Pack.ImpactImageBatchToImageList']({ image: finalImage })._IMAGE
+      let samLoader: Comfy.Node['Impact-Pack.SAMLoader'] | undefined
       if ((faces || hands) && ui.settings.sam)
-         samLoader = graph.SAMLoader({
+         samLoader = graph['Impact-Pack.SAMLoader']({
             model_name: ui.settings.sam.model_name,
             device_mode: ui.settings.sam.device_mode,
          })
       if (faces) {
          const facePrompt = faces.prompt
-         const provider = graph.UltralyticsDetectorProvider({ model_name: faces.detector })
-         const x = graph.FaceDetailer({
+         const provider = graph['Impact-Pack.UltralyticsDetectorProvider']({ model_name: faces.detector })
+         const x = graph['Impact-Pack.FaceDetailer']({
             image,
             bbox_detector: provider._BBOX_DETECTOR,
             sam_model_opt: samLoader?._SAM_MODEL,
@@ -197,8 +195,8 @@ export const run_refiners_fromImage = (
       }
       if (hands) {
          const handsPrompt = hands.prompt
-         const provider = graph.UltralyticsDetectorProvider({ model_name: hands.detector })
-         const x = graph.FaceDetailer({
+         const provider = graph['Impact-Pack.UltralyticsDetectorProvider']({ model_name: hands.detector })
+         const x = graph['Impact-Pack.FaceDetailer']({
             image,
             bbox_detector: provider._BBOX_DETECTOR,
             sam_model_opt: samLoader?._SAM_MODEL,
@@ -227,27 +225,28 @@ export const run_refiners_fromImage = (
          const eyesPrompt =
             eyes.prompt || 'eyes, perfect eyes, perfect anatomy, hightly detailed, sharp details'
 
-         const faceMesh = graph.MediaPipe$7FaceMeshPreprocessor({
+         const faceMesh = graph['controlnet_aux.MediaPipe-FaceMeshPreprocessor']({
             image,
             max_faces: 10,
             min_confidence: 0.5,
             resolution: 512,
          })
          const meshPreview = graph.PreviewImage({ images: faceMesh._IMAGE })
-         const segs = graph.MediaPipeFaceMeshToSEGS({
+         const segs = graph['Impact-Pack.MediaPipeFaceMeshToSEGS']({
             image: faceMesh._IMAGE,
             left_eye: true,
             right_eye: true,
             face: false,
          })
-         const mask = graph.SegsToCombinedMask({ segs: segs._SEGS })
-         const combinedSegs = graph.MaskToSEGS({ mask: mask._MASK, combined: true })
+         const mask = graph['Impact-Pack.SegsToCombinedMask']({ segs: segs._SEGS })
+         const combinedSegs = graph['Impact-Pack.MaskToSEGS']({ mask: mask._MASK, combined: true })
+         const preview = graph.PreviewImage({
+            images: graph['was.Convert Masks to Images']({ masks: mask._MASK }),
+         })
 
-         const preview = graph.PreviewImage({ images: graph.Convert_Masks_to_Images({ masks: mask._MASK }) })
-
-         const detailer = graph.DetailerForEachDebug({
+         const detailer = graph['Impact-Pack.DetailerForEachDebug']({
             image,
-            segs: graph.MaskToSEGS({
+            segs: graph['Impact-Pack.MaskToSEGS']({
                mask: mask._MASK,
                combined: true,
                crop_factor: 3,

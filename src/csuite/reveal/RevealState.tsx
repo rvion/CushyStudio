@@ -1,4 +1,5 @@
 import type { NO_PROPS } from '../types/NO_PROPS'
+import type { ObservableRef } from '../utils/observableRef'
 import type { RevealStateLazy } from './RevealStateLazy'
 import type { RevealContentProps } from './shells/ShellProps'
 import type { CSSProperties, FC, ReactNode } from 'react'
@@ -135,12 +136,14 @@ export class RevealState {
 
    p: RevealProps
    readonly parents: RevealState[]
-   anchorRef: React.RefObject<HTMLDivElement> // 🚨 ref do not work when observables!
+   anchorRef: ObservableRef<HTMLDivElement>
+   shellRef: ObservableRef<HTMLDivElement>
 
    constructor(public lazyState: RevealStateLazy) {
       this.p = { ...lazyState.p }
       this.parents = lazyState.parentsLazy.map((lazy) => lazy.getRevealState())
       this.anchorRef = lazyState.anchorRef
+      this.shellRef = lazyState.shellRef
       this.uid = lazyState.uid
       // see comment above
       this.contentFn = (): ReactNode => {
@@ -318,8 +321,8 @@ export class RevealState {
       return out
    }
    tooltipPosition: RevealComputedPosition = { top: 0, left: 0 }
-   setPosition = (rect: DOMRect | null): void => {
-      this.tooltipPosition = computePlacement(this.placement, rect)
+   setPosition = (rect: DOMRect | null, shell: DOMRect | null): void => {
+      this.tooltipPosition = computePlacement(this.placement, rect, shell)
    }
 
    // lock --------------------------------------------
@@ -344,7 +347,7 @@ export class RevealState {
 
       /* 🔥 */ if (this.isVisible) return
       /* 🔥 */ if (!this.shouldShowOnAnchorHover) return
-      /* 🔥 */ if (RevealState.shared.current) return this.open('mouse-enter-anchor-(no-parent-open)')
+      // /* 🔥 */ if (RevealState.shared.current) return this.open('mouse-enter-anchor-(no-parent-open)')
       this._resetAllAnchorTimouts()
       this.enterAnchorTimeoutId = setTimeout(
          () => this.open('mouse-enter-anchor-(with-parent-open)'),
@@ -354,8 +357,8 @@ export class RevealState {
 
    onMouseLeaveAnchor = (ev: React.MouseEvent<unknown>): void => {
       this.logEv(ev, `anchor.onMouseLeave`)
-      if (!this.shouldHideOnAnchorOrTooltipMouseLeave) return
       this._resetAllAnchorTimouts()
+      if (!this.shouldHideOnAnchorOrTooltipMouseLeave) return
       this.leaveAnchorTimeoutId = setTimeout(() => this.close('mouseOutside'), this.hideDelay)
    }
 
@@ -643,6 +646,7 @@ export class RevealState {
 
    onAnchorKeyDown = (ev: React.KeyboardEvent): void => {
       this.logEv(ev, `AnchorOrShell.onKeyDown (⏳: ${this.delaySinceLastOpenClose})`)
+      this.p.onAnchorKeyDown?.(ev)
 
       // 🔶 without delay: press 'Enter' in option list => toggle => close popup => calls onAnchorKeyDown 'Enter' with visible now false => re-opens :(
       if (this.PREVENT_DOUBLE_OPEN_CLOSE_DELAY) return
@@ -731,16 +735,20 @@ export class RevealState {
             >,
         msg: string,
     ): void {
-        return
         if (!DEBUG_REVEAL) return
         // this.log(`🎩 ${this.uid} ${evUID(ev)} ${msg}`)
         const evenInfo = `${ev?.type}#${evUID(ev)}`.padStart(15)
         this.log(`[${evenInfo}] ${msg}`)
     }
 
-   log(msg: string): void {
+   log(msg: string, ...args: any[]): void {
       if (!DEBUG_REVEAL) return
-      console.log(`🎩 ${'    '.repeat(this.depth)} | uid=${this.uid.toString().padStart(2)}`, msg)
+      const emoji = `🎩 `
+      const prefix = `${'    '.repeat(this.depth)}${this.depth > 1 ? ` | ` : ''}`
+      const uid = this.p.debugName
+         ? `uid=${this.p.debugName}-${this.uid.toString()}`
+         : `uid=${this.uid.toString().padStart(2)}`
+      console.log(`${emoji}${prefix}${uid}`, msg, ...args)
       // console.log(`🎩 ${'    '.repeat(this.ix)} depth=${this.ix.toString()} | uid=${this.uid.toString().padStart(2)}`, msg)
    }
 

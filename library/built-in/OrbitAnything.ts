@@ -32,7 +32,7 @@ app({
       const ckpt = graph.ImageOnlyCheckpointLoader({ ckpt_name: 'stable_zero123.ckpt' })
       const startImage2 = await run.loadImageAnswer(ui.image)
       // const upscale_model = graph.Upscale_Model_Loader({ model_name: 'RealESRGAN_x2.pth' })
-      const sz123 = graph.StableZero123$_Conditioning({
+      const sz123 = graph.StableZero123_Conditioning({
          width: 256,
          height: 256,
          batch_size: 1,
@@ -42,7 +42,7 @@ app({
          init_image: startImage2,
          vae: ckpt,
       })
-      let latent: _LATENT = graph.KSampler({
+      let latent: Comfy.Signal['LATENT'] = graph.KSampler({
          seed: run.randomSeed(),
          steps: 20,
          cfg: 4,
@@ -72,7 +72,10 @@ app({
       // if (ui.highResFix.saveIntermediaryImage) {
       //     graph.SaveImage({ images: graph.VAEDecode({ samples: latent, vae }) })
       // }
-      const ckpt2 = graph.CheckpointLoaderSimple({ ckpt_name: 'revAnimated_v121.safetensors' })
+      const ckpt2 = graph.CheckpointLoaderSimple({
+         // @ts-ignore
+         ckpt_name: 'revAnimated_v121.safetensors',
+      })
       latent = graph.LatentUpscale({
          samples: latent,
          crop: 'disabled',

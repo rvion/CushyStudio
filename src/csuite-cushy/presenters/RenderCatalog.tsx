@@ -1,11 +1,16 @@
+import type { Field_choices } from '../../csuite/fields/choices/FieldChoices'
 import type { Field_number } from '../../csuite/fields/number/FieldNumber'
 import type { Field_string } from '../../csuite/fields/string/FieldString'
 import type { CompiledRenderProps } from './Renderer'
 import type { FC } from 'react'
 
+import { WidgetChoices_HeaderButtonsUI } from '../../csuite/fields/choices/WidgetChoices_HeaderButtonsUI'
+import { WidgetChoices_HeaderSelectUI } from '../../csuite/fields/choices/WidgetChoices_HeaderSelectUI'
+import { WidgetChoices_HeaderTabBarUI } from '../../csuite/fields/choices/WidgetChoices_HeaderTabBarUI'
 import { WidgetGroup_BlockUI } from '../../csuite/fields/group/WidgetGroup_BlockUI'
 import { WidgetGroup_LineUI } from '../../csuite/fields/group/WidgetGroup_Header'
 import { WidgetGroup_InlineUI } from '../../csuite/fields/group/WidgetGroup_InlineUI'
+import { WidgetGroup_TabUI } from '../../csuite/fields/group/WidgetGroup_TabUI'
 import { WidgetNumberUI } from '../../csuite/fields/number/WidgetNumberUI'
 import { WidgetString_SmallInput } from '../../csuite/fields/string/WidgetString_SmallInput'
 import { WidgetString_summary } from '../../csuite/fields/string/WidgetString_summary'
@@ -69,6 +74,12 @@ export type WidgetsCatalog = {
       def: FC<{ field: Field_number }>
    }
 
+   choices: {
+      TabbedInline: FC<{ field: Field_choices<any> }>
+      Buttons: FC<{ field: Field_choices<any> }>
+      SelectHeaderUI: FC<{ field: Field_choices<any> }>
+   }
+
    string: {
       input: FC<{ field: Field_string }>
       summary: FC<{ field: Field_string }>
@@ -76,6 +87,7 @@ export type WidgetsCatalog = {
    }
 
    group: {
+      Tabbed: typeof WidgetGroup_TabUI
       controls: typeof WidgetGroup_LineUI
       group: typeof WidgetGroup_BlockUI
       inline: typeof WidgetGroup_InlineUI
@@ -115,12 +127,18 @@ export const widgetsCatalog: WidgetsCatalog = {
    number: {
       def: WidgetNumberUI,
    },
+   choices: {
+      TabbedInline: WidgetChoices_HeaderTabBarUI,
+      Buttons: WidgetChoices_HeaderButtonsUI,
+      SelectHeaderUI: WidgetChoices_HeaderSelectUI,
+   },
    string: {
       input: WidgetString_SmallInput,
       summary: WidgetString_summary,
       textarea: WidgetString_TextareaInput,
    },
    group: {
+      Tabbed: WidgetGroup_TabUI,
       controls: WidgetGroup_LineUI,
       group: WidgetGroup_BlockUI,
       inline: WidgetGroup_InlineUI,

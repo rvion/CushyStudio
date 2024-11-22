@@ -94,7 +94,7 @@ app({
       // 1. SETUP --------------------------------------------------
       const graph = run.nodes
       const floor = (x: number): number => Math.floor(x)
-      let { ckpt, vae, clip } = evalModelSD15andSDXL(ui.model)
+      const { ckpt, vae, clip } = evalModelSD15andSDXL(ui.model)
       const suits = Array.from(new Set(ui.cards.map((c) => c.row)))
       const values = Array.from(new Set(ui.cards.map((c) => c.col)))
       const W = ui.size.width, W2 = floor(W / 2), W3 = floor(W / 3), W4 = floor(W / 4) // prettier-ignore
@@ -103,7 +103,7 @@ app({
 
       //===//===//===//===//===//===//===//===//===//===//===//===//===//
       // 2. BACKGROUND --------------------------------------------------
-      const suitsBackground = new Map<(typeof suits)[number], _LATENT>()
+      const suitsBackground = new Map<(typeof suits)[number], Comfy.Signal['LATENT']>()
       const suitsBackgroundLatent = graph.EmptyLatentImage({ width: W, height: H })
       for (const suit of suits) {
          // const store = run.getImageStore({ tag: `bg-${suit}`, autoUpdate: (img) => img.filename.startsWith(`${suit}_BG`) })
@@ -130,7 +130,7 @@ app({
       // 3. CARD LAYOUTS --------------------------------------------------
       const negativeText = 'text, watermarks, logo, nsfw, boobs'
       const cardsSorted = ui.cards.sort((a, b) => 100 * a.x + a.y - (100 * b.x + b.y))
-      let foo: { [key: string]: { base: ImageAndMask; mask: ImageAndMask } } = {}
+      const foo: { [key: string]: { base: ImageAndMask; mask: ImageAndMask } } = {}
       for (const card of cardsSorted) {
          // console.log(`[🧐] `, toJS(card))
          const { col: value, row: suit } = card
@@ -172,8 +172,8 @@ app({
          const positive = graph.CLIPTextEncode({ clip, text: positiveText })
          const negative = negP.conditioning // graph.CLIPTextEncode({ clip, text: negativeText })
          const xxx = foo[`${suit}_${value}`]!
-         // let latent: _LATENT = suitsBackground.get(suit)! // emptyLatent
-         let latent: _LATENT = graph.VAEEncode({ pixels: xxx.base, vae })
+         // let latent: Comfy.Signal['LATENT'] = suitsBackground.get(suit)! // emptyLatent
+         let latent: Comfy.Signal['LATENT'] = graph.VAEEncode({ pixels: xxx.base, vae })
          latent = graph.SetLatentNoiseMask({
             samples: latent,
             mask: xxx.mask, // graph.ImageToMask({ image: xxx.mask, channel: 'alpha' }),
@@ -219,7 +219,7 @@ app({
          }
 
          // ADD LOGOS ----------------------------------------
-         let pixels: _IMAGE = graph.VAEDecode({ vae, samples: latent })
+         const pixels: Comfy.Signal['IMAGE'] = graph.VAEDecode({ vae, samples: latent })
          graph.SaveImage({ images: pixels, filename_prefix: `cards/${suit}/${value}/img` })
       }
       await run.PROMPT()

@@ -66,8 +66,8 @@ h4 { font-size: 1rem; font-weight: bold; }
 
 
 /* border stuff ----------------------------------------------------------------------------------- */
-.bd { border: 2px solid oklch(var(--p)) }
-.bd1 { border: 1px solid oklch(var(--p)) }
+.bd { border: 2px solid red }
+.bd1 { border: 1px solid blue }
 
 .konvajs-content { border: 1px solid var(--fallback-bc,oklch(var(--bc)/0.2)); }
 /* .virtualBorder { border: 1px solid var(--fallback-bc,oklch(var(--bc)/0.2)); } */

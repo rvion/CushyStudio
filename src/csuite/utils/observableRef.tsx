@@ -11,7 +11,13 @@ export function createObservableRef<T extends any>(value?: T): ObservableRef<T> 
    return new ObservableRef(value)
 }
 
-class ObservableRef<T extends any> {
+export class ObservableRef<T extends any> {
+   private _onFirstMount: ((value: T) => void) | null = null
+   onMount(fn: (value: T) => void): void {
+      if (this._current !== null) fn(this._current)
+      else this._onFirstMount = fn
+   }
+
    constructor(private _current: T | null = null) {
       makeAutoObservable<this, '_current'>(this, { _current: observable.ref })
    }
@@ -22,5 +28,10 @@ class ObservableRef<T extends any> {
 
    set current(value: T | null) {
       this._current = value
+
+      if (value != null && this._onFirstMount !== null) {
+         this._onFirstMount(value)
+         this._onFirstMount = null
+      }
    }
 }

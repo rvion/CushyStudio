@@ -1,3 +1,3 @@
-import type { PluginInfo } from '../../manager/custom-node-list/custom-node-list-types'
+import type { ComfyManagerPluginInfo } from '../types/ComfyManagerPluginInfo'
 
-export type PluginSuggestion = { reason: string; plugin: PluginInfo }
+export type PluginSuggestion = { reason: string; plugin: ComfyManagerPluginInfo }

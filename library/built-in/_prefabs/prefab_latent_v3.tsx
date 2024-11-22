@@ -19,9 +19,9 @@ export type UI_LatentV3 = X.XLink<
          image: X.XImage
          resize: X.XOptional<
             X.XGroup<{
-               mode: X.XEnum<Enum_CR_Upscale_Image_mode>
-               supersample: X.XEnum<Enum_ImageDrawRectangleRounded_top_left_corner>
-               resampling: X.XEnum<Enum_SEGSUpscaler_resampling_method>
+               mode: X.XEnumOf<'resize' | 'rescale'>
+               supersample: X.XEnumOf<'false' | 'true'>
+               resampling: X.XEnumOf<'bicubic' | 'bilinear' | 'lanczos' | 'nearest'>
                rescale_factor: X.XNumber
                resize_width: X.XNumber
                resize_height: X.XNumber
@@ -52,7 +52,7 @@ export function ui_latent_v3(p: { size?: Field_size_config } = {}): UI_LatentV3 
                {
                   batchSize,
                   image: form.image({ label: false, justifyLabel: false }),
-                  resize: form.auto.Image_Resize().optional(),
+                  resize: form.auto['was.Image Resize']().optional(),
                },
                { collapsed: false, border: false },
             ),
@@ -85,9 +85,9 @@ export function ui_latent_v3(p: { size?: Field_size_config } = {}): UI_LatentV3 
 export const run_latent_v3 = async (p: {
    //
    opts: ReturnType<typeof ui_latent_v3>['$Value']
-   vae: _VAE
+   vae: Comfy.Signal['VAE']
 }): Promise<{
-   latent: _LATENT
+   latent: Comfy.Signal['LATENT']
    width: number
    height: number
 }> => {
@@ -99,14 +99,14 @@ export const run_latent_v3 = async (p: {
    // misc calculatiosn
    let width: number
    let height: number
-   let latent: _LATENT
+   let latent: Comfy.Signal['LATENT']
 
    // case 1. start form image
    if (opts.image) {
       const _img = run.loadImage(opts.image.image.id)
-      let image: _IMAGE = await _img.loadInWorkflow()
+      let image: Comfy.Signal['IMAGE'] = await _img.loadInWorkflow()
       if (opts.image.resize) {
-         image = graph.Image_Resize({ image, ...opts.image.resize })
+         image = graph['was.Image Resize']({ image, ...opts.image.resize })
          if (opts.image.resize.mode === 'rescale') {
             width = _img.width * opts.image.resize.rescale_factor
             height = _img.height * opts.image.resize.rescale_factor

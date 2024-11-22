@@ -1,12 +1,11 @@
 import type { RevealProps } from './RevealProps'
 import type { RevealShellProps } from './shells/ShellProps'
-import type { ForwardedRef, ReactNode, ReactPortal } from 'react'
+import type { ForwardedRef, ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
-import React, { cloneElement, createElement, forwardRef, useEffect, useRef } from 'react'
+import React, { cloneElement, createElement, forwardRef, useEffect, useMemo } from 'react'
 import { createPortal } from 'react-dom'
 
-// import { twMerge } from 'tailwind-merge'
 import { cls } from '../../widgets/misc/cls'
 import { regionMonitor } from '../regions/RegionMonitor'
 import { objectAssignTsEfficient_t_t } from '../utils/objectAssignTsEfficient'
@@ -31,16 +30,17 @@ import { useSyncForwardedRef } from './useSyncForwardedRef'
 
 export const RevealUI = observer(
    forwardRef(function RevealUI_(p: RevealProps, ref2?: ForwardedRef<RevealStateLazy>) {
-      const anchorRef = useRef<HTMLDivElement>(null)
-      useSyncForwardedRef(p.sharedAnchorRef, anchorRef)
-
       const parents_: RevealStateLazy[] = p.parentRevealState?.tower ?? useRevealOrNull()?.tower ?? []
       const parents: RevealStateLazy[] = p.useSeparateTower ? [] : parents_
 
       // Eagerly retrieving parents is OK here cause as a children, we expects our parents to exist.
-      const lazyState = useMemoAction(() => new RevealStateLazy(p, parents, anchorRef), []) // prettier-ignore
+      const lazyState = useMemoAction(() => new RevealStateLazy(p, parents), []) // prettier-ignore
+      const anchorRef = lazyState.anchorRef
+      const shellRef = lazyState.shellRef
+      useSyncForwardedRef(p.sharedAnchorRef, anchorRef)
+
       const reveal = lazyState.state
-      const nextTower = lazyState.towerContext // (() => ({ tower: [...parents, lazyState] }), [])
+      // const nextTower = lazyState.towerContext // (() => ({ tower: [...parents, lazyState] }), [])
       useEffectToRegisterInGlobalRevealStack(lazyState)
 
       // 🔴 2024-08-08 domi: isn't this broken/useless?
@@ -58,8 +58,7 @@ export const RevealUI = observer(
       // TODO: can we just make that part of the lazyState initialization instead
       useEffectAction(() => {
          if (reveal == null) return
-         if (p.content !== reveal.p.content)
-            reveal.contentFn = (): JSX.Element => createElement(p.content, reveal.revealContentProps)
+         if (p.content !== reveal.p.content) reveal.contentFn = (): JSX.Element => createElement(p.content, reveal.revealContentProps) // prettier-ignore
          if (p.showBackdrop !== reveal.p.showBackdrop) reveal.p.showBackdrop = p.showBackdrop
          if (p.hasBackdrop !== reveal.p.hasBackdrop) reveal.p.hasBackdrop = p.hasBackdrop
          if (p.backdropColor !== reveal.p.backdropColor) reveal.p.backdropColor = p.backdropColor
@@ -89,18 +88,16 @@ export const RevealUI = observer(
             const x = regionMonitor.mouseX
             const y = regionMonitor.mouseY
             const vDomRect = new VirtualDomRect({ x, y, width: 1, height: 1 })
-            reveal.setPosition(vDomRect)
+            reveal.setPosition(vDomRect, null)
          }
 
          // 2. place around anchor
          else if (relTo == null || relTo === 'anchor') {
             const element = anchorRef.current
-            if (element) {
-               const rect = element.getBoundingClientRect()
-               reveal.setPosition(rect)
-            } else {
-               reveal.setPosition(null)
-            }
+            reveal.setPosition(
+               element?.getBoundingClientRect() ?? null,
+               shellRef.current?.getBoundingClientRect() ?? null,
+            )
          }
 
          // 3. place somewhere else
@@ -112,7 +109,8 @@ export const RevealUI = observer(
             // and use 2 as a fallback case.
             if (element == null) return
             const rect = element.getBoundingClientRect()
-            reveal.setPosition(rect)
+            reveal.setPosition(rect, shellRef.current?.getBoundingClientRect() ?? null)
+
             // in that case, let's add a return here
          }
       }, [reveal?.isVisible])
@@ -160,36 +158,20 @@ export const RevealUI = observer(
                 },
                 <>
                     {child.props.children}
-                    {mkTooltip(lazyState)}
+                    <MkTooltip lazyState={lazyState} />
                 </>
             )
-         return (
-            <RevealCtx.Provider //
-               value={nextTower}
-            >
-               {clonedChildren}
-            </RevealCtx.Provider>
-         )
+         return clonedChildren
       }
 
-      if (p.children == null) {
-         return (
-            <RevealCtx.Provider value={nextTower}>{mkTooltip(lazyState) /* tooltip */}</RevealCtx.Provider>
-         )
-      }
+      if (p.children == null) return <MkTooltip lazyState={lazyState} />
 
       // this span could be bypassed by cloning the child element and injecting props,
       // assuming the child will mount them
       return (
          <div //
             // 'inline-flex',
-            tw={
-               /* twMerge */ [
-                  'UI-Reveal 🔶NOT-CLONED🔶',
-                  reveal?.defaultCursor ?? 'cursor-pointer',
-                  p.className,
-               ]
-            }
+            tw={['UI-Reveal 🔶NOT-CLONED🔶', reveal?.defaultCursor ?? 'cursor-pointer', p.className]}
             ref={anchorRef}
             style={p.style}
             onContextMenu={lazyState.onContextMenu}
@@ -203,10 +185,7 @@ export const RevealUI = observer(
             {...p.anchorProps}
          >
             {p.children /* anchor */}
-            <RevealCtx.Provider value={nextTower}>
-               {/*  */}
-               {mkTooltip(lazyState) /* tooltip */}
-            </RevealCtx.Provider>
+            <MkTooltip lazyState={lazyState} />
          </div>
       )
    }),
@@ -214,9 +193,29 @@ export const RevealUI = observer(
 
 RevealUI.displayName = 'RevealUI'
 
-const mkTooltip = (lazyState: Maybe<RevealStateLazy>): Maybe<ReactPortal> => {
-   if (lazyState == null) return null
+const MkTooltip = observer(({ lazyState }: { lazyState: RevealStateLazy }) => {
    const select = lazyState.state
+   const p = lazyState.p
+   const ShellUI: React.FC<RevealShellProps> = useMemo(
+      () =>
+         (props: RevealShellProps): ReactNode => {
+            const shell = p.shell
+            if (shell === 'popover') return <ShellPopoverUI {...props} />
+            if (shell === 'none') return <ShellNoneUI {...props} />
+            //
+            if (shell === 'popup') return <ShellPopupUI {...props} />
+            if (shell === 'popup-xs') return <ShellPopupXSUI {...props} />
+            if (shell === 'popup-sm') return <ShellPopupSMUI {...props} />
+            if (shell === 'popup-lg') return <ShellPopupLGUI {...props} />
+            if (shell === 'popup-xl') return <ShellPopupXLUI {...props} />
+
+            if (!shell) return <ShellPopoverUI {...props} />
+
+            const Shell = shell as React.FC<RevealShellProps>
+            return <Shell {...props} />
+         },
+      [p.shell],
+   )
 
    // ensure uist initialized
    if (select == null) return null
@@ -228,28 +227,10 @@ const mkTooltip = (lazyState: Maybe<RevealStateLazy>): Maybe<ReactPortal> => {
    const element = document.getElementById('tooltip-root')!
 
    const pos = select.tooltipPosition
-   const p = select.p
    const hiddenContent = createElement(select.contentFn)
 
-   const ShellUI: React.FC<RevealShellProps> = (props: RevealShellProps): ReactNode => {
-      const shell = p.shell
-      if (shell === 'popover') return <ShellPopoverUI {...props} />
-      if (shell === 'none') return <ShellNoneUI {...props} />
-      //
-      if (shell === 'popup') return <ShellPopupUI {...props} />
-      if (shell === 'popup-xs') return <ShellPopupXSUI {...props} />
-      if (shell === 'popup-sm') return <ShellPopupSMUI {...props} />
-      if (shell === 'popup-lg') return <ShellPopupLGUI {...props} />
-      if (shell === 'popup-xl') return <ShellPopupXLUI {...props} />
-
-      if (!shell) return <ShellPopoverUI {...props} />
-
-      const Shell = shell as React.FC<RevealShellProps>
-      return <Shell {...props} />
-   }
-
    let revealedContent = (
-      <ShellUI pos={pos} reveal={select}>
+      <ShellUI pos={pos} reveal={select} shellRef={lazyState.shellRef}>
          {hiddenContent}
       </ShellUI>
    )
@@ -259,5 +240,10 @@ const mkTooltip = (lazyState: Maybe<RevealStateLazy>): Maybe<ReactPortal> => {
       revealedContent = <RevealBackdropUI reveal={select}>{revealedContent}</RevealBackdropUI>
    }
 
-   return createPortal(revealedContent, element)
-}
+   return (
+      <RevealCtx.Provider value={lazyState.towerContext}>
+         {createPortal(revealedContent, element)}
+      </RevealCtx.Provider>
+   )
+   // return createPortal(revealedContent, element)
+})

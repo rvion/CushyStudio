@@ -1,4 +1,4 @@
-import type { ModelInfo } from '../../manager/model-list/model-list-loader-types'
+import type { ComfyManagerModelInfo } from '../../manager/types/ComfyManagerModelInfo'
 import type { CivitaiDownloadableFile, CivitaiModelVersion, CivitaiSearchResultItem } from './CivitaiSpec'
 
 import { observer, useLocalObservable } from 'mobx-react-lite'
@@ -12,9 +12,9 @@ import { MessageWarningUI } from '../../csuite/messages/MessageWarningUI'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { SelectUI } from '../../csuite/select/SelectUI'
 import { formatSize } from '../../csuite/utils/formatSize'
-import { knownModel_Base, type KnownModel_Base } from '../../manager/model-list/KnownModel_Base'
-import { knownModel_SavePath, type KnownModel_SavePath } from '../../manager/model-list/KnownModel_SavePath'
-import { knownModel_Type, type KnownModel_Type } from '../../manager/model-list/KnownModel_Type'
+import { knownModel_Base, type KnownModel_Base } from '../../manager/generated/KnownModel_Base'
+import { knownModel_SavePath, type KnownModel_SavePath } from '../../manager/generated/KnownModel_SavePath'
+import { knownModel_Type, type KnownModel_Type } from '../../manager/generated/KnownModel_Type'
 import { CivitaiWarningAPIKeyMissingUI } from './CivitaiWarningAPIKeyMissingUI'
 
 const detectBase = ({ version }: CivitaiDownloadableFileProps): Maybe<KnownModel_Base> => {
@@ -60,7 +60,7 @@ export const CivitaiDownloadableFileUI = observer(function CivitaiDownloadableFi
          save_path: 'default',
       }),
    )
-   const mi: ModelInfo = {
+   const mi: ComfyManagerModelInfo = {
       description: version.description,
       name: version.name as any,
       filename: file.name,
@@ -130,7 +130,7 @@ export const CivitaiDownloadableFileUI = observer(function CivitaiDownloadableFi
                   Download
                </Button>
                <RevealUI content={() => <JsonViewUI value={mi} />}>
-                  <div tw='btn btn-sm btn-link'>show ComfyManager payload</div>
+                  <Button>show ComfyManager payload</Button>
                </RevealUI>
             </div>
             <div tw='text-sm'>url: {file.downloadUrl}</div>

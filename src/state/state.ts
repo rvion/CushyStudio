@@ -5,6 +5,7 @@ import type { ResilientWebSocketClient } from '../back/ResilientWebsocket'
 import type { ActionTagMethodList } from '../cards/App'
 import type { GithubRepoName } from '../cards/githubRepo'
 import type { GithubUserName } from '../cards/GithubUser'
+import type { ComfyNodeSlotName, ComfyUnionValue } from '../comfyui/comfyui-types'
 import type { PreferedFormLayout } from '../config/ConfigFile'
 import type { JsonFile } from '../core/JsonFile'
 import type { Activity } from '../csuite/activity/Activity'
@@ -15,8 +16,8 @@ import type { RegionMonitor } from '../csuite/regions/RegionMonitor'
 import type { TreeNode } from '../csuite/tree/TreeNode'
 import type { Timestamp } from '../csuite/types/Timestamp'
 import type { LiveDB } from '../db/LiveDB'
-import type { ModelInfo } from '../manager/model-list/model-list-loader-types'
-import type { ComfySchemaL, EnumValue } from '../models/ComfySchema'
+import type { ComfyManagerModelInfo } from '../manager/types/ComfyManagerModelInfo'
+import type { ComfySchemaL } from '../models/ComfySchema'
 import type { ComfyWorkflowL } from '../models/ComfyWorkflow'
 import type { CushyAppL } from '../models/CushyApp'
 import type { DraftL } from '../models/Draft'
@@ -43,7 +44,7 @@ import { fromZodError } from 'zod-validation-error'
 import { asAppPath } from '../cards/asAppPath'
 import { Library } from '../cards/Library'
 import { recursivelyFindAppsInFolder } from '../cards/walkLib'
-import { STANDARD_HOST_ID, vIRTUAL_HOST_ID__BASE } from '../config/ComfyHostDef'
+import { STANDARD_HOST_ID } from '../config/ComfyHostDef'
 import { type ConfigFile } from '../config/ConfigFile'
 import { mkConfigFile } from '../config/mkConfigFile'
 import { builder, cushyFactory, type CushyFactory } from '../controls/Builder'
@@ -120,7 +121,7 @@ export class STATE {
    uploader: Uploader
    supabase: SupabaseClient<Database>
    auth: AuthState
-   managerRepository = new ComfyManagerRepository({ check: false, genTypes: false })
+   comfyAddons = new ComfyManagerRepository({ check: false, genTypes: false })
    search: SearchManager = new SearchManager(this)
    forms: CushyFactory = cushyFactory
    repository = getGlobalRepository()
@@ -209,8 +210,8 @@ export class STATE {
       return openInVSCode(filePathWithinWorkspace)
    }
 
-   getKnownCheckpoints(): ModelInfo[] {
-      return this.managerRepository.getKnownCheckpoints()
+   getKnownCheckpoints(): ComfyManagerModelInfo[] {
+      return this.comfyAddons.getKnownCheckpoints()
    }
 
    reloadCushyMainWindow(): void {
@@ -411,11 +412,11 @@ export class STATE {
 
    fixEnumValue = (
       //
-      candidateValue: Maybe<EnumValue>,
-      enumName: string,
+      candidateValue: Maybe<ComfyUnionValue>,
+      slotName: ComfyNodeSlotName,
    ): CleanedEnumResult<any> => {
       // 0. retrieve enum dev
-      const possibleValues = this.schema.knownEnumsByName.get(enumName)?.values ?? []
+      const possibleValues = this.schema.knownUnionBySlotName.get(slotName)?.values ?? []
 
       // 1. when enum is empty
       if (possibleValues.length == 0) {
@@ -598,7 +599,7 @@ export class STATE {
       // 🔴 ensure getters are called at least once so we upsert the two core virtual hosts
       // 💬 2024-10-26 rvion: this is just bad
       // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-      this.virtualHostBase
+      // this.virtualHostBase
       // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       // this.virtualHostFull
       // eslint-disable-next-line @typescript-eslint/no-unused-expressions
@@ -668,22 +669,22 @@ export class STATE {
    get mainComfyHostID(): HostID {
       return (
          this.configFile.value.mainComfyHostID ?? //
-         vIRTUAL_HOST_ID__BASE
+         STANDARD_HOST_ID
       )
    }
 
-   get virtualHostBase(): HostL {
-      return this.db.host.upsert({
-         id: asHostID(vIRTUAL_HOST_ID__BASE),
-         hostname: 'localhost',
-         useHttps: SQLITE_false,
-         port: 8188,
-         name: 'virtual-ComfyUI-base',
-         isLocal: SQLITE_true,
-         isVirtual: SQLITE_true,
-         isReadonly: SQLITE_true,
-      })
-   }
+   // get virtualHostBase(): HostL {
+   //    return this.db.host.upsert({
+   //       id: asHostID(vIRTUAL_HOST_ID__BASE),
+   //       hostname: 'localhost',
+   //       useHttps: SQLITE_false,
+   //       port: 8188,
+   //       name: 'virtual-ComfyUI-base',
+   //       isLocal: SQLITE_true,
+   //       isVirtual: SQLITE_true,
+   //       isReadonly: SQLITE_true,
+   //    })
+   // }
 
    get standardHost(): HostL {
       return this.db.host.upsert({
@@ -742,7 +743,7 @@ export class STATE {
    /** main host */
    get mainHost(): HostL {
       const selectedHost = this.db.host.get(this.mainComfyHostID)
-      return selectedHost ?? this.virtualHostBase
+      return selectedHost ?? this.standardHost
    }
 
    /** todo: rename */

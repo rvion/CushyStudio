@@ -25,7 +25,6 @@ export const PanelContainerUI = observer(function PanelContainer(p: {
    const panelURI = p.flexLayoutTabNode.getId()
    const panelState = useMemoAction(() => {
       const ps = new PanelState(flexLayoutTabNode, panelURI, panelDef)
-      // PanelStateById.set(panelID, ps)
       PanelStateByNode.set(panelURI, ps)
       return ps
    }, [flexLayoutTabNode, panelURI])
@@ -53,6 +52,7 @@ export const PanelContainerUI = observer(function PanelContainer(p: {
       // 'Gallery',
       // 'Draft',
    ]
+
    if (blacklist.includes(panelName)) return null
    const Component = panelDef.widget
    return (
@@ -60,21 +60,13 @@ export const PanelContainerUI = observer(function PanelContainer(p: {
          <panelContext.Provider value={panelState}>
             <Frame
                col
-               tw={[
-                  'h-full w-full flex-1',
-                  'overflow-auto', // overflow-auto to only show scrollbar when needed
-                  // 'overflow-scroll',
-               ]}
+               tw='h-full w-full flex-1 overflow-auto'
                className={`Region-${panelName}`}
                data-panel-id={panelURI}
                id={panelURI}
                // HACK?(bird_d): Needed to make panel headers lighter
-               onMouseEnter={(e) => {
-                  e.currentTarget.classList.add('Hovered-Region')
-               }}
-               onMouseLeave={(e) => {
-                  e.currentTarget.classList.remove('Hovered-Region')
-               }}
+               onMouseEnter={(e) => e.currentTarget.classList.add('Hovered-Region')}
+               onMouseLeave={(e) => e.currentTarget.classList.remove('Hovered-Region')}
                onFocus={(e) => e.currentTarget.classList.add('Hovered-Region')}
                onBlur={(e) => e.currentTarget.classList.remove('Hovered-Region')}
             >

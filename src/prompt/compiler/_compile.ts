@@ -16,7 +16,7 @@ export const compilePrompt = (p: {
    seed?: number
    onLora: (
       //
-      lora: Enum_LoraLoader_lora_name,
+      lora: Comfy.Slots['LoraLoader.lora_name'],
       strength_clip: number,
       strength_model: number,
    ) => void

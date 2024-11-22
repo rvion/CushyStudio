@@ -6,14 +6,14 @@ import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
 export type UI_subform_Tile = X.XGroup<{
    preprocessor: UI_subform_Tile_Preprocessor
    models: X.XGroup<{
-      cnet_model_name: X.XEnum<Enum_ControlNetLoader_control_net_name>
+      cnet_model_name: X.XEnum<'ControlNetLoader.control_net_name'>
    }>
    strength: X.XNumber
    advanced: X.XGroup<{
       startAtStepPercent: X.XNumber
       endAtStepPercent: X.XNumber
-      crop: X.XEnum<Enum_LatentUpscale_crop>
-      upscale_method: X.XEnum<Enum_ImageScale_upscale_method>
+      crop: X.XEnum<'LatentUpscale.crop'>
+      upscale_method: X.XEnum<'ImageScale.upscale_method'>
    }>
 }>
 
@@ -29,8 +29,9 @@ export function ui_subform_Tile(): UI_subform_Tile {
                label: 'Select or Download Models',
                // startCollapsed: true,
                items: {
-                  cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
+                  cnet_model_name: form.enum['ControlNetLoader.control_net_name']({
                      label: 'Model',
+                     // @ts-ignore
                      default: 'control_v11u_sd15_tile_fp16.safetensors',
                      filter: (name) => name.toString().includes('_tile'),
                      extraDefaults: ['control_v11f1e_sd15_tile.pth'],
@@ -80,11 +81,11 @@ export function ui_subform_Tile_Preprocessor(): UI_subform_Tile_Preprocessor {
 // 🅿️ Tile RUN ===================================================
 export const run_cnet_Tile = (
    Tile: OutputFor<typeof ui_subform_Tile>,
-   image: _IMAGE,
+   image: Comfy.Signal['IMAGE'],
    resolution: number, // 512 | 768 | 1024 = 512,
 ): {
-   image: _IMAGE
-   cnet_name: Enum_ControlNetLoader_control_net_name
+   image: Comfy.Signal['IMAGE']
+   cnet_name: Comfy.Slots['ControlNetLoader.control_net_name']
 } => {
    const run = getCurrentRun()
    const graph = run.nodes
@@ -93,7 +94,7 @@ export const run_cnet_Tile = (
    // PREPROCESSOR - Tile ===========================================================
    if (Tile.preprocessor.Pyrup) {
       const tile = Tile.preprocessor.Pyrup
-      image = graph.TilePreprocessor({
+      image = graph['controlnet_aux.TilePreprocessor']({
          image: image,
          resolution: resolution,
          pyrUp_iters: tile.pyrup,

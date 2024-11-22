@@ -1,9 +1,9 @@
+import type { ComfyUIAPIRequest_Node } from '../comfyui/comfyui-prompt-api'
 import type { ManualPromise } from '../csuite/utils/ManualPromise'
 import type { LiveDB } from '../db/LiveDB'
 import type { TABLES } from '../db/TYPES.gen'
 import type { SafetyResult } from '../safety/Safety'
 import type { ComfyNodeMetadata } from '../types/ComfyNodeID'
-import type { ComfyNodeJSON } from '../types/ComfyPrompt'
 import type { ComfyPromptL } from './ComfyPrompt'
 import type { ComfyWorkflowL } from './ComfyWorkflow'
 import type { CushyAppL } from './CushyApp'
@@ -280,17 +280,17 @@ export class MediaImageL extends BaseInst<TABLES['media_image']> {
    }
 
    /** get the expected enum name */
-   get enumName(): Enum_LoadImage_image {
+   get enumName(): Comfy.Slots['LoadImage.image'] {
       // return `${this.baseNameWithoutExtension}-${this.data.hash}${this.extension}`
-      return `${this.data.hash}${this.extension}` as Enum_LoadImage_image
+      return `${this.data.hash}${this.extension}` as Comfy.Slots['LoadImage.image']
    }
 
-   uploadAndReturnEnumName = async (): Promise<Enum_LoadImage_image> => {
+   uploadAndReturnEnumName = async (): Promise<Comfy.Slots['LoadImage.image']> => {
       const finalName = await this.st.uploader.upload_Image(this, { type: 'input', override: true })
       return finalName
    }
 
-   loadInWorkflow = async (workflow_?: ComfyWorkflowL): Promise<LoadImage> => {
+   loadInWorkflow = async (workflow_?: ComfyWorkflowL): Promise<Comfy.Node['LoadImage']> => {
       const workflow = workflow_ ?? getCurrentRun_IMPL().workflow
       const enumName = await this.uploadAndReturnEnumName()
       const img = workflow.builder.LoadImage({ image: enumName })
@@ -300,13 +300,13 @@ export class MediaImageL extends BaseInst<TABLES['media_image']> {
    /** load an image as mask in a comfy workflow beeing created */
    loadInWorkflowAsMask = async (
       /** "alpha" | "blue" | "green" | "red" */
-      channel: Enum_LoadImageMask_channel,
+      channel: Comfy.Slots['LoadImageMask.channel'],
       /** workflow to load image as mask into (default to current workflow) */
       workflow_?: ComfyWorkflowL,
-   ): Promise<LoadImageMask> => {
+   ): Promise<Comfy.Node['LoadImageMask']> => {
       const workflow = workflow_ ?? getCurrentRun_IMPL().workflow
       const enumName = await this.uploadAndReturnEnumName()
-      const mask: LoadImageMask = workflow.builder.LoadImageMask({ image: enumName, channel })
+      const mask: Comfy.Node['LoadImageMask'] = workflow.builder.LoadImageMask({ image: enumName, channel })
       return mask
    }
 
@@ -335,7 +335,7 @@ export class MediaImageL extends BaseInst<TABLES['media_image']> {
    }
 
    /** return the json of the ComfyNode that led to this image */
-   get ComfyNode(): Maybe<ComfyNodeJSON> {
+   get ComfyNode(): Maybe<ComfyUIAPIRequest_Node> {
       const nodeID = this.data.promptNodeID
       if (nodeID == null) return null
       return this.graph?.data.comfyPromptJSON[nodeID]

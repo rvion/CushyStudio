@@ -4,7 +4,7 @@ import type { Requirements } from '../../../src/manager/REQUIREMENTS/Requirement
 import type { OutputFor } from './_prefabs'
 
 export type UI_upscaleWithModel = X.XGroup<{
-   model: X.XEnum<Enum_UpscaleModelLoader_model_name>
+   model: X.XEnum<'UpscaleModelLoader.model_name'>
 }>
 
 export function ui_upscaleWithModel(): UI_upscaleWithModel {
@@ -12,7 +12,7 @@ export function ui_upscaleWithModel(): UI_upscaleWithModel {
    return ui
       .group({
          label: 'Upscale via Model',
-         items: { model: ui.enum.Enum_UpscaleModelLoader_model_name({ default: '4x-UltraSharp.pth' }) },
+         items: { model: ui.enum['UpscaleModelLoader.model_name']({ default: '4x-UltraSharp.pth' }) },
          icon: 'mdiArrowExpandAll',
          box: { base: { hue: 180, chroma: 0.1 } },
       })
@@ -27,7 +27,7 @@ export function ui_upscaleWithModel(): UI_upscaleWithModel {
          // { type: 'modelInManager', modelName: '4x_NMKD-Siax_200k' },
          // // 8x
          // { type: 'modelInManager', modelName: '8x_NMKD-Superscale_150000_G' },
-         ...Array.from(cushy.managerRepository.knownModels.values())
+         ...Array.from(cushy.comfyAddons.knownModels.values())
             .filter((t) => t.type === 'upscale')
             .map((t): Requirements => ({ type: 'modelInManager', modelName: t.name, optional: true })),
       ])
@@ -35,14 +35,14 @@ export function ui_upscaleWithModel(): UI_upscaleWithModel {
 
 export const run_upscaleWithModel = (
    ui: NonNullable<OutputFor<typeof ui_upscaleWithModel>>,
-   p?: { image?: _IMAGE },
-): _IMAGE => {
+   p?: { image?: Comfy.Signal['IMAGE'] },
+): Comfy.Signal['IMAGE'] => {
    const run = getCurrentRun()
    const graph: ComfyWorkflowBuilder = run.nodes
    const upscale = ui
    const upscaleModelName = upscale.model
-   const upscaleModel = graph.UpscaleModelLoader({ model_name: upscaleModelName })
-   const upscaledResult = graph.ImageUpscaleWithModel({
+   const upscaleModel = graph['UpscaleModelLoader']({ model_name: upscaleModelName })
+   const upscaledResult = graph['ImageUpscaleWithModel']({
       image: p?.image ?? run.AUTO,
       upscale_model: upscaleModel,
    })

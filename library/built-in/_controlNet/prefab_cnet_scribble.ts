@@ -6,13 +6,13 @@ import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
 
 export type UI_subform_Scribble = X.XGroup<{
    preprocessor: UI_subform_Scribble_Preprocessor
-   cnet_model_name: X.XEnum<Enum_ControlNetLoader_control_net_name>
+   cnet_model_name: X.XEnum<'ControlNetLoader.control_net_name'>
    strength: X.XNumber
    advanced: X.XGroup<{
       startAtStepPercent: X.XNumber
       endAtStepPercent: X.XNumber
-      crop: X.XEnum<Enum_LatentUpscale_crop>
-      upscale_method: X.XEnum<Enum_ImageScale_upscale_method>
+      crop: X.XEnum<'LatentUpscale.crop'>
+      upscale_method: X.XEnum<'ImageScale.upscale_method'>
    }>
 }>
 export function ui_subform_Scribble(): UI_subform_Scribble {
@@ -23,8 +23,9 @@ export function ui_subform_Scribble(): UI_subform_Scribble {
          items: {
             ...cnet_ui_common(form),
             preprocessor: ui_subform_Scribble_Preprocessor(),
-            cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
+            cnet_model_name: form.enum['ControlNetLoader.control_net_name']({
                label: 'Model',
+               // @ts-ignore
                default: 'control_scribble-fp16.safetensors',
                extraDefaults: ['control_v11p_sd15_scribble.pth'],
                filter: (name) => name.toString().includes('scribble'),
@@ -112,11 +113,11 @@ export function ui_subform_Scribble_XDoG_Lines(): UI_subform_Scribble_XDoG_Lines
 
 export const run_cnet_Scribble = (
    Scribble: OutputFor<typeof ui_subform_Scribble>,
-   image: _IMAGE,
+   image: Comfy.Signal['IMAGE'],
    resolution: number, // 512 | 768 | 1024 = 512,
 ): {
-   image: _IMAGE
-   cnet_name: Enum_ControlNetLoader_control_net_name
+   image: Comfy.Signal['IMAGE']
+   cnet_name: Comfy.Slots['ControlNetLoader.control_net_name']
 } => {
    const run = getCurrentRun()
    const graph = run.nodes
@@ -126,7 +127,7 @@ export const run_cnet_Scribble = (
    if (Scribble.preprocessor) {
       if (Scribble.preprocessor.FakeScribble) {
          const fake = Scribble.preprocessor.FakeScribble
-         image = graph.FakeScribblePreprocessor({
+         image = graph['controlnet_aux.FakeScribblePreprocessor']({
             image: image,
             resolution: resolution,
             safe: fake.safe ? 'enable' : 'disable',
@@ -136,7 +137,7 @@ export const run_cnet_Scribble = (
          else graph.PreviewImage({ images: image })
       } else if (Scribble.preprocessor.XDOG) {
          const xdog = Scribble.preprocessor.XDOG
-         image = graph.Scribble$_XDoG$_Preprocessor({
+         image = graph['controlnet_aux.Scribble_XDoG_Preprocessor']({
             image: image,
             resolution: resolution,
             threshold: xdog.threshold,
@@ -146,7 +147,7 @@ export const run_cnet_Scribble = (
          else graph.PreviewImage({ images: image })
       } else if (Scribble.preprocessor.ScribbleLines) {
          const scribble = Scribble.preprocessor.ScribbleLines
-         image = graph.ScribblePreprocessor({
+         image = graph['controlnet_aux.ScribblePreprocessor']({
             image: image,
             resolution: resolution,
          })._IMAGE

@@ -6,6 +6,8 @@
 import type { Field_selectMany_config_simplified_ } from '../csuite/fields/selectMany/FieldSelectMany'
 import type { Builder } from '../CUSHY'
 
+import { asComfyNodeSlotName } from '../comfyui/comfyui-types'
+
 export type IEnumListBuilderFn<T extends string> = (
    config?: Omit<Field_selectMany_config_simplified_<T>, 'choices'>,
 ) => X.XSelectMany_<T>
@@ -15,10 +17,10 @@ export type IEnumListBuilder = {
    // | Extract seems to be a better default, since it preserve type alias name
    // | provided in the the type template.
    // | with Extract:
-   // |    ✅: X.Many_<Enum_UpscaleModelLoader_model_name>
+   // |    ✅: X.Many_<Comfy.Slots['UpscaleModelLoader.model_name']>
    // | without Extract<...>
    // |    ❌: X.Many_<"4x-AnimeSharp.pth" | "4x-UltraSharp.pth" | "4x_NMKD-Siax_200k.pth" | ...>
-   [K in keyof Requirable]: IEnumListBuilderFn<Extract<Requirable[K]['$Value'], string>>
+   [K in keyof Comfy.Slots]: IEnumListBuilderFn<Extract<Comfy.Slots[K], string>>
    // [K in keyof Requirable]: IEnumListBuilderFn<Requirable[K]['$Value'] & string>
 }
 
@@ -39,9 +41,9 @@ export class EnumListBuilder {
             if (prop === 'isMobXComputedValue') return (target as any)[prop]
 
             // retrieve the schema
-            const enumName = prop
+            const enumName = asComfyNodeSlotName(prop)
             const schema = cushy.schema
-            const enumSchema = schema.knownEnumsByName.get(enumName)
+            const enumSchema = schema.knownUnionBySlotName.get(enumName)
             if (enumSchema == null) { throw new Error(`unknown enum: ${enumName}`); } // prettier-ignore
 
             // return (config: any = {}) => form.builder.bool()

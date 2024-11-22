@@ -1,14 +1,16 @@
+import type { EmbeddingName } from '../comfyui/comfyui-types'
 import type { LiveDB } from '../db/LiveDB'
-import type { PluginInfo } from '../manager/custom-node-list/custom-node-list-types'
-import type { KnownCustomNode_File } from '../manager/custom-node-list/KnownCustomNode_File'
-import type { KnownCustomNode_Title } from '../manager/custom-node-list/KnownCustomNode_Title'
+import type { KnownComfyPluginTitle } from '../manager/generated/KnownComfyPluginTitle'
+import type { KnownComfyPluginURL } from '../manager/generated/KnownComfyPluginURL'
 import type { Requirements } from '../manager/REQUIREMENTS/Requirements'
-import type { ComfySchemaL, EmbeddingName } from './ComfySchema'
+import type { ComfyManagerPluginInfo } from '../manager/types/ComfyManagerPluginInfo'
+import type { ComfySchemaL } from './ComfySchema'
 
 import { copyFileSync, existsSync, mkdirSync, writeFileSync } from 'fs'
 import * as v from 'valibot'
 
 import { ResilientWebSocketClient } from '../back/ResilientWebsocket'
+import { ComfySchemaJSON_valibot } from '../comfyui/objectInfo/ComfyUIObjectInfoTypes'
 import { extractErrorMessage } from '../csuite/formatters/extractErrorMessage'
 import { readableStringify } from '../csuite/formatters/stringifyReadable'
 import { toastError, toastSuccess } from '../csuite/utils/toasts'
@@ -16,7 +18,6 @@ import { BaseInst } from '../db/BaseInst'
 import { LiveTable } from '../db/LiveTable'
 import { asComfySchemaID, type TABLES } from '../db/TYPES.gen'
 import { ComfyManager } from '../manager/ComfyManager'
-import { ComfySchemaJSON_valibot } from '../types/ComfySchemaJSON'
 import { downloadFile } from '../utils/fs/downloadFile'
 import { asRelativePath } from '../utils/fs/pathUtils'
 
@@ -34,25 +35,24 @@ export class HostL extends BaseInst<TABLES['host']> {
    // comfyUIIframeRef = createRef<HTMLIFrameElement>()
 
    matchRequirements = (requirements: Requirements[]): boolean => {
-      const manager = this.manager
-      const repo = manager.repository
+      const repo = cushy.comfyAddons
       for (const req of requirements) {
          if (req.optional) continue
          if (req.type === 'customNodesByNameInCushy') {
-            const plugins: PluginInfo[] = repo.plugins_byNodeNameInCushy.get(req.nodeName) ?? []
+            const plugins: ComfyManagerPluginInfo[] = repo.plugins_byNodeNameInCushy.get(req.nodeName) ?? []
             if (!plugins.find((i) => this.manager.isPluginInstalled(i.title))) {
                // console.log(`[❌ A] ${JSON.stringify(req)} NOT MATCHED`)
                return false
             }
          } else if (req.type === 'customNodesByTitle') {
-            const plugin: PluginInfo | undefined = repo.plugins_byTitle.get(req.title)
+            const plugin: ComfyManagerPluginInfo | undefined = repo.plugins_byTitle.get(req.title)
             if (plugin == null) continue
             if (!this.manager.isPluginInstalled(plugin.title)) {
                // console.log(`[❌ B] ${JSON.stringify(req)} NOT MATCHED`)
                return false
             }
          } else if (req.type === 'customNodesByURI') {
-            const plugin: PluginInfo | undefined = repo.plugins_byFile.get(req.uri)
+            const plugin: ComfyManagerPluginInfo | undefined = repo.plugins_byFile.get(req.uri)
             if (plugin == null) continue
             if (!this.manager.isPluginInstalled(plugin.title)) {
                // console.log(`[❌ C] ${JSON.stringify(req)} NOT MATCHED`)
@@ -73,15 +73,15 @@ export class HostL extends BaseInst<TABLES['host']> {
    // Rotating srever logs --------------------------------------------
    private wantLog: boolean = true
 
-   enableServerLogs(): Promise<any> {
-      this.wantLog = true
-      return this.manager.configureLogging(this.wantLog)
-   }
+   // enableServerLogs(): Promise<any> {
+   //    this.wantLog = true
+   //    return this.manager.configureLogging(this.wantLog)
+   // }
 
-   disableServerLogs = (): Promise<unknown> => {
-      this.wantLog = false
-      return this.manager.configureLogging(this.wantLog)
-   }
+   // disableServerLogs = (): Promise<unknown> => {
+   //    this.wantLog = false
+   //    return this.manager.configureLogging(this.wantLog)
+   // }
 
    toggleServerLogs = (): Promise<unknown> => {
       this.wantLog = !this.wantLog
@@ -184,21 +184,21 @@ export class HostL extends BaseInst<TABLES['host']> {
       return true
    }
 
-   installCustomNodeByFile = async (customNodeFile: KnownCustomNode_File): Promise<boolean> => {
-      const manager = this.manager.repository
-      const plugin: PluginInfo | undefined = manager.plugins_byFile.get(customNodeFile)
+   installCustomNodeByFile = async (customNodeFile: KnownComfyPluginURL): Promise<boolean> => {
+      const manager = cushy.comfyAddons
+      const plugin: ComfyManagerPluginInfo | undefined = manager.plugins_byFile.get(customNodeFile)
       if (plugin == null) throw new Error(`Unknown custom node for file: "${customNodeFile}"`)
       return this.manager.installPlugin(plugin)
    }
 
-   installCustomNodeByTitle = async (customNodeTitle: KnownCustomNode_Title): Promise<boolean> => {
-      const manager = this.manager.repository
-      const plugin: PluginInfo | undefined = manager.plugins_byTitle.get(customNodeTitle)
+   installCustomNodeByTitle = async (customNodeTitle: KnownComfyPluginTitle): Promise<boolean> => {
+      const manager = cushy.comfyAddons
+      const plugin: ComfyManagerPluginInfo | undefined = manager.plugins_byTitle.get(customNodeTitle)
       if (plugin == null) throw new Error(`Unknown custom node for title: "${customNodeTitle}"`)
       return this.manager.installPlugin(plugin)
    }
 
-   installCustomNode = async (customNode: PluginInfo): Promise<boolean> => {
+   installCustomNode = async (customNode: ComfyManagerPluginInfo): Promise<boolean> => {
       return this.manager.installPlugin(customNode)
    }
 
@@ -259,7 +259,7 @@ export class HostL extends BaseInst<TABLES['host']> {
    }
 
    private writeSDKToDisk = (): void => {
-      const comfySchemaTs = this.schema.codegenDTS()
+      const comfySchemaTs = this.schema.parseObjectInfo.codegenDTS()
       writeFileSync(this.sdkDTSPath, comfySchemaTs, 'utf-8')
       if (this.isPrimary) writeFileSync(this.st.primarySdkDtsPath, comfySchemaTs, 'utf-8')
       // if (this.isPrimary) this._copyGeneratedSDKToGlobalDTS()
@@ -335,7 +335,7 @@ export class HostL extends BaseInst<TABLES['host']> {
          const res = v.safeParse(ComfySchemaJSON_valibot, object_info_json)
          // const res = ComfySchemaJSON_valibot..safeParse(object_info_json) //{ KSampler: schema$['KSampler'] })
          if (res.success) {
-            console.log('🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢 valid schema')
+            // console.log('🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢 valid schema')
          } else {
             console.log('🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 invalid schema')
             for (const issue of res.issues) {

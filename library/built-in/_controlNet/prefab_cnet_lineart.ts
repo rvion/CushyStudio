@@ -6,14 +6,14 @@ import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
 export type UI_subform_Lineart = X.XGroup<{
    preprocessor: UI_subform_Lineart_Preprocessor
    models: X.XGroup<{
-      cnet_model_name: X.XEnum<Enum_ControlNetLoader_control_net_name>
+      cnet_model_name: X.XEnum<'ControlNetLoader.control_net_name'>
    }>
    strength: X.XNumber
    advanced: X.XGroup<{
       startAtStepPercent: X.XNumber
       endAtStepPercent: X.XNumber
-      crop: X.XEnum<Enum_LatentUpscale_crop>
-      upscale_method: X.XEnum<Enum_ImageScale_upscale_method>
+      crop: X.XEnum<'LatentUpscale.crop'>
+      upscale_method: X.XEnum<'ImageScale.upscale_method'>
    }>
 }>
 
@@ -29,7 +29,7 @@ export function ui_subform_Lineart(): UI_subform_Lineart {
                label: 'Select or Download Models',
                // startCollapsed: true,
                items: {
-                  cnet_model_name: ui.enum.Enum_ControlNetLoader_control_net_name({
+                  cnet_model_name: ui.enum['ControlNetLoader.control_net_name']({
                      label: 'Model',
                      filter: (name) => name.toString().includes('lineart'),
                      // @ts-ignore
@@ -113,39 +113,44 @@ export function ui_subform_Lineart_Manga(): UI_subform_Lineart_Manga {
 // 🅿️ Lineart RUN ===================================================
 export const run_cnet_Lineart = (
    Lineart: OutputFor<typeof ui_subform_Lineart>,
-   image: _IMAGE,
+   image: Comfy.Signal['IMAGE'],
    resolution: number, // 512 | 768 | 1024 = 512,
 ): {
-   image: _IMAGE
-   cnet_name: Enum_ControlNetLoader_control_net_name
+   image: Comfy.Signal['IMAGE']
+   cnet_name: Comfy.Slots['ControlNetLoader.control_net_name']
 } => {
-   const run = getCurrentRun()
-   const graph = run.nodes
+   const sdk = getCurrentRun()
+   const graph = sdk.nodes
    const cnet_name = Lineart.models.cnet_model_name
 
    // PREPROCESSOR - Lineart ===========================================================
    if (Lineart.preprocessor) {
+      // Anime
       if (Lineart.preprocessor.Anime) {
          const anime = Lineart.preprocessor.Anime
-         image = graph.AnimeLineArtPreprocessor({
+         image = graph['controlnet_aux.AnimeLineArtPreprocessor']({
             image: image,
             resolution: resolution,
          })._IMAGE
          if (anime.saveProcessedImage)
             graph.SaveImage({ images: image, filename_prefix: 'cnet\\Lineart\\anime' })
          else graph.PreviewImage({ images: image })
-      } else if (Lineart.preprocessor.Manga) {
+      }
+      // Manga
+      else if (Lineart.preprocessor.Manga) {
          const manga = Lineart.preprocessor.Manga
-         image = graph.Manga2Anime$_LineArt$_Preprocessor({
+         image = graph['controlnet_aux.Manga2Anime_LineArt_Preprocessor']({
             image: image,
             resolution: resolution,
          })._IMAGE
          if (manga.saveProcessedImage)
             graph.SaveImage({ images: image, filename_prefix: 'cnet\\Lineart\\manga' })
          else graph.PreviewImage({ images: image })
-      } else if (Lineart.preprocessor.Realistic) {
+      }
+      // Realistic
+      else if (Lineart.preprocessor.Realistic) {
          const Realistic = Lineart.preprocessor.Realistic
-         image = graph.LineArtPreprocessor({
+         image = graph['controlnet_aux.LineArtPreprocessor']({
             image: image,
             resolution: resolution,
             coarse: !Realistic || Realistic?.coarse ? 'enable' : 'disable',

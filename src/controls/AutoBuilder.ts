@@ -1,10 +1,14 @@
+import type { ComfyUnionValue } from '../comfyui/comfyui-types'
 import type { Field_enum_config } from '../csuite/fields/enum/FieldEnum'
 import type { Field_string_config } from '../csuite/fields/string/FieldString'
 import type { FieldConfig } from '../csuite/model/FieldConfig'
-import type { EnumValue } from '../models/ComfySchema'
 import type { CushySchemaBuilder } from './Builder'
 
-type AutoWidget<T> = T extends { kind: any; type: infer X }
+type KK = IAutoBuilder['KSampler']
+
+type FOO = Comfy.FormHelper['KSampler']['sampler_name']
+
+type AutoWidget<T> = T extends { kind: any; type: infer TPE }
    ? T['kind'] extends 'number'
       ? X.XNumber
       : T['kind'] extends 'string'
@@ -14,13 +18,17 @@ type AutoWidget<T> = T extends { kind: any; type: infer X }
           : T['kind'] extends 'prompt'
             ? X.XPrompt
             : T['kind'] extends 'enum'
-              ? X.XEnum<X & EnumValue>
+              ? // check perf implications here
+                //         VVV
+                T['type'] extends ComfyUnionValue
+                 ? X.XEnumOf<T['type']>
+                 : never
               : any
    : any
 
 export type IAutoBuilder = {
-   [K in keyof FormHelper]: () => X.XGroup<{
-      [N in keyof FormHelper[K]]: AutoWidget<FormHelper[K][N]>
+   [K in keyof Comfy.FormHelper]: () => X.XGroup<{
+      [N in keyof Comfy.FormHelper[K]]: AutoWidget<Comfy.FormHelper[K][N]>
    }>
 }
 
@@ -92,7 +100,7 @@ export class AutoBuilder {
                   }
                   // PRIMITIVES ------------------------------------------
                   if (field.isPrimitive) {
-                     const typeLower = field.type.toLowerCase()
+                     const typeLower = field.typeName.toLowerCase()
                      // boolean ------------------------------------------
                      if (typeLower === 'boolean') {
                         items[field.nameInComfy] = formBuilder.bool({
@@ -186,16 +194,16 @@ export class AutoBuilder {
                   else if (field.isEnum) {
                      // console.log(`[👗] 🌈 Enum: ${field.type}`, { field })
                      const enumFn: Maybe<(p: Field_enum_config<any>) => void> = (formBuilder.enum as any)[
-                        field.type
+                        field.slotName
                      ]
                      if (enumFn == null) {
-                        console.log(`[👗] ❌ Unknown enum: ${field.type}`)
+                        console.log(`[👗] ❌ Unknown enum: ${field.typeName}`)
                         continue
                      }
 
                      items[field.nameInComfy] = enumFn({
                         label: field.nameInComfy,
-                        enumName: field.type,
+                        slotName: field.slotName,
                         default: opts?.default,
                      })
                   } else {

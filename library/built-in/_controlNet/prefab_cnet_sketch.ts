@@ -1,4 +1,5 @@
-import { OutputFor } from '../_prefabs/_prefabs'
+import type { OutputFor } from '../_prefabs/_prefabs'
+
 import { cnet_ui_common } from './cnet_ui_common'
 
 // 🅿️ Sketch FORM ===================================================
@@ -8,10 +9,10 @@ export type UI_subform_Sketch = X.XGroup<{
    advanced: X.XGroup<{
       startAtStepPercent: X.XNumber
       endAtStepPercent: X.XNumber
-      crop: X.XEnum<Enum_LatentUpscale_crop>
-      upscale_method: X.XEnum<Enum_ImageScale_upscale_method>
+      crop: X.XEnum<'LatentUpscale.crop'>
+      upscale_method: X.XEnum<'ImageScale.upscale_method'>
    }>
-   cnet_model_name: X.XEnum<Enum_ControlNetLoader_control_net_name>
+   cnet_model_name: X.XEnum<'ControlNetLoader.control_net_name'>
 }>
 export function ui_subform_Sketch(): UI_subform_Sketch {
    const form = getCurrentForm()
@@ -19,8 +20,9 @@ export function ui_subform_Sketch(): UI_subform_Sketch {
       .group({
          label: 'Sketch',
          items: {
-            cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
+            cnet_model_name: form.enum['ControlNetLoader.control_net_name']({
                label: 'Model',
+               // @ts-ignore
                default: 't2iadapter_sketch_sd14v1.pth',
             }),
             ...cnet_ui_common(form),
@@ -40,10 +42,10 @@ export function ui_subform_Sketch(): UI_subform_Sketch {
 // 🅿️ Sketch RUN ===================================================
 export const run_cnet_Sketch = (
    Sketch: OutputFor<typeof ui_subform_Sketch>,
-   image: _IMAGE,
+   image: Comfy.Signal['IMAGE'],
 ): {
-   image: _IMAGE
-   cnet_name: Enum_ControlNetLoader_control_net_name
+   image: Comfy.Signal['IMAGE']
+   cnet_name: Comfy.Slots['ControlNetLoader.control_net_name']
 } => {
    const run = getCurrentRun()
    const graph = run.nodes

@@ -45,9 +45,12 @@ app({
          ckpt_name: 'stable_zero123.ckpt',
       })
       const startImage2 = await run.loadImageAnswer(ui.image)
-      const upscale_model = graph.Upscale_Model_Loader({ model_name: 'RealESRGAN_x2.pth' })
+      const upscale_model = graph.UpscaleModelLoader({
+         // @ts-ignore
+         model_name: 'RealESRGAN_x2.pth',
+      })
       for (const angle of run.range(ui.from, ui.to, ui.step)) {
-         const sz123 = graph.StableZero123$_Conditioning({
+         const sz123 = graph.StableZero123_Conditioning({
             width: 256,
             height: 256,
             batch_size: 1,
@@ -57,7 +60,7 @@ app({
             init_image: startImage2,
             vae: ckpt,
          })
-         let latent: _LATENT = graph.KSampler({
+         const latent: Comfy.Signal['LATENT'] = graph.KSampler({
             seed: run.randomSeed(),
             steps: ui.steps,
             cfg: 4,
@@ -72,7 +75,7 @@ app({
 
          // SECOND PASS (a.k.a. highres fix) ---------------------------------------------------------
 
-         let image: _IMAGE = graph.VAEDecode({ samples: latent, vae: ckpt })
+         let image: Comfy.Signal['IMAGE'] = graph.VAEDecode({ samples: latent, vae: ckpt })
          if (ui.upscale) {
             image = graph.ImageUpscaleWithModel({ upscale_model, image })
          }

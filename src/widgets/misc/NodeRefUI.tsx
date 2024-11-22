@@ -1,4 +1,4 @@
-import type { ComfyNode } from '../../core/ComfyNode'
+import type { ComfyNode } from '../../comfyui/livegraph/ComfyNode'
 
 import { observer } from 'mobx-react-lite'
 

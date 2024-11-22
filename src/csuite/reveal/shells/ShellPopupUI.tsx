@@ -45,6 +45,7 @@ export const ShellPopupUI = observer(function ShellPopupUI_(p: RevealShellProps 
 
    return (
       <ModalShellUI //
+         shellRef={p.shellRef}
          onClick={(ev) => reveal.onShellClick(ev)}
          style={mergeStylesTsEfficientInNew(p.reveal.posCSS, { minWidth, minHeight })} // 👽
          size={p.size}

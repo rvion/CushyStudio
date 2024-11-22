@@ -5,11 +5,11 @@ import {
 } from '../_prefabs/prefab_model_extras'
 
 export type $prefabModelFlux = X.XGroup<{
-   ckpt_name: X.XEnum<Enum_UNETLoader_unet_name>
-   weight_type: X.XEnum<Enum_UNETLoader_weight_dtype>
-   clip1: X.XEnum<Enum_CLIPLoader_clip_name>
-   clip2: X.XEnum<Enum_CLIPLoader_clip_name>
-   type: X.XEnum<Enum_DualCLIPLoader_type>
+   ckpt_name: X.XEnum<'UNETLoader.unet_name'>
+   weight_type: X.XEnum<'UNETLoader.weight_dtype'>
+   clip1: X.XEnum<'CLIPLoader.clip_name'>
+   clip2: X.XEnum<'CLIPLoader.clip_name'>
+   type: X.XEnum<'DualCLIPLoader.type'>
    extra: $schemaModelExtras
 }>
 
@@ -18,23 +18,27 @@ export const prefabModelFlux = (): $prefabModelFlux => {
    // const ckpts = cushy.managerRepository.getKnownCheckpoints()
    return b
       .fields({
-         ckpt_name: b.enum.Enum_UNETLoader_unet_name({
+         ckpt_name: b.enum['UNETLoader.unet_name']({
             // @ts-ignore
             default: 'flux1-dev.sft',
          }),
-         weight_type: b.enum.Enum_UNETLoader_weight_dtype({ label: 'Weight Type', default: 'fp8_e4m3fn' }),
-         clip1: b.enum
-            .Enum_DualCLIPLoader_clip_name1({
-               // @ts-ignore
-               default: 't5xxl_fp16.safetensors',
-            })
+         weight_type: b.enum['UNETLoader.weight_dtype']({
+            label: 'Weight Type',
+            default: 'fp8_e4m3fn',
+         }),
+         clip1: b.enum['DualCLIPLoader.clip_name1']({
+            // @ts-ignore
+            default: 't5xxl_fp16.safetensors',
+         })
             .addRequirementOnComfyManagerModel('google-t5/t5-v1_1-xxl_encoderonly-fp16')
             .addRequirementOnComfyManagerModel('google-t5/t5-v1_1-xxl_encoderonly-fp8_e4m3fn'),
-         clip2: b.enum
-            .Enum_DualCLIPLoader_clip_name2({ default: 'clip_l.safetensors' })
-            .addRequirementOnComfyManagerModel('comfyanonymous/clip_l'),
-         type: b.enum.Enum_DualCLIPLoader_type({ default: 'flux' }),
+         clip2: b.enum['DualCLIPLoader.clip_name2']({
+            // @ts-ignore
+            default: 'clip_l.safetensors',
+         }).addRequirementOnComfyManagerModel('comfyanonymous/clip_l'),
+         type: b.enum['DualCLIPLoader.type']({ default: 'flux' }),
          extra: schemaModelExtras({
+            // @ts-ignore
             defaultVAE: 'FLUX1\\ae.sft',
             vaeActiveByDefault: true,
          }),
@@ -54,12 +58,12 @@ export const prefabModelFlux = (): $prefabModelFlux => {
    //         w.setValue({
    //             FLUX: {
    //                 type: 'flux',
-   //                 ckpt_name: 'flux1-dev.sft' as Enum_UNETLoader_unet_name,
+   //                 ckpt_name: 'flux1-dev.sft' as Comfy.Slots['UNETLoader.unet_name'],
    //                 weight_type: 'fp8_e4m3fn',
-   //                 clip1: 't5xxl_fp16.safetensors' as Enum_DualCLIPLoader_clip_name1,
-   //                 clip2: 'clip_l.safetensors' as Enum_DualCLIPLoader_clip_name2,
+   //                 clip1: 't5xxl_fp16.safetensors' as Comfy.Slots['DualCLIPLoader.clip_name1'],
+   //                 clip2: 'clip_l.safetensors' as Comfy.Slots['DualCLIPLoader.clip_name2'],
    //             },
-   //             extra: { vae: 'ae.sft' as Enum_VAELoader_vae_name },
+   //             extra: { vae: 'ae.sft' as Comfy.Slots['VAELoader.vae_name'] },
    //         })
    //     },
    // })
@@ -68,24 +72,25 @@ export const prefabModelFlux = (): $prefabModelFlux => {
 export const evalModelFlux = (
    doc: $prefabModelFlux['$Value'],
 ): {
-   ckpt: _MODEL
-   vae: _VAE
-   clip: _CLIP
+   ckpt: Comfy.Signal['MODEL']
+   vae: Comfy.Signal['VAE']
+   clip: Comfy.Signal['CLIP']
 } => {
    const run = getCurrentRun()
    const graph = run.nodes
-   const vae: _VAE | undefined = undefined
-   const ckptLoader: _MODEL = graph.UNETLoader({
+   const vae: Comfy.Signal['VAE'] | undefined = undefined
+   const ckptLoader: Comfy.Node['UNETLoader'] = graph.UNETLoader({
       unet_name: doc.ckpt_name,
       weight_dtype: doc.weight_type,
    })
+
    const ckpt = ckptLoader._MODEL
    const clipLoader = graph.DualCLIPLoader({
       clip_name1: doc.clip1,
       clip_name2: doc.clip2,
       type: doc.type,
    })
-   const clip: _CLIP = clipLoader._CLIP
+   const clip: Comfy.Signal['CLIP'] = clipLoader._CLIP
    //Flux requires a vae to be selected
    if (!doc.extra.vae) {
       throw new Error('No VAE selected')

@@ -1,9 +1,10 @@
+import type { ComfyUIAPIRequest } from '../comfyui/comfyui-prompt-api'
+import type { NodeInputExt } from '../comfyui/comfyui-types'
+import type { ComfyUIObjectInfoParsedNodeSchema } from '../comfyui/objectInfo/ComfyUIObjectInfoParsedNodeSchema'
 import type { TEdge } from '../csuite/utils/toposort'
-import type { ComfyNodeSchema, NodeInputExt } from '../models/ComfySchema'
 import type { STATE } from '../state/state'
-import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 
-import { convertComfyNodeNameToCushyNodeNameValidInJS } from '../core/normalizeJSIdentifier'
+import { convertComfyModuleAndNodeNameToCushyQualifiedNodeKey } from '../comfyui/codegen/_convertComfyModuleAndNodeNameToCushyQualifiedNodeKey'
 import { ComfyPrimitiveMapping } from '../core/Primitives'
 import { bang } from '../csuite/utils/bang'
 import { toposort } from '../csuite/utils/toposort'
@@ -28,7 +29,7 @@ export type PromptToCodeOpts = {
    autoUI: boolean
 }
 
-const formVarInUIFn: "form" = 'form'
+const formVarInUIFn: 'form' = 'form'
 
 export class ComfyImporter {
    constructor(public st: STATE) {}
@@ -113,7 +114,7 @@ export class ComfyImporter {
       return x
    }
 
-   convertPromptToCode = (flow: ComfyPromptJSON, opts: PromptToCodeOpts): string => {
+   convertPromptToCode = (flow: ComfyUIAPIRequest, opts: PromptToCodeOpts): string => {
       this.resetCache()
       const flowNodes = Object.entries(flow)
       const ids = Object.keys(flow)
@@ -166,11 +167,13 @@ export class ComfyImporter {
       for (const nodeID of sortedNodes) {
          // @ts-ignore
          const node = flow[nodeID]!
-         const classType = convertComfyNodeNameToCushyNodeNameValidInJS(node.class_type)
+         // FIXME
+         const pythonModule = cushy.schema.pythonModuleByNodeNameInComfy.get(node.class_type) ?? 'unknown'
+         const classType = convertComfyModuleAndNodeNameToCushyQualifiedNodeKey(pythonModule, node.class_type)
          const varName = this.mkVarNameForNodeType(classType, []) //`${classType}_${nodeID}`
 
          generatedName.set(nodeID, varName)
-         const schema: Maybe<ComfyNodeSchema> =
+         const schema: Maybe<ComfyUIObjectInfoParsedNodeSchema> =
             this.st.schema.nodesByNameInCushy[classType] ?? //
             this.st.schema.nodesByNameInCushy[this.knownAliaes[classType]!]
          if (schema == null) {
@@ -272,7 +275,7 @@ export class ComfyImporter {
          const inputName = x.name
          const prefix = inputGroupName ? `ui.${inputGroupName}` : 'ui'
          if (s == null) return `null`
-         if (s.type === 'Enum_LoadImage_image')
+         if (s.typeName === 'E_Image')
             return `await run.loadImageAnswerAsEnum(${prefix}${asJSAccessor(inputName)})`
          return `${prefix}${asJSAccessor(inputName)}`
       }
@@ -282,22 +285,21 @@ export class ComfyImporter {
          // no schema, let's try to infer the type from the value
          if (s == null) return `${formVarInUIFn}.${x.typeofValue}({default: ${jsEscapeStr(x.default)}})`
 
-         if (x.name === 'seed' && s.type === 'INT')
+         if (x.name === 'seed' && s.typeName === 'INT')
             return `${formVarInUIFn}.seed({default: ${jsEscapeStr(x.default)}})`
-         if (s.type === 'Enum_LoadImage_image')
-            return `${formVarInUIFn}.image({default: ${jsEscapeStr(x.default)}})`
-         if (s.type.startsWith('Enum_'))
-            return `${formVarInUIFn}.enum.${s.type}({default: ${jsEscapeStr(x.default)} })`
+         if (s.typeName === 'E_Image') return `${formVarInUIFn}.image({default: ${jsEscapeStr(x.default)}})`
+         if (s.typeName.startsWith('E_'))
+            return `${formVarInUIFn}.enum.${s.typeName}({default: ${jsEscapeStr(x.default)} })`
 
-         if (s.type in ComfyPrimitiveMapping) {
+         if (s.typeName in ComfyPrimitiveMapping) {
             let builderFnName = ((): string => {
-               const typeLower = s.type.toLowerCase()
+               const typeLower = s.typeName.toLowerCase()
                if (typeLower === 'boolean') return 'boolean'
                if (typeLower === 'float') return 'float'
                if (typeLower === 'int') return 'int'
                if (typeLower === 'integer') return 'int'
                if (typeLower === 'string') return 'string'
-               return ComfyPrimitiveMapping[s.type] ?? 'str'
+               return ComfyPrimitiveMapping[s.typeName] ?? 'str'
             })()
 
             if (!s.required && builderFnName != 'boolean') builderFnName += 'Opt'

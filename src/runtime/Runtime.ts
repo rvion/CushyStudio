@@ -18,8 +18,8 @@ import { createHash } from 'crypto'
 import fs, { writeFileSync } from 'fs'
 import * as path from 'pathe'
 
-import { auto } from '../core/autoValue'
-import { ComfyNodeOutput } from '../core/Slot'
+import { auto } from '../comfyui/livegraph/autoValue'
+import { ComfyNodeOutput } from '../comfyui/livegraph/ComfyNodeOutput'
 import { toJSONError } from '../csuite/errors/toJSONError'
 import { createRandomGenerator } from '../csuite/rnd/createRandomGenerator'
 import { braceExpansion } from '../csuite/utils/expansion'
@@ -41,7 +41,7 @@ import { RuntimeStore } from './RuntimeStore'
 import { RuntimeVideos } from './RuntimeVideo'
 
 export type ImageStoreName = Tagged<string, 'ImageStoreName'>
-export type ImageAndMask = HasSingle_IMAGE & HasSingle_MASK
+export type ImageAndMask = Comfy.HasSingle['IMAGE'] & Comfy.HasSingle['MASK']
 
 // prettier-ignore
 export type RuntimeExecutionResult =
@@ -171,35 +171,9 @@ export class Runtime<FIELD extends Field = any> {
       return this.step.draft?.isDirty
    }
 
-   compilePrompt = (p: {
-      text: string
-      seed?: number /** for wildcard */
-      onLora: (
-         //
-         lora: Enum_LoraLoader_lora_name,
-         strength_clip: number,
-         strength_model: number,
-      ) => void
-      /** @default true */
-      printWildcards?: boolean
-   }): CompiledPrompt =>
-      compilePrompt({
-         text: p.text,
-         ctx: this.Cushy,
-         seed: p.seed,
-         onLora: p.onLora,
-         printWildcards: p.printWildcards ?? true,
-      })
-
    constructor(public step: StepL) {
       this.Cushy = step.st
       this.folder = step.st.outputFolderPath
-
-      // ⏸️ this.upload_FileAtAbsolutePath = this.st.uploader.upload_FileAtAbsolutePath.bind(this.st.uploader)
-      // ⏸️ this.upload_ImageAtURL = this.st.uploader.upload_ImageAtURL.bind(this.st.uploader)
-      // ⏸️ this.upload_dataURL = this.st.uploader.upload_dataURL.bind(this.st.uploader)
-      // ⏸️ this.upload_Asset = this.st.uploader.upload_Asset.bind(this.st.uploader)
-      // ⏸️ this.upload_Blob = this.st.uploader.upload_Blob.bind(this.st.uploader)
    }
 
    /**
@@ -259,12 +233,20 @@ export class Runtime<FIELD extends Field = any> {
       return this.Cushy.configFile.value?.loraPrompts?.[loraName]
    }
 
-   /** the default app's ComfyUI graph we're manipulating */
+   /**
+    * @deprecated
+    * the default app's ComfyUI graph we're manipulating
+    */
    get workflow(): ComfyWorkflowL {
+      // this should also be deprecated
+      //               VVVVVVVVVVVVVV
       return this.step.outputWorkflow.item
    }
 
-   /** graph buider */
+   /**
+    * @deprecated
+    * graph buider
+    */
    get nodes(): ComfyWorkflowBuilder {
       return this.workflow.builder
    }
@@ -274,7 +256,9 @@ export class Runtime<FIELD extends Field = any> {
 
    /** a built-in prefab to quickly
     * add PreviewImage & JoinImageWithAlpha node to your ComfyUI graph */
-   add_previewImageWithAlpha = (image: HasSingle_IMAGE & HasSingle_MASK): PreviewImage => {
+   add_previewImageWithAlpha(
+      image: Comfy.HasSingle['IMAGE'] & Comfy.HasSingle['MASK'],
+   ): Comfy.Node['PreviewImage'] {
       return this.nodes.PreviewImage({
          images: this.nodes.JoinImageWithAlpha({
             image: image,
@@ -285,19 +269,19 @@ export class Runtime<FIELD extends Field = any> {
 
    /** a built-in prefab to quickly
     * add a PreviewImage node to your ComfyUI graph */
-   add_previewImage = (image: _IMAGE): PreviewImage => {
+   add_previewImage = (image: Comfy.Signal['IMAGE']): Comfy.Node['PreviewImage'] => {
       return this.nodes.PreviewImage({ images: image })
    }
 
    /** a built-in prefab to quickly
     * add a PreviewImage node to your ComfyUI graph */
-   add_PreviewMask = (mask: _MASK): PreviewImage => {
+   add_PreviewMask = (mask: Comfy.Signal['MASK']): Comfy.Node['PreviewImage'] => {
       return this.nodes.PreviewImage({ images: this.nodes.MaskToImage({ mask: mask }) })
    }
 
    /** a built-in prefab to quickly
     * add a PreviewImage node to your ComfyUI graph */
-   add_saveImage = (image: _IMAGE, prefix?: string): SaveImage => {
+   add_saveImage = (image: Comfy.Signal['IMAGE'], prefix?: string): Comfy.Node['SaveImage'] => {
       return this.nodes.SaveImage({ images: image, filename_prefix: prefix })
    }
 
@@ -587,7 +571,7 @@ export class Runtime<FIELD extends Field = any> {
     * Takes an embedding name and format it for ComfyUI usage
     * e.g.: "EasyNegative" => "embedding:EasyNegative"
     * */
-   formatEmbeddingForComfyUI = (t: Embeddings): string => `embedding:${t}`
+   formatEmbeddingForComfyUI = (t: Comfy.Embeddings): string => `embedding:${t}`
    formatAsRelativeDateTime = (date: Date | number): string => _formatAsRelativeDateTime(date)
 
    // 🐉 /** ask the user a few informations */
@@ -632,7 +616,7 @@ export class Runtime<FIELD extends Field = any> {
       return seed
    }
 
-   loadImageAnswerAsEnum = (img: MediaImageL): Promise<Enum_LoadImage_image> => {
+   loadImageAnswerAsEnum = (img: MediaImageL): Promise<Comfy.Slots['LoadImage.image']> => {
       return img.uploadAndReturnEnumName()
    }
 

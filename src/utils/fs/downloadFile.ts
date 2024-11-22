@@ -1,6 +1,7 @@
 import fs, { mkdirSync } from 'fs'
 import https from 'https'
 import { dirname } from 'pathe'
+import { stdout } from 'process'
 
 /** Usage example
  * | ;(async () => {
@@ -13,7 +14,12 @@ import { dirname } from 'pathe'
  * | })()
  * |
  */
-export function downloadFile(url: string, outputPath: AbsolutePath | string): Promise<true> {
+export function downloadFile(
+   //
+   url: string,
+   outputPath: AbsolutePath | string,
+   logPrefix = '  - ',
+): Promise<true> {
    const baseDir = dirname(outputPath)
    mkdirSync(baseDir, { recursive: true })
 
@@ -49,7 +55,8 @@ export function downloadFile(url: string, outputPath: AbsolutePath | string): Pr
                downloaded += chunk.length
                const percentage = Math.round((downloaded / totalSize) * 100)
                if (percentage >= lastLoggedPercentage + 1) {
-                  console.log(`${percentage}% downloaded`)
+                  // console.log(`${percentage}% downloaded`)
+                  stdout.write(`\r${logPrefix}${percentage}% downloaded`)
                   lastLoggedPercentage = percentage
                }
             })
@@ -60,6 +67,7 @@ export function downloadFile(url: string, outputPath: AbsolutePath | string): Pr
          response.pipe(fileStream)
 
          fileStream.on('finish', () => {
+            console.log(` (DONE)`)
             fileStream.close()
             resolve(true)
          })

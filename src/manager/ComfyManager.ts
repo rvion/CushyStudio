@@ -2,47 +2,29 @@
 
 import type { HostL } from '../models/Host'
 import type { ComfyManagerRepository } from './ComfyManagerRepository'
-import type { PluginInfo } from './custom-node-list/custom-node-list-types'
-import type { KnownCustomNode_Title } from './custom-node-list/KnownCustomNode_Title'
-import type { KnownModel_Name } from './model-list/KnownModel_Name'
-import type { ModelInfo } from './model-list/model-list-loader-types'
+import type { KnownComfyPluginTitle } from './generated/KnownComfyPluginTitle'
+import type { KnownModel_Name } from './generated/KnownModel_Name'
 import type { PluginInstallStatus } from './REQUIREMENTS/PluginInstallStatus'
+import type { ComfyManagerAPIFetchPolicy } from './types/ComfyManagerAPIFetchPolicy'
+import type { ComfyManagerAPIModelList } from './types/ComfyManagerAPIModelList'
+import type { ComfyManagerAPIPluginList } from './types/ComfyManagerAPIPluginList'
+import type { ComfyManagerModelInfo } from './types/ComfyManagerModelInfo'
+import type { ComfyManagerPluginInfo } from './types/ComfyManagerPluginInfo'
 
 import { makeAutoObservable, observable, runInAction } from 'mobx'
 
 import { toastError, toastSuccess } from '../csuite/utils/toasts'
 
-type HostPluginList = {
-   custom_nodes: {
-      title: KnownCustomNode_Title
-      installed: 'False' | 'True' | 'Update' /* ... */
-   }[]
-   chanel: 'string'
-}
-
-type HostModelList = {
-   models: {
-      name: KnownModel_Name
-      installed: 'False' | 'True' | 'Update' /* ... */
-   }[]
-   // why is this not there ⁉️
-   // chanel: 'string'
-}
-
-type ComfyManagerFetchPolicy =
-   /** DB: Channel (1day cache)' */
-   | 'cache'
-   /** text: 'DB: Local' */
-   | 'local'
-   /** DB: Channel (remote) */
-   | 'url'
-
 export class ComfyManager {
    get repository(): ComfyManagerRepository {
-      return this.host.st.managerRepository
+      return cushy.comfyAddons
    }
 
-   constructor(public host: HostL) {
+   constructor(
+      public host: {
+         getServerHostHTTP: () => string
+      },
+   ) {
       makeAutoObservable(this, {
          host: false,
          repository: false,
@@ -66,13 +48,38 @@ export class ComfyManager {
    }
 
    // utils ------------------------------------------------------------------------------
-   getModelInfoFinalFilePath = (mi: ModelInfo): string => {
-      return this.repository.getModelInfoFinalFilePath(mi)
+   getModelInfoFinalFilePath = (mi: ComfyManagerModelInfo): string => {
+      return cushy.comfyAddons.getModelInfoFinalFilePath(mi)
+   }
+
+   waitForHostToBeBackOnline(maxAttempt: 10): Promise<true> {
+      return new Promise<true>((yes, no) => {
+         let attempt = 0
+         let abortCtrl: AbortController
+         const interval = setInterval(async () => {
+            attempt++
+            if (attempt > maxAttempt) {
+               console.log(`   - failure`)
+               clearInterval(interval)
+               no()
+            }
+            if (abortCtrl) abortCtrl.abort()
+            const url = this.host.getServerHostHTTP()
+            abortCtrl = new AbortController()
+            try {
+               console.log(`   - trying...`)
+               await fetch(url, { signal: abortCtrl.signal })
+               clearInterval(interval)
+               yes(true)
+            } catch {
+               /* empty */
+            }
+         }, 1000)
+      })
    }
 
    // actions ---------------------------------------------------------------------------
-   // @server.PromptServer.instance.routes.get("/manager/reboot")
-   rebootComfyUI = async (): Promise<unknown> => {
+   rebootComfyUIAndUpdateHostPluginsAndModelsAfter10Seconds(): Promise<void> {
       // 🔴 bad code
       setTimeout(() => void this.updateHostPluginsAndModels(), 10_000)
       // curl 'http://192.168.1.19:8188/api/manager/reboot' \
@@ -86,16 +93,24 @@ export class ComfyManager {
       return this.fetchGetJSON('/manager/reboot')
    }
 
+   // @server.PromptServer.instance.routes.get("/manager/reboot")
+   rebootComfyUI = async (): Promise<unknown> => {
+      return this.fetchGetJSON('/manager/reboot')
+   }
+
    /** alias to rebootComfyUI since I was looking for that method instead. */
    restartComfyUI = async (): Promise<unknown> => {
       return this.rebootComfyUI()
    }
 
    // models --------------------------------------------------------------
-   modelList: Maybe<HostModelList> = null
+   modelList: Maybe<ComfyManagerAPIModelList> = null
 
-   fetchModelList = (): Promise<HostModelList> => {
-      return this.fetchGetJSON<HostModelList>('/externalmodel/getlist?mode=cache')
+   fetchModelList = (): Promise<ComfyManagerAPIModelList> => {
+      return this.fetchGetJSON<ComfyManagerAPIModelList>('/externalmodel/getlist?mode=cache')
+   }
+   fetchLogs = (): Promise<any> => {
+      return this.fetchGetJSON<any>('/internal/logs')
    }
 
    isModelInstalled = (name: KnownModel_Name): boolean => {
@@ -104,7 +119,7 @@ export class ComfyManager {
 
    modelsBeeingInstalled = new Set<KnownModel_Name>()
 
-   installModel = async (model: ModelInfo): Promise<boolean> => {
+   installModel = async (model: ComfyManagerModelInfo): Promise<boolean> => {
       try {
          this.modelsBeeingInstalled.add(model.name)
          const status = await this.fetchPost('/model/install', model)
@@ -132,9 +147,9 @@ export class ComfyManager {
    }
 
    // PLUGINS (A.K.A. Custom nodes) ----------------------------------------------------------------------------
-   pluginList: Maybe<HostPluginList> = null // hasModel = async (model: ModelInfo) => {
+   pluginList: Maybe<ComfyManagerAPIPluginList> = null // hasModel = async (model: ModelInfo) => {
 
-   get titlesOfAllInstalledPlugins(): KnownCustomNode_Title[] {
+   get titlesOfAllInstalledPlugins(): KnownComfyPluginTitle[] {
       return (
          this.pluginList?.custom_nodes //
             .filter((x) => x.installed === 'True')
@@ -142,11 +157,11 @@ export class ComfyManager {
       )
    }
 
-   isPluginInstalled = (title: KnownCustomNode_Title): boolean => {
+   isPluginInstalled = (title: KnownComfyPluginTitle): boolean => {
       return this.pluginList?.custom_nodes.some((x) => x.title === title && x.installed === 'True') ?? false
    }
 
-   getPluginStatus = (title: KnownCustomNode_Title): PluginInstallStatus => {
+   getPluginStatus = (title: KnownComfyPluginTitle): PluginInstallStatus => {
       if (this.pluginList == null) return 'unknown'
       const entry = this.pluginList?.custom_nodes.find((x) => x.title === title)
       const status = ((): PluginInstallStatus => {
@@ -163,10 +178,10 @@ export class ComfyManager {
    // https://github.com/ltdrdata/ComfyUI-Manager/blob/4649d216b1842aa48b95d3f064c679a1b698e506/js/custom-nodes-downloader.js#L14C25-L14C88
    fetchPluginList = async (
       /** @default: 'cache' */
-      mode: ComfyManagerFetchPolicy = 'cache',
+      mode: ComfyManagerAPIFetchPolicy = 'cache',
       /** @default: true */
       skipUpdate: boolean = true,
-   ): Promise<HostPluginList> => {
+   ): Promise<ComfyManagerAPIPluginList> => {
       try {
          const skip_update = skipUpdate ? '&skip_update=true' : ''
          const status = await this.fetchGetJSON(`/customnode/getlist?mode=${mode}${skip_update}`)
@@ -178,9 +193,10 @@ export class ComfyManager {
       }
    }
 
-   installPlugin = async (model: PluginInfo): Promise<boolean> => {
+   installPlugin = async (model: ComfyManagerPluginInfo): Promise<boolean> => {
       try {
          const status = await this.fetchPost('/customnode/install', model)
+         console.log('✅ Custom Node installed')
          toastSuccess('Custom Node installed')
          return true
       } catch (exception) {
@@ -207,9 +223,9 @@ export class ComfyManager {
    private fetchGetJSON = async <Out>(endopint: string): Promise<Out> => {
       const url = this.host.getServerHostHTTP() + endopint
       const response = await fetch(url)
-      const status = await response.json()
-      console.log(`[👀]`, status)
-      return status
+      const jsonResult = await response.json()
+      // console.log(`[👀]`, jsonResult)
+      return jsonResult
    }
    private fetchGetText = async (endopint: string): Promise<string> => {
       const url = this.host.getServerHostHTTP() + endopint

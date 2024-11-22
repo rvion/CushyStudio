@@ -1,9 +1,9 @@
-import type { ComfyWorkflowJSON } from '../../core/LiteGraph'
-import type { ComfyPromptJSON } from '../../types/ComfyPrompt'
+import type { ComfyUIAPIRequest } from '../../comfyui/comfyui-prompt-api'
+import type { ComfyWorkflowJSON } from '../../comfyui/litegraph/LiteGraphJSON'
 
 import { observer } from 'mobx-react-lite'
 
-import { convertWorkflowToPrompt } from '../../core/litegraphToPrompt'
+import { convertWorkflowToPrompt } from '../../comfyui/litegraphToApiRequestPayload'
 import { ErrorBoundaryUI } from '../../csuite/errors/ErrorBoundaryUI'
 import { JsonViewUI } from '../../csuite/json/JsonViewUI'
 import { TypescriptHighlightedCodeUI } from '../../widgets/misc/TypescriptHighlightedCodeUI'
@@ -12,7 +12,7 @@ import { TypescriptHighlightedCodeUI } from '../../widgets/misc/TypescriptHighli
 export const PlaygroundImportFromComfy = observer(function PlaygroundImportFromComfy_(p: {}) {
    const absPath = cushy.resolveFromRoot('library/built-in/3d/3d-app-1/3d1.workflow.json' as RelativePath)
    const wflowJSON = cushy.readJSON_<ComfyWorkflowJSON>(absPath)
-   const promptJSON: ComfyPromptJSON = convertWorkflowToPrompt(cushy.schema, wflowJSON)
+   const promptJSON: ComfyUIAPIRequest = convertWorkflowToPrompt(cushy.schema, wflowJSON)
    const code = cushy.importer.convertPromptToCode(promptJSON, { autoUI: false, preserveId: false })
    return (
       <ErrorBoundaryUI>

@@ -21,7 +21,10 @@ app({
 
    run: async (flow, form) => {
       const graph = flow.nodes
-      const ckpt = graph.CheckpointLoaderSimple({ ckpt_name: 'revAnimated_v122.safetensors' })
+      const ckpt = graph.CheckpointLoaderSimple({
+         // @ts-ignore
+         ckpt_name: 'revAnimated_v122.safetensors',
+      })
       const positive = graph.CLIPTextEncode({ clip: ckpt, text: form.steps.frame?.positive || 'a house' })
       const negative = graph.CLIPTextEncode({ clip: ckpt, text: 'bad' })
       const latent_image = graph.EmptyLatentImage({ width: 512, height: 512, batch_size: 1 })

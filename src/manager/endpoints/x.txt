@@ -1,0 +1,437 @@
+56 results - 10 files
+
+js/cm-api.js:
+  26  	let res = confirm(msg);
+  27  	if(res) {
+  28  		if(event.detail.target.installed == 'Disabled') {
+  29: 			const response = await api.fetchApi(`/customnode/toggle_active`, {
+  30  										method: 'POST',
+  31  										headers: { 'Content-Type': 'application/json' },
+  32  										body: JSON.stringify(event.detail.target)
+
+  36  			await sleep(300);
+  37  			app.ui.dialog.show(`Installing... '${event.detail.target.title}'`);
+  38
+  39: 			const response = await api.fetchApi(`/customnode/install`, {
+  40  										method: 'POST',
+  41  										headers: { 'Content-Type': 'application/json' },
+  42  										body: JSON.stringify(event.detail.target)
+
+  48  			}
+  49  		}
+  50
+  51: 		let response = await api.fetchApi("/manager/reboot");
+  52  		if(response.status == 403) {
+  53  			show_message('This action is not allowed with this security level configuration.');
+  54  			return false;
+
+js/comfyui-manager.js:
+   414
+   415
+   416  async function init_badge_mode() {
+   417: 	api.fetchApi('/manager/badge_mode')
+   418  		.then(response => response.text())
+   419  		.then(data => { badge_mode = data; })
+   420  }
+   421
+   422  async function init_share_option() {
+   423: 	api.fetchApi('/manager/share_option')
+   424  		.then(response => response.text())
+   425  		.then(data => {
+   426  			share_option = data || 'all';
+
+   428  }
+   429
+   430  async function init_notice(notice) {
+   431: 	api.fetchApi('/manager/notice')
+   432  		.then(response => response.text())
+   433  		.then(data => {
+   434  			notice.innerHTML = data;
+
+   439  await init_share_option();
+   440
+   441  async function fetchNicknames() {
+   442: 	const response1 = await api.fetchApi(`/customnode/getmappings?mode=nickname`);
+   443  	const mappings = await response1.json();
+   444
+   445  	let result = {};
+
+   568  	update_comfyui_button.style.backgroundColor = "gray";
+   569
+   570  	try {
+   571: 		const response = await api.fetchApi('/comfyui_manager/update_comfyui');
+   572
+   573  		if (response.status == 400) {
+   574  			show_message('Failed to update ComfyUI.');
+
+   604  	try {
+   605  		var mode = manager_instance.datasrc_combo.value;
+   606
+   607: 		const response = await api.fetchApi(`/customnode/fetch_updates?mode=${mode}`);
+   608
+   609  		if (response.status != 200 && response.status != 201) {
+   610  			show_message('Failed to fetch updates.');
+
+   655  		var mode = manager_instance.datasrc_combo.value;
+   656
+   657  		update_all_button.innerText = "Updating all...";
+   658: 		const response1 = await api.fetchApi('/comfyui_manager/update_comfyui');
+   659: 		const response2 = await api.fetchApi(`/customnode/update_all?mode=${mode}`);
+   660
+   661  		if (response2.status == 403) {
+   662  			show_message('This action is not allowed with this security level configuration.');
+
+   867  		preview_combo.appendChild($el('option', { value: 'latent2rgb', text: 'Preview method: Latent2RGB (fast)' }, []));
+   868  		preview_combo.appendChild($el('option', { value: 'none', text: 'Preview method: None (very fast)' }, []));
+   869
+   870: 		api.fetchApi('/manager/preview_method')
+   871  			.then(response => response.text())
+   872  			.then(data => { preview_combo.value = data; });
+   873
+   874  		preview_combo.addEventListener('change', function (event) {
+   875: 			api.fetchApi(`/manager/preview_method?value=${event.target.value}`);
+   876  		});
+   877
+   878  		// nickname
+
+   887              badge_combo.appendChild($el('option', { value: 'id_nick', text: 'Badge: #ID Nickname' }, []));
+   888              badge_combo.appendChild($el('option', { value: 'id_nick_hide', text: 'Badge: #ID Nickname (hide built-in)' }, []));
+   889
+   890:             api.fetchApi('/manager/badge_mode')
+   891                  .then(response => response.text())
+   892                  .then(data => { badge_combo.value = data; badge_mode = data; });
+   893
+   894              badge_combo.addEventListener('change', function (event) {
+   895:                 api.fetchApi(`/manager/badge_mode?value=${event.target.value}`);
+   896                  badge_mode = event.target.value;
+   897                  app.graph.setDirtyCanvas(true);
+   898              });
+
+   902  		let channel_combo = document.createElement("select");
+   903  		channel_combo.setAttribute("title", "Configure the channel for retrieving data from the Custom Node list (including missing nodes) or the Model list. Note that the badge utilizes local information.");
+   904  		channel_combo.className = "cm-menu-combo";
+   905: 		api.fetchApi('/manager/channel_url_list')
+   906  			.then(response => response.json())
+   907  			.then(async data => {
+   908  				try {
+
+   915  					}
+   916
+   917  					channel_combo.addEventListener('change', function (event) {
+   918: 						api.fetchApi(`/manager/channel_url_list?value=${event.target.value}`);
+   919  					});
+   920
+   921  					channel_combo.value = data.selected;
+
+   932  		default_ui_combo.appendChild($el('option', { value: 'none', text: 'Default UI: None' }, []));
+   933  		default_ui_combo.appendChild($el('option', { value: 'history', text: 'Default UI: History' }, []));
+   934  		default_ui_combo.appendChild($el('option', { value: 'queue', text: 'Default UI: Queue' }, []));
+   935: 		api.fetchApi('/manager/default_ui')
+   936  			.then(response => response.text())
+   937  			.then(data => { default_ui_combo.value = data; });
+   938
+   939  		default_ui_combo.addEventListener('change', function (event) {
+   940: 			api.fetchApi(`/manager/default_ui?value=${event.target.value}`);
+   941  		});
+   942
+   943
+
+   965  		component_policy_combo.appendChild($el('option', { value: 'workflow', text: 'Component: Use workflow version' }, []));
+   966  		component_policy_combo.appendChild($el('option', { value: 'higher', text: 'Component: Use higher version' }, []));
+   967  		component_policy_combo.appendChild($el('option', { value: 'mine', text: 'Component: Use my version' }, []));
+   968: 		api.fetchApi('/manager/component/policy')
+   969  			.then(response => response.text())
+   970  			.then(data => {
+   971  				component_policy_combo.value = data;
+
+   973  			});
+   974
+   975  		component_policy_combo.addEventListener('change', function (event) {
+   976: 			api.fetchApi(`/manager/component/policy?value=${event.target.value}`);
+   977  			set_component_policy(event.target.value);
+   978  		});
+   979
+
+   987  		dbl_click_policy_combo.appendChild($el('option', { value: 'possible-input', text: 'Double-Click: Possible Input Connections' }, []));
+   988  		dbl_click_policy_combo.appendChild($el('option', { value: 'dual', text: 'Double-Click: Possible(left) + Copy(right)' }, []));
+   989
+   990: 		api.fetchApi('/manager/dbl_click/policy')
+   991  			.then(response => response.text())
+   992  			.then(data => {
+   993  				dbl_click_policy_combo.value = data;
+
+   995  			});
+   996
+   997  		dbl_click_policy_combo.addEventListener('change', function (event) {
+   998: 			api.fetchApi(`/manager/dbl_click/policy?value=${event.target.value}`);
+   999  			set_double_click_policy(event.target.value);
+  1000  		});
+  1001
+  1002: 		api.fetchApi('/manager/share_option')
+  1003  			.then(response => response.text())
+  1004  			.then(data => {
+  1005  				share_combo.value = data || 'all';
+
+  1009  		share_combo.addEventListener('change', function (event) {
+  1010  			const value = event.target.value;
+  1011  			share_option = value;
+  1012: 			api.fetchApi(`/manager/share_option?value=${value}`);
+  1013  			const shareButton = document.getElementById("shareButton");
+  1014  			if (value === 'none') {
+  1015  				shareButton.style.display = "none";
+
+  1537
+  1538  async function set_default_ui()
+  1539  {
+  1540: 	let res = await api.fetchApi('/manager/default_ui');
+  1541  	if(res.status == 200) {
+  1542  		let mode = await res.text();
+  1543  		switch(mode) {
+
+js/comfyui-share-common.js:
+  171  		const nodes = app.graph._nodes
+  172  		const { potential_outputs, potential_output_nodes } = getPotentialOutputsAndOutputNodes(nodes);
+  173  		const workflow = prompt['workflow']
+  174: 		api.fetchApi(`/manager/set_esheep_workflow_and_images`, {
+  175  			method: 'POST',
+  176  			headers: { 'Content-Type': 'application/json' },
+  177  			body: JSON.stringify({
+
+  774  		// get the user's existing matrix auth and share key
+  775  		ShareDialog.matrix_auth = { homeserver: "matrix.org", username: "", password: "" };
+  776  		try {
+  777: 			api.fetchApi(`/manager/get_matrix_auth`)
+  778  				.then(response => response.json())
+  779  				.then(data => {
+  780  					ShareDialog.matrix_auth = data;
+
+  793  		ShareDialog.cw_sharekey = "";
+  794  		try {
+  795  			// console.log("Fetching comfyworkflows share key")
+  796: 			api.fetchApi(`/manager/get_comfyworkflows_auth`)
+  797  				.then(response => response.json())
+  798  				.then(data => {
+  799  					ShareDialog.cw_sharekey = data.comfyworkflows_sharekey;
+
+  853  			// Change the text of the share button to "Sharing..." to indicate that the share process has started
+  854  			this.share_button.textContent = "Sharing...";
+  855
+  856: 			const response = await api.fetchApi(`/manager/share`, {
+  857  				method: 'POST',
+  858  				headers: { 'Content-Type': 'application/json' },
+  859  				body: JSON.stringify({
+
+js/comfyui-share-copus.js:
+  455     * @param {statusText} statusText
+  456     * @returns
+  457     */
+  458:   async fetchApi(path, options, statusText) {
+  459      if (statusText) {
+  460        this.message.textContent = statusText;
+  461      }
+
+  483      form.append("file", uploadFile);
+  484      form.append("apiToken", this.keyInput.value);
+  485      try {
+  486: (      const res = await this.fetchApi(
+  487  )        `/client/common/opus/uploadImage`,
+  488          {
+  489            method: "POST",
+
+  586        }
+  587      }
+  588      try {
+  589:       const res = await this.fetchApi(
+  590          "/client/common/opus/shareFromComfyUI",
+  591          {
+  592            method: "POST",
+
+js/comfyui-share-openart.js:
+   66    async readKey() {
+   67      let key = ""
+   68      try {
+   69:       key = await api.fetchApi(`/manager/get_openart_auth`)
+   70          .then(response => response.json())
+   71          .then(data => {
+   72            return data.openart_key;
+
+   81    }
+   82
+   83    async saveKey(value) {
+   84:     await api.fetchApi(`/manager/set_openart_auth`, {
+   85        method: 'POST',
+   86        headers: {'Content-Type': 'application/json'},
+   87        body: JSON.stringify({
+
+  359      return layout;
+  360    }
+  361
+  362:   async fetchApi(path, options, statusText) {
+  363      if (statusText) {
+  364        this.message.textContent = statusText;
+  365      }
+
+  397      const form = new FormData();
+  398      form.append("file", uploadFile);
+  399      try {
+  400:       const res = await this.fetchApi(
+  401          `/workflows/upload_thumbnail`,
+  402          {
+  403            method: "POST",
+
+  458        throw new Error("Title is required");
+  459      }
+  460
+  461:     const current_snapshot = await api.fetchApi(`/snapshot/get_current`)
+  462        .then(response => response.json())
+  463        .catch(error => {
+  464          // console.log(error);
+
+  487      // const join_contest = this.joinContestCheckbox.checked;
+  488
+  489      try {
+  490:       const response = await this.fetchApi(
+  491          "/workflows/publish",
+  492          {
+  493            method: "POST",
+
+js/comfyui-share-youml.js:
+  178    async loadToken() {
+  179      let key = ""
+  180      try {
+  181:       const response = await api.fetchApi(`/manager/youml/settings`)
+  182        const settings = await response.json()
+  183        return settings.token
+  184      } catch (error) {
+
+  187    }
+  188
+  189    async saveToken(value) {
+  190:     await api.fetchApi(`/manager/youml/settings`, {
+  191        method: 'POST',
+  192        headers: {'Content-Type': 'application/json'},
+  193        body: JSON.stringify({
+
+  379      try {
+  380        let snapshotData = null;
+  381        try {
+  382:         const snapshot = await api.fetchApi(`/snapshot/get_current`)
+  383          snapshotData = await snapshot.json()
+  384        } catch (e) {
+  385          console.error("Failed to get snapshot", e)
+
+js/common.js:
+   14  export function rebootAPI() {
+   15  	if (confirm("Are you sure you'd like to reboot the server?")) {
+   16  		try {
+   17: 			api.fetchApi("/manager/reboot");
+   18  		}
+   19  		catch(exception) {
+   20
+
+   53  	if(packages.includes('&'))
+   54  		app.ui.dialog.show(`Invalid PIP package enumeration: '${packages}'`);
+   55
+   56: 	const res = await api.fetchApi("/customnode/install/pip", {
+   57  		method: "POST",
+   58  		body: packages,
+   59  	});
+
+   88
+   89  	show_message(`Wait...<BR><BR>Installing '${url}'`);
+   90
+   91: 	const res = await api.fetchApi("/customnode/install/git_url", {
+   92  		method: "POST",
+   93  		body: url,
+   94  	});
+
+  126  			mode = '{"unload_models": true}';
+  127  		}
+  128
+  129: 		let res = await api.fetchApi(`/free`, {
+  130  			method: 'POST',
+  131  			headers: { 'Content-Type': 'application/json' },
+  132  			body: mode
+
+  192
+  193  export async function fetchData(route, options) {
+  194  	let err;
+  195: 	const res = await api.fetchApi(route, options).catch(e => {
+  196  		err = e;
+  197  	});
+  198
+
+js/components-manager.js:
+   64  }
+   65
+   66  export async function load_components() {
+   67: 	let data = await api.fetchApi('/manager/component/loads', {method: "POST"});
+   68  	let components = await data.json();
+   69
+   70  	let start_time = Date.now();
+
+  222  	pack_map[packname] = component_name;
+  223  	rpack_map[component_name] = subgraph;
+  224
+  225: 	const res = await api.fetchApi('/manager/component/save', {
+  226  			method: "POST",
+  227  			headers: {
+  228  				"Content-Type": "application/json",
+
+  259  				workflow: component
+  260  			};
+  261
+  262: 		const res = await api.fetchApi('/manager/component/save', {
+  263  						method: "POST",
+  264  						headers: { "Content-Type": "application/json", },
+  265  						body: JSON.stringify(body)
+
+  708
+  709  let current_component_policy = 'workflow';
+  710  try {
+  711: 	api.fetchApi('/manager/component/policy')
+  712  		.then(response => response.text())
+  713  		.then(data => { current_component_policy = data; });
+  714  }
+
+js/node_fixer.js:
+  3
+  4  let double_click_policy = "copy-all";
+  5
+  6: api.fetchApi('/manager/dbl_click/policy')
+  7  	.then(response => response.text())
+  8  	.then(data => set_double_click_policy(data));
+  9
+
+js/snapshot.js:
+   7  async function restore_snapshot(target) {
+   8  	if(SnapshotManager.instance) {
+   9  		try {
+  10: 			const response = await api.fetchApi(`/snapshot/restore?target=${target}`, { cache: "no-store" });
+  11
+  12  			if(response.status == 403) {
+  13  				show_message('This action is not allowed with this security level configuration.');
+
+  35  async function remove_snapshot(target) {
+  36  	if(SnapshotManager.instance) {
+  37  		try {
+  38: 			const response = await api.fetchApi(`/snapshot/remove?target=${target}`, { cache: "no-store" });
+  39
+  40  			if(response.status == 403) {
+  41  				show_message('This action is not allowed with this security level configuration.');
+
+  61
+  62  async function save_current_snapshot() {
+  63  	try {
+  64: 		const response = await api.fetchApi('/snapshot/save', { cache: "no-store" });
+  65  		app.ui.dialog.close();
+  66  		return true;
+  67  	}
+
+  76  }
+  77
+  78  async function getSnapshotList() {
+  79: 	const response = await api.fetchApi(`/snapshot/getlist`);
+  80  	const data = await response.json();
+  81  	return data;
+  82  }

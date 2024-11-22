@@ -72,7 +72,10 @@ export function ui_cnet(): UI_cnet {
                      image: form.image({}),
                      mask: ui_mask()
                         .addRequirements([
-                           { type: 'customNodesByNameInCushy', nodeName: 'ACN$_AdvancedControlNetApply' },
+                           {
+                              type: 'customNodesByNameInCushy',
+                              nodeName: 'Advanced-ControlNet.ACN_AdvancedControlNetApply',
+                           },
                         ])
                         .withConfig({ tooltip: 'Applies controlnet only to the masked area.' }),
                      resize: form.bool({ default: true }),
@@ -111,19 +114,19 @@ export function ui_cnet(): UI_cnet {
 
 // RUN -----------------------------------------------------------
 export type Cnet_args = {
-   positive: _CONDITIONING
-   negative: _CONDITIONING
+   positive: Comfy.Signal['CONDITIONING']
+   negative: Comfy.Signal['CONDITIONING']
    width: number
    height: number
-   ckptPos: _MODEL
+   ckptPos: Comfy.Signal['MODEL']
 }
 
 export type Cnet_return = {
-   cnet_positive: _CONDITIONING
-   cnet_negative: _CONDITIONING
-   post_cnet_positive: _CONDITIONING
-   post_cnet_negative: _CONDITIONING
-   ckpt_return: _MODEL
+   cnet_positive: Comfy.Signal['CONDITIONING']
+   cnet_negative: Comfy.Signal['CONDITIONING']
+   post_cnet_positive: Comfy.Signal['CONDITIONING']
+   post_cnet_negative: Comfy.Signal['CONDITIONING']
+   ckpt_return: Comfy.Signal['MODEL']
 }
 
 export async function run_cnet(
@@ -133,14 +136,14 @@ export async function run_cnet(
 ): Promise<Cnet_return> {
    const run = getCurrentRun()
    const cnetList = opts // opts?.controlNetList
-   let args: Cnet_args = { ...ctx }
+   const args: Cnet_args = { ...ctx }
 
    if (cnetList) {
       for (const cnetImage of cnetList) {
-         let image: _IMAGE = (await run.loadImageAnswer(cnetImage.image))._IMAGE
-         const mask = await run_mask(cnetImage.mask)
+         let image: Comfy.Signal['IMAGE'] = (await run.loadImageAnswer(cnetImage.image))._IMAGE
+         const mask: Comfy.Signal['MASK'] | null = await run_mask(cnetImage.mask)
          const { width, height } = ctx
-         let resolution = Math.min(width, height)
+         const resolution = Math.min(width, height)
 
          // TODO: make configurable
          if (cnetImage.resize) {
@@ -262,15 +265,15 @@ const _apply_cnet = (
    strength: number,
    startPct: number,
    endPct: number,
-   image: _IMAGE,
-   cnet_name: Enum_ControlNetLoader_control_net_name,
-   mask: HasSingle_MASK | null,
+   image: Comfy.Signal['IMAGE'],
+   cnet_name: Comfy.Slots['ControlNetLoader.control_net_name'],
+   mask: Comfy.Signal['MASK'] | null,
 ): void => {
    const run = getCurrentRun()
    const graph = run.nodes
    const cnet_node = mask
       ? // @ts-expect-error
-        graph.ACN$_AdvancedControlNetApply({
+        graph.ACN_AdvancedControlNetApply({
            strength: strength ?? 1,
            positive: args.positive,
            negative: args.negative,

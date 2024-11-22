@@ -2,15 +2,16 @@ app({
    // name: 'playground-seed-widget',
    ui: (b) =>
       b.fields({
+         ckpt: b.enum['CheckpointLoader.ckpt_name'](),
          seed1: b.seed({ defaultMode: 'randomize' }),
          seed2: b.seed({ defaultMode: 'fixed' }),
          seed3: b.seed({ defaultMode: 'fixed', default: 12 }),
       }),
 
-   run: async (flow, form) => {
-      const graph = flow.nodes
+   run: async (sdk, ui) => {
+      const graph = sdk.nodes
 
-      const ckpt = graph.CheckpointLoaderSimple({ ckpt_name: 'revAnimated_v122.safetensors' })
+      const ckpt = graph.CheckpointLoaderSimple({ ckpt_name: ui.ckpt })
       const latent_image = graph.EmptyLatentImage({ width: 512, height: 512, batch_size: 1 })
       const negative = graph.CLIPTextEncode({ clip: ckpt, text: 'bad' })
       const positive = graph.CLIPTextEncode({ clip: ckpt, text: 'a house' })
@@ -35,8 +36,8 @@ app({
          })
       }
 
-      generate(form.seed1)
-      generate(form.seed2)
-      generate(form.seed3)
+      generate(ui.seed1)
+      generate(ui.seed2)
+      generate(ui.seed3)
    },
 })

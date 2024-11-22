@@ -11,7 +11,7 @@ app({
          test: b.auto.FAKE_STUFF(),
 
          // case 3. node without any primitive value
-         invert: b.auto.Mask_Invert(),
+         invert: b.auto['was.Mask Invert'](),
       }),
    run: async (run, ui) => {
       // ui.lora.

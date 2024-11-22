@@ -1,9 +1,9 @@
-import type { KnownCustomNode_File } from '../custom-node-list/KnownCustomNode_File'
-import type { KnownCustomNode_Title } from '../custom-node-list/KnownCustomNode_Title'
-import type { KnownCustomNode_CushyName } from '../extension-node-map/KnownCustomNode_CushyName'
-import type { KnownModel_Base } from '../model-list/KnownModel_Base'
-import type { KnownModel_Name } from '../model-list/KnownModel_Name'
-import type { ModelInfo } from '../model-list/model-list-loader-types'
+import type { KnownComfyCustomNodeName } from '../generated/KnownComfyCustomNodeName'
+import type { KnownComfyPluginTitle } from '../generated/KnownComfyPluginTitle'
+import type { KnownComfyPluginURL } from '../generated/KnownComfyPluginURL'
+import type { KnownModel_Base } from '../generated/KnownModel_Base'
+import type { KnownModel_Name } from '../generated/KnownModel_Name'
+import type { ComfyManagerModelInfo } from '../types/ComfyManagerModelInfo'
 
 /**
  * cushy-specific types to allow
@@ -20,8 +20,8 @@ export type Requirements =
         base: KnownModel_Base
      }
    | { type: 'modelInManager'; modelName: KnownModel_Name; optional?: true }
-   | { type: 'modelCustom'; infos: ModelInfo; optional?: true }
+   | { type: 'modelCustom'; infos: ComfyManagerModelInfo; optional?: true }
    // custom nodes
-   | { type: 'customNodesByTitle'; title: KnownCustomNode_Title; optional?: true }
-   | { type: 'customNodesByURI'; uri: KnownCustomNode_File; optional?: true }
-   | { type: 'customNodesByNameInCushy'; nodeName: KnownCustomNode_CushyName; optional?: true }
+   | { type: 'customNodesByTitle'; title: KnownComfyPluginTitle; optional?: true }
+   | { type: 'customNodesByURI'; uri: KnownComfyPluginURL; optional?: true }
+   | { type: 'customNodesByNameInCushy'; nodeName: KnownComfyCustomNodeName; optional?: true }

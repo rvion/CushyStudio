@@ -18,9 +18,9 @@ export function ui_latent_v1(): X.XGroup<{
 
 export const run_latent_v1 = async (p: {
    opts: OutputFor<typeof ui_latent_v1>
-   vae: _VAE
+   vae: Comfy.Signal['VAE']
 }): Promise<{
-   latent: HasSingle_LATENT
+   latent: Comfy.HasSingle['LATENT']
    width: number
    height: number
 }> => {
@@ -32,7 +32,7 @@ export const run_latent_v1 = async (p: {
    // misc calculatiosn
    let width: number
    let height: number
-   let latent: HasSingle_LATENT
+   let latent: Comfy.HasSingle['LATENT']
 
    // case 1. start form image
    if (opts.image) {

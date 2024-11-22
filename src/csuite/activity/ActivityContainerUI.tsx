@@ -1,7 +1,7 @@
 import type { Routine } from './Routine'
-import type { CSSProperties, ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
+import { type CSSProperties, type ReactNode, useRef } from 'react'
 
 import { ModalShellUI } from '../../csuite/modal/ModalShell'
 import { computePlacement } from '../../csuite/reveal/RevealPlacement'
@@ -13,6 +13,7 @@ export const ActivityContainerUI = observer(function ActivityContainerUI_(p: {
    children: ReactNode
    stop: () => void
 }) {
+   const shellRef = useRef<HTMLDivElement>(null)
    const routine = p.routine
    const backdropzIndex = 1000 + 100 * (p.ix ?? 1)
    const activityZIndex = backdropzIndex + 1
@@ -25,11 +26,13 @@ export const ActivityContainerUI = observer(function ActivityContainerUI_(p: {
             //
             activity.placement ?? 'screen',
             target.getBoundingClientRect(),
+            shellRef.current?.getBoundingClientRect() ?? null,
          )
       }
    }
    return (
       <div // whole screen
+         ref={shellRef}
          tabIndex={-1}
          className='$activity-root'
          tw='pointer-events-auto absolute inset-0 h-full w-full'

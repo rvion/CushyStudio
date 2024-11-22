@@ -17,7 +17,7 @@ export const DemoActivityUI = observer(() => {
             {/* A */}
             <Frame>
                <h3 tw='italic text-gray-500'>Open as as standalone Activity</h3>
-               <Button look='primary' onClick={() => menu_imageActions.open(img)}>
+               <Button look='primary' onClick={() => menu_imageActions.open({ image: img })}>
                   Open
                </Button>
             </Frame>
@@ -25,7 +25,7 @@ export const DemoActivityUI = observer(() => {
             {/* B */}
             <Frame>
                <h3 tw='italic text-gray-500'>menu mounted as widget</h3>
-               <menu_imageActions.UI props={img} />
+               <menu_imageActions.MenuEntriesUI image={img} />
             </Frame>
 
             {/* C.1 */}
@@ -37,7 +37,10 @@ export const DemoActivityUI = observer(() => {
             {/* D */}
             <Frame>
                <h3 tw='italic text-gray-500'>Open as as standalone Activity</h3>
-               <RevealUI placement='bottomStart' content={() => <menu_imageActions.UI props={img} />}>
+               <RevealUI
+                  placement='bottomStart'
+                  content={() => <menu_imageActions.MenuEntriesUI image={img} />}
+               >
                   <Button look='primary'>Open</Button>
                </RevealUI>
             </Frame>
@@ -45,7 +48,10 @@ export const DemoActivityUI = observer(() => {
             {/* Es */}
             <Frame>
                <h3 tw='italic text-gray-500'>Open as as standalone Activity</h3>
-               <RevealUI placement='bottomStart' content={() => <menu_imageActions.UI props={img} />}>
+               <RevealUI
+                  placement='bottomStart'
+                  content={() => <menu_imageActions.MenuEntriesUI image={img} />}
+               >
                   <Button look='primary' /* onClick={() => menu_imageActions.open(img)} */>Open</Button>
                </RevealUI>
             </Frame>

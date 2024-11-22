@@ -6,14 +6,14 @@ import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
 export type UI_subform_Normal = X.XGroup<{
    preprocessor: UI_subform_Normal_Preprocessor
    models: X.XGroup<{
-      cnet_model_name: X.XEnum<Enum_ControlNetLoader_control_net_name>
+      cnet_model_name: X.XEnum<'ControlNetLoader.control_net_name'>
    }>
    strength: X.XNumber
    advanced: X.XGroup<{
       startAtStepPercent: X.XNumber
       endAtStepPercent: X.XNumber
-      crop: X.XEnum<Enum_LatentUpscale_crop>
-      upscale_method: X.XEnum<Enum_ImageScale_upscale_method>
+      crop: X.XEnum<'LatentUpscale.crop'>
+      upscale_method: X.XEnum<'ImageScale.upscale_method'>
    }>
 }>
 export function ui_subform_Normal(): UI_subform_Normal {
@@ -28,7 +28,7 @@ export function ui_subform_Normal(): UI_subform_Normal {
                label: 'Select or Download Models',
                // startCollapsed: true,
                items: {
-                  cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
+                  cnet_model_name: form.enum['ControlNetLoader.control_net_name']({
                      label: 'Model',
                      default: 'control_v11p_sd15_normalbae.pth' as any,
                      filter: (x) => x.toString().includes('normal'),
@@ -104,21 +104,21 @@ function ui_subform_Normal_bae(): UI_subform_Normal_bae {
 // 🅿️ Normal RUN ===================================================
 export const run_cnet_Normal = (
    Normal: OutputFor<typeof ui_subform_Normal>,
-   image: _IMAGE,
+   image: Comfy.Signal['IMAGE'],
    resolution: number, // 512 | 768 | 1024 = 512,
 ): {
-   image: _IMAGE
-   cnet_name: Enum_ControlNetLoader_control_net_name
+   image: Comfy.Signal['IMAGE']
+   cnet_name: Comfy.Slots['ControlNetLoader.control_net_name']
 } => {
-   const run = getCurrentRun()
-   const graph = run.nodes
+   const sdk = getCurrentRun()
+   const graph = sdk.nodes
    const cnet_name = Normal.models.cnet_model_name
 
    // PREPROCESSOR - Normal ===========================================================
    if (Normal.preprocessor) {
       if (Normal.preprocessor.BAE) {
          const bae = Normal.preprocessor.BAE
-         image = graph.BAE$7NormalMapPreprocessor({
+         image = graph['controlnet_aux.BAE-NormalMapPreprocessor']({
             image: image,
             resolution: resolution,
          })._IMAGE
@@ -126,7 +126,7 @@ export const run_cnet_Normal = (
          else graph.PreviewImage({ images: image })
       } else if (Normal.preprocessor.Midas) {
          const midas = Normal.preprocessor.Midas
-         image = graph.MiDaS$7NormalMapPreprocessor({
+         image = graph['controlnet_aux.MiDaS-NormalMapPreprocessor']({
             image: image,
             resolution: resolution,
             a: midas.a_value,

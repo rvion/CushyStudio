@@ -24,27 +24,27 @@ import { _evalPrompt } from './_evalPrompt'
 
 export async function _cushySDXLRun(
    //
-   run: Runtime<$CushySDXLUI['$Field']>,
+   sdk: Runtime<$CushySDXLUI['$Field']>,
    ui: FIELD['$Value'],
    ctx: DraftExecutionContext,
 ): Promise<void> {
-   const graph = run.nodes
+   const graph = sdk.nodes
    // #region  MODEL, clip skip, vae, etc.
-   let { ckpt, vae, clip: clip_ } = evalModelSD15andSDXL(ui.model)
+   const { ckpt, vae, clip: clip_ } = evalModelSD15andSDXL(ui.model)
 
    // #region PROMPT ENGINE -- POSITIVE
    const mergeConditionning = (
       //
-      a: _CONDITIONING | undefined,
-      b: _CONDITIONING,
-   ): _CONDITIONING => {
+      a: Comfy.Signal['CONDITIONING'] | undefined,
+      b: Comfy.Signal['CONDITIONING'],
+   ): Comfy.Signal['CONDITIONING'] => {
       if (a == null) return b
       return graph.ConditioningCombine({ conditioning_1: a, conditioning_2: b })
    }
 
    let ckptPos = ckpt
    let clipPos = clip_
-   let positive!: _CONDITIONING
+   let positive!: Comfy.Signal['CONDITIONING']
    for (const prompt of ui.positive.prompts) {
       if (prompt == null /* disabled */) continue
       const res = _evalPrompt(prompt.text, ui, clipPos, ckptPos, graph)
@@ -86,7 +86,7 @@ export async function _cushySDXLRun(
    // #region PROMPT ENGINE -- NEGATIVE
    let ckptNeg = ckpt
    let clipNeg = clip_
-   let negative!: _CONDITIONING
+   let negative!: Comfy.Signal['CONDITIONING']
    for (const prompt of ui.negative) {
       if (prompt == null /* disabled */) continue
       const res = _evalPrompt(prompt.text, ui, clipNeg, ckpt, graph)
@@ -97,9 +97,10 @@ export async function _cushySDXLRun(
 
    // #region START IMAGE
    const imgCtx = ctx.image
+   // eslint-disable-next-line prefer-const
    let { latent, width, height } = imgCtx
       ? /* 🔴 HACKY  */
-        await (async (): Promise<{ latent: _LATENT; height: number; width: number }> => ({
+        await (async (): Promise<{ latent: Comfy.Signal['LATENT']; height: number; width: number }> => ({
            latent: graph.VAEEncode({ pixels: await imgCtx.loadInWorkflow(), vae }),
            height: imgCtx.height,
            width: imgCtx.width,
@@ -107,7 +108,7 @@ export async function _cushySDXLRun(
       : await run_latent_v3({ opts: ui.latent, vae })
 
    // #region mask
-   let mask: Maybe<_MASK>
+   let mask: Maybe<Comfy.Signal['MASK']>
    if (ui.extra.mask) mask = await run_mask(ui.extra.mask, ctx.mask)
    if (mask) latent = graph.SetLatentNoiseMask({ mask, samples: latent })
 
@@ -121,7 +122,7 @@ export async function _cushySDXLRun(
       ckptPos = cnet_out.ckpt_return //only used for ipAdapter, otherwise it will just be a passthrough
    }
 
-   let ip_adapter: _IPADAPTER | undefined
+   let ip_adapter: Comfy.Signal['IPADAPTER'] | undefined
    if (ui.ipAdapter) {
       const ipAdapter_out = await run_IPAdapterV2(ui.ipAdapter, ckptPos, ip_adapter)
       ckptPos = ipAdapter_out.ip_adapted_model
@@ -147,14 +148,14 @@ export async function _cushySDXLRun(
       height: height,
       cfg: ui.sampler?.textEncoderType.FLUX ? ui.sampler.guidanceType?.CFG : undefined,
    }
-   latent = run_sampler_advanced(run, ui.sampler, ctx_sampler_advanced).output
+   latent = run_sampler_advanced(sdk, ui.sampler, ctx_sampler_advanced).output
 
    // RECURSIVE PASS ----------------------------------------------------------------------------
    const extra = ui.extra
    if (extra.recursiveImgToImg) {
       for (let i = 0; i < extra.recursiveImgToImg.loops; i++) {
          latent = run_sampler_advanced(
-            run,
+            sdk,
             {
                seed: ui.sampler.seed + i,
                guidanceType: { CFG: extra.recursiveImgToImg.cfg },
@@ -202,14 +203,14 @@ export async function _cushySDXLRun(
                  height: height * HRF.scaleFactor,
                  width: width * HRF.scaleFactor,
               })
-            : graph.NNLatentUpscale({
+            : graph['NNLatentUpscale.NNLatentUpscale']({
                  latent,
                  version: HRF.upscaleMethod == 'Neural XL' ? 'SDXL' : 'SD 1.x',
                  upscale: HRF.scaleFactor,
               })
       if (mask) latent = graph.SetLatentNoiseMask({ mask, samples: latent })
       latent = run_sampler(
-         run,
+         sdk,
          {
             seed: ui.sampler.seed,
             cfg:
@@ -231,7 +232,7 @@ export async function _cushySDXLRun(
    // UPSCALE with upscale model ------------------------------------------------------------
    // TODO
    // ---------------------------------------------------------------------------------------
-   let finalImage: _IMAGE = graph.VAEDecode({ samples: latent, vae })
+   let finalImage: Comfy.Signal['IMAGE'] = graph.VAEDecode({ samples: latent, vae })
 
    // REFINE PASS AFTER ---------------------------------------------------------------------
    if (extra.refine) {
@@ -242,7 +243,7 @@ export async function _cushySDXLRun(
    // REMOVE BACKGROUND ---------------------------------------------------------------------
    if (ui.extra.removeBG) {
       const sub = run_rembg_v1(ui.extra.removeBG, finalImage)
-      if (sub.length > 0) finalImage = graph.AlphaChanelRemove({ images: sub[0]! })
+      if (sub.length > 0) finalImage = graph['Allor.AlphaChanelRemove']({ images: sub[0]! })
    }
 
    // SHOW 3D -------------------------------------------------------------------------------
@@ -255,7 +256,7 @@ export async function _cushySDXLRun(
       finalImage = run_upscaleWithModel(ui.extra.upscaleWithModel, { image: finalImage })
 
    const saveFormat = run_customSave(ui.customSave)
-   await run.PROMPT({ saveFormat })
+   await sdk.PROMPT({ saveFormat })
 
    if (show3d) run_Dispacement2('base')
 

@@ -1,11 +1,11 @@
 import type { Status } from '../back/Status'
+import type { ComfyUIAPIRequest } from '../comfyui/comfyui-prompt-api'
+import type { EmbeddingName } from '../comfyui/comfyui-types'
+import type { ComfySchemaJSON } from '../comfyui/objectInfo/ComfyUIObjectInfoTypes'
 import type { AnyFieldSerial } from '../csuite/model/EntitySerial'
-import type { EmbeddingName } from '../models/ComfySchema'
 import type { ImageInfos_ComfyGenerated } from '../models/ImageInfos_ComfyGenerated'
 import type { SafetyResult } from '../safety/Safety'
 import type { ComfyNodeID, ComfyNodeMetadata } from '../types/ComfyNodeID'
-import type { ComfyPromptJSON } from '../types/ComfyPrompt'
-import type { ComfySchemaJSON } from '../types/ComfySchemaJSON'
 import type { WsMsgExecutionError } from '../types/ComfyWsApi'
 import type { SqlColDef } from './_getAllColumnsForTable'
 import type { BaseInstanceFields } from './LiveInstance'
@@ -48,7 +48,7 @@ export const MediaImage_safetyRating_Schema = Type.Record(Type.String(), Type.An
 export type ComfyWorkflow_metadata = { [key: ComfyNodeID]: ComfyNodeMetadata }
 export const ComfyWorkflow_metadata_Schema = Type.Record(Type.String(), Type.Any())
 
-export type ComfyWorkflow_comfyPromptJSON = ComfyPromptJSON
+export type ComfyWorkflow_comfyPromptJSON = ComfyUIAPIRequest
 export const ComfyWorkflow_comfyPromptJSON_Schema = Type.Record(Type.String(), Type.Any())
 
 // #region Media3dScene
@@ -147,7 +147,7 @@ export class TableInfo<
 
    // TODO: use
    hydrateJSONFields_skipMissingData = (data: any): T => {
-      if (data == null) debugger
+      // if (data == null) debugger
       for (const col of this.cols) {
          if (col.type !== 'json') continue
          const rawCol = data[col.name]
@@ -159,7 +159,7 @@ export class TableInfo<
    }
 
    hydrateJSONFields_crashOnMissingData = (data: any): T => {
-      if (data == null) debugger
+      // if (data == null) debugger
       for (const col of this.cols) {
          if (col.type !== 'json') continue
          const rawCol = data[col.name]

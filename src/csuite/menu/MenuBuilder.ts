@@ -1,11 +1,17 @@
+import type { MenuItemProps } from '../dropdown/MenuItem'
 import type { Field } from '../model/Field'
 import type { Command } from '@codemirror/view'
 import type { FC } from 'react'
 
 import { MenuDivider } from '../dropdown/MenuDivider'
-import { SimpleMenuAction, type SimpleMenuActionProps } from './SimpleMenuAction'
+import { Menu, type MenuProps } from './Menu'
+import { SimpleMenuAction } from './SimpleMenuAction'
 
-/** class that will be injected in most places where you are expected to return a menu */
+/**
+ * class that will be injected in most places where you are expected
+ * to return a list of menu entries
+ * @see src/csuite/menu/MenuEntry.ts
+ * */
 export class MenuBuilder<Ctx> {
    field<T extends Field>(field: T): T {
       return field
@@ -19,8 +25,12 @@ export class MenuBuilder<Ctx> {
       return command
    }
 
-   SimpleMenuAction(p: SimpleMenuActionProps): SimpleMenuAction {
+   SimpleMenuAction(p: MenuItemProps): SimpleMenuAction {
       return new SimpleMenuAction(p)
+   }
+
+   SubMenu(p: MenuProps): Menu {
+      return new Menu(p)
    }
 
    Divider = MenuDivider

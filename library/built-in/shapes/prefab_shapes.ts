@@ -127,11 +127,11 @@ export const run_LatentShapeGenerator = async (
    /** the shape generation config */
    shapeConfig: UI_LatentShapeGenerator['$Value'],
    /** required to convert generated image to latent */
-   vae: _VAE,
+   vae: Comfy.Signal['VAE'],
 ): Promise<{
    width: number
    height: number
-   latent: _LATENT
+   latent: Comfy.Signal['LATENT']
 }> => {
    const run = getCurrentRun()
    const graph = run.nodes
@@ -212,7 +212,7 @@ export const run_LatentShapeGenerator = async (
    img.addTag('noise')
    img.addTag('latent-shape-generator')
 
-   let latent: _LATENT = graph.VAEEncode({
+   let latent: Comfy.Signal['LATENT'] = graph.VAEEncode({
       pixels: await run.loadImageAnswer(img),
       vae: vae,
    })

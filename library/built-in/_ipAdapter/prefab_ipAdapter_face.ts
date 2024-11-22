@@ -20,12 +20,12 @@ export type UI_IPAdapterFaceID = X.XGroup<{
             crop: X.XBool
             startAtStepPercent: X.XNumber
             endAtStepPercent: X.XNumber
-            weight_type: X.XEnum<Enum_IPAdapterAdvanced_weight_type>
-            embedding_scaling: X.XEnum<Enum_IPAdapterAdvanced_embeds_scaling>
+            weight_type: X.XEnum<'IPAdapter_plus.IPAdapterAdvanced.weight_type'>
+            embedding_scaling: X.XEnum<'IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'>
             noise: X.XNumber
             unfold_batch: X.XBool
          }>
-         cnet_model_name: X.XEnum<Enum_AV$_IPAdapterPipe_ip_adapter_name>
+         cnet_model_name: X.XEnum<'IPAdapter_plus.IPAdapterModelLoader.ipadapter_file'>
          help: X.XMarkdown
       }>
    >
@@ -35,75 +35,72 @@ export type UI_IPAdapterFaceID = X.XGroup<{
       crop: X.XBool
       startAtStepPercent: X.XNumber
       endAtStepPercent: X.XNumber
-      weight_type: X.XEnum<Enum_IPAdapterAdvanced_weight_type>
-      embedding_scaling: X.XEnum<Enum_IPAdapterAdvanced_embeds_scaling>
+      weight_type: X.XEnum<'IPAdapter_plus.IPAdapterAdvanced.weight_type'>
+      embedding_scaling: X.XEnum<'IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'>
       noise: X.XNumber
       unfold_batch: X.XBool
    }>
    help: X.XMarkdown
    models: X.XGroup<{
-      lora: X.XEnum<Enum_LoraLoader_lora_name>
-      cnet_model_name: X.XEnum<Enum_AV$_IPAdapterPipe_ip_adapter_name>
-      clip_name: X.XEnum<Enum_CLIPVisionLoader_clip_name>
+      lora: X.XEnum<'LoraLoader.lora_name'>
+      cnet_model_name: X.XEnum<'IPAdapter_plus.IPAdapterModelLoader.ipadapter_file'>
+      clip_name: X.XEnum<'CLIPVisionLoader.clip_name'>
    }>
    lora_strength: X.XNumber
 }>
 
 export function ui_IPAdapterFaceID(): UI_IPAdapterFaceID {
-   const form = getCurrentForm()
-   return form
+   const b = getCurrentForm()
+   return b
       .group({
          label: 'FaceID IPAdapter',
          items: {
-            help: form.markdown({ startCollapsed: true, markdown: ipAdapterDoc }),
-            models: form.group({
-               label: 'Select or Download Models',
-               // startCollapsed: true,
-               items: {
-                  ...ui_ipadapter_CLIPSelection(form),
+            help: b.markdown({ startCollapsed: true, markdown: ipAdapterDoc }),
+            models: b.fields(
+               {
+                  ...ui_ipadapter_CLIPSelection(b),
                   ...ui_ipadapter_modelSelection(
-                     form,
+                     b,
                      // @ts-ignore
                      'ip-adapter-faceid-plusv2_sd15.bin',
                      //'ip-adapter-plus-face_sd15.safetensors',
                      // 'ip-adapter-faceid-plus_sd15.bin',
                      ipAdapter_faceID_ClipModelList,
                   ),
-                  lora: form.enum
-                     .Enum_LoraLoader_lora_name({
-                        // enumName: 'Enum_AV$_CheckpointModelsToParametersPipe_lora_1_name',
-                        // @ts-ignore
-                        default: 'ip-adapter-faceid-plusv2_sd15_lora.safetensors',
-                        label: 'Face ID Lora',
-                        // recommandedModels: {
-                        //     modelFolderPrefix: 'models/lora',
-                        //     knownModel: ipAdapter_faceID_LoraList,
-                        // },
-                        tooltip: 'Select the same LORA as the model. So for ip-adapter-faceid-plus, select ip-adapter-faceid-plus_sd15_lora', // prettier-ignore
-                     })
-                     .addRequirementOnComfyManagerModel(ipAdapter_faceID_LoraList),
+                  lora: b.enum['LoraLoader.lora_name']({
+                     // @ts-ignore
+                     default: 'ip-adapter-faceid-plusv2_sd15_lora.safetensors',
+                     label: 'Face ID Lora',
+                     // recommandedModels: {
+                     //     modelFolderPrefix: 'models/lora',
+                     //     knownModel: ipAdapter_faceID_LoraList,
+                     // },
+                     tooltip: 'Select the same LORA as the model. So for ip-adapter-faceid-plus, select ip-adapter-faceid-plus_sd15_lora', // prettier-ignore
+                  }).addRequirementOnComfyManagerModel(ipAdapter_faceID_LoraList),
                },
-            }),
+               { label: 'Select or Download Models' },
+            ),
 
-            lora_strength: form.float({ default: 0.5, min: 0, max: 2, step: 0.1 }),
-            ...ui_subform_IPAdapter_common(form),
-            reinforce: form
+            lora_strength: b.float({ default: 0.5, min: 0, max: 2, step: 0.1 }),
+            ...ui_subform_IPAdapter_common(b),
+            reinforce: b
                .group({
                   startCollapsed: true,
                   label: 'Reinforce With Additional IPAdapter',
                   tooltip:
                      'Enabling will apply an additional IPAdapter. This usually makes faces more accurate, but pulls along more features from the face image.',
                   items: {
-                     help: form.markdown({
+                     help: b.markdown({
                         startCollapsed: true,
                         markdown: `Recommended to select a model with "face" in it but NOT "faceID". So ip-adapter-plus-face_sd15 for example.\nAlso keep the strength pretty low. Like 0.3 unless you want the image dominated by the face image style.`,
                      }),
                      ...ui_ipadapter_modelSelection(
-                        form,
+                        b,
+                        // @ts-ignore
                         'ip-adapter-plus-face_sd15.safetensors',
                         ipAdapterModelList,
                      ),
-                     ...ui_subform_IPAdapter_common(form, 0.3),
+                     ...ui_subform_IPAdapter_common(b, 0.3),
                   },
                })
                .optional(),
@@ -116,9 +113,9 @@ export function ui_IPAdapterFaceID(): UI_IPAdapterFaceID {
 export const run_cnet_IPAdapterFaceID = (
    IPAdapter: OutputFor<typeof ui_IPAdapterFaceID>,
    cnet_args: Cnet_args,
-   image: _IMAGE,
+   image: Comfy.Signal['IMAGE'],
 ): {
-   ip_adapted_model: _MODEL
+   ip_adapted_model: Comfy.Signal['MODEL']
 } => {
    const run = getCurrentRun()
    const graph = run.nodes
@@ -134,11 +131,11 @@ export const run_cnet_IPAdapterFaceID = (
    })
 
    const ip_clip_name = graph.CLIPVisionLoader({ clip_name: ip.models.clip_name })
-   const faceIDnode = graph.IPAdapterFaceID({
-      ipadapter: graph.IPAdapterModelLoader({ ipadapter_file: ip.models.cnet_model_name }),
+   const faceIDnode = graph['IPAdapter_plus.IPAdapterFaceID']({
+      ipadapter: graph['IPAdapter_plus.IPAdapterModelLoader']({ ipadapter_file: ip.models.cnet_model_name }),
       clip_vision: ip_clip_name,
       insightface: (t) =>
-         t.IPAdapterInsightFaceLoader({
+         t['IPAdapter_plus.IPAdapterInsightFaceLoader']({
             provider: 'CPU',
             // 🔴        VVVVVV review that
             model_name: 'antelopev2',
@@ -157,8 +154,10 @@ export const run_cnet_IPAdapterFaceID = (
    ckpt = faceIDnode._MODEL
 
    if (ip.reinforce) {
-      const ip_model = graph.IPAdapterModelLoader({ ipadapter_file: ip.reinforce.cnet_model_name })
-      const ip_adapted_model = graph.IPAdapterAdvanced({
+      const ip_model = graph['IPAdapter_plus.IPAdapterModelLoader']({
+         ipadapter_file: ip.reinforce.cnet_model_name,
+      })
+      const ip_adapted_model = graph['IPAdapter_plus.IPAdapterAdvanced']({
          ipadapter: ip_model,
          image: image,
          model: ckpt,

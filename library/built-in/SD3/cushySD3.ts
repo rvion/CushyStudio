@@ -25,25 +25,29 @@ app({
    run: async (run, ui, ctx) => {
       const graph = run.nodes
       // #region  MODEL, clip skip, vae, etc.
-      let { ckpt, vae, clip } = eval_model_SD3(ui.model)
+      const { ckpt, vae, clip } = eval_model_SD3(ui.model)
 
       // #region  PROMPT ENGINE
       let positiveText = ui.positive.text
       if (ui.extra.promtPlus) positiveText += run_advancedPrompt(ui.extra.promtPlus)
       const posPrompt = run_prompt({ prompt: { text: positiveText }, clip, ckpt, printWildcards: true })
       const clipPos = posPrompt.clip
-      let ckptPos = posPrompt.ckpt
-      let positive: _CONDITIONING = posPrompt.conditioning // graph.CLIPTextEncode({ clip: clipPos, text: finalText })
+      const ckptPos = posPrompt.ckpt
+      let positive: Comfy.Signal['CONDITIONING'] = posPrompt.conditioning // graph.CLIPTextEncode({ clip: clipPos, text: finalText })
       if (ui.extra.regionalPrompt)
          positive = run_regionalPrompting_v1(ui.extra.regionalPrompt, { conditionning: positive, clip })
       const negPrompt = run_prompt({ prompt: ui.negative, clip, ckpt })
-      let negative: _CONDITIONING = graph.CLIPTextEncode({ clip, text: negPrompt.promptIncludingBreaks })
+      const negative: Comfy.Signal['CONDITIONING'] = graph.CLIPTextEncode({
+         clip,
+         text: negPrompt.promptIncludingBreaks,
+      })
 
       // #region START IMAGE
       const imgCtx = ctx.image
+      // eslint-disable-next-line prefer-const
       let { latent, width, height } = imgCtx
          ? /* 🔴 HACKY  */
-           await (async (): Promise<{ latent: _LATENT; height: number; width: number }> => ({
+           await (async (): Promise<{ latent: Comfy.Signal['LATENT']; height: number; width: number }> => ({
               latent: graph.VAEEncode({ pixels: await imgCtx.loadInWorkflow(), vae }),
               height: imgCtx.height,
               width: imgCtx.width,
@@ -51,7 +55,7 @@ app({
          : await run_latent_v3({ opts: ui.latent, vae })
 
       // #region mask
-      let mask: Maybe<_MASK>
+      let mask: Maybe<Comfy.Signal['MASK']>
       if (ui.extra.mask) mask = await run_mask(ui.extra.mask, ctx.mask)
       if (mask) latent = graph.SetLatentNoiseMask({ mask, samples: latent })
 
@@ -65,7 +69,7 @@ app({
       // ⏸️     ckptPos = cnet_out.ckpt_return // only used for ipAdapter, otherwise it will just be a passthrough
       // ⏸️ }
 
-      // ⏸️ let ip_adapter: _IPADAPTER | undefined
+      // ⏸️ let ip_adapter: Comfy.Signal['IPADAPTER'] | undefined
       // ⏸️ if (ui.ipAdapter) {
       // ⏸️     const ipAdapter_out = await run_IPAdapterV2(ui.ipAdapter, ckptPos, ip_adapter)
       // ⏸️     ckptPos = ipAdapter_out.ip_adapted_model
@@ -147,7 +151,7 @@ app({
                     height: height * HRF.scaleFactor,
                     width: width * HRF.scaleFactor,
                  })
-               : graph.NNLatentUpscale({
+               : graph['NNLatentUpscale.NNLatentUpscale']({
                     latent,
                     version: HRF.upscaleMethod == 'Neural XL' ? 'SDXL' : 'SD 1.x',
                     upscale: HRF.scaleFactor,
@@ -177,7 +181,7 @@ app({
       // TODO
 
       // ---------------------------------------------------------------------------------------
-      let finalImage: _IMAGE = graph.VAEDecode({ samples: latent, vae })
+      let finalImage: Comfy.Signal['IMAGE'] = graph.VAEDecode({ samples: latent, vae })
 
       // REFINE PASS AFTER ---------------------------------------------------------------------
       if (extra.refine) {
@@ -188,7 +192,7 @@ app({
       // REMOVE BACKGROUND ---------------------------------------------------------------------
       if (ui.extra.removeBG) {
          const sub = run_rembg_v1(ui.extra.removeBG, finalImage)
-         if (sub.length > 0) finalImage = graph.AlphaChanelRemove({ images: sub[0]! })
+         if (sub.length > 0) finalImage = graph['Allor.AlphaChanelRemove']({ images: sub[0]! })
       }
 
       // SHOW 3D -------------------------------------------------------------------------------

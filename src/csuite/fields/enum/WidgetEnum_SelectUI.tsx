@@ -5,12 +5,9 @@ import { useCallback } from 'react'
 
 import { EnumSelectorUI } from './EnumSelectorUI'
 
-export const WidgetEnum_SelectUI = observer(function WidgetEnum_SelectUI_(p: {
-   //
-   field: Field_enum<any>
-}) {
+export const WidgetEnum_SelectUI = observer(function WidgetEnum_SelectUI_(p: { field: Field_enum<any> }) {
    const field = p.field
-   const enumName = field.config.enumName
+   const slotName = field.config.slotName
    const clearable = useCallback(
       () => (field.canBeToggledWithinParent ? (): void => field.disableSelfWithinParent() : undefined),
       [field.canBeToggledWithinParent],
@@ -18,9 +15,8 @@ export const WidgetEnum_SelectUI = observer(function WidgetEnum_SelectUI_(p: {
    return (
       <EnumSelectorUI
          value={() => field.status}
-         enumName={enumName}
+         slotName={slotName}
          clearable={clearable}
-         // substituteValue={req.status}
          onChange={(e) => {
             if (e == null) return // ❓
             field.value = e

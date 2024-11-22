@@ -8,8 +8,10 @@ import { Frame } from '../../csuite/frame/Frame'
 import { Ikon } from '../../csuite/icons/iconHelpers'
 import { Message } from '../../csuite/inputs/shims'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
+import { useTicker } from '../../csuite/utils/useTicker'
 import { QuickHostActionsUI } from '../../manager/REQUIREMENTS/QuickHostActionsUI'
 import { useSt } from '../../state/stateContext'
+import { HostComfyLogsUI } from './HostComfyLogsUI'
 
 export const ConnectionInfoUI = observer(function ConnectionInfoUI_(p: { host: HostL }) {
    const host = p.host
@@ -40,6 +42,7 @@ export const ConnectionInfoUI = observer(function ConnectionInfoUI_(p: { host: H
                   )}
                   <pre>{host.schemaRetrievalLogs.join('\n')}</pre>
                   <QuickHostActionsUI host={host} />
+                  <HostComfyLogsUI host={host} />
                </Frame>
             )
          }}
@@ -117,13 +120,13 @@ export const HostQuickMenuUI = observer(function HostQuickMenuUI_(p: { host: Hos
             tw='resize overflow-auto opacity-85'
             style={{ width: '800px', maxHeight: '400px' }}
          >
-            <div>
+            {/* <div>
                Logs:
                <div className='join'>
                   <Button onClick={() => host.enableServerLogs()}>On</Button>
                   <Button onClick={() => host.enableServerLogs()}>Off</Button>
                </div>
-            </div>
+            </div> */}
             {p.host.serverLogs.toReversed().map((l) => {
                return (
                   <div style={{ borderBottom: '.5px solid #555' }} key={l.id} tw='text-xs text-opacity-75'>

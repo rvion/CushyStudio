@@ -3,6 +3,7 @@ import type { RevealProps } from './RevealProps'
 import { makeAutoObservable } from 'mobx'
 import React from 'react'
 
+import { createObservableRef, type ObservableRef } from '../utils/observableRef'
 import { DEBUG_REVEAL } from './DEBUG_REVEAL'
 import { RevealState } from './RevealState'
 
@@ -24,10 +25,11 @@ export class RevealStateLazy {
    readonly tower: RevealStateLazy[]
    readonly towerContext: { tower: RevealStateLazy[] }
 
+   anchorRef: ObservableRef<HTMLDivElement> = createObservableRef()
+   shellRef: ObservableRef<HTMLDivElement> = createObservableRef()
    constructor(
       public p: RevealProps,
       public parentsLazy: RevealStateLazy[],
-      public anchorRef: React.RefObject<HTMLDivElement>,
    ) {
       // if (DEBUG_REVEAL) console.log(`💙 new RevealStateLazy (lazyId: ${this.uid} / props: ${p.placement})`)
       this.tower = [...parentsLazy, this]
@@ -36,6 +38,7 @@ export class RevealStateLazy {
       makeAutoObservable(this, {
          p: false,
          anchorRef: false, // 🚨 ref do not work when observables!
+         shellRef: false, // 🚨 ref do not work when observables!
       })
    }
 

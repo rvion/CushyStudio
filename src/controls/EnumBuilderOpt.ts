@@ -1,20 +1,22 @@
-import type { EnumValue } from '../models/ComfySchema'
+import type { ComfySchemaL } from '../models/ComfySchema'
 /**
  * this module is here to allow performant type-level apis for enums.
  * TODO: document the unique challenges this appraoch is solving
  */
 import type { CushySchemaBuilder } from './Builder'
 
+import { asComfyNodeSlotName } from '../comfyui/comfyui-types'
 import { Field_enum, type Field_enum_config } from '../csuite/fields/enum/FieldEnum'
 import { CushySchema } from './Schema'
 
 // 🔴 showcase how nullability work without optional
 
-export type IEnumBuilderOptFn<T extends EnumValue> = (
-   config?: Omit<Field_enum_config<T>, 'enumName'> & { startActive?: boolean },
-) => X.XOptional<X.XEnum<T>>
+export type IEnumBuilderOptFn<ENUM_NAME extends keyof Comfy.Slots> = (
+   config?: Omit<Field_enum_config<Comfy.Slots[ENUM_NAME]>, 'slotName'> & { startActive?: boolean },
+) => X.XOptional<X.XEnum<ENUM_NAME>>
+
 export type IEnumBuilderOpt = {
-   [K in keyof Requirable]: IEnumBuilderOptFn<Requirable[K]['$Value']>
+   [K in keyof Comfy.Slots]: IEnumBuilderOptFn<K>
 }
 
 export interface EnumBuilderOpt extends IEnumBuilderOpt {}
@@ -34,18 +36,18 @@ export class EnumBuilderOpt {
             if (prop === 'isMobXComputedValue') return (target as any)[prop]
 
             // retrieve the schema
-            const enumName = prop
-            const schema = cushy.schema
-            const enumSchema = schema.knownEnumsByName.get(enumName)
+            const slotName: keyof Comfy.Slots = asComfyNodeSlotName(prop)
+            const schema: ComfySchemaL = cushy.schema
+            const enumSchema = schema.knownUnionBySlotName.get(slotName)
             if (enumSchema == null) {
-               console.error(`❌ unknown enum: ${enumName}`)
+               console.error(`❌ unknown enum: ${slotName}`)
                return (config: any = {}) =>
                   domain.optional({
                      label: config.label,
                      startActive: config.startActive,
                      schema: new CushySchema(Field_enum<any /* 🔴 */>, {
                         ...config,
-                        enumName: 'INVALID_null',
+                        slotName: 'INVALID_null',
                      }),
                   })
                // 🔴 can't throw here, will break for everyone !!
@@ -58,7 +60,11 @@ export class EnumBuilderOpt {
                domain.optional({
                   label: config.label,
                   startActive: config.startActive,
-                  schema: new CushySchema(Field_enum<any /* 🔴 */>, { default: def, ...config, enumName }),
+                  schema: new CushySchema(Field_enum<any /* 🔴 */>, {
+                     default: def,
+                     ...config,
+                     slotName: slotName,
+                  }),
                })
          },
       })

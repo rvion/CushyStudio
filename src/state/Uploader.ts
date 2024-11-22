@@ -55,8 +55,8 @@ export class Uploader {
          override?: Maybe<boolean>
          subfolder?: string
       },
-   ): Promise<Enum_LoadImage_image> => {
-      const uniqFileName = img.enumName as Enum_LoadImage_image
+   ): Promise<Comfy.Slots['LoadImage.image']> => {
+      const uniqFileName = img.enumName as Comfy.Slots['LoadImage.image']
       // console.warn(`[🌁] UPLOAD: ${img.relPath} required as "${uniqFileName}"...`)
 
       const expectedFinalName = p.subfolder //
@@ -65,7 +65,7 @@ export class Uploader {
       // 2. if image already exists, return it
       if (this.st.schema.hasImage(expectedFinalName)) {
          console.log(`[🌁] UPLOAD: 🩶 "${img.relPath}" already exists on current ComfyUI instance`)
-         return expectedFinalName as Enum_LoadImage_image
+         return expectedFinalName as Comfy.Slots['LoadImage.image']
       }
 
       // 3. upload
@@ -84,7 +84,7 @@ export class Uploader {
       if (result.name == null) throw new Error('upload failed')
 
       const finalName = result.subfolder //
-         ? (`${result.subfolder}/${result.name}` as Enum_LoadImage_image)
+         ? (`${result.subfolder}/${result.name}` as Comfy.Slots['LoadImage.image'])
          : result.name
 
       if (finalName !== expectedFinalName) {

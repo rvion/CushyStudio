@@ -1,3 +1,8 @@
+import {
+   computePlacement_autoVerticalEndFixedSize,
+   computePlacement_autoVerticalStartFixedSize,
+} from './compute-placement'
+
 export type RevealPlacement =
    /** ---------------------------------------------------------------------------
     * @since 2024-07-23
@@ -35,6 +40,8 @@ export type RevealPlacement =
    | 'autoVerticalEnd'
    | 'autoHorizontalStart'
    | 'autoHorizontalEnd'
+   | 'autoVerticalStartFixedSize'
+   | 'autoVerticalEndFixedSize'
 
 export type RevealComputedPosition = {
    top?: number | string
@@ -59,6 +66,7 @@ export const computePlacement = (
    //
    placement: RevealPlacement,
    anchor: DOMRect | null,
+   shell: DOMRect | null,
 ): RevealComputedPosition => {
    // 2024-09-06 domi: we could consider something like https://floating-ui.com/docs/tutorial
    // it seems to exclusively handle the positioning
@@ -374,6 +382,14 @@ export const computePlacement = (
          maxWidth: `calc(100vw - ${anchor.left + WINDOW_PADDING}px)`, //
          maxHeight: `calc(98vh - ${anchor.top + WINDOW_PADDING}px)`,
       }
+
+   if (placement == 'autoVerticalStartFixedSize') {
+      return computePlacement_autoVerticalStartFixedSize({ anchor, shell, window })
+   }
+
+   if (placement == 'autoVerticalEndFixedSize') {
+      return computePlacement_autoVerticalEndFixedSize({ anchor, shell, window })
+   }
 
    return {
       top: anchor.bottom,

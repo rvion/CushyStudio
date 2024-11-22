@@ -5,8 +5,8 @@ export type UI_subform_IPAdapter_common = {
       crop: X.XBool
       startAtStepPercent: X.XNumber
       endAtStepPercent: X.XNumber
-      weight_type: X.XEnum<Enum_IPAdapterAdvanced_weight_type>
-      embedding_scaling: X.XEnum<Enum_IPAdapterAdvanced_embeds_scaling>
+      weight_type: X.XEnum<'IPAdapter_plus.IPAdapterAdvanced.weight_type'>
+      embedding_scaling: X.XEnum<'IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'>
       noise: X.XNumber
       unfold_batch: X.XBool
    }>
@@ -33,8 +33,12 @@ export function ui_subform_IPAdapter_common(
             crop: ui.bool({ default: true }),
             startAtStepPercent: ui.float({ default: 0, min: 0, max: 1, step: 0.1 }),
             endAtStepPercent: ui.float({ default: 1, min: 0, max: 1, step: 0.1 }),
-            weight_type: ui.enum.Enum_IPAdapterAdvanced_weight_type({ default: 'linear' }),
-            embedding_scaling: ui.enum.Enum_IPAdapterAdvanced_embeds_scaling({ default: 'V only' }),
+            weight_type: ui.enum['IPAdapter_plus.IPAdapterAdvanced.weight_type']({
+               default: 'linear',
+            }),
+            embedding_scaling: ui.enum['IPAdapter_plus.IPAdapterAdvanced.embeds_scaling']({
+               default: 'V only',
+            }),
             noise: ui.float({ default: 0, min: 0, max: 1, step: 0.1 }),
             unfold_batch: ui.bool({ default: false }),
          },
@@ -43,23 +47,21 @@ export function ui_subform_IPAdapter_common(
 }
 
 export type UI_ipadapter_CLIPSelection = {
-   clip_name: X.XEnum<Enum_CLIPVisionLoader_clip_name>
+   clip_name: X.XEnum<'CLIPVisionLoader.clip_name'>
 }
 
 //🅿️ IPAdapter CLIP Selection ===================================================
 export function ui_ipadapter_CLIPSelection(form: X.Builder): UI_ipadapter_CLIPSelection {
    return {
-      clip_name: form.enum
-         .Enum_CLIPVisionLoader_clip_name({
-            // @ts-ignore
-            default: 'CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors',
-            label: 'CLIP Vision Model',
-         })
-         .addRequirements([
-            {
-               type: 'modelInManager',
-               modelName: 'CLIPVision model (IP-Adapter) CLIP-ViT-H-14-laion2B-s32B-b79K',
-            },
-         ]),
+      clip_name: form.enum['CLIPVisionLoader.clip_name']({
+         // @ts-ignore
+         default: 'CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors',
+         label: 'CLIP Vision Model',
+      }).addRequirements([
+         {
+            type: 'modelInManager',
+            modelName: 'CLIPVision model (IP-Adapter) CLIP-ViT-H-14-laion2B-s32B-b79K',
+         },
+      ]),
    }
 }

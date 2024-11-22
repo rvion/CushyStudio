@@ -1,5 +1,30 @@
 SHORT TERM TODO:
 
+    ☐ reveal
+        - almost good
+        - menubar instance (just a regular menu instance)
+            - need a stable way to instanciate sub-menus
+                - so sub-menus need a stable ref to pass to the reveal
+            - need a stable revealRef themselves
+        - revealGroup (for menubar should check if tower parent have same group when switching)
+            - so we can jump form sub-sub-menu of first menubar entry to second
+
+
+    ☐ regular click on image should just reveal the global "Output" and pin the image inside.
+    ☐ close menu on item click
+    ✘ rename Comfy.Slots to Comfy.UnionFor @cancelled(24-11-17 15:07)
+    ☐ fix reveal bug reported by bird_d
+        ☐ panel steps
+            ☐ open config
+                ☐ click anywhere on tooltip
+
+    ☐ Finish migration
+        ☐ fix generated enums tied to the manager
+
+    ☐ Improve ComfyUI Codegen
+        ☐ Namesapce all the custom nodes in dedicatd interfaces
+        ☐ change the way to construct / access the root workflow
+
     ☐ remove all `p: {}` and other `: {}` annotations
     CORE BUGS:
         ☐ undoing choices via the undo button doesn't work properly. choices no longer there are still displayed

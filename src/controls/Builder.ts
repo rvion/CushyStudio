@@ -1,3 +1,4 @@
+import type { ComfyUnionValue } from '../comfyui/comfyui-types'
 import type { Field_board_config } from '../csuite/fields/board/Field_board'
 import type { Field_bool } from '../csuite/fields/bool/FieldBool'
 import type { Field_button_config } from '../csuite/fields/button/FieldButton'
@@ -29,7 +30,6 @@ import type { IBuilder } from '../csuite/model/IBuilder'
 import type { OpenRouter_Models } from '../csuite/openrouter/OpenRouter_models'
 import type { SimpleSchema } from '../csuite/simple/SimpleSchema'
 import type { NO_PROPS } from '../csuite/types/NO_PROPS'
-import type { EnumValue } from '../models/ComfySchema'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -112,7 +112,7 @@ declare global {
       type Choice<T extends SchemaDict = SchemaDict> = Field_choices<T>
       type Number = Field_number
       type Color = Field_color
-      type Enum<T extends EnumValue> = Field_enum<T>
+      type Enum<ENUM_NAME extends keyof Comfy.Slots> = Field_enum<ENUM_NAME>
       type List<T extends BaseSchema> = Field_list<T>
       type Orbit = Field_orbit
       // type ListExt<T extends BaseSchema> = Field_listExt<T>
@@ -168,7 +168,8 @@ declare global {
       type XMarkdown = CushySchema<Field_markdown>
 
       type XPrompt = CushySchema<Field_prompt>
-      type XEnum<T extends EnumValue> = CushySchema<Field_enum<T>>
+      type XEnum<ENUM_NAME extends keyof Comfy.Slots> = CushySchema<Field_enum<Comfy.Slots[ENUM_NAME]>>
+      type XEnumOf<O extends ComfyUnionValue> = CushySchema<Field_enum<O>>
       type XOrbit = CushySchema<Field_orbit>
       type XImage = CushySchema<Field_image>
       type XCustom<T> = CushySchema<Field_custom<T>>

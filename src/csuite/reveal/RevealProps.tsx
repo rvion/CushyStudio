@@ -76,12 +76,15 @@ export const revealPresets = {
    menubarItem: preset({
       show: {
          anchorClick: true,
+         keyboardEnterOrLetterWhenAnchorFocused: true,
          anchorHover: (reveal, RevealState) => {
             // console.log(`[🎩🔴1] RevealState.shared.current is ${RevealState.shared.current?.uid} at depth ${RevealState.shared.current?.depth}`)
             const current = RevealState.shared.current
             if (current == null) return false
+            if (current.p.revealGroup != null && current.p.revealGroup === reveal.p.revealGroup) return true
+            return false
             // if I'm in a sibling (or a sibling descendant) of the current reveal, I should reveal on hover
-            if (current.parents.length >= reveal.parents.length) return true
+            // if (current.parents.length >= reveal.parents.length) return true
             // console.log(`[🎩🔴2] current.parents.length(${current.parents.length}) is NOT >= this.parents.length(${this.parents.length})`)
          },
       },
@@ -151,6 +154,12 @@ export type RevealOpenReason =
    | 'default-visible'
 
 export type RevealProps = {
+   /** used to identify reveal when src/csuite/reveal/DEBUG_REVEAL.tsx set to true */
+   debugName?: string
+
+   /** so you can check if the reveal is part of the same semantic group */
+   revealGroup?: string
+
    /** @since 2024-07-23 */
    relativeTo?: `#${string}` | 'mouse' | 'anchor'
 
@@ -171,6 +180,7 @@ export type RevealProps = {
    title?: React.ReactNode // only for popup
 
    // callbacks if we need to add side effects after reveal/hide
+   onAnchorKeyDown?: (ev: React.KeyboardEvent) => void
    onRevealed?: (rst: RevealState) => void
    onBeforeHide?: (ev: RevealCloseEvent) => void
    onHidden?: (reason: RevealHideReason) => void

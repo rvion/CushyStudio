@@ -7,15 +7,15 @@ import { ui_model_pag, type UI_model_pag } from './prefab_model_pag'
 import { ui_model_sag, type UI_model_sag } from './prefab_model_sag'
 
 export type $schemaModelExtras = X.XChoices<{
-   checkpointConfig: X.XEnum<Enum_CheckpointLoader_config_name>
+   checkpointConfig: X.XEnum<'CheckpointLoader.config_name'>
    rescaleCFG: X.XNumber
-   vae: X.XEnum<Enum_VAELoader_vae_name>
+   vae: X.XEnum<'VAELoader.vae_name'>
    clipSkip: X.XNumber
    freeU: X.XEmpty
    freeUv2: X.XEmpty
    vpred: X.XGroup<{ zsnr: X.XBool }>
    sampling: X.XGroup<{
-      sampling: X.XEnum<Enum_ModelSamplingDiscrete_sampling>
+      sampling: X.XEnum<'ModelSamplingDiscrete.sampling'>
       zsnr: X.XBool
    }>
    pag: UI_model_pag
@@ -26,7 +26,7 @@ export type $schemaModelExtras = X.XChoices<{
 
 export const schemaModelExtras = (
    p: {
-      defaultVAE?: Enum_VAELoader_vae_name
+      defaultVAE?: Comfy.Slots['VAELoader.vae_name']
       vaeActiveByDefault?: boolean
       // default?: $schemaModelExtras['$Value']
    } = {},
@@ -35,9 +35,9 @@ export const schemaModelExtras = (
    return b
       .choices(
          {
-            checkpointConfig: b.enum.Enum_CheckpointLoader_config_name({ label: 'Config' }),
+            checkpointConfig: b.enum['CheckpointLoader.config_name']({ label: 'Config' }),
             rescaleCFG: b.float({ min: 0, max: 2, softMax: 1, default: 0.75 }),
-            vae: b.enum.Enum_VAELoader_vae_name({ default: p.defaultVAE }),
+            vae: b.enum['VAELoader.vae_name']({ default: p.defaultVAE }),
             clipSkip: b.int({ label: 'Clip Skip', default: 1, min: 1, max: 5 }),
             freeU: b.empty({ label: 'freeU ' }),
             freeUv2: b.empty({ label: 'freeU (v2)' }),
@@ -53,7 +53,10 @@ export const schemaModelExtras = (
                   placeHolder: 'e.g. 43331@176425',
                })
                .addRequirements([
-                  { type: 'customNodesByNameInCushy', nodeName: 'CivitAI$_Checkpoint$_Loader' },
+                  {
+                     type: 'customNodesByNameInCushy',
+                     nodeName: 'civitai_comfy_nodes.CivitAI_Checkpoint_Loader',
+                  },
                ]),
          },
          {
@@ -76,8 +79,8 @@ export const schemaModelExtras = (
 }
 
 // ------------
-type XX1 = { vae: _VAE | undefined; clip: _CLIP; ckpt: _MODEL }
-type XX2 = { vae: _VAE; clip: _CLIP; ckpt: _MODEL }
+type XX1 = { vae: Comfy.Signal['VAE'] | undefined; clip: Comfy.Signal['CLIP']; ckpt: Comfy.Signal['MODEL'] }
+type XX2 = { vae: Comfy.Signal['VAE']; clip: Comfy.Signal['CLIP']; ckpt: Comfy.Signal['MODEL'] }
 
 export function evalModelExtras_part1(
    //
@@ -109,7 +112,7 @@ export function evalModelExtras_part1(
    if (extra.clipSkip) clip = graph.CLIPSetLastLayer({ clip, stop_at_clip_layer: -Math.abs(extra.clipSkip) })
 
    // 4. Optional FreeU
-   if (extra.freeUv2) ckpt = graph.FreeU$_V2({ model: ckpt })
+   if (extra.freeUv2) ckpt = graph.FreeU_V2({ model: ckpt })
    else if (extra.freeU) ckpt = graph.FreeU({ model: ckpt })
 
    /* Rescale CFG */
@@ -121,10 +124,10 @@ export function evalModelExtras_part1(
 
 export const evalModelExtras_part2 = (
    extra: $schemaModelExtras['$Value'],
-   ckpt: _MODEL,
+   ckpt: Comfy.Signal['MODEL'],
    forHiRes?: boolean,
    kohyaScale?: number,
-): _MODEL => {
+): Comfy.Signal['MODEL'] => {
    const run = getCurrentRun()
    const graph = run.nodes
    // 5. Optional SAG - Self Attention Guidance
@@ -138,7 +141,7 @@ export const evalModelExtras_part2 = (
 
    // 6. Optional PAG - Perturbed Attention Guidance
    if (extra.pag && ((!forHiRes && extra.pag.include.base) || (forHiRes && extra.pag.include.hiRes))) {
-      ckpt = graph.PerturbedAttention({
+      ckpt = graph['sd-perturbed-attention.PerturbedAttention']({
          scale: extra.pag.scale,
          model: ckpt,
          adaptive_scale: extra.pag.adaptiveScale,

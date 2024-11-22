@@ -1,9 +1,11 @@
 import type { IDNaminScheemeInPromptSentToComfyUI } from '../back/IDNaminScheemeInPromptSentToComfyUI'
-import type { LiteGraphJSON } from '../core/LiteGraph'
+import type { ComfyUIAPIRequest } from '../comfyui/comfyui-prompt-api'
+import type { LiteGraphJSON } from '../comfyui/litegraph/LiteGraphJSON'
+import type { ComfyUIObjectInfoParsed } from '../comfyui/objectInfo/ComfyUIObjectInfoParsed'
+import type { ComfyUIObjectInfoParsedNodeSchema } from '../comfyui/objectInfo/ComfyUIObjectInfoParsedNodeSchema'
 import type { LiveDB } from '../db/LiveDB'
 import type { ComfyWorkflowT, TABLES } from '../db/TYPES.gen'
 import type { ComfyNodeID, ComfyNodeMetadata } from '../types/ComfyNodeID'
-import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 import type {
    ApiPromptInput,
    PromptInfo,
@@ -14,7 +16,7 @@ import type {
 import type { HTMLContent, MDContent } from '../types/markdown'
 import type { VisEdges, VisNodes } from '../widgets/misc/VisUI'
 import type { ComfyPromptL } from './ComfyPrompt'
-import type { ComfyNodeSchema, ComfySchemaL } from './ComfySchema'
+import type { ComfySchemaL } from './ComfySchema'
 import type { StepL } from './Step'
 import type { MouseEvent } from 'react'
 
@@ -23,9 +25,9 @@ import { marked } from 'marked'
 import { join } from 'pathe'
 
 import { ComfyWorkflowBuilder } from '../back/NodeBuilder'
+import { convertFlowToLiteGraphJSON } from '../comfyui/litegraph/convertFlowToLiteGraphJSON'
+import { ComfyNode, type ComfyNodeUID } from '../comfyui/livegraph/ComfyNode'
 import { comfyColors } from '../core/Colors'
-import { ComfyNode, type ComfyNodeUID } from '../core/ComfyNode'
-import { convertFlowToLiteGraphJSON } from '../core/LiteGraph'
 import { bang } from '../csuite/utils/bang'
 import { deepCopyNaive } from '../csuite/utils/deepCopyNaive'
 import { type TEdge, toposort } from '../csuite/utils/toposort'
@@ -119,7 +121,7 @@ export class ComfyWorkflowL extends BaseInst<TABLES['comfy_workflow']> {
       writeFileSync(path, JSON.stringify(jsonWorkflow, null, 3))
    }
 
-   get comfyPromptJSON(): ComfyPromptJSON {
+   get comfyPromptJSON(): ComfyUIAPIRequest {
       return this.data.comfyPromptJSON
    }
 
@@ -209,9 +211,9 @@ export class ComfyWorkflowL extends BaseInst<TABLES['comfy_workflow']> {
       // return this.nodes.slice().sort((a, b) => b.updatedAt - a.updatedAt)
    }
 
-   findNodeByType = <T extends keyof ComfySetup>(nameInCushy: T): Maybe<ReturnType<ComfySetup[T]>> => {
-      return this.nodes.find((n) => n.$schema.nameInCushy === nameInCushy) as any
-   }
+   // findNodeByType = <T extends keyof ComfySetup>(nameInCushy: T): Maybe<ReturnType<ComfySetup[T]>> => {
+   //    return this.nodes.find((n) => n.$schema.nameInCushy === nameInCushy) as any
+   // }
 
    /** nodes, indexed by nodeID */
    nodesIndex = new Map<string, ComfyNode<any>>()
@@ -246,8 +248,8 @@ export class ComfyWorkflowL extends BaseInst<TABLES['comfy_workflow']> {
       // this.st.writeTextFile(workflowJSONPath, JSON.stringify(liteGraphJSON, null, 4))
    }
    /** return the coresponding comfy prompt  */
-   json_forPrompt = (ns: IDNaminScheemeInPromptSentToComfyUI): ComfyPromptJSON => {
-      const json: ComfyPromptJSON = {}
+   json_forPrompt = (ns: IDNaminScheemeInPromptSentToComfyUI): ComfyUIAPIRequest => {
+      const json: ComfyUIAPIRequest = {}
       for (const node of this.nodes) {
          if (node.disabled) continue
          // console.log(`🦊 ${node.uid}`)
@@ -386,14 +388,14 @@ export class ComfyWorkflowL extends BaseInst<TABLES['comfy_workflow']> {
 
    /** visjs JSON format (network visualisation) */
    get JSON_forVisDataVisualisation(): { nodes: VisNodes[]; edges: VisEdges[] } {
-      const json: ComfyPromptJSON = this.json_forPrompt('use_stringified_numbers_only')
-      const schemas: ComfySchemaL = this.schema
+      const json: ComfyUIAPIRequest = this.json_forPrompt('use_stringified_numbers_only')
+      const comfyUIObjectInfo: ComfyUIObjectInfoParsed = this.schema.parseObjectInfo
       const nodes: VisNodes[] = []
       const edges: VisEdges[] = []
       if (json == null) return { nodes: [], edges: [] }
       for (const [uid, node] of Object.entries(json)) {
-         const schema: ComfyNodeSchema = bang(
-            schemas.nodesByNameInComfy[node.class_type],
+         const schema: ComfyUIObjectInfoParsedNodeSchema = bang(
+            comfyUIObjectInfo.nodesByNameInComfy[node.class_type],
             `unknown node ${node.class_type}`,
          )
          const color = comfyColors[schema.category]

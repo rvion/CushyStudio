@@ -1,4 +1,4 @@
-import type { NodePort } from '../../core/ComfyNode'
+import type { NodePort } from '../../comfyui/livegraph/ComfyNode'
 import type { ComfyWorkflowL } from '../../models/ComfyWorkflow'
 
 import { observer } from 'mobx-react-lite'

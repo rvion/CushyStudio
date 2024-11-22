@@ -5,13 +5,13 @@ import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
 // 🅿️ OPEN POSE FORM ===================================================
 export type UI_subform_OpenPose = X.XGroup<{
    preprocessor: UI_subform_OpenPose_Preprocessor
-   cnet_model_name: X.XEnum<Enum_ControlNetLoader_control_net_name>
+   cnet_model_name: X.XEnum<'ControlNetLoader.control_net_name'>
    strength: X.XNumber
    advanced: X.XGroup<{
       startAtStepPercent: X.XNumber
       endAtStepPercent: X.XNumber
-      crop: X.XEnum<Enum_LatentUpscale_crop>
-      upscale_method: X.XEnum<Enum_ImageScale_upscale_method>
+      crop: X.XEnum<'LatentUpscale.crop'>
+      upscale_method: X.XEnum<'ImageScale.upscale_method'>
    }>
 }>
 
@@ -22,7 +22,7 @@ export function ui_subform_OpenPose(): UI_subform_OpenPose {
          {
             ...cnet_ui_common(form),
             preprocessor: ui_subform_OpenPose_Preprocessor(),
-            cnet_model_name: form.enum.Enum_ControlNetLoader_control_net_name({
+            cnet_model_name: form.enum['ControlNetLoader.control_net_name']({
                label: 'Model',
                // @ts-ignore
                default: 't2iadapter_openpose_sd14v1.pth',
@@ -50,8 +50,8 @@ type UI_subform_OpenPose_Preprocessor = X.XChoice<{
       detect_body: X.XBool
       detect_face: X.XBool
       detect_hand: X.XBool
-      bbox_detector: X.XEnum<Enum_DWPreprocessor$_Provider$_for$_SEGS_$3$3Inspire_bbox_detector>
-      pose_estimator: X.XEnum<Enum_DWPreprocessor$_Provider$_for$_SEGS_$3$3Inspire_pose_estimator>
+      bbox_detector: X.XEnum<'controlnet_aux.DWPreprocessor.bbox_detector'> // 'DWPreprocessor_Provider_for_SEGS_$3$3Inspire_bbox_detector'
+      pose_estimator: X.XEnum<'controlnet_aux.DWPreprocessor.pose_estimator'> // 'DWPreprocessor_Provider_for_SEGS_$3$3Inspire_pose_estimator'
       saveProcessedImage: X.XBool
    }>
    OpenPose: X.XGroup<{
@@ -75,11 +75,11 @@ function ui_subform_OpenPose_Preprocessor(): UI_subform_OpenPose_Preprocessor {
                detect_body: form.bool({ default: true }),
                detect_face: form.bool({ default: true }),
                detect_hand: form.bool({ default: true }),
-               bbox_detector: form.enum.Enum_DWPreprocessor_bbox_detector({
+               bbox_detector: form.enum['controlnet_aux.DWPreprocessor.bbox_detector']({
                   label: 'Model',
                   default: 'yolox_l.onnx',
                }),
-               pose_estimator: form.enum.Enum_DWPreprocessor_pose_estimator({
+               pose_estimator: form.enum['controlnet_aux.DWPreprocessor.pose_estimator']({
                   label: 'Model',
                   default: 'dw-ll_ucoco_384.onnx',
                }),
@@ -105,14 +105,14 @@ function ui_subform_OpenPose_Preprocessor(): UI_subform_OpenPose_Preprocessor {
 // 🅿️ OPEN POSE RUN ===================================================
 export const run_cnet_openPose = (
    openPose: OutputFor<typeof ui_subform_OpenPose>,
-   image: _IMAGE,
+   image: Comfy.Signal['IMAGE'],
    resolution: number, // 512 | 768 | 1024 = 512,
 ): {
-   image: _IMAGE
-   cnet_name: Enum_ControlNetLoader_control_net_name
+   image: Comfy.Signal['IMAGE']
+   cnet_name: Comfy.Slots['ControlNetLoader.control_net_name']
 } => {
-   const run = getCurrentRun()
-   const graph = run.nodes
+   const sdk = getCurrentRun()
+   const graph = sdk.nodes
    const cnet_name = openPose.cnet_model_name
 
    let returnImage = image
@@ -127,9 +127,9 @@ export const run_cnet_openPose = (
    // })._IMAGE
 
    if (openPose.preprocessor) {
-      var opPP = openPose.preprocessor
+      const opPP = openPose.preprocessor
       if (opPP.OpenPose) {
-         returnImage = graph.OpenposePreprocessor({
+         returnImage = graph['controlnet_aux.OpenposePreprocessor']({
             image: image,
             detect_body: opPP.OpenPose.detect_body ? 'enable' : 'disable',
             detect_face: opPP.OpenPose.detect_face ? 'enable' : 'disable',
@@ -140,7 +140,7 @@ export const run_cnet_openPose = (
             graph.SaveImage({ images: returnImage, filename_prefix: 'cnet\\pose\\' })
          else graph.PreviewImage({ images: returnImage })
       } else if (opPP.DWPose) {
-         returnImage = graph.DWPreprocessor({
+         returnImage = graph['controlnet_aux.DWPreprocessor']({
             image: image,
             detect_body: opPP.DWPose.detect_body ? 'enable' : 'disable',
             detect_face: opPP.DWPose.detect_face ? 'enable' : 'disable',
