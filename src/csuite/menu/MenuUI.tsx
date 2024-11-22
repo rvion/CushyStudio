@@ -61,7 +61,8 @@ export const MenuUI = observer(function MenuUI_({
                      beforeShortcut={entry.opts.beforeShortcut}
                      onClick={async () => {
                         await entry.opts.onClick?.()
-                        menu.onStop()
+                        menu.close()
+                        // menu.onStop()
                      }}
                   />
                )
@@ -76,6 +77,7 @@ export const MenuUI = observer(function MenuUI_({
                      localShortcut={char}
                      label={entry.p.label}
                      onClick={(event?: MouseEvent) => {
+                        menu.close()
                         activityManager.start({
                            event,
                            placement: 'auto',
@@ -105,7 +107,7 @@ export const MenuUI = observer(function MenuUI_({
                      icon={entry.icon}
                      onClick={() => {
                         void entry.execute()
-                        menu.onStop()
+                        menu.close()
                      }}
                   />
                )

@@ -45,14 +45,14 @@ export class MenuTemplate<PROPS> {
    /** MenuUI JSX.Elemnt */
    MenuEntriesUI = memo((p: PROPS): JSX.Element => {
       const menu = useMemo(() => this.bind(p), [p])
-      const menuInst = useMemo(() => new MenuInstance(menu), [menu])
+      const menuInst = useMemo(() => new MenuInstance(menu, undefined, null), [menu])
       return createElement(MenuUI, { menu: menuInst })
    })
 
    /** Menu with a root anchro */
    DropDownUI = memo((p: PROPS): JSX.Element => {
       const menu = useMemo(() => this.bind(p), [p])
-      const menuInst = useMemo(() => new MenuInstance(menu), [menu])
+      const menuInst = useMemo(() => new MenuInstance(menu, undefined, null), [menu])
       return createElement(MenuRootUI, { menu: menuInst })
    })
 

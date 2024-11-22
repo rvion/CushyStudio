@@ -51,28 +51,28 @@ export class Menu {
    }
 
    UI = (): JSX.Element => {
-      const menuInst = useMemo(() => new MenuInstance(this), [])
+      const menuInst = useMemo(() => new MenuInstance(this, undefined, null), [])
       return createElement(MenuRootUI, { menu: menuInst })
    }
 
    DropDownUI = (): JSX.Element => {
-      const menuInst = useMemo(() => new MenuInstance(this), [])
+      const menuInst = useMemo(() => new MenuInstance(this, undefined, null), [])
       return createElement(MenuRootUI, { menu: menuInst })
    }
 
    MenuBarUI = (p: { autoFocus?: boolean }): JSX.Element => {
-      const menuInst = useMemo(() => new MenuInstance(this), [])
+      const menuInst = useMemo(() => new MenuInstance(this, undefined, null), [])
       return createElement(MenuBarUI, { menu: menuInst, autoFocus: p.autoFocus })
    }
 
    /** what is it used for  */
    init = (keysTaken?: Set<string>): MenuInstance => {
-      return new MenuInstance(this, keysTaken)
+      return new MenuInstance(this, keysTaken, null)
    }
 
    /** push the menu to current activity */
    open(): Trigger | Promise<Trigger> {
-      const instance = new MenuInstance(this)
+      const instance = new MenuInstance(this, undefined, null)
       activityManager.start(instance)
       return Trigger.Success
    }

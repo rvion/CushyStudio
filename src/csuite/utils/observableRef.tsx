@@ -13,6 +13,13 @@ export function createObservableRef<T extends any>(value?: T): ObservableRef<T> 
 
 export class ObservableRef<T extends any> {
    private _onFirstMount: ((value: T) => void) | null = null
+
+   focusOnMount(): void {
+      this.onMount((value) => {
+         if (value instanceof HTMLElement) value.focus()
+      })
+   }
+
    onMount(fn: (value: T) => void): void {
       if (this._current !== null) fn(this._current)
       else this._onFirstMount = fn

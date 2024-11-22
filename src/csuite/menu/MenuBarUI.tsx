@@ -1,10 +1,8 @@
-import type { RevealStateLazy } from '../reveal/RevealStateLazy'
 import type { MenuInstance } from './MenuInstance'
 
 import { observer } from 'mobx-react-lite'
-import React, { useId } from 'react'
+import { useId } from 'react'
 
-import { uniqueIDByMemoryRef } from '../../router/uniqueIDByMemoryRef'
 import { Frame } from '../frame/Frame'
 import { isBoundCommand } from '../introspect/_isBoundCommand'
 import { isCommand } from '../introspect/_isCommand'
@@ -20,11 +18,6 @@ import { SimpleMenuModal } from './SimpleMenuModal'
 export const MenuBarUI = observer(function MenuBar({
    // own props
    menu,
-
-   // top-level 'div' patches
-   tabIndex,
-   autoFocus,
-   onKeyDown,
 
    // rest (so custom JSX magic can work)
    ...rest
@@ -152,5 +145,9 @@ export const MenuBarUI = observer(function MenuBar({
 
       return renderFCOrNode(entry, {})
    })
-   return <span tw='flex w-fit gap-1'>{ENTRIES}</span>
+   return (
+      <div tw='flex w-fit gap-1' {...rest}>
+         {ENTRIES}
+      </div>
+   )
 })

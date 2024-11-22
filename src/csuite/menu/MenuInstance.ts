@@ -28,6 +28,22 @@ export class MenuInstance implements Activity {
    /** callled when menu is closed */
    onStop(): void {}
 
+   close(): void {
+      this.closeSelf()
+      if (this.parent != null) this.parent.close()
+   }
+   closeSelf(): void {
+      // console.log(
+      //    `[🤠] `,
+      //    this.root.revealRef,
+      //    this.root.revealRef.current,
+      //    this.root.revealRef.current?.getRevealState().isVisible,
+      //    this.root.entriesWithKb.length,
+      // )
+      this.revealRef.current?.getRevealState().close('programmatic')
+      if (this.parent) this.parent.menuUIRef.focusOnMount()
+   }
+
    /** calle */
    UI = (): JSX.Element => createElement(MenuUI, { menu: this })
 
@@ -45,14 +61,22 @@ export class MenuInstance implements Activity {
 
    stableInit(subMenu: Menu): MenuInstance {
       if (this.subMenus.has(subMenu)) return this.subMenus.get(subMenu)!
-      const menuInstance = new MenuInstance(subMenu, this.allocatedKeys)
+      const menuInstance = new MenuInstance(subMenu, this.allocatedKeys, this)
       this.subMenus.set(subMenu, menuInstance)
       return menuInstance
+   }
+
+   get root(): MenuInstance {
+      // eslint-disable-next-line consistent-this
+      let at: MenuInstance = this
+      while (at.parent != null) at = at.parent
+      return at
    }
 
    constructor(
       public menu: Menu,
       public keysTaken: Set<string> = new Set(),
+      public parent: MenuInstance | null,
    ) {
       makeAutoObservable(this, {
          uid: false,
