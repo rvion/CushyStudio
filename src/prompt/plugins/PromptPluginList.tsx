@@ -2,7 +2,7 @@ import type { PromptPlugin } from './PromptPlugin'
 
 import { Plugin_AdjustWeightsUI } from './Plugin_AdjustWeights'
 import { Plugin_DebugAST } from './Plugin_DebugAST'
-import { Plugin_LoraControlsUI } from './Plugin_LoraBoxUI'
+import { Plugin_LoraControlsUI } from './Plugin_LoraBox/Plugin_LoraBoxUI'
 import { Plugin_PreviewPromptUI } from './Plugin_PreviewUI'
 import { Plugin_ReorderTopLevelStuffUI } from './Plugin_ReorderTopLevelStuffUI'
 import { Plugin_ShortcutsUI } from './Plugin_ShortcutsUI'
