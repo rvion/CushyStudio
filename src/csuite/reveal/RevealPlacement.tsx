@@ -33,15 +33,22 @@ export type RevealPlacement =
    | 'rightStart'
    | 'rightEnd'
    | 'cover'
-
-   //
-   | 'auto'
-   | 'autoVerticalStart'
-   | 'autoVerticalEnd'
-   | 'autoHorizontalStart'
-   | 'autoHorizontalEnd'
-   | 'autoVerticalStartFixedSize'
-   | 'autoVerticalEndFixedSize'
+   // ------------------------------
+   | 'auto' // to-do: fix (currently behave like autoVertical)
+   // ----------------------------
+   | 'autoVerticalStart' // left or right, aligned top y in {bottomStart, topStart}
+   | 'autoVerticalEnd' // left or right, aligned bottom y
+   | 'autoVertical'
+   // -----------
+   | 'autoRight' // maximize height in { rightStart , rightEnd }
+   | 'autoLeft' // maximize height in { leftStart , leftEnd }
+   // ----------------------------
+   | 'autoHorizontalStart' // top or bottom, aligned left x
+   | 'autoHorizontalEnd' // top or bottom, aligned right x
+   | 'autoHorizontal'
+   // ----------------------------
+   | 'autoVerticalStartFixedSize' // to-do: doc
+   | 'autoVerticalEndFixedSize' // to-do: doc
 
 export type RevealComputedPosition = {
    top?: number | string
@@ -147,53 +154,89 @@ export const computePlacement = (
       }
    }
    // AUTO ========================================================================================
-   if (placement === 'autoHorizontalStart') {
-      placement =
-         anchor.left + anchor.width / 2 < window.innerWidth / 2 //
-            ? 'rightStart'
-            : 'leftStart'
-   }
+   if (placement.startsWith('auto')) {
+      const top = anchor.top
+      const bottom = window.innerHeight - anchor.bottom
+      const left = anchor.left
+      const right = window.innerWidth - anchor.right
+      const minX = Math.min(left, right)
+      const minY = Math.min(top, bottom)
 
-   if (placement === 'autoHorizontalEnd') {
-      placement =
-         anchor.left + anchor.width / 2 < window.innerWidth / 2 //
-            ? 'rightEnd'
-            : 'leftEnd'
-   }
+      if (placement === 'autoRight') {
+         const heightBetweenAnchorTopAndWinBottom = window.innerHeight - anchor.top
+         const heightBetweenWinTopAndAnchorBottom = anchor.bottom
+         placement =
+            heightBetweenAnchorTopAndWinBottom > heightBetweenWinTopAndAnchorBottom
+               ? 'rightStart'
+               : 'rightEnd'
+         console.log(`[🤠] `, {
+            heightBetweenAnchorTopAndWinBottom,
+            heightBetweenWinTopAndAnchorBottom,
+            placement,
+         })
+      }
+      if (placement === 'autoLeft') {
+         const heightBetweenAnchorTopAndWinBottom = window.innerHeight - anchor.top - anchor.bottom
+         const heightBetweenWinTopAndAnchorBottom = anchor.bottom
+         placement =
+            heightBetweenAnchorTopAndWinBottom > heightBetweenWinTopAndAnchorBottom ? 'leftEnd' : 'leftStart'
+      }
+      if (placement === 'autoHorizontalStart') {
+         placement =
+            anchor.left + anchor.width / 2 < window.innerWidth / 2 //
+               ? 'rightStart'
+               : 'leftStart'
+      }
 
-   if (placement === 'autoVerticalStart') {
-      placement =
-         anchor.top + anchor.height / 2 < window.innerHeight / 2 //
-            ? 'bottomStart'
-            : 'topStart'
-   }
+      if (placement === 'autoHorizontalEnd') {
+         placement =
+            anchor.left + anchor.width / 2 < window.innerWidth / 2 //
+               ? 'rightEnd'
+               : 'leftEnd'
+      }
 
-   if (placement === 'autoVerticalEnd') {
-      placement =
-         anchor.top + anchor.height / 2 < window.innerHeight / 2 //
-            ? 'bottomEnd'
-            : 'topEnd'
-   }
-
-   if (placement === 'auto') {
-      placement = ((): RevealPlacement => {
-         const top = anchor.top
-         const bottom = window.innerHeight - anchor.bottom
-         const left = anchor.left
-         const right = window.innerWidth - anchor.right
-         const minX = Math.min(left, right)
-         const minY = Math.min(top, bottom)
-         return minY == top
-            ? minX == left
+      if (placement === 'autoVerticalStart') {
+         placement =
+            anchor.top + anchor.height / 2 < window.innerHeight / 2 //
                ? 'bottomStart'
-               : 'bottomEnd'
-            : minX == left
-              ? 'topStart'
-              : 'topEnd'
-      })()
-      // const bestHorizontalSide: 'left' | 'right' =  rect.left + rect.width / 2 < window.innerWidth / 2 ? 'right' : 'left'
-      // const bestVerticalSide: 'top' | 'bottom' =  rect.top + rect.height / 2 < window.innerHeight / 2 ? 'bottom' : 'top'
-      // placement = `${bestHorizontalSide}Start` as Placement
+               : 'topStart'
+      }
+
+      if (placement === 'autoVerticalEnd') {
+         placement =
+            anchor.top + anchor.height / 2 < window.innerHeight / 2 //
+               ? 'bottomEnd'
+               : 'topEnd'
+      }
+
+      if (
+         placement === 'auto' || //
+         placement === 'autoVertical'
+      ) {
+         placement = ((): RevealPlacement => {
+            return minY == top
+               ? minX == left
+                  ? 'bottomStart'
+                  : 'bottomEnd'
+               : minX == left
+                 ? 'topStart'
+                 : 'topEnd'
+         })()
+         // const bestHorizontalSide: 'left' | 'right' =  rect.left + rect.width / 2 < window.innerWidth / 2 ? 'right' : 'left'
+         // const bestVerticalSide: 'top' | 'bottom' =  rect.top + rect.height / 2 < window.innerHeight / 2 ? 'bottom' : 'top'
+         // placement = `${bestHorizontalSide}Start` as Placement
+      }
+      if (placement === 'autoHorizontal') {
+         placement = ((): RevealPlacement => {
+            return minX == left
+               ? minY == top
+                  ? 'rightStart'
+                  : 'rightEnd'
+               : minY == bottom
+                 ? 'leftStart'
+                 : 'leftEnd'
+         })()
+      }
    }
 
    // BOTTOM --------------------------------------------------------------
