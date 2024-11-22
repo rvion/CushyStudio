@@ -60,9 +60,9 @@ export class Menu {
       return createElement(MenuRootUI, { menu: menuInst })
    }
 
-   MenuBarUI = (): JSX.Element => {
+   MenuBarUI = (p: { autoFocus?: boolean }): JSX.Element => {
       const menuInst = useMemo(() => new MenuInstance(this), [])
-      return createElement(MenuBarUI, { menu: menuInst })
+      return createElement(MenuBarUI, { menu: menuInst, autoFocus: p.autoFocus })
    }
 
    /** what is it used for  */
