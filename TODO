@@ -1,14 +1,16 @@
 SHORT TERM TODO:
 
     ☐ reveal
-        - almost good
-        - menubar instance (just a regular menu instance)
-            - need a stable way to instanciate sub-menus
-                - so sub-menus need a stable ref to pass to the reveal
-            - need a stable revealRef themselves
+        ✔ almost good @done(24-11-22 23:25)
+        ✔ menubar instance (just a regular menu instance) @done(24-11-22 23:25)
+            ✔ need a stable way to instanciate sub-menus @done(24-11-22 23:25)
+                ✔ so sub-menus need a stable ref to pass to the reveal @done(24-11-22 23:25)
+            ✔ need a stable revealRef themselves @done(24-11-22 23:25)
         - revealGroup (for menubar should check if tower parent have same group when switching)
             - so we can jump form sub-sub-menu of first menubar entry to second
-
+        - close menu on item selection
+        - global reveal
+        - space to start menu search activity
 
     ☐ regular click on image should just reveal the global "Output" and pin the image inside.
     ☐ close menu on item click
