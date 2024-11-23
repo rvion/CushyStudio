@@ -2,6 +2,7 @@ import type { LiveDB } from '../db/LiveDB'
 import type { TABLES } from '../db/TYPES.gen'
 import type { AnnotationMapEntry } from 'mobx'
 
+import { toastError } from '../csuite/utils/toasts'
 import { BaseInst } from '../db/BaseInst'
 import { LiveTable } from '../db/LiveTable'
 import { perspectiveHelper } from '../router/DefaultPerspective'
@@ -60,6 +61,7 @@ export class PerspectiveL extends BaseInst<TABLES['perspective']> {
       const perspectives = cushy.db.perspective.all
       if (perspectives.length === 1) {
          console.error('Cannot delete last perspective')
+         toastError('Cannot delete last perspective')
          return
       }
       if (cushy.layout.perspective === this) {
