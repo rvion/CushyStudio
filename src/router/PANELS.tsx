@@ -1,8 +1,8 @@
 import type { Panel } from './Panel'
 
+import { PanelAppLibrary } from '../panels/AppLibrary/AppLibrary'
 import { PanelScript } from '../panels/Panel_Script'
 import { PanelSquoosh } from '../panels/Panel_Squoosh'
-import { PanelAppLibrary } from '../panels/PanelAppLibrary/PanelAppLibrary'
 import { PanelAssets } from '../panels/PanelAssets/PanelAssets'
 import { PanelCanvas } from '../panels/PanelCanvas/PanelCanvas'
 import { PanelCaptioning } from '../panels/PanelCaptioning/PanelCaptioning'

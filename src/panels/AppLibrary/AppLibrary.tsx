@@ -1,7 +1,7 @@
 import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
 
 import { Panel, type PanelHeader } from '../../router/Panel'
-import { PanelAppLibraryUI } from './PanelAppLibraryUI'
+import { PanelAppLibraryUI } from './AppLibraryUI'
 
 export const PanelAppLibrary = new Panel({
    name: 'PanelAppLibrary',
