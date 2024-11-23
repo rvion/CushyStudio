@@ -15,6 +15,7 @@ import { isMenu } from '../introspect/_isMenu'
 import { bang } from '../utils/bang'
 import { createObservableRef } from '../utils/observableRef'
 import { menuBuilder } from './MenuBuilder'
+import { MenuFuzzySearchActivityUI } from './MenuFuzzySearchActivityUI'
 import { MenuUI } from './MenuUI'
 import { SimpleMenuAction } from './SimpleMenuAction'
 
@@ -87,6 +88,14 @@ export class MenuInstance implements Activity {
 
    processKey = (ev: React.KeyboardEvent<Element>): void => {
       const key = ev.key
+      if (key === ' ') {
+         console.log(`[🔴] SPACE PRESSED IN MENU`)
+         cushy.startActivity({
+            UI: MenuFuzzySearchActivityUI,
+            backdrop: true,
+         })
+         return
+      }
       console.log(
          `[🤠] `,
          key,
