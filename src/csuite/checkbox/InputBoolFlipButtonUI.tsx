@@ -8,8 +8,6 @@ export const InputBoolFlipButtonUI = observer(function InputBoolFlipButtonUI_(p:
    const isActive = p.value ?? false
    const label = p.text
    const mode = p.mode ?? false // 'checkbox'
-   // const chroma = getInputBoolChroma(isActive)
-   // const contrast = getInputBoolContrast(isActive)
    return (
       <Frame //Container (Makes it so we follow Fitt's law and neatly contains everything)
          style={p.style}
