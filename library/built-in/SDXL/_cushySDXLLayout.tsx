@@ -28,6 +28,31 @@ export function _cushySDXLLayout(): Maybe<DisplayRule<$CushySDXLUI['$Field']>> {
 
       const model = ui.field.Model
       const latent = ui.field.Latent
+      ui.for(ui.field.Positive.Prompts, {
+         Header: false,
+         Body: (p) => (
+            <ui.catalog.list.BlenderLike<typeof p.field> //
+               field={p.field}
+               renderItem={(item) => (
+                  <ui.catalog.Misc.Frame tw='flex' hover key={item.id}>
+                     <div tw={['line-clamp-1 flex-1', !item.active && 'opacity-45']}>{item.child.text}</div>
+                     <div tw='flex-none'>
+                        <ui.catalog.Misc.Checkbox
+                           toggleGroup='prompt'
+                           value={item.active}
+                           onValueChange={(v) => item.setActive(v)}
+                        />
+                     </div>
+                  </ui.catalog.Misc.Frame>
+               )}
+            />
+         ),
+      })
+      ui.forAllFields((ui2) => {
+         if (ui2.field.parent?.parent === ui.field.Positive.Prompts) {
+            ui2.apply({ Head: false })
+         }
+      })
       ui.for(latent.bField, { Shell: ui.catalog.Shell.Left })
       // ui.for(ui.field.PositiveExtra, { Title: null })
       // ui.for(ui.field.Model.Extra.fields.pag, {
