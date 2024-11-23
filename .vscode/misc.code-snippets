@@ -50,10 +50,5 @@
         "body": ["const uiSt = useLocalObservable$1(() => ({$2}))"],
         "description": "uist"
     },
-    "icon":{
-        "scope": "typescriptreact",
-        "prefix": "icon",
-        "body": ["<span className='material-symbols-outlined'>$1</span>"],
-        "description": "icon"
-    }
+
 }
