@@ -84,7 +84,7 @@ export class DraftL extends BaseInst<TABLES['draft']> {
 
    openOrFocusTab(): void {
       if (!(this instanceof DraftL)) throw new Error('❌')
-      this.st.layout.open('Draft', { draftID: this.id }, { where: 'left' })
+      this.st.layout.open('Draft', { draftID: this.id }, { where: 'biggest-similar' })
       // this.st.tree2View.revealAndFocusAtPath(['all-drafts', this.id])
    }
 

@@ -18,6 +18,7 @@ import { Message } from '../csuite/inputs/shims'
 import { regionMonitor } from '../csuite/regions/RegionMonitor'
 import { Trigger } from '../csuite/trigger/Trigger'
 import { bang } from '../csuite/utils/bang'
+import { exhaust } from '../csuite/utils/exhaust'
 import { toastError } from '../csuite/utils/toasts'
 import { type CustomPanelRef, registerCustomPanel } from '../panels/PanelCustom/CustomPanels'
 import { perspectiveHelper } from './DefaultPerspective'
@@ -43,6 +44,8 @@ export type PanelPlacement =
     | 'biggest'
     /** open in the non-current tabset that have the biggest area */
     | 'biggest-except-current'
+    /** prefer the biggest existing tabset with similar content */
+    | 'biggest-similar'
 
 type TabsetID = string
 type PerspectiveDataForSelect = {
@@ -239,6 +242,24 @@ export class CushyLayoutManager {
       let biggest: Maybe<FL.TabSetNode> = null
       let biggestArea: number = 0
       for (const tabset of tabsets) {
+         const rect = tabset.getRect()
+         const area = rect.width * rect.height
+         if (area > biggestArea) {
+            biggest = tabset
+            biggestArea = area
+            continue
+         }
+      }
+      return biggest
+   }
+
+   get biggestTabsetExceptCurrent(): Maybe<FL.TabSetNode> {
+      const tabsets = this.getAllTabset()
+      const currentTabset = this.getActiveOrFirstTabset_orThrow()
+      let biggest: Maybe<FL.TabSetNode> = null
+      let biggestArea: number = 0
+      for (const tabset of tabsets) {
+         if (tabset === currentTabset) continue
          const rect = tabset.getRect()
          const area = rect.width * rect.height
          if (area > biggestArea) {
@@ -731,6 +752,43 @@ export class CushyLayoutManager {
                return this.biggestTabset?.getId() ?? this.getActiveOrFirstTabset_orThrow().getId()
             }
 
+            if (conf.where === 'biggest-except-current') {
+               return ( this.biggestTabsetExceptCurrent?.getId() ?? this.getActiveOrFirstTabset_orThrow().getId() ) // prettier-ignore
+            }
+
+            if (conf.where === 'biggest-similar') {
+               const similarTabs = this.findTabsFor(panelName)
+               if (similarTabs.length === 0) {
+                  console.log(`[📛] did not find any other tab similar to target '${panelName}'`)
+                  return this.getActiveOrFirstTabset_orThrow().getId()
+               }
+               let maxTabesetArea = -1
+               let bestTabset = null
+               for (const tab of similarTabs) {
+                  const tabset = tab.tabNode.getParent() as FL.TabSetNode
+                  if (tabset == null) continue
+                  const rect = tabset.getRect()
+                  const area = rect.width * rect.height
+                  if (area > maxTabesetArea) {
+                     maxTabesetArea = area
+                     bestTabset = tabset
+                  }
+               }
+               return bestTabset?.getId() ?? this.getActiveOrFirstTabset_orThrow().getId()
+            }
+
+            // if (conf.where === 'right') throw new Error('❌ not implemented yet')
+            // if (conf.where === 'left') throw new Error('❌ not implemented yet')
+            if (conf.where === 'below') {
+               throw new Error('❌ not implemented yet')
+               // const tabset = this.getActiveOrFirstTabset_orThrow()
+               // const parent = tabset.getParent()
+               // if (parent == null) return tabset.getId()
+               // const children = parent.getChildren()
+               // const selfX = children.indexOf(tabset)
+               // return children[selfX + 1]?.getId() ?? tabset.getId()
+            }
+
             // case current
             if (
                conf.where === 'current' || //
@@ -738,6 +796,8 @@ export class CushyLayoutManager {
             ) {
                return this.getActiveOrFirstTabset_orThrow().getId()
             }
+
+            // exhaust(conf.where)
 
             // temporary catch-all until we're done implementing
             // all `where` options
