@@ -3,9 +3,9 @@ import { observer } from 'mobx-react-lite'
 import { ErrorBoundaryUI } from '../../csuite/errors/ErrorBoundaryUI'
 import { GalleryHoveredPreviewUI } from '../../widgets/galleries/GalleryHoveredPreviewUI'
 
-export const ProjectUI = observer(function ProjectUI_(p: React.HTMLProps<HTMLDivElement>) {
+export const ProjectUI = observer(function ProjectUI_(p: {}) {
    return (
-      <div className='UI-MAIN relative flex h-full grow flex-col' {...p}>
+      <div tw='UI-MAIN relative flex h-full grow flex-col' {...p}>
          <GalleryHoveredPreviewUI />
          <div // TODO: remove this; probably unused anymore
             id='hovered-graph'
