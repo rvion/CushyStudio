@@ -3,6 +3,7 @@ import type { TreeNode } from './TreeNode'
 import { observer } from 'mobx-react-lite'
 import { Fragment } from 'react'
 
+import { Frame } from '../frame/Frame'
 import { Ikon } from '../icons/iconHelpers'
 import { RenderItemTitleUI } from './RenderItemTitleUI'
 import { useTreeView } from './TreeCtx'
@@ -19,18 +20,18 @@ export const TreeEntryUI = observer(function TreeEntryUI_(p: {
    const selected = tv.at === n
    return (
       <Fragment key={n.id}>
-         <div
+         <Frame
             id={n.id}
             style={{ paddingLeft: `${p.depth ?? 0}rem` }}
             onClick={() => tv.setFocusAt(n)}
+            active={selected}
+            base={selected ? 3 : undefined}
+            hover
             tw={[
                // 'py-1',
+               '_line',
                {
-                  _line: true,
-                  _hasChildren: hasChildren,
                   _selected: selected,
-                  _opened: n.isOpen,
-                  _closed: !n.isOpen,
                },
             ]}
          >
@@ -55,7 +56,7 @@ export const TreeEntryUI = observer(function TreeEntryUI_(p: {
 
             {/* Tree title */}
             <RenderItemTitleUI node={n} />
-         </div>
+         </Frame>
 
          {hasChildren && n.isOpen ? ( //
             <div
