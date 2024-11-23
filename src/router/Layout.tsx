@@ -25,6 +25,7 @@ import { perspectiveHelper } from './DefaultPerspective'
 import { LayoutUI } from './LayoutUI'
 import { PanelContainerUI } from './PanelContainerUI'
 import { panels } from './PANELS'
+import { Stack } from './Stack'
 import { type TraversalNextStep, type TraverseFn, traverseLayoutNode } from './traverseLayoutNode'
 import { uniqueIDByMemoryRef } from './uniqueIDByMemoryRef'
 
@@ -567,6 +568,31 @@ export class CushyLayoutManager {
       this.model.doAction(Actions.renameTab(tabID, newName))
    }
 
+   tabHistory = new Map<string /* tabsetID */, Stack<string /* tabID */>>()
+   unrecordVisit(tabsetID: string, tabID: string): Maybe<string> {
+      let stack = this.tabHistory.get(tabsetID)
+      if (stack == null) {
+         stack = new Stack<string>()
+         this.tabHistory.set(tabsetID, stack)
+      }
+      stack.remove(tabID)
+
+      const last = stack.last()
+      // console.log(`[XX] 🔴 <== previous visit (${tabsetID}:${last}):`)
+      return last
+   }
+   recordVisit(tabsetID: string, tabId: string): void {
+      let stack = this.tabHistory.get(tabsetID)
+      if (stack == null) {
+         stack = new Stack<string>()
+         this.tabHistory.set(tabsetID, stack)
+      }
+      const last = stack.last()
+      if (last === tabId) return
+      // console.log(`[xx] 🟢 ==> recording visit (${tabsetID}:${tabId}):`)
+      stack.push(tabId)
+   }
+
    closeCurrentTab(tse: TabsetExt = 'hoverd'): Trigger {
       // 1. find tabset
       const tabset = this._getTabset(tse)
@@ -575,14 +601,21 @@ export class CushyLayoutManager {
       // 2. find active tab
       const tab = tabset.getSelectedNode()
       if (tab == null) return Trigger.UNMATCHED
+      const tabID = tab.getId()
+
+      // ??. focus preview tab in the tabset if it exists
+      const prevTabToReselect = this.unrecordVisit(tabset.getId(), tabID)
+      if (prevTabToReselect != null) {
+         this.model.doAction(Actions.selectTab(prevTabToReselect))
+      }
 
       // 3. close tab
-      const tabID = tab.getId()
       this.model.doAction(Actions.deleteTab(tabID))
 
-      // 4. focus preview tab in the tabset if it exists
-      const prevTab = tabset.getSelectedNode()
-      if (prevTab != null) this.model.doAction(Actions.selectTab(prevTab.getId()))
+      // else {
+      //    const prevTab = tabset.getSelectedNode()
+      //    if (prevTab != null) this.model.doAction(Actions.selectTab(prevTab.getId()))
+      // }
 
       // 5. mark action as success
       return Trigger.Success

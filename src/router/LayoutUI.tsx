@@ -37,6 +37,7 @@ export const LayoutUI = observer(function LayoutUI_(p: { layout: CushyLayoutMana
                layout.currentTab = tabset?.getSelectedNode()
                layout.currentTabID = layout.currentTab?.getId()
             })
+            layout.recordVisit(layout.currentTabSet?.getId() ?? '--', layout.currentTabID ?? '--')
             layout.perspective.update({
                layout: model.toJson(),
             })

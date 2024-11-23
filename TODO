@@ -13,7 +13,7 @@ SHORT TERM TODO:
     ☐ fix way multiple prompts are stacked in base apps
         ☐ just concat text, no weird merge positive crap
 
-
+    ✔ on close tab, should open previously opened tab in tabset @done(24-11-23 12:47)
     ☐ open new draft in biggest existing draft is possible
 
     ☐ persist current perspective in project
