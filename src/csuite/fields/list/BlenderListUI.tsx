@@ -23,13 +23,14 @@ export const BlenderListUI = observer(function BlenderListUI_<T extends Field_li
    const size = field.size
    const x = useLocalObservable(() => ({ selectedIx: 0 }))
    const selectedChild = field.items[x.selectedIx]
+
+   const theme = cushy.theme.value
    return (
-      <Frame tw='ml-8 flex flex-col gap-2'>
-         <Frame row>
+      <Frame tw='flex flex-col gap-2'>
+         <Frame tw='flex flex-row gap-2 px-2'>
             <ResizableFrame
                footer={<BlenderListFooterFilterUI />}
                border
-               tw='w-full text-sm'
                currentSize={size}
                onResize={(val) => {
                   field.size = val
@@ -37,37 +38,48 @@ export const BlenderListUI = observer(function BlenderListUI_<T extends Field_li
                snap={16}
                base={{ contrast: -0.025 }}
             >
-               {field.items.map((i, ix) => {
-                  const selected = x.selectedIx === ix
-                  return (
-                     <Frame //
-                        tw='select-none'
-                        triggerOnPress={{
-                           startingState: selected,
-                           toggleGroup: 'blender-list-item-selected',
-                        }}
-                        onClick={() => (x.selectedIx = ix)}
-                        active={selected}
-                     >
-                        {renderItem(i)}
-                     </Frame>
-                  )
-               })}
+               <div tw='flex flex-col gap-0.5 p-1'>
+                  {field.items.map((i, ix) => {
+                     const selected = x.selectedIx === ix
+                     return (
+                        <Frame //
+                           tw={[
+                              //
+                              'select-none overflow-clip',
+                              '!box-content',
+                           ]}
+                           triggerOnPress={{
+                              startingState: selected,
+                              toggleGroup: 'blender-list-item-selected',
+                           }}
+                           // active={selected}
+                           border={{ contrast: 0 }}
+                           onClick={() => (x.selectedIx = ix)}
+                           base={{ contrast: selected ? 0.1 : 0 }}
+                           roundness={theme.inputRoundness}
+                        >
+                           {renderItem(i)}
+                        </Frame>
+                     )
+                  })}
+               </div>
             </ResizableFrame>
-            <div>
+            <div tw='flex flex-col gap-2'>
                {/* <ListButtonClearUI field={field} /> */}
-               <ListButtonAddUI field={field} />
+               <div>
+                  <ListButtonAddUI field={field} />
+                  <Button
+                     disabled={selectedChild == null}
+                     icon='mdiMinus'
+                     onClick={() =>
+                        runInAction(() => {
+                           if (x.selectedIx > 0) x.selectedIx--
+                           field.removeItemAt(x.selectedIx)
+                        })
+                     }
+                  />
+               </div>
                <Button icon='mdiChevronDown'></Button>
-               <Button
-                  disabled={selectedChild == null}
-                  icon='mdiMinus'
-                  onClick={() =>
-                     runInAction(() => {
-                        if (x.selectedIx > 0) x.selectedIx--
-                        field.removeItemAt(x.selectedIx)
-                     })
-                  }
-               />
             </div>
          </Frame>
          <Frame base={10}>{selectedChild && <selectedChild.UI />}</Frame>
