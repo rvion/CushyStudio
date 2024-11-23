@@ -13,7 +13,7 @@ import { openInVSCode } from '../../utils/electron/openInVsCode'
 import { PanelComfyHostsUI } from '../PanelComfyHosts/PanelComfyHostsUI'
 import { LegacyOptions } from './LegacyOptions'
 
-export type ConfigMode = 'hosts' | 'input' | 'interface' | 'legacy' | 'system' | 'theme' | 'TEMP'
+export type ConfigMode = 'hosts' | 'input' | 'interface' | 'legacy' | 'system' | 'theme'
 
 export const PanelConfig = new Panel({
    name: 'Config',
@@ -36,7 +36,7 @@ export const PanelSettings = new Panel({
 
 export type PanelConfigProps = NO_PROPS
 
-const configTabs: ConfigMode[] = ['hosts', 'input', 'interface', 'legacy', 'system', 'theme', 'TEMP']
+const configTabs: ConfigMode[] = ['hosts', 'input', 'interface', 'legacy', 'system', 'theme']
 
 export const PanelConfigUI = observer(function Panel_Config_(p: PanelConfigProps) {
    const panel = usePanel()
@@ -44,7 +44,8 @@ export const PanelConfigUI = observer(function Panel_Config_(p: PanelConfigProps
    const panelState = panel.usePersistentModel('abcd', (ui) =>
       ui.fields({
          configMode: ui.selectOneString(configTabs),
-         shelfSize: ui.int(),
+         //TODO(bird_d): Needs to be done through panel state?
+         // shelfSize: ui.int(),
       }),
    )
    // return <>test</>
@@ -59,7 +60,6 @@ export const PanelConfigUI = observer(function Panel_Config_(p: PanelConfigProps
       if (mode === 'hosts') return <PanelComfyHostsUI />
       if (mode === 'input')
          return <cushy.theme.UI tw='w-full' layout={({ fields: f }) => [f.inputBorder, f.inputContrast]} />
-      if (mode === 'TEMP') return <div>{panelState.UI()}</div>
       if (mode === 'interface') return <FormUI tw='flex-1' field={cushy.preferences.interface} />
       if (mode === 'legacy') return <LegacyOptions />
       if (mode === 'system') return <FormUI tw='flex-1' field={cushy.preferences.system} />
@@ -98,9 +98,6 @@ export const PanelConfigUI = observer(function Panel_Config_(p: PanelConfigProps
                   <UI.Shelf.Group align hueShift={200}>
                      <ConfigTabButtonUI field={modeField} mode='system' />
                      <ConfigTabButtonUI field={modeField} mode='hosts' />
-                  </UI.Shelf.Group>
-                  <UI.Shelf.Group align hueShift={300}>
-                     <ConfigTabButtonUI field={modeField} mode='TEMP' />
                   </UI.Shelf.Group>
                </UI.Shelf.Column>
             </UI.Shelf>
