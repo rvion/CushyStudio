@@ -1,9 +1,7 @@
 import type { MediaImageL } from '../../models/MediaImage'
 
 import { observer } from 'mobx-react-lite'
-import { nanoid } from 'nanoid'
 
-import { Button } from '../../csuite/button/Button'
 import { SpacerUI } from '../../csuite/components/SpacerUI'
 import { UI } from '../../csuite/components/UI'
 import { usePanel } from '../../router/usePanel'
@@ -28,12 +26,6 @@ export const PanelGalleryUI = observer(function PanelGalleryUI_(p: PanelGalleryP
          style={{ background: conf.value.galleryBgColor ?? undefined }}
       >
          <UI.Panel.Header>
-            <Button //
-               square
-               icon='mdiContentDuplicate'
-               tooltip='Duplicate Panel'
-               onClick={() => panel.clone({ uid: nanoid() })}
-            />
             <SpacerUI />
             <GallerySearchControlsUI />
             <SpacerUI />
