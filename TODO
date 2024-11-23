@@ -6,26 +6,26 @@ SHORT TERM TODO:
             ✔ need a stable way to instanciate sub-menus @done(24-11-22 23:25)
                 ✔ so sub-menus need a stable ref to pass to the reveal @done(24-11-22 23:25)
             ✔ need a stable revealRef themselves @done(24-11-22 23:25)
-        - close menu on item selection @started(24-11-23 00:09) 🔶 <-------- finish first when I'm back
+        ✔ close menu on item selection @started(24-11-23 00:09)
+        ✔ close menu on item click @done(24-11-23 11:04)
         - revealGroup (for menubar should check if tower parent have same group when switching)
             - so we can jump form sub-sub-menu of first menubar entry to second
         - global backdrop when starting a menu
         - space to start menu search activity
 
     ☐ regular click on image should just reveal the global "Output" and pin the image inside.
-    ☐ close menu on item click
     ✘ rename Comfy.Slots to Comfy.UnionFor @cancelled(24-11-17 15:07)
-    ☐ fix reveal bug reported by bird_d
-        ☐ panel steps
-            ☐ open config
-                ☐ click anywhere on tooltip
+    ✔ fix reveal bug reported by bird_d @done(24-11-23 11:07)
+        ✔ panel steps @done(24-11-23 11:07)
+            ✔ open config @done(24-11-23 11:07)
+                ✔ click anywhere on tooltip @done(24-11-23 11:07)
 
     ☐ Finish migration
         ☐ fix generated enums tied to the manager
 
-    ☐ Improve ComfyUI Codegen
-        ☐ Namesapce all the custom nodes in dedicatd interfaces
-        ☐ change the way to construct / access the root workflow
+    ✔ Improve ComfyUI Codegen @done(24-11-23 11:07)
+        ✔ Namesapce all the custom nodes in dedicatd interfaces @done(24-11-23 11:07)
+        ✔ change the way to construct / access the root workflow @done(24-11-23 11:07)
 
     ☐ remove all `p: {}` and other `: {}` annotations
     CORE BUGS:
