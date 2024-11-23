@@ -32,10 +32,7 @@ export const InputBoolFlipButtonUI = observer(function InputBoolFlipButtonUI_(p:
             square
             icon={p.icon ?? (isActive ? 'mdiCheckBold' : null)}
             tw={['!select-none', mode === 'radio' ? 'rounded-full' : 'rounded-sm']}
-            // border={{ contrast: 0.2, chroma }}
-            // base={{ contrast, chroma }}
-            // square
-            iconSize='var(--input-icon-height)'
+            iconSize={p.iconSize ?? 'var(--input-icon-height)'}
             hover
             {...p.box}
          />
