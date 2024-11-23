@@ -8,6 +8,7 @@ import { AppIllustrationUI } from '../../cards/fancycard/AppIllustrationUI'
 import { DraftIllustrationUI } from '../../cards/fancycard/DraftIllustration'
 import { Button } from '../../csuite/button/Button'
 import { Frame } from '../../csuite/frame/Frame'
+import { Ikon } from '../../csuite/icons/iconHelpers'
 import { InputStringUI } from '../../csuite/input-string/InputStringUI'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { CreateAppPopupUI } from '../../panels/PanelWelcome/CreateAppBtnUI'
@@ -58,6 +59,16 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                tw='flex flex-1 flex-grow flex-col overflow-auto p-1 '
                roundness={'5px'}
             >
+               <Button
+                  //
+                  tw='my-0.5 flex flex-shrink-0 items-center justify-center self-center'
+                  tooltip='SD1.5'
+                  // base={{ hue: 0, chromaBlend: 2, contrast: 0.2 }}
+                  style={{ width: tempSize, height: tempSize }}
+                  onClick={() => cushy.layout.open('PanelAppLibrary', {})}
+               >
+                  <Ikon.mdiApps style={{ fontSize: '8rem' }} />
+               </Button>
                {/* <PanelHeaderUI>{conf.renderAsConfigBtn()}</PanelHeaderUI> */}
                <Button
                   //
