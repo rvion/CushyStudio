@@ -1,16 +1,5 @@
+import type { OpenRouter_ModelInfo } from './OpenRouter_ModelInfo'
 import type { OpenRouter_Models } from './OpenRouter_models'
-
-export type OpenRouter_ModelInfo = {
-   id: OpenRouter_Models
-   name: string
-   pricing: { prompt: string; completion: string }
-   context_length: number
-   architecture: { tokenizer: string; instruct_type: InstructType | null }
-   top_provider: { max_completion_tokens: number | null }
-   per_request_limits?: Maybe<{ prompt_tokens: string; completion_tokens: string }>
-}
-export type InstructType = //
-   'llama2' | 'zephyr' | 'openchat' | 'alpaca' | 'vicuna' | 'neural' | 'gpt' | 'airoboros' | 'claude'
 
 export const openRouterInfos: { [key in OpenRouter_Models]: OpenRouter_ModelInfo } = {
    'openrouter/auto': {

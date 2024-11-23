@@ -20,13 +20,13 @@ export class RuntimeLLM {
    // ---------------------------
 
    /** verify key is ready */
-   isConfigured = async () => {
+   isConfigured = async (): Promise<boolean> => {
       return !!this.rt.Cushy.configFile.value.OPENROUTER_API_KEY
    }
 
    /** geenric function to ask open router anything */
    ask_OpenRouter = async (p: OpenRouterRequest): Promise<OpenRouterResponse> => {
-      return await OpenRouter_ask(this.rt.Cushy.configFile.value.OPENROUTER_API_KEY, p)
+      return OpenRouter_ask(this.rt.Cushy.configFile.value.OPENROUTER_API_KEY, p)
    }
 
    /** dictionary of all known openrouter models */
