@@ -74,7 +74,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                   //
                   tw='my-0.5 flex flex-shrink-0 items-center justify-center self-center'
                   tooltip='SD1.5'
-                  base={{ hue: 0, chromaBlend: 2, contrast: 0.3 }}
+                  base={{ hue: 0, chromaBlend: 2, contrast: 0.2 }}
                   style={{ width: tempSize, height: tempSize }}
                   onClick={() =>
                      cushy.db.cushy_app.get('library/built-in/SD15/cushySD15.ts:0')?.openLastOrCreateDraft()
@@ -85,7 +85,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                <Button
                   tw='my-0.5 flex flex-shrink-0 items-center justify-center self-center'
                   tooltip='SDXL'
-                  base={{ hue: 90, chromaBlend: 2, contrast: 0.3 }}
+                  base={{ hue: 90, chromaBlend: 2, contrast: 0.2 }}
                   style={{ width: tempSize, height: tempSize }}
                   onClick={() =>
                      cushy.db.cushy_app.get('library/built-in/SDXL/cushySDXL.tsx:0')?.openLastOrCreateDraft()
@@ -101,7 +101,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                <Button
                   tw='my-0.5 flex flex-shrink-0 items-center justify-center self-center'
                   tooltip='NoobAI'
-                  base={{ hue: 90, chromaBlend: 2, contrast: 0.3 }}
+                  base={{ hue: 90, chromaBlend: 2, contrast: 0.2 }}
                   style={{
                      width: tempSize,
                      height: tempSize,
@@ -121,7 +121,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                <Button
                   tw='my-0.5 flex flex-shrink-0 items-center justify-center self-center'
                   tooltip='SD3'
-                  base={{ hue: 180, chromaBlend: 2, contrast: 0.3 }}
+                  base={{ hue: 180, chromaBlend: 2, contrast: 0.2 }}
                   style={{ width: tempSize, height: tempSize }}
                   onClick={() =>
                      cushy.db.cushy_app.get('library/built-in/SD3/cushySD3.ts:0')?.openLastOrCreateDraft()
@@ -132,7 +132,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                <Button
                   tw='my-0.5 flex flex-shrink-0 items-center justify-center self-center truncate'
                   tooltip='Cascade'
-                  base={{ hue: 210, chromaBlend: 2, contrast: 0.3 }}
+                  base={{ hue: 210, chromaBlend: 2, contrast: 0.2 }}
                   style={{ width: tempSize, height: tempSize }}
                   onClick={() => cushy.db.cushy_app.get('library/built-in/Cascade/cushyCascade.ts:0')?.openLastOrCreateDraft()} // prettier-ignore
                >
@@ -141,7 +141,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                <Button
                   tw='my-0.5 flex flex-shrink-0 items-center justify-center self-center'
                   tooltip='FLUX'
-                  base={{ hue: 270, chromaBlend: 2, contrast: 0.3 }}
+                  base={{ hue: 270, chromaBlend: 2, contrast: 0.2 }}
                   style={{ width: tempSize, height: tempSize }}
                   onClick={() =>
                      cushy.db.cushy_app.get('library/built-in/Flux/cushyFlux.ts:0')?.openLastOrCreateDraft()
@@ -152,7 +152,7 @@ export const FavBarUI = observer(function FavBarUI_(p: {
                <Button
                   tooltip='Slay the Spire Card Generator'
                   tw='my-0.5 flex flex-shrink-0 items-center justify-center self-center'
-                  base={{ hue: 270, chromaBlend: 2, contrast: 0.3 }}
+                  base={{ hue: 270, chromaBlend: 2, contrast: 0.2 }}
                   style={{ width: tempSize, height: tempSize }}
                   onClick={() =>
                      cushy.db.cushy_app
