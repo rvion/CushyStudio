@@ -3,6 +3,7 @@ import type { ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
 
+import { Ikon } from '../icons/iconHelpers'
 import { exhaust } from '../utils/exhaust'
 
 export const InputLegacy = (p: JSX.IntrinsicElements['input']): JSX.Element => {
@@ -89,9 +90,9 @@ export const ProgressLine = observer(function ProgressLine_(p: {
 
 // ------------------------------------------------------------------------
 const messageIcon = (type: MessageType): ReactNode => {
-   if (type === 'error') return <span className='material-symbols-outlined !text-xl'>error</span>
-   if (type === 'info') return <span className='material-symbols-outlined !text-xl'>info</span>
-   if (type === 'warning') return <span className='material-symbols-outlined !text-xl'>warning</span>
+   if (type === 'error') return <Ikon.mdiAlertCircle tw=' !text-xl' />
+   if (type === 'info') return <Ikon.mdiAlert tw=' !text-xl' />
+   if (type === 'warning') return <Ikon.mdiInformationSlabBox tw=' !text-xl' />
    exhaust(type)
    return null
 }

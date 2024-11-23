@@ -12,6 +12,7 @@ import { ImageUI } from '../../../widgets/galleries/ImageUI'
 import { Button } from '../../button/Button'
 import { SpacerUI } from '../../components/SpacerUI'
 import { Frame } from '../../frame/Frame'
+import { Ikon } from '../../icons/iconHelpers'
 import { ResizableFrame } from '../../resizableFrame/resizableFrameUI'
 import { RevealUI } from '../../reveal/RevealUI'
 
@@ -115,12 +116,9 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: {
       <div>
          <div
             tw={'flex items-center justify-center text-5xl text-red-500'}
-            style={{
-               width: '5rem',
-               height: '5rem',
-            }}
+            style={{ width: '5rem', height: '5rem' }}
          >
-            <span className='material-symbols-outlined'>broken_image</span>
+            <Ikon.mdiImageBrokenVariant />
          </div>
          <div>drop image here</div>
       </div>
