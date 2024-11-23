@@ -272,6 +272,8 @@ export type ProjectTable = {
    autostartDelay: Generated<number>
    /** @default: "100", sqlType: INT */
    autostartMaxDelay: Generated<number>
+   /** @default: null, sqlType: TEXT */
+   perspectiveID?: Maybe<PerspectiveID>
 }
 
 export type NewProject = {
@@ -283,6 +285,7 @@ export type NewProject = {
    filterNSFW?: number
    autostartDelay?: number
    autostartMaxDelay?: number
+   perspectiveID?: Maybe<PerspectiveID>
 }
 
 export type ProjectUpdate = {
@@ -296,6 +299,7 @@ export type ProjectUpdate = {
    filterNSFW?: number
    autostartDelay?: number
    autostartMaxDelay?: number
+   perspectiveID?: PerspectiveID | null
 }
 
 export type ProjectBackRefsToHandleOnDelete = EmptyObject
@@ -311,6 +315,7 @@ export type ProjectT = {
    filterNSFW: number
    autostartDelay: number
    autostartMaxDelay: number
+   perspectiveID?: PerspectiveID | null
 }
 
 export type ProjectTypes = {
@@ -336,12 +341,14 @@ export const ProjectSchema = Type.Object(
       filterNSFW: Type.Number(),
       autostartDelay: Type.Number(),
       autostartMaxDelay: Type.Number(),
+      perspectiveID: Type.Optional(T.Nullable(Type.String())),
    },
    { additionalProperties: false },
 )
 
 // prettier-ignore
 export const ProjectRefs = [
+    { fromTable:'project', fromField:'perspectiveID', toTable:'perspective', tofield:'id' },
     { fromTable:'project', fromField:'currentDraftID', toTable:'draft', tofield:'id' },
     { fromTable:'project', fromField:'rootGraphID', toTable:'comfy_workflow', tofield:'id' }
 ]
@@ -366,6 +373,7 @@ export const ProjectFields = {
       dflt_value: '100',
       pk: 0,
    },
+   perspectiveID: { cid: 10, name: 'perspectiveID', type: 'TEXT', notnull: 0, dflt_value: null, pk: 0 },
 }
 
 // #region Step
@@ -2159,7 +2167,9 @@ export type PerspectiveUpdate = {
    priority?: number
 }
 
-export type PerspectiveBackRefsToHandleOnDelete = EmptyObject
+export type PerspectiveBackRefsToHandleOnDelete = {
+   project_perspectiveID?: ProjectBackRefsToHandleOnDelete | 'set null'
+}
 
 export type PerspectiveT = {
    id: PerspectiveID
@@ -2197,7 +2207,10 @@ export const PerspectiveSchema = Type.Object(
 
 export const PerspectiveRefs = []
 
-export const PerspectiveBackRefs = []
+// prettier-ignore
+export const PerspectiveBackRefs = [
+    { fromTable:'project', fromField:'perspectiveID', toTable:'perspective', tofield:'id' }
+]
 
 export const PerspectiveFields = {
    id: { cid: 0, name: 'id', type: 'string', notnull: 1, dflt_value: 'hex(randomblob(16))', pk: 1 },
@@ -2629,6 +2642,7 @@ export type LiveDBSubKeys =
    | 'project.filterNSFW'
    | 'project.autostartDelay'
    | 'project.autostartMaxDelay'
+   | 'project.perspectiveID'
    | 'step'
    | 'step.id'
    | 'step.createdAt'
@@ -2823,6 +2837,7 @@ export const liveDBSubKeys = new Set([
    'project.filterNSFW',
    'project.autostartDelay',
    'project.autostartMaxDelay',
+   'project.perspectiveID',
    'step',
    'step.id',
    'step.createdAt',

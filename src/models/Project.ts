@@ -3,6 +3,7 @@ import type { TABLES } from '../db/TYPES.gen'
 import type { ComfySchemaL } from './ComfySchema'
 import type { ComfyWorkflowL } from './ComfyWorkflow'
 import type { DraftL } from './Draft'
+import type { PerspectiveL } from './Perspective'
 
 import { SQLITE_false, SQLITE_true } from '../csuite/types/SQLITE_boolean'
 import { BaseInst } from '../db/BaseInst'
@@ -27,6 +28,19 @@ export class ProjectL extends BaseInst<TABLES['project']> {
 
    rootGraph = new LiveRef<this, ComfyWorkflowL>(this, 'rootGraphID', 'comfy_workflow')
    draft = new LiveRefOpt<this, DraftL>(this, 'currentDraftID', 'draft')
+
+   onHydrate = (): void => {
+      if (this.perspective) cushy.layout.openPerspective(this.perspective)
+   }
+
+   /** current perspective */
+   get perspective(): Maybe<PerspectiveL> {
+      if (this.data.perspectiveID == null) return null
+      return cushy.db.perspective.get(this.data.perspectiveID)
+   }
+   set perspective(v: Maybe<PerspectiveL>) {
+      this.update({ perspectiveID: v?.id })
+   }
 
    get filterNSFW(): boolean {
       return this.data.filterNSFW ? true : false
