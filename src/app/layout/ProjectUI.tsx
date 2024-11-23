@@ -1,12 +1,11 @@
 import { observer } from 'mobx-react-lite'
 
 import { ErrorBoundaryUI } from '../../csuite/errors/ErrorBoundaryUI'
-import { useSt } from '../../state/stateContext'
 import { GalleryHoveredPreviewUI } from '../../widgets/galleries/GalleryHoveredPreviewUI'
 
-export const ProjectUI = observer(function ProjectUI_(p: {}) {
+export const ProjectUI = observer(function ProjectUI_(p: React.HTMLProps<HTMLDivElement>) {
    return (
-      <div className='UI-MAIN relative flex h-full grow flex-col'>
+      <div className='UI-MAIN relative flex h-full grow flex-col' {...p}>
          <GalleryHoveredPreviewUI />
          <div // TODO: remove this; probably unused anymore
             id='hovered-graph'

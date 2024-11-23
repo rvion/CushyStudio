@@ -3,15 +3,15 @@ import { observer } from 'mobx-react-lite'
 import { BadgeListUI } from '../../csuite/badge/BadgeListUI'
 import { BadgeUI } from '../../csuite/badge/BadgeUI'
 import { DebugControlsUI } from '../../csuite/debug/DebugControlsUI'
-import { Frame } from '../../csuite/frame/Frame'
+import { Frame, type FrameProps } from '../../csuite/frame/Frame'
 
-/* TODO(bird_d): Add Interface options for positioning 
+/* TODO(bird_d): Add Interface options for positioning
    - Set position on screen
    - History amount
    - Command Matching History amount
 */
 
-export const DebugShortcutsFloatingUI = observer(function DebugShortcutsFloating(p: {}) {
+export const DebugShortcutsFloatingUI = observer(function DebugShortcutsFloating(p: FrameProps) {
    const theme = cushy.theme.value
 
    return (
@@ -19,6 +19,7 @@ export const DebugShortcutsFloatingUI = observer(function DebugShortcutsFloating
          tw='pointer-events-none absolute bottom-14 right-4 flex flex-col gap-2 p-2 opacity-80'
          roundness={theme.inputRoundness}
          dropShadow={theme.inputShadow}
+         {...p}
       >
          <DebugControlsUI />
 

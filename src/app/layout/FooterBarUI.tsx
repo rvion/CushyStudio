@@ -1,16 +1,16 @@
 import { observer } from 'mobx-react-lite'
 
 import { ToggleButtonUI } from '../../csuite/checkbox/InputBoolToggleButtonUI'
-import { Frame } from '../../csuite/frame/Frame'
+import { Frame, type FrameProps } from '../../csuite/frame/Frame'
 import { DebugShortcutsFloatingUI } from './DebugShortcutsFloatingUI'
 
-export const FooterBarUI = observer(function FooterBarUI_(p: {}) {
+export const FooterBarUI = observer(function FooterBarUI_(p: FrameProps) {
    return (
       <Frame
-         //
          border={0}
          base={cushy.theme.value.appbar ?? { contrast: -0.077 }}
          tw='line-clamp-1 flex items-center truncate px-1 py-1'
+         {...p}
       >
          <ToggleButtonUI
             tw='mr-2'
