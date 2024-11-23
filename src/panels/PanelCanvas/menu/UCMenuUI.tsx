@@ -145,7 +145,7 @@ export const UCMenuUI = observer(function UCMenuUI_(p: {}) {
                               name: 'new layer',
                               placement: mkPlacement({ x: 0, y: 0 }),
                               visible: true,
-                              image: undefined,
+                              image: cushy.db.media_image.lastOrCrash(),
                            },
                         })
                      }}
