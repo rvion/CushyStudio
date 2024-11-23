@@ -45,7 +45,7 @@ export const InstructType_valibot = v.union([
 
 // #region OpenRouter_ModelInfo
 export type OpenRouter_ModelInfo = {
-   id: string
+   id: OpenRouter_Models
    name: string
    created: number
    description: string
@@ -70,7 +70,7 @@ export type OpenRouter_ModelInfo = {
 }
 
 export const OpenRouter_ModelInfo_valibot = v.strictObject({
-   id: v.string(),
+   id: v.custom<OpenRouter_Models>((v) => typeof v === 'string'),
    name: v.string(),
    created: v.number(),
    description: v.string(),
