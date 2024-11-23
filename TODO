@@ -1,5 +1,18 @@
 SHORT TERM TODO:
 
+    ☐ tree view:
+        ☐ add back highlighting
+            ☐ still use legacy daisyUI colors
+
+    ☐ fix prompt
+        ☐ LIST ALL ERRORS (probably a bunch)
+        ☐ fix cmd+up/down using old syntax.
+        ☐ remove weird group pre-processing
+        ☐ preview final prompt do not react to changes anymore
+
+    ☐ fix way multiple prompts are stacked in base apps
+        ☐ just concat text, no weird merge positive crap
+
     ☐ reveal
         ✔ almost good @done(24-11-22 23:25)
         ✔ menubar instance (just a regular menu instance) @done(24-11-22 23:25)
@@ -42,7 +55,7 @@ SHORT TERM TODO:
     ✔ remove unoCSS @done(24-10-18 19:57)
 
     ☐ remove last remnants of daisy
-        ☐ loading loading-spinner
+        ✔ loading loading-spinner @done(24-11-23 11:35) (we kept those)
         ☐ btn
         ☐ material-symbols-outlined
 
