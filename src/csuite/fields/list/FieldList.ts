@@ -11,13 +11,11 @@ import { bang } from '../../utils/bang'
 import { clamp_or_min_or_zero } from '../../utils/clamp'
 import { registerFieldClass } from '../WidgetUI.DI'
 import { hole, type HOLE } from './HOLE'
-import {
-   ListButtonAdd100ItemsUI,
-   ListButtonAddUI,
-   ListButtonClearUI,
-   ListButtonFoldUI,
-   ListButtonUnfoldUI,
-} from './ListControlsUI'
+import { ListButtonAdd100ItemsUI } from './ListButtonAdd100ItemsUI'
+import { ListButtonAddUI } from './ListButtonAddUI'
+import { ListButtonClearUI } from './ListButtonClearUI'
+import { ListButtonFoldUI } from './ListButtonFoldUI'
+import { ListButtonUnfoldUI } from './ListButtonUnfoldUI'
 import { WidgetList_BodyUI } from './WidgetList_BodyUI'
 import { WidgetList_LineUI } from './WidgetList_LineUI'
 
@@ -78,6 +76,7 @@ export type Field_list_serial<T extends BaseSchema> = FieldSerial<{
    $: 'list'
    /** when undefined, means the list has not be `set` yet */
    items_?: (T['$Serial'] | HOLE)[]
+   size?: number
 }>
 
 // #region VALUE type
@@ -115,12 +114,26 @@ export class Field_list<T extends BaseSchema> //
    DefaultHeaderUI = WidgetList_LineUI
    DefaultBodyUI = WidgetList_BodyUI
 
-   UI_AddButton = ListButtonAddUI
-   UI_ClearButton = ListButtonClearUI
-   UI_FoldButton = ListButtonFoldUI
-   UI_UnfoldButton = ListButtonUnfoldUI
-   UI_Add100ItemsButton = ListButtonAdd100ItemsUI
+   // #region UI/preview
+   /** size of the preview */
+   get size(): number {
+      return this.serial.size ?? this._defaultPreviewSize
+   }
 
+   set size(val: number) {
+      this.runInSerialTransaction(() => {
+         this.patchSerial((serial) => {
+            if (val === this._defaultPreviewSize) delete serial.size
+            else serial.size = val
+         })
+      })
+   }
+
+   private get _defaultPreviewSize(): number {
+      return 128
+   }
+
+   // #region ....
    get isOwnSet(): boolean {
       return this.serial.items_ != null
    }

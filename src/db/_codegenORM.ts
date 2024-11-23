@@ -27,7 +27,7 @@ export const _codegenORM = (store: {
    }
    out1 += `\n`
    out1 += `import { Type } from '@sinclair/typebox'\n`
-   out1 += `import { Generated, /* Insertable, Selectable, Updateable */ } from 'kysely'\n`
+   out1 += `import type { Generated } from 'kysely'\n`
    out1 += `\n`
    out1 += `import * as T from './TYPES_json'\n`
    out1 += `\n`
@@ -230,24 +230,28 @@ export const _codegenORM = (store: {
 
       // #region backref (del)
       // typeDecl += `export type ${jsTableName}Update = Updateable<${jsTableName}Table>`
-      typeDecl += `\n\nexport type ${jsTableName}BackRefsToHandleOnDelete = {\n`
-      const tableBackref = backRefs.get(table.name) ?? []
-      for (const br of tableBackref) {
-         const jsTableName = convertTableNameToJSName(br.fromTable)
-         const backrefTable = bang(precomputedTableInfosDict.get(br.fromTable))
-         const backRefColInfos = bang(backrefTable.cols.find((c) => c.name === br.fromField))
-         const backRefIsNullabel = !backRefColInfos.notnull
-         console.log(`[🤠] ${br.fromTable}_${br.fromField}`, {
-            jsTableName,
-            backrefTable,
-            backRefColInfos,
-            backRefIsNullabel,
-         })
-         const colon = backRefIsNullabel ? '?:' : ':'
-         typeDecl += `    ${br.fromTable}_${br.fromField}${colon} ${jsTableName}BackRefsToHandleOnDelete${backRefIsNullabel ? ` | 'set null'` : ''}\n`
-      }
-      typeDecl += `}`
 
+      const tableBackref = backRefs.get(table.name) ?? []
+      if (tableBackref.length > 0) {
+         typeDecl += `\n\nexport type ${jsTableName}BackRefsToHandleOnDelete = {\n`
+         for (const br of tableBackref) {
+            const jsTableName = convertTableNameToJSName(br.fromTable)
+            const backrefTable = bang(precomputedTableInfosDict.get(br.fromTable))
+            const backRefColInfos = bang(backrefTable.cols.find((c) => c.name === br.fromField))
+            const backRefIsNullabel = !backRefColInfos.notnull
+            console.log(`[🤠] ${br.fromTable}_${br.fromField}`, {
+               jsTableName,
+               backrefTable,
+               backRefColInfos,
+               backRefIsNullabel,
+            })
+            const colon = backRefIsNullabel ? '?:' : ':'
+            typeDecl += `    ${br.fromTable}_${br.fromField}${colon} ${jsTableName}BackRefsToHandleOnDelete${backRefIsNullabel ? ` | 'set null'` : ''}\n`
+         }
+         typeDecl += `}`
+      } else {
+         typeDecl += `\n\nexport type ${jsTableName}BackRefsToHandleOnDelete = EmptyObject\n`
+      }
       // #region ....
       // typeDeclCreate += `}`
       schemaDecl += '    },\n    { additionalProperties: false },\n)'

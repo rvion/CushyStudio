@@ -754,4 +754,9 @@ export const migrations: {
          ]),
       ],
    },
+   {
+      id: '2024-11-23-FAQdKizTxp',
+      name: 'add perspectiveID to project',
+      up: ['alter table project add column perspectiveID text references perspective(id)'],
+   },
 ]

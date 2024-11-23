@@ -74,7 +74,7 @@ export class StepL extends BaseInst<TABLES['step']> {
       const asyncRuntimeStorage = getGlobalRuntimeCtx()
       const scriptExecutionStatus: RuntimeExecutionResult = await asyncRuntimeStorage.run(
          { runtime, stepID: this.id },
-         async () => await runtime._EXECUTE(p),
+         async () => runtime._EXECUTE(p),
       )
 
       // const scriptExecutionStatus: RuntimeExecutionResult = await this.runtime._EXECUTE(p)

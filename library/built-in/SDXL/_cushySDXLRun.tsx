@@ -39,7 +39,7 @@ export async function _cushySDXLRun(
       b: Comfy.Signal['CONDITIONING'],
    ): Comfy.Signal['CONDITIONING'] => {
       if (a == null) return b
-      return graph.ConditioningCombine({ conditioning_1: a, conditioning_2: b })
+      return graph.ConditioningConcat({ conditioning_to: a, conditioning_from: b })
    }
 
    let ckptPos = ckpt
@@ -52,7 +52,6 @@ export async function _cushySDXLRun(
       ckptPos = res.ckpt
       clipPos = res.clip
    }
-
    const allArtists = []
    if (ui.positive.artists && ui.positive.artists.length > 0) allArtists.push(...ui.positive.artists)
    // if (ui.positiveExtra.artistsV2 && ui.positiveExtra.artistsV2.length > 0) allArtists.push(...ui.positiveExtra.artistsV2)

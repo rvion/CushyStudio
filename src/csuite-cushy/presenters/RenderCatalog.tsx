@@ -1,9 +1,13 @@
+import type { BoolButtonProps } from '../../csuite/checkbox/InputBoolUI'
 import type { Field_choices } from '../../csuite/fields/choices/FieldChoices'
 import type { Field_number } from '../../csuite/fields/number/FieldNumber'
 import type { Field_string } from '../../csuite/fields/string/FieldString'
 import type { CompiledRenderProps } from './Renderer'
 import type { FC } from 'react'
 
+import { Button, type ButtonProps } from '../../csuite/button/Button'
+import { InputBoolCheckboxUI } from '../../csuite/checkbox/InputBoolCheckboxUI'
+import { InputBoolFlipButtonUI } from '../../csuite/checkbox/InputBoolFlipButtonUI'
 import { WidgetChoices_HeaderButtonsUI } from '../../csuite/fields/choices/WidgetChoices_HeaderButtonsUI'
 import { WidgetChoices_HeaderSelectUI } from '../../csuite/fields/choices/WidgetChoices_HeaderSelectUI'
 import { WidgetChoices_HeaderTabBarUI } from '../../csuite/fields/choices/WidgetChoices_HeaderTabBarUI'
@@ -11,6 +15,7 @@ import { WidgetGroup_BlockUI } from '../../csuite/fields/group/WidgetGroup_Block
 import { WidgetGroup_LineUI } from '../../csuite/fields/group/WidgetGroup_Header'
 import { WidgetGroup_InlineUI } from '../../csuite/fields/group/WidgetGroup_InlineUI'
 import { WidgetGroup_TabUI } from '../../csuite/fields/group/WidgetGroup_TabUI'
+import { type BlenderListProps, BlenderListUI } from '../../csuite/fields/list/BlenderListUI'
 import { WidgetNumberUI } from '../../csuite/fields/number/WidgetNumberUI'
 import { WidgetString_SmallInput } from '../../csuite/fields/string/WidgetString_SmallInput'
 import { WidgetString_summary } from '../../csuite/fields/string/WidgetString_summary'
@@ -36,6 +41,8 @@ import { ShellSimpleUI } from '../shells/ShellSimple'
 export type WidgetsCatalog = {
    Misc: {
       Frame: FC<FrameProps>
+      Button: FC<ButtonProps>
+      Checkbox: FC<BoolButtonProps>
    }
    Decorations: {
       Card: FC<WidgetCardProps>
@@ -86,6 +93,12 @@ export type WidgetsCatalog = {
       textarea: FC<{ field: Field_string }>
    }
 
+   list: {
+      BlenderLike: typeof BlenderListUI
+   }
+   // optional:{
+   //    toggleButton: FC<{ field: Field_string }>
+   // }
    group: {
       Tabbed: typeof WidgetGroup_TabUI
       controls: typeof WidgetGroup_LineUI
@@ -100,6 +113,8 @@ export const widgetsCatalog: WidgetsCatalog = {
    },
    Misc: {
       Frame: Frame,
+      Button: Button,
+      Checkbox: InputBoolCheckboxUI,
    },
    Shell: {
       Simple: ShellSimpleUI,
@@ -136,6 +151,9 @@ export const widgetsCatalog: WidgetsCatalog = {
       input: WidgetString_SmallInput,
       summary: WidgetString_summary,
       textarea: WidgetString_TextareaInput,
+   },
+   list: {
+      BlenderLike: BlenderListUI,
    },
    group: {
       Tabbed: WidgetGroup_TabUI,

@@ -5,7 +5,7 @@ SHORT TERM TODO:
             ☐ still use legacy daisyUI colors
 
     ☐ fix prompt
-        ☐ LIST ALL ERRORS (probably a bunch)
+        ☐ LIST EVERYTHING WRONG WITH PROMOPT (probably a bunch of stuff)
         ☐ fix cmd+up/down using old syntax.
         ☐ remove weird group pre-processing
         ☐ preview final prompt do not react to changes anymore
@@ -14,9 +14,8 @@ SHORT TERM TODO:
         ☐ just concat text, no weird merge positive crap
 
     ✔ on close tab, should open previously opened tab in tabset @done(24-11-23 12:47)
-    ☐ open new draft in biggest existing draft is possible
-
-    ☐ persist current perspective in project
+    ✔ open new draft in biggest existing draft is possible @done(24-11-23 20:19)
+    ✔ persist current perspective in project @done(24-11-23 21:15)
     ☐ fix reset on choices
 
     ☐ reveal

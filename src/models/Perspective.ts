@@ -36,6 +36,7 @@ export class PerspectiveL extends BaseInst<TABLES['perspective']> {
    }
    open(): void {
       cushy.layout.openPerspective(this)
+      cushy.project.perspective = this
    }
 
    get isActive(): boolean {
