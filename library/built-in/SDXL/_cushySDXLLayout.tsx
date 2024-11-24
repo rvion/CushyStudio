@@ -29,6 +29,7 @@ export function _cushySDXLLayout(): Maybe<DisplayRule<$CushySDXLUI['$Field']>> {
       const model = ui.field.Model
       const latent = ui.field.Latent
       ui.for(ui.field.Positive.Prompts, {
+         Head: false,
          Header: false,
          Body: (p) => (
             <ui.catalog.list.BlenderLike<typeof p.field> //
