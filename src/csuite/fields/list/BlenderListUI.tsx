@@ -5,7 +5,9 @@ import type { ReactNode } from 'react'
 import { runInAction } from 'mobx'
 import { observer, useLocalObservable } from 'mobx-react-lite'
 
+import { WahWidgetPromptUI } from '../../../prompt/widgets/WidgetPromptUI'
 import { Button } from '../../button/Button'
+import { SpacerUI } from '../../components/SpacerUI'
 import { Frame } from '../../frame/Frame'
 import { InputStringUI } from '../../input-string/InputStringUI'
 import { ResizableFrame } from '../../resizableFrame/resizableFrameUI'
@@ -67,7 +69,15 @@ export const BlenderListUI = observer(function BlenderListUI_<T extends Field_li
             </ResizableFrame>
             <div tw='flex flex-col gap-2'>
                {/* <ListButtonClearUI field={field} /> */}
-               <div>
+               <Frame
+                  //
+                  tw='w-input'
+                  align
+                  col
+                  border={theme.inputBorder}
+                  dropShadow={theme.inputShadow}
+                  roundness={theme.inputRoundness}
+               >
                   <ListButtonAddUI field={field} />
                   <Button
                      disabled={selectedChild == null}
@@ -79,11 +89,84 @@ export const BlenderListUI = observer(function BlenderListUI_<T extends Field_li
                         })
                      }
                   />
-               </div>
+               </Frame>
                <Button icon='mdiChevronDown'></Button>
             </div>
          </Frame>
-         <Frame base={10}>{selectedChild && <selectedChild.UI />}</Frame>
+         <Frame
+            /* TODO(bird_d/login): Need an inline collapsible "group" sort of thing here */
+            tw='h-input flex-grow items-center text-center'
+            row
+            base={{ contrast: 0.1 }}
+         >
+            <Button borderless subtle icon='mdiChevronDown' />
+            <Frame>Prompt</Frame>
+         </Frame>
+         <div tw='flex flex-row gap-2 px-2'>
+            <ResizableFrame
+               header={
+                  </* TODO(bird_d/logic): Need to implement a way to toggle if the
+                      * resizable frame should take up content or should use size.
+                      * The buttons here should only need to be activated once for all items, not per item.
+                      * */>
+                     <SpacerUI />
+                     <Button
+                        borderless
+                        square
+                        subtle
+                        icon={'mdiArrowExpandVertical'}
+                        tooltip='Automatically resize to prompt'
+                     />
+                  </>
+               }
+               border
+               base={{ contrast: -0.025 }}
+            >
+               <Frame tw='h-full' base={10}>
+                  {selectedChild && <selectedChild.UI />}
+               </Frame>
+            </ResizableFrame>
+         </div>
+         <Frame
+            /* TODO(bird_d/login): Need an inline collapsible "group" sort of thing here */
+            tw='h-input flex-grow items-center text-center'
+            row
+            base={{ contrast: 0.1 }}
+         >
+            <Button borderless subtle icon='mdiChevronDown' />
+            <Frame>Options</Frame>
+         </Frame>
+         <div tw='px-2'>
+            <Frame
+               align
+               border={theme.inputBorder}
+               dropShadow={theme.inputShadow}
+               roundness={theme.inputRoundness}
+            >
+               <Button //
+                  active
+                  expand
+               >
+                  Concatenate
+               </Button>
+               <Button //
+                  expand
+               >
+                  Combine
+               </Button>
+               <Button //
+                  expand
+               >
+                  Average
+               </Button>
+            </Frame>
+         </div>
+         <div
+            // Temporary, just to separate from old stuff
+            tw='h-input'
+         >
+            WOW
+         </div>
       </Frame>
    )
 })
