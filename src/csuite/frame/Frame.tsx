@@ -205,9 +205,11 @@ export const Frame = observer(
                p.wrap && 'flex-wrap',
                p.align && [
                   // Clip children to fix border issues and make the children styled correctly
-                  'h-input flex !gap-0 overflow-clip [&>*]:!rounded-none [&>*]:!border-0',
-                  // Add borders/"dividers" where needed (Right of every child except last)
-                  '[&>*:not(:last-child)]:!border-r',
+                  'flex !gap-0 overflow-clip [&>*]:!rounded-none [&>*]:!border-0',
+                  // Add borders/"dividers" where needed (Right/Bottom of every child except last)
+                  p.col
+                     ? 'flex-col [&>*:not(:last-child)]:!border-b'
+                     : 'h-input flex-row [&>*:not(:last-child)]:!border-r',
                   // '[&>*:not(:last-child)]:!mr-[1px]',
                ],
                // Fixes scrolling when used as a container
