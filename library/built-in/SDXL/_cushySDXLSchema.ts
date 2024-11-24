@@ -79,7 +79,6 @@ export function _cushySDXLSchema(b: X.Builder): $CushySDXLUI {
          },
          { icon: 'mdiPlusBoxOutline' },
       ),
-      controlnets: ui_cnet(),
       negative: b
          .prompt({
             icon: 'mdiMinusBoxOutline',
@@ -101,6 +100,7 @@ export function _cushySDXLSchema(b: X.Builder): $CushySDXLUI {
          })
          .optional(true)
          .list({ min: 1, icon: 'mdiMinusBoxOutline' }),
+      controlnets: ui_cnet(),
       model: prefabModelSD15andSDXL({
          // @ts-ignore
          ckpt_name: 'albedobaseXL_v21.safetensors',
