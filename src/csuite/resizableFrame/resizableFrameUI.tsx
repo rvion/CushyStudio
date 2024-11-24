@@ -4,6 +4,7 @@ import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 
+import { Button } from '../button/Button'
 import { useCSuite } from '../ctx/useCSuite'
 import { Frame, type FrameProps } from '../frame/Frame'
 import { IkonOf } from '../icons/iconHelpers'
@@ -34,6 +35,9 @@ type ResizableFrameProps = {
    header?: ReactNode
    footer?: ReactNode
 
+   /** If undefined, the footer will always be shown. When True/False it will start with that value, but will be toggle-able via an internal state  */
+   showFooter?: boolean
+
    /** When true, return relative mouse movement (e.movementY), else return the starting value + offset */
    relative?: boolean
 
@@ -46,8 +50,11 @@ type ResizableFrameProps = {
 
 class ResizableFrameStableState {
    size: number
+   showFooter?: boolean
+
    constructor(public props: ResizableFrameProps) {
       this.size = props.currentSize ?? props.startSize ?? defaultSize
+      this.showFooter = props.showFooter
       makeAutoObservable(this)
    }
 
@@ -89,7 +96,7 @@ export const ResizableFrame = observer(function ResizableFrame_(p: ResizableFram
    return (
       <Frame // container
          // hover
-         tw='flex flex-col overflow-clip !p-0'
+         tw='flex flex-grow flex-col overflow-clip !p-0'
          style={{ gap: '0px', ...p.style }}
          border={{ contrast: 0 }}
          dropShadow={theme.inputShadow}
@@ -112,18 +119,33 @@ export const ResizableFrame = observer(function ResizableFrame_(p: ResizableFram
          </Frame>
 
          <Frame // Footer
-            className='h-input relative w-full'
+            className='flex w-full flex-col'
             base={csuite.inputContrast}
             style={{ borderTop: '1px solid oklch(from var(--KLR) calc(l + 0.1 * var(--DIR)) c h)' }}
          >
             <Frame
-               hover
-               tw='absolute inset-0 !flex h-full cursor-ns-resize items-center justify-center'
+               tw='h-input inset-0 z-10 flex cursor-ns-resize items-center justify-center'
                onMouseDown={() => uist.start()}
             >
-               <IkonOf name='mdiDragHorizontalVariant'></IkonOf>
+               {p.showFooter != undefined && (
+                  <Button
+                     tw='absolute left-0'
+                     subtle
+                     border={false}
+                     icon={uist.showFooter ? 'mdiChevronDown' : 'mdiChevronRight'}
+                     onMouseDown={() => {
+                        uist.showFooter = !uist.showFooter
+                     }}
+                  />
+               )}
+               <IkonOf name='mdiDragHorizontalVariant' />
             </Frame>
-            <div tw='lh-input absolute items-center'>{p.footer}</div>
+            {
+               //TODO(bird_d): Make sure to fix image widget
+            }
+            {p.showFooter != undefined && uist.showFooter && (
+               <div tw='!z-50 flex-grow items-center'>{p.footer}</div>
+            )}
          </Frame>
       </Frame>
    )

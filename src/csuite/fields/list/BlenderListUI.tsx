@@ -36,6 +36,7 @@ export const BlenderListUI = observer(function BlenderListUI_<T extends Field_li
                   field.size = val
                }}
                snap={16}
+               showFooter={false}
                base={{ contrast: -0.025 }}
             >
                <div tw='flex flex-col gap-0.5 p-1'>
@@ -90,8 +91,9 @@ export const BlenderListUI = observer(function BlenderListUI_<T extends Field_li
 export const BlenderListFooterFilterUI = observer(function BlenderListFooterFilterUI_(p: {}) {
    const x = useLocalObservable(() => ({ filter: '' }))
    return (
-      <div>
+      <div tw='flex w-full flex-grow flex-col p-1'>
          <InputStringUI //
+            tw='flex-grow'
             icon='mdiFilter'
             clearable
             getValue={() => x.filter}

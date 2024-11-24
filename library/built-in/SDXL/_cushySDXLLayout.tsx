@@ -35,7 +35,9 @@ export function _cushySDXLLayout(): Maybe<DisplayRule<$CushySDXLUI['$Field']>> {
                field={p.field}
                renderItem={(item) => (
                   <ui.catalog.Misc.Frame tw='flex items-center' hover key={item.id}>
-                     <span tw={['line-clamp-1', !item.active && 'opacity-45']}>{item.child.text}</span>
+                     <span tw={['line-clamp-1 flex-grow px-1', !item.active && 'opacity-50']}>
+                        {item.child.text}
+                     </span>
                      <div tw='flex-none'>
                         <ui.catalog.Misc.Checkbox
                            toggleGroup='prompt'
