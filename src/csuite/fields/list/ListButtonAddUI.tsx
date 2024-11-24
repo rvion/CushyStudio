@@ -12,7 +12,6 @@ export const ListButtonAddUI = observer(function ListButtonAddUI_(p: { field: IW
       <Button
          size='input'
          // borderless
-         subtle
          disabled={!canAdd}
          square
          icon='mdiPlus'
