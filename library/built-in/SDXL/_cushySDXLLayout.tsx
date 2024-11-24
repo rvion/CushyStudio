@@ -41,6 +41,7 @@ export function _cushySDXLLayout(): Maybe<DisplayRule<$CushySDXLUI['$Field']>> {
                      </span>
                      <div tw='flex-none'>
                         <ui.catalog.Misc.Checkbox
+                           square // TODO(bird_d/ui): Buttons like this, where there's only an icon, should just automatically apply square if there's no text/children.
                            toggleGroup='prompt'
                            value={item.active}
                            onValueChange={(v) => item.setActive(v)}
