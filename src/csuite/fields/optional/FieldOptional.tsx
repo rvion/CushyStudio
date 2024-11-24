@@ -241,8 +241,8 @@ export class Field_optional<out T extends BaseSchema = BaseSchema> extends Field
          this.patchSerial((draft) => void (draft.active = value))
 
          // update child collapsed state if need be
-         if (value) this.child.setCollapsed(false)
-         else this.child.setCollapsed(true)
+         // if (value) this.child.setCollapsed(false)
+         // else this.child.setCollapsed(true)
       })
    }
 
