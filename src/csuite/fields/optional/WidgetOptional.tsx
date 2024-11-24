@@ -19,3 +19,19 @@ export const ShellOptionalUI = observer(function ShellOptionalUI_(p: CompiledRen
       />
    )
 })
+
+export const ShellOptionalEnabledUI = observer(function ShellOptionalEnabledUI_(
+   p: CompiledRenderProps<Field_optional>,
+) {
+   const field = p.field
+   // const extraClass = field.isDisabled ? 'pointer-events-none opacity-30 bg-[#00000005]' : undefined
+   const child = field.child
+   return (
+      <child.UI //
+         UpDownBtn={p.UpDownBtn}
+         DeleteBtn={p.DeleteBtn}
+         // Toogle={<child.UIToggle />}
+         // Title={(x) => renderFCOrNode(p.Title, { field: field })}
+      />
+   )
+})

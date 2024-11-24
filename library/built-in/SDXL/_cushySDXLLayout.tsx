@@ -1,6 +1,8 @@
 import type { DisplayRule } from '../../../src/csuite-cushy/presenters/Renderer'
 import type { $CushySDXLUI } from './_cushySDXLSchema'
 
+import { ShellOptionalEnabledUI } from '../../../src/csuite/fields/optional/WidgetOptional'
+
 export function _cushySDXLLayout(): Maybe<DisplayRule<$CushySDXLUI['$Field']>> {
    return (ui) => {
       const xxx = ui.field.Latent.bField
@@ -55,6 +57,9 @@ export function _cushySDXLLayout(): Maybe<DisplayRule<$CushySDXLUI['$Field']>> {
       ui.forAllFields((ui2) => {
          if (ui2.field.parent?.parent === ui.field.Positive.Prompts) {
             ui2.apply({ Head: false })
+         }
+         if (ui2.field.parent === ui.field.Positive.Prompts) {
+            ui2.apply({ Shell: ShellOptionalEnabledUI })
          }
       })
       ui.for(latent.bField, { Shell: ui.catalog.Shell.Left })
