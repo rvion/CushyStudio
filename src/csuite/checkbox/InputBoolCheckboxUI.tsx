@@ -9,9 +9,8 @@ import { CheckboxAndRadioIcon } from './_InputBoolToggleButtonBoxUI'
 // => ok the the other one is probably a togglable button. it was just unclear in SelectOptionUI
 // => can probably merge the two of them, except "input" like style may not make sense for buttons... let's see later
 export const InputBoolCheckboxUI = observer(function InputBoolCheckboxUI_(p: BoolButtonProps) {
-   const { onValueChange, iconOff, toggleGroup, ...rest } = p
+   const { onValueChange, iconOff, toggleGroup, widgetLabel, ...rest } = p
    const isActive = p.value ?? false
-   const label = p.text
    const mode = p.mode ?? 'checkbox' // 'checkbox'
    // const chroma = getInputBoolChroma(isActive)
    // const contrast = getInputBoolContrast(isActive)
@@ -37,7 +36,7 @@ export const InputBoolCheckboxUI = observer(function InputBoolCheckboxUI_(p: Boo
                iconSize='1.2rem' // 🔴 should be var(--inside-height), but for now we lose the csuite context in old modals. (cf fiche client in ticket modal)
             />
          )}
-         {p.children ?? (label ? <div tw='ml-1'>{label}</div> : null)}
+         {p.children ?? (widgetLabel ? <div tw='pl-1'>{widgetLabel}</div> : null)}
       </Frame>
    )
 })

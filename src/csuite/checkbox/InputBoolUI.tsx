@@ -28,6 +28,9 @@ export type BoolButtonProps = {
    /** alternative way to specify children */
    text?: string
 
+   /** Text to display inside widget */
+   widgetLabel?: string
+
    // border?: TintExt
 
    box?: Box

@@ -21,7 +21,7 @@ export const WidgetBoolUI = observer(function WidgetBoolUI_(p: { field: Field_bo
             display={field.config.display}
             expand={field.config.display === 'button' ? field.config.expand : true}
             icon={field.icon}
-            text={field.config.text ?? field.config.label2}
+            widgetLabel={field.config.text ?? field.config.label2}
             // value
             value={field.value_or_zero}
             onBlur={() => field.touch()}
