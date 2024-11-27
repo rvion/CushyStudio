@@ -10,7 +10,8 @@ import { hashStringToNumber } from '../../csuite/hashUtils/hash'
 import { InputStringUI } from '../../csuite/input-string/InputStringUI'
 import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
 import { mergeStylesTsEfficient } from '../../csuite/utils/mergeStylesTsEfficient'
-import { DraftMenuActionsUI } from './DraftMenuActionsUI'
+import { DraftMenuAppUI } from './DraftMenuAppUI'
+import { DraftMenuDraftUI } from './DraftMenuDraftUI'
 import { DraftMenuDataBlockUI } from './DraftMenuJump'
 import { DraftMenuLooks } from './DraftMenuLooksUI'
 import OverflowingRowUI from './OverflowingRowUI'
@@ -40,7 +41,8 @@ export const DraftHeaderUI = observer(function DraftHeader({
          <PanelHeaderUI>
             <DraftMenuLooks.DropDownUI draft={draft} title={app.name} />
             {/* <DraftMenuLooksUI draft={draft} title={app.name} /> */}
-            <DraftMenuActionsUI draft={draft} title={'Actions' /* app.name */} />
+            <DraftMenuAppUI draft={draft} />
+            <DraftMenuDraftUI draft={draft} />
             <SpacerUI />
             <Frame
                //Joined
