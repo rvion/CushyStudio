@@ -41,6 +41,7 @@ app({
             },
          }),
          promptFromLlm: b.markdown({ markdown: `` }),
+         promptFromLlm2: b.textarea({ default: '' }),
       }),
 
    run: async (sdk, ui) => {
@@ -53,6 +54,7 @@ app({
       const llmResult = await sdk.LLM.expandPrompt(ui.topic, ui.llmModel.id, ui.customSystemMessage.system)
       const positiveTxt = llmResult.prompt
       sdk.form.fields.promptFromLlm.config.markdown = positiveTxt
+      sdk.form.fields.promptFromLlm2.value = positiveTxt
       sdk.output_text(positiveTxt)
    },
 })
