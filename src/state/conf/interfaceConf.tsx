@@ -102,35 +102,39 @@ export const interfaceConf = cushyFactory.document(
          }),
 
          // 4. Widget Components
-         showWidgetUndo: ui.bool({
-            label: 'Show Widget',
-            text: ' Undo',
-            tooltip: 'Show undo button near every field',
-            default: true,
-         }),
-         showWidgetFoldButtons: ui.bool({
-            label: false,
-            text: 'Fold',
-            tooltip: 'Show Fold button near every field',
-            default: true,
-         }),
-         showWidgetMenu: ui.bool({
-            label: false,
-            text: 'Menu',
-            tooltip: 'Show action buttons at the bottom of the form',
-            default: true,
-         }),
-         showWidgetDiff: ui.bool({
-            label: false,
-            text: 'Diff',
-            tooltip: 'Show diff button near every field',
-            default: true,
-         }),
-         showToggleButtonBox: ui.bool({
-            label: false,
-            text: 'Toggle Button Box',
-            default: false,
-            tooltip: 'Show icons in toggle buttons',
+         widget: ui.group({
+            items: {
+               showUndo: ui.bool({
+                  label: 'Show',
+                  text: ' Undo',
+                  tooltip: 'Show undo button near every field',
+                  default: true,
+               }),
+               showFoldButtons: ui.bool({
+                  label: false,
+                  text: 'Fold',
+                  tooltip: 'Show Fold button near every field',
+                  default: true,
+               }),
+               showMenu: ui.bool({
+                  label: false,
+                  text: 'Menu',
+                  tooltip: 'Show action buttons at the bottom of the form',
+                  default: true,
+               }),
+               showDiff: ui.bool({
+                  label: false,
+                  text: 'Diff',
+                  tooltip: 'Show diff button near every field',
+                  default: true,
+               }),
+               showToggleButtonBox: ui.bool({
+                  label: false,
+                  text: 'Toggle Button Box',
+                  default: false,
+                  tooltip: 'Show icons in toggle buttons',
+               }),
+            },
          }),
 
          favBar: schemaFavbar(ui),
