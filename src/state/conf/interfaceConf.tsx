@@ -26,7 +26,7 @@ export const interfaceConf = cushyFactory.document(
       ui.fields({
          // name copied from flexlayout; will be used
          tabSetEnableSingleTabStretch: ui.boolean({
-            label: 'Auto-Hide Tabset',
+            label: false,
             text: 'Auto-Hide Tabset',
             tooltip: 'Hide the tabset when there is only one tab',
             default: false,
@@ -93,7 +93,8 @@ export const interfaceConf = cushyFactory.document(
             unit: 'rem',
             suffix: 'rem',
          }),
-         useDefaultCursorEverywhere: ui.boolean({
+         useDefaultCursorEverywhere: ui.bool({
+            label: false,
             text: 'Default Cursor Everywhere',
             tooltip:
                'Interactables will show the default cursor instead of the pointer finger. Reduces cursor flickering',
@@ -101,26 +102,32 @@ export const interfaceConf = cushyFactory.document(
          }),
 
          // 4. Widget Components
-         showWidgetUndo: ui.boolean({
-            text: 'Widget Undo',
+         showWidgetUndo: ui.bool({
+            label: 'Show Widget',
+            text: ' Undo',
             tooltip: 'Show undo button near every field',
             default: true,
          }),
-         showWidgetFoldButtons: ui.boolean({
-            tooltip: 'Show undo button near every field',
+         showWidgetFoldButtons: ui.bool({
+            label: false,
+            text: 'Fold',
+            tooltip: 'Show Fold button near every field',
             default: true,
          }),
-         showWidgetMenu: ui.boolean({
-            text: 'Widget Menu',
+         showWidgetMenu: ui.bool({
+            label: false,
+            text: 'Menu',
             tooltip: 'Show action buttons at the bottom of the form',
             default: true,
          }),
-         showWidgetDiff: ui.boolean({
-            text: 'Widget Diff',
+         showWidgetDiff: ui.bool({
+            label: false,
+            text: 'Diff',
             tooltip: 'Show diff button near every field',
             default: true,
          }),
-         showToggleButtonBox: ui.boolean({
+         showToggleButtonBox: ui.bool({
+            label: false,
             text: 'Toggle Button Box',
             default: false,
             tooltip: 'Show icons in toggle buttons',
