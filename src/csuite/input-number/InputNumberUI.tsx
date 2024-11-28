@@ -207,6 +207,8 @@ class InputNumberStableState {
       if (e.button == 2) {
          activeSlider = null
          document.exitPointerLock()
+         e.preventDefault()
+         e.stopPropagation()
       }
    }
 
@@ -296,20 +298,22 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
             style={{ width: `${((val - uist.rangeMin) / (uist.rangeMax - uist.rangeMin)) * 100}%` }}
          />
 
-         <div tw='z-20 grid h-full w-full items-center' style={{ gridTemplateColumns: '16px 1fr 16px' }}>
+         <div tw='z-20 flex h-full items-center'>
             <Button /* Left Button */
-               className='control'
+               // className='control'
                borderless
-               tw='z-20 items-center !rounded-none opacity-0'
+               tw='z-20 h-full items-center !rounded-none opacity-0'
                tabIndex={-1}
                onClick={uist.decrement}
                icon='mdiChevronLeft'
+               square
+               size='inside'
             />
             <div /* Text Container */
                tw={[
                   //
                   'th-text',
-                  `z-20 flex h-full truncate px-1 text-sm`,
+                  `z-20 flex h-full flex-grow truncate px-1 text-sm`,
                   'items-center',
                   // 'items-center justify-center',
                ]}
@@ -420,7 +424,9 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                   <>
                      {p.text && (
                         <div /* Inner Label Text - Not shown while editing */
-                           tw={['z-10 w-full truncate border-0 border-transparent pr-1 text-left outline-0']}
+                           tw={[
+                              'z-10 w-full flex-grow truncate border-0 border-transparent pr-1 text-left outline-0',
+                           ]}
                            style={{ fontSize: `${theme.inputText}pt` }}
                         >
                            {p.text}
@@ -436,12 +442,14 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
             </div>
 
             <Button /* Right Button */
-               className='control'
+               // className='control'
                borderless
-               tw='z-20 items-center !rounded-none opacity-0'
+               tw='z-20 h-full items-center !rounded-none opacity-0'
                tabIndex={-1}
                onClick={uist.increment}
                icon='mdiChevronRight'
+               square
+               size='inside'
             />
          </div>
       </Frame>
