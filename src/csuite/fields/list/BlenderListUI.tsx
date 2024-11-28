@@ -5,7 +5,6 @@ import type { ReactNode } from 'react'
 import { runInAction } from 'mobx'
 import { observer, useLocalObservable } from 'mobx-react-lite'
 
-import { WahWidgetPromptUI } from '../../../prompt/widgets/WidgetPromptUI'
 import { Button } from '../../button/Button'
 import { SpacerUI } from '../../components/SpacerUI'
 import { Frame } from '../../frame/Frame'
