@@ -291,12 +291,14 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
             }
          }}
       >
-         <Frame /* Slider display */
-            className='inui-foreground'
-            base={{ contrast: p.hideSlider ? 0 : 0.1, chromaBlend: 1 }}
-            tw={['h-input absolute left-0 z-10']}
-            style={{ width: `${((val - uist.rangeMin) / (uist.rangeMax - uist.rangeMin)) * 100}%` }}
-         />
+         {p.hideSlider ?? (
+            <Frame /* Slider display */
+               className='inui-foreground'
+               base={{ contrast: 0.1, chromaBlend: 1 }}
+               tw={['h-input absolute left-0 z-10']}
+               style={{ width: `${((val - uist.rangeMin) / (uist.rangeMax - uist.rangeMin)) * 100}%` }}
+            />
+         )}
 
          <div tw='z-20 flex h-full items-center'>
             <Button /* Left Button */
