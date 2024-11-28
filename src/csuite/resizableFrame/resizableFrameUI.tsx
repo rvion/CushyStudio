@@ -58,19 +58,27 @@ class ResizableFrameStableState {
       makeAutoObservable(this)
    }
 
-   start = (): void => {
+   start = (e: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
       startValue = this.size
       offset = 0
       window_addEventListener('mousemove', this.resize, true)
       window_addEventListener('pointerup', this.stop, true)
+
+      e.preventDefault()
+      e.stopPropagation()
    }
 
-   stop = (): void => {
+   stop = (e: MouseEvent): void => {
       window.removeEventListener('mousemove', this.resize, true)
       window.removeEventListener('pointerup', this.stop, true)
+
+      e.preventDefault()
+      e.stopPropagation()
    }
 
    resize = (e: MouseEvent): void => {
+      e.preventDefault()
+      e.stopPropagation()
       if (this.props.relative) {
          return this.props.onResize?.(e.movementY)
       }
@@ -125,7 +133,7 @@ export const ResizableFrame = observer(function ResizableFrame_(p: ResizableFram
          >
             <Frame
                tw='h-input inset-0 z-10 flex cursor-ns-resize items-center justify-center'
-               onMouseDown={() => uist.start()}
+               onMouseDown={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => uist.start(e)}
             >
                {p.showFooter != undefined && (
                   <Button
