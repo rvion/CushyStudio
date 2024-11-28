@@ -51,23 +51,26 @@ export const DraftMenuDraftUI = observer(function DraftMenuDraftUI_(p: {
                   }}
                />
 
-               <MenuDivider // Developer stuff
-               />
-               <MenuItem //
-                  label={`Copy ID`}
-                  icon='mdiClipboard'
-                  tooltip={`Copy draft ID to clipboard\n${draft.id}`}
-                  onClick={() => navigator.clipboard.writeText(draft.id)}
-               />
-               <MenuItem //
-                  label='Form Serial'
-                  onClick={() => st.layout.open('DraftJsonSerial', { draftID: draft.id })}
-               />
+               {cushy.preferences.interface.value.developerOptions.showMenuItems && (
+                  <>
+                     <MenuDivider />
+                     <MenuItem //
+                        label={`Copy ID`}
+                        icon='mdiClipboard'
+                        tooltip={`Copy draft ID to clipboard\n${draft.id}`}
+                        onClick={() => navigator.clipboard.writeText(draft.id)}
+                     />
+                     <MenuItem //
+                        label='Form Serial'
+                        onClick={() => st.layout.open('DraftJsonSerial', { draftID: draft.id })}
+                     />
 
-               <MenuItem //
-                  label='App code'
-                  onClick={() => st.layout.open('Script', { scriptID: draft.app.script.id })}
-               />
+                     <MenuItem //
+                        label='App code'
+                        onClick={() => st.layout.open('Script', { scriptID: draft.app.script.id })}
+                     />
+                  </>
+               )}
 
                <MenuDivider />
                <MenuItem

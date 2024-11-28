@@ -137,6 +137,21 @@ export const interfaceConf = cushyFactory.document(
             },
          }),
 
+         developerOptions: ui.fields({
+            showMenuItems: ui.bool({
+               label: 'Show',
+               text: 'Menu Items',
+               tooltip: 'Show developer options in various menus, pop-ups, etc.',
+               default: false,
+            }),
+            showDeveloperTooltips: ui.bool({
+               label: false,
+               text: 'Tooltips',
+               tooltip: 'Show developer info inside tooltips',
+               default: false,
+            }),
+         }),
+
          favBar: schemaFavbar(ui),
       }),
    {
