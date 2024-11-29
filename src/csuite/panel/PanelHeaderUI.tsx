@@ -55,6 +55,8 @@ export const PanelHeaderUI = observer(function PanelHeader({
       )
    }
 
+   const adjustedPadding = cushy.theme.value.inputRoundness + 2
+
    return (
       <RevealUI
          debugName='<Show-Header>'
@@ -73,7 +75,6 @@ export const PanelHeaderUI = observer(function PanelHeader({
             tw={[
                //
                'sticky top-0 [z-index:999]',
-               'px-1',
                extensibleHeight ? 'minh-widget shrink-0' : 'h-widget',
                'UI-PanelHeader',
                'CSHY-panel-header',
@@ -85,6 +86,10 @@ export const PanelHeaderUI = observer(function PanelHeader({
             onWheel={(event) => {
                event.currentTarget.scrollLeft += event.deltaY
                event.stopPropagation()
+            }}
+            style={{
+               paddingLeft: `${adjustedPadding}px`,
+               paddingRight: `${adjustedPadding}px`,
             }}
             {...rest}
          >
