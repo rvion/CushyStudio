@@ -59,11 +59,9 @@ h4 { font-size: 1rem; font-weight: bold; }
     display: none;
 }
 
-.Hovered-Region .CSHY-panel-header {
+/* .Hovered-Region .CSHY-panel-header {
     filter: brightness(110%);
-}
-
-
+} */
 
 /* border stuff ----------------------------------------------------------------------------------- */
 .bd { border: 2px solid red }
