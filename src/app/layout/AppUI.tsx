@@ -87,6 +87,9 @@ export const CushyUI = observer(function CushyUI_() {
                '--appbar': appBarComputed.variables.background,
                '--foobar1': inactiveTabColors.variables.color,
                '--foobar2': inactiveTabColors.variables.background,
+               '--theme-roundness': `${cushy.theme.value.inputRoundness}px`,
+               '--theme-roundness-padding': `${cushy.theme.value.inputRoundness}px`,
+               // '--theme-roundness-padding': `${cushy.theme.value.inputRoundness > 10 ? cushy.theme.value.inputRoundness - 10 : 0}px`,
                // TODO(bird_d): This feels hacky, probably okay for now? A lot of the csuite stuff I'm assuming needs to not use cushy.theme.value
                fontSize: `${cushy.theme.value.inputText}pt`,
             }}
