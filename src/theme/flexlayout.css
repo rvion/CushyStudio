@@ -264,8 +264,8 @@
   box-sizing: border-box;
   padding: 3px 0.5em;
   cursor: pointer;
-  padding-left: calc(var(--theme-roundness-padding) * 0.75);
-  padding-right: calc(var(--theme-roundness-padding) * 0.75);
+  padding-left: calc(var(--theme-roundness-padding) * 0.5 + 0.2rem);
+  padding-right: calc(var(--theme-roundness-padding) * 0.5 + 0.2rem);
 }
 .flexlayout__tab_button_stretch {
   background-color: transparent;
@@ -295,7 +295,7 @@
   }
 }
 .flexlayout__tab_button--unselected {
-  background-color: var(--color-tab-unselected-background);
+  background-color: transparent;
   color: var(--color-tab-unselected);
   border-radius: var(--theme-roundness);
   height: 90%;
@@ -334,7 +334,9 @@
 .flexlayout__tab_button_trailing {
   display: flex;
   visibility: hidden;
-  border-radius: 4px;
+  border-radius: var(--theme-roundness);
+  margin-left: 4px;
+  height: 12px !important;
 }
 .flexlayout__tab_button_trailing:hover {
   background-color: var(--color-6);
