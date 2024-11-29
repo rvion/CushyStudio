@@ -73,8 +73,8 @@
 /* splitter */
   --color-splitter:                         oklch(from var(--KLR) calc(l - 0.1 * var(--DIR)) calc(c / 2) h);
   --color-splitter:                         var(--appbar);
-  --color-splitter-hover:                   oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) calc(c * 2) h);
-  --color-splitter-drag:                    oklch(from var(--KLR) calc(l + 0.3 * var(--DIR)) calc(c * 8) h);
+  --color-splitter-hover:                   oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h);
+  --color-splitter-drag:                    oklch(from var(--KLR) calc(l + 0.3 * var(--DIR)) c h);
 
   --color-drag-rect-border:                 oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h);
   --color-drag-rect-background:             oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h);
