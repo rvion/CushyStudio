@@ -264,6 +264,8 @@
   box-sizing: border-box;
   padding: 3px 0.5em;
   cursor: pointer;
+  padding-left: calc(var(--theme-roundness-padding) * 0.75);
+  padding-right: calc(var(--theme-roundness-padding) * 0.75);
 }
 .flexlayout__tab_button_stretch {
   background-color: transparent;
