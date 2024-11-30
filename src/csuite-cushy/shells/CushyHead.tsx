@@ -31,8 +31,8 @@ export const CushyHeadUI = observer(function CushyHead(p: CushyHeadProps) {
 
          {/* HEADER EXTRA prettier-ignore */}
          {utils.renderFCOrNode(p.Extra, p)}
-         {interfacePreferences.showWidgetUndo && utils.renderFCOrNode(p.UndoBtn, p)}
-         {interfacePreferences.showWidgetMenu && utils.renderFCOrNode(p.MenuBtn, p)}
+         {interfacePreferences.widget.showUndo && utils.renderFCOrNode(p.UndoBtn, p)}
+         {interfacePreferences.widget.showMenu && utils.renderFCOrNode(p.MenuBtn, p)}
       </WidgetHeaderContainerUI>
    )
 })

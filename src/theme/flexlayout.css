@@ -32,7 +32,8 @@
   /* tabset background */
   /* --color-tabset-background:                oklch(from var(--KLR) calc(l + 0 * var(--DIR)) c h); */
   /* --color-tabset-background:                oklch(from var(--KLR) calc(l - 0.1 * var(--DIR)) calc(c / 2) h); */
-  --color-tabset-background:                var(--appbar);
+  --tab-bg:                                 oklch(from var(--appbar) calc(l - 0.1 * var(--DIR)) c h);
+  --color-tabset-background:                var(--tab-bg);
 
   /*                                        oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h); */
   /*                                        oklch(from var(--KLR) calc(l - 0.1 * var(--DIR)) calc(c / 2) h); */
@@ -40,11 +41,11 @@
   /* --color-tabset-background-selected:    oklch(from var(--KLR) calc(l + 0 * var(--DIR)) c h); */
   /* --color-tabset-background-selected:    oklch(from var(--KLR) calc(l - 0.1 * var(--DIR)) calc(c / 2) h); */
   /* --color-tabset-background-selected:    oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h); */
-  --color-tabset-background-selected:       var(--appbar);
+  --color-tabset-background-selected:       var(--tab-bg);
 
   /* --color-tabset-background-maximized:      oklch(from var(--KLR) calc(l + 0 * var(--DIR)) c h); */
   /*                                        oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h); */
-  --color-tabset-background-maximized:      var(--appbar);
+  --color-tabset-background-maximized:      var(--tab-bg);
 
   --color-tabset-divider-line:              oklch(var(--p)/.2);
   --color-tabset-header-background:         oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h);
@@ -72,8 +73,8 @@
 /* splitter */
   --color-splitter:                         oklch(from var(--KLR) calc(l - 0.1 * var(--DIR)) calc(c / 2) h);
   --color-splitter:                         var(--appbar);
-  --color-splitter-hover:                   oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) calc(c * 2) h);
-  --color-splitter-drag:                    oklch(from var(--KLR) calc(l + 0.3 * var(--DIR)) calc(c * 8) h);
+  --color-splitter-hover:                   oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h);
+  --color-splitter-drag:                    oklch(from var(--KLR) calc(l + 0.3 * var(--DIR)) c h);
 
   --color-drag-rect-border:                 oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h);
   --color-drag-rect-background:             oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h);
@@ -96,6 +97,7 @@
   bottom: 0;
   position: absolute;
   overflow: hidden;
+  background: var(--appbar);
 }
 .flexlayout__splitter {
   background-color: var(--color-splitter);
@@ -170,6 +172,10 @@
   box-sizing: border-box;
   font-size: var(--font-size);
   font-family: var(--font-family);
+  border-radius: var(--theme-roundness);
+  padding-left: var(--theme-roundness-padding);
+  padding-right: var(--theme-roundness-padding);
+  /* align-items: center; */
 }
 .flexlayout__tabset_tab_divider {
   width: 4px;
@@ -244,7 +250,7 @@
   box-sizing: border-box;
 }
 .flexlayout__tab {
-  border-radius: 5px;
+  border-radius: var(--theme-roundness);
   overflow: auto;
   position: absolute;
   box-sizing: border-box;
@@ -258,6 +264,8 @@
   box-sizing: border-box;
   padding: 3px 0.5em;
   cursor: pointer;
+  padding-left: calc(var(--theme-roundness-padding) * 0.5 + 0.2rem);
+  padding-right: calc(var(--theme-roundness-padding) * 0.5 + 0.2rem);
 }
 .flexlayout__tab_button_stretch {
   background-color: transparent;
@@ -287,18 +295,22 @@
   }
 }
 .flexlayout__tab_button--unselected {
-  background-color: var(--color-tab-unselected-background);
+  background-color: transparent;
   color: var(--color-tab-unselected);
+  border-radius: var(--theme-roundness);
+  height: 90%;
+  margin-top: 2px;
 }
 .flexlayout__tab_button_top {
   /* box-shadow: inset -2px 0px 5px rgba(0, 0, 0, 0.1); */
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
+  border-top-left-radius: var(--theme-roundness);
+  border-top-right-radius: var(--theme-roundness);
+  margin-top: 2px;
 }
 .flexlayout__tab_button_bottom {
   /* box-shadow: inset -2px 0px 5px rgba(0, 0, 0, 0.1); */
-  border-bottom-left-radius: 3px;
-  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: var(--theme-roundness);
+  border-bottom-right-radius: var(--theme-roundness);
 }
 .flexlayout__tab_button_leading {
   display: flex;
@@ -322,7 +334,9 @@
 .flexlayout__tab_button_trailing {
   display: flex;
   visibility: hidden;
-  border-radius: 4px;
+  border-radius: var(--theme-roundness);
+  margin-left: 4px;
+  height: 12px !important;
 }
 .flexlayout__tab_button_trailing:hover {
   background-color: var(--color-6);

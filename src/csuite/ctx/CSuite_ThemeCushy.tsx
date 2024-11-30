@@ -21,7 +21,7 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
    }
 
    get showFoldButtons(): boolean {
-      return this.st.preferences.interface.ShowWidgetFoldButtons.value ?? true
+      return this.st.preferences.interface.Widget.ShowFoldButtons.value ?? true
    }
 
    // sizes ------------------------------------------------------
@@ -47,19 +47,19 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
    }
 
    get showWidgetUndo(): boolean {
-      return this.st.preferences.interface.ShowWidgetUndo.value ?? true
+      return this.st.preferences.interface.Widget.ShowUndo.value ?? true
    }
 
    get showWidgetMenu(): boolean {
-      return this.st.preferences.interface.ShowWidgetMenu.value ?? true
+      return this.st.preferences.interface.Widget.ShowMenu.value ?? true
    }
 
    get showWidgetDiff(): boolean {
-      return this.st.preferences.interface.ShowWidgetDiff.value ?? true
+      return this.st.preferences.interface.Widget.ShowDiff.value ?? true
    }
 
    get showToggleButtonBox(): boolean {
-      return this.st.preferences.interface.ShowToggleButtonBox.value ?? false
+      return this.st.preferences.interface.Widget.ShowToggleButtonBox.value ?? false
    }
 
    get labellayout(): FormGlobalLayoutMode {

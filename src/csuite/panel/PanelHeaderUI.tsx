@@ -41,12 +41,10 @@ export const PanelHeaderUI = observer(function PanelHeader({
    if (!state.showHeader) {
       return (
          <Button
-            tw='absolute -top-1 !rounded-t-none opacity-80'
+            tw='absolute -top-1 z-[1000] !rounded-t-none opacity-90'
             style={{ right: theme.inputRoundness > 30 ? `${theme.inputRoundness}px` : '30px' }}
             size='xs'
             square
-            // subtle
-            borderless
             icon='mdiChevronDown'
             onClick={() => {
                state.showHeader = !state.showHeader
@@ -54,6 +52,8 @@ export const PanelHeaderUI = observer(function PanelHeader({
          />
       )
    }
+
+   const adjustedPadding = cushy.theme.value.inputRoundness + 2
 
    return (
       <RevealUI
@@ -73,7 +73,6 @@ export const PanelHeaderUI = observer(function PanelHeader({
             tw={[
                //
                'sticky top-0 [z-index:999]',
-               'px-1',
                extensibleHeight ? 'minh-widget shrink-0' : 'h-widget',
                'UI-PanelHeader',
                'CSHY-panel-header',
@@ -85,6 +84,10 @@ export const PanelHeaderUI = observer(function PanelHeader({
             onWheel={(event) => {
                event.currentTarget.scrollLeft += event.deltaY
                event.stopPropagation()
+            }}
+            style={{
+               paddingLeft: `${adjustedPadding}px`,
+               paddingRight: `${adjustedPadding}px`,
             }}
             {...rest}
          >

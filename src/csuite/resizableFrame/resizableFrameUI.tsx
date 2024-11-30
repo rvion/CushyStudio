@@ -8,7 +8,6 @@ import { Button } from '../button/Button'
 import { useCSuite } from '../ctx/useCSuite'
 import { Frame, type FrameProps } from '../frame/Frame'
 import { IkonOf } from '../icons/iconHelpers'
-import { PanelHeaderUI } from '../panel/PanelHeaderUI'
 import { window_addEventListener } from '../utils/window_addEventListenerAction'
 
 /* Used once per widget since they should not conflict. */
@@ -58,19 +57,27 @@ class ResizableFrameStableState {
       makeAutoObservable(this)
    }
 
-   start = (): void => {
+   start = (e: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
       startValue = this.size
       offset = 0
       window_addEventListener('mousemove', this.resize, true)
       window_addEventListener('pointerup', this.stop, true)
+
+      e.preventDefault()
+      e.stopPropagation()
    }
 
-   stop = (): void => {
+   stop = (e: MouseEvent): void => {
       window.removeEventListener('mousemove', this.resize, true)
       window.removeEventListener('pointerup', this.stop, true)
+
+      e.preventDefault()
+      e.stopPropagation()
    }
 
    resize = (e: MouseEvent): void => {
+      e.preventDefault()
+      e.stopPropagation()
       if (this.props.relative) {
          return this.props.onResize?.(e.movementY)
       }
@@ -98,12 +105,20 @@ export const ResizableFrame = observer(function ResizableFrame_(p: ResizableFram
          // hover
          tw='flex flex-grow flex-col overflow-clip !p-0'
          style={{ gap: '0px', ...p.style }}
-         border={{ contrast: 0 }}
+         border={theme.inputBorder}
          dropShadow={theme.inputShadow}
          roundness={csuite.inputRoundness}
          {...props}
       >
-         {p.header && <PanelHeaderUI>{p.header}</PanelHeaderUI>}
+         {p.header && (
+            <Frame
+               //
+               row
+               base={{ contrast: 0.0777 }}
+            >
+               {p.header}
+            </Frame>
+         )}
 
          <Frame // Content
             tw='w-full overflow-auto'
@@ -125,7 +140,7 @@ export const ResizableFrame = observer(function ResizableFrame_(p: ResizableFram
          >
             <Frame
                tw='h-input inset-0 z-10 flex cursor-ns-resize items-center justify-center'
-               onMouseDown={() => uist.start()}
+               onMouseDown={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => uist.start(e)}
             >
                {p.showFooter != undefined && (
                   <Button
