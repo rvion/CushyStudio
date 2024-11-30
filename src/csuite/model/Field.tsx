@@ -858,8 +858,8 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
    /** path within the model */
    get pathExt(): string {
       const p = this.parent
-      if (p == null) return `📄[${this.type}]`
-      return p.pathExt + '-' + this.mountKey + `->[${this.type}]`
+      if (p == null) return `@${this.type}`
+      return p.pathExt + '.' + this.mountKey + `@${this.type}`
    }
 
    getFieldAt(path: string): Maybe<Field<any>> {
