@@ -11,7 +11,7 @@ import { mergeDefined } from '../../csuite/utils/mergeDefined'
 import { _isFC, renderFCOrNode, renderFCOrNodeWithWrapper } from '../../csuite/utils/renderFCOrNode'
 import { QuickForm } from '../catalog/group/QuickForm'
 import { widgetsCatalog } from './RenderCatalog'
-import { defaultPresenterRule, defaultPresenterSlots } from './RenderDefaults'
+import { defaultPresenterRule } from './RenderDefaults'
 import { RenderUI } from './RenderUI'
 
 // 👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇
@@ -138,17 +138,11 @@ export class Presenter {
             }) as Maybe<WidgetSlots<FIELD>> // 🔴🔴🔴
             if (_slots) slots = mergeDefined(slots, _slots)
          } else {
-            const { rule, global, ...slotsOverride } = ruleOrConf
+            const { rule, ...slotsOverride } = ruleOrConf
             slots = mergeDefined(slots, slotsOverride)
             if (rule != null) {
                evalRuleOrConf(rule)
             }
-            // TODO do we want to simplify this
-            if (global != null) {
-               this.rulesForAllFields.push({ whenUnderPath: field.path, ruleOrConf: global })
-               evalRuleOrConf(global as RuleOrConf<FIELD> /* 🔶 cast probably necessary */)
-            }
-            // ⏸️ console.log(`[💄]    | slots are merged`)
          }
       }
       // #region EVALUATING/MERGING ALL RULES
@@ -232,7 +226,7 @@ export class Presenter {
          ? catalog.Shell[slots.ShellName]
          : slots.Shell //
            ? slots.Shell
-           : defaultPresenterSlots.Shell
+           : catalog.Shell.Default
 
       // console.log(`[🤠] slots.ShellName`, slots.ShellName, field.path, Shell === catalog.Shell.Inline)
       if (!Shell) throw new Error('Shell is not defined')
@@ -305,9 +299,7 @@ export type DisplayRule<FIELD extends Field> = CovariantFn1<
 export interface DisplayConf<out FIELD extends Field> //
    // 1️⃣ for self: UISlots + shell + children
    extends WidgetSlots<FIELD> {
-   layout?: CovariantFn1<FIELD, QuickFormContent[]>
    rule?: RuleOrConf<FIELD>
-   global?: RuleOrConf<Field> // | null | undefined | void
 }
 
 /**
