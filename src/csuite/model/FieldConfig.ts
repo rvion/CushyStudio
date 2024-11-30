@@ -51,12 +51,6 @@ export interface FieldConfig_CommonProperties<out T extends FieldTypes> {
    body?: null | CovariantFC<{ field: T['$Field'] }>
 
    /**
-    * override the default cell renderer
-    * (passing `null` to restore the default renderer)
-    */
-   cell?: null | CovariantFC<{ field: T['$Field'] }>
-
-   /**
     * override the default string renderer
     * (passing `null` to restore the default renderer)
     */
