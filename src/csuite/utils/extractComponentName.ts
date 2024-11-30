@@ -1,4 +1,4 @@
-export function extractComponentName(type) {
+export function extractComponentName(type: any): string | null {
    if (type == null) return null // recursivity terminal condition
    if (typeof type === 'string') return null // discard 'div', 'span', etc.
    if (type.name) return '🔘' + type.name
