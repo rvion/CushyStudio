@@ -4,14 +4,13 @@ import { observer } from 'mobx-react-lite'
 
 import { InputStringUI } from '../../input-string/InputStringUI'
 
-// string HEADER
-
 export const WidgetString_SmallInput = observer(function WidgetStringUI_(p: {
    field: Field_string
    readonly?: boolean
 }) {
    const field = p.field
    const config = field.config
+
    // prettier-ignore
    const placeholder =
         // 1. if placeholder is specified, use it

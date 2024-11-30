@@ -5,8 +5,6 @@ import { observer } from 'mobx-react-lite'
 import { useCSuite } from '../../ctx/useCSuite'
 import { Frame } from '../../frame/Frame'
 
-// Textarea BODY
-
 export const WidgetString_TextareaInput = observer(function WidgetString_TextareaBodyUI_(p: {
    field: Field_string
    readonly?: boolean

@@ -17,6 +17,7 @@ import { WidgetGroup_InlineUI } from '../../csuite/fields/group/WidgetGroup_Inli
 import { WidgetGroup_TabUI } from '../../csuite/fields/group/WidgetGroup_TabUI'
 import { type BlenderListProps, BlenderListUI } from '../../csuite/fields/list/BlenderListUI'
 import { WidgetNumberUI } from '../../csuite/fields/number/WidgetNumberUI'
+import { WidgetString_MarkdownUI } from '../../csuite/fields/string/WidgetString_Markdown'
 import { WidgetString_SmallInput } from '../../csuite/fields/string/WidgetString_SmallInput'
 import { WidgetString_summary } from '../../csuite/fields/string/WidgetString_summary'
 import { WidgetString_TextareaInput } from '../../csuite/fields/string/WidgetString_TextareaInput'
@@ -38,7 +39,7 @@ import { ShellMobileUI } from '../shells/ShellMobile'
 import { ShellNoop } from '../shells/ShellNoop'
 import { ShellSimpleUI } from '../shells/ShellSimple'
 
-export type WidgetsCatalog = {
+export type WidgetsCatalog = typeof widgetsCatalog /* {
    Misc: {
       Frame: FC<FrameProps>
       Button: FC<ButtonProps>
@@ -105,17 +106,14 @@ export type WidgetsCatalog = {
       group: typeof WidgetGroup_BlockUI
       inline: typeof WidgetGroup_InlineUI
    }
-}
+} */
 
-export const widgetsCatalog: WidgetsCatalog = {
+export const widgetsCatalog /* WidgetsCatalog */ = {
+   // #region global stuff
    Decorations: {
       Card: WidgetCardUI,
    },
-   Misc: {
-      Frame: Frame,
-      Button: Button,
-      Checkbox: InputBoolCheckboxUI,
-   },
+   QuickForm: QuickForm,
    Shell: {
       Simple: ShellSimpleUI,
       Mobile: ShellMobileUI,
@@ -127,6 +125,13 @@ export const widgetsCatalog: WidgetsCatalog = {
       //
       List1: ShellCushyList1UI,
    },
+   // #region Utils
+   Misc: {
+      Frame: Frame,
+      Button: Button,
+      Checkbox: InputBoolCheckboxUI,
+   },
+   // #region Form components
    Title: {
       h1: H1Title,
       h2: H2Title,
@@ -138,7 +143,7 @@ export const widgetsCatalog: WidgetsCatalog = {
       indentWithLiness: WidgetIndentNoLinesUI,
       indentNoLiness: WidgetIndentUI,
    },
-   QuickForm: QuickForm,
+   // #region fields
    number: {
       def: WidgetNumberUI,
    },
@@ -151,6 +156,7 @@ export const widgetsCatalog: WidgetsCatalog = {
       input: WidgetString_SmallInput,
       summary: WidgetString_summary,
       textarea: WidgetString_TextareaInput,
+      markdown: WidgetString_MarkdownUI,
    },
    list: {
       BlenderLike: BlenderListUI,
