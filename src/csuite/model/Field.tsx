@@ -45,6 +45,7 @@ import { WidgetLabelIconUI } from '../form/WidgetLabelIconUI'
 import { WidgetToggleUI } from '../form/WidgetToggleUI'
 import { hashJSONObjectToNumber } from '../hashUtils/hash'
 import { annotationsSymbol, makeAutoObservableInheritance } from '../mobx/mobx-store-inheritance'
+import { type SelectorMixin, SelectorMixinDescriptors } from '../selector/selector.mixin'
 import { SimpleSchema } from '../simple/SimpleSchema'
 import { exhaust } from '../utils/exhaust'
 import { makeLabelFromPrimitiveValue } from '../utils/makeLabelFromFieldName'
@@ -857,8 +858,8 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
    /** path within the model */
    get pathExt(): string {
       const p = this.parent
-      if (p == null) return `📄[${this.type}]`
-      return p.pathExt + '-' + this.mountKey + `->[${this.type}]`
+      if (p == null) return `@${this.type}`
+      return p.pathExt + '.' + this.mountKey + `@${this.type}`
    }
 
    getFieldAt(path: string): Maybe<Field<any>> {
@@ -1035,6 +1036,11 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
     * It's just a quick/hacky place to store stuff
     */
    getFieldCustom<T = unknown>(): T {
+      return this.serial.custom
+   }
+
+   // will be easy to type/extend with the new type accumulator strategy when we backport
+   get custom(): any {
       return this.serial.custom
    }
 
@@ -1235,6 +1241,24 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
       while (current) {
          result.push(current)
          current = current.parent
+      }
+      return result
+   }
+
+   get descendants(): Field[] {
+      const result: Field[] = []
+      for (const child of this.childrenAll) {
+         result.push(child)
+         result.push(...child.descendants)
+      }
+      return result
+   }
+
+   get descendantsIncludingSelf(): Field[] {
+      const result: Field[] = [this]
+      for (const child of this.childrenAll) {
+         result.push(child)
+         result.push(...child.descendants)
       }
       return result
    }
@@ -1921,3 +1945,6 @@ function isEmptyObject(obj: any): boolean {
    if (typeof obj !== 'object') return false
    return Object.keys(obj).length === 0
 }
+
+export interface Field<out K extends FieldTypes = FieldTypes> extends SelectorMixin {}
+Object.defineProperties(Field.prototype, SelectorMixinDescriptors)
