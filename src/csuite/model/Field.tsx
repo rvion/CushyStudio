@@ -45,6 +45,7 @@ import { WidgetLabelIconUI } from '../form/WidgetLabelIconUI'
 import { WidgetToggleUI } from '../form/WidgetToggleUI'
 import { hashJSONObjectToNumber } from '../hashUtils/hash'
 import { annotationsSymbol, makeAutoObservableInheritance } from '../mobx/mobx-store-inheritance'
+import { type SelectorMixin, SelectorMixinDescriptors } from '../selector/selector.mixin'
 import { SimpleSchema } from '../simple/SimpleSchema'
 import { exhaust } from '../utils/exhaust'
 import { makeLabelFromPrimitiveValue } from '../utils/makeLabelFromFieldName'
@@ -1939,3 +1940,6 @@ function isEmptyObject(obj: any): boolean {
    if (typeof obj !== 'object') return false
    return Object.keys(obj).length === 0
 }
+
+export interface Field<out K extends FieldTypes = FieldTypes> extends SelectorMixin {}
+Object.defineProperties(Field.prototype, SelectorMixinDescriptors)
