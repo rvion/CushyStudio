@@ -96,6 +96,7 @@ export const BlenderListUI = observer(function BlenderListUI_<T extends Field_li
                   tw='w-input'
                   align
                   col
+                  disabled={field.items.length < 2}
                   border={theme.inputBorder}
                   dropShadow={theme.inputShadow}
                   roundness={theme.inputRoundness}
