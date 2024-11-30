@@ -1,3 +1,5 @@
+import type { OpenRouter_ModelInfo } from '../../src/csuite/openrouter/OpenRouter_ModelInfo'
+
 import { InputStringUI } from '../../src/csuite/input-string/InputStringUI'
 import { LegacyFieldUI } from '../../src/panels/PanelConfig/LegacyFieldUI'
 
@@ -11,24 +13,27 @@ const _defaultSystemPrompt = [
 app({
    ui: (b) =>
       b.fields({
-         topic: b.string({ textarea: true, default: 'portrait of a sexy furry sheep princess' }),
-         llmModel: b.llmModel().withConfig({
-            uiui: (b) =>
-               b.apply({
-                  Body: () => (
-                     <div>
-                        <LegacyFieldUI label='OpenRouter API KEY'>
-                           <InputStringUI
-                              icon='mdiKey'
-                              type='password'
-                              getValue={() => cushy.configFile.value.OPENROUTER_API_KEY ?? ''}
-                              setValue={(next) => cushy.configFile.update({ OPENROUTER_API_KEY: next })}
-                           />
-                        </LegacyFieldUI>
-                     </div>
-                  ),
-               }),
-         }),
+         llmModels: b
+            .llmModel()
+            .list()
+            .withConfig({
+               uiui: (b) =>
+                  b.apply({
+                     Body: () => (
+                        <div>
+                           {b.field.defaultBody()}
+                           <LegacyFieldUI label='OpenRouter API KEY'>
+                              <InputStringUI
+                                 icon='mdiKey'
+                                 type='password'
+                                 getValue={() => cushy.configFile.value.OPENROUTER_API_KEY ?? ''}
+                                 setValue={(next) => cushy.configFile.update({ OPENROUTER_API_KEY: next })}
+                              />
+                           </LegacyFieldUI>
+                        </div>
+                     ),
+                  }),
+            }),
          customSystemMessage: b.group({
             startCollapsed: true,
             items: {
@@ -40,21 +45,41 @@ app({
                }),
             },
          }),
-         promptFromLlm: b.markdown({ markdown: `` }),
+         topic: b.string({
+            textarea: true,
+            default: 'portrait of a sexy furry sheep princess',
+            label: 'Prompt in Natural format',
+         }),
          promptFromLlm2: b.textarea({ default: '' }),
       }),
 
-   run: async (sdk, ui) => {
+   layout: (b) => {
+      b.for(b.field.PromptFromLlm2, { Body: b.catalog.string.markdown })
+   },
+   run: async (sdk, conf) => {
       if (!sdk.LLM.isConfigured) {
          sdk.output_text(`Enter your api key in Config`)
          return
       }
 
+      function formatResult(model: OpenRouter_ModelInfo, prompt: string): string {
+         return `## ${model.name} (${model.top_provider.is_moderated ? '😇' : '😈'})\n\n${prompt}`
+      }
+      function outputLLMResult(model: OpenRouter_ModelInfo, prompt: string): string {
+         const res = formatResult(model, prompt)
+         sdk.output_text(res)
+         return prompt
+      }
+
       // ask LLM to generate
-      const llmResult = await sdk.LLM.expandPrompt(ui.topic, ui.llmModel.id, ui.customSystemMessage.system)
-      const positiveTxt = llmResult.prompt
-      sdk.form.fields.promptFromLlm.config.markdown = positiveTxt
-      sdk.form.fields.promptFromLlm2.value = positiveTxt
-      sdk.output_text(positiveTxt)
+      const llmResults: string[] = await Promise.all(
+         conf.llmModels.map((model) =>
+            sdk.LLM.expandPrompt(conf.topic, model.id, conf.customSystemMessage.system) //
+               .then((p) => outputLLMResult(model, p.prompt)),
+         ),
+      )
+      const summaryTxt = conf.llmModels.map((model, ix) => formatResult(model, llmResults[ix]!)).join('\n\n')
+      sdk.form.fields.promptFromLlm2.value = summaryTxt
+      sdk.output_text(summaryTxt)
    },
 })
