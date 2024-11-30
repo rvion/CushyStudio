@@ -160,3 +160,8 @@ export const interfaceConf = cushyFactory.document(
       onSerialChange: (form) => writeJSON('settings/interface.json', form.serial),
    },
 )
+
+if (import.meta.hot) {
+   import.meta.hot.accept()
+   cushy.preferences.interface = interfaceConf
+}
