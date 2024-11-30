@@ -41,12 +41,10 @@ export const PanelHeaderUI = observer(function PanelHeader({
    if (!state.showHeader) {
       return (
          <Button
-            tw='absolute -top-1 !rounded-t-none opacity-80'
+            tw='absolute -top-1 z-[1000] !rounded-t-none opacity-90'
             style={{ right: theme.inputRoundness > 30 ? `${theme.inputRoundness}px` : '30px' }}
             size='xs'
             square
-            // subtle
-            borderless
             icon='mdiChevronDown'
             onClick={() => {
                state.showHeader = !state.showHeader
