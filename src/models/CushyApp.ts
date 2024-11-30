@@ -1,5 +1,5 @@
 import type { LibraryFile } from '../cards/LibraryFile'
-import type { DisplayRule } from '../csuite-cushy/presenters/Renderer'
+import type { DisplaySlotFn } from '../csuite-cushy/presenters/RenderTypes'
 import type { Timestamp } from '../csuite/types/Timestamp'
 import type { LiveDB } from '../db/LiveDB'
 import type { TABLES } from '../db/TYPES.gen'
@@ -345,7 +345,7 @@ export class CushyAppL extends BaseInst<TABLES['cushy_app']> {
       return this.data.createdAt as Timestamp
    }
 
-   get layout(): Maybe<DisplayRule<any>> {
+   get layout(): Maybe<DisplaySlotFn<any>> {
       return this.executable_orExtract?.def.layout
    }
 

@@ -1,7 +1,6 @@
 import type { Field } from '../../csuite/model/Field'
 import type { FCOrNode } from '../../csuite/utils/renderFCOrNode'
-import type { DisplayConf } from './Renderer'
-import type { WidgetSlots } from './RenderSlots'
+import type { DisplaySlots } from './RenderSlots'
 
 import { ShellLinkUI } from '../../csuite/fields/link/WidgetLink'
 import { ShellOptionalUI } from '../../csuite/fields/optional/WidgetOptional'
@@ -24,8 +23,8 @@ import { CushyHeadUI } from '../shells/CushyHead'
 import { ShellCushyLeftUI } from '../shells/ShellCushy'
 import { widgetsCatalog } from './RenderCatalog'
 
-export const defaultPresenterRule = <FIELD extends Field>(field: FIELD): DisplayConf<FIELD> => {
-   const slots: WidgetSlots<FIELD> = {
+export const defaultPresenterRule = <FIELD extends Field>(field: FIELD): DisplaySlots<FIELD> => {
+   const slots: DisplaySlots<FIELD> = {
       /* ✅ */ Shell: ShellCushyLeftUI,
 
       // heavilly suggested to include in your presenter unless you know what you do
@@ -70,7 +69,7 @@ export const defaultPresenterRule = <FIELD extends Field>(field: FIELD): Display
       /* 🟥 */ EasterEgg: (): JSX.Element => <>🥚</>,
    }
    const catalog = widgetsCatalog
-   const apply = (overrides: Partial<WidgetSlots<FIELD>>): void => void Object.assign(slots, overrides)
+   const apply = (overrides: Partial<DisplaySlots<FIELD>>): void => void Object.assign(slots, overrides)
    slots.DebugID = null
 
    // for('$@group', 1, {Body: ListOfFieldsWithGaps}  /* ... */)

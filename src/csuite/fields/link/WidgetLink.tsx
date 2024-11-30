@@ -1,4 +1,4 @@
-import type { CompiledRenderProps } from '../../../csuite-cushy/presenters/Renderer'
+import type { CompiledRenderProps } from '../../../csuite-cushy/presenters/RenderTypes'
 import type { BaseSchema } from '../../model/BaseSchema'
 import type { Field_link } from './FieldLink'
 

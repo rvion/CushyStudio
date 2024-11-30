@@ -1,4 +1,4 @@
-import type { CompiledRenderProps } from '../../../csuite-cushy/presenters/Renderer'
+import type { CompiledRenderProps } from '../../../csuite-cushy/presenters/RenderTypes'
 import type { Field_shared } from './FieldShared'
 
 import { observer } from 'mobx-react-lite'

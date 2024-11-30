@@ -18,7 +18,7 @@ app({
             .list()
             .withConfig({
                uiui: (b) =>
-                  b.apply({
+                  b.ui({
                      Body: () => (
                         <div>
                            {b.field.defaultBody()}
@@ -54,7 +54,11 @@ app({
       }),
 
    layout: (b) => {
-      b.for(b.field.PromptFromLlm2, { Body: b.catalog.string.markdown })
+      b.ui('', {
+         Decoration: null,
+         Indent: null,
+      })
+      b.ui(b.field.PromptFromLlm2, { Header: b.catalog.string.markdown })
    },
    run: async (sdk, conf) => {
       if (!sdk.LLM.isConfigured) {

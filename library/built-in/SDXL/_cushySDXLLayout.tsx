@@ -1,11 +1,11 @@
-import type { DisplayRule } from '../../../src/csuite-cushy/presenters/Renderer'
+import type { DisplaySlotFn } from '../../../src/csuite-cushy/presenters/RenderTypes'
 import type { $CushySDXLUI } from './_cushySDXLSchema'
 
 import { observer } from 'mobx-react-lite'
 
 import { ShellOptionalEnabledUI } from '../../../src/csuite/fields/optional/WidgetOptional'
 
-export function _cushySDXLLayout(): Maybe<DisplayRule<$CushySDXLUI['$Field']>> {
+export function _cushySDXLLayout(): Maybe<DisplaySlotFn<$CushySDXLUI['$Field']>> {
    return (ui) => {
       const xxx = ui.field.Latent.bField
       // ui.apply({
@@ -32,7 +32,7 @@ export function _cushySDXLLayout(): Maybe<DisplayRule<$CushySDXLUI['$Field']>> {
 
       const model = ui.field.Model
       const latent = ui.field.Latent
-      ui.for(ui.field.Positive.Prompts, {
+      ui.ui(ui.field.Positive.Prompts, {
          Head: false,
          Header: false,
          Body: observer((p) => (
@@ -56,29 +56,29 @@ export function _cushySDXLLayout(): Maybe<DisplayRule<$CushySDXLUI['$Field']>> {
             />
          )),
       })
-      ui.forAllFields((ui2) => {
-         if (ui2.field.parent?.parent === ui.field.Positive.Prompts) ui2.apply({ Head: false })
-         if (ui2.field.parent === ui.field.Positive.Prompts) ui2.apply({ Shell: ShellOptionalEnabledUI })
+      ui.ui('', (ui2) => {
+         if (ui2.field.parent?.parent === ui.field.Positive.Prompts) ui2.ui({ Head: false })
+         if (ui2.field.parent === ui.field.Positive.Prompts) ui2.ui({ Shell: ShellOptionalEnabledUI })
       })
-      ui.for(latent.bField, { Shell: ui.catalog.Shell.Left })
-      ui.forAllFields((ui2) => {
-         // ui2.apply()
+      ui.ui(latent.bField, { Shell: ui.catalog.Shell.Left })
+      ui.ui('', (ui2) => {
+         // ui2.for()
          // const isTopLevelGroup = ui2.field.depth === 1 && true //
          if (
             ui2.field.path.startsWith(latent.path + '.') &&
             ui2.field.type !== 'shared' &&
             ui2.field.type !== 'optional'
          )
-            ui2.apply({ Shell: ui.catalog.Shell.Right })
+            ui2.ui({ Shell: ui.catalog.Shell.Right })
 
-         if (ui2.field.path.startsWith(model.path + '.')) ui2.apply({ Shell: ui.catalog.Shell.Right })
+         if (ui2.field.path.startsWith(model.path + '.')) ui2.ui({ Shell: ui.catalog.Shell.Right })
 
          let should = ui2.field.path.startsWith(ui.field.Sampler.path + '.')
          should = ui2.field.depth >= 2
          if (should) {
-            if (ui2.field.isOfType('group', 'list', 'choices')) ui2.apply({ Title: ui.catalog.Title.h4 })
+            if (ui2.field.isOfType('group', 'list', 'choices')) ui2.ui({ Title: ui.catalog.Title.h4 })
             if (!ui2.field.isOfType('optional', 'link', 'list', 'shared'))
-               ui2.apply({ Shell: ui.catalog.Shell.Right })
+               ui2.ui({ Shell: ui.catalog.Shell.Right })
          }
       })
    }
