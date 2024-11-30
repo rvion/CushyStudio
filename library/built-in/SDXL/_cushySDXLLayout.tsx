@@ -87,7 +87,11 @@ export function _cushySDXLLayout(): Maybe<DisplayRule<$CushySDXLUI['$Field']>> {
                Title: ui2.catalog.Title.h3,
             })
          }
-         if (ui2.field.path.startsWith(latent.path + '.') && ui2.field.type !== 'shared')
+         if (
+            ui2.field.path.startsWith(latent.path + '.') &&
+            ui2.field.type !== 'shared' &&
+            ui2.field.type !== 'optional'
+         )
             ui2.apply({ Shell: ui.catalog.Shell.Right })
 
          if (ui2.field.path.startsWith(model.path + '.')) ui2.apply({ Shell: ui.catalog.Shell.Right })
