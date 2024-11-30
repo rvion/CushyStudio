@@ -65,6 +65,7 @@ import { BuilderString } from '../csuite/model/builders/BuilderStringTypes'
 import { Factory } from '../csuite/model/Factory'
 import { openRouterInfos } from '../csuite/openrouter/OpenRouter_infos'
 import { type OpenRouter_ModelInfo } from '../csuite/openrouter/OpenRouter_ModelInfo'
+import { SelectDefaultOptionUI } from '../csuite/select/SelectOptionBadgeUI'
 import { _FIX_INDENTATION } from '../csuite/utils/_FIX_INDENTATION'
 import { bang } from '../csuite/utils/bang'
 import { combine } from '../csuite/utils/combine'
@@ -457,13 +458,23 @@ export class CushySchemaBuilder implements IBuilder {
       const def = p.default ? knownModels.find((c) => c.id === p.default) : undefined
       return this.selectOne({
          values: knownModels,
+         OptionLabelUI(t, where) {
+            if (t?.id == null) return '🔶DEFAULT🔶'
+            const model = openRouterInfos[t.id]
+            if (!model) return '🔶DEFAULT🔶'
+            const moderationEmoji = model.top_provider.is_moderated ? '😇' : '😈'
+            const pricing = model.pricing
+            const pricingText = `(💰: ${pricing.prompt}/tok${pricing.request !== '0' ? ` + ${pricing.request}/req` : ''})`
+            const label = `${moderationEmoji} ${model.name} ${pricingText}`
+            return <SelectDefaultOptionUI label={label} />
+         },
          getIdFromValue: (v) => v.id,
          getOptionFromId: (id) => {
             const model = bang(knownModels.find((c) => c.id === id))
             return { id: model.id, label: model.name, value: model }
          },
          getValueFromId: (id) => knownModels.find((c) => c.id === id),
-         default: def?.id,
+         default: def?.id ?? knownModels[0]!.id,
       })
    }
 
