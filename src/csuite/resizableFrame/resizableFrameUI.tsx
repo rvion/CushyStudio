@@ -8,7 +8,6 @@ import { Button } from '../button/Button'
 import { useCSuite } from '../ctx/useCSuite'
 import { Frame, type FrameProps } from '../frame/Frame'
 import { IkonOf } from '../icons/iconHelpers'
-import { PanelHeaderUI } from '../panel/PanelHeaderUI'
 import { window_addEventListener } from '../utils/window_addEventListenerAction'
 
 /* Used once per widget since they should not conflict. */
@@ -106,12 +105,20 @@ export const ResizableFrame = observer(function ResizableFrame_(p: ResizableFram
          // hover
          tw='flex flex-grow flex-col overflow-clip !p-0'
          style={{ gap: '0px', ...p.style }}
-         border={{ contrast: 0 }}
+         border={theme.inputBorder}
          dropShadow={theme.inputShadow}
          roundness={csuite.inputRoundness}
          {...props}
       >
-         {p.header && <PanelHeaderUI>{p.header}</PanelHeaderUI>}
+         {p.header && (
+            <Frame
+               //
+               row
+               base={{ contrast: 0.0777 }}
+            >
+               {p.header}
+            </Frame>
+         )}
 
          <Frame // Content
             tw='w-full overflow-auto'
