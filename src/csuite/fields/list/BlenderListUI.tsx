@@ -8,13 +8,15 @@ import { observer, useLocalObservable } from 'mobx-react-lite'
 import { Button } from '../../button/Button'
 import { SpacerUI } from '../../components/SpacerUI'
 import { Frame } from '../../frame/Frame'
+import { IkonOf } from '../../icons/iconHelpers'
+import { InputNumberUI } from '../../input-number/InputNumberUI'
 import { InputStringUI } from '../../input-string/InputStringUI'
 import { ResizableFrame } from '../../resizableFrame/resizableFrameUI'
 import { ListButtonAddUI } from './ListButtonAddUI'
 
 export type BlenderListProps<T extends Field_list<any>> = {
    field: T
-   renderItem: (item: T['items'][number]) => ReactNode
+   renderItem: (item: T['items'][number], index: number) => ReactNode
 }
 
 export const BlenderListUI = observer(function BlenderListUI_<T extends Field_list<BaseSchema>>({
@@ -60,7 +62,7 @@ export const BlenderListUI = observer(function BlenderListUI_<T extends Field_li
                            base={{ contrast: selected ? 0.1 : 0 }}
                            roundness={theme.inputRoundness}
                         >
-                           {renderItem(i)}
+                           {renderItem(i, ix)}
                         </Frame>
                      )
                   })}
@@ -134,19 +136,49 @@ export const BlenderListUI = observer(function BlenderListUI_<T extends Field_li
             <Button borderless subtle icon='mdiChevronDown' />
             <Frame>Options</Frame>
          </Frame>
-         <div tw='px-2'>
-            <Frame
-               align
-               border={theme.inputBorder}
-               dropShadow={theme.inputShadow}
-               roundness={theme.inputRoundness}
-            >
-               <Button active expand>
-                  Concatenate
-               </Button>
-               <Button expand>Combine</Button>
-               <Button expand>Average</Button>
-            </Frame>
+         <div tw='flex flex-col gap-2 px-2'>
+            {x.selectedIx != 0 ? (
+               <>
+                  <Frame
+                     align
+                     border={theme.inputBorder}
+                     dropShadow={theme.inputShadow}
+                     roundness={theme.inputRoundness}
+                  >
+                     <Button //
+                        active
+                        expand
+                        tooltip='Not implemented'
+                     >
+                        Concatenate
+                     </Button>
+                     <Button //
+                        expand
+                        tooltip='Not implemented'
+                     >
+                        Combine
+                     </Button>
+                     <Button //
+                        expand
+                        tooltip='Not implemented'
+                     >
+                        Average
+                     </Button>
+                  </Frame>
+                  <InputNumberUI //
+                     text='Strength'
+                     hideSlider
+                     mode='float'
+                     onValueChange={() => {}}
+                     value={1.0}
+                     tooltip='Not implemented'
+                  />
+               </>
+            ) : (
+               <p tw='opacity-75'>
+                  First Prompt is used as a base and cannot adjust strength/conditioning type
+               </p>
+            )}
          </div>
          <div // Temporary, just to separate from old stuff
             tw='h-input'
