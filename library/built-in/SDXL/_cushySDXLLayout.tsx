@@ -1,6 +1,8 @@
 import type { DisplayRule } from '../../../src/csuite-cushy/presenters/Renderer'
 import type { $CushySDXLUI } from './_cushySDXLSchema'
 
+import { observer } from 'mobx-react-lite'
+
 import { ShellOptionalEnabledUI } from '../../../src/csuite/fields/optional/WidgetOptional'
 
 export function _cushySDXLLayout(): Maybe<DisplayRule<$CushySDXLUI['$Field']>> {
@@ -33,7 +35,7 @@ export function _cushySDXLLayout(): Maybe<DisplayRule<$CushySDXLUI['$Field']>> {
       ui.for(ui.field.Positive.Prompts, {
          Head: false,
          Header: false,
-         Body: (p) => (
+         Body: observer((p) => (
             <ui.catalog.list.BlenderLike<typeof p.field> //
                field={p.field}
                renderItem={(item) => (
@@ -52,7 +54,7 @@ export function _cushySDXLLayout(): Maybe<DisplayRule<$CushySDXLUI['$Field']>> {
                   </ui.catalog.Misc.Frame>
                )}
             />
-         ),
+         )),
       })
       ui.forAllFields((ui2) => {
          if (ui2.field.parent?.parent === ui.field.Positive.Prompts) {
