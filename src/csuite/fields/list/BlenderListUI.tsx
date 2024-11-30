@@ -90,7 +90,38 @@ export const BlenderListUI = observer(function BlenderListUI_<T extends Field_li
                      }
                   />
                </Frame>
-               <Button icon='mdiChevronDown'></Button>
+               <Button base={{ contrast: -0.1 }} icon='mdiChevronDown'></Button>
+               <Frame
+                  //
+                  tw='w-input'
+                  align
+                  col
+                  border={theme.inputBorder}
+                  dropShadow={theme.inputShadow}
+                  roundness={theme.inputRoundness}
+               >
+                  <Button
+                     disabled={selectedChild == null}
+                     icon='mdiChevronUp'
+                     tooltip='Move item up'
+                     onClick={() =>
+                        runInAction(() => {
+                           if (x.selectedIx > 0) field.moveItem(x.selectedIx, --x.selectedIx)
+                        })
+                     }
+                  />
+                  <Button
+                     disabled={selectedChild == null}
+                     icon='mdiChevronDown'
+                     tooltip='Move item down'
+                     onClick={() =>
+                        runInAction(() => {
+                           if (x.selectedIx < field.items.length - 1)
+                              field.moveItem(x.selectedIx, ++x.selectedIx)
+                        })
+                     }
+                  />
+               </Frame>
             </div>
          </Frame>
          {/* <Frame // TODO(bird_d/ui/logic): Need an inline collapsible "group" sort of thing here
