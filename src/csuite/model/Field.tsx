@@ -1239,6 +1239,24 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
       return result
    }
 
+   get descendants(): Field[] {
+      const result: Field[] = []
+      for (const child of this.childrenAll) {
+         result.push(child)
+         result.push(...child.descendants)
+      }
+      return result
+   }
+
+   get descendantsIncludingSelf(): Field[] {
+      const result: Field[] = [this]
+      for (const child of this.childrenAll) {
+         result.push(child)
+         result.push(...child.descendants)
+      }
+      return result
+   }
+
    // BUMP ----------------------------------------------------
    /**
     * every time a field serial is updated, we should call this function.
