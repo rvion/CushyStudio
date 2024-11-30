@@ -2,10 +2,9 @@ import type { BaseSchema } from '../../model/BaseSchema'
 import type { Field_list } from './FieldList'
 import type { ReactNode } from 'react'
 
-import { runInAction } from 'mobx'
+import { action, runInAction } from 'mobx'
 import { observer, useLocalObservable } from 'mobx-react-lite'
 
-import { WahWidgetPromptUI } from '../../../prompt/widgets/WidgetPromptUI'
 import { Button } from '../../button/Button'
 import { SpacerUI } from '../../components/SpacerUI'
 import { Frame } from '../../frame/Frame'
@@ -57,7 +56,7 @@ export const BlenderListUI = observer(function BlenderListUI_<T extends Field_li
                            }}
                            // active={selected}
                            border={{ contrast: 0 }}
-                           onClick={() => (x.selectedIx = ix)}
+                           onClick={action(() => (x.selectedIx = ix))}
                            base={{ contrast: selected ? 0.1 : 0 }}
                            roundness={theme.inputRoundness}
                         >
@@ -93,15 +92,14 @@ export const BlenderListUI = observer(function BlenderListUI_<T extends Field_li
                <Button icon='mdiChevronDown'></Button>
             </div>
          </Frame>
-         <Frame
-            /* TODO(bird_d/login): Need an inline collapsible "group" sort of thing here */
+         {/* <Frame // TODO(bird_d/login): Need an inline collapsible "group" sort of thing here
             tw='h-input flex-grow items-center text-center'
             row
             base={{ contrast: 0.1 }}
          >
             <Button borderless subtle icon='mdiChevronDown' />
             <Frame>Prompt</Frame>
-         </Frame>
+         </Frame> */}
          <div tw='flex flex-row gap-2 px-2'>
             <ResizableFrame
                header={
@@ -143,26 +141,14 @@ export const BlenderListUI = observer(function BlenderListUI_<T extends Field_li
                dropShadow={theme.inputShadow}
                roundness={theme.inputRoundness}
             >
-               <Button //
-                  active
-                  expand
-               >
+               <Button active expand>
                   Concatenate
                </Button>
-               <Button //
-                  expand
-               >
-                  Combine
-               </Button>
-               <Button //
-                  expand
-               >
-                  Average
-               </Button>
+               <Button expand>Combine</Button>
+               <Button expand>Average</Button>
             </Frame>
          </div>
-         <div
-            // Temporary, just to separate from old stuff
+         <div // Temporary, just to separate from old stuff
             tw='h-input'
          >
             WOW
