@@ -13,6 +13,7 @@ import { MessageErrorUI } from '../../csuite/messages/MessageErrorUI'
 import { MessageInfoUI } from '../../csuite/messages/MessageInfoUI'
 import { ProvenanceCtx } from '../../csuite/provenance/Provenance'
 import { SelectUI } from '../../csuite/select/SelectUI'
+import { SQLITE_true } from '../../csuite/types/SQLITE_boolean'
 import { QuickTableUI } from '../../csuite/utils/quicktable'
 import { FramePhoneUI } from '../../csuite/wrappers/FramePhoneUI'
 import { InstallRequirementsBtnUI } from '../../manager/REQUIREMENTS/Panel_InstallRequirementsUI'
@@ -141,7 +142,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                   }
                }}
             >
-               {metadata?.help && (
+               {app.data.showInfo === SQLITE_true && metadata?.help && (
                   // <MessageInfoUI>
                   <MarkdownUI tw='_WidgetMardownUI w-full' markdown={metadata.help} />
                   // </MessageInfoUI>

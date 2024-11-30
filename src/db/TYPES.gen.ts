@@ -1579,6 +1579,8 @@ export type CushyAppTable = {
    canStartFromImage?: Maybe<number>
    /** @default: null, sqlType: INT */
    lastRunAt?: Maybe<number>
+   /** @default: "1", sqlType: INT */
+   showInfo: Generated<number>
 }
 
 export type NewCushyApp = {
@@ -1594,6 +1596,7 @@ export type NewCushyApp = {
    isFavorite?: number
    canStartFromImage?: Maybe<number>
    lastRunAt?: Maybe<number>
+   showInfo?: number
 }
 
 export type CushyAppUpdate = {
@@ -1611,6 +1614,7 @@ export type CushyAppUpdate = {
    isFavorite?: number
    canStartFromImage?: number | null
    lastRunAt?: number | null
+   showInfo?: number
 }
 
 export type CushyAppBackRefsToHandleOnDelete = {
@@ -1633,6 +1637,7 @@ export type CushyAppT = {
    isFavorite: number
    canStartFromImage?: number | null
    lastRunAt?: number | null
+   showInfo: number
 }
 
 export type CushyAppTypes = {
@@ -1662,6 +1667,7 @@ export const CushyAppSchema = Type.Object(
       isFavorite: Type.Number(),
       canStartFromImage: Type.Optional(T.Nullable(Type.Number())),
       lastRunAt: Type.Optional(T.Nullable(Type.Number())),
+      showInfo: Type.Number(),
    },
    { additionalProperties: false },
 )
@@ -1706,6 +1712,7 @@ export const CushyAppFields = {
       pk: 0,
    },
    lastRunAt: { cid: 13, name: 'lastRunAt', type: 'INT', notnull: 0, dflt_value: null, pk: 0 },
+   showInfo: { cid: 14, name: 'showInfo', type: 'INT', notnull: 1, dflt_value: '1', pk: 0 },
 }
 
 // #region Auth
@@ -2762,6 +2769,7 @@ export type LiveDBSubKeys =
    | 'cushy_app.isFavorite'
    | 'cushy_app.canStartFromImage'
    | 'cushy_app.lastRunAt'
+   | 'cushy_app.showInfo'
    | 'auth'
    | 'auth.id'
    | 'auth.createdAt'
@@ -2957,6 +2965,7 @@ export const liveDBSubKeys = new Set([
    'cushy_app.isFavorite',
    'cushy_app.canStartFromImage',
    'cushy_app.lastRunAt',
+   'cushy_app.showInfo',
    'auth',
    'auth.id',
    'auth.createdAt',

@@ -151,7 +151,7 @@ export const _codegenORM = (store: {
       let fieldsDef: string = `\n`
       out2 += `declare type ${jsTableName}ID = Tagged<string, { ${jsTableName}ID: true }>\n`
       typeDecl += `\nexport const as${jsTableName}ID = (s: string): ${jsTableName}ID => s as any\n`
-      schemaDecl = `\n\nexport const ${jsTableName}Schema = Type.Object(\n    {\n`
+      schemaDecl = `\nexport const ${jsTableName}Schema = Type.Object(\n    {\n`
       typeDecl += `\nexport type ${jsTableName}Table = {\n`
       // typeDeclCreate += `export type ${jsTableName}_C = {\n`
       fieldsDef += `${xxx}\nexport const ${jsTableName}Fields = {\n`
@@ -250,7 +250,7 @@ export const _codegenORM = (store: {
          }
          typeDecl += `}`
       } else {
-         typeDecl += `\n\nexport type ${jsTableName}BackRefsToHandleOnDelete = EmptyObject\n`
+         typeDecl += `\n\nexport type ${jsTableName}BackRefsToHandleOnDelete = EmptyObject`
       }
       // #region ....
       // typeDeclCreate += `}`
@@ -273,14 +273,14 @@ export const _codegenORM = (store: {
 
       // #region #sum types
       out1 += `\nexport type ${jsTableName}Types = {\n`
-      out1 += `    TableName: '${table.name}',\n`
-      out1 += `    JSName: '${jsTableName}',\n`
-      out1 += `    Read: ${jsTableName}T,\n`
-      out1 += `    Instance: ${jsTableName}L,\n`
-      out1 += `    Create: New${jsTableName},\n`
-      out1 += `    Update: ${jsTableName}Update,\n`
-      out1 += `    ID: ${jsTableName}ID,\n`
-      out1 += `    Delete: ${jsTableName}BackRefsToHandleOnDelete,\n`
+      out1 += `    TableName: '${table.name}'\n`
+      out1 += `    JSName: '${jsTableName}'\n`
+      out1 += `    Read: ${jsTableName}T\n`
+      out1 += `    Instance: ${jsTableName}L\n`
+      out1 += `    Create: New${jsTableName}\n`
+      out1 += `    Update: ${jsTableName}Update\n`
+      out1 += `    ID: ${jsTableName}ID\n`
+      out1 += `    Delete: ${jsTableName}BackRefsToHandleOnDelete\n`
       out1 += `}\n`
 
       // out1 += typeDeclCreate + '\n'
