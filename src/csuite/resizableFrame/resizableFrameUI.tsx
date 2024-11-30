@@ -104,7 +104,7 @@ export const ResizableFrame = observer(function ResizableFrame_(p: ResizableFram
       <Frame // container
          // hover
          tw='flex flex-grow flex-col overflow-clip !p-0'
-         style={{ gap: '0px', ...p.style }}
+         style={{ gap: '0px', ...p.style, height: `${uist.size}px` }}
          border={theme.inputBorder}
          dropShadow={theme.inputShadow}
          roundness={csuite.inputRoundness}
@@ -121,10 +121,9 @@ export const ResizableFrame = observer(function ResizableFrame_(p: ResizableFram
          )}
 
          <Frame // Content
-            tw='w-full overflow-auto'
+            tw='w-full flex-grow overflow-auto'
             base={csuite.inputContrast}
             style={{
-               height: `${uist.size}px`,
                borderBottomLeftRadius: '0px',
                borderBottomRightRadius: '0px',
                padding: '0px !important',
