@@ -137,7 +137,11 @@ export class Field_prompt extends Field<Field_prompt_types> {
    /** DO NOT CALL YOURSELF; use `field.text =` setter instead */
    setText_INTERNAL(next: string): void {
       if (this.serial.val === next) return
-      this.runInValueTransaction(() => (this.serial.val = next))
+      this.runInValueTransaction(() => {
+         this.patchSerial((draft) => {
+            draft.val = next
+         })
+      })
    }
 
    setText(next: string): void {
@@ -151,7 +155,9 @@ export class Field_prompt extends Field<Field_prompt_types> {
          // To allow CodeMirror editor to react to external value changes, we need to use an effect in the UI.
          // To know when to run the effect, we update `valueUpdatedViaAPIAt` here to trigger the effect.
          this._valueUpdatedViaAPIAt = Date.now() as Timestamp
-         this.serial.val = next
+         this.patchSerial((draft) => {
+            draft.val = next
+         })
       })
    }
 
@@ -214,8 +220,8 @@ export class Field_prompt extends Field<Field_prompt_types> {
       onLora: (lora: Comfy.Slots['LoraLoader.lora_name']) => void
       /** @default true */
       printWildcards?: boolean
-   }): CompiledPrompt =>
-      compilePrompt({
+   }): CompiledPrompt => {
+      return compilePrompt({
          ctx: cushy,
          text: this.text,
          //
@@ -223,6 +229,7 @@ export class Field_prompt extends Field<Field_prompt_types> {
          seed: p.seed,
          printWildcards: p.printWildcards,
       })
+   }
 }
 
 // DI
