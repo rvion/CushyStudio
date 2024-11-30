@@ -84,8 +84,8 @@ export const BlenderListUI = observer(function BlenderListUI_<T extends Field_li
                      icon='mdiMinus'
                      onClick={() =>
                         runInAction(() => {
-                           if (x.selectedIx > 0) x.selectedIx--
                            field.removeItemAt(x.selectedIx)
+                           if (x.selectedIx > field.items.length - 1) x.selectedIx--
                         })
                      }
                   />
