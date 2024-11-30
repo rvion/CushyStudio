@@ -44,6 +44,13 @@ export const DraftMenuDraftUI = observer(function DraftMenuDraftUI_(p: {
 
                <MenuDivider />
                <MenuItem
+                  label='Open In ComfyUI'
+                  disabled={p.draft.file?.liteGraphJSON == null}
+                  onClick={() => cushy.layout.open('ComfyUI', { litegraphJson: p.draft.file.liteGraphJSON })}
+               />
+
+               <MenuDivider />
+               <MenuItem
                   label='Reset'
                   icon='mdiUndoVariant'
                   tooltip='Resets all fields of a Draft to their default'
