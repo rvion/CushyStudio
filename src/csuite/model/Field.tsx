@@ -1039,6 +1039,11 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
       return this.serial.custom
    }
 
+   // will be easy to type/extend with the new type accumulator strategy when we backport
+   get custom(): any {
+      return this.serial.custom
+   }
+
    /**
     * update
     * You can either return a new value, or patch the initial value
