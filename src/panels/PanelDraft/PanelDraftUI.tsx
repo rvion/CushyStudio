@@ -45,7 +45,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
    const panel: PanelState<any> = usePanel()
    // ensure
    useLayoutEffect(() => {
-      if (draft?.name != null) st.layout.syncTabTitle('Draft', { draftID: draft.id }, draft.name)
+      if (draft?.name != null) st.layout.syncTabTitle('Draft', { draftID: draft.id }, `Draft (${draft.name})`)
       // if (panel.def.tabColor) panel.setTabColor('!bg-blue-900')
    }, [draft?.name])
 
