@@ -134,6 +134,14 @@ export const interfaceConf = cushyFactory.document(
                   default: false,
                   tooltip: 'Show icons in toggle buttons',
                }),
+               color: ui.fields({
+                  showText: ui.bool({
+                     label: false,
+                     text: 'Text',
+                     default: false,
+                     tooltip: 'Show text inside color widget',
+                  }),
+               }),
             },
          }),
 

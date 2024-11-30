@@ -99,6 +99,7 @@ export const InputStringUI = observer(
       let visualHelper: ReactElement<any, any> | undefined
 
       const theme = cushy.theme.value
+      const interfacePref = cushy.preferences.interface.value
 
       switch (p.type) {
          case 'color':
@@ -109,7 +110,7 @@ export const InputStringUI = observer(
                   base={value ? value : undefined}
                   text={{ contrast: 1 }}
                >
-                  {getLCHFromStringAsString(value)}
+                  {interfacePref.widget.color.showText && getLCHFromStringAsString(value)}
                </Frame>
             )
             break
