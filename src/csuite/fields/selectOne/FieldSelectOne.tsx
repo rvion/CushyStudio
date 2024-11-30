@@ -76,6 +76,17 @@ export type Field_selectOne_config<
       getOptionFromId: (t: KEY, self: Field_selectOne<NoInfer<VALUE>, KEY>) => Maybe<SelectOption<VALUE, KEY>>
       /** set this to true if your choices are dynamically generated from the query directly, to disable local filtering */
       disableLocalFiltering?: boolean
+      /**
+       * will be removed soon; in the meantime, you must know that:
+       * - it will be passed to `OptionLabelUI` in src/csuite/fields/selectOne/WidgetSelectOne_SelectUI.tsx
+       * - it will be used in `DisplayOptionUI` in src/csuite/select/SelectState.tsx
+       * - if unset, `DefaultDisplayOption` in src/csuite/select/SelectState.tsx
+       * - you may want to use `SelectDefaultOptionUI` if you want to build a similarly themed component
+       * - you can just change the text label if otherise...
+       *
+       * ... and yes, this is crappy.
+       *
+       * */
       OptionLabelUI?: (
          //
          t: Maybe<SelectOption<VALUE, KEY>>,
