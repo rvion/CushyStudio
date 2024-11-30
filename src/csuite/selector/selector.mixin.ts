@@ -38,6 +38,9 @@ export const SelectorMixinImpl = defineFieldMixin({
    contains(selector: string): boolean {
       return this.select(selector).length > 0
    },
+   matches(selector: string): boolean {
+      return this.select(selector).includes(this)
+   },
 })
 
 export const SelectorMixinDescriptors = Object.getOwnPropertyDescriptors(SelectorMixinImpl)

@@ -160,7 +160,7 @@ describe('SelectorCompiler Tests', () => {
       expect(root.contains('.foo.baz?(@.custom.abcdefgh === false)')).toBe(false)
    })
 
-   it.only('should match itself when selector is emtpy', () => {
+   it('should match itself when selector is emtpy', () => {
       expect(root.contains('')).toBe(true)
       expect(root.select('').length).toBe(1)
       expect(root.select('')[0]).toBe(root)
@@ -168,5 +168,9 @@ describe('SelectorCompiler Tests', () => {
       expect(foo.contains('')).toBe(true)
       expect(foo.select('').length).toBe(1)
       expect(foo.select('')[0]).toBe(foo)
+
+      expect(foo.matches('')).toBe(true)
+      expect(bar.matches('')).toBe(true)
+      expect(root.matches('')).toBe(true)
    })
 })
