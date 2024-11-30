@@ -74,7 +74,7 @@ export const DraftHeaderUI = observer(function DraftHeader({
             <PublishAppBtnUI app={app} tw='ml-auto' />
          </PanelHeaderUI>
 
-         <OverflowingRowUI // quick access to past versions
+         {/* <OverflowingRowUI // quick access to past versions
             row
             icon='mdiHistory'
             iconSize='1.25rem'
@@ -95,7 +95,7 @@ export const DraftHeaderUI = observer(function DraftHeader({
                   </Button>
                )
             })}
-         </OverflowingRowUI>
+         </OverflowingRowUI> */}
          <Frame tw='text-base-content flex w-full flex-grow gap-2 p-2' base={{ contrast: -0.025 }}>
             <DraftIllustrationUI
                revealAppIllustrationOnHover
