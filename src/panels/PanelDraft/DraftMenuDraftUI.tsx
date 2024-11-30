@@ -32,11 +32,12 @@ export const DraftMenuDraftUI = observer(function DraftMenuDraftUI_(p: {
                <MenuDivider />
                <MenuItem //
                   label='New'
-                  icon='mdiContentCopy'
+                  icon='mdiFileDocumentPlus'
                   onClick={() => draft.app.createDraft()}
                />
                <MenuItem
                   label='Duplicate'
+                  icon='mdiContentCopy'
                   localShortcut={KEYS.duplicateCurrentDraft}
                   onClick={() => draft.duplicateAndFocus()}
                />
@@ -44,6 +45,7 @@ export const DraftMenuDraftUI = observer(function DraftMenuDraftUI_(p: {
                <MenuDivider />
                <MenuItem
                   label='Reset'
+                  icon='mdiUndoVariant'
                   tooltip='Resets all fields of a Draft to their default'
                   onClick={() => {
                      const confirm = window.confirm('Are you sure you want to delete this draft?')
