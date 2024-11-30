@@ -74,9 +74,9 @@ const DraftListUI = observer(function DraftListUI_(p: { app: CushyAppL }) {
                      draft.openOrFocusTab()
                   }}
                   beforeShortcut={
-                     <div tw='ml-auto text-xs italic text-gray-500'>
+                     <Frame text={{ contrast: 0.5 }} tw='ml-auto pl-6 text-xs '>
                         {_formatAsRelativeDateTime(lastRunAt)}
-                     </div>
+                     </Frame>
                   }
                />
             )
