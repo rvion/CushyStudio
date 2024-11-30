@@ -94,9 +94,13 @@ export const RevealUI = observer(
          // 2. place around anchor
          else if (relTo == null || relTo === 'anchor') {
             const element = anchorRef.current
+            // console.log(`[🌍 1] `, element?.getBoundingClientRect())
+            // console.log(`[🌍 2] `, reveal.getBoundingClientRect(element))
             reveal.setPosition(
-               element?.getBoundingClientRect() ?? null,
-               shellRef.current?.getBoundingClientRect() ?? null,
+               // 🌍 element?.getBoundingClientRect() ?? null,
+               reveal.getBoundingClientRect(element),
+               // 🌍 shellRef.current?.getBoundingClientRect() ?? null,
+               reveal.getBoundingClientRect(shellRef.current),
             )
          }
 
@@ -171,7 +175,7 @@ export const RevealUI = observer(
       return (
          <div //
             // 'inline-flex',
-            tw={['UI-Reveal 🔶NOT-CLONED🔶', reveal?.defaultCursor ?? 'cursor-pointer', p.className]}
+            tw={['UI-Reveal 🔶NOT-CLONED🔶 contents', reveal?.defaultCursor ?? 'cursor-pointer', p.className]}
             ref={anchorRef}
             style={p.style}
             onContextMenu={lazyState.onContextMenu}

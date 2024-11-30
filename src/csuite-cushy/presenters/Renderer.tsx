@@ -6,8 +6,9 @@ import type { ReactNode } from 'react'
 
 import { createElement } from 'react'
 
+import { extractComponentName } from '../../csuite/utils/extractComponentName'
 import { mergeDefined } from '../../csuite/utils/mergeDefined'
-import { renderFCOrNode, renderFCOrNodeWithWrapper } from '../../csuite/utils/renderFCOrNode'
+import { _isFC, renderFCOrNode, renderFCOrNodeWithWrapper } from '../../csuite/utils/renderFCOrNode'
 import { QuickForm } from '../catalog/group/QuickForm'
 import { widgetsCatalog } from './RenderCatalog'
 import { defaultPresenterRule, defaultPresenterSlots } from './RenderDefaults'
@@ -240,8 +241,24 @@ export class Presenter {
       const UI = widgetsCatalog
       const finalProps: CompiledRenderProps<FIELD> = { field, UI, presenter: this, ...slots }
 
+      // if (field.path === '$.latent.b.image.resize') this.debugFinalProps(finalProps)
       // console.log(`[🤠] Shell for ${field.path} is `, Shell)
       return renderFCOrNode(Shell, finalProps)
+   }
+
+   debugFinalProps(finalProps: CompiledRenderProps<any>): void {
+      console.log(
+         `[🤠] `,
+         finalProps.field.path,
+         Object.fromEntries(
+            Object.entries(finalProps).map(([k, v]) => [
+               k,
+               _isFC(v) && 'type' in v //
+                  ? (extractComponentName(v.type) ?? v)
+                  : v,
+            ]),
+         ),
+      )
    }
 
    utils = {

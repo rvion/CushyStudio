@@ -2,8 +2,6 @@ import type { Field_string } from './FieldString'
 
 import { observer } from 'mobx-react-lite'
 
-// Textarea HEADER
-
 export const WidgetString_summary = observer(function WidgetString_TextareaHeaderUI_(p: {
    field: Field_string
 }) {
