@@ -148,11 +148,11 @@ export const BlenderListUI = observer(function BlenderListUI_<T extends Field_li
                <Button expand>Average</Button>
             </Frame>
          </div>
-         <div // Temporary, just to separate from old stuff
+         {/* <div // Temporary, just to separate from old stuff
             tw='h-input'
          >
             WOW
-         </div>
+         </div> */}
       </Frame>
    )
 })
