@@ -171,7 +171,7 @@ export const RevealUI = observer(
       return (
          <div //
             // 'inline-flex',
-            tw={['UI-Reveal 🔶NOT-CLONED🔶', reveal?.defaultCursor ?? 'cursor-pointer', p.className]}
+            tw={['UI-Reveal 🔶NOT-CLONED🔶 contents', reveal?.defaultCursor ?? 'cursor-pointer', p.className]}
             ref={anchorRef}
             style={p.style}
             onContextMenu={lazyState.onContextMenu}
