@@ -14,11 +14,11 @@ export const WidgetCardUI = (p: WidgetCardProps): JSX.Element => (
       // style={{ transform: 'rotate(0deg)' }}
       border
       base={{
-         contrast: 0,
-         hue: p.hue ?? hashStringToNumber(p.field.path), // 0,
+         contrast: 0.0777,
+         // hue: p.hue ?? hashStringToNumber(p.field.path), // 0,
          // chroma: 0.3,
       }}
-      tw='mb-2'
+      // tw='mb-2'
       // tw='py-2 ml-1 my-1'
    >
       {p.children}

@@ -759,4 +759,10 @@ export const migrations: {
       name: 'add perspectiveID to project',
       up: ['alter table project add column perspectiveID text references perspective(id)'],
    },
+   // add migration to persist showInfo into cushy_app
+   {
+      id: '2024-11-30-tsnLYPzTAw',
+      name: 'add showInfo to cushy_app',
+      up: ['alter table cushy_app add column showInfo int not null default 1'],
+   },
 ]

@@ -4,11 +4,13 @@ import { observer } from 'mobx-react-lite'
 
 import { DraftIllustrationUI } from '../../cards/fancycard/DraftIllustration'
 import { Button } from '../../csuite/button/Button'
+import { InputBoolCheckboxUI } from '../../csuite/checkbox/InputBoolCheckboxUI'
 import { SpacerUI } from '../../csuite/components/SpacerUI'
 import { Frame, type FrameProps } from '../../csuite/frame/Frame'
 import { hashStringToNumber } from '../../csuite/hashUtils/hash'
 import { InputStringUI } from '../../csuite/input-string/InputStringUI'
 import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
+import { SQLITE_false, SQLITE_true } from '../../csuite/types/SQLITE_boolean'
 import { mergeStylesTsEfficient } from '../../csuite/utils/mergeStylesTsEfficient'
 import { DraftMenuAppUI } from './DraftMenuAppUI'
 import { DraftMenuDraftUI } from './DraftMenuDraftUI'
@@ -74,7 +76,7 @@ export const DraftHeaderUI = observer(function DraftHeader({
             <PublishAppBtnUI app={app} tw='ml-auto' />
          </PanelHeaderUI>
 
-         <OverflowingRowUI // quick access to past versions
+         {/* <OverflowingRowUI // quick access to past versions
             row
             icon='mdiHistory'
             iconSize='1.25rem'
@@ -95,7 +97,7 @@ export const DraftHeaderUI = observer(function DraftHeader({
                   </Button>
                )
             })}
-         </OverflowingRowUI>
+         </OverflowingRowUI> */}
          <Frame tw='text-base-content flex w-full flex-grow gap-2 p-2' base={{ contrast: -0.025 }}>
             <DraftIllustrationUI
                revealAppIllustrationOnHover
@@ -108,7 +110,15 @@ export const DraftHeaderUI = observer(function DraftHeader({
                   <DraftMenuDataBlockUI draft={draft} title='Drafts' />
                   <RunOrAutorunUI tw='!h-full flex-grow' draft={draft} />
                </Frame>
-               <div tw='flex items-center justify-between'>
+               <div tw='flex items-center'>
+                  <InputBoolCheckboxUI //
+                     value={app.data.showInfo === SQLITE_true}
+                     onValueChange={(v) => app.update({ showInfo: v ? SQLITE_true : SQLITE_false })}
+                     toggleGroup='showInfo'
+                     icon='mdiInformation'
+                  >
+                     Info
+                  </InputBoolCheckboxUI>
                   <InputStringUI
                      icon='mdiHammerScrewdriver'
                      autoResize

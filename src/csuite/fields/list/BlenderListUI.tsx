@@ -180,11 +180,11 @@ export const BlenderListUI = observer(function BlenderListUI_<T extends Field_li
                </p>
             )}
          </div>
-         <div // Temporary, just to separate from old stuff
+         {/* <div // Temporary, just to separate from old stuff
             tw='h-input'
          >
             WOW
-         </div>
+         </div> */}
       </Frame>
    )
 })

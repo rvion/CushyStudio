@@ -74,38 +74,13 @@ export function _cushySDXLLayout(): Maybe<DisplayRule<$CushySDXLUI['$Field']>> {
          )),
       })
       ui.forAllFields((ui2) => {
-         if (ui2.field.parent?.parent === ui.field.Positive.Prompts) {
-            ui2.apply({ Head: false })
-         }
-         if (ui2.field.parent === ui.field.Positive.Prompts) {
-            ui2.apply({ Shell: ShellOptionalEnabledUI })
-         }
+         if (ui2.field.parent?.parent === ui.field.Positive.Prompts) ui2.apply({ Head: false })
+         if (ui2.field.parent === ui.field.Positive.Prompts) ui2.apply({ Shell: ShellOptionalEnabledUI })
       })
       ui.for(latent.bField, { Shell: ui.catalog.Shell.Left })
-      // ui.for(ui.field.PositiveExtra, { Title: null })
-      // ui.for(ui.field.Model.Extra.fields.pag, {
-      //     Shell: ui.catalog.Shell.Left,
-      //     Title: ui.catalog.Title.h3,
-      //     Decoration: ui.catalog.Decorations.Card,
-      // })
       ui.forAllFields((ui2) => {
          // ui2.apply()
-         const isTopLevelGroup = ui2.field.depth === 1 && true //
-
-         // (ui2.field.type === 'group' || ui2.field.type === 'list' || ui2.field.type === 'choices')
-         if (ui2.field.parent?.parent === ui.field.Positive.Prompts) {
-            ui2.apply({
-               Icon: false,
-               Shell: ui.catalog.Shell.List1,
-            })
-         }
-         if (isTopLevelGroup) {
-            ui2.apply({
-               // Decoration: ui2.catalog.Decorations.Card,
-               // Decoration: (p) => <ui.catalog.Decorations.Card hue={hashStringToNumber(ui2.field.path)} {...p} />,
-               Title: ui2.catalog.Title.h3,
-            })
-         }
+         // const isTopLevelGroup = ui2.field.depth === 1 && true //
          if (
             ui2.field.path.startsWith(latent.path + '.') &&
             ui2.field.type !== 'shared' &&
