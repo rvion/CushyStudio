@@ -6,13 +6,9 @@ import type { ReactNode } from 'react'
 
 import { createElement } from 'react'
 
+import { extractComponentName } from '../../csuite/utils/extractComponentName'
 import { mergeDefined } from '../../csuite/utils/mergeDefined'
-import {
-   _isFC,
-   extractComponentName,
-   renderFCOrNode,
-   renderFCOrNodeWithWrapper,
-} from '../../csuite/utils/renderFCOrNode'
+import { _isFC, renderFCOrNode, renderFCOrNodeWithWrapper } from '../../csuite/utils/renderFCOrNode'
 import { QuickForm } from '../catalog/group/QuickForm'
 import { widgetsCatalog } from './RenderCatalog'
 import { defaultPresenterRule, defaultPresenterSlots } from './RenderDefaults'
