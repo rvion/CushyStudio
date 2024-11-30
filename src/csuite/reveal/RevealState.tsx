@@ -33,6 +33,41 @@ export const defaultShowDelay_whenNested: 0 = 0
 export const defaultHideDelay_whenNested: 0 = 0
 
 export class RevealState {
+   getBoundingClientRect(element: HTMLDivElement | null): DOMRect | null {
+      // if no element, let's just return null; not our problem
+      if (element == null) return null
+
+      // 1. check if "display:contents" is used
+      const isUsingDisplayContents =
+         element.style.display === 'contents' || //
+         element.className.includes('contents')
+      console.log(`[🔴3.1] `, isUsingDisplayContents)
+
+      // 2. if it does not, return it's natural bouding rect
+      if (!isUsingDisplayContents) return element?.getBoundingClientRect() ?? null
+
+      // 2. it it does, compute virtual bounding box by reducing its children
+      // https://stackoverflow.com/questions/75454061/getboundingclientrect-from-a-div-with-as-style-display-contents
+      const children = element.children
+      console.log(`[🔴3.2] `, children)
+      if (!children || children.length === 0) return null
+      // return new DOMRectReadOnly(10, 10, 10, 10)
+
+      let minX = Infinity
+      let minY = Infinity
+      let maxX = -Infinity
+      let maxY = -Infinity
+      const childrenList = [...element.children]
+      for (const child of childrenList) {
+         const rect = child.getBoundingClientRect()
+         minX = Math.min(minX, rect.left)
+         minY = Math.min(minY, rect.top)
+         maxX = Math.max(maxX, rect.right)
+         maxY = Math.max(maxY, rect.bottom)
+      }
+      return new DOMRectReadOnly(minX, minY, maxX - minX, maxY - minY)
+   }
+
    static shared: { current: Maybe<RevealState> } = observable({ current: null }, { current: observable.ref })
    uid: number
 

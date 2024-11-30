@@ -94,9 +94,13 @@ export const RevealUI = observer(
          // 2. place around anchor
          else if (relTo == null || relTo === 'anchor') {
             const element = anchorRef.current
+            // console.log(`[🌍 1] `, element?.getBoundingClientRect())
+            // console.log(`[🌍 2] `, reveal.getBoundingClientRect(element))
             reveal.setPosition(
-               element?.getBoundingClientRect() ?? null,
-               shellRef.current?.getBoundingClientRect() ?? null,
+               // 🌍 element?.getBoundingClientRect() ?? null,
+               reveal.getBoundingClientRect(element),
+               // 🌍 shellRef.current?.getBoundingClientRect() ?? null,
+               reveal.getBoundingClientRect(shellRef.current),
             )
          }
 
