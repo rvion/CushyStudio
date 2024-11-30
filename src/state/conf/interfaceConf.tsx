@@ -163,5 +163,6 @@ export const interfaceConf = cushyFactory.document(
 
 if (import.meta.hot) {
    import.meta.hot.accept()
-   cushy.preferences.interface = interfaceConf
+
+   if ((window as any).cushy) cushy.preferences.interface = interfaceConf
 }
