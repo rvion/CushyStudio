@@ -1,6 +1,7 @@
 import type { PromptLangNodeName } from '../grammar/grammar.types'
-import type { Extension } from '@codemirror/state'
+import type { ChangeSpec, Extension } from '@codemirror/state'
 import type { EditorView } from '@codemirror/view'
+import type { SyntaxNode } from '@lezer/common'
 
 import { syntaxTree } from '@codemirror/language'
 import { keymap } from '@codemirror/view'
@@ -43,6 +44,21 @@ export const PromptKeymap1 = (): Extension =>
          key: 'm-k',
          preventDefault: true,
          run: changeWeights(-0.1, ['WeightedExpression', 'Lora', 'Wildcard']),
+      },
+      {
+         key: 'shift-a-ArrowUp',
+         preventDefault: true,
+         run: expandWeights(0, ['WeightedExpression', 'Lora', 'Wildcard']),
+      },
+      {
+         key: 'shift-a-ArrowLeft',
+         preventDefault: true,
+         run: expandWeights(-1, ['WeightedExpression', 'Lora', 'Wildcard']),
+      },
+      {
+         key: 'shift-a-ArrowRight',
+         preventDefault: true,
+         run: expandWeights(1, ['WeightedExpression', 'Lora', 'Wildcard']),
       },
       // { key: 'm-s-j', preventDefault: true, run: changeWeight(0.1, ['Lora', 'Wildcard']) },
       // { key: 'm-s-k', preventDefault: true, run: changeWeight(-0.1, ['Lora', 'Wildcard']) },
@@ -121,4 +137,110 @@ const changeWeight = (
          { from: b.to, to: b.to, insert: `:${newWeights})` },
       ],
    })
+}
+
+const expandWeights =
+   (direction: number, stopAt: PromptLangNodeName[]) =>
+   (view: EditorView): boolean => {
+      const ranges = view.state.selection.ranges
+      const tree = syntaxTree(view.state)
+
+      for (const r of ranges) {
+         // TODO(bird_d/prompting/logic): Make this find the first weighted expression inside the selected range and go from there.
+         // Do nothing if there is a selection for now
+         if (r.from != r.to) {
+            continue
+         }
+
+         let a: SyntaxNode | null = $smartResolve(tree, r.to)
+
+         // Make sure we have the entire WeightedExpression group selected
+         while (a && a.name != 'WeightedExpression') {
+            a = a.parent
+         }
+
+         // Token was not inside a WeightedExpression, so do nothing
+         if (!a) {
+            console.log('[FD] "a" was null!')
+            return true
+         }
+
+         // Store changes to do at once later on so undo does not get extra steps
+         const changes = []
+
+         // Expand to the left
+         if (direction != 1) {
+            changes.push(growWeight(view, a, false))
+         }
+
+         // Expand to the right
+         if (direction != -1) {
+            changes.push(growWeight(view, a, true))
+         }
+
+         // Expand in both ways if not direction
+         view.dispatch({
+            changes,
+         })
+         continue
+      }
+      return true
+   }
+
+const growWeight = (view: EditorView, a: SyntaxNode, next: boolean): ChangeSpec => {
+   const tree = syntaxTree(view.state)
+   let token: SyntaxNode | undefined
+   let offset = a.to
+   // Find the token to expand the group to
+   while (token === undefined) {
+      if (a.name == 'WeightedExpression') {
+         let sibling = next ? a.nextSibling : a.prevSibling
+
+         while (sibling != null && sibling.name != 'Identifier') {
+            sibling = next ? sibling.nextSibling : a.prevSibling
+         }
+
+         if (sibling == null) {
+            return { from: 0, to: 0, insert: '' }
+         }
+         token = sibling
+         break
+      }
+
+      // SAFEGUARD
+      if (++offset - a.to > 5000) {
+         break
+      }
+   }
+
+   if (!token) {
+      return { from: 0, to: 0, insert: '' }
+   }
+   const text = view.state.doc.sliceString(a.from, token.to)
+
+   const number = bang(a.node.lastChild, 'A')
+   if ((number.name as PromptLangNodeName) !== 'Number') {
+      throw new Error(`❌ Expected a number`)
+   }
+
+   const numberTxt = view.state.doc.sliceString(number.from, number.to)
+   const weight = parseFloat(numberTxt)
+
+   // Expand to the right
+   if (next) {
+      return [
+         // Remove weights
+         { from: number.from - 1, to: number.to + 1, insert: '' },
+         // Add weights back in
+         { from: token.to, to: token.to, insert: `:${weight})` },
+      ]
+   }
+
+   // Expand to the left
+   return [
+      // Remove '('
+      { from: a.from, to: a.from + 1, insert: '' },
+      // Insert '(' in front of new place
+      { from: token.from, to: token.from, insert: '(' },
+   ]
 }
