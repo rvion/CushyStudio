@@ -197,7 +197,7 @@ const growWeight = (view: EditorView, a: SyntaxNode, next: boolean): ChangeSpec 
          let sibling = next ? a.nextSibling : a.prevSibling
 
          while (sibling != null && sibling.name != 'Identifier') {
-            sibling = next ? sibling.nextSibling : a.prevSibling
+            sibling = next ? sibling.nextSibling : sibling.prevSibling
          }
 
          if (sibling == null) {
