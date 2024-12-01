@@ -33,7 +33,7 @@ export const PanelStepsConf = cushyFactory.document(
                },
             ),
          },
-         { label: 'Panel steps Conf' },
+         { label: false, header: null },
       ),
    {
       name: 'panel-steps',
