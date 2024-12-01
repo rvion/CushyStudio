@@ -66,11 +66,30 @@ export type ParsedSelector = {
  * SelectorParser parses selector strings into an array of ASTSteps.
  */
 export class FieldSelector {
+   static cache = new Map<string, FieldSelector>()
+
+   static from(selector: string | ParsedSelector | FieldSelector): FieldSelector {
+      // 1.
+      if (selector instanceof FieldSelector) return selector
+
+      // 2.
+      if (typeof selector === 'string') {
+         const prev = FieldSelector.cache.get(selector)
+         if (prev) return prev
+         const next = new FieldSelector(selector)
+         FieldSelector.cache.set(selector, next)
+         return next
+      }
+
+      // 3.
+      return new FieldSelector(selector)
+   }
+
    private position: number = 0
    private length: number
    private selector: string
 
-   constructor(
+   private constructor(
       selector: string | ParsedSelector,
       //   public from: Field | null = null,
    ) {

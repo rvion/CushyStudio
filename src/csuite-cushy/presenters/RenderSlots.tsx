@@ -14,7 +14,7 @@ import type { WidgetIndentProps } from '../catalog/Indent/WidgetIndentUI'
 import type { WidgetPresetsProps } from '../catalog/Presets/WidgetPresets'
 import type { WidgetTitleProps } from '../catalog/Title/WidgetLabelTextUI'
 import type { CushyHeadProps } from '../shells/CushyHead'
-import type { CompiledRenderProps } from './Renderer'
+import type { CompiledRenderProps, DisplaySlotExt } from './RenderTypes'
 import type { FC, ReactNode } from 'react'
 
 // #region Slots
@@ -38,7 +38,8 @@ import type { FC, ReactNode } from 'react'
  *    ReactNode => use this react node direclty
  */
 
-export interface WidgetSlots<out FIELD extends Field = Field> {
+export interface DisplaySlots<out FIELD extends Field = Field> {
+   rule?: DisplaySlotExt<FIELD>
    layout?: CovariantFn1<FIELD, QuickFormContent[]>
 
    // 0.

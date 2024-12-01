@@ -1,13 +1,5 @@
-import type { BoolButtonProps } from '../../csuite/checkbox/InputBoolUI'
-import type { Field_choices } from '../../csuite/fields/choices/FieldChoices'
-import type { Field_number } from '../../csuite/fields/number/FieldNumber'
-import type { Field_string } from '../../csuite/fields/string/FieldString'
-import type { CompiledRenderProps } from './Renderer'
-import type { FC } from 'react'
-
-import { Button, type ButtonProps } from '../../csuite/button/Button'
+import { Button } from '../../csuite/button/Button'
 import { InputBoolCheckboxUI } from '../../csuite/checkbox/InputBoolCheckboxUI'
-import { InputBoolFlipButtonUI } from '../../csuite/checkbox/InputBoolFlipButtonUI'
 import { WidgetChoices_HeaderButtonsUI } from '../../csuite/fields/choices/WidgetChoices_HeaderButtonsUI'
 import { WidgetChoices_HeaderSelectUI } from '../../csuite/fields/choices/WidgetChoices_HeaderSelectUI'
 import { WidgetChoices_HeaderTabBarUI } from '../../csuite/fields/choices/WidgetChoices_HeaderTabBarUI'
@@ -15,19 +7,19 @@ import { WidgetGroup_BlockUI } from '../../csuite/fields/group/WidgetGroup_Block
 import { WidgetGroup_LineUI } from '../../csuite/fields/group/WidgetGroup_Header'
 import { WidgetGroup_InlineUI } from '../../csuite/fields/group/WidgetGroup_InlineUI'
 import { WidgetGroup_TabUI } from '../../csuite/fields/group/WidgetGroup_TabUI'
-import { type BlenderListProps, BlenderListUI } from '../../csuite/fields/list/BlenderListUI'
+import { BlenderListUI } from '../../csuite/fields/list/BlenderListUI'
 import { WidgetNumberUI } from '../../csuite/fields/number/WidgetNumberUI'
 import { WidgetString_MarkdownUI } from '../../csuite/fields/string/WidgetString_Markdown'
 import { WidgetString_SmallInput } from '../../csuite/fields/string/WidgetString_SmallInput'
 import { WidgetString_summary } from '../../csuite/fields/string/WidgetString_summary'
 import { WidgetString_TextareaInput } from '../../csuite/fields/string/WidgetString_TextareaInput'
-import { Frame, type FrameProps } from '../../csuite/frame/Frame'
-import { type WidgetCardProps, WidgetCardUI } from '../catalog/Decorations/WidgetCardUI'
-import { QuickForm, type QuickFormProps } from '../catalog/group/QuickForm'
+import { Frame } from '../../csuite/frame/Frame'
+import { WidgetCardUI } from '../catalog/Decorations/WidgetCardUI'
+import { QuickForm } from '../catalog/group/QuickForm'
 import { WidgetIndentNoLinesUI } from '../catalog/Indent/IndentNoLine'
-import { type WidgetIndentProps, WidgetIndentUI } from '../catalog/Indent/WidgetIndentUI'
+import { WidgetIndentUI } from '../catalog/Indent/WidgetIndentUI'
 import { H1Title, H2Title, H3Title, H4Title } from '../catalog/Title/H123Title'
-import { DefaultWidgetTitleUI, type WidgetTitleProps } from '../catalog/Title/WidgetLabelTextUI'
+import { DefaultWidgetTitleUI } from '../catalog/Title/WidgetLabelTextUI'
 import {
    ShellCushyFluidUI,
    ShellCushyLeftUI,
@@ -115,6 +107,7 @@ export const widgetsCatalog /* WidgetsCatalog */ = {
    },
    QuickForm: QuickForm,
    Shell: {
+      Default: ShellCushyLeftUI,
       Simple: ShellSimpleUI,
       Mobile: ShellMobileUI,
       Noop: ShellNoop,

@@ -1,4 +1,4 @@
-import type { CompiledRenderProps } from '../presenters/Renderer'
+import type { CompiledRenderProps } from '../presenters/RenderTypes'
 import type { ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
@@ -136,7 +136,9 @@ export const ShellCushyRightUI = observer(function ShellCushyRight(p: CompiledRe
                   {utils.renderFCOrNode(p.DragKnob /*  */, {})}
                   {utils.renderFCOrNode(p.Caret /*     */, { field, className: 'mr-auto' })}
                   {utils.renderFCOrNode(p.Presets /*   */, { field, className: 'self-start mr-2' })}
-                  {!p.field.isCollapsed && !p.field.isCollapsible && <div tw='mr-auto' />}
+                  {/* {p.field.isCollapsible ? 'collapsible' : 'not collapsible'} */}
+                  {/* {!p.field.isCollapsed && !p.field.isCollapsible && <div tw='mr-auto' />} */}
+                  <div tw='mr-auto' />
                   {utils.renderFCOrNode(p.Title /*     */, { field, className: 'mr-2' })}
                   {utils.renderFCOrNode(p.DebugID /*   */, { field })}
                   {utils.renderFCOrNode(p.Icon /*      */, { field, className: 'mx-1' })}

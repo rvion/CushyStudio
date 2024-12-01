@@ -1,7 +1,6 @@
 import type { Field } from '../../csuite/model/Field'
 import type { FCOrNode } from '../../csuite/utils/renderFCOrNode'
-import type { DisplayConf } from './Renderer'
-import type { WidgetSlots } from './RenderSlots'
+import type { DisplaySlots } from './RenderSlots'
 
 import { ShellLinkUI } from '../../csuite/fields/link/WidgetLink'
 import { ShellOptionalUI } from '../../csuite/fields/optional/WidgetOptional'
@@ -24,11 +23,70 @@ import { CushyHeadUI } from '../shells/CushyHead'
 import { ShellCushyLeftUI } from '../shells/ShellCushy'
 import { widgetsCatalog } from './RenderCatalog'
 
-export const defaultPresenterRule = <FIELD extends Field>(field: FIELD): DisplayConf<FIELD> => {
-   const slots: WidgetSlots<FIELD> = { ...defaultPresenterSlots }
+export const defaultPresenterRule = <FIELD extends Field>(field: FIELD): DisplaySlots<FIELD> => {
+   const slots: DisplaySlots<FIELD> = {
+      /* ✅ */ Shell: ShellCushyLeftUI,
+
+      // heavilly suggested to include in your presenter unless you know what you do
+      /* ✅ */ Head: CushyHeadUI, // will be injected by the field
+      /* ✅ */ Header: undefined, // will be injected by the field
+      /* ✅ */ Body: undefined, // will be injected by the field
+      /* ✅ */ Extra: undefined,
+
+      /* 🟢 */ Errors: WidgetErrorsUI,
+      /* 🟢 */ Title: DefaultWidgetTitleUI,
+
+      /* 🟢 */ DragKnob: undefined,
+      /* 🟢 */ UpDownBtn: undefined,
+      /* 🟢 */ DeleteBtn: undefined,
+
+      // bonus features
+      /* 🟡 */ Indent: WidgetIndentUI,
+      /* 🟡 */ UndoBtn: WidgetUndoChangesButtonUI,
+      /* 🟡 */ Toogle: WidgetToggleUI,
+      /* 🟡 */ Caret: WidgetLabelCaretUI,
+      /* 🟡 */ Icon: WidgetLabelIconUI,
+      /* 🟡 */ Presets: WidgetPresetsUI,
+      /* 🟡 */ MenuBtn: WidgetMenuUI,
+
+      // suggested containers
+      /* 🟠 */ ContainerForHeader: WidgetHeaderContainerUI,
+      /* 🟠 */ ContainerForBody: WidgetBodyContainerUI,
+      /* 🟠 */ ContainerForSummary: WidgetSingleLineSummaryUI,
+
+      classNameAroundBodyAndHeader: null,
+      classNameAroundBody: null,
+      classNameAroundHeader: null,
+      className: null,
+      shouldShowHiddenFields: false,
+      shouldAnimateResize: true,
+
+      // stuff you probably don't want to include
+      // debug stuff
+      /* 🟣 */ DebugID: WidgetDebugIDUI,
+
+      // only for the lolz
+      /* 🟥 */ EasterEgg: (): JSX.Element => <>🥚</>,
+   }
    const catalog = widgetsCatalog
-   const apply = (overrides: Partial<WidgetSlots<FIELD>>): void => void Object.assign(slots, overrides)
+   const apply = (overrides: Partial<DisplaySlots<FIELD>>): void => void Object.assign(slots, overrides)
    slots.DebugID = null
+
+   // for('$@group', 1, {Body: ListOfFieldsWithGaps}  /* ... */)
+   // for('@group', 10, { Body: } /* ... */)
+   // for('@list.@optional.@prompt^^', { Body: } /* ... */)
+
+   // for('$', { Shell:({field}) => (
+   //    <div>
+   //       <field.Foo.Bar.UI />
+   //       <div>
+   //          <field.Foo.Baz.X1.UI />
+   //          <field.Foo.Baz.X2.UI />
+   //          <field.Foo.Bar.UI />
+   //       </div>
+   //       <field.Foo.Bar.UI />
+   //    </div>
+   // ) } /* ... */)
 
    // shared
    if (isFieldShared(field)) {
@@ -54,7 +112,7 @@ export const defaultPresenterRule = <FIELD extends Field>(field: FIELD): Display
       if (field.depth === 1) {
          if (field.isOfType('group', 'list', 'choices')) {
             slots.Decoration = (p): JSX.Element => <catalog.Decorations.Card field={field} {...p} />
-            slots.Title = catalog.Title.h3
+            // slots.Title = catalog.Title.h3
          }
       } else if (field.depth === 2) {
          if (field.isOfType('group', 'list', 'choices')) apply({ Title: catalog.Title.h4 })
@@ -71,54 +129,9 @@ export const defaultPresenterRule = <FIELD extends Field>(field: FIELD): Display
 }
 
 // #region P.setup
-export const configureDefaultFieldPresenterComponents = (
-   /** so you don't have to polute the rest of your code */
-   overrides: Partial<WidgetSlots>,
-): void => {
-   Object.assign(defaultPresenterSlots, overrides)
-}
-
-export const defaultPresenterSlots: WidgetSlots<any> = {
-   /* ✅ */ Shell: ShellCushyLeftUI,
-
-   // heavilly suggested to include in your presenter unless you know what you do
-   /* ✅ */ Head: CushyHeadUI, // will be injected by the field
-   /* ✅ */ Header: undefined, // will be injected by the field
-   /* ✅ */ Body: undefined, // will be injected by the field
-   /* ✅ */ Extra: undefined,
-
-   /* 🟢 */ Errors: WidgetErrorsUI,
-   /* 🟢 */ Title: DefaultWidgetTitleUI,
-
-   /* 🟢 */ DragKnob: undefined,
-   /* 🟢 */ UpDownBtn: undefined,
-   /* 🟢 */ DeleteBtn: undefined,
-
-   // bonus features
-   /* 🟡 */ Indent: WidgetIndentUI,
-   /* 🟡 */ UndoBtn: WidgetUndoChangesButtonUI,
-   /* 🟡 */ Toogle: WidgetToggleUI,
-   /* 🟡 */ Caret: WidgetLabelCaretUI,
-   /* 🟡 */ Icon: WidgetLabelIconUI,
-   /* 🟡 */ Presets: WidgetPresetsUI,
-   /* 🟡 */ MenuBtn: WidgetMenuUI,
-
-   // suggested containers
-   /* 🟠 */ ContainerForHeader: WidgetHeaderContainerUI,
-   /* 🟠 */ ContainerForBody: WidgetBodyContainerUI,
-   /* 🟠 */ ContainerForSummary: WidgetSingleLineSummaryUI,
-
-   classNameAroundBodyAndHeader: null,
-   classNameAroundBody: null,
-   classNameAroundHeader: null,
-   className: null,
-   shouldShowHiddenFields: false,
-   shouldAnimateResize: true,
-
-   // stuff you probably don't want to include
-   // debug stuff
-   /* 🟣 */ DebugID: WidgetDebugIDUI,
-
-   // only for the lolz
-   /* 🟥 */ EasterEgg: (): JSX.Element => <>🥚</>,
-}
+// export const configureDefaultFieldPresenterComponents = (
+//    /** so you don't have to polute the rest of your code */
+//    overrides: Partial<WidgetSlots>,
+// ): void => {
+//    Object.assign(defaultPresenterSlots, overrides)
+// }

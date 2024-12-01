@@ -1,6 +1,7 @@
 import type { Field } from '../../csuite/model/Field'
 import type { WidgetsCatalog } from './RenderCatalog'
-import type { DisplayConf, RuleOrConf } from './Renderer'
+import type { DisplaySlots } from './RenderSlots'
+import type { DisplaySlotExt } from './RenderTypes'
 import type { FC } from 'react'
 
 export type CatalogVariants<N extends CATALOG.AllFieldTypes> = any
@@ -8,8 +9,8 @@ export type CatalogVariants<N extends CATALOG.AllFieldTypes> = any
 /* eslint-disable @typescript-eslint/no-namespace */
 declare global {
    namespace RENDERER {
-      interface FieldRenderArgs<out FIELD extends Field> extends DisplayConf<FIELD> {}
-      type UIConf<FIELD extends Field> = RuleOrConf<FIELD>
+      interface FieldRenderArgs<out FIELD extends Field> extends DisplaySlots<FIELD> {}
+      type UIConf<FIELD extends Field> = DisplaySlotExt<FIELD>
    }
 
    interface Window {
