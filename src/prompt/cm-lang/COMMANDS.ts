@@ -98,8 +98,8 @@ const changeWeight = (
             changes: [
                // remove the `(`
                { from: a.from, to: a.from + 1, insert: `` },
-               // remove the `)*...`
-               { from: number.from - 2, to: number.to, insert: `` },
+               // remove the `:VALUE)`
+               { from: number.from - 1, to: number.to + 1, insert: `` },
             ],
          })
          return
@@ -118,7 +118,7 @@ const changeWeight = (
    view.dispatch({
       changes: [
          { from: a.from, to: a.from, insert: `(` },
-         { from: b.to, to: b.to, insert: `)*${newWeights}` },
+         { from: b.to, to: b.to, insert: `:${newWeights})` },
       ],
    })
 }
