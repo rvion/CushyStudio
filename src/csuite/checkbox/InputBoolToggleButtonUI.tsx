@@ -56,6 +56,7 @@ export const ToggleButtonUI = observer(function ToggleButtonUI_(
          roundness={csuite.inputRoundness}
          expand={p.expand}
          style={p.style}
+         size={p.size}
          hovered={p.hovered}
          icon={p.icon}
          onClick={(ev) => {
