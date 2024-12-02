@@ -69,7 +69,7 @@ export class ComfyManagerRepository {
    getKnownCheckpoints = (): ComfyManagerModelInfo[] => {
       const allKnownModels = [...this.knownModels.values()]
       const allKnownCheckpoints = allKnownModels.filter((i) => i.type === 'checkpoint')
-      console.log(`[🤠] allKnownCheckpoints`, allKnownCheckpoints)
+      // console.log(`[🤠] allKnownCheckpoints`, allKnownCheckpoints)
       // for (const mi of knownModels.values()) {
       //     console.log(`[🧐] `, mi.type === 'checkpoint' ? '✅' : '❌', mi.name)
       // }

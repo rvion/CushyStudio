@@ -23,6 +23,11 @@ const CushyShellUI = observer(function CushySHell(
    const utils = p.presenter.utils
    const provenance = useProvenance()
    const csuite = useCSuite()
+   const isCollapsed = ((): boolean => {
+      if (p.collapsible != null) return p.collapsible // UI config most important
+      if (!p.field.isCollapsible) return false
+      return field.isCollapsed
+   })()
    if (p.field.isHidden && !p.shouldShowHiddenFields) return null
    let WUI: ReactNode = (
       <Frame
@@ -47,7 +52,7 @@ const CushyShellUI = observer(function CushySHell(
          >
             {utils.renderFCOrNodeWithWrapper(p.HEADER, {}, p.Head, p)}
          </RevealUI>
-         {p.field.isCollapsed
+         {isCollapsed
             ? null
             : utils.renderFCOrNodeWithWrapper(p.Body, p, p.ContainerForBody, {
                  className: p.classNameAroundBodyAndHeader ?? undefined,

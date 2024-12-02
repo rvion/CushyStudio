@@ -1,6 +1,7 @@
 import type { Field } from '../../csuite/model/Field'
 import type { FCOrNode } from '../../csuite/utils/renderFCOrNode'
 import type { DisplaySlots } from './RenderSlots'
+import type { DisplaySlotFn } from './RenderTypes'
 
 import { ShellLinkUI } from '../../csuite/fields/link/WidgetLink'
 import { ShellOptionalUI } from '../../csuite/fields/optional/WidgetOptional'
@@ -23,8 +24,9 @@ import { CushyHeadUI } from '../shells/CushyHead'
 import { ShellCushyLeftUI } from '../shells/ShellCushy'
 import { widgetsCatalog } from './RenderCatalog'
 
-export const defaultPresenterRule = <FIELD extends Field>(field: FIELD): DisplaySlots<FIELD> => {
-   const slots: DisplaySlots<FIELD> = {
+export const defaultPresenterRule: DisplaySlotFn<Field> = (ui) => {
+   const field = ui.field
+   const slots: DisplaySlots<Field> = {
       /* ✅ */ Shell: ShellCushyLeftUI,
 
       // heavilly suggested to include in your presenter unless you know what you do
@@ -41,7 +43,7 @@ export const defaultPresenterRule = <FIELD extends Field>(field: FIELD): Display
       /* 🟢 */ DeleteBtn: undefined,
 
       // bonus features
-      /* 🟡 */ Indent: WidgetIndentUI,
+      /* 🟡 */ Indent: undefined, // WidgetIndentUI,
       /* 🟡 */ UndoBtn: WidgetUndoChangesButtonUI,
       /* 🟡 */ Toogle: WidgetToggleUI,
       /* 🟡 */ Caret: WidgetLabelCaretUI,
@@ -69,51 +71,23 @@ export const defaultPresenterRule = <FIELD extends Field>(field: FIELD): Display
       /* 🟥 */ EasterEgg: (): JSX.Element => <>🥚</>,
    }
    const catalog = widgetsCatalog
-   const apply = (overrides: Partial<DisplaySlots<FIELD>>): void => void Object.assign(slots, overrides)
+   const apply = (overrides: Partial<DisplaySlots<Field>>): void => void Object.assign(slots, overrides)
    slots.DebugID = null
 
-   // for('$@group', 1, {Body: ListOfFieldsWithGaps}  /* ... */)
-   // for('@group', 10, { Body: } /* ... */)
-   // for('@list.@optional.@prompt^^', { Body: } /* ... */)
-
-   // for('$', { Shell:({field}) => (
-   //    <div>
-   //       <field.Foo.Bar.UI />
-   //       <div>
-   //          <field.Foo.Baz.X1.UI />
-   //          <field.Foo.Baz.X2.UI />
-   //          <field.Foo.Bar.UI />
-   //       </div>
-   //       <field.Foo.Bar.UI />
-   //    </div>
-   // ) } /* ... */)
-
    // shared
-   if (isFieldShared(field)) {
-      slots.Shell = ShellSharedUI as any
-   }
-   // link
-   else if (isFieldLink(field)) {
-      slots.Shell = ShellLinkUI as any
-   }
-   // optional
-   else if (isFieldOptional(field)) {
-      slots.Shell = ShellOptionalUI as any
-   }
-
-   // others
+   if (isFieldShared(field)) slots.Shell = ShellSharedUI as any
+   else if (isFieldLink(field)) slots.Shell = ShellLinkUI as any
+   else if (isFieldOptional(field)) slots.Shell = ShellOptionalUI as any
    else {
       slots.Header = field.DefaultHeaderUI
       slots.Body = field.DefaultBodyUI
-      slots.Extra = field.schema.LabelExtraUI as FCOrNode<{
-         field: FIELD
-      }> /* 🔴 check if that can be fixed */
+      slots.Extra = field.schema.LabelExtraUI as FCOrNode<{ field: Field }>
 
       if (field.depth === 1) {
-         if (field.isOfType('group', 'list', 'choices')) {
-            slots.Decoration = (p): JSX.Element => <catalog.Decorations.Card field={field} {...p} />
-            // slots.Title = catalog.Title.h3
-         }
+         // if (field.isOfType('group', 'list', 'choices')) {
+         //    slots.Decoration = (p): JSX.Element => <catalog.Decorations.Card field={field} {...p} />
+         //    // slots.Title = catalog.Title.h3
+         // }
       } else if (field.depth === 2) {
          if (field.isOfType('group', 'list', 'choices')) apply({ Title: catalog.Title.h4 })
          if (!field.isOfType('optional', 'link', 'list', 'shared')) apply({ Shell: catalog.Shell.Right })
@@ -125,7 +99,24 @@ export const defaultPresenterRule = <FIELD extends Field>(field: FIELD): Display
       }
    }
 
-   return slots
+   ui.set(slots)
+   ui.set('$@group', {
+      Indent: false,
+      Body: (f) => <ui.catalog.group.Default field={f.field as any /* 🔴 */} className='gap-1' />,
+   })
+   ui.set('$.{@group|@list|@choices}', {
+      Decoration: (p): JSX.Element => <catalog.Decorations.Card field={field} {...p} />,
+   })
+   ui.set('$.@link.{@group|@list|@choices}', {
+      Decoration: (p): JSX.Element => <catalog.Decorations.Card field={field} {...p} />,
+   })
+   ui.set('$.{@group|@list|@choices}.@link', {
+      Decoration: (p): JSX.Element => <catalog.Decorations.Card field={field} {...p} />,
+   })
+   // ui.set('$.{@group|@list|@choices}.', { Indent: false })
+   // ui.set('$.@link.{@group|@list|@choices}.', { Indent: false })
+   // ui.set('$.{@group|@list|@choices}.@link.', { Indent: false })
+   // return slots
 }
 
 // #region P.setup

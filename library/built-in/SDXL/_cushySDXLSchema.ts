@@ -38,8 +38,8 @@ export type $CushySDXLUI = X.XGroup<{
 export function _cushySDXLSchema(b: X.Builder): $CushySDXLUI {
    const tags = cushy.danbooru.tags
    const artists = tags.filter((t) => t.category === 1).map((t) => t.text)
-   console.log(`[🤠] tags`, tags)
-   console.log(`[🤠] artists`, artists)
+   // console.log(`[🤠] tags`, tags)
+   // console.log(`[🤠] artists`, artists)
    return b.fields({
       positive: b.fields(
          {

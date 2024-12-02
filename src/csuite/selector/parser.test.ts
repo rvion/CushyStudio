@@ -8,7 +8,7 @@ import { FieldSelector } from './selector'
 
 describe('SelectorParser Tests', () => {
    it('can parse sequence of axises', () => {
-      expect(new FieldSelector('...^^').parse().steps).toMatchObject([
+      expect(FieldSelector.from('...^^').parse().steps).toMatchObject([
          { type: 'axis', axis: '.' },
          { type: 'axis', axis: '.' },
          { type: 'axis', axis: '.' },
@@ -18,7 +18,7 @@ describe('SelectorParser Tests', () => {
    })
 
    it('should parse a single step with a single mountKey filter', () => {
-      const parsed = new FieldSelector('.foo').parse()
+      const parsed = FieldSelector.from('.foo').parse()
       expect(parsed.steps).toMatchObject([
          { type: 'axis', axis: '.' },
          { type: 'mount', key: 'foo' },
@@ -26,7 +26,7 @@ describe('SelectorParser Tests', () => {
    })
 
    it('can parse selector starting with a filter', () => {
-      const parsed = new FieldSelector('bar.baz').parse()
+      const parsed = FieldSelector.from('bar.baz').parse()
       expect(parsed.steps).toMatchObject([
          { type: 'mount', key: 'bar' },
          { type: 'axis', axis: '.' },
@@ -35,7 +35,7 @@ describe('SelectorParser Tests', () => {
    })
 
    it("should parse a single step with multiple mountKey filters connected by '|'", () => {
-      const parsed = new FieldSelector('{.foo|.bar|.baz}').parse()
+      const parsed = FieldSelector.from('{.foo|.bar|.baz}').parse()
       const expected: ParsedSelector['steps'] = [
          {
             type: 'branches',
@@ -60,7 +60,7 @@ describe('SelectorParser Tests', () => {
    })
 
    it("should parse a single step with multiple mountKey filters connected by '|'", () => {
-      const parsed = new FieldSelector('.{foo|bar|baz}').parse()
+      const parsed = FieldSelector.from('.{foo|bar|baz}').parse()
       const expected: ParsedSelector = {
          steps: [
             { type: 'axis', axis: '.' },
@@ -79,7 +79,7 @@ describe('SelectorParser Tests', () => {
    })
 
    it("should parse a single step with mountKey and type filters connected by '|'", () => {
-      const parsed = new FieldSelector('.{foo@str|bar@number}').parse()
+      const parsed = FieldSelector.from('.{foo@str|bar@number}').parse()
       const expected: ParsedSelector = {
          steps: [
             { type: 'axis', axis: '.' },
@@ -103,7 +103,7 @@ describe('SelectorParser Tests', () => {
    })
 
    it("should parse a single step with expression filters connected by '|'", () => {
-      const parsed = new FieldSelector(".{?( @.value === '33')|?( @.type === 'FieldGroup')}").parse()
+      const parsed = FieldSelector.from(".{?( @.value === '33')|?( @.type === 'FieldGroup')}").parse()
       const expected: ParsedSelector = {
          steps: [
             { type: 'axis', axis: '.' },
@@ -120,7 +120,7 @@ describe('SelectorParser Tests', () => {
    })
 
    it('should parse multiple steps with different axes and filters', () => {
-      const parsed = new FieldSelector('.{foo|bar}@string^.baz?(@.active)').parse()
+      const parsed = FieldSelector.from('.{foo|bar}@string^.baz?(@.active)').parse()
       const expected: ParsedSelector = {
          steps: [
             { type: 'axis', axis: '.' },
@@ -139,7 +139,7 @@ describe('SelectorParser Tests', () => {
    })
 
    it("should parse a selector with all types of filters connected by '|'", () => {
-      const parsed = new FieldSelector(
+      const parsed = FieldSelector.from(
          ".{foo|bar@string|?(@.value === '33')|?(@.type === 'FieldGroup')}",
       ).parse()
       const expected: ParsedSelector = {
@@ -168,17 +168,17 @@ describe('SelectorParser Tests', () => {
    // })
 
    it('should throw an error for unbalanced parentheses in expression filter', () => {
-      expect(() => new FieldSelector(".xx?(@.value === '33'").parse()).toThrowError(/Unbalanced parentheses/)
+      expect(() => FieldSelector.from(".xx?(@.value === '33'").parse()).toThrowError(/Unbalanced parentheses/)
    })
 
    it('should throw an error for invalid type filter format', () => {
-      expect(() => new FieldSelector('.foo@').parse()).toThrowError(
+      expect(() => FieldSelector.from('.foo@').parse()).toThrowError(
          /Expected word at position 5 in selector ".foo@"/,
       )
    })
 
    it('should handle filters without mountKey or nodeType but with expression', () => {
-      const parsed = new FieldSelector('.?( @.isActive )').parse()
+      const parsed = FieldSelector.from('.?( @.isActive )').parse()
       const expected: ParsedSelector = {
          steps: [
             {
@@ -196,7 +196,7 @@ describe('SelectorParser Tests', () => {
 
    it('should handle complex selectors with multiple steps and multiple filters', () => {
       const selector = '$.{foo|bar@type}>?(@.active)<?(@.visible)'
-      const parsed = new FieldSelector(selector).parse()
+      const parsed = FieldSelector.from(selector).parse()
       const expected: ParsedSelector = {
          steps: [
             { axis: '$', type: 'axis' },

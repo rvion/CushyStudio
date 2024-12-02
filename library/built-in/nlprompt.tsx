@@ -17,11 +17,11 @@ app({
             .llmModel()
             .list()
             .withConfig({
-               uiui: (b) =>
-                  b.ui({
+               uiui: (ui) =>
+                  ui.set({
                      Body: () => (
                         <div>
-                           {b.field.defaultBody()}
+                           {ui.field.defaultBody()}
                            <LegacyFieldUI label='OpenRouter API KEY'>
                               <InputStringUI
                                  icon='mdiKey'
@@ -53,12 +53,9 @@ app({
          promptFromLlm2: b.textarea({ default: '' }),
       }),
 
-   layout: (b) => {
-      b.ui('', {
-         Decoration: null,
-         Indent: null,
-      })
-      b.ui(b.field.PromptFromLlm2, { Header: b.catalog.string.markdown })
+   layout: (ui) => {
+      ui.set('', { Decoration: null, Indent: null })
+      ui.set(ui.field.PromptFromLlm2, { Header: ui.catalog.string.markdown })
    },
    run: async (sdk, conf) => {
       if (!sdk.LLM.isConfigured) {

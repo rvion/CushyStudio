@@ -37,11 +37,18 @@ window.RENDERER = {
 export class Presenter {
    /** list of all the ruleOrConf, indexed by field, added during this presenter lifecycle  */
    rules: {
-      addedBy: Field
+      addedBy: Field | null
       selector: FieldSelector
       uiconf: DisplaySlotExt<Field>
    }[] = []
 
+   constructor(rootField: Field) {
+      this.rules.push({
+         addedBy: null,
+         selector: FieldSelector.from(''),
+         uiconf: defaultPresenterRule,
+      })
+   }
    /**
     * MAIN METHOD TO RENDER A FIELD
     * this method is both for humans (calling render on field root)
@@ -55,7 +62,7 @@ export class Presenter {
    ): ReactNode {
       // ⏸️ console.log(`[💄] rendering ${field.path}`)
       // slots accumulator
-      let slots: DisplaySlots<FIELD> = defaultPresenterRule(field)
+      let slots: DisplaySlots<FIELD> = {} //
       const catalog = widgetsCatalog
 
       // 🔴 SUPER SLOW
@@ -127,7 +134,7 @@ export class Presenter {
             const _slots = ruleOrConf({
                field,
                catalog,
-               ui: addForField,
+               set: addForField,
                presets: renderPresets,
             }) as Maybe<DisplaySlots<FIELD>> // 🔴🔴🔴
             if (_slots) slots = mergeDefined(slots, _slots)
@@ -146,10 +153,17 @@ export class Presenter {
          evalRuleOrConf(field.config.uiui)
       }
 
+      const debug = null // '$.latent.b' // '$.positive'
       for (const rule of this.rules) {
-         if (field.matches(rule.selector)) {
-            evalRuleOrConf(rule.uiconf as DisplaySlotExt<FIELD>)
-         }
+         const isMatching = field.matches(rule.selector)
+         if (field.path === debug)
+            console.log(
+               `[🤠] ${field.pathExt}`,
+               isMatching ? '🟢' : '🔴',
+               rule.selector.selector,
+               typeof rule.uiconf !== 'function' ? this.explainSlots(rule.uiconf) : '<function...>',
+            )
+         if (isMatching) evalRuleOrConf(rule.uiconf as DisplaySlotExt<FIELD>)
       }
 
       evalRuleOrConf(finalRuleOrConf)
@@ -176,23 +190,23 @@ export class Presenter {
       const UI = widgetsCatalog
       const finalProps: CompiledRenderProps<FIELD> = { field, UI, presenter: this, ...slots }
 
+      if (field.path === debug) this.debugFinalProps(finalProps)
       // if (field.path === '$.latent.b.image.resize') this.debugFinalProps(finalProps)
       // console.log(`[🤠] Shell for ${field.path} is `, Shell)
       return renderFCOrNode(Shell, finalProps)
    }
 
    debugFinalProps(finalProps: CompiledRenderProps<any>): void {
-      console.log(
-         `[🤠] `,
-         finalProps.field.path,
-         Object.fromEntries(
-            Object.entries(finalProps).map(([k, v]) => [
-               k,
-               _isFC(v) && 'type' in v //
-                  ? (extractComponentName(v.type) ?? v)
-                  : v,
-            ]),
-         ),
+      console.log(`[🤠] `, finalProps.field.path, this.explainSlots(finalProps))
+   }
+   private explainSlots(slots: DisplaySlots<any>): Record<string, any> {
+      return Object.fromEntries(
+         Object.entries(slots).map(([k, v]) => [
+            k,
+            _isFC(v) && 'type' in v //
+               ? (extractComponentName(v.type) ?? v)
+               : v,
+         ]),
       )
    }
 

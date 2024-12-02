@@ -157,7 +157,7 @@ export const widgetsCatalog /* WidgetsCatalog */ = {
    group: {
       Tabbed: WidgetGroup_TabUI,
       controls: WidgetGroup_LineUI,
-      group: WidgetGroup_BlockUI,
+      Default: WidgetGroup_BlockUI,
       inline: WidgetGroup_InlineUI,
    },
 }

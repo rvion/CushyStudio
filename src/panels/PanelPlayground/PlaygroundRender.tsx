@@ -39,14 +39,14 @@ export const PlaygroundRenderUI = observer(function PlaygroundRender(p: NO_PROPS
             // layout={({ fields: f }) => [f.x, f.x, f.x, f.x, '*']}
             rule={(ui) => {
                // ui.for(ui.field.Aaa, { Shell: ui.catalog.Shell.Card })
-               ui.ui(ui.field.Z, { Header: 'hello guys' })
-               ui.ui(ui.field.Y, { Title: null })
-               ui.ui(ui.field.Sub1.Z, { Header: 'hope you guys good' })
-               ui.ui(ui.field.Sub1, { layout: (f) => [f.X, f.Y, f.Y, '*'], Header: 'hope you guys good' })
-               ui.ui('', (ui: DisplayRuleCtx) => {
+               ui.set(ui.field.Z, { Header: 'hello guys' })
+               ui.set(ui.field.Y, { Title: null })
+               ui.set(ui.field.Sub1.Z, { Header: 'hope you guys good' })
+               ui.set(ui.field.Sub1, { layout: (f) => [f.X, f.Y, f.Y, '*'], Header: 'hope you guys good' })
+               ui.set('', (ui: DisplayRuleCtx) => {
                   if (isFieldGroup(ui.field) && isFieldChoice(ui.field.parent)) return { Head: false }
                })
-               ui.ui('', ({ field, ui: apply, catalog }) => {
+               ui.set('', ({ field, catalog }) => {
                   // apply(field, {
                   //     Shell: catalog.ShellMobile,
                   //     Indent: (f) => f.depth + '>>',

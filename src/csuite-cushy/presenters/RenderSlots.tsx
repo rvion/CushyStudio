@@ -88,6 +88,7 @@ export interface DisplaySlots<out FIELD extends Field = Field> {
    className?: Maybe<string>
    shouldShowHiddenFields?: Maybe<boolean>
    shouldAnimateResize?: Maybe<boolean>
+   collapsible?: boolean
 
    // ---------------------------------------------------------
    // 4. Slots for shell
