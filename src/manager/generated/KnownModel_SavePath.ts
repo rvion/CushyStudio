@@ -1,7 +1,7 @@
 // prettier-ignore
 export type KnownModel_SavePath =
     | "vae_approx"                                       // x   8
-    | "default"                                          // x  85
+    | "default"                                          // x  11
     | "upscale_models/ldsr"                              // x   1
     | "checkpoints/upscale"                              // x   1
     | "insightface"                                      // x   2
@@ -9,29 +9,44 @@ export type KnownModel_SavePath =
     | "face_restore"                                     // x   3
     | "checkpoints/SVD"                                  // x   2
     | "checkpoints/zero123"                              // x   5
+    | "embeddings/SD1.5"                                 // x   4
     | "checkpoints/Stable-Cascade"                       // x   2
     | "vae/Stable-Cascade"                               // x   2
     | "diffusion_models/Stable-Cascade"                  // x   8
     | "clip/Stable-Cascade"                              // x   1
     | "checkpoints/SDXL-TURBO"                           // x   2
+    | "checkpoints/SDXL"                                 // x   4
     | "diffusion_models/xl-inpaint-0.1"                  // x   2
+    | "loras/SDXL"                                       // x   1
     | "loras/SDXL-Lightning"                             // x   3
     | "loras/DMD2"                                       // x   2
     | "loras/HyperSD/FLUX.1"                             // x   2
     | "loras/HyperSD/SD15"                               // x   6
     | "loras/HyperSD/SDXL"                               // x   6
     | "loras/HyperSD/SD3"                                // x   3
+    | "text_encoders/t5"                                 // x   3
     | "clip/t5-base"                                     // x   1
     | "clip/t5"                                          // x  13
-    | "vae/openai_consistency_decoder"                   // x   1
-    | "loras/lcm/SD1.5"                                  // x   1
-    | "loras/lcm/SSD-1B"                                 // x   1
-    | "loras/lcm/SDXL"                                   // x   1
+    | "checkpoints/SD1.5"                                // x   4
+    | "checkpoints/SD2.1"                                // x   5
+    | "vae/SDXL"                                         // x   1
+    | "vae/SD1.5"                                        // x   2
+    | "vae/SD2.1"                                        // x   1
+    | "vae/SD1.5/openai_consistency_decoder"             // x   1
+    | "loras/SD1.5/lcm"                                  // x   1
+    | "loras/SSD-1B/lcm"                                 // x   1
+    | "loras/SDXL/lcm"                                   // x   1
     | "checkpoints/segmind-vega"                         // x   1
     | "loras/segmind-vega"                               // x   1
-    | "controlnet/TemporalNet1XL"                        // x   1
-    | "clip_vision"                                      // x   5
+    | "loras/SD2.1"                                      // x   1
+    | "loras/SD1.5"                                      // x   1
+    | "controlnet/SD1.5"                                 // x   9
+    | "controlnet/SDXL"                                  // x  35
+    | "controlnet/SDXL/TemporalNet1XL"                   // x   1
+    | "clip_vision"                                      // x   6
     | "custom_nodes/ControlNet-LLLite-ComfyUI/models"    // x   1
+    | "controlnet/1.5"                                   // x  17
+    | "gligen/SD1.5"                                     // x   1
     | "sams"                                             // x   4
     | "seecoders"                                        // x   3
     | "ultralytics/bbox"                                 // x   6
@@ -71,11 +86,11 @@ export type KnownModel_SavePath =
     | "custom_nodes/ComfyUI_ID_Animator/models/animatediff_models" // x   1
     | "custom_nodes/ComfyUI_ID_Animator/models/image_encoder" // x   1
     | "custom_nodes/ComfyUI_CustomNet/pretrain"          // x   1
-    | "controlnet/SDXL"                                  // x  12
     | "RGT/RGT"                                          // x   3
     | "RGT/RGT_S"                                        // x   3
     | "custom_nodes/ComfyUI-ToonCrafter/ToonCrafter/checkpoints/tooncrafter_512_interp_v1" // x   1
     | "controlnet/FLUX.1/InstantX-FLUX1-Dev-Union"       // x   1
+    | "ipadapter-flux"                                   // x   1
     | "controlnet/FLUX.1/Shakker-Labs-ControlNet-Union-Pro" // x   1
     | "controlnet/FLUX.1"                                // x   1
     | "controlnet/FLUX.1/jasperai-dev-Upscaler"          // x   1
@@ -91,6 +106,7 @@ export type KnownModel_SavePath =
     | "controlnet/SD3/InstantX-Controlnet-Canny"         // x   1
     | "controlnet/SD3/InstantX-Controlnet-Pose"          // x   1
     | "controlnet/SD3/InstantX-Controlnet-Tile"          // x   1
+    | "controlnet/SD3.5"                                 // x   3
     | "checkpoints/ToonCrafter"                          // x   1
     | "depthanything"                                    // x   6
     | "checkpoints/PixArt-Sigma"                         // x   1
@@ -106,11 +122,12 @@ export type KnownModel_SavePath =
     | "LLM"                                              // x   3
     | "pulid"                                            // x   2
     | "MoGe"                                             // x   2
+    | "checkpoints/LTXV"                                 // x   1
     | "custom_nodes/ComfyUI-BRIA_AI-RMBG/RMBG-1.4"       // x   1
 
 export const knownModel_SavePath: KnownModel_SavePath[] = [
     "vae_approx"                                      ,  // x   8
-    "default"                                         ,  // x  85
+    "default"                                         ,  // x  11
     "upscale_models/ldsr"                             ,  // x   1
     "checkpoints/upscale"                             ,  // x   1
     "insightface"                                     ,  // x   2
@@ -118,29 +135,44 @@ export const knownModel_SavePath: KnownModel_SavePath[] = [
     "face_restore"                                    ,  // x   3
     "checkpoints/SVD"                                 ,  // x   2
     "checkpoints/zero123"                             ,  // x   5
+    "embeddings/SD1.5"                                ,  // x   4
     "checkpoints/Stable-Cascade"                      ,  // x   2
     "vae/Stable-Cascade"                              ,  // x   2
     "diffusion_models/Stable-Cascade"                 ,  // x   8
     "clip/Stable-Cascade"                             ,  // x   1
     "checkpoints/SDXL-TURBO"                          ,  // x   2
+    "checkpoints/SDXL"                                ,  // x   4
     "diffusion_models/xl-inpaint-0.1"                 ,  // x   2
+    "loras/SDXL"                                      ,  // x   1
     "loras/SDXL-Lightning"                            ,  // x   3
     "loras/DMD2"                                      ,  // x   2
     "loras/HyperSD/FLUX.1"                            ,  // x   2
     "loras/HyperSD/SD15"                              ,  // x   6
     "loras/HyperSD/SDXL"                              ,  // x   6
     "loras/HyperSD/SD3"                               ,  // x   3
+    "text_encoders/t5"                                ,  // x   3
     "clip/t5-base"                                    ,  // x   1
     "clip/t5"                                         ,  // x  13
-    "vae/openai_consistency_decoder"                  ,  // x   1
-    "loras/lcm/SD1.5"                                 ,  // x   1
-    "loras/lcm/SSD-1B"                                ,  // x   1
-    "loras/lcm/SDXL"                                  ,  // x   1
+    "checkpoints/SD1.5"                               ,  // x   4
+    "checkpoints/SD2.1"                               ,  // x   5
+    "vae/SDXL"                                        ,  // x   1
+    "vae/SD1.5"                                       ,  // x   2
+    "vae/SD2.1"                                       ,  // x   1
+    "vae/SD1.5/openai_consistency_decoder"            ,  // x   1
+    "loras/SD1.5/lcm"                                 ,  // x   1
+    "loras/SSD-1B/lcm"                                ,  // x   1
+    "loras/SDXL/lcm"                                  ,  // x   1
     "checkpoints/segmind-vega"                        ,  // x   1
     "loras/segmind-vega"                              ,  // x   1
-    "controlnet/TemporalNet1XL"                       ,  // x   1
-    "clip_vision"                                     ,  // x   5
+    "loras/SD2.1"                                     ,  // x   1
+    "loras/SD1.5"                                     ,  // x   1
+    "controlnet/SD1.5"                                ,  // x   9
+    "controlnet/SDXL"                                 ,  // x  35
+    "controlnet/SDXL/TemporalNet1XL"                  ,  // x   1
+    "clip_vision"                                     ,  // x   6
     "custom_nodes/ControlNet-LLLite-ComfyUI/models"   ,  // x   1
+    "controlnet/1.5"                                  ,  // x  17
+    "gligen/SD1.5"                                    ,  // x   1
     "sams"                                            ,  // x   4
     "seecoders"                                       ,  // x   3
     "ultralytics/bbox"                                ,  // x   6
@@ -180,11 +212,11 @@ export const knownModel_SavePath: KnownModel_SavePath[] = [
     "custom_nodes/ComfyUI_ID_Animator/models/animatediff_models",  // x   1
     "custom_nodes/ComfyUI_ID_Animator/models/image_encoder",  // x   1
     "custom_nodes/ComfyUI_CustomNet/pretrain"         ,  // x   1
-    "controlnet/SDXL"                                 ,  // x  12
     "RGT/RGT"                                         ,  // x   3
     "RGT/RGT_S"                                       ,  // x   3
     "custom_nodes/ComfyUI-ToonCrafter/ToonCrafter/checkpoints/tooncrafter_512_interp_v1",  // x   1
     "controlnet/FLUX.1/InstantX-FLUX1-Dev-Union"      ,  // x   1
+    "ipadapter-flux"                                  ,  // x   1
     "controlnet/FLUX.1/Shakker-Labs-ControlNet-Union-Pro",  // x   1
     "controlnet/FLUX.1"                               ,  // x   1
     "controlnet/FLUX.1/jasperai-dev-Upscaler"         ,  // x   1
@@ -200,6 +232,7 @@ export const knownModel_SavePath: KnownModel_SavePath[] = [
     "controlnet/SD3/InstantX-Controlnet-Canny"        ,  // x   1
     "controlnet/SD3/InstantX-Controlnet-Pose"         ,  // x   1
     "controlnet/SD3/InstantX-Controlnet-Tile"         ,  // x   1
+    "controlnet/SD3.5"                                ,  // x   3
     "checkpoints/ToonCrafter"                         ,  // x   1
     "depthanything"                                   ,  // x   6
     "checkpoints/PixArt-Sigma"                        ,  // x   1
@@ -215,6 +248,7 @@ export const knownModel_SavePath: KnownModel_SavePath[] = [
     "LLM"                                             ,  // x   3
     "pulid"                                           ,  // x   2
     "MoGe"                                            ,  // x   2
+    "checkpoints/LTXV"                                ,  // x   1
     "custom_nodes/ComfyUI-BRIA_AI-RMBG/RMBG-1.4"      ,  // x   1
 ]
 

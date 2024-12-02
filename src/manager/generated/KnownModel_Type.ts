@@ -2,7 +2,7 @@
 export type KnownModel_Type =
     | "TAESD"              // x   8
     | "upscale"            // x  11
-    | "checkpoint"         // x  36
+    | "checkpoint"         // x  37
     | "insightface"        // x  13
     | "deepbump"           // x   1
     | "face_restore"       // x   3
@@ -10,20 +10,20 @@ export type KnownModel_Type =
     | "embeddings"         // x   4
     | "VAE"                // x   8
     | "diffusion_model"    // x  45
-    | "clip"               // x  18
+    | "clip"               // x  21
     | "lora"               // x  35
     | "unclip"             // x   2
     | "T2I-Adapter"        // x  18
     | "T2I-Style"          // x   1
-    | "controlnet"         // x  67
-    | "clip_vision"        // x   5
+    | "controlnet"         // x  70
+    | "clip_vision"        // x   6
     | "gligen"             // x   1
     | "sam"                // x   4
     | "seecoder"           // x   3
     | "Ultralytics"        // x  16
     | "animatediff"        // x  13
     | "motion lora"        // x   8
-    | "IP-Adapter"         // x  24
+    | "IP-Adapter"         // x  25
     | "PFG"                // x   3
     | "GFPGAN"             // x   1
     | "CodeFormer"         // x   1
@@ -51,7 +51,7 @@ export type KnownModel_Type =
 export const knownModel_Type: KnownModel_Type[] = [
     "TAESD"             ,  // x   8
     "upscale"           ,  // x  11
-    "checkpoint"        ,  // x  36
+    "checkpoint"        ,  // x  37
     "insightface"       ,  // x  13
     "deepbump"          ,  // x   1
     "face_restore"      ,  // x   3
@@ -59,20 +59,20 @@ export const knownModel_Type: KnownModel_Type[] = [
     "embeddings"        ,  // x   4
     "VAE"               ,  // x   8
     "diffusion_model"   ,  // x  45
-    "clip"              ,  // x  18
+    "clip"              ,  // x  21
     "lora"              ,  // x  35
     "unclip"            ,  // x   2
     "T2I-Adapter"       ,  // x  18
     "T2I-Style"         ,  // x   1
-    "controlnet"        ,  // x  67
-    "clip_vision"       ,  // x   5
+    "controlnet"        ,  // x  70
+    "clip_vision"       ,  // x   6
     "gligen"            ,  // x   1
     "sam"               ,  // x   4
     "seecoder"          ,  // x   3
     "Ultralytics"       ,  // x  16
     "animatediff"       ,  // x  13
     "motion lora"       ,  // x   8
-    "IP-Adapter"        ,  // x  24
+    "IP-Adapter"        ,  // x  25
     "PFG"               ,  // x   3
     "GFPGAN"            ,  // x   1
     "CodeFormer"        ,  // x   1

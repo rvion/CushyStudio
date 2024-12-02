@@ -28,6 +28,8 @@ export type KnownComfyPluginTitle =
     | "Advanced CLIP Text Encode"
     /** Advanced Latent Control - https://github.com/RomanKuschanow/ComfyUI-Advanced-Latent-Control */
     | "Advanced Latent Control"
+    /** advancedRefluxControl - https://github.com/kaibioinfo/ComfyUI_AdvancedRefluxControl */
+    | "Advanced Reflux control"
     /** adv-seq-seed-gen - https://github.com/florestefano1975/ComfyUI-Advanced-Sequence-Seed */
     | "Advanced Sequence Seed Generator"
     /** aegis - https://github.com/aegis72/aegisflow_utility_nodes */
@@ -38,6 +40,8 @@ export type KnownComfyPluginTitle =
     | "AIGODLIKE-ComfyUI-Studio"
     /** translation - https://github.com/AIGODLIKE/AIGODLIKE-COMFYUI-TRANSLATION */
     | "AIGODLIKE-COMFYUI-TRANSLATION"
+    /** AIRedoon - https://github.com/purpen/ComfyUI-AIRedoon */
+    | "AIRedoon"
     /** akatz-ai - https://github.com/akatz-ai/ComfyUI-AKatz-Nodes */
     | "Akatz Custom Nodes"
     /** alekpet - https://github.com/AlekPet/ComfyUI_Custom_Nodes_AlekPet */
@@ -66,6 +70,8 @@ export type KnownComfyPluginTitle =
     | "Anyline"
     /** apisr-zho - https://github.com/ZHO-ZHO-ZHO/ComfyUI-APISR */
     | "APISR IN COMFYUI"
+    /** Apply Style Model Adjust for ComfyUI - https://github.com/ShmuelRonen/ComfyUI-Apply_Style_Model_Adjust */
+    | "Apply Style Model Adjust for ComfyUI"
     /** clean-filename - https://github.com/APZmedia/ComfyUI-APZmedia-cleanName-from-string */
     | "APZmedia Clean Name"
     /** APZmedia Fast Image Save Node - https://github.com/APZmedia/APZmedia-comfyui-fast-image-save */
@@ -76,8 +82,6 @@ export type KnownComfyPluginTitle =
     | "As_ComfyUI_CustomNodes"
     /** asagi-nodes - https://github.com/asagi4/comfyui-utility-nodes */
     | "asagi4/comfyui-utility-nodes"
-    /** asterr - https://github.com/WASasquatch/ASTERR */
-    | "ASTERR"
     /** asymmetric - https://github.com/alsritter/asymmetric-tiling-comfyui */
     | "asymmetric-tiling-comfyui"
     /** audio-separation-nodes-comfyui - https://github.com/christian-byrne/audio-separation-nodes-comfyui */
@@ -106,8 +110,8 @@ export type KnownComfyPluginTitle =
     | "Bjornulf_custom_nodes"
     /** blibla-comfyui-extensions - https://github.com/blib-la/blibla-comfyui-extensions */
     | "blibla-comfyui-extensions"
-    /** Bobs_FLUX_SDXL_Latent_Optimizer - https://github.com/BobsBlazed/Bobs_FLUX_SDXL_Latent_Optimizer */
-    | "Bobs_FLUX_SDXL_Latent_Optimizer"
+    /** Bobs_Latent_Optimizer - https://github.com/BobsBlazed/Bobs_Latent_Optimizer */
+    | "Bobs_Latent_Optimizer"
     /** braintacles - https://github.com/braintacles/braintacles-comfyui-nodes */
     | "braintacles-nodes"
     /** brevimage - https://github.com/bkunbargi/BrevImage */
@@ -120,6 +124,8 @@ export type KnownComfyPluginTitle =
     | "bsz-cui-extras"
     /** BV Nodes - https://github.com/BlackVortexAI/ComfyUI-BVortexNodes */
     | "BV Nodes"
+    /** Bytebeat Synthesizer: Composing with Operators - https://github.com/c0ffymachyne/ComfyUI_BeatByte */
+    | "Bytebeat Synthesizer: Composing with Operators"
     /** canvastab - https://github.com/Lerc/canvas_tab */
     | "Canvas Tab"
     /** cdtuner - https://github.com/laksjdjf/cd-tuner_negpip-ComfyUI */
@@ -150,6 +156,8 @@ export type KnownComfyPluginTitle =
     | "CLIPSeg"
     /** Clothing Migration Kit - https://github.com/TTPlanetPig/Comfyui_Object_Migration */
     | "Clothing Migration Kit"
+    /** cn-translator - https://github.com/SleeeepyZhou/ComfyUI-CNtranslator */
+    | "CNtranslator"
     /** color2rgb - https://github.com/vxinhao/color2rgb */
     | "color2rgb"
     /** comflowy - https://github.com/6174/comflowy-nodes */
@@ -244,8 +252,6 @@ export type KnownComfyPluginTitle =
     | "ComfyUI 3D Pose Editor"
     /** ComfyUI A1111-like Prompt Custom Node Solution - https://github.com/SadaleNet/CLIPTextEncodeA1111-ComfyUI */
     | "ComfyUI A1111-like Prompt Custom Node Solution"
-    /** ComfyUI AceNodes - https://github.com/hay86/ComfyUI_AceNodes */
-    | "ComfyUI AceNodes"
     /** aesthetic-predictor - https://github.com/discus0434/comfyui-aesthetic-predictor-v2-5 */
     | "ComfyUI Aesthetic Predictor V2.5"
     /** ComfyUI aichemy nodes - https://github.com/HAL41/ComfyUI-aichemy-nodes */
@@ -382,10 +388,10 @@ export type KnownComfyPluginTitle =
     | "ComfyUI Llava-OneVision"
     /** savefile-to-s3 - https://github.com/kealiu/ComfyUI-S3-Tools */
     | "ComfyUI Load and Save file to S3"
-    /** loopchain - https://github.com/Fannovel16/ComfyUI-Loopchain */
-    | "ComfyUI Loopchain"
     /** ComfyUI MagicClip_Strength for SDXL - https://github.com/311-code/ComfyUI-MagicClip_Strength */
     | "ComfyUI MagicClip_Strength for SDXL"
+    /** comfyui-shua-creator - https://github.com/motivated3/comfyui-shua-creator */
+    | "ComfyUI MiaoShua Creator"
     /** minicpm-v - https://github.com/hay86/ComfyUI_MiniCPM-V */
     | "ComfyUI MiniCPM-V"
     /** minimap - https://github.com/OliverCrosby/Comfyui-Minimap */
@@ -450,6 +456,8 @@ export type KnownComfyPluginTitle =
     | "ComfyUI PiperTTS"
     /** pixelart-detector - https://github.com/dimtoneff/ComfyUI-PixelArt-Detector */
     | "ComfyUI PixelArt Detector"
+    /** ComfyUI Pixtral Large Extension - https://github.com/ShmuelRonen/ComfyUI_pixtral_large */
+    | "ComfyUI Pixtral Large Extension"
     /** pngmeta - https://github.com/romeobuilderotti/ComfyUI-PNG-Metadata */
     | "ComfyUI PNG Metadata"
     /** preset-merger - https://github.com/WASasquatch/ComfyUI_Preset_Merger */
@@ -492,6 +500,8 @@ export type KnownComfyPluginTitle =
     | "ComfyUI Sequential Image Loader"
     /** serving-toolkit - https://github.com/matan1905/ComfyUI-Serving-Toolkit */
     | "ComfyUI Serving toolkit"
+    /** ComfyUI Signal Processing - https://github.com/c0ffymachyne/ComfyUI_SingalProcessing */
+    | "ComfyUI Signal Processing"
     /** simplefeed - https://github.com/tachyon-beep/comfyui-simplefeed */
     | "ComfyUI Simple Feed"
     /** ComfyUI SimpleTools Suit - https://github.com/celsojr2013/comfyui_simpletools */
@@ -508,6 +518,8 @@ export type KnownComfyPluginTitle =
     | "ComfyUI Stable Audio Open 1.0 Sampler"
     /** ComfyUI Stable Video Diffusion - https://github.com/thecooltechguy/ComfyUI-Stable-Video-Diffusion */
     | "ComfyUI Stable Video Diffusion"
+    /** Steudio - https://github.com/Steudio/ComfyUI_Steudio */
+    | "ComfyUI Steudio"
     /** storycreater - https://github.com/oztrkoguz/ComfyUI_StoryCreator */
     | "ComfyUI StoryCreater"
     /** ComfyUI String Tools - https://github.com/Taremin/comfyui-string-tools */
@@ -566,6 +578,8 @@ export type KnownComfyPluginTitle =
     | "ComfyUI_Accessories"
     /** alkadi - https://github.com/kunieone/ComfyUI_alkaid */
     | "ComfyUI_alkaid"
+    /** ComfyUI_AnimationNodes - https://github.com/SimonHeese/ComfyUI_AnimationNodes */
+    | "ComfyUI_AnimationNodes"
     /** ComfyUI_Aniportrait - https://github.com/frankchieng/ComfyUI_Aniportrait */
     | "ComfyUI_Aniportrait"
     /** ComfyUI_AnyDoor - https://github.com/smthemex/ComfyUI_AnyDoor */
@@ -592,6 +606,8 @@ export type KnownComfyPluginTitle =
     | "comfyui_bmab"
     /** ComfyUI_Bxb - https://github.com/zhulu111/ComfyUI_Bxb */
     | "ComfyUI_Bxb"
+    /** ComfyUI_Camera - https://github.com/xuhongming251/ComfyUI_Camera */
+    | "ComfyUI_Camera"
     /** cartoon-seg - https://github.com/Nlar/ComfyUI_CartoonSegmentation */
     | "ComfyUI_CartoonSegmentation"
     /** ComfyUI_CAS - https://github.com/BenNarum/ComfyUI_CAS */
@@ -610,8 +626,6 @@ export type KnownComfyPluginTitle =
     | "ComfyUI_CompareModelWeights"
     /** comfyui_csgo_wrapper - https://github.com/smthemex/ComfyUI_CSGO_Wrapper */
     | "ComfyUI_CSGO_Wrapper"
-    /** ComfyUI_Ctrlora - https://github.com/zmwv823/ComfyUI_Ctrlora */
-    | "ComfyUI_Ctrlora"
     /** comfyui_custom_node_image - https://github.com/jstit/comfyui_custom_node_image */
     | "comfyui_custom_node_image"
     /** customnet - https://github.com/smthemex/ComfyUI_CustomNet */
@@ -638,7 +652,7 @@ export type KnownComfyPluginTitle =
     | "ComfyUI_Demucs"
     /** demucus - https://github.com/kale4eat/ComfyUI-path-util */
     | "ComfyUI_demucus"
-    /** ComfyUI_DeployCash - https://github.com/amaozhao/ComfyUI_DeployCash */
+    /** ComfyUI_DeployCash - https://github.com/jacklukai/ComfyUI_DeployCash */
     | "ComfyUI_DeployCash"
     /** ComfyUI_DepthFlow - https://github.com/cr7Por/ComfyUI_DepthFlow */
     | "ComfyUI_DepthFlow"
@@ -654,6 +668,8 @@ export type KnownComfyPluginTitle =
     | "comfyui_DSP_imagehelpers"
     /** ComfyUI_DW_Chat - https://github.com/yiwangsimple/ComfyUI_DW_Chat */
     | "ComfyUI_DW_Chat"
+    /** comfyui_dygen - https://github.com/dymokomi/comfyui_dygen */
+    | "comfyui_dygen"
     /** comfyui_dynamic_util_nodes - https://github.com/mullakhmetov/comfyui_dynamic_util_nodes */
     | "comfyui_dynamic_util_nodes"
     /** EchoMimic - https://github.com/smthemex/ComfyUI_EchoMimic */
@@ -662,10 +678,14 @@ export type KnownComfyPluginTitle =
     | "ComfyUI_Emojiiii_Custom_Nodes"
     /** emoji-overlay - https://github.com/chandlergis/ComfyUI_EmojiOverlay */
     | "ComfyUI_EmojiOverlay"
+    /** ComfyUI_Eugene_Nodes - https://github.com/JEONG-JIWOO/ComfyUI_Eugene_Nodes */
+    | "ComfyUI_Eugene_Nodes"
     /** comfy-exp - https://github.com/comfyanonymous/ComfyUI_experiments */
     | "ComfyUI_experiments"
     /** comfyui_extra_api - https://github.com/injet-zhou/comfyui_extra_api */
     | "comfyui_extra_api"
+    /** ComfyUI_Face_Anon_Simple - https://github.com/smthemex/ComfyUI_Face_Anon_Simple */
+    | "ComfyUI_Face_Anon_Simple"
     /** face-parsing - https://github.com/Ryuukeisyou/comfyui_face_parsing */
     | "comfyui_face_parsing"
     /** facesharper - https://github.com/fssorc/ComfyUI_FaceShaper */
@@ -688,6 +708,10 @@ export type KnownComfyPluginTitle =
     | "ComfyUI_FlipStreamViewer"
     /** ComfyUI_Florence2SAM2 - https://github.com/rdancer/ComfyUI_Florence2SAM2 */
     | "ComfyUI_Florence2SAM2"
+    /** Comfyui_Flux_Style_Adjust - https://github.com/tanglup/Comfyui_Flux_Style_Adjust */
+    | "Comfyui_Flux_Style_Adjust"
+    /** fluxmod - https://github.com/lodestone-rock/ComfyUI_FluxMod */
+    | "ComfyUI_FluxMod"
     /** ComfyUI_FluxPromptGen - https://github.com/dfghsdh/ComfyUI_FluxPromptGen */
     | "ComfyUI_FluxPromptGen"
     /** ComfyUI_fnodes - https://github.com/syaofox/ComfyUI_fnodes */
@@ -704,6 +728,8 @@ export type KnownComfyPluginTitle =
     | "ComfyUI_fsdymy"
     /** gemini-flash - https://github.com/ShmuelRonen/ComfyUI_Gemini_Flash */
     | "ComfyUI_Gemini_Flash"
+    /** Comfyui_Get_promptId - https://github.com/xs315431/Comfyui_Get_promptId */
+    | "Comfyui_Get_promptId"
     /** getfilename-from-url - https://github.com/githubYiheng/ComfyUI_GetFileNameFromURL */
     | "ComfyUI_GetFileNameFromURL"
     /** glm4node - https://github.com/JcandZero/ComfyUI_GLM4Node */
@@ -724,6 +750,8 @@ export type KnownComfyPluginTitle =
     | "ComfyUI_HiDiffusion_Pro"
     /** Comfyui_Hunyuan3D - https://github.com/TTPlanetPig/Comfyui_Hunyuan3D */
     | "Comfyui_Hunyuan3D"
+    /** Comfyui_Hunyuan3D_EX - https://github.com/BIMer-99/Comfyui_Hunyuan3D_EX */
+    | "Comfyui_Hunyuan3D_EX"
     /** ib-nodes - https://github.com/Chaoses-Ib/ComfyUI_Ib_CustomNodes */
     | "ComfyUI_Ib_CustomNodes"
     /** id-animator - https://github.com/smthemex/ComfyUI_ID_Animator */
@@ -892,6 +920,8 @@ export type KnownComfyPluginTitle =
     | "ComfyUI_Prompt-Quill"
     /** ComfyUI_PS_Blend_Node - https://github.com/bluevisor/ComfyUI_PS_Blend_Node */
     | "ComfyUI_PS_Blend_Node"
+    /** ComfyUI_pyannote - https://github.com/ramesh-x90/ComfyUI_pyannote */
+    | "ComfyUI_pyannote"
     /** pytorch-openpose - https://github.com/nirex0/ComfyUI_pytorch_openpose */
     | "ComfyUI_pytorch_openpose"
     /** quilting - https://github.com/bmad4ever/comfyui_quilting */
@@ -904,10 +934,14 @@ export type KnownComfyPluginTitle =
     | "comfyui_reimgsize"
     /** rerouter - https://github.com/an90ray/ComfyUI_RErouter_CustomNodes */
     | "ComfyUI_RErouter_CustomNodes"
+    /** ComfyUI_rgbx_Wrapper - https://github.com/toyxyz/ComfyUI_rgbx_Wrapper */
+    | "ComfyUI_rgbx_Wrapper"
     /** ComfyUI_rotate_image - https://github.com/jamal-alkharrat/ComfyUI_rotate_image */
     | "ComfyUI_rotate_image"
     /** rssfeed - https://github.com/BAIS1C/ComfyUI_RSS_Feed_Reader */
     | "ComfyUI_RSS_Feed_Reader"
+    /** ComfyUI_SageUtils - https://github.com/arcum42/ComfyUI_SageUtils */
+    | "ComfyUI_SageUtils"
     /** ComfyUI_Sapiens - https://github.com/smthemex/ComfyUI_Sapiens */
     | "ComfyUI_Sapiens"
     /** comfyui_save_image_with_options - https://github.com/lordgasmic/comfyui_save_image_with_options */
@@ -940,10 +974,14 @@ export type KnownComfyPluginTitle =
     | "ComfyUI_StableAudio_Open"
     /** cascade-latent-ratio - https://github.com/Guillaume-Fgt/ComfyUI_StableCascadeLatentRatio */
     | "ComfyUI_StableCascadeLatentRatio"
+    /** comfyui_stabledelight_ll - https://github.com/lldacing/ComfyUI_StableDelight_ll */
+    | "ComfyUI_StableDelight_ll"
+    /** comfyui_stablehair_ll - https://github.com/lldacing/ComfyUI_StableHair_ll */
+    | "ComfyUI_StableHair_ll"
+    /** ComfyUI_StarNodes - https://github.com/Starnodes2024/ComfyUI_StarNodes */
+    | "ComfyUI_StarNodes"
     /** comfyui_stealth_pnginfo - https://github.com/catboxanon/comfyui_stealth_pnginfo */
     | "comfyui_stealth_pnginfo"
-    /** ComfyUI_Steudio - https://github.com/Steudio/ComfyUI_Steudio */
-    | "ComfyUI_Steudio"
     /** StoryDiffusion - https://github.com/smthemex/ComfyUI_StoryDiffusion */
     | "ComfyUI_StoryDiffusion"
     /** streamdiffusion - https://github.com/jesenzhang/ComfyUI_StreamDiffusion */
@@ -968,11 +1006,13 @@ export type KnownComfyPluginTitle =
     | "ComfyUI_TextAssets"
     /** tgate - https://github.com/JettHu/ComfyUI_TGate */
     | "ComfyUI_TGate"
+    /** lth - https://github.com/lo-th/Comfyui_three_js */
+    | "Comfyui_three_js"
     /** ttn - https://github.com/TinyTerra/ComfyUI_tinyterraNodes */
     | "ComfyUI_tinyterraNodes"
     /** comfyUI_TJ_NormalLighting - https://github.com/TJ16th/comfyUI_TJ_NormalLighting */
     | "comfyUI_TJ_NormalLighting"
-    /** toyxyz - https://github.com/toyxyz/ComfyUI_toyxyz_test_nodes */
+    /** comfyui_toyxyz_test_nodes - https://github.com/toyxyz/ComfyUI_toyxyz_test_nodes */
     | "ComfyUI_toyxyz_test_nodes"
     /** travel - https://github.com/NicholasMcCarthy/ComfyUI_TravelSuite */
     | "ComfyUI_TravelSuite"
@@ -1002,6 +1042,8 @@ export type KnownComfyPluginTitle =
     | "ComfyUI_Yvann-Nodes"
     /** drawshape - https://github.com/zohac/ComfyUI_ZC_DrawShape */
     | "ComfyUI_ZC_DrawShape"
+    /** ComfyUI_ZenID - https://github.com/vuongminh1907/ComfyUI_ZenID */
+    | "ComfyUI_ZenID"
     /** ComfyUI_zfkun - https://github.com/zfkun/ComfyUI_zfkun */
     | "ComfyUI_zfkun"
     /** zwng - https://github.com/za-wa-n-go/ComfyUI_Zwng_Nodes */
@@ -1032,6 +1074,8 @@ export type KnownComfyPluginTitle =
     | "ComfyUI-AIT"
     /** ComfyUI-Alimama-ControlNet-compatible - https://github.com/zhiselfly/ComfyUI-Alimama-ControlNet-compatible */
     | "ComfyUI-Alimama-ControlNet-compatible"
+    /** ComfyUI-Allegro - https://github.com/bombax-xiaoice/ComfyUI-Allegro */
+    | "ComfyUI-Allegro"
     /** ComfyUI-Anchors - https://github.com/DrJKL/ComfyUI-Anchors */
     | "ComfyUI-Anchors"
     /** animateanyone-evolved - https://github.com/MrForExample/ComfyUI-AnimateAnyone-Evolved */
@@ -1048,6 +1092,8 @@ export type KnownComfyPluginTitle =
     | "ComfyUI-APGScaling"
     /** apisr - https://github.com/kijai/ComfyUI-APISR-KJ */
     | "ComfyUI-APISR"
+    /** ComfyUI-APQNodes - https://github.com/AIPOQUE/ComfyUI-APQNodes */
+    | "ComfyUI-APQNodes"
     /** ARD - https://github.com/ArdeniusAI/ComfyUI-Ardenius */
     | "ComfyUI-Ardenius"
     /** codecringebinge.arrow.key.canvas.navigation - https://github.com/codecringebinge/ComfyUI-Arrow-Key-Canvas-Navigation */
@@ -1060,6 +1106,8 @@ export type KnownComfyPluginTitle =
     | "ComfyUI-ArtGallery"
     /** ComfyUI-ARZUMATA - https://github.com/ARZUMATA/ComfyUI-ARZUMATA */
     | "ComfyUI-ARZUMATA"
+    /** comfyui-ascii-art - https://github.com/tomudo/ComfyUI-ascii-art */
+    | "ComfyUI-ascii-art"
     /** astralanimator - https://github.com/ShmuelRonen/ComfyUI-AstralAnimator */
     | "ComfyUI-AstralAnimator"
     /** ComfyUI-ASV-Nodes - https://github.com/zubenelakrab/ComfyUI-ASV-Nodes */
@@ -1102,6 +1150,8 @@ export type KnownComfyPluginTitle =
     | "ComfyUI-BiRefNet"
     /** BiRefNet - https://github.com/MoonHugo/ComfyUI-BiRefNet-Hugo */
     | "ComfyUI-BiRefNet-Hugo"
+    /** ComfyUI-BiRefNet-lite - https://github.com/rubi-du/ComfyUI-BiRefNet-lite */
+    | "ComfyUI-BiRefNet-lite"
     /** bleh - https://github.com/blepping/ComfyUI-bleh */
     | "ComfyUI-bleh"
     /** ComfyUI-Bmad-DirtyUndoRedo - https://github.com/bmad4ever/ComfyUI-Bmad-DirtyUndoRedo */
@@ -1130,6 +1180,8 @@ export type KnownComfyPluginTitle =
     | "ComfyUI-Catcat"
     /** comfyui-catvton - https://github.com/pzc163/Comfyui-CatVTON */
     | "Comfyui-CatVTON"
+    /** comfyui-catvton-flux-wrapper - https://github.com/lujiazho/ComfyUI-CatvtonFluxWrapper */
+    | "ComfyUI-CatvtonFluxWrapper"
     /** ccsr - https://github.com/kijai/ComfyUI-CCSR */
     | "ComfyUI-CCSR"
     /** comfyui-centernode - https://github.com/alessandrozonta/ComfyUI-CenterNode */
@@ -1170,8 +1222,6 @@ export type KnownComfyPluginTitle =
     | "ComfyUI-Counter"
     /** coziness - https://github.com/skfoo/ComfyUI-Coziness */
     | "ComfyUI-Coziness"
-    /** ComfyUI-Cre8it-Nodes - https://github.com/DonBaronFactory/ComfyUI-Cre8it-Nodes */
-    | "ComfyUI-Cre8it-Nodes"
     /** creaprompt - https://github.com/tritant/ComfyUI_CreaPrompt */
     | "ComfyUI-CreaPrompt"
     /** csv-loader - https://github.com/PCMonsterx/ComfyUI-CSV-Loader */
@@ -1270,6 +1320,8 @@ export type KnownComfyPluginTitle =
     | "ComfyUI-EasyDeforum"
     /** easyocr - https://github.com/prodogape/ComfyUI-EasyOCR */
     | "ComfyUI-EasyOCR"
+    /** ComfyUI-EasyPony - https://github.com/regiellis/ComfyUI-EasyPony */
+    | "ComfyUI-EasyPony"
     /** easy-url-loader - https://github.com/Apache0ne/ComfyUI-EasyUrlLoader */
     | "ComfyUI-EasyUrlLoader"
     /** comfyEbsynth - https://github.com/FuouM/ComfyUI-EbSynth */
@@ -1350,8 +1402,12 @@ export type KnownComfyPluginTitle =
     | "ComfyUI-Flowty-LDSR"
     /** ComfyUI-Flowty-TripoSR - https://github.com/flowtyone/ComfyUI-Flowty-TripoSR */
     | "ComfyUI-Flowty-TripoSR"
+    /** ComfyUI-flux_fill_patcher - https://github.com/bananasss00/ComfyUI-flux_fill_patcher */
+    | "ComfyUI-flux_fill_patcher"
     /** ComfyUI-FLUX-BFL-API - https://github.com/gelasdev/ComfyUI-FLUX-BFL-API */
     | "ComfyUI-FLUX-BFL-API"
+    /** ComfyUI-Flux-Inpainting - https://github.com/rubi-du/ComfyUI-Flux-Inpainting */
+    | "ComfyUI-Flux-Inpainting"
     /** replicate-api - https://github.com/smlbiobot/ComfyUI-Flux-Replicate-API */
     | "ComfyUI-Flux-Replicate-API"
     /** ComfyUI-FLUX-TOGETHER-API - https://github.com/BZcreativ/ComfyUI-FLUX-TOGETHER-API */
@@ -1364,6 +1420,8 @@ export type KnownComfyPluginTitle =
     | "ComfyUI-Fluxtapoz"
     /** fofr-toolkit - https://github.com/fofr/comfyui-fofr-toolkit */
     | "comfyui-fofr-toolkit"
+    /** ComfyUI-Fooocus - https://github.com/mrhan1993/ComfyUI-Fooocus */
+    | "ComfyUI-Fooocus"
     /** ComfyUI-FrameFX - https://github.com/mgfxer/ComfyUI-FrameFX */
     | "ComfyUI-FrameFX"
     /** FrameSkipping - https://github.com/baicai99/ComfyUI-FrameSkipping */
@@ -1412,6 +1470,10 @@ export type KnownComfyPluginTitle =
     | "ComfyUI-GTF-Utilities"
     /** gtsuya - https://github.com/GTSuya-Studio/ComfyUI-Gtsuya-Nodes */
     | "ComfyUI-GTSuya-Nodes"
+    /** haiperai-api - https://github.com/Haiper-ai/ComfyUI-HaiperAI-API */
+    | "ComfyUI-HaiperAI-API"
+    /** HakuImg - https://github.com/licyk/ComfyUI-HakuImg */
+    | "ComfyUI-HakuImg"
     /** hallo - https://github.com/AIFSH/ComfyUI-Hallo */
     | "ComfyUI-Hallo"
     /** ComfyUI-Hangover-Moondream - https://github.com/Hangover3832/ComfyUI-Hangover-Moondream */
@@ -1430,10 +1492,10 @@ export type KnownComfyPluginTitle =
     | "ComfyUI-HH-Image-Selector"
     /** ComfyUI-HigherBitDepthSaveImage - https://github.com/aimerib/ComfyUI_HigherBitDepthSaveImage */
     | "ComfyUI-HigherBitDepthSaveImage"
-    /** comfyui-highlight-connections - https://github.com/HentaiGirlfriendDotCom/comfyui-highlight-connections */
-    | "comfyui-highlight-connections"
     /** hq-image-save - https://github.com/spacepxl/ComfyUI-HQ-Image-Save */
     | "ComfyUI-HQ-Image-Save"
+    /** ComfyUI-Html2Image - https://github.com/liuqianhonga/ComfyUI-Html2Image */
+    | "ComfyUI-Html2Image"
     /** ComfyUI-Hunyuan3D-1-wrapper - https://github.com/jtydhr88/ComfyUI-Hunyuan3D-1-wrapper */
     | "ComfyUI-Hunyuan3D-1-wrapper"
     /** hypersdxl - https://github.com/fofr/ComfyUI-HyperSDXL1StepUnetScheduler */
@@ -1462,8 +1524,14 @@ export type KnownComfyPluginTitle =
     | "ComfyUI-Image-Browsing"
     /** image-captioner - https://github.com/neverbiasu/ComfyUI-Image-Captioner */
     | "ComfyUI-Image-Captioner"
+    /** ComfyUI-Image-Compressor - https://github.com/liuqianhonga/ComfyUI-Image-Compressor */
+    | "ComfyUI-Image-Compressor"
+    /** ComfyUI-Image-Evaluation - https://github.com/wu12023/ComfyUI-Image-Evaluation */
+    | "ComfyUI-Image-Evaluation"
     /** image-fitlers - https://github.com/spacepxl/ComfyUI-Image-Filters */
     | "ComfyUI-Image-Filters"
+    /** ComfyUI-Image-Harmonizer - https://github.com/sweetndata/ComfyUI-Image-Harmonizer */
+    | "ComfyUI-Image-Harmonizer"
     /** image-inpainting - https://github.com/SherryXieYuchen/ComfyUI-Image-Inpainting */
     | "ComfyUI-Image-Inpainting"
     /** image-matting - https://github.com/hackkhai/ComfyUI-Image-Matting */
@@ -1482,6 +1550,8 @@ export type KnownComfyPluginTitle =
     | "ComfyUI-ImageCropper"
     /** ComfyUI-ImageMetadataExtension - https://github.com/edelvarden/ComfyUI-ImageMetadataExtension */
     | "ComfyUI-ImageMetadataExtension"
+    /** ComfyUI-ImageTagger - https://github.com/purpen/ComfyUI-ImageTagger */
+    | "ComfyUI-ImageTagger"
     /** img-query - https://github.com/chandlergis/ComfyUI-IMG_Query */
     | "ComfyUI-IMG_Query"
     /** Img2DrawingAssistants - https://github.com/Isi-dev/ComfyUI-Img2DrawingAssistants */
@@ -1510,6 +1580,8 @@ export type KnownComfyPluginTitle =
     | "ComfyUI-InversedNoise"
     /** iplap - https://github.com/AIFSH/ComfyUI-IP_LAP */
     | "ComfyUI-IP_LAP"
+    /** ComfyUI-IPAdapter-Flux - https://github.com/Shakker-Labs/ComfyUI-IPAdapter-Flux */
+    | "ComfyUI-IPAdapter-Flux"
     /** ComfyUI-IPAnimate - https://github.com/Chan-0312/ComfyUI-IPAnimate */
     | "ComfyUI-IPAnimate"
     /** isniceparts - https://github.com/aburahamu/ComfyUI-IsNiceParts */
@@ -1540,14 +1612,20 @@ export type KnownComfyPluginTitle =
     | "ComfyUI-Keyframed"
     /** comfyUI-kling-api-2lab - https://github.com/AI2lab/comfyUI-kling-api-2lab */
     | "comfyUI-kling-api-2lab"
+    /** ComfyUI-KLingAI-API - https://github.com/KwaiVGI/ComfyUI-KLingAI-API */
+    | "ComfyUI-KLingAI-API"
     /** kolors-mz - https://github.com/MinusZoneAI/ComfyUI-Kolors-MZ */
     | "ComfyUI-Kolors-MZ"
     /** kwaikolors - https://github.com/kijai/ComfyUI-KwaiKolorsWrapper */
     | "ComfyUI-KwaiKolorsWrapper"
+    /** ComfyUI-KYNode - https://github.com/yorkane/ComfyUI-KYNode */
+    | "ComfyUI-KYNode"
     /** lama - https://github.com/hhhzzyang/Comfyui_Lama */
     | "Comfyui-Lama"
     /** latent-modifier - https://github.com/Clybius/ComfyUI-Latent-Modifiers */
     | "ComfyUI-Latent-Modifiers"
+    /** ComfyUI-LatentClamp - https://github.com/SparknightLLC/ComfyUI-LatentClamp */
+    | "ComfyUI-LatentClamp"
     /** latte - https://github.com/RhizoNymph/ComfyUI-Latte */
     | "ComfyUI-Latte"
     /** ComfyUI-LaVi-Bridge-Wrapper - https://github.com/kijai/ComfyUI-LaVi-Bridge-Wrapper */
@@ -1584,6 +1662,8 @@ export type KnownComfyPluginTitle =
     | "ComfyUI-LJNodes"
     /** ComfyUI-Llama - https://github.com/daniel-lewis-ab/ComfyUI-Llama */
     | "ComfyUI-Llama"
+    /** ComfyUI-LLaMA-Mesh - https://github.com/Yuan-ManX/ComfyUI-LLaMA-Mesh */
+    | "ComfyUI-LLaMA-Mesh"
     /** llm-assistant - https://github.com/longgui0318/comfyui-llm-assistant */
     | "comfyui-llm-assistant"
     /** ComfyUI-LLMs - https://github.com/leoleelxh/ComfyUI-LLMs */
@@ -1618,6 +1698,10 @@ export type KnownComfyPluginTitle =
     | "ComfyUI-LoRA-Tuner"
     /** ComfyUI-Lotus - https://github.com/kijai/ComfyUI-Lotus */
     | "ComfyUI-Lotus"
+    /** ComfyUI-LTXTricks - https://github.com/logtd/ComfyUI-LTXTricks */
+    | "ComfyUI-LTXTricks"
+    /** ltxv - https://github.com/Lightricks/ComfyUI-LTXVideo */
+    | "ComfyUI-LTXVideo"
     /** lumaai-api - https://github.com/lumalabs/ComfyUI-LumaAI-API */
     | "ComfyUI-LumaAI-API"
     /** ComfyUI-Lumina-Next-SFT-DiffusersWrapper - https://github.com/Excidos/ComfyUI-Lumina-Next-SFT-DiffusersWrapper */
@@ -1644,6 +1728,8 @@ export type KnownComfyPluginTitle =
     | "ComfyUI-MARS5-TTS"
     /** mask-util - https://github.com/longgui0318/comfyui-mask-util */
     | "comfyui-mask-util"
+    /** ComfyUI-MaskArbiter - https://github.com/SparknightLLC/ComfyUI-MaskArbiter */
+    | "ComfyUI-MaskArbiter"
     /** maskbatch-permutations - https://github.com/curiousjp/ComfyUI-MaskBatchPermutations */
     | "ComfyUI-MaskBatchPermutations"
     /** matchering - https://github.com/MuziekMagie/ComfyUI-Matchering */
@@ -1822,6 +1908,8 @@ export type KnownComfyPluginTitle =
     | "ComfyUI-PixArt-alpha-Diffusers"
     /** pixel - https://github.com/wandbrandon/comfyui-pixel */
     | "comfyui-pixel"
+    /** ComfyUI-Pixelate - https://github.com/flycarl/ComfyUI-Pixelate */
+    | "ComfyUI-Pixelate"
     /** ComfyUI-PixelOE-Wrapper - https://github.com/A4P7J1N7M05OT/ComfyUI-PixelOE-Wrapper */
     | "ComfyUI-PixelOE-Wrapper"
     /** PixelCalulator - https://github.com/Ling-APE/ComfyUI-PixelResolutionCalculator */
@@ -1864,6 +1952,8 @@ export type KnownComfyPluginTitle =
     | "ComfyUI-Prompt-Preview"
     /** Prompt-Wildcards - https://github.com/MakkiShizu/ComfyUI-Prompt-Wildcards */
     | "ComfyUI-Prompt-Wildcards"
+    /** ComfyUI-PromptConverter - https://github.com/vkff5833/ComfyUI-PromptConverter */
+    | "ComfyUI-PromptConverter"
     /** prompter-fofr - https://github.com/fofr/ComfyUI-Prompter-fofrAI */
     | "ComfyUI-Prompter-fofrAI"
     /** promptlab - https://github.com/Makeezi/ComfyUI-promptLAB */
@@ -1874,6 +1964,8 @@ export type KnownComfyPluginTitle =
     | "ComfyUI-PromptOrganizer"
     /** ComfyUI-PromptUtilities - https://github.com/nkchocoai/ComfyUI-PromptUtilities */
     | "ComfyUI-PromptUtilities"
+    /** ComfyUI-PromptUtils - https://github.com/Black-Lioness/ComfyUI-PromptUtils */
+    | "ComfyUI-PromptUtils"
     /** pronodes - https://github.com/yuvraj108c/ComfyUI-Pronodes */
     | "ComfyUI-Pronodes"
     /** ComfyUI-ProPost - https://github.com/digitaljohn/comfyui-propost */
@@ -1958,8 +2050,12 @@ export type KnownComfyPluginTitle =
     | "ComfyUI-safety-checker"
     /** sal-vton - https://github.com/ratulrafsan/Comfyui-SAL-VTON */
     | "Comfyui-SAL-VTON"
+    /** ComfyUI-SAM2-Realtime - https://github.com/pschroedl/ComfyUI-SAM2-Realtime */
+    | "ComfyUI-SAM2-Realtime"
     /** lmc-alt - https://github.com/jojkaart/ComfyUI-sampler-lcm-alternative */
     | "ComfyUI-sampler-lcm-alternative"
+    /** SaveAnimatedGIF - https://github.com/MakkiShizu/ComfyUI-SaveAnimatedGIF */
+    | "ComfyUI-SaveAnimatedGIF"
     /** saveavif - https://github.com/pkpkTech/ComfyUI-SaveAVIF */
     | "ComfyUI-SaveAVIF"
     /** ComfyUI-SaveImageCivitAI - https://github.com/Wakfull33/ComfyUI-SaveImageCivitAI */
@@ -2036,12 +2132,16 @@ export type KnownComfyPluginTitle =
     | "comfyui-smooth-step-lora-loader"
     /** ComfyUI-Sn0w-Scripts - https://github.com/sn0w12/ComfyUI-Sn0w-Scripts */
     | "ComfyUI-Sn0w-Scripts"
+    /** ComfyUI-SnakeOil - https://github.com/DoctorDiffusion/ComfyUI-SnakeOil */
+    | "ComfyUI-SnakeOil"
     /** comfyui-snek-nodes - https://github.com/sneccc/comfyui-snek-nodes */
     | "comfyui-snek-nodes"
     /** sonar - https://github.com/blepping/ComfyUI-sonar */
     | "ComfyUI-sonar"
     /** soundlab - https://github.com/shadowcz007/comfyui-sound-lab */
     | "comfyui-sound-lab"
+    /** ComfyUI-SoundHub - https://github.com/Yuan-ManX/ComfyUI-SoundHub */
+    | "ComfyUI-SoundHub"
     /** ComfyUI-speech-dataset-toolkit - https://github.com/kale4eat/ComfyUI-speech-dataset-toolkit */
     | "ComfyUI-speech-dataset-toolkit"
     /** ssrencoder - https://github.com/logtd/ComfyUI-SSREncoder */
@@ -2086,6 +2186,8 @@ export type KnownComfyPluginTitle =
     | "ComfyUI-SVD-ZHO (WIP)"
     /** svdresizer - https://github.com/ShmuelRonen/ComfyUI-SVDResizer */
     | "ComfyUI-SVDResizer"
+    /** ComfyUI-SVGFullfill - https://github.com/stormcenter/ComfyUI-SVGFullfill */
+    | "ComfyUI-SVGFullfill"
     /** svgview - https://github.com/Parameshvadivel/ComfyUI-SVGview */
     | "ComfyUI-SVGview"
     /** synctalk - https://github.com/Ryuukeisyou/ComfyUI-SyncTalk */
@@ -2108,6 +2210,8 @@ export type KnownComfyPluginTitle =
     | "ComfyUI-TCD-scheduler"
     /** teanodes - https://github.com/TeaCrab/ComfyUI-TeaNodes */
     | "ComfyUI-TeaNodes"
+    /** ComfyUI-Teeth - https://github.com/steelan9199/ComfyUI-Teeth */
+    | "ComfyUI-Teeth"
     /** temploader - https://github.com/pkpkTech/ComfyUI-TemporaryLoader */
     | "ComfyUI-TemporaryLoader"
     /** tensorop - https://github.com/ttulttul/ComfyUI-Tensor-Operations */
@@ -2122,6 +2226,8 @@ export type KnownComfyPluginTitle =
     | "ComfyUI-text-file-util"
     /** ComfyUI-text-replace - https://github.com/banqingyuan/ComfyUI-text-replace */
     | "ComfyUI-text-replace"
+    /** ComfyUI-Text2Json - https://github.com/Alvaroeai/ComfyUI-Text2Json */
+    | "ComfyUI-Text2Json"
     /** comfyui-textarea-keybindings - https://github.com/shinich39/comfyui-textarea-keybindings */
     | "comfyui-textarea-keybindings"
     /** ComfyUI-textnodes - https://github.com/akierson/ComfyUI-textnodes */
@@ -2214,6 +2320,8 @@ export type KnownComfyPluginTitle =
     | "ComfyUI-VisualQueryTemplate"
     /** ComfyUI-Vivax-Nodes - https://github.com/vivax3794/ComfyUI-Vivax-Nodes */
     | "ComfyUI-Vivax-Nodes"
+    /** ComfyUI-VLM_Captions - https://github.com/5x00/ComfyUI-VLM_Captions */
+    | "ComfyUI-VLM_Captions"
     /** ComfyUI-Voxels - https://github.com/DanielHabib/ComfyUI-Voxels */
     | "ComfyUI-Voxels"
     /** vsgan - https://github.com/yuvraj108c/ComfyUI-Vsgan */
@@ -2238,6 +2346,8 @@ export type KnownComfyPluginTitle =
     | "ComfyUI-YALLM-node"
     /** yanc - https://github.com/ka-puna/comfyui-yanc */
     | "comfyui-yanc"
+    /** Comfyui-Ycanvas - https://github.com/tanglup/Comfyui-Ycnode */
+    | "Comfyui-Ycanvas"
     /** ComfyUI-YCYY-LoraInfo - https://github.com/ycyy/ComfyUI-YCYY-LoraInfo */
     | "ComfyUI-YCYY-LoraInfo"
     /** comfy-yolo - https://github.com/kadirnar/ComfyUI-YOLO */
@@ -2384,6 +2494,8 @@ export type KnownComfyPluginTitle =
     | "Dream Project Animation Nodes"
     /** dream-video - https://github.com/alt-key-project/comfyui-dream-video-batches */
     | "Dream Video Batches"
+    /** et_dynamicprompts - https://github.com/exectails/comfyui-et_dynamicprompts */
+    | "Dynamic Prompts"
     /** dynamic-thresholding - https://github.com/mcmonkeyprojects/sd-dynamic-thresholding */
     | "Dynamic Thresholding"
     /** dynamic-oversampling - https://github.com/AustinMroz/ComfyUI-DynamicOversampling */
@@ -2410,6 +2522,8 @@ export type KnownComfyPluginTitle =
     | "Efficiency Nodes ExtendeD"
     /** eff-nodes - https://github.com/jags111/efficiency-nodes-comfyui */
     | "Efficiency Nodes for ComfyUI Version 2.0+"
+    /** Embedding Merge for ComfyUI - https://github.com/duskfallcrew/Comfyui_EmbeddingMerge_Node */
+    | "Embedding Merge for ComfyUI"
     /** embedding-picker - https://github.com/Tropfchen/ComfyUI-Embedding_Picker */
     | "Embedding Picker"
     /** embeddings-curve-editor - https://github.com/chris-the-wiz/EmbeddingsCurveEditor_ComfyUI */
@@ -2434,6 +2548,8 @@ export type KnownComfyPluginTitle =
     | "Face Analysis for ComfyUI"
     /** facecompare - https://github.com/czcz1024/Comfyui-FaceCompare */
     | "Face Compare"
+    /** face_restorer - https://github.com/tungdop2/Comfyui_face_restorer */
+    | "Face Restorer for ComfyUI"
     /** faceless - https://github.com/jeffy5/comfyui-faceless-node */
     | "Faceless Node for ComfyUI"
     /** face-cf - https://github.com/mav-rik/facerestore_cf */
@@ -2592,6 +2708,8 @@ export type KnownComfyPluginTitle =
     | "ImgProcessing_ComfyUI"
     /** Immortal_comfyUI - https://github.com/JichaoLiang/Immortal_comfyUI */
     | "Immortal_comfyUI"
+    /** et_infoutils - https://github.com/exectails/comfyui-et_infoutils */
+    | "Info Utils"
     /** instancediffusion - https://github.com/logtd/ComfyUI-InstanceDiffusion */
     | "InstanceDiffusion Nodes"
     /** InstaSD nodes for ComfyUI - https://github.com/WaddingtonHoldings/ComfyUI-InstaSD */
@@ -2610,6 +2728,8 @@ export type KnownComfyPluginTitle =
     | "JNComfy"
     /** jovimetrix - https://github.com/Amorano/Jovimetrix */
     | "Jovimetrix Composition Nodes"
+    /** joy-captioner-alpha-two - https://github.com/tungdop2/Comfyui_joy-caption-alpha-two */
+    | "Joy Caption Alpha Two for ComfyUI"
     /** JoyCaptionAlpha Two for ComfyUI - https://github.com/EvilBT/ComfyUI_SLK_joy_caption_two */
     | "JoyCaptionAlpha Two for ComfyUI"
     /** JoyHallo-ComfyUI - https://github.com/AIFSH/JoyHallo-ComfyUI */
@@ -2764,6 +2884,10 @@ export type KnownComfyPluginTitle =
     | "noise latent perlinpinpin"
     /** cg-noisetools - https://github.com/chrisgoringe/cg-noisetools */
     | "Noise variation and batch noise tools"
+    /** NSFW Check for ComfyUI - https://github.com/iamandeepsandhu/ComfyUI-NSFW-Check */
+    | "NSFW Check for ComfyUI"
+    /** nsfw-image-check-comfyui - https://github.com/fallingmeteorite/nsfw-image-check-comfyui */
+    | "nsfw-image-check-comfyui"
     /** nsfwrecog-comfyui - https://github.com/goburiin/nsfwrecog-comfyui */
     | "nsfwrecog-comfyui"
     /** ntdviet/comfyui-ext - https://github.com/ntdviet/comfyui-ext */
@@ -2812,8 +2936,6 @@ export type KnownComfyPluginTitle =
     | "Panoramic Image Stitcher"
     /** pants - https://github.com/pants007/comfy-pants */
     | "pants"
-    /** pag - https://github.com/pamparamm/sd-perturbed-attention */
-    | "Perturbed-Attention Guidance"
     /** petty-paint - https://github.com/mephisto83/petty-paint-comfyui-node */
     | "petty-paint-comfyui-node"
     /** pfaeff - https://github.com/Pfaeff/pfaeff-comfyui */
@@ -2920,6 +3042,8 @@ export type KnownComfyPluginTitle =
     | "Rembg Background Removal Node for ComfyUI"
     /** rembg-better - https://github.com/Loewen-Hob/rembg-comfyui-node-better */
     | "Rembg Background Removal Node for ComfyUI (Better)"
+    /** res4lyf - https://github.com/ClownsharkBatwing/RES4LYF */
+    | "RES4LYF"
     /** ResAdapter for ComfyUI - https://github.com/jiaxiangc/ComfyUI-ResAdapter */
     | "ResAdapter for ComfyUI"
     /** resolution-selector - https://github.com/bradsec/ComfyUI_ResolutionSelector */
@@ -2940,6 +3064,8 @@ export type KnownComfyPluginTitle =
     | "Runtime44 ComfyUI Nodes"
     /** ruucm - https://github.com/ruucm/ruucm-comfy */
     | "Ruucm's ComfyUI Nodes"
+    /** RvTComfyUI-RvTools_v2 - https://github.com/Rvage0815/ComfyUI-RvTools_v2 */
+    | "RvTComfyUI-RvTools_v2"
     /** RyanOnTheInside - https://github.com/ryanontheinside/ComfyUI_RyanOnTheInside */
     | "RyanOnTheInside"
     /** saltai-audioviz - https://github.com/get-salt-AI/SaltAI_AudioViz */
@@ -2950,6 +3076,8 @@ export type KnownComfyPluginTitle =
     | "SaltAI-Open-Resources"
     /** SambaNovaAPI - https://github.com/Apache0ne/SambaNova */
     | "SambaNova"
+    /** SAMURAI Nodes for ComfyUI - https://github.com/takemetosiberia/ComfyUI-SAMURAI--SAM2- */
+    | "SAMURAI Nodes for ComfyUI"
     /** save-image-extended - https://github.com/audioscavenger/save-image-extended-comfyui */
     | "Save Image Extended for ComfyUI"
     /** saveimage-plus - https://github.com/Goktug/comfyui-saveimage-plus */
@@ -2970,6 +3098,8 @@ export type KnownComfyPluginTitle =
     | "SD Prompt Reader"
     /** latent-upscaler - https://github.com/city96/SD-Latent-Upscaler */
     | "SD-Latent-Upscaler"
+    /** pag - https://github.com/pamparamm/sd-perturbed-attention */
+    | "sd-perturbed-attention"
     /** SD-PPP - https://github.com/zombieyang/sd-ppp */
     | "SD-PPP"
     /** sd3-scaling - https://github.com/TylerZoro/SD3-Scaling */
@@ -2978,6 +3108,8 @@ export type KnownComfyPluginTitle =
     | "SD3.5 Empty Latent Size Picker"
     /** sdfx - https://github.com/sdfxai/SDFXBridgeForComfyUI */
     | "SDFXBridgeForComfyUI - ComfyUI Custom Node for SDFX Integration"
+    /** SDVN - https://github.com/StableDiffusionVN/SDVN_Comfy_node */
+    | "SDVN Comfy node"
     /** autoprompt - https://github.com/dagthomas/comfyui_dagthomas */
     | "SDXL Auto Prompter"
     /** twri-styler - https://github.com/twri/sdxl_prompt_styler */
@@ -3070,6 +3202,8 @@ export type KnownComfyPluginTitle =
     | "StereoVision Plugin for ComfyUI"
     /** String Converter - https://github.com/glowcone/comfyui-string-converter */
     | "String Converter"
+    /** et_stringutils - https://github.com/exectails/comfyui-et_stringutils */
+    | "String Utils"
     /** StyleAligned for ComfyUI - https://github.com/brianfitzgerald/style_aligned_comfy */
     | "StyleAligned for ComfyUI"
     /** StyledCLIPTextEncode - https://github.com/microbote/ComfyUI-StyledCLIPTextEncode */
@@ -3112,6 +3246,8 @@ export type KnownComfyPluginTitle =
     | "TIPO-extension"
     /** Touch screen gesture support - https://github.com/Iemand005/ComfyUI-Touch-Gestures */
     | "Touch screen gesture support"
+    /** Touchpad and trackpad gesture support - https://github.com/Iemand005/ComfyUI-Touchpad-Gestures */
+    | "Touchpad and trackpad gesture support"
     /** Touchpad two-finger gesture support for macOS - https://github.com/subtleGradient/TinkerBot-tech-for-ComfyUI-Touchpad */
     | "Touchpad two-finger gesture support for macOS"
     /** tracking - https://github.com/logtd/ComfyUI-TrackingNodes */
@@ -3150,6 +3286,8 @@ export type KnownComfyPluginTitle =
     | "Various ComfyUI Nodes by Type"
     /** vector-sculptor - https://github.com/Extraltodeus/Vector_Sculptor_ComfyUI */
     | "Vector_Sculptor_ComfyUI"
+    /** VEnhancer ComfyUI Extension - https://github.com/VikramxD/VEnhancer-ComfyUI-Wrapper */
+    | "VEnhancer ComfyUI Extension"
     /** vid2vid - https://github.com/sylym/comfy_vid2vid */
     | "Vid2vid"
     /** VideoSys-ComfyUI - https://github.com/AIFSH/VideoSys-ComfyUI */
@@ -3196,12 +3334,16 @@ export type KnownComfyPluginTitle =
     | "youtube-dl-comfyui"
     /** z-a1111-sd-webui-DanTagGen - https://github.com/Aaron-CHM/ComfyUI-z-a1111-sd-webui-DanTagGen */
     | "z-a1111-sd-webui-DanTagGen"
+    /** zer0-comfy-utils - https://github.com/zer0thgear/zer0-comfy-utils */
+    | "zer0 Comfy Utilities"
     /** zhangp365/ComfyUI-utils-nodes - https://github.com/zhangp365/ComfyUI-utils-nodes */
     | "zhangp365/ComfyUI-utils-nodes"
     /** zhihuige-nodes - https://github.com/rcfcu2000/zhihuige-nodes-comfyui */
     | "zhihuige-nodes-comfyui"
     /** zmg - https://github.com/vanche1212/ComfyUI-ZMG-Nodes */
     | "ZMG PLUGIN"
+    /** zsq_prompt - https://github.com/windfancy/zsq_prompt */
+    | "zsq_prompt"
     /** zsuite - https://github.com/TheBarret/ZSuite */
     | "ZSuite"
     /** Zuellni/ComfyUI-Custom-Nodes - https://github.com/Zuellni/ComfyUI-Custom-Nodes */

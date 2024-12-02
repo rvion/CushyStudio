@@ -43,7 +43,7 @@
         "gen-supa-types": "supabase gen types typescript --schema public --linked > src/supa/database.types.ts",
         "gen-supa-types-full": "supabase gen types typescript --schema public --schema auth --linked > src/supa/database.types.ts",
         "gen-bins": "electron-builder install-app-deps",
-        "gen-manager": "bun src/manager/_utils/_downloadComfyManagerJSONs.ts",
+        "gen-manager": "bun src/_/script-update-manager.bun.ts",
         "gen-manager:watch": "bun --watch src/manager/_utils/_downloadComfyManagerJSONs.ts --skip-download",
         "gen-assets": "bun src/utils/assets/assets.gen.ts",
         "gen-dts": "tsc -p tsconfig.doc.json",

@@ -18,7 +18,7 @@ import {
 import { type ComfyManagerPluginContentMetadata } from '../types/ComfyManagerPluginContentMetadata'
 
 export const _getCustomNodeRegistry = (DB: ComfyManagerRepository): void => {
-   const totalCustomNodeSeen = 0
+   let totalCustomNodeSeen: number = 0
 
    // 1. read file
    const extensionNodeMapFile: ComfyManagerFilePluginContent = JSON.parse(
@@ -71,6 +71,7 @@ export const _getCustomNodeRegistry = (DB: ComfyManagerRepository): void => {
 
    // 3. for each file
    for (const enmEntry of enmEntries) {
+      totalCustomNodeSeen += enmEntry.comfyNodeNames.length
       // JSON CHECKS ------------------------------------------------------------
       // if (!hasErrors && DB.opts.check) {
       //    const valid = Value.Check(ComfyManagerPluginContentMetadata_typebox, enmEntry.meta)
@@ -114,16 +115,6 @@ export const _getCustomNodeRegistry = (DB: ComfyManagerRepository): void => {
          // 4.3. index the node in the plugin (file is only giving index by files...)
          nodesInPlugin.push(nodeNameInCushy as KnownComfyCustomNodeName)
       }
-   }
-   // process.exit(1)
-   // 5. log duplicates
-   if (DB.opts.check) {
-      // for (const [k, v] of DB.plugins_byNodeNameInComfy.entries()) {
-      //    if (v.length > 1) {
-      //       if (DB.opts.check) console.log(`❌ DUPLICATE: ${k}`)
-      //       for (const file of v) console.log(`    | ${file.author}/${file.title}`)
-      //    }
-      // }
    }
 
    // 6. CODEGEN ------------------------------------------------------------

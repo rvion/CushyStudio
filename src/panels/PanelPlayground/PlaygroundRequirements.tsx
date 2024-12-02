@@ -22,7 +22,7 @@ export const PlaygroundRequirementsHeader = observer(function PlaygroundRequirem
                //
                { type: 'customNodesByTitle', title: 'Allor Plugin' },
                { type: 'customNodesByURI', uri: 'https://civitai.com/api/download/models/24154' },
-               { type: 'customNodesByURI', uri: 'https://github.com/Fannovel16/ComfyUI-Loopchain' },
+               { type: 'customNodesByURI', uri: 'https://github.com/Fannovel16/ComfyUI-Frame-Interpolation' },
                // { type: 'modelCustom',infos:{} }
                // { type: 'modelInCivitai', civitaiURL: 'https://civitai.com/api/download/models/24154' },
                { type: 'modelInManager', modelName: 'stabilityai/stable-diffusion-x4-upscaler' },
@@ -49,7 +49,7 @@ export const PlaygroundRequirements = observer(function PlaygroundRequirements_(
                //
                { type: 'customNodesByTitle', title: 'Allor Plugin' },
                { type: 'customNodesByURI', uri: 'https://civitai.com/api/download/models/24154' },
-               { type: 'customNodesByURI', uri: 'https://github.com/Fannovel16/ComfyUI-Loopchain' },
+               { type: 'customNodesByURI', uri: 'https://github.com/Fannovel16/ComfyUI-Frame-Interpolation' },
                // { type: 'modelCustom',infos:{} }
                // { type: 'modelInCivitai', civitaiURL: 'https://civitai.com/api/download/models/24154' },
                { type: 'modelInManager', modelName: 'stabilityai/stable-diffusion-x4-upscaler' },

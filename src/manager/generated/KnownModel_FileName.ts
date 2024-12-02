@@ -455,11 +455,31 @@ export type KnownModel_FileName =
      * see https://huggingface.co/Comfy-Org/flux1-dev/tree/main
      */
     | "flux1-schnell-fp8.safetensors"
+    /** This clip vision model is required for FLUX.1 Redux.
+     * 857MB - https://huggingface.co/Comfy-Org/sigclip_vision_384/resolve/main/sigclip_vision_patch14_384.safetensors
+     * see https://huggingface.co/Comfy-Org/sigclip_vision_384/tree/main
+     */
+    | "sigclip_vision_patch14_384.safetensors"
     /** clip_l model
      * 246MB - https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/clip_l.safetensors
      * see https://huggingface.co/comfyanonymous/flux_text_encoders/tree/main
      */
     | "clip_l.safetensors"
+    /** Text Encoders for FLUX (fp16)
+     * 9.79GB - https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp16.safetensors
+     * see https://huggingface.co/comfyanonymous/flux_text_encoders
+     */
+    | "t5xxl_fp16.safetensors"
+    /** Text Encoders for FLUX (fp16)
+     * 5.16GB - https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp8_e4m3fn_scaled.safetensors
+     * see https://huggingface.co/comfyanonymous/flux_text_encoders
+     */
+    | "t5xxl_fp8_e4m3fn_scaled.safetensors"
+    /** Text Encoders for FLUX (fp8_e4m3fn)
+     * 4.89GB - https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp8_e4m3fn.safetensors
+     * see https://huggingface.co/comfyanonymous/flux_text_encoders
+     */
+    | "t5xxl_fp8_e4m3fn.safetensors"
     /** Loose ControlNet model
      * 722.6MB - https://huggingface.co/ioclab/LooseControl_WebUICombine/resolve/main/control_boxdepth_LooseControlfp16.safetensors
      * see https://huggingface.co/ioclab/LooseControl_WebUICombine
@@ -951,6 +971,11 @@ You need to this model for <B>Tiled Resample</B>
      * see https://huggingface.co/InstantX/FLUX.1-dev-Controlnet-Union
      */
     | "diffusion_pytorch_model.safetensors"
+    /** FLUX.1-dev-IP-Adapter
+     * 5.29GB - https://huggingface.co/InstantX/FLUX.1-dev-IP-Adapter/resolve/main/ip-adapter.bin
+     * see https://huggingface.co/InstantX/FLUX.1-dev-IP-Adapter
+     */
+    | "ip-adapter.bin"
     /** Controlnet SD3 Canny model.
      * 1.19GB - https://huggingface.co/InstantX/SD3-Controlnet-Canny/resolve/main/diffusion_pytorch_model.safetensors
      * see https://huggingface.co/InstantX/SD3-Controlnet-Canny
@@ -1315,6 +1340,11 @@ ComfyUI roop and comfy_mtb)
      * see https://huggingface.co/Lightricks/LongAnimateDiff
      */
     | "lt_long_mm_32_frames.ckpt"
+    /** LTX-Video is the first DiT-based video generation model capable of generating high-quality videos in real-time. It produces 24 FPS videos at a 768x512 resolution faster than they can be watched. Trained on a large-scale dataset of diverse videos, the model generates high-resolution videos with realistic and varied content.
+     * 9.37GB - https://huggingface.co/Lightricks/LTX-Video/resolve/main/ltx-video-2b-v0.9.safetensors
+     * see https://huggingface.co/Lightricks/LTX-Video
+     */
+    | "ltx-video-2b-v0.9.safetensors"
     /** MobileSAM
      * 38.8MB - https://github.com/ChaoningZhang/MobileSAM/blob/master/weights/mobile_sam.pt
      * see https://github.com/ChaoningZhang/MobileSAM/
@@ -1591,6 +1621,21 @@ Version quantized to fp8_e4m3fn by Kijai
      * see https://huggingface.co/stabilityai/control-lora
      */
     | "control-lora-sketch-rank256.safetensors"
+    /** Blur Controlnet model for SD3.5 Large
+     * 8.65GB - https://huggingface.co/stabilityai/stable-diffusion-3.5-controlnets/resolve/main/sd3.5_large_controlnet_blur.safetensors
+     * see https://huggingface.co/stabilityai/stable-diffusion-3.5-controlnets
+     */
+    | "sd3.5_large_controlnet_blur.safetensors"
+    /** Canny Controlnet model for SD3.5 Large
+     * 8.65GB - https://huggingface.co/stabilityai/stable-diffusion-3.5-controlnets/resolve/main/sd3.5_large_controlnet_canny.safetensors
+     * see https://huggingface.co/stabilityai/stable-diffusion-3.5-controlnets
+     */
+    | "sd3.5_large_controlnet_canny.safetensors"
+    /** Depth Controlnet model for SD3.5 Large
+     * 8.65GB - https://huggingface.co/stabilityai/stable-diffusion-3.5-controlnets/resolve/main/sd3.5_large_controlnet_depth.safetensors
+     * see https://huggingface.co/stabilityai/stable-diffusion-3.5-controlnets
+     */
+    | "sd3.5_large_controlnet_depth.safetensors"
     /** Stable Cascade: effnet_encoder.
 VAE encoder for stage_c latent.
      * 81.5MB - https://huggingface.co/stabilityai/stable-cascade/resolve/main/effnet_encoder.safetensors
