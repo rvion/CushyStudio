@@ -19,12 +19,6 @@ export const DraftMenuLooks = new MenuTemplate<DraftMenuLooksProps>({
       }),
       b.Divider,
       b.SimpleMenuAction({
-         disabled: p.draft.file?.liteGraphJSON == null,
-         onClick: () => cushy.layout.open('ComfyUI', { litegraphJson: p.draft.file.liteGraphJSON }),
-         label: 'Open in ComfyUI',
-      }),
-      b.Divider,
-      b.SimpleMenuAction({
          icon: 'mdiArrowExpandAll',
          onClick: () => (cushy.preferedFormLayout = 'auto'),
          active: cushy.preferedFormLayout == 'auto',

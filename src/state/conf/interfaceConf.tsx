@@ -134,6 +134,14 @@ export const interfaceConf = cushyFactory.document(
                   default: false,
                   tooltip: 'Show icons in toggle buttons',
                }),
+               color: ui.fields({
+                  showText: ui.bool({
+                     label: false,
+                     text: 'Text',
+                     default: false,
+                     tooltip: 'Show text inside color widget',
+                  }),
+               }),
             },
          }),
 
@@ -160,3 +168,9 @@ export const interfaceConf = cushyFactory.document(
       onSerialChange: (form) => writeJSON('settings/interface.json', form.serial),
    },
 )
+
+if (import.meta.hot) {
+   import.meta.hot.accept()
+
+   if ((window as any).cushy) cushy.preferences.interface = interfaceConf
+}

@@ -1,9 +1,12 @@
 import type { DisplaySlotFn } from '../../../src/csuite-cushy/presenters/RenderTypes'
+import type { IconName } from '../../../src/csuite/icons/icons'
 import type { $CushySDXLUI } from './_cushySDXLSchema'
 
 import { observer } from 'mobx-react-lite'
 
 import { ShellOptionalEnabledUI } from '../../../src/csuite/fields/optional/WidgetOptional'
+import { IkonOf } from '../../../src/csuite/icons/iconHelpers'
+import { InputNumberUI } from '../../../src/csuite/input-number/InputNumberUI'
 
 export function _cushySDXLLayout(): Maybe<DisplaySlotFn<$CushySDXLUI['$Field']>> {
    return (ui) => {
@@ -29,7 +32,6 @@ export function _cushySDXLLayout(): Maybe<DisplaySlotFn<$CushySDXLUI['$Field']>>
       //     //     '*',
       //     // ],
       // })
-
       const model = ui.field.Model
       const latent = ui.field.Latent
       ui.set(ui.field.Positive.Prompts, {
@@ -39,21 +41,35 @@ export function _cushySDXLLayout(): Maybe<DisplaySlotFn<$CushySDXLUI['$Field']>>
          Body: observer((p) => (
             <ui.catalog.list.BlenderLike<typeof p.field> //
                field={p.field}
-               renderItem={(item) => (
-                  <ui.catalog.Misc.Frame tw='flex items-center' hover key={item.id}>
-                     <span tw={['line-clamp-1 flex-grow px-1', !item.active && 'opacity-50']}>
-                        {item.child.text}
-                     </span>
-                     <div tw='flex-none'>
-                        <ui.catalog.Misc.Checkbox
-                           square // TODO(bird_d/ui): Buttons like this, where there's only an icon, should just automatically apply square if there's no text/children.
-                           toggleGroup='prompt'
-                           value={item.active}
-                           onValueChange={(v) => item.setActive(v)}
-                        />
-                     </div>
-                  </ui.catalog.Misc.Frame>
-               )}
+               renderItem={(item, index) => {
+                  const conditioningIcon: IconName = index == 0 ? 'mdiArrowDown' : 'mdiFormatListGroupPlus'
+                  return (
+                     <ui.catalog.Misc.Frame tw='flex items-center' hover key={item.id}>
+                        <span tw={['line-clamp-1 w-full flex-grow px-1', !item.active && 'opacity-50']}>
+                           {item.child.text}
+                        </span>
+                        <div tw='flex-none'>
+                           <IkonOf name={conditioningIcon} />
+                        </div>
+                        <div tw='w-2' />
+                        <div tw='flex-none'>
+                           {/* <InputNumberUI
+                              // TODO(bird_d/ui/logic): Implement showing strength based on the conditioning type, should only appear on blend/add/etc. concate doesn't need it for example.
+                              mode='float'
+                              hideSlider
+                              onValueChange={() => {}}
+                              value={ree}
+                           /> */}
+                           <ui.catalog.Misc.Checkbox
+                              square // TODO(bird_d/ui): Buttons like this, where there's only an icon, should just automatically apply square if there's no text/children.
+                              toggleGroup='prompt'
+                              value={item.active}
+                              onValueChange={(v) => item.setActive(v)}
+                           />
+                        </div>
+                     </ui.catalog.Misc.Frame>
+                  )
+               }}
             />
          )),
       })

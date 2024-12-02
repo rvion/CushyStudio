@@ -8,13 +8,15 @@ import { observer, useLocalObservable } from 'mobx-react-lite'
 import { Button } from '../../button/Button'
 import { SpacerUI } from '../../components/SpacerUI'
 import { Frame } from '../../frame/Frame'
+import { IkonOf } from '../../icons/iconHelpers'
+import { InputNumberUI } from '../../input-number/InputNumberUI'
 import { InputStringUI } from '../../input-string/InputStringUI'
 import { ResizableFrame } from '../../resizableFrame/resizableFrameUI'
 import { ListButtonAddUI } from './ListButtonAddUI'
 
 export type BlenderListProps<T extends Field_list<any>> = {
    field: T
-   renderItem: (item: T['items'][number]) => ReactNode
+   renderItem: (item: T['items'][number], index: number) => ReactNode
 }
 
 export const BlenderListUI = observer(function BlenderListUI_<T extends Field_list<BaseSchema>>({
@@ -30,15 +32,14 @@ export const BlenderListUI = observer(function BlenderListUI_<T extends Field_li
       <Frame tw='flex flex-col gap-2'>
          <Frame tw='flex flex-row gap-2 px-2'>
             <ResizableFrame
+               tw='overflow-clip'
                footer={<BlenderListFooterFilterUI />}
-               border
                currentSize={size}
                onResize={(val) => {
                   field.size = val
                }}
                snap={16}
                showFooter={false}
-               base={{ contrast: -0.025 }}
             >
                <div tw='flex flex-col gap-0.5 p-1'>
                   {field.items.map((i, ix) => {
@@ -60,7 +61,7 @@ export const BlenderListUI = observer(function BlenderListUI_<T extends Field_li
                            base={{ contrast: selected ? 0.1 : 0 }}
                            roundness={theme.inputRoundness}
                         >
-                           {renderItem(i)}
+                           {renderItem(i, ix)}
                         </Frame>
                      )
                   })}
@@ -83,16 +84,48 @@ export const BlenderListUI = observer(function BlenderListUI_<T extends Field_li
                      icon='mdiMinus'
                      onClick={() =>
                         runInAction(() => {
-                           if (x.selectedIx > 0) x.selectedIx--
                            field.removeItemAt(x.selectedIx)
+                           if (x.selectedIx > field.items.length - 1) x.selectedIx--
                         })
                      }
                   />
                </Frame>
-               <Button icon='mdiChevronDown'></Button>
+               <Button base={{ contrast: -0.1 }} icon='mdiChevronDown'></Button>
+               <Frame
+                  //
+                  tw='w-input'
+                  align
+                  col
+                  disabled={field.items.length < 2}
+                  border={theme.inputBorder}
+                  dropShadow={theme.inputShadow}
+                  roundness={theme.inputRoundness}
+               >
+                  <Button
+                     disabled={selectedChild == null}
+                     icon='mdiChevronUp'
+                     tooltip='Move item up'
+                     onClick={() =>
+                        runInAction(() => {
+                           if (x.selectedIx > 0) field.moveItem(x.selectedIx, --x.selectedIx)
+                        })
+                     }
+                  />
+                  <Button
+                     disabled={selectedChild == null}
+                     icon='mdiChevronDown'
+                     tooltip='Move item down'
+                     onClick={() =>
+                        runInAction(() => {
+                           if (x.selectedIx < field.items.length - 1)
+                              field.moveItem(x.selectedIx, ++x.selectedIx)
+                        })
+                     }
+                  />
+               </Frame>
             </div>
          </Frame>
-         {/* <Frame // TODO(bird_d/login): Need an inline collapsible "group" sort of thing here
+         {/* <Frame // TODO(bird_d/ui/logic): Need an inline collapsible "group" sort of thing here
             tw='h-input flex-grow items-center text-center'
             row
             base={{ contrast: 0.1 }}
@@ -103,7 +136,7 @@ export const BlenderListUI = observer(function BlenderListUI_<T extends Field_li
          <div tw='flex flex-row gap-2 px-2'>
             <ResizableFrame
                header={
-                  </* TODO(bird_d/logic): Need to implement a way to toggle if the
+                  </* TODO(bird_d/ui/logic): Need to implement a way to toggle if the
                       * resizable frame should take up content or should use size.
                       * The buttons here should only need to be activated once for all items, not per item.
                       * */>
@@ -117,8 +150,6 @@ export const BlenderListUI = observer(function BlenderListUI_<T extends Field_li
                      />
                   </>
                }
-               border
-               base={{ contrast: -0.025 }}
             >
                <Frame tw='h-full' base={10}>
                   {selectedChild && <selectedChild.UI />}
@@ -126,7 +157,7 @@ export const BlenderListUI = observer(function BlenderListUI_<T extends Field_li
             </ResizableFrame>
          </div>
          <Frame
-            /* TODO(bird_d/login): Need an inline collapsible "group" sort of thing here */
+            /* TODO(bird_d/ui/logic): Need an inline collapsible "group" sort of thing here */
             tw='h-input flex-grow items-center text-center'
             row
             base={{ contrast: 0.1 }}
@@ -134,19 +165,49 @@ export const BlenderListUI = observer(function BlenderListUI_<T extends Field_li
             <Button borderless subtle icon='mdiChevronDown' />
             <Frame>Options</Frame>
          </Frame>
-         <div tw='px-2'>
-            <Frame
-               align
-               border={theme.inputBorder}
-               dropShadow={theme.inputShadow}
-               roundness={theme.inputRoundness}
-            >
-               <Button active expand>
-                  Concatenate
-               </Button>
-               <Button expand>Combine</Button>
-               <Button expand>Average</Button>
-            </Frame>
+         <div tw='flex flex-col gap-2 px-2'>
+            {x.selectedIx != 0 ? (
+               <>
+                  <Frame
+                     align
+                     border={theme.inputBorder}
+                     dropShadow={theme.inputShadow}
+                     roundness={theme.inputRoundness}
+                  >
+                     <Button //
+                        active
+                        expand
+                        tooltip='Not implemented'
+                     >
+                        Concatenate
+                     </Button>
+                     <Button //
+                        expand
+                        tooltip='Not implemented'
+                     >
+                        Combine
+                     </Button>
+                     <Button //
+                        expand
+                        tooltip='Not implemented'
+                     >
+                        Average
+                     </Button>
+                  </Frame>
+                  <InputNumberUI //
+                     text='Strength'
+                     hideSlider
+                     mode='float'
+                     onValueChange={() => {}}
+                     value={1.0}
+                     tooltip='Not implemented'
+                  />
+               </>
+            ) : (
+               <p tw='opacity-75'>
+                  First Prompt is used as a base and cannot adjust strength/conditioning type
+               </p>
+            )}
          </div>
          {/* <div // Temporary, just to separate from old stuff
             tw='h-input'
