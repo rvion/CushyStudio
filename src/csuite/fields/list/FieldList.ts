@@ -314,6 +314,10 @@ export class Field_list<T extends BaseSchema> //
       })
    }
 
+   get isCollapsible(): boolean {
+      return this.length > 0
+   }
+
    protected setOwnSerial(next: Field_list_serial<T>): void {
       // reset every previous value (🔴 pretty bad; reconciliation would be better)
       for (const item of this.items) item.disposeTree()
