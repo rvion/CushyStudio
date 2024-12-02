@@ -82,7 +82,7 @@ export const ShellCushyLeftUI = observer(function ShellCushyLeft(p: CompiledRend
                {/* prettier-ignore */}
                <WidgetLabelContainerUI tooltip={field.config.tooltip} justify>
                         {utils.renderFCOrNode(p.Indent,      { depth: field.depth })}
-                        {utils.renderFCOrNode(p.DragKnob,    {})}
+                        {utils.renderFCOrNode(p.DragKnob,    { field })}
                         {utils.renderFCOrNode(p.Caret,       { field, placeholder: true })}
                         {utils.renderFCOrNode(p.Icon,        { field, className: 'mr-1' })}
                         {utils.renderFCOrNode(p.Title,       { field })}
@@ -109,7 +109,7 @@ export const ShellCushyList1UI = observer(function ShellCushyList1(p: CompiledRe
                {/* prettier-ignore */}
                <WidgetLabelContainerUI tooltip={field.config.tooltip} justify>
                         {utils.renderFCOrNode(p.Indent,      { depth: field.depth })}
-                        {utils.renderFCOrNode(p.DragKnob,    {})}
+                        {utils.renderFCOrNode(p.DragKnob,    { field })}
                         {utils.renderFCOrNode(p.Caret,       { field, placeholder: true })}
                         {utils.renderFCOrNode(p.Icon,        { field, className: 'mr-1' })}
                         {utils.renderFCOrNode(p.Toogle, { field: originalField })}
@@ -138,7 +138,7 @@ export const ShellCushyRightUI = observer(function ShellCushyRight(p: CompiledRe
                   justify
                >
                   {utils.renderFCOrNode(p.Indent /*    */, { depth: field.depth })}
-                  {utils.renderFCOrNode(p.DragKnob /*  */, {})}
+                  {utils.renderFCOrNode(p.DragKnob /*  */, { field })}
                   {utils.renderFCOrNode(p.Caret /*     */, { field, className: 'mr-auto' })}
                   {utils.renderFCOrNode(p.Presets /*   */, { field, className: 'self-start mr-2' })}
                   {/* {p.field.isCollapsible ? 'collapsible' : 'not collapsible'} */}
@@ -170,7 +170,7 @@ export const ShellCushyFluidUI = observer(function ShellCushyFluid(p: CompiledRe
                   justify={false}
                >
                   {utils.renderFCOrNode(p.Indent, /*    */ { depth: field.depth })}
-                  {utils.renderFCOrNode(p.DragKnob, /*  */ {})}
+                  {utils.renderFCOrNode(p.DragKnob, /*  */ { field })}
                   {utils.renderFCOrNode(p.Caret, /*     */ { field })}
                   {utils.renderFCOrNode(p.Toogle, /*    */ { field: originalField, className: 'mr-1' })}
                   {utils.renderFCOrNode(p.Icon, /*      */ { field, className: 'mr-1' })}
