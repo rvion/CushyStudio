@@ -2,7 +2,8 @@ import type { ComfyWorkflowL } from '../../models/ComfyWorkflow'
 
 import { observer } from 'mobx-react-lite'
 
-import { ProgressLine, Surface } from '../../csuite/inputs/shims'
+import { LegacyProgressLineUI } from '../../csuite/inputs/LegacyProgressLineUI'
+import { LegacySurfaceUI } from '../../csuite/inputs/LegacySurfaceUI'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { NodeRefUI } from '../misc/NodeRefUI'
 import { JSONHighlightedCodeUI } from '../misc/TypescriptHighlightedCodeUI'
@@ -12,7 +13,7 @@ import { ButtonOpenInComfyUI } from './ButtonOpenInComfyUI'
 export const GraphSummaryUI = observer(function GraphSummaryUI_(p: { graph: ComfyWorkflowL }) {
    const graph = p.graph
    return (
-      <Surface tw='relative [min-width:2rem]'>
+      <LegacySurfaceUI tw='relative [min-width:2rem]'>
          <GraphProgressUI graph={p.graph} />
          {p.graph.done ? null : <NodeProgressUI graph={p.graph} />}
          {/* </div> */}
@@ -36,7 +37,7 @@ export const GraphSummaryUI = observer(function GraphSummaryUI_(p: { graph: Comf
                </div>
             ))}
          </div>
-      </Surface>
+      </LegacySurfaceUI>
    )
 })
 
@@ -44,12 +45,12 @@ export const NodeProgressUI = observer(function NodeProgressUI_(p: { graph: Comf
    const graph = p.graph
    if (graph == null) return <>no execution yet</>
    const pgr = graph.progressCurrentNode
-   return <ProgressLine status={pgr?.isDone ? 'success' : 'active'} percent={pgr?.percent} />
+   return <LegacyProgressLineUI status={pgr?.isDone ? 'success' : 'active'} percent={pgr?.percent} />
 })
 
 export const GraphProgressUI = observer(function NodeProgressUI_(p: { graph: ComfyWorkflowL }) {
    const graph = p.graph
    if (graph == null) return null
    const pgr = graph.progressGlobal
-   return <ProgressLine status={pgr.isDone ? 'success' : 'active'} percent={pgr.percent} />
+   return <LegacyProgressLineUI status={pgr.isDone ? 'success' : 'active'} percent={pgr.percent} />
 })

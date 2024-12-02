@@ -2,7 +2,7 @@ import type { GitManagedFolder } from './updater'
 
 import { observer } from 'mobx-react-lite'
 
-import { Message } from '../csuite/inputs/shims'
+import { LegacyMessageUI } from '../csuite/inputs/LegacyMessageUI'
 
 export const UpdaterErrorUI = observer(function UpdaterErrorUI_(p: { updater: GitManagedFolder }) {
    const updater = p.updater
@@ -13,7 +13,7 @@ export const UpdaterErrorUI = observer(function UpdaterErrorUI_(p: { updater: Gi
       <div>
          {errsArr.map(([cmd, err]) => (
             <div tw='w-96 overflow-auto' key={cmd}>
-               <Message type='error' showIcon>
+               <LegacyMessageUI type='error' showIcon>
                   <div>
                      command
                      <pre tw='whitespace-pre-wrap'>{cmd}</pre>
@@ -22,7 +22,7 @@ export const UpdaterErrorUI = observer(function UpdaterErrorUI_(p: { updater: Gi
                      error
                      <pre tw='whitespace-pre-wrap'>{JSON.stringify(err)}</pre>
                   </div>
-               </Message>
+               </LegacyMessageUI>
             </div>
          ))}
       </div>

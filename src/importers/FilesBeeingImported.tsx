@@ -15,7 +15,7 @@ import { MessageErrorUI } from '../csuite'
 import { Button } from '../csuite/button/Button'
 import { extractErrorMessage } from '../csuite/formatters/extractErrorMessage'
 import { Frame } from '../csuite/frame/Frame'
-import { Surface } from '../csuite/inputs/shims'
+import { LegacySurfaceUI } from '../csuite/inputs/LegacySurfaceUI'
 import { MessageInfoUI } from '../csuite/messages/MessageInfoUI'
 import { toastError } from '../csuite/utils/toasts'
 import { Panel_InstallRequirementsUI } from '../manager/REQUIREMENTS/Panel_InstallRequirementsUI'
@@ -133,7 +133,7 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: {
       { title: 'autoui+id', conf: { preserveId: true, autoUI: true } },
    ]
    return (
-      <Surface className={p.className} tw='virtua overflow-auto'>
+      <LegacySurfaceUI className={p.className} tw='virtua overflow-auto'>
          <LegacyFieldUI k='name' v={file.name} />
          <LegacyFieldUI k='size' v={file.size} />
          <LegacyFieldUI k='name' v={file.type} />
@@ -194,7 +194,7 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: {
          )}
          {/* {json ? <pre>{JSON.stringify(json.value, null, 4)}</pre> : null} */}
          {/* {Boolean(hasWorkflow) ? '🟢 has workflow' : `🔴 no workflow`} */}
-      </Surface>
+      </LegacySurfaceUI>
    )
 })
 

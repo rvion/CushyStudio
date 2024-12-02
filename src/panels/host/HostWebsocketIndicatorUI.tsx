@@ -6,7 +6,7 @@ import { Button } from '../../csuite/button/Button'
 import { useCSuite } from '../../csuite/ctx/useCSuite'
 import { Frame } from '../../csuite/frame/Frame'
 import { Ikon } from '../../csuite/icons/iconHelpers'
-import { Message } from '../../csuite/inputs/shims'
+import { LegacyMessageUI } from '../../csuite/inputs/LegacyMessageUI'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { QuickHostActionsUI } from '../../manager/REQUIREMENTS/QuickHostActionsUI'
 import { HostComfyLogsUI } from './HostComfyLogsUI'
@@ -31,12 +31,12 @@ export const ConnectionInfoUI = observer(function ConnectionInfoUI_(p: { host: H
                   </div>
                   <div tw='text-xs text-opacity-50'>({size} nodes)</div>
                   {p.host.ws?.isOpen ? null : (
-                     <Message showIcon type='warning'>
+                     <LegacyMessageUI showIcon type='warning'>
                         <div>Is your ComfyUI server running? </div>
                         <div>You config file says it should be accessible at</div>
                         <div>{host.getServerHostHTTP()}</div>
                         <div>{host.getWSUrl()}</div>
-                     </Message>
+                     </LegacyMessageUI>
                   )}
                   <pre>{host.schemaRetrievalLogs.join('\n')}</pre>
                   <QuickHostActionsUI host={host} />
@@ -98,11 +98,11 @@ export const HostQuickMenuUI = observer(function HostQuickMenuUI_(p: { host: Hos
    return (
       <div tw='menu'>
          {ws?.isOpen ? null : (
-            <Message showIcon type='warning'>
+            <LegacyMessageUI showIcon type='warning'>
                <span>Is your ComfyUI server running? </span>
                <span>You config file says it should be accessible at</span>
                <div>{cushy.getWSUrl()}</div>
-            </Message>
+            </LegacyMessageUI>
          )}
          {ws?.debugMessages.map((x, ix) =>
             x.type === 'error' ? ( //

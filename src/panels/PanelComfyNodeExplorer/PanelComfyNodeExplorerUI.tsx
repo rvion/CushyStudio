@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 
 import { getColorForInputNameInComfy, getColorForOutputNameInCushy } from '../../core/Colors'
-import { InputLegacy } from '../../csuite/inputs/shims'
+import { LegacyInputUI } from '../../csuite/inputs/LegacyInputUI'
 import { ComfyNodeExplorerState } from './ComfyNodeExplorerState'
 
 export const PanelComfyNodeExplorerUI = observer(function PanelComfyNodeExplorerUI_(p: NO_PROPS) {
@@ -23,23 +23,26 @@ export const PanelComfyNodeExplorerUI = observer(function PanelComfyNodeExplorer
                <tr>
                   <th>
                      <div>name</div>
-                     <InputLegacy value={search.name} onChange={(ev) => (search.name = ev.target.value)} />
+                     <LegacyInputUI value={search.name} onChange={(ev) => (search.name = ev.target.value)} />
                   </th>
                   <th>Found in...</th>
                   <th>
                      <div>input</div>
-                     <InputLegacy value={search.input} onChange={(ev) => (search.input = ev.target.value)} />
+                     <LegacyInputUI
+                        value={search.input}
+                        onChange={(ev) => (search.input = ev.target.value)}
+                     />
                   </th>
                   <th>
                      <div>output</div>
-                     <InputLegacy
+                     <LegacyInputUI
                         value={search.output}
                         onChange={(ev) => (search.output = ev.target.value)}
                      />
                   </th>
                   <th>
                      <div>category</div>
-                     <InputLegacy
+                     <LegacyInputUI
                         value={search.category}
                         onChange={(ev) => (search.category = ev.target.value)}
                      />

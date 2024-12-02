@@ -7,7 +7,8 @@ import { FolderGitStatus } from '../cards/FolderGitStatus'
 import { BadgeUI } from '../csuite/badge/BadgeUI'
 import { Button } from '../csuite/button/Button'
 import { Frame } from '../csuite/frame/Frame'
-import { Loader, Message } from '../csuite/inputs/shims'
+import { LegacyMessageUI } from '../csuite/inputs/LegacyMessageUI'
+import { Loader } from '../csuite/inputs/Loader'
 import { MessageInfoUI } from '../csuite/messages/MessageInfoUI'
 import { RevealUI } from '../csuite/reveal/RevealUI'
 import { exhaust } from '../csuite/utils/exhaust'
@@ -65,7 +66,7 @@ export const UpdaterDetailsUI = observer(function UpdaterDetailsUI_(p: { updater
 
    return (
       <div tw='flex flex-col gap-2 overflow-auto p-1 [max-height:80vh]'>
-         {hasErrors && <Message type='error'>error</Message>}
+         {hasErrors && <LegacyMessageUI type='error'>error</LegacyMessageUI>}
          {updater.hasUpdateAvailable && (
             <MessageInfoUI>To update: close cushy and run the update script</MessageInfoUI>
          )}
