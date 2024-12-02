@@ -96,12 +96,12 @@ export class MenuInstance implements Activity {
          })
          return
       }
-      console.log(
-         `[🤠] `,
-         key,
-         this.entriesWithKb.length,
-         this.entriesWithKb.findIndex((t) => t.char === key),
-      )
+      // console.log(
+      //    `[🤠] `,
+      //    key,
+      //    this.entriesWithKb.length,
+      //    this.entriesWithKb.findIndex((t) => t.char === key),
+      // )
       // handle the shortcut key
       for (const entryWithKey of this.entriesWithKb) {
          const { char, entry } = entryWithKey
