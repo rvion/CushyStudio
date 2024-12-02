@@ -1,14 +1,14 @@
 import type { Field_enum } from './FieldEnum'
 
 import { observer } from 'mobx-react-lite'
-import { useCallback } from 'react'
+import { useMemo } from 'react'
 
 import { EnumSelectorUI } from './EnumSelectorUI'
 
 export const WidgetEnum_SelectUI = observer(function WidgetEnum_SelectUI_(p: { field: Field_enum<any> }) {
    const field = p.field
    const slotName = field.config.slotName
-   const clearable = useCallback(
+   const clearable = useMemo(
       () => (field.canBeToggledWithinParent ? (): void => field.disableSelfWithinParent() : undefined),
       [field.canBeToggledWithinParent],
    )
