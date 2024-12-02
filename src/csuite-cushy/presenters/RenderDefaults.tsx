@@ -113,6 +113,7 @@ export const defaultPresenterRule: DisplaySlotFn<Field> = (ui) => {
    ui.set('$.{@group|@list|@choices}.@link', {
       Decoration: (p): JSX.Element => <catalog.Decorations.Card field={field} {...p} />,
    })
+   ui.set('$', { collapsible: false })
    // ui.set('$.{@group|@list|@choices}.', { Indent: false })
    // ui.set('$.@link.{@group|@list|@choices}.', { Indent: false })
    // ui.set('$.{@group|@list|@choices}.@link.', { Indent: false })
