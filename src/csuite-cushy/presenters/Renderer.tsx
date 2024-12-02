@@ -7,11 +7,11 @@ import { createElement } from 'react'
 import { Field } from '../../csuite/model/Field'
 import { FieldSelector } from '../../csuite/selector/selector'
 import { extractComponentName } from '../../csuite/utils/extractComponentName'
+import { getUIDForMemoryStructure } from '../../csuite/utils/getUIDForMemoryStructure'
 import { mergeDefined } from '../../csuite/utils/mergeDefined'
 import { _isFC, renderFCOrNode, renderFCOrNodeWithWrapper } from '../../csuite/utils/renderFCOrNode'
 import { QuickForm } from '../catalog/group/QuickForm'
 import { widgetsCatalog } from './RenderCatalog'
-import { defaultPresenterRule } from './RenderDefaults'
 import { renderPresets } from './RenderPresets'
 import { RenderUI } from './RenderUI'
 
@@ -40,7 +40,7 @@ export class Presenter {
       this.rules.push({
          addedBy: null,
          selector: FieldSelector.from(''),
-         uiconf: defaultPresenterRule,
+         uiconf: defaultRenderRules,
       })
    }
    /**

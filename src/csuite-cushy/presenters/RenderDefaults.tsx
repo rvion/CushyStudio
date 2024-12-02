@@ -21,8 +21,9 @@ import { WidgetPresetsUI } from '../catalog/Presets/WidgetPresets'
 import { DefaultWidgetTitleUI } from '../catalog/Title/WidgetLabelTextUI'
 import { CushyHeadUI } from '../shells/CushyHead'
 import { ShellCushyLeftUI } from '../shells/ShellCushy'
+import { renderDefaultKey } from './RenderDefaultsKey'
 
-export const defaultPresenterRule: DisplaySlotFn<Field> = (ui) => {
+const defaultPresenterRule: DisplaySlotFn<Field> = (ui) => {
    const field = ui.field
    const slots: DisplaySlots<Field> = {
       /* ✅ */ Shell: ShellCushyLeftUI,
@@ -112,7 +113,8 @@ export const defaultPresenterRule: DisplaySlotFn<Field> = (ui) => {
    })
    ui.set('$', { collapsible: false })
    ui.set('@string', { Header: UY.string.input, Body: null })
-   ui.set('@number', { Header: UY.number.simple, Body: null })
+   ui.set('@number', { Header: UY.number.input, Body: null })
+   // ui.set('@number', { Header: UY.number.simple, Body: null })
    // ui.set('$.{@group|@list|@choices}.', { Indent: false })
    // ui.set('$.@link.{@group|@list|@choices}.', { Indent: false })
    // ui.set('$.{@group|@list|@choices}.@link.', { Indent: false })
@@ -126,3 +128,8 @@ export const defaultPresenterRule: DisplaySlotFn<Field> = (ui) => {
 // ): void => {
 //    Object.assign(defaultPresenterSlots, overrides)
 // }
+;(window as any).defaultRenderRules = defaultPresenterRule
+renderDefaultKey.version++
+if (import.meta.hot) {
+   import.meta.hot.accept()
+}
