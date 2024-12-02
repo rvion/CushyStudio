@@ -22,12 +22,6 @@ import { RenderUI } from './RenderUI'
 // see src/csuite-cushy/presenters/presenter.readme.md
 // 👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆
 
-// #region 'window' mixin
-// Renderer is injected, to help with using csuite in other codebases.
-window.RENDERER = {
-   Render: RenderUI,
-}
-
 // #region Presenter
 // see `src/csuite/form/presenters/presenter.readme.md`
 /**
@@ -212,4 +206,10 @@ export class Presenter {
       renderFCOrNodeWithWrapper: renderFCOrNodeWithWrapper,
       // _isFC: _isFC,
    }
+}
+
+// #region 'window' mixin
+// Renderer is injected, to help with using csuite in other codebases.
+window.RENDERER = {
+   Render: RenderUI,
 }

@@ -111,6 +111,8 @@ export const defaultPresenterRule: DisplaySlotFn<Field> = (ui) => {
       Decoration: (p): JSX.Element => <UY.Decorations.Card field={field} {...p} />,
    })
    ui.set('$', { collapsible: false })
+   ui.set('@string', { Header: UY.string.input, Body: null })
+   ui.set('@number', { Header: UY.number.simple, Body: null })
    // ui.set('$.{@group|@list|@choices}.', { Indent: false })
    // ui.set('$.@link.{@group|@list|@choices}.', { Indent: false })
    // ui.set('$.{@group|@list|@choices}.@link.', { Indent: false })

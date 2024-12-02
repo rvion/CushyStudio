@@ -8,6 +8,7 @@ import { WidgetGroup_LineUI } from '../../csuite/fields/group/WidgetGroup_Header
 import { WidgetGroup_InlineUI } from '../../csuite/fields/group/WidgetGroup_InlineUI'
 import { WidgetGroup_TabUI } from '../../csuite/fields/group/WidgetGroup_TabUI'
 import { BlenderListUI } from '../../csuite/fields/list/BlenderListUI'
+import { WidgetNumberSimpleUI } from '../../csuite/fields/number/WidgetNumberSimpleUI'
 import { WidgetNumberUI } from '../../csuite/fields/number/WidgetNumberUI'
 import { WidgetString_MarkdownUI } from '../../csuite/fields/string/WidgetString_Markdown'
 import { WidgetString_SmallInput } from '../../csuite/fields/string/WidgetString_SmallInput'
@@ -139,6 +140,9 @@ export const widgetsCatalog /* WidgetsCatalog */ = {
    // #region fields
    number: {
       def: WidgetNumberUI,
+      /** inline WidgetNumber */
+      input: WidgetNumberUI,
+      simple: WidgetNumberSimpleUI,
    },
    choices: {
       TabbedInline: WidgetChoices_HeaderTabBarUI,

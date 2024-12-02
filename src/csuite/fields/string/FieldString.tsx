@@ -130,12 +130,7 @@ export class Field_string extends Field<Field_string_types> {
       serial?: Field_string_serial,
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
-      this.init(serial, {
-         UITextarea: false,
-         UIInputText: false,
-         DefaultBodyUI: false,
-         DefaultHeaderUI: false,
-      })
+      this.init(serial)
    }
 
    // #region SERIAL
@@ -319,8 +314,6 @@ export class Field_string extends Field<Field_string_types> {
    }
 
    // #region UI
-   UITextarea: FC = () => <WidgetString_TextareaInput field={this} />
-   UIInputText: FC = () => <WidgetString_SmallInput field={this} />
    DefaultBodyUI: undefined = undefined
    DefaultHeaderUI = WidgetStringUI
 

@@ -32,8 +32,8 @@ async function buildJS() {
     const res = await esbuild.build({
         // https://github.com/evanw/esbuild/issues/2377#issuecomment-1178426065
         define: { 'process.env.NODE_ENV': '"production"' },
-        // entryPoints: ['src/app/main.tsx'],
-        entryPoints: ['src/app/main.tsx'],
+        // entryPoints: ['src/main.tsx'],
+        entryPoints: ['src/main.tsx'],
         bundle: true,
         minify: shouldMinify,
         // minifyIdentifiers: shouldMinify,
