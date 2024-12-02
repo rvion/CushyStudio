@@ -4,7 +4,6 @@ import { existsSync } from 'fs'
 import { observer } from 'mobx-react-lite'
 import { fileURLToPath } from 'url'
 
-import { useSt } from '../../state/stateContext'
 import { useImageDrop } from '../../widgets/galleries/dnd'
 import { ImageErrorDisplayUI } from '../../widgets/galleries/ImageErrorDisplayUI'
 import { AppIllustrationUI } from './AppIllustrationUI'
@@ -16,8 +15,7 @@ export const DraftIllustrationUI = observer(function DraftIllustrationUI_(p: {
    revealAppIllustrationOnHover?: boolean
    size: string
 }) {
-   const st = useSt()
-   const [dropStyle, dropRef] = useImageDrop(st, (img) => {
+   const [dropStyle, dropRef] = useImageDrop(cushy, (img) => {
       if (p.draft == null) return
       img.useAsDraftIllustration(p.draft)
    })

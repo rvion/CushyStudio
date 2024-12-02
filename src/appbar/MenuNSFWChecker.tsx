@@ -3,10 +3,9 @@ import { observer } from 'mobx-react-lite'
 import { Button } from '../csuite/button/Button'
 import { MessageInfoUI } from '../csuite/messages/MessageInfoUI'
 import { MessageWarningUI } from '../csuite/messages/MessageWarningUI'
-import { useSt } from '../state/stateContext'
 
 export const MenuNSFWCheckerUI = observer(function MenuNSFWCheckerUI_(p: {}) {
-   const pj = useSt().project
+   const pj = cushy.project
    return (
       <Button //
          tooltip={pj.filterNSFW ? 'NSFW Filter Enabled' : 'NSFW Filter Disabled'}

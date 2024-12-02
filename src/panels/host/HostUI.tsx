@@ -10,14 +10,12 @@ import { Frame } from '../../csuite/frame/Frame'
 import { InputStringUI } from '../../csuite/input-string/InputStringUI'
 import { knownOKLCHHues } from '../../csuite/tinyCSS/knownHues'
 import { SQLITE_false, SQLITE_true } from '../../csuite/types/SQLITE_boolean'
-import { useSt } from '../../state/stateContext'
 import { LabelUI } from '../LabelUI'
 import { HostSchemaIndicatorUI } from './HostSchemaIndicatorUI'
 import { HostWebsocketIndicatorUI } from './HostWebsocketIndicatorUI'
 
 export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
-   const st = useSt()
-   const config = st.configFile.value
+   const config = cushy.configFile.value
    const host: HostL = p.host
    const isMain = host.id === config.mainComfyHostID
    const disabled = host.data.isVirtual ? true : false
@@ -117,7 +115,7 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                ></input>
             </div>
 
-            <InputBoolUI // HTTPS
+            <InputBoolUI // HTTPS
                toggleGroup='host-flags'
                disabled={disabled}
                value={host.data.useHttps ? true : false}

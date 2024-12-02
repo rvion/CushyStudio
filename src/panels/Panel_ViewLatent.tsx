@@ -1,11 +1,8 @@
 import { observer } from 'mobx-react-lite'
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
 
-import { useSt } from '../state/stateContext'
-
 export const Panel_ViewLatent = observer(function Panel_ViewLatent_(p: {}) {
-   const st = useSt()
-   const url = st.latentPreview?.url
+   const url = cushy.latentPreview?.url
    // 🛝 const background = st.galleryConf.value.galleryBgColor ?? undefined
    return (
       <div tw='flex h-full w-full flex-col' /* 🛝 style={{ background }} */>

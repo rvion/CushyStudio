@@ -9,11 +9,9 @@ import { InputNumberUI } from '../../csuite/input-number/InputNumberUI'
 import { InputStringUI } from '../../csuite/input-string/InputStringUI'
 import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
 import { toastSuccess } from '../../csuite/utils/toasts'
-import { useSt } from '../../state/stateContext'
 
 export const PanelAppLibraryUI = observer(function PanelAppLibraryUI_(p: NO_PROPS) {
-   const st = useSt()
-   const library = st.library
+   const library = cushy.library
 
    return (
       <div tw='relative flex h-full flex-grow flex-col'>
@@ -41,7 +39,7 @@ export const PanelAppLibraryUI = observer(function PanelAppLibraryUI_(p: NO_PROP
             />
             <Button //
                look='primary'
-               onClick={st.startupFileIndexing}
+               onClick={cushy.startupFileIndexing}
                children='Index All Apps'
             />
             <ToggleButtonUI
@@ -49,24 +47,24 @@ export const PanelAppLibraryUI = observer(function PanelAppLibraryUI_(p: NO_PROP
                showToggleButtonBox
                mode='checkbox'
                text='Descriptions'
-               value={st.library.showDescription}
-               onValueChange={(next) => (st.library.showDescription = next)}
+               value={cushy.library.showDescription}
+               onValueChange={(next) => (cushy.library.showDescription = next)}
             />
             <ToggleButtonUI
                toggleGroup='panel-app-header'
                showToggleButtonBox
                mode='checkbox'
                text='Drafts'
-               value={st.library.showDrafts}
-               onValueChange={(next) => (st.library.showDrafts = next)}
+               value={cushy.library.showDrafts}
+               onValueChange={(next) => (cushy.library.showDrafts = next)}
             />
             <ToggleButtonUI
                toggleGroup='panel-app-header'
                showToggleButtonBox
                mode='checkbox'
                text='Favorites'
-               value={st.library.showFavorites}
-               onValueChange={(next) => (st.library.showFavorites = next)}
+               value={cushy.library.showFavorites}
+               onValueChange={(next) => (cushy.library.showFavorites = next)}
             />
             <InputNumberUI
                text='size'
@@ -75,8 +73,8 @@ export const PanelAppLibraryUI = observer(function PanelAppLibraryUI_(p: NO_PROP
                max={20}
                style={{ width: '10rem' }}
                suffix='rem'
-               onValueChange={(next) => (st.library.imageSize = `${next}rem`)}
-               value={parseInt(st.library.imageSize.slice(0, -3), 10)}
+               onValueChange={(next) => (cushy.library.imageSize = `${next}rem`)}
+               value={parseInt(cushy.library.imageSize.slice(0, -3), 10)}
             />
          </PanelHeaderUI>
          <Button
@@ -84,7 +82,7 @@ export const PanelAppLibraryUI = observer(function PanelAppLibraryUI_(p: NO_PROP
             look='error'
             children='remove every deleted app'
             onClick={() => {
-               const allapps = st.db.cushy_app.findAll()
+               const allapps = cushy.db.cushy_app.findAll()
 
                const toDelete = allapps.filter((app) => !app.scriptStillExistsOnDisk)
                if (toDelete.length === 0) {
@@ -122,10 +120,10 @@ export const PanelAppLibraryUI = observer(function PanelAppLibraryUI_(p: NO_PROP
          <div tw='flex flex-grow flex-col overflow-auto p-4'>
             <div tw='text-accent text-xl font-bold'>Built-in Apps</div>
             <div tw='flex flex-wrap  gap-2'>
-               {st.library.appsFilteredBuiltIn.map((app, ix) => (
+               {cushy.library.appsFilteredBuiltIn.map((app, ix) => (
                   <div key={app.id}>
                      <AppCardUI //
-                        active={st.library.selectionCursor === ix}
+                        active={cushy.library.selectionCursor === ix}
                         app={app}
                      />
                   </div>
@@ -134,10 +132,10 @@ export const PanelAppLibraryUI = observer(function PanelAppLibraryUI_(p: NO_PROP
             <div tw='divider'></div>
             <div tw='text-accent text-xl font-bold'>Local Apps</div>
             <div tw='flex flex-wrap  gap-2'>
-               {st.library.appsFilteredLocal.map((app, ix) => (
+               {cushy.library.appsFilteredLocal.map((app, ix) => (
                   <div key={app.id}>
                      <AppCardUI //
-                        active={st.library.selectionCursor === ix}
+                        active={cushy.library.selectionCursor === ix}
                         app={app}
                      />
                   </div>
@@ -146,10 +144,10 @@ export const PanelAppLibraryUI = observer(function PanelAppLibraryUI_(p: NO_PROP
             <div tw='divider'></div>
             <div tw='text-accent text-xl font-bold'>SDK Examples</div>
             <div tw='flex flex-wrap  gap-2'>
-               {st.library.appsFilteredExample.map((app, ix) => (
+               {cushy.library.appsFilteredExample.map((app, ix) => (
                   <div key={app.id}>
                      <AppCardUI //
-                        active={st.library.selectionCursor === ix}
+                        active={cushy.library.selectionCursor === ix}
                         app={app}
                      />
                   </div>

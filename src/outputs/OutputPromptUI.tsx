@@ -6,7 +6,6 @@ import { observer } from 'mobx-react-lite'
 
 import { Button } from '../csuite/button/Button'
 import { parseFloatNoRoundingErr } from '../csuite/utils/parseFloatNoRoundingErr'
-import { useSt } from '../state/stateContext'
 import { GraphSummaryUI } from '../widgets/workspace/GraphSummaryUI'
 
 export const OutputPromptPreviewUI = observer(function OutputPromptPreviewUI_(p: {
@@ -14,10 +13,9 @@ export const OutputPromptPreviewUI = observer(function OutputPromptPreviewUI_(p:
    step?: Maybe<StepL>
    output: ComfyPromptL
 }) {
-   const st = useSt()
    const prompt = p.output
    const graph = prompt.graph
-   const size = st.historySizeStr
+   const size = cushy.historySizeStr
    if (graph == null) return <div>❌ ERROR</div>
 
    const pgr1: ProgressReport = prompt.progressGlobal
@@ -44,12 +42,11 @@ export const OutputPromptUI = observer(function OutputPromptUI_(p: {
    output: ComfyPromptL
 }) {
    const prompt = p.output
-   const st = useSt()
    const graph = prompt.graph
    if (graph == null) return <>no graph</>
    return (
       <div className='flex flex-col gap-1'>
-         <Button onClick={() => st.stopCurrentPrompt()}>STOP GENERATING</Button>
+         <Button onClick={() => cushy.stopCurrentPrompt()}>STOP GENERATING</Button>
          <GraphSummaryUI graph={graph} />
       </div>
    )

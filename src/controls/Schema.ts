@@ -12,7 +12,7 @@ import { createElement } from 'react'
 
 import { isFieldOptional } from '../csuite/fields/WidgetUI.DI'
 import { BaseSchema } from '../csuite/model/BaseSchema'
-import { InstallRequirementsBtnUI } from '../manager/REQUIREMENTS/Panel_InstallRequirementsUI'
+import { InstallRequirementsBtnUI } from '../manager/REQUIREMENTS/InstallRequirementsBtnUI'
 
 export class CushySchema<out TYPES extends FieldTypes = FieldTypes> //
    extends BaseSchema<TYPES, CushySchemaᐸ_ᐳ>

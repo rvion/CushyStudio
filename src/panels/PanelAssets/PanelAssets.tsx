@@ -6,7 +6,6 @@ import { useCSuite } from '../../csuite/ctx/useCSuite'
 import { Frame } from '../../csuite/frame/Frame'
 import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
 import { Panel, type PanelHeader } from '../../router/Panel'
-import { useSt } from '../../state/stateContext'
 import { PanelAssetsShelfUI } from './PanelAssetsShelfUI'
 
 /** This is going to be rudementary for now, including only Loras atm. */
@@ -34,7 +33,6 @@ export class PanelAssetsState {
 }
 
 export const PanelAssetsUI = observer(function PanelAssetsUI_(p: PanelAssetsProps) {
-   const st = useSt()
    const uist = useMemo(() => new PanelAssetsState({ active: -1, selected: new Set() }), [])
    // const panel = usePanel<PanelAssetsProps>()
    return (

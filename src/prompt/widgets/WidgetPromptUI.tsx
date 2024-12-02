@@ -4,7 +4,6 @@ import { observer } from 'mobx-react-lite'
 import { useEffect, useLayoutEffect, useMemo } from 'react'
 
 import { Frame } from '../../csuite/frame/Frame'
-import { useSt } from '../../state/stateContext'
 import { PluginWrapperUI } from '../plugins/_PluginWrapperUI'
 import { plugins } from '../plugins/PromptPluginList'
 import { WidgetPromptUISt } from '../WidgetPromptUISt'
@@ -12,7 +11,6 @@ import { WidgetPromptUISt } from '../WidgetPromptUISt'
 // UI
 
 export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { field: Field_prompt }) {
-   const st = useSt()
    const field = p.field
    const uist = useMemo(() => new WidgetPromptUISt(field), [])
    useLayoutEffect(() => {
@@ -28,7 +26,9 @@ export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { field: Fiel
       uist.replaceTextBy(field.text)
    }, [field._valueUpdatedViaAPIAt])
 
-   const haveAtLeastOnePluginActive = plugins.some((plugin) => st.configFile.get(plugin.configKey) ?? false)
+   const haveAtLeastOnePluginActive = plugins.some(
+      (plugin) => cushy.configFile.get(plugin.configKey) ?? false,
+   )
    return (
       <div tw='flex flex-1 flex-col'>
          <div ref={uist.mountRef}></div>
@@ -38,7 +38,7 @@ export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { field: Fiel
          {haveAtLeastOnePluginActive && (
             <Frame className='my-1 flex flex-col gap-1 p-1'>
                {plugins.map((plugin) => {
-                  const active = st.configFile.get(plugin.configKey) ?? false
+                  const active = cushy.configFile.get(plugin.configKey) ?? false
                   if (!active) return null
                   return (
                      <PluginWrapperUI key={plugin.key} plugin={plugin}>

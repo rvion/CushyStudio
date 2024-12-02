@@ -13,7 +13,6 @@ import { SelectUI } from '../../csuite/select/SelectUI'
 import { formatSize } from '../../csuite/utils/formatSize'
 import { Panel, type PanelHeader } from '../../router/Panel'
 import { usePanel } from '../../router/usePanel'
-import { useSt } from '../../state/stateContext'
 import { assets } from '../../utils/assets/assets'
 import { ImageDropdownUI } from '../ImageDropdownUI'
 
@@ -107,7 +106,6 @@ export const PanelViewImageUI = observer(function PanelViewImage(p: PanelViewIma
 })
 
 export const ImageActionBarUI = observer(function ImageActionBar(p: { img?: Maybe<MediaImageL> }) {
-   const st = useSt()
    const img = p.img
    const isStarred = Boolean(img?.data.star)
    const showTags = usePanel().usePersistentModel('showTags', (ui) =>
@@ -169,7 +167,7 @@ export const ImageActionBarUI = observer(function ImageActionBar(p: { img?: Mayb
                iconSize='1.2rem'
                onClick={() => {
                   if (img == null) return
-                  st.db.media_image.delete(img.id)
+                  cushy.db.media_image.delete(img.id)
                }}
             />
          </PanelHeaderUI>

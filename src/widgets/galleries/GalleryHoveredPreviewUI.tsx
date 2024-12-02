@@ -2,18 +2,16 @@ import { observer } from 'mobx-react-lite'
 import { useDragLayer } from 'react-dnd'
 
 import { OutputUI } from '../../outputs/OutputUI'
-import { useSt } from '../../state/stateContext'
 
 export const GalleryHoveredPreviewUI = observer(function GalleryHoveredPreviewUI_(p: {}) {
-   const st = useSt()
    const cccP = useDragLayer((monitor) => {
       if (monitor.isDragging()) return true
       return false
    })
    if (cccP) return null
-   const hovered = st.hovered
+   const hovered = cushy.hovered
    if (hovered == null) return null
-   if (st.showPreviewInPanel) return null
+   if (cushy.showPreviewInPanel) return null
 
    return (
       <div>

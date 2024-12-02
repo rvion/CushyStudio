@@ -8,9 +8,7 @@ import { Frame } from '../../csuite/frame/Frame'
 import { Ikon } from '../../csuite/icons/iconHelpers'
 import { Message } from '../../csuite/inputs/shims'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
-import { useTicker } from '../../csuite/utils/useTicker'
 import { QuickHostActionsUI } from '../../manager/REQUIREMENTS/QuickHostActionsUI'
-import { useSt } from '../../state/stateContext'
 import { HostComfyLogsUI } from './HostComfyLogsUI'
 
 export const ConnectionInfoUI = observer(function ConnectionInfoUI_(p: { host: HostL }) {
@@ -95,7 +93,6 @@ export const HostWebsocketIndicatorUI = observer(function HostWebsocketIndicator
 })
 
 export const HostQuickMenuUI = observer(function HostQuickMenuUI_(p: { host: HostL }) {
-   const st = useSt()
    const host = p.host
    const ws = host.ws
    return (
@@ -104,7 +101,7 @@ export const HostQuickMenuUI = observer(function HostQuickMenuUI_(p: { host: Hos
             <Message showIcon type='warning'>
                <span>Is your ComfyUI server running? </span>
                <span>You config file says it should be accessible at</span>
-               <div>{st.getWSUrl()}</div>
+               <div>{cushy.getWSUrl()}</div>
             </Message>
          )}
          {ws?.debugMessages.map((x, ix) =>

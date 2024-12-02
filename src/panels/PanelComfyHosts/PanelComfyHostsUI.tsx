@@ -3,7 +3,6 @@ import { observer } from 'mobx-react-lite'
 import { useCSuite } from '../../csuite/ctx/useCSuite'
 import { Frame } from '../../csuite/frame/Frame'
 import { SelectUI } from '../../csuite/select/SelectUI'
-import { useSt } from '../../state/stateContext'
 import { HostUI } from '../host/HostUI'
 import { AddHostBtnUI } from './AddHostBtnUI'
 
@@ -12,9 +11,8 @@ export type PanelComfyHostProps = {
 }
 
 export const PanelComfyHostsUI = observer(function PanelComfyHostsUI_(p: PanelComfyHostProps) {
-   const st = useSt()
-   const allHosts = st.hosts
-   const mainHost = st.mainHost
+   const allHosts = cushy.hosts
+   const mainHost = cushy.mainHost
    const csuite = useCSuite()
 
    return (

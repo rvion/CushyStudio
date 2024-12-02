@@ -30,8 +30,5 @@
 
         // misc other highlights
         "fabiospampinato.vscode-highlight",
-
-        // found in a screeshot of @ricklove, looks great
-        "YoavBls.pretty-ts-errors"
     ]
 }

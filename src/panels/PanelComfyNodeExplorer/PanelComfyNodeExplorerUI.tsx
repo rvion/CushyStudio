@@ -5,14 +5,12 @@ import { useMemo } from 'react'
 
 import { getColorForInputNameInComfy, getColorForOutputNameInCushy } from '../../core/Colors'
 import { InputLegacy } from '../../csuite/inputs/shims'
-import { useSt } from '../../state/stateContext'
 import { ComfyNodeExplorerState } from './ComfyNodeExplorerState'
 
 export const PanelComfyNodeExplorerUI = observer(function PanelComfyNodeExplorerUI_(p: NO_PROPS) {
-   const st = useSt()
-   const pj = st.getProject()
+   const pj = cushy.getProject()
    const search = useMemo(() => new ComfyNodeExplorerState(pj), [])
-   const repo = st.comfyAddons
+   const repo = cushy.comfyAddons
    return (
       <div className='_MD flex flex-col'>
          <table

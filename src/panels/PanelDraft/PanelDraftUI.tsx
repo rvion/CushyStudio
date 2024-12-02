@@ -16,9 +16,8 @@ import { SelectUI } from '../../csuite/select/SelectUI'
 import { SQLITE_true } from '../../csuite/types/SQLITE_boolean'
 import { QuickTableUI } from '../../csuite/utils/quicktable'
 import { FramePhoneUI } from '../../csuite/wrappers/FramePhoneUI'
-import { InstallRequirementsBtnUI } from '../../manager/REQUIREMENTS/Panel_InstallRequirementsUI'
+import { InstallRequirementsBtnUI } from '../../manager/REQUIREMENTS/InstallRequirementsBtnUI'
 import { usePanel } from '../../router/usePanel'
-import { useSt } from '../../state/stateContext'
 import { draftContext } from '../../widgets/misc/useDraft'
 import { AppCompilationErrorUI } from './AppCompilationErrorUI'
 import { DraftHeaderUI } from './DraftHeaderUI'
@@ -32,13 +31,11 @@ export type PanelDraftProps = {
 
 export const PanelDraftUI = observer(function PanelDraftUI_(p: PanelDraftProps) {
    // 1. get draft
-   const st = useSt()
-   const draft = typeof p.draftID === 'string' ? st.db.draft.get(p.draftID) : p.draftID
+   const draft = typeof p.draftID === 'string' ? cushy.db.draft.get(p.draftID) : p.draftID
    return <DraftUI draft={draft} />
 })
 
 export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> }) {
-   const st = useSt()
    const draft = p.draft
    const justify = cushy.forms.use(ui_justify)
 
@@ -46,7 +43,8 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
    const panel: PanelState<any> = usePanel()
    // ensure
    useLayoutEffect(() => {
-      if (draft?.name != null) st.layout.syncTabTitle('Draft', { draftID: draft.id }, `Draft (${draft.name})`)
+      if (draft?.name != null)
+         cushy.layout.syncTabTitle('Draft', { draftID: draft.id }, `Draft (${draft.name})`)
       // if (panel.def.tabColor) panel.setTabColor('!bg-blue-900')
    }, [draft?.name])
 
@@ -89,7 +87,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
    const { containerClassName, containerStyle } = compiledApp.def ?? {}
    const defaultContainerStyle = {} // { margin: '0 auto' }
 
-   const wrapMobile = st.isConfigValueEq('draft.mockup-mobile', true)
+   const wrapMobile = cushy.isConfigValueEq('draft.mockup-mobile', true)
    const metadata = draft.app.executable_orExtract?.metadata
    // {/* <ActionDraftListUI card={card} /> */}
    const fpath = draft.file.fPath

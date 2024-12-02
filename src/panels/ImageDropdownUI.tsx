@@ -7,7 +7,6 @@ import { DraftIllustrationUI } from '../cards/fancycard/DraftIllustration'
 import { Button } from '../csuite/button/Button'
 import { Dropdown } from '../csuite/dropdown/Dropdown'
 import { MenuItem } from '../csuite/dropdown/MenuItem'
-import { useSt } from '../state/stateContext'
 
 export const ImageDropdownUI = observer(function ImageDropdownUI_(p: { img: MediaImageL }) {
    const img = p.img
@@ -22,7 +21,6 @@ export const ImageDropdownUI = observer(function ImageDropdownUI_(p: { img: Medi
 })
 
 export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { img: MediaImageL }) {
-   const st = useSt()
    const img = p.img
    return (
       <>
@@ -46,7 +44,7 @@ export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { i
          <MenuItem
             icon='mdiOverscan'
             disabled={!img?.absPath}
-            onClick={() => st.layout.open('Image', { imageID: img.id })}
+            onClick={() => cushy.layout.open('Image', { imageID: img.id })}
             localShortcut='mod+click'
             label='Dedicated Panel'
          />
@@ -54,14 +52,14 @@ export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { i
             icon='mdiFocusAuto'
             disabled={!img?.absPath}
             localShortcut='shift+click'
-            onClick={() => st.layout.open('Canvas', { startingImgID: img.id })}
+            onClick={() => cushy.layout.open('Canvas', { startingImgID: img.id })}
             label='Unified Canvas'
          />
          <MenuItem
             icon='mdiBrush'
             disabled={!img?.absPath}
             localShortcut='alt+click'
-            onClick={() => st.layout.open('Paint', { imgID: img.id })}
+            onClick={() => cushy.layout.open('Paint', { imgID: img.id })}
             label='MiniPaint'
          />
 
@@ -70,14 +68,14 @@ export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { i
             icon='mdiStarShooting'
             iconClassName='[color:gold]'
             disabled={
-               !st.getConfigValue('favoriteLocalFolderPath') ||
-               st.getConfigValue('favoriteLocalFolderPath') === ''
+               !cushy.getConfigValue('favoriteLocalFolderPath') ||
+               cushy.getConfigValue('favoriteLocalFolderPath') === ''
             }
             onClick={() => {
-               if (!img || !st.getConfigValue('favoriteLocalFolderPath')) return
-               return img.saveLocally(st.getConfigValue('favoriteLocalFolderPath') ?? '')
+               if (!img || !cushy.getConfigValue('favoriteLocalFolderPath')) return
+               return img.saveLocally(cushy.getConfigValue('favoriteLocalFolderPath') ?? '')
             }}
-            label={ImagePathUIString(st.getConfigValue('favoriteLocalFolderPath'))}
+            label={ImagePathUIString(cushy.getConfigValue('favoriteLocalFolderPath'))}
          />
          <MenuItem
             icon='mdiFolder'
@@ -131,11 +129,10 @@ const ImagePathUIString = (path: string | undefined): string => {
 }
 
 export const ImageActionMenu = observer(function ImageActionMenu_(p: { img: MediaImageL }) {
-   const st = useSt()
    const img = p.img
    return (
       <>
-         {st.allImageApps.map((app) => {
+         {cushy.allImageApps.map((app) => {
             return (
                <div key={app.id}>
                   {app.drafts.map((draft) => (

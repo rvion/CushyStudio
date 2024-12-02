@@ -6,11 +6,9 @@ import { showItemInFolder } from '../../app/layout/openExternal'
 import { Dropdown } from '../../csuite/dropdown/Dropdown'
 import { MenuDivider } from '../../csuite/dropdown/MenuDivider'
 import { MenuItem } from '../../csuite/dropdown/MenuItem'
-import { useSt } from '../../state/stateContext'
 import { openInVSCode } from '../../utils/electron/openInVsCode'
 
 export const DraftMenuAppUI = observer(function DraftMenuAppUI_(p: { draft: DraftL; className?: string }) {
-   const st = useSt()
    const draft = p.draft
    const file = draft.file
    const app = draft.app

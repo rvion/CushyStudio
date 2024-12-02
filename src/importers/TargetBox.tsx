@@ -5,10 +5,7 @@ import { observer } from 'mobx-react-lite'
 import { useDrop } from 'react-dnd'
 import { NativeTypes } from 'react-dnd-html5-backend'
 
-import { useSt } from '../state/stateContext'
-
 export const TargetBox = observer((p: { children?: ReactNode }) => {
-   const st = useSt()
    const [{ isActive, canDrop, isOver }, drop] = useDrop(
       () => ({
          accept: [
@@ -20,8 +17,8 @@ export const TargetBox = observer((p: { children?: ReactNode }) => {
          drop(item: { files: any[] }): void {
             if (item) {
                const files = item.files
-               st.droppedFiles.push(...files)
-               st.layout.open('Import', {})
+               cushy.droppedFiles.push(...files)
+               cushy.layout.open('Import', {})
             }
          },
          canDrop(item: any): true {

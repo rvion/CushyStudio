@@ -6,7 +6,6 @@
 
 // import { observer } from 'mobx-react-lite'
 // import { useLayoutEffect } from 'react'
-// import { useSt } from './stContext'
 
 // import * as visData from 'vis-data'
 // import * as visNetwork from 'vis-network'
@@ -20,7 +19,7 @@ export type VisEdges = Edge // { id: string; from: string; to: string }
 export type VisOptions = Options
 
 // export const VisUI = observer(function VisUI_(p: {}) {
-//     const st = useSt()
+//     const st = cushy
 //     const visJSON = st.project.currentRun?.graph?.JSON_forVisDataVisualisation
 //     useLayoutEffect(() => {
 //         if (visJSON == null) return

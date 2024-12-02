@@ -4,51 +4,18 @@ import type { Requirements } from './Requirements'
 import { observer } from 'mobx-react-lite'
 
 import { MessageWarningUI } from '../../csuite'
-import { Button } from '../../csuite/button/Button'
 import { MessageErrorUI } from '../../csuite/messages/MessageErrorUI'
-import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { exhaust } from '../../csuite/utils/exhaust'
-import { useSt } from '../../state/stateContext'
 import { Button_InstallCustomNodeUI } from './Button_InstallCustomNodeUI'
 import { Button_InstalModelViaManagerUI } from './Button_InstalModelViaManagerUI'
 import { IntallBtnForKnownCivitaiModelId, IntallBtnForKnownCivitaiModelVersionId } from './FOOBAR'
 import { QuickHostActionsUI } from './QuickHostActionsUI'
 
-export const InstallRequirementsBtnUI = observer(function InstallRequirementsBtnUI_(p: {
-   active: boolean
-   label?: string
-   requirements: Requirements[]
-}) {
-   const st = useSt()
-   if (p.requirements.length == 0) return null
-   const rr = p.requirements
-   const actionRequired = p.active && !st.mainHost.matchRequirements(rr)
-   return (
-      <RevealUI
-         content={() => (
-            <div tw='[max-width:500px]'>
-               <Panel_InstallRequirementsUI requirements={rr} />
-            </div>
-         )}
-      >
-         <Button //
-            icon='mdiPuzzleOutline'
-            size='widget'
-            square={!p.label}
-            subtle={!actionRequired}
-            look={actionRequired ? 'error' : undefined}
-         >
-            {p.label}
-         </Button>
-      </RevealUI>
-   )
-})
-
 export const Panel_InstallRequirementsUI = observer(function Panel_InstallRequirementsUI_(p: {
    requirements: Requirements[]
 }) {
    const rr = p.requirements
-   const host = useSt().mainHost
+   const host = cushy.mainHost
    const manager = host.manager
    const repo = cushy.comfyAddons
    return (

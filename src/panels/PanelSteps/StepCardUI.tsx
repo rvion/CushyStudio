@@ -11,7 +11,6 @@ import { SpacerUI } from '../../csuite/components/SpacerUI'
 import { _formatPreviewDate } from '../../csuite/formatters/_formatPreviewDate'
 import { Frame } from '../../csuite/frame/Frame'
 import { OutputPreviewUI } from '../../outputs/OutputUI'
-import { useSt } from '../../state/stateContext'
 import { PanelStepsConf } from './Panel_StepsConf'
 
 export const StepCardUI = observer(function StepOutputsV1HeaderUI_(p: {
@@ -38,9 +37,8 @@ export const StepCardUI = observer(function StepOutputsV1HeaderUI_(p: {
    contrast?: number
 }) {
    const conf = PanelStepsConf
-   const st = useSt()
    const step = p.step
-   const isSelected = st.focusedStepL === step
+   const isSelected = cushy.focusedStepL === step
    const appSize = conf.value.appSize ? `${conf.value.appSize}rem` : '2rem'
    // const outputSize = conf.value.outputSize ? `${conf.value.outputSize}rem` : '2rem'
 
@@ -58,7 +56,7 @@ export const StepCardUI = observer(function StepOutputsV1HeaderUI_(p: {
       <Frame
          base={p.contrast}
          tw={['relative flex cursor-pointer flex-wrap', p.className]}
-         onClick={() => st.layout.open('Output', { stepID: step.id })}
+         onClick={() => cushy.layout.open('Output', { stepID: step.id })}
          style={p.style}
       >
          {showTitle && (

@@ -1,6 +1,5 @@
 import type { GithubUserName } from './GithubUser'
 
-import { useSt } from '../state/stateContext'
 import { assets } from '../utils/assets/assets'
 import { asGithubUserName, GithubUser } from './GithubUser'
 
@@ -13,7 +12,6 @@ export function GithubUserUI(p: {
    className?: string
    textClassName?: string
 }): JSX.Element | GithubUserName {
-   const st = useSt()
    const { username } = p
    const size = p.size ?? '1.5rem'
 
@@ -21,7 +19,7 @@ export function GithubUserUI(p: {
    const imgURL =
       username === 'CushyStudio' //
          ? assets.CushyLogo_512_png
-         : GithubUser.get(st, asGithubUserName(username), false).localAvatarURL
+         : GithubUser.get(cushy, asGithubUserName(username), false).localAvatarURL
    try {
       return (
          <div className={p.className} tw='flex gap-1'>

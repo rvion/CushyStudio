@@ -6,7 +6,6 @@ import { useMemo } from 'react'
 import { SpacerUI } from '../../csuite/components/SpacerUI'
 import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
 import { Panel, type PanelHeader } from '../../router/Panel'
-import { useSt } from '../../state/stateContext'
 import { assets } from '../../utils/assets/assets'
 import { SectionTitleUI } from '../../widgets/workspace/SectionTitle'
 import { CivitaiUI } from './CivitaiBrowserUI'
@@ -22,7 +21,6 @@ export const PanelModels = new Panel({
 })
 
 export const PanelModelsUI = observer(function PanelModelsUI_(p: NO_PROPS) {
-   const st = useSt()
    const civitai = useMemo(() => new Civitai(), [])
    return (
       <div className='flex size-full flex-col gap-2'>
@@ -37,7 +35,7 @@ export const PanelModelsUI = observer(function PanelModelsUI_(p: NO_PROPS) {
                className='block'
             />
             <SpacerUI />
-            {st.civitaiConf.renderAsConfigBtn({ title: 'CIVITAI Options' })}
+            {cushy.civitaiConf.renderAsConfigBtn({ title: 'CIVITAI Options' })}
          </PanelHeaderUI>
          <CivitaiUI tw='flex-1' civitai={civitai} />
       </div>
