@@ -17,12 +17,10 @@ import { WidgetToggleUI } from '../../csuite/form/WidgetToggleUI'
 import { WidgetUndoChangesButtonUI } from '../../csuite/form/WidgetUndoChangesButtonUI'
 import { WidgetDebugIDUI } from '../catalog/Debug/WidgetDebugIDUI'
 import { WidgetErrorsUI } from '../catalog/Errors/WidgetErrorsUI'
-import { WidgetIndentUI } from '../catalog/Indent/WidgetIndentUI'
 import { WidgetPresetsUI } from '../catalog/Presets/WidgetPresets'
 import { DefaultWidgetTitleUI } from '../catalog/Title/WidgetLabelTextUI'
 import { CushyHeadUI } from '../shells/CushyHead'
 import { ShellCushyLeftUI } from '../shells/ShellCushy'
-import { widgetsCatalog } from './RenderCatalog'
 
 export const defaultPresenterRule: DisplaySlotFn<Field> = (ui) => {
    const field = ui.field
@@ -70,7 +68,6 @@ export const defaultPresenterRule: DisplaySlotFn<Field> = (ui) => {
       // only for the lolz
       /* 🟥 */ EasterEgg: (): JSX.Element => <>🥚</>,
    }
-   const catalog = widgetsCatalog
    const apply = (overrides: Partial<DisplaySlots<Field>>): void => void Object.assign(slots, overrides)
    slots.DebugID = null
 
@@ -89,8 +86,8 @@ export const defaultPresenterRule: DisplaySlotFn<Field> = (ui) => {
          //    // slots.Title = catalog.Title.h3
          // }
       } else if (field.depth === 2) {
-         if (field.isOfType('group', 'list', 'choices')) apply({ Title: catalog.Title.h4 })
-         if (!field.isOfType('optional', 'link', 'list', 'shared')) apply({ Shell: catalog.Shell.Right })
+         if (field.isOfType('group', 'list', 'choices')) apply({ Title: UY.Title.h4 })
+         if (!field.isOfType('optional', 'link', 'list', 'shared')) apply({ Shell: UY.Shell.Right })
       }
 
       // hide group head in choices
@@ -102,16 +99,16 @@ export const defaultPresenterRule: DisplaySlotFn<Field> = (ui) => {
    ui.set(slots)
    ui.set('$@group', {
       Indent: false,
-      Body: (f) => <ui.catalog.group.Default field={f.field as any /* 🔴 */} className='gap-1' />,
+      Body: (f) => <UY.group.Default field={f.field as any /* 🔴 */} className='gap-1' />,
    })
    ui.set('$.{@group|@list|@choices}', {
-      Decoration: (p): JSX.Element => <catalog.Decorations.Card field={field} {...p} />,
+      Decoration: (p): JSX.Element => <UY.Decorations.Card field={field} {...p} />,
    })
    ui.set('$.@link.{@group|@list|@choices}', {
-      Decoration: (p): JSX.Element => <catalog.Decorations.Card field={field} {...p} />,
+      Decoration: (p): JSX.Element => <UY.Decorations.Card field={field} {...p} />,
    })
    ui.set('$.{@group|@list|@choices}.@link', {
-      Decoration: (p): JSX.Element => <catalog.Decorations.Card field={field} {...p} />,
+      Decoration: (p): JSX.Element => <UY.Decorations.Card field={field} {...p} />,
    })
    ui.set('$', { collapsible: false })
    // ui.set('$.{@group|@list|@choices}.', { Indent: false })

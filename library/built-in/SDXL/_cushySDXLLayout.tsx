@@ -39,12 +39,12 @@ export function _cushySDXLLayout(): Maybe<DisplaySlotFn<$CushySDXLUI['$Field']>>
          Head: false,
          Header: false,
          Body: observer((p) => (
-            <ui.catalog.list.BlenderLike<typeof p.field> //
+            <UY.list.BlenderLike<typeof p.field> //
                field={p.field}
                renderItem={(item, index) => {
                   const conditioningIcon: IconName = index == 0 ? 'mdiArrowDown' : 'mdiFormatListGroupPlus'
                   return (
-                     <ui.catalog.Misc.Frame tw='flex items-center' hover key={item.id}>
+                     <UY.Misc.Frame tw='flex items-center' hover key={item.id}>
                         <span tw={['line-clamp-1 w-full flex-grow px-1', !item.active && 'opacity-50']}>
                            {item.child.text}
                         </span>
@@ -60,14 +60,14 @@ export function _cushySDXLLayout(): Maybe<DisplaySlotFn<$CushySDXLUI['$Field']>>
                               onValueChange={() => {}}
                               value={ree}
                            /> */}
-                           <ui.catalog.Misc.Checkbox
+                           <UY.Misc.Checkbox
                               square // TODO(bird_d/ui): Buttons like this, where there's only an icon, should just automatically apply square if there's no text/children.
                               toggleGroup='prompt'
                               value={item.active}
                               onValueChange={(v) => item.setActive(v)}
                            />
                         </div>
-                     </ui.catalog.Misc.Frame>
+                     </UY.Misc.Frame>
                   )
                }}
             />
@@ -77,8 +77,8 @@ export function _cushySDXLLayout(): Maybe<DisplaySlotFn<$CushySDXLUI['$Field']>>
          if (ui2.field.parent?.parent === ui.field.Positive.Prompts) ui2.set({ Head: false })
          if (ui2.field.parent === ui.field.Positive.Prompts) ui2.set({ Shell: ShellOptionalEnabledUI })
       })
-      ui.set(latent.bField, { Shell: ui.catalog.Shell.Left })
-      // ui.set(latent, { Shell: ui.catalog.Shell.Left })
+      ui.set(latent.bField, { Shell: UY.Shell.Left })
+      // ui.set(latent, { Shell: UY.Shell.Left })
       ui.set('', (ui2) => {
          // ui2.for()
          // const isTopLevelGroup = ui2.field.depth === 1 && true //
@@ -87,16 +87,15 @@ export function _cushySDXLLayout(): Maybe<DisplaySlotFn<$CushySDXLUI['$Field']>>
             ui2.field.type !== 'shared' &&
             ui2.field.type !== 'optional'
          )
-            ui2.set({ Shell: ui.catalog.Shell.Right })
+            ui2.set({ Shell: UY.Shell.Right })
 
-         if (ui2.field.path.startsWith(model.path + '.')) ui2.set({ Shell: ui.catalog.Shell.Right })
+         if (ui2.field.path.startsWith(model.path + '.')) ui2.set({ Shell: UY.Shell.Right })
 
          let should = ui2.field.path.startsWith(ui.field.Sampler.path + '.')
          should = ui2.field.depth >= 2
          if (should) {
-            if (ui2.field.isOfType('group', 'list', 'choices')) ui2.set({ Title: ui.catalog.Title.h4 })
-            if (!ui2.field.isOfType('optional', 'link', 'list', 'shared'))
-               ui2.set({ Shell: ui.catalog.Shell.Right })
+            if (ui2.field.isOfType('group', 'list', 'choices')) ui2.set({ Title: UY.Title.h4 })
+            if (!ui2.field.isOfType('optional', 'link', 'list', 'shared')) ui2.set({ Shell: UY.Shell.Right })
          }
       })
    }

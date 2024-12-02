@@ -161,3 +161,10 @@ export const widgetsCatalog /* WidgetsCatalog */ = {
       inline: WidgetGroup_InlineUI,
    },
 }
+
+// make globally available
+;(window as any).UY = widgetsCatalog
+if (import.meta.hot) {
+   import.meta.hot.accept()
+   ;(window as any).UY = widgetsCatalog
+}

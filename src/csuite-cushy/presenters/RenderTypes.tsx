@@ -24,7 +24,6 @@ export type DisplayRuleCtx<FIELD extends Field = Field> = {
    set(selector: FieldSelector, x: DisplaySlotExt<Field>): void
    set<Sub extends Field>(field: Maybe<Sub>, x: DisplaySlotExt<Sub>): void
 
-   catalog: CATALOG.widgets
    presets: typeof renderPresets
 }
 

@@ -55,7 +55,7 @@ app({
 
    layout: (ui) => {
       ui.set('', { Decoration: null, Indent: null })
-      ui.set(ui.field.PromptFromLlm2, { Header: ui.catalog.string.markdown })
+      ui.set(ui.field.PromptFromLlm2, { Header: UY.string.markdown })
    },
    run: async (sdk, conf) => {
       if (!sdk.LLM.isConfigured) {

@@ -38,7 +38,7 @@ export const PlaygroundRenderUI = observer(function PlaygroundRender(p: NO_PROPS
             // Shell=''
             // layout={({ fields: f }) => [f.x, f.x, f.x, f.x, '*']}
             rule={(ui) => {
-               // ui.for(ui.field.Aaa, { Shell: ui.catalog.Shell.Card })
+               // ui.for(ui.field.Aaa, { Shell: UY.Shell.Card })
                ui.set(ui.field.Z, { Header: 'hello guys' })
                ui.set(ui.field.Y, { Title: null })
                ui.set(ui.field.Sub1.Z, { Header: 'hope you guys good' })
@@ -46,12 +46,12 @@ export const PlaygroundRenderUI = observer(function PlaygroundRender(p: NO_PROPS
                ui.set('', (ui: DisplayRuleCtx) => {
                   if (isFieldGroup(ui.field) && isFieldChoice(ui.field.parent)) return { Head: false }
                })
-               ui.set('', ({ field, catalog }) => {
+               ui.set('', ({ field }) => {
                   // apply(field, {
                   //     Shell: catalog.ShellMobile,
                   //     Indent: (f) => f.depth + '>>',
                   // })
-                  if (isFieldNumber(field)) return { Header: <>🟢{<catalog.number.def field={field} />}</> }
+                  if (isFieldNumber(field)) return { Header: <>🟢{<UY.number.def field={field} />}</> }
                })
                // return { Body: 'hello' }
             }}

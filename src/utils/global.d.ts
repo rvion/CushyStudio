@@ -1,5 +1,6 @@
 import 'react'
 
+import type { WidgetsCatalog } from '../csuite-cushy/presenters/RenderCatalog'
 import type { PixiReactElementProps } from '@pixi/react/types/typedefs/PixiReactNode'
 import type { Viewport } from 'pixi-viewport'
 
@@ -25,6 +26,7 @@ declare global {
         | Object.defineProperty(window, 'cushy', { get() { return (window as any).st } }) // prettier-ignore
     */
    const cushy: import('../state/state').STATE
+   const UY: WidgetsCatalog
 }
 
 declare module 'react' {

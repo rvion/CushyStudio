@@ -63,7 +63,6 @@ export class Presenter {
       // ⏸️ console.log(`[💄] rendering ${field.path}`)
       // slots accumulator
       let slots: DisplaySlots<FIELD> = {} //
-      const catalog = widgetsCatalog
 
       // 🔴 SUPER SLOW
       this.rules = this.rules.filter((rule) => rule.addedBy !== field)
@@ -133,7 +132,6 @@ export class Presenter {
          if (typeof ruleOrConf === 'function') {
             const _slots = ruleOrConf({
                field,
-               catalog,
                set: addForField,
                presets: renderPresets,
             }) as Maybe<DisplaySlots<FIELD>> // 🔴🔴🔴
@@ -178,17 +176,16 @@ export class Presenter {
 
       // bad logic
       const Shell = slots.ShellName
-         ? catalog.Shell[slots.ShellName]
+         ? UY.Shell[slots.ShellName]
          : slots.Shell //
            ? slots.Shell
-           : catalog.Shell.Default
+           : UY.Shell.Default
 
       // console.log(`[🤠] slots.ShellName`, slots.ShellName, field.path, Shell === catalog.Shell.Inline)
       if (!Shell) throw new Error('Shell is not defined')
 
       // COMPILED
-      const UI = widgetsCatalog
-      const finalProps: CompiledRenderProps<FIELD> = { field, UI, presenter: this, ...slots }
+      const finalProps: CompiledRenderProps<FIELD> = { field, UI: UY, presenter: this, ...slots }
 
       if (field.path === debug) this.debugFinalProps(finalProps)
       // if (field.path === '$.latent.b.image.resize') this.debugFinalProps(finalProps)
