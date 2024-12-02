@@ -75,6 +75,16 @@ export const PromptKeymap1 = (): Extension =>
          preventDefault: true,
          run: contractWeights(1, ['WeightedExpression', 'Lora', 'Wildcard']),
       },
+      {
+         key: 'ctrl-shift-a-ArrowLeft',
+         preventDefault: true,
+         run: shiftWeights(-1, ['WeightedExpression', 'Lora', 'Wildcard']),
+      },
+      {
+         key: 'ctrl-shift-a-ArrowRight',
+         preventDefault: true,
+         run: shiftWeights(1, ['WeightedExpression', 'Lora', 'Wildcard']),
+      },
       // { key: 'm-s-j', preventDefault: true, run: changeWeight(0.1, ['Lora', 'Wildcard']) },
       // { key: 'm-s-k', preventDefault: true, run: changeWeight(-0.1, ['Lora', 'Wildcard']) },
       // { key: 'm-s-j', preventDefault: true, run: increaseWeights, },
@@ -391,3 +401,65 @@ const shrinkWeight = (view: EditorView, a: SyntaxNode, next: boolean): ChangeSpe
       { from: token.to, to: token.to, insert: `:${weight})` },
    ]
 }
+
+const shiftWeights =
+   (direction: number, stopAt: PromptLangNodeName[]) =>
+   (view: EditorView): boolean => {
+      const ranges = view.state.selection.ranges
+      const tree = syntaxTree(view.state)
+
+      let index = 0
+      for (const r of ranges) {
+         // TODO(bird_d/prompting/logic): Make this find the first weighted expression inside the selected range and go from there.
+         // Do nothing if there is a selection for now
+         if (r.from != r.to) {
+            index++
+            continue
+         }
+
+         let a: SyntaxNode | null = $smartResolve(tree, r.to)
+
+         // Make sure we have the entire WeightedExpression group selected
+         while (a && a.name != 'WeightedExpression') {
+            a = a.parent
+         }
+
+         // Token was not inside a WeightedExpression, so do nothing
+         if (!a) {
+            return true
+         }
+
+         // Store changes to do at once later on so undo does not get extra steps
+         const changes: Array<ChangeSpec> = []
+
+         // Expand to the left
+         if (direction != 1) {
+            changes.push(shrinkWeight(view, a, false))
+            changes.push(growWeight(view, a, false))
+         }
+
+         // Expand to the right
+         if (direction != -1) {
+            changes.push(shrinkWeight(view, a, true))
+            changes.push(growWeight(view, a, true))
+         }
+
+         // Expand in both ways if not direction
+         view.dispatch({
+            changes,
+         })
+
+         // XXX: Not type-safe. There should always be a change, so it should be fine?
+         const position = changes[0] && (changes[0] as any)[1].from
+
+         view.dispatch({
+            selection: {
+               anchor: position,
+               head: position,
+            },
+         })
+
+         continue
+      }
+      return true
+   }
