@@ -1,5 +1,7 @@
 SHORT TERM TODO:
 
+    ☐ paths: switche to / instead of .
+
     ☐ tree view:
         ☐ add back highlighting
             ☐ still use legacy daisyUI colors

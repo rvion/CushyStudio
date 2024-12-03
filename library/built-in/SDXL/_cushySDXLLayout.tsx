@@ -1,4 +1,5 @@
-import type { DisplaySlotFn } from '../../../src/csuite-cushy/presenters/RenderTypes'
+import type { DisplayRuleCtx, DisplaySlotFn } from '../../../src/csuite-cushy/presenters/RenderTypes'
+import type { Field_list } from '../../../src/csuite/fields/list/FieldList'
 import type { IconName } from '../../../src/csuite/icons/icons'
 import type { $CushySDXLUI } from './_cushySDXLSchema'
 
@@ -34,9 +35,7 @@ export function _cushySDXLLayout(): Maybe<DisplaySlotFn<$CushySDXLUI['$Field']>>
       // })
       const model = ui.field.Model
       const latent = ui.field.Latent
-      ui.set(ui.field.Positive.Prompts, {
-         collapsible: false,
-         Head: false,
+      ui.set<Field_list<X.XOptional<X.XPrompt>>>('@list.@optional.@prompt^^', {
          Header: false,
          Body: observer((p) => (
             <UY.list.BlenderLike<typeof p.field> //
@@ -73,6 +72,9 @@ export function _cushySDXLLayout(): Maybe<DisplaySlotFn<$CushySDXLUI['$Field']>>
             />
          )),
       })
+      // already handled by its parent
+      ui.set(ui.field.Positive.Prompts, { collapsible: false, Head: false, Header: false })
+
       ui.set('', (ui2) => {
          if (ui2.field.parent?.parent === ui.field.Positive.Prompts) ui2.set({ Head: false })
          if (ui2.field.parent === ui.field.Positive.Prompts) ui2.set({ Shell: ShellOptionalEnabledUI })

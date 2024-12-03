@@ -20,9 +20,9 @@ export type DisplayRuleCtx<FIELD extends Field = Field> = {
    field: FIELD
 
    set(x: DisplaySlotExt<FIELD>): void
-   set(selector: string, x: DisplaySlotExt<Field>): void
-   set(selector: FieldSelector, x: DisplaySlotExt<Field>): void
-   set<Sub extends Field>(field: Maybe<Sub>, x: DisplaySlotExt<Sub>): void
+   set<SUB extends Field = Field>(selector: string, x: DisplaySlotExt<SUB>): void
+   set<SUB extends Field = Field>(selector: FieldSelector, x: DisplaySlotExt<SUB>): void
+   set<SUB extends Field>(field: Maybe<SUB>, x: DisplaySlotExt<SUB>): void
 
    presets: typeof renderPresets
 }
