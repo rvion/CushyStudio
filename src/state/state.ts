@@ -968,6 +968,7 @@ export class STATE {
    preferences = {
       interface: interfaceConf,
       system: systemConf,
+      theme: themeConf,
    }
 
    csuite: CSuiteConfig = new CSuite_ThemeCushy(this)

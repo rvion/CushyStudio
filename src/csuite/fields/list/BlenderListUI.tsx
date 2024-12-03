@@ -1,9 +1,9 @@
 import type { BaseSchema } from '../../model/BaseSchema'
 import type { Field_list } from './FieldList'
-import type { ReactNode } from 'react'
 
 import { action, runInAction } from 'mobx'
 import { observer, useLocalObservable } from 'mobx-react-lite'
+import { createRef, type ReactNode } from 'react'
 
 import { Button } from '../../button/Button'
 import { SpacerUI } from '../../components/SpacerUI'
@@ -30,7 +30,7 @@ export const BlenderListUI = observer(function BlenderListUI_<T extends Field_li
    const theme = cushy.theme.value
    return (
       <Frame tw='flex flex-col gap-2'>
-         <Frame tw='flex flex-row gap-2 px-2'>
+         <Frame tw='flex flex-row gap-2 px-2' style={{ minHeight: '100%' }}>
             <ResizableFrame
                tw='overflow-clip'
                footer={<BlenderListFooterFilterUI />}
@@ -38,7 +38,8 @@ export const BlenderListUI = observer(function BlenderListUI_<T extends Field_li
                onResize={(val) => {
                   field.size = val
                }}
-               snap={16}
+               // Should be h-input + half of gap-size
+               snap={28}
                showFooter={false}
             >
                <div tw='flex flex-col gap-0.5 p-1'>
