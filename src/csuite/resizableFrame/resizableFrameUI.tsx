@@ -96,6 +96,7 @@ class ResizableFrameStableState {
       if (this.props.snap) {
          next = Math.round(next / this.props.snap) * this.props.snap
       }
+      next = clamp(next, 100, Number.MAX_SAFE_INTEGER)
       this.props.onResize?.(next)
       this.size = next
    }
