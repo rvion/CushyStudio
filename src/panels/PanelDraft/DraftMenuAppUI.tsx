@@ -31,20 +31,23 @@ export const DraftMenuAppUI = observer(function DraftMenuAppUI_(p: { draft: Draf
                <MenuItem //
                   icon='mdiBookEdit'
                   onClick={() => openInVSCode(file?.absPath ?? '')}
-                  label='Edit Definition'
+                  label='Edit Externally'
+                  tooltip='Opens the app definition with the editor chosen in system preferences'
                />
                <MenuItem //
-                  icon='mdiOpenInApp'
+                  // icon='mdiOpenInApp'
                   onClick={() => showItemInFolder(file.absPath)}
-                  label='Show Item In Folder'
+                  label='Show in Folder'
+                  tooltip='Opens the app location in your file manager'
                />
 
                <MenuDivider />
                <MenuItem
+                  disabled={!app.canBePublishedByUser}
                   loading={app.isPublishing}
                   icon='mdiPublish'
                   onClick={() => app.publish()}
-                  label='Publish on app-store'
+                  label='Publish to App Repository'
                />
             </>
          )}

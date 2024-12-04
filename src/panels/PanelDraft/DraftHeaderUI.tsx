@@ -46,34 +46,10 @@ export const DraftHeaderUI = observer(function DraftHeader({
             <DraftMenuAppUI draft={draft} />
             <DraftMenuDraftUI draft={draft} />
             <SpacerUI />
-            <Frame
-               //Joined
-
-               tw='flex overflow-clip [&>*]:!rounded-none [&>*]:!border-0'
-               border
-               roundness={'5px'}
-               dropShadow={
-                  theme.inputShadow && {
-                     x: theme.inputShadow.x,
-                     y: theme.inputShadow.y,
-                     color: theme.inputShadow.color,
-                     blur: theme.inputShadow.blur,
-                     opacity: theme.inputShadow.opacity,
-                  }
-               }
-            >
-               <Button
-                  tooltip='Edit in external editor'
-                  icon='mdiTextBoxEditOutline'
-                  onClick={() => cushy.openInVSCode(draft.app.relPath)}
-               >
-                  {draft.app.name}
-               </Button>
-            </Frame>
-
             {children}
             <SpacerUI />
-            <PublishAppBtnUI app={app} tw='ml-auto' />
+
+            {/* <PublishAppBtnUI app={app} /> //Is in DraftMenuAppUI, no need for this */}
          </PanelHeaderUI>
 
          {/* <OverflowingRowUI // quick access to past versions
