@@ -25,6 +25,7 @@ export const ToggleButtonUI = observer(function ToggleButtonUI_(
    // const border = p.border ?? 10
    const theme = cushy.theme.value
    const dropShadow = p.dropShadow ?? theme.inputShadow
+   console.log('[FD] ' + p.text, p.children)
    return (
       <Button
          tw={
@@ -81,7 +82,7 @@ export const ToggleButtonUI = observer(function ToggleButtonUI_(
                 - I removed the "line-clamp-1" from the paragraph below
                 - I replaced the "h-input" by "minh-input" in the Frame above
             */}
-         {p.children ?? <p tw='w-full text-center'>{p.text}</p>}
+         {p.children ?? (p.text && <p tw='w-full text-center'>{p.text}</p>)}
       </Button>
    )
 })

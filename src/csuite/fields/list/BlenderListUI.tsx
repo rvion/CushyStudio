@@ -152,9 +152,7 @@ export const BlenderListUI = observer(function BlenderListUI_<T extends Field_li
                   </>
                }
             >
-               <Frame tw='h-full' base={10}>
-                  {selectedChild && <selectedChild.UI />}
-               </Frame>
+               <Frame tw='h-full'>{selectedChild && <selectedChild.UI />}</Frame>
             </ResizableFrame>
          </div>
          <Frame
