@@ -30,12 +30,17 @@ export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { field: Fiel
 
    const haveAtLeastOnePluginActive = plugins.some((plugin) => st.configFile.get(plugin.configKey) ?? false)
    return (
-      <div tw='flex flex-1 flex-col'>
-         <div ref={uist.mountRef}></div>
-
-         {/* ACTIVE PLUGINS */}
-         {/* <PluginToggleBarUI /> */}
-         {haveAtLeastOnePluginActive && (
+      <div ref={uist.mountRef}></div>
+      // <div tw='flex flex-1 flex-col'>
+   )
+   {
+      /* ACTIVE PLUGINS */
+   }
+   {
+      /* <PluginToggleBarUI /> */
+   }
+   {
+      /* {haveAtLeastOnePluginActive && (
             <Frame className='my-1 flex flex-col gap-1 p-1'>
                {plugins.map((plugin) => {
                   const active = st.configFile.get(plugin.configKey) ?? false
@@ -47,7 +52,8 @@ export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { field: Fiel
                   )
                })}
             </Frame>
-         )}
-      </div>
-   )
+         )} */
+   }
+   // </div>
+   // )
 })
