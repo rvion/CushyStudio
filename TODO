@@ -1,5 +1,10 @@
 SHORT TERM TODO:
 
+    ☐ backport 2024-12-07
+        - skip: 20241029_132420_guillaume-gautreau_10dc8bb_refactor-unify-buttons-1998
+        - skip: 20241029_153538_rvion_a99d39a_initial-setup.diff
+        - skip: 20241031_164650_guillaume-gautreau_1238494_refactor-mark-other-buttons-as-deprecated-migrate-buttons-from-scenario-settings-and-remove-deprecated-buttons-2057
+
     ☐ paths: switche to / instead of .
 
     ☐ tree view:
