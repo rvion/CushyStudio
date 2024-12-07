@@ -25,12 +25,6 @@ export const CheckboxAndRadioIcon = observer(function InputBoolToggleButtonBoxUI
               : 'mdiCheckboxBlankOutline'
            : null
 
-   return (
-      icon && (
-         <UY.Misc.Frame active={isActive}>
-            <IkonOf name={icon} tw={'shrink-0'} size={p.iconSize ?? '1.3em'} />
-         </UY.Misc.Frame>
-      )
-   )
+   return icon && <IkonOf name={icon} tw={'shrink-0'} size={p.iconSize ?? '1.3em'} />
    // return <div tw='text-lg mr-1'>{icon && <IkonOf name={icon} />}</div>
 })
