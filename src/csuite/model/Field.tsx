@@ -1409,11 +1409,6 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
 
    // #region UI.Render
 
-   //  => LOCO
-   Render(props: RENDERER.FieldRenderArgs<this> = {}): ReactNode {
-      return <window.RENDERER.Render {...props} field={this} />
-   }
-
    //  => CUSHY
    UI(props: RENDERER.FieldRenderArgs<this> = {}): ReactNode {
       // 💬 2024-10-17 ghusse:
@@ -1433,18 +1428,6 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
       // 💬 2024-10-17 ghusse:
       // | ⚠ props must be added first, to avoid circular references of field
       return <window.RENDERER.Render {...props} field={this} />
-   }
-
-   /**
-    * alias to `Render`
-    *
-    * @since 2024-09-19
-    * @see {@link Render}
-    */
-   render(props: RENDERER.FieldRenderArgs<this> = {}): ReactNode {
-      // eslint-disable-next-line no-debugger
-      if (props == undefined) debugger /* 🔴 */
-      return <window.RENDERER.Render field={this} {...props} />
    }
 
    /**
@@ -1815,8 +1798,6 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
          }
 
          this.UI = this.UI.bind(this)
-         this.render = this.render.bind(this)
-         this.Render = this.Render.bind(this)
          this.renderAsConfigBtn = this.renderAsConfigBtn.bind(this) // TODO: remove
 
          this.repo._registerField(this)

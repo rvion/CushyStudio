@@ -31,7 +31,7 @@ export const PlaygroundSkinsUI = observer(function PlaygroundSkinsUI_(p: {}) {
                </Frame>
             </Frame>
             <Frame border base expand>
-               {xx.render({})}
+               {xx.UI({})}
                {/* {xx.render(({ fields: f }) => [`# hello\n\nI love the 'a' field`, f.a, f.a, f.a])} */}
                {/* {xx.render((f) => ['a', 'b', 'b', 'b'])} */}
             </Frame>

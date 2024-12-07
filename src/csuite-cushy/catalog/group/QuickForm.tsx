@@ -41,7 +41,7 @@ export const QuickForm = observer(function QuickForm_<T extends SchemaDict>(p: Q
                seen.add(s)
                // key is not unique if we display the same field multiple times
                // ...but it's not a realistic use case anyway
-               return <s.Render key={`${s.path}-input`} />
+               return <s.UI key={`${s.path}-input`} />
             }
             if (s === '*') {
                const notSeen = p.field.childrenActive.filter((f) => !seen.has(f))

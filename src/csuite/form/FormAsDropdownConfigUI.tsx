@@ -30,7 +30,7 @@ export const FormAsDropdownConfigUI = observer(function FormAsDropdownConfigUI_(
                   width: p.width,
                }}
             >
-               {p.form.render()}
+               {p.form.UI()}
                {p.children}
             </div>
          )}
