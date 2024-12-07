@@ -37,6 +37,7 @@ export type BoolButtonProps = {
    onValueChange?: (next: boolean) => void
 
    toggleGroup: SharedClickAndSlideKey
+   disabled?: boolean
 } & FrameProps
 
 export const InputBoolUI = observer(function InputBool(p: BoolButtonProps) {

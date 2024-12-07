@@ -8,6 +8,7 @@ import { IkonOf } from '../icons/iconHelpers'
 export const CheckboxAndRadioIcon = observer(function InputBoolToggleButtonBoxUI_(p: {
    //
    mode: 'radio' | 'checkbox' | false | 'switch'
+   disabled?: boolean
    isActive: boolean
    iconSize?: string
 }) {
@@ -26,11 +27,9 @@ export const CheckboxAndRadioIcon = observer(function InputBoolToggleButtonBoxUI
 
    return (
       icon && (
-         <IkonOf
-            name={icon}
-            tw={[isActive ? 'text-lsuite-primary' : 'text-lsuite-gray', 'shrink-0']}
-            size={p.iconSize ?? '1.3em'}
-         />
+         <UY.Misc.Frame active={isActive}>
+            <IkonOf name={icon} tw={'shrink-0'} size={p.iconSize ?? '1.3em'} />
+         </UY.Misc.Frame>
       )
    )
    // return <div tw='text-lg mr-1'>{icon && <IkonOf name={icon} />}</div>
