@@ -1,5 +1,9 @@
 import type { FieldTypes } from '../$FieldTypes'
 
+import { nanoid } from 'nanoid'
+import { createElement } from 'react'
+import { v4 } from 'uuid'
+
 import { Field_string, type Field_string_config } from '../../fields/string/FieldString'
 import { BaseBuilder } from './BaseBuilder'
 
@@ -9,6 +13,36 @@ interface SchemaAndAliasesᐸ_ᐳ extends HKT<FieldTypes> {
 
 export class BuilderString<Schemaᐸ_ᐳ extends SchemaAndAliasesᐸ_ᐳ> extends BaseBuilder<Schemaᐸ_ᐳ> {
    static fromSchemaClass = BaseBuilder.buildfromSchemaClass(BuilderString)
+
+   /**
+    * readonly string, defaulting to some new nanoid()
+    * (new default for each schema instanciation)
+    *
+    * @since 2024-10-25
+    */
+   nanoid(config: Field_string_config = {}): Schemaᐸ_ᐳ['String'] {
+      const uid: string = nanoid()
+      return this.string_({
+         ...config,
+         header: (p) => createElement('div', {}, p.field.value),
+         default: uid,
+      })
+   }
+
+   /**
+    * readonly string, defaulting to some new UUID-V4
+    * (new default for each schema instanciation)
+    *
+    * @since 2024-10-25
+    */
+   uuidV4(config: Field_string_config = {}): Schemaᐸ_ᐳ['String'] {
+      const uuid: string = v4()
+      return this.string_({
+         ...config,
+         header: (p) => createElement('div', {}, p.field.value),
+         default: uuid,
+      })
+   }
 
    string_(config: Field_string_config = {}): Schemaᐸ_ᐳ['String'] {
       return this.buildSchema(Field_string, config)
