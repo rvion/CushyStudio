@@ -168,6 +168,7 @@ export class AutoCompleteSelectState<OPTION> {
       return (
          <SelectDefaultOptionUI //
             label={label}
+            icon={this.p.startIcon}
             hue={this.getHue(option)}
             key={this.getKey(option)}
             closeFn={
