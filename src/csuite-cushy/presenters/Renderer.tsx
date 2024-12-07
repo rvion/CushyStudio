@@ -147,6 +147,9 @@ export class Presenter {
 
       const debug = null // '$.latent.b' // '$.positive'
       for (const rule of this.rules) {
+         // starts from this, and ensures the result contains the field.
+         // we probably want contains in many place.
+         //                 VVVVVVVVVVVVVV
          const isMatching = field.matches(rule.selector)
          if (field.path === debug)
             console.log(
