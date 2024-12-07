@@ -25,18 +25,9 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
          <Frame //Joined container
             border={csuite.inputBorder}
             roundness={csuite.inputRoundness}
-            // border={{ contrast: 0.05 }}
-            // line
-            tw={[
-               //
-
-               'flex flex-1 flex-col overflow-clip',
-               // Clip children to fix border issues and make the children styled correctly
-               '!gap-0 !p-0 [&>*]:!rounded-none [&>*]:!border-0',
-               // Add borders/"dividers" where needed (Right of every child except last)
-               '[&>*:not(:last-child)]:!border-b',
-               '[&>*]:filter-none',
-            ]}
+            align
+            col
+            expand
          >
             <InputNumberUI
                //

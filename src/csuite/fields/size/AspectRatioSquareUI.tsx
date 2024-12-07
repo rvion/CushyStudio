@@ -7,27 +7,33 @@ import { Frame } from '../../frame/Frame'
 
 export const AspectRatioSquareUI = observer(function AspectRatioSquareUI_(p: { sizeHelper: Field_size }) {
    const uist = p.sizeHelper
-   const ratioDisplaySize = 64
    const csuite = useCSuite()
+   const ratioDisplaySize =
+      csuite.inputHeight * 2.05 * parseFloat(getComputedStyle(document.documentElement).fontSize)
    const theme = cushy.theme.value
 
    return (
       <Frame // Aspect ratio display background
-         // square
          border={csuite.inputBorder}
          roundness={csuite.inputRoundness}
          base={csuite.inputContrast}
          dropShadow={theme.inputShadow}
+         hover
+         square
          tw={[
             //
             'overflow-clip',
             'items-center justify-center',
             'cursor-pointer',
-            `!h-[64px] !w-[64px]`,
+            // `aspect-square w-[100%]`,
          ]}
          onClick={() => uist.flip()}
-         hover
-         tooltip='Press to flip the aspect ratio'
+         tooltip='Flip aspect ratio'
+         style={{
+            //
+            width: ratioDisplaySize,
+            height: ratioDisplaySize,
+         }}
       >
          <Frame
             base={10}
