@@ -32,6 +32,9 @@ export const csuite_i18n_en = {
          required: ({ prefix }: { prefix: string }): string => `${prefix} is required`,
          pattern: ({ pattern }: { pattern: string }): string => `Invalid format`,
       },
+      email: {
+         invalid: `Invalid email address`,
+      },
       field: {
          not_set: 'Field is not set',
          defaultExplicitelySetToNullButFieldNotNullable: 'Default value is explicitely set to null, but field is not nullable', // prettier-ignore
@@ -87,6 +90,9 @@ export const csuite_i18n_fr: CsuiteI18nConfig = {
       field: {
          not_set: 'Valeur manquante',
          defaultExplicitelySetToNullButFieldNotNullable: 'La valeur par défaut est explicitement définie à null, mais le champ n\'est pas nullable', // prettier-ignore
+      },
+      email: {
+         invalid: `Adresse email invalide`,
       },
       selectMany: {
          required: (): string => `Au moins une valeur doit être sélectionnée`,

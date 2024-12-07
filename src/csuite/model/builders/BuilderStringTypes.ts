@@ -4,6 +4,7 @@ import { nanoid } from 'nanoid'
 import { createElement } from 'react'
 import { v4 } from 'uuid'
 
+import { csuiteConfig } from '../../config/configureCsuite'
 import { Field_string, type Field_string_config } from '../../fields/string/FieldString'
 import { BaseBuilder } from './BaseBuilder'
 
@@ -78,7 +79,25 @@ export class BuilderString<Schemaᐸ_ᐳ extends SchemaAndAliasesᐸ_ᐳ> extend
     * - no specific validation
     */
    email(config: Field_string_config = {}): Schemaᐸ_ᐳ['String'] {
-      return this.string({ inputType: 'email', ...config })
+      const { inputType, check, ...rest } = config
+
+      const emailConfig: Field_string_config = {
+         innerIcon: 'mdiEmailOutline',
+         normalize: (v) => v?.toLowerCase()?.trim(),
+         inputType: inputType ?? 'email',
+         check: (v) => {
+            const configuredError = config.check?.(v)
+            if (configuredError) return configuredError
+
+            if (!v.value) return
+            if (!/^.+@.+\..+$/.test(v.value.trim())) {
+               return csuiteConfig.i18n.err.email.invalid
+            }
+         },
+         ...rest,
+      }
+
+      return this.string(emailConfig)
    }
 
    /**
