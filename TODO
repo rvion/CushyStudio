@@ -7,6 +7,13 @@ SHORT TERM TODO:
         - skip: 20241104_153812_globidev_b749f2d_fix-builder-choices-default-value (❌ wrong)
         - skip: 20241106_160310_globidev_9fdc458_try-to-improve-form-labels (❌ now can this work without reactivity)
         - wrong: `disabled={p.readonly || p.field.config.readonly}`
+        - wrong: 20241107_140139_guillaume-gautreau_6de86ca_feat-dont-show-extra-checkboxes-on-optional-strings-2074
+            (completely break having empty strings :|)
+            | if (!value && p.field.canBeToggledWithinParent) {
+            |     p.field.disableSelfWithinParent()
+            | } else if (value && p.field.canBeToggledWithinParent) {
+            |     p.field.enableSelfWithinParent()
+            | }
 
     ☐ paths: switche to / instead of .
 

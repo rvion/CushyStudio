@@ -30,7 +30,7 @@ export const WidgetSelectOne_SelectUI = observer(function WidgetSelectOne_Select
             // 💬 2024-09-16 rvion: weird/tmporary class name here
             // | this is just so we outline the input with a red border
             //                                    VVVVVVVVVVVVVVVVV
-            tw={[field.ownTypeSpecificProblems && 'rsx-field-error']}
+            tw={[field.mustDisplayErrors && 'rsx-field-error']}
             // 💬 2024-09-16 rvion:
             // | since 2024-09-12, we can't use the value anymore
             // | since the value may not be set anymore, we need to use
