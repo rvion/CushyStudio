@@ -281,7 +281,7 @@ export class Field_selectOne<
    }
 
    reset(): void {
-      if (this.defaultKey !== undefined) this.selectedId = this.defaultKey
+      this.selectedId = this.defaultKey
    }
 
    get query(): string {
@@ -493,7 +493,7 @@ export class Field_selectOne<
       return this.serial.val // || this.default // 🔴 idk, probably bad to have default here
    }
 
-   set selectedId(nextId: KEY) {
+   set selectedId(nextId: KEY | undefined) {
       if (this.serial.val === nextId) return
 
       this.runInValueTransaction(() => {
