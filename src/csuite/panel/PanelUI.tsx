@@ -1,4 +1,4 @@
-import { observerWC } from '../dropdown/observer8'
+import { observerWC } from '../dropdown/observerWC'
 import { Frame, type FrameProps } from '../frame/Frame'
 import { PanelContentUI } from './PanelContentUI'
 import { PanelHeaderUI } from './PanelHeaderUI'

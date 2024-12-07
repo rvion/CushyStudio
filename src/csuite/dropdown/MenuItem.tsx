@@ -9,7 +9,7 @@ import { Frame } from '../frame/Frame'
 import { Ikon, IkonOf } from '../icons/iconHelpers'
 import { formatMenuLabel } from '../menu/formatMenuLabel'
 import { MenuDivider } from './MenuDivider'
-import { observerWC } from './observer8'
+import { observerWC } from './observerWC'
 
 export type MenuItemProps = {
    // behaviour

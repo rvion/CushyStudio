@@ -7,7 +7,7 @@ import { Frame } from '../frame/Frame'
 import { RevealUI } from '../reveal/RevealUI'
 import { MenuDivider } from './MenuDivider'
 import { MenuItem } from './MenuItem'
-import { observerWC } from './observer8'
+import { observerWC } from './observerWC'
 
 export type DropdownProps = {
    title: ReactNode
