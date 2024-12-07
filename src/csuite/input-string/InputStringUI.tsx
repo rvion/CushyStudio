@@ -115,7 +115,7 @@ export const InputStringUI = observer(
             )
             break
          default:
-            inputTailwind = 'w-full h-full !outline-none bg-transparent'
+            inputTailwind = 'w-full h-full !outline-none bg-transparent px-2'
             break
       }
       const csuite = useCSuite()
@@ -206,7 +206,7 @@ export const InputStringUI = observer(
                   {input}
                   <span
                      style={{ maxWidth: p.autoResizeMaxWidth }}
-                     tw='minh-input lh-input select-none whitespace-nowrap whitespace-pre'
+                     tw='minh-input lh-input select-none whitespace-nowrap whitespace-pre px-1'
                   >
                      {p.getValue() ? p.getValue() : <span tw='opacity-30'>{p.placeholder || ' '}</span>}
                   </span>
