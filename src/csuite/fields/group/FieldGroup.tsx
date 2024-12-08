@@ -47,6 +47,7 @@ export type Field_group_config<T extends Field_group_types<SchemaDict>> = FieldC
 // SERIAL
 export type Field_group_serial<T extends Field_group_types<SchemaDict>> = FieldSerial<{
    $: 'group'
+   // TODO: why is that not optional ? it should be.
    values_: { [K in keyof T['$Sub']]?: T['$Sub'][K]['$Serial'] }
 }>
 
@@ -270,6 +271,9 @@ export class Field_group<X extends Field_group_types<SchemaDict> = Field_group_t
 
    _acknowledgeCount: number = 0
    _acknowledgeNewChildSerial(mountKey: string, newChildSerial: any): boolean {
+      // fast path: abort when exactly the same
+      if (this.serial.values_[mountKey] === newChildSerial) return false
+
       // console.log(`[🤠] ACK`, getUIDForMemoryStructure(newChildSerial), getUIDForMemoryStructure(this.serial), this.serial)
       const didChange = this.patchSerial((draft) => void ((draft.values_ as any)[mountKey] = newChildSerial))
       if (didChange) this._acknowledgeCount++

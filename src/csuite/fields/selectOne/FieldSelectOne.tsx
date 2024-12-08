@@ -289,9 +289,7 @@ export class Field_selectOne<
    }
 
    set query(next: string) {
-      this.runInTransaction(() => {
-         this.patchSerial((draft) => void (draft.query = next))
-      })
+      this.patchInTransaction((draft) => void (draft.query = next))
    }
 
    /**
