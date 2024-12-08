@@ -57,8 +57,7 @@ export const StepCardUI = observer(function StepOutputsV1HeaderUI_(p: {
    return (
       <Frame
          base={p.contrast}
-         tw={['relative flex cursor-pointer flex-wrap', p.className]}
-         onClick={() => st.layout.open('Output', { stepID: step.id })}
+         tw={['relative flex cursor-pointer flex-wrap p-0.5', p.className]}
          style={p.style}
       >
          {showTitle && (
@@ -86,21 +85,22 @@ export const StepCardUI = observer(function StepOutputsV1HeaderUI_(p: {
                <div style={STYLE}>❓</div>
             ))}
          {/* 6. OUTPUTS --------------------------------------------------------------- */}
-         {showOutputs &&
-            step?.outputs?.map((output, ix) => (
-               <OutputPreviewUI //
-                  key={ix}
-                  step={step}
-                  size={appSize}
-                  output={output}
-               />
-            ))}
+         {showOutputs && (
+            <div tw='flex px-2'>
+               {step?.outputs?.map((output, ix) => (
+                  <OutputPreviewUI //
+                     key={ix}
+                     step={step}
+                     size={appSize}
+                     output={output}
+                  />
+               ))}
+            </div>
+         )}
          <SpacerUI />
          {showDate && (
-            <div style={STYLE2} tw='flex items-center justify-center'>
-               <BadgeUI autoHue tw='text-xs'>
-                  {_formatPreviewDate(new Date(step.createdAt))}
-               </BadgeUI>
+            <div style={STYLE2} tw='flex items-center justify-center opacity-80'>
+               {_formatPreviewDate(new Date(step.createdAt))}
             </div>
          )}
          {showStatus && (

@@ -5,6 +5,7 @@ import type { StepL } from '../models/Step'
 import { observer } from 'mobx-react-lite'
 
 import { Button } from '../csuite/button/Button'
+import { Frame } from '../csuite/frame/Frame'
 import { parseFloatNoRoundingErr } from '../csuite/utils/parseFloatNoRoundingErr'
 import { useSt } from '../state/stateContext'
 import { GraphSummaryUI } from '../widgets/workspace/GraphSummaryUI'
@@ -21,16 +22,23 @@ export const OutputPromptPreviewUI = observer(function OutputPromptPreviewUI_(p:
    if (graph == null) return <div>❌ ERROR</div>
 
    const pgr1: ProgressReport = prompt.progressGlobal
+
+   const percent = parseFloatNoRoundingErr(pgr1.percent)
    return (
-      <div tw='text-shadow flex h-full w-full items-center justify-center p-0 text-sm'>
-         <div
-            className='radial-progress'
+      <div tw='flex h-full w-full items-center justify-center p-0.5 text-center'>
+         <Frame
+            tw='absolute z-0 h-full w-full'
+            base={{ contrast: 0.1 }}
             style={{
                // @ts-ignore
-               '--value': pgr1.percent,
-               '--size': `${parseInt(size) * 0.9}px`,
+               transform: `
+                  translateX(${(percent - 100) / 2}%)
+                 scaleX(${percent}%)`,
             }}
-            role='progressbar'
+         ></Frame>
+         <div
+            tw='z-10'
+            //
          >
             {parseFloatNoRoundingErr(pgr1.percent, 0)}%
          </div>

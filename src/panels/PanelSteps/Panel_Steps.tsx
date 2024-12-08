@@ -43,6 +43,13 @@ const StepListUI = observer(function StepLists(p: {}) {
          base={{ contrast: -0.1 }}
          className='flex grow select-none flex-col gap-0.5'
          style={{ overflow: 'auto' }}
+         onMouseDown={(e) => {
+            if (e.button != 0) {
+               return
+            }
+
+            cushy.focusedStepOutput = null
+         }}
       >
          {/* {PanelStepsConf.render()} */}
          {steps.map((step, ix: number) => (
