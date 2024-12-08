@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite'
 
 import { SpacerUI } from '../../csuite/components/SpacerUI'
 import { FormAsDropdownConfigUI } from '../../csuite/form/FormAsDropdownConfigUI'
+import { Frame } from '../../csuite/frame/Frame'
 import { PanelUI } from '../../csuite/panel/PanelUI'
 import { clamp } from '../../csuite/utils/clamp'
 import { Panel, type PanelHeader } from '../../router/Panel'
@@ -38,7 +39,11 @@ const StepListUI = observer(function StepLists(p: {}) {
    const amount = clamp(Math.round(PanelStepsConf.value.maxItem), 1, 1000)
    const steps = cushy.db.step.getLastN(amount)
    return (
-      <div className='flex grow select-none flex-col gap-0.5' style={{ overflow: 'auto' }}>
+      <Frame
+         base={{ contrast: -0.1 }}
+         className='flex grow select-none flex-col gap-0.5'
+         style={{ overflow: 'auto' }}
+      >
          {/* {PanelStepsConf.render()} */}
          {steps.map((step, ix: number) => (
             <StepCardUI //
@@ -47,6 +52,6 @@ const StepListUI = observer(function StepLists(p: {}) {
                step={step}
             />
          ))}
-      </div>
+      </Frame>
    )
 })
