@@ -7,24 +7,30 @@ const r = f.repository
 describe('field customizations', () => {
    beforeEach(() => r.reset())
    it('works', () => {
-      const SA = b.int().useClass((SUPER) => {
-         return class A extends SUPER {
-            $Field!: A
-            squareV2 = (): number => this.value ** 2
+      expect(r.transactionCount).toBe(0)
+
+      type T1 = {
+         squareV2(): number
+         square(): number
+         toSquare(): void
+         toSquareV2(): void
+         set abc(x: number)
+      }
+      const SA = b.int().useMixin(
+         (self): T1 => ({
+            squareV2: (): number => self.value ** 2,
             square(): number {
-               return this.value ** 2
-            }
+               return self.value ** 2
+            },
             set abc(x: number) {
-               this.value = x * 2
-            }
-            toSquareV2(): void {
-               void (this.value = this.value ** 2)
-            }
+               self.value = x * 2
+            },
+            toSquareV2: (): void => void (self.value = self.value ** 2),
             toSquare(): void {
-               this.value = this.value ** 2
-            }
-         }
-      })
+               self.value = self.value ** 2
+            },
+         }),
+      )
       const S1 = b
          .fields({
             a1: SA,
@@ -32,25 +38,25 @@ describe('field customizations', () => {
             b: b.string({ default: 'ok' }),
          })
 
-         .useClass((SUPER) => {
-            return class A extends SUPER {
-               $Field!: A
-               bang(): void {
+         .useMixin((self) => {
+            return {
+               bang: (): void => {
                   // TODO: this should be done implicitly
                   // not critical
-                  this.runInTransaction(() => {
-                     this.fields.b.value += '!'
-                     this.value.a1 += 11
-                     this.value.a2 += 11
+                  self.runInTransaction(() => {
+                     self.fields.b.value += '!'
+                     self.value.a1 += 11
+                     self.value.a2 += 11
                   })
-               }
+               },
                get atimes2(): number {
-                  return this.value.a1 * 2
-               }
-               someValue = 2
+                  return self.value.a1 * 2
+               },
+               someValue: 2,
             }
          })
 
+      expect(r.transactionCount).toBe(0)
       const E1 = S1.create()
       expect({ a1: 0, a2: 0, b: 'ok' }).toMatchObject(E1.toValueJSON())
 

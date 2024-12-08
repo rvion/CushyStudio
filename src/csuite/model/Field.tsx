@@ -258,6 +258,7 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
       this.schema = schema
       this.serial = serial ?? this._emptySerial
       this.mountKey = initialMountKey
+      this.parent?._acknowledgeNewChildSerial(initialMountKey, this.serial)
    }
 
    // ⏸️ static get mobxOverrideds() {
