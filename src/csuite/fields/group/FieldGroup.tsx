@@ -22,16 +22,6 @@ export type Field_group_config<T extends Field_group_types<SchemaDict>> = FieldC
       /** fields */
       items?: T['$Sub']
 
-      /** @deprecated; use `toString` instead */
-      summary?: CovariantFn<
-         [
-            //
-            items: { [k in keyof T['$Sub']]: T['$Sub'][k]['$Value'] },
-            self: Field_group<T>,
-         ],
-         string
-      >
-
       /** @default @false */
       presetButtons?: boolean
       default?: Partial<T['$Value']>
@@ -172,9 +162,13 @@ export class Field_group<X extends Field_group_types<SchemaDict> = Field_group_t
    }
 
    get summary(): string {
-      //                                👇🤔 Maybe we don't want to invoke the summary unless the field is valid -> it could throw with children that have a throwable _or_zero
-      return this.config.summary?.(this.value_or_zero, this) ?? ''
-      // return this.config.summary?.(this.value) ?? Object.keys(this.fields).length + ' fields'
+      // 👇🤔 Maybe we don't want to invoke the summary unless the field is valid
+      // -> it could throw with children that have a throwable _or_zero
+      try {
+         return this.config.toString?.(this) ?? ''
+      } catch (e) {
+         return `❌ ${this.path}.toString() crashed ❌`
+      }
    }
 
    get justifyLabel(): boolean {

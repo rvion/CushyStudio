@@ -32,7 +32,7 @@ export const prefabModelSD15andSDXL = (
       },
       {
          icon: 'mdiTurbine',
-         summary: (ui) => {
+         toString: ({ value: ui }): string => {
             let out: string = ui.ckpt_name
             if (ui.extra.freeU) out += ' + FreeU'
             if (ui.extra.freeUv2) out += ' + FreeUv2'
