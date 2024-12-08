@@ -1849,6 +1849,11 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
       return hashJSONObjectToNumber(snapshot) !== hashJSONObjectToNumber(currentSerial)
    }
 
+   // TODO: rename fastSerialHash
+   get hashSerial(): number {
+      return hashJSONObjectToNumber(this.serial)
+   }
+
    abstract isOwnSet: boolean
 
    /**
@@ -1873,7 +1878,6 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
    // TODO: remove that
    public async saveChanges(): Promise<void> {
       await this.root.config.saveChanges?.(this.root)
-      this.root.saveSnapshot()
       this.touched = false
    }
 
@@ -1884,7 +1888,6 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
     */
    public async cancelChanges(): Promise<void> {
       await this.root.config.cancelChanges?.(this.root)
-      this.root.revertToSnapshot()
       this.touched = false
    }
 }

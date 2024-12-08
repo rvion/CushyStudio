@@ -56,3 +56,7 @@ export type IdLabelIcon = {
    icon?: IconName
    hue?: number
 }
+
+export function isValidIconName(icon: string): icon is IconName {
+   return icon in allIcons
+}

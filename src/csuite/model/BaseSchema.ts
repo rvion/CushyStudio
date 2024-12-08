@@ -253,6 +253,11 @@ export class BaseSchema<
       return this.withConfig({ hidden: true })
    }
 
+   // TODO: make this add extra protection so people don't edit it by mistake
+   protected(warning: string): this {
+      return this.withConfig({ hidden: true })
+   }
+
    // PubSub -----------------------------------------------------
    publish<T>(chan: Channel<T> | ChannelId, produce: (self: TYPES['$Field']) => T): this {
       return this.withConfig({
