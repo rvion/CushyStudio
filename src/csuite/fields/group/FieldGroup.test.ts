@@ -109,6 +109,20 @@ describe('mobx observability', () => {
    })
 })
 
+describe('reset', () => {
+   it('works', () => {
+      const S1 = b.fields({
+         num: b.number(),
+         str: b.string({ default: 'test' }),
+      })
+      const E1 = S1.create()
+      E1.fields.num.value = 10
+      E1.fields.str.value = 'A'
+      E1.reset()
+      expect(E1.fields.num.value).toBe(0)
+      expect(E1.fields.str.value).toBe('test')
+   })
+})
 describe('structural sharing', () => {
    it('works', () => {
       const S1 = b.fields({

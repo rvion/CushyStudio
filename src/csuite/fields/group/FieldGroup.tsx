@@ -399,12 +399,6 @@ export class Field_group<X extends Field_group_types<SchemaDict> = Field_group_t
       }
    }
 
-   // TODO: why ? probably a wrong bugfix; needs to be removed asap
-   reset(): void {
-      super.reset()
-      this.childrenAll.forEach((f) => f.reset())
-   }
-
    randomize(): void {
       this.childrenAll.forEach((f) => f.randomize())
    }
