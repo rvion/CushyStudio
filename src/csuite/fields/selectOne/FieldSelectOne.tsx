@@ -289,7 +289,7 @@ export class Field_selectOne<
    }
 
    set query(next: string) {
-      this.runInSerialTransaction(() => {
+      this.runInTransaction(() => {
          this.patchSerial((draft) => void (draft.query = next))
       })
    }
@@ -438,9 +438,7 @@ export class Field_selectOne<
 
    /** different from reset; doesn't take default into account */
    unset(): void {
-      this.runInValueTransaction(() => {
-         this.patchSerial((draft) => void (draft.val = undefined))
-      })
+      this.patchInTransaction((draft) => void (draft.val = undefined))
    }
 
    get value_or_fail(): CanThrow<VALUE> {
@@ -496,7 +494,7 @@ export class Field_selectOne<
    set selectedId(nextId: KEY | undefined) {
       if (this.serial.val === nextId) return
 
-      this.runInValueTransaction(() => {
+      this.runInTransaction(() => {
          this.patchSerial((draft) => void (draft.val = nextId))
 
          // 💬 2024-07-08 rvion:

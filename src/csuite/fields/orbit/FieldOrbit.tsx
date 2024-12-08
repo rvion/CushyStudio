@@ -147,7 +147,7 @@ export class Field_orbit extends Field<Field_orbit_types> {
       azimuth_rad: number
       elevation_rad: number
    }): void {
-      this.runInValueTransaction(() => {
+      this.runInTransaction(() => {
          this.serial.azimuth = clampMod(-90 + p.azimuth_rad * (180 / Math.PI), -180, 180)
          this.serial.elevation = clampMod(90 - p.elevation_rad * (180 / Math.PI), -180, 180)
       })
@@ -206,7 +206,7 @@ export class Field_orbit extends Field<Field_orbit_types> {
 
    set azimuth(val: number) {
       if (this.azimuth === val) return
-      this.runInValueTransaction(() => {
+      this.runInTransaction(() => {
          this.patchSerial((draft) => {
             draft.azimuth = val
          })
@@ -236,7 +236,7 @@ export class Field_orbit extends Field<Field_orbit_types> {
 
    set elevation(val: number) {
       if (this.elevation === val) return
-      this.runInValueTransaction(() => {
+      this.runInTransaction(() => {
          this.patchSerial((draft) => {
             draft.elevation = val
          })

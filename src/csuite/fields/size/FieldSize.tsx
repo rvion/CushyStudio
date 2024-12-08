@@ -196,12 +196,12 @@ export class Field_size extends Field<Field_size_types> {
 
    set width(next: number) {
       if (next === this.serial.width) return
-      this.runInValueTransaction(() => void this.patchSerial((draft) => void (draft.width = next)))
+      this.runInTransaction(() => void this.patchSerial((draft) => void (draft.width = next)))
    }
 
    set height(next: number) {
       if (next === this.serial.height) return
-      this.runInValueTransaction(() => void this.patchSerial((draft) => void (draft.height = next)))
+      this.runInTransaction(() => void this.patchSerial((draft) => void (draft.height = next)))
    }
 
    setWidth(width: number): void {
@@ -233,7 +233,7 @@ export class Field_size extends Field<Field_size_types> {
       ) {
          return
       }
-      this.runInValueTransaction(() => {
+      this.runInTransaction(() => {
          this.patchSerial((draft) => {
             Object.assign(draft, val)
          })
@@ -278,7 +278,7 @@ export class Field_size extends Field<Field_size_types> {
    /** flip width and height */
    flip(): void {
       if (this.width === this.height) return
-      this.runInValueTransaction(() => {
+      this.runInTransaction(() => {
          const prevWidth = this.width
          this.width = this.height
          this.height = prevWidth

@@ -395,22 +395,27 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
     * @since 2024-07-05
     */
    disposeTree(): void {
-      this.disposeSelf()
+      this.runInTransaction((tct) => this._disposeTree(tct))
+   }
+
+   /* calls itself recursively */
+   private _disposeTree(tct: Transaction): void {
+      this._disposeSelf(tct)
 
       // dispose all children
       for (const sub of this.childrenAll) {
-         sub.disposeTree()
+         sub._disposeTree(tct)
       }
    }
 
-   private disposeSelf(): void {
+   private _disposeSelf(tct: Transaction): void {
       // TODO:
       // - disable all publish
       // - disable all reactions
       // - mark as DELETED;  => makes most function throw an error if used
 
       // unregister from repo
-      this.repo._unregisterField(this)
+      this.repo._unregisterField(this, tct)
 
       // dispose all reactions/other long-running stuff
       for (const disposeFn of this.disposeFns) {
@@ -456,7 +461,7 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
       /** this serial may be from a previous schema; we need to be able to handle properly */
       serial: Maybe<K['$Serial']>,
    ): void {
-      this.runInValueTransaction(() => {
+      this.runInTransaction(() => {
          // this.copyCommonSerialFields(serial)
          this.setOwnSerialWithValidationAndMigrationAndFixes(serial)
       })
@@ -1052,22 +1057,20 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
    updateFieldCustom<T = unknown>(fn: (x: Maybe<T>) => T): this {
       const prev = this.value
       const next = fn(prev) ?? prev
-      this.patchSerial((draft) => {
+      return this.patchInTransaction((draft) => {
          // 💬 2024-09-17 rvion:
          // | I'll assume that the custom data is already serializable...
          // | still wrong, but probably a bit less dangerous than naive deep-cloning it.
          draft.custom = next
          // draft.custom = JSON.parse(JSON.stringify(next))
       })
-      this.applySerialUpdateEffects()
-      return this
    }
 
    /** delete field custom data (delete this.serial.custom)  */
    deleteFieldCustomData(): this {
-      delete this.serial.custom
-      this.applySerialUpdateEffects()
-      return this
+      return this.patchInTransaction((draft) => {
+         delete draft.custom
+      })
    }
 
    // 📌 ERROR / VALIDATION ---------------------------------------------------------------|
@@ -1270,17 +1273,8 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
     * this function is called recursively upwards.
     * persistance will usually be done at the root field reacting to this event.
     */
-   applySerialUpdateEffects(): void {
-      // console.log(`[🤠] upda applySerialUpdateEffects`)
+   INTERNAL_applySerialUpdateEffects(): void {
       this.config.onSerialChange?.(this)
-      // this.parent?.applySerialUpdateEffects()
-   }
-
-   // 💬 2024-03-15 rvion: use this regexp to quickly review manual serial set patterns
-   // | `serial\.[a-zA-Z_]+(\[[a-zA-Z_]+\])? = `
-   applyValueUpdateEffects(): void {
-      // console.log(`[🤠] upda applyValueUpdateEffects`)
-      // ⏸️ this.serial.lastUpdatedAt = Date.now() as Timestamp
       this.config.onValueChange?.(this)
    }
 
@@ -1346,22 +1340,15 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
    // #region UI.Fold
    setCollapsed(val?: boolean): void {
       if (this.serial.collapsed === val) return
-      this.runInSerialTransaction(() => {
-         this.patchSerial((draft) => {
-            draft.collapsed = val
-         })
+      this.patchInTransaction((draft) => {
+         draft.collapsed = val
       })
-      this.applySerialUpdateEffects()
    }
 
    toggleCollapsed(this: Field): void {
-      this.runInSerialTransaction(() => {
-         this.patchSerial((draft) => {
-            draft.collapsed = !draft.collapsed
-         })
+      this.patchInTransaction((draft) => {
+         draft.collapsed = !draft.collapsed
       })
-
-      this.applySerialUpdateEffects()
    }
 
    get isCollapsedByDefault(): boolean {
@@ -1533,47 +1520,16 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
     * proxy this.repo.action
     * defined to shorted call and allow per-field override
     */
-   runInValueTransaction<T>(fn: (tct: Transaction) => T): T {
-      return this.repo.TRANSACT(fn, this, 'value', 'WITH_EFFECT')
+   runInTransaction<T>(fn: (tct: Transaction) => T): T {
+      return this.repo.runInTransaction(fn)
    }
 
-   runInAutoTransaction(fn: (tct: Transaction) => void): void {
-      return this.repo.TRANSACT(fn, this, 'auto', 'WITH_EFFECT')
-   }
-
-   runInSerialTransaction(fn: (tct: Transaction) => void): void {
-      return this.repo.TRANSACT(fn, this, 'serial', 'WITH_EFFECT')
-   }
-
-   private runInCreateTransaction(fn: (tct: Transaction) => void): void {
-      return this.repo.TRANSACT(fn, this, 'create', 'NO_EFFECT')
-   }
-
-   // -------------
-   runInValuePatch<T>(fn: (draft: K['$Serial'], tct: Transaction) => void): void {
-      return this.repo.TRANSACT(
-         (tct) => {
-            this.patchSerial((draft) => {
-               fn(draft, tct)
-            })
-         },
-         this,
-         'value',
-         'WITH_EFFECT',
-      )
-   }
-
-   runInSerialPatch(fn: (draft: K['$Serial'], tct: Transaction) => void): void {
-      return this.repo.TRANSACT(
-         (tct) => {
-            this.patchSerial((draft) => {
-               fn(draft, tct)
-            })
-         },
-         this,
-         'serial',
-         'WITH_EFFECT',
-      )
+   /**
+    * equivalent to `runInTransaction(() => patchSerial(() => {....}))`
+    */
+   patchInTransaction(fn: (draft: K['$Serial'], tct: Transaction) => undefined): this {
+      this.runInTransaction((tct) => this.patchSerial((draft) => fn(draft, tct)))
+      return this
    }
 
    // ------------
@@ -1582,10 +1538,16 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
     * @internal
     */
    protected assignNewSerial(next: K['$Serial']): void {
+      if (this.repo.tct == null)
+         throw new Error(
+            '❌ patchSerial should be called within a transaction; you may want to use `patchInTransaction`',
+         )
+
       if (this.serial === next) return
+      this.repo.tct.trackAsUpdated(this)
       this.serial = next
       this.__version__++
-      // this.parent?._acknowledgeNewChildSerial(this.mountKey, this.serial)
+      this.parent?._acknowledgeNewChildSerial(this.mountKey, this.serial)
    }
    __version__: number = 1
 
@@ -1605,6 +1567,11 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
        * | fn: (serial: K['$Serial']) => undefined  | K['$Serial']
        */
    ): boolean {
+      if (this.repo.tct == null)
+         throw new Error(
+            '❌ patchSerial should be called within a transaction; you may want to use `patchInTransaction`',
+         )
+
       // console.log(`[🧑‍🦯‍➡️] patch serial called from ${this.pathExt}`)
       // from 2024-09-09, serial are not longer observable objects
       if (isObservable(this.serial)) throw new Error('❌ serial should not be observable')
@@ -1746,9 +1713,9 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
       this.schema.applyFieldExtensions(this)
 
       // 3. ...
-      this.runInCreateTransaction(() => {
+      this.runInTransaction((tct) => {
          // this.copyCommonSerialFields(serial)
-
+         this.repo._registerField(this, tct)
          //   VVVVVVVVVVVV this is where we hydrate children
          this.setOwnSerialWithValidationAndMigrationAndFixes(serial)
 
@@ -1801,7 +1768,6 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
          this.UI = this.UI.bind(this)
          this.renderAsConfigBtn = this.renderAsConfigBtn.bind(this) // TODO: remove
 
-         this.repo._registerField(this)
          this.ready = true
       })
    }
@@ -1838,8 +1804,9 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
    }
 
    deleteSnapshot(): void {
-      delete this.serial.snapshot
-      this.applySerialUpdateEffects()
+      this.patchInTransaction((draft) => {
+         delete draft.snapshot
+      })
    }
 
    /** update current field snapshot */
@@ -1855,8 +1822,7 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
 
       // delete snapshot.snapshot
 
-      this.patchSerial((draft) => void (draft.snapshot = snapshot))
-      this.applySerialUpdateEffects()
+      this.patchInTransaction((draft) => void (draft.snapshot = snapshot))
       return snapshot
    }
 

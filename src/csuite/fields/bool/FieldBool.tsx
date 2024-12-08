@@ -131,7 +131,7 @@ export class Field_bool extends Field<Field_bool_types> {
 
    set value(next: Field_bool_value) {
       if (this.serial.value === next) return
-      this.runInValueTransaction(() => this.patchSerial((serial) => void (serial.value = next)))
+      this.patchInTransaction((serial) => void (serial.value = next))
    }
 
    get value_or_fail(): Field_bool_value {

@@ -52,7 +52,7 @@ export const WidgetListExt_KonvaBoardUI = observer(function WidgetListExt_KonvaB
                      <ReactKonvaRectangleUI
                         key={`rect-${value.id}`}
                         onChange={(p) => {
-                           shape.runInValueTransaction(() => {
+                           shape.runInTransaction(() => {
                               const v = shape.value
                               Object.assign(v, p)
                            })

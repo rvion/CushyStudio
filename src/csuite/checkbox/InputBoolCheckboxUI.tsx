@@ -36,6 +36,7 @@ export const InputBoolCheckboxUI = observer(function InputBoolCheckboxUI_(p: Boo
          {p.iconOff !== true && (
             <CheckboxAndRadioIcon
                isActive={isActive}
+               disabled={p.disabled}
                mode={mode}
                iconSize='1.2rem' // 🔴 should be var(--inside-height), but for now we lose the csuite context in old modals. (cf fiche client in ticket modal)
             />

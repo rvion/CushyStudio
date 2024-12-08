@@ -181,7 +181,7 @@ export class Field_string extends Field<Field_string_types> {
       if (this.serial.value === normalized) return
 
       // patch value in serial
-      this.runInValueTransaction(() => {
+      this.runInTransaction(() => {
          this.patchSerial((serial) => void (serial.value = normalized))
       })
    }

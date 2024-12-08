@@ -66,7 +66,7 @@ export function _cushySDXLSchema(b: X.Builder): $CushySDXLUI {
                // .withConfig({ uiui: { Head: false } })
                .subscribe(latentSizeChanel, (s, self) => {
                   const area = self.fields.area
-                  self.fields.area.runInValueTransaction(() => {
+                  self.fields.area.runInTransaction(() => {
                      area.width = s.w
                      area.height = s.h
                   })

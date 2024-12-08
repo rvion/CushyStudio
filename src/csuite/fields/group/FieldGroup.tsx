@@ -316,7 +316,7 @@ export class Field_group<X extends Field_group_types<SchemaDict> = Field_group_t
    // #region VALUE
 
    setPartialValue(val: Partial<Field_group_value<X['$Sub']>>): this {
-      this.runInValueTransaction(() => {
+      this.runInTransaction(() => {
          for (const key in val) {
             this.fields[key].value = val[key]
          }
@@ -329,7 +329,7 @@ export class Field_group<X extends Field_group_types<SchemaDict> = Field_group_t
    }
 
    set value(val: Field_group_value<X['$Sub']>) {
-      this.runInAutoTransaction(() => {
+      this.runInTransaction(() => {
          for (const key in val) {
             const child = this.fields[key]
             if (child == null) {

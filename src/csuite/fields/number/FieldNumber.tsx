@@ -160,9 +160,7 @@ export class Field_number extends Field<Field_number_types> {
 
    set value(next: Field_number_value) {
       if (this.serial.value === next) return
-      this.runInValueTransaction((tct) => {
-         this.patchSerial((serial) => void (serial.value = next))
-      })
+      this.patchInTransaction((draft) => void (draft.value = next))
    }
 
    get value_or_fail(): number {

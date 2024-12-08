@@ -38,7 +38,7 @@ describe('field customizations', () => {
                bang(): void {
                   // TODO: this should be done implicitly
                   // not critical
-                  this.runInValueTransaction(() => {
+                  this.runInTransaction(() => {
                      this.fields.b.value += '!'
                      this.value.a1 += 11
                      this.value.a2 += 11

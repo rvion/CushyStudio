@@ -107,7 +107,7 @@ export class Field_date extends Field<Field_date_types> {
 
    private _setValue(value: Field_date_value | undefined): void {
       this._value = value
-      this.runInValueTransaction(() => {
+      this.runInTransaction(() => {
          this.patchSerial((draft) => {
             draft.value = value?.toISOString()
          })

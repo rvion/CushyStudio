@@ -128,11 +128,11 @@ export class Field_seed extends Field<Field_seed_types> {
 
    setMode = (mode: SeedMode): void => {
       if (this.serial.mode === mode) return
-      this.runInValueTransaction(() => this.patchSerial((draft) => void (draft.mode = mode)))
+      this.runInTransaction(() => this.patchSerial((draft) => void (draft.mode = mode)))
    }
 
    setToFixed = (val?: number): void => {
-      this.runInValueTransaction(() => {
+      this.runInTransaction(() => {
          this.patchSerial((draft) => {
             draft.mode = 'fixed'
             if (val != null) draft.val = val
@@ -142,7 +142,7 @@ export class Field_seed extends Field<Field_seed_types> {
 
    setToRandomize(): void {
       if (this.serial.mode === 'randomize') return
-      this.runInValueTransaction(() => this.patchSerial((draft) => void (draft.mode = 'randomize')))
+      this.runInTransaction(() => this.patchSerial((draft) => void (draft.mode = 'randomize')))
    }
 
    // #region value
@@ -159,7 +159,7 @@ export class Field_seed extends Field<Field_seed_types> {
    set value(val: number) {
       if (this.serial.mode === 'fixed' && this.serial.val === val) return
       // 🔴 a moitié faux
-      this.runInValueTransaction(() => {
+      this.runInTransaction(() => {
          this.patchSerial((draft) => void (draft.val = val))
       })
    }

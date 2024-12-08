@@ -151,7 +151,7 @@ export class Field_datePlain<const NULLABLE extends boolean = false> extends Fie
       }
 
       this.selectedValue_ = next
-      this.runInValueTransaction(() => {
+      this.runInTransaction(() => {
          this.patchSerial((draft) => {
             draft.value = next?.toString()
          })

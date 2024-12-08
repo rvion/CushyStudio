@@ -153,7 +153,7 @@ export class Field_date<const NULLABLE extends boolean = false> extends Field<Fi
       }
 
       this.selectedValue_ = next
-      this.runInValueTransaction(() => {
+      this.runInTransaction(() => {
          this.patchSerial((draft) => {
             draft.value = next?.toISOString() ?? null
          })

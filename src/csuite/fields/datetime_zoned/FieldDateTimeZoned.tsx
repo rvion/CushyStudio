@@ -146,7 +146,7 @@ export class Field_dateTimeZoned<const NULLABLE extends boolean = false> extends
          throw new Error('Field_dateTimeZoned: value is null')
       }
       this.selectedValue_ = next
-      this.runInValueTransaction(() => {
+      this.runInTransaction(() => {
          this.patchSerial((draft) => {
             draft.value = next?.toString()
          })

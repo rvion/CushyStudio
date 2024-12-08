@@ -153,7 +153,7 @@ export class Field_enum<O extends ComfyUnionValue> extends Field<Field_enum_type
 
    set value(next: Field_enum_value<O>) {
       if (this.serial.val === next) return
-      this.runInValuePatch((draft) => (draft.val = next))
+      this.patchInTransaction((draft) => void (draft.val = next))
    }
 
    get value_or_fail(): Field_enum_value<O> {
