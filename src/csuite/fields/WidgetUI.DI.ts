@@ -6,13 +6,13 @@
 | build to include those.
 */
 
+import type { BaseSchema } from '../model/BaseSchema'
 import type { Field } from '../model/Field'
 import type { FieldSerial_CommonProperties } from '../model/FieldSerial'
 import type { Field_bool, Field_bool_serial } from './bool/FieldBool'
 import type { Field_button_serial } from './button/FieldButton'
 import type { Field_choices, Field_choices_serial } from './choices/FieldChoices'
 import type { Field_date, Field_date_serial } from './date/FieldDate'
-import type { Field_datePlain } from './date_plain/FieldDatePlain'
 import type { Field_group, Field_group_serial } from './group/FieldGroup'
 import type { Field_link, Field_link_serial } from './link/FieldLink'
 import type { Field_list, Field_list_serial } from './list/FieldList'
@@ -70,12 +70,6 @@ export const isFieldSelectMany = _checkIfIs<Field_selectMany<any, any>>('selectM
 export const isFieldChoices = _checkIfIs<Field_choices<any>>('choices', (f) => f.isMulti)
 export const isFieldChoice = _checkIfIs<Field_choices<any>>('choices', (f) => f.isSingle)
 export const isFieldDate = _checkIfIs<Field_date<any>>('date')
-export const isFieldDatePlain = _checkIfIs<Field_datePlain<any>>('plaindate')
-export const isFieldDateNullable = _checkIfIs<Field_date<true>>('date', (f) => f.config.nullable === true)
-export const isFieldDateNotNullable = _checkIfIs<Field_date<false>>(
-   'date',
-   (f) => f.config.nullable === undefined || f.config.nullable === false,
-)
 
 function _checkIfIs<W extends { $Type: string; $Field: Field }>(
    /** widget type to check */
@@ -88,6 +82,19 @@ function _checkIfIs<W extends { $Type: string; $Field: Field }>(
       if (widget.type !== type) return false
       if (predicate && !predicate(widget)) return false
       return true
+   }
+}
+
+function _checkIfIsOptionalOf<W extends BaseSchema>(
+   type: W['$Type'],
+   predicate?: (widget: W['$Field']) => boolean,
+): (widget: any) => widget is Field_optional<W> {
+   const checkChild = _checkIfIs<W>(type, predicate)
+
+   return (widget): widget is Field_optional<W> => {
+      if (!isFieldOptional(widget)) return false
+      const child = widget.child
+      return checkChild(child)
    }
 }
 

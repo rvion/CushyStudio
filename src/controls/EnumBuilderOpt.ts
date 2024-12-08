@@ -3,11 +3,11 @@ import type { ComfySchemaL } from '../models/ComfySchema'
  * this module is here to allow performant type-level apis for enums.
  * TODO: document the unique challenges this appraoch is solving
  */
-import type { CushySchemaBuilder } from './Builder'
+import type { CushySchemaBuilder } from './CushyBuilder'
 
 import { asComfyNodeSlotName } from '../comfyui/comfyui-types'
 import { Field_enum, type Field_enum_config } from '../csuite/fields/enum/FieldEnum'
-import { CushySchema } from './Schema'
+import { CushySchema } from './CushySchema'
 
 // 🔴 showcase how nullability work without optional
 

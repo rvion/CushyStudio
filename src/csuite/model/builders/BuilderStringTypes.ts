@@ -49,14 +49,12 @@ export class BuilderString<Schemaᐸ_ᐳ extends SchemaAndAliasesᐸ_ᐳ> extend
       return this.buildSchema(Field_string, config)
    }
 
-   /**
-    * primitive string type
-    */
+   /** primitive string type */
    string(config: Field_string_config = {}): Schemaᐸ_ᐳ['String'] {
       return this.string_({
          default: config.default ?? '',
+         placeHolder: config.placeHolder ?? csuiteConfig.i18n.ui.field.empty,
          ...config,
-         // placeHolder: 'Vide', <-- not the place for that
       })
    }
 

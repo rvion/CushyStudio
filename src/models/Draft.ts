@@ -12,7 +12,7 @@ import type { StepL } from './Step'
 import { observable, reaction } from 'mobx'
 
 import { Status } from '../back/Status'
-import { cushyFactory } from '../controls/Builder'
+import { cushyFactory } from '../controls/CushyBuilder'
 import { getGlobalSeeder } from '../csuite/fields/seed/Seeder'
 import { SQLITE_false, SQLITE_true } from '../csuite/types/SQLITE_boolean'
 import { toastError, toastSuccess } from '../csuite/utils/toasts'

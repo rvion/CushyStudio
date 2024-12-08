@@ -1,4 +1,4 @@
-import type { CushySchema } from '../../../src/controls/Schema'
+import type { CushySchema } from '../../../src/controls/CushySchema'
 import type { Field_list } from '../../../src/csuite/fields/list/FieldList'
 import type { OutputFor } from '../_prefabs/_prefabs'
 

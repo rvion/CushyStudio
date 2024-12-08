@@ -1,4 +1,4 @@
-import type { CushySchemaBuilder } from '../../../src/controls/Builder'
+import type { CushySchemaBuilder } from '../../../src/controls/CushyBuilder'
 import type { OutputFor } from './_prefabs'
 
 export type UI_regionalPrompting_v1 = X.XBoard<

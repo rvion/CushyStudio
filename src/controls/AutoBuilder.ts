@@ -2,7 +2,7 @@ import type { ComfyUnionValue } from '../comfyui/comfyui-types'
 import type { Field_enum_config } from '../csuite/fields/enum/FieldEnum'
 import type { Field_string_config } from '../csuite/fields/string/FieldString'
 import type { FieldConfig } from '../csuite/model/FieldConfig'
-import type { CushySchemaBuilder } from './Builder'
+import type { CushySchemaBuilder } from './CushyBuilder'
 
 type KK = IAutoBuilder['KSampler']
 

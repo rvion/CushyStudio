@@ -1,4 +1,4 @@
-import type { CushySchemaBuilder } from '../../../controls/Builder'
+import type { CushySchemaBuilder } from '../../../controls/CushyBuilder'
 import type { FieldId } from '../../../csuite/model/FieldId'
 
 import { masksChannel } from './ucV2'

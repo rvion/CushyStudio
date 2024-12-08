@@ -3,7 +3,7 @@ import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
 import { observer } from 'mobx-react-lite'
 import { useLayoutEffect } from 'react'
 
-import { cushyFactory } from '../../controls/Builder'
+import { cushyFactory } from '../../controls/CushyBuilder'
 import { UI } from '../../csuite/components/UI'
 import { ErrorBoundaryUI } from '../../csuite/errors/ErrorBoundaryUI'
 import { MessageInfoUI } from '../../csuite/messages/MessageInfoUI'

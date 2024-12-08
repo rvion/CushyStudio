@@ -3,7 +3,7 @@ import { describe, expect, it } from 'bun:test'
 describe('FieldPrompt', () => {
    // 🔴🔴🔴
    if (1 - 1 === 0) return
-   const { builder: b } = require('../controls/Builder') as typeof import('../controls/Builder')
+   const { builder: b } = require('../controls/Builder') as typeof import('../controls/CushyBuilder')
    // 🔴🔴🔴
 
    const S1 = b.fields(

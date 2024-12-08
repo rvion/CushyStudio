@@ -1,4 +1,4 @@
-import type { CushySchemaBuilder } from '../../controls/Builder'
+import type { CushySchemaBuilder } from '../../controls/CushyBuilder'
 import type { TintExt } from '../kolor/Tint'
 
 export type SimpleDropShadow = {

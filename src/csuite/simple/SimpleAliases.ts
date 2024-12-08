@@ -4,8 +4,6 @@ import type { Field_button } from '../fields/button/FieldButton'
 import type { Field_choices } from '../fields/choices/FieldChoices'
 import type { Field_color } from '../fields/color/FieldColor'
 import type { Field_date } from '../fields/date/FieldDate'
-import type { Field_datePlain } from '../fields/date_plain/FieldDatePlain'
-import type { Field_dateTimeZoned } from '../fields/datetime_zoned/FieldDateTimeZoned'
 import type { Field_group, Field_group_types, Field_Group_withMagicFields } from '../fields/group/FieldGroup'
 import type { Field_link } from '../fields/link/FieldLink'
 import type { Field_list } from '../fields/list/FieldList'
@@ -22,6 +20,7 @@ import type { Field_string } from '../fields/string/FieldString'
 import type { BaseSchema } from '../model/BaseSchema'
 import type { NO_PROPS } from '../types/NO_PROPS'
 import type { SimpleSchema } from './SimpleSchema'
+import type { Temporal } from '@js-temporal/polyfill'
 
 declare global {
    // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -76,17 +75,9 @@ declare global {
       type SBool = SimpleSchema<Field_bool>
       type SString = SimpleSchema<Field_string>
 
-      type SDatePlain<NULLABLE extends boolean> = SimpleSchema<Field_datePlain<NULLABLE>>
-      type SDatePlainRequired = SimpleSchema<Field_datePlain<false>>
-      type SDatePlainNullable = SimpleSchema<Field_datePlain<true>>
-
-      type SDateTimeZoned<NULLABLE extends boolean> = SimpleSchema<Field_dateTimeZoned<NULLABLE>>
-      type SDateTimeZonedRequired = SimpleSchema<Field_dateTimeZoned<false>>
-      type SDateTimeZonedNullable = SimpleSchema<Field_dateTimeZoned<true>>
-
-      type SDate<NULLABLE extends boolean> = SimpleSchema<Field_date<NULLABLE>>
-      type SDateRequired = SimpleSchema<Field_date<false>>
-      type SDateNullable = SimpleSchema<Field_date<true>>
+      type SDatePlain = SimpleSchema<Field_date<Temporal.PlainDate>>
+      type SDateTimeZoned = SimpleSchema<Field_date<Temporal.ZonedDateTime>>
+      type SDate = SimpleSchema<Field_date<Date>>
 
       type SNumber = SimpleSchema<Field_number>
       type SColor = SimpleSchema<Field_color>

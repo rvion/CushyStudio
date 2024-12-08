@@ -1,4 +1,4 @@
-import { cushyFactory } from '../../controls/Builder'
+import { cushyFactory } from '../../controls/CushyBuilder'
 import { readJSON, writeJSON } from '../jsonUtils'
 
 export const systemConf = cushyFactory.document(

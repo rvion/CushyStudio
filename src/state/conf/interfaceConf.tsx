@@ -1,4 +1,4 @@
-import { cushyFactory, type CushySchemaBuilder } from '../../controls/Builder'
+import { cushyFactory, type CushySchemaBuilder } from '../../controls/CushyBuilder'
 import { readJSON, writeJSON } from '../jsonUtils'
 
 // ---------------
