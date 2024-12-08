@@ -62,7 +62,7 @@ export const ImageUI = observer(function ImageUI_({
    if (image.existsLocally && !existsSync(image?.absPath as PathLike))
       return (
          <ImageErrorDisplayUI //
-            icon={'folder'}
+            icon={'mdiFolder'}
          />
       )
 
@@ -88,13 +88,15 @@ export const ImageUIDumb = observer(function ImageUIDumb_({
    const image = typeof img === 'string' ? cushy.db.media_image.get(img) : img
    const [{ opacity }, dragRef] = useImageDrag(image! /* 🔴 */)
 
-   return (
-      <ImageErrorDisplayUI //
-         icon={'mdiFolder'}
-      />
-   )
-
    if (!image) {
+      return (
+         <ImageErrorDisplayUI //
+            icon={'mdiImageRemoveOutline'}
+         />
+      )
+   }
+
+   if (image.existsLocally && !existsSync(image?.absPath as PathLike)) {
       return (
          <ImageErrorDisplayUI //
             icon={'mdiFolder'}
@@ -111,9 +113,8 @@ export const ImageUIDumb = observer(function ImageUIDumb_({
          children={
             <img
                className={className}
-               tw='bg-contain bg-center bg-no-repeat object-contain w-full h-full'
-               // src={image.url}
-               src={image?.url}
+               tw='h-full w-full bg-contain bg-center bg-no-repeat object-contain'
+               src={image.url}
                onAuxClick={(ev) => {
                   if (ev.button === 1) return image.onMiddleClick()
                   if (ev.button === 2) return image.onRightClick()
