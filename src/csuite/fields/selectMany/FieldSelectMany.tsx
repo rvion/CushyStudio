@@ -430,6 +430,11 @@ export class Field_selectMany<
          get: (_, prop): any => {
             if (typeof prop === 'symbol') return (this.selectedValues as any)[prop]
 
+            // skip mobx stuff
+            if (prop === 'isMobXAtom') return (this.selectedValues as any)[prop]
+            if (prop === 'isMobXReaction') return (this.selectedValues as any)[prop]
+            if (prop === 'isMobXComputedValue') return (this.selectedValues as any)[prop]
+
             // handle numbers (1) and number-like ('1')
             if (parseInt(prop, 10) === +prop) return this.selectedValueAt(+prop)
 
