@@ -82,6 +82,7 @@ export const PanelHeaderUI = observer(function PanelHeader({
                'overflow-auto',
                'items-center',
                // 'flex-wrap',
+               'flex-shrink-0',
             ]}
             onWheel={(event) => {
                event.currentTarget.scrollLeft += event.deltaY
