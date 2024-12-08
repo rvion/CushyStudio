@@ -8,12 +8,15 @@ import { ListButtonClearUI } from './ListButtonClearUI'
 import { ListButtonFoldUI } from './ListButtonFoldUI'
 import { ListButtonUnfoldUI } from './ListButtonUnfoldUI'
 
-export const ListControlsUI = observer(function ListControlsUI_(p: {
+export const ListControlsUI = observer(function ListControlsUI_({
+   field,
+   children,
+   ...rest
+}: {
    //
    field: IWidgetListLike
    children?: React.ReactNode
 }) {
-   const field = p.field
    const csuite = useCSuite()
 
    return (
@@ -23,9 +26,10 @@ export const ListControlsUI = observer(function ListControlsUI_(p: {
             ev.preventDefault()
             ev.stopPropagation()
          }}
+         {...rest}
       >
          <ListButtonAddUI field={field} />
-         {p.children}
+         {children}
          <div tw='flex-1' />
          <ListButtonClearUI field={field} />
          {csuite.showFoldButtons && <ListButtonFoldUI field={field} />}
