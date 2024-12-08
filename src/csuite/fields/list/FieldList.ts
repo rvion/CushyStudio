@@ -182,12 +182,6 @@ export class Field_list<T extends BaseSchema> //
    //     for (const i of this.items) i.reset()
    // }
 
-   // TODO: why ? probably a wrong bugfix; needs to be removed asap
-   reset(): void {
-      super.reset()
-      this.childrenAll.forEach((i) => i.reset())
-   }
-
    findItemIndexContaining(widget: Field): number | null {
       let at = widget as Field | null
       let child = at
