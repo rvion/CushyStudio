@@ -53,7 +53,7 @@ export const WidgetSelectMany_SelectUI = observer(function WidgetSelectMany_Sele
             onCleared={
                field.canBeToggledWithinParent &&
                // 🔴 ARE THOSE TRHE CONDITIONS BELOW CORRECT ?
-               !field.isInsideDisabledBranch &&
+               field.isEnabledWithinParent &&
                !field.config.readonly &&
                !field.parent?.config.readonly
                   ? (): void => {
