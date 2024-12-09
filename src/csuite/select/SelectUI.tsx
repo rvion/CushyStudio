@@ -31,7 +31,7 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                //
                'UI-Select minh-input',
                'ANCHOR-REVEAL',
-               p.hasErrors && 'border border-red-700',
+               p.hasErrors && 'rsx-field-error',
             ]}
          >
             <AnchorContentComp select={select} />
@@ -77,6 +77,7 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                'relative',
                'h-full',
                'flex items-center',
+               p.hasErrors && 'rsx-field-error',
             ]}
             align
             base={csuite.inputContrast}

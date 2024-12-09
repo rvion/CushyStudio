@@ -22,6 +22,7 @@ export const WidgetSelectMany_SelectUI = observer(function WidgetSelectMany_Sele
    return (
       <div tw='flex w-full flex-1 gap-1'>
          <SelectUI<OPTION>
+            hasErrors={p.field.mustDisplayErrors}
             multiple
             wrap={field.wrap}
             tw={[
