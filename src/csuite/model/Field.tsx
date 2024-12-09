@@ -1189,7 +1189,7 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
 
    /**
     * getter to retrieve the errors from the `check` function in the config.
-    * ONLY returns errros from the `check` config
+    * ONLY returns errors from the `check` config
     *
     * 🔶 TODO: rename to "...."
     *
