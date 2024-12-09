@@ -56,7 +56,7 @@ export const StepCardUI = observer(function StepOutputsV1HeaderUI_(p: {
       <Frame
          base={p.contrast}
          tw={['relative flex cursor-pointer flex-wrap py-0.5', p.className]}
-         onClick={() => cushy.layout.open('Output', { stepID: step.id })}
+         // onClick={() => cushy.layout.open('Output', { stepID: step.id })}
          style={p.style}
       >
          {showTitle && (
