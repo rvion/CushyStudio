@@ -90,9 +90,12 @@ export const OutputPreview_ContentUI = observer(function OutputPreview_ContentUI
    return (
       <Frame //
          tw='flex h-full overflow-clip'
-         active={isActive}
          square
-         border
+         border={
+            isActive
+               ? { contrast: 0.4, chromaBlend: 100, hueShift: 180 }
+               : { contrast: 0.2, chromaBlend: 0, hueShift: 0 }
+         }
          roundness={theme.inputRoundness}
          dropShadow={theme.inputShadow}
          // onClick={() => cushy.layout.open('Output', { stepID: step.id })}
