@@ -657,7 +657,7 @@ export class Runtime<FIELD extends Field = any> {
       return res
    }
 
-   // INTERRACTIONS ------------------------------------------------------------------------------------------
+   // INTERACTIONS ------------------------------------------------------------------------------------------
    async PROMPT(p?: PromptSettings): Promise<ComfyPromptL> {
       // console.info('prompt requested')
       const prompt = await this.workflow.sendPrompt(p)
