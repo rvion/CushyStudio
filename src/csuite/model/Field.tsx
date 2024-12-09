@@ -638,8 +638,9 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
    // }
 
    /** unified api to allow setting serial from value */
-   setValue(val: K['$Value']): void {
+   setValue(val: K['$Value']): this {
       this.value = val
+      return this
    }
 
    RECONCILE<SCHEMA extends Instanciable>(p: {
