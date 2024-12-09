@@ -450,6 +450,7 @@ export class Field_selectMany<
             if (prop === 'concat') return (...args: any[]) => this.selectedValues.concat(...args)
             if (prop === 'slice') return (...args: [any, any]) => this.selectedValues.slice(...args)
             if (prop === 'filter') return (...args: [any, any]) => this.selectedValues.filter(...args)
+            if (prop === 'some') return (...args: [any, any]) => this.selectedValues.some(...args)
             if (prop === 'sort') return (...args: [any]) => this.selectedValues.sort(...args)
             if (prop === 'join') return (...args: [any]) => this.selectedValues.join(...args)
             if (prop === 'toSorted') return (...args: [any]) => this.selectedValues.toSorted(...args)
