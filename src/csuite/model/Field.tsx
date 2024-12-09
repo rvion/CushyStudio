@@ -1181,7 +1181,7 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
     * @category Validation
     */
    get allErrorsIncludingChildrenErrors(): Problem[] {
-      const subErrs = this.childrenAll.flatMap((f) => f.allErrorsIncludingChildrenErrors)
+      const subErrs = this.childrenActive.flatMap((f) => f.allErrorsIncludingChildrenErrors)
       const errs = this.ownErrors.concat(subErrs)
       if (!this.isSet) errs.push({ message: `Field ${this.path}(${this.type}) is not set` })
       return errs
