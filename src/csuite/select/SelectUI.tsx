@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 
 import { Button } from '../button/Button'
+import { csuiteConfig } from '../config/configureCsuite'
 import { useCSuite } from '../ctx/useCSuite'
 import { Frame } from '../frame/Frame'
 import { Ikon } from '../icons/iconHelpers'
@@ -47,12 +48,8 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
          // placement={p.placement ?? 'autoVerticalStart'}
          placement='cover'
          content={({ reveal }) => (
-            <PopupComp //
-               reveal={reveal}
-               selectState={select}
-            />
-         )}
-         // 🔶 be careful to not override stuff with that (goes both ways)
+            <PopupComp reveal={reveal} selectState={select} createOption={p.createOption} />
+         )} // 🔶 be careful to not override stuff with that (goes both ways)
          {...p.revealProps}
          onHidden={(reason) => {
             // select.revealState?.log(`🔶 revealUI - onHidden (focus anchor)`)
@@ -96,6 +93,7 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
                <Button
                   disabled={select.value == null}
                   square
+                  size='input'
                   icon='_clear'
                   onFocus={(ev) => ev.stopPropagation()}
                   onClick={(ev) => {
@@ -114,8 +112,8 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
       <>
          {WUI}
          {p.createOption != null && p.createOption.isActive !== false && (
-            <Button subtle size='inside' onClick={() => select.createOption()}>
-               {p.createOption.label ?? 'Créer'}
+            <Button subtle size='input' onClick={() => select.createOption()}>
+               {p.createOption.label ?? csuiteConfig.i18n.ui.select.create}
             </Button>
          )}
       </>
