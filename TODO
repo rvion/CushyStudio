@@ -15,6 +15,11 @@ SHORT TERM TODO:
             |     p.field.enableSelfWithinParent()
             | }
         - wtf: 20241115_014236_gggdomi_fc9c3ab_labels-fieldlink-fieldshared
+        - partial: 20241115_144416_guillaume-gautreau_f52f9d3_fix-select-widgets-size-2090
+            we need to fork select once forall;
+            I don't want to add those p-input-2, ... classes
+        - need other name in 20241115_144643_gggdomi_d6cd16e_rename-configtostring
+            toString  => ❌toString_, but 🟢 toSummary?, toText?, ...
 
     ☐ paths: switche to / instead of .
 
