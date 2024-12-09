@@ -25,7 +25,7 @@ export const WidgetChoices_HeaderSelectUI = observer(function WidgetChoices_Head
          <SelectUI<Entry>
             tw='flex-grow'
             key={`${isActive}`}
-            placeholder={p.field.config.placeholder ?? csuiteConfig.i18n.misc.words.empty}
+            placeholder={p.field.config.placeholder ?? csuiteConfig.i18n.ui.field.empty}
             value={() =>
                field.activeBranchNames.map((key) => ({
                   key,

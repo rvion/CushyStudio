@@ -62,9 +62,9 @@ export interface DisplaySlots<out FIELD extends Field = Field> {
    /* 🟢 */ Errors?: FCOrNode<{ field: FIELD }>
    /* 🟢 */ Title?: FCOrNode<WidgetTitleProps>
 
-   /* 🟢 */ DragKnob?: FCOrNode<NO_PROPS>
-   /* 🟢 */ UpDownBtn?: FCOrNode<NO_PROPS>
-   /* 🟢 */ DeleteBtn?: FCOrNode<NO_PROPS>
+   /* 🟢 */ DragKnob?: FCOrNode<{ field: FIELD }>
+   /* 🟢 */ UpDownBtn?: FCOrNode<{ field: FIELD }>
+   /* 🟢 */ DeleteBtn?: FCOrNode<{ field: FIELD }>
 
    // bonus features
    /* 🟡 */ Indent?: FCOrNode<WidgetIndentProps>
@@ -88,6 +88,7 @@ export interface DisplaySlots<out FIELD extends Field = Field> {
    className?: Maybe<string>
    shouldShowHiddenFields?: Maybe<boolean>
    shouldAnimateResize?: Maybe<boolean>
+   collapsible?: boolean
 
    // ---------------------------------------------------------
    // 4. Slots for shell

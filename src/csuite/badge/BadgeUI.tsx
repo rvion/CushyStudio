@@ -2,10 +2,13 @@ import type { ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
 
+import { Button } from '../button/Button'
 import { Frame, type FrameProps } from '../frame/Frame'
 import { hashStringToNumber } from '../hashUtils/hash'
 
 export type BadgeProps = {
+   linkButton?: () => void
+
    /** oklch hue */
    chroma?: number
    contrast?: number
@@ -19,7 +22,18 @@ export type BadgeProps = {
    className?: string
 } & FrameProps
 
-export const BadgeUI = observer(function BadgeUI_({ hue, autoHue, chroma, contrast, ...rest }: BadgeProps) {
+export const BadgeUI = observer(function BadgeUI_({
+   // own
+   hue,
+   autoHue,
+   chroma,
+   contrast,
+   linkButton,
+
+   // modified
+   children,
+   ...rest
+}: BadgeProps) {
    const hasAction = Boolean(rest.onClick)
    return (
       <Frame
@@ -45,13 +59,33 @@ export const BadgeUI = observer(function BadgeUI_({ hue, autoHue, chroma, contra
                hue ??
                (autoHue != null
                   ? typeof autoHue === 'boolean'
-                     ? typeof rest.children === 'string'
-                        ? hashStringToNumber(rest.children)
+                     ? typeof children === 'string'
+                        ? hashStringToNumber(children)
                         : undefined
                      : hashStringToNumber(autoHue)
                   : undefined),
          }}
          {...rest}
-      />
+      >
+         {linkButton && (
+            <Button
+               icon='mdiOpenInNew'
+               size='inside'
+               square
+               subtle
+               borderless
+               onFocus={(ev) => {
+                  ev.stopPropagation()
+                  ev.preventDefault()
+               }}
+               onClick={(ev) => {
+                  ev.stopPropagation()
+                  ev.preventDefault()
+                  linkButton()
+               }}
+            />
+         )}
+         {children}
+      </Frame>
    )
 })

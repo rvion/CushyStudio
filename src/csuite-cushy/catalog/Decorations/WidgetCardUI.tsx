@@ -11,6 +11,7 @@ export type WidgetCardProps = {
 
 export const WidgetCardUI = (p: WidgetCardProps): JSX.Element => (
    <Frame //
+      tw='pr-1'
       // style={{ transform: 'rotate(0deg)' }}
       border
       base={{

@@ -14,7 +14,7 @@ import { createElement, createRef, type RefObject } from 'react'
 
 import { hashJSONObjectToNumber } from '../csuite/hashUtils/hash'
 import { getIconAsDataSVG } from '../csuite/icons/iconStr'
-import { Message } from '../csuite/inputs/shims'
+import { LegacyMessageUI } from '../csuite/inputs/LegacyMessageUI'
 import { regionMonitor } from '../csuite/regions/RegionMonitor'
 import { Trigger } from '../csuite/trigger/Trigger'
 import { bang } from '../csuite/utils/bang'
@@ -913,9 +913,9 @@ export class CushyLayoutManager {
       const panelName = node.getComponent() as Maybe<PanelName>
       if (panelName == null)
          return (
-            <Message type='error' showIcon>
+            <LegacyMessageUI type='error' showIcon>
                no panel (TabNode.getComponent())
-            </Message>
+            </LegacyMessageUI>
          )
 
       // 2. get panel props
@@ -929,9 +929,9 @@ export class CushyLayoutManager {
 
       if (panelProps == null)
          return (
-            <Message type='error' showIcon>
+            <LegacyMessageUI type='error' showIcon>
                no panel props (TabNode.getConfig().$props)
-            </Message>
+            </LegacyMessageUI>
          )
 
       return createElement(PanelContainerUI, {

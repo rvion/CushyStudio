@@ -3,7 +3,6 @@ import type { CleanedEnumResult } from '../../../types/EnumUtils'
 
 import { observer } from 'mobx-react-lite'
 
-import { useSt } from '../../../state/stateContext'
 import { Ikon } from '../../icons/iconHelpers'
 import { MessageErrorUI } from '../../messages/MessageErrorUI'
 import { RevealUI } from '../../reveal/RevealUI'
@@ -18,7 +17,7 @@ export const EnumSelectorUI = observer(function EnumSelectorUI_(p: {
    disabled?: boolean
    slotName: ComfyNodeSlotName
 }) {
-   const project = useSt().project
+   const project = cushy.project
    const schema = project.schema
    const options: ComfyUnionValue[] = schema.knownUnionBySlotName.get(p.slotName)?.values ?? []
 

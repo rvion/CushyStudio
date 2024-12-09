@@ -4,7 +4,6 @@ import { observer } from 'mobx-react-lite'
 
 import { Button } from '../../csuite/button/Button'
 import { Panel, type PanelHeader } from '../../router/Panel'
-import { useSt } from '../../state/stateContext'
 import { CreateAppBtnUI } from '../PanelWelcome/CreateAppBtnUI'
 
 export const PanelMarketplace = new Panel({
@@ -17,7 +16,6 @@ export const PanelMarketplace = new Panel({
 })
 
 export const PanelMarketplaceUI = observer(function PanelMarketplaceUI_(p: NO_PROPS) {
-   const st = useSt()
    // const form = useMemo(
    //         CushyRepository.form(
    //             (ui) => ({
@@ -28,7 +26,7 @@ export const PanelMarketplaceUI = observer(function PanelMarketplaceUI_(p: NO_PR
    //         ),
    //     [],
    // )
-   const mkp = st.marketplace
+   const mkp = cushy.marketplace
    const published = mkp.publishedApps()
    const selected = mkp.selectedApp
    return (

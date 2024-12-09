@@ -3,7 +3,6 @@ import type { BadgeProps } from '../badge/BadgeUI'
 import { observer } from 'mobx-react-lite'
 
 import { BadgeUI } from '../badge/BadgeUI'
-import { Button } from '../button/Button'
 import { Frame } from '../frame/Frame'
 
 export const SelectDefaultOptionUI = observer(function SelectDefaultOptionUI_({
@@ -31,27 +30,9 @@ export const SelectDefaultOptionUI = observer(function SelectDefaultOptionUI_({
    return (
       <BadgeUI //
          autoHue={autoHue ?? label}
+         linkButton={link ? (): void => (window as any).loco.router.goToURL(link()) : undefined}
          {...rest}
       >
-         {link ? (
-            <Button
-               icon='mdiOpenInNew'
-               size='inside'
-               square
-               subtle
-               borderless
-               onFocus={(ev) => {
-                  ev.stopPropagation()
-                  ev.preventDefault()
-               }}
-               onClick={(ev) => {
-                  ev.stopPropagation()
-                  ev.preventDefault()
-                  /* 🔴 find a better way to handle that */
-                  ;(window as any).loco?.router.goToURL(link())
-               }}
-            />
-         ) : undefined}
          {label}
          {children}
          {closeFn && (

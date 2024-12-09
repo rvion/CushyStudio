@@ -6,7 +6,6 @@ import { observer } from 'mobx-react-lite'
 
 import { ErrorBoundaryUI } from '../csuite/errors/ErrorBoundaryUI'
 import { Frame } from '../csuite/frame/Frame'
-import { useSt } from '../state/stateContext'
 
 export const OutputPreviewWrapperUI = observer(function OutputPreviewWrapperUI_(p: {
    /** 3/4 letters max if possible */
@@ -18,7 +17,6 @@ export const OutputPreviewWrapperUI = observer(function OutputPreviewWrapperUI_(
    /** size in px */
    size?: string
 }) {
-   const st = useSt()
    const size = p.size ?? '2rem'
    return (
       <ErrorBoundaryUI>
@@ -38,11 +36,11 @@ export const OutputPreviewWrapperUI = observer(function OutputPreviewWrapperUI_(
                // e.preventDefault()
                e.stopPropagation()
 
-               runInAction(() => (st.focusedStepOutput = p.output))
+               runInAction(() => (cushy.focusedStepOutput = p.output))
             }}
-            onMouseEnter={(ev) => runInAction(() => (st.hovered = p.output))}
+            onMouseEnter={(ev) => runInAction(() => (cushy.hovered = p.output))}
             onMouseLeave={() => {
-               if (st.hovered === p.output) runInAction(() => (st.hovered = null))
+               if (cushy.hovered === p.output) runInAction(() => (cushy.hovered = null))
             }}
          >
             {/* <Frame

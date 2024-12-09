@@ -1,5 +1,7 @@
+import type { Field } from '../../model/Field'
+
 export type IWidgetListLike = {
-   addItem(): void
+   addItem(): Maybe<Field>
    removeAllItems(): void
    expandAllChildren(): void
    collapseAllChildren(): void

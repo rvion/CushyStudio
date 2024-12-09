@@ -3,7 +3,6 @@ import { observer } from 'mobx-react-lite'
 import { replaceImportsWithSyncImport } from '../compiler/transpiler'
 import { TabUI } from '../csuite/tabs/TabUI'
 import { Panel, type PanelHeader } from '../router/Panel'
-import { useSt } from '../state/stateContext'
 import { _formatAsRelativeDateTime } from '../updater/_getRelativeTimeString'
 import { ErrorScreenUI } from '../widgets/misc/ErrorScreenUI'
 import { TypescriptHighlightedCodeUI } from '../widgets/misc/TypescriptHighlightedCodeUI'
@@ -22,8 +21,7 @@ export type PanelScriptProps = {
 }
 
 export const PanelScriptUI = observer(function PanelScriptUI_(p: PanelScriptProps) {
-   const st = useSt()
-   const script = st.db.cushy_script.get(p.scriptID)
+   const script = cushy.db.cushy_script.get(p.scriptID)
 
    if (script == null) {
       return (

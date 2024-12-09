@@ -1,4 +1,4 @@
-import type { CushySchemaBuilder } from '../../../controls/Builder'
+import type { CushySchemaBuilder } from '../../../controls/CushyBuilder'
 
 import { simpleShape$, type SimpleShape$ } from '../../../csuite/fields/core-prefabs/ShapeSchema'
 

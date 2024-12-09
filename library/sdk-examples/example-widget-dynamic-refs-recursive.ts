@@ -1,4 +1,4 @@
-import type { CushySchema } from '../../src/controls/Schema'
+import type { CushySchema } from '../../src/controls/CushySchema'
 import type { Field_choices } from '../../src/csuite/fields/choices/FieldChoices'
 import type { Field_group } from '../../src/csuite/fields/group/FieldGroup'
 import type { Field_image } from '../../src/csuite/fields/image/FieldImage'

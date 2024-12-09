@@ -87,7 +87,7 @@ export class FieldSelector {
 
    private position: number = 0
    private length: number
-   private selector: string
+   readonly selector: string
 
    private constructor(
       selector: string | ParsedSelector,

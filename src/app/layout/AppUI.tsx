@@ -15,14 +15,12 @@ import { Kolor } from '../../csuite/kolor/Kolor'
 import { useRegionMonitor } from '../../csuite/regions/RegionMonitor'
 import { Trigger } from '../../csuite/trigger/Trigger'
 import { window_addEventListener } from '../../csuite/utils/window_addEventListenerAction'
-import { useSt } from '../../state/stateContext'
 import { GlobalSearchUI } from '../../utils/electron/globalSearchUI'
-import { FavBarUI } from './FavBar'
+import { FavBarUI } from './FavBarUI'
 import { FooterBarUI } from './FooterBarUI'
 import { ProjectUI } from './ProjectUI'
 
 export const CushyUI = observer(function CushyUI_() {
-   const st = useSt()
    const appRef = useRef<HTMLDivElement>(null)
    useRegionMonitor()
    useEffect(() => {
@@ -57,9 +55,9 @@ export const CushyUI = observer(function CushyUI_() {
       window_addEventListener('keydown', handleKeyDown)
       if (document.activeElement === document.body) current.focus()
       return (): void => window.removeEventListener('keydown', handleKeyDown)
-   }, [appRef.current, st])
+   }, [appRef.current, cushy])
 
-   const appBarColor = st.theme.value.appbar ?? st.theme.value.base
+   const appBarColor = cushy.theme.value.appbar ?? cushy.theme.value.base
    const appBarBase = Kolor.fromString(appBarColor)
    const inactiveTabColors = computeColors(
       {
@@ -106,7 +104,7 @@ export const CushyUI = observer(function CushyUI_() {
             tw={[
                'col h-full grow overflow-clip',
                // topic=WZ2sEOGiLy
-               st.preferences.interface.value.useDefaultCursorEverywhere && 'useDefaultCursorEverywhere',
+               cushy.preferences.interface.value.useDefaultCursorEverywhere && 'useDefaultCursorEverywhere',
             ]}
          >
             <div // Global Popup/Reveal/Tooltip container always be on screen with overflow-clip added.

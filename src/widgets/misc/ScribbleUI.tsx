@@ -6,7 +6,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react'
 
 import { Button } from '../../csuite/button/Button'
 import { InputSliderUI_legacy } from '../../csuite/input-slider/Slider'
-import { InputLegacy } from '../../csuite/inputs/shims'
+import { LegacyInputUI } from '../../csuite/inputs/LegacyInputUI'
 import { parseFloatNoRoundingErr } from '../../csuite/utils/parseFloatNoRoundingErr'
 import { FieldAndLabelUI } from './FieldAndLabelUI'
 
@@ -89,7 +89,7 @@ export const ScribbleCanvas = (p: {
                reset
             </Button>
             <FieldAndLabelUI label='Weight'>
-               <InputLegacy
+               <LegacyInputUI
                   tw='input-xs'
                   style={{
                      fontFamily: 'monospace',
@@ -101,7 +101,7 @@ export const ScribbleCanvas = (p: {
                />
             </FieldAndLabelUI>
             <FieldAndLabelUI label='Height'>
-               <InputLegacy
+               <LegacyInputUI
                   tw='input-xs'
                   style={{
                      fontFamily: 'monospace',

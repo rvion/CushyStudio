@@ -6,7 +6,7 @@ import { simpleBuilder } from '../simple/SimpleFactory'
 import { FieldSelector } from './selector'
 
 function selector(str: string): FieldSelector {
-   return new FieldSelector(str)
+   return FieldSelector.from(str)
 }
 const b = simpleBuilder
 const S1 = b.fields({

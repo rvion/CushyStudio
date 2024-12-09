@@ -85,7 +85,7 @@ export class Field_color extends Field<Field_color_types> {
 
    set value(next: Field_color_value) {
       if (this.serial.value === next) return
-      this.runInValueTransaction(() => this.patchSerial((draft) => void (draft.value = next)))
+      this.runInTransaction(() => this.patchSerial((draft) => void (draft.value = next)))
    }
 
    get value_or_fail(): Field_color_value {

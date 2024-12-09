@@ -203,7 +203,7 @@ describe('FieldChoices', () => {
                const E1 = MultiNoDefault.create()
 
                E1.setSerial(serial)
-               expect(E1.repo.allFieldSize).toBe(1)
+               expect(E1.repo.fieldCount).toBe(1)
             })
 
             it('should NOT deep clone the value', () => {

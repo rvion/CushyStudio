@@ -525,7 +525,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
    }
 
    set value(val: Field_choices_value<T>) {
-      this.runInValueTransaction(() => {
+      this.runInTransaction(() => {
          for (const branch of this.allPossibleChoices) {
             this._setBranchValue(branch, val[branch])
          }
@@ -587,7 +587,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
       if (!this.activeBranchesDict[branch]) {
          return // console.info(`❌ Branch "${branch}" not enabled`)
       }
-      this.runInValueTransaction(() => {
+      this.runInTransaction(() => {
          // remove children
          const prevChild = this.activeBranchesDict[branch]
          if (prevChild) prevChild.disposeTree()
@@ -610,7 +610,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field<Fiel
          return void console.info(`❌ Branch "${branchName}" already enabled`)
       }
 
-      this.runInValueTransaction(() => {
+      this.runInTransaction(() => {
          if (this.isSingle) {
             for (const key in this.activeBranchesDict) {
                this.disableBranch(key)

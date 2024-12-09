@@ -1,3 +1,5 @@
+import type { Field_group_serial } from './FieldGroup'
+
 import { describe, expect, it } from 'bun:test'
 import { _getAdministration, isObservableProp } from 'mobx'
 
@@ -14,7 +16,6 @@ describe('groups', () => {
          { default: { num: 20, str: 'B' } },
       )
       expectJSON(S1.create().value).toEqual({ num: 20, str: 'B' })
-
       const S2 = b.fields(
          {
             x: b.number({ default: 10 }),
@@ -28,7 +29,6 @@ describe('groups', () => {
          { default: { x: 20, xx: { y: 'B', yy: { z: true } } } },
       )
       expectJSON(S2.create().value).toEqual({ x: 20, xx: { y: 'B', yy: { z: true } } })
-
       // TODO: move that elsewhere
       // const S2 = b.int().list({ default: [1, 2, 3] })
       // expectJSON(S2.create().value).toEqual([1, 2, 3])
@@ -39,8 +39,8 @@ describe('groups', () => {
          num: b.number_(),
          str: b.string_(),
       })
-      const E1 = S1.create()
-      expect(E1._acknowledgeCount).toBe(2)
+      const __serial = undefined // { $: 'group', values_: { num: { $: 'number' }, str: { $: 'str' } } }
+      const E1 = S1.create(__serial)
       expect(E1.Num.serial).toEqual({ $: 'number' })
       expect(E1.serial).toEqual({
          $: 'group',
@@ -49,14 +49,11 @@ describe('groups', () => {
             str: { $: 'str' },
          },
       })
+      expect(E1._acknowledgeCount).toBe(2)
    })
 
    it('are practical to use', () => {
-      const S1: S.SGroup<{
-         baz: S.SGroup<{
-            qux: S.SString
-         }>
-      }> = b.fields({
+      const S1 = b.fields({
          baz: b.fields({
             qux: b.string({ default: '🔵' }),
          }),
@@ -109,6 +106,20 @@ describe('mobx observability', () => {
    })
 })
 
+describe('reset', () => {
+   it('works', () => {
+      const S1 = b.fields({
+         num: b.number(),
+         str: b.string({ default: 'test' }),
+      })
+      const E1 = S1.create()
+      E1.fields.num.value = 10
+      E1.fields.str.value = 'A'
+      E1.reset()
+      expect(E1.fields.num.value).toBe(0)
+      expect(E1.fields.str.value).toBe('test')
+   })
+})
 describe('structural sharing', () => {
    it('works', () => {
       const S1 = b.fields({

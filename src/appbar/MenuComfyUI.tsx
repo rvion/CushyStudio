@@ -54,7 +54,6 @@ const menuDivider = (
 )
 
 // export const MenuComfyUI = observer(function MenuComfyUI_(p: {}) {
-//     const st = useSt()
 //     const isConnected = st.ws?.isOpen ?? false
 //     return (
 //         <Dropdown

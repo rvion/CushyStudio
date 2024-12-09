@@ -19,12 +19,11 @@ export type DisplaySlotFn<FIELD extends Field> = CovariantFn1<
 export type DisplayRuleCtx<FIELD extends Field = Field> = {
    field: FIELD
 
-   ui(x: DisplaySlotExt<FIELD>): void
-   ui(selector: string, x: DisplaySlotExt<Field>): void
-   ui(selector: FieldSelector, x: DisplaySlotExt<Field>): void
-   ui<Sub extends Field>(field: Maybe<Sub>, x: DisplaySlotExt<Sub>): void
+   set(x: DisplaySlotExt<FIELD>): void
+   set<SUB extends Field = Field>(selector: string, x: DisplaySlotExt<SUB>): void
+   set<SUB extends Field = Field>(selector: FieldSelector, x: DisplaySlotExt<SUB>): void
+   set<SUB extends Field>(field: Maybe<SUB>, x: DisplaySlotExt<SUB>): void
 
-   catalog: CATALOG.widgets
    presets: typeof renderPresets
 }
 

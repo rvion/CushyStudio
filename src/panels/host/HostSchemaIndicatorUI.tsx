@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite'
 
 import { Button } from '../../csuite/button/Button'
 import { Ikon } from '../../csuite/icons/iconHelpers'
-import { Message } from '../../csuite/inputs/shims'
+import { LegacyMessageUI } from '../../csuite/inputs/LegacyMessageUI'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { QuickHostActionsUI } from '../../manager/REQUIREMENTS/QuickHostActionsUI'
 
@@ -24,12 +24,12 @@ export const HostSchemaIndicatorUI = observer(function HostSchemaIndicatorUI_(p:
             <div tw='menu'>
                <div tw='text-xs text-opacity-50'>({size} nodes)</div>
                {p.host.ws?.isOpen ? null : (
-                  <Message showIcon type='warning'>
+                  <LegacyMessageUI showIcon type='warning'>
                      <div>Is your ComfyUI server running? </div>
                      <div>You config file says it should be accessible at</div>
                      <div>{host.getServerHostHTTP()}</div>
                      <div>{host.getWSUrl()}</div>
-                  </Message>
+                  </LegacyMessageUI>
                )}
                <pre>{host.schemaRetrievalLogs.join('\n')}</pre>
                <QuickHostActionsUI host={host} />

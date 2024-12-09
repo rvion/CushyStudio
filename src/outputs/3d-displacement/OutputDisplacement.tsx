@@ -20,7 +20,6 @@ import {
    createMediaImage_fromDataURI,
 } from '../../models/createMediaImage_fromWebFile'
 import { FPath } from '../../models/FPath'
-import { useSt } from '../../state/stateContext'
 import { asRelativePath } from '../../utils/fs/pathUtils'
 import { DisplacementState } from './DisplacementState'
 import { DisplacementUI } from './DisplacementUI'
@@ -29,9 +28,8 @@ export const OutputDisplacementPreviewUI = observer(function OutputImagePreviewU
    step?: Maybe<StepL>
    output: Media3dDisplacementL
 }) {
-   const st = useSt()
-   const size = st.historySize
-   const sizeStr = st.historySizeStr
+   const size = cushy.historySize
+   const sizeStr = cushy.historySizeStr
    return (
       <div
          tw={['bg-orange-500 text-black', 'flex h-full w-full items-center justify-center']}
@@ -67,25 +65,24 @@ export const OutputDisplacementUI = observer(function OutputDisplacementUI_(p: {
       [JSON.stringify(p)],
    )
 
-   const st = useSt()
    const saveImgBtn = (
       <Button icon='mdiDownload' size='sm' onClick={(ev) => saveCanvasAsImage(uist.canvasRef.current)} />
    )
-   const menuConf = st.displacementConf.value.menu
+   const menuConf = cushy.displacementConf.value.menu
    return (
       <div tw='relative flex flex-1 flex-col'>
          {menuConf.right ? (
             <div tw='absolute right-0 top-0 z-50 !w-96 p-2'>
                {saveImgBtn}
-               <FormUI field={st.displacementConf} />
+               <FormUI field={cushy.displacementConf} />
             </div>
          ) : menuConf.left ? (
             <div tw='absolute left-0 top-0 z-50 !w-96 p-2'>
                {saveImgBtn}
-               <FormUI field={st.displacementConf} />
+               <FormUI field={cushy.displacementConf} />
             </div>
          ) : (
-            <PanelHeaderUI>{st.displacementConf.renderAsConfigBtn()}</PanelHeaderUI>
+            <PanelHeaderUI>{cushy.displacementConf.renderAsConfigBtn()}</PanelHeaderUI>
          )}
 
          <DisplacementUI uist={uist} />
@@ -93,7 +90,7 @@ export const OutputDisplacementUI = observer(function OutputDisplacementUI_(p: {
    )
 })
 
-export async function saveCanvasAsImage(
+async function saveCanvasAsImage(
    canvas: Maybe<HTMLCanvasElement>,
    subfolder?: string,
 ): Promise<Trigger | undefined> {
@@ -110,7 +107,7 @@ export async function saveCanvasAsImage(
    })
 }
 
-export const saveDataUriAsImage = async (
+const saveDataUriAsImage = async (
    //
    dataURI: string,
    st: STATE,

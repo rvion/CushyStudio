@@ -121,7 +121,7 @@ export class Field_list<T extends BaseSchema> //
    }
 
    set size(val: number) {
-      this.runInSerialTransaction(() => {
+      this.runInTransaction(() => {
          this.patchSerial((serial) => {
             if (val === this._defaultPreviewSize) delete serial.size
             else serial.size = val
@@ -182,12 +182,6 @@ export class Field_list<T extends BaseSchema> //
    //     for (const i of this.items) i.reset()
    // }
 
-   // TODO: why ? probably a wrong bugfix; needs to be removed asap
-   reset(): void {
-      super.reset()
-      this.childrenAll.forEach((i) => i.reset())
-   }
-
    findItemIndexContaining(widget: Field): number | null {
       let at = widget as Field | null
       let child = at
@@ -231,7 +225,7 @@ export class Field_list<T extends BaseSchema> //
       const disposeFn = reaction(
          () => auto.keys(this),
          (keys: string[]) => {
-            this.runInAutoTransaction(() => {
+            this.runInTransaction(() => {
                // 1. Add missing entries
                const currentKeys: string[] = this.items.map((i, ix) => auto.getKey(i, ix))
                const missingKeys: string[] = keys.filter((k) => !currentKeys.includes(k))
@@ -312,6 +306,10 @@ export class Field_list<T extends BaseSchema> //
       return this.patchSerial((draft) => {
          draft.items_![index] = nextChildSerial
       })
+   }
+
+   get isCollapsible(): boolean {
+      return this.length > 0
    }
 
    protected setOwnSerial(next: Field_list_serial<T>): void {
@@ -416,7 +414,7 @@ export class Field_list<T extends BaseSchema> //
    }
 
    set value(val: Field_list_value<T>) {
-      this.runInAutoTransaction(() => {
+      this.runInTransaction(() => {
          for (let i = 0; i < val.length; i++) {
             // 1. replace existing items
             if (i < this.items.length) {
@@ -527,7 +525,7 @@ export class Field_list<T extends BaseSchema> //
     */
    push(...values: T['$Value'][]): number {
       if (values.length === 0) return this.length
-      this.runInValueTransaction(() => {
+      this.runInTransaction(() => {
          for (const v of values) {
             this.addItem({ value: v })
          }
@@ -552,7 +550,7 @@ export class Field_list<T extends BaseSchema> //
     */
    unshift(...values: T['$Value'][]): number {
       if (values.length === 0) return this.length
-      this.runInValueTransaction(() => {
+      this.runInTransaction(() => {
          for (const v of values) {
             this.addItem({ value: v, at: 0 })
          }
@@ -574,7 +572,7 @@ export class Field_list<T extends BaseSchema> //
       if (!Boolean(p.applyEvenIfAtMaxLen) && this.config.max != null && this.items.length >= this.config.max)
          return void console.log(`[🔶] list.addItem: list is already at max length`)
 
-      return this.runInValueTransaction(() => {
+      return this.runInTransaction(() => {
          const at: number = p.at ?? this.items.length
          this.patchSerial((draft) => {
             if (draft.items_ == null) {
@@ -607,7 +605,7 @@ export class Field_list<T extends BaseSchema> //
       if (newIndex < 0 || newIndex >= this.length)
          return console.log(`[🔶] list.moveItem: newIndex out of bounds`)
 
-      this.runInValueTransaction(() => {
+      this.runInTransaction(() => {
          this.patchSerial((draft) => {
             // serials
             const serials = draft.items_
@@ -643,7 +641,7 @@ export class Field_list<T extends BaseSchema> //
       if (deleteCount === 0) return []
       if (start >= this.length) return []
       let deleted: T['$Field'][] = []
-      this.runInValueTransaction(() => {
+      this.runInTransaction(() => {
          // remove from serial
          this.patchSerial((draft) => {
             if (draft.items_ == null) throw new Error('❌ Field_list is not set yet')

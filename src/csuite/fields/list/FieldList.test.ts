@@ -10,6 +10,16 @@ describe('FieldList', () => {
    const S1 = b.string({ default: '🔵' }).list({ defaultLength: 3 })
    const S123 = b.string({ default: '🔵' }).list()
 
+   describe('reset', () => {
+      it('works', () => {
+         const S = b.int({ default: 3 }).list({ defaultLength: 3 })
+         const E = S.create()
+         E.value = [1, 2, 3]
+         E.reset()
+         expectJSON(E.value).toEqual([3, 3, 3])
+      })
+   })
+
    describe('isSet', () => {
       it('is true with list()', () => {
          const S_def = b.int().list()

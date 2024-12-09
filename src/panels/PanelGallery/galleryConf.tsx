@@ -1,4 +1,4 @@
-import type { CushySchemaBuilder } from '../../controls/Builder'
+import type { CushySchemaBuilder } from '../../controls/CushyBuilder'
 import type { FieldCtorProps } from '../../csuite/model/Field'
 import type { MediaImageL } from '../../models/MediaImage'
 

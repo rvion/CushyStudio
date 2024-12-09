@@ -3,16 +3,14 @@ import type { StepL } from '../models/Step'
 
 import { observer } from 'mobx-react-lite'
 
-import { useSt } from '../state/stateContext'
 
 export const OutputSplatPreviewUI = observer(function OutputImagePreviewUI_(p: {
    //
    step?: Maybe<StepL>
    output: MediaSplatL
 }) {
-   const st = useSt()
-   const size = st.historySize
-   const sizeStr = st.historySizeStr
+   const size = cushy.historySize
+   const sizeStr = cushy.historySizeStr
    return (
       <div
          tw='bg-secondary text-secondary-content w-full text-center'

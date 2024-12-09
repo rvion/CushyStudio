@@ -23,9 +23,11 @@ export const ListItemMoveUpButtonUI = observer(function ListItemMoveUpButtonUI_(
    return (
       <Button
          disabled={ix === 0}
-         onClick={() => {
+         onClick={(ev) => {
             listField.moveItem(ix, ix - 1)
             listField.touch()
+            ev.preventDefault()
+            ev.stopPropagation()
          }}
          square
          borderless

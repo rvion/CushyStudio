@@ -126,7 +126,7 @@ export class Field_custom<T> extends Field<Field_custom_types<T>> {
 
    set value(next: Field_custom_value<T>) {
       if (this.serial.value === next) return
-      this.runInValueTransaction(() => (this.serial.value = next))
+      this.runInTransaction(() => (this.serial.value = next))
    }
 
    get value_or_fail(): Field_custom_value<T> {

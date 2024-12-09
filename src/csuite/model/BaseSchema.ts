@@ -253,6 +253,11 @@ export class BaseSchema<
       return this.withConfig({ hidden: true })
    }
 
+   // TODO: make this add extra protection so people don't edit it by mistake
+   protected(warning: string): this {
+      return this.withConfig({ hidden: true })
+   }
+
    // PubSub -----------------------------------------------------
    publish<T>(chan: Channel<T> | ChannelId, produce: (self: TYPES['$Field']) => T): this {
       return this.withConfig({
@@ -333,15 +338,13 @@ export class BaseSchema<
     * @category Create Document
     */
    create(
-      //
+      // when unspecified, an empty serial is used
       serial_?: Maybe<TYPES['$Serial']> | false,
       /** when unspeficied, the global repository will be used */
       repository_?: Repository,
    ): TYPES['$Field'] {
-      // /* 😂 */ console.log(`[🤠] ${getUIDForMemoryStructure(serial_)} (BaseSchema.create (start))`)
       const repository = repository_ ?? getGlobalRepository()
       const serial = serial_ === false ? undefined : serial_
-      // /* 😂 */ console.log(`[🤠] ${getUIDForMemoryStructure(serial)} (BaseSchema.create)`)
       return this.instanciate(repository, null, null, '$', serial)
    }
 

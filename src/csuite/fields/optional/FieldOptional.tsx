@@ -237,7 +237,7 @@ export class Field_optional<out T extends BaseSchema = BaseSchema> extends Field
    // #region Setters
    setActive(value: boolean): void {
       if (this.serial.active === value) return
-      this.runInValueTransaction(() => {
+      this.runInTransaction(() => {
          this.patchSerial((draft) => void (draft.active = value))
 
          // update child collapsed state if need be

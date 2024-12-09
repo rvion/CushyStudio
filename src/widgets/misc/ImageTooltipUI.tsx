@@ -13,7 +13,6 @@ export const ImageTooltipUI = observer(function ImageTooltipUI_(p: { selectedIma
 })
 
 // export const FlowGeneratedImagesUI = observer(function FlowGeneratedImagesUI_(p: { msg: MessageFromExtensionToWebview }) {
-//     const st = useSt()
 //     const msg = p.msg
 
 //     // 🔴

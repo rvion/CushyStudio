@@ -23,13 +23,14 @@ export const ShellMobileUI = observer(function ShellMobile(p: CompiledRenderProp
          <WidgetHeaderContainerUI field={field}>
             {_isFC(p.Indent) ? <p.Indent tw='pr-2' depth={field.depth} /> : p.Indent}
             <div tw='flex-1'>
+               {/* prettier-ignore */}
                <div tw='flex flex-1'>
-                  {renderFCOrNode(p.DragKnob, {})}
-                  {renderFCOrNode(p.Caret, { placeholder: false, field })}
-                  {renderFCOrNode(p.Icon, { field, className: 'mr-1' })}
-                  {renderFCOrNode(p.Title, { field })}
-                  {renderFCOrNode(p.DebugID, { field })}
-                  {renderFCOrNode(p.Presets, { field })}
+                  {renderFCOrNode(p.DragKnob, { field })}
+                  {renderFCOrNode(p.Caret,    { placeholder: false, field })}
+                  {renderFCOrNode(p.Icon,     { field, className: 'mr-1' })}
+                  {renderFCOrNode(p.Title,    { field })}
+                  {renderFCOrNode(p.DebugID,  { field })}
+                  {renderFCOrNode(p.Presets,  { field })}
                </div>
                <div tw='flex flex-1'>
                   {_isFC(p.Toogle) ? <p.Toogle field={field} /> : p.Toogle}

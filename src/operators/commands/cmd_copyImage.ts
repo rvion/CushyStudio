@@ -1,7 +1,7 @@
 import type { DeleteInstructionsFor } from '../../db/TYPES_json'
 import type { MediaImageL } from '../../models/MediaImage'
 
-import { cushyFactory } from '../../controls/Builder'
+import { cushyFactory } from '../../controls/CushyBuilder'
 import { command, type Command } from '../../csuite/commands/Command'
 import { lazy_viaProxy } from '../../csuite/lazy/lazy_viaProxy'
 import { defineMenuTemplate, type MenuTemplate } from '../../csuite/menu/MenuTemplate'

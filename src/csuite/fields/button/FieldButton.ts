@@ -117,7 +117,7 @@ export class Field_button<K> extends Field<Field_button_types<K>> {
 
    set value(next: boolean) {
       if (this.serial.value === next) return
-      this.runInValueTransaction(() => this.patchSerial((serial) => void (serial.value = next)))
+      this.patchInTransaction((serial) => void (serial.value = next))
    }
 
    get value_or_fail(): Field_button_value {

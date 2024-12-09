@@ -22,16 +22,6 @@ export type Field_group_config<T extends Field_group_types<SchemaDict>> = FieldC
       /** fields */
       items?: T['$Sub']
 
-      /** @deprecated; use `toString` instead */
-      summary?: CovariantFn<
-         [
-            //
-            items: { [k in keyof T['$Sub']]: T['$Sub'][k]['$Value'] },
-            self: Field_group<T>,
-         ],
-         string
-      >
-
       /** @default @false */
       presetButtons?: boolean
       default?: Partial<T['$Value']>
@@ -47,6 +37,7 @@ export type Field_group_config<T extends Field_group_types<SchemaDict>> = FieldC
 // SERIAL
 export type Field_group_serial<T extends Field_group_types<SchemaDict>> = FieldSerial<{
    $: 'group'
+   // TODO: why is that not optional ? it should be.
    values_: { [K in keyof T['$Sub']]?: T['$Sub'][K]['$Serial'] }
 }>
 
@@ -171,9 +162,13 @@ export class Field_group<X extends Field_group_types<SchemaDict> = Field_group_t
    }
 
    get summary(): string {
-      //                                👇🤔 Maybe we don't want to invoke the summary unless the field is valid -> it could throw with children that have a throwable _or_zero
-      return this.config.summary?.(this.value_or_zero, this) ?? ''
-      // return this.config.summary?.(this.value) ?? Object.keys(this.fields).length + ' fields'
+      // 👇🤔 Maybe we don't want to invoke the summary unless the field is valid
+      // -> it could throw with children that have a throwable _or_zero
+      try {
+         return this.config.toString?.(this) ?? ''
+      } catch (e) {
+         return `❌ ${this.path}.toString() crashed ❌`
+      }
    }
 
    get justifyLabel(): boolean {
@@ -270,6 +265,9 @@ export class Field_group<X extends Field_group_types<SchemaDict> = Field_group_t
 
    _acknowledgeCount: number = 0
    _acknowledgeNewChildSerial(mountKey: string, newChildSerial: any): boolean {
+      // fast path: abort when exactly the same
+      if (this.serial.values_[mountKey] === newChildSerial) return false
+
       // console.log(`[🤠] ACK`, getUIDForMemoryStructure(newChildSerial), getUIDForMemoryStructure(this.serial), this.serial)
       const didChange = this.patchSerial((draft) => void ((draft.values_ as any)[mountKey] = newChildSerial))
       if (didChange) this._acknowledgeCount++
@@ -316,7 +314,7 @@ export class Field_group<X extends Field_group_types<SchemaDict> = Field_group_t
    // #region VALUE
 
    setPartialValue(val: Partial<Field_group_value<X['$Sub']>>): this {
-      this.runInValueTransaction(() => {
+      this.runInTransaction(() => {
          for (const key in val) {
             this.fields[key].value = val[key]
          }
@@ -329,7 +327,7 @@ export class Field_group<X extends Field_group_types<SchemaDict> = Field_group_t
    }
 
    set value(val: Field_group_value<X['$Sub']>) {
-      this.runInAutoTransaction(() => {
+      this.runInTransaction(() => {
          for (const key in val) {
             const child = this.fields[key]
             if (child == null) {
@@ -397,12 +395,6 @@ export class Field_group<X extends Field_group_types<SchemaDict> = Field_group_t
             }
          },
       }
-   }
-
-   // TODO: why ? probably a wrong bugfix; needs to be removed asap
-   reset(): void {
-      super.reset()
-      this.childrenAll.forEach((f) => f.reset())
    }
 
    randomize(): void {

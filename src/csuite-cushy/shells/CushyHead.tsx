@@ -26,8 +26,8 @@ export const CushyHeadUI = observer(function CushyHead(p: CushyHeadProps) {
             field,
          })}
 
-         {utils.renderFCOrNode(p.UpDownBtn, {})}
-         {utils.renderFCOrNode(p.DeleteBtn, {})}
+         {utils.renderFCOrNode(p.UpDownBtn, { field })}
+         {utils.renderFCOrNode(p.DeleteBtn, { field })}
 
          {/* HEADER EXTRA prettier-ignore */}
          {utils.renderFCOrNode(p.Extra, p)}

@@ -7,11 +7,11 @@ import { createElement } from 'react'
 import { Field } from '../../csuite/model/Field'
 import { FieldSelector } from '../../csuite/selector/selector'
 import { extractComponentName } from '../../csuite/utils/extractComponentName'
+import { getUIDForMemoryStructure } from '../../csuite/utils/getUIDForMemoryStructure'
 import { mergeDefined } from '../../csuite/utils/mergeDefined'
 import { _isFC, renderFCOrNode, renderFCOrNodeWithWrapper } from '../../csuite/utils/renderFCOrNode'
 import { QuickForm } from '../catalog/group/QuickForm'
 import { widgetsCatalog } from './RenderCatalog'
-import { defaultPresenterRule } from './RenderDefaults'
 import { renderPresets } from './RenderPresets'
 import { RenderUI } from './RenderUI'
 
@@ -22,12 +22,6 @@ import { RenderUI } from './RenderUI'
 // see src/csuite-cushy/presenters/presenter.readme.md
 // 👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆
 
-// #region 'window' mixin
-// Renderer is injected, to help with using csuite in other codebases.
-window.RENDERER = {
-   Render: RenderUI,
-}
-
 // #region Presenter
 // see `src/csuite/form/presenters/presenter.readme.md`
 /**
@@ -37,11 +31,18 @@ window.RENDERER = {
 export class Presenter {
    /** list of all the ruleOrConf, indexed by field, added during this presenter lifecycle  */
    rules: {
-      addedBy: Field
+      addedBy: Field | null
       selector: FieldSelector
       uiconf: DisplaySlotExt<Field>
    }[] = []
 
+   constructor(rootField: Field) {
+      this.rules.push({
+         addedBy: null,
+         selector: FieldSelector.from(''),
+         uiconf: defaultRenderRules,
+      })
+   }
    /**
     * MAIN METHOD TO RENDER A FIELD
     * this method is both for humans (calling render on field root)
@@ -55,8 +56,7 @@ export class Presenter {
    ): ReactNode {
       // ⏸️ console.log(`[💄] rendering ${field.path}`)
       // slots accumulator
-      let slots: DisplaySlots<FIELD> = defaultPresenterRule(field)
-      const catalog = widgetsCatalog
+      let slots: DisplaySlots<FIELD> = {} //
 
       // 🔴 SUPER SLOW
       this.rules = this.rules.filter((rule) => rule.addedBy !== field)
@@ -126,8 +126,7 @@ export class Presenter {
          if (typeof ruleOrConf === 'function') {
             const _slots = ruleOrConf({
                field,
-               catalog,
-               ui: addForField,
+               set: addForField,
                presets: renderPresets,
             }) as Maybe<DisplaySlots<FIELD>> // 🔴🔴🔴
             if (_slots) slots = mergeDefined(slots, _slots)
@@ -146,10 +145,20 @@ export class Presenter {
          evalRuleOrConf(field.config.uiui)
       }
 
+      const debug = null // '$.latent.b' // '$.positive'
       for (const rule of this.rules) {
-         if (field.matches(rule.selector)) {
-            evalRuleOrConf(rule.uiconf as DisplaySlotExt<FIELD>)
-         }
+         // starts from this, and ensures the result contains the field.
+         // we probably want contains in many place.
+         //                 VVVVVVVVVVVVVV
+         const isMatching = field.matches(rule.selector)
+         if (field.path === debug)
+            console.log(
+               `[🤠] ${field.pathExt}`,
+               isMatching ? '🟢' : '🔴',
+               rule.selector.selector,
+               typeof rule.uiconf !== 'function' ? this.explainSlots(rule.uiconf) : '<function...>',
+            )
+         if (isMatching) evalRuleOrConf(rule.uiconf as DisplaySlotExt<FIELD>)
       }
 
       evalRuleOrConf(finalRuleOrConf)
@@ -164,35 +173,34 @@ export class Presenter {
 
       // bad logic
       const Shell = slots.ShellName
-         ? catalog.Shell[slots.ShellName]
+         ? UY.Shell[slots.ShellName]
          : slots.Shell //
            ? slots.Shell
-           : catalog.Shell.Default
+           : UY.Shell.Default
 
       // console.log(`[🤠] slots.ShellName`, slots.ShellName, field.path, Shell === catalog.Shell.Inline)
       if (!Shell) throw new Error('Shell is not defined')
 
       // COMPILED
-      const UI = widgetsCatalog
-      const finalProps: CompiledRenderProps<FIELD> = { field, UI, presenter: this, ...slots }
+      const finalProps: CompiledRenderProps<FIELD> = { field, UI: UY, presenter: this, ...slots }
 
+      if (field.path === debug) this.debugFinalProps(finalProps)
       // if (field.path === '$.latent.b.image.resize') this.debugFinalProps(finalProps)
       // console.log(`[🤠] Shell for ${field.path} is `, Shell)
       return renderFCOrNode(Shell, finalProps)
    }
 
    debugFinalProps(finalProps: CompiledRenderProps<any>): void {
-      console.log(
-         `[🤠] `,
-         finalProps.field.path,
-         Object.fromEntries(
-            Object.entries(finalProps).map(([k, v]) => [
-               k,
-               _isFC(v) && 'type' in v //
-                  ? (extractComponentName(v.type) ?? v)
-                  : v,
-            ]),
-         ),
+      console.log(`[🤠] `, finalProps.field.path, this.explainSlots(finalProps))
+   }
+   private explainSlots(slots: DisplaySlots<any>): Record<string, any> {
+      return Object.fromEntries(
+         Object.entries(slots).map(([k, v]) => [
+            k,
+            _isFC(v) && 'type' in v //
+               ? (extractComponentName(v.type) ?? v)
+               : v,
+         ]),
       )
    }
 
@@ -201,4 +209,10 @@ export class Presenter {
       renderFCOrNodeWithWrapper: renderFCOrNodeWithWrapper,
       // _isFC: _isFC,
    }
+}
+
+// #region 'window' mixin
+// Renderer is injected, to help with using csuite in other codebases.
+window.RENDERER = {
+   Render: RenderUI,
 }

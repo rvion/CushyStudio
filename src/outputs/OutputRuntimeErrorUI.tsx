@@ -3,7 +3,7 @@ import type { StepL } from '../models/Step'
 
 import { observer } from 'mobx-react-lite'
 
-import { Surface } from '../csuite/inputs/shims'
+import { LegacySurfaceUI } from '../csuite/inputs/LegacySurfaceUI'
 import { JsonViewUI } from '../csuite/json/JsonViewUI'
 
 export const OutputRuntimeErrorPreviewUI = observer(function OutputRuntimeErrorPreviewUI_(p: {
@@ -20,7 +20,7 @@ export const OutputRuntimeErrorUI = observer(function OutputRuntimeErrorUI_(p: {
    const output = p.output
    const msg = output.data
    return (
-      <Surface tw='h-full w-full'>
+      <LegacySurfaceUI tw='h-full w-full'>
          <div className='bg-error text-error-content'>
             <div tw='text-xl font-bold'>Runtime Error</div>
             <div tw='italic'>{msg.message}</div>
@@ -29,6 +29,6 @@ export const OutputRuntimeErrorUI = observer(function OutputRuntimeErrorUI_(p: {
             <div tw='font-bold'>error infos:</div>
             <JsonViewUI value={JSON.parse(JSON.stringify(msg.infos))} />
          </div>
-      </Surface>
+      </LegacySurfaceUI>
    )
 })

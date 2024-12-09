@@ -213,7 +213,7 @@ export class Field_link<
    }
 
    set value(val: Field_link_value<A, B>) {
-      this.runInAutoTransaction(() => {
+      this.runInTransaction(() => {
          this.bField.value = val
       })
    }

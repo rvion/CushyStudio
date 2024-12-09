@@ -26,8 +26,8 @@ app({
          // model: prefabModelSD15andSDXL(),
       }),
    // layout: (ui) => {
-   //    ui.for(ui.field.Via,{Header: ui.catalog.})
-   //    ui.catalog.group
+   //    ui.for(ui.field.Via,{Header: UY.})
+   //    UY.group
    // },
    run: async (sdk, ui, ctx) => {
       const x = sdk.nodes

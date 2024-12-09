@@ -15,12 +15,11 @@ import { MessageErrorUI } from '../csuite'
 import { Button } from '../csuite/button/Button'
 import { extractErrorMessage } from '../csuite/formatters/extractErrorMessage'
 import { Frame } from '../csuite/frame/Frame'
-import { Surface } from '../csuite/inputs/shims'
+import { LegacySurfaceUI } from '../csuite/inputs/LegacySurfaceUI'
 import { MessageInfoUI } from '../csuite/messages/MessageInfoUI'
 import { toastError } from '../csuite/utils/toasts'
 import { Panel_InstallRequirementsUI } from '../manager/REQUIREMENTS/Panel_InstallRequirementsUI'
 import { createMediaImage_fromFileObject } from '../models/createMediaImage_fromWebFile'
-import { useSt } from '../state/stateContext'
 import { getPngMetadataFromFile, type TextChunks } from '../utils/png/_getPngMetadata'
 import { getWebpMetadata } from '../utils/png/_getWebpMetadata'
 import { TypescriptHighlightedCodeUI } from '../widgets/misc/TypescriptHighlightedCodeUI'
@@ -73,7 +72,6 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: {
    const file = p.file
    const [code, setCode] = useState<string | null>(null)
    const [relPath, setRelPath] = useState<string | null>(`library/local/${file.name}-${Date.now()}.ts`)
-   const st = useSt()
 
    type T = Promise<ExifData> | string | { workflow: string }
    type T2 = Promise<ExifData> | Promise<TextChunks> | 'NO' | Promise<{ workflow: string }>
@@ -95,7 +93,7 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: {
 
    let promptJSON: ComfyUIAPIRequest
    try {
-      promptJSON = convertLiteGraphToPrompt(st.schema, workflowJSON)
+      promptJSON = convertLiteGraphToPrompt(cushy.schema, workflowJSON)
    } catch (error) {
       console.log(error)
       if (error instanceof UnknownCustomNode) {
@@ -135,7 +133,7 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: {
       { title: 'autoui+id', conf: { preserveId: true, autoUI: true } },
    ]
    return (
-      <Surface className={p.className} tw='virtua overflow-auto'>
+      <LegacySurfaceUI className={p.className} tw='virtua overflow-auto'>
          <LegacyFieldUI k='name' v={file.name} />
          <LegacyFieldUI k='size' v={file.size} />
          <LegacyFieldUI k='name' v={file.type} />
@@ -153,7 +151,7 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: {
                   key={conf.title}
                   onClick={async () => {
                      //
-                     const x = st.importer.convertPromptToCode(promptJSON, {
+                     const x = cushy.importer.convertPromptToCode(promptJSON, {
                         title: file.name,
                         author: 'unknown',
                         preserveId: conf.conf.preserveId ?? false,
@@ -174,9 +172,9 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: {
                   size='sm'
                   onClick={async () => {
                      // if (uist.hasConflict) return toastError('file already exist, change app name')
-                     const path = `${st.rootPath}/${relPath}`
+                     const path = `${cushy.rootPath}/${relPath}`
                      writeFileSync(path, code, 'utf-8')
-                     const file = st.library.getFile(relPath as RelativePath)
+                     const file = cushy.library.getFile(relPath as RelativePath)
                      const res = await file.extractScriptFromFile()
                      if (res.type === 'failed') return toastError('failed to extract script')
                      const script = res.script
@@ -196,7 +194,7 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: {
          )}
          {/* {json ? <pre>{JSON.stringify(json.value, null, 4)}</pre> : null} */}
          {/* {Boolean(hasWorkflow) ? '🟢 has workflow' : `🔴 no workflow`} */}
-      </Surface>
+      </LegacySurfaceUI>
    )
 })
 

@@ -24,7 +24,7 @@ export async function buildJS(p: {
       define: {
          'process.env.NODE_ENV': '"production"',
       },
-      // entryPoints: ['src/app/main.tsx'],
+      // entryPoints: ['src/main.tsx'],
       entryPoints, //: ['src/controls/Builder.loco.ts'],
       plugins: [
          // {

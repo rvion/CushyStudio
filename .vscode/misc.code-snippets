@@ -41,7 +41,7 @@
     "create new observable react component with st": {
         "scope": "typescriptreact",
         "prefix": "ocompst",
-        "body": ["export const $1UI = observer(function $1UI_(p: { $2 }){", "const st = useSt()", "return (<div>", "$3", "</div>)", "})"],
+        "body": ["export const $1UI = observer(function $1UI_(p: { $2 }){", "return (<div>", "$3", "</div>)", "})"],
         "description": "scaffold a new React functional component"
     },
     "uist": {

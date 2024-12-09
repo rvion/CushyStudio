@@ -29,9 +29,9 @@ export interface SimpleSchemaᐸ_ᐳ extends HKT<Field> {
    Bool: S.SBool
    Number: S.SNumber
 
-   Date: HKSimpleDateAlias
-   DatePlain: HKSimpleDatePlainAlias
-   DateTimeZoned: HKSimpleDateTimeZonedAlias
+   Date: S.SDate
+   DatePlain: S.SDatePlain
+   DateTimeZoned: S.SDateTimeZoned
 
    Link: HKSimpleLinkAlias
    Shared: HKSimpleSharedAlias
@@ -98,17 +98,6 @@ interface HKSimpleChoicesAlias extends HKT<SchemaDict> {
 // #region group
 interface HKSimpleGroupAlias extends HKT<SchemaDict> {
    type: S.SGroup<this['__1']>
-}
-
-// #region dates
-interface HKSimpleDateAlias extends HKT<boolean> {
-   type: S.SDate<this['__1']>
-}
-interface HKSimpleDatePlainAlias extends HKT<boolean> {
-   type: S.SDatePlain<this['__1']>
-}
-interface HKSimpleDateTimeZonedAlias extends HKT<boolean> {
-   type: S.SDateTimeZoned<this['__1']>
 }
 
 // #region button

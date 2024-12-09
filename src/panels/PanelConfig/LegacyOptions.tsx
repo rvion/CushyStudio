@@ -7,12 +7,10 @@ import { InputBoolCheckboxUI } from '../../csuite/checkbox/InputBoolCheckboxUI'
 import { InputNumberUI } from '../../csuite/input-number/InputNumberUI'
 import { InputStringUI } from '../../csuite/input-string/InputStringUI'
 import { parseFloatNoRoundingErr } from '../../csuite/utils/parseFloatNoRoundingErr'
-import { useSt } from '../../state/stateContext'
 import { openInVSCode } from '../../utils/electron/openInVsCode'
 import { LegacyFieldUI } from './LegacyFieldUI'
 
 export const LegacyOptions = observer(function LegacyOptions_() {
-   const st = useSt()
    const config = cushy.configFile
 
    return (
@@ -88,7 +86,7 @@ export const LegacyOptions = observer(function LegacyOptions_() {
                />
             </LegacyFieldUI>
             <LegacyFieldUI label='Configure hosts:'>
-               <Button icon={'mdiOpenInNew'} onClick={() => st.layout.open('Hosts', {})}>
+               <Button icon={'mdiOpenInNew'} onClick={() => cushy.layout.open('Hosts', {})}>
                   Open Hosts page
                   <ComboUI combo={KEYS.openPage_Hosts} />
                </Button>

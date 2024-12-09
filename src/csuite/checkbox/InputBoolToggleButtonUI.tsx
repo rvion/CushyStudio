@@ -57,14 +57,19 @@ export const ToggleButtonUI = observer(function ToggleButtonUI_(
          roundness={csuite.inputRoundness}
          expand={p.expand}
          style={p.style}
+         size={p.size}
          hovered={p.hovered}
          icon={p.icon}
          onClick={(ev) => {
             // wasEnabled = !isActive
+            if (p.disabled) return
             ev.stopPropagation()
             p.onValueChange?.(!isActive)
             if (p.preventDefault) ev.preventDefault()
          }}
+         role='checkbox'
+         aria-disabled={p.disabled}
+         aria-checked={isActive}
          {...p.box}
          iconSize={p.iconSize}
          // hoverable={!p.disabled}
@@ -75,7 +80,7 @@ export const ToggleButtonUI = observer(function ToggleButtonUI_(
          // }
       >
          {(p.showToggleButtonBox ?? csuite.showToggleButtonBox) && p.mode != null && (
-            <CheckboxAndRadioIcon isActive={isActive} mode={p.mode} />
+            <CheckboxAndRadioIcon disabled isActive={isActive} mode={p.mode} />
          )}
          {/* 2024-06-07 rvion: make sure long label remain legible even on low width
                 - I removed the "line-clamp-1" from the paragraph below

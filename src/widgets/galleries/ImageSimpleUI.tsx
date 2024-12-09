@@ -17,7 +17,6 @@ export const ImageSimpleUI = observer(function ImageSimple({
    className?: string
 }) {
    // const LEGACY_ST_gallerySizeStr = '100px'
-   // const st = useSt()
    const ImageWidth =
       typeof size === 'number' //
          ? `${size}px`

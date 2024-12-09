@@ -6,7 +6,7 @@ import type { FrameSize } from './FrameSize'
 import type { FrameAppearance } from './FrameTemplates'
 import type { SimpleBoxShadow } from './SimpleBoxShadow'
 import type { SimpleDropShadow } from './SimpleDropShadow'
-import type { ForwardedRef, MouseEvent } from 'react'
+import type { AriaRole, ForwardedRef, MouseEvent } from 'react'
 
 import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
@@ -82,6 +82,7 @@ export type FrameProps = {
 
    /** Makes children of the Frame "!rounded-none !border-none", grouping them together visually */
    align?: boolean
+   role?: AriaRole
 } & BoxUIProps &
    /** Sizing and aspect ratio vocabulary */
    FrameSize

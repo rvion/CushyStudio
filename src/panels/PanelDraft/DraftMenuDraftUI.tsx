@@ -6,16 +6,12 @@ import { KEYS } from '../../app/shortcuts/shorcutKeys'
 import { Dropdown } from '../../csuite/dropdown/Dropdown'
 import { MenuDivider } from '../../csuite/dropdown/MenuDivider'
 import { MenuItem } from '../../csuite/dropdown/MenuItem'
-import { useSt } from '../../state/stateContext'
 
 export const DraftMenuDraftUI = observer(function DraftMenuDraftUI_(p: {
    draft: DraftL
    className?: string
 }) {
-   const st = useSt()
    const draft = p.draft
-   const file = draft.file
-   const app = draft.app
 
    return (
       <Dropdown
@@ -71,12 +67,12 @@ export const DraftMenuDraftUI = observer(function DraftMenuDraftUI_(p: {
                      />
                      <MenuItem //
                         label='Form Serial'
-                        onClick={() => st.layout.open('DraftJsonSerial', { draftID: draft.id })}
+                        onClick={() => cushy.layout.open('DraftJsonSerial', { draftID: draft.id })}
                      />
 
                      <MenuItem //
                         label='App code'
-                        onClick={() => st.layout.open('Script', { scriptID: draft.app.script.id })}
+                        onClick={() => cushy.layout.open('Script', { scriptID: draft.app.script.id })}
                      />
                   </>
                )}

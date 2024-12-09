@@ -12,7 +12,7 @@ import { createElement } from 'react'
 
 import { isFieldOptional } from '../csuite/fields/WidgetUI.DI'
 import { BaseSchema } from '../csuite/model/BaseSchema'
-import { InstallRequirementsBtnUI } from '../manager/REQUIREMENTS/Panel_InstallRequirementsUI'
+import { InstallRequirementsBtnUI } from '../manager/REQUIREMENTS/InstallRequirementsBtnUI'
 
 export class CushySchema<out TYPES extends FieldTypes = FieldTypes> //
    extends BaseSchema<TYPES, CushySchemaᐸ_ᐳ>
@@ -75,9 +75,9 @@ export interface CushySchemaᐸ_ᐳ extends HKT<FieldTypes> {
    Bool: X.XBool
    Number: X.XNumber
 
-   Date: HKSimpleDateAlias
-   DatePlain: HKSimpleDatePlainAlias
-   DateTimeZoned: HKSimpleDateTimeZonedAlias
+   Date: X.XDate
+   DatePlain: X.XDatePlain
+   DateTimeZoned: X.XDateTimeZoned
 
    Link: HKSimpleLinkAlias
    Shared: HKSimpleSharedAlias
@@ -140,17 +140,6 @@ interface HKSimpleChoicesAlias extends HKT<SchemaDict> {
 // #region group
 interface HKSimpleGroupAlias extends HKT<SchemaDict> {
    type: X.XGroup<this['__1']>
-}
-
-// #region date
-interface HKSimpleDateAlias extends HKT<boolean> {
-   type: X.XDate<this['__1']>
-}
-interface HKSimpleDatePlainAlias extends HKT<boolean> {
-   type: X.XDatePlain<this['__1']>
-}
-interface HKSimpleDateTimeZonedAlias extends HKT<boolean> {
-   type: X.XDateTimeZoned<this['__1']>
 }
 
 // #region button

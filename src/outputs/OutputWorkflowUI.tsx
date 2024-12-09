@@ -6,7 +6,6 @@ import { observer } from 'mobx-react-lite'
 import { MenuItem } from '../csuite/dropdown/MenuItem'
 import { Frame } from '../csuite/frame/Frame'
 import { RevealUI } from '../csuite/reveal/RevealUI'
-import { useSt } from '../state/stateContext'
 import { DrawWorkflowUI } from '../widgets/graph/DrawWorkflowUI'
 import { GraphPreviewUI } from '../widgets/graph/GraphPreviewUI'
 import { ButtonOpenInComfyUI } from '../widgets/workspace/ButtonOpenInComfyUI'
@@ -15,8 +14,7 @@ export const OutputWorkflowPreviewUI = observer(function OutputWorkflowUI_(p: {
    step?: Maybe<StepL>
    output: ComfyWorkflowL
 }) {
-   const st = useSt()
-   const size = st.historySizeStr
+   const size = cushy.historySizeStr
    const graph = p.output
    return (
       // <RevealUI showDelay={0} hideDelay={100}>

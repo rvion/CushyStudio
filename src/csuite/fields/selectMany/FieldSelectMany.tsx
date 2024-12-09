@@ -220,7 +220,7 @@ export class Field_selectMany<
    }
 
    set query(next: string) {
-      this.runInSerialTransaction(() => {
+      this.runInTransaction(() => {
          this.patchSerial((draft) => void (draft.query = next))
       })
    }
@@ -333,7 +333,7 @@ export class Field_selectMany<
    private _removeExistingKey(key: KEY): void {
       const values = this.serial.values
       if (values == null) return
-      this.runInValueTransaction(() =>
+      this.runInTransaction(() =>
          this.patchSerial((draft) => {
             draft.values = values.filter((k) => k !== key) // filter just in case of duplicate
          }),
@@ -353,7 +353,7 @@ export class Field_selectMany<
       this._addNewKey(key)
    }
    private _addNewKey(key: KEY): void {
-      this.runInValueTransaction(() =>
+      this.runInTransaction(() =>
          this.patchSerial((draft) => {
             draft.values ??= [] // adding a new key means we're being set
             draft.values.push(key)
@@ -409,7 +409,7 @@ export class Field_selectMany<
     * @since 2024-09-03
     */
    pushValue(...values: VALUE[]): void {
-      this.runInValueTransaction(() => {
+      this.runInTransaction(() => {
          for (const value of values) {
             this.addValue(value)
          }
@@ -429,6 +429,11 @@ export class Field_selectMany<
          has: (_, prop): boolean => prop in this.selectedKeys,
          get: (_, prop): any => {
             if (typeof prop === 'symbol') return (this.selectedValues as any)[prop]
+
+            // skip mobx stuff
+            if (prop === 'isMobXAtom') return (this.selectedValues as any)[prop]
+            if (prop === 'isMobXReaction') return (this.selectedValues as any)[prop]
+            if (prop === 'isMobXComputedValue') return (this.selectedValues as any)[prop]
 
             // handle numbers (1) and number-like ('1')
             if (parseInt(prop, 10) === +prop) return this.selectedValueAt(+prop)
@@ -472,7 +477,7 @@ export class Field_selectMany<
                   this.addKey(newKey)
                } else if (prevKey != null) {
                   if (prevKey === newKey) return false // nothing to do
-                  this.runInValueTransaction(() => {
+                  this.runInTransaction(() => {
                      this.removeKey(prevKey)
                      this.addKey(newKey)
                   })
@@ -489,7 +494,7 @@ export class Field_selectMany<
 
    /** different from reset; doesn't take default into account */
    unset(): void {
-      this.runInValueTransaction(() => {
+      this.runInTransaction(() => {
          this.patchSerial((draft) => void (draft.values = undefined))
       })
    }
@@ -510,7 +515,7 @@ export class Field_selectMany<
       )
          return
 
-      this.runInValueTransaction(() => {
+      this.runInTransaction(() => {
          this.patchSerial((draft) => void (draft.values = [...nextKeys]))
 
          // 2024-07-08 rvion:

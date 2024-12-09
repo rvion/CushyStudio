@@ -9,24 +9,20 @@ import { CushyUI } from '../../app/layout/AppUI'
 // import { withMobxSpy } from '../../csuite/utils/withSpy'
 import { TargetBox } from '../../importers/TargetBox'
 import { STATE } from '../../state/state'
-import { stContext } from '../../state/stateContext'
 import { asAbsolutePath } from '../../utils/fs/pathUtils'
 import { useGlobalDropHook } from './useGlobalDropHook'
 
 const path = asAbsolutePath(process.cwd())
 
 export const MainUI = observer(function MainUI_() {
-   // const st = useMemo(() => runInAction(() => withMobxSpy(() => new STATE(path))), [])
    const st = useMemo(() => runInAction(() => new STATE(path)), [])
    useGlobalDropHook(st)
    return (
-      <stContext.Provider value={st}>
+      <DndProvider backend={HTML5Backend}>
          <ToastContainer />
-         <DndProvider backend={HTML5Backend}>
-            <TargetBox>
-               <CushyUI />
-            </TargetBox>
-         </DndProvider>
-      </stContext.Provider>
+         <TargetBox>
+            <CushyUI />
+         </TargetBox>
+      </DndProvider>
    )
 })

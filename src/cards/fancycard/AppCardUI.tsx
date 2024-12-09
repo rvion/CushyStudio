@@ -4,7 +4,6 @@ import { observer } from 'mobx-react-lite'
 
 import { InputBoolFlipButtonUI } from '../../csuite/checkbox/InputBoolFlipButtonUI'
 import { Frame } from '../../csuite/frame/Frame'
-import { useSt } from '../../state/stateContext'
 import { AppIllustrationUI } from './AppIllustrationUI'
 
 export const AppCardUI = observer(function FancyCardUI_(p: {
@@ -15,12 +14,11 @@ export const AppCardUI = observer(function FancyCardUI_(p: {
 }) {
    const app = p.app
    const file = app.file
-   const st = useSt()
    // const importedFrom
    // prettier-ignore
    const color = ((): JSX.Element | undefined => {
         const tw='px-1 py-0.5 overflow-hidden text-ellipsis block whitespace-nowrap self-stretch'
-        const maxWidth = st.library.imageSize
+        const maxWidth = cushy.library.imageSize
         if (file.absPath.endsWith('.ts'))   return <Frame base={{hueShift:  60, chroma: .1 }} tw={[tw]} style={{maxWidth}}>Cushy App</Frame>
         if (file.absPath.endsWith('.json')) return <Frame base={{hueShift: 120, chroma: .1 }} tw={[tw]} style={{maxWidth}}>ComfyUI Workflow JSON</Frame>
         if (file.absPath.endsWith('.png'))  return <Frame base={{hueShift: 180, chroma: .1 }} tw={[tw]} style={{maxWidth}}>ComfyUI Workflow Image</Frame>
@@ -31,7 +29,7 @@ export const AppCardUI = observer(function FancyCardUI_(p: {
          base={app.file.fPath.existsSync ? 8 : { hue: 0, chroma: 0.1, contrast: 0.8 }}
          hover
          border
-         style={{ width: st.library.imageSize }}
+         style={{ width: cushy.library.imageSize }}
          onClick={p.app.openLastOrCreateDraft}
          tw={['flex flex-col px-1 shadow-xl', p.active ? 'active' : 'not-active', 'cursor-pointer']}
       >
@@ -42,7 +40,7 @@ export const AppCardUI = observer(function FancyCardUI_(p: {
             {/* NAME */}
             <div
                //
-               style={{ width: st.library.imageSize, height: '2rem' }}
+               style={{ width: cushy.library.imageSize, height: '2rem' }}
                tw='overflow-hidden overflow-ellipsis pt-1 font-bold [line-height:1rem]'
             >
                {app.name}
@@ -52,9 +50,9 @@ export const AppCardUI = observer(function FancyCardUI_(p: {
          {/* ROW 2 */}
          <div tw='relative flex'>
             {/* ILLUSTRATION */}
-            <AppIllustrationUI app={app} size={st.library.imageSize} />
+            <AppIllustrationUI app={app} size={cushy.library.imageSize} />
             <div tw='relative h-full w-full'></div>
-            {st.library.showFavorites ? (
+            {cushy.library.showFavorites ? (
                <InputBoolFlipButtonUI
                   tw='absolute right-0'
                   toggleGroup='favorite'
@@ -69,7 +67,7 @@ export const AppCardUI = observer(function FancyCardUI_(p: {
                />
             ) : null}
             {/* DESCRIPTION */}
-            {st.library.showDescription ? (
+            {cushy.library.showDescription ? (
                <div tw='ml-1 flex w-44 flex-grow flex-col'>
                   {/* <div>
                             {(file.manifest.categories ?? []).map((i, ix) => (

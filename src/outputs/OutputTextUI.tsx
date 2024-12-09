@@ -4,7 +4,7 @@ import type { StepL } from '../models/Step'
 import { observer } from 'mobx-react-lite'
 
 import { Frame } from '../csuite/frame/Frame'
-import { Surface } from '../csuite/inputs/shims'
+import { LegacySurfaceUI } from '../csuite/inputs/LegacySurfaceUI'
 import { MarkdownUI } from '../csuite/markdown/MarkdownUI'
 import { TabUI } from '../csuite/tabs/TabUI'
 
@@ -53,33 +53,33 @@ export const OutputTextUI = observer(function OutputTextUI_(p: { step?: Maybe<St
    // 🔴 handle markdown / html / text
    if (p.output.data.kind === 'markdown')
       return (
-         <Surface className='m-2 w-full'>
+         <LegacySurfaceUI className='m-2 w-full'>
             <TabUI tw='w-full'>
                <div>rendered version</div>
                <MarkdownUI tw='w-full' markdown={p.output.data.content} />
                <div>raw version</div>
                <pre className='w-full'>{p.output.data.content}</pre>
             </TabUI>
-         </Surface>
+         </LegacySurfaceUI>
       )
 
    if (p.output.data.kind === 'html')
       return (
-         <Surface className='m-2 w-full'>
+         <LegacySurfaceUI className='m-2 w-full'>
             <div //
                className='_HTML _MD w-full'
                dangerouslySetInnerHTML={{ __html: p.output.data.content }}
             ></div>
-         </Surface>
+         </LegacySurfaceUI>
       )
 
    if (p.output.data.kind === 'text')
       return (
-         <Surface className='m-2 w-full'>
+         <LegacySurfaceUI className='m-2 w-full'>
             {/*  */}
             <div tw='text-xl font-bold'>Text:</div>
             {p.output.data.content}
-         </Surface>
+         </LegacySurfaceUI>
       )
 
    return <div>unknown content</div>

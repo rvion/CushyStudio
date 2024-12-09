@@ -4,10 +4,7 @@ import { observer } from 'mobx-react-lite'
 
 import { InputNumberUI } from '../../input-number/InputNumberUI'
 
-export const WidgetNumberUI = observer(function WidgetNumberUI_(p: {
-   //
-   field: Field_number
-}) {
+export const WidgetNumberUI = observer(function WidgetNumberUI_(p: { field: Field_number }) {
    const field = p.field
    const value = field.value_or_zero
    const mode = field.config.mode
@@ -25,9 +22,7 @@ export const WidgetNumberUI = observer(function WidgetNumberUI_(p: {
          step={step}
          suffix={field.config.suffix}
          text={field.config.text}
-         onValueChange={(next) => {
-            field.value = next
-         }}
+         onValueChange={(next) => void (field.value = next)}
          forceSnap={field.config.forceSnap}
       />
    )

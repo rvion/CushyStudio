@@ -9,7 +9,6 @@ import { Button } from '../../csuite/button/Button'
 import { PanelUI } from '../../csuite/panel/PanelUI'
 import { Panel, type PanelHeader } from '../../router/Panel'
 import { usePanel } from '../../router/usePanel'
-import { useSt } from '../../state/stateContext'
 
 export const PanelComfy = new Panel({
    name: 'ComfyUI',
@@ -28,8 +27,7 @@ export type PanelComfyUIProps = {
 }
 
 export const PanelComfyUI = observer(function PanelComfyUI_(p: PanelComfyUIProps) {
-   const st = useSt()
-   const host = st.db.host.get(p.hostID) ?? st.mainHost
+   const host = cushy.db.host.get(p.hostID) ?? cushy.mainHost
    const url = host.getServerHostHTTP()
    const conf = usePanel().usePersistentModel('uist', (ui) =>
       ui.fields({
@@ -42,7 +40,7 @@ export const PanelComfyUI = observer(function PanelComfyUI_(p: PanelComfyUIProps
       if (p.litegraphJson == null) return
 
       // ensure the iframe is ready
-      const iframe = st.comfyUIIframeRef.current
+      const iframe = cushy.comfyUIIframeRef.current
       if (iframe == null) return
 
       let app: any = null
@@ -81,9 +79,9 @@ export const PanelComfyUI = observer(function PanelComfyUI_(p: PanelComfyUIProps
    }
 
    useLayoutEffect(() => {
-      if (!st.comfyUIIframeRef.current) return
+      if (!cushy.comfyUIIframeRef.current) return
       void loadFn()
-   }, [st.comfyUIIframeRef.current])
+   }, [cushy.comfyUIIframeRef.current])
 
    const finalURL = conf.value.hash ? `${url}?hash=${conf.value.hash}` : url
    return (
@@ -104,7 +102,7 @@ export const PanelComfyUI = observer(function PanelComfyUI_(p: PanelComfyUIProps
             {url}
          </PanelUI.Header>
          <iframe //
-            ref={st.comfyUIIframeRef}
+            ref={cushy.comfyUIIframeRef}
             src={finalURL}
             tw='disable-x-frame-options'
             className={p.className}

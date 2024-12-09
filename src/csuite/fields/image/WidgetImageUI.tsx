@@ -6,7 +6,6 @@ import { nanoid } from 'nanoid'
 import { createMediaImage_fromBlobObject } from '../../../models/createMediaImage_fromWebFile'
 import { FPath } from '../../../models/FPath'
 import { PanelGalleryUI } from '../../../panels/PanelGallery/PanelGalleryUI'
-import { useSt } from '../../../state/stateContext'
 import { useImageDrop } from '../../../widgets/galleries/dnd'
 import { ImageUI } from '../../../widgets/galleries/ImageUI'
 import { Button } from '../../button/Button'
@@ -21,8 +20,7 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: {
    field: Field_image
 }) {
    const field = p.field
-   const st = useSt()
-   const [dropStyle, dropRef] = useImageDrop(st, (imageL) => {
+   const [dropStyle, dropRef] = useImageDrop(cushy, (imageL) => {
       field.value = imageL
    })
    const image = field.value

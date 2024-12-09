@@ -6,7 +6,7 @@ import { useState } from 'react'
 
 import { ErrorBoundaryUI } from '../csuite/errors/ErrorBoundaryUI'
 import { Frame } from '../csuite/frame/Frame'
-import { Message } from '../csuite/inputs/shims'
+import { LegacyMessageUI } from '../csuite/inputs/LegacyMessageUI'
 import { useMemoAction } from '../csuite/utils/useMemoAction'
 import { panels } from './PANELS'
 import { PanelState } from './PanelState'
@@ -39,9 +39,9 @@ export const PanelContainerUI = observer(function PanelContainer(p: {
    // 3. get panel definition
    if (panelDef == null)
       return (
-         <Message type='error' showIcon>
+         <LegacyMessageUI type='error' showIcon>
             no panel definition for {panelName}
-         </Message>
+         </LegacyMessageUI>
       )
 
    const blacklist: PanelName[] = [

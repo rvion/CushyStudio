@@ -1,5 +1,5 @@
 import type { ComfyWorkflowBuilder } from '../../../src/back/NodeBuilder'
-import type { CushySchemaBuilder } from '../../../src/controls/Builder'
+import type { CushySchemaBuilder } from '../../../src/controls/CushyBuilder'
 import type { Requirements } from '../../../src/manager/REQUIREMENTS/Requirements'
 import type { OutputFor } from './_prefabs'
 

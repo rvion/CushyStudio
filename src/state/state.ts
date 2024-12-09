@@ -47,7 +47,7 @@ import { recursivelyFindAppsInFolder } from '../cards/walkLib'
 import { STANDARD_HOST_ID } from '../config/ComfyHostDef'
 import { type ConfigFile } from '../config/ConfigFile'
 import { mkConfigFile } from '../config/mkConfigFile'
-import { builder, cushyFactory, type CushyFactory } from '../controls/Builder'
+import { builder, cushyFactory, type CushyFactory } from '../controls/CushyBuilder'
 import { Channel } from '../csuite' // WIP remove me 2024-06-25 🔴
 import { activityManager, type ActivityManager } from '../csuite/activity/ActivityManager'
 import { commandManager, type CommandManager } from '../csuite/commands/CommandManager'

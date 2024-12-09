@@ -2,7 +2,7 @@ import type { ComfyUnionValue } from '../comfyui/comfyui-types'
 import type { Field_enum_config } from '../csuite/fields/enum/FieldEnum'
 import type { Field_string_config } from '../csuite/fields/string/FieldString'
 import type { FieldConfig } from '../csuite/model/FieldConfig'
-import type { CushySchemaBuilder } from './Builder'
+import type { CushySchemaBuilder } from './CushyBuilder'
 
 type KK = IAutoBuilder['KSampler']
 
@@ -101,13 +101,13 @@ export class AutoBuilder {
                   // PRIMITIVES ------------------------------------------
                   if (field.isPrimitive) {
                      const typeLower = field.typeName.toLowerCase()
-                     // boolean ------------------------------------------
+                     // #region boolean
                      if (typeLower === 'boolean') {
                         items[field.nameInComfy] = formBuilder.bool({
                            label: field.nameInComfy,
                         })
                      }
-                     // number ------------------------------------------
+                     // #region text & string
                      else if (typeLower === 'text' || typeLower === 'string') {
                         // number default -----------
                         const textarea = opts?.multiline ?? undefined
@@ -126,7 +126,7 @@ export class AutoBuilder {
                         // number value
                         items[field.nameInComfy] = formBuilder.string(conf)
                      }
-                     // number ------------------------------------------
+                     // #region number
                      else if (typeLower === 'number') {
                         // number default -----------
                         let def: number | undefined = undefined
@@ -146,7 +146,7 @@ export class AutoBuilder {
                            step: opts?.step ?? undefined,
                         })
                      }
-                     // int ------------------------------------------
+                     // #region int
                      else if (typeLower === 'int') {
                         // int default -----------
                         let def: number | undefined = undefined
@@ -166,9 +166,8 @@ export class AutoBuilder {
                            step: opts?.step ?? undefined,
                         })
                      }
-                     // int ------------------------------------------
+                     // #region float
                      else if (typeLower === 'float') {
-                        // console.log(`[🔴🔴🔴] `, opts)
                         // float default -----------
                         let def: number | undefined = undefined
                         if (opts?.default != null) {
@@ -190,7 +189,7 @@ export class AutoBuilder {
                         console.log(`[👗] ❌ Unknown primitive type: ${typeLower}`)
                      }
                   }
-                  // ENUMS ------------------------------------------
+                  // #region enums
                   else if (field.isEnum) {
                      // console.log(`[👗] 🌈 Enum: ${field.type}`, { field })
                      const enumFn: Maybe<(p: Field_enum_config<any>) => void> = (formBuilder.enum as any)[
@@ -201,10 +200,11 @@ export class AutoBuilder {
                         continue
                      }
 
+                     const possibleValues = schema.knownUnionBySlotName.get(field.slotName)?.values ?? []
                      items[field.nameInComfy] = enumFn({
                         label: field.nameInComfy,
                         slotName: field.slotName,
-                        default: opts?.default,
+                        default: opts?.default ?? possibleValues[0],
                      })
                   } else {
                      // console.log(`[👗] skipping field type: ${field.type}`)

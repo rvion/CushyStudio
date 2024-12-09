@@ -5,7 +5,6 @@ import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
-import type { FC } from 'react'
 
 import { produce } from 'immer'
 
@@ -14,8 +13,6 @@ import { extractConfigMessage, extractConfigValue } from '../../errors/extractCo
 import { Field } from '../../model/Field'
 import { makeLabelFromPrimitiveValue } from '../../utils/makeLabelFromFieldName'
 import { isProbablySerialString, registerFieldClass } from '../WidgetUI.DI'
-import { WidgetString_SmallInput } from './WidgetString_SmallInput'
-import { WidgetString_TextareaInput } from './WidgetString_TextareaInput'
 import { WidgetStringUI } from './WidgetStringUI'
 
 type CssProprtyGlobals = '-moz-initial' | 'inherit' | 'initial' | 'revert' | 'unset'
@@ -66,6 +63,8 @@ export type Field_string_config = FieldConfig<
       pattern?: string | RegExp | { value: string | RegExp; error: string }
       minLength?: ErrorConfigValue<number>
       maxLength?: ErrorConfigValue<number>
+
+      normalize?: (value: Maybe<string>) => string | undefined
 
       // randomization
       randomizationPool?: string[]
@@ -130,12 +129,7 @@ export class Field_string extends Field<Field_string_types> {
       serial?: Field_string_serial,
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
-      this.init(serial, {
-         UITextarea: false,
-         UIInputText: false,
-         DefaultBodyUI: false,
-         DefaultHeaderUI: false,
-      })
+      this.init(serial)
    }
 
    // #region SERIAL
@@ -181,11 +175,14 @@ export class Field_string extends Field<Field_string_types> {
       const nextStrVal = typeof next === 'string' ? next : JSON.stringify(next)
 
       // abort if same value
-      if (this.serial.value === nextStrVal) return
+      const normalized = this.config.normalize //
+         ? this.config.normalize(nextStrVal)
+         : nextStrVal
+      if (this.serial.value === normalized) return
 
       // patch value in serial
-      this.runInValueTransaction(() => {
-         this.patchSerial((serial) => void (serial.value = nextStrVal))
+      this.runInTransaction(() => {
+         this.patchSerial((serial) => void (serial.value = normalized))
       })
    }
 
@@ -271,7 +268,6 @@ export class Field_string extends Field<Field_string_types> {
          out.push(
             extractConfigMessage(
                this.config.minLength,
-               // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
                i18n.err.str.required({
                   prefix: this.config.label || makeLabelFromPrimitiveValue(this.mountKey),
                }),
@@ -319,8 +315,6 @@ export class Field_string extends Field<Field_string_types> {
    }
 
    // #region UI
-   UITextarea: FC = () => <WidgetString_TextareaInput field={this} />
-   UIInputText: FC = () => <WidgetString_SmallInput field={this} />
    DefaultBodyUI: undefined = undefined
    DefaultHeaderUI = WidgetStringUI
 

@@ -131,7 +131,7 @@ export class Field_image extends Field<Field_image_types> {
 
    set value(next: MediaImageL) {
       if (this.serial.imageID === next.id) return
-      this.runInValueTransaction(() => {
+      this.runInTransaction(() => {
          this.patchSerial((draft) => {
             draft.imageID = next.id
          })
@@ -164,7 +164,7 @@ export class Field_image extends Field<Field_image_types> {
    }
 
    set size(val: number) {
-      this.runInSerialTransaction(() => {
+      this.runInTransaction(() => {
          this.patchSerial((serial) => {
             if (val === this._defaultPreviewSize) delete serial.size
             else serial.size = val

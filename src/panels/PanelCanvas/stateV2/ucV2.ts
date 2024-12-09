@@ -1,4 +1,4 @@
-import type { CushySchemaBuilder } from '../../../controls/Builder'
+import type { CushySchemaBuilder } from '../../../controls/CushyBuilder'
 
 import { type Builder, Channel } from '../../../csuite'
 import { simpleRect$, type SimpleRect$ } from '../../../csuite/fields/core-prefabs/RectSchema'

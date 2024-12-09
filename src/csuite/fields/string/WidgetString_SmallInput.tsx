@@ -33,7 +33,7 @@ export const WidgetString_SmallInput = observer(function WidgetStringUI_(p: {
          setValue={(value) => {
             field.value = value
          }}
-         disabled={p.readonly}
+         disabled={p.readonly ?? p.field.config.readonly}
          clearable={config.clearable}
          autoResize={config.autoResize}
          buffered={

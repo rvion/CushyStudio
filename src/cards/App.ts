@@ -1,4 +1,4 @@
-import type { CushySchema } from '../controls/Schema'
+import type { CushySchema } from '../controls/CushySchema'
 import type { DisplaySlotFn } from '../csuite-cushy/presenters/RenderTypes'
 import type { Field } from '../csuite/model/Field'
 import type { SchemaDict } from '../csuite/model/SchemaDict'

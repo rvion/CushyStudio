@@ -6,7 +6,7 @@ import { Fragment, useEffect, useRef } from 'react'
 
 import { Frame } from '../../csuite/frame/Frame'
 import { hashStringToNumber } from '../../csuite/hashUtils/hash'
-import { ProgressLine } from '../../csuite/inputs/shims'
+import { LegacyProgressLineUI } from '../../csuite/inputs/LegacyProgressLineUI'
 import { bang } from '../../csuite/utils/bang'
 import { randomColorHSLNice } from '../../panels/PanelCanvas/utils/randomColor'
 import { NodeSlotSize } from './NodeSlotSize'
@@ -141,7 +141,7 @@ export const DrawWorkflowUI = observer(function DrawWorkflowUI_(p: {
                         height: bang(node.height) + 2,
                      }}
                   >
-                     <ProgressLine
+                     <LegacyProgressLineUI
                         tw='absolute -top-2 !p-0'
                         status={pgr?.isDone ? 'success' : 'active'}
                         percent={pgr?.percent}

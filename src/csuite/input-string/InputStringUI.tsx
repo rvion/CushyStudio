@@ -175,6 +175,7 @@ export const InputStringUI = observer(
             hover={3}
             dropShadow={dropShadow}
             roundness={csuite.inputRoundness}
+            role='textbox'
             border={
                isDirty //
                   ? { contrast: 0.3, hue: knownOKLCHHues.warning, chroma: 0.2 }

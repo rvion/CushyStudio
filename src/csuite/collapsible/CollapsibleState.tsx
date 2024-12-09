@@ -14,8 +14,8 @@ export class CollapsibleState {
    }
 
    toggle(): void {
-      if (this.p.onToggle) this.p.onToggle?.(this)
-      else this.isCollapsed = !this.isCollapsed
+      this.isCollapsed = !this.isCollapsed
+      this.p.onToggle?.(this)
    }
 
    open(): void {

@@ -16,7 +16,7 @@ export const DebugShortcutsFloatingUI = observer(function DebugShortcutsFloating
 
    return (
       <Frame //
-         tw='pointer-events-none absolute bottom-14 right-4 flex flex-col gap-2 p-2 opacity-80'
+         tw='pointer-events-none absolute bottom-14 left-4 flex flex-col gap-2 p-2 opacity-80'
          roundness={theme.inputRoundness}
          dropShadow={theme.inputShadow}
          {...p}

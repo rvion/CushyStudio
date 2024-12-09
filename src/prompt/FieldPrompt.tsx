@@ -137,7 +137,7 @@ export class Field_prompt extends Field<Field_prompt_types> {
    /** DO NOT CALL YOURSELF; use `field.text =` setter instead */
    setText_INTERNAL(next: string): void {
       if (this.serial.val === next) return
-      this.runInValueTransaction(() => {
+      this.runInTransaction(() => {
          this.patchSerial((draft) => {
             draft.val = next
          })
@@ -149,7 +149,7 @@ export class Field_prompt extends Field<Field_prompt_types> {
    }
    set text(next: string) {
       if (this.serial.val === next) return
-      this.runInSerialTransaction(() => {
+      this.runInTransaction(() => {
          // widget prompt uses codemirror, and codemirror manage its internal state itsef.
          // making the widget "uncontrolled". Usual automagical mobx-reactivity may not always apply.
          // To allow CodeMirror editor to react to external value changes, we need to use an effect in the UI.

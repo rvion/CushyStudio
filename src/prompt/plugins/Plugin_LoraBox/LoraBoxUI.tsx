@@ -11,7 +11,6 @@ import { Frame } from '../../../csuite/frame/Frame'
 import { InputNumberUI } from '../../../csuite/input-number/InputNumberUI'
 import { InputStringUI } from '../../../csuite/input-string/InputStringUI'
 import { SelectUI } from '../../../csuite/select/SelectUI'
-import { useSt } from '../../../state/stateContext'
 
 export const LoraBoxUI = observer(function LoraBoxUI_(p: {
    //
@@ -21,10 +20,9 @@ export const LoraBoxUI = observer(function LoraBoxUI_(p: {
    onDelete: () => void
 }) {
    const node = p.loraASTNode
-   const st = useSt()
    const loraName = node.name
    if (loraName == null) return <MessageErrorUI>error parsing lora</MessageErrorUI>
-   const loraMetadata = st.configFile.value?.loraPrompts?.[loraName]
+   const loraMetadata = cushy.configFile.value?.loraPrompts?.[loraName]
    const associatedText = loraMetadata?.text ?? ''
    const associatedUrl = loraMetadata?.url ?? ''
    const weighted = p.weightedASTNode
@@ -42,7 +40,7 @@ export const LoraBoxUI = observer(function LoraBoxUI_(p: {
          >
             <SelectUI<string>
                value={() => loraName}
-               options={() => st.schema.getLoras()}
+               options={() => cushy.schema.getLoras()}
                onOptionToggled={(val) => {
                   node.nameNode?.setText(val)
                   // p.uist.editorView?.dispatch({
@@ -138,7 +136,7 @@ export const LoraBoxUI = observer(function LoraBoxUI_(p: {
                   getValue={() => associatedText}
                   placeholder='Trigger Words'
                   setValue={(val) => {
-                     st.configFile.update((prev) => {
+                     cushy.configFile.update((prev) => {
                         // ensure prev.loraPrompts
                         if (!prev.loraPrompts) prev.loraPrompts = {}
                         const lp = prev.loraPrompts
@@ -179,7 +177,7 @@ export const LoraBoxUI = observer(function LoraBoxUI_(p: {
                   placeholder='Associated URL....'
                   getValue={() => associatedUrl}
                   setValue={(val) => {
-                     st.configFile.update((prev) => {
+                     cushy.configFile.update((prev) => {
                         // ensure prev.loraPrompts
                         if (!prev.loraPrompts) prev.loraPrompts = {}
                         const lp = prev.loraPrompts

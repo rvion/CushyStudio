@@ -3,7 +3,6 @@ import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
 import { observer } from 'mobx-react-lite'
 
 import { Panel, type PanelHeader } from '../../router/Panel'
-import { useSt } from '../../state/stateContext'
 
 export const PanelLastStep = new Panel({
    name: 'LastStep',
@@ -15,8 +14,7 @@ export const PanelLastStep = new Panel({
 })
 
 export const PanelLastStepUI = observer(function PanelLastStepUI_(p: NO_PROPS) {
-   const st = useSt()
-   const lastStep = st.db.step.last()
+   const lastStep = cushy.db.step.last()
    if (lastStep == null) return null
    return (
       <div className='flex flex-col'>

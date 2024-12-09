@@ -7,16 +7,14 @@ import { Button } from '../../csuite/button/Button'
 import { Frame } from '../../csuite/frame/Frame'
 import { Ikon } from '../../csuite/icons/iconHelpers'
 import { useAsyncAction } from '../../importers/usePromise'
-import { useSt } from '../../state/stateContext'
 import { renderStatus } from './renderStatus'
 
 export const Button_InstallCustomNodeUI = observer(function Button_InstallCustomNodeUI_(p: {
    optional: boolean
    plugin: ComfyManagerPluginInfo
 }) {
-   const st = useSt()
    const { plugin } = p
-   const host = st.mainHost
+   const host = cushy.mainHost
    const pluginStatus = host.manager.getPluginStatus(p.plugin.title)
    const isInstalled = pluginStatus === 'installed'
    const action = useAsyncAction(() => host.manager.installPlugin(plugin), [])

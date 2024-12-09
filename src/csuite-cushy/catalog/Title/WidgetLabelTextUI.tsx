@@ -20,7 +20,11 @@ export const DefaultWidgetTitleUI = observer(function DefaultWidgetTitle(p: Widg
    return (
       <Elem
          tw={[
-            'UI-WidgetLabel minh-widget lh-widget self-start',
+            'UI-WidgetLabel',
+            'lh-widget minh-widget',
+            'self-start',
+            // 'overflow-hidden whitespace-nowrap',
+
             // 1. indicate we can click on the label
             'COLLAPSE-PASSTHROUGH',
             // p.field.isCollapsed || p.field.isCollapsible ? 'cursor-pointer COLLAPSE-PASSTHROUGH' : null,

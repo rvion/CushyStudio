@@ -1,10 +1,9 @@
 import { observer } from 'mobx-react-lite'
 
 // import { TreeValue } from './LabelUI'
-// import { useSt } from './stContext'
 
 export const ProjectInfosUI = observer(function ProjectInfosUI_() {
-   // const client = useSt()
+   // const client = cushy
    // const project = client.project
    return null
    // return (

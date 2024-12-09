@@ -6,11 +6,9 @@ import { Button } from '../../csuite/button/Button'
 import { useCSuite } from '../../csuite/ctx/useCSuite'
 import { Frame } from '../../csuite/frame/Frame'
 import { Ikon } from '../../csuite/icons/iconHelpers'
-import { Message } from '../../csuite/inputs/shims'
+import { LegacyMessageUI } from '../../csuite/inputs/LegacyMessageUI'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
-import { useTicker } from '../../csuite/utils/useTicker'
 import { QuickHostActionsUI } from '../../manager/REQUIREMENTS/QuickHostActionsUI'
-import { useSt } from '../../state/stateContext'
 import { HostComfyLogsUI } from './HostComfyLogsUI'
 
 export const ConnectionInfoUI = observer(function ConnectionInfoUI_(p: { host: HostL }) {
@@ -33,12 +31,12 @@ export const ConnectionInfoUI = observer(function ConnectionInfoUI_(p: { host: H
                   </div>
                   <div tw='text-xs text-opacity-50'>({size} nodes)</div>
                   {p.host.ws?.isOpen ? null : (
-                     <Message showIcon type='warning'>
+                     <LegacyMessageUI showIcon type='warning'>
                         <div>Is your ComfyUI server running? </div>
                         <div>You config file says it should be accessible at</div>
                         <div>{host.getServerHostHTTP()}</div>
                         <div>{host.getWSUrl()}</div>
-                     </Message>
+                     </LegacyMessageUI>
                   )}
                   <pre>{host.schemaRetrievalLogs.join('\n')}</pre>
                   <QuickHostActionsUI host={host} />
@@ -95,17 +93,16 @@ export const HostWebsocketIndicatorUI = observer(function HostWebsocketIndicator
 })
 
 export const HostQuickMenuUI = observer(function HostQuickMenuUI_(p: { host: HostL }) {
-   const st = useSt()
    const host = p.host
    const ws = host.ws
    return (
       <div tw='menu'>
          {ws?.isOpen ? null : (
-            <Message showIcon type='warning'>
+            <LegacyMessageUI showIcon type='warning'>
                <span>Is your ComfyUI server running? </span>
                <span>You config file says it should be accessible at</span>
-               <div>{st.getWSUrl()}</div>
-            </Message>
+               <div>{cushy.getWSUrl()}</div>
+            </LegacyMessageUI>
          )}
          {ws?.debugMessages.map((x, ix) =>
             x.type === 'error' ? ( //

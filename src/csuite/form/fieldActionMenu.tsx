@@ -139,6 +139,16 @@ export const fieldActionMenu: MenuTemplate<FieldActionMenuProps> = defineMenuTem
             },
          }),
       )
+      out.push(
+         new SimpleMenuAction({
+            label: `copy pathExt (${field.pathExt})`,
+            icon: 'mdiContentCopy',
+            onClick: (): Promise<void> => {
+               toastInfo(field.path)
+               return navigator.clipboard.writeText(field.pathExt)
+            },
+         }),
+      )
 
       return out
       // CUSTOM ACTIONS

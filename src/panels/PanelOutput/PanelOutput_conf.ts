@@ -1,4 +1,4 @@
-import { cushyFactory } from '../../controls/Builder'
+import { cushyFactory } from '../../controls/CushyBuilder'
 import { readJSON, writeJSON } from '../../state/jsonUtils'
 
 export const PanelOutputConf = cushyFactory.document(

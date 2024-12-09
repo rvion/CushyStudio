@@ -5,7 +5,6 @@ import { observer } from 'mobx-react-lite'
 import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
 import { TreeUI } from '../../csuite/tree/TreeUI'
 import { Panel, type PanelHeader } from '../../router/Panel'
-import { useSt } from '../../state/stateContext'
 import { LibraryHeaderUI } from './TreeExplorerHeader'
 
 export const PanelTreeExplorer = new Panel({
@@ -18,7 +17,6 @@ export const PanelTreeExplorer = new Panel({
 })
 
 export const PanelTreeExplorerUI = observer(function PanelTreeExplorerUI_(p: NO_PROPS) {
-   const st = useSt()
    return (
       <>
          <PanelHeaderUI>
@@ -29,7 +27,7 @@ export const PanelTreeExplorerUI = observer(function PanelTreeExplorerUI_(p: NO_
             shortcut='mod+2'
             title='File Explorer'
             tw='flex-2 overflow-auto'
-            treeView={st.tree2View}
+            treeView={cushy.tree2View}
          />
       </>
    )
