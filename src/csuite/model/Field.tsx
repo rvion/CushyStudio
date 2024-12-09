@@ -765,6 +765,10 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
       )
    }
 
+   get isDisabledWithinParent(): boolean {
+      return !this.isEnabledWithinParent
+   }
+
    get isEnabledWithinParent(): boolean {
       if (isFieldOptional(this.parent)) return this.parent.active
       if (isFieldChoices(this.parent)) return this.parent.isBranchEnabled(this.mountKey)
