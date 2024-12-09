@@ -5,7 +5,6 @@ import type { FieldSerial } from '../../model/FieldSerial'
 import type { Repository } from '../../model/Repository'
 import type { SchemaDict } from '../../model/SchemaDict'
 import type { Problem_Ext } from '../../model/Validation'
-import type { CovariantFn } from '../../variance/BivariantHack'
 import type { CovariantFC } from '../../variance/CovariantFC'
 
 import { produce } from 'immer'
