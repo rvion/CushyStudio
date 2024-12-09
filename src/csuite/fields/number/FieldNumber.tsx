@@ -1,3 +1,4 @@
+import type { NumberFormat } from '../../i18n/i18n'
 import type { BaseSchema } from '../../model/BaseSchema'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
@@ -15,7 +16,7 @@ import { WidgetNumberUI } from './WidgetNumberUI'
 // #region CONFIG
 export type Field_number_config = FieldConfig<
    {
-      mode: 'int' | 'float'
+      mode: NumberFormat
       default?: number
       min?: number
       max?: number
@@ -35,12 +36,12 @@ export type Field_number_config = FieldConfig<
 // #region SERIAL
 export type Field_number_serial = FieldSerial<{
    $: 'number'
-   value?: number
+   value?: number | string | null
 }>
 
 // #region VALUE
 export type Field_number_value = number
-export type Field_number_unchecked = Field_number_value | undefined
+export type Field_number_unchecked = Field_number_value | string | null | undefined
 
 // #region TYPES
 export type Field_number_types = {
@@ -85,6 +86,7 @@ export class Field_number extends Field<Field_number_types> {
       // /* 😂 */ console.log(`[🤠] ${getUIDForMemoryStructure(serial)} (FieldNumber#constructor ❌)`)
       // /* 😂 */ console.log(`[🤠] ${getUIDForMemoryStructure(this.serial)} (FieldNumber#constructor ❌)`)
       this.init(serial, {
+         value: computed,
          DefaultHeaderUI: false,
          DefaultBodyUI: false,
       })
@@ -95,6 +97,9 @@ export class Field_number extends Field<Field_number_types> {
       if (next.value == null) {
          const def = this.defaultValue
          if (def != null) next = produce(next, (draft) => void (draft.value = def))
+      } else if (typeof next.value === 'string') {
+         const parsed = csuiteConfig.i18n.ui.number.parse(next.value, this.config.mode)
+         if (!isNaN(parsed)) next = produce(next, (draft) => void (draft.value = parsed))
       }
       // assign given serial (or default one)
       this.assignNewSerial(next)
@@ -142,14 +147,18 @@ export class Field_number extends Field<Field_number_types> {
    get ownTypeSpecificProblems(): Problem_Ext {
       if (!this.isSet) return null
 
+      if (typeof this.value_unchecked === 'string') {
+         return csuiteConfig.i18n.err.number.notANumber
+      }
+
       const value = this.value_or_zero
       // < MIN
       if (this.config.min != null && value < this.config.min) {
-         return `Value is less than ${this.config.min}`
+         return csuiteConfig.i18n.err.number.lessThanMin({ min: this.config.min })
       }
       // > MAX
       if (this.config.max != null && value > this.config.max) {
-         return `Value is greater than ${this.config.max}`
+         return csuiteConfig.i18n.err.number.greaterThanMax({ max: this.config.max })
       }
       return null
    }
@@ -158,18 +167,34 @@ export class Field_number extends Field<Field_number_types> {
       return this.value_or_fail
    }
 
-   set value(next: Field_number_value) {
+   set value(next: Field_number_value | string | null) {
       if (this.serial.value === next) return
-      this.patchInTransaction((draft) => void (draft.value = next))
+
+      if (typeof next === 'string') {
+         if (next.trim() === '') {
+            next = null
+         } else {
+            const parsed = csuiteConfig.i18n.ui.number.parse(next, this.config.mode)
+            if (!isNaN(parsed)) next = parsed
+         }
+      }
+
+      this.patchInTransaction((draft, tct) => {
+         draft.value = next
+      })
    }
 
-   get value_or_fail(): number {
+   get value_or_fail(): Field_number_value {
       const val = this.value_unchecked
       if (val == null) throw new Error('Field_number.value_or_fail: not set')
+      if (typeof val === 'string') throw new Error('Field_number.value_or_fail: invalid number')
+
       return val
    }
 
    get value_or_zero(): number {
+      if (typeof this.value_unchecked === 'string') return 0
+
       return this.value_unchecked ?? 0
    }
 
@@ -179,6 +204,12 @@ export class Field_number extends Field<Field_number_types> {
 
    set value_unchecked(next: Field_number_unchecked) {
       this.patchSerial((serial) => void (serial.value = next))
+   }
+
+   setValueFromString(stringValue: string): void {
+      const parsed = csuiteConfig.i18n.ui.number.parse(stringValue, this.config.mode)
+      if (isNaN(parsed)) return
+      this.value = parsed
    }
 
    // #region SETTERS
