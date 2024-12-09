@@ -93,7 +93,7 @@ export const OutputPreview_ContentUI = observer(function OutputPreview_ContentUI
          square
          border={
             isActive
-               ? { contrast: 0.4, chromaBlend: 100, hueShift: 180 }
+               ? { contrast: 0.4, chromaBlend: 100, hueShift: 0 }
                : { contrast: 0.2, chromaBlend: 0, hueShift: 0 }
          }
          roundness={theme.inputRoundness}
