@@ -26,7 +26,7 @@ export type Field_group_config<T extends Field_group_types<SchemaDict>> = FieldC
        *      This is a very important concept to understand, and we don't want to pollute the group field
        *      with the complexity of dynamic fields.
        */
-      items?: T | (() => T)
+      items?: T['$Sub'] | (() => T['$Sub'])
 
       /** @default @false */
       presetButtons?: boolean
