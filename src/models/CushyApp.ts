@@ -280,7 +280,7 @@ export class CushyAppL extends BaseInst<TABLES['cushy_app']> {
                ` | no image found from path "${illustrationPath}"`,
             )
          const imageBuffer = readFileSync(illustrationPath)
-         const hash = await hashArrayBuffer(imageBuffer)
+         const hash = hashArrayBuffer(imageBuffer)
          const bucketPath = `${user_id}/${hash}${imageExtension}`
          const { data, error } = await supa.storage //
             .from('Apps')
