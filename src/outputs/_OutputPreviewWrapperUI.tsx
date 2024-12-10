@@ -20,17 +20,36 @@ export const OutputPreviewWrapperUI = observer(function OutputPreviewWrapperUI_(
    const size = p.size ?? '2rem'
    return (
       <ErrorBoundaryUI>
-         <Frame
-            tw='overflow-clip p-0.5'
-            hover
+         <Frame // Div because only layouting, no color stuff.
+            tw={[
+               //
+               // 'p-0.5',
+               // Make children brighten when this is hovered, but not the element itself
+               '[&>*]:hover:brightness-110',
+               '!box-border !border-none p-0.5',
+            ]}
             style={{ width: size, height: size }}
-            onClick={() => runInAction(() => (cushy.focusedStepOutput = p.output))}
+            onMouseDown={(e) => {
+               if (e.button != 0) {
+                  return
+               }
+               // e.preventDefault()
+               e.stopPropagation()
+
+               runInAction(() => (cushy.focusedStepOutput = p.output))
+            }}
             onMouseEnter={(ev) => runInAction(() => (cushy.hovered = p.output))}
             onMouseLeave={() => {
                if (cushy.hovered === p.output) runInAction(() => (cushy.hovered = null))
             }}
          >
+            {/* <Frame
+               //
+               tw='h-full w-full p-0.5'
+               // square
+            > */}
             {p.children}
+            {/* </Frame> */}
          </Frame>
       </ErrorBoundaryUI>
    )

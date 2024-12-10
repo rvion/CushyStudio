@@ -3,8 +3,9 @@ import type { StepL } from '../models/Step'
 
 import { observer } from 'mobx-react-lite'
 
+import { Frame } from '../csuite/frame/Frame'
 import { PanelViewImageUI } from '../panels/PanelViewImage/Panel_ViewImage'
-import { ImageUI } from '../widgets/galleries/ImageUI'
+import { ImageUI, ImageUIDumb } from '../widgets/galleries/ImageUI'
 
 export const OutputImagePreviewUI = observer(function OutputImagePreviewUI_(p: {
    //
@@ -12,11 +13,11 @@ export const OutputImagePreviewUI = observer(function OutputImagePreviewUI_(p: {
    output: MediaImageL
 }) {
    return (
-      <ImageUI //
-         img={p.output}
-         size={32} // TODO(bird_d): Should probably use a config
-         style={{ width: '100%', height: '100%' }}
-      />
+      <Frame tooltip={`Image Output`} tw='h-full w-full'>
+         <ImageUIDumb //
+            img={p.output}
+         />
+      </Frame>
    )
 })
 

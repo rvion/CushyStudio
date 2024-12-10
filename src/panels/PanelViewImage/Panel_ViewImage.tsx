@@ -116,11 +116,12 @@ export const ImageActionBarUI = observer(function ImageActionBar(p: { img?: Mayb
          <PanelHeaderUI>
             <Button // rating button
                square
-               icon='mdiStar'
+               icon={isStarred ? 'mdiStarMinus' : 'mdiStar'}
+               tooltip={isStarred ? 'Un-Favorite' : 'Favorite'}
                // active={isStarred}
                borderless
                subtle
-               text={isStarred ? { hue: 80, chroma: 0.2, lightness: 0.8 } : undefined}
+               text={isStarred ? { hue: 80, chromaBlend: 30, contrast: 0.4 } : undefined}
                onClick={() => img?.update({ star: isStarred ? 0 : 1 })}
             />
             {img ? <ImageDropdownUI img={img} /> : null}

@@ -3,11 +3,9 @@ import type { DraftL } from '../../models/Draft'
 import { observer } from 'mobx-react-lite'
 
 import { DraftIllustrationUI } from '../../cards/fancycard/DraftIllustration'
-import { Button } from '../../csuite/button/Button'
 import { InputBoolCheckboxUI } from '../../csuite/checkbox/InputBoolCheckboxUI'
 import { SpacerUI } from '../../csuite/components/SpacerUI'
 import { Frame, type FrameProps } from '../../csuite/frame/Frame'
-import { hashStringToNumber } from '../../csuite/hashUtils/hash'
 import { InputStringUI } from '../../csuite/input-string/InputStringUI'
 import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
 import { SQLITE_false, SQLITE_true } from '../../csuite/types/SQLITE_boolean'
@@ -16,8 +14,6 @@ import { DraftMenuAppUI } from './DraftMenuAppUI'
 import { DraftMenuDraftUI } from './DraftMenuDraftUI'
 import { DraftMenuDataBlockUI } from './DraftMenuJump'
 import { DraftMenuLooks } from './DraftMenuLooksUI'
-import OverflowingRowUI from './OverflowingRowUI'
-import { PublishAppBtnUI } from './PublishAppBtnUI'
 import { RunOrAutorunUI } from './RunOrAutorunUI'
 
 export const DraftHeaderUI = observer(function DraftHeader({
@@ -46,34 +42,10 @@ export const DraftHeaderUI = observer(function DraftHeader({
             <DraftMenuAppUI draft={draft} />
             <DraftMenuDraftUI draft={draft} />
             <SpacerUI />
-            <Frame
-               //Joined
-
-               tw='flex overflow-clip [&>*]:!rounded-none [&>*]:!border-0'
-               border
-               roundness={'5px'}
-               dropShadow={
-                  theme.inputShadow && {
-                     x: theme.inputShadow.x,
-                     y: theme.inputShadow.y,
-                     color: theme.inputShadow.color,
-                     blur: theme.inputShadow.blur,
-                     opacity: theme.inputShadow.opacity,
-                  }
-               }
-            >
-               <Button
-                  tooltip='Edit in external editor'
-                  icon='mdiTextBoxEditOutline'
-                  onClick={() => cushy.openInVSCode(draft.app.relPath)}
-               >
-                  {draft.app.name}
-               </Button>
-            </Frame>
-
             {children}
             <SpacerUI />
-            <PublishAppBtnUI app={app} tw='ml-auto' />
+
+            {/* <PublishAppBtnUI app={app} /> //Is in DraftMenuAppUI, no need for this */}
          </PanelHeaderUI>
 
          {/* <OverflowingRowUI // quick access to past versions

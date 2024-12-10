@@ -25,7 +25,6 @@ export const ToggleButtonUI = observer(function ToggleButtonUI_(
    // const border = p.border ?? 10
    const theme = cushy.theme.value
    const dropShadow = p.dropShadow ?? theme.inputShadow
-   console.log('[FD] ' + p.text, p.children)
    return (
       <Button
          tw={

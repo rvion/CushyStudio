@@ -49,7 +49,7 @@ export const DraftMenuDraftUI = observer(function DraftMenuDraftUI_(p: {
                <MenuItem
                   label='Reset'
                   icon='mdiUndoVariant'
-                  tooltip='Resets all fields of a Draft to their default'
+                  tooltip='Resets all fields of a Draft to their default value'
                   onClick={() => {
                      const confirm = window.confirm('Are you sure you want to delete this draft?')
                      if (confirm) draft.update({ formSerial: {} as any })

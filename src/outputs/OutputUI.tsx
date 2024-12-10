@@ -2,6 +2,7 @@ import type { StepOutput } from '../types/StepOutput'
 
 import { observer } from 'mobx-react-lite'
 
+import { Frame } from '../csuite/frame/Frame'
 import { exhaust } from '../csuite/utils/exhaust'
 import { ComfyPromptL } from '../models/ComfyPrompt'
 import { ComfyWorkflowL } from '../models/ComfyWorkflow'
@@ -39,27 +40,69 @@ export const OutputPreviewUI = observer(function StepOutputUI_(p: {
 })
 
 // prettier-ignore
+function getOutput(step: Maybe<StepL>, output: StepOutput): JSX.Element | undefined {
+   if (output instanceof MediaTextL)            return <OutputTextPreviewUI         step={step} output={output} />
+   if (output instanceof MediaImageL)           return <OutputImagePreviewUI        step={step} output={output} />
+   if (output instanceof MediaVideoL)           return <OutputVideoPreviewUI        step={step} output={output} />
+   if (output instanceof MediaSplatL)           return <OutputSplatPreviewUI        step={step} output={output} />
+   if (output instanceof Media3dDisplacementL)  return <OutputDisplacementPreviewUI step={step} output={output} />
+   if (output instanceof ComfyPromptL)          return <OutputPromptPreviewUI       step={step} output={output} />
+   if (output instanceof ComfyWorkflowL)        return <OutputWorkflowPreviewUI     step={step} output={output} />
+   if (output instanceof StepL)                 return <>🔴 StepL not yet supported</>
+   if (output instanceof MediaCustomL)          return <Output3dScenePreviewUI      step={step} output={output} />
+   if (output instanceof RuntimeErrorL)         return <OutputRuntimeErrorPreviewUI step={step} output={output} />
+
+   exhaust(output)
+   console.log(`[🔴]`,output)
+   return <Frame square icon='mdiAlert' iconSize='80%' tooltip={`❌ unhandled message of type ${(output as any).constructor.name}`}  />
+   }
+
 export const OutputPreview_ContentUI = observer(function OutputPreview_ContentUI_(p: {
-     step?: Maybe<StepL>
-     output: StepOutput
+   step?: Maybe<StepL>
+   output: StepOutput
 }) {
-    // const size =
-    const output = p.output
+   const theme = cushy.preferences.theme.value
 
-    if (output instanceof MediaTextL)            return <OutputTextPreviewUI         step={p.step} output={output} />
-    if (output instanceof MediaImageL)           return <OutputImagePreviewUI        step={p.step} output={output} />
-    if (output instanceof MediaVideoL)           return <OutputVideoPreviewUI        step={p.step} output={output} />
-    if (output instanceof MediaSplatL)           return <OutputSplatPreviewUI        step={p.step} output={output} />
-    if (output instanceof Media3dDisplacementL)  return <OutputDisplacementPreviewUI step={p.step} output={output} />
-    if (output instanceof ComfyPromptL)          return <OutputPromptPreviewUI       step={p.step} output={output} />
-    if (output instanceof ComfyWorkflowL)        return <OutputWorkflowPreviewUI     step={p.step} output={output} />
-    if (output instanceof StepL)                 return <>🔴 StepL not yet supported</>
-    if (output instanceof MediaCustomL)          return <Output3dScenePreviewUI      step={p.step} output={output} />
-    if (output instanceof RuntimeErrorL)         return <OutputRuntimeErrorPreviewUI step={p.step} output={output} />
+   const step = p.step
 
-    exhaust(output)
-    console.log(`[🔴]`,output)
-    return <div className='border'>❌ unhandled message of type `{(output as any).constructor.name}`</div>
+   if (!step) {
+      return (
+         <Frame
+            tw='h-full'
+            square
+            // border={}
+            roundness={theme.inputRoundness}
+            dropShadow={theme.inputShadow}
+            tooltip='Step was null'
+            icon={'mdiAlert'}
+            iconSize='80%'
+         />
+      )
+   }
+
+   let isActive = false
+   if (cushy.focusedStepOutput) {
+      if (cushy.focusedStepOutput.id == p.output.id) {
+         isActive = true
+      }
+   }
+
+   return (
+      <Frame //
+         tw='flex h-full overflow-clip'
+         square
+         border={
+            isActive
+               ? { contrast: 0.4, chromaBlend: 100, hueShift: 0 }
+               : { contrast: 0.2, chromaBlend: 0, hueShift: 0 }
+         }
+         roundness={theme.inputRoundness}
+         dropShadow={theme.inputShadow}
+         // onClick={() => cushy.layout.open('Output', { stepID: step.id })}
+      >
+         {getOutput(p.step, p.output)}
+      </Frame>
+   )
 })
 
 // FULL -----------------------------------------------------------------------------

@@ -72,6 +72,13 @@ export class GitManagedFolder {
    /** main branch name; usually master (previous git default) or main (new git default) */
    mainBranchName: string = ''
 
+   /** active branch name */
+   activeBranchName: string = ''
+   activeRemoteName: string = ''
+   activeCommitText: string = ''
+   behindCount: number = 0
+   aheadCount: number = 0
+
    /** the simple git  */
    git: Maybe<SimpleGit> = null
 
@@ -132,6 +139,12 @@ export class GitManagedFolder {
             return
          }
 
+         this.activeBranchName = await this._activeBranch()
+         this.activeRemoteName = await this._activeRemote()
+         this.activeCommitText = await this._activeCommit()
+         this.behindCount = (await git.log(['HEAD..@{upstream}'])).all.length
+         this.aheadCount = (await git.log(['@{upstream}..HEAD'])).all.length
+
          // Get the default remote branch name
          const remoteInfo = await git.raw(['symbolic-ref', 'HEAD'])
          // console.log({ remoteInfo })
@@ -156,7 +169,7 @@ export class GitManagedFolder {
          // update values
          const defaultBranch = headBranchMatch // headBranchMatch[1]
          const headCommitsCount = await _getHeadCommitsCount('HEAD')
-         const originCommitsCount = await _getHeadCommitsCount(`origin/${defaultBranch}`)
+         const originCommitsCount = await _getHeadCommitsCount(`${this.activeRemoteName}/${defaultBranch}`)
 
          try {
             runInAction(() => {
@@ -216,6 +229,47 @@ export class GitManagedFolder {
          const newTime = new Date()
          utimesSync(FETCH_HEAD_path, newTime, newTime)
       }
+   }
+
+   _activeBranch = async (): Promise<string> => {
+      console.log()
+      if (!this.git) {
+         return 'COULD NOT GIT'
+      }
+      return (await this.git.branch()).current
+   }
+
+   _activeRemote = async (): Promise<string> => {
+      if (!this.git) {
+         return 'COULD NOT GIT'
+      }
+      try {
+         const value = (await this.git.getConfig(`branch.${this.activeBranchName}.remote`)).value
+         if (!value) {
+            return 'COULD NOT GET REMOTE FOR BRANCH'
+         }
+         return value
+      } catch (err: any) {
+         console.error(err)
+         return err.message
+      }
+   }
+
+   _activeCommit = async (): Promise<string> => {
+      if (!this.git) {
+         return 'COULD NOT GIT'
+      }
+
+      return this.git.revparse(['--short', 'HEAD'])
+   }
+
+   _activeBranchBehind = async (): Promise<string> => {
+      if (!this.git) {
+         return 'COULD NOT GIT'
+      }
+
+      this.git.revparse()
+      return 'NONE'
    }
 
    // ===================================================================================================

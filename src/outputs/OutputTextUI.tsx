@@ -3,6 +3,7 @@ import type { StepL } from '../models/Step'
 
 import { observer } from 'mobx-react-lite'
 
+import { Frame } from '../csuite/frame/Frame'
 import { LegacySurfaceUI } from '../csuite/inputs/LegacySurfaceUI'
 import { MarkdownUI } from '../csuite/markdown/MarkdownUI'
 import { TabUI } from '../csuite/tabs/TabUI'
@@ -37,11 +38,12 @@ export const OutputTextPreviewUI = observer(function OutputTextPreviewUI_(p: {
             {'<HTML/>'}
          </div>
       ) : (
-         <div //
-            tw='overflow-hidden whitespace-pre-wrap text-xs '
-         >
-            {output.data.content}
-         </div>
+         <Frame //
+            tooltip={'Text Output'}
+            square
+            icon='mdiText'
+            iconSize='80%'
+         />
       )
 
    return message

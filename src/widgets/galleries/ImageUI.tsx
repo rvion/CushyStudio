@@ -62,8 +62,7 @@ export const ImageUI = observer(function ImageUI_({
    if (image.existsLocally && !existsSync(image?.absPath as PathLike))
       return (
          <ImageErrorDisplayUI //
-            className='hover:border-transparent'
-            icon={'folder'}
+            icon={'mdiFolder'}
          />
       )
 
@@ -74,6 +73,55 @@ export const ImageUI = observer(function ImageUI_({
          tw='shrink-0'
          content={() => <ImageDropdownMenuUI img={image} />}
          children={IMG}
+      />
+   )
+})
+
+export const ImageUIDumb = observer(function ImageUIDumb_({
+   className,
+   img,
+   ...rest
+}: {
+   img: MediaImageL | MediaImageID
+   className?: string
+}) {
+   const image = typeof img === 'string' ? cushy.db.media_image.get(img) : img
+   const [{ opacity }, dragRef] = useImageDrag(image! /* 🔴 */)
+
+   if (!image) {
+      return (
+         <ImageErrorDisplayUI //
+            icon={'mdiImageRemoveOutline'}
+         />
+      )
+   }
+
+   if (image.existsLocally && !existsSync(image?.absPath as PathLike)) {
+      return (
+         <ImageErrorDisplayUI //
+            icon={'mdiFolder'}
+         />
+      )
+   }
+
+   return (
+      <RevealUI //
+         trigger='rightClick'
+         relativeTo='mouse'
+         tw='shrink-0'
+         content={() => <ImageDropdownMenuUI img={image} />}
+         children={
+            <img
+               className={className}
+               tw='h-full w-full bg-contain bg-center bg-no-repeat object-contain'
+               src={image.url}
+               onAuxClick={(ev) => {
+                  if (ev.button === 1) return image.onMiddleClick()
+                  if (ev.button === 2) return image.onRightClick()
+               }}
+               ref={dragRef}
+            />
+         }
       />
    )
 })

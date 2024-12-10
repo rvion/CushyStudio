@@ -69,15 +69,20 @@ export const MenuItem = observerWC(
       return (
          <Frame
             loading={loading ?? isExecuting}
-            text={{ contrast: isDisabled ? 0.5 : 1 }}
             base={{
                contrast: active ? 0.1 : 0,
                chroma: active ? 0.1 : undefined,
             }}
-            // hover={{ contrast: 0.15, chroma: 0.2, hueShift: 180 }}
+            disabled={isDisabled}
             hover={15}
             onClick={async (ev) => {
-               // ev.preventDefault()
+               if (isDisabled) {
+                  // Prevent closing pop-up on click if disabled
+                  ev.preventDefault()
+                  ev.stopPropagation()
+                  return
+               }
+
                if (stopPropagation) ev.stopPropagation()
                setExecuting(true)
                const res = await onClick?.(ev)

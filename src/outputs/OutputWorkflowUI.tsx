@@ -21,6 +21,7 @@ export const OutputWorkflowPreviewUI = observer(function OutputWorkflowUI_(p: {
 
       <RevealUI
          className='item-center size-full justify-center'
+         trigger={'rightClick'}
          content={() => (
             <ul tabIndex={0} tw='menu dropdown-content rounded-box z-[1]  shadow'>
                {/* <ImageDropdownMenuUI img={image} /> */}
@@ -52,9 +53,10 @@ export const OutputWorkflowPreviewUI = observer(function OutputWorkflowUI_(p: {
          )}
       >
          <Frame //
-            border={10}
-            icon='mdiGraph'
-            iconSize='100%'
+            square
+            icon='cdiNodes'
+            iconSize='80%'
+            tooltip='Workflow'
          />
       </RevealUI>
    )

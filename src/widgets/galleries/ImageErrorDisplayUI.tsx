@@ -1,25 +1,30 @@
+import type { IconName } from '../../csuite/icons/icons'
+
 import { observer } from 'mobx-react-lite'
+
+import { Frame } from '../../csuite/frame/Frame'
+import { IkonOf } from '../../csuite/icons/iconHelpers'
 
 export const ImageErrorDisplayUI = observer(function ImageErrorDisplayUI_(p: {
    className?: string
-   icon: string
+   icon: IconName
    size?: string
 }) {
+   const theme = cushy.preferences.theme.value
+
    return (
-      <div
+      <Frame
          className={p.className}
-         tw='border-error bg-error/5 text-error pointer-events-none relative flex h-full w-full select-none flex-col items-center justify-center rounded border border-dotted'
+         tw='h-full w-full select-none flex-col items-center justify-center !border-dotted text-center'
+         roundness={theme.inputRoundness}
+         border={{ lightness: 0.8, chroma: 0.1, hue: 0 }}
+         base={{ chroma: 0.1, hue: 0 }}
+         square
       >
-         <div tw='relative flex text-sm' style={{ fontSize: p.size ?? 'inherit' }}>
-            <span className='material-symbols-outlined'>scan_delete</span>
-         </div>
-         <div tw='absolute right-0 top-0 -translate-x-0.5 translate-y-0.5' style={{ fontSize: '0px' }}>
-            {p.icon && (
-               <span className='material-symbols-outlined' style={{ fontSize: '12px' }}>
-                  {p.icon}
-               </span>
-            )}
-         </div>
-      </div>
+         <Frame square icon='mdiFileAlert' iconSize='80%' />
+         <Frame tw='absolute right-0 top-0 -translate-x-0.5 translate-y-0.5 opacity-80'>
+            {p.icon && <IkonOf name={p.icon} />}
+         </Frame>
+      </Frame>
    )
 })

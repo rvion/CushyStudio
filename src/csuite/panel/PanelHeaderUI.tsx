@@ -73,13 +73,16 @@ export const PanelHeaderUI = observer(function PanelHeader({
             tw={[
                //
                'sticky top-0 [z-index:999]',
-               extensibleHeight ? 'minh-widget shrink-0' : 'h-widget',
+               // extensibleHeight ? 'minh-widget shrink-0' : 'h-widget',
+               // (bird_d): Clamping instead of height, going to transition to working around h-input instead of forcing it. TODO:(bird_d/ui/theme/padding)
+               'line-clamp-1 py-0.5',
                'UI-PanelHeader',
                'CSHY-panel-header',
                'flex select-none gap-1',
                'overflow-auto',
                'items-center',
                // 'flex-wrap',
+               'flex-shrink-0',
             ]}
             onWheel={(event) => {
                event.currentTarget.scrollLeft += event.deltaY
