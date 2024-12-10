@@ -14,13 +14,12 @@ import { DEBUG_REVEAL } from './DEBUG_REVEAL'
 import { RevealCloseEvent } from './RevealCloseEvent'
 import { removeFromGlobalRevealStack } from './RevealGlobal'
 import { computePlacement, type RevealComputedPosition, type RevealPlacement } from './RevealPlacement'
+import { type RevealPresetName, revealPresets } from './RevealPresets'
 import {
    type RevealHideReason,
    type RevealHideTriggers,
    type RevealOpenReason,
    type RevealPreset,
-   type RevealPresetName,
-   revealPresets,
    type RevealProps,
    type RevealShowTriggers,
 } from './RevealProps'
@@ -722,8 +721,7 @@ export class RevealState {
          )
             return // 🔶 tab should not close popups
 
-         // 🔶 todo: proper "if shouldHideOnTab"...
-         this.close(reason)
+         if (this.hideTriggers.tabKey) this.close(reason)
          // 🔴 if in grid context, do not stop propagation and do not focusNextElement so the grid focus the next cell (which have tabIndex=-1) itself
          // (or maybe call .selectCell ourselves to keep the grid selection in sync with our own?)
          // see ev.preventGridDefault() in https://github.com/adazzle/react-data-grid/blob/main/website/demos/CellNavigation.tsx#L136
