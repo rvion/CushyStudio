@@ -83,6 +83,7 @@ export class BuilderString<Schemaᐸ_ᐳ extends SchemaAndAliasesᐸ_ᐳ> extend
          innerIcon: 'mdiEmailOutline',
          normalize: (v) => v?.toLowerCase()?.trim(),
          inputType: inputType ?? 'email',
+         minLength: 1,
          check: (v) => {
             const configuredError = config.check?.(v)
             if (configuredError) return configuredError

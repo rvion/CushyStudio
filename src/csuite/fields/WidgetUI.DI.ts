@@ -13,6 +13,7 @@ import type { Field_bool, Field_bool_serial } from './bool/FieldBool'
 import type { Field_button_serial } from './button/FieldButton'
 import type { Field_choices, Field_choices_serial } from './choices/FieldChoices'
 import type { Field_date, Field_date_serial } from './date/FieldDate'
+import type { Field_dynamic } from './dynamic/FieldDynamic'
 import type { Field_group, Field_group_serial } from './group/FieldGroup'
 import type { Field_link, Field_link_serial } from './link/FieldLink'
 import type { Field_list, Field_list_serial } from './list/FieldList'
@@ -39,6 +40,7 @@ export const getFieldClass = (fieldType: string): unknown => {
 
 export const getFieldOptionalClass = (): typeof Field_optional => getFieldClass('optional') as any
 export const getFieldLinkClass = (): typeof Field_link<any, any> => getFieldClass('link') as any
+export const getFieldDynamicClass = (): typeof Field_dynamic<any> => getFieldClass('dynamic') as any
 export const getFieldSharedClass = (): typeof Field_shared => getFieldClass('shared') as any
 export const getFieldGroupClass = (): typeof Field_group<any> => getFieldClass('group') as any
 export const getFieldStringClass = (): typeof Field_string => getFieldClass('str') as any
@@ -59,6 +61,7 @@ export const registerFieldClass = <T extends { $Type: string }>(
 // in conditional when instance of is used with a ctor stored in a dictionary
 export const isFieldOptional = _checkIfIs<Field_optional>('optional')
 export const isFieldLink = _checkIfIs<Field_link<any, any>>('link')
+export const isFieldDynamic = _checkIfIs<Field_dynamic<any>>('dynamic')
 export const isFieldShared = _checkIfIs<Field_shared>('shared')
 export const isFieldGroup = _checkIfIs<Field_group<any>>('group')
 export const isFieldString = _checkIfIs<Field_string>('str')

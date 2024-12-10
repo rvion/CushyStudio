@@ -4,7 +4,16 @@ import { simpleBuilder } from '../SimpleFactory'
 
 // #region test case
 const b = simpleBuilder
-const makeDoc = (): any => {
+const makeDoc = (): S.SGroup<{
+   a: S.SString
+   b: S.SString
+   arr: S.SList<
+      S.SGroup<{
+         x: S.SString
+         y: S.SNumber
+      }>
+   >
+}> => {
    return b.fields({
       a: b.string(),
       b: b.string(),
@@ -20,17 +29,18 @@ const makeDoc = (): any => {
 const bench = new Bench({ time: 1000 })
 const schema1 = makeDoc().withConfig({
    instanciationOption: {
-      skipMobx: true,
-      skipMobxAutoBind: true,
+      // skipMobx: true,
+      // skipMobxAutoBind: true,
+      altMobx: true,
    },
 })
 const schema2 = makeDoc()
 
 bench
-   .add('faster task', () => {
+   .add('field (altMobx)', () => {
       schema1.create()
    })
-   .add('slower task', () => {
+   .add('field', () => {
       schema2.create()
    })
    .todo('unimplemented bench')

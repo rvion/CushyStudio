@@ -10,6 +10,7 @@ import type { CovariantFC } from '../variance/CovariantFC'
 import type { FieldTypes } from './$FieldTypes'
 import type { BaseSchema } from './BaseSchema'
 import type { DraftLike } from './Draft'
+import type { AnyFieldSerial } from './EntitySerial'
 import type { FieldConstructor_ViaClass, SerialMigrationFunction, UNVALIDATED } from './FieldConstructor'
 import type { FieldId } from './FieldId'
 import type { FieldSerial } from './FieldSerial'
@@ -44,6 +45,8 @@ import { WidgetLabelContainerUI } from '../form/WidgetLabelContainerUI'
 import { WidgetLabelIconUI } from '../form/WidgetLabelIconUI'
 import { WidgetToggleUI } from '../form/WidgetToggleUI'
 import { hashJSONObjectToNumber } from '../hashUtils/hash'
+import { type FieldAnomaly } from '../migration/Anomaly'
+import { type AnomalyMixin, AnomalyMixinDescriptors } from '../migration/Anomaly.mixin'
 import { annotationsSymbol, makeAutoObservableInheritance } from '../mobx/mobx-store-inheritance'
 import { type SelectorMixin, SelectorMixinDescriptors } from '../selector/selector.mixin'
 import { SimpleSchema } from '../simple/SimpleSchema'
@@ -53,6 +56,7 @@ import { $FieldSym } from './$FieldSym'
 import { autofixSerial_20240703 } from './autofix/autofixSerial_20240703'
 import { autofixSerial_20240711 } from './autofix/autofixSerial_20240711'
 import { mkNewFieldId } from './FieldId'
+import { type TraversalMixin, TraversalMixinDescriptors } from './FieldTraversal.mixin'
 import { __ERROR, __OK, type Result } from './Result'
 import { TreeEntry_Field } from './TreeEntry_Field'
 import { normalizeProblem } from './Validation'
@@ -137,71 +141,6 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
 
    /** wiget serial is the full serialized representation of that widget  */
    serial: K['$Serial']
-
-   /** @since 2024-10-07 */
-   traverse(
-      fn: (c: Field) => void,
-      p: {
-         /** default to depth-first (les memory usage, usually more logical) */
-         order?: 'depth-first' | 'breadth-first'
-
-         /* default to 'active */
-         cover?: 'active' | 'all'
-      },
-   ): void {
-      if (p.order === 'depth-first' && p.cover === 'active') return this.traverseDepthFirst(fn)
-      if (p.order === 'breadth-first' && p.cover === 'active') return this.traverseBreadthFirst(fn)
-      if (p.order === 'depth-first' && p.cover === 'all') return this.traverseAllDepthFirst(fn)
-      if (p.order === 'breadth-first' && p.cover === 'all') return this.traverseAlltraverseBreadthFirst(fn)
-      return this.traverseDepthFirst(fn)
-   }
-
-   /** @since 2024-10-07 */
-   traverseDepthFirst(fn: (c: Field) => 'stop' | void): void {
-      runInAction((): void => {
-         const shouldEnterChildren = fn(this)
-         if (shouldEnterChildren === 'stop') return
-         for (const child of this.childrenActive) {
-            child.traverseDepthFirst(fn)
-         }
-      })
-   }
-
-   /** @since 2024-10-07 */
-   traverseAllDepthFirst(fn: (c: Field) => 'stop' | void): void {
-      runInAction((): void => {
-         const shouldEnterChildren = fn(this)
-         if (shouldEnterChildren === 'stop') return
-         for (const child of this.childrenAll) {
-            child.traverseAllDepthFirst(fn)
-         }
-      })
-   }
-
-   /** @since 2024-10-07 */
-   traverseBreadthFirst(fn: (c: Field) => 'stop' | void): void {
-      runInAction((): void => {
-         const queue: Field[] = [this]
-         while (queue.length > 0) {
-            const current = queue.shift()!
-            const shouldEnterChildren = fn(current)
-            if (shouldEnterChildren === 'stop') return
-            queue.push(...current.childrenActive)
-         }
-      })
-   }
-   /** @since 2024-10-07 */
-   traverseAlltraverseBreadthFirst(fn: (c: Field) => 'stop' | void): void {
-      runInAction((): void => {
-         const queue: Field[] = [this]
-         while (queue.length > 0) {
-            const current = queue.shift()!
-            const shouldEnterChildren = fn(current)
-            if (shouldEnterChildren === 'stop') return
-            queue.push(...current.childrenAll)
-         }
-      })
-   }
 
    /**
     * singleton repository for the project
@@ -547,12 +486,14 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
       }
 
       // #region 3. run the static migrateSerial function from field
+      // 🔶 this is probably wrong; and we probably need to get rid of it sooner than later.
       if (!wasNull) {
          const newSerial = this._migrateSerial(serial)
          if (newSerial != null) serial = newSerial
       }
 
       // #region 4. Legacy (🔴!) run the heuristic migration function
+      // 🔶 this is probably wrong; and we probably need to get rid of it sooner than later.
       // TODO: dispatch to various migrateSerial functions within fields themselves
       if (isProbablySomeFieldSerial(serial) && serial.$ !== this.type) {
          // ADDING LIST
@@ -590,6 +531,7 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
       }
 
       // #region 5. Legacy (🔴!) migration system
+      // 🔶 this is probably wrong; and we probably need to get rid of it sooner than later.
       if (this.config.beforeInit != null) {
          const oldVersion = (serial as any)._version ?? 'default'
          const newVersion = this.config.version ?? 'default'
@@ -610,6 +552,19 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
          console.log(`[🔶] INVALID SERIAL (expected: ${this.type}, got: ${serial.$})`)
          console.log(`[🔶] INVALID SERIAL:`, JSON.stringify(serial))
          serial = this._emptySerial // ❌
+         const anomaly: FieldAnomaly = {
+            type: 'invalid-serial',
+            date: Date.now(),
+            path: this.path,
+            pathExt: this.pathExt,
+            got: serialish as AnyFieldSerial,
+         }
+         if (this.root !== this) {
+            this.root.addAnomaly(anomaly)
+            serial = this._emptySerial
+         } else {
+            serial = { ...this._emptySerial /* ❌ */, anomalies: [anomaly] }
+         }
       }
 
       // #region 8. final validation
@@ -638,8 +593,9 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
    // }
 
    /** unified api to allow setting serial from value */
-   setValue(val: K['$Value']): void {
+   setValue(val: K['$Value']): this {
       this.value = val
+      return this
    }
 
    RECONCILE<SCHEMA extends Instanciable>(p: {
@@ -683,13 +639,6 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
    /** default body UI */
    // abstract readonly DefaultBodyUI: CovariantFC<{ field: K['$Field'] }> | undefined
    abstract readonly DefaultBodyUI: CovariantFC<{ field: UNSAFE_AnyField }> | undefined
-
-   UIToggle: FC<{ className?: string }> = (p) => <WidgetToggleUI field={this} {...p} />
-   UILabelIcon: ProplessFC = () => <WidgetLabelIconUI field={this} />
-   UILabelContainer: FC<WidgetLabelContainerProps> = (p) => <WidgetLabelContainerUI {...p} />
-   UIHeaderContainer: FC<{ children: ReactNode }> = (p) => (
-      <WidgetHeaderContainerUI field={this}>{p.children}</WidgetHeaderContainerUI>
-   )
 
    // #region UI HELPERS
    /** @deprecated with the new UI system */
@@ -763,6 +712,10 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
       throw new Error(
          `(${this.type}@'${this.path}').setOff: (${parent?.type} is not [optional, choice, choices, list]`,
       )
+   }
+
+   get isDisabledWithinParent(): boolean {
+      return !this.isEnabledWithinParent
    }
 
    get isEnabledWithinParent(): boolean {
@@ -1181,7 +1134,7 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
     * @category Validation
     */
    get allErrorsIncludingChildrenErrors(): Problem[] {
-      const subErrs = this.childrenAll.flatMap((f) => f.allErrorsIncludingChildrenErrors)
+      const subErrs = this.childrenActive.flatMap((f) => f.allErrorsIncludingChildrenErrors)
       const errs = this.ownErrors.concat(subErrs)
       if (!this.isSet) errs.push({ message: `Field ${this.path}(${this.type}) is not set` })
       return errs
@@ -1189,7 +1142,7 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
 
    /**
     * getter to retrieve the errors from the `check` function in the config.
-    * ONLY returns errros from the `check` config
+    * ONLY returns errors from the `check` config
     *
     * 🔶 TODO: rename to "...."
     *
@@ -1738,12 +1691,6 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
                   schema: false,
                   serial: observable.ref,
 
-                  // components should not be observable; otherwise, it breaks the hot reload in dev-mode
-                  UIToggle: false,
-                  UILabelIcon: false,
-                  UILabelContainer: false,
-                  UIHeaderContainer: false,
-
                   // overrides retrieved from parents
                   ...mobxOverrides,
 
@@ -1900,3 +1847,9 @@ function isEmptyObject(obj: any): boolean {
 
 export interface Field<out K extends FieldTypes = FieldTypes> extends SelectorMixin {}
 Object.defineProperties(Field.prototype, SelectorMixinDescriptors)
+
+export interface Field<out K extends FieldTypes = FieldTypes> extends AnomalyMixin {}
+Object.defineProperties(Field.prototype, AnomalyMixinDescriptors)
+
+export interface Field<out K extends FieldTypes = FieldTypes> extends TraversalMixin {}
+Object.defineProperties(Field.prototype, TraversalMixinDescriptors)

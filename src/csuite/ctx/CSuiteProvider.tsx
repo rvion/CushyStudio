@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite'
 import { type CSSProperties, type ReactNode } from 'react'
 
 import { Frame } from '../frame/Frame'
+import { CSuite_CSS_Variables } from './CSuite_CSS_Variables'
 import { CSuiteCtx } from './CSuiteCtx'
 
 /**
@@ -12,8 +13,6 @@ import { CSuiteCtx } from './CSuiteCtx'
  * (color, ...)
  * */
 export const CSuiteProvider = observer(function CSuiteProvider_(p: {
-   //
-
    children: ReactNode
    config: CSuiteConfig
    className?: string
@@ -27,18 +26,7 @@ export const CSuiteProvider = observer(function CSuiteProvider_(p: {
             tw='h-full w-full flex-1'
             base={config.base}
             text={config.text}
-            style={{
-               // @ts-expect-error 🔴
-               '--KLR': config.baseStr,
-               '--DIR': config.shiftDirection,
-               '--roundness': '5px',
-               // sizes
-               '--widget-height': `${config.widgetHeight}rem`,
-               '--input-height': `${config.inputHeight}rem`,
-               '--inside-height': `${config.insideHeight}rem`, // TEMP
-               // legacy ? change to inside ?
-               '--input-icon-height': `${config.inputHeight / 1.8}rem`,
-            }}
+            style={CSuite_CSS_Variables(config)}
          >
             {p.children}
          </Frame>

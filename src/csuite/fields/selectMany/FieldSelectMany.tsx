@@ -66,7 +66,7 @@ export type Field_selectMany_config<
       }
       selectAll?: (self: Field_selectMany<VALUE, KEY>) => void
       getIdFromValue: (t: VALUE) => KEY
-      getValueFromId: (t: KEY) => Maybe<VALUE>
+      getValueFromId: (t: KEY, field: Field_selectMany<VALUE, KEY>) => Maybe<VALUE>
       getOptionFromId: (t: KEY, field: Field_selectMany<VALUE, KEY>) => Maybe<SelectOption<VALUE, KEY>>
       /** set this to true if your choices are dynamically generated from the query directly, to disable local filtering */
       disableLocalFiltering?: boolean
@@ -450,6 +450,7 @@ export class Field_selectMany<
             if (prop === 'concat') return (...args: any[]) => this.selectedValues.concat(...args)
             if (prop === 'slice') return (...args: [any, any]) => this.selectedValues.slice(...args)
             if (prop === 'filter') return (...args: [any, any]) => this.selectedValues.filter(...args)
+            if (prop === 'some') return (...args: [any, any]) => this.selectedValues.some(...args)
             if (prop === 'sort') return (...args: [any]) => this.selectedValues.sort(...args)
             if (prop === 'join') return (...args: [any]) => this.selectedValues.join(...args)
             if (prop === 'toSorted') return (...args: [any]) => this.selectedValues.toSorted(...args)
@@ -538,7 +539,7 @@ export class Field_selectMany<
    }
 
    // see FieldSelectOne.getValueFromId notes
-   getValueFromId = (id: KEY): Maybe<VALUE> => this.config.getValueFromId(id)
+   getValueFromId = (id: KEY): Maybe<VALUE> => this.config.getValueFromId(id, this)
    getOptionFromId = (id: KEY): Maybe<SelectOption<VALUE, KEY>> => this.config.getOptionFromId(id, this)
 
    private get selectedValues(): VALUE[] {

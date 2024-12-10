@@ -134,6 +134,24 @@ export class BuilderSelectMany<Schemaᐸ_ᐳ extends SchemaAndAliasesᐸ_ᐳ> ex
       })
    }
 
+   selectManyOptionsFn<const O extends SelectOptionNoVal<string>>(
+      optionsFn: (self: Field_selectMany<O, O['id']>) => readonly O[],
+      config: Field_selectMany_config_simplified<O, O['id']> = {},
+   ): Apply<Schemaᐸ_ᐳ['Many'], O, O['id']> {
+      return this.selectMany<O, O['id']>({
+         choices: (self) => optionsFn(self).map((c) => c.id),
+         getIdFromValue: (v) => v.id,
+         getValueFromId: (id, self) => optionsFn(self).find((c) => c.id === id) ?? null,
+         getOptionFromId: (id, self): Maybe<SelectOption<O, O['id']>> => {
+            const options = optionsFn(self)
+            const option = options.find((c) => c.id === id)
+            if (!option) return null
+            return { id: option.id, label: option.label ?? option.id, value: option, hue: option.hue }
+         },
+         ...config,
+      })
+   }
+
    /**
     * @since 2024-08-26
     * value is the option id (`option.id`)

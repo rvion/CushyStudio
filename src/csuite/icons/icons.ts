@@ -50,13 +50,6 @@ export const allIcons = {
 // > T[number] is not a naked type parameter, so no distribution. Elem is a naked type parameter in the second type, so distribution occurs.
 export type IconName = [keyof typeof allIcons][0]
 
-export type IdLabelIcon = {
-   id: string
-   label?: string
-   icon?: IconName
-   hue?: number
-}
-
 export function isValidIconName(icon: string): icon is IconName {
    return icon in allIcons
 }

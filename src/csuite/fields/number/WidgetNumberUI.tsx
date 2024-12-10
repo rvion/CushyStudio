@@ -12,7 +12,7 @@ export const WidgetNumberUI = observer(function WidgetNumberUI_(p: { field: Fiel
 
    return (
       <InputNumberUI
-         mode={mode}
+         mode={mode === 'int' ? 'int' : 'float'}
          value={value}
          hideSlider={field.config.hideSlider}
          max={field.config.max}

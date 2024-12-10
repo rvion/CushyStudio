@@ -109,7 +109,7 @@ export const Frame = observer(
             container, row, line, col, wrap,                    // layout
 
             hovered: hovered__,                                 // state
-            onMouseDown, onMouseEnter, onClick, triggerOnPress, // interractions
+            onMouseDown, onMouseEnter, onClick, triggerOnPress, // interactions
             tooltip, tooltipPlacement,
 
             noColorStuff: noColorStuff__,

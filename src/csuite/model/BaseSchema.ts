@@ -13,6 +13,7 @@ import type { Result } from './Result'
 import type { ValidationError } from './ValidationError'
 
 import { reaction } from 'mobx'
+import { nanoid } from 'nanoid'
 
 import { getFieldLinkClass, getFieldListClass, getFieldOptionalClass } from '../fields/WidgetUI.DI'
 import { objectAssignTsEfficient_t_pt } from '../utils/objectAssignTsEfficient'
@@ -50,6 +51,13 @@ export class BaseSchema<
 > {
    codegenValueType(): string {
       return this.fieldConstructor.codegenValueType(this.config)
+   }
+
+   /** is not stable; but should be hopefully */
+   uid = nanoid()
+   withUID(uid: string): this {
+      this.uid = uid
+      return this
    }
 
    /** untyped so the schema remains covariant over Field */

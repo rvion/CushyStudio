@@ -22,6 +22,7 @@ export const WidgetSelectMany_SelectUI = observer(function WidgetSelectMany_Sele
    return (
       <div tw='flex w-full flex-1 gap-1'>
          <SelectUI<OPTION>
+            hasErrors={p.field.mustDisplayErrors}
             multiple
             wrap={field.wrap}
             tw={[
@@ -52,7 +53,7 @@ export const WidgetSelectMany_SelectUI = observer(function WidgetSelectMany_Sele
             onCleared={
                field.canBeToggledWithinParent &&
                // 🔴 ARE THOSE TRHE CONDITIONS BELOW CORRECT ?
-               !field.isInsideDisabledBranch &&
+               field.isEnabledWithinParent &&
                !field.config.readonly &&
                !field.parent?.config.readonly
                   ? (): void => {

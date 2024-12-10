@@ -5,18 +5,19 @@ import type { AutoCompleteSelectState } from './SelectState'
 import { observer } from 'mobx-react-lite'
 import { FixedSizeList } from 'react-window'
 
+import { csuiteConfig } from '../config/configureCsuite'
 import { Frame } from '../frame/Frame'
 import { InputStringUI } from '../input-string/InputStringUI'
 import { SelectAllNoneUI } from './SelectAllNoneUI'
 import { SelectOptionUI } from './SelectOptionUI'
 import { SelectOptionUI_FixedList } from './SelectOptionUI_FixedList'
 
-const trueMinWidth: "20rem" = '20rem'
+const trueMinWidth: '20rem' = '20rem'
 
 export type SelectPopupProps<OPTION> = {
    reveal: RevealState
    selectState: AutoCompleteSelectState<OPTION>
-   createOption?: Pick<SelectProps<OPTION>, 'createOption'>
+   createOption: SelectProps<OPTION>['createOption']
 }
 
 export const SelectPopupUI = observer(function SelectPopupUI_<OPTION>(p: SelectPopupProps<OPTION>) {
@@ -90,8 +91,23 @@ export const SelectPopupUI = observer(function SelectPopupUI_<OPTION>(p: SelectP
 
          {/* No results */}
          {select.filteredOptions.length === 0 //
-            ? // select.p.slotPlaceholderWhenNoResults ?? <span className='h-input text-base px-2'>Aucun résultat</span>
-              (select.p.slotPlaceholderWhenNoResults ?? <li className='h-input text-base'>No results</li>)
+            ? (select.p.slotPlaceholderWhenNoResults ?? (
+                 <span className='h-input gap-1 px-2 text-base'>
+                    {csuiteConfig.i18n.ui.select.noResults}
+                    {p.createOption != null && p.createOption.isActive !== false && (
+                       <>
+                          {' '}
+                          -{' '}
+                          <button
+                             tw='inline border-none bg-transparent text-base text-sky-700 hover:text-sky-700 hover:underline'
+                             onClick={() => select.createOption()}
+                          >
+                             {p.createOption.label ?? csuiteConfig.i18n.ui.select.create}
+                          </button>
+                       </>
+                    )}
+                 </span>
+              ))
             : null}
 
          {select.p.slotResultsListUI != null ? (
@@ -120,30 +136,32 @@ export const SelectPopupUI = observer(function SelectPopupUI_<OPTION>(p: SelectP
                </>
             )
          ) : (
-            <>
-               {showSelectAll && <SelectAllNoneUI tw='mt-2' state={select} />}
-               <Frame col tw='max-h-96 pb-1 pt-2'>
-                  {select.filteredOptions.map((option, index) =>
-                     select.p.slotOptionUI != null ? (
-                        <select.p.slotOptionUI //
-                           key={select.getKey(option)}
-                           index={index}
-                           option={option}
-                           state={select}
-                           reveal={p.reveal}
-                        />
-                     ) : (
-                        <SelectOptionUI<OPTION> //
-                           key={select.getKey(option)}
-                           index={index}
-                           reveal={p.reveal}
-                           option={option}
-                           state={select}
-                        />
-                     ),
-                  )}
-               </Frame>
-            </>
+            select.filteredOptions.length !== 0 && (
+               <>
+                  {showSelectAll && <SelectAllNoneUI tw='mt-2' state={select} />}
+                  <Frame col tw='max-h-96 pb-1 pt-2'>
+                     {select.filteredOptions.map((option, index) =>
+                        select.p.slotOptionUI != null ? (
+                           <select.p.slotOptionUI //
+                              key={select.getKey(option)}
+                              index={index}
+                              option={option}
+                              state={select}
+                              reveal={p.reveal}
+                           />
+                        ) : (
+                           <SelectOptionUI<OPTION> //
+                              key={select.getKey(option)}
+                              index={index}
+                              reveal={p.reveal}
+                              option={option}
+                              state={select}
+                           />
+                        ),
+                     )}
+                  </Frame>
+               </>
+            )
          )}
       </div>
    )

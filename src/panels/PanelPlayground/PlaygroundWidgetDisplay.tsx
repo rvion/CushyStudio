@@ -118,10 +118,6 @@ const useDoc = (): Field<any> => {
             }),
          }
 
-         const groupForm = {
-            test: b.group(),
-         }
-
          const choiceForm = {
             choice: b.choice(
                { choiceOne: b.group(), choiceTwo: b.group(), choiceThree: b.group() },
@@ -134,18 +130,29 @@ const useDoc = (): Field<any> => {
          }
 
          return b.fields({
+            manyOf: b.fields({
+               selectMany: b.selectManyStrings([
+                  'one',
+                  'two',
+                  'three',
+                  'four',
+                  'five',
+                  'six',
+                  'seven',
+                  'eight',
+                  'nine',
+                  'ten',
+               ]),
+               selectManyErr: b.selectManyStrings(
+                  ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'],
+                  { default: 'WRONG' },
+               ),
+            }),
             boolean: b.group({
                startCollapsed: true,
                items: {
-                  aligned: b.group({
-                     border: false,
-                     items: booleanForm,
-                  }),
-                  notAligned: b.group({
-                     border: false,
-                     justifyLabel: false,
-                     items: booleanForm,
-                  }),
+                  aligned: b.group({ border: false, items: booleanForm }),
+                  notAligned: b.group({ border: false, justifyLabel: false, items: booleanForm }),
                },
             }),
             string: b.group({

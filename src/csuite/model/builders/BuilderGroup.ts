@@ -21,7 +21,7 @@ export class BuilderGroup<Schemaᐸ_ᐳ extends SchemaAndAliasesᐸ_ᐳ> extends
    }
 
    fields<T extends SchemaDict>(
-      items: T,
+      items: T | (() => T),
       config: Omit<Field_group_config<Field_group_types<T>>, 'items'> = {},
    ): Apply<Schemaᐸ_ᐳ['Group'], T> {
       return this.group({ items, ...config })

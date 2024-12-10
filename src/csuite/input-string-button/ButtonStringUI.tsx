@@ -23,7 +23,7 @@ export const ButtonStringUI = observer(
       return (
          <RevealUI
             trigger={['doubleClick', 'rightClick']}
-            placement='above-no-clamp'
+            placement='above-no-max-size'
             content={(p) => (
                <InputStringUI //
                   autoFocus

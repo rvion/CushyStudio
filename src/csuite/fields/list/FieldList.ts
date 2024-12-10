@@ -203,7 +203,7 @@ export class Field_list<T extends BaseSchema> //
       return this.items.map((field, ix) => ({ key: ix.toString(), field }))
    }
 
-   private schemaAt(ix: number): T {
+   schemaAt(ix: number): T {
       const _schema = this.config.element
       const schema: T =
          typeof _schema === 'function' //

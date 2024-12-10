@@ -313,11 +313,14 @@ export class AutoCompleteSelectState<OPTION> {
       this.revealState?.log(`_ SelectSate toggleOption`)
       const onOptionToggled = this.p.onOptionToggled ?? this.p.onChange
       onOptionToggled?.(option, this)
+
       // reset the query
       const shouldResetQuery = this.p.resetQueryOnPick ?? true // !this.isMultiSelect // 🚂 default was false
       if (shouldResetQuery) this.searchQuery = ''
-      // close the menu
-      this.closeIfShouldCloseAfterSelection()
+
+      // close the menu (only if the selection actually happened)
+      const isCurrentlySelected = this.isOptionSelected(option)
+      if (!isCurrentlySelected) this.closeIfShouldCloseAfterSelection()
    }
 
    async createOption(): Promise<void> {

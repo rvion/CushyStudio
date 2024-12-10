@@ -9,7 +9,13 @@ export type RevealPlacement =
     * will clamp the revealed content above the dom of the given element.
     */
    | 'above'
-   | 'above-no-clamp'
+   | 'above-no-max-size'
+   | 'above-no-min-size'
+   | 'above-no-min-no-max-size'
+
+   // cover is a bit like 'above', but slightly broken...
+   | 'cover'
+   | 'cover-no-min-size'
 
    // absolute placement ---------------------------------------------------------
    | 'screen'
@@ -32,7 +38,6 @@ export type RevealPlacement =
    | 'leftEnd'
    | 'rightStart'
    | 'rightEnd'
-   | 'cover'
    // ------------------------------
    | 'auto' // to-do: fix (currently behave like autoVertical)
    // ----------------------------
@@ -144,13 +149,26 @@ export const computePlacement = (
       }
    }
 
-   if (placement === 'above-no-clamp') {
+   if (placement === 'above-no-max-size') {
       return {
          top: anchor.top,
          left: anchor.left,
-         // TODO: review those two lines below:
          minWidth: anchor.width,
          minHeight: anchor.height,
+      }
+   }
+   if (placement === 'above-no-min-size') {
+      return {
+         top: anchor.top,
+         left: anchor.left,
+         maxWidth: anchor.width,
+         maxHeight: anchor.height,
+      }
+   }
+   if (placement === 'above-no-min-no-max-size') {
+      return {
+         top: anchor.top,
+         left: anchor.left,
       }
    }
    // AUTO ========================================================================================
@@ -424,6 +442,21 @@ export const computePlacement = (
          left: anchor.left - 1,
          maxWidth: `calc(100vw - ${anchor.left + WINDOW_PADDING}px)`, //
          maxHeight: `calc(98vh - ${anchor.top + WINDOW_PADDING}px)`,
+      }
+
+   // |--------------------|
+   // |                    |
+   // |      [XXXXX]       |
+   // |                    |
+   // |--------------------|
+   if (placement == 'cover-no-min-size')
+      return {
+         top: anchor.top - 1, // 🔴 -1 due to shell border, does not belongs here though
+         left: anchor.left - 1,
+         maxWidth: `calc(100vw - ${anchor.left + WINDOW_PADDING}px)`, //
+         maxHeight: `calc(98vh - ${anchor.top + WINDOW_PADDING}px)`,
+         // minWidth: anchor.width,
+         // minHeight: anchor.height,
       }
 
    if (placement == 'autoVerticalStartFixedSize') {
