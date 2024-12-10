@@ -25,33 +25,6 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
       this.builder = builder
    }
 
-   // /**
-   //  * LEGACY API; TYPES ARE COMPLICATED DUE TO MAINTAINING BACKWARD COMPAT
-   //  * @deprecated
-   //  */
-   // fields<FIELDS extends SchemaDict>(
-   //     schemaExt: (form: BUILDER) => FIELDS,
-   //     entityConfig: EntityConfig<BaseSchema<Field_group<NoInfer<FIELDS>>>> = { name: 'unnamed' },
-   // ): Field_group<FIELDS> {
-   //     const schema = this.builder.group({
-   //         label: false,
-   //         items: schemaExt(this.builder),
-   //         collapsed: false,
-   //         onSerialChange: entityConfig.onSerialChange,
-   //         onValueChange: entityConfig.onValueChange,
-   //     })
-
-   //     // 👇 🔴 CALL CREATE INSTEAD
-   //     return (schema as any).instanciate(
-   //         //
-   //         this.repository,
-   //         null,
-   //         null,
-   //         '$',
-   //         entityConfig.serial?.(),
-   //     )
-   // }
-
    // #region Creation
    /** simple alias to create a new Document */
    document<SCHEMA extends BaseSchema>(
@@ -154,6 +127,25 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
       schemaExt: SCHEMA | ((form: BUILDER) => SCHEMA),
       deps: DependencyList = [],
    ): SCHEMA['$Field'] {
+      return this.useLocalstorage_persistOnlyWhen(key, schemaExt, () => true, deps)
+   }
+
+   /** simple way to defined forms and in react components */
+   useLocalstorage_persistOnlyWhenValid<SCHEMA extends BaseSchema>(
+      key: string,
+      schemaExt: SCHEMA | ((form: BUILDER) => SCHEMA),
+      deps: DependencyList = [],
+   ): SCHEMA['$Field'] {
+      return this.useLocalstorage_persistOnlyWhen(key, schemaExt, (doc) => doc.isValid, deps)
+   }
+
+   /** simple way to defined forms and in react components */
+   useLocalstorage_persistOnlyWhen<SCHEMA extends BaseSchema>(
+      key: string,
+      schemaExt: SCHEMA | ((form: BUILDER) => SCHEMA),
+      canPersistPredicate: (doc: SCHEMA['$Field']) => boolean,
+      deps: DependencyList = [],
+   ): SCHEMA['$Field'] {
       let serial: any = null
 
       try {
@@ -169,6 +161,7 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
          {
             serial: () => serial,
             onSerialChange: (root) => {
+               if (!canPersistPredicate(root)) return
                localStorage.setItem(key, JSON.stringify(root.serial))
             },
          },
