@@ -41,6 +41,7 @@ declare global {
          | 'enum'
          | 'image'
          | 'link'
+         | 'dynamic'
          | 'list'
          | 'markdown'
          | 'matrix'
