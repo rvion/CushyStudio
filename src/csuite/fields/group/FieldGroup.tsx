@@ -18,8 +18,15 @@ import { WidgetGroup_LineUI } from './WidgetGroup_Header'
 // #region Config
 export type Field_group_config<T extends Field_group_types<SchemaDict>> = FieldConfig<
    {
-      /** fields */
-      items?: T['$Sub']
+      /**
+       * lambdas allowed only for recursive fields;
+       *   => Don't use that to change the fields dynamically
+       *   => If you want a dynamic field, use a b.dynamic(() => b.group(...)) instead, so you can controll
+       *      how the field is re-instanciated when schema changes.
+       *      This is a very important concept to understand, and we don't want to pollute the group field
+       *      with the complexity of dynamic fields.
+       */
+      items?: T | (() => T)
 
       /** @default @false */
       presetButtons?: boolean
