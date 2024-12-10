@@ -40,6 +40,11 @@ export const SelectorMixinImpl = defineFieldMixin({
       return x
    },
 
+   // #region  all in one
+   selectAndExtract(selector: string): { fields: Field[]; values: any[] } {
+      return FieldSelector.from(selector).selectFrom(this)
+   },
+
    // #region quick checks
    contains(selector_: string | FieldSelector): boolean {
       const selector = FieldSelector.from(selector_)
