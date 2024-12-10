@@ -56,6 +56,7 @@ import { $FieldSym } from './$FieldSym'
 import { autofixSerial_20240703 } from './autofix/autofixSerial_20240703'
 import { autofixSerial_20240711 } from './autofix/autofixSerial_20240711'
 import { mkNewFieldId } from './FieldId'
+import { type TraversalMixin, TraversalMixinDescriptors } from './FieldTraversal.mixin'
 import { __ERROR, __OK, type Result } from './Result'
 import { TreeEntry_Field } from './TreeEntry_Field'
 import { normalizeProblem } from './Validation'
@@ -140,71 +141,6 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
 
    /** wiget serial is the full serialized representation of that widget  */
    serial: K['$Serial']
-
-   /** @since 2024-10-07 */
-   traverse(
-      fn: (c: Field) => void,
-      p: {
-         /** default to depth-first (les memory usage, usually more logical) */
-         order?: 'depth-first' | 'breadth-first'
-
-         /* default to 'active */
-         cover?: 'active' | 'all'
-      },
-   ): void {
-      if (p.order === 'depth-first' && p.cover === 'active') return this.traverseDepthFirst(fn)
-      if (p.order === 'breadth-first' && p.cover === 'active') return this.traverseBreadthFirst(fn)
-      if (p.order === 'depth-first' && p.cover === 'all') return this.traverseAllDepthFirst(fn)
-      if (p.order === 'breadth-first' && p.cover === 'all') return this.traverseAlltraverseBreadthFirst(fn)
-      return this.traverseDepthFirst(fn)
-   }
-
-   /** @since 2024-10-07 */
-   traverseDepthFirst(fn: (c: Field) => 'stop' | void): void {
-      runInAction((): void => {
-         const shouldEnterChildren = fn(this)
-         if (shouldEnterChildren === 'stop') return
-         for (const child of this.childrenActive) {
-            child.traverseDepthFirst(fn)
-         }
-      })
-   }
-
-   /** @since 2024-10-07 */
-   traverseAllDepthFirst(fn: (c: Field) => 'stop' | void): void {
-      runInAction((): void => {
-         const shouldEnterChildren = fn(this)
-         if (shouldEnterChildren === 'stop') return
-         for (const child of this.childrenAll) {
-            child.traverseAllDepthFirst(fn)
-         }
-      })
-   }
-
-   /** @since 2024-10-07 */
-   traverseBreadthFirst(fn: (c: Field) => 'stop' | void): void {
-      runInAction((): void => {
-         const queue: Field[] = [this]
-         while (queue.length > 0) {
-            const current = queue.shift()!
-            const shouldEnterChildren = fn(current)
-            if (shouldEnterChildren === 'stop') return
-            queue.push(...current.childrenActive)
-         }
-      })
-   }
-   /** @since 2024-10-07 */
-   traverseAlltraverseBreadthFirst(fn: (c: Field) => 'stop' | void): void {
-      runInAction((): void => {
-         const queue: Field[] = [this]
-         while (queue.length > 0) {
-            const current = queue.shift()!
-            const shouldEnterChildren = fn(current)
-            if (shouldEnterChildren === 'stop') return
-            queue.push(...current.childrenAll)
-         }
-      })
-   }
 
    /**
     * singleton repository for the project
@@ -1927,3 +1863,6 @@ Object.defineProperties(Field.prototype, SelectorMixinDescriptors)
 
 export interface Field<out K extends FieldTypes = FieldTypes> extends AnomalyMixin {}
 Object.defineProperties(Field.prototype, AnomalyMixinDescriptors)
+
+export interface Field<out K extends FieldTypes = FieldTypes> extends TraversalMixin {}
+Object.defineProperties(Field.prototype, TraversalMixinDescriptors)
