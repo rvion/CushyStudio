@@ -10,6 +10,7 @@ import type { CovariantFC } from '../variance/CovariantFC'
 import type { FieldTypes } from './$FieldTypes'
 import type { BaseSchema } from './BaseSchema'
 import type { DraftLike } from './Draft'
+import type { AnyFieldSerial } from './EntitySerial'
 import type { FieldConstructor_ViaClass, SerialMigrationFunction, UNVALIDATED } from './FieldConstructor'
 import type { FieldId } from './FieldId'
 import type { FieldSerial } from './FieldSerial'
@@ -44,6 +45,8 @@ import { WidgetLabelContainerUI } from '../form/WidgetLabelContainerUI'
 import { WidgetLabelIconUI } from '../form/WidgetLabelIconUI'
 import { WidgetToggleUI } from '../form/WidgetToggleUI'
 import { hashJSONObjectToNumber } from '../hashUtils/hash'
+import { type FieldAnomaly } from '../migration/Anomaly'
+import { type AnomalyMixin, AnomalyMixinDescriptors } from '../migration/Anomaly.mixin'
 import { annotationsSymbol, makeAutoObservableInheritance } from '../mobx/mobx-store-inheritance'
 import { type SelectorMixin, SelectorMixinDescriptors } from '../selector/selector.mixin'
 import { SimpleSchema } from '../simple/SimpleSchema'
@@ -547,12 +550,14 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
       }
 
       // #region 3. run the static migrateSerial function from field
+      // 🔶 this is probably wrong; and we probably need to get rid of it sooner than later.
       if (!wasNull) {
          const newSerial = this._migrateSerial(serial)
          if (newSerial != null) serial = newSerial
       }
 
       // #region 4. Legacy (🔴!) run the heuristic migration function
+      // 🔶 this is probably wrong; and we probably need to get rid of it sooner than later.
       // TODO: dispatch to various migrateSerial functions within fields themselves
       if (isProbablySomeFieldSerial(serial) && serial.$ !== this.type) {
          // ADDING LIST
@@ -590,6 +595,7 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
       }
 
       // #region 5. Legacy (🔴!) migration system
+      // 🔶 this is probably wrong; and we probably need to get rid of it sooner than later.
       if (this.config.beforeInit != null) {
          const oldVersion = (serial as any)._version ?? 'default'
          const newVersion = this.config.version ?? 'default'
@@ -610,6 +616,19 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
          console.log(`[🔶] INVALID SERIAL (expected: ${this.type}, got: ${serial.$})`)
          console.log(`[🔶] INVALID SERIAL:`, JSON.stringify(serial))
          serial = this._emptySerial // ❌
+         const anomaly: FieldAnomaly = {
+            type: 'invalid-serial',
+            date: Date.now(),
+            path: this.path,
+            pathExt: this.pathExt,
+            got: serialish as AnyFieldSerial,
+         }
+         if (this.root !== this) {
+            this.root.addAnomaly(anomaly)
+            serial = this._emptySerial
+         } else {
+            serial = { ...this._emptySerial /* ❌ */, anomalies: [anomaly] }
+         }
       }
 
       // #region 8. final validation
@@ -1905,3 +1924,6 @@ function isEmptyObject(obj: any): boolean {
 
 export interface Field<out K extends FieldTypes = FieldTypes> extends SelectorMixin {}
 Object.defineProperties(Field.prototype, SelectorMixinDescriptors)
+
+export interface Field<out K extends FieldTypes = FieldTypes> extends AnomalyMixin {}
+Object.defineProperties(Field.prototype, AnomalyMixinDescriptors)

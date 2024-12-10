@@ -1,3 +1,4 @@
+import type { FieldAnomaly } from '../migration/Anomaly'
 import type { FieldId } from './FieldId'
 
 /** helper to define widget serial types */
@@ -34,4 +35,6 @@ export type FieldSerial_CommonProperties = {
 
    /** may or may not be a good idea to add back :S */
    uid?: FieldId
+
+   anomalies?: FieldAnomaly[]
 }
