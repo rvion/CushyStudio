@@ -48,7 +48,7 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
          <PerspectivePickerUI tw='ml-auto' />
 
          <SpacerUI />
-         {/* <UpdateBtnUI updater={cushy.updater} /> */}
+         <UpdateBtnUI updater={cushy.updater} />
          <Frame line>
             <ConnectionInfoUI host={mainHost} />
             {/* <HostWebsocketIndicatorUI host={mainHost} /> */}

@@ -169,7 +169,7 @@ export class GitManagedFolder {
          // update values
          const defaultBranch = headBranchMatch // headBranchMatch[1]
          const headCommitsCount = await _getHeadCommitsCount('HEAD')
-         const originCommitsCount = await _getHeadCommitsCount(`origin/${defaultBranch}`)
+         const originCommitsCount = await _getHeadCommitsCount(`${this.activeRemoteName}/${defaultBranch}`)
 
          try {
             runInAction(() => {
