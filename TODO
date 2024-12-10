@@ -20,6 +20,8 @@ SHORT TERM TODO:
             I don't want to add those p-input-2, ... classes
         - need other name in 20241115_144643_gggdomi_d6cd16e_rename-configtostring
             toString  => ❌toString_, but 🟢 toSummary?, toText?, ...
+        - ....
+        - skip: 20241128_000225_gggdomi_d6cfc25_choice-widget-via-type-subfield
 
     ☐ paths: switche to / instead of .
 
