@@ -87,11 +87,7 @@ export class BuilderMisc<Schemaᐸ_ᐳ extends SchemaAndAliasesᐸ_ᐳ> extends 
    }
 
    pixel(config: Omit<Field_number_config, 'mode' | 'parse' | 'format'> = {}): Schemaᐸ_ᐳ['Number'] {
-      return this.buildSchema(Field_number, {
-         mode: 'int',
-         ...config,
-         unit: 'px',
-         suffix: 'px',
-      })
+      const finalConf: Field_number_config = { mode: 'int', ...config, unit: 'px', suffix: 'px' }
+      return this.buildSchema(Field_number, finalConf)
    }
 }
