@@ -3,6 +3,7 @@ import type { Field_optional } from './FieldOptional'
 
 import { observer } from 'mobx-react-lite'
 
+import { WidgetToggleUI } from '../../form/WidgetToggleUI'
 import { renderFCOrNode } from '../../utils/renderFCOrNode'
 
 export const ShellOptionalUI = observer(function ShellOptionalUI_(p: CompiledRenderProps<Field_optional>) {
@@ -13,7 +14,7 @@ export const ShellOptionalUI = observer(function ShellOptionalUI_(p: CompiledRen
       <child.UI //
          UpDownBtn={p.UpDownBtn}
          DeleteBtn={p.DeleteBtn}
-         Toogle={<child.UIToggle />}
+         Toogle={<WidgetToggleUI field={child} />}
          Title={(x) => renderFCOrNode(p.Title, { field: field })}
          classNameAroundBodyAndHeader={extraClass}
       />

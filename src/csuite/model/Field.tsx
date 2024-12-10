@@ -640,13 +640,6 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
    // abstract readonly DefaultBodyUI: CovariantFC<{ field: K['$Field'] }> | undefined
    abstract readonly DefaultBodyUI: CovariantFC<{ field: UNSAFE_AnyField }> | undefined
 
-   UIToggle: FC<{ className?: string }> = (p) => <WidgetToggleUI field={this} {...p} />
-   UILabelIcon: ProplessFC = () => <WidgetLabelIconUI field={this} />
-   UILabelContainer: FC<WidgetLabelContainerProps> = (p) => <WidgetLabelContainerUI {...p} />
-   UIHeaderContainer: FC<{ children: ReactNode }> = (p) => (
-      <WidgetHeaderContainerUI field={this}>{p.children}</WidgetHeaderContainerUI>
-   )
-
    // #region UI HELPERS
    /** @deprecated with the new UI system */
    get actualWidgetToDisplay(): Field {
@@ -1697,12 +1690,6 @@ export abstract class Field<out K extends FieldTypes = FieldTypes>
                   // schema should not be able
                   schema: false,
                   serial: observable.ref,
-
-                  // components should not be observable; otherwise, it breaks the hot reload in dev-mode
-                  UIToggle: false,
-                  UILabelIcon: false,
-                  UILabelContainer: false,
-                  UIHeaderContainer: false,
 
                   // overrides retrieved from parents
                   ...mobxOverrides,
