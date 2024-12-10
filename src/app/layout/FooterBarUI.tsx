@@ -37,7 +37,7 @@ export const FooterBarUI = observer(function FooterBarUI_(p: FrameProps) {
             <Button line tw='!px-0'>
                <Frame
                   //
-                  tw='px-1'
+                  tw='pl-1'
                   line
                   base={
                      cushy.updater.behindCount != 0 || cushy.updater.aheadCount != 0
@@ -73,7 +73,7 @@ export const FooterBarUI = observer(function FooterBarUI_(p: FrameProps) {
                <div>
                   {cushy.updater.activeRemoteName}/{cushy.updater.activeBranchName}
                </div>
-               <div tw='px-1 opacity-70'>{cushy.updater.activeCommitText}</div>
+               <div tw='pr-1 opacity-70'>{cushy.updater.activeCommitText}</div>
             </Button>
          </Frame>
       </Frame>
