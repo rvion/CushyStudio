@@ -17,7 +17,7 @@ export type PreferenceMode = 'hosts' | 'input' | 'interface' | 'legacy' | 'syste
 
 export const PanelPreferences = new Panel({
    name: 'Preferences',
-   icon: 'mdiCogOutline',
+   icon: 'mdiCog',
    category: 'settings',
    widget: (): FC<NO_PROPS> => PanelPreferencesUI,
    header: (p): PanelHeader => ({ title: 'Preferences', icon: undefined }),
@@ -98,7 +98,11 @@ export const PanelPreferencesUI = observer(function Panel_Preferences_(p: PanelP
                   </UI.Shelf.Group>
                </UI.Shelf.Column>
             </UI.Shelf>
-            <UI.Shelf.Content>{page}</UI.Shelf.Content>
+            <UI.Shelf.Content
+            // (bird_d): This isn't actually part of the shelf's content? It's part of the region's/panel's.
+            >
+               {page}
+            </UI.Shelf.Content>
          </UI.Frame>
       </UI.Panel>
    )
@@ -112,7 +116,7 @@ const PreferenceTabButtonUI = observer(function PreferenceTabButtonUI_(p: {
    return (
       <ToggleButtonUI //
          toggleGroup='preference-tab'
-         tw='h-10 capitalize'
+         tw='!h-10 capitalize'
          value={p.field.is(p.mode)}
          text={p.mode}
          onValueChange={(_) => p.field.setValue(p.mode)}
