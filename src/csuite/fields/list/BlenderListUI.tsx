@@ -16,16 +16,18 @@ import { ListButtonAddUI } from './ListButtonAddUI'
 
 export type BlenderListProps<T extends Field_list<any>> = {
    field: T
+   activeIndex: number
    renderItem: (item: T['items'][number], index: number) => ReactNode
 }
 
 export const BlenderListUI = observer(function BlenderListUI_<T extends Field_list<BaseSchema>>({
    field,
+   activeIndex,
    renderItem,
 }: BlenderListProps<T>) {
    const size = field.size
-   const x = useLocalObservable(() => ({ selectedIx: 0 }))
-   const selectedChild = field.items[x.selectedIx]
+   const x = useLocalObservable(() => ({ selectedIx: activeIndex }))
+   const selectedChild = field.items[activeIndex]
 
    const theme = cushy.theme.value
    return (
@@ -134,27 +136,7 @@ export const BlenderListUI = observer(function BlenderListUI_<T extends Field_li
             <Button borderless subtle icon='mdiChevronDown' />
             <Frame>Prompt</Frame>
          </Frame> */}
-         <div tw='flex flex-row gap-2 px-2'>
-            <ResizableFrame
-               header={
-                  </* TODO(bird_d/ui/logic): Need to implement a way to toggle if the
-                      * resizable frame should take up content or should use size.
-                      * The buttons here should only need to be activated once for all items, not per item.
-                      * */>
-                     <SpacerUI />
-                     <Button
-                        borderless
-                        square
-                        subtle
-                        icon={'mdiArrowExpandVertical'}
-                        tooltip='Automatically resize to prompt'
-                     />
-                  </>
-               }
-            >
-               <Frame tw='h-full'>{selectedChild && <selectedChild.UI />}</Frame>
-            </ResizableFrame>
-         </div>
+
          <Frame
             /* TODO(bird_d/ui/logic): Need an inline collapsible "group" sort of thing here */
             tw='h-input flex-grow items-center text-center'
@@ -231,3 +213,25 @@ export const BlenderListFooterFilterUI = observer(function BlenderListFooterFilt
       </div>
    )
 })
+
+// {<div tw='flex flex-row gap-2 px-2'>
+//             <ResizableFrame
+//                header={
+//                   </* TODO(bird_d/ui/logic): Need to implement a way to toggle if the
+//                       * resizable frame should take up content or should use size.
+//                       * The buttons here should only need to be activated once for all items, not per item.
+//                       * */>
+//                      <SpacerUI />
+//                      <Button
+//                         borderless
+//                         square
+//                         subtle
+//                         icon={'mdiArrowExpandVertical'}
+//                         tooltip='Automatically resize to prompt'
+//                      />
+//                   </>
+//                }
+//             >
+//                <Frame tw='h-full'>{selectedChild && <selectedChild.UI />}</Frame>
+//             </ResizableFrame>
+//          </div>}
