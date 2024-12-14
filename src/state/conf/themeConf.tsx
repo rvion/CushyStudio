@@ -12,6 +12,7 @@ export type ThemeConf = X.XGroup<{
    labelLayout: X.XSelectOne_<FormGlobalLayoutMode>
    base: X.XColor
    appbar: X.XOptional<X.XColor>
+   /** @deprecated Legacy option, will probably be removed? */
    fieldGroups: X.XGroup<{
       border: X.XOptional<X.XNumber>
       contrast: X.XOptional<X.XNumber>
@@ -24,6 +25,11 @@ export type ThemeConf = X.XGroup<{
    inputRoundness: X.XNumber
    inputText: X.XNumber
    inputTextShadow: X.XOptional<$schemaSimpleDropShadow>
+
+   groups: X.XGroup<{
+      border: X.XOptional<X.XNumber>
+      contrast: X.XOptional<X.XNumber>
+   }>
 }>
 
 export const themeConf: ThemeConf['$Field'] = cushyFactory.document(
@@ -92,6 +98,11 @@ export const themeConf: ThemeConf['$Field'] = cushyFactory.document(
             inputRoundness: ui.int({ default: 5, min: 0 }),
             // TODO(bird_d): Stopgap, should be split for panels/widget labels/widget text.
             inputText: ui.float({ default: 11, min: 8, max: 20, step: 1, suffix: 'pt' }),
+
+            groups: ui.fields({
+               border: ui.percent({ default: 20, min: -100, max: 100 }).optional(false),
+               contrast: ui.percent({ default: 11, min: -100, max: 100 }).optional(true),
+            }),
          },
          {
             label: 'Theme',
