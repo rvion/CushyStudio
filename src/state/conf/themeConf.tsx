@@ -23,6 +23,7 @@ export type ThemeConf = X.XGroup<{
    inputShadow: X.XOptional<$schemaSimpleDropShadow>
    inputRoundness: X.XNumber
    inputText: X.XNumber
+   inputTextShadow: X.XOptional<$schemaSimpleDropShadow>
 }>
 
 export const themeConf: ThemeConf['$Field'] = cushyFactory.document(
@@ -86,6 +87,7 @@ export const themeConf: ThemeConf['$Field'] = cushyFactory.document(
             inputBorder: ui.percent({ default: 5, min: -100, max: 100 }).optional(true),
             inputContrast: ui.percent({ default: -10, min: -100, max: 100 }).optional(true),
             inputShadow: schemaSimpleDropShadow(ui).optional(true),
+            inputTextShadow: schemaSimpleDropShadow(ui).optional(true),
             // ui.ratio({ default: 0.05 }).optional(true),
             inputRoundness: ui.int({ default: 5, min: 0 }),
             // TODO(bird_d): Stopgap, should be split for panels/widget labels/widget text.

@@ -17,6 +17,8 @@
     --widget-height: 2rem;
     --input-height: 1.6rem;
     --input-icon-height: 1.4rem;
+    text-shadow: var(--theme-text-shadow);
+    /* text-shadow: 0px 1px black; */
 }
 
 .UI-WidgetHeaderContainer,
@@ -187,22 +189,6 @@
 }
 .csuite-basic-input {
     height: var(--input-height);
-}
-
-/* Form Utils ------------------------------------------------------------------------------------- */
-/* Text Shading - These are defined in theme.css*/
-.text-shadow {
-    text-shadow:
-        0px  1px 1px oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h),
-        1px  1px 1px oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h),
-        -1px 1px 1px oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h);
-}
-
-.text-shadow-inv {
-    text-shadow:
-        0px  1px 1px oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h),
-        1px  1px 1px oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h),
-        -1px 1px 1px oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h);
 }
 
 /* Select Utils ------------------------------------------------------------------------------------- */

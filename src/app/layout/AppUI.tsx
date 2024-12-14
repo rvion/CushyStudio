@@ -76,8 +76,14 @@ export const CushyUI = observer(function CushyUI_() {
       },
       { base: { contrast: -0.077 } },
    )
+
+   const textShadow = cushy.theme.value.inputTextShadow
    return (
       <CSuiteProvider config={cushy.csuite}>
+         <div tw='absolute z-[1918024778912489712] bg-red-500'>
+            `${textShadow?.color}
+            {}`
+         </div>
          <div
             id='CushyStudio'
             style={{
@@ -87,6 +93,10 @@ export const CushyUI = observer(function CushyUI_() {
                '--foobar2': inactiveTabColors.variables.background,
                '--theme-roundness': `${cushy.theme.value.inputRoundness}px`,
                '--theme-roundness-padding': `${cushy.theme.value.inputRoundness}px`,
+               // TODO(bird_d/ui/theme): Make able to be relative instead of just manual
+               'text-shadow': textShadow
+                  ? `${textShadow?.x}px ${textShadow?.y}px ${textShadow.blur}px ${textShadow?.color}${Math.round(textShadow?.opacity * 255).toString(16)}`
+                  : '',
                // '--theme-roundness-padding': `${cushy.theme.value.inputRoundness > 10 ? cushy.theme.value.inputRoundness - 10 : 0}px`,
                // TODO(bird_d): This feels hacky, probably okay for now? A lot of the csuite stuff I'm assuming needs to not use cushy.theme.value
                fontSize: `${cushy.theme.value.inputText}pt`,
