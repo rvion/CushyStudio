@@ -80,10 +80,6 @@ export const CushyUI = observer(function CushyUI_() {
    const textShadow = cushy.theme.value.inputTextShadow
    return (
       <CSuiteProvider config={cushy.csuite}>
-         <div tw='absolute z-[1918024778912489712] bg-red-500'>
-            `${textShadow?.color}
-            {}`
-         </div>
          <div
             id='CushyStudio'
             style={{
