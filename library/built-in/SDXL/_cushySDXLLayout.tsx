@@ -100,7 +100,7 @@ export function _cushySDXLLayout(): Maybe<DisplaySlotFn<$CushySDXLUI['$Field']>>
                   </UY.Misc.Button>
 
                   {positive.showEditor && (
-                     <UY.Misc.Frame tw='p-2' base={{ contrast: -0.1 }}>
+                     <UY.Misc.Frame tw='p-2' base={cushy.theme.value.inputContrast}>
                         <ResizableFrame tw='!bg-transparent'>
                            {activePrompt ? <PromptEditorUI promptID={activePrompt.id} /> : <>No prompt</>}
                         </ResizableFrame>
