@@ -92,7 +92,7 @@ export const CushyUI = observer(function CushyUI_() {
                '--theme-roundness-padding': `${theme.global.roundness}px`,
                // TODO(bird_d/ui/theme): Make able to be relative instead of just manual
                'text-shadow': textShadow
-                  ? `${textShadow?.x}px ${textShadow?.y}px ${textShadow.blur}px ${textShadow?.color}${Math.round(textShadow?.opacity * 255).toString(16)}`
+                  ? `${textShadow?.x}px ${textShadow?.y}px ${textShadow.blur}px ${textShadow?.color}${Math.round(textShadow?.opacity * 255).toString(16)} !important`
                   : '',
                // '--theme-roundness-padding': `${cushy.preferences.theme.value.global.roundness > 10 ? cushy.preferences.theme.value.global.roundness - 10 : 0}px`,
                // TODO(bird_d): This feels hacky, probably okay for now? A lot of the csuite stuff I'm assuming needs to not use cushy.preferences.theme.value

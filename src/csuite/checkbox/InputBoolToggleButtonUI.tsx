@@ -5,6 +5,7 @@ import { observer } from 'mobx-react-lite'
 // import { twMerge } from 'tailwind-merge'
 import { Button } from '../button/Button'
 import { useCSuite } from '../ctx/useCSuite'
+import { run_tint } from '../kolor/prefab_Tint'
 import { CheckboxAndRadioIcon } from './_InputBoolToggleButtonBoxUI'
 
 // 🔴 2024-07-31: domi: this should actually look like a button?
@@ -23,7 +24,9 @@ export const ToggleButtonUI = observer(function ToggleButtonUI_(
    // const chroma = getInputBoolChroma(isActive)
    // const border = p.border ?? 10
    const theme = cushy.preferences.theme.value
+   const textShadow = theme.global.textShadow
    const dropShadow = p.dropShadow ?? theme.global.shadow
+   const activeColor = run_tint(theme.global.active)
    return (
       <Button
          tw={
@@ -48,7 +51,8 @@ export const ToggleButtonUI = observer(function ToggleButtonUI_(
          triggerOnPress={{ startingState: isActive, toggleGroup: p.toggleGroup }}
          tooltip={p.tooltip}
          tooltipPlacement={p.tooltipPlacement}
-         look={isActive ? 'primary' : undefined} // 🔴🦀 temp solution to visually broken active options
+         // look={isActive ? 'primary' : undefined} // 🔴🦀 temp solution to visually broken active options
+         base={isActive ? activeColor : {}} // 🔴🦀 temp solution to visually broken active options
          border={theme.global.border}
          disabled={p.disabled}
          dropShadow={p.look == 'subtle' ? undefined : dropShadow}

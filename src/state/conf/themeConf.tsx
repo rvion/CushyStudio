@@ -26,6 +26,7 @@ export type ThemeConf = X.XGroup<{
       roundness: X.XNumber
       text: X.XNumber
       textShadow: X.XOptional<$schemaSimpleDropShadow>
+      active: UI_Tint
    }>
 
    groups: X.XGroup<{
@@ -100,6 +101,7 @@ export const themeConf: ThemeConf['$Field'] = cushyFactory.document(
                roundness: ui.int({ default: 5, min: 0 }),
                // TODO(bird_d): Stopgap, should be split for panels/widget labels/widget text.
                text: ui.float({ default: 11, min: 8, max: 20, step: 1, suffix: 'pt' }),
+               active: ui_tint(ui, { contrast: 0.25, chromaBlend: 7.5 }),
             }),
 
             groups: ui.fields({

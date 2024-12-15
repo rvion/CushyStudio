@@ -3,6 +3,7 @@ import type { BoolButtonProps } from './InputBoolUI'
 import { observer } from 'mobx-react-lite'
 
 import { Frame } from '../frame/Frame'
+import { run_tint } from '../kolor/prefab_Tint'
 import { CheckboxAndRadioIcon } from './_InputBoolToggleButtonBoxUI'
 
 // 2024-07-31: domi: not 100% sure what the difference is supposed to be with InputBoolToggleButtonUI
@@ -21,7 +22,7 @@ export const InputBoolCheckboxUI = observer(function InputBoolCheckboxUI_(p: Boo
          hover
          size='input'
          triggerOnPress={{ startingState: isActive, toggleGroup }}
-         tw={['cursor-pointer select-none px-0.5 !h-full']}
+         tw={['!h-full cursor-pointer select-none !bg-transparent px-0.5']}
          onClick={(ev) => {
             if (p.disabled) return
             if (!p.onValueChange) return
@@ -32,6 +33,7 @@ export const InputBoolCheckboxUI = observer(function InputBoolCheckboxUI_(p: Boo
          role='checkbox'
          aria-checked={isActive}
          aria-disabled={p.disabled}
+         text={run_tint(cushy.preferences.theme.value.global.active)}
       >
          {p.iconOff !== true && (
             <CheckboxAndRadioIcon

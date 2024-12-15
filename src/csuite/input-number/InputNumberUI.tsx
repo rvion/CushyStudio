@@ -1,9 +1,12 @@
+import type { Tint } from '../kolor/Tint'
+
 import { makeAutoObservable, runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import React, { useEffect, useMemo } from 'react'
 
 import { Button } from '../button/Button'
 import { Frame, type FrameProps } from '../frame/Frame'
+import { run_tint } from '../kolor/prefab_Tint'
 import { parseFloatNoRoundingErr } from '../utils/parseFloatNoRoundingErr'
 import { window_addEventListener } from '../utils/window_addEventListenerAction'
 
@@ -287,7 +290,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
          {p.hideSlider ?? (
             <Frame /* Slider display */
                className='inui-foreground'
-               base={{ contrast: 0.1, chromaBlend: 1 }}
+               base={run_tint(theme.global.active)}
                tw={['h-input absolute left-0 z-10']}
                style={{ width: `${((val - uist.rangeMin) / (uist.rangeMax - uist.rangeMin)) * 100}%` }}
             />
