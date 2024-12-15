@@ -21,7 +21,7 @@ export const InputBoolCheckboxUI = observer(function InputBoolCheckboxUI_(p: Boo
          hover
          size='input'
          triggerOnPress={{ startingState: isActive, toggleGroup }}
-         tw={['cursor-pointer select-none px-0.5']}
+         tw={['cursor-pointer select-none px-0.5 !h-full']}
          onClick={(ev) => {
             if (p.disabled) return
             if (!p.onValueChange) return
@@ -35,6 +35,7 @@ export const InputBoolCheckboxUI = observer(function InputBoolCheckboxUI_(p: Boo
       >
          {p.iconOff !== true && (
             <CheckboxAndRadioIcon
+               // tw='h-full items-center text-center'
                isActive={isActive}
                disabled={p.disabled}
                mode={mode}

@@ -15,7 +15,7 @@ export const WidgetChoices_HeaderTabBarUI = observer(function WidgetChoices_Head
    const choices = field.choicesWithLabels // choicesStr.map((v) => ({ key: v }))
    return (
       <Frame tw='h-widget grid grid-rows-1' expand>
-         <OverflowingRowUI tw='gap-1'>
+         <OverflowingRowUI tw='h-full items-center gap-1'>
             {choices.map((c) => {
                const isSelected = field.isBranchEnabled(c.key) // serial.branches[c.key]
                return (

@@ -31,6 +31,7 @@ export type ThemeConf = X.XGroup<{
    groups: X.XGroup<{
       border: X.XOptional<X.XNumber>
       contrast: X.XOptional<X.XNumber>
+      padding: X.XNumber
    }>
 }>
 
@@ -104,6 +105,7 @@ export const themeConf: ThemeConf['$Field'] = cushyFactory.document(
             groups: ui.fields({
                border: ui.percent({ default: 20, min: -100, max: 100 }).optional(false),
                contrast: ui.percent({ default: 11, min: -100, max: 100 }).optional(true),
+               padding: ui.number({ default: 0.5, min: 0, max: 20, step: 1, suffix: 'rem' }),
             }),
          },
          {

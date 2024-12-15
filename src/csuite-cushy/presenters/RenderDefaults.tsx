@@ -114,6 +114,16 @@ const defaultPresenterRule: DisplaySlotFn<Field> = (ui) => {
    ui.set('$', { collapsible: false })
    ui.set('@string', { Header: UY.string.input, Body: null })
    ui.set('@number', { Header: UY.number.input, Body: null })
+   ui.set('$.{@group|@list|@choices}>', {
+      Decoration: (p) => {
+         if (field.type == 'choices') {
+            return p.children
+            // return field.defaultBody ? field.defaultBody() : <></>
+         }
+         return <UY.Decorations.Pad {...p} />
+      },
+   })
+
    // ui.set('@number', { Header: UY.number.simple, Body: null })
    // ui.set('$.{@group|@list|@choices}.', { Indent: false })
    // ui.set('$.@link.{@group|@list|@choices}.', { Indent: false })
