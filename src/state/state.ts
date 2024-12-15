@@ -964,7 +964,6 @@ export class STATE {
       writeFileSync(absPath, content, 'utf-8')
    }
 
-   theme = themeConf
    preferences = {
       interface: interfaceConf,
       system: systemConf,
@@ -974,7 +973,7 @@ export class STATE {
    csuite: CSuiteConfig = new CSuite_ThemeCushy(this)
 
    get themeText(): Tint {
-      return run_tint(this.theme.value.text)
+      return run_tint(this.preferences.theme.value.text)
    }
 
    resolveFromRoot(relativePath: RelativePath): AbsolutePath {

@@ -29,7 +29,7 @@ export const BlenderListUI = observer(function BlenderListUI_<T extends Field_li
    const x = useLocalObservable(() => ({ selectedIx: activeIndex }))
    const selectedChild = field.items[activeIndex]
 
-   const theme = cushy.theme.value
+   const theme = cushy.preferences.theme.value
    return (
       <Frame tw='flex flex-col gap-2'>
          <Frame tw='flex flex-row gap-2 px-2' style={{ minHeight: '100%' }}>
@@ -62,7 +62,7 @@ export const BlenderListUI = observer(function BlenderListUI_<T extends Field_li
                            border={{ contrast: 0 }}
                            onClick={action(() => (x.selectedIx = ix))}
                            base={{ contrast: selected ? 0.1 : 0 }}
-                           roundness={theme.inputRoundness}
+                           roundness={theme.global.roundness}
                         >
                            {renderItem(i, ix)}
                         </Frame>
@@ -77,9 +77,9 @@ export const BlenderListUI = observer(function BlenderListUI_<T extends Field_li
                   tw='w-input'
                   align
                   col
-                  border={theme.inputBorder}
-                  dropShadow={theme.inputShadow}
-                  roundness={theme.inputRoundness}
+                  border={theme.global.border}
+                  dropShadow={theme.global.shadow}
+                  roundness={theme.global.roundness}
                >
                   <ListButtonAddUI field={field} />
                   <Button
@@ -100,9 +100,9 @@ export const BlenderListUI = observer(function BlenderListUI_<T extends Field_li
                   align
                   col
                   disabled={field.items.length < 2}
-                  border={theme.inputBorder}
-                  dropShadow={theme.inputShadow}
-                  roundness={theme.inputRoundness}
+                  border={theme.global.border}
+                  dropShadow={theme.global.shadow}
+                  roundness={theme.global.roundness}
                >
                   <Button
                      disabled={selectedChild == null}
@@ -151,9 +151,9 @@ export const BlenderListUI = observer(function BlenderListUI_<T extends Field_li
                <>
                   <Frame
                      align
-                     border={theme.inputBorder}
-                     dropShadow={theme.inputShadow}
-                     roundness={theme.inputRoundness}
+                     border={theme.global.border}
+                     dropShadow={theme.global.shadow}
+                     roundness={theme.global.roundness}
                   >
                      <Button //
                         active

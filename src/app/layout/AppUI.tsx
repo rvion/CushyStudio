@@ -57,7 +57,7 @@ export const CushyUI = observer(function CushyUI_() {
       return (): void => window.removeEventListener('keydown', handleKeyDown)
    }, [appRef.current, cushy])
 
-   const appBarColor = cushy.theme.value.appbar ?? cushy.theme.value.base
+   const appBarColor = cushy.preferences.theme.value.appbar ?? cushy.preferences.theme.value.base
    const appBarBase = Kolor.fromString(appBarColor)
    const inactiveTabColors = computeColors(
       {
@@ -77,7 +77,8 @@ export const CushyUI = observer(function CushyUI_() {
       { base: { contrast: -0.077 } },
    )
 
-   const textShadow = cushy.theme.value.inputTextShadow
+   const theme = cushy.preferences.theme.value
+   const textShadow = theme.global.textShadow
    return (
       <CSuiteProvider config={cushy.csuite}>
          <div
@@ -87,15 +88,15 @@ export const CushyUI = observer(function CushyUI_() {
                '--appbar': appBarComputed.variables.background,
                '--foobar1': inactiveTabColors.variables.color,
                '--foobar2': inactiveTabColors.variables.background,
-               '--theme-roundness': `${cushy.theme.value.inputRoundness}px`,
-               '--theme-roundness-padding': `${cushy.theme.value.inputRoundness}px`,
+               '--theme-roundness': `${theme.global.roundness}px`,
+               '--theme-roundness-padding': `${theme.global.roundness}px`,
                // TODO(bird_d/ui/theme): Make able to be relative instead of just manual
                'text-shadow': textShadow
                   ? `${textShadow?.x}px ${textShadow?.y}px ${textShadow.blur}px ${textShadow?.color}${Math.round(textShadow?.opacity * 255).toString(16)}`
                   : '',
-               // '--theme-roundness-padding': `${cushy.theme.value.inputRoundness > 10 ? cushy.theme.value.inputRoundness - 10 : 0}px`,
-               // TODO(bird_d): This feels hacky, probably okay for now? A lot of the csuite stuff I'm assuming needs to not use cushy.theme.value
-               fontSize: `${cushy.theme.value.inputText}pt`,
+               // '--theme-roundness-padding': `${cushy.preferences.theme.value.global.roundness > 10 ? cushy.preferences.theme.value.global.roundness - 10 : 0}px`,
+               // TODO(bird_d): This feels hacky, probably okay for now? A lot of the csuite stuff I'm assuming needs to not use cushy.preferences.theme.value
+               fontSize: `${theme.global.text}pt`,
             }}
             tabIndex={-1}
             // ❌ onClick={(ev) => {

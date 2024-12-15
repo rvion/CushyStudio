@@ -19,12 +19,14 @@ export type ThemeConf = X.XGroup<{
    }>
    text: UI_Tint
    textLabel: X.XOptional<UI_Tint>
-   inputBorder: X.XOptional<X.XNumber>
-   inputContrast: X.XOptional<X.XNumber>
-   inputShadow: X.XOptional<$schemaSimpleDropShadow>
-   inputRoundness: X.XNumber
-   inputText: X.XNumber
-   inputTextShadow: X.XOptional<$schemaSimpleDropShadow>
+   global: X.XGroup<{
+      border: X.XOptional<X.XNumber>
+      contrast: X.XOptional<X.XNumber>
+      shadow: X.XOptional<$schemaSimpleDropShadow>
+      roundness: X.XNumber
+      text: X.XNumber
+      textShadow: X.XOptional<$schemaSimpleDropShadow>
+   }>
 
    groups: X.XGroup<{
       border: X.XOptional<X.XNumber>
@@ -89,15 +91,15 @@ export const themeConf: ThemeConf['$Field'] = cushyFactory.document(
             text: ui_tint(ui, { contrast: 0.824 }),
             textLabel: ui_tint(ui, { contrast: 0.45, chroma: 0.045 }).optional(true),
 
-            // 3. misc
-            inputBorder: ui.percent({ default: 5, min: -100, max: 100 }).optional(true),
-            inputContrast: ui.percent({ default: -10, min: -100, max: 100 }).optional(true),
-            inputShadow: schemaSimpleDropShadow(ui).optional(true),
-            inputTextShadow: schemaSimpleDropShadow(ui).optional(true),
-            // ui.ratio({ default: 0.05 }).optional(true),
-            inputRoundness: ui.int({ default: 5, min: 0 }),
-            // TODO(bird_d): Stopgap, should be split for panels/widget labels/widget text.
-            inputText: ui.float({ default: 11, min: 8, max: 20, step: 1, suffix: 'pt' }),
+            global: ui.fields({
+               border: ui.percent({ default: 5, min: -100, max: 100 }).optional(true),
+               contrast: ui.percent({ default: -10, min: -100, max: 100 }).optional(true),
+               shadow: schemaSimpleDropShadow(ui).optional(true),
+               textShadow: schemaSimpleDropShadow(ui).optional(true),
+               roundness: ui.int({ default: 5, min: 0 }),
+               // TODO(bird_d): Stopgap, should be split for panels/widget labels/widget text.
+               text: ui.float({ default: 11, min: 8, max: 20, step: 1, suffix: 'pt' }),
+            }),
 
             groups: ui.fields({
                border: ui.percent({ default: 20, min: -100, max: 100 }).optional(false),

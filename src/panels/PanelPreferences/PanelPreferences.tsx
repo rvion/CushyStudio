@@ -58,7 +58,7 @@ export const PanelPreferencesUI = observer(function Panel_Preferences_(p: PanelP
             return <FormUI tw='flex-1' field={cushy.preferences.system} />
          }
          case 'theme': {
-            return <FormUI tw='flex-1' field={cushy.theme} />
+            return <FormUI tw='flex-1' field={cushy.preferences.theme} />
          }
       }
       return <Fragment>❌ unknown tab</Fragment>

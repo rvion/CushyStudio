@@ -13,7 +13,6 @@ export const WidgetChoices_HeaderTabBarUI = observer(function WidgetChoices_Head
 >(p: { field: Field_choices<T> }) {
    const field = p.field
    const choices = field.choicesWithLabels // choicesStr.map((v) => ({ key: v }))
-   const csuite = useCSuite()
    return (
       <Frame tw='h-widget grid grid-rows-1' expand>
          <OverflowingRowUI tw='gap-1'>
@@ -28,7 +27,6 @@ export const WidgetChoices_HeaderTabBarUI = observer(function WidgetChoices_Head
                      display='button'
                      mode={p.field.isMulti ? 'checkbox' : 'radio'}
                      text={c.label ?? c.key}
-                     box={isSelected ? undefined : { text: csuite.labelText }}
                      onValueChange={(value) => {
                         if (value != isSelected) {
                            field.toggleBranch(c.key)

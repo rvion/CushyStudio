@@ -21,7 +21,7 @@ export const WidgetCardUI = observer(function WidgetCardUI_(p: WidgetCardProps) 
          tw='overflow-clip'
          border={theme.groups.border}
          base={theme.groups.contrast}
-         roundness={theme.inputRoundness}
+         roundness={theme.global.roundness}
       >
          {p.children}
       </Frame>

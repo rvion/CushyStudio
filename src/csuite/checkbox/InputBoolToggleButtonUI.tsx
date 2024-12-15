@@ -20,11 +20,10 @@ export const ToggleButtonUI = observer(function ToggleButtonUI_(
    },
 ) {
    const isActive = p.value ?? false
-   const csuite = useCSuite()
    // const chroma = getInputBoolChroma(isActive)
    // const border = p.border ?? 10
-   const theme = cushy.theme.value
-   const dropShadow = p.dropShadow ?? theme.inputShadow
+   const theme = cushy.preferences.theme.value
+   const dropShadow = p.dropShadow ?? theme.global.shadow
    return (
       <Button
          tw={
@@ -50,10 +49,10 @@ export const ToggleButtonUI = observer(function ToggleButtonUI_(
          tooltip={p.tooltip}
          tooltipPlacement={p.tooltipPlacement}
          look={isActive ? 'primary' : undefined} // 🔴🦀 temp solution to visually broken active options
-         border={csuite.inputBorder}
+         border={theme.global.border}
          disabled={p.disabled}
          dropShadow={p.look == 'subtle' ? undefined : dropShadow}
-         roundness={csuite.inputRoundness}
+         roundness={theme.global.roundness}
          expand={p.expand}
          style={p.style}
          size={p.size}
@@ -78,9 +77,8 @@ export const ToggleButtonUI = observer(function ToggleButtonUI_(
          //         : { inset: true, y: -3, blur: 5, spread: 0, color: 5 }
          // }
       >
-         {(p.showToggleButtonBox ?? csuite.showToggleButtonBox) && p.mode != null && (
-            <CheckboxAndRadioIcon disabled isActive={isActive} mode={p.mode} />
-         )}
+         {(p.showToggleButtonBox ?? cushy.preferences.interface.value.widget.showToggleButtonBox) &&
+            p.mode != null && <CheckboxAndRadioIcon disabled isActive={isActive} mode={p.mode} />}
          {/* 2024-06-07 rvion: make sure long label remain legible even on low width
                 - I removed the "line-clamp-1" from the paragraph below
                 - I replaced the "h-input" by "minh-input" in the Frame above
