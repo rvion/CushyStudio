@@ -27,7 +27,7 @@ export const SelectValueContainerUI = observer(function SelectValueContainerUI_<
    }
 
    return (
-      <div tw='w-full shrink grow overflow-hidden'>
+      <div tw='w-full shrink grow overflow-hidden px-1'>
          <div
             ref={handleRef}
             tw={[
