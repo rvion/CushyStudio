@@ -5,6 +5,7 @@ import { observer } from 'mobx-react-lite'
 import React, { type ForwardedRef, forwardRef, useEffect, useMemo } from 'react'
 
 import { Frame } from '../frame/Frame'
+import { run_theme_dropShadow } from '../frame/SimpleDropShadow'
 import { registerComponentAsClonableWhenInsideReveal } from '../reveal/RevealCloneWhitelist'
 import { window_addEventListener } from '../utils/window_addEventListenerAction'
 import { withDefaultProps } from './withDefaultProps'
@@ -74,7 +75,9 @@ const _Button = observer(
             iconSize={iconSize ?? '1.1rem'}
             style={{
                //
-               fontSize: `${theme.global.text}pt`,
+               fontSize: `${theme.global.text.size}pt`,
+               // TODO(bird_d/ui/theme/textShadow): Implement per-widget textShadows
+               // textShadow: run_theme_dropShadow(theme.widget.button.text.shadow),
                ...style,
             }}
             {...rest}

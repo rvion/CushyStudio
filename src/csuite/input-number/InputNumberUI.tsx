@@ -6,6 +6,7 @@ import React, { useEffect, useMemo } from 'react'
 
 import { Button } from '../button/Button'
 import { Frame, type FrameProps } from '../frame/Frame'
+import { run_theme_dropShadow } from '../frame/SimpleDropShadow'
 import { run_tint } from '../kolor/prefab_Tint'
 import { parseFloatNoRoundingErr } from '../utils/parseFloatNoRoundingErr'
 import { window_addEventListener } from '../utils/window_addEventListenerAction'
@@ -347,7 +348,6 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                   ref={uist.inputRef}
                   onDragStart={(ev) => ev.preventDefault()} // Prevents drag n drop of selected text, so selecting is easier.
                   tw={[
-                     // 'text-shadow outline-0',
                      /* `absolute opacity-0` is a bit of a hack around not being able to figure out why the input kept taking up so much width.
                       * Can't use `hidden` here because it messes up focusing. */
                      !isEditing && 'pointer-events-none absolute cursor-not-allowed opacity-0',
@@ -357,7 +357,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                   placeholder={p.placeholder}
                   style={{
                      fontFamily: 'monospace',
-                     fontSize: `${theme.global.text}pt`,
+                     fontSize: `${theme.global.text.size}pt`,
                      zIndex: 2,
                      background: 'transparent',
                      MozWindowDragging: 'no-drag',
@@ -425,13 +425,13 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                            tw={[
                               'z-10 w-full flex-grow truncate border-0 border-transparent pr-1 text-left outline-0',
                            ]}
-                           style={{ fontSize: `${theme.global.text}pt` }}
+                           style={{ fontSize: `${theme.global.text.size}pt` }}
                         >
                            {p.text}
                         </div>
                      )}
                      {/* I couldn't make the input not take up a ton of space so I'm just using this when we're not editing now. */}
-                     <div style={{ fontFamily: 'monospace', fontSize: `${theme.global.text}pt` }}>
+                     <div style={{ fontFamily: 'monospace', fontSize: `${theme.global.text.size}pt` }}>
                         {p.value}
                      </div>
                      {!isEditing && p.suffix ? <div tw='pl-0.5'>{p.suffix}</div> : <></>}

@@ -4,6 +4,7 @@ import type { FormGlobalLayoutMode } from './FormGlobalLayoutMode'
 import { cushyFactory } from '../../controls/CushyBuilder'
 import { WidgetSelectOne_TabUI } from '../../csuite/fields/selectOne/WidgetSelectOne_TabUI'
 import { type $schemaSimpleDropShadow, schemaSimpleDropShadow } from '../../csuite/frame/SimpleDropShadow'
+import { ui_theme_text, type UI_Theme_Text } from '../../csuite/kolor/prefab_Text'
 import { ui_tint, type UI_Tint } from '../../csuite/kolor/prefab_Tint'
 import { readJSON, writeJSON } from '../jsonUtils'
 
@@ -17,15 +18,14 @@ export type ThemeConf = X.XGroup<{
       border: X.XOptional<X.XNumber>
       contrast: X.XOptional<X.XNumber>
    }>
-   text: UI_Tint
-   textLabel: X.XOptional<UI_Tint>
    global: X.XGroup<{
       border: X.XOptional<X.XNumber>
       contrast: X.XOptional<X.XNumber>
       shadow: X.XOptional<$schemaSimpleDropShadow>
+      text: UI_Theme_Text
+      // TODO(bird_d/theme/text): Not plugged in yet
+      textLabel: UI_Theme_Text
       roundness: X.XNumber
-      text: X.XNumber
-      textShadow: X.XOptional<$schemaSimpleDropShadow>
       active: UI_Tint
    }>
 
@@ -89,19 +89,14 @@ export const themeConf: ThemeConf['$Field'] = cushyFactory.document(
                { background: { hue: 180 } },
             ),
 
-            // 2. texts
-            text: ui_tint(ui, { contrast: 0.824 }),
-            textLabel: ui_tint(ui, { contrast: 0.45, chroma: 0.045 }).optional(true),
-
             global: ui.fields({
                border: ui.percent({ default: 5, min: -100, max: 100 }).optional(true),
                contrast: ui.percent({ default: -10, min: -100, max: 100 }).optional(true),
                shadow: schemaSimpleDropShadow(ui).optional(true),
-               textShadow: schemaSimpleDropShadow(ui).optional(true),
                roundness: ui.int({ default: 5, min: 0 }),
-               // TODO(bird_d): Stopgap, should be split for panels/widget labels/widget text.
-               text: ui.float({ default: 11, min: 8, max: 20, step: 1, suffix: 'pt' }),
                active: ui_tint(ui, { contrast: 0.25, chromaBlend: 7.5 }),
+               text: ui_theme_text(ui),
+               labelText: ui_theme_text(ui),
             }),
 
             groups: ui.fields({
@@ -112,45 +107,7 @@ export const themeConf: ThemeConf['$Field'] = cushyFactory.document(
          },
          {
             label: 'Theme',
-            presetButtons: true,
             collapsed: false,
-            presets: [
-               {
-                  label: 'light',
-                  icon: 'mdiLightSwitch',
-                  apply: (w): void => {
-                     w.value.base = 'oklch(97.1% 0.01 278.6)'
-                     w.value.appbar = 'oklch(32.1% 0.01 268.4)'
-                  },
-               },
-               {
-                  label: 'Dark Blue',
-                  icon: 'mdiLightSwitch',
-                  apply: (w): void => {
-                     w.value.base = 'oklch(50% 0.08 255)'
-                     // w.value.base = 'oklch(24.7% 0.01 247.9)'
-                     // w.value.appbar = 'oklch(40.6% 0.08 244.8)'
-                     w.value.appbar = 'oklch(51.6% 0.12 263)'
-                  },
-               },
-               {
-                  label: 'Dark Blue 2',
-                  icon: 'mdiLightSwitch',
-                  apply: (w): void => {
-                     w.value.base = 'oklch(24.7% 0.01 247.9)'
-                     w.value.appbar = 'oklch(40.6% 0.08 244.8)'
-                     // w.value.appbar = 'oklch(51.6% 0.12 263)'
-                  },
-               },
-               {
-                  label: 'Dark Red',
-                  icon: 'mdiLightSwitch',
-                  apply: (w): void => {
-                     w.value.base = 'oklch(19.7% 0.00 0)'
-                     w.value.appbar = 'oklch(30.6% 0.06 14.7)'
-                  },
-               },
-            ],
          },
       ),
    {

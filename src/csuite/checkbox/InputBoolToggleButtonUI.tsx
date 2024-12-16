@@ -24,7 +24,6 @@ export const ToggleButtonUI = observer(function ToggleButtonUI_(
    // const chroma = getInputBoolChroma(isActive)
    // const border = p.border ?? 10
    const theme = cushy.preferences.theme.value
-   const textShadow = theme.global.textShadow
    const dropShadow = p.dropShadow ?? theme.global.shadow
    const activeColor = run_tint(theme.global.active)
    return (

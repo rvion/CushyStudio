@@ -11,6 +11,7 @@ import { defaultTextTint } from '../../csuite/box/CurrentStyleCtx'
 import { commandManager } from '../../csuite/commands/CommandManager'
 import { CSuiteProvider } from '../../csuite/ctx/CSuiteProvider'
 import { computeColors } from '../../csuite/frame/FrameColors'
+import { run_theme_dropShadow } from '../../csuite/frame/SimpleDropShadow'
 import { Kolor } from '../../csuite/kolor/Kolor'
 import { useRegionMonitor } from '../../csuite/regions/RegionMonitor'
 import { Trigger } from '../../csuite/trigger/Trigger'
@@ -78,7 +79,7 @@ export const CushyUI = observer(function CushyUI_() {
    )
 
    const theme = cushy.preferences.theme.value
-   const textShadow = theme.global.textShadow
+   const textShadow = theme.global.text.shadow
    return (
       <CSuiteProvider config={cushy.csuite}>
          <div
@@ -91,12 +92,10 @@ export const CushyUI = observer(function CushyUI_() {
                '--theme-roundness': `${theme.global.roundness}px`,
                '--theme-roundness-padding': `${theme.global.roundness}px`,
                // TODO(bird_d/ui/theme): Make able to be relative instead of just manual
-               'text-shadow': textShadow
-                  ? `${textShadow?.x}px ${textShadow?.y}px ${textShadow.blur}px ${textShadow?.color}${Math.round(textShadow?.opacity * 255).toString(16)} !important`
-                  : '',
+               'text-shadow': run_theme_dropShadow(textShadow),
                // '--theme-roundness-padding': `${cushy.preferences.theme.value.global.roundness > 10 ? cushy.preferences.theme.value.global.roundness - 10 : 0}px`,
                // TODO(bird_d): This feels hacky, probably okay for now? A lot of the csuite stuff I'm assuming needs to not use cushy.preferences.theme.value
-               fontSize: `${theme.global.text}pt`,
+               fontSize: `${theme.global.text.size}pt`,
             }}
             tabIndex={-1}
             // ❌ onClick={(ev) => {

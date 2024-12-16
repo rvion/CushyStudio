@@ -91,7 +91,7 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
    labelBackground: TintExt = 0 // 3 // {}
 
    get text(): Tint {
-      return run_tint(this.st.preferences.theme.Text.value)
+      return run_tint(this.st.preferences.theme.value.global.text.base)
    }
 
    get inputContrast(): TintExt {
@@ -103,7 +103,7 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
    }
 
    get labelText(): Tint | undefined {
-      const raw = this.st.preferences.theme.TextLabel.value
+      const raw = this.st.preferences.theme.value.global.textLabel.base
       if (raw == null) return undefined
       return run_tint(raw)
    }
