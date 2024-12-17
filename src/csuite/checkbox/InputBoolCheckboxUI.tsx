@@ -33,7 +33,7 @@ export const InputBoolCheckboxUI = observer(function InputBoolCheckboxUI_(p: Boo
          role='checkbox'
          aria-checked={isActive}
          aria-disabled={p.disabled}
-         text={run_tint(cushy.preferences.theme.value.global.active)}
+         text={isActive ? run_tint(cushy.preferences.theme.value.global.active) : undefined}
       >
          {p.iconOff !== true && (
             <CheckboxAndRadioIcon
