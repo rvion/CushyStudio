@@ -112,15 +112,14 @@ const dynamicCompletion: CompletionSource = (context: CompletionContext): Comple
          const tagName = tag.text
          const noWrap = isValidPromptLangIdentifier(tagName)
          const prefix = alreadyhasPrefix ? '' : ``
+         const formattedTagName = tagName.replace(/_/g, ' ').replace(/\(/g, '\\(').replace(/\)/g, '\\)')
          completionsOptions.push({
             displayLabel: `${tagName}`,
-            detail: getCategoryName(tag.category),
+            detail: getCategoryName(tag.category) + ' ' + tag.count,
             boost: -99,
             label: tagName,
             type: 'tag',
-            apply: noWrap
-               ? `${prefix}${tagName.replace(/_/g, ' ').replace(/\(/g, '\\(').replace(/\)/g, '\\)')}`
-               : `${prefix}"${tagName.replace(/_/g, ' ').replace(/\(/g, '\\(').replace(/\)/g, '\\)')}"`,
+            apply: noWrap ? `${prefix}${formattedTagName}` : `${prefix}"${formattedTagName}"`,
          })
       }
    }
