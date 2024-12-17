@@ -39,6 +39,7 @@ export const systemConf = cushyFactory.document(
                e621: ui.bool({ default: false, label: 'e621' }),
 
                e621NSFW: ui.bool({ default: false, label: 'e621 NSFW' }),
+               remove: ui.int({ default: 0, min: 0, label: 'Minimum count' }),
             }),
          },
          {

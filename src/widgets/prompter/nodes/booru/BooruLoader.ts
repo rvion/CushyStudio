@@ -61,16 +61,16 @@ export class DanbooruTags {
       if (DanbooruTags._instance) throw new Error('DanbooruTags is a singleton')
       DanbooruTags._instance = this
       const filePaths = []
-      if (cushy.preferences.system.fields.tags.fields.danbooru) {
+      if (cushy.preferences.system.Tags.Danbooru.value) {
          filePaths.push('completions/danbooru.csv')
       }
-      if (cushy.preferences.system.fields.tags.fields.danbooruNSFW) {
+      if (cushy.preferences.system.Tags.DanbooruNSFW.value) {
          filePaths.push('completions/danbooru_nsfw.csv')
       }
-      if (cushy.preferences.system.fields.tags.fields.e621) {
+      if (cushy.preferences.system.Tags.E621.value) {
          filePaths.push('completions/e621.csv')
       }
-      if (cushy.preferences.system.fields.tags.fields.e621NSFW) {
+      if (cushy.preferences.system.Tags.E621NSFW.value) {
          filePaths.push('completions/e621_nsfw.csv')
       }
       filePaths.forEach((filePath) => {
@@ -79,6 +79,7 @@ export class DanbooruTags {
             .on('error', (error) => console.error(error))
             .on('data', (row) => {
                const parsedTag = this.parseRow(row)
+               if (parsedTag.count < cushy.preferences.system.Tags.Remove.value) return
                const existingTag = this.tagsMap.get(parsedTag.text)
                if (existingTag) {
                   if (existingTag.count < parsedTag.count) {
