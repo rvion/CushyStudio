@@ -33,7 +33,7 @@ export const InstallRequirementsBtnUI = observer(function InstallRequirementsBtn
              *    - It should map on to the state's paths closely.
              *    - Actually can't we do get/setters in the form system? Probably don't even need this actually.
              */
-            text={run_tint(cushy.preferences.theme.value.text)}
+            text={run_tint(cushy.preferences.theme.value.global.text.base)}
             size='widget'
             // subtle
             look={actionRequired ? 'error' : undefined}
