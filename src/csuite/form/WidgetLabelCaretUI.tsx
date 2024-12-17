@@ -2,8 +2,7 @@ import type { Field } from '../model/Field'
 
 import { observer } from 'mobx-react-lite'
 
-import { Ikon } from '../../csuite/icons/iconHelpers'
-import { useCSuite } from '../ctx/useCSuite'
+import { IkonOf } from '../../csuite/icons/iconHelpers'
 import { WidgetLabelCaretPlaceholderUI } from './WidgetLabelCaretPlaceholderUI'
 
 export const LabelCaretWidth: '1rem' = '1rem'
@@ -44,32 +43,18 @@ const WidgetLabelCaretAlwaysUI = observer(function WidgetLabelCaretAlways_({
    isCollapsed: boolean
 }) {
    // 🔴 TODO:caret
-   if (isCollapsed)
-      return (
-         <Ikon.mdiChevronRight //
-            className={className}
-            tw={[
-               //
-               'UI-WidgetLabelCaret minh-widget self-start',
-               'COLLAPSE-PASSTHROUGH shrink-0',
-            ]}
-         />
-      )
+
    return (
-      <Ikon.mdiChevronDown
-         //
+      <IkonOf
          className={className}
          tw={[
             //
             'UI-WidgetLabelCaret minh-widget self-start',
-            'COLLAPSE-PASSTHROUGH shrink-0 opacity-35',
+            'COLLAPSE-PASSTHROUGH shrink-0',
+            'px-0.5',
          ]}
+         // TODO(bird_d/variables/negative): isCollapsed should be isExpanded. We should try to always use a "positive" version of an action.
+         name={isCollapsed ? 'mdiChevronRight' : 'mdiChevronDown'}
       />
    )
-   // return (
-   //     <div
-   //         icon={isCollapsed ? 'mdiChevronRight' : 'mdiChevronDown'}
-   //         tw={['WIDGET-COLLAPSE-BTN COLLAPSE-PASSTHROUGH', 'opacity-30 hover:opacity-100 cursor-pointer']}
-   //     />
-   // )
 })
