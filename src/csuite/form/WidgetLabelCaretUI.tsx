@@ -2,7 +2,7 @@ import type { Field } from '../model/Field'
 
 import { observer } from 'mobx-react-lite'
 
-import { IkonOf } from '../../csuite/icons/iconHelpers'
+import { Frame } from '../frame/Frame'
 import { WidgetLabelCaretPlaceholderUI } from './WidgetLabelCaretPlaceholderUI'
 
 export const LabelCaretWidth: '1rem' = '1rem'
@@ -45,7 +45,7 @@ const WidgetLabelCaretAlwaysUI = observer(function WidgetLabelCaretAlways_({
    // 🔴 TODO:caret
 
    return (
-      <IkonOf
+      <Frame
          className={className}
          tw={[
             //
@@ -54,7 +54,8 @@ const WidgetLabelCaretAlwaysUI = observer(function WidgetLabelCaretAlways_({
             'px-0.5',
          ]}
          // TODO(bird_d/variables/negative): isCollapsed should be isExpanded. We should try to always use a "positive" version of an action.
-         name={isCollapsed ? 'mdiChevronRight' : 'mdiChevronDown'}
+         icon={isCollapsed ? 'mdiChevronRight' : 'mdiChevronDown'}
+         square
       />
    )
 })
