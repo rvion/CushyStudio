@@ -56,16 +56,18 @@ export class DanbooruTags {
       if (DanbooruTags._instance) throw new Error('DanbooruTags is a singleton')
       DanbooruTags._instance = this
 
-      const filePath = this.st.configFile.get('tagFile') ?? 'completions/danbooru.csv'
-      createReadStream(filePath)
-         .pipe(csv.parse({ headers: false, delimiter: ',' }))
-         .on('error', (error) => console.error(error))
-         .on('data', (row) => this.tags.push(this.parseRow(row)))
-         .on('end', (rowCount: number) => {
-            console.log(`[🏷️] DanbooruTags: ${rowCount} tags parsed`)
-            // console.log(`[🤠] `, this.tags[0])
-         })
+      if (cushy.preferences.system.fields.tags.fields.danbooru) {
+         const filePath = this.st.configFile.get('tagFile') ?? 'completions/danbooru.csv'
+         createReadStream(filePath)
+            .pipe(csv.parse({ headers: false, delimiter: ',' }))
+            .on('error', (error) => console.error(error))
+            .on('data', (row) => this.tags.push(this.parseRow(row)))
+            .on('end', (rowCount: number) => {
+               console.log(`[🏷️] DanbooruTags: ${rowCount} tags parsed`)
+               // console.log(`[🤠] `, this.tags[0])
+            })
 
-      if (isObservable(this.tags)) throw new Error(`tags shouldn't be observable for perf reasons`)
+         if (isObservable(this.tags)) throw new Error(`tags shouldn't be observable for perf reasons`)
+      }
    }
 }

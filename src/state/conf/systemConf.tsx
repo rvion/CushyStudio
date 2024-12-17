@@ -27,6 +27,19 @@ export const systemConf = cushyFactory.document(
                tooltip: 'The name of your preffered text editor to use when opening text files externally',
                default: 'code',
             }),
+            tags: ui.fields({
+               danbooru: ui.bool({
+                  default: true,
+                  label: 'Danbooru',
+               }),
+               danbooruNSFW: ui.bool({
+                  default: false,
+                  label: 'Danbooru NSFW',
+               }),
+               e621: ui.bool({ default: false, label: 'e621' }),
+
+               e621NSFW: ui.bool({ default: false, label: 'e621 NSFW' }),
+            }),
          },
          {
             label: false,
