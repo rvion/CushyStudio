@@ -5,6 +5,7 @@ import { observer } from 'mobx-react-lite'
 // import { twMerge } from 'tailwind-merge'
 import { Button } from '../button/Button'
 import { useCSuite } from '../ctx/useCSuite'
+import { run_theme_dropShadow } from '../frame/SimpleDropShadow'
 import { run_tint } from '../kolor/prefab_Tint'
 import { CheckboxAndRadioIcon } from './_InputBoolToggleButtonBoxUI'
 
@@ -57,7 +58,10 @@ export const ToggleButtonUI = observer(function ToggleButtonUI_(
          dropShadow={p.look == 'subtle' ? undefined : dropShadow}
          roundness={theme.global.roundness}
          expand={p.expand}
-         style={p.style}
+         style={{
+            textShadow: run_theme_dropShadow(theme.global.text.shadow),
+            ...p.style,
+         }}
          size={p.size}
          hovered={p.hovered}
          icon={p.icon}

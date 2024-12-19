@@ -3,6 +3,7 @@ import type { BoolButtonProps } from './InputBoolUI'
 import { observer } from 'mobx-react-lite'
 
 import { Frame } from '../frame/Frame'
+import { run_theme_dropShadow } from '../frame/SimpleDropShadow'
 import { run_tint } from '../kolor/prefab_Tint'
 import { CheckboxAndRadioIcon } from './_InputBoolToggleButtonBoxUI'
 
@@ -35,6 +36,10 @@ export const InputBoolCheckboxUI = observer(function InputBoolCheckboxUI_(p: Boo
          aria-checked={isActive}
          aria-disabled={p.disabled}
          text={isActive ? run_tint(theme.global.active) : run_tint(theme.global.text.base)}
+         style={{
+            textShadow: run_theme_dropShadow(theme.global.text.shadow),
+            ...p.style,
+         }}
       >
          {p.iconOff !== true && (
             <CheckboxAndRadioIcon
