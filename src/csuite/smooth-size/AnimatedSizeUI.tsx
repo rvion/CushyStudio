@@ -23,7 +23,7 @@ export const AnimatedSizeUI: React.FC<AnimatedSizeProps> = observer(function Ani
       <div
          style={{ height: `${size.height}px` }}
          className={className}
-         tw='smooth-resize-container animated overflow-auto'
+         tw='smooth-resize-container animated'
          {...rest}
       >
          <div className='smooth-resize-content' ref={refFn}>
