@@ -21,7 +21,7 @@ export const WidgetCardUI = observer(function WidgetCardUI_(p: WidgetCardProps) 
       <Frame
          // Clipping here fixes border's corners since child content goes outside of this component.
          tw='overflow-clip'
-         border={theme.groups.border}
+         border={theme.groups.border ?? { contrast: 0 }}
          base={theme.groups.contrast}
          roundness={theme.global.roundness}
          style={
