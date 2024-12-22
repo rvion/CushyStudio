@@ -10,20 +10,30 @@ import { Button } from '../button/Button'
 import { extractConfigValue } from '../errors/extractConfig'
 import { Frame, type FrameProps } from '../frame/Frame'
 import { IkonOf } from '../icons/iconHelpers'
+import { InputNumberUI } from '../input-number/InputNumberUI'
 import { getLCHFromStringAsString } from '../kolor/getLCHFromStringAsString'
 import { Kolor } from '../kolor/Kolor'
 import { RevealUI } from '../reveal/RevealUI'
 import { knownOKLCHHues } from '../tinyCSS/knownHues'
+import { parseFloatNoRoundingErr } from '../utils/parseFloatNoRoundingErr'
 
 type ClassLike = string | { [cls: string]: any } | null | undefined | boolean
 
 // bird_d: All of this is probably the most disgusting code I've ever written in my life.
 type ColorPickerProps = {
    color: Kolor
-   onColorChange: (value: string) => void
+   onColorChange: (value: Kolor) => void
 }
 
 const CANVASSIZE = 200
+
+function quickToHex(value: number): string {
+   const next = Math.round(value * 255)
+      .toString(16)
+      .toUpperCase()
+   // Make sure to always return two characters
+   return next.length == 1 ? `${next}${next}` : next
+}
 
 function hsvToRGB(h: number, s: number, v: number): { r: number; g: number; b: number } {
    const c = v * s // Chroma
@@ -124,6 +134,7 @@ const ColorCirclePicker: React.FC<ColorPickerProps> = ({ color, onColorChange })
    const hueSatCanvasRef = useRef<HTMLCanvasElement>(null)
    const valueCanvasRef = useRef<HTMLCanvasElement>(null)
    const [mode, setMode] = useState<'rgb' | 'hsv' | 'oklch'>('rgb')
+   const [tempHex, setTempHex] = useState<string>('')
 
    const theme = cushy.preferences.theme.value
 
@@ -189,6 +200,9 @@ const ColorCirclePicker: React.FC<ColorPickerProps> = ({ color, onColorChange })
 
       valueCtx.fillStyle = gradientLightness
       valueCtx.fillRect(0, 0, valueCanvas.width, valueCanvas.height)
+
+      const asSRGB = color.color.to('srgb')
+      setTempHex(`#${quickToHex(asSRGB.r)}${quickToHex(asSRGB.g)}${quickToHex(asSRGB.b)}`)
    }, [color])
 
    function getCanvasPositionFromHueSaturation(
@@ -279,7 +293,9 @@ const ColorCirclePicker: React.FC<ColorPickerProps> = ({ color, onColorChange })
                      }
 
                      const adjustedRgb = hslToRGB(hue, saturation, lightness / 100)
-                     onColorChange(`rgb(${adjustedRgb.r}, ${adjustedRgb.g}, ${adjustedRgb.b})`)
+                     onColorChange(
+                        Kolor.fromString(`rgb(${adjustedRgb.r}, ${adjustedRgb.g}, ${adjustedRgb.b})`),
+                     )
 
                      // onColorChange(`rgb(${r}, ${g}, ${b})`)
                   }}
@@ -287,7 +303,95 @@ const ColorCirclePicker: React.FC<ColorPickerProps> = ({ color, onColorChange })
             </Frame>
             <canvas ref={valueCanvasRef} width={'20px'} height={CANVASSIZE} />
          </Frame>
-         <InputStringUI getValue={() => color.color.toString({ format: 'rgb' })} setValue={(value) => {}} />
+         {/* <Frame align col>
+            <InputNumberUI
+               text='hue'
+               mode='int'
+               min={0}
+               step={10}
+               value={Math.round(hsl[0])}
+               onValueChange={(val) => {
+                  console.log('[FD] Hue: ', val)
+                  const adjustedRgb = hslToRGB(val, hsl[1] / 100, hsl[2] / 100)
+                  onColorChange(Kolor.fromString(`rgb(${adjustedRgb.r}, ${adjustedRgb.g}, ${adjustedRgb.b})`))
+               }}
+            />
+            <InputNumberUI
+               text='saturation'
+               mode='float'
+               min={0}
+               max={1}
+               step={0.1}
+               value={parseFloatNoRoundingErr(hsl[1] / 100)}
+               onValueChange={(val) => {
+                  console.log('[FD] Saturation: ', val)
+                  const adjustedRgb = hslToRGB(hsl[0], hsl[1] / 100, hsl[2] / 100)
+                  onColorChange(Kolor.fromString(`rgb(${adjustedRgb.r}, ${adjustedRgb.g}, ${adjustedRgb.b})`))
+               }}
+            />
+            <InputNumberUI
+               text='lightness'
+               mode='float'
+               min={0}
+               max={0}
+               step={0.1}
+               value={parseFloatNoRoundingErr(hsl[2] / 100)}
+               onValueChange={(val) => {
+                  console.log('[FD] VALUE: ', val)
+                  const adjustedRgb = hslToRGB(hsl[0], hsl[1] / 100, val)
+                  onColorChange(Kolor.fromString(`rgb(${adjustedRgb.r}, ${adjustedRgb.g}, ${adjustedRgb.b})`))
+               }}
+            />
+         </Frame> */}
+         <InputStringUI
+            buffered={{
+               getTemporaryValue: () => {
+                  return tempHex
+               },
+               setTemporaryValue: (val) => {
+                  if (!val) {
+                     return
+                  }
+                  setTempHex(val)
+               },
+            }}
+            onFocus={() => {
+               const asSRGB = color.color.to('srgb')
+               setTempHex(`#${quickToHex(asSRGB.r)}${quickToHex(asSRGB.g)}${quickToHex(asSRGB.b)}`)
+            }}
+            onKeyDown={(ev) => {
+               if (ev.key == 'Escape') {
+                  ev.preventDefault()
+                  ev.stopPropagation()
+                  return
+               }
+
+               if (ev.key != 'Enter') {
+                  return
+               }
+
+               ev.preventDefault()
+               ev.stopPropagation()
+
+               ev.currentTarget.blur()
+            }}
+            getValue={() => {
+               const asSRGB = color.color.to('srgb')
+
+               return `#${quickToHex(asSRGB.r)}${quickToHex(asSRGB.g)}${quickToHex(asSRGB.b)}`
+            }}
+            setValue={(value) => {
+               console.log('[FD] HEX: ', value)
+               const col = Kolor.fromString(value, true)
+               const asSRGB = col.color.to('srgb')
+
+               console.log('[FD] col: ', col)
+
+               setTempHex(`#${quickToHex(asSRGB.r)}${quickToHex(asSRGB.g)}${quickToHex(asSRGB.b)}`)
+
+               onColorChange(col)
+            }}
+         />
       </Frame>
    )
 }
@@ -400,8 +504,10 @@ export const InputStringUI = observer(
                         <div tw='p-2'>
                            <ColorCirclePicker
                               color={color}
-                              onColorChange={(value) => {
-                                 p.setValue(value)
+                              onColorChange={(value: Kolor) => {
+                                 const next = `${value.toOKLCH()}`
+                                 console.log('[FD] NEXT: ', next)
+                                 p.setValue(next)
                               }}
                            />
                         </div>
