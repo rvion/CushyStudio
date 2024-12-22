@@ -4,16 +4,293 @@ import type { CSSSizeString } from './CSSSizeString'
 import type { CSSProperties, ForwardedRef, ReactElement, ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
-import { forwardRef, useState } from 'react'
+import { forwardRef, useEffect, useRef, useState } from 'react'
 
 import { Button } from '../button/Button'
 import { extractConfigValue } from '../errors/extractConfig'
 import { Frame, type FrameProps } from '../frame/Frame'
 import { IkonOf } from '../icons/iconHelpers'
 import { getLCHFromStringAsString } from '../kolor/getLCHFromStringAsString'
+import { Kolor } from '../kolor/Kolor'
+import { RevealUI } from '../reveal/RevealUI'
 import { knownOKLCHHues } from '../tinyCSS/knownHues'
 
 type ClassLike = string | { [cls: string]: any } | null | undefined | boolean
+
+// bird_d: All of this is probably the most disgusting code I've ever written in my life.
+type ColorPickerProps = {
+   color: Kolor
+   onColorChange: (value: string) => void
+}
+
+const CANVASSIZE = 200
+
+function hsvToRGB(h: number, s: number, v: number): { r: number; g: number; b: number } {
+   const c = v * s // Chroma
+   const x = c * (1 - Math.abs(((h / 60) % 2) - 1))
+   const m = v - c
+
+   let r = 0,
+      g = 0,
+      b = 0
+
+   if (s === 0) {
+      // If saturation is 0, the color is gray and all RGB components are equal to value
+      r = g = b = v
+   } else {
+      // Normal HSV to RGB conversion when saturation is not 0
+      if (h >= 0 && h < 60) {
+         r = c
+         g = x
+         b = 0
+      } else if (h >= 60 && h < 120) {
+         r = x
+         g = c
+         b = 0
+      } else if (h >= 120 && h < 180) {
+         r = 0
+         g = c
+         b = x
+      } else if (h >= 180 && h < 240) {
+         r = 0
+         g = x
+         b = c
+      } else if (h >= 240 && h < 300) {
+         r = x
+         g = 0
+         b = c
+      } else if (h >= 300 && h < 360) {
+         r = c
+         g = 0
+         b = x
+      }
+   }
+
+   return {
+      r: Math.round((r + m) * 255),
+      g: Math.round((g + m) * 255),
+      b: Math.round((b + m) * 255),
+   }
+}
+
+function hslToRGB(h: number, s: number, l: number): { r: number; g: number; b: number } {
+   const c = (1 - Math.abs(2 * l - 1)) * s // Chroma
+   const x = c * (1 - Math.abs(((h / 60) % 2) - 1))
+   const m = l - c / 2
+
+   let r = 0,
+      g = 0,
+      b = 0
+
+   if (s === 0) {
+      // If saturation is 0, the color is gray (all RGB components are equal to lightness)
+      r = g = b = l
+   } else {
+      if (h >= 0 && h < 60) {
+         r = c
+         g = x
+         b = 0
+      } else if (h >= 60 && h < 120) {
+         r = x
+         g = c
+         b = 0
+      } else if (h >= 120 && h < 180) {
+         r = 0
+         g = c
+         b = x
+      } else if (h >= 180 && h < 240) {
+         r = 0
+         g = x
+         b = c
+      } else if (h >= 240 && h < 300) {
+         r = x
+         g = 0
+         b = c
+      } else if (h >= 300 && h < 360) {
+         r = c
+         g = 0
+         b = x
+      }
+   }
+
+   return {
+      r: Math.round((r + m) * 255),
+      g: Math.round((g + m) * 255),
+      b: Math.round((b + m) * 255),
+   }
+}
+
+const ColorCirclePicker: React.FC<ColorPickerProps> = ({ color, onColorChange }) => {
+   const hueSatCanvasRef = useRef<HTMLCanvasElement>(null)
+   const valueCanvasRef = useRef<HTMLCanvasElement>(null)
+   const [mode, setMode] = useState<'rgb' | 'hsv' | 'oklch'>('rgb')
+
+   const theme = cushy.preferences.theme.value
+
+   const hsl = color.color.hsl
+
+   useEffect(() => {
+      const canvas = hueSatCanvasRef.current
+      if (!canvas) return
+
+      const ctx = canvas.getContext('2d')
+      if (!ctx) return
+
+      const radius = canvas.width / 2
+
+      // Draw conic gradient for hues
+      const gradientHue = ctx.createConicGradient(90 * (Math.PI / 180), radius, radius)
+
+      function rgbFromHueLightness(hue: number, lightness: number): string {
+         const HSL = hslToRGB(hue, 1, lightness)
+         return `rgb(${HSL.r}, ${HSL.g}, ${HSL.b})`
+      }
+
+      const step = 360 / 6
+      const l = hsl[2] / 100
+      gradientHue.addColorStop(0, rgbFromHueLightness(0, l))
+      gradientHue.addColorStop(1 / 6, rgbFromHueLightness(step, l))
+      gradientHue.addColorStop(2 / 6, rgbFromHueLightness(step * 2, l))
+      gradientHue.addColorStop(3 / 6, rgbFromHueLightness(step * 3, l))
+      gradientHue.addColorStop(4 / 6, rgbFromHueLightness(step * 4, l))
+      gradientHue.addColorStop(5 / 6, rgbFromHueLightness(step * 5, l))
+      gradientHue.addColorStop(1, rgbFromHueLightness(0, l))
+
+      ctx.fillStyle = gradientHue
+      ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+      // Draw radial gradient for saturation
+      // ctx.globalCompositeOperation = ''
+
+      const gradientSaturation = ctx.createRadialGradient(radius, radius, 0, radius, radius, radius)
+      gradientSaturation.addColorStop(0, `rgba(${l * 255}, ${l * 255}, ${l * 255}, 1)`)
+      gradientSaturation.addColorStop(1, `rgba(${l * 255}, ${l * 255}, ${l * 255}, 0)`)
+
+      ctx.fillStyle = gradientSaturation
+      ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+      // ctx.globalCompositeOperation = 'multiply'
+
+      // const l = Math.round((hsl[2] / 100) * 255)
+      // ctx.fillStyle = `rgb(${l}, ${l}, ${l})`
+      // ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+      ctx.globalCompositeOperation = 'source-over' // Reset blend mode
+
+      const valueCanvas = valueCanvasRef.current
+      if (!valueCanvas) return
+
+      const valueCtx = valueCanvas.getContext('2d')
+      if (!valueCtx) return
+
+      const gradientLightness = valueCtx.createLinearGradient(0, 0, 0, CANVASSIZE)
+      gradientLightness.addColorStop(0, 'rgba(255, 255, 255, 1)')
+      gradientLightness.addColorStop(1, 'rgba(0, 0, 0, 1)')
+
+      valueCtx.fillStyle = gradientLightness
+      valueCtx.fillRect(0, 0, valueCanvas.width, valueCanvas.height)
+   }, [color])
+
+   function getCanvasPositionFromHueSaturation(
+      hue: number,
+      saturation: number,
+      radius: number,
+   ): { x: number; y: number } {
+      const angle = (hue - 90) * (Math.PI / 180) // Convert hue to radians and rotate red to the bottom
+      const distance = saturation * radius // Distance from the center
+
+      const x = radius + distance * Math.cos(angle) // Center x + offset
+      const y = radius + distance * Math.sin(angle) // Center y + offset
+
+      return { x, y }
+   }
+
+   // -180 to adjust for the rotated hue, saturation should be 0-1, so divide by 100 prob not needed. clean later
+   const circlePosition = getCanvasPositionFromHueSaturation(hsl[0] - 180, hsl[1] / 100, CANVASSIZE / 2)
+
+   return (
+      <Frame col tw='gap-2'>
+         <Frame row tw='gap-2'>
+            <Frame
+               tw='relative gap-2 rounded-full !bg-transparent'
+               row
+               border={{ contrast: 0.25 }}
+               dropShadow={theme.global.shadow}
+            >
+               <div
+                  // Hue/Saturation indicator
+                  tw='pointer-events-none absolute rounded-full'
+                  style={{
+                     border: '1px solid grey',
+                     top: `${circlePosition.y}px`,
+                     left: `${circlePosition.x}px`,
+                     transform: 'translateX(-50%) translateY(-50%)',
+                  }}
+               >
+                  <div
+                     // Hue/Saturation indicator
+                     tw='h-5 w-5 rounded-full'
+                     style={{
+                        border: '1px solid white',
+                        background: color.toOKLCH(),
+                     }}
+                  />
+               </div>
+               <canvas
+                  ref={hueSatCanvasRef}
+                  width={CANVASSIZE}
+                  height={CANVASSIZE}
+                  style={{
+                     borderRadius: '50%',
+                     cursor: cushy.preferences.interface.value.useDefaultCursorEverywhere
+                        ? 'default'
+                        : 'pointer',
+                  }}
+                  onClick={(e: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
+                     const canvas = hueSatCanvasRef.current
+                     if (!canvas) return
+
+                     const rect = canvas.getBoundingClientRect()
+                     const x = e.clientX - rect.left
+                     const y = e.clientY - rect.top
+
+                     const radius = canvas.width / 2
+                     const centerX = radius
+                     const centerY = radius
+
+                     // Calculate relative position
+                     const dx = x - centerX
+                     const dy = y - centerY
+                     const distance = Math.sqrt(dx * dx + dy * dy)
+
+                     // Saturation is the distance from the center normalized to the radius
+                     const saturation = Math.min(1, distance / radius)
+
+                     // Hue is the angle from the center (in degrees, 0–360)
+                     let hue = Math.atan2(dy, dx) * (180 / Math.PI)
+
+                     // Adjust 90 degrees (Probably arbitrary, but I'm literally just copying how blender "looks", their code is probably cleaner cause they actually know math there LMAO)
+                     hue = (hue - 90) % 360
+                     if (hue < 0) hue += 360
+
+                     const lightness = hsl[2]
+                     if (!lightness) {
+                        return
+                     }
+
+                     const adjustedRgb = hslToRGB(hue, saturation, lightness / 100)
+                     onColorChange(`rgb(${adjustedRgb.r}, ${adjustedRgb.g}, ${adjustedRgb.b})`)
+
+                     // onColorChange(`rgb(${r}, ${g}, ${b})`)
+                  }}
+               />
+            </Frame>
+            <canvas ref={valueCanvasRef} width={'20px'} height={CANVASSIZE} />
+         </Frame>
+         <InputStringUI getValue={() => color.color.toString({ format: 'rgb' })} setValue={(value) => {}} />
+      </Frame>
+   )
+}
 
 export type InputStringProps = {
    /** when true => 'mdiText' */
@@ -111,6 +388,50 @@ export const InputStringUI = observer(
                >
                   {interfacePref.widget.color.showText && getLCHFromStringAsString(value)}
                </Frame>
+            )
+
+            return (
+               <RevealUI
+                  placement='above-no-min-no-max-size'
+                  content={() => {
+                     const color = Kolor.fromString(p.getValue())
+
+                     return (
+                        <div tw='p-2'>
+                           <ColorCirclePicker
+                              color={color}
+                              onColorChange={(value) => {
+                                 p.setValue(value)
+                              }}
+                           />
+                        </div>
+                     )
+                  }}
+               >
+                  <Frame
+                     noColorStuff={p.noColorStuff}
+                     className={p.className}
+                     style={p.style}
+                     base={theme.global.contrast}
+                     text={{ contrast: 1, chromaBlend: 1 }}
+                     hover={3}
+                     // dropShadow={dropShadow}
+                     roundness={theme.global.roundness}
+                     role='textbox'
+                     border={
+                        isDirty //
+                           ? { contrast: 0.3, hue: knownOKLCHHues.warning, chroma: 0.2 }
+                           : theme.global.border
+                     }
+                     tw={[
+                        //
+                        p.icon && !p.clearable ? 'pr-1' : 'px-0',
+                        'UI-InputString h-input relative flex items-center overflow-clip text-sm',
+                     ]}
+                  >
+                     {visualHelper}
+                  </Frame>
+               </RevealUI>
             )
             break
          default:
