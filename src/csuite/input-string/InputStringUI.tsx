@@ -3,6 +3,7 @@ import type { IconName } from '../icons/icons'
 import type { CSSSizeString } from './CSSSizeString'
 import type { CSSProperties, ForwardedRef, ReactElement, ReactNode } from 'react'
 
+import Color from 'colorjs.io'
 import { observer } from 'mobx-react-lite'
 import { forwardRef, useEffect, useRef, useState } from 'react'
 
@@ -140,6 +141,7 @@ const ColorCirclePicker: React.FC<ColorPickerProps> = ({ color, onColorChange })
    const theme = cushy.preferences.theme.value
 
    const hsl = color.color.hsl
+   const hsv = color.color.hsv
 
    useEffect(() => {
       const canvas = hueSatCanvasRef.current
@@ -159,33 +161,42 @@ const ColorCirclePicker: React.FC<ColorPickerProps> = ({ color, onColorChange })
       }
 
       const step = 360 / 6
-      const l = hsl[2] / 100
-      gradientHue.addColorStop(0, rgbFromHueLightness(0, l))
-      gradientHue.addColorStop(1 / 6, rgbFromHueLightness(step, l))
-      gradientHue.addColorStop(2 / 6, rgbFromHueLightness(step * 2, l))
-      gradientHue.addColorStop(3 / 6, rgbFromHueLightness(step * 3, l))
-      gradientHue.addColorStop(4 / 6, rgbFromHueLightness(step * 4, l))
-      gradientHue.addColorStop(5 / 6, rgbFromHueLightness(step * 5, l))
-      gradientHue.addColorStop(1, rgbFromHueLightness(0, l))
+      // const l = hsl[2] / 100
+      // gradientHue.addColorStop(0, rgbFromHueLightness(0, l))
+      // gradientHue.addColorStop(1 / 6, rgbFromHueLightness(step, l))
+      // gradientHue.addColorStop(2 / 6, rgbFromHueLightness(step * 2, l))
+      // gradientHue.addColorStop(3 / 6, rgbFromHueLightness(step * 3, l))
+      // gradientHue.addColorStop(4 / 6, rgbFromHueLightness(step * 4, l))
+      // gradientHue.addColorStop(5 / 6, rgbFromHueLightness(step * 5, l))
+      // gradientHue.addColorStop(1, rgbFromHueLightness(0, l))
+      gradientHue.addColorStop(0, 'red')
+      gradientHue.addColorStop(1 / 6, 'yellow')
+      gradientHue.addColorStop(2 / 6, 'lime')
+      gradientHue.addColorStop(3 / 6, 'cyan')
+      gradientHue.addColorStop(4 / 6, 'blue')
+      gradientHue.addColorStop(5 / 6, 'magenta')
+      gradientHue.addColorStop(1, 'red')
 
       ctx.fillStyle = gradientHue
       ctx.fillRect(0, 0, canvas.width, canvas.height)
 
       // Draw radial gradient for saturation
-      // ctx.globalCompositeOperation = ''
+      // ctx.globalCompositeOperation = 'overlay'
 
       const gradientSaturation = ctx.createRadialGradient(radius, radius, 0, radius, radius, radius)
-      gradientSaturation.addColorStop(0, `rgba(${l * 255}, ${l * 255}, ${l * 255}, 1)`)
-      gradientSaturation.addColorStop(1, `rgba(${l * 255}, ${l * 255}, ${l * 255}, 0)`)
+      gradientSaturation.addColorStop(0, `rgba(255, 255, 255, 1)`)
+      gradientSaturation.addColorStop(1, `rgba(255, 255, 255, 0)`)
+      // gradientSaturation.addColorStop(0, `rgba(${l * 255}, ${l * 255}, ${l * 255}, 1)`)
+      // gradientSaturation.addColorStop(1, `rgba(${l * 255}, ${l * 255}, ${l * 255}, 0)`)
 
       ctx.fillStyle = gradientSaturation
       ctx.fillRect(0, 0, canvas.width, canvas.height)
 
-      // ctx.globalCompositeOperation = 'multiply'
+      ctx.globalCompositeOperation = 'multiply'
 
       // const l = Math.round((hsl[2] / 100) * 255)
-      // ctx.fillStyle = `rgb(${l}, ${l}, ${l})`
-      // ctx.fillRect(0, 0, canvas.width, canvas.height)
+      ctx.fillStyle = `hsl(0deg, 0%, ${hsv[2]}%)`
+      ctx.fillRect(0, 0, canvas.width, canvas.height)
 
       ctx.globalCompositeOperation = 'source-over' // Reset blend mode
 
@@ -221,7 +232,7 @@ const ColorCirclePicker: React.FC<ColorPickerProps> = ({ color, onColorChange })
    }
 
    // -180 to adjust for the rotated hue, saturation should be 0-1, so divide by 100 prob not needed. clean later
-   const circlePosition = getCanvasPositionFromHueSaturation(hsl[0] - 180, hsl[1] / 100, CANVASSIZE / 2)
+   const circlePosition = getCanvasPositionFromHueSaturation(hsv[0] - 180, hsv[1] / 100, CANVASSIZE / 2)
 
    return (
       <Frame col tw='gap-2'>
@@ -229,7 +240,7 @@ const ColorCirclePicker: React.FC<ColorPickerProps> = ({ color, onColorChange })
             <Frame
                tw='relative gap-2 rounded-full !bg-transparent'
                row
-               border={{ contrast: 0.25 }}
+               border={{ lightness: 0.5 }}
                dropShadow={theme.global.shadow}
             >
                <div
@@ -289,21 +300,24 @@ const ColorCirclePicker: React.FC<ColorPickerProps> = ({ color, onColorChange })
                      hue = (hue - 90) % 360
                      if (hue < 0) hue += 360
 
-                     const lightness = hsl[2]
+                     const lightness = hsv[2]
                      if (!lightness) {
                         return
                      }
 
-                     const adjustedRgb = hslToRGB(hue, saturation, lightness / 100)
-                     onColorChange(
-                        Kolor.fromString(`rgb(${adjustedRgb.r}, ${adjustedRgb.g}, ${adjustedRgb.b})`),
-                     )
+                     const newCol = new Color('hsv', [hue, saturation * 100, lightness]).hsl
+
+                     // const adjustedRgb = hslToRGB(hue, saturation, lightness / 100)
+                     onColorChange(Kolor.fromString(`hsl(${newCol[0]}deg, ${newCol[1]}%, ${newCol[2]}%)`))
 
                      // onColorChange(`rgb(${r}, ${g}, ${b})`)
                   }}
                />
             </Frame>
-            <div tw='relative !bg-transparent'>
+            <div
+               // Lightness Bar
+               tw='relative !bg-transparent'
+            >
                <Frame
                   tw='overflow-clip !bg-transparent'
                   border={{ lightness: 0.1 }}
@@ -321,22 +335,23 @@ const ColorCirclePicker: React.FC<ColorPickerProps> = ({ color, onColorChange })
                         const rect = canvas.getBoundingClientRect()
                         const y = e.clientY - rect.top
 
-                        const lightness = 1 - y / CANVASSIZE
+                        const lightness = Math.round((1 - y / CANVASSIZE) * 100)
 
-                        const hue = hsl[0]
-                        const saturation = hsl[1]
+                        const hue = hsv[0]
+                        const saturation = hsv[1]
 
                         if (!hue || !saturation) {
                            return
                         }
 
-                        console.log('[FD] Lightness: ', saturation)
+                        // Kolor.fromColor(
+                        const newColor = new Color('hsv', [hue, saturation, lightness])
+                        console.log('[FD] new Color: ', newColor)
+                        // )
 
-                        onColorChange(
-                           Kolor.fromString(
-                              `hsl(${hue}deg, ${Math.round(saturation)}%, ${Math.round(lightness * 100)}%)`,
-                           ),
-                        )
+                        const asHSL = newColor.hsl
+
+                        onColorChange(Kolor.fromString(`hsl(${asHSL[0]}deg, ${asHSL[1]}%, ${asHSL[2]}%)`))
                      }}
                   />
                </Frame>
@@ -345,7 +360,7 @@ const ColorCirclePicker: React.FC<ColorPickerProps> = ({ color, onColorChange })
                   tw='pointer-events-none absolute'
                   style={{
                      border: '1px solid grey',
-                     top: `${CANVASSIZE - (hsl[2] / 100) * CANVASSIZE}px`,
+                     top: `${CANVASSIZE - (hsv[2] / 100) * CANVASSIZE}px`,
                      left: `50%`,
                      transform: 'translateX(-50%) translateY(-50%)',
                   }}
@@ -357,7 +372,7 @@ const ColorCirclePicker: React.FC<ColorPickerProps> = ({ color, onColorChange })
                         // Only add by a multiple of two here, this is centered in the transform above and numbers not divisible by two will be blurry
                         width: BAR_CANVAS_WIDTH + 2,
                         border: '1px solid white',
-                        background: `hsl(0deg, 0%, ${hsl[2]}%)`,
+                        background: `hsl(0deg, 0%, ${hsv[2]}%)`,
                      }}
                   />
                </div>
