@@ -61,25 +61,19 @@ export class DanbooruTags {
       if (DanbooruTags._instance) throw new Error('DanbooruTags is a singleton')
       DanbooruTags._instance = this
       const filePaths = []
-      if (cushy.preferences.system.value.tags.danbooru) {
-         filePaths.push('completions/danbooru.csv')
-      }
-      if (cushy.preferences.system.value.tags.danbooruNSFW) {
-         filePaths.push('completions/danbooru_nsfw.csv')
-      }
-      if (cushy.preferences.system.value.tags.e621) {
-         filePaths.push('completions/e621.csv')
-      }
-      if (cushy.preferences.system.value.tags.e621NSFW) {
-         filePaths.push('completions/e621_nsfw.csv')
-      }
+      const enabledTags = cushy.preferences.system.value.tags
+      if (enabledTags.danbooru) filePaths.push('completions/danbooru.csv')
+      if (enabledTags.danbooruNSFW) filePaths.push('completions/danbooru_nsfw.csv')
+      if (enabledTags.e621) filePaths.push('completions/e621.csv')
+      if (enabledTags.e621NSFW) filePaths.push('completions/e621_nsfw.csv')
+
       filePaths.forEach((filePath) => {
          createReadStream(filePath)
             .pipe(csv.parse({ headers: false, delimiter: ',' }))
             .on('error', (error) => console.error(error))
             .on('data', (row) => {
                const parsedTag = this.parseRow(row)
-               if (parsedTag.count < cushy.preferences.system.value.tags.remove) return
+               if (parsedTag.count < enabledTags.remove) return
                const existingTag = this.tagsMap.get(parsedTag.text)
                if (existingTag) {
                   if (existingTag.count < parsedTag.count) {
