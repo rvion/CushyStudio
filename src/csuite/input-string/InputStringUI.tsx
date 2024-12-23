@@ -359,7 +359,7 @@ const ColorCirclePicker: React.FC<ColorPickerProps> = ({ color, onColorChange })
                   // Lightness indicator
                   tw='pointer-events-none absolute'
                   style={{
-                     border: '1px solid grey',
+                     border: '1px solid black',
                      top: `${CANVASSIZE - (hsv[2] / 100) * CANVASSIZE}px`,
                      left: `50%`,
                      transform: 'translateX(-50%) translateY(-50%)',
