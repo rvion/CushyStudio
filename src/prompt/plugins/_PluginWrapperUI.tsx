@@ -6,18 +6,18 @@ import { Frame } from '../../csuite/frame/Frame'
 import { Ikon } from '../../csuite/icons/iconHelpers'
 
 export const PluginWrapperUI = observer(function PluginWrapperUI_(p: {
-    //
-    plugin: PromptPlugin
-    children?: React.ReactNode
+   //
+   plugin: PromptPlugin
+   children?: React.ReactNode
 }) {
-    const plugin = p.plugin
-    const Icon = Ikon[plugin.icon]
-    return (
-        <Frame>
-            <div tw='italic text-gray-500 text-sm flex gap-1 align-center'>
-                <Icon /> Plugin {plugin.title}
-            </div>
-            {p.children}
-        </Frame>
-    )
+   const plugin = p.plugin
+   const Icon = Ikon[plugin.icon]
+   return (
+      <Frame>
+         <div tw='align-center flex gap-1 text-sm italic text-gray-500'>
+            <Icon /> Plugin {plugin.title}
+         </div>
+         {p.children}
+      </Frame>
+   )
 })

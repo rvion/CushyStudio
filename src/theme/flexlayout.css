@@ -1,11 +1,17 @@
-.UI-MAIN{
+/* .UI-MAIN{ */
   /* border: 6px solid oklch(from var(--KLR) calc(l - 0.1 * var(--DIR)) calc(c / 2) h);; */
-  border-left: 6px solid var(--appbar);
-  border-right: 6px solid var(--appbar);
+  /* border-left: 6px solid var(--appbar); */
+  /* border-right: 6px solid var(--appbar); */
+/* } */
 
-}
+/* :root { */
+/* } */
 
 .flexlayout__layout {
+  --p: oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) calc(c * 2) h);
+  --s: oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) calc(c * 2) h + 180);
+  --t: oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) calc(c * 2) h + 270);
+
   --color-background:                       oklch(from var(--KLR) calc(l + 0.0001 * var(--DIR)) calc(c / 2) h); /* White background equivalent */
   --color-base:                             oklch(from var(--KLR) calc(l + 0.0001 * var(--DIR)) calc(c / 2) h); /* Base color */
   --color-1:                                oklch(from var(--KLR) calc(l + 0.0001 * var(--DIR)) calc(c / 2) h); /* Slightly off-white */
@@ -15,10 +21,10 @@
   --color-5:                                oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h); /* Slightly darker than --color-3 */
   --color-6:                                oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h); /* Placeholder for a color a bit darker than --color-5 */
 
-  --color-drag1:                            oklch(var(--p));  /* Primary color for dragging */
-  --color-drag2:                            oklch(var(--s));  /* Secondary color for dragging */
-  --color-drag1-background:                 oklch(var(--p));  /* Primary color background with lowered opacity */
-  --color-drag2-background:                 oklch(var(--s));  /* Secondary color background with lowered opacity */
+  --color-drag1:                            oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) calc(c * 2) h);  /* Primary color for dragging */
+  --color-drag2:                            oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) calc(c * 2) h + 180);  /* Secondary color for dragging */
+  --color-drag1-background:                 oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) calc(c * 2) h);  /* Primary color background with lowered opacity */
+  --color-drag2-background:                 oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) calc(c * 2) h + 180);  /* Secondary color background with lowered opacity */
 
   --color-overflow:                         oklch(from var(--KLR) calc(l + 0.4 * var(--DIR)) calc(c / 2) h);
   --color-icon:                             oklch(from var(--KLR) calc(l + 0.4 * var(--DIR)) calc(c / 2) h);
@@ -26,7 +32,8 @@
   /* tabset background */
   /* --color-tabset-background:                oklch(from var(--KLR) calc(l + 0 * var(--DIR)) c h); */
   /* --color-tabset-background:                oklch(from var(--KLR) calc(l - 0.1 * var(--DIR)) calc(c / 2) h); */
-  --color-tabset-background:                var(--appbar);
+  --tab-bg:                                 oklch(from var(--appbar) calc(l - 0.1 * var(--DIR)) c h);
+  --color-tabset-background:                var(--tab-bg);
 
   /*                                        oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h); */
   /*                                        oklch(from var(--KLR) calc(l - 0.1 * var(--DIR)) calc(c / 2) h); */
@@ -34,11 +41,11 @@
   /* --color-tabset-background-selected:    oklch(from var(--KLR) calc(l + 0 * var(--DIR)) c h); */
   /* --color-tabset-background-selected:    oklch(from var(--KLR) calc(l - 0.1 * var(--DIR)) calc(c / 2) h); */
   /* --color-tabset-background-selected:    oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h); */
-  --color-tabset-background-selected:       var(--appbar);
+  --color-tabset-background-selected:       var(--tab-bg);
 
   /* --color-tabset-background-maximized:      oklch(from var(--KLR) calc(l + 0 * var(--DIR)) c h); */
   /*                                        oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h); */
-  --color-tabset-background-maximized:      var(--appbar);
+  --color-tabset-background-maximized:      var(--tab-bg);
 
   --color-tabset-divider-line:              oklch(var(--p)/.2);
   --color-tabset-header-background:         oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h);
@@ -47,8 +54,8 @@
   --color-border-divider-line:              oklch(var(--p)/.2);
 
   /* # tab color */
-  --color-tab-selected:                     oklch(from var(--KLR) calc(l + 0.8 * var(--DIR)) calc(c / 2) h);
-  --color-tab-selected-background:          oklch(from var(--KLR) calc(l + 0.08   * var(--DIR)) calc(c / 2) h);
+  --color-tab-selected:                     oklch(from var(--KLR) calc(l + 0.8 * var(--DIR)) c h);
+  --color-tab-selected-background:          oklch(from var(--KLR) calc(l + 0.08   * var(--DIR)) c h);
   /* --color-tab-unselected:                   oklch(from var(--KLR) calc(l + 0.4 * var(--DIR)) calc(c / 2) h); */
   /* --color-tab-unselected:                   oklch(from var(--KLR) calc(l + 0.8 * var(--DIR)) calc(c / 2) h); */
   --color-tab-unselected:                   var(--foobar1);
@@ -66,8 +73,8 @@
 /* splitter */
   --color-splitter:                         oklch(from var(--KLR) calc(l - 0.1 * var(--DIR)) calc(c / 2) h);
   --color-splitter:                         var(--appbar);
-  --color-splitter-hover:                   oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) calc(c * 2) h);
-  --color-splitter-drag:                    oklch(from var(--KLR) calc(l + 0.3 * var(--DIR)) calc(c * 8) h);
+  --color-splitter-hover:                   oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h);
+  --color-splitter-drag:                    oklch(from var(--KLR) calc(l + 0.3 * var(--DIR)) c h);
 
   --color-drag-rect-border:                 oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h);
   --color-drag-rect-background:             oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h);
@@ -90,6 +97,7 @@
   bottom: 0;
   position: absolute;
   overflow: hidden;
+  background: var(--appbar);
 }
 .flexlayout__splitter {
   background-color: var(--color-splitter);
@@ -164,6 +172,10 @@
   box-sizing: border-box;
   font-size: var(--font-size);
   font-family: var(--font-family);
+  border-radius: var(--theme-roundness);
+  padding-left: var(--theme-roundness-padding);
+  padding-right: var(--theme-roundness-padding);
+  /* align-items: center; */
 }
 .flexlayout__tabset_tab_divider {
   width: 4px;
@@ -238,6 +250,7 @@
   box-sizing: border-box;
 }
 .flexlayout__tab {
+  border-radius: var(--theme-roundness);
   overflow: auto;
   position: absolute;
   box-sizing: border-box;
@@ -251,6 +264,8 @@
   box-sizing: border-box;
   padding: 3px 0.5em;
   cursor: pointer;
+  padding-left: calc(var(--theme-roundness-padding) * 0.5 + 0.2rem);
+  padding-right: calc(var(--theme-roundness-padding) * 0.5 + 0.2rem);
 }
 .flexlayout__tab_button_stretch {
   background-color: transparent;
@@ -280,18 +295,22 @@
   }
 }
 .flexlayout__tab_button--unselected {
-  background-color: var(--color-tab-unselected-background);
+  background-color: transparent;
   color: var(--color-tab-unselected);
+  border-radius: var(--theme-roundness);
+  height: 90%;
+  margin-top: 2px;
 }
 .flexlayout__tab_button_top {
   /* box-shadow: inset -2px 0px 5px rgba(0, 0, 0, 0.1); */
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
+  border-top-left-radius: var(--theme-roundness);
+  border-top-right-radius: var(--theme-roundness);
+  margin-top: 2px;
 }
 .flexlayout__tab_button_bottom {
   /* box-shadow: inset -2px 0px 5px rgba(0, 0, 0, 0.1); */
-  border-bottom-left-radius: 3px;
-  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: var(--theme-roundness);
+  border-bottom-right-radius: var(--theme-roundness);
 }
 .flexlayout__tab_button_leading {
   display: flex;
@@ -315,7 +334,9 @@
 .flexlayout__tab_button_trailing {
   display: flex;
   visibility: hidden;
-  border-radius: 4px;
+  border-radius: var(--theme-roundness);
+  margin-left: 4px;
+  height: 12px !important;
 }
 .flexlayout__tab_button_trailing:hover {
   background-color: var(--color-6);

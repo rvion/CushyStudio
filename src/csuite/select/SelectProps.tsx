@@ -2,127 +2,154 @@ import type { FrameProps } from '../frame/Frame'
 import type { IconName } from '../icons/icons'
 import type { InputStringProps } from '../input-string/InputStringUI'
 import type { RevealPlacement } from '../reveal/RevealPlacement'
-import type { RevealHideReason, RevealProps } from '../reveal/RevealProps'
+import type { RevealProps } from '../reveal/RevealProps'
 import type { SelectOptionProps } from './SelectOptionUI'
 import type { SelectPopupProps } from './SelectPopupUI'
-import type { AutoCompleteSelectState } from './SelectState'
+import type { AutoCompleteSelectState, SelectValueSlots } from './SelectState'
+import type React from 'react'
 
-import React from 'react'
+// 🔶 should probably use symbols
+export type SelectValueLooks =
+   | '🔶DEFAULT🔶' // convenient when we only want to customize one 'where' case
+   | 'TODO_ColoredBadgeWithCloseKnob'
+   | 'TODO_ColoredBadge'
+   | 'TODO_Badge'
+   | 'TODO_BadgeWithCloseKnob'
 
 export type SelectProps<OPTION> = {
-    label?: string
-    startIcon?: IconName
+   label?: string
+   startIcon?: IconName
 
-    placement?: RevealPlacement
-    /**
-     * if true, select is virtualized
-     * @default true
-     */
-    virtualized?: boolean | number
+   placement?: RevealPlacement
+   /**
+    * if true, select is virtualized
+    * @default true
+    */
+   virtualized?: boolean | number
 
-    slotPlaceholderWhenNoResults?: React.ReactNode
+   slotPlaceholderWhenNoResults?: React.ReactNode
 
-    /** callback when a new option is selected */
-    onOptionToggled: null | ((next: OPTION, self: AutoCompleteSelectState<OPTION>) => void)
+   /** callback when a new option is selected */
+   onOptionToggled: null | ((next: OPTION, self: AutoCompleteSelectState<OPTION>) => void)
 
-    /**
-     * @deprecated
-     * use `onOptionToggled` instead
-     * this is just an alias for `onOptionToggled`
-     * this function has been added back since 2 people struggled to find the `onOptionToggled` name
-     */
-    onChange?: (next: OPTION, self: AutoCompleteSelectState<OPTION>) => void
+   /**
+    * @deprecated
+    * use `onOptionToggled` instead
+    * this is just an alias for `onOptionToggled`
+    * this function has been added back since 2 people struggled to find the `onOptionToggled` name
+    */
+   onChange?: (next: OPTION, self: AutoCompleteSelectState<OPTION>) => void
 
-    /**
-     * list of all choices
-     * 👉 If the list of options is generated from the query directly,
-     *    you should also set `disableLocalFiltering: true`, to avoid
-     *    filtering the options twice.
-     */
-    options?: (query: string) => OPTION[]
+   /**
+    * list of all choices
+    * 👉 If the list of options is generated from the query directly,
+    *    you should also set `disableLocalFiltering: true`, to avoid
+    *    filtering the options twice.
+    */
+   options?: (query: string) => OPTION[]
+   createOption?: {
+      label?: string
+      isActive?: boolean
+      action: () => Promise<OPTION | null>
+   }
 
-    /** set this to true if your choices */
-    disableLocalFiltering?: boolean
+   /** set this to true if your choices */
+   disableLocalFiltering?: boolean
 
-    /** if provided, is used to compare options with selected values */
-    equalityCheck?: (a: OPTION, b: OPTION) => boolean
+   /** if provided, is used to compare options with selected values */
+   equalityCheck?: (a: OPTION, b: OPTION) => boolean
 
-    // --------------------------------------------
-    /** used to search/filter & for UI if no getLabelUI provided */
-    getLabelText: (t: OPTION) => string
+   // --------------------------------------------
+   /** used to search/filter & for UI if no getLabelUI provided */
+   getLabelText: (t: OPTION) => string
 
-    /** if provided, is used to display the options in the popover */
-    getLabelUI?: (t: OPTION) => React.ReactNode
-    // ^^^
-    // - [ ] RENAME
-    // - [ ] allow to specify them by well known slot
-    //     - 'ColoredBadgeWithCloseKnob'
-    //     - 'ColoredBadge'
-    //     - 'Badge'
-    //     - 'BadgeWithCloseKnob'
+   /** if provided, is used to display the options in the popover */
+   OptionLabelUI?: (
+      t: OPTION,
+      where: SelectValueSlots,
+      selectState: AutoCompleteSelectState<OPTION>,
+   ) => React.ReactNode | SelectValueLooks
 
-    /** if provided, is used to display the selected options in the inside area  */
-    getInsideUI?: (t: OPTION) => React.ReactNode
-    // - [ ] RENAME
-    // - [ ] allow to specify them by well known slot
-    //     - 'ColoredBadgeWithCloseKnob'
-    //     - 'ColoredBadge'
-    //     - 'Badge'
-    //     - 'BadgeWithCloseKnob'
-    // --------------------------------------------
+   hideOptionCheckbox?: boolean
 
-    /** if not provided, autoKey will be used instead */
-    getKey?: (t: OPTION) => string
+   /** if not provided, autoKey will be used instead */
+   getKey?: (t: OPTION) => string
 
-    /** the selected value / list of values if multiple values provided */
-    value?: () => Maybe<OPTION | OPTION[]>
+   /** the selected value / list of values if multiple values provided */
+   value?: () => (OPTION | OPTION[]) | undefined
 
-    /** if true, this widget is considered a multi-select */
-    multiple?: boolean
+   /** if true, this widget is considered a multi-select */
+   multiple?: boolean
 
-    /** text to show when no value yet nor filter query */
-    placeholder?: string
-    disabled?: boolean
-    cleanable?: boolean
-    // hideValue?: boolean
-    className?: string
-    style?: React.CSSProperties
+   /** prevents popup from opening, not well thought out, probably does not belongs here */
+   readonly?: boolean
 
-    /**
-     * @default: false if multi-select, true if single select
-     */
-    closeOnPick?: boolean
+   hasErrors?: boolean
 
-    /**
-     * @default: false
-     * (previous default before 2024-02-29: false if multi-select, true if single select)
-     */
-    resetQueryOnPick?: boolean
+   /** text to show when no value yet nor filter query */
+   placeholder?: string
+   disabled?: boolean
 
-    /** hooks required to plug search query from/into some other system */
-    getSearchQuery?: () => string
-    setSearchQuery?: (val: string) => void
+   onCleared?: Maybe<() => void>
 
-    /**
-     * since 2024-06-12
-     * @default false
-     */
-    wrap?: boolean
+   /** if true, popup-input options won't have a close icon */
+   uncloseableOptions?: boolean
 
-    onHidden?: (reason: RevealHideReason) => void
-    // 🧚‍♀️ onAnchorFocus?: (ev: React.FocusEvent<HTMLElement>) => void
-    // 🧚‍♀️ onAnchorBlur?: (ev: React.FocusEvent<HTMLElement>) => void
-    // 🧚‍♀️ onAnchorKeyDown?: (ev: React.KeyboardEvent<HTMLElement>) => void
-    revealProps?: RevealProps
-    anchorProps?: FrameProps
-    popupWrapperProps?: FrameProps
-    textInputProps?: InputStringProps
+   hideValue?: boolean
+   // className?: string // use revealProps.anchorProps.className instead
+   // style?: React.CSSProperties // use revealProps.anchorProps.style instead
 
-    // customization slots
-    slotTextInputUI?: React.FC<{ select: AutoCompleteSelectState<OPTION> }>
-    slotPopupUI?: React.FC<SelectPopupProps<OPTION>>
-    slotAnchorContentUI?: React.FC<{ select: AutoCompleteSelectState<OPTION> }>
-    slotDisplayValueUI?: React.FC<{ select: AutoCompleteSelectState<OPTION> }>
-    slotResultsListUI?: React.FC<{ select: AutoCompleteSelectState<OPTION> }>
-    slotOptionUI?: React.FC<SelectOptionProps<OPTION>>
+   /**
+    * wride doc
+    * @since 2024-10-17
+    */
+   showSelectAllNone?: boolean
+
+   /**
+    * Implement the selection of ALL values, when the user did not type any search filter
+    * @since 2024-10-17
+    */
+   onSelectAll?: (filterText: string) => void
+
+   /**
+    * @default: false if multi-select, true if single select
+    */
+   closeOnPick?: boolean
+
+   /**
+    * @default: false
+    * (previous default before 2024-02-29: false if multi-select, true if single select)
+    */
+   resetQueryOnPick?: boolean
+
+   /** hooks required to plug search query from/into some other system */
+   getSearchQuery?: () => string
+   setSearchQuery?: (val: string) => void
+
+   /**
+    * since 2024-06-12
+    * @default false
+    */
+   wrap?:
+      | boolean //
+      | 'no-wrap-no-overflow-hidden' // in cells, we don't want to wrap, but overflow hidden is handled by the cell container, we want the select to overflow.
+
+   // 🧚‍♀️ onAnchorFocus?: (ev: React.FocusEvent<HTMLElement>) => void
+   // 🧚‍♀️ onAnchorBlur?: (ev: React.FocusEvent<HTMLElement>) => void
+   // 🧚‍♀️ onAnchorKeyDown?: (ev: React.KeyboardEvent<HTMLElement>) => void
+   revealProps?: Partial<RevealProps>
+   popupWrapperProps?: React.HTMLAttributes<HTMLDivElement>
+   textInputProps?: InputStringProps
+
+   // customization slots
+   slotTextInputUI?: React.FC<{ select: AutoCompleteSelectState<OPTION> }>
+   slotPopupUI?: React.FC<SelectPopupProps<OPTION>>
+   slotAnchorContentUI?: React.FC<{ select: AutoCompleteSelectState<OPTION> }>
+   slotDisplayValueUI?: React.FC<{ select: AutoCompleteSelectState<OPTION> }>
+   SlotDisplayValueInPopupUI?: React.FC<{ select: AutoCompleteSelectState<OPTION> }>
+   slotResultsListUI?: React.FC<{ select: AutoCompleteSelectState<OPTION> }>
+   slotOptionUI?: React.FC<SelectOptionProps<OPTION>>
+
+   tooltip?: string
+   frameProps?: FrameProps
 }

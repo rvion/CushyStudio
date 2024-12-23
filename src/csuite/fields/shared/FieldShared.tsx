@@ -7,83 +7,110 @@ import type { Problem_Ext } from '../../model/Validation'
 import { Field } from '../../model/Field'
 import { registerFieldClass } from '../WidgetUI.DI'
 
-// CONFIG
+// #region CONFIG TYPE
 export type Field_shared_config<F extends Field> = FieldConfig<
-    //
-    { field: F },
-    Field_shared_types<F>
+   //
+   { field: F },
+   Field_shared_types<F>
 >
 
-// SERIAL
+// #region SERIAL TYPE
 export type Field_shared_serial = FieldSerial<{
-    $: 'shared'
-    // NO VALUE HERE; otherwise, we would store the data twice
+   $: 'shared'
+   // NO VALUE HERE; otherwise, we would store the data twice
 }>
 
-// SERIAL FROM VALUE
-export const Field_shared_fromValue = (val: Field_shared_value): Field_shared_serial => ({
-    $: 'shared',
-})
-
-// VALUE
+// #region VALUE TYPE
 export type Field_shared_value<F extends Field = Field> = F['$Value']
+export type Field_shared_unchecked<F extends Field = Field> = F['$Unchecked']
 
-// TYPES
+// #region $FieldTypes
 export type Field_shared_types<F extends Field = Field> = {
-    $Type: 'shared'
-    $Config: Field_shared_config<F>
-    $Serial: Field_shared_serial
-    $Value: Field_shared_value<F>
-    $Field: Field_shared<F>
+   $Type: 'shared'
+   $Config: Field_shared_config<F>
+   $Serial: Field_shared_serial
+   $Value: Field_shared_value<F>
+   $Unchecked: Field_shared_unchecked<F>
+   $Field: Field_shared<F>
+   $Child: F
+   $Reflect: Field_shared_types<F>
 }
 
-// STATE
+// #region STATE
 export class Field_shared<F extends Field = Field> extends Field<Field_shared_types<F>> {
-    static readonly type: 'shared' = 'shared'
+   // #region TYPE
+   static readonly type: 'shared' = 'shared'
+   static readonly emptySerial: Field_shared_serial = { $: 'shared' }
+   static codegenValueType(config: Field_shared_config<any>): string {
+      return config.field.schema.codegenValueType()
+   }
+   static migrateSerial(): undefined {}
 
-    readonly DefaultHeaderUI = undefined
-    readonly DefaultBodyUI = undefined
+   // #region CTOR
+   constructor(
+      repo: Repository,
+      root: Field | null,
+      parent: Field | null,
+      schema: BaseSchema<Field_shared<F>>,
+      initialMountKey: string,
+      serial?: Field_shared_serial,
+   ) {
+      super(repo, root, parent, schema, initialMountKey, serial)
+      this.init(serial, {
+         DefaultHeaderUI: false,
+         DefaultBodyUI: false,
+      })
+   }
 
-    constructor(
-        //
-        repo: Repository,
-        root: Field | null,
-        parent: Field | null,
-        schema: BaseSchema<Field_shared<F>>,
-        serial?: Field_shared_serial,
-    ) {
-        super(repo, root, parent, schema)
-        this.init(serial, {
-            DefaultHeaderUI: false,
-            DefaultBodyUI: false,
-        })
-    }
+   // #region UI
+   readonly DefaultHeaderUI: undefined = undefined
+   readonly DefaultBodyUI: undefined = undefined
 
-    protected setOwnSerial(_serial: Maybe<Field_shared_serial>): void {}
+   protected setOwnSerial(_next: Field_shared_serial): void {}
 
-    get hasChanges(): boolean {
-        return this.shared.hasChanges ?? false
-    }
+   get isOwnSet(): boolean {
+      return this.shared.isSet
+   }
 
-    get actualWidgetToDisplay(): Field {
-        return this.shared.actualWidgetToDisplay
-    }
+   get hasChanges(): boolean {
+      return this.shared.hasChanges
+   }
 
-    get shared(): F {
-        return this.config.field
-    }
+   get actualWidgetToDisplay(): Field {
+      return this.shared.actualWidgetToDisplay
+   }
 
-    get ownProblems(): Problem_Ext {
-        return this.shared.ownProblems
-    }
+   get shared(): F {
+      return this.config.field
+   }
 
-    get value(): Field_shared_value<F> {
-        return this.shared.value
-    }
+   get ownConfigSpecificProblems(): Problem_Ext {
+      return null
+   }
 
-    set value(val: Field_shared_value<F>) {
-        this.shared.value = val
-    }
+   get ownTypeSpecificProblems(): Problem_Ext {
+      return this.shared.ownTypeSpecificProblems
+   }
+
+   get value(): Field_shared_value<F> {
+      return this.shared.value
+   }
+
+   set value(val: Field_shared_value<F>) {
+      this.shared.value = val
+   }
+
+   get value_or_fail(): Field_shared_value<F> {
+      return this.shared.value_or_fail
+   }
+
+   get value_or_zero(): Field_shared_value<F> {
+      return this.shared.value_or_zero
+   }
+
+   get value_unchecked(): Field_shared_unchecked<F> {
+      return this.shared.value_unchecked
+   }
 }
 
 // DI

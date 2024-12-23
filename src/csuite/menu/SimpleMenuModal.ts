@@ -6,20 +6,20 @@ import type { FC } from 'react'
  * label will be used for shortcut binding and fuzzy menu search
  */
 export class SimpleMenuModal {
-    constructor(
-        public p: {
-            label: string
-            icon?: IconName
+   constructor(
+      public p: {
+         label: string
+         icon?: IconName
+         submit?: () => void
+         submitLabel?: string
+         UI: FC<{
+            /** will be called both when submitted and not */
+            close: (p: { didSubmit?: boolean }) => void
+            /** if present, a submit button will be added */
             submit?: () => void
+            /** only taken into account if submit function is also given */
             submitLabel?: string
-            UI: FC<{
-                /** will be called both when submitted and not */
-                close: (p: { didSubmit?: boolean }) => void
-                /** if present, a submit button will be added */
-                submit?: () => void
-                /** only taken into account if submit function is also given */
-                submitLabel?: string
-            }>
-        },
-    ) {}
+         }>
+      },
+   ) {}
 }

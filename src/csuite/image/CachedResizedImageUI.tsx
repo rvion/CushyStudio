@@ -18,43 +18,43 @@ import { ImageErrorDisplayUI } from '../../widgets/galleries/ImageErrorDisplayUI
  */
 
 export const CachedResizedImage = observer(function CachedResizedImage_({
-    // own --------------------------------------------------------------
-    /** unrelated to the underlying image element */
-    size,
+   // own --------------------------------------------------------------
+   /** unrelated to the underlying image element */
+   size,
 
-    // modified ---------------------------------------------------------
-    // will be replaced by the resized version
-    src,
-    /** make it lazy by default */
-    loading = 'lazy',
+   // modified ---------------------------------------------------------
+   // will be replaced by the resized version
+   src,
+   /** make it lazy by default */
+   loading = 'lazy',
 
-    // standard ---------------------------------------------------------
-    ...rest
+   // standard ---------------------------------------------------------
+   ...rest
 }: { size: number } & ImgHTMLAttributes<HTMLImageElement>) {
-    const [lastSize, setLastSize] = useState<number>(-1)
-    const [cached, setCached] = useState<string>('')
+   const [lastSize, setLastSize] = useState<number>(-1)
+   const [cached, setCached] = useState<string>('')
 
-    if (lastSize != size) {
-        const image = sharp(src).resize(size, size, { fit: 'inside' })
-        image
-            .ensureAlpha()
-            .png()
-            .toBuffer((err, buffer, info) => {
-                if (err) {
-                    console.error(err)
-                    return <ImageErrorDisplayUI icon='cached' />
-                }
+   if (lastSize != size) {
+      const image = sharp(src).resize(size, size, { fit: 'inside' })
+      image
+         .ensureAlpha()
+         .png()
+         .toBuffer((err, buffer, info) => {
+            if (err) {
+               console.error(err)
+               return <ImageErrorDisplayUI icon='mdiCached' />
+            }
 
-                setCached(`data:image/png;base64,${buffer.toString('base64')}`)
-            })
-        setLastSize(size)
-    }
+            setCached(`data:image/png;base64,${buffer.toString('base64')}`)
+         })
+      setLastSize(size)
+   }
 
-    return (
-        <img // using a native image without any wrapper
-            src={cached}
-            loading={loading}
-            {...rest}
-        />
-    )
+   return (
+      <img // using a native image without any wrapper
+         src={cached}
+         loading={loading}
+         {...rest}
+      />
+   )
 })

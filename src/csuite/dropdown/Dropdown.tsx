@@ -1,22 +1,23 @@
 import type { IconName } from '../icons/icons'
 import type { Tint } from '../kolor/Tint'
-
-import { observer } from 'mobx-react-lite'
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 import { Button } from '../button/Button'
 import { Frame } from '../frame/Frame'
 import { RevealUI } from '../reveal/RevealUI'
-import { MenuDivider, MenuItem } from './MenuItem'
+import { MenuDivider } from './MenuDivider'
+import { MenuItem } from './MenuItem'
+import { observerWC } from './observerWC'
 
 export type DropdownProps = {
-    title: ReactNode
-    className?: string
-    startIcon?: Maybe<IconName>
-    theme?: Tint
-    content?: () => ReactNode
-    button?: ReactNode
-    expand?: boolean
+   title: ReactNode
+   className?: string
+   startIcon?: Maybe<IconName>
+   theme?: Tint
+   content?: () => ReactNode
+   button?: ReactNode
+   expand?: boolean
+   debugName?: string
 }
 
 /**
@@ -24,21 +25,31 @@ export type DropdownProps = {
  * to build menus
  * see modules like `src/appbar/MenuDebugUI.tsx`
  */
-export const _Dropdown = observer(function Dropdown(p: DropdownProps): JSX.Element {
-    return (
-        <RevealUI
+export const Dropdown = observerWC(
+   function Dropdown_(p: DropdownProps): JSX.Element {
+      return (
+         <RevealUI
             tw={[p.className]}
             hideTriggers={{ shellClick: true, backdropClick: true, escapeKey: true }}
-            content={() => <Frame tabIndex={0} tw='flex flex-col z-[1]' children={p.content?.()} />}
+            content={() => <Frame tabIndex={0} tw='z-[1] flex flex-col' children={p.content?.()} />}
+            debugName={p.debugName}
             children={
-                p.button ?? <Button borderless subtle icon={p.startIcon} tabIndex={0} expand={p.expand} children={p.title} />
+               p.button ?? (
+                  <Button
+                     borderless
+                     subtle
+                     icon={p.startIcon}
+                     tabIndex={0}
+                     expand={p.expand}
+                     children={p.title}
+                  />
+               )
             }
-        />
-    )
-})
-
-export const Dropdown = Object.assign(_Dropdown, {
-    // name: 'BasicShelfUI',
-    Divider: MenuDivider,
-    Item: MenuItem,
-})
+         />
+      )
+   },
+   {
+      Divider: MenuDivider,
+      Item: MenuItem,
+   },
+)

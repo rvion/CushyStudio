@@ -4,18 +4,22 @@
     overflow: auto;
 }
 
-.ͼo .cm-activeLineGutter,
 .ͼo .cm-gutters {
     color:            oklch(from var(--KLR) calc(l + 0.4 * var(--DIR)) calc(c / 2) h);
-    background-color: oklch(from var(--KLR) calc(l) calc(c / 2) h);
+    background-color: oklch(from var(--KLR) calc(l - 0.0777 * var(--DIR)) c h);
     /* background-color: oklch(from var(--KLR) calc(l + 0.1 * var(--DIR)) calc(c / 2) h); */
+}
+
+.ͼo .cm-activeLineGutter {
+    color:            oklch(from var(--KLR) calc(l + 0.777 * var(--DIR)) calc(c * 5) calc(h + 180));
+    background-color: oklch(from var(--KLR) calc(l - 0.0777 * var(--DIR)) c h);
 }
 
 .ͼo {
     /* color here is the comment color */
     color: oklch(from var(--KLR) calc(l + 0.3 * var(--DIR)) 0.03 h);
     /* color:            oklch(from var(--KLR) calc(l + 0.8 * var(--DIR)) calc(c / 2) h); */
-    background-color: oklch(from var(--KLR) calc(l + 0   * var(--DIR)) calc(c / 2) h);
+    background-color: oklch(from var(--KLR) calc(l * var(--DIR)) calc(c) h);
 }
 .ͼo .cm-tooltip-autocomplete > ul > li[aria-selected] {
     background-color: oklch(var(--p));

@@ -1,9 +1,9 @@
-import type { Builder } from '../../controls/Builder'
+import type { CushySchemaBuilder } from '../../controls/CushyBuilder'
 
 /**
  * @legacy
  * @deprecated
  */
-export const getCurrentForm_IMPL = (): Builder => {
-    return cushy.builder
+export const getCurrentForm_IMPL = (): CushySchemaBuilder => {
+   return cushy.builder
 }

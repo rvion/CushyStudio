@@ -5,109 +5,187 @@ import type { FieldSerial } from '../../model/FieldSerial'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 
+import { produce } from 'immer'
+
 import { Field } from '../../model/Field'
-import { registerFieldClass } from '../WidgetUI.DI'
+import { isProbablySerialBool, isProbablySerialButton, registerFieldClass } from '../WidgetUI.DI'
 import { WidgetButtonUI } from './WidgetButtonUI'
 
 export type Field_button_context<K> = {
-    context: K
-    widget: Field_button<K>
+   context: K
+   widget: Field_button<K>
 }
 
-// CONFIG
+// #region CONFIG
 export type Field_button_config<K = any> = FieldConfig<
-    {
-        text?: string
-        /** @default false */
-        default?: boolean
-        look?: FrameAppearance
-        expand?: boolean
-        useContext?: () => K
-        onClick?: (ctx: Field_button_context<K>) => void
-    },
-    Field_button_types<K>
+   {
+      text?: string
+      /** @default false */
+      default?: boolean
+      look?: FrameAppearance
+      expand?: boolean
+      useContext?: () => K
+      onClick?: (ctx: Field_button_context<K>) => void
+   },
+   Field_button_types<K>
 >
 
-// SERIAL
+// #region SERIAL
 export type Field_button_serial = FieldSerial<{
-    $: 'button'
-    val?: boolean
+   $: 'button'
+   value?: boolean
 }>
 
-// VALUE
+// #region VALUE
 export type Field_button_value = boolean
+export type Field_button_unchecked = Field_button_value | undefined
 
-// TYPES
+// #region TYPES
 export type Field_button_types<K> = {
-    $Type: 'button'
-    $Config: Field_button_config<K>
-    $Serial: Field_button_serial
-    $Value: Field_button_value
-    $Field: Field_button<K>
+   $Type: 'button'
+   $Config: Field_button_config<K>
+   $Serial: Field_button_serial
+   $Value: Field_button_value
+   $Unchecked: Field_button_unchecked
+   $Field: Field_button<K>
+   $Child: never
+   $Reflect: Field_button_types<K>
 }
 
 // STATE
 export class Field_button<K> extends Field<Field_button_types<K>> {
-    static readonly type: 'button' = 'button'
-    readonly DefaultHeaderUI = WidgetButtonUI
-    readonly DefaultBodyUI = undefined
+   // #region TYPE
+   static readonly type: 'button' = 'button'
+   static readonly emptySerial: Field_button_serial = { $: 'button' }
+   static migrateSerial(serial: object): Maybe<Field_button_serial> {
+      if (isProbablySerialBool(serial) || isProbablySerialButton(serial)) {
+         if ('val' in serial) {
+            const recoveredVal = serial.val
+            if (typeof recoveredVal !== 'boolean')
+               throw new Error(`Field_button: invalid legacy 'val' serial`)
+            const { val, $, ...rest } = serial
+            const out: Field_button_serial = {
+               $: this.type,
+               value: recoveredVal,
+               ...rest,
+            }
+            return out
+         }
+      }
+   }
 
-    constructor(
-        //
-        repo: Repository,
-        root: Field | null,
-        parent: Field | null,
-        schema: BaseSchema<Field_button<K>>,
-        serial?: Field_button_serial,
-    ) {
-        super(repo, root, parent, schema)
-        const config = schema.config
-        if (config.text) config.label = config.label ?? ` `
-        this.init(serial, {
-            DefaultHeaderUI: false,
-            DefaultBodyUI: false,
-        })
-    }
+   // #region CTOR
+   constructor(
+      repo: Repository,
+      root: Field | null,
+      parent: Field | null,
+      schema: BaseSchema<Field_button<K>>,
+      initialMountKey: string,
+      serial?: Field_button_serial,
+   ) {
+      super(repo, root, parent, schema, initialMountKey, serial)
+      const config = schema.config
+      if (config.text) config.label = config.label ?? ` `
+      this.init(serial, {
+         DefaultHeaderUI: false,
+         DefaultBodyUI: false,
+      })
+   }
 
-    protected setOwnSerial(serial: Maybe<Field_button_serial>): void {
-        this.serial.val = serial?.val ?? this.defaultValue
-    }
+   // #region UI
+   readonly DefaultHeaderUI = WidgetButtonUI
+   readonly DefaultBodyUI: undefined = undefined
 
-    get value(): Field_button_value {
-        return this.serial.val ?? this.defaultValue
-    }
+   // #region SERIAL
+   protected setOwnSerial(next: Field_button_serial): void {
+      if (next.value == null) {
+         const def = this.defaultValue
+         if (def != null) next = produce(next, (draft) => void (draft.value = def))
+      }
 
-    set value(next: boolean) {
-        if (this.serial.val === next) return
-        this.runInValueTransaction(() => (this.serial.val = next))
-    }
+      this.assignNewSerial(next)
+   }
 
-    get ownProblems(): Problem_Ext {
-        return null
-    }
+   // #region CHILDREN
 
-    /** set the value to true */
-    setOn(): true {
-        return (this.value = true)
-    }
+   // #region VALUE
+   get value(): Field_button_value {
+      return this.value_or_fail
+      // if (!this.hasMagicDefault && !this.isSet) throw new Error('Field_Button.value: not set')
+      // return this.serial.value ?? this.defaultValue ?? false /* <- zero */
+   }
 
-    /** set the value to false */
-    setOff(): false {
-        return (this.value = false)
-    }
+   set value(next: boolean) {
+      if (this.serial.value === next) return
+      this.patchInTransaction((serial) => void (serial.value = next))
+   }
 
-    /** set value to true if false, and to false if true */
-    toggle(): boolean {
-        return (this.value = !this.value)
-    }
+   get value_or_fail(): Field_button_value {
+      const val = this.value_unchecked
+      if (val == null) throw new Error('Field_button.value_or_fail: not set')
+      return val
+   }
 
-    get defaultValue(): boolean {
-        return this.config.default ?? false
-    }
+   get value_or_zero(): Field_button_value {
+      return this.serial.value ?? false
+   }
 
-    get hasChanges(): boolean {
-        return this.value !== this.defaultValue
-    }
+   get value_unchecked(): Field_button_unchecked {
+      return this.serial.value
+   }
+
+   get defaultValue(): boolean | undefined {
+      return this.config.default
+   }
+
+   // #region CHANGES
+   get isOwnSet(): boolean {
+      return this.serial.value !== undefined
+   }
+
+   get hasChanges(): boolean {
+      if (!this.isSet) return false
+      if (this.serial.value === this.defaultValue) return false
+      return true
+   }
+
+   // #region VALIDATION
+
+   // #region PROBLEMS
+   get ownConfigSpecificProblems(): Problem_Ext {
+      return null
+   }
+
+   get ownTypeSpecificProblems(): Problem_Ext {
+      return null
+   }
+
+   // #region NULLABILITY
+   get canBeSetOnOrOff(): true {
+      return true
+   }
+
+   /** set the value to true */
+   setOn(): void {
+      this.value = true
+   }
+
+   /** set the value to false */
+   setOff(): void {
+      this.value = false
+   }
+
+   // #region SETTERS
+   /** set value to true if false, and to false if true */
+   toggle(): boolean {
+      return (this.value = !this.value_or_zero)
+   }
+
+   // #region MOCK
+   randomize(): void {
+      const r = Math.random()
+      this.value = r > 0.5
+   }
 }
 
 // DI

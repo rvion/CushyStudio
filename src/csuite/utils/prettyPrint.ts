@@ -5,5 +5,5 @@
  * large objects
  */
 export const prettyPrint = (x: unknown): string => {
-    return JSON.stringify(x, null, 4)
+   return JSON.stringify(x, null, 4)
 }

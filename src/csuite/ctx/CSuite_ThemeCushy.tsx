@@ -7,108 +7,114 @@ import { makeAutoObservable } from 'mobx'
 
 import { Kolor } from '../kolor/Kolor'
 import { run_tint } from '../kolor/prefab_Tint'
-import { NumberVar } from '../tinyCSS/CSSVar'
 
 export class CSuite_ThemeCushy implements CSuiteConfig {
-    constructor(private st: STATE) {
-        makeAutoObservable(this)
-    }
+   constructor(private st: STATE) {
+      makeAutoObservable(this)
+   }
 
-    get tooltipDelay(): Maybe<number> {
-        return cushy.preferences.interface.value.tooltipDelay
-    }
+   showExpandCarets: boolean = true
+   showSelectIcons: boolean = false
 
-    get showFoldButtons(): boolean {
-        return this.st.preferences.interface.value.showWidgetFoldButtons ?? true
-    }
+   get tooltipDelay(): Maybe<number> {
+      return cushy.preferences.interface.TooltipDelay.value
+   }
 
-    // sizes ------------------------------------------------------
-    get widgetHeight(): number {
-        return this.st.preferences.interface.value.widgetHeight ?? 1.8
-    }
+   get showFoldButtons(): boolean {
+      return this.st.preferences.interface.Widget.ShowFoldButtons.value ?? true
+   }
 
-    get inputHeight(): number {
-        return this.st.preferences.interface.value.inputHeight ?? 1.6
-    }
+   // sizes ------------------------------------------------------
+   get widgetHeight(): number {
+      return this.st.preferences.interface.WidgetHeight.value ?? 1.8
+   }
 
-    get insideHeight(): number {
-        return this.st.preferences.interface.value.insideHeight ?? 1.2
-    }
+   get inputHeight(): number {
+      return this.st.preferences.interface.InputHeight.value ?? 1.6
+   }
 
-    // misc ------------------------------------------------------
-    get clickAndSlideMultiplicator(): number {
-        return this.st.clickAndSlideMultiplicator ?? 1
-    }
+   get insideHeight(): number {
+      return this.st.preferences.interface.InsideHeight.value ?? 1.2
+   }
 
-    get showWidgetUndo(): boolean {
-        return this.st.preferences.interface.value.showWidgetUndo ?? true
-    }
+   get inputRoundness(): number {
+      return this.st.theme.InputRoundness.value ?? 5
+   }
 
-    get showWidgetMenu(): boolean {
-        return this.st.preferences.interface.value.showWidgetMenu ?? true
-    }
+   // misc ------------------------------------------------------
+   get clickAndSlideMultiplicator(): number {
+      return this.st.clickAndSlideMultiplicator ?? 1
+   }
 
-    get showWidgetDiff(): boolean {
-        return this.st.preferences.interface.value.showWidgetDiff ?? true
-    }
+   get showWidgetUndo(): boolean {
+      return this.st.preferences.interface.Widget.ShowUndo.value ?? true
+   }
 
-    get showToggleButtonBox(): boolean {
-        return this.st.preferences.interface.value.showToggleButtonBox ?? false
-    }
+   get showWidgetMenu(): boolean {
+      return this.st.preferences.interface.Widget.ShowMenu.value ?? true
+   }
 
-    get labellayout(): FormGlobalLayoutMode {
-        const x = this.st.theme.value.labelLayout
-        if (x.id === 'fluid') return 'fluid'
-        if (x.id === 'fixed-left') return 'fixed-left'
-        if (x.id === 'fixed-right') return 'fixed-right'
-        if (x.id === 'mobile') return 'mobile'
-        return 'fixed-right'
-    }
+   get showWidgetDiff(): boolean {
+      return this.st.preferences.interface.Widget.ShowDiff.value ?? true
+   }
 
-    showWidgetExtra: boolean = true
-    truncateLabels?: boolean | undefined = false
+   get showToggleButtonBox(): boolean {
+      return this.st.preferences.interface.Widget.ShowToggleButtonBox.value ?? false
+   }
 
-    // theme
+   get labellayout(): FormGlobalLayoutMode {
+      const x = this.st.theme.LabelLayout.value
+      if (x === 'fluid') return 'fluid'
+      if (x === 'fixed-left') return 'fixed-left'
+      if (x === 'fixed-right') return 'fixed-right'
+      if (x === 'mobile') return 'mobile'
+      return 'fixed-right'
+   }
 
-    get baseStr(): string {
-        return this.st.theme.root.value.base
-    }
+   showWidgetExtra: boolean = true
+   truncateLabels?: boolean | undefined = false
 
-    get base(): Kolor {
-        return Kolor.fromString(this.baseStr)
-    }
+   // theme
 
-    get shiftDirection(): 1 | -1 {
-        return this.base.lightness > 0.5 ? -1 : 1
-    }
+   get baseStr(): string {
+      return this.st.theme.Base.value
+   }
 
-    labelBackground: TintExt = 0 // 3 // {}
+   get base(): Kolor {
+      return Kolor.fromString(this.baseStr)
+   }
 
-    get text(): Tint {
-        return run_tint(this.st.theme.value.text)
-    }
+   get shiftDirection(): 1 | -1 {
+      return this.base.lightness > 0.5 ? -1 : 1
+   }
 
-    get inputContrast(): TintExt {
-        return this.st.theme.value.inputContrast
-    }
+   labelBackground: TintExt = 0 // 3 // {}
 
-    get inputBorder(): TintExt {
-        return this.st.theme.value.inputBorder ?? 10
-    }
+   get text(): Tint {
+      return run_tint(this.st.theme.Text.value)
+   }
 
-    get labelText(): Tint | undefined {
-        const raw = this.st.theme.value.textLabel
-        if (raw == null) return undefined
-        return run_tint(raw)
-    }
+   get inputContrast(): TintExt {
+      return this.st.theme.InputContrast.value
+   }
 
-    get fieldGroups(): {
-        border: Maybe<number>
-        contrast: Maybe<number>
-    } {
-        return {
-            border: this.st.theme.value.fieldGroups?.border,
-            contrast: this.st.theme.value.fieldGroups?.contrast,
-        }
-    }
+   get inputBorder(): TintExt {
+      return this.st.theme.InputBorder.value ?? 10
+   }
+
+   get labelText(): Tint | undefined {
+      const raw = this.st.theme.TextLabel.value
+      if (raw == null) return undefined
+      return run_tint(raw)
+   }
+
+   get fieldGroups(): {
+      border: Maybe<number>
+      contrast: Maybe<number>
+   } {
+      return {
+         border: this.st.theme.FieldGroups.value?.border,
+         contrast: this.st.theme.FieldGroups.value?.contrast,
+      }
+   }
 }

@@ -32,12 +32,12 @@ const modulesToCache /*: [name:string, path:string][]*/ = [
 
 const fs = require('fs')
 for (const [pt, x] of modulesToCache) {
-    const symbols = Object.keys(require(pt))
-    let output = `const _ = window.require('${pt}')\n`
-    output += `export default _\n`
-    for (const sym of symbols) {
-        if (sym === 'default') continue
-        output += `export const ${sym} = _.${sym}\n`
-    }
-    fs.writeFileSync(`src/syms/${x}.js`, output)
+   const symbols = Object.keys(require(pt))
+   let output = `const _ = window.require('${pt}')\n`
+   output += `export default _\n`
+   for (const sym of symbols) {
+      if (sym === 'default') continue
+      output += `export const ${sym} = _.${sym}\n`
+   }
+   fs.writeFileSync(`src/syms/${x}.js`, output)
 }

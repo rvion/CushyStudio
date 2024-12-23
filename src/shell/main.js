@@ -1,6 +1,7 @@
 const { mkdirSync } = require('fs')
 const { cwd } = require('process')
 const { clipboard } = require('electron')
+const { execSync, spawn } = require('child_process')
 
 void START()
 
@@ -60,10 +61,16 @@ async function START() {
 
             server.printUrls()
         }
+        console.log(`[✅] starting vite dev-server`)
         startDevServer().catch((error) => {
             console.error(error)
             process.exit(1)
         })
+
+        // start CSS builder
+        console.log(`[✅] starting tailwind dev-server`)
+        void spawn('./node_modules/.bin/tailwindcss', ['--watch', '-o', 'src/theme/twin.css'], { stdio: 'inherit' })
+        // void spawn('./node_modules/.bin/unocss', ['--watch', '-o', 'src/theme/twin.css'], { stdio: 'inherit' })
     }
 
     // ===//=====//======//======//======//======//======//======//======//======//======//======//==
@@ -76,8 +83,16 @@ async function START() {
     // ⏸️     console.log('❌ error patching electron icon and name', error)
     // ⏸️ }
 
-    const { app, BrowserWindow, globalShortcut, ipcMain, session } = require('electron')
+    const Electron = require('electron')
+    const { app, BrowserWindow, globalShortcut, ipcMain, session, } = Electron
 
+    ipcMain.handle('proxy',async (event, arg) => {
+        console.log(`[🔎] proxy received with arg:`, arg)
+        const {object, method, props} = arg
+        const stuff = Electron[object][method]
+        if (typeof stuff !== 'function') return stuff
+        return await Electron[object][method](...props)
+    })
     ipcMain.on('resize-for-video-capture', (event, arg) => {
         const focusedWindow = BrowserWindow.getFocusedWindow()
         if (focusedWindow) focusedWindow.setSize(1920, 1080)
@@ -85,6 +100,8 @@ async function START() {
 
     ipcMain.on('search-stop', (event, arg) => {
         console.log(`[🔎] search-stop received with arg:`, arg)
+        const focusedWindow = BrowserWindow.getFocusedWindow()
+        const webContents = focusedWindow.webContents
         webContents.stopFindInPage('clearSelection')
     })
     ipcMain.on('search-start', (event, arg, options) => {
@@ -159,7 +176,30 @@ async function START() {
                 webviewTag: true,
                 webSecurity: false, // Disable CORS
                 allowRunningInsecureContent: true, // Disable CORS
+                // 💬 2024-10-27 rvion:
+                // | this doesn't work since we have  {..., contextIsolation: false }
+                // ❌ preload: path.join(__dirname, 'preload.js'),
             },
+        })
+
+        // 2024-08-16 rvion: 🏑
+        // | attempt to fix `cmd+w` closing the whole app when triggerd from an iframe
+        // | every possible fix (diabling global events, injecting js code, etc etc) fails.
+        // | I tried 5+ solutions and none of them worked, despite the fact all of them should
+        // | have worked. My guess is that there is some hard-coded stuff somewhere in electron
+        // | below is some weird-ass solution that seems to work
+        // Use 'before-input-event' to intercept the Cmd+W combination
+        mainWindow.webContents.on('before-input-event', (event, input) => {
+            if (input.key === 'w' && input.meta) {
+                console.log(`[🏑] custom 'cmd+w'`)
+                event.preventDefault() // Prevent the default close behavior
+                mainWindow.webContents.send('custom-cmd-w')
+            }
+            if (input.key === 'w' && input.control) {
+                console.log(`[🏑] custom 'ctrl+w'`)
+                event.preventDefault() // Prevent the default close behavior
+                mainWindow.webContents.send('custom-ctrl-w')
+            }
         })
 
         // remove the menu bar on windows & linux
@@ -318,7 +358,15 @@ async function START() {
             const installer = require('electron-devtools-installer')
             const forceDownload = !!process.env.UPGRADE_EXTENSIONS
             const extensions = ['REACT_DEVELOPER_TOOLS']
-            return Promise.all(extensions.map((name) => installer.default(installer[name], forceDownload))).catch(console.log)
+            return Promise.all(
+                //
+                extensions.map((name) =>
+                    installer
+                        .default(installer[name], forceDownload)
+                        .catch(console.log)
+                        .then((name) => console.log(`Added Extension:  ${name}`)),
+                ),
+            ) //
         }
 
         void createWindow()

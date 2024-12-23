@@ -1,43 +1,44 @@
 app({
-    metadata: {
-        name: 'ui-booleans',
-        description: 'sdk demo for boolean ui primitives',
-    },
-    ui: (form) => ({
-        check: form.bool({}),
-        checkLabel: form.bool({
+   metadata: {
+      name: 'ui-booleans',
+      description: 'sdk demo for boolean ui primitives',
+   },
+   ui: (b) =>
+      b.fields({
+         check: b.bool({}),
+         checkLabel: b.bool({
             label: false,
             text: 'Check Label',
-        }),
-        checkLabelIcon: form.bool({
+         }),
+         checkLabelIcon: b.bool({
             label: false,
             text: 'Check Label',
             icon: 'mdiContentSaveOutline',
-        }),
-        toggleButton: form.bool({
+         }),
+         toggleButton: b.bool({
             label: '',
             text: 'Toggle Button',
             display: 'button',
-        }),
-        toggleButtonIcon: form.bool({
+         }),
+         toggleButtonIcon: b.bool({
             label: false,
             text: 'Toggle Button Icon',
             display: 'button',
             icon: 'mdiCheckboxOutline',
-        }),
-        toggleButtonExpand: form.bool({
+         }),
+         toggleButtonExpand: b.bool({
             label: '',
             text: 'Toggle Button Expand',
             display: 'button',
             expand: true,
-        }),
-        toggleButtonExpandIcon: form.bool({
+         }),
+         toggleButtonExpandIcon: b.bool({
             label: '',
             text: 'Toggle Button Expand',
             display: 'button',
             expand: true,
             icon: 'mdiCheckboxOutline',
-        }),
-    }),
-    run: async (run, ui) => {},
+         }),
+      }),
+   run: async (run, ui) => {},
 })

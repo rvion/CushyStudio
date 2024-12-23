@@ -1,18 +1,16 @@
 import { observer } from 'mobx-react-lite'
 
-import { Button } from '../../csuite/button/Button'
-import { SelectUI } from '../../csuite/select/SelectUI'
-import { useGalleryConf } from './galleryConf'
+import { type GalleryConf, useGalleryConf } from './galleryConf'
 
 export const GallerySearchControlsUI = observer(function GallerySearchControlsUI_(p: {}) {
-    const conf = useGalleryConf()
-    return (
-        <div tw='flex gap-1 items-center'>
-            {conf.fields.filterPath.header()}
-            {conf.fields.filterAppName.header()}
-            {conf.fields.filterTag.header()}
-            {conf.fields.filterStar.header()}
-            {/* <input
+   const conf: GalleryConf = useGalleryConf()
+   return (
+      <div tw='flex items-center gap-1'>
+         {/* {conf.fields.filterPath.header()} */}
+         {/* {conf.fields.filterAppName.header()} */}
+         {conf.fields.filterTag.header()}
+         {/* {conf.fields.filterStar.header()} */}
+         {/* <input
                 tw='csuite-basic-input my-0.5'
                 placeholder='filename'
                 value={cushy.galleryFilterPath ?? ''}
@@ -40,7 +38,7 @@ export const GallerySearchControlsUI = observer(function GallerySearchControlsUI
                     else cushy.galleryFilterTag = next
                 }}
             /> */}
-            {/* <SelectUI
+         {/* <SelectUI
                 key='45'
                 placeholder='filter by app'
                 label='app'
@@ -54,6 +52,6 @@ export const GallerySearchControlsUI = observer(function GallerySearchControlsUI
                 }}
                 cleanable
             /> */}
-        </div>
-    )
+      </div>
+   )
 })

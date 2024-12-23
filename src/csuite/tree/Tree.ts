@@ -8,57 +8,56 @@ import { TreeNode } from './TreeNode'
 
 // ------------------------------------------------------------------------
 export type ITreeNodeState = {
-    isExpanded?: Maybe<SQLITE_boolean_>
-    isSelected?: Maybe<SQLITE_boolean_>
+   isExpanded?: Maybe<SQLITE_boolean_>
+   isSelected?: Maybe<SQLITE_boolean_>
 }
 
 export type INodeStore = {
-    data: ITreeNodeState
-    update: (data: Partial<ITreeNodeState>) => void
+   data: ITreeNodeState
+   update: (data: Partial<ITreeNodeState>) => void
 }
 
 export type TreeStorageConfig = {
-    /**
-     * @since 2024-05-21
-     * called once at construction time to get a
-     * hold on some persistent storage object, in case you want to persist the tree state
-     * easilly
-     * */
-    getNodeState: (node: TreeNode) => INodeStore
-    /**
-     */
-    updateAll?: (data: { isExpanded: SQLITE_boolean_ | null }) => void
+   /**
+    * @since 2024-05-21
+    * called once at construction time to get a
+    * hold on some persistent storage object, in case you want to persist the tree state
+    * easilly
+    * */
+   getNodeState: (node: TreeNode) => INodeStore
+   /**
+    */
+   updateAll?: (data: { isExpanded: SQLITE_boolean_ | null }) => void
 }
 
 export const defaultTreeStorage = (node: TreeNode): INodeStore => {
-    const data: ITreeNodeState = observable({
-        isExpanded: SQLITE_true,
-        isSelected: SQLITE_true,
-    })
-    return observable({
-        data,
-        update: (next) => Object.assign(data, next),
-    })
+   const data: ITreeNodeState = observable({
+      isExpanded: SQLITE_true,
+      isSelected: SQLITE_true,
+   })
+   return observable({
+      data,
+      update: (next) => Object.assign(data, next),
+   })
 }
 // ------------------------------------------------------------------------
 
 export class Tree {
-    topLevelNodes: TreeNode[] = []
-    KeyboardNavigableDomNodeID = nanoid()
+   topLevelNodes: TreeNode[] = []
+   KeyboardNavigableDomNodeID: string = nanoid()
 
-    constructor(
-        //
-        rootNodes: ITreeElement[],
-        public config: TreeStorageConfig = { getNodeState: defaultTreeStorage },
-    ) {
-        for (const uid of rootNodes) {
-            const node = new TreeNode(this, uid, undefined)
-            this.topLevelNodes.push(node)
-        }
-        makeAutoObservable(this, {
-            // indexNode: action
-        })
-    }
+   constructor(
+      rootNodes: ITreeElement[],
+      public config: TreeStorageConfig = { getNodeState: defaultTreeStorage },
+   ) {
+      for (const uid of rootNodes) {
+         const node = new TreeNode(this, uid, undefined)
+         this.topLevelNodes.push(node)
+      }
+      makeAutoObservable(this, {
+         // indexNode: action
+      })
+   }
 }
 
 // ⏸️    get nodes(): TreeNode[] {

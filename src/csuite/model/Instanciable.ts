@@ -1,21 +1,28 @@
+import type { FieldTypes } from './$FieldTypes'
 import type { Field } from './Field'
 import type { Repository } from './Repository'
 
-export interface Instanciable<T extends Field = Field> {
-    $Type: T['$Type']
-    $Config: T['$Config']
-    $Serial: T['$Serial']
-    $Value: T['$Value']
-    $Field: T['$Field']
+export interface Instanciable<TYPES extends FieldTypes = FieldTypes> {
+   // 1.
+   $Type: TYPES['$Type']
+   $Config: TYPES['$Config']
+   $Serial: TYPES['$Serial']
+   $Value: TYPES['$Value']
+   $Field: TYPES['$Field']
+   $Unchecked: TYPES['$Unchecked']
+   $Child: TYPES['$Child']
+   $Reflect: TYPES['$Reflect']
 
-    type: T['type']
-    config: T['$Config']
+   // 2.
+   type: TYPES['$Type']
+   config: TYPES['$Config']
 
-    instanciate(
-        //
-        repo: Repository,
-        root: Field<any> | null,
-        parent: Field | null,
-        serial: any | null,
-    ): T
+   instanciate(
+      // 3.
+      repo: Repository,
+      root: Field<any> | null,
+      parent: Field | null,
+      initialMountKey: string,
+      serial: any | null,
+   ): TYPES['$Field']
 }

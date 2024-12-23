@@ -41,51 +41,43 @@ export const joinCls = (tw /*: ClassLike[]*/) /*: string[]*/ => {
 function extractComponentName(type) /* : Maybe<string> */ {
     if (type == null) return null // recursivity terminal condition
     if (typeof type === 'string') return null // discard 'div', 'span', etc.
-    if (type.name) return type.name
-    if (type.displayName) return type.displayName
+    if (type.name) return '🔘' + type.name
+    if (type.displayName) return '🔘' + type.displayName
     return extractComponentName(type.type) // recrusively descend into type, so we can go though HOCs, Memo, or even React Contexts
 }
 
 export function jsx(type, props, key) {
-    const compName = extractComponentName(type) // .name || type.displayName || null // (typeof type === 'string' ? type : 'Component')
     const isSym = typeof type === 'symbol'
     const isPrim = typeof type === 'string'
-    const compCls = compName ? `🔘${compName}` : null // 'UI-'
-    const { tw, className, 'data-ux': ux, ...rest } = props
-    const PROPS = isSym
-        ? rest
-        : isPrim
-          ? {
-                ...rest,
-                // UX_: [...rest.UX, compCls],
-                className: joinCls([ux, className, tw]),
-            }
-          : {
-                ...rest,
-                'data-ux': ux ? [...ux, compCls] : [compCls],
-                className: joinCls([className, tw]),
-            }
+    const $$cls = extractComponentName(type) // .name || type.displayName || null // (typeof type === 'string' ? type : 'Component')
+    const { tw, className, $$clses, ...PROPS } = props
+    if (isSym) {
+        // do nothing
+    } else if (isPrim) {
+        PROPS.className = joinCls([$$clses, className, tw])
+    } else {
+        PROPS.className = joinCls([className, tw])
+        if ($$cls && $$cls.endsWith('_')) {
+            PROPS.$$clses = $$clses ? $$clses + ' ' + $$cls : $$cls
+        }
+    }
     return jsx_(type, PROPS, key)
 }
 
 export function jsxs(type, props, key) {
-    const compName = extractComponentName(type) // .name || type.displayName || null // (typeof type === 'string' ? type : 'Component')
     const isSym = typeof type === 'symbol'
     const isPrim = typeof type === 'string'
-    const compCls = compName ? `🔘${compName}` : null // 'UI-'
-    const { tw, className, 'data-ux': ux, ...rest } = props
-    const PROPS = isSym
-        ? rest
-        : isPrim
-          ? {
-                ...rest,
-                // UX_: [...rest.UX, compCls],
-                className: joinCls([ux, className, tw]),
-            }
-          : {
-                ...rest,
-                'data-ux': ux ? [...ux, compCls] : [compCls],
-                className: joinCls([className, tw]),
-            }
+    const $$cls = extractComponentName(type) // .name || type.displayName || null // (typeof type === 'string' ? type : 'Component')
+    const { tw, className, $$clses, ...PROPS } = props
+    if (isSym) {
+        // do nothing
+    } else if (isPrim) {
+        PROPS.className = joinCls([$$clses, className, tw])
+    } else {
+        PROPS.className = joinCls([className, tw])
+        if ($$cls && $$cls.endsWith('_')) {
+            PROPS.$$clses = $$clses ? $$clses + ' ' + $$cls : $$cls
+        }
+    }
     return jsxs_(type, PROPS, key)
 }

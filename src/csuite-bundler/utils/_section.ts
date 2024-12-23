@@ -2,16 +2,16 @@ import chalk from 'chalk'
 
 import { wrapBox } from '../../manager/_utils/_wrapBox'
 
-export function sectionTool(x: string) {
-    console.log(`tool: ${chalk.yellowBright(x)}`)
+export function sectionTool(x: string): void {
+   console.log(`tool: ${chalk.yellowBright(x)}`)
 }
 
-export function sectionObjective(x: string) {
-    console.log(chalk.gray.italic(`objective: ${x}`))
+export function sectionObjective(x: string): void {
+   console.log(chalk.gray.italic(`objective: ${x}`))
 }
 
-export function section(x: string) {
-    console.log('\n' + wrapBox(x, 1, chalk.bold.cyan))
+export function section(x: string): void {
+   console.log('\n' + wrapBox(x, 1, chalk.bold.cyan))
 }
 
 // async function buildTailwind() {
@@ -35,6 +35,6 @@ export function section(x: string) {
 //         console.error('Error occurred building css:', error)
 //     }
 // }
-export function CRASH() {
-    throw new Error('❌')
+export function CRASH(): never {
+   throw new Error('❌')
 }

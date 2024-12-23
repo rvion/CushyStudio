@@ -1,7 +1,7 @@
-import BetterSqlite3 from 'better-sqlite3'
+import type BetterSqlite3 from 'better-sqlite3'
 
 // prettier-ignore
-type SqlFKDef = {
+export type SqlFKDef = {
     id       : 0,
     seq      : 0,
     table    : string // 'step',
@@ -13,11 +13,11 @@ type SqlFKDef = {
   }
 
 export const _getAllForeignKeysForTable = (
-    //
-    db: BetterSqlite3.Database,
-    tableName: string,
-) => {
-    const stmt = db.prepare(`pragma foreign_key_list(${tableName})`)
-    const cols = stmt.all() as SqlFKDef[]
-    return cols
+   //
+   db: BetterSqlite3.Database,
+   tableName: string,
+): SqlFKDef[] => {
+   const stmt = db.prepare(`pragma foreign_key_list(${tableName})`)
+   const cols = stmt.all() as SqlFKDef[]
+   return cols
 }

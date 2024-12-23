@@ -11,6 +11,7 @@ dts
 
 # in case of local ComfyUI clone
 ComfyUI
+!src/comfyui
 
 # electron
 out
@@ -92,3 +93,8 @@ src/tools/cushy-screenshots-logs.txt
 
 @cushy/*
 @cushy.zip
+
+eslint.config.debug.json
+
+autotype.summary.txt
+src/theme/twin.css

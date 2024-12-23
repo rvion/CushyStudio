@@ -1,201 +1,201 @@
 {
-    "asset": {
-        "generator": "Khronos glTF Blender I/O v4.0.44",
-        "version": "2.0"
-    },
-    "scene": 0,
-    "scenes": [
-        {
-            "name": "Scene",
-            "nodes": [0]
-        }
-    ],
-    "nodes": [
-        {
-            "mesh": 0,
-            "name": "Lobster Can",
-            "translation": [0, 0, 0]
-        }
-    ],
-    "materials": [
-        {
-            "doubleSided": true,
-            "name": "lobster texture",
-            "pbrMetallicRoughness": {
-                "baseColorTexture": {
-                    "index": 0
-                },
-                "metallicFactor": 0.5469122529029846,
-                "roughnessFactor": 0.3282051384449005
+   "asset": {
+      "generator": "Khronos glTF Blender I/O v4.0.44",
+      "version": "2.0"
+   },
+   "scene": 0,
+   "scenes": [
+      {
+         "name": "Scene",
+         "nodes": [0]
+      }
+   ],
+   "nodes": [
+      {
+         "mesh": 0,
+         "name": "Lobster Can",
+         "translation": [0, 0, 0]
+      }
+   ],
+   "materials": [
+      {
+         "doubleSided": true,
+         "name": "lobster texture",
+         "pbrMetallicRoughness": {
+            "baseColorTexture": {
+               "index": 0
+            },
+            "metallicFactor": 0.5469122529029846,
+            "roughnessFactor": 0.3282051384449005
+         }
+      },
+      {
+         "doubleSided": true,
+         "name": "Top",
+         "pbrMetallicRoughness": {
+            "baseColorTexture": {
+               "index": 1
+            },
+            "metallicFactor": 0.7704082131385803,
+            "roughnessFactor": 0.23979592323303223
+         }
+      }
+   ],
+   "meshes": [
+      {
+         "name": "Cylinder",
+         "primitives": [
+            {
+               "attributes": {
+                  "POSITION": 0,
+                  "NORMAL": 1,
+                  "TEXCOORD_0": 2
+               },
+               "indices": 3,
+               "material": 0
+            },
+            {
+               "attributes": {
+                  "POSITION": 4,
+                  "NORMAL": 5,
+                  "TEXCOORD_0": 6
+               },
+               "indices": 7,
+               "material": 1
             }
-        },
-        {
-            "doubleSided": true,
-            "name": "Top",
-            "pbrMetallicRoughness": {
-                "baseColorTexture": {
-                    "index": 1
-                },
-                "metallicFactor": 0.7704082131385803,
-                "roughnessFactor": 0.23979592323303223
-            }
-        }
-    ],
-    "meshes": [
-        {
-            "name": "Cylinder",
-            "primitives": [
-                {
-                    "attributes": {
-                        "POSITION": 0,
-                        "NORMAL": 1,
-                        "TEXCOORD_0": 2
-                    },
-                    "indices": 3,
-                    "material": 0
-                },
-                {
-                    "attributes": {
-                        "POSITION": 4,
-                        "NORMAL": 5,
-                        "TEXCOORD_0": 6
-                    },
-                    "indices": 7,
-                    "material": 1
-                }
-            ]
-        }
-    ],
-    "textures": [
-        {
-            "sampler": 0,
-            "source": 0
-        },
-        {
-            "sampler": 0,
-            "source": 0
-        }
-    ],
-    "images": [
-        {
-            "name": "lobster matt",
-            "uri": "can3_img0.png"
-        }
-    ],
-    "accessors": [
-        {
-            "bufferView": 0,
-            "componentType": 5126,
-            "count": 1032,
-            "max": [0.029984382912516594, 0.08603651076555252, 0.029984384775161743],
-            "min": [-0.029984382912516594, -0.08129396289587021, -0.029984384775161743],
-            "type": "VEC3"
-        },
-        {
-            "bufferView": 1,
-            "componentType": 5126,
-            "count": 1032,
-            "type": "VEC3"
-        },
-        {
-            "bufferView": 2,
-            "componentType": 5126,
-            "count": 1032,
-            "type": "VEC2"
-        },
-        {
-            "bufferView": 3,
-            "componentType": 5123,
-            "count": 4608,
-            "type": "SCALAR"
-        },
-        {
-            "bufferView": 4,
-            "componentType": 5126,
-            "count": 3995,
-            "max": [0.029472921043634415, 0.08770154416561127, 0.029472919180989265],
-            "min": [-0.029472922906279564, -0.08767145872116089, -0.029472921043634415],
-            "type": "VEC3"
-        },
-        {
-            "bufferView": 5,
-            "componentType": 5126,
-            "count": 3995,
-            "type": "VEC3"
-        },
-        {
-            "bufferView": 6,
-            "componentType": 5126,
-            "count": 3995,
-            "type": "VEC2"
-        },
-        {
-            "bufferView": 7,
-            "componentType": 5123,
-            "count": 14163,
-            "type": "SCALAR"
-        }
-    ],
-    "bufferViews": [
-        {
-            "buffer": 0,
-            "byteLength": 12384,
-            "byteOffset": 0,
-            "target": 34962
-        },
-        {
-            "buffer": 0,
-            "byteLength": 12384,
-            "byteOffset": 12384,
-            "target": 34962
-        },
-        {
-            "buffer": 0,
-            "byteLength": 8256,
-            "byteOffset": 24768,
-            "target": 34962
-        },
-        {
-            "buffer": 0,
-            "byteLength": 9216,
-            "byteOffset": 33024,
-            "target": 34963
-        },
-        {
-            "buffer": 0,
-            "byteLength": 47940,
-            "byteOffset": 42240,
-            "target": 34962
-        },
-        {
-            "buffer": 0,
-            "byteLength": 47940,
-            "byteOffset": 90180,
-            "target": 34962
-        },
-        {
-            "buffer": 0,
-            "byteLength": 31960,
-            "byteOffset": 138120,
-            "target": 34962
-        },
-        {
-            "buffer": 0,
-            "byteLength": 28328,
-            "byteOffset": 170080,
-            "target": 34963
-        }
-    ],
-    "samplers": [
-        {
-            "magFilter": 9729,
-            "minFilter": 9987
-        }
-    ],
-    "buffers": [
-        {
-            "uri": "can3_data.bin",
-            "byteLength": 198408
-        }
-    ]
+         ]
+      }
+   ],
+   "textures": [
+      {
+         "sampler": 0,
+         "source": 0
+      },
+      {
+         "sampler": 0,
+         "source": 0
+      }
+   ],
+   "images": [
+      {
+         "name": "lobster matt",
+         "uri": "can3_img0.png"
+      }
+   ],
+   "accessors": [
+      {
+         "bufferView": 0,
+         "componentType": 5126,
+         "count": 1032,
+         "max": [0.029984382912516594, 0.08603651076555252, 0.029984384775161743],
+         "min": [-0.029984382912516594, -0.08129396289587021, -0.029984384775161743],
+         "type": "VEC3"
+      },
+      {
+         "bufferView": 1,
+         "componentType": 5126,
+         "count": 1032,
+         "type": "VEC3"
+      },
+      {
+         "bufferView": 2,
+         "componentType": 5126,
+         "count": 1032,
+         "type": "VEC2"
+      },
+      {
+         "bufferView": 3,
+         "componentType": 5123,
+         "count": 4608,
+         "type": "SCALAR"
+      },
+      {
+         "bufferView": 4,
+         "componentType": 5126,
+         "count": 3995,
+         "max": [0.029472921043634415, 0.08770154416561127, 0.029472919180989265],
+         "min": [-0.029472922906279564, -0.08767145872116089, -0.029472921043634415],
+         "type": "VEC3"
+      },
+      {
+         "bufferView": 5,
+         "componentType": 5126,
+         "count": 3995,
+         "type": "VEC3"
+      },
+      {
+         "bufferView": 6,
+         "componentType": 5126,
+         "count": 3995,
+         "type": "VEC2"
+      },
+      {
+         "bufferView": 7,
+         "componentType": 5123,
+         "count": 14163,
+         "type": "SCALAR"
+      }
+   ],
+   "bufferViews": [
+      {
+         "buffer": 0,
+         "byteLength": 12384,
+         "byteOffset": 0,
+         "target": 34962
+      },
+      {
+         "buffer": 0,
+         "byteLength": 12384,
+         "byteOffset": 12384,
+         "target": 34962
+      },
+      {
+         "buffer": 0,
+         "byteLength": 8256,
+         "byteOffset": 24768,
+         "target": 34962
+      },
+      {
+         "buffer": 0,
+         "byteLength": 9216,
+         "byteOffset": 33024,
+         "target": 34963
+      },
+      {
+         "buffer": 0,
+         "byteLength": 47940,
+         "byteOffset": 42240,
+         "target": 34962
+      },
+      {
+         "buffer": 0,
+         "byteLength": 47940,
+         "byteOffset": 90180,
+         "target": 34962
+      },
+      {
+         "buffer": 0,
+         "byteLength": 31960,
+         "byteOffset": 138120,
+         "target": 34962
+      },
+      {
+         "buffer": 0,
+         "byteLength": 28328,
+         "byteOffset": 170080,
+         "target": 34963
+      }
+   ],
+   "samplers": [
+      {
+         "magFilter": 9729,
+         "minFilter": 9987
+      }
+   ],
+   "buffers": [
+      {
+         "uri": "can3_data.bin",
+         "byteLength": 198408
+      }
+   ]
 }

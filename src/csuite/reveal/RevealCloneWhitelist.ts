@@ -8,5 +8,5 @@ export const whitelistedClonableComponents = new WeakSet<any>()
  * 🔶 you need to make sure your compoenent will properly forward all of its props ! 🔶
  */
 export function registerComponentAsClonableWhenInsideReveal(comp: FC<any>): void {
-    whitelistedClonableComponents.add(comp)
+   whitelistedClonableComponents.add(comp)
 }

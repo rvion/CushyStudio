@@ -1,0 +1,18 @@
+diff --git a/node_modules/@react-three/drei/web/DragControls.d.ts b/node_modules/@react-three/drei/web/DragControls.d.ts
+index a0ba9fa..7c65b0b 100644
+--- a/node_modules/@react-three/drei/web/DragControls.d.ts
++++ b/node_modules/@react-three/drei/web/DragControls.d.ts
+@@ -1,6 +1,5 @@
+ import * as React from 'react';
+ import * as THREE from 'three';
+-import { DragConfig } from '@use-gesture/react';
+ import { ForwardRefComponent } from '../helpers/ts-utils';
+ export type DragControlsProps = {
+     autoTransform?: boolean;
+@@ -12,6 +11,5 @@ export type DragControlsProps = {
+     onDrag?: (localMatrix: THREE.Matrix4, deltaLocalMatrix: THREE.Matrix4, worldMatrix: THREE.Matrix4, deltaWorldMatrix: THREE.Matrix4) => void;
+     onDragEnd?: () => void;
+     children: React.ReactNode;
+-    dragConfig?: DragConfig;
+ };
+ export declare const DragControls: ForwardRefComponent<DragControlsProps, THREE.Group>;
