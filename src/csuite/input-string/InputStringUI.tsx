@@ -26,6 +26,7 @@ type ColorPickerProps = {
 }
 
 const CANVASSIZE = 200
+const BAR_CANVAS_WIDTH = 20
 
 function quickToHex(value: number): string {
    const next = Math.round(value * 255)
@@ -250,6 +251,7 @@ const ColorCirclePicker: React.FC<ColorPickerProps> = ({ color, onColorChange })
                      }}
                   />
                </div>
+
                <canvas
                   ref={hueSatCanvasRef}
                   width={CANVASSIZE}
@@ -301,7 +303,65 @@ const ColorCirclePicker: React.FC<ColorPickerProps> = ({ color, onColorChange })
                   }}
                />
             </Frame>
-            <canvas ref={valueCanvasRef} width={'20px'} height={CANVASSIZE} />
+            <div tw='relative !bg-transparent'>
+               <Frame
+                  tw='overflow-clip !bg-transparent'
+                  border={{ lightness: 0.1 }}
+                  dropShadow={theme.global.shadow}
+                  roundness={theme.global.roundness}
+               >
+                  <canvas
+                     ref={valueCanvasRef}
+                     width={BAR_CANVAS_WIDTH}
+                     height={CANVASSIZE}
+                     onClick={(e: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
+                        const canvas = valueCanvasRef.current
+                        if (!canvas) return
+
+                        const rect = canvas.getBoundingClientRect()
+                        const y = e.clientY - rect.top
+
+                        const lightness = 1 - y / CANVASSIZE
+
+                        const hue = hsl[0]
+                        const saturation = hsl[1]
+
+                        if (!hue || !saturation) {
+                           return
+                        }
+
+                        console.log('[FD] Lightness: ', saturation)
+
+                        onColorChange(
+                           Kolor.fromString(
+                              `hsl(${hue}deg, ${Math.round(saturation)}%, ${Math.round(lightness * 100)}%)`,
+                           ),
+                        )
+                     }}
+                  />
+               </Frame>
+               <div
+                  // Lightness indicator
+                  tw='pointer-events-none absolute'
+                  style={{
+                     border: '1px solid grey',
+                     top: `${CANVASSIZE - (hsl[2] / 100) * CANVASSIZE}px`,
+                     left: `50%`,
+                     transform: 'translateX(-50%) translateY(-50%)',
+                  }}
+               >
+                  <div
+                     // Hue/Saturation indicator
+                     tw='h-4'
+                     style={{
+                        // Only add by a multiple of two here, this is centered in the transform above and numbers not divisible by two will be blurry
+                        width: BAR_CANVAS_WIDTH + 2,
+                        border: '1px solid white',
+                        background: `hsl(0deg, 0%, ${hsl[2]}%)`,
+                     }}
+                  />
+               </div>
+            </div>
          </Frame>
          {/* <Frame align col>
             <InputNumberUI
