@@ -34,3 +34,9 @@ cd <...>\ComfyUI_windows_portable\ComfyUI\custom_nodes\ComfyUI-3D-Pack
 ----------
 
 - add ip (e.g 192.168.1.18) in here `configs\system.conf`
+
+```cmd
+C:\Users\user\Downloads\comfy_FULL>python.exe -m pip install --upgrade --force-reinstall torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+
+.\python_miniconda_env\ComfyUI\python.exe -s ComfyUI\main.py --windows-standalone-build --listen --disable-auto-launch --front-end-version Comfy-Org/ComfyUI_frontend@latest
+```

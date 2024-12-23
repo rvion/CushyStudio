@@ -1,4 +1,18 @@
 {
+    "create a test file":{
+        "description": "create a test file",
+        "scope": "typescript",
+        "prefix": "tst",
+        "body": [
+            "import { describe, expect, it } from 'bun:test'",
+            "",
+            "describe('$1', () => {",
+            "    it('${2:work}', () => {",
+            "        expect($3).toBe($4)",
+            "    })",
+            "})",
+        ],
+    },
     "create new observable react component": {
         "scope": "typescriptreact",
         "prefix": "ocomp",
@@ -27,7 +41,7 @@
     "create new observable react component with st": {
         "scope": "typescriptreact",
         "prefix": "ocompst",
-        "body": ["export const $1UI = observer(function $1UI_(p: { $2 }){", "const st = useSt()", "return (<div>", "$3", "</div>)", "})"],
+        "body": ["export const $1UI = observer(function $1UI_(p: { $2 }){", "return (<div>", "$3", "</div>)", "})"],
         "description": "scaffold a new React functional component"
     },
     "uist": {
@@ -35,11 +49,6 @@
         "prefix": "uist",
         "body": ["const uiSt = useLocalObservable$1(() => ({$2}))"],
         "description": "uist"
-    }
-    "icon":{
-        "scope": "typescriptreact",
-        "prefix": "icon",
-        "body": ["<span className='material-symbols-outlined'>$1</span>"],
-        "description": "icon"
-    }
+    },
+
 }

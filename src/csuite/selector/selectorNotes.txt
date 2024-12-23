@@ -1,0 +1,86 @@
+for my model driven framework, I want to build a selector system so I can match or find
+nodes/group of nodes having a similar shape;
+I've been thinking about the following specification:
+
+
+a selectors are sequences of "filter? [axis filter?]*"
+   examples:
+      - axis axis axis filter
+      - axis filter axis filter axis
+      - filter axis filter axis filter axis
+      - ...
+
+-----------------------
+
+axis allow to select the pool of next candidates starting from the current node
+   - '$'           root
+   - '.'           child
+   - '*.'          descendant
+   - '^'           parent
+   - '*^'          ancenstor
+
+
+and then filter sort though that gruop, with pre-built syntax for selecting the `mountKey`, and checking the type
+every other filter go into a `?(<expr>)` expression that is basically javascript, with `@` meaning the current node.
+
+   - foo                                  means mountKey=foo
+   - bar@group                            means mountKey=bar && type=FieldGroup
+   - @string?(@.value==='33')             string whose value is 33
+   - @string?(@.value==='33')|@group      string whose value is 33 or group
+   - @group?(@.A && @.B)                  group with a A anb a B subfields
+   - foo|bar|baz|@group|x@string
+
+
+the api will then offer two main methods (verbs)
+
+verbs:
+   -  match: return roots, when each step yieled at least one result yielded by the whole expr
+   -  select: return childs of last expr
+
+
+give me a quick parser implementation for my language.
+alongside a function that compile both selector and matcher to efficient code
+logic to know if a selector match is to ensure that each axis(and possible associated filter) always return at least ONE item.
+
+
+---------------------
+
+examples:
+
+ - select all string in ...
+   - selelect("@array.@optional.@string"):
+ - select all array of optional strings
+   - match("@array.@optional.@string") :
+ - select any stuff deep within otional
+   @optional*.
+
+
+match any array of at least 2 optional string, having at least one string with length > 3
+
+   @array?(length>2).@optional.@string?(@.length>3)
+
+   (group of nodes)
+      for each
+         (axis .) => activeChildren
+            if none => abort
+
+
+----------
+
+
+can't type them => need simple way to type them.
+
+const selector = select<X.Array<X.Optional<Field>>>("@array.@optional^^")
+
+
+`for(selector, f => {},{prio:3})`
+`for("@string",(f: X.String) => {
+
+})
+
+------
+
+@group.@array@optional?()
+@group.
+$ > foo@group > @string[0]
+$ >> @group

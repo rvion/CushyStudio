@@ -1,7 +1,7 @@
-import type { ClassLike } from '../types/ClassLike'
+import type { ImgHTMLAttributes } from 'react'
 
 import { observer } from 'mobx-react-lite'
-import { CSSProperties, useState } from 'react'
+import { useState } from 'react'
 import sharp from 'sharp'
 
 import { ImageErrorDisplayUI } from '../../widgets/galleries/ImageErrorDisplayUI'
@@ -16,31 +16,45 @@ import { ImageErrorDisplayUI } from '../../widgets/galleries/ImageErrorDisplayUI
  *  <div><CachedResizedImage filePath={"/path/to/file"} size={48} /></div>
  * ```
  */
-export const CachedResizedImage = observer(function CachedResizedImage_(p: {
-    tw?: string | ClassLike[]
-    className?: string
-    filePath: string
-    size: number
-    style?: CSSProperties
-}) {
-    const [lastSize, setLastSize] = useState<number>(-1)
-    const [cached, setCached] = useState<string>('')
 
-    if (lastSize != p.size) {
-        const image = sharp(p.filePath).resize(p.size, p.size, { fit: 'inside' })
-        image
-            .ensureAlpha()
-            .png()
-            .toBuffer((err, buffer, info) => {
-                if (err) {
-                    console.error(err)
-                    return <ImageErrorDisplayUI icon='cached' />
-                }
+export const CachedResizedImage = observer(function CachedResizedImage_({
+   // own --------------------------------------------------------------
+   /** unrelated to the underlying image element */
+   size,
 
-                setCached(`data:image/png;base64,${buffer.toString('base64')}`)
-            })
-        setLastSize(p.size)
-    }
+   // modified ---------------------------------------------------------
+   // will be replaced by the resized version
+   src,
+   /** make it lazy by default */
+   loading = 'lazy',
 
-    return <img className={p.className} loading='lazy' tw={p.tw} style={p.style} src={cached} />
+   // standard ---------------------------------------------------------
+   ...rest
+}: { size: number } & ImgHTMLAttributes<HTMLImageElement>) {
+   const [lastSize, setLastSize] = useState<number>(-1)
+   const [cached, setCached] = useState<string>('')
+
+   if (lastSize != size) {
+      const image = sharp(src).resize(size, size, { fit: 'inside' })
+      image
+         .ensureAlpha()
+         .png()
+         .toBuffer((err, buffer, info) => {
+            if (err) {
+               console.error(err)
+               return <ImageErrorDisplayUI icon='mdiCached' />
+            }
+
+            setCached(`data:image/png;base64,${buffer.toString('base64')}`)
+         })
+      setLastSize(size)
+   }
+
+   return (
+      <img // using a native image without any wrapper
+         src={cached}
+         loading={loading}
+         {...rest}
+      />
+   )
 })

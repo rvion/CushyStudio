@@ -1,18 +1,19 @@
 import type { CollapsibleState } from './CollapsibleState'
-
-import React from 'react'
+import type React from 'react'
 
 export type CollapsibleProps = {
-    startCollapsed?: boolean
+   startCollapsed?: boolean
 
-    // components
-    content: (state: CollapsibleState) => React.ReactNode
-    children?: React.ReactNode
-    titleCollapsed?: React.ReactNode
-    titleExpanded?: React.ReactNode
+   // components
+   content: (state: CollapsibleState) => React.ReactNode
+   children?: React.ReactNode
+   titleCollapsed?: React.ReactNode
+   titleExpanded?: React.ReactNode
 
-    onToggle?: (state: CollapsibleState) => void
+   hideAnchorWhenExpanded?: boolean
 
-    className?: string
-    style?: React.CSSProperties
+   onToggle?: (state: CollapsibleState) => void
+
+   className?: string
+   style?: React.CSSProperties
 }

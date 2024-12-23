@@ -1,16 +1,17 @@
 app({
-    ui: (ui) => ({
-        a: ui.int().optional(),
-        b: ui.int().optional(),
-        c: ui
+   ui: (b) =>
+      b.fields({
+         a: b.int().optional(),
+         b: b.int().optional(),
+         c: b
             .group({
-                items: {
-                    foo: ui.int().optional(),
-                    bar: ui.int().optional(),
-                },
+               items: {
+                  foo: b.int().optional(),
+                  bar: b.int().optional(),
+               },
             })
             .optional(),
-        _: ui.markdown(`
+         _: b.markdown(`
 
 2024-02-25 10:28:
 - _❌ we don't always want a group border around the optional fields, it's too much visual noise:_
@@ -19,7 +20,7 @@ app({
 
 
         `),
-    }),
+      }),
 
-    run: async (flow, form) => {},
+   run: async (flow, form) => {},
 })

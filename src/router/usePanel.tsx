@@ -1,15 +1,19 @@
+import type { PanelState } from './PanelState'
+
 import React from 'react'
 
-export type PanelID = string
+export const panelContext = React.createContext<PanelState | null>(null)
 
-type PanelCtxData = {
-    id: PanelID
-}
-
-export const panelContext = React.createContext<PanelCtxData | null>(null)
-
-export const usePanel = (): PanelCtxData => {
-    const data = React.useContext(panelContext)
-    if (data == null) throw new Error('n❌ not in a Panel')
-    return data
+/**
+ * THIS IS A KEY HOOK OF CushyStudio
+ * it returns a stable helper instance that allow various things like
+ *   - manipulate panel props
+ *   - access panel position
+ *   - allocate persistent resources
+ *   -
+ */
+export const usePanel = <PROPS extends object = any>(): PanelState<PROPS> => {
+   const data = React.useContext(panelContext)
+   if (data == null) throw new Error('❌ usePanel has been called not in a Panel')
+   return data
 }

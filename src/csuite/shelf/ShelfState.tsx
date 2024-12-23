@@ -1,79 +1,78 @@
-import type { ShelfProps } from './ShelfUI'
+import type { OwnShelfProps } from './ShelfUI'
 
 import { makeAutoObservable } from 'mobx'
 
-let startValue = 0
+import { window_addEventListener } from '../utils/window_addEventListenerAction'
+
+let startValue: number = 0
+
 export class ShelfState {
-    constructor(
-        //
-        public props: ShelfProps,
-    ) {
-        this.size = props.defaultSize ?? 200
-        makeAutoObservable(this)
-    }
+   constructor(public props: OwnShelfProps) {
+      this.size = props.defaultSize ?? 200
+      makeAutoObservable(this)
+   }
 
-    size: number
-    dragging: boolean = false
+   // having a function makes it automatically an action
+   syncProps(p: Partial<OwnShelfProps>): void {
+      Object.assign(this.props, p)
+   }
 
-    begin = () => {
-        startValue = this.size
+   size: number
+   dragging: boolean = false
 
-        this.dragging = true
-        window.addEventListener('mousemove', this.onMouseMove, true)
-        window.addEventListener('pointerup', this.end, true)
-        window.addEventListener('mousedown', this.cancel, true)
-        window.addEventListener('keydown', this.cancel, true)
-    }
+   begin = (): void => {
+      startValue = this.size
 
-    cancel = (ev: MouseEvent | KeyboardEvent) => {
-        // Only cancel if right click
-        if (ev instanceof MouseEvent && ev.button != 2) {
-            return
+      this.dragging = true
+      window_addEventListener('mousemove', this.onMouseMove, true)
+      window_addEventListener('pointerup', this.end, true)
+      window_addEventListener('mousedown', this.cancel, true)
+      window_addEventListener('keydown', this.cancel, true)
+   }
+
+   cancel = (ev: MouseEvent | KeyboardEvent): void => {
+      // Only cancel if right click
+      if (ev instanceof MouseEvent && ev.button != 2) {
+         return
+      }
+
+      if (ev instanceof KeyboardEvent && ev.key != 'Escape') {
+         return
+      }
+
+      this.size = startValue
+      this.end()
+   }
+
+   onMouseMove = (ev: MouseEvent): void => {
+      // prettier-ignore
+      switch (this.props.anchor) {
+            case 'left':   return void (this.size += ev.movementX)
+            case 'right':  return void (this.size -= ev.movementX)
+            case 'bottom': return void (this.size += ev.movementY)
+            case 'top':    return void (this.size -= ev.movementY)
         }
+   }
 
-        if (ev instanceof KeyboardEvent && ev.key != 'Escape') {
-            return
+   end = (): void => {
+      this.dragging = false
+      window.removeEventListener('mousemove', this.onMouseMove, true)
+      window.removeEventListener('pointerup', this.end, true)
+      window.removeEventListener('mousedown', this.cancel, true)
+      window.removeEventListener('keydown', this.cancel, true)
+   }
+
+   isHorizontal = (): boolean => {
+      return this.props.anchor == 'left' || this.props.anchor == 'right'
+   }
+
+   computeResizeAnchor = (): 'right' | 'left' | 'top' | 'bottom' => {
+      // prettier-ignore
+      switch (this.props.anchor) {
+            case 'left':   return 'right'
+            case 'right':  return 'left'
+            case 'bottom': return 'top'
+            case 'top':    return 'bottom'
         }
-
-        this.size = startValue
-        this.end()
-    }
-
-    onMouseMove = (ev: MouseEvent) => {
-        switch (this.props.anchor) {
-            case 'left':
-                return (this.size += ev.movementX)
-            case 'right':
-                return (this.size -= ev.movementX)
-            case 'bottom':
-                return (this.size += ev.movementY)
-            case 'top':
-                return (this.size -= ev.movementY)
-        }
-    }
-
-    end = () => {
-        this.dragging = false
-        window.removeEventListener('mousemove', this.onMouseMove, true)
-        window.removeEventListener('pointerup', this.end, true)
-        window.removeEventListener('mousedown', this.cancel, true)
-        window.removeEventListener('keydown', this.cancel, true)
-    }
-
-    isHorizontal = (): boolean => {
-        return this.props.anchor == 'left' || this.props.anchor == 'right'
-    }
-
-    computeResizeAnchor = () => {
-        switch (this.props.anchor) {
-            case 'left':
-                return 'right'
-            case 'right':
-                return 'left'
-            case 'bottom':
-                return 'top'
-            case 'top':
-                return 'bottom'
-        }
-    }
+   }
 }

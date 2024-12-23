@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite'
 import { type CSSProperties, type ReactNode } from 'react'
 
 import { Frame } from '../frame/Frame'
+import { CSuite_CSS_Variables } from './CSuite_CSS_Variables'
 import { CSuiteCtx } from './CSuiteCtx'
 
 /**
@@ -12,35 +13,23 @@ import { CSuiteCtx } from './CSuiteCtx'
  * (color, ...)
  * */
 export const CSuiteProvider = observer(function CSuiteProvider_(p: {
-    //
-
-    children: ReactNode
-    config: CSuiteConfig
-    className?: string
-    style?: CSSProperties
+   children: ReactNode
+   config: CSuiteConfig
+   className?: string
+   style?: CSSProperties
 }) {
-    const config = p.config
-    return (
-        <CSuiteCtx.Provider value={config}>
-            <Frame //
-                className={p.className}
-                tw='w-full h-full flex-1'
-                base={config.base}
-                text={config.text}
-                style={{
-                    // @ts-expect-error 🔴
-                    '--KLR': config.baseStr,
-                    // '--KLRH': config.baseStr,
-                    // '--input-border': getNum(config.inputBorder) / 100,
-                    '--DIR': config.shiftDirection,
-                    '--roundness': '5px',
-                    '--widget-height': `${config.widgetHeight}rem`,
-                    '--input-height': `${config.inputHeight}rem`,
-                    '--input-icon-height': `${config.inputHeight / 1.8}rem`,
-                }}
-            >
-                {p.children}
-            </Frame>
-        </CSuiteCtx.Provider>
-    )
+   const config = p.config
+   return (
+      <CSuiteCtx.Provider value={config}>
+         <Frame //
+            className={p.className}
+            tw='h-full w-full flex-1'
+            base={config.base}
+            text={config.text}
+            style={CSuite_CSS_Variables(config)}
+         >
+            {p.children}
+         </Frame>
+      </CSuiteCtx.Provider>
+   )
 })

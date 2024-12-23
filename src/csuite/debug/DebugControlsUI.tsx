@@ -1,15 +1,14 @@
 import { observer } from 'mobx-react-lite'
 
-import { commandManager } from '../commands/CommandManager'
-import { regionMonitor } from '../regions/RegionMonitor'
+import { Frame } from '../frame/Frame'
+import { DebugHoveredRegionUI } from './DebugHoveredRegionUI'
+import { DebugInputHistoryUI } from './DebugInputHistoryUI'
 
 export const DebugControlsUI = observer(function DebugControlsUI_(p: {}) {
-    return (
-        <div tw='flex gap-1 text-xs'>
-            <div tw='text-green-500'>{regionMonitor.hoveredRegion?.type}</div>
-            <div tw='text-yellow-500'>#{regionMonitor.hoveredRegion?.id ?? '0'}</div>
-            <div tw='text-blue-500'>{regionMonitor.debugMods}</div>
-            <div tw='text-gray-500'>...{commandManager.inputHistory.slice(-3).join(' ')}</div>
-        </div>
-    )
+   return (
+      <Frame tw='line-clamp-1 flex flex-col !items-start !justify-start gap-1 truncate !text-left'>
+         <DebugHoveredRegionUI />
+         <DebugInputHistoryUI />
+      </Frame>
+   )
 })

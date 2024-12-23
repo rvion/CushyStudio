@@ -1,5 +1,5 @@
 // RUNTIME
 export * from './runtime/Runtime'
-export * from './manager/model-list/KnownModel_Name'
+export * from './manager/generated/KnownModel_Name'
 // UI
-export type { Builder } from './controls/Builder'
+export type { CushySchemaBuilder as Builder } from './controls/CushyBuilder'

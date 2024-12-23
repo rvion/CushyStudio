@@ -4,9 +4,9 @@ import { naiveDeepClone } from '../../../utils/naiveDeepClone'
 import { potatoClone } from '../../../utils/potatoClone'
 
 export function expectJSON(a: any): Matchers<any> {
-    return expect(naiveDeepClone(a))
+   return expect(naiveDeepClone(a))
 }
 
 export function expectPotato(a: any): Matchers<any> {
-    return expect(potatoClone(a))
+   return expect(potatoClone(a))
 }

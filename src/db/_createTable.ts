@@ -1,5 +1,5 @@
-export const _createTable = (tableName: string, fields: string[]) => {
-    return `--sql
+export const _createTable = (tableName: string, fields: string[]): string => {
+   return `--sql
         create table ${tableName} (
             id string primary key not null default (hex(randomblob(16))),
             createdAt integer not null default now,
@@ -9,9 +9,9 @@ export const _createTable = (tableName: string, fields: string[]) => {
 }
 
 export type TableFields = {
-    id: string
-    createdAt: number
-    updatedAt: number
+   id: string
+   createdAt: number
+   updatedAt: number
 }
 // export const createOutputTable = (tableName: string, fields: string[]) => {
 //     return `--sql

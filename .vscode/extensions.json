@@ -25,7 +25,10 @@
         // VeRy PoWeRfUl !!.!..!!
         "wmaurer.change-case",
 
-        // found in a screeshot of @ricklove, looks great
-        "YoavBls.pretty-ts-errors"
+        // hacky way to show sections
+        "roabramov.marks-to-outline",
+
+        // misc other highlights
+        "fabiospampinato.vscode-highlight",
     ]
 }

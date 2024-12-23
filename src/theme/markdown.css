@@ -7,6 +7,10 @@ Known Users:
 /* markdown related stuff */
 
 /* ._MD { padding-left: .5rem } */
+._MD a {
+    color: oklch(var(--p));
+    text-decoration: underline;
+}
 ._MD h1 { font-size: 2rem; }
 ._MD h2 { font-size: 1.5rem; }
 ._MD h3 { font-size: 1.17rem; }
@@ -26,6 +30,9 @@ Known Users:
     margin-left: 1rem;
     /* margin-top: .5rem; */
     /* margin-bottom: .5rem; */
+}
+._MD table thead th {
+    text-align: left;
 }
 ._MD table, ._MD th, ._MD td {
     border-top: 1px solid #333333;

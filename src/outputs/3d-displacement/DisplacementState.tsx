@@ -1,43 +1,43 @@
 import type { Panel_DisplacementProps } from './OutputDisplacement'
+import type * as THREE from 'three'
 
 import { createRef } from 'react'
-import * as THREE from 'three'
 
 // State class
 
 export class DisplacementState {
-    constructor(public p: Panel_DisplacementProps) {}
-    canvasRef = createRef<HTMLCanvasElement>()
-    materialRef = createRef<THREE.MeshStandardMaterial>()
-    onBeforeCompile = (
-        //
-        shader: THREE.WebGLProgramParametersWithUniforms,
-        // mat: any,
-        cutout: { value: number },
-        removeBackground: { value: number },
-        // val: number,
-        // shader: THREE.ShaderMaterial,
-        // cutout: any,
-    ) => {
-        console.log(`[🧐] mat1`, cutout)
-        // console.log(`[🧐] mat2`, mat.userData.cutout)
-        shader.uniforms.cutout = cutout // mat.userData.cutout //{ value: 0.3 }
-        shader.uniforms.removeBackground = removeBackground
+   constructor(public p: Panel_DisplacementProps) {}
+   canvasRef = createRef<HTMLCanvasElement>()
+   materialRef = createRef<THREE.MeshStandardMaterial>()
+   onBeforeCompile = (
+      //
+      shader: THREE.WebGLProgramParametersWithUniforms,
+      // mat: any,
+      cutout: { value: number },
+      removeBackground: { value: number },
+      // val: number,
+      // shader: THREE.ShaderMaterial,
+      // cutout: any,
+   ) => {
+      console.log(`[🧐] mat1`, cutout)
+      // console.log(`[🧐] mat2`, mat.userData.cutout)
+      shader.uniforms.cutout = cutout // mat.userData.cutout //{ value: 0.3 }
+      shader.uniforms.removeBackground = removeBackground
 
-        // shader.uniforms.cutout = mat.userData.cutout
-        shader.vertexShader = shader.vertexShader
-            .replace(
-                `void main() {`,
-                `
+      // shader.uniforms.cutout = mat.userData.cutout
+      shader.vertexShader = shader.vertexShader
+         .replace(
+            `void main() {`,
+            `
                 varying float vTransformDiff;
                 varying float vDisplacement;
                 uniform float cutout;
                 uniform float removeBackground;
                 void main() {`,
-            )
-            .replace(
-                `#include <displacementmap_vertex>`,
-                `#include <displacementmap_vertex>
+         )
+         .replace(
+            `#include <displacementmap_vertex>`,
+            `#include <displacementmap_vertex>
 
                 // Calculate the maximum absolute displacement difference from neighboring pixels
                 vec2 dUv = vec2(1.0, 1.0) / vec2(textureSize(displacementMap, 0));
@@ -58,20 +58,20 @@ export class DisplacementState {
                 vTransformDiff = max(length(transformDiffX), length(transformDiffY));
                 vDisplacement = texture2D(displacementMap, vDisplacementMapUv).x;
                     `,
-            )
+         )
 
-        shader.fragmentShader = shader.fragmentShader
-            .replace(
-                `void main() {`,
-                `varying float vTransformDiff;
+      shader.fragmentShader = shader.fragmentShader
+         .replace(
+            `void main() {`,
+            `varying float vTransformDiff;
                 varying float vDisplacement;
                 uniform float cutout;
                 uniform float removeBackground;
                 void main() {`,
-            )
-            .replace(
-                `#include <dithering_fragment>`,
-                `#include <dithering_fragment>
+         )
+         .replace(
+            `#include <dithering_fragment>`,
+            `#include <dithering_fragment>
 
                 // debug: visualize vTransformDiff
                 // vec3 visualizationColor = vec3(vTransformDiff, 0.0, 1.0 - vTransformDiff);
@@ -91,15 +91,15 @@ export class DisplacementState {
                     discard;
                 }
             `,
-            )
+         )
 
-        // console.log(`vertexShader`, {
-        //     vertexShader: shader.vertexShader,
-        //     fragmentShader: shader.fragmentShader,
-        // })
-        // console.log(`[🧐]`, shader.vertexShader)
-        // console.log(`[🧐]`, shader.fragmentShader)
-    }
+      // console.log(`vertexShader`, {
+      //     vertexShader: shader.vertexShader,
+      //     fragmentShader: shader.fragmentShader,
+      // })
+      // console.log(`[🧐]`, shader.vertexShader)
+      // console.log(`[🧐]`, shader.fragmentShader)
+   }
 }
 
 // mountRef = createRef<HTMLDivElement>()

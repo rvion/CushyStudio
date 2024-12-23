@@ -2,18 +2,18 @@
 
 import { IconUI } from './IconUI'
 
-export const FolderIcon = (p: { isOpen?: boolean }) =>
-    p.isOpen ? ( //
-        <IconUI icon='expand_more' color='e8a87c' />
-    ) : (
-        <IconUI icon='chevron_right' color='e8a87c' />
-    )
+export const FolderIcon = (p: { isOpen?: boolean }): JSX.Element =>
+   p.isOpen ? ( //
+      <IconUI icon='expand_more' color='e8a87c' />
+   ) : (
+      <IconUI icon='chevron_right' color='e8a87c' />
+   )
 
-export const FileIcon = (p: { filename: string }) => {
-    const filename = p.filename
-    const extension = filename.slice(filename.lastIndexOf('.') + 1)
-    // prettier-ignore
-    switch (extension) {
+export const FileIcon = (p: { filename: string }): JSX.Element | null => {
+   const filename = p.filename
+   const extension = filename.slice(filename.lastIndexOf('.') + 1)
+   // prettier-ignore
+   switch (extension) {
         case 'js': return <IconUI icon='Javascript' color='yellow' />
         case 'css': return <IconUI icon='css3' color='turquoise' />
         case 'json': return <IconUI icon='list' color='yellow' />

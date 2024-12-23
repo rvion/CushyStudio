@@ -7,8 +7,7 @@ It is quite opinionated.
 It tries to come battery included to build complex apps
 
 It comes with several core non-UI abstractions and.
-
-Main authors: @rvion @birdddev @Globidev
+Main authors: @rvion @birdddev @domi @Globidev
 
 ------------
 

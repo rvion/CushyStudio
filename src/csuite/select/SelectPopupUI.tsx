@@ -1,147 +1,168 @@
-import type { BoolButtonMode } from '../checkbox/InputBoolUI'
+import type { RevealState } from '../reveal/RevealState'
+import type { SelectProps } from './SelectProps'
 import type { AutoCompleteSelectState } from './SelectState'
 
 import { observer } from 'mobx-react-lite'
-import { createPortal } from 'react-dom'
-import { FixedSizeList, type ListChildComponentProps } from 'react-window'
+import { FixedSizeList } from 'react-window'
 
-import { InputBoolToggleButtonUI } from '../checkbox/InputBoolToggleButtonUI'
+import { csuiteConfig } from '../config/configureCsuite'
 import { Frame } from '../frame/Frame'
+import { InputStringUI } from '../input-string/InputStringUI'
+import { SelectAllNoneUI } from './SelectAllNoneUI'
+import { SelectOptionUI } from './SelectOptionUI'
+import { SelectOptionUI_FixedList } from './SelectOptionUI_FixedList'
 
-const trueMinWidth = '40rem'
+const trueMinWidth: '20rem' = '20rem'
 
-export const SelectPopupUI = observer(function SelectPopupUI_<T>(p: {
-    //
-    s: AutoCompleteSelectState<T>
-    /** @default true */
-    showValues: boolean
-}) {
-    const s = p.s
-    return createPortal(
-        <Frame
-            ref={s.popupRef}
+export type SelectPopupProps<OPTION> = {
+   reveal: RevealState
+   selectState: AutoCompleteSelectState<OPTION>
+   createOption: SelectProps<OPTION>['createOption']
+}
+
+export const SelectPopupUI = observer(function SelectPopupUI_<OPTION>(p: SelectPopupProps<OPTION>) {
+   const select = p.selectState
+   const minWidth =
+      select.anchorRef.current?.clientWidth != null //
+         ? `max(${select.anchorRef.current.offsetWidth /* take into account border width */}px, ${trueMinWidth})`
+         : trueMinWidth
+
+   const itemSize = typeof select.p.virtualized === 'number' ? select.p.virtualized : 28 // should probably match input height or cell height
+   const showSelectAll =
+      select.filteredOptions.length > 1 && select.p.showSelectAllNone !== false && select.isMultiSelect
+   return (
+      <div
+         tw={[
+            //
+            'flex flex-col',
+            'max-w-xl',
+            'overflow-hidden',
+         ]}
+         {...p.selectState.p.popupWrapperProps}
+         style={{ minWidth, ...p.selectState.p.popupWrapperProps?.style }}
+      >
+         <div
             tw={[
-                'MENU-ROOT _SelectPopupUI flex',
-                'overflow-auto flex-col',
-                s.tooltipPosition.bottom != null ? 'rounded-t border-t' : 'rounded-b border-b',
+               //
+               'minh-input p-input', // padding shoud simulate the difference between input size and inside size
+               'flex flex-wrap items-start gap-0.5 overflow-auto rounded-t-md',
+               'border-b border-gray-200',
+               'bg-gray-100',
             ]}
-            onMouseUp={() => s.closeIfShouldCloseAfterSelection()}
-            style={{
-                minWidth:
-                    s.anchorRef.current?.clientWidth != null
-                        ? `max(${s.anchorRef.current.clientWidth}px, ${trueMinWidth})`
-                        : trueMinWidth,
-                maxWidth:
-                    window.innerWidth - (s.tooltipPosition.left != null ? s.tooltipPosition.left : s.tooltipPosition.right ?? 0),
-                maxHeight: `${s.tooltipMaxHeight}px`,
-                pointerEvents: 'initial',
-                position: 'absolute',
-                zIndex: 99999999,
-                top: s.tooltipPosition.top != null ? `${s.tooltipPosition.top}px` : 'unset',
-                bottom: s.tooltipPosition.bottom != null ? `${s.tooltipPosition.bottom}px` : 'unset',
-                left: s.tooltipPosition.left != null ? `${s.tooltipPosition.left}px` : 'unset',
-                right: s.tooltipPosition.right != null ? `${s.tooltipPosition.right}px` : 'unset',
-                // Adjust positioning as needed
-            }}
-            // Prevent close when clicking the pop-up frame. There are also small gaps between the buttons where this becomes an issue.
-            onMouseDown={(ev) => {
-                ev.preventDefault()
-                ev.stopPropagation()
-            }}
-            onMouseEnter={(ev) => {
-                if (s.isOpen) s.hasMouseEntered = true
-            }}
-        >
-            {(p.showValues ?? true) && (
-                <div // list of all values
-                    tw={['overflow-auto flex flex-wrap gap-0.5']} // 'max-w-sm',
-                >
-                    {s.displayValue}
-                </div>
+         >
+            {select.p.SlotDisplayValueInPopupUI != null ? (
+               <select.p.SlotDisplayValueInPopupUI select={select} />
+            ) : (
+               p.selectState.displayValueInPopup
             )}
 
-            {/* No results */}
-            {s.filteredOptions.length === 0 ? <li className='h-input text-base'>No results</li> : null}
+            {select.p.slotTextInputUI != null ? (
+               <select.p.slotTextInputUI select={select} />
+            ) : (
+               <InputStringUI
+                  noColorStuff
+                  autoFocus
+                  onKeyDown={(ev) => {
+                     if (ev.key === 'Backspace' && select.searchQuery === '' && select.lastValue != null) {
+                        select.toggleOption(select.lastValue)
+                        ev.stopPropagation()
+                        ev.preventDefault()
+                        return
+                     }
 
-            {/* Entries */}
-            <FixedSizeList<{ s: AutoCompleteSelectState<T> }>
-                useIsScrolling={false}
-                height={400}
-                itemCount={s.filteredOptions.length}
-                itemSize={30}
-                width='100%'
-                children={SelectOptionUI}
-                itemData={{ s }}
-            />
-        </Frame>,
-        document.getElementById('tooltip-root')!,
-    )
+                     // s.handleTooltipKeyDown(ev) // 🔶 already caught by the anchor!
+                  }}
+                  placeholder={select.firstValue == null ? 'Rechercher une valeur...' : undefined} // 🚂 we need a second placeholder prop
+                  ref={select.inputRef_real}
+                  type='text'
+                  getValue={() => select.searchQuery}
+                  setValue={(next) => select.filterOptions(next)}
+                  tw={[
+                     //
+                     'h-inside absolute left-0 right-0 top-0 z-50',
+                     'min-w-24 flex-1',
+                     // 'bg-gray-200 !rounded-none',
+                  ]}
+                  // TODO: better props passing...
+                  {...p.selectState.p.textInputProps}
+               />
+            )}
+         </div>
+
+         {/* No results */}
+         {select.filteredOptions.length === 0 //
+            ? (select.p.slotPlaceholderWhenNoResults ?? (
+                 <span className='h-input gap-1 px-2 text-base'>
+                    {csuiteConfig.i18n.ui.select.noResults}
+                    {p.createOption != null && p.createOption.isActive !== false && (
+                       <>
+                          {' '}
+                          -{' '}
+                          <button
+                             tw='inline border-none bg-transparent text-base text-sky-700 hover:text-sky-700 hover:underline'
+                             onClick={() => select.createOption()}
+                          >
+                             {p.createOption.label ?? csuiteConfig.i18n.ui.select.create}
+                          </button>
+                       </>
+                    )}
+                 </span>
+              ))
+            : null}
+
+         {select.p.slotResultsListUI != null ? (
+            <select.p.slotResultsListUI select={select} />
+         ) : select.p.virtualized !== false ? (
+            select.filteredOptions.length !== 0 && (
+               <>
+                  {showSelectAll && <SelectAllNoneUI tw='mt-2' state={select} />}
+                  <FixedSizeList<{
+                     s: AutoCompleteSelectState<OPTION>
+                     reveal: RevealState
+                  }>
+                     className={`mb-1 ${showSelectAll ? 'mt-1' : 'mt-2'}`}
+                     useIsScrolling={false}
+                     height={Math.min(
+                        400,
+                        itemSize /* temp hack to leave place for soon-to-be input */ *
+                           select.filteredOptions.length,
+                     )}
+                     itemCount={select.filteredOptions.length}
+                     itemSize={itemSize}
+                     width='100%'
+                     children={SelectOptionUI_FixedList}
+                     itemData={{ s: select, reveal: p.reveal }}
+                  />
+               </>
+            )
+         ) : (
+            select.filteredOptions.length !== 0 && (
+               <>
+                  {showSelectAll && <SelectAllNoneUI tw='mt-2' state={select} />}
+                  <Frame col tw='max-h-96 pb-1 pt-2'>
+                     {select.filteredOptions.map((option, index) =>
+                        select.p.slotOptionUI != null ? (
+                           <select.p.slotOptionUI //
+                              key={select.getKey(option)}
+                              index={index}
+                              option={option}
+                              state={select}
+                              reveal={p.reveal}
+                           />
+                        ) : (
+                           <SelectOptionUI<OPTION> //
+                              key={select.getKey(option)}
+                              index={index}
+                              reveal={p.reveal}
+                              option={option}
+                              state={select}
+                           />
+                        ),
+                     )}
+                  </Frame>
+               </>
+            )
+         )}
+      </div>
+   )
 })
-
-export const SelectOptionUI = observer(function FooUI_<T>({
-    data,
-    index,
-    style,
-}: ListChildComponentProps<{ s: AutoCompleteSelectState<T> }>) {
-    const s = data.s
-    const option = s.filteredOptions[index]!
-    const isSelected = s.values.find((v) => s.isEqual(v, option)) != null
-    const mode: BoolButtonMode = s.isMultiSelect ? 'checkbox' : 'radio'
-    return (
-        <InputBoolToggleButtonUI
-            style={style}
-            expand
-            mode={mode}
-            preventDefault
-            showToggleButtonBox
-            hovered={(b) => b || s.selectedIndex === index}
-            value={isSelected}
-            onValueChange={(value) => {
-                if (value != isSelected) s.selectOption(index)
-            }}
-        >
-            <div tw='w-full'>
-                {s.p.getLabelUI //
-                    ? s.p.getLabelUI(option)
-                    : s.p.getLabelText(option)}
-            </div>
-        </InputBoolToggleButtonUI>
-    )
-})
-
-// <li // Fake gaps by padding <li> to make sure you can't click inbetween visual gaps
-//     key={index}
-//     style={{ minWidth: '10rem', ...style }}
-//     tw={['flex py-0.5']}
-//     onMouseEnter={(ev) => {
-//         console.log(`[🤠] 🟢🔴`, ev)
-//         s.setNavigationIndex(index)
-//         if (!s.isDragging || isSelected == s.wasEnabled) return
-//         s.onMenuEntryClick(ev, index)
-//     }}
-//     onMouseDown={(ev) => {
-//         console.log(`[🤠] 🟢`, ev)
-//         if (ev.button != 0) return
-//         s.isDragging = true
-//         s.wasEnabled = !isSelected
-//         s.onMenuEntryClick(ev, index)
-//         window.addEventListener('mouseup', isDraggingListener, true)
-//     }}
-// >
-// tw={[
-//     //
-//     'h-input pl-0.5 flex w-full items-center rounded',
-//     'active:cursor-default cursor-pointer',
-// ]}
-// hover
-// hovered={s.selectedIndex === index}
-// base={getBaseColor(isSelected)}
-// active={index === s.selectedIndex}
-
-//     {/* {s.isMultiSelect && <InputBoolCheckboxUI mode='checkbox' value={isSelected} expand={false} />}
-//         <div tw='pl-0.5 flex truncate'>
-//             {s.p.getLabelUI //
-//                 ? s.p.getLabelUI(option)
-//                 : s.p.getLabelText(option)}
-//         </div> */}
-// // </li>

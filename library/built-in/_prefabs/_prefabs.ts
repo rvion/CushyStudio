@@ -11,114 +11,119 @@
  * ❌ import {...} from '...'`
  * */
 
-import type { Builder } from '../../../src/controls/Builder'
-
 // this should be a default
 export type OutputFor<UIFn extends (...args: any[]) => { $Value: any }> = ReturnType<UIFn>['$Value']
 
 export type UI_HighResFix = X.XGroup<{
-    upscaleMethod: X.XSelectOne<{ readonly id: 'regular' } | { readonly id: 'Neural 1.5' } | { readonly id: 'Neural XL' }>
-    scaleFactor: X.XNumber
-    steps: X.XNumber
-    denoise: X.XNumber
-    saveIntermediaryImage: X.XBool
-    useMainSampler: X.XBool
+   upscaleMethod: X.XSelectOne_<'regular' | 'Neural 1.5' | 'Neural XL'>
+   scaleFactor: X.XNumber
+   steps: X.XNumber
+   denoise: X.XNumber
+   saveIntermediaryImage: X.XBool
+   useMainSampler: X.XBool
 }>
 
 export function ui_highresfix(): UI_HighResFix {
-    const form = getCurrentForm()
-    return form.group({
-        label: 'High Res Fix',
-        icon: 'mdiArrowExpandAll',
-        box: { base: { hue: 220, chroma: 0.1 } },
-        items: {
-            // NNLatentUpscale: form.bool({
-            //     default: false,
-            //     label: 'NN Latent Upscale?',
-            // }),
-            upscaleMethod: form
-                .selectOne({
-                    appearance: 'tab',
-                    choices: [{ id: 'regular' }, { id: 'Neural 1.5' }, { id: 'Neural XL' }],
-                    tooltip:
-                        'regular upscale add more noise, depend your objective. for a second pass to refine stuff, I think adding noise is better',
-                })
-                .addRequirements([{ type: 'customNodesByURI', uri: 'https://github.com/Ttl/ComfyUi_NNLatentUpscale' }]),
+   const form = getCurrentForm()
+   return form.group({
+      label: 'High Res Fix',
+      icon: 'mdiArrowExpandAll',
+      box: { base: { hue: 220, chroma: 0.1 } },
+      items: {
+         // NNLatentUpscale: form.bool({
+         //     default: false,
+         //     label: 'NN Latent Upscale?',
+         // }),
+         upscaleMethod: form
+            .selectOneString(['regular', 'Neural 1.5', 'Neural XL'], {
+               appearance: 'tab',
+               tooltip: 'regular upscale add more noise, depend your objective. for a second pass to refine stuff, I think adding noise is better', // prettier-ignore
+            })
+            .addRequirements([
+               { type: 'customNodesByURI', uri: 'https://github.com/Ttl/ComfyUi_NNLatentUpscale' },
+            ]),
 
-            scaleFactor: form.float({ default: 1.5, min: 0.5, max: 8, step: 1 }),
-            steps: form.int({ default: 15, min: 0, softMax: 100, step: 10 }),
-            denoise: form.float({ min: 0, default: 0.6, max: 1, step: 0.1 }),
-            saveIntermediaryImage: form.bool({ default: true }),
-            useMainSampler: form.bool({ default: true }),
-        },
-    })
+         scaleFactor: form.float({ default: 1.5, min: 0.5, max: 8, step: 1 }),
+         steps: form.int({ default: 15, min: 0, softMax: 100, step: 10 }),
+         denoise: form.float({ min: 0, default: 0.6, max: 1, step: 0.1 }),
+         saveIntermediaryImage: form.bool({ default: true }),
+         useMainSampler: form.bool({ default: true }),
+      },
+   })
 }
 
 // ---------------------------------------------------------
-export const ui_themes = (form: X.Builder) =>
-    form.list({
-        element: () =>
-            form.group({
-                layout: 'H',
-                items: {
-                    text: form.string({ label: 'Main', textarea: true }), //textarea: true
-                    theme: form.list({
-                        element: () =>
-                            form.group({
-                                layout: 'V',
-                                items: {
-                                    text: form.string({ label: 'Theme', textarea: true }), //textarea: true
-                                },
-                            }),
-                    }),
-                },
-            }),
-    })
+export type UI_Themes = X.XList<
+   X.XGroup<{
+      text: X.XString
+      theme: X.XList<X.XGroup<{ text: X.XString }>>
+   }>
+>
+export const ui_themes = (form: X.Builder): UI_Themes =>
+   form.list({
+      element: () =>
+         form.group({
+            layout: 'H',
+            items: {
+               text: form.string({ label: 'Main', textarea: true }), //textarea: true
+               theme: form.list({
+                  element: () =>
+                     form.group({
+                        layout: 'V',
+                        items: {
+                           text: form.string({ label: 'Theme', textarea: true }), //textarea: true
+                        },
+                     }),
+               }),
+            },
+         }),
+   })
 
 // --------------------------------------------------------
 export const util_expandBrances = (str: string): string[] => {
-    const matches = str.match(/{([^{}]+)}/)
-    if (!matches) return [str]
-    const parts = matches[1]!.split(',')
-    const result: Set<string> = new Set()
-    for (const part of parts) {
-        const expanded = util_expandBrances(str.replace(matches[0], part))
-        expanded.forEach((item) => result.add(item))
-    }
-    return Array.from(result)
+   const matches = str.match(/{([^{}]+)}/)
+   if (!matches) return [str]
+   const parts = matches[1]!.split(',')
+   const result: Set<string> = new Set()
+   for (const part of parts) {
+      const expanded = util_expandBrances(str.replace(matches[0], part))
+      expanded.forEach((item) => result.add(item))
+   }
+   return Array.from(result)
 }
 
-export const ui_vaeName = (form: X.Builder) => form.enumOpt.Enum_VAELoader_vae_name({ label: 'VAE' })
-export const ui_modelName = (form: X.Builder) => form.enum.Enum_CheckpointLoaderSimple_ckpt_name({ label: 'Checkpoint' })
-export const ui_resolutionPicker = (form: X.Builder) =>
-    form.selectOne({
-        label: 'Resolution',
-        choices: [
-            { id: '1024x1024' },
-            { id: '896x1152' },
-            { id: '832x1216' },
-            { id: '768x1344' },
-            { id: '640x1536' },
-            { id: '1152x862' },
-            { id: '1216x832' },
-            { id: '1344x768' },
-            { id: '1536x640' },
-        ],
-        tooltip: 'Width x Height',
-    })
+export const ui_vaeName = (form: X.Builder): X.XOptional<X.XEnum<'VAELoader.vae_name'>> =>
+   form.enumOpt['VAELoader.vae_name']({ label: 'VAE' })
+
+export const ui_modelName = (form: X.Builder): X.XEnum<'CheckpointLoaderSimple.ckpt_name'> =>
+   form.enum['CheckpointLoaderSimple.ckpt_name']({ label: 'Checkpoint' })
+
+const resolutions: Resolutions[] = [
+   '1024x1024',
+   '896x1152',
+   '832x1216',
+   '768x1344',
+   '640x1536',
+   '1152x862',
+   '1216x832',
+   '1344x768',
+   '1536x640',
+]
+type Resolutions =
+   | '1024x1024'
+   | '896x1152'
+   | '832x1216'
+   | '768x1344'
+   | '640x1536'
+   | '1152x862'
+   | '1216x832'
+   | '1344x768'
+   | '1536x640'
+
+export const ui_resolutionPicker = (form: X.Builder): X.XSelectOne_<Resolutions> =>
+   form.selectOneString(resolutions, { label: 'Resolution', tooltip: 'Width x Height' })
 
 /** allow to easilly pick a shape */
-export const ui_shapePickerBasic = (form: X.Builder) => {
-    return form.selectOne({
-        label: 'Shape',
-        choices: [{ id: 'round' }, { id: 'square' }],
-    })
-}
-
-/** allow to easilly pick any shape given as parameter */
-export const ui_shapePickerExt = <const T extends string>(form: X.Builder, values: T[]) => {
-    return form.selectOne({
-        label: 'Shape',
-        choices: values.map((t) => ({ id: t })),
-    })
+export const ui_shapePickerBasic = (form: X.Builder): X.XSelectOne_<'round' | 'square'> => {
+   return form.selectOneString(['round', 'square'], { label: 'Shape' })
 }

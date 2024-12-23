@@ -8,14 +8,14 @@ import { observer } from 'mobx-react-lite'
  *
  * ```
  *  <HeaderUI>
- *      <div tw='btn btn-sm'>Left!</div>
+ *      <Button>Left!</Button>
  *      <SpacerUI />
- *      <div tw='btn btn-sm'>Centered!</div>
+ *      <Button>Centered!</Button>
  *      <SpacerUI />
- *      <div tw='btn btn-sm'>Right!</div>
+ *      <Button>Right!</Button>
  *  </HeaderUI>
  * ```
  */
 export const SpacerUI = observer(function SpacerUI_(p: {}) {
-    return <div tw={['ml-auto']} />
+   return <div tw={['ml-auto']} />
 })

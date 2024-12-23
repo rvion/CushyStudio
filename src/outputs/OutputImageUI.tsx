@@ -3,17 +3,27 @@ import type { StepL } from '../models/Step'
 
 import { observer } from 'mobx-react-lite'
 
-import { Panel_ViewImage } from '../panels/Panel_ViewImage'
-import { ImageUI } from '../widgets/galleries/ImageUI'
+import { Frame } from '../csuite/frame/Frame'
+import { PanelViewImageUI } from '../panels/PanelViewImage/Panel_ViewImage'
+import { ImageUI, ImageUIDumb } from '../widgets/galleries/ImageUI'
 
 export const OutputImagePreviewUI = observer(function OutputImagePreviewUI_(p: {
-    //
-    step?: Maybe<StepL>
-    output: MediaImageL
+   //
+   step?: Maybe<StepL>
+   output: MediaImageL
 }) {
-    return <ImageUI tw='!rounded-none cursor-default' img={p.output} size='100%' />
+   return (
+      <Frame tooltip={`Image Output`} tw='h-full w-full'>
+         <ImageUIDumb //
+            img={p.output}
+         />
+      </Frame>
+   )
 })
 
-export const OutputImageUI = observer(function OutputImageUI_(p: { step?: Maybe<StepL>; output: MediaImageL }) {
-    return <Panel_ViewImage imageID={p.output.id} />
+export const OutputImageUI = observer(function OutputImageUI_(p: {
+   step?: Maybe<StepL>
+   output: MediaImageL
+}) {
+   return <PanelViewImageUI imageID={p.output.id} />
 })

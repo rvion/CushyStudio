@@ -1,107 +1,122 @@
 import type { Field } from './Field'
 import type { Repository } from './Repository'
 
-// prettier-ignore
-export type FieldTouchMode =
-    | 'value'
-    | 'serial'
-    // | 'none'
-    | 'create'
-    | 'auto'
+export type TransactionSummary1 = {
+   created: string[]
+   updated: string[]
+   deleted: string[]
+}
 
-// prettier-ignore
-export type FieldTouchReal =
-    | 'value'
-    | 'serial'
-    | 'create'
-
-export type TransactionMode = 'WITH_EFFECT' | 'NO_EFFECT'
+export type TransactionSummary2 = TransactionSummary2Item[]
+export type TransactionSummary2Item = {
+   path: string
+   type: 'create' | 'update' | 'delete'
+}
 
 export class Transaction {
-    constructor(
-        //
-        public repo: Repository,
-        // 🔴 Transaction mode is not used yet
-        // public mode: TransactionMode,
-    ) {}
+   tower: Field[] = []
 
-    /** fields that have been created during the transaction */
-    bump: {
-        [key in FieldTouchReal]: number
-    } = {
-        create: 0,
-        serial: 0,
-        value: 0,
-    }
+   constructor(
+      public repo: Repository, // 🔴 Transaction mode is not used yet // public mode: TransactionMode,
+   ) {}
 
-    touchedFields = new Map<Field, FieldTouchReal>()
-    track(field: Field, mode: FieldTouchReal): void {
-        const prev = this.touchedFields.get(field)
+   get summary1(): TransactionSummary1 {
+      return {
+         created: [...this.createdFields.values()].map((f) => f.path),
+         updated: [...this.updatedFields.values()].map((f) => f.path),
+         deleted: [...this.deletedFields.values()].map((f) => f.path),
+      }
+   }
 
-        // if this is true, we should have already propagated
-        // upwards with all the correct values...
-        if (prev === mode) return
+   private _mkTransactionSummary2Item = (x: TransactionSummary2Item): TransactionSummary2Item => x
+   get summary2(): TransactionSummary2 {
+      return [
+         ...[...this.createdFields.values()].map((f) =>
+            this._mkTransactionSummary2Item({ path: f.path, type: 'create' }),
+         ),
+         ...[...this.updatedFields.values()].map((f) =>
+            this._mkTransactionSummary2Item({ path: f.path, type: 'update' }),
+         ),
+         ...[...this.deletedFields.values()].map((f) =>
+            this._mkTransactionSummary2Item({ path: f.path, type: 'delete' }),
+         ),
+      ]
+   }
 
-        if (prev == null) {
-            this.touchedFields.set(field, mode)
-            this.bump[mode]++
-        } else if (prev === 'serial' && mode === 'value') {
-            this.bump.serial--
-            this.bump.value++
-            this.touchedFields.set(field, 'value')
-        } else if (prev === 'value' && mode === 'create') {
-            this.bump.value--
-            this.bump.create++
-            this.touchedFields.set(field, 'create')
-        }
+   createdFields: Set<Field> = new Set()
+   updatedFields: Set<Field> = new Set()
+   deletedFields: Set<Field> = new Set()
 
-        // propagate to parents
-        if (field.parent) {
-            const parentMode = mode === 'create' ? 'value' : mode
-            this.track(field.parent, parentMode)
-        }
-    }
+   trackAsCreated(field: Field): void {
+      // console.log(`[🤠] 🟢`, field.path)
+      if (this.createdFields.has(field)) return
+      if (this.updatedFields.has(field)) throw new Error("❌ you're trying to mark as 'Created' a field that is already updated (so created before)") // prettier-ignore
+      if (this.deletedFields.has(field)) throw new Error("❌ you're trying to mark as 'Created' a field that is already deleted") // prettier-ignore
+      this.createdFields.add(field)
+      // NO NEED TO BUBBLING HERE !
+   }
+   trackAsUpdated(field: Field): void {
+      // console.log(`[🤠] 👛`, field.path)
+      if (this.updatedFields.has(field)) return
+      if (this.createdFields.has(field)) return
+      if (this.deletedFields.has(field)) throw new Error("❌ you're trying to mark as 'Updated' a field that is already deleted") // prettier-ignore
 
-    commit(): void {
-        // bump transaction
-        this.repo.transactionCount++
-        this.repo.totalValueTouched += this.bump.value
-        this.repo.totalSerialTouched += this.bump.serial
-        this.repo.totalCreations += this.bump.create
+      this.updatedFields.add(field)
+      // NO NEED TO BUBBLING HERE !
+      // if (field.parent) this.trackAsUpdated(field.parent)
+   }
+   trackAsDeleted(field: Field): void {
+      // console.log(`[🤠] ❌`, field.path)
+      if (this.deletedFields.has(field)) return
+      if (this.createdFields.has(field)) this.createdFields.delete(field)
+      if (this.updatedFields.has(field)) this.updatedFields.delete(field)
+      this.deletedFields.add(field)
+      // NO NEED TO BUBBLING HERE !
+   }
 
-        // compute all nodes from leaves that need to call effects
-        // call them in order, non recursively.
-        const entries = Array.from(this.touchedFields.entries())
-            .map(([field, mode]) => ({ field, mode, depth: field.trueDepth }))
-            .sort((a, b) => b.depth - a.depth)
+   commit(): void {
+      // bump transaction
+      this.repo.transactionCount++
+      this.repo.createCount += this.createdFields.size
+      this.repo.updateCount += this.updatedFields.size
+      this.repo.deleteCount += this.deletedFields.size
 
-        for (const { field, mode } of entries) {
-            if (mode !== 'create') continue
-            // console.log(`>> ${field.path}.onValue`)
-            this.repo.debugLog(`🟢 ${`onInit`.padEnd(10)} ${field.path}`)
-            field.config.onInit?.(field)
-        }
+      // #region Create
+      // compute all nodes from leaves that need to call effects
+      // call them in order, non recursively.
+      const createdFieldList = Array.from(this.createdFields.values())
+         .map((field) => ({ field, depth: field.trueDepth }))
+         .sort((a, b) => b.depth - a.depth)
 
-        for (const { field, mode } of entries) {
-            if (mode !== 'value') continue
-            // console.log(`${field.path}.onValue`)
-            this.repo.debugLog(`🔶 ${`onValue`.padEnd(10)} ${field.path}`)
-            field.applyValueUpdateEffects()
-        }
+      for (const { field } of createdFieldList) {
+         this.repo.debugLog(`🟢 ${`create`.padEnd(10)} ${field.path}`)
+         field.config.onInit?.(field)
+      }
 
-        for (const { mode, field } of entries) {
-            if (mode === 'serial' || mode === 'value') {
-                // console.log(`${field.path}.onSerial`)
-                this.repo.debugLog(`❌ ${`onSerial`.padEnd(10)} ${field.path}`)
-                field.applySerialUpdateEffects()
-            }
-        }
+      // #region Update
+      // compute all nodes from leaves that need to call effects
+      // call them in order, non recursively.
+      const updatedFieldList = Array.from(this.updatedFields.values())
+         .map((field) => ({ field, depth: field.trueDepth }))
+         .sort((a, b) => b.depth - a.depth)
 
-        for (const { field, mode } of entries) {
-            if (mode !== 'value') continue
-            // console.log(`${field.path}.publish`)
-            this.repo.debugLog(`💙 ${`publish`.padEnd(10)} ${field.path}`)
-            field.publishValue()
-        }
-    }
+      for (const { field } of updatedFieldList) {
+         this.repo.debugLog(`👛 ${`update`.padEnd(10)} ${field.path}`)
+         field.INTERNAL_applySerialUpdateEffects()
+      }
+
+      for (const { field } of updatedFieldList) {
+         this.repo.debugLog(`💙 ${`publish`.padEnd(10)} ${field.path}`)
+         field.publishValue()
+      }
+
+      // #region Delete
+      const deletedFieldList = Array.from(this.deletedFields.values())
+         .map((field) => ({ field, depth: field.trueDepth }))
+         .sort((a, b) => b.depth - a.depth)
+      for (const { field } of deletedFieldList) {
+         this.repo.debugLog(`❌ ${`delete`.padEnd(10)} ${field.path}`)
+         // field.INTERNAL_applyOnDelete() // TODO
+      }
+   }
 }

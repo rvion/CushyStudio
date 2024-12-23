@@ -1,352 +1,394 @@
+import type { RevealHideReason } from '../reveal/RevealProps'
+import type { RevealState } from '../reveal/RevealState'
+import type { RevealStateLazy } from '../reveal/RevealStateLazy'
 import type { SelectProps } from './SelectProps'
+import type { ReactNode } from 'react'
 
-import { makeAutoObservable } from 'mobx'
-import React, { type FocusEvent, ReactNode } from 'react'
+import { makeAutoObservable, runInAction } from 'mobx'
+import { nanoid } from 'nanoid'
+import React from 'react'
 
-import { BadgeUI } from '../badge/BadgeUI'
+import { hasMod } from '../accelerators/META_NAME'
+import { getUIDForMemoryStructure } from '../utils/getUIDForMemoryStructure'
+import { createObservableRef } from '../utils/observableRef'
 import { searchMatches } from '../utils/searchMatches'
+import { SelectDefaultOptionUI } from './SelectOptionBadgeUI'
 
 interface ToolTipPosition {
-    top?: number | undefined
-    bottom?: number | undefined
-    left?: number | undefined
-    right?: number | undefined
+   top?: number | undefined
+   bottom?: number | undefined
+   left?: number | undefined
+   right?: number | undefined
 }
 
-export class AutoCompleteSelectState<T> {
-    constructor(public p: SelectProps<T>) {
-        makeAutoObservable(this, {
-            popupRef: false,
-            anchorRef: false,
-            inputRef: false,
-        })
-    }
+export type SelectValueSlots = 'anchor' | 'popup-input' | 'options-list'
 
-    isMultiSelect = this.p.multiple ?? false
+export class AutoCompleteSelectState<OPTION> {
+   uid: string = nanoid()
+   // various refs for our select so we can quickly puppet
+   // various key dom elements of the select, or move the focus
+   // around when needed
 
-    get options(): T[] {
-        return this.p.options?.(this.searchQuery) ?? [] // replace with actual options logic
-    }
+   anchorRef = createObservableRef<HTMLDivElement>()
+   inputRef_real = createObservableRef<HTMLInputElement>()
+   revealStateRef = createObservableRef<RevealStateLazy>()
 
-    private _searchQuery = ''
-    get searchQuery(): string {
-        return this.p.getSearchQuery?.() ?? this._searchQuery
-    }
-    set searchQuery(value: string) {
-        if (this.p.setSearchQuery) this.p.setSearchQuery(value)
-        else this._searchQuery = value
-    }
+   selectedIndex: number | null = null
+   get revealState(): Maybe<RevealState> {
+      return this.revealStateRef.current?.state
+   }
+   get isOpen(): boolean {
+      return this.revealStateRef.current?.state?.isVisible ?? false
+   }
+   wasEnabled: boolean = false
+   tooltipPosition: ToolTipPosition = { top: undefined, bottom: undefined, left: undefined, right: undefined }
+   tooltipMaxHeight: number = 100
 
-    get filteredOptions(): T[] {
-        if (this.searchQuery === '') return this.options
-        if (this.p.disableLocalFiltering) return this.options
-        return this.options.filter((p) => {
-            const label = this.p.getLabelText(p)
-            return searchMatches(label, this.searchQuery)
-        })
-    }
+   /** return the unique key for the given option */
+   getKey(option: OPTION): React.Key | null | undefined {
+      return this.p.getKey?.(option) ?? getUIDForMemoryStructure(option)
+   }
 
-    /**
-     * function to compare value or options,
-     * using the provided equality check  if provided.
-     *
-     * '===' check if the object is exactly the same.
-     * It work in some cases like those:
-     * case 1: 🟢
-     *   | const myvar = {a:1}
-     *   | <SelectUI options={[myvar, {a:2}]}, value={myvar} />
-     * case 2: 🟢
-     *   | <SelectUI options={[1,2]}, value={1} />
-     *   (because primitve type are always compared by value)
-     *
-     * but not here
-     *
-     * case 3: ❌
-     *   | <SelectUI options={[{a:1}, {a:2}]}, value={{a:1}} />
-     *                          👆   is NOT '===' to  👆 (not the same instance object)
-     *                                but is "equal" according to human logic
-     *
-     */
-    isEqual = (a: T, b: T): boolean => {
-        if (this.p.equalityCheck) return this.p.equalityCheck(a, b)
-        return a === b
-    }
+   constructor(public p: SelectProps<OPTION>) {
+      makeAutoObservable(this, {
+         anchorRef: false, // 🚨 ref do not work when observables!
+         inputRef_real: false,
 
-    /**
-     * return the index of the first selected Item amongst options;
-     * just in case the name wasn't clear enough.
-     * TODO: rename this funciton, and remove this comment about the function name.
-     */
-    get indexOfFirstSelectedItemAmongstOptions(): Maybe<number> {
-        const firstSelection = this.firstValue
-        if (firstSelection == null) return null
-        return this.options.findIndex((o) => this.isEqual(o, firstSelection))
-    }
+         // this class is one of the few we want to make fast
+         selectAll: false /* micro_optimize_with_run_inActions_inside */,
+         selectNone: false /* micro_optimize_with_run_inActions_inside */,
+      })
+   }
 
-    /** return the first selected value */
-    get firstValue(): Maybe<T> {
-        const v = this.value
-        if (v == null) return null
-        if (Array.isArray(v)) {
-            if (v.length === 0) return null
-            return v[0]
-        }
-        return v
-    }
+   /**
+    * return true if given option selected
+    * (or one of the selected values, if this.isMultiSelect)
+    */
+   isOptionSelected(option: OPTION): boolean {
+      const selected = this.value
+      if (selected == null) return false
+      if (Array.isArray(selected)) return selected.some((s) => this.isEqual(s, option))
+      return this.isEqual(selected, option)
+   }
 
-    /** currently selected value or values */
-    get value(): Maybe<T | T[]> {
-        return this.p.value?.()
-    }
+   /**
+    * return true if the given option is the only one selected
+    * (return false if more than one option is selected when this.isMultiSelect)
+    */
+   isSingleSelectedOption(option: OPTION): boolean {
+      const selected = this.value
+      if (selected == null) return false
+      if (Array.isArray(selected))
+         return selected.length === 1 && selected.some((s) => this.isEqual(s, option))
+      return this.isEqual(selected, option)
+   }
 
-    /** list of all selected values */
-    get values(): T[] {
-        const v = this.value
-        if (v == null) return []
-        return Array.isArray(v) ? v : [v]
-    }
+   isMultiSelect: boolean = this.p.multiple ?? false
 
-    get displayValue(): ReactNode {
-        if (this.p.hideValue) return this.p.placeholder ?? ''
-        let value = this.value
-        const placeHolderStr = this.p.placeholder ?? 'Select...'
-        if (value == null) return placeHolderStr
-        value = Array.isArray(value) ? value : [value]
-        // if (Array.isArray(value)) {
-        const str =
-            value.length === 0 //
-                ? placeHolderStr
-                : value.map((i) => {
-                      const label = this.p.getLabelText(i)
-                      if (!this.p.multiple) return label
-                      return (
-                          <BadgeUI
-                              key={label}
-                              // hack to allow to unselect quickly selected items
-                              onClick={() => this.p.onChange?.(i, this)}
-                          >
-                              {label}
-                          </BadgeUI>
-                      )
-                  })
-        if (this.p.label)
-            return (
-                <>
-                    {this.p.label}: {str}
-                </>
-            )
-        return <>{str}</>
-        // } else {
-        //     const str = this.p.getLabelText(value)
-        //     if (this.p.label) return `${this.p.label}: ${str}`
-        //     return str
-        // }
-    }
+   get options(): OPTION[] {
+      return this.p.options?.(this.searchQuery) ?? [] // replace with actual options logic
+   }
 
-    anchorRef = React.createRef<HTMLInputElement>()
-    inputRef = React.createRef<HTMLInputElement>()
-    popupRef = React.createRef<HTMLDivElement>()
-    selectedIndex: number = 0
-    isOpen: boolean = false
-    isDragging: boolean = false
-    isFocused: boolean = false
-    wasEnabled: boolean = false
-    hasMouseEntered: boolean = false
+   /**
+    * function to compare value or options,
+    * using the provided equality check  if provided.
+    *
+    * '===' check if the object is exactly the same.
+    * It work in some cases like those:
+    * case 1: 🟢
+    *   | const myvar = {a:1}
+    *   | <SelectUI options={[myvar, {a:2}]}, value={myvar} />
+    * case 2: 🟢
+    *   | <SelectUI options={[1,2]}, value={1} />
+    *   (because primitve type are always compared by value)
+    *
+    * but not here
+    *
+    * case 3: ❌
+    *   | <SelectUI options={[{a:1}, {a:2}]}, value={{a:1}} />
+    *                          👆   is NOT '===' to  👆 (not the same instance object)
+    *                                but is "equal" according to human logic
+    *
+    */
+   isEqual = (a: OPTION, b: OPTION): boolean => {
+      if (this.p.equalityCheck) return this.p.equalityCheck(a, b)
+      if (a != null && typeof a === 'object' && 'id' in a && b != null && typeof b === 'object' && 'id' in b)
+         return a.id === b.id
+      return a === b
+   }
 
-    tooltipPosition: ToolTipPosition = { top: undefined, bottom: undefined, left: undefined, right: undefined }
-    tooltipMaxHeight: number = 100
+   /**
+    * return the index of the first selected Item amongst options;
+    * just in case the name wasn't clear enough.
+    * TODO: rename this funciton, and remove this comment about the function name.
+    */
+   get indexOfFirstSelectedItemAmongstOptions(): Maybe<number> {
+      const firstSelection = this.firstValue
+      if (firstSelection == null) return null
+      return this.options.findIndex((o) => this.isEqual(o, firstSelection))
+   }
 
-    updatePosition = (): void => {
-        const rect = this.anchorRef.current?.getBoundingClientRect()
-        if (rect == null) return
+   /** return the first selected value */
+   get firstValue(): Maybe<OPTION> {
+      const v = this.value
+      if (v == null) return null
+      if (Array.isArray(v)) {
+         if (v.length === 0) return null
+         return v[0]
+      }
+      return v
+   }
 
-        /* Default anchoring is to favor bottom-left */
-        this.tooltipPosition = {
-            top: rect.bottom + window.scrollY,
-            left: rect.left + window.scrollX,
-            right: undefined,
-            bottom: undefined,
-        }
+   /** return the last selected value */
+   get lastValue(): Maybe<OPTION> {
+      const v = this.values
+      if (v.length === 0) return null
+      return v[v.length - 1]
+   }
 
-        /* Which direction has more space? */
-        const onBottom = window.innerHeight * 0.5 < (rect.top + rect.bottom) * 0.5
-        const onLeft = window.innerWidth * 0.5 < (rect.left + rect.right) * 0.5
+   /** currently selected value or values */
+   get value(): (OPTION | OPTION[]) | undefined {
+      return this.p.value?.()
+   }
 
-        /* Make sure pop-up always fits within screen, but isn't too large */
-        this.tooltipMaxHeight = (window.innerHeight - rect.bottom) * 0.99
+   /** list of all selected values */
+   get values(): OPTION[] {
+      const v = this.value
+      if (v == null) return []
+      return Array.isArray(v) ? v : [v]
+   }
 
-        // 2024-03-28 @rvion: not so sure about that use of `window.getComputedStyle(document.body).getPropertyValue('--input-height'))`
-        // ping 🌶️
-        const inputHeight = parseInt(window.getComputedStyle(document.body).getPropertyValue('--input-height'))
-        /* Add 1.25 in case of headers, needs to be done properly by getting if there's a title when moving this to RevealUI. */
-        const desiredHeight = Math.min(this.options.length * inputHeight * 1.25)
-        const bottomSpace = window.innerHeight - rect.bottom
+   getHue(option: OPTION): Maybe<number> {
+      if (option != null && typeof option === 'object' && 'hue' in option && typeof option.hue === 'number')
+         return option.hue
+   }
 
-        /* Make sure pop-up never goes off-screen vertically, preferring to go on the bottom if there is space. */
-        if (onBottom && desiredHeight > bottomSpace) {
-            /* This probably doesn't take in to account the fact that the browser's menu bar cuts off the top. */
-            this.tooltipMaxHeight = rect.top * 0.99
+   DefaultDisplayOption = (option: OPTION, opt: { where: SelectValueSlots }): React.ReactNode => {
+      const label = this.p.getLabelText(option)
+      return (
+         <SelectDefaultOptionUI //
+            label={label}
+            icon={this.p.startIcon}
+            hue={this.getHue(option)}
+            key={this.getKey(option)}
+            closeFn={
+               opt.where === 'popup-input' && !this.p.uncloseableOptions //
+                  ? (): void => void this.toggleOption(option)
+                  : undefined
+            }
+         />
+      )
+   }
 
-            this.tooltipPosition.top = undefined
-            this.tooltipPosition.bottom = window.innerHeight - rect.top
-        }
+   DisplayOptionUI(option: OPTION, opt: { where: SelectValueSlots }): React.ReactNode {
+      if (this.p.OptionLabelUI) {
+         // return '🔶'
+         const val = this.p.OptionLabelUI(option, opt.where, this)
+         if (val !== '🔶DEFAULT🔶') return val
+         // we could handle other magic values here
+      }
+      return this.DefaultDisplayOption(option, opt)
+   }
 
-        /* Make sure pop-up never goes off-screen horizontally.  */
-        if (onLeft) {
-            this.tooltipPosition.left = undefined
-            this.tooltipPosition.right = window.innerWidth - rect.right
-        }
-    }
+   // ⏸️ getDisplayValueWithLabel(): ReactNode {
+   // ⏸️     if (this.p.label)
+   // ⏸️         return (
+   // ⏸️             <>
+   // ⏸️                 {this.p.label}: {this.displayValue}
+   // ⏸️             </>
+   // ⏸️         )
+   // ⏸️     return <>{this.displayValue}</>
+   // ⏸️ }
 
-    onRealWidgetMouseDown = (ev: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
-        // ev.preventDefault()
-        // ev.stopPropagation()
-        this.hasMouseEntered = true
-        this.openMenu()
-    }
+   get displayValueInAnchor(): ReactNode {
+      if (this.p.hideValue) return this.p.placeholder ?? ''
+      const value: (OPTION | OPTION[]) | undefined = this.value
+      const placeHolderStr = <div tw='w-full text-sm text-gray-300 '>{this.p.placeholder ?? 'Select...'}</div>
+      if (value === undefined) return placeHolderStr
+      // 💬 2024-09-18 rvion:
+      // | null is now a valid value; only undefined means no value.
+      // |> if (value == null) return placeHolderStr
+      const values = Array.isArray(value) ? value : [value]
+      if (values.length === 0) return placeHolderStr
 
-    openMenu = (): void => {
-        this.isOpen = true
-        this.updatePosition()
-        this.inputRef.current?.focus()
-        window.addEventListener('mousemove', this.MouseMoveTooFar, true)
-    }
+      return values.map((op) => this.DisplayOptionUI(op, { where: 'anchor' }))
+   }
 
-    closeMenu(): void {
-        this.isOpen = false
-        this.isFocused = false
-        this.selectedIndex = 0
-        this.searchQuery = ''
-        this.isDragging = false
-        this.hasMouseEntered = false
+   get displayValueInPopup(): ReactNode {
+      // no placeholder in popup, it's in the input
+      let value = this.value
+      if (value == null) return null
+      value = Array.isArray(value) ? value : [value]
+      if (value.length === 0) return null
 
-        // Text cursor should only show when menu is open
-        // this.anchorRef?.current?.querySelector('input')?.blur()
-        window.removeEventListener('mousemove', this.MouseMoveTooFar, true)
-    }
+      return value.map((op) => this.DisplayOptionUI(op, { where: 'popup-input' }))
+   }
 
-    filterOptions(inputValue: string): void {
-        this.searchQuery = inputValue
-        this.isOpen = true
-        /* Could maybe try to keep to the highlighted option from before filter? (Not the index, but the actual option)
-         * This is just easier for now, and I think it's better honestly. It's more predictable behavior for the user. */
-        this.setNavigationIndex(0)
-        // Logic to filter options based on input value
-        // Update this.filteredOptions accordingly
-    }
+   // get placeholderElem(): ReactNode {
+   //     return <span tw='whitespace-nowrap'>{this.p.placeholder ?? 'Select...'}</span>
+   // }
 
-    // click means focus change => means need to refocus the input
-    // ⏸️ onMenuEntryClick = (ev: React.MouseEvent<HTMLLIElement, MouseEvent>, index: number) => {
-    // ⏸️     ev.preventDefault()
-    // ⏸️     ev.stopPropagation()
-    // ⏸️     this.selectOption(index)
-    // ⏸️     this.inputRef.current?.focus()
-    // ⏸️ }
+   // get displayValue(): ReactNode {
+   //     let value = this.value
+   //     if (value == null) return this.placeholderElem
+   //     value = Array.isArray(value) ? value : [value]
+   //     if (value.length === 0) return this.placeholderElem
+   //     return value.map((op) => this.displayOptionInInside(op, { where: 'select-values' }))
+   // }
 
-    selectOption(index: number): void {
-        const selectedOption = this.filteredOptions[index]
-        if (selectedOption != null) {
-            this.p.onChange?.(selectedOption, this)
-            // reset the query
-            const shouldResetQuery = this.p.resetQueryOnPick ?? false // !this.isMultiSelect
-            if (shouldResetQuery) this.searchQuery = ''
-            // close the menu
-            // this.closeIfShouldCloseAfterSelection()
-        }
-    }
+   // UNUSED
+   openMenuProgrammatically = (): void => {
+      this.revealState?.log(`🔶 SelectSate openMenuProgrammatically`)
+      this.revealStateRef.current?.getRevealState()?.open('programmatically-via-open-function')
+      this.inputRef_real.current?.focus() // 🔴 never been tested
+   }
 
-    closeIfShouldCloseAfterSelection(): void {
-        // close the menu
-        const shouldCloseMenu = this.p.closeOnPick ?? !this.isMultiSelect
-        if (shouldCloseMenu) this.closeMenu()
-    }
+   closeMenu(reason: RevealHideReason): void {
+      this.revealState?.log(`🔶 SelectSate closeMenu`)
+      this.revealStateRef.current?.state?.close(reason)
+      // this.clean() // 🔶 called by onHidden
+   }
 
-    navigateSelection(direction: 'up' | 'down'): void {
-        this.updatePosition() // just in case we scrolled
-        if (direction === 'up' && this.selectedIndex > 0) {
-            this.selectedIndex--
-        } else if (direction === 'down' && this.selectedIndex < this.filteredOptions.length - 1) {
-            this.selectedIndex++
-        }
-    }
+   clean(): void {
+      this.revealState?.log(`🔶 SelectSate clean`)
+      this.selectedIndex = null
+      this.searchQuery = ''
+   }
 
-    setNavigationIndex(value: number): void {
-        this.updatePosition() // just in case we scrolled
-        this.selectedIndex = value
-    }
+   closeIfShouldCloseAfterSelection(): void {
+      // close the menu
+      const shouldCloseMenu = this.p.closeOnPick ?? !this.isMultiSelect
+      if (shouldCloseMenu) this.closeMenu('pickOption')
+   }
 
-    handleInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-        this.filterOptions(event.target.value)
-        this.updatePosition() // just in case we scrolled
-    }
+   // click means focus change => means need to refocus the input
+   // ⏸️ onMenuEntryClick = (ev: React.MouseEvent<HTMLLIElement, MouseEvent>, index: number) => {
+   // ⏸️     ev.preventDefault()
+   // ⏸️     ev.stopPropagation()
+   // ⏸️     this.selectOption(index)
+   // ⏸️     this.inputRef.current?.focus()
+   // ⏸️ }
 
-    // Close pop-up if too far outside
-    // 💬 2024-02-29 rvion:
-    // | this code was a good idea; but it's really
-    // | not pleasant when working mostly with keyboard and using tab to open selects.
-    // | as soon as the moouse move just one pixel, popup close.
-    // |  =>  commenting it out until we find a solution confortable in all cases
-    MouseMoveTooFar = (event: MouseEvent): void => {
-        const popup = this.popupRef?.current
-        const anchor = this.anchorRef?.current
+   /**
+    * SEARCH/FILTER OPTIONS
+    **/
 
-        if (!popup || !anchor || !this.hasMouseEntered) {
-            return
-        }
+   private _searchQuery: string = ''
+   get searchQuery(): string {
+      return this.p.getSearchQuery?.() ?? this._searchQuery
+   }
+   set searchQuery(value: string) {
+      if (this.p.setSearchQuery) this.p.setSearchQuery(value)
+      else this._searchQuery = value
+   }
 
-        const x = event.clientX
-        const y = event.clientY
+   get filteredOptions(): OPTION[] {
+      if (this.searchQuery === '') return this.options
+      if (this.p.disableLocalFiltering) return this.options
+      return this.options.filter((p) => {
+         const label = this.p.getLabelText(p)
+         return searchMatches(label, this.searchQuery)
+      })
+   }
 
-        // XXX: Should probably be scaled by UI scale
-        const maxDistance = 75
+   filterOptions(inputValue: string): void {
+      this.searchQuery = inputValue
+      /* Could maybe try to keep to the highlighted option from before filter? (Not the index, but the actual option)
+       * This is just easier for now, and I think it's better honestly. It's more predictable behavior for the user. */
+      this.setNavigationIndex(0)
+      // Logic to filter options based on input value
+      // Update this.filteredOptions accordingly
+   }
 
-        if (
-            // left
-            popup.offsetLeft - x > maxDistance ||
-            // top
-            popup.offsetTop - y > maxDistance ||
-            // right
-            x - (popup.offsetLeft + popup.offsetWidth) > maxDistance ||
-            // bottom
-            y - (popup.offsetTop + popup.offsetHeight) > maxDistance
-        ) {
-            this.closeMenu()
-        }
-    }
+   /**
+    * EVENTS ON OPTIONS
+    **/
 
-    onBlur(_ev: FocusEvent<HTMLDivElement, Element>): void {
-        this.closeMenu()
-    }
+   toggleOptionFromFilteredOptionsAtIndex(index: number): void {
+      const selectedOption = this.filteredOptions[index]
+      if (selectedOption != null) this.toggleOption(selectedOption)
+   }
 
-    handleTooltipKeyDown = (ev: React.KeyboardEvent): void => {
-        if (ev.key === 'ArrowDown') this.navigateSelection('down')
-        else if (ev.key === 'ArrowUp') this.navigateSelection('up')
-        else if (ev.key === 'Enter' && !ev.metaKey && !ev.ctrlKey) {
-            this.selectOption(this.selectedIndex)
-            this.closeIfShouldCloseAfterSelection()
-        }
-    }
+   toggleOption(option: OPTION): void {
+      this.revealState?.log(`_ SelectSate toggleOption`)
+      const onOptionToggled = this.p.onOptionToggled ?? this.p.onChange
+      onOptionToggled?.(option, this)
 
-    onRealInputKeyUp = (ev: React.KeyboardEvent): void => {
-        if (ev.key === 'Enter' && !this.isOpen) {
-            this.openMenu()
-            ev.preventDefault()
-            ev.stopPropagation()
-            return
-        }
-        if (ev.key === 'Escape') {
-            this.closeMenu()
-            // this.anchorRef.current?.focus()
-            ev.preventDefault()
-            ev.stopPropagation()
-            return
-        }
+      // reset the query
+      const shouldResetQuery = this.p.resetQueryOnPick ?? true // !this.isMultiSelect // 🚂 default was false
+      if (shouldResetQuery) this.searchQuery = ''
 
-        if (!this.isOpen) {
-            this.openMenu()
-            this.setNavigationIndex(0)
-            ev.preventDefault()
-            ev.stopPropagation()
-        }
-    }
+      // close the menu (only if the selection actually happened)
+      const isCurrentlySelected = this.isOptionSelected(option)
+      if (!isCurrentlySelected) this.closeIfShouldCloseAfterSelection()
+   }
+
+   async createOption(): Promise<void> {
+      const createdOption = await this.p.createOption?.action()
+      if (createdOption != null) {
+         this.options.push(createdOption)
+         this.toggleOption(createdOption)
+      }
+   }
+
+   selectAll(): void {
+      runInAction(() => {
+         if (this.p.onSelectAll && this.searchQuery == '') {
+            this.p.onSelectAll(this.searchQuery)
+         } else {
+            this.filteredOptions.forEach((option) => {
+               if (!this.isOptionSelected(option)) this.toggleOption(option)
+            })
+         }
+      })
+   }
+
+   selectNone(): void {
+      const unselectedOptions = this.searchQuery == '' ? this.values : this.filteredOptions
+
+      runInAction(() => {
+         unselectedOptions.forEach((option) => {
+            if (this.isOptionSelected(option)) this.toggleOption(option)
+         })
+      })
+   }
+
+   /**
+    * MOVE IN OPTIONS LIST
+    **/
+   navigateSelection(direction: 'up' | 'down'): void {
+      if (this.selectedIndex == null) {
+         if (direction === 'down') this.selectedIndex = 0
+         else if (direction === 'up') this.selectedIndex = this.filteredOptions.length - 1
+      } else if (direction === 'up' && this.selectedIndex > 0) {
+         this.selectedIndex--
+      } else if (direction === 'down' && this.selectedIndex < this.filteredOptions.length - 1) {
+         this.selectedIndex++
+      }
+   }
+
+   setNavigationIndex(value: number): void {
+      this.selectedIndex = value
+   }
+
+   handleTooltipKeyDown = (ev: React.KeyboardEvent): void => {
+      this.revealState?.log(`_ SelectSate handleTooltipKeyDown (${ev.key})`)
+      if (ev.key === 'ArrowDown') this.navigateSelection('down')
+      else if (ev.key === 'ArrowUp') this.navigateSelection('up')
+      else if (ev.key === 'Enter' && !ev.metaKey && !ev.ctrlKey) {
+         if (this.selectedIndex != null) this.toggleOptionFromFilteredOptionsAtIndex(this.selectedIndex)
+         this.closeIfShouldCloseAfterSelection()
+         this.inputRef_real.current?.focus()
+      }
+
+      // when the select is hidden but the anchor is focused
+      // typing a letter should add it to the search query in addition to opening the select
+      const isLetter = ev.keyCode >= 65 && ev.keyCode <= 90
+      // 🔴 this does not work anymore because Reveal is opening on key down, so visible is true and the letter isn't added
+      // (we can live with it for now)
+      if (isLetter && !this.revealState?.isVisible && !hasMod(ev)) {
+         // setTimeout prevents from having the newly added letter being selected due to subsequent input.focus()
+         setTimeout(() => (this.searchQuery += ev.key), 0)
+      }
+   }
 }

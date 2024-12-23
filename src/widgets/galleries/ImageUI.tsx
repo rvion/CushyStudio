@@ -5,74 +5,123 @@ import { observer } from 'mobx-react-lite'
 
 import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { ImageDropdownMenuUI } from '../../panels/ImageDropdownUI'
-import { useSt } from '../../state/stateContext'
 import { useImageDrag } from './dnd'
 import { ImageErrorDisplayUI } from './ImageErrorDisplayUI'
 
-type SmolSize = `${'1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'}rem`
-
-export const ImageUI = observer(function ImageUI_(p: {
-    size?: SmolSize | '100%' | number /* px */
-    img: MediaImageL | MediaImageID
-    className?: string
+export const ImageUI = observer(function ImageUI_({
+   size,
+   img,
+   onClick,
+   className,
+   style,
+   // blurred,
+   ...rest
+}: {
+   size: number /* px */
+   img: MediaImageL | MediaImageID
+   onClick?: (img: MediaImageL) => void
+   className?: string
+   // blurred?: boolean
+   style?: React.CSSProperties
 }) {
-    const st = useSt()
-    const ImageWidth =
-        typeof p.size === 'number' //
-            ? `${p.size}px`
-            : p.size ?? st.gallerySizeStr
+   const image = typeof img === 'string' ? cushy.db.media_image.get(img) : img
+   const ImageWidth = `${size}px`
 
-    // get image
-    const image = typeof p.img === 'string' ? st.db.media_image.get(p.img) : p.img
+   if (image == null) {
+      return <div style={{ width: ImageWidth, height: ImageWidth }}>❌</div>
+   }
 
-    // abort if image missing
-    if (image == null) return <div style={{ width: ImageWidth, height: ImageWidth }}>❌</div>
+   const [{ opacity }, dragRef] = useImageDrag(image! /* 🔴 */)
+   const IMG = (
+      <img
+         className={className}
+         tw='bg-contain bg-center bg-no-repeat object-contain'
+         // src={image.url}
+         src={image.urlForSize(size)}
+         onMouseEnter={image.onMouseEnter}
+         onMouseLeave={image.onMouseLeave}
+         onClick={onClick ? (): void => void onClick(image) : image.onClick}
+         onAuxClick={(ev) => {
+            if (ev.button === 1) return image.onMiddleClick()
+            if (ev.button === 2) return image.onRightClick()
+         }}
+         ref={dragRef}
+         style={{
+            // not really necessary; let's just keep the bare minimum to make things faster
+            // backgroundImage: `url(${image.thumbhashURL})`,
+            width: ImageWidth,
+            height: ImageWidth,
+            // filter: blurred ? 'blur(10px)' : undefined,
+            opacity,
+            ...style,
+         }}
+         {...rest}
+      />
+   )
 
-    // ugly code; very wtf
-    const ImageWidthPx = ((x: string | number) => {
-        if (typeof x === 'number') return x
-        if (x === '100%') return 1000
-        if (x.endsWith('px')) return parseInt(x.slice(0, -2), 10)
-        if (x.endsWith('rem')) return parseInt(x.slice(0, -3), 10) * 16
-        if (x.endsWith('em')) return parseInt(x.slice(0, -2), 10) * 16
-        return 50
-    })(p.size ?? st.gallerySizeStr)
+   if (image.existsLocally && !existsSync(image?.absPath as PathLike))
+      return (
+         <ImageErrorDisplayUI //
+            icon={'mdiFolder'}
+         />
+      )
 
-    const [{ opacity }, dragRef] = useImageDrag(image! /* 🔴 */)
+   return (
+      <RevealUI //
+         trigger='rightClick'
+         relativeTo='mouse'
+         tw='shrink-0'
+         content={() => <ImageDropdownMenuUI img={image} />}
+         children={IMG}
+      />
+   )
+})
 
-    const IMG = (
-        <img
-            className={p.className}
-            tw='object-contain bg-contain bg-no-repeat bg-center'
-            src={image.urlForSize(ImageWidthPx)}
-            onMouseEnter={image.onMouseEnter}
-            onMouseLeave={image.onMouseLeave}
-            onClick={image.onClick}
-            onAuxClick={(ev) => {
-                if (ev.button === 1) return image.onMiddleClick()
-                if (ev.button === 2) return image.onRightClick()
-            }}
-            ref={dragRef}
-            loading='lazy'
-            style={{ backgroundImage: `url(${image.thumbhashURL})`, width: ImageWidth, height: ImageWidth, opacity }}
-        />
-    )
-    return (
-        <RevealUI
-            tw='flex w-full h-full items-center'
-            content={() => (
-                <ul tabIndex={0} tw='shadow menu dropdown-content z-[1]  rounded-box'>
-                    <ImageDropdownMenuUI img={image} />
-                </ul>
-            )}
-        >
-            {!image ? (
-                <ImageErrorDisplayUI className='hover:border-transparent' icon={'database'} />
-            ) : image.existsLocally && !existsSync(image?.absPath as PathLike) ? (
-                <ImageErrorDisplayUI className='hover:border-transparent' icon={'folder'} />
-            ) : (
-                <div tw='flex w-full justify-center items-center'>{IMG}</div>
-            )}
-        </RevealUI>
-    )
+export const ImageUIDumb = observer(function ImageUIDumb_({
+   className,
+   img,
+   ...rest
+}: {
+   img: MediaImageL | MediaImageID
+   className?: string
+}) {
+   const image = typeof img === 'string' ? cushy.db.media_image.get(img) : img
+   const [{ opacity }, dragRef] = useImageDrag(image! /* 🔴 */)
+
+   if (!image) {
+      return (
+         <ImageErrorDisplayUI //
+            icon={'mdiImageRemoveOutline'}
+         />
+      )
+   }
+
+   if (image.existsLocally && !existsSync(image?.absPath as PathLike)) {
+      return (
+         <ImageErrorDisplayUI //
+            icon={'mdiFolder'}
+         />
+      )
+   }
+
+   return (
+      <RevealUI //
+         trigger='rightClick'
+         relativeTo='mouse'
+         tw='shrink-0'
+         content={() => <ImageDropdownMenuUI img={image} />}
+         children={
+            <img
+               className={className}
+               tw='h-full w-full bg-contain bg-center bg-no-repeat object-contain'
+               src={image.url}
+               onAuxClick={(ev) => {
+                  if (ev.button === 1) return image.onMiddleClick()
+                  if (ev.button === 2) return image.onRightClick()
+               }}
+               ref={dragRef}
+            />
+         }
+      />
+   )
 })
