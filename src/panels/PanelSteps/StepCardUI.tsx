@@ -64,20 +64,22 @@ export const StepCardUI = observer(function StepOutputsV1HeaderUI_(p: {
          style={p.style}
       >
          {showInfoBar && (
-            <UY.Layout.Row base={{ contrast: -0.1 }} tw='h-input items-center px-1'>
+            <UY.Layout.Row base={{ contrast: -0.1 }} tw='h-input items-center'>
                {showTitle && (
-                  <UY.Misc.Frame tw='!line-clamp-1 flex items-center justify-center' tooltip={step.name}>
+                  <UY.Misc.Frame tw='!line-clamp-1 flex items-center justify-center px-1' tooltip={step.name}>
                      {step.name}
                   </UY.Misc.Frame>
                )}
                <SpacerUI />
                {showDate && (
-                  <div tw='flex flex-shrink-0 items-center justify-center opacity-80'>
+                  <div tw='flex flex-shrink-0 items-center justify-center px-1 opacity-80'>
                      {_formatPreviewDate(new Date(step.createdAt))}
                   </div>
                )}
                {showStatus && (
-                  <div tw='flex items-center justify-center px-2'>{statusUI(p.step.finalStatus)}</div>
+                  <UY.Misc.Frame square size='input' tw='flex items-center justify-center'>
+                     {statusUI(p.step)}
+                  </UY.Misc.Frame>
                )}
             </UY.Layout.Row>
          )}
@@ -111,17 +113,6 @@ export const StepCardUI = observer(function StepOutputsV1HeaderUI_(p: {
                      />
                   ))}
             </div>
-         )}
-         <SpacerUI />
-         {step?.finalStatus === Status.Running && (
-            <Button //
-               icon='mdiStop'
-               look='error'
-               onClick={() => {
-                  step.abort()
-                  cushy.stopCurrentPrompt()
-               }}
-            />
          )}
       </Frame>
    )
