@@ -12,6 +12,7 @@ import { Button } from '../../csuite/button/Button'
 import { SpacerUI } from '../../csuite/components/SpacerUI'
 import { _formatPreviewDate } from '../../csuite/formatters/_formatPreviewDate'
 import { Frame } from '../../csuite/frame/Frame'
+import { ComfyWorkflowL } from '../../models/ComfyWorkflow'
 import { OutputPreviewUI } from '../../outputs/OutputUI'
 import { PanelStepsConf } from './PanelStepsConf'
 
@@ -98,14 +99,17 @@ export const StepCardUI = observer(function StepOutputsV1HeaderUI_(p: {
          {/* 6. OUTPUTS --------------------------------------------------------------- */}
          {showOutputs && (
             <div tw='flex flex-wrap'>
-               {step?.outputs?.map((output, ix) => (
-                  <OutputPreviewUI //
-                     key={ix}
-                     step={step}
-                     size={appSize}
-                     output={output}
-                  />
-               ))}
+               {step?.outputs
+                  // Filter out the stuff we don't want anymore... @rvion Unsure how you want to have this or clean these outputs since we're merging them in to the "Progress" output
+                  ?.filter((output) => !(output instanceof ComfyWorkflowL))
+                  .map((output, ix) => (
+                     <OutputPreviewUI //
+                        key={ix}
+                        step={step}
+                        size={appSize}
+                        output={output}
+                     />
+                  ))}
             </div>
          )}
          <SpacerUI />

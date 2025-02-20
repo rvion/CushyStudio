@@ -21,7 +21,7 @@ export const GraphSummaryUI = observer(function GraphSummaryUI_(p: { graph: Comf
             <ButtonDownloadFilesUI graph={graph} />
             <ButtonOpenInComfyUI graph={graph} />
          </div>
-         <div className='overflow-auto'>
+         <div>
             {graph.size === 0 && <div>Empty Graph</div>}
             {graph.pendingNodes.length > 0 && <div>+{graph.pendingNodes.length} nodes remaining</div>}
             {graph.nodesByUpdatedAt.map((n, ix) => (
@@ -31,9 +31,7 @@ export const GraphSummaryUI = observer(function GraphSummaryUI_(p: { graph: Comf
                      <span>{n.statusEmoji}</span>
                   </RevealUI>
                   <NodeRefUI size={1.1} label={ix.toString()} node={n} />
-                  <span tw='overflow-hidden text-ellipsis whitespace-nowrap text-sm'>
-                     {n.$schema.nameInComfy}
-                  </span>
+                  <span tw='text-ellipsis whitespace-nowrap text-sm'>{n.$schema.nameInComfy}</span>
                </div>
             ))}
          </div>
