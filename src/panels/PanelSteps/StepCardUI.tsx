@@ -51,20 +51,34 @@ export const StepCardUI = observer(function StepOutputsV1HeaderUI_(p: {
    const showOutputs = p.showOutputs ?? conf.value.show.outputs
    const showExecutionTime = p.showExecutionTime ?? conf.value.show.executionTime
    const showDate = p.showDate ?? conf.value.show.date
+   const showInfoBar = showTitle || showDate || showStatus
 
-   const STYLE = { height: appSize, width: appSize }
-   const STYLE2 = { height: appSize }
+   // const STYLE = { height: appSize, width: appSize }
+   // const STYLE2 = { height: appSize }
    return (
       <Frame
          base={p.contrast}
-         tw={['relative flex cursor-pointer flex-wrap py-0.5', p.className]}
+         tw={['relative flex cursor-pointer flex-col flex-wrap py-0.5', p.className]}
          // onClick={() => cushy.layout.open('Output', { stepID: step.id })}
          style={p.style}
       >
-         {showTitle && (
-            <div style={STYLE2} tw='flex items-center justify-center'>
-               {step.name}
-            </div>
+         {showInfoBar && (
+            <UY.Layout.Row base={{ contrast: -0.1 }} tw='h-input items-center px-1'>
+               {showTitle && (
+                  <UY.Misc.Frame tw='!line-clamp-1 flex items-center justify-center' tooltip={step.name}>
+                     {step.name}
+                  </UY.Misc.Frame>
+               )}
+               <SpacerUI />
+               {showDate && (
+                  <div tw='flex flex-shrink-0 items-center justify-center opacity-80'>
+                     {_formatPreviewDate(new Date(step.createdAt))}
+                  </div>
+               )}
+               {showStatus && (
+                  <div tw='flex items-center justify-center px-2'>{statusUI(p.step.finalStatus)}</div>
+               )}
+            </UY.Layout.Row>
          )}
          {showApp && (
             <div
@@ -74,20 +88,16 @@ export const StepCardUI = observer(function StepOutputsV1HeaderUI_(p: {
                {step.app ? (
                   <AppIllustrationUI tw='hover:opacity-100' size={appSize} app={step.app} />
                ) : (
-                  <div style={STYLE}>❓</div>
+                  <div>❓</div>
                )}
             </div>
          )}
          {/* 4. DRAFT --------------------------------------------------------------- */}
          {showDraft &&
-            (step.draft ? (
-               <DraftIllustrationUI draft={step.draft} size={appSize} />
-            ) : (
-               <div style={STYLE}>❓</div>
-            ))}
+            (step.draft ? <DraftIllustrationUI draft={step.draft} size={appSize} /> : <div>❓</div>)}
          {/* 6. OUTPUTS --------------------------------------------------------------- */}
          {showOutputs && (
-            <div tw='flex px-2'>
+            <div tw='flex flex-wrap'>
                {step?.outputs?.map((output, ix) => (
                   <OutputPreviewUI //
                      key={ix}
@@ -108,16 +118,6 @@ export const StepCardUI = observer(function StepOutputsV1HeaderUI_(p: {
                   cushy.stopCurrentPrompt()
                }}
             />
-         )}
-         {showDate && (
-            <div style={STYLE2} tw='flex items-center justify-center opacity-80'>
-               {_formatPreviewDate(new Date(step.createdAt))}
-            </div>
-         )}
-         {showStatus && (
-            <div style={STYLE} tw='flex items-center justify-center'>
-               {statusUI(p.step.finalStatus)}
-            </div>
          )}
       </Frame>
    )
