@@ -89,12 +89,12 @@ type DraftMenuLooksProps = {
 //                   <div tw='subtle'>{Object.keys(app.script.data.metafile?.inputs ?? {}).length} files</div>
 //                </MenuItem> */}
 //                <MenuItem
-//                   icon='mdiArrowCollapseVertical'
+//                   icon={IKONS.mdiArrowCollapseVertical}
 //                   onClick={() => draft.collapseTopLevelFormEntries()}
 //                   label='Collapse top level entries'
 //                />
 //                <MenuItem
-//                   icon='mdiArrowExpandVertical'
+//                   icon={IKONS.mdiArrowExpandVertical}
 //                   onClick={() => draft.expandTopLevelFormEntries()}
 //                   label='Expand top level entries'
 //                />
@@ -109,7 +109,7 @@ type DraftMenuLooksProps = {
 //                <MenuItem //
 //                   onClick={() => (cushy.preferedFormLayout = 'auto')}
 //                   active={layout == 'auto'}
-//                   icon='mdiArrowExpandAll'
+//                   icon={IKONS.mdiArrowExpandAll}
 //                   label='Auto Layout'
 //                   beforeShortcut={<BadgeUI autoHue>recommended</BadgeUI>}
 //                />
@@ -117,13 +117,13 @@ type DraftMenuLooksProps = {
 //                <MenuItem
 //                   onClick={() => (cushy.preferedFormLayout = 'dense')}
 //                   active={layout == 'dense'}
-//                   icon='mdiImageSizeSelectSmall'
+//                   icon={IKONS.mdiImageSizeSelectSmall}
 //                   label='Dense Layout'
 //                />
 //                <MenuItem
 //                   onClick={() => (cushy.preferedFormLayout = 'mobile')}
 //                   active={layout == 'mobile'}
-//                   icon='mdiImageSizeSelectLarge'
+//                   icon={IKONS.mdiImageSizeSelectLarge}
 //                   label='Expanded Layout'
 //                />
 //                <MenuDividerUI_ />
@@ -132,7 +132,7 @@ type DraftMenuLooksProps = {
 //                      cushy.setConfigValue('draft.mockup-mobile', !cushy.getConfigValue('draft.mockup-mobile'))
 //                   }
 //                   active={cushy.isConfigValueEq('draft.mockup-mobile', true)}
-//                   icon='mdiCellphone'
+//                   icon={IKONS.mdiCellphone}
 //                   label='Mobile'
 //                />
 //             </>

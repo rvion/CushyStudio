@@ -11,18 +11,18 @@ import { menuCommands } from './menuCommands'
                   onClick={() => {
                      void window.require('electron').shell.openExternal('https://www.CushyStudio.com/blog')
                   }}
-                  icon={'mdiPost'}
+                  icon={IKONS.mdiPost}
                   label='Blog'
                />
                {cushy.auth.isConnected ? (
                   <MenuItem //
-                     icon='mdiLogout'
+                     icon={IKONS.mdiLogout}
                      onClick={() => cushy.auth.logout()}
                      label='Logout'
                   />
                ) : (
                   <MenuItem //
-                     icon='mdiLogin'
+                     icon={IKONS.mdiLogin}
                      onClick={() => void cushy.auth.startLoginFlowWithGithub()}
                      label='Login with Github'
                   />
@@ -75,7 +75,7 @@ export const helpMenu: Menu = defineMenu({
    // TODO(bird): Properly do this
    /**<RevealUI content={() => <JsonViewUI value={cushy.auth.user} />}>
                   <MenuItem //
-                     icon='mdiInformation'
+                     icon={IKONS.mdiInformation}
                      label={cushy.auth.user?.email ?? '<no-email>'}
                   />
                </RevealUI> */

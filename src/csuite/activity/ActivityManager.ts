@@ -2,10 +2,8 @@ import type { Activity } from './Activity'
 
 import { makeAutoObservable } from 'mobx'
 
-import { commandManager } from '../commands/CommandManager'
 import { Trigger } from '../trigger/Trigger'
 import { Routine } from './Routine'
-import { SimpleMouseActivity, type SimpleMouseActivityProps } from './SimpleMouseActivity'
 
 // ACTIVITY = global app state machine state you can be in;
 // consume all events, and react to them
@@ -13,13 +11,6 @@ import { SimpleMouseActivity, type SimpleMouseActivityProps } from './SimpleMous
 export class ActivityManager {
    constructor() {
       makeAutoObservable(this)
-      commandManager.useSpy((inputToken, ev) => {
-         const routine = this.current()
-         // console.log(`[💩] commandManager intercepted a key (${inputToken})`)
-         if (routine == null) return
-         // console.log(`[💩] currrent activity live; forwarding ev to it`)
-         routine.activity.onKeyDown?.(ev, routine)
-      })
    }
 
    // ACCESSING ---------------------------------------------------------------
@@ -33,7 +24,7 @@ export class ActivityManager {
       //
       ActivityKls: { new (ctx: Ctx): Activity },
       ctx: NoInfer<Ctx>,
-   ): Trigger => {
+   ) => {
       const activity = new ActivityKls(ctx)
       const routine = new Routine(this, activity)
       this.routines.push(routine)
@@ -59,15 +50,6 @@ export class ActivityManager {
       this.routines.push(routine)
       activity.onStart?.()
       return Trigger.Success
-   }
-
-   /**
-    *
-    * mouse activity commint on mouse up, cancel on right click,et. TODO: doucment
-    * start an activity, return Trigger.Success */
-   startSimpleMouseActivity_ = (p: SimpleMouseActivityProps): Trigger => {
-      const activity = new SimpleMouseActivity(p)
-      return this.start_(activity)
    }
 
    // STOPPING ---------------------------------------------------------------

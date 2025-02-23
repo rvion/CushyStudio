@@ -1,4 +1,6 @@
 import type { IconName } from '../icons/icons'
+import type { NO_PROPS } from '../types/NO_PROPS'
+import type { BoundMenuOpts } from './BoundMenuOpts'
 import type { MenuBuilder } from './MenuBuilder'
 import type { MenuEntry } from './MenuEntry'
 
@@ -6,22 +8,28 @@ import { nanoid } from 'nanoid'
 import { createElement, useMemo } from 'react'
 
 import { activityManager } from '../activity/ActivityManager'
-import { MenuSym } from '../introspect/_isMenu'
 import { Trigger } from '../trigger/Trigger'
-import { MenuBarUI } from './MenuBarUI'
+import { BoundMenu } from './BoundMenuOpts'
 import { MenuInstance } from './MenuInstance'
+import { menuManager } from './menuManager'
 import { MenuRootUI } from './MenuRootUI'
+import { MenuUI } from './MenuUI'
 
-/**
- * simplest way to create a menu template when your menu has no props.
- * if it has props, you probably want to use `defineMenuTemplate` instead.
- * and bind the menuTemplate to give it props where it makes sense.
- */
-export const defineMenu = (def: MenuProps): Menu => new Menu(def)
+// ------------------------------------------------------------------------------------------
+// ACTIVITY STACK
+export type MenuEntryWithKey = {
+   entry: MenuEntry
+   /** local key bound to that menu entry */
+   char?: string
+   /**
+    * char index within the string;
+    * (value kept around to speed up later processing to add underline at the right position)
+    * */
+   charIx?: number
+}
 
-export type MenuID = Tagged<string, 'MenuID'>
-
-export type MenuProps = {
+/** supplied menu definition */
+export type MenuDef<Props> = {
    title: string
    /**
     * used to register menu into menu manager so you can open menu by ref
@@ -29,51 +37,65 @@ export type MenuProps = {
     */
    id?: string
    icon?: Maybe<IconName>
-   entries: (builder: MenuBuilder<any>) => MenuEntry[]
-   disabled?: boolean
+   entries: (props: Props, builder: MenuBuilder<any>) => MenuEntry[]
 }
 
-export class Menu {
+export type MenuID = Tagged<string, 'MenuID'>
+
+export class Menu<Props> {
    id: MenuID
-   $SYM = MenuSym
 
    get title(): string {
       return this.def.title
    }
 
-   get icon(): Maybe<IconName> {
-      return this.def.icon
-   }
-
-   constructor(public def: MenuProps) {
+   constructor(public def: MenuDef<Props>) {
       this.id = def.id ?? nanoid()
-      // /menuManager.registerMenuTemplate(this)
+      menuManager.registerMenu(this)
    }
+   UI = (p: { props: Props }): React.JSX.Element =>
+      createElement(MenuUI, { menu: useMemo(() => new MenuInstance(this, p.props), []) })
 
-   UI = (): React.JSX.Element => {
-      const menuInst = useMemo(() => new MenuInstance(this, undefined, null), [])
-      return createElement(MenuRootUI, { menu: menuInst })
-   }
+   DropDownUI = (p: { props: Props }): React.JSX.Element => createElement(MenuRootUI, { menu: useMemo(() => new MenuInstance(this, p.props), []) }) // prettier-ignore
 
-   DropDownUI = (): React.JSX.Element => {
-      const menuInst = useMemo(() => new MenuInstance(this, undefined, null), [])
-      return createElement(MenuRootUI, { menu: menuInst })
-   }
-
-   MenuBarUI = (p: { autoFocus?: boolean }): React.JSX.Element => {
-      const menuInst = useMemo(() => new MenuInstance(this, undefined, null), [])
-      return createElement(MenuBarUI, { menu: menuInst, autoFocus: p.autoFocus })
-   }
-
-   /** what is it used for  */
-   init = (keysTaken?: Set<string>): MenuInstance => {
-      return new MenuInstance(this, keysTaken, null)
-   }
+   /** bind a menu to give props */
+   bind = (props: Props, ui?: BoundMenuOpts): BoundMenu => new BoundMenu(this, props, ui)
 
    /** push the menu to current activity */
-   open(): Trigger | Promise<Trigger> {
-      const instance = new MenuInstance(this, undefined, null)
+   open(props: Props): Trigger | Promise<Trigger> {
+      const instance = new MenuInstance(this, props)
       activityManager.start(instance)
       return Trigger.Success
    }
 }
+
+export class MenuWithoutProps {
+   id: MenuID
+
+   get title(): string {
+      return this.def.title
+   }
+
+   constructor(public def: MenuDef<NO_PROPS>) {
+      this.id = def.id ?? nanoid()
+      menuManager.registerMenu(this)
+   }
+   // 🔴
+   UI = (): React.JSX.Element =>
+      createElement(MenuRootUI, { menu: useMemo(() => new MenuInstance(this, {}), []) })
+   DropDownUI = (): React.JSX.Element =>
+      createElement(MenuRootUI, { menu: useMemo(() => new MenuInstance(this, {}), []) })
+
+   /** bind a menu to give props */
+   bind = (ui?: BoundMenuOpts): BoundMenu => new BoundMenu(this, {}, ui)
+
+   /** push the menu to current activity */
+   open(): Trigger | Promise<Trigger> {
+      const instance = new MenuInstance(this, {})
+      activityManager.start(instance)
+      return Trigger.Success
+   }
+}
+
+export const menuWithProps = <P>(def: MenuDef<P>): Menu<P> => new Menu(def)
+export const menuWithoutProps = (def: MenuDef<NO_PROPS>): MenuWithoutProps => new MenuWithoutProps(def)

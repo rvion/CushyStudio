@@ -1,11 +1,11 @@
 // UI -----------------------------------------------------------
 
-export type UI_recursive = X.XOptional<
-   X.XGroup<{
-      cfg: X.XNumber
-      loops: X.XNumber
-      denoise: X.XNumber
-      steps: X.XNumber
+export type UI_recursive = Z.XOptional<
+   Z.XGroup<{
+      cfg: Z.XNumber
+      loops: Z.XNumber
+      denoise: Z.XNumber
+      steps: Z.XNumber
    }>
 >
 

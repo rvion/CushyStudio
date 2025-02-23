@@ -107,7 +107,7 @@ export class Transaction {
 
       for (const { field } of updatedFieldList) {
          this.repo.debugLog(`💙 ${`publish`.padEnd(10)} ${field.path}`)
-         field.publishValue()
+         field.runPublications()
       }
 
       // #region Delete

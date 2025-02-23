@@ -14,7 +14,7 @@ export const MenuAppsUI = observer(function MenuAppsUI_(p: {}) {
             <>
                {/* <MenuItem
                         onClick={() => cushy.layout.FOCUS_OR_CREATE('Marketplace', {}, 'RIGHT_PANE_TABSET')}
-                        icon='mdiCloudDownload'
+                        icon={IKONS.mdiCloudDownload}
                         localShortcut={KEYS.openPage_Marketplace}
                         label='Civitai'
                     /> */}

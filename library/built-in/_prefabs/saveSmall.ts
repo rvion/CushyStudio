@@ -1,9 +1,9 @@
 import type { OutputFor } from './_prefabs'
 
-export type UI_customSave = X.XGroup<{
-   subfolder: X.XString
-   format: X.XSelectOne_<'raw' | 'image/webp' | 'image/png' | 'image/jpeg'>
-   quality: X.XNumber
+export type UI_customSave = Z.XGroup<{
+   subfolder: Z.XString
+   format: Z.XSelectOne_<'raw' | 'image/webp' | 'image/png' | 'image/jpeg'>
+   quality: Z.XNumber
 }>
 
 export function ui_customSave(): UI_customSave {

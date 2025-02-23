@@ -18,7 +18,7 @@ export const CanvasToolbarUI = observer(function CanvasToolbarUI_(p: {}) {
       >
          <div tw='flex flex-col gap-1 p-2'>
             {/* <Button // NONE ----------------------------------------------------------------
-                    icon='mdiSetNone'
+                    icon={IKONS.mdiSetNone}
                     onClick={() => canvas.enable_none()}
                     tw={[canvas.tool === 'none' ? 'btn-primary' : null]}
                 >

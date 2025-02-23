@@ -1,4 +1,3 @@
-import type { IconName } from '../icons/icons'
 import type { TreeNode } from './TreeNode'
 import type { ReactNode } from 'react'
 
@@ -44,7 +43,7 @@ export interface ITreeEntry<P = any> {
 export type TreeEntryAction = {
    name: string
    mode: 'small' | 'full'
-   icon: IconName
+   icon: string
    onClick: (node: TreeNode) => void
    className?: string
 }

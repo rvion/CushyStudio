@@ -1,4 +1,4 @@
-import type { CushySchema } from '../controls/CushySchema'
+import type { CSchema } from '../controls/CSchema'
 import type { RenderRule } from '../csuite-cushy/presenters/RenderTypes'
 import type { Field } from '../csuite/model/Field'
 import type { SchemaDict } from '../csuite/model/SchemaDict'
@@ -15,7 +15,7 @@ import type { CSSProperties, ReactNode } from 'react'
 ) => CustomViewRef<P>
 /* 🛋️ */ export type GlobalGetCurrentRun = () => Runtime
 
-/* shared */ export type GlobalGetCurrentForm = () => X.Builder
+/* shared */ export type GlobalGetCurrentForm = () => Z.Builder
 
 /* ⏰ */ export type ActionTagMethod = (arg0: string) => string
 /* ⏰ */ export type ActionTagMethodList = Array<{ key: string; method: ActionTagMethod }>
@@ -51,7 +51,7 @@ export type DraftExecutionContext = {
 
 export type App<FIELD extends Field> = {
    /** app interface (GUI) */
-   ui: (form: X.Builder) => CushySchema<FIELD>
+   ui: (form: Z.Builder) => CSchema<FIELD>
 
    /* layout */
    layout?: Maybe<RenderRule<NoInfer<FIELD>>>

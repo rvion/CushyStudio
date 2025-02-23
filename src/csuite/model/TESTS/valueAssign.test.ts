@@ -1,4 +1,4 @@
-import { describe, it } from 'bun:test'
+import { describe, it } from 'vitest'
 
 import { simpleBuilder as b } from '../../index'
 import { expectJSON } from './utils/expectJSON'
@@ -32,6 +32,7 @@ describe('assign to value object', () => {
             { $: 'str', value: '🟡' },
             { $: 'str', value: '🔵' },
          ],
+         keys: [E1.items[0]?.mountKey, E1.items[1]?.mountKey, E1.items[2]?.mountKey],
       })
    })
 })

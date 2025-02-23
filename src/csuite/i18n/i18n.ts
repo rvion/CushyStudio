@@ -71,7 +71,7 @@ export const csuite_i18n_en = {
       },
       select: {
          noResults: 'No results',
-         create: 'Create',
+         create: 'Create a new entry',
       },
    },
    langs: {
@@ -148,7 +148,7 @@ export const csuite_i18n_fr: CsuiteI18nConfig = {
       },
       select: {
          noResults: 'Aucun résultat',
-         create: 'Créer',
+         create: 'Créer un nouvel élément',
       },
    },
    langs: {

@@ -5,7 +5,7 @@ import type { RevealState } from './RevealState'
 import type { RevealStateLazy } from './RevealStateLazy'
 import type { RevealContentProps, RevealShellProps } from './shells/ShellProps'
 import type React from 'react'
-import type { FC } from 'react'
+import type { FC, SyntheticEvent } from 'react'
 
 // prettier-ignore
 export type KnownShells =
@@ -26,7 +26,11 @@ export type RevealShowTriggersExt = RevealShowTriggers | RevealShowTrigger
 export type RevealShowTriggers = {
    [key in RevealShowTrigger]?:
       | boolean
-      | ((reveal: RevealState, Reveal: typeof RevealState) => boolean | undefined)
+      | ((
+           reveal: RevealState,
+           Reveal: typeof RevealState,
+           event: Maybe<SyntheticEvent>,
+        ) => boolean | undefined)
 }
 export type RevealShowTrigger =
    | 'anchorFocus'
@@ -139,7 +143,7 @@ export type RevealProps = {
    // avoid extra div ------------------------------------------------------------------
    UNSAFE_cloned?: boolean
 
-   sharedAnchorRef?: React.RefObject<HTMLDivElement>
+   sharedAnchorRef?: React.RefObject<HTMLDivElement | null>
 
    // #region backdrop stuff
    backdropColor?: string

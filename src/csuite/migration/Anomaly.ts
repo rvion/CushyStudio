@@ -11,7 +11,7 @@ import type { Field } from '../model/Field'
  */
 export type FieldAnomaly = {
    type: 'invalid-serial'
-   date: Timestamp
+   date: FL_Timestamp
    path: string
    pathExt: string
    got: AnyFieldSerial

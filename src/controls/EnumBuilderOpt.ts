@@ -7,13 +7,13 @@ import type { CushySchemaBuilder } from './CushyBuilder'
 
 import { asComfyNodeSlotName } from '../comfyui/comfyui-types'
 import { Field_enum, type Field_enum_config } from '../csuite/fields/enum/FieldEnum'
-import { CushySchema } from './CushySchema'
+import { CSchema } from './CSchema'
 
 // 🔴 showcase how nullability work without optional
 
 export type IEnumBuilderOptFn<ENUM_NAME extends keyof Comfy.Slots> = (
    config?: Omit<Field_enum_config<Comfy.Slots[ENUM_NAME]>, 'slotName'> & { startActive?: boolean },
-) => X.XOptional<X.XEnum<ENUM_NAME>>
+) => Z.XOptional<Z.XEnum<ENUM_NAME>>
 
 export type IEnumBuilderOpt = {
    [K in keyof Comfy.Slots]: IEnumBuilderOptFn<K>
@@ -45,7 +45,7 @@ export class EnumBuilderOpt {
                   domain.optional({
                      label: config.label,
                      startActive: config.startActive,
-                     schema: new CushySchema(Field_enum<any /* 🔴 */>, {
+                     schema: new CSchema(Field_enum<any /* 🔴 */>, {
                         ...config,
                         slotName: 'INVALID_null',
                      }),
@@ -60,7 +60,7 @@ export class EnumBuilderOpt {
                domain.optional({
                   label: config.label,
                   startActive: config.startActive,
-                  schema: new CushySchema(Field_enum<any /* 🔴 */>, {
+                  schema: new CSchema(Field_enum<any /* 🔴 */>, {
                      default: def,
                      ...config,
                      slotName: slotName,

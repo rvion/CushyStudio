@@ -13,7 +13,7 @@ export function getUIDForMemoryStructure(
    if (typeof x === 'boolean') return x.toString()
    const prev = wm.get(x)
    if (prev) return prev
-   const uid = nanoid(nanoidLength ?? 4)
+   const uid = nanoid(nanoidLength)
    wm.set(x, uid)
    return uid
 }

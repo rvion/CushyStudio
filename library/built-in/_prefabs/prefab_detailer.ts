@@ -9,24 +9,24 @@ const handNegativeDefault = 'bad hand, bad anatomy, bad details'
 const eyePositiveDefault = 'eyes, perfect eyes, perfect anatomy, hightly detailed, sharp details'
 const eyeNegativeDefault = 'bad eyes, bad anatomy, bad details'
 
-export type UI_Refiners = X.XGroup<{
-   refinerType: X.XChoices<{
-      faces: X.XGroup<{
-         prompt: X.XString
-         detector: X.XEnum<'Impact-Pack.UltralyticsDetectorProvider.model_name'>
+export type UI_Refiners = Z.XGroup<{
+   refinerType: Z.XChoices<{
+      faces: Z.XGroup<{
+         prompt: Z.XString
+         detector: Z.XEnum<'Impact-Pack.UltralyticsDetectorProvider.model_name'>
       }>
-      hands: X.XGroup<{
-         prompt: X.XString
-         detector: X.XEnum<'Impact-Pack.UltralyticsDetectorProvider.model_name'>
+      hands: Z.XGroup<{
+         prompt: Z.XString
+         detector: Z.XEnum<'Impact-Pack.UltralyticsDetectorProvider.model_name'>
       }>
-      eyes: X.XGroup<{ prompt: X.XString }>
+      eyes: Z.XGroup<{ prompt: Z.XString }>
    }>
-   settings: X.XGroup<{
+   settings: Z.XGroup<{
       sampler: UI_Sampler
-      sam: X.XOptional<
-         X.XGroup<{
-            model_name: X.XEnum<'Impact-Pack.SAMLoader.model_name'>
-            device_mode: X.XEnum<'Impact-Pack.SAMLoader.device_mode'>
+      sam: Z.XOptional<
+         Z.XGroup<{
+            model_name: Z.XEnum<'Impact-Pack.SAMLoader.model_name'>
+            device_mode: Z.XEnum<'Impact-Pack.SAMLoader.device_mode'>
          }>
       >
    }>

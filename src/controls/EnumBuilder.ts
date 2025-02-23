@@ -6,11 +6,11 @@ import type { CushySchemaBuilder } from './CushyBuilder'
 
 import { asComfyNodeSlotName, type ComfyUnionValue } from '../comfyui/comfyui-types'
 import { Field_enum, type Field_enum_config } from '../csuite/fields/enum/FieldEnum'
-import { CushySchema } from './CushySchema'
+import { CSchema } from './CSchema'
 
 export type IEnumBuilderFN<ENUM_NAME extends keyof Comfy.Slots> = (
    config?: Omit<Field_enum_config<Comfy.Slots[ENUM_NAME]>, 'slotName'>,
-) => X.XEnum<ENUM_NAME>
+) => Z.XEnum<ENUM_NAME>
 
 export type IEnumBuilder = { [K in keyof Comfy.Slots]: IEnumBuilderFN<K> }
 
@@ -37,18 +37,14 @@ export class EnumBuilder {
             if (enumSchema == null) {
                console.error(`❌ unknown enum: ${slotName}`)
                return (config: any = {}) =>
-                  new CushySchema(
-                     Field_enum<any /* 🔴 */>,
-                     /* form, */ { ...config, slotName: 'INVALID_null' },
-                  )
+                  new CSchema(Field_enum<any /* 🔴 */>, /* form, */ { ...config, slotName: 'INVALID_null' })
                // 🔴 can't throw here, will break for everyone !!
                // 🔴 throw new Error(`unknown enum: ${enumName}`)
             }
 
             // return the builder
             const def = enumSchema.values[0]
-            return (config: any = {}) =>
-               new CushySchema(Field_enum<any>, { default: def, ...config, slotName })
+            return (config: any = {}) => new CSchema(Field_enum<any>, { default: def, ...config, slotName })
          },
       })
    }

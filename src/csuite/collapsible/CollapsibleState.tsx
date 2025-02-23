@@ -4,10 +4,11 @@ import { makeAutoObservable } from 'mobx'
 
 export class CollapsibleState {
    constructor(public p: CollapsibleProps) {
+      this.isCollapsed = this.p.startCollapsed ?? true
       makeAutoObservable(this)
    }
 
-   isCollapsed: boolean = this.p.startCollapsed ?? true
+   isCollapsed: boolean
 
    get isExpanded(): boolean {
       return !this.isCollapsed

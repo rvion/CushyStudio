@@ -1,4 +1,4 @@
-import type { CushySchema } from '../../../src/controls/CushySchema'
+import type { CSchema } from '../../../src/controls/CSchema'
 import type { Field_list } from '../../../src/csuite/fields/list/FieldList'
 import type { OutputFor } from '../_prefabs/_prefabs'
 
@@ -9,24 +9,24 @@ import { ui_ipadapter_modelSelection } from './ui_ipadapter_modelSelection'
 
 // 🅿️ IPAdapter Basic ===================================================
 
-export type UI_ipadapter_standalone = X.XGroup<{
-   strength: X.XNumber
-   settings: X.XGroup<{
-      extra: X.XList<X.XImage>
-      crop: X.XBool
-      startAtStepPercent: X.XNumber
-      endAtStepPercent: X.XNumber
-      weight_type: X.XEnum<'IPAdapter_plus.IPAdapterAdvanced.weight_type'>
-      embedding_scaling: X.XEnum<'IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'>
-      noise: X.XNumber
-      unfold_batch: X.XBool
+export type UI_ipadapter_standalone = Z.XGroup<{
+   strength: Z.XNumber
+   settings: Z.XGroup<{
+      extra: Z.XList<Z.XImage>
+      crop: Z.XBool
+      startAtStepPercent: Z.XNumber
+      endAtStepPercent: Z.XNumber
+      weight_type: Z.XEnum<'IPAdapter_plus.IPAdapterAdvanced.weight_type'>
+      embedding_scaling: Z.XEnum<'IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'>
+      noise: Z.XNumber
+      unfold_batch: Z.XBool
    }>
-   cnet_model_name: X.XEnum<'IPAdapter_plus.IPAdapterModelLoader.ipadapter_file'>
-   clip_name: X.XEnum<'CLIPVisionLoader.clip_name'>
-   help: X.XMarkdown
-   image: X.XImage
-   extra: CushySchema<Field_list<X.XImage>>
-   embedding_scaling: X.XEnum<'IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'>
+   cnet_model_name: Z.XEnum<'IPAdapter_plus.IPAdapterModelLoader.ipadapter_file'>
+   clip_name: Z.XEnum<'CLIPVisionLoader.clip_name'>
+   help: Z.XMarkdown
+   image: Z.XImage
+   extra: CSchema<Field_list<Z.XImage>>
+   embedding_scaling: Z.XEnum<'IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'>
 }>
 
 export const ui_ipadapter_standalone = (): UI_ipadapter_standalone => {

@@ -3,6 +3,7 @@ import type { CSSProperties } from 'react'
 
 import { observer } from 'mobx-react-lite'
 
+import { useCSuite } from '../../csuite/ctx/useCSuite'
 import { Frame } from '../../csuite/frame/Frame'
 
 export type WidgetLabelContainerProps = {
@@ -17,12 +18,12 @@ export type WidgetLabelContainerProps = {
 export const WidgetLabelContainerUI = observer(function WidgetLabelContainerUI_(
    p: WidgetLabelContainerProps,
 ) {
-   // const theme = cushy.preferences.theme.value
+   const csuite = useCSuite()
    return (
       <Frame
-         // NOTE(bird_d): tooltips should be on the interact-able component, not the label
-         // tooltip={p.tooltip}
-         // tooltipPlacement={p.tooltipPlacement ?? 'topStart'}
+         base={csuite.labelBackground}
+         tooltip={p.tooltip}
+         tooltipPlacement={p.tooltipPlacement ?? 'topStart'}
          className={p.className}
          // hover={1}
          expand
@@ -31,12 +32,9 @@ export const WidgetLabelContainerUI = observer(function WidgetLabelContainerUI_(
             'COLLAPSE-PASSTHROUGH',
             'flex items-center self-stretch',
             'flex-none shrink-0',
-            // NOTE(bird_d): Does not need to have a background, breaks rounded corners on parent components
-            '!bg-transparent',
          ]}
          style={p.justify ? justifiedStyle : undefined}
-         // TODO(bird_d/ui/theme/text)
-         // text={theme.textLabel}
+         text={csuite.labelText}
       >
          {p.children}
       </Frame>

@@ -14,7 +14,7 @@ export const GitInstallUI: React.FC<GitInstallUIProps> = observer(function GitIn
          loading={updater.currentAction != null}
          look='primary'
          size='xs'
-         icon='mdiCloudDownload'
+         icon={IKONS.mdiCloudDownload}
          onClick={(ev) => {
             ev.stopPropagation()
             ev.preventDefault()

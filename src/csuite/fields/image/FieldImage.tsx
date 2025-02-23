@@ -20,7 +20,7 @@ export type Field_image_config = FieldConfig<
       suggestionWhere?: SQLWhere<MediaImageT>
       assetSuggested?: RelativePath | RelativePath[]
    },
-   Field_image_types
+   Field_image
 >
 
 // #region Serial
@@ -43,7 +43,7 @@ export type Field_image_serial = FieldSerial<{
 export type Field_image_value = MediaImageL
 
 // #region Types
-export type Field_image_types = {
+export type Field_image = {
    $Type: 'image'
    $Config: Field_image_config
    $Serial: Field_image_serial
@@ -51,11 +51,11 @@ export type Field_image_types = {
    $Unchecked: Field_image_value | undefined
    $Field: Field_image
    $Child: never
-   $Reflect: Field_image_types
+   $Reflect: Field_image
 }
 
 // #region STATE
-export class Field_image extends Field<Field_image_types> {
+export class Field_image extends Field<Field_image> {
    // #region static
    static readonly type: 'image' = 'image'
    static readonly emptySerial: Field_image_serial = { $: 'image' }

@@ -2,18 +2,28 @@
 
 import type { ParsedSelector } from './selector'
 
-import { describe, expect, it } from 'bun:test'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { FieldSelector } from './selector'
 
+const spyOn = vi.spyOn
+
 describe('SelectorParser Tests', () => {
+   it('can parse sequence indexes', () => {
+      expect(FieldSelector.from('[0][-1][8_2]').parse().steps).toMatchObject([
+         { type: 'index', index: 0 },
+         { type: 'index', index: -1 },
+         { type: 'index', index: 8_2 },
+      ])
+   })
    it('can parse sequence of axises', () => {
-      expect(FieldSelector.from('...^^').parse().steps).toMatchObject([
+      expect(FieldSelector.from('...^^_test').parse().steps).toMatchObject([
          { type: 'axis', axis: '.' },
          { type: 'axis', axis: '.' },
          { type: 'axis', axis: '.' },
          { type: 'axis', axis: '^' },
          { type: 'axis', axis: '^' },
+         { type: 'mount', key: '_test' },
       ])
    })
 
@@ -59,7 +69,7 @@ describe('SelectorParser Tests', () => {
       expect(parsed.steps).toMatchObject(expected)
    })
 
-   it("should parse a single step with multiple mountKey filters connected by '|'", () => {
+   it("should parse a single step with multiple mountKey filters connected by '|' (part 2)", () => {
       const parsed = FieldSelector.from('.{foo|bar|baz}').parse()
       const expected: ParsedSelector = {
          steps: [
@@ -162,19 +172,27 @@ describe('SelectorParser Tests', () => {
       expect(parsed).toMatchObject(expected)
    })
 
-   // it('should throw an error for invalid axis', () => {
-   //     console.log(`[🤠] new SelectorParser('!invalidAxis.foo').parse()`, new SelectorParser('!invalidAxis.foo').parse() )
-   //     expect(() => new SelectorParser('!invalidAxis.foo').parse()).toThrowError(/Invalid axis/)
-   // })
+   describe('errors', () => {
+      beforeEach(() => {
+         spyOn(console, 'log').mockImplementation(() => undefined)
+      })
+      // eslint-disable-next-line vitest/no-commented-out-tests
+      // it('should throw an error for invalid axis', () => {
+      //     console.log(`[🤠] new SelectorParser('!invalidAxis.foo').parse()`, new SelectorParser('!invalidAxis.foo').parse() )
+      //     expect(() => new SelectorParser('!invalidAxis.foo').parse()).toThrowError(/Invalid axis/)
+      // })
 
-   it('should throw an error for unbalanced parentheses in expression filter', () => {
-      expect(() => FieldSelector.from(".xx?(@.value === '33'").parse()).toThrowError(/Unbalanced parentheses/)
-   })
+      it('should throw an error for unbalanced parentheses in expression filter', () => {
+         expect(() => FieldSelector.from(".xx?(@.value === '33'").parse()).toThrowError(
+            /Unbalanced parentheses/,
+         )
+      })
 
-   it('should throw an error for invalid type filter format', () => {
-      expect(() => FieldSelector.from('.foo@').parse()).toThrowError(
-         /Expected word at position 5 in selector ".foo@"/,
-      )
+      it('should throw an error for invalid type filter format', () => {
+         expect(() => FieldSelector.from('.foo@').parse()).toThrowError(
+            /Expected word at position 5 in selector ".foo@"/,
+         )
+      })
    })
 
    it('should handle filters without mountKey or nodeType but with expression', () => {

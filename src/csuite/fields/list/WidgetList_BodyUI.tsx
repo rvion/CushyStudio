@@ -38,7 +38,7 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
                               square
                               size='input'
                               subtle
-                              icon='mdiDeleteOutline'
+                              icon={IKONS.mdiDeleteOutline}
                               onClick={(ev) => {
                                  listField.removeItem(subField)
                                  listField.touch()

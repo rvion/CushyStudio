@@ -3,7 +3,6 @@ import type { CurrentStyle } from '../box/CurrentStyleCtx'
 import type { Kolor } from '../kolor/Kolor'
 import type { FrameAppearance } from './FrameTemplates'
 import type { SimpleBoxShadow } from './SimpleBoxShadow'
-import type { SimpleDropShadow } from './SimpleDropShadow'
 
 import SparkMD5 from 'spark-md5'
 
@@ -21,8 +20,6 @@ export type FrameCssVariables = {
    textShadow?: string
    '--KLR'?: string
    '--DIR'?: string
-   filter?: string
-   'border-radius'?: string
 }
 
 export type ComputedColors = {
@@ -43,22 +40,9 @@ export function computeColors(
    hovered: Maybe<boolean> = null,
    active: Maybe<boolean> = null,
    boxShadow: Maybe<SimpleBoxShadow> = null,
-   dropShadow: Maybe<SimpleDropShadow> = null,
-   roundness: Maybe<number | string> = null,
 ): ComputedColors {
    // ------------------------------------------------------------
-   const strToHash = JSON.stringify({
-      // Add new parameters here as well or else hot-reload will not work
-      prevCtx,
-      box,
-      look,
-      disabled,
-      hovered,
-      active,
-      boxShadow,
-      dropShadow,
-      roundness,
-   })
+   const strToHash = JSON.stringify({ prevCtx, box, look, disabled, hovered, active, boxShadow })
    const hash = SparkMD5.hash(strToHash)
    if (colorCache.has(hash)) return colorCache.get(hash)!
    totalComputeColors++
@@ -125,7 +109,7 @@ export function computeColors(
    if (boxText != null) variables.color = KBase.tintFg(boxText).toOKLCH()
 
    // TEXT-SHADOW
-   // if (box.textShadow) variables.textShadow = `0px 0px 2px ${KBase.tintFg(box.textShadow).toOKLCH()}`
+   if (box.textShadow) variables.textShadow = `0px 0px 2px ${KBase.tintFg(box.textShadow).toOKLCH()}`
 
    // BORDER
    // 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴
@@ -145,21 +129,6 @@ export function computeColors(
          `${KBase.tintBg(y).toOKLCH()}`,
       ].join(' ')
    }
-
-   if (dropShadow) {
-      const n = normalizeTint(dropShadow.color ?? 'black')
-      const color = KBase.tintBg(n, dir)
-      color.opacity = dropShadow.opacity ?? 1
-      const corrected = color.toOKLCH()
-      variables['filter'] =
-         `drop-shadow(${dropShadow.x ?? 0}px ${dropShadow.y ?? 0}px ${dropShadow.blur ?? 0}px ${corrected.toString()});`
-   }
-
-   if (roundness) {
-      // console.log('[FD] - ROUNDNESS!!', roundness)
-      variables['border-radius'] = typeof roundness === 'number' ? `${roundness}px` : roundness
-   }
-
    const OUT: ComputedColors = { variables, nextDir, KBase, nextext }
    colorCache.set(hash, OUT)
    return OUT

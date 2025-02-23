@@ -40,13 +40,13 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: {
          base={{ contrast: -0.025 }}
          header={
             <Frame expand line>
-               {/* <Button onClick={() => {}} subtle icon='mdiCircle'></Button>
-               <Button onClick={() => {}} subtle icon='mdiSquare'></Button> */}
+               {/* <Button onClick={() => {}} subtle icon={IKONS.mdiCircle}></Button>
+               <Button onClick={() => {}} subtle icon={IKONS.mdiSquare}></Button> */}
 
                <Button
                   square
                   subtle
-                  icon='mdiContentPaste'
+                  icon={IKONS.mdiContentPaste}
                   tooltip='Paste image data from the clipboard'
                   onClick={() => {
                      // XXX: This is slow, should probably be done through electron's api, but works for now. Could also be made re-usable? getImageFromClipboard()?
@@ -80,7 +80,7 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: {
                      <Button
                         tw='!justify-start'
                         subtle
-                        icon='mdiImageSearchOutline'
+                        icon={IKONS.mdiImageSearchOutline}
                         suffixIcon={'mdiChevronDown'}
                      >
                         {image.id}
@@ -102,7 +102,7 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: {
                   tooltip='reset'
                   square
                   subtle
-                  icon={'mdiRestore'}
+                  icon={IKONS.mdiRestore}
                   onClick={() => (field.value = cushy.defaultImage)}
                />
             </Frame>

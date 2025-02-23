@@ -84,7 +84,7 @@ export const BlenderListUI = observer(function BlenderListUI_<T extends Field_li
                   <ListButtonAddUI field={field} />
                   <Button
                      disabled={selectedChild == null}
-                     icon='mdiMinus'
+                     icon={IKONS.mdiMinus}
                      onClick={() =>
                         runInAction(() => {
                            field.removeItemAt(x.selectedIx)
@@ -93,7 +93,7 @@ export const BlenderListUI = observer(function BlenderListUI_<T extends Field_li
                      }
                   />
                </Frame>
-               <Button base={{ contrast: -0.1 }} icon='mdiChevronDown'></Button>
+               <Button base={{ contrast: -0.1 }} icon={IKONS.mdiChevronDown}></Button>
                <Frame
                   //
                   tw='w-input'
@@ -106,7 +106,7 @@ export const BlenderListUI = observer(function BlenderListUI_<T extends Field_li
                >
                   <Button
                      disabled={selectedChild == null}
-                     icon='mdiChevronUp'
+                     icon={IKONS.mdiChevronUp}
                      tooltip='Move item up'
                      onClick={() =>
                         runInAction(() => {
@@ -116,7 +116,7 @@ export const BlenderListUI = observer(function BlenderListUI_<T extends Field_li
                   />
                   <Button
                      disabled={selectedChild == null}
-                     icon='mdiChevronDown'
+                     icon={IKONS.mdiChevronDown}
                      tooltip='Move item down'
                      onClick={() =>
                         runInAction(() => {
@@ -133,7 +133,7 @@ export const BlenderListUI = observer(function BlenderListUI_<T extends Field_li
             row
             base={{ contrast: 0.1 }}
          >
-            <Button borderless subtle icon='mdiChevronDown' />
+            <Button borderless subtle icon={IKONS.mdiChevronDown} />
             <Frame>Prompt</Frame>
          </Frame> */}
 
@@ -143,7 +143,7 @@ export const BlenderListUI = observer(function BlenderListUI_<T extends Field_li
             row
             base={{ contrast: 0.1 }}
          >
-            <Button borderless subtle icon='mdiChevronDown' />
+            <Button borderless subtle icon={IKONS.mdiChevronDown} />
             <Frame>Options</Frame>
          </Frame>
          <div tw='flex flex-col gap-2 px-2'>
@@ -205,7 +205,7 @@ export const BlenderListFooterFilterUI = observer(function BlenderListFooterFilt
       <div tw='flex w-full flex-grow flex-col p-1'>
          <InputStringUI //
             tw='flex-grow'
-            icon='mdiFilter'
+            icon={IKONS.mdiFilter}
             clearable
             getValue={() => x.filter}
             setValue={(next) => (x.filter = next)}
@@ -226,7 +226,7 @@ export const BlenderListFooterFilterUI = observer(function BlenderListFooterFilt
 //                         borderless
 //                         square
 //                         subtle
-//                         icon={'mdiArrowExpandVertical'}
+//                         icon={IKONS.mdiArrowExpandVertical}
 //                         tooltip='Automatically resize to prompt'
 //                      />
 //                   </>

@@ -13,7 +13,7 @@ export const MessageInfoUI = observer(function MessageInfoUI_(p: {
    return (
       <MessageUI //
          type='info'
-         icon='mdiInformationOutline'
+         icon={IKONS.mdiInformationOutline}
          hue={knownOKLCHHues.info}
          {...p}
       />

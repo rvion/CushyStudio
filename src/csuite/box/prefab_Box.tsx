@@ -4,13 +4,13 @@ import type { Box } from './Box'
 
 import { run_tint, ui_tint, type UI_Tint } from '../kolor/prefab_Tint'
 
-export type UI_Box = X.XChoices<{
+export type UI_Box = Z.XChoices<{
    base: UI_Tint
    text: UI_Tint
    textShadow: UI_Tint
    shadow: UI_Tint
    border: UI_Tint
-   hover: X.XBool
+   hover: Z.XBool
 }>
 
 export const ui_Box = (
@@ -23,7 +23,7 @@ export const ui_Box = (
          textShadow: UI_Tint
          shadow: UI_Tint
          border: UI_Tint
-         hover: X.XBool
+         hover: Z.XBool
       }>,
       'multi' | 'items'
    >,

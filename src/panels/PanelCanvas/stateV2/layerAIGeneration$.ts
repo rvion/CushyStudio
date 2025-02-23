@@ -3,10 +3,10 @@ import type { FieldId } from '../../../csuite/model/FieldId'
 
 import { masksChannel } from './ucV2'
 
-export type LayerAIGeneration$ = X.XGroup<{
-   masks: X.XSelectMany_<FieldId>
-   draftId: X.XSelectOne<{ id: DraftID; label: string }, DraftID>
-   image: X.XOptional<X.XImage>
+export type LayerAIGeneration$ = Z.XGroup<{
+   masks: Z.XSelectMany_<FieldId>
+   draftId: Z.XSelectOne<{ id: DraftID; label: string }, DraftID>
+   image: Z.XOptional<Z.XImage>
 }>
 export function layerAIGeneration$(b: CushySchemaBuilder): LayerAIGeneration$ {
    return b.fields({

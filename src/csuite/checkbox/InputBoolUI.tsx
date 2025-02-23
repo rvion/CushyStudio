@@ -1,13 +1,12 @@
 import type { Box } from '../box/Box'
-import type { SharedClickAndSlideKey } from '../button/usePressLogic'
-import type { FrameProps } from '../frame/Frame'
+import type { DovProps } from '../frame/Dov/Dov'
 import type { IconName } from '../icons/icons'
 
 import { observer } from 'mobx-react-lite'
 import { createElement } from 'react'
 
 import { InputBoolCheckboxUI } from './InputBoolCheckboxUI'
-import { ToggleButtonUI } from './InputBoolToggleButtonUI'
+import { InputBoolToggleButtonUI } from './InputBoolToggleButtonUI'
 
 export type BoolButtonMode = 'radio' | 'checkbox' | false
 
@@ -27,21 +26,18 @@ export type BoolButtonProps = {
 
    /** alternative way to specify children */
    text?: string
-
-   /** Text to display inside widget */
-   widgetLabel?: string
-
    // border?: TintExt
 
    box?: Box
    onValueChange?: (next: boolean) => void
 
-   toggleGroup: SharedClickAndSlideKey
+   toggleGroup: string
    disabled?: boolean
-} & FrameProps
+} & DovProps
 
 export const InputBoolUI = observer(function InputBool(p: BoolButtonProps) {
    const display = p.display ?? 'check'
+
    if (display === 'check') return createElement(InputBoolCheckboxUI, p)
-   return createElement(ToggleButtonUI, p)
+   return createElement(InputBoolToggleButtonUI, p)
 })

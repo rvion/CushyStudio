@@ -11,11 +11,11 @@ export const mkRect = (p: Partial<SimpleRect>): SimpleRect$['$Value'] => {
    return { x: 0, y: 0, width: 0, height: 0, ...p }
 }
 
-export type SimpleRect$ = S.SGroup<{
-   x: S.SNumber
-   y: S.SNumber
-   width: S.SNumber
-   height: S.SNumber
+export type SimpleRect$ = Z.SGroup<{
+   x: Z.SNumber
+   y: Z.SNumber
+   width: Z.SNumber
+   height: Z.SNumber
 }>
 
 export function simpleRect$(def?: Partial<SimpleRect>): SimpleRect$ {

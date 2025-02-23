@@ -2,11 +2,11 @@ import { cushyFactory, type CushySchemaBuilder } from '../../controls/CushyBuild
 import { readJSON, writeJSON } from '../jsonUtils'
 
 // ---------------
-export type $schemaFavbar = X.XGroup<{
-   size: X.XNumber
-   visible: X.XBool
-   grayscale: X.XBool
-   appIcons: X.XOptional<X.XNumber>
+export type $schemaFavbar = Z.XGroup<{
+   size: Z.XNumber
+   visible: Z.XBool
+   grayscale: Z.XBool
+   appIcons: Z.XOptional<Z.XNumber>
 }>
 const schemaFavbar = (b: CushySchemaBuilder): $schemaFavbar =>
    b.group({

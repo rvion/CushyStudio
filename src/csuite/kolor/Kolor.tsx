@@ -18,7 +18,6 @@ export class Kolor implements Tint {
          return new Kolor(l!, c!, isNaN(h!) ? 0 : h!)
       } catch (e) {
          console.error(`[🔴] getLCHFromString FAILURE (string is: "${str}")`)
-         console.error(`[🔴] Real Error: ${e}`)
          return new Kolor(0.5, 0.1, 0)
       }
    }
@@ -67,26 +66,10 @@ export class Kolor implements Tint {
       }
       if (isNaN(this.chroma)) throw new Error('isNaN(this.chroma)')
       if (isNaN(this.hue)) throw new Error('isNaN(this.hue)')
-      if (this.lightness < 0) {
-         console.warn(this, `Had an invalid lightness and was clamped from ${this.lightness}=>0`)
-         this.lightness = 0
-      }
-      if (this.lightness > 1) {
-         console.warn(this, `Had an invalid lightness and was clamped from ${this.lightness}=>1`)
-         this.lightness = 1
-      }
-      if (this.chroma < 0) {
-         console.warn(this, `Had an invalid chroma and was clamped from ${this.chroma}=>0`)
-         this.chroma = 0
-      }
-      if (this.chroma > 1) {
-         console.warn(this, `Had an invalid chroma and was clamped from ${this.chroma}=>1`)
-         this.chroma = 1
-      }
-      // if (this.lightness < 0) throw new Error(`this.lightness (${this.lightness}) < 0`)
-      // if (this.lightness > 1) throw new Error(`this.lightness (${this.lightness}) > 1`)
-      // if (this.chroma < 0) throw new Error(`this.chroma (${this.chroma}) < 0`)
-      // if (this.chroma > 1) throw new Error(`this.chroma (${this.chroma}) > 1`)
+      if (this.lightness < 0) throw new Error(`this.lightness (${this.lightness}) < 0`)
+      if (this.lightness > 1) throw new Error(`this.lightness (${this.lightness}) > 1`)
+      if (this.chroma < 0) throw new Error(`this.chroma (${this.chroma}) < 0`)
+      if (this.chroma > 1) throw new Error(`this.chroma (${this.chroma}) > 1`)
       // if (this.hue < 0) throw new Error(`this.hue (${this.hue}) < 0`)
       // if (this.hue > 360) throw new Error(`this.hue (${this.hue}) > 360`)
    }
@@ -95,10 +78,7 @@ export class Kolor implements Tint {
       const l = clamp(this.lightness, 0.0001, 0.9999).toFixed(3)
       const c = this.chroma.toFixed(3)
       const h = this.hue.toFixed(3)
-      if (this.opacity === 1) return `oklch(${l} ${c} ${h})`
-
-      const a = this.opacity.toFixed(3)
-      return `oklch(${l} ${c} ${h} / ${a})`
+      return `oklch(${l} ${c} ${h})`
    }
 
    /** true if strictly same values */
@@ -134,14 +114,12 @@ export class Kolor implements Tint {
          // console.log(`[🤠] dir`, dir_)
          const x1 = this.color
             .clone()
-            .set({ 'oklch.l': (v: any) => (v += cr) })
-            // .set({ 'hct.t': (v: any) => (v += cr * 100) })
+            .set({ 'hct.t': (v: any) => (v += cr * 100) })
             .toGamut('srgb')
 
          const x2 = this.color
             .clone()
-            .set({ 'oklch.l': (v: any) => (v -= cr) })
-            // .set({ 'hct.t': (v: any) => (v -= cr * 100) })
+            .set({ 'hct.t': (v: any) => (v -= cr * 100) })
             .toGamut('srgb')
 
          const apcaWx1 = Math.abs(this.color.contrastAPCA(x1))
@@ -152,8 +130,12 @@ export class Kolor implements Tint {
 
       const clamped = new Color('oklch', [lightness, chroma, hue]).toGamut('srgb')
       // console.log(`[🤠] `, xxxx.oklch[0]!, xxxx.oklch[1]!, or0(xxxx.oklch[2]!))
-      const oklchCl = clamped.oklch
-      const next = new Kolor(oklchCl[0]!, oklchCl[1]!, or0(oklchCl[2]!))
+      // Values returned by colorjs.io are not always in the 0-1 range
+      const next = new Kolor(
+         clamp(clamped.oklch[0]!, 0, 1),
+         clamp(clamped.oklch[1]!, 0, 1),
+         or0(clamped.oklch[2]!),
+      )
 
       if (!next.isInRBGGamut) console.error(`[🔴] ${usage} out of gamut: ${next.toOKLCH()} - ${next.webLink}`)
       return next

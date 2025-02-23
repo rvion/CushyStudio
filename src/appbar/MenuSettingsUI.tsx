@@ -12,19 +12,19 @@ export const MenuSettingsUI = observer(function MenuSettingsUI_(p: {}) {
             <>
                <MenuItem
                   onClick={() => cushy.layout.open('Config', {})}
-                  icon={'mdiSettingsHelper'}
+                  icon={IKONS.mdiSettingsHelper}
                   localShortcut={KEYS.openPage_Config}
                   label='Config'
                />
                <MenuItem
                   onClick={() => cushy.layout.open('Hosts', {})}
-                  icon={'mdiHospital'}
+                  icon={IKONS.mdiHospital}
                   localShortcut={KEYS.openPage_Hosts}
                   label='ComfyUI Hosts'
                />
                <MenuItem
                   onClick={() => cushy.layout.open('Shortcuts', {})}
-                  icon={'mdiKey'}
+                  icon={IKONS.mdiKey}
                   localShortcut={KEYS.openPage_Shortcuts}
                   label='Shortcuts'
                />

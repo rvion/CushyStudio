@@ -1,6 +1,6 @@
 // test/selectorCompiler.test.ts
 
-import { describe, expect, it } from 'bun:test'
+import { describe, expect, it } from 'vitest'
 
 import { expectJSON } from '../model/TESTS/utils/expectJSON'
 import { simpleBuilder } from '../simple/SimpleFactory'
@@ -23,11 +23,11 @@ const S1 = b.fields({
 const root = S1.create()
 root.value.foo.test = ['a', 'b', 'c']
 root.value.foo.test2 = [1, 2, 3, 4]
-const foo = root.Foo
-const bar = root.Foo.Bar
-const baz = root.Foo.Baz
-const qux = root.Qux
-const test2nd = root.Foo.Test.items[1]!
+const foo = root._.foo
+const bar = root._.foo._.bar
+const baz = root._.foo._.baz
+const qux = root._.qux
+const test2nd = root._.foo._.test.items[1]!
 
 baz.updateFieldCustom((t) => ({ abcdefgh: true })) // makes @.custom.abcdefgh be true
 

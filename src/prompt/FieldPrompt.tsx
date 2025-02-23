@@ -32,7 +32,7 @@ export type Field_prompt_config = FieldConfig<
       default?: string
       placeHolder?: string
    },
-   Field_prompt_types
+   Field_prompt
 >
 
 // #region Serial from value
@@ -54,7 +54,7 @@ export type Field_prompt_value = Field_prompt
 export type Field_prompt_unchecked = Field_prompt
 
 // #region $FieldTypes
-export type Field_prompt_types = {
+export type Field_prompt = {
    $Type: 'prompt'
    $Config: Field_prompt_config
    $Serial: Field_prompt_serial
@@ -62,11 +62,11 @@ export type Field_prompt_types = {
    $Unchecked: Field_prompt_value | undefined
    $Field: Field_prompt
    $Child: never
-   $Reflect: Field_prompt_types
+   $Reflect: Field_prompt
 }
 
 // #region State
-export class Field_prompt extends Field<Field_prompt_types> {
+export class Field_prompt extends Field<Field_prompt> {
    // #region types
    static readonly type: 'prompt' = 'prompt'
    static readonly emptySerial: Field_prompt_serial = { $: 'prompt' }

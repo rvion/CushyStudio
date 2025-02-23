@@ -23,7 +23,7 @@ export const GallerySearchControlsUI = observer(function GallerySearchControlsUI
             />
             <Button
                 square
-                icon='mdiStar'
+                icon={IKONS.mdiStar}
                 active={cushy.galleryFilterStar}
                 onClick={() => (cushy.galleryFilterStar = !cushy.galleryFilterStar)}
             />

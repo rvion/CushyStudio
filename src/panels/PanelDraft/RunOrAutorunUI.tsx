@@ -46,7 +46,7 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?:
                </div>
             )}
          >
-            <Button tw='!gap-0 !px-0.5' icon='mdiTimer' suffixIcon={'mdiChevronDown'} />
+            <Button tw='!gap-0 !px-0.5' icon={IKONS.mdiTimer} suffixIcon={'mdiChevronDown'} />
          </RevealUI>
          <Button
             // tw='h-input'
@@ -65,7 +65,7 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?:
             Run
          </Button>
          <Button // TODO(bird_d): Need a button that can be tied to an command, and will pull the relevant info from it. Like a label for the- label, and a description for the tooltip.
-            icon='mdiAnimationPlay'
+            icon={IKONS.mdiAnimationPlay}
             tooltip='Auto-start (restart when idle if change happened)'
             look='success'
             // size='xs'

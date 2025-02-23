@@ -1,4 +1,4 @@
-import type { FrameProps } from '../frame/Frame'
+import type { DovProps } from '../frame/Dov/Dov'
 import type { IconName } from '../icons/icons'
 import type { InputStringProps } from '../input-string/InputStringUI'
 import type { RevealPlacement } from '../reveal/RevealPlacement'
@@ -8,18 +8,10 @@ import type { SelectPopupProps } from './SelectPopupUI'
 import type { AutoCompleteSelectState, SelectValueSlots } from './SelectState'
 import type React from 'react'
 
-// 🔶 should probably use symbols
-export type SelectValueLooks =
-   | '🔶DEFAULT🔶' // convenient when we only want to customize one 'where' case
-   | 'TODO_ColoredBadgeWithCloseKnob'
-   | 'TODO_ColoredBadge'
-   | 'TODO_Badge'
-   | 'TODO_BadgeWithCloseKnob'
-
 export type SelectProps<OPTION> = {
    label?: string
    startIcon?: IconName
-
+   fullyShrinkable?: boolean
    placement?: RevealPlacement
    /**
     * if true, select is virtualized
@@ -48,8 +40,8 @@ export type SelectProps<OPTION> = {
     */
    options?: (query: string) => OPTION[]
    createOption?: {
-      label?: string
-      isActive?: boolean
+      label?: () => string
+      isActive?: () => boolean
       action: () => Promise<OPTION | null>
    }
 
@@ -68,7 +60,7 @@ export type SelectProps<OPTION> = {
       t: OPTION,
       where: SelectValueSlots,
       selectState: AutoCompleteSelectState<OPTION>,
-   ) => React.ReactNode | SelectValueLooks
+   ) => React.ReactNode
 
    hideOptionCheckbox?: boolean
 
@@ -91,7 +83,6 @@ export type SelectProps<OPTION> = {
    disabled?: boolean
 
    onCleared?: Maybe<() => void>
-
    /** if true, popup-input options won't have a close icon */
    uncloseableOptions?: boolean
 
@@ -99,16 +90,8 @@ export type SelectProps<OPTION> = {
    // className?: string // use revealProps.anchorProps.className instead
    // style?: React.CSSProperties // use revealProps.anchorProps.style instead
 
-   /**
-    * wride doc
-    * @since 2024-10-17
-    */
    showSelectAllNone?: boolean
-
-   /**
-    * Implement the selection of ALL values, when the user did not type any search filter
-    * @since 2024-10-17
-    */
+   /** Implement the selection of ALL values, when the user did not type any search filter */
    onSelectAll?: (filterText: string) => void
 
    /**
@@ -138,8 +121,9 @@ export type SelectProps<OPTION> = {
    // 🧚‍♀️ onAnchorBlur?: (ev: React.FocusEvent<HTMLElement>) => void
    // 🧚‍♀️ onAnchorKeyDown?: (ev: React.KeyboardEvent<HTMLElement>) => void
    revealProps?: Partial<RevealProps>
-   popupWrapperProps?: React.HTMLAttributes<HTMLDivElement>
+   popupWrapperProps?: DovProps
    textInputProps?: InputStringProps
+   anchorProps?: DovProps
 
    // customization slots
    slotTextInputUI?: React.FC<{ select: AutoCompleteSelectState<OPTION> }>
@@ -149,7 +133,4 @@ export type SelectProps<OPTION> = {
    SlotDisplayValueInPopupUI?: React.FC<{ select: AutoCompleteSelectState<OPTION> }>
    slotResultsListUI?: React.FC<{ select: AutoCompleteSelectState<OPTION> }>
    slotOptionUI?: React.FC<SelectOptionProps<OPTION>>
-
-   tooltip?: string
-   frameProps?: FrameProps
 }

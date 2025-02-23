@@ -1,5 +1,5 @@
-import type { Field_number_serial } from '../fields/number/FieldNumber'
-import type { BaseSchema } from '../model/BaseSchema'
+import type { CSchema } from '../../../../front/form/LocoSchema'
+import type { Field_number } from '../fields/number/FieldNumber'
 import type { Field } from '../model/Field'
 import type { BoundAnomaly } from './Anomaly'
 import type { AnomalySolution } from './AnomalySolution'
@@ -7,18 +7,15 @@ import type { AnomalySolutionChoosen } from './AnomalySolutionChoosen'
 import type { AnomalySolutionSuggestion, AnomalySuggestionID } from './AnomalySolutionSuggestion'
 import type { MigrationResult } from './MigrationResult'
 
+import groupBy from 'lodash/groupBy'
+
 import { isFieldString } from '../fields/WidgetUI.DI'
 import { bang } from '../utils/bang'
-import { groupByAsDict } from '../utils/groupByAsDict'
 
 export class MigrationEngine {
    knownSolutions = new Map<string, AnomalySolution<any, any>>()
 
-   registerSolution<
-      //
-      CONFIG extends BaseSchema,
-      DATA extends any,
-   >(solution: AnomalySolution<CONFIG, DATA>): void {
+   registerSolution<CONFIG extends CSchema, DATA extends any>(solution: AnomalySolution<CONFIG, DATA>): void {
       this.knownSolutions.set(solution.solutionID, solution)
    }
    constructor() {
@@ -40,7 +37,7 @@ export class MigrationEngine {
             const field = document.getFieldAt(anomaly.path)
             if (!isFieldString(field)) return // console.log(`   > field at ${anomaly.path} is not a string`)
             if (anomaly.got.$ !== 'number') return // console.log(`   >  prevSerial.$ is not a 'number'`)
-            const oldVal = (anomaly.got as Field_number_serial).value
+            const oldVal = (anomaly.got as Field_number['$serial']).value
             if (typeof oldVal !== 'number') return // console.log(`   >  prevSerial.value is not a number`, anomaly.got)
             return { field, oldVal }
          },
@@ -69,7 +66,7 @@ export class MigrationEngine {
 
    get batchOfSimilarAnomalies(): Record<AnomalySuggestionID, BoundAnomaly[]> {
       // this is kind of some `Anomaly Batch Id`
-      const y = groupByAsDict(this.anomalies, (a) => `{{${a.document.schema.uid}}}${a.anomaly.pathExt}`)
+      const y = groupBy(this.anomalies, (a) => `{{${a.document.schema.uid}}}${a.anomaly.pathExt}`)
       return y
    }
 
@@ -82,7 +79,7 @@ export class MigrationEngine {
                .filter((fix) => {
                   const isApplicable = fix.isApplicable({ document, anomaly })
                   // console.log(`[🤠]   ${anomalySuggestionID}: ${fix.solutionID} is ${isApplicable ? '🟢 applicable' : '❌ NOT applicable'}`) // prettier-ignore
-                  return isApplicable
+                  return isApplicable !== undefined
                })
             return {
                id: anomalySuggestionID,

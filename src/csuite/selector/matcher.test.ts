@@ -1,13 +1,12 @@
 // test/selectorCompiler.test.ts
 
-import { describe, expect, it } from 'bun:test'
+import type { Field_string } from '../fields/string/FieldString'
+
+import { describe, expect, it } from 'vitest'
 
 import { simpleBuilder } from '../simple/SimpleFactory'
 import { FieldSelector } from './selector'
 
-function selector(str: string): FieldSelector {
-   return FieldSelector.from(str)
-}
 const b = simpleBuilder
 const S1 = b.fields({
    foo: b.fields({
@@ -20,20 +19,30 @@ const S1 = b.fields({
 })
 const root = S1.create()
 root.value.foo.test = ['a', 'b', 'c']
-const foo = root.Foo
-const bar = root.Foo.Bar
-const baz = root.Foo.Baz
-const qux = root.Qux
-const test2nd = root.Foo.Test.items[1]!
+const foo = root._.foo
+const bar = root._.foo._.bar
+const baz = root._.foo._.baz
+const qux = root._.qux
+const test2nd = root._.foo._.test.items[1]!
 
 baz.updateFieldCustom((t) => ({ abcdefgh: true })) // makes @.custom.abcdefgh be true
 
 describe('SelectorCompiler Tests', () => {
+   it('works with indexes', () => {
+      expect(root.selectFirstOrThrow<Field_string>('$.foo.test')?.path).toBe('$.foo.test')
+      expect(root.selectFirstOrThrow<Field_string>('$.foo.test[0]')?.path).toBe(
+         `$.foo.test.${root._.foo._.test.at(0)?.mountKey}`,
+      )
+      expect([1, 2, 3].at(-1)).toBe(3)
+      expect(root.selectFirstOrThrow<Field_string>('$.foo.test[-1]')?.path).toBe(
+         `$.foo.test.${root._.foo._.test.at(2)?.mountKey}`,
+      )
+   })
    it('test', () => {
       expect(root.select('>@list.@optional.@str').map((f) => f.path)).toMatchObject([
-         '$.foo.test.0.child',
-         '$.foo.test.1.child',
-         '$.foo.test.2.child',
+         expect.stringMatching(/\$\.foo\.test\.[a-z0-9_-]+\.child/i),
+         expect.stringMatching(/\$\.foo\.test\.[a-z0-9_-]+\.child/i),
+         expect.stringMatching(/\$\.foo\.test\.[a-z0-9_-]+\.child/i),
       ])
       expect(root.select('>@list.@optional.@str^^').map((f) => f.path)).toMatchObject(['$.foo.test'])
       expect(root.select('>@list.@optional.^^').map((f) => f.path)).toMatchObject([
@@ -47,13 +56,26 @@ describe('SelectorCompiler Tests', () => {
    it('can filter entry-node', () => {
       expect(root.contains('?(@.childrenAll.length === 1)')).toBe(false)
       expect(root.contains('?(@.childrenAll.length === 2)')).toBe(true)
-      expect(root.select('>@list?(@.length >3)').length).toBe(1)
-      expect(root.select('>@list?(@.length >2)').length).toBe(2)
+      expect(root.select('>@list?(@.length >3)')).toHaveLength(1)
+      expect(root.select('>@list?(@.length >2)')).toHaveLength(2)
    })
 
    it('should select direct children with "." axis', () => {
       const selected = root.select('.').map((f) => f.path)
       expect(selected).toMatchObject(['$.foo', '$.qux'])
+   })
+
+   it('should correctly select children with a key containing `-` or `_`', () => {
+      const schema = b.fields({
+         'foo-bar': b.fields({
+            baz_qux: b.string(),
+         }),
+      })
+      const root = schema.create()
+
+      const selected = root.select('$.foo-bar.baz_qux')
+
+      expect(selected).toHaveLength(1)
    })
 
    it('match for both path and pathExt', () => {
@@ -78,21 +100,21 @@ describe('SelectorCompiler Tests', () => {
          '$.foo.bar',
          '$.foo.baz',
          '$.foo.test',
-         '$.foo.test.0',
-         '$.foo.test.0.child',
-         '$.foo.test.1',
-         '$.foo.test.1.child',
-         '$.foo.test.2',
-         '$.foo.test.2.child',
+         expect.stringMatching(/\$\.foo\.test\.[0-9a-z_-]+$/i),
+         expect.stringMatching(/\$\.foo\.test\.[0-9a-z_-]+\.child$/i),
+         expect.stringMatching(/\$\.foo\.test\.[0-9a-z_-]+$/i),
+         expect.stringMatching(/\$\.foo\.test\.[0-9a-z_-]+\.child$/i),
+         expect.stringMatching(/\$\.foo\.test\.[0-9a-z_-]+$/i),
+         expect.stringMatching(/\$\.foo\.test\.[0-9a-z_-]+\.child$/i),
          '$.foo.test2',
-         '$.foo.test2.0',
-         '$.foo.test2.0.child',
-         '$.foo.test2.1',
-         '$.foo.test2.1.child',
-         '$.foo.test2.2',
-         '$.foo.test2.2.child',
-         '$.foo.test2.3',
-         '$.foo.test2.3.child',
+         expect.stringMatching(/\$\.foo\.test2\.[0-9a-z_-]+$/i),
+         expect.stringMatching(/\$\.foo\.test2\.[0-9a-z_-]+\.child$/i),
+         expect.stringMatching(/\$\.foo\.test2\.[0-9a-z_-]+$/i),
+         expect.stringMatching(/\$\.foo\.test2\.[0-9a-z_-]+\.child$/i),
+         expect.stringMatching(/\$\.foo\.test2\.[0-9a-z_-]+$/i),
+         expect.stringMatching(/\$\.foo\.test2\.[0-9a-z_-]+\.child$/i),
+         expect.stringMatching(/\$\.foo\.test2\.[0-9a-z_-]+$/i),
+         expect.stringMatching(/\$\.foo\.test2\.[0-9a-z_-]+\.child$/i),
          '$.qux',
       ])
    })
@@ -104,7 +126,7 @@ describe('SelectorCompiler Tests', () => {
    })
 
    it('should select all ancestors of a node with "<" axis', () => {
-      const selected = root.Foo.Test2.items[0]!.select('<').map((f) => f.path)
+      const selected = root._.foo._.test2.items[0]!.select('<').map((f) => f.path)
       expect(selected).toMatchObject(['$.foo.test2', '$.foo', '$'])
    })
 
@@ -162,11 +184,11 @@ describe('SelectorCompiler Tests', () => {
 
    it('should match itself when selector is emtpy', () => {
       expect(root.contains('')).toBe(true)
-      expect(root.select('').length).toBe(1)
+      expect(root.select('')).toHaveLength(1)
       expect(root.select('')[0]).toBe(root)
 
       expect(foo.contains('')).toBe(true)
-      expect(foo.select('').length).toBe(1)
+      expect(foo.select('')).toHaveLength(1)
       expect(foo.select('')[0]).toBe(foo)
 
       expect(foo.matches('')).toBe(true)

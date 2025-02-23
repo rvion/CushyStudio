@@ -5,29 +5,29 @@ import { ui_ipadapter_advancedSettings, type UI_ipadapter_advancedSettings } fro
 
 // ======================================================================================================
 // 🅿️ IPAdapter Basic
-export type UI_IPAdapterFaceIDV2 = X.XGroup<{
+export type UI_IPAdapterFaceIDV2 = Z.XGroup<{
    baseImage: UI_FaceIDImageInput
-   settings: X.XGroup<{
-      weight: X.XNumber
-      weight_faceidv2: X.XNumber
-      models: X.XGroup<{
-         type: X.XEnum<'IPAdapter_plus.IPAdapterUnifiedLoaderFaceID.preset'>
+   settings: Z.XGroup<{
+      weight: Z.XNumber
+      weight_faceidv2: Z.XNumber
+      models: Z.XGroup<{
+         type: Z.XEnum<'IPAdapter_plus.IPAdapterUnifiedLoaderFaceID.preset'>
       }>
-      extra: X.XList<UI_FaceIDImageInput>
-      advancedSettings: X.XGroup<{
-         extraIPAdapter: X.XOptional<UI_extraIpAdapter>
-         startAtStepPercent: X.XNumber
-         endAtStepPercent: X.XNumber
-         lora_strength: X.XNumber
-         embedding_combination: X.XEnum<'Impact-Pack.ImpactIPAdapterApplySEGS.combine_embeds'>
-         weight_type: X.XEnum<'IPAdapter_plus.IPAdapterAdvanced.weight_type'>
-         embedding_scaling: X.XEnum<'IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'>
-         noise: X.XNumber
-         unfold_batch: X.XBool
-         adapterAttentionMask: X.XOptional<X.XImage>
+      extra: Z.XList<UI_FaceIDImageInput>
+      advancedSettings: Z.XGroup<{
+         extraIPAdapter: Z.XOptional<UI_extraIpAdapter>
+         startAtStepPercent: Z.XNumber
+         endAtStepPercent: Z.XNumber
+         lora_strength: Z.XNumber
+         embedding_combination: Z.XEnum<'Impact-Pack.ImpactIPAdapterApplySEGS.combine_embeds'>
+         weight_type: Z.XEnum<'IPAdapter_plus.IPAdapterAdvanced.weight_type'>
+         embedding_scaling: Z.XEnum<'IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'>
+         noise: Z.XNumber
+         unfold_batch: Z.XBool
+         adapterAttentionMask: Z.XOptional<Z.XImage>
       }>
    }>
-   help: X.XMarkdown
+   help: Z.XMarkdown
 }>
 
 export function ui_IPAdapterFaceIDV2(): UI_IPAdapterFaceIDV2 {
@@ -146,14 +146,14 @@ export function ui_IPAdapterFaceIDV2(): UI_IPAdapterFaceIDV2 {
 }
 
 // ======================================================================================================
-export type UI_FaceIDImageInput = X.XGroup<{
-   image: X.XImage
-   advanced: X.XGroup<{
-      sharpening: X.XNumber
-      crop_position: X.XEnum<'IPAdapter_plus.PrepImageForClipVision.crop_position'>
+export type UI_FaceIDImageInput = Z.XGroup<{
+   image: Z.XImage
+   advanced: Z.XGroup<{
+      sharpening: Z.XNumber
+      crop_position: Z.XEnum<'IPAdapter_plus.PrepImageForClipVision.crop_position'>
    }>
 }>
-export function ui_FaceIDImageInput(form: X.Builder): UI_FaceIDImageInput {
+export function ui_FaceIDImageInput(form: Z.Builder): UI_FaceIDImageInput {
    return form.fields(
       {
          image: form.image({ label: 'Image' }),
@@ -183,12 +183,12 @@ export function ui_FaceIDImageInput(form: X.Builder): UI_FaceIDImageInput {
 }
 
 // ======================================================================================================
-export type UI_extraIpAdapter = X.XGroup<{
-   weight: X.XNumber
-   embedding_combination: X.XEnum<'IPAdapter_plus.IPAdapterAdvanced.combine_embeds'>
+export type UI_extraIpAdapter = Z.XGroup<{
+   weight: Z.XNumber
+   embedding_combination: Z.XEnum<'IPAdapter_plus.IPAdapterAdvanced.combine_embeds'>
    ipAdapterSettings: UI_ipadapter_advancedSettings
 }>
-function ui_extraIpAdapter(form: X.Builder): UI_extraIpAdapter {
+function ui_extraIpAdapter(form: Z.Builder): UI_extraIpAdapter {
    return form.fields(
       {
          weight: form.float({ default: 0.4, min: -1, max: 3, step: 0.1 }),

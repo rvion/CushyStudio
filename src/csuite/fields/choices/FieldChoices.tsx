@@ -427,7 +427,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
    /**
     * technically, we can't always guarantee the config schema dict only contains schema for branches
     * since we allow to pass already instantiated fields instead of schema (in this case, those are wrapped)
-    * as Schema as shared (SimpleSchema<Field_shared<....>>)
+    * as Schema as shared (CSchema<Field_shared<....>>)
     */
    private getSchemaForBranch(branchName: keyof T & string): CSchema {
       const schema = this.configItems[branchName]

@@ -291,14 +291,14 @@ export const computePlacement = (
    // |      [anchor]      |
    // |[XXXXXXXXXXXX]      |
    // |--------------------|
-   if (placement == 'bottomEnd')
+   if (placement == 'bottomEnd') {
       return {
          top: anchor.bottom,
-         left: anchor.right,
-         transform: 'translate(-100%)',
+         right: window.innerWidth - anchor.right,
          maxWidth: `${anchor.right}px`,
          maxHeight: `calc(98vh - ${anchor.bottom}px)`,
       }
+   }
 
    // TOP -----------------------------------------------------------------
    // |--------------------|

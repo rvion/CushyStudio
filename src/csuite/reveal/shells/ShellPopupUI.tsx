@@ -6,6 +6,7 @@ import { observer } from 'mobx-react-lite'
 import { type ModalShellSize, ModalShellUI } from '../../modal/ModalShell'
 import { exhaust } from '../../utils/exhaust'
 import { mergeStylesTsEfficientInNew } from '../../utils/mergeStylesTsEfficient'
+import { ShellFocusTrapUI } from './utils/ShellFocusTrap'
 
 export const ShellPopupXSUI = (p: RevealShellProps): React.JSX.Element => <ShellPopupUI size='xs' {...p} />
 export const ShellPopupSMUI = (p: RevealShellProps): React.JSX.Element => <ShellPopupUI size='sm' {...p} />
@@ -51,6 +52,7 @@ export const ShellPopupUI = observer(function ShellPopupUI_(p: RevealShellProps 
          size={p.size}
          close={() => reveal.close('closeButton')}
          title={reveal.p.title}
+         slotFocusTrap={<ShellFocusTrapUI reveal={p.reveal} />}
       >
          {p.children}
       </ModalShellUI>

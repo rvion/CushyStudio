@@ -13,7 +13,7 @@ export const PanelStepsUI = observer(function PanelStepsUI_(p: NO_PROPS) {
    return (
       <PanelUI>
          <PanelUI.Header>
-            <Button icon='mdiStop' onClick={() => cushy.stopCurrentPrompt()}>
+            <Button icon={IKONS.mdiStop} onClick={() => cushy.stopCurrentPrompt()}>
                stop
             </Button>
             <SpacerUI />

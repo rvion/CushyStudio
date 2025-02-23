@@ -19,8 +19,8 @@ export const PlaygroundMessages = observer(function PlaygroundImportFromComfy_(p
                <InputStringUI tw='w-96' {...sampleInputStringUIProps} buffered={null} />
                <div tw='divider my-0'>text buffered</div>
                <InputStringUI tw='w-96' {...sampleInputStringUIProps} />
-               <InputStringUI tw='w-96' icon='mdiText' {...sampleInputStringUIProps} />
-               <InputStringUI tw='w-96' icon='mdiAccessPointCheck' {...sampleInputStringUIProps} />
+               <InputStringUI tw='w-96' icon={IKONS.mdiText} {...sampleInputStringUIProps} />
+               <InputStringUI tw='w-96' icon={IKONS.mdiAccessPointCheck} {...sampleInputStringUIProps} />
             </div>
             <div tw='divider my-0'>w-fit on container</div>
             <div tw='w-fit'>

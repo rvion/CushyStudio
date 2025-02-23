@@ -1,35 +1,34 @@
-import { describe, it } from 'bun:test'
 import { makeAutoObservable } from 'mobx'
-
-import { expectJSON } from './utils/expectJSON'
+import { type Assertion, describe, expect, it } from 'vitest'
 
 describe('proxied mobx array that pretend their values are something else', () => {
    // MOBX MAKES IT SUPER HARD TO RE-PROXY
+   // eslint-disable-next-line vitest/expect-expect
    it('works(get,push,slice,set,...)', () => {
       const foo = new MockedMappedList()
-      expectJSON(foo.nums).toEqual([1, 2, 3])
-      expectJSON(JSON.stringify(foo.nums)).toBe('[1,2,3]')
+      expectNaiveJSON(foo.nums).toEqual([1, 2, 3])
+      expectNaiveJSON(JSON.stringify(foo.nums)).toBe('[1,2,3]')
 
       foo.nums[1] = 999
 
-      expectJSON(foo.nums).toEqual([1, 999, 3])
-      expectJSON(foo.nums.slice(0, 2)).toEqual([1, 999])
-      expectJSON(JSON.stringify(foo.nums)).toBe('[1,999,3]')
-      expectJSON(foo.raw).toEqual([
+      expectNaiveJSON(foo.nums).toEqual([1, 999, 3])
+      expectNaiveJSON(foo.nums.slice(0, 2)).toEqual([1, 999])
+      expectNaiveJSON(JSON.stringify(foo.nums)).toBe('[1,999,3]')
+      expectNaiveJSON(foo.raw).toEqual([
          { num: 1, str: '1' },
          { num: 999, str: '999' },
          { num: 3, str: '3' },
       ])
 
       foo.nums.push(8)
-      expectJSON(foo.nums[1]).toBe(999)
-      expectJSON(foo.nums[2]).toBe(3)
-      expectJSON(foo.nums.length).toBe(4)
-      expectJSON(foo.nums[3]).toBe(8)
-      expectJSON(foo.nums.length).toBe(4)
-      expectJSON(foo.raw.length).toBe(4)
-      expectJSON(foo.raw[3]!.str).toBe('8')
-      expectJSON(JSON.stringify(foo.nums)).toBe('[1,999,3,8]')
+      expectNaiveJSON(foo.nums[1]).toBe(999)
+      expectNaiveJSON(foo.nums[2]).toBe(3)
+      expectNaiveJSON(foo.nums.length).toBe(4)
+      expectNaiveJSON(foo.nums[3]).toBe(8)
+      expectNaiveJSON(foo.nums.length).toBe(4)
+      expectNaiveJSON(foo.raw.length).toBe(4)
+      expectNaiveJSON(foo.raw[3]!.str).toBe('8')
+      expectNaiveJSON(JSON.stringify(foo.nums)).toBe('[1,999,3,8]')
    })
 })
 
@@ -85,4 +84,9 @@ class MockedMappedList {
    get nums(): number[] {
       return this.__nums
    }
+}
+
+function expectNaiveJSON(a: any): Assertion<any> {
+   // eslint-disable-next-line vitest/valid-expect
+   return expect(JSON.parse(JSON.stringify(a)))
 }

@@ -6,23 +6,23 @@ import {
 import { ui_model_pag, type UI_model_pag } from './prefab_model_pag'
 import { ui_model_sag, type UI_model_sag } from './prefab_model_sag'
 
-export type $schemaModelExtras = X.XChoices<{
-   checkpointConfig: X.XEnum<'CheckpointLoader.config_name'>
-   rescaleCFG: X.XNumber
-   vae: X.XEnum<'VAELoader.vae_name'>
-   clipSkip: X.XNumber
-   freeU: X.XEmpty
-   freeUv2: X.XEmpty
-   vpred: X.XGroup<{ zsnr: X.XBool }>
-   epred: X.XGroup<{ zsnr: X.XBool }>
-   sampling: X.XGroup<{
-      sampling: X.XEnum<'ModelSamplingDiscrete.sampling'>
-      zsnr: X.XBool
+export type $schemaModelExtras = Z.XChoices<{
+   checkpointConfig: Z.XEnum<'CheckpointLoader.config_name'>
+   rescaleCFG: Z.XNumber
+   vae: Z.XEnum<'VAELoader.vae_name'>
+   clipSkip: Z.XNumber
+   freeU: Z.XEmpty
+   freeUv2: Z.XEmpty
+   vpred: Z.XGroup<{ zsnr: Z.XBool }>
+   epred: Z.XGroup<{ zsnr: Z.XBool }>
+   sampling: Z.XGroup<{
+      sampling: Z.XEnum<'ModelSamplingDiscrete.sampling'>
+      zsnr: Z.XBool
    }>
    pag: UI_model_pag
    sag: UI_model_sag
    KohyaDeepShrink: UI_model_kohyaDeepShrink
-   civitai_ckpt_air: X.XString
+   civitai_ckpt_air: Z.XString
 }>
 
 export const schemaModelExtras = (

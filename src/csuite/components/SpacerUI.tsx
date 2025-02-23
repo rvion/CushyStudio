@@ -8,11 +8,11 @@ import { observer } from 'mobx-react-lite'
  *
  * ```
  *  <HeaderUI>
- *      <Button>Left!</Button>
+ *      <div tw='btn btn-sm'>Left!</div>
  *      <SpacerUI />
- *      <Button>Centered!</Button>
+ *      <div tw='btn btn-sm'>Centered!</div>
  *      <SpacerUI />
- *      <Button>Right!</Button>
+ *      <div tw='btn btn-sm'>Right!</div>
  *  </HeaderUI>
  * ```
  */

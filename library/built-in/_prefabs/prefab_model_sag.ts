@@ -1,13 +1,13 @@
-export type UI_model_sag = X.XGroup<{
-   include: X.XChoices<{
-      base: X.XGroup<{}>
-      hiRes: X.XGroup<{}>
+export type UI_model_sag = Z.XGroup<{
+   include: Z.XChoices<{
+      base: Z.XGroup<{}>
+      hiRes: Z.XGroup<{}>
    }>
-   scale: X.XNumber
-   blur_sigma: X.XNumber
+   scale: Z.XNumber
+   blur_sigma: Z.XNumber
 }>
 
-export const ui_model_sag = (form: X.Builder): UI_model_sag => {
+export const ui_model_sag = (form: Z.Builder): UI_model_sag => {
    return form.fields(
       {
          include: form.choices(

@@ -27,7 +27,7 @@ export type Field_button_config<K = any> = FieldConfig<
       useContext?: () => K
       onClick?: (ctx: Field_button_context<K>) => void
    },
-   Field_button_types<K>
+   Field_button<K>
 >
 
 // #region SERIAL
@@ -41,7 +41,7 @@ export type Field_button_value = boolean
 export type Field_button_unchecked = Field_button_value | undefined
 
 // #region TYPES
-export type Field_button_types<K> = {
+export type Field_button<K> = {
    $Type: 'button'
    $Config: Field_button_config<K>
    $Serial: Field_button_serial
@@ -49,11 +49,11 @@ export type Field_button_types<K> = {
    $Unchecked: Field_button_unchecked
    $Field: Field_button<K>
    $Child: never
-   $Reflect: Field_button_types<K>
+   $Reflect: Field_button<K>
 }
 
 // STATE
-export class Field_button<K> extends Field<Field_button_types<K>> {
+export class Field_button<K> extends Field<Field_button<K>> {
    // #region TYPE
    static readonly type: 'button' = 'button'
    static readonly emptySerial: Field_button_serial = { $: 'button' }

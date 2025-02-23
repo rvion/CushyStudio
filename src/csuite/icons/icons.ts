@@ -41,6 +41,8 @@ export const allIcons = {
    ..._IconsCDI,
 }
 
+type AllIconsT = typeof allIcons
+
 // slow when used in union => will break typescript
 // export type IconName = keyof typeof allIcons
 
@@ -48,8 +50,14 @@ export const allIcons = {
 // https://stackoverflow.com/questions/70924508/why-doesnt-union-distribution-happen-with-tnumber-where-t-is-an-arraylike
 // > Distribution happens only over naked type parameters, meaning a single type parameter without any other type operation applied to it.
 // > T[number] is not a naked type parameter, so no distribution. Elem is a naked type parameter in the second type, so distribution occurs.
-export type IconName = [keyof typeof allIcons][0]
+export type IconNameReal = [keyof AllIconsT][0]
 
-export function isValidIconName(icon: string): icon is IconName {
+const IconSym = Symbol.for('icon')
+export type IconName = typeof IconSym
+
+export type AllIkons = { [iconName in IconNameReal]: IconName }
+export const IKONS: AllIkons = new Proxy({},{ get(_, key: IconNameReal): any { return key } }) as any // prettier-ignore
+
+export function isValidIconName(icon: string | IconName): icon is IconName {
    return icon in allIcons
 }

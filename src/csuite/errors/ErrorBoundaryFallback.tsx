@@ -1,4 +1,3 @@
-import { Button } from '../button/Button'
 import { JsonViewUI } from '../json/JsonViewUI'
 
 export const ErrorBoundaryFallback = (p: {
@@ -9,13 +8,9 @@ export const ErrorBoundaryFallback = (p: {
    return (
       <div role='alert'>
          <p tw='flex items-center gap-2'>
-            <Button //
-               icon='mdiRefresh'
-               onClick={() => p.resetErrorBoundary()}
-               // size='sm'
-               look='error'
-               square
-            />
+            <span onClick={() => p.resetErrorBoundary()} tw='btn btn-square btn-error btn-sm rounded'>
+               <span className='material-symbols-outlined'>refresh</span>
+            </span>
             Something went wrong:
          </p>
          <pre style={{ color: 'red' }}>{p.error?.message}</pre>

@@ -17,7 +17,7 @@ export const PanelAppLibraryUI = observer(function PanelAppLibraryUI_(p: NO_PROP
       <div tw='relative flex h-full flex-grow flex-col'>
          <PanelHeaderUI>
             <InputStringUI
-               icon='mdiMagnify'
+               icon={IKONS.mdiMagnify}
                tw='csuite-basic-input'
                getValue={() => library.query}
                setValue={(next) => (library.query = next)}

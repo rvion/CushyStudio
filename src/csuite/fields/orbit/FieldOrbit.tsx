@@ -23,7 +23,7 @@ export type Field_orbit_config = FieldConfig<
    {
       default?: Partial<OrbitData>
    },
-   Field_orbit_types
+   Field_orbit
 >
 
 // #region Serial
@@ -47,7 +47,7 @@ export type Field_orbit_unchecked = {
 }
 
 // #region Types
-export type Field_orbit_types = {
+export type Field_orbit = {
    $Type: 'orbit'
    $Config: Field_orbit_config
    $Serial: Field_orbit_serial
@@ -55,11 +55,11 @@ export type Field_orbit_types = {
    $Unchecked: Field_orbit_unchecked
    $Field: Field_orbit
    $Child: never
-   $Reflect: Field_orbit_types
+   $Reflect: Field_orbit
 }
 
 // STATE
-export class Field_orbit extends Field<Field_orbit_types> {
+export class Field_orbit extends Field<Field_orbit> {
    // #region types
    static readonly type: 'orbit' = 'orbit'
    static readonly emptySerial: Field_orbit_serial = { $: 'orbit' }

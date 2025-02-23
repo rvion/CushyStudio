@@ -26,7 +26,7 @@ export const InstallRequirementsBtnUI = observer(function InstallRequirementsBtn
          <Button //
             // TODO(bird_d): @rvion Example of how subtle should work imo. (or ghost, pick one but not the other. There's value to having a background for some hover-able things that matches the background of the parent and brightens on hover. Like how subtle works now.)
             tw='!border-none !bg-transparent hover:brightness-125'
-            icon='mdiPuzzleOutline'
+            icon={IKONS.mdiPuzzleOutline}
             /** 💬(bird_d/ui/theme/system): We should have a wrapper around the base theme state, like Csuite was, but more extensive.
              *    We need to be able to call a specific value, then use the state to determine whether it passes either
              *       the widget's theme or the global.

@@ -2,13 +2,13 @@ import type { Runtime } from '../../../src/runtime/Runtime'
 import type { OutputFor } from './_prefabs'
 
 // UI -----------------------------------------------------------
-export type UI_Sampler = X.XGroup<{
-   denoise: X.XNumber
-   steps: X.XNumber
-   cfg: X.XNumber
-   seed: X.XSeed
-   sampler_name: X.XEnum<'KSampler.sampler_name'>
-   scheduler: X.XEnum<'KSampler.scheduler'>
+export type UI_Sampler = Z.XGroup<{
+   denoise: Z.XNumber
+   steps: Z.XNumber
+   cfg: Z.XNumber
+   seed: Z.XSeed
+   sampler_name: Z.XEnum<'KSampler.sampler_name'>
+   scheduler: Z.XEnum<'KSampler.scheduler'>
 }>
 
 type UiSampleProps = {
@@ -20,7 +20,7 @@ type UiSampleProps = {
    startCollapsed?: boolean
 }
 export function ui_sampler(p?: UiSampleProps): UI_Sampler {
-   const form: X.Builder = getCurrentForm()
+   const form: Z.Builder = getCurrentForm()
    return form.fields(
       {
          denoise: form.float({ step: 0.1, min: 0, max: 1, default: p?.denoise ?? 1, label: 'Denoise' }),

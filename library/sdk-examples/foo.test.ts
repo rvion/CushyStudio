@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'bun:test'
 
 import { Field_bool } from '../../src/csuite/fields/bool/FieldBool'
-import { SimpleSchema } from '../../src/csuite/simple/SimpleSchema'
+import { CSchema } from '../../src/csuite/model/CSchema'
 
 describe('can create models without going through builder', () => {
    it('work', () => {
@@ -16,7 +16,7 @@ describe('can create models without going through builder', () => {
       // const fn = (f: typeof Field_bool) =>
       // required if we template on FieldTypes... sad
       //                                VVVV
-      const x = new SimpleSchema<Bar>(Bar, {}).create()
+      const x = new CSchema<Bar>(Bar, {}).create()
       expect(x.coucou()).toBe('monde')
    })
 })

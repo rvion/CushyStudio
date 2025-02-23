@@ -31,22 +31,22 @@ export const PerspectivePickerUI = observer(function PerspectivePicker(p: FrameP
                                  ),
                               })
                            }
-                           icon='mdiTagEdit'
+                           icon={IKONS.mdiTagEdit}
                            label='Rename'
                         />
-                        <MenuItem onClick={() => p.saveSnapshot()} icon='mdiZipDisk' label='save' />
+                        <MenuItem onClick={() => p.saveSnapshot()} icon={IKONS.mdiZipDisk} label='save' />
                         <MenuItem
                            onClick={() => p.resetToSnapshot()}
-                           icon='mdiLockReset'
+                           icon={IKONS.mdiLockReset}
                            label='Reset To Last Save'
                         />
                         <MenuItem
                            onClick={() => p.resetToDefault()}
-                           icon='mdiRestore'
+                           icon={IKONS.mdiRestore}
                            label='Reset To Default'
                         />
-                        <MenuItem onClick={() => p.duplicate()} icon='mdiClipboard' label='Duplicate' />
-                        <MenuItem onClick={() => p.delete()} icon='mdiTrashCan' label='Delete' />
+                        <MenuItem onClick={() => p.duplicate()} icon={IKONS.mdiClipboard} label='Duplicate' />
+                        <MenuItem onClick={() => p.delete()} icon={IKONS.mdiTrashCan} label='Delete' />
                      </>
                   )}
                >
@@ -64,7 +64,7 @@ export const PerspectivePickerUI = observer(function PerspectivePicker(p: FrameP
             ))}
          </Frame>
          <Button //
-            icon='mdiPlus'
+            icon={IKONS.mdiPlus}
             subtle
             borderless
             onClick={() =>

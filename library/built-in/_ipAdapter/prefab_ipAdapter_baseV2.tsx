@@ -2,18 +2,18 @@ import type { OutputFor } from '../_prefabs/_prefabs'
 
 import { ipAdapterDoc } from './_ipAdapterDoc'
 
-export type UI_ipadapter_advancedSettings = X.XGroup<{
-   startAtStepPercent: X.XNumber
-   endAtStepPercent: X.XNumber
-   adapterAttentionMask: X.XOptional<X.XImage>
-   weight_type: X.XEnum<'IPAdapter_plus.IPAdapterAdvanced.weight_type'>
-   embedding_scaling: X.XEnum<'IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'>
-   noise: X.XNumber
-   unfold_batch: X.XBool
+export type UI_ipadapter_advancedSettings = Z.XGroup<{
+   startAtStepPercent: Z.XNumber
+   endAtStepPercent: Z.XNumber
+   adapterAttentionMask: Z.XOptional<Z.XImage>
+   weight_type: Z.XEnum<'IPAdapter_plus.IPAdapterAdvanced.weight_type'>
+   embedding_scaling: Z.XEnum<'IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'>
+   noise: Z.XNumber
+   unfold_batch: Z.XBool
 }>
 
 export const ui_ipadapter_advancedSettings = (
-   form: X.Builder,
+   form: Z.Builder,
    start: number = 0,
    end: number = 1,
    weight_type: Comfy.Slots['IPAdapter_plus.IPAdapterAdvanced.weight_type'] = 'linear',
@@ -45,15 +45,15 @@ export const ui_ipadapter_advancedSettings = (
 
 // -------------------------------------------------------------------------------------------
 
-export type UI_IPAdapterImageInput = X.XGroup<{
-   image: X.XImage
-   advanced: X.XGroup<{
-      imageWeight: X.XNumber
-      embedding_combination: X.XEnum<'Impact-Pack.ImpactIPAdapterApplySEGS.combine_embeds'>
-      imageAttentionMask: X.XOptional<X.XImage>
+export type UI_IPAdapterImageInput = Z.XGroup<{
+   image: Z.XImage
+   advanced: Z.XGroup<{
+      imageWeight: Z.XNumber
+      embedding_combination: Z.XEnum<'Impact-Pack.ImpactIPAdapterApplySEGS.combine_embeds'>
+      imageAttentionMask: Z.XOptional<Z.XImage>
    }>
 }>
-export function ui_IPAdapterImageInput(form: X.Builder): UI_IPAdapterImageInput {
+export function ui_IPAdapterImageInput(form: Z.Builder): UI_IPAdapterImageInput {
    return form.fields(
       {
          image: form.image({ label: 'Image' }),
@@ -94,16 +94,16 @@ export function ui_IPAdapterImageInput(form: X.Builder): UI_IPAdapterImageInput 
 }
 
 // 🅿️ IPAdapter Basic ===================================================
-export type UI_IPAdapterV2 = X.XGroup<{
-   images: X.XList<UI_IPAdapterImageInput>
-   settings: X.XGroup<{
-      adapterStrength: X.XNumber
-      models: X.XGroup<{
-         type: X.XEnum<'IPAdapter_plus.IPAdapterUnifiedLoader.preset'>
+export type UI_IPAdapterV2 = Z.XGroup<{
+   images: Z.XList<UI_IPAdapterImageInput>
+   settings: Z.XGroup<{
+      adapterStrength: Z.XNumber
+      models: Z.XGroup<{
+         type: Z.XEnum<'IPAdapter_plus.IPAdapterUnifiedLoader.preset'>
       }>
       advancedSettings: UI_ipadapter_advancedSettings
    }>
-   help: X.XMarkdown
+   help: Z.XMarkdown
 }>
 
 export function ui_IPAdapterV2(): UI_IPAdapterV2 {

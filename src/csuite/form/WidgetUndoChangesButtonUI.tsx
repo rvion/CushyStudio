@@ -19,7 +19,7 @@ export const WidgetUndoChangesButtonUI = observer(function WidgetUndoChangesButt
          className={p.className}
          onClick={() => field?.reset()}
          disabled={!(field?.hasChanges ?? false)}
-         icon='mdiUndoVariant'
+         icon={IKONS.mdiUndoVariant}
          look='ghost'
          size='widget'
          // square

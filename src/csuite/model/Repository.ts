@@ -10,12 +10,13 @@ import { Transaction } from './Transaction'
  * you need one, and only one (singleton) per project
  * allow to inject the proper form config for your specific project.
  * to avoid problem with hot-reload, export an instance from a module directly and use it from there.
+ *
+ * 🔶 this class is not observable as of 2025-02-07
  */
 export class Repository {
-   constructor() {}
    /* STORE ------------------------------------------------------------ */
    /** all root fields (previously called entities) */
-   allDocuments: Map<FieldId, Field> = new Map()
+   readonly allDocuments: Map<FieldId, Field> = new Map()
    get documentCount(): number {
       return this.allDocuments.size
    }
@@ -121,39 +122,39 @@ export class Repository {
     */
    _unregisterField(field: Field, tct: Transaction): void {
       // unregister field in `this._allWidgets`
-      this.allFields.delete(field.id)
-      this.allDocuments.delete(field.id)
+      this.allFields.delete(field._uid)
+      this.allDocuments.delete(field._uid)
 
       // unregister field in `this._allWidgetsByType(<type>)`
       tct.trackAsDeleted(field)
 
       const typeStore = this.allFieldsByType.get(field.type)
-      if (typeStore) typeStore.delete(field.id)
+      if (typeStore) typeStore.delete(field._uid)
    }
 
    /** only called when  a new field is created */
    _registerField(field: Field, tct: Transaction): void {
       // creations
-      if (this.allFields.has(field.id)) {
-         throw new Error(`[🔴] INVARIANT VIOLATION: field already registered: ${field.id}`)
+      if (this.allFields.has(field._uid)) {
+         throw new Error(`[🔴] INVARIANT VIOLATION: field already registered: ${field._uid}`)
       }
 
       // 🔴 creations ⁉️
       tct.trackAsCreated(field)
 
       if (field.root == field) {
-         this.allDocuments.set(field.id, field)
+         this.allDocuments.set(field._uid, field)
       }
 
       // register field in `this._allWidgets
-      this.allFields.set(field.id, field)
+      this.allFields.set(field._uid, field)
 
       // register field in `this._allWidgetsByType(<type>)
       const prev = this.allFieldsByType.get(field.type)
       if (prev == null) {
-         this.allFieldsByType.set(field.type, new Map([[field.id, field]]))
+         this.allFieldsByType.set(field.type, new Map([[field._uid, field]]))
       } else {
-         prev.set(field.id, field)
+         prev.set(field._uid, field)
       }
    }
 
@@ -222,27 +223,7 @@ export type RepositoryStats = {
 // REPOSITORY DI -------------------------------------------------------------------------
 let globalRepository: Maybe<Repository> = null
 
-// export function registerRepository(repository: Repository): void {
-//     // RepositoryDI[name] = repository
-//     if (globalRepository == null) {
-//         globalRepository = repository
-//     } else {
-//         throw new Error('Repository already registered')
-//     }
-// }
-
 export function getGlobalRepository(): Repository {
    globalRepository = globalRepository ||= new Repository()
    return bang(globalRepository)
-}
-
-/**
- * sometimes, we want to get a fake repository that does not interfere with anything
- * and that consume as little CPU/memory as possible (e.g. to do codegen on schema
- * that include dynamic fields relying on having intermediate instanciations)
- */
-let globalFakeRepository: Maybe<Repository> = null
-export function getFakeRepository(): Repository {
-   globalFakeRepository = globalFakeRepository ||= new Repository()
-   return bang(globalFakeRepository)
 }

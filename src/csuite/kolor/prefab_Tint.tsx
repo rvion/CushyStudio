@@ -2,22 +2,22 @@ import type { Tint } from './Tint'
 
 import { getNum } from '../tinyCSS/CSSVar'
 
-export type UI_Tint = X.XChoices<{
-   l: X.XChoice<{
-      lightness: X.XNumber
-      contrast: X.XNumber
+export type UI_Tint = Z.XChoices<{
+   l: Z.XChoice<{
+      lightness: Z.XNumber
+      contrast: Z.XNumber
    }>
-   c: X.XChoice<{
-      chroma: X.XNumber
-      chromaBlend: X.XNumber
+   c: Z.XChoice<{
+      chroma: Z.XNumber
+      chromaBlend: Z.XNumber
    }>
-   h: X.XChoice<{
-      hue: X.XNumber
-      hueShift: X.XNumber
+   h: Z.XChoice<{
+      hue: Z.XNumber
+      hueShift: Z.XNumber
    }>
 }>
 
-export const ui_tint = (ui: X.Builder, def?: Tint): UI_Tint => {
+export const ui_tint = (ui: Z.Builder, def?: Tint): UI_Tint => {
    return ui.choices(
       {
          l: ui.choice(

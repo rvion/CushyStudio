@@ -28,12 +28,12 @@ export const DraftMenuDraftUI = observer(function DraftMenuDraftUI_(p: {
                <MenuDivider />
                <MenuItem //
                   label='New'
-                  icon='mdiFileDocumentPlus'
+                  icon={IKONS.mdiFileDocumentPlus}
                   onClick={() => draft.app.createDraft()}
                />
                <MenuItem
                   label='Duplicate'
-                  icon='mdiContentCopy'
+                  icon={IKONS.mdiContentCopy}
                   localShortcut={KEYS.duplicateCurrentDraft}
                   onClick={() => draft.duplicateAndFocus()}
                />
@@ -48,7 +48,7 @@ export const DraftMenuDraftUI = observer(function DraftMenuDraftUI_(p: {
                <MenuDivider />
                <MenuItem
                   label='Reset'
-                  icon='mdiUndoVariant'
+                  icon={IKONS.mdiUndoVariant}
                   tooltip='Resets all fields of a Draft to their default value'
                   onClick={() => {
                      const confirm = window.confirm('Are you sure you want to delete this draft?')
@@ -61,7 +61,7 @@ export const DraftMenuDraftUI = observer(function DraftMenuDraftUI_(p: {
                      <MenuDivider />
                      <MenuItem //
                         label={`Copy ID`}
-                        icon='mdiClipboard'
+                        icon={IKONS.mdiClipboard}
                         tooltip={`Copy draft ID to clipboard\n${draft.id}`}
                         onClick={() => navigator.clipboard.writeText(draft.id)}
                      />
@@ -80,7 +80,7 @@ export const DraftMenuDraftUI = observer(function DraftMenuDraftUI_(p: {
                <MenuDivider />
                <MenuItem
                   label='Delete'
-                  icon='mdiDelete'
+                  icon={IKONS.mdiDelete}
                   onClick={() => {
                      const confirm = window.confirm('Are you sure you want to delete this draft?')
                      if (confirm) draft.delete({})

@@ -9,27 +9,27 @@ import { ui_tint, type UI_Tint } from '../../csuite/kolor/prefab_Tint'
 import { readJSON, writeJSON } from '../jsonUtils'
 
 // --------------
-export type ThemeConf = X.XGroup<{
-   labelLayout: X.XSelectOne_<FormGlobalLayoutMode>
-   base: X.XColor
-   appbar: X.XOptional<X.XColor>
-   fieldGroups: X.XGroup<{
-      border: X.XOptional<X.XNumber>
-      contrast: X.XOptional<X.XNumber>
+export type ThemeConf = Z.XGroup<{
+   labelLayout: Z.XSelectOne_<FormGlobalLayoutMode>
+   base: Z.XColor
+   appbar: Z.XOptional<Z.XColor>
+   fieldGroups: Z.XGroup<{
+      border: Z.XOptional<Z.XNumber>
+      contrast: Z.XOptional<Z.XNumber>
    }>
-   global: X.XGroup<{
-      border: X.XOptional<X.XNumber>
-      contrast: X.XOptional<X.XNumber>
-      shadow: X.XOptional<$schemaSimpleDropShadow>
-      roundness: X.XNumber
+   global: Z.XGroup<{
+      border: Z.XOptional<Z.XNumber>
+      contrast: Z.XOptional<Z.XNumber>
+      shadow: Z.XOptional<$schemaSimpleDropShadow>
+      roundness: Z.XNumber
       active: UI_Tint
       text: UI_Theme_Text
       labelText: UI_Theme_Text
    }>
-   groups: X.XGroup<{
-      border: X.XOptional<X.XNumber>
-      contrast: X.XOptional<X.XNumber>
-      padding: X.XNumber
+   groups: Z.XGroup<{
+      border: Z.XOptional<Z.XNumber>
+      contrast: Z.XOptional<Z.XNumber>
+      padding: Z.XNumber
    }>
 }>
 

@@ -28,16 +28,16 @@ import { createElement, type DependencyList, type FC, type ReactNode, useMemo } 
 import { csuiteConfig } from '../config/configureCsuite'
 import { isHole } from '../fields/list/HOLE'
 import {
-    getFieldSharedClass,
-    isFieldChoice,
-    isFieldChoices,
-    isFieldGroup,
-    isFieldList,
-    isFieldOptional,
-    isProbablySerialList,
-    isProbablySerialOptional,
-    isProbablySomeFieldSerial,
-    isProbablySomeFieldSerialOf,
+   getFieldSharedClass,
+   isFieldChoice,
+   isFieldChoices,
+   isFieldGroup,
+   isFieldList,
+   isFieldOptional,
+   isProbablySerialList,
+   isProbablySerialOptional,
+   isProbablySomeFieldSerial,
+   isProbablySomeFieldSerialOf,
 } from '../fields/WidgetUI.DI'
 import { FormAsDropdownConfigUI } from '../form/FormAsDropdownConfigUI'
 import { hashJSONObjectToNumber } from '../hashUtils/hash'
@@ -52,14 +52,14 @@ import { CSchema, type WithConfigOptions } from './CSchema'
 import { mkNewFieldId } from './FieldId'
 import { type TraversalMixin, TraversalMixinDescriptors } from './FieldTraversal.mixin'
 import {
-    isPatchAdd,
-    isPatchRemove,
-    isPatchReplace,
-    type Patch,
-    type Patch_Common,
-    type PatchAdd,
-    type PatchRemove,
-    type PatchReplace,
+   isPatchAdd,
+   isPatchRemove,
+   isPatchReplace,
+   type Patch,
+   type Patch_Common,
+   type PatchAdd,
+   type PatchRemove,
+   type PatchReplace,
 } from './Patch'
 import { TreeEntry_Field } from './TreeEntry_Field'
 import { normalizeProblem } from './Validation'
@@ -484,7 +484,7 @@ export abstract class Field {
    shared(): Z.Shared<this> {
       const FieldSharedClass = getFieldSharedClass()
       // 💬 2024-08-30 rvion:
-      // | SimpleSchema usage is OK here, even if your project
+      // | CSchema usage is OK here, even if your project
       // | use a custom schema with extra methods; this is just some
       // | internal plumbing to allow to reuse fields from one tree
       // | in another tree as a linked/Shared field.

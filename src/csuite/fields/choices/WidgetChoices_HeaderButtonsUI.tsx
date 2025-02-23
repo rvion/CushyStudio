@@ -50,7 +50,7 @@ export const WidgetChoices_HeaderButtonsUI = observer(function WidgetChoices_Hea
                borderless
                subtle
                square
-               icon='mdiClose'
+               icon={IKONS.mdiClose}
                disabled={!isActive}
                onClick={() => {
                   p.field.disableSelfWithinParent()

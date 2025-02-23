@@ -33,11 +33,11 @@ export const SelectorMixinImpl = defineFieldMixin({
       const selector = FieldSelector.from(selector_)
       return selector.selectFrom(this).fields[0] ?? null
    },
-   selectFirstOrThrow(selector_: string | FieldSelector): Field | null {
+   selectFirstOrThrow<FIELD extends Field>(selector_: string | FieldSelector): FIELD | null {
       const selector = FieldSelector.from(selector_)
       const x = selector.selectFrom(this).fields[0]
       if (x == null) throw new Error('selectOneOrThrow: did not yield any Field')
-      return x
+      return x as FIELD
    },
 
    // #region  all in one

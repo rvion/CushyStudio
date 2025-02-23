@@ -4,14 +4,14 @@ import type { Tint } from './Tint'
 import { type $schemaSimpleDropShadow, schemaSimpleDropShadow } from '../frame/SimpleDropShadow'
 import { ui_tint, type UI_Tint } from './prefab_Tint'
 
-export type UI_Theme_Text = X.XGroup<{
+export type UI_Theme_Text = Z.XGroup<{
    base: UI_Tint
-   size: X.XNumber
+   size: Z.XNumber
    shadow: $schemaSimpleDropShadow
 }>
 
 export const ui_theme_text = (
-   ui: X.Builder,
+   ui: Z.Builder,
    def?: { base?: Tint; size?: Field_number_config_configured },
 ): UI_Theme_Text => {
    return ui.fields({

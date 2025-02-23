@@ -147,7 +147,7 @@ export const FavBarUI = observer(function FavBarUI_(p: { direction?: 'row' | 'co
                      square
                      style={{ width: tempSize, height: tempSize, fontSize: sizeStr }}
                      tw='flex-shrink-0 content-center items-center'
-                     icon='mdiPlus'
+                     icon={IKONS.mdiPlus}
                      iconSize={tempSize}
                   />
                </RevealUI>

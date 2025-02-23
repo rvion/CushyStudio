@@ -1,20 +1,20 @@
-export type UI_model_kohyaDeepShrink = X.XGroup<{
-   include: X.XChoices<{
-      base: X.XGroup<{}>
-      hiRes: X.XGroup<{}>
+export type UI_model_kohyaDeepShrink = Z.XGroup<{
+   include: Z.XChoices<{
+      base: Z.XGroup<{}>
+      hiRes: Z.XGroup<{}>
    }>
-   advancedSettings: X.XGroup<{
-      downscaleFactor: X.XNumber
-      block_number: X.XNumber
-      startPercent: X.XNumber
-      endPercent: X.XNumber
-      downscaleAfterSkip: X.XBool
-      downscaleMethod: X.XEnum<'LatentUpscale.upscale_method'>
-      upscaleMethod: X.XEnum<'LatentUpscale.upscale_method'>
+   advancedSettings: Z.XGroup<{
+      downscaleFactor: Z.XNumber
+      block_number: Z.XNumber
+      startPercent: Z.XNumber
+      endPercent: Z.XNumber
+      downscaleAfterSkip: Z.XBool
+      downscaleMethod: Z.XEnum<'LatentUpscale.upscale_method'>
+      upscaleMethod: Z.XEnum<'LatentUpscale.upscale_method'>
    }>
 }>
 
-export function ui_model_kohyaDeepShrink(form: X.Builder): UI_model_kohyaDeepShrink {
+export function ui_model_kohyaDeepShrink(form: Z.Builder): UI_model_kohyaDeepShrink {
    return form.fields(
       {
          include: form.choices(

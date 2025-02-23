@@ -62,7 +62,7 @@ export const ImageUI = observer(function ImageUI_({
    if (image.existsLocally && !existsSync(image?.absPath as PathLike))
       return (
          <ImageErrorDisplayUI //
-            icon={'mdiFolder'}
+            icon={IKONS.mdiFolder}
          />
       )
 
@@ -91,7 +91,7 @@ export const ImageUIDumb = observer(function ImageUIDumb_({
    if (!image) {
       return (
          <ImageErrorDisplayUI //
-            icon={'mdiImageRemoveOutline'}
+            icon={IKONS.mdiImageRemoveOutline}
          />
       )
    }
@@ -99,7 +99,7 @@ export const ImageUIDumb = observer(function ImageUIDumb_({
    if (image.existsLocally && !existsSync(image?.absPath as PathLike)) {
       return (
          <ImageErrorDisplayUI //
-            icon={'mdiFolder'}
+            icon={IKONS.mdiFolder}
          />
       )
    }

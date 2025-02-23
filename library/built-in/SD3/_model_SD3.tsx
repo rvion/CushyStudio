@@ -5,11 +5,11 @@ import {
    schemaModelExtras,
 } from '../_prefabs/prefab_model_extras'
 
-export type $prefabModelSD3 = X.XGroup<{
-   ckpt_name: X.XEnum<'CheckpointLoaderSimple.ckpt_name'>
-   clip1: X.XEnum<'CLIPLoader.clip_name'>
-   clip2: X.XEnum<'CLIPLoader.clip_name'>
-   clip3: X.XEnum<'CLIPLoader.clip_name'>
+export type $prefabModelSD3 = Z.XGroup<{
+   ckpt_name: Z.XEnum<'CheckpointLoaderSimple.ckpt_name'>
+   clip1: Z.XEnum<'CLIPLoader.clip_name'>
+   clip2: Z.XEnum<'CLIPLoader.clip_name'>
+   clip3: Z.XEnum<'CLIPLoader.clip_name'>
    extra: $schemaModelExtras
 }>
 

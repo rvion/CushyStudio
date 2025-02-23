@@ -1,13 +1,13 @@
+import type { IconProps } from '@mdi/react/dist/IconProps.d.ts'
 import type { FC } from 'react'
 
 import * as IconImport from '@mdi/react'
 
-import { allIcons, type IconName } from './icons'
+import { allIcons, type IconName, type IconNameReal } from './icons'
 
 const Icon = IconImport.Icon
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
-type RawIconProps = import('@mdi/react/dist/IconProps.d.ts').IconProps
+type RawIconProps = IconProps
 type MyIconProps = Omit<RawIconProps, 'path'>
 
 /**
@@ -17,13 +17,11 @@ type MyIconProps = Omit<RawIconProps, 'path'>
  */
 
 export const Ikon: {
-   [key in keyof typeof allIcons]: FC<MyIconProps>
+   [Name in IconNameReal]: FC<MyIconProps>
 } = new Proxy({} as any, {
-   get(target, key): React.FC<MyIconProps> {
+   get(target, key) {
       if (key in target) return target[key]
-      return (target[key] = (p: any): React.JSX.Element => (
-         <Icon path={(allIcons as any)[key]} size='1.1em' {...p} />
-      ))
+      return (target[key] = (p: any) => <Icon path={(allIcons as any)[key]} size='1.1em' {...p} />)
    },
 }) as any
 

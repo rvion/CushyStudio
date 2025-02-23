@@ -37,7 +37,7 @@ export const UCMenuUI = observer(function UCMenuUI_(p: {}) {
                <div tw='flex justify-between'>
                   <span>Layers</span>
                   <Button
-                     icon='mdiPlus'
+                     icon={IKONS.mdiPlus}
                      borderless
                      subtle
                      onClick={() => {
@@ -97,9 +97,9 @@ export const UCMenuUI = observer(function UCMenuUI_(p: {}) {
                                     <>
                                        <div tw='flex gap-0.5'>
                                           <x.DraftId.UI Shell={ShellInputOnly} className='flex-1' />
-                                          {/* <Button icon='mdiCursorMove' /> */}
+                                          {/* <Button icon={IKONS.mdiCursorMove} /> */}
                                           <Button
-                                             icon='mdiPlay'
+                                             icon={IKONS.mdiPlay}
                                              onClick={() => {
                                                 const draft = cushy.db.draft.get(x.DraftId.value.id)
                                                 if (!draft) return toastError('Draft not found')
@@ -109,7 +109,7 @@ export const UCMenuUI = observer(function UCMenuUI_(p: {}) {
                                              }}
                                           />
                                           <Button
-                                             icon='mdiContentCopy'
+                                             icon={IKONS.mdiContentCopy}
                                              onClick={() => {
                                                 const newLayer = layers.duplicateItemAtIndex(i)
                                                 if (newLayer == null)
@@ -134,7 +134,7 @@ export const UCMenuUI = observer(function UCMenuUI_(p: {}) {
                <div tw='flex justify-between'>
                   <span>Masks</span>
                   <Button
-                     icon='mdiPlus'
+                     icon={IKONS.mdiPlus}
                      borderless
                      subtle
                      onClick={() => {

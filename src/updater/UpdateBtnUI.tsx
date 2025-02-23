@@ -74,10 +74,10 @@ export const UpdaterDetailsUI = observer(function UpdaterDetailsUI_(p: { updater
          <div>
             {updater.lastFetchAt ? (
                <div>
-                  <Frame line icon='mdiHistory'>
+                  <Frame line icon={IKONS.mdiHistory}>
                      prev update: {_formatAsRelativeDateTime(updater.lastFetchAt)}
                   </Frame>
-                  <Frame line icon='mdiPageNext'>
+                  <Frame line icon={IKONS.mdiPageNext}>
                      next update: {_formatAsRelativeDateTime(updater.nextFetchAt)}
                   </Frame>
                </div>
@@ -86,7 +86,12 @@ export const UpdaterDetailsUI = observer(function UpdaterDetailsUI_(p: { updater
             )}
          </div>
          <div tw='flex gap-2'>
-            <Button look='info' size='sm' onClick={() => updater.checkForUpdatesNow()} icon='mdiRefresh'>
+            <Button
+               look='info'
+               size='sm'
+               onClick={() => updater.checkForUpdatesNow()}
+               icon={IKONS.mdiRefresh}
+            >
                REFRESH
             </Button>
          </div>

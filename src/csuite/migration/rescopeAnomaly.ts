@@ -8,15 +8,15 @@ import type { FieldAnomaly } from './Anomaly'
  */
 
 export function rescopeAnomaly(
-    //
-    anomaly: FieldAnomaly,
-    //
-    pathPrefix: string,
-    pathExtPrefix: string,
+   //
+   anomaly: FieldAnomaly,
+   //
+   pathPrefix: string,
+   pathExtPrefix: string,
 ): FieldAnomaly {
-    return {
-        ...anomaly,
-        path: pathPrefix + anomaly.path,
-        pathExt: pathExtPrefix + anomaly.pathExt,
-    }
+   return {
+      ...anomaly,
+      path: pathPrefix + anomaly.path,
+      pathExt: pathExtPrefix + anomaly.pathExt,
+   }
 }

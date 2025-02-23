@@ -1,15 +1,15 @@
-import type { CushySchema } from '../../src/controls/CushySchema'
+import type { CSchema } from '../../src/controls/CSchema'
 import type { Field_choices } from '../../src/csuite/fields/choices/FieldChoices'
 import type { Field_group } from '../../src/csuite/fields/group/FieldGroup'
 import type { Field_image } from '../../src/csuite/fields/image/FieldImage'
 import type { Field_list } from '../../src/csuite/fields/list/FieldList'
 
-type ListItem = X.XGroup<{
-   uid: X.XString /* UID */
-   value: X.XChoice<{
-      image: X.XImage
-      latent: X.XGroup<{ size: X.XSize; batch: X.XNumber }>
-      process: X.XSelectOne_<string /* UID */> // <---- recursion here
+type ListItem = Z.XGroup<{
+   uid: Z.XString /* UID */
+   value: Z.XChoice<{
+      image: Z.XImage
+      latent: Z.XGroup<{ size: Z.XSize; batch: Z.XNumber }>
+      process: Z.XSelectOne_<string /* UID */> // <---- recursion here
    }>
 }>
 
@@ -32,11 +32,11 @@ app({
                // so to make sure code is correct, we need to cast it to the correct type
                // (and yes, types are slighly verbose for now)
                const steps = formRoot.fields.samplerUI as Field_list<
-                  CushySchema<
+                  CSchema<
                      Field_choices<{
-                        sampler_output_abc_asdf: CushySchema<X.SelectOne_<any>>
-                        empty_latent: CushySchema<Field_group<any>>
-                        pick_image: CushySchema<Field_image>
+                        sampler_output_abc_asdf: CSchema<Z.SelectOne_<any>>
+                        empty_latent: CSchema<Field_group<any>>
+                        pick_image: CSchema<Field_image>
                      }>
                   >
                >

@@ -26,23 +26,23 @@ export const OutputWorkflowPreviewUI = observer(function OutputWorkflowUI_(p: {
             <ul tabIndex={0} tw='menu dropdown-content rounded-box z-[1]  shadow'>
                {/* <ImageDropdownMenuUI img={image} /> */}
                <MenuItem //
-                  icon={'mdiOpenInNew'}
+                  icon={IKONS.mdiOpenInNew}
                   onClick={graph.menuAction_openInTab}
                   label='open in ComfyUI Tab'
                />
                <MenuItem //
-                  icon={'mdiOpenInApp'}
+                  icon={IKONS.mdiOpenInApp}
                   onClick={graph.menuAction_openInFullScreen}
                   label='open in ComfyUI FULL'
                />
                <div className='divider my-0'></div>
                <MenuItem //
-                  icon={'mdiCloud'}
+                  icon={IKONS.mdiCloud}
                   onClick={graph.menuAction_downloadWorkflow}
                   label='Download ComfyUI Workflow'
                />
                <MenuItem //
-                  icon={'mdiDownloadLock'}
+                  icon={IKONS.mdiDownloadLock}
                   onClick={graph.menuAction_downloadPrompt}
                   label='Download ComfyUI PROMPT'
                />
@@ -54,7 +54,7 @@ export const OutputWorkflowPreviewUI = observer(function OutputWorkflowUI_(p: {
       >
          <Frame //
             square
-            icon='cdiNodes'
+            icon={IKONS.cdiNodes}
             iconSize='80%'
             tooltip='Workflow'
          />

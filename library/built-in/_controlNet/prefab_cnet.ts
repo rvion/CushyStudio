@@ -23,15 +23,15 @@ import { run_cnet_SoftEdge, ui_subform_SoftEdge, type UI_subform_SoftEdge } from
 import { run_cnet_Tile, ui_subform_Tile, type UI_subform_Tile } from './prefab_cnet_tile'
 
 // 🅿️ CNET UI -----------------------------------------------------------
-export type UI_cnet = X.XLink<
-   X.XBool,
-   X.XList<
-      X.XGroup<{
-         image: X.XImage
+export type UI_cnet = Z.XLink<
+   Z.XBool,
+   Z.XList<
+      Z.XGroup<{
+         image: Z.XImage
          mask: UI_Mask
-         resize: X.XBool
-         applyDuringUpscale: X.Bool
-         cnets: X.XChoices<{
+         resize: Z.XBool
+         applyDuringUpscale: Z.Bool
+         cnets: Z.XChoices<{
             IPAdapter: UI_subform_IPAdapter
             FaceID: UI_IPAdapterFaceID
             Pose: UI_subform_OpenPose
@@ -49,7 +49,7 @@ export type UI_cnet = X.XLink<
 >
 
 export function ui_cnet(): UI_cnet {
-   const form: X.Builder = getCurrentForm()
+   const form: Z.Builder = getCurrentForm()
 
    const applyDuringUpscale2 = form.bool({
       tooltip: 'Use the controlnet conditioning for the upscale pass if enabled',

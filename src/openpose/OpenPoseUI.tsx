@@ -16,9 +16,9 @@ export const OpenPoseViewerUI = observer(function OpenPoseViewerUI_(p: {}) {
    return (
       <div>
          <div>
-            <Button onClick={() => OPAnim.start()} icon='mdiPlay' />
-            <Button onClick={() => OPAnim.stop()} icon='mdiPause' />
-            <Button onClick={() => OPAnim.drawAllToPngAndSaveLocally()} icon='mdiContentSave'>
+            <Button onClick={() => OPAnim.start()} icon={IKONS.mdiPlay} />
+            <Button onClick={() => OPAnim.stop()} icon={IKONS.mdiPause} />
+            <Button onClick={() => OPAnim.drawAllToPngAndSaveLocally()} icon={IKONS.mdiContentSave}>
                Draw all to png and save locally
             </Button>
          </div>

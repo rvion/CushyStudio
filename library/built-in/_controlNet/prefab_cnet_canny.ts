@@ -3,22 +3,22 @@ import type { OutputFor } from '../_prefabs/_prefabs'
 import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
 
 // 🅿️ Canny FORM ===================================================
-export type UI_subform_Canny = X.XGroup<{
+export type UI_subform_Canny = Z.XGroup<{
    preprocessor: UI_subform_Canny_Preprocessor
-   models: X.XGroup<{
-      cnet_model_name: X.XEnum<'ControlNetLoader.control_net_name'>
+   models: Z.XGroup<{
+      cnet_model_name: Z.XEnum<'ControlNetLoader.control_net_name'>
    }>
-   strength: X.XNumber
-   advanced: X.XGroup<{
-      startAtStepPercent: X.XNumber
-      endAtStepPercent: X.XNumber
-      crop: X.XEnum<'LatentUpscale.crop'>
-      upscale_method: X.XEnum<'ImageScale.upscale_method'>
+   strength: Z.XNumber
+   advanced: Z.XGroup<{
+      startAtStepPercent: Z.XNumber
+      endAtStepPercent: Z.XNumber
+      crop: Z.XEnum<'LatentUpscale.crop'>
+      upscale_method: Z.XEnum<'ImageScale.upscale_method'>
    }>
 }>
 
 export function ui_subform_Canny(): UI_subform_Canny {
-   const ui: X.Builder = getCurrentForm()
+   const ui: Z.Builder = getCurrentForm()
    return ui
       .group({
          label: 'Canny',
@@ -50,15 +50,15 @@ export function ui_subform_Canny(): UI_subform_Canny {
 }
 
 // ================================================================================================
-type UI_subform_Canny_Preprocessor = X.XOptional<
-   X.XGroup<{
-      lowThreshold: X.XNumber
-      highThreshold: X.XNumber
-      saveProcessedImage: X.XBool
+type UI_subform_Canny_Preprocessor = Z.XOptional<
+   Z.XGroup<{
+      lowThreshold: Z.XNumber
+      highThreshold: Z.XNumber
+      saveProcessedImage: Z.XBool
    }>
 >
 
-function ui_subform_Canny_Preprocessor(ui: X.Builder): UI_subform_Canny_Preprocessor {
+function ui_subform_Canny_Preprocessor(ui: Z.Builder): UI_subform_Canny_Preprocessor {
    return ui
       .group({
          label: 'Canny Edge Preprocessor',

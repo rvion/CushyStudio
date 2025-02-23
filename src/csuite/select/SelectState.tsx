@@ -6,7 +6,7 @@ import type { ReactNode } from 'react'
 
 import { makeAutoObservable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
-import React from 'react'
+import React, { Fragment } from 'react'
 
 import { hasMod } from '../accelerators/META_NAME'
 import { getUIDForMemoryStructure } from '../utils/getUIDForMemoryStructure'
@@ -24,11 +24,10 @@ interface ToolTipPosition {
 export type SelectValueSlots = 'anchor' | 'popup-input' | 'options-list'
 
 export class AutoCompleteSelectState<OPTION> {
-   uid: string = nanoid()
    // various refs for our select so we can quickly puppet
    // various key dom elements of the select, or move the focus
    // around when needed
-
+   uid: string = nanoid()
    anchorRef = createObservableRef<HTMLDivElement>()
    inputRef_real = createObservableRef<HTMLInputElement>()
    revealStateRef = createObservableRef<RevealStateLazy>()
@@ -49,14 +48,13 @@ export class AutoCompleteSelectState<OPTION> {
       return this.p.getKey?.(option) ?? getUIDForMemoryStructure(option)
    }
 
+   isMultiSelect: boolean
+
    constructor(public p: SelectProps<OPTION>) {
+      this.isMultiSelect = p.multiple ?? false
       makeAutoObservable(this, {
          anchorRef: false, // 🚨 ref do not work when observables!
          inputRef_real: false,
-
-         // this class is one of the few we want to make fast
-         selectAll: false /* micro_optimize_with_run_inActions_inside */,
-         selectNone: false /* micro_optimize_with_run_inActions_inside */,
       })
    }
 
@@ -82,8 +80,6 @@ export class AutoCompleteSelectState<OPTION> {
          return selected.length === 1 && selected.some((s) => this.isEqual(s, option))
       return this.isEqual(selected, option)
    }
-
-   isMultiSelect: boolean = this.p.multiple ?? false
 
    get options(): OPTION[] {
       return this.p.options?.(this.searchQuery) ?? [] // replace with actual options logic
@@ -179,14 +175,8 @@ export class AutoCompleteSelectState<OPTION> {
          />
       )
    }
-
    DisplayOptionUI(option: OPTION, opt: { where: SelectValueSlots }): React.ReactNode {
-      if (this.p.OptionLabelUI) {
-         // return '🔶'
-         const val = this.p.OptionLabelUI(option, opt.where, this)
-         if (val !== '🔶DEFAULT🔶') return val
-         // we could handle other magic values here
-      }
+      if (this.p.OptionLabelUI) return this.p.OptionLabelUI(option, opt.where, this)
       return this.DefaultDisplayOption(option, opt)
    }
 
@@ -211,7 +201,9 @@ export class AutoCompleteSelectState<OPTION> {
       const values = Array.isArray(value) ? value : [value]
       if (values.length === 0) return placeHolderStr
 
-      return values.map((op) => this.DisplayOptionUI(op, { where: 'anchor' }))
+      return values.map((op, ix) => (
+         <Fragment key={ix}>{this.DisplayOptionUI(op, { where: 'anchor' })}</Fragment>
+      ))
    }
 
    get displayValueInPopup(): ReactNode {
@@ -221,7 +213,9 @@ export class AutoCompleteSelectState<OPTION> {
       value = Array.isArray(value) ? value : [value]
       if (value.length === 0) return null
 
-      return value.map((op) => this.DisplayOptionUI(op, { where: 'popup-input' }))
+      return value.map((op, index) => (
+         <Fragment key={index}>{this.DisplayOptionUI(op, { where: 'popup-input' })}</Fragment>
+      ))
    }
 
    // get placeholderElem(): ReactNode {
@@ -310,21 +304,20 @@ export class AutoCompleteSelectState<OPTION> {
    }
 
    toggleOption(option: OPTION): void {
+      const isCurrentlySelected = this.isOptionSelected(option)
       this.revealState?.log(`_ SelectSate toggleOption`)
       const onOptionToggled = this.p.onOptionToggled ?? this.p.onChange
       onOptionToggled?.(option, this)
-
       // reset the query
       const shouldResetQuery = this.p.resetQueryOnPick ?? true // !this.isMultiSelect // 🚂 default was false
       if (shouldResetQuery) this.searchQuery = ''
-
-      // close the menu (only if the selection actually happened)
-      const isCurrentlySelected = this.isOptionSelected(option)
+      // close the menu (if we really selected a value)
       if (!isCurrentlySelected) this.closeIfShouldCloseAfterSelection()
    }
 
    async createOption(): Promise<void> {
       const createdOption = await this.p.createOption?.action()
+
       if (createdOption != null) {
          this.options.push(createdOption)
          this.toggleOption(createdOption)

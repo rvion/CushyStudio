@@ -3,10 +3,9 @@ import type { FrameAppearance } from '../frame/FrameTemplates'
 import type { Field } from '../model/Field'
 import type { NO_PROPS } from '../types/NO_PROPS'
 import type { RSSize } from '../types/RsuiteTypes'
-import type { CSSProperties, FC } from 'react'
 
 import { observer } from 'mobx-react-lite'
-import { createElement } from 'react'
+import { type CSSProperties, type FC } from 'react'
 
 import { Button } from '../../csuite/button/Button'
 import { Frame } from '../../csuite/frame/Frame'
@@ -15,6 +14,7 @@ import { MessageErrorUI } from '../../csuite/messages/MessageErrorUI'
 export type FormUIProps = {
    // form ---------------------------------------------------------
    field: Maybe<Field>
+   // ⏸️ skin?: 'default' | 'cell' | 'text' | 'whatev'
 
    Header?: FC<NO_PROPS>
    Content?: FC<NO_PROPS> //
@@ -62,26 +62,31 @@ export type FormUIProps = {
 export const FormUI = observer(function FormUI_(p: FormUIProps) {
    const field = p.field
    if (field == null) return <MessageErrorUI markdown={`form is not yet initialized`} />
-   const canSubmit: boolean = p.allowSubmitWhenErrors || p.field == null || p.field.isValid
-   return (
-      <Frame tw='UI-Form overflow-auto' col {...p.theme} className={p.className} style={p.style}>
-         {p.Header && <p.Header />}
-         {p.Content ? <p.Content /> : field.UI({ Header: null })}
-         {createElement(FormSubmitBtnUI, p)}
-         {p.Footer != null && <p.Footer field={field} canSubmit={canSubmit} />}
-      </Frame>
-   )
-})
-
-export const FormSubmitBtnUI = observer(function FormSubmitBtnUI_(p: FormUIProps) {
-   const field = p.field
-   if (field == null) return <MessageErrorUI markdown={`form is not yet initialized`} />
-
+   // if (form.error) return <MessageErrorUI markdown={form.error} />
    const submitAction = p.submitAction
-   const canSubmit: boolean = p.allowSubmitWhenErrors || p.field == null || p.field.isValid
+
+   const canSubmit: boolean =
+      p.allowSubmitWhenErrors ||
+      p.field == null ||
+      // 💬 2024-07-21 rvion:
+      // | spent one hour troubleshooting this crap:
+      // | components re-evaluated at every single rendering will not be properly cached.
+      // | this was making every sub components re-render everytime => int were not working properly
+      // | also...... now that I'm writing that, why the hell was this component re-rendering everytime the value was changing ?
+      p.field.allErrorsIncludingChildrenErrors.length === 0
 
    return (
-      <div>
+      <Frame
+         //
+         tw='UI-Form'
+         col
+         {...p.theme}
+         className={p.className}
+         style={p.style}
+      >
+         {p.Header && <p.Header />}
+         {/* FORM */}
+         {p.Content ? <p.Content /> : <field.Render />}
          {submitAction != null && (
             <div tw='flex'>
                <Button
@@ -107,6 +112,7 @@ export const FormSubmitBtnUI = observer(function FormSubmitBtnUI_(p: FormUIProps
                </Button>
             </div>
          )}
-      </div>
+         {p.Footer != null && <p.Footer field={field} canSubmit={canSubmit} />}
+      </Frame>
    )
 })

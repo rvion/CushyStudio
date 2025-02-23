@@ -38,7 +38,7 @@ export const GithubUsernameInputUI = observer(function GithubUsernameInputUI_(p:
          </div>
          <InputStringUI
             tw='csuite-basic-input'
-            icon='mdiGithub'
+            icon={IKONS.mdiGithub}
             placeholder='your github username'
             getValue={() => githubUsername}
             setValue={(next) => void cushy.configFile.update({ githubUsername: next })}

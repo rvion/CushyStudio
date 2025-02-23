@@ -18,33 +18,33 @@ export const MenuAboutUI = observer(function MenuAboutUI_(p: {}) {
                         .require('electron')
                         .shell.openExternal('https://github.com/rvion/CushyStudio#readme')
                   }}
-                  icon={'mdiGithub'}
+                  icon={IKONS.mdiGithub}
                   label='Github'
                />
                <MenuItem
                   onClick={() => {
                      void window.require('electron').shell.openExternal('https://www.CushyStudio.com')
                   }}
-                  icon={'mdiWeb'}
+                  icon={IKONS.mdiWeb}
                   label='Documentation'
                />
                <MenuItem
                   onClick={() => {
                      void window.require('electron').shell.openExternal('https://www.CushyStudio.com/blog')
                   }}
-                  icon={'mdiPost'}
+                  icon={IKONS.mdiPost}
                   label='Blog'
                />
                {/* Github Integration */}
                {cushy.auth.isConnected ? (
                   <MenuItem //
-                     icon='mdiLogout'
+                     icon={IKONS.mdiLogout}
                      onClick={() => cushy.auth.logout()}
                      label='Logout'
                   />
                ) : (
                   <MenuItem //
-                     icon='mdiLogin'
+                     icon={IKONS.mdiLogin}
                      onClick={() => void cushy.auth.startLoginFlowWithGithub()}
                      label='Login with Github'
                   />
@@ -53,7 +53,7 @@ export const MenuAboutUI = observer(function MenuAboutUI_(p: {}) {
                {/* <MenuDivider></MenuDivider> */}
                <RevealUI content={() => <JsonViewUI value={cushy.auth.user} />}>
                   <MenuItem //
-                     icon='mdiInformation'
+                     icon={IKONS.mdiInformation}
                      label={cushy.auth.user?.email ?? '<no-email>'}
                   />
                </RevealUI>

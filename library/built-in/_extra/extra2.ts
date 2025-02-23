@@ -8,14 +8,14 @@ import {
 import { CustomView3dCan } from '../_views/View_3d_TinCan'
 import { CustomViewSpriteSheet } from '../_views/View_Spritesheets'
 
-export type $extra2 = X.XChoices<{
-   gaussianSplat: X.XEmpty
-   summary: X.XEmpty
-   displayAsBeerCan: X.XEmpty
-   displayAsSpriteSheet: X.XEmpty
+export type $extra2 = Z.XChoices<{
+   gaussianSplat: Z.XEmpty
+   summary: Z.XEmpty
+   displayAsBeerCan: Z.XEmpty
+   displayAsSpriteSheet: Z.XEmpty
    watermark: UI_watermark_v1
-   fancyWatermark: X.XEmpty
-   makeAVideo: X.XEmpty
+   fancyWatermark: Z.XEmpty
+   makeAVideo: Z.XEmpty
 }>
 
 export function extra2(): $extra2 {

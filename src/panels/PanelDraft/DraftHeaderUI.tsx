@@ -50,7 +50,7 @@ export const DraftHeaderUI = observer(function DraftHeader({
 
          {/* <OverflowingRowUI // quick access to past versions
             row
-            icon='mdiHistory'
+            icon={IKONS.mdiHistory}
             iconSize='1.25rem'
             tw='items-center gap-1'
          >
@@ -87,12 +87,12 @@ export const DraftHeaderUI = observer(function DraftHeader({
                      value={app.data.showInfo === SQLITE_true}
                      onValueChange={(v) => app.update({ showInfo: v ? SQLITE_true : SQLITE_false })}
                      toggleGroup='showInfo'
-                     icon='mdiInformation'
+                     icon={IKONS.mdiInformation}
                   >
                      Info
                   </InputBoolCheckboxUI>
                   <InputStringUI
-                     icon='mdiHammerScrewdriver'
+                     icon={IKONS.mdiHammerScrewdriver}
                      autoResize
                      getValue={() => draft.data.canvasToolCategory ?? ''}
                      setValue={(val) => draft.update({ canvasToolCategory: val ? val : null })}
@@ -122,7 +122,7 @@ export const DraftHeaderUI = observer(function DraftHeader({
 //             button={
 //                 <Button //
 //                     tw={'w-full'}
-//                     icon={'mdiApplication'}
+//                     icon={IKONS.mdiApplication}
 //                     tooltip='Not Implemented'
 //                 >
 //                     {app.name}

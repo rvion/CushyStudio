@@ -9,21 +9,21 @@ import { ui_customSave, type UI_customSave } from '../_prefabs/saveSmall'
 import { sampleNegative, samplePrompts } from '../samplePrompts'
 import { type $prefabModelSD15andSDXL, prefabModelSD15andSDXL } from './_model_SD15_SDXL'
 
-export type $CushySD15UI = X.XGroup<{
-   positive: X.XPrompt
-   negative: X.XPrompt
+export type $CushySD15UI = Z.XGroup<{
+   positive: Z.XPrompt
+   negative: Z.XPrompt
    model: $prefabModelSD15andSDXL
    latent: UI_LatentV3
    sampler: UI_Sampler_Advanced
-   customSave: X.XOptional<UI_customSave>
+   customSave: Z.XOptional<UI_customSave>
    controlnets: UI_cnet
-   ipAdapter: X.XOptional<UI_IPAdapterV2>
-   faceID: X.XOptional<UI_IPAdapterFaceIDV2>
+   ipAdapter: Z.XOptional<UI_IPAdapterV2>
+   faceID: Z.XOptional<UI_IPAdapterFaceIDV2>
    extra: $extra1
    extra2: $extra2
 }>
 
-export function CushySD15UI(ui: X.Builder): $CushySD15UI {
+export function CushySD15UI(ui: Z.Builder): $CushySD15UI {
    return ui.fields({
       positive: ui.prompt({
          icon: 'mdiPlusBoxOutline',

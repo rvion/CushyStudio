@@ -1,7 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { useState } from 'react'
-
-import { Frame } from '../frame/Frame'
+import { useCallback, useState } from 'react'
 
 /**
  * this container is used to wrap the list of values in their dense inline form.
@@ -13,21 +11,14 @@ export const SelectValueContainerUI = observer(function SelectValueContainerUI_<
    children?: React.ReactNode
    valuesCount: number
 }) {
-   const [ref, setRef] = useState<HTMLDivElement | null>(null)
    const [isOverflowing, setIsOverflowing] = useState(false)
-
-   function handleRef(ref: HTMLDivElement | null): void {
-      setRef(ref)
-      computeOverflow()
-   }
-
-   function computeOverflow(): void {
-      if (!ref) return
+   const handleRef = useCallback((ref: HTMLDivElement | null) => {
+      if (ref == null) return
       setIsOverflowing(ref.scrollHeight > ref.clientHeight || ref.scrollWidth > ref.clientWidth)
-   }
+   }, [])
 
    return (
-      <div tw='w-full shrink grow overflow-hidden px-1'>
+      <div tw='w-full shrink grow overflow-hidden'>
          <div
             ref={handleRef}
             tw={[
@@ -50,16 +41,15 @@ export const SelectValueOverflowUI = observer(function SelectValueOverflowUI(p: 
    if (p.valuesCount <= 1) return null
 
    return (
-      <Frame
-         base={0}
-         tw='box minw-inside h-inside absolute right-0 top-0 w-fit whitespace-nowrap px-1 text-center  shadow-md'
-         tooltip={`${p.valuesCount} valeurs`}
+      <div
+         tw='box lh-inside-2 minw-inside h-inside absolute right-0 top-0 w-fit whitespace-nowrap rounded-badge border border-sky-200 bg-sky-100 px-1 text-center  shadow-md'
+         title={`${p.valuesCount} valeurs`}
          style={{
             marginTop: 'calc((var(--input-height) - var(--inside-height)) / 2 - 1px)',
             marginRight: '2px',
          }}
       >
          {p.valuesCount}
-      </Frame>
+      </div>
    )
 })

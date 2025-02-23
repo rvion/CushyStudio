@@ -9,7 +9,7 @@ export const OpenComfyExternalUI = observer(function OpenComfyExternalUI_(p: {})
          size='sm'
          look='subtle'
          className='self-start'
-         icon='mdiOpenInNew'
+         icon={IKONS.mdiOpenInNew}
          onClick={() => openExternal(cushy.getServerHostHTTP())}
       >
          {/* ComfyUI Web */}

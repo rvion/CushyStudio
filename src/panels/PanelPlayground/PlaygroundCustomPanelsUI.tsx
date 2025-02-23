@@ -12,11 +12,11 @@ export const PlaygroundCustomPanelsUI = observer(function PlaygroundCustomPanels
       <div tw='flex gap-1'>
          <Button
             onClick={() => cushy.layout.addCustom(HANDLE, { name: '@rvion' + Math.random() })}
-            icon='mdiAbTesting'
+            icon={IKONS.mdiAbTesting}
          >
             Open custom Panel
          </Button>
-         <Button onClick={() => cushy.layout.addCustom(HANDLE, { name: '@rvion' })} icon='mdiAbTesting'>
+         <Button onClick={() => cushy.layout.addCustom(HANDLE, { name: '@rvion' })} icon={IKONS.mdiAbTesting}>
             Open custom Panel
          </Button>
          <hr />

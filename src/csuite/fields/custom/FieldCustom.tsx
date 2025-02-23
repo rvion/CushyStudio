@@ -24,7 +24,7 @@ export type Field_custom_config<T> = FieldConfig<
       subTree?: () => BaseSchema
       Component: FC<CustomWidgetProps<T>>
    },
-   Field_custom_types<T>
+   Field_custom<T>
 >
 
 // #region $Serial
@@ -39,7 +39,7 @@ export type Field_custom_serial<T> = FieldSerial<{
 export type Field_custom_value<T> = T
 
 // #region $Types
-export type Field_custom_types<T> = {
+export type Field_custom<T> = {
    $Type: 'custom'
    $Config: Field_custom_config<T>
    $Serial: Field_custom_serial<T>
@@ -47,11 +47,11 @@ export type Field_custom_types<T> = {
    $Unchecked: Field_custom_value<T> | undefined
    $Field: Field_custom<T>
    $Child: never
-   $Reflect: Field_custom_types<T>
+   $Reflect: Field_custom<T>
 }
 
 // #region State
-export class Field_custom<T> extends Field<Field_custom_types<T>> {
+export class Field_custom<T> extends Field<Field_custom<T>> {
    // #region Static
    static readonly type: 'custom' = 'custom'
    static readonly emptySerial: Field_custom_serial<any> = { $: 'custom' }

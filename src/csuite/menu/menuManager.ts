@@ -1,14 +1,10 @@
-import type { MenuTemplate } from './MenuTemplate'
+import type { Menu } from './Menu'
 
-/**
- * Menu MANAGER
- * singleton that aims to holds all menu definitions
- */
+/** Menu MANAGER Centralize every single menu definition */
 class MenuManager {
-   menuTemplates: MenuTemplate<any>[] = []
-   registerMenuTemplate = (menu: MenuTemplate<any>): number => this.menuTemplates.push(menu)
-   getMenuById = (id: string): MenuTemplate<any> | undefined =>
-      this.menuTemplates.find((op) => op.def.id === id)
+   menus: Menu<any>[] = []
+   registerMenu = (menu: Menu<any>): number => this.menus.push(menu)
+   getMenuById = (id: string): Menu<any> | undefined => this.menus.find((op) => op.def.id === id)
 }
 
 export const menuManager = new MenuManager()

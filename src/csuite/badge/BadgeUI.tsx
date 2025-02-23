@@ -23,7 +23,7 @@ export type BadgeProps = {
 } & FrameProps
 
 export const BadgeUI = observer(function BadgeUI_({
-   // own
+   // own props
    hue,
    autoHue,
    chroma,
@@ -46,11 +46,9 @@ export const BadgeUI = observer(function BadgeUI_({
             'whitespace-nowrap rounded px-1',
             hasAction && 'cursor-pointer',
             'w-fit',
-            // 'lh-inside h-inside',
-            // 'h-1/2',
+            'lh-inside h-inside',
             'items-center',
             'select-none',
-            'h-2/3',
          ]}
          hover={hasAction}
          base={{
@@ -70,7 +68,7 @@ export const BadgeUI = observer(function BadgeUI_({
       >
          {linkButton && (
             <Button
-               icon='mdiOpenInNew'
+               icon={IKONS.mdiOpenInNew}
                size='inside'
                square
                subtle

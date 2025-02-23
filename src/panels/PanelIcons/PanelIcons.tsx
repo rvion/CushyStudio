@@ -65,7 +65,7 @@ export const PanelIconUI = observer(function PanelIconUI_(p: NO_PROPS) {
                   // autoResize
                   clearable
                   placeholder='Search...'
-                  icon='mdiMagnify'
+                  icon={IKONS.mdiMagnify}
                   autoFocus
                   getValue={() => uist.query}
                   setValue={(val) =>

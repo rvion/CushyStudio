@@ -11,7 +11,7 @@ export const WidgetPrompt_LineUI = observer(function WidgetPrompt_LineUI_(p: { f
    return null
    //         {/* <Button
    //             onClick={() => cushy.layout.addCustomV2(PromptEditorUI, { promptID: field.id })}
-   //             icon='mdiAbacus'
+   //             icon={IKONS.mdiAbacus}
    //             subtle
    //             square
    //         /> */}

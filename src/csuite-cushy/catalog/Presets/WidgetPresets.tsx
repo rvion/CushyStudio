@@ -36,7 +36,7 @@ export const WidgetPresetsUI = observer(function WidgetPresets({
                   tooltipPlacement='top'
                   subtle
                   borderless
-                  icon='mdiBookOutline'
+                  icon={IKONS.mdiBookOutline}
                   // children={presetCount}
                />
             )

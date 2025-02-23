@@ -128,12 +128,12 @@ export const ImageActionBarUI = observer(function ImageActionBar(p: { img?: Mayb
             <Button // Canvas Button
                onClick={() => img?.openInCanvasEditor()}
                disabled={img == null}
-               icon='mdiVectorSquareEdit'
+               icon={IKONS.mdiVectorSquareEdit}
                borderless
                children='Canvas'
             />
             <Button // Paint Button
-               icon='mdiBrush'
+               icon={IKONS.mdiBrush}
                disabled={img == null}
                borderless
                onClick={() => img?.openInImageEditor()}
@@ -164,7 +164,7 @@ export const ImageActionBarUI = observer(function ImageActionBar(p: { img?: Mayb
             <Button // Delete button
                look='warning'
                tooltip='Delete Image'
-               icon='mdiDeleteForever'
+               icon={IKONS.mdiDeleteForever}
                iconSize='1.2rem'
                onClick={() => {
                   if (img == null) return
@@ -189,7 +189,7 @@ export const ImageActionBarUI = observer(function ImageActionBar(p: { img?: Mayb
             )}
             {/*
                 <InputStringUI
-                    icon='mdiTagEdit'
+                    icon={IKONS.mdiTagEdit}
                     getValue={() => img?.data.tags ?? ''}
                     setValue={(next) => {
                         if (!img) return

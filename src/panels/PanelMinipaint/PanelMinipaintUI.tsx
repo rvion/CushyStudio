@@ -29,7 +29,7 @@ export const PanelMinipaintUI = observer(function PanelMinipaintUI_(p: PanelMini
                <Button
                   tw='join-item'
                   size='sm'
-                  icon='mdiContentSave'
+                  icon={IKONS.mdiContentSave}
                   look='primary'
                   base={{ hue: knownOKLCHHues.success }}
                   onClick={() => runInAction(() => uist.saveImage())}
@@ -39,7 +39,7 @@ export const PanelMinipaintUI = observer(function PanelMinipaintUI_(p: PanelMini
                <Button
                   // active={Boolean(uist.autoSave)}
                   // tw={['self-start', uist.autoSave ? 'btn-active' : null]}
-                  icon='mdiRepeat'
+                  icon={IKONS.mdiRepeat}
                   loading={Boolean(uist.autoSave)}
                   onClick={() => uist.toggleAutoSave()}
                >

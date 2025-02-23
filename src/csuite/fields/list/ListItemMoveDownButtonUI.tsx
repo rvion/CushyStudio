@@ -25,7 +25,7 @@ export const ListItemMoveDownButtonUI = observer(function ListItemMoveDownButton
          borderless
          subtle
          size='xs'
-         icon='mdiArrowDown'
+         icon={IKONS.mdiArrowDown}
       />
    )
 })

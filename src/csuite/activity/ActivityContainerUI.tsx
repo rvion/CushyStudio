@@ -1,7 +1,7 @@
 import type { Routine } from './Routine'
+import { useRef, type CSSProperties, type ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
-import { type CSSProperties, type ReactNode, useRef } from 'react'
 
 import { ModalShellUI } from '../../csuite/modal/ModalShell'
 import { computePlacement } from '../../csuite/reveal/RevealPlacement'
@@ -26,13 +26,12 @@ export const ActivityContainerUI = observer(function ActivityContainerUI_(p: {
             //
             activity.placement ?? 'screen',
             target.getBoundingClientRect(),
-            shellRef.current?.getBoundingClientRect() ?? null,
+            shellRef?.current?.getBoundingClientRect() ?? null,
          )
       }
    }
    return (
       <div // whole screen
-         ref={shellRef}
          tabIndex={-1}
          className='$activity-root'
          tw='pointer-events-auto absolute inset-0 h-full w-full'
@@ -90,15 +89,16 @@ export const ActivityContainerUI = observer(function ActivityContainerUI_(p: {
                </div>
             ) : null}
 
-            {/* <div // debug info
+            <div // debug info
                tw='absolute left-10 top-10 [z-index:99999]'
             >
                activity "{activity.title}"
-            </div> */}
+            </div>
 
             <div // activity area
                // 1. when an activity is POPED, we NEED to focus it
                // so events are captured by the activity
+               ref={shellRef}
                tabIndex={-1}
                autoFocus
                // 2. the activity area may not cover the whole screen;

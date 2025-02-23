@@ -10,7 +10,7 @@ import { asComfyNodeSlotName } from '../comfyui/comfyui-types'
 
 export type IEnumListBuilderFn<T extends string> = (
    config?: Omit<Field_selectMany_config_simplified_<T>, 'choices'>,
-) => X.XSelectMany_<T>
+) => Z.XSelectMany_<T>
 
 export type IEnumListBuilder = {
    // 💬 2024-08-26 rvion:

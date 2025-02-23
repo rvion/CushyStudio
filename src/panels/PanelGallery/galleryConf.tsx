@@ -15,19 +15,19 @@ export function useGalleryConf(): GalleryConf {
 // type GalleryConfData = ReturnType<typeof GalleryConfDataSchema>
 
 // alt 2. copy paste the explicit type for speedup
-type GalleryConfData = X.XGroup<{
-   defaultSort: X.XSelectOne_<'createdAt' | 'updatedAt'>
-   gallerySize: X.XNumber
-   galleryMaxImages: X.XNumber
-   galleryBgColor: X.XOptional<X.XColor>
-   galleryHoverOpacity: X.XNumber
-   showPreviewInFullScreen: X.XBool
-   onlyShowBlurryThumbnails: X.XBool
-   filterPath: X.XString
-   filterTag: X.XString
-   filterStar: X.XBool
-   filterAppName: X.XOptional<X.XSelectOne<{ id: CushyAppID; label: string }, CushyAppID>>
-   enableStepGrouping: X.XBool
+type GalleryConfData = Z.XGroup<{
+   defaultSort: Z.XSelectOne_<'createdAt' | 'updatedAt'>
+   gallerySize: Z.XNumber
+   galleryMaxImages: Z.XNumber
+   galleryBgColor: Z.XOptional<Z.XColor>
+   galleryHoverOpacity: Z.XNumber
+   showPreviewInFullScreen: Z.XBool
+   onlyShowBlurryThumbnails: Z.XBool
+   filterPath: Z.XString
+   filterTag: Z.XString
+   filterStar: Z.XBool
+   filterAppName: Z.XOptional<Z.XSelectOne<{ id: CushyAppID; label: string }, CushyAppID>>
+   enableStepGrouping: Z.XBool
 }>
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type

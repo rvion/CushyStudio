@@ -12,7 +12,7 @@ import { useEffectAction } from '../utils/useEffectAction'
 export function useSyncForwardedRef(
    //
    forwaredRef: Maybe<ForwardedRef<HTMLDivElement>>,
-   localRef: RefObject<HTMLDivElement>,
+   localRef: RefObject<HTMLDivElement | null>,
 ): void {
    useEffectAction(() => {
       if (forwaredRef == null) return

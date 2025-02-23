@@ -25,6 +25,6 @@ export const WidgetEnum_SelectUI = observer(function WidgetEnum_SelectUI_(p: { f
    )
    // <>
    //     {/* <InstallModelBtnUI widget={widget} modelFolderPrefix={} /> */}
-   //     <Button icon='mdiUndoVariant' disabled={!widget.hasChanges} onClick={() => widget.reset()}></Button>
+   //     <Button icon={IKONS.mdiUndoVariant} disabled={!widget.hasChanges} onClick={() => widget.reset()}></Button>
    // </>
 })

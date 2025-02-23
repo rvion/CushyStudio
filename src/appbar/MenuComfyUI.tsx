@@ -32,7 +32,7 @@ const menuDivider = (
          tw='flex' // TODO(bird_d: JOINER)
       >
          <Button
-            icon='mdiClipboard'
+            icon={IKONS.mdiClipboard}
             onClick={() => {
                void navigator.clipboard.writeText(cushy.configFile.value.mainComfyHostID ?? '')
             }}
@@ -40,7 +40,7 @@ const menuDivider = (
             Primary Host
          </Button>
          <Button
-            icon='mdiFolderOpen'
+            icon={IKONS.mdiFolderOpen}
             onClick={(ev) => {
                ev.stopPropagation()
                ev.preventDefault()
@@ -62,9 +62,9 @@ const menuDivider = (
 //             title='ComfyUI'
 //             content={() => (
 //                 <>
-//                     <MenuItem onClick={() => st.layout.open('ComfyUI', {})} label='ComfyUI' icon={'cdiNodes'} />
+//                     <MenuItem onClick={() => st.layout.open('ComfyUI', {})} label='ComfyUI' icon={IKONS.cdiNodes} />
 //                     <MenuItem //
-//                         icon='mdiMagnify'
+//                         icon={IKONS.mdiMagnify}
 //                         onClick={() => st.layout.open('ComfyUINodeExplorer', {})}
 //                         label='Nodes Explorer'
 //                     />
@@ -75,7 +75,7 @@ const menuDivider = (
 //                             subtle
 //                             borderless
 //                             onClick={() => cushy.layout.open('Hosts', {})}
-//                             icon='mdiOpenInApp'
+//                             icon={IKONS.mdiOpenInApp}
 //                             children='Hosts'
 //                         />
 //                     </MenuDivider>
@@ -93,13 +93,13 @@ const menuDivider = (
 //     const isMain = host.id === cushy.configFile.value.mainComfyHostID
 //     return (
 //         <MenuItem //
-//             icon='mdiServerNetwork'
+//             icon={IKONS.mdiServerNetwork}
 //             // icon={isMain ? 'mdiServerNetwork' : null}
 //             onClick={() => host.electAsPrimary()}
 //             afterShortcut={
 //                 <Button
 //                     subtle
-//                     icon='cdiNodes'
+//                     icon={IKONS.cdiNodes}
 //                     onClick={(ev) => {
 //                         ev.preventDefault()
 //                         ev.stopPropagation()

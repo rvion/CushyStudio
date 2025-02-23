@@ -1,9 +1,11 @@
-import type { BaseSchema } from './BaseSchema'
+import type { Field_group } from '../fields/group/FieldGroup'
+import type { CSchema } from './CSchema'
 import type { IBuilder } from './builders/IBuilder'
 import type { DraftLike } from './Draft'
 import type { EntityConfig } from './Entity'
+import type { SchemaDict } from './SchemaDict'
 
-import { runInAction } from 'mobx'
+import { makeObservable, observable, runInAction } from 'mobx'
 import { type DependencyList, useEffect, useMemo } from 'react'
 
 import { getGlobalRepository, type Repository } from './Repository'
@@ -23,25 +25,54 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
    constructor(builder: BUILDER, repository?: Repository) {
       this.repository = repository ?? getGlobalRepository()
       this.builder = builder
+      makeObservable(this, {
+         builder: observable.ref,
+         repository: observable.ref,
+      })
+   }
+
+   /**
+    * LEGACY API; TYPES ARE COMPLICATED DUE TO MAINTAINING BACKWARD COMPAT
+    * @deprecated
+    */
+   fields<FIELDS extends SchemaDict>(
+      schemaExt: (form: BUILDER) => FIELDS,
+      entityConfig: EntityConfig<CSchema<Field_group<NoInfer<FIELDS>>>> = { name: 'unnamed' },
+   ): Field_group<FIELDS> {
+      const schema = this.builder.group({
+         label: false,
+         items: schemaExt(this.builder),
+         collapsed: false,
+         onSerialChange: entityConfig.onSerialChange,
+         onValueChange: entityConfig.onValueChange,
+      })
+
+      // 👇 🔴 CALL CREATE INSTEAD
+      return (schema as any).instanciate(
+         //
+         this.repository,
+         null,
+         null,
+         '$',
+         entityConfig.serial?.(),
+      )
    }
 
    // #region Creation
    /** simple alias to create a new Document */
-   document<SCHEMA extends BaseSchema>(
+   document<SCHEMA extends CSchema>(
       schemaExt: SCHEMA | ((form: BUILDER) => SCHEMA),
       entityConfig: EntityConfig<NoInfer<SCHEMA>> = {},
    ): SCHEMA['$Field'] {
-      let schema: SCHEMA = this.evalSchema(schemaExt)
-      if (entityConfig.onSerialChange || entityConfig.onValueChange)
-         schema = schema.withConfig({
-            onSerialChange: entityConfig.onSerialChange,
-            onValueChange: entityConfig.onValueChange,
-         })
-      return schema.create(entityConfig.serial?.(), this.repository)
+      const schema: SCHEMA = this.evalSchema(schemaExt)
+      const doc = schema.create(entityConfig.serial?.(), this.repository)
+      if (entityConfig.onSerialChange != null) doc.onSerialChanges(entityConfig.onSerialChange)
+      if (entityConfig.onValueChange != null) doc.onSerialChanges(entityConfig.onValueChange)
+      return doc
    }
 
    /** simple alias to create a new Document */
-   draft<SCHEMA extends BaseSchema>(
+   draft<SCHEMA extends CSchema>(
       schemaExt: SCHEMA | ((form: BUILDER) => SCHEMA),
       entityConfig: EntityConfig<NoInfer<SCHEMA>> = {},
    ): DraftLike<SCHEMA['$Field']> {
@@ -57,9 +88,9 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
     * | on the DependencyList provided as 3rd argument.
     * | // TODO: change that ?
     */
-   use<SCHEMA extends BaseSchema>(
+   use<SCHEMA extends CSchema>(
       schemaExt: SCHEMA | ((form: BUILDER) => SCHEMA),
-      entityConfig: EntityConfig<NoInfer<SCHEMA>> = {},
+      entityConfig: EntityConfig<SCHEMA> = {},
       deps: DependencyList = [],
    ): SCHEMA['$Field'] {
       const doc = useMemo(() => {
@@ -81,13 +112,29 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
       return doc
    }
 
+   // this is not much more than a useMemo(() => new Prez(field))...
+   usePrez<SCHEMA extends CSchema>(
+      fieldOrSchema: SCHEMA['$Field'] | SCHEMA,
+      conf:
+         | RENDERER.FieldRenderArgs<SCHEMA['$Field']>
+         | ((fo: RENDERER.Prez<SCHEMA>) => RENDERER.Prez<SCHEMA>) = {},
+      deps: DependencyList = [],
+   ): RENDERER.Prez<SCHEMA> {
+      const prez = useMemo(() => {
+         if (typeof conf === 'function') return conf(globalThis.RENDERER.makePrez(fieldOrSchema))
+         return globalThis.RENDERER.makePrez(fieldOrSchema, conf)
+      }, [...deps])
+
+      return prez
+   }
+
    /**
     * same as `use` but dispose the document when the component unmount.
     *
     * @since 2024-09-19
     * @see {@link use}
     */
-   useDisposable<SCHEMA extends BaseSchema>(
+   useDisposable<SCHEMA extends CSchema>(
       schemaExt: SCHEMA | ((form: BUILDER) => SCHEMA),
       entityConfig: EntityConfig<NoInfer<SCHEMA>> = {},
       deps: DependencyList = [],
@@ -98,7 +145,7 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
       return doc
    }
 
-   useDraft<SCHEMA extends BaseSchema>(
+   useDraft<SCHEMA extends CSchema>(
       schemaExt: SCHEMA | ((form: BUILDER) => SCHEMA),
       entityConfig: EntityConfig<NoInfer<SCHEMA>> = {},
       deps: DependencyList = [],
@@ -113,7 +160,7 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
     * @see {@link useDraft}
     * @see {@link use}
     */
-   useDisposableDraft<SCHEMA extends BaseSchema>(
+   useDisposableDraft<SCHEMA extends CSchema>(
       schemaExt: SCHEMA | ((form: BUILDER) => SCHEMA),
       entityConfig: EntityConfig<NoInfer<SCHEMA>> = {},
       deps: DependencyList = [],
@@ -122,28 +169,9 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
    }
 
    /** simple way to defined forms and in react components */
-   useLocalstorage<SCHEMA extends BaseSchema>(
+   useLocalstorage<SCHEMA extends CSchema>(
       key: string,
       schemaExt: SCHEMA | ((form: BUILDER) => SCHEMA),
-      deps: DependencyList = [],
-   ): SCHEMA['$Field'] {
-      return this.useLocalstorage_persistOnlyWhen(key, schemaExt, () => true, deps)
-   }
-
-   /** simple way to defined forms and in react components */
-   useLocalstorage_persistOnlyWhenValid<SCHEMA extends BaseSchema>(
-      key: string,
-      schemaExt: SCHEMA | ((form: BUILDER) => SCHEMA),
-      deps: DependencyList = [],
-   ): SCHEMA['$Field'] {
-      return this.useLocalstorage_persistOnlyWhen(key, schemaExt, (doc) => doc.isValid, deps)
-   }
-
-   /** simple way to defined forms and in react components */
-   useLocalstorage_persistOnlyWhen<SCHEMA extends BaseSchema>(
-      key: string,
-      schemaExt: SCHEMA | ((form: BUILDER) => SCHEMA),
-      canPersistPredicate: (doc: SCHEMA['$Field']) => boolean,
       deps: DependencyList = [],
    ): SCHEMA['$Field'] {
       let serial: any = null
@@ -156,28 +184,56 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
          /* empty */
       }
 
+      const finalDeps = [key, this.builder._uid, ...deps]
       return this.use(
          schemaExt,
          {
             serial: () => serial,
             onSerialChange: (root) => {
-               if (!canPersistPredicate(root)) return
                localStorage.setItem(key, JSON.stringify(root.serial))
             },
          },
-         deps,
+         finalDeps,
+      )
+   }
+
+   /** simple way to defined forms and in react components */
+   useLocalstorageOnlyValid<SCHEMA extends CSchema>(
+      key: string,
+      schemaExt: SCHEMA | ((form: BUILDER) => SCHEMA),
+      deps: DependencyList = [],
+   ): SCHEMA['$Field'] {
+      let serial: any = null
+
+      try {
+         const prev = localStorage.getItem(key)
+         const parsed = prev ? JSON.parse(prev) : null
+         serial = parsed
+      } catch {
+         /* empty */
+      }
+
+      const finalDeps = [key, this.builder._uid, ...deps]
+      return this.use(
+         schemaExt,
+         {
+            serial: () => serial,
+            onSerialChange: (root) => {
+               if (root.isValid) localStorage.setItem(key, JSON.stringify(root.serial))
+            },
+         },
+         finalDeps,
       )
    }
 
    // #region misc
    /** simple alias to create a new Form */
-   define<SCHEMA extends BaseSchema>(schemaFn: (form: BUILDER) => SCHEMA): SCHEMA {
+   define<SCHEMA extends CSchema>(schemaFn: (form: BUILDER) => SCHEMA): SCHEMA {
       return schemaFn(this.builder)
    }
-   schema = <T extends BaseSchema>(fn: (form: BUILDER) => T): T => fn(this.builder)
 
    /** eval schema if it's a function */
-   private evalSchema<SCHEMA extends BaseSchema>(buildFn: SCHEMA | ((form: BUILDER) => SCHEMA)): SCHEMA {
+   private evalSchema<SCHEMA extends CSchema>(buildFn: SCHEMA | ((form: BUILDER) => SCHEMA)): SCHEMA {
       if (typeof buildFn === 'function') return buildFn(this.builder as BUILDER)
       return buildFn
    }

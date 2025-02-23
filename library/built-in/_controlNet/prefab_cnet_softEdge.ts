@@ -3,19 +3,19 @@ import type { OutputFor } from '../_prefabs/_prefabs'
 import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
 
 // 🅿️ SoftEdge FORM ===================================================
-export type UI_subform_SoftEdge = X.XGroup<{
+export type UI_subform_SoftEdge = Z.XGroup<{
    preprocessor: UI_subform_SoftEdge_Preprocessor
-   cnet_model_name: X.XEnum<'ControlNetLoader.control_net_name'>
-   strength: X.XNumber
-   advanced: X.XGroup<{
-      startAtStepPercent: X.XNumber
-      endAtStepPercent: X.XNumber
-      crop: X.XEnum<'LatentUpscale.crop'>
-      upscale_method: X.XEnum<'ImageScale.upscale_method'>
+   cnet_model_name: Z.XEnum<'ControlNetLoader.control_net_name'>
+   strength: Z.XNumber
+   advanced: Z.XGroup<{
+      startAtStepPercent: Z.XNumber
+      endAtStepPercent: Z.XNumber
+      crop: Z.XEnum<'LatentUpscale.crop'>
+      upscale_method: Z.XEnum<'ImageScale.upscale_method'>
    }>
 }>
 export function ui_subform_SoftEdge(): UI_subform_SoftEdge {
-   const form: X.Builder = getCurrentForm()
+   const form: Z.Builder = getCurrentForm()
    return form
       .group({
          label: 'SoftEdge',
@@ -36,13 +36,13 @@ export function ui_subform_SoftEdge(): UI_subform_SoftEdge {
 }
 
 // ====================================================================================
-export type UI_subform_SoftEdge_Preprocessor = X.XChoice<{
-   None: X.XEmpty
+export type UI_subform_SoftEdge_Preprocessor = Z.XChoice<{
+   None: Z.XEmpty
    HED: UI_subform_SoftEdge_Preprocessor_Options
    Pidinet: UI_subform_SoftEdge_Preprocessor_Options
 }>
 export function ui_subform_SoftEdge_Preprocessor(): UI_subform_SoftEdge_Preprocessor {
-   const form: X.Builder = getCurrentForm()
+   const form: Z.Builder = getCurrentForm()
    return form.choice(
       {
          None: form.empty(),
@@ -59,12 +59,12 @@ export function ui_subform_SoftEdge_Preprocessor(): UI_subform_SoftEdge_Preproce
 }
 
 // ====================================================================================
-export type UI_subform_SoftEdge_Preprocessor_Options = X.XGroup<{
-   safe: X.XBool
-   saveProcessedImage: X.XBool
+export type UI_subform_SoftEdge_Preprocessor_Options = Z.XGroup<{
+   safe: Z.XBool
+   saveProcessedImage: Z.XBool
 }>
 export function ui_subform_SoftEdge_Preprocessor_Options(
-   form: X.Builder,
+   form: Z.Builder,
 ): UI_subform_SoftEdge_Preprocessor_Options {
    return form.group({
       label: 'Settings',

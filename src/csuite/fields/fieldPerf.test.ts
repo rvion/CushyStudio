@@ -4,13 +4,13 @@ import { simpleBuilder } from '../SimpleFactory'
 
 // #region test case
 const b = simpleBuilder
-const makeDoc = (): S.SGroup<{
-   a: S.SString
-   b: S.SString
-   arr: S.SList<
-      S.SGroup<{
-         x: S.SString
-         y: S.SNumber
+const makeDoc = (): Z.SGroup<{
+   a: Z.SString
+   b: Z.SString
+   arr: Z.SList<
+      Z.SGroup<{
+         x: Z.SString
+         y: Z.SNumber
       }>
    >
 }> => {
@@ -43,7 +43,7 @@ bench
    .add('field', () => {
       schema2.create()
    })
-   // .todo('unimplemented bench')
+// .todo('unimplemented bench')
 
 // await bench.warmup() // make results more reliable, ref: https://github.com/tinylibs/tinybench/pull/50
 await bench.run()

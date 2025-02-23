@@ -43,7 +43,7 @@ export function _cushySDXLLayout(): Maybe<RenderRule<$CushySDXLUI['$Field']>> {
       //    },
       // })
 
-      ui.set<Field_list<X.XGroup<{ enabled: X.XBool; name: X.XString; prompt: X.XPrompt }>>>(
+      ui.set<Field_list<Z.XGroup<{ enabled: Z.XBool; name: Z.XString; prompt: Z.XPrompt }>>>(
          '@list..@prompt^^',
          {
             Header: false,

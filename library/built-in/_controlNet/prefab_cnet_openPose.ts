@@ -3,20 +3,20 @@ import type { OutputFor } from '../_prefabs/_prefabs'
 import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
 
 // 🅿️ OPEN POSE FORM ===================================================
-export type UI_subform_OpenPose = X.XGroup<{
+export type UI_subform_OpenPose = Z.XGroup<{
    preprocessor: UI_subform_OpenPose_Preprocessor
-   cnet_model_name: X.XEnum<'ControlNetLoader.control_net_name'>
-   strength: X.XNumber
-   advanced: X.XGroup<{
-      startAtStepPercent: X.XNumber
-      endAtStepPercent: X.XNumber
-      crop: X.XEnum<'LatentUpscale.crop'>
-      upscale_method: X.XEnum<'ImageScale.upscale_method'>
+   cnet_model_name: Z.XEnum<'ControlNetLoader.control_net_name'>
+   strength: Z.XNumber
+   advanced: Z.XGroup<{
+      startAtStepPercent: Z.XNumber
+      endAtStepPercent: Z.XNumber
+      crop: Z.XEnum<'LatentUpscale.crop'>
+      upscale_method: Z.XEnum<'ImageScale.upscale_method'>
    }>
 }>
 
 export function ui_subform_OpenPose(): UI_subform_OpenPose {
-   const form: X.Builder = getCurrentForm()
+   const form: Z.Builder = getCurrentForm()
    return form
       .fields(
          {
@@ -44,26 +44,26 @@ export function ui_subform_OpenPose(): UI_subform_OpenPose {
 
 // ================================================================================================
 
-type UI_subform_OpenPose_Preprocessor = X.XChoice<{
-   None: X.XEmpty
-   DWPose: X.XGroup<{
-      detect_body: X.XBool
-      detect_face: X.XBool
-      detect_hand: X.XBool
-      bbox_detector: X.XEnum<'controlnet_aux.DWPreprocessor.bbox_detector'> // 'DWPreprocessor_Provider_for_SEGS_$3$3Inspire_bbox_detector'
-      pose_estimator: X.XEnum<'controlnet_aux.DWPreprocessor.pose_estimator'> // 'DWPreprocessor_Provider_for_SEGS_$3$3Inspire_pose_estimator'
-      saveProcessedImage: X.XBool
+type UI_subform_OpenPose_Preprocessor = Z.XChoice<{
+   None: Z.XEmpty
+   DWPose: Z.XGroup<{
+      detect_body: Z.XBool
+      detect_face: Z.XBool
+      detect_hand: Z.XBool
+      bbox_detector: Z.XEnum<'controlnet_aux.DWPreprocessor.bbox_detector'> // 'DWPreprocessor_Provider_for_SEGS_$3$3Inspire_bbox_detector'
+      pose_estimator: Z.XEnum<'controlnet_aux.DWPreprocessor.pose_estimator'> // 'DWPreprocessor_Provider_for_SEGS_$3$3Inspire_pose_estimator'
+      saveProcessedImage: Z.XBool
    }>
-   OpenPose: X.XGroup<{
-      detect_body: X.XBool
-      detect_face: X.XBool
-      detect_hand: X.XBool
-      saveProcessedImage: X.XBool
+   OpenPose: Z.XGroup<{
+      detect_body: Z.XBool
+      detect_face: Z.XBool
+      detect_hand: Z.XBool
+      saveProcessedImage: Z.XBool
    }>
 }>
 
 function ui_subform_OpenPose_Preprocessor(): UI_subform_OpenPose_Preprocessor {
-   const form: X.Builder = getCurrentForm()
+   const form: Z.Builder = getCurrentForm()
    return form.choice(
       {
          None: form.empty(),

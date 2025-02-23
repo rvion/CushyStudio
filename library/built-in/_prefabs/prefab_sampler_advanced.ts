@@ -3,65 +3,65 @@ import type { OutputFor } from './_prefabs'
 
 import { run_prompt } from './prefab_prompt'
 
-export type UI_Sampler_Advanced = X.XGroup<{
-   sampler_name: X.XEnum<'KSampler.sampler_name'>
-   guidanceType: X.XChoice<{
-      CFG: X.XNumber
-      DualCFG: X.XGroup<{
-         cfg: X.XNumber
-         cfg_conds2_negative: X.XNumber
-         dualCFGPositive2: X.XPrompt
+export type UI_Sampler_Advanced = Z.XGroup<{
+   sampler_name: Z.XEnum<'KSampler.sampler_name'>
+   guidanceType: Z.XChoice<{
+      CFG: Z.XNumber
+      DualCFG: Z.XGroup<{
+         cfg: Z.XNumber
+         cfg_conds2_negative: Z.XNumber
+         dualCFGPositive2: Z.XPrompt
       }>
-      PerpNeg: X.XGroup<{
-         cfg: X.XNumber
-         negCfg: X.XNumber
-      }>
-   }>
-   sigmasType: X.XChoice<{
-      basic: X.XGroup<{
-         denoise: X.XNumber
-         steps: X.XNumber
-         scheduler: X.XEnum<'KSampler.scheduler'>
-      }>
-      AlignYourStep: X.XGroup<{
-         denoise: X.XNumber
-         steps: X.XNumber
-         modelType: X.XEnum<'AlignYourStepsScheduler.model_type'>
-      }>
-      karrasCustom: X.XGroup<{
-         steps: X.XNumber
-         sigma_max: X.XNumber
-         sigma_min: X.XNumber
-         rho: X.XNumber
-      }>
-      ExponentialCustom: X.XGroup<{
-         steps: X.XNumber
-         sigma_max: X.XNumber
-         sigma_min: X.XNumber
-      }>
-      polyexponentialCustom: X.XGroup<{
-         steps: X.XNumber
-         sigma_max: X.XNumber
-         sigma_min: X.XNumber
-         rho: X.XNumber
-      }>
-      SDTurbo: X.XGroup<{
-         steps: X.XNumber
-         denoise: X.XNumber
-      }>
-      VPScheduler: X.XGroup<{
-         steps: X.XNumber
-         beta_d: X.XNumber
-         beta_min: X.XNumber
-         eps_s: X.XNumber
+      PerpNeg: Z.XGroup<{
+         cfg: Z.XNumber
+         negCfg: Z.XNumber
       }>
    }>
-   seed: X.XSeed
-   textEncoderType: X.XChoice<{
-      CLIP: X.XGroup<{}>
-      SDXL: X.XGroup<{}>
-      SD3: X.XGroup<{}>
-      FLUX: X.XGroup<{}>
+   sigmasType: Z.XChoice<{
+      basic: Z.XGroup<{
+         denoise: Z.XNumber
+         steps: Z.XNumber
+         scheduler: Z.XEnum<'KSampler.scheduler'>
+      }>
+      AlignYourStep: Z.XGroup<{
+         denoise: Z.XNumber
+         steps: Z.XNumber
+         modelType: Z.XEnum<'AlignYourStepsScheduler.model_type'>
+      }>
+      karrasCustom: Z.XGroup<{
+         steps: Z.XNumber
+         sigma_max: Z.XNumber
+         sigma_min: Z.XNumber
+         rho: Z.XNumber
+      }>
+      ExponentialCustom: Z.XGroup<{
+         steps: Z.XNumber
+         sigma_max: Z.XNumber
+         sigma_min: Z.XNumber
+      }>
+      polyexponentialCustom: Z.XGroup<{
+         steps: Z.XNumber
+         sigma_max: Z.XNumber
+         sigma_min: Z.XNumber
+         rho: Z.XNumber
+      }>
+      SDTurbo: Z.XGroup<{
+         steps: Z.XNumber
+         denoise: Z.XNumber
+      }>
+      VPScheduler: Z.XGroup<{
+         steps: Z.XNumber
+         beta_d: Z.XNumber
+         beta_min: Z.XNumber
+         eps_s: Z.XNumber
+      }>
+   }>
+   seed: Z.XSeed
+   textEncoderType: Z.XChoice<{
+      CLIP: Z.XGroup<{}>
+      SDXL: Z.XGroup<{}>
+      SD3: Z.XGroup<{}>
+      FLUX: Z.XGroup<{}>
    }>
 }>
 
@@ -75,7 +75,7 @@ export function ui_sampler_advanced(p?: {
    startCollapsed?: boolean
    sharedSampler?: boolean
 }): UI_Sampler_Advanced {
-   const form: X.Builder = getCurrentForm()
+   const form: Z.Builder = getCurrentForm()
    return form.fields(
       {
          sampler_name: p?.sharedSampler

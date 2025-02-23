@@ -1,4 +1,6 @@
-import { beforeEach, describe, expect, it } from 'bun:test'
+import type { Field_list_ItemID } from '../../fields/list/FieldList'
+
+import { beforeEach, describe, expect, it } from 'vitest'
 
 import { simpleBuilder as b, simpleFactory } from '../../index'
 import { expectJSON } from './utils/expectJSON'
@@ -36,7 +38,7 @@ describe('model links', () => {
          },
       )
 
-      const DEFAULT_SERIAL: (typeof S)['$Serial'] = {
+      const DEFAULT_SERIAL: (typeof S)['$serial'] = {
          $: 'group',
          values_: {
             int: { $: 'number', value: 0 },
@@ -44,6 +46,11 @@ describe('model links', () => {
             bool: { $: 'bool', value: false },
             list: {
                $: 'list',
+               keys: [
+                  'UUID1' as Field_list_ItemID,
+                  'UUID2' as Field_list_ItemID,
+                  'UUID3' as Field_list_ItemID,
+               ],
                items_: [
                   { $: 'number', value: 0 },
                   { $: 'number', value: 0 },
@@ -112,7 +119,7 @@ describe('model links', () => {
       })
       r.endRecording()
       expect(totalRootSerialChanged).toBe(3)
-      expect(e.value.list.length).toBe(3)
+      expect(e.value.list).toHaveLength(3)
       expect(e.toValueJSON().list).toMatchObject([0, 0, 0])
 
       // #region samve value assignment
@@ -147,17 +154,17 @@ describe('model links', () => {
          list: [1, 0, 3, 4],
       }
       expect(r.endRecording()).toEqual([
-         '🟢 create     $.list.3',
-         '👛 update     $.list.0',
+         expect.stringMatching(/🟢 create\s{5}\$\.list\.[a-z0-9_-]/i),
+         '👛 update     $.list.UUID1',
          // '👛 update     $.list.1',
-         '👛 update     $.list.2',
+         '👛 update     $.list.UUID3',
          '👛 update     $.int',
          '👛 update     $.str',
          '👛 update     $.list',
          '👛 update     $',
-         '💙 publish    $.list.0',
+         '💙 publish    $.list.UUID1',
          // '💙 publish    $.list.1',
-         '💙 publish    $.list.2',
+         '💙 publish    $.list.UUID3',
          '💙 publish    $.int',
          '💙 publish    $.str',
          '💙 publish    $.list',
@@ -180,11 +187,11 @@ describe('model links', () => {
       // const pathsTouched = [...tct!.updatedFields.entries()].map(([field, mode]) => ({ path: field.path, mode }))
       expect(tct?.summary1).toMatchObject({
          created: [],
-         updated: ['$.list.1', '$.list', '$'],
+         updated: ['$.list.UUID2', '$.list', '$'],
          deleted: [],
       })
       expect(tct?.summary2).toMatchObject([
-         { path: '$.list.1', type: 'update' },
+         { path: '$.list.UUID2', type: 'update' },
          { path: '$.list', type: 'update' },
          { path: '$', type: 'update' },
       ])

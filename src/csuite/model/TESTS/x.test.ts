@@ -1,4 +1,5 @@
-import { describe, expect, it } from 'bun:test'
+/* eslint-disable vitest/require-to-throw-message */
+import { describe, expect, it } from 'vitest'
 
 import { simpleBuilder as b } from '../../simple/SimpleFactory'
 import { expectJSON } from './utils/expectJSON'
@@ -10,11 +11,8 @@ describe('default values', () => {
    describe('createDraft', () => {
       it('works', () => {
          expect(() => S1.createDraft().validateOrNull()).not.toThrow()
-         expect(() => S1.createDraftAlt().validateOrNull()).not.toThrow()
-         expect(S1.createDraft().validateOrNull()).toBeNil()
-         expect(S1.createDraftAlt().validateOrNull()).toBeNil()
+         expect(S1.createDraft().validateOrNull()).toBeNull()
          expect(() => S1.createDraft().validateOrThrow()).toThrow()
-         expect(() => S1.createDraftAlt().validateOrThrow()).toThrow()
       })
    })
 
@@ -22,7 +20,7 @@ describe('default values', () => {
       it('should not throw time despite missing values', () => {
          const E1 = S1.create()
          expect(() => E1.value).toThrow()
-         expect(E1.value_unchecked).toBeNil()
+         expect(E1.value_unchecked).toBeUndefined()
          expect(E1.value_or_zero).toBe(false)
 
          const E2 = S2.create()
@@ -34,11 +32,11 @@ describe('default values', () => {
 
    describe('schema.createOrThrowIfInvalid', () => {
       it('throw at creation time', () => {
-         expect(() => S1.createOrThrowIfInvalid()).toThrow()
+         expect(() => S1.create().validateOrThrow()).toThrow()
       })
 
-      it('throw at creation time', () => {
-         expect(() => S2.createOrThrowIfInvalid()).toThrow()
+      it('throw at creation time (part 2)', () => {
+         expect(() => S2.create().validateOrThrow()).toThrow()
       })
    })
 })

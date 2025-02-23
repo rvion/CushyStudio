@@ -25,13 +25,13 @@ export const AppDraftsQuickListUI = observer(function AppDraftsQuickListUI_(p: {
             <Button
                tw={[app.isFavorite ? '!text-yellow-500' : null, '!peer-hover:text-red-500']}
                onClick={() => app.setFavorite(!app.isFavorite)}
-               icon='mdiStar'
+               icon={IKONS.mdiStar}
                square
             />
             <span tw='flex-grow truncate text-center'>{app.name}</span>
             <Button //
                onClick={() => app.createDraft()}
-               icon='mdiPlus'
+               icon={IKONS.mdiPlus}
                square
             />
          </Frame>
@@ -55,7 +55,7 @@ export const AppDraftsQuickListUI = observer(function AppDraftsQuickListUI_(p: {
                      getValue={() => filterText}
                      placeholder='Filter Drafts'
                   ></InputStringUI>
-                  <Button icon='mdiCancel' onClick={(ev) => setFilterText('')}></Button>
+                  <Button icon={IKONS.mdiCancel} onClick={(ev) => setFilterText('')}></Button>
                </Frame>
                <Frame //App Grid Container
                   base={{ contrast: -0.1 }}

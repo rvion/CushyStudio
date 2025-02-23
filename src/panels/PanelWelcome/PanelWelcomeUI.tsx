@@ -26,7 +26,7 @@ export const PanelWelcomeUI = observer(function PanelWelcomeUI_(p: {}) {
             </div>
             <div>
                1. First thing first, make sure you have some ComfyUI server you can connect to in the
-               <Button icon='mdiOpenInNew' onClick={() => cushy.layout.open('Hosts', {})}>
+               <Button icon={IKONS.mdiOpenInNew} onClick={() => cushy.layout.open('Hosts', {})}>
                   Hosts
                </Button>
                panel.
@@ -61,8 +61,8 @@ export const PanelWelcomeUI = observer(function PanelWelcomeUI_(p: {}) {
                   </div>
                </div>
                <div>and if you're feeling lost, check the </div>
-               <Button icon='mdiOpenInNew'>SDK examples</Button> or the{' '}
-               <Button icon='mdiOpenInNew'>Documentation</Button> website
+               <Button icon={IKONS.mdiOpenInNew}>SDK examples</Button> or the{' '}
+               <Button icon={IKONS.mdiOpenInNew}>Documentation</Button> website
             </div>
          </section>
       </div>

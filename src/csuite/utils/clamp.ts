@@ -1,8 +1,6 @@
 // UTILS
 
-export const clamp = (v: number, min: number, max: number): number => {
-   return Math.min(Math.max(v, min), max)
-}
+export const clamp = (v: number, min: number, max: number): number => Math.min(Math.max(v, min), max)
 
 /** a clamp function that attempt to return a number no matter what info is missing */
 export const clamp_or_min_or_zero = (

@@ -19,6 +19,8 @@ declare module 'react' {
    }
 }
 
+type AllIkons = import('../csuite/icons/icons').AllIkons
+
 declare global {
    const app: import('../cards/App').GlobalFunctionToDefineAnApp
    const view: import('../cards/App').GlobalFunctionToDefineAView
@@ -33,6 +35,7 @@ declare global {
    const cushy: import('../state/state').STATE
    const UY: WidgetsCatalog
    const defaultRenderRules: RenderRule<Field>
+   const IKONS: AllIkons
 }
 
 declare module 'react' {

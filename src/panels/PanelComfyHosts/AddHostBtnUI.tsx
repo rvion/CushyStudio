@@ -9,7 +9,7 @@ export const AddHostBtnUI = observer(function AddHostBtnUI_(p: {}) {
    return (
       <Button
          tooltip='Add a new Host'
-         icon='mdiPlus'
+         icon={IKONS.mdiPlus}
          look='primary'
          onClick={() => {
             cushy.configFile.update(() => {

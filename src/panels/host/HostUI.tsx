@@ -55,12 +55,12 @@ export const HostUI = observer(function MachineUI_(p: { host: HostL }) {
                />
                <Button
                   look='ghost'
-                  icon='mdiContentDuplicate'
+                  icon={IKONS.mdiContentDuplicate}
                   onClick={() => host.clone({ name: host.data.name + '-clone' })}
                   children='clone'
                />
                <Button
-                  icon='mdiDelete'
+                  icon={IKONS.mdiDelete}
                   // disabled={host.isReadonly}
                   onClick={() => {
                      // if (host.isReadonly) return

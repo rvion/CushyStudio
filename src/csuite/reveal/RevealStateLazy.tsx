@@ -52,7 +52,7 @@ export class RevealStateLazy {
    }
 
    // all of those callbacks are for anchor ----------------------------------------
-   onContextMenu = (ev: React.MouseEvent<unknown>): void => {
+   onContextMenu = (ev: React.MouseEvent): void => {
       if (this.p.trigger === 'rightClick') {
          this.getRevealState().onRightClickAnchor(ev)
       }
@@ -65,10 +65,10 @@ export class RevealStateLazy {
       }
    }
 
-   onClick = (ev: React.MouseEvent<unknown>): void => {
+   onClick = (ev: React.MouseEvent): void => {
       return this.getRevealState().onLeftClickAnchor(ev)
    }
-   onDoubleClick = (ev: React.MouseEvent<unknown>): void => {
+   onDoubleClick = (ev: React.MouseEvent): void => {
       return this.getRevealState().onDoubleClickAnchor(ev)
    }
    // 🧑‍🎤 onMouseDown = (ev: React.MouseEvent<unknown>): void => {
@@ -77,23 +77,23 @@ export class RevealStateLazy {
    // 🧑‍🎤 onMouseUp = (ev: React.MouseEvent<unknown>): void => {
    // 🧑‍🎤     return this.getRevealState().onMouseUpAnchor(ev)
    // 🧑‍🎤 }
-   onAuxClick = (ev: React.MouseEvent<unknown>): void => {
+   onAuxClick = (ev: React.MouseEvent): void => {
       if (ev.button === 1) return this.getRevealState().onMiddleClickAnchor(ev)
       if (ev.button === 2) return this.getRevealState().onRightClickAnchor(ev)
    }
-   onMouseEnter = (ev: React.MouseEvent<unknown>): void => {
+   onMouseEnter = (ev: React.MouseEvent): void => {
       return this.getRevealState().onMouseEnterAnchor(ev)
    }
-   onMouseLeave = (ev: React.MouseEvent<unknown>): void => {
+   onMouseLeave = (ev: React.MouseEvent): void => {
       return this.getRevealState().onMouseLeaveAnchor(ev)
    }
-   onFocus = (ev: React.FocusEvent<unknown>): void => {
+   onFocus = (ev: React.FocusEvent): void => {
       return this.getRevealState().onFocusAnchor(ev)
    }
-   onBlur = (ev: React.FocusEvent<unknown>): void => {
+   onBlur = (ev: React.FocusEvent): void => {
       return this.getRevealState().onBlurAnchor(ev)
    }
-   onKeyDown = (ev: React.KeyboardEvent<Element>): void => {
+   onKeyDown = (ev: React.KeyboardEvent): void => {
       return this.getRevealState().onAnchorKeyDown(ev)
    }
 }

@@ -34,6 +34,7 @@ export type ASTStep =
     | StepFilterType
     | StepFilterCode
     | StepCollect
+    | StepIndex
     | StepBranches
 
 type StepAxis = { type: 'axis'; axis: Axis }
@@ -41,8 +42,10 @@ type StepFilterMountKey = { type: 'mount'; key: string }
 type StepFilterType = { type: 'filterType'; fieldType: string }
 type StepFilterCode = { type: 'filterCode'; filterCode: string }
 type StepCollect = { type: 'collect'; collectCode?: string }
+type StepIndex = { type: 'index'; index: number }
 type StepBranches = { type: 'branches'; branches: ASTStep[][] }
 
+export type FL_RawFieldSelector = Flavor<string, 'FL_RawFieldSelector'>
 const axes: Axis[] = ['$', '.', '>', '^', '<']
 export type Axis =
    | '$' // root
@@ -123,7 +126,7 @@ export class FieldSelector {
                (node) => node.type === (step.fieldType === 'str' ? 'str' : step.fieldType),
             )
          else if (step.type === 'filterCode')
-            candidates = candidates.filter((node) => {
+            candidates = candidates.filter((node): boolean => {
                try {
                   const func = new Function('node', `return ${step.filterCode.replaceAll('@.', 'node.')};`)
                   return func(node)
@@ -134,7 +137,9 @@ export class FieldSelector {
             })
          else if (step.type === 'axis') candidates = this.applyAxis(candidates, step)
          else if (step.type === 'branches') candidates = this.applyBranch(candidates, step)
-         else if (step.type === 'collect') {
+         else if (step.type === 'index') {
+            candidates = candidates.map((c) => c.childrenActive.at(step.index)).filter(Boolean) as Field[]
+         } else if (step.type === 'collect') {
             if (step.collectCode) {
                try {
                   const func = new Function(`return ${step.collectCode};`)
@@ -214,8 +219,9 @@ export class FieldSelector {
       if (char === '{') return this.parseBranches()
       else if (char === '@') return this.parseFilterType()
       else if (char === '=') return this.parseCollector()
+      else if (char === '[') return this.parseIndex()
       else if (char === '?') return this.parseFilterCode()
-      else if (/[a-zA-Z0-9]/.test(char!)) return this.parseFilterKey()
+      else if (/[a-zA-Z0-9_-]/.test(char!)) return this.parseFilterKey()
       else if (axes.includes(char as any)) return this.parseAxisStep()
       else
          this.FAIL(
@@ -275,6 +281,14 @@ export class FieldSelector {
       this.consumeCharOrThrow('=')
       const code: string = this.consumeParenthesisGroup()
       return { type: 'collect', collectCode: code }
+   }
+
+   /** Parses a reducer after '='. */
+   parseIndex(): StepIndex {
+      this.consumeCharOrThrow('[')
+      const index: number = this.consumeNextNumber()
+      this.consumeCharOrThrow(']')
+      return { type: 'index', index }
    }
 
    /** Parses a reducer after '='. */
@@ -348,10 +362,17 @@ export class FieldSelector {
    }
 
    private consumeNextWord(): string {
-      const word = this.consumeWhile((char) => /[a-zA-Z0-9_]/.test(char))
+      const word = this.consumeWhile((char) => /[a-zA-Z0-9_-]/.test(char))
       if (word.length === 0)
          this.FAIL(`Expected word at position ${this.position} in selector "${this.selector}"`)
       return word
+   }
+
+   private consumeNextNumber(): number {
+      const word = this.consumeWhile((char) => /[-0-9_]/.test(char))
+      if (word.length === 0)
+         this.FAIL(`Expected word at position ${this.position} in selector "${this.selector}"`)
+      return parseInt(word.replaceAll('_', ''), 10)
    }
 
    private consumeWhile(check: (char: string) => boolean): string {

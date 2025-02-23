@@ -4,8 +4,8 @@ import {
    schemaModelExtras,
 } from '../_prefabs/prefab_model_extras'
 
-export type $prefabModelSD15andSDXL = X.XGroup<{
-   ckpt_name: X.XEnum<'CheckpointLoaderSimple.ckpt_name'>
+export type $prefabModelSD15andSDXL = Z.XGroup<{
+   ckpt_name: Z.XEnum<'CheckpointLoaderSimple.ckpt_name'>
    extra: $schemaModelExtras
 }>
 

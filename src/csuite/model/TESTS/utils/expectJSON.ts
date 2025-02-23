@@ -1,12 +1,12 @@
-import { expect, type Matchers } from 'bun:test'
+import { type Assertion, expect } from 'vitest'
 
 import { naiveDeepClone } from '../../../utils/naiveDeepClone'
 import { potatoClone } from '../../../utils/potatoClone'
 
-export function expectJSON(a: any): Matchers<any> {
+export function expectJSON<T>(a: T): Assertion<T> {
    return expect(naiveDeepClone(a))
 }
 
-export function expectPotato(a: any): Matchers<any> {
+export function expectPotato<T>(a: T): Assertion<T> {
    return expect(potatoClone(a))
 }

@@ -8,7 +8,7 @@ import { Button } from '../../button/Button'
 //    return (
 //       //TODO (bird_d): FIX UI - Needs to be Button when ref is implemented.
 //       <div ref={ref} onClick={(ev) => p.field.toggleCollapsed()}>
-//          <Button size='input' subtle borderless square icon='mdiDragHorizontalVariant' />
+//          <Button size='input' subtle borderless square icon={IKONS.mdiDragHorizontalVariant} />
 //       </div>
 //    )
 // })
@@ -33,7 +33,7 @@ export const ListItemMoveUpButtonUI = observer(function ListItemMoveUpButtonUI_(
          borderless
          subtle
          size='xs'
-         icon='mdiArrowUp'
+         icon={IKONS.mdiArrowUp}
       />
    )
 })

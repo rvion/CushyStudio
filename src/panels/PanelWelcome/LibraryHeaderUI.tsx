@@ -5,7 +5,7 @@ import { Button } from '../../csuite/button/Button'
 export const IndexAllAppsBtnUI = observer(function IndexAllAppsBtnUI_(p: {}) {
    return (
       <Button //
-         icon='mdiMagnifyScan'
+         icon={IKONS.mdiMagnifyScan}
          look='primary'
          hue={200}
          onClick={cushy.startupFileIndexing}

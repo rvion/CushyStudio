@@ -1,13 +1,13 @@
-export type UI_model_pag = X.XGroup<{
-   include: X.XChoices<{
-      base: X.XGroup<{}>
-      hiRes: X.XGroup<{}>
+export type UI_model_pag = Z.XGroup<{
+   include: Z.XChoices<{
+      base: Z.XGroup<{}>
+      hiRes: Z.XGroup<{}>
    }>
-   scale: X.XNumber
-   adaptiveScale: X.XNumber
+   scale: Z.XNumber
+   adaptiveScale: Z.XNumber
 }>
 
-export const ui_model_pag = (form: X.Builder): UI_model_pag => {
+export const ui_model_pag = (form: Z.Builder): UI_model_pag => {
    return form
       .fields(
          {

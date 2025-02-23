@@ -20,7 +20,7 @@ export const FooterBarUI = observer(function FooterBarUI_(p: FrameProps) {
             tooltip='Show Command Visualizer'
             onValueChange={(next) => (cushy.showCommandHistory = next)}
             value={cushy.showCommandHistory}
-            icon='mdiKeyboard'
+            icon={IKONS.mdiKeyboard}
             toggleGroup='footer-conf'
          />
 

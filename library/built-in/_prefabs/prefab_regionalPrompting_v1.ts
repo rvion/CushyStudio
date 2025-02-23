@@ -1,10 +1,10 @@
 import type { CushySchemaBuilder } from '../../../src/controls/CushyBuilder'
 import type { OutputFor } from './_prefabs'
 
-export type UI_regionalPrompting_v1 = X.XBoard<
-   X.XGroup<{
-      prompt: X.XPrompt
-      strength: X.XNumber
+export type UI_regionalPrompting_v1 = Z.XBoard<
+   Z.XGroup<{
+      prompt: Z.XPrompt
+      strength: Z.XNumber
    }>
 >
 

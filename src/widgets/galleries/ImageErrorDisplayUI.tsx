@@ -21,7 +21,7 @@ export const ImageErrorDisplayUI = observer(function ImageErrorDisplayUI_(p: {
          base={{ chroma: 0.1, hue: 0 }}
          square
       >
-         <Frame square icon='mdiFileAlert' iconSize='80%' />
+         <Frame square icon={IKONS.mdiFileAlert} iconSize='80%' />
          <Frame tw='absolute right-0 top-0 -translate-x-0.5 translate-y-0.5 opacity-80'>
             {p.icon && <IkonOf name={p.icon} />}
          </Frame>

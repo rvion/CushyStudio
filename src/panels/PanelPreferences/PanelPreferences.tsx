@@ -111,7 +111,7 @@ export const PanelPreferencesUI = observer(function Panel_Preferences_(p: PanelP
 const PreferenceTabButtonUI = observer(function PreferenceTabButtonUI_(p: {
    //
    mode: PreferenceMode
-   field: X.SelectOne_<PreferenceMode>
+   field: Z.SelectOne_<PreferenceMode>
 }) {
    return (
       <ToggleButtonUI //

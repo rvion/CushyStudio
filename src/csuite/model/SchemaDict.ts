@@ -1,5 +1,5 @@
-import type { Instanciable } from './Instanciable'
+import type { CSchema } from './CSchema'
 
 export type SchemaDict = {
-   [key: string]: Instanciable
+   [key: string]: CSchema
 }

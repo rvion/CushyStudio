@@ -34,7 +34,7 @@ export const CommandTableUI = observer(function CommandTableUI_(p: {}) {
                         <td tw='flex-1'>{c.label}</td>
                         <td>
                            {c.combos == null ? (
-                              <Frame line disabled icon='mdiCancel'>
+                              <Frame line disabled icon={IKONS.mdiCancel}>
                                  none
                               </Frame>
                            ) : Array.isArray(c.combos) ? (

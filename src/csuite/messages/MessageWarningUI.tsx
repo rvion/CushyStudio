@@ -13,7 +13,7 @@ export const MessageWarningUI = observer(function MessageWarningUI_(p: {
    return (
       <MessageUI //
          type='warning'
-         icon='mdiAlert'
+         icon={IKONS.mdiAlert}
          hue={knownOKLCHHues.warning}
          {...p}
       />

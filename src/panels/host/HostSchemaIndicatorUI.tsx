@@ -55,7 +55,7 @@ export const HostSchemaIndicatorUI = observer(function HostSchemaIndicatorUI_(p:
 
             {/* SIZE */}
             {size === 0 ? (
-               <Button loading={host.isUpdatingSchema} icon='mdiAlertCircle' look='error'>
+               <Button loading={host.isUpdatingSchema} icon={IKONS.mdiAlertCircle} look='error'>
                   empty schema
                </Button>
             ) : (

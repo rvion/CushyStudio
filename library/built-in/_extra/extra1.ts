@@ -11,13 +11,13 @@ import {
 import { ui_rembg_v1, type UI_rembg_v1 } from '../_prefabs/prefab_rembg'
 import { ui_upscaleWithModel } from '../_prefabs/prefab_upscaleWithModel'
 
-export type $extra1 = X.XChoices<{
+export type $extra1 = Z.XChoices<{
    show3d: UI_3dDisplacement
    regionalPrompt: UI_regionalPrompting_v1
    removeBG: UI_rembg_v1
    mask: UI_Mask
    highResFix: UI_HighResFix
-   upscaleWithModel: X.XGroup<{ model: X.XEnum<'UpscaleModelLoader.model_name'> }>
+   upscaleWithModel: Z.XGroup<{ model: Z.XEnum<'UpscaleModelLoader.model_name'> }>
    refine: UI_Refiners
    promtPlus: UI_advancedPrompt
    recursiveImgToImg: UI_recursive

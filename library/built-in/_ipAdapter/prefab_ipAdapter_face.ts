@@ -11,42 +11,42 @@ import { ui_ipadapter_CLIPSelection, ui_subform_IPAdapter_common } from './_ipAd
 import { ui_ipadapter_modelSelection } from './ui_ipadapter_modelSelection'
 
 // 🅿️ IPAdapter FaceID ===================================================
-export type UI_IPAdapterFaceID = X.XGroup<{
-   reinforce: X.XOptional<
-      X.XGroup<{
-         strength: X.XNumber
-         settings: X.XGroup<{
-            extra: X.XList<X.XImage>
-            crop: X.XBool
-            startAtStepPercent: X.XNumber
-            endAtStepPercent: X.XNumber
-            weight_type: X.XEnum<'IPAdapter_plus.IPAdapterAdvanced.weight_type'>
-            embedding_scaling: X.XEnum<'IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'>
-            noise: X.XNumber
-            unfold_batch: X.XBool
+export type UI_IPAdapterFaceID = Z.XGroup<{
+   reinforce: Z.XOptional<
+      Z.XGroup<{
+         strength: Z.XNumber
+         settings: Z.XGroup<{
+            extra: Z.XList<Z.XImage>
+            crop: Z.XBool
+            startAtStepPercent: Z.XNumber
+            endAtStepPercent: Z.XNumber
+            weight_type: Z.XEnum<'IPAdapter_plus.IPAdapterAdvanced.weight_type'>
+            embedding_scaling: Z.XEnum<'IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'>
+            noise: Z.XNumber
+            unfold_batch: Z.XBool
          }>
-         cnet_model_name: X.XEnum<'IPAdapter_plus.IPAdapterModelLoader.ipadapter_file'>
-         help: X.XMarkdown
+         cnet_model_name: Z.XEnum<'IPAdapter_plus.IPAdapterModelLoader.ipadapter_file'>
+         help: Z.XMarkdown
       }>
    >
-   strength: X.XNumber
-   settings: X.XGroup<{
-      extra: X.XList<X.XImage>
-      crop: X.XBool
-      startAtStepPercent: X.XNumber
-      endAtStepPercent: X.XNumber
-      weight_type: X.XEnum<'IPAdapter_plus.IPAdapterAdvanced.weight_type'>
-      embedding_scaling: X.XEnum<'IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'>
-      noise: X.XNumber
-      unfold_batch: X.XBool
+   strength: Z.XNumber
+   settings: Z.XGroup<{
+      extra: Z.XList<Z.XImage>
+      crop: Z.XBool
+      startAtStepPercent: Z.XNumber
+      endAtStepPercent: Z.XNumber
+      weight_type: Z.XEnum<'IPAdapter_plus.IPAdapterAdvanced.weight_type'>
+      embedding_scaling: Z.XEnum<'IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'>
+      noise: Z.XNumber
+      unfold_batch: Z.XBool
    }>
-   help: X.XMarkdown
-   models: X.XGroup<{
-      lora: X.XEnum<'LoraLoader.lora_name'>
-      cnet_model_name: X.XEnum<'IPAdapter_plus.IPAdapterModelLoader.ipadapter_file'>
-      clip_name: X.XEnum<'CLIPVisionLoader.clip_name'>
+   help: Z.XMarkdown
+   models: Z.XGroup<{
+      lora: Z.XEnum<'LoraLoader.lora_name'>
+      cnet_model_name: Z.XEnum<'IPAdapter_plus.IPAdapterModelLoader.ipadapter_file'>
+      clip_name: Z.XEnum<'CLIPVisionLoader.clip_name'>
    }>
-   lora_strength: X.XNumber
+   lora_strength: Z.XNumber
 }>
 
 export function ui_IPAdapterFaceID(): UI_IPAdapterFaceID {

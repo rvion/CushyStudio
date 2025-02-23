@@ -5,22 +5,22 @@ import {
 } from '../../_prefabs/prefab_regionalPrompting_v1'
 import { samplePrompts } from '../../samplePrompts'
 
-export type $PromptList = X.XGroup<{
-   activeIndex: X.XNumber
-   showEditor: X.XBool
-   showOptions: X.XBool
-   prompts: X.XList<
-      X.XGroup<{
-         enabled: X.XBool
-         name: X.XString
-         prompt: X.XPrompt
+export type $PromptList = Z.XGroup<{
+   activeIndex: Z.XNumber
+   showEditor: Z.XBool
+   showOptions: Z.XBool
+   prompts: Z.XList<
+      Z.XGroup<{
+         enabled: Z.XBool
+         name: Z.XString
+         prompt: Z.XPrompt
       }>
    >
-   regionalPrompt: S.SOptional<UI_regionalPrompting_v1>
-   artists: X.XSelectMany_<string>
+   regionalPrompt: Z.SOptional<UI_regionalPrompting_v1>
+   artists: Z.XSelectMany_<string>
 }>
 
-export function promptList(b: X.Builder, options?: { default?: string }): $PromptList {
+export function promptList(b: Z.Builder, options?: { default?: string }): $PromptList {
    const tags = cushy.danbooru.tags
    const artists = tags.filter((t) => t.category === 1).map((t) => t.text)
 

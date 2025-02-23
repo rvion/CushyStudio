@@ -29,25 +29,25 @@ export interface Shape {
 // even when typescript does a great job at inferring them :)
 // will make your vscode go brrrrr.
 
-export type UI_LatentShapeGenerator = X.XGroup<{
-   batchSize: X.XShared<X.Number> | X.XNumber
-   size: X.XShared<X.Size> | X.XSize
-   amountCircle: X.XNumber
-   amountRect: X.XNumber
-   amountStar: X.XNumber
-   amountPolygon: X.XNumber
-   amountRing: X.XNumber
-   amountRainbow: X.XNumber
-   color1: X.XString
-   color2: X.XString
-   colorVariationFactor: X.XNumber
+export type UI_LatentShapeGenerator = Z.XGroup<{
+   batchSize: Z.Shared<Z.Number> | Z.XNumber
+   size: Z.Shared<Z.Size> | Z.XSize
+   amountCircle: Z.XNumber
+   amountRect: Z.XNumber
+   amountStar: Z.XNumber
+   amountPolygon: Z.XNumber
+   amountRing: Z.XNumber
+   amountRainbow: Z.XNumber
+   color1: Z.XString
+   color2: Z.XString
+   colorVariationFactor: Z.XNumber
 }>
 
 // 1. ------------------------------------------------------------------------------------
 export function ui_LatentShapeGenerator(
    //
-   batchSize?: X.XShared<X.Number>,
-   size?: X.XShared<X.Size>,
+   batchSize?: Z.Shared<Z.Number>,
+   size?: Z.Shared<Z.Size>,
 ): UI_LatentShapeGenerator {
    const ui = getCurrentForm()
    return ui.fields(

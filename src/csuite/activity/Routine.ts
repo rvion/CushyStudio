@@ -13,7 +13,6 @@ import { nanoid } from 'nanoid'
  * */
 export class Routine {
    uid: string = nanoid()
-
    constructor(
       public manager: ActivityManager,
       public activity: Activity,

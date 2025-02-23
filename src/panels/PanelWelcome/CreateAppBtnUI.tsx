@@ -20,7 +20,7 @@ export const CreateAppBtnUI = observer(function CreateAppBtnUI_(p: {}) {
          title='Create an app'
          content={(p) => <CreateAppPopupUI closeFn={() => p.reveal.close()} />}
       >
-         <Button look='primary' icon='mdiOpenInNew'>
+         <Button look='primary' icon={IKONS.mdiOpenInNew}>
             Create My App
          </Button>
       </RevealUI>

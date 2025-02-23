@@ -1,10 +1,11 @@
-import { describe, expect, it } from 'bun:test'
+import { describe, expect, it } from 'vitest'
 
 import { naiveDeepClone } from '../utils/naiveDeepClone'
 import { toJSONError } from './toJSONError'
 
 describe('convertThrownObjectToDict', () => {
    // prettier-ignore
+   // eslint-disable-next-line vitest/expect-expect
    it('works with everything', () => {
         assertCanBeTransformedToErrorDict('test')
         assertCanBeTransformedToErrorDict(1)
@@ -31,7 +32,7 @@ describe('convertThrownObjectToDict', () => {
 
 function assertCanBeTransformedToErrorDict(thrown: unknown): void {
    const dict = toJSONError(thrown)
-   expect(dict).toBeObject()
+   expect(typeof dict).toBe('object')
    expect(dict).toMatchObject(naiveDeepClone(dict))
    // console.log(`[🤠]`, JSON.stringify(dict, null, 4))
 }

@@ -1,69 +1,60 @@
-import type { FieldTypes } from '../$FieldTypes'
+import type { FieldConstructor } from '../FieldConstructor'
 import type { SchemaDict } from '../SchemaDict'
 
-import { Field_choices, type Field_choices_config } from '../../fields/choices/FieldChoices'
-import { bang } from '../../utils/bang'
-import { BaseBuilder } from './BaseBuilder'
+import { Field_choices } from '../../fields/choices/FieldChoices'
+import { CSchema } from '../CSchema'
+import { defineSchemaBuilderMixin } from './defineSchemaBuilderMixin'
 
-interface SchemaAndAliasesᐸ_ᐳ extends HKT<FieldTypes> {
-   Choices: HKT
+type Items<T extends SchemaDict> = Field_choices<T>['$config']['items']
+type Config<T extends SchemaDict> = Omit<Field_choices<T>['$config'], 'multi' | 'items'>
+
+// prettier-ignore
+export type BuilderChoicesMixin = {
+   choice<T extends SchemaDict>(items: Items<T>, config?: Config<T>): Z.Union<T>;
+   choices<T extends SchemaDict>(items: Items<T>, config?: Config<NoInfer<T>>): Z.Union<T>;
+   tabs<T extends SchemaDict>(items: Items<T>, config?: Config<T>): Z.Union<T>;
+   choice_<T extends SchemaDict>(items: Items<T>, config?: Config<NoInfer<T>>): Z.Union<T>;
+   choices_<T extends SchemaDict>(items: Items<T>, config?: Config<NoInfer<T>>): Z.Union<T>;
 }
 
-export class BuilderChoices<Schemaᐸ_ᐳ extends SchemaAndAliasesᐸ_ᐳ> extends BaseBuilder<Schemaᐸ_ᐳ> {
-   static fromSchemaClass = BaseBuilder.buildfromSchemaClass(BuilderChoices)
+const BuilderChoicesImpl = (): BuilderChoicesMixin =>
+   defineSchemaBuilderMixin({
+      choice<T extends SchemaDict>(
+         //
+         items: Items<T>,
+         config: Config<T> = {},
+      ): Z.Union<T> {
+         const defaultKey = typeof items === 'function' ? undefined : Object.keys(items)[0]
+         return this.choice_(items, { default: defaultKey, ...config })
+      },
 
-   choice<T extends SchemaDict>(
-      //
-      items: Field_choices_config<T>['items'],
-      config: Omit<Field_choices_config<T>, 'multi' | 'items'> = {},
-   ): Apply<Schemaᐸ_ᐳ['Choices'], T> {
-      return this.choice_(items, { default: bang(Object.keys(items)[0]), ...config })
-   }
+      choices<T extends SchemaDict>(items: Items<T>, config: Config<NoInfer<T>> = {}): Z.Union<T> {
+         return this.choices_(items, { default: {}, ...config })
+      },
 
-   choices<T extends SchemaDict>(
-      items: Field_choices_config<T>['items'],
-      config: Omit<Field_choices_config<NoInfer<T>>, 'multi' | 'items'> = {},
-   ): Apply<Schemaᐸ_ᐳ['Choices'], T> {
-      return this.choices_(items, { default: {}, ...config })
-   }
+      /** simple choice alternative api */
+      tabs<T extends SchemaDict>(items: Items<T>, config: Config<T> = {}): Z.Union<T> {
+         const defaultKey = typeof items === 'function' ? undefined : Object.keys(items)[0]
+         return this.choices_(items, { default: defaultKey, appearance: 'tab', ...config })
+      },
 
-   /** simple choice alternative api */
-   tabs<T extends SchemaDict>(
-      items: Field_choices_config<T>['items'],
-      config: Omit<Field_choices_config<T>, 'multi' | 'items'> = {},
-   ): Apply<Schemaᐸ_ᐳ['Choices'], T> {
-      return this.choices_(items, { default: bang(Object.keys(items)[0]), appearance: 'tab', ...config })
-   }
+      // #region without defaults
 
-   // #region without defaults
+      /** generic choice field, without any default */
+      choice_<T extends SchemaDict>(items: Items<T>, config: Config<NoInfer<T>> = {}): Z.Union<T> {
+         // 💬 2025-02-03 rvion:
+         // the cast here is just so we can pretend at the type level that the class have the MAGICCHOICES
+         // defined at construction (whici it does via manual Object.defineProperty in the constructor!)
+         const CTOR = Field_choices as FieldConstructor<Field_choices<T>>
+         return CSchema.new(CTOR, { items, multi: false, ...config }) as Z.Union<T>
+      },
 
-   /** generic choice field, without any default */
-   choice_<T extends SchemaDict>(
-      items: Field_choices_config<T>['items'],
-      config: Omit<Field_choices_config<NoInfer<T>>, 'multi' | 'items'> = {},
-   ): Apply<Schemaᐸ_ᐳ['Choices'], T> {
-      if ('items' in items) {
-         console.warn(`[🔴] wrong choice`)
-      }
-      const finalConfig: Field_choices_config<T> = { items, multi: false, ...config }
-      return this.buildSchema(Field_choices<T>, finalConfig)
-   }
+      /** generic choice field, without any default */
+      choices_<T extends SchemaDict>(items: Items<T>, config: Config<NoInfer<T>> = {}): Z.Union<T> {
+         const CTOR = Field_choices as FieldConstructor<Field_choices<T>>
+         return CSchema.new(CTOR, { items, multi: true, ...config }) as Z.Union<T>
+      },
+   })
 
-   /** generic choice field, without any default */
-   choices_<T extends SchemaDict>(
-      items: Field_choices_config<T>['items'],
-      config: Omit<Field_choices_config<NoInfer<T>>, 'multi' | 'items'> = {},
-   ): Apply<Schemaᐸ_ᐳ['Choices'], T> {
-      const finalConfig: Field_choices_config<T> = { items, multi: true, ...config }
-      return this.buildSchema(Field_choices<T>, finalConfig)
-   }
-
-   // #region legacy
-   // choice_v0<T extends SchemaDict>(config: Omit<Field_choices_config<T>, 'multi'>): S.SChoices<T> {
-   //     return new SimpleSchema<Field_choices<T>>(Field_choices<any>, { multi: false, ...config })
-   // }
-
-   // choices_v0<T extends SchemaDict>(config: Omit<Field_choices_config<T>, 'multi'>): S.SChoices<T> {
-   //     return new SimpleSchema<Field_choices<T>>(Field_choices<any>, { multi: true, ...config })
-   // }
-}
+export const BuilderChoicesDescriptors: Record<string, PropertyDescriptor> =
+   Object.getOwnPropertyDescriptors(BuilderChoicesImpl())

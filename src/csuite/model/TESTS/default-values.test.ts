@@ -1,4 +1,4 @@
-import { beforeEach, describe, it } from 'bun:test'
+import { beforeEach, describe, it } from 'vitest'
 
 import { simpleBuilder as b, simpleFactory as f } from '../../index'
 import { expectJSON } from './utils/expectJSON'
@@ -47,7 +47,7 @@ describe('default values', () => {
    itDefaults(
       //
       'linked string',
-      (def) => b.with(b.string({ default: def }), (f) => b.fields({ a: f, b: f })),
+      (def) => b.with(b.string({ default: def }), (f) => b.fields({ a: f.shared(), b: f.shared() })),
       ['', '🔵', 'cushy'].map((v) => ({ seed: v, expect: { a: v, b: v } })),
    )
 
@@ -69,32 +69,31 @@ describe('default values', () => {
          { seed: { a: true, b: true }, expect: { a: 8, b: '' } },
       ],
    )
+   function itDefaults<const T>(
+      //
+      name: string,
+      schema: (x: T) => any,
+      defaults: { seed: T; expect: any }[],
+   ): void {
+      it(`works with ${name}`, () => {
+         for (const def of defaults) {
+            const S = schema(def.seed)
+            const E = S.create()
+            expectJSON(E.value).toEqual(def.expect)
+         }
+      })
+   }
+
+   function itDefaultsSimple<T>(
+      //
+      name: string,
+      schema: (x: T) => any,
+      defaults: T[],
+   ): void {
+      itDefaults(
+         name,
+         schema,
+         defaults.map((x) => ({ seed: x, expect: x })),
+      )
+   }
 })
-
-function itDefaults<const T>(
-   //
-   name: string,
-   schema: (x: T) => any,
-   defaults: { seed: T; expect: any }[],
-): void {
-   it(`works with ${name}`, () => {
-      for (const def of defaults) {
-         const S = schema(def.seed)
-         const E = S.create()
-         expectJSON(E.value).toEqual(def.expect)
-      }
-   })
-}
-
-function itDefaultsSimple<T>(
-   //
-   name: string,
-   schema: (x: T) => any,
-   defaults: T[],
-): void {
-   itDefaults(
-      name,
-      schema,
-      defaults.map((x) => ({ seed: x, expect: x })),
-   )
-}

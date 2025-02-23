@@ -57,7 +57,7 @@ export const LoraBoxUI = observer(function LoraBoxUI_(p: {
             <Button //
                tw='WIDGET-FIELD join-item w-8'
                size='xs'
-               icon='mdiDeleteForever'
+               icon={IKONS.mdiDeleteForever}
                onClick={p.onDelete}
             />
          </Frame>
@@ -65,7 +65,7 @@ export const LoraBoxUI = observer(function LoraBoxUI_(p: {
                    <div tw='flex-0 flex-grow'></div>
                    <Button //
                        size='xs'
-                       icon='mdiDeleteForever'
+                       icon={IKONS.mdiDeleteForever}
                        onClick={p.onDelete}
                        tw='h-full'
                    /> */}
@@ -191,7 +191,7 @@ export const LoraBoxUI = observer(function LoraBoxUI_(p: {
                <Button
                   //
                   tooltip='Open associated URL in external browser'
-                  icon='mdiOpenInNew'
+                  icon={IKONS.mdiOpenInNew}
                   onClick={() => openExternal(associatedUrl)}
                />
             </Frame>

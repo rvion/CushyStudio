@@ -4,12 +4,12 @@ import {
    schemaModelExtras,
 } from '../_prefabs/prefab_model_extras'
 
-export type $prefabModelFlux = X.XGroup<{
-   ckpt_name: X.XEnum<'UNETLoader.unet_name'>
-   weight_type: X.XEnum<'UNETLoader.weight_dtype'>
-   clip1: X.XEnum<'CLIPLoader.clip_name'>
-   clip2: X.XEnum<'CLIPLoader.clip_name'>
-   type: X.XEnum<'DualCLIPLoader.type'>
+export type $prefabModelFlux = Z.XGroup<{
+   ckpt_name: Z.XEnum<'UNETLoader.unet_name'>
+   weight_type: Z.XEnum<'UNETLoader.weight_dtype'>
+   clip1: Z.XEnum<'CLIPLoader.clip_name'>
+   clip2: Z.XEnum<'CLIPLoader.clip_name'>
+   type: Z.XEnum<'DualCLIPLoader.type'>
    extra: $schemaModelExtras
 }>
 

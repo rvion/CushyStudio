@@ -1,6 +1,6 @@
+import type { ReactNode } from 'react'
 import type { RevealProps } from './RevealProps'
 import type { RevealShellProps } from './shells/ShellProps'
-import type { ForwardedRef, ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
 import React, { cloneElement, createElement, useEffect, useMemo } from 'react'
@@ -28,8 +28,8 @@ import {
 } from './shells/ShellPopupUI'
 import { useSyncForwardedRef } from './useSyncForwardedRef'
 
-export const RevealUI = observer(function RevealUI_(p: RevealProps) {
-   const ref2 = p.ref // ref2?: ForwardedRef<RevealStateLazy>
+export const RevealUI: React.FunctionComponent<RevealProps> = observer(function RevealUI_(p: RevealProps) {
+   const ref2 = p.ref
    const parents_: RevealStateLazy[] = p.parentRevealState?.tower ?? useRevealOrNull()?.tower ?? []
    const parents: RevealStateLazy[] = p.useSeparateTower ? [] : parents_
 
@@ -41,14 +41,13 @@ export const RevealUI = observer(function RevealUI_(p: RevealProps) {
 
    const reveal = lazyState.state
    // const nextTower = lazyState.towerContext // (() => ({ tower: [...parents, lazyState] }), [])
-   useEffectToRegisterInGlobalRevealStack(lazyState)
 
    // 🔴 2024-08-08 domi: isn't this broken/useless?
-   // useEffectAction(() => {
-   //    if (ref2 == null) return
-   //    if (typeof ref2 === 'function') ref2(lazyState)
-   //    else ref2.current = lazyState
-   // }, [])
+   useEffectAction(() => {
+      if (ref2 == null) return
+      if (typeof ref2 === 'function') ref2(lazyState)
+      else ref2.current = lazyState
+   }, [])
 
    useEffect(() => {
       return (): void => lazyState.state?.close('RevealUI-is-unmounted')
@@ -139,7 +138,8 @@ export const RevealUI = observer(function RevealUI_(p: RevealProps) {
       // 💬 2024-07-23: trying to remove the outer div
       // mostly working but edge cases (multiple children, forwarding props & ref by children)
       // makes it slightly unsafe / we're not sure what to do with it yet
-      const child = p.children
+      const child =
+         p.children as React.ReactElement<any /* since react 19, props are unknown, rather than any */>
       // prettier-ignore
       const clonedChildren = cloneElement(
                 child,
@@ -202,6 +202,7 @@ const MkTooltip = observer(({ lazyState }: { lazyState: RevealStateLazy }) => {
    const ShellUI: React.FC<RevealShellProps> = useMemo(
       () =>
          (props: RevealShellProps): ReactNode => {
+            useEffectToRegisterInGlobalRevealStack(lazyState)
             const shell = p.shell
             if (shell === 'popover') return <ShellPopoverUI {...props} />
             if (shell === 'none') return <ShellNoneUI {...props} />

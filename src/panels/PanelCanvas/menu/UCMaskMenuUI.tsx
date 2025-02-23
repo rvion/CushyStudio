@@ -61,13 +61,13 @@ export const UCMaskMenuUI = observer(function UCMaskMenuUI_(p: {
                <Button //
                   // base={{ hue: 250, chroma: 0.1, contrast: 0.5 }}
                   onClick={() => p.mask.Visible.toggle()}
-                  icon='mdiBrush'
+                  icon={IKONS.mdiBrush}
                />
 
                {/* <SpacerUI /> */}
                <Button
                   onClick={() => p.mask.disableSelfWithinParent()}
-                  icon={'mdiDelete'}
+                  icon={IKONS.mdiDelete}
                   borderless
                   subtle
                />

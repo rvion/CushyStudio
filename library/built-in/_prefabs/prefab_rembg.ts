@@ -1,14 +1,14 @@
 import type { OutputFor } from './_prefabs'
 
-export type UI_rembg_v1 = X.XChoices<{
+export type UI_rembg_v1 = Z.XChoices<{
    // RemBG: X.XEmpty
-   isnetAnime: X.XEmpty
-   isnetGeneralUse: X.XEmpty
-   silueta: X.XEmpty
-   u2net: X.XEmpty
-   u2net_human_seg: X.XEmpty
-   u2netp: X.XEmpty
-   RemBGV1_4: X.XEmpty
+   isnetAnime: Z.XEmpty
+   isnetGeneralUse: Z.XEmpty
+   silueta: Z.XEmpty
+   u2net: Z.XEmpty
+   u2net_human_seg: Z.XEmpty
+   u2netp: Z.XEmpty
+   RemBGV1_4: Z.XEmpty
 }>
 
 export function ui_rembg_v1(): UI_rembg_v1 {

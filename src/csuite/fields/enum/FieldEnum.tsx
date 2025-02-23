@@ -27,7 +27,7 @@ export type Field_enum_config<O extends ComfyUnionValue> = FieldConfig<
        */
       wrap?: boolean
    },
-   Field_enum_types<O>
+   Field_enum<O>
 >
 
 // #region Serial
@@ -40,7 +40,7 @@ export type Field_enum_serial<O extends ComfyUnionValue> = FieldSerial<{
 export type Field_enum_value<O extends ComfyUnionValue> = O // Requirable[T]
 
 // #region Types
-export type Field_enum_types<O extends ComfyUnionValue> = {
+export type Field_enum<O extends ComfyUnionValue> = {
    $Type: 'enum'
    $Config: Field_enum_config<O>
    $Serial: Field_enum_serial<O>
@@ -48,11 +48,11 @@ export type Field_enum_types<O extends ComfyUnionValue> = {
    $Unchecked: Field_enum_value<O> | undefined
    $Field: Field_enum<O>
    $Child: never
-   $Reflect: Field_enum_types<O>
+   $Reflect: Field_enum<O>
 }
 
 // #region State
-export class Field_enum<O extends ComfyUnionValue> extends Field<Field_enum_types<O>> {
+export class Field_enum<O extends ComfyUnionValue> extends Field<Field_enum<O>> {
    // #region Static
    static readonly type: 'enum' = 'enum'
    static readonly emptySerial: Field_enum_serial<any> = { $: 'enum' }

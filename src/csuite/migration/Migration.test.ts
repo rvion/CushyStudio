@@ -1,30 +1,38 @@
-import { describe, expect, it } from 'bun:test'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { sb } from '../simple/SimpleFactory'
+import { locoSchemaBuilder } from '../../../../front/form/LocoSchemaBuilder'
 import { MigrationEngine } from './MigrationEngine'
 
+const spyOn = vi.spyOn
+
+const b = locoSchemaBuilder
+
 describe('paths and pathExt', () => {
+   beforeEach(() => {
+      spyOn(console, 'log').mockImplementation(() => undefined)
+   })
+
    it('looks like jsonPath', () => {
-      const S1 = sb.fields({ a: sb.int() })
+      const S1 = b.fields({ a: b.int() })
       const E1 = S1.create()
       expect(E1.path).toBe('$')
-      expect(E1.A.path).toBe('$.a')
-      expect(E1.A.pathExt).toBe('@group.a@number')
+      expect(E1._.a.path).toBe('$.a')
+      expect(E1._.a.pathExt).toBe('@group.a@number')
    })
 })
 
 describe('migrator', () => {
    it('never-loose-data', () => {
       // 1. first version: everything OK
-      const S1 = sb.fields({ a: sb.int() }).withUID('TEST-abcd')
+      const S1 = b.fields({ a: b.int() }).withUID('TEST-abcd')
       const E1 = S1.create()
-      E1.A.value = 100
+      E1._.a.value = 100
       expect(E1.serial.anomalies).toBeUndefined()
 
       // 2. then schema changes, but serial not migrated => ANOMALIES
-      const S2 = sb.fields({ a: sb.string() }).withUID('TEST-abcd') // <--- Same Schema.uid
+      const S2 = b.fields({ a: b.string() }).withUID('TEST-abcd') // <--- Same Schema.uid
       const E2 = S2.create(E1.serial as any)
-      expect(E2.A.serial.anomalies).toBeUndefined()
+      expect(E2._.a.serial.anomalies).toBeUndefined()
       expect(E2.serial.anomalies?.length).toBe(1)
       expect(E2.serial.anomalies![0]).toMatchObject({
          type: 'invalid-serial',
@@ -54,8 +62,8 @@ describe('migrator', () => {
 
       expect(E1.hoistAnomalies).toBeDefined()
       expect(migrator.scope.size).toBe(2)
-      expect(Object.keys(migrator.batchOfSimilarAnomalies).length).toBe(1)
-      expect(migrator.suggestions.length).toBe(1)
+      expect(Object.keys(migrator.batchOfSimilarAnomalies)).toHaveLength(1)
+      expect(migrator.suggestions).toHaveLength(1)
       expect(migrator.suggestions.map((s) => s.id)).toMatchObject(['{{TEST-abcd}}@group.a@str'])
       expect(migrator.suggestions[0]!.count).toBe(2)
       expect(migrator.suggestions[0]!.candidates).toMatchObject([
@@ -67,8 +75,8 @@ describe('migrator', () => {
       const res = migrator.attemptMigration({
          '{{TEST-abcd}}@group.a@str': {
             solutionID: 'number-to-string',
-            config: sb
-               .choices({ prefix: sb.string(), suffix: sb.string() })
+            config: b
+               .choices({ prefix: b.string(), suffix: b.string() })
                .create()
                .setValue({ prefix: '🔢', suffix: '🔚' }),
          },
@@ -89,9 +97,10 @@ describe('migrator', () => {
          ],
          status: 'SUCCESS',
       })
-      expect(E3.A.value).toBe('🔢100🔚')
+      expect(E3._.a.value).toBe('🔢100🔚')
    })
 
+   // eslint-disable-next-line vitest/no-commented-out-tests
    // it.skip('never-loose-data', () => {
    //     const S1 = b.fields({
    //         a: b.int(),
@@ -99,7 +108,7 @@ describe('migrator', () => {
    //         c: b.bool().list(),
    //     })
    //     const E1 = S1.create()
-   //     expect(E1.serial.anomalies).toBeUndefined()
+   //     expect(E1.serial.anomalies).toBe(undefined)
 
    //     const S2 = b.fields({
    //         a: b.float({ min: Math.PI }),

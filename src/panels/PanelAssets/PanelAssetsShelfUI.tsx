@@ -21,7 +21,7 @@ export const PanelAssetsShelfUI = observer(function PanelAssetsShelfUI_(p: { st:
             {activeLora ? (
                <Frame // Kind of useless since the path isn't a full one, but need something here to display for now
                   tw='line-clamp-1 flex w-full select-none truncate whitespace-nowrap p-1'
-                  icon='mdiFileDocument'
+                  icon={IKONS.mdiFileDocument}
                   line
                   tooltip={`Filepath\n${activeLora}`}
                   roundness={theme.global.roundness}
@@ -29,7 +29,7 @@ export const PanelAssetsShelfUI = observer(function PanelAssetsShelfUI_(p: { st:
                   {activeLora}
                </Frame>
             ) : (
-               <Frame line icon='mdiInformationBox'>
+               <Frame line icon={IKONS.mdiInformationBox}>
                   No active item
                </Frame>
             )}

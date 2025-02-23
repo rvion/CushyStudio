@@ -55,7 +55,7 @@ export const ToolShelfUI = observer(function ToolShelfUI_(p: ToolShelfProps) {
                      tw='relative -left-0.5 top-16'
                      size={'xs'}
                      square
-                     icon='mdiChevronRight'
+                     icon={IKONS.mdiChevronRight}
                      iconSize='14px'
                      onClick={() => {
                         uist.props.panelState.visible = true

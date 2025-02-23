@@ -3,12 +3,12 @@ import type { CushySchemaBuilder } from '../../../src/controls/CushyBuilder'
 import type { Requirements } from '../../../src/manager/REQUIREMENTS/Requirements'
 import type { OutputFor } from './_prefabs'
 
-export type UI_upscaleWithModel = X.XGroup<{
-   model: X.XEnum<'UpscaleModelLoader.model_name'>
+export type UI_upscaleWithModel = Z.XGroup<{
+   model: Z.XEnum<'UpscaleModelLoader.model_name'>
 }>
 
 export function ui_upscaleWithModel(): UI_upscaleWithModel {
-   const ui: X.Builder = getCurrentForm()
+   const ui: Z.Builder = getCurrentForm()
    return ui
       .group({
          label: 'Upscale via Model',

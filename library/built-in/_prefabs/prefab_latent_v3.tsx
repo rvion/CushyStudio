@@ -6,24 +6,24 @@ import {
    type UI_LatentShapeGenerator,
 } from '../shapes/prefab_shapes'
 
-export type UI_LatentV3 = X.XLink<
-   X.XNumber,
-   X.XChoice<{
-      emptyLatent: X.XGroup<{
-         batchSize: X.XShared<X.Number>
-         size: X.XSize
+export type UI_LatentV3 = Z.XLink<
+   Z.XNumber,
+   Z.XChoice<{
+      emptyLatent: Z.XGroup<{
+         batchSize: Z.Shared<Z.Number>
+         size: Z.XSize
       }>
-      image: X.XGroup<{
-         batchSize: X.XShared<X.Number>
-         image: X.XImage
-         resize: X.XOptional<
-            X.XGroup<{
-               mode: X.XEnumOf<'resize' | 'rescale'>
-               supersample: X.XEnumOf<'false' | 'true'>
-               resampling: X.XEnumOf<'bicubic' | 'bilinear' | 'lanczos' | 'nearest'>
-               rescale_factor: X.XNumber
-               resize_width: X.XNumber
-               resize_height: X.XNumber
+      image: Z.XGroup<{
+         batchSize: Z.Shared<Z.Number>
+         image: Z.XImage
+         resize: Z.XOptional<
+            Z.XGroup<{
+               mode: Z.XEnumOf<'resize' | 'rescale'>
+               supersample: Z.XEnumOf<'false' | 'true'>
+               resampling: Z.XEnumOf<'bicubic' | 'bilinear' | 'lanczos' | 'nearest'>
+               rescale_factor: Z.XNumber
+               resize_width: Z.XNumber
+               resize_height: Z.XNumber
             }>
          >
       }>
@@ -34,7 +34,7 @@ export type UI_LatentV3 = X.XLink<
 export const latentSizeChanel = new cushy.Channel<{ w: number; h: number }>()
 
 export function ui_latent_v3(p: { size?: Field_size_config } = {}): UI_LatentV3 {
-   const form: X.Builder = getCurrentForm()
+   const form: Z.Builder = getCurrentForm()
    return form.with(form.int({ label: 'batchSize', step: 1, default: 1, min: 1, max: 8 }), (batchSize_) => {
       const batchSize = form.linked(batchSize_)
       return form.choice(

@@ -23,7 +23,7 @@ app({
                         <UY.list.DefaultBody field={field} />
                         <LegacyFieldUI label='OpenRouter API KEY'>
                            <InputStringUI
-                              icon='mdiKey'
+                              icon={IKONS.mdiKey}
                               type='password'
                               getValue={() => cushy.configFile.value.OPENROUTER_API_KEY ?? ''}
                               setValue={(next) => cushy.configFile.update({ OPENROUTER_API_KEY: next })}

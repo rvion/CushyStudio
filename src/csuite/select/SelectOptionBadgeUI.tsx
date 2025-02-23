@@ -30,7 +30,7 @@ export const SelectDefaultOptionUI = observer(function SelectDefaultOptionUI_({
    return (
       <BadgeUI //
          autoHue={autoHue ?? label}
-         linkButton={link ? (): void => (window as any).loco.router.goToURL(link()) : undefined}
+         linkButton={link ? (): void => loco.router.goToURL(link()) : undefined}
          {...rest}
       >
          {label}
@@ -49,7 +49,7 @@ export const SelectDefaultOptionUI = observer(function SelectDefaultOptionUI_({
                   ev.preventDefault()
                   ev.stopPropagation()
                }}
-               icon='mdiClose'
+               icon={IKONS.mdiClose}
                iconSize='0.8rem'
             />
          )}

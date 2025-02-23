@@ -1,7 +1,7 @@
 import type { Command, CommandContext } from './Command'
 import type { KeyboardEvent } from 'react'
 
-import { makeAutoObservable, observable } from 'mobx'
+import { computed, makeObservable, observable } from 'mobx'
 
 import { META_NAME, MOD_KEY } from '../accelerators/META_NAME'
 import { Trigger } from '../trigger/Trigger'
@@ -23,44 +23,7 @@ export type KeyEventInfo = {
    inInput: boolean
 }
 
-type KeyboardSpy = (inputToken: InputToken, ev: KeyboardEvent<HTMLElement>) => void
-type UnregisterSpy = () => void
-
 export class CommandManager {
-   // ----------------------------------------------------------------
-   spies: KeyboardSpy[] = []
-   useSpy = (fn: KeyboardSpy): UnregisterSpy => {
-      this.spies.push(fn)
-      return () => {
-         const idx = this.spies.indexOf(fn)
-         if (idx === -1) throw new Error(`spy not found`)
-         this.spies.splice(idx, 1)
-      }
-   }
-   // ----------------------------------------------------------------
-
-   constructor(
-      public conf: {
-         log?: boolean
-         name?: string
-      } = {},
-   ) {
-      makeAutoObservable(this, {
-         commands: observable.shallow,
-         commandByShortcut: observable.shallow,
-         commandByContext: observable.shallow,
-         contextByName: observable.shallow,
-
-         // items are readonly, no need to make them recursively observabel
-         lastTriggered: observable.shallow,
-
-         // @ts-ignore
-         _lastTriggeredNextUID: false,
-      })
-
-      this.name = this.conf.name || 'no-name' //shortId()
-   }
-
    /** index of all commands, by their ID */
    commands: Map<Command['id'], Command> = new Map()
 
@@ -82,7 +45,6 @@ export class CommandManager {
       shortcut: string
       tokens: InputToken[]
    }[] = []
-
    private _lastTriggeredNextUID: number = 1
    private _recordInHistory(command: Command, shortcut: string, tokens: InputToken[]): void {
       this.lastTriggered.unshift({
@@ -101,7 +63,7 @@ export class CommandManager {
       return Array.from(this.contextByName.values())
    }
 
-   registerCommand(op: Command): void {
+   registerCommand = (op: Command): void => {
       this.contextByName.set(op.ctx.name, op.ctx)
       this.commands.set(op.id, op)
       const combos: CushyShortcut[] =
@@ -129,6 +91,23 @@ export class CommandManager {
       return this.commands.get(id)
    }
 
+   constructor(
+      public conf: {
+         log?: boolean
+         name?: string
+      } = {},
+   ) {
+      makeObservable(this, {
+         inputHistory: true,
+         contextByName: observable.shallow,
+         commandByShortcut: observable.shallow,
+         knownContexts: computed,
+         // items are readonly, no need to make them recursively observabel
+         lastTriggered: observable.shallow,
+      })
+
+      this.name = this.conf.name || 'no-name' //shortId()
+   }
    log = (...content: any[]): void => console.log(`[Shortcut-Watcher #${this.name}`, ...content)
 
    private evInInput = (ev: KeyboardEvent<HTMLElement>): boolean => {
@@ -141,7 +120,7 @@ export class CommandManager {
       return inInput
    }
 
-   private getInputTokenFromEvent = (ev: KeyboardEvent<HTMLElement>): InputToken => {
+   private inputToken = (ev: KeyboardEvent<HTMLElement>): InputToken => {
       // console.log(`[🤠] input > ev.key`, ev.key)
       const keyLower = ev.key.toLowerCase()
       const inputAccum: string[] = []
@@ -150,8 +129,7 @@ export class CommandManager {
       if (ev.altKey && keyLower !== 'alt') inputAccum.push('alt' /* as KeyName */)
       if (ev.metaKey && keyLower !== 'meta') inputAccum.push(META_NAME)
 
-      // const key = ev.key
-      const key = ev.key != 'Unidentified' ? ev.key : ev.code
+      const key = ev.key
 
       if (key) {
          if (key === ' ') inputAccum.push('space' /* as KeyName */)
@@ -161,8 +139,7 @@ export class CommandManager {
    }
 
    processKeyDownEvent = (ev: KeyboardEvent<HTMLElement>): Trigger => {
-      const inputToken = this.getInputTokenFromEvent(ev)
-      for (const spy of this.spies) spy(inputToken, ev)
+      const inputToken = this.inputToken(ev)
       const inInput = this.evInInput(ev)
       return this.processKeyDown({ inputToken, inInput }, ev)
    }

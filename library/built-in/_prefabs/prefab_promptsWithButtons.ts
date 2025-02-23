@@ -7,18 +7,18 @@ import type { OutputFor } from './_prefabs'
 // I tend to prefer adding them in built-in prefabs to help
 // with codebase typechecking performances, and making breaking
 // changes more explicit.
-export type UI_advancedPrompt = X.XList<
-   X.XChoice<{
-      prompt: X.XPrompt
-      characters: X.XChoice<{
-         [k: string]: X.XChoice<{
-            [k: string]: X.XGroup<SchemaDict>
+export type UI_advancedPrompt = Z.XList<
+   Z.XChoice<{
+      prompt: Z.XPrompt
+      characters: Z.XChoice<{
+         [k: string]: Z.XChoice<{
+            [k: string]: Z.XGroup<SchemaDict>
          }>
       }>
-      styles: X.XChoice<{
-         [k: string]: X.XChoice<{
-            [k: string]: X.XChoice<{
-               [k: string]: X.XGroup<SchemaDict>
+      styles: Z.XChoice<{
+         [k: string]: Z.XChoice<{
+            [k: string]: Z.XChoice<{
+               [k: string]: Z.XGroup<SchemaDict>
             }>
          }>
       }>

@@ -1,60 +1,69 @@
-import type { FieldTypes } from '../$FieldTypes'
+import { Field_number } from '../../fields/number/FieldNumber'
+import { defineSchemaBuilderMixin } from './defineSchemaBuilderMixin'
+import { CSchema } from '../CSchema'
 
-import { Field_number, type Field_number_config } from '../../fields/number/FieldNumber'
-import { BaseBuilder } from './BaseBuilder'
+export type Field_number_config_configured = Omit<Field_number['$config'], 'mode'>
 
-interface SchemaAndAliasesᐸ_ᐳ extends HKT<FieldTypes> {
-   Number: Apply<this, Field_number>
+export type BuilderNumberMixin = {
+   int_(config?: Field_number_config_configured): Z.Number
+   int(config?: Field_number_config_configured): Z.Number
+   float(config?: Field_number_config_configured): Z.Number
+   float_(config?: Field_number_config_configured): Z.Number
+   percent(config?: Field_number_config_configured): Z.Number
+   number(config?: Field_number_config_configured): Z.Number
+   number_(config?: Field_number_config_configured): Z.Number
+   // __buildNumberSchema(config: Field_number_config): Z.Number;
 }
 
-export type Field_number_config_configured = Omit<Field_number_config, 'mode'>
+const BuilderNumberImpl = (): BuilderNumberMixin =>
+   defineSchemaBuilderMixin({
+      // #region ints
+      int_(config: Field_number_config_configured = {}): Z.Number {
+         return this.__buildNumberSchema({ mode: 'int', ...config })
+      },
+      int(config: Field_number_config_configured = {}): Z.Number {
+         return this.int_({ default: _autoDefault(config), ...config })
+      },
 
-export class BuilderNumber<Schemaᐸ_ᐳ extends SchemaAndAliasesᐸ_ᐳ> extends BaseBuilder<Schemaᐸ_ᐳ> {
-   static fromSchemaClass = BaseBuilder.buildfromSchemaClass(BuilderNumber)
+      // #region float
+      float(config: Field_number_config_configured = {}): Z.Number {
+         return this.__buildNumberSchema({ mode: 'float', default: _autoDefault(config), ...config })
+      },
+      float_(config: Field_number_config_configured = {}): Z.Number {
+         return this.__buildNumberSchema({ mode: 'float', ...config })
+      },
 
-   // #region ints
-   int(config: Field_number_config_configured = {}): Schemaᐸ_ᐳ['Number'] {
-      return this.int_({ default: this._autoDefault(config), ...config })
-   }
-   int_(config: Field_number_config_configured = {}): Schemaᐸ_ᐳ['Number'] {
-      return this._number({ mode: 'int', ...config })
-   }
+      // #region ratios
+      /** [number variant] precent = mode=int, default=100, step=10, min=1, max=100, suffix='%', */
+      percent(config: Field_number_config_configured = {}): Z.Number {
+         return this.__buildNumberSchema({
+            mode: 'int',
+            default: 100,
+            step: 10,
+            min: 0,
+            max: 100,
+            suffix: '%',
+            ...config,
+         })
+      },
 
-   // #region float
-   float(config: Field_number_config_configured = {}): Schemaᐸ_ᐳ['Number'] {
-      return this._number({ mode: 'float', default: this._autoDefault(config), ...config })
-   }
-   float_(config: Field_number_config_configured = {}): Schemaᐸ_ᐳ['Number'] {
-      return this._number({ mode: 'float', ...config })
-   }
+      // #region numbers
+      number(config: Field_number_config_configured = {}): Z.Number {
+         return this.__buildNumberSchema({ mode: 'float', default: _autoDefault(config), ...config })
+      },
+      number_(config: Field_number_config_configured = {}): Z.Number {
+         return this.__buildNumberSchema({ mode: 'float', ...config })
+      },
 
-   // #region ratios
-   /** [number variant] precent = mode=int, default=100, step=10, min=0, max=100, suffix='%' */
-   percent(config: Field_number_config_configured = {}): Schemaᐸ_ᐳ['Number'] {
-      return this._number({
-         mode: 'int',
-         default: 100,
-         step: 10,
-         min: 0,
-         max: 100,
-         suffix: '%',
-         ...config,
-      })
-   }
+      // #region _utils
+      __buildNumberSchema(config: Field_number['$config']): Z.Number {
+         return CSchema.new(Field_number, config)
+      },
+   })
 
-   // #region numbers
-   number(config: Field_number_config_configured = {}): Schemaᐸ_ᐳ['Number'] {
-      return this._number({ mode: 'float', default: this._autoDefault(config), ...config })
-   }
-   number_(config: Field_number_config_configured = {}): Schemaᐸ_ᐳ['Number'] {
-      return this._number({ mode: 'float', ...config })
-   }
-
-   // #region _utils
-   private _autoDefault(config: { min?: number; default?: number }): number {
-      return config.default ?? config.min ?? 0
-   }
-   private _number(config: Field_number_config): Schemaᐸ_ᐳ['Number'] {
-      return this.buildSchema(Field_number, config)
-   }
+function _autoDefault(config: { min?: number; default?: number }): number {
+   return config.default ?? config.min ?? 0
 }
+
+export const BuilderNumberDescriptors: Record<string, PropertyDescriptor> =
+   Object.getOwnPropertyDescriptors(BuilderNumberImpl())

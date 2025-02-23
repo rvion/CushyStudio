@@ -66,7 +66,11 @@ export const OutputDisplacementUI = observer(function OutputDisplacementUI_(p: {
    )
 
    const saveImgBtn = (
-      <Button icon='mdiDownload' size='sm' onClick={(ev) => saveCanvasAsImage(uist.canvasRef.current)} />
+      <Button
+         icon={IKONS.mdiDownload}
+         size='sm'
+         onClick={(ev) => saveCanvasAsImage(uist.canvasRef.current)}
+      />
    )
    const menuConf = cushy.displacementConf.value.menu
    return (

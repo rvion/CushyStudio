@@ -1,4 +1,4 @@
-import type { Field_group, Field_group_types } from './FieldGroup'
+import type { Field_group } from './FieldGroup'
 import type { ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
@@ -10,7 +10,7 @@ import { WidgetSingleLineSummaryUI } from '../../form/WidgetSingleLineSummaryUI'
 // HEADER
 export const WidgetGroup_LineUI = observer(function WidgetGroup_LineUI_(p: {
    //
-   field: Field_group<Field_group_types<any>>
+   field: Field_group<any>
 }) {
    const field = p.field
    if (p.field.serial.collapsed)
@@ -47,7 +47,7 @@ export const WidgetGroup_LineUI = observer(function WidgetGroup_LineUI_(p: {
                square
                subtle
                borderless
-               icon='mdiUnfoldMoreHorizontal'
+               icon={IKONS.mdiUnfoldMoreHorizontal}
                disabled={!field.hasFoldableSubfieldsThatAreFolded}
                onClick={() => {
                   p.field.expandAllChildren()
@@ -59,7 +59,7 @@ export const WidgetGroup_LineUI = observer(function WidgetGroup_LineUI_(p: {
                square
                subtle
                borderless
-               icon='mdiUnfoldLessHorizontal'
+               icon={IKONS.mdiUnfoldLessHorizontal}
                disabled={!field.hasFoldableSubfieldsThatAreUnfolded}
                onClick={() => {
                   p.field.collapseAllChildren()

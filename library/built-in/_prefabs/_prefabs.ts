@@ -14,13 +14,13 @@
 // this should be a default
 export type OutputFor<UIFn extends (...args: any[]) => { $Value: any }> = ReturnType<UIFn>['$Value']
 
-export type UI_HighResFix = X.XGroup<{
-   upscaleMethod: X.XSelectOne_<'regular' | 'Neural 1.5' | 'Neural XL'>
-   scaleFactor: X.XNumber
-   steps: X.XNumber
-   denoise: X.XNumber
-   saveIntermediaryImage: X.XBool
-   useMainSampler: X.XBool
+export type UI_HighResFix = Z.XGroup<{
+   upscaleMethod: Z.XSelectOne_<'regular' | 'Neural 1.5' | 'Neural XL'>
+   scaleFactor: Z.XNumber
+   steps: Z.XNumber
+   denoise: Z.XNumber
+   saveIntermediaryImage: Z.XBool
+   useMainSampler: Z.XBool
 }>
 
 export function ui_highresfix(): UI_HighResFix {
@@ -53,13 +53,13 @@ export function ui_highresfix(): UI_HighResFix {
 }
 
 // ---------------------------------------------------------
-export type UI_Themes = X.XList<
-   X.XGroup<{
-      text: X.XString
-      theme: X.XList<X.XGroup<{ text: X.XString }>>
+export type UI_Themes = Z.XList<
+   Z.XGroup<{
+      text: Z.XString
+      theme: Z.XList<Z.XGroup<{ text: Z.XString }>>
    }>
 >
-export const ui_themes = (form: X.Builder): UI_Themes =>
+export const ui_themes = (form: Z.Builder): UI_Themes =>
    form.list({
       element: () =>
          form.group({
@@ -92,10 +92,10 @@ export const util_expandBrances = (str: string): string[] => {
    return Array.from(result)
 }
 
-export const ui_vaeName = (form: X.Builder): X.XOptional<X.XEnum<'VAELoader.vae_name'>> =>
+export const ui_vaeName = (form: Z.Builder): Z.XOptional<Z.XEnum<'VAELoader.vae_name'>> =>
    form.enumOpt['VAELoader.vae_name']({ label: 'VAE' })
 
-export const ui_modelName = (form: X.Builder): X.XEnum<'CheckpointLoaderSimple.ckpt_name'> =>
+export const ui_modelName = (form: Z.Builder): Z.XEnum<'CheckpointLoaderSimple.ckpt_name'> =>
    form.enum['CheckpointLoaderSimple.ckpt_name']({ label: 'Checkpoint' })
 
 const resolutions: Resolutions[] = [
@@ -120,10 +120,10 @@ type Resolutions =
    | '1344x768'
    | '1536x640'
 
-export const ui_resolutionPicker = (form: X.Builder): X.XSelectOne_<Resolutions> =>
+export const ui_resolutionPicker = (form: Z.Builder): Z.XSelectOne_<Resolutions> =>
    form.selectOneString(resolutions, { label: 'Resolution', tooltip: 'Width x Height' })
 
 /** allow to easilly pick a shape */
-export const ui_shapePickerBasic = (form: X.Builder): X.XSelectOne_<'round' | 'square'> => {
+export const ui_shapePickerBasic = (form: Z.Builder): Z.XSelectOne_<'round' | 'square'> => {
    return form.selectOneString(['round', 'square'], { label: 'Shape' })
 }

@@ -30,7 +30,7 @@ export const PanelCaptioningUI = observer(function PanelCaptioningUI_(p: {}) {
          >
             {/* <div>
                <Button
-                  icon='mdiEyeLock'
+                  icon={IKONS.mdiEyeLock}
                   onClick={() => misc.saveData({ showDebug: !misc.data.showDebug })}
                ></Button>
                {misc.data.showDebug ?? <pre tw='text-xs w-96 overflow-visible'>{doc.debug}</pre>}
@@ -52,7 +52,7 @@ export const PanelCaptioningUI = observer(function PanelCaptioningUI_(p: {}) {
                   <Button
                      tooltip={doc.folderPath ?? 'no folder selected'}
                      expand
-                     icon={'mdiFolderOpen'}
+                     icon={IKONS.mdiFolderOpen}
                      onClick={async () => {
                         const d = await cushy.electron.dialog.showOpenDialog({
                            properties: ['openDirectory'],
@@ -67,7 +67,7 @@ export const PanelCaptioningUI = observer(function PanelCaptioningUI_(p: {}) {
                      {doc.folderName}
                   </Button>
                   {/* <Button
-                     icon='mdiOpenInNew'
+                     icon={IKONS.mdiOpenInNew}
                      onClick={() => revealInFileExplorer(doc.folderPath)}
                   ></Button> */}
                </Frame>
@@ -134,7 +134,7 @@ export const PanelCaptioningUI = observer(function PanelCaptioningUI_(p: {}) {
                                           square
                                           subtle
                                           borderless
-                                          icon='mdiMinus'
+                                          icon={IKONS.mdiMinus}
                                           onClick={(ev) => {
                                              doc.removeCaptionAt(ix)
                                              ev.stopPropagation()
@@ -154,7 +154,7 @@ export const PanelCaptioningUI = observer(function PanelCaptioningUI_(p: {}) {
                      <InputStringUI //
                         ref={doc.inputRefCaption}
                         clearable
-                        icon='mdiTextBoxPlus'
+                        icon={IKONS.mdiTextBoxPlus}
                         onKeyDown={(ev) => {
                            if (!doc.floatingCaption) return
                            if (ev.key == 'Enter') {

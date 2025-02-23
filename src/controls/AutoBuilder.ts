@@ -10,24 +10,24 @@ type FOO = Comfy.FormHelper['KSampler']['sampler_name']
 
 type AutoWidget<T> = T extends { kind: any; type: infer TPE }
    ? T['kind'] extends 'number'
-      ? X.XNumber
+      ? Z.XNumber
       : T['kind'] extends 'string'
-        ? X.XString
+        ? Z.XString
         : T['kind'] extends 'boolean'
-          ? X.XBool
+          ? Z.XBool
           : T['kind'] extends 'prompt'
-            ? X.XPrompt
+            ? Z.XPrompt
             : T['kind'] extends 'enum'
               ? // check perf implications here
                 //         VVV
                 T['type'] extends ComfyUnionValue
-                 ? X.XEnumOf<T['type']>
+                 ? Z.XEnumOf<T['type']>
                  : never
               : any
    : any
 
 export type IAutoBuilder = {
-   [K in keyof Comfy.FormHelper]: () => X.XGroup<{
+   [K in keyof Comfy.FormHelper]: () => Z.XGroup<{
       [N in keyof Comfy.FormHelper[K]]: AutoWidget<Comfy.FormHelper[K][N]>
    }>
 }

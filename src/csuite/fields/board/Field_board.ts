@@ -4,15 +4,15 @@
  */
 import type { IconName } from '../../icons/icons'
 import type { BaseSchema } from '../../model/BaseSchema'
+import type { CSchema } from '../../model/CSchema'
 import type { Field, FieldCtorProps } from '../../model/Field'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { SchemaDict } from '../../model/SchemaDict'
 import type { SimpleBuilder } from '../../simple/SimpleBuilder'
-import type { SimpleSchema } from '../../simple/SimpleSchema'
 import type { SimpleShape$ } from '../core-prefabs/ShapeSchema'
 
 import { type SimpleShape, simpleShape$ } from '../core-prefabs/ShapeSchema'
-import { Field_group, type Field_group_types, type MAGICFIELDS } from '../group/FieldGroup'
+import { Field_group, type MAGICFIELDS } from '../group/FieldGroup'
 import { WidgetListExt_LineUI } from './WidgetListExt_LineUI'
 import { WidgetListExtUI__Regional } from './WidgetListExtUI'
 
@@ -36,10 +36,10 @@ export type Field_board_config<T extends BaseSchema> = {
    icon?: IconName
 }
 
-export type BoardDataSchema<SCHEMA extends BaseSchema> = S.SGroup<{
-   area: S.SSize
-   items: S.SList<
-      S.SGroup<
+export type BoardDataSchema<SCHEMA extends BaseSchema> = Z.SGroup<{
+   area: Z.SSize
+   items: Z.SList<
+      Z.SGroup<
          Assume<
             {
                shape: SimpleShape$
@@ -85,7 +85,7 @@ export const boardDataSchema = <SCHEMA extends BaseSchema>(
 
 export interface RV1<
    //
-   TYPES extends Field_group_types<any>,
+   TYPES extends Field_group<any>,
    NEWCLASS extends Field,
 > {
    // config need to be based on the new field for stuff like `body`
@@ -152,7 +152,7 @@ export class Field_board<SCHEMA extends BaseSchema> extends Field_group<BoardDat
       //
       b: SimpleBuilder,
       opts: Field_board_config<SCHEMA>,
-   ): SimpleSchema<Field_board<SCHEMA>> {
+   ): CSchema<Field_board<SCHEMA>> {
       return boardDataSchema(b, opts) //
          .useBuilder((...args: FieldCtorProps) => new Field_board<SCHEMA>(opts, ...args))
          .withConfig({ ui: { Body: WidgetListExtUI__Regional } })

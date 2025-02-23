@@ -3,13 +3,13 @@ import type { OutputFor } from './_prefabs'
 
 import { exhaust } from '../../../src/csuite/utils/exhaust'
 
-export type UI_3dDisplacement = X.XGroup<{
-   normal: X.XSelectOne_<'MiDaS' | 'BAE' | 'None'>
-   depth: X.XChoice<{
-      MiDaS: X.XEmpty
-      Zoe: X.XEmpty
-      LeReS: X.XEmpty
-      Marigold: ReturnType<X.Builder['auto']['Marigold.MarigoldDepthEstimation']>
+export type UI_3dDisplacement = Z.XGroup<{
+   normal: Z.XSelectOne_<'MiDaS' | 'BAE' | 'None'>
+   depth: Z.XChoice<{
+      MiDaS: Z.XEmpty
+      Zoe: Z.XEmpty
+      LeReS: Z.XEmpty
+      Marigold: ReturnType<Z.Builder['auto']['Marigold.MarigoldDepthEstimation']>
    }>
 }>
 

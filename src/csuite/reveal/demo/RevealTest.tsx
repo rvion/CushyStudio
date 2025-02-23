@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite'
 
 import { Button } from '../../button/Button'
 import { Frame, type FrameProps } from '../../frame/Frame'
-import { simpleFactory } from '../../SimpleFactory'
+import { simpleFactory } from '../../simple/SimpleFactory'
 import { RevealUI } from '../RevealUI'
 
 export const RevealTestUI = observer(function RevealTestUI_(p: {}) {
@@ -45,7 +45,7 @@ export const RevealTestUI = observer(function RevealTestUI_(p: {}) {
    return (
       <div tw='flex flex-1 flex-col gap-2'>
          <Frame border base>
-            {conf.UI()}
+            <conf.Render />
          </Frame>
          {conf.value.defaultVisible && (
             <RevealUI

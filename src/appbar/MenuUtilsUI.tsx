@@ -12,34 +12,34 @@ export const MenuUtilsUI = observer(function MenuUtilsUI_(p: {}) {
             <>
                <MenuItem
                   onClick={() => cushy.layout.open('Models', {})}
-                  icon='cdiExternalCivitai'
+                  icon={IKONS.cdiExternalCivitai}
                   localShortcut={KEYS.openPage_Models}
                   label='Civitai (fast and clean)'
                />
                <MenuItem
                   onClick={() => cushy.layout.open('Civitai', {})}
-                  icon='cdiExternalCivitai'
+                  icon={IKONS.cdiExternalCivitai}
                   localShortcut={KEYS.openPage_Civitai}
                   label='Civitai (iframe)'
                />
 
                <MenuItem
                   onClick={() => cushy.layout.open('Squoosh', {})}
-                  icon={'cdiExternalSquoosh'}
+                  icon={IKONS.cdiExternalSquoosh}
                   localShortcut={KEYS.openPage_Squoosh}
                   label='Squoosh'
                />
                <MenuItem
                   onClick={() => cushy.layout.open('IFrame', { url: 'https://app.posemy.art/' })}
                   iconClassName='text-red-400'
-                  icon='mdiBrush'
+                  icon={IKONS.mdiBrush}
                   localShortcut={KEYS.openPage_Posemy}
                   label='3d Poser (posemy.art)'
                />
                <MenuItem
                   onClick={() => cushy.layout.open('Paint', {})}
                   iconClassName='text-red-400'
-                  icon='mdiBrush'
+                  icon={IKONS.mdiBrush}
                   localShortcut={KEYS.openPage_Paint}
                   label='Minipaint'
                />
@@ -50,14 +50,14 @@ export const MenuUtilsUI = observer(function MenuUtilsUI_(p: {}) {
                      })
                   }
                   iconClassName='text-red-400'
-                  icon='mdiBrush'
+                  icon={IKONS.mdiBrush}
                   localShortcut={KEYS.openPage_Paint}
                   label='Photopea'
                />
                <MenuItem
                   onClick={() => cushy.layout.open('IFrame', { url: 'https://unsplash.com/' })}
                   iconClassName='text-purple-400'
-                  icon='mdiImageSearch'
+                  icon={IKONS.mdiImageSearch}
                   localShortcut={KEYS.openPage_Unsplash}
                   label='Unsplash - Free images'
                />

@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'bun:test'
+import { describe, expect, it } from 'vitest'
 
 import { simpleBuilder as b } from '../../index'
 import { expectJSON } from './utils/expectJSON'
@@ -18,8 +18,8 @@ describe('assign to value object', () => {
          boolFalse: b.bool({ default: false }),
          with: b.with(b.bool(), (x) =>
             b.fields({
-               b1: x,
-               b2: x,
+               b1: x.shared(),
+               b2: x.shared(),
             }),
          ),
       })
@@ -84,7 +84,7 @@ describe('assign to value object', () => {
 
       E.value = ['a']
       const snap1 = E.saveSnapshot() // 💾 1
-      expect(snap1 === E.serial).toBeFalse()
+      expect(snap1 === E.serial).toBeFalsy()
       const { snapshot, ...serial } = E.serial
       expectJSON(snap1).toEqual(serial)
 

@@ -17,11 +17,11 @@ export const masksChannel: Channel<Masks$['$Field']> = new Channel()
  * basically, the definition of the structure of the content
  * of a .psd, or .xslx, .krita, ...
  */
-export type UC2$ = X.XGroup<{
-   fileName: X.XString
+export type UC2$ = Z.XGroup<{
+   fileName: Z.XString
    frame: SimpleRect$
-   masks: X.XList<Mask$>
-   layers: X.XList<Layer$>
+   masks: Z.XList<Mask$>
+   layers: Z.XList<Layer$>
 }>
 
 export const uc2$ = (b: CushySchemaBuilder): UC2$ =>

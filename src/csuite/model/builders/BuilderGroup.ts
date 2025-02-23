@@ -1,65 +1,51 @@
-import type { FieldTypes } from '../$FieldTypes'
 import type { NO_PROPS } from '../../types/NO_PROPS'
+import type { FieldConstructor } from '../FieldConstructor'
 import type { SchemaDict } from '../SchemaDict'
 
-import { Field_group, type Field_group_config, type Field_group_types } from '../../fields/group/FieldGroup'
-import { BaseBuilder } from './BaseBuilder'
+import { Field_group, type Field_group_config } from '../../fields/group/FieldGroup'
+import { CSchema } from '../CSchema'
+import { defineSchemaBuilderMixin } from './defineSchemaBuilderMixin'
 
-interface SchemaAndAliasesᐸ_ᐳ extends HKT<FieldTypes> {
-   Group: HKT<SchemaDict>
-   Empty: Apply<this, Field_group<Field_group_types<NO_PROPS>>>
+// prettier-ignore
+export type BuilderGroupMixin = {
+   group<T extends SchemaDict>(config?: Field_group_config<T>): Z.Record<T>;
+   fields<T extends SchemaDict>(items: T | (() => T), config?: Omit<Field_group_config<T>, "items">): Z.Record<T>;
+   empty(config?: Field_group_config<NO_PROPS>): Z.Empty;
 }
 
-export class BuilderGroup<Schemaᐸ_ᐳ extends SchemaAndAliasesᐸ_ᐳ> extends BaseBuilder<Schemaᐸ_ᐳ> {
-   static fromSchemaClass = BaseBuilder.buildfromSchemaClass(BuilderGroup)
+const BuilderGroupImpl = (): BuilderGroupMixin =>
+   defineSchemaBuilderMixin({
+      /** see also: `fields` for a more practical api */
+      group<T extends SchemaDict>(config: Field_group_config<T> = {}): Z.Record<T> {
+         // 💬 2025-02-03 rvion:
+         // the cast here is just so we can pretend at the type level that the class have the MAGICFIELDS
+         // defined at construction (whici it does via manual Object.defineProperty in the constructor!)
+         const CTOR = Field_group as FieldConstructor<Field_group<T>>
+         const groupSchema = CSchema.new(CTOR, config)
 
-   /** see also: `fields` for a more practical api */
-   group<T extends SchemaDict>(
-      config: Field_group_config<Field_group_types<T>> = {},
-   ): Apply<Schemaᐸ_ᐳ['Group'], T> {
-      return this.buildSchema(Field_group<Field_group_types<T>>, config)
-   }
+         // make sure lazy lambdas are only executed once.
+         const items = groupSchema.config.items
+         if (typeof items === 'function')
+            groupSchema.config.items = (): T => {
+               const subSchema = items()
+               groupSchema.config.items = subSchema
+               return subSchema
+            }
 
-   fields<T extends SchemaDict>(
-      items: T | (() => T),
-      config: Omit<Field_group_config<Field_group_types<T>>, 'items'> = {},
-   ): Apply<Schemaᐸ_ᐳ['Group'], T> {
-      return this.group({ items, ...config })
-   }
+         return groupSchema as Z.Record<T>
+      },
 
-   empty(config: Field_group_config<Field_group_types<NO_PROPS>> = {}): Schemaᐸ_ᐳ['Empty'] {
-      return this.group(config)
-   }
+      fields<T extends SchemaDict>(
+         items: T | (() => T),
+         config: Omit<Field_group_config<T>, 'items'> = {},
+      ): Z.Record<T> {
+         return this.group({ items, ...config })
+      },
 
-   // Backward Compat (row/col)
-   private _defaultGroupConfigs: {
-      row?: Partial<Omit<Field_group_config<any>, 'items' | 'summary'>>
-      column?: Partial<Omit<Field_group_config<any>, 'items' | 'summary'>>
-   } = {}
+      empty(config: Field_group_config<NO_PROPS> = {}): Z.Empty {
+         return this.group(config)
+      },
+   })
 
-   withDefaultGroupConfig(conf: {
-      row?: Partial<Field_group_config<any>>
-      column?: Partial<Field_group_config<any>>
-   }): this {
-      Object.assign(this._defaultGroupConfigs, conf)
-      return this
-   }
-
-   row = <T extends SchemaDict>(
-      items: T,
-      config: Omit<Field_group_config<Field_group_types<T>>, 'items'> = {},
-   ): Apply<Schemaᐸ_ᐳ['Group'], T> => {
-      const finalConfig: Field_group_config<Field_group_types<T>> = {
-         ...this._defaultGroupConfigs.row,
-         ...config,
-      }
-      return this.fields(items, finalConfig)
-   }
-
-   column = <T extends SchemaDict>(
-      items: T,
-      config: Omit<Field_group_config<Field_group_types<T>>, 'items'> = {},
-   ): Apply<Schemaᐸ_ᐳ['Group'], T> => {
-      return this.fields(items, { ...this._defaultGroupConfigs.column, ...config })
-   }
-}
+export const BuilderGroupDescriptors: Record<string, PropertyDescriptor> =
+   Object.getOwnPropertyDescriptors(BuilderGroupImpl())

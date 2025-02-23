@@ -1,6 +1,6 @@
 import type { CushySchemaBuilder } from '../../controls/CushyBuilder'
 
-export type UI_Justify = X.XSelectOne_<'full' | 'L' | 'center' | 'R'>
+export type UI_Justify = Z.XSelectOne_<'full' | 'L' | 'center' | 'R'>
 
 export const ui_justify = (ui: CushySchemaBuilder): UI_Justify =>
    ui.selectOneOptionId(

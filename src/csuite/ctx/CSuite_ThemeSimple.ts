@@ -29,7 +29,6 @@ export const CSuite_theme1: CSuiteConfig = {
    widgetHeight: 1.8,
    inputHeight: 1.6,
    insideHeight: 1.2,
-   inputRoundness: 3,
    showWidgetExtra: true,
    truncateLabels: false,
    fieldGroups: {},

@@ -20,7 +20,7 @@ export const CivitaiUI = observer(function CivitaiUI_(p: { className?: string; c
                   className='px-1'
                >
                   <InputStringUI
-                     icon='mdiMagnify'
+                     icon={IKONS.mdiMagnify}
                      tw='csuite-basic-input w-full'
                      placeholder='rechercher'
                      getValue={() => civitai.query.value}

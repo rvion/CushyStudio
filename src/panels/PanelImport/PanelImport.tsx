@@ -27,14 +27,14 @@ export const PanelImportUI = observer(function PanelImportUI_(p: {}) {
             <Button //
                look='warning'
                onClick={() => cushy.droppedFiles.splice(0)}
-               icon='mdiBackspace'
+               icon={IKONS.mdiBackspace}
                children='Clear Items'
             />
          </PanelHeaderUI>
          <div tw='m-3 flex flex-col gap-3'>
             {cushy.droppedFiles.map((file, ix) => (
                <Frame border base key={`${file.name}+${ix}`} tw='p-1'>
-                  <Frame line icon='mdiFileImport'>
+                  <Frame line icon={IKONS.mdiFileImport}>
                      "{file.name}"
                   </Frame>
 

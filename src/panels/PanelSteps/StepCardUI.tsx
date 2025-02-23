@@ -101,7 +101,7 @@ export const StepCardUI = observer(function StepOutputsV1HeaderUI_(p: {
          <SpacerUI />
          {step?.finalStatus === Status.Running && (
             <Button //
-               icon='mdiStop'
+               icon={IKONS.mdiStop}
                look='error'
                onClick={() => {
                   step.abort()

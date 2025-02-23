@@ -18,7 +18,7 @@ export const PanelCanvasHeaderUI = observer(function PanelCanvasHeaderUI_(p: {})
                {/* <Button
                 onClick={() => cushy.activityManager.startFromClass(UCAGenerate, canvas)}
                 children='test'
-                icon='mdiAbTesting'
+                icon={IKONS.mdiAbTesting}
             /> */}
                <InputNumberUI //
                   text='Brush Size'
@@ -43,7 +43,7 @@ export const PanelCanvasHeaderUI = observer(function PanelCanvasHeaderUI_(p: {})
             >
                <Button //
                   square
-                  icon='mdiUndo'
+                  icon={IKONS.mdiUndo}
                   tooltip='Undo'
                   disabled={!canvas.canUndo}
                   onClick={() => canvas.undo()}
@@ -51,7 +51,7 @@ export const PanelCanvasHeaderUI = observer(function PanelCanvasHeaderUI_(p: {})
                <Button
                   square
                   disabled={!canvas.canRedo}
-                  icon='mdiRedo'
+                  icon={IKONS.mdiRedo}
                   tooltip='Redo (Not implemented)'
                   onClick={() => canvas.redo()}
                />

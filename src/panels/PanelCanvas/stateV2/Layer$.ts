@@ -4,16 +4,16 @@ import type { FieldId } from '../../../csuite/model/FieldId'
 import { simpleShape$, type SimpleShape$ } from '../../../csuite/fields/core-prefabs/ShapeSchema'
 import { layerAIGeneration$ } from './layerAIGeneration$'
 
-export type Layer$ = X.XGroup<{
+export type Layer$ = Z.XGroup<{
    placement: SimpleShape$
-   visible: X.XBool
-   name: X.XString
-   content: X.XChoices<{
-      image: X.XImage
-      aiGeneration: X.XGroup<{
-         masks: X.XSelectMany_<FieldId>
-         draftId: X.XSelectOne<{ id: DraftID; label: string }, DraftID>
-         image: X.XOptional<X.XImage>
+   visible: Z.XBool
+   name: Z.XString
+   content: Z.XChoices<{
+      image: Z.XImage
+      aiGeneration: Z.XGroup<{
+         masks: Z.XSelectMany_<FieldId>
+         draftId: Z.XSelectOne<{ id: DraftID; label: string }, DraftID>
+         image: Z.XOptional<Z.XImage>
       }>
    }>
 }>

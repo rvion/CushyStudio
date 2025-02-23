@@ -1,13 +1,15 @@
-import { describe, it } from 'bun:test'
+import type { Field_list_ItemID } from '../../fields/list/FieldList'
+
+import { describe, it } from 'vitest'
 
 import { simpleBuilder as b } from '../../index'
 import { expectJSON } from './utils/expectJSON'
 
 // ------------------------------------------------------------------------------
-describe('auto-migration ', () => {
+describe('auto-migration', () => {
    it('can recover from/to lists', () => {
       // E1 works
-      const S1: S.SString = b.string({ default: '🔵' })
+      const S1: Z.String = b.string({ default: '🔵' })
       const E1 = S1.create()
       expectJSON(E1.value).toBe('🔵')
 
@@ -23,7 +25,11 @@ describe('auto-migration ', () => {
 
       // E2 should able to PRESERVE the '🟢' when schema has been wrapped into list
       expectJSON(E2.value).toMatchObject(['🟢'])
-      expectJSON(E2.serial).toMatchObject({ $: 'list', items_: [{ $: 'str', value: '🟢' }] })
+      expectJSON(E2.serial).toMatchObject({
+         $: 'list',
+         items_: [{ $: 'str', value: '🟢' }],
+         keys: [E2.items[0]?.mountKey],
+      })
 
       // E1 should still have the same value, despite its serial having been used to create E2
       expectJSON(E1.serial).toMatchObject({ $: 'str', value: '🟢' })
@@ -67,15 +73,16 @@ describe('auto-migration ', () => {
    // 🔶     expectJSON(E3.serial).toMatchObject({ $: 'str', value: '🟢' })
    // 🔶 })
 
+   // eslint-disable-next-line vitest/no-commented-out-tests
    // it('can recover from/to links', () => {
    //     expect(0).toBe(1)
    //     // 💬 2024-07-02: TODO with GUI
-   //     // see `src/csuite/simple/SimpleSchema.ts`, near the `AUTOMIGRATION` section
+   //     // see `src/csuite/model/CSchema.ts`, near the `AUTOMIGRATION` section
    // })
 
-   it('can recover from/to lists + TEST PROXY SETTERS 🔥 ', () => {
+   it('can recover from/to lists + TEST PROXY SETTERS 🔥', () => {
       // E1 works
-      const S1: S.SString = b.string({ default: '🔵' })
+      const S1: Z.String = b.string({ default: '🔵' })
       const E1 = S1.create()
       expectJSON(E1.value).toBe('🔵')
 
@@ -92,7 +99,11 @@ describe('auto-migration ', () => {
       // E2 should able to PRESERVE the '🟢' when schema has been wrapped into list
       expectJSON(E2.value).toMatchObject(['🟢'])
       E2.value[0] = '🔴'
-      expectJSON(E2.serial).toMatchObject({ $: 'list', items_: [{ $: 'str', value: '🔴' }] })
+      expectJSON(E2.serial).toMatchObject({
+         $: 'list',
+         items_: [{ $: 'str', value: '🔴' }],
+         keys: [E2.items[0]?.mountKey as Field_list_ItemID],
+      })
 
       // E1 should still have the same value, despite its serial having been used to create E2
       expectJSON(E1.serial).toMatchObject({ $: 'str', value: '🟢' })

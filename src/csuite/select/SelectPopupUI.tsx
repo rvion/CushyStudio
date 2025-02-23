@@ -8,9 +8,7 @@ import { FixedSizeList } from 'react-window'
 import { csuiteConfig } from '../config/configureCsuite'
 import { Frame } from '../frame/Frame'
 import { InputStringUI } from '../input-string/InputStringUI'
-import { SelectAllNoneUI } from './SelectAllNoneUI'
-import { SelectOptionUI } from './SelectOptionUI'
-import { SelectOptionUI_FixedList } from './SelectOptionUI_FixedList'
+import { SelectAllNoneUI, SelectOptionUI, SelectOptionUI_FixedList } from './SelectOptionUI'
 
 const trueMinWidth: '20rem' = '20rem'
 
@@ -30,6 +28,7 @@ export const SelectPopupUI = observer(function SelectPopupUI_<OPTION>(p: SelectP
    const itemSize = typeof select.p.virtualized === 'number' ? select.p.virtualized : 28 // should probably match input height or cell height
    const showSelectAll =
       select.filteredOptions.length > 1 && select.p.showSelectAllNone !== false && select.isMultiSelect
+
    return (
       <div
          tw={[
@@ -40,6 +39,7 @@ export const SelectPopupUI = observer(function SelectPopupUI_<OPTION>(p: SelectP
          ]}
          {...p.selectState.p.popupWrapperProps}
          style={{ minWidth, ...p.selectState.p.popupWrapperProps?.style }}
+         data-testid='SelectPopupUI'
       >
          <div
             tw={[
@@ -92,21 +92,15 @@ export const SelectPopupUI = observer(function SelectPopupUI_<OPTION>(p: SelectP
          {/* No results */}
          {select.filteredOptions.length === 0 //
             ? (select.p.slotPlaceholderWhenNoResults ?? (
-                 <span className='h-input gap-1 px-2 text-base'>
+                 <FixedSlot>
                     {csuiteConfig.i18n.ui.select.noResults}
-                    {p.createOption != null && p.createOption.isActive !== false && (
+                    {p.createOption != null && p.createOption.isActive?.() !== false && (
                        <>
                           {' '}
-                          -{' '}
-                          <button
-                             tw='inline border-none bg-transparent text-base text-sky-700 hover:text-sky-700 hover:underline'
-                             onClick={() => select.createOption()}
-                          >
-                             {p.createOption.label ?? csuiteConfig.i18n.ui.select.create}
-                          </button>
+                          - <CreateButton select={select} />
                        </>
                     )}
-                 </span>
+                 </FixedSlot>
               ))
             : null}
 
@@ -163,6 +157,31 @@ export const SelectPopupUI = observer(function SelectPopupUI_<OPTION>(p: SelectP
                </>
             )
          )}
+
+         {select.filteredOptions.length > 0 &&
+            p.createOption != null &&
+            p.createOption.isActive?.() !== false && (
+               <FixedSlot>
+                  <CreateButton select={select} />
+               </FixedSlot>
+            )}
       </div>
+   )
+})
+
+export const FixedSlot = observer(function CreateSlot<OPTION>(p: { children?: React.ReactNode }) {
+   return <div className='h-input gap-1 px-2 text-base'>{p.children}</div>
+})
+
+export const CreateButton = observer(function CreateButton<OPTION>(p: {
+   select: AutoCompleteSelectState<OPTION>
+}) {
+   return (
+      <button
+         tw='inline border-none bg-transparent text-base text-sky-700 hover:text-sky-700 hover:underline'
+         onClick={() => p.select.createOption()}
+      >
+         {p.select.p.createOption?.label?.() ?? csuiteConfig.i18n.ui.select.create}
+      </button>
    )
 })
