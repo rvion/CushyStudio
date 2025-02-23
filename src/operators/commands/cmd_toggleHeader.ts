@@ -26,7 +26,7 @@ export const ctx_menu = new CommandContext<Menu>('OverMenu', () => {
          builder.SimpleMenuAction({ label: '6', onClick: () => console.log(`[🤠] 6`) }),
          builder.SimpleMenuAction({ label: '7', onClick: () => console.log(`[🤠] 7`) }),
       ],
-      icon: 'mdiKeyboardCaps',
+      icon: IKONS.mdiKeyboardCaps,
    })
    return x
 })

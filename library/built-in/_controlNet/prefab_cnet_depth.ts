@@ -3,15 +3,15 @@ import type { OutputFor } from '../_prefabs/_prefabs'
 import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
 
 // 🅿️ Depth FORM ===================================================
-export type UI_subform_Depth = Z.XGroup<{
+export type UI_subform_Depth = Z.Group<{
    preprocessor: UI_subform_Depth_Preprocessor
-   cnet_model_name: Z.XEnum<'ControlNetLoader.control_net_name'>
-   strength: Z.XNumber
-   advanced: Z.XGroup<{
-      startAtStepPercent: Z.XNumber
-      endAtStepPercent: Z.XNumber
-      crop: Z.XEnum<'LatentUpscale.crop'>
-      upscale_method: Z.XEnum<'ImageScale.upscale_method'>
+   cnet_model_name: Z.Enum<'ControlNetLoader.control_net_name'>
+   strength: Z.Number
+   advanced: Z.Group<{
+      startAtStepPercent: Z.Number
+      endAtStepPercent: Z.Number
+      crop: Z.Enum<'LatentUpscale.crop'>
+      upscale_method: Z.Enum<'ImageScale.upscale_method'>
    }>
 }>
 
@@ -43,8 +43,8 @@ export function ui_subform_Depth(): UI_subform_Depth {
 }
 
 // ================================================================================
-export type UI_subform_Depth_Preprocessor = Z.XChoice<{
-   None: Z.XEmpty
+export type UI_subform_Depth_Preprocessor = Z.Choice<{
+   None: Z.Empty
    Midas: UI_subform_Depth_Midas
    Leres: UI_subform_Depth_LeReS
    Zoe: UI_subform_Depth_Zoe
@@ -65,10 +65,10 @@ export function ui_subform_Depth_Preprocessor(): UI_subform_Depth_Preprocessor {
 }
 
 // ================================================================================
-export type UI_subform_Depth_Midas = Z.XGroup<{
-   a_value: Z.XNumber
-   bg_threshold: Z.XNumber
-   saveProcessedImage: Z.XBool
+export type UI_subform_Depth_Midas = Z.Group<{
+   a_value: Z.Number
+   bg_threshold: Z.Number
+   saveProcessedImage: Z.Bool
 }>
 
 export function ui_subform_Depth_Midas(): UI_subform_Depth_Midas {
@@ -88,11 +88,11 @@ export function ui_subform_Depth_Midas(): UI_subform_Depth_Midas {
 }
 
 // ================================================================================
-export type UI_subform_Depth_LeReS = Z.XGroup<{
-   rm_nearest: Z.XNumber
-   rm_background: Z.XNumber
-   boost: Z.XBool
-   saveProcessedImage: Z.XBool
+export type UI_subform_Depth_LeReS = Z.Group<{
+   rm_nearest: Z.Number
+   rm_background: Z.Number
+   boost: Z.Bool
+   saveProcessedImage: Z.Bool
 }>
 export function ui_subform_Depth_LeReS(): UI_subform_Depth_LeReS {
    const form: Z.Builder = getCurrentForm()
@@ -109,8 +109,8 @@ export function ui_subform_Depth_LeReS(): UI_subform_Depth_LeReS {
 }
 
 // ================================================================================
-export type UI_subform_Depth_Zoe = Z.XGroup<{
-   saveProcessedImage: Z.XBool
+export type UI_subform_Depth_Zoe = Z.Group<{
+   saveProcessedImage: Z.Bool
 }>
 export function ui_subform_Depth_Zoe(): UI_subform_Depth_Zoe {
    const form: Z.Builder = getCurrentForm()

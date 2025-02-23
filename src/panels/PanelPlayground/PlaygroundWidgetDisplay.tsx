@@ -45,7 +45,7 @@ const useDoc = (): Field<any> => {
             checkLabelIcon: b.bool({
                label: false,
                text: 'Check Label w icon',
-               icon: 'mdiContentSaveOutline',
+               icon: IKONS.mdiContentSaveOutline,
             }),
             toggleButton: b.bool({
                label: '',
@@ -56,7 +56,7 @@ const useDoc = (): Field<any> => {
                label: false,
                text: 'Toggle Button Icon',
                display: 'button',
-               icon: 'mdiCheckboxOutline',
+               icon: IKONS.mdiCheckboxOutline,
             }),
             toggleButtonExpand: b.bool({
                label: '',
@@ -69,7 +69,7 @@ const useDoc = (): Field<any> => {
                text: 'Toggle Button Expand w Icon',
                display: 'button',
                expand: true,
-               icon: 'mdiCheckboxOutline',
+               icon: IKONS.mdiCheckboxOutline,
             }),
          }
 

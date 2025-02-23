@@ -49,7 +49,7 @@ export const ConnectionInfoUI = observer(function ConnectionInfoUI_(p: { host: H
             borderless
             square
             look={connected ? 'success' : 'error'}
-            icon={connected ? 'mdiServer' : 'mdiServerOff'}
+            icon={connected ? IKONS.mdiServer : IKONS.mdiServerOff}
          />
       </RevealUI>
    )
@@ -71,7 +71,7 @@ export const HostWebsocketIndicatorUI = observer(function HostWebsocketIndicator
       <RevealUI showDelay={0} content={() => <HostQuickMenuUI host={p.host} />}>
          {ws == null ? (
             <Button //
-               icon={p.showIcon ? 'mdiCloudOff' : undefined}
+               icon={p.showIcon ? IKONS.mdiCloudOff : undefined}
                subtle
                tw='opacity-50'
                children='WS'

@@ -12,7 +12,7 @@ export const allScreencastCommands: Command<null>[] = [
          cushy.showCommandHistory = !cushy.showCommandHistory
          return Trigger.Success
       },
-      icon: 'mdiKeyboard',
+      icon: IKONS.mdiKeyboard,
       validInInput: true,
    }),
 
@@ -25,7 +25,7 @@ export const allScreencastCommands: Command<null>[] = [
          cushy.resizeWindowForLaptop()
          return Trigger.Success
       },
-      icon: 'mdiMoveResize',
+      icon: IKONS.mdiMoveResize,
       validInInput: true,
    }),
 ]

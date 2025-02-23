@@ -6,30 +6,30 @@ import {
 import { ui_model_pag, type UI_model_pag } from './prefab_model_pag'
 import { ui_model_sag, type UI_model_sag } from './prefab_model_sag'
 
-export type $schemaModelExtras = Z.XChoices<{
-   checkpointConfig: Z.XEnum<'CheckpointLoader.config_name'>
-   rescaleCFG: Z.XNumber
-   vae: Z.XEnum<'VAELoader.vae_name'>
-   clipSkip: Z.XNumber
-   freeU: Z.XEmpty
-   freeUv2: Z.XEmpty
-   vpred: Z.XGroup<{ zsnr: Z.XBool }>
-   epred: Z.XGroup<{ zsnr: Z.XBool }>
-   sampling: Z.XGroup<{
-      sampling: Z.XEnum<'ModelSamplingDiscrete.sampling'>
-      zsnr: Z.XBool
+export type $schemaModelExtras = Z.Choices<{
+   checkpointConfig: Z.Enum<'CheckpointLoader.config_name'>
+   rescaleCFG: Z.Number
+   vae: Z.Enum<'VAELoader.vae_name'>
+   clipSkip: Z.Number
+   freeU: Z.Empty
+   freeUv2: Z.Empty
+   vpred: Z.Group<{ zsnr: Z.Bool }>
+   epred: Z.Group<{ zsnr: Z.Bool }>
+   sampling: Z.Group<{
+      sampling: Z.Enum<'ModelSamplingDiscrete.sampling'>
+      zsnr: Z.Bool
    }>
    pag: UI_model_pag
    sag: UI_model_sag
    KohyaDeepShrink: UI_model_kohyaDeepShrink
-   civitai_ckpt_air: Z.XString
+   civitai_ckpt_air: Z.String
 }>
 
 export const schemaModelExtras = (
    p: {
       defaultVAE?: Comfy.Slots['VAELoader.vae_name']
       vaeActiveByDefault?: boolean
-      // default?: $schemaModelExtras['$Value']
+      // default?: $schemaModelExtras['$value']
    } = {},
 ): $schemaModelExtras => {
    const b = getCurrentForm()
@@ -86,7 +86,7 @@ type XX2 = { vae: Comfy.Signal['VAE']; clip: Comfy.Signal['CLIP']; ckpt: Comfy.S
 
 export function evalModelExtras_part1(
    //
-   extra: $schemaModelExtras['$Value'],
+   extra: $schemaModelExtras['$value'],
    { vae, clip, ckpt }: XX1,
 ): XX2 {
    const graph = getCurrentRun().nodes
@@ -132,7 +132,7 @@ export function evalModelExtras_part1(
 }
 
 export const evalModelExtras_part2 = (
-   extra: $schemaModelExtras['$Value'],
+   extra: $schemaModelExtras['$value'],
    ckpt: Comfy.Signal['MODEL'],
    forHiRes?: boolean,
    kohyaScale?: number,

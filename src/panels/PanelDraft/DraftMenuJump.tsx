@@ -38,7 +38,7 @@ export const DraftMenuDataBlockUI = observer(function DraftMenuDataBlockUI_(p: {
       >
          <Dropdown
             className={p.className}
-            startIcon='mdiPencilBox'
+            startIcon={IKONS.mdiPencilBox}
             title={false}
             content={() => <DraftListUI app={p.draft.app} />}
             button={
@@ -47,7 +47,7 @@ export const DraftMenuDataBlockUI = observer(function DraftMenuDataBlockUI_(p: {
                   borderless
                   tw='!gap-0 !rounded-none !px-0.5'
                   icon={IKONS.mdiPencilBox}
-                  suffixIcon={'mdiChevronDown'}
+                  suffixIcon={IKONS.mdiChevronDown}
                />
             }
          />

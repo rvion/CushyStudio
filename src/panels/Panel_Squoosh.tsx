@@ -10,7 +10,7 @@ export const PanelSquoosh = new Panel({
    header: (p): PanelHeader => ({ title: 'Squoosh' }),
    def: (): NO_PROPS => ({}),
    category: 'tools',
-   icon: 'mdiImageFilterVintage',
+   icon: IKONS.mdiImageFilterVintage,
 })
 
 export const PanelSquooshUI = observer(function PanelSquooshUI_(p: NO_PROPS) {

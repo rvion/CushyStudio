@@ -17,7 +17,7 @@ import { knownOKLCHHues } from '../tinyCSS/knownHues'
 type ClassLike = string | { [cls: string]: any } | null | undefined | boolean
 
 export type InputStringProps = {
-   /** when true => 'mdiText' */
+   /** when true => IKONS.mdiText */
    icon?: Maybe<IconName> // | boolean | null | undefined
 
    disabled?: boolean

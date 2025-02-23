@@ -3,17 +3,17 @@ import type { OutputFor } from '../_prefabs/_prefabs'
 import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
 
 // 🅿️ Lineart FORM ===================================================
-export type UI_subform_Lineart = Z.XGroup<{
+export type UI_subform_Lineart = Z.Group<{
    preprocessor: UI_subform_Lineart_Preprocessor
-   models: Z.XGroup<{
-      cnet_model_name: Z.XEnum<'ControlNetLoader.control_net_name'>
+   models: Z.Group<{
+      cnet_model_name: Z.Enum<'ControlNetLoader.control_net_name'>
    }>
-   strength: Z.XNumber
-   advanced: Z.XGroup<{
-      startAtStepPercent: Z.XNumber
-      endAtStepPercent: Z.XNumber
-      crop: Z.XEnum<'LatentUpscale.crop'>
-      upscale_method: Z.XEnum<'ImageScale.upscale_method'>
+   strength: Z.Number
+   advanced: Z.Group<{
+      startAtStepPercent: Z.Number
+      endAtStepPercent: Z.Number
+      crop: Z.Enum<'LatentUpscale.crop'>
+      upscale_method: Z.Enum<'ImageScale.upscale_method'>
    }>
 }>
 
@@ -47,8 +47,8 @@ export function ui_subform_Lineart(): UI_subform_Lineart {
 }
 
 // ====================================================================================================
-export type UI_subform_Lineart_Preprocessor = Z.XChoice<{
-   None: Z.XEmpty
+export type UI_subform_Lineart_Preprocessor = Z.Choice<{
+   None: Z.Empty
    Realistic: UI_subform_Lineart_realistic
    Anime: UI_subform_Lineart_Anime
    Manga: UI_subform_Lineart_Manga
@@ -67,9 +67,9 @@ export function ui_subform_Lineart_Preprocessor(): UI_subform_Lineart_Preprocess
 }
 
 // ====================================================================================================
-export type UI_subform_Lineart_realistic = Z.XGroup<{
-   coarse: Z.XBool
-   saveProcessedImage: Z.XBool
+export type UI_subform_Lineart_realistic = Z.Group<{
+   coarse: Z.Bool
+   saveProcessedImage: Z.Bool
 }>
 
 export function ui_subform_Lineart_realistic(): UI_subform_Lineart_realistic {
@@ -81,8 +81,8 @@ export function ui_subform_Lineart_realistic(): UI_subform_Lineart_realistic {
 }
 
 // ========================================================================
-export type UI_subform_Lineart_Anime = Z.XGroup<{
-   saveProcessedImage: Z.XBool
+export type UI_subform_Lineart_Anime = Z.Group<{
+   saveProcessedImage: Z.Bool
 }>
 export function ui_subform_Lineart_Anime(): UI_subform_Lineart_Anime {
    const form: Z.Builder = getCurrentForm()
@@ -96,8 +96,8 @@ export function ui_subform_Lineart_Anime(): UI_subform_Lineart_Anime {
 }
 
 // ========================================================================
-export type UI_subform_Lineart_Manga = Z.XGroup<{
-   saveProcessedImage: Z.XBool
+export type UI_subform_Lineart_Manga = Z.Group<{
+   saveProcessedImage: Z.Bool
 }>
 export function ui_subform_Lineart_Manga(): UI_subform_Lineart_Manga {
    const form: Z.Builder = getCurrentForm()

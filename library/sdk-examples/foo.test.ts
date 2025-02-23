@@ -8,7 +8,7 @@ describe('can create models without going through builder', () => {
       //
       // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
       class Bar extends Field_bool {
-         $Field!: Bar
+         $field!: Bar
          coucou(): string {
             return 'monde'
          }

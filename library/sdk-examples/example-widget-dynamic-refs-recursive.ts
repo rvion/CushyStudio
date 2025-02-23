@@ -4,11 +4,11 @@ import type { Field_group } from '../../src/csuite/fields/group/FieldGroup'
 import type { Field_image } from '../../src/csuite/fields/image/FieldImage'
 import type { Field_list } from '../../src/csuite/fields/list/FieldList'
 
-type ListItem = Z.XGroup<{
-   uid: Z.XString /* UID */
-   value: Z.XChoice<{
-      image: Z.XImage
-      latent: Z.XGroup<{ size: Z.XSize; batch: Z.XNumber }>
+type ListItem = Z.Group<{
+   uid: Z.String /* UID */
+   value: Z.Choice<{
+      image: Z.Image
+      latent: Z.Group<{ size: Z.Size; batch: Z.Number }>
       process: Z.XSelectOne_<string /* UID */> // <---- recursion here
    }>
 }>

@@ -1,9 +1,7 @@
+import type { Tree } from '@lezer/common'
 import type { BaseSchema } from '../csuite/model/BaseSchema'
-import type { FieldConfig } from '../csuite/model/FieldConfig'
-import type { FieldSerial } from '../csuite/model/FieldSerial'
 import type { Repository } from '../csuite/model/Repository'
 import type { Problem_Ext } from '../csuite/model/Validation'
-import type { Tree } from '@lezer/common'
 
 import { produce } from 'immer'
 
@@ -27,13 +25,10 @@ export type CompiledPrompt = {
 }
 
 // #region Config
-export type Field_prompt_config = FieldConfig<
-   {
-      default?: string
-      placeHolder?: string
-   },
-   Field_prompt
->
+export type Field_prompt_ownConfig = {
+   default?: string
+   placeHolder?: string
+}
 
 // #region Serial from value
 export const Field_prompt_fromValue = (val: Field_prompt_value): Field_prompt_serial => ({
@@ -42,27 +37,25 @@ export const Field_prompt_fromValue = (val: Field_prompt_value): Field_prompt_se
 })
 
 // #region Serial
-export type Field_prompt_serial = FieldSerial<{
+export type Field_prompt_ownSerial = {
    $: 'prompt'
-
    /** when undefined, the field is considered unset */
    val?: string
-}>
+}
 
 // #region Value
 export type Field_prompt_value = Field_prompt
 export type Field_prompt_unchecked = Field_prompt
 
 // #region $FieldTypes
-export type Field_prompt = {
-   $Type: 'prompt'
-   $Config: Field_prompt_config
-   $Serial: Field_prompt_serial
-   $Value: Field_prompt_value
-   $Unchecked: Field_prompt_value | undefined
-   $Field: Field_prompt
-   $Child: never
-   $Reflect: Field_prompt
+export interface Field_prompt {
+   $type: 'prompt'
+   $ownConfig: Field_prompt_ownConfig
+   $ownSerial: Field_prompt_ownSerial
+   $value: Field_prompt_value
+   $unchecked: Field_prompt_value | undefined
+   $field: Field_prompt
+   $child: never
 }
 
 // #region State

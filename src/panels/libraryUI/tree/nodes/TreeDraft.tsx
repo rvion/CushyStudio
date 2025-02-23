@@ -38,7 +38,7 @@ export class TreeDraft implements ITreeEntry {
    actions: TreeEntryAction[] = [
       {
          name: 'add Draft',
-         icon: 'mdiPlay',
+         icon: IKONS.mdiPlay,
          mode: 'small',
          onClick: (): void => {
             this.draft.AWAKE()
@@ -47,7 +47,7 @@ export class TreeDraft implements ITreeEntry {
       },
       {
          name: 'add Draft',
-         icon: 'mdiCloseCircleOutline',
+         icon: IKONS.mdiCloseCircleOutline,
          mode: 'small',
          onClick: () => this.draft.delete({}),
       },

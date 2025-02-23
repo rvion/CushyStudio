@@ -1,10 +1,10 @@
-export type UI_model_sag = Z.XGroup<{
-   include: Z.XChoices<{
-      base: Z.XGroup<{}>
-      hiRes: Z.XGroup<{}>
+export type UI_model_sag = Z.Group<{
+   include: Z.Choices<{
+      base: Z.Group<{}>
+      hiRes: Z.Group<{}>
    }>
-   scale: Z.XNumber
-   blur_sigma: Z.XNumber
+   scale: Z.Number
+   blur_sigma: Z.Number
 }>
 
 export const ui_model_sag = (form: Z.Builder): UI_model_sag => {

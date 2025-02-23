@@ -8,7 +8,7 @@ import { Frame } from '../../../csuite/frame/Frame'
 import { UCMenuEntryContainerUI } from './UCMenuEntryContainerUI'
 
 type UCMenuLayerEntryUIProps = {
-   layer: Layer$['$Field']
+   layer: Layer$['$field']
    index: number
    active?: boolean
    children?: React.ReactNode
@@ -79,7 +79,7 @@ export const UCMenuLayerEntryUI = observer(function UCMenuLayerEntryUI_(p: UCMen
             <Button
                tooltip='visibility'
                onClick={() => p.layer.Visible.toggle()}
-               icon={isVisible ? 'mdiEyeOutline' : 'mdiEyeClosed'}
+               icon={isVisible ? IKONS.mdiEyeOutline : IKONS.mdiEyeClosed}
                borderless
                subtle
             />

@@ -13,7 +13,7 @@ app({
          checkLabelIcon: b.bool({
             label: false,
             text: 'Check Label',
-            icon: 'mdiContentSaveOutline',
+            icon: IKONS.mdiContentSaveOutline,
          }),
          toggleButton: b.bool({
             label: '',
@@ -24,7 +24,7 @@ app({
             label: false,
             text: 'Toggle Button Icon',
             display: 'button',
-            icon: 'mdiCheckboxOutline',
+            icon: IKONS.mdiCheckboxOutline,
          }),
          toggleButtonExpand: b.bool({
             label: '',
@@ -37,7 +37,7 @@ app({
             text: 'Toggle Button Expand',
             display: 'button',
             expand: true,
-            icon: 'mdiCheckboxOutline',
+            icon: IKONS.mdiCheckboxOutline,
          }),
       }),
    run: async (run, ui) => {},

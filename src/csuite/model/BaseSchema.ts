@@ -33,14 +33,14 @@ export interface BaseSchema<
    out TYPES extends FieldTypes = FieldTypes,
    Schemaᐸ_ᐳ extends SchemaAndAliasesᐸ_ᐳ = SchemaAndAliasesᐸ_ᐳ,
 > {
-   $Field: TYPES['$Field']
-   $Type: TYPES['$Type']
-   $Config: TYPES['$Config']
-   $Serial: TYPES['$Serial']
-   $Value: TYPES['$Value']
-   $Unchecked: TYPES['$Unchecked']
-   $Child: TYPES['$Child']
-   $Reflect: TYPES['$Reflect']
+   $field: TYPES['$field']
+   $type: TYPES['$type']
+   $config: TYPES['$config']
+   $serial: TYPES['$serial']
+   $value: TYPES['$value']
+   $unchecked: TYPES['$unchecked']
+   $child: TYPES['$child']
+   $reflect: TYPES['$reflect']
    // reflect API
 }
 
@@ -63,21 +63,21 @@ export class BaseSchema<
    /** untyped so the schema remains covariant over Field */
    private UNSAFE_selfConstructor: any
 
-   // private get pocLessUnsafe_selfConstructor(): CovariantFn<[fieldConstructor: FieldConstructor<FIELD>, config: FIELD['$Config']],  Apply<HKSCHEMA, FIELD>> {
+   // private get pocLessUnsafe_selfConstructor(): CovariantFn<[fieldConstructor: FieldConstructor<FIELD>, config: FIELD['$config']],  Apply<HKSCHEMA, FIELD>> {
    //     return this.UNSAFE_selfConstructor
    // }
 
    constructor(
       /** field constructor (class or function, see FieldConstructor definition)  */
-      public fieldConstructor: FieldConstructor<TYPES /* 🔴['$Field'] */>,
+      public fieldConstructor: FieldConstructor<TYPES /* 🔴['$field'] */>,
       /** config of the field to instanciate */
-      public readonly config: TYPES['$Config'],
+      public readonly config: TYPES['$config'],
       /** necessary for higher-kinded clone (e.g. withConfig) */
       selfConstructor: (
          //
-         fieldConstructor: FieldConstructor<TYPES /* 🔴['$Field'] */>,
-         config: TYPES['$Config'],
-      ) => Apply<Schemaᐸ_ᐳ, TYPES['$Field']>,
+         fieldConstructor: FieldConstructor<TYPES /* 🔴['$field'] */>,
+         config: TYPES['$config'],
+      ) => Apply<Schemaᐸ_ᐳ, TYPES['$field']>,
    ) {
       this.UNSAFE_selfConstructor = selfConstructor
 
@@ -93,7 +93,7 @@ export class BaseSchema<
    }
 
    // ------------------------------------------------------------
-   applyFieldExtensions(field: TYPES['$Field']): void {
+   applyFieldExtensions(field: TYPES['$field']): void {
       for (const ext of this.config.customFieldProperties ?? []) {
          const xxx = ext(field)
          Object.defineProperties(field, Object.getOwnPropertyDescriptors(xxx))
@@ -116,7 +116,7 @@ export class BaseSchema<
     * ```ts
     * // 👉 using an external class require it to properly extend your field shape
     * //                 VVVVVVVVVVV VVVVVVVVVVVVVVVVVVVVVVVVVV
-    * class Foo1 extends Field_group<T0['$Field']['$Subfields']> {
+    * class Foo1 extends Field_group<T0['$field']['$Subfields']> {
     *     static HELLO = 'WORLD'
     *     volatile = 12
     *     constructor(...args:FieldCtorProps){ // 👈 constructor is only required if you want
@@ -159,7 +159,7 @@ export class BaseSchema<
    useClass<CUSTOM extends Field>(
       /** the class constructor */
       // prettier-ignore
-      classToUse: KlassToUse<TYPES['$Field'], CUSTOM>,
+      classToUse: KlassToUse<TYPES['$field'], CUSTOM>,
    ): Apply<Schemaᐸ_ᐳ, CUSTOM> {
       if (this.config.classToUse != null) throw new Error('already have a custom class')
       if (this.config.builderToUse != null) throw new Error('already have a custom class')
@@ -176,8 +176,8 @@ export class BaseSchema<
    }
 
    useMixin<EXTS extends object>(
-      extensions: (self: TYPES['$Field']) => EXTS,
-   ): Apply<Schemaᐸ_ᐳ, TYPES & { $Field: EXTS & TYPES['$Field'] }> {
+      extensions: (self: TYPES['$field']) => EXTS,
+   ): Apply<Schemaᐸ_ᐳ, TYPES & { $field: EXTS & TYPES['$field'] }> {
       const x: BaseSchema<TYPES> = this.withConfig({
          customFieldProperties: [...(this.config.customFieldProperties ?? []), extensions],
       })
@@ -192,7 +192,7 @@ export class BaseSchema<
     * so you can type a lot of type.
     */
    useIn<BP extends BaseSchema>(
-      fn: CovariantFn<[field: TYPES['$Field']], BP>,
+      fn: CovariantFn<[field: TYPES['$field']], BP>,
    ): Apply<Schemaᐸ_ᐳ['Link'], this, BP> {
       const FieldLinkClass = getFieldLinkClass()
       const linkConf: Field_link_config<this, BP> = { share: this, children: fn }
@@ -238,19 +238,19 @@ export class BaseSchema<
    // ⏸️ fieldConstructor: FieldConstructor<FIELD>
 
    /** type of the field to instanciate */
-   get type(): TYPES['$Type'] {
+   get type(): TYPES['$type'] {
       return this.fieldConstructor.type
    }
 
    // ⏸️ /** config of the field to instanciate */
-   // ⏸️ config: FIELD['$Config']
+   // ⏸️ config: FIELD['$config']
 
    // ------------------------------------------------------------
-   LabelExtraUI?: CovariantFC<{ field: TYPES['$Field'] }>
+   LabelExtraUI?: CovariantFC<{ field: TYPES['$field'] }>
 
    // ------------------------------------------------------------
    // Clone/Fork
-   withConfig(config: Partial<TYPES['$Config']>): this {
+   withConfig(config: Partial<TYPES['$config']>): this {
       const mergedConfig = objectAssignTsEfficient_t_pt(potatoClone(this.config), config)
       const cloned = this.UNSAFE_selfConstructor(this.fieldConstructor, mergedConfig)
       return cloned
@@ -267,25 +267,25 @@ export class BaseSchema<
    }
 
    // PubSub -----------------------------------------------------
-   publish<T>(chan: Channel<T> | ChannelId, produce: (self: TYPES['$Field']) => T): this {
+   publish<T>(chan: Channel<T> | ChannelId, produce: (self: TYPES['$field']) => T): this {
       return this.withConfig({
          producers: [...(this.config.producers ?? []), { chan, produce }],
       })
    }
 
-   publishSelf(chan: Channel<TYPES['$Field']> | ChannelId): this {
+   publishSelf(chan: Channel<TYPES['$field']> | ChannelId): this {
       return this.withConfig({
          producers: [...(this.config.producers ?? []), { chan, produce: (s) => s }],
       })
    }
 
-   publishValue(chan: Channel<TYPES['$Value']> | ChannelId): this {
+   publishValue(chan: Channel<TYPES['$value']> | ChannelId): this {
       return this.withConfig({
          producers: [...(this.config.producers ?? []), { chan, produce: (s) => s.value }],
       })
    }
 
-   subscribe<T>(chan: Channel<T> | ChannelId, effect: (arg: T, self: TYPES['$Field']) => void): this {
+   subscribe<T>(chan: Channel<T> | ChannelId, effect: (arg: T, self: TYPES['$field']) => void): this {
       return this.addReaction(
          (self) => self.consume(chan),
          (arg, self) => {
@@ -295,15 +295,15 @@ export class BaseSchema<
       )
    }
 
-   get reactions(): FieldReaction<TYPES['$Field']>[] {
+   get reactions(): FieldReaction<TYPES['$field']>[] {
       return this.config.reactions ?? []
    }
 
-   get producers(): Producer<any, TYPES['$Field']>[] {
+   get producers(): Producer<any, TYPES['$field']>[] {
       return this.config.producers ?? []
    }
 
-   addCheck(check: NonNullable<TYPES['$Config']['check']>): this {
+   addCheck(check: NonNullable<TYPES['$config']['check']>): this {
       const prevCheck = this.config.check
       if (prevCheck == null) return this.withConfig({ check })
       return this.withConfig({
@@ -317,8 +317,8 @@ export class BaseSchema<
 
    addReaction<T>(
       //
-      expr: (self: TYPES['$Field']) => T,
-      effect: (arg: T, self: TYPES['$Field']) => void,
+      expr: (self: TYPES['$field']) => T,
+      effect: (arg: T, self: TYPES['$field']) => void,
    ): this {
       return this.withConfig({
          reactions: [...(this.config.reactions ?? []), { expr, effect }],
@@ -347,10 +347,10 @@ export class BaseSchema<
     */
    create(
       // when unspecified, an empty serial is used
-      serial_?: Maybe<TYPES['$Serial']> | false,
+      serial_?: Maybe<TYPES['$serial']> | false,
       /** when unspeficied, the global repository will be used */
       repository_?: Repository,
-   ): TYPES['$Field'] {
+   ): TYPES['$field'] {
       const repository = repository_ ?? getGlobalRepository()
       const serial = serial_ === false ? undefined : serial_
       return this.instanciate(repository, null, null, '$', serial)
@@ -365,7 +365,7 @@ export class BaseSchema<
     */
    createDraft(
       //
-      serial_?: TYPES['$Serial'] | false,
+      serial_?: TYPES['$serial'] | false,
       /** when unspeficied, the global repository will be used */
       repository_?: Repository,
    ): DraftLike<TYPES> {
@@ -382,7 +382,7 @@ export class BaseSchema<
     */
    createDraftAlt(
       //
-      serial_?: TYPES['$Serial'] | false,
+      serial_?: TYPES['$serial'] | false,
       /** when unspeficied, the global repository will be used */
       repository_?: Repository,
    ): Draft<TYPES> {
@@ -397,10 +397,10 @@ export class BaseSchema<
     * @category Validation
     */
    createAndValidate(
-      serial?: TYPES['$Serial'] | false,
+      serial?: TYPES['$serial'] | false,
       /** when unspeficied, the global repository will be used */
       repository?: Repository,
-   ): Result<TYPES['$Field'], ValidationError> {
+   ): Result<TYPES['$field'], ValidationError> {
       return this.create(serial, repository).validate()
    }
 
@@ -411,10 +411,10 @@ export class BaseSchema<
     * @category Validation
     */
    createOrThrowIfInvalid(
-      serial?: TYPES['$Serial'] | false,
+      serial?: TYPES['$serial'] | false,
       /** when unspeficied, the global repository will be used */
       repository?: Repository,
-   ): TYPES['$Field'] {
+   ): TYPES['$field'] {
       return this.create(serial, repository).validateOrThrow()
    }
 
@@ -433,10 +433,10 @@ export class BaseSchema<
       parent: Field | null,
       initialMountKey: string,
       serial?: unknown,
-   ): TYPES['$Field'] {
+   ): TYPES['$field'] {
       // /* 😂 */ console.log(`[🤠] ${getUIDForMemoryStructure(serial)} (Field.instanciate, before creating instance 🟢 )`)
       // create the instance
-      let field: TYPES['$Field']
+      let field: TYPES['$field']
       if (this.fieldConstructor.build === 'new') {
          if (this.config.classToUse) {
             const SUPER = this.fieldConstructor

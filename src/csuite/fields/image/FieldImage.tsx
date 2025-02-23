@@ -44,14 +44,13 @@ export type Field_image_value = MediaImageL
 
 // #region Types
 export type Field_image = {
-   $Type: 'image'
-   $Config: Field_image_config
-   $Serial: Field_image_serial
-   $Value: Field_image_value
-   $Unchecked: Field_image_value | undefined
-   $Field: Field_image
-   $Child: never
-   $Reflect: Field_image
+   $type: 'image'
+   $config: Field_image_config
+   $serial: Field_image_serial
+   $value: Field_image_value
+   $unchecked: Field_image_value | undefined
+   $field: Field_image
+   $child: never
 }
 
 // #region STATE

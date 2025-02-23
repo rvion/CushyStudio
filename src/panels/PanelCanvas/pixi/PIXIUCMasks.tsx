@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite'
 
 import { PixiMediaImage } from './PixiMediaImage'
 
-export const PIXIUCMasks = observer(function UCMasks_(p: { uc2: UC2$['$Field'] }) {
+export const PIXIUCMasks = observer(function UCMasks_(p: { uc2: UC2$['$field'] }) {
    const uc2 = p.uc2
    return (
       <>

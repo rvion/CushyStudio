@@ -6,24 +6,24 @@ import {
    type UI_LatentShapeGenerator,
 } from '../shapes/prefab_shapes'
 
-export type UI_LatentV3 = Z.XLink<
-   Z.XNumber,
-   Z.XChoice<{
-      emptyLatent: Z.XGroup<{
+export type UI_LatentV3 = Z.Link<
+   Z.Number,
+   Z.Choice<{
+      emptyLatent: Z.Group<{
          batchSize: Z.Shared<Z.Number>
-         size: Z.XSize
+         size: Z.Size
       }>
-      image: Z.XGroup<{
+      image: Z.Group<{
          batchSize: Z.Shared<Z.Number>
-         image: Z.XImage
-         resize: Z.XOptional<
-            Z.XGroup<{
-               mode: Z.XEnumOf<'resize' | 'rescale'>
-               supersample: Z.XEnumOf<'false' | 'true'>
-               resampling: Z.XEnumOf<'bicubic' | 'bilinear' | 'lanczos' | 'nearest'>
-               rescale_factor: Z.XNumber
-               resize_width: Z.XNumber
-               resize_height: Z.XNumber
+         image: Z.Image
+         resize: Z.Maybe<
+            Z.Group<{
+               mode: Z.EnumOf<'resize' | 'rescale'>
+               supersample: Z.EnumOf<'false' | 'true'>
+               resampling: Z.EnumOf<'bicubic' | 'bilinear' | 'lanczos' | 'nearest'>
+               rescale_factor: Z.Number
+               resize_width: Z.Number
+               resize_height: Z.Number
             }>
          >
       }>
@@ -74,7 +74,7 @@ export function ui_latent_v3(p: { size?: Field_size_config } = {}): UI_LatentV3 
                   )
                },
             },
-            icon: 'mdiStarThreePoints',
+            icon: IKONS.mdiStarThreePoints,
             appearance: 'tab',
             default: 'emptyLatent',
             label: 'Latent Input',
@@ -86,7 +86,7 @@ export function ui_latent_v3(p: { size?: Field_size_config } = {}): UI_LatentV3 
 
 export const run_latent_v3 = async (p: {
    //
-   opts: ReturnType<typeof ui_latent_v3>['$Value']
+   opts: ReturnType<typeof ui_latent_v3>['$value']
    vae: Comfy.Signal['VAE']
 }): Promise<{
    latent: Comfy.Signal['LATENT']

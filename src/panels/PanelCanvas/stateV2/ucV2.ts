@@ -7,9 +7,9 @@ import { usePanel } from '../../../router/usePanel'
 import { layer$, type Layer$ } from './Layer$'
 import { mask$, type Mask$, type Masks$ } from './Masks$'
 
-export const useUCV2 = (): UC2$['$Field'] => usePanel().usePersistentModel('StateV2', (b) => uc2$(b))
+export const useUCV2 = (): UC2$['$field'] => usePanel().usePersistentModel('StateV2', (b) => uc2$(b))
 
-export const masksChannel: Channel<Masks$['$Field']> = new Channel()
+export const masksChannel: Channel<Masks$['$field']> = new Channel()
 
 // #region UC2
 /**
@@ -17,11 +17,11 @@ export const masksChannel: Channel<Masks$['$Field']> = new Channel()
  * basically, the definition of the structure of the content
  * of a .psd, or .xslx, .krita, ...
  */
-export type UC2$ = Z.XGroup<{
-   fileName: Z.XString
+export type UC2$ = Z.Group<{
+   fileName: Z.String
    frame: SimpleRect$
-   masks: Z.XList<Mask$>
-   layers: Z.XList<Layer$>
+   masks: Z.List<Mask$>
+   layers: Z.List<Layer$>
 }>
 
 export const uc2$ = (b: CushySchemaBuilder): UC2$ =>

@@ -10,7 +10,7 @@ const helpCommands = [
       label: 'Open Github',
       combos: 'mod+shift+h 1',
       ctx: ctx_global,
-      icon: 'mdiGithub',
+      icon: IKONS.mdiGithub,
       action: () => {
          void window.require('electron').shell.openExternal('https://github.com/rvion/CushyStudio#readme')
          return Trigger.Success
@@ -21,7 +21,7 @@ const helpCommands = [
       description: 'Open CushyStudio Website in your default web browser',
       label: 'Open Website',
       combos: 'mod+shift+h 2',
-      icon: 'mdiGithub',
+      icon: IKONS.mdiGithub,
       ctx: ctx_global,
       action: () => {
          void window.require('electron').shell.openExternal('https://www.CushyStudio.com')
@@ -33,7 +33,7 @@ const helpCommands = [
       description: 'Open CushyStudio blog in your default web browser',
       label: 'Open blog',
       combos: 'mod+shift+h 3',
-      icon: 'mdiPost',
+      icon: IKONS.mdiPost,
       ctx: ctx_global,
       action: () => {
          void window.require('electron').shell.openExternal('https://www.CushyStudio.com/blog')

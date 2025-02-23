@@ -40,8 +40,8 @@ describe('field customizations', () => {
          // const z: CSchema<CSchema<F>> = 0 as any
          const S1 = b.bool().useClass(F)
          const E1 = S1.create()
-         E1 satisfies CSchema<CSchema<F>['$Field']>['$Field']
-         E1 satisfies CSchema<CSchema<CSchema<F>['$Field']>['$Field']>['$Field']
+         E1 satisfies CSchema<CSchema<F>['$field']>['$field']
+         E1 satisfies CSchema<CSchema<CSchema<F>['$field']>['$field']>['$field']
 
          expect(E1.value).toBe(false)
          expect(E1.inverse).toBe(true)
@@ -113,7 +113,7 @@ describe('field customizations', () => {
          // 💬 2025-02-06 rvion:
          // until we pick a better default for MagicFields, I can't find an other way
          // than just having it merged at the final subclass.
-         // from a practical standpoint, it's probably ok since we anyway need to merge the $Field for now.
+         // from a practical standpoint, it's probably ok since we anyway need to merge the $field for now.
          interface MyFooCollection extends MAGICFIELDS<FooStuff> {  } // prettier-ignore
          class MyFooCollection extends MyCollection<FooStuff> {
             static schema = (b: SimpleBuilder): CSchema<MyFooCollection> =>

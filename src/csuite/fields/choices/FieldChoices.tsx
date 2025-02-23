@@ -76,15 +76,15 @@ type Field_choices_ownSerial<T extends SchemaDict = SchemaDict> = {
 
 // #region VALUE TYPE
 export type Field_choices_value<T extends SchemaDict = SchemaDict> = {
-   [k in keyof T]?: T[k]['$Field']['$value']
+   [k in keyof T]?: T[k]['$field']['$value']
 }
 
 export type Field_choices_SetValue<T extends SchemaDict = SchemaDict> = {
-   [k in keyof T]?: T[k]['$Field']['$setValue']
+   [k in keyof T]?: T[k]['$field']['$setValue']
 }
 
 export type Field_choices_unchecked<T extends SchemaDict = SchemaDict> = {
-   [k in keyof T]?: T[k]['$Field']['$unchecked']
+   [k in keyof T]?: T[k]['$field']['$unchecked']
 }
 
 // #region $TypeString
@@ -95,7 +95,7 @@ export interface Field_choices<T extends SchemaDict = SchemaDict> {
    $value: Field_choices_value<T>
    $setValue: Field_choices_SetValue<T>
    $unchecked: Field_choices_unchecked<T>
-   $child: T[keyof T]['$Field']
+   $child: T[keyof T]['$field']
    $opts: unknown
    $ownPatch: Field_choices_patch<T>
    //
@@ -115,8 +115,8 @@ export type Field_choices_patch_disable<T extends SchemaDict = SchemaDict> = Pat
    branch: keyof T & string
 }
 
-export type MAGICCHOICES<T extends { [key: string]: { $Field: any } }> = {
-   [K in keyof T as Capitalize<K & string>]?: T[K]['$Field']
+export type MAGICCHOICES<T extends { [key: string]: { $field: any } }> = {
+   [K in keyof T as Capitalize<K & string>]?: T[K]['$field']
 }
 
 // #region STATE
@@ -208,13 +208,13 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
     * dictionary of enabled children branches
     * TODO: rename
     */
-   readonly _: { [k in keyof T]?: T[k]['$Field'] } = observable({})
+   readonly _: { [k in keyof T]?: T[k]['$field'] } = observable({})
 
-   @computed get activeBranchesList(): T[keyof T]['$Field'][] {
+   @computed get activeBranchesList(): T[keyof T]['$field'][] {
       return Object.values(this._)
    }
 
-   getChildIfActive<KEY extends keyof T & string>(branchName: KEY): T[KEY]['$Field'] | undefined {
+   getChildIfActive<KEY extends keyof T & string>(branchName: KEY): T[KEY]['$field'] | undefined {
       return this._[branchName]
    }
 
@@ -260,7 +260,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
       return this.activeBranchNames[0]
    }
 
-   get firstActiveBranchField(): T[keyof T]['$Field'] | undefined {
+   get firstActiveBranchField(): T[keyof T]['$field'] | undefined {
       if (this.firstActiveBranchName == null) return undefined
       return this._[this.firstActiveBranchName]
    }
@@ -655,7 +655,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
       })
    }
 
-   enableBranch<K extends keyof T & string>(branchName: K): Maybe<T[K]['$Field']> {
+   enableBranch<K extends keyof T & string>(branchName: K): Maybe<T[K]['$field']> {
       // ensure branch to enable is disabled
       if (this.isBranchEnabled(branchName)) {
          void console.info(`❌ Branch "${branchName}" already enabled`)
@@ -762,7 +762,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
    // #region Matching
    matchCase<R, DEF = null>(
       cases: {
-         [K in keyof T]?: (field: T[K]['$Field']) => R
+         [K in keyof T]?: (field: T[K]['$field']) => R
       },
       def: DEF,
    ): R | DEF {
@@ -776,11 +776,11 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
 
    // sigh, nullable composition...
    matchExhaustive<R>(cases: {
-      [K in keyof T]: (field: T[K]['$Field']) => R
+      [K in keyof T]: (field: T[K]['$field']) => R
    }): [null] extends [R] ? "❌ match branches cannot return 'null'" : R
 
    matchExhaustive<R>(cases: {
-      [K in keyof T]: (field: T[K]['$Field']) => R
+      [K in keyof T]: (field: T[K]['$field']) => R
    }): R {
       const result = this.matchCase(cases, _NotExhaustive)
       if (result == _NotExhaustive) throw new Error('❌ matchExhaustive did not have exhaustive cases')
@@ -788,7 +788,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
    }
 
    matchAll<R>(cases: {
-      [K in keyof T]?: (field: T[K]['$Field']) => R
+      [K in keyof T]?: (field: T[K]['$field']) => R
    }): R[] {
       const OUT: R[] = []
       for (const branch of this.activeBranchesList) {

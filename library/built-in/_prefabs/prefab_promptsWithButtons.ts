@@ -7,18 +7,18 @@ import type { OutputFor } from './_prefabs'
 // I tend to prefer adding them in built-in prefabs to help
 // with codebase typechecking performances, and making breaking
 // changes more explicit.
-export type UI_advancedPrompt = Z.XList<
-   Z.XChoice<{
-      prompt: Z.XPrompt
-      characters: Z.XChoice<{
-         [k: string]: Z.XChoice<{
-            [k: string]: Z.XGroup<SchemaDict>
+export type UI_advancedPrompt = Z.List<
+   Z.Choice<{
+      prompt: Z.Prompt
+      characters: Z.Choice<{
+         [k: string]: Z.Choice<{
+            [k: string]: Z.Group<SchemaDict>
          }>
       }>
-      styles: Z.XChoice<{
-         [k: string]: Z.XChoice<{
-            [k: string]: Z.XChoice<{
-               [k: string]: Z.XGroup<SchemaDict>
+      styles: Z.Choice<{
+         [k: string]: Z.Choice<{
+            [k: string]: Z.Choice<{
+               [k: string]: Z.Group<SchemaDict>
             }>
          }>
       }>
@@ -30,7 +30,7 @@ export function ui_advancedPrompt(): UI_advancedPrompt {
    return form.list({
       min: 1,
       layout: 'H',
-      icon: 'mdiBookAlphabet',
+      icon: IKONS.mdiBookAlphabet,
       element: () =>
          form.choice(
             {

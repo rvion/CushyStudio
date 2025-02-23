@@ -4,9 +4,9 @@ import type { Tint } from './Tint'
 import { type $schemaSimpleDropShadow, schemaSimpleDropShadow } from '../frame/SimpleDropShadow'
 import { ui_tint, type UI_Tint } from './prefab_Tint'
 
-export type UI_Theme_Text = Z.XGroup<{
+export type UI_Theme_Text = Z.Group<{
    base: UI_Tint
-   size: Z.XNumber
+   size: Z.Number
    shadow: $schemaSimpleDropShadow
 }>
 

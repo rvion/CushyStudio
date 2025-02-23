@@ -17,7 +17,7 @@ export type CustomWidgetProps<T> = {
    extra: UIKit
 }
 
-// #region $Config
+// #region $config
 export type Field_custom_config<T> = FieldConfig<
    {
       defaultValue: () => T
@@ -27,7 +27,7 @@ export type Field_custom_config<T> = FieldConfig<
    Field_custom<T>
 >
 
-// #region $Serial
+// #region $serial
 export type Field_custom_serial<T> = FieldSerial<{
    $: 'custom'
 
@@ -35,19 +35,18 @@ export type Field_custom_serial<T> = FieldSerial<{
    value?: T
 }>
 
-// #region $Value
+// #region $value
 export type Field_custom_value<T> = T
 
 // #region $Types
 export type Field_custom<T> = {
-   $Type: 'custom'
-   $Config: Field_custom_config<T>
-   $Serial: Field_custom_serial<T>
-   $Value: Field_custom_value<T>
-   $Unchecked: Field_custom_value<T> | undefined
-   $Field: Field_custom<T>
-   $Child: never
-   $Reflect: Field_custom<T>
+   $type: 'custom'
+   $config: Field_custom_config<T>
+   $serial: Field_custom_serial<T>
+   $value: Field_custom_value<T>
+   $unchecked: Field_custom_value<T> | undefined
+   $field: Field_custom<T>
+   $child: never
 }
 
 // #region State

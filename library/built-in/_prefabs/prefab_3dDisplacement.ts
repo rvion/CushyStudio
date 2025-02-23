@@ -3,12 +3,12 @@ import type { OutputFor } from './_prefabs'
 
 import { exhaust } from '../../../src/csuite/utils/exhaust'
 
-export type UI_3dDisplacement = Z.XGroup<{
+export type UI_3dDisplacement = Z.Group<{
    normal: Z.XSelectOne_<'MiDaS' | 'BAE' | 'None'>
-   depth: Z.XChoice<{
-      MiDaS: Z.XEmpty
-      Zoe: Z.XEmpty
-      LeReS: Z.XEmpty
+   depth: Z.Choice<{
+      MiDaS: Z.Empty
+      Zoe: Z.Empty
+      LeReS: Z.Empty
       Marigold: ReturnType<Z.Builder['auto']['Marigold.MarigoldDepthEstimation']>
    }>
 }>

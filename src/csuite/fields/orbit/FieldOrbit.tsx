@@ -48,14 +48,13 @@ export type Field_orbit_unchecked = {
 
 // #region Types
 export type Field_orbit = {
-   $Type: 'orbit'
-   $Config: Field_orbit_config
-   $Serial: Field_orbit_serial
-   $Value: Field_orbit_value
-   $Unchecked: Field_orbit_unchecked
-   $Field: Field_orbit
-   $Child: never
-   $Reflect: Field_orbit
+   $type: 'orbit'
+   $config: Field_orbit_config
+   $serial: Field_orbit_serial
+   $value: Field_orbit_value
+   $unchecked: Field_orbit_unchecked
+   $field: Field_orbit
+   $child: never
 }
 
 // STATE

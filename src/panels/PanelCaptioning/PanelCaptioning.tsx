@@ -35,6 +35,6 @@ export const PanelCaptioning = new Panel({
       floatingCaption: '',
       floatingGlobalCaption: '',
    }),
-   icon: 'mdiImageText',
+   icon: IKONS.mdiImageText,
    category: 'tools',
 })

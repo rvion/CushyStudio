@@ -21,7 +21,7 @@ export const DraftMenuAppUI = observer(function DraftMenuAppUI_(p: { draft: Draf
             <>
                <MenuItem
                   label={app.isFavorite ? 'Un-Favorite' : 'Favorite'}
-                  icon={app.isFavorite ? 'mdiStarMinus' : 'mdiStar'}
+                  icon={app.isFavorite ? IKONS.mdiStarMinus : IKONS.mdiStar}
                   onClick={() => app.setFavorite(!app.isFavorite)}
                />
 

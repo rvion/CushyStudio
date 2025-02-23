@@ -4,12 +4,12 @@ import {
    schemaModelExtras,
 } from '../_prefabs/prefab_model_extras'
 
-export type $prefabModelFlux = Z.XGroup<{
-   ckpt_name: Z.XEnum<'UNETLoader.unet_name'>
-   weight_type: Z.XEnum<'UNETLoader.weight_dtype'>
-   clip1: Z.XEnum<'CLIPLoader.clip_name'>
-   clip2: Z.XEnum<'CLIPLoader.clip_name'>
-   type: Z.XEnum<'DualCLIPLoader.type'>
+export type $prefabModelFlux = Z.Group<{
+   ckpt_name: Z.Enum<'UNETLoader.unet_name'>
+   weight_type: Z.Enum<'UNETLoader.weight_dtype'>
+   clip1: Z.Enum<'CLIPLoader.clip_name'>
+   clip2: Z.Enum<'CLIPLoader.clip_name'>
+   type: Z.Enum<'DualCLIPLoader.type'>
    extra: $schemaModelExtras
 }>
 
@@ -52,7 +52,7 @@ export const prefabModelFlux = (): $prefabModelFlux => {
          { type: 'modelInManager', modelName: 'Comfy Org/FLUX.1 [schnell] Checkpoint model (fp8)' },
       ])
    // .addPreset({
-   //     icon: 'mdiStar',
+   //     icon: IKONS.mdiStar,
    //     label: 'FLUX',
    //     apply: (w): void => {
    //         w.setValue({
@@ -70,7 +70,7 @@ export const prefabModelFlux = (): $prefabModelFlux => {
 }
 
 export const evalModelFlux = (
-   doc: $prefabModelFlux['$Value'],
+   doc: $prefabModelFlux['$value'],
 ): {
    ckpt: Comfy.Signal['MODEL']
    vae: Comfy.Signal['VAE']

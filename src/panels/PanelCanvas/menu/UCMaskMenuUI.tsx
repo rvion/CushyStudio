@@ -12,7 +12,7 @@ import { InputStringUI } from '../../../csuite/input-string/InputStringUI'
 
 export const UCMaskMenuUI = observer(function UCMaskMenuUI_(p: {
    //
-   mask: Mask$['$Field']
+   mask: Mask$['$field']
    index: number
 }) {
    const inputHeight = cushy.preferences.interface.value.inputHeight
@@ -73,7 +73,7 @@ export const UCMaskMenuUI = observer(function UCMaskMenuUI_(p: {
                />
                <Button
                   onClick={() => p.mask.Visible.toggle()}
-                  icon={isVisible ? 'mdiEye' : 'mdiEyeClosed'}
+                  icon={isVisible ? IKONS.mdiEye : IKONS.mdiEyeClosed}
                   borderless
                   subtle
                />

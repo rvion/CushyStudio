@@ -134,9 +134,9 @@ function _checkIfIs<F extends Field>(
 
 function _checkIfIsOptionalOf<S extends CSchema>(
    type: S['$type'],
-   predicate?: (field: S['$Field']) => boolean,
+   predicate?: (field: S['$field']) => boolean,
 ): (field: any) => field is Field_optional<S> {
-   const checkChild = _checkIfIs<S['$Field']>(type, predicate)
+   const checkChild = _checkIfIs<S['$field']>(type, predicate)
 
    return (field): field is Field_optional<S> => {
       if (!isFieldOptional(field)) return false

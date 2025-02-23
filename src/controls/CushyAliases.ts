@@ -1,3 +1,4 @@
+import type { Temporal } from '@js-temporal/polyfill'
 import type { ComfyUnionValue } from '../comfyui/comfyui-types'
 import type { Field_board } from '../csuite/fields/board/Field_board'
 import type { Field_bool } from '../csuite/fields/bool/FieldBool'
@@ -8,7 +9,7 @@ import type { Field_custom } from '../csuite/fields/custom/FieldCustom'
 import type { Field_date } from '../csuite/fields/date/FieldDate'
 import type { Field_dynamic } from '../csuite/fields/dynamic/FieldDynamic'
 import type { Field_enum } from '../csuite/fields/enum/FieldEnum'
-import type { Field_group, FieldGroup } from '../csuite/fields/group/FieldGroup'
+import type { Field_group } from '../csuite/fields/group/FieldGroup'
 import type { Field_image } from '../csuite/fields/image/FieldImage'
 import type { Field_link } from '../csuite/fields/link/FieldLink'
 import type { Field_list } from '../csuite/fields/list/FieldList'
@@ -27,10 +28,9 @@ import type { Field_string } from '../csuite/fields/string/FieldString'
 import type { CSchema } from '../csuite/model/CSchema'
 import type { NO_PROPS } from '../csuite/types/NO_PROPS'
 import type { Field_prompt } from '../prompt/FieldPrompt'
-import type { Temporal } from '@js-temporal/polyfill'
 
 // TODO:
-// alias should only be $Type &
+// alias should only be $type &
 // {Field:..., Schema:...}
 //  => would make EVERYTHING so much simpler
 
@@ -56,23 +56,22 @@ declare global {
 
       // schema aliases
       type Shared<T extends Field> = CSchema<Field_shared<T>>
-      type XGroup<T extends SchemaDict> = CSchema<FieldGroup<Field_group<T>>>
-      type XGroup_<T extends SchemaDict> = CSchema<Field_group<T>>
-      type XEmpty = CSchema<Field_group<NO_PROPS>>
-      type XOptional<T extends BaseSchema> = CSchema<Field_optional<T>>
-      type XBool = CSchema<Field_bool>
-      type XLink<A extends BaseSchema, B extends BaseSchema> = CSchema<Field_link<A, B>>
-      type XString = CSchema<Field_string>
-      type XChoices<T extends SchemaDict = SchemaDict> = CSchema<Field_choices<T>>
-      type XChoice<T extends SchemaDict = SchemaDict> = CSchema<Field_choices<T>>
-      type XNumber = CSchema<Field_number>
-      type XColor = CSchema<Field_color>
-      type XList<T extends BaseSchema> = CSchema<Field_list<T>>
-      type XDynamic<T extends BaseSchema> = CSchema<Field_dynamic<T>>
-      type XBoard<T extends BaseSchema> = CSchema<Field_board<T>>
-      type XButton<T> = CSchema<Field_button<T>>
-      type XSeed = CSchema<Field_seed>
-      type XMatrix = CSchema<Field_matrix>
+      type Group<T extends SchemaDict> = CSchema<Field_group<T>>
+      type Empty = CSchema<Field_group<NO_PROPS>>
+      type Maybe<T extends BaseSchema> = CSchema<Field_optional<T>>
+      type Bool = CSchema<Field_bool>
+      type Link<A extends BaseSchema, B extends BaseSchema> = CSchema<Field_link<A, B>>
+      type String = CSchema<Field_string>
+      type Choices<T extends SchemaDict = SchemaDict> = CSchema<Field_choices<T>>
+      type Choice<T extends SchemaDict = SchemaDict> = CSchema<Field_choices<T>>
+      type Number = CSchema<Field_number>
+      type Color = CSchema<Field_color>
+      type List<T extends BaseSchema> = CSchema<Field_list<T>>
+      type Dynamic<T extends BaseSchema> = CSchema<Field_dynamic<T>>
+      type Board<T extends BaseSchema> = CSchema<Field_board<T>>
+      type Button<T> = CSchema<Field_button<T>>
+      type Seed = CSchema<Field_seed>
+      type Matrix = CSchema<Field_matrix>
 
       // dates
       type XDatePlain = CSchema<Field_date<Temporal.PlainDate>>
@@ -85,14 +84,14 @@ declare global {
       type XSelectOne_<T extends SelectKey> = CSchema<Field_selectOne<T, T>> // variant that may be shorter to read
       type XSelectMany_<T extends SelectKey> = CSchema<Field_selectMany<T, T>> // variant that may be shorter to read
 
-      type XSize = CSchema<Field_size>
-      type XMarkdown = CSchema<Field_markdown>
+      type Size = CSchema<Field_size>
+      type Markdown = CSchema<Field_markdown>
 
-      type XPrompt = CSchema<Field_prompt>
-      type XEnum<ENUM_NAME extends keyof Comfy.Slots> = CSchema<Field_enum<Comfy.Slots[ENUM_NAME]>>
-      type XEnumOf<O extends ComfyUnionValue> = CSchema<Field_enum<O>>
-      type XOrbit = CSchema<Field_orbit>
-      type XImage = CSchema<Field_image>
-      type XCustom<T> = CSchema<Field_custom<T>>
+      type Prompt = CSchema<Field_prompt>
+      type Enum<ENUM_NAME extends keyof Comfy.Slots> = CSchema<Field_enum<Comfy.Slots[ENUM_NAME]>>
+      type EnumOf<O extends ComfyUnionValue> = CSchema<Field_enum<O>>
+      type Orbit = CSchema<Field_orbit>
+      type Image = CSchema<Field_image>
+      type Custom<T> = CSchema<Field_custom<T>>
    }
 }

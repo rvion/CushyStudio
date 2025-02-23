@@ -3,17 +3,17 @@ import type { OutputFor } from '../_prefabs/_prefabs'
 import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
 
 // 🅿️ Tile FORM ===================================================
-export type UI_subform_Tile = Z.XGroup<{
+export type UI_subform_Tile = Z.Group<{
    preprocessor: UI_subform_Tile_Preprocessor
-   models: Z.XGroup<{
-      cnet_model_name: Z.XEnum<'ControlNetLoader.control_net_name'>
+   models: Z.Group<{
+      cnet_model_name: Z.Enum<'ControlNetLoader.control_net_name'>
    }>
-   strength: Z.XNumber
-   advanced: Z.XGroup<{
-      startAtStepPercent: Z.XNumber
-      endAtStepPercent: Z.XNumber
-      crop: Z.XEnum<'LatentUpscale.crop'>
-      upscale_method: Z.XEnum<'ImageScale.upscale_method'>
+   strength: Z.Number
+   advanced: Z.Group<{
+      startAtStepPercent: Z.Number
+      endAtStepPercent: Z.Number
+      crop: Z.Enum<'LatentUpscale.crop'>
+      upscale_method: Z.Enum<'ImageScale.upscale_method'>
    }>
 }>
 
@@ -48,11 +48,11 @@ export function ui_subform_Tile(): UI_subform_Tile {
       ])
 }
 
-export type UI_subform_Tile_Preprocessor = Z.XChoice<{
-   None: Z.XEmpty
-   Pyrup: Z.XGroup<{
-      pyrup: Z.XNumber
-      saveProcessedImage: Z.XBool
+export type UI_subform_Tile_Preprocessor = Z.Choice<{
+   None: Z.Empty
+   Pyrup: Z.Group<{
+      pyrup: Z.Number
+      saveProcessedImage: Z.Bool
    }>
 }>
 export function ui_subform_Tile_Preprocessor(): UI_subform_Tile_Preprocessor {

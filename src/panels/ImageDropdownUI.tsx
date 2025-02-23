@@ -14,7 +14,7 @@ export const ImageDropdownUI = observer(function ImageDropdownUI_(p: { img: Medi
       <Dropdown //
          debugName='<ImageDropdownUI>'
          title='Actions'
-         // startIcon='mdiMenu'
+         // startIcon=IKONS.mdiMenu
          content={() => <ImageDropdownMenuUI img={img} />}
       />
    )

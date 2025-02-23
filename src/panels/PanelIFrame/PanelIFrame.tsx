@@ -10,7 +10,7 @@ export const PanelIframe = new Panel({
    header: (): PanelHeader => ({ title: 'IFrame' }),
    def: (): PanelIframeProps => ({ url: 'https://app.posemy.art/' }),
    category: 'tools',
-   icon: 'mdiWebPlus',
+   icon: IKONS.mdiWebPlus,
    presets: {
       Posemy(): PanelPreset<PanelIframeProps> {
          return { props: { url: 'https://app.posemy.art/' } }

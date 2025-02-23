@@ -9,5 +9,5 @@ export const PanelAppLibrary = new Panel({
    widget: (): React.FC<NO_PROPS> => PanelAppLibraryUI,
    header: (p): PanelHeader => ({ title: 'PanelAppLibrary' }),
    def: (): NO_PROPS => ({}),
-   icon: 'mdiBookmarkBoxMultipleOutline',
+   icon: IKONS.mdiBookmarkBoxMultipleOutline,
 })

@@ -30,12 +30,12 @@ const SpriteSheetUI = observer(function SpriteSheet(p: { imageID: MediaImageID |
                label: 'controls',
                presets: [
                   {
-                     icon: 'mdiAnimationPlay',
+                     icon: IKONS.mdiAnimationPlay,
                      label: '4 dirs',
                      apply: (f): void => void f.setPartialValue({ row: 4, col: 4, imagePerAnim: 4 }),
                   },
                   {
-                     icon: 'mdiRun',
+                     icon: IKONS.mdiRun,
                      label: 'run 1x6',
                      apply: (f): void => void f.setPartialValue({ row: 1, col: 6, imagePerAnim: 6 }),
                   },

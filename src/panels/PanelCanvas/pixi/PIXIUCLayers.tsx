@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite'
 import { useUnifiedCanvas } from '../states/UnifiedCanvasCtx'
 import { PixiMediaImage } from './PixiMediaImage'
 
-export const PIXIUCLayers = observer(function UCLayers_(p: { uc2: UC2$['$Field'] }) {
+export const PIXIUCLayers = observer(function UCLayers_(p: { uc2: UC2$['$field'] }) {
    const uc1 = useUnifiedCanvas()
    const uc2 = p.uc2
    return (

@@ -12,7 +12,6 @@ export type BuilderNumberMixin = {
    percent(config?: Field_number_config_configured): Z.Number
    number(config?: Field_number_config_configured): Z.Number
    number_(config?: Field_number_config_configured): Z.Number
-   // __buildNumberSchema(config: Field_number_config): Z.Number;
 }
 
 const BuilderNumberImpl = (): BuilderNumberMixin =>
@@ -43,6 +42,21 @@ const BuilderNumberImpl = (): BuilderNumberMixin =>
             min: 0,
             max: 100,
             suffix: '%',
+            ...config,
+         })
+      },
+
+      /**
+       * [number variant] ratio = mode=float, default=0.5, step=0.01, min=0, max=1, suffix='%',
+       * see also: `percent`
+       */
+      ratio(config: Omit<Field_number['$config'], 'mode'> = {}): Z.Number {
+         return new CSchema<Field_number>(Field_number, {
+            mode: 'float',
+            default: 0.5,
+            step: 0.01,
+            min: 0,
+            max: 1,
             ...config,
          })
       },

@@ -34,7 +34,7 @@ let currentlyDragged: {
 class XXX {
    constructor(
       public i: MediaImageL,
-      public placement: SimpleShape$['$Field'],
+      public placement: SimpleShape$['$field'],
       public uc: UnifiedCanvas,
    ) {
       makeAutoObservable(this)
@@ -102,9 +102,9 @@ class XXX {
 }
 
 type DraggableSpriteProps = {
-   placement: SimpleShape$['$Field']
+   placement: SimpleShape$['$field']
    mediaImage: MediaImageL
-   layer?: Layer$['$Field']
+   layer?: Layer$['$field']
    onClick?: () => void
    alpha?: number
 }

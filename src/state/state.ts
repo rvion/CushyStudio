@@ -511,7 +511,7 @@ export class STATE {
          onSerialChange: (form) => writeJSON('settings/civitai.json', form.serial),
       },
    )
-   get favbar(): $schemaFavbar['$Field'] {
+   get favbar(): $schemaFavbar['$field'] {
       return this.preferences.interface.fields.favBar
    }
    // favbar = cushyFactory.document(

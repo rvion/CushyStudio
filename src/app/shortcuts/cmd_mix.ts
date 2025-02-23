@@ -42,7 +42,7 @@ export const allLegacyCommands: Command<any>[] = [
          else cushy.search.activate()
          return Trigger.Success
       },
-      'mdiSelectSearch',
+      IKONS.mdiSelectSearch,
    ),
 
    globalValidInInput(
@@ -52,7 +52,7 @@ export const allLegacyCommands: Command<any>[] = [
          cushy.resizeWindowForVideoCapture()
          return Trigger.Success
       },
-      'mdiMoveResize',
+      IKONS.mdiMoveResize,
    ),
    globalValidInInput(
       KEYS.resetLayout,
@@ -63,7 +63,7 @@ export const allLegacyCommands: Command<any>[] = [
          // if (lastDraft) cushy.layout.FOCUS_OR_CREATE('Draft', { draftID: lastDraft.id })
          return Trigger.Success
       },
-      'mdiNewBox',
+      IKONS.mdiNewBox,
    ),
 
    // placeholderTree('/', 'focus tree filter (not implemented for now)'),

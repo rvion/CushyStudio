@@ -9,24 +9,24 @@ import { ui_ipadapter_modelSelection } from './ui_ipadapter_modelSelection'
 
 // 🅿️ IPAdapter Basic ===================================================
 
-export type UI_ipadapter_standalone = Z.XGroup<{
-   strength: Z.XNumber
-   settings: Z.XGroup<{
-      extra: Z.XList<Z.XImage>
-      crop: Z.XBool
-      startAtStepPercent: Z.XNumber
-      endAtStepPercent: Z.XNumber
-      weight_type: Z.XEnum<'IPAdapter_plus.IPAdapterAdvanced.weight_type'>
-      embedding_scaling: Z.XEnum<'IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'>
-      noise: Z.XNumber
-      unfold_batch: Z.XBool
+export type UI_ipadapter_standalone = Z.Group<{
+   strength: Z.Number
+   settings: Z.Group<{
+      extra: Z.List<Z.Image>
+      crop: Z.Bool
+      startAtStepPercent: Z.Number
+      endAtStepPercent: Z.Number
+      weight_type: Z.Enum<'IPAdapter_plus.IPAdapterAdvanced.weight_type'>
+      embedding_scaling: Z.Enum<'IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'>
+      noise: Z.Number
+      unfold_batch: Z.Bool
    }>
-   cnet_model_name: Z.XEnum<'IPAdapter_plus.IPAdapterModelLoader.ipadapter_file'>
-   clip_name: Z.XEnum<'CLIPVisionLoader.clip_name'>
-   help: Z.XMarkdown
-   image: Z.XImage
-   extra: CSchema<Field_list<Z.XImage>>
-   embedding_scaling: Z.XEnum<'IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'>
+   cnet_model_name: Z.Enum<'IPAdapter_plus.IPAdapterModelLoader.ipadapter_file'>
+   clip_name: Z.Enum<'CLIPVisionLoader.clip_name'>
+   help: Z.Markdown
+   image: Z.Image
+   extra: CSchema<Field_list<Z.Image>>
+   embedding_scaling: Z.Enum<'IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'>
 }>
 
 export const ui_ipadapter_standalone = (): UI_ipadapter_standalone => {

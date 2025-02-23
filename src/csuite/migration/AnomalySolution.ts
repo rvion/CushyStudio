@@ -28,7 +28,7 @@ export type AnomalySolution<
    config: (b: LocoSchemaBuilder) => CONFIG
    action: (p: {
       document: Field
-      config: CONFIG['$Field']
+      config: CONFIG['$field']
       anomaly: FieldAnomaly
       data: NonNullable<DATA>
    }) => 'SUCCESS' | 'FAILURE'

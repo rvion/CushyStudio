@@ -11,13 +11,13 @@ import {
 import { ui_rembg_v1, type UI_rembg_v1 } from '../_prefabs/prefab_rembg'
 import { ui_upscaleWithModel } from '../_prefabs/prefab_upscaleWithModel'
 
-export type $extra1 = Z.XChoices<{
+export type $extra1 = Z.Choices<{
    show3d: UI_3dDisplacement
    regionalPrompt: UI_regionalPrompting_v1
    removeBG: UI_rembg_v1
    mask: UI_Mask
    highResFix: UI_HighResFix
-   upscaleWithModel: Z.XGroup<{ model: Z.XEnum<'UpscaleModelLoader.model_name'> }>
+   upscaleWithModel: Z.Group<{ model: Z.Enum<'UpscaleModelLoader.model_name'> }>
    refine: UI_Refiners
    promtPlus: UI_advancedPrompt
    recursiveImgToImg: UI_recursive
@@ -37,6 +37,6 @@ export function extra1(): $extra1 {
          promtPlus: ui_advancedPrompt(),
          recursiveImgToImg: ui_recursive(),
       },
-      { /* appearance: 'tab', */ icon: 'mdiAlien' },
+      { /* appearance: 'tab', */ icon: IKONS.mdiAlien },
    )
 }

@@ -17,10 +17,10 @@ import { type Problem_Ext, type SchemaDict } from 'src/cushy-forms/main'
 // #region 🔶AUTO
 interface AutoBehaviour<out T extends CSchema> {
    /** list of keys that must be present */
-   keys(self: T['$Field']): string[] // ['foo', 'bar', 'baz']
+   keys(self: T['$field']): string[] // ['foo', 'bar', 'baz']
 
    /** for every item given by the list above */
-   getKey(self: T['$Field'], ix: number): string
+   getKey(self: T['$field'], ix: number): string
 
    /** once an item if  */
    init(key: string /* foo */): T['$value']
@@ -113,7 +113,7 @@ export interface Field_list<T extends CSchema> {
    $value: Field_list_value<T>
    $setValue: Field_list_SetValue<T>
    $unchecked: Field_list_unchecked<T>
-   $child: T['$Field']
+   $child: T['$field']
    $opts: unknown
    $ownPatch: Field_list_patch<T>
 }
@@ -176,8 +176,8 @@ export class Field_list<T extends CSchema> extends Field {
       return this.items_.length
    }
 
-   private readonly items_: T['$Field'][] = observable([])
-   public get items(): readonly T['$Field'][] {
+   private readonly items_: T['$field'][] = observable([])
+   public get items(): readonly T['$field'][] {
       return this.items_
    }
 
@@ -223,7 +223,7 @@ export class Field_list<T extends CSchema> extends Field {
       while (at != null) {
          at = at.parent
          if (at === this) {
-            return this.items_.indexOf(child as T['$Field'])
+            return this.items_.indexOf(child as T['$field'])
          }
          child = at
       }
@@ -234,7 +234,7 @@ export class Field_list<T extends CSchema> extends Field {
       return `items_.[${branchName}]`
    }
 
-   override get childrenAll(): T['$Field'][] {
+   override get childrenAll(): T['$field'][] {
       return this.items_
    }
 
@@ -300,7 +300,7 @@ export class Field_list<T extends CSchema> extends Field {
       this.startAutoBehaviour()
    }
 
-   at(ix: number): T['$Field'] | undefined {
+   at(ix: number): T['$field'] | undefined {
       return this.items_.at(ix)
    }
 
@@ -633,7 +633,7 @@ export class Field_list<T extends CSchema> extends Field {
          valueExt?: T['$setValue']
          serial?: T['$serial']
       } = {},
-   ): Maybe<T['$Field']> {
+   ): Maybe<T['$field']> {
       if (p.at != null && p.at < 0) return void console.log(`[🔶] list.addItem: at is negative`)
       if (p.at != null && p.at > this.items_.length)
          return void console.log(`[🔶] list.addItem: at is out of bounds`)
@@ -710,10 +710,10 @@ export class Field_list<T extends CSchema> extends Field {
       start: number,
       /** The number of elements to remove. */
       deleteCount: number = Infinity,
-   ): T['$Field'][] {
+   ): T['$field'][] {
       if (deleteCount === 0) return []
       if (start >= this.length) return []
-      let deleted: T['$Field'][] = []
+      let deleted: T['$field'][] = []
       this.runInTransaction(() => {
          // remove from serial
          this.patchSerial((draft) => {
@@ -737,7 +737,7 @@ export class Field_list<T extends CSchema> extends Field {
     * Removes all elements from the array and
     * @returns An array containing the elements that were deleted.
     */
-   removeAllItems(): T['$Field'][] {
+   removeAllItems(): T['$field'][] {
       // ensure list is not empty
       if (this.length === 0) {
          console.log(`[🔶] list.removeAllItems: list is already empty`)
@@ -757,7 +757,7 @@ export class Field_list<T extends CSchema> extends Field {
       // })
    }
 
-   removeItem(item: T['$Field']): Maybe<T['$Field']> {
+   removeItem(item: T['$field']): Maybe<T['$field']> {
       // ensure item is in the list
       const i = this.items_.indexOf(item)
       if (i === -1) {
@@ -776,11 +776,11 @@ export class Field_list<T extends CSchema> extends Field {
     * Removes the first element from an array and returns it.
     * If the array is empty, undefined is returned and the array is not modified.
     */
-   shift(): Maybe<T['$Field']> {
+   shift(): Maybe<T['$field']> {
       return this.removeItemAt(0)
    }
 
-   removeItemAt(i: number): Maybe<T['$Field']> {
+   removeItemAt(i: number): Maybe<T['$field']> {
       if (this.length < i) return null
       return this.splice(i, 1)[0]
    }

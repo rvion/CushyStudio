@@ -2,13 +2,13 @@ import type { Runtime } from '../../../src/runtime/Runtime'
 import type { OutputFor } from './_prefabs'
 
 // UI -----------------------------------------------------------
-export type UI_Sampler = Z.XGroup<{
-   denoise: Z.XNumber
-   steps: Z.XNumber
-   cfg: Z.XNumber
-   seed: Z.XSeed
-   sampler_name: Z.XEnum<'KSampler.sampler_name'>
-   scheduler: Z.XEnum<'KSampler.scheduler'>
+export type UI_Sampler = Z.Group<{
+   denoise: Z.Number
+   steps: Z.Number
+   cfg: Z.Number
+   seed: Z.Seed
+   sampler_name: Z.Enum<'KSampler.sampler_name'>
+   scheduler: Z.Enum<'KSampler.scheduler'>
 }>
 
 type UiSampleProps = {
@@ -37,7 +37,7 @@ export function ui_sampler(p?: UiSampleProps): UI_Sampler {
          }),
       },
       {
-         icon: 'mdiTimerSandComplete',
+         icon: IKONS.mdiTimerSandComplete,
          // box: { base: { hue: 120, chroma: 0.03 } },
          toSummary: ({ value: ui }): string => {
             return `denoise:${ui.denoise} steps:${ui.steps} cfg:${ui.cfg} sampler:${ui.sampler_name}/${ui.scheduler}`

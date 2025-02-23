@@ -1,12 +1,12 @@
 // 🅿️ CNET COMMON FORM ===================================================
 
 export type UI_cnet_ui_common = {
-   strength: Z.XNumber
-   advanced: Z.XGroup<{
-      startAtStepPercent: Z.XNumber
-      endAtStepPercent: Z.XNumber
-      crop: Z.XEnum<'LatentUpscale.crop'>
-      upscale_method: Z.XEnum<'ImageScale.upscale_method'>
+   strength: Z.Number
+   advanced: Z.Group<{
+      startAtStepPercent: Z.Number
+      endAtStepPercent: Z.Number
+      crop: Z.Enum<'LatentUpscale.crop'>
+      upscale_method: Z.Enum<'ImageScale.upscale_method'>
    }>
 }
 
@@ -35,7 +35,7 @@ export function cnet_ui_common(ui: Z.Builder): UI_cnet_ui_common {
 export const cnet_preprocessor_ui_common = (
    form: Z.Builder,
 ): {
-   saveProcessedImage: Z.XBool
+   saveProcessedImage: Z.Bool
 } => ({
    //preview: form.inlineRun({ text: 'Preview', kind: 'special' }),
    saveProcessedImage: form.bool({ default: false, expand: true, label: 'Save image' }),

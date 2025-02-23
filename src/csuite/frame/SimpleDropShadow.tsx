@@ -9,12 +9,12 @@ export type SimpleDropShadow = {
    opacity?: number
 }
 
-export type $schemaSimpleDropShadow = Z.XGroup<{
-   x: Z.XNumber
-   y: Z.XNumber
-   blur: Z.XNumber
-   color: Z.XColor
-   opacity: Z.XNumber
+export type $schemaSimpleDropShadow = Z.Group<{
+   x: Z.Number
+   y: Z.Number
+   blur: Z.Number
+   color: Z.Color
+   opacity: Z.Number
 }>
 
 export function run_theme_dropShadow(shadow: SimpleDropShadow): string {

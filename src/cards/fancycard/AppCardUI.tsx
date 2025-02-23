@@ -59,7 +59,7 @@ export const AppCardUI = observer(function FancyCardUI_(p: {
                   value={app.isFavorite}
                   onValueChange={(v) => app.setFavorite(v)}
                   iconSize='1.3rem'
-                  icon={app.isFavorite ? 'mdiStar' : 'mdiStarOutline'}
+                  icon={app.isFavorite ? IKONS.mdiStar : IKONS.mdiStarOutline}
                   // onClick={(ev) => {
                   //    ev.preventDefault()
                   //    ev.stopPropagation()

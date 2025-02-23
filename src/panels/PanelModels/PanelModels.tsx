@@ -9,5 +9,5 @@ export const PanelModels = new Panel({
    header: (p): PanelHeader => ({ title: 'Models' }),
    def: (): NO_PROPS => ({}),
    category: 'models',
-   icon: 'mdiGlobeModel',
+   icon: IKONS.mdiGlobeModel,
 })

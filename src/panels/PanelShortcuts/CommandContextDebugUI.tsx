@@ -17,7 +17,7 @@ export const CommandContextDebugUI = observer(function CommandContextDebug(p: Fr
                   <Button //
                      line
                      // disabled
-                     icon={NOK ? 'mdiCancel' : 'mdiCheck'}
+                     icon={NOK ? IKONS.mdiCancel : IKONS.mdiCheck}
                      look={NOK ? 'error' : 'success'}
                      key={c.name}
                      children={c.name}

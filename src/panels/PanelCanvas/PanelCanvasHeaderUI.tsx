@@ -34,7 +34,7 @@ export const PanelCanvasHeaderUI = observer(function PanelCanvasHeaderUI_(p: {})
                   toggleGroup='canvas'
                   value={canvas.usePenPressure}
                   onValueChange={() => (canvas.usePenPressure = !canvas.usePenPressure)}
-                  icon={canvas.usePenPressure ? 'mdiPencil' : 'mdiPencilOff'}
+                  icon={canvas.usePenPressure ? IKONS.mdiPencil : IKONS.mdiPencilOff}
                   tooltip='(Not implemented) Whether or not pressure affects the radius size of a brush stroke'
                />
             </div>
@@ -70,7 +70,7 @@ export const PanelCanvasHeaderUI = observer(function PanelCanvasHeaderUI_(p: {})
             />
             <ToggleButtonUI
                toggleGroup='canvas'
-               icon={canvas.snapToGrid ? 'mdiMagnetOn' : 'mdiMagnet'}
+               icon={canvas.snapToGrid ? IKONS.mdiMagnetOn : IKONS.mdiMagnet}
                value={canvas.snapToGrid}
                onValueChange={(v) => {
                   canvas.snapToGrid = !canvas.snapToGrid
@@ -83,12 +83,12 @@ export const PanelCanvasHeaderUI = observer(function PanelCanvasHeaderUI_(p: {})
                toggleGroup='canvas'
                value={canvas.enableOverlay}
                onValueChange={(_) => (canvas.enableOverlay = !canvas.enableOverlay)}
-               icon={canvas.enableOverlay ? 'mdiDrawing' : 'mdiDrawingBox'}
+               icon={canvas.enableOverlay ? IKONS.mdiDrawing : IKONS.mdiDrawingBox}
                tooltip={'(Not Implemented) Show Canvas Overlays'}
             />
             <Dropdown
                title=''
-               startIcon={'mdiChevronDown'}
+               startIcon={IKONS.mdiChevronDown}
                content={() => (
                   <
                      //

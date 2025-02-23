@@ -39,7 +39,7 @@ export interface Field_optional<T extends CSchema = CSchema> {
    $value: Field_optional_value<T>
    $setValue: Field_optional_SetValue<T>
    $unchecked: Field_optional_value<T>
-   $child: T['$Field']
+   $child: T['$field']
    $opts: unknown
    $ownPatch: Patch<'optional'>
 }
@@ -169,9 +169,9 @@ export class Field_optional<out T extends CSchema = CSchema> extends Field {
    }
 
    // #region Children
-   @observable.ref accessor child!: T['$Field']
+   @observable.ref accessor child!: T['$field']
 
-   getChildIfActive(): Maybe<T['$Field']> {
+   getChildIfActive(): Maybe<T['$field']> {
       return this.serial.active ? this.child : null
    }
 
@@ -181,7 +181,7 @@ export class Field_optional<out T extends CSchema = CSchema> extends Field {
       return didChange
    }
 
-   get childOrThrow(): T['$Field'] {
+   get childOrThrow(): T['$field'] {
       if (this.child == null) throw new Error('❌ optional active but child is null')
       return this.child
    }

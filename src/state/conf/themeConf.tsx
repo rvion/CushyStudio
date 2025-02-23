@@ -9,40 +9,40 @@ import { ui_tint, type UI_Tint } from '../../csuite/kolor/prefab_Tint'
 import { readJSON, writeJSON } from '../jsonUtils'
 
 // --------------
-export type ThemeConf = Z.XGroup<{
+export type ThemeConf = Z.Group<{
    labelLayout: Z.XSelectOne_<FormGlobalLayoutMode>
-   base: Z.XColor
-   appbar: Z.XOptional<Z.XColor>
-   fieldGroups: Z.XGroup<{
-      border: Z.XOptional<Z.XNumber>
-      contrast: Z.XOptional<Z.XNumber>
+   base: Z.Color
+   appbar: Z.Maybe<Z.Color>
+   fieldGroups: Z.Group<{
+      border: Z.Maybe<Z.Number>
+      contrast: Z.Maybe<Z.Number>
    }>
-   global: Z.XGroup<{
-      border: Z.XOptional<Z.XNumber>
-      contrast: Z.XOptional<Z.XNumber>
-      shadow: Z.XOptional<$schemaSimpleDropShadow>
-      roundness: Z.XNumber
+   global: Z.Group<{
+      border: Z.Maybe<Z.Number>
+      contrast: Z.Maybe<Z.Number>
+      shadow: Z.Maybe<$schemaSimpleDropShadow>
+      roundness: Z.Number
       active: UI_Tint
       text: UI_Theme_Text
       labelText: UI_Theme_Text
    }>
-   groups: Z.XGroup<{
-      border: Z.XOptional<Z.XNumber>
-      contrast: Z.XOptional<Z.XNumber>
-      padding: Z.XNumber
+   groups: Z.Group<{
+      border: Z.Maybe<Z.Number>
+      contrast: Z.Maybe<Z.Number>
+      padding: Z.Number
    }>
 }>
 
-export const themeConf: ThemeConf['$Field'] = cushyFactory.document(
+export const themeConf: ThemeConf['$field'] = cushyFactory.document(
    (ui) =>
       ui.fields(
          {
             labelLayout: ui.selectOneOptionId<SelectOptionNoVal<FormGlobalLayoutMode>>(
                [
-                  { id: 'fixed-left', /*  */ icon: 'mdiAlignHorizontalLeft' /*  */, label: '' },
-                  { id: 'fixed-right', /* */ icon: 'mdiAlignHorizontalRight' /* */, label: '' },
-                  { id: 'fluid', /*       */ icon: 'mdiFullscreenExit' /*       */, label: '' },
-                  { id: 'mobile', /*      */ icon: 'mdiCellphone' /*            */, label: '' },
+                  { id: 'fixed-left', /*  */ icon: IKONS.mdiAlignHorizontalLeft /*  */, label: '' },
+                  { id: 'fixed-right', /* */ icon: IKONS.mdiAlignHorizontalRight /* */, label: '' },
+                  { id: 'fluid', /*       */ icon: IKONS.mdiFullscreenExit /*       */, label: '' },
+                  { id: 'mobile', /*      */ icon: IKONS.mdiCellphone /*            */, label: '' },
                ],
                {
                   ui: {
@@ -56,9 +56,9 @@ export const themeConf: ThemeConf['$Field'] = cushyFactory.document(
                tooltip: 'main color of the CushyStudio UI',
                default: '#F4F5FB',
                // presets: [
-               //     { label: 'Dark', icon: 'mdiLightSwitch', apply: (w) => (w.value = '#1E212B') },
-               //     { label: 'Light', icon: 'mdiLightSwitch', apply: (w) => (w.value = '#F4F5FB') },
-               //     { label: 'Moonlight', icon: 'mdiMoonFull', apply: (w) => (w.value = 'oklch(32.1% 0.01 268.4)') },
+               //     { label: 'Dark', icon: IKONS.mdiLightSwitch, apply: (w) => (w.value = '#1E212B') },
+               //     { label: 'Light', icon: IKONS.mdiLightSwitch, apply: (w) => (w.value = '#F4F5FB') },
+               //     { label: 'Moonlight', icon: IKONS.mdiMoonFull, apply: (w) => (w.value = 'oklch(32.1% 0.01 268.4)') },
                // ],
             }),
             appbar: ui

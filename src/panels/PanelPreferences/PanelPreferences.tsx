@@ -17,7 +17,7 @@ export type PreferenceMode = 'hosts' | 'input' | 'interface' | 'legacy' | 'syste
 
 export const PanelPreferences = new Panel({
    name: 'Preferences',
-   icon: 'mdiCog',
+   icon: IKONS.mdiCog,
    category: 'settings',
    widget: (): FC<NO_PROPS> => PanelPreferencesUI,
    header: (p): PanelHeader => ({ title: 'Preferences', icon: undefined }),

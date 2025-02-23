@@ -9,7 +9,7 @@ import type { DisplaySlots } from './RenderSlots'
 // prettier-ignore
 export type FieldUIConf<FIELD extends Field> =
    | RenderRule<FIELD>
-   | DisplaySlots<FIELD> // RenderDSL<FIELD['$Child']['$Field']>
+   | DisplaySlots<FIELD> // RenderDSL<FIELD['$child']['$field']>
 
 // display rule is just a function that returns a display slot, injecting the field
 export type RenderRule<FIELD extends Field> = CovariantFn1<

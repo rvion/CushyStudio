@@ -9,5 +9,5 @@ export const PanelShortcuts = new Panel({
    widget: (): React.FC<NO_PROPS> => PanelShortcutsUI,
    header: (p: NO_PROPS): PanelHeader => ({ title: 'Shortcuts' }),
    def: (): NO_PROPS => ({}),
-   icon: 'mdiKeyboardOutline',
+   icon: IKONS.mdiKeyboardOutline,
 })

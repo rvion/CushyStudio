@@ -26,7 +26,7 @@ export const PublishAppBtnUI = observer(function PublishAppBtnUI_({
          tw='ml-auto'
          disabled={disabled ?? !app.canBePublishedByUser}
          loading={loading ?? app.isPublishing}
-         icon={icon ?? 'mdiPublish'}
+         icon={icon ?? IKONS.mdiPublish}
          square={square ?? true}
          tooltip={tooltip ?? 'Publish app to the Cushy App Store'}
          onClick={async (ev) => {

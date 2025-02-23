@@ -5,11 +5,11 @@ import {
    schemaModelExtras,
 } from '../_prefabs/prefab_model_extras'
 
-export type $prefabModelSD3 = Z.XGroup<{
-   ckpt_name: Z.XEnum<'CheckpointLoaderSimple.ckpt_name'>
-   clip1: Z.XEnum<'CLIPLoader.clip_name'>
-   clip2: Z.XEnum<'CLIPLoader.clip_name'>
-   clip3: Z.XEnum<'CLIPLoader.clip_name'>
+export type $prefabModelSD3 = Z.Group<{
+   ckpt_name: Z.Enum<'CheckpointLoaderSimple.ckpt_name'>
+   clip1: Z.Enum<'CLIPLoader.clip_name'>
+   clip2: Z.Enum<'CLIPLoader.clip_name'>
+   clip3: Z.Enum<'CLIPLoader.clip_name'>
    extra: $schemaModelExtras
 }>
 
@@ -31,7 +31,7 @@ export const prefabModelSD3 = (): $prefabModelSD3 => {
       ])
 }
 
-export function eval_model_SD3(doc: $prefabModelSD3['$Value']): {
+export function eval_model_SD3(doc: $prefabModelSD3['$value']): {
    ckpt: Comfy.Signal['MODEL']
    vae: Comfy.Signal['VAE']
    clip: Comfy.Signal['CLIP']

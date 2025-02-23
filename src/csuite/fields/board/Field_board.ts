@@ -89,16 +89,15 @@ export interface RV1<
    NEWCLASS extends Field,
 > {
    // config need to be based on the new field for stuff like `body`
-   $Config: FieldConfig<{/* ... place whatever here */}, RV1<TYPES, NEWCLASS>> // prettier-ignore
-   $Field: NEWCLASS
-   $Reflect: RV1<TYPES, NEWCLASS>
+   $config: FieldConfig<{/* ... place whatever here */}, RV1<TYPES, NEWCLASS>> // prettier-ignore
+   $field: NEWCLASS
 
    // 👇 UNCHANGED
-   $Type: 'group' // type is unchanged
-   $Serial: TYPES['$Serial']
-   $Value: TYPES['$Value']
-   $Unchecked: TYPES['$Unchecked']
-   $Child: TYPES['$Child']
+   $type: 'group' // type is unchanged
+   $serial: TYPES['$serial']
+   $value: TYPES['$value']
+   $unchecked: TYPES['$unchecked']
+   $child: TYPES['$child']
    $Sub: TYPES['$Sub']
 }
 
@@ -106,23 +105,23 @@ export interface RV1<
 // 🔴 ping @globi: Why assume here
 
 // export interface Field_board<SCHEMA extends BaseSchema> //
-//     extends RV1<BoardDataSchema<SCHEMA>['$Reflect'], any> {}
+//     extends RV1<BoardDataSchema<SCHEMA>['$reflect'], any> {}
 // type K = BoardDataSchema['']
 
 //🟢> type MakeItWork<SCHEMA extends BaseSchema> = //
-//🟢>     RV1<BoardDataSchema<SCHEMA>['$Reflect'], Field_board<SCHEMA>> & //
-//🟢>         MAGICFIELDS<BoardDataSchema<SCHEMA>['$Reflect']>
+//🟢>     RV1<BoardDataSchema<SCHEMA>['$reflect'], Field_board<SCHEMA>> & //
+//🟢>         MAGICFIELDS<BoardDataSchema<SCHEMA>['$reflect']>
 //🟢>
 //🟢> export interface Field_board<SCHEMA extends BaseSchema> //
 //🟢>     extends MakeItWork<BoardDataSchema<SCHEMA>> {}
 //🟢>
 
 export interface Field_board<SCHEMA extends BaseSchema>
-   extends MAGICFIELDS<BoardDataSchema<SCHEMA>['$Reflect']> {}
-export class Field_board<SCHEMA extends BaseSchema> extends Field_group<BoardDataSchema<SCHEMA>['$Reflect']> {
-   $Config!: FieldConfig<{/* ... place whatever here */}, RV1<BoardDataSchema<SCHEMA>['$Reflect'], Field_board<SCHEMA>>> // prettier-ignore
-   $Field!: Field_board<SCHEMA>
-   // $Reflect: RV1<SCHEMA, NEWCLASS>
+   extends MAGICFIELDS<BoardDataSchema<SCHEMA>['$reflect']> {}
+export class Field_board<SCHEMA extends BaseSchema> extends Field_group<BoardDataSchema<SCHEMA>['$reflect']> {
+   $config!: FieldConfig<{/* ... place whatever here */}, RV1<BoardDataSchema<SCHEMA>['$reflect'], Field_board<SCHEMA>>> // prettier-ignore
+   $field!: Field_board<SCHEMA>
+   // $reflect: RV1<SCHEMA, NEWCLASS>
 
    constructor(opts: Field_board_config<SCHEMA>, ...args: FieldCtorProps) {
       super(...args)

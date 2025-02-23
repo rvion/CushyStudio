@@ -41,14 +41,13 @@ export type Field_enum_value<O extends ComfyUnionValue> = O // Requirable[T]
 
 // #region Types
 export type Field_enum<O extends ComfyUnionValue> = {
-   $Type: 'enum'
-   $Config: Field_enum_config<O>
-   $Serial: Field_enum_serial<O>
-   $Value: Field_enum_value<O>
-   $Unchecked: Field_enum_value<O> | undefined
-   $Field: Field_enum<O>
-   $Child: never
-   $Reflect: Field_enum<O>
+   $type: 'enum'
+   $config: Field_enum_config<O>
+   $serial: Field_enum_serial<O>
+   $value: Field_enum_value<O>
+   $unchecked: Field_enum_value<O> | undefined
+   $field: Field_enum<O>
+   $child: never
 }
 
 // #region State

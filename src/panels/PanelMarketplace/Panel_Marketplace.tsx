@@ -11,7 +11,7 @@ export const PanelMarketplace = new Panel({
    widget: (): React.FC<NO_PROPS> => PanelMarketplaceUI,
    header: (p): PanelHeader => ({ title: 'Marketplace' }),
    def: (): NO_PROPS => ({}),
-   icon: 'mdiCubeScan',
+   icon: IKONS.mdiCubeScan,
    category: 'app',
 })
 

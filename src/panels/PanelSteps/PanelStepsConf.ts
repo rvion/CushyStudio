@@ -42,17 +42,17 @@ export const PanelStepsConf = cushyFactory.document(
    },
 )
 
-type UI_outputFilter = Z.XChoices<{
-   MediaTextL: Z.XEmpty
-   MediaImageL: Z.XEmpty
-   MediaVideoL: Z.XEmpty
-   MediaSplatL: Z.XEmpty
-   Media3dDisplacementL: Z.XEmpty
-   ComfyPromptL: Z.XEmpty
-   ComfyWorkflowL: Z.XEmpty
-   StepL: Z.XEmpty
-   MediaCustomL: Z.XEmpty
-   RuntimeErrorL: Z.XEmpty
+type UI_outputFilter = Z.Choices<{
+   MediaTextL: Z.Empty
+   MediaImageL: Z.Empty
+   MediaVideoL: Z.Empty
+   MediaSplatL: Z.Empty
+   Media3dDisplacementL: Z.Empty
+   ComfyPromptL: Z.Empty
+   ComfyWorkflowL: Z.Empty
+   StepL: Z.Empty
+   MediaCustomL: Z.Empty
+   RuntimeErrorL: Z.Empty
 }>
 
 function ui_outputFilter(ui: CushySchemaBuilder): UI_outputFilter {

@@ -2,14 +2,14 @@ import type { OutputFor } from '../_prefabs/_prefabs'
 
 import { ipAdapterDoc } from './_ipAdapterDoc'
 
-export type UI_ipadapter_advancedSettings = Z.XGroup<{
-   startAtStepPercent: Z.XNumber
-   endAtStepPercent: Z.XNumber
-   adapterAttentionMask: Z.XOptional<Z.XImage>
-   weight_type: Z.XEnum<'IPAdapter_plus.IPAdapterAdvanced.weight_type'>
-   embedding_scaling: Z.XEnum<'IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'>
-   noise: Z.XNumber
-   unfold_batch: Z.XBool
+export type UI_ipadapter_advancedSettings = Z.Group<{
+   startAtStepPercent: Z.Number
+   endAtStepPercent: Z.Number
+   adapterAttentionMask: Z.Maybe<Z.Image>
+   weight_type: Z.Enum<'IPAdapter_plus.IPAdapterAdvanced.weight_type'>
+   embedding_scaling: Z.Enum<'IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'>
+   noise: Z.Number
+   unfold_batch: Z.Bool
 }>
 
 export const ui_ipadapter_advancedSettings = (
@@ -45,12 +45,12 @@ export const ui_ipadapter_advancedSettings = (
 
 // -------------------------------------------------------------------------------------------
 
-export type UI_IPAdapterImageInput = Z.XGroup<{
-   image: Z.XImage
-   advanced: Z.XGroup<{
-      imageWeight: Z.XNumber
-      embedding_combination: Z.XEnum<'Impact-Pack.ImpactIPAdapterApplySEGS.combine_embeds'>
-      imageAttentionMask: Z.XOptional<Z.XImage>
+export type UI_IPAdapterImageInput = Z.Group<{
+   image: Z.Image
+   advanced: Z.Group<{
+      imageWeight: Z.Number
+      embedding_combination: Z.Enum<'Impact-Pack.ImpactIPAdapterApplySEGS.combine_embeds'>
+      imageAttentionMask: Z.Maybe<Z.Image>
    }>
 }>
 export function ui_IPAdapterImageInput(form: Z.Builder): UI_IPAdapterImageInput {
@@ -94,16 +94,16 @@ export function ui_IPAdapterImageInput(form: Z.Builder): UI_IPAdapterImageInput 
 }
 
 // 🅿️ IPAdapter Basic ===================================================
-export type UI_IPAdapterV2 = Z.XGroup<{
-   images: Z.XList<UI_IPAdapterImageInput>
-   settings: Z.XGroup<{
-      adapterStrength: Z.XNumber
-      models: Z.XGroup<{
-         type: Z.XEnum<'IPAdapter_plus.IPAdapterUnifiedLoader.preset'>
+export type UI_IPAdapterV2 = Z.Group<{
+   images: Z.List<UI_IPAdapterImageInput>
+   settings: Z.Group<{
+      adapterStrength: Z.Number
+      models: Z.Group<{
+         type: Z.Enum<'IPAdapter_plus.IPAdapterUnifiedLoader.preset'>
       }>
       advancedSettings: UI_ipadapter_advancedSettings
    }>
-   help: Z.XMarkdown
+   help: Z.Markdown
 }>
 
 export function ui_IPAdapterV2(): UI_IPAdapterV2 {
@@ -140,7 +140,7 @@ export function ui_IPAdapterV2(): UI_IPAdapterV2 {
                console.log(`[🔴🔴🔴🔴] `)
                ui.set({ Shell: <>🟢</> })
             },
-            icon: 'mdiAnvil',
+            icon: IKONS.mdiAnvil,
             label: 'IPAdapter',
             box: { base: { hue: 70, chroma: 0.1 } },
             toSummary: ({ value: ui }): string => {

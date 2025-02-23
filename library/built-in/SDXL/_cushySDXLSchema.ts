@@ -11,7 +11,7 @@ import { sampleNegative, samplePrompts } from '../samplePrompts'
 import { type $prefabModelSD15andSDXL, prefabModelSD15andSDXL } from '../SD15/_model_SD15_SDXL'
 import { type $PromptList, promptList } from './_prefabs/prefab_PromptList'
 
-export type $CushySDXLUI = Z.XGroup<{
+export type $CushySDXLUI = Z.Group<{
    positive: $PromptList
    negative: $PromptList
    model: $prefabModelSD15andSDXL
@@ -19,13 +19,13 @@ export type $CushySDXLUI = Z.XGroup<{
    sampler: UI_Sampler_Advanced
    customSave: UI_customSave
    controlnets: UI_cnet
-   ipAdapter: Z.XOptional<UI_IPAdapterV2>
-   faceID: Z.XOptional<UI_IPAdapterFaceIDV2>
+   ipAdapter: Z.Maybe<UI_IPAdapterV2>
+   faceID: Z.Maybe<UI_IPAdapterFaceIDV2>
    extra: $extra1
    extra2: $extra2
 }>
 
-// type K = $CushySDXLUI['$Field']
+// type K = $CushySDXLUI['$field']
 
 export function _cushySDXLSchema(b: Z.Builder): $CushySDXLUI {
    // console.log(`[🤠] tags`, tags)

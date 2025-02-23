@@ -10,7 +10,7 @@ import { snap } from '../utils/snap'
 export class ToolGenerate implements ICanvasTool {
    id: 'generate' = 'generate'
    category: 'generate' = 'generate'
-   icon: IconName = 'mdiImageArea'
+   icon: IconName = IKONS.mdiImageArea
    description: string = 'run a portion of the canvas though some draft'
 
    constructor(public canvas: UnifiedCanvas) {}

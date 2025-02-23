@@ -28,7 +28,7 @@ export type SimpleShape = {
    isResizing: boolean
 }
 
-export const mkPlacement = (p: Partial<SimpleShape>): SimpleShape$['$Value'] => {
+export const mkPlacement = (p: Partial<SimpleShape>): SimpleShape$['$value'] => {
    return {
       x: 0,
       y: 0,

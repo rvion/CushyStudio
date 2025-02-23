@@ -3,17 +3,17 @@ import type { OutputFor } from '../_prefabs/_prefabs'
 import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
 
 // 🅿️ Normal FORM ===================================================
-export type UI_subform_Normal = Z.XGroup<{
+export type UI_subform_Normal = Z.Group<{
    preprocessor: UI_subform_Normal_Preprocessor
-   models: Z.XGroup<{
-      cnet_model_name: Z.XEnum<'ControlNetLoader.control_net_name'>
+   models: Z.Group<{
+      cnet_model_name: Z.Enum<'ControlNetLoader.control_net_name'>
    }>
-   strength: Z.XNumber
-   advanced: Z.XGroup<{
-      startAtStepPercent: Z.XNumber
-      endAtStepPercent: Z.XNumber
-      crop: Z.XEnum<'LatentUpscale.crop'>
-      upscale_method: Z.XEnum<'ImageScale.upscale_method'>
+   strength: Z.Number
+   advanced: Z.Group<{
+      startAtStepPercent: Z.Number
+      endAtStepPercent: Z.Number
+      crop: Z.Enum<'LatentUpscale.crop'>
+      upscale_method: Z.Enum<'ImageScale.upscale_method'>
    }>
 }>
 export function ui_subform_Normal(): UI_subform_Normal {
@@ -45,8 +45,8 @@ export function ui_subform_Normal(): UI_subform_Normal {
 }
 
 // ================================================================================================
-type UI_subform_Normal_Preprocessor = Z.XChoice<{
-   None: Z.XEmpty
+type UI_subform_Normal_Preprocessor = Z.Choice<{
+   None: Z.Empty
    Midas: UI_subform_Normal_Midas
    BAE: UI_subform_Normal_bae
 }>
@@ -66,10 +66,10 @@ function ui_subform_Normal_Preprocessor(): UI_subform_Normal_Preprocessor {
 }
 
 // ==========================================================================================
-type UI_subform_Normal_Midas = Z.XGroup<{
-   a_value: Z.XNumber
-   bg_threshold: Z.XNumber
-   saveProcessedImage: Z.XBool
+type UI_subform_Normal_Midas = Z.Group<{
+   a_value: Z.Number
+   bg_threshold: Z.Number
+   saveProcessedImage: Z.Bool
 }>
 
 function ui_subform_Normal_Midas(): UI_subform_Normal_Midas {
@@ -86,8 +86,8 @@ function ui_subform_Normal_Midas(): UI_subform_Normal_Midas {
 }
 
 // ==========================================================================================
-type UI_subform_Normal_bae = Z.XGroup<{
-   saveProcessedImage: Z.XBool
+type UI_subform_Normal_bae = Z.Group<{
+   saveProcessedImage: Z.Bool
 }>
 
 function ui_subform_Normal_bae(): UI_subform_Normal_bae {

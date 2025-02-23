@@ -1,19 +1,19 @@
 import type { MediaImageL } from '../../../src/models/MediaImage'
 import type { OutputFor } from './_prefabs'
 
-export type UI_Mask = Z.XGroup<{
-   image: Z.XImage
-   mode: Z.XEnum<'LoadImageMask.channel'>
-   invert: Z.XBool
-   grow: Z.XNumber
-   feather: Z.XNumber
-   preview: Z.XBool
+export type UI_Mask = Z.Group<{
+   image: Z.Image
+   mode: Z.Enum<'LoadImageMask.channel'>
+   invert: Z.Bool
+   grow: Z.Number
+   feather: Z.Number
+   preview: Z.Bool
 }>
 
 export function ui_mask(): UI_Mask {
    const form: Z.Builder = getCurrentForm()
    return form.group({
-      icon: 'mdiDominoMask',
+      icon: IKONS.mdiDominoMask,
       label: 'Mask',
       collapsed: false,
       items: {

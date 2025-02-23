@@ -5,12 +5,12 @@ import { simpleShape$, type SimpleShape$ } from '../../../csuite/fields/core-pre
 // #region Masks
 // gayscale/opacity
 
-export type Masks$ = Z.XList<Mask$>
-export type Mask$ = Z.XGroup<{
-   name: Z.XString
+export type Masks$ = Z.List<Mask$>
+export type Mask$ = Z.Group<{
+   name: Z.String
    placement: SimpleShape$
-   visible: Z.XBool
-   image: Z.XImage
+   visible: Z.Bool
+   image: Z.Image
 }>
 
 export const mask$ = (b: CushySchemaBuilder): Mask$ =>

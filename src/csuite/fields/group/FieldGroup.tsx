@@ -74,7 +74,7 @@ export interface Field_group<T extends SchemaDict> {
    $value: Field_group_value<T>
    $setValue: Field_group_SetValue<T>
    $unchecked: Field_group_unchecked<T>
-   $child: T[keyof T]['$Field']
+   $child: T[keyof T]['$field']
    $opts: unknown
    $ownPatch: Patch<'group'>
    // own
@@ -85,8 +85,8 @@ export interface Field_group<T extends SchemaDict> {
 // 💬 2025-02-10 rvion: pending decision about removal or not
 /** @deprecated */
 export type FieldGroupWithMAGICFIELDS<T extends SchemaDict> = Field_group<T> & MAGICFIELDS<T>
-export type MAGICFIELDS<T extends { [key: string]: { $Field: any } }> = {
-   [K in keyof T as Capitalize<K & string>]: T[K]['$Field']
+export type MAGICFIELDS<T extends { [key: string]: { $field: any } }> = {
+   [K in keyof T as Capitalize<K & string>]: T[K]['$field']
 }
 
 export class Field_group<T extends SchemaDict> extends Field {
@@ -239,8 +239,8 @@ export class Field_group<T extends SchemaDict> extends Field {
     * // fix | I'm not really convinces that this should be observable
     * // fix | varying fields should probably always go though a dynamic 🤔
     */
-   readonly fields: { [k in keyof T]: T[k]['$Field'] } = observable({}) as any
-   get _(): { [k in keyof T]: T[k]['$Field'] } {
+   readonly fields: { [k in keyof T]: T[k]['$field'] } = observable({}) as any
+   get _(): { [k in keyof T]: T[k]['$field'] } {
       return this.fields
    }
 
@@ -265,7 +265,7 @@ export class Field_group<T extends SchemaDict> extends Field {
    }
 
    /** return item at give key */
-   at<K extends keyof T>(key: K): T[K]['$Field'] {
+   at<K extends keyof T>(key: K): T[K]['$field'] {
       return this.fields[key]
    }
 

@@ -1,16 +1,16 @@
-export type UI_model_kohyaDeepShrink = Z.XGroup<{
-   include: Z.XChoices<{
-      base: Z.XGroup<{}>
-      hiRes: Z.XGroup<{}>
+export type UI_model_kohyaDeepShrink = Z.Group<{
+   include: Z.Choices<{
+      base: Z.Group<{}>
+      hiRes: Z.Group<{}>
    }>
-   advancedSettings: Z.XGroup<{
-      downscaleFactor: Z.XNumber
-      block_number: Z.XNumber
-      startPercent: Z.XNumber
-      endPercent: Z.XNumber
-      downscaleAfterSkip: Z.XBool
-      downscaleMethod: Z.XEnum<'LatentUpscale.upscale_method'>
-      upscaleMethod: Z.XEnum<'LatentUpscale.upscale_method'>
+   advancedSettings: Z.Group<{
+      downscaleFactor: Z.Number
+      block_number: Z.Number
+      startPercent: Z.Number
+      endPercent: Z.Number
+      downscaleAfterSkip: Z.Bool
+      downscaleMethod: Z.Enum<'LatentUpscale.upscale_method'>
+      upscaleMethod: Z.Enum<'LatentUpscale.upscale_method'>
    }>
 }>
 
@@ -63,7 +63,7 @@ export function ui_model_kohyaDeepShrink(form: Z.Builder): UI_model_kohyaDeepShr
 
 /** https://www.reddit.com/r/StableDiffusion/comments/18ld5sj/kohya_deep_shrink_explain_to_me_like_im_5_years/  */
 export const run_model_kohyaDeepShrink = (
-   ui: UI_model_kohyaDeepShrink['$Value'],
+   ui: UI_model_kohyaDeepShrink['$value'],
    ckpt: Comfy.Signal['MODEL'],
    forHiRes?: boolean,
    kohyaScale?: number,

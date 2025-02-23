@@ -800,7 +800,7 @@ export abstract class Field {
        * must attach/register both
        *  - child into parent where it belongs
        *  - child.serial into parent.serial where it belongs  */
-      attach(child: SCHEMA['$Field']): void
+      attach(child: SCHEMA['$field']): void
    }): void {
       let child = p.existingChild
       if (child != null && child.type === p.correctChildSchema.type) {
@@ -1386,7 +1386,7 @@ export abstract class Field {
    }
 
    // BUMP ----------------------------------------------------
-   private _extraSerialChangesFunction: ((self: Field) => void)[] = [] // 🔶 cannot (but probably need not) type self as K['$Field'] due to variance issues
+   private _extraSerialChangesFunction: ((self: Field) => void)[] = [] // 🔶 cannot (but probably need not) type self as K['$field'] due to variance issues
    onSerialChanges(fn: (self: this) => void): this {
       this._extraSerialChangesFunction.push(fn as any)
       return this

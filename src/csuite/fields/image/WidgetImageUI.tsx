@@ -81,7 +81,7 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: {
                         tw='!justify-start'
                         subtle
                         icon={IKONS.mdiImageSearchOutline}
-                        suffixIcon={'mdiChevronDown'}
+                        suffixIcon={IKONS.mdiChevronDown}
                      >
                         {image.id}
                         <SpacerUI />

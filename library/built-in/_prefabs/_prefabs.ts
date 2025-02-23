@@ -12,22 +12,22 @@
  * */
 
 // this should be a default
-export type OutputFor<UIFn extends (...args: any[]) => { $Value: any }> = ReturnType<UIFn>['$Value']
+export type OutputFor<UIFn extends (...args: any[]) => { $value: any }> = ReturnType<UIFn>['$value']
 
-export type UI_HighResFix = Z.XGroup<{
+export type UI_HighResFix = Z.Group<{
    upscaleMethod: Z.XSelectOne_<'regular' | 'Neural 1.5' | 'Neural XL'>
-   scaleFactor: Z.XNumber
-   steps: Z.XNumber
-   denoise: Z.XNumber
-   saveIntermediaryImage: Z.XBool
-   useMainSampler: Z.XBool
+   scaleFactor: Z.Number
+   steps: Z.Number
+   denoise: Z.Number
+   saveIntermediaryImage: Z.Bool
+   useMainSampler: Z.Bool
 }>
 
 export function ui_highresfix(): UI_HighResFix {
    const form = getCurrentForm()
    return form.group({
       label: 'High Res Fix',
-      icon: 'mdiArrowExpandAll',
+      icon: IKONS.mdiArrowExpandAll,
       box: { base: { hue: 220, chroma: 0.1 } },
       items: {
          // NNLatentUpscale: form.bool({
@@ -53,10 +53,10 @@ export function ui_highresfix(): UI_HighResFix {
 }
 
 // ---------------------------------------------------------
-export type UI_Themes = Z.XList<
-   Z.XGroup<{
-      text: Z.XString
-      theme: Z.XList<Z.XGroup<{ text: Z.XString }>>
+export type UI_Themes = Z.List<
+   Z.Group<{
+      text: Z.String
+      theme: Z.List<Z.Group<{ text: Z.String }>>
    }>
 >
 export const ui_themes = (form: Z.Builder): UI_Themes =>
@@ -92,10 +92,10 @@ export const util_expandBrances = (str: string): string[] => {
    return Array.from(result)
 }
 
-export const ui_vaeName = (form: Z.Builder): Z.XOptional<Z.XEnum<'VAELoader.vae_name'>> =>
+export const ui_vaeName = (form: Z.Builder): Z.Maybe<Z.Enum<'VAELoader.vae_name'>> =>
    form.enumOpt['VAELoader.vae_name']({ label: 'VAE' })
 
-export const ui_modelName = (form: Z.Builder): Z.XEnum<'CheckpointLoaderSimple.ckpt_name'> =>
+export const ui_modelName = (form: Z.Builder): Z.Enum<'CheckpointLoaderSimple.ckpt_name'> =>
    form.enum['CheckpointLoaderSimple.ckpt_name']({ label: 'Checkpoint' })
 
 const resolutions: Resolutions[] = [

@@ -207,7 +207,7 @@ export const MenuPieUI = observer(function MenuPieUI_({
                   //          disabled={entry.def.disabled}
                   //          localShortcut={char}
                   //          icon={entry.icon}
-                  //          afterShortcut={<IkonOf name='mdiMenuRight' />}
+                  //          afterShortcut={<IkonOf name=IKONS.mdiMenuRight />}
                   //          label={label}
                   //          labelAcceleratorIx={charIx}
                   //       />

@@ -16,13 +16,13 @@ interface BuilderClass<Sᐸ_ᐳ extends HKT<FieldTypes>, B extends BaseBuilder<S
 }
 
 type BuildSchema<Sᐸ_ᐳ extends HKT<FieldTypes>> = <F extends FieldTypes>(
-   FieldClass: FieldConstructor_ViaClass<F /* ['$Field'] */>,
-   config: F['$Config'],
+   FieldClass: FieldConstructor_ViaClass<F /* ['$field'] */>,
+   config: F['$config'],
 ) => Apply<Sᐸ_ᐳ, F>
 
 type SchemaClass<Sᐸ_ᐳ extends HKT<FieldTypes>> = {
    new <F extends FieldTypes>( //
-      FieldClass: FieldConstructor_ViaClass<F /* ['$Field'] */>,
-      config: F['$Config'],
+      FieldClass: FieldConstructor_ViaClass<F /* ['$field'] */>,
+      config: F['$config'],
    ): Apply<Sᐸ_ᐳ, F>
 }

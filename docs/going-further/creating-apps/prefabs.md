@@ -57,7 +57,7 @@ export function ui_mask(): UI_Mask {
     const form: Builder = getCurrentForm()
     return form.choice({
         appearance: 'tab',
-        icon: 'mdiDominoMask',
+        icon: IKONS.mdiDominoMask,
         label: 'Mask',
         default: 'noMask',
         // box: { base: { hue: 20, chroma: 0.03 } },

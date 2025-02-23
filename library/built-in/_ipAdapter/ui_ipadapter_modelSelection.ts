@@ -3,7 +3,7 @@ import type { KnownModel_Name } from '../../../src/CUSHY'
 //🅿️ IPAdapter Model Selection ===================================================
 
 export type UI_ipadapter_modelSelection = {
-   cnet_model_name: Z.XEnum<'IPAdapter_plus.IPAdapterModelLoader.ipadapter_file'>
+   cnet_model_name: Z.Enum<'IPAdapter_plus.IPAdapterModelLoader.ipadapter_file'>
 }
 
 export const ui_ipadapter_modelSelection = (

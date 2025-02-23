@@ -3,8 +3,8 @@ import type { CushySchemaBuilder } from '../../../src/controls/CushyBuilder'
 import type { Requirements } from '../../../src/manager/REQUIREMENTS/Requirements'
 import type { OutputFor } from './_prefabs'
 
-export type UI_upscaleWithModel = Z.XGroup<{
-   model: Z.XEnum<'UpscaleModelLoader.model_name'>
+export type UI_upscaleWithModel = Z.Group<{
+   model: Z.Enum<'UpscaleModelLoader.model_name'>
 }>
 
 export function ui_upscaleWithModel(): UI_upscaleWithModel {
@@ -13,7 +13,7 @@ export function ui_upscaleWithModel(): UI_upscaleWithModel {
       .group({
          label: 'Upscale via Model',
          items: { model: ui.enum['UpscaleModelLoader.model_name']({ default: '4x-UltraSharp.pth' }) },
-         icon: 'mdiArrowExpandAll',
+         icon: IKONS.mdiArrowExpandAll,
          box: { base: { hue: 180, chroma: 0.1 } },
       })
       .addRequirements([

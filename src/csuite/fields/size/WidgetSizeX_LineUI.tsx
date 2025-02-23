@@ -15,7 +15,7 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
    const uist = p.size
 
    // const ratio = uist.width / uist.height
-   // const ratioIcon = ratio == 1.0 ? 'mdiApproximatelyEqual' : ratio > 1.0 ? 'mdiCropLandscape' : 'mdiCropPortrait'
+   // const ratioIcon = ratio == 1.0 ? IKONS.mdiApproximatelyEqual : ratio > 1.0 ? IKONS.mdiCropLandscape : IKONS.mdiCropPortrait
 
    const theme = cushy.preferences.theme.value
 

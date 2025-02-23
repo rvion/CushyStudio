@@ -3,65 +3,65 @@ import type { OutputFor } from './_prefabs'
 
 import { run_prompt } from './prefab_prompt'
 
-export type UI_Sampler_Advanced = Z.XGroup<{
-   sampler_name: Z.XEnum<'KSampler.sampler_name'>
-   guidanceType: Z.XChoice<{
-      CFG: Z.XNumber
-      DualCFG: Z.XGroup<{
-         cfg: Z.XNumber
-         cfg_conds2_negative: Z.XNumber
-         dualCFGPositive2: Z.XPrompt
+export type UI_Sampler_Advanced = Z.Group<{
+   sampler_name: Z.Enum<'KSampler.sampler_name'>
+   guidanceType: Z.Choice<{
+      CFG: Z.Number
+      DualCFG: Z.Group<{
+         cfg: Z.Number
+         cfg_conds2_negative: Z.Number
+         dualCFGPositive2: Z.Prompt
       }>
-      PerpNeg: Z.XGroup<{
-         cfg: Z.XNumber
-         negCfg: Z.XNumber
-      }>
-   }>
-   sigmasType: Z.XChoice<{
-      basic: Z.XGroup<{
-         denoise: Z.XNumber
-         steps: Z.XNumber
-         scheduler: Z.XEnum<'KSampler.scheduler'>
-      }>
-      AlignYourStep: Z.XGroup<{
-         denoise: Z.XNumber
-         steps: Z.XNumber
-         modelType: Z.XEnum<'AlignYourStepsScheduler.model_type'>
-      }>
-      karrasCustom: Z.XGroup<{
-         steps: Z.XNumber
-         sigma_max: Z.XNumber
-         sigma_min: Z.XNumber
-         rho: Z.XNumber
-      }>
-      ExponentialCustom: Z.XGroup<{
-         steps: Z.XNumber
-         sigma_max: Z.XNumber
-         sigma_min: Z.XNumber
-      }>
-      polyexponentialCustom: Z.XGroup<{
-         steps: Z.XNumber
-         sigma_max: Z.XNumber
-         sigma_min: Z.XNumber
-         rho: Z.XNumber
-      }>
-      SDTurbo: Z.XGroup<{
-         steps: Z.XNumber
-         denoise: Z.XNumber
-      }>
-      VPScheduler: Z.XGroup<{
-         steps: Z.XNumber
-         beta_d: Z.XNumber
-         beta_min: Z.XNumber
-         eps_s: Z.XNumber
+      PerpNeg: Z.Group<{
+         cfg: Z.Number
+         negCfg: Z.Number
       }>
    }>
-   seed: Z.XSeed
-   textEncoderType: Z.XChoice<{
-      CLIP: Z.XGroup<{}>
-      SDXL: Z.XGroup<{}>
-      SD3: Z.XGroup<{}>
-      FLUX: Z.XGroup<{}>
+   sigmasType: Z.Choice<{
+      basic: Z.Group<{
+         denoise: Z.Number
+         steps: Z.Number
+         scheduler: Z.Enum<'KSampler.scheduler'>
+      }>
+      AlignYourStep: Z.Group<{
+         denoise: Z.Number
+         steps: Z.Number
+         modelType: Z.Enum<'AlignYourStepsScheduler.model_type'>
+      }>
+      karrasCustom: Z.Group<{
+         steps: Z.Number
+         sigma_max: Z.Number
+         sigma_min: Z.Number
+         rho: Z.Number
+      }>
+      ExponentialCustom: Z.Group<{
+         steps: Z.Number
+         sigma_max: Z.Number
+         sigma_min: Z.Number
+      }>
+      polyexponentialCustom: Z.Group<{
+         steps: Z.Number
+         sigma_max: Z.Number
+         sigma_min: Z.Number
+         rho: Z.Number
+      }>
+      SDTurbo: Z.Group<{
+         steps: Z.Number
+         denoise: Z.Number
+      }>
+      VPScheduler: Z.Group<{
+         steps: Z.Number
+         beta_d: Z.Number
+         beta_min: Z.Number
+         eps_s: Z.Number
+      }>
+   }>
+   seed: Z.Seed
+   textEncoderType: Z.Choice<{
+      CLIP: Z.Group<{}>
+      SDXL: Z.Group<{}>
+      SD3: Z.Group<{}>
+      FLUX: Z.Group<{}>
    }>
 }>
 
@@ -117,7 +117,7 @@ export function ui_sampler_advanced(p?: {
                   }),
                   dualCFGPositive2: form.prompt({
                      default: ['highly detailed, masterpiece, best quality,'].join('\n'),
-                     icon: 'mdiAlphabeticalVariant',
+                     icon: IKONS.mdiAlphabeticalVariant,
                      box: { base: { hue: 150, chroma: 0.05 } },
                   }),
                }),
@@ -233,14 +233,14 @@ export function ui_sampler_advanced(p?: {
 
             return `sigmas:${sigmas} guide:${guidance} cfg:${cfg} `
          },
-         icon: 'mdiTimerSandComplete',
+         icon: IKONS.mdiTimerSandComplete,
          // box: { base: { hue: 300, chroma: 0.1 } },
          label: 'Sampler',
          startCollapsed: p?.startCollapsed ?? false,
          presets: [
             {
                label: 'SD3',
-               icon: 'mdiStar',
+               icon: IKONS.mdiStar,
                apply: (w): void => {
                   w.value = {
                      guidanceType: { CFG: 4.5 },
@@ -253,7 +253,7 @@ export function ui_sampler_advanced(p?: {
             },
             {
                label: 'FLUX',
-               icon: 'mdiStar',
+               icon: IKONS.mdiStar,
                apply: (w): void => {
                   w.value = {
                      guidanceType: { CFG: 3.5 },

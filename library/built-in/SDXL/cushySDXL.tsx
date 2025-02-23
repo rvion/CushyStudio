@@ -2,7 +2,7 @@ import { _cushySDXLLayout } from './_cushySDXLLayout'
 import { _cushySDXLRun } from './_cushySDXLRun'
 import { type $CushySDXLUI, _cushySDXLSchema } from './_cushySDXLSchema'
 
-export type $CushySDXLUIField = $CushySDXLUI['$Field']
+export type $CushySDXLUIField = $CushySDXLUI['$field']
 
 app<$CushySDXLUIField>({
    metadata: {

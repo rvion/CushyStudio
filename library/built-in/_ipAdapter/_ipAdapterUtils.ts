@@ -1,14 +1,14 @@
 export type UI_subform_IPAdapter_common = {
-   strength: Z.XNumber
-   settings: Z.XGroup<{
-      extra: Z.XList<Z.XImage>
-      crop: Z.XBool
-      startAtStepPercent: Z.XNumber
-      endAtStepPercent: Z.XNumber
-      weight_type: Z.XEnum<'IPAdapter_plus.IPAdapterAdvanced.weight_type'>
-      embedding_scaling: Z.XEnum<'IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'>
-      noise: Z.XNumber
-      unfold_batch: Z.XBool
+   strength: Z.Number
+   settings: Z.Group<{
+      extra: Z.List<Z.Image>
+      crop: Z.Bool
+      startAtStepPercent: Z.Number
+      endAtStepPercent: Z.Number
+      weight_type: Z.Enum<'IPAdapter_plus.IPAdapterAdvanced.weight_type'>
+      embedding_scaling: Z.Enum<'IPAdapter_plus.IPAdapterAdvanced.embeds_scaling'>
+      noise: Z.Number
+      unfold_batch: Z.Bool
    }>
 }
 
@@ -47,7 +47,7 @@ export function ui_subform_IPAdapter_common(
 }
 
 export type UI_ipadapter_CLIPSelection = {
-   clip_name: Z.XEnum<'CLIPVisionLoader.clip_name'>
+   clip_name: Z.Enum<'CLIPVisionLoader.clip_name'>
 }
 
 //🅿️ IPAdapter CLIP Selection ===================================================

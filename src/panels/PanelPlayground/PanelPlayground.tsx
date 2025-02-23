@@ -30,7 +30,7 @@ export const PanelPlayground = new Panel({
    widget: (): React.FC<PanelPlaygroundProps> => PanelPlaygroundUI,
    header: (p: PanelPlaygroundProps): PanelHeader => ({ title: 'Welcome' }),
    def: (): PanelPlaygroundProps => ({}),
-   icon: 'mdiLiquidSpot',
+   icon: IKONS.mdiLiquidSpot,
    category: 'developper',
 })
 

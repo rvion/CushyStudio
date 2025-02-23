@@ -17,7 +17,7 @@ export const PanelSafetyRatings = new Panel({
    category: 'outputs',
    widget: (): React.FC<PanelSafetyRatingsProps> => PanelSafetyRatingsUI,
    header: (p: PanelSafetyRatingsProps): PanelHeader => ({ title: 'SafetyRatings' }),
-   icon: 'mdiShieldSunOutline',
+   icon: IKONS.mdiShieldSunOutline,
    def: (): PanelSafetyRatingsProps => ({}),
 })
 

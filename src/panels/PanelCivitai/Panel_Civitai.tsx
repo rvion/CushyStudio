@@ -10,7 +10,7 @@ export const PanelCivitai = new Panel({
    widget: (): React.FC<NO_PROPS> => PanelCivitaiUI,
    header: (p): PanelHeader => ({ title: 'Civitai' }),
    def: (): NO_PROPS => ({}),
-   icon: 'mdiAccountStarOutline',
+   icon: IKONS.mdiAccountStarOutline,
 })
 
 const PanelCivitaiUI = observer(function PanelCivitaiUI_(p: NO_PROPS) {

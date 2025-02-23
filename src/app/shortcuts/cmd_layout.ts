@@ -13,7 +13,7 @@ export const allLayoutCommands: Command<null>[] = [
       ctx: ctx_layout,
       combos: 'ctrl+shift+space',
       action: () => cushy.layout.maximizeActiveTabset(),
-      icon: 'mdiWindowMaximize',
+      icon: IKONS.mdiWindowMaximize,
       validInInput: true,
    }),
 
@@ -23,7 +23,7 @@ export const allLayoutCommands: Command<null>[] = [
       label: 'maximize hovered panel',
       ctx: ctx_layout,
       combos: ['alt+space', 'ctrl+u'],
-      icon: 'mdiWindowMaximize',
+      icon: IKONS.mdiWindowMaximize,
       action: () => cushy.layout.maximizHoveredTabset(),
       validInInput: true,
    }),
@@ -36,7 +36,7 @@ export const allLayoutCommands: Command<null>[] = [
       id: 'layout.move-tab-to-the-right',
       label: 'move tab to the right',
       action: () => cushy.layout.moveActiveTabToRight(),
-      icon: 'mdiGamepadCircleRight',
+      icon: IKONS.mdiGamepadCircleRight,
       validInInput: true,
    }),
 
@@ -48,7 +48,7 @@ export const allLayoutCommands: Command<null>[] = [
       id: 'layout.move-tab-to-the-left',
       label: 'move tab to the left',
       action: () => cushy.layout.moveActiveTabToLeft(),
-      icon: 'mdiGamepadCircleLeft',
+      icon: IKONS.mdiGamepadCircleLeft,
       validInInput: true,
    }),
 
@@ -59,7 +59,7 @@ export const allLayoutCommands: Command<null>[] = [
       ctx: ctx_layout,
       action: () => cushy.layout.closeCurrentTab(),
       label: 'Close current tab',
-      icon: 'mdiCloseBoxOutline',
+      icon: IKONS.mdiCloseBoxOutline,
    }),
 
    command({
@@ -69,7 +69,7 @@ export const allLayoutCommands: Command<null>[] = [
       validInInput: true,
       ctx: ctx_layout,
       action: () => cushy.layout.closeAllTabs(),
-      icon: 'mdiCloseBoxMultipleOutline',
+      icon: IKONS.mdiCloseBoxMultipleOutline,
    }),
 
    command({
@@ -79,7 +79,7 @@ export const allLayoutCommands: Command<null>[] = [
       validInInput: true,
       ctx: ctx_layout,
       action: () => cushy.layout.closeCurrentTabset(),
-      icon: 'mdiCloseOctagonOutline',
+      icon: IKONS.mdiCloseOctagonOutline,
    }),
 
    command({
@@ -89,7 +89,7 @@ export const allLayoutCommands: Command<null>[] = [
       validInInput: true,
       ctx: ctx_layout,
       action: () => cushy.layout.openPreviousPane(),
-      icon: 'mdiArrowUpBoldBox',
+      icon: IKONS.mdiArrowUpBoldBox,
    }),
 
    command({
@@ -99,7 +99,7 @@ export const allLayoutCommands: Command<null>[] = [
       validInInput: true,
       ctx: ctx_layout,
       action: () => cushy.layout.openNextPane(),
-      icon: 'mdiArrowUpBoldBox',
+      icon: IKONS.mdiArrowUpBoldBox,
    }),
 
    command({
@@ -108,7 +108,7 @@ export const allLayoutCommands: Command<null>[] = [
       combos: 'mod+ctrl+arrowright',
       validInInput: true,
       ctx: ctx_layout,
-      icon: 'mdiArrowExpandHorizontal',
+      icon: IKONS.mdiArrowExpandHorizontal,
       action: () => {
          cushy.layout.widenTabset('hoverd')
          return Trigger.Success
@@ -121,7 +121,7 @@ export const allLayoutCommands: Command<null>[] = [
       combos: 'mod+ctrl+arrowleft',
       validInInput: true,
       ctx: ctx_layout,
-      icon: 'mdiArrowExpandHorizontal',
+      icon: IKONS.mdiArrowExpandHorizontal,
       action: () => {
          cushy.layout.shrinkTabset('hoverd')
          return Trigger.Success
@@ -134,7 +134,7 @@ export const allLayoutCommands: Command<null>[] = [
       combos: 'mod+ctrl+r',
       validInInput: true,
       ctx: ctx_layout,
-      icon: 'mdiLockReset',
+      icon: IKONS.mdiLockReset,
       action: () => {
          cushy.layout.resetTabsetSize('hoverd')
          return Trigger.Success

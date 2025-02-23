@@ -25,7 +25,7 @@ export const AspectLockButtonUI = observer(function AspectLockButtonUI_(p: { siz
                    square
                    // size='input'
                    value={uist.isAspectRatioLocked}
-                   icon={uist.isAspectRatioLocked ? 'mdiLink' : 'mdiLinkOff'}
+                   icon={uist.isAspectRatioLocked ? IKONS.mdiLink : IKONS.mdiLinkOff}
                    onValueChange={(ev) => {
                        uist.isAspectRatioLocked = !uist.isAspectRatioLocked
                        if (!uist.isAspectRatioLocked) return
@@ -42,7 +42,7 @@ export const AspectLockButtonUI = observer(function AspectLockButtonUI_(p: { siz
             tw='flex flex-1 !gap-0 !rounded-none !px-0.5'
             // tw='!gap-0 !px-0.5 !rounded-none'
             active={uist.isAspectRatioLocked}
-            suffixIcon={uist.isAspectRatioLocked ? 'mdiLink' : 'mdiLinkOff'}
+            suffixIcon={uist.isAspectRatioLocked ? IKONS.mdiLink : IKONS.mdiLinkOff}
             onClick={(ev) => {
                uist.isAspectRatioLocked = !uist.isAspectRatioLocked
                if (!uist.isAspectRatioLocked) return
@@ -60,7 +60,7 @@ export const AspectLockButtonUI = observer(function AspectLockButtonUI_(p: { siz
                   size='input'
                   base={theme.global.contrast}
                   tw='flex flex-1 !gap-0 !rounded-none !px-0.5'
-                  suffixIcon={'mdiChevronDown'}
+                  suffixIcon={IKONS.mdiChevronDown}
                />
             }
          />

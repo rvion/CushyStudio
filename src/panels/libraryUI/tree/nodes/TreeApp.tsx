@@ -67,7 +67,7 @@ export class TreeApp implements ITreeEntry {
    actions: TreeEntryAction[] = [
       {
          name: 'add Draft',
-         icon: 'mdiPlus',
+         icon: IKONS.mdiPlus,
          mode: 'small',
          onClick: (node): void => {
             if (this.app == null) return

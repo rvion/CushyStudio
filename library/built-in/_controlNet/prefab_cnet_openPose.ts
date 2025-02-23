@@ -3,15 +3,15 @@ import type { OutputFor } from '../_prefabs/_prefabs'
 import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
 
 // 🅿️ OPEN POSE FORM ===================================================
-export type UI_subform_OpenPose = Z.XGroup<{
+export type UI_subform_OpenPose = Z.Group<{
    preprocessor: UI_subform_OpenPose_Preprocessor
-   cnet_model_name: Z.XEnum<'ControlNetLoader.control_net_name'>
-   strength: Z.XNumber
-   advanced: Z.XGroup<{
-      startAtStepPercent: Z.XNumber
-      endAtStepPercent: Z.XNumber
-      crop: Z.XEnum<'LatentUpscale.crop'>
-      upscale_method: Z.XEnum<'ImageScale.upscale_method'>
+   cnet_model_name: Z.Enum<'ControlNetLoader.control_net_name'>
+   strength: Z.Number
+   advanced: Z.Group<{
+      startAtStepPercent: Z.Number
+      endAtStepPercent: Z.Number
+      crop: Z.Enum<'LatentUpscale.crop'>
+      upscale_method: Z.Enum<'ImageScale.upscale_method'>
    }>
 }>
 
@@ -44,21 +44,21 @@ export function ui_subform_OpenPose(): UI_subform_OpenPose {
 
 // ================================================================================================
 
-type UI_subform_OpenPose_Preprocessor = Z.XChoice<{
-   None: Z.XEmpty
-   DWPose: Z.XGroup<{
-      detect_body: Z.XBool
-      detect_face: Z.XBool
-      detect_hand: Z.XBool
-      bbox_detector: Z.XEnum<'controlnet_aux.DWPreprocessor.bbox_detector'> // 'DWPreprocessor_Provider_for_SEGS_$3$3Inspire_bbox_detector'
-      pose_estimator: Z.XEnum<'controlnet_aux.DWPreprocessor.pose_estimator'> // 'DWPreprocessor_Provider_for_SEGS_$3$3Inspire_pose_estimator'
-      saveProcessedImage: Z.XBool
+type UI_subform_OpenPose_Preprocessor = Z.Choice<{
+   None: Z.Empty
+   DWPose: Z.Group<{
+      detect_body: Z.Bool
+      detect_face: Z.Bool
+      detect_hand: Z.Bool
+      bbox_detector: Z.Enum<'controlnet_aux.DWPreprocessor.bbox_detector'> // 'DWPreprocessor_Provider_for_SEGS_$3$3Inspire_bbox_detector'
+      pose_estimator: Z.Enum<'controlnet_aux.DWPreprocessor.pose_estimator'> // 'DWPreprocessor_Provider_for_SEGS_$3$3Inspire_pose_estimator'
+      saveProcessedImage: Z.Bool
    }>
-   OpenPose: Z.XGroup<{
-      detect_body: Z.XBool
-      detect_face: Z.XBool
-      detect_hand: Z.XBool
-      saveProcessedImage: Z.XBool
+   OpenPose: Z.Group<{
+      detect_body: Z.Bool
+      detect_face: Z.Bool
+      detect_hand: Z.Bool
+      saveProcessedImage: Z.Bool
    }>
 }>
 

@@ -8,33 +8,33 @@ import {
 import { CustomView3dCan } from '../_views/View_3d_TinCan'
 import { CustomViewSpriteSheet } from '../_views/View_Spritesheets'
 
-export type $extra2 = Z.XChoices<{
-   gaussianSplat: Z.XEmpty
-   summary: Z.XEmpty
-   displayAsBeerCan: Z.XEmpty
-   displayAsSpriteSheet: Z.XEmpty
+export type $extra2 = Z.Choices<{
+   gaussianSplat: Z.Empty
+   summary: Z.Empty
+   displayAsBeerCan: Z.Empty
+   displayAsSpriteSheet: Z.Empty
    watermark: UI_watermark_v1
-   fancyWatermark: Z.XEmpty
-   makeAVideo: Z.XEmpty
+   fancyWatermark: Z.Empty
+   makeAVideo: Z.Empty
 }>
 
 export function extra2(): $extra2 {
    const b = getCurrentForm()
    return b.choices(
       {
-         gaussianSplat: b.empty({ icon: 'mdiDotsHexagon' }),
-         summary: b.empty({ icon: 'mdiLanguageMarkdown', tooltip: 'outputs a markdown summary about the execution and outputs' }), // prettier-ignore
-         displayAsBeerCan: b.empty({ icon: 'mdiBeerOutline' }),
-         displayAsSpriteSheet: b.empty({ icon: 'mdiMovie' }),
+         gaussianSplat: b.empty({ icon: IKONS.mdiDotsHexagon }),
+         summary: b.empty({ icon: IKONS.mdiLanguageMarkdown, tooltip: 'outputs a markdown summary about the execution and outputs' }), // prettier-ignore
+         displayAsBeerCan: b.empty({ icon: IKONS.mdiBeerOutline }),
+         displayAsSpriteSheet: b.empty({ icon: IKONS.mdiMovie }),
          watermark: ui_watermark_v1(),
-         fancyWatermark: b.empty({ icon: 'mdiWatermark' }),
-         makeAVideo: b.empty({ icon: 'mdiMessageVideo', tooltip: 'generate a video from all the generated images in that step ' }), // prettier-ignore
+         fancyWatermark: b.empty({ icon: IKONS.mdiWatermark }),
+         makeAVideo: b.empty({ icon: IKONS.mdiMessageVideo, tooltip: 'generate a video from all the generated images in that step ' }), // prettier-ignore
       },
-      { /* appearance: 'tab', */ icon: 'mdiAlien' },
+      { /* appearance: 'tab', */ icon: IKONS.mdiAlien },
    )
 }
 
-export async function eval_extra2(p: $extra2['$Value']): Promise<void> {
+export async function eval_extra2(p: $extra2['$value']): Promise<void> {
    const run = getCurrentRun()
 
    if (p?.gaussianSplat) run.output_GaussianSplat({ url: '' })

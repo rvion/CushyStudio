@@ -21,9 +21,9 @@ export const PanelIcon = new Panel({
    name: 'Icons',
    category: 'developper',
    widget: (): React.FC<NO_PROPS> => PanelIconUI,
-   header: (_: NO_PROPS): PanelHeader => ({ title: 'Icons', icon: 'mdiImageSyncOutline' }),
+   header: (_: NO_PROPS): PanelHeader => ({ title: 'Icons', icon: IKONS.mdiImageSyncOutline }),
    def: (): NO_PROPS => ({}),
-   icon: 'mdiImageSyncOutline',
+   icon: IKONS.mdiImageSyncOutline,
 })
 
 export const PanelIconUI = observer(function PanelIconUI_(p: NO_PROPS) {
@@ -32,7 +32,7 @@ export const PanelIconUI = observer(function PanelIconUI_(p: NO_PROPS) {
    const form = panel.usePersistentModel('misc', (ui) =>
       ui.fields(
          {
-            query: ui.string({ placeHolder: 'Search', default: '', innerIcon: 'mdiSearchWeb' }),
+            query: ui.string({ placeHolder: 'Search', default: '', innerIcon: IKONS.mdiSearchWeb }),
             size: ui.int({ text: 'Size', min: 32, max: 500, default: 64, step: 24 }),
          },
          { collapsed: false },
@@ -77,7 +77,7 @@ export const PanelIconUI = observer(function PanelIconUI_(p: NO_PROPS) {
                <ToggleButtonUI
                   toggleGroup='panel-icon-filter'
                   value={uist.filter}
-                  icon={uist.filter ? 'mdiFilter' : 'mdiFilterOff'}
+                  icon={uist.filter ? IKONS.mdiFilter : IKONS.mdiFilterOff}
                   hover
                   onValueChange={() => {
                      uist.filter = !uist.filter

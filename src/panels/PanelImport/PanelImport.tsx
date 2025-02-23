@@ -13,9 +13,9 @@ export const PanelImport = new Panel({
    name: 'Import',
    category: 'tools',
    widget: (): React.FC<NO_PROPS> => PanelImportUI,
-   header: (p): PanelHeader => ({ title: 'Import', icon: 'mdiImport' }),
+   header: (p): PanelHeader => ({ title: 'Import', icon: IKONS.mdiImport }),
    def: (): NO_PROPS => ({}),
-   icon: 'mdiImport',
+   icon: IKONS.mdiImport,
 })
 
 export const PanelImportUI = observer(function PanelImportUI_(p: {}) {

@@ -29,18 +29,18 @@ export interface Shape {
 // even when typescript does a great job at inferring them :)
 // will make your vscode go brrrrr.
 
-export type UI_LatentShapeGenerator = Z.XGroup<{
-   batchSize: Z.Shared<Z.Number> | Z.XNumber
-   size: Z.Shared<Z.Size> | Z.XSize
-   amountCircle: Z.XNumber
-   amountRect: Z.XNumber
-   amountStar: Z.XNumber
-   amountPolygon: Z.XNumber
-   amountRing: Z.XNumber
-   amountRainbow: Z.XNumber
-   color1: Z.XString
-   color2: Z.XString
-   colorVariationFactor: Z.XNumber
+export type UI_LatentShapeGenerator = Z.Group<{
+   batchSize: Z.Shared<Z.Number> | Z.Number
+   size: Z.Shared<Z.Size> | Z.Size
+   amountCircle: Z.Number
+   amountRect: Z.Number
+   amountStar: Z.Number
+   amountPolygon: Z.Number
+   amountRing: Z.Number
+   amountRainbow: Z.Number
+   color1: Z.String
+   color2: Z.String
+   colorVariationFactor: Z.Number
 }>
 
 // 1. ------------------------------------------------------------------------------------
@@ -125,7 +125,7 @@ export function ui_LatentShapeGenerator(
 /** this function returns a fancy latent */
 export const run_LatentShapeGenerator = async (
    /** the shape generation config */
-   shapeConfig: UI_LatentShapeGenerator['$Value'],
+   shapeConfig: UI_LatentShapeGenerator['$value'],
    /** required to convert generated image to latent */
    vae: Comfy.Signal['VAE'],
 ): Promise<{

@@ -39,7 +39,7 @@ export const menuView: Menu = defineMenu({
                allPanels
                   .flatMap((panel) => panel.menuEntries)
                   .toSorted((a, b) => a.title.localeCompare(b.title)),
-            icon: 'mdiSortAlphabeticalVariant',
+            icon: IKONS.mdiSortAlphabeticalVariant,
          }),
          // menuWithoutProps({
          //     title: 'FooBar',

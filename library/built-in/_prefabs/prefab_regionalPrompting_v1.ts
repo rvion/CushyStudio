@@ -1,10 +1,10 @@
 import type { CushySchemaBuilder } from '../../../src/controls/CushyBuilder'
 import type { OutputFor } from './_prefabs'
 
-export type UI_regionalPrompting_v1 = Z.XBoard<
-   Z.XGroup<{
-      prompt: Z.XPrompt
-      strength: Z.XNumber
+export type UI_regionalPrompting_v1 = Z.Board<
+   Z.Group<{
+      prompt: Z.Prompt
+      strength: Z.Number
    }>
 >
 
@@ -21,7 +21,7 @@ export function ui_regionalPrompting_v1(b: CushySchemaBuilder): UI_regionalPromp
       }),
       height: 512,
       width: 512,
-      icon: 'mdiPictureInPictureTopRight',
+      icon: IKONS.mdiPictureInPictureTopRight,
       initialPosition: () => ({
          x: 0,
          y: 0,

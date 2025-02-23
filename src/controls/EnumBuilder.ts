@@ -10,7 +10,7 @@ import { CSchema } from './CSchema'
 
 export type IEnumBuilderFN<ENUM_NAME extends keyof Comfy.Slots> = (
    config?: Omit<Field_enum_config<Comfy.Slots[ENUM_NAME]>, 'slotName'>,
-) => Z.XEnum<ENUM_NAME>
+) => Z.Enum<ENUM_NAME>
 
 export type IEnumBuilder = { [K in keyof Comfy.Slots]: IEnumBuilderFN<K> }
 

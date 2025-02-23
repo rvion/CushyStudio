@@ -49,7 +49,9 @@ export const FooterBarUI = observer(function FooterBarUI_(p: FrameProps) {
                   <Frame
                      square
                      tw='relative h-full w-full flex-1 '
-                     icon={cushy.updater.hasUpdateAvailable ? 'mdiSourceBranchSync' : 'mdiSourceBranch'}
+                     icon={
+                        cushy.updater.hasUpdateAvailable ? IKONS.mdiSourceBranchSync : IKONS.mdiSourceBranch
+                     }
                   >
                      {cushy.updater.hasUpdateAvailable && (
                         <Frame
@@ -64,9 +66,9 @@ export const FooterBarUI = observer(function FooterBarUI_(p: FrameProps) {
                   {(cushy.updater.behindCount != 0 || cushy.updater.aheadCount != 0) && (
                      <Frame line tw='flex-1 !gap-0'>
                         {cushy.updater.behindCount}
-                        <IkonOf name='mdiArrowDownThick' />
+                        <IkonOf name={IKONS.mdiArrowDownThick} />
                         {cushy.updater.aheadCount}
-                        <IkonOf name='mdiArrowUpThick' />
+                        <IkonOf name={IKONS.mdiArrowUpThick} />
                      </Frame>
                   )}
                </Frame>

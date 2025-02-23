@@ -4,13 +4,13 @@ import type { Box } from './Box'
 
 import { run_tint, ui_tint, type UI_Tint } from '../kolor/prefab_Tint'
 
-export type UI_Box = Z.XChoices<{
+export type UI_Box = Z.Choices<{
    base: UI_Tint
    text: UI_Tint
    textShadow: UI_Tint
    shadow: UI_Tint
    border: UI_Tint
-   hover: Z.XBool
+   hover: Z.Bool
 }>
 
 export const ui_Box = (
@@ -23,7 +23,7 @@ export const ui_Box = (
          textShadow: UI_Tint
          shadow: UI_Tint
          border: UI_Tint
-         hover: Z.XBool
+         hover: Z.Bool
       }>,
       'multi' | 'items'
    >,
@@ -44,7 +44,7 @@ export const ui_Box = (
    )
 }
 
-export const run_Box = (ui: UI_Box['$Value']): Box => {
+export const run_Box = (ui: UI_Box['$value']): Box => {
    const box: Box = { hover: ui.hover }
    if (ui.base) box.base = run_tint(ui.base)
    if (ui.text) box.text = run_tint(ui.text)

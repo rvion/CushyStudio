@@ -29,7 +29,7 @@ export const useImageDrag = (
          collect: (monitor): { opacity: number } => {
             if (cushy.dndHandler.visible) {
                if (cushy.dndHandler.label === undefined || cushy.dndHandler.icon) {
-                  cushy.dndHandler.setDragContent({ icon: 'mdiImage' })
+                  cushy.dndHandler.setDragContent({ icon: IKONS.mdiImage })
                }
             }
             return { opacity: monitor.isDragging() ? 0.5 : 1 }
@@ -78,12 +78,12 @@ export const useImageDrop = (
          cushy.dndHandler.setContent(
             monitor.isOver()
                ? {
-                    icon: 'mdiImage',
+                    icon: IKONS.mdiImage,
                     label: isExternal ? 'Import and Drop Image' : 'Drop Image',
-                    suffixIcon: 'mdiArrowDownRight',
+                    suffixIcon: IKONS.mdiArrowDownRight,
                  }
                : {
-                    icon: 'mdiImage',
+                    icon: IKONS.mdiImage,
                  },
          )
          return { opacity: monitor.isOver() ? '0.75' : undefined }
@@ -138,9 +138,9 @@ export const useImageSlotDrop = (dropAction: (image: MediaImageL) => void): [boo
       hover(item, monitor): void {
          if (monitor.isOver({ shallow: true })) {
             cushy.dndHandler.setContent({
-               icon: 'mdiImage',
+               icon: IKONS.mdiImage,
                label: 'Drop Image in to Slot',
-               suffixIcon: 'mdiMenuOpen',
+               suffixIcon: IKONS.mdiMenuOpen,
             })
          }
       },

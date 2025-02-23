@@ -11,7 +11,7 @@ export const allTreeCommands: Command<TreeView>[] = [
       combo: KEYS.tree_moveUp,
       label: 'move up in tree',
       idSuffix: 'moveUp',
-      icon: 'mdiFileTree',
+      icon: IKONS.mdiFileTree,
       action: (tv) => tv.moveUp(),
    }),
 
@@ -19,7 +19,7 @@ export const allTreeCommands: Command<TreeView>[] = [
       combo: KEYS.tree_moveDown,
       label: 'move down in tree',
       idSuffix: 'moveDown',
-      icon: 'mdiFileTree',
+      icon: IKONS.mdiFileTree,
       action: (tv) => tv.moveDown(),
    }),
 
@@ -27,7 +27,7 @@ export const allTreeCommands: Command<TreeView>[] = [
       combo: KEYS.tree_moveRight,
       label: 'unfold item if folded, then move down',
       idSuffix: 'moveRight',
-      icon: 'mdiFileTree',
+      icon: IKONS.mdiFileTree,
       action: (tv) => tv.moveRight(),
    }),
 
@@ -35,7 +35,7 @@ export const allTreeCommands: Command<TreeView>[] = [
       combo: KEYS.tree_moveLeft,
       label: 'fold item if unfolded and movme up',
       idSuffix: 'moveLeft',
-      icon: 'mdiFileTree',
+      icon: IKONS.mdiFileTree,
       action: (tv) => tv.moveLeft(),
    }),
 
@@ -43,7 +43,7 @@ export const allTreeCommands: Command<TreeView>[] = [
       combo: KEYS.tree_deleteNodeAndFocusNodeAbove,
       label: 'Delete Node And Focus Node Above',
       idSuffix: 'deleteNodeAndFocusNodeAbove',
-      icon: 'mdiFileTree',
+      icon: IKONS.mdiFileTree,
       action: (tv) => tv.deleteNodeAndFocusNodeAbove(),
    }),
 
@@ -51,7 +51,7 @@ export const allTreeCommands: Command<TreeView>[] = [
       combo: KEYS.tree_deleteNodeAndFocusNodeBelow,
       label: 'Delete Node And Focus Node Below',
       idSuffix: 'deleteNodeAndFocusNodeBelow',
-      icon: 'mdiFileTree',
+      icon: IKONS.mdiFileTree,
       action: (tv) => tv.deleteNodeAndFocusNodeBelow(),
    }),
 
@@ -59,7 +59,7 @@ export const allTreeCommands: Command<TreeView>[] = [
       combo: KEYS.tree_onPrimaryAction,
       label: 'execute selected tree primary action',
       idSuffix: 'onPrimaryAction',
-      icon: 'mdiFileTree',
+      icon: IKONS.mdiFileTree,
       action: (tv) => {
          if (tv.at == null) return Trigger.UNMATCHED
          return tv.at.onPrimaryAction()
@@ -70,7 +70,7 @@ export const allTreeCommands: Command<TreeView>[] = [
       combo: KEYS.tree_movePageUp,
       label: 'move all the way to the top of the tree',
       idSuffix: 'movePageUp',
-      icon: 'mdiFileTree',
+      icon: IKONS.mdiFileTree,
       action: (tv) => tv.movePageUp(),
    }),
 
@@ -78,7 +78,7 @@ export const allTreeCommands: Command<TreeView>[] = [
       combo: KEYS.tree_movePageDown,
       label: 'move 100 items down in the tree',
       idSuffix: 'movePageDown',
-      icon: 'mdiFileTree',
+      icon: IKONS.mdiFileTree,
       action: (tv) => tv.movePageDown(),
    }),
 ]

@@ -16,7 +16,7 @@ export const PanelComfy = new Panel({
    widget: (): React.FC<PanelComfyUIProps> => PanelComfyUI,
    header: (p): PanelHeader => ({ title: 'ComfyUI' }),
    def: (): PanelComfyUIProps => ({}),
-   icon: 'mdiCabinAFrame',
+   icon: IKONS.mdiCabinAFrame,
 })
 
 export type PanelComfyUIProps = {

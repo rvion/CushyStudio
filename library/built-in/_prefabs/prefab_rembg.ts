@@ -1,14 +1,14 @@
 import type { OutputFor } from './_prefabs'
 
-export type UI_rembg_v1 = Z.XChoices<{
+export type UI_rembg_v1 = Z.Choices<{
    // RemBG: X.XEmpty
-   isnetAnime: Z.XEmpty
-   isnetGeneralUse: Z.XEmpty
-   silueta: Z.XEmpty
-   u2net: Z.XEmpty
-   u2net_human_seg: Z.XEmpty
-   u2netp: Z.XEmpty
-   RemBGV1_4: Z.XEmpty
+   isnetAnime: Z.Empty
+   isnetGeneralUse: Z.Empty
+   silueta: Z.Empty
+   u2net: Z.Empty
+   u2net_human_seg: Z.Empty
+   u2netp: Z.Empty
+   RemBGV1_4: Z.Empty
 }>
 
 export function ui_rembg_v1(): UI_rembg_v1 {
@@ -26,7 +26,7 @@ export function ui_rembg_v1(): UI_rembg_v1 {
             u2netp: form.empty(),
             RemBGV1_4: form.empty(),
          },
-         { expand: true, icon: 'mdiTargetAccount' },
+         { expand: true, icon: IKONS.mdiTargetAccount },
       )
       .addRequirements([
          { type: 'customNodesByTitle', title: 'TEMP_ComfyUI-BRIA_AI-RMBG' },

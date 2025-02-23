@@ -38,7 +38,7 @@ export const Button_InstallCustomNodeUI = observer(function Button_InstallCustom
             <div tw='flex flex-col'>
                {!isInstalled && (
                   <Button
-                     icon={isInstalled ? 'mdiCheck' : 'mdiDownload'}
+                     icon={isInstalled ? IKONS.mdiCheck : IKONS.mdiDownload}
                      loading={action.isRunning}
                      onClick={() => action.start()}
                   >

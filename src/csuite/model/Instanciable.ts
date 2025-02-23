@@ -4,18 +4,17 @@ import type { Repository } from './Repository'
 
 export interface Instanciable<TYPES extends FieldTypes = FieldTypes> {
    // 1.
-   $Type: TYPES['$Type']
-   $Config: TYPES['$Config']
-   $Serial: TYPES['$Serial']
-   $Value: TYPES['$Value']
-   $Field: TYPES['$Field']
-   $Unchecked: TYPES['$Unchecked']
-   $Child: TYPES['$Child']
-   $Reflect: TYPES['$Reflect']
+   $type: TYPES['$type']
+   $config: TYPES['$config']
+   $serial: TYPES['$serial']
+   $value: TYPES['$value']
+   $field: TYPES['$field']
+   $unchecked: TYPES['$unchecked']
+   $child: TYPES['$child']
 
    // 2.
-   type: TYPES['$Type']
-   config: TYPES['$Config']
+   type: TYPES['$type']
+   config: TYPES['$config']
 
    instanciate(
       // 3.
@@ -24,5 +23,5 @@ export interface Instanciable<TYPES extends FieldTypes = FieldTypes> {
       parent: Field | null,
       initialMountKey: string,
       serial: any | null,
-   ): TYPES['$Field']
+   ): TYPES['$field']
 }

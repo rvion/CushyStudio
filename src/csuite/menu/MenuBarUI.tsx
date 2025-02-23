@@ -132,7 +132,7 @@ export const MenuBarUI = observer(function MenuBar({
                     key={ix}
                     localShortcut={char}
                     icon={entry.icon}
-                    afterShortcut={<IkonOf name='mdiMenuRight' />}
+                    afterShortcut={<IkonOf name=IKONS.mdiMenuRight />}
                     label={formatLabel(charIx, label)}
                 /> */}
             </RevealUI>

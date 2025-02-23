@@ -9,7 +9,7 @@ import { RevealUI } from '../../csuite/reveal/RevealUI'
 
 export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?: string; draft: DraftL }) {
    const draft = p.draft
-   const icon: IconName = draft.shouldAutoStart ? 'mdiPause' : 'mdiPlay'
+   const icon: IconName = draft.shouldAutoStart ? IKONS.mdiPause : IKONS.mdiPlay
    return (
       <div tw='flex h-full' className={p.className}>
          <RevealUI
@@ -46,7 +46,7 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?:
                </div>
             )}
          >
-            <Button tw='!gap-0 !px-0.5' icon={IKONS.mdiTimer} suffixIcon={'mdiChevronDown'} />
+            <Button tw='!gap-0 !px-0.5' icon={IKONS.mdiTimer} suffixIcon={IKONS.mdiChevronDown} />
          </RevealUI>
          <Button
             // tw='h-input'

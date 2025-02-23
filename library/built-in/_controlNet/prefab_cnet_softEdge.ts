@@ -3,15 +3,15 @@ import type { OutputFor } from '../_prefabs/_prefabs'
 import { cnet_preprocessor_ui_common, cnet_ui_common } from './cnet_ui_common'
 
 // 🅿️ SoftEdge FORM ===================================================
-export type UI_subform_SoftEdge = Z.XGroup<{
+export type UI_subform_SoftEdge = Z.Group<{
    preprocessor: UI_subform_SoftEdge_Preprocessor
-   cnet_model_name: Z.XEnum<'ControlNetLoader.control_net_name'>
-   strength: Z.XNumber
-   advanced: Z.XGroup<{
-      startAtStepPercent: Z.XNumber
-      endAtStepPercent: Z.XNumber
-      crop: Z.XEnum<'LatentUpscale.crop'>
-      upscale_method: Z.XEnum<'ImageScale.upscale_method'>
+   cnet_model_name: Z.Enum<'ControlNetLoader.control_net_name'>
+   strength: Z.Number
+   advanced: Z.Group<{
+      startAtStepPercent: Z.Number
+      endAtStepPercent: Z.Number
+      crop: Z.Enum<'LatentUpscale.crop'>
+      upscale_method: Z.Enum<'ImageScale.upscale_method'>
    }>
 }>
 export function ui_subform_SoftEdge(): UI_subform_SoftEdge {
@@ -36,8 +36,8 @@ export function ui_subform_SoftEdge(): UI_subform_SoftEdge {
 }
 
 // ====================================================================================
-export type UI_subform_SoftEdge_Preprocessor = Z.XChoice<{
-   None: Z.XEmpty
+export type UI_subform_SoftEdge_Preprocessor = Z.Choice<{
+   None: Z.Empty
    HED: UI_subform_SoftEdge_Preprocessor_Options
    Pidinet: UI_subform_SoftEdge_Preprocessor_Options
 }>
@@ -59,9 +59,9 @@ export function ui_subform_SoftEdge_Preprocessor(): UI_subform_SoftEdge_Preproce
 }
 
 // ====================================================================================
-export type UI_subform_SoftEdge_Preprocessor_Options = Z.XGroup<{
-   safe: Z.XBool
-   saveProcessedImage: Z.XBool
+export type UI_subform_SoftEdge_Preprocessor_Options = Z.Group<{
+   safe: Z.Bool
+   saveProcessedImage: Z.Bool
 }>
 export function ui_subform_SoftEdge_Preprocessor_Options(
    form: Z.Builder,

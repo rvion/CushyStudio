@@ -14,11 +14,11 @@ export const menuComfyUI2: Menu = defineMenu({
       b.SimpleMenuAction({
          label: 'Hosts',
          onClick: () => cushy.layout.open('Hosts', {}),
-         icon: 'mdiServerNetwork',
+         icon: IKONS.mdiServerNetwork,
       }),
       ...cushy.hosts.map((host) => {
          return b.SimpleMenuAction({
-            icon: 'mdiServerNetwork',
+            icon: IKONS.mdiServerNetwork,
             label: host.data.name,
             onClick: () => host.electAsPrimary(),
          })
@@ -94,7 +94,7 @@ const menuDivider = (
 //     return (
 //         <MenuItem //
 //             icon={IKONS.mdiServerNetwork}
-//             // icon={isMain ? 'mdiServerNetwork' : null}
+//             // icon={isMain ? IKONS.mdiServerNetwork : null}
 //             onClick={() => host.electAsPrimary()}
 //             afterShortcut={
 //                 <Button

@@ -7,5 +7,5 @@ export const PanelCanvas = new Panel({
    widget: (): React.FC<PanelCanvasProps> => PanelCanvasUI,
    header: (p): PanelHeader => ({ title: 'Canvas' }),
    def: (): PanelCanvasProps => ({}),
-   icon: 'mdiDraw',
+   icon: IKONS.mdiDraw,
 })

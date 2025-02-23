@@ -6,7 +6,7 @@ export const PanelGallery = new Panel({
    category: 'outputs',
    widget: (): React.FC<PanelGalleryProps> => PanelGalleryUI,
    header: (p: PanelGalleryProps): PanelHeader => ({ title: 'Gallery' }),
-   icon: 'mdiViewGallery',
+   icon: IKONS.mdiViewGallery,
    def: (): PanelGalleryProps => ({}),
    presets: {
       'Gallery 1': (): PanelPreset<PanelGalleryProps> => ({ props: { uid: 1 } }),

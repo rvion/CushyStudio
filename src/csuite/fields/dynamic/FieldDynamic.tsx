@@ -23,7 +23,7 @@ type Field_dynamic_ownConfig<A extends CSchema> = {
 }
 export type Field_dynamic_transition<A extends CSchema> = {
    prevSchema: A | null
-   prevField: A['$Field'] | null
+   prevField: A['$field'] | null
    nextSchema: A | null
 }
 
@@ -46,7 +46,7 @@ export interface Field_dynamic<A extends CSchema> {
    $value: A['$value']
    $setValue: A['$setValue']
    $unchecked: Field_dynamic_unchecked<A>
-   $child: A['$Field']
+   $child: A['$field']
    $opts: unknown
    $ownPatch: Patch<'dynamic'>
 }
@@ -67,7 +67,7 @@ export class Field_dynamic<A extends CSchema> extends Field {
    dynamicSchema: A | null = null
 
    /** this schema */
-   child!: A['$Field'] | null
+   child!: A['$field'] | null
 
    // #region CTOR
    constructor(
@@ -177,11 +177,11 @@ export class Field_dynamic<A extends CSchema> extends Field {
       return 'child'
    }
 
-   override get childrenAll(): A['$Field'][] {
+   override get childrenAll(): A['$field'][] {
       if (this.child == null) return []
       return [this.child]
    }
-   override get childrenActive(): A['$Field'][] {
+   override get childrenActive(): A['$field'][] {
       if (this.child == null) return []
       return [this.child]
    }

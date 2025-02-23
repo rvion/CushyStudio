@@ -23,15 +23,15 @@ import { run_cnet_SoftEdge, ui_subform_SoftEdge, type UI_subform_SoftEdge } from
 import { run_cnet_Tile, ui_subform_Tile, type UI_subform_Tile } from './prefab_cnet_tile'
 
 // 🅿️ CNET UI -----------------------------------------------------------
-export type UI_cnet = Z.XLink<
-   Z.XBool,
-   Z.XList<
-      Z.XGroup<{
-         image: Z.XImage
+export type UI_cnet = Z.Link<
+   Z.Bool,
+   Z.List<
+      Z.Group<{
+         image: Z.Image
          mask: UI_Mask
-         resize: Z.XBool
+         resize: Z.Bool
          applyDuringUpscale: Z.Bool
-         cnets: Z.XChoices<{
+         cnets: Z.Choices<{
             IPAdapter: UI_subform_IPAdapter
             FaceID: UI_IPAdapterFaceID
             Pose: UI_subform_OpenPose
@@ -62,7 +62,7 @@ export function ui_cnet(): UI_cnet {
       form
          .list({
             label: 'ControlNets',
-            icon: 'mdiCompass',
+            icon: IKONS.mdiCompass,
             // box: { base: { hue: 90, chroma: 0.1 } },
             tooltip: `Instructional resources:\nhttps://github.com/lllyasviel/ControlNet\nhttps://stable-diffusion-art.com/controlnet/`,
             element: () =>

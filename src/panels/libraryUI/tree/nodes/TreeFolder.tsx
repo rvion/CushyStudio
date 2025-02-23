@@ -47,7 +47,7 @@ export class TreeFolder implements ITreeEntry<RelativePath> {
          return [
             {
                name: 'Find More...',
-               icon: 'mdiCloudDownloadOutline',
+               icon: IKONS.mdiCloudDownloadOutline,
                onClick: (): void => {},
                mode: 'full',
             },
@@ -56,7 +56,7 @@ export class TreeFolder implements ITreeEntry<RelativePath> {
          return [
             {
                name: 'create...',
-               icon: 'mdiPlusCircleOutline',
+               icon: IKONS.mdiPlusCircleOutline,
                onClick: (): void => {},
                mode: 'full',
             },

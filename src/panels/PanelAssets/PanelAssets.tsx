@@ -14,7 +14,7 @@ export const PanelAssets = new Panel({
    widget: (): React.FC<PanelAssetsProps> => PanelAssetsUI,
    header: (p: PanelAssetsProps): PanelHeader => ({ title: 'Assets' }),
    def: (): PanelAssetsProps => ({ active: -1, selected: new Set() }),
-   icon: 'mdiBookOpenOutline',
+   icon: IKONS.mdiBookOpenOutline,
    category: 'tools',
 })
 

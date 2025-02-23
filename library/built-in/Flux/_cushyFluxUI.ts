@@ -6,13 +6,13 @@ import { ui_customSave, type UI_customSave } from '../_prefabs/saveSmall'
 import { sampleNegative, samplePrompts } from '../samplePrompts'
 import { type $prefabModelFlux, prefabModelFlux } from './_modelFlux'
 
-export type $CushySD15UI = Z.XGroup<{
-   positive: Z.XPrompt
-   negative: Z.XPrompt
+export type $CushySD15UI = Z.Group<{
+   positive: Z.Prompt
+   negative: Z.Prompt
    model: $prefabModelFlux
    latent: UI_LatentV3
    sampler: UI_Sampler_Advanced
-   customSave: Z.XOptional<UI_customSave>
+   customSave: Z.Maybe<UI_customSave>
    // controlnets: UI_cnet
    // ipAdapter: X.XOptional<UI_IPAdapterV2>
    // faceID: X.XOptional<UI_IPAdapterFaceIDV2>
@@ -23,30 +23,34 @@ export type $CushySD15UI = Z.XGroup<{
 export function CushyFluxUI(ui: Z.Builder): $CushySD15UI {
    return ui.fields({
       positive: ui.prompt({
-         icon: 'mdiPlusBoxOutline',
+         icon: IKONS.mdiPlusBoxOutline,
          background: { hue: 150, chroma: 0.05 },
          default: samplePrompts.tree,
          presets: [
             //
-            { label: 'Portrait', icon: 'mdiFaceWoman', apply: (w) => w.setText('portrait, face') },
-            { label: 'Landscape', icon: 'mdiImageFilterHdr', apply: (w) => w.setText('landscape, nature') },
-            { label: 'Tree', icon: 'mdiTree', apply: (w) => w.setText(samplePrompts.tree) },
-            { label: 'Abstract', icon: 'mdiShape', apply: (w) => w.setText('abstract, art') },
+            { label: 'Portrait', icon: IKONS.mdiFaceWoman, apply: (w) => w.setText('portrait, face') },
+            {
+               label: 'Landscape',
+               icon: IKONS.mdiImageFilterHdr,
+               apply: (w) => w.setText('landscape, nature'),
+            },
+            { label: 'Tree', icon: IKONS.mdiTree, apply: (w) => w.setText(samplePrompts.tree) },
+            { label: 'Abstract', icon: IKONS.mdiShape, apply: (w) => w.setText('abstract, art') },
          ],
       }),
       negative: ui.prompt({
-         icon: 'mdiMinusBoxOutline',
+         icon: IKONS.mdiMinusBoxOutline,
          startCollapsed: true,
          default: 'bad quality, blurry, low resolution, pixelated, noisy',
          box: { base: { hue: 0, chroma: 0.05 } },
          presets: [
             {
-               icon: 'mdiCloseOctagon',
+               icon: IKONS.mdiCloseOctagon,
                label: 'simple negative',
                apply: (w) => w.setText(sampleNegative.simpleNegative),
             },
             {
-               icon: 'mdiCloseOctagon',
+               icon: IKONS.mdiCloseOctagon,
                label: 'simple negative + nsfw',
                apply: (w) => w.setText(sampleNegative.simpleNegativeNsfw),
             },

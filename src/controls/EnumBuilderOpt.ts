@@ -13,7 +13,7 @@ import { CSchema } from './CSchema'
 
 export type IEnumBuilderOptFn<ENUM_NAME extends keyof Comfy.Slots> = (
    config?: Omit<Field_enum_config<Comfy.Slots[ENUM_NAME]>, 'slotName'> & { startActive?: boolean },
-) => Z.XOptional<Z.XEnum<ENUM_NAME>>
+) => Z.Maybe<Z.Enum<ENUM_NAME>>
 
 export type IEnumBuilderOpt = {
    [K in keyof Comfy.Slots]: IEnumBuilderOptFn<K>

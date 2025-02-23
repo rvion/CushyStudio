@@ -48,7 +48,7 @@ export const HostSchemaIndicatorUI = observer(function HostSchemaIndicatorUI_(p:
                ) : p.showIcon ? (
                   <Button
                      className='btn-ghost cursor-help'
-                     icon={p.showIcon ? 'mdiCheckCircle' : undefined}
+                     icon={p.showIcon ? IKONS.mdiCheckCircle : undefined}
                   />
                ) : null
             ) : null}

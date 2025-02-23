@@ -9,7 +9,7 @@ export const PanelDraftValue = new Panel({
    header: (p): PanelHeader => ({ title: 'DraftJsonResult' }),
    def: (): PanelDraftValueProps => ({ draftID: cushy.db.draft.lastOrCrash().id }),
    category: 'developper',
-   icon: 'mdiDevTo',
+   icon: IKONS.mdiDevTo,
 })
 
 export type PanelDraftValueProps = {

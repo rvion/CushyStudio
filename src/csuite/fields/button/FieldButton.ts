@@ -42,14 +42,13 @@ export type Field_button_unchecked = Field_button_value | undefined
 
 // #region TYPES
 export type Field_button<K> = {
-   $Type: 'button'
-   $Config: Field_button_config<K>
-   $Serial: Field_button_serial
-   $Value: Field_button_value
-   $Unchecked: Field_button_unchecked
-   $Field: Field_button<K>
-   $Child: never
-   $Reflect: Field_button<K>
+   $type: 'button'
+   $config: Field_button_config<K>
+   $serial: Field_button_serial
+   $value: Field_button_value
+   $unchecked: Field_button_unchecked
+   $field: Field_button<K>
+   $child: never
 }
 
 // STATE

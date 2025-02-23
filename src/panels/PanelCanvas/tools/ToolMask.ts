@@ -9,7 +9,7 @@ import { bang } from '../../../csuite/utils/bang'
 export class ToolMask implements ICanvasTool {
    id: 'mask' = 'mask'
    category: 'generate' = 'generate'
-   icon: IconName = 'mdiTransitionMasked'
+   icon: IconName = IKONS.mdiTransitionMasked
    description: string = 'draw a mask on the canvas'
 
    constructor(public canvas: UnifiedCanvas) {}

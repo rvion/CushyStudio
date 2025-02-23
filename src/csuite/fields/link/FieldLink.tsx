@@ -14,8 +14,8 @@ type Field_link_ownConfig<A extends CSchema, B extends CSchema> = {
    share: A
 
    // into
-   children(child: A['$Field']): B
-   dynamic?(a: A['$Field']): any
+   children(child: A['$field']): B
+   dynamic?(a: A['$field']): any
 }
 
 // #region SERIAL TYPE
@@ -39,7 +39,7 @@ export interface Field_link<A extends CSchema, B extends CSchema> {
    $value: B['$value']
    $setValue: B['$setValue']
    $unchecked: Field_link_unchecked<A, B>
-   $child: B['$Field']
+   $child: B['$field']
    $opts: unknown
    $ownPatch: Patch<'link'>
 }
@@ -87,8 +87,8 @@ export class Field_link<A extends CSchema, B extends CSchema> extends Field {
 
    // #region children
    /** the dict of all child widgets */
-   @observable.ref accessor aField!: A['$Field']
-   @observable.ref accessor bField!: B['$Field']
+   @observable.ref accessor aField!: A['$field']
+   @observable.ref accessor bField!: B['$field']
 
    // #region serial
    protected setOwnSerial(next: this['$serial']): void {
@@ -168,7 +168,7 @@ export class Field_link<A extends CSchema, B extends CSchema> extends Field {
       return branchName
    }
 
-   override get childrenAll(): [A['$Field'], B['$Field']] {
+   override get childrenAll(): [A['$field'], B['$field']] {
       return [this.aField, this.bField]
    }
 

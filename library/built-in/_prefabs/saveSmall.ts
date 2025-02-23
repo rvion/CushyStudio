@@ -1,9 +1,9 @@
 import type { OutputFor } from './_prefabs'
 
-export type UI_customSave = Z.XGroup<{
-   subfolder: Z.XString
+export type UI_customSave = Z.Group<{
+   subfolder: Z.String
    format: Z.XSelectOne_<'raw' | 'image/webp' | 'image/png' | 'image/jpeg'>
-   quality: Z.XNumber
+   quality: Z.Number
 }>
 
 export function ui_customSave(): UI_customSave {
@@ -40,7 +40,7 @@ export function ui_customSave(): UI_customSave {
          // uiui: (ui) => ({ Shell: UY.Shell.Mobile }),
          border: true,
          label: 'Save As...',
-         icon: 'mdiContentSaveCogOutline',
+         icon: IKONS.mdiContentSaveCogOutline,
          tooltip: 'Save Folder and file format',
       },
    )

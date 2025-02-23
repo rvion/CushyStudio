@@ -28,7 +28,7 @@ declare global {
 // export interface CSchema<out FIELD extends Field = Field>
 export interface CSchema<out FIELD extends Field = Field>
    extends CSuite.CSchemaExtensions<{ $Schema: CSchema<FIELD> }> {
-   $Field: FIELD
+   $field: FIELD
    $type: FIELD['$type']
    $ownConfig: FIELD['$ownConfig']
    $ownSerial: FIELD['$ownSerial']
@@ -134,7 +134,7 @@ export class CSchema<out FIELD extends Field = Field> {
     * ```ts
     * // 👉 using an external class require it to properly extend your field shape
     * //                 VVVVVVVVVVV VVVVVVVVVVVVVVVVVVVVVVVVVV
-    * class Foo1 extends Field_group<T0['$Field']['$subfields']> {
+    * class Foo1 extends Field_group<T0['$field']['$subfields']> {
     *     static HELLO = 'WORLD'
     *     volatile = 12
     *     constructor(...args:FieldCtorProps){ // 👈 constructor is only required if you want

@@ -1,105 +1,53 @@
-import type { ComfyUnionValue } from '../comfyui/comfyui-types'
 import type { Field_board_config } from '../csuite/fields/board/Field_board'
-import type { Field_bool } from '../csuite/fields/bool/FieldBool'
 import type { Field_button_config } from '../csuite/fields/button/FieldButton'
-import type { Field_choices } from '../csuite/fields/choices/FieldChoices'
-import type { Field_color_config } from '../csuite/fields/color/FieldColor'
+import type { Field_color } from '../csuite/fields/color/FieldColor'
 import type { SimpleShape$ } from '../csuite/fields/core-prefabs/ShapeSchema'
 import type { Field_custom_config } from '../csuite/fields/custom/FieldCustom'
-import type { Field_date } from '../csuite/fields/date/FieldDate'
-import type { Field_enum } from '../csuite/fields/enum/FieldEnum'
-import type { Field_group, FieldGroup } from '../csuite/fields/group/FieldGroup'
 import type { Field_image_config } from '../csuite/fields/image/FieldImage'
-import type { Field_link } from '../csuite/fields/link/FieldLink'
 import type { Field_list_config } from '../csuite/fields/list/FieldList'
-import type { Field_markdown_config } from '../csuite/fields/markdown/FieldMarkdown'
 import type { Field_matrix_config } from '../csuite/fields/matrix/FieldMatrix'
-import type { Field_number_config } from '../csuite/fields/number/FieldNumber'
+import type { Field_number } from '../csuite/fields/number/FieldNumber'
 import type { Field_optional_config } from '../csuite/fields/optional/FieldOptional'
 import type { Field_orbit_config } from '../csuite/fields/orbit/FieldOrbit'
-import type { Field_seed } from '../csuite/fields/seed/FieldSeed'
-import type { Field_selectMany } from '../csuite/fields/selectMany/FieldSelectMany'
-import type { Field_selectOne } from '../csuite/fields/selectOne/FieldSelectOne'
-import type { SelectKey } from '../csuite/fields/selectOne/SelectOneKey'
-import type { Field_shared } from '../csuite/fields/shared/FieldShared'
-import type { Field_size } from '../csuite/fields/size/FieldSize'
 import type { BaseSchema } from '../csuite/model/BaseSchema'
 import type { CSchema } from '../csuite/model/CSchema'
 import type { IBuilder } from '../csuite/model/IBuilder'
 import type { OpenRouter_ModelInfo } from '../csuite/openrouter/OpenRouter_ModelInfo'
 import type { OpenRouter_Models } from '../csuite/openrouter/OpenRouter_models'
-import type { NO_PROPS } from '../csuite/types/NO_PROPS'
-import type { Temporal } from '@js-temporal/polyfill'
-
-import { makeAutoObservable } from 'mobx'
-import { nanoid } from 'nanoid'
-import { createElement } from 'react'
+import type { SelectOption } from '../csuite/fields/selectOne/SelectOption'
 
 import { simpleBuilder } from '../csuite'
 import { csuiteConfig } from '../csuite/config/configureCsuite'
 import { Field_board } from '../csuite/fields/board/Field_board'
 import { WidgetListExtUI__Timeline } from '../csuite/fields/board/WidgetListExtUI'
 import { Field_button } from '../csuite/fields/button/FieldButton'
-import { Field_color } from '../csuite/fields/color/FieldColor'
 import { simpleShape$ } from '../csuite/fields/core-prefabs/ShapeSchema'
 import { Field_custom } from '../csuite/fields/custom/FieldCustom'
 import { Field_image } from '../csuite/fields/image/FieldImage'
 import { Field_list } from '../csuite/fields/list/FieldList'
-import { Field_markdown } from '../csuite/fields/markdown/FieldMarkdown'
 import { Field_matrix } from '../csuite/fields/matrix/FieldMatrix'
-import { Field_number } from '../csuite/fields/number/FieldNumber'
 import { Field_optional } from '../csuite/fields/optional/FieldOptional'
 import { Field_orbit } from '../csuite/fields/orbit/FieldOrbit'
-import { type SelectOption } from '../csuite/fields/selectOne/SelectOption'
 import { WidgetSelectOneUI } from '../csuite/fields/selectOne/WidgetSelectOneUI'
-import { Field_string, type Field_string_config } from '../csuite/fields/string/FieldString'
+import { BuilderBoolDescriptors, type BuilderBoolMixin } from '../csuite/model/builders/BuilderBoolTypes'
+import { BuilderChoicesDescriptors, type BuilderChoicesMixin } from '../csuite/model/builders/BuilderChoices'
+import { BuilderDateDescriptors, type BuilderDateMixin } from '../csuite/model/builders/BuilderDateTypes'
+import { BuilderGroupDescriptors, type BuilderGroupMixin } from '../csuite/model/builders/BuilderGroup'
+import { BuilderMiscDescriptors, type BuilderMiscMixin } from '../csuite/model/builders/BuilderMisc'
 import {
-   BuilderBool,
-   BuilderBoolDescriptors,
-   type BuilderBoolMixin,
-} from '../csuite/model/builders/BuilderBoolTypes'
-import {
-   BuilderChoices,
-   BuilderChoicesDescriptors,
-   type BuilderChoicesMixin,
-} from '../csuite/model/builders/BuilderChoices'
-import {
-   BuilderDate,
-   BuilderDateDescriptors,
-   type BuilderDateMixin,
-} from '../csuite/model/builders/BuilderDateTypes'
-import {
-   BuilderGroup,
-   BuilderGroupDescriptors,
-   type BuilderGroupMixin,
-} from '../csuite/model/builders/BuilderGroup'
-import {
-   BuilderMisc,
-   BuilderMiscDescriptors,
-   type BuilderMiscMixin,
-} from '../csuite/model/builders/BuilderMisc'
-import {
-   BuilderNumber,
    BuilderNumberDescriptors,
    type BuilderNumberMixin,
 } from '../csuite/model/builders/BuilderNumberTypes'
 import {
-   BuilderSelectMany,
    BuilderSelectManyDescriptorsFn,
    type BuilderSelectManyMixin,
 } from '../csuite/model/builders/BuilderSelectMany'
 import {
-   BuilderSelectOne,
    BuilderSelectOneDescriptorsFn,
    type BuilderSelectOneMixin,
 } from '../csuite/model/builders/BuilderSelectOne'
+import { BuilderSharedDescriptors, type BuilderSharedMixin } from '../csuite/model/builders/BuilderShared'
 import {
-   BuilderShared,
-   BuilderSharedDescriptors,
-   type BuilderSharedMixin,
-} from '../csuite/model/builders/BuilderShared'
-import {
-   BuilderString,
    BuilderStringDescriptors,
    type BuilderStringMixin,
 } from '../csuite/model/builders/BuilderStringTypes'
@@ -108,10 +56,8 @@ import { openRouterInfos } from '../csuite/openrouter/OpenRouter_infos'
 import { SelectDefaultOptionUI } from '../csuite/select/SelectOptionBadgeUI'
 import { _FIX_INDENTATION } from '../csuite/utils/_FIX_INDENTATION'
 import { bang } from '../csuite/utils/bang'
-import { combine } from '../csuite/utils/combine'
 import { Field_prompt, type Field_prompt_config } from '../prompt/FieldPrompt'
 import { type AutoBuilder, mkFormAutoBuilder } from './AutoBuilder'
-import { CSchema, type CushySchemaᐸ_ᐳ } from './CSchema'
 import { EnumBuilder } from './EnumBuilder'
 import { EnumBuilderOpt } from './EnumBuilderOpt'
 import { EnumListBuilder } from './EnumListBuilder'
@@ -132,11 +78,11 @@ import { EnumListBuilder } from './EnumListBuilder'
 
 /** cushy studio form builder */
 export class CushySchemaBuilder implements IBuilder {
-   orbit(config: Field_orbit_config = {}): Z.XOrbit {
+   orbit(config: Field_orbit_config = {}): Z.Orbit {
       return new CSchema<Field_orbit>(Field_orbit, config)
    }
 
-   color(config: Field_color_config = {}): Z.XColor {
+   color(config: Field_color_config = {}): Z.Color {
       return new CSchema<Field_color>(Field_color, config)
    }
 
@@ -144,72 +90,40 @@ export class CushySchemaBuilder implements IBuilder {
    //     return new CSchema<Field_string>(Field_string, { inputType: 'color', ...config })
    // }
 
-   matrix(config: Field_matrix_config): Z.XMatrix {
+   matrix(config: Field_matrix_config): Z.Matrix {
       return new CSchema<Field_matrix>(Field_matrix, config)
    }
 
-   button<K>(config: Field_button_config<K>): Z.XButton<K> {
+   button<K>(config: Field_button_config<K>): Z.Button<K> {
       return new CSchema<Field_button<K>>(Field_button, config)
    }
 
-   /** variants: `header` */
-   markdown(config: Field_markdown_config | string): Z.XMarkdown {
-      return new CSchema<Field_markdown>(
-         Field_markdown,
-         typeof config === 'string' ? { markdown: config } : config,
-      )
-   }
-
-   /** [markdown variant]: inline=true, label=false */
-   header(config: Field_markdown_config | string): Z.XMarkdown {
-      const config_: Field_markdown_config =
-         typeof config === 'string'
-            ? { markdown: config, inHeader: true, label: false }
-            : { inHeader: true, label: false, justifyLabel: false, ...config }
-      return new CSchema<Field_markdown>(Field_markdown, config_)
-   }
-
    /** image field, defaulting to `cushy.defaultImage` if no default provided */
-   image(config: Field_image_config = {}): Z.XImage {
+   image(config: Field_image_config = {}): Z.Image {
       const def = config.default ?? cushy.defaultImage
       return this.image_({ default: def, ...config })
    }
 
    /** image field, without any default */
-   image_(config: Field_image_config = {}): Z.XImage {
+   image_(config: Field_image_config = {}): Z.Image {
       return new CSchema<Field_image>(Field_image, config)
    }
 
    /** prompt, defaulting to '' */
-   prompt(config: Field_prompt_config = {}): Z.XPrompt {
+   prompt(config: Field_prompt_config = {}): Z.Prompt {
       const def = config.default ?? ''
       return this.prompt_({ default: def, ...config })
    }
 
-   prompt_(config: Field_prompt_config = {}): Z.XPrompt {
+   prompt_(config: Field_prompt_config = {}): Z.Prompt {
       return new CSchema<Field_prompt>(Field_prompt, config)
    }
 
-   /**
-    * [number variant] ratio = mode=float, default=0.5, step=0.01, min=0, max=1, suffix='%',
-    * see also: `percent`
-    */
-   ratio(config: Omit<Field_number_config, 'mode'> = {}): Z.XNumber {
-      return new CSchema<Field_number>(Field_number, {
-         mode: 'float',
-         default: 0.5,
-         step: 0.01,
-         min: 0,
-         max: 1,
-         ...config,
-      })
-   }
-
-   remSize(config: Omit<Field_number_config, 'mode'> = {}): Z.XNumber {
+   remSize(config: Omit<Field_number['$config'], 'mode'> = {}): Z.Number {
       return this.number({ min: 1, max: 20, default: 2, step: 1, unit: 'rem', suffix: 'rem' })
    }
 
-   custom<T>(config: Field_custom_config<T>): Z.XCustom<T> {
+   custom<T>(config: Field_custom_config<T>): Z.Custom<T> {
       return new CSchema<Field_custom<T>>(Field_custom, config)
    }
 
@@ -225,19 +139,16 @@ export class CushySchemaBuilder implements IBuilder {
    timeline<T extends BaseSchema>(
       sub: Field_board_config<T>,
       config: Omit<Field_board_config<T>, 'element'> = {},
-   ): Z.XBoard<T> {
+   ): Z.Board<T> {
       const x = Field_board.getSchema(simpleBuilder, sub)
-      type T01 = (typeof x)['$Field']
-      type T02 = (typeof x)['$Reflect']['$Field']
-      type T1 = (typeof x)['$Config']['body']
       return x.withConfig({ body: WidgetListExtUI__Timeline, ...config })
    }
 
-   regional<T extends BaseSchema>(sub: Field_board_config<T>): Z.XBoard<T> {
+   regional<T extends BaseSchema>(sub: Field_board_config<T>): Z.Board<T> {
       return Field_board.getSchema(simpleBuilder, sub) //
    }
 
-   listExt<T extends BaseSchema>(sub: Field_board_config<T>): Z.XBoard<T> {
+   listExt<T extends BaseSchema>(sub: Field_board_config<T>): Z.Board<T> {
       return Field_board.getSchema(simpleBuilder, sub)
    }
 
@@ -270,7 +181,7 @@ export class CushySchemaBuilder implements IBuilder {
    // with<const SCHEMA1 extends BaseSchema, SCHEMA2 extends BaseSchema>(
    //     /** the schema of the field you'll want to re-use the in second part */
    //     injected: SCHEMA1,
-   //     children: (shared: SCHEMA1['$Field']) => SCHEMA2,
+   //     children: (shared: SCHEMA1['$field']) => SCHEMA2,
    // ): X.XLink<SCHEMA1, SCHEMA2> {
    //     return new CSchema<Field_link<SCHEMA1, SCHEMA2>>(Field_link, { share: injected, children })
    // }
@@ -339,7 +250,7 @@ export class CushySchemaBuilder implements IBuilder {
    // }
 
    // optional wrappers
-   optional<T extends BaseSchema>(p: Field_optional_config<T>): Z.XOptional<T> {
+   optional<T extends BaseSchema>(p: Field_optional_config<T>): Z.Maybe<T> {
       return new CSchema<Field_optional<T>>(Field_optional, p)
    }
 
@@ -485,7 +396,7 @@ export const cushyFactory: CushyFactory = new Factory<CushySchemaBuilder>(builde
  */
 export const b = builder
 
-export interface LocoSchemaBuilder
+export interface CushySchemaBuilder
    extends BuilderStringMixin,
       BuilderBoolMixin,
       BuilderChoicesMixin,

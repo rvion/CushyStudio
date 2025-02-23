@@ -15,19 +15,19 @@ export function useGalleryConf(): GalleryConf {
 // type GalleryConfData = ReturnType<typeof GalleryConfDataSchema>
 
 // alt 2. copy paste the explicit type for speedup
-type GalleryConfData = Z.XGroup<{
+type GalleryConfData = Z.Group<{
    defaultSort: Z.XSelectOne_<'createdAt' | 'updatedAt'>
-   gallerySize: Z.XNumber
-   galleryMaxImages: Z.XNumber
-   galleryBgColor: Z.XOptional<Z.XColor>
-   galleryHoverOpacity: Z.XNumber
-   showPreviewInFullScreen: Z.XBool
-   onlyShowBlurryThumbnails: Z.XBool
-   filterPath: Z.XString
-   filterTag: Z.XString
-   filterStar: Z.XBool
-   filterAppName: Z.XOptional<Z.XSelectOne<{ id: CushyAppID; label: string }, CushyAppID>>
-   enableStepGrouping: Z.XBool
+   gallerySize: Z.Number
+   galleryMaxImages: Z.Number
+   galleryBgColor: Z.Maybe<Z.Color>
+   galleryHoverOpacity: Z.Number
+   showPreviewInFullScreen: Z.Bool
+   onlyShowBlurryThumbnails: Z.Bool
+   filterPath: Z.String
+   filterTag: Z.String
+   filterStar: Z.Bool
+   filterAppName: Z.Maybe<Z.XSelectOne<{ id: CushyAppID; label: string }, CushyAppID>>
+   enableStepGrouping: Z.Bool
 }>
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -44,23 +44,23 @@ const galleryConfDataSchema = (ui: CushySchemaBuilder): GalleryConfData => {
          tooltip: 'Show the preview in full screen',
       }),
       onlyShowBlurryThumbnails: ui.boolean({ label: 'Blur Thumbnails' }),
-      filterPath: ui.string({ innerIcon: 'mdiFilter', placeHolder: 'filter' }), //.optional(), // emptyAsNullWhenOptional: true
+      filterPath: ui.string({ innerIcon: IKONS.mdiFilter, placeHolder: 'filter' }), //.optional(), // emptyAsNullWhenOptional: true
       filterTag: ui.string({
          clearable: true,
-         innerIcon: 'mdiTagSearch',
+         innerIcon: IKONS.mdiTagSearch,
          placeHolder: 'Filter by Tags',
          autoResize: false,
       }), //.optional(), // emptyAsNullWhenOptional: true
-      filterStar: ui.boolean({ icon: 'mdiStar', default: false, tooltip: 'Only show favorites' }), //.optional(), // emptyAsNullWhenOptional: true
+      filterStar: ui.boolean({ icon: IKONS.mdiStar, default: false, tooltip: 'Only show favorites' }), //.optional(), // emptyAsNullWhenOptional: true
       filterAppName: ui.app().optional(),
       enableStepGrouping: ui.boolean({ default: false }),
    })
 }
 
-export interface GalleryConf extends MAGICFIELDS<GalleryConfData['$Reflect']> {
-   $Field: GalleryConf
+export interface GalleryConf extends MAGICFIELDS<GalleryConfData['$reflect']> {
+   $field: GalleryConf
 }
-export class GalleryConf extends Field_group<GalleryConfData['$Reflect']> {
+export class GalleryConf extends Field_group<GalleryConfData['$reflect']> {
    constructor(...args: FieldCtorProps) {
       super(...args)
       this.autoExtendObservable()

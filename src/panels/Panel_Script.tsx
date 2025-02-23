@@ -13,7 +13,7 @@ export const PanelScript = new Panel({
    widget: (): React.FC<PanelScriptProps> => PanelScriptUI,
    header: (p: PanelScriptProps): PanelHeader => ({ title: 'Script' }),
    def: (): PanelScriptProps => ({ scriptID: '' /* 🔴 */ }),
-   icon: 'mdiLanguageTypescript',
+   icon: IKONS.mdiLanguageTypescript,
 })
 
 export type PanelScriptProps = {

@@ -9,7 +9,7 @@ export const PanelCustom = new Panel({
    widget: (): React.FC<PanelCustomProps> => PanelCustomUI,
    header: (p: PanelCustomProps): PanelHeader => ({ title: 'Temporary' }),
    def: (): PanelCustomProps => ({ uid: '___', props: {} }),
-   icon: 'mdiSourceRepositoryMultiple',
+   icon: IKONS.mdiSourceRepositoryMultiple,
    category: 'misc',
 })
 

@@ -2,21 +2,21 @@ import type { OutputFor } from './_prefabs'
 
 import { run_prompt } from './prefab_prompt'
 
-type PromptLisT$ = Z.XGroup<{
-   joinType: Z.XChoices<{
-      concat: Z.XGroup<{}>
-      combine: Z.XGroup<{}>
-      average: Z.XGroup<{
-         strength: Z.XNumber
+type PromptLisT$ = Z.Group<{
+   joinType: Z.Choices<{
+      concat: Z.Group<{}>
+      combine: Z.Group<{}>
+      average: Z.Group<{
+         strength: Z.Number
       }>
    }>
-   promptList: Z.XList<
-      Z.XGroup<{
-         prompt: Z.XPrompt
-         mask: Z.XImage
-         invert: Z.XBool
-         mode: Z.XEnum<'LoadImageMask.channel'>
-         blur: Z.XNumber
+   promptList: Z.List<
+      Z.Group<{
+         prompt: Z.Prompt
+         mask: Z.Image
+         invert: Z.Bool
+         mode: Z.Enum<'LoadImageMask.channel'>
+         blur: Z.Number
       }>
    >
 }>

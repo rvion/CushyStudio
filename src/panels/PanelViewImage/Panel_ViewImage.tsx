@@ -20,18 +20,18 @@ export const PanelViewImage = new Panel({
    name: 'Image',
    category: 'outputs',
    widget: (): React.FC<PanelViewImageProps> => PanelViewImageUI,
-   header: (p): PanelHeader => ({ title: 'Image', icon: 'mdiCameraImage' }),
+   header: (p): PanelHeader => ({ title: 'Image', icon: IKONS.mdiCameraImage }),
    def: (): PanelViewImageProps => ({}),
-   icon: 'mdiCameraImage',
+   icon: IKONS.mdiCameraImage,
 })
 
 export const PanelLastImage = new Panel({
    name: 'LastImage',
    category: 'outputs',
    widget: (): React.FC<PanelViewImageProps> => PanelViewImageUI,
-   header: (p): PanelHeader => ({ title: 'LastImage', icon: 'mdiImageSyncOutline' }),
+   header: (p): PanelHeader => ({ title: 'LastImage', icon: IKONS.mdiImageSyncOutline }),
    def: (): PanelViewImageProps => ({}),
-   icon: 'mdiImageSyncOutline',
+   icon: IKONS.mdiImageSyncOutline,
 })
 
 export type PanelViewImageProps = {
@@ -116,7 +116,7 @@ export const ImageActionBarUI = observer(function ImageActionBar(p: { img?: Mayb
          <PanelHeaderUI>
             <Button // rating button
                square
-               icon={isStarred ? 'mdiStarMinus' : 'mdiStar'}
+               icon={isStarred ? IKONS.mdiStarMinus : IKONS.mdiStar}
                tooltip={isStarred ? 'Un-Favorite' : 'Favorite'}
                // active={isStarred}
                borderless
@@ -175,7 +175,7 @@ export const ImageActionBarUI = observer(function ImageActionBar(p: { img?: Mayb
          <div>
             {img && showTags.value && (
                <SelectUI<string> //
-                  startIcon='mdiTagEdit'
+                  startIcon={IKONS.mdiTagEdit}
                   multiple
                   options={(q) =>
                      img.tags.includes(q) || !Boolean(q) //

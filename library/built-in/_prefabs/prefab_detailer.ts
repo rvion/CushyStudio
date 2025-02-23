@@ -9,24 +9,24 @@ const handNegativeDefault = 'bad hand, bad anatomy, bad details'
 const eyePositiveDefault = 'eyes, perfect eyes, perfect anatomy, hightly detailed, sharp details'
 const eyeNegativeDefault = 'bad eyes, bad anatomy, bad details'
 
-export type UI_Refiners = Z.XGroup<{
-   refinerType: Z.XChoices<{
-      faces: Z.XGroup<{
-         prompt: Z.XString
-         detector: Z.XEnum<'Impact-Pack.UltralyticsDetectorProvider.model_name'>
+export type UI_Refiners = Z.Group<{
+   refinerType: Z.Choices<{
+      faces: Z.Group<{
+         prompt: Z.String
+         detector: Z.Enum<'Impact-Pack.UltralyticsDetectorProvider.model_name'>
       }>
-      hands: Z.XGroup<{
-         prompt: Z.XString
-         detector: Z.XEnum<'Impact-Pack.UltralyticsDetectorProvider.model_name'>
+      hands: Z.Group<{
+         prompt: Z.String
+         detector: Z.Enum<'Impact-Pack.UltralyticsDetectorProvider.model_name'>
       }>
-      eyes: Z.XGroup<{ prompt: Z.XString }>
+      eyes: Z.Group<{ prompt: Z.String }>
    }>
-   settings: Z.XGroup<{
+   settings: Z.Group<{
       sampler: UI_Sampler
-      sam: Z.XOptional<
-         Z.XGroup<{
-            model_name: Z.XEnum<'Impact-Pack.SAMLoader.model_name'>
-            device_mode: Z.XEnum<'Impact-Pack.SAMLoader.device_mode'>
+      sam: Z.Maybe<
+         Z.Group<{
+            model_name: Z.Enum<'Impact-Pack.SAMLoader.model_name'>
+            device_mode: Z.Enum<'Impact-Pack.SAMLoader.device_mode'>
          }>
       >
    }>
@@ -122,7 +122,7 @@ export function ui_refiners(): UI_Refiners {
          ),
       },
       {
-         icon: 'mdiMagnifyExpand',
+         icon: IKONS.mdiMagnifyExpand,
          toSummary: ({ value: ui }): string => {
             return `Refiners ${ui.refinerType.faces ? 'FACE' : ''} ${ui.refinerType.hands ? 'HANDS' : ''} ${
                ui.refinerType.eyes ? 'EYES' : ''
