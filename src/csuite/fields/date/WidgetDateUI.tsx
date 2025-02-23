@@ -24,7 +24,7 @@ export const WidgetDate_ClearButtonUI = observer(function WidgetDate_ClearButton
          borderless
          subtle
          square
-         icon='mdiClose'
+         icon={IKONS.mdiClose}
          disabled={p.field.selectedValue == null || !p.field.isEnabledWithinParent}
          onClick={() => {
             if (p.field.canBeToggledWithinParent) {

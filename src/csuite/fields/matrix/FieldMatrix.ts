@@ -2,9 +2,8 @@
  * 🔴 TODO: rewrite as field composite
  */
 
-import type { BaseSchema } from '../../model/BaseSchema'
-import type { FieldConfig } from '../../model/FieldConfig'
-import type { FieldSerial } from '../../model/FieldSerial'
+import type { CSchema } from '../../model/CSchema'
+import type { Patch } from '../../model/Patch'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 
@@ -13,7 +12,6 @@ import { runInAction } from 'mobx'
 import { Field } from '../../model/Field'
 import { bang } from '../../utils/bang'
 import { registerFieldClass } from '../WidgetUI.DI'
-import { WidgetMatrixUI } from './WidgetMatrixUI'
 
 export type Field_matrix_cell = {
    x: number
@@ -23,67 +21,57 @@ export type Field_matrix_cell = {
    value: boolean
 }
 
-// #region $Config
-export type Field_matrix_config = FieldConfig<
-   {
-      default?: { row: string; col: string }[]
-      rows: string[]
-      cols: string[]
-   },
-   Field_matrix_types
->
+// CONFIG
+export type Field_matrix_config = Field_matrix['$config']
+type Field_matrix_ownConfig = {
+   default?: { row: string; col: string }[]
+   rows: string[]
+   cols: string[]
+}
 
-// #region $Serial
-export type Field_matrix_serial = FieldSerial<{
+// SERIAL
+export type Field_matrix_serial = Field_matrix['$serial']
+type Field_matrix_ownSerial = {
    $: 'matrix'
    /** only contains cells that are ONs */
    selected?: Field_matrix_cell[]
-}>
+}
 
-// #region $Value
+// VALUE
 export type Field_matrix_value = Field_matrix_cell[]
 export type Field_matrix_unchecked = Field_matrix_value | undefined
 
-// #region $Types
-export type Field_matrix_types = {
-   $Type: 'matrix'
-   $Config: Field_matrix_config
-   $Serial: Field_matrix_serial
-   $Value: Field_matrix_value
-   $Unchecked: Field_matrix_unchecked
-   $Field: Field_matrix
-   $Child: never
-   $Reflect: Field_matrix_types
+// TYPES
+export interface Field_matrix {
+   $type: 'matrix'
+   $ownConfig: Field_matrix_ownConfig
+   $ownSerial: Field_matrix_ownSerial
+   $value: Field_matrix_value
+   $setValue: Field_matrix_value
+   $unchecked: Field_matrix_unchecked
+   $child: never
+   $opts: unknown
+   $ownPatch: Patch<'matrix'>
 }
 
-// #region State
-export class Field_matrix extends Field<Field_matrix_types> {
-   // #region Static
+// STATE
+export class Field_matrix extends Field {
    static readonly type: 'matrix' = 'matrix'
    static readonly emptySerial: Field_matrix_serial = { $: 'matrix' }
-   static migrateSerial(): undefined {}
-
-   // #region Ctor
+   static override migrateSerial(): undefined {}
+   static readonly codeForTypescriptValue = (config: Field_matrix_config): string => 'MatrixCell[]'
    constructor(
       repo: Repository,
       root: Field | null,
       parent: Field | null,
-      schema: BaseSchema<Field_matrix>,
+      schema: CSchema<Field_matrix>,
       initialMountKey: string,
       serial?: Field_matrix_serial,
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
-      this.init(serial, {
-         DefaultHeaderUI: false,
-         DefaultBodyUI: false,
-      })
+      this.init(serial)
    }
 
-   // #region UI
-   DefaultHeaderUI = WidgetMatrixUI
-   DefaultBodyUI: undefined = undefined
-
-   // #region Serial
    protected setOwnSerial(next: Field_matrix_serial): void {
       this.assignNewSerial(next)
 
@@ -104,6 +92,7 @@ export class Field_matrix extends Field<Field_matrix_types> {
       this.patchSerial((draft) => void (draft.selected = this.activeCells))
    }
 
+   // #region VALUE
    /** list of all active cells */
    get value(): Field_matrix_value {
       return this.value_or_fail
@@ -136,6 +125,13 @@ export class Field_matrix extends Field<Field_matrix_types> {
          // 3. update
          this.UPDATE()
       })
+   }
+
+   override isValueEqual(other: Field): boolean {
+      if (!(other instanceof Field_matrix)) return false
+      if (this.value.length !== other.value.length) return false
+
+      return JSON.stringify(this.serial.selected) === JSON.stringify(other.serial.selected)
    }
 
    /** list of all possible row keys */
@@ -242,6 +238,9 @@ export class Field_matrix extends Field<Field_matrix_types> {
       cell.value = value
       this.UPDATE()
    }
+
+   // #region PATCHES
+   public override readonly patchedSerialPaths: string[] = ['selected']
 }
 
 // DI

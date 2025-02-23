@@ -1,4 +1,4 @@
-import type { IWidgetListLike } from './IWidgetListLike'
+import type { IWidgetListLike } from './ListControlsUI'
 
 import { observer } from 'mobx-react-lite'
 
@@ -15,7 +15,7 @@ export const ListButtonClearUI = observer(function ListButtonClearUI_(p: { field
          subtle
          disabled={!canClear}
          square
-         icon='mdiDeleteSweep'
+         icon={IKONS.mdiDeleteSweep}
          onClick={(ev) => {
             field.touch()
             if (!canClear) return

@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'bun:test'
+import { describe, expect, it } from 'vitest'
 
 import { simpleBuilder as b } from '../../index'
 import { expectJSON } from '../../model/TESTS/utils/expectJSON'
@@ -7,7 +7,7 @@ describe('FieldMatrix', () => {
    it('work', () => {
       const S1 = b.matrix({ rows: ['a', 'b'], cols: ['x', 'y'] })
       const E1 = S1.create()
-      expect(E1.cols.length).toBe(2)
+      expect(E1.cols).toHaveLength(2)
       expectJSON(E1.cols).toEqual(['x', 'y'])
       expectJSON(E1.rows).toEqual(['a', 'b'])
       expectJSON(E1.value).toEqual([])
@@ -21,5 +21,61 @@ describe('FieldMatrix', () => {
          { row: 'a', col: 'y' },
          { row: 'b', col: 'y' },
       ])
+   })
+
+   describe('isValueEqual', () => {
+      describe('equality', () => {
+         it('should return true if both fields are unset', () => {
+            const S = b.matrix({ rows: ['a', 'b'], cols: ['x', 'y'] })
+            const E1 = S.create()
+            const E2 = S.create()
+
+            expect(E1.isValueEqual(E2)).toBeTruthy()
+         })
+
+         it('should return true if both fields are set to the same value', () => {
+            const S = b.matrix({ rows: ['a', 'b'], cols: ['x', 'y'] })
+            const E1 = S.create()
+            const E2 = S.create()
+
+            E1.setCol('x', true)
+            E2.setCol('x', true)
+
+            expect(E1.isValueEqual(E2)).toBeTruthy()
+         })
+      })
+
+      describe('inequality', () => {
+         it('should return false if one field is unset and the other is set', () => {
+            const S = b.matrix({ rows: ['a', 'b'], cols: ['x', 'y'] })
+            const E1 = S.create()
+            const E2 = S.create()
+
+            E1.setCol('x', true)
+
+            expect(E1.isValueEqual(E2)).toBeFalsy()
+         })
+
+         it('should return false if both fields are set to different values', () => {
+            const S = b.matrix({ rows: ['a', 'b'], cols: ['x', 'y'] })
+            const E1 = S.create()
+            const E2 = S.create()
+
+            E1.setCol('x', true)
+            E2.setCol('y', true)
+
+            expect(E1.isValueEqual(E2)).toBeFalsy()
+         })
+
+         it('should return false if the other field is not a matrix', () => {
+            const S = b.matrix({ rows: ['a', 'b'], cols: ['x', 'y'] })
+            const E1 = S.create()
+            const E2 = b.text({ default: '8' }).create()
+
+            E1.setCol('x', true)
+
+            expect(E1.isValueEqual(E2 as any)).toBeFalsy()
+         })
+      })
    })
 })

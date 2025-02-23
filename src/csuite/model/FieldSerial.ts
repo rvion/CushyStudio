@@ -1,8 +1,8 @@
 import type { FieldAnomaly } from '../migration/Anomaly'
-import type { FieldId } from './FieldId'
+import type { Field } from './Field'
 
 /** helper to define widget serial types */
-export type FieldSerial<X> = X & FieldSerial_CommonProperties
+export type FieldSerialFor<F extends Field> = FieldSerial_CommonProperties & F['$ownSerial']
 
 /** common properties we expect to see in a widget serial */
 export type FieldSerial_CommonProperties = {
@@ -33,8 +33,13 @@ export type FieldSerial_CommonProperties = {
    // ⏸️  * */
    // ⏸️ _history: { at: Timestamp; version: any }[]
 
-   /** may or may not be a good idea to add back :S */
-   uid?: FieldId
-
    anomalies?: FieldAnomaly[]
+}
+
+export function isFieldSerial(x: object): x is FieldSerial_CommonProperties {
+   return (
+      typeof x === 'object' &&
+      Object.prototype.hasOwnProperty.call(x, '$') &&
+      typeof (x as { $: any })['$'] === 'string'
+   )
 }

@@ -1,19 +1,17 @@
-import type { ErrorConfigValue } from '../../errors/extractConfig'
 import type { IconName } from '../../icons/icons'
-import type { BaseSchema } from '../../model/BaseSchema'
-import type { FieldConfig } from '../../model/FieldConfig'
-import type { FieldSerial } from '../../model/FieldSerial'
+import type { CSchema } from '../../model/CSchema'
+import type { Patch } from '../../model/Patch'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { produce } from 'immer'
+import { computed } from 'mobx'
 
 import { csuiteConfig } from '../../config/configureCsuite'
-import { extractConfigMessage, extractConfigValue } from '../../errors/extractConfig'
+import { type ErrorConfigValue, extractConfigMessage, extractConfigValue } from '../../errors/extractConfig'
 import { Field } from '../../model/Field'
 import { makeLabelFromPrimitiveValue } from '../../utils/makeLabelFromFieldName'
 import { isProbablySerialString, registerFieldClass } from '../WidgetUI.DI'
-import { WidgetStringUI } from './WidgetStringUI'
 
 type CssProprtyGlobals = '-moz-initial' | 'inherit' | 'initial' | 'revert' | 'unset'
 
@@ -32,51 +30,49 @@ export type FieldStringInputType =
     | 'color'
 
 // #region CONFIG TYPE
-export type Field_string_config = FieldConfig<
-   {
-      /**
-       * used:
-       *  - when checking if field has changes
-       *  - when resetting (.reset())
-       *  - when value is undefined
-       *
-       * note:
-       *  | if you enable field diff / change tracking,
-       *  | default will ALWAYS be evaluated, so you need to be
-       *  | careful with functions that have side effects
-       */
-      default?: string | (() => string)
-      clearable?: boolean
-      textarea?: boolean
-      placeHolder?: string
-      inputType?: FieldStringInputType
-      autoResize?: boolean
-      resize?: CssProprtyResize
-      /**
-       * if set to true, widget will commit values on enter; not before.
-       * hitting esc will revert to the last committed value
-       * */
-      buffered?: boolean
-      innerIcon?: IconName
+export type Field_string_config = Field_string['$config']
+type Field_string_ownConfig = {
+   /**
+    * used:
+    *  - when checking if field has changes
+    *  - when resetting (.reset())
+    *  - when value is undefined
+    *
+    * note:
+    *  | if you enable field diff / change tracking,
+    *  | default will ALWAYS be evaluated, so you need to be
+    *  | careful with functions that have side effects
+    */
+   default?: string | (() => string)
+   textarea?: boolean
+   placeHolder?: string
+   inputType?: FieldStringInputType
+   autoResize?: boolean
+   resize?: CssProprtyResize
+   /**
+    * if set to true, widget will commit values on enter; not before.
+    * hitting esc will revert to the last committed value
+    * */
+   buffered?: boolean
+   innerIcon?: IconName
 
-      // validation
-      pattern?: string | RegExp | { value: string | RegExp; error: string }
-      minLength?: ErrorConfigValue<number>
-      maxLength?: ErrorConfigValue<number>
+   // validation
+   pattern?: string | RegExp | { value: string | RegExp; error: string }
+   minLength?: ErrorConfigValue<number>
+   maxLength?: ErrorConfigValue<number>
 
-      normalize?: (value: Maybe<string>) => string | undefined
+   normalize?: (value: Maybe<string>) => string | undefined
 
-      // randomization
-      randomizationPool?: string[]
-   },
-   Field_string_types
->
+   // randomization
+   randomizationPool?: string[]
+}
 
 // #region SERIAL TYPE
-export type Field_string_serial = FieldSerial<{
+export type Field_string_serial = Field_string['$serial']
+type Field_string_ownSerial = {
    $: 'str'
    value?: string | undefined
-}>
+}
 
 // 💬 2024-09-03 rvion:
 // | so many ways we could golf the serial some more
@@ -85,36 +81,39 @@ export type Field_string_serial = FieldSerial<{
 // | 💡 ["str","dsafasdfsdafas","coucou"],
 
 // #region VALUE TYPE
-export type Field_string_value = string
-export type Field_string_unchecked = Field_string_value | undefined
+type Field_string_value = string
+type Field_string_unchecked = Field_string_value | undefined
 
-// #region $FieldTypes
-export type Field_string_types = {
-   $Type: 'str'
-   $Config: Field_string_config
-   $Serial: Field_string_serial
-   $Value: Field_string_value
-   $Unchecked: Field_string_unchecked
-   $Field: Field_string
-   $Child: never
-   $Reflect: Field_string_types
+// #region Field
+export interface Field_string {
+   $type: 'str'
+   $ownConfig: Field_string_ownConfig
+   $ownSerial: Field_string_ownSerial
+   $value: Field_string_value
+   $setValue: Field_string_value
+   $unchecked: Field_string_unchecked
+   $child: never
+   $opts: unknown
+   $ownPatch: Patch<'str'>
 }
 
 // #region STATE
-export class Field_string extends Field<Field_string_types> {
+export class Field_string extends Field {
    // #region Type
    static readonly type: 'str' = 'str'
-   static readonly emptySerial: Field_string_serial = { $: 'str' }
-   static codegenValueType(config: Field_string_config): string {
-      return `string`
+   static readonly emptySerial: Field_string['$serial'] = { $: 'str' }
+   static readonly codeForTypescriptValue = (config: Field_string_ownConfig): string => {
+      if (config.inputType == null) return 'string'
+      if (config.inputType === 'text') return 'string'
+      return `Z.FL_string_${config.inputType}`
    }
-   static migrateSerial(serial: object): Maybe<Field_string_serial> | void {
+   static override migrateSerial(serial: object): Maybe<Field_string['$serial']> | void {
       if (isProbablySerialString(serial)) {
          // recover from previous version of string serial
          if ('val' in serial) {
             const recoveredVal = serial.val
             if (typeof recoveredVal !== 'string') throw new Error(`Field_string: invalid legacy 'val' serial`)
-            return produce(serial, (serial) => void ((serial as Field_string_serial).value = recoveredVal))
+            return produce(serial, (serial) => void (serial.value = recoveredVal))
          }
       }
    }
@@ -124,9 +123,9 @@ export class Field_string extends Field<Field_string_types> {
       repo: Repository,
       root: Field | null,
       parent: Field | null,
-      schema: BaseSchema<Field_string>,
+      schema: CSchema<Field_string>,
       initialMountKey: string,
-      serial?: Field_string_serial,
+      serial?: Field_string['$serial'],
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
       this.init(serial)
@@ -134,7 +133,7 @@ export class Field_string extends Field<Field_string_types> {
 
    // #region SERIAL
    // 🟢
-   protected setOwnSerial(next: Field_string_serial): void {
+   protected setOwnSerial(next: Field_string['$serial']): void {
       // 💬 2024-09-10 rvion:
       // | we CAN'T do this:
       // | ```
@@ -169,15 +168,13 @@ export class Field_string extends Field<Field_string_types> {
       return this.value_or_fail
    }
 
-   set value(next: Field_string_value) {
+   set value(next: Field_string_value | undefined) {
       // Do we want to add that to implicitly convert non strings to string ?
       // convenient, but can be a source of bugs / unexpected behaviours.
       const nextStrVal = typeof next === 'string' ? next : JSON.stringify(next)
 
       // abort if same value
-      const normalized = this.config.normalize //
-         ? this.config.normalize(nextStrVal)
-         : nextStrVal
+      const normalized = this.config.normalize ? this.config.normalize(nextStrVal) : nextStrVal
       if (this.serial.value === normalized) return
 
       // patch value in serial
@@ -200,6 +197,14 @@ export class Field_string extends Field<Field_string_types> {
       return this.serial.value
    }
 
+   public isValueEqual(other: Field): boolean {
+      if (other === this) return true
+      if (!(other instanceof Field_string)) return false
+      return this.value_unchecked === other.value_unchecked
+   }
+
+   public override readonly patchedSerialPaths: string[] = ['value']
+
    // #region BUFFERED
    temporaryValue: string | null = null
    setTemporaryValue(next: string | null): void {
@@ -221,6 +226,10 @@ export class Field_string extends Field<Field_string_types> {
       return this.evalDefaultValue()
    }
 
+   get pathToValueInRootSerial(): string {
+      return `${this.getOwnSerialPathFromRoot()}.value`
+   }
+
    private evalDefaultValue(): string | undefined {
       const d = this.config.default
       if (d == null) return undefined
@@ -230,7 +239,7 @@ export class Field_string extends Field<Field_string_types> {
    }
 
    // #region PROBLEMS
-   get ownConfigSpecificProblems(): Problem_Ext {
+   @computed get ownConfigSpecificProblems(): Problem_Ext {
       const i18n = csuiteConfig.i18n
       const out: string[] = []
       const minlen = extractConfigValue(this.config.minLength)
@@ -255,7 +264,7 @@ export class Field_string extends Field<Field_string_types> {
       return out
    }
 
-   get ownTypeSpecificProblems(): Problem_Ext {
+   @computed get ownTypeSpecificProblems(): Problem_Ext {
       const i18n = csuiteConfig.i18n
       const out: Problem_Ext = []
 
@@ -268,8 +277,12 @@ export class Field_string extends Field<Field_string_types> {
          out.push(
             extractConfigMessage(
                this.config.minLength,
+
                i18n.err.str.required({
-                  prefix: this.config.label || makeLabelFromPrimitiveValue(this.mountKey),
+                  prefix:
+                     this.config.label != null && this.config.label !== false
+                        ? this.config.label
+                        : makeLabelFromPrimitiveValue(this.mountKey),
                }),
             ),
          )
@@ -285,20 +298,19 @@ export class Field_string extends Field<Field_string_types> {
       const pattern = extractConfigValue(this.config.pattern)
       if (pattern != null) {
          const reg = new RegExp(pattern).test(value)
-         if (!reg) {
-            const errMsg: string = extractConfigMessage(
-               this.config.pattern,
-               i18n.err.str.pattern({ pattern: pattern.toString() }),
+         if (!reg)
+            out.push(
+               extractConfigMessage(
+                  this.config.pattern,
+                  i18n.err.str.pattern({ pattern: pattern.toString() }),
+               ),
             )
-            out.push(errMsg)
-         }
       }
-
       return out.length > 0 ? out : null
    }
    // #region randomization
 
-   randomize(): void {
+   override randomize(): void {
       if (this.config.randomizationPool) {
          this.value = choose(this.config.randomizationPool)
       } else {
@@ -315,17 +327,20 @@ export class Field_string extends Field<Field_string_types> {
    }
 
    // #region UI
-   DefaultBodyUI: -1 = -1
-   DefaultHeaderUI: -1 = -1
-
-   get isCollapsible(): boolean {
+   override get isCollapsible(): boolean {
       if (this.config.textarea) return true
       return false
    }
 
-   get animateResize(): boolean {
-      if (this.config.textarea) return false
-      return true
+   override get isRequired(): boolean {
+      const min = extractConfigValue(this.config.minLength)
+      return super.isRequired === true && min != null && min > 0
+   }
+
+   override get isEmpty(): boolean {
+      if (this.value_unchecked == null) return true
+      if (this.value_unchecked.trim().length === 0) return true
+      return false
    }
 }
 

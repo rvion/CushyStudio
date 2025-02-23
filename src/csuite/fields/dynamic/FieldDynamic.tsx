@@ -1,6 +1,6 @@
-import type { BaseSchema } from '../../model/BaseSchema'
-import type { FieldConfig } from '../../model/FieldConfig'
-import type { FieldSerial } from '../../model/FieldSerial'
+import type { CSchema } from '../../model/CSchema'
+import type { CodegenOpts } from '../../model/FieldConstructor'
+import type { Patch } from '../../model/Patch'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 
@@ -13,55 +13,57 @@ import { registerFieldClass } from '../WidgetUI.DI'
 // value is
 
 // #region CONFIG TYPE
-export type Field_dynamic_config<A extends BaseSchema> = FieldConfig<
-   {
-      /**
-       * if the schema have an ID, the serial is re-used
-       * this function will be run in a mobx reaction.
-       */
-      childSchema: (self: Field_dynamic<A>) => A | null
-      onSchemaChange?: (p: Field_dynamic_transition<A>) => void
-   },
-   Field_dynamic_types<A>
->
-export type Field_dynamic_transition<A extends BaseSchema> = {
+type Field_dynamic_ownConfig<A extends CSchema> = {
+   /**
+    * if the schema have an ID, the serial is re-used
+    * this function will be run in a mobx reaction.
+    */
+   childSchema: (self: Field_dynamic<A>) => A | null
+   onSchemaChange?: (p: Field_dynamic_transition<A>) => void
+}
+export type Field_dynamic_transition<A extends CSchema> = {
    prevSchema: A | null
    prevField: A['$Field'] | null
    nextSchema: A | null
 }
 
 // #region SERIAL TYPE
-export type Field_dynamic_serial<A extends BaseSchema> = FieldSerial<{
+type Field_dynamic_ownSerial<A extends CSchema> = {
    $: 'dynamic'
-   child?: A['$Serial']
+   child?: A['$serial']
    dynamicSchemaId?: string
-}>
+}
 
 // #region VALUE TYPE
-export type Field_dynamic_value<A extends BaseSchema> = A['$Value']
-export type Field_dynamic_unchecked<A extends BaseSchema> = A['$Unchecked'] | null
+export type Field_dynamic_value<A extends CSchema> = A['$value']
+export type Field_dynamic_unchecked<A extends CSchema> = A['$unchecked'] | null
 
 // #region $FieldType
-export type Field_dynamic_types<A extends BaseSchema> = {
-   $Type: 'dynamic'
-   $Config: Field_dynamic_config<A>
-   $Serial: Field_dynamic_serial<A>
-   $Value: A['$Value']
-   $Field: Field_dynamic<A>
-   $Unchecked: Field_dynamic_unchecked<A>
-   $Child: A
-   $Reflect: Field_dynamic_types<A>
+export interface Field_dynamic<A extends CSchema> {
+   $type: 'dynamic'
+   $ownConfig: Field_dynamic_ownConfig<A>
+   $ownSerial: Field_dynamic_ownSerial<A>
+   $value: A['$value']
+   $setValue: A['$setValue']
+   $unchecked: Field_dynamic_unchecked<A>
+   $child: A['$Field']
+   $opts: unknown
+   $ownPatch: Patch<'dynamic'>
 }
 
 // #region STATE
-export class Field_dynamic<A extends BaseSchema> //
-   extends Field<Field_dynamic_types<A>>
-{
+export class Field_dynamic<A extends CSchema> extends Field {
    // #region TYPE
    static readonly type: 'dynamic' = 'dynamic'
-   static readonly emptySerial: Field_dynamic_serial<any> = { $: 'dynamic' }
-   static migrateSerial(): undefined {}
-
+   static readonly emptySerial: Field_dynamic<any>['serial'] = { $: 'dynamic' }
+   static override migrateSerial(): undefined {}
+   static codeForTypescriptValue = (
+      config: Field_dynamic<any /* 🔴 */>['$config'],
+      opts: CodegenOpts,
+   ): string => {
+      // AHA ! Que faire !
+      return '<🔥DYNAMIC🔥>'
+   }
    dynamicSchema: A | null = null
 
    /** this schema */
@@ -72,12 +74,12 @@ export class Field_dynamic<A extends BaseSchema> //
       repo: Repository,
       root: Field | null,
       parent: Field | null,
-      schema: BaseSchema<Field_dynamic<A>>,
+      schema: CSchema<Field_dynamic<A>>,
       initialMountKey: string,
-      serial?: Field_dynamic_serial<A>,
+      serial?: Field_dynamic<A>['$serial'],
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
-      this.init(serial, {})
+      this.init(serial)
 
       const cleanup = reaction(
          () => this.schema.config.childSchema(this),
@@ -113,7 +115,7 @@ export class Field_dynamic<A extends BaseSchema> //
    }
 
    // #region serial
-   protected setOwnSerial(next: Field_dynamic_serial<A>): void {
+   protected setOwnSerial(next: this['$serial']): void {
       this.assignNewSerial(next)
 
       if (next.child && this.dynamicSchema)
@@ -130,10 +132,7 @@ export class Field_dynamic<A extends BaseSchema> //
    }
 
    // #region UI
-   DefaultHeaderUI: undefined = undefined
-   DefaultBodyUI: undefined = undefined
-
-   get actualWidgetToDisplay(): Field {
+   override get actualWidgetToDisplay(): Field {
       return this.child?.actualWidgetToDisplay ?? this
    }
 
@@ -157,16 +156,16 @@ export class Field_dynamic<A extends BaseSchema> //
       return this.child?.hasChanges ?? false
    }
 
-   get indentChildren(): number {
+   override get indentChildren(): number {
       return 0
    }
 
-   get summary(): string {
+   override get summary(): string {
       return this.child?.summary ?? ''
    }
 
    // #region children
-   _acknowledgeNewChildSerial(mountKey: string, serial: any): boolean {
+   override _acknowledgeNewChildSerial(mountKey: string, serial: any): boolean {
       if (mountKey === 'child') {
          const didChange = this.patchSerial((draft) => void (draft.child = serial))
          return didChange
@@ -174,21 +173,34 @@ export class Field_dynamic<A extends BaseSchema> //
       throw new Error(`[❌] invalid mountKey: ${mountKey}`)
    }
 
-   get childrenAll(): A['$Field'][] {
+   override getChildrenSerialPath(): string {
+      return 'child'
+   }
+
+   override get childrenAll(): A['$Field'][] {
       if (this.child == null) return []
       return [this.child]
    }
-   get childrenActive(): A['$Field'][] {
+   override get childrenActive(): A['$Field'][] {
       if (this.child == null) return []
       return [this.child]
    }
 
-   get subFieldsWithKeys(): KeyedField[] {
+   override get subFieldsWithKeys(): KeyedField[] {
       if (this.child == null) return []
       return [{ key: 'child', field: this.child }]
    }
 
    // #region value
+   override set(x: A['$setValue']): this {
+      const child = this.child
+      if (child == null) return this // throw new Error(`[❌] child is null`)
+      this.runInTransaction(() => {
+         child.set(x)
+      })
+      return this
+   }
+
    get value(): Field_dynamic_value<A> {
       return this.value_or_fail
    }
@@ -216,6 +228,16 @@ export class Field_dynamic<A extends BaseSchema> //
    get value_unchecked(): Field_dynamic_unchecked<A> {
       return this.child?.value_unchecked ?? null
    }
+
+   override isValueEqual(other: Field): boolean {
+      if (!(other instanceof Field_dynamic)) return false
+      if ((this.child == null) != (other.child == null)) return false
+      if (this.child == null || other.child == null) return true
+
+      return this.child.isValueEqual(other.child)
+   }
+
+   public override readonly patchedSerialPaths: string[] = ['dynamicSchemaId']
 }
 
 // DI

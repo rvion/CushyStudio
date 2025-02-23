@@ -1,6 +1,5 @@
-import type { BaseSchema } from '../../model/BaseSchema'
-import type { FieldConfig } from '../../model/FieldConfig'
-import type { FieldSerial } from '../../model/FieldSerial'
+import type { CSchema } from '../../model/CSchema'
+import type { Patch } from '../../model/Patch'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 
@@ -9,90 +8,78 @@ import { produce } from 'immer'
 import { Field } from '../../model/Field'
 import { registerFieldClass } from '../WidgetUI.DI'
 import { getGlobalSeeder, type Seeder } from './Seeder'
-import { WidgetSeedUI } from './WidgetSeedUI'
 
 type SeedMode = 'randomize' | 'fixed' | 'last'
 
 // #region Config
-export type Field_seed_config = FieldConfig<
-   {
-      default?: number
-      defaultMode?: SeedMode
-      min?: number
-      max?: number
-      seeder?: Seeder
-   },
-   Field_seed_types
->
+export type Field_seed_config = Field_seed['$config']
+type Field_seed_ownConfig = {
+   default?: number
+   defaultMode?: SeedMode
+   min?: number
+   max?: number
+   seeder?: Seeder
+}
 
 // #region Serial
-export type Field_seed_serial = FieldSerial<{
+export type Field_seed_serial = Field_seed['$serial']
+type Field_seed_ownSerial = {
    $: 'seed'
    val?: number
    mode?: SeedMode
-}>
+}
 
 // #region Value
 export type Field_seed_value = number
 export type Field_seed_unchecked = Field_seed_value | undefined
 
 // #region Types
-export type Field_seed_types = {
-   $Type: 'seed'
-   $Config: Field_seed_config
-   $Serial: Field_seed_serial
-   $Value: Field_seed_value
-   $Unchecked: Field_seed_unchecked
-   $Field: Field_seed
-   $Child: never
-   $Reflect: Field_seed_types
+export interface Field_seed {
+   $type: 'seed'
+   $ownConfig: Field_seed_ownConfig
+   $ownSerial: Field_seed_ownSerial
+   $value: Field_seed_value
+   $setValue: Field_seed_value
+   $unchecked: Field_seed_unchecked
+   $child: never
+   $opts: unknown
+   $ownPatch: Patch<'seed'>
 }
 
 // STATE
-export class Field_seed extends Field<Field_seed_types> {
+export class Field_seed extends Field {
    // #region type
    static readonly type: 'seed' = 'seed'
    static readonly emptySerial: Field_seed_serial = { $: 'seed' }
-   static codegenValueType(config: Field_seed_config): string {
-      return `number`
-   }
-   static migrateSerial(): undefined {}
+   static override migrateSerial(): undefined {}
+   static readonly codeForTypescriptValue = (config: Field_seed_config): string => 'Z.Seed'
 
    // #region Ctor
    constructor(
       repo: Repository,
       root: Field | null,
       parent: Field | null,
-      schema: BaseSchema<Field_seed>,
+      schema: CSchema<Field_seed>,
       initialMountKey: string,
       serial?: Field_seed_serial,
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
-      this.init(serial, {
-         DefaultHeaderUI: false,
-         DefaultBodyUI: false,
-      })
+      this.init(serial)
    }
 
    // #region setOwnSerial
    protected setOwnSerial(next: Field_seed_serial): void {
-      if (/* is unset */ next.val == null && next.mode == null) {
-         const def1 = this.defaultValue
-         if (/* has default value */ def1 != null) {
-            next = produce(next, (draft) => void (draft.val = def1))
-         }
-         const def2 = this.defaultMode
-         if (/* has default mode */ def2 != null) {
-            next = produce(next, (draft) => void (draft.mode = def2))
-         }
+      if (next.val == null) {
+         const def = this.defaultValue
+         if (def != null) next = produce(next, (draft) => void (draft.val = def))
+      }
+      if (next.mode == null) {
+         const def = this.defaultMode
+         if (def != null) next = produce(next, (draft) => void (draft.mode = def))
       }
 
       this.assignNewSerial(next)
    }
-
-   // #region UI
-   DefaultHeaderUI = WidgetSeedUI
-   DefaultBodyUI: undefined = undefined
 
    // #region validation
    get ownConfigSpecificProblems(): Problem_Ext {
@@ -104,10 +91,7 @@ export class Field_seed extends Field<Field_seed_types> {
    }
 
    get isOwnSet(): boolean {
-      return (
-         this.serial.val != null || //
-         this.serial.mode != null
-      )
+      return this.serial.val != null
    }
 
    // #region changes
@@ -178,6 +162,11 @@ export class Field_seed extends Field<Field_seed_types> {
       return this.computeValue()
    }
 
+   override isValueEqual(other: Field): boolean {
+      if (!(other instanceof Field_seed)) return false
+      return this.value_unchecked === other.value_unchecked
+   }
+
    private computeValue(): number | undefined {
       const seeder = this.config.seeder ?? getGlobalSeeder()
       const count = seeder.count
@@ -186,6 +175,9 @@ export class Field_seed extends Field<Field_seed_types> {
          ? Math.floor(Math.random() * 9_999_999)
          : this.serial.val
    }
+
+   // #region patches
+   public override readonly patchedSerialPaths: string[] = ['val', 'mode']
 }
 
 registerFieldClass('seed', Field_seed)

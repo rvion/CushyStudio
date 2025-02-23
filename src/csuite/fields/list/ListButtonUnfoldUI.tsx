@@ -1,4 +1,4 @@
-import type { IWidgetListLike } from './IWidgetListLike'
+import type { IWidgetListLike } from './ListControlsUI'
 
 import { observer } from 'mobx-react-lite'
 
@@ -12,8 +12,9 @@ export const ListButtonUnfoldUI = observer(function ListButtonUnfoldUI_(p: { fie
          borderless
          subtle
          square
-         icon='mdiUnfoldLessHorizontal'
+         icon={IKONS.mdiUnfoldLessHorizontal}
          onClick={(ev) => {
+            field.touch()
             ev.stopPropagation()
             field.collapseAllChildren()
          }}

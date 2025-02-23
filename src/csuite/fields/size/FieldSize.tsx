@@ -1,6 +1,5 @@
-import type { BaseSchema } from '../../model/BaseSchema'
-import type { FieldConfig } from '../../model/FieldConfig'
-import type { FieldSerial } from '../../model/FieldSerial'
+import type { CSchema } from '../../model/CSchema'
+import type { Patch } from '../../model/Patch'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 
@@ -18,8 +17,6 @@ import {
    type ModelType,
    type SDModelType,
 } from './WidgetSizeTypes'
-import { WigetSize_BlockUI } from './WigetSize_BlockUI'
-import { WigetSize_LineUI } from './WigetSize_LineUI'
 
 type SizeAble = {
    width: number
@@ -27,77 +24,71 @@ type SizeAble = {
 }
 
 // CONFIG
-export type Field_size_config = FieldConfig<
-   {
-      default?: CushySizeByRatio
-      min?: number
-      max?: number
-      step?: number
-   },
-   Field_size_types
->
+export type Field_size_config = Field_size['$config']
+type Field_size_ownConfig = {
+   default?: CushySizeByRatio
+   min?: number
+   max?: number
+   step?: number
+}
 
 // SERIAL
-export type Field_size_serial = FieldSerial<{
+export type Field_size_serial = Field_size['$serial']
+type Field_size_ownSerial = {
    width?: number
    height?: number
    modelType?: SDModelType
    aspectRatio?: AspectRatio
-}>
+}
+
+// SERIAL FROM VALUE
+export const Field_size_fromValue = (val: Field_size_value): Field_size_serial => ({
+   ...val,
+})
 
 // VALUE
 export type Field_size_value = CushySize // prettier-ignore
 export type Field_size_unchecked = Field_size_serial
 
 // TYPES
-export type Field_size_types = {
-   $Type: 'size'
-   $Config: Field_size_config
-   $Serial: Field_size_serial
-   $Value: Field_size_value
-   $Unchecked: Field_size_unchecked
-   $Field: Field_size
-   $Child: never
-   $Reflect: Field_size_types
+export interface Field_size {
+   $type: 'size'
+   $ownConfig: Field_size_ownConfig
+   $ownSerial: Field_size_ownSerial
+   $value: Field_size_value
+   $setValue: Field_size_value
+   $unchecked: Field_size_unchecked
+   $child: never
+   $opts: unknown
+   $ownPatch: Patch<'size'>
 }
 
 // STATE
-export class Field_size extends Field<Field_size_types> {
+export class Field_size extends Field {
    static readonly type: 'size' = 'size'
-   static migrateSerial(serial: object): void {}
+   static override migrateSerial(serial: object): void {}
    static readonly emptySerial: Field_size_serial = { $: 'size' }
-   static codegenValueType(config: Field_size_config): string {
-      return 'CushySize'
-   }
-   DefaultHeaderUI: -1 = -1
-   DefaultBodyUI: -1 = -1
-
+   static readonly codeForTypescriptValue = (config: Field_size_config): string => 'Z.CushySize'
    get isOwnSet(): boolean {
       const ser = this.serial
-      if (
-         ser.width == null && //
-         ser.height == null &&
-         ser.aspectRatio == null &&
-         ser.modelType == null
+      return (
+         ser.width != null && //
+         ser.height != null &&
+         ser.aspectRatio != null &&
+         ser.modelType != null
       )
-         return false
-      return true
    }
 
    constructor(
       repo: Repository,
       root: Field | null,
       parent: Field | null,
-      schema: BaseSchema<Field_size>,
+      schema: CSchema<Field_size>,
       initialMountKey: string,
       serial?: Field_size_serial,
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
-      this.init(serial, {
-         sizeHelper: false,
-         DefaultHeaderUI: false,
-         DefaultBodyUI: false,
-      })
+      this.init(serial)
    }
 
    get aspectRatio_or_zero(): AspectRatio {
@@ -117,8 +108,7 @@ export class Field_size extends Field<Field_size_types> {
    }
 
    protected setOwnSerial(next: Field_size_serial): void {
-      // 1. make serial canonical
-      // 1.1. apply default if unset + default
+      // 1. MAKE SERIAL CANONICAL
       if (
          next.width == null || //
          next.height == null ||
@@ -135,24 +125,12 @@ export class Field_size extends Field<Field_size_types> {
             })
          }
       }
-      // 1.2. fill missing fields if some are specified and other can be recovered
-      const modelType = next.modelType
-      if (
-         modelType != null && //
-         (next.width == null || //
-            next.height == null ||
-            next.aspectRatio == null)
-      ) {
-         const size = parseInt(modelType.split(' ')[1]!)
-         next = produce(next, (draft) => {
-            if (draft.width == null) draft.width = size
-            if (draft.height == null) draft.height = size
-            if (draft.aspectRatio == null) draft.aspectRatio = this.toAspectRatio(draft.width / draft.height)
-         })
-      }
 
       // 2. ASSIGN SERIAL
       this.assignNewSerial(next)
+
+      // 3. RECONCILE CHILDREN
+      // (primitive field; no children)
    }
 
    get ownConfigSpecificProblems(): Problem_Ext {
@@ -180,7 +158,7 @@ export class Field_size extends Field<Field_size_types> {
       return false
    }
 
-   reset(): void {
+   override reset(): void {
       this.value = this.defaultValue
    }
 
@@ -242,7 +220,7 @@ export class Field_size extends Field<Field_size_types> {
 
    get value_or_fail(): Field_size_value {
       const serial = this.value_unchecked
-      if (!this.isOwnSet) throw new Error(`Field_size.value_or_fail: field(${this.pathExt}) not set`)
+      if (!this.isOwnSet) throw new Error('Field_size.value_or_fail: field not set')
       return {
          $: 'size',
          aspectRatio: bang(serial.aspectRatio),
@@ -265,6 +243,14 @@ export class Field_size extends Field<Field_size_types> {
    get value_unchecked(): Field_size_unchecked {
       return this.serial
    }
+
+   override isValueEqual(other: Field): boolean {
+      if (!(other instanceof Field_size)) return false
+
+      return this.serial.height === other.serial.height && this.serial.width === other.serial.width
+   }
+
+   public override readonly patchedSerialPaths: string[] = ['width', 'height', 'aspectRatio', 'modelType']
 
    private idealSizeforModelType(model: ModelType | string): SizeAble {
       if (model === 'xl') return { width: 1024, height: 1024 }

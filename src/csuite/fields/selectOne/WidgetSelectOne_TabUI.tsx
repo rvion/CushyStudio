@@ -32,7 +32,6 @@ export const WidgetSelectOne_TabUI = observer(function WidgetSelectOne_TabUI_<
             const isSelected = selected === c.id
             return (
                <InputBoolUI
-                  toggleGroup={field.id}
                   key={convertSelectKeyToReactKey(c.id)}
                   icon={c.icon}
                   value={isSelected}
@@ -44,6 +43,7 @@ export const WidgetSelectOne_TabUI = observer(function WidgetSelectOne_TabUI_<
                      field.touch()
                   }}
                   onBlur={() => field.touch()}
+                  toggleGroup={p.field._uid}
                />
             )
          })}

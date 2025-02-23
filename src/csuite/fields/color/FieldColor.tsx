@@ -1,6 +1,5 @@
-import type { BaseSchema } from '../../model/BaseSchema'
-import type { FieldConfig } from '../../model/FieldConfig'
-import type { FieldSerial } from '../../model/FieldSerial'
+import type { CSchema } from '../../model/CSchema'
+import type { Patch } from '../../model/Patch'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 
@@ -8,65 +7,53 @@ import { produce } from 'immer'
 
 import { Field } from '../../model/Field'
 import { registerFieldClass } from '../WidgetUI.DI'
-import { WidgetColorUI } from './WidgetColorUI'
 
 // CONFIG
-export type Field_color_config = FieldConfig<{ default?: string }, Field_color_types>
+type Field_color_ownConfig = { default?: string }
 
 // SERIAL
-export type Field_color_serial = FieldSerial<{
+type Field_color_ownSerial = {
    $: 'color'
    /** color, stored as string */
    value?: string
-}>
+}
 
 // VALUE
 export type Field_color_value = string
 export type Field_color_unchecked = Field_color_value | undefined
 
 // TYPES
-export type Field_color_types = {
-   $Type: 'color'
-   $Config: Field_color_config
-   $Serial: Field_color_serial
-   $Value: Field_color_value
-   $Unchecked: Field_color_unchecked
-   $Field: Field_color
-   $Child: never
-   $Reflect: Field_color_types
+export interface Field_color {
+   $type: 'color'
+   $ownConfig: Field_color_ownConfig
+   $ownSerial: Field_color_ownSerial
+   $value: Field_color_value
+   $setValue: Field_color_value
+   $unchecked: Field_color_unchecked
+   $child: never
+   $opts: unknown
+   $ownPatch: Patch<'color'>
 }
 
 // STATE
-export class Field_color extends Field<Field_color_types> {
-   // #region types
+export class Field_color extends Field {
    static readonly type: 'color' = 'color'
-   static readonly emptySerial: Field_color_serial = { $: 'color' }
-   static codegenValueType(config: Field_color_config): string {
-      return `string`
-   }
-   static migrateSerial(): undefined {}
-
-   // #region UI
-   readonly DefaultHeaderUI = WidgetColorUI
-   readonly DefaultBodyUI: undefined = undefined
-
-   // #region Ctor
+   static readonly emptySerial: Field_color['$serial'] = { $: 'color' }
+   static override migrateSerial(): undefined {}
+   static readonly codeForTypescriptValue = (config: Field_color['$config']): string => 'Z.Color'
    constructor(
       repo: Repository,
       root: Field | null,
       parent: Field | null,
-      schema: BaseSchema<Field_color>,
+      schema: CSchema<Field_color>,
       initialMountKey: string,
-      serial?: Field_color_serial,
+      serial?: Field_color['$serial'],
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
-      this.init(serial, {
-         DefaultHeaderUI: false,
-         DefaultBodyUI: false,
-      })
+      this.init(serial)
    }
 
-   protected setOwnSerial(next: Field_color_serial): void {
+   protected setOwnSerial(next: this['$serial']): void {
       if (next.value == null) {
          const def = this.defaultValue
          if (def != null) next = produce(next, (draft) => void (draft.value = def))
@@ -101,6 +88,14 @@ export class Field_color extends Field<Field_color_types> {
    get value_unchecked(): Field_color_unchecked {
       return this.serial.value
    }
+
+   override isValueEqual(other: Field): boolean {
+      if (!(other instanceof Field_color)) return false
+
+      return this.serial.value === other.serial.value
+   }
+
+   public override readonly patchedSerialPaths: string[] = ['value']
 
    get ownTypeSpecificProblems(): Problem_Ext {
       return null

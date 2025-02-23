@@ -22,7 +22,7 @@ export const WidgetSelectMany_SelectUI = observer(function WidgetSelectMany_Sele
    return (
       <div tw='flex w-full flex-1 gap-1'>
          <SelectUI<OPTION>
-            hasErrors={p.field.mustDisplayErrors}
+            hasErrors={field.hasOwnErrors}
             multiple
             wrap={field.wrap}
             tw={[
@@ -51,13 +51,12 @@ export const WidgetSelectMany_SelectUI = observer(function WidgetSelectMany_Sele
                field.touch()
             }}
             onCleared={
-               field.canBeToggledWithinParent &&
-               // 🔴 ARE THOSE TRHE CONDITIONS BELOW CORRECT ?
-               field.isEnabledWithinParent &&
-               !field.config.readonly &&
-               !field.parent?.config.readonly
+               p.field.canBeToggledWithinParent &&
+               p.field.isEnabledWithinParent &&
+               !p.field.config.readonly &&
+               !p.field.parent?.config.readonly
                   ? (): void => {
-                       field.disableSelfWithinParent()
+                       p.field.disableSelfWithinParent()
                        field.touch()
                        p.selectProps?.onCleared?.()
                     }
@@ -75,16 +74,16 @@ export const WidgetSelectMany_SelectUI = observer(function WidgetSelectMany_Sele
          />
          {field.config.wrapButton && (
             <InputBoolFlipButtonUI
-               toggleGroup={field.id}
                tooltip='Wrap items'
                tw='self-start'
-               icon={p.field.wrap ? 'mdiWrapDisabled' : 'mdiWrap'}
+               icon={p.field.wrap ? IKONS.mdiWrapDisabled : IKONS.mdiWrap}
                value={p.field.wrap}
                onValueChange={(next) => {
                   p.field.wrap = next
                   p.field.touch()
                }}
                onBlur={() => p.field.touch()}
+               toggleGroup={p.field._uid}
             />
          )}
       </div>

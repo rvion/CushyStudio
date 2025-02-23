@@ -1,10 +1,7 @@
 import type { IconName } from '../../icons/icons'
-import type { BaseSchema } from '../../model/BaseSchema'
-import type { FieldConfig } from '../../model/FieldConfig'
-import type { FieldSerial } from '../../model/FieldSerial'
+import type { CSchema } from '../../model/CSchema'
+import type { Patch } from '../../model/Patch'
 import type { Repository } from '../../model/Repository'
-import type { CovariantFC } from '../../variance/CovariantFC'
-import type { Field_string_serial } from '../string/FieldString'
 import type { ISOString } from './ISOString'
 
 import { produce } from 'immer'
@@ -13,54 +10,54 @@ import { csuiteConfig } from '../../config/configureCsuite'
 import { Field } from '../../model/Field'
 import { type Problem_Ext, Severity } from '../../model/Validation'
 import { isProbablySerialString } from '../WidgetUI.DI'
-import { WidgetDate_HeaderUI } from './WidgetDateUI'
 
 // #region Config
-export type Field_date_config<VALUE> = FieldConfig<
-   {
-      default?: VALUE | undefined | null | (() => VALUE | undefined | null)
-      placeHolder?: string
-      innerIcon?: IconName
-      serialize: (d: VALUE) => ISOString | null
-      /* This should throw if the string is invalid */
-      deserialize: (s: ISOString) => VALUE | null
-      valueToDate: (v: VALUE) => Date
-      dateToValue: (d: Date) => VALUE
-      time: boolean
-   },
-   Field_date_types<VALUE>
->
+type Field_date_ownConfig<VALUE> = {
+   default?: VALUE | undefined | null | (() => VALUE | undefined | null)
+   placeHolder?: string
+   innerIcon?: IconName
+   serialize(d: VALUE): ISOString | null
+   /* This should throw if the string is invalid */
+   deserialize(s: ISOString): VALUE | null
+   codeForTypescriptValue: string
+   valueToDate(v: VALUE): Date
+   dateToValue(d: Date): VALUE
+   time: boolean
+}
 
 // #region Value
 export type Field_date_value<VALUE> = VALUE
 export type Field_date_unchecked<VALUE> = Maybe<Field_date_value<VALUE>>
 
 // #region Serial
-export type Field_date_serial = FieldSerial<{
+type Field_date_serial = Field_date<unknown>['$serial']
+type Field_date_ownSerial = {
    $: 'date'
    value?: ISOString | null
-}>
+}
 
 // #region Types
-export type Field_date_types<VALUE> = {
-   $Type: 'date'
-   $Config: Field_date_config<VALUE>
-   $Serial: Field_date_serial
-   $Value: Field_date_value<VALUE>
-   $Unchecked: Field_date_unchecked<VALUE>
-   $Field: Field_date<VALUE>
-   $Child: never
-   $Reflect: Field_date_types<VALUE>
+export interface Field_date<VALUE> {
+   $type: 'date'
+   $ownConfig: Field_date_ownConfig<VALUE>
+   $ownSerial: Field_date_ownSerial
+   $value: Field_date_value<VALUE>
+   $setValue: Field_date_value<VALUE>
+   $unchecked: Field_date_unchecked<VALUE>
+   $child: never
+   $opts: unknown
+   $ownPatch: Patch<'date'>
 }
 
 // #region State
-export class Field_date<VALUE> extends Field<Field_date_types<VALUE>> {
+export class Field_date<out VALUE> extends Field {
    // #region static
    static readonly type: 'date' = 'date'
    static readonly emptySerial: Field_date_serial = { $: 'date' }
-
+   static readonly codeForTypescriptValue = (config: Field_date<unknown>['$config']): string =>
+      config.codeForTypescriptValue ?? 'Date'
    // #region migration
-   static migrateSerial(serial: object): Field_date_serial | null {
+   static override migrateSerial(serial: object): Field_date_serial | null {
       const anySerial = serial as any
       if (
          typeof anySerial === 'object' &&
@@ -71,7 +68,7 @@ export class Field_date<VALUE> extends Field<Field_date_types<VALUE>> {
       }
 
       if (isProbablySerialString(serial)) {
-         const stringSerial = serial as Field_string_serial
+         const stringSerial = serial
          if (!stringSerial.value) return { $: this.type }
          const parsed = new Date(stringSerial.value)
          if (!isNaN(parsed.getTime())) {
@@ -87,7 +84,7 @@ export class Field_date<VALUE> extends Field<Field_date_types<VALUE>> {
       repo: Repository,
       root: Field | null,
       parent: Field | null,
-      schema: BaseSchema<Field_date<VALUE>>,
+      schema: CSchema<Field_date<VALUE>>,
       initialMountKey: string,
       serial?: Field_date_serial,
    ) {
@@ -164,6 +161,14 @@ export class Field_date<VALUE> extends Field<Field_date_types<VALUE>> {
       return this.selectedValue
    }
 
+   override isValueEqual(other: Field): boolean {
+      if (!(other instanceof Field_date)) return false
+
+      return this.serial.value === other.serial.value
+   }
+
+   public override readonly patchedSerialPaths: string[] = ['value']
+
    // #region value ext
    private stringValue_: Maybe<string> = undefined
    get stringValueUnchecked(): Maybe<string> {
@@ -216,12 +221,14 @@ export class Field_date<VALUE> extends Field<Field_date_types<VALUE>> {
          (this.selectedValue != null && !this.isValidSelectedValue)
       ) {
          return {
+            path: this.path,
             severity: Severity.Error,
             message: csuiteConfig.i18n.err.date.invalid,
          }
       }
       if (this.selectedValue == null) {
          return {
+            path: this.path,
             severity: Severity.Error,
             message: csuiteConfig.i18n.err.field.not_set,
          }
@@ -255,9 +262,11 @@ export class Field_date<VALUE> extends Field<Field_date_types<VALUE>> {
       this.value = nextValue as Field_date_value<VALUE>
    }
 
-   // #region UI
-   readonly DefaultHeaderUI: CovariantFC<{ field: Field_date<VALUE>; readonly?: boolean }> | undefined =
-      WidgetDate_HeaderUI
-
-   readonly DefaultBodyUI: CovariantFC<{ field: Field_date<VALUE> }> | undefined = undefined
+   // #region SETTERS
+   override randomize(): void {
+      // pick a random date between +30 days and -30 days
+      const max = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+      const min = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+      this.value = new Date(min.getTime() + Math.random() * (max.getTime() - min.getTime()))
+   }
 }

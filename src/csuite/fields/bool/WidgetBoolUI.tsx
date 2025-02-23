@@ -15,23 +15,24 @@ export const WidgetBoolUI = observer(function WidgetBoolUI_(p: { field: Field_bo
    }
 
    return (
-      // <div tw='flex h-full w-full '>
-      <InputBoolUI
-         // config
-         display={field.config.display}
-         expand={field.config.display === 'button' ? field.config.expand : true}
-         icon={field.icon}
-         widgetLabel={field.config.text ?? field.config.label2}
-         // value
-         value={field.value_or_zero}
-         onBlur={() => field.touch()}
-         onValueChange={(value) => {
-            field.value = value
-            p.field.touch()
-         }}
-         toggleGroup={'field-bool'}
-      />
-      // <SpacerUI />
-      // </div>
+      <div tw='flex h-full w-full '>
+         <InputBoolUI
+            // config
+            display={field.config.display}
+            expand={field.config.display === 'button' ? field.config.expand : true}
+            icon={field.icon}
+            text={field.config.text ?? field.config.label2}
+            // value
+            value={field.value_or_zero}
+            onBlur={() => field.touch()}
+            onValueChange={(value) => {
+               field.value = value
+               p.field.touch()
+            }}
+            toggleGroup={field._uid}
+         />
+
+         <SpacerUI />
+      </div>
    )
 })

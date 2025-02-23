@@ -26,11 +26,11 @@ export const WidgetSelectOne_SelectUI = observer(function WidgetSelectOne_Select
          <SelectUI<OPTION>
             // 💬 2024-09-16 rvion: still necessary ?
             // | probably not; todo: remove
-            key={field.id}
+            key={field._uid}
             // 💬 2024-09-16 rvion: weird/tmporary class name here
             // | this is just so we outline the input with a red border
-            //                                    VVVVVVVVVVVVVVVVV
-            tw={[field.mustDisplayErrors && 'rsx-field-error']}
+            //                                                                     VVVVVVVVVVVVVVVVV
+            tw={[field.ownTypeSpecificProblems && !field.isInsideDisabledBranch && 'rsx-field-error']}
             // 💬 2024-09-16 rvion:
             // | since 2024-09-12, we can't use the value anymore
             // | since the value may not be set anymore, we need to use
@@ -61,7 +61,7 @@ export const WidgetSelectOne_SelectUI = observer(function WidgetSelectOne_Select
                   : undefined
             }
             onOptionToggled={(option) => {
-               // console.log(`[🤠] option`, option, field.selectedId, option?.id === field.selectedId)
+               console.log(`[🤠] option`, option, field.selectedId, option?.id === field.selectedId)
                field.touch()
                if (option == null || field.selectedId === option.id) return field.unset()
                field.selectedId = option.id

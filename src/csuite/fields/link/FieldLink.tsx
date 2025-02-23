@@ -1,96 +1,68 @@
-import type { BaseSchema } from '../../model/BaseSchema'
-import type { FieldConfig } from '../../model/FieldConfig'
-import type { FieldSerial } from '../../model/FieldSerial'
+import type { CSchema } from '../../model/CSchema'
+import type { Patch } from '../../model/Patch'
+import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
-import type { CovariantFn } from '../../variance/BivariantHack'
-import type { FC } from 'react'
 
-import { reaction } from 'mobx'
+import { observable, reaction } from 'mobx'
 
 import { Field, type KeyedField } from '../../model/Field'
-import { getFakeRepository, type Repository } from '../../model/Repository'
 import { registerFieldClass } from '../WidgetUI.DI'
 
 // #region CONFIG TYPE
-export type Field_link_config<
-   //
-   A extends BaseSchema,
-   B extends BaseSchema,
-> = FieldConfig<
-   {
-      // injected
-      share: A
+type Field_link_ownConfig<A extends CSchema, B extends CSchema> = {
+   // injected
+   share: A
 
-      // into
-      children: CovariantFn<[child: A['$Field']], B>
-      dynamic?: (a: Field /* 🔴 variance issue but the right type is: A['$Field'] */) => any
-   },
-   Field_link_types<A, B>
->
+   // into
+   children(child: A['$Field']): B
+   dynamic?(a: A['$Field']): any
+}
 
 // #region SERIAL TYPE
-export type Field_link_serial<A extends BaseSchema, B extends BaseSchema> = FieldSerial<{
+type Field_link_ownSerial<A extends CSchema, B extends CSchema> = {
    $: 'link'
-   a?: A['$Serial']
-   b?: B['$Serial']
-}>
+   a?: A['$serial']
+   b?: B['$serial']
+}
 
 // #region VALUE TYPE
-export type Field_link_value<
-   /** A value is NOT used; it may be part of B */
-   A extends BaseSchema,
-   B extends BaseSchema,
-> = B['$Value']
-export type Field_link_unchecked<
-   //
-   A extends BaseSchema,
-   B extends BaseSchema,
-> = B['$Unchecked']
+/** A value is NOT used; it may be part of B */
+export type Field_link_value<A extends CSchema, B extends CSchema> = B['$value']
+export type Field_link_SetValue<A extends CSchema, B extends CSchema> = B['$setValue']
+export type Field_link_unchecked<A extends CSchema, B extends CSchema> = B['$unchecked']
 
 // #region $FieldType
-export type Field_link_types<A extends BaseSchema, B extends BaseSchema> = {
-   $Type: 'link'
-   $Config: Field_link_config<A, B>
-   $Serial: Field_link_serial<A, B>
-   $Value: B['$Value']
-   $Field: Field_link<A, B>
-   $Unchecked: Field_link_unchecked<A, B>
-   $Child: B
-   $Reflect: Field_link_types<A, B>
+export interface Field_link<A extends CSchema, B extends CSchema> {
+   $type: 'link'
+   $ownConfig: Field_link_ownConfig<A, B>
+   $ownSerial: Field_link_ownSerial<A, B>
+   $value: B['$value']
+   $setValue: B['$setValue']
+   $unchecked: Field_link_unchecked<A, B>
+   $child: B['$Field']
+   $opts: unknown
+   $ownPatch: Patch<'link'>
 }
 
 // #region STATE
-export class Field_link<
-      //
-      A extends BaseSchema,
-      B extends BaseSchema,
-   > //
-   extends Field<Field_link_types<A, B>>
-{
+export class Field_link<A extends CSchema, B extends CSchema> extends Field {
    // #region TYPE
    static readonly type: 'link' = 'link'
-   static readonly emptySerial: Field_link_serial<any, any> = { $: 'link' }
-   static codegenValueType(config: Field_link_config<BaseSchema, BaseSchema>): string {
-      // 🔴 this implementation is very bad
-      const subSchema = config.share
-      const aField = subSchema.instanciate(getFakeRepository(), null, null, '')
-      const bSchema = config.children(aField)
-      return bSchema.codegenValueType()
-   }
-
-   static migrateSerial(): undefined {}
+   static readonly emptySerial: Field_link<any, any>['$serial'] = { $: 'link' }
+   static readonly codeForTypescriptValue = (config: Field_link<any, any>['$config']): string => 'Z.Link'
+   static override migrateSerial(): undefined {}
 
    // #region CTOR
    constructor(
       repo: Repository,
       root: Field | null,
       parent: Field | null,
-      schema: BaseSchema<Field_link<A, B>>,
+      schema: CSchema<Field_link<A, B>>,
       initialMountKey: string,
-      serial?: Field_link_serial<A, B>,
+      serial?: Field_link<A, B>['$serial'],
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
-      this.init(serial, {})
+      this.init(serial)
 
       const dynamicFn = this.config.dynamic
       if (dynamicFn != null) {
@@ -115,11 +87,11 @@ export class Field_link<
 
    // #region children
    /** the dict of all child widgets */
-   aField!: A['$Field']
-   bField!: B['$Field']
+   @observable.ref accessor aField!: A['$Field']
+   @observable.ref accessor bField!: B['$Field']
 
    // #region serial
-   protected setOwnSerial(next: Field_link_serial<A, B>): void {
+   protected setOwnSerial(next: this['$serial']): void {
       this.assignNewSerial(next)
 
       this.RECONCILE({
@@ -145,11 +117,7 @@ export class Field_link<
       })
    }
 
-   // #region UI
-   DefaultHeaderUI: undefined = undefined
-   DefaultBodyUI: FC<{}> = () => this.bField.UI() // 🔴 Not sure how to use `Render` properly here
-
-   get actualWidgetToDisplay(): Field {
+   override get actualWidgetToDisplay(): Field {
       return this.bField.actualWidgetToDisplay
    }
 
@@ -170,21 +138,21 @@ export class Field_link<
       return this.bField.hasChanges
    }
 
-   reset(): void {
+   override reset(): void {
       this.bField.reset()
    }
 
-   get indentChildren(): number {
+   override get indentChildren(): number {
       return 0
    }
 
-   get summary(): string {
+   override get summary(): string {
       return this.bField.summary
    }
 
    // #region children
 
-   _acknowledgeNewChildSerial(mountKey: string, serial: any): boolean {
+   override _acknowledgeNewChildSerial(mountKey: string, serial: any): boolean {
       if (mountKey === 'a') {
          const didChange = this.patchSerial((draft) => void (draft.a = serial))
          return didChange
@@ -196,11 +164,15 @@ export class Field_link<
       throw new Error(`[❌] invalid mountKey: ${mountKey}`)
    }
 
-   get childrenAll(): [A['$Field'], B['$Field']] {
+   override getChildrenSerialPath(branchName: 'a' | 'b'): string {
+      return branchName
+   }
+
+   override get childrenAll(): [A['$Field'], B['$Field']] {
       return [this.aField, this.bField]
    }
 
-   get subFieldsWithKeys(): KeyedField[] {
+   override get subFieldsWithKeys(): KeyedField[] {
       return [
          { key: 'a', field: this.aField },
          { key: 'b', field: this.bField },
@@ -210,6 +182,11 @@ export class Field_link<
    // #region value
    get value(): Field_link_value<A, B> {
       return this.value_or_fail
+   }
+
+   override set(val: B['$setValue']): this {
+      this.bField.set(val)
+      return this
    }
 
    set value(val: Field_link_value<A, B>) {
@@ -226,6 +203,22 @@ export class Field_link<
    }
    get value_unchecked(): Field_link_unchecked<A, B> {
       return this.bField.value_unchecked
+   }
+
+   override isValueEqual(other: Field): boolean {
+      if (!(other instanceof Field_link)) return false
+      return this.aField === other.aField && this.bField === other.bField
+   }
+
+   public override readonly patchedSerialPaths: string[] = []
+
+   // Don't get patches from children
+   protected override generateChildrenPatches(reference: this): Patch<'list', unknown>[] {
+      return []
+   }
+
+   protected override applyChildrenPatches(patches: Patch<'list', unknown>[]): void {
+      // NOOP
    }
 }
 

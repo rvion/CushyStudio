@@ -1,4 +1,4 @@
-import type { IWidgetListLike } from './IWidgetListLike'
+import type { IWidgetListLike } from './ListControlsUI'
 
 import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
@@ -15,7 +15,7 @@ export const ListButtonAdd100ItemsUI = observer(function ListButtonAdd100ItemsUI
          borderless
          subtle
          square
-         icon='mdiUnfoldLessHorizontal'
+         icon={IKONS.mdiUnfoldLessHorizontal}
          onClick={() => {
             field.touch()
             runInAction(() => {

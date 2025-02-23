@@ -1,6 +1,6 @@
-import type { BaseSchema } from '../../model/BaseSchema'
-import type { FieldConfig } from '../../model/FieldConfig'
-import type { FieldSerial } from '../../model/FieldSerial'
+import type { CSchema } from '../../model/CSchema'
+import type { CodegenOpts } from '../../model/FieldConstructor'
+import type { Patch } from '../../model/Patch'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 
@@ -8,79 +8,70 @@ import { Field } from '../../model/Field'
 import { registerFieldClass } from '../WidgetUI.DI'
 
 // #region CONFIG TYPE
-export type Field_shared_config<F extends Field> = FieldConfig<
-   //
-   { field: F },
-   Field_shared_types<F>
->
+type Field_shared_ownConfig<F extends Field> = { field: F }
 
 // #region SERIAL TYPE
-export type Field_shared_serial = FieldSerial<{
+type Field_shared_ownSerial = {
    $: 'shared'
    // NO VALUE HERE; otherwise, we would store the data twice
-}>
+}
 
 // #region VALUE TYPE
-export type Field_shared_value<F extends Field = Field> = F['$Value']
-export type Field_shared_unchecked<F extends Field = Field> = F['$Unchecked']
+export type Field_shared_value<F extends Field = Field> = F['$value']
+export type Field_shared_unchecked<F extends Field = Field> = F['$unchecked']
 
-// #region $FieldTypes
-export type Field_shared_types<F extends Field = Field> = {
-   $Type: 'shared'
-   $Config: Field_shared_config<F>
-   $Serial: Field_shared_serial
-   $Value: Field_shared_value<F>
-   $Unchecked: Field_shared_unchecked<F>
-   $Field: Field_shared<F>
-   $Child: F
-   $Reflect: Field_shared_types<F>
+// #region Field
+export interface Field_shared<F extends Field = Field> {
+   $type: 'shared'
+   $ownConfig: Field_shared_ownConfig<F>
+   $ownSerial: Field_shared_ownSerial
+   $value: Field_shared_value<F>
+   $setValue: Field_shared_value<F>
+   $unchecked: Field_shared_unchecked<F>
+   $child: F
+   $opts: unknown
+   $ownPatch: Patch<'shared'>
 }
 
 // #region STATE
-export class Field_shared<F extends Field = Field> extends Field<Field_shared_types<F>> {
+export class Field_shared<out F extends Field = Field> extends Field {
    // #region TYPE
    static readonly type: 'shared' = 'shared'
-   static readonly emptySerial: Field_shared_serial = { $: 'shared' }
-   static codegenValueType(config: Field_shared_config<any>): string {
-      return config.field.schema.codegenValueType()
+   static readonly emptySerial: Field_shared['$serial'] = { $: 'shared' }
+   static override migrateSerial(): undefined {}
+   static codeForTypescriptValue = (config: Field_shared<Field>['$config'], opts: CodegenOpts): string => {
+      return `Z.Shared<${config.field.schema.codeForTypescriptValue(opts)}>`
    }
-   static migrateSerial(): undefined {}
 
    // #region CTOR
    constructor(
       repo: Repository,
       root: Field | null,
       parent: Field | null,
-      schema: BaseSchema<Field_shared<F>>,
+      schema: CSchema<Field_shared<F>>,
       initialMountKey: string,
-      serial?: Field_shared_serial,
+      serial?: Field_shared<F>['$serial'],
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
-      this.init(serial, {
-         DefaultHeaderUI: false,
-         DefaultBodyUI: false,
-      })
+      this.init(serial)
    }
 
    // #region UI
-   DefaultHeaderUI: -1 = -1
-   DefaultBodyUI: -1 = -1
-
-   protected setOwnSerial(_next: Field_shared_serial): void {}
+   protected setOwnSerial(_next: this['$serial']): void {}
 
    get isOwnSet(): boolean {
-      return this.shared.isSet
+      return this.child.isSet
    }
 
    get hasChanges(): boolean {
-      return this.shared.hasChanges
+      return this.child.hasChanges
    }
 
-   get actualWidgetToDisplay(): Field {
-      return this.shared.actualWidgetToDisplay
+   override get actualWidgetToDisplay(): Field {
+      return this.child.actualWidgetToDisplay
    }
 
-   get shared(): F {
+   get child(): F {
       return this.config.field
    }
 
@@ -89,28 +80,35 @@ export class Field_shared<F extends Field = Field> extends Field<Field_shared_ty
    }
 
    get ownTypeSpecificProblems(): Problem_Ext {
-      return this.shared.ownTypeSpecificProblems
+      return this.child.ownTypeSpecificProblems
    }
 
    get value(): Field_shared_value<F> {
-      return this.shared.value
+      return this.child.value
    }
 
    set value(val: Field_shared_value<F>) {
-      this.shared.value = val
+      this.child.value = val
    }
 
    get value_or_fail(): Field_shared_value<F> {
-      return this.shared.value_or_fail
+      return this.child.value_or_fail
    }
 
    get value_or_zero(): Field_shared_value<F> {
-      return this.shared.value_or_zero
+      return this.child.value_or_zero
    }
 
    get value_unchecked(): Field_shared_unchecked<F> {
-      return this.shared.value_unchecked
+      return this.child.value_unchecked
    }
+
+   override isValueEqual(other: Field): boolean {
+      if (!(other instanceof Field_shared)) return false
+      return this.child.isValueEqual(other.child)
+   }
+
+   public override readonly patchedSerialPaths: string[] = []
 }
 
 // DI

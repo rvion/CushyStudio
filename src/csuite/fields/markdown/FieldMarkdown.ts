@@ -1,75 +1,58 @@
-import type { BaseSchema } from '../../model/BaseSchema'
-import type { FieldConfig } from '../../model/FieldConfig'
-import type { FieldSerial } from '../../model/FieldSerial'
+import type { CSchema } from '../../model/CSchema'
+import type { Patch } from '../../model/Patch'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
-import type { FC } from 'react'
 
 import { Field } from '../../model/Field'
 import { registerFieldClass } from '../WidgetUI.DI'
-import { WidgetMardownUI } from './WidgetMarkdownUI'
 
-// #region $Config
-export type Field_markdown_config = FieldConfig<
-   {
-      markdown: string | ((self: Field_markdown) => string)
-      inHeader?: boolean
-   },
-   Field_markdown_types
->
+// #region CONFIG TYPE
+export type Field_markdown_config = Field_markdown['$config']
+type Field_markdown_ownConfig = {
+   markdown: string | ((self: Field_markdown) => string)
+   inHeader?: boolean
+}
 
-// #region $Serial
-export type Field_markdown_serial = FieldSerial<{
-   $: 'markdown'
-}>
+// #region SERIAL TYPE
+export type Field_markdown_serial = Field_markdown['$serial']
+type Field_markdown_ownSerial = { $: 'markdown' }
 
-// #region $Value
+// #region VALUE TYPE
 export type Field_markdown_value = { $: 'markdown' }
 export type Field_markdown_unchecked = Field_markdown_value
 
-// #region $Types
-export type Field_markdown_types = {
-   $Type: 'markdown'
-   $Config: Field_markdown_config
-   $Serial: Field_markdown_serial
-   $Value: Field_markdown_value
-   $Unchecked: Field_markdown_unchecked
-   $Field: Field_markdown
-   $Child: never
-   $Reflect: Field_markdown_types
+// #region Field
+export interface Field_markdown {
+   $type: 'markdown'
+   $ownConfig: Field_markdown_ownConfig
+   $ownSerial: Field_markdown_ownSerial
+   $value: Field_markdown_value
+   $setValue: Field_markdown_value
+   $unchecked: Field_markdown_unchecked
+   $child: never
+   $opts: unknown
+   $ownPatch: Patch<'markdown'>
 }
 
 // #region STATE TYPE
-export class Field_markdown extends Field<Field_markdown_types> {
+export class Field_markdown extends Field {
    // #region TYPE
    static readonly type: 'markdown' = 'markdown'
    static readonly emptySerial: Field_markdown_serial = { $: 'markdown' }
-   static codegenValueType(config: Field_markdown_config): string {
-      return `undefined`
-   }
-   static migrateSerial(): undefined {}
+   static override migrateSerial(): undefined {}
+   static readonly codeForTypescriptValue = (config: Field_markdown_config): string => 'Markdown'
 
    // #region CTOR
    constructor(
       repo: Repository,
       root: Field | null,
       parent: Field | null,
-      schema: BaseSchema<Field_markdown>,
+      schema: CSchema<Field_markdown>,
       initialMountKey: string,
       serial?: Field_markdown_serial,
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
       this.init(serial)
-   }
-   // #region UI
-   get DefaultHeaderUI(): FC<{ field: Field_markdown }> | undefined {
-      if (this.config.inHeader) return WidgetMardownUI
-      return undefined
-   }
-
-   get DefaultBodyUI(): FC<{ field: Field_markdown }> | undefined {
-      if (this.config.inHeader) return undefined
-      return WidgetMardownUI
    }
 
    // #region SERIAL
@@ -121,6 +104,15 @@ export class Field_markdown extends Field<Field_markdown_types> {
    get value_unchecked(): Field_markdown_unchecked {
       return this.serial
    }
+
+   override isValueEqual(other: Field): boolean {
+      if (!(other instanceof Field_markdown)) return false
+
+      return true
+   }
+
+   // #region PATCH
+   public override readonly patchedSerialPaths: string[] = []
 }
 
 // DI

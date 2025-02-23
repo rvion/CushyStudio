@@ -1,4 +1,4 @@
-import type { IWidgetListLike } from './IWidgetListLike'
+import type { IWidgetListLike } from './ListControlsUI'
 
 import { observer } from 'mobx-react-lite'
 
@@ -12,9 +12,10 @@ export const ListButtonAddUI = observer(function ListButtonAddUI_(p: { field: IW
       <Button
          size='input'
          // borderless
+         subtle
          disabled={!canAdd}
          square
-         icon='mdiPlus'
+         icon={IKONS.mdiPlus}
          onClick={(ev) => {
             field.touch()
             if (!canAdd) return

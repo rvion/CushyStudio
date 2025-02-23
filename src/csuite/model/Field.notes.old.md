@@ -70,19 +70,19 @@ INTERNAL API
 // type NoValueRequired<T> = T extends { value: any } ? Omit<T, 'value'> : T
 type DataError = 'Missing' | 'wrong schema' | '...'
 type Errorable<T> =
-    | Error
-    // T['$PossiblyWrong'] extends ....
-    | T extends (infer Item)[]
-    ? Errorable<Item>[] | null
-    : T extends Record<any, any> //
-    ? { [key in keyof T]: Errorable<T[key]> } | Error
-    : T | Error
+   | Error
+   // T['$PossiblyWrong'] extends ....
+   | T extends (infer Item)[]
+   ? Errorable<Item>[] | null
+   : T extends Record<any, any> //
+     ? { [key in keyof T]: Errorable<T[key]> } | Error
+     : T | Error
 
 type WithHoles<T> =
-    // T['$WithHoles'] extends ....
-    T extends (infer Item)[]
-        ? WithHoles<Item>[] | null
-        : T extends Record<any, any> //
+   // T['$WithHoles'] extends ....
+   T extends (infer Item)[]
+      ? WithHoles<Item>[] | null
+      : T extends Record<any, any> //
         ? { [key in keyof T]: WithHoles<T[key]> | null } | null
         : Maybe<T>
 

@@ -1,13 +1,18 @@
+/* eslint-disable vitest/require-to-throw-message */
 import { Temporal } from '@js-temporal/polyfill'
-import { afterEach, describe, expect, it, mock, spyOn } from 'bun:test'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import { Severity } from '../../model/Validation'
 import { simpleBuilder as b } from '../../simple/SimpleFactory'
 import { Field_date } from './FieldDate'
 
+const spyOn = vi.spyOn
+const mock = vi.mock
+
 describe('FieldDate', () => {
    afterEach(() => {
-      mock.restore()
+      // mock.restore()
+      vi.restoreAllMocks()
    })
 
    describe('Create', () => {
@@ -35,7 +40,7 @@ describe('FieldDate', () => {
             const field = b.date({ default: new Date('INVALID') }).create()
 
             expect(field.value_unchecked).toBeNull()
-            expect(field.hasOwnErrors).toBeTrue()
+            expect(field.hasOwnErrors).toBeTruthy()
          })
       })
 
@@ -58,8 +63,10 @@ describe('FieldDate', () => {
             const newField = b.date().create(serial)
 
             expect(newField.serial).toEqual(serial)
-            expect(newField.ownErrors).toEqual([{ message: 'Invalid date', severity: Severity.Error }])
-            expect(newField.value_unchecked).toBe(null)
+            expect(newField.ownErrors).toEqual([
+               { path: newField.path, message: 'Invalid date', severity: Severity.Error },
+            ])
+            expect(newField.value_unchecked).toBeNull()
             expect(() => newField.value).toThrowError()
          })
       })
@@ -274,6 +281,7 @@ describe('FieldDate', () => {
          const field = b.date().create()
 
          expect(field.ownTypeSpecificProblems).toEqual({
+            path: field.path,
             severity: Severity.Error,
             message: 'Field is not set',
          })
@@ -285,6 +293,7 @@ describe('FieldDate', () => {
          field.setValueFromString('invalid')
 
          expect(field.ownTypeSpecificProblems).toEqual({
+            path: field.path,
             severity: Severity.Error,
             message: 'Invalid date',
          })
@@ -299,6 +308,7 @@ describe('FieldDate', () => {
 
          expect(field.ownCustomConfigCheckProblems).toEqual([
             {
+               path: field.path,
                severity: Severity.Error,
                message: 'Invalid date',
             },
@@ -311,6 +321,7 @@ describe('FieldDate', () => {
                check: (f) => {
                   if (f.value_unchecked?.getFullYear() !== 2025) {
                      return {
+                        path: '$',
                         severity: Severity.Error,
                         message: 'Invalid year',
                      }
@@ -323,6 +334,7 @@ describe('FieldDate', () => {
 
          expect(field.ownCustomConfigCheckProblems).toEqual([
             {
+               path: field.path,
                severity: Severity.Error,
                message: 'Invalid year',
             },
@@ -353,7 +365,7 @@ describe('FieldDate', () => {
       it('should return false if the value has not been set', () => {
          const field = b.date().create()
 
-         expect(field.isOwnSet).toBeFalse()
+         expect(field.isOwnSet).toBeFalsy()
       })
 
       it('should return true if the value has been set', () => {
@@ -361,7 +373,7 @@ describe('FieldDate', () => {
 
          field.setValueFromString('03/02/2025 04:05')
 
-         expect(field.isOwnSet).toBeTrue()
+         expect(field.isOwnSet).toBeTruthy()
       })
 
       it('should return true if the value is null', () => {
@@ -370,7 +382,7 @@ describe('FieldDate', () => {
          field.setValueFromString('03/02/2025 04:05')
          field.value = null as any as Date
 
-         expect(field.isOwnSet).toBeTrue()
+         expect(field.isOwnSet).toBeTruthy()
       })
 
       it('should return true if the value is invalid', () => {
@@ -378,7 +390,64 @@ describe('FieldDate', () => {
 
          field.setValueFromString('invalid')
 
-         expect(field.isOwnSet).toBeTrue()
+         expect(field.isOwnSet).toBeTruthy()
+      })
+   })
+
+   describe('isValueEqual', () => {
+      describe('equality', () => {
+         it('should return true if both fields are unset', () => {
+            const S = b.date()
+            const E1 = S.create()
+            const E2 = S.create()
+
+            expect(E1.isValueEqual(E2)).toBeTruthy()
+         })
+
+         it('should return true if both fields are set to the same value', () => {
+            const S = b.date()
+            const E1 = S.create()
+            const E2 = S.create()
+
+            E1.value = new Date(2025, 1, 3, 4, 5)
+            E2.value = new Date(2025, 1, 3, 4, 5)
+
+            expect(E1.isValueEqual(E2)).toBeTruthy()
+         })
+      })
+
+      describe('inequality', () => {
+         it('should return false if one field is unset and the other is set', () => {
+            const S = b.date()
+            const E1 = S.create()
+            const E2 = S.create()
+
+            E1.value = new Date(2025, 1, 3, 4, 5)
+
+            expect(E1.isValueEqual(E2)).toBeFalsy()
+         })
+
+         it('should return false if both fields are set to different values', () => {
+            const S = b.date()
+            const E1 = S.create()
+            const E2 = S.create()
+
+            E1.value = new Date(2025, 1, 3, 4, 5)
+            E2.value = new Date(2025, 1, 3, 4, 6)
+
+            expect(E1.isValueEqual(E2)).toBeFalsy()
+         })
+
+         it('should return false if the other field is not a date', () => {
+            const S = b.date()
+            const E1 = S.create()
+            const E2 = b.text().create()
+
+            E1.value = new Date(2025, 1, 3, 4, 5)
+            E2.value = new Date(2025, 1, 3, 4, 5).toISOString()
+
+            expect(E1.isValueEqual(E2 as any)).toBeFalsy()
+         })
       })
    })
 })

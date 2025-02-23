@@ -1,69 +1,62 @@
 import type { NumberFormat } from '../../i18n/i18n'
-import type { BaseSchema } from '../../model/BaseSchema'
-import type { FieldConfig } from '../../model/FieldConfig'
-import type { FieldSerial } from '../../model/FieldSerial'
+import type { CSchema } from '../../model/CSchema'
+import type { Patch } from '../../model/Patch'
 import type { Repository } from '../../model/Repository'
-import type { Problem_Ext } from '../../model/Validation'
+import type { Problem_Ext } from 'src/cushy-forms/main'
 
 import { produce } from 'immer'
-import { computed } from 'mobx'
 
 import { csuiteConfig } from '../../config/configureCsuite'
 import { Field } from '../../model/Field'
 import { isProbablySerialString, registerFieldClass } from '../WidgetUI.DI'
-import { WidgetNumberUI } from './WidgetNumberUI'
 
 // #region CONFIG
-export type Field_number_config = FieldConfig<
-   {
-      mode: NumberFormat
-      default?: number
-      min?: number
-      max?: number
-      softMin?: number
-      softMax?: number
-      step?: number
-      suffix?: string
-      text?: string
-      hideSlider?: boolean
-      forceSnap?: boolean
-      /** used as suffix */
-      unit?: string
-   },
-   Field_number_types
->
+type Field_number_ownConfig = {
+   mode: NumberFormat
+   default?: number
+   min?: number
+   max?: number
+   softMin?: number
+   softMax?: number
+   step?: number
+   suffix?: string
+   text?: string
+   hideSlider?: boolean
+   forceSnap?: boolean
+   /** used as suffix */
+   unit?: string
+}
 
 // #region SERIAL
-export type Field_number_serial = FieldSerial<{
+type Field_number_ownSerial = {
    $: 'number'
    value?: number | string | null
-}>
+}
 
 // #region VALUE
 export type Field_number_value = number
 export type Field_number_unchecked = Field_number_value | string | null | undefined
 
 // #region TYPES
-export type Field_number_types = {
-   $Type: 'number'
-   $Config: Field_number_config
-   $Serial: Field_number_serial
-   $Value: Field_number_value
-   $Unchecked: Field_number_unchecked
-   $Field: Field_number
-   $Child: never
-   $Reflect: Field_number_types
+export interface Field_number {
+   $type: 'number'
+   $ownConfig: Field_number_ownConfig
+   $ownSerial: Field_number_ownSerial
+   $value: Field_number_value
+   $setValue: Field_number_value
+   $unchecked: Field_number_unchecked
+   $child: never
+   $opts: unknown
+   $ownPatch: Patch<'number'>
 }
 
 // #region STATE
-export class Field_number extends Field<Field_number_types> {
+export class Field_number extends Field {
    // #region TYPE
    static readonly type: 'number' = 'number'
-   static readonly emptySerial: Field_number_serial = { $: 'number' }
-   static codegenValueType(config: Field_number_config): string {
-      return `number`
-   }
-   static migrateSerial(serial: object): Maybe<Field_number_serial> {
+   static readonly emptySerial: Field_number['$serial'] = { $: 'number' }
+   static readonly codeForTypescriptValue = (config: Field_number['$config']): string => 'number'
+   static override migrateSerial(serial: object): Maybe<Field_number['$serial']> {
       // migrate from string with number typed as string
       if (isProbablySerialString(serial)) {
          const prop = serial.value
@@ -78,22 +71,18 @@ export class Field_number extends Field<Field_number_types> {
       repo: Repository,
       root: Field | null,
       parent: Field | null,
-      schema: BaseSchema<Field_number>,
+      schema: CSchema<Field_number>,
       initialMountKey: string,
-      serial?: Field_number_serial,
+      serial?: Field_number['$serial'],
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
       // /* 😂 */ console.log(`[🤠] ${getUIDForMemoryStructure(serial)} (FieldNumber#constructor ❌)`)
       // /* 😂 */ console.log(`[🤠] ${getUIDForMemoryStructure(this.serial)} (FieldNumber#constructor ❌)`)
-      this.init(serial, {
-         value: computed,
-         DefaultHeaderUI: false,
-         DefaultBodyUI: false,
-      })
+      this.init(serial)
    }
 
    // #region SERIAL
-   protected setOwnSerial(next: Field_number_serial): void {
+   protected setOwnSerial(next: Field_number['$serial']): void {
       if (next.value == null) {
          const def = this.defaultValue
          if (def != null) next = produce(next, (draft) => void (draft.value = def))
@@ -104,10 +93,6 @@ export class Field_number extends Field<Field_number_types> {
       // assign given serial (or default one)
       this.assignNewSerial(next)
    }
-
-   // #region UI
-   DefaultHeaderUI = WidgetNumberUI
-   DefaultBodyUI: undefined = undefined
 
    readonly forceSnap: boolean = false
 
@@ -163,6 +148,7 @@ export class Field_number extends Field<Field_number_types> {
       return null
    }
 
+   // #region VALUE
    get value(): Field_number_value {
       return this.value_or_fail
    }
@@ -206,6 +192,18 @@ export class Field_number extends Field<Field_number_types> {
       this.patchSerial((serial) => void (serial.value = next))
    }
 
+   override isValueEqual(other: Field): boolean {
+      if (!(other instanceof Field_number)) return false
+
+      return this.value_unchecked === other.value_unchecked
+   }
+
+   public override readonly patchedSerialPaths: string[] = ['value']
+
+   get pathToValueInRootSerial(): string {
+      return `${this.getOwnSerialPathFromRoot()}.value`
+   }
+
    setValueFromString(stringValue: string): void {
       const parsed = csuiteConfig.i18n.ui.number.parse(stringValue, this.config.mode)
       if (isNaN(parsed)) return
@@ -214,7 +212,7 @@ export class Field_number extends Field<Field_number_types> {
 
    // #region SETTERS
    /** randomize respect (soft)Min and (soft)max */
-   randomize(): void {
+   override randomize(): void {
       const min = this.config.softMin ?? this.config.min ?? 0
       const max = this.config.softMax ?? this.config.max ?? 100
       this.value = Math.floor(Math.random() * (max - min + 1))

@@ -25,7 +25,6 @@ export const WidgetSelectMany_TabUI = observer(function WidgetSelectMany_TabUI_<
 
                return (
                   <InputBoolUI
-                     toggleGroup={field.id}
                      key={convertSelectKeyToReactKey(option.id)}
                      value={isSelected}
                      display='button'
@@ -35,6 +34,7 @@ export const WidgetSelectMany_TabUI = observer(function WidgetSelectMany_TabUI_<
                         field.touch()
                      }}
                      onBlur={() => field.touch()}
+                     toggleGroup={p.field._uid}
                   />
                )
             })}
@@ -45,7 +45,6 @@ export const WidgetSelectMany_TabUI = observer(function WidgetSelectMany_TabUI_<
                .filter((v) => !field.possibleKeys.includes(v))
                .map((missingId) => (
                   <InputBoolUI
-                     toggleGroup={field.id}
                      key={convertSelectKeyToReactKey(missingId)}
                      value={true}
                      style={{ border: '1px solid oklch(var(--er))' }}
@@ -56,6 +55,7 @@ export const WidgetSelectMany_TabUI = observer(function WidgetSelectMany_TabUI_<
                         field.touch()
                      }}
                      onBlur={() => field.touch()}
+                     toggleGroup={p.field._uid}
                   />
                ))}
          </div>

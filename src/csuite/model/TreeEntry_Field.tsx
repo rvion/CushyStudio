@@ -9,18 +9,23 @@ export class TreeEntry_Field implements ITreeEntry {
       makeAutoObservable(this)
    }
 
-   get widget(): Field {
+   get widget() {
       return this.widgetWithKey.widget
    }
 
    /** config label, or parent key */
    get label(): string {
-      if (this.widget.config.label) return this.widget.config.label
+      if (
+         this.widget.config.label != null &&
+         this.widget.config.label !== '' &&
+         this.widget.config.label !== false
+      )
+         return this.widget.config.label
       return this.widgetWithKey.key
    }
 
    get name(): string {
-      return `${this.label} = ${this.widget.id /* 🔴 */}`
+      return `${this.label} = ${this.widget._uid /* 🔴 */}`
    }
 
    get isFolder(): boolean {
@@ -61,7 +66,7 @@ export class TreeEntry_Field implements ITreeEntry {
    //     // return <span className='material-symbols-outlined'>Draft</span>
    // }
 
-   onPrimaryAction = (n: TreeNode): void => {
+   onPrimaryAction = (n: TreeNode) => {
       // if (this.app == null) return
       // if (!n.isOpen) n.open()
       // if (this.app.drafts.length > 0) return

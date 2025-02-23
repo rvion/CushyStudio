@@ -3,7 +3,7 @@ import type { Field_seed } from './FieldSeed'
 import { observer } from 'mobx-react-lite'
 
 import { Button } from '../../button/Button'
-import { ToggleButtonUI } from '../../checkbox/InputBoolToggleButtonUI'
+import { InputBoolToggleButtonUI } from '../../checkbox/InputBoolToggleButtonUI'
 import { useCSuite } from '../../ctx/useCSuite'
 import { Frame } from '../../frame/Frame'
 import { InputNumberUI } from '../../input-number/InputNumberUI'
@@ -11,38 +11,28 @@ import { InputNumberUI } from '../../input-number/InputNumberUI'
 export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { field: Field_seed }) {
    const field = p.field
    const val = field.value_or_zero
-   const theme = cushy.preferences.theme.value
+   const csuite = useCSuite()
 
    return (
-      <Frame
-         tw={[
-            //
-            'h-input',
-            'flex flex-1 items-center',
-            // bird_d: Need to put this as a tw alias or make a wrapper component
-         ]}
-         align
-         roundness={theme.global.roundness}
-         border={theme.global.border}
-      >
-         <ToggleButtonUI // Random
-            toggleGroup={field.id}
-            icon='mdiAutoFix'
+      <Frame border={csuite.inputBorder} tw={['h-input', 'flex flex-1 items-center']}>
+         <InputBoolToggleButtonUI // Random
+            icon={IKONS.mdiAutoFix}
             value={field.serial.mode === 'randomize'}
             onValueChange={() => {
                field.setToRandomize()
                field.touch()
             }}
+            toggleGroup={field._uid}
             // text='Random'
          />
-         <ToggleButtonUI // Fixed
-            toggleGroup={field.id}
-            icon='mdiNumeric1CircleOutline'
+         <InputBoolToggleButtonUI // Fixed
+            icon={IKONS.mdiNumeric1CircleOutline}
             value={field.serial.mode === 'fixed'}
             onValueChange={() => {
                field.setToFixed()
                field.touch()
             }}
+            toggleGroup={field._uid}
             // text='Fixed'
          />
          <InputNumberUI // Fixed value
@@ -65,7 +55,7 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { field: Field_se
                field.setToFixed(Math.floor(Math.random() * 100000000))
                field.touch()
             }}
-            icon='mdiAutorenew'
+            icon={IKONS.mdiAutorenew}
             square
          />
       </Frame>

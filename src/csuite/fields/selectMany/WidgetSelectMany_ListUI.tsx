@@ -2,7 +2,7 @@ import type { Field_selectMany } from './FieldSelectMany'
 
 import { observer } from 'mobx-react-lite'
 
-import { ToggleButtonUI } from '../../checkbox/InputBoolToggleButtonUI'
+import { InputBoolToggleButtonUI } from '../../checkbox/InputBoolToggleButtonUI'
 import { ResizableFrame } from '../../resizableFrame/resizableFrameUI'
 import { makeLabelFromPrimitiveValue } from '../../utils/makeLabelFromFieldName'
 import { convertSelectKeyToReactKey, type SelectKey } from '../selectOne/SelectOneKey'
@@ -32,8 +32,7 @@ export const WidgetSelectMany_ListUI = observer(function WidgetSelectMany_ListUI
          {field.options.slice(0, 100).map((c) => {
             const isSelected = field.selectedKeys.includes(c.id)
             return (
-               <ToggleButtonUI
-                  toggleGroup={field.id}
+               <InputBoolToggleButtonUI
                   key={convertSelectKeyToReactKey(c.id)}
                   value={isSelected}
                   // border={false}
@@ -46,6 +45,7 @@ export const WidgetSelectMany_ListUI = observer(function WidgetSelectMany_ListUI
                      field.touch()
                   }}
                   onBlur={() => field.touch()}
+                  toggleGroup={p.field._uid}
                />
             )
          })}

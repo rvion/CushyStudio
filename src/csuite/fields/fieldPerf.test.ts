@@ -43,9 +43,9 @@ bench
    .add('field', () => {
       schema2.create()
    })
-   .todo('unimplemented bench')
+   // .todo('unimplemented bench')
 
-await bench.warmup() // make results more reliable, ref: https://github.com/tinylibs/tinybench/pull/50
+// await bench.warmup() // make results more reliable, ref: https://github.com/tinylibs/tinybench/pull/50
 await bench.run()
 
 // show results
