@@ -42,7 +42,7 @@ export class MenuTemplate<PROPS> {
       return this.def.title
    }
 
-   /** MenuUI JSX.Elemnt */
+   /** MenuUI React.JSX.Elemnt */
    MenuEntriesUI = memo((p: PROPS): React.JSX.Element => {
       const menu = useMemo(() => this.bind(p), [p])
       const menuInst = useMemo(() => new MenuInstance(menu, undefined, null), [menu])

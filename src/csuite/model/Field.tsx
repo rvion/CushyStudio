@@ -1553,14 +1553,24 @@ export abstract class Field {
    }
 
    // #region UI.Render
-   /** @undecorated  */
-   UI(props: RENDERER.FieldRenderArgs<this>): ReactNode {
-      // Spreading props here instead of passing them as a single object
-      // avoids useless refresh when the widget's parent is rerendered
-      // because the props object is recreated every time, even if
-      // the props themselves are the same.
-      // ⚠ props must be added first, to avoid circular references of field
-      return <globalThis.RENDERER.Render {...props} field={this} />
+   UI(props: RENDERER.FieldRenderArgs<this> = {}): ReactNode {
+      // 💬 2024-10-17 ghusse:
+      // | Spreading props here instead of passing them as a single object
+      // | avoids useless refresh when the widget's parent is rerendered
+      // | because the props object is recreated every time, even if
+      // | the props themselves are the same.
+
+      // 💬 2024-10-26 rvion:
+      // | okay; so it it’s true-ish, but also probably deserve a quick discussion some day;
+      // | since we probably want to have custom object comparer for key components like
+      // | this one.
+      // | relying on memo using Object.is to compare stuff is just wrong, and spread here
+      // | just doesn’t fix much as soon as we pass down more complex props that include
+      // | objects not beeing cached/made referentially stable in the parent component.
+
+      // 💬 2024-10-17 ghusse:
+      // | ⚠ props must be added first, to avoid circular references of field
+      return <window.RENDERER.Render {...props} field={this} />
    }
 
    // #region CHILDREN
@@ -1798,8 +1808,6 @@ export abstract class Field {
          this.setOwnSerialWithValidationAndMigrationAndFixes(serial)
 
          this.UI = this.UI.bind(this)
-         this.UI = this.UI.bind(this)
-         this.EditForm = this.EditForm.bind(this)
          this.ready = true
       })
    }
