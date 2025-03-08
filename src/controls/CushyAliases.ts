@@ -33,6 +33,7 @@ import type { Temporal } from '@js-temporal/polyfill'
 // {Field:..., Schema:...}
 //  => would make EVERYTHING so much simpler
 
+// prettier-ignore
 declare global {
    // eslint-disable-next-line @typescript-eslint/no-namespace
    namespace Z {
@@ -48,42 +49,48 @@ declare global {
       // #region core types
 
       // schema aliases
-      type Shared<T extends Field> = CSchema<Field_shared<T>>
-      type Group<T extends SchemaDict> = CSchema<Field_group<T>>
-      type Empty = CSchema<Field_group<NO_PROPS>>
-      type Maybe<T extends CSchema> = CSchema<Field_optional<T>>
-      type Bool = CSchema<Field_bool>
+      type Shared<T extends Field>                    = CSchema<Field_shared<T>>
+      type Group<T extends SchemaDict>                = CSchema<Field_group<T>>
+      type Empty                                      = CSchema<Field_group<NO_PROPS>>
+      type Maybe<T extends CSchema>                   = CSchema<Field_optional<T>>
+      type Bool                                       = CSchema<Field_bool>
       type Link<A extends CSchema, B extends CSchema> = CSchema<Field_link<A, B>>
-      type String = CSchema<Field_string>
+      type String                                     = CSchema<Field_string>
+
+      type Union<T extends SchemaDict>                = CSchema<Field_choices<T>>
       type Choices<T extends SchemaDict = SchemaDict> = CSchema<Field_choices<T>>
-      type Choice<T extends SchemaDict = SchemaDict> = CSchema<Field_choices<T>>
-      type Number = CSchema<Field_number>
-      type Color = CSchema<Field_color>
-      type List<T extends CSchema> = CSchema<Field_list<T>>
-      type Dynamic<T extends CSchema> = CSchema<Field_dynamic<T>>
-      type Board<T extends CSchema> = CSchema<Field_board<T>>
-      type Seed = CSchema<Field_seed>
-      type Matrix = CSchema<Field_matrix>
+      type Choice<T extends SchemaDict = SchemaDict>  = CSchema<Field_choices<T>>
+
+      type Number                                     = CSchema<Field_number>
+      type Color                                      = CSchema<Field_color>
+      type List<T extends CSchema>                    = CSchema<Field_list<T>>
+      type Dynamic<T extends CSchema>                 = CSchema<Field_dynamic<T>>
+      type Board<T extends CSchema>                   = CSchema<Field_board<T>>
+      type Seed                                       = CSchema<Field_seed>
+      type Matrix                                     = CSchema<Field_matrix>
 
       // dates
-      type XDatePlain = CSchema<Field_date<Temporal.PlainDate>>
-      type XDateTimeZoned = CSchema<Field_date<Temporal.ZonedDateTime>>
-      type XDate = CSchema<Field_date<Date>>
+      type SDate                                      = CSchema<Field_date<Date>>
+      type XDate                                      = CSchema<Field_date<Date>>
+      type SDatePlain                                 = CSchema<Field_date<Temporal.PlainDate>>
+      type XDatePlain                                 = CSchema<Field_date<Temporal.PlainDate>>
+      type DateTimeZoned                              = CSchema<Field_date<Temporal.ZonedDateTime>>
+      type XDateTimeZoned                             = CSchema<Field_date<Temporal.ZonedDateTime>>
 
       // selects
-      type XSelectOne<T, ID extends SelectKey> = CSchema<Field_selectOne<T, ID>>
-      type XSelectMany<T, ID extends SelectKey> = CSchema<Field_selectMany<T, ID>>
-      type XSelectOne_<T extends SelectKey> = CSchema<Field_selectOne<T, T>> // variant that may be shorter to read
-      type XSelectMany_<T extends SelectKey> = CSchema<Field_selectMany<T, T>> // variant that may be shorter to read
+      type XSelectOne<T, ID extends SelectKey>        = CSchema<Field_selectOne<T, ID>>
+      type XSelectMany<T, ID extends SelectKey>       = CSchema<Field_selectMany<T, ID>>
+      type XSelectOne_<T extends SelectKey>           = CSchema<Field_selectOne<T, T>> // variant that may be shorter to read
+      type XSelectMany_<T extends SelectKey>          = CSchema<Field_selectMany<T, T>> // variant that may be shorter to read
 
-      type Size = CSchema<Field_size>
-      type Markdown = CSchema<Field_markdown>
+      type Size                                       = CSchema<Field_size>
+      type Markdown                                   = CSchema<Field_markdown>
 
-      type Prompt = CSchema<Field_prompt>
-      type Enum<ENUM_NAME extends keyof Comfy.Slots> = CSchema<Field_enum<Comfy.Slots[ENUM_NAME]>>
-      type EnumOf<O extends ComfyUnionValue> = CSchema<Field_enum<O>>
-      type Orbit = CSchema<Field_orbit>
-      type Image = CSchema<Field_image>
-      type Custom<T> = CSchema<Field_custom<T>>
+      type Prompt                                     = CSchema<Field_prompt>
+      type Enum<ENUM_NAME extends keyof Comfy.Slots>  = CSchema<Field_enum<Comfy.Slots[ENUM_NAME]>>
+      type EnumOf<O extends ComfyUnionValue>          = CSchema<Field_enum<O>>
+      type Orbit                                      = CSchema<Field_orbit>
+      type Image                                      = CSchema<Field_image>
+      type Custom<T>                                  = CSchema<Field_custom<T>>
    }
 }
