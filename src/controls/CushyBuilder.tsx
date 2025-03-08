@@ -1,5 +1,4 @@
 import type { Field_board_config } from '../csuite/fields/board/Field_board'
-import type { Field_button_config } from '../csuite/fields/button/FieldButton'
 import type { Field_color } from '../csuite/fields/color/FieldColor'
 import type { SimpleShape$ } from '../csuite/fields/core-prefabs/ShapeSchema'
 import type { Field_custom_config } from '../csuite/fields/custom/FieldCustom'
@@ -9,18 +8,16 @@ import type { Field_matrix_config } from '../csuite/fields/matrix/FieldMatrix'
 import type { Field_number } from '../csuite/fields/number/FieldNumber'
 import type { Field_optional_config } from '../csuite/fields/optional/FieldOptional'
 import type { Field_orbit_config } from '../csuite/fields/orbit/FieldOrbit'
-import type { BaseSchema } from '../csuite/model/BaseSchema'
+import type { SelectOption } from '../csuite/fields/selectOne/SelectOption'
 import type { CSchema } from '../csuite/model/CSchema'
 import type { IBuilder } from '../csuite/model/IBuilder'
 import type { OpenRouter_ModelInfo } from '../csuite/openrouter/OpenRouter_ModelInfo'
 import type { OpenRouter_Models } from '../csuite/openrouter/OpenRouter_models'
-import type { SelectOption } from '../csuite/fields/selectOne/SelectOption'
 
 import { simpleBuilder } from '../csuite'
 import { csuiteConfig } from '../csuite/config/configureCsuite'
 import { Field_board } from '../csuite/fields/board/Field_board'
 import { WidgetListExtUI__Timeline } from '../csuite/fields/board/WidgetListExtUI'
-import { Field_button } from '../csuite/fields/button/FieldButton'
 import { simpleShape$ } from '../csuite/fields/core-prefabs/ShapeSchema'
 import { Field_custom } from '../csuite/fields/custom/FieldCustom'
 import { Field_image } from '../csuite/fields/image/FieldImage'
@@ -94,10 +91,6 @@ export class CushySchemaBuilder implements IBuilder {
       return new CSchema<Field_matrix>(Field_matrix, config)
    }
 
-   button<K>(config: Field_button_config<K>): Z.Button<K> {
-      return new CSchema<Field_button<K>>(Field_button, config)
-   }
-
    /** image field, defaulting to `cushy.defaultImage` if no default provided */
    image(config: Field_image_config = {}): Z.Image {
       const def = config.default ?? cushy.defaultImage
@@ -127,7 +120,7 @@ export class CushySchemaBuilder implements IBuilder {
       return new CSchema<Field_custom<T>>(Field_custom, config)
    }
 
-   list<T extends BaseSchema>(config: Field_list_config<T>): CSchema<Field_list<T>> {
+   list<T extends CSchema>(config: Field_list_config<T>): CSchema<Field_list<T>> {
       return new CSchema<Field_list<T>>(Field_list, config)
    }
 
@@ -136,7 +129,7 @@ export class CushySchemaBuilder implements IBuilder {
    }
 
    // #region ListExt
-   timeline<T extends BaseSchema>(
+   timeline<T extends CSchema>(
       sub: Field_board_config<T>,
       config: Omit<Field_board_config<T>, 'element'> = {},
    ): Z.Board<T> {
@@ -144,11 +137,11 @@ export class CushySchemaBuilder implements IBuilder {
       return x.withConfig({ body: WidgetListExtUI__Timeline, ...config })
    }
 
-   regional<T extends BaseSchema>(sub: Field_board_config<T>): Z.Board<T> {
+   regional<T extends CSchema>(sub: Field_board_config<T>): Z.Board<T> {
       return Field_board.getSchema(simpleBuilder, sub) //
    }
 
-   listExt<T extends BaseSchema>(sub: Field_board_config<T>): Z.Board<T> {
+   listExt<T extends CSchema>(sub: Field_board_config<T>): Z.Board<T> {
       return Field_board.getSchema(simpleBuilder, sub)
    }
 
@@ -178,7 +171,7 @@ export class CushySchemaBuilder implements IBuilder {
    //  * @since 2024-06-27
    //  * @stability unstable
    //  */
-   // with<const SCHEMA1 extends BaseSchema, SCHEMA2 extends BaseSchema>(
+   // with<const SCHEMA1 extends CSchema, SCHEMA2 extends CSchema>(
    //     /** the schema of the field you'll want to re-use the in second part */
    //     injected: SCHEMA1,
    //     children: (shared: SCHEMA1['$field']) => SCHEMA2,
@@ -216,22 +209,22 @@ export class CushySchemaBuilder implements IBuilder {
    //     return new CSchema<Field_group<T>>(Field_group, { items: fields, ...config }) as any
    // }
 
-   // choice<T extends { [key: string]: BaseSchema }>(config: Omit<Field_choices_config<T>, 'multi'>): X.XChoice<T> {
+   // choice<T extends { [key: string]: CSchema }>(config: Omit<Field_choices_config<T>, 'multi'>): X.XChoice<T> {
    //     return new CSchema<Field_choices<T>>(Field_choices, { multi: false, ...config })
    // }
 
-   // choices<T extends { [key: string]: BaseSchema }>(config: Omit<Field_choices_config<T>, 'multi'>): X.XChoices<T> {
+   // choices<T extends { [key: string]: CSchema }>(config: Omit<Field_choices_config<T>, 'multi'>): X.XChoices<T> {
    //     return new CSchema<Field_choices<T>>(Field_choices, { multi: true, ...config })
    // }
 
-   // choiceV2<T extends { [key: string]: BaseSchema }>(
+   // choiceV2<T extends { [key: string]: CSchema }>(
    //     items: Field_choices_config<T>['items'],
    //     config: Omit<Field_choices_config<NoInfer<T>>, 'multi' | 'items'> = {},
    // ): X.XChoice<T> {
    //     return new CSchema<Field_choices<T>>(Field_choices, { multi: false, items, ...config })
    // }
 
-   // choicesV2<T extends { [key: string]: BaseSchema }>(
+   // choicesV2<T extends { [key: string]: CSchema }>(
    //     items: Field_choices_config<T>['items'],
    //     config: Omit<Field_choices_config<T>, 'multi' | 'items'> = {},
    // ): X.XChoices<T> {
@@ -239,7 +232,7 @@ export class CushySchemaBuilder implements IBuilder {
    // }
 
    // /** simple choice alternative api */
-   // tabs<T extends { [key: string]: BaseSchema }>(
+   // tabs<T extends { [key: string]: CSchema }>(
    //     items: Field_choices_config<T>['items'],
    //     config: Omit<Field_choices_config<NoInfer<T>>, 'multi' | 'items'> = {},
    // ): X.XChoices<T> {
@@ -250,7 +243,7 @@ export class CushySchemaBuilder implements IBuilder {
    // }
 
    // optional wrappers
-   optional<T extends BaseSchema>(p: Field_optional_config<T>): Z.Maybe<T> {
+   optional<T extends CSchema>(p: Field_optional_config<T>): Z.Maybe<T> {
       return new CSchema<Field_optional<T>>(Field_optional, p)
    }
 

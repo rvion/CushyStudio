@@ -1,8 +1,6 @@
-import type { Temporal } from '@js-temporal/polyfill'
 import type { ComfyUnionValue } from '../comfyui/comfyui-types'
 import type { Field_board } from '../csuite/fields/board/Field_board'
 import type { Field_bool } from '../csuite/fields/bool/FieldBool'
-import type { Field_button } from '../csuite/fields/button/FieldButton'
 import type { Field_choices } from '../csuite/fields/choices/FieldChoices'
 import type { Field_color } from '../csuite/fields/color/FieldColor'
 import type { Field_custom } from '../csuite/fields/custom/FieldCustom'
@@ -28,6 +26,7 @@ import type { Field_string } from '../csuite/fields/string/FieldString'
 import type { CSchema } from '../csuite/model/CSchema'
 import type { NO_PROPS } from '../csuite/types/NO_PROPS'
 import type { Field_prompt } from '../prompt/FieldPrompt'
+import type { Temporal } from '@js-temporal/polyfill'
 
 // TODO:
 // alias should only be $type &
@@ -37,18 +36,12 @@ import type { Field_prompt } from '../prompt/FieldPrompt'
 declare global {
    // eslint-disable-next-line @typescript-eslint/no-namespace
    namespace Z {
-      // #region core types
       // eslint-disable-next-line @typescript-eslint/consistent-type-imports
       type SchemaDict = import('../csuite/model/SchemaDict').SchemaDict
       // eslint-disable-next-line @typescript-eslint/consistent-type-imports
       type Builder = import('./CushyBuilder').CushySchemaBuilder
       // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-      type Field<K extends FieldTypes = FieldTypes> = import('../csuite/model/Field').Field<K>
-      // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-      type FieldTypes = import('../csuite/model/$FieldTypes').FieldTypes
-      // prettier-ignore
-      // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-      type BaseSchema<TYPES extends FieldTypes = FieldTypes> = import('../csuite/model/BaseSchema').BaseSchema<TYPES>
+      type Field = import('../csuite/model/Field').Field
       // eslint-disable-next-line @typescript-eslint/consistent-type-imports
       type Runtime = import('../runtime/Runtime').Runtime
 
@@ -58,18 +51,17 @@ declare global {
       type Shared<T extends Field> = CSchema<Field_shared<T>>
       type Group<T extends SchemaDict> = CSchema<Field_group<T>>
       type Empty = CSchema<Field_group<NO_PROPS>>
-      type Maybe<T extends BaseSchema> = CSchema<Field_optional<T>>
+      type Maybe<T extends CSchema> = CSchema<Field_optional<T>>
       type Bool = CSchema<Field_bool>
-      type Link<A extends BaseSchema, B extends BaseSchema> = CSchema<Field_link<A, B>>
+      type Link<A extends CSchema, B extends CSchema> = CSchema<Field_link<A, B>>
       type String = CSchema<Field_string>
       type Choices<T extends SchemaDict = SchemaDict> = CSchema<Field_choices<T>>
       type Choice<T extends SchemaDict = SchemaDict> = CSchema<Field_choices<T>>
       type Number = CSchema<Field_number>
       type Color = CSchema<Field_color>
-      type List<T extends BaseSchema> = CSchema<Field_list<T>>
-      type Dynamic<T extends BaseSchema> = CSchema<Field_dynamic<T>>
-      type Board<T extends BaseSchema> = CSchema<Field_board<T>>
-      type Button<T> = CSchema<Field_button<T>>
+      type List<T extends CSchema> = CSchema<Field_list<T>>
+      type Dynamic<T extends CSchema> = CSchema<Field_dynamic<T>>
+      type Board<T extends CSchema> = CSchema<Field_board<T>>
       type Seed = CSchema<Field_seed>
       type Matrix = CSchema<Field_matrix>
 
