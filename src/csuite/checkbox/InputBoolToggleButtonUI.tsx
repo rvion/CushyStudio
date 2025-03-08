@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite'
 import { twMerge } from 'tailwind-merge'
 
 import { useCSuite } from '../ctx/useCSuite'
-import { Row } from '../frame/Dov/Dov'
+import { Frame } from '../frame/Frame'
 import { CheckboxAndRadioIcon } from './_InputBoolToggleButtonBoxUI'
 
 // 🔴 2024-07-31: domi: this should actually look like a button?
@@ -24,7 +24,7 @@ export const InputBoolToggleButtonUI = observer(function InputBoolToggleButtonUI
    const kit = useCSuite()
    // const border = p.border ?? 10
    return (
-      <Row
+      <Frame
          tw={twMerge([
             'minh-input select-none cursor-pointer px-1',
             p.showToggleButtonBox ? undefined : 'justify-center',
@@ -84,6 +84,6 @@ export const InputBoolToggleButtonUI = observer(function InputBoolToggleButtonUI
                 - I replaced the "h-input" by "minh-input" in the Frame above
             */}
          {p.children ?? <p tw='w-full text-center'>{p.text}</p>}
-      </Row>
+      </Frame>
    )
 })

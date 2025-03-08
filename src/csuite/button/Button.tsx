@@ -5,6 +5,7 @@ import { observer } from 'mobx-react-lite'
 import { useEffect, useMemo } from 'react'
 
 import { Frame } from '../frame/Frame'
+import { window_addEventListener } from '../utils/window_addEventListenerAction'
 import { withDefaultProps } from './withDefaultProps'
 
 const buttonContrastWhenPressed: number = 0.13 // 30%
@@ -113,7 +114,7 @@ export class ButtonState {
       if (this.running) return
 
       this.pressed = true
-      window.addEventListener('pointerup', this.release, true)
+      window_addEventListener('pointerup', this.release, true)
    }
 
    release = (/* e: MouseEvent */): void => {
@@ -128,9 +129,6 @@ export class ButtonState {
    }
 }
 
-/**
- * @deprecated don't use inside locomotive: use Button from lsuite instead
- */
 export const Button = Object.assign(_Button, {
    /** a borderless / contrastless button */
    Ghost: withDefaultProps(_Button, { borderless: true, subtle: true }),

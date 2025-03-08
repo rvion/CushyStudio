@@ -1,4 +1,4 @@
-import type { BaseSchema } from '../../model/BaseSchema'
+import type { CSchema } from '../../model/CSchema'
 import type { Field_board } from './Field_board'
 
 import { observer, useLocalObservable } from 'mobx-react-lite'

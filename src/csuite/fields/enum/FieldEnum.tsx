@@ -1,6 +1,6 @@
 import type { ComfyNodeSlotName, ComfyUnionValue } from '../../../comfyui/comfyui-types'
 import type { CleanedEnumResult } from '../../../types/EnumUtils'
-import type { BaseSchema } from '../../model/BaseSchema'
+import type { CSchema } from '../../model/CSchema'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { Repository } from '../../model/Repository'
@@ -86,7 +86,7 @@ export class Field_enum<O extends ComfyUnionValue> extends Field<Field_enum<O>> 
       repo: Repository,
       root: Field | null,
       parent: Field | null,
-      schema: BaseSchema<Field_enum<O>>,
+      schema: CSchema<Field_enum<O>>,
       initialMountKey: string,
       serial?: Field_enum_serial<O>,
    ) {

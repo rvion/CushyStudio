@@ -9,7 +9,7 @@ import { bang } from '../utils/bang'
 import { searchMatches } from '../utils/searchMatches'
 
 export type NeighborhoodName = 'children' | 'travels'
-export type NeighborhoodPath = Flavor<string, 'NeighborhoodPath'>
+export type NeighborhoodPath = Tagged<string, 'NeighborhoodPath'>
 export class CSchemaNeighborhood<KEY extends string> {
    constructor(
       public name: NeighborhoodName,
@@ -160,5 +160,5 @@ export class CSchemaNeighborhood<KEY extends string> {
    }
 }
 
-type ColExpr = Flavor<string, 'NeighborhoodPath'>
+type ColExpr = Tagged<string, 'NeighborhoodPath'>
 export type SchemaGraphNode = { at: ColExpr; schema: CSchema }

@@ -3,7 +3,7 @@ import type { BoolButtonProps } from './InputBoolUI'
 import { observer } from 'mobx-react-lite'
 
 import { useCSuite } from '../ctx/useCSuite'
-import { Row } from '../frame/Dov/Dov'
+import { Frame } from '../frame/Frame'
 import { CheckboxAndRadioIcon } from './_InputBoolToggleButtonBoxUI'
 
 // 2024-07-31: domi: not 100% sure what the difference is supposed to be with InputBoolToggleButtonUI
@@ -18,7 +18,7 @@ export const InputBoolCheckboxUI = observer(function InputBoolCheckboxUI_(p: Boo
    // const contrast = getInputBoolContrast(isActive)
    const csuite = useCSuite()
    return (
-      <Row //Container (Makes it so we follow Fitt's law and neatly contains everything)
+      <Frame //Container (Makes it so we follow Fitt's law and neatly contains everything)
          hoverable
          size='input'
          triggerOnPress={
@@ -45,6 +45,6 @@ export const InputBoolCheckboxUI = observer(function InputBoolCheckboxUI_(p: Boo
             />
          )}
          {p.children ?? (label ? <div tw='ml-1'>{label}</div> : null)}
-      </Row>
+      </Frame>
    )
 })

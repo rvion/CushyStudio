@@ -45,7 +45,7 @@ type StepCollect = { type: 'collect'; collectCode?: string }
 type StepIndex = { type: 'index'; index: number }
 type StepBranches = { type: 'branches'; branches: ASTStep[][] }
 
-export type FL_RawFieldSelector = Flavor<string, 'FL_RawFieldSelector'>
+export type FL_RawFieldSelector = Tagged<string, 'FL_RawFieldSelector'>
 const axes: Axis[] = ['$', '.', '>', '^', '<']
 export type Axis =
    | '$' // root

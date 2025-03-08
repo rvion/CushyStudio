@@ -9,7 +9,7 @@ export type SchemaWithSerialPath = {
 }
 export type SchemaDictWithPaths = Record<string, SchemaWithSerialPath>
 
-export type TravelEdge = Flavor<string, 'TravelKey'>
+export type TravelEdge = Tagged<string, 'TravelKey'>
 export type UNVALIDATED<T> = T | unknown
 export type FieldConstructor<FIELD extends Field> = {
    // ⏸️ readonly build: 'new'

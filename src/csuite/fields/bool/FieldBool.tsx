@@ -200,10 +200,6 @@ export class Field_bool extends Field {
       this.value = r > 0.5
    }
 
-   override get isRequired(): boolean {
-      return false
-   }
-
    // #region PATCH
    public static readonly patchedSerialPaths: readonly string[] = Object.freeze(['value'])
 }

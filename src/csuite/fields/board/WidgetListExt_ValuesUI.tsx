@@ -1,11 +1,11 @@
-import type { BaseSchema } from '../../model/BaseSchema'
+import type { CSchema } from '../../model/CSchema'
 import type { Field_board } from './Field_board'
 
 import { observer } from 'mobx-react-lite'
 
 import { Button } from '../../button/Button'
 
-export const WidgetListExt_ValuesUI = observer(function WidgetListExtValuesUI_<T extends BaseSchema>(p: {
+export const WidgetListExt_ValuesUI = observer(function WidgetListExtValuesUI_<T extends CSchema>(p: {
    //
    field: Field_board<T>
 }) {

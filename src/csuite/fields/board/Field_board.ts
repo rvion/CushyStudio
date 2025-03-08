@@ -3,7 +3,6 @@
  * IT WILL BE IMPROVED AS COMPOSITE FIELDS API IS FINALIZED.
  */
 import type { IconName } from '../../icons/icons'
-import type { BaseSchema } from '../../model/BaseSchema'
 import type { CSchema } from '../../model/CSchema'
 import type { Field, FieldCtorProps } from '../../model/Field'
 import type { FieldConfig } from '../../model/FieldConfig'
@@ -17,7 +16,7 @@ import { WidgetListExt_LineUI } from './WidgetListExt_LineUI'
 import { WidgetListExtUI__Regional } from './WidgetListExtUI'
 
 // #region Config
-export type Field_board_config<T extends BaseSchema> = {
+export type Field_board_config<T extends CSchema> = {
    // container size
    width?: number /** default: 100 */
    height?: number /** default: 100 */
@@ -36,7 +35,7 @@ export type Field_board_config<T extends BaseSchema> = {
    icon?: IconName
 }
 
-export type BoardDataSchema<SCHEMA extends BaseSchema> = Z.SGroup<{
+export type BoardDataSchema<SCHEMA extends CSchema> = Z.SGroup<{
    area: Z.SSize
    items: Z.SList<
       Z.SGroup<
@@ -51,7 +50,7 @@ export type BoardDataSchema<SCHEMA extends BaseSchema> = Z.SGroup<{
    >
 }>
 
-export const boardDataSchema = <SCHEMA extends BaseSchema>(
+export const boardDataSchema = <SCHEMA extends CSchema>(
    //
    b: SimpleBuilder,
    opts: Field_board_config<SCHEMA>,
@@ -101,24 +100,24 @@ export interface RV1<
    $Sub: TYPES['$Sub']
 }
 
-// export type ListExtFields<SCHEMA extends BaseSchema> =
+// export type ListExtFields<SCHEMA extends CSchema> =
 // 🔴 ping @globi: Why assume here
 
-// export interface Field_board<SCHEMA extends BaseSchema> //
+// export interface Field_board<SCHEMA extends CSchema> //
 //     extends RV1<BoardDataSchema<SCHEMA>['$reflect'], any> {}
 // type K = BoardDataSchema['']
 
-//🟢> type MakeItWork<SCHEMA extends BaseSchema> = //
+//🟢> type MakeItWork<SCHEMA extends CSchema> = //
 //🟢>     RV1<BoardDataSchema<SCHEMA>['$reflect'], Field_board<SCHEMA>> & //
 //🟢>         MAGICFIELDS<BoardDataSchema<SCHEMA>['$reflect']>
 //🟢>
-//🟢> export interface Field_board<SCHEMA extends BaseSchema> //
+//🟢> export interface Field_board<SCHEMA extends CSchema> //
 //🟢>     extends MakeItWork<BoardDataSchema<SCHEMA>> {}
 //🟢>
 
-export interface Field_board<SCHEMA extends BaseSchema>
+export interface Field_board<SCHEMA extends CSchema>
    extends MAGICFIELDS<BoardDataSchema<SCHEMA>['$reflect']> {}
-export class Field_board<SCHEMA extends BaseSchema> extends Field_group<BoardDataSchema<SCHEMA>['$reflect']> {
+export class Field_board<SCHEMA extends CSchema> extends Field_group<BoardDataSchema<SCHEMA>['$reflect']> {
    $config!: FieldConfig<{/* ... place whatever here */}, RV1<BoardDataSchema<SCHEMA>['$reflect'], Field_board<SCHEMA>>> // prettier-ignore
    $field!: Field_board<SCHEMA>
    // $reflect: RV1<SCHEMA, NEWCLASS>
@@ -147,7 +146,7 @@ export class Field_board<SCHEMA extends BaseSchema> extends Field_group<BoardDat
    DefaultHeaderUI: any = WidgetListExt_LineUI
 
    // #region Composite Shema
-   static getSchema<SCHEMA extends BaseSchema>(
+   static getSchema<SCHEMA extends CSchema>(
       //
       b: SimpleBuilder,
       opts: Field_board_config<SCHEMA>,

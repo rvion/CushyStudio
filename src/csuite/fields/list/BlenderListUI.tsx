@@ -1,4 +1,4 @@
-import type { BaseSchema } from '../../model/BaseSchema'
+import type { CSchema } from '../../model/CSchema'
 import type { Field_list } from './FieldList'
 
 import { action, runInAction } from 'mobx'
@@ -20,7 +20,7 @@ export type BlenderListProps<T extends Field_list<any>> = {
    renderItem: (item: T['items'][number], index: number) => ReactNode
 }
 
-export const BlenderListUI = observer(function BlenderListUI_<T extends Field_list<BaseSchema>>({
+export const BlenderListUI = observer(function BlenderListUI_<T extends Field_list<CSchema>>({
    field,
    activeIndex,
    renderItem,

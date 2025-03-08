@@ -1,5 +1,6 @@
 /** usefull to catch most *units* type errors */
 
+// Csuite
 declare type Tagged<O, Tag> = O & { __tag?: Tag }
 declare type Branded<O, Brand extends { [key: string]: true }> = O & Brand
 declare type Maybe<T> = T | null | undefined

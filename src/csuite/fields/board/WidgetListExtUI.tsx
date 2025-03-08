@@ -1,4 +1,4 @@
-import type { BaseSchema } from '../../model/BaseSchema'
+import type { CSchema } from '../../model/CSchema'
 import type { Field_board } from './Field_board'
 
 import { observer } from 'mobx-react-lite'
@@ -28,7 +28,7 @@ export function WidgetListExtUI__Timeline(p: { field: Field_board<any> }): React
    )
 }
 
-export const WidgetListExtUI = observer(function WidgetListExtUI_<T extends BaseSchema>(p: {
+export const WidgetListExtUI = observer(function WidgetListExtUI_<T extends CSchema>(p: {
    //
    field: Field_board<T>
    mode: 'timeline' | 'regional'

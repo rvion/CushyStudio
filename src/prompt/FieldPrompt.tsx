@@ -1,7 +1,7 @@
-import type { Tree } from '@lezer/common'
-import type { BaseSchema } from '../csuite/model/BaseSchema'
+import type { CSchema } from '../csuite/model/CSchema'
 import type { Repository } from '../csuite/model/Repository'
 import type { Problem_Ext } from '../csuite/model/Validation'
+import type { Tree } from '@lezer/common'
 
 import { produce } from 'immer'
 
@@ -70,7 +70,7 @@ export class Field_prompt extends Field<Field_prompt> {
       repo: Repository,
       root: Field | null,
       parent: Field | null,
-      schema: BaseSchema<Field_prompt>,
+      schema: CSchema<Field_prompt>,
       initialMountKey: string,
       serial?: Field_prompt_serial,
    ) {

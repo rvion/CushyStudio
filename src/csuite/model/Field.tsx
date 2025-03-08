@@ -67,10 +67,10 @@ import {
    type PatchRemove,
    type PatchReplace,
 } from './Patch'
+import { __ERROR, __OK, type Result } from './Result'
 import { TreeEntry_Field } from './TreeEntry_Field'
 import { normalizeProblem } from './Validation'
 import { ValidationError } from './ValidationError'
-import { __ERROR, __OK } from 'src/types/Result'
 
 /*
  * fact 1. mobx object can't be frozen;
@@ -95,8 +95,8 @@ export const ensureObserver = <T extends null | undefined | FC<any>>(fn: T): T =
 }
 
 export type KeyedField = { key: string; field: Field }
-export type FL_FieldPathExt = Flavor<string, 'FL_FieldPathExt'>
-export type FL_FieldPath = Flavor<string, 'FL_FieldPath'>
+export type FL_FieldPathExt = Tagged<string, 'FL_FieldPathExt'>
+export type FL_FieldPath = Tagged<string, 'FL_FieldPath'>
 
 export type FieldCtorProps<TYPES extends Field = any> = [
    //
@@ -1917,10 +1917,6 @@ export abstract class Field {
    public async saveChanges(): Promise<void> {
       for (const fn of this._extraSaveChangesFunction) await fn()
       this.touched = false
-   }
-
-   public get isRequired(): boolean {
-      return !this.canBeToggledWithinParent
    }
 
    /**

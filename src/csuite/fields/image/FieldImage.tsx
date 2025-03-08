@@ -1,7 +1,7 @@
 import type { SQLWhere } from '../../../db/SQLWhere'
 import type { MediaImageT } from '../../../db/TYPES.gen'
 import type { MediaImageL } from '../../../models/MediaImage'
-import type { BaseSchema } from '../../model/BaseSchema'
+import type { CSchema } from '../../model/CSchema'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { Repository } from '../../model/Repository'
@@ -68,7 +68,7 @@ export class Field_image extends Field<Field_image> {
       repo: Repository,
       root: Field | null,
       parent: Field | null,
-      schema: BaseSchema<Field_image>,
+      schema: CSchema<Field_image>,
       initialMountKey: string,
       serial?: Field_image_serial,
    ) {

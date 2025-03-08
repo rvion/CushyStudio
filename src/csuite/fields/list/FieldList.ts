@@ -860,10 +860,6 @@ export class Field_list<T extends CSchema> extends Field {
       return this.splice(i, 1)[0]
    }
 
-   override get isRequired(): boolean {
-      return super.isRequired && this.config.min != null && this.config.min > 0
-   }
-
    // #region Patches
    public static readonly patchedSerialPaths: readonly string[] = Object.freeze(['keys_'])
 

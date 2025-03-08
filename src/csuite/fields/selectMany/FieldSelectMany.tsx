@@ -1,3 +1,4 @@
+import type { ErrorConfigValue } from '../../errors/extractConfig'
 import type { CSchema } from '../../model/CSchema'
 import type { Patch } from '../../model/Patch'
 import type { Repository } from '../../model/Repository'
@@ -5,7 +6,6 @@ import type { SelectValueSlots } from '../../select/SelectState'
 import type { TabPositionConfig } from '../choices/TabPositionConfig'
 import type { SelectKey } from '../selectOne/SelectOneKey'
 import type { SelectOption } from '../selectOne/SelectOption'
-import type { ErrorConfigValue } from '../../errors/extractConfig'
 
 import { csuiteConfig } from '../../config/configureCsuite'
 import { extractConfigMessage, extractConfigValue } from '../../errors/extractConfig'
@@ -613,11 +613,6 @@ export class Field_selectMany<
          if (this.selectedKeys.includes(choice)) continue
          this.addKey(choice)
       }
-   }
-
-   override get isRequired(): boolean {
-      const min = extractConfigValue(this.config.minLength)
-      return min != null && min > 0
    }
 
    override get isEmpty(): boolean {

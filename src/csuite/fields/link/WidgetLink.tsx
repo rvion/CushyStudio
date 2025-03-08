@@ -1,14 +1,12 @@
 import type { CompiledRenderProps } from '../../../csuite-cushy/presenters/RenderTypes'
-import type { BaseSchema } from '../../model/BaseSchema'
+import type { CSchema } from '../../model/CSchema'
 import type { Field_link } from './FieldLink'
 
 import { observer } from 'mobx-react-lite'
 
 import { renderFCOrNode } from '../../utils/renderFCOrNode'
 
-export const ShellLinkUI = observer(function ShellLink(
-   p: CompiledRenderProps<Field_link<BaseSchema, BaseSchema>>,
-) {
+export const ShellLinkUI = observer(function ShellLink(p: CompiledRenderProps<Field_link<CSchema, CSchema>>) {
    const field = p.field
    const extraClass = field.isDisabled ? 'pointer-events-none opacity-30 bg-[#00000005]' : undefined
    const child = field.bField

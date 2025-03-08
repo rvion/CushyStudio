@@ -1,4 +1,4 @@
-import type { BaseSchema } from '../csuite'
+import type { CSchema } from '../csuite'
 import type { Field } from '../csuite/model/Field'
 import type { Json } from '../csuite/types/Json'
 import type { Builder } from '../CUSHY'
@@ -161,7 +161,7 @@ export class PanelState<PROPS extends object = any> {
    }
 
    documents: Map<string, Field> = new Map<string, Field>()
-   usePersistentModel = <SCHEMA extends BaseSchema>(
+   usePersistentModel = <SCHEMA extends CSchema>(
       //
       uid: string,
       init: ((ui: Builder) => SCHEMA) | SCHEMA,

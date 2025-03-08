@@ -1,4 +1,4 @@
-import type { BaseSchema } from '../../model/BaseSchema'
+import type { CSchema } from '../../model/CSchema'
 import type { Field_list } from './FieldList'
 
 import { observer } from 'mobx-react-lite'
@@ -7,7 +7,7 @@ import { Button } from '../../button/Button'
 import { ListItemMoveDownButtonUI } from './ListItemMoveDownButtonUI'
 import { ListItemMoveUpButtonUI } from './ListItemMoveUpButtonUI'
 
-export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends BaseSchema>(p: {
+export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends CSchema>(p: {
    field: Field_list<T>
 }) {
    const listField = p.field

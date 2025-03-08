@@ -1,5 +1,5 @@
 import type { Box } from '../box/Box'
-import type { DovProps } from '../frame/Dov/Dov'
+import type { FrameProps } from '../frame/Frame'
 import type { IconName } from '../icons/icons'
 
 import { observer } from 'mobx-react-lite'
@@ -33,7 +33,7 @@ export type BoolButtonProps = {
 
    toggleGroup: string
    disabled?: boolean
-} & DovProps
+} & FrameProps
 
 export const InputBoolUI = observer(function InputBool(p: BoolButtonProps) {
    const display = p.display ?? 'check'

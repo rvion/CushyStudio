@@ -1,4 +1,4 @@
-import type { BaseSchema } from '../../model/BaseSchema'
+import type { CSchema } from '../../model/CSchema'
 import type { FieldConfig } from '../../model/FieldConfig'
 import type { FieldSerial } from '../../model/FieldSerial'
 import type { Repository } from '../../model/Repository'
@@ -72,7 +72,7 @@ export class Field_orbit extends Field<Field_orbit> {
       repo: Repository,
       root: Field | null,
       parent: Field | null,
-      schema: BaseSchema<Field_orbit>,
+      schema: CSchema<Field_orbit>,
       initialMountKey: string,
       serial?: Field_orbit_serial,
    ) {

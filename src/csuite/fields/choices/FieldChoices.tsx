@@ -19,6 +19,7 @@ import { exhaust } from '../../utils/exhaust'
 import { makeLabelFromPrimitiveValue } from '../../utils/makeLabelFromFieldName'
 import { isProbablySerialChoices, registerFieldClass } from '../WidgetUI.DI'
 
+export type Field_choices_config<T extends SchemaDict> = Field_choices<T>['$config']
 type ActiveBranchesByName<T> = { [key in keyof T]?: true }
 
 // 💬 2024-12-30 rvion:

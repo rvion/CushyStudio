@@ -1,4 +1,4 @@
-import type { BaseSchema } from '../../model/BaseSchema'
+import type { CSchema } from '../../model/CSchema'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 import type { UIKit } from './WidgetCustomUI'
@@ -18,7 +18,7 @@ export type CustomWidgetProps<T> = {
 // #region $config
 export type Field_custom_ownConfig<T> = {
    defaultValue: () => T
-   subTree?: () => BaseSchema
+   subTree?: () => CSchema
    Component: FC<CustomWidgetProps<T>>
 }
 
@@ -58,7 +58,7 @@ export class Field_custom<T> extends Field {
       repo: Repository,
       root: Field | null,
       parent: Field | null,
-      schema: BaseSchema<Field_custom<T>>,
+      schema: CSchema<Field_custom<T>>,
       initialMountKey: string,
       serial?: Field_custom<T>['$serial'],
    ) {
