@@ -2,26 +2,28 @@ import type { FrameProps } from '../frame/Frame'
 
 import { makeAutoObservable, observable, runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 
 import { Frame } from '../frame/Frame'
+import { registerComponentAsClonableWhenInsideReveal } from '../reveal/RevealCloneWhitelist'
 import { window_addEventListener } from '../utils/window_addEventListenerAction'
 import { withDefaultProps } from './withDefaultProps'
 
 const buttonContrastWhenPressed: number = 0.13 // 30%
 const buttonContrast: number = 0.08 // 20%
 
-const _Button = observer(function Button_(
-   p: FrameProps & {
-      /** no contrast */
-      subtle?: boolean
-      /** no border */
-      borderless?: boolean
-      /** hue */
-      hue?: number
-      chroma?: number
-   },
-) {
+export type ButtonProps = FrameProps & {
+   /** no contrast */
+   subtle?: boolean
+   /** no border */
+   borderless?: boolean
+   /** hue */
+   hue?: number
+   contrast?: number
+   chroma?: number
+}
+
+const _Button = observer(function Button_(p: ButtonProps) {
    const uist = useMemo(() => new ButtonState(p), [])
 
    // ensure new properties that could change during lifetime of the component stays up-to-date in the stable state.
@@ -30,35 +32,52 @@ const _Button = observer(function Button_(
    // ensure any unmounting of this component will properly clean-up
    useEffect(() => uist.release, [])
 
-   const { size, look, subtle, borderless, iconSize, onClick, ...rest } = p
+   const { size, look, subtle, borderless, iconSize, onClick, square: square_, style, ...rest } = p
+   const theme = cushy.preferences.theme.value
+   const square = square_ ?? (p.icon != null && p.children == null)
+
    return (
       <Frame //
+         ref={p.ref}
          as='button'
          size={size ?? 'input'}
          look={look}
-         boxShadow={
-            uist.visuallyActive || p.subtle || p.borderless //
-               ? undefined
-               : { inset: true, y: -3, blur: 5, spread: 0, color: 5 }
-         }
+         // (bird_d): Need to make this optional, disabling it to make it consistent with everything else for now
+         // boxShadow={
+         //     uist.visuallyActive || p.subtle || p.borderless //
+         //         ? undefined
+         //         : { inset: true, y: -3, blur: 5, spread: 0, color: 5 }
+         // }
          base={{
-            contrast: subtle //
-               ? 0
-               : uist.visuallyActive || uist.running
-                 ? buttonContrastWhenPressed
-                 : buttonContrast,
+            contrast:
+               p.contrast ??
+               (subtle //
+                  ? 0
+                  : uist.visuallyActive || uist.running
+                    ? buttonContrastWhenPressed
+                    : buttonContrast),
             hue: p.hue,
             chroma: p.chroma,
          }}
-         border={borderless ? 0 : 10}
+         border={borderless ? 0 : theme.global.border}
          hover={p.disabled ? false : 3}
          // active={uist.visuallyActive}
          disabled={p.disabled}
+         dropShadow={p.subtle ? undefined : (p.dropShadow ?? theme.global.shadow)}
+         roundness={theme.global.roundness}
          loading={p.loading ?? uist.running}
          tabIndex={p.tabIndex}
          onMouseDown={uist.press}
+         square={square}
          onClick={uist.onClick}
          iconSize={iconSize ?? '1.1rem'}
+         style={{
+            //
+            fontSize: `${theme.global.text.size}pt`,
+            // TODO(bird_d/ui/theme/textShadow): Implement per-widget textShadows
+            // textShadow: run_theme_dropShadow(theme.widget.button.text.shadow),
+            ...style,
+         }}
          {...rest}
          tw={[
             'inline-flex',
@@ -73,8 +92,8 @@ const _Button = observer(function Button_(
             // | 'font-semibold',
 
             'ui-button',
-            'items-center gap-1 rounded-sm',
-            p.disabled ? null : 'cursor-pointer',
+            'items-center gap-1',
+            p.disabled ? 'cursor-not-allowed' : 'cursor-pointer',
             'whitespace-nowrap',
             'justify-center',
          ]}
@@ -86,7 +105,7 @@ export class ButtonState {
    pressed: boolean = false
    running: boolean = false
 
-   constructor(public props: Pick<FrameProps, 'disabled' | 'onClick' | 'active'>) {
+   constructor(public props: Pick<FrameProps, 'disabled' | 'onClick' | 'onDoubleClick' | 'active'>) {
       makeAutoObservable(this, { props: observable.ref })
    }
 
@@ -107,7 +126,24 @@ export class ButtonState {
       }
    }
 
-   press = (_ev: React.MouseEvent<any>): void => {
+   onDoubleClick = (ev: React.MouseEvent<any>): void => {
+      // prevent to run if already running
+      if (this.props.disabled) return
+      // prevent to run if already running (automatic behaviour when onClick return Promsies)
+      if (this.running) return
+
+      if (this.props.onDoubleClick) {
+         const res = this.props.onDoubleClick(ev)
+         if (res == null) return
+         if (res instanceof Promise) {
+            // mark as running
+            runInAction(() => (this.running = true))
+            void res.finally(() => runInAction(() => (this.running = false)))
+         }
+      }
+   }
+
+   press = (_ev: React.MouseEvent): void => {
       // prevent to run if already running
       if (this.props.disabled) return
       // prevent to run if already running (automatic behaviour when onClick return Promsies)
@@ -134,4 +170,6 @@ export const Button = Object.assign(_Button, {
    Ghost: withDefaultProps(_Button, { borderless: true, subtle: true }),
 })
 
-// registerComponentAsClonableWhenInsideReveal(Button)
+// 💬 2024-10-08 rvion:
+// | was commented, but probably worth uncommenting
+registerComponentAsClonableWhenInsideReveal(_Button)

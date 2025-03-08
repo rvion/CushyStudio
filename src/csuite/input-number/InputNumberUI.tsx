@@ -1,13 +1,15 @@
-import type { CSuiteConfig } from '../ctx/CSuiteConfig'
+import type { Tint } from '../kolor/Tint'
 
 import { makeAutoObservable, runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import React, { useEffect, useMemo } from 'react'
 
 import { Button } from '../button/Button'
-import { useCSuite } from '../ctx/useCSuite'
-import { Frame } from '../frame/Frame'
+import { Frame, type FrameProps } from '../frame/Frame'
+import { run_theme_dropShadow } from '../frame/SimpleDropShadow'
+import { run_tint } from '../kolor/prefab_Tint'
 import { parseFloatNoRoundingErr } from '../utils/parseFloatNoRoundingErr'
+import { window_addEventListener } from '../utils/window_addEventListenerAction'
 
 const clamp = (x: number, min: number, max: number): number => Math.max(min, Math.min(max, x))
 
@@ -41,18 +43,20 @@ type InputNumberProps = {
    placeholder?: string
    forceSnap?: boolean
    className?: string
+   tooltip?: string
+} & {
+   // 💬 2024-09-30 rvion:
+   // Temporarilly, let's just accept the two we use manually,
+   // and improve that later.
+   //
+   //> & FrameProps 🔴 will hhave to take all those props properly into account if we want to add taht here
+   roundness?: FrameProps['roundness']
+   dropShadow?: FrameProps['dropShadow']
 }
 
 /** this class will be instanciated ONCE in every InputNumberUI, (local the the InputNumberUI) */
 class InputNumberStableState {
-   /* Used for making sure you can type whatever you want in to the value, but it gets validated when pressing Enter. */
-   inputValue: string
-
-   constructor(
-      public props: InputNumberProps,
-      public kit: Maybe<CSuiteConfig>,
-   ) {
-      this.inputValue = this.value.toString()
+   constructor(public props: InputNumberProps) {
       makeAutoObservable(this)
    }
 
@@ -85,12 +89,15 @@ class InputNumberStableState {
    }
 
    get numberSliderSpeed(): number {
-      return this.kit?.clickAndSlideMultiplicator ?? 1
+      return cushy.preferences.interface.value.widget.valueSliderMultiplier
    }
 
    get isInteger(): boolean {
       return this.mode === 'int'
    }
+
+   /* Used for making sure you can type whatever you want in to the value, but it gets validated when pressing Enter. */
+   inputValue: string = this.value.toString()
 
    /* When editing the number <input> this will make it display inputValue instead of val.*/
    isEditing: boolean = false
@@ -198,6 +205,8 @@ class InputNumberStableState {
       if (e.button == 2) {
          activeSlider = null
          document.exitPointerLock()
+         e.preventDefault()
+         e.stopPropagation()
       }
    }
 
@@ -231,8 +240,7 @@ class InputNumberStableState {
 
 export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProps) {
    // create stable state, that we can programmatically mutate witout caring about stale references
-   const csuite = useCSuite()
-   const uist = useMemo(() => new InputNumberStableState(p, csuite), [])
+   const uist = useMemo(() => new InputNumberStableState(p), [])
 
    // ensure new properties that could change during lifetime of the component stays up-to-date in the stable state.
    runInAction(() => Object.assign(uist.props, p))
@@ -245,23 +253,26 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
    const step = uist.step
    const rounding = uist.rounding
    const isEditing = uist.isEditing
+   const theme = cushy.preferences.theme.value
 
+   const dropShadow = uist.props.dropShadow ?? theme.global.shadow
    return (
       <Frame /* Root */
          style={p.style}
-         base={csuite.inputContrast}
-         border={csuite.inputBorder}
+         base={theme.global.contrast}
+         border={theme.global.border}
          hover={{ contrast: 0.03 }}
          className={p.className}
-         // base={{ contrast: isEditing ? -0.1 : 0.05 }}
-         // textShadow={{ contrast: 1, hue: 0, chroma: 1 }}
+         // unsure about the amount of code we had to use for that prop
+         dropShadow={dropShadow ? dropShadow : undefined}
+         tooltip={p.tooltip}
+         roundness={p.roundness ?? theme.global.roundness}
+         disabled={p.disabled}
          tw={[
             'UI-InputNumber',
-            p.disabled && 'pointer-events-none opacity-25',
             'h-input relative',
             'input-number-ui',
             'min-w-24 flex-1 cursor-ew-resize select-none overflow-clip',
-            // !isEditing && 'hover:border-base-200 hover:border-b-base-300 hover:bg-primary/40',
          ]}
          onWheel={(ev) => {
             /* NOTE: This could probably divide by the length? But I'm not sure how to get the distance of 1 scroll tick.
@@ -277,27 +288,31 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
             }
          }}
       >
-         <Frame /* Slider display */
-            className='inui-foreground'
-            base={{ contrast: p.hideSlider ? 0 : 0.1, chromaBlend: 2 }}
-            tw={['h-input absolute left-0 z-10']}
-            style={{ width: `${((val - uist.rangeMin) / (uist.rangeMax - uist.rangeMin)) * 100}%` }}
-         />
+         {p.hideSlider ?? (
+            <Frame /* Slider display */
+               className='inui-foreground'
+               base={run_tint(theme.global.active)}
+               tw={['h-input absolute left-0 z-10']}
+               style={{ width: `${((val - uist.rangeMin) / (uist.rangeMax - uist.rangeMin)) * 100}%` }}
+            />
+         )}
 
-         <div tw='z-20 grid h-full w-full items-center' style={{ gridTemplateColumns: '16px 1fr 16px' }}>
+         <div tw='z-20 flex h-full items-center'>
             <Button /* Left Button */
-               className='control'
+               // className='control'
                borderless
-               tw='z-20 items-center rounded-none opacity-0'
+               tw='z-20 h-full items-center !rounded-none opacity-0'
                tabIndex={-1}
                onClick={uist.decrement}
-               icon={IKONS.mdiChevronLeft}
+               icon='mdiChevronLeft'
+               square
+               size='inside'
             />
             <div /* Text Container */
                tw={[
                   //
                   'th-text',
-                  `z-20 flex h-full truncate px-1 text-sm`,
+                  `z-20 flex h-full flex-grow truncate px-1 text-sm`,
                   'items-center',
                   // 'items-center justify-center',
                ]}
@@ -310,19 +325,20 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                   cumulativeOffset = 0
                   dragged = false
 
-                  window.addEventListener('mousemove', uist.mouseMoveListener, true)
-                  window.addEventListener('pointerup', uist.onPointerUpListener, true)
-                  window.addEventListener('pointerlockchange', uist.onPointerLockChange, true)
-                  window.addEventListener('mousedown', uist.cancelListener, true)
+                  window_addEventListener('mousemove', uist.mouseMoveListener, true)
+                  window_addEventListener('pointerup', uist.onPointerUpListener, true)
+                  window_addEventListener('pointerlockchange', uist.onPointerLockChange, true)
+                  window_addEventListener('mousedown', uist.cancelListener, true)
 
                   /* Fix for low-sensitivity devices, it will get raw input from the mouse instead of the processed input.
                    *  NOTE: This does not work on Linux right now, but when it does get added for Linux, this code should not need to be changed.
                    */
-                  void activeSlider?.requestPointerLock({ unadjustedMovement: true }).catch(async (error) => {
+                  // @ts-ignore 🔴 untyped for me for now; TODO: will have to investigate why
+                  activeSlider?.requestPointerLock({ unadjustedMovement: true }).catch((error) => {
                      console.log(
                         '[InputNumberUI] Obtaining raw mouse input is not supported on this platform. Using processed mouse input, you may need to adjust the number input drag multiplier.',
                      )
-                     await activeSlider?.requestPointerLock()
+                     activeSlider?.requestPointerLock()
                   })
                }}
             >
@@ -332,7 +348,6 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                   ref={uist.inputRef}
                   onDragStart={(ev) => ev.preventDefault()} // Prevents drag n drop of selected text, so selecting is easier.
                   tw={[
-                     // 'text-shadow outline-0',
                      /* `absolute opacity-0` is a bit of a hack around not being able to figure out why the input kept taking up so much width.
                       * Can't use `hidden` here because it messes up focusing. */
                      !isEditing && 'pointer-events-none absolute cursor-not-allowed opacity-0',
@@ -342,6 +357,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                   placeholder={p.placeholder}
                   style={{
                      fontFamily: 'monospace',
+                     fontSize: `${theme.global.text.size}pt`,
                      zIndex: 2,
                      background: 'transparent',
                      MozWindowDragging: 'no-drag',
@@ -357,8 +373,10 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                      activeSlider = textInput.parentElement as HTMLDivElement
                      textInput.select()
                      startValue = val
-                     uist.inputValue = val.toString()
-                     uist.isEditing = true
+                     runInAction(() => {
+                        uist.inputValue = val.toString()
+                        uist.isEditing = true
+                     })
                      p.onFocus?.()
                   }}
                   onBlur={(ev) => {
@@ -404,25 +422,32 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                   <>
                      {p.text && (
                         <div /* Inner Label Text - Not shown while editing */
-                           tw={['z-10 w-full truncate border-0 border-transparent pr-1 text-left outline-0']}
+                           tw={[
+                              'z-10 w-full flex-grow truncate border-0 border-transparent pr-1 text-left outline-0',
+                           ]}
+                           style={{ fontSize: `${theme.global.text.size}pt` }}
                         >
                            {p.text}
                         </div>
                      )}
                      {/* I couldn't make the input not take up a ton of space so I'm just using this when we're not editing now. */}
-                     <div style={{ fontFamily: 'monospace' }}>{p.value}</div>
+                     <div style={{ fontFamily: 'monospace', fontSize: `${theme.global.text.size}pt` }}>
+                        {p.value}
+                     </div>
                      {!isEditing && p.suffix ? <div tw='pl-0.5'>{p.suffix}</div> : <></>}
                   </>
                )}
             </div>
 
             <Button /* Right Button */
-               className='control'
+               // className='control'
                borderless
-               tw='z-20 items-center rounded-none opacity-0'
+               tw='z-20 h-full items-center !rounded-none opacity-0'
                tabIndex={-1}
                onClick={uist.increment}
-               icon={IKONS.mdiChevronRight}
+               icon='mdiChevronRight'
+               square
+               size='inside'
             />
          </div>
       </Frame>

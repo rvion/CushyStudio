@@ -32,6 +32,7 @@ export const InputBoolFlipButtonUI = observer(function InputBoolFlipButtonUI_(p:
          onClick={(ev) => {
             if (!p.onValueChange) return
             ev.stopPropagation()
+            ev.preventDefault()
             p.onValueChange(!isActive)
          }}
       >

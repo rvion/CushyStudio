@@ -37,6 +37,7 @@ export interface CSuiteConfig {
    widgetHeight: number
    inputHeight: number
    insideHeight: number
+   inputRoundness: number
 
    // ------------------------------------------------------------
    // [theme]
@@ -61,6 +62,5 @@ export interface CSuiteConfig {
     * @default false
     * when true, force labels to remain inline, and show ellipsis when label is too long  */
    truncateLabels?: boolean
-
    enableRollingClick?: boolean
 }

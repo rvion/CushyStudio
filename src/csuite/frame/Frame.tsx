@@ -39,7 +39,7 @@ export type FrameProps = {
 
    /** should be moved to Box props soon */
    boxShadow?: SimpleBoxShadow
-   dropShadow?: SimpleDropShadow
+   dropShadow?: Maybe<SimpleDropShadow>
 
    // quick layout ----------------------------------------------------
    /** quick layout feature to add `flex flex-row` */

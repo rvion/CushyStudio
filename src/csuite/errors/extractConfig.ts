@@ -7,6 +7,7 @@ export function extractConfigValue<T>(config?: ErrorConfigValue<T>): T | undefin
       ? (config as { value: T }).value
       : (config as T)
 }
+
 export function extractConfigMessage<T>(
    config: undefined | ErrorConfigValue<T>,
    defaultMessage: string,

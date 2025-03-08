@@ -1,12 +1,14 @@
-import type { ReactNode } from 'react'
+import type { ReactNode, RefObject } from 'react'
 
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { useMemo } from 'react'
+import { createRef, useLayoutEffect, useMemo } from 'react'
 
+import { Button } from '../button/Button'
 import { Frame, type FrameProps } from '../frame/Frame'
 import { IkonOf } from '../icons/iconHelpers'
-import { PanelHeaderUI } from '../panel/PanelHeaderUI'
+import { clamp } from '../utils/clamp'
+import { window_addEventListener } from '../utils/window_addEventListenerAction'
 
 /* Used once per widget since they should not conflict. */
 let startValue: number = 0
@@ -32,6 +34,9 @@ type ResizableFrameProps = {
    header?: ReactNode
    footer?: ReactNode
 
+   /** If undefined, the footer will always be shown. When True/False it will start with that value, but will be toggle-able via an internal state  */
+   showFooter?: boolean
+
    /** When true, return relative mouse movement (e.movementY), else return the starting value + offset */
    relative?: boolean
 
@@ -44,24 +49,42 @@ type ResizableFrameProps = {
 
 class ResizableFrameStableState {
    size: number
+   showFooter?: boolean
+   containerRef = createRef<HTMLDivElement>()
+
    constructor(public props: ResizableFrameProps) {
       this.size = props.currentSize ?? props.startSize ?? defaultSize
+      this.showFooter = props.showFooter
       makeAutoObservable(this)
    }
 
-   start = () => {
+   start = (e: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
       startValue = this.size
       offset = 0
-      window.addEventListener('mousemove', this.resize, true)
-      window.addEventListener('pointerup', this.stop, true)
+      window_addEventListener('mousemove', this.resize, true)
+      window_addEventListener('pointerup', this.stop, true)
+
+      e.preventDefault()
+      e.stopPropagation()
    }
 
-   stop = () => {
+   stop = (e: MouseEvent): void => {
       window.removeEventListener('mousemove', this.resize, true)
       window.removeEventListener('pointerup', this.stop, true)
+
+      // Make sure to resize on stop to container, else the dragged value could be not in sync and the user will have to drag down a lot to fix.
+      const ref = this.containerRef
+      if (ref.current) {
+         this.size = ref.current.clientHeight
+      }
+
+      e.preventDefault()
+      e.stopPropagation()
    }
 
-   resize = (e: MouseEvent) => {
+   resize = (e: MouseEvent): void => {
+      e.preventDefault()
+      e.stopPropagation()
       if (this.props.relative) {
          return this.props.onResize?.(e.movementY)
       }
@@ -69,9 +92,10 @@ class ResizableFrameStableState {
       offset += e.movementY
       let next = startValue + offset
 
-      if (this.props.snap != null && this.props.snap !== 0) {
+      if (this.props.snap) {
          next = Math.round(next / this.props.snap) * this.props.snap
       }
+      next = clamp(next, 100, Number.MAX_SAFE_INTEGER)
       this.props.onResize?.(next)
       this.size = next
    }
@@ -80,23 +104,41 @@ class ResizableFrameStableState {
 export const ResizableFrame = observer(function ResizableFrame_(p: ResizableFrameProps) {
    // create stable state, that we can programmatically mutate witout caring about stale references
    const uist = useMemo(() => new ResizableFrameStableState(p), [])
+   const theme = cushy.preferences.theme.value
 
    const { currentSize, ...props } = p
    return (
       <Frame // container
          // hover
-         tw='flex flex-col !p-0'
-         style={{ gap: '0px', ...p.style }}
+         tw='flex flex-grow flex-col overflow-clip !p-0'
+         style={{
+            gap: '0px',
+            ...p.style,
+         }}
+         border={theme.global.border}
+         dropShadow={theme.global.shadow}
+         roundness={theme.global.roundness}
          {...props}
       >
-         {Boolean(p.header) && <PanelHeaderUI>{p.header}</PanelHeaderUI>}
+         {p.header && (
+            <Frame
+               //
+               tw='p-1'
+               row
+               base={{ contrast: 0.0777 }}
+            >
+               {p.header}
+            </Frame>
+         )}
 
          <Frame // Content
-            tw='w-full overflow-auto'
+            ref={uist.containerRef}
+            tw='w-full flex-grow overflow-auto'
+            base={theme.global.contrast}
             style={{
-               height: `${uist.size}px`,
                borderBottomLeftRadius: '0px',
                borderBottomRightRadius: '0px',
+               height: `${uist.size}px`,
                padding: '0px !important',
             }}
          >
@@ -104,17 +146,35 @@ export const ResizableFrame = observer(function ResizableFrame_(p: ResizableFram
          </Frame>
 
          <Frame // Footer
-            className='h-input relative w-full'
-            style={{ borderTop: '1px solid oklch(from var(--KLR) calc(l + 0.1 * var(--DIR)) c h)' }}
+            className='flex w-full flex-col'
+            base={theme.global.contrast}
          >
             <Frame
-               hover
-               tw='absolute inset-0 !flex h-full cursor-ns-resize items-center justify-center'
-               onMouseDown={() => uist.start()}
+               tw='inset-0 z-10 flex h-4 cursor-ns-resize items-center justify-center'
+               onMouseDown={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => uist.start(e)}
             >
-               <IkonOf name={IKONS.mdiDragHorizontalVariant}></IkonOf>
+               {p.showFooter != undefined && (
+                  <Button
+                     // Workaround not having a background-less button option
+                     tw='absolute left-0 !h-4 !w-8 !border-none !bg-transparent'
+                     hover={{ lightness: -1000 }}
+                     subtle
+                     size='xs'
+                     border={false}
+                     icon={uist.showFooter ? 'mdiChevronDown' : 'mdiChevronRight'}
+                     onMouseDown={() => {
+                        uist.showFooter = !uist.showFooter
+                     }}
+                  />
+               )}
+               <IkonOf name='mdiDragHorizontalVariant' />
             </Frame>
-            <div tw='lh-input absolute items-center'>{p.footer}</div>
+            {
+               //TODO(bird_d): Make sure to fix image widget
+            }
+            {p.showFooter != undefined && uist.showFooter && (
+               <div tw='!z-50 flex-grow items-center'>{p.footer}</div>
+            )}
          </Frame>
       </Frame>
    )
