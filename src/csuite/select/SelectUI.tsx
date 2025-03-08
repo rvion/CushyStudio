@@ -4,13 +4,14 @@ import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 
 import { Button } from '../button/Button'
-import { Row } from '../frame/Dov/Dov'
+import { Frame } from '../frame/Frame'
 import { RevealUI } from '../reveal/RevealUI'
 import { SelectAnchorContentUI } from './SelectAnchorContentUI'
 import { SelectPopupUI } from './SelectPopupUI'
 import { SelectShellUI } from './SelectShellUI'
 import { AutoCompleteSelectState } from './SelectState'
 
+const Row = Frame
 // TODO fork this component
 export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
    const select = useMemo(() => new AutoCompleteSelectState(/* st, */ p), [])

@@ -50,7 +50,10 @@ declare global {
 
       // schema aliases
       type Shared<T extends Field>                    = CSchema<Field_shared<T>>
+
       type Group<T extends SchemaDict>                = CSchema<Field_group<T>>
+      type Record<T extends SchemaDict>               = CSchema<Field_group<T>>
+
       type Empty                                      = CSchema<Field_group<NO_PROPS>>
       type Maybe<T extends CSchema>                   = CSchema<Field_optional<T>>
       type Bool                                       = CSchema<Field_bool>
