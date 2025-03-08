@@ -23,6 +23,8 @@ export type InstructType =
    | 'zephyr'
    | 'none'
    | 'gemma'
+   | 'deepseek-r1'
+   | 'qwq'
 
 export const InstructType_valibot = v.union([
    v.literal('llama2'),
@@ -41,6 +43,8 @@ export const InstructType_valibot = v.union([
    v.literal('zephyr'),
    v.literal('none'),
    v.literal('gemma'),
+   v.literal('deepseek-r1'),
+   v.literal('qwq'),
 ])
 
 // #region OpenRouter_ModelInfo
@@ -54,6 +58,10 @@ export type OpenRouter_ModelInfo = {
       completion: stringifiedNumber // "0"
       image: stringifiedNumber // "0"
       request: stringifiedNumber // "0"
+      input_cache_read: stringifiedNumber // "0"
+      input_cache_write: stringifiedNumber // "0"
+      web_search: stringifiedNumber // "0"
+      internal_reasoning: stringifiedNumber // "0"
    }
    context_length: number
    architecture: {
@@ -79,6 +87,10 @@ export const OpenRouter_ModelInfo_valibot = v.strictObject({
       completion: v.string(),
       image: v.string(),
       request: v.string(),
+      input_cache_read: v.string(),
+      input_cache_write: v.string(),
+      web_search: v.string(),
+      internal_reasoning: v.string(),
    }),
    context_length: v.number(),
    architecture: v.strictObject({
