@@ -126,44 +126,47 @@ export const DnDDragIndicatorUI = observer(function DnDDragIndicateUI_() {
    const widgetHeight = cushy.preferences.interface.value.widgetHeight
 
    return (
-      <div
+      <div // NOTE(bird_d): We need a container here to clip the indicator, else it causes some weird scrollbar stuttering issue to occur.
          tw={[
-            'absolute',
+            'absolute h-full w-full overflow-clip',
             'pointer-events-none  z-[1000000000000000] select-none',
-            dndHandler.visible ? 'block' : 'hidden',
          ]}
-         style={{
-            top: cushy.region.mouseY,
-            left: cushy.region.mouseX,
-         }}
       >
-         <Frame
-            tw={[
-               // Need to allow the content to draw whatever, the title will always show there
-               '!bg-transparent',
-               //    '',
-            ]}
+         <div
+            tw={['absolute', dndHandler.visible ? 'block' : 'hidden']}
             style={{
-               willChange: 'transform',
-               transform: `translate(-${widgetHeight / 1.8}rem, calc(-100% - 10px))`,
+               top: cushy.region.mouseY,
+               left: cushy.region.mouseX,
             }}
          >
             <Frame
-               tw={['items-center justify-center', dndHandler.label && 'px-2']}
-               roundness={theme.global.roundness}
-               border
-               base={theme.global.contrast}
-               line
-               expand
-               size='widget'
-               icon={dndHandler.icon}
-               suffixIcon={dndHandler.suffixIcon}
-               square={dndHandler.label == undefined}
+               tw={[
+                  // Need to allow the content to draw whatever, the title will always show there
+                  '!bg-transparent',
+                  //    '',
+               ]}
+               style={{
+                  willChange: 'transform',
+                  transform: `translate(-${widgetHeight / 1.8}rem, calc(-100% - 10px))`,
+               }}
             >
-               {dndHandler.label}
+               <Frame
+                  tw={['items-center justify-center', dndHandler.label && 'px-2']}
+                  roundness={theme.global.roundness}
+                  border
+                  base={theme.global.contrast}
+                  line
+                  expand
+                  size='widget'
+                  icon={dndHandler.icon}
+                  suffixIcon={dndHandler.suffixIcon}
+                  square={dndHandler.label == undefined}
+               >
+                  {dndHandler.label}
+               </Frame>
+               {/* <Frame tw='w-20 h-20'>TEST</Frame> */}
             </Frame>
-            {/* <Frame tw='w-20 h-20'>TEST</Frame> */}
-         </Frame>
+         </div>
       </div>
    )
 })
