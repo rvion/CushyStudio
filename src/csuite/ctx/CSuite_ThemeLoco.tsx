@@ -36,7 +36,6 @@ export class CSuite_ThemeLoco implements CSuiteConfig {
    text: Tint = { contrast: 0.824 }
 
    // heights
-   // Synchronize with tailwind.config.js
    widgetHeight: number = 2.25 // 36px
    inputHeight: number = 1.75 // 28px
    insideHeight: number = 1.25 // 20px
@@ -44,6 +43,7 @@ export class CSuite_ThemeLoco implements CSuiteConfig {
    // misc theming options
    inputBorder: number = 0
    inputContrast: number = 0
+   inputRoundness: number = 3
    labelText = { contrast: 0.48, chroma: 0.035 }
    showWidgetExtra: boolean = true
    truncateLabels?: boolean | undefined = true

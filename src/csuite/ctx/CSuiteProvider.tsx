@@ -13,8 +13,6 @@ import { CSuiteCtx } from './CSuiteCtx'
  * (color, ...)
  * */
 export const CSuiteProvider = observer(function CSuiteProvider_(p: {
-   //
-
    children: ReactNode
    config: CSuiteConfig
    className?: string

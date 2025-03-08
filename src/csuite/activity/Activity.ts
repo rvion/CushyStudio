@@ -5,6 +5,13 @@ import type { FC, KeyboardEvent, MouseEvent, UIEvent } from 'react'
 
 export type DomId = string
 
+export type ActivityUIProps = {
+   activity: Activity
+   routine: Routine
+   /** call that function to stop the activity */
+   stop: () => void
+}
+
 /**
  * Activities are <....TODO>
  *
@@ -37,6 +44,7 @@ export type Activity = {
 
    /** will be executed when activity end */
    onStop?: () => void
+
    /**
     * everytime an event bubbles upward to the activity root, it will
     * pass through this function
@@ -54,7 +62,9 @@ export type Activity = {
    onMouseDown?: (event: MouseEvent, routine: Routine) => void
    onMouseEnter?: (event: MouseEvent, routine: Routine) => void
    onMouseLeave?: (event: MouseEvent, routine: Routine) => void
+
    onKeyUp?: (event: KeyboardEvent, routine: Routine) => void
+   onKeyDown?: (event: KeyboardEvent, routine: Routine) => void
 
    /**
     * @since 2024-05-21
@@ -67,12 +77,7 @@ export type Activity = {
     * activity UI overlay
     * you can leave that empty if you only care about processign events
     * */
-   UI?: FC<{
-      activity: Activity
-      routine: Routine
-      /** call that function to stop the activity */
-      stop: () => void
-   }>
+   UI?: FC<ActivityUIProps>
 
    /**
     * @since 2024-05-21
