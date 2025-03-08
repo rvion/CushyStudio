@@ -2,7 +2,7 @@ import type { NumberFormat } from '../../i18n/i18n'
 import type { CSchema } from '../../model/CSchema'
 import type { Patch } from '../../model/Patch'
 import type { Repository } from '../../model/Repository'
-import type { Problem_Ext } from 'src/cushy-forms/main'
+import type { Problem_Ext } from '../../model/Validation'
 
 import { produce } from 'immer'
 
