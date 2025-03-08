@@ -185,6 +185,18 @@ export class Field_selectOne<
       }
    }
 
+   static generateSerial(
+      value: Maybe<Field_selectOne<any, any>['$value']>,
+      config: Field_selectOne<any, any>['$config'],
+   ): Field_selectOne<any, any>['$serial'] {
+      if (value == null && config.default == null) return this.emptySerial
+
+      return {
+         $: 'selectOne',
+         val: value != null ? config.getIdFromValue(value) : config.default,
+      }
+   }
+
    // #region CTOR
    constructor(
       repo: Repository,
@@ -404,6 +416,7 @@ export class Field_selectOne<
    }
 
    override getSetValue(): this['$setValue'] | undefined {
+      // console.log(`[💀 getSetValue] `, this.path)
       return this.selectedId
    }
 
@@ -441,7 +454,7 @@ export class Field_selectOne<
       return this.selectedId === other.selectedId
    }
 
-   public override readonly patchedSerialPaths: string[] = ['val']
+   public static readonly patchedSerialPaths: readonly string[] = Object.freeze(['val'])
 
    private _getValueOrThrow(key: KEY | undefined): CanThrow<VALUE> {
       if (key === undefined) throw new Error(`Field_selectOne._getValueOrThrow (${this.pathExt}): no key available`) // prettier-ignore

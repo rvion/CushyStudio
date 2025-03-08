@@ -1,10 +1,10 @@
-import type { Field_number } from './FieldNumber'
-
 import { produce } from 'immer'
 import { reaction } from 'mobx'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vitest } from 'vitest'
 
 import { simpleBuilder } from '../../simple/SimpleFactory'
+import { Field_group } from '../group/FieldGroup'
+import { Field_number } from './FieldNumber'
 
 const b = simpleBuilder
 
@@ -162,20 +162,22 @@ describe('field number', () => {
             values_: { num: { $: 'number', value: 8 } },
          }
 
+         const patchSerial = vitest.spyOn(Field_group.prototype, 'patchSerial')
+
          const document = schema.create(serial)
          expect(document.value.num).toBe(8)
          expect(document.serial).toBe(serial)
 
-         expect(document._acknowledgeCount).toBe(0)
+         expect(patchSerial).not.toHaveBeenCalled()
          document.value.num = 8
          expect(document.value.num).toBe(8)
          expect(document.serial).toBe(serial)
-         expect(document._acknowledgeCount).toBe(0)
+         expect(patchSerial).not.toHaveBeenCalled()
 
          document.value.num = 9
          expect(document.value.num).toBe(9)
          expect(document.serial).not.toBe(serial)
-         expect(document._acknowledgeCount).toBe(1)
+         expect(patchSerial).toHaveBeenCalledOnce()
 
          // test things are properly mutable
          let x = 0
@@ -264,6 +266,34 @@ describe('field number', () => {
          E2.applyPatches(patches)
 
          expect(E2.value).toBe(8)
+      })
+   })
+
+   describe('create performance', () => {
+      describe('without a serial', () => {
+         describe('without a default value', () => {
+            it('should use the default serial and not modify it', () => {
+               const patchSerial = vitest.spyOn(Field_number.prototype, 'patchSerial')
+
+               const schema = b.number_()
+               const document = schema.create()
+
+               expect(document.serial).toBe(schema.emptySerial)
+               expect(patchSerial).not.toHaveBeenCalled()
+            })
+         })
+
+         describe('with a default value', () => {
+            it('should use the default serial and not modify it', () => {
+               const patchSerial = vitest.spyOn(Field_number.prototype, 'patchSerial')
+
+               const schema = b.number({ default: 5 })
+               const document = schema.create()
+
+               expect(document.serial).toBe(schema.emptySerial)
+               expect(patchSerial).not.toHaveBeenCalled()
+            })
+         })
       })
    })
 })

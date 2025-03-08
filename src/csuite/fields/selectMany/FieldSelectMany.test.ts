@@ -1,11 +1,12 @@
 import type { Patch } from '../../model/Patch'
 
-import { describe, expect, it } from 'vitest'
 import { observable } from 'mobx'
+import { describe, expect, it, vitest } from 'vitest'
 
 import { MsgPackR_packToString } from '../../../../../front/shared/packr'
 import { simpleBuilder } from '../../index'
 import { expectJSON } from '../../model/TESTS/utils/expectJSON'
+import { Field_selectMany, type Field_selectMany_serial } from './FieldSelectMany'
 
 const b = simpleBuilder
 
@@ -182,6 +183,58 @@ describe('FieldSelectMany', () => {
          const patches = E1.generatePatches(E2)
 
          expectJSON(patches).toEqual([])
+      })
+   })
+
+   describe('create perf', () => {
+      describe('without a serial', () => {
+         describe('without a default value', () => {
+            it('should use the empty serial', () => {
+               const patchSerial = vitest.spyOn(Field_selectMany.prototype, 'patchSerial')
+               const S = b.selectMany_({
+                  choices: ['a', 'b', 'c'],
+                  getIdFromValue: (v) => v as any,
+                  getValueFromId: (id) => id,
+                  getOptionFromId: (id) => id,
+               })
+               const E = S.create()
+
+               expect(patchSerial).not.toHaveBeenCalled()
+               expect(E.serial).toBe(S.emptySerial)
+            })
+         })
+
+         describe('with a default value', () => {
+            it('should use the default serial', () => {
+               const patchSerial = vitest.spyOn(Field_selectMany.prototype, 'patchSerial')
+               const S = b.selectManyString(['a', 'b', 'c'], { default: ['a'] })
+               const E = S.create()
+
+               expect(patchSerial).not.toHaveBeenCalled()
+               expect(E.serial).toBe(S.emptySerial)
+            })
+
+            it('should use the default serial (empty default)', () => {
+               const patchSerial = vitest.spyOn(Field_selectMany.prototype, 'patchSerial')
+               const S = b.selectManyString(['a', 'b', 'c'])
+               const E = S.create()
+
+               expect(patchSerial).not.toHaveBeenCalled()
+               expect(E.serial).toBe(S.emptySerial)
+            })
+         })
+      })
+
+      describe('with a serial', () => {
+         it('should not patch the serial', () => {
+            const patchSerial = vitest.spyOn(Field_selectMany.prototype, 'patchSerial')
+            const S = b.selectManyString(['a', 'b', 'c'])
+            const serial: Field_selectMany_serial<'a' | 'b' | 'c'> = { $: 'selectMany', values: ['b', 'c'] }
+            const E = S.create(serial)
+
+            expect(patchSerial).not.toHaveBeenCalled()
+            expect(E.serial).toBe(serial)
+         })
       })
    })
 })

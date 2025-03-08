@@ -17,7 +17,6 @@ import type { SchemaDict } from '../model/SchemaDict'
 import type { Field_bool } from './bool/FieldBool'
 import type { Field_choices } from './choices/FieldChoices'
 import type { Field_date } from './date/FieldDate'
-import type { Field_dynamic } from './dynamic/FieldDynamic'
 import type { Field_group } from './group/FieldGroup'
 import type { Field_link } from './link/FieldLink'
 import type { Field_list } from './list/FieldList'
@@ -30,6 +29,7 @@ import type { Field_shared } from './shared/FieldShared'
 import type { Field_string } from './string/FieldString'
 
 import { bang } from '../utils/bang'
+import type { Field_markdown } from './markdown/FieldMarkdown'
 
 /**
  * DI (Dependency Injection)
@@ -65,7 +65,6 @@ export const registerFieldClass = <T extends { $type: string }>(
 // in conditional when instance of is used with a ctor stored in a dictionary
 export const isSchemaOptional = _checkIfIsSchemaOf<Field_optional>('optional')
 export const isSchemaLink = _checkIfIsSchemaOf<Field_link<any, any>>('link')
-// export const isSchemaDynamic = _checkIfIsSchemaOf<Z.Dynamic<any>>('dynamic')
 export const isSchemaShared = _checkIfIsSchemaOf<Field_shared>('shared')
 export const isSchemaGroup = _checkIfIsSchemaOf<Field_group<SchemaDict>>('group')
 export const isSchemaString = _checkIfIsSchemaOf<Field_string>('str')
@@ -100,10 +99,10 @@ function _checkIfIsSchemaOf<F extends Field>(
 // in conditional when instance of is used with a ctor stored in a dictionary
 export const isFieldOptional = _checkIfIs<Field_optional>('optional')
 export const isFieldLink = _checkIfIs<Field_link<any, any>>('link')
-export const isFieldDynamic = _checkIfIs<Field_dynamic<CSchema>>('dynamic')
 export const isFieldShared = _checkIfIs<Field_shared>('shared')
 export const isFieldGroup = _checkIfIs<Field_group<any>>('group')
 export const isFieldString = _checkIfIs<Field_string>('str')
+export const isFieldMarkdown = _checkIfIs<Field_markdown>('markdown')
 export const isFieldNumber = _checkIfIs<Field_number>('number')
 export const isFieldBool = _checkIfIs<Field_bool>('bool')
 export const isFieldList = _checkIfIs<Field_list<any>>('list')

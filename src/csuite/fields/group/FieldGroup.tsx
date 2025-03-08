@@ -1,7 +1,7 @@
 import type { CSchema } from '../../model/CSchema'
 import type { KeyedField, VALUE_MODE } from '../../model/Field'
 import type { FieldConfig_CommonProperties } from '../../model/FieldConfig'
-import type { CodegenOpts } from '../../model/FieldConstructor'
+import type { CodegenOpts, SchemaDictWithPaths } from '../../model/FieldConstructor'
 import type { Patch } from '../../model/Patch'
 import type { Repository } from '../../model/Repository'
 import type { SchemaDict } from '../../model/SchemaDict'
@@ -113,8 +113,30 @@ export class Field_group<T extends SchemaDict> extends Field {
    static getSchemaDict(config: Field_group_config<SchemaDict>): SchemaDict {
       return typeof config.items === 'function' ? config.items() : (config.items ?? {})
    }
-   static override getChildren(config: Field_group_config<SchemaDict>): SchemaDict {
-      return Field_group.getSchemaDict(config)
+   static override getChildren(config: Field_group_config<SchemaDict>): SchemaDictWithPaths {
+      const X = this.getSchemaDict(config)
+      const OUT: SchemaDictWithPaths = {}
+      for (const [k, v] of Object.entries(X)) {
+         OUT[k] = { schema: v, serialPath: `values_.${k}` }
+      }
+      return OUT
+   }
+   static generateSerial(
+      value: Maybe<Field_group<any>['$value']>,
+      config: Field_group<any>['$config'],
+   ): Field_group<any>['$serial'] {
+      const configItems = typeof config.items === 'function' ? config.items() : config.items
+      if (configItems == null) return this.emptySerial
+
+      return {
+         $: 'group',
+         values_: Object.fromEntries(
+            Object.entries(configItems).map(([k, schema]) => [
+               k,
+               (schema as CSchema).generateSerial(value?.[k] ?? config.default?.[k]),
+            ]),
+         ) as any,
+      }
    }
 
    private _defineMagicFields(): void {
@@ -239,20 +261,17 @@ export class Field_group<T extends SchemaDict> extends Field {
     * // fix | I'm not really convinces that this should be observable
     * // fix | varying fields should probably always go though a dynamic 🤔
     */
-   readonly fields: { [k in keyof T]: T[k]['$field'] } = observable({}) as any
+   fields: { [k in keyof T]: T[k]['$field'] } = observable({}) as any
    get _(): { [k in keyof T]: T[k]['$field'] } {
       return this.fields
    }
 
-   _acknowledgeCount: number = 0
    override _acknowledgeNewChildSerial(mountKey: string, newChildSerial: any): boolean {
       // fast path: abort when exactly the same
       if (this.serial.values_[mountKey] === newChildSerial) return false
       // console.log(`[🤠] ACK`, getUIDForMemoryStructure(newChildSerial), getUIDForMemoryStructure(this.serial), this.serial)
-      const didChange = this.patchSerial((draft) => void ((draft.values_ as any)[mountKey] = newChildSerial))
-      if (didChange) this._acknowledgeCount++
+      return this.patchSerial((draft) => void ((draft.values_ as any)[mountKey] = newChildSerial))
       // console.log(`[🤠] ACK`, getUIDForMemoryStructure(newChildSerial), getUIDForMemoryStructure(this.serial), this.serial)
-      return didChange
    }
 
    /** all [key,value] pairs */
@@ -326,9 +345,50 @@ export class Field_group<T extends SchemaDict> extends Field {
       })
    }
 
-   value_or_fail: Field_group_value<T> = new Proxy({}, this.makeValueProxy('fail'))
-   value_or_zero: Field_group_value<T> = new Proxy({}, this.makeValueProxy('zero'))
-   value_unchecked: Field_group_unchecked<T> = new Proxy({}, this.makeValueProxy('unchecked'))
+   get value_or_fail(): Field_group_value<T> {
+      const value = new Proxy({}, this.makeValueProxy('fail'))
+      void this.serial
+      Object.defineProperty(this, 'value_or_fail', {
+         get: () => {
+            void this.serial
+            return value
+         },
+      })
+      return value
+   }
+   get value_or_zero(): Field_group_value<T> {
+      const value = new Proxy({}, this.makeValueProxy('zero'))
+      void this.serial
+      Object.defineProperty(this, 'value_or_zero', {
+         get: () => {
+            void this.serial
+            return value
+         },
+      })
+      return value
+   }
+   get value_unchecked(): Field_group_unchecked<T> {
+      const value = new Proxy({}, this.makeValueProxy('unchecked'))
+      void this.serial
+      Object.defineProperty(this, 'value_unchecked', {
+         get: () => {
+            void this.serial
+            return value
+         },
+      })
+      return value
+   }
+   get value_set(): Field_group_SetValue<T> {
+      const value = new Proxy({}, this.makeValueProxy('set'))
+      void this.serial
+      Object.defineProperty(this, 'value_set', {
+         get: () => {
+            void this.value
+            return value
+         },
+      })
+      return value
+   }
 
    public isValueEqual(other: Field): boolean {
       if (other === this) return true
@@ -346,7 +406,7 @@ export class Field_group<T extends SchemaDict> extends Field {
       })
    }
 
-   public override readonly patchedSerialPaths: string[] = []
+   public static readonly patchedSerialPaths: readonly string[] = Object.freeze([])
 
    private makeValueProxy(mode: VALUE_MODE): ProxyHandler<any> {
       return {
@@ -364,12 +424,14 @@ export class Field_group<T extends SchemaDict> extends Field {
             if (typeof prop !== 'string') return
             const subWidget: Maybe<Field> = this.fields[prop]
             if (subWidget == null) return
+            if (!(subWidget instanceof Field)) return void console.log(`[🔶] tried to access non-field`, prop)
             return subWidget.getValue(mode)
          },
          getOwnPropertyDescriptor: (_target, prop): PropertyDescriptor | undefined => {
             if (typeof prop !== 'string') return
             const subWidget: Maybe<Field> = this.fields[prop]
             if (subWidget == null) return
+            if (!(subWidget instanceof Field)) return void console.log(`[🔶] tried to access non-field`, prop)
             return {
                enumerable: true,
                configurable: true,
@@ -379,6 +441,11 @@ export class Field_group<T extends SchemaDict> extends Field {
             }
          },
       }
+   }
+
+   override getSetValue(): this['$setValue'] | undefined {
+      // console.log(`[💀 getSetValue] `, this.path)
+      return this.value_set
    }
 
    override reset(): void {

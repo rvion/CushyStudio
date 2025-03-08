@@ -53,6 +53,17 @@ export class Field_seed extends Field {
    static readonly emptySerial: Field_seed_serial = { $: 'seed' }
    static override migrateSerial(): undefined {}
    static readonly codeForTypescriptValue = (config: Field_seed_config): string => 'Z.Seed'
+   static generateSerial(
+      value: Maybe<Field_seed['$value']>,
+      config: Field_seed['$config'],
+   ): Field_seed['$serial'] {
+      if (value == null) return this.emptySerial
+
+      return {
+         $: 'seed',
+         val: value,
+      }
+   }
 
    // #region Ctor
    constructor(
@@ -177,7 +188,7 @@ export class Field_seed extends Field {
    }
 
    // #region patches
-   public override readonly patchedSerialPaths: string[] = ['val', 'mode']
+   public static readonly patchedSerialPaths: readonly string[] = Object.freeze(['val', 'mode'])
 }
 
 registerFieldClass('seed', Field_seed)

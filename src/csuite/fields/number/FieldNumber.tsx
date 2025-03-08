@@ -2,7 +2,7 @@ import type { NumberFormat } from '../../i18n/i18n'
 import type { CSchema } from '../../model/CSchema'
 import type { Patch } from '../../model/Patch'
 import type { Repository } from '../../model/Repository'
-import type { Problem_Ext } from '../../model/Validation'
+import type { Problem_Ext } from 'src/cushy-forms/main'
 
 import { produce } from 'immer'
 
@@ -63,6 +63,18 @@ export class Field_number extends Field {
          if (prop != null && parseInt(prop, 10) === +prop) {
             return { $: 'number', value: +prop }
          }
+      }
+   }
+
+   static generateSerial(
+      value: Maybe<Field_number['$value']>,
+      config: Field_number['$config'],
+   ): Field_number['$serial'] {
+      if (value == null && config.default == null) return this.emptySerial
+
+      return {
+         $: 'number',
+         value: value ?? config.default,
       }
    }
 
@@ -198,7 +210,7 @@ export class Field_number extends Field {
       return this.value_unchecked === other.value_unchecked
    }
 
-   public override readonly patchedSerialPaths: string[] = ['value']
+   public static readonly patchedSerialPaths: readonly string[] = Object.freeze(['value'])
 
    get pathToValueInRootSerial(): string {
       return `${this.getOwnSerialPathFromRoot()}.value`

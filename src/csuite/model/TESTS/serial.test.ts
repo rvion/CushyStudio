@@ -55,13 +55,11 @@ describe('assign to value object', () => {
             boolFalse: { $: 'bool', value: false },
             intOpt: {
                $: 'optional',
-               active: false,
-               child: { $: 'number', value: 5 },
+               n: { $: 'number', value: 5 },
             },
             intOpt2: {
                $: 'optional',
-               active: true,
-               child: { $: 'number', value: 8 },
+               y: { $: 'number', value: 8 },
             },
             with: {
                $: 'link',

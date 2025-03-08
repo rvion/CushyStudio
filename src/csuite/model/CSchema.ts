@@ -4,19 +4,33 @@ import type { Field_optional, Field_optional_config } from '../fields/optional/F
 import type { DraftLike } from './Draft'
 import type { Field, FieldCtorProps } from './Field'
 import type { FieldConfigFor } from './FieldConfig'
-import type { FieldConstructor } from './FieldConstructor'
+import type { FieldConstructor, TravelEdge } from './FieldConstructor'
 import type { Klass } from './KlassToUse'
 import type { Channel, ChannelId } from './pubsub/Channel'
 import type { FieldReaction } from './pubsub/FieldReaction'
 import type { Publication } from './pubsub/Producer'
 
-import { action, reaction } from 'mobx'
+import { reaction, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { getFieldLinkClass, getFieldListClass, getFieldOptionalClass } from '../fields/WidgetUI.DI'
+import {
+   getFieldLinkClass,
+   getFieldListClass,
+   getFieldOptionalClass,
+   isSchemaBool,
+   isSchemaDate,
+   isSchemaNumber,
+   isSchemaOptional,
+   isSchemaRelationship,
+   isSchemaRelationships,
+   isSchemaSelectMany,
+   isSchemaSelectOne,
+   isSchemaString,
+} from '../fields/WidgetUI.DI'
 import { schemaConfigHash } from '../hashUtils/hash'
 import { objectAssignTsEfficient_t_pt } from '../utils/objectAssignTsEfficient'
 import { potatoClone } from '../utils/potatoClone'
+import { CSchemaNeighborhood, type NeighborhoodName } from './CSchemaTraversal'
 import { getGlobalRepository, type Repository } from './Repository'
 
 declare global {
@@ -210,6 +224,10 @@ export class CSchema<out FIELD extends Field = Field> {
 
    /** make field optional (A => Maybe<A>) */
    optional(startActive: boolean = false, config?: Partial<Field_optional_config<this>>): Z.Maybe<this> {
+      return this.optional_(Boolean(startActive), config)
+   }
+
+   optional_(startActive?: boolean, config?: Partial<Field_optional_config<this>>): Z.Maybe<this> {
       const FieldOptionalClass = getFieldOptionalClass()
       return CSchema.new<Field_optional<this>>(FieldOptionalClass, {
          schema: this,
@@ -347,11 +365,23 @@ export class CSchema<out FIELD extends Field = Field> {
    create(
       // when unspecified, an empty serial is used
       serial?: Maybe<FIELD['$serial']>,
-      /** when unspeficied, the global repository will be used */
+      /** when unspecified, the global repository will be used */
       repository_?: Repository,
    ): FIELD {
       const repository = repository_ ?? getGlobalRepository()
       return this.instanciate(repository, null, null, '$', serial)
+   }
+
+   get emptySerial(): FIELD['$serial'] {
+      const serial = this.fieldConstructor.generateSerial(undefined, this.config)
+      Object.defineProperty(this, 'emptySerial', { value: serial })
+      return serial
+   }
+
+   generateSerial(value: Maybe<FIELD['$value']>): FIELD['$serial'] {
+      if (value === undefined) return this.emptySerial
+
+      return this.fieldConstructor.generateSerial(value, this.config)
    }
 
    /**
@@ -373,12 +403,12 @@ export class CSchema<out FIELD extends Field = Field> {
    // #region CREATE SUB-FIELDS
    /**
     * unlike `create`, this allow to pass parent/root and can be
-    * used to instanciate field deep within a document
+    * used to instantiate field deep within a document
     *
     * 👉 If you need to create a document, please use `create` or one
-    * of its vairant instead.
+    * of its variant instead.
     */
-   @action instanciate(
+   instanciate(
       //
       repo: Repository,
       root: Field | null,
@@ -386,37 +416,92 @@ export class CSchema<out FIELD extends Field = Field> {
       initialMountKey: string,
       serial?: unknown,
    ): FIELD {
-      // create the instance
-      const args: FieldCtorProps<any> = [repo, root, parent, this, initialMountKey, serial]
-      const KTOR: Klass<FIELD> = this.konfig.classToUse ?? this.fieldConstructor
-      const field: FIELD = new KTOR(...args)
+      return runInAction(() => {
+         // create the instance
+         const args: FieldCtorProps<any> = [
+            repo,
+            root,
+            parent,
+            this,
+            initialMountKey,
+            serial ?? this.emptySerial,
+         ]
+         const KTOR: Klass<FIELD> = this.konfig.classToUse ?? this.fieldConstructor
+         const field: FIELD = new KTOR(...args)
 
-      // start publications
-      field.runPublications()
+         // start publications
+         field.runPublications()
 
-      // start reactions
-      for (const { expr, effect } of this.reactions) {
-         // 🔴 Need to dispose later
-         reaction(
-            () => expr(field),
-            (arg) => effect(arg, field),
-            { fireImmediately: true },
-         )
-      }
-      return field
+         // start reactions
+         for (const { expr, effect } of this.reactions) {
+            // 🔴 Need to dispose later
+            reaction(
+               () => expr(field),
+               (arg) => effect(arg, field),
+               { fireImmediately: true },
+            )
+         }
+         return field
+      })
    }
 
    // CODEGEN -------------------------------------------------------
    codeForTypescriptValue(p?: { indent?: number; tab?: string }): string {
       return this.fieldConstructor.codeForTypescriptValue(this.config, { tab: '   ', indent: 0, ...p })
    }
-   get(...schemaPath: string[]): Maybe<CSchema> {
-      // eslint-disable-next-line consistent-this
-      let at: Maybe<CSchema<any>> = this
-      for (const k of schemaPath) {
-         at = at.fieldConstructor.getChild(at.config, k)
-         if (at == null) return null
+
+   // ------------------------------------------------------------------------
+   neighboors: { [key in NeighborhoodName]: CSchemaNeighborhood<string> } = {
+      children: new CSchemaNeighborhood<string>('children', this, () =>
+         this.fieldConstructor.getChildren(this.config),
+      ),
+      travels: new CSchemaNeighborhood<TravelEdge>('travels', this, () =>
+         this.fieldConstructor.getTravels(this.config),
+      ),
+   }
+   get children(): CSchemaNeighborhood<string>{ return this.neighboors.children } // prettier-ignore
+   get travels(): CSchemaNeighborhood<TravelEdge>{ return this.neighboors.travels } // prettier-ignore
+
+   getSerialPath(travelPath: string[]): Maybe<string> {
+      const found = this.travels.getP(travelPath)
+      let path = found.serialPath
+      let node = found.schema
+
+      if (isSchemaOptional(node)) {
+         node = node.config.schema
+         path = `${path}.y`
       }
-      return at
+
+      // leaves.
+      if (isSchemaString(node)) path = `${path}.value`
+      if (isSchemaNumber(node)) path = `${path}.value`
+      if (isSchemaBool(node)) path = `${path}.value`
+      if (isSchemaDate(node)) path = `${path}.value`
+      if (isSchemaSelectMany(node)) path = `${path}.values`
+      if (isSchemaSelectOne(node)) path = `${path}.val`
+      if (isSchemaRelationship(node)) path = `${path}.value`
+      if (isSchemaRelationships(node)) path = `${path}.value`
+
+      return path
+   }
+
+   postgres_castJsonExpr(uncasted: string): Maybe<string> {
+      // eslint-disable-next-line consistent-this
+      let node: CSchema = this
+
+      if (isSchemaOptional(node)) node = node.config.schema
+
+      // leaves.
+      if (isSchemaString(node)) return `${uncasted} #>> '{{}}'`
+      if (isSchemaNumber(node)) return `${uncasted}::float`
+      if (isSchemaBool(node)) return `${uncasted}::boolean`
+      if (isSchemaDate(node)) return `${uncasted}::timestamp`
+      if (isSchemaSelectMany(node)) return `${uncasted} #>> '{{}}'`
+      if (isSchemaSelectOne(node)) return `${uncasted} #>> '{{}}'`
+      if (isSchemaRelationship(node)) return `(${uncasted} #>> '{{}}')::uuid`
+      if (isSchemaRelationships(node)) return `${uncasted}::text[]::uuid[]`
+
+      console.log('🦫 unsupported castor type', node.type)
+      return `${uncasted}::🦫`
    }
 }

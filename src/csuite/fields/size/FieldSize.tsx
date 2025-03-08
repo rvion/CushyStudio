@@ -79,6 +79,22 @@ export class Field_size extends Field {
       )
    }
 
+   static generateSerial(
+      value: Maybe<Field_size['$value']>,
+      config: Field_size['$config'],
+   ): Field_size['$serial'] {
+      if (value == null && config.default == null) return this.emptySerial
+
+      const selectedVal = value ?? config.default
+      return {
+         $: 'size',
+         width: selectedVal?.width,
+         height: selectedVal?.height,
+         aspectRatio: selectedVal?.aspectRatio,
+         modelType: selectedVal?.modelType,
+      }
+   }
+
    constructor(
       repo: Repository,
       root: Field | null,
@@ -250,7 +266,12 @@ export class Field_size extends Field {
       return this.serial.height === other.serial.height && this.serial.width === other.serial.width
    }
 
-   public override readonly patchedSerialPaths: string[] = ['width', 'height', 'aspectRatio', 'modelType']
+   public static readonly patchedSerialPaths: readonly string[] = Object.freeze([
+      'width',
+      'height',
+      'aspectRatio',
+      'modelType',
+   ])
 
    private idealSizeforModelType(model: ModelType | string): SizeAble {
       if (model === 'xl') return { width: 1024, height: 1024 }

@@ -118,6 +118,20 @@ export class Field_string extends Field {
       }
    }
 
+   static generateSerial(
+      value: Maybe<Field_string['$value']>,
+      config: Field_string['$config'],
+   ): Field_string['$serial'] {
+      if (value == null && config.default == null) return this.emptySerial
+
+      const selectedVal = value ?? (typeof config.default === 'function' ? config.default() : config.default)
+
+      return {
+         $: 'str',
+         value: selectedVal,
+      }
+   }
+
    // #region CTOR
    constructor(
       repo: Repository,
@@ -203,7 +217,7 @@ export class Field_string extends Field {
       return this.value_unchecked === other.value_unchecked
    }
 
-   public override readonly patchedSerialPaths: string[] = ['value']
+   public static patchedSerialPaths: readonly string[] = Object.freeze(['value'])
 
    // #region BUFFERED
    temporaryValue: string | null = null

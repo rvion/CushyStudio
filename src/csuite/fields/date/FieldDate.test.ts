@@ -70,6 +70,35 @@ describe('FieldDate', () => {
             expect(() => newField.value).toThrowError()
          })
       })
+
+      describe('perf', () => {
+         describe('without a serial', () => {
+            describe('without a default value', () => {
+               it('should use the emptySerial without patching it', () => {
+                  const S = b.date()
+                  const E = S.create()
+
+                  expect(E.serial).toBe(S.emptySerial)
+               })
+            })
+
+            describe('with a default value', () => {
+               it('should use the emptySerial and patch it', () => {
+                  const S = b.date({ default: new Date(2025, 1, 3, 4, 5) })
+                  const E = S.create()
+
+                  expect(E.serial).toBe(S.emptySerial)
+               })
+
+               it('should use the emptySerial and patch it (default as function)', () => {
+                  const S = b.date({ default: () => new Date(2025, 1, 3, 4, 5) })
+                  const E = S.create()
+
+                  expect(E.serial).toBe(S.emptySerial)
+               })
+            })
+         })
+      })
    })
 
    describe('Migrate serial', () => {

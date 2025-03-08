@@ -6,7 +6,13 @@ import type { FieldAnomaly } from '../migration/Anomaly'
 import type { ITreeElement } from '../tree/TreeEntry'
 import type { AnyFieldSerial } from './EntitySerial'
 import type { FieldConfigFor } from './FieldConfig'
-import type { FieldConstructor, SerialMigrationFunction, UNVALIDATED } from './FieldConstructor'
+import type {
+   FieldConstructor,
+   SchemaDictWithPaths,
+   SerialMigrationFunction,
+   TravelEdge,
+   UNVALIDATED,
+} from './FieldConstructor'
 import type { FieldId } from './FieldId'
 import type { FieldSerialFor } from './FieldSerial'
 import type { Channel, ChannelId } from './pubsub/Channel'
@@ -20,7 +26,7 @@ import { produce, setAutoFreeze } from 'immer'
 import _get from 'lodash/get'
 import _set from 'lodash/set'
 import _unset from 'lodash/unset'
-import { action, computed, isObservable, observable, runInAction } from 'mobx'
+import { computed, isObservable, observable, runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 import { createElement, type DependencyList, type FC, type ReactNode, useMemo } from 'react'
@@ -64,7 +70,7 @@ import {
 import { TreeEntry_Field } from './TreeEntry_Field'
 import { normalizeProblem } from './Validation'
 import { ValidationError } from './ValidationError'
-import { __ERROR, __OK, type Result } from './Result'
+import { __ERROR, __OK } from 'src/types/Result'
 
 /*
  * fact 1. mobx object can't be frozen;
@@ -79,7 +85,7 @@ export const useEnsureObserver = <T extends null | undefined | FC<any>>(fn: T): 
    return useMemo(() => ensureObserver(fn), [fn])
 }
 
-export type VALUE_MODE = 'fail' | 'zero' | 'unchecked'
+export type VALUE_MODE = 'fail' | 'zero' | 'unchecked' | 'set'
 
 export const ensureObserver = <T extends null | undefined | FC<any>>(fn: T): T => {
    if (fn == null) return null as T
@@ -143,12 +149,12 @@ export abstract class Field {
     * unique Field instance ID;
     * each node in the form tree has one;
     * NOT persisted in serial.
-    * change every time the field is instanciated
+    * change every time the field is instantiated
     * @undecorated (can't change)
     */
    readonly _uid: FieldId
 
-   /** wiget serial is the full serialized representation of that widget  */
+   /** widget serial is the full serialized representation of that widget  */
    @observable.ref accessor serial: this['$serial']
 
    /**
@@ -315,7 +321,9 @@ export abstract class Field {
       return patches
    }
 
-   abstract readonly patchedSerialPaths: string[]
+   get patchedSerialPaths(): readonly string[] {
+      return (this.constructor as FieldConstructor<this>).patchedSerialPaths
+   }
 
    /**
     * To be overwritten by subclasses to generate patches for the field itself
@@ -378,6 +386,7 @@ export abstract class Field {
 
    /** @undecorated (pure getter function) */
    getSetValue(): this['$setValue'] | undefined {
+      // console.log(`[💀 getSetValue] `, this.path)
       return this.value
    }
 
@@ -456,18 +465,16 @@ export abstract class Field {
     * @since 2025-02-13
     * should be overritten by every parent field.
     */
-   static getChildren(config: any): SchemaDict {
+   static getChildren(config: any): SchemaDictWithPaths {
       return {}
    }
 
    /**
-    * @since 2025-02-13
+    * @since 2025-02-24
     * should be overritten by every parent field.
     */
-   static getChild(config: any, key: string): Maybe<CSchema> {
-      // hopefully this will properly return the subclassed static getChildren
-      const schemaDict = (this as unknown as FieldConstructor<any>).getChildren(config)
-      return schemaDict[key]
+   static getTravels(config: any): SchemaDictWithPaths {
+      return this.getChildren(config)
    }
 
    /**
@@ -484,7 +491,7 @@ export abstract class Field {
    shared(): Z.Shared<this> {
       const FieldSharedClass = getFieldSharedClass()
       // 💬 2024-08-30 rvion:
-      // | CSchema usage is OK here, even if your project
+      // | SimpleSchema usage is OK here, even if your project
       // | use a custom schema with extra methods; this is just some
       // | internal plumbing to allow to reuse fields from one tree
       // | in another tree as a linked/Shared field.
@@ -557,7 +564,7 @@ export abstract class Field {
     *
     * @since 2024-09-04
     */
-   @computed get isDocumentReady(): boolean {
+   get isDocumentReady(): boolean {
       return this.root.ready
    }
 
@@ -694,8 +701,7 @@ export abstract class Field {
          else if (this.type === 'optional') {
             const next: Field_optional_serial<any> = {
                $: 'optional',
-               active: true,
-               child: serial,
+               y: serial,
             }
             serial = next
          }
@@ -715,9 +721,9 @@ export abstract class Field {
          // REMOVING OPTIONAL
          else if (
             isProbablySerialOptional(serial) && //
-            serial.child != null
+            serial.y != null
          ) {
-            serial = serial.child
+            serial = serial.y
          }
       }
 
@@ -803,7 +809,7 @@ export abstract class Field {
       attach(child: SCHEMA['$field']): void
    }): void {
       let child = p.existingChild
-      if (child != null && child.type === p.correctChildSchema.type) {
+      if (child != null && child.schema === p.correctChildSchema) {
          child.setSerial(p.targetChildSerial)
       } else {
          if (child) child.disposeTree()
@@ -833,7 +839,7 @@ export abstract class Field {
    }
 
    /** @deprecated ? with the new UI system */
-   @computed get justifyLabel(): boolean {
+   get justifyLabel(): boolean {
       if (this.config.justifyLabel != null) return this.config.justifyLabel
       return true
    }
@@ -911,7 +917,7 @@ export abstract class Field {
    }
 
    @computed get isEnabledWithinParent(): boolean {
-      if (isFieldOptional(this.parent)) return this.parent.active
+      if (isFieldOptional(this.parent)) return this.parent.isActive
       if (isFieldChoices(this.parent)) return this.parent.isBranchEnabled(this.mountKey)
       if (isFieldChoice(this.parent)) return this.parent.isBranchEnabled(this.mountKey)
       return true
@@ -941,14 +947,15 @@ export abstract class Field {
       if (mode === 'fail') return this.value_or_fail
       if (mode === 'zero') return this.value_or_zero
       if (mode === 'unchecked') return this.value_unchecked
+      if (mode === 'set') return this.getSetValue()
       exhaust(mode)
    }
 
    /**
     * return true when widget has no child
-    * return flase when widget has one or more child
+    * return false when widget has one or more child
     * */
-   @computed get hasNoChild(): boolean {
+   get hasNoChild(): boolean {
       return this.childrenAll.length === 0
    }
 
@@ -1015,23 +1022,27 @@ export abstract class Field {
    // }
 
    /** collapse all children that can be collapsed */
-   @action collapseAllChildren(): void {
-      for (const _item of this.childrenAll) {
-         // this allow to make sure we fold though optionals and similar constructs
-         const item = _item.actualWidgetToDisplay
-         if (item.serial.collapsed) continue
-         const isCollapsible = item.isCollapsible
-         if (isCollapsible) item.setCollapsed(true)
-      }
+   collapseAllChildren(): void {
+      runInAction(() => {
+         for (const _item of this.childrenAll) {
+            // this allow to make sure we fold though optionals and similar constructs
+            const item = _item.actualWidgetToDisplay
+            if (item.serial.collapsed) continue
+            const isCollapsible = item.isCollapsible
+            if (isCollapsible) item.setCollapsed(true)
+         }
+      })
    }
 
    /** expand all children that can are collapsed */
-   @action expandAllChildren(): void {
-      for (const _item of this.childrenAll) {
-         // this allow to make sure we fold though optionals and similar constructs
-         const item = _item.actualWidgetToDisplay
-         item.setCollapsed(undefined)
-      }
+   expandAllChildren(): void {
+      runInAction(() => {
+         for (const _item of this.childrenAll) {
+            // this allow to make sure we fold though optionals and similar constructs
+            const item = _item.actualWidgetToDisplay
+            item.setCollapsed(undefined)
+         }
+      })
    }
 
    // change management ------------------------------------------------
@@ -1049,9 +1060,11 @@ export abstract class Field {
     * | it's simpler  though
     * 🔶 some widget like `WidgetPrompt` would not work with such logic
     * */
-   @action reset(): void {
-      this.setSerial(null)
-      this.touched = false
+   reset(): void {
+      runInAction(() => {
+         this.setSerial(null)
+         this.touched = false
+      })
    }
 
    /** return a cloned/detached value object you can use anywhere without care */
@@ -1070,29 +1083,36 @@ export abstract class Field {
    @observable private accessor touched_: boolean = false
 
    /** true when the field contains unsaved changes */
-   @computed get touched(): boolean {
+   get touched(): boolean {
       return this.touched_
    }
-   @action set touched(val: boolean) {
-      if (val === true && this.touched_ !== val && this.parent !== this && this.parent != null) {
-         this.parent.touched = true
-      }
 
-      this.touched_ = val
+   set touched(val: boolean) {
+      runInAction(() => {
+         if (val === true && this.touched_ !== val && this.parent !== this && this.parent != null) {
+            this.parent.touched = true
+         }
+
+         this.touched_ = val
+      })
    }
    /**
     * Identical to field.touched = true but easier to use when field is nullable
     */
-   @action touch = (): void => {
-      this.touched = true
+   touch(): void {
+      runInAction(() => {
+         this.touched = true
+      })
    }
 
-   @action touchAll = (): void => {
-      if (this.childrenAll.length === 0) this.touched = true
+   touchAll(): void {
+      runInAction(() => {
+         if (this.childrenAll.length === 0) this.touched = true
 
-      for (const child of this.childrenAll) {
-         child.touchAll()
-      }
+         for (const child of this.childrenAll) {
+            child.touchAll()
+         }
+      })
    }
 
    /**
@@ -1125,7 +1145,7 @@ export abstract class Field {
          }
          at = at.parent
       }
-      console.warn(`[🪈] ${channelId} | not found from ${this.path}`)
+      // console.warn(`[🪈] ${channelId} | not found from ${this.path}`)
       return null // $EmptyChannel
    }
 
@@ -1165,7 +1185,7 @@ export abstract class Field {
    }
 
    // will be easy to type/extend with the new type accumulator strategy when we backport
-   @computed get custom(): any {
+   get custom(): any {
       return this.serial.custom
    }
 
@@ -1253,7 +1273,7 @@ export abstract class Field {
     * @category Validation
     * @since 2024-09-04
     */
-   @computed get isValid(): boolean {
+   get isValid(): boolean {
       return this.allErrorsIncludingChildrenErrors.length === 0
    }
 
@@ -1261,7 +1281,7 @@ export abstract class Field {
     * returns true if errors.length > 0
     * @category Validation
     */
-   @computed get hasOwnErrors(): boolean {
+   get hasOwnErrors(): boolean {
       const errors = this.ownErrors
       return errors.length > 0
    }
@@ -1420,8 +1440,12 @@ export abstract class Field {
     *  - by only setting this getter up once.
     * */
    runPublications(this: Field): void {
+      // 1. publications(broadcast upwards)
+      const publications = this.schema.publications
+      if (publications.length === 0) return
+
       // 💬 2024-09-20 rvion:
-      // | 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴
+      // | 🔴
       // | We need to write tests about that.
       // 💬 2024-12-30 rvion:
       // | seems like a good idea, but is actually a bad idea.
@@ -1430,11 +1454,8 @@ export abstract class Field {
       // | we need to add try-catch instead.
       // | 👇👇👇👇👇👇👇👇👇👇👇👇
       // ❌ if (!this.isSet) return
-      if (!this.isOwnSet) return
-
-      // 1. publications(broadcast upwards)
-      const publications = this.schema.publications
-      if (publications.length === 0) return
+      if (!this.isOwnSet)
+         return console.log(`[🤠] skipping publication of ${this.pathExt} because field is not set`)
 
       // Create and store values for every producer
       const producedValues: Record<ChannelId, any> = {}
@@ -1464,7 +1485,7 @@ export abstract class Field {
 
    /** whether the widget should be considered inactive */
    @computed get isDisabled(): boolean {
-      return isFieldOptional(this) && !this.active
+      return isFieldOptional(this) && !this.isActive
    }
 
    // #region UI
@@ -1593,10 +1614,10 @@ export abstract class Field {
     *
     *
     * @since 2024-09-11
-    * @remaks expected to be overriden in every field that have children that can be toggled,
+    * @remarks expected to be overriden in every field that have children that can be toggled,
     * like FIeldChoice, FieldOptional
     */
-   @computed get childrenActive(): Field[] {
+   get childrenActive(): Field[] {
       return this.childrenAll
    }
 
@@ -1801,7 +1822,7 @@ export abstract class Field {
    }
    // ---------------------------------------------------------------
 
-   @computed get hasSnapshot(): boolean {
+   get hasSnapshot(): boolean {
       return this.serial.snapshot != null
    }
 

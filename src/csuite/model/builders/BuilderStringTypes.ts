@@ -35,7 +35,7 @@ const BuilderStringImpl = (): BuilderStringMixin =>
          const uid: string = nanoid()
          return this.string_({
             ...(config as any) /* ping @domi; uiui type error here */,
-            header: memoizedFN((p) => createElement('div', {}, p.field.value), []),
+            header: memoizedFN(this, 'nanoid', (p) => createElement('div', {}, p.field.value), []),
             default: uid,
          })
       },
@@ -50,7 +50,7 @@ const BuilderStringImpl = (): BuilderStringMixin =>
          const uuid: string = v4()
          return this.string_({
             ...(config as any) /* ping @domi; uiui type error here */,
-            header: memoizedFN((p) => createElement('div', {}, p.field.value), []),
+            header: memoizedFN(this, 'uuidV4', (p) => createElement('div', {}, p.field.value), []),
             default: uuid,
          })
       },

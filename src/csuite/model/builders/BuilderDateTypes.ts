@@ -21,8 +21,11 @@ import { defineSchemaBuilderMixin } from './defineSchemaBuilderMixin'
 
 export type BuilderDateMixin = {
    date(config?: Field_date_config_specific<Date>): Z.SDate
+   // TODO: rename temporalPlainDate (do the same for type aliases)
    datePlain(config?: Field_date_config_specific<Temporal.PlainDate>): Z.SDatePlain
+   // TODO: rename temporalZonedDatetime (do the same for type aliases)
    dateTimeZoned(config?: Field_date_config_specific<Temporal.ZonedDateTime>): Z.DateTimeZoned
+   // TODO:
 }
 
 export type Field_date_config_specific<VALUE> = Omit<
@@ -49,6 +52,8 @@ const BuilderDateImpl = (): BuilderDateMixin =>
             dateToValue: IDENTITY,
             codeForTypescriptValue: 'Date',
             check: memoizedFN(
+               this,
+               'date',
                (field: Field_date<Date>): Problem_Ext => {
                   if (field.value_unchecked instanceof Date && isNaN(field.value_unchecked.getTime()))
                      return { path: field.path, severity: Severity.Error, message: 'Invalid date' }

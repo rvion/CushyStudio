@@ -60,6 +60,24 @@ export class Field_matrix extends Field {
    static readonly emptySerial: Field_matrix_serial = { $: 'matrix' }
    static override migrateSerial(): undefined {}
    static readonly codeForTypescriptValue = (config: Field_matrix_config): string => 'MatrixCell[]'
+
+   static generateSerial(value: Maybe<Field_matrix_value>, config: Field_matrix_config): Field_matrix_serial {
+      const selectedValue = value ?? config.default
+
+      if (selectedValue == null) return Field_matrix.emptySerial
+
+      return {
+         $: 'matrix',
+         selected: selectedValue.map((v) => ({
+            x: config.rows.indexOf(v.row),
+            y: config.cols.indexOf(v.col),
+            row: v.row,
+            col: v.col,
+            value: true,
+         })),
+      }
+   }
+
    constructor(
       repo: Repository,
       root: Field | null,
@@ -75,6 +93,8 @@ export class Field_matrix extends Field {
    protected setOwnSerial(next: Field_matrix_serial): void {
       this.assignNewSerial(next)
 
+      if (next.selected == null && this.config.default == null) return
+
       const cells = this.serial.selected ?? this.config.default ?? []
       const selectedCells = new Set(cells.map(({ row, col }) => this.getCellkey(row, col)))
 
@@ -89,6 +109,7 @@ export class Field_matrix extends Field {
          }
       }
 
+      if (this.serial.selected?.every((v, index) => v === cells[index])) return
       this.patchSerial((draft) => void (draft.selected = this.activeCells))
    }
 
@@ -240,7 +261,7 @@ export class Field_matrix extends Field {
    }
 
    // #region PATCHES
-   public override readonly patchedSerialPaths: string[] = ['selected']
+   public static readonly patchedSerialPaths: readonly string[] = Object.freeze(['selected'])
 }
 
 // DI

@@ -42,7 +42,7 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
    )
 
    // const ratio = uist.width / uist.height
-   // const ratioIcon = ratio == 1.0 ? IKONS.mdiApproximatelyEqual : ratio > 1.0 ? IKONS.mdiCropLandscape : IKONS.mdiCropPortrait
+   // const ratioIcon = ratio == 1.0 ? 'mdiApproximatelyEqual' : ratio > 1.0 ? 'mdiCropLandscape' : 'mdiCropPortrait'
 
    return (
       <div className='flex flex-1 flex-col gap-0.5'>

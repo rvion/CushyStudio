@@ -42,6 +42,10 @@ export class Field_markdown extends Field {
    static override migrateSerial(): undefined {}
    static readonly codeForTypescriptValue = (config: Field_markdown_config): string => 'Markdown'
 
+   static generateSerial(): Field_markdown_serial {
+      return Field_markdown.emptySerial
+   }
+
    // #region CTOR
    constructor(
       repo: Repository,
@@ -112,7 +116,7 @@ export class Field_markdown extends Field {
    }
 
    // #region PATCH
-   public override readonly patchedSerialPaths: string[] = []
+   public static readonly patchedSerialPaths: readonly string[] = Object.freeze([])
 }
 
 // DI

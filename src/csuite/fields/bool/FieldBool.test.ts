@@ -1,6 +1,7 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vitest } from 'vitest'
 
 import { simpleBuilder } from '../../simple/SimpleFactory'
+import { Field_bool } from './FieldBool'
 
 const b = simpleBuilder
 describe('FieldBool', () => {
@@ -46,6 +47,32 @@ describe('FieldBool', () => {
             E2.value = false
 
             expect(E1.isValueEqual(E2)).toBeFalsy()
+         })
+      })
+   })
+
+   describe('create perf', () => {
+      describe('without a serial', () => {
+         describe('without a default value', () => {
+            it('should use the emptySerial without patching it', () => {
+               const patchSerial = vitest.spyOn(Field_bool.prototype, 'patchSerial')
+               const S = b.bool_()
+               const E = S.create()
+
+               expect(E.serial).toBe(S.emptySerial)
+               expect(patchSerial).not.toHaveBeenCalled()
+            })
+         })
+
+         describe('with a default value', () => {
+            it('should use the emptySerial and patch it with the default value', () => {
+               const patchSerial = vitest.spyOn(Field_bool.prototype, 'patchSerial')
+               const S = b.bool({ default: true })
+               const E = S.create()
+
+               expect(E.serial).toBe(S.emptySerial)
+               expect(patchSerial).not.toHaveBeenCalled()
+            })
          })
       })
    })

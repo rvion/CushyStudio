@@ -1,6 +1,7 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi, vitest } from 'vitest'
 
 import { simpleBuilder } from '../../simple/SimpleFactory'
+import { Field_size } from './FieldSize'
 
 const spyOn = vi.spyOn
 
@@ -32,6 +33,30 @@ describe('FieldSize', () => {
          expect(E2.height).toBe(683)
          // Aspect ratio and modelType are not working as expected for now
          // as they don't seem to be saved in the serial
+      })
+   })
+
+   describe('create perf', () => {
+      describe('without a default value', () => {
+         it('should use the empty serial and not patch it', () => {
+            const patchSerial = vitest.spyOn(Field_size.prototype, 'patchSerial')
+            const S = simpleBuilder.size_()
+            const E = S.create()
+
+            expect(patchSerial).not.toHaveBeenCalled()
+            expect(E.serial).toBe(S.emptySerial)
+         })
+      })
+
+      describe('with a default value', () => {
+         it('should use the default serial and not patch it', () => {
+            const patchSerial = vitest.spyOn(Field_size.prototype, 'patchSerial')
+            const S = simpleBuilder.size({ default: { width: 5, height: 5 } })
+            const E = S.create()
+
+            expect(patchSerial).not.toHaveBeenCalled()
+            expect(E.serial).toBe(S.emptySerial)
+         })
       })
    })
 })

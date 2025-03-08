@@ -1,7 +1,6 @@
 import type { PartialOmit } from '../../../types/Misc'
 import type { Field } from '../Field'
 
-import { Field_dynamic } from '../../fields/dynamic/FieldDynamic'
 import { Field_link } from '../../fields/link/FieldLink'
 import { Field_shared } from '../../fields/shared/FieldShared'
 import { CSchema } from '../CSchema'
@@ -19,7 +18,6 @@ export type BuilderSharedMixin = {
       config?: Config<SA, SB>,
    ): Z.Link<SA, SB>
    linked<T extends Field>(field: T): Z.Shared<T>
-   dynamic<T extends CSchema>(conf: Field_dynamic<T>['$config']): Z.Dynamic<T>
 }
 
 const BuilderSharedImpl = (): BuilderSharedMixin =>
@@ -42,10 +40,6 @@ const BuilderSharedImpl = (): BuilderSharedMixin =>
 
       linked<T extends Field>(field: T): Z.Shared<T> {
          return CSchema.new(Field_shared<T>, { field })
-      },
-
-      dynamic<T extends CSchema>(conf: Field_dynamic<T>['$config']): Z.Dynamic<T> {
-         return CSchema.new(Field_dynamic<T>, conf)
       },
    })
 

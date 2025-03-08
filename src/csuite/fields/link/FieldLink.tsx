@@ -51,6 +51,9 @@ export class Field_link<A extends CSchema, B extends CSchema> extends Field {
    static readonly emptySerial: Field_link<any, any>['$serial'] = { $: 'link' }
    static readonly codeForTypescriptValue = (config: Field_link<any, any>['$config']): string => 'Z.Link'
    static override migrateSerial(): undefined {}
+   static generateSerial(): Field_link<CSchema, CSchema>['$serial'] {
+      return this.emptySerial
+   }
 
    // #region CTOR
    constructor(
@@ -154,10 +157,12 @@ export class Field_link<A extends CSchema, B extends CSchema> extends Field {
 
    override _acknowledgeNewChildSerial(mountKey: string, serial: any): boolean {
       if (mountKey === 'a') {
+         if (this.serial.a === serial) return false
          const didChange = this.patchSerial((draft) => void (draft.a = serial))
          return didChange
       }
       if (mountKey === 'b') {
+         if (this.serial.b === serial) return false
          const didChange = this.patchSerial((draft) => void (draft.b = serial))
          return didChange
       }
@@ -210,7 +215,7 @@ export class Field_link<A extends CSchema, B extends CSchema> extends Field {
       return this.aField === other.aField && this.bField === other.bField
    }
 
-   public override readonly patchedSerialPaths: string[] = []
+   public static readonly patchedSerialPaths: readonly string[] = Object.freeze([])
 
    // Don't get patches from children
    protected override generateChildrenPatches(reference: this): Patch<'list', unknown>[] {

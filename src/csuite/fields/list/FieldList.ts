@@ -1,5 +1,5 @@
 import type { CSchema } from '../../model/CSchema'
-import type { CodegenOpts } from '../../model/FieldConstructor'
+import type { CodegenOpts, SchemaDictWithPaths } from '../../model/FieldConstructor'
 import type { Patch_Common } from '../../model/Patch'
 import type { Repository } from '../../model/Repository'
 
@@ -12,8 +12,7 @@ import { bang } from '../../utils/bang'
 import { clamp_or_min_or_zero } from '../../utils/clamp'
 import { registerFieldClass } from '../WidgetUI.DI'
 import { hole, type HOLE } from './HOLE'
-import type { SchemaDict } from '../../model/SchemaDict'
-import type { Problem_Ext } from '../../model/Validation'
+import { type Problem_Ext, type SchemaDict } from 'src/cushy-forms/main'
 
 // #region 🔶AUTO
 interface AutoBehaviour<out T extends CSchema> {
@@ -65,7 +64,7 @@ type Field_list_ownConfig<out T extends CSchema> = {
 }
 
 // #region SERIAL type
-export type Field_list_ItemID = Branded<string, { ItemId: true }>
+export type Field_list_ItemID = Tagged<string, 'Field_list_ItemID'>
 
 export type Field_list_serial<T extends CSchema> = Field_list<T>['$serial']
 type Field_list_ownSerial<T extends CSchema> = {
@@ -148,26 +147,54 @@ export class Field_list<T extends CSchema> extends Field {
       }
       return undefined
    }
-   static override getChildren(config: Field_list_config<CSchema>): SchemaDict {
+
+   static override getChildren(config: Field_list_config<CSchema>): SchemaDictWithPaths {
       const element = config.element
       const keys = [0] // TODO: make that based on the list mode (tuple, auto, etc.)
-      const schemaDict: SchemaDict = {}
+      const schemaDict: SchemaDictWithPaths = {}
       for (const key of keys)
-         schemaDict[key.toString()] = typeof element === 'function' ? element(key) : element
+         schemaDict[key.toString()] = {
+            schema: typeof element === 'function' ? element(key) : element,
+            serialPath: `items_[${key}]`,
+         }
       return schemaDict
    }
+
+   static generateSerial(
+      value: Maybe<Field_list<CSchema>['$value']>,
+      config: Field_list_config<CSchema>,
+   ): Field_list_serial<CSchema> {
+      if (value == null && config.defaultLength == null) return this.emptySerial
+
+      const length = Math.max(config.defaultLength ?? 0, value?.length ?? 0)
+
+      return {
+         $: 'list',
+         items_: Array(length)
+            .fill(undefined)
+            .map((_, ix) => {
+               if (value != null && ix < value.length) {
+                  const itemValue = value[ix]
+                  const schema = typeof config.element === 'function' ? config.element(ix) : config.element
+                  return schema.generateSerial(itemValue)
+               }
+
+               return typeof config.element === 'function'
+                  ? config.element(ix).generateSerial(undefined)
+                  : config.element.generateSerial(undefined)
+            }),
+         keys: Array(length)
+            .fill(undefined)
+            .map(() => Field_list.generateId()),
+      }
+   }
+
    // static override getChild(config: Field_list_config<CSchema>, key: string): Maybe<CSchema> {
    //    return Field_group.getSchemaDict(config)[key]
    // }
    protected static generateId(): Field_list_ItemID {
       return nanoid(6) as string as Field_list_ItemID
    }
-
-   // UI_AddButton = ListButtonAddUI
-   // UI_ClearButton = ListButtonClearUI
-   // UI_FoldButton = ListButtonFoldUI
-   // UI_UnfoldButton = ListButtonUnfoldUI
-   // UI_Add100ItemsButton = ListButtonAdd100ItemsUI
 
    get isOwnSet(): boolean {
       return this.serial.items_ != null
@@ -326,6 +353,8 @@ export class Field_list<T extends CSchema> extends Field {
       if (index > (this.serial.items_ ?? []).length)
          throw new Error(`❌ FieldList._acknowledgeNewChildSerial: index is OOB (${index}`)
 
+      if (this.serial.items_?.[index] === nextChildSerial) return false
+
       // make sure the serial.items_ is set (akin to saying that from now-on, the field is `set`)
       // 💬 2024-09-11 rvion:
       // | 🔴 we could actually throw here 🤔
@@ -365,7 +394,6 @@ export class Field_list<T extends CSchema> extends Field {
                // field remains unset
                return
             }
-
             this.patchSerial((draft) => {
                draft.items_ ??= []
                draft.keys ??= []
@@ -449,9 +477,50 @@ export class Field_list<T extends CSchema> extends Field {
     * see `src/csuite/model/TESTS/proxy.test.ts` if you're not scared
     */
 
-   value_or_fail: Field_list_value<T> = new Proxy([], this.makeValueProxy('fail'))
-   value_or_zero: Field_list_value<T> = new Proxy([], this.makeValueProxy('zero'))
-   value_unchecked: Field_list_unchecked<T> = new Proxy([], this.makeValueProxy('unchecked'))
+   get value_or_fail(): Field_list_value<T> {
+      const value = new Proxy([], this.makeValueProxy('fail'))
+      void this.serial
+      Object.defineProperty(this, 'value_or_fail', {
+         get: () => {
+            void this.serial
+            return value
+         },
+      })
+      return value
+   }
+   get value_or_zero(): Field_list_value<T> {
+      const value = new Proxy([], this.makeValueProxy('zero'))
+      void this.serial
+      Object.defineProperty(this, 'value_or_zero', {
+         get: () => {
+            void this.serial
+            return value
+         },
+      })
+      return value
+   }
+   get value_unchecked(): Field_list_unchecked<T> {
+      const value = new Proxy([], this.makeValueProxy('unchecked'))
+      void this.serial
+      Object.defineProperty(this, 'value_unchecked', {
+         get: () => {
+            void this.serial
+            return value
+         },
+      })
+      return value
+   }
+   get value_set(): Field_list_SetValue<T> {
+      const value = new Proxy([], this.makeValueProxy('set'))
+      void this.serial
+      Object.defineProperty(this, 'value_set', {
+         get: () => {
+            void this.serial
+            return value
+         },
+      })
+      return value
+   }
 
    // 🦊 get value_or_fail(): Field_list_value<T> {
    // 🦊     const x: this['$value'] = new Proxy([], this.makeValueProxy('fail'))
@@ -562,6 +631,11 @@ export class Field_list<T extends CSchema> extends Field {
       }
    }
 
+   override getSetValue(): this['$setValue'] | undefined {
+      // console.log(`[💀 getSetValue] `, this.path)
+      return this.value_set
+   }
+
    // #region Validation
    get ownConfigSpecificProblems(): Problem_Ext {
       return null
@@ -599,11 +673,11 @@ export class Field_list<T extends CSchema> extends Field {
     * Appends new elements to the end of an array,
     * and returns the new length of the array.
     */
-   push(...values: T['$value'][]): number {
+   push(...values: T['$setValue'][]): number {
       if (values.length === 0) return this.length
       this.runInTransaction(() => {
          for (const v of values) {
-            this.addItem({ value: v })
+            this.addItem({ valueExt: v })
          }
       })
       return this.length
@@ -791,7 +865,7 @@ export class Field_list<T extends CSchema> extends Field {
    }
 
    // #region Patches
-   public override readonly patchedSerialPaths: string[] = ['keys_']
+   public static readonly patchedSerialPaths: readonly string[] = Object.freeze(['keys_'])
 
    protected override generateOwnPatches(referenceField: this): Field_list_patch<T>[] {
       const patches: Field_list_patch<T>[] = []

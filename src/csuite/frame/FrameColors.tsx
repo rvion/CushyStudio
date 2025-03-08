@@ -112,7 +112,7 @@ export function computeColors(
    if (box.textShadow) variables.textShadow = `0px 0px 2px ${KBase.tintFg(box.textShadow).toOKLCH()}`
 
    // BORDER
-   // 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴
+   // 🔴
    // console.log(`[🤠] box.border`, box.border)
    if (box.border) variables.border = `1px solid ${KBase.tintBorder(box.border, dir).toOKLCH()}`
 

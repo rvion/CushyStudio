@@ -1,12 +1,20 @@
 /* eslint-disable vitest/require-to-throw-message */
 import type { Patch } from '../../model/Patch'
-import type { Field_list_config, Field_list_ItemID, Field_list_patch, Field_list_serial } from './FieldList'
 
 import { toJS } from 'mobx'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vitest } from 'vitest'
 
 import { simpleBuilder as b } from '../../index'
 import { expectJSON } from '../../model/TESTS/utils/expectJSON'
+import { Field_optional } from '../optional/FieldOptional'
+import { Field_string } from '../string/FieldString'
+import {
+   Field_list,
+   type Field_list_config,
+   type Field_list_ItemID,
+   type Field_list_patch,
+   type Field_list_serial,
+} from './FieldList'
 
 describe('FieldList', () => {
    const S1 = b.string({ default: '🔵' }).list({ defaultLength: 3 })
@@ -819,6 +827,60 @@ describe('FieldList', () => {
                   field2.items[0]!.mountKey,
                   field2.items[1]!.mountKey,
                ])
+            })
+         })
+      })
+   })
+
+   describe('create perf', () => {
+      describe('without a serial', () => {
+         describe('without a default length', () => {
+            it('should create the field with the empty serial and not patch it', () => {
+               const patchSerial = vitest.spyOn(Field_list.prototype, 'patchSerial')
+               const S = b.string_().list_()
+               const E = S.create()
+
+               expect(patchSerial).not.toHaveBeenCalled()
+               expect(E.serial).toBe(S.emptySerial)
+            })
+         })
+
+         describe('with a default length', () => {
+            it('should create the field with the default length and patch it', () => {
+               const patchSerial = vitest.spyOn(Field_list.prototype, 'patchSerial')
+               const S = b.string_().list({ defaultLength: 3 })
+               const E = S.create()
+
+               expect(patchSerial).not.toHaveBeenCalled()
+               expect(E.serial).toBe(S.emptySerial)
+            })
+
+            describe('when the target field has a default value', () => {
+               it('should create the field with the default length and patch it', () => {
+                  const patchSerial = vitest.spyOn(Field_list.prototype, 'patchSerial')
+                  const S = b.string({ default: 'DEFAULT' }).list({ defaultLength: 3 })
+                  const E = S.create()
+
+                  expect(patchSerial).not.toHaveBeenCalled()
+                  expect(E.serial).toBe(S.emptySerial)
+               })
+            })
+         })
+
+         describe('optional', () => {
+            it('should not patch any serial', () => {
+               const optionalPatchSerial = vitest.spyOn(Field_optional.prototype, 'patchSerial')
+               const listPatchSerial = vitest.spyOn(Field_list.prototype, 'patchSerial')
+               const stringPatchSerial = vitest.spyOn(Field_string.prototype, 'patchSerial')
+
+               const S = b.string().list().optional()
+               const E = S.create()
+
+               expect(optionalPatchSerial).not.toHaveBeenCalled()
+               expect(listPatchSerial).not.toHaveBeenCalled()
+               expect(stringPatchSerial).not.toHaveBeenCalled()
+
+               expect(E.serial).toBe(S.emptySerial)
             })
          })
       })

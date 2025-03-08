@@ -3,15 +3,36 @@ import type { Field } from './Field'
 import type { FieldSerial_CommonProperties } from './FieldSerial'
 import type { Repository } from './Repository'
 
+export type SchemaWithSerialPath = {
+   schema: CSchema
+   serialPath: string | null
+}
+export type SchemaDictWithPaths = Record<string, SchemaWithSerialPath>
+
+export type TravelEdge = Flavor<string, 'TravelKey'>
 export type UNVALIDATED<T> = T | unknown
 export type FieldConstructor<FIELD extends Field> = {
    // ⏸️ readonly build: 'new'
+
    readonly type: FIELD['$type']
    readonly emptySerial: FIELD['$serial']
    readonly migrateSerial: SerialMigrationFunction<FIELD['$serial']>
+
+   /** various codegen utilities */
    codeForTypescriptValue(config: FIELD['$config'], codegenOpts: CodegenOpts): string
-   getChildren(config: FIELD['$config']): { [childSchemaKey: string]: CSchema }
-   getChild(config: FIELD['$config'], key: string): Maybe<CSchema>
+
+   /**
+    * regular traversal (for real "chilcren"; i.e. sub schemas from the config that will
+    * most probably be instanciated as child when instanciating the field
+    */
+   getChildren(config: FIELD['$config']): SchemaDictWithPaths
+
+   /** extra traversal you may want to implement following very specific rules */
+   getTravels(config: FIELD['$config']): SchemaDictWithPaths
+
+   readonly patchedSerialPaths: readonly string[]
+   generateSerial(value: Maybe<FIELD['$value']>, config: FIELD['$config']): FIELD['$serial']
+
    new (
       // 💬 2024-08-20 rvion:
       // | 🔶 we can't use FIELD here, for variance reasons.

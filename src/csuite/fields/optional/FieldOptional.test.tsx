@@ -1,6 +1,9 @@
-import { describe, expect, it } from 'vitest'
+import type { Field_number } from '../number/FieldNumber'
+
+import { describe, expect, it, vitest } from 'vitest'
 
 import { simpleBuilder } from '../../simple/SimpleFactory'
+import { Field_optional, type Field_optional_serial } from './FieldOptional'
 
 const b = simpleBuilder
 
@@ -62,7 +65,7 @@ describe('FieldOptional', () => {
 
          E2.applyPatches(patches)
 
-         expect(E2.active).toBe(false)
+         expect(E2.isActive).toBe(false)
       })
 
       it('should change the active state to active', () => {
@@ -76,7 +79,7 @@ describe('FieldOptional', () => {
 
          E2.applyPatches(patches)
 
-         expect(E2.active).toBe(true)
+         expect(E2.isActive).toBe(true)
          expect(E2.value).toBe(8)
       })
 
@@ -93,6 +96,158 @@ describe('FieldOptional', () => {
          E2.applyPatches(patches)
 
          expect(E2.value).toBe(8)
+      })
+   })
+
+   describe('create', () => {
+      describe('without a serial', () => {
+         describe('without a default value', () => {
+            it('should create the field and use the empty serial without patching it', () => {
+               const patchSerial = vitest.spyOn(Field_optional.prototype, 'patchSerial')
+               const S = b.number_().optional()
+               const E = S.create()
+
+               expect(E.serial).toBe(S.emptySerial)
+               expect(patchSerial).not.toHaveBeenCalled()
+            })
+
+            it('should not be set', () => {
+               const E = b.number_().optional_().create()
+               expect(() => {
+                  console.log(E.value)
+               }).toThrowError('not set')
+               expect(E.isOwnSet).toBe(false)
+               expect(E.hasOwnErrors).toBe(true)
+               expect(E.ownErrors).toEqual([
+                  {
+                     longerMessage: 'Field is not set (@optional)',
+                     message: 'Field is not set',
+                     path: '$',
+                  },
+               ])
+               expect(E.value_unchecked).toBeUndefined()
+            })
+         })
+
+         describe('with a default value', () => {
+            it('should create the field and use the default serial without patching it', () => {
+               const patchSerial = vitest.spyOn(Field_optional.prototype, 'patchSerial')
+               const S = b.number_().optional(true)
+               const E = S.create()
+
+               expect(E.serial).toBe(S.emptySerial)
+               expect(patchSerial).not.toHaveBeenCalled()
+            })
+
+            describe('when the target field has a default value', () => {
+               it('should create the field and use the default serial without patching it', () => {
+                  const patchSerial = vitest.spyOn(Field_optional.prototype, 'patchSerial')
+                  const S = b.number_({ default: 42 }).optional(true)
+                  const E = S.create()
+
+                  expect(E.serial).toBe(S.emptySerial)
+                  expect(patchSerial).not.toHaveBeenCalled()
+               })
+            })
+         })
+      })
+
+      describe('with a serial', () => {
+         it('should create the field and use the serial without patching it', () => {
+            const patchSerial = vitest.spyOn(Field_optional.prototype, 'patchSerial')
+            const S = b.number_().optional()
+            const serial: Field_optional_serial<Field_number['$Schema']> = {
+               $: 'optional',
+               y: { $: 'number', value: 42 },
+            }
+            const E = S.create(serial)
+
+            expect(E.serial).toBe(serial)
+            expect(patchSerial).not.toHaveBeenCalled()
+         })
+
+         describe('startActive', () => {
+            describe('when true', () => {
+               it('should apply the startActive when the value is undefined', () => {
+                  const S = b.number().optional(true)
+                  const serial = S.generateSerial(undefined)
+                  const E = S.create(serial)
+
+                  expect(E.isActive).toBe(true)
+                  expect(E.value_unchecked).toBe(0)
+               })
+
+               it('should be inactive when the value is null', () => {
+                  const S = b.number_().optional(true)
+                  const serial = S.generateSerial(null)
+                  const E = S.create(serial)
+
+                  expect(E.isActive).toBe(false)
+                  expect(E.value).toBeNull()
+               })
+            })
+
+            describe('when false', () => {
+               it('should set the value to null when the value is undefined', () => {
+                  const S = b.number_().optional(false)
+                  const serial = S.generateSerial(undefined)
+                  const E = S.create(serial)
+
+                  expect(E.isActive).toBe(false)
+                  expect(E.value).toBeNull()
+               })
+
+               it('should keep the null value', () => {
+                  const S = b.number_().optional(false)
+                  const serial = S.generateSerial(null)
+                  const E = S.create(serial)
+
+                  expect(E.isActive).toBe(false)
+                  expect(E.value).toBeNull()
+               })
+            })
+
+            describe('when not set', () => {
+               it('should keep the unset state', () => {
+                  const S = b.number_().optional_()
+                  const serial = S.generateSerial(undefined)
+                  const E = S.create(serial)
+
+                  expect(E.isActive).toBe(false)
+                  expect(() => {
+                     console.log(E.value)
+                  }).toThrowError('not set')
+                  expect(E.isOwnSet).toBe(false)
+                  expect(E.hasOwnErrors).toBe(true)
+                  expect(E.ownErrors).toEqual([
+                     {
+                        longerMessage: 'Field is not set (@optional)',
+                        message: 'Field is not set',
+                        path: '$',
+                     },
+                  ])
+                  expect(E.value_unchecked).toBeUndefined()
+               })
+
+               it('should keep the null value', () => {
+                  const S = b.number_().optional_()
+                  const serial = S.generateSerial(null)
+                  const E = S.create(serial)
+
+                  expect(E.isActive).toBe(false)
+                  expect(E.value).toBeNull()
+               })
+
+               it('should keep the value', () => {
+                  const S = b.number_().optional_()
+                  const serial = S.generateSerial(42)
+                  const E = S.create(serial)
+
+                  expect(E.isActive).toBe(true)
+                  expect(E.value).toBe(42)
+               })
+            })
+         })
       })
    })
 })

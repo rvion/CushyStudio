@@ -12,6 +12,7 @@ export type BuilderNumberMixin = {
    percent(config?: Field_number_config_configured): Z.Number
    number(config?: Field_number_config_configured): Z.Number
    number_(config?: Field_number_config_configured): Z.Number
+   // __buildNumberSchema(config: Field_number_config): Z.Number;
 }
 
 const BuilderNumberImpl = (): BuilderNumberMixin =>

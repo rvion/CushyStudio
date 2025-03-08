@@ -80,6 +80,18 @@ export class Field_bool extends Field {
       }
    }
 
+   static generateSerial(
+      value: Maybe<Field_bool['$value']>,
+      config: Field_bool['$config'],
+   ): Field_bool['$serial'] {
+      if (value == null && config.default == null) return this.emptySerial
+
+      return {
+         $: 'bool',
+         value: value ?? config.default,
+      }
+   }
+
    // #region CTOR
    constructor(
       repo: Repository,
@@ -193,7 +205,7 @@ export class Field_bool extends Field {
    }
 
    // #region PATCH
-   public override readonly patchedSerialPaths: string[] = ['value']
+   public static readonly patchedSerialPaths: readonly string[] = Object.freeze(['value'])
 }
 
 // DI

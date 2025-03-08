@@ -23,6 +23,19 @@ interface Field_dummy extends Field {
 
 class Field_dummy extends Field {
    static readonly codeForTypescriptValue = (): string => '0'
+   static readonly patchedSerialPaths: readonly string[] = Object.freeze(['value'])
+   static generateSerial(
+      value: Maybe<Field_dummy['$value']>,
+      config: Field_dummy['$config'],
+   ): Field_dummy['$serial'] {
+      if (value == null) return this.emptySerial
+
+      return {
+         $: 'dummy',
+         value,
+      }
+   }
+
    override get value(): string {
       return this.value_or_fail
    }
@@ -46,7 +59,6 @@ class Field_dummy extends Field {
    override isValueEqual(other: Field): boolean {
       return this.value_unchecked === other.value_unchecked
    }
-   override patchedSerialPaths: string[] = ['value']
    protected override setOwnSerial(serial: Field_dummy_serial): void {
       this.assignNewSerial(serial)
    }

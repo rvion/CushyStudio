@@ -5,6 +5,7 @@ import type { Repository } from '../../model/Repository'
 import type { ISOString } from './ISOString'
 
 import { produce } from 'immer'
+import { computed, observable } from 'mobx'
 
 import { csuiteConfig } from '../../config/configureCsuite'
 import { Field } from '../../model/Field'
@@ -79,6 +80,19 @@ export class Field_date<out VALUE> extends Field {
       return null
    }
 
+   static generateSerial(
+      value: Maybe<Field_date<any>['$value']>,
+      config: Field_date<any>['$config'],
+   ): Field_date<any>['$serial'] {
+      const defaultValue = typeof config.default === 'function' ? config.default() : config.default
+      if (value == null && defaultValue == null) return this.emptySerial
+
+      return {
+         $: 'date',
+         value: config.serialize(value ?? defaultValue),
+      }
+   }
+
    // #region Ctor
    constructor(
       repo: Repository,
@@ -113,7 +127,7 @@ export class Field_date<out VALUE> extends Field {
          this.selectedValue_ = null
       }
 
-      this.stringValue_ = this.selectedValue_ != null ? this.format(this.selectedValue_) : raw
+      this.stringValue_ = this.selectedValue_ != null ? null : raw
    }
 
    // #region Set/Unset
@@ -136,7 +150,7 @@ export class Field_date<out VALUE> extends Field {
       const nextValue = next instanceof Date ? this.config.dateToValue(next) : next
 
       this.selectedValue_ = nextValue
-      this.stringValue_ = nextValue != null ? this.format(nextValue) : null
+      this.stringValue_ = null
       this.runInTransaction(() => {
          this.patchSerial((draft) => {
             draft.value = nextValue != null ? this.config.serialize(nextValue) : null
@@ -167,11 +181,12 @@ export class Field_date<out VALUE> extends Field {
       return this.serial.value === other.serial.value
    }
 
-   public override readonly patchedSerialPaths: string[] = ['value']
+   public static readonly patchedSerialPaths: readonly string[] = Object.freeze(['value'])
 
    // #region value ext
-   private stringValue_: Maybe<string> = undefined
-   get stringValueUnchecked(): Maybe<string> {
+   @observable private accessor stringValue_: Maybe<string> = undefined
+   @computed get stringValueUnchecked(): Maybe<string> {
+      if (this.stringValue_ == null && this.selectedValue != null) return this.format(this.selectedValue)
       return this.stringValue_
    }
    private selectedValue_: Field_date_unchecked<VALUE> = undefined

@@ -1,7 +1,9 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vitest } from 'vitest'
 
 import { simpleBuilder as b } from '../../index'
 import { expectJSON } from '../../model/TESTS/utils/expectJSON'
+import { Field_matrix } from './FieldMatrix'
+import { CSchema } from 'src/cushy-forms/src/csuite/model/CSchema'
 
 describe('FieldMatrix', () => {
    it('work', () => {
@@ -75,6 +77,32 @@ describe('FieldMatrix', () => {
             E1.setCol('x', true)
 
             expect(E1.isValueEqual(E2 as any)).toBeFalsy()
+         })
+      })
+   })
+
+   describe('create perf', () => {
+      describe('without serial', () => {
+         describe('without a default value', () => {
+            it('should use the empty serial', () => {
+               const patchSerial = vitest.spyOn(Field_matrix.prototype, 'patchSerial')
+               const S = CSchema.new(Field_matrix, { rows: ['a', 'b'], cols: ['x', 'y'] })
+               const E = S.create()
+
+               expect(patchSerial).not.toHaveBeenCalled()
+               expect(E.serial).toBe(S.emptySerial)
+            })
+         })
+
+         describe('with a default value', () => {
+            it('should use the empty serial', () => {
+               const patchSerial = vitest.spyOn(Field_matrix.prototype, 'patchSerial')
+               const S = b.matrix({ rows: ['a', 'b'], cols: ['x', 'y'], default: [{ row: 'a', col: 'x' }] })
+               const E = S.create()
+
+               expect(patchSerial).not.toHaveBeenCalled()
+               expect(E.serial).toBe(S.emptySerial)
+            })
          })
       })
    })

@@ -8,9 +8,9 @@ import type { SelectOption, SelectOption_, SelectOptionNoVal } from '../../field
 
 import { Field_selectOne } from '../../fields/selectOne/FieldSelectOne'
 import { IDENTITY } from '../../utils/identity'
+import { CSchema } from '../CSchema'
 import { defineSchemaBuilderMixin } from './defineSchemaBuilderMixin'
 import { NAIVE_getOptionFromId, NAIVE_getOptionFromId2 } from './NAIVE_getOptionFromId'
-import { CSchema } from '../CSchema'
 
 type Field_selectOne_<V extends SelectKey> = Field_selectOne<V, V>
 
@@ -183,7 +183,11 @@ const BuilderSelectOneImpl = (
          return this.selectOne<O, O['id']>({
             choices: (self) => optionsFn(self).map((i) => i.id),
             getIdFromValue: (v) => v.id,
-            getValueFromId: (id, self) => optionsFn(self).find((c) => c.id === id),
+            getValueFromId: (id, self) => {
+               const options = optionsFn(self)
+               if (options == null) console.log(`[‼️ builder.selectOneOptionFn > optionsFn(...) returned undefined] `, id, self._uid, optionsFn.toString(), options) // prettier-ignore
+               return options.find((c) => c.id === id)
+            },
             getOptionFromId: (id, self) => {
                const options = optionsFn(self)
                const option = options.find((o) => o.id === id) ?? null

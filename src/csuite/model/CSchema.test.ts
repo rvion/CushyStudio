@@ -87,16 +87,16 @@ describe('schema caching', () => {
 
       const S2 = getSchema()
       // should be able to retrieve nested schema
-      expect(S2.get('foo', 'bar')?.type).toBe('str')
-      expect(S2.get('foo', 'bar')).toBe(S2.get('foo', 'bar'))
+      expect(S2.children.get(['foo', 'bar'])?.type).toBe('str')
+      expect(S2.children.get(['foo', 'bar'])).toBe(S2.children.get(['foo', 'bar']))
 
       // should be able to retrive schema at specific index (required for tupples)
-      expect(S2.get('foo', 'test', '0', 'child')?.type).toBe('str')
+      expect(S2.children.get(['foo', 'test', '0', 'child'])?.type).toBe('str')
 
       // should be able to check that deepest string are properly equal
       // should be able to check that group are equal if all their child are
-      expect(S2.get('foo')).toBe(S2.get('foo'))
-      expect(S2.get('foo')?.uid).toBe(S2.get('foo')?.uid)
+      expect(S2.children.get(['foo'])).toBe(S2.children.get(['foo']))
+      expect(S2.children.get(['foo'])?.uid).toBe(S2.children.get(['foo'])?.uid)
 
       expect(S1).toBe(S2)
    })

@@ -5,9 +5,10 @@ import type { SelectValueSlots } from '../../select/SelectState'
 import type { TabPositionConfig } from '../choices/TabPositionConfig'
 import type { SelectKey } from '../selectOne/SelectOneKey'
 import type { SelectOption } from '../selectOne/SelectOption'
+import type { ErrorConfigValue } from '../../errors/extractConfig'
 
 import { csuiteConfig } from '../../config/configureCsuite'
-import { type ErrorConfigValue, extractConfigMessage, extractConfigValue } from '../../errors/extractConfig'
+import { extractConfigMessage, extractConfigValue } from '../../errors/extractConfig'
 import { Field } from '../../model/Field'
 import { isProbablySerialSelectMany, registerFieldClass } from '../WidgetUI.DI'
 
@@ -102,10 +103,12 @@ export type Field_selectMany_config_<KEY extends SelectKey> = Field_selectMany_c
  *
  * @since 2024-08-26
  */
-export type Field_selectMany_config_simplified<VALUE, KEY extends SelectKey> = Omit<
+export type Field_selectMany_config_simplified<VALUE, KEY extends SelectKey> = Omit2<
    Field_selectMany_config<VALUE, KEY>,
    'choices' | 'getIdFromValue' | 'getOptionFromId' | 'getValueFromId'
 >
+
+type Omit2<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
 
 // SERIAL
 export type Field_selectMany_serial<KEY extends SelectKey> = Field_selectMany<unknown, KEY>['$serial']
@@ -130,7 +133,7 @@ export interface Field_selectMany<
    $ownConfig: Field_selectMany_ownConfig<VALUE, KEY>
    $ownSerial: Field_selectMany_ownSerial<KEY>
    $value: Field_selectMany_value<VALUE>
-   $setValue: Field_selectMany_value<VALUE>
+   $setValue: VALUE[] | KEY[]
    $unchecked: Field_selectMany_unchecked<VALUE>
    $child: never
    $opts: unknown
@@ -171,6 +174,24 @@ export class Field_selectMany<
             }
             return next
          }
+      }
+   }
+
+   static generateSerial<VALUE, KEY extends SelectKey>(
+      value: Maybe<Field_selectMany<VALUE, KEY>['$value']>,
+      config: Field_selectMany<VALUE, KEY>['$config'],
+   ): Field_selectMany<VALUE, KEY>['$serial'] {
+      if (value == null && config.default == null) return this.emptySerial
+
+      const defaultSelectedKeys = Array.isArray(config.default)
+         ? config.default
+         : config.default != null
+           ? [config.default]
+           : []
+
+      return {
+         $: 'selectMany',
+         values: value != null ? value.map((v) => config.getIdFromValue(v)) : defaultSelectedKeys,
       }
    }
 
@@ -405,6 +426,30 @@ export class Field_selectMany<
       })
    }
 
+   // KEY extends SelectKey
+   // see: src/cushy-forms/src/csuite/fields/selectOne/SelectOneKey.ts,
+   private isProbablyValidKey(val: unknown): val is KEY {
+      if (val === null) return true
+      if (typeof val === 'string') return true
+      if (typeof val === 'number') return true
+      if (typeof val === 'boolean') return true
+      // TODO: better checks;
+      // TODO: use statically known list of keys when present to quickly check if it's a valid key.
+      return false
+   }
+
+   override set(valOrKey: VALUE[] | KEY[]): this {
+      if (valOrKey.length === 0) this.selectedKeys = []
+      else if (this.isProbablyValidKey(valOrKey[0])) this.selectedKeys = valOrKey as KEY[]
+      else this.value = valOrKey as VALUE[]
+      return this
+   }
+
+   override getSetValue(): this['$setValue'] | undefined {
+      // console.log(`[💀 getSetValue] `, this.path)
+      return this.selectedKeys
+   }
+
    get value(): Field_selectMany_value<VALUE> {
       return this.value_or_fail
    }
@@ -438,6 +483,7 @@ export class Field_selectMany<
             if (prop === 'map') return (...args: [any, any]) => this.selectedValues.map(...args)
             if (prop === 'slice') return (...args: [any, any]) => this.selectedValues.slice(...args)
             if (prop === 'filter') return (...args: [any, any]) => this.selectedValues.filter(...args)
+            if (prop === 'find') return (...args: [any, any]) => this.selectedValues.find(...args)
             if (prop === 'some') return (...args: [any, any]) => this.selectedValues.some(...args)
             if (prop === 'concat') return (...args: any[]) => this.selectedValues.concat(...args)
             if (prop === 'sort') return (...args: [any]) => this.selectedValues.sort(...args)
@@ -446,7 +492,6 @@ export class Field_selectMany<
             if (prop === 'toJSON') return undefined
             if (prop === 'constructor') return Reflect.get(_, prop)
             if (prop === 'hasOwnProperty') return Reflect.get(this.selectedValues, prop)
-
             // 💬 2024-09-03 rvion:
             // | let's be conservative and just throw, rather to pass that to some other
             // | function we haven't properly tested/reviewed yet.
@@ -487,7 +532,7 @@ export class Field_selectMany<
       return JSON.stringify(this.serial.values) === JSON.stringify(other.serial.values)
    }
 
-   public override readonly patchedSerialPaths: string[] = ['values']
+   public static readonly patchedSerialPaths: readonly string[] = Object.freeze(['values'])
 
    /** different from reset; doesn't take default into account */
    unset(): void {

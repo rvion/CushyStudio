@@ -1,12 +1,15 @@
-import { Field_group, type Field_group_serial } from './FieldGroup'
-
 import { _getAdministration, isObservableProp } from 'mobx'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vitest } from 'vitest'
 
 import { simpleBuilder as b } from '../../index'
 import { expectJSON } from '../../model/TESTS/utils/expectJSON'
+import { Field_group, type Field_group_serial } from './FieldGroup'
 
 describe('FieldGroup', () => {
+   afterEach(() => {
+      vitest.restoreAllMocks()
+   })
+
    it('work properly with set', () => {
       class Opt {
          constructor(
@@ -72,7 +75,9 @@ describe('FieldGroup', () => {
          num: b.number_(),
          str: b.string_(),
       })
+
       const __serial = undefined // { $: 'group', values_: { num: { $: 'number' }, str: { $: 'str' } } }
+      const _acknowledgeNewChildSerial = vitest.spyOn(Field_group.prototype, '_acknowledgeNewChildSerial')
       const E1 = S1.create(__serial)
       expect(E1._.num.serial).toEqual({ $: 'number' })
       expect(E1.serial).toEqual({
@@ -82,7 +87,7 @@ describe('FieldGroup', () => {
             str: { $: 'str' },
          },
       })
-      expect(E1._acknowledgeCount).toBe(2)
+      expect(_acknowledgeNewChildSerial).toHaveBeenCalledTimes(2)
    })
 
    it('are practical to use', () => {
@@ -340,6 +345,42 @@ describe('FieldGroup', () => {
 
          expect(field2.value.title).toBe('One')
          expect(field2.value.description).toBe('DESCRIPTION MODIFIED')
+      })
+   })
+
+   describe('create perf', () => {
+      describe('without a default value', () => {
+         it('should use the emptySerial and not patch it', () => {
+            const schema = b.fields({
+               title: b.string_(),
+               description: b.string_(),
+            })
+
+            const field = schema.create()
+
+            expect(field.serial).toBe(schema.emptySerial)
+         })
+      })
+
+      describe('with a default value', () => {
+         it('should use the default value as the serial', () => {
+            const schema = b.fields(
+               {
+                  title: b.string(),
+                  description: b.string(),
+               },
+               {
+                  default: {
+                     title: 'One',
+                     description: 'DESCRIPTION',
+                  },
+               },
+            )
+
+            const field = schema.create()
+
+            expect(field.serial).toBe(schema.emptySerial)
+         })
       })
    })
 })

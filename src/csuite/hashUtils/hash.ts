@@ -1,5 +1,10 @@
-import type { CSchema } from '../model/CSchema'
+import type { AnyCTCollection } from '../../../../extensions/customTables/CTCollection'
+import type { AnyLoCollection } from '../../../../extensions/customTables/LoCollection'
 import type { Field } from '../model/Field'
+import type { CSchema } from '../simple/SimpleSchema'
+
+import DefaultMap from 'mnemonist/default-map'
+import DefaultWeakMap from 'mnemonist/default-weak-map'
 
 import { getUIDForMemoryStructure } from '../utils/getUIDForMemoryStructure'
 
@@ -64,7 +69,7 @@ export function stableStringify(obj: any): string {
 }
 
 export function schemaConfigHash(obj: any): string {
-   // console.log(`[🔴🔴🔴] obj`, obj)
+   // console.log(`[🔴] obj`, obj)
    const type = typeof obj
    if (type === 'bigint') return `🔢${obj.toString()}`
    if (type === 'function') return `🏭${getUIDForMemoryStructure(obj, 6)}`
@@ -84,6 +89,8 @@ export function schemaConfigHash(obj: any): string {
       if (!isPOJO) {
          if (obj._symCSchema === Symbol.for('CSchema')) return `🚼${(obj as CSchema)._uid}` // sub-schema
          if (obj._symField === Symbol.for('Field')) return `🚼${(obj as Field)._uid}` // sub-schema
+         if (obj._symCTCollection === Symbol.for('CTCollection')) return `🛜${(obj as AnyCTCollection).id}` // sub-schema
+         if (obj._symLoCollection === Symbol.for('LoCollection')) return `🇮🇸${(obj as AnyLoCollection).id}` // sub-schema
          const readableName = obj.constructor?.name
          return `❓${readableName}#${getUIDForMemoryStructure(obj)}`
       } else {
@@ -116,9 +123,22 @@ export function schemaConfigHash(obj: any): string {
 }
 
 // --------------------------------------------------------
-const memoMap = new Map<any, any>()
-export function memoizedFN<FN extends (...args: any[]) => any>(stuff: FN, deps: any[]): FN {
-   const key = schemaConfigHash(deps)
+// 🔴 very probably going to cause a memory leack as-is
+const memoMapIndex = new DefaultWeakMap(() => new Map<any, any>())
+
+/**
+ * Memoizes a function based on its unique key, and its dependencies hash.
+ * before 2025-03-04, this function was plain wrong: similar deps lead to reusing
+ * wrong memoized functions, since we had no specific key for scope/context.
+ */
+export function memoizedFN<FN extends (...args: any[]) => any>(
+   owner: object,
+   uid: string,
+   stuff: FN,
+   deps: any[],
+): FN {
+   const memoMap = memoMapIndex.get(owner)
+   const key = uid + schemaConfigHash(deps)
    const memo = memoMap.get(key)
    if (memo) return memo
    memoMap.set(key, stuff)

@@ -41,6 +41,18 @@ export class Field_color extends Field {
    static readonly emptySerial: Field_color['$serial'] = { $: 'color' }
    static override migrateSerial(): undefined {}
    static readonly codeForTypescriptValue = (config: Field_color['$config']): string => 'Z.Color'
+   static generateSerial(
+      value: Maybe<Field_color['$value']>,
+      config: Field_color['$config'],
+   ): Field_color['$serial'] {
+      if (value == null && config.default == null) return this.emptySerial
+
+      return {
+         $: 'color',
+         value: value ?? config.default,
+      }
+   }
+
    constructor(
       repo: Repository,
       root: Field | null,
@@ -95,7 +107,7 @@ export class Field_color extends Field {
       return this.serial.value === other.serial.value
    }
 
-   public override readonly patchedSerialPaths: string[] = ['value']
+   public static readonly patchedSerialPaths: readonly string[] = Object.freeze(['value'])
 
    get ownTypeSpecificProblems(): Problem_Ext {
       return null

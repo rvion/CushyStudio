@@ -42,6 +42,9 @@ export class Field_shared<out F extends Field = Field> extends Field {
    static codeForTypescriptValue = (config: Field_shared<Field>['$config'], opts: CodegenOpts): string => {
       return `Z.Shared<${config.field.schema.codeForTypescriptValue(opts)}>`
    }
+   static generateSerial(): Field_shared['$serial'] {
+      return Field_shared.emptySerial
+   }
 
    // #region CTOR
    constructor(
@@ -108,7 +111,7 @@ export class Field_shared<out F extends Field = Field> extends Field {
       return this.child.isValueEqual(other.child)
    }
 
-   public override readonly patchedSerialPaths: string[] = []
+   public static readonly patchedSerialPaths: readonly string[] = Object.freeze([])
 }
 
 // DI

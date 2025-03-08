@@ -1,7 +1,9 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vitest } from 'vitest'
 
 import { simpleBuilder } from '../../index'
 import { expectJSON } from '../../model/TESTS/utils/expectJSON'
+import { Field_optional } from '../optional/FieldOptional'
+import { Field_selectOne } from './FieldSelectOne'
 
 const b = simpleBuilder
 
@@ -129,6 +131,46 @@ describe('FieldSelectOne', () => {
          const patches = E1.generatePatches(E2)
 
          expectJSON(patches).toEqual([])
+      })
+   })
+
+   describe('create perf', () => {
+      describe('without a serial', () => {
+         describe('without a default value', () => {
+            it('should use the empty serial and not patch it', () => {
+               const patchSerial = vitest.spyOn(Field_selectOne.prototype, 'patchSerial')
+               const S = b.selectOneString_(['a', 'b', 'c'])
+               const E = S.create()
+
+               expect(E.serial).toBe(S.emptySerial)
+               expect(patchSerial).not.toHaveBeenCalled()
+            })
+         })
+
+         describe('with a default value', () => {
+            it('should use the default serial and not patch it', () => {
+               const patchSerial = vitest.spyOn(Field_selectOne.prototype, 'patchSerial')
+               const S = b.selectOneString_(['a', 'b', 'c'], { default: 'b' })
+               const E = S.create()
+
+               expect(E.serial).toBe(S.emptySerial)
+               expect(patchSerial).not.toHaveBeenCalled()
+            })
+         })
+
+         describe('with an optional', () => {
+            it('should not patch the serial', () => {
+               const optionalPatchSerial = vitest.spyOn(Field_optional.prototype, 'patchSerial')
+               const selectPatchSerial = vitest.spyOn(Field_selectOne.prototype, 'patchSerial')
+
+               const S = b.selectOneString_(['a', 'b', 'c']).optional()
+               const E = S.create()
+
+               expect(E.serial).toBe(S.emptySerial)
+               expect(optionalPatchSerial).not.toHaveBeenCalled()
+               expect(selectPatchSerial).not.toHaveBeenCalled()
+            })
+         })
       })
    })
 })
