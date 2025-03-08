@@ -112,7 +112,7 @@
         "@mdi/react": "^1.6.1",
         "@pixi/react": "^8.0.0-beta.21",
         "@react-hook/resize-observer": "^2.0.2",
-        "@react-three/drei": "https://pkg.csb.dev/pmndrs/drei/commit/d2d25601/@react-three/drei",
+        "@react-three/drei": "10.0.1",
         "@react-three/fiber": "9.0.4",
         "@sinclair/typebox": "^0.34.28",
         "@supabase/supabase-js": "^2.48.1",
@@ -168,7 +168,7 @@
         "sharp": "^0.33.5",
         "simple-git": "^3.27.0",
         "spark-md5": "^3.0.2",
-        "tailwindcss": "^4.0.8",
+        "tailwindcss": "^3.4.17",
         "three": "^0.173.0",
         "tiny-case": "^1.0.3",
         "typescript": "5.7.3",
@@ -181,6 +181,7 @@
         "zod-validation-error": "^3.4.0"
     },
     "devDependencies": {
+        "@types/lodash": "^4.17.15",
         "@types/marked": "^6.0.0",
         "@types/mime-types": "^2.1.4",
         "@types/node": "22.13.5",

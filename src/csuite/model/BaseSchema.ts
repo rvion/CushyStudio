@@ -40,7 +40,6 @@ export interface BaseSchema<
    $value: TYPES['$value']
    $unchecked: TYPES['$unchecked']
    $child: TYPES['$child']
-   $reflect: TYPES['$reflect']
    // reflect API
 }
 

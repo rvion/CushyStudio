@@ -1,6 +1,4 @@
 import type { BaseSchema } from '../../model/BaseSchema'
-import type { FieldConfig } from '../../model/FieldConfig'
-import type { FieldSerial } from '../../model/FieldSerial'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 import type { UIKit } from './WidgetCustomUI'
@@ -18,31 +16,27 @@ export type CustomWidgetProps<T> = {
 }
 
 // #region $config
-export type Field_custom_config<T> = FieldConfig<
-   {
-      defaultValue: () => T
-      subTree?: () => BaseSchema
-      Component: FC<CustomWidgetProps<T>>
-   },
-   Field_custom<T>
->
+export type Field_custom_ownConfig<T> = {
+   defaultValue: () => T
+   subTree?: () => BaseSchema
+   Component: FC<CustomWidgetProps<T>>
+}
 
 // #region $serial
-export type Field_custom_serial<T> = FieldSerial<{
+export type Field_custom_ownSerial<T> = {
    $: 'custom'
-
    /** field is considered unset until value is set */
    value?: T
-}>
+}
 
 // #region $value
 export type Field_custom_value<T> = T
 
 // #region $Types
-export type Field_custom<T> = {
+export interface Field_custom<T> {
    $type: 'custom'
-   $config: Field_custom_config<T>
-   $serial: Field_custom_serial<T>
+   $ownConfig: Field_custom_ownConfig<T>
+   $ownSerial: Field_custom_ownSerial<T>
    $value: Field_custom_value<T>
    $unchecked: Field_custom_value<T> | undefined
    $field: Field_custom<T>
@@ -50,12 +44,12 @@ export type Field_custom<T> = {
 }
 
 // #region State
-export class Field_custom<T> extends Field<Field_custom<T>> {
+export class Field_custom<T> extends Field {
    // #region Static
    static readonly type: 'custom' = 'custom'
-   static readonly emptySerial: Field_custom_serial<any> = { $: 'custom' }
+   static readonly emptySerial: Field_custom<any>['$serial'] = { $: 'custom' }
    static migrateSerial(): undefined {}
-   static codegenValueType(config: Field_custom_config<any>): string {
+   static codegenValueType(config: Field_custom<any>['$config']): string {
       return `unknown /* ${config.Component.name} */`
    }
 
@@ -66,21 +60,17 @@ export class Field_custom<T> extends Field<Field_custom<T>> {
       parent: Field | null,
       schema: BaseSchema<Field_custom<T>>,
       initialMountKey: string,
-      serial?: Field_custom_serial<T>,
+      serial?: Field_custom<T>['$serial'],
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
-      this.init(serial, {
-         Component: false,
-         DefaultHeaderUI: false,
-         DefaultBodyUI: false,
-      })
+      this.init(serial)
    }
    // #region serial
    get isOwnSet(): boolean {
       return this.serial.value !== undefined
    }
 
-   protected setOwnSerial(next: Field_custom_serial<T>): void {
+   protected setOwnSerial(next: Field_custom<T>['$serial']): void {
       if (!this.serial.value === undefined) {
          const def = this.defaultValue
          if (def !== undefined) {

@@ -64,7 +64,7 @@ import {
 import { TreeEntry_Field } from './TreeEntry_Field'
 import { normalizeProblem } from './Validation'
 import { ValidationError } from './ValidationError'
-import { __ERROR, __OK } from 'src/types/Result'
+import { __ERROR, __OK, type Result } from './Result'
 
 /*
  * fact 1. mobx object can't be frozen;
@@ -1532,54 +1532,14 @@ export abstract class Field {
    }
 
    // #region UI.Render
-
-   /**
-    * do not use directly; prefer `Render`.
-    *
-    * @internal
-    * @since 2024-09-19
-    * @deprecated
-    * @see {@link Render}
-    * @undecorated
-    */
-   render(p: RENDERER.FieldRenderArgs<this> = {}): ReactNode {
-      return <globalThis.RENDERER.Render {...p} field={this} />
-   }
-
    /** @undecorated  */
-   Render(props: RENDERER.FieldRenderArgs<this>): ReactNode {
+   UI(props: RENDERER.FieldRenderArgs<this>): ReactNode {
       // Spreading props here instead of passing them as a single object
       // avoids useless refresh when the widget's parent is rerendered
       // because the props object is recreated every time, even if
       // the props themselves are the same.
       // ⚠ props must be added first, to avoid circular references of field
       return <globalThis.RENDERER.Render {...props} field={this} />
-   }
-
-   /** @undecorated  */
-   EditForm(props: RENDERER.FieldRenderArgs<this>): ReactNode {
-      const prez = this.usePrez((pz) => pz.editForm().deep(props))
-      return <prez.Render />
-   }
-
-   /**
-    * @undecorated
-    * @deprecated prefer Field.Render with the proper modal options
-    * allow to quickly render the form in a dropdown button
-    * without having to import any component; usage:
-    * | <div>{x.renderAsConfigBtn()}</div>
-    */
-   renderAsConfigBtn(p?: {
-      // 1. anchor option
-      // ...TODO
-      // 2. popup options
-      title?: string
-      className?: string
-      maxWidth?: string
-      minWidth?: string
-      width?: string
-   }): ReactNode {
-      return createElement(FormAsDropdownConfigUI, { form: this, ...p })
    }
 
    // #region CHILDREN
@@ -1816,8 +1776,8 @@ export abstract class Field {
          //   VVVVVVVVVVVV this is where we hydrate children
          this.setOwnSerialWithValidationAndMigrationAndFixes(serial)
 
-         this.render = this.render.bind(this)
-         this.Render = this.Render.bind(this)
+         this.UI = this.UI.bind(this)
+         this.UI = this.UI.bind(this)
          this.EditForm = this.EditForm.bind(this)
          this.ready = true
       })
@@ -1940,28 +1900,6 @@ export abstract class Field {
 
    public get isRequired(): boolean {
       return !this.canBeToggledWithinParent
-   }
-
-   // 🔶 not sure if this syntaxic sugar is worth it vs loco.factory.usePrez(schema, (fo) => fo...)
-   // (probably not, just more work)
-   // but... those typings are working, loco.factory.usePrez typings are not 🤷🏻‍♂️, so let's keep them.
-   usePrez(
-      fn: (fo: RENDERER.Prez<CSchema<this>>) => RENDERER.Prez<CSchema<this>>,
-      deps: DependencyList = [],
-   ): RENDERER.Prez<CSchema<this>> {
-      return globalThis.RENDERER.usePrez(this, fn, deps)
-   }
-
-   // need a separate method only because of variance issues
-   usePrezObj(
-      conf: RENDERER.FieldRenderArgs<this> = {},
-      deps: DependencyList = [],
-   ): RENDERER.Prez<CSchema<this>> {
-      return globalThis.RENDERER.usePrez<CSchema<this>>(this, conf, deps)
-   }
-
-   prez(): RENDERER.Prez<CSchema<this>> {
-      return globalThis.RENDERER.makePrez<CSchema<this>>(this)
    }
 
    /**

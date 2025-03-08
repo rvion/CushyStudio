@@ -12,7 +12,8 @@ import { bang } from '../../utils/bang'
 import { clamp_or_min_or_zero } from '../../utils/clamp'
 import { registerFieldClass } from '../WidgetUI.DI'
 import { hole, type HOLE } from './HOLE'
-import { type Problem_Ext, type SchemaDict } from 'src/cushy-forms/main'
+import type { SchemaDict } from '../../model/SchemaDict'
+import type { Problem_Ext } from '../../model/Validation'
 
 // #region 🔶AUTO
 interface AutoBehaviour<out T extends CSchema> {
