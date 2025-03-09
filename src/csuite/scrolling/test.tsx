@@ -1,7 +1,8 @@
 /* Horizontal scrolling container pseudocode
- ** - Should show an indicator (optional, enabled by default)
- ** - Scrolling should scroll horizontally by default
- ** - Smooth-scrolling support? Is it possible to see if this is enabled via the browser so we can do it consistently?
+ ** - Should show an indicator. Done 
+        - (optional, enabled by default)
+ ** - Scrolling should scroll horizontally by default. Done.
+ ** - Smooth-scrolling support? Is it possible to see if this is enabled via the browser so we can do it consistently? Would need to handle accumulation and animation seperately? Seems not good.
  ** - Let's do it~
  */
 
@@ -37,7 +38,7 @@ export const HorizontalScrollingUI = observer(function HorizontalScrollingUI_(p:
    const theme = cushy.preferences.theme.value
 
    return (
-      <div ref={containerRef} tw='relative flex overflow-hidden'>
+      <div ref={containerRef} tw='relative flex flex-1 shrink-0 flex-row overflow-hidden'>
          {showIndicators && showLeft && (
             <UY.Misc.Frame
                base={{ contrast: 0.1 }}
@@ -49,22 +50,16 @@ export const HorizontalScrollingUI = observer(function HorizontalScrollingUI_(p:
          )}
          <div // Scroll Handler
             ref={scrollRef}
-            tw='flex flex-row overflow-hidden whitespace-nowrap'
+            tw='flex flex-1 shrink-0 flex-row overflow-hidden whitespace-nowrap'
             onWheel={(ev) => {
                if (scrollRef.current) {
                   //   scrollRef.current.scrollBy({ behavior: 'smooth', left: ev.deltaY })
                   scrollRef.current.scrollLeft += ev.deltaY
                   setShowRight(
-                     Math.ceil(scrollRef.current.scrollLeft) !=
+                     Math.ceil(scrollRef.current.scrollLeft) <
                         scrollRef.current.scrollWidth - scrollRef.current.clientWidth,
                   )
                   setShowLeft(Math.ceil(scrollRef.current.scrollLeft) != 0)
-                  console.log(
-                     '[FD] - ',
-                     ev.deltaY,
-                     Math.ceil(scrollRef.current.scrollLeft),
-                     scrollRef.current.scrollWidth - scrollRef.current.clientWidth,
-                  )
                }
             }}
          >
