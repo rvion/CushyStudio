@@ -2,6 +2,7 @@ import type { CSchema } from '../../model/CSchema'
 import type { CodegenOpts, SchemaDictWithPaths } from '../../model/FieldConstructor'
 import type { Patch_Common } from '../../model/Patch'
 import type { Repository } from '../../model/Repository'
+import type { Problem_Ext } from '../../model/Validation'
 
 import { observable, reaction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -12,7 +13,6 @@ import { bang } from '../../utils/bang'
 import { clamp_or_min_or_zero } from '../../utils/clamp'
 import { registerFieldClass } from '../WidgetUI.DI'
 import { hole, type HOLE } from './HOLE'
-import { type Problem_Ext, type SchemaDict } from 'src/cushy-forms/main'
 
 // #region 🔶AUTO
 interface AutoBehaviour<out T extends CSchema> {
