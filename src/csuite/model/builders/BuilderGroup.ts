@@ -11,6 +11,8 @@ export type BuilderGroupMixin = {
    group<T extends SchemaDict>(config?: Field_group_config<T>): Z.Record<T>;
    fields<T extends SchemaDict>(items: T | (() => T), config?: Omit<Field_group_config<T>, "items">): Z.Record<T>;
    empty(config?: Field_group_config<NO_PROPS>): Z.Empty;
+   row<T extends SchemaDict>(items: T | (() => T), config?: Omit<Field_group_config<T>, "items">): Z.Record<T>;
+   column<T extends SchemaDict>(items: T | (() => T), config?: Omit<Field_group_config<T>, "items">): Z.Record<T>;
 }
 
 const BuilderGroupImpl = (): BuilderGroupMixin =>
@@ -44,6 +46,22 @@ const BuilderGroupImpl = (): BuilderGroupMixin =>
 
       empty(config: Field_group_config<NO_PROPS> = {}): Z.Empty {
          return this.group(config)
+      },
+
+      /** @deprecated */
+      row<T extends SchemaDict>(
+         items: T | (() => T),
+         config: Omit<Field_group_config<T>, 'items'> = {},
+      ): Z.Record<T> {
+         return this.fields(items, config)
+      },
+
+      /** @deprecated */
+      column<T extends SchemaDict>(
+         items: T | (() => T),
+         config: Omit<Field_group_config<T>, 'items'> = {},
+      ): Z.Record<T> {
+         return this.fields(items, config)
       },
    })
 
