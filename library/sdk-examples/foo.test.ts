@@ -16,7 +16,7 @@ describe('can create models without going through builder', () => {
       // const fn = (f: typeof Field_bool) =>
       // required if we template on FieldTypes... sad
       //                                VVVV
-      const x = new CSchema<Bar>(Bar, {}).create()
+      const x = CSchema.new<Bar>(Bar, {}).create()
       expect(x.coucou()).toBe('monde')
    })
 })

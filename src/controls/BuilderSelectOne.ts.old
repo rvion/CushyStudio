@@ -29,7 +29,7 @@ export class SelectOneBuilder {
      * @see {@link selectOneOptionValue}
      */
     selectOne<VALUE, KEY extends string = string>(config: Field_selectOne_config<VALUE, KEY>): X.XSelectOne<VALUE, KEY> {
-        return new CSchema<Field_selectOne<VALUE, KEY>>(Field_selectOne<VALUE, KEY>, config)
+        return CSchema.new<Field_selectOne<VALUE, KEY>>(Field_selectOne<VALUE, KEY>, config)
     }
 
     /**

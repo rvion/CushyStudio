@@ -37,14 +37,14 @@ export class EnumBuilder {
             if (enumSchema == null) {
                console.error(`❌ unknown enum: ${slotName}`)
                return (config: any = {}) =>
-                  new CSchema(Field_enum<any /* 🔴 */>, /* form, */ { ...config, slotName: 'INVALID_null' })
+                  CSchema.new(Field_enum<any /* 🔴 */>, /* form, */ { ...config, slotName: 'INVALID_null' })
                // 🔴 can't throw here, will break for everyone !!
                // 🔴 throw new Error(`unknown enum: ${enumName}`)
             }
 
             // return the builder
             const def = enumSchema.values[0]
-            return (config: any = {}) => new CSchema(Field_enum<any>, { default: def, ...config, slotName })
+            return (config: any = {}) => CSchema.new(Field_enum<any>, { default: def, ...config, slotName })
          },
       })
    }

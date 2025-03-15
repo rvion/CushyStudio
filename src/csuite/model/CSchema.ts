@@ -120,7 +120,7 @@ export class CSchema<out FIELD extends Field = Field> {
          return prev as CSchema<T>
       }
       CSchema.CacheMisses++
-      const next = new CSchema(fieldConstructor, config)
+      const next = CSchema.new(fieldConstructor, config)
 
       CSchema.CacheSet(configHash, next)
       return next
@@ -465,10 +465,10 @@ export class CSchema<out FIELD extends Field = Field> {
 
    // ------------------------------------------------------------------------
    neighboors: { [key in NeighborhoodName]: CSchemaNeighborhood<string> } = {
-      children: new CSchemaNeighborhood<string>('children', this, () =>
+      children: CSchema.newNeighborhood<string>('children', this, () =>
          this.fieldConstructor.getChildren(this.config),
       ),
-      travels: new CSchemaNeighborhood<TravelEdge>('travels', this, () =>
+      travels: CSchema.newNeighborhood<TravelEdge>('travels', this, () =>
          this.fieldConstructor.getTravels(this.config),
       ),
    }

@@ -45,7 +45,7 @@ export class EnumBuilderOpt {
                   domain.optional({
                      label: config.label,
                      startActive: config.startActive,
-                     schema: new CSchema(Field_enum<any /* 🔴 */>, {
+                     schema: CSchema.new(Field_enum<any /* 🔴 */>, {
                         ...config,
                         slotName: 'INVALID_null',
                      }),
@@ -60,7 +60,7 @@ export class EnumBuilderOpt {
                domain.optional({
                   label: config.label,
                   startActive: config.startActive,
-                  schema: new CSchema(Field_enum<any /* 🔴 */>, {
+                  schema: CSchema.new(Field_enum<any /* 🔴 */>, {
                      default: def,
                      ...config,
                      slotName: slotName,

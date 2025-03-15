@@ -9,7 +9,6 @@ import type { Field_number } from '../csuite/fields/number/FieldNumber'
 import type { Field_optional_config } from '../csuite/fields/optional/FieldOptional'
 import type { Field_orbit_config } from '../csuite/fields/orbit/FieldOrbit'
 import type { SelectOption } from '../csuite/fields/selectOne/SelectOption'
-import type { CSchema } from '../csuite/model/CSchema'
 import type { IBuilder } from '../csuite/model/IBuilder'
 import type { OpenRouter_ModelInfo } from '../csuite/openrouter/OpenRouter_ModelInfo'
 import type { OpenRouter_Models } from '../csuite/openrouter/OpenRouter_models'
@@ -48,12 +47,13 @@ import {
    BuilderStringDescriptors,
    type BuilderStringMixin,
 } from '../csuite/model/builders/BuilderStringTypes'
+import { CSchema } from '../csuite/model/CSchema'
 import { Factory } from '../csuite/model/Factory'
 import { openRouterInfos } from '../csuite/openrouter/OpenRouter_infos'
 import { SelectDefaultOptionUI } from '../csuite/select/SelectOptionBadgeUI'
 import { _FIX_INDENTATION } from '../csuite/utils/_FIX_INDENTATION'
 import { bang } from '../csuite/utils/bang'
-import { Field_prompt, type Field_prompt_config } from '../prompt/FieldPrompt'
+import { Field_prompt } from '../prompt/FieldPrompt'
 import { type AutoBuilder, mkFormAutoBuilder } from './AutoBuilder'
 import { EnumBuilder } from './EnumBuilder'
 import { EnumBuilderOpt } from './EnumBuilderOpt'
@@ -76,19 +76,19 @@ import { EnumListBuilder } from './EnumListBuilder'
 /** cushy studio form builder */
 export class CushySchemaBuilder implements IBuilder {
    orbit(config: Field_orbit_config = {}): Z.Orbit {
-      return new CSchema<Field_orbit>(Field_orbit, config)
+      return CSchema.new<Field_orbit>(Field_orbit, config)
    }
 
    color(config: Field_color_config = {}): Z.Color {
-      return new CSchema<Field_color>(Field_color, config)
+      return CSchema.new<Field_color>(Field_color, config)
    }
 
    // colorV2(config: Field_string_config = {}): X.XString {
-   //     return new CSchema<Field_string>(Field_string, { inputType: 'color', ...config })
+   //     return CSchema.new<Field_string>(Field_string, { inputType: 'color', ...config })
    // }
 
    matrix(config: Field_matrix_config): Z.Matrix {
-      return new CSchema<Field_matrix>(Field_matrix, config)
+      return CSchema.new<Field_matrix>(Field_matrix, config)
    }
 
    /** image field, defaulting to `cushy.defaultImage` if no default provided */
@@ -99,17 +99,17 @@ export class CushySchemaBuilder implements IBuilder {
 
    /** image field, without any default */
    image_(config: Field_image_config = {}): Z.Image {
-      return new CSchema<Field_image>(Field_image, config)
+      return CSchema.new<Field_image>(Field_image, config)
    }
 
    /** prompt, defaulting to '' */
-   prompt(config: Field_prompt_config = {}): Z.Prompt {
+   prompt(config: Field_prompt['$config'] = {}): Z.Prompt {
       const def = config.default ?? ''
       return this.prompt_({ default: def, ...config })
    }
 
-   prompt_(config: Field_prompt_config = {}): Z.Prompt {
-      return new CSchema<Field_prompt>(Field_prompt, config)
+   prompt_(config: Field_prompt['$config'] = {}): Z.Prompt {
+      return CSchema.new<Field_prompt>(Field_prompt, config)
    }
 
    remSize(config: Omit<Field_number['$config'], 'mode'> = {}): Z.Number {
@@ -117,11 +117,11 @@ export class CushySchemaBuilder implements IBuilder {
    }
 
    custom<T>(config: Field_custom_config<T>): Z.Custom<T> {
-      return new CSchema<Field_custom<T>>(Field_custom, config)
+      return CSchema.new<Field_custom<T>>(Field_custom, config)
    }
 
    list<T extends CSchema>(config: Field_list_config<T>): CSchema<Field_list<T>> {
-      return new CSchema<Field_list<T>>(Field_list, config)
+      return CSchema.new<Field_list<T>>(Field_list, config)
    }
 
    cube(): SimpleShape$ {
@@ -176,26 +176,26 @@ export class CushySchemaBuilder implements IBuilder {
    //     injected: SCHEMA1,
    //     children: (shared: SCHEMA1['$field']) => SCHEMA2,
    // ): X.XLink<SCHEMA1, SCHEMA2> {
-   //     return new CSchema<Field_link<SCHEMA1, SCHEMA2>>(Field_link, { share: injected, children })
+   //     return CSchema.new<Field_link<SCHEMA1, SCHEMA2>>(Field_link, { share: injected, children })
    // }
 
    // linked<T extends Field>(field: T): X.XShared<T> {
-   //     return new CSchema<Field_shared<T>>(Field_shared<any /* 🔴 */>, { field })
+   //     return CSchema.new<Field_shared<T>>(Field_shared<any /* 🔴 */>, { field })
    // }
 
    // /** see also: `fields` for a more practical api */
    // group<T extends SchemaDict>(config: Field_group_config<T> = {}): X.XGroup<T> {
-   //     return new CSchema<Field_group<T>>(Field_group, config) as any
+   //     return CSchema.new<Field_group<T>>(Field_group, config) as any
    // }
 
    // /** Convenience function for `group({ border: false, label: false, collapsed: false })` */
    // column<T extends SchemaDict>(config: Field_group_config<T> = {}): X.XGroup<T> {
-   //     return new CSchema<Field_group<T>>(Field_group, { border: false, label: false, collapsed: false, ...config }) as any
+   //     return CSchema.new<Field_group<T>>(Field_group, { border: false, label: false, collapsed: false, ...config }) as any
    // }
 
    // /** Convenience function for `group({ border: false, label: false, collapsed: false, layout:'H' })` */
    // row<T extends SchemaDict>(config: Field_group_config<T> = {}): X.XGroup<T> {
-   //     return new CSchema<Field_group<T>>(Field_group, {
+   //     return CSchema.new<Field_group<T>>(Field_group, {
    //         border: false,
    //         label: false,
    //         collapsed: false,
@@ -206,29 +206,29 @@ export class CushySchemaBuilder implements IBuilder {
 
    // /** simpler way to create `group` */
    // fields<T extends SchemaDict>(fields: T, config: Omit<Field_group_config<T>, 'items'> = {}): X.XGroup<T> {
-   //     return new CSchema<Field_group<T>>(Field_group, { items: fields, ...config }) as any
+   //     return CSchema.new<Field_group<T>>(Field_group, { items: fields, ...config }) as any
    // }
 
    // choice<T extends { [key: string]: CSchema }>(config: Omit<Field_choices_config<T>, 'multi'>): X.XChoice<T> {
-   //     return new CSchema<Field_choices<T>>(Field_choices, { multi: false, ...config })
+   //     return CSchema.new<Field_choices<T>>(Field_choices, { multi: false, ...config })
    // }
 
    // choices<T extends { [key: string]: CSchema }>(config: Omit<Field_choices_config<T>, 'multi'>): X.XChoices<T> {
-   //     return new CSchema<Field_choices<T>>(Field_choices, { multi: true, ...config })
+   //     return CSchema.new<Field_choices<T>>(Field_choices, { multi: true, ...config })
    // }
 
    // choiceV2<T extends { [key: string]: CSchema }>(
    //     items: Field_choices_config<T>['items'],
    //     config: Omit<Field_choices_config<NoInfer<T>>, 'multi' | 'items'> = {},
    // ): X.XChoice<T> {
-   //     return new CSchema<Field_choices<T>>(Field_choices, { multi: false, items, ...config })
+   //     return CSchema.new<Field_choices<T>>(Field_choices, { multi: false, items, ...config })
    // }
 
    // choicesV2<T extends { [key: string]: CSchema }>(
    //     items: Field_choices_config<T>['items'],
    //     config: Omit<Field_choices_config<T>, 'multi' | 'items'> = {},
    // ): X.XChoices<T> {
-   //     return new CSchema<Field_choices<T>>(Field_choices, { items, multi: true, appearance: 'tab', ...config })
+   //     return CSchema.new<Field_choices<T>>(Field_choices, { items, multi: true, appearance: 'tab', ...config })
    // }
 
    // /** simple choice alternative api */
@@ -236,15 +236,15 @@ export class CushySchemaBuilder implements IBuilder {
    //     items: Field_choices_config<T>['items'],
    //     config: Omit<Field_choices_config<NoInfer<T>>, 'multi' | 'items'> = {},
    // ): X.XChoices<T> {
-   //     return new CSchema<Field_choices<T>>(Field_choices, { items, multi: false, ...config, appearance: 'tab' })
+   //     return CSchema.new<Field_choices<T>>(Field_choices, { items, multi: false, ...config, appearance: 'tab' })
    // }
    // empty(config: Field_group_config<NO_PROPS> = {}): X.XEmpty {
-   //     return new CSchema<Field_group<NO_PROPS>>(Field_group, config)
+   //     return CSchema.new<Field_group<NO_PROPS>>(Field_group, config)
    // }
 
    // optional wrappers
    optional<T extends CSchema>(p: Field_optional_config<T>): Z.Maybe<T> {
-      return new CSchema<Field_optional<T>>(Field_optional, p)
+      return CSchema.new<Field_optional<T>>(Field_optional, p)
    }
 
    llmModel(p: { default?: OpenRouter_Models } = {}): Z.XSelectOne<OpenRouter_ModelInfo, OpenRouter_Models> {
