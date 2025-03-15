@@ -10,7 +10,6 @@ import type {
    FieldConstructor,
    SchemaDictWithPaths,
    SerialMigrationFunction,
-   TravelEdge,
    UNVALIDATED,
 } from './FieldConstructor'
 import type { FieldId } from './FieldId'
@@ -18,7 +17,6 @@ import type { FieldSerialFor } from './FieldSerial'
 import type { Channel, ChannelId } from './pubsub/Channel'
 import type { Publication } from './pubsub/Producer'
 import type { Repository } from './Repository'
-import type { SchemaDict } from './SchemaDict'
 import type { Transaction } from './Transaction'
 import type { Problem, Problem_Ext } from './Validation'
 
@@ -29,7 +27,7 @@ import _unset from 'lodash/unset'
 import { computed, isObservable, observable, runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
-import { createElement, type DependencyList, type FC, type ReactNode, useMemo } from 'react'
+import { type FC, type ReactNode, useMemo } from 'react'
 
 import { csuiteConfig } from '../config/configureCsuite'
 import { isHole } from '../fields/list/HOLE'

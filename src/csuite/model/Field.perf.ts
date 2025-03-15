@@ -1,11 +1,11 @@
 import chalk from 'chalk'
 import { Bench } from 'tinybench'
 
-import { locoSchemaBuilder } from '../../../../front/form/LocoSchemaBuilder'
+import { sb } from '../simple/SimpleFactory'
 
 const SIMPLE = true
 // #region test case
-const b = locoSchemaBuilder
+const b = sb
 const makeDoc = ():
    | Z.Bool
    | Z.Record<{
@@ -59,11 +59,11 @@ bench
 // .todo('unimplemented bench')
 
 console.log(`[🤠] warmup`)
-await bench.warmupConcurrently()
+// await bench.warmupConcurrently()
 
 // await bench.warmup() // make results more reliable, ref: https://github.com/tinylibs/tinybench/pull/50
 console.log(`[🤠] run`)
-await bench.runConcurrently()
+// await bench.runConcurrently()
 
 // show results
 const table = bench.table()
