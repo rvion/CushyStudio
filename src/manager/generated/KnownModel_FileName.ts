@@ -170,11 +170,6 @@ export type KnownModel_FileName =
      * see https://huggingface.co/guoyww/animatediff
      */
     | "v3_sd15_sparsectrl_scribble.ckpt"
-    /** SegGPT
-     * 1.48GB - https://huggingface.co/BAAI/SegGPT/resolve/main/seggpt_vit_large.pth
-     * see https://huggingface.co/BAAI/SegGPT
-     */
-    | "seggpt_vit_large.pth"
     /** The idea behind this embedding was to somehow train the negative prompt as an embedding, thus unifying the basis of the negative prompt into one word or embedding.
      * 25KB - https://civitai.com/api/download/models/60095
      * see https://civitai.com/models/55700/badprompt-negative-embedding
@@ -455,16 +450,56 @@ export type KnownModel_FileName =
      * see https://huggingface.co/Comfy-Org/flux1-dev/tree/main
      */
     | "flux1-schnell-fp8.safetensors"
+    /** clip_g model (for SDXL, SD3.5)
+     * 1.39GB - https://huggingface.co/Comfy-Org/stable-diffusion-3.5-fp8/resolve/main/text_encoders/clip_g.safetensors
+     * see https://huggingface.co/Comfy-Org/stable-diffusion-3.5-fp8
+     */
+    | "clip_g.safetensors"
+    /** clip_l model (for SD1.x, SD2.x, SDXL, SD3.5, FLUX.1, HunyuanVideo, ...) 
+     * 246MB - https://huggingface.co/Comfy-Org/stable-diffusion-3.5-fp8/resolve/main/text_encoders/clip_l.safetensors
+     * see https://huggingface.co/Comfy-Org/stable-diffusion-3.5-fp8
+     */
+    | "clip_l.safetensors"
+    /** Huyuan Video Image2Video diffusion model. repackaged version.
+     * 25.6GB - https://huggingface.co/Comfy-Org/HunyuanVideo_repackaged/resolve/main/split_files/diffusion_models/hunyuan_video_image_to_video_720p_bf16.safetensors
+     * see https://huggingface.co/Comfy-Org/HunyuanVideo_repackaged
+     */
+    | "hunyuan_video_image_to_video_720p_bf16.safetensors"
+    /** Huyuan Video diffusion model. repackaged version.
+     * 25.6GB - https://huggingface.co/Comfy-Org/HunyuanVideo_repackaged/resolve/main/split_files/diffusion_models/hunyuan_video_t2v_720p_bf16.safetensors
+     * see https://huggingface.co/Comfy-Org/HunyuanVideo_repackaged
+     */
+    | "hunyuan_video_t2v_720p_bf16.safetensors"
+    /** Huyuan Video VAE model. repackaged version.
+     * 493MB - https://huggingface.co/Comfy-Org/HunyuanVideo_repackaged/resolve/main/split_files/vae/hunyuan_video_vae_bf16.safetensors
+     * see https://huggingface.co/Comfy-Org/HunyuanVideo_repackaged
+     */
+    | "hunyuan_video_vae_bf16.safetensors"
+    /** llava_llama3_fp16 text encoder model. This is required for using Hunyuan Video.
+     * 16.1GB - https://huggingface.co/Comfy-Org/HunyuanVideo_repackaged/resolve/main/split_files/text_encoders/llava_llama3_fp16.safetensors
+     * see https://huggingface.co/Comfy-Org/HunyuanVideo_repackaged
+     */
+    | "llava_llama3_fp16.safetensors"
+    /** llava_llama3_fp8_scaled text encoder model. This is required for using Hunyuan Video.
+     * 9.09GB - https://huggingface.co/Comfy-Org/HunyuanVideo_repackaged/resolve/main/split_files/text_encoders/llava_llama3_fp8_scaled.safetensors
+     * see https://huggingface.co/Comfy-Org/HunyuanVideo_repackaged
+     */
+    | "llava_llama3_fp8_scaled.safetensors"
+    /** llava_llama3_vision clip vison model. This is required for using Hunyuan Video Image2Video.
+     * 649MB - https://huggingface.co/Comfy-Org/HunyuanVideo_repackaged/resolve/main/split_files/clip_vision/llava_llama3_vision.safetensors
+     * see https://huggingface.co/Comfy-Org/HunyuanVideo_repackaged
+     */
+    | "llava_llama3_vision.safetensors"
     /** This clip vision model is required for FLUX.1 Redux.
      * 857MB - https://huggingface.co/Comfy-Org/sigclip_vision_384/resolve/main/sigclip_vision_patch14_384.safetensors
      * see https://huggingface.co/Comfy-Org/sigclip_vision_384/tree/main
      */
     | "sigclip_vision_patch14_384.safetensors"
-    /** clip_l model
-     * 246MB - https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/clip_l.safetensors
-     * see https://huggingface.co/comfyanonymous/flux_text_encoders/tree/main
+    /** VAE model for Cosmos 1.0
+     * 211MB - https://huggingface.co/comfyanonymous/cosmos_1.0_text_encoder_and_VAE_ComfyUI/resolve/main/vae/cosmos_cv8x8x8_1.0.safetensors
+     * see https://huggingface.co/comfyanonymous/cosmos_1.0_text_encoder_and_VAE_ComfyUI/tree/main
      */
-    | "clip_l.safetensors"
+    | "cosmos_cv8x8x8_1.0.safetensors"
     /** Text Encoders for FLUX (fp16)
      * 9.79GB - https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp16.safetensors
      * see https://huggingface.co/comfyanonymous/flux_text_encoders
@@ -591,6 +626,16 @@ You need to this model for <B>Tiled Resample</B>
      * see https://huggingface.co/Bingsu/adetailer/tree/main
      */
     | "deepfashion2_yolov8s-seg.pt"
+    /** [SNAPSHOT] Janus-Pro-1B model.[w/You cannot download this item on ComfyUI-Manager versions below V3.18]
+     * 7.8GB - deepseek-ai/Janus-Pro-1B
+     * see https://huggingface.co/deepseek-ai/Janus-Pro-1B
+     */
+    | "<huggingface>"
+    /** [SNAPSHOT] Janus-Pro-7B model.[w/You cannot download this item on ComfyUI-Manager versions below V3.18]
+     * 14.85GB - deepseek-ai/Janus-Pro-7B
+     * see https://huggingface.co/deepseek-ai/Janus-Pro-7B
+     */
+    | "<huggingface>"
     /** Depth pro model for [a/ComfyUI-Depth-Pro](https://github.com/spacepxl/ComfyUI-Depth-Pro)
      * 1.9GB - https://huggingface.co/spacepxl/ml-depth-pro/resolve/main/depth_pro.fp16.safetensors
      * see https://huggingface.co/spacepxl/ml-depth-pro
@@ -636,11 +681,6 @@ You need to this model for <B>Tiled Resample</B>
      * see https://huggingface.co/InstantX/InstantID
      */
     | "diffusion_pytorch_model.safetensors"
-    /** To use the Face Analysis for ComfyUI custom node, installation of this model is needed.
-     * 22.5MB - https://huggingface.co/matt3ounstable/dlib_predictor_recognition/resolve/main/dlib_face_recognition_resnet_model_v1.dat
-     * see https://huggingface.co/matt3ounstable/dlib_predictor_recognition/tree/main
-     */
-    | "dlib_face_recognition_resnet_model_v1.dat"
     /** DMD2 LoRA (4steps)
      * 787MB - https://huggingface.co/tianweiy/DMD2/resolve/main/dmd2_sdxl_4step_lora.safetensors
      * see https://huggingface.co/tianweiy/DMD2
@@ -651,11 +691,6 @@ You need to this model for <B>Tiled Resample</B>
      * see https://huggingface.co/tianweiy/DMD2
      */
     | "dmd2_sdxl_4step_lora_fp16.safetensors"
-    /** ToonCrafter checkpoint model for ComfyUI-ToonCrafter
-     * 10.5GB - https://huggingface.co/Doubiiu/ToonCrafter/resolve/main/model.ckpt
-     * see https://huggingface.co/Doubiiu/ToonCrafter/tree/main
-     */
-    | "model.ckpt"
     /** DynamiCrafter image2video model 1024x575
      * 5.22GB - https://huggingface.co/Kijai/DynamiCrafter_pruned/resolve/main/dynamicrafter_1024_v1_bf16.safetensors
      * see https://huggingface.co/Kijai/DynamiCrafter_pruned/
@@ -921,21 +956,6 @@ You need to this model for <B>Tiled Resample</B>
      * see https://huggingface.co/lllyasviel/ic-light
      */
     | "iclight_sd15_fcon.safetensors"
-    /** ID-Animator checkpoint
-     * 247.3MB - https://huggingface.co/spaces/ID-Animator/ID-Animator/resolve/main/animator.ckpt
-     * see https://huggingface.co/spaces/ID-Animator/ID-Animator
-     */
-    | "animator.ckpt"
-    /** CLIP Image encoder for ID-Animator
-     * 2.53GB - https://huggingface.co/spaces/ID-Animator/ID-Animator/resolve/main/image_encoder/model.safetensors
-     * see https://huggingface.co/spaces/ID-Animator/ID-Animator
-     */
-    | "model.safetensors"
-    /** AnimateDiff checkpoint for ID-Animator
-     * 1.82GB - https://huggingface.co/spaces/ID-Animator/ID-Animator/resolve/main/mm_sd_v15_v2.ckpt
-     * see https://huggingface.co/spaces/ID-Animator/ID-Animator
-     */
-    | "mm_sd_v15_v2.ckpt"
     /** Mix model (SD2.1 unCLIP + illuminatiDiffusionV1_v11)
      * 3.98GB - https://huggingface.co/comfyanonymous/illuminatiDiffusionV1_v11_unCLIP/resolve/main/illuminatiDiffusionV1_v11-unclip-h-fp16.safetensors
      * see https://huggingface.co/comfyanonymous/illuminatiDiffusionV1_v11_unCLIP
@@ -991,20 +1011,6 @@ You need to this model for <B>Tiled Resample</B>
      * see https://huggingface.co/InstantX/SD3-Controlnet-Tile
      */
     | "diffusion_pytorch_model.safetensors"
-    /** Checkpoint of the insightface swapper model
-(used by ComfyUI-FaceSwap, comfyui-reactor-node, CharacterFaceSwap,
-ComfyUI roop and comfy_mtb)
-     * 555.3MB - https://github.com/facefusion/facefusion-assets/releases/download/models/inswapper_128.onnx
-     * see https://github.com/facefusion/facefusion-assets
-     */
-    | "inswapper_128.onnx"
-    /** Checkpoint of the insightface swapper model
-(used by ComfyUI-FaceSwap, comfyui-reactor-node, CharacterFaceSwap,
-ComfyUI roop and comfy_mtb)
-     * 277.7MB - https://github.com/facefusion/facefusion-assets/releases/download/models/inswapper_128_fp16.onnx
-     * see https://github.com/facefusion/facefusion-assets
-     */
-    | "inswapper_128_fp16.onnx"
     /** You can use this model in the [a/ComfyUI IPAdapter plus](https://github.com/cubiq/ComfyUI_IPAdapter_plus) extension.
      * 98.2MB - https://huggingface.co/ostris/ip-composition-adapter/resolve/main/ip_plus_composition_sd15.safetensors
      * see https://huggingface.co/ostris/ip-composition-adapter
@@ -1280,11 +1286,6 @@ ComfyUI roop and comfy_mtb)
      * see https://huggingface.co/hakurei/waifu-diffusion-v1-4
      */
     | "kl-f8-anime2.ckpt"
-    /** An extremely compactly designed controlnet model (a.k.a. ControlNet-LLLite). Note: The model structure is highly experimental and may be subject to change in the future.
-     * 46.2MB - https://huggingface.co/kohya-ss/controlnet-lllite/resolve/main/controllllite_v01032064e_sdxl_canny_anime.safetensors
-     * see https://huggingface.co/kohya-ss/controlnet-lllite
-     */
-    | "controllllite_v01032064e_sdxl_canny_anime.safetensors"
     /** Kolors UNet model
      * 10.3GB - https://huggingface.co/Kwai-Kolors/Kolors/resolve/main/unet/diffusion_pytorch_model.safetensors
      * see https://huggingface.co/Kwai-Kolors/Kolors
@@ -1305,6 +1306,16 @@ ComfyUI roop and comfy_mtb)
      * see https://huggingface.co/Kwai-Kolors/Kolors-IP-Adapter-Plus
      */
     | "Kolors-IP-Adapter-Plus.bin"
+    /** Kolors VAE
+     * 167MB - https://huggingface.co/Kwai-Kolors/Kolors/resolve/main/vae/diffusion_pytorch_model.fp16.safetensors
+     * see https://huggingface.co/Kwai-Kolors/Kolors
+     */
+    | "diffusion_pytorch_model.fp16.safetensors"
+    /** Kolors VAE
+     * 335MB - https://huggingface.co/Kwai-Kolors/Kolors/resolve/main/vae/diffusion_pytorch_model.safetensors
+     * see https://huggingface.co/Kwai-Kolors/Kolors
+     */
+    | "diffusion_pytorch_model.safetensors"
     /** Latent Consistency LoRA for SD1.5
      * 134.6MB - https://huggingface.co/latent-consistency/lcm-lora-sdv1-5/resolve/main/pytorch_lora_weights.safetensors
      * see https://huggingface.co/latent-consistency/lcm-lora-sdv1-5
@@ -1325,6 +1336,11 @@ ComfyUI roop and comfy_mtb)
      * see https://github.com/CompVis/latent-diffusion
      */
     | "last.ckpt"
+    /** AnimateDiff-PIA Model
+     * 1.67GB - https://huggingface.co/Leoxing/PIA/resolve/main/pia.ckpt
+     * see https://huggingface.co/Leoxing/PIA/tree/main
+     */
+    | "pia.ckpt"
     /** Pressing 'install' directly downloads the model from the Kosinkadink/ComfyUI-AnimateDiff-Evolved extension node.
      * 1.83GB - https://huggingface.co/Lightricks/LongAnimateDiff/resolve/main/lt_long_mm_16_64_frames_v1.1.ckpt
      * see https://huggingface.co/Lightricks/LongAnimateDiff
@@ -1345,6 +1361,36 @@ ComfyUI roop and comfy_mtb)
      * see https://huggingface.co/Lightricks/LTX-Video
      */
     | "ltx-video-2b-v0.9.safetensors"
+    /** LTX-Video is the first DiT-based video generation model capable of generating high-quality videos in real-time. It produces 24 FPS videos at a 768x512 resolution faster than they can be watched. Trained on a large-scale dataset of diverse videos, the model generates high-resolution videos with realistic and varied content.
+     * 5.72GB - https://huggingface.co/Lightricks/LTX-Video/resolve/main/ltx-video-2b-v0.9.1.safetensors
+     * see https://huggingface.co/Lightricks/LTX-Video
+     */
+    | "ltx-video-2b-v0.9.1.safetensors"
+    /** LTX-Video is the first DiT-based video generation model capable of generating high-quality videos in real-time. It produces 24 FPS videos at a 768x512 resolution faster than they can be watched. Trained on a large-scale dataset of diverse videos, the model generates high-resolution videos with realistic and varied content.
+     * 6.34GB - https://huggingface.co/Lightricks/LTX-Video/resolve/main/ltx-video-2b-v0.9.5.safetensors
+     * see https://huggingface.co/Lightricks/LTX-Video
+     */
+    | "ltx-video-2b-v0.9.5.safetensors"
+    /** Cosmos 1.0 Text2World Diffusion Model (14B)
+     * 28.5GB - https://huggingface.co/mcmonkey/cosmos-1.0/resolve/main/Cosmos-1_0-Diffusion-14B-Text2World.safetensors
+     * see https://huggingface.co/mcmonkey/cosmos-1.0
+     */
+    | "Cosmos-1_0-Diffusion-14B-Text2World.safetensors"
+    /** Cosmos 1.0 Video2World Diffusion Model (14B)
+     * 28.5GB - https://huggingface.co/mcmonkey/cosmos-1.0/resolve/main/Cosmos-1_0-Diffusion-14B-Video2World.safetensors
+     * see https://huggingface.co/mcmonkey/cosmos-1.0
+     */
+    | "Cosmos-1_0-Diffusion-14B-Video2World.safetensors"
+    /** Cosmos 1.0 Text2World Diffusion Model (7B)
+     * 14.5GB - https://huggingface.co/mcmonkey/cosmos-1.0/resolve/main/Cosmos-1_0-Diffusion-7B-Text2World.safetensors
+     * see https://huggingface.co/mcmonkey/cosmos-1.0
+     */
+    | "Cosmos-1_0-Diffusion-7B-Text2World.safetensors"
+    /** Cosmos 1.0 Video2World Diffusion Model (7B)
+     * 14.5GB - https://huggingface.co/mcmonkey/cosmos-1.0/resolve/main/Cosmos-1_0-Diffusion-7B-Video2World.safetensors
+     * see https://huggingface.co/mcmonkey/cosmos-1.0
+     */
+    | "Cosmos-1_0-Diffusion-7B-Video2World.safetensors"
     /** MobileSAM
      * 38.8MB - https://github.com/ChaoningZhang/MobileSAM/blob/master/weights/mobile_sam.pt
      * see https://github.com/ChaoningZhang/MobileSAM/
@@ -1390,21 +1436,6 @@ ComfyUI roop and comfy_mtb)
      * see https://huggingface.co/Bingsu/adetailer/tree/main
      */
     | "person_yolov8s-seg.pt"
-    /** Pressing 'install' directly downloads the model from the pfg-ComfyUI/models extension node. (Note: Requires ComfyUI-Manager V0.24 or above)
-     * 23.6MB - https://huggingface.co/furusu/PFG/resolve/main/pfg-novel-n10.pt
-     * see https://huggingface.co/furusu/PFG
-     */
-    | "pfg-novel-n10.pt"
-    /** Pressing 'install' directly downloads the model from the pfg-ComfyUI/models extension node. (Note: Requires ComfyUI-Manager V0.24 or above)
-     * 31.5MB - https://huggingface.co/furusu/PFG/resolve/main/pfg-wd14-n10.pt
-     * see https://huggingface.co/furusu/PFG
-     */
-    | "pfg-wd14-n10.pt"
-    /** Pressing 'install' directly downloads the model from the pfg-ComfyUI/models extension node. (Note: Requires ComfyUI-Manager V0.24 or above)
-     * 31.5MB - https://huggingface.co/furusu/PFG/resolve/main/pfg-wd15beta2-n10.pt
-     * see https://huggingface.co/furusu/PFG
-     */
-    | "pfg-wd15beta2-n10.pt"
     /** PhotoMaker model. This model is compatible with SDXL.
      * 934.1MB - https://huggingface.co/TencentARC/PhotoMaker/resolve/main/photomaker-v1.bin
      * see https://huggingface.co/TencentARC/PhotoMaker
@@ -1420,6 +1451,21 @@ ComfyUI roop and comfy_mtb)
      * see https://huggingface.co/PixArt-alpha/PixArt-Sigma/tree/main
      */
     | "PixArt-Sigma-XL-2-1024-MS.pth"
+    /** PixArt-Sigma Diffusion model
+     * 2.44GB - https://huggingface.co/PixArt-alpha/PixArt-Sigma-XL-2-1024-MS/resolve/main/transformer/diffusion_pytorch_model.safetensors
+     * see https://huggingface.co/PixArt-alpha/PixArt-Sigma-XL-2-1024-MS
+     */
+    | "PixArt-Sigma-XL-2-1024-MS.safetensors"
+    /** PixArt-Sigma Diffusion model
+     * 2.44GB - https://huggingface.co/PixArt-alpha/PixArt-Sigma-XL-2-512-MS/resolve/main/transformer/diffusion_pytorch_model.safetensors
+     * see https://huggingface.co/PixArt-alpha/PixArt-Sigma-XL-2-512-MS
+     */
+    | "PixArt-Sigma-XL-2-512-MS.safetensors"
+    /** PixArt-Alpha Diffusion model
+     * 2.45GB - https://huggingface.co/PixArt-alpha/PixArt-XL-2-1024-MS/resolve/main/transformer/diffusion_pytorch_model.safetensors
+     * see https://huggingface.co/PixArt-alpha/PixArt-XL-2-1024-MS
+     */
+    | "PixArt-XL-2-1024-MS.safetensors"
     /** This is required for PuLID (FLUX)
      * 1.14GB - https://huggingface.co/guozinan/PuLID/resolve/main/pulid_flux_v0.9.1.safetensors
      * see https://huggingface.co/guozinan/PuLID
@@ -1551,11 +1597,6 @@ Version quantized to fp8_e4m3fn by Kijai
      * see https://huggingface.co/Kijai/flux-fp8
      */
     | "flux_shakker_labs_union_pro-fp8_e4m3fn.safetensors"
-    /** To use the Face Analysis for ComfyUI custom node, installation of this model is needed.
-     * 99.7MB - https://huggingface.co/matt3ounstable/dlib_predictor_recognition/resolve/main/shape_predictor_68_face_landmarks.dat
-     * see https://huggingface.co/matt3ounstable/dlib_predictor_recognition/tree/main
-     */
-    | "shape_predictor_68_face_landmarks.dat"
     /** These are the available models in the UltralyticsDetectorProvider of Impact Pack.
      * 54.9MB - https://github.com/hben35096/assets/releases/download/yolo8/skin_yolov8m-seg_400.pt
      * see https://github.com/hben35096/assets/releases/tag/yolo8
@@ -1874,6 +1915,11 @@ NOTE: 25 frames @ 576x1024
      * see https://huggingface.co/briaai/RMBG-1.4
      */
     | "model.pth"
+    /** CustomNet Inpaint pretrained model for ComfyUI_CustomNet
+     * 5.71GB - https://huggingface.co/TencentARC/CustomNet/resolve/main/customnet_inpaint_v1.pt
+     * see https://huggingface.co/TencentARC/CustomNet/tree/main
+     */
+    | "customnet_inpaint_v1.pt"
     /** CustomNet pretrained model for ComfyUI_CustomNet
      * 5.71GB - https://huggingface.co/TencentARC/CustomNet/resolve/main/customnet_v1.pt
      * see https://huggingface.co/TencentARC/CustomNet/tree/main
@@ -2039,6 +2085,41 @@ NOTE: 25 frames @ 576x1024
      * see https://huggingface.co/xinsir/controlnet-union-sdxl-1.0
      */
     | "diffusion_pytorch_model_promax.safetensors"
+    /** A checkpoint with trained LoRAs for FLUX.1-dev model by Black Forest Labs
+     * 44.8MB - https://huggingface.co/XLabs-AI/flux-lora-collection/resolve/main/scenery_lora.safetensors
+     * see https://huggingface.co/XLabs-AI/flux-lora-collection
+     */
+    | "art_lora.safetensors"
+    /** ControlNet checkpoints for FLUX.1-dev model by Black Forest Labs.
+     * 1.49GB - https://huggingface.co/XLabs-AI/flux-controlnet-collections/resolve/main/flux-canny-controlnet-v3.safetensors
+     * see https://huggingface.co/XLabs-AI/flux-controlnet-collections
+     */
+    | "flux-canny-controlnet-v3.safetensors"
+    /** ControlNet checkpoints for FLUX.1-dev model by Black Forest Labs.
+     * 1.49GB - https://huggingface.co/XLabs-AI/flux-controlnet-collections/resolve/main/flux-depth-controlnet-v3.safetensors
+     * see https://huggingface.co/XLabs-AI/flux-controlnet-collections
+     */
+    | "flux-depth-controlnet-v3.safetensors"
+    /** ControlNet checkpoints for FLUX.1-dev model by Black Forest Labs.
+     * 1.49GB - https://huggingface.co/XLabs-AI/flux-controlnet-collections/resolve/main/flux-hed-controlnet-v3.safetensors
+     * see https://huggingface.co/XLabs-AI/flux-controlnet-collections
+     */
+    | "flux-hed-controlnet-v3.safetensors"
+    /** A checkpoint with trained LoRAs for FLUX.1-dev model by Black Forest Labs
+     * 982MB - https://huggingface.co/XLabs-AI/flux-ip-adapter/resolve/main/ip_adapter.safetensors
+     * see https://huggingface.co/XLabs-AI/flux-ip-adapter
+     */
+    | "ip_adapter.safetensors"
+    /** A checkpoint with trained LoRAs for FLUX.1-dev model by Black Forest Labs
+     * 44.8MB - https://huggingface.co/XLabs-AI/flux-lora-collection/resolve/main/mjv6_lora.safetensors
+     * see https://huggingface.co/XLabs-AI/flux-lora-collection
+     */
+    | "mjv6_lora.safetensors"
+    /** A checkpoint with trained LoRAs for FLUX.1-dev model by Black Forest Labs
+     * 44.8MB - https://huggingface.co/XLabs-AI/flux-lora-collection/resolve/main/realism_lora.safetensors
+     * see https://huggingface.co/XLabs-AI/flux-lora-collection
+     */
+    | "realism_lora.safetensors"
     /** Face Detection Models. Download the model required for using the 'Facerestore CF (Code Former)' custom node.
      * 187.0MB - https://github.com/sczhou/CodeFormer/releases/download/v0.1.0/yolov5l-face.pth
      * see https://github.com/xinntao/facexlib
