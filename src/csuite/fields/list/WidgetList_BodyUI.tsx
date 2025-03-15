@@ -21,7 +21,7 @@ export const WidgetList_BodyUI = observer(function WidgetList_BodyUI_<T extends 
       >
          {subFields.map((subField, ix) => {
             return (
-               <div /* SortableItem */ key={subField.id}>
+               <div /* SortableItem */ key={subField._uid}>
                   <subField.UI
                      Title={<>{ix.toString()}</>}
                      // slotDragKnob={

@@ -20,7 +20,7 @@ export const WidgetChoices_HeaderTabBarUI = observer(function WidgetChoices_Head
                const isSelected = field.isBranchEnabled(c.key) // serial.branches[c.key]
                return (
                   <InputBoolUI
-                     toggleGroup={field.id}
+                     toggleGroup={field._uid}
                      icon={c.icon}
                      key={c.key}
                      value={isSelected}

@@ -22,7 +22,7 @@ export const WidgetEnum_TabUI = observer(function WidgetEnum_TabUI_(p: { field: 
             const isSelected = selected === c
             return (
                <InputBoolUI
-                  toggleGroup={field.id}
+                  toggleGroup={field._uid}
                   key={c}
                   value={isSelected}
                   display='button'

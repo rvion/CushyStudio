@@ -41,7 +41,7 @@ export const PlaygroundForms = observer(function PlaygroundImportFromComfy_(p: {
                         <h3>play with forms</h3>
                         <Frame border={20} tw='m-8'>
                            <Frame base={10}>
-                              {field.type}({field.id})
+                              {field.type}({field._uid})
                            </Frame>
                            <Frame base={{ hueShift: 100 }}>
                               <div>

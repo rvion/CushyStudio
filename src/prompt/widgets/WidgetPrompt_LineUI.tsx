@@ -10,7 +10,7 @@ export const WidgetPrompt_LineUI = observer(function WidgetPrompt_LineUI_(p: { f
       return <WidgetSingleLineSummaryUI>{field.serial.val}</WidgetSingleLineSummaryUI>
    return null
    //         {/* <Button
-   //             onClick={() => cushy.layout.addCustomV2(PromptEditorUI, { promptID: field.id })}
+   //             onClick={() => cushy.layout.addCustomV2(PromptEditorUI, { promptID: field._uid })}
    //             icon={IKONS.mdiAbacus}
    //             subtle
    //             square
