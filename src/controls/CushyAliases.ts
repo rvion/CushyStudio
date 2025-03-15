@@ -1,13 +1,13 @@
 import type { ComfyUnionValue } from '../comfyui/comfyui-types'
 import type { Field_board } from '../csuite/fields/board/Field_board'
 import type { Field_bool } from '../csuite/fields/bool/FieldBool'
-import type { Field_choices } from '../csuite/fields/choices/FieldChoices'
+import type { Field_choices, MAGICCHOICES } from '../csuite/fields/choices/FieldChoices'
 import type { Field_color } from '../csuite/fields/color/FieldColor'
 import type { Field_custom } from '../csuite/fields/custom/FieldCustom'
 import type { Field_date } from '../csuite/fields/date/FieldDate'
 import type { Field_dynamic } from '../csuite/fields/dynamic/FieldDynamic'
 import type { Field_enum } from '../csuite/fields/enum/FieldEnum'
-import type { Field_group } from '../csuite/fields/group/FieldGroup'
+import type { Field_group, MAGICFIELDS } from '../csuite/fields/group/FieldGroup'
 import type { Field_image } from '../csuite/fields/image/FieldImage'
 import type { Field_link } from '../csuite/fields/link/FieldLink'
 import type { Field_list } from '../csuite/fields/list/FieldList'
@@ -51,8 +51,8 @@ declare global {
       // schema aliases
       type Shared<T extends Field>                    = CSchema<Field_shared<T>>
 
-      type Group<T extends SchemaDict>                = CSchema<Field_group<T>>
-      type Record<T extends SchemaDict>               = CSchema<Field_group<T>>
+      type Group<T extends SchemaDict>                = CSchema<Field_group<T> & MAGICFIELDS<T>>
+      type Record<T extends SchemaDict>               = CSchema<Field_group<T> & MAGICFIELDS<T>>
 
       type Empty                                      = CSchema<Field_group<NO_PROPS>>
       type Maybe<T extends CSchema>                   = CSchema<Field_optional<T>>
@@ -61,8 +61,8 @@ declare global {
       type String                                     = CSchema<Field_string>
 
       type Union<T extends SchemaDict>                = CSchema<Field_choices<T>>
-      type Choices<T extends SchemaDict = SchemaDict> = CSchema<Field_choices<T>>
-      type Choice<T extends SchemaDict = SchemaDict>  = CSchema<Field_choices<T>>
+      type Choices<T extends SchemaDict = SchemaDict> = CSchema<Field_choices<T> & MAGICCHOICES<T>>
+      type Choice<T extends SchemaDict = SchemaDict>  = CSchema<Field_choices<T> & MAGICCHOICES<T>>
 
       type Number                                     = CSchema<Field_number>
       type Color                                      = CSchema<Field_color>
