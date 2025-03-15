@@ -1,69 +1,58 @@
 import type { ComfyNodeSlotName, ComfyUnionValue } from '../../../comfyui/comfyui-types'
 import type { CleanedEnumResult } from '../../../types/EnumUtils'
 import type { CSchema } from '../../model/CSchema'
-import type { FieldConfig } from '../../model/FieldConfig'
-import type { FieldSerial } from '../../model/FieldSerial'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { produce } from 'immer'
 
 import { Field } from '../../model/Field'
+import { Field_selectOne } from '../selectOne/FieldSelectOne'
 import { registerFieldClass } from '../WidgetUI.DI'
 import { _extractDefaultValue } from './_extractDefaultValue'
 import { WidgetEnumUI } from './WidgetEnumUI'
 
 // #region Config
-export type Field_enum_config<O extends ComfyUnionValue> = FieldConfig<
-   {
-      slotName: ComfyNodeSlotName
-      default?: O
-      extraDefaults?: string[]
-      filter?: (v: ComfyUnionValue) => boolean
-      appearance?: 'select' | 'tab'
-      /**
-       * @since 2024-07-22
-       * allow to wrap the list of values if they take more than 1 SLH (standard line height)
-       */
-      wrap?: boolean
-   },
-   Field_enum<O>
->
+export type Field_enum_ownConfig<O extends ComfyUnionValue> = {
+   slotName: ComfyNodeSlotName
+   default?: O
+   extraDefaults?: string[]
+   filter?: (v: ComfyUnionValue) => boolean
+   appearance?: 'select' | 'tab'
+   /**
+    * @since 2024-07-22
+    * allow to wrap the list of values if they take more than 1 SLH (standard line height)
+    */
+   wrap?: boolean
+}
 
 // #region Serial
-export type Field_enum_serial<O extends ComfyUnionValue> = FieldSerial<{
+export type Field_enum_ownSerial<O extends ComfyUnionValue> = {
    $: 'enum'
    val?: O
-}>
+}
 
 // #region Value
 export type Field_enum_value<O extends ComfyUnionValue> = O // Requirable[T]
 
-// #region Types
-export type Field_enum<O extends ComfyUnionValue> = {
-   $type: 'enum'
-   $config: Field_enum_config<O>
-   $serial: Field_enum_serial<O>
-   $value: Field_enum_value<O>
-   $unchecked: Field_enum_value<O> | undefined
-   $field: Field_enum<O>
-   $child: never
-}
-
 // #region State
-export class Field_enum<O extends ComfyUnionValue> extends Field<Field_enum<O>> {
+export class Field_enum<O extends ComfyUnionValue> extends Field {
+   declare $type: 'enum'
+   declare $ownConfig: Field_enum_ownConfig<O>
+   declare $ownSerial: Field_enum_ownSerial<O>
+   declare $value: Field_enum_value<O>
+   declare $unchecked: Field_enum_value<O> | undefined
+   declare $field: Field_enum<O>
+   declare $child: never
+
    // #region Static
    static readonly type: 'enum' = 'enum'
-   static readonly emptySerial: Field_enum_serial<any> = { $: 'enum' }
-   static codegenValueType(config: Field_enum_config<any>): string {
+   static readonly emptySerial: Field_enum<any>['$serial'] = { $: 'enum' }
+   static codegenValueType(config: Field_enum<any>['$config']): string {
       const knownValues = cushy.schema.knownUnionBySlotName.get(config.slotName)?.values ?? []
       return knownValues.map((v) => JSON.stringify(v)).join(' | ')
    }
    static migrateSerial(): undefined {}
-
-   // #region UI
-   DefaultHeaderUI = WidgetEnumUI
-   DefaultBodyUI: undefined = undefined
 
    get defaultValue(): Field_enum_value<O> {
       return this.config.default ?? (this.possibleValues[0] as any)
@@ -88,13 +77,10 @@ export class Field_enum<O extends ComfyUnionValue> extends Field<Field_enum<O>> 
       parent: Field | null,
       schema: CSchema<Field_enum<O>>,
       initialMountKey: string,
-      serial?: Field_enum_serial<O>,
+      serial?: Field_enum<O>['$serial'],
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
-      this.init(serial, {
-         DefaultHeaderUI: false,
-         DefaultBodyUI: false,
-      })
+      this.init(serial)
    }
 
    // #region serial
@@ -119,7 +105,7 @@ export class Field_enum<O extends ComfyUnionValue> extends Field<Field_enum<O>> 
       return isValidDef
    }
 
-   protected setOwnSerial(next: Field_enum_serial<O>): void {
+   protected setOwnSerial(next: Field_enum<O>['$serial']): void {
       // handle default
       if (next?.val === undefined) {
          const def = _extractDefaultValue(this.config)
@@ -165,6 +151,11 @@ export class Field_enum<O extends ComfyUnionValue> extends Field<Field_enum<O>> 
 
    get value_unchecked(): Field_enum_value<O> {
       return this.status.finalValue /* 🔴 */
+   }
+
+   override isValueEqual(other: Field): boolean {
+      if (!(other instanceof Field_selectOne)) return false
+      return this.value_unchecked === other.value_unchecked
    }
 }
 
