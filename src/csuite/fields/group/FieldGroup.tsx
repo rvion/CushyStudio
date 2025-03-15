@@ -67,7 +67,7 @@ export type Field_group_unchecked<T extends SchemaDict> = {
 }
 
 // TYPES
-export interface Field_group<T extends SchemaDict> {
+export interface Field_group<T extends SchemaDict = SchemaDict> {
    $type: 'group'
    $ownConfig: Field_group_ownConfig<T>
    $ownSerial: Field_group_ownSerial<T>
