@@ -144,6 +144,7 @@
         "lodash.debounce": "^4.0.8",
         "marked": "^15.0.7",
         "mime-types": "^2.1.35",
+        "mnemonist": "^0.40.3",
         "mobx": "^6.13.6",
         "mobx-react-lite": "^4.1.0",
         "mobx-utils": "^6.1.0",
