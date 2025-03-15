@@ -80,11 +80,22 @@ declare global {
       type DateTimeZoned                              = CSchema<Field_date<Temporal.ZonedDateTime>>
       type XDateTimeZoned                             = CSchema<Field_date<Temporal.ZonedDateTime>>
 
-      // selects
+      // #region select
+      // naming v1
       type XSelectOne<T, ID extends SelectKey>        = CSchema<Field_selectOne<T, ID>>
       type XSelectMany<T, ID extends SelectKey>       = CSchema<Field_selectMany<T, ID>>
       type XSelectOne_<T extends SelectKey>           = CSchema<Field_selectOne<T, T>> // variant that may be shorter to read
       type XSelectMany_<T extends SelectKey>          = CSchema<Field_selectMany<T, T>> // variant that may be shorter to read
+      // naming v2
+      type SelectOne<T, ID extends SelectKey>        = CSchema<Field_selectOne<T, ID>>
+      type SelectMany<T, ID extends SelectKey>       = CSchema<Field_selectMany<T, ID>>
+      type SelectOne_<T extends SelectKey>           = CSchema<Field_selectOne<T, T>> // variant that may be shorter to read
+      type SelectMany_<T extends SelectKey>          = CSchema<Field_selectMany<T, T>> // variant that may be shorter to read
+      // naming v3
+      type OneOf<T, ID extends SelectKey>        = CSchema<Field_selectOne<T, ID>>
+      type Many<T, ID extends SelectKey>       = CSchema<Field_selectMany<T, ID>>
+      type OneOf_<T extends SelectKey>           = CSchema<Field_selectOne<T, T>> // variant that may be shorter to read
+      type Many_<T extends SelectKey>          = CSchema<Field_selectMany<T, T>> // variant that may be shorter to read
 
       type Size                                       = CSchema<Field_size>
       type Markdown                                   = CSchema<Field_markdown>
