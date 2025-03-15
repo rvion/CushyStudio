@@ -113,7 +113,7 @@ export const cmd_canvas_drawRectMask = command({
                visible: true,
             })
 
-            const maskField = bang(UC.ucv2?.Masks.last)
+            const maskField = bang(UC.ucv2?._.masks.at(-1))
 
             // 4. enable the mask on the active layer
             UC.activeLayer?.Content.match({
