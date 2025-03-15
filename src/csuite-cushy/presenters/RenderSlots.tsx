@@ -7,7 +7,6 @@ import type { WidgetSingleLineSummaryProps } from '../../csuite/form/WidgetSingl
 import type { WidgetToggleProps } from '../../csuite/form/WidgetToggleUI'
 import type { Field } from '../../csuite/model/Field'
 import type { FCOrJSXOrNamed, FCOrNode } from '../../csuite/utils/renderFCOrNode'
-import type { CovariantFn1 } from '../../csuite/variance/BivariantHack'
 import type { QuickFormContent } from '../catalog/group/QuickForm'
 import type { WidgetIndentProps } from '../catalog/Indent/WidgetIndentUI'
 import type { WidgetPresetsProps } from '../catalog/Presets/WidgetPresets'
@@ -37,8 +36,8 @@ import type { FC, ReactNode } from 'react'
  *    ReactNode => use this react node direclty
  */
 
-export interface DisplaySlots<out FIELD extends Field = Field> {
-   layout?: CovariantFn1<FIELD, QuickFormContent[]>
+export interface DisplaySlots<FIELD extends Field = Field> {
+   layout?: (field: FIELD) => QuickFormContent[]
 
    // 0.
    Decoration?: FCOrNode<{ children: ReactNode }>
