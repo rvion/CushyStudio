@@ -22,7 +22,7 @@ export function layerAIGeneration$(b: CushySchemaBuilder): LayerAIGeneration$ {
       // ⏸️     //
       // ⏸️ }),
       masks: b.selectManyDynamicStrings<FieldId>((self) => {
-         return self.consume(masksChannel)?.items.map((t) => t.id) ?? []
+         return self.readChannel(masksChannel)?.items.map((t) => t._uid) ?? []
       }),
 
       //  => Bridge is just too specifc, let's leave each app include
