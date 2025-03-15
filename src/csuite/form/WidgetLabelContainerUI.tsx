@@ -1,50 +1,38 @@
-import type { RevealPlacement } from '../reveal/RevealPlacement'
-import type { CSSProperties } from 'react'
+import type { Menu } from '../menu/Menu'
+import type { Field } from '../model/Field'
 
 import { observer } from 'mobx-react-lite'
 
-import { useCSuite } from '../../csuite/ctx/useCSuite'
-import { Frame } from '../../csuite/frame/Frame'
+import { Button } from '../../csuite/button/Button'
+import { RevealUI } from '../../csuite/reveal/RevealUI'
+import { useProvenance } from '../provenance/Provenance'
+import { fieldActionMenu } from './fieldActionMenu'
 
-export type WidgetLabelContainerProps = {
-   //
-   justify: boolean
-   className?: string
-   children: React.ReactNode
-   tooltip?: string
-   tooltipPlacement?: RevealPlacement
+export type WidgetMenuProps = {
+   className?: string | null
+   field: Field
 }
 
-export const WidgetLabelContainerUI = observer(function WidgetLabelContainerUI_(
-   p: WidgetLabelContainerProps,
-) {
-   const csuite = useCSuite()
+export const WidgetMenuUI = observer(function WidgetMenu(p: WidgetMenuProps) {
+   const field = p.field
+   const provenance = useProvenance()
+   const menu: Menu = fieldActionMenu.useBind({ field, provenance })
    return (
-      <Frame
-         base={csuite.labelBackground}
-         tooltip={p.tooltip}
-         tooltipPlacement={p.tooltipPlacement ?? 'topStart'}
-         className={p.className}
-         // hover={1}
-         expand
-         tw={[
-            'UI-WidgetLabelContainer', //
-            'COLLAPSE-PASSTHROUGH',
-            'flex items-center self-stretch',
-            'flex-none shrink-0',
-         ]}
-         style={p.justify ? justifiedStyle : undefined}
-         text={csuite.labelText}
+      <RevealUI //
+         className={p.className ?? undefined}
+         content={() => <menu.UI />}
       >
-         {p.children}
-      </Frame>
+         <Button //
+            tooltip='Open field menu'
+            tabIndex={-1}
+            borderless
+            subtle
+            icon={IKONS.mdiDotsVertical}
+            look='ghost'
+            size='widget'
+            // square
+            tw='!px-0'
+         />
+      </RevealUI>
    )
 })
-
-const justifiedStyle: CSSProperties = {
-   minWidth: '8rem', // 🔴 move to theme options
-   // maxWidth: '20rem', // 🔴 move to theme options
-   maxWidth: '15rem', // 🔴 move to theme options
-   width: '35%', // 🔴 move to theme options
-   justifyContent: 'flex-start',
-}
