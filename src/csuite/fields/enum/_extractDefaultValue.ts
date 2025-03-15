@@ -1,8 +1,8 @@
 import type { ComfyUnionValue } from '../../../comfyui/comfyui-types'
-import type { Field_enum_config } from './FieldEnum'
+import type { Field_enum } from './FieldEnum'
 
 // ⁉️
-export const _extractDefaultValue = (input: Field_enum_config<any>): Maybe<ComfyUnionValue> => {
+export const _extractDefaultValue = (input: Field_enum<any>['$config']): Maybe<ComfyUnionValue> => {
    const def = input.default
 
    if (def != null) {

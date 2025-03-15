@@ -51,7 +51,7 @@ export const UCMenuUI = observer(function UCMenuUI_(p: {}) {
                               content: {
                                  aiGeneration: {
                                     draftId: { id: lastActiveDraft?.id, label: lastActiveDraft?.name },
-                                    image: undefined,
+                                    image: null,
                                     masks: [],
                                  },
                               },
@@ -66,7 +66,7 @@ export const UCMenuUI = observer(function UCMenuUI_(p: {}) {
                >
                   <div /* SortableList */ className='list' tw='flex flex-col gap-2'>
                      {layers.items.map((layer, i) => {
-                        return layer.Content.match({
+                        return layer.Content.matchExhaustive({
                            image: () => (
                               <UCMenuLayerEntryUI //
                                  active={layer === uc1.activeLayer}
