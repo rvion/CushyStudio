@@ -7,22 +7,25 @@ import { createMediaImage_fromBlobObject } from '../../../models/createMediaImag
 import { FPath } from '../../../models/FPath'
 import { PanelGalleryUI } from '../../../panels/PanelGallery/PanelGalleryUI'
 import { useImageDrop } from '../../../widgets/galleries/dnd'
-import { ImageUI, ImageUIDumb } from '../../../widgets/galleries/ImageUI'
+import { ImageUIDumb } from '../../../widgets/galleries/ImageUI'
 import { Button } from '../../button/Button'
 import { SpacerUI } from '../../components/SpacerUI'
 import { Frame } from '../../frame/Frame'
-import { Ikon, IkonOf } from '../../icons/iconHelpers'
+import { Ikon } from '../../icons/iconHelpers'
 import { ResizableFrame } from '../../resizableFrame/resizableFrameUI'
 import { RevealUI } from '../../reveal/RevealUI'
+import { useDragDropRefForReact19 } from '../../utils/dnd'
 
 export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: {
    //
    field: Field_image
 }) {
    const field = p.field
-   const [dropStyle, dropRef] = useImageDrop(cushy, (imageL) => {
+   const [dropStyle, dropRef__] = useImageDrop(cushy, (imageL) => {
       field.value = imageL
    })
+   const dropRef = useDragDropRefForReact19(dropRef__)
+
    const image = field.value_unchecked
    // ⏸️ const suggestionsRaw = p.field.config.assetSuggested
    // ⏸️ const suggestions: RelativePath[] =
