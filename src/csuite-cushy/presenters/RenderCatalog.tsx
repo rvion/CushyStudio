@@ -30,6 +30,8 @@ import { MessageErrorUI } from '../../csuite/messages/MessageErrorUI'
 import { MessageInfoUI } from '../../csuite/messages/MessageInfoUI'
 import { MessageWarningUI } from '../../csuite/messages/MessageWarningUI'
 import { ResizableFrame } from '../../csuite/resizableFrame/resizableFrameUI'
+import { WidgetPromptCollapsibleUI } from '../../prompt/widgets/WidgetPromptCollapsibleUI'
+import { WidgetPromptUI } from '../../prompt/widgets/WidgetPromptUI'
 import { WidgetCardUI } from '../catalog/Decorations/WidgetCardUI'
 import { WidgetPadUI } from '../catalog/Decorations/WidgetPadUI'
 import { QuickForm } from '../catalog/group/QuickForm'
@@ -209,6 +211,10 @@ export const widgetsCatalog /* WidgetsCatalog */ = {
       BlenderLike: BlenderListUI,
       DefaultHeader: WidgetList_LineUI,
       DefaultBody: WidgetList_BodyUI,
+   },
+   prompt: {
+      DefaultHeaderUI: WidgetPromptCollapsibleUI,
+      DefaultBodyUI: WidgetPromptUI,
    },
    group: {
       Tabbed: WidgetGroup_TabUI,

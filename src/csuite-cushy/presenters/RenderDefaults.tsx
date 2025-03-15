@@ -77,6 +77,7 @@ const baseslots: DisplaySlots<Field> = {
 }
 
 export const defaultRulesV2: RuleEntry[] = []
+
 function setRule<T extends Field>(selector: string, slots: DisplaySlotsExt<T>, priority = 10): void {
    defaultRulesV2.push({ addedBy: null, selector: FieldSelector.from(selector), uiconf: slots, priority })
 }
@@ -97,6 +98,7 @@ setRule<any>('@group', { Header: WidgetGroup_LineUI, Body: WidgetGroup_BlockUI }
 setRule<any>('@choices', { Header: WidgetChoices_HeaderUI, Body: WidgetChoices_BodyUI })
 setRule<any>('@color', { Header: WidgetColorUI, Body: null })
 setRule<any>('@bool', { Header: UY.boolean.default, Body: null })
+setRule<any>('@prompt', { Header: UY.prompt.DefaultHeaderUI, Body: UY.prompt.DefaultBodyUI })
 
 setRule(
    '',
