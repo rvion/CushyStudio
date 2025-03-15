@@ -16,7 +16,7 @@ const CushyShellUI = observer(function CushySHell(
    p: CompiledRenderProps & {
       // card?: boolean
       border?: boolean
-      HEADER: React.React.JSX.Element
+      HEADER: React.JSX.Element
    },
 ) {
    const field = p.field
