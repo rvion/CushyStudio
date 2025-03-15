@@ -5,10 +5,6 @@ import { Fragment } from 'react/jsx-runtime'
 
 import { FrameWithCSuiteOverride } from '../../csuite/ctx/CSuiteOverride'
 import { FormUI } from '../../csuite/form/FormUI'
-import { type FrameAppearance, frameTemplates } from '../../csuite/frame/FrameTemplates'
-import { getNthIconName } from '../../csuite/icons/getAllIcons'
-import { mapObjectEntries } from '../../csuite/utils/mapObjectEntries'
-import { mapObjectValues } from '../../csuite/utils/mapObjectValues'
 import { readJSON, writeJSON } from '../../state/jsonUtils'
 
 export const PlaygroundWidgetDisplay = observer(function PlaygroundRequirements_(p: {}) {
@@ -29,7 +25,7 @@ export const PlaygroundWidgetDisplay = observer(function PlaygroundRequirements_
    )
 })
 
-const useDoc = (): Field<any> => {
+const useDoc = (): Field => {
    return cushy.forms.use(
       (b) => {
          const booleanForm = {
@@ -207,30 +203,6 @@ const useDoc = (): Field<any> => {
                   }),
                },
             }),
-
-            button: b.group({
-               startCollapsed: true,
-               items: {
-                  button: b.button({}),
-                  ...mapObjectValues(frameTemplates, (k, v, ix) =>
-                     b.button({
-                        text: k,
-                        icon: getNthIconName(ix * 10),
-                        look: k as FrameAppearance,
-                     }),
-                  ),
-                  ...mapObjectEntries(frameTemplates, (k, v, ix) => [
-                     k + '_',
-                     b.button({
-                        text: k,
-                        icon: getNthIconName(1000 + ix * 10),
-                        look: k as FrameAppearance,
-                        expand: true,
-                     }),
-                  ]),
-               },
-            }),
-
             color: b.group({
                startCollapsed: true,
                items: {
