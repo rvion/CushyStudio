@@ -128,6 +128,8 @@ export class CushySchemaBuilder implements IBuilder {
       return simpleShape$()
    }
 
+   PREFABS = new BuilderPrefabs(this)
+   private __uid: string = nanoid(4)
    // #region ListExt
    timeline<T extends CSchema>(
       sub: Field_board_config<T>,
