@@ -10,8 +10,6 @@ import { Field } from '../csuite/model/Field'
 import { compilePrompt } from './compiler/_compile'
 import { parser } from './grammar/grammar.parser'
 import { PromptAST } from './grammar/grammar.practical'
-import { WidgetPromptCollapsibleUI } from './widgets/WidgetPromptCollapsibleUI'
-import { WidgetPromptUI } from './widgets/WidgetPromptUI'
 
 export type CompiledPrompt = {
    /** e.g. "score_9 score_8 BREAK foo bar baz" */
@@ -31,7 +29,7 @@ export type Field_prompt_ownConfig = {
 }
 
 // #region Serial from value
-export const Field_prompt_fromValue = (val: Field_prompt_value): Field_prompt_serial => ({
+export const Field_prompt_fromValue = (val: Field_prompt_value): Field_prompt['$serial'] => ({
    $: 'prompt',
    val: val.text,
 })
@@ -47,22 +45,19 @@ export type Field_prompt_ownSerial = {
 export type Field_prompt_value = Field_prompt
 export type Field_prompt_unchecked = Field_prompt
 
-// #region $FieldTypes
-export interface Field_prompt {
-   $type: 'prompt'
-   $ownConfig: Field_prompt_ownConfig
-   $ownSerial: Field_prompt_ownSerial
-   $value: Field_prompt_value
-   $unchecked: Field_prompt_value | undefined
-   $field: Field_prompt
-   $child: never
-}
-
 // #region State
 export class Field_prompt extends Field {
+   declare $type: 'prompt'
+   declare $ownConfig: Field_prompt_ownConfig
+   declare $ownSerial: Field_prompt_ownSerial
+   declare $value: Field_prompt_value
+   declare $unchecked: Field_prompt_value | undefined
+   declare $field: Field_prompt
+   declare $child: never
+
    // #region types
    static readonly type: 'prompt' = 'prompt'
-   static readonly emptySerial: Field_prompt_serial = { $: 'prompt' }
+   static readonly emptySerial: Field_prompt['$serial'] = { $: 'prompt' }
    static migrateSerial(): undefined {}
 
    // #region Ctor
@@ -72,14 +67,10 @@ export class Field_prompt extends Field {
       parent: Field | null,
       schema: CSchema<Field_prompt>,
       initialMountKey: string,
-      serial?: Field_prompt_serial,
+      serial?: Field_prompt['$serial'],
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
-
-      this.init(serial, {
-         DefaultHeaderUI: false,
-         DefaultBodyUI: false,
-      })
+      this.init(serial)
    }
 
    get isOwnSet(): boolean {
@@ -87,13 +78,8 @@ export class Field_prompt extends Field {
    }
 
    // #region UI
-   DefaultHeaderUI = WidgetPromptCollapsibleUI
-   DefaultBodyUI = WidgetPromptUI // WidgetPromptUI
-
-   // DefaultHeaderUI = () => createElement(WidgetPrompt_LineUI, { widget: this })
-   // DefaultBodyUI = () => createElement(WidgetPromptUI, { widget: this })
-   // DefaultHeaderUI = WidgetPrompt_LineUI
-   // DefaultBodyUI = WidgetPromptUI
+   // DefaultHeaderUI = WidgetPromptCollapsibleUI
+   // DefaultBodyUI = WidgetPromptUI // WidgetPromptUI
 
    get isCollapsible(): boolean {
       return true
@@ -113,7 +99,7 @@ export class Field_prompt extends Field {
       return (this.serial.val ?? '') !== (this.config.default ?? '')
    }
 
-   protected setOwnSerial(next: Field_prompt_serial): void {
+   protected setOwnSerial(next: Field_prompt['$serial']): void {
       // assign default value if not value set but has default value
       if (next.val == null) {
          const def = this.defaultValue
@@ -193,6 +179,12 @@ export class Field_prompt extends Field {
 
    get value_unchecked(): Field_prompt_unchecked {
       return this
+   }
+
+   public isValueEqual(other: Field): boolean {
+      if (other === this) return true
+      if (!(other instanceof Field_prompt)) return false
+      return this.value_unchecked === other.value_unchecked
    }
 
    get value_or_zero(): Field_prompt_value {
