@@ -13,6 +13,8 @@ import type { IBuilder } from '../csuite/model/IBuilder'
 import type { OpenRouter_ModelInfo } from '../csuite/openrouter/OpenRouter_ModelInfo'
 import type { OpenRouter_Models } from '../csuite/openrouter/OpenRouter_models'
 
+import { nanoid } from 'nanoid'
+
 import { simpleBuilder } from '../csuite'
 import { csuiteConfig } from '../csuite/config/configureCsuite'
 import { Field_board } from '../csuite/fields/board/Field_board'
@@ -130,6 +132,8 @@ export class CushySchemaBuilder implements IBuilder {
 
    PREFABS = new BuilderPrefabs(this)
    private __uid: string = nanoid(4)
+   get _uid(): string { return this.__uid + '/' + this.PREFABS._uid } // prettier-ignore
+
    // #region ListExt
    timeline<T extends CSchema>(
       sub: Field_board_config<T>,
