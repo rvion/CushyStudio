@@ -74,27 +74,27 @@ describe('FieldDate', () => {
       describe('perf', () => {
          describe('without a serial', () => {
             describe('without a default value', () => {
-               it('should use the emptySerial without patching it', () => {
+               it('should use the defaultSerial without patching it', () => {
                   const S = b.date()
                   const E = S.create()
 
-                  expect(E.serial).toBe(S.emptySerial)
+                  expect(E.serial).toBe(S.defaultSerial)
                })
             })
 
             describe('with a default value', () => {
-               it('should use the emptySerial and patch it', () => {
+               it('should use the defaultSerial and patch it', () => {
                   const S = b.date({ default: new Date(2025, 1, 3, 4, 5) })
                   const E = S.create()
 
-                  expect(E.serial).toBe(S.emptySerial)
+                  expect(E.serial).toBe(S.defaultSerial)
                })
 
-               it('should use the emptySerial and patch it (default as function)', () => {
+               it('should use the defaultSerial and patch it (default as function)', () => {
                   const S = b.date({ default: () => new Date(2025, 1, 3, 4, 5) })
                   const E = S.create()
 
-                  expect(E.serial).toBe(S.emptySerial)
+                  expect(E.serial).toBe(S.defaultSerial)
                })
             })
          })

@@ -2,7 +2,6 @@ import type { CSchema } from '../../model/CSchema'
 import type { CodegenOpts, SchemaDictWithPaths } from '../../model/FieldConstructor'
 import type { Patch_Common } from '../../model/Patch'
 import type { Repository } from '../../model/Repository'
-import type { Problem_Ext } from '../../model/Validation'
 
 import { observable, reaction } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -13,6 +12,7 @@ import { bang } from '../../utils/bang'
 import { clamp_or_min_or_zero } from '../../utils/clamp'
 import { registerFieldClass } from '../WidgetUI.DI'
 import { hole, type HOLE } from './HOLE'
+import { type Problem_Ext, type SchemaDict } from 'src/cushy-forms/main'
 
 // #region 🔶AUTO
 interface AutoBehaviour<out T extends CSchema> {
@@ -122,7 +122,7 @@ export interface Field_list<T extends CSchema> {
 export class Field_list<T extends CSchema> extends Field {
    // #region TYPE
    static readonly type: 'list' = 'list'
-   static readonly emptySerial: Field_list_serial<any> = { $: 'list' }
+   private static readonly unsetSerial: Field_list_serial<any> = { $: 'list' }
    static readonly codeForTypescriptValue = (
       config: Field_list_config<CSchema>,
       opts: CodegenOpts,
@@ -164,7 +164,7 @@ export class Field_list<T extends CSchema> extends Field {
       value: Maybe<Field_list<CSchema>['$value']>,
       config: Field_list_config<CSchema>,
    ): Field_list_serial<CSchema> {
-      if (value == null && config.defaultLength == null) return this.emptySerial
+      if (value == null && config.defaultLength == null) return this.unsetSerial
 
       const length = Math.max(config.defaultLength ?? 0, value?.length ?? 0)
 
@@ -438,10 +438,7 @@ export class Field_list<T extends CSchema> extends Field {
             correctChildSchema: schema,
             existingChild: remainingEntries.find((i) => i.mountKey === mountKey),
             targetChildSerial: nextSerial,
-            // ⏸️ targetChildSerial: subSerial === hole ? null : subSerial,
-            // ⏸️ targetChildSerial: subSerial === hole ? schema.fieldConstructor.emptySerial : subSerial,
             attach: (sub) => {
-               // console.log(`[🤠] setOwnSerial > reconciled created a new child`, mountKey)
                // push instead of doing [ix]= ... since we're re-creating them in order
                this.items_.push(sub)
                // bang(this.serial.items_).push(sub.serial)
@@ -858,6 +855,10 @@ export class Field_list<T extends CSchema> extends Field {
    removeItemAt(i: number): Maybe<T['$field']> {
       if (this.length < i) return null
       return this.splice(i, 1)[0]
+   }
+
+   override get isRequired(): boolean {
+      return super.isRequired && this.config.min != null && this.config.min > 0
    }
 
    // #region Patches

@@ -19,7 +19,6 @@ import { exhaust } from '../../utils/exhaust'
 import { makeLabelFromPrimitiveValue } from '../../utils/makeLabelFromFieldName'
 import { isProbablySerialChoices, registerFieldClass } from '../WidgetUI.DI'
 
-export type Field_choices_config<T extends SchemaDict> = Field_choices<T>['$config']
 type ActiveBranchesByName<T> = { [key in keyof T]?: true }
 
 // 💬 2024-12-30 rvion:
@@ -133,7 +132,6 @@ export type MAGICCHOICES<T extends { [key: string]: { $field: any } }> = {
 export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
    // #region TYPE
    static readonly type: 'choices' = 'choices'
-   static readonly emptySerial: Field_choices['$serial'] = { $: 'choices' }
    static readonly codeForTypescriptValue = (config: Field_choices['$config'], opts: CodegenOpts): string => {
       const subSchema = config.items
       const schemaDict = typeof subSchema === 'function' ? subSchema() : subSchema
@@ -488,6 +486,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
          for (const x of Object.keys(res)) {
             if (res[x] == null) {
                console.log(`[🔶🦖‼️] missing choice: ${x} at (${this.path})`)
+               delete res[x]
             }
          }
          return res ?? {}
@@ -563,7 +562,6 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
          for (const branch of this.allPossibleChoices) {
             const branchSerial = next.values?.[branch]
             const schema = this.getSchemaForBranch(branch)
-
             const isActive = Boolean(next.branches?.[branch])
             if (isActive) {
                // set the active branch as active...

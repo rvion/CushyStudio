@@ -150,7 +150,7 @@ export class Field_selectMany<
 > extends Field {
    // #region TYPE
    static readonly type: 'selectMany' = 'selectMany'
-   static readonly emptySerial: Field_selectMany_serial<any> = { $: 'selectMany' }
+   static readonly unsetSerial: Field_selectMany_serial<any> = { $: 'selectMany' }
    static readonly codeForTypescriptValue = (config: Field_selectMany_config<any, any>): string =>
       'Z.SelectMany<❓>'
 
@@ -181,7 +181,7 @@ export class Field_selectMany<
       value: Maybe<Field_selectMany<VALUE, KEY>['$value']>,
       config: Field_selectMany<VALUE, KEY>['$config'],
    ): Field_selectMany<VALUE, KEY>['$serial'] {
-      if (value == null && config.default == null) return this.emptySerial
+      if (value == null && config.default == null) return this.unsetSerial
 
       const defaultSelectedKeys = Array.isArray(config.default)
          ? config.default
@@ -613,6 +613,11 @@ export class Field_selectMany<
          if (this.selectedKeys.includes(choice)) continue
          this.addKey(choice)
       }
+   }
+
+   override get isRequired(): boolean {
+      const min = extractConfigValue(this.config.minLength)
+      return min != null && min > 0
    }
 
    override get isEmpty(): boolean {

@@ -38,14 +38,14 @@ export interface Field_color {
 // STATE
 export class Field_color extends Field {
    static readonly type: 'color' = 'color'
-   static readonly emptySerial: Field_color['$serial'] = { $: 'color' }
+   static readonly unsetSerial: Field_color['$serial'] = { $: 'color' }
    static override migrateSerial(): undefined {}
    static readonly codeForTypescriptValue = (config: Field_color['$config']): string => 'Z.Color'
    static generateSerial(
       value: Maybe<Field_color['$value']>,
       config: Field_color['$config'],
    ): Field_color['$serial'] {
-      if (value == null && config.default == null) return this.emptySerial
+      if (value == null && config.default == null) return this.unsetSerial
 
       return {
          $: 'color',

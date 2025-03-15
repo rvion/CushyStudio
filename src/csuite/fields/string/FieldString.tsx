@@ -101,7 +101,7 @@ export interface Field_string {
 export class Field_string extends Field {
    // #region Type
    static readonly type: 'str' = 'str'
-   static readonly emptySerial: Field_string['$serial'] = { $: 'str' }
+   private static readonly unsetSerial: Field_string['$serial'] = { $: 'str' }
    static readonly codeForTypescriptValue = (config: Field_string_ownConfig): string => {
       if (config.inputType == null) return 'string'
       if (config.inputType === 'text') return 'string'
@@ -122,7 +122,7 @@ export class Field_string extends Field {
       value: Maybe<Field_string['$value']>,
       config: Field_string['$config'],
    ): Field_string['$serial'] {
-      if (value == null && config.default == null) return this.emptySerial
+      if (value == null && config.default == null) return this.unsetSerial
 
       const selectedVal = value ?? (typeof config.default === 'function' ? config.default() : config.default)
 
@@ -178,11 +178,11 @@ export class Field_string extends Field {
    }
 
    // #region VALUE
-   get value(): Field_string_value {
+   get value(): this['$value'] {
       return this.value_or_fail
    }
 
-   set value(next: Field_string_value | undefined) {
+   set value(next: this['$value'] | undefined) {
       // Do we want to add that to implicitly convert non strings to string ?
       // convenient, but can be a source of bugs / unexpected behaviours.
       const nextStrVal = typeof next === 'string' ? next : JSON.stringify(next)
@@ -344,6 +344,11 @@ export class Field_string extends Field {
    override get isCollapsible(): boolean {
       if (this.config.textarea) return true
       return false
+   }
+
+   override get isRequired(): boolean {
+      const min = extractConfigValue(this.config.minLength)
+      return super.isRequired === true && min != null && min > 0
    }
 
    override get isEmpty(): boolean {

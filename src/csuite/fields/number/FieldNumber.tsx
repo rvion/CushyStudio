@@ -2,7 +2,7 @@ import type { NumberFormat } from '../../i18n/i18n'
 import type { CSchema } from '../../model/CSchema'
 import type { Patch } from '../../model/Patch'
 import type { Repository } from '../../model/Repository'
-import type { Problem_Ext } from '../../model/Validation'
+import type { Problem_Ext } from 'src/cushy-forms/main'
 
 import { produce } from 'immer'
 
@@ -54,7 +54,7 @@ export interface Field_number {
 export class Field_number extends Field {
    // #region TYPE
    static readonly type: 'number' = 'number'
-   static readonly emptySerial: Field_number['$serial'] = { $: 'number' }
+   static readonly unsetSerial: Field_number['$serial'] = { $: 'number' }
    static readonly codeForTypescriptValue = (config: Field_number['$config']): string => 'number'
    static override migrateSerial(serial: object): Maybe<Field_number['$serial']> {
       // migrate from string with number typed as string
@@ -70,7 +70,7 @@ export class Field_number extends Field {
       value: Maybe<Field_number['$value']>,
       config: Field_number['$config'],
    ): Field_number['$serial'] {
-      if (value == null && config.default == null) return this.emptySerial
+      if (value == null && config.default == null) return this.unsetSerial
 
       return {
          $: 'number',

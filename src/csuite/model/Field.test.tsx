@@ -28,7 +28,7 @@ class Field_dummy extends Field {
       value: Maybe<Field_dummy['$value']>,
       config: Field_dummy['$config'],
    ): Field_dummy['$serial'] {
-      if (value == null) return this.emptySerial
+      if (value == null) return this.unsetSerial
 
       return {
          $: 'dummy',
@@ -71,7 +71,7 @@ class Field_dummy extends Field {
       return this.value_unchecked !== undefined
    }
    static readonly type = 'dummy'
-   static readonly emptySerial = { $: 'dummy' }
+   private static readonly unsetSerial = { $: 'dummy' }
    static override readonly migrateSerial = (): undefined => undefined
 
    constructor(

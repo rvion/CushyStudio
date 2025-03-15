@@ -90,7 +90,7 @@ describe('FieldMatrix', () => {
                const E = S.create()
 
                expect(patchSerial).not.toHaveBeenCalled()
-               expect(E.serial).toBe(S.emptySerial)
+               expect(E.serial).toBe(S.defaultSerial)
             })
          })
 
@@ -101,7 +101,7 @@ describe('FieldMatrix', () => {
                const E = S.create()
 
                expect(patchSerial).not.toHaveBeenCalled()
-               expect(E.serial).toBe(S.emptySerial)
+               expect(E.serial).toBe(S.defaultSerial)
             })
          })
       })

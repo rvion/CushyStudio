@@ -5,6 +5,7 @@ import type { DraftLike } from './Draft'
 import type { Field, FieldCtorProps } from './Field'
 import type { FieldConfigFor } from './FieldConfig'
 import type { FieldConstructor, TravelEdge } from './FieldConstructor'
+import type { CastUnknown } from './IsItUnknown'
 import type { Klass } from './KlassToUse'
 import type { Channel, ChannelId } from './pubsub/Channel'
 import type { FieldReaction } from './pubsub/FieldReaction'
@@ -70,7 +71,7 @@ export class CSchema<out FIELD extends Field = Field> {
       Object.defineProperties(CSchema.prototype, Object.getOwnPropertyDescriptors(mixin))
    }
 
-   $!: FIELD
+   declare $: FIELD
    /** truely unique per instance */
    _uid = nanoid(6)
 
@@ -160,7 +161,7 @@ export class CSchema<out FIELD extends Field = Field> {
     *         return this.value.foo * 2
     *     }
     * }
-    * const S1: Schema<Foo1> = S0.useClass(() => Foo1)
+    * const S1: Schema<Foo1> = S0.useClass(() => Foo1, null)
     * ```
     *
     * ## USAGE 2: inline class definition, without type annotion
@@ -191,8 +192,20 @@ export class CSchema<out FIELD extends Field = Field> {
    useClass<CUSTOM extends Field>(
       /** the class constructor */
       classToUse: Klass<CUSTOM>,
-      /** if your custom class require opts, you MUST pass them here */
-      opts?: CUSTOM['$opts'],
+
+      /**
+       * if your custom class require opts, you MUST pass them here.
+       * to make your custom class require $opts, do that:
+       *
+       * ```ts
+       * export class Example extends Field_group<{ name: Z.string}> {
+       *    override $opts!: {whatever: string}
+       *    static schema = (b: Z.Builder): Z.Schema<Example> =>
+       *       b.fields({ name: b.string() }).useClass(Example, { whatever: 'you want' })
+       * }
+       * ```
+       */
+      opts: CastUnknown<CUSTOM['$opts'], null>,
    ): CSchema<CUSTOM> {
       if (this.config.classToUse != null) throw new Error('already have a custom class')
       return this.withConfig({ classToUse, opts }) as any as CSchema<CUSTOM>
@@ -372,14 +385,14 @@ export class CSchema<out FIELD extends Field = Field> {
       return this.instanciate(repository, null, null, '$', serial)
    }
 
-   get emptySerial(): FIELD['$serial'] {
+   get defaultSerial(): FIELD['$serial'] {
       const serial = this.fieldConstructor.generateSerial(undefined, this.config)
-      Object.defineProperty(this, 'emptySerial', { value: serial })
+      Object.defineProperty(this, 'defaultSerial', { value: serial })
       return serial
    }
 
    generateSerial(value: Maybe<FIELD['$value']>): FIELD['$serial'] {
-      if (value === undefined) return this.emptySerial
+      if (value === undefined) return this.defaultSerial
 
       return this.fieldConstructor.generateSerial(value, this.config)
    }
@@ -424,7 +437,7 @@ export class CSchema<out FIELD extends Field = Field> {
             parent,
             this,
             initialMountKey,
-            serial ?? this.emptySerial,
+            serial ?? this.defaultSerial,
          ]
          const KTOR: Klass<FIELD> = this.konfig.classToUse ?? this.fieldConstructor
          const field: FIELD = new KTOR(...args)

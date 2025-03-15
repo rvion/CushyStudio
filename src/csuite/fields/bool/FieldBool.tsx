@@ -67,7 +67,7 @@ export interface Field_bool extends Field {
 export class Field_bool extends Field {
    // #region TYPE
    static readonly type: 'bool' = 'bool'
-   static readonly emptySerial: Field_bool['$serial'] = { $: 'bool' }
+   private static readonly unsetSerial: Field_bool['$serial'] = { $: 'bool' }
    static readonly codeForTypescriptValue = (config: Field_bool_ownConfig): string => 'boolean'
    static override migrateSerial(serial: object): Maybe<Field_bool['$serial']> {
       if (isProbablySerialBool(serial)) {
@@ -84,7 +84,7 @@ export class Field_bool extends Field {
       value: Maybe<Field_bool['$value']>,
       config: Field_bool['$config'],
    ): Field_bool['$serial'] {
-      if (value == null && config.default == null) return this.emptySerial
+      if (value == null && config.default == null) return this.unsetSerial
 
       return {
          $: 'bool',
@@ -198,6 +198,10 @@ export class Field_bool extends Field {
    override randomize(): void {
       const r = Math.random()
       this.value = r > 0.5
+   }
+
+   override get isRequired(): boolean {
+      return false
    }
 
    // #region PATCH

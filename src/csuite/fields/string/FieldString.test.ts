@@ -60,7 +60,7 @@ describe('field string', () => {
 
                const E = S.create()
 
-               expect(E.serial).toBe(S.emptySerial)
+               expect(E.serial).toBe(S.defaultSerial)
                expect(patchSerial).not.toHaveBeenCalled()
             })
          })
@@ -73,7 +73,7 @@ describe('field string', () => {
 
                const E = S.create()
 
-               expect(E.serial).toBe(S.emptySerial)
+               expect(E.serial).toBe(S.defaultSerial)
                expect(patchSerial).not.toHaveBeenCalled()
             })
          })

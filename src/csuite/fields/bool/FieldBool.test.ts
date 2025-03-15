@@ -54,23 +54,23 @@ describe('FieldBool', () => {
    describe('create perf', () => {
       describe('without a serial', () => {
          describe('without a default value', () => {
-            it('should use the emptySerial without patching it', () => {
+            it('should use the defaultSerial without patching it', () => {
                const patchSerial = vitest.spyOn(Field_bool.prototype, 'patchSerial')
                const S = b.bool_()
                const E = S.create()
 
-               expect(E.serial).toBe(S.emptySerial)
+               expect(E.serial).toBe(S.defaultSerial)
                expect(patchSerial).not.toHaveBeenCalled()
             })
          })
 
          describe('with a default value', () => {
-            it('should use the emptySerial and patch it with the default value', () => {
+            it('should use the defaultSerial and patch it with the default value', () => {
                const patchSerial = vitest.spyOn(Field_bool.prototype, 'patchSerial')
                const S = b.bool({ default: true })
                const E = S.create()
 
-               expect(E.serial).toBe(S.emptySerial)
+               expect(E.serial).toBe(S.defaultSerial)
                expect(patchSerial).not.toHaveBeenCalled()
             })
          })

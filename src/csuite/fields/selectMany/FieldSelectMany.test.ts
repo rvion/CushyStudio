@@ -200,7 +200,7 @@ describe('FieldSelectMany', () => {
                const E = S.create()
 
                expect(patchSerial).not.toHaveBeenCalled()
-               expect(E.serial).toBe(S.emptySerial)
+               expect(E.serial).toBe(S.defaultSerial)
             })
          })
 
@@ -211,7 +211,7 @@ describe('FieldSelectMany', () => {
                const E = S.create()
 
                expect(patchSerial).not.toHaveBeenCalled()
-               expect(E.serial).toBe(S.emptySerial)
+               expect(E.serial).toBe(S.defaultSerial)
             })
 
             it('should use the default serial (empty default)', () => {
@@ -220,7 +220,7 @@ describe('FieldSelectMany', () => {
                const E = S.create()
 
                expect(patchSerial).not.toHaveBeenCalled()
-               expect(E.serial).toBe(S.emptySerial)
+               expect(E.serial).toBe(S.defaultSerial)
             })
          })
       })

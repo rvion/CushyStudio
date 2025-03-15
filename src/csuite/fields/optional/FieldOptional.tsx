@@ -1,5 +1,4 @@
 import type { CSchema } from '../../model/CSchema'
-import type { AnyFieldSerial } from '../../model/EntitySerial'
 import type { CodegenOpts, SchemaDictWithPaths } from '../../model/FieldConstructor'
 import type { Patch } from '../../model/Patch'
 import type { Repository } from '../../model/Repository'
@@ -13,8 +12,19 @@ import { isProbablySomeFieldSerial, registerFieldClass } from '../WidgetUI.DI'
 // #region Config
 export type Field_optional_config<T extends CSchema = CSchema> = Field_optional<T>['$config']
 type Field_optional_ownConfig<T extends CSchema = CSchema> = {
-   /** if true, child field will be instanciated by default */
+   /**
+    * @recommended
+    * On most codebase, we except the schema builder methods to always pick a default.
+    * not having default will possibly yield unset fields.
+    *
+    * On field creation without serial:
+    * - when either `true` or `false`, field will always be initialized
+    * - when undefined
+    *    - reseting the field will set the child to null
+    *    - accessing the child will not crash
+    */
    startActive?: boolean
+
    /** child schema; schema you want  to make optional */
    schema: T
 }
@@ -37,8 +47,8 @@ type Field_optional_ownSerialV1<T extends CSchema = CSchema> = {
 // adter 2025-02-24, the optional serial is like that:
 type Field_optional_ownSerialV2<T extends CSchema = CSchema> = {
    $: 'optional'
-   y?: Maybe<T['$serial']> // when active
-   n?: Maybe<T['$serial']> // when not active
+   y?: T['$serial'] | undefined // when active
+   n?: T['$serial'] | undefined // when not active
 }
 // ------------------------------------------------------------------------
 
@@ -82,17 +92,22 @@ export function isOptionalSerialV2(serial: object): serial is Field_optional_own
 export class Field_optional<out T extends CSchema = CSchema> extends Field {
    // #region Type
    static readonly type: 'optional' = 'optional'
-   static readonly emptySerial: Field_optional_serial = { $: 'optional' }
    static override migrateSerial(prev: object): Maybe<Field_optional['$serial']> {
       // for now, code here is not executed
       if (isOptionalSerialV1(prev)) {
          const { $, active, child, ...rest } = prev
-         return {
-            $: 'optional',
-            y: active ? child : undefined,
-            n: active ? undefined : child,
-            ...rest,
-         }
+
+         const serial: Field_optional['$serial'] = { $: 'optional', ...rest }
+         const child_ = child ?? undefined
+         if (active) serial.y = child_
+         else serial.n = child_
+         return serial
+         // return {
+         //    $: 'optional',
+         //    y: active ? (child ?? undefined) : undefined,
+         //    n: active ? undefined : (child ?? undefined),
+         //    ...rest,
+         // }
       }
    }
 
@@ -117,20 +132,29 @@ export class Field_optional<out T extends CSchema = CSchema> extends Field {
       }
       return OUT
    }
+   static unsetSerial: Field_optional['$serial'] = { $: 'optional' }
    static generateSerial(
       value: Maybe<Field_optional<CSchema>['$value']>,
       config: Field_optional<CSchema>['$config'],
    ): Field_optional<CSchema>['$serial'] {
-      if (value === undefined && (config.startActive == null || config.startActive == false))
-         return {
-            $: 'optional',
-            n: config.schema.generateSerial(undefined),
-         }
+      // use default
+      if (value === undefined) {
+         const startActive = config.startActive
+         if (startActive == null) return this.unsetSerial
 
-      return {
-         $: 'optional',
-         y: config.schema.generateSerial(value),
+         const childSerial = config.schema.generateSerial(undefined)
+         if (startActive) return { $: 'optional', y: childSerial }
+         else return { $: 'optional', n: childSerial }
       }
+
+      // user want to explicity generate a serial fo
+      // r a null value
+      if (value == null) {
+         return { $: 'optional', n: config.schema.generateSerial(undefined) }
+      }
+
+      // user want to generate a serial for a non-null value
+      return { $: 'optional', y: config.schema.generateSerial(value) }
    }
 
    // #region Ctor
@@ -185,18 +209,25 @@ export class Field_optional<out T extends CSchema = CSchema> extends Field {
 
       // when is not set
       const startActive = this.config.startActive
-      if (next.y == null && next.n == null && startActive != null) {
+      if (startActive != null && next.y == null && next.n == null) {
          this.patchSerial((draft) => {
-            if (startActive) draft.y = this.config.schema.fieldConstructor.emptySerial
-            else draft.n = this.config.schema.fieldConstructor.emptySerial
+            if (startActive) draft.y = this.config.schema.defaultSerial
+            else draft.n = this.config.schema.defaultSerial
          })
       }
 
+      if ('y' in next || 'n' in next) {
+         this.__initializeChild(next?.y ?? next?.n)
+      }
+   }
+
+   /** must always be run within a runInTransaction */
+   private __initializeChild(targetChildSerial: Maybe<T['$serial']>): void {
       this.RECONCILE({
          mountKey: 'child',
          existingChild: this.child,
          correctChildSchema: this.config.schema,
-         targetChildSerial: next?.y ?? next?.n,
+         targetChildSerial,
          attach: (child) => {
             this.child = child
          },
@@ -369,10 +400,10 @@ export class Field_optional<out T extends CSchema = CSchema> extends Field {
          this.patchSerial((draft) => {
             if (value) {
                draft.y = this.child.serial
-               draft.n = null
+               delete draft.n
             } else {
                draft.n = this.child.serial
-               draft.y = null
+               delete draft.y
             }
          })
 
@@ -420,6 +451,10 @@ export class Field_optional<out T extends CSchema = CSchema> extends Field {
       const active = Math.random() < 0.5
       this.setActive(active)
       if (active) this.child.randomize()
+   }
+
+   public override get isRequired(): boolean {
+      return false
    }
 
    override get isEmpty(): boolean {

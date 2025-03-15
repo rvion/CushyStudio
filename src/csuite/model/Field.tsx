@@ -212,7 +212,7 @@ export abstract class Field {
       this.root = root ?? this
       this.parent = parent
       this.schema = schema
-      this.serial = serial ?? this._emptySerial
+      this.serial = serial ?? this.schema.defaultSerial
       this.mountKey = initialMountKey
       this.parent?._acknowledgeNewChildSerial(initialMountKey, this.serial)
    }
@@ -224,11 +224,6 @@ export abstract class Field {
     */
    get type(): this['$type'] {
       return (this.constructor as FieldConstructor<this>).type
-   }
-
-   /** @undecorated */
-   private get _emptySerial(): this['$serial'] {
-      return (this.constructor as FieldConstructor<this>).emptySerial
    }
 
    /** @undecorated */
@@ -646,17 +641,17 @@ export abstract class Field {
       let skipAutoFix: boolean = false
       let serial: object
 
-      // #region 1.1. case `null` => use `_emptySerial`
+      // #region 1.1. case `null` => use `defaultSerial`
       if (serialish == null) {
-         this.recordSerialProblem(`serial is null, using _emptySerial`, serialish)
-         serial = this._emptySerial
+         this.recordSerialProblem(`serial is null, using defaultSerial`, serialish)
+         serial = this.schema.defaultSerial
          skipAutoFix = true
       }
 
-      // #region 1.2. case not an object => use `_emptySerial`
+      // #region 1.2. case not an object => use `defaultSerial`
       else if (typeof serialish !== 'object') {
-         this.recordSerialProblem(`serial is not an object, using _emptySerial`, serialish)
-         serial = this._emptySerial
+         this.recordSerialProblem(`serial is not an object, using defaultSerial`, serialish)
+         serial = this.schema.defaultSerial
          skipAutoFix = true
       }
 
@@ -757,9 +752,9 @@ export abstract class Field {
          }
          if (this.root !== this) {
             this.root.addAnomaly(anomaly)
-            serial = this._emptySerial
+            serial = this.schema.defaultSerial
          } else {
-            serial = { ...this._emptySerial /* ❌ */, anomalies: [anomaly] }
+            serial = { ...this.schema.defaultSerial /* ❌ */, anomalies: [anomaly] }
          }
       }
 

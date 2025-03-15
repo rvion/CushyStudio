@@ -134,7 +134,14 @@ export class Repository {
             return OUT
          })
       } catch (err) {
-         console.log(`[🔴] `, err)
+         console.error(`[❌ TRANSACTION FAILED] cannot rollback; salvaging the mutation and proceeding.`)
+         console.error(err)
+         // 💬 2025-03-13 rvion:
+         // this is critical, we must not let the transaction in a bad state.
+         // because otherwise, every future transaction will be scoped under the failed
+         // transaction, and we will NEVER call commit => we will NEVER run the onChange callbacks
+         // and everything will be slightly broken in weird ways.
+         //   VVVVVVVVVV
          this.tct = null
          throw err
       }

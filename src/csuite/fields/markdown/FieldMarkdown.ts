@@ -38,12 +38,12 @@ export interface Field_markdown {
 export class Field_markdown extends Field {
    // #region TYPE
    static readonly type: 'markdown' = 'markdown'
-   static readonly emptySerial: Field_markdown_serial = { $: 'markdown' }
+   private static readonly unsetSerial: Field_markdown_serial = { $: 'markdown' }
    static override migrateSerial(): undefined {}
    static readonly codeForTypescriptValue = (config: Field_markdown_config): string => 'Markdown'
 
    static generateSerial(): Field_markdown_serial {
-      return Field_markdown.emptySerial
+      return Field_markdown.unsetSerial
    }
 
    // #region CTOR

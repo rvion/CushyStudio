@@ -278,7 +278,7 @@ describe('field number', () => {
                const schema = b.number_()
                const document = schema.create()
 
-               expect(document.serial).toBe(schema.emptySerial)
+               expect(document.serial).toBe(schema.defaultSerial)
                expect(patchSerial).not.toHaveBeenCalled()
             })
          })
@@ -290,7 +290,7 @@ describe('field number', () => {
                const schema = b.number({ default: 5 })
                const document = schema.create()
 
-               expect(document.serial).toBe(schema.emptySerial)
+               expect(document.serial).toBe(schema.defaultSerial)
                expect(patchSerial).not.toHaveBeenCalled()
             })
          })

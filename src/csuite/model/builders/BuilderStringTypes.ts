@@ -4,9 +4,9 @@ import { v4 } from 'uuid'
 
 import { csuiteConfig } from '../../config/configureCsuite'
 import { Field_string } from '../../fields/string/FieldString'
-import { defineSchemaBuilderMixin } from './defineSchemaBuilderMixin'
-import { CSchema } from '../CSchema'
 import { memoizedFN } from '../../hashUtils/hash'
+import { CSchema } from '../CSchema'
+import { defineSchemaBuilderMixin } from './defineSchemaBuilderMixin'
 
 export type BuilderStringMixin = {
    nanoid(config?: Field_string['$config']): Z.String

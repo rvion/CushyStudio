@@ -9,13 +9,10 @@ export type SchemaWithSerialPath = {
 }
 export type SchemaDictWithPaths = Record<string, SchemaWithSerialPath>
 
-export type TravelEdge = Tagged<string, 'TravelKey'>
+export type TravelEdge = Flavor<string, 'TravelKey'>
 export type UNVALIDATED<T> = T | unknown
 export type FieldConstructor<FIELD extends Field> = {
-   // ⏸️ readonly build: 'new'
-
    readonly type: FIELD['$type']
-   readonly emptySerial: FIELD['$serial']
    readonly migrateSerial: SerialMigrationFunction<FIELD['$serial']>
 
    /** various codegen utilities */
@@ -31,6 +28,7 @@ export type FieldConstructor<FIELD extends Field> = {
    getTravels(config: FIELD['$config']): SchemaDictWithPaths
 
    readonly patchedSerialPaths: readonly string[]
+   // getChild(config: FIELD['$config'], key: string): Maybe<CSchema>
    generateSerial(value: Maybe<FIELD['$value']>, config: FIELD['$config']): FIELD['$serial']
 
    new (

@@ -91,7 +91,7 @@ export type MAGICFIELDS<T extends { [key: string]: { $field: any } }> = {
 
 export class Field_group<T extends SchemaDict> extends Field {
    static readonly type: 'group' = 'group'
-   static readonly emptySerial: Field_group_serial<any> = { $: 'group', values_: {} }
+   private static readonly unsetSerial: Field_group_serial<any> = { $: 'group', values_: {} }
    static override migrateSerial(): undefined {}
    static codeForTypescriptValue = (config: Field_group_config<SchemaDict>, opts: CodegenOpts): string => {
       const schemaDict = Field_group.getSchemaDict(config)
@@ -126,7 +126,7 @@ export class Field_group<T extends SchemaDict> extends Field {
       config: Field_group<any>['$config'],
    ): Field_group<any>['$serial'] {
       const configItems = typeof config.items === 'function' ? config.items() : config.items
-      if (configItems == null) return this.emptySerial
+      if (configItems == null) return this.unsetSerial
 
       return {
          $: 'group',

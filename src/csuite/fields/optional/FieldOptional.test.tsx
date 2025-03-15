@@ -36,7 +36,9 @@ describe('FieldOptional', () => {
             const E2 = schema.create()
 
             E1.value = 8
+            expect(E1.isValueEqual(E2)).toBeFalsy()
 
+            E1.value = 5
             expect(E1.isValueEqual(E2)).toBeFalsy()
          })
 
@@ -107,7 +109,7 @@ describe('FieldOptional', () => {
                const S = b.number_().optional()
                const E = S.create()
 
-               expect(E.serial).toBe(S.emptySerial)
+               expect(E.serial).toBe(S.defaultSerial)
                expect(patchSerial).not.toHaveBeenCalled()
             })
 
@@ -135,7 +137,7 @@ describe('FieldOptional', () => {
                const S = b.number_().optional(true)
                const E = S.create()
 
-               expect(E.serial).toBe(S.emptySerial)
+               expect(E.serial).toBe(S.defaultSerial)
                expect(patchSerial).not.toHaveBeenCalled()
             })
 
@@ -145,7 +147,7 @@ describe('FieldOptional', () => {
                   const S = b.number_({ default: 42 }).optional(true)
                   const E = S.create()
 
-                  expect(E.serial).toBe(S.emptySerial)
+                  expect(E.serial).toBe(S.defaultSerial)
                   expect(patchSerial).not.toHaveBeenCalled()
                })
             })
@@ -212,6 +214,7 @@ describe('FieldOptional', () => {
                   const S = b.number_().optional_()
                   const serial = S.generateSerial(undefined)
                   const E = S.create(serial)
+                  expect(E.serial).toEqual({ $: 'optional' })
 
                   expect(E.isActive).toBe(false)
                   expect(() => {
@@ -240,9 +243,19 @@ describe('FieldOptional', () => {
 
                it('should keep the value', () => {
                   const S = b.number_().optional_()
-                  const serial = S.generateSerial(42)
-                  const E = S.create(serial)
 
+                  const serialUnset = S.generateSerial(undefined)
+                  expect(serialUnset).toEqual({ $: 'optional' })
+
+                  const seriaNull = S.generateSerial(null)
+                  expect(seriaNull).toEqual({ $: 'optional', n: { $: 'number' } })
+
+                  const serial = S.generateSerial(42)
+                  expect(serial).toEqual({ $: 'optional', y: { $: 'number', value: 42 } })
+
+                  const E = S.create(serial)
+                  console.log(`[🤠HHHAA] `, E.serial, serial)
+                  expect(E.serial).toEqual(serial)
                   expect(E.isActive).toBe(true)
                   expect(E.value).toBe(42)
                })

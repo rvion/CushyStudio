@@ -9,11 +9,11 @@ import { expectJSON } from '../../model/TESTS/utils/expectJSON'
 import { Field_optional } from '../optional/FieldOptional'
 import { Field_string } from '../string/FieldString'
 import {
-   Field_list,
-   type Field_list_config,
-   type Field_list_ItemID,
-   type Field_list_patch,
-   type Field_list_serial,
+    Field_list,
+    type Field_list_config,
+    type Field_list_ItemID,
+    type Field_list_patch,
+    type Field_list_serial,
 } from './FieldList'
 
 describe('FieldList', () => {
@@ -841,7 +841,7 @@ describe('FieldList', () => {
                const E = S.create()
 
                expect(patchSerial).not.toHaveBeenCalled()
-               expect(E.serial).toBe(S.emptySerial)
+               expect(E.serial).toBe(S.defaultSerial)
             })
          })
 
@@ -852,7 +852,7 @@ describe('FieldList', () => {
                const E = S.create()
 
                expect(patchSerial).not.toHaveBeenCalled()
-               expect(E.serial).toBe(S.emptySerial)
+               expect(E.serial).toBe(S.defaultSerial)
             })
 
             describe('when the target field has a default value', () => {
@@ -862,7 +862,7 @@ describe('FieldList', () => {
                   const E = S.create()
 
                   expect(patchSerial).not.toHaveBeenCalled()
-                  expect(E.serial).toBe(S.emptySerial)
+                  expect(E.serial).toBe(S.defaultSerial)
                })
             })
          })
@@ -880,7 +880,7 @@ describe('FieldList', () => {
                expect(listPatchSerial).not.toHaveBeenCalled()
                expect(stringPatchSerial).not.toHaveBeenCalled()
 
-               expect(E.serial).toBe(S.emptySerial)
+               expect(E.serial).toBe(S.defaultSerial)
             })
          })
       })

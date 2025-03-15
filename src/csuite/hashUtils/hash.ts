@@ -69,7 +69,6 @@ export function stableStringify(obj: any): string {
 }
 
 export function schemaConfigHash(obj: any): string {
-   // console.log(`[🔴] obj`, obj)
    const type = typeof obj
    if (type === 'bigint') return `🔢${obj.toString()}`
    if (type === 'function') return `🏭${getUIDForMemoryStructure(obj, 6)}`
@@ -116,14 +115,14 @@ export function schemaConfigHash(obj: any): string {
       return `${obj}`
    }
 
-   console.log(`[❌❌❌❌❌❌❌❌❌❌❌❌] `, obj)
+   console.log(`[❌] `, obj)
    throw new TypeError(
       `Invalid JSON type of ${type}, value ${obj}. stableStringiyf can only hash JSON objects.`,
    )
 }
 
 // --------------------------------------------------------
-// 🔴 very probably going to cause a memory leack as-is
+// 🔴 very probably going to cause a memory leak as-is
 const memoMapIndex = new DefaultWeakMap(() => new Map<any, any>())
 
 /**

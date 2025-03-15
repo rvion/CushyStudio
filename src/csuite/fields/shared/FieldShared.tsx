@@ -37,13 +37,13 @@ export interface Field_shared<F extends Field = Field> {
 export class Field_shared<out F extends Field = Field> extends Field {
    // #region TYPE
    static readonly type: 'shared' = 'shared'
-   static readonly emptySerial: Field_shared['$serial'] = { $: 'shared' }
+   private static readonly unsetSerial: Field_shared['$serial'] = { $: 'shared' }
    static override migrateSerial(): undefined {}
    static codeForTypescriptValue = (config: Field_shared<Field>['$config'], opts: CodegenOpts): string => {
       return `Z.Shared<${config.field.schema.codeForTypescriptValue(opts)}>`
    }
    static generateSerial(): Field_shared['$serial'] {
-      return Field_shared.emptySerial
+      return Field_shared.unsetSerial
    }
 
    // #region CTOR

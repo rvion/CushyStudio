@@ -158,7 +158,7 @@ export class Field_selectOne<
 > extends Field {
    // #region TYPE
    static readonly type: 'selectOne' = 'selectOne'
-   static readonly emptySerial: Field_selectOne_serial<any> = { $: 'selectOne' }
+   private static readonly unsetSerial: Field_selectOne_serial<any> = { $: 'selectOne' }
    static readonly codeForTypescriptValue = (config: Field_selectOne_config<any, any>): string => {
       if (config.choices != null && Array.isArray(config.choices)) {
          return `Z.SelectOne<${config.choices.map((i) => JSON.stringify(i)).join(' | ')}>`
@@ -189,7 +189,7 @@ export class Field_selectOne<
       value: Maybe<Field_selectOne<any, any>['$value']>,
       config: Field_selectOne<any, any>['$config'],
    ): Field_selectOne<any, any>['$serial'] {
-      if (value == null && config.default == null) return this.emptySerial
+      if (value == null && config.default == null) return this.unsetSerial
 
       return {
          $: 'selectOne',

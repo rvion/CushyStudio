@@ -3,6 +3,7 @@ import type { Field_string } from './FieldString'
 import { action } from 'mobx'
 import { observer, useLocalObservable } from 'mobx-react-lite'
 
+import { csuiteConfig } from '../../config/configureCsuite'
 import { useCSuite } from '../../ctx/useCSuite'
 import { Frame } from '../../frame/Frame'
 import { InputStringUI } from '../../input-string/InputStringUI'
@@ -82,7 +83,7 @@ export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: {
          ]}
          icon={p.field.config.innerIcon}
          type={config.inputType}
-         placeholder={config.placeHolder}
+         placeholder={config.placeHolder ?? csuiteConfig.i18n.ui.field.empty}
          pattern={config.pattern}
          className={config.className}
          getValue={() => (uiSt.focused ? uiSt.value : field.value_or_zero)}

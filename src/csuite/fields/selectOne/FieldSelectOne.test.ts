@@ -142,7 +142,7 @@ describe('FieldSelectOne', () => {
                const S = b.selectOneString_(['a', 'b', 'c'])
                const E = S.create()
 
-               expect(E.serial).toBe(S.emptySerial)
+               expect(E.serial).toBe(S.defaultSerial)
                expect(patchSerial).not.toHaveBeenCalled()
             })
          })
@@ -153,7 +153,7 @@ describe('FieldSelectOne', () => {
                const S = b.selectOneString_(['a', 'b', 'c'], { default: 'b' })
                const E = S.create()
 
-               expect(E.serial).toBe(S.emptySerial)
+               expect(E.serial).toBe(S.defaultSerial)
                expect(patchSerial).not.toHaveBeenCalled()
             })
          })
@@ -166,7 +166,7 @@ describe('FieldSelectOne', () => {
                const S = b.selectOneString_(['a', 'b', 'c']).optional()
                const E = S.create()
 
-               expect(E.serial).toBe(S.emptySerial)
+               expect(E.serial).toBe(S.defaultSerial)
                expect(optionalPatchSerial).not.toHaveBeenCalled()
                expect(selectPatchSerial).not.toHaveBeenCalled()
             })

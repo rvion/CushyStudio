@@ -350,7 +350,7 @@ describe('FieldGroup', () => {
 
    describe('create perf', () => {
       describe('without a default value', () => {
-         it('should use the emptySerial and not patch it', () => {
+         it('should use the defaultSerial and not patch it', () => {
             const schema = b.fields({
                title: b.string_(),
                description: b.string_(),
@@ -358,7 +358,7 @@ describe('FieldGroup', () => {
 
             const field = schema.create()
 
-            expect(field.serial).toBe(schema.emptySerial)
+            expect(field.serial).toBe(schema.defaultSerial)
          })
       })
 
@@ -379,7 +379,7 @@ describe('FieldGroup', () => {
 
             const field = schema.create()
 
-            expect(field.serial).toBe(schema.emptySerial)
+            expect(field.serial).toBe(schema.defaultSerial)
          })
       })
    })

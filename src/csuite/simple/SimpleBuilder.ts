@@ -8,10 +8,7 @@ import { BuilderDateDescriptors, type BuilderDateMixin } from '../model/builders
 import { BuilderGroupDescriptors, type BuilderGroupMixin } from '../model/builders/BuilderGroup'
 import { BuilderMiscDescriptors, type BuilderMiscMixin } from '../model/builders/BuilderMisc'
 import { BuilderNumberDescriptors, type BuilderNumberMixin } from '../model/builders/BuilderNumberTypes'
-import {
-   BuilderSelectManyDescriptorsFn,
-   type BuilderSelectManyMixin,
-} from '../model/builders/BuilderSelectMany'
+import { BuilderSelectManyDescriptorsFn, type BuilderSelectManyMixin } from '../model/builders/BuilderSelectMany'
 import { BuilderSelectOneDescriptorsFn, type BuilderSelectOneMixin } from '../model/builders/BuilderSelectOne'
 import { BuilderSharedDescriptors, type BuilderSharedMixin } from '../model/builders/BuilderShared'
 import { BuilderStringDescriptors, type BuilderStringMixin } from '../model/builders/BuilderStringTypes'

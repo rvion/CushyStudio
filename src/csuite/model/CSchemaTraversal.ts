@@ -9,7 +9,7 @@ import { bang } from '../utils/bang'
 import { searchMatches } from '../utils/searchMatches'
 
 export type NeighborhoodName = 'children' | 'travels'
-export type NeighborhoodPath = Tagged<string, 'NeighborhoodPath'>
+export type NeighborhoodPath = Flavor<string, 'NeighborhoodPath'>
 export class CSchemaNeighborhood<KEY extends string> {
    constructor(
       public name: NeighborhoodName,
@@ -39,8 +39,13 @@ export class CSchemaNeighborhood<KEY extends string> {
    }
 
    private _getOne(key: KEY): CSchema {
-      const errMsg = `❌ key ${key} does not exist in schema ${this.schema._uid}'s ${this.name} neighboorhood`
-      return bang(this.edges[key], errMsg).schema
+      const edge = this.edges[key]
+      if (edge == null) {
+         const availableKeys = this.getPathsAndSchemaNoFollow().map((i) => i.at)
+         const errMsg = `❌ key ${key} does not exist in schema ${this.schema._uid}(${this.schema.codeForTypescriptValue()})'s ${this.name} neighboorhood (available keys: ${availableKeys})`
+         throw new Error(errMsg)
+      }
+      return edge.schema
    }
 
    private _getAtPath(keys: KEY[]): CSchema {
@@ -160,5 +165,5 @@ export class CSchemaNeighborhood<KEY extends string> {
    }
 }
 
-type ColExpr = Tagged<string, 'NeighborhoodPath'>
+type ColExpr = Flavor<string, 'NeighborhoodPath'>
 export type SchemaGraphNode = { at: ColExpr; schema: CSchema }

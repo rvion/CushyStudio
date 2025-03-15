@@ -48,11 +48,12 @@ export interface Field_link<A extends CSchema, B extends CSchema> {
 export class Field_link<A extends CSchema, B extends CSchema> extends Field {
    // #region TYPE
    static readonly type: 'link' = 'link'
-   static readonly emptySerial: Field_link<any, any>['$serial'] = { $: 'link' }
+   private static readonly unsetSerial: Field_link<any, any>['$serial'] = { $: 'link' }
    static readonly codeForTypescriptValue = (config: Field_link<any, any>['$config']): string => 'Z.Link'
    static override migrateSerial(): undefined {}
    static generateSerial(): Field_link<CSchema, CSchema>['$serial'] {
-      return this.emptySerial
+      // TODO what to do here ?
+      return this.unsetSerial
    }
 
    // #region CTOR

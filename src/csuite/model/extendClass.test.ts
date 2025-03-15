@@ -1,16 +1,7 @@
 /* eslint-disable vitest/require-to-throw-message */
 import type { SimpleBuilder } from '../simple/SimpleBuilder'
 
-import {
-   action,
-   computed,
-   isAction,
-   isComputedProp,
-   isObservableProp,
-   observable,
-   reaction,
-   runInAction,
-} from 'mobx'
+import { action, computed, isAction, isComputedProp, isObservableProp, observable, reaction, runInAction } from 'mobx'
 import { describe, expect, it } from 'vitest'
 
 import { type CSchema, type SchemaDict, simpleBuilder as b, simpleFactory as f } from '../'
@@ -24,9 +15,9 @@ describe('field customizations', () => {
       it('fails when useClass + useClass', () => {
          const S0 = b.fields({ foo: b.int({ default: 10 }) })
          class A extends Field_group<any> {}
-         const S1 = S0.useClass(A)
+         const S1 = S0.useClass(A, null)
          class B extends Field_group<any> {}
-         expect(() => S1.useClass(B)).toThrow()
+         expect(() => S1.useClass(B, null)).toThrow()
       })
    })
 
@@ -38,7 +29,7 @@ describe('field customizations', () => {
             }
          }
          // const z: CSchema<CSchema<F>> = 0 as any
-         const S1 = b.bool().useClass(F)
+         const S1 = b.bool().useClass(F, null)
          const E1 = S1.create()
          E1 satisfies CSchema<CSchema<F>['$field']>['$field']
          E1 satisfies CSchema<CSchema<CSchema<F>['$field']>['$field']>['$field']
@@ -66,7 +57,7 @@ describe('field customizations', () => {
             }
          }
 
-         const S1 = S0.useClass(Foo2)
+         const S1 = S0.useClass(Foo2, null)
 
          const E1: Foo2 = S1.create()
          // proper constructor
@@ -122,7 +113,7 @@ describe('field customizations', () => {
                      a: b.number(),
                      b: b.fields({ points: b.fields({ x: b.number(), y: b.number() }).list() }),
                   })
-                  .useClass<MyFooCollection>(MyFooCollection)
+                  .useClass<MyFooCollection>(MyFooCollection, null)
             @action upTwice_action(): void {
                this.up()
                this.up()
@@ -210,7 +201,7 @@ describe('field customizations', () => {
             }
          }
 
-         const S1 = S0.useClass(Foo3)
+         const S1 = S0.useClass(Foo3, null)
 
          const E1: Foo3 = S1.create()
          // proper constructor
@@ -272,7 +263,7 @@ describe('field customizations', () => {
             }
          }
 
-         const S1 = S0.useClass(Glux)
+         const S1 = S0.useClass(Glux, null)
          for (let i = 0; i < 3; i++) {
             const E1 = S1.create()
             expect({
@@ -327,7 +318,7 @@ describe('field customizations', () => {
             }
          }
 
-         const S1 = S0.useClass(Glux)
+         const S1 = S0.useClass(Glux, null)
          for (let i = 0; i < 1; i++) {
             const E1 = S1.create()
             expect({

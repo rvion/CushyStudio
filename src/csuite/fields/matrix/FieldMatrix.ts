@@ -57,14 +57,14 @@ export interface Field_matrix {
 // STATE
 export class Field_matrix extends Field {
    static readonly type: 'matrix' = 'matrix'
-   static readonly emptySerial: Field_matrix_serial = { $: 'matrix' }
+   private static readonly unsetSerial: Field_matrix_serial = { $: 'matrix' }
    static override migrateSerial(): undefined {}
    static readonly codeForTypescriptValue = (config: Field_matrix_config): string => 'MatrixCell[]'
 
    static generateSerial(value: Maybe<Field_matrix_value>, config: Field_matrix_config): Field_matrix_serial {
       const selectedValue = value ?? config.default
 
-      if (selectedValue == null) return Field_matrix.emptySerial
+      if (selectedValue == null) return Field_matrix.unsetSerial
 
       return {
          $: 'matrix',

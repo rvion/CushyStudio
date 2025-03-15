@@ -10,12 +10,12 @@ import { bang } from '../../utils/bang'
 import { parseFloatNoRoundingErr } from '../../utils/parseFloatNoRoundingErr'
 import { registerFieldClass } from '../WidgetUI.DI'
 import {
-   type AspectRatio,
-   aspectRatioMap,
-   type CushySize,
-   type CushySizeByRatio,
-   type ModelType,
-   type SDModelType,
+    type AspectRatio,
+    aspectRatioMap,
+    type CushySize,
+    type CushySizeByRatio,
+    type ModelType,
+    type SDModelType,
 } from './WidgetSizeTypes'
 
 type SizeAble = {
@@ -67,7 +67,7 @@ export interface Field_size {
 export class Field_size extends Field {
    static readonly type: 'size' = 'size'
    static override migrateSerial(serial: object): void {}
-   static readonly emptySerial: Field_size_serial = { $: 'size' }
+   private static readonly unsetSerial: Field_size_serial = { $: 'size' }
    static readonly codeForTypescriptValue = (config: Field_size_config): string => 'Z.CushySize'
    get isOwnSet(): boolean {
       const ser = this.serial
@@ -83,7 +83,7 @@ export class Field_size extends Field {
       value: Maybe<Field_size['$value']>,
       config: Field_size['$config'],
    ): Field_size['$serial'] {
-      if (value == null && config.default == null) return this.emptySerial
+      if (value == null && config.default == null) return this.unsetSerial
 
       const selectedVal = value ?? config.default
       return {

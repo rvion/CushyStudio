@@ -54,7 +54,7 @@ export interface Field_date<VALUE> {
 export class Field_date<out VALUE> extends Field {
    // #region static
    static readonly type: 'date' = 'date'
-   static readonly emptySerial: Field_date_serial = { $: 'date' }
+   private static readonly unsetSerial: Field_date_serial = { $: 'date' }
    static readonly codeForTypescriptValue = (config: Field_date<unknown>['$config']): string =>
       config.codeForTypescriptValue ?? 'Date'
    // #region migration
@@ -85,7 +85,7 @@ export class Field_date<out VALUE> extends Field {
       config: Field_date<any>['$config'],
    ): Field_date<any>['$serial'] {
       const defaultValue = typeof config.default === 'function' ? config.default() : config.default
-      if (value == null && defaultValue == null) return this.emptySerial
+      if (value == null && defaultValue == null) return this.unsetSerial
 
       return {
          $: 'date',

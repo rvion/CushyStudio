@@ -8,7 +8,7 @@ import { bang } from '../../utils/bang'
 export type ChannelId = string
 
 export class Channel<T> {
-   $type!: T
+   declare $type: T
 
    // get() {
    //    return (field: Field): Maybe<T> => field.readChannel(this)
