@@ -1,6 +1,5 @@
 import { observer } from 'mobx-react-lite'
 
-import { replaceImportsWithSyncImport } from '../compiler/transpiler'
 import { TabUI } from '../csuite/tabs/TabUI'
 import { Panel, type PanelHeader } from '../router/Panel'
 import { _formatAsRelativeDateTime } from '../updater/_getRelativeTimeString'
@@ -43,7 +42,7 @@ export const PanelScriptUI = observer(function PanelScriptUI_(p: PanelScriptProp
             <div>text (before import rewrite)</div>
             <pre tw='font-mono text-xs'>{script.data.code}</pre>
             <div>text (after import rewrite)</div>
-            <pre tw='font-mono text-xs'>{replaceImportsWithSyncImport(script.data.code)}</pre>
+            <pre tw='font-mono text-xs'>{script.data.code}</pre>
             <div>code</div>
             <TypescriptHighlightedCodeUI code={script.data.code}></TypescriptHighlightedCodeUI>
          </TabUI>

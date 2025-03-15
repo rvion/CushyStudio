@@ -8,7 +8,7 @@ import { existsSync, statSync } from 'fs'
 import { runInAction } from 'mobx'
 
 import { type CustomView, type CustomViewRef } from '../cards/App'
-import { CUSHY_IMPORT, replaceImportsWithSyncImport } from '../compiler/transpiler'
+import { CUSHY_IMPORT } from '../compiler/transpiler'
 import { extractErrorMessage } from '../csuite/formatters/extractErrorMessage'
 import { getCurrentForm_IMPL } from '../csuite/model/runWithGlobalForm'
 import { SQLITE_false, SQLITE_true } from '../csuite/types/SQLITE_boolean'
@@ -225,22 +225,14 @@ export class CushyScriptL extends BaseInst<TABLES['cushy_script']> {
       }
 
       // 2. eval file to extract actions
-
-      let codJSWithoutWithImportsReplaced
-      try {
-         // console.log(`🟡 BEFORE: rewriting module import (${mod})`)
-         codJSWithoutWithImportsReplaced = replaceImportsWithSyncImport(codeJS) // REWRITE_IMPORTS(codeJS)
-      } catch {
-         console.error(`❌ script evealuation crashed when replacing imports`)
-         return { apps: [], views: [] }
-      }
+      let codJSWithoutWithImportsReplaced = codeJS
       try {
          // 2.1. replace imports
          const ProjectScriptFn = new Function(
             //
             'app',
             'view',
-            'CUSHY_IMPORT',
+            'require',
             'getCurrentForm',
             'getCurrentRun',
             'cushy',
