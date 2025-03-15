@@ -28,6 +28,8 @@ export const Ikon: {
    },
 }) as any
 
+export const Ikon2 = Ikon as unknown as Record<IconName, FC<MyIconProps>>
+
 /** reexport Icon from `@mdi/react` and add siz='1.1em' */
 export const IkonOf = function IkonOf_({
    name,

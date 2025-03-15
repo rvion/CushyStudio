@@ -3,7 +3,7 @@ import type { PromptPlugin } from './PromptPlugin'
 import { observer } from 'mobx-react-lite'
 
 import { Frame } from '../../csuite/frame/Frame'
-import { Ikon } from '../../csuite/icons/iconHelpers'
+import { Ikon2 } from '../../csuite/icons/iconHelpers'
 
 export const PluginWrapperUI = observer(function PluginWrapperUI_(p: {
    //
@@ -11,7 +11,7 @@ export const PluginWrapperUI = observer(function PluginWrapperUI_(p: {
    children?: React.ReactNode
 }) {
    const plugin = p.plugin
-   const Icon = Ikon[plugin.icon]
+   const Icon = Ikon2[plugin.icon]
    return (
       <Frame>
          <div tw='align-center flex gap-1 text-sm italic text-gray-500'>
