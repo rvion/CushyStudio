@@ -67,7 +67,7 @@ Exec=/usr/bin/bash -c 'cd \"$SCRIPTPATH\" && \"$SCRIPTPATH/_mac-linux-start-dev.
 esac
 echo "Node.js architecture: $NODE_ARCH"
 
-NODE_VERSION="v20.14.0"
+NODE_VERSION="v22.14.0"
 echo "Node.js version: $NODE_VERSION"
 
 # Define the download URL ------------------------------------------------------------
