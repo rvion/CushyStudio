@@ -118,28 +118,26 @@ export type FieldCtorProps_ALT<TYPES extends Field = any> = [
    serial?: TYPES['$serial'],
 ]
 
-export interface Field {
-   $type: CATALOG.AllFieldTypes
-   $ownConfig: unknown
-   $ownSerial: unknown
-
-   $serial: FieldSerialFor<this>
-   $config: FieldConfigFor<this>
-
-   $value: unknown
-   $setValue: unknown
-   $unchecked: unknown
-   $child: unknown
-   $opts: unknown
-   $ownPatch: Patch_Common<this['$type']>
-
-   // 2025-02-11 new addition
-   $Schema: CSchema<this>
-}
-
 type PathObject = [string, Maybe<PathObject>]
 
 export abstract class Field {
+   declare $type: CATALOG.AllFieldTypes
+   declare $ownConfig: unknown
+   declare $ownSerial: unknown
+
+   declare $serial: FieldSerialFor<this>
+   declare $config: FieldConfigFor<this>
+
+   declare $value: unknown
+   declare $setValue: unknown
+   declare $unchecked: unknown
+   declare $child: unknown
+   declare $opts: unknown
+   declare $ownPatch: Patch_Common<this['$type']>
+
+   // 2025-02-11 new addition
+   declare $Schema: CSchema<this>
+
    /**
     * @internal
     */
