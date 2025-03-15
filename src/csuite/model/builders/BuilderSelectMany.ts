@@ -8,11 +8,11 @@ import {
    type Field_selectMany_config_simplified,
    type Field_selectMany_config_simplified_,
 } from '../../fields/selectMany/FieldSelectMany'
-import { defineSchemaBuilderMixin } from './defineSchemaBuilderMixin'
-import { removeReadOnly } from 'src/front/reusable/utils.types.shared'
 import { IDENTITY } from '../../utils/identity'
-import { NAIVE_getOptionFromId } from './NAIVE_getOptionFromId'
+import { removeReadOnly } from '../../utils/removeReadOnly'
 import { CSchema } from '../CSchema'
+import { defineSchemaBuilderMixin } from './defineSchemaBuilderMixin'
+import { NAIVE_getOptionFromId } from './NAIVE_getOptionFromId'
 
 // prettier-ignore
 export type BuilderSelectManyMixin = {

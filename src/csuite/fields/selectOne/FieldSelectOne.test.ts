@@ -1,7 +1,7 @@
 import { describe, expect, it, vitest } from 'vitest'
 
-import { simpleBuilder } from '../../index'
 import { expectJSON } from '../../model/TESTS/utils/expectJSON'
+import { simpleBuilder } from '../../simple/SimpleFactory'
 import { Field_optional } from '../optional/FieldOptional'
 import { Field_selectOne } from './FieldSelectOne'
 

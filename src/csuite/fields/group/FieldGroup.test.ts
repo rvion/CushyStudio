@@ -1,8 +1,8 @@
 import { _getAdministration, isObservableProp } from 'mobx'
 import { describe, expect, it, vitest } from 'vitest'
 
-import { simpleBuilder as b } from '../../index'
 import { expectJSON } from '../../model/TESTS/utils/expectJSON'
+import { simpleBuilder as b } from '../../simple/SimpleFactory'
 import { Field_group, type Field_group_serial } from './FieldGroup'
 
 describe('FieldGroup', () => {

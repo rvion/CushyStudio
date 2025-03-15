@@ -4,16 +4,16 @@ import type { Patch } from '../../model/Patch'
 import { toJS } from 'mobx'
 import { describe, expect, it, vitest } from 'vitest'
 
-import { simpleBuilder as b } from '../../index'
 import { expectJSON } from '../../model/TESTS/utils/expectJSON'
+import { simpleBuilder as b } from '../../simple/SimpleFactory'
 import { Field_optional } from '../optional/FieldOptional'
 import { Field_string } from '../string/FieldString'
 import {
-    Field_list,
-    type Field_list_config,
-    type Field_list_ItemID,
-    type Field_list_patch,
-    type Field_list_serial,
+   Field_list,
+   type Field_list_config,
+   type Field_list_ItemID,
+   type Field_list_patch,
+   type Field_list_serial,
 } from './FieldList'
 
 describe('FieldList', () => {

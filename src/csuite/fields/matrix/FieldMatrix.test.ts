@@ -1,9 +1,9 @@
 import { describe, expect, it, vitest } from 'vitest'
 
-import { simpleBuilder as b } from '../../index'
+import { CSchema } from '../../model/CSchema'
 import { expectJSON } from '../../model/TESTS/utils/expectJSON'
+import { simpleBuilder as b } from '../../simple/SimpleFactory'
 import { Field_matrix } from './FieldMatrix'
-import { CSchema } from 'src/cushy-forms/src/csuite/model/CSchema'
 
 describe('FieldMatrix', () => {
    it('work', () => {

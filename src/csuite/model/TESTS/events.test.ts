@@ -2,7 +2,7 @@ import type { Field_list_ItemID } from '../../fields/list/FieldList'
 
 import { beforeEach, describe, expect, it } from 'vitest'
 
-import { simpleBuilder as b, simpleFactory } from '../../index'
+import { simpleBuilder as b, simpleFactory } from '../../simple/SimpleFactory'
 import { expectJSON } from './utils/expectJSON'
 
 const r = simpleFactory.repository

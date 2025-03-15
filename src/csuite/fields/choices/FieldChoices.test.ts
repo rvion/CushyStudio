@@ -2,8 +2,8 @@ import type { Field_list_ItemID } from '../list/FieldList'
 
 import { beforeEach, describe, expect, it } from 'vitest'
 
-import { simpleBuilder as b, simpleFactory as f } from '../../index'
 import { expectJSON } from '../../model/TESTS/utils/expectJSON'
+import { simpleBuilder as b, simpleFactory as f } from '../../simple/SimpleFactory'
 
 const r = f.repository
 describe('FieldChoices', () => {

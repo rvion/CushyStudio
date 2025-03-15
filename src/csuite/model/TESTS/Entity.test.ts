@@ -1,7 +1,7 @@
 import { toJS } from 'mobx'
 import { type Assertion, describe, expect, it } from 'vitest'
 
-import { simpleFactory } from '../../index'
+import { simpleFactory } from '../../simple/SimpleFactory'
 
 // ------------------------------------------------------------------------------
 describe('basic', () => {

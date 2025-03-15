@@ -1,6 +1,6 @@
 import { describe, it } from 'vitest'
 
-import { simpleBuilder as b } from '../../index'
+import { simpleBuilder as b } from '../../simple/SimpleFactory'
 import { expectJSON } from './utils/expectJSON'
 
 // ------------------------------------------------------------------------------

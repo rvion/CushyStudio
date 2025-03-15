@@ -1,6 +1,6 @@
 import { describe, expect, it, vitest } from 'vitest'
 
-import { simpleBuilder } from '../../index'
+import { simpleBuilder } from '../../simple/SimpleFactory'
 import { Field_string, type Field_string_serial } from './FieldString'
 
 const b = simpleBuilder

@@ -1,6 +1,6 @@
 import { beforeEach, describe, it } from 'vitest'
 
-import { simpleBuilder as b, simpleFactory as f } from '../../index'
+import { simpleBuilder as b, simpleFactory as f } from '../../simple/SimpleFactory'
 import { expectJSON } from './utils/expectJSON'
 
 // ------------------------------------------------------------------------------
