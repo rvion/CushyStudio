@@ -1,4 +1,5 @@
 import type { IconProps } from '@mdi/react/dist/IconProps.d.ts'
+import type React from 'react'
 import type { FC } from 'react'
 
 import * as IconImport from '@mdi/react'
@@ -19,9 +20,11 @@ type MyIconProps = Omit<RawIconProps, 'path'>
 export const Ikon: {
    [Name in IconNameReal]: FC<MyIconProps>
 } = new Proxy({} as any, {
-   get(target, key) {
+   get(target, key): unknown {
       if (key in target) return target[key]
-      return (target[key] = (p: any) => <Icon path={(allIcons as any)[key]} size='1.1em' {...p} />)
+      return (target[key] = (p: any): React.JSX.Element => (
+         <Icon path={(allIcons as any)[key]} size='1.1em' {...p} />
+      ))
    },
 }) as any
 
