@@ -1,13 +1,9 @@
 import type { Field_board_config } from '../csuite/fields/board/Field_board'
-import type { Field_color } from '../csuite/fields/color/FieldColor'
 import type { SimpleShape$ } from '../csuite/fields/core-prefabs/ShapeSchema'
-import type { Field_custom_config } from '../csuite/fields/custom/FieldCustom'
-import type { Field_image_config } from '../csuite/fields/image/FieldImage'
 import type { Field_list_config } from '../csuite/fields/list/FieldList'
 import type { Field_matrix_config } from '../csuite/fields/matrix/FieldMatrix'
 import type { Field_number } from '../csuite/fields/number/FieldNumber'
 import type { Field_optional_config } from '../csuite/fields/optional/FieldOptional'
-import type { Field_orbit_config } from '../csuite/fields/orbit/FieldOrbit'
 import type { SelectOption } from '../csuite/fields/selectOne/SelectOption'
 import type { IBuilder } from '../csuite/model/IBuilder'
 import type { OpenRouter_ModelInfo } from '../csuite/openrouter/OpenRouter_ModelInfo'
@@ -19,6 +15,7 @@ import { simpleBuilder } from '../csuite'
 import { csuiteConfig } from '../csuite/config/configureCsuite'
 import { Field_board } from '../csuite/fields/board/Field_board'
 import { WidgetListExtUI__Timeline } from '../csuite/fields/board/WidgetListExtUI'
+import { Field_color } from '../csuite/fields/color/FieldColor'
 import { simpleShape$ } from '../csuite/fields/core-prefabs/ShapeSchema'
 import { Field_custom } from '../csuite/fields/custom/FieldCustom'
 import { Field_image } from '../csuite/fields/image/FieldImage'
@@ -57,50 +54,33 @@ import { _FIX_INDENTATION } from '../csuite/utils/_FIX_INDENTATION'
 import { bang } from '../csuite/utils/bang'
 import { Field_prompt } from '../prompt/FieldPrompt'
 import { type AutoBuilder, mkFormAutoBuilder } from './AutoBuilder'
+import { BuilderPrefabs } from './BuilderPrefabs'
 import { EnumBuilder } from './EnumBuilder'
 import { EnumBuilderOpt } from './EnumBuilderOpt'
 import { EnumListBuilder } from './EnumListBuilder'
 
-// export interface CushySchemaBuilder
-//    extends BuilderString<CushySchemaᐸ_ᐳ>,
-//       BuilderBool<CushySchemaᐸ_ᐳ>,
-//       BuilderNumber<CushySchemaᐸ_ᐳ>,
-//       BuilderDate<CushySchemaᐸ_ᐳ>,
-//       BuilderMisc<CushySchemaᐸ_ᐳ>,
-//       BuilderSelectOne<CushySchemaᐸ_ᐳ>,
-//       BuilderSelectMany<CushySchemaᐸ_ᐳ>,
-//       BuilderChoices<CushySchemaᐸ_ᐳ>,
-//       BuilderGroup<CushySchemaᐸ_ᐳ>,
-//       BuilderShared<CushySchemaᐸ_ᐳ> {
-//    //
-// }
-
 /** cushy studio form builder */
 export class CushySchemaBuilder implements IBuilder {
-   orbit(config: Field_orbit_config = {}): Z.Orbit {
+   orbit(config: Field_orbit['$config'] = {}): Z.Orbit {
       return CSchema.new<Field_orbit>(Field_orbit, config)
    }
 
-   color(config: Field_color_config = {}): Z.Color {
+   color(config: Field_color['$config'] = {}): Z.Color {
       return CSchema.new<Field_color>(Field_color, config)
    }
-
-   // colorV2(config: Field_string_config = {}): X.XString {
-   //     return CSchema.new<Field_string>(Field_string, { inputType: 'color', ...config })
-   // }
 
    matrix(config: Field_matrix_config): Z.Matrix {
       return CSchema.new<Field_matrix>(Field_matrix, config)
    }
 
    /** image field, defaulting to `cushy.defaultImage` if no default provided */
-   image(config: Field_image_config = {}): Z.Image {
+   image(config: Field_image['$config'] = {}): Z.Image {
       const def = config.default ?? cushy.defaultImage
       return this.image_({ default: def, ...config })
    }
 
    /** image field, without any default */
-   image_(config: Field_image_config = {}): Z.Image {
+   image_(config: Field_image['$config'] = {}): Z.Image {
       return CSchema.new<Field_image>(Field_image, config)
    }
 
@@ -115,10 +95,17 @@ export class CushySchemaBuilder implements IBuilder {
    }
 
    remSize(config: Omit<Field_number['$config'], 'mode'> = {}): Z.Number {
-      return this.number({ min: 1, max: 20, default: 2, step: 1, unit: 'rem', suffix: 'rem' })
+      return this.number({
+         min: 1,
+         max: 20,
+         default: 2,
+         step: 1,
+         unit: 'rem',
+         suffix: 'rem',
+      })
    }
 
-   custom<T>(config: Field_custom_config<T>): Z.Custom<T> {
+   custom<T>(config: Field_custom<T>['$config']): Z.Custom<T> {
       return CSchema.new<Field_custom<T>>(Field_custom, config)
    }
 
