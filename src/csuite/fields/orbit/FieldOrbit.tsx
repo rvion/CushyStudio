@@ -1,6 +1,4 @@
 import type { CSchema } from '../../model/CSchema'
-import type { FieldConfig } from '../../model/FieldConfig'
-import type { FieldSerial } from '../../model/FieldSerial'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 import type { FC } from 'react'
@@ -19,19 +17,16 @@ export type OrbitData = {
 }
 
 // #region Config
-export type Field_orbit_config = FieldConfig<
-   {
-      default?: Partial<OrbitData>
-   },
-   Field_orbit
->
+export type Field_orbit_ownConfig = {
+   default?: Partial<OrbitData>
+}
 
 // #region Serial
-export type Field_orbit_serial = FieldSerial<{
+export type Field_orbit_ownSerial = {
    $: 'orbit'
    azimuth?: number
    elevation?: number
-}>
+}
 
 // #region Value
 export type Field_orbit_value = {
@@ -46,24 +41,21 @@ export type Field_orbit_unchecked = {
    englishSummary?: string
 }
 
-// #region Types
-export type Field_orbit = {
-   $type: 'orbit'
-   $config: Field_orbit_config
-   $serial: Field_orbit_serial
-   $value: Field_orbit_value
-   $unchecked: Field_orbit_unchecked
-   $field: Field_orbit
-   $child: never
-}
-
 // STATE
-export class Field_orbit extends Field<Field_orbit> {
+export class Field_orbit extends Field {
+   declare $type: 'orbit'
+   declare $ownConfig: Field_orbit_ownConfig
+   declare $ownSerial: Field_orbit_ownSerial
+   declare $value: Field_orbit_value
+   declare $unchecked: Field_orbit_unchecked
+   declare $field: Field_orbit
+   declare $child: never
+
    // #region types
    static readonly type: 'orbit' = 'orbit'
-   static readonly emptySerial: Field_orbit_serial = { $: 'orbit' }
+   static readonly emptySerial: Field_orbit['$serial'] = { $: 'orbit' }
    static migrateSerial(): undefined {}
-   static codegenValueType(config: Field_orbit_config): string {
+   static codegenValueType(config: Field_orbit['$config']): string {
       return `number`
    }
 
@@ -74,13 +66,10 @@ export class Field_orbit extends Field<Field_orbit> {
       parent: Field | null,
       schema: CSchema<Field_orbit>,
       initialMountKey: string,
-      serial?: Field_orbit_serial,
+      serial?: Field_orbit['$serial'],
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
-      this.init(serial, {
-         DefaultHeaderUI: false,
-         DefaultBodyUI: false,
-      })
+      this.init(serial)
    }
 
    // #region Serial
@@ -90,7 +79,7 @@ export class Field_orbit extends Field<Field_orbit> {
       return true
    }
 
-   protected setOwnSerial(next: Field_orbit_serial): void {
+   protected setOwnSerial(next: Field_orbit['$serial']): void {
       // assign default
       if (this.serial.azimuth == null) {
          const def = this.config.default
@@ -158,6 +147,14 @@ export class Field_orbit extends Field<Field_orbit> {
       if (this.azimuth !== this.defaultAzimuth) return true
       if (this.elevation !== this.defaultElevation) return true
       return false
+   }
+
+   override isValueEqual(other: Field): boolean {
+      if (!(other instanceof Field_orbit)) return false
+      return (
+         this.serial.height === other.serial.height && //
+         this.serial.width === other.serial.width
+      )
    }
 
    // #region Value
