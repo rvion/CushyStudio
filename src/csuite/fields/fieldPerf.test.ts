@@ -4,13 +4,13 @@ import { simpleBuilder } from '../SimpleFactory'
 
 // #region test case
 const b = simpleBuilder
-const makeDoc = (): Z.SGroup<{
-   a: Z.SString
-   b: Z.SString
-   arr: Z.SList<
-      Z.SGroup<{
-         x: Z.SString
-         y: Z.SNumber
+const makeDoc = (): Z.Record<{
+   a: Z.String
+   b: Z.String
+   arr: Z.List<
+      Z.Record<{
+         x: Z.String
+         y: Z.Number
       }>
    >
 }> => {

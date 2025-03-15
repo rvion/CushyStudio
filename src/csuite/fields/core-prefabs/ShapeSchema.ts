@@ -49,17 +49,17 @@ export const mkPlacement = (p: Partial<SimpleShape>): SimpleShape$['$value'] => 
 }
 
 export type SimpleShape$ = Z.SGroup<{
-   x: Z.SNumber
-   y: Z.SNumber
-   z: Z.SNumber
-   width: Z.SNumber
-   height: Z.SNumber
-   depth: Z.SNumber
-   scaleX: Z.SOptional<Z.SNumber>
-   scaleY: Z.SOptional<Z.SNumber>
-   scaleZ: Z.SOptional<Z.SNumber>
+   x: Z.Number
+   y: Z.Number
+   z: Z.Number
+   width: Z.Number
+   height: Z.Number
+   depth: Z.Number
+   scaleX: Z.SOptional<Z.Number>
+   scaleY: Z.SOptional<Z.Number>
+   scaleZ: Z.SOptional<Z.Number>
    fill: Z.SColor
-   rotation: Z.SOptional<Z.SNumber>
+   rotation: Z.SOptional<Z.Number>
    isSelected: Z.SBool
    isDragging: Z.SBool
    isResizing: Z.SBool

@@ -1,5 +1,4 @@
 import type { Field } from './Field'
-import type { FieldId } from './FieldId'
 
 import { runInAction } from 'mobx'
 

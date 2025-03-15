@@ -17,24 +17,24 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
    showSelectIcons: boolean = false
 
    get tooltipDelay(): Maybe<number> {
-      return cushy.preferences.interface.TooltipDelay.value
+      return cushy.preferences.interface._.tooltipDelay.value
    }
 
    get showFoldButtons(): boolean {
-      return this.st.preferences.interface.Widget.ShowFoldButtons.value ?? true
+      return this.st.preferences.interface._.widget._.showFoldButtons.value ?? true
    }
 
    // sizes ------------------------------------------------------
    get widgetHeight(): number {
-      return this.st.preferences.interface.WidgetHeight.value ?? 1.8
+      return this.st.preferences.interface._.widgetHeight.value ?? 1.8
    }
 
    get inputHeight(): number {
-      return this.st.preferences.interface.InputHeight.value ?? 1.6
+      return this.st.preferences.interface._.inputHeight.value ?? 1.6
    }
 
    get insideHeight(): number {
-      return this.st.preferences.interface.InsideHeight.value ?? 1.2
+      return this.st.preferences.interface._.insideHeight.value ?? 1.2
    }
 
    get inputRoundness(): number {
@@ -47,23 +47,23 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
    }
 
    get showWidgetUndo(): boolean {
-      return this.st.preferences.interface.Widget.ShowUndo.value ?? true
+      return this.st.preferences.interface._.widget._.showUndo.value ?? true
    }
 
    get showWidgetMenu(): boolean {
-      return this.st.preferences.interface.Widget.ShowMenu.value ?? true
+      return this.st.preferences.interface._.widget._.showMenu.value ?? true
    }
 
    get showWidgetDiff(): boolean {
-      return this.st.preferences.interface.Widget.ShowDiff.value ?? true
+      return this.st.preferences.interface._.widget._.showDiff.value ?? true
    }
 
    get showToggleButtonBox(): boolean {
-      return this.st.preferences.interface.Widget.ShowToggleButtonBox.value ?? false
+      return this.st.preferences.interface._.widget._.showToggleButtonBox.value ?? false
    }
 
    get labellayout(): FormGlobalLayoutMode {
-      const x = this.st.preferences.theme.LabelLayout.value
+      const x = this.st.preferences.theme._.labelLayout.value
       if (x === 'fluid') return 'fluid'
       if (x === 'fixed-left') return 'fixed-left'
       if (x === 'fixed-right') return 'fixed-right'
@@ -77,7 +77,7 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
    // theme
 
    get baseStr(): string {
-      return this.st.preferences.theme.Base.value
+      return this.st.preferences.theme._.base.value
    }
 
    get base(): Kolor {

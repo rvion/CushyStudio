@@ -45,7 +45,6 @@ import {
    isProbablySomeFieldSerial,
    isProbablySomeFieldSerialOf,
 } from '../fields/WidgetUI.DI'
-import { FormAsDropdownConfigUI } from '../form/FormAsDropdownConfigUI'
 import { hashJSONObjectToNumber } from '../hashUtils/hash'
 import { type AnomalyMixin, AnomalyMixinDescriptors } from '../migration/Anomaly.mixin'
 import { type SelectorMixin, SelectorMixinDescriptors } from '../selector/selector.mixin'
@@ -1566,6 +1565,9 @@ export abstract class Field {
       // 💬 2024-10-17 ghusse:
       // | ⚠ props must be added first, to avoid circular references of field
       return <window.RENDERER.Render {...props} field={this} />
+   }
+   Render(props: RENDERER.FieldRenderArgs<this> = {}): ReactNode {
+      return this.UI(props)
    }
 
    // #region CHILDREN
