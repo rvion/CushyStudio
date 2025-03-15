@@ -346,11 +346,6 @@ export class Field_string extends Field {
       return false
    }
 
-   override get isRequired(): boolean {
-      const min = extractConfigValue(this.config.minLength)
-      return super.isRequired === true && min != null && min > 0
-   }
-
    override get isEmpty(): boolean {
       if (this.value_unchecked == null) return true
       if (this.value_unchecked.trim().length === 0) return true

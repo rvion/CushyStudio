@@ -615,11 +615,6 @@ export class Field_selectMany<
       }
    }
 
-   override get isRequired(): boolean {
-      const min = extractConfigValue(this.config.minLength)
-      return min != null && min > 0
-   }
-
    override get isEmpty(): boolean {
       return this.selectedKeys.length === 0
    }

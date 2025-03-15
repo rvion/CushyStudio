@@ -453,10 +453,6 @@ export class Field_optional<out T extends CSchema = CSchema> extends Field {
       if (active) this.child.randomize()
    }
 
-   public override get isRequired(): boolean {
-      return false
-   }
-
    override get isEmpty(): boolean {
       return !this.isActive
    }
