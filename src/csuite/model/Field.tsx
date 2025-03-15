@@ -54,6 +54,7 @@ import { $FieldSym } from './$FieldSym'
 import { autofixSerial_20240703 } from './autofix/autofixSerial_20240703'
 import { autofixSerial_20240711 } from './autofix/autofixSerial_20240711'
 import { CSchema, type WithConfigOptions } from './CSchema'
+import { type CushyOnlyMixin, CushyOnlyMixinDescriptors } from './CushyOnly.mixin'
 import { mkNewFieldId } from './FieldId'
 import { type TraversalMixin, TraversalMixinDescriptors } from './FieldTraversal.mixin'
 import {
@@ -1941,3 +1942,6 @@ Object.defineProperties(Field.prototype, SelectorMixinDescriptors)
 
 export interface Field extends TraversalMixin {}
 Object.defineProperties(Field.prototype, TraversalMixinDescriptors)
+
+export interface Field extends CushyOnlyMixin {}
+Object.defineProperties(Field.prototype, CushyOnlyMixinDescriptors)
