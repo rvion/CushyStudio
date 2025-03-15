@@ -2,8 +2,6 @@ import type { SQLWhere } from '../../../db/SQLWhere'
 import type { MediaImageT } from '../../../db/TYPES.gen'
 import type { MediaImageL } from '../../../models/MediaImage'
 import type { CSchema } from '../../model/CSchema'
-import type { FieldConfig } from '../../model/FieldConfig'
-import type { FieldSerial } from '../../model/FieldSerial'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 
@@ -11,20 +9,16 @@ import { produce } from 'immer'
 
 import { Field } from '../../model/Field'
 import { registerFieldClass } from '../WidgetUI.DI'
-import { WidgetSelectImageUI } from './WidgetImageUI'
 
 // #region Config
-export type Field_image_config = FieldConfig<
-   {
-      default?: MediaImageL
-      suggestionWhere?: SQLWhere<MediaImageT>
-      assetSuggested?: RelativePath | RelativePath[]
-   },
-   Field_image
->
+export type Field_image_ownConfig = {
+   default?: MediaImageL
+   suggestionWhere?: SQLWhere<MediaImageT>
+   assetSuggested?: RelativePath | RelativePath[]
+}
 
 // #region Serial
-export type Field_image_serial = FieldSerial<{
+export type Field_image_ownSerial = {
    $: 'image'
 
    imageID?: Maybe<MediaImageID>
@@ -37,29 +31,26 @@ export type Field_image_serial = FieldSerial<{
     * the width is aspect ratio locked.
     */
    size?: number
-}>
+}
 
 // #region Value
 export type Field_image_value = MediaImageL
 
-// #region Types
-export type Field_image = {
-   $type: 'image'
-   $config: Field_image_config
-   $serial: Field_image_serial
-   $value: Field_image_value
-   $unchecked: Field_image_value | undefined
-   $field: Field_image
-   $child: never
-}
-
 // #region STATE
-export class Field_image extends Field<Field_image> {
+export class Field_image extends Field {
+   declare $type: 'image'
+   declare $ownConfig: Field_image_ownConfig
+   declare $ownSerial: Field_image_ownSerial
+   declare $value: Field_image_value
+   declare $unchecked: Field_image_value | undefined
+   declare $field: Field_image
+   declare $child: never
+
    // #region static
    static readonly type: 'image' = 'image'
-   static readonly emptySerial: Field_image_serial = { $: 'image' }
+   static readonly emptySerial: Field_image['$serial'] = { $: 'image' }
    static migrateSerial(): undefined {}
-   static codegenValueType(config: Field_image_config): string {
+   static codegenValueType(config: Field_image['$config']): string {
       return `MediaImageL`
    }
 
@@ -70,7 +61,7 @@ export class Field_image extends Field<Field_image> {
       parent: Field | null,
       schema: CSchema<Field_image>,
       initialMountKey: string,
-      serial?: Field_image_serial,
+      serial?: Field_image['$serial'],
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
       this.init(serial)
@@ -81,7 +72,7 @@ export class Field_image extends Field<Field_image> {
       return this.serial.imageID != null
    }
 
-   protected setOwnSerial(next: Field_image_serial): void {
+   protected setOwnSerial(next: Field_image['$serial']): void {
       // apply default if unset + default in config
       const def = this.config.default
       if (this.serial.imageID == null && def != null) {
@@ -151,6 +142,12 @@ export class Field_image extends Field<Field_image> {
       const image = cushy.db.media_image.get(this.serial.imageID)
       if (image == null) return
       return image
+   }
+
+   public isValueEqual(other: Field): boolean {
+      if (other === this) return true
+      if (!(other instanceof Field_image)) return false
+      return this.serial.imageID === this.serial.imageID
    }
 
    // #region UI/preview
