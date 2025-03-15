@@ -22,21 +22,18 @@ type Field_color_ownSerial = {
 export type Field_color_value = string
 export type Field_color_unchecked = Field_color_value | undefined
 
-// TYPES
-export interface Field_color {
-   $type: 'color'
-   $ownConfig: Field_color_ownConfig
-   $ownSerial: Field_color_ownSerial
-   $value: Field_color_value
-   $setValue: Field_color_value
-   $unchecked: Field_color_unchecked
-   $child: never
-   $opts: unknown
-   $ownPatch: Patch<'color'>
-}
-
 // STATE
 export class Field_color extends Field {
+   declare $type: 'color'
+   declare $ownConfig: Field_color_ownConfig
+   declare $ownSerial: Field_color_ownSerial
+   declare $value: Field_color_value
+   declare $setValue: Field_color_value
+   declare $unchecked: Field_color_unchecked
+   declare $child: never
+   declare $opts: unknown
+   declare $ownPatch: Patch<'color'>
+
    static readonly type: 'color' = 'color'
    static readonly unsetSerial: Field_color['$serial'] = { $: 'color' }
    static override migrateSerial(): undefined {}
