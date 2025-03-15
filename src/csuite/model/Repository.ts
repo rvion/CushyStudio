@@ -1,4 +1,5 @@
 import type { Field } from './Field'
+import type { FieldId } from './FieldId'
 
 import { runInAction } from 'mobx'
 
@@ -13,6 +14,13 @@ import { Transaction } from './Transaction'
  * 🔶 this class is not observable as of 2025-02-07
  */
 export class Repository {
+   /**
+    * @deprecated
+    * unimplemented; probably worth adding back as non-observable weakmap
+    */
+   getFieldByID(promptID: any): Field {
+      throw new Error('Method not implemented.')
+   }
    /* 📌 STATS --------------------------------------------------------- */
    /** how many transactions have been executed on that repo */
    transactionCount: number = 0

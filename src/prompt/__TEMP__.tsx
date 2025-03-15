@@ -18,7 +18,8 @@ import { PromptAST } from './grammar/grammar.practical'
 
 type X = { id: FieldId; label?: string }
 
-export const PromptEditorUI = observer(function PromptEditorUI_(p: { promptID: Field_prompt['id'] }) {
+export const PromptEditorUI = observer(function PromptEditorUI_(p: { promptID: Field_prompt['_uid'] }) {
+   return '❌ broken'
    // 1. retrieve the widget to get the inital value
    // |  the widget won't be used afterwise unless we programmatically do stuff with it
    const field = cushy.repository.getFieldByID(p.promptID) as Field_prompt | undefined

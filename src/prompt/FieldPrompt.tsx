@@ -59,7 +59,7 @@ export interface Field_prompt {
 }
 
 // #region State
-export class Field_prompt extends Field<Field_prompt> {
+export class Field_prompt extends Field {
    // #region types
    static readonly type: 'prompt' = 'prompt'
    static readonly emptySerial: Field_prompt_serial = { $: 'prompt' }
