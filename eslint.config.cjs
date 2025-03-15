@@ -10,6 +10,7 @@ const tsParser = require('@typescript-eslint/parser')
 const js = require('@eslint/js')
 const tailwindcss = require('eslint-plugin-tailwindcss')
 const { FlatCompat } = require('@eslint/eslintrc')
+const vitest = require('@vitest/eslint-plugin')
 
 // 💬 2024-10-16 rvion:
 // | this localRules stuff seems pretty cool; probably something to investigate soon
@@ -240,6 +241,46 @@ module.exports = [
 
          semi: 'off', //                                                USELESS STYLE / NAMING STUFF
          'no-extra-semi': 'off', //                                     CONFLICT WITH PRETTIER
+      },
+   },
+   {
+      files: ['src/**/*.test.{ts,tsx}'],
+      plugins: { vitest },
+      rules: {
+         ...vitest.configs.recommended.rules,
+         'vitest/expect-expect': [
+            'error',
+            {
+               assertFunctionNames: ['expect', 'expect__', '**.expect', 'expectJSON', 'expectToJS'],
+               additionalTestBlockFunctions: [],
+            },
+         ],
+         'vitest/no-focused-tests': ['error', { fixable: false }],
+         'vitest/prefer-comparison-matcher': 'error',
+         'vitest/prefer-equality-matcher': 'error',
+         'vitest/prefer-expect-resolves': 'error',
+         'vitest/prefer-hooks-on-top': 'error',
+         'vitest/prefer-hooks-in-order': 'error',
+         'vitest/prefer-mock-promise-shorthand': 'warn',
+         'vitest/prefer-spy-on': 'error',
+         'vitest/prefer-to-be': 'error',
+         'vitest/prefer-to-be-object': 'error',
+         'vitest/prefer-to-contain': 'error',
+         'vitest/prefer-to-have-length': 'error',
+         'vitest/prefer-vi-mocked': 'error',
+         'vitest/require-to-throw-message': 'error',
+         'vitest/require-top-level-describe': 'error',
+         'vitest/valid-expect-in-promise': 'error',
+      },
+      settings: {
+         vitest: {
+            typecheck: !SKIP_SLOW_TYPECHECKING_RULES,
+         },
+      },
+      languageOptions: {
+         globals: {
+            ...vitest.environments.env.globals,
+         },
       },
    },
 ]

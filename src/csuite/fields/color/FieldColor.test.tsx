@@ -1,6 +1,7 @@
-import { vitest } from 'vitest'
+import { describe } from 'node:test'
+import { expect, it, vitest } from 'vitest'
 
-import { locoSchemaBuilder } from '../../../../../front/form/LocoSchemaBuilder'
+import { simpleBuilder } from '../../SimpleFactory'
 import { Field_color } from './FieldColor'
 
 describe('FieldColor', () => {
@@ -9,7 +10,7 @@ describe('FieldColor', () => {
          describe('without a default value', () => {
             it('should use the defaultSerial without patching it', () => {
                const patchSerial = vitest.spyOn(Field_color.prototype, 'patchSerial')
-               const S = locoSchemaBuilder.color()
+               const S = simpleBuilder.color()
                const E = S.create()
 
                expect(E.serial).toBe(S.defaultSerial)
@@ -20,7 +21,7 @@ describe('FieldColor', () => {
          describe('with a default value', () => {
             it('should use the defaultSerial and patch it', () => {
                const patchSerial = vitest.spyOn(Field_color.prototype, 'patchSerial')
-               const S = locoSchemaBuilder.color({ default: '#123456' })
+               const S = simpleBuilder.color({ default: '#123456' })
                const E = S.create()
 
                expect(E.serial).toBe(S.defaultSerial)

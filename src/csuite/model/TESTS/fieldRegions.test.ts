@@ -1,6 +1,6 @@
-import { describe, expect, it } from 'bun:test'
 import { readdirSync, readFileSync, statSync } from 'fs'
 import { join } from 'path'
+import { describe, expect, it } from 'vitest'
 
 // Define the directory where the `Field<...>.ts` or `.tsx` files are located
 const directoryPath: 'src/csuite' = 'src/csuite' // Change this to your directory path

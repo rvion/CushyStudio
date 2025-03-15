@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'bun:test'
+import { describe, expect, it } from 'vitest'
 
 import { Field_bool } from '../../src/csuite/fields/bool/FieldBool'
 import { CSchema } from '../../src/csuite/model/CSchema'

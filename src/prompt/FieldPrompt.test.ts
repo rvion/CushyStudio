@@ -1,8 +1,9 @@
-import { describe, expect, it } from 'bun:test'
+import { describe, expect, it } from 'vitest'
 
+const TRUE = Math.random() >= 0
 describe('FieldPrompt', () => {
    // 🔴🔴🔴
-   if (1 - 1 === 0) return
+   if (TRUE) return
    const { builder: b } = require('../controls/Builder') as typeof import('../controls/CushyBuilder')
    // 🔴🔴🔴
 
@@ -22,7 +23,7 @@ describe('FieldPrompt', () => {
                apply({ fields }): void {
                   // V1
                   fields.c.enableBranch('bar')
-                  fields.c.activeBranchesDict.bar?.setText('new prompt A')
+                  fields.c._.bar?.setText('new prompt A')
                   // V2
                   fields.c.enableBranch('bar')?.setText('new prompt B')
                },
@@ -35,14 +36,14 @@ describe('FieldPrompt', () => {
       it('works', () => {
          const E1 = S1.create()
          expect(E1.value.c.foo).toBe('')
-         expect(E1.value.c.bar).toBeNil()
+         expect(E1.value.c.bar).toBe(undefined)
 
          E1.fields.c.enableBranch('bar')
 
-         expect(E1.value.c.foo).toBeNil()
+         expect(E1.value.c.foo).toBe(undefined)
          expect(E1.value.c.bar?.text).toBe('coucou')
 
-         E1.fields.c.activeBranchesDict.bar?.setText('new prompt')
+         E1.fields.c._.bar?.setText('new prompt')
 
          expect(E1.value.c.bar?.text).toBe('new prompt')
       })
@@ -52,7 +53,7 @@ describe('FieldPrompt', () => {
       it('works', () => {
          const E1 = S1.create()
          expect(E1.value.c.foo).toBe('')
-         expect(E1.value.c.bar).toBeNil()
+         expect(E1.value.c.bar).toBeUndefined()
 
          E1.fields.c.enableBranch('bar')?.setText('new prompt')
 

@@ -1,6 +1,6 @@
-import { describe, expect, it } from 'bun:test'
 import { readFileSync } from 'fs'
 import * as v from 'valibot'
+import { describe, expect, it } from 'vitest'
 
 import { printValibotResultInConsole } from '../../csuite/utils/printValibotResult'
 import { LiteGraphJSON_valibot } from './LiteGraphJSON'

@@ -4,7 +4,7 @@
         "scope": "typescript",
         "prefix": "tst",
         "body": [
-            "import { describe, expect, it } from 'bun:test'",
+            "import { describe, expect, it } from 'vitest'",
             "",
             "describe('$1', () => {",
             "    it('${2:work}', () => {",

@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'bun:test'
+import { describe, expect, it } from 'vitest'
 
 import { sb } from '../simple/SimpleFactory'
 
@@ -12,7 +12,7 @@ describe('field schema string representations', () => {
          x: sb.string(),
          y: sb.string(),
       })
-      expect(schema.codegenValueType()).toBe(`{ x: string; y: string }`)
+      expect(schema.codeForTypescriptValue()).toBe(`{ x: string; y: string }`)
    })
    it('works for list and optional', () => {
       const schema = sb.fields({
@@ -20,15 +20,15 @@ describe('field schema string representations', () => {
          y: sb.int().optional(),
          z: sb.bool().list(),
       })
-      expect(schema.codegenValueType()).toBe(`{ x: string; y: Maybe<number>; z: boolean[] }`)
+      expect(schema.codeForTypescriptValue()).toBe(`{ x: string; y: Maybe<number>; z: boolean[] }`)
    })
    it('works for link and shared', () => {
       const schema = sb.with(sb.int(), (int) =>
          sb.fields({
-            x: int,
+            x: int.shared(),
          }),
       )
-      expect(schema.codegenValueType()).toBe(`{ x: number }`)
+      expect(schema.codeForTypescriptValue()).toBe(`{ x: number }`)
    })
    it('support custom fields', () => {
       const schema = sb.fields({
@@ -36,6 +36,6 @@ describe('field schema string representations', () => {
          y: sb.int().optional(),
          z: sb.bool().list(),
       })
-      expect(schema.codegenValueType()).toBe(`{ x: string; y: Maybe<number>; z: boolean[] }`)
+      expect(schema.codeForTypescriptValue()).toBe(`{ x: string; y: Maybe<number>; z: boolean[] }`)
    })
 })
