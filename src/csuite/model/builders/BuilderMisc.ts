@@ -1,5 +1,3 @@
-import { CSchema } from '../CSchema'
-
 import { Field_color } from '../../fields/color/FieldColor'
 import { Field_markdown, type Field_markdown_config } from '../../fields/markdown/FieldMarkdown'
 import { Field_matrix, type Field_matrix_config } from '../../fields/matrix/FieldMatrix'
@@ -7,6 +5,7 @@ import { Field_number } from '../../fields/number/FieldNumber'
 import { Field_seed, type Field_seed_config } from '../../fields/seed/FieldSeed'
 import { Field_size, type Field_size_config } from '../../fields/size/FieldSize'
 import { Field_string } from '../../fields/string/FieldString'
+import { CSchema } from '../CSchema'
 import { defineSchemaBuilderMixin } from './defineSchemaBuilderMixin'
 
 export type BuilderMiscMixin = {
@@ -14,7 +13,7 @@ export type BuilderMiscMixin = {
    size(config?: Field_size['$config']): Z.Size
    seed(config?: Field_seed['$config']): Z.Seed
    color(config?: Field_color['$config']): Z.Color
-   colorV2(config?: Field_string['$config']): Z.String
+   stringColor(config?: Field_string['$config']): Z.String
    matrix(config: Field_matrix['$config']): Z.Matrix
    markdown(config: Field_markdown['$config'] | string): Z.Markdown
    header(config: Field_markdown['$config'] | string): Z.Markdown
@@ -61,7 +60,7 @@ const BuilderMiscImpl = (): BuilderMiscMixin =>
        * @deprecated
        * @see {@link color} for a better color field based on colorjs.io
        */
-      colorV2(config: Field_string['$config'] = {}): Z.String {
+      stringColor(config: Field_string['$config'] = {}): Z.String {
          config.inputType ??= 'color'
          return CSchema.new(Field_string, config)
       },

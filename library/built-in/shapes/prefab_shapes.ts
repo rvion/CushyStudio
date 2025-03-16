@@ -8,6 +8,7 @@
  */
 
 import type { Field_number } from '../../../src/csuite/fields/number/FieldNumber'
+import type { Field_size } from '../../../src/csuite/fields/size/FieldSize'
 import type Konva from 'konva'
 
 // --------------------------------------------------------------------------------
@@ -46,8 +47,8 @@ export type UI_LatentShapeGenerator = Z.Group<{
 // 1. ------------------------------------------------------------------------------------
 export function ui_LatentShapeGenerator(
    //
-   batchSize?: Z.Shared<Z.Number>,
-   size?: Z.Shared<Z.Size>,
+   batchSize?: Z.Shared<Field_number>,
+   size?: Z.Shared<Field_size>,
 ): UI_LatentShapeGenerator {
    const ui = getBuilder()
    return ui.fields(

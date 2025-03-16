@@ -1,3 +1,4 @@
+import type { Field_number } from '../../../src/csuite/fields/number/FieldNumber'
 import type { Field_size_config } from '../../../src/csuite/fields/size/FieldSize'
 
 import {
@@ -10,11 +11,11 @@ export type UI_LatentV3 = Z.Link<
    Z.Number,
    Z.Choice<{
       emptyLatent: Z.Group<{
-         batchSize: Z.Shared<Z.Number>
+         batchSize: Z.Shared<Field_number>
          size: Z.Size
       }>
       image: Z.Group<{
-         batchSize: Z.Shared<Z.Number>
+         batchSize: Z.Shared<Field_number>
          image: Z.Image
          resize: Z.Maybe<
             Z.Group<{
@@ -36,7 +37,7 @@ export const latentSizeChanel = new cushy.Channel<{ w: number; h: number }>()
 export function ui_latent_v3(p: { size?: Field_size_config } = {}): UI_LatentV3 {
    const form: Z.Builder = getBuilder()
    return form.with(form.int({ label: 'batchSize', step: 1, default: 1, min: 1, max: 8 }), (batchSize_) => {
-      const batchSize = batchSize_.shared()
+      const batchSize: Z.Shared<Field_number> = batchSize_.shared()
       return form.choice(
          {
             emptyLatent: form.fields({

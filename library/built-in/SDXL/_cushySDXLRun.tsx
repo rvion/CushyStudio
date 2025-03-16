@@ -1,7 +1,6 @@
 import type { DraftExecutionContext } from '../../../src/cards/App'
 import type { Runtime } from '../../../src/CUSHY'
-import type { $CushySDXLUI } from './_cushySDXLSchema'
-import type { $CushySDXLUIField } from './cushySDXL'
+import type { CushySDXLSchema } from './_cushySDXLSchema'
 
 import { type Cnet_args, type Cnet_return, run_cnet } from '../_controlNet/prefab_cnet'
 import { eval_extra2 } from '../_extra/extra2'
@@ -24,8 +23,8 @@ import { _evalPrompt } from './_evalPrompt'
 
 export async function _cushySDXLRun(
    //
-   sdk: Runtime<$CushySDXLUIField>,
-   ui: $CushySDXLUIField['$value'],
+   sdk: Runtime<CushySDXLSchema>,
+   ui: CushySDXLSchema['$value'],
    ctx: DraftExecutionContext,
 ): Promise<void> {
    const graph = sdk.nodes

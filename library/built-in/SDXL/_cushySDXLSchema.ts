@@ -13,7 +13,7 @@ import { samplePrompts } from '../samplePrompts'
 import { type $prefabModelSD15andSDXL, prefabModelSD15andSDXL } from '../SD15/_model_SD15_SDXL'
 import { type $PromptList, promptList } from './_prefabs/prefab_PromptList'
 
-type $CushySDXLUI = {
+type CushySDXL_inner = {
    positive: $PromptList
    negative: $PromptList
    model: $prefabModelSD15andSDXL
@@ -27,9 +27,7 @@ type $CushySDXLUI = {
    extra2: $extra2
 }
 
-export const _cushySDXLSchema = 0 as any
-
-export class CushySDXLSchema extends Field_group<$CushySDXLUI> {
+export class CushySDXLSchema extends Field_group<CushySDXL_inner> {
    static schema(b: CushySchemaBuilder): Z.Schema<CushySDXLSchema> {
       return b
          .fields({

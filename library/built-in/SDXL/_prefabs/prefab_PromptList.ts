@@ -16,7 +16,7 @@ export type $PromptList = Z.Group<{
          prompt: Z.Prompt
       }>
    >
-   regionalPrompt: Z.SOptional<UI_regionalPrompting_v1>
+   regionalPrompt: Z.Maybe<UI_regionalPrompting_v1>
    artists: Z.XSelectMany_<string>
 }>
 
@@ -57,7 +57,7 @@ export function promptList(b: Z.Builder, options?: { default?: string }): $Promp
             .list({ min: 1 }),
          regionalPrompt: ui_regionalPrompting_v1(b)
             // .withConfig({ uiui: { Head: false } })
-            .subscribe(latentSizeChanel, (s, self) => {
+            .subscribeToChannel(latentSizeChanel, (s, self) => {
                const area = self.fields.area
                self.fields.area.runInTransaction(() => {
                   area.width = s.w

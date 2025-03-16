@@ -35,6 +35,7 @@ import type { Temporal } from '@js-temporal/polyfill'
 declare global {
    // eslint-disable-next-line @typescript-eslint/no-namespace
    namespace Z {
+      type Tuple<T extends CSchema[]> = any
       type SchemaDict = SchemaDict_
       type Builder = CushySchemaBuilder_
       type Field = Field_
@@ -45,12 +46,16 @@ declare global {
 
       // schema aliases
       type Shared<T extends Field>                    = CSchema<Field_shared<T>>
+      type SharedAlt<S extends CSchema>               = CSchema<Field_shared<S['$field']>>
 
       type Group<T extends SchemaDict>                = CSchema<Field_group<T> & MAGICFIELDS<T>>
       type Record<T extends SchemaDict>               = CSchema<Field_group<T> & MAGICFIELDS<T>>
 
       type Empty                                      = CSchema<Field_group<NO_PROPS>>
+
       type Maybe<T extends CSchema>                   = CSchema<Field_optional<T>>
+      type Optional<T extends CSchema>                = CSchema<Field_optional<T>>
+
       type Bool                                       = CSchema<Field_bool>
       type Link<A extends CSchema, B extends CSchema> = CSchema<Field_link<A, B>>
       type String                                     = CSchema<Field_string>

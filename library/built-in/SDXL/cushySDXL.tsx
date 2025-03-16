@@ -1,6 +1,6 @@
 import { _cushySDXLLayout } from './_cushySDXLLayout'
 import { _cushySDXLRun } from './_cushySDXLRun'
-import { _cushySDXLSchema, CushySDXLSchema } from './_cushySDXLSchema'
+import { CushySDXLSchema } from './_cushySDXLSchema'
 
 app<CushySDXLSchema>({
    metadata: {

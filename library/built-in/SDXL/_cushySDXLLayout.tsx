@@ -1,11 +1,11 @@
 import type { RenderRule } from '../../../src/csuite-cushy/presenters/RenderTypes'
 import type { Field_list } from '../../../src/csuite/fields/list/FieldList'
 import type { IconName } from '../../../src/csuite/icons/icons'
-import type { $CushySDXLUI } from './_cushySDXLSchema'
+import type { CushySDXLSchema } from './_cushySDXLSchema'
 
 import { observer } from 'mobx-react-lite'
 
-export function _cushySDXLLayout(): Maybe<RenderRule<$CushySDXLUI['$field']>> {
+export function _cushySDXLLayout(): Maybe<RenderRule<CushySDXLSchema>> {
    return (ui) => {
       const xxx = ui.field.Latent.bField
       // ui.apply({
