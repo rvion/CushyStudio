@@ -14,7 +14,7 @@ type Config<A extends CSchema, B extends CSchema> = PartialOmit<
 export type BuilderSharedMixin = {
    with<const SA extends CSchema, SB extends CSchema>(
       injected: SA,
-      children: (shared: SA['$field']) => SB,
+      children: (field: SA['$field']) => SB,
       config?: Config<SA, SB>,
    ): Z.Link<SA, SB>
    linked<T extends Field>(field: T): Z.Shared<T>
