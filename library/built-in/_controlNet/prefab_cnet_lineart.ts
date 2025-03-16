@@ -18,18 +18,18 @@ export type UI_subform_Lineart = Z.Group<{
 }>
 
 export function ui_subform_Lineart(): UI_subform_Lineart {
-   const ui: Z.Builder = getCurrentForm()
-   return ui
+   const b: Z.Builder = getCurrentForm()
+   return b
       .group({
          label: 'Lineart',
          items: {
-            ...cnet_ui_common(ui),
+            ...cnet_ui_common(b),
             preprocessor: ui_subform_Lineart_Preprocessor(),
-            models: ui.group({
+            models: b.group({
                label: 'Select or Download Models',
                // startCollapsed: true,
                items: {
-                  cnet_model_name: ui.enum['ControlNetLoader.control_net_name']({
+                  cnet_model_name: b.enum['ControlNetLoader.control_net_name']({
                      label: 'Model',
                      filter: (name) => name.toString().includes('lineart'),
                      // @ts-ignore
