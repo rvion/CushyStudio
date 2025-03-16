@@ -1,38 +1,52 @@
-import type { Menu } from '../menu/Menu'
-import type { Field } from '../model/Field'
+import type { RevealPlacement } from '../reveal/RevealPlacement'
+import type { CSSProperties } from 'react'
 
 import { observer } from 'mobx-react-lite'
 
-import { Button } from '../../csuite/button/Button'
-import { RevealUI } from '../../csuite/reveal/RevealUI'
-import { useProvenance } from '../provenance/Provenance'
-import { fieldActionMenu } from './fieldActionMenu'
+import { Frame } from '../../csuite/frame/Frame'
 
-export type WidgetMenuProps = {
-   className?: string | null
-   field: Field
+export type WidgetLabelContainerProps = {
+   //
+   justify: boolean
+   className?: string
+   children: React.ReactNode
+   tooltip?: string
+   tooltipPlacement?: RevealPlacement
 }
 
-export const WidgetMenuUI = observer(function WidgetMenu(p: WidgetMenuProps) {
-   const field = p.field
-   const provenance = useProvenance()
-   const menu: Menu = fieldActionMenu.useBind({ field, provenance })
+export const WidgetLabelContainerUI = observer(function WidgetLabelContainerUI_(
+   p: WidgetLabelContainerProps,
+) {
+   // const theme = cushy.preferences.theme.value
    return (
-      <RevealUI //
-         className={p.className ?? undefined}
-         content={() => <menu.UI />}
+      <Frame
+         // NOTE(bird_d): tooltips should be on the interact-able component, not the label
+         // tooltip={p.tooltip}
+         // tooltipPlacement={p.tooltipPlacement ?? 'topStart'}
+         className={p.className}
+         // hover={1}
+         expand
+         tw={[
+            'UI-WidgetLabelContainer', //
+            'COLLAPSE-PASSTHROUGH',
+            'flex items-center self-stretch',
+            'flex-none shrink-0',
+            // NOTE(bird_d): Does not need to have a background, breaks rounded corners on parent components
+            '!bg-transparent',
+         ]}
+         style={p.justify ? justifiedStyle : undefined}
+         // TODO(bird_d/ui/theme/text)
+         // text={theme.textLabel}
       >
-         <Button //
-            tooltip='Open field menu'
-            tabIndex={-1}
-            borderless
-            subtle
-            icon={IKONS.mdiDotsVertical}
-            look='ghost'
-            size='widget'
-            // square
-            tw='!px-0'
-         />
-      </RevealUI>
+         {p.children}
+      </Frame>
    )
 })
+
+const justifiedStyle: CSSProperties = {
+   minWidth: '8rem', // 🔴 move to theme options
+   // maxWidth: '20rem', // 🔴 move to theme options
+   maxWidth: '15rem', // 🔴 move to theme options
+   width: '35%', // 🔴 move to theme options
+   justifyContent: 'flex-start',
+}
