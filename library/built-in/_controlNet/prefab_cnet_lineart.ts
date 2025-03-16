@@ -18,7 +18,7 @@ export type UI_subform_Lineart = Z.Group<{
 }>
 
 export function ui_subform_Lineart(): UI_subform_Lineart {
-   const b: Z.Builder = getCurrentForm()
+   const b: Z.Builder = getBuilder()
    return b
       .group({
          label: 'Lineart',
@@ -54,7 +54,7 @@ export type UI_subform_Lineart_Preprocessor = Z.Choice<{
    Manga: UI_subform_Lineart_Manga
 }>
 export function ui_subform_Lineart_Preprocessor(): UI_subform_Lineart_Preprocessor {
-   const form: Z.Builder = getCurrentForm()
+   const form: Z.Builder = getBuilder()
    return form.choice(
       {
          None: form.empty(),
@@ -73,7 +73,7 @@ export type UI_subform_Lineart_realistic = Z.Group<{
 }>
 
 export function ui_subform_Lineart_realistic(): UI_subform_Lineart_realistic {
-   const form: Z.Builder = getCurrentForm()
+   const form: Z.Builder = getBuilder()
    return form.fields({
       ...cnet_preprocessor_ui_common(form),
       coarse: form.bool({ default: false }),
@@ -85,7 +85,7 @@ export type UI_subform_Lineart_Anime = Z.Group<{
    saveProcessedImage: Z.Bool
 }>
 export function ui_subform_Lineart_Anime(): UI_subform_Lineart_Anime {
-   const form: Z.Builder = getCurrentForm()
+   const form: Z.Builder = getBuilder()
    return form.group({
       // label: 'Settings',
       // startCollapsed: true,
@@ -100,7 +100,7 @@ export type UI_subform_Lineart_Manga = Z.Group<{
    saveProcessedImage: Z.Bool
 }>
 export function ui_subform_Lineart_Manga(): UI_subform_Lineart_Manga {
-   const form: Z.Builder = getCurrentForm()
+   const form: Z.Builder = getBuilder()
    return form.group({
       // label: 'Settings',
       // startCollapsed: true,

@@ -15,7 +15,7 @@ export type UI_subform_SoftEdge = Z.Group<{
    }>
 }>
 export function ui_subform_SoftEdge(): UI_subform_SoftEdge {
-   const form: Z.Builder = getCurrentForm()
+   const form: Z.Builder = getBuilder()
    return form
       .group({
          label: 'SoftEdge',
@@ -42,7 +42,7 @@ export type UI_subform_SoftEdge_Preprocessor = Z.Choice<{
    Pidinet: UI_subform_SoftEdge_Preprocessor_Options
 }>
 export function ui_subform_SoftEdge_Preprocessor(): UI_subform_SoftEdge_Preprocessor {
-   const form: Z.Builder = getCurrentForm()
+   const form: Z.Builder = getBuilder()
    return form.choice(
       {
          None: form.empty(),

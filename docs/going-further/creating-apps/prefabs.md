@@ -54,7 +54,7 @@ export type UI_Mask = X.XChoice<{
 // and add explit return type to your function
 //                         VVVVV
 export function ui_mask(): UI_Mask {
-    const form: Builder = getCurrentForm()
+    const form: Builder = getBuilder()
     return form.choice({
         appearance: 'tab',
         icon: IKONS.mdiDominoMask,

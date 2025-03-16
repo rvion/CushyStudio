@@ -18,7 +18,7 @@ export type UI_subform_Tile = Z.Group<{
 }>
 
 export function ui_subform_Tile(): UI_subform_Tile {
-   const form = getCurrentForm()
+   const form = getBuilder()
    return form
       .group({
          label: 'Tile',
@@ -56,7 +56,7 @@ export type UI_subform_Tile_Preprocessor = Z.Choice<{
    }>
 }>
 export function ui_subform_Tile_Preprocessor(): UI_subform_Tile_Preprocessor {
-   const form: Z.Builder = getCurrentForm()
+   const form: Z.Builder = getBuilder()
    return form.choice(
       {
          None: form.empty(),

@@ -24,7 +24,7 @@ export type $extra1 = Z.Choices<{
 }>
 
 export function extra1(): $extra1 {
-   const b = getCurrentForm()
+   const b = getBuilder()
    return b.choices(
       {
          show3d: ui_3dDisplacement(),

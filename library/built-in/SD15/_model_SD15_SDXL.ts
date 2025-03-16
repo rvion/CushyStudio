@@ -15,7 +15,7 @@ export const prefabModelSD15andSDXL = (
       extra?: $schemaModelExtras['$value']
    } = {},
 ): $prefabModelSD15andSDXL => {
-   const b = getCurrentForm()
+   const b = getBuilder()
    // console.log('A', cushy)
    // console.log('B', cushy?.comfyAddons)
    // console.log('C', cushy?.comfyAddons?.getKnownCheckpoints)

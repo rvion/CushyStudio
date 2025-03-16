@@ -24,7 +24,7 @@ export type UI_HighResFix = Z.Group<{
 }>
 
 export function ui_highresfix(): UI_HighResFix {
-   const form = getCurrentForm()
+   const form = getBuilder()
    return form.group({
       label: 'High Res Fix',
       icon: IKONS.mdiArrowExpandAll,

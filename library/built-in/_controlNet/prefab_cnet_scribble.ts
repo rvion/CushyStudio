@@ -16,7 +16,7 @@ export type UI_subform_Scribble = Z.Group<{
    }>
 }>
 export function ui_subform_Scribble(): UI_subform_Scribble {
-   const form: Z.Builder = getCurrentForm()
+   const form: Z.Builder = getBuilder()
    return form
       .group({
          label: 'Scribble',
@@ -46,7 +46,7 @@ export type UI_subform_Scribble_Preprocessor = Z.Choice<{
    XDOG: UI_subform_Scribble_XDoG_Lines
 }>
 export function ui_subform_Scribble_Preprocessor(): UI_subform_Scribble_Preprocessor {
-   const form = getCurrentForm()
+   const form = getBuilder()
    return form.choice(
       {
          None: form.empty(),
@@ -68,7 +68,7 @@ export type UI_subform_Scribble_Lines = Z.Group<{
    saveProcessedImage: Z.Bool
 }>
 export const ui_subform_Scribble_Lines = (): UI_subform_Scribble_Lines => {
-   const form = getCurrentForm()
+   const form = getBuilder()
    return form.group({
       label: 'Scribble Lines',
       // startCollapsed: true,
@@ -82,7 +82,7 @@ export type UI_subform_Fake_Scribble_Lines = Z.Group<{
    saveProcessedImage: Z.Bool
 }>
 export function ui_subform_Fake_Scribble_Lines(): UI_subform_Fake_Scribble_Lines {
-   const form = getCurrentForm()
+   const form = getBuilder()
    return form.group({
       label: 'Fake Scribble',
       items: {
@@ -98,7 +98,7 @@ export type UI_subform_Scribble_XDoG_Lines = Z.Group<{
    saveProcessedImage: Z.Bool
 }>
 export function ui_subform_Scribble_XDoG_Lines(): UI_subform_Scribble_XDoG_Lines {
-   const form = getCurrentForm()
+   const form = getBuilder()
    return form.group({
       label: 'Scribble_XDoG_Lines',
       // startCollapsed: true,

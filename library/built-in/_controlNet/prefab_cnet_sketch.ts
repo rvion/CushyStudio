@@ -15,7 +15,7 @@ export type UI_subform_Sketch = Z.Group<{
    cnet_model_name: Z.Enum<'ControlNetLoader.control_net_name'>
 }>
 export function ui_subform_Sketch(): UI_subform_Sketch {
-   const form = getCurrentForm()
+   const form = getBuilder()
    return form
       .group({
          label: 'Sketch',

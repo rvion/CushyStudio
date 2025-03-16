@@ -10,7 +10,7 @@ import { runInAction } from 'mobx'
 import { type CustomView, type CustomViewRef } from '../cards/App'
 import { CUSHY_IMPORT } from '../compiler/transpiler'
 import { extractErrorMessage } from '../csuite/formatters/extractErrorMessage'
-import { getCurrentForm_IMPL } from '../csuite/model/runWithGlobalForm'
+import { getBuilder_IMPL } from '../csuite/model/runWithGlobalForm'
 import { SQLITE_false, SQLITE_true } from '../csuite/types/SQLITE_boolean'
 import { BaseInst } from '../db/BaseInst'
 import { LiveTable } from '../db/LiveTable'
@@ -233,7 +233,7 @@ export class CushyScriptL extends BaseInst<TABLES['cushy_script']> {
             'app',
             'view',
             'require',
-            'getCurrentForm',
+            'getBuilder',
             'getCurrentRun',
             'cushy',
             //
@@ -247,7 +247,7 @@ export class CushyScriptL extends BaseInst<TABLES['cushy_script']> {
             registerViewFn,
             //
             CUSHY_IMPORT,
-            getCurrentForm_IMPL,
+            getBuilder_IMPL,
             getCurrentRun_IMPL,
             //
             cushy,

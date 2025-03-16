@@ -14,7 +14,7 @@ export type $prefabModelSD3 = Z.Group<{
 }>
 
 export const prefabModelSD3 = (): $prefabModelSD3 => {
-   const b = getCurrentForm()
+   const b = getBuilder()
    // const ckpts = cushy.managerRepository.getKnownCheckpoints()
    return b
       .fields({

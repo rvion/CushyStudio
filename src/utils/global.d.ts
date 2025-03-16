@@ -24,7 +24,7 @@ type AllIkons = import('../csuite/icons/icons').AllIkons
 declare global {
    const app: import('../cards/App').GlobalFunctionToDefineAnApp
    const view: import('../cards/App').GlobalFunctionToDefineAView
-   const getCurrentForm: import('../cards/App').GlobalGetCurrentForm
+   const getBuilder: import('../cards/App').GlobalGetBuilderFn
    const getCurrentRun: import('../cards/App').GlobalGetCurrentRun
 
    /*

@@ -49,7 +49,7 @@ export function ui_LatentShapeGenerator(
    batchSize?: Z.Shared<Z.Number>,
    size?: Z.Shared<Z.Size>,
 ): UI_LatentShapeGenerator {
-   const ui = getCurrentForm()
+   const ui = getBuilder()
    return ui.fields(
       {
          batchSize: batchSize ?? ui.int({ step: 1, default: 1, min: 1, max: 15 }),

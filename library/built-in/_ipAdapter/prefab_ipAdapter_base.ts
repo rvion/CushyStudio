@@ -23,7 +23,7 @@ export type UI_subform_IPAdapter = Z.Group<
 >
 
 export function ui_subform_IPAdapter(): UI_subform_IPAdapter {
-   const form = getCurrentForm()
+   const form = getBuilder()
    return form
       .group({
          label: 'IPAdapter',

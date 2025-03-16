@@ -7,7 +7,7 @@ export type UI_customSave = Z.Group<{
 }>
 
 export function ui_customSave(): UI_customSave {
-   const form = getCurrentForm()
+   const form = getBuilder()
    return form.fields(
       {
          subfolder: form.string({

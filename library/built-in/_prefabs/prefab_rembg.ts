@@ -12,7 +12,7 @@ export type UI_rembg_v1 = Z.Choices<{
 }>
 
 export function ui_rembg_v1(): UI_rembg_v1 {
-   const form = getCurrentForm()
+   const form = getBuilder()
    return form
       .choices(
          {

@@ -14,7 +14,7 @@ export type UI_3dDisplacement = Z.Group<{
 }>
 
 export function ui_3dDisplacement(): UI_3dDisplacement {
-   const form = getCurrentForm()
+   const form = getBuilder()
    return form
       .group({
          icon: 'mdiRotate3d',

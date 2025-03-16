@@ -14,7 +14,7 @@ export type $prefabModelFlux = Z.Group<{
 }>
 
 export const prefabModelFlux = (): $prefabModelFlux => {
-   const b = getCurrentForm()
+   const b = getBuilder()
    // const ckpts = cushy.managerRepository.getKnownCheckpoints()
    return b
       .fields({

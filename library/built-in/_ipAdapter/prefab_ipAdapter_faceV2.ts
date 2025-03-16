@@ -31,7 +31,7 @@ export type UI_IPAdapterFaceIDV2 = Z.Group<{
 }>
 
 export function ui_IPAdapterFaceIDV2(): UI_IPAdapterFaceIDV2 {
-   const form = getCurrentForm()
+   const form = getBuilder()
    return (
       form
          .fields(

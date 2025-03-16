@@ -30,7 +30,7 @@ export type UI_ipadapter_standalone = Z.Group<{
 }>
 
 export const ui_ipadapter_standalone = (): UI_ipadapter_standalone => {
-   const form = getCurrentForm()
+   const form = getBuilder()
    return form
       .group({
          label: 'IPAdapter',

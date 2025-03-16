@@ -32,7 +32,7 @@ export const schemaModelExtras = (
       // default?: $schemaModelExtras['$value']
    } = {},
 ): $schemaModelExtras => {
-   const b = getCurrentForm()
+   const b = getBuilder()
    return b
       .choices(
          {

@@ -15,7 +15,7 @@ import type { CSSProperties, ReactNode } from 'react'
 ) => CustomViewRef<P>
 /* 🛋️ */ export type GlobalGetCurrentRun = () => Runtime
 
-/* shared */ export type GlobalGetCurrentForm = () => Z.Builder
+/* shared */ export type GlobalGetBuilderFn = () => Z.Builder
 
 /* ⏰ */ export type ActionTagMethod = (arg0: string) => string
 /* ⏰ */ export type ActionTagMethodList = Array<{ key: string; method: ActionTagMethod }>

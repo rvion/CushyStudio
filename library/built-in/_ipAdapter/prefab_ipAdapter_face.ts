@@ -50,7 +50,7 @@ export type UI_IPAdapterFaceID = Z.Group<{
 }>
 
 export function ui_IPAdapterFaceID(): UI_IPAdapterFaceID {
-   const b = getCurrentForm()
+   const b = getBuilder()
    return b
       .group({
          label: 'FaceID IPAdapter',

@@ -32,7 +32,7 @@ export type UI_Refiners = Z.Group<{
    }>
 }>
 export function ui_refiners(): UI_Refiners {
-   const form = getCurrentForm()
+   const form = getBuilder()
    return form.fields(
       {
          refinerType: form

@@ -18,7 +18,7 @@ export type UI_subform_Canny = Z.Group<{
 }>
 
 export function ui_subform_Canny(): UI_subform_Canny {
-   const ui: Z.Builder = getCurrentForm()
+   const ui: Z.Builder = getBuilder()
    return ui
       .group({
          label: 'Canny',

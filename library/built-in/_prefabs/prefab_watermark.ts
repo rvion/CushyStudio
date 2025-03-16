@@ -12,7 +12,7 @@ export type UI_watermark_v1 = Z.Group<{
    tool: Z.XSelectOne_<'canvas' | 'konva'>
 }>
 export function ui_watermark_v1() {
-   const ui = getCurrentForm()
+   const ui = getBuilder()
    return ui.fields(
       {
          pos: ui.row({ x: ui.int({ default: 100 }), y: ui.int({ default: 100 }) }),

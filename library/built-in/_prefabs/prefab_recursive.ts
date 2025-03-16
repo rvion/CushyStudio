@@ -10,7 +10,7 @@ export type UI_recursive = Z.Maybe<
 >
 
 export function ui_recursive(): UI_recursive {
-   const form = getCurrentForm()
+   const form = getBuilder()
    return form
       .fields({
          cfg: form.float({ step: 1, label: 'CFG', min: 0, max: 100, softMax: 10, default: 8 }),

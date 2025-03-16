@@ -16,7 +16,7 @@ export type UI_subform_OpenPose = Z.Group<{
 }>
 
 export function ui_subform_OpenPose(): UI_subform_OpenPose {
-   const form: Z.Builder = getCurrentForm()
+   const form: Z.Builder = getBuilder()
    return form
       .fields(
          {
@@ -63,7 +63,7 @@ type UI_subform_OpenPose_Preprocessor = Z.Choice<{
 }>
 
 function ui_subform_OpenPose_Preprocessor(): UI_subform_OpenPose_Preprocessor {
-   const form: Z.Builder = getCurrentForm()
+   const form: Z.Builder = getBuilder()
    return form.choice(
       {
          None: form.empty(),

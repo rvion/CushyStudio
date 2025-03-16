@@ -49,7 +49,7 @@ export type UI_cnet = Z.Link<
 >
 
 export function ui_cnet(): UI_cnet {
-   const form: Z.Builder = getCurrentForm()
+   const form: Z.Builder = getBuilder()
 
    const applyDuringUpscale2 = form.bool({
       tooltip: 'Use the controlnet conditioning for the upscale pass if enabled',

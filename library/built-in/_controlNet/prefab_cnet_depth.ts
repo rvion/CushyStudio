@@ -16,7 +16,7 @@ export type UI_subform_Depth = Z.Group<{
 }>
 
 export function ui_subform_Depth(): UI_subform_Depth {
-   const ui: Z.Builder = getCurrentForm()
+   const ui: Z.Builder = getBuilder()
    return ui
       .group({
          label: 'Depth',
@@ -50,7 +50,7 @@ export type UI_subform_Depth_Preprocessor = Z.Choice<{
    Zoe: UI_subform_Depth_Zoe
 }>
 export function ui_subform_Depth_Preprocessor(): UI_subform_Depth_Preprocessor {
-   const ui: Z.Builder = getCurrentForm()
+   const ui: Z.Builder = getBuilder()
    return ui.choice(
       {
          None: ui.empty(),
@@ -72,7 +72,7 @@ export type UI_subform_Depth_Midas = Z.Group<{
 }>
 
 export function ui_subform_Depth_Midas(): UI_subform_Depth_Midas {
-   const form: Z.Builder = getCurrentForm()
+   const form: Z.Builder = getBuilder()
    return form.group({
       label: 'Midas',
       // startCollapsed: true,
@@ -95,7 +95,7 @@ export type UI_subform_Depth_LeReS = Z.Group<{
    saveProcessedImage: Z.Bool
 }>
 export function ui_subform_Depth_LeReS(): UI_subform_Depth_LeReS {
-   const form: Z.Builder = getCurrentForm()
+   const form: Z.Builder = getBuilder()
    return form.group({
       label: 'LeReS',
       // startCollapsed: true,
@@ -113,7 +113,7 @@ export type UI_subform_Depth_Zoe = Z.Group<{
    saveProcessedImage: Z.Bool
 }>
 export function ui_subform_Depth_Zoe(): UI_subform_Depth_Zoe {
-   const form: Z.Builder = getCurrentForm()
+   const form: Z.Builder = getBuilder()
    return form.group({
       label: 'Zoe',
       // startCollapsed: true,

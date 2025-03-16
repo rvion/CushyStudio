@@ -75,7 +75,7 @@ export function ui_sampler_advanced(p?: {
    startCollapsed?: boolean
    sharedSampler?: boolean
 }): UI_Sampler_Advanced {
-   const form: Z.Builder = getCurrentForm()
+   const form: Z.Builder = getBuilder()
    return form.fields(
       {
          sampler_name: p?.sharedSampler

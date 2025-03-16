@@ -9,7 +9,7 @@ export type UI_regionalPrompting_v1 = Z.Board<
 >
 
 export function ui_regionalPrompting_v1(b: CushySchemaBuilder): UI_regionalPrompting_v1 {
-   b = b ?? getCurrentForm()
+   b = b ?? getBuilder()
    return b.regional({
       element: b.group({
          // uiui: (b) => b.apply({ Header: '🟢222', Body: '🟢' }),

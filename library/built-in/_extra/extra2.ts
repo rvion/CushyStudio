@@ -19,7 +19,7 @@ export type $extra2 = Z.Choices<{
 }>
 
 export function extra2(): $extra2 {
-   const b = getCurrentForm()
+   const b = getBuilder()
    return b.choices(
       {
          gaussianSplat: b.empty({ icon: IKONS.mdiDotsHexagon }),

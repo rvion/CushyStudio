@@ -22,7 +22,7 @@ type PromptLisT$ = Z.Group<{
 }>
 
 export const ui_promptList = (): PromptLisT$ => {
-   const form = getCurrentForm()
+   const form = getBuilder()
    return form.fields(
       {
          joinType: form.choice(

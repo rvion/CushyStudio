@@ -11,7 +11,7 @@ export type UI_Mask = Z.Group<{
 }>
 
 export function ui_mask(): UI_Mask {
-   const form: Z.Builder = getCurrentForm()
+   const form: Z.Builder = getBuilder()
    return form.group({
       icon: IKONS.mdiDominoMask,
       label: 'Mask',

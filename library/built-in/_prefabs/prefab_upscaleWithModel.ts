@@ -8,7 +8,7 @@ export type UI_upscaleWithModel = Z.Group<{
 }>
 
 export function ui_upscaleWithModel(): UI_upscaleWithModel {
-   const ui: Z.Builder = getCurrentForm()
+   const ui: Z.Builder = getBuilder()
    return ui
       .group({
          label: 'Upscale via Model',

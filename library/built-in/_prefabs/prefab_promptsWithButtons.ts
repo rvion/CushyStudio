@@ -26,7 +26,7 @@ export type UI_advancedPrompt = Z.List<
 >
 
 export function ui_advancedPrompt(): UI_advancedPrompt {
-   const form = getCurrentForm()
+   const form = getBuilder()
    return form.list({
       min: 1,
       layout: 'H',

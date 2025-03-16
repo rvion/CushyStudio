@@ -107,7 +107,7 @@ export type UI_IPAdapterV2 = Z.Group<{
 }>
 
 export function ui_IPAdapterV2(): UI_IPAdapterV2 {
-   const form = getCurrentForm()
+   const form = getBuilder()
    return form
       .fields(
          {

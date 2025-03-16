@@ -17,7 +17,7 @@ export type UI_subform_Normal = Z.Group<{
    }>
 }>
 export function ui_subform_Normal(): UI_subform_Normal {
-   const form = getCurrentForm()
+   const form = getBuilder()
    return form
       .group({
          label: 'Normal',
@@ -52,7 +52,7 @@ type UI_subform_Normal_Preprocessor = Z.Choice<{
 }>
 
 function ui_subform_Normal_Preprocessor(): UI_subform_Normal_Preprocessor {
-   const form: Z.Builder = getCurrentForm()
+   const form: Z.Builder = getBuilder()
    return form.choice(
       {
          None: form.empty(),
@@ -73,7 +73,7 @@ type UI_subform_Normal_Midas = Z.Group<{
 }>
 
 function ui_subform_Normal_Midas(): UI_subform_Normal_Midas {
-   const form = getCurrentForm()
+   const form = getBuilder()
    return form.group({
       label: 'Settings',
       startCollapsed: true,
@@ -91,7 +91,7 @@ type UI_subform_Normal_bae = Z.Group<{
 }>
 
 function ui_subform_Normal_bae(): UI_subform_Normal_bae {
-   const form = getCurrentForm()
+   const form = getBuilder()
    return form.group({
       label: 'Settings',
       startCollapsed: true,
