@@ -22,8 +22,6 @@ import {
    isSchemaDate,
    isSchemaNumber,
    isSchemaOptional,
-   isSchemaRelationship,
-   isSchemaRelationships,
    isSchemaSelectMany,
    isSchemaSelectOne,
    isSchemaString,
@@ -529,8 +527,8 @@ export class CSchema<out FIELD extends Field = Field> {
       if (isSchemaDate(node)) path = `${path}.value`
       if (isSchemaSelectMany(node)) path = `${path}.values`
       if (isSchemaSelectOne(node)) path = `${path}.val`
-      if (isSchemaRelationship(node)) path = `${path}.value`
-      if (isSchemaRelationships(node)) path = `${path}.value`
+      // 🚂 if (isSchemaRelationship(node)) path = `${path}.value`
+      // 🚂 if (isSchemaRelationships(node)) path = `${path}.value`
 
       return path
    }
@@ -548,8 +546,8 @@ export class CSchema<out FIELD extends Field = Field> {
       if (isSchemaDate(node)) return `${uncasted}::timestamp`
       if (isSchemaSelectMany(node)) return `${uncasted} #>> '{{}}'`
       if (isSchemaSelectOne(node)) return `${uncasted} #>> '{{}}'`
-      if (isSchemaRelationship(node)) return `(${uncasted} #>> '{{}}')::uuid`
-      if (isSchemaRelationships(node)) return `${uncasted}::text[]::uuid[]`
+      // 🚂 if (isSchemaRelationship(node)) return `(${uncasted} #>> '{{}}')::uuid`
+      // 🚂 if (isSchemaRelationships(node)) return `${uncasted}::text[]::uuid[]`
 
       console.log('🦫 unsupported castor type', node.type)
       return `${uncasted}::🦫`
