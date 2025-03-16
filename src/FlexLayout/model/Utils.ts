@@ -2,7 +2,7 @@ import { TabSetNode } from "./TabSetNode";
 import { BorderNode } from "./BorderNode";
 import { RowNode } from "./RowNode";
 import { TabNode } from "./TabNode";
-import { NOTNULL } from "../../examples/demo/NOTNULL";
+import { NOTNULL } from "../NOTNULL";
 
 /** @internal */
 export function adjustSelectedIndexAfterDock(node: TabNode) {

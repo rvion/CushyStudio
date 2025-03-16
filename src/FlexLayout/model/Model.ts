@@ -16,7 +16,7 @@ import { TabNode } from "./TabNode";
 import { TabSetNode } from "./TabSetNode";
 import { randomUUID } from "./Utils";
 import { LayoutWindow } from "./LayoutWindow";
-import { NOTNULL } from "../../examples/demo/NOTNULL";
+import { NOTNULL } from "../NOTNULL";
 
 /** @internal */
 export const DefaultMin = 0;

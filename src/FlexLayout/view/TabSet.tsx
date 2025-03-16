@@ -12,7 +12,7 @@ import { CLASSES } from "../Types";
 import { isAuxMouseEvent } from "./Utils";
 import { createPortal } from "react-dom";
 import { Rect } from "../Rect";
-import { NOTNULL } from "../../examples/demo/NOTNULL";
+import { NOTNULL } from "../NOTNULL";
 
 /** @internal */
 export interface ITabSetProps {

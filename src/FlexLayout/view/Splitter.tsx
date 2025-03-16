@@ -7,7 +7,7 @@ import { CLASSES } from "../Types";
 import { LayoutInternal } from "./Layout";
 import { enablePointerOnIFrames, isDesktop, startDrag } from "./Utils";
 import { Rect } from "../Rect";
-import { NOTNULL } from "../../examples/demo/NOTNULL";
+import { NOTNULL } from "../NOTNULL";
 
 /** @internal */
 export interface ISplitterProps {

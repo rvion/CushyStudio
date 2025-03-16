@@ -1,4 +1,4 @@
-import { NOTNULL } from "../examples/demo/NOTNULL";
+import { NOTNULL } from "./NOTNULL";
 import { Attribute } from "./Attribute";
 
 /** @internal */

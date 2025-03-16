@@ -14,7 +14,7 @@ import { Node } from "./Node";
 import { TabSetNode } from "./TabSetNode";
 import { canDockToWindow } from "../view/Utils";
 import { LayoutWindow } from "./LayoutWindow";
-import { NOTNULL } from "../../examples/demo/NOTNULL";
+import { NOTNULL } from "../NOTNULL";
 
 export class RowNode extends Node implements IDropTarget {
     static readonly TYPE = "row";
