@@ -36,7 +36,8 @@ export class RenderXXX<FIELD extends Field> {
    private forOthers: RuleEntry[] = []
 
    get final(): CompiledFieldConf<FIELD> {
-      if (this.field.config.ui == null)
+      const uiuiRule = this.field.config.ui ?? this.field.config.uiui
+      if (uiuiRule == null)
          return {
             rulesForSubtree: emptyArray,
             selfSlotOverrides: emptyArray,
@@ -44,7 +45,7 @@ export class RenderXXX<FIELD extends Field> {
       //  reset stack and rules
       this.forSelf.splice(0, this.forSelf.length)
       this.forOthers.splice(0, this.forOthers.length)
-      this.evalRule(this.field.config.ui, RENDER_PRIORITY_UIUI)
+      this.evalRule(uiuiRule, RENDER_PRIORITY_UIUI)
       return { rulesForSubtree: this.forOthers, selfSlotOverrides: this.forSelf }
    }
 

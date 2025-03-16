@@ -12,6 +12,7 @@ import type { Problem_Ext } from './Validation'
 
 export type FieldConfigFor<FIELD extends Field> = FieldConfig_CommonProperties<FIELD> & FIELD['$ownConfig']
 export interface FieldConfig_CommonProperties<out FIELD extends Field> {
+   ui?: CATALOG.variants[FIELD['$type']]
    uiui?: CATALOG.variants[FIELD['$type']]
    /**
     * @since 2024-05-20
