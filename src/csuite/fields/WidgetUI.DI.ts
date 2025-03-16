@@ -6,10 +6,10 @@
 | build to include those.
 */
 
-import type { Field_address } from '../../../../csuite-loco/fields/address/FieldAddress'
-import type { Field_file } from '../../../../csuite-loco/fields/file/FieldFile'
-import type { Field_relationship } from '../../../../csuite-loco/fields/relationship/FieldRelationship'
-import type { Field_relationships } from '../../../../csuite-loco/fields/relationship/FieldRelationships'
+// 🚂 import type { Field_address } from '../../../../csuite-loco/fields/address/FieldAddress'
+// 🚂 import type { Field_file } from '../../../../csuite-loco/fields/file/FieldFile'
+// 🚂 import type { Field_relationship } from '../../../../csuite-loco/fields/relationship/FieldRelationship'
+// 🚂 import type { Field_relationships } from '../../../../csuite-loco/fields/relationship/FieldRelationships'
 import type { CSchema } from '../model/CSchema'
 import type { Field } from '../model/Field'
 import type { FieldSerial_CommonProperties } from '../model/FieldSerial'
@@ -20,6 +20,7 @@ import type { Field_date } from './date/FieldDate'
 import type { Field_group } from './group/FieldGroup'
 import type { Field_link } from './link/FieldLink'
 import type { Field_list } from './list/FieldList'
+import type { Field_markdown } from './markdown/FieldMarkdown'
 import type { Field_number } from './number/FieldNumber'
 import type { Field_optional } from './optional/FieldOptional'
 import type { Field_selectMany } from './selectMany/FieldSelectMany'
@@ -29,7 +30,6 @@ import type { Field_shared } from './shared/FieldShared'
 import type { Field_string } from './string/FieldString'
 
 import { bang } from '../utils/bang'
-import type { Field_markdown } from './markdown/FieldMarkdown'
 
 /**
  * DI (Dependency Injection)
@@ -71,15 +71,15 @@ export const isSchemaString = _checkIfIsSchemaOf<Field_string>('str')
 export const isSchemaNumber = _checkIfIsSchemaOf<Field_number>('number')
 export const isSchemaBool = _checkIfIsSchemaOf<Field_bool>('bool')
 export const isSchemaList = _checkIfIsSchemaOf<Field_list<any>>('list')
-export const isSchemaFile = _checkIfIsSchemaOf<Field_file>('file')
 export const isSchemaSelectOne = _checkIfIsSchemaOf<Field_selectOne<any, any>>('selectOne')
 export const isSchemaSelectMany = _checkIfIsSchemaOf<Field_selectMany<any, any>>('selectMany')
 export const isSchemaChoices = _checkIfIsSchemaOf<Field_choices<any>>('choices', (f) => f.multi === true)
 export const isSchemaChoice = _checkIfIsSchemaOf<Field_choices<any>>('choices', (f) => f.multi !== true)
 export const isSchemaDate = _checkIfIsSchemaOf<Field_date<any>>('date')
-export const isSchemaAddress = _checkIfIsSchemaOf<Field_address>('address')
-export const isSchemaRelationship = _checkIfIsSchemaOf<Field_relationship<any>>('relationship')
-export const isSchemaRelationships = _checkIfIsSchemaOf<Field_relationships<any>>('relationships')
+// 🚂 export const isSchemaFile = _checkIfIsSchemaOf<Field_file>('file')
+// 🚂 export const isSchemaAddress = _checkIfIsSchemaOf<Field_address>('address')
+// 🚂 export const isSchemaRelationship = _checkIfIsSchemaOf<Field_relationship<any>>('relationship')
+// 🚂 export const isSchemaRelationships = _checkIfIsSchemaOf<Field_relationships<any>>('relationships')
 
 function _checkIfIsSchemaOf<F extends Field>(
    /** widget type to check */
@@ -106,16 +106,16 @@ export const isFieldMarkdown = _checkIfIs<Field_markdown>('markdown')
 export const isFieldNumber = _checkIfIs<Field_number>('number')
 export const isFieldBool = _checkIfIs<Field_bool>('bool')
 export const isFieldList = _checkIfIs<Field_list<any>>('list')
-export const isFieldFile = _checkIfIs<Field_file>('file')
 export const isFieldSelectOne = _checkIfIs<Field_selectOne<any, any>>('selectOne')
 export const isFieldSelectMany = _checkIfIs<Field_selectMany<any, any>>('selectMany')
 export const isFieldChoices = _checkIfIs<Field_choices<any>>('choices', (f) => f.isMulti)
 export const isFieldChoice = _checkIfIs<Field_choices<any>>('choices', (f) => f.isSingle)
 export const isFieldDate = _checkIfIs<Field_date<any>>('date')
-export const isFieldAddress = _checkIfIs<Field_address>('address')
 export const isFieldDateOptional = _checkIfIsOptionalOf<Z.SDatePlain>('date')
-export const isFieldRelationship = _checkIfIs<Field_relationship<any>>('relationship')
-export const isFieldRelationships = _checkIfIs<Field_relationships<any>>('relationships')
+// 🚂 export const isFieldFile = _checkIfIs<Field_file>('file')
+// 🚂 export const isFieldAddress = _checkIfIs<Field_address>('address')
+// 🚂 export const isFieldRelationship = _checkIfIs<Field_relationship<any>>('relationship')
+// 🚂 export const isFieldRelationships = _checkIfIs<Field_relationships<any>>('relationships')
 
 function _checkIfIs<F extends Field>(
    /** widget type to check */
