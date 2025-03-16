@@ -79,7 +79,6 @@ export function ui_latent_v3(p: { size?: Field_size_config } = {}): UI_LatentV3 
             appearance: 'tab',
             default: 'emptyLatent',
             label: 'Latent Input',
-            // background: { hue: 270, chroma: 0.04 },
          },
       )
    })

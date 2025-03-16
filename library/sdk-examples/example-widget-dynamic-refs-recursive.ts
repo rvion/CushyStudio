@@ -32,13 +32,11 @@ app({
                // so to make sure code is correct, we need to cast it to the correct type
                // (and yes, types are slighly verbose for now)
                const steps = formRoot.fields.samplerUI as Field_list<
-                  CSchema<
-                     Field_choices<{
-                        sampler_output_abc_asdf: CSchema<Z.SelectOne_<any>>
-                        empty_latent: CSchema<Field_group<any>>
-                        pick_image: CSchema<Field_image>
-                     }>
-                  >
+                  Z.Choice<{
+                     sampler_output_abc_asdf: Z.OneOf_<any>
+                     empty_latent: Z.Record<any>
+                     pick_image: Z.Image
+                  }>
                >
 
                // return a list of items
@@ -52,7 +50,7 @@ app({
 
                   const _actualChoice = _selectOne?.value
                   return {
-                     id: _selectOne?.id ?? 'error',
+                     id: _selectOne?._uid ?? 'error',
                      disabled: _actualChoice == null,
                      name: _selectOne?.type ?? '❌ ERROR',
                      label: `${ix + 1}th (${choiceWidget.firstActiveBranchName ?? '❓'})`,

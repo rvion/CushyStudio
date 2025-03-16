@@ -35,10 +35,8 @@ export function promptList(b: Z.Builder, options?: { default?: string }): $Promp
                name: b.string({ default: '' }),
                prompt: b.prompt({
                   icon: IKONS.mdiPlusBoxOutline,
-                  // background: { hue: 150, chroma: 0.05 },
                   default: options?.default ?? '',
                   presets: [
-                     //
                      {
                         label: 'Portrait',
                         icon: IKONS.mdiFaceWoman,

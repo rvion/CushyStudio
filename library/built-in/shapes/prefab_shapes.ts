@@ -31,8 +31,8 @@ export interface Shape {
 // will make your vscode go brrrrr.
 
 export type UI_LatentShapeGenerator = Z.Group<{
-   batchSize: Z.Shared<Z.Number> | Z.Number
-   size: Z.Shared<Z.Size> | Z.Size
+   batchSize: Z.Shared<Field_number> | Z.Number
+   size: Z.Shared<Field_size> | Z.Size
    amountCircle: Z.Number
    amountRect: Z.Number
    amountStar: Z.Number

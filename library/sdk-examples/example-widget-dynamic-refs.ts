@@ -16,19 +16,19 @@ app({
             .useIn((listOfStuff) =>
                b.fields({
                   _1: b.header({ markdown: `#### Define values:`, label: false, border: false }),
-                  listOfStuff,
+                  listOfStuff: listOfStuff.shared(),
                   _2: b.header({ markdown: `#### Reference values (select):`, label: false, border: false }),
                   listOfRefs: b.list({
                      defaultLength: 1,
                      element: b.selectOneOption(
-                        listOfStuff.items.map((item) => ({ id: item.id, label: item.value })),
+                        listOfStuff.items.map((item) => ({ id: item._uid, label: item.value })),
                         { label: 'dynamic OneOf' },
                      ),
                   }),
                   listOfRefs2: b.list({
                      defaultLength: 1,
                      element: b.selectManyOptions(
-                        listOfStuff.items.map((item) => ({ id: item.id, label: item.value })),
+                        listOfStuff.items.map((item) => ({ id: item._uid, label: item.value })),
                         { label: 'dynamic Many' },
                      ),
                   }),
@@ -36,14 +36,14 @@ app({
                   refs4: b.list({
                      defaultLength: 1,
                      element: b.selectOneOption(
-                        listOfStuff.items.map((item) => ({ id: item.id, label: item.value })),
+                        listOfStuff.items.map((item) => ({ id: item._uid, label: item.value })),
                         { label: 'dynamic OneOf(tab)', appearance: 'tab' },
                      ),
                   }),
                   refs5: b.list({
                      defaultLength: 1,
                      element: b.selectManyOptions(
-                        listOfStuff.items.map((item) => ({ id: item.id, label: item.value })),
+                        listOfStuff.items.map((item) => ({ id: item._uid, label: item.value })),
                         { label: 'dynamic Many(tab)', appearance: 'tab' },
                      ),
                   }),

@@ -27,7 +27,6 @@ export function CushySD15UI(ui: Z.Builder): $CushySD15UI {
    return ui.fields({
       positive: ui.prompt({
          icon: IKONS.mdiPlusBoxOutline,
-         background: { hue: 150, chroma: 0.05 },
          default: samplePrompts.tree,
          presets: [
             //

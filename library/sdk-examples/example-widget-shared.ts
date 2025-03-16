@@ -4,14 +4,16 @@ app({
    },
    ui: (b) =>
       b.fields({
-         root: b.with(b.string(), (test1) =>
-            b.with(
+         root: b.with(b.string(), (test1_) => {
+            const test1 = test1_.shared()
+            return b.with(
                b.fields({
-                  foo: b.linked(test1),
+                  foo: test1,
                   bar: b.number(),
                }),
-               (test2) =>
-                  b.fields({
+               (test2_) => {
+                  const test2 = test2_.shared()
+                  return b.fields({
                      a: test2,
                      b: test2,
                      k1: test1,
@@ -23,9 +25,10 @@ app({
                            y: test2,
                         },
                      }),
-                  }),
-            ),
-         ),
+                  })
+               },
+            )
+         }),
       }),
 
    run: async (sdk, ui) => {},
