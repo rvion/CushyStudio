@@ -7,6 +7,7 @@ import { CLASSES } from "../Types";
 import { LayoutInternal } from "./Layout";
 import { enablePointerOnIFrames, isDesktop, startDrag } from "./Utils";
 import { Rect } from "../Rect";
+import { NOTNULL } from "../../examples/demo/NOTNULL";
 
 /** @internal */
 export interface ISplitterProps {
@@ -167,11 +168,11 @@ export const Splitter = (props: ISplitterProps) => {
     const getBoundPosition = (p: number) => {
         const bounds = pBounds.current as number[];
         let rtn = p;
-        if (p < bounds[0]) {
-            rtn = bounds[0];
+        if (p < NOTNULL(bounds[0])) {
+            rtn = bounds[0]!;
         }
-        if (p > bounds[1]) {
-            rtn = bounds[1];
+        if (p > NOTNULL(bounds[1])) {
+            rtn = bounds[1]!;
         }
 
         return rtn;
@@ -253,4 +254,3 @@ export const Splitter = (props: ISplitterProps) => {
             </div>);
     }
 };
-

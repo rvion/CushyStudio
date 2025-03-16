@@ -12,6 +12,7 @@ import { CLASSES } from "../Types";
 import { isAuxMouseEvent } from "./Utils";
 import { createPortal } from "react-dom";
 import { Rect } from "../Rect";
+import { NOTNULL } from "../../examples/demo/NOTNULL";
 
 /** @internal */
 export interface ITabSetProps {
@@ -124,7 +125,7 @@ export const TabSet = (props: ITabSetProps) => {
     };
 
     const onCloseTab = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
-        layout.doAction(Actions.deleteTab(node.getChildren()[0].getId()));
+        layout.doAction(Actions.deleteTab(NOTNULL(node.getChildren()[0]).getId()));
         event.stopPropagation();
     };
 
@@ -462,5 +463,3 @@ export const TabSet = (props: ITabSetProps) => {
     }
 
 };
-
-

@@ -14,6 +14,7 @@ import { Node } from "./Node";
 import { TabSetNode } from "./TabSetNode";
 import { canDockToWindow } from "../view/Utils";
 import { LayoutWindow } from "./LayoutWindow";
+import { NOTNULL } from "../../examples/demo/NOTNULL";
 
 export class RowNode extends Node implements IDropTarget {
     static readonly TYPE = "row";
@@ -100,28 +101,32 @@ export class RowNode extends Node implements IDropTarget {
         const h = this.getOrientation() === Orientation.HORZ;
         const c = this.getChildren();
         const ss = this.model.getSplitterSize();
-        const fr = c[0].getRect();
-        const lr = c[c.length - 1].getRect();
+        const fr = NOTNULL(c[0]).getRect();
+        const lr = NOTNULL(c[c.length - 1]).getRect();
         let p = h ? [fr.x, lr.getRight()] : [fr.y, lr.getBottom()];
         const q = h ? [fr.x, lr.getRight()] : [fr.y, lr.getBottom()];
 
         for (let i = 0; i < index; i++) {
             const n = c[i] as TabSetNode | RowNode;
-            p[0] += h ? n.getMinWidth() : n.getMinHeight();
-            q[0] += h ? n.getMaxWidth() : n.getMaxHeight();
+            NOTNULL(p[0])
+            NOTNULL(q[0])
+            p[0]! += h ? n.getMinWidth() : n.getMinHeight();
+            q[0]! += h ? n.getMaxWidth() : n.getMaxHeight();
             if (i > 0) {
-                p[0] += ss;
-                q[0] += ss;
+                p[0]! += ss;
+                q[0]! += ss;
             }
         }
 
         for (let i = c.length - 1; i >= index; i--) {
+            NOTNULL(p[1])
+            NOTNULL(q[1])
             const n = c[i] as TabSetNode | RowNode;
-            p[1] -= (h ? n.getMinWidth() : n.getMinHeight()) + ss;
-            q[1] -= (h ? n.getMaxWidth() : n.getMaxHeight()) + ss;
+            p[1]! -= (h ? n.getMinWidth() : n.getMinHeight()) + ss;
+            q[1]! -= (h ? n.getMaxWidth() : n.getMaxHeight()) + ss;
         }
 
-        p = [Math.max(q[1], p[0]), Math.min(q[0], p[1])];
+        p = [Math.max(NOTNULL(q[1]), NOTNULL(p[0])), Math.min(NOTNULL(q[0]), NOTNULL(p[1]))];
 
         return p;
     }
@@ -143,7 +148,7 @@ export class RowNode extends Node implements IDropTarget {
             sum += s;
         }
 
-        const startRect = c[index].getRect()
+        const startRect = NOTNULL(c[index]).getRect()
         const startPosition = (h ? startRect.x : startRect.y) - ss;
 
         return { initialSizes, sum, startPosition };
@@ -161,21 +166,21 @@ export class RowNode extends Node implements IDropTarget {
         if (splitterPos < startPosition) { // moved left
             let shift = startPosition - splitterPos;
             let altShift = 0;
-            if (sizes[index] + shift > smax) {
-                altShift = sizes[index] + shift - smax;
+            if (NOTNULL(sizes[index]) + shift > smax) {
+                altShift = sizes[index]! + shift - smax;
                 sizes[index] = smax;
             } else {
-                sizes[index] += shift;
+                sizes[index]! += shift;
             }
 
             for (let i = index - 1; i >= 0; i--) {
                 const n = c[i] as TabSetNode | RowNode;
                 const m = h ? n.getMinWidth() : n.getMinHeight();
-                if (sizes[i] - shift > m) {
-                    sizes[i] -= shift;
+                if (NOTNULL(sizes[i]) - shift > m) {
+                    sizes[i]! -= shift;
                     break;
                 } else {
-                    shift -= sizes[i] - m;
+                    shift -= sizes[i]! - m;
                     sizes[i] = m;
                 }
             }
@@ -183,11 +188,11 @@ export class RowNode extends Node implements IDropTarget {
             for (let i = index+1; i < c.length; i++) {
                 const n = c[i] as TabSetNode | RowNode;
                 const m = h ? n.getMaxWidth() : n.getMaxHeight();
-                if (sizes[i] + altShift < m) {
-                    sizes[i] += altShift;
+                if (NOTNULL(sizes[i]) + altShift < m) {
+                    sizes[i]! += altShift;
                     break;
                 } else {
-                    altShift -= m - sizes[i];
+                    altShift -= m - sizes[i]!;
                     sizes[i] = m;
                 }
             }
@@ -196,21 +201,21 @@ export class RowNode extends Node implements IDropTarget {
         } else {
             let shift = splitterPos - startPosition;
             let altShift = 0;
-            if (sizes[index-1] + shift > smax) {
-                altShift = sizes[index-1] + shift - smax;
+            if (NOTNULL(sizes[index-1]) + shift > smax) {
+                altShift = sizes[index-1]! + shift - smax;
                 sizes[index-1] = smax;
             } else {
-                sizes[index-1] += shift;
+                sizes[index-1]! += shift;
             }
 
             for (let i = index; i < c.length; i++) {
                 const n = c[i] as TabSetNode | RowNode;
                 const m = h ? n.getMinWidth() : n.getMinHeight();
-                if (sizes[i] - shift > m) {
-                    sizes[i] -= shift;
+                if (NOTNULL(sizes[i]) - shift > m) {
+                    sizes[i]! -= shift;
                     break;
                 } else {
-                    shift -= sizes[i] - m;
+                    shift -= sizes[i]! - m;
                     sizes[i] = m;
                 }
             }
@@ -218,11 +223,11 @@ export class RowNode extends Node implements IDropTarget {
             for (let i = index - 1; i >= 0; i--) {
                 const n = c[i] as TabSetNode | RowNode;
                 const m = h ? n.getMaxWidth() : n.getMaxHeight();
-                if (sizes[i] + altShift < m) {
-                    sizes[i] += altShift;
+                if (NOTNULL(sizes[i]) + altShift < m) {
+                    sizes[i]! += altShift;
                     break;
                 } else {
-                    altShift -= m - sizes[i];
+                    altShift -= m - sizes[i]!;
                     sizes[i] = m;
                 }
             }
@@ -320,7 +325,7 @@ export class RowNode extends Node implements IDropTarget {
                     this.removeChild(child);
                 } else if (childChildren.length === 1) {
                     // hoist child/children up to this level
-                    const subchild = childChildren[0];
+                    const subchild = NOTNULL(childChildren[0]);
                     this.removeChild(child);
                     if (subchild instanceof RowNode) {
                         let subChildrenTotal = 0;
@@ -525,7 +530,7 @@ export class RowNode extends Node implements IDropTarget {
     }
 
 
-    // NOTE:  flex-grow cannot have values < 1 otherwise will not fill parent, need to normalize 
+    // NOTE:  flex-grow cannot have values < 1 otherwise will not fill parent, need to normalize
     normalizeWeights() {
         let sum = 0;
         for (const n of this.children) {

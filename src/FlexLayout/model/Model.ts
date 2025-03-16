@@ -16,6 +16,7 @@ import { TabNode } from "./TabNode";
 import { TabSetNode } from "./TabSetNode";
 import { randomUUID } from "./Utils";
 import { LayoutWindow } from "./LayoutWindow";
+import { NOTNULL } from "../../examples/demo/NOTNULL";
 
 /** @internal */
 export const DefaultMin = 0;
@@ -406,7 +407,7 @@ export class Model {
         }
         if (json.popouts) {
             for (const windowId in json.popouts) {
-                const windowJson = json.popouts[windowId];
+                const windowJson = NOTNULL(json.popouts[windowId]);
                 const layoutWindow = LayoutWindow.fromJson(windowJson, model, windowId);
                 model.windows.set(windowId, layoutWindow);
             }
@@ -473,12 +474,12 @@ export class Model {
      * set callback called when a new TabSet is created.
      * The tabNode can be undefined if it's the auto created first tabset in the root row (when the last
      * tab is deleted, the root tabset can be recreated)
-     * @param onCreateTabSet 
+     * @param onCreateTabSet
      */
     setOnCreateTabSet(onCreateTabSet: (tabNode?: TabNode) => ITabSetAttributes) {
         this.onCreateTabSet = onCreateTabSet;
     }
-    
+
     addChangeListener(listener: ((action: Action) => void)) {
         this.changeListeners.push(listener);
     }
@@ -701,4 +702,3 @@ export class Model {
         return attributeDefinitions;
     }
 }
-

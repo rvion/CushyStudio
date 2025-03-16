@@ -1,3 +1,4 @@
+import { NOTNULL } from "../../examples/demo/NOTNULL";
 import { Attribute } from "../Attribute";
 import { AttributeDefinitions } from "../AttributeDefinitions";
 import { DockLocation } from "../DockLocation";
@@ -431,7 +432,7 @@ export class TabSetNode extends Node implements IDraggable, IDropTarget {
                 }, 0);
             } else {
                 for (let i = 0; i < dragNode.getChildren().length; i++) {
-                    const child = dragNode.getChildren()[i];
+                    const child = NOTNULL(dragNode.getChildren()[i]);
                     this.addChild(child, insertPos);
                     // console.log("added child at : " + insertPos);
                     insertPos++;
@@ -588,5 +589,3 @@ export class TabSetNode extends Node implements IDraggable, IDropTarget {
     }
 
 }
-
-
