@@ -30,7 +30,7 @@ export class ElectronUtils {
    ipc: Electron.IpcRenderer
 
    constructor(public st: STATE) {
-      const ipcRenderer = window.require('electron').ipcRenderer
+      const ipcRenderer: Electron.IpcRenderer = window.require('electron').ipcRenderer
       this.ipc = ipcRenderer
 
       ipcRenderer.removeAllListeners('execute')
