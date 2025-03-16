@@ -1,6 +1,8 @@
+import type { IconNameReal } from './icons'
+
 export const iconAliases: {
-   [key: string]: string[]
-} = {
+   [key: string]: IconNameReal[]
+} = JSON.parse(`{
    mdiAbjadArabic: ['writing-system-arabic'],
    mdiAbjadHebrew: ['writing-system-hebrew'],
    mdiAbugidaDevanagari: ['writing-system-devanagari'],
@@ -4792,4 +4794,4 @@ export const iconAliases: {
    mdiZodiacScorpio: ['horoscope-scorpio'],
    mdiZodiacTaurus: ['horoscope-taurus'],
    mdiZodiacVirgo: ['horoscope-virgo'],
-}
+}`)
