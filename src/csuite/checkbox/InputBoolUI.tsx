@@ -1,4 +1,5 @@
 import type { Box } from '../box/Box'
+import type { SharedClickAndSlideKey } from '../button/usePressLogic'
 import type { FrameProps } from '../frame/Frame'
 import type { IconName } from '../icons/icons'
 
@@ -26,18 +27,21 @@ export type BoolButtonProps = {
 
    /** alternative way to specify children */
    text?: string
+
+   /** Text to display inside widget */
+   widgetLabel?: string
+
    // border?: TintExt
 
    box?: Box
    onValueChange?: (next: boolean) => void
 
-   toggleGroup: string
+   toggleGroup: SharedClickAndSlideKey
    disabled?: boolean
 } & FrameProps
 
 export const InputBoolUI = observer(function InputBool(p: BoolButtonProps) {
    const display = p.display ?? 'check'
-
    if (display === 'check') return createElement(InputBoolCheckboxUI, p)
    return createElement(ToggleButtonUI, p)
 })
