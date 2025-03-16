@@ -1,15 +1,18 @@
-import type { ReactNode } from 'react'
+import type { BoxUIProps } from '../box/BoxUIProps'
 
 import { observer } from 'mobx-react-lite'
 
 import { FrameSubtle } from '../../csuite/wrappers/FrameSubtle'
 
-export const WidgetSingleLineSummaryUI = observer(function WidgetSingleLineSummaryUI_(p: {
-   children?: ReactNode
-}) {
+export type WidgetSingleLineSummaryProps = BoxUIProps<HTMLDivElement>
+
+export const WidgetSingleLineSummaryUI = observer(function WidgetSingleLineSummaryUI_(
+   p: WidgetSingleLineSummaryProps,
+) {
    return (
-      <FrameSubtle className='COLLAPSE-PASSTHROUGH lh-input ml-1 line-clamp-1 italic'>
-         {p.children}
-      </FrameSubtle>
+      <FrameSubtle //
+         tw='COLLAPSE-PASSTHROUGH lh-input ml-1 line-clamp-1 overflow-hidden italic'
+         {...p}
+      />
    )
 })

@@ -5,6 +5,10 @@ import { observer } from 'mobx-react-lite'
 
 import { UI } from '../components/UI'
 
+export type WidgetPresetsProps = {
+   field: Field
+} & Omit<DropdownProps, 'title'>
+
 export const WidgetPresetsUI = observer(function WidgetPresets({
    //own props
    field,
@@ -15,7 +19,7 @@ export const WidgetPresetsUI = observer(function WidgetPresets({
 
    // rest
    ...rest
-}: { field: Field } & Omit<DropdownProps, 'title'>) {
+}: WidgetPresetsProps) {
    const presets = field.config.presets
    const presetCount = presets?.length ?? 0
    if (presets == null) return null
@@ -31,8 +35,9 @@ export const WidgetPresetsUI = observer(function WidgetPresets({
                   tooltip={title}
                   tooltipPlacement='top'
                   subtle
-                  icon={IKONS.mdiBook}
-                  children={presetCount}
+                  borderless
+                  icon={IKONS.mdiBookOutline}
+                  // children={presetCount}
                />
             )
          }
@@ -42,7 +47,7 @@ export const WidgetPresetsUI = observer(function WidgetPresets({
                   key={preset.label}
                   icon={preset.icon}
                   onClick={() => preset.apply(field)}
-                  children={preset.label}
+                  label={preset.label}
                />
             ))
          }}
