@@ -1,9 +1,27 @@
-import { createElement, type ReactNode } from 'react'
+import type { CovariantFn } from '../variance/BivariantHack'
 
-export type FCOrNode<P extends object> = React.FunctionComponent<P> | React.ReactNode
+import React, { createElement, isValidElement } from 'react'
+
+// legacy type:
+// export type FCOrNode<P extends object> = React.FunctionComponent<P> | React.ReactNode
+
+// this explicity avoid strings, to allow for foture magic
+export type SimpleReactNode = React.JSX.Element | string | number | boolean | null
+
+export type SimpleReactComponent<P> = React.FunctionComponent<P> // CovariantFn<[props: P], React.JSX.Element>
+
+// prettier-ignore
+export type FCOrNode<P extends object> =
+    | SimpleReactComponent<P>
+    | SimpleReactNode
+
+export type FCOrJSXOrNamed<P extends object, Named extends string> =
+   | SimpleReactComponent<P>
+   | SimpleReactNode
+   | Named
 
 /** render */
-export const renderFCOrNode = <T extends object>(x: FCOrNode<T>, props: NoInfer<T>): React.ReactNode => {
+export const renderFCOrNode = <T extends object>(x: FCOrNode<T>, props: NoInfer<T>): SimpleReactNode => {
    if (_isFC<T>(x)) return createElement(x, props)
    return x
 }
@@ -19,9 +37,9 @@ export const renderFCOrNodeWithWrapper = <
    props: NoInfer<T>,
    wrapper: Maybe<FCOrNode<U>>,
    wrapperProps: NoInfer<U>,
-): ReactNode => {
+): SimpleReactNode => {
    // if wrapper is already rendered, let's skip the content
-   if (!_isFC<U>(wrapper) && wrapper != null) return wrapper
+   if (wrapper != null && _isSimpleReactNode(wrapper)) return wrapper
 
    const inner = _isFC<T>(x) ? createElement(x, props) : x
    if (inner == null) return null
@@ -34,7 +52,14 @@ export const renderFCOrNodeWithWrapper = <
    return createElement(wrapper, wrapperProps, inner)
 }
 
-export const _isFC = <T extends object>(x: any): x is React.FunctionComponent<T> => {
+export const _isSimpleReactNode = (x: any): x is SimpleReactNode => {
+   if (x == null) return true
+   if (typeof x === 'string' || typeof x === 'number' || typeof x === 'boolean') return true
+   if (isValidElement(x)) return true
+   return false
+}
+
+export const _isFC = <T extends object>(x: any): x is SimpleReactComponent<T> => {
    // if it's a simple function , it's probably some FC
    if (typeof x === 'function') return true
 

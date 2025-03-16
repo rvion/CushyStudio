@@ -37,7 +37,7 @@ import type { FC, ReactNode } from 'react'
  *    ReactNode => use this react node direclty
  */
 
-export interface DisplaySlots<FIELD extends Field = Field> {
+export interface DisplaySlots<out FIELD extends Field = Field> {
    layout?: CovariantFn<[FIELD], QuickFormContent[]>
 
    // 0.
