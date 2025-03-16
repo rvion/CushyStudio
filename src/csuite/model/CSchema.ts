@@ -5,7 +5,7 @@ import type { DraftLike } from './Draft'
 import type { Field, FieldCtorProps } from './Field'
 import type { FieldConfigFor } from './FieldConfig'
 import type { FieldConstructor, TravelEdge } from './FieldConstructor'
-import type { CastUnknown } from './IsItUnknown'
+import type { CastUnknown, IsUnknown } from './IsItUnknown'
 import type { Klass } from './KlassToUse'
 import type { Channel, ChannelId } from './pubsub/Channel'
 import type { FieldReaction } from './pubsub/FieldReaction'
@@ -205,7 +205,9 @@ export class CSchema<out FIELD extends Field = Field> {
        * }
        * ```
        */
-      opts: CastUnknown<CUSTOM['$opts'], null>,
+      ...[opts]: IsUnknown<CUSTOM['$opts']> extends false //
+         ? [opts: CastUnknown<CUSTOM['$opts'], null>]
+         : [opts?: null]
    ): CSchema<CUSTOM> {
       if (this.config.classToUse != null) throw new Error('already have a custom class')
       return this.withConfig({ classToUse, opts }) as any as CSchema<CUSTOM>

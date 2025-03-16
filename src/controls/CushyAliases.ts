@@ -5,7 +5,6 @@ import type { Field_choices, MAGICCHOICES } from '../csuite/fields/choices/Field
 import type { Field_color } from '../csuite/fields/color/FieldColor'
 import type { Field_custom } from '../csuite/fields/custom/FieldCustom'
 import type { Field_date } from '../csuite/fields/date/FieldDate'
-import type { Field_dynamic } from '../csuite/fields/dynamic/FieldDynamic'
 import type { Field_enum } from '../csuite/fields/enum/FieldEnum'
 import type { Field_group, MAGICFIELDS } from '../csuite/fields/group/FieldGroup'
 import type { Field_image } from '../csuite/fields/image/FieldImage'
@@ -24,27 +23,23 @@ import type { Field_shared } from '../csuite/fields/shared/FieldShared'
 import type { Field_size } from '../csuite/fields/size/FieldSize'
 import type { Field_string } from '../csuite/fields/string/FieldString'
 import type { CSchema } from '../csuite/model/CSchema'
+import type { Field as Field_ } from '../csuite/model/Field'
+import type { SchemaDict as SchemaDict_ } from '../csuite/model/SchemaDict'
 import type { NO_PROPS } from '../csuite/types/NO_PROPS'
 import type { Field_prompt } from '../prompt/FieldPrompt'
+import type { Runtime as Runtime_ } from '../runtime/Runtime'
+import type { CushySchemaBuilder as CushySchemaBuilder_ } from './CushyBuilder'
 import type { Temporal } from '@js-temporal/polyfill'
-
-// TODO:
-// alias should only be $type &
-// {Field:..., Schema:...}
-//  => would make EVERYTHING so much simpler
 
 // prettier-ignore
 declare global {
    // eslint-disable-next-line @typescript-eslint/no-namespace
    namespace Z {
-      // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-      type SchemaDict = import('../csuite/model/SchemaDict').SchemaDict
-      // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-      type Builder = import('./CushyBuilder').CushySchemaBuilder
-      // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-      type Field = import('../csuite/model/Field').Field
-      // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-      type Runtime = import('../runtime/Runtime').Runtime
+      type SchemaDict = SchemaDict_
+      type Builder = CushySchemaBuilder_
+      type Field = Field_
+      type Runtime = Runtime_
+      type Schema<FIELD extends Field = Field> = CSchema<FIELD>
 
       // #region core types
 
@@ -67,7 +62,6 @@ declare global {
       type Number                                     = CSchema<Field_number>
       type Color                                      = CSchema<Field_color>
       type List<T extends CSchema>                    = CSchema<Field_list<T>>
-      type Dynamic<T extends CSchema>                 = CSchema<Field_dynamic<T>>
       type Board<T extends CSchema>                   = CSchema<Field_board<T>>
       type Seed                                       = CSchema<Field_seed>
       type Matrix                                     = CSchema<Field_matrix>
@@ -87,15 +81,15 @@ declare global {
       type XSelectOne_<T extends SelectKey>           = CSchema<Field_selectOne<T, T>> // variant that may be shorter to read
       type XSelectMany_<T extends SelectKey>          = CSchema<Field_selectMany<T, T>> // variant that may be shorter to read
       // naming v2
-      type SelectOne<T, ID extends SelectKey>        = CSchema<Field_selectOne<T, ID>>
-      type SelectMany<T, ID extends SelectKey>       = CSchema<Field_selectMany<T, ID>>
-      type SelectOne_<T extends SelectKey>           = CSchema<Field_selectOne<T, T>> // variant that may be shorter to read
-      type SelectMany_<T extends SelectKey>          = CSchema<Field_selectMany<T, T>> // variant that may be shorter to read
+      type SelectOne<T, ID extends SelectKey>         = CSchema<Field_selectOne<T, ID>>
+      type SelectMany<T, ID extends SelectKey>        = CSchema<Field_selectMany<T, ID>>
+      type SelectOne_<T extends SelectKey>            = CSchema<Field_selectOne<T, T>> // variant that may be shorter to read
+      type SelectMany_<T extends SelectKey>           = CSchema<Field_selectMany<T, T>> // variant that may be shorter to read
       // naming v3
-      type OneOf<T, ID extends SelectKey>        = CSchema<Field_selectOne<T, ID>>
-      type Many<T, ID extends SelectKey>       = CSchema<Field_selectMany<T, ID>>
-      type OneOf_<T extends SelectKey>           = CSchema<Field_selectOne<T, T>> // variant that may be shorter to read
-      type Many_<T extends SelectKey>          = CSchema<Field_selectMany<T, T>> // variant that may be shorter to read
+      type OneOf<T, ID extends SelectKey>             = CSchema<Field_selectOne<T, ID>>
+      type Many<T, ID extends SelectKey>              = CSchema<Field_selectMany<T, ID>>
+      type OneOf_<T extends SelectKey>                = CSchema<Field_selectOne<T, T>> // variant that may be shorter to read
+      type Many_<T extends SelectKey>                 = CSchema<Field_selectMany<T, T>> // variant that may be shorter to read
 
       type Size                                       = CSchema<Field_size>
       type Markdown                                   = CSchema<Field_markdown>
