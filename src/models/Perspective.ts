@@ -1,6 +1,6 @@
 import type { LiveDB } from '../db/LiveDB'
 import type { TABLES } from '../db/TYPES.gen'
-import type { IJsonModel } from 'flexlayout-react'
+import type { IJsonModel } from '../flexlayout-react'
 import type { AnnotationMapEntry } from 'mobx'
 
 import { toastError } from '../csuite/utils/toasts'

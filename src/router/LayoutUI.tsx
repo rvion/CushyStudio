@@ -1,10 +1,10 @@
 import type { CushyLayoutManager } from './Layout'
 
-import { Layout } from 'flexlayout-react'
 import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 
-import * as FL from '../FlexLayout'
+import * as FL from '../flexlayout-react'
+import { Layout } from '../flexlayout-react'
 import { TabsetPlaceholderUI } from './TabsetPlaceholderUI'
 
 export const LayoutUI = observer(function LayoutUI_(p: { layout: CushyLayoutManager }) {

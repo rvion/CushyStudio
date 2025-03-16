@@ -4,7 +4,7 @@ import { runInAction } from 'mobx'
 
 import { type Command } from '../../csuite/commands/Command'
 import { Trigger } from '../../csuite/trigger/Trigger'
-import * as FL from '../../FlexLayout'
+import * as FL from '../../flexlayout-react'
 import { _duplicateCurrentDraft } from './cmd_duplicateCurrentDraft'
 import { KEYS } from './shorcutKeys'
 import { globalValidInInput } from './simpleValidInInput'

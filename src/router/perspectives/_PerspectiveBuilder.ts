@@ -1,8 +1,8 @@
 import type { PropsOf } from '../../csuite/types/PropsOf'
+import type * as FL from '../../flexlayout-react'
+import type { IJsonModel } from '../../flexlayout-react'
 import type { PanelPersistedJSON } from '../PanelPersistedJSON'
 import type { PanelName, Panels } from '../PANELS'
-import type * as FL from 'flexlayout-react'
-import type { IJsonModel } from 'flexlayout-react'
 
 import { hashJSONObjectToNumber } from '../../csuite/hashUtils/hash'
 import { getIconAsDataSVG } from '../../csuite/icons/iconStr'
@@ -31,7 +31,7 @@ export class PerspectiveHelper {
          component: p.panelName,
          enableClose: p.canClose ?? true,
          enableRename: false,
-         enableFloat: false,
+         // enableFloat: false,
          // enablePopout: false,
          icon: getIconAsDataSVG(icon),
       }
@@ -39,14 +39,14 @@ export class PerspectiveHelper {
 
    getGlobalPerspectiveConfig(): FL.IGlobalAttributes {
       return {
-         tabEnableFloat: false,
+         // tabEnableFloat: false,
          // tabEnablePopout: false,
          splitterSize: 6,
          tabEnableRename: false,
          borderEnableAutoHide: true,
          borderAutoSelectTabWhenClosed: true,
-         tabSetHeaderHeight: 24,
-         tabSetTabStripHeight: 24,
+         // tabSetHeaderHeight: 24,
+         // tabSetTabStripHeight: 24,
          tabSetEnableSingleTabStretch: false /* 🔴 */,
          // tabSetEnableSingleTabStretch: true,
       }

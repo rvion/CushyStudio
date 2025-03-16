@@ -1,5 +1,5 @@
+import type { IJsonModel } from '../../flexlayout-react'
 import type { PerspectiveHelper } from './_PerspectiveBuilder'
-import type { IJsonModel } from 'flexlayout-react'
 
 export function getCanvasPerspective(p: PerspectiveHelper): IJsonModel {
    return {
