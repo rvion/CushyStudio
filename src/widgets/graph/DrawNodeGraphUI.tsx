@@ -98,11 +98,17 @@ export const DrawNodeGraphUI = observer(function DrawNodeGraphUI_(p: {
       })
    }
    useEffect(() => {
-      window.addEventListener('resize', updateViewport)
-      updateViewport()
-      return (): void => {
-         window.removeEventListener('resize', updateViewport)
+      if (!ref.current) {
+         return
       }
+
+      const observer = new ResizeObserver((entries) => {
+         updateViewport()
+      })
+
+      observer.observe(ref.current)
+
+      return (): void => observer.disconnect()
    }, [])
 
    return (
@@ -123,14 +129,15 @@ export const DrawNodeGraphUI = observer(function DrawNodeGraphUI_(p: {
 
          <Frame
             base={{ contrast: -0.15 }}
-            tw='relative h-full w-full flex-1 select-none overflow-clip'
+            tw='relative h-full w-full flex-1 select-none overflow-clip text-sm'
             ref={ref}
          >
             <svg //
                // key={ix}
+               tw='h-full w-full'
                style={{ position: 'absolute', top: 0, left: 0, zIndex: 99 }}
-               width={wflow.width ?? '100%'}
-               height={wflow.height ?? '100%'}
+               //    width={wflow.width ?? '100%'}
+               //    height={wflow.height ?? '100%'}
             >
                {wflow.nodes.map((node) => {
                   return node._incomingEdges().map((e, ix) => {
@@ -167,7 +174,7 @@ export const DrawNodeGraphUI = observer(function DrawNodeGraphUI_(p: {
                         (start.fromNode && start.fromNode.isDirty) ||
                         (end.toNode && end.toNode.isDirty)
                      ) {
-                        const dx2 = (end.x - start.x) / (p.spline ?? 5)
+                        const dx2 = (end.x - start.x) / (p.spline ?? 2.5)
                         splineString = `M ${start.x} ${start.y} C`
                         splineString += ` ${start.x + dx2} ${start.y}`
                         splineString += ` ${end.x - dx2} ${end.y}`
@@ -348,7 +355,7 @@ export const DrawNodeGraphUI = observer(function DrawNodeGraphUI_(p: {
                                  // base={6}
                                  style={{ height: '20px' }}
                                  tw='flex overflow-ellipsis whitespace-nowrap px-1'
-                                 base={{ contrast: -0.1, hue: 0, chromaBlend: 0 }}
+                                 base={{ contrast: -0.1, hue: 0 }}
                               >
                                  <span>{node.$schema.nameInComfy}</span>
                                  <SpacerUI />
@@ -388,7 +395,7 @@ export const DrawNodeGraphUI = observer(function DrawNodeGraphUI_(p: {
                                     >
                                        <div tw='flex'>
                                           <div>{ie.inputName}:</div>
-                                          <div tw='ml-auto'>{JSON.stringify(ie.value)}</div>
+                                          <div tw='ml-auto truncate'>{JSON.stringify(ie.value)}</div>
                                        </div>
                                     </Frame>
                                  ))}
