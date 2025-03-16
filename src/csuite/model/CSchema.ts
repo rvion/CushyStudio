@@ -28,7 +28,7 @@ import {
    isSchemaSelectOne,
    isSchemaString,
 } from '../fields/WidgetUI.DI'
-import { schemaConfigHash } from '../hashUtils/hash'
+import { memoizedFN, schemaConfigHash } from '../hashUtils/hash'
 import { objectAssignTsEfficient_t_pt } from '../utils/objectAssignTsEfficient'
 import { potatoClone } from '../utils/potatoClone'
 import { CSchemaNeighborhood, type NeighborhoodName } from './CSchemaTraversal'
@@ -458,6 +458,41 @@ export class CSchema<out FIELD extends Field = Field> {
          }
          return field
       })
+   }
+
+   addCheck(
+      /** the check function you want to add */
+      check_: NonNullable<FIELD['$config']['check']>,
+
+      /**
+       * a list of explicit dependencies this function should be cache against
+       * helps to cache schema which enables a wide range of optimisations
+       *    - fast path when comparing schema
+       *    - reused derived values (travels, children, etc.)
+       */
+      memo: any[],
+   ): this {
+      const checkToAdd = memoizedFN(this, 'addCheck-1', check_, memo)
+      const prevCheck = this.config.check
+      // case 1. same
+      if (prevCheck === checkToAdd) return this
+
+      // case 2. first check
+      if (prevCheck == null) return this.withConfig({ check: checkToAdd })
+
+      // case 3. merge both
+      const mergedChecks = memoizedFN(
+         this,
+         'addCheck-2',
+         (f) => {
+            const prevCheckResults = prevCheck!(f)
+            const nextCheckResults = checkToAdd(f)
+            return [prevCheckResults, nextCheckResults]
+         },
+         [prevCheck, checkToAdd],
+      )
+
+      return this.withConfig({ check: mergedChecks })
    }
 
    // CODEGEN -------------------------------------------------------

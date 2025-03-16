@@ -77,7 +77,7 @@ export const schemaModelExtras = (
          if (f.isBranchEnabled('vpred') && f.isBranchEnabled('sampling')) {
             return 'You can only use one of Vpred or Sampling, not both; vpred is just a shortcut for sampling with vpred mode enabled.'
          }
-      })
+      }, [])
 }
 
 // ------------
