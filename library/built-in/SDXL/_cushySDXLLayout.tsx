@@ -60,7 +60,7 @@ export function _cushySDXLLayout(): Maybe<RenderRule<CushySDXLSchema>> {
                            <UY.Misc.Frame
                               tw='flex items-center'
                               hover
-                              key={item.id}
+                              key={item._uid}
                               onMouseDown={() => (promptGroup.activeIndex = index)}
                            >
                               <span

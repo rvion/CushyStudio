@@ -1,5 +1,3 @@
-import type { CovariantFn } from '../variance/BivariantHack'
-
 import React, { createElement, isValidElement } from 'react'
 
 // legacy type:
@@ -8,7 +6,8 @@ import React, { createElement, isValidElement } from 'react'
 // this explicity avoid strings, to allow for foture magic
 export type SimpleReactNode = React.JSX.Element | string | number | boolean | null
 
-export type SimpleReactComponent<P> = React.FunctionComponent<P> // CovariantFn<[props: P], React.JSX.Element>
+export type SimpleReactComponent<P> = React.FunctionComponent<P>
+// export type SimpleReactComponent<P> = CovariantFn<[props: P], React.JSX.Element>
 
 // prettier-ignore
 export type FCOrNode<P extends object> =
