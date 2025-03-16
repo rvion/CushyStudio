@@ -4,7 +4,14 @@ import React, { createElement, isValidElement } from 'react'
 // export type FCOrNode<P extends object> = React.FunctionComponent<P> | React.ReactNode
 
 // this explicity avoid strings, to allow for foture magic
-export type SimpleReactNode = React.JSX.Element | string | number | boolean | null
+// prettier-ignore
+export type SimpleReactNode =
+   | React.JSX.Element
+   | string
+   | number
+   | boolean
+   | null
+   | undefined
 
 export type SimpleReactComponent<P> = React.FunctionComponent<P>
 // export type SimpleReactComponent<P> = CovariantFn<[props: P], React.JSX.Element>

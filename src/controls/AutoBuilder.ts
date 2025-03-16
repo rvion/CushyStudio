@@ -1,7 +1,7 @@
 import type { ComfyUnionValue } from '../comfyui/comfyui-types'
-import type { Field_enum_config } from '../csuite/fields/enum/FieldEnum'
+import type { Field_enum } from '../csuite/fields/enum/FieldEnum'
 import type { Field_string_config } from '../csuite/fields/string/FieldString'
-import type { FieldConfig } from '../csuite/model/FieldConfig'
+import type { FieldConfig_CommonProperties } from '../csuite/model/FieldConfig'
 import type { CushySchemaBuilder } from './CushyBuilder'
 
 type KK = IAutoBuilder['KSampler']
@@ -78,7 +78,7 @@ export class AutoBuilder {
       const schema = cushy.schema
       for (const node of schema.nodes) {
          Object.defineProperty(this, node.nameInCushy, {
-            value: (ext?: Partial<FieldConfig<{}, any>>) => {
+            value: (ext?: Partial<FieldConfig_CommonProperties<any>>) => {
                const items: any = {}
                for (const field of node.inputs) {
                   // console.log(`[👗] DEBUG:`, field, field.isPrimitive)
@@ -192,7 +192,7 @@ export class AutoBuilder {
                   // #region enums
                   else if (field.isEnum) {
                      // console.log(`[👗] 🌈 Enum: ${field.type}`, { field })
-                     const enumFn: Maybe<(p: Field_enum_config<any>) => void> = (formBuilder.enum as any)[
+                     const enumFn: Maybe<(p: Field_enum<any>['$config']) => void> = (formBuilder.enum as any)[
                         field.slotName
                      ]
                      if (enumFn == null) {
