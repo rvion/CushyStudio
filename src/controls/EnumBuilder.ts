@@ -4,12 +4,12 @@
  */
 import type { CushySchemaBuilder } from './CushyBuilder'
 
-import { asComfyNodeSlotName, type ComfyUnionValue } from '../comfyui/comfyui-types'
-import { Field_enum, type Field_enum_config } from '../csuite/fields/enum/FieldEnum'
+import { asComfyNodeSlotName } from '../comfyui/comfyui-types'
+import { Field_enum } from '../csuite/fields/enum/FieldEnum'
 import { CSchema } from './CSchema'
 
 export type IEnumBuilderFN<ENUM_NAME extends keyof Comfy.Slots> = (
-   config?: Omit<Field_enum_config<Comfy.Slots[ENUM_NAME]>, 'slotName'>,
+   config?: Omit<Field_enum<Comfy.Slots[ENUM_NAME]>['$config'], 'slotName'>,
 ) => Z.Enum<ENUM_NAME>
 
 export type IEnumBuilder = { [K in keyof Comfy.Slots]: IEnumBuilderFN<K> }
