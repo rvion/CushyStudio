@@ -213,8 +213,8 @@ const useDoc = (): Field => {
                   v2: b.group({
                      border: false,
                      items: {
-                        color: b.colorV2({}),
-                        colorN: b.colorV2({ label: false, justifyLabel: false }),
+                        color: b.stringColor({}),
+                        colorN: b.stringColor({ label: false, justifyLabel: false }),
                      },
                   }),
                },

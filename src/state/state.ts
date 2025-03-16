@@ -542,7 +542,7 @@ export class STATE {
             cutout: b.number({ label: 'cutout', min: 0, max: 1, step: 0.01, default: 0.08 }),
             removeBackground: b.number({ label: 'remove bg', min: 0, max: 1, step: 0.01, default: 0.2 }),
             ambientLightIntensity: b.number({ label: 'light', min: 0, max: 8, default: 1.5 }),
-            ambientLightColor: b.colorV2({ label: 'light color', default: '#ffffff' }),
+            ambientLightColor: b.stringColor({ label: 'light color', default: '#ffffff' }),
             isSymmetric: b.boolean({ label: 'Symmetric Model' }),
             // takeScreenshot: form.inlineRun({ label: 'Screenshot' }),
             metalness: b.float({ min: 0, max: 1 }),

@@ -14,13 +14,22 @@ export type FCOrNode<P extends object> =
     | SimpleReactComponent<P>
     | SimpleReactNode
 
+// prettier-ignore
+export type FCOrNode__<P extends object> =
+   | SimpleReactComponent<P>
+   | SimpleReactNode
+
 export type FCOrJSXOrNamed<P extends object, Named extends string> =
    | SimpleReactComponent<P>
    | SimpleReactNode
    | Named
 
 /** render */
-export const renderFCOrNode = <T extends object>(x: FCOrNode<T>, props: NoInfer<T>): SimpleReactNode => {
+export const renderFCOrNode = <T extends object>(
+   //
+   x: FCOrNode<T>,
+   props: NoInfer<T>,
+): SimpleReactNode => {
    if (_isFC<T>(x)) return createElement(x, props)
    return x
 }

@@ -85,7 +85,7 @@ export function simpleShape$(def?: Partial<SimpleShape>): SimpleShape$ {
          scaleZ: b.number().optional(),
 
          // color
-         fill: b.colorV2(),
+         fill: b.stringColor(),
 
          // rotation
          rotation: b.number().optional(),

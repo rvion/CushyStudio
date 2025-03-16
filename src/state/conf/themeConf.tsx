@@ -52,7 +52,7 @@ export const themeConf: ThemeConf['$field'] = cushyFactory.document(
                },
             ),
             // 1. colors
-            base: ui.colorV2({
+            base: ui.stringColor({
                tooltip: 'main color of the CushyStudio UI',
                default: '#F4F5FB',
                // presets: [
@@ -62,7 +62,7 @@ export const themeConf: ThemeConf['$field'] = cushyFactory.document(
                // ],
             }),
             appbar: ui
-               .colorV2({
+               .stringColor({
                   tooltip: 'color or the app shell (appbar, footer, tabset separator, etc.)',
                   default: '#313338',
                })
