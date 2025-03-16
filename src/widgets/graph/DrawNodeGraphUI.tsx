@@ -7,6 +7,7 @@ import { Fragment, useEffect, useRef, useState } from 'react'
 import { SpacerUI } from '../../csuite/components/SpacerUI'
 import { Frame } from '../../csuite/frame/Frame'
 import { hashStringToNumber } from '../../csuite/hashUtils/hash'
+import { InputStringUI } from '../../csuite/input-string/InputStringUI'
 import { LegacyProgressLineUI } from '../../csuite/inputs/LegacyProgressLineUI'
 import { bang } from '../../csuite/utils/bang'
 import { useEffectAction } from '../../csuite/utils/useEffectAction'
@@ -129,7 +130,7 @@ export const DrawNodeGraphUI = observer(function DrawNodeGraphUI_(p: {
 
          <Frame
             base={{ contrast: -0.15 }}
-            tw='relative h-full w-full flex-1 select-none overflow-clip text-sm'
+            tw='relative h-full w-full flex-1 select-none overflow-clip text-sm !bg-clip-border'
             ref={ref}
          >
             <svg //
@@ -167,6 +168,8 @@ export const DrawNodeGraphUI = observer(function DrawNodeGraphUI_(p: {
                      }
 
                      const cachedSpline = splineCache.get(node.uid)
+                     // TODO(bird_d/preferences/interface): Spline handle distance
+                     const handlePadding = 25
                      let splineString = null
                      let splineColor = null
                      if (
@@ -174,7 +177,11 @@ export const DrawNodeGraphUI = observer(function DrawNodeGraphUI_(p: {
                         (start.fromNode && start.fromNode.isDirty) ||
                         (end.toNode && end.toNode.isDirty)
                      ) {
-                        const dx2 = (end.x - start.x) / (p.spline ?? 2.5)
+                        // Reverse handle direction when start is greater than the end so we can clearly see the noodles in more scenarios
+                        const dx2 =
+                           (start.x > end.x
+                              ? start.x - end.x + handlePadding
+                              : end.x - start.x + handlePadding) / (p.spline ?? 2.5)
                         splineString = `M ${start.x} ${start.y} C`
                         splineString += ` ${start.x + dx2} ${start.y}`
                         splineString += ` ${end.x - dx2} ${end.y}`
@@ -196,15 +203,16 @@ export const DrawNodeGraphUI = observer(function DrawNodeGraphUI_(p: {
                      } else {
                         const isOneSelected =
                            (start.fromNode && start.fromNode.selected) ||
-                           (start.toNode && start.toNode.selected)
+                           (start.toNode && start.toNode.selected) ||
+                           (end.fromNode && end.fromNode.selected) ||
+                           (end.toNode && end.toNode.selected)
                         splineString = cachedSpline.spline
                         splineColor = isOneSelected ? 'white' : cachedSpline.color
-                        //    splineColor = 'black'
                      }
                      const path = splineString //path2WithCubicBezier
-                     // const color2 = 'black'
                      const stroke = splineColor
-                     return <path d={path} stroke={stroke} strokeWidth='2.5' fill='none' />
+                     // TODO(bird_d/preferences/interface): Graph stroke width option
+                     return <path d={path} stroke={stroke} strokeWidth='2' fill='none' />
                   })
                })}
             </svg>
@@ -232,6 +240,8 @@ export const DrawNodeGraphUI = observer(function DrawNodeGraphUI_(p: {
                      )
                   //   node.tagDirty(false)
                   //    }
+
+                  //   node.visible = true
 
                   return (
                      <Fragment key={node.uid}>
@@ -384,21 +394,39 @@ export const DrawNodeGraphUI = observer(function DrawNodeGraphUI_(p: {
                                        ))}
                                     </div>
                                  </Frame>
-                                 {node._primitives().map((ie, ix) => (
-                                    <Frame //
-                                       // base={ix % 2 === 0 ? 3 : 6}
-                                       // base={3}
-                                       // hover
-                                       key={ie.inputName}
-                                       style={{ height: '20px' }}
-                                       tw='overflow-hidden overflow-ellipsis whitespace-nowrap px-2'
-                                    >
-                                       <div tw='flex'>
-                                          <div>{ie.inputName}:</div>
-                                          <div tw='ml-auto truncate'>{JSON.stringify(ie.value)}</div>
-                                       </div>
-                                    </Frame>
-                                 ))}
+                                 {node._primitives().map((ie, ix) => {
+                                    const input = node.$schema.inputs[ix]
+                                    if (input) {
+                                       switch (input.typeName) {
+                                          case 'STRING':
+                                             if (typeof ie.value != 'string') {
+                                                return
+                                             }
+                                             return input.isPrimitive ? (
+                                                <InputStringUI
+                                                   getValue={() => ie.value}
+                                                   setValue={(val) => {
+                                                      ie.value = val
+                                                   }}
+                                                />
+                                             ) : (
+                                                <span>NOT PRIMITIVE</span>
+                                             )
+                                       }
+                                    }
+                                    return (
+                                       <Frame //
+                                          key={ie.inputName}
+                                          style={{ height: '20px' }}
+                                          tw='overflow-hidden overflow-ellipsis whitespace-nowrap px-2'
+                                       >
+                                          <div tw='flex'>
+                                             <div>{ie.inputName}:</div>
+                                             <div tw='ml-auto truncate'>{JSON.stringify(ie.value)}</div>
+                                          </div>
+                                       </Frame>
+                                    )
+                                 })}
                               </div>
                            </Frame>
                         )}
