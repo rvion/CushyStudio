@@ -1,3 +1,4 @@
+import type { Field_selectOne_ } from '../../csuite/fields/selectOne/FieldSelectOne'
 import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
 
 import { observer } from 'mobx-react-lite'
@@ -111,7 +112,7 @@ export const PanelPreferencesUI = observer(function Panel_Preferences_(p: PanelP
 const PreferenceTabButtonUI = observer(function PreferenceTabButtonUI_(p: {
    //
    mode: PreferenceMode
-   field: Z.SelectOne_<PreferenceMode>
+   field: Field_selectOne_<PreferenceMode>
 }) {
    return (
       <ToggleButtonUI //
