@@ -1,9 +1,6 @@
-import type { AnyCTCollection } from '../../../../extensions/customTables/CTCollection'
-import type { AnyLoCollection } from '../../../../extensions/customTables/LoCollection'
 import type { Field } from '../model/Field'
 import type { CSchema } from '../simple/SimpleSchema'
 
-import DefaultMap from 'mnemonist/default-map'
 import DefaultWeakMap from 'mnemonist/default-weak-map'
 
 import { getUIDForMemoryStructure } from '../utils/getUIDForMemoryStructure'
@@ -88,8 +85,8 @@ export function schemaConfigHash(obj: any): string {
       if (!isPOJO) {
          if (obj._symCSchema === Symbol.for('CSchema')) return `🚼${(obj as CSchema)._uid}` // sub-schema
          if (obj._symField === Symbol.for('Field')) return `🚼${(obj as Field)._uid}` // sub-schema
-         if (obj._symCTCollection === Symbol.for('CTCollection')) return `🛜${(obj as AnyCTCollection).id}` // sub-schema
-         if (obj._symLoCollection === Symbol.for('LoCollection')) return `🇮🇸${(obj as AnyLoCollection).id}` // sub-schema
+         if (obj._symCTCollection === Symbol.for('CTCollection')) return `🛜${obj.id}` // sub-schema
+         if (obj._symLoCollection === Symbol.for('LoCollection')) return `🇮🇸${obj.id}` // sub-schema
          const readableName = obj.constructor?.name
          return `❓${readableName}#${getUIDForMemoryStructure(obj)}`
       } else {
@@ -132,14 +129,15 @@ const memoMapIndex = new DefaultWeakMap(() => new Map<any, any>())
  */
 export function memoizedFN<FN extends (...args: any[]) => any>(
    owner: object,
+   /** unique for this usage withing owner */
    uid: string,
-   stuff: FN,
+   fn: FN,
    deps: any[],
 ): FN {
    const memoMap = memoMapIndex.get(owner)
    const key = uid + schemaConfigHash(deps)
    const memo = memoMap.get(key)
    if (memo) return memo
-   memoMap.set(key, stuff)
-   return stuff
+   memoMap.set(key, fn)
+   return fn
 }
