@@ -1,4 +1,4 @@
-import type { IconName } from '../../csuite/icons/icons'
+import type { IconNameReal } from '../../csuite/icons/icons'
 
 import { makeAutoObservable } from 'mobx'
 
@@ -11,15 +11,15 @@ export class IconPanelStableState {
       makeAutoObservable(this)
    }
 
-   get allIcons_unfiltered(): IconName[] {
+   get allIcons_unfiltered(): IconNameReal[] {
       return getAllIcons()
    }
 
-   aliasesFor(iconName: IconName): Maybe<string[]> {
+   aliasesFor(iconName: IconNameReal): Maybe<string[]> {
       return iconAliases[iconName]
    }
 
-   get allIcons(): IconName[] {
+   get allIcons(): IconNameReal[] {
       if (!this.filter) return this.allIcons_unfiltered
       if (!this.query) return this.allIcons_unfiltered
       return this.allIcons_unfiltered.filter((x) => {
@@ -35,11 +35,11 @@ export class IconPanelStableState {
    /** Whether or not to use the filter when displaying icons */
    filter: boolean = true
    /** List of recently copied icons */
-   recent: IconName[] = []
+   recent: IconNameReal[] = []
    /** Used to filter down the icons to match the query. Only used when filter is enabled. */
    query: string = ''
 
-   copy = async (icon: IconName): Promise<void> => {
+   copy = async (icon: IconNameReal): Promise<void> => {
       const found = this.recent.indexOf(icon)
       if (found > -1) {
          this.recent.splice(found, 1)

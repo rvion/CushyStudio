@@ -6,7 +6,7 @@ import type { FrameSize } from './FrameSize'
 import type { FrameAppearance } from './FrameTemplates'
 import type { SimpleBoxShadow } from './SimpleBoxShadow'
 import type { SimpleDropShadow } from './SimpleDropShadow'
-import type { AriaRole, ForwardedRef, MouseEvent } from 'react'
+import type { AriaRole, MouseEvent } from 'react'
 
 import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
@@ -25,7 +25,7 @@ import { frameMode } from './frameMode'
 import { tooltipStuff } from './tooltip'
 
 export type FrameProps = {
-   ref?: ForwardedRef<HTMLDivElement>
+   ref?: React.Ref<HTMLDivElement>
    //
    as?: string
 
@@ -83,7 +83,7 @@ export type FrameProps = {
    /** Makes children of the Frame "!rounded-none !border-none", grouping them together visually */
    align?: boolean
    role?: AriaRole
-} & BoxUIProps &
+} & BoxUIProps<HTMLDivElement> &
    /** Sizing and aspect ratio vocabulary */
    FrameSize
 
@@ -174,7 +174,7 @@ export const Frame = observer(function Frame_(p: FrameProps) {
    // ===================================================================
    return (
       <Elem //
-         ref={ref}
+         ref={ref as any}
          // 📋 tooltip is now handled by csuite directly
          // | no need to rely on the browser's default tooltip
          // | // title={tooltip}
