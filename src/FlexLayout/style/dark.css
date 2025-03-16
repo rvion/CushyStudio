@@ -1,95 +1,59 @@
-/* .UI-MAIN{ */
-  /* border: 6px solid oklch(from var(--KLR) calc(l - 0.1 * var(--DIR)) calc(c / 2) h);; */
-  /* border-left: 6px solid var(--appbar); */
-  /* border-right: 6px solid var(--appbar); */
-/* } */
-
-/* :root { */
-/* } */
-
 .flexlayout__layout {
-  --p: oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) calc(c * 2) h);
-  --s: oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) calc(c * 2) h + 180);
-  --t: oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) calc(c * 2) h + 270);
-
-  --color-background:                       oklch(from var(--KLR) calc(l + 0.0001 * var(--DIR)) calc(c / 2) h); /* White background equivalent */
-  --color-base:                             oklch(from var(--KLR) calc(l + 0.0001 * var(--DIR)) calc(c / 2) h); /* Base color */
-  --color-1:                                oklch(from var(--KLR) calc(l + 0.0001 * var(--DIR)) calc(c / 2) h); /* Slightly off-white */
-  --color-2:                                oklch(var(--t/* b2 */)); /* Whitesmoke equivalent */
-  --color-3:                                oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h); /* Light gray equivalent */
-  --color-4:                                oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h); /* Placeholder for non-existing base-400 */
-  --color-5:                                oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h); /* Slightly darker than --color-3 */
-  --color-6:                                oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h); /* Placeholder for a color a bit darker than --color-5 */
-
-  --color-drag1:                            oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) calc(c * 2) h);  /* Primary color for dragging */
-  --color-drag2:                            oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) calc(c * 2) h + 180);  /* Secondary color for dragging */
-  --color-drag1-background:                 oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) calc(c * 2) h);  /* Primary color background with lowered opacity */
-  --color-drag2-background:                 oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) calc(c * 2) h + 180);  /* Secondary color background with lowered opacity */
-
-  --color-overflow:                         oklch(from var(--KLR) calc(l + 0.4 * var(--DIR)) calc(c / 2) h);
-  --color-icon:                             oklch(from var(--KLR) calc(l + 0.4 * var(--DIR)) calc(c / 2) h);
-
-  /* tabset background */
-  /* --color-tabset-background:                oklch(from var(--KLR) calc(l + 0 * var(--DIR)) c h); */
-  /* --color-tabset-background:                oklch(from var(--KLR) calc(l - 0.1 * var(--DIR)) calc(c / 2) h); */
-  --tab-bg:                                 oklch(from var(--appbar) calc(l - 0.1 * var(--DIR)) c h);
-  --color-tabset-background:                var(--tab-bg);
-
-  /*                                        oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h); */
-  /*                                        oklch(from var(--KLR) calc(l - 0.1 * var(--DIR)) calc(c / 2) h); */
-
-  /* --color-tabset-background-selected:    oklch(from var(--KLR) calc(l + 0 * var(--DIR)) c h); */
-  /* --color-tabset-background-selected:    oklch(from var(--KLR) calc(l - 0.1 * var(--DIR)) calc(c / 2) h); */
-  /* --color-tabset-background-selected:    oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h); */
-  --color-tabset-background-selected:       var(--tab-bg);
-
-  /* --color-tabset-background-maximized:      oklch(from var(--KLR) calc(l + 0 * var(--DIR)) c h); */
-  /*                                        oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h); */
-  --color-tabset-background-maximized:      var(--tab-bg);
-
-  --color-tabset-divider-line:              oklch(var(--p)/.2);
-  --color-tabset-header-background:         oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h);
-  --color-tabset-header:                    oklch(from var(--KLR) calc(l + 0.0001 * var(--DIR)) calc(c / 2) h);
-  --color-border-background:                oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h);
-  --color-border-divider-line:              oklch(var(--p)/.2);
-
-  /* # tab color */
-  --color-tab-selected:                     oklch(from var(--KLR) calc(l + 0.8 * var(--DIR)) c h);
-  --color-tab-selected-background:          oklch(from var(--KLR) calc(l + 0.08   * var(--DIR)) c h);
-  /* --color-tab-unselected:                   oklch(from var(--KLR) calc(l + 0.4 * var(--DIR)) calc(c / 2) h); */
-  /* --color-tab-unselected:                   oklch(from var(--KLR) calc(l + 0.8 * var(--DIR)) calc(c / 2) h); */
-  --color-tab-unselected:                   var(--foobar1);
-  --color-tab-unselected-background:        oklch(from var(--KLR) calc(l - 0.05 * var(--DIR)) calc(c / 2) h / .2);
-
-  /* borders tabs */
-  --color-border-tab-selected:              oklch(from var(--KLR) calc(l + 0.8 * var(--DIR)) calc(c / 2) h);
-  --color-border-tab-selected-background:   oklch(from var(--KLR) calc(l + 0.1 * var(--DIR)) calc(c / 2) h);
-  --color-border-tab-unselected:            oklch(from var(--KLR) calc(l + 0.4 * var(--DIR)) calc(c / 2) h);
-  --color-border-tab-unselected-background: oklch(from var(--KLR) calc(l + 0   * var(--DIR)) calc(c / 2) h);
-
-  /* # ??? */
-  --color-tab-textbox-background:           oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h);
-
-/* splitter */
-  --color-splitter:                         oklch(from var(--KLR) calc(l - 0.1 * var(--DIR)) calc(c / 2) h);
-  --color-splitter:                         var(--appbar);
-  --color-splitter-hover:                   oklch(from var(--KLR) calc(l + 0.2 * var(--DIR)) c h);
-  --color-splitter-drag:                    oklch(from var(--KLR) calc(l + 0.3 * var(--DIR)) c h);
-
-  --color-drag-rect-border:                 oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h);
-  --color-drag-rect-background:             oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h);
-  --color-drag-rect:                        oklch(from var(--KLR) calc(l + 0.0001 * var(--DIR)) calc(c / 2) h);
-  --color-popup-border:                     oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h);
-  --color-popup-unselected:                 oklch(from var(--KLR) calc(l + 0.0001 * var(--DIR)) calc(c / 2) h);
-  --color-popup-unselected-background:      oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h);
-  --color-popup-selected:                   oklch(from var(--KLR) calc(l + 0.0001 * var(--DIR)) calc(c / 2) h);
-  --color-popup-selected-background:        oklch(from var(--KLR) calc(l + 0.0003 * var(--DIR)) calc(c / 2) h);
-  --color-edge-marker:                      oklch(var(--n));
-  --color-underline:                        oklch(var(--i)); /* Info color for underline */
-  --color-underline-hover:                  oklch(var(--n)); /* Neutral color for hover state */
-  --underline_height: 3px;
+  --color-text: #eeeeee;
+  --color-background: black;
+  --color-base: black;
+  --color-1: rgb(17.85, 17.85, 17.85);
+  --color-2: rgb(25.5, 25.5, 25.5);
+  --color-3: rgb(38.25, 38.25, 38.25);
+  --color-4: #333333;
+  --color-5: rgb(63.75, 63.75, 63.75);
+  --color-6: rgb(76.5, 76.5, 76.5);
+  --color-drag1: rgb(207, 232, 255);
+  --color-drag2: rgb(183, 209, 181);
+  --color-drag1-background: rgba(128, 128, 128, 0.15);
+  --color-drag2-background: rgba(128, 128, 128, 0.15);
+  --font-size: medium;
+  --font-family: Roboto, Arial, sans-serif;
+  --color-overflow: gray;
+  --color-icon: gray;
+  --color-tabset-background: var(--color-1);
+  --color-tabset-background-selected: var(--color-1);
+  --color-tabset-background-maximized: var(--color-6);
+  --color-tabset-divider-line: var(--color-4);
+  --color-tabset-header-background: var(--color-1);
+  --color-tabset-header: var(--color-text);
+  --color-border-tab-content: var(--color-background);
+  --color-border-background: var(--color-1);
+  --color-border-divider-line: var(--color-4);
+  --color-tab-content: var(--color-background);
+  --color-tab-selected: var(--color-text);
+  --color-tab-selected-background: var(--color-4);
+  --color-tab-unselected: gray;
+  --color-tab-unselected-background: transparent;
+  --color-tab-textbox: var(--color-text);
+  --color-tab-textbox-background: var(--color-3);
+  --color-border-tab-selected: var(--color-text);
+  --color-border-tab-selected-background: var(--color-4);
+  --color-border-tab-unselected: gray;
+  --color-border-tab-unselected-background: var(--color-2);
+  --color-splitter: var(--color-2);
+  --color-splitter-hover: var(--color-4);
+  --color-splitter-drag: var(--color-5);
+  --color-drag-rect-border: var(--color-4);
+  --color-drag-rect-background: var(--color-1);
+  --color-drag-rect: var(--color-text);
+  --color-popup-border: var(--color-6);
+  --color-popup-unselected: var(--color-text);
+  --color-popup-unselected-background: var(--color-background);
+  --color-popup-selected: var(--color-text);
+  --color-popup-selected-background: var(--color-4);
+  --color-edge-marker: gray;
+  --color-edge-icon: #eee;
+  --color-mini-scroll-indicator: rgba(128, 128, 128, 0.5);
+  --color-mini-scroll-indicator-hovered: rgba(128, 128, 128, 0.8);
+  --size-mini-scroll-indicator: 3px;
+  --color-toolbar-button-hover: var(--color-4);
 }
-
 
 /*
     base classes

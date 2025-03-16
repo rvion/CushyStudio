@@ -133,7 +133,6 @@
         "esbuild": "^0.25.1",
         "express": "^4.21.2",
         "fastest-levenshtein": "^1.0.16",
-        "flexlayout-react": "file:./src/flexlayout-react-0.8.1.tgz",
         "highlight.js": "^11.11.1",
         "image-meta": "^0.2.1",
         "immer": "^10.1.1",

@@ -4,6 +4,7 @@ import { runInAction } from 'mobx'
 
 import { type Command } from '../../csuite/commands/Command'
 import { Trigger } from '../../csuite/trigger/Trigger'
+import * as FL from '../../FlexLayout'
 import { _duplicateCurrentDraft } from './cmd_duplicateCurrentDraft'
 import { KEYS } from './shorcutKeys'
 import { globalValidInInput } from './simpleValidInInput'
@@ -22,7 +23,7 @@ function focusTree(tree: Tree): void {
             cushy.layout.open('TreeExplorer', {}, { where: 'right' }) // close the panel
          else focusTreeRootIfMounted()
       } else {
-         const node = cushy.layout.open('TreeExplorer', {}, { where: 'right' })
+         const node: Maybe<FL.Node> = cushy.layout.open('TreeExplorer', {}, { where: 'right' })
          setImmediate((): void => {
             const isVisible = node?.isVisible()
             if (!isVisible) return
