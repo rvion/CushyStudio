@@ -172,10 +172,16 @@ export const DrawNodeGraphUI = observer(function DrawNodeGraphUI_(p: {
                      const handlePadding = 25
                      let splineString = null
                      let splineColor = null
+                     const isOneSelected =
+                        (start.fromNode && start.fromNode.selected) ||
+                        (start.toNode && start.toNode.selected) ||
+                        (end.fromNode && end.fromNode.selected) ||
+                        (end.toNode && end.toNode.selected)
+
                      if (
                         !cachedSpline ||
-                        (start.fromNode && start.fromNode.isDirty) ||
-                        (end.toNode && end.toNode.isDirty)
+                        (start.fromNode && (start.fromNode.isDirty || start.fromNode.isDirty)) ||
+                        (end.toNode && (end.toNode.isDirty || end.toNode.selected))
                      ) {
                         // Reverse handle direction when start is greater than the end so we can clearly see the noodles in more scenarios
                         const dx2 =
@@ -187,6 +193,7 @@ export const DrawNodeGraphUI = observer(function DrawNodeGraphUI_(p: {
                         splineString += ` ${end.x - dx2} ${end.y}`
                         splineString += ` ${end.x} ${end.y}`
                         splineColor = colorFn(start.type)
+                        // splineColor = `oklch(0.5 0.25 ${node.x})`
 
                         splineCache.set(start.id, {
                            node: node,
@@ -201,16 +208,11 @@ export const DrawNodeGraphUI = observer(function DrawNodeGraphUI_(p: {
                            end.toNode.tagDirty(false)
                         }
                      } else {
-                        const isOneSelected =
-                           (start.fromNode && start.fromNode.selected) ||
-                           (start.toNode && start.toNode.selected) ||
-                           (end.fromNode && end.fromNode.selected) ||
-                           (end.toNode && end.toNode.selected)
                         splineString = cachedSpline.spline
-                        splineColor = isOneSelected ? 'white' : cachedSpline.color
+                        splineColor = cachedSpline.color
                      }
                      const path = splineString //path2WithCubicBezier
-                     const stroke = splineColor
+                     const stroke = isOneSelected ? 'white' : splineColor
                      // TODO(bird_d/preferences/interface): Graph stroke width option
                      return <path d={path} stroke={stroke} strokeWidth='2' fill='none' />
                   })
@@ -316,7 +318,7 @@ export const DrawNodeGraphUI = observer(function DrawNodeGraphUI_(p: {
                               base={{ contrast: 0.05, chromaBlend: 0.2 }}
                               tw='node flex flex-col overflow-clip '
                               //  hover
-                              border={{ contrast: node.selected ? 0.5 : -0.2 }}
+                              border={{ contrast: node.selected ? 1 : -0.2 }}
                               key={node.uid}
                               roundness={theme.global.roundness}
                               //    dropShadow={{ x: 0, y: 3, color: 'black', blur: 5, opacity: 0.5 }}
