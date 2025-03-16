@@ -35,7 +35,7 @@ export const prefabModelFlux = (): $prefabModelFlux => {
          clip2: b.enum['DualCLIPLoader.clip_name2']({
             // @ts-ignore
             default: 'clip_l.safetensors',
-         }).addRequirementOnComfyManagerModel('comfyanonymous/clip_l'),
+         }).addRequirementOnComfyManagerModel('Comfy-Org/clip_l'),
          type: b.enum['DualCLIPLoader.type']({ default: 'flux' }),
          extra: schemaModelExtras({
             // @ts-ignore
