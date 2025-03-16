@@ -26,7 +26,7 @@ export const prefabModelSD3 = (): $prefabModelSD3 => {
       })
       .addRequirements([
          { type: 'modelInManager', modelName: 'google-t5/t5-v1_1-xxl_encoderonly-fp16' },
-         { type: 'modelInManager', modelName: 'comfyanonymous/clip_l' },
+         { type: 'modelInManager', modelName: 'Comfy-Org/clip_l' },
          { type: 'modelInManager', modelName: 'CLIPVision model (stabilityai/clip_vision_g)' },
       ])
 }
