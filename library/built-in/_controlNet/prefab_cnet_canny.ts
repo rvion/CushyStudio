@@ -45,7 +45,7 @@ export function ui_subform_Canny(): UI_subform_Canny {
          { type: 'modelInManager', modelName: 'ControlNet-v1-1 (canny; fp16)' },
          { type: 'modelInManager', modelName: 'stabilityai/control-lora-canny-rank128.safetensors' },
          { type: 'modelInManager', modelName: 'stabilityai/control-lora-canny-rank256.safetensors' },
-         { type: 'modelInManager', modelName: 'kohya-ss/ControlNet-LLLite: SDXL Canny Anime' },
+         // { type: 'modelInManager', modelName: 'kohya-ss/ControlNet-LLLite: SDXL Canny Anime' },
       ])
 }
 
