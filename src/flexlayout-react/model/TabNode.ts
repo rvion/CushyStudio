@@ -52,6 +52,10 @@ export class TabNode extends Node implements IDraggable {
         }
     }
 
+    isVisible(){
+        return this.visible;
+    }
+
     getName() {
         return this.getAttr("name") as string;
     }
