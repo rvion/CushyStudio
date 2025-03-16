@@ -1025,6 +1025,10 @@ export abstract class Field {
       })
    }
 
+   isOfType(...type: CATALOG.AllFieldTypes[]): boolean {
+      return type.includes(this.type)
+   }
+
    /** expand all children that can are collapsed */
    expandAllChildren(): void {
       runInAction(() => {
