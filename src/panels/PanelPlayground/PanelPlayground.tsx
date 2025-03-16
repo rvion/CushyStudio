@@ -65,19 +65,6 @@ export const PanelPlaygroundUI = observer(function PanelPlaygroundUI_(p: PanelPl
             {mode.jsx && <PlaygroundJSX />}
             {/* {mode.value.comfyImport && <PlaygroundImportFromComfy />} */}
          </ErrorBoundaryUI>
-
-         <MessageInfoUI>
-            <div tw='inline overflow-clip text-sm'>
-               <span>Use this panel as a scratchpad by modifying </span>
-               <span tw='rounded px-1'>PlaygroundScratchPad</span>
-               <span> in </span>
-               <UI.Button //
-                  tw='underline'
-                  onClick={() => cushy.openInVSCode(relPathToThisPage)}
-                  children={relPathToThisPage}
-               />
-            </div>
-         </MessageInfoUI>
       </UI.Panel>
    )
 })
