@@ -4,7 +4,8 @@ import type { FC } from 'react'
 
 import * as IconImport from '@mdi/react'
 
-import { allIcons, type IconName, type IconNameReal } from './icons'
+import { type IconName } from './IconName'
+import { allIcons, type IconNameReal } from './icons'
 
 const Icon = IconImport.Icon
 

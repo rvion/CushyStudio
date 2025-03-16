@@ -1,5 +1,5 @@
 import type { BoxUIProps } from '../box/BoxUIProps'
-import type { IconName } from '../icons/icons'
+import type { IconName } from '../icons/IconName'
 import type { RevealPlacement } from '../reveal/RevealPlacement'
 import type { ComputedColors } from './FrameColors'
 import type { FrameSize } from './FrameSize'

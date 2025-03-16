@@ -1,4 +1,4 @@
-import type { IconName } from '../icons/icons'
+import type { IconName } from '../icons/IconName'
 
 import { makeAutoObservable } from 'mobx'
 

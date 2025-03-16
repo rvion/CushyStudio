@@ -1,7 +1,7 @@
 import type { Box } from '../box/Box'
 import type { SharedClickAndSlideKey } from '../button/usePressLogic'
 import type { FrameProps } from '../frame/Frame'
-import type { IconName } from '../icons/icons'
+import type { IconName } from '../icons/IconName'
 
 import { observer } from 'mobx-react-lite'
 import { createElement } from 'react'

@@ -10,6 +10,7 @@ import { ToggleButtonUI } from '../../csuite/checkbox/InputBoolToggleButtonUI'
 import { SpacerUI } from '../../csuite/components/SpacerUI'
 import { useCSuite } from '../../csuite/ctx/useCSuite'
 import { Frame } from '../../csuite/frame/Frame'
+import { uncastIcon } from '../../csuite/icons/icons'
 import { InputStringUI } from '../../csuite/input-string/InputStringUI'
 import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
 import { useSizeOf } from '../../csuite/smooth-size/useSizeOf'
@@ -103,7 +104,7 @@ export const PanelIconUI = observer(function PanelIconUI_(p: NO_PROPS) {
             {uist.recent.map((iconName) => {
                return (
                   <Button //
-                     key={iconName}
+                     key={uncastIcon(iconName)}
                      borderless
                      subtle
                      style={{ height: itemHeight, width: itemWidth }}
@@ -135,7 +136,8 @@ export const PanelIconUI = observer(function PanelIconUI_(p: NO_PROPS) {
                {({ columnIndex, rowIndex, style }) => {
                   const iconName = allIcons[rowIndex * nbCols + columnIndex]
                   if (iconName == null) return
-                  const matchPrimaryName = iconName.toLowerCase().includes(uist.query)
+                  const iconNameStr = uncastIcon(iconName)
+                  const matchPrimaryName = iconNameStr.toLowerCase().includes(uist.query)
                   const aliases = uist.aliasesFor(iconName)
                   // if (matchPrimaryName) return '🟢'
                   // return '🔴'
@@ -143,7 +145,9 @@ export const PanelIconUI = observer(function PanelIconUI_(p: NO_PROPS) {
                      <Button //
                         borderless
                         subtle
-                        tooltip={iconName + (aliases != null ? ` (aliases: ${JSON.stringify(aliases)})` : '')}
+                        tooltip={
+                           iconNameStr + (aliases != null ? ` (aliases: ${JSON.stringify(aliases)})` : '')
+                        }
                         base={{ hueShift: matchPrimaryName ? undefined : -100 }}
                         style={style}
                         icon={iconName}

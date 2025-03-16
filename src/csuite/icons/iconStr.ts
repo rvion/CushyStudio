@@ -1,4 +1,5 @@
-import { allIcons, type IconName } from './icons'
+import { type IconName } from './IconName'
+import { allIcons } from './icons'
 
 export const getIconAsDataSVG = (iconName: Maybe<IconName>): string | undefined => {
    if (!iconName) return undefined

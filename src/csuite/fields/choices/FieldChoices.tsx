@@ -1,4 +1,4 @@
-import type { IconName } from '../../icons/icons'
+import type { IconName } from '../../icons/IconName'
 import type { CSchema } from '../../model/CSchema'
 import type { KeyedField, VALUE_MODE } from '../../model/Field'
 import type { FieldConfig_CommonProperties } from '../../model/FieldConfig'

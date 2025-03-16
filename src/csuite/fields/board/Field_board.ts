@@ -2,7 +2,7 @@
  * THIS FILE IS AN EXEMPLE OF A COMPOSITE FIELD WITH METHODS.
  * IT WILL BE IMPROVED AS COMPOSITE FIELDS API IS FINALIZED.
  */
-import type { IconName } from '../../icons/icons'
+import type { IconName } from '../../icons/IconName'
 import type { CSchema } from '../../model/CSchema'
 import type { Field, FieldCtorProps } from '../../model/Field'
 import type { FieldConfig } from '../../model/FieldConfig'

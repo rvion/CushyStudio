@@ -1,4 +1,4 @@
-import type { IconName } from '../csuite/icons/icons'
+import type { IconName } from '../csuite/icons/IconName'
 
 import { exhaust } from '../csuite/utils/exhaust'
 

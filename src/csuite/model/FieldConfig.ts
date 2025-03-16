@@ -1,5 +1,5 @@
 import type { Box } from '../box/Box'
-import type { IconName } from '../icons/icons'
+import type { IconName } from '../icons/IconName'
 import type { TintExt } from '../kolor/Tint'
 import type { CovariantFn } from '../variance/BivariantHack'
 import type { CovariantFC } from '../variance/CovariantFC'

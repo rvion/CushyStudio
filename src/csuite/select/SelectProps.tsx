@@ -1,5 +1,5 @@
 import type { FrameProps } from '../frame/Frame'
-import type { IconName } from '../icons/icons'
+import type { IconName } from '../icons/IconName'
 import type { InputStringProps } from '../input-string/InputStringUI'
 import type { RevealPlacement } from '../reveal/RevealPlacement'
 import type { RevealProps } from '../reveal/RevealProps'

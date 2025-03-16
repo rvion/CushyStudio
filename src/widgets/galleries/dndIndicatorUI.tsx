@@ -1,4 +1,4 @@
-import type { IconName } from '../../csuite/icons/icons'
+import type { IconName } from '../../csuite/icons/IconName'
 
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'

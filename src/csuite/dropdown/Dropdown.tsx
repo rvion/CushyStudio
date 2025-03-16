@@ -1,4 +1,4 @@
-import type { IconName } from '../icons/icons'
+import type { IconName } from '../icons/IconName'
 import type { Tint } from '../kolor/Tint'
 import type { ReactNode } from 'react'
 

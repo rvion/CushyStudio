@@ -1,4 +1,4 @@
-import type { IconName } from '../../icons/icons'
+import type { IconName } from '../../icons/IconName'
 import type { SelectKey } from './SelectOneKey'
 
 export type SelectOptionID = string

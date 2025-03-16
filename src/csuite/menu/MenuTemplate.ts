@@ -1,4 +1,4 @@
-import type { IconName } from '../icons/icons'
+import type { IconName } from '../icons/IconName'
 import type { Trigger } from '../trigger/Trigger'
 import type { MenuProps } from './Menu'
 import type { MenuBuilder } from './MenuBuilder'

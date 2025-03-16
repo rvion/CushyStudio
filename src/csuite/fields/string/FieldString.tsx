@@ -1,4 +1,4 @@
-import type { IconName } from '../../icons/icons'
+import type { IconName } from '../../icons/IconName'
 import type { CSchema } from '../../model/CSchema'
 import type { Patch } from '../../model/Patch'
 import type { Repository } from '../../model/Repository'

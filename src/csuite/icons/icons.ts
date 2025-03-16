@@ -1,3 +1,5 @@
+import type { IconName } from './IconName'
+
 import { _IconsCDI } from './iconsCDI'
 import { _IconsLDI } from './iconsLDI'
 import { _IconsMDI } from './iconsMDI'
@@ -52,8 +54,9 @@ type AllIconsT = typeof allIcons
 // > T[number] is not a naked type parameter, so no distribution. Elem is a naked type parameter in the second type, so distribution occurs.
 export type IconNameReal = [keyof AllIconsT][0]
 
-const IconSym = Symbol.for('icon')
-export type IconName = typeof IconSym
+export function uncastIcon(icon: IconName): string {
+   return icon as any as string
+}
 
 export type AllIkons = { [iconName in IconNameReal]: IconName }
 export const IKONS: AllIkons = new Proxy({},{ get(_, key: IconNameReal): any { return key } }) as any // prettier-ignore

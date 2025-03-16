@@ -1,4 +1,4 @@
-import type { IconName } from '../../../csuite/icons/icons'
+import type { IconName } from '../../../csuite/icons/IconName'
 import type { UnifiedCanvas } from '../states/UnifiedCanvas'
 import type { ICanvasTool } from '../utils/_ICanvasTool'
 

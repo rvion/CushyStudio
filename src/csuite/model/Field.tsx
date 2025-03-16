@@ -1,6 +1,6 @@
 import type { Field_list_ItemID, Field_list_serial } from '../fields/list/FieldList'
 import type { Field_optional_serial } from '../fields/optional/FieldOptional'
-import type { IconName } from '../icons/icons'
+import type { IconName } from '../icons/IconName'
 import type { TintExt } from '../kolor/Tint'
 import type { FieldAnomaly } from '../migration/Anomaly'
 import type { ITreeElement } from '../tree/TreeEntry'

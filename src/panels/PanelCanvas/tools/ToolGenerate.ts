@@ -1,4 +1,4 @@
-import type { IconName } from '../../../csuite/icons/icons'
+import type { IconName } from '../../../csuite/icons/IconName'
 import type { Trigger } from '../../../csuite/trigger/Trigger'
 import type { UnifiedCanvas } from '../states/UnifiedCanvas'
 import type { ICanvasTool, ToolMovePayload, ToolPressPayload } from '../utils/_ICanvasTool'

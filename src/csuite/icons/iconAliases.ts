@@ -1,8 +1,6 @@
-import type { IconNameReal } from './icons'
+import type { IconName } from './IconName'
 
-export const iconAliases: {
-   [key: string]: IconNameReal[]
-} = JSON.parse(`{
+export const iconAliases: Record<IconName, IconName[]> = JSON.parse(`{
    mdiAbjadArabic: ['writing-system-arabic'],
    mdiAbjadHebrew: ['writing-system-hebrew'],
    mdiAbugidaDevanagari: ['writing-system-devanagari'],

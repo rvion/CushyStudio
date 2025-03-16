@@ -1,5 +1,5 @@
 import type { Field_string_config } from '../fields/string/FieldString'
-import type { IconName } from '../icons/icons'
+import type { IconName } from '../icons/IconName'
 import type { CSSSizeString } from './CSSSizeString'
 import type { CSSProperties, ReactElement, ReactNode } from 'react'
 

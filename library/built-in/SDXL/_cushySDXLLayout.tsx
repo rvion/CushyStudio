@@ -1,6 +1,6 @@
 import type { RenderRule } from '../../../src/csuite-cushy/presenters/RenderTypes'
 import type { Field_list } from '../../../src/csuite/fields/list/FieldList'
-import type { IconName } from '../../../src/csuite/icons/icons'
+import type { IconName } from '../../../src/csuite/icons/IconName'
 import type { CushySDXLSchema } from './_cushySDXLSchema'
 
 import { observer } from 'mobx-react-lite'

@@ -1,5 +1,5 @@
 import type { ConfigFile } from '../../config/ConfigFile'
-import type { IconName } from '../../csuite/icons/icons'
+import type { IconName } from '../../csuite/icons/IconName'
 import type { WidgetPromptUISt } from '../WidgetPromptUISt'
 import type { FC } from 'react'
 
