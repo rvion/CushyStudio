@@ -304,7 +304,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                tw='z-20 h-full items-center !rounded-none opacity-0'
                tabIndex={-1}
                onClick={uist.decrement}
-               icon='mdiChevronLeft'
+               icon={IKONS.mdiChevronLeft}
                square
                size='inside'
             />
@@ -445,7 +445,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProp
                tw='z-20 h-full items-center !rounded-none opacity-0'
                tabIndex={-1}
                onClick={uist.increment}
-               icon='mdiChevronRight'
+               icon={IKONS.mdiChevronRight}
                square
                size='inside'
             />

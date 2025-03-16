@@ -17,7 +17,7 @@ export function ui_3dDisplacement(): UI_3dDisplacement {
    const form = getBuilder()
    return form
       .group({
-         icon: 'mdiRotate3d',
+         icon: IKONS.mdiRotate3d,
          label: '3D Displacement',
          items: {
             normal: form.selectOneString(['MiDaS', 'BAE', 'None'], {

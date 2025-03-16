@@ -1,6 +1,6 @@
 import type { Field_group } from '../fields/group/FieldGroup'
-import type { CSchema } from './CSchema'
 import type { IBuilder } from './builders/IBuilder'
+import type { CSchema } from './CSchema'
 import type { DraftLike } from './Draft'
 import type { EntityConfig } from './Entity'
 import type { SchemaDict } from './SchemaDict'
@@ -112,21 +112,21 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
       return doc
    }
 
-   // this is not much more than a useMemo(() => new Prez(field))...
-   usePrez<SCHEMA extends CSchema>(
-      fieldOrSchema: SCHEMA['$field'] | SCHEMA,
-      conf:
-         | RENDERER.FieldRenderArgs<SCHEMA['$field']>
-         | ((fo: RENDERER.Prez<SCHEMA>) => RENDERER.Prez<SCHEMA>) = {},
-      deps: DependencyList = [],
-   ): RENDERER.Prez<SCHEMA> {
-      const prez = useMemo(() => {
-         if (typeof conf === 'function') return conf(globalThis.RENDERER.makePrez(fieldOrSchema))
-         return globalThis.RENDERER.makePrez(fieldOrSchema, conf)
-      }, [...deps])
+   // // this is not much more than a useMemo(() => new Prez(field))...
+   // usePrez<SCHEMA extends CSchema>(
+   //    fieldOrSchema: SCHEMA['$field'] | SCHEMA,
+   //    conf:
+   //       | RENDERER.FieldRenderArgs<SCHEMA['$field']>
+   //       | ((fo: RENDERER.Prez<SCHEMA>) => RENDERER.Prez<SCHEMA>) = {},
+   //    deps: DependencyList = [],
+   // ): RENDERER.Prez<SCHEMA> {
+   //    const prez = useMemo(() => {
+   //       if (typeof conf === 'function') return conf(globalThis.RENDERER.makePrez(fieldOrSchema))
+   //       return globalThis.RENDERER.makePrez(fieldOrSchema, conf)
+   //    }, [...deps])
 
-      return prez
-   }
+   //    return prez
+   // }
 
    /**
     * same as `use` but dispose the document when the component unmount.

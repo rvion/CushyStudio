@@ -3,7 +3,7 @@ import type { AspectRatio, ModelType } from './WidgetSizeTypes'
 
 import { observer } from 'mobx-react-lite'
 
-import { InputBoolToggleButtonUI } from '../../checkbox/InputBoolToggleButtonUI'
+import { ToggleButtonUI } from '../../checkbox/InputBoolToggleButtonUI'
 import { InputBoolUI } from '../../checkbox/InputBoolUI'
 import { Frame } from '../../frame/Frame'
 import { InputNumberUI } from '../../input-number/InputNumberUI'
@@ -28,7 +28,7 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
    const uist = p.size
 
    const modelBtn = (model: ModelType): React.JSX.Element => (
-      <InputBoolToggleButtonUI //
+      <ToggleButtonUI //
          tw='w-input'
          value={uist.desiredModelType == model}
          onValueChange={() => {
@@ -42,7 +42,7 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
    )
 
    // const ratio = uist.width / uist.height
-   // const ratioIcon = ratio == 1.0 ? 'mdiApproximatelyEqual' : ratio > 1.0 ? 'mdiCropLandscape' : 'mdiCropPortrait'
+   // const ratioIcon = ratio == 1.0 ? IKONS.mdiApproximatelyEqual : ratio > 1.0 ? IKONS.mdiCropLandscape : IKONS.mdiCropPortrait
 
    return (
       <div className='flex flex-1 flex-col gap-0.5'>

@@ -12,8 +12,8 @@ import type { Problem_Ext } from './Validation'
 
 export type FieldConfigFor<FIELD extends Field> = FieldConfig_CommonProperties<FIELD> & FIELD['$ownConfig']
 export interface FieldConfig_CommonProperties<out FIELD extends Field> {
-   ui?: CATALOG.variants[FIELD['$type']]
-   uiui?: CATALOG.variants[FIELD['$type']]
+   ui?: RENDERER.UIConf<FIELD>
+   uiui?: RENDERER.UIConf<FIELD>
    /**
     * @since 2024-05-20
     * @stability beta
@@ -177,8 +177,8 @@ export interface FieldConfig_CommonProperties<out FIELD extends Field> {
    /**
     * @internal
     * you probably DON'T want to specify this manually.
-    * you can use the <schema>.publish(...) method instead
-    *                          ^^^^^^^^^^^^
+    * you can use the <schema>.publishToChannel(...) method instead
+    *                          ^^^^^^^^^^^^^^^^
     * @since 2024-05-01
     * @stability beta
     */

@@ -1,3 +1,4 @@
+import type { Field_bool } from '../../../src/csuite/fields/bool/FieldBool'
 import type { OutputFor } from '../_prefabs/_prefabs'
 
 import { bang } from '../../../src/csuite/utils/bang'
@@ -30,7 +31,7 @@ export type UI_cnet = Z.Link<
          image: Z.Image
          mask: UI_Mask
          resize: Z.Bool
-         applyDuringUpscale: Z.Bool
+         applyDuringUpscale: Z.Shared<Field_bool>
          cnets: Z.Choices<{
             IPAdapter: UI_subform_IPAdapter
             FaceID: UI_IPAdapterFaceID
@@ -79,7 +80,7 @@ export function ui_cnet(): UI_cnet {
                         ])
                         .withConfig({ tooltip: 'Applies controlnet only to the masked area.' }),
                      resize: form.bool({ default: true }),
-                     applyDuringUpscale: applyDuringUpscale,
+                     applyDuringUpscale: applyDuringUpscale.shared(),
                      cnets: form.choices(
                         {
                            IPAdapter: ui_subform_IPAdapter(), // 🟢

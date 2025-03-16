@@ -49,7 +49,7 @@ export function ui_refiners(): UI_Refiners {
                         },
                         {
                            startCollapsed: true,
-                           toSummary: ({ value: ui }): string =>
+                           toString_: ({ value: ui }): string =>
                               `prompt:${ui.prompt} detector:${ui.detector}`,
                         },
                      )
@@ -71,7 +71,7 @@ export function ui_refiners(): UI_Refiners {
                         },
                         {
                            startCollapsed: true,
-                           toSummary: ({ value: ui }): string =>
+                           toString_: ({ value: ui }): string =>
                               `prompt:${ui.prompt} detector:${ui.detector}`,
                         },
                      )
@@ -84,7 +84,7 @@ export function ui_refiners(): UI_Refiners {
                   eyes: form
                      .fields(
                         { prompt: form.string({ default: eyePositiveDefault, textarea: true }) },
-                        { startCollapsed: true, toSummary: ({ value: ui }): string => `prompt:${ui.prompt}` },
+                        { startCollapsed: true, toString_: ({ value: ui }): string => `prompt:${ui.prompt}` },
                      )
                      .addRequirements([
                         { type: 'customNodesByTitle', title: 'ComfyUI Impact Pack' },
@@ -106,14 +106,14 @@ export function ui_refiners(): UI_Refiners {
                      {
                         startCollapsed: true,
                         tooltip: 'Enabling defines the bounding boxes more clearly rather than a square box',
-                        toSummary: ({ value: ui }): string => `model:${ui.model_name}`,
+                        toString_: ({ value: ui }): string => `model:${ui.model_name}`,
                      },
                   )
                   .optional(),
             },
             {
                startCollapsed: true,
-               toSummary: ({ value: ui }): string => {
+               toString_: ({ value: ui }): string => {
                   return `sam:${ui.sam ? 'on' : 'off'} denoise:${ui.sampler.denoise} steps:${ui.sampler.steps} cfg:${
                      ui.sampler.cfg
                   } sampler:${ui.sampler.sampler_name}/$${ui.sampler.scheduler}`
@@ -123,7 +123,7 @@ export function ui_refiners(): UI_Refiners {
       },
       {
          icon: IKONS.mdiMagnifyExpand,
-         toSummary: ({ value: ui }): string => {
+         toString_: ({ value: ui }): string => {
             return `Refiners ${ui.refinerType.faces ? 'FACE' : ''} ${ui.refinerType.hands ? 'HANDS' : ''} ${
                ui.refinerType.eyes ? 'EYES' : ''
             }`

@@ -36,12 +36,12 @@ export const latentSizeChanel = new cushy.Channel<{ w: number; h: number }>()
 export function ui_latent_v3(p: { size?: Field_size_config } = {}): UI_LatentV3 {
    const form: Z.Builder = getBuilder()
    return form.with(form.int({ label: 'batchSize', step: 1, default: 1, min: 1, max: 8 }), (batchSize_) => {
-      const batchSize = form.linked(batchSize_)
+      const batchSize = batchSize_.shared()
       return form.choice(
          {
             emptyLatent: form.fields({
                batchSize,
-               size: form.size(p.size).publish(latentSizeChanel, (s) => ({
+               size: form.size(p.size).publishToChannel(latentSizeChanel, (s) => ({
                   w: s.width_or_zero,
                   h: s.height_or_zero,
                })),
