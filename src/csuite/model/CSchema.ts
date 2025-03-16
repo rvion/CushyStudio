@@ -502,10 +502,10 @@ export class CSchema<out FIELD extends Field = Field> {
 
    // ------------------------------------------------------------------------
    neighboors: { [key in NeighborhoodName]: CSchemaNeighborhood<string> } = {
-      children: CSchema.newNeighborhood<string>('children', this, () =>
+      children: new CSchemaNeighborhood<string>('children', this, () =>
          this.fieldConstructor.getChildren(this.config),
       ),
-      travels: CSchema.newNeighborhood<TravelEdge>('travels', this, () =>
+      travels: new CSchemaNeighborhood<TravelEdge>('travels', this, () =>
          this.fieldConstructor.getTravels(this.config),
       ),
    }
