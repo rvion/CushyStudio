@@ -12,15 +12,15 @@ export type SimpleShape = {
    depth: number
 
    // scale
-   scaleX?: number
-   scaleY?: number
-   scaleZ?: number
+   scaleX?: Maybe<number>
+   scaleY?: Maybe<number>
+   scaleZ?: Maybe<number>
 
    // color
-   fill?: string
+   fill?: Maybe<string>
 
    // rotation
-   rotation?: number
+   rotation?: Maybe<number>
 
    // interraction
    isSelected: boolean
@@ -28,7 +28,7 @@ export type SimpleShape = {
    isResizing: boolean
 }
 
-export const mkPlacement = (p: Partial<SimpleShape>): SimpleShape$['$value'] => {
+export const mkPlacement = (p: Partial<SimpleShape>): SimpleShape => {
    return {
       x: 0,
       y: 0,

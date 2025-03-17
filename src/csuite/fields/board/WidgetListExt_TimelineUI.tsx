@@ -11,7 +11,7 @@ export const WidgetListExt_TimelineUI = observer(function WidgetTimelineUI_<T ex
    const scale = 20
    const TL = p.field
    const value = TL.value
-   const entries = TL.fields.items.childrenActive.map((i) => i.fields)
+   const entries = TL.fields.items.map((i) => i.fields)
    const uiSt = useLocalObservable(() => ({
       ix: 0,
    }))

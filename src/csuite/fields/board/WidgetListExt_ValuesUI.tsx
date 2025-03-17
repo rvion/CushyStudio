@@ -22,7 +22,7 @@ export const WidgetListExt_ValuesUI = observer(function WidgetListExtValuesUI_<T
             const subWidget = sub.value
             const shape = sub.shape
             return (
-               <div key={subWidget.id} tw='flex items-start'>
+               <div key={subWidget._uid} tw='flex items-start'>
                   <div style={{ width: `${indexWidth}rem` }}>{ix}</div>
                   <input
                      value={shape.value.fill}

@@ -1,4 +1,3 @@
-import type { CSchema } from '../../model/CSchema'
 import type { Field_board } from './Field_board'
 
 import { observer, useLocalObservable } from 'mobx-react-lite'
@@ -11,7 +10,7 @@ export const WidgetListExt_KonvaBoardUI = observer(function WidgetListExt_KonvaB
    field: Field_board<any>
 }) {
    const RG = p.field
-   const entries = RG.fields.items.childrenActive.map((i) => i.fields)
+   const entries = RG.fields.items.map((i) => i.fields)
    const uist = useLocalObservable(() => ({ scale: 1 }))
    return (
       <>

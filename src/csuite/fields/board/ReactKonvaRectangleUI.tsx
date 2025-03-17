@@ -11,8 +11,8 @@ export const ReactKonvaRectangleUI = observer(function ReactKonvaRectangleUI_(p:
    isSelected?: boolean
    onChange?: (p: Partial<SimpleShape>) => void
 }) {
-   const shapeRef = React.useRef<any>()
-   const trRef = React.useRef<any>()
+   const shapeRef = React.useRef<any>(null)
+   const trRef = React.useRef<any>(null)
    React.useEffect(() => {
       if (p.isSelected) {
          // we need to attach transformer manually
@@ -32,9 +32,9 @@ export const ReactKonvaRectangleUI = observer(function ReactKonvaRectangleUI_(p:
             y={p.shape.y}
             width={p.shape.width}
             height={p.shape.height}
-            scaleX={p.shape.scaleX}
-            scaleY={p.shape.scaleY}
-            rotation={p.shape.rotation}
+            scaleX={p.shape.scaleX ?? undefined}
+            scaleY={p.shape.scaleY ?? undefined}
+            rotation={p.shape.rotation ?? undefined}
             draggable
             onDragEnd={(e) => {
                p.onChange?.({
