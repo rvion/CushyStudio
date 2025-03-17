@@ -39,7 +39,7 @@ export const DraftImageSlotPickerUI = observer(function DraftImageSlotPickerUI_(
       return allImageFields
    }, [])
 
-   let lastParent = ''
+   let lastParent: string | false | undefined = ''
 
    return (
       <div tw='flex flex-col' {...rest}>
@@ -68,7 +68,13 @@ export const DraftImageSlotPickerUI = observer(function DraftImageSlotPickerUI_(
                   <div key={i}>
                      <Button
                         borderless
-                        icon={(!i || addDivider) && topParent ? topParent.config.icon : IKONS.mdiChevronRight}
+                        icon={
+                           (!i || addDivider) && topParent //
+                              ? typeof topParent.config.icon === 'function'
+                                 ? topParent.config.icon(topParent)
+                                 : topParent.config.icon
+                              : IKONS.mdiChevronRight
+                        }
                         expand
                         subtle
                         // TODO(bird_d/ui/tooltips) : Really fucking annoying until tooltips are fixed
