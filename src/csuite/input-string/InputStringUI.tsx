@@ -277,7 +277,7 @@ export const InputStringUI = observer(function WidgetStringUI_(p: InputStringPro
                roundness={0}
                subtle
                borderless
-               icon={'_clear'}
+               icon={IKONS._clear}
                onClick={() => p.setValue('')}
             />
          )}
