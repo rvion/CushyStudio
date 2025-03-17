@@ -205,8 +205,10 @@ export class Field_list<T extends CSchema> extends Field {
    }
 
    private readonly items_: T['$field'][] = observable([])
-   public get items(): readonly T['$field'][] {
-      return this.items_
+   public get items(): readonly T['$field'][] { return this.items_ } // prettier-ignore
+   public get _(): readonly T['$field'][] { return this.items_ } // prettier-ignore
+   map<U>(fn: (item: T['$field'], ix: number) => U): U[] {
+      return this.items_.map(fn)
    }
 
    get hasChanges(): boolean {
