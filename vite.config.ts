@@ -10,7 +10,12 @@ export default defineConfig({
    clearScreen: false,
    optimizeDeps: { exclude: ['fsevents', 'esbuild'] },
    // https://github.com/vitejs/vite-plugin-react/commit/25fe88a02d3a718b81a3b1290ff4e46bfab427f9
-   plugins: [react({ jsxImportSource: 'JSOX' })],
+   plugins: [
+      react({
+         jsxImportSource: 'JSOX',
+         babel: { plugins: [['@babel/plugin-proposal-decorators', { version: '2023-05' }]] },
+      }),
+   ],
    build: { emptyOutDir: true, copyPublicDir: false },
    server: {
       port: 8788,
