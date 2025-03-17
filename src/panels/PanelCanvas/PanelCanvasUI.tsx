@@ -3,6 +3,7 @@ import React, { useMemo } from 'react'
 
 import { mkPlacement } from '../../csuite/fields/core-prefabs/ShapeSchema'
 import { RegionUI } from '../../csuite/regions/RegionUI'
+import { useDragDropRefForReact19 } from '../../csuite/utils/dnd'
 import { useImageDrop } from '../../widgets/galleries/dnd'
 import { CanvasToolbarUI } from './menu/CanvasToolbarUI'
 import { UCMenuUI } from './menu/UCMenuUI'
@@ -21,7 +22,7 @@ export type PanelCanvasProps = {
 export const PanelCanvasUI = observer(function Panel_Canvas_(p: PanelCanvasProps) {
    const uc2 = useUCV2()
    const canvas: UnifiedCanvas = useMemo(() => new UnifiedCanvas(cushy, uc2), [uc2])
-   const [dropStyle, dropRef] = useImageDrop(cushy, (img) => {
+   const [dropStyle, dropRef_] = useImageDrop(cushy, (img) => {
       // runInAction(() => canvas.addImage(img))
       uc2.Layers.push({
          placement: mkPlacement({ x: 0, y: 0 }),
@@ -30,6 +31,7 @@ export const PanelCanvasUI = observer(function Panel_Canvas_(p: PanelCanvasProps
          content: { image: img },
       })
    })
+   const dropRef = useDragDropRefForReact19(dropRef_)
    const containerRef = React.useRef<HTMLDivElement>(null)
    const size = useSize(containerRef)
    // React.useEffect(() => {
