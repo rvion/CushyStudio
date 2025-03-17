@@ -161,6 +161,7 @@ export class PanelState<PROPS extends object = any> {
    }
 
    documents: Map<string, Field> = new Map<string, Field>()
+
    usePersistentModel = <SCHEMA extends CSchema>(
       //
       uid: string,
@@ -174,8 +175,8 @@ export class PanelState<PROPS extends object = any> {
 
          const prevEntity = this.documents.get(uid)
          if (prevEntity != null) {
-            const prevHash = prevEntity.schema.codegenValueType()
-            const nextHash = schema.codegenValueType()
+            const prevHash = prevEntity.schema.codeForTypescriptValue()
+            const nextHash = schema.codeForTypescriptValue()
             if (prevHash === nextHash) {
                log(`    | 🟢 prev entity found; schema is identical`)
                return prevEntity
@@ -209,9 +210,9 @@ export class PanelState<PROPS extends object = any> {
          const prevSerial = store.data
          const entity = schema.create(prevSerial)
          this.documents.set(uid, entity)
-         log(`    | ENTITY for (${uid}) ID IS`, entity.id, `from store ${store.uid}`)
+         log(`    | ENTITY for (${uid}) ID IS`, entity._uid, `from store ${store.uid}`)
          return entity
-      })
+      }, [uid])
    }
 }
 

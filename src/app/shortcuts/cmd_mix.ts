@@ -23,7 +23,7 @@ function focusTree(tree: Tree): void {
             cushy.layout.open('TreeExplorer', {}, { where: 'right' }) // close the panel
          else focusTreeRootIfMounted()
       } else {
-         const node: Maybe<FL.Node> = cushy.layout.open('TreeExplorer', {}, { where: 'right' })
+         const node: Maybe<FL.TabNode> = cushy.layout.open('TreeExplorer', {}, { where: 'right' })
          setImmediate((): void => {
             const isVisible = node?.isVisible()
             if (!isVisible) return

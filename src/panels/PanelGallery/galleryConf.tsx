@@ -49,7 +49,7 @@ export class GalleryConf extends Field_group<GalleryConf_data> {
             onlyShowBlurryThumbnails: ui.boolean({ label: 'Blur Thumbnails' }),
             filterPath: ui.string({ innerIcon: IKONS.mdiFilter, placeHolder: 'filter' }), //.optional(), // emptyAsNullWhenOptional: true
             filterTag: ui.string({
-               clearable: true,
+               // clearable: true, 🔴
                innerIcon: IKONS.mdiTagSearch,
                placeHolder: 'Filter by Tags',
                autoResize: false,
