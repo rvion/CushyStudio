@@ -1,7 +1,16 @@
 /* eslint-disable vitest/require-to-throw-message */
 import type { SimpleBuilder } from '../simple/SimpleBuilder'
 
-import { action, computed, isAction, isComputedProp, isObservableProp, observable, reaction, runInAction } from 'mobx'
+import {
+   action,
+   computed,
+   isAction,
+   isComputedProp,
+   isObservableProp,
+   observable,
+   reaction,
+   runInAction,
+} from 'mobx'
 import { describe, expect, it } from 'vitest'
 
 import { type CSchema, type SchemaDict, simpleBuilder as b, simpleFactory as f } from '../'
@@ -41,9 +50,7 @@ describe('field customizations', () => {
       it('works with external class', () => {
          const S0 = b.fields({ foo: b.int({ default: 10 }) })
 
-         type T0 = Z.FRecord<{
-            foo: Z.Number
-         }>['$subfields']
+         type T0 = Field_group<{ foo: Z.Number }>['$subfields']
 
          interface Foo2 extends MAGICFIELDS<T0> {}
          class Foo2 extends Field_group<T0> {

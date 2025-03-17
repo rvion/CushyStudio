@@ -1,1 +1,1 @@
-export type Timestamp = Branded<number, { Timestamp: true }>
+export type Timestamp = Flavor<number, 'Timestamp'>

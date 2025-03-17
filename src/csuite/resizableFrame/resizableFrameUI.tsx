@@ -1,8 +1,8 @@
-import type { ReactNode, RefObject } from 'react'
+import type { ReactNode } from 'react'
 
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { createRef, useLayoutEffect, useMemo } from 'react'
+import { createRef, useMemo } from 'react'
 
 import { Button } from '../button/Button'
 import { Frame, type FrameProps } from '../frame/Frame'
@@ -161,13 +161,13 @@ export const ResizableFrame = observer(function ResizableFrame_(p: ResizableFram
                      subtle
                      size='xs'
                      border={false}
-                     icon={uist.showFooter ? 'mdiChevronDown' : 'mdiChevronRight'}
+                     icon={uist.showFooter ? IKONS.mdiChevronDown : IKONS.mdiChevronRight}
                      onMouseDown={() => {
                         uist.showFooter = !uist.showFooter
                      }}
                   />
                )}
-               <IkonOf name='mdiDragHorizontalVariant' />
+               <IkonOf name={IKONS.mdiDragHorizontalVariant} />
             </Frame>
             {
                //TODO(bird_d): Make sure to fix image widget

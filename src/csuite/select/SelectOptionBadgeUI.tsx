@@ -30,7 +30,7 @@ export const SelectDefaultOptionUI = observer(function SelectDefaultOptionUI_({
    return (
       <BadgeUI //
          autoHue={autoHue ?? label}
-         linkButton={link ? (): void => loco.router.goToURL(link()) : undefined}
+         // 🚂 linkButton={link ? (): void => loco.router.goToURL(link()) : undefined}
          {...rest}
       >
          {label}

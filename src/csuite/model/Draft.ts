@@ -1,4 +1,5 @@
 import type { Field } from './Field'
+import type { Result } from './Result'
 import type { ValidationError } from './ValidationError'
 
 /** 🧪 might be useful:

@@ -8,7 +8,7 @@
  *  - "errMsg"
  * */
 
-import type { Field, FL_FieldPath } from './Field'
+import type { FL_FieldPath } from './Field'
 
 export type Problem_Ext = boolean | string | Problem | null | undefined | Problem_Ext[]
 
