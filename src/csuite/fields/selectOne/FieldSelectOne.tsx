@@ -1,5 +1,6 @@
 import type { PartialOmit } from '../../../types/Misc'
 import type { CSchema } from '../../model/CSchema'
+import type { FieldConstructor } from '../../model/FieldConstructor'
 import type { Patch } from '../../model/Patch'
 import type { Repository } from '../../model/Repository'
 import type { SelectValueSlots } from '../../select/SelectState'
@@ -562,4 +563,4 @@ export class Field_selectOne<
 
 // DI
 registerFieldClass('selectOne', Field_selectOne)
-Field_selectOne satisfies FieldConstructor<Field_selectOne>
+Field_selectOne satisfies FieldConstructor<Field_selectOne<any, any>>

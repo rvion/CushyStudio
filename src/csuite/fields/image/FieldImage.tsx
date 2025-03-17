@@ -49,7 +49,19 @@ export class Field_image extends Field {
 
    // #region static
    static readonly type: 'image' = 'image'
-   static readonly emptySerial: Field_image['$serial'] = { $: 'image' }
+   static readonly unsetSerial: Field_image['$serial'] = { $: 'image' }
+   public static readonly patchedSerialPaths: readonly string[] = Object.freeze([
+      'imageID',
+      'imageHash',
+      'size',
+   ])
+   static generateSerial(
+      value: Maybe<Field_image['$value']>,
+      config: Field_image['$config'],
+   ): Field_image['$serial'] {
+      if (value == null && config.default == null) return this.unsetSerial
+      return { $: 'image', imageID: value?.id ?? config.default?.id }
+   }
    static migrateSerial(): undefined {}
    static codeForTypescriptValue(config: Field_image['$config']): string {
       return `MediaImageL`

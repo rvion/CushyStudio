@@ -15,10 +15,10 @@ export const PIXIUCLayers = observer(function UCLayers_(p: { uc2: UC2$['$field']
             const content = layer.fields.content
             if (!layer.Visible.value) return null
             const placement = layer.fields.placement
-            return content.match({
+            return content.matchExhaustive({
                image: (image) => (
                   <PixiMediaImage //
-                     key={layer.id}
+                     key={layer._uid}
                      layer={layer}
                      onClick={() => uc1.selectLayer(layer)}
                      placement={placement}
@@ -28,7 +28,7 @@ export const PIXIUCLayers = observer(function UCLayers_(p: { uc2: UC2$['$field']
                aiGeneration: (x) =>
                   x.Image.value_or_zero ? (
                      <PixiMediaImage //
-                        key={layer.id}
+                        key={layer._uid}
                         layer={layer}
                         onClick={() => uc1.selectLayer(layer)}
                         placement={placement}

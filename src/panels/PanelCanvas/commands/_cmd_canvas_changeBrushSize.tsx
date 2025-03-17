@@ -116,9 +116,9 @@ export const cmd_canvas_drawRectMask = command({
             const maskField = bang(UC.ucv2?._.masks.at(-1))
 
             // 4. enable the mask on the active layer
-            UC.activeLayer?.Content.match({
+            UC.activeLayer?.Content.matchAll({
                aiGeneration: (x) => {
-                  x.Masks.value.push(maskField.id)
+                  x.Masks.value.push(maskField._uid)
                },
             })
          },

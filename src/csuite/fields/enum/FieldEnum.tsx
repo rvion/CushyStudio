@@ -11,7 +11,6 @@ import { Field } from '../../model/Field'
 import { Field_selectOne } from '../selectOne/FieldSelectOne'
 import { registerFieldClass } from '../WidgetUI.DI'
 import { _extractDefaultValue } from './_extractDefaultValue'
-import { WidgetEnumUI } from './WidgetEnumUI'
 
 // #region Config
 export type Field_enum_ownConfig<O extends ComfyUnionValue> = {

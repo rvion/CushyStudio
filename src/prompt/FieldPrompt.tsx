@@ -58,7 +58,16 @@ export class Field_prompt extends Field {
 
    // #region types
    static readonly type: 'prompt' = 'prompt'
-   static readonly emptySerial: Field_prompt['$serial'] = { $: 'prompt' }
+   static readonly unsetSerial: Field_prompt['$serial'] = { $: 'prompt' }
+   static codeForTypescriptValue = () => `Field_prompt`
+   public static readonly patchedSerialPaths: readonly string[] = Object.freeze(['val'])
+   static generateSerial(
+      value: Maybe<Field_prompt['$value']>,
+      config: Field_prompt['$config'],
+   ): Field_prompt['$serial'] {
+      if (value == null && config.default == null) return this.unsetSerial
+      return { $: 'prompt', val: value != null ? value.serial.val : config.default }
+   }
    static migrateSerial(): undefined {}
 
    // #region Ctor

@@ -19,7 +19,7 @@ type UCMenuLayerEntryUIProps = {
 export const UCMenuLayerEntryUI = observer(function UCMenuLayerEntryUI_(p: UCMenuLayerEntryUIProps) {
    const inputHeight = cushy.preferences.interface.value.inputHeight
    const isVisible: boolean = p.layer.Visible.value
-   const image = p.layer.Content.match({
+   const image = p.layer.Content.matchExhaustive({
       aiGeneration: (t) => t.fields.image.value_or_zero,
       image: (t) => t.value_or_zero,
    })

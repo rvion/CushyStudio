@@ -12,7 +12,7 @@ const sides: { color: string; text: string; }[] = [
 ];
 // https://codesandbox.io/p/sandbox/drei-rendertexture-0z8i2c?file=%2Fsrc%2FApp.js%3A11%2C22
 export function Cube(): React.JSX.Element {
-   const textRef = useRef<any>()
+   const textRef = useRef<any>(null)
    return (
       <mesh>
          <boxGeometry />

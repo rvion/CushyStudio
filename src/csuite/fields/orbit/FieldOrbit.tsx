@@ -167,8 +167,8 @@ export class Field_orbit extends Field {
    override isValueEqual(other: Field): boolean {
       if (!(other instanceof Field_orbit)) return false
       return (
-         this.serial.height === other.serial.height && //
-         this.serial.width === other.serial.width
+         this.serial.azimuth === other.serial.azimuth && //
+         this.serial.elevation === other.serial.elevation
       )
    }
 
