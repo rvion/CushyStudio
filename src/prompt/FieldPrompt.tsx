@@ -159,6 +159,17 @@ export class Field_prompt extends Field {
       return this.config.default
    }
 
+   override set(valOrKey: Field_prompt | string): this {
+      if (valOrKey instanceof Field_prompt) this.value = valOrKey.value
+      else this.patchInTransaction((next) => void (next.val = valOrKey))
+      return this
+   }
+
+   override getSetValue(): this['$setValue'] | undefined {
+      // console.log(`[💀 getSetValue] `, this.path)
+      return this.serial.val
+   }
+
    // #region value
    get value(): Field_prompt_value {
       return this
