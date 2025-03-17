@@ -901,9 +901,9 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
    }
 
    // sigh, nullable composition...
-   matchExhaustive<R>(cases: {
-      [K in keyof T]: (field: T[K]['$field']) => R
-   }): [null] extends [R] ? "❌ match branches cannot return 'null'" : R
+   // matchExhaustive<R>(cases: {
+   //    [K in keyof T]: (field: T[K]['$field']) => R
+   // }): [null] extends [R] ? "❌ match branches cannot return 'null'" : R
 
    matchExhaustive<R>(cases: {
       [K in keyof T]: (field: T[K]['$field']) => R

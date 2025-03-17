@@ -1,14 +1,10 @@
-import type { Layer$ } from '../stateV2/Layer$'
-import type { Mask$, Masks$ } from '../stateV2/Masks$'
+import type { Mask$ } from '../stateV2/Masks$'
 
 import { observer } from 'mobx-react-lite'
 
 import { ShellInputOnly } from '../../../csuite-cushy/shells/ShellInputOnly'
-import { ShellSimpleUI } from '../../../csuite-cushy/shells/ShellSimple'
 import { Button } from '../../../csuite/button/Button'
 import { Frame } from '../../../csuite/frame/Frame'
-import { CachedResizedImage } from '../../../csuite/image/CachedResizedImageUI'
-import { InputStringUI } from '../../../csuite/input-string/InputStringUI'
 
 export const UCMaskMenuUI = observer(function UCMaskMenuUI_(p: {
    //

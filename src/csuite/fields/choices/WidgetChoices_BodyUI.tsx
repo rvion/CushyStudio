@@ -7,15 +7,13 @@ import { observer } from 'mobx-react-lite'
 import { ListOfFieldsContainerUI } from '../../form/WidgetsContainerUI'
 import { WidgetToggleUI } from '../../form/WidgetToggleUI'
 
-export const WidgetChoices_BodyUI = observer(function WidgetChoices_BodyUI_<
-   //
-   T extends SchemaDict,
->(p: { field: Field_choices<T>; justify?: boolean; className?: string }) {
+export const WidgetChoices_BodyUI = observer(function WidgetChoices_BodyUI_<T extends SchemaDict>(p: {
+   field: Field_choices<T>
+   justify?: boolean
+   className?: string
+}) {
    const field = p.field
-   const activeSubwidgets: {
-      branch: string
-      subWidget: Field
-   }[] = Object.entries(field.activeBranchesDict) //
+   const activeSubwidgets: { branch: string; subWidget: Field }[] = Object.entries(field._) //
       .map(([branch, subWidget]) => ({ branch, subWidget }))
 
    // return activeSubwidgets.map((i) => i.branch).join(',')
