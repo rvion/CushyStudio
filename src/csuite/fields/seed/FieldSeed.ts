@@ -192,3 +192,4 @@ export class Field_seed extends Field {
 }
 
 registerFieldClass('seed', Field_seed)
+Field_seed satisfies FieldConstructor<Field_seed>

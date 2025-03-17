@@ -49,7 +49,7 @@ export class Field_custom<T> extends Field {
    static readonly type: 'custom' = 'custom'
    static readonly emptySerial: Field_custom<any>['$serial'] = { $: 'custom' }
    static migrateSerial(): undefined {}
-   static codegenValueType(config: Field_custom<any>['$config']): string {
+   static codeForTypescriptValue(config: Field_custom<any>['$config']): string {
       return `unknown /* ${config.Component.name} */`
    }
 
@@ -136,3 +136,4 @@ export class Field_custom<T> extends Field {
 }
 
 registerFieldClass('custom', Field_custom)
+Field_custom satisfies FieldConstructor<Field_custom>

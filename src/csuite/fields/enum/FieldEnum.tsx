@@ -47,8 +47,17 @@ export class Field_enum<O extends ComfyUnionValue> extends Field {
 
    // #region Static
    static readonly type: 'enum' = 'enum'
-   static readonly emptySerial: Field_enum<any>['$serial'] = { $: 'enum' }
-   static codegenValueType(config: Field_enum<any>['$config']): string {
+   public static readonly patchedSerialPaths: readonly string[] = Object.freeze(['val'])
+   static readonly unsetSerial: Field_enum<any>['$serial'] = { $: 'enum' }
+   static generateSerial(
+      value: Maybe<Field_enum<any>['$value']>,
+      config: Field_enum<any>['$config'],
+   ): Field_enum<any>['$serial'] {
+      if (value == null && config.default == null) return this.unsetSerial
+      return { $: 'enum', val: value ?? config.default }
+   }
+
+   static codeForTypescriptValue(config: Field_enum<any>['$config']): string {
       const knownValues = cushy.schema.knownUnionBySlotName.get(config.slotName)?.values ?? []
       return knownValues.map((v) => JSON.stringify(v)).join(' | ')
    }
@@ -161,3 +170,4 @@ export class Field_enum<O extends ComfyUnionValue> extends Field {
 
 // DI
 registerFieldClass('enum', Field_enum)
+Field_enum satisfies FieldConstructor<Field_enum>

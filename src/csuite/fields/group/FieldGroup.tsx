@@ -460,3 +460,4 @@ export class Field_group<T extends SchemaDict> extends Field {
 
 // DI
 registerFieldClass('group', Field_group)
+Field_group satisfies FieldConstructor<Field_group>

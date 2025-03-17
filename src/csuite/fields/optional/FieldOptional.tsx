@@ -460,3 +460,4 @@ export class Field_optional<out T extends CSchema = CSchema> extends Field {
 
 // DI
 registerFieldClass('optional', Field_optional)
+Field_optional satisfies FieldConstructor<Field_optional>

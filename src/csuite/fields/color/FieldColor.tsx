@@ -127,3 +127,4 @@ export class Field_color extends Field {
 
 // DI
 registerFieldClass('color', Field_color)
+Field_color satisfies FieldConstructor<Field_color>

@@ -562,3 +562,4 @@ export class Field_selectOne<
 
 // DI
 registerFieldClass('selectOne', Field_selectOne)
+Field_selectOne satisfies FieldConstructor<Field_selectOne>

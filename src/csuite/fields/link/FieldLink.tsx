@@ -230,3 +230,4 @@ export class Field_link<A extends CSchema, B extends CSchema> extends Field {
 
 // DI
 registerFieldClass('link', Field_link)
+Field_link satisfies FieldConstructor<Field_link>

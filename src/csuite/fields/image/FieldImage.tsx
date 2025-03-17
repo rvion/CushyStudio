@@ -50,7 +50,7 @@ export class Field_image extends Field {
    static readonly type: 'image' = 'image'
    static readonly emptySerial: Field_image['$serial'] = { $: 'image' }
    static migrateSerial(): undefined {}
-   static codegenValueType(config: Field_image['$config']): string {
+   static codeForTypescriptValue(config: Field_image['$config']): string {
       return `MediaImageL`
    }
 
@@ -172,3 +172,4 @@ export class Field_image extends Field {
 
 // DI
 registerFieldClass('image', Field_image)
+Field_image satisfies FieldConstructor<Field_image>

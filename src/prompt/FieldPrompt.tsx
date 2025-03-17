@@ -219,3 +219,4 @@ export class Field_prompt extends Field {
 
 // DI
 registerFieldClass('prompt', Field_prompt)
+Field_prompt satisfies FieldConstructor<Field_prompt>

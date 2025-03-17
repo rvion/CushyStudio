@@ -121,3 +121,4 @@ export class Field_markdown extends Field {
 
 // DI
 registerFieldClass('markdown', Field_markdown)
+Field_markdown satisfies FieldConstructor<Field_markdown>

@@ -10,12 +10,12 @@ import { bang } from '../../utils/bang'
 import { parseFloatNoRoundingErr } from '../../utils/parseFloatNoRoundingErr'
 import { registerFieldClass } from '../WidgetUI.DI'
 import {
-    type AspectRatio,
-    aspectRatioMap,
-    type CushySize,
-    type CushySizeByRatio,
-    type ModelType,
-    type SDModelType,
+   type AspectRatio,
+   aspectRatioMap,
+   type CushySize,
+   type CushySizeByRatio,
+   type ModelType,
+   type SDModelType,
 } from './WidgetSizeTypes'
 
 type SizeAble = {
@@ -363,3 +363,4 @@ export class Field_size extends Field {
 
 // DI
 registerFieldClass('size', Field_size)
+Field_size satisfies FieldConstructor<Field_size>

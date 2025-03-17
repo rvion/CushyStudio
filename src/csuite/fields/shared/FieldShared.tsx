@@ -116,3 +116,4 @@ export class Field_shared<out F extends Field = Field> extends Field {
 
 // DI
 registerFieldClass('shared', Field_shared)
+Field_shared satisfies FieldConstructor<Field_shared>

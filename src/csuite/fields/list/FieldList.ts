@@ -1015,6 +1015,7 @@ export class Field_list<T extends CSchema> extends Field {
 
 // DI
 registerFieldClass('list', Field_list)
+Field_list satisfies FieldConstructor<Field_list>
 
 function isSerialList(serial: any): serial is Field_list_serial<any> {
    return serial.$ === 'list'

@@ -355,3 +355,4 @@ export class Field_string extends Field {
 
 // DI
 registerFieldClass('str', Field_string)
+Field_string satisfies FieldConstructor<Field_string>

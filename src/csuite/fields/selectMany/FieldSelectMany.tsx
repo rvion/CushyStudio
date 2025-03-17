@@ -622,6 +622,7 @@ export class Field_selectMany<
 
 // DI
 registerFieldClass('selectMany', Field_selectMany)
+Field_selectMany satisfies FieldConstructor<Field_selectMany>
 
 function removeReadonly<T>(x: T): T extends Readonly<infer X> ? X : T {
    return x as any

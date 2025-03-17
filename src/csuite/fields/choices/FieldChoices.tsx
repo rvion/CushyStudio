@@ -1001,6 +1001,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
 
 // DI
 registerFieldClass('choices', Field_choices)
+Field_choices satisfies FieldConstructor<Field_choices>
 
 const _NotExhaustive = Symbol.for('NotExhaustive')
 

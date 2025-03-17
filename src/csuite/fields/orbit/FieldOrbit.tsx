@@ -1,4 +1,5 @@
 import type { CSchema } from '../../model/CSchema'
+import type { FieldConstructor } from '../../model/FieldConstructor'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 import type { FC } from 'react'
@@ -42,6 +43,7 @@ export type Field_orbit_unchecked = {
 }
 
 // STATE
+
 export class Field_orbit extends Field {
    declare $type: 'orbit'
    declare $ownConfig: Field_orbit_ownConfig
@@ -55,7 +57,7 @@ export class Field_orbit extends Field {
    static readonly type: 'orbit' = 'orbit'
    static readonly emptySerial: Field_orbit['$serial'] = { $: 'orbit' }
    static migrateSerial(): undefined {}
-   static codegenValueType(config: Field_orbit['$config']): string {
+   static codeForTypescriptValue(config: Field_orbit['$config']): string {
       return `number`
    }
 
@@ -257,4 +259,5 @@ export class Field_orbit extends Field {
 }
 
 // #region DI
-registerFieldClass<Field_orbit>('orbit', Field_orbit)
+registerFieldClass('orbit', Field_orbit)
+Field_orbit satisfies FieldConstructor<Field_orbit>

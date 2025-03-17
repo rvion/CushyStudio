@@ -266,3 +266,4 @@ export class Field_matrix extends Field {
 
 // DI
 registerFieldClass('matrix', Field_matrix)
+Field_matrix satisfies FieldConstructor<Field_matrix>

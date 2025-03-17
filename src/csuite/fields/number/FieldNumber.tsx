@@ -233,3 +233,4 @@ export class Field_number extends Field {
 
 // DI
 registerFieldClass('number', Field_number)
+Field_number satisfies FieldConstructor<Field_number>

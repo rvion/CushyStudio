@@ -206,3 +206,4 @@ export class Field_bool extends Field {
 
 // DI
 registerFieldClass('bool', Field_bool)
+Field_bool satisfies FieldConstructor<Field_bool>
