@@ -97,6 +97,7 @@
         "form:bundle-dts2": " yarn form:bundle-dts && cp stats.json "
     },
     "dependencies": {
+        "@babel/plugin-proposal-decorators": "^7.25.9",
         "@codemirror/autocomplete": "^6.18.6",
         "@codemirror/language": "^6.11.0",
         "@codemirror/lint": "^6.8.4",
