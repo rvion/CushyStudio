@@ -127,16 +127,16 @@ export class CushySchemaBuilder implements IBuilder {
       sub: Field_board_config<T>,
       config: Omit<Field_board_config<T>, 'element'> = {},
    ): Z.Board<T> {
-      const x = Field_board.getSchema(simpleBuilder, sub)
+      const x = Field_board.schema(simpleBuilder, sub)
       return x.withConfig({ body: WidgetListExtUI__Timeline, ...config })
    }
 
    regional<T extends CSchema>(sub: Field_board_config<T>): Z.Board<T> {
-      return Field_board.getSchema(simpleBuilder, sub) //
+      return Field_board.schema(simpleBuilder, sub) //
    }
 
    listExt<T extends CSchema>(sub: Field_board_config<T>): Z.Board<T> {
-      return Field_board.getSchema(simpleBuilder, sub)
+      return Field_board.schema(simpleBuilder, sub)
    }
 
    // SELECT ONE
