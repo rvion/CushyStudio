@@ -48,21 +48,21 @@ export const mkPlacement = (p: Partial<SimpleShape>): SimpleShape$['$value'] => 
    }
 }
 
-export type SimpleShape$ = Z.SGroup<{
+export type SimpleShape$ = Z.Record<{
    x: Z.Number
    y: Z.Number
    z: Z.Number
    width: Z.Number
    height: Z.Number
    depth: Z.Number
-   scaleX: Z.SOptional<Z.Number>
-   scaleY: Z.SOptional<Z.Number>
-   scaleZ: Z.SOptional<Z.Number>
-   fill: Z.SColor
-   rotation: Z.SOptional<Z.Number>
-   isSelected: Z.SBool
-   isDragging: Z.SBool
-   isResizing: Z.SBool
+   scaleX: Z.Optional<Z.Number>
+   scaleY: Z.Optional<Z.Number>
+   scaleZ: Z.Optional<Z.Number>
+   fill: Z.Color
+   rotation: Z.Optional<Z.Number>
+   isSelected: Z.Bool
+   isDragging: Z.Bool
+   isResizing: Z.Bool
 }>
 
 export function simpleShape$(def?: Partial<SimpleShape>): SimpleShape$ {
@@ -85,7 +85,7 @@ export function simpleShape$(def?: Partial<SimpleShape>): SimpleShape$ {
          scaleZ: b.number().optional(),
 
          // color
-         fill: b.stringColor(),
+         fill: b.color(),
 
          // rotation
          rotation: b.number().optional(),

@@ -35,10 +35,10 @@ export type Field_board_config<T extends CSchema> = {
    icon?: IconName
 }
 
-export type BoardDataSchema<SCHEMA extends CSchema> = Z.SGroup<{
+export type BoardDataSchema<SCHEMA extends CSchema> = Z.Record<{
    area: Z.SSize
    items: Z.SList<
-      Z.SGroup<
+      Z.Record<
          Assume<
             {
                shape: SimpleShape$
