@@ -3,12 +3,20 @@ import type { MediaImageL } from '../../../models/MediaImage'
 import type { UnifiedCanvas } from '../states/UnifiedCanvas'
 import type { Layer$ } from '../stateV2/Layer$'
 
-import { extend, useAsset } from '@pixi/react'
+import { extend } from '@pixi/react'
 // import { Sprite, Text } from '@pixi/react/lib/components'
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { type Container, type FederatedEventHandler, type FederatedPointerEvent, Sprite } from 'pixi.js'
-import { useMemo } from 'react'
+import {
+   Assets,
+   type Container,
+   type FederatedEventHandler,
+   type FederatedPointerEvent,
+   Sprite,
+   Texture,
+   type TextureSource,
+} from 'pixi.js'
+import { useEffect, useMemo, useState } from 'react'
 
 import { useUnifiedCanvas } from '../states/UnifiedCanvasCtx'
 
@@ -110,6 +118,14 @@ type DraggableSpriteProps = {
 }
 
 extend({ Sprite })
+
+const useAsset = (relPath: string = 'https://pixijs.com/assets/bunny.png'): Texture<TextureSource<any>> => {
+   const [texture, setTexture] = useState(Texture.EMPTY)
+   useEffect(() => {
+      Assets.load(relPath).then((result) => void setTexture(result))
+   })
+   return texture
+}
 
 export const PixiMediaImage = observer(function DraggableSpriteUI_(p: DraggableSpriteProps) {
    const mediaImage = p.mediaImage
