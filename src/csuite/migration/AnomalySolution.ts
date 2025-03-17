@@ -1,5 +1,4 @@
-import type { CSchema } from '../../../../front/form/LocoSchema'
-import type { LocoSchemaBuilder } from '../../../../front/form/LocoSchemaBuilder'
+import type { CSchema } from '../model/CSchema'
 import type { Field } from '../model/Field'
 import type { FieldAnomaly } from './Anomaly'
 
@@ -25,7 +24,7 @@ export type AnomalySolution<
    solutionID: AnomalysolutionID
    description?: string
    isApplicable: (p: { document: Field; anomaly: FieldAnomaly }) => DATA | void
-   config: (b: LocoSchemaBuilder) => CONFIG
+   config: (b: Z.Builder) => CONFIG
    action: (p: {
       document: Field
       config: CONFIG['$field']

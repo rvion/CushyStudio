@@ -1,5 +1,6 @@
 import type { AnyFieldSerial } from '../model/EntitySerial'
 import type { Field } from '../model/Field'
+import type { Timestamp } from '../types/Timestamp'
 
 /**
  * data-structure that preserve invalid serial
@@ -11,7 +12,7 @@ import type { Field } from '../model/Field'
  */
 export type FieldAnomaly = {
    type: 'invalid-serial'
-   date: FL_Timestamp
+   date: Timestamp
    path: string
    pathExt: string
    got: AnyFieldSerial

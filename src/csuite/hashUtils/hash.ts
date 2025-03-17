@@ -1,5 +1,5 @@
+import type { CSchema } from '../model/CSchema'
 import type { Field } from '../model/Field'
-import type { CSchema } from '../simple/SimpleSchema'
 
 import DefaultWeakMap from 'mnemonist/default-weak-map'
 

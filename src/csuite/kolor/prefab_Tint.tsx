@@ -44,8 +44,8 @@ export const ui_tint = (ui: Z.Builder, def?: Tint): UI_Tint => {
             },
             {
                uiui: (ui) => {
-                  ui.set(ui.field.activeBranchesDict.contrast, ui.presets.noLabel)
-                  ui.set(ui.field.activeBranchesDict.lightness, ui.presets.noLabel)
+                  ui.set(ui.field._.contrast, ui.presets.noLabel)
+                  ui.set(ui.field._.lightness, ui.presets.noLabel)
                },
                appearance: 'tab',
                label: 'Light',
