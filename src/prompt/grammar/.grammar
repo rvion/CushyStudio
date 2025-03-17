@@ -5,6 +5,7 @@ expression[@isGroup=Expression] {
   Permutations |
 
   Lora |
+  Choice |
   Wildcard |
   Embedding |
   Artist |
@@ -34,6 +35,8 @@ TagName {  Identifier | String }
 // Lora { "@" loraName ( "[" Number ("," Number)? "]" )?   }
 Lora { "<lora:" loraName (":" Number ("," Number)? )? ">" }
 
+Choice { "<choice:" ChoiceEntry+ ">"} // GPT Change this
+ChoiceEntry {  Identifier | String  }
 
 loraName { Identifier | String  }
 
@@ -45,7 +48,6 @@ wildcardName { Identifier | String  }
 Embedding { @specialize<Identifier, "embedding"> ":" embeddingName }
 embeddingName { Identifier | String  }
 
-
 // ARTIST
 Artist { @specialize<Identifier, "artist"> ":" ArtistName }
 ArtistName { Identifier | String  }
@@ -54,7 +56,7 @@ ArtistName { Identifier | String  }
   space { @whitespace+ }
   Break { "break" }
   // EmbeddingWord { "embedding" }
-  Identifier { ($[A-Za-z0-9._\\\/\-] )+ }
+  Identifier { ($[A-Za-z0-9._\/\-] )+ }
   String { '"' !["]* '"' }
   Separator { "," }
   Comment { ";" ![\n]* }

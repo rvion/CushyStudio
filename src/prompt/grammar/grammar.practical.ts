@@ -12,6 +12,8 @@ type KnownNodeNames = keyof typeof GrammarTerms
 type CLASSES = {
     Prompt:             Prompt_Prompt
     Lora:               Prompt_Lora
+    Choice:             Prompt_Choice
+    ChoiceEntry:        Prompt_ChoiceEntry
     Identifier:         Prompt_Identifier
     Number:             Prompt_Number
     Separator:          Prompt_Separator
@@ -64,6 +66,8 @@ export class PromptAST {
         Number            : Prompt_Number,
         Separator         : Prompt_Separator,
         Content           : Prompt_Content,
+        Choice            : Prompt_Choice,
+        ChoiceEntry       : Prompt_ChoiceEntry,
         WeightedExpression: Prompt_WeightedExpression,
         Break             : Prompt_Break,
         Comment           : Prompt_Comment,
@@ -410,6 +414,20 @@ export class Prompt_Artist extends ManagedNode<'Artist'> {
 
 export class Prompt_ArtistName extends ManagedNode<'ArtistName'> {
    $kind: 'ArtistName' = 'ArtistName' as const
+}
+
+export class Prompt_Choice extends ManagedNode<'Choice'> {
+   $kind: 'Choice' = 'Choice' as const
+
+   pickRandomly = (): string => {
+      const choices = this.getChildren('ChoiceEntry')
+      const randomIndex = Math.floor(Math.random() * choices.length)
+      return choices[randomIndex]!.text
+   }
+}
+
+export class Prompt_ChoiceEntry extends ManagedNode<'ChoiceEntry'> {
+   $kind: 'ChoiceEntry' = 'ChoiceEntry' as const
 }
 
 export class Prompt_Unknown extends ManagedNode<any> {
