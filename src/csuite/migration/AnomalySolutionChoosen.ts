@@ -1,4 +1,4 @@
-import type { CSchema } from '../../../../front/form/LocoSchema'
+import type { CSchema } from '../model/CSchema'
 import type { AnomalysolutionID } from './AnomalySolution'
 
 // import type { AnomalySuggestionID } from './AnomalySolutionSuggestion'

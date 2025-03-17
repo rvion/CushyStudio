@@ -5307,3 +5307,7 @@ export const openRouterInfos: { [key in OpenRouter_Models]: OpenRouter_ModelInfo
       per_request_limits: null,
    },
 }
+
+// untyped variant with keys as type level literral
+export const openRouterInfos_: Record<string, OpenRouter_ModelInfo> = openRouterInfos
+export const allOpenrouterModels: OpenRouter_ModelInfo[] = Object.values(openRouterInfos_)

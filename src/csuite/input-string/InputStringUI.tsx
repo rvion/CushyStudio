@@ -245,7 +245,7 @@ export const InputStringUI = observer(function WidgetStringUI_(p: InputStringPro
             <IkonOf //
                tw='mx-1 flex-none'
                size='1.2rem'
-               name={typeof p.icon === 'string' ? p.icon : 'mdiText'}
+               name={typeof p.icon === 'string' ? p.icon : IKONS.mdiText}
             />
          )}
          {p.slotBeforeInput}
@@ -266,7 +266,7 @@ export const InputStringUI = observer(function WidgetStringUI_(p: InputStringPro
             <Button
                subtle
                borderless
-               icon={reveal ? 'mdiEyeOff' : 'mdiEye'}
+               icon={reveal ? IKONS.mdiEyeOff : IKONS.mdiEye}
                onClick={() => setReveal(!reveal)}
                tw='mx-1 cursor-pointer'
                square

@@ -1,13 +1,15 @@
+import type { SimpleBuilder } from '../simple/SimpleBuilder'
+
 import { describe, expect, it } from 'vitest'
 
-import { locoSchemaBuilder, type LocoSchemaBuilder } from '../../../../front/form/LocoSchemaBuilder'
+import { sb } from '../simple/SimpleFactory'
 import { CSchema } from './CSchema'
 
 // 💬 2025-02-17 rvion: this wasn't properly cached
-export const ui_ticketPriority = (ui: LocoSchemaBuilder): Z.OneOf_<'Semaine' | 'Jour' | 'Mois'> =>
+export const ui_ticketPriority = (ui: SimpleBuilder): Z.OneOf_<'Semaine' | 'Jour' | 'Mois'> =>
    ui.selectOneString(['Jour', 'Semaine', 'Mois'], { default: 'Semaine', label: 'Urgence' })
 
-const b = locoSchemaBuilder
+const b = sb
 const getSchema = (): Z.Schema<any> => {
    return b.fields({
       foo: b.fields({

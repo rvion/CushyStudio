@@ -36,7 +36,7 @@ const CushyShellUI = observer(function CushySHell(
          className={p.className ?? undefined}
          tw={['UI-WidgetWithLabel !border-b-0 !border-l-0 !border-r-0']}
          roundness={theme.global.roundness}
-         base={field.background}
+         // base={field.background}
          // border={p.card ? 1 : field.border}
          {...p.field.config.box}
       >

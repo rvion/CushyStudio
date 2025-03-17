@@ -42,7 +42,7 @@ export class MenuInstance implements Activity {
       //    this.root.entriesWithKb.length,
       // )
       this.revealRef.current?.getRevealState().close('programmatic')
-      if (this.parent) this.parent.menuUIRef.focusOnMountOrNowIfMounted()
+      if (this.parent) this.parent.menuUIRef.focusOnMountOrNowIfMounted_EXCEPT_IF_FOCUS_ALREADY_INSIDE()
    }
 
    /** calle */

@@ -45,6 +45,8 @@ export const allIcons = {
 
 type AllIconsT = typeof allIcons
 
+/** fast alis to allIcons, without all keys as type level literals */
+export const allIcons_ = allIcons as Record<string, string>
 // slow when used in union => will break typescript
 // export type IconName = keyof typeof allIcons
 

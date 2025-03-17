@@ -1,11 +1,11 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { locoSchemaBuilder } from '../../../../front/form/LocoSchemaBuilder'
+import { sb } from '../simple/SimpleFactory'
 import { MigrationEngine } from './MigrationEngine'
 
 const spyOn = vi.spyOn
 
-const b = locoSchemaBuilder
+const b = sb
 
 describe('paths and pathExt', () => {
    beforeEach(() => {

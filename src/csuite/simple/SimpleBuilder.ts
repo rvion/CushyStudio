@@ -6,9 +6,13 @@ import { BuilderBoolDescriptors, type BuilderBoolMixin } from '../model/builders
 import { BuilderChoicesDescriptors, type BuilderChoicesMixin } from '../model/builders/BuilderChoices'
 import { BuilderDateDescriptors, type BuilderDateMixin } from '../model/builders/BuilderDateTypes'
 import { BuilderGroupDescriptors, type BuilderGroupMixin } from '../model/builders/BuilderGroup'
+import { BuilderLLMDescriptors, type BuilderLLMMixin } from '../model/builders/BuilderLLM'
 import { BuilderMiscDescriptors, type BuilderMiscMixin } from '../model/builders/BuilderMisc'
 import { BuilderNumberDescriptors, type BuilderNumberMixin } from '../model/builders/BuilderNumberTypes'
-import { BuilderSelectManyDescriptorsFn, type BuilderSelectManyMixin } from '../model/builders/BuilderSelectMany'
+import {
+   BuilderSelectManyDescriptorsFn,
+   type BuilderSelectManyMixin,
+} from '../model/builders/BuilderSelectMany'
 import { BuilderSelectOneDescriptorsFn, type BuilderSelectOneMixin } from '../model/builders/BuilderSelectOne'
 import { BuilderSharedDescriptors, type BuilderSharedMixin } from '../model/builders/BuilderShared'
 import { BuilderStringDescriptors, type BuilderStringMixin } from '../model/builders/BuilderStringTypes'
@@ -75,3 +79,7 @@ Object.defineProperties(SimpleBuilder.prototype, BuilderGroupDescriptors)
 // shared builder mixin
 export interface SimpleBuilder extends BuilderSharedMixin {}
 Object.defineProperties(SimpleBuilder.prototype, BuilderSharedDescriptors)
+
+// shared builder mixin
+export interface SimpleBuilder extends BuilderLLMMixin {}
+Object.defineProperties(SimpleBuilder.prototype, BuilderLLMDescriptors)

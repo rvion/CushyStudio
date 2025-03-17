@@ -16,7 +16,7 @@ export const WidgetConfigErrorsUI = observer(function WidgetConfigErrorsUI_(p: {
    if (!csuiteConfig.isDev) return null
 
    const field = p.field
-   const configPbs = normalizeProblem(field.ownConfigSpecificProblems)
+   const configPbs = normalizeProblem(field, field.ownConfigSpecificProblems)
    if (configPbs.length === 0) return null
    return (
       <MessageInfoUI title={`Field Config Invalid (ONLY VISIBLE DURING DEV)`}>

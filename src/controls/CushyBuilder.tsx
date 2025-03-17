@@ -28,6 +28,7 @@ import { BuilderBoolDescriptors, type BuilderBoolMixin } from '../csuite/model/b
 import { BuilderChoicesDescriptors, type BuilderChoicesMixin } from '../csuite/model/builders/BuilderChoices'
 import { BuilderDateDescriptors, type BuilderDateMixin } from '../csuite/model/builders/BuilderDateTypes'
 import { BuilderGroupDescriptors, type BuilderGroupMixin } from '../csuite/model/builders/BuilderGroup'
+import { BuilderLLMDescriptors, type BuilderLLMMixin } from '../csuite/model/builders/BuilderLLM'
 import { BuilderMiscDescriptors, type BuilderMiscMixin } from '../csuite/model/builders/BuilderMisc'
 import {
    BuilderNumberDescriptors,
@@ -392,7 +393,8 @@ export interface CushySchemaBuilder
       BuilderGroupMixin,
       BuilderSharedMixin,
       BuilderSelectOneMixin,
-      BuilderSelectManyMixin {}
+      BuilderSelectManyMixin,
+      BuilderLLMMixin {}
 
 const emptyPlaceholder = csuiteConfig.i18n.ui.field.empty
 
@@ -406,3 +408,4 @@ Object.defineProperties(CushySchemaBuilder.prototype, BuilderGroupDescriptors)
 Object.defineProperties(CushySchemaBuilder.prototype, BuilderSharedDescriptors)
 Object.defineProperties(CushySchemaBuilder.prototype, BuilderSelectOneDescriptorsFn({ wrap: true, placeholder: emptyPlaceholder, header: WidgetSelectOneUI })) // prettier-ignore
 Object.defineProperties(CushySchemaBuilder.prototype, BuilderSelectManyDescriptorsFn({ wrap: false, placeholder: emptyPlaceholder, appearance: 'select' })) // prettier-ignore
+Object.defineProperties(CushySchemaBuilder.prototype, BuilderLLMDescriptors)

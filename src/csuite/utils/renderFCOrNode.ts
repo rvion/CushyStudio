@@ -1,3 +1,5 @@
+import type { CovariantFn } from '../variance/BivariantHack'
+
 import React, { createElement, isValidElement, type ReactNode } from 'react'
 
 // legacy type:
