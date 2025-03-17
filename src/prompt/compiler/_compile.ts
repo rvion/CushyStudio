@@ -114,6 +114,16 @@ export const compilePrompt = (p: {
             // 🔴 clip = next._CLIP
             // 🔴 ckpt = next._MODEL
          }
+
+         if (toktype === 'Choice') {
+            const index = node.nth
+            const options = node.expressions
+            if (index > options.length || index < 0) {
+               return false
+            }
+            set(node.value)
+            return false
+         }
          return true
       },
       // leave

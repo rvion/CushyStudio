@@ -3,18 +3,28 @@
 expression[@isGroup=Expression] {
   WeightedExpression |
   Permutations |
-
   Lora |
   Choice |
   Wildcard |
   Embedding |
   Artist |
   Tag |
-
   Separator |
   Break |
-
   Comment |
+  Identifier |
+  String
+}
+
+choiceEntry[@isGroup=ChoiceEntry] {
+  WeightedExpression |
+  Permutations |
+  Lora |
+  Choice |
+  Wildcard |
+  Embedding |
+  Artist |
+  Tag |
   Identifier |
   String
 }
@@ -35,8 +45,8 @@ TagName {  Identifier | String }
 // Lora { "@" loraName ( "[" Number ("," Number)? "]" )?   }
 Lora { "<lora:" loraName (":" Number ("," Number)? )? ">" }
 
-Choice { "<choice:" ChoiceEntry+ ">"} // GPT Change this
-ChoiceEntry {  Identifier | String  }
+Choice { "<choice(" Number "):" choiceEntry+ ">"} // GPT Change this
+// ChoiceEntry {  Identifier | String  }
 
 loraName { Identifier | String  }
 

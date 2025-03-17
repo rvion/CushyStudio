@@ -3,6 +3,7 @@ import type * as Lezer from '@lezer/common'
 import type { SyntaxNode } from '@lezer/common'
 import type { EditorView } from 'codemirror'
 
+import { bang } from '../../csuite/utils/bang'
 import { parser } from './grammar.parser'
 
 type KnownNodeNames = keyof typeof GrammarTerms
@@ -13,7 +14,6 @@ type CLASSES = {
     Prompt:             Prompt_Prompt
     Lora:               Prompt_Lora
     Choice:             Prompt_Choice
-    ChoiceEntry:        Prompt_ChoiceEntry
     Identifier:         Prompt_Identifier
     Number:             Prompt_Number
     Separator:          Prompt_Separator
@@ -31,6 +31,33 @@ type CLASSES = {
     Wildcard:           Prompt_Wildcard
 
 }
+
+type Prompt_expression =
+   | Prompt_WeightedExpression
+   | Prompt_Permutations
+   | Prompt_Lora
+   | Prompt_Choice
+   | Prompt_Wildcard
+   | Prompt_Embedding
+   | Prompt_Artist
+   | Prompt_Tag
+   | Prompt_Separator
+   | Prompt_Break
+   | Prompt_Comment
+   | Prompt_Identifier
+   | Prompt_String
+
+type Prompt_choiceEntry =
+   | Prompt_WeightedExpression
+   | Prompt_Permutations
+   | Prompt_Lora
+   | Prompt_Choice
+   | Prompt_Wildcard
+   | Prompt_Embedding
+   | Prompt_Artist
+   | Prompt_Tag
+   | Prompt_Identifier
+   | Prompt_String
 
 // 1. wrap text
 export class PromptAST {
@@ -67,7 +94,6 @@ export class PromptAST {
         Separator         : Prompt_Separator,
         Content           : Prompt_Content,
         Choice            : Prompt_Choice,
-        ChoiceEntry       : Prompt_ChoiceEntry,
         WeightedExpression: Prompt_WeightedExpression,
         Break             : Prompt_Break,
         Comment           : Prompt_Comment,
@@ -253,6 +279,12 @@ abstract class ManagedNode<Name extends KnownNodeNames = any> {
       if (index != null) return this.getChildren(kind)[index] // slow
       return this.childrens.find((child) => child.$kind === kind) as Maybe<CLASSES[T]>
    }
+   getChildOrCrash = <T extends KnownNodeNames>(kind: T, index?: number): CLASSES[T] => {
+      if (index != null) return bang(this.getChildren(kind)[index]) // slow
+      const item = this.childrens.find((child) => child.$kind === kind) as Maybe<CLASSES[T]>
+      if (item == null) throw new Error(`[❌] child "${kind}" not found`)
+      return item
+   }
    getChildren = <T extends KnownNodeNames>(kind: T): CLASSES[T][] => {
       return this.childrens.filter((child) => child.$kind === kind) as CLASSES[T][]
    }
@@ -420,14 +452,25 @@ export class Prompt_Choice extends ManagedNode<'Choice'> {
    $kind: 'Choice' = 'Choice' as const
 
    pickRandomly = (): string => {
-      const choices = this.getChildren('ChoiceEntry')
+      const choices = this.getChildren('Content')
       const randomIndex = Math.floor(Math.random() * choices.length)
       return choices[randomIndex]!.text
    }
-}
+   get nth(): number {
+      return this.getChildOrCrash('Number').number
+   }
+   get expressions(): Prompt_choiceEntry[] {
+      return this.childrens.slice(1)
+   }
+   get value(): string {
+      if (this.expressions.length < this.nth) return '❌ invalid choice picked'
+      const option = this.expressions[this.nth]!
 
-export class Prompt_ChoiceEntry extends ManagedNode<'ChoiceEntry'> {
-   $kind: 'ChoiceEntry' = 'ChoiceEntry' as const
+      if (option instanceof Prompt_String) {
+         return option.content
+      }
+      return option.text
+   }
 }
 
 export class Prompt_Unknown extends ManagedNode<any> {
