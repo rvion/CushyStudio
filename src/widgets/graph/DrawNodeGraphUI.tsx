@@ -343,6 +343,10 @@ export const NodeUI = observer(function NodeUI_(p: {
                onMouseDown={(ev) => {
                   if (ev.button == 0) {
                      //    node.x += 20
+                     if (ev.shiftKey) {
+                        node.selected = false
+                        return
+                     }
                      node.selected = true
                      const moveNode = (ev: MouseEvent): void => {
                         wflow.nodes.map((node) => {
