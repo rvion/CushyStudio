@@ -3,7 +3,6 @@ import type { SchemaDictWithPaths, SchemaWithSerialPath } from './FieldConstruct
 
 import { computed } from 'mobx'
 
-import { Object_keys } from '../../../../front/reusable/helpers/Object_keys.utils'
 import { isSchemaOptional } from '../fields/WidgetUI.DI'
 import { bang } from '../utils/bang'
 import { searchMatches } from '../utils/searchMatches'
@@ -26,7 +25,7 @@ export class CSchemaNeighborhood<KEY extends string> {
    }
 
    @computed get keys(): KEY[] {
-      return Object_keys(this.edges) as KEY[]
+      return Object.keys(this.edges) as KEY[]
    }
 
    // --------------------------------------------------------------------
@@ -125,8 +124,8 @@ export class CSchemaNeighborhood<KEY extends string> {
          // if false, do not even attempt to go deeper
          enter: (schema: Z.Schema, at) => {
             const realSchema = isSchemaOptional(schema) ? schema.config.schema : schema
-            if (realSchema.type === 'relationship') return false
-            if (realSchema.type === 'relationships') return false
+            // 🚂 if (realSchema.type === 'relationship') return false
+            // 🚂 if (realSchema.type === 'relationships') return false
             if (realSchema.type === 'list') return false
             return true
          },
@@ -136,7 +135,7 @@ export class CSchemaNeighborhood<KEY extends string> {
             if (realSchema.type === 'group') return false
             if (realSchema.type === 'choices') return false
             if (realSchema.type === 'list') return false
-            if (realSchema.type === 'relationships') return false
+            // 🚂 if (realSchema.type === 'relationships') return false
             return true
          },
       })
