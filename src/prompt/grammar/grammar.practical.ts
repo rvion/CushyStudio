@@ -464,6 +464,41 @@ export class Prompt_Choice extends ManagedNode<'Choice'> {
       const randomIndex = Math.floor(Math.random() * choices.length)
       return choices[randomIndex]!.text
    }
+
+   get choiceSelection(): Maybe<string> {
+      const wildcard = this.getChild('ChoiceWildCard')
+      if (wildcard) {
+         return '?'
+      }
+
+      const num = this.getChild('Number')
+      if (num) {
+         return num.text
+      }
+
+      return null
+   }
+
+   set choiceSelection(value: number) {
+      const wildcard = this.getChild('ChoiceWildCard')
+
+      if (value < 0 || value > this.expressions.length) {
+         console.log('[FD]:  triggered')
+         if (wildcard) {
+            return
+         }
+         this.getChild('Number')?.setText('?')
+         return
+      }
+
+      if (wildcard) {
+         wildcard.setText(`${value}`)
+         return
+      }
+
+      this.getChild('Number')?.setNumber(value)
+   }
+
    get nth(): number {
       const wildcard = this.getChild('ChoiceWildCard')
       if (wildcard) {

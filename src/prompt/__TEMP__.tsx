@@ -8,7 +8,9 @@ import { makeAutoObservable, observable, reaction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { createRef, useLayoutEffect, useMemo } from 'react'
 
+import { InputBoolUI } from '../csuite/checkbox/InputBoolUI'
 import { Frame } from '../csuite/frame/Frame'
+import { BasicShelfUI } from '../csuite/shelf/ShelfUI'
 import { PromptLang } from './cm-lang/LANG'
 import { basicSetup } from './cm-lang/SETUP'
 import { PromptAST } from './grammar/grammar.practical'
@@ -127,10 +129,14 @@ export const PromptEditorUI = observer(function PromptEditorUI_(p: { promptID: F
       if (uist.mountRef.current) uist.mount(uist.mountRef.current)
    }, [cushy.activePrompt])
 
+   const ast = uist.ast
+   const theme = cushy.preferences.theme.value
+
    return (
-      <Frame className='ͼo' base={{ contrast: -0.05 }} tw='flex h-full flex-col gap-1'>
-         {/* <MessageInfoUI title='instructions'> select the [from] to change the to widget </MessageInfoUI> */}
-         {/* <div className='flex flex-wrap'>
+      <div tw='flex flex-1 flex-row'>
+         <Frame className='ͼo' base={{ contrast: -0.05 }} tw='flex h-full flex-col gap-1'>
+            {/* <MessageInfoUI title='instructions'> select the [from] to change the to widget </MessageInfoUI> */}
+            {/* <div className='flex flex-wrap'>
             {cushy.repository.getWidgetsByType<Field_prompt>('prompt').map((widget) => (
                <ToggleButtonUI //
                   toggleGroup='prompt-link'
@@ -142,8 +148,8 @@ export const PromptEditorUI = observer(function PromptEditorUI_(p: { promptID: F
             ))}
          </div> */}
 
-         <div tw='h-full' ref={uist.mountRef}></div>
-         {/* <Button onClick={() => uist.setInternalText(uist.linkedText + '!')}>add "!"</Button>
+            <div tw='h-full' ref={uist.mountRef}></div>
+            {/* <Button onClick={() => uist.setInternalText(uist.linkedText + '!')}>add "!"</Button>
          <SelectUI<X>
             value={() => ({ id: p.promptID, label: 'current' })}
             getLabelText={(i) => i.label ?? i.id}
@@ -161,6 +167,53 @@ export const PromptEditorUI = observer(function PromptEditorUI_(p: { promptID: F
                return allPrompts.map((i) => ({ id: i.id, label: i.text ?? '' }))
             }}
          /> */}
-      </Frame>
+         </Frame>
+         <BasicShelfUI anchor='right'>
+            {uist.ast.findAll('Choice').map((choice, choiceIndex) => (
+               <UY.Layout.Col
+                  roundness={theme.global.roundness}
+                  key={choiceIndex}
+                  base={{ contrast: 0.05 }}
+                  tw='gap-1 p-1'
+               >
+                  <UY.Layout.Row tw='items-center p-1' base={{ contrast: -0.1 }}>
+                     <span tw='flex-1 truncate'>{choice.text}</span>
+                     <InputBoolUI
+                        square
+                        icon={'mdiHelp'}
+                        roundness={theme.global.roundness}
+                        hover
+                        value={choice.choiceSelection != null && choice.choiceSelection == '?'}
+                        display='button'
+                        toggleGroup={`ast_choice_${choiceIndex}`}
+                        onValueChange={() => {
+                           choice.choiceSelection = -1
+                        }}
+                     />
+                  </UY.Layout.Row>
+                  <UY.Layout.Col base={{ contrast: -0.1 }} key={choiceIndex} align>
+                     {choice.expressions.map((entry, index) => {
+                        return (
+                           <InputBoolUI
+                              tw='!text-left'
+                              roundness={theme.global.roundness}
+                              value={
+                                 choice.choiceSelection != null && parseInt(choice.choiceSelection) == index
+                              }
+                              display='button'
+                              toggleGroup={`ast_choice_${choiceIndex}`}
+                              onValueChange={() => {
+                                 choice.choiceSelection = index
+                              }}
+                           >
+                              {entry.text}
+                           </InputBoolUI>
+                        )
+                     })}
+                  </UY.Layout.Col>
+               </UY.Layout.Col>
+            ))}
+         </BasicShelfUI>
+      </div>
    )
 })
