@@ -5,6 +5,7 @@
         "useDefineForClassFields": false,
         "lib": ["DOM", "DOM.Iterable", "ESNext"],
         "allowJs": false,
+        "experimentalDecorators": false,
         "skipLibCheck": false,
         // https://stackoverflow.com/questions/53113031/how-to-see-a-fully-expanded-typescript-type-without-n-more-and
         // "noErrorTruncation": true,
