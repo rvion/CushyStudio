@@ -1,0 +1,20 @@
+diff --git a/node_modules/mnemonist/package.json b/node_modules/mnemonist/package.json
+index d8476ff..93d663f 100644
+--- a/node_modules/mnemonist/package.json
++++ b/node_modules/mnemonist/package.json
+@@ -20,11 +20,13 @@
+     },
+     "./*": {
+       "types": "./*.d.ts",
+-      "require": "./*.js"
++      "require": "./*.js",
++      "import": "./*.js"
+     },
+     "./*.js": {
+       "types": "./*.d.ts",
+-      "require": "./*.js"
++      "require": "./*.js",
++      "import": "./*.js"
+     }
+   },
+   "sideEffects": false,
