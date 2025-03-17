@@ -5,11 +5,21 @@ import { PromptAST } from './grammar.practical'
 // prettier-ignore
 const options__ = [
    'test',
-   '"option2, yes"',
-   '"The quick brown fox jumped over the lazy dog"'
+   'option2, yes',
+   'The quick brown fox jumped over the lazy dog'
 ]
-const test1 = `<choice(1):test "option2, yes" "The quick brown fox jumped over the lazy dog">`
-const test1Parsed = `\
+const testWildcard = `<choice(?):test "option2, yes" "The quick brown fox jumped over the lazy dog">`
+const testWildcardParsed = `\
+Prompt: 
+  Choice: "<choice(?):test "option2, yes" "The quick brown fox jumped over the lazy dog">"
+    ChoiceWildCard: "?"
+    Identifier: "test"
+    String: ""option2, yes""
+    String: ""The quick brown fox jumped over the lazy dog""\
+`
+
+const testNumber = `<choice(1):test "option2, yes" "The quick brown fox jumped over the lazy dog">`
+const testNumberParsed = `\
 Prompt: 
   Choice: "<choice(1):test "option2, yes" "The quick brown fox jumped over the lazy dog">"
     Number: "1"
@@ -18,15 +28,16 @@ Prompt:
     String: ""The quick brown fox jumped over the lazy dog""\
 `
 
-const expr = new PromptAST(test1)
-console.log(expr.toString())
+const exprNumberSelection = new PromptAST(testNumber)
+const exprWildcard = new PromptAST(testWildcard)
 describe('prompt grammar', () => {
-   it('parse', () => {
-      expect(expr.toString()).toBe(test1Parsed)
+   it('Parse Number Selection', () => {
+      console.log(exprNumberSelection.toString())
+      expect(exprNumberSelection.toString()).toBe(testNumberParsed)
    })
 
-   it('Choices', () => {
-      const entries = expr.findAll('Choice')
+   it('Pick from Index', () => {
+      const entries = exprNumberSelection.findAll('Choice')
       expect(entries).toHaveLength(1)
       expect(entries[0]!.value).toBe(options__[1]!)
       // expect(entries[0]!.pickRandomly()).toBe('test')
@@ -36,5 +47,16 @@ describe('prompt grammar', () => {
       // expect(matches[0]!.strength_clip).toBe(1)
       // expect(matches[1]!.name).toBe('test' as any)
       // expect(matches[1]!.strength_clip).toBe(3)
+   })
+
+   it('Parse Wildcard Selection', () => {
+      console.log(exprWildcard.toString())
+      expect(exprWildcard.toString()).toBe(testWildcardParsed)
+   })
+
+   it('Pick from Wildcard', () => {
+      const entries = exprWildcard.findAll('Choice')
+      expect(entries).toHaveLength(1)
+      expect(options__).toContain(entries[0]!.value)
    })
 })

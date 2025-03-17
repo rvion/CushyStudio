@@ -14,6 +14,7 @@ type CLASSES = {
     Prompt:             Prompt_Prompt
     Lora:               Prompt_Lora
     Choice:             Prompt_Choice
+    ChoiceWildCard:     Prompt_ChoiceWildCard
     Identifier:         Prompt_Identifier
     Number:             Prompt_Number
     Separator:          Prompt_Separator
@@ -59,6 +60,8 @@ type Prompt_choiceEntry =
    | Prompt_Identifier
    | Prompt_String
 
+type Prompt_choiceSelection = Prompt_Number | Prompt_ChoiceWildCard
+
 // 1. wrap text
 export class PromptAST {
    /**
@@ -94,6 +97,7 @@ export class PromptAST {
         Separator         : Prompt_Separator,
         Content           : Prompt_Content,
         Choice            : Prompt_Choice,
+        ChoiceWildCard    : Prompt_ChoiceWildCard,
         WeightedExpression: Prompt_WeightedExpression,
         Break             : Prompt_Break,
         Comment           : Prompt_Comment,
@@ -448,6 +452,10 @@ export class Prompt_ArtistName extends ManagedNode<'ArtistName'> {
    $kind: 'ArtistName' = 'ArtistName' as const
 }
 
+export class Prompt_ChoiceWildCard extends ManagedNode<'ChoiceWildCard'> {
+   $kind: 'ChoiceWildCard' = 'ChoiceWildCard' as const
+}
+
 export class Prompt_Choice extends ManagedNode<'Choice'> {
    $kind: 'Choice' = 'Choice' as const
 
@@ -457,6 +465,10 @@ export class Prompt_Choice extends ManagedNode<'Choice'> {
       return choices[randomIndex]!.text
    }
    get nth(): number {
+      const wildcard = this.getChild('ChoiceWildCard')
+      if (wildcard) {
+         return Math.floor(Math.random() * this.expressions.length)
+      }
       return this.getChildOrCrash('Number').number
    }
    get expressions(): Prompt_choiceEntry[] {

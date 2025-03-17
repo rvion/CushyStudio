@@ -29,6 +29,11 @@ choiceEntry[@isGroup=ChoiceEntry] {
   String
 }
 
+choiceSelection[@isGroup=ChoiceSelection] {
+  Number |
+  ChoiceWildCard
+}
+
 @skip { space }
 
 Content {expression+ }
@@ -45,7 +50,8 @@ TagName {  Identifier | String }
 // Lora { "@" loraName ( "[" Number ("," Number)? "]" )?   }
 Lora { "<lora:" loraName (":" Number ("," Number)? )? ">" }
 
-Choice { "<choice(" Number "):" choiceEntry+ ">"} // GPT Change this
+Choice { "<choice(" choiceSelection "):" choiceEntry+ ">"} // GPT Change this
+ChoiceWildCard { "?" }
 // ChoiceEntry {  Identifier | String  }
 
 loraName { Identifier | String  }

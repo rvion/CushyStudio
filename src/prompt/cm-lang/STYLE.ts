@@ -19,6 +19,10 @@ export const parserWithMetadata = parser.configure({
          Wildcards: t.heading5,
          Number: t.number,
          '( )': t.paren,
+         Choice: t.definitionKeyword,
+         'Choice/ChoiceWildCard': t.number,
+         'Choice/Identifier Choice/String': t.labelName,
+         // 'Choice/String': t.definitionKeyword,
       }),
       indentNodeProp.add({
          Application: (context) => context.column(context.node.from) + context.unit,
