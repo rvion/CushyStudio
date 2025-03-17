@@ -1,5 +1,5 @@
-import type { CSchema } from '../../../../front/form/LocoSchema'
 import type { Field_number } from '../fields/number/FieldNumber'
+import type { CSchema } from '../model/CSchema'
 import type { Field } from '../model/Field'
 import type { BoundAnomaly } from './Anomaly'
 import type { AnomalySolution } from './AnomalySolution'
