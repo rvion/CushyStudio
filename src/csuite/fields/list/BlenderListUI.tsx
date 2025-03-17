@@ -3,13 +3,10 @@ import type { Field_list } from './FieldList'
 
 import { action, runInAction } from 'mobx'
 import { observer, useLocalObservable } from 'mobx-react-lite'
-import { createRef, type ReactNode } from 'react'
+import { type ReactNode } from 'react'
 
 import { Button } from '../../button/Button'
-import { SpacerUI } from '../../components/SpacerUI'
 import { Frame } from '../../frame/Frame'
-import { IkonOf } from '../../icons/iconHelpers'
-import { InputNumberUI } from '../../input-number/InputNumberUI'
 import { InputStringUI } from '../../input-string/InputStringUI'
 import { ResizableFrame } from '../../resizableFrame/resizableFrameUI'
 import { ListButtonAddUI } from './ListButtonAddUI'
@@ -25,7 +22,8 @@ export const BlenderListUI = observer(function BlenderListUI_<T extends Field_li
    activeIndex,
    renderItem,
 }: BlenderListProps<T>) {
-   const size = field.size
+   const uiConf = useLocalObservable(() => ({ size: undefined as Maybe<number> }), [field])
+   const size = uiConf.size
    const x = useLocalObservable(() => ({ selectedIx: activeIndex }))
    const selectedChild = field.items[activeIndex]
 
@@ -38,7 +36,7 @@ export const BlenderListUI = observer(function BlenderListUI_<T extends Field_li
                footer={<BlenderListFooterFilterUI />}
                currentSize={size}
                onResize={(val) => {
-                  field.size = val
+                  uiConf.size = val
                }}
                // Should be h-input + half of gap-size
                snap={28}
