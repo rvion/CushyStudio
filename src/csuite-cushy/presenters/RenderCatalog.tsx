@@ -174,7 +174,7 @@ export const widgetsCatalog /* WidgetsCatalog */ = {
             <Frame
                col
                border={p.align ? true : undefined}
-               roundness={p.align ? theme.global.roundness : undefined}
+               roundness={theme.global.roundness}
                dropShadow={p.align ? theme.global.shadow : undefined}
                expand={p.expand ?? true}
                {...p}
@@ -187,7 +187,7 @@ export const widgetsCatalog /* WidgetsCatalog */ = {
             <Frame
                row
                border={p.align ? true : undefined}
-               roundness={p.align ? theme.global.roundness : undefined}
+               roundness={theme.global.roundness}
                dropShadow={p.align ? theme.global.shadow : undefined}
                expand={p.expand ?? true}
                {...p}
