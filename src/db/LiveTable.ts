@@ -7,10 +7,9 @@ import type { DeleteQueryBuilder, SelectQueryBuilder } from 'kysely'
 
 // 💬 2024-03-14 commented serial checks for now
 // import { Value, ValueError } from '@sinclair/typebox/value'
-import { action, type AnnotationMapEntry } from 'mobx'
+import { type AnnotationMapEntry, computed, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
-import { makeAutoObservableInheritance } from '../csuite/mobx/mobx-store-inheritance'
 import { kysely } from '../DB'
 import { sqlbench, sqlbenchRaw } from '../utils/microbench'
 import { DEPENDS_ON } from './LiveHelpers'
@@ -23,7 +22,7 @@ export interface LiveEntityClass<TABLE extends TableInfo> {
 export class LiveTable<
    //
    TABLE extends TableInfo<keyof KyselyTables>,
-   AAAAA extends {
+   InstanceClass extends {
       new (
          ...args: any[]
          //
@@ -184,10 +183,12 @@ export class LiveTable<
       this.schema,
       `select * from ${this.name} order by createdAt asc limit 1`,
    )
+
    first = (): Maybe<TABLE['$L']> => {
       return this.first_
    }
-   get first_(): Maybe<TABLE['$L']> {
+
+   @computed get first_(): Maybe<TABLE['$L']> {
       const data = this.stmt_first()
       // 2023-11-30 rvion:
       // 👇 first should mosltly not depends on anything
@@ -216,7 +217,7 @@ export class LiveTable<
       return this.last_
    }
 
-   get last_(): Maybe<TABLE['$L']> {
+   @computed get last_(): Maybe<TABLE['$L']> {
       console.log(`[🤠] last ${this.name} (hash=size:${this.liveEntities.size})`)
       const data = sqlbenchRaw(this.stmt_query, this.stmt_last) // sqlbench(this.stmt_last, 0 as any)
       DEPENDS_ON(this.liveEntities.size)
@@ -237,21 +238,11 @@ export class LiveTable<
       public db: LiveDB,
       public name: TableNameInDB,
       public emoji: string,
-      public Ktor: AAAAA, // LiveEntityClass<TABLE>,
+      public Ktor: InstanceClass, // LiveEntityClass<TABLE>,
       public opts?: { singleton?: boolean },
    ) {
       // register
       this.db._tables.push(this)
-   }
-
-   init(obs?: { [key: string]: AnnotationMapEntry } | undefined): void {
-      makeAutoObservableInheritance(this, {
-         // @ts-ignore (private properties are untyped in this function)
-         Ktor: false,
-         _createInstance: action,
-         get: action,
-         ...obs,
-      })
    }
 
    // UTILITIES -----------------------------------------------------------------------
@@ -264,7 +255,7 @@ export class LiveTable<
       const ts = this.SKL_getLastN(amount)
       return ts.map((data) => this.getOrCreateInstanceForExistingData(data))
    }
-   get Last10(): TABLE['$L'][] {
+   @computed get Last10(): TABLE['$L'][] {
       DEPENDS_ON(this.liveEntities.size)
       const ts = this.SKL_getLastN(10)
       return ts.map((data) => this.getOrCreateInstanceForExistingData(data))
@@ -280,19 +271,21 @@ export class LiveTable<
       `select * from ${this.name} where id = ?`,
    )
    get = (id: Maybe<string>): Maybe<TABLE['$L']> => {
-      // if (id === 'main-schema') debugger
-      if (id == null) return null
+      return runInAction(() => {
+         // if (id === 'main-schema') debugger
+         if (id == null) return null
 
-      // 1. check if instance exists in the entity map
-      const val = this.liveEntities.get(id)
-      if (val) return val
+         // 1. check if instance exists in the entity map
+         const val = this.liveEntities.get(id)
+         if (val) return val
 
-      // 2. check if data is on sqlite
-      const x = this.stmt_getByID(id)
-      if (x == null) return null
+         // 2. check if data is on sqlite
+         const x = this.stmt_getByID(id)
+         if (x == null) return null
 
-      // 3. create instance form data
-      return this._createInstance(x)
+         // 3. create instance form data
+         return this._createInstance(x)
+      })
    }
 
    getOrThrow = (id: string): TABLE['$L'] => {
@@ -563,26 +556,28 @@ export class LiveTable<
 
    /** only call this with some data already in the database */
    _createInstance = (data: TABLE['$T']): TABLE['$L'] => {
-      const instance = new this.Ktor(
-         //
-         this.db,
-         cushy,
-         this,
-         data,
-      )
-      // TYPE CHECKING --------------------
-      // /* ⏸️ */ const schema = this.schema.schema
-      // /* ⏸️ */ const valid = Value.Check(schema, data)
-      // /* ⏸️ */ if (!valid) {
-      // /* ⏸️ */     const errors: ValueError[] = [...Value.Errors(schema, data)]
-      // /* ⏸️ */     console.log('❌', this.name)
-      // /* ⏸️ */     for (const i of errors) console.log(`❌`, JSON.stringify(i))
-      // /* ⏸️ */     // debugger
-      // /* ⏸️ */ }
-      // --------------------
-      instance.init(data)
-      this.liveEntities.set(data.id, instance)
-      this.db.bump(this.name as LiveDBSubKeys)
-      return instance
+      return runInAction(() => {
+         const instance = new this.Ktor(
+            //
+            this.db,
+            cushy,
+            this,
+            data,
+         )
+         // TYPE CHECKING --------------------
+         // /* ⏸️ */ const schema = this.schema.schema
+         // /* ⏸️ */ const valid = Value.Check(schema, data)
+         // /* ⏸️ */ if (!valid) {
+         // /* ⏸️ */     const errors: ValueError[] = [...Value.Errors(schema, data)]
+         // /* ⏸️ */     console.log('❌', this.name)
+         // /* ⏸️ */     for (const i of errors) console.log(`❌`, JSON.stringify(i))
+         // /* ⏸️ */     // debugger
+         // /* ⏸️ */ }
+         // --------------------
+         instance.init(data)
+         this.liveEntities.set(data.id, instance)
+         this.db.bump(this.name as LiveDBSubKeys)
+         return instance
+      })
    }
 }

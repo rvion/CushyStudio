@@ -36,13 +36,9 @@ import { FPath } from './FPath'
 export class ComfyPromptRepo extends LiveTable<TABLES['comfy_prompt'], typeof ComfyPromptL> {
    constructor(liveDB: LiveDB) {
       super(liveDB, 'comfy_prompt', '❓', ComfyPromptL)
-      this.init()
    }
 }
 export class ComfyPromptL extends BaseInst<TABLES['comfy_prompt']> {
-   instObservabilityConfig: undefined
-   dataObservabilityConfig: undefined
-
    saveFormat: Maybe<ImageSaveFormat> = null
 
    private _resolve!: (value: this) => void

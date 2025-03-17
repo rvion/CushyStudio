@@ -6,7 +6,6 @@ import type { AnnotationMapEntry } from 'mobx'
 import { toastError } from '../csuite/utils/toasts'
 import { BaseInst } from '../db/BaseInst'
 import { LiveTable } from '../db/LiveTable'
-import { perspectiveHelper } from '../router/perspectives/_PerspectiveBuilder'
 
 export class PerspectiveRepo extends LiveTable<TABLES['perspective'], typeof PerspectiveL> {
    getOrCreateWith = (name: string, layout: () => IJsonModel): PerspectiveL => {
@@ -25,12 +24,10 @@ export class PerspectiveRepo extends LiveTable<TABLES['perspective'], typeof Per
 
    constructor(liveDB: LiveDB) {
       super(liveDB, 'perspective', '🗂️', PerspectiveL)
-      this.init()
    }
 }
 
 export class PerspectiveL extends BaseInst<TABLES['perspective']> {
-   instObservabilityConfig: undefined
    dataObservabilityConfig: Record<string, AnnotationMapEntry> = {
       layout: false,
       layoutDefault: false,

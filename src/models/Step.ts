@@ -32,15 +32,11 @@ export type FormPath = (string | number)[]
 export class StepRepo extends LiveTable<TABLES['step'], typeof StepL> {
    constructor(liveDB: LiveDB) {
       super(liveDB, 'step', '🚶‍♂️', StepL)
-      this.init()
    }
 }
 
 /** a thin wrapper around an app execution */
 export class StepL extends BaseInst<TABLES['step']> {
-   instObservabilityConfig: undefined
-   dataObservabilityConfig: undefined
-
    draftL = new LiveRefOpt<StepL, DraftL>(this, 'draftID', 'draft')
    get draft(): Maybe<DraftL> {
       return this.draftL.item

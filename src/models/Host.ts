@@ -7,6 +7,7 @@ import type { ComfyManagerPluginInfo } from '../manager/types/ComfyManagerPlugin
 import type { ComfySchemaL } from './ComfySchema'
 
 import { copyFileSync, existsSync, mkdirSync, writeFileSync } from 'fs'
+import { observable } from 'mobx'
 import * as v from 'valibot'
 
 import { ResilientWebSocketClient } from '../back/ResilientWebsocket'
@@ -24,13 +25,9 @@ import { asRelativePath } from '../utils/fs/pathUtils'
 export class HostRepo extends LiveTable<TABLES['host'], typeof HostL> {
    constructor(liveDB: LiveDB) {
       super(liveDB, 'host', '📑', HostL)
-      this.init()
    }
 }
 export class HostL extends BaseInst<TABLES['host']> {
-   instObservabilityConfig = { manager: false }
-   dataObservabilityConfig: undefined
-
    // 🔶 can't move frame ref here because no way to override mobx
    // comfyUIIframeRef = createRef<HTMLIFrameElement>()
 
@@ -89,14 +86,14 @@ export class HostL extends BaseInst<TABLES['host']> {
    }
 
    /** maximum amount of logs to keep in memory */
-   maxLogs: number = 200
+   readonly maxLogs: number = 200
 
    /** server sent by the comfy-manager plugin */
-   serverLogs: {
+   readonly serverLogs: {
       at: string
       content: string
       id: number
-   }[] = []
+   }[] = observable([])
 
    /** last log id received */
    private logId: number = 0

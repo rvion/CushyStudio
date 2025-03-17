@@ -25,16 +25,12 @@ export type FormPath = (string | number)[]
 export class DraftRepo extends LiveTable<TABLES['draft'], typeof DraftL> {
    constructor(liveDB: LiveDB) {
       super(liveDB, 'draft', '📝', DraftL)
-      this.init()
    }
 }
 
 /** a thin wrapper around a single Draft somewhere in a .ts file */
 export class DraftL extends BaseInst<TABLES['draft']> {
-   instObservabilityConfig: undefined
-   dataObservabilityConfig = {
-      formSerial: observable.ref,
-   }
+   dataObservabilityConfig = { formSerial: observable.ref }
 
    // get drafts(): DraftL[] {
    //     return cushy.db.draft.select((q) => q.where('appID', '=', this.id))

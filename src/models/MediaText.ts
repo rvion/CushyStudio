@@ -9,12 +9,9 @@ import { LiveTable } from '../db/LiveTable'
 export class MediaTextRepo extends LiveTable<TABLES['media_text'], typeof MediaTextL> {
    constructor(liveDB: LiveDB) {
       super(liveDB, 'media_text', '💬', MediaTextL)
-      this.init()
    }
 }
 
 export class MediaTextL extends BaseInst<TABLES['media_text']> {
-   instObservabilityConfig: undefined
-   dataObservabilityConfig: undefined
    step = new LiveRefOpt<this, StepL>(this, 'stepID', 'step')
 }

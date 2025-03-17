@@ -21,13 +21,10 @@ import { getCurrentRun_IMPL } from './getGlobalRuntimeCtx'
 export class CushyScriptRepo extends LiveTable<TABLES['cushy_script'], typeof CushyScriptL> {
    constructor(liveDB: LiveDB) {
       super(liveDB, 'cushy_script', '⭐️', CushyScriptL)
-      this.init()
    }
 }
 
 export class CushyScriptL extends BaseInst<TABLES['cushy_script']> {
-   instObservabilityConfig: undefined
-   dataObservabilityConfig: undefined
    // get firstApp(): Maybe<CushyAppL> {
    //     return this.apps[0]
    // }

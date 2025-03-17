@@ -22,14 +22,10 @@ import { hashArrayBuffer } from '../state/hashArrayBuffer'
 export class CushyAppRepo extends LiveTable<TABLES['cushy_app'], typeof CushyAppL> {
    constructor(liveDB: LiveDB) {
       super(liveDB, 'cushy_app', '🌟', CushyAppL)
-      this.init()
    }
 }
 
 export class CushyAppL extends BaseInst<TABLES['cushy_app']> {
-   instObservabilityConfig: undefined
-   dataObservabilityConfig: undefined
-
    // linked scripts
    private _scriptL: LiveRef<this, CushyScriptL> = new LiveRef(this, 'scriptID', 'cushy_script')
 

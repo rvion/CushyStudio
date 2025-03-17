@@ -61,14 +61,10 @@ export const GraphIDCache = new Map<string, number>()
 export class ComfyWorkflowRepo extends LiveTable<TABLES['comfy_workflow'], typeof ComfyWorkflowL> {
    constructor(liveDB: LiveDB) {
       super(liveDB, 'comfy_workflow', '📊', ComfyWorkflowL)
-      this.init()
    }
 }
 
 export class ComfyWorkflowL extends BaseInst<TABLES['comfy_workflow']> {
-   instObservabilityConfig: undefined
-   dataObservabilityConfig: undefined
-
    /** number of node in the graph */
    get size(): number {
       return this.nodes.length

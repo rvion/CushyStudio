@@ -44,14 +44,10 @@ import { getCurrentRun_IMPL } from './getGlobalRuntimeCtx'
 export class MediaImageRepo extends LiveTable<TABLES['media_image'], typeof MediaImageL> {
    constructor(liveDB: LiveDB) {
       super(liveDB, 'media_image', '🖼️', MediaImageL)
-      this.init()
    }
 }
 
 export class MediaImageL extends BaseInst<TABLES['media_image']> {
-   instObservabilityConfig: undefined
-   dataObservabilityConfig: undefined
-
    static async cacheMissingSafetyRatings({
       //
       amount = 10,
