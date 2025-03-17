@@ -136,7 +136,7 @@ export function ui_IPAdapterV2(): UI_IPAdapterV2 {
             help: form.markdown({ startCollapsed: true, markdown: ipAdapterDoc }),
          },
          {
-            ui: (ui) => {
+            uiui: (ui) => {
                console.log(`[🔴🔴🔴🔴] `)
                ui.set({ Shell: <>🟢</> })
             },

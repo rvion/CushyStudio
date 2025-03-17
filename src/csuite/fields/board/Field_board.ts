@@ -85,7 +85,7 @@ export class Field_board<SCHEMA extends CSchema> extends Field_group<BoardDataSc
             { icon: opts.icon },
          )
          .useClass(Field_board<SCHEMA>, opts)
-         .withConfig({ ui: { Body: WidgetListExtUI__Regional } })
+         .withConfig({ uiui: { Body: WidgetListExtUI__Regional } })
    }
 
    @computed get width(): number {

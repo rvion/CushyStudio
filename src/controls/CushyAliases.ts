@@ -1,4 +1,5 @@
 import type { ComfyUnionValue } from '../comfyui/comfyui-types'
+import type { OpenRouter_Models } from '../csuite'
 import type { Field_board } from '../csuite/fields/board/Field_board'
 import type { Field_bool } from '../csuite/fields/bool/FieldBool'
 import type { Field_choices, MAGICCHOICES } from '../csuite/fields/choices/FieldChoices'
@@ -25,6 +26,7 @@ import type { Field_string } from '../csuite/fields/string/FieldString'
 import type { CSchema } from '../csuite/model/CSchema'
 import type { Field as Field_ } from '../csuite/model/Field'
 import type { SchemaDict as SchemaDict_ } from '../csuite/model/SchemaDict'
+import type { OpenRouter_ModelInfo } from '../csuite/openrouter/OpenRouter_ModelInfo'
 import type { NO_PROPS } from '../csuite/types/NO_PROPS'
 import type { Field_prompt } from '../prompt/FieldPrompt'
 import type { Runtime as Runtime_ } from '../runtime/Runtime'
@@ -79,6 +81,7 @@ declare global {
       type DateTimeZoned                              = CSchema<Field_date<Temporal.ZonedDateTime>>
       type XDateTimeZoned                             = CSchema<Field_date<Temporal.ZonedDateTime>>
 
+      type LLM                                        = CSchema<Field_selectOne<OpenRouter_ModelInfo, OpenRouter_Models>>
       // #region select
       // naming v1
       type XSelectOne<T, ID extends SelectKey>        = CSchema<Field_selectOne<T, ID>>

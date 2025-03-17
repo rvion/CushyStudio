@@ -60,7 +60,7 @@ export function ui_latent_v3(p: { size?: Field_size_config } = {}): UI_LatentV3 
             random: ui_LatentShapeGenerator(batchSize),
          },
          {
-            ui: {
+            uiui: {
                Header: (p) => {
                   const size = p.field.value.emptyLatent?.size || p.field.value.random?.size
                   return (

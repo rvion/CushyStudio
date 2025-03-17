@@ -241,7 +241,7 @@ export class CushySchemaBuilder implements IBuilder {
       return CSchema.new<Field_optional<T>>(Field_optional, p)
    }
 
-   llmModel(p: { default?: OpenRouter_Models } = {}): Z.XSelectOne<OpenRouter_ModelInfo, OpenRouter_Models> {
+   llmModel(p: { default?: OpenRouter_Models } = {}): Z.LLM {
       const knownModels = Object.values(openRouterInfos)
       const def = p.default ? knownModels.find((c) => c.id === p.default) : undefined
       return this.selectOne({

@@ -10,7 +10,7 @@ app({
          testA: b.fields(
             { a: b.int(), b: b.string(), c: b.string() },
             {
-               ui: {
+               uiui: {
                   Header: ({ field }) => (
                      <div tw='flex'>
                         <field.fields.a.UI Shell={UY.Shell.HeaderOnly} />
@@ -26,7 +26,7 @@ app({
          testB: b.fields(
             { a: b.int(), b: b.string(), c: b.string() },
             {
-               ui: {
+               uiui: {
                   Body: null,
                   Header: () => <div tw='flex'>nothing to see here</div>,
                },
@@ -35,7 +35,7 @@ app({
 
          c: b.header('Custom boolean header wrapping the default:'),
          testC: b.bool({
-            ui: {
+            uiui: {
                Header: ({ field: widget }) => (
                   <div tw='flex flex-1 whitespace-nowrap'>
                      <div

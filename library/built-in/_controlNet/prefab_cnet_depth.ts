@@ -76,7 +76,7 @@ export function ui_subform_Depth_Midas(): UI_subform_Depth_Midas {
    return form.group({
       label: 'Midas',
       // startCollapsed: true,
-      ui: { Header: null },
+      uiui: { Header: null },
       collapsed: false,
       border: false,
       items: {

@@ -36,7 +36,7 @@ export class RenderXXX<FIELD extends Field> {
    private forOthers: RuleEntry[] = []
 
    get final(): CompiledFieldConf<FIELD> {
-      const uiuiRule = this.field.config.ui ?? this.field.config.uiui
+      const uiuiRule = this.field.config.uiui ?? this.field.config.uiui
       if (uiuiRule == null)
          return {
             rulesForSubtree: emptyArray,

@@ -48,7 +48,7 @@ export class Theme extends Field_group<ThemeConf> {
                      { id: 'mobile', /*      */ icon: IKONS.mdiCellphone /*            */, label: '' },
                   ],
                   {
-                     ui: {
+                     uiui: {
                         Header: (p) => (
                            <WidgetSelectOne_TabUI field={p.field} tw='!gap-0 ![flex-wrap:nowrap]' />
                         ),
