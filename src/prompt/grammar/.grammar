@@ -77,6 +77,7 @@ ArtistName { Identifier | String  }
   Separator { "," }
   Comment { ";" ![\n]* }
   Number { "-"? $[0-9.]+ }
+  Index { "[" "-"? $[0-9?]+ "]" }
   // WeightedExpression {"{}"}
   @precedence { Comment, Break, Identifier }
   // @precedence { Comment, Break, Identifier, Number } // 🔴

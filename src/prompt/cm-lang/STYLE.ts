@@ -23,6 +23,7 @@ export const parserWithMetadata = parser.configure({
          'Choice/ChoiceWildCard': t.number,
          'Choice/Identifier Choice/String': t.labelName,
          ChoiceName: t.heading,
+         'Wildcard/Index': t.number,
          // 'Choice/String': t.definitionKeyword,
       }),
       indentNodeProp.add({

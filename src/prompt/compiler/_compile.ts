@@ -84,8 +84,15 @@ export const compilePrompt = (p: {
                console.log(`[❌] invalid wildcard`)
                return false
             }
-            const picked = chooseRandomly(node.name, p.seed ?? Math.floor(Math.random() * 99999999), options)
-            if (p.printWildcards ?? true) debugText.push(picked)
+            if (node.index != null) {
+               const picked = options[node.index]
+               if (p.printWildcards ?? true) debugText.push(`${node.index} | ${picked}`)
+               set(picked)
+               return false
+            }
+            const index = p.seed ?? Math.floor(Math.random() * 99999999)
+            const picked = chooseRandomly(node.name, index, options)
+            if (p.printWildcards ?? true) debugText.push(`${index} | ${picked}`)
             set(picked)
             return false
          }

@@ -18,6 +18,7 @@ type CLASSES = {
     ChoiceName:         Prompt_ChoiceName
     Identifier:         Prompt_Identifier
     Number:             Prompt_Number
+    Index:              Prompt_Index
     Separator:          Prompt_Separator
     Content:            Prompt_Content
     WeightedExpression: Prompt_WeightedExpression
@@ -95,6 +96,7 @@ export class PromptAST {
         Lora              : Prompt_Lora,
         Identifier        : Prompt_Identifier,
         Number            : Prompt_Number,
+        Index             : Prompt_Index,
         Separator         : Prompt_Separator,
         Content           : Prompt_Content,
         Choice            : Prompt_Choice,
@@ -371,6 +373,16 @@ export class Prompt_Wildcard extends ManagedNode<'Wildcard'> {
          ''
       )
    }
+
+   get index(): Maybe<number> {
+      const indexAST = this.getChild('Index')
+
+      if (indexAST) {
+         if (indexAST.number != null) return indexAST.number
+      }
+
+      return null
+   }
 }
 
 export class Prompt_Identifier extends ManagedNode<'Identifier'> {
@@ -390,6 +402,37 @@ export class Prompt_Number extends ManagedNode<'Number'> {
 
    setNumber = (value: number): void => {
       this.setText(value.toString())
+   }
+}
+
+export class Prompt_Index extends ManagedNode<'Index'> {
+   $kind: 'Index' = 'Index' as const
+
+   get number(): Maybe<number> {
+      if (this.text == '[?]') {
+         return null
+      }
+      return parseInt(this.text.slice(1, -1))
+   }
+
+   set number(value: number) {
+      this.setText(Math.floor(value).toString())
+   }
+
+   /** When called with a max number and the value within the bracket is '?', it will return a random number up to max-1. For example, indexAST.number(array.length) */
+   getIndex = (max?: number): number => {
+      if (this.text == '?') {
+         return max ? Math.floor(Math.random() * max) : 0
+      }
+      return parseInt(this.text)
+   }
+
+   setNumber = (value: number): void => {
+      this.setText(value.toString())
+   }
+
+   setRandom = (): void => {
+      this.setText('[?]')
    }
 }
 
@@ -500,7 +543,6 @@ export class Prompt_Choice extends ManagedNode<'Choice'> {
       const wildcard = this.getChild('ChoiceWildCard')
 
       if (value < 0 || value > this.expressions.length) {
-         console.log('[FD]:  triggered')
          if (wildcard) {
             return
          }
