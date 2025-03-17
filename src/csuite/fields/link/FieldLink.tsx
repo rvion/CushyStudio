@@ -1,4 +1,5 @@
 import type { CSchema } from '../../model/CSchema'
+import type { FieldConstructor } from '../../model/FieldConstructor'
 import type { Patch } from '../../model/Patch'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
@@ -230,4 +231,4 @@ export class Field_link<A extends CSchema, B extends CSchema> extends Field {
 
 // DI
 registerFieldClass('link', Field_link)
-Field_link satisfies FieldConstructor<Field_link>
+Field_link satisfies FieldConstructor<Field_link<any, any>>

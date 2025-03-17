@@ -1,5 +1,6 @@
 import type { NumberFormat } from '../../i18n/i18n'
 import type { CSchema } from '../../model/CSchema'
+import type { FieldConstructor } from '../../model/FieldConstructor'
 import type { Patch } from '../../model/Patch'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'

@@ -1,5 +1,5 @@
 import type { CSchema } from '../../model/CSchema'
-import type { CodegenOpts, SchemaDictWithPaths } from '../../model/FieldConstructor'
+import type { CodegenOpts, FieldConstructor, SchemaDictWithPaths } from '../../model/FieldConstructor'
 import type { Patch_Common } from '../../model/Patch'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
@@ -1015,7 +1015,7 @@ export class Field_list<T extends CSchema> extends Field {
 
 // DI
 registerFieldClass('list', Field_list)
-Field_list satisfies FieldConstructor<Field_list>
+Field_list satisfies FieldConstructor<Field_list<any>>
 
 function isSerialList(serial: any): serial is Field_list_serial<any> {
    return serial.$ === 'list'

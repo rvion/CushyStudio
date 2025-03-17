@@ -55,8 +55,21 @@ export class Field_orbit extends Field {
 
    // #region types
    static readonly type: 'orbit' = 'orbit'
-   static readonly emptySerial: Field_orbit['$serial'] = { $: 'orbit' }
+   static readonly unsetSerial: Field_orbit['$serial'] = { $: 'orbit' }
    static migrateSerial(): undefined {}
+   public static readonly patchedSerialPaths: readonly string[] = Object.freeze(['azimuth', 'elevation'])
+   static generateSerial(
+      value: Maybe<Field_orbit['$value']>,
+      config: Field_orbit['$config'],
+   ): Field_orbit['$serial'] {
+      if (value == null && config.default == null) return this.unsetSerial
+      const selectedVal = value ?? config.default
+      return {
+         $: 'orbit',
+         azimuth: selectedVal?.azimuth,
+         elevation: selectedVal?.elevation,
+      }
+   }
    static codeForTypescriptValue(config: Field_orbit['$config']): string {
       return `number`
    }

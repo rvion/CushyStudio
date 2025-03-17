@@ -1,6 +1,7 @@
 import type { ComfyNodeSlotName, ComfyUnionValue } from '../../../comfyui/comfyui-types'
 import type { CleanedEnumResult } from '../../../types/EnumUtils'
 import type { CSchema } from '../../model/CSchema'
+import type { FieldConstructor } from '../../model/FieldConstructor'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 
@@ -170,4 +171,4 @@ export class Field_enum<O extends ComfyUnionValue> extends Field {
 
 // DI
 registerFieldClass('enum', Field_enum)
-Field_enum satisfies FieldConstructor<Field_enum>
+Field_enum satisfies FieldConstructor<Field_enum<any>>

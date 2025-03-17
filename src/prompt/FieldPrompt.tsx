@@ -1,4 +1,5 @@
 import type { CSchema } from '../csuite/model/CSchema'
+import type { FieldConstructor } from '../csuite/model/FieldConstructor'
 import type { Repository } from '../csuite/model/Repository'
 import type { Problem_Ext } from '../csuite/model/Validation'
 import type { Tree } from '@lezer/common'

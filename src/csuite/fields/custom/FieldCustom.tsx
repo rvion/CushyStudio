@@ -1,4 +1,5 @@
 import type { CSchema } from '../../model/CSchema'
+import type { FieldConstructor } from '../../model/FieldConstructor'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 import type { UIKit } from './WidgetCustomUI'
@@ -136,4 +137,4 @@ export class Field_custom<T> extends Field {
 }
 
 registerFieldClass('custom', Field_custom)
-Field_custom satisfies FieldConstructor<Field_custom>
+Field_custom satisfies FieldConstructor<Field_custom<any>>

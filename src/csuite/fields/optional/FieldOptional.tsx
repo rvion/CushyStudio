@@ -1,5 +1,5 @@
 import type { CSchema } from '../../model/CSchema'
-import type { CodegenOpts, SchemaDictWithPaths } from '../../model/FieldConstructor'
+import type { CodegenOpts, FieldConstructor, SchemaDictWithPaths } from '../../model/FieldConstructor'
 import type { Patch } from '../../model/Patch'
 import type { Repository } from '../../model/Repository'
 import type { Problem, Problem_Ext } from '../../model/Validation'
@@ -460,4 +460,4 @@ export class Field_optional<out T extends CSchema = CSchema> extends Field {
 
 // DI
 registerFieldClass('optional', Field_optional)
-Field_optional satisfies FieldConstructor<Field_optional>
+Field_optional satisfies FieldConstructor<Field_optional<any>>
