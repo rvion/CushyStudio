@@ -49,15 +49,15 @@ TagName {  Identifier | String }
 // Lora { @specialize<Identifier, "lora"> ":" LoraName  }
 // Lora { "@" loraName ( "[" Number ("," Number)? "]" )?   }
 Lora { "<lora:" loraName (":" Number ("," Number)? )? ">" }
-
-Choice { "<choice(" choiceSelection "):" choiceEntry+ ">"} // GPT Change this
-ChoiceWildCard { "?" }
-// ChoiceEntry {  Identifier | String  }
-
 loraName { Identifier | String  }
 
+
+Choice { "<choice" ChoiceName? "(" choiceSelection "):" choiceEntry+ ">"} // GPT Change this
+ChoiceWildCard { "?" }
+ChoiceName { String }
+
 // WILDCARD
-Wildcard { "?" wildcardName }
+Wildcard { "?" wildcardName Index? }
 wildcardName { Identifier | String  }
 
 // EMBEDDING

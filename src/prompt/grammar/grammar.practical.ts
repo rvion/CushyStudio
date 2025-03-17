@@ -15,6 +15,7 @@ type CLASSES = {
     Lora:               Prompt_Lora
     Choice:             Prompt_Choice
     ChoiceWildCard:     Prompt_ChoiceWildCard
+    ChoiceName:         Prompt_ChoiceName
     Identifier:         Prompt_Identifier
     Number:             Prompt_Number
     Separator:          Prompt_Separator
@@ -98,6 +99,7 @@ export class PromptAST {
         Content           : Prompt_Content,
         Choice            : Prompt_Choice,
         ChoiceWildCard    : Prompt_ChoiceWildCard,
+        ChoiceName        : Prompt_ChoiceName,
         WeightedExpression: Prompt_WeightedExpression,
         Break             : Prompt_Break,
         Comment           : Prompt_Comment,
@@ -456,8 +458,23 @@ export class Prompt_ChoiceWildCard extends ManagedNode<'ChoiceWildCard'> {
    $kind: 'ChoiceWildCard' = 'ChoiceWildCard' as const
 }
 
+export class Prompt_ChoiceName extends ManagedNode<'ChoiceName'> {
+   $kind: 'ChoiceName' = 'ChoiceName' as const
+
+   get content(): string {
+      return this.text.slice(1, -1)
+   }
+}
 export class Prompt_Choice extends ManagedNode<'Choice'> {
    $kind: 'Choice' = 'Choice' as const
+
+   get name(): Maybe<string> {
+      const name = this.getChild('ChoiceName')
+      if (name) {
+         return name.content
+      }
+      return null
+   }
 
    pickRandomly = (): string => {
       const choices = this.getChildren('Content')
@@ -507,7 +524,7 @@ export class Prompt_Choice extends ManagedNode<'Choice'> {
       return this.getChildOrCrash('Number').number
    }
    get expressions(): Prompt_choiceEntry[] {
-      return this.childrens.slice(1)
+      return this.childrens.slice(this.getChild('ChoiceName') != null ? 2 : 1)
    }
    get value(): string {
       if (this.expressions.length < this.nth) return '❌ invalid choice picked'

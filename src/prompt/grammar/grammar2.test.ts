@@ -40,13 +40,6 @@ describe('prompt grammar', () => {
       const entries = exprNumberSelection.findAll('Choice')
       expect(entries).toHaveLength(1)
       expect(entries[0]!.value).toBe(options__[1]!)
-      // expect(entries[0]!.pickRandomly()).toBe('test')
-      // const matches = expr.findAll('Lora')
-      // expect(matches.length).toBe(2)
-      // expect(matches[0]!.name).toBe('a' as any)
-      // expect(matches[0]!.strength_clip).toBe(1)
-      // expect(matches[1]!.name).toBe('test' as any)
-      // expect(matches[1]!.strength_clip).toBe(3)
    })
 
    it('Parse Wildcard Selection', () => {

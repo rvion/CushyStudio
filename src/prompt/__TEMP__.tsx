@@ -177,7 +177,7 @@ export const PromptEditorUI = observer(function PromptEditorUI_(p: { promptID: F
                   tw='gap-1 p-1'
                >
                   <UY.Layout.Row tw='items-center p-1' base={{ contrast: -0.1 }}>
-                     <span tw='flex-1 truncate'>{choice.text}</span>
+                     <span tw='flex-1 truncate'>{choice.name ?? 'No name'}</span>
                      <InputBoolUI
                         square
                         icon={'mdiHelp'}
