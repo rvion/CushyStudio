@@ -13,7 +13,6 @@ import type { Problem_Ext } from './Validation'
 export type FieldConfigFor<FIELD extends Field> = FieldConfig_CommonProperties<FIELD> & FIELD['$ownConfig']
 
 export interface FieldConfig_CommonProperties<out FIELD extends Field> {
-   ui?: RENDERER.UIConf<FIELD>
    uiui?: RENDERER.UIConf<FIELD>
    /**
     * @since 2024-05-20
