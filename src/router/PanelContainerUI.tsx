@@ -1,4 +1,4 @@
-import type * as FL from './flexlayout-react'
+import type * as FL from '../flexlayout-react'
 import type { PanelName } from './PANELS'
 
 import { observer } from 'mobx-react-lite'

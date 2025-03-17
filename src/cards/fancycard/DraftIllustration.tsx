@@ -4,7 +4,8 @@ import { existsSync } from 'fs'
 import { observer } from 'mobx-react-lite'
 import { fileURLToPath } from 'url'
 
-import { useDragDropRefForReact19, useImageDrop } from '../../widgets/galleries/dnd'
+import { useDragDropRefForReact19 } from '../../csuite/utils/dnd'
+import { useImageDrop } from '../../widgets/galleries/dnd'
 import { ImageErrorDisplayUI } from '../../widgets/galleries/ImageErrorDisplayUI'
 import { AppIllustrationUI } from './AppIllustrationUI'
 

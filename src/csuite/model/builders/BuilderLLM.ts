@@ -1,11 +1,3 @@
-import type { FieldTypes } from '../$FieldTypes'
-
-import { BaseBuilder } from './BaseBuilder'
-
-interface SchemaAndAliasesᐸ_ᐳ extends HKT<FieldTypes> {
-   //
-}
-
 export class BuilderLLM<Schemaᐸ_ᐳ extends SchemaAndAliasesᐸ_ᐳ> extends BaseBuilder<Schemaᐸ_ᐳ> {
    static fromSchemaClass = BaseBuilder.buildfromSchemaClass(BuilderLLM)
 

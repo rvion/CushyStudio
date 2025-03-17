@@ -4,8 +4,9 @@ import { existsSync, type PathLike } from 'fs'
 import { observer } from 'mobx-react-lite'
 
 import { RevealUI } from '../../csuite/reveal/RevealUI'
+import { useDragDropRefForReact19 } from '../../csuite/utils/dnd'
 import { ImageDropdownMenuUI } from '../../panels/ImageDropdownUI'
-import { useDragDropRefForReact19, useImageDrag } from './dnd'
+import { useImageDrag } from './dnd'
 import { ImageErrorDisplayUI } from './ImageErrorDisplayUI'
 
 export const ImageUI = observer(function ImageUI_({

@@ -1,4 +1,4 @@
-import React, { createElement, isValidElement } from 'react'
+import React, { createElement, isValidElement, type ReactNode } from 'react'
 
 // legacy type:
 // export type FCOrNode<P extends object> = React.FunctionComponent<P> | React.ReactNode
@@ -24,7 +24,7 @@ export type FCOrNode<P extends object> =
 // prettier-ignore
 export type FCOrNode__<P extends object> =
    | SimpleReactComponent<P>
-   | SimpleReactNode
+   | ReactNode
 
 export type FCOrJSXOrNamed<P extends object, Named extends string> =
    | SimpleReactComponent<P>
@@ -34,9 +34,9 @@ export type FCOrJSXOrNamed<P extends object, Named extends string> =
 /** render */
 export const renderFCOrNode = <T extends object>(
    //
-   x: FCOrNode<T>,
+   x: FCOrNode__<T>,
    props: NoInfer<T>,
-): SimpleReactNode => {
+): ReactNode => {
    if (_isFC<T>(x)) return createElement(x, props)
    return x
 }

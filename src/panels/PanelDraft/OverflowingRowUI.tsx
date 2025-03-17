@@ -5,14 +5,13 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 import { Frame, type FrameProps } from '../../csuite/frame/Frame'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
-import { useObservableRef } from '../../csuite/utils/useObservableRef'
+import { useObservableRef } from '../../csuite/utils/observableRef'
 
 type TabContent = ReactNode
 
 export type TabBarProps = {
    children: TabContent[]
-   className?: string
-} & FrameProps
+} & Omit<FrameProps, 'children'>
 
 export const OverflowingRowUI = observer(function OverflowingRow({
    //
@@ -23,7 +22,7 @@ export const OverflowingRowUI = observer(function OverflowingRow({
    const containerRef = useRef<HTMLDivElement>(null)
    const [extraIndex, setExtraIndex] = useState(0)
    const tabRefs = useRef<(HTMLDivElement | null)[]>([])
-   const caretRef = useObservableRef<HTMLDivElement>(null)
+   const caretRef = useObservableRef<HTMLDivElement>()
 
    const handleReveal = (): void => {
       if (!containerRef.current) return console.log(`[🤠] ❌ no containerRef`)

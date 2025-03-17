@@ -1281,6 +1281,11 @@ export abstract class Field {
       return errors.length > 0
    }
 
+   get mustDisplayErrors(): boolean {
+      return this.hasOwnErrors && !this.isInsideDisabledBranch
+      return this.hasOwnErrors
+      return this.hasOwnErrors && this.touched
+   }
    /**
     * all own errors:
     *  + base/default (built-in field, e.g. minLength for string)

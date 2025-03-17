@@ -7,6 +7,7 @@ import type { FC } from 'react'
 
 import { produce } from 'immer'
 
+import { stableStringify } from '../../hashUtils/hash'
 import { Field } from '../../model/Field'
 import { registerFieldClass } from '../WidgetUI.DI'
 import { WidgetCustom_HeaderUI } from './WidgetCustomUI'
@@ -44,12 +45,19 @@ export interface Field_custom<T> {
    $child: never
 }
 
-// #region State
 export class Field_custom<T> extends Field {
-   // #region Static
    static readonly type: 'custom' = 'custom'
-   static readonly emptySerial: Field_custom<any>['$serial'] = { $: 'custom' }
+   static readonly unsetSerial: Field_custom<any>['$serial'] = { $: 'custom' }
+   static generateSerial(
+      value: Maybe<Field_custom<any>['$value']>,
+      config: Field_custom<any>['$config'],
+   ): Field_custom<any>['$serial'] {
+      if (value == null && config.defaultValue == null) return this.unsetSerial
+      const finalValue = value != null ? value : config.defaultValue()
+      return { $: 'custom', value: finalValue }
+   }
    static migrateSerial(): undefined {}
+   public static readonly patchedSerialPaths: readonly string[] = Object.freeze(['val'])
    static codeForTypescriptValue(config: Field_custom<any>['$config']): string {
       return `unknown /* ${config.Component.name} */`
    }
@@ -86,7 +94,7 @@ export class Field_custom<T> extends Field {
    DefaultHeaderUI = WidgetCustom_HeaderUI
    DefaultBodyUI: undefined = undefined
 
-   get Component(): Field_custom_config<T>['Component'] {
+   get Component(): Field_custom<T>['$config']['Component'] {
       return this.config.Component
    }
 
@@ -106,6 +114,13 @@ export class Field_custom<T> extends Field {
 
    get hasChanges(): boolean {
       return this.value !== this.defaultValue
+   }
+
+   public isValueEqual(other: Field): boolean {
+      if (other === this) return true
+      if (!(other instanceof Field_custom)) return false
+      // 🔴 naive
+      return stableStringify(other.serial) === stableStringify(this.serial)
    }
 
    // #region Value

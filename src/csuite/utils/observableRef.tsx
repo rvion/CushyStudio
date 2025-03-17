@@ -3,7 +3,7 @@ import type { DependencyList } from 'react'
 import { makeAutoObservable, observable } from 'mobx'
 import { useMemo } from 'react'
 
-export function useObservableRef<T extends any>(deps: DependencyList): ObservableRef<T> {
+export function useObservableRef<T extends any>(deps: DependencyList = []): ObservableRef<T> {
    return useMemo(() => new ObservableRef(), deps)
 }
 

@@ -15,6 +15,7 @@ import { MessageInfoUI } from '../../csuite/messages/MessageInfoUI'
 import { ProvenanceCtx } from '../../csuite/provenance/Provenance'
 import { SelectUI } from '../../csuite/select/SelectUI'
 import { SQLITE_true } from '../../csuite/types/SQLITE_boolean'
+import { useDragDropRefForReact19 } from '../../csuite/utils/dnd'
 import { QuickTableUI } from '../../csuite/utils/quicktable'
 import { FramePhoneUI } from '../../csuite/wrappers/FramePhoneUI'
 import { InstallRequirementsBtnUI } from '../../manager/REQUIREMENTS/InstallRequirementsBtnUI'
@@ -118,7 +119,7 @@ const POPUP = observer(function POPUP___(p: { title?: string; children?: React.R
 export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> }) {
    const draft = p.draft
    const justify = cushy.forms.use(ui_justify)
-   const [isDnDHovered, dropRef] = useImageSlotDrop((img) => {
+   const [isDnDHovered, dropRef_] = useImageSlotDrop((img) => {
       if (draft == null) return
 
       cushy.activityManager.start({
@@ -141,6 +142,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
       // For example, CushySXDL's Latent Image field would be "Latent->Image"
       return null
    })
+   const dropRef = useDragDropRefForReact19(dropRef_)
    const theme = cushy.preferences.theme.value
 
    // useEffect(() => draft?.AWAKE(), [draft?.id])
