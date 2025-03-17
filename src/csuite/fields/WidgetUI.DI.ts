@@ -18,6 +18,7 @@ import type { Field_bool } from './bool/FieldBool'
 import type { Field_choices } from './choices/FieldChoices'
 import type { Field_date } from './date/FieldDate'
 import type { Field_group } from './group/FieldGroup'
+import type { Field_image } from './image/FieldImage'
 import type { Field_link } from './link/FieldLink'
 import type { Field_list } from './list/FieldList'
 import type { Field_markdown } from './markdown/FieldMarkdown'
@@ -105,6 +106,7 @@ export const isFieldString = _checkIfIs<Field_string>('str')
 export const isFieldMarkdown = _checkIfIs<Field_markdown>('markdown')
 export const isFieldNumber = _checkIfIs<Field_number>('number')
 export const isFieldBool = _checkIfIs<Field_bool>('bool')
+export const isFieldImage = _checkIfIs<Field_image>('image')
 export const isFieldList = _checkIfIs<Field_list<any>>('list')
 export const isFieldSelectOne = _checkIfIs<Field_selectOne<any, any>>('selectOne')
 export const isFieldSelectMany = _checkIfIs<Field_selectMany<any, any>>('selectMany')
