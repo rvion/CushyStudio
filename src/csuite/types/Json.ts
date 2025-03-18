@@ -3,6 +3,7 @@
 export type Json =
     | string
     | number
+    | null
     | boolean
     | JSONDict
     | Array<Json>;
