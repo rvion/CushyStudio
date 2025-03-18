@@ -1,0 +1,37 @@
+diff --git a/node_modules/pixi.js/lib/scene/graphics/shared/fill/FillGradient.d.ts b/node_modules/pixi.js/lib/scene/graphics/shared/fill/FillGradient.d.ts
+index 44f27c2..b3e9a12 100644
+--- a/node_modules/pixi.js/lib/scene/graphics/shared/fill/FillGradient.d.ts
++++ b/node_modules/pixi.js/lib/scene/graphics/shared/fill/FillGradient.d.ts
+@@ -1,6 +1,6 @@
+ import { Matrix } from '../../../../maths/matrix/Matrix';
+ import { Texture } from '../../../../rendering/renderers/shared/texture/Texture';
+-import { type PointData } from '~/maths/point/PointData';
++import { type PointData } from '../../../../maths/point/PointData';
+ import type { ColorSource } from '../../../../color/Color';
+ import type { TextureSpace } from '../FillTypes';
+ export type GradientType = 'linear' | 'radial';
+diff --git a/node_modules/pixi.js/lib/scene/sprite-nine-slice/NineSliceGeometry.d.ts b/node_modules/pixi.js/lib/scene/sprite-nine-slice/NineSliceGeometry.d.ts
+index f461649..1e605c4 100644
+--- a/node_modules/pixi.js/lib/scene/sprite-nine-slice/NineSliceGeometry.d.ts
++++ b/node_modules/pixi.js/lib/scene/sprite-nine-slice/NineSliceGeometry.d.ts
+@@ -1,5 +1,5 @@
+ import { PlaneGeometry } from '../mesh-plane/PlaneGeometry';
+-import { type PointData } from '~/maths/point/PointData';
++import { type PointData } from '../../maths/point/PointData';
+ /**
+  * Options for the NineSliceGeometry.
+  * @memberof scene
+diff --git a/node_modules/pixi.js/lib/scene/sprite-nine-slice/NineSliceSprite.d.ts b/node_modules/pixi.js/lib/scene/sprite-nine-slice/NineSliceSprite.d.ts
+index 6343440..e381dfa 100644
+--- a/node_modules/pixi.js/lib/scene/sprite-nine-slice/NineSliceSprite.d.ts
++++ b/node_modules/pixi.js/lib/scene/sprite-nine-slice/NineSliceSprite.d.ts
+@@ -1,7 +1,7 @@
+ import { Texture } from '../../rendering/renderers/shared/texture/Texture';
+ import { ViewContainer, type ViewContainerOptions } from '../view/ViewContainer';
+-import { ObservablePoint } from '~/maths/point/ObservablePoint';
+-import { type PointData } from '~/maths/point/PointData';
++import { ObservablePoint } from '../../maths/point/ObservablePoint';
++import { type PointData } from '../../maths/point/PointData';
+ import type { Size } from '../../maths/misc/Size';
+ import type { View } from '../../rendering/renderers/shared/view/View';
+ import type { Optional } from '../container/container-mixins/measureMixin';
