@@ -44,7 +44,7 @@ export const UCMenuUI = observer(function UCMenuUI_(p: {}) {
                         const lastActiveDraft = cushy.db.draft.last()
                         if (lastActiveDraft == null) return toastError('No active draft')
                         ucv2.Layers.addItem({
-                           value: {
+                           valueExt: {
                               name: 'new layer',
                               placement: mkPlacement({ x: 0, y: 0 }),
                               visible: true,
@@ -141,7 +141,7 @@ export const UCMenuUI = observer(function UCMenuUI_(p: {}) {
                         const lastActiveDraft = cushy.db.draft.last()
                         if (lastActiveDraft == null) return toastError('No active draft')
                         ucv2.Masks.addItem({
-                           value: {
+                           valueExt: {
                               name: 'new layer',
                               placement: mkPlacement({ x: 0, y: 0 }),
                               visible: true,
