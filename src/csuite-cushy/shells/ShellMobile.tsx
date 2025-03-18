@@ -15,7 +15,7 @@ export const ShellMobileUI = observer(function ShellMobile(p: CompiledRenderProp
       <Frame
          className={p.className ?? undefined}
          tw={['UI-WidgetWithLabel !border-b-0 !border-l-0 !border-r-0']}
-         base={field.background}
+         // base={field.background}
          border={field.border}
          {...p.field.config.box}
       >
@@ -52,6 +52,6 @@ export const ShellMobileUI = observer(function ShellMobile(p: CompiledRenderProp
       </Frame>
    )
 
-   if (field.animateResize && p.Body != null) return <AnimatedSizeUI>{WUI}</AnimatedSizeUI>
+   if (/* field.animateResize && */ p.Body != null) return <AnimatedSizeUI>{WUI}</AnimatedSizeUI>
    return WUI
 })
