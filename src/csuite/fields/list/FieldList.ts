@@ -106,20 +106,18 @@ export type Field_list_patch_move = Patch_Common<'list'> & {
 // 2. tuple lists:       e.g. [T1,T2,T2]
 // 3. "dict" (auto mode) e.g. [x:T1, y:T2, z:T3]
 
-export interface Field_list<T extends CSchema> {
-   $type: 'list'
-   $ownConfig: Field_list_ownConfig<T>
-   $ownSerial: Field_list_ownSerial<T>
-   $value: Field_list_value<T>
-   $setValue: Field_list_SetValue<T>
-   $unchecked: Field_list_unchecked<T>
-   $child: T['$field']
-   $opts: unknown
-   $ownPatch: Field_list_patch<T>
-}
-
 // #region STATE
 export class Field_list<T extends CSchema> extends Field {
+   declare readonly $type: 'list'
+   declare readonly $ownConfig: Field_list_ownConfig<T>
+   declare readonly $ownSerial: Field_list_ownSerial<T>
+   declare readonly $value: Field_list_value<T>
+   declare readonly $setValue: Field_list_SetValue<T>
+   declare readonly $unchecked: Field_list_unchecked<T>
+   declare readonly $child: T['$field']
+   declare readonly $opts: unknown
+   declare readonly $ownPatch: Field_list_patch<T>
+
    // #region TYPE
    static readonly type: 'list' = 'list'
    private static readonly unsetSerial: Field_list_serial<any> = { $: 'list' }

@@ -34,6 +34,10 @@ export type FCOrJSXOrNamed<P extends object, Named extends string> =
    | SimpleReactNode
    | Named
 
+export function isNamed<NAME extends string>(x: FCOrJSXOrNamed<any, NAME>): x is NAME {
+   return typeof x === 'string'
+}
+
 /** render */
 export const renderFCOrNode = <T extends object>(
    //
