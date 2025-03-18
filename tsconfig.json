@@ -6,7 +6,8 @@
         "lib": ["DOM", "DOM.Iterable", "ESNext"],
         "allowJs": false,
         "experimentalDecorators": false,
-        "skipLibCheck": false,
+        // "skipLibCheck": true,
+        "skipDefaultLibCheck": true,
         // https://stackoverflow.com/questions/53113031/how-to-see-a-fully-expanded-typescript-type-without-n-more-and
         // "noErrorTruncation": true,
         "incremental": true,
@@ -43,6 +44,11 @@
         /* specific to base */ "noEmit": true
     },
 
-    "include": ["src", "schema/global.d.ts", "library"],
+    "include": [
+        //
+        "src",
+        "schema/global.d.ts",
+        "library"
+    ],
     "exclude": []
 }
