@@ -118,7 +118,7 @@ export class CSchema<out FIELD extends Field = Field> {
          return prev as CSchema<T>
       }
       CSchema.CacheMisses++
-      const next = CSchema.new(fieldConstructor, config)
+      const next = new CSchema(fieldConstructor, config)
 
       CSchema.CacheSet(configHash, next)
       return next
