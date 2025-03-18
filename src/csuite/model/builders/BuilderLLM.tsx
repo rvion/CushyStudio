@@ -1,7 +1,9 @@
 import type { OpenRouter_ModelInfo } from '../../openrouter/OpenRouter_ModelInfo'
 import type { OpenRouter_Models } from '../../openrouter/OpenRouter_models'
+import type { BuilderBoolMixin } from './BuilderBoolTypes'
 import type { BuilderSelectOneMixin } from './BuilderSelectOne'
 
+import { WidgetButtonUI } from '../../fields/button/WidgetButtonUI'
 import { allOpenrouterModels, openRouterInfos_ } from '../../openrouter/OpenRouter_infos'
 import { defineSchemaBuilderMixin } from './defineSchemaBuilderMixin'
 
@@ -10,6 +12,7 @@ type FieldLLMCOnfig = { default?: OpenRouter_Models }
 
 export type BuilderLLMMixin = {
    llmModel(config?: FieldLLMCOnfig): FieldLLM
+   button(p: { onClick: () => void }): Z.Bool
 }
 
 const BuilderLLMImpl = (): BuilderLLMMixin =>
@@ -25,6 +28,20 @@ const BuilderLLMImpl = (): BuilderLLMMixin =>
             getIdFromValue: (v) => v.id,
             getOptionFromId: (id) => ({ id, value: openRouterInfos_[id]! }),
             getValueFromId: (id) => openRouterInfos_[id]!,
+         })
+      },
+
+      button: ({ onClick }: { onClick: () => void }): Z.Bool => {
+         const self = this as any as BuilderBoolMixin
+         return self.bool({
+            uiui: {
+               Header: (p) => (
+                  <WidgetButtonUI //
+                     field={p.field}
+                     onClick={onClick}
+                  />
+               ),
+            },
          })
       },
    })
