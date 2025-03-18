@@ -9,11 +9,11 @@ import React, { createElement, isValidElement, type ReactNode } from 'react'
 // prettier-ignore
 export type SimpleReactNode =
    | React.JSX.Element
-   | string
    | number
    | boolean
    | null
    | undefined
+// | string <--- ❌  disabled so we reserve string for named components
 
 export type SimpleReactComponent<P> = React.FunctionComponent<P>
 // export type SimpleReactComponent<P> = CovariantFn<[props: P], React.JSX.Element>
