@@ -17,7 +17,7 @@ export type SimpleShape = {
    scaleZ?: Maybe<number>
 
    // color
-   fill?: Maybe<string>
+   fill: string
 
    // rotation
    rotation?: Maybe<number>
