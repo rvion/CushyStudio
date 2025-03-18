@@ -14,8 +14,8 @@ type CLASSES = {
     Prompt:             Prompt_Prompt
     Lora:               Prompt_Lora
     Choice:             Prompt_Choice
-    ChoiceWildCard:     Prompt_ChoiceWildCard
-    ChoiceName:         Prompt_ChoiceName
+   //  ChoiceWildCard:     Prompt_ChoiceWildCard
+   //  ChoiceName:         Prompt_ChoiceName
     Identifier:         Prompt_Identifier
     Number:             Prompt_Number
     Index:              Prompt_Index
@@ -62,7 +62,7 @@ type Prompt_choiceEntry =
    | Prompt_Identifier
    | Prompt_String
 
-type Prompt_choiceSelection = Prompt_Number | Prompt_ChoiceWildCard
+// type Prompt_choiceSelection = Prompt_Number | Prompt_ChoiceWildCard
 
 // 1. wrap text
 export class PromptAST {
@@ -100,8 +100,8 @@ export class PromptAST {
         Separator         : Prompt_Separator,
         Content           : Prompt_Content,
         Choice            : Prompt_Choice,
-        ChoiceWildCard    : Prompt_ChoiceWildCard,
-        ChoiceName        : Prompt_ChoiceName,
+      //   ChoiceWildCard    : Prompt_ChoiceWildCard,
+      //   ChoiceName        : Prompt_ChoiceName,
         WeightedExpression: Prompt_WeightedExpression,
         Break             : Prompt_Break,
         Comment           : Prompt_Comment,
@@ -416,19 +416,30 @@ export class Prompt_Index extends ManagedNode<'Index'> {
    }
 
    set number(value: number) {
-      this.setText(Math.floor(value).toString())
+      this.setText(`[${Math.floor(value)}]`)
    }
 
    /** When called with a max number and the value within the bracket is '?', it will return a random number up to max-1. For example, indexAST.number(array.length) */
-   getIndex = (max?: number): number => {
-      if (this.text == '?') {
+   getIndex = (max?: number): Maybe<number> => {
+      if (this.isRandom()) {
          return max ? Math.floor(Math.random() * max) : 0
       }
-      return parseInt(this.text)
+      return parseInt(this.text.slice(1, -1))
    }
 
-   setNumber = (value: number): void => {
-      this.setText(value.toString())
+   // setNumber = (value: number): void => {
+   // this.setText(Math.floor(value).toString())
+   // }
+   isBypass = (): boolean => {
+      return this.text == '[_]'
+   }
+
+   setBypass = (): void => {
+      this.setText('[_]')
+   }
+
+   isRandom = (): boolean => {
+      return this.text == '[?]'
    }
 
    setRandom = (): void => {
@@ -497,26 +508,30 @@ export class Prompt_ArtistName extends ManagedNode<'ArtistName'> {
    $kind: 'ArtistName' = 'ArtistName' as const
 }
 
-export class Prompt_ChoiceWildCard extends ManagedNode<'ChoiceWildCard'> {
-   $kind: 'ChoiceWildCard' = 'ChoiceWildCard' as const
-}
+// export class Prompt_ChoiceWildCard extends ManagedNode<'ChoiceWildCard'> {
+//    $kind: 'ChoiceWildCard' = 'ChoiceWildCard' as const
+// }
 
-export class Prompt_ChoiceName extends ManagedNode<'ChoiceName'> {
-   $kind: 'ChoiceName' = 'ChoiceName' as const
+// export class Prompt_ChoiceName extends ManagedNode<'ChoiceName'> {
+//    $kind: 'ChoiceName' = 'ChoiceName' as const
 
-   get content(): string {
-      return this.text.slice(1, -1)
-   }
-}
+//    get content(): string {
+//       return this.text.slice(1, -1)
+//    }
+// }
 export class Prompt_Choice extends ManagedNode<'Choice'> {
    $kind: 'Choice' = 'Choice' as const
 
    get name(): Maybe<string> {
-      const name = this.getChild('ChoiceName')
-      if (name) {
-         return name.content
-      }
-      return null
+      // const name = this.getChild('ChoiceName')
+      // if (name) {
+      //    return name.content
+      // }
+      return (
+         this.getChild('Identifier')?.text ?? //
+         this.getChild('String')?.content ??
+         null
+      )
    }
 
    pickRandomly = (): string => {
@@ -525,56 +540,49 @@ export class Prompt_Choice extends ManagedNode<'Choice'> {
       return choices[randomIndex]!.text
    }
 
-   get choiceSelection(): Maybe<string> {
-      const wildcard = this.getChild('ChoiceWildCard')
-      if (wildcard) {
-         return '?'
-      }
-
-      const num = this.getChild('Number')
-      if (num) {
-         return num.text
-      }
-
-      return null
+   get indexAST(): Maybe<Prompt_Index> {
+      return this.getChild('Index')
    }
 
-   set choiceSelection(value: number) {
-      const wildcard = this.getChild('ChoiceWildCard')
+   // get nth(): number {
+   // const indexAST = this.getChild('Index')!
+   // if (indexAST.isRandom()) {
+   //    return Math.floor(Math.random() * this.expressions.length)
+   // }
+   // return indexAST.getIndex(this.expressions.length)
+   // }
 
-      if (value < 0 || value > this.expressions.length) {
-         if (wildcard) {
-            return
-         }
-         this.getChild('Number')?.setText('?')
-         return
-      }
-
-      if (wildcard) {
-         wildcard.setText(`${value}`)
-         return
-      }
-
-      this.getChild('Number')?.setNumber(value)
+   get expressions(): Maybe<Prompt_expression[]> {
+      // return this.childrens.slice(this.getChild('Permutations') != null ? 2 : 1)
+      return this.getChild('Permutations')?.getChild('Content')?.childrens as Prompt_expression[]
    }
 
-   get nth(): number {
-      const wildcard = this.getChild('ChoiceWildCard')
-      if (wildcard) {
-         return Math.floor(Math.random() * this.expressions.length)
-      }
-      return this.getChildOrCrash('Number').number
-   }
-   get expressions(): Prompt_choiceEntry[] {
-      return this.childrens.slice(this.getChild('ChoiceName') != null ? 2 : 1)
-   }
    get value(): string {
-      if (this.expressions.length < this.nth) return '❌ invalid choice picked'
-      const option = this.expressions[this.nth]!
+      const indexAST = this.indexAST
+      if (!indexAST || this.expressions == null) {
+         return '?>Choice: Should not get this'
+      }
+      if (this.indexAST?.isBypass()) {
+         return 'BYPASSED'
+      }
+      const index = indexAST.getIndex(this.expressions.length)
+      if (index == null || this.expressions.length < index) return '❌ invalid choice picked'
 
-      if (option instanceof Prompt_String) {
+      const option = this.expressions[index]
+      console.log('[FD]: kind: ', index, option, option ? option.$kind : 'No Kindness...')
+      console.log('[FD]: EXP', this.expressions)
+      if (option === undefined) {
+         return 'UNDEFINED'
+      }
+
+      if (option.$kind == 'Choice') {
+         return option.value
+      }
+
+      if (option.$kind == 'String') {
          return option.content
       }
+
       return option.text
    }
 }

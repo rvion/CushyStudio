@@ -134,7 +134,7 @@ export const PromptEditorUI = observer(function PromptEditorUI_(p: { promptID: F
 
    return (
       <div tw='flex flex-1 flex-row'>
-         <Frame className='ͼo' base={{ contrast: -0.05 }} tw='flex h-full flex-col gap-1'>
+         <Frame className='ͼo' base={{ contrast: -0.05 }} tw='flex h-full flex-grow flex-col gap-1'>
             {/* <MessageInfoUI title='instructions'> select the [from] to change the to widget </MessageInfoUI> */}
             {/* <div className='flex flex-wrap'>
             {cushy.repository.getWidgetsByType<Field_prompt>('prompt').map((widget) => (
@@ -169,50 +169,76 @@ export const PromptEditorUI = observer(function PromptEditorUI_(p: { promptID: F
          /> */}
          </Frame>
          <BasicShelfUI anchor='right'>
-            {uist.ast.findAll('Choice').map((choice, choiceIndex) => (
-               <UY.Layout.Col
-                  roundness={theme.global.roundness}
-                  key={choiceIndex}
-                  base={{ contrast: 0.05 }}
-                  tw='gap-1 p-1'
-               >
-                  <UY.Layout.Row tw='items-center p-1' base={{ contrast: -0.1 }}>
-                     <span tw='flex-1 truncate'>{choice.name ?? 'No name'}</span>
-                     <InputBoolUI
-                        square
-                        icon={'mdiHelp'}
-                        roundness={theme.global.roundness}
-                        hover
-                        value={choice.choiceSelection != null && choice.choiceSelection == '?'}
-                        display='button'
-                        toggleGroup={`ast_choice_${choiceIndex}`}
-                        onValueChange={() => {
-                           choice.choiceSelection = -1
-                        }}
-                     />
-                  </UY.Layout.Row>
-                  <UY.Layout.Col base={{ contrast: -0.1 }} key={choiceIndex} align>
-                     {choice.expressions.map((entry, index) => {
-                        return (
-                           <InputBoolUI
-                              tw='!text-left'
-                              roundness={theme.global.roundness}
-                              value={
-                                 choice.choiceSelection != null && parseInt(choice.choiceSelection) == index
-                              }
-                              display='button'
-                              toggleGroup={`ast_choice_${choiceIndex}`}
-                              onValueChange={() => {
-                                 choice.choiceSelection = index
-                              }}
-                           >
-                              {entry.text}
-                           </InputBoolUI>
-                        )
-                     })}
+            {uist.ast.findAll('Choice').map((choice, choiceIndex) => {
+               const indexAST = choice.indexAST
+               if (indexAST == null) {
+                  return <></>
+               }
+
+               return (
+                  <UY.Layout.Col
+                     roundness={theme.global.roundness}
+                     key={choiceIndex}
+                     base={{ contrast: 0.05 }}
+                     tw='gap-1 p-1'
+                  >
+                     <UY.Layout.Row tw='items-center p-1' base={{ contrast: -0.1 }}>
+                        <span tw='flex-1 truncate'>{choice.name ?? 'No name'}</span>
+                        <InputBoolUI
+                           square
+                           icon={'mdiCancel'}
+                           roundness={theme.global.roundness}
+                           hover
+                           value={indexAST.isBypass()}
+                           display='button'
+                           toggleGroup={`ast_choice_${choiceIndex}`}
+                           onValueChange={() => {
+                              indexAST.setBypass()
+                           }}
+                        />
+                        <InputBoolUI
+                           square
+                           icon={'mdiHelp'}
+                           roundness={theme.global.roundness}
+                           hover
+                           value={indexAST.isRandom()}
+                           display='button'
+                           toggleGroup={`ast_choice_${choiceIndex}`}
+                           onValueChange={() => {
+                              indexAST.setRandom()
+                           }}
+                        />
+                     </UY.Layout.Row>
+                     <UY.Layout.Col base={{ contrast: -0.1 }} key={choiceIndex} align>
+                        {choice.expressions &&
+                           choice.expressions.map((entry, index) => {
+                              return (
+                                 <InputBoolUI
+                                    tw='!text-left'
+                                    roundness={theme.global.roundness}
+                                    value={
+                                       choice.indexAST &&
+                                       choice.indexAST.number != null &&
+                                       choice.indexAST.number == index
+                                    }
+                                    display='button'
+                                    toggleGroup={`ast_choice_${choiceIndex}`}
+                                    onValueChange={() => {
+                                       indexAST.number = index
+                                    }}
+                                 >
+                                    {entry && entry.$kind && entry.$kind == 'String'
+                                       ? entry.text.slice(1, -1)
+                                       : entry.$kind == 'Choice' && entry.indexAST
+                                         ? `?>${entry.name}[${entry.indexAST.isBypass() ? '_' : entry.indexAST.isRandom() ? '?' : entry.value}]`
+                                         : entry.text}
+                                 </InputBoolUI>
+                              )
+                           })}
+                     </UY.Layout.Col>
                   </UY.Layout.Col>
-               </UY.Layout.Col>
-            ))}
+               )
+            })}
          </BasicShelfUI>
       </div>
    )

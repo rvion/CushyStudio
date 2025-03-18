@@ -3,22 +3,22 @@
 // eslint-disable
 import { LRParser } from '@lezer/lr'
 
-const spec_Identifier = {__proto__:null,embedding:82, artist:86}
+const spec_Identifier = {__proto__:null,embedding:70, artist:74}
 export const parser = LRParser.deserialize({
   version: 14,
-  states: "(^QVQPOOOVQPO'#C^OVQPO'#CaO!QQPO'#CjO!VQPO'#CkO![QPO'#CmO!dQPO'#CeOOQO'#Cw'#CwOOQO'#Cr'#CrQVQPOOO!lQPO'#CbO!lQPO'#ChO!tQPO'#C_O#RQPO,58xO#ZQPO,58{O!lQPO,59UO#`QPO,59VOOQO'#Cn'#CnOOQO,59X,59XOOQO'#Cf'#CfO#hQQO,59PO#pQPO,59POOQO-E6p-E6pOOQO'#DW'#DWO#uQPO,58|O#}QPO,59SOOQO1G.d1G.dO%[QQO1G.dOOQO1G.g1G.gOOQO1G.p1G.pOOQO'#Cl'#ClOOQO1G.q1G.qOOQO'#Cg'#CgOOQO'#DR'#DRO%aQQO1G.kO#hQQO1G.kOOQO1G.h1G.hO%fQQO1G.hOOQO1G.n1G.nO%kQPO7+$OO%pQPO7+$VO&bQQO7+$VO&gQQO7+$SOOQO<<Gj<<GjOOQO'#DU'#DUOOQO'#Cs'#CsO&oQPO<<GqO%pQPO<<GqOOQO<<Gn<<GnO&vQQO<<GnOOQO-E6q-E6qOOQOAN=]AN=]O&{QPOAN=]O'SQPOAN=YOOQOG22wG22wOOQOG22tG22t",
-  stateData: "'^~OjOS~OVVOWVOcVOdVOeVOlPOoQOqYOtUOvZOyRO{SO|TO~Om_O~Om`O~OVaOWaO~OWcOldO~OVgOWgO~OmRXnRXpRX~PVOmkOnjO~OplO~OVnOWnO~OSqOvpO~OlsO~OmuOstO~O]vOV[aW[ac[ad[ae[ah[al[ao[aq[at[av[ay[a{[a|[am[an[ap[as[a~OSwO~OwxO~OSzO~On{O~OV|OW|OlPOoQOqYOtUOvZOyRO{SO|TO~Ow!PO~Or!ROs!QO~Os!TO~P%pOS!VO~Os!WO~P%pOs!XO~OedVd~",
-  goto: "#q{PP|!ZP||PP|!a!d|P||!h|!kPPP!n!yPPP#TPPPPPPPPP#[PP#bP#hYVOPQX[X|x!O!P!UQ]PR^QReUTqdsRo`RbTQXOS[PQTfX[Q!OxS!S!O!UR!U!PZWOPQX[QrdRysX}x!O!P!UQhYQiZRm_",
-  nodeNames: "⚠ Prompt WeightedExpression Content Number Permutations Lora Identifier String Choice ChoiceName ChoiceWildCard Wildcard Index Embedding Artist ArtistName Tag TagName Separator Break Comment",
-  maxTerm: 44,
+  states: "&rQVQPOOOVQPO'#C^OVQPO'#CaO!QQPO'#CeO!]QPO'#ChO!bQPO'#CiO!gQPO'#CkOOQO'#Ct'#CtOOQO'#Cp'#CpQVQPOOO!oQPO'#CbO!oQPO'#CgO!wQPO'#C_O#UQPO,58xO#^QPO,58{O#cQPO,59POOQO'#DQ'#DQO#hQPO,59PO!oQPO,59SO#mQPO,59TOOQO'#Cl'#ClOOQO,59V,59VOOQO-E6n-E6nO#uQPO,58|O#}QPO,59ROOQO1G.d1G.dO%XQQO1G.dOOQO1G.g1G.gOOQO1G.k1G.kO#cQPO1G.kOOQO1G.n1G.nOOQO'#Cj'#CjOOQO1G.o1G.oOOQO1G.h1G.hO%^QQO1G.hOOQO1G.m1G.mO%cQPO7+$OOOQO7+$V7+$VO%hQQO7+$SOOQO<<Gj<<GjOOQO<<Gn<<GnO%pQQO<<GnO%uQPOAN=YOOQOG22tG22t",
+  stateData: "&P~OgOS~OVVOWVOaVObVOcVOiPOlQOnYOqROrZOsSOuTOvUO~OV`OW`OY_O~OjbO~OjcO~OVdOWdO~OV`OW`O~OjRXkRXmRX~PVOjjOkiO~OmkO~OlQO~OYmO~OVoOWoO~OjrOpqO~OYsOVZaWZaaZabZacZaeZaiZalZanZaqZarZasZauZavZajZakZamZa~OStO~OSvO~OkwO~OoyOpxO~OSzO~Op{O~OcbVb~",
+  goto: "#WuPPv}P!TvPPvPvvv!bv!ePPP!hPPP!sPPPPPPPPPPP!zZVOPQX[Q]PR^QYVOPQX[Ql_RumRpcReUQXOS[PQTfX[ZWOPQX[QaRQgYQhZRnb",
+  nodeNames: "⚠ Prompt WeightedExpression Content Number Permutations Lora Identifier String Choice Index Wildcard Embedding Artist ArtistName Tag TagName Separator Break Comment",
+  maxTerm: 38,
   nodeProps: [
-    ["group", -10,2,5,6,7,8,9,12,14,15,17,"ChoiceEntry Expression",-2,4,11,"ChoiceSelection",-3,19,20,21,"Expression"]
+    ["group", -13,2,5,6,7,8,9,11,12,13,15,17,18,19,"Expression"]
   ],
   skippedNodes: [0],
-  repeatNodeCount: 2,
-  tokenData: "-q~RpX^#Vpq#Vrs#zuv$ixy$nyz$s|}%Q}!O%X!O!P&_!P!Q%s!Q![&_![!]&{!]!^'Q!^!_'i!`!a)U!a!b)Z!c!}%s!}#O)`#R#S%s#T#U%s#U#V*W#V#o%s#o#p-g#q#r-l#y#z#V$f$g#V#BY#BZ#V$IS$I_#V$I|$JO#V$JT$JU#V$KV$KW#V&FU&FV#V~#[Yj~X^#Vpq#V#y#z#V$f$g#V#BY#BZ#V$IS$I_#V$I|$JO#V$JT$JU#V$KV$KW#V&FU&FV#V~#}TOr#zrs$^s;'S#z;'S;=`$c<%lO#z~$cOW~~$fP;=`<%l#z~$nO|~~$sOl~R$xPnP![!]${Q%QOwQR%XOrQcPR%^VVP}!O%s!O!P&_!P!Q%s!Q![&_!c!}%s#R#S%s#T#o%sP%xVVP}!O%s!O!P%s!P!Q%s!Q![%s!c!}%s#R#S%s#T#o%sR&fVSQVP}!O%s!O!P&_!P!Q%s!Q![&_!c!}%s#R#S%s#T#o%s~'QOm~~'VSe~OY'QZ;'S'Q;'S;=`'c<%lO'Q~'fP;=`<%l'Q~'lQ#V#W'r#`#a(g~'uP#[#]'x~'{P#c#d(O~(RP#]#^(U~(XP#V#W([~(_P#X#Y(b~(gOt~~(jP#c#d(m~(pP#f#g(s~(vP#T#U(y~(|P![!])P~)UOq~~)ZOs~~)`Ov~~)cR}!O)l!Q![)u!a!b)u~)oQ!Q![)u!a!b)u~)xR!Q![)u!a!b)u#P#Q*R~*WO]~~*]XVP}!O%s!O!P%s!P!Q%s!Q![%s!c!}%s#R#S%s#T#f%s#f#g*x#g#o%s~*}XVP}!O%s!O!P%s!P!Q%s!Q![%s!c!}%s#R#S%s#T#X%s#X#Y+j#Y#o%s~+oWVP}!O%s!O!P%s!P!Q%s!Q![%s!c!}%s#R#S%s#T#U,X#U#o%s~,^XVP}!O%s!O!P%s!P!Q%s!Q![%s!c!}%s#R#S%s#T#_%s#_#`,y#`#o%s~-QVd~VP}!O%s!O!P%s!P!Q%s!Q![%s!c!}%s#R#S%s#T#o%s~-lOo~~-qOp~",
+  repeatNodeCount: 1,
+  tokenData: "-S~RpX^#Vpq#Vrs#zuv$ixy$nyz$s|}$x}!O%P!O!P&V!P!Q%k!Q![&V![!]&s!]!^&x!^!_'a!`!a(U!a!b(Z!c!}%k!}#O(h#R#S%k#T#U%k#U#V)i#V#o%k#o#p,x#q#r,}#y#z#V$f$g#V#BY#BZ#V$IS$I_#V$I|$JO#V$JT$JU#V$KV$KW#V&FU&FV#V~#[Yg~X^#Vpq#V#y#z#V$f$g#V#BY#BZ#V$IS$I_#V$I|$JO#V$JT$JU#V$KV$KW#V&FU&FV#V~#}TOr#zrs$^s;'S#z;'S;=`$c<%lO#z~$cOW~~$fP;=`<%l#z~$nOv~~$sOi~~$xOk~R%POoQaPR%UVVP}!O%k!O!P&V!P!Q%k!Q![&V!c!}%k#R#S%k#T#o%kP%pVVP}!O%k!O!P%k!P!Q%k!Q![%k!c!}%k#R#S%k#T#o%kR&^VSQVP}!O%k!O!P&V!P!Q%k!Q![&V!c!}%k#R#S%k#T#o%k~&xOj~~&}Sc~OY&xZ;'S&x;'S;=`'Z<%lO&x~'^P;=`<%l&x~'dP#`#a'g~'jP#c#d'm~'pP#f#g's~'vP#T#U'y~'|P![!](P~(UOn~~(ZOp~~(`Pr~!`!a(c~(hOq~~(kS}!O(w!Q![)T!a!b)T#R#S)T~(zR!Q![)T!a!b)T#R#S)T~)WS!Q![)T!a!b)T#P#Q)d#R#S)T~)iOY~~)nXVP}!O%k!O!P%k!P!Q%k!Q![%k!c!}%k#R#S%k#T#f%k#f#g*Z#g#o%k~*`XVP}!O%k!O!P%k!P!Q%k!Q![%k!c!}%k#R#S%k#T#X%k#X#Y*{#Y#o%k~+QWVP}!O%k!O!P%k!P!Q%k!Q![%k!c!}%k#R#S%k#T#U+j#U#o%k~+oXVP}!O%k!O!P%k!P!Q%k!Q![%k!c!}%k#R#S%k#T#_%k#_#`,[#`#o%k~,cVb~VP}!O%k!O!P%k!P!Q%k!Q![%k!c!}%k#R#S%k#T#o%k~,}Ol~~-SOm~",
   tokenizers: [0, 1],
   topRules: {"Prompt":[0,1]},
   specialized: [{term: 7, get: (value): any => spec_Identifier[value] || -1}],
-  tokenPrec: 285
+  tokenPrec: 226
 })
