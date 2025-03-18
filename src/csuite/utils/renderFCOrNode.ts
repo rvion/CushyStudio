@@ -15,8 +15,9 @@ export type SimpleReactNode =
    | undefined
 // | string <--- ❌  disabled so we reserve string for named components
 
-export type SimpleReactComponent<P> = React.FunctionComponent<P>
+export type SimpleReactComponent<P> = CovariantFn<[props: P], ReactNode | Promise<ReactNode>>
 // export type SimpleReactComponent<P> = CovariantFn<[props: P], React.JSX.Element>
+// export type SimpleReactComponent<P> = React.FunctionComponent<P>
 
 // prettier-ignore
 export type FCOrNode<P extends object> =
