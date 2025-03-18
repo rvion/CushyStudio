@@ -13,7 +13,7 @@ import type { Problem_Ext } from './Validation'
 export type FieldConfigFor<FIELD extends Field> = FieldConfig_CommonProperties<FIELD> & FIELD['$ownConfig']
 
 export interface FieldConfig_CommonProperties<out FIELD extends Field> {
-   uiui?: RENDERER.UIConf<FIELD>
+   readonly uiui?: RENDERER.UIConf<FIELD>
    /**
     * @since 2024-05-20
     * @stability beta
@@ -22,7 +22,7 @@ export interface FieldConfig_CommonProperties<out FIELD extends Field> {
     *   - "cdi..." for Cushy design icons - 1+ custom icon by the cushy team
     *   - "ldi..." for Locomotive design icons
     */
-   icon?: IconName | ((field?: any) => Maybe<IconName>)
+   icon?: IconName | CovariantFn<[field?: FIELD], Maybe<IconName>>
    // ❌ warning: 2024-06-14 rvion: using this expression with an union here will
    // ❌ CHOKE typescript typechecking performances.
    // ❌ | icon?: IconName | CovariantFn<FIELD, IconName> // IconName
