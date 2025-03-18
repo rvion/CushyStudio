@@ -33,8 +33,8 @@ export class PanelCaptioningState {
       private props: {
          onFolderChange?: (folderPath: string) => void
          startFolder?: Maybe<string>
-         inputRefCaption?: RefObject<HTMLInputElement>
-         inputRefCaptionGlobal?: RefObject<HTMLInputElement>
+         inputRefCaption?: RefObject<HTMLInputElement | null>
+         inputRefCaptionGlobal?: RefObject<HTMLInputElement | null>
       } = {},
    ) {
       if (props.startFolder != null) {
@@ -128,8 +128,8 @@ export class PanelCaptioningState {
       return `${this.folderPath}/${this.imageNameWithoutExt}.txt`
    }
 
-   inputRefCaption?: RefObject<HTMLInputElement>
-   inputRefCaptionGlobal?: RefObject<HTMLInputElement>
+   inputRefCaption?: RefObject<HTMLInputElement | null>
+   inputRefCaptionGlobal?: RefObject<HTMLInputElement | null>
 
    focusInput(type: CaptionFocusOption): void {
       switch (type) {

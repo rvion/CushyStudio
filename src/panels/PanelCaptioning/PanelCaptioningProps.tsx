@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { useEffect, useMemo, useRef } from 'react'
+import { type RefObject, useEffect, useMemo, useRef } from 'react'
 
 import { RegionUI } from '../../csuite/regions/RegionUI'
 import { usePanel } from '../../router/usePanel'
@@ -16,8 +16,8 @@ export const PanelCaptioningWrapperUI = observer(function PanelCaptioningUI_(p: 
       folder: null,
    }))
 
-   const inputRefCaption = useRef<HTMLInputElement>(null)
-   const inputRefCaptionGlobal = useRef<HTMLInputElement>(null)
+   const inputRefCaption: RefObject<HTMLInputElement | null> = useRef<HTMLInputElement>(null)
+   const inputRefCaptionGlobal: RefObject<HTMLInputElement | null> = useRef<HTMLInputElement>(null)
 
    const state = useMemo(
       () =>
