@@ -6,6 +6,7 @@ import type { Patch } from '../../model/Patch'
 import type { Repository } from '../../model/Repository'
 import type { SchemaDict } from '../../model/SchemaDict'
 import type { Problem_Ext } from '../../model/Validation'
+import type { CovariantFn } from '../../variance/BivariantHack'
 
 import { produce } from 'immer'
 import { computed, observable } from 'mobx'
@@ -28,11 +29,10 @@ type Field_group_ownConfig<T extends SchemaDict> = {
    items?: T | (() => T)
 
    /** @deprecated; use `toString` instead */
-   summary?(
-      //
-      items: { [k in keyof T]: T[k]['$value'] },
-      self: Field_group<T>,
-   ): string
+   summary?: CovariantFn<[items: { [k in keyof T]: T[k]['$value'] }, self: Field_group<T>], string>
+   // (
+   //    //
+   // ): string
 
    /** @default @false */
    presetButtons?: boolean
