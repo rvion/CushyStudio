@@ -130,7 +130,7 @@
         "class-variance-authority": "^0.7.1",
         "codemirror": "^6.0.1",
         "colorjs.io": "^0.5.2",
-        "electron": "^35.0.1",
+        "electron": "^35.0.2",
         "electron-builder": "^25.1.8",
         "esbuild": "^0.25.1",
         "express": "^4.21.2",
