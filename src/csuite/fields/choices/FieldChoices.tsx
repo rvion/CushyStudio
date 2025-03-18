@@ -60,7 +60,7 @@ type Field_choices_ownConfig<T extends SchemaDict = SchemaDict> = {
    placeholder?: string
 
    /** preffered widget to use for value selection */
-   appearance?: 'select' | 'tab' | 'nested'
+   appearance?: 'select' | 'tab' | 'nested' | 'tab2'
 
    /** if the widget use tabs, where to place tabs */
    tabPosition?: TabPositionConfig
