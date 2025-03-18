@@ -106,7 +106,7 @@ export const PanelSafetyRatingsUI = observer(function PanelSafetyRatings(p: Pane
          />
 
          <QuickTableUI
-            key={xxx.Image.value?.id}
+            key={xxx.value.image?.id}
             tw='bd m-2'
             rows={cushy.db.media_image.selectRaw2((r) =>
                r

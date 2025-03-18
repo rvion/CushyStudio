@@ -16,13 +16,13 @@ import { UCMenuLayerEntryUI } from './UCMenuLayerEntryUI'
 export const UCMenuUI = observer(function UCMenuUI_(p: {}) {
    const uc1 = useUnifiedCanvas()
    const ucv2 = useUCV2()
-   const layers = ucv2.Layers
-   const masks = ucv2.Masks.items
+   const layers = ucv2._.layers
+   const masks = ucv2._.masks.items
 
    const [dropStyle2, dropRef2] = useImageDrop(cushy, (img) => {
       // TODO: move as method once setup with custom classes finished
       // canvas.addMask(img)
-      ucv2.Masks.push({
+      ucv2._.masks.push({
          image: img,
          visible: true,
          name: 'masky-mac-mask-face',
