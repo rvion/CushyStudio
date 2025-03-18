@@ -137,11 +137,6 @@ export abstract class Field {
    declare $Schema: CSchema<this>
 
    /**
-    * @internal
-    */
-   static build: 'new' = 'new'
-
-   /**
     * unique Field instance ID;
     * each node in the form tree has one;
     * NOT persisted in serial.
