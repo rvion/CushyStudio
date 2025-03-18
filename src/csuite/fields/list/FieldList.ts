@@ -663,9 +663,9 @@ export class Field_list<T extends CSchema> extends Field {
    }
 
    // ADDING ITEMS -------------------------------------------------
-   duplicateItemAtIndex(ix: number): void {
-      const item = this.items_[ix]!
-      this.addItem({ at: ix, value: item.isValid ? item.value : undefined })
+   duplicateItemAtIndex(ix: number): Maybe<T['$field']> {
+      const item = bang(this.items_[ix])
+      return this.addItem({ at: ix, value: item.isValid ? item.value : undefined })
    }
 
    /**
