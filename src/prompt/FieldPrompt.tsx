@@ -47,15 +47,16 @@ export type Field_prompt_value = Field_prompt
 export type Field_prompt_unchecked = Field_prompt
 
 // #region State
+export interface Field_prompt {
+   $type: 'prompt'
+   $ownConfig: Field_prompt_ownConfig
+   $ownSerial: Field_prompt_ownSerial
+   $value: Field_prompt_value
+   $unchecked: Field_prompt_value | undefined
+   $field: Field_prompt
+   $child: never
+}
 export class Field_prompt extends Field {
-   declare $type: 'prompt'
-   declare $ownConfig: Field_prompt_ownConfig
-   declare $ownSerial: Field_prompt_ownSerial
-   declare $value: Field_prompt_value
-   declare $unchecked: Field_prompt_value | undefined
-   declare $field: Field_prompt
-   declare $child: never
-
    // #region types
    static readonly type: 'prompt' = 'prompt'
    static readonly unsetSerial: Field_prompt['$serial'] = { $: 'prompt' }
