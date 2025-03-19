@@ -36,15 +36,16 @@ export type Field_enum_ownSerial<O extends ComfyUnionValue> = {
 export type Field_enum_value<O extends ComfyUnionValue> = O // Requirable[T]
 
 // #region State
+export interface Field_enum<O extends ComfyUnionValue> {
+   $type: 'enum'
+   $ownConfig: Field_enum_ownConfig<O>
+   $ownSerial: Field_enum_ownSerial<O>
+   $value: Field_enum_value<O>
+   $unchecked: Field_enum_value<O> | undefined
+   $field: Field_enum<O>
+   $child: never
+}
 export class Field_enum<O extends ComfyUnionValue> extends Field {
-   declare $type: 'enum'
-   declare $ownConfig: Field_enum_ownConfig<O>
-   declare $ownSerial: Field_enum_ownSerial<O>
-   declare $value: Field_enum_value<O>
-   declare $unchecked: Field_enum_value<O> | undefined
-   declare $field: Field_enum<O>
-   declare $child: never
-
    // #region Static
    static readonly type: 'enum' = 'enum'
    public static readonly patchedSerialPaths: readonly string[] = Object.freeze(['val'])

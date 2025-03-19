@@ -43,16 +43,16 @@ export type Field_orbit_unchecked = {
 }
 
 // STATE
-
+export interface Field_orbit {
+   $type: 'orbit'
+   $ownConfig: Field_orbit_ownConfig
+   $ownSerial: Field_orbit_ownSerial
+   $value: Field_orbit_value
+   $unchecked: Field_orbit_unchecked
+   $field: Field_orbit
+   $child: never
+}
 export class Field_orbit extends Field {
-   declare $type: 'orbit'
-   declare $ownConfig: Field_orbit_ownConfig
-   declare $ownSerial: Field_orbit_ownSerial
-   declare $value: Field_orbit_value
-   declare $unchecked: Field_orbit_unchecked
-   declare $field: Field_orbit
-   declare $child: never
-
    // #region types
    static readonly type: 'orbit' = 'orbit'
    static readonly unsetSerial: Field_orbit['$serial'] = { $: 'orbit' }

@@ -23,17 +23,18 @@ export type Field_markdown_value = { $: 'markdown' }
 export type Field_markdown_unchecked = Field_markdown_value
 
 // #region STATE TYPE
+export interface Field_markdown {
+   $type: 'markdown'
+   $ownConfig: Field_markdown_ownConfig
+   $ownSerial: Field_markdown_ownSerial
+   $value: Field_markdown_value
+   $setValue: Field_markdown_value
+   $unchecked: Field_markdown_unchecked
+   $child: never
+   $opts: unknown
+   $ownPatch: Patch<'markdown'>
+}
 export class Field_markdown extends Field {
-   declare readonly $type: 'markdown'
-   declare readonly $ownConfig: Field_markdown_ownConfig
-   declare readonly $ownSerial: Field_markdown_ownSerial
-   declare readonly $value: Field_markdown_value
-   declare readonly $setValue: Field_markdown_value
-   declare readonly $unchecked: Field_markdown_unchecked
-   declare readonly $child: never
-   declare readonly $opts: unknown
-   declare readonly $ownPatch: Patch<'markdown'>
-
    // #region TYPE
    static readonly type: 'markdown' = 'markdown'
    private static readonly unsetSerial: Field_markdown_serial = { $: 'markdown' }

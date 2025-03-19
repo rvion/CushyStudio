@@ -38,15 +38,16 @@ export type Field_image_ownSerial = {
 export type Field_image_value = MediaImageL
 
 // #region STATE
+export interface Field_image {
+   $type: 'image'
+   $ownConfig: Field_image_ownConfig
+   $ownSerial: Field_image_ownSerial
+   $value: Field_image_value
+   $unchecked: Field_image_value | undefined
+   $field: Field_image
+   $child: never
+}
 export class Field_image extends Field {
-   declare $type: 'image'
-   declare $ownConfig: Field_image_ownConfig
-   declare $ownSerial: Field_image_ownSerial
-   declare $value: Field_image_value
-   declare $unchecked: Field_image_value | undefined
-   declare $field: Field_image
-   declare $child: never
-
    // #region static
    static readonly type: 'image' = 'image'
    static readonly unsetSerial: Field_image['$serial'] = { $: 'image' }

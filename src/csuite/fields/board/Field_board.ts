@@ -46,10 +46,11 @@ export type BoardDataSchema<SCHEMA extends CSchema> = {
 }
 
 // ------------------------------------------------------------------------------------------------------------------------
-export interface Field_board<SCHEMA extends CSchema> extends MAGICFIELDS<BoardDataSchema<SCHEMA>> {}
+export interface Field_board<SCHEMA extends CSchema> extends MAGICFIELDS<BoardDataSchema<SCHEMA>> {
+   $opts: Field_board_config<SCHEMA>
+}
 export class Field_board<SCHEMA extends CSchema> extends Field_group<BoardDataSchema<SCHEMA>> {
    // built-in mechanism to inject schema-level opts without having to redefine the constructor
-   declare $opts: Field_board_config<SCHEMA>
    get min(): number | undefined { return this.opts2.min } // prettier-ignore
    get max(): number | undefined { return this.opts2.max } // prettier-ignore
    get step(): number | undefined { return this.opts2.step } // prettier-ignore
