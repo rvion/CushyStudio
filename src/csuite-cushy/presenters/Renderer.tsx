@@ -87,11 +87,11 @@ export class Presenter<DOC extends Field = Field> {
       rule: FieldUIConf<FIELD> | undefined,
       extraSlots: DisplaySlots<FIELD>,
    ): ReactNode {
-      console.log(`[🦊] rendering ${field.path}`, this.allRules.length)
-      const debug =
-         true || //
-         field.path === '$' ||
-         field.path === `$.ipAdapter.child` // '$.latent.b' // '$.positive'
+      // console.log(`[🦊] rendering ${field.path}`, this.allRules.length)
+      const debug = false
+      //    true || //
+      //    field.path === '$' ||
+      //    field.path === `$.ipAdapter.child` // '$.latent.b' // '$.positive'
 
       const rules: RuleEntry[] = [
          ...this.allRules,

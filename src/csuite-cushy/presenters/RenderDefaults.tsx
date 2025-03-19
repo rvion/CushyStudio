@@ -1,4 +1,5 @@
 import type { Field_group } from '../../csuite/fields/group/FieldGroup'
+import type { SelectKey } from '../../csuite/fields/selectOne/SelectOneKey'
 import type { Field } from '../../csuite/model/Field'
 import type { DisplaySlots } from './RenderSlots'
 import type { DisplaySlotsExt, FieldUIConfCtx } from './RenderTypes'
@@ -79,44 +80,56 @@ const baseslots: DisplaySlots<Field> = {
 export const defaultRulesV2: RuleEntry[] = []
 
 function setRule<T extends Field>(selector: string, slots: DisplaySlotsExt<T>, priority = 10): void {
-   defaultRulesV2.push({ addedBy: null, selector: FieldSelector.from(selector), uiconf: slots, priority })
+   defaultRulesV2.push({
+      addedBy: null,
+      selector: FieldSelector.from(selector),
+      uiconf: slots,
+      priority,
+   })
 }
 
-setRule('', baseslots)
-
-setRule<any>('@shared', { Shell: ShellSharedUI })
-setRule<any>('@link', { Shell: ShellLinkUI })
-setRule<any>('@optional', { Shell: ShellOptionalUI })
-
-setRule('@str', { Header: UY.string.input, Body: null })
-setRule<any>('@number', { Header: UY.number.input, Body: null })
-setRule<any>('@size', { Header: UY.size.line, Body: UY.size.block })
-
-setRule<any>('@selectOne', { Header: WidgetSelectOneUI /* UY.selectOne.Select */ })
-setRule<any>('@image', { Body: WidgetSelectImageUI /* UY.selectOne.Select */ })
-setRule<any>('@group', { Header: WidgetGroup_LineUI, Body: WidgetGroup_BlockUI })
-setRule<any>('@choices', { Header: WidgetChoices_HeaderUI, Body: WidgetChoices_BodyUI })
-setRule<any>('@color', { Header: WidgetColorUI, Body: null })
-setRule<any>('@bool', { Header: UY.boolean.default, Body: null })
-setRule<any>('@enum', { Header: UY.enum.default, Body: null })
-setRule<any>('@prompt', { Header: UY.prompt.DefaultHeaderUI, Body: UY.prompt.DefaultBodyUI })
-
-setRule(
-   '',
-   ({ field }) => {
-      console.log(`[🔴🦊] evaluationg for ${field.path}`)
-      if (field.depth === 1) {
-         if (field.isOfType('group', 'list', 'choices')) {
-            return { Decoration: (p): React.JSX.Element => <UY.Decorations.Card field={field} {...p} /> }
-            // slots.Title = catalog.Title.h3
+// prettier-ignore
+function rules(){
+   setRule('', baseslots)
+   setRule<Z.FShared<any>>('@shared',                      { Shell: ShellSharedUI })
+   setRule<Z.FLink<any, any>>('@link',                     { Shell: ShellLinkUI })
+   setRule<Z.FOptional<any>>('@optional',                  { Shell: ShellOptionalUI })
+   setRule<Z.FString>('@str',                              { Header: UY.string.input, Body: null })
+   setRule<Z.FNumber>('@number',                           { Header: UY.number.input, Body: null })
+   setRule<Z.FSize>('@size',                               { Header: UY.size.line, Body: UY.size.block })
+   setRule<Z.FSelectOne<unknown, SelectKey>>('@selectOne', { Header: WidgetSelectOneUI /* UY.selectOne.Select */ }) // prettier-ignore
+   setRule<Z.FList<any>>('@list',                          { Body: UY.list.DefaultBody,  Header: UY.list.DefaultHeader})
+   setRule<Z.FImage>('@image',                             { Body: WidgetSelectImageUI /* UY.selectOne.Select */ })
+   setRule<Z.FRecord<any>>('@group',                       { Header: WidgetGroup_LineUI, Body: WidgetGroup_BlockUI })
+   setRule<Z.FChoices<any>>('@choices',                    { Header: WidgetChoices_HeaderUI, Body: WidgetChoices_BodyUI })
+   setRule<Z.FColor>('@color',                             { Header: WidgetColorUI, Body: null })
+   setRule<Z.FBool>('@bool',                               { Header: UY.boolean.default, Body: null })
+   setRule<any>('@enum',                                   { Header: UY.enum.default, Body: null })
+   setRule<any>('@prompt',                                 { Header: UY.prompt.DefaultHeaderUI, Body: UY.prompt.DefaultBodyUI })
+   setRule<Field>('$',                                     { collapsible: false })
+   setRule<Field>('.^',                                    { Caret: false })
+   setRule<Field_group>('$@group', {
+      Indent: false,
+      Body: (f) => <UY.group.Default field={f.field as any /* 🔴 */} className='gap-1' />,
+   })
+   setRule(
+      '',
+      ({ field }) => {
+         console.log(`[🔴🦊] evaluationg for ${field.path}`)
+         if (field.depth === 1) {
+            if (field.isOfType('group', 'list', 'choices')) {
+               return { Decoration: (p): React.JSX.Element => <UY.Decorations.Card field={field} {...p} /> }
+               // slots.Title = catalog.Title.h3
+            }
+         } else if (field.depth === 2) {
+            if (field.isOfType('group', 'list', 'choices')) return { Title: UY.Title.h4 }
+            if (!field.isOfType('optional', 'link', 'list', 'shared')) return { Shell: UY.Shell.Right }
          }
-      } else if (field.depth === 2) {
-         if (field.isOfType('group', 'list', 'choices')) return { Title: UY.Title.h4 }
-         if (!field.isOfType('optional', 'link', 'list', 'shared')) return { Shell: UY.Shell.Right }
-      }
-   },
-   100,
-)
+      },
+      100,
+   )
+}
+rules()
 
 const defaultPresenterRule = (ui: FieldUIConfCtx): void => {
    ui.set(baseslots)
@@ -196,7 +209,7 @@ const defaultPresenterRule = (ui: FieldUIConfCtx): void => {
    // })
 }
 
-;(window as any).defaultRenderRules = defaultPresenterRule
+// ;(window as any).defaultRenderRules = defaultPresenterRule
 renderDefaultKey.version++
 if (import.meta.hot) {
    import.meta.hot.accept()
