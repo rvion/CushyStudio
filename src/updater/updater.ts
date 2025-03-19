@@ -247,15 +247,16 @@ export class GitManagedFolder {
    }
 
    _activeRemote = async (): Promise<string> => {
-      if (!this.git) {
-         return 'COULD NOT GIT'
-      }
+      if (!this.git) return 'COULD NOT GIT'
+
       try {
-         const value = (await this.git.getConfig(`branch.${this.activeBranchName}.remote`)).value
-         if (!value) {
-            return 'COULD NOT GET REMOTE FOR BRANCH'
-         }
-         return value
+         const remotes = await this.git.getRemotes(true)
+         // console.log(`[🤠] 🦊`, remotes.map((r) => r.refs.fetch), { xx: this.activeBranchName })
+         // const remote = remotes.find((r) => r.refs.fetch.includes(this.activeBranchName))
+         const remote = remotes.find((r) => r.refs.fetch.includes(`rvion/CushyStudio`))
+         if (!remote) return 'COULD NOT GET REMOTE FOR BRANCH'
+
+         return remote.name
       } catch (err: any) {
          console.error(err)
          return err.message
