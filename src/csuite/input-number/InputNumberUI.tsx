@@ -54,6 +54,7 @@ type InputNumberProps = {
 /** this class will be instanciated ONCE in every InputNumberUI, (local the the InputNumberUI) */
 class InputNumberStableState {
    constructor(public props: InputNumberProps) {
+      this.inputValue = this.value.toString()
       makeAutoObservable(this)
    }
 
@@ -94,7 +95,7 @@ class InputNumberStableState {
    }
 
    /* Used for making sure you can type whatever you want in to the value, but it gets validated when pressing Enter. */
-   inputValue: string = this.value.toString()
+   inputValue: string
 
    /* When editing the number <input> this will make it display inputValue instead of val.*/
    isEditing: boolean = false
