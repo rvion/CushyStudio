@@ -1,6 +1,6 @@
 import type { IconName } from '../../csuite/icons/IconName'
 
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable, runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 
 import { Frame } from '../../csuite/frame/Frame'
@@ -75,12 +75,14 @@ export class CushyDnDHandler {
    }
 
    clear = (): void => {
-      this._suffixIcon = undefined
-      this._icon = undefined
-      this._label = undefined
-      this._content = undefined
-      //   window.document.removeEventListener('mousemove', this.onMouseMove, false)
-      window.document.removeEventListener('drag', this.onMouseMove, true)
+      runInAction(() => {
+         this._suffixIcon = undefined
+         this._icon = undefined
+         this._label = undefined
+         this._content = undefined
+         //   window.document.removeEventListener('mousemove', this.onMouseMove, false)
+         window.document.removeEventListener('drag', this.onMouseMove, true)
+      })
    }
 
    setContent({
@@ -95,10 +97,12 @@ export class CushyDnDHandler {
       /** Underneath the other parameters, display whatever you need to */
       content?: () => React.JSX.Element
    }): void {
-      this._suffixIcon = suffixIcon
-      this._icon = icon
-      this._label = label
-      this._content = content
+      runInAction(() => {
+         this._suffixIcon = suffixIcon
+         this._icon = icon
+         this._label = label
+         this._content = content
+      })
    }
 
    /** Call this when starting a drag to have the indicator have a fallback when the normal content is cleared */
