@@ -29,12 +29,11 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
             expand
          >
             <InputNumberUI
-               //
                min={p.bounds?.min ?? 128}
                max={p.bounds?.max ?? 4096}
                step={p.bounds?.step ?? 32}
                mode='int'
-               value={uist.width}
+               value={uist.width_or_zero}
                hideSlider
                onValueChange={(next) => {
                   uist.setWidth(next)
@@ -52,7 +51,7 @@ export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
                step={p.bounds?.step ?? 32}
                hideSlider
                mode='int'
-               value={uist.height}
+               value={uist.height_or_zero}
                onValueChange={(next) => {
                   uist.setHeight(next)
                   uist.touch()

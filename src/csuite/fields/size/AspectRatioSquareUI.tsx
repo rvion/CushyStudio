@@ -2,7 +2,6 @@ import type { Field_size } from './FieldSize'
 
 import { observer } from 'mobx-react-lite'
 
-import { useCSuite } from '../../ctx/useCSuite'
 import { Frame } from '../../frame/Frame'
 
 export const AspectRatioSquareUI = observer(function AspectRatioSquareUI_(p: { sizeHelper: Field_size }) {
@@ -13,6 +12,8 @@ export const AspectRatioSquareUI = observer(function AspectRatioSquareUI_(p: { s
       parseFloat(getComputedStyle(document.documentElement).fontSize)
    const theme = cushy.preferences.theme.value
 
+   const width = uist.width_or_zero || 1
+   const height = uist.height_or_zero || 1
    return (
       <Frame // Aspect ratio display background
          border={theme.global.border}
@@ -47,14 +48,10 @@ export const AspectRatioSquareUI = observer(function AspectRatioSquareUI_(p: { s
                // Use transform here because it works with floats and will not cause popping/mis-alignments.
                transform: `
                  scaleX(${
-                    uist.width < uist.height
-                       ? Math.round((uist.width / uist.height) * ratioDisplaySize) / ratioDisplaySize
-                       : '1'
+                    width < height ? Math.round((width / height) * ratioDisplaySize) / ratioDisplaySize : '1'
                  })
                  scaleY(${
-                    uist.height < uist.width
-                       ? Math.round((uist.height / uist.width) * ratioDisplaySize) / ratioDisplaySize
-                       : '1'
+                    height < width ? Math.round((height / width) * ratioDisplaySize) / ratioDisplaySize : '1'
                  })`,
             }}
          />
