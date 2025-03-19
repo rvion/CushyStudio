@@ -1019,7 +1019,7 @@ export abstract class Field {
 
    /** collapse all children that can be collapsed */
    collapseAllChildren(): void {
-      runInAction(() => {
+      this.runInTransaction(() => {
          for (const _item of this.childrenAll) {
             // this allow to make sure we fold though optionals and similar constructs
             const item = _item.actualWidgetToDisplay
@@ -1036,7 +1036,7 @@ export abstract class Field {
 
    /** expand all children that can are collapsed */
    expandAllChildren(): void {
-      runInAction(() => {
+      this.runInTransaction(() => {
          for (const _item of this.childrenAll) {
             // this allow to make sure we fold though optionals and similar constructs
             const item = _item.actualWidgetToDisplay
