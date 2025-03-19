@@ -1,4 +1,5 @@
 import type { RenderRule } from '../../../src/csuite-cushy/presenters/RenderTypes'
+import type { Field_group } from '../../../src/csuite/fields/group/FieldGroup'
 import type { Field_list } from '../../../src/csuite/fields/list/FieldList'
 import type { IconName } from '../../../src/csuite/icons/IconName'
 import type { CushySDXLSchema } from './_cushySDXLSchema'
@@ -46,7 +47,8 @@ export function _cushySDXLLayout(): Maybe<RenderRule<CushySDXLSchema>> {
       ui.set<Field_list<Z.Group<{ enabled: Z.Bool; name: Z.String; prompt: Z.Prompt }>>>('@list..@prompt^^', {
          Header: false,
          Body: observer((p) => {
-            const promptGroup = p.field.parent?.value
+            const promptGroup = p.field.parent?.value as Field_group<any>['value'] // 🔴 convert that to pub/sub
+            // 💬 2025-03-16 rvion: we can't allow to have those `any` anymore !
             const activePrompt = p.field.items[promptGroup.activeIndex]
             return (
                <>
@@ -141,12 +143,12 @@ export function _cushySDXLLayout(): Maybe<RenderRule<CushySDXLSchema>> {
          }),
       })
       // already handled by its parent
-      ui.set(ui.field.Positive.Prompts, { collapsible: false, Head: false, Header: false })
-      ui.set(ui.field.Negative.Prompts, { collapsible: false, Head: false, Header: false })
+      ui.set(ui.field._.positive._.prompts, { collapsible: false, Head: false, Header: false })
+      ui.set(ui.field._.negative._.prompts, { collapsible: false, Head: false, Header: false })
 
       ui.set('', (ui2) => {
-         if (ui2.field.parent?.parent === ui.field.Positive.Prompts) return { Head: false }
-         if (ui2.field.parent?.parent === ui.field.Negative.Prompts) return { Head: false }
+         if (ui2.field.parent?.parent === ui.field._.positive._.prompts) return { Head: false }
+         if (ui2.field.parent?.parent === ui.field._.negative._.prompts) return { Head: false }
          // No longer needed as not using optional, opting for the enabled field. It didn't even work anyways.
          // if (ui2.field.parent === ui.field.Positive.Prompts) ui2.set({ Shell: ShellOptionalEnabledUI })
       })
