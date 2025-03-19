@@ -36,6 +36,8 @@ export type ASTStep =
     | StepCollect
     | StepIndex
     | StepBranches
+    | StepNot
+    | StepHas
 
 type StepAxis = { type: 'axis'; axis: Axis }
 type StepFilterMountKey = { type: 'mount'; key: string }
@@ -44,6 +46,8 @@ type StepFilterCode = { type: 'filterCode'; filterCode: string }
 type StepCollect = { type: 'collect'; collectCode?: string }
 type StepIndex = { type: 'index'; index: number }
 type StepBranches = { type: 'branches'; branches: ASTStep[][] }
+type StepNot = { type: 'not'; child: ASTStep[] }
+type StepHas = { type: 'has'; child: ASTStep[] }
 
 export type FL_RawFieldSelector = Tagged<string, 'FL_RawFieldSelector'>
 const axes: Axis[] = ['$', '.', '>', '^', '<']
@@ -221,6 +225,8 @@ export class FieldSelector {
       else if (char === '=') return this.parseCollector()
       else if (char === '[') return this.parseIndex()
       else if (char === '?') return this.parseFilterCode()
+      else if (char === '!') return this.parseNot()
+      else if (char === ':') return this.parseHas()
       else if (/[a-zA-Z0-9_-]/.test(char!)) return this.parseFilterKey()
       else if (axes.includes(char as any)) return this.parseAxisStep()
       else
@@ -289,6 +295,35 @@ export class FieldSelector {
       const index: number = this.consumeNextNumber()
       this.consumeCharOrThrow(']')
       return { type: 'index', index }
+   }
+
+   parseNot(): StepNot {
+      this.consumeCharOrThrow('!')
+      this.consumeCharOrThrow('(')
+      const steps: ASTStep[] = []
+      while (true) {
+         if (this.peek() === ')') break
+         const step: ASTStep = this.parseStep()
+         steps.push(step)
+      }
+      this.consumeCharOrThrow(')')
+      return { type: 'not', child: steps }
+   }
+
+   parseHas(): StepHas {
+      this.consumeCharOrThrow(':')
+      this.consumeCharOrThrow('h')
+      this.consumeCharOrThrow('a')
+      this.consumeCharOrThrow('s')
+      this.consumeCharOrThrow('(')
+      const steps: ASTStep[] = []
+      while (true) {
+         if (this.peek() === ')') break
+         const step: ASTStep = this.parseStep()
+         steps.push(step)
+      }
+      this.consumeCharOrThrow(')')
+      return { type: 'has', child: steps }
    }
 
    /** Parses a reducer after '='. */
@@ -387,10 +422,12 @@ export class FieldSelector {
    }
 
    private consumeCharOrThrow(expected: string): void {
-      const char = this.selector[this.position]
-      if (char !== expected)
-         throw new Error(`Expected '${expected}' at position ${this.position} in selector "${this.selector}"`)
-      this.position++
+      for (let i = 0; i < expected.length; i++) {
+         const char = this.selector[this.position]
+         if (char !== expected[i])
+            this.FAIL(`Expected '${expected[i]}' at position ${this.position} in selector "${this.selector}"`)
+         this.position++
+      }
    }
 
    /** Returns the current character without advancing the position. */

@@ -1,4 +1,9 @@
 // test/parser.test.ts
+// basically
+// start ALWAYS from the element itself
+// navigate upwards to the root (execute steps in reverse order)
+// if :has() is encountered, execute the inner in natural order
+// link must go away
 
 import type { ParsedSelector } from './selector'
 
@@ -9,15 +14,46 @@ import { FieldSelector } from './selector'
 const spyOn = vi.spyOn
 
 describe('SelectorParser Tests', () => {
+   it('can parse not', () => {
+      // prettier-ignore
+      expect(FieldSelector.from('.foo!(.bar)').parse().steps).toEqual([
+         { type: 'axis', axis: '.' },
+         { type: 'mount', key: 'foo' },
+         { type: 'not', child: [
+            { type: 'axis', axis: '.' },
+            { type: 'mount', key: 'bar' },
+         ] },
+      ])
+   })
+   it('can parse has', () => {
+      // 1. check has child called super
+      // 2. check is not => means yields no result
+      //  check is bar
+      // 3. retrieve all parents
+      // 4.
+      // prettier-ignore
+      expect(FieldSelector.from('.foo>!(bar):has(.super)').parse().steps).toEqual([
+         { type: 'axis', axis: '.' },
+         { type: 'mount', key: 'foo' },
+         { type: 'axis', axis: '>' },
+         { type: 'not', child: [
+            { type: 'mount', key: 'bar' },
+         ] },
+         { type: 'has', child: [
+            { type: 'axis', axis: '.' },
+            { type: 'mount', key: 'super' },
+         ] },
+      ])
+   })
    it('can parse sequence indexes', () => {
-      expect(FieldSelector.from('[0][-1][8_2]').parse().steps).toMatchObject([
+      expect(FieldSelector.from('[0][-1][8_2]').parse().steps).toEqual([
          { type: 'index', index: 0 },
          { type: 'index', index: -1 },
          { type: 'index', index: 8_2 },
       ])
    })
    it('can parse sequence of axises', () => {
-      expect(FieldSelector.from('...^^_test').parse().steps).toMatchObject([
+      expect(FieldSelector.from('...^^_test').parse().steps).toEqual([
          { type: 'axis', axis: '.' },
          { type: 'axis', axis: '.' },
          { type: 'axis', axis: '.' },
@@ -29,7 +65,7 @@ describe('SelectorParser Tests', () => {
 
    it('should parse a single step with a single mountKey filter', () => {
       const parsed = FieldSelector.from('.foo').parse()
-      expect(parsed.steps).toMatchObject([
+      expect(parsed.steps).toEqual([
          { type: 'axis', axis: '.' },
          { type: 'mount', key: 'foo' },
       ])
@@ -37,7 +73,7 @@ describe('SelectorParser Tests', () => {
 
    it('can parse selector starting with a filter', () => {
       const parsed = FieldSelector.from('bar.baz').parse()
-      expect(parsed.steps).toMatchObject([
+      expect(parsed.steps).toEqual([
          { type: 'mount', key: 'bar' },
          { type: 'axis', axis: '.' },
          { type: 'mount', key: 'baz' },
@@ -66,7 +102,7 @@ describe('SelectorParser Tests', () => {
          },
       ]
 
-      expect(parsed.steps).toMatchObject(expected)
+      expect(parsed.steps).toEqual(expected)
    })
 
    it("should parse a single step with multiple mountKey filters connected by '|' (part 2)", () => {
@@ -85,7 +121,7 @@ describe('SelectorParser Tests', () => {
             },
          ],
       }
-      expect(parsed).toMatchObject(expected)
+      expect(parsed).toEqual(expected)
    })
 
    it("should parse a single step with mountKey and type filters connected by '|'", () => {
@@ -109,7 +145,7 @@ describe('SelectorParser Tests', () => {
             },
          ],
       }
-      expect(parsed).toMatchObject(expected)
+      expect(parsed).toEqual(expected)
    })
 
    it("should parse a single step with expression filters connected by '|'", () => {
@@ -126,7 +162,7 @@ describe('SelectorParser Tests', () => {
             },
          ],
       }
-      expect(parsed).toMatchObject(expected)
+      expect(parsed).toEqual(expected)
    })
 
    it('should parse multiple steps with different axes and filters', () => {
@@ -145,7 +181,7 @@ describe('SelectorParser Tests', () => {
             { filterCode: '(@.active)', type: 'filterCode' },
          ],
       }
-      expect(parsed).toMatchObject(expected)
+      expect(parsed).toEqual(expected)
    })
 
    it("should parse a selector with all types of filters connected by '|'", () => {
@@ -169,7 +205,7 @@ describe('SelectorParser Tests', () => {
             },
          ],
       }
-      expect(parsed).toMatchObject(expected)
+      expect(parsed).toEqual(expected)
    })
 
    describe('errors', () => {
@@ -209,7 +245,7 @@ describe('SelectorParser Tests', () => {
             },
          ],
       }
-      expect(parsed).toMatchObject(expected)
+      expect(parsed).toEqual(expected)
    })
 
    it('should handle complex selectors with multiple steps and multiple filters', () => {
@@ -235,6 +271,6 @@ describe('SelectorParser Tests', () => {
             { type: 'filterCode', filterCode: '(@.visible)' },
          ],
       }
-      expect(parsed).toMatchObject(expected)
+      expect(parsed).toEqual(expected)
    })
 })
