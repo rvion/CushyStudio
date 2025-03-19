@@ -184,30 +184,32 @@ export const PromptEditorUI = observer(function PromptEditorUI_(p: { promptID: F
                   >
                      <UY.Layout.Row tw='items-center p-1' base={{ contrast: -0.1 }}>
                         <span tw='flex-1 truncate'>{choice.name ?? 'No name'}</span>
-                        <InputBoolUI
-                           square
-                           icon={'mdiCancel'}
-                           roundness={theme.global.roundness}
-                           hover
-                           value={indexAST.isBypass()}
-                           display='button'
-                           toggleGroup={`ast_choice_${choiceIndex}`}
-                           onValueChange={() => {
-                              indexAST.setBypass()
-                           }}
-                        />
-                        <InputBoolUI
-                           square
-                           icon={'mdiHelp'}
-                           roundness={theme.global.roundness}
-                           hover
-                           value={indexAST.isRandom()}
-                           display='button'
-                           toggleGroup={`ast_choice_${choiceIndex}`}
-                           onValueChange={() => {
-                              indexAST.setRandom()
-                           }}
-                        />
+                        <UY.Layout.Row tw='flex-1 !flex-shrink !flex-grow-0' align>
+                           <InputBoolUI
+                              square
+                              icon={'mdiCancel'}
+                              roundness={theme.global.roundness}
+                              hover
+                              value={indexAST.isBypass()}
+                              display='button'
+                              toggleGroup={`ast_choice_${choiceIndex}`}
+                              onValueChange={() => {
+                                 indexAST.setBypass()
+                              }}
+                           />
+                           <InputBoolUI
+                              square
+                              icon={'mdiHelp'}
+                              roundness={theme.global.roundness}
+                              hover
+                              value={indexAST.isRandom()}
+                              display='button'
+                              toggleGroup={`ast_choice_${choiceIndex}`}
+                              onValueChange={() => {
+                                 indexAST.setRandom()
+                              }}
+                           />
+                        </UY.Layout.Row>
                      </UY.Layout.Row>
                      <UY.Layout.Col base={{ contrast: -0.1 }} key={choiceIndex} align>
                         {choice.expressions &&

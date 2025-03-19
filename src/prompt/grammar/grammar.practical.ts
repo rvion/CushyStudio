@@ -562,17 +562,19 @@ export class Prompt_Choice extends ManagedNode<'Choice'> {
       if (!indexAST || this.expressions == null) {
          return '?>Choice: Should not get this'
       }
+
       if (this.indexAST?.isBypass()) {
-         return 'BYPASSED'
+         return ''
       }
+
       const index = indexAST.getIndex(this.expressions.length)
-      if (index == null || this.expressions.length < index) return '❌ invalid choice picked'
+      if (index == null || this.expressions.length < index) {
+         return '❌ invalid choice picked'
+      }
 
       const option = this.expressions[index]
-      console.log('[FD]: kind: ', index, option, option ? option.$kind : 'No Kindness...')
-      console.log('[FD]: EXP', this.expressions)
       if (option === undefined) {
-         return 'UNDEFINED'
+         return 'Invalid choice for ' + this.text
       }
 
       if (option.$kind == 'Choice') {
