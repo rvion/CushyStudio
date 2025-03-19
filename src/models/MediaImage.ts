@@ -16,7 +16,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { imageMeta } from 'image-meta'
 import Konva from 'konva'
 import { lookup } from 'mime-types'
-import { runInAction } from 'mobx'
+import { action, runInAction } from 'mobx'
 import { format, join, parse } from 'path'
 import { basename, resolve } from 'pathe'
 import sharp from 'sharp'
@@ -236,17 +236,17 @@ export class MediaImageL extends BaseInst<TABLES['media_image']> {
       return fname.slice(((fname.lastIndexOf('.') - 1) >>> 0) + 1)
    }
 
-   onMouseEnter = (ev: MouseEvent): void => {
+   onMouseEnter = action((ev: MouseEvent): void => {
       cushy.hovered = this
-   }
+   })
 
-   onMouseLeave = (ev: MouseEvent): void => {
+   onMouseLeave = action((ev: MouseEvent): void => {
       if (cushy.hovered === this) cushy.hovered = null
-   }
+   })
 
-   onMiddleClick = (): void => {
+   onMiddleClick = action((): void => {
       return void cushy.layout.open('Image', { imageID: this.id }, { where: 'biggest' })
-   }
+   })
 
    onRightClick = (): void => {}
 

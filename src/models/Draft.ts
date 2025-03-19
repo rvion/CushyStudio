@@ -9,13 +9,13 @@ import type { Executable } from './Executable'
 import type { MediaImageL } from './MediaImage'
 import type { StepL } from './Step'
 
-import { observable, reaction } from 'mobx'
+import { computed, observable, reaction } from 'mobx'
 
 import { Status } from '../back/Status'
 import { cushyFactory } from '../controls/CushyBuilder'
 import { getGlobalSeeder } from '../csuite/fields/seed/Seeder'
 import { SQLITE_false, SQLITE_true } from '../csuite/types/SQLITE_boolean'
-import { toastError, toastSuccess } from '../csuite/utils/toasts'
+import { toastError } from '../csuite/utils/toasts'
 import { BaseInst } from '../db/BaseInst'
 import { LiveRef } from '../db/LiveRef'
 import { LiveTable } from '../db/LiveTable'
@@ -117,25 +117,25 @@ export class DraftL extends BaseInst<TABLES['draft']> {
    }
 
    /** if name is 'portrait/SMILING' => 'portrait' */
-   get virtualFolder(): string {
+   @computed get virtualFolder(): string {
       const pieces = this.name.split('/')
       pieces.pop()
       return pieces.join('/')
    }
 
-   get app(): CushyAppL {
+   @computed get app(): CushyAppL {
       return this.appRef.item
    }
 
-   get executable(): Maybe<Executable> {
+   @computed get executable(): Maybe<Executable> {
       return this.app.executable_orExtract
    }
 
-   get name(): string {
+   @computed get name(): string {
       return this.data.title ?? this.id
    }
 
-   get isFavorite(): boolean {
+   @computed get isFavorite(): boolean {
       return this.data.isFavorite === SQLITE_true
    }
 
@@ -143,17 +143,16 @@ export class DraftL extends BaseInst<TABLES['draft']> {
       this.update({ isFavorite: fav ? SQLITE_true : SQLITE_false })
    }
 
-   private autoStartTimer: NodeJS.Timeout | null = null
-   private autoStartMaxTimer: NodeJS.Timeout | null = null
+   @observable private accessor autoStartTimer: NodeJS.Timeout | null = null
+   @observable private accessor autoStartMaxTimer: NodeJS.Timeout | null = null
 
    setAutostart(val: boolean): void {
       this.shouldAutoStart = val
       if (val) this.start({})
    }
 
-   lastStarted: Maybe<StepL> = null
-
-   isDirty: boolean = false
+   @observable accessor lastStarted: Maybe<StepL> = null
+   @observable accessor isDirty: boolean = false
 
    checkIfShouldRestart = (): void => {
       // console.log(`[⏰] checkIfShouldRestart called`)
@@ -284,17 +283,17 @@ export class DraftL extends BaseInst<TABLES['draft']> {
       return step
    }
 
-   get form(): Maybe<Field_group<any>> {
+   @computed get form(): Maybe<Field_group<any>> {
       this.AWAKE()
       return this._form
    }
-   _form: Maybe<Field_group<any>> = null
+   @observable accessor _form: Maybe<Field_group<any>> = null
 
-   get file(): LibraryFile {
+   @computed get file(): LibraryFile {
       return this.st.library.getFile(this.appRef.item.relPath)
    }
 
-   isInitialized: boolean = false
+   @observable accessor isInitialized: boolean = false
 
    AWAKE = (): Maybe<() => void> => {
       // if (this.isInitializing) return
@@ -303,7 +302,7 @@ export class DraftL extends BaseInst<TABLES['draft']> {
       const _1 = reaction(
          () => this.executable,
          (action) => {
-            console.log(`[🦊] form: awakening app ${this.data.appID}`)
+            console.log(`[🦊] awakening draft from ${this.data.appID}`)
             if (action == null) return
             // 💬 2024-03-13 hopefully this is not needed anymore now that
             // | we're no longer using reactions
@@ -313,15 +312,12 @@ export class DraftL extends BaseInst<TABLES['draft']> {
                name: this.name,
                serial: () => this.data.formSerial,
                onSerialChange: (form) => {
-                  console.log(`[🧐] update draft(${this.id}) SERIAL`)
-
+                  console.log(`[🧐] updating draft(${this.id}) SERIAL`)
                   this.update({ formSerial: form.serial })
-                  console.log(`[🧐] UPDATING draft(${this.id}) SERIAL`)
                   this.isDirty = true
                   this.checkIfShouldRestart()
                },
             })
-            // form.init()
          },
          { fireImmediately: true },
       )
