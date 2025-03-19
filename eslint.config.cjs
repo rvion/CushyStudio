@@ -116,6 +116,16 @@ module.exports = [
                property: 'addEventListener',
                message: "Please use 'window_addEventListener' instead of 'window.addEventListener'.",
             },
+            {
+               object: 'window.document',
+               property: 'addEventListener',
+               message: "Please use 'window_document_addEventListener' instead of 'window.document.addEventListener'.", // prettier-ignore
+            },
+            {
+               object: 'document',
+               property: 'addEventListener',
+               message: "Please use 'document_addEventListener' instead of 'document.addEventListener'.",
+            },
          ],
          // "no-restricted-imports": [
          //     "error",
