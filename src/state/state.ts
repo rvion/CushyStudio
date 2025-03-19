@@ -449,7 +449,7 @@ export class STATE {
 
    comfyUIIframeRef = createRef<HTMLIFrameElement>()
    // dndVisualRef = createRef<HTMLDivElement>()
-   dndHandler = new CushyDnDHandler()
+   dndHandler: CushyDnDHandler
    mousePosition: { x: number; y: number } = { x: 0, y: 0 }
 
    expandNodes: boolean = false
@@ -602,7 +602,7 @@ export class STATE {
       this.project = this.getProject()
       this.auth = new AuthState(this)
       this.danbooru = DanbooruTags.build(this)
-
+      this.dndHandler = new CushyDnDHandler()
       // 🔴 ensure getters are called at least once so we upsert the two core virtual hosts
       // 💬 2024-10-26 rvion: this is just bad
       // eslint-disable-next-line @typescript-eslint/no-unused-expressions

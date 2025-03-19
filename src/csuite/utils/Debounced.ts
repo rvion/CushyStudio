@@ -6,10 +6,11 @@ export class Debounced<T> {
       public delay: number = 700 /* ms */,
       public onChange?: (value: T) => void,
    ) {
+      this._debouncedValue = _value
       makeAutoObservable(this)
    }
 
-   private _debouncedValue: T = this._value
+   private _debouncedValue: T
    get debouncedValue(): T {
       return this._debouncedValue
    }

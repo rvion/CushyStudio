@@ -1,12 +1,9 @@
-import type { Tint } from '../kolor/Tint'
-
 import { makeAutoObservable, runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import React, { useEffect, useMemo } from 'react'
 
 import { Button } from '../button/Button'
 import { Frame, type FrameProps } from '../frame/Frame'
-import { run_theme_dropShadow } from '../frame/SimpleDropShadow'
 import { run_tint } from '../kolor/prefab_Tint'
 import { parseFloatNoRoundingErr } from '../utils/parseFloatNoRoundingErr'
 import { window_addEventListener } from '../utils/window_addEventListenerAction'
