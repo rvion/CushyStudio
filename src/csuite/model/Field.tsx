@@ -648,7 +648,14 @@ export abstract class Field {
          skipAutoFix = true
       }
 
-      // #region 1.3. case object => use it
+      // #region 1.3. empty object => use defaultSerial
+      else if (Object.keys(serialish).length === 0) {
+         this.recordSerialProblem(`serial is not an empty object, using defaultSerial`, serialish)
+         serial = this.schema.defaultSerial
+         skipAutoFix = true
+      }
+
+      // #region 1.4. case object => use it
       else {
          serial = serialish
       }
@@ -731,6 +738,7 @@ export abstract class Field {
 
       // #region 7. catch all phase
       if (!isProbablySomeFieldSerial(serial)) {
+         console.error({ invalidSerial: serial })
          throw new Error(`invalid serial at '${this.path}'`)
       }
       if (isProbablySomeFieldSerial(serial) && serial.$ !== this.type) {
