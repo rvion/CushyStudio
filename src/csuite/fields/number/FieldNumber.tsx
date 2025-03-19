@@ -36,7 +36,7 @@ type Field_number_ownSerial = {
 
 // #region VALUE
 export type Field_number_value = number
-export type Field_number_unchecked = Field_number_value | string | null | undefined
+export type Field_number_unchecked = Field_number_value | null | undefined
 
 // #region TYPES
 export interface Field_number {
@@ -192,13 +192,13 @@ export class Field_number extends Field {
    }
 
    get value_or_zero(): number {
-      if (typeof this.value_unchecked === 'string') return 0
-
-      return this.value_unchecked ?? 0
+      if (typeof this.serial.value === 'string') return 0
+      return this.serial.value ?? 0
    }
 
    get value_unchecked(): Field_number_unchecked {
-      return this.serial.value
+      if (typeof this.serial.value === 'string') return null
+      return this.serial.value ?? 0
    }
 
    set value_unchecked(next: Field_number_unchecked) {
