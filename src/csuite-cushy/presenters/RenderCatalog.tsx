@@ -7,6 +7,9 @@ import { WidgetChoices_HeaderButtonsUI } from '../../csuite/fields/choices/Widge
 import { WidgetChoices_HeaderSelectUI } from '../../csuite/fields/choices/WidgetChoices_HeaderSelectUI'
 import { WidgetChoices_HeaderTabBarUI } from '../../csuite/fields/choices/WidgetChoices_HeaderTabBarUI'
 import { WidgetChoices_HeaderUI } from '../../csuite/fields/choices/WidgetChoices_HeaderUI'
+import { WidgetEnum_SelectUI } from '../../csuite/fields/enum/WidgetEnum_SelectUI'
+import { WidgetEnum_TabUI } from '../../csuite/fields/enum/WidgetEnum_TabUI'
+import { WidgetEnumUI } from '../../csuite/fields/enum/WidgetEnumUI'
 import { WidgetGroup_BlockUI } from '../../csuite/fields/group/WidgetGroup_BlockUI'
 import { WidgetGroup_LineUI } from '../../csuite/fields/group/WidgetGroup_Header'
 import { WidgetGroup_InlineUI } from '../../csuite/fields/group/WidgetGroup_InlineUI'
@@ -184,6 +187,11 @@ export const widgetsCatalog /* WidgetsCatalog */ = {
       /** inline WidgetNumber */
       input: WidgetNumberUI,
       simple: WidgetNumberSimpleUI,
+   },
+   enum: {
+      default: WidgetEnumUI,
+      select: WidgetEnum_SelectUI,
+      tab: WidgetEnum_TabUI,
    },
    boolean: {
       default: WidgetBoolUI,

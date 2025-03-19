@@ -98,6 +98,7 @@ setRule<any>('@group', { Header: WidgetGroup_LineUI, Body: WidgetGroup_BlockUI }
 setRule<any>('@choices', { Header: WidgetChoices_HeaderUI, Body: WidgetChoices_BodyUI })
 setRule<any>('@color', { Header: WidgetColorUI, Body: null })
 setRule<any>('@bool', { Header: UY.boolean.default, Body: null })
+setRule<any>('@enum', { Header: UY.enum.default, Body: null })
 setRule<any>('@prompt', { Header: UY.prompt.DefaultHeaderUI, Body: UY.prompt.DefaultBodyUI })
 
 setRule(
