@@ -63,13 +63,15 @@ export type WithConfigOptions = {
 }
 
 /** if you ever want ot subclass this, you'll need to override withConfig /!\ so it returns the correct class */
+export interface CSchema<out FIELD extends Field = Field> {
+   $: FIELD
+}
 export class CSchema<out FIELD extends Field = Field> {
    _symCSchema = Symbol.for('CSchema')
    static addMIXIN<MIXIN>(mixin: MIXIN & ThisType<CSchema & MIXIN>): void {
       Object.defineProperties(CSchema.prototype, Object.getOwnPropertyDescriptors(mixin))
    }
 
-   declare $: FIELD
    /** truely unique per instance */
    _uid = nanoid(6)
 

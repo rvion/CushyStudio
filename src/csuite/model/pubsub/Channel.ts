@@ -7,12 +7,10 @@ import { bang } from '../../utils/bang'
 
 export type ChannelId = string
 
+export interface Channel<T> {
+   $type: T
+}
 export class Channel<T> {
-   declare $type: T
-
-   // get() {
-   //    return (field: Field): Maybe<T> => field.readChannel(this)
-   // }
    readFrom(field: Field): Maybe<T> {
       return field.readChannel(this)
    }
