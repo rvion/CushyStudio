@@ -101,7 +101,7 @@ class ColorPickerState {
 
       const nCol = new Color('hsv', [hue, saturation * 100, phsv.v]).oklch
 
-      this.onColorChange(`oklch(${nCol[0]} ${nCol[1]}, ${nCol[2]})`)
+      this.onColorChange(`oklch(${nCol[0]} ${nCol[1]} ${nCol[2]})`)
    }
 
    //    startLightness = (e: MouseEvent): void => {
@@ -120,7 +120,7 @@ class ColorPickerState {
    //       const newColor = new Color('hsv', [phsv.h, phsv.s, lightness])
 
    //       const nCol = newColor.oklch
-   //       this.onColorChange(`oklch(${nCol[0]} ${nCol[1]}, ${nCol[2]})`)
+   //       this.onColorChange(`oklch(${nCol[0]} ${nCol[1]} ${nCol[2]})`)
    //    }
 
    startLightness = (e: MouseEvent): void => {
@@ -159,7 +159,7 @@ class ColorPickerState {
       const newColor = new Color('hsv', [phsv.h, phsv.s, value])
 
       const nCol = newColor.oklch
-      this.onColorChange(`oklch(${nCol[0]} ${nCol[1]}, ${nCol[2]})`)
+      this.onColorChange(`oklch(${nCol[0]} ${nCol[1]} ${nCol[2]})`)
    }
 
    cancel = (e: React.MouseEvent<HTMLCanvasElement, MouseEvent>, isLightness: boolean): void => {
@@ -420,7 +420,7 @@ export const ColorPickerUI = observer(function ColorPickerUI_(p: ColorPickerProp
                         // Only add by a multiple of two here, this is centered in the transform above and numbers not divisible by two will be blurry
                         width: BAR_CANVAS_WIDTH + 2,
                         border: '1px solid white',
-                        background: `hsl(0deg, 0%, ${hsv.v}%)`,
+                        background: `hsl(0deg, 0% ${hsv.v}%)`,
                      }}
                   />
                </div>
@@ -435,7 +435,7 @@ export const ColorPickerUI = observer(function ColorPickerUI_(p: ColorPickerProp
                 value={Math.round(hsl[0])}
                 onValueChange={(val) => {
                    const adjustedRgb = hslToRGB(val, hsl[1] / 100, hsl[2] / 100)
-                   onColorChange(Kolor.fromString(`rgb(${adjustedRgb.r}, ${adjustedRgb.g}, ${adjustedRgb.b})`))
+                   onColorChange(Kolor.fromString(`rgb(${adjustedRgb.r} ${adjustedRgb.g} ${adjustedRgb.b})`))
                 }}
              />
              <InputNumberUI
@@ -447,7 +447,7 @@ export const ColorPickerUI = observer(function ColorPickerUI_(p: ColorPickerProp
                 value={parseFloatNoRoundingErr(hsl[1] / 100)}
                 onValueChange={(val) => {
                    const adjustedRgb = hslToRGB(hsl[0], hsl[1] / 100, hsl[2] / 100)
-                   onColorChange(Kolor.fromString(`rgb(${adjustedRgb.r}, ${adjustedRgb.g}, ${adjustedRgb.b})`))
+                   onColorChange(Kolor.fromString(`rgb(${adjustedRgb.r} ${adjustedRgb.g} ${adjustedRgb.b})`))
                 }}
              />
              <InputNumberUI
@@ -459,7 +459,7 @@ export const ColorPickerUI = observer(function ColorPickerUI_(p: ColorPickerProp
                 value={parseFloatNoRoundingErr(hsl[2] / 100)}
                 onValueChange={(val) => {
                    const adjustedRgb = hslToRGB(hsl[0], hsl[1] / 100, val)
-                   onColorChange(Kolor.fromString(`rgb(${adjustedRgb.r}, ${adjustedRgb.g}, ${adjustedRgb.b})`))
+                   onColorChange(Kolor.fromString(`rgb(${adjustedRgb.r} ${adjustedRgb.g} ${adjustedRgb.b})`))
                 }}
              />
           </Frame> */}
