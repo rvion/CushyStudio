@@ -1,3 +1,4 @@
+import './setup'
 // ------------------------------------------------------------
 // GLOBAL MODULES THAT PATCH WINDOW
 // make sure presenter is properly injected
