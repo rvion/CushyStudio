@@ -45,44 +45,33 @@ declare global {
       type Schema<FIELD extends Field = Field> = CSchema<FIELD>
 
       // #region core types
-
-      // schema aliases
       type Shared<T extends Field>                    = CSchema<Field_shared<T>>
       type SharedAlt<S extends CSchema>               = CSchema<Field_shared<S['$field']>>
-
       type Group<T extends SchemaDict>                = CSchema<Field_group<T> & MAGICFIELDS<T>>
       type Record<T extends SchemaDict>               = CSchema<Field_group<T> & MAGICFIELDS<T>>
-
       type Empty                                      = CSchema<Field_group<NO_PROPS>>
-
       type Maybe<T extends CSchema>                   = CSchema<Field_optional<T>>
       type Optional<T extends CSchema>                = CSchema<Field_optional<T>>
-
       type Bool                                       = CSchema<Field_bool>
       type Link<A extends CSchema, B extends CSchema> = CSchema<Field_link<A, B>>
       type String                                     = CSchema<Field_string>
-
       type Union<T extends SchemaDict>                = CSchema<Field_choices<T>>
       type Choices<T extends SchemaDict = SchemaDict> = CSchema<Field_choices<T> & MAGICCHOICES<T>>
       type Choice<T extends SchemaDict = SchemaDict>  = CSchema<Field_choices<T> & MAGICCHOICES<T>>
-
       type Number                                     = CSchema<Field_number>
       type Color                                      = CSchema<Field_color>
       type List<T extends CSchema>                    = CSchema<Field_list<T>>
       type Board<T extends CSchema>                   = CSchema<Field_board<T>>
       type Seed                                       = CSchema<Field_seed>
       type Matrix                                     = CSchema<Field_matrix>
-
-      // dates
       type SDate                                      = CSchema<Field_date<Date>>
+      // dates
       type XDate                                      = CSchema<Field_date<Date>>
       type SDatePlain                                 = CSchema<Field_date<Temporal.PlainDate>>
       type XDatePlain                                 = CSchema<Field_date<Temporal.PlainDate>>
       type DateTimeZoned                              = CSchema<Field_date<Temporal.ZonedDateTime>>
       type XDateTimeZoned                             = CSchema<Field_date<Temporal.ZonedDateTime>>
-
       type LLM                                        = CSchema<Field_selectOne<OpenRouter_ModelInfo, OpenRouter_Models>>
-      // #region select
       // naming v1
       type XSelectOne<T, ID extends SelectKey>        = CSchema<Field_selectOne<T, ID>>
       type XSelectMany<T, ID extends SelectKey>       = CSchema<Field_selectMany<T, ID>>
@@ -98,15 +87,66 @@ declare global {
       type Many<T, ID extends SelectKey>              = CSchema<Field_selectMany<T, ID>>
       type OneOf_<T extends SelectKey>                = CSchema<Field_selectOne<T, T>> // variant that may be shorter to read
       type Many_<T extends SelectKey>                 = CSchema<Field_selectMany<T, T>> // variant that may be shorter to read
-
       type Size                                       = CSchema<Field_size>
       type Markdown                                   = CSchema<Field_markdown>
-
       type Prompt                                     = CSchema<Field_prompt>
       type Enum<ENUM_NAME extends keyof Comfy.Slots>  = CSchema<Field_enum<Comfy.Slots[ENUM_NAME]>>
       type EnumOf<O extends ComfyUnionValue>          = CSchema<Field_enum<O>>
       type Orbit                                      = CSchema<Field_orbit>
       type Image                                      = CSchema<Field_image>
       type Custom<T>                                  = CSchema<Field_custom<T>>
+
+      // Fields
+      type FShared<T extends Field>                    = Field_shared<T>
+      type FSharedAlt<S extends CSchema>               = Field_shared<S['$field']>
+      type FGroup<T extends SchemaDict>                = Field_group<T> & MAGICFIELDS<T>
+      type FRecord<T extends SchemaDict>               = Field_group<T> & MAGICFIELDS<T>
+      type FEmpty                                      = Field_group<NO_PROPS>
+      type FMaybe<T extends CSchema>                   = Field_optional<T>
+      type FOptional<T extends CSchema>                = Field_optional<T>
+      type FBool                                       = Field_bool
+      type FLink<A extends CSchema, B extends CSchema> = Field_link<A, B>
+      type FString                                     = Field_string
+      type FUnion<T extends SchemaDict>                = Field_choices<T>
+      type FChoices<T extends SchemaDict = SchemaDict> = Field_choices<T> & MAGICCHOICES<T>
+      type FChoice<T extends SchemaDict = SchemaDict>  = Field_choices<T> & MAGICCHOICES<T>
+      type FNumber                                     = Field_number
+      type FColor                                      = Field_color
+      type FList<T extends CSchema>                    = Field_list<T>
+      type FBoard<T extends CSchema>                   = Field_board<T>
+      type FSeed                                       = Field_seed
+      type FMatrix                                     = Field_matrix
+      type FSDate                                      = Field_date<Date>
+      // dates
+      type FXDate                                      = Field_date<Date>
+      type FSDatePlain                                 = Field_date<Temporal.PlainDate>
+      type FXDatePlain                                 = Field_date<Temporal.PlainDate>
+      type FDateTimeZoned                              = Field_date<Temporal.ZonedDateTime>
+      type FXDateTimeZoned                             = Field_date<Temporal.ZonedDateTime>
+      type FLLM                                        = Field_selectOne<OpenRouter_ModelInfo, OpenRouter_Models>
+      // naming v1
+      type FXSelectOne<T, ID extends SelectKey>        = Field_selectOne<T, ID>
+      type FXSelectMany<T, ID extends SelectKey>       = Field_selectMany<T, ID>
+      type FXSelectOne_<T extends SelectKey>           = Field_selectOne<T, T> // variant that may be shorter to read
+      type FXSelectMany_<T extends SelectKey>          = Field_selectMany<T, T> // variant that may be shorter to read
+      // naming v2
+      type FSelectOne<T, ID extends SelectKey>         = Field_selectOne<T, ID>
+      type FSelectMany<T, ID extends SelectKey>        = Field_selectMany<T, ID>
+      type FSelectOne_<T extends SelectKey>            = Field_selectOne<T, T> // variant that may be shorter to read
+      type FSelectMany_<T extends SelectKey>           = Field_selectMany<T, T> // variant that may be shorter to read
+      // naming v3
+      type FOneOf<T, ID extends SelectKey>             = Field_selectOne<T, ID>
+      type FMany<T, ID extends SelectKey>              = Field_selectMany<T, ID>
+      type FOneOf_<T extends SelectKey>                = Field_selectOne<T, T> // variant that may be shorter to read
+      type FMany_<T extends SelectKey>                 = Field_selectMany<T, T> // variant that may be shorter to read
+      type FSize                                       = Field_size
+      type FMarkdown                                   = Field_markdown
+      type FPrompt                                     = Field_prompt
+      type FEnum<ENUM_NAME extends keyof Comfy.Slots>  = Field_enum<Comfy.Slots[ENUM_NAME]>
+      type FEnumOf<O extends ComfyUnionValue>          = Field_enum<O>
+      type FOrbit                                      = Field_orbit
+      type FImage                                      = Field_image
+      type FCustom<T>                                  = Field_custom<T>
+
    }
 }
