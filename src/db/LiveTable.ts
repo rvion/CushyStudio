@@ -7,7 +7,7 @@ import type { DeleteQueryBuilder, SelectQueryBuilder } from 'kysely'
 
 // 💬 2024-03-14 commented serial checks for now
 // import { Value, ValueError } from '@sinclair/typebox/value'
-import { computed, runInAction } from 'mobx'
+import { computed, observable, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { kysely } from '../DB'
@@ -143,7 +143,7 @@ export class LiveTable<
    // ⏸️ query3: SelectQueryBuilder<KyselyTables, TABLE['$TableName'], TABLE['$T']> = dbxx.selectFrom(this.name).selectAll() as any
 
    // private Ktor: LiveEntityClass<TABLE>
-   liveEntities = new Map<string, TABLE['$L']>()
+   readonly liveEntities = observable(new Map<string, TABLE['$L']>())
    $DATA!: TABLE['$T']
    // 🟢 --------------------------------------------------------------------------------
 
