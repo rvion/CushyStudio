@@ -10,16 +10,16 @@ export type BuilderNumberMixin = {
    float(config?: Field_number_config_configured): Z.Number
    float_(config?: Field_number_config_configured): Z.Number
    percent(config?: Field_number_config_configured): Z.Number
+   ratio(config: Field_number_config_configured): Z.Number
    number(config?: Field_number_config_configured): Z.Number
    number_(config?: Field_number_config_configured): Z.Number
-   // __buildNumberSchema(config: Field_number_config): Z.Number;
 }
 
 const BuilderNumberImpl = (): BuilderNumberMixin =>
-   defineSchemaBuilderMixin({
+   defineSchemaBuilderMixin<BuilderNumberMixin>({
       // #region ints
       int_(config: Field_number_config_configured = {}): Z.Number {
-         return this.__buildNumberSchema({ mode: 'int', ...config })
+         return buildNumberSchema({ mode: 'int', ...config })
       },
       int(config: Field_number_config_configured = {}): Z.Number {
          return this.int_({ default: _autoDefault(config), ...config })
@@ -27,16 +27,16 @@ const BuilderNumberImpl = (): BuilderNumberMixin =>
 
       // #region float
       float(config: Field_number_config_configured = {}): Z.Number {
-         return this.__buildNumberSchema({ mode: 'float', default: _autoDefault(config), ...config })
+         return buildNumberSchema({ mode: 'float', default: _autoDefault(config), ...config })
       },
       float_(config: Field_number_config_configured = {}): Z.Number {
-         return this.__buildNumberSchema({ mode: 'float', ...config })
+         return buildNumberSchema({ mode: 'float', ...config })
       },
 
       // #region ratios
       /** [number variant] precent = mode=int, default=100, step=10, min=1, max=100, suffix='%', */
       percent(config: Field_number_config_configured = {}): Z.Number {
-         return this.__buildNumberSchema({
+         return buildNumberSchema({
             mode: 'int',
             default: 100,
             step: 10,
@@ -64,17 +64,16 @@ const BuilderNumberImpl = (): BuilderNumberMixin =>
 
       // #region numbers
       number(config: Field_number_config_configured = {}): Z.Number {
-         return this.__buildNumberSchema({ mode: 'float', default: _autoDefault(config), ...config })
+         return buildNumberSchema({ mode: 'float', default: _autoDefault(config), ...config })
       },
       number_(config: Field_number_config_configured = {}): Z.Number {
-         return this.__buildNumberSchema({ mode: 'float', ...config })
-      },
-
-      // #region _utils
-      __buildNumberSchema(config: Field_number['$config']): Z.Number {
-         return CSchema.new(Field_number, config)
+         return buildNumberSchema({ mode: 'float', ...config })
       },
    })
+
+function buildNumberSchema(config: Field_number['$config']): Z.Number {
+   return CSchema.new(Field_number, config)
+}
 
 function _autoDefault(config: { min?: number; default?: number }): number {
    return config.default ?? config.min ?? 0

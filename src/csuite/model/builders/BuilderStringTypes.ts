@@ -24,7 +24,7 @@ export type BuilderStringMixin = {
 }
 
 const BuilderStringImpl = (): BuilderStringMixin =>
-   defineSchemaBuilderMixin({
+   defineSchemaBuilderMixin<BuilderStringMixin>({
       /**
        * readonly string, defaulting to some new nanoid()
        * (new default for each schema instanciation)

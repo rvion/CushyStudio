@@ -31,7 +31,7 @@ const emptyArray = Object.freeze([])
 const BuilderSelectManyImpl = (
    _defaultSelectManyConfig: Partial<Field_selectMany_config<any, any>> = {},
 ): BuilderSelectManyMixin =>
-   defineSchemaBuilderMixin({
+   defineSchemaBuilderMixin<BuilderSelectManyMixin>({
       /**
        * this method has all the selectMany capabilities.
        * please, use a simpler variant if you don't need all the features.

@@ -34,7 +34,7 @@ export type Field_date_config_specific<VALUE> = Omit<
 > & { time?: boolean }
 
 const BuilderDateImpl = (): BuilderDateMixin =>
-   defineSchemaBuilderMixin({
+   defineSchemaBuilderMixin<BuilderDateMixin>({
       // #region date
       /**
        * Field for javascript date object

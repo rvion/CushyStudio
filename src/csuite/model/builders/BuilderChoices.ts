@@ -18,7 +18,7 @@ export type BuilderChoicesMixin = {
 }
 
 const BuilderChoicesImpl = (): BuilderChoicesMixin =>
-   defineSchemaBuilderMixin({
+   defineSchemaBuilderMixin<BuilderChoicesMixin>({
       choice<T extends SchemaDict>(
          //
          items: Items<T>,

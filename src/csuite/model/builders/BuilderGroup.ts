@@ -16,7 +16,7 @@ export type BuilderGroupMixin = {
 }
 
 const BuilderGroupImpl = (): BuilderGroupMixin =>
-   defineSchemaBuilderMixin({
+   defineSchemaBuilderMixin<BuilderGroupMixin>({
       /** see also: `fields` for a more practical api */
       group<T extends SchemaDict>(config: Field_group_config<T> = {}): Z.Record<T> {
          // 💬 2025-02-03 rvion:

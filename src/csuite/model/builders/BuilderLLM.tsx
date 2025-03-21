@@ -16,7 +16,7 @@ export type BuilderLLMMixin = {
 }
 
 const BuilderLLMImpl = (): BuilderLLMMixin =>
-   defineSchemaBuilderMixin({
+   defineSchemaBuilderMixin<BuilderLLMMixin>({
       llmModel(p: FieldLLMCOnfig = {}): FieldLLM {
          // 💬 2025-03-17 rvion: let's pretend `this` has acess to selectOne
          const self = this as any as BuilderSelectOneMixin

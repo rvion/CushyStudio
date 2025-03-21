@@ -30,7 +30,7 @@ export type BuilderSelectOneMixin = {
 const BuilderSelectOneImpl = (
    _defaultSelectOneConfig: Partial<Field_selectOne_config<any, any>> = {},
 ): BuilderSelectOneMixin =>
-   defineSchemaBuilderMixin({
+   defineSchemaBuilderMixin<BuilderSelectOneMixin>({
       // private _defaultSelectOneConfig: Partial<Field_selectOne_config<any, any>> = {}
       // withDefaultSelectOneConfig(conf: Partial<Field_selectOne_config<any, any>>) {
       //    this._defaultSelectOneConfig = conf

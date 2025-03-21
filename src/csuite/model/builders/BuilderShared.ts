@@ -21,7 +21,7 @@ export type BuilderSharedMixin = {
 }
 
 const BuilderSharedImpl = (): BuilderSharedMixin =>
-   defineSchemaBuilderMixin({
+   defineSchemaBuilderMixin<BuilderSharedMixin>({
       /**
        * Allow to instanciate a field early, so you can re-use it in multiple places
        * or access it's instance to dynamically change some other field schema.

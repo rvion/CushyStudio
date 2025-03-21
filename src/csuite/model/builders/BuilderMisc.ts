@@ -26,7 +26,7 @@ export type BuilderMiscMixin = {
 //  => because we want to be able to overload methods  inside; and I didn't find how to do it
 // with object notation
 const BuilderMiscImpl = (): BuilderMiscMixin =>
-   defineSchemaBuilderMixin({
+   defineSchemaBuilderMixin<BuilderMiscMixin>({
       size_(config: Field_size_config = {}): Z.Size {
          return CSchema.new(Field_size, config)
       },

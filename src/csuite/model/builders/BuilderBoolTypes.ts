@@ -9,7 +9,7 @@ export type BuilderBoolMixin = {
 }
 
 const BuilderBoolImpl = (): BuilderBoolMixin =>
-   defineSchemaBuilderMixin({
+   defineSchemaBuilderMixin<BuilderBoolMixin>({
       /**
        * boolean without default
        * @since 2024-09-04
