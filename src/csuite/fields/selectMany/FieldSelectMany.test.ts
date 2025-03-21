@@ -9,32 +9,32 @@ import { Field_selectMany, type Field_selectMany_serial } from './FieldSelectMan
 
 const b = simpleBuilder
 
-describe('array proxies', () => {
-   // it.skip('should correctly be packed by MsgPackr', () => {
-   //    // v1 Proxy with get
-   //    const v1Arr = new Proxy([1, 2, 3, 4, 5], {
-   //       get: (target, prop): any => {
-   //          return Reflect.get(target, prop)
-   //          // if (prop === 'constructor') return undefined
-   //          // if (prop === 'hasOwnProperty') return undefined
-   //       },
-   //    })
-   //    const v1 = MsgPackR_packToString(v1Arr)
-   //    console.log(`[🤠] v1`, v1Arr.length, JSON.stringify(v1))
-   //    // v2 Proxy empty
-   //    const v2Arr = new Proxy([1, 2, 3, 4, 5], {})
-   //    const v2 = MsgPackR_packToString(v2Arr)
-   //    console.log(`[🤠] v2`, v2Arr.length, JSON.stringify(v2))
-   //    // v3 base
-   //    const v3Arr = [1, 2, 3, 4, 5]
-   //    const v3 = MsgPackR_packToString(v3Arr)
-   //    console.log(`[🤠] v3`, v3Arr.length, JSON.stringify(v3))
-   //    // v4 mobx
-   //    const v4Arr = observable([1, 2, 3, 4, 5])
-   //    const v4 = MsgPackR_packToString(v4Arr)
-   //    console.log(`[🤠] v4`, v4Arr.length, JSON.stringify(v4))
-   // })
-})
+// describe('array proxies', () => {
+//    // it.skip('should correctly be packed by MsgPackr', () => {
+//    //    // v1 Proxy with get
+//    //    const v1Arr = new Proxy([1, 2, 3, 4, 5], {
+//    //       get: (target, prop): any => {
+//    //          return Reflect.get(target, prop)
+//    //          // if (prop === 'constructor') return undefined
+//    //          // if (prop === 'hasOwnProperty') return undefined
+//    //       },
+//    //    })
+//    //    const v1 = MsgPackR_packToString(v1Arr)
+//    //    console.log(`[🤠] v1`, v1Arr.length, JSON.stringify(v1))
+//    //    // v2 Proxy empty
+//    //    const v2Arr = new Proxy([1, 2, 3, 4, 5], {})
+//    //    const v2 = MsgPackR_packToString(v2Arr)
+//    //    console.log(`[🤠] v2`, v2Arr.length, JSON.stringify(v2))
+//    //    // v3 base
+//    //    const v3Arr = [1, 2, 3, 4, 5]
+//    //    const v3 = MsgPackR_packToString(v3Arr)
+//    //    console.log(`[🤠] v3`, v3Arr.length, JSON.stringify(v3))
+//    //    // v4 mobx
+//    //    const v4Arr = observable([1, 2, 3, 4, 5])
+//    //    const v4 = MsgPackR_packToString(v4Arr)
+//    //    console.log(`[🤠] v4`, v4Arr.length, JSON.stringify(v4))
+//    // })
+// })
 // ------------------------------------------------------------------------------
 describe('FieldSelectMany', () => {
    it('works', () => {

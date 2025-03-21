@@ -48,9 +48,9 @@ describe('field schema string representations', () => {
       expect(schema.codeForTypescriptValue()).toBe(
          [
             //
-            `{`,
-            `   x: number`,
-            `}`,
+            'Z.Link<number,{',
+            '   x: Z.Shared<number>,',
+            '}>',
          ].join('\n'),
       )
    })

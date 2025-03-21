@@ -1,5 +1,5 @@
 import type { CSchema } from '../../model/CSchema'
-import type { FieldConstructor } from '../../model/FieldConstructor'
+import type { CodegenOpts, FieldConstructor } from '../../model/FieldConstructor'
 import type { Patch } from '../../model/Patch'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
@@ -50,7 +50,19 @@ export class Field_link<A extends CSchema, B extends CSchema> extends Field {
    // #region TYPE
    static readonly type: 'link' = 'link'
    private static readonly unsetSerial: Field_link<any, any>['$serial'] = { $: 'link' }
-   static readonly codeForTypescriptValue = (config: Field_link<any, any>['$config']): string => 'Z.Link'
+   static readonly codeForTypescriptValue = (
+      config: Field_link<CSchema, CSchema>['$config'],
+      opts: CodegenOpts,
+   ): string => {
+      // const myIndent = opts.indent ?? 0
+      // const childOpts = { ...opts, indent: myIndent + 1 }
+      const childOpts = opts
+      const a = config.share.create()
+      const b = config.children(a)
+      const aStr = config.share.codeForTypescriptValue(childOpts)
+      const bStr = b.codeForTypescriptValue(childOpts)
+      return `Z.Link<${aStr},${bStr}>`
+   }
    static override migrateSerial(): undefined {}
    static generateSerial(): Field_link<CSchema, CSchema>['$serial'] {
       // TODO what to do here ?
