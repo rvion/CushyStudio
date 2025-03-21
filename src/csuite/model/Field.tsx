@@ -47,6 +47,7 @@ import { hashJSONObjectToNumber } from '../hashUtils/hash'
 import { type AnomalyMixin, AnomalyMixinDescriptors } from '../migration/Anomaly.mixin'
 import { type SelectorMixin, SelectorMixinDescriptors } from '../selector/selector.mixin'
 import { exhaust } from '../utils/exhaust'
+import { getUIDForMemoryStructure } from '../utils/getUIDForMemoryStructure'
 import { makeLabelFromPrimitiveValue } from '../utils/makeLabelFromFieldName'
 import { $FieldSym } from './$FieldSym'
 import { autofixSerial_20240703 } from './autofix/autofixSerial_20240703'
@@ -313,6 +314,9 @@ export abstract class Field {
       return (this.constructor as FieldConstructor<this>).patchedSerialPaths
    }
 
+   get shorthash(): string {
+      return getUIDForMemoryStructure(this.serial)
+   }
    /**
     * To be overwritten by subclasses to generate patches for the field itself
     * for special cases
