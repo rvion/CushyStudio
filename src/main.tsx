@@ -31,9 +31,7 @@ import { MainUI } from './widgets/misc/MainUI'
 const root = document.getElementById('root') as HTMLElement
 
 function updateMousePosition(e: MouseEvent): void {
-   if (!cushy) {
-      return
-   }
+   if (!('cushy' in globalThis)) return
    cushy.mousePosition = { x: e.clientX, y: e.clientY }
 }
 window.document.addEventListener('mousemove', updateMousePosition)
