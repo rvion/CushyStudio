@@ -145,7 +145,7 @@ export class Field_number extends Field {
    get ownTypeSpecificProblems(): Problem_Ext {
       if (!this.isSet) return null
 
-      if (typeof this.value_unchecked === 'string') {
+      if (typeof this.value_unchecked !== 'number') {
          return csuiteConfig.i18n.err.number.notANumber
       }
 
@@ -198,10 +198,10 @@ export class Field_number extends Field {
 
    get value_unchecked(): Field_number_unchecked {
       if (typeof this.serial.value === 'string') return null
-      return this.serial.value ?? 0
+      return this.serial.value
    }
 
-   set value_unchecked(next: Field_number_unchecked) {
+   set value_unchecked(next: number | string | null | undefined) {
       this.patchSerial((serial) => void (serial.value = next))
    }
 

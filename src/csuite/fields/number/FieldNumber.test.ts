@@ -22,7 +22,7 @@ describe('field number', () => {
          const serial: Field_number['$serial'] = { $: 'number', value: 'invalid' }
          const schema = b.number({ default: 5 })
          const document = schema.create(serial)
-         expect(document.value_unchecked).toBe('invalid')
+         expect(document.value_unchecked).toBe(null) // 'invalid'
          expect(document.hasOwnErrors).toBeTruthy()
       })
 
@@ -59,6 +59,7 @@ describe('field number', () => {
          it('should accept null', () => {
             const schema = b.number({ default: 5 })
             const document = schema.create()
+            const x = document.value
             document.value = null
             expect(document.value_unchecked).toBeNull()
          })
@@ -77,7 +78,8 @@ describe('field number', () => {
                const schema = b.number({ default: 5 })
                const document = schema.create()
                document.value = 'invalid'
-               expect(document.value_unchecked).toBe('invalid')
+               expect(document.value_unchecked).toBe(null)
+               expect(document.serial.value).toBe('invalid')
             })
 
             it('should be on error', () => {
