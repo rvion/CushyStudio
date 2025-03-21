@@ -6,6 +6,15 @@ import { FieldSelector } from './selector'
 export type SelectorMixin = typeof SelectorMixinImpl
 
 export const SelectorMixinImpl = defineFieldMixin({
+   // #region quick checks
+   contains(selector_: string | FieldSelector): boolean {
+      const selector = FieldSelector.from(selector_)
+      return this.select(selector).length > 0
+   },
+   matches(selector_: string | FieldSelector): boolean {
+      const selector = FieldSelector.from(selector_)
+      return selector.match(this)
+   },
    // extraction
    extract(selector_: string | FieldSelector): any {
       const selector = FieldSelector.from(selector_)
@@ -43,16 +52,6 @@ export const SelectorMixinImpl = defineFieldMixin({
    // #region  all in one
    selectAndExtract(selector: string): { fields: Field[]; values: any[] } {
       return FieldSelector.from(selector).selectFrom(this)
-   },
-
-   // #region quick checks
-   contains(selector_: string | FieldSelector): boolean {
-      const selector = FieldSelector.from(selector_)
-      return this.select(selector).length > 0
-   },
-   matches(selector_: string | FieldSelector): boolean {
-      const selector = FieldSelector.from(selector_)
-      return this.select(selector).includes(this)
    },
 })
 

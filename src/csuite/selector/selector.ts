@@ -21,7 +21,8 @@ examples selectors
     - .foo.bar{.baz.quuz | @str.a.b.c.d | {x.y^z | @number } }
     - >@str=(@.map(v => v.value).join('+'))
 */
-import type { Field } from '../model/Field'
+import { Field } from '../model/Field'
+import { exhaust } from '../utils/exhaust'
 
 // import chalk from 'chalk'
 
@@ -38,7 +39,9 @@ export type ASTStep =
     | StepBranches
     | StepNot
     | StepHas
+    | StepIsRoot
 
+type StepIsRoot = { type: 'root' }
 type StepAxis = { type: 'axis'; axis: Axis }
 type StepFilterMountKey = { type: 'mount'; key: string }
 type StepFilterType = { type: 'filterType'; fieldType: string }
@@ -46,17 +49,18 @@ type StepFilterCode = { type: 'filterCode'; filterCode: string }
 type StepCollect = { type: 'collect'; collectCode?: string }
 type StepIndex = { type: 'index'; index: number }
 type StepBranches = { type: 'branches'; branches: ASTStep[][] }
-type StepNot = { type: 'not'; child: ASTStep[] }
-type StepHas = { type: 'has'; child: ASTStep[] }
+type StepNot = { type: 'not'; steps: ASTStep[] }
+type StepHas = { type: 'has'; steps: ASTStep[] }
 
 export type FL_RawFieldSelector = Tagged<string, 'FL_RawFieldSelector'>
-const axes: Axis[] = ['$', '.', '>', '^', '<']
+const axes: Axis[] = ['.', '>', '^', '<']
 export type Axis =
-   | '$' // root
    | '.' // child
-   | '>' // descendants
    | '^' // parent
+   | '>' // descendants
    | '<' // ancestors
+// | '$' // root => is Filter
+// | '&' // ownwer => is Filter
 
 export interface Selector {
    match: (node: ASTNode) => boolean
@@ -110,26 +114,59 @@ export class FieldSelector {
       }
    }
 
+   get inverse() {
+      const { steps } = this.parse()
+      const stepsInverse: ASTStep[] = steps.toReversed().map((step) => {
+         if (step.type === 'axis') {
+            if (step.axis === '.') return { type: 'axis', axis: '^' }
+            if (step.axis === '^') return { type: 'axis', axis: '.' }
+            if (step.axis === '>') return { type: 'axis', axis: '<' }
+            if (step.axis === '<') return { type: 'axis', axis: '>' }
+         }
+         return step
+      })
+      return stepsInverse
+   }
+
    // #region HIGH LEVEL API
-   match(field: Field, from?: Field): boolean {
-      const { fields: selected } = this.selectFrom(from ?? field.root.descendantsIncludingSelf)
-      return selected.includes(field)
+   match(field: Field /* from?: Field */): boolean {
+      const { fields: selected } = this.selectFrom_(field, this.inverse /* , true */)
+      // console.log(`[🤠] `, this.inverse)
+      return selected.length > 0
    }
 
    selectFrom(from: Field | Field[]): { fields: Field[]; values: any[] } {
       const { steps } = this.parse()
+      return this.selectFrom_(from, steps)
+   }
+
+   private selectFrom_(
+      //
+      from: Field[] | Field,
+      steps: ASTStep[],
+      debug: boolean = false,
+   ) {
       let candidates: Field[] = Array.isArray(from) ? from : [from]
       const values: any[] = []
       for (const step of steps) {
+         if (debug) console.log(`[🤠] step`, FieldSelector.renderStep(step), [candidates.map((c) => c.path)])
          // early abort
          if (candidates.length === 0) return { fields: [], values: values }
 
-         if (step.type === 'mount') candidates = candidates.filter((node) => node.mountKey === step.key)
-         else if (step.type === 'filterType')
+         // mount
+         if (step.type === 'mount') {
+            candidates = candidates.filter((node) => node.mountKey === step.key)
+         }
+
+         // filterType
+         else if (step.type === 'filterType') {
             candidates = candidates.filter(
                (node) => node.type === (step.fieldType === 'str' ? 'str' : step.fieldType),
             )
-         else if (step.type === 'filterCode')
+         }
+
+         // filterCode
+         else if (step.type === 'filterCode') {
             candidates = candidates.filter((node): boolean => {
                try {
                   const func = new Function('node', `return ${step.filterCode.replaceAll('@.', 'node.')};`)
@@ -139,11 +176,49 @@ export class FieldSelector {
                   return false
                }
             })
-         else if (step.type === 'axis') candidates = this.applyAxis(candidates, step)
-         else if (step.type === 'branches') candidates = this.applyBranch(candidates, step)
+         }
+
+         // root
+         else if (step.type === 'root') {
+            candidates = candidates.filter((node) => node.parent == null)
+         }
+
+         // has
+         else if (step.type === 'has') {
+            candidates = candidates.filter((node) => {
+               const subSelector = FieldSelector.from({ steps: step.steps })
+               const res = node.selectFirstOrNull(subSelector)
+               return res != null
+            })
+         }
+
+         // not
+         else if (step.type === 'not') {
+            throw new Error('❌ not is not implemented')
+            // candidates = candidates.filter((node) => {
+            //    const subSelector = FieldSelector.from({ steps: step.steps })
+            //    const res = node.selectFirstOrNull(subSelector)
+            //    return res != null
+            // })
+         }
+
+         // axis
+         else if (step.type === 'axis') {
+            candidates = this.applyAxis(candidates, step)
+         }
+
+         // branches
+         else if (step.type === 'branches') {
+            candidates = this.applyBranch(candidates, step)
+         }
+
+         // index
          else if (step.type === 'index') {
             candidates = candidates.map((c) => c.childrenActive.at(step.index)).filter(Boolean) as Field[]
-         } else if (step.type === 'collect') {
+         }
+
+         // collect
+         else if (step.type === 'collect') {
             if (step.collectCode) {
                try {
                   const func = new Function(`return ${step.collectCode};`)
@@ -153,10 +228,31 @@ export class FieldSelector {
                   console.error(`Error evaluating collect code "${step.collectCode}":`, e)
                }
             }
-         } else throw new Error(`Unknown step type "${(step as any).type}"`)
+         }
+         // exhaus
+         else {
+            exhaust(step)
+            throw new Error(`Unknown step type "${(step as any).type}"`)
+         }
       }
 
       return { fields: candidates, values }
+   }
+
+   static renderStep(step: ASTStep): string {
+      if (step.type === 'axis') return step.axis
+      if (step.type === 'mount') return `${step.key}`
+      if (step.type === 'filterType') return `@${step.fieldType}`
+      if (step.type === 'filterCode') return `?(${step.filterCode})`
+      if (step.type === 'collect') return `=(${step.collectCode})`
+      if (step.type === 'index') return `[${step.index}]`
+      if (step.type === 'branches')
+         return `{${step.branches.map((b) => b.map(FieldSelector.renderStep).join('|')).join(' | ')}}`
+      if (step.type === 'not') return `!(${step.steps.map(FieldSelector.renderStep).join('')})`
+      if (step.type === 'has') return `:has(${step.steps.map(FieldSelector.renderStep).join('')})`
+      if (step.type === 'root') return `$`
+      exhaust(step)
+      throw new Error(`Unknown step type "${(step as any).type}"`)
    }
 
    // #region MATCH
@@ -168,8 +264,7 @@ export class FieldSelector {
          nextNodes.add(node)
       }
       for (const at of candidates) {
-         if (step.axis === '$') addNode(at.root)
-         else if (step.axis === '.') at.childrenAll.forEach(addNode)
+         if (step.axis === '.') at.childrenAll.forEach(addNode)
          else if (step.axis === '>') at.descendants.forEach(addNode)
          else if (step.axis === '^') addNode(at.parent)
          else if (step.axis === '<') at.ancestors.forEach(addNode)
@@ -221,6 +316,7 @@ export class FieldSelector {
       this.consumeWhitespace()
       const char = this.peek()!
       if (char === '{') return this.parseBranches()
+      else if (char === '$') return this.parseRoot()
       else if (char === '@') return this.parseFilterType()
       else if (char === '=') return this.parseCollector()
       else if (char === '[') return this.parseIndex()
@@ -307,7 +403,7 @@ export class FieldSelector {
          steps.push(step)
       }
       this.consumeCharOrThrow(')')
-      return { type: 'not', child: steps }
+      return { type: 'not', steps: steps }
    }
 
    parseHas(): StepHas {
@@ -323,7 +419,7 @@ export class FieldSelector {
          steps.push(step)
       }
       this.consumeCharOrThrow(')')
-      return { type: 'has', child: steps }
+      return { type: 'has', steps: steps }
    }
 
    /** Parses a reducer after '='. */
@@ -338,45 +434,16 @@ export class FieldSelector {
       return { type: 'mount', key: word }
    }
 
+   parseRoot(): StepIsRoot {
+      this.consumeCharOrThrow('$')
+      return { type: 'root' }
+   }
+
    parseFilterType(): StepFilterType {
       this.consumeCharOrThrow('@')
       const fieldType = this.consumeNextWord()
       return { type: 'filterType', fieldType }
    }
-
-   // /** Splits a filter string by '|' operators not enclosed in parentheses. */
-   // private splitByOr(filterStr: string): string[] {
-   //     const parts: string[] = []
-   //     let current = ''
-   //     let depth = 0
-
-   //     for (let i = 0; i < filterStr.length; i++) {
-   //         const char = filterStr[i]
-   //         if (char === '(') {
-   //             depth++
-   //         } else if (char === ')') {
-   //             if (depth > 0) depth--
-   //             else {
-   //                 throw new Error(`Unbalanced parentheses in filter string "${filterStr}"`)
-   //             }
-   //         } else if (char === '|' && depth === 0) {
-   //             parts.push(current)
-   //             current = ''
-   //             continue
-   //         }
-   //         current += char
-   //     }
-
-   //     if (depth !== 0) {
-   //         throw new Error(`Unbalanced parentheses in filter string "${filterStr}"`)
-   //     }
-
-   //     if (current) {
-   //         parts.push(current)
-   //     }
-
-   //     return parts
-   // }
 
    // #region HELPERS
    private consumeParenthesisGroup(): string {

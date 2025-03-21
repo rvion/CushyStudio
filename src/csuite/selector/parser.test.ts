@@ -19,7 +19,7 @@ describe('SelectorParser Tests', () => {
       expect(FieldSelector.from('.foo!(.bar)').parse().steps).toEqual([
          { type: 'axis', axis: '.' },
          { type: 'mount', key: 'foo' },
-         { type: 'not', child: [
+         { type: 'not', steps: [
             { type: 'axis', axis: '.' },
             { type: 'mount', key: 'bar' },
          ] },
@@ -36,10 +36,10 @@ describe('SelectorParser Tests', () => {
          { type: 'axis', axis: '.' },
          { type: 'mount', key: 'foo' },
          { type: 'axis', axis: '>' },
-         { type: 'not', child: [
+         { type: 'not', steps: [
             { type: 'mount', key: 'bar' },
          ] },
-         { type: 'has', child: [
+         { type: 'has', steps: [
             { type: 'axis', axis: '.' },
             { type: 'mount', key: 'super' },
          ] },
@@ -253,7 +253,7 @@ describe('SelectorParser Tests', () => {
       const parsed = FieldSelector.from(selector).parse()
       const expected: ParsedSelector = {
          steps: [
-            { axis: '$', type: 'axis' },
+            { type: 'root' },
             { axis: '.', type: 'axis' },
             {
                type: 'branches',

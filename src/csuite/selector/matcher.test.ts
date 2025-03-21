@@ -5,7 +5,6 @@ import type { Field_string } from '../fields/string/FieldString'
 import { describe, expect, it } from 'vitest'
 
 import { simpleBuilder } from '../simple/SimpleFactory'
-import { FieldSelector } from './selector'
 
 const b = simpleBuilder
 const S1 = b.fields({
@@ -27,8 +26,26 @@ const test2nd = root._.foo._.test.items[1]!
 
 baz.updateFieldCustom((t) => ({ abcdefgh: true })) // makes @.custom.abcdefgh be true
 
-describe('SelectorCompiler Tests', () => {
+describe('selector.match', () => {
+   it('works', () => {
+      const F = root._.foo._.bar
+      expect(F.path).toBe('$.foo.bar')
+      expect(F.matches('bar')).toBe(true)
+      expect(F.matches('.bar')).toBe(true)
+      expect(F.matches('$.foo.bar')).toBe(true)
+      expect(F.matches('foo.')).toBe(true)
+      expect(F.matches('foo')).toBe(false)
+
+      expect(F.matches('$')).toBe(false)
+
+      expect(F.matches('{bar|foo}')).toBe(true)
+      expect(F.matches('{bar|bar}')).toBe(true)
+      expect(F.matches('{quu|foo}')).toBe(false)
+   })
+})
+describe('selector.select', () => {
    it('works with indexes', () => {
+      expect(foo.selectFirstOrNull('$.foo.test')?.path).toBe(undefined)
       expect(root.selectFirstOrThrow<Field_string>('$.foo.test')?.path).toBe('$.foo.test')
       expect(root.selectFirstOrThrow<Field_string>('$.foo.test[0]')?.path).toBe(
          `$.foo.test.${root._.foo._.test.at(0)?.mountKey}`,
