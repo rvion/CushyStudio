@@ -40,6 +40,7 @@ const CushyShellUI = observer(function CushySHell(
          // border={p.card ? 1 : field.border}
          {...p.field.config.box}
       >
+         {utils.renderFCOrNode(p.Before, { field })}
          <RevealUI
             tw='w-full'
             trigger={'rightClick'}
@@ -60,14 +61,14 @@ const CushyShellUI = observer(function CushySHell(
                  className: p.classNameAroundBodyAndHeader ?? undefined,
                  border: p.border,
               })}
-
          {/* ERRORS  */}
          {utils.renderFCOrNode(p.Errors, { field })}
+         {utils.renderFCOrNode(p.After, { field })}
       </Frame>
    )
 
    WUI = <AnimatedSizeUI>{WUI}</AnimatedSizeUI>
-   if (p.Decoration) WUI = utils.renderFCOrNode(p.Decoration, { children: WUI })
+   if (p.Decoration) WUI = utils.renderFCOrNode(p.Decoration, { children: WUI, field })
    return WUI
 })
 

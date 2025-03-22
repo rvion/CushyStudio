@@ -47,6 +47,9 @@ export interface DisplaySlots<out FIELD extends Field = Field> {
    // can also be used an escape hatch for 100% custom UI
    /* ⭕️ */ Shell?: FCOrJSXOrNamed<CompiledRenderProps<FIELD>, keyof CATALOG.widgets['Shell']>
 
+   Before?: FCOrNode<{ field: FIELD }>
+   After?: FCOrNode<{ field: FIELD }>
+
    // 2. Direct Slots for this field only
    // heavilly suggested to include in your presenter unless you know what you do
    /* ✅ */ Head?: FCOrNode<CushyHeadProps>

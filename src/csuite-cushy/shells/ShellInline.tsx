@@ -10,6 +10,7 @@ export const ShellInlineUI = observer(function ShellInline(p: CompiledRenderProp
    const utils = p.presenter.utils
    return (
       <Frame row>
+         {utils.renderFCOrNode(p.Before, { field })}
          {utils.renderFCOrNodeWithWrapper(p.Header, p, p.ContainerForHeader, {
             className: p.classNameAroundBodyAndHeader ?? undefined,
             field,
@@ -17,6 +18,7 @@ export const ShellInlineUI = observer(function ShellInline(p: CompiledRenderProp
          {utils.renderFCOrNodeWithWrapper(p.Body, p, p.ContainerForBody, {
             className: p.classNameAroundBodyAndHeader ?? undefined,
          })}
+         {utils.renderFCOrNode(p.After, { field })}
       </Frame>
    )
 })
