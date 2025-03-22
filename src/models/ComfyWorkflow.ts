@@ -22,6 +22,7 @@ import type { MouseEvent } from 'react'
 
 import { existsSync, mkdirSync, writeFileSync } from 'fs'
 import { marked } from 'marked'
+import { action } from 'mobx'
 import { join } from 'pathe'
 
 import { ComfyWorkflowBuilder } from '../back/NodeBuilder'
@@ -426,7 +427,7 @@ export class ComfyWorkflowL extends BaseInst<TABLES['comfy_workflow']> {
    }
 
    /** compute autolayout */
-   RUNLAYOUT = (p?: {
+   @action RUNLAYOUT = (p?: {
       /** @default: 20 */
       node_vsep?: number
       /** @default: 20 */
