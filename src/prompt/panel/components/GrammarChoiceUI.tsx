@@ -60,12 +60,18 @@ The "index_value" would be a Number, Random "?", or Disable "_"]`}
 
    return (
       <UY.Layout.Col //
-         tw='select-none gap-1 p-1'
+         tw={'relative select-none gap-0.5 p-1.5'}
          roundness={theme.global.roundness}
          key={index}
-         base={{ contrast: 0.05 }}
+         base={{ contrast: nested ? 0.1 : 0.077 }}
       >
-         <UY.Layout.Row tw='items-center p-1' base={{ contrast: -0.1 }}>
+         {nested && (
+            <UY.Misc.Frame
+               border={{ contrast: -0.1 }}
+               tw='absolute left-0 top-0 flex h-full w-full !border-b-0 !border-l-4 !border-r-0 !border-t-0 !bg-transparent '
+            />
+         )}
+         <UY.Layout.Row tw='items-center p-1' base={{ contrast: 0 }}>
             <span tw='flex-1 truncate'>{choice.name ?? 'No name'}</span>
             <UY.Layout.Row tw='flex-1 !flex-shrink !flex-grow-0' align>
                <InputBoolUI
@@ -136,7 +142,7 @@ function formatChoice(view: Maybe<EditorView>, entry: Prompt_expression, index: 
          }
          //  return <GrammarChoiceUI choice={entry} index={index} />
          return (
-            <>{`?>${entry.name}[${indexAST.isBypass() ? '_' : indexAST.isRandom() ? '?' : entry.value}]`}</>
+            <>{`?>${entry.name ?? ''}[${indexAST.isBypass() ? '_' : indexAST.isRandom() ? '?' : entry.value}]`}</>
          )
       }
 
