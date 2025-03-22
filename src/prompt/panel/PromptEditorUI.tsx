@@ -1,6 +1,6 @@
-import type { FieldId } from '../csuite/model/FieldId'
-import type { Field_prompt } from './FieldPrompt'
-import type { Prompt_Lora } from './grammar/grammar.practical'
+import type { FieldId } from '../../csuite/model/FieldId'
+import type { Field_prompt } from '../FieldPrompt'
+import type { Prompt_Lora } from '../grammar/grammar.practical'
 
 import { EditorState } from '@codemirror/state'
 import { EditorView } from 'codemirror'
@@ -8,12 +8,12 @@ import { makeAutoObservable, observable, reaction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { createRef, useLayoutEffect, useMemo } from 'react'
 
-import { InputBoolUI } from '../csuite/checkbox/InputBoolUI'
-import { Frame } from '../csuite/frame/Frame'
-import { BasicShelfUI } from '../csuite/shelf/ShelfUI'
-import { PromptLang } from './cm-lang/LANG'
-import { basicSetup } from './cm-lang/SETUP'
-import { PromptAST } from './grammar/grammar.practical'
+import { InputBoolUI } from '../../csuite/checkbox/InputBoolUI'
+import { Frame } from '../../csuite/frame/Frame'
+import { BasicShelfUI } from '../../csuite/shelf/ShelfUI'
+import { PromptLang } from '../cm-lang/LANG'
+import { basicSetup } from '../cm-lang/SETUP'
+import { PromptAST } from '../grammar/grammar.practical'
 
 type X = { id: FieldId; label?: string }
 

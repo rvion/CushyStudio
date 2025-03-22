@@ -3,12 +3,8 @@ import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
 import { observer } from 'mobx-react-lite'
 
 import { Button } from '../../csuite/button/Button'
-import { SpacerUI } from '../../csuite/components/SpacerUI'
-import { FormAsDropdownConfigUI } from '../../csuite/form/FormAsDropdownConfigUI'
 import { PanelUI } from '../../csuite/panel/PanelUI'
-import { BasicShelfUI } from '../../csuite/shelf/ShelfUI'
-import { PromptEditorUI } from '../../prompt/__TEMP__'
-import { PanelStepsConf } from './PanelPromptingConf'
+import { PromptEditorUI } from '../../prompt/panel/PromptEditorUI'
 
 export const PanelPromptingUI = observer(function PanelPromptingUI_(p: NO_PROPS) {
    return (
