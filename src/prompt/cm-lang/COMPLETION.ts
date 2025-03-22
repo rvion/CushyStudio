@@ -138,17 +138,14 @@ const dynamicCompletion: CompletionSource = (context: CompletionContext): Comple
    // console.log(`[🧐] leftNodeName=`, leftNodeName, ' => ', validNodeNames.includes(leftNodeName))
    if (!validNodeNames.includes(leftNodeName)) return null
 
-   let from =
+   const from =
       /* nodeToReplace //
         ? nodeToReplace.from
-        :  */
-      //   node.name === 'String' ? node.from + 1 :
-      node.from
-   let to =
+        :  */ node.name === 'String' ? node.from + 1 : node.from
+   const to =
       /* nodeToReplace //
         ? nodeToReplace.to
-        :  */ node.to
-   //   node.name === 'String' ? node.to - 1
+        :  */ node.name === 'String' ? node.to - 1 : node.to
 
    // console.log(`[🧐] no meaningful parent`, from, to)
    if (nodeToReplace == null || nodeToReplace.name === 'Lora') addLoras()
@@ -156,44 +153,6 @@ const dynamicCompletion: CompletionSource = (context: CompletionContext): Comple
    if (nodeToReplace == null || nodeToReplace.name === 'Embedding') addEmbeddings()
    if (nodeToReplace == null || nodeToReplace.name === 'Tag') addTags()
    // }
-
-   // Auto-complete for within string, determined by csv. Shitty attempt, whitespace handling is not good
-   if (nodeToReplace == null || nodeToReplace.name === 'String') {
-      const text = context.state.sliceDoc(node.from, node.to)
-      const position = context.pos - node.from
-
-      // Get Start
-      let i = 0
-      while (i < position) {
-         const char = text[i]
-         if (char == undefined) {
-            break
-         }
-
-         if ([',', '"', ' '].indexOf(char) > -1) {
-            from = i + 1
-         }
-
-         i += 1
-      }
-
-      // Get End
-      i = node.to - node.from - 1
-      while (i >= position) {
-         const char = text[i]
-         if (char == undefined) {
-            break
-         }
-
-         if ([',', '"', ' '].indexOf(char) > -1) {
-            to = i
-         }
-         i -= 1
-      }
-
-      from += node.from
-      to += node.from
-   }
 
    return {
       filter: onlyHasPrefix ? false : true,
