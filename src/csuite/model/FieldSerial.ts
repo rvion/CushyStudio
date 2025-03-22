@@ -21,6 +21,7 @@ export type FieldSerial_CommonProperties = {
     * use to know if the beforeInit function should be re-run or not
     * */
    _version?: string
+   _shared?: any
 
    /** unused internally, here so you can add whatever you want inside */
    custom?: any

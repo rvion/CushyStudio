@@ -66,7 +66,7 @@ export class Presenter<DOC extends Field = Field> {
       extraSlots: DisplaySlots<FIELD>,
    ): ReactNode {
       // console.log(`[🦊] rendering ${field.path}`, this.allRules.length)
-      const debug = false
+      const debug = false // field.path === '$.linkedFromChannel.val'
       //    true || //
       //    field.path === '$' ||
       //    field.path === `$.ipAdapter.child` // '$.latent.b' // '$.positive'
@@ -87,12 +87,12 @@ export class Presenter<DOC extends Field = Field> {
          //                                                         VVVVVVVVVVVVVV
          const isMatching = isBool(rule.selector) ? rule.selector : field.matches(rule.selector)
          if (debug) {
-            // console.log(
-            //    `[🦊] ${field.pathExt}`,
-            //    isMatching ? '🟢' : '🔴',
-            //    isBool(rule.selector) ? rule.selector : rule.selector.selector,
-            //    typeof rule.uiconf !== 'function' ? this.explainSlots(rule.uiconf) : '<function...>',
-            // )
+            console.log(
+               `[🦊] ${field.pathExt}`,
+               isMatching ? '🟢' : '🔴',
+               isBool(rule.selector) ? rule.selector : rule.selector.selector,
+               typeof rule.uiconf !== 'function' ? this.explainSlots(rule.uiconf) : '<function...>',
+            )
          }
          if (isMatching) {
             const newSlots =
@@ -136,7 +136,7 @@ export class Presenter<DOC extends Field = Field> {
    }
 
    debugFinalProps(finalProps: CompiledRenderProps<any>): void {
-      console.log(`[🤠] `, finalProps.field.path, this.explainSlots(finalProps))
+      console.log(`[🦊----------->>>>>] `, finalProps.field.path, this.explainSlots(finalProps))
    }
 
    private explainSlots(slots: DisplaySlots<any>): Record<string, any> {

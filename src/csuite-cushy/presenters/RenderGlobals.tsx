@@ -6,7 +6,6 @@ import type { Field_date } from '../../csuite/fields/date/FieldDate'
 import type { Field_enum } from '../../csuite/fields/enum/FieldEnum'
 import type { Field_group } from '../../csuite/fields/group/FieldGroup'
 import type { Field_image } from '../../csuite/fields/image/FieldImage'
-import type { Field_link } from '../../csuite/fields/link/FieldLink'
 import type { Field_list } from '../../csuite/fields/list/FieldList'
 import type { Field_markdown } from '../../csuite/fields/markdown/FieldMarkdown'
 import type { Field_matrix } from '../../csuite/fields/matrix/FieldMatrix'
@@ -61,7 +60,6 @@ declare global {
          date: typeof Field_date
          enum: typeof Field_enum
          image: typeof Field_image
-         link: typeof Field_link
          list: typeof Field_list
          markdown: typeof Field_markdown
          matrix: typeof Field_matrix
@@ -86,7 +84,6 @@ declare global {
          | 'date'
          | 'enum'
          | 'image'
-         | 'link'
          | 'list'
          | 'markdown'
          | 'matrix'

@@ -44,12 +44,12 @@ describe('default values', () => {
       [[], ['a'], ['b', 'c'], ['c', 'a']],
    )
 
-   itDefaults(
-      //
-      'linked string',
-      (def) => b.with(b.string({ default: def }), (f) => b.fields({ a: f.shared(), b: f.shared() })),
-      ['', '🔵', 'cushy'].map((v) => ({ seed: v, expect: { a: v, b: v } })),
-   )
+   // itDefaults(
+   //    //
+   //    'linked string',
+   //    (def) => b.with(b.string({ default: def }), (f) => b.fields({ a: f.shared(), b: f.shared() })),
+   //    ['', '🔵', 'cushy'].map((v) => ({ seed: v, expect: { a: v, b: v } })),
+   // )
 
    itDefaults<'a' | 'b' | { [k in 'a' | 'b']?: true }>(
       //

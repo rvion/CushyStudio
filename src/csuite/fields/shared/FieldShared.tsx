@@ -3,12 +3,21 @@ import type { CodegenOpts, FieldConstructor } from '../../model/FieldConstructor
 import type { Patch } from '../../model/Patch'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
+import type { CovariantFn } from '../../variance/BivariantHack'
+
+import { computed } from 'mobx'
 
 import { Field } from '../../model/Field'
 import { registerFieldClass } from '../WidgetUI.DI'
 
 // #region CONFIG TYPE
-type Field_shared_ownConfig<F extends Field> = { field: F }
+type Field_shared_ownConfig<F extends Field> = {
+   /** schema is now mandatory so introspection properly works */
+   schema: CSchema<F>
+
+   /** and then you need a lambda tha will be used instead of calling create() */
+   field: CovariantFn<[self: Field_shared<F>], Maybe<F>>
+}
 
 // #region SERIAL TYPE
 type Field_shared_ownSerial = {
@@ -18,7 +27,7 @@ type Field_shared_ownSerial = {
 
 // #region VALUE TYPE
 export type Field_shared_value<F extends Field = Field> = F['$value']
-export type Field_shared_unchecked<F extends Field = Field> = F['$unchecked']
+export type Field_shared_unchecked<F extends Field = Field> = Maybe<F['$unchecked']>
 
 // #region Field
 export interface Field_shared<F extends Field = Field> {
@@ -40,7 +49,7 @@ export class Field_shared<out F extends Field = Field> extends Field {
    private static readonly unsetSerial: Field_shared['$serial'] = { $: 'shared' }
    static override migrateSerial(): undefined {}
    static codeForTypescriptValue = (config: Field_shared<Field>['$config'], opts: CodegenOpts): string => {
-      return `Z.Shared<${config.field.schema.codeForTypescriptValue(opts)}>`
+      return `Z.Shared<${config.schema.codeForTypescriptValue(opts)}>`
    }
    static generateSerial(): Field_shared['$serial'] {
       return Field_shared.unsetSerial
@@ -74,8 +83,14 @@ export class Field_shared<out F extends Field = Field> extends Field {
       return this.child.actualWidgetToDisplay
    }
 
-   get child(): F {
-      return this.config.field
+   @computed get childOrNull(): Maybe<F> {
+      return this.config.field(this)
+   }
+
+   @computed get child(): F {
+      const child = this.childOrNull
+      if (child == null) throw new Error('Field_shared: child is null')
+      return child
    }
 
    get ownConfigSpecificProblems(): Problem_Ext {
@@ -103,7 +118,7 @@ export class Field_shared<out F extends Field = Field> extends Field {
    }
 
    get value_unchecked(): Field_shared_unchecked<F> {
-      return this.child.value_unchecked
+      return this.childOrNull?.value_unchecked
    }
 
    override isValueEqual(other: Field): boolean {

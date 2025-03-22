@@ -1921,10 +1921,6 @@ export abstract class Field {
 
    get labelText(): string {
       if (this.config.label == null) {
-         if (this.parent?.type === 'link') {
-            if (this.parent.path === '$') return '$'
-            return `🔶 préciser le label pour ${this.path}`
-         }
          const mountKey = this.parent?.type === 'optional' ? this.parent.mountKey : this.mountKey
          return makeLabelFromPrimitiveValue(mountKey)
       }

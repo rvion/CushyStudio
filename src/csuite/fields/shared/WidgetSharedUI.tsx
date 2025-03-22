@@ -7,12 +7,13 @@ import { renderFCOrNode } from '../../utils/renderFCOrNode'
 
 export const ShellSharedUI = observer(function ShellShared(p: CompiledRenderProps<Field_shared>) {
    const field = p.field
-   const child = field.config.field
+   const child = field.child
    return (
       <child.UI //
          UpDownBtn={p.UpDownBtn}
          DeleteBtn={p.DeleteBtn}
          Toogle={p.Toogle}
+         shouldShowHiddenFields
          Title={(x) => renderFCOrNode(p.Title, { field: field })}
       />
    )

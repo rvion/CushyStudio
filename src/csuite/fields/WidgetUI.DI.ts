@@ -19,7 +19,6 @@ import type { Field_choices } from './choices/FieldChoices'
 import type { Field_date } from './date/FieldDate'
 import type { Field_group } from './group/FieldGroup'
 import type { Field_image } from './image/FieldImage'
-import type { Field_link } from './link/FieldLink'
 import type { Field_list } from './list/FieldList'
 import type { Field_markdown } from './markdown/FieldMarkdown'
 import type { Field_number } from './number/FieldNumber'
@@ -45,7 +44,6 @@ export const getFieldClass = (fieldType: CATALOG.AllFieldTypes): unknown => {
 }
 
 export const getFieldOptionalClass = (): typeof Field_optional => getFieldClass('optional') as any
-export const getFieldLinkClass = (): typeof Field_link<any, any> => getFieldClass('link') as any
 export const getFieldSharedClass = (): typeof Field_shared => getFieldClass('shared') as any
 export const getFieldGroupClass = (): typeof Field_group<any> => getFieldClass('group') as any
 export const getFieldStringClass = (): typeof Field_string => getFieldClass('str') as any
@@ -65,7 +63,6 @@ export const registerFieldClass = <T extends { $type: CATALOG.AllFieldTypes }>(
 // help with DI, and help around some typescript bug not able to narrow types
 // in conditional when instance of is used with a ctor stored in a dictionary
 export const isSchemaOptional = _checkIfIsSchemaOf<Field_optional>('optional')
-export const isSchemaLink = _checkIfIsSchemaOf<Field_link<any, any>>('link')
 export const isSchemaShared = _checkIfIsSchemaOf<Field_shared>('shared')
 export const isSchemaGroup = _checkIfIsSchemaOf<Field_group<SchemaDict>>('group')
 export const isSchemaString = _checkIfIsSchemaOf<Field_string>('str')
@@ -99,7 +96,6 @@ function _checkIfIsSchemaOf<F extends Field>(
 // help with DI, and help around some typescript bug not able to narrow types
 // in conditional when instance of is used with a ctor stored in a dictionary
 export const isFieldOptional = _checkIfIs<Field_optional>('optional')
-export const isFieldLink = _checkIfIs<Field_link<CSchema, CSchema>>('link')
 export const isFieldShared = _checkIfIs<Field_shared>('shared')
 export const isFieldGroup = _checkIfIs<Field_group<any>>('group')
 export const isFieldString = _checkIfIs<Field_string>('str')
@@ -149,7 +145,6 @@ function _checkIfIsOptionalOf<S extends CSchema>(
 // help with DI, and help around some typescript bug not able to narrow types
 // in conditional when instance of is used with a ctor stored in a dictionary
 export const isProbablySerialOptional = isProbablySerialOf<Field_optional>('optional')
-export const isProbablySerialLink = isProbablySerialOf<Field_link<CSchema, CSchema>>('link')
 export const isProbablySerialShared = isProbablySerialOf<Field_shared>('shared')
 export const isProbablySerialGroup = isProbablySerialOf<Field_group<SchemaDict>>('group')
 export const isProbablySerialString = isProbablySerialOf<Field_string>('str')

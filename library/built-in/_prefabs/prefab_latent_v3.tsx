@@ -7,81 +7,79 @@ import {
    type UI_LatentShapeGenerator,
 } from '../shapes/prefab_shapes'
 
-export type UI_LatentV3 = Z.Link<
-   Z.Number,
-   Z.Choice<{
-      emptyLatent: Z.Group<{
-         batchSize: Z.Shared<Field_number>
-         size: Z.Size
-      }>
-      image: Z.Group<{
-         batchSize: Z.Shared<Field_number>
-         image: Z.Image
-         resize: Z.Maybe<
-            Z.Group<{
-               mode: Z.EnumOf<'resize' | 'rescale'>
-               supersample: Z.EnumOf<'false' | 'true'>
-               resampling: Z.EnumOf<'bicubic' | 'bilinear' | 'lanczos' | 'nearest'>
-               rescale_factor: Z.Number
-               resize_width: Z.Number
-               resize_height: Z.Number
-            }>
-         >
-      }>
-      random: UI_LatentShapeGenerator
+export type UI_LatentV3 = Z.Choice<{
+   emptyLatent: Z.Group<{
+      batchSize: Z.Shared<Field_number>
+      size: Z.Size
    }>
->
+   image: Z.Group<{
+      batchSize: Z.Shared<Field_number>
+      image: Z.Image
+      resize: Z.Maybe<
+         Z.Group<{
+            mode: Z.EnumOf<'resize' | 'rescale'>
+            supersample: Z.EnumOf<'false' | 'true'>
+            resampling: Z.EnumOf<'bicubic' | 'bilinear' | 'lanczos' | 'nearest'>
+            rescale_factor: Z.Number
+            resize_width: Z.Number
+            resize_height: Z.Number
+         }>
+      >
+   }>
+   random: UI_LatentShapeGenerator
+}>
 
 export const latentSizeChanel = new cushy.Channel<{ w: number; h: number }>()
 
 export function ui_latent_v3(p: { size?: Field_size_config } = {}): UI_LatentV3 {
    const form: Z.Builder = getBuilder()
-   return form.with(form.int({ label: 'batchSize', step: 1, default: 1, min: 1, max: 8 }), (batchSize_) => {
-      const batchSize: Z.Shared<Field_number> = batchSize_.shared()
-      return form.choice(
-         {
-            emptyLatent: form.fields({
+   const batchSize = form.linkedFromSharedUID(
+      '2025-03-22-batchSize',
+      form.int({ label: 'batchSize', step: 1, default: 1, min: 1, max: 8 }),
+   )
+   return form.choice(
+      {
+         emptyLatent: form.fields({
+            batchSize,
+            size: form.size(p.size).publishToChannel(latentSizeChanel, (s) => ({
+               w: s.width_or_zero,
+               h: s.height_or_zero,
+            })),
+         }),
+         // cas 2
+         image: form.fields(
+            {
                batchSize,
-               size: form.size(p.size).publishToChannel(latentSizeChanel, (s) => ({
-                  w: s.width_or_zero,
-                  h: s.height_or_zero,
-               })),
-            }),
-            // cas 2
-            image: form.fields(
-               {
-                  batchSize,
-                  image: form.image(),
-                  resize: form.auto['was.Image Resize']().optional(),
-                  // resize2: form.auto['was.Image Resize']().optional(),
-               },
-               // { collapsed: false, border: false },
-            ),
-            random: ui_LatentShapeGenerator(batchSize),
-         },
-         {
-            uiui: {
-               Header: (p) => {
-                  const size = p.field.value.emptyLatent?.size || p.field.value.random?.size
-                  return (
-                     <div tw='flex gap-1'>
-                        <p.field.UI Header={UY.choices.DefaultHeader} />
-                        {size && (
-                           <>
-                              {size.width} x{size.height}
-                           </>
-                        )}
-                     </div>
-                  )
-               },
+               image: form.image(),
+               resize: form.auto['was.Image Resize']().optional(),
+               // resize2: form.auto['was.Image Resize']().optional(),
             },
-            icon: IKONS.mdiStarThreePoints,
-            appearance: 'tab',
-            default: 'emptyLatent',
-            label: 'Latent Input',
+            // { collapsed: false, border: false },
+         ),
+         random: ui_LatentShapeGenerator(batchSize),
+      },
+      {
+         uiui: {
+            Header: (p) => {
+               const size = p.field.value.emptyLatent?.size || p.field.value.random?.size
+               return (
+                  <div tw='flex gap-1'>
+                     <p.field.UI Header={UY.choices.DefaultHeader} />
+                     {size && (
+                        <>
+                           {size.width} x{size.height}
+                        </>
+                     )}
+                  </div>
+               )
+            },
          },
-      )
-   })
+         icon: IKONS.mdiStarThreePoints,
+         appearance: 'tab',
+         default: 'emptyLatent',
+         label: 'Latent Input',
+      },
+   )
 }
 
 export const run_latent_v3 = async (p: {

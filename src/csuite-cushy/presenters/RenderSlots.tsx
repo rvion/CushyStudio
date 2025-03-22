@@ -38,6 +38,13 @@ import type { FC, ReactNode } from 'react'
  */
 
 export interface DisplaySlots<out FIELD extends Field = Field> {
+   /**
+    * if specified, css rules will be matched as if the given
+    * field was a direct child of given field.
+    * // TODO: handle properly
+    */
+   virtualParent?: Field
+
    layout?: CovariantFn<[FIELD], QuickFormContent[]>
 
    // 0.

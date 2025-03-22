@@ -86,8 +86,8 @@ export const ShellCushyLeftUI = observer(function ShellCushyLeft(p: CompiledRend
                <WidgetLabelContainerUI tooltip={field.config.tooltip} justify>
                         {utils.renderFCOrNode(p.Indent,      { depth: field.depth })}
                         {utils.renderFCOrNode(p.DragKnob,    { field })}
-                        {utils.renderFCOrNode(p.Caret,       { field, placeholder: true })}
                         {utils.renderFCOrNode(p.Icon,        { field, className: 'mr-1' })}
+                        {utils.renderFCOrNode(p.Caret,       { field, placeholder: true })}
                         {utils.renderFCOrNode(p.Title,       { field })}
                         {utils.renderFCOrNode(p.Presets,     { field })}
                         {utils.renderFCOrNode(p.DebugID,     { field })}

@@ -21,9 +21,7 @@ examples selectors
     - .foo.bar{.baz.quuz | @str.a.b.c.d | {x.y^z | @number } }
     - >@str=(@.map(v => v.value).join('+'))
 */
-import type { Field_link } from '../fields/link/FieldLink'
 
-import { isFieldLink } from '../fields/WidgetUI.DI'
 import { Field } from '../model/Field'
 import { exhaust } from '../utils/exhaust'
 
@@ -107,7 +105,6 @@ export class FieldSelector {
    }
 
    axisSkips: { [key in CATALOG.AllFieldTypes]?: (node: any) => Field } = {
-      link: (node: Z.FLink<Z.Schema, Z.Schema>) => node.bField,
       shared: (node: Z.FShared<Field>) => node.child,
    }
 

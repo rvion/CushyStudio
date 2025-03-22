@@ -23,19 +23,19 @@ describe('FieldGroup', () => {
       // extra  @ list
       // ZezVdi @ group
       // name   @ str
-      const S = b.with(b.string(), () =>
-         b.fields({
-            a: b
-               .selectOne<Opt, string>({
-                  values: ['a', 'b', 'c'].map((v) => new Opt(v, v)),
-                  getIdFromValue: (v: Opt) => v.uid,
-                  getValueFromId: (id: string) => new Opt(id, id),
-                  getOptionFromId: (v: string) => ({ id: v, label: v, value: new Opt(v, v) }),
-               })
-               .optional()
-               .list(),
-         }),
-      )
+      // const S = b.with(b.string(), () =>
+      const S = b.fields({
+         a: b
+            .selectOne<Opt, string>({
+               values: ['a', 'b', 'c'].map((v) => new Opt(v, v)),
+               getIdFromValue: (v: Opt) => v.uid,
+               getValueFromId: (id: string) => new Opt(id, id),
+               getOptionFromId: (v: string) => ({ id: v, label: v, value: new Opt(v, v) }),
+            })
+            .optional()
+            .list(),
+      })
+      // )
       const E = S.create()
       expectJSON(E.value).toEqual({ a: [] })
       E.set({ a: ['a', null, 'c'] })

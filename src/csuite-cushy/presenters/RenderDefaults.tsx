@@ -12,11 +12,9 @@ import { WidgetColorUI } from '../../csuite/fields/color/WidgetColorUI'
 import { WidgetGroup_BlockUI } from '../../csuite/fields/group/WidgetGroup_BlockUI'
 import { WidgetGroup_LineUI } from '../../csuite/fields/group/WidgetGroup_Header'
 import { WidgetSelectImageUI } from '../../csuite/fields/image/WidgetImageUI'
-import { ShellLinkUI } from '../../csuite/fields/link/WidgetLink'
 import { ShellOptionalUI } from '../../csuite/fields/optional/WidgetOptional'
 import { WidgetSelectOneUI } from '../../csuite/fields/selectOne/WidgetSelectOneUI'
 import { ShellSharedUI } from '../../csuite/fields/shared/WidgetSharedUI'
-import { isFieldLink } from '../../csuite/fields/WidgetUI.DI'
 import { WidgetBodyContainerUI } from '../../csuite/form/WidgetBodyContainerUI'
 import { WidgetHeaderContainerUI } from '../../csuite/form/WidgetHeaderContainerUI'
 import { WidgetLabelCaretUI } from '../../csuite/form/WidgetLabelCaretUI'
@@ -103,7 +101,6 @@ function resetDefaultRules() {
    r('.@choices.', { Shell: ShellCushyRightUI })
    r('@choices.@group', { Head: false })
    r<Z.FShared<any>>('@shared', { Shell: ShellSharedUI })
-   r<Z.FLink<any, any>>('@link', { Shell: ShellLinkUI })
    r<Z.FOptional<any>>('@optional', { Shell: ShellOptionalUI })
    r<Z.FString>('@str', { Header: UY.string.input, Body: null })
    r<Z.FNumber>('@number', { Header: UY.number.input, Body: null })
@@ -135,7 +132,7 @@ function resetDefaultRules() {
             <UY.list.BlenderLike
                field={f.field}
                renderItem={(item) => {
-                  const children = item.childrenActive.map((f) => (isFieldLink(f) ? f.bField : f))
+                  const children = item.childrenActive
                   const str = children.find((x) => x.type === 'str') as Z.FString | undefined
                   const img = children.find((x) => x.type === 'image') as Z.FImage | undefined
                   return (

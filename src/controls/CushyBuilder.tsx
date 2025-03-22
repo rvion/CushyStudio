@@ -5,8 +5,7 @@ import type { Field_matrix_config } from '../csuite/fields/matrix/FieldMatrix'
 import type { Field_number } from '../csuite/fields/number/FieldNumber'
 import type { Field_optional_config } from '../csuite/fields/optional/FieldOptional'
 import type { SelectOption } from '../csuite/fields/selectOne/SelectOption'
-import type { IBuilder } from '../csuite/model/IBuilder'
-import type { OpenRouter_ModelInfo } from '../csuite/openrouter/OpenRouter_ModelInfo'
+// import type { IBuilder } from '../csuite/model/IBuilder'
 import type { OpenRouter_Models } from '../csuite/openrouter/OpenRouter_models'
 
 import { nanoid } from 'nanoid'
@@ -61,7 +60,7 @@ import { EnumBuilderOpt } from './EnumBuilderOpt'
 import { EnumListBuilder } from './EnumListBuilder'
 
 /** cushy studio form builder */
-export class CushySchemaBuilder implements IBuilder {
+export class CushySchemaBuilder /* implements IBuilder */ {
    orbit(config: Field_orbit['$config'] = {}): Z.Orbit {
       return CSchema.new<Field_orbit>(Field_orbit, config)
    }

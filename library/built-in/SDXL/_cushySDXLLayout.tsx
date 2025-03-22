@@ -8,7 +8,7 @@ import { observer } from 'mobx-react-lite'
 
 export function _cushySDXLLayout(): Maybe<RenderRule<CushySDXLSchema>> {
    return (ui) => {
-      const xxx = ui.field.Latent.bField
+      const xxx = ui.field.Latent
       // ui.apply({
       //     layout: () => [
       //         //
@@ -163,7 +163,7 @@ export function _cushySDXLLayout(): Maybe<RenderRule<CushySDXLSchema>> {
          // ui2.for()
          // const isTopLevelGroup = ui2.field.depth === 1 && true //
          if (
-            ui2.field.path.startsWith(latent.bField.path + '.') &&
+            ui2.field.path.startsWith(latent.path + '.') &&
             ui2.field.type !== 'shared' &&
             ui2.field.type !== 'optional'
          ) {
@@ -176,7 +176,7 @@ export function _cushySDXLLayout(): Maybe<RenderRule<CushySDXLSchema>> {
          should = ui2.field.depth >= 2
          if (should) {
             if (ui2.field.isOfType('group', 'list', 'choices')) return { Title: UY.Title.h4 }
-            if (!ui2.field.isOfType('optional', 'link', 'list', 'shared')) return { Shell: UY.Shell.Right }
+            if (!ui2.field.isOfType('optional', 'list', 'shared')) return { Shell: UY.Shell.Right }
          }
       })
    }

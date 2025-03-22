@@ -15,7 +15,6 @@ import { reaction, runInAction } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import {
-   getFieldLinkClass,
    getFieldListClass,
    getFieldOptionalClass,
    isSchemaBool,
@@ -211,19 +210,6 @@ export class CSchema<out FIELD extends Field = Field> {
    ): CSchema<CUSTOM> {
       if (this.config.classToUse != null) throw new Error('already have a custom class')
       return this.withConfig({ classToUse, opts }) as any as CSchema<CUSTOM>
-   }
-
-   /**
-    * chain construction
-    * @since 2024-06-30
-    * TODO: WRITE MORE DOC
-    * MORE DOC: yo dawg; I heard you like beeing hight wiht types, so I put a type in your type,
-    * so you can type a lot of type.
-    */
-   useIn<BP extends CSchema>(fn: (field: FIELD) => BP): Z.Link<this, BP> {
-      const FieldLinkClass = getFieldLinkClass()
-      const linkConf: Z.Link<this, BP>['$config'] = { share: this, children: fn }
-      return CSchema.new(FieldLinkClass, linkConf)
    }
 
    /** wrap field schema to list stuff */

@@ -9,7 +9,6 @@ import type { Field_date } from '../csuite/fields/date/FieldDate'
 import type { Field_enum } from '../csuite/fields/enum/FieldEnum'
 import type { Field_group, MAGICFIELDS } from '../csuite/fields/group/FieldGroup'
 import type { Field_image } from '../csuite/fields/image/FieldImage'
-import type { Field_link } from '../csuite/fields/link/FieldLink'
 import type { Field_list } from '../csuite/fields/list/FieldList'
 import type { Field_markdown } from '../csuite/fields/markdown/FieldMarkdown'
 import type { Field_matrix } from '../csuite/fields/matrix/FieldMatrix'
@@ -55,7 +54,6 @@ declare global {
       type Maybe<T extends CSchema>                   = CSchema<Field_optional<T>>
       type Optional<T extends CSchema>                = CSchema<Field_optional<T>>
       type Bool                                       = CSchema<Field_bool>
-      type Link<A extends CSchema, B extends CSchema> = CSchema<Field_link<A, B>>
       type String                                     = CSchema<Field_string>
       type Union<T extends SchemaDict>                = CSchema<Field_choices<T>>
       type Choices<T extends SchemaDict = SchemaDict> = CSchema<Field_choices<T> & MAGICCHOICES<T>>
@@ -107,7 +105,6 @@ declare global {
       type FMaybe<T extends CSchema>                   = Field_optional<T>
       type FOptional<T extends CSchema>                = Field_optional<T>
       type FBool                                       = Field_bool
-      type FLink<A extends CSchema, B extends CSchema> = Field_link<A, B>
       type FString                                     = Field_string
       type FUnion<T extends SchemaDict>                = Field_choices<T>
       type FChoices<T extends SchemaDict = SchemaDict> = Field_choices<T> & MAGICCHOICES<T>

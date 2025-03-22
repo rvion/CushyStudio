@@ -1,45 +1,102 @@
-import type { PartialOmit } from '../../../types/Misc'
 import type { Field } from '../Field'
+import type { Channel, ChannelId } from '../pubsub/Channel'
 
-import { Field_link } from '../../fields/link/FieldLink'
 import { Field_shared } from '../../fields/shared/FieldShared'
 import { CSchema } from '../CSchema'
 import { defineSchemaBuilderMixin } from './defineSchemaBuilderMixin'
 
-type Config<A extends CSchema, B extends CSchema> = PartialOmit<
-   Field_link<A, B>['$config'],
-   'share' | 'children'
->
-
 export type BuilderSharedMixin = {
-   with<const SA extends CSchema, SB extends CSchema>(
-      injected: SA,
-      children: (field: SA['$field']) => SB,
-      config?: Config<SA, SB>,
-   ): Z.Link<SA, SB>
-   linked<T extends Field>(field: T): Z.Shared<T>
+   linkedFromExternalField<T extends Field>(field: T): Z.Shared<T>
+   linkedFromChannel<T extends Field>(channel: Channel<T>, schema: Z.Schema<T>): Z.Shared<T>
+   linkedFromChannelId<T extends Field>(channelId: ChannelId, schema: Z.Schema<T>): Z.Shared<T>
+   linkedFromCustom<T extends Field>(field: (self: Field_shared<T>) => T, schema: Z.Schema<T>): Z.Shared<T>
+   linkedFromSharedUID<T extends Field>(uid: string, schema: Z.Schema<T>): Z.Shared<T>
 }
 
 const BuilderSharedImpl = (): BuilderSharedMixin =>
    defineSchemaBuilderMixin<BuilderSharedMixin>({
       /**
-       * Allow to instanciate a field early, so you can re-use it in multiple places
-       * or access it's instance to dynamically change some other field schema.
-       *
-       * @since 2024-06-27
-       * @stability unstable
+       * sometimes you have a field from an other document already instanciated
+       * or you using a link within a dynamic, and already have access to the field
        */
-      with<const SA extends CSchema, SB extends CSchema>(
-         /** the schema of the field you'll want to re-use the in second part */
-         injected: SA,
-         children: (shared: SA['$field']) => SB,
-         config: Config<SA, SB> = {},
-      ): Z.Link<SA, SB> {
-         return CSchema.new(Field_link<SA, SB>, { share: injected, children, ...config })
+      linkedFromExternalField<T extends Field>(field: T): Z.Shared<T> {
+         return CSchema.new(Field_shared<T>, { field: () => field, schema: field.schema })
+      },
+      /** sometimes, you just want to get the filed from a chanel */
+      linkedFromChannel<T extends Field>(channel: Channel<T>, schema: Z.Schema<T>): Z.Shared<T> {
+         return CSchema.new(Field_shared<T>, { field: (f) => f.readChannel(channel), schema })
+      },
+      /** ...and sometimes you're so lazy you don't even bother to type it properly */
+      linkedFromChannelId<T extends Field>(channelId: ChannelId, schema: Z.Schema<T>): Z.Shared<T> {
+         return CSchema.new(Field_shared<T>, { field: (f) => f.readChannel(channelId), schema })
+      },
+      /** sometimes, you just want to specify how to retrieve it manually */
+      linkedFromCustom<T extends Field>(
+         field: (self: Field_shared<T>) => T,
+         schema: Z.Schema<T>,
+      ): Z.Shared<T> {
+         return CSchema.new(Field_shared<T>, { field, schema })
       },
 
-      linked<T extends Field>(field: T): Z.Shared<T> {
-         return CSchema.new(Field_shared<T>, { field })
+      /**
+       * E. `linkedFromSharedUID`
+       * and sometimes you want to see the world burn
+       * this one is very VERY VEEEERY experimental (not to say broken)
+       * not quite sure where to store the serial yet.
+       *
+       * option1:
+       *    💡 the serial is stored in the first `linkedFromSharedUID` that will be instanciated.
+       *    🔶 only work if the first is stable => does not work if all linked fields are within choices
+       *
+       * option2:
+       *    💡 serial is stored in the root ? somewhere in some undocumented `serial.shared` ?
+       *    🔶 will work badly with `.clone()`
+       *    🔶 very non-standard
+       *
+       *
+       * option3:
+       *    💡 serial is discarded ?
+       *    🔶 lol, loosing people data never that great; or rename it to `linkThatLooseData`
+       *    🔶   actually, could be fun to add anyway.
+       *
+       * option4:
+       *    💡 this just injects a onChange callback that sync it's serial with the other 3 fields.
+       *    🔶 need to avoid loops
+       *    🔶 duplicated data
+       *        => allow to later fork those 🤔
+       *    if we do that, it should be on `Field` class directly, using `isValueEqual`
+       *
+       * --------------------
+       * I picked option 2 🤔
+       */
+      linkedFromSharedUID<T extends Field>(uid: string, schema: Z.Schema<T>): Z.Shared<T> {
+         return CSchema.new(Field_shared<T>, {
+            field: (f) => {
+               // 1. get root
+               const root = f.root
+
+               // 2. get unique key
+               const key = Symbol.for(uid)
+
+               // 3 if field already exists, return it
+               if (key in root) return root[key] as T
+
+               // 4.1 create it,
+               const prevSerial = root.serial._shared?.[uid]
+               const field: T = schema.create(prevSerial)
+               // 4.2. store it on root
+               ;(root as any)[key] = field
+               // 4.2. add a new change callback to keep its serial synced
+               field.onSerialChanges((x: Field) => {
+                  root.patchInTransaction((rootNext) => {
+                     rootNext._shared ??= {}
+                     rootNext._shared[uid] = x.serial
+                  })
+               })
+               return field
+            },
+            schema,
+         })
       },
    })
 

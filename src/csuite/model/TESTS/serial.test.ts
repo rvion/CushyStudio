@@ -16,12 +16,11 @@ describe('assign to value object', () => {
          bool: b.bool(),
          boolTrue: b.bool({ default: true }),
          boolFalse: b.bool({ default: false }),
-         with: b.with(b.bool(), (x) =>
-            b.fields({
-               b1: x.shared(),
-               b2: x.shared(),
-            }),
-         ),
+         _x: b.bool().hidden().publishSelfToChannel('<test>'),
+         with: b.fields({
+            b1: b.linkedFromChannelId('<test>', b.bool()),
+            b2: b.linkedFromChannelId('<test>', b.bool()),
+         }),
       })
       const E1 = S1.create()
 
@@ -36,11 +35,12 @@ describe('assign to value object', () => {
          intOpt2: 8,
          strCoucou: 'coucou',
          strEmpty: '',
+         _x: false,
          with: {
             b1: false,
             b2: false,
          },
-      }).toMatchObject(E1.toValueJSON())
+      }).toEqual(E1.toValueJSON())
 
       // SERIAL
       expectJSON({

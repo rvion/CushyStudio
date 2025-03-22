@@ -40,11 +40,12 @@ describe('field schema string representations', () => {
       )
    })
    it('works for link and shared', () => {
-      const schema = sb.with(sb.int(), (int) =>
-         sb.fields({
-            x: int.shared(),
-         }),
-      )
+      const schema = sb.fields({
+         // very cool way to add volatile stuff for models
+         x1: sb.linkedFromExternalField(sb.number().create()),
+         x2: sb.linkedFromChannelId('<does-not-exists>', sb.number()),
+      })
+
       expect(schema.codeForTypescriptValue()).toBe(
          [
             //

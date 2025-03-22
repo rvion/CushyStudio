@@ -5,7 +5,7 @@ import type { TABLES } from '../db/TYPES.gen'
 import type { CushyAppL } from './CushyApp'
 
 import { existsSync, statSync } from 'fs'
-import { runInAction } from 'mobx'
+import { computed, observable, runInAction } from 'mobx'
 
 import { type CustomView, type CustomViewRef } from '../cards/App'
 import { CUSHY_IMPORT } from '../compiler/transpiler'
@@ -26,7 +26,7 @@ export class CushyScriptRepo extends LiveTable<TABLES['cushy_script'], typeof Cu
 
 export class CushyScriptL extends BaseInst<TABLES['cushy_script']> {
    /** relative path from CushyStudio root to the file that produced this script */
-   get relPath(): RelativePath {
+   @computed get relPath(): RelativePath {
       return asRelativePath(this.data.path)
    }
 
@@ -36,11 +36,11 @@ export class CushyScriptL extends BaseInst<TABLES['cushy_script']> {
 
    _apps_viaScript: Maybe<CushyAppL[]> = null
 
-   get _apps_viaDB(): CushyAppL[] {
+   @computed get _apps_viaDB(): CushyAppL[] {
       return cushy.db.cushy_app.select((q) => q.where('scriptID', '=', this.id), ['cushy_script'])
    }
 
-   get apps(): CushyAppL[] {
+   @computed get apps(): CushyAppL[] {
       if (this._apps_viaScript != null) return this._apps_viaScript
       return this._apps_viaDB
    }
@@ -49,22 +49,22 @@ export class CushyScriptL extends BaseInst<TABLES['cushy_script']> {
       if (this.data.lastEvaluatedAt == null) this.evaluateAndUpdateAppsAndViews()
    }
 
-   get file(): LibraryFile {
+   @computed get file(): LibraryFile {
       return this.st.library.getFile(this.relPath)
    }
 
-   errors: { title: string; details: any }[] = []
+   readonly errors: { title: string; details: any }[] = observable([], { deep: false })
 
    addError = (title: string, details: any = null): LoadStatus => {
       this.errors.push({ title, details })
       return LoadStatus.FAILURE
    }
 
-   get isOutOfDate(): { needRecompile: boolean; reason: string } {
+   @computed get isOutOfDate(): { needRecompile: boolean; reason: string } {
       return this.checkIfisOutOfDate()
    }
 
-   get stillExistsOnDisk(): boolean {
+   @computed get stillExistsOnDisk(): boolean {
       return existsSync(this.relPath)
    }
 
@@ -110,7 +110,7 @@ export class CushyScriptL extends BaseInst<TABLES['cushy_script']> {
    }
    // --------------------------------------------------------------------------------------
    /** cache of extracted apps */
-   private _VIEWS: Maybe<LoadedCustomView[]> = []
+   private _VIEWS: Maybe<LoadedCustomView[]> = null
 
    /** cache of extracted views */
    private _EXECUTABLES: Maybe<Executable[]> = null
@@ -166,6 +166,7 @@ export class CushyScriptL extends BaseInst<TABLES['cushy_script']> {
             })
             return app
          })
+         console.log(`[🧐] found ${this._apps_viaScript.length} apps`)
 
          // bumpt timestamps
          const now = Date.now()
@@ -216,6 +217,7 @@ export class CushyScriptL extends BaseInst<TABLES['cushy_script']> {
          return view.ref
       }
 
+      console.log(`[🔴] CODE IS:`, codeJS)
       // 2. eval file to extract actions
       try {
          // 2.1. replace imports
