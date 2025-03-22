@@ -49,7 +49,7 @@ export class CushySDXLSchema extends cushy.field.group<CushySDXL_inner> {
                optional: true,
             }),
             latent: ui_latent_v3({
-               size: { default: { modelType: 'SDXL 1024' } },
+               size: { default: { modelType: 'SDXL 1024', width: 1024, height: 1024, aspectRatio: '1:1' } },
             }),
             sampler: ui_sampler_advanced(),
             customSave: ui_customSave(),

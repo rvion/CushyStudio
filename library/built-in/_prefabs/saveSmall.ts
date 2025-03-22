@@ -26,7 +26,7 @@ export function ui_customSave(): UI_customSave {
                { id: 'image/png', label: 'PNG' },
                { id: 'image/jpeg', label: 'JPG' },
             ],
-            { default: 'raw', label: 'Format', appearance: 'tab' },
+            { default: 'raw', label: 'Local Re-encoding', appearance: 'tab' },
          ),
          quality: form.float({
             tooltip: 'only when saving as WebP or JPG',

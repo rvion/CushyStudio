@@ -3,11 +3,11 @@ import type { Field } from '../../src/csuite/model/Field'
 
 app({
    metadata: {
-      description: 'show how to re-use part of the drafts in various places.',
+      description: 'show how to re-use fields multiple times.',
    },
-   layout: (x) => {
-      x.set<Field>('', { After: <>test</> })
-   },
+   // layout: (x) => {
+   //    x.set<Field>('', { After: <>test</> })
+   // },
    ui: (b) => {
       const someExternalField = b.int().create()
 

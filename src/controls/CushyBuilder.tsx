@@ -110,7 +110,7 @@ export class CushySchemaBuilder /* implements IBuilder */ {
    }
 
    list<T extends CSchema>(config: Field_list_config<T>): CSchema<Field_list<T>> {
-      return CSchema.new<Field_list<T>>(Field_list, config)
+      return CSchema.new<Field_list<T>>(Field_list, { defaultLength: 0, ...config })
    }
 
    cube(): SimpleShape$ {
