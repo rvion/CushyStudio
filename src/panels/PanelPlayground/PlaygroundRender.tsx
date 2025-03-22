@@ -51,7 +51,7 @@ export const PlaygroundRenderUI = observer(function PlaygroundRender(p: NO_PROPS
                   //     Shell: catalog.ShellMobile,
                   //     Indent: (f) => f.depth + '>>',
                   // })
-                  if (isFieldNumber(field)) return { Header: <>🟢{<UY.number.def field={field} />}</> }
+                  if (isFieldNumber(field)) return { Header: <>🟢{<UY.number.input field={field} />}</> }
                })
                // return { Body: 'hello' }
             }}

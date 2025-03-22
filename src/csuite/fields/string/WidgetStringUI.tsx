@@ -22,9 +22,11 @@ export const WidgetString_TextareaHeaderUI = observer(function WidgetString_Text
 export const WidgetString_TextareaBodyUI = observer(function WidgetString_TextareaBodyUI_(p: {
    field: Field_string
    readonly?: boolean
+   config?: Field_string['config']
 }) {
    const field = p.field
    const csuite = useCSuite()
+   const config = p.config ? { ...field.config, ...p.config } : field.config
    const uiSt = useLocalObservable(() => ({
       focused: false,
       value: field.value_or_zero,
@@ -38,10 +40,10 @@ export const WidgetString_TextareaBodyUI = observer(function WidgetString_Textar
             style={{
                /* ...p.widget.config.style, */
                lineHeight: '1.3rem',
-               resize: p.field.config.resize ?? 'both',
+               resize: config.resize ?? 'both',
             }}
             tw='csuite-input w-full !bg-transparent p-2'
-            placeholder={field.config.placeHolder}
+            placeholder={config.placeHolder}
             rows={3}
             value={uiSt.focused ? uiSt.value : field.value_or_zero}
             onChange={(ev) => {
@@ -65,9 +67,10 @@ export const WidgetString_TextareaBodyUI = observer(function WidgetString_Textar
 export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: {
    field: Field_string
    readonly?: boolean
+   config?: Field_string['config']
 }) {
    const field = p.field
-   const config = field.config
+   const config = p.config ? { ...field.config, ...p.config } : field.config
 
    // This is necessary to avoid changing the value while the user is typing something
    const uiSt = useLocalObservable(() => ({
@@ -81,7 +84,7 @@ export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: {
             'w-full',
             field.hasOwnErrors && !field.isInsideDisabledBranch && field.touched && 'rsx-field-error',
          ]}
-         icon={p.field.config.innerIcon}
+         icon={config.innerIcon}
          type={config.inputType}
          placeholder={config.placeHolder ?? csuiteConfig.i18n.ui.field.empty}
          pattern={config.pattern}

@@ -5,31 +5,32 @@ import { observer } from 'mobx-react-lite'
 import { InputNumberUI } from '../../input-number/InputNumberUI'
 
 export const WidgetNumberUI = observer(function WidgetNumberUI_(p: {
-   //
    field: Field_number
+   config?: Field_number['config']
 }) {
    const field = p.field
    const value = field.value_or_zero
-   const mode = field.config.mode
-   const step = field.config.step ?? (mode === 'int' ? 1 : 0.1)
+   const finalConfig = p.config ? { ...field.config, ...p.config } : field.config
+   const mode = finalConfig.mode
+   const step = finalConfig.step ?? (mode === 'int' ? 1 : 0.1)
 
    return (
       <InputNumberUI
          mode={mode === 'int' ? 'int' : 'float'}
          value={value}
-         hideSlider={field.config.hideSlider}
-         max={field.config.max}
-         min={field.config.min}
-         softMin={field.config.softMin}
-         softMax={field.config.softMax}
+         hideSlider={finalConfig.hideSlider}
+         max={finalConfig.max}
+         min={finalConfig.min}
+         softMin={finalConfig.softMin}
+         softMax={finalConfig.softMax}
          step={step}
-         suffix={field.config.suffix}
-         text={field.config.text}
+         suffix={finalConfig.suffix}
+         text={finalConfig.text}
          onValueChange={(next) => {
             field.value = next
          }}
          onBlur={() => field.touch()}
-         forceSnap={field.config.forceSnap}
+         forceSnap={finalConfig.forceSnap}
       />
    )
 })

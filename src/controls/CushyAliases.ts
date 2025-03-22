@@ -1,5 +1,6 @@
 import type { ComfyUnionValue } from '../comfyui/comfyui-types'
 import type { OpenRouter_Models } from '../csuite'
+import type { UIPropsFor as UIPropsFor_ } from '../csuite-cushy/presenters/RenderSlots'
 import type { Field_board } from '../csuite/fields/board/Field_board'
 import type { Field_bool } from '../csuite/fields/bool/FieldBool'
 import type { Field_choices, MAGICCHOICES } from '../csuite/fields/choices/FieldChoices'
@@ -36,10 +37,12 @@ import type { Temporal } from '@js-temporal/polyfill'
 declare global {
    // eslint-disable-next-line @typescript-eslint/no-namespace
    namespace Z {
+      type UIPropsFor<FIELD extends Field> = UIPropsFor_<FIELD>
       type Tuple<T extends CSchema[]> = any
       type SchemaDict = SchemaDict_
       type Builder = CushySchemaBuilder_
       type Field = Field_
+      type AnyField = any // 🔴
       type Runtime = Runtime_
       type Schema<FIELD extends Field = Field> = CSchema<FIELD>
 

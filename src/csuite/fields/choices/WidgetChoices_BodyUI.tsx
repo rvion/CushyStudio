@@ -7,14 +7,14 @@ import { observer } from 'mobx-react-lite'
 import { ListOfFieldsContainerUI } from '../../form/WidgetsContainerUI'
 import { WidgetToggleUI } from '../../form/WidgetToggleUI'
 
-export const WidgetChoices_BodyUI = observer(function WidgetChoices_BodyUI_<T extends SchemaDict>(p: {
-   field: Field_choices<T>
+export const WidgetChoices_BodyUI = observer(function WidgetChoices_BodyUI_(p: {
+   field: Field_choices<SchemaDict>
    justify?: boolean
-   className?: string
+   className?: Maybe<string>
 }) {
    const field = p.field
-   const activeSubwidgets: { branch: string; subWidget: Field }[] = Object.entries(field._) //
-      .map(([branch, subWidget]) => ({ branch, subWidget }))
+   const activeSubwidgets: { branch: string; subField: Maybe<Field> }[] = Object.entries(field._) //
+      .map(([branch, subField]) => ({ branch, subField }))
 
    // return activeSubwidgets.map((i) => i.branch).join(',')
    return (
@@ -23,12 +23,12 @@ export const WidgetChoices_BodyUI = observer(function WidgetChoices_BodyUI_<T ex
          tw={[field.config.className, p.className]}
       >
          {activeSubwidgets.map((val) => {
-            const subWidget = val.subWidget
-            if (subWidget == null) return <>❌ error</>
+            const subField = val.subField
+            if (subField == null) return <>❌ error</>
             return (
-               <subWidget.UI //
+               <subField.UI //
                   key={val.branch}
-                  Toogle={<WidgetToggleUI field={subWidget} />}
+                  Toogle={<WidgetToggleUI field={subField} />}
                />
             )
             // return (

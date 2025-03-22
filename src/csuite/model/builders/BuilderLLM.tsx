@@ -35,7 +35,7 @@ const BuilderLLMImpl = (): BuilderLLMMixin =>
          const self = this as any as BuilderBoolMixin
          return self.bool({
             uiui: {
-               Header: (p) => (
+               Header: (p: Z.UIPropsFor<Z.FBool>) => (
                   <WidgetButtonUI //
                      field={p.field}
                      onClick={onClick}

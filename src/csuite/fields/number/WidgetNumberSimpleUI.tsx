@@ -4,11 +4,16 @@ import { observer } from 'mobx-react-lite'
 
 import { useCSuite } from '../../ctx/useCSuite'
 
-export const WidgetNumberSimpleUI = observer(function WidgetNumberSimpleUI_(p: { field: Field_number }) {
+export const WidgetNumberSimpleUI = observer(function WidgetNumberSimpleUI_(p: {
+   //
+   field: Field_number
+   config?: Field_number['config']
+}) {
    const field = p.field
+   const finalConfig = p.config ? { ...field.config, ...p.config } : field.config
    const value = field.value_or_zero
-   const mode = field.config.mode
-   const step = field.config.step ?? (mode === 'int' ? 1 : 0.1)
+   const mode = finalConfig.mode
+   const step = finalConfig.step ?? (mode === 'int' ? 1 : 0.1)
    // const contrast = useCSuite().inputContrast
    return (
       <input
@@ -22,8 +27,8 @@ export const WidgetNumberSimpleUI = observer(function WidgetNumberSimpleUI_(p: {
             field.value = parsed
          }}
          value={value}
-         min={field.config.min}
-         max={field.config.max}
+         min={finalConfig.min}
+         max={finalConfig.max}
          step={step}
       />
    )

@@ -121,12 +121,7 @@ export class Presenter<DOC extends Field = Field> {
       if (!Shell) throw new Error('Shell is not defined')
 
       // COMPILED
-      const finalProps: CompiledRenderProps<FIELD> = {
-         field,
-         UI: UY,
-         presenter: this,
-         ...slots,
-      }
+      const finalProps: CompiledRenderProps<FIELD> = { field, presenter: this, ...slots }
 
       if (debug) this.debugFinalProps(finalProps)
       // if (field.path === '$.latent.b.image.resize') this.debugFinalProps(finalProps)

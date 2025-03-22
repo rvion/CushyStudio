@@ -188,9 +188,7 @@ export const widgetsCatalog /* WidgetsCatalog */ = {
       block: WigetSize_BlockUI,
    },
    number: {
-      def: WidgetNumberUI,
-      /** inline WidgetNumber */
-      input: WidgetNumberUI,
+      input: WidgetNumberUI /** inline WidgetNumber */,
       simple: WidgetNumberSimpleUI,
    },
    enum: {

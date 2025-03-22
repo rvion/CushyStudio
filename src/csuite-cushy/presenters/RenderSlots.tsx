@@ -37,6 +37,8 @@ import type { FC, ReactNode } from 'react'
  *    ReactNode => use this react node direclty
  */
 
+export type UIPropsFor<FIELD extends Field> = Omit<DisplaySlots<FIELD>, 'Shell'> & { field: FIELD }
+
 export interface DisplaySlots<out FIELD extends Field = Field> {
    /**
     * if specified, css rules will be matched as if the given
@@ -45,6 +47,14 @@ export interface DisplaySlots<out FIELD extends Field = Field> {
     */
    virtualParent?: Field
 
+   /** instruct the components to pretend config has been overriten with that */
+   config?: Partial<FIELD['$config']>
+
+   /** instruct the components to pretend config has been overriten with that */
+   ownConfig?: Partial<FIELD['$ownConfig']>
+
+   // TODO: remove
+   /** @deprecated */
    layout?: CovariantFn<[FIELD], QuickFormContent[]>
 
    // 0.
@@ -60,22 +70,22 @@ export interface DisplaySlots<out FIELD extends Field = Field> {
    // 2. Direct Slots for this field only
    // heavilly suggested to include in your presenter unless you know what you do
    /* ✅ */ Head?: FCOrNode<CushyHeadProps>
-   /* ✅ */ Header?: FCOrNode<{ field: FIELD }>
-   /* ✅ */ Body?: FCOrNode<{ field: FIELD }>
-   /* ✅ */ Extra?: FCOrNode<{ field: FIELD }>
+   /* ✅ */ Header?: FCOrNode<UIPropsFor<FIELD>>
+   /* ✅ */ Body?: FCOrNode<UIPropsFor<FIELD>>
+   /* ✅ */ Extra?: FCOrNode<UIPropsFor<FIELD>>
 
    // stuff you want to include, possilby in some revealable way
    // based on field.hasError.
-   /* 🟢 */ Errors?: FCOrNode<{ field: FIELD }>
+   /* 🟢 */ Errors?: FCOrNode<UIPropsFor<FIELD>>
    /* 🟢 */ Title?: FCOrNode<WidgetTitleProps>
 
-   /* 🟢 */ DragKnob?: FCOrNode<{ field: FIELD }>
-   /* 🟢 */ UpDownBtn?: FCOrNode<{ field: FIELD }>
-   /* 🟢 */ DeleteBtn?: FCOrNode<{ field: FIELD }>
+   /* 🟢 */ DragKnob?: FCOrNode<UIPropsFor<FIELD>>
+   /* 🟢 */ UpDownBtn?: FCOrNode<UIPropsFor<FIELD>>
+   /* 🟢 */ DeleteBtn?: FCOrNode<UIPropsFor<FIELD>>
 
    // bonus features
    /* 🟡 */ Indent?: FCOrNode<WidgetIndentProps>
-   /* 🟡 */ UndoBtn?: FCOrNode<{ field: FIELD }>
+   /* 🟡 */ UndoBtn?: FCOrNode<UIPropsFor<FIELD>>
    /* 🟡 */ Toogle?: FCOrNode<WidgetToggleProps>
    /* 🟡 */ Caret?: FCOrNode<WidgetLabelCaretProps>
    /* 🟡 */ Icon?: FCOrNode<WidgetLabelIconProps>

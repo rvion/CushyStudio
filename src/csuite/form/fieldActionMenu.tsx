@@ -2,6 +2,7 @@ import type { MenuEntry } from '../menu/MenuEntry'
 import type { Field } from '../model/Field'
 import type { Provenance } from '../provenance/Provenance'
 
+import { getVisualPath, getVisualPathBase } from '../../csuite-cushy/presenters/RenderCtx'
 import { MenuDividerUI_ } from '../dropdown/MenuDivider2'
 import { defineMenuTemplate, MenuTemplate } from '../menu/MenuTemplate'
 import { SimpleMenuAction } from '../menu/SimpleMenuAction'
@@ -144,8 +145,20 @@ export const fieldActionMenu: MenuTemplate<FieldActionMenuProps> = defineMenuTem
             label: `copy pathExt (${field.pathExt})`,
             icon: IKONS.mdiContentCopy,
             onClick: (): Promise<void> => {
-               toastInfo(field.path)
+               toastInfo(field.pathExt)
                return navigator.clipboard.writeText(field.pathExt)
+            },
+         }),
+      )
+
+      out.push(
+         new SimpleMenuAction({
+            label: `copy VISUAL pathExt (${getVisualPath(field)})`,
+            icon: IKONS.mdiContentCopy,
+            onClick: (): Promise<void> => {
+               const visualPath = getVisualPath(field)
+               toastInfo(visualPath)
+               return navigator.clipboard.writeText(visualPath)
             },
          }),
       )

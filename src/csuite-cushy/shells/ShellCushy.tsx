@@ -13,8 +13,7 @@ import { AnimatedSizeUI } from '../../csuite/smooth-size/AnimatedSizeUI'
 import { WidgetPresetsUI } from '../catalog/Presets/WidgetPresets'
 
 const CushyShellUI = observer(function CushySHell(
-   p: CompiledRenderProps & {
-      // card?: boolean
+   p: CompiledRenderProps<Z.AnyField> & {
       border?: boolean
       HEADER: React.JSX.Element
    },

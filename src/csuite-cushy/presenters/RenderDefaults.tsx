@@ -2,7 +2,7 @@ import type { Field_group } from '../../csuite/fields/group/FieldGroup'
 import type { SelectKey } from '../../csuite/fields/selectOne/SelectOneKey'
 import type { Field } from '../../csuite/model/Field'
 import type { DisplaySlots } from './RenderSlots'
-import type { DisplaySlotsExt, FieldUIConfCtx } from './RenderTypes'
+import type { DisplaySlotsExt } from './RenderTypes'
 
 import { runInAction } from 'mobx'
 
@@ -24,7 +24,6 @@ import { WidgetSingleLineSummaryUI } from '../../csuite/form/WidgetSingleLineSum
 import { WidgetToggleUI } from '../../csuite/form/WidgetToggleUI'
 import { WidgetUndoChangesButtonUI } from '../../csuite/form/WidgetUndoChangesButtonUI'
 import { FieldSelector } from '../../csuite/selector/selector'
-import { WidgetDebugIDUI } from '../catalog/Debug/WidgetDebugIDUI'
 import { WidgetErrorsUI } from '../catalog/Errors/WidgetErrorsUI'
 import { WidgetPresetsUI } from '../catalog/Presets/WidgetPresets'
 import { DefaultWidgetTitleUI } from '../catalog/Title/WidgetLabelTextUI'
@@ -79,10 +78,10 @@ const baseslots: DisplaySlots<Field> = {
    /* 🟣 */ DebugID: null, // WidgetDebugIDUI,
 }
 
-function r<T extends Field>(
+function r<FIELD extends Field>(
    //
    selector: string,
-   slots: DisplaySlotsExt<T>,
+   slots: DisplaySlotsExt<FIELD>,
    priority = 10,
 ): void {
    defaultRulesV2.push({
@@ -93,10 +92,19 @@ function r<T extends Field>(
    })
 }
 
+// const K: DisplaySlots<Z.FNumber>={config:{min}}
 function resetDefaultRules() {
+   // 1. reset rules
    defaultRulesV2.splice(0, defaultRulesV2.length)
 
+   // default rules: `* {...}`
    r('', baseslots)
+
+   // funny defaults (we want to remove them)
+   // but they can be good to make sure the whole system is fast.
+   r<Z.FNumber>('ratio@number', { config: { softMin: 0, softMax: 1 } })
+
+   // core rules
    r('.@group.', { Shell: ShellCushyRightUI })
    r('.@choices.', { Shell: ShellCushyRightUI })
    r('@choices.@group', { Head: false })
@@ -178,3 +186,11 @@ if (import.meta.hot) {
 // ): void => {
 //    Object.assign(defaultPresenterSlots, overrides)
 // }
+// const x = sb
+//    .fields({
+//       a: sb.number(),
+//    })
+//    .create()
+
+// const a = x.A.UI({ config: { softMax: 10 } })
+// const b = <x.A.UI config={{ softMax: 10 }} />
