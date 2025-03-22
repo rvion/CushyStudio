@@ -8,6 +8,7 @@ import type { DraftL } from './Draft'
 import type { Executable } from './Executable'
 
 import { existsSync, readFileSync } from 'fs'
+import { computed, runInAction } from 'mobx'
 import { basename, extname, join } from 'pathe'
 
 import { generateAvatar } from '../cards/AvatarGenerator'
@@ -29,11 +30,11 @@ export class CushyAppL extends BaseInst<TABLES['cushy_app']> {
    // linked scripts
    private _scriptL: LiveRef<this, CushyScriptL> = new LiveRef(this, 'scriptID', 'cushy_script')
 
-   get script(): CushyScriptL {
+   @computed get script(): CushyScriptL {
       return this._scriptL.item
    }
 
-   get canBePublishedByUser(): boolean {
+   @computed get canBePublishedByUser(): boolean {
       if (this.file == null) return false
       if (this.file.relPath.startsWith('library/built-in')) return false
       if (this.file.relPath.startsWith('library/installed')) return false
@@ -41,17 +42,17 @@ export class CushyAppL extends BaseInst<TABLES['cushy_app']> {
       return true
    }
 
-   get drafts(): DraftL[] {
+   @computed get drafts(): DraftL[] {
       return cushy.db.draft.select((q) => q.where('appID', '=', this.id))
    }
 
-   get virtualFolder(): string {
+   @computed get virtualFolder(): string {
       const pieces = this.name.split('/')
       pieces.pop()
       return pieces.join('/')
    }
 
-   get lastExecutedDrafts(): {
+   @computed get lastExecutedDrafts(): {
       id: DraftID
       title: Maybe<string>
       lastRunAt: Maybe<number>
@@ -66,7 +67,7 @@ export class CushyAppL extends BaseInst<TABLES['cushy_app']> {
       )
    }
 
-   get last10ExecutedDrafts(): {
+   @computed get last10ExecutedDrafts(): {
       id: DraftID
       title: Maybe<string>
       lastRunAt: Maybe<number>
@@ -83,17 +84,17 @@ export class CushyAppL extends BaseInst<TABLES['cushy_app']> {
    }
 
    /** true if in the library/local folder */
-   get isLocal(): boolean {
+   @computed get isLocal(): boolean {
       return this.script.relPath.startsWith('library/local')
    }
 
    /** true if in the library/local folder */
-   get isExample(): boolean {
+   @computed get isExample(): boolean {
       return this.script.relPath.startsWith('library/sdk-examples')
    }
 
    /** true if in built-in  */
-   get isBuiltIn(): boolean {
+   @computed get isBuiltIn(): boolean {
       return this.script.relPath.startsWith('library/built-in')
    }
 
@@ -105,13 +106,13 @@ export class CushyAppL extends BaseInst<TABLES['cushy_app']> {
    subFolderStructure = new VirtualHierarchy<DraftL>(() => this.drafts)
    // --------------------------------------------
 
-   getLastOrCreateDraft = (): DraftL => {
+   getLastOrCreateDraft(): DraftL {
       const drafts = this.drafts
       return drafts.length > 0 ? drafts[0]! : this.createDraft()
    }
 
    // favorite system ------------------------------------------------------
-   get isFavorite(): boolean {
+   @computed get isFavorite(): boolean {
       return this.data.isFavorite === SQLITE_true
    }
 
@@ -120,24 +121,26 @@ export class CushyAppL extends BaseInst<TABLES['cushy_app']> {
    }
 
    // ------------------------------------------------------
-   get draftCount(): number {
+   @computed get draftCount(): number {
       return this.drafts.length
    }
 
-   createDraft = (): DraftL => {
-      const title = this.name + ' ' + this.draftCount + 1
-      const draft = this.st.db.draft.create({
-         // @ts-expect-error 🔴
-         formSerial: {},
-         appID: this.id,
-         title: title,
+   createDraft(): DraftL {
+      return runInAction(() => {
+         const title = this.name + ' ' + this.draftCount + 1
+         const draft = this.st.db.draft.create({
+            // @ts-expect-error 🔴
+            formSerial: {},
+            appID: this.id,
+            title: title,
+         })
+         this.st.layout.open('Draft', { draftID: draft.id }, { where: 'left' })
+         return draft
       })
-      this.st.layout.open('Draft', { draftID: draft.id }, { where: 'left' })
-      return draft
    }
 
    /** true if file match current library search */
-   matchesSearch = (search: string): boolean => {
+   matchesSearch(search: string): boolean {
       if (search === '') return true
       const searchLower = search.toLowerCase()
       const nameLower = this.name.toLowerCase()
@@ -145,7 +148,7 @@ export class CushyAppL extends BaseInst<TABLES['cushy_app']> {
       return nameLower.includes(searchLower) || descriptionLower.includes(searchLower)
    }
 
-   get isLoadedInMemory(): boolean {
+   @computed get isLoadedInMemory(): boolean {
       return this.script.getExecutable_orNull(this.id) != null
    }
 
@@ -153,11 +156,11 @@ export class CushyAppL extends BaseInst<TABLES['cushy_app']> {
    // ⏸️     return this.script.getExecutable_orNull(this.id)
    // ⏸️ }
 
-   get executable_orExtract(): Maybe<Executable> {
+   @computed get executable_orExtract(): Maybe<Executable> {
       return this.script.getExecutable_orExtract(this.id)
    }
 
-   get scriptStillExistsOnDisk(): boolean {
+   @computed get scriptStillExistsOnDisk(): boolean {
       return this.script.stillExistsOnDisk
    }
 
@@ -337,15 +340,15 @@ export class CushyAppL extends BaseInst<TABLES['cushy_app']> {
    }
 
    /** globaly unique id (in theory...); 🔶 */
-   get uid(): Timestamp {
+   @computed get uid(): Timestamp {
       return this.data.createdAt as Timestamp
    }
 
-   get layout(): Maybe<RenderRule<any>> {
+   @computed get layout(): Maybe<RenderRule<any>> {
       return this.executable_orExtract?.def.layout
    }
 
-   get name(): string {
+   @computed get name(): string {
       if (this.data.name) return this.data.name
       // if (this.executable?.metadata?.name) return this.executable.metadata.name
 
@@ -367,22 +370,22 @@ export class CushyAppL extends BaseInst<TABLES['cushy_app']> {
    }
 
    /** retlative path to the script this app comes from */
-   get relPath(): RelativePath {
+   @computed get relPath(): RelativePath {
       return this._scriptL.item.relPath
    }
 
    /** quick way to access the LibraryFile this app script comes from */
-   get file(): LibraryFile {
+   @computed get file(): LibraryFile {
       return this.st.library.getFile(this.relPath)
    }
 
    /** app description */
-   get description(): string {
+   @computed get description(): string {
       return this.data.description /*?? this.executable?.description*/ ?? '<no description>'
    }
 
    /** action display name */
-   get illustrationPath_eiter_RelativeToDeckRoot_or_Base64Encoded_or_SVG(): Maybe<string> {
+   @computed get illustrationPath_eiter_RelativeToDeckRoot_or_Base64Encoded_or_SVG(): Maybe<string> {
       // if (this.executable?.metadata?.illustration) return this.executable.metadata.illustration
       if (this.data.illustration) return this.data.illustration
       if (this.relPath.endsWith('.png')) return this.relPath
@@ -390,7 +393,7 @@ export class CushyAppL extends BaseInst<TABLES['cushy_app']> {
    }
 
    /** ready to be used in URL */
-   get illustrationPathWithFileProtocol(): string {
+   @computed get illustrationPathWithFileProtocol(): string {
       const tmp = this.illustrationPath_eiter_RelativeToDeckRoot_or_Base64Encoded_or_SVG
       if (tmp?.startsWith('data:')) return tmp
       if (tmp?.startsWith('http')) return tmp

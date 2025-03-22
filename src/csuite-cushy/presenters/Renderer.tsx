@@ -105,11 +105,11 @@ export class Presenter<DOC extends Field = Field> {
          }
       }
 
-      // override `Body` if `chidlren` is specified
-      const layout = slots.layout
-      if (layout != null) {
-         slots.Body = createElement(QuickForm, { field, items: layout(field) })
-      }
+      // ⏸️ override `Body` if `chidlren` is specified
+      // ⏸️ const layout = slots.layout
+      // ⏸️ if (layout != null) {
+      // ⏸️    slots.Body = createElement(QuickForm, { field, items: layout(field) })
+      // ⏸️ }
 
       // console.log(`[🔴🦊SHELL]`, slots.Shell)
       const Shell =

@@ -28,21 +28,20 @@ export const BlenderListUI = observer(function BlenderListUI_<T extends Field_li
    const size = uiConf.size
    const x = useLocalObservable(() => ({ selectedIx: activeIndex }))
    const selectedChild = field.items[x.selectedIx]
-
    const theme = cushy.preferences.theme.value
-   const wrapperCls = direction === 'horizontal' ? 'flex flex-row gap-2' : 'flex flex-col gap-2'
+   const wrapperCls =
+      direction === 'horizontal' //
+         ? 'flex flex-row gap-2'
+         : 'flex flex-col gap-2'
    return (
       <Frame tw={wrapperCls}>
          <Frame tw='flex flex-row gap-2 px-2' style={{ minHeight: '100%' }}>
             <ResizableFrame
-               tw='overflow-clip'
+               tw='overflow-clip min-w-40'
                footer={<BlenderListFooterFilterUI />}
                currentSize={size}
-               onResize={(val) => {
-                  uiConf.size = val
-               }}
-               // Should be h-input + half of gap-size
-               snap={28}
+               onResize={(val) => void (uiConf.size = val)}
+               snap={28} // Should be h-input + half of gap-size
                showFooter={false}
             >
                <div tw='flex flex-col gap-0.5 p-1'>

@@ -54,10 +54,10 @@ export interface DisplaySlots<out FIELD extends Field = Field> {
    ownConfig?: Partial<FIELD['$ownConfig']>
 
    // TODO: remove
-   /** @deprecated */
-   layout?: CovariantFn<[FIELD], QuickFormContent[]>
+   // /** @deprecated */
+   // ⏸️layout?: CovariantFn<[FIELD], QuickFormContent[]>
 
-   // 0.
+   // 0. stuff that will wrap the shell if specified
    Decoration?: FCOrNode<{ field: FIELD; children: ReactNode }>
 
    // 1. Shell
@@ -86,7 +86,7 @@ export interface DisplaySlots<out FIELD extends Field = Field> {
    // bonus features
    /* 🟡 */ Indent?: FCOrNode<WidgetIndentProps>
    /* 🟡 */ UndoBtn?: FCOrNode<UIPropsFor<FIELD>>
-   /* 🟡 */ Toogle?: FCOrNode<WidgetToggleProps>
+   /* 🟡 */ Toogle?: FCOrNode<UIPropsFor<FIELD>>
    /* 🟡 */ Caret?: FCOrNode<WidgetLabelCaretProps>
    /* 🟡 */ Icon?: FCOrNode<WidgetLabelIconProps>
    /* 🟡 */ Presets?: FCOrNode<WidgetPresetsProps>
