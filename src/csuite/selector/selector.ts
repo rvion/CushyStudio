@@ -21,6 +21,9 @@ examples selectors
     - .foo.bar{.baz.quuz | @str.a.b.c.d | {x.y^z | @number } }
     - >@str=(@.map(v => v.value).join('+'))
 */
+import type { Field_link } from '../fields/link/FieldLink'
+
+import { isFieldLink } from '../fields/WidgetUI.DI'
 import { Field } from '../model/Field'
 import { exhaust } from '../utils/exhaust'
 
@@ -40,7 +43,9 @@ export type ASTStep =
     | StepNot
     | StepHas
     | StepIsRoot
+    | StepDebug
 
+type StepDebug = { type: 'debug' }
 type StepIsRoot = { type: 'root' }
 type StepAxis = { type: 'axis'; axis: Axis }
 type StepFilterMountKey = { type: 'mount'; key: string }
@@ -61,6 +66,11 @@ export type Axis =
    | '<' // ancestors
 // | '$' // root => is Filter
 // | '&' // ownwer => is Filter
+
+enum SelectorMode {
+   MATCH = 1,
+   SELECT = 2,
+}
 
 export interface Selector {
    match: (node: ASTNode) => boolean
@@ -96,6 +106,11 @@ export class FieldSelector {
       return new FieldSelector(selector)
    }
 
+   axisSkips: { [key in CATALOG.AllFieldTypes]?: (node: any) => Field } = {
+      link: (node: Z.FLink<Z.Schema, Z.Schema>) => node.bField,
+      shared: (node: Z.FShared<Field>) => node.child,
+   }
+
    private position: number = 0
    private length: number
    readonly selector: string
@@ -110,52 +125,73 @@ export class FieldSelector {
       } else {
          this.parsed = selector
          this.length = 0
-         this.selector = ''
+         this.selector = FieldSelector.renderSteps(selector.steps)
       }
    }
 
-   get inverse() {
-      const { steps } = this.parse()
-      const stepsInverse: ASTStep[] = steps.toReversed().map((step) => {
-         if (step.type === 'axis') {
-            if (step.axis === '.') return { type: 'axis', axis: '^' }
-            if (step.axis === '^') return { type: 'axis', axis: '.' }
-            if (step.axis === '>') return { type: 'axis', axis: '<' }
-            if (step.axis === '<') return { type: 'axis', axis: '>' }
-         }
-         return step
-      })
-      return stepsInverse
-   }
+   // match mode actually works against those:
+   // get inverse() {
+   //    const { steps } = this.parse()
+   //    const stepsInverse: ASTStep[] = steps.toReversed().map((step) => {
+   //       if (step.type === 'axis') {
+   //          if (step.axis === '.') return { type: 'axis', axis: '^' }
+   //          if (step.axis === '^') return { type: 'axis', axis: '.' }
+   //          if (step.axis === '>') return { type: 'axis', axis: '<' }
+   //          if (step.axis === '<') return { type: 'axis', axis: '>' }
+   //       }
+   //       return step
+   //    })
+   //    return stepsInverse
+   // }
 
    // #region HIGH LEVEL API
-   match(field: Field /* from?: Field */): boolean {
-      const { fields: selected } = this.selectFrom_(field, this.inverse /* , true */)
-      // console.log(`[🤠] `, this.inverse)
-      return selected.length > 0
+   matches(field: Field | Field[]): boolean {
+      const { fields } = this.runMatch(field)
+      return fields.length > 0
    }
 
-   selectFrom(from: Field | Field[]): { fields: Field[]; values: any[] } {
+   run(field: Field | Field[], mode: SelectorMode) {
+      if (mode === SelectorMode.MATCH) return this.runMatch(field)
+      if (mode === SelectorMode.SELECT) return this.runSelect(field)
+      throw new Error(`Unknown mode "${mode}"`)
+   }
+   runMatch(field: Field | Field[]): { fields: Field[]; values: any[] } {
       const { steps } = this.parse()
-      return this.selectFrom_(from, steps)
+      return this.selectFrom_(field, steps, SelectorMode.MATCH)
+   }
+   runSelect(from: Field | Field[]): { fields: Field[]; values: any[] } {
+      const { steps } = this.parse()
+      return this.selectFrom_(from, steps, SelectorMode.SELECT)
    }
 
+   isDebugEnabled = false
    private selectFrom_(
       //
       from: Field[] | Field,
-      steps: ASTStep[],
-      debug: boolean = false,
+      steps_: ASTStep[],
+      mode: SelectorMode,
    ) {
       let candidates: Field[] = Array.isArray(from) ? from : [from]
+      let steps = mode === SelectorMode.MATCH ? steps_.toReversed() : steps_
       const values: any[] = []
       for (const step of steps) {
-         if (debug) console.log(`[🤠] step`, FieldSelector.renderStep(step), [candidates.map((c) => c.path)])
+         if (this.isDebugEnabled) {
+            const stepIndex = steps.indexOf(step)
+            const start = steps.slice(0, stepIndex)
+            const startStr = FieldSelector.renderSteps(start)
+            console.log(`[🧠] `, startStr, [candidates.map((c) => c.path)])
+         }
          // early abort
          if (candidates.length === 0) return { fields: [], values: values }
 
          // mount
          if (step.type === 'mount') {
             candidates = candidates.filter((node) => node.mountKey === step.key)
+         }
+
+         // dbg
+         else if (step.type === 'debug') {
+            this.isDebugEnabled = true
          }
 
          // filterType
@@ -194,22 +230,22 @@ export class FieldSelector {
 
          // not
          else if (step.type === 'not') {
-            throw new Error('❌ not is not implemented')
-            // candidates = candidates.filter((node) => {
-            //    const subSelector = FieldSelector.from({ steps: step.steps })
-            //    const res = node.selectFirstOrNull(subSelector)
-            //    return res != null
-            // })
+            // throw new Error('❌ not is not implemented')
+            candidates = candidates.filter((node) => {
+               const subSelector = FieldSelector.from({ steps: step.steps })
+               const res = node.selectFirstOrNull(subSelector)
+               return res == null
+            })
          }
 
          // axis
          else if (step.type === 'axis') {
-            candidates = this.applyAxis(candidates, step)
+            candidates = this.applyAxis(candidates, step, mode)
          }
 
          // branches
          else if (step.type === 'branches') {
-            candidates = this.applyBranch(candidates, step)
+            candidates = this.applyBranch(candidates, step, mode)
          }
 
          // index
@@ -239,6 +275,9 @@ export class FieldSelector {
       return { fields: candidates, values }
    }
 
+   static renderSteps(steps: ASTStep[]): string {
+      return steps.map(FieldSelector.renderStep).join('')
+   }
    static renderStep(step: ASTStep): string {
       if (step.type === 'axis') return step.axis
       if (step.type === 'mount') return `${step.key}`
@@ -251,37 +290,64 @@ export class FieldSelector {
       if (step.type === 'not') return `!(${step.steps.map(FieldSelector.renderStep).join('')})`
       if (step.type === 'has') return `:has(${step.steps.map(FieldSelector.renderStep).join('')})`
       if (step.type === 'root') return `$`
+      if (step.type === 'debug') return `+`
       exhaust(step)
       throw new Error(`Unknown step type "${(step as any).type}"`)
    }
 
    // #region MATCH
    /** Applies an axis step to the current candidates. */
-   private applyAxis(candidates: Field[], step: StepAxis): Field[] {
+   private applyAxis(
+      //
+      candidates: Field[],
+      step: StepAxis,
+      mode: SelectorMode,
+   ): Field[] {
       const nextNodes: Set<Field> = new Set()
-      const addNode = (node: Field | null): void => {
+      const addChildNode = (node: Field | null): void => {
+         if (node == null) return
+         const skip_ = this.axisSkips[node.type]
+         if (skip_ != null) node = skip_(node)
+         nextNodes.add(node)
+      }
+      const addParentNode = (node: Field | null): void => {
+         if (node == null) return
+         const skip_ = this.axisSkips[node.type]
+         if (skip_ != null) node = node.parent
          if (node == null) return
          nextNodes.add(node)
       }
       for (const at of candidates) {
-         if (step.axis === '.') at.childrenAll.forEach(addNode)
-         else if (step.axis === '>') at.descendants.forEach(addNode)
-         else if (step.axis === '^') addNode(at.parent)
-         else if (step.axis === '<') at.ancestors.forEach(addNode)
-         else throw new Error(`Invalid axis "${step.axis}"`)
+         if (mode === SelectorMode.MATCH) {
+            if (step.axis === '.') addParentNode(at.parent)
+            else if (step.axis === '^') at.childrenAll.forEach(addChildNode)
+            else if (step.axis === '>') at.ancestors.forEach(addParentNode)
+            else if (step.axis === '<') at.descendants.forEach(addChildNode)
+            else throw new Error(`Invalid axis "${step.axis}"`)
+         } else {
+            if (step.axis === '.') at.childrenAll.forEach(addChildNode)
+            else if (step.axis === '^') addParentNode(at.parent)
+            else if (step.axis === '>') at.descendants.forEach(addChildNode)
+            else if (step.axis === '<') at.ancestors.forEach(addParentNode)
+            else throw new Error(`Invalid axis "${step.axis}"`)
+         }
       }
 
       return [...nextNodes.values()]
    }
 
    /** Applies a branch step to the current candidates. */
-   private applyBranch(candidates: Field[], step: StepBranches): Field[] {
+   private applyBranch(
+      //
+      candidates: Field[],
+      step: StepBranches,
+      mode: SelectorMode,
+   ): Field[] {
       let branchResults: Field[] = []
       for (const branch of step.branches) {
-         const branchSelector = new FieldSelector('')
-         branchSelector.parsed = { steps: branch }
-         const { fields: selected } = branchSelector.selectFrom(candidates)
-         branchResults = branchResults.concat(selected)
+         const branchSelector = new FieldSelector({ steps: branch })
+         const { fields } = branchSelector.run(candidates, mode)
+         branchResults = branchResults.concat(fields)
       }
       return Array.from(new Set(branchResults))
    }
@@ -323,6 +389,7 @@ export class FieldSelector {
       else if (char === '?') return this.parseFilterCode()
       else if (char === '!') return this.parseNot()
       else if (char === ':') return this.parseHas()
+      else if (char === '+') return this.parseDebug()
       else if (/[a-zA-Z0-9_-]/.test(char!)) return this.parseFilterKey()
       else if (axes.includes(char as any)) return this.parseAxisStep()
       else
@@ -336,6 +403,13 @@ export class FieldSelector {
       const axis = this.parseAxis()
       this.consumeWhitespace()
       return { type: 'axis', axis }
+   }
+
+   /** Parses a single axis step. */
+   private parseDebug(): StepDebug {
+      this.consumeCharOrThrow('+')
+      this.isDebugEnabled = true
+      return { type: 'debug' }
    }
 
    /** Parses a single axis step. TODO: merge with funtion above */
