@@ -49,6 +49,8 @@ declare global {
       type SharedAlt<S extends CSchema>               = CSchema<Field_shared<S['$field']>>
       type Group<T extends SchemaDict>                = CSchema<Field_group<T> & MAGICFIELDS<T>>
       type Record<T extends SchemaDict>               = CSchema<Field_group<T> & MAGICFIELDS<T>>
+      type Group_<T extends SchemaDict = SchemaDict>  = CSchema<Field_group<T>>
+      type Record_<T extends SchemaDict = SchemaDict> = CSchema<Field_group<T>>
       type Empty                                      = CSchema<Field_group<NO_PROPS>>
       type Maybe<T extends CSchema>                   = CSchema<Field_optional<T>>
       type Optional<T extends CSchema>                = CSchema<Field_optional<T>>

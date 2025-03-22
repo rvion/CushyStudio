@@ -40,7 +40,7 @@ import { bang } from '../utils/bang'
  * */
 export const KNOWN_FIELDS: CATALOG.AllFields = {} as any
 
-export const getFieldClass = (fieldType: string): unknown => {
+export const getFieldClass = (fieldType: CATALOG.AllFieldTypes): unknown => {
    return bang(KNOWN_FIELDS[fieldType] as any)
 }
 
@@ -54,7 +54,7 @@ export const getFieldListClass = (): typeof Field_list<any> => getFieldClass('li
 export const getFieldSelectOneClass = (): typeof Field_selectOne<any, string> =>
    getFieldClass('selectOne') as any
 
-export const registerFieldClass = <T extends { $type: string }>(
+export const registerFieldClass = <T extends { $type: CATALOG.AllFieldTypes }>(
    //
    type: T['$type'],
    kls: { new (...args: any[]): T },
@@ -99,7 +99,7 @@ function _checkIfIsSchemaOf<F extends Field>(
 // help with DI, and help around some typescript bug not able to narrow types
 // in conditional when instance of is used with a ctor stored in a dictionary
 export const isFieldOptional = _checkIfIs<Field_optional>('optional')
-export const isFieldLink = _checkIfIs<Field_link<any, any>>('link')
+export const isFieldLink = _checkIfIs<Field_link<CSchema, CSchema>>('link')
 export const isFieldShared = _checkIfIs<Field_shared>('shared')
 export const isFieldGroup = _checkIfIs<Field_group<any>>('group')
 export const isFieldString = _checkIfIs<Field_string>('str')

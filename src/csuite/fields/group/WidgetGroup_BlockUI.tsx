@@ -4,7 +4,9 @@ import { observer } from 'mobx-react-lite'
 
 import { ListOfFieldsContainerUI } from '../../form/WidgetsContainerUI'
 
-export const WidgetGroup_BlockUI = observer(function WidgetGroup_BlockUI_<T extends Field_group>(p: {
+export const WidgetGroup_BlockUI = observer(function WidgetGroup_BlockUI_<
+   T extends Field_group = Field_group,
+>(p: {
    //
    className?: string
    field: T
