@@ -133,7 +133,7 @@ export const PromptEditorUI = observer(function PromptEditorUI_(p: { promptID: F
    const theme = cushy.preferences.theme.value
 
    return (
-      <div tw='flex flex-1 flex-row'>
+      <div tw='flex flex-1 flex-row overflow-auto'>
          <Frame className='ͼo' base={{ contrast: -0.05 }} tw='flex h-full flex-grow flex-col gap-1'>
             {/* <MessageInfoUI title='instructions'> select the [from] to change the to widget </MessageInfoUI> */}
             {/* <div className='flex flex-wrap'>
