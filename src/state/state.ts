@@ -53,6 +53,7 @@ import { Channel } from '../csuite' // WIP remove me 2024-06-25 🔴
 import { activityManager, type ActivityManager } from '../csuite/activity/ActivityManager'
 import { commandManager, type CommandManager } from '../csuite/commands/CommandManager'
 import { CSuite_ThemeCushy } from '../csuite/ctx/CSuite_ThemeCushy'
+import { KNOWN_FIELDS } from '../csuite/fields/WidgetUI.DI'
 import { run_tint } from '../csuite/kolor/prefab_Tint'
 import { getGlobalRepository } from '../csuite/model/Repository'
 import { regionMonitor } from '../csuite/regions/RegionMonitor'
@@ -151,6 +152,7 @@ export class STATE {
    userTags = UserTags.build()
    actionTags: ActionTagMethodList = []
    importer: ComfyImporter
+   field: CATALOG.AllFields = KNOWN_FIELDS
 
    _updateTime(): void {
       const now = Date.now()
@@ -668,6 +670,7 @@ export class STATE {
          comfyUIIframeRef: false,
          wildcards: false,
          Channel: false, // WIP remove me 2024-06-25 🔴
+         field: false,
       })
       void this.startupFileIndexing()
       setTimeout(() => quickBench.printAllStats(), 1000)

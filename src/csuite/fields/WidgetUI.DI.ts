@@ -38,7 +38,7 @@ import { bang } from '../utils/bang'
  * regardless of circular dependencies.
  * 2024-03-27 update: now that we support splitting parts of
  * */
-const KNOWN_FIELDS: { [widgetName: string]: Field } = {}
+export const KNOWN_FIELDS: CATALOG.AllFields = {} as any
 
 export const getFieldClass = (fieldType: string): unknown => {
    return bang(KNOWN_FIELDS[fieldType] as any)

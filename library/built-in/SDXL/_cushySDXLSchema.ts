@@ -1,6 +1,6 @@
 import type { CushySchemaBuilder } from '../../../src/controls/CushyBuilder'
 
-import { Field_group, type MAGICFIELDS } from '../../../src/csuite/fields/group/FieldGroup'
+import { type MAGICFIELDS } from '../../../src/csuite/fields/group/FieldGroup'
 import { ui_cnet, type UI_cnet } from '../_controlNet/prefab_cnet'
 import { type $extra1, extra1 } from '../_extra/extra1'
 import { type $extra2, extra2 } from '../_extra/extra2'
@@ -28,7 +28,7 @@ type CushySDXL_inner = {
 }
 
 export interface CushySDXLSchema extends MAGICFIELDS<CushySDXL_inner> {}
-export class CushySDXLSchema extends Field_group<CushySDXL_inner> {
+export class CushySDXLSchema extends cushy.field.group<CushySDXL_inner> {
    static schema(b: CushySchemaBuilder): Z.Schema<CushySDXLSchema> {
       return b
          .fields({
