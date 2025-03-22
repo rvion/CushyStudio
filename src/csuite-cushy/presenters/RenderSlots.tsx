@@ -41,7 +41,7 @@ export interface DisplaySlots<out FIELD extends Field = Field> {
    layout?: CovariantFn<[FIELD], QuickFormContent[]>
 
    // 0.
-   Decoration?: FCOrNode<{ children: ReactNode }>
+   Decoration?: FCOrNode<{ field: FIELD; children: ReactNode }>
 
    // 1. Shell
    // can also be used an escape hatch for 100% custom UI

@@ -3,7 +3,8 @@ import type { SelectKey } from '../../csuite/fields/selectOne/SelectOneKey'
 import type { Field } from '../../csuite/model/Field'
 import type { DisplaySlots } from './RenderSlots'
 import type { DisplaySlotsExt, FieldUIConfCtx } from './RenderTypes'
-import type { RuleEntry } from './RenderXXX'
+
+import { runInAction } from 'mobx'
 
 import { WidgetChoices_BodyUI } from '../../csuite/fields/choices/WidgetChoices_BodyUI'
 import { WidgetChoices_HeaderUI } from '../../csuite/fields/choices/WidgetChoices_HeaderUI'
@@ -15,6 +16,7 @@ import { ShellLinkUI } from '../../csuite/fields/link/WidgetLink'
 import { ShellOptionalUI } from '../../csuite/fields/optional/WidgetOptional'
 import { WidgetSelectOneUI } from '../../csuite/fields/selectOne/WidgetSelectOneUI'
 import { ShellSharedUI } from '../../csuite/fields/shared/WidgetSharedUI'
+import { isFieldLink } from '../../csuite/fields/WidgetUI.DI'
 import { WidgetBodyContainerUI } from '../../csuite/form/WidgetBodyContainerUI'
 import { WidgetHeaderContainerUI } from '../../csuite/form/WidgetHeaderContainerUI'
 import { WidgetLabelCaretUI } from '../../csuite/form/WidgetLabelCaretUI'
@@ -29,9 +31,13 @@ import { WidgetErrorsUI } from '../catalog/Errors/WidgetErrorsUI'
 import { WidgetPresetsUI } from '../catalog/Presets/WidgetPresets'
 import { DefaultWidgetTitleUI } from '../catalog/Title/WidgetLabelTextUI'
 import { CushyHeadUI } from '../shells/CushyHead'
-import { ShellCushyLeftUI } from '../shells/ShellCushy'
-import { renderDefaultKey } from './RenderDefaultsKey'
+import { ShellCushyLeftUI, ShellCushyRightUI } from '../shells/ShellCushy'
+import { defaultRulesV2, renderDefaultKey } from './RenderDefaultsKey'
 
+/**
+ * every project can define its own algebra for rendering fields
+ * in CushyStudio, our Shell iw suppose to handle those
+ */
 const baseslots: DisplaySlots<Field> = {
    /* ✅ */ Shell: ShellCushyLeftUI,
 
@@ -62,24 +68,25 @@ const baseslots: DisplaySlots<Field> = {
    /* 🟠 */ ContainerForBody: WidgetBodyContainerUI,
    /* 🟠 */ ContainerForSummary: WidgetSingleLineSummaryUI,
 
-   classNameAroundBodyAndHeader: null,
-   classNameAroundBody: null,
-   classNameAroundHeader: null,
-   className: null,
+   /* 🟢 */ classNameAroundBodyAndHeader: null,
+   /* 🟢 */ classNameAroundBody: null,
+   /* 🟢 */ classNameAroundHeader: null,
+   /* 🟢 */ className: null,
+
    shouldShowHiddenFields: false,
    shouldAnimateResize: true,
 
    // stuff you probably don't want to include
    // misc debug stuff
    /* 🟣 */ DebugID: null, // WidgetDebugIDUI,
-
-   // only for the lolz
-   /* 🟥 */ EasterEgg: (): React.JSX.Element => <>🥚</>,
 }
 
-export const defaultRulesV2: RuleEntry[] = []
-
-function setRule<T extends Field>(selector: string, slots: DisplaySlotsExt<T>, priority = 10): void {
+function r<T extends Field>(
+   //
+   selector: string,
+   slots: DisplaySlotsExt<T>,
+   priority = 10,
+): void {
    defaultRulesV2.push({
       addedBy: null,
       selector: FieldSelector.from(selector),
@@ -88,129 +95,68 @@ function setRule<T extends Field>(selector: string, slots: DisplaySlotsExt<T>, p
    })
 }
 
-// prettier-ignore
-function rules(){
-   setRule('', baseslots)
-   setRule<Z.FShared<any>>('@shared',                      { Shell: ShellSharedUI })
-   setRule<Z.FLink<any, any>>('@link',                     { Shell: ShellLinkUI })
-   setRule<Z.FOptional<any>>('@optional',                  { Shell: ShellOptionalUI })
-   setRule<Z.FString>('@str',                              { Header: UY.string.input, Body: null })
-   setRule<Z.FNumber>('@number',                           { Header: UY.number.input, Body: null })
-   setRule<Z.FSize>('@size',                               { Header: UY.size.line, Body: UY.size.block })
-   setRule<Z.FSelectOne<unknown, SelectKey>>('@selectOne', { Header: WidgetSelectOneUI /* UY.selectOne.Select */ }) // prettier-ignore
-   setRule<Z.FList<any>>('@list',                          { Body: UY.list.DefaultBody,  Header: UY.list.DefaultHeader})
-   setRule<Z.FImage>('@image',                             { Body: WidgetSelectImageUI /* UY.selectOne.Select */ })
-   setRule<Z.FRecord<any>>('@group',                       { Header: WidgetGroup_LineUI, Body: WidgetGroup_BlockUI })
-   setRule<Z.FChoices<any>>('@choices',                    { Header: WidgetChoices_HeaderUI, Body: WidgetChoices_BodyUI })
-   setRule<Z.FColor>('@color',                             { Header: WidgetColorUI, Body: null })
-   setRule<Z.FBool>('@bool',                               { Header: UY.boolean.default, Body: null })
-   setRule<any>('@enum',                                   { Header: UY.enum.default, Body: null })
-   setRule<any>('@prompt',                                 { Header: UY.prompt.DefaultHeaderUI, Body: UY.prompt.DefaultBodyUI })
-   setRule<Field>('$',                                     { collapsible: false })
-   setRule<Field>('.^',                                    { Caret: false })
-   setRule<Field_group>('$@group', {
+function resetDefaultRules() {
+   defaultRulesV2.splice(0, defaultRulesV2.length)
+
+   r('', baseslots)
+   r('.@group.', { Shell: ShellCushyRightUI })
+   r('.@choices.', { Shell: ShellCushyRightUI })
+   r('@choices.@group', { Head: false })
+   r<Z.FShared<any>>('@shared', { Shell: ShellSharedUI })
+   r<Z.FLink<any, any>>('@link', { Shell: ShellLinkUI })
+   r<Z.FOptional<any>>('@optional', { Shell: ShellOptionalUI })
+   r<Z.FString>('@str', { Header: UY.string.input, Body: null })
+   r<Z.FNumber>('@number', { Header: UY.number.input, Body: null })
+   r<Z.FSize>('@size', { Header: UY.size.line, Body: UY.size.block })
+   r<Z.FSelectOne<unknown, SelectKey>>('@selectOne', { Header: WidgetSelectOneUI /* UY.selectOne.Select */ }) // prettier-ignore
+   r<Z.FList<any>>('@list', { Body: UY.list.DefaultBody, Header: UY.list.DefaultHeader })
+   r<Z.FImage>('@image', { Body: WidgetSelectImageUI /* UY.selectOne.Select */ })
+   r<Z.FRecord<any>>('@group', { Header: WidgetGroup_LineUI, Body: WidgetGroup_BlockUI })
+   r<Z.FChoices<any>>('@choices', { Header: WidgetChoices_HeaderUI, Body: WidgetChoices_BodyUI })
+   r<Z.FColor>('@color', { Header: WidgetColorUI, Body: null })
+   r<Z.FBool>('@bool', { Header: UY.boolean.default, Body: null })
+   r<any>('@enum', { Header: UY.enum.default, Body: null })
+   r<any>('@prompt', { Header: UY.prompt.DefaultHeaderUI, Body: UY.prompt.DefaultBodyUI })
+   r<Field>('$', { collapsible: false })
+   r<Field>('!(:has(.))', { Caret: false })
+   r<Field_group>('$@group', {
       Indent: false,
-      Body: (f) => <UY.group.Default field={f.field as any /* 🔴 */} className='gap-1' />,
+      Body: (f) => <UY.group.Default field={f.field} className='gap-1' />,
    })
-   setRule(
-      '',
-      ({ field }) => {
-         console.log(`[🔴🦊] evaluationg for ${field.path}`)
-         if (field.depth === 1) {
-            if (field.isOfType('group', 'list', 'choices')) {
-               return { Decoration: (p): React.JSX.Element => <UY.Decorations.Card field={field} {...p} /> }
-               // slots.Title = catalog.Title.h3
-            }
-         } else if (field.depth === 2) {
-            if (field.isOfType('group', 'list', 'choices')) return { Title: UY.Title.h4 }
-            if (!field.isOfType('optional', 'link', 'list', 'shared')) return { Shell: UY.Shell.Right }
-         }
-      },
-      100,
-   )
-}
-rules()
-
-const defaultPresenterRule = (ui: FieldUIConfCtx): void => {
-   ui.set(baseslots)
-
-   ui.set<any>('@shared', { Shell: ShellSharedUI })
-   ui.set<any>('@link', { Shell: ShellLinkUI })
-   ui.set<any>('@optional', { Shell: ShellOptionalUI })
-
-   ui.set('@str', { Header: UY.string.input, Body: null })
-   ui.set<any>('@number', { Header: UY.number.input, Body: null })
-   ui.set<any>('@bool', { Header: UY.boolean.default, Body: null })
-   ui.set<any>('@size', { Header: UY.size.line, Body: UY.size.block })
-
-   ui.set<any>('@selectOne', { Header: WidgetSelectOneUI /* UY.selectOne.Select */ })
-   ui.set<any>('@image', { Body: WidgetSelectImageUI /* UY.selectOne.Select */ })
-   ui.set<any>('@group', { Header: WidgetGroup_LineUI, Body: WidgetGroup_BlockUI })
-
-   // {
-   //    slots.Header = field.DefaultHeaderUI
-   //    slots.Body = field.DefaultBodyUI
-   //    slots.Extra = field.schema.LabelExtraUI as FCOrNode<{ field: Field }>
-
-   //    if (field.depth === 1) {
-   //       // if (field.isOfType('group', 'list', 'choices')) {
-   //       //    slots.Decoration = (p): React.JSX.Element => <catalog.Decorations.Card field={field} {...p} />
-   //       //    // slots.Title = catalog.Title.h3
-   //       // }
-   //    } else if (field.depth === 2) {
-   //       if (field.isOfType('group', 'list', 'choices')) apply({ Title: UY.Title.h4 })
-   //       if (!field.isOfType('optional', 'link', 'list', 'shared')) apply({ Shell: UY.Shell.Right })
-   //    }
-   ui.set(
-      '',
-      ({ field }) => {
-         console.log(`[🔴🦊] evaluationg for ${field.path}`)
-         if (field.depth === 1) {
-            if (field.isOfType('group', 'list', 'choices')) {
-               return { Decoration: (p): React.JSX.Element => <UY.Decorations.Card field={field} {...p} /> }
-               // slots.Title = catalog.Title.h3
-            }
-         } else if (field.depth === 2) {
-            if (field.isOfType('group', 'list', 'choices')) return { Title: UY.Title.h4 }
-            if (!field.isOfType('optional', 'link', 'list', 'shared')) return { Shell: UY.Shell.Right }
-         }
-      },
-      100,
-   )
-
-   //    // hide group head in choices
-   //    if (field.parent?.type === 'choices' && field.type === 'group') {
-   //       apply({ Head: false })
-   //    }
-   // }
-
-   ui.set('$', { collapsible: false })
-   ui.set<Field_group>('$@group', {
-      Indent: false,
-      Body: (f) => <UY.group.Default field={f.field as any /* 🔴 */} className='gap-1' />,
+   r<Field>('$.{@group|@optional.@group|@list|@choices|@prompt}', {
+      Decoration: (p) => <UY.Decorations.Card {...p} />,
    })
-   // ui.set('$.{@group|@list|@choices}', { Decoration: (p) => <UY.Decorations.Card field={field} {...p} /> })
-   // ui.set('$.@link.{@group|@list|@choices}', {
-   //    Decoration: (p) => <UY.Decorations.Card field={field} {...p} />,
-   // })
-   // ui.set('$.{@group|@list|@choices}.@link', {
-   //    Decoration: (p) => <UY.Decorations.Card field={field} {...p} />,
-   // })
-
-   // ui.set('@image', {
-   //    Header: false,
-   //    Head: false,
-   //    Decoration: (p) => {
-   //       if (field.type == 'choices') {
-   //          return p.children
-   //       }
-   //       return <UY.Decorations.Pad {...p} />
-   //    },
-   // })
+   r<Z.FList<Z.Record_>>('@list.@optional.@group.', (f) => ({
+      Body: <UY.list.BlenderLike field={f.field} renderItem={() => <>🔴</>} />,
+   }))
+   r<Z.FList<Z.Record_>>('@list:has(.@group.)', () => ({
+      Body: (f) => {
+         return (
+            <UY.list.BlenderLike
+               field={f.field}
+               renderItem={(item) => {
+                  const children = item.childrenActive.map((f) => (isFieldLink(f) ? f.bField : f))
+                  const str = children.find((x) => x.type === 'str') as Z.FString | undefined
+                  const img = children.find((x) => x.type === 'image') as Z.FImage | undefined
+                  return (
+                     <div tw='flex'>
+                        {str?.value_unchecked ?? item.summary}
+                        {img && <img src={img.value.url} tw='h-widget w-widget' />}
+                     </div>
+                  )
+               }}
+            />
+         )
+      },
+   }))
+   renderDefaultKey.version++
 }
+runInAction(() => {
+   resetDefaultRules()
+   console.log(`[🤠] renderDefaultKey`, renderDefaultKey.version)
+})
 
 // ;(window as any).defaultRenderRules = defaultPresenterRule
-renderDefaultKey.version++
 if (import.meta.hot) {
    import.meta.hot.accept()
 }

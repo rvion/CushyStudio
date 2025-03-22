@@ -9,7 +9,7 @@ import { extractComponentName } from '../../csuite/utils/extractComponentName'
 import { mergeDefined } from '../../csuite/utils/mergeDefined'
 import { _isFC, renderFCOrNode, renderFCOrNodeWithWrapper } from '../../csuite/utils/renderFCOrNode'
 import { QuickForm } from '../catalog/group/QuickForm'
-import { defaultRulesV2 } from './RenderDefaults'
+import { defaultRulesV2 } from './RenderDefaultsKey'
 import { RenderUI } from './RenderUI'
 import { RenderXXX, type RuleEntry } from './RenderXXX'
 
@@ -20,13 +20,7 @@ import { RenderXXX, type RuleEntry } from './RenderXXX'
  */
 export class Presenter<DOC extends Field = Field> {
    static count = 0
-   /** list of all the ruleOrConf, indexed by field, added during this presenter lifecycle  */
-   // rules: RuleEntry[] = []
-
-   constructor(
-      //
-      public rootField: Field,
-   ) {
+   constructor(public rootField: Field) {
       Presenter.count++
    }
 
@@ -92,13 +86,14 @@ export class Presenter<DOC extends Field = Field> {
          // we probably want contains in many place.
          //                                                         VVVVVVVVVVVVVV
          const isMatching = isBool(rule.selector) ? rule.selector : field.matches(rule.selector)
-         if (debug)
-            console.log(
-               `[🦊] ${field.pathExt}`,
-               isMatching ? '🟢' : '🔴',
-               isBool(rule.selector) ? rule.selector : rule.selector.selector,
-               typeof rule.uiconf !== 'function' ? this.explainSlots(rule.uiconf) : '<function...>',
-            )
+         if (debug) {
+            // console.log(
+            //    `[🦊] ${field.pathExt}`,
+            //    isMatching ? '🟢' : '🔴',
+            //    isBool(rule.selector) ? rule.selector : rule.selector.selector,
+            //    typeof rule.uiconf !== 'function' ? this.explainSlots(rule.uiconf) : '<function...>',
+            // )
+         }
          if (isMatching) {
             const newSlots =
                typeof rule.uiconf === 'function' //
@@ -116,7 +111,7 @@ export class Presenter<DOC extends Field = Field> {
          slots.Body = createElement(QuickForm, { field, items: layout(field) })
       }
 
-      console.log(`[🔴🦊SHELL]`, slots.Shell)
+      // console.log(`[🔴🦊SHELL]`, slots.Shell)
       const Shell =
          typeof slots.Shell === 'string' //
             ? UY.Shell[slots.Shell]
@@ -136,7 +131,7 @@ export class Presenter<DOC extends Field = Field> {
       if (debug) this.debugFinalProps(finalProps)
       // if (field.path === '$.latent.b.image.resize') this.debugFinalProps(finalProps)
       // console.log(`[🤠] Shell for ${field.path} is `, Shell)
-      console.log(`[🦊] slots for`, field.path, slots)
+      // console.log(`[🦊] slots for`, field.path, slots)
       return renderFCOrNode(Shell, finalProps)
    }
 
