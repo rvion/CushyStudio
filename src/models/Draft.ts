@@ -15,6 +15,7 @@ import { Status } from '../back/Status'
 import { cushyFactory } from '../controls/CushyBuilder'
 import { getGlobalSeeder } from '../csuite/fields/seed/Seeder'
 import { SQLITE_false, SQLITE_true } from '../csuite/types/SQLITE_boolean'
+import { debounce } from '../csuite/utils/debounce'
 import { toastError } from '../csuite/utils/toasts'
 import { BaseInst } from '../db/BaseInst'
 import { LiveRef } from '../db/LiveRef'
@@ -311,12 +312,16 @@ export class DraftL extends BaseInst<TABLES['draft']> {
             this._form = cushyFactory.document(action.ui, {
                name: this.name,
                serial: () => this.data.formSerial,
-               onSerialChange: (form) => {
-                  console.log(`[🧐] updating draft(${this.id}) SERIAL`)
-                  this.update({ formSerial: form.serial })
-                  this.isDirty = true
-                  this.checkIfShouldRestart()
-               },
+               onSerialChange: debounce(
+                  (form) => {
+                     console.log(`[🧐] updating draft(${this.id}) SERIAL`)
+                     this.update({ formSerial: form.serial })
+                     this.isDirty = true
+                     this.checkIfShouldRestart()
+                  },
+                  300,
+                  2000,
+               ),
             })
          },
          { fireImmediately: true },
