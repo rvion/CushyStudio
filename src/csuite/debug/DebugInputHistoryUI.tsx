@@ -9,6 +9,7 @@ export const DebugInputHistoryUI = observer(function DebugInputHistoryUI_(p: {})
          {commandManager.inputHistory.slice(-3).map((text, _) => {
             return (
                <Frame //
+                  key={`${text}-${_}`}
                   tw='px-2'
                   roundness={cushy.preferences.theme.value.global.roundness}
                   base={{ contrast: -0.075 }}
