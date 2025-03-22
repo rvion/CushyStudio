@@ -92,7 +92,4 @@ export interface DisplaySlots<out FIELD extends Field = Field> {
    // stuff you probably don't want to include
    // debug stuff
    /* 🟣 */ DebugID?: Maybe<FC<{ field: Field }>>
-
-   // only for the lolz
-   /* 🟥 */ EasterEgg?: Maybe<FC<{ field: Field }>>
 }

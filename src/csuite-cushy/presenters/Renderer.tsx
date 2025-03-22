@@ -13,14 +13,6 @@ import { defaultRulesV2 } from './RenderDefaults'
 import { RenderUI } from './RenderUI'
 import { RenderXXX, type RuleEntry } from './RenderXXX'
 
-// 👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇
-// Those types are made folling a language design principle:
-// every field/config/override is based on what UX people may request
-// so we have a quick vocabulary to ajdust look and feel.
-// see src/csuite-cushy/presenters/presenter.readme.md
-// 👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆
-
-// #region Presenter
 // see `src/csuite/form/presenters/presenter.readme.md`
 /**
  * retrieve * Shell + Slots for each field,
@@ -36,14 +28,6 @@ export class Presenter<DOC extends Field = Field> {
       public rootField: Field,
    ) {
       Presenter.count++
-      // const proc = new RenderXXX(this, rootField)
-      // defaultRenderRules({ set:  })
-      // this.rules.push({
-      //    addedBy: null,
-      //    selector: true,
-      //    uiconf: defaultRenderRules,
-      //    priority: RENDER_PRIORITY_DEFAULT_RULES,
-      // })
    }
 
    fieldRenderers: WeakMap<Field, RenderXXX<any>> = new WeakMap()

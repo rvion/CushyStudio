@@ -768,16 +768,14 @@ export class CushyLayoutManager {
           * @default 'active'
           */
          relativeTo?: 'active' | 'hovered'
-
          /**
-          * allow to pre-fill the panel $store data
+          * initial value for the panel $store persistent data
           * notably usefull when cloning a tab
           * 🔶 YOU NEED TO DEEP-CLONE the object if needed BEFORE
           */
          $store?: any
-
          /**
-          * allow to pre-fill the panel $store data
+          * initial value for the panel $temp temporary data
           * notably usefull when cloning a tab
           * 🔶 YOU NEED TO DEEP-CLONE the object if needed BEFORE
           */

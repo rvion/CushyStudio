@@ -49,13 +49,16 @@ export class PerspectiveL extends BaseInst<TABLES['perspective']> {
    saveSnapshot(): void {
       this.update({ layoutDefault: this.data.layout })
    }
+
    resetToSnapshot(): void {
       this.update({ layout: this.data.layoutDefault ?? cushy.layout.makeNewPerspective_default1() })
       cushy.layout.openPerspective(this)
    }
+
    duplicate(): void {
       this.clone({ name: this.data.name + '2' }).open()
    }
+
    delete(): void {
       const perspectives = cushy.db.perspective.all
       if (perspectives.length === 1) {

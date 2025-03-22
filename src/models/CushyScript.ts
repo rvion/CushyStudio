@@ -25,10 +25,6 @@ export class CushyScriptRepo extends LiveTable<TABLES['cushy_script'], typeof Cu
 }
 
 export class CushyScriptL extends BaseInst<TABLES['cushy_script']> {
-   // get firstApp(): Maybe<CushyAppL> {
-   //     return this.apps[0]
-   // }
-
    /** relative path from CushyStudio root to the file that produced this script */
    get relPath(): RelativePath {
       return asRelativePath(this.data.path)
@@ -43,24 +39,11 @@ export class CushyScriptL extends BaseInst<TABLES['cushy_script']> {
    get _apps_viaDB(): CushyAppL[] {
       return cushy.db.cushy_app.select((q) => q.where('scriptID', '=', this.id), ['cushy_script'])
    }
-   // private _apps_viaDB = new LiveCollection<TABLES['cushy_app']>({
-   //     table: () => this.db.cushy_app,
-   //     where: () => ({ scriptID: this.id }),
-   // })
 
    get apps(): CushyAppL[] {
       if (this._apps_viaScript != null) return this._apps_viaScript
       return this._apps_viaDB
    }
-
-   // ⏸️ get apps_viaDB(): CushyAppL[] {
-   // ⏸️     return this._apps_viaDB.items
-   // ⏸️ }
-
-   // ⏸️ get apps_viaScript(): CushyAppL[] {
-   // ⏸️     if (this._apps_viaScript == null) this.extractApps()
-   // ⏸️     return this._apps_viaScript!
-   // ⏸️ }
 
    onHydrate = (): void => {
       if (this.data.lastEvaluatedAt == null) this.evaluateAndUpdateAppsAndViews()
