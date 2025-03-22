@@ -7,7 +7,8 @@ import { TreeKeys } from '../../csuite/tree/TreeKeys'
 export const KEYS = {
     search: 'mod+f',
     // misc
-    closeCurrentTab: 'mod+w',
+    closeCurrentActiveTab: 'mod+w',
+    closeCurrentHoveredTab: 'mod+shift+w',
     closeDialogOrPopupsOrFullScreenPanel: 'escape',
 
     // tree navigation -------------------------------------------------------------------------------

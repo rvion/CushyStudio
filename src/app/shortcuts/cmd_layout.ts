@@ -53,12 +53,22 @@ export const allLayoutCommands: Command<null>[] = [
    }),
 
    command({
-      id: 'closeCurrentTab',
-      combos: KEYS.closeCurrentTab,
+      id: 'closeCurrentActiveTab',
+      combos: KEYS.closeCurrentActiveTab,
       validInInput: true,
       ctx: ctx_layout,
-      action: () => cushy.layout.closeCurrentTab(),
-      label: 'Close current tab',
+      action: () => cushy.layout.closeCurrentTab('active'),
+      label: 'Close current active tab',
+      icon: IKONS.mdiCloseBoxOutline,
+   }),
+
+   command({
+      id: 'closeCurrentHoveredTab',
+      combos: KEYS.closeCurrentHoveredTab,
+      validInInput: true,
+      ctx: ctx_layout,
+      action: () => cushy.layout.closeCurrentTab('hoverd'),
+      label: 'Close current hovered tab',
       icon: IKONS.mdiCloseBoxOutline,
    }),
 
