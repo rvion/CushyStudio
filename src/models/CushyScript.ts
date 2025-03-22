@@ -30,7 +30,7 @@ export class CushyScriptL extends BaseInst<TABLES['cushy_script']> {
       return asRelativePath(this.data.path)
    }
 
-   openInVSCode = (): Promise<void> => {
+   openInVSCode(): Promise<void> {
       return cushy.openInVSCode(this.relPath)
    }
 
@@ -54,6 +54,7 @@ export class CushyScriptL extends BaseInst<TABLES['cushy_script']> {
    }
 
    errors: { title: string; details: any }[] = []
+
    addError = (title: string, details: any = null): LoadStatus => {
       this.errors.push({ title, details })
       return LoadStatus.FAILURE
@@ -67,10 +68,10 @@ export class CushyScriptL extends BaseInst<TABLES['cushy_script']> {
       return existsSync(this.relPath)
    }
 
-   checkIfisOutOfDate = (): {
+   private checkIfisOutOfDate(): {
       needRecompile: boolean
       reason: string
-   } => {
+   } {
       try {
          // 1. no lastExtractedAt => ❌ need recompile
          const lastExtractedAt = this.data.lastExtractedAt
@@ -168,8 +169,15 @@ export class CushyScriptL extends BaseInst<TABLES['cushy_script']> {
 
          // bumpt timestamps
          const now = Date.now()
-         if (this._apps_viaScript.length === 0) this.update({ lastEvaluatedAt: now })
-         else this.update({ lastEvaluatedAt: now, lastSuccessfulEvaluationAt: now })
+         if (this._apps_viaScript.length === 0)
+            this.update({
+               lastEvaluatedAt: now,
+            })
+         else
+            this.update({
+               lastEvaluatedAt: now,
+               lastSuccessfulEvaluationAt: now,
+            })
       })
       return // this._EXECUTABLES
    }
@@ -179,7 +187,10 @@ export class CushyScriptL extends BaseInst<TABLES['cushy_script']> {
     * and returns the apps defined in it
     * returns [] on script execution failure
     * */
-   private _EVALUATE_SCRIPT = (): { apps: Executable[]; views: LoadedCustomView[] } => {
+   private _EVALUATE_SCRIPT = (): {
+      apps: Executable[]
+      views: LoadedCustomView[]
+   } => {
       // toastInfo(`evaluating script: ${this.relPath}`)
       const codeJS = this.data.code
 
@@ -187,6 +198,7 @@ export class CushyScriptL extends BaseInst<TABLES['cushy_script']> {
       // APPS ---------------------------------------------------------------------------
       const APPS: Executable[] = []
       let appIndex = 0
+
       const registerAppFn = (appDef: App<any>): AppRef<any> => {
          const app = new Executable(this, appIndex++, appDef)
          console.info(`[💙] found app: "${app.name}"`, { path: this.relPath, appID: app.appID })
@@ -205,7 +217,6 @@ export class CushyScriptL extends BaseInst<TABLES['cushy_script']> {
       }
 
       // 2. eval file to extract actions
-      let codJSWithoutWithImportsReplaced = codeJS
       try {
          // 2.1. replace imports
          const ProjectScriptFn = new Function(
@@ -217,7 +228,7 @@ export class CushyScriptL extends BaseInst<TABLES['cushy_script']> {
             'getCurrentRun',
             'cushy',
             //
-            codJSWithoutWithImportsReplaced,
+            codeJS,
          )
 
          // 2.2. extract apps by evaluating script
@@ -238,7 +249,7 @@ export class CushyScriptL extends BaseInst<TABLES['cushy_script']> {
       } catch (e) {
          console.error(`[📜] CushyScript execution failed:`, e)
          console.groupCollapsed(`[📜] <script that failed>`)
-         console.log(codJSWithoutWithImportsReplaced)
+         console.log(codeJS)
          console.groupEnd()
          // this.addError('❌5. cannot convert prompt to code', e)
          return { apps: [], views: [] }
