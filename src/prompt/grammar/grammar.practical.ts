@@ -35,7 +35,7 @@ type CLASSES = {
 
 }
 
-type Prompt_expression =
+export type Prompt_expression =
    | Prompt_WeightedExpression
    | Prompt_Permutations
    | Prompt_Lora
