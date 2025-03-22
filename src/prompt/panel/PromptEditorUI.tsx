@@ -129,9 +129,7 @@ export const PromptEditorUI = observer(function PromptEditorUI_(p: { promptID: F
    useLayoutEffect(() => {
       if (uist.mountRef.current) uist.mount(uist.mountRef.current)
    }, [cushy.activePrompt])
-
-   const ast = uist.ast
-   const theme = cushy.preferences.theme.value
+   // const theme = cushy.preferences.theme.value
 
    return (
       <div tw='flex flex-1 flex-row overflow-auto'>
@@ -171,7 +169,7 @@ export const PromptEditorUI = observer(function PromptEditorUI_(p: { promptID: F
          </Frame>
          <BasicShelfUI anchor='right'>
             {uist.ast.findAll('Choice').map((choice, choiceIndex) => {
-               return <GrammarChoiceUI choice={choice} index={choiceIndex} />
+               return <GrammarChoiceUI view={uist.editorView} choice={choice} index={choiceIndex} />
             })}
          </BasicShelfUI>
       </div>

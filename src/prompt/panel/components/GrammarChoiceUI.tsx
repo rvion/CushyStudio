@@ -1,10 +1,12 @@
 import type { Prompt_Choice, Prompt_expression } from '../../grammar/grammar.practical'
+import type { EditorView } from 'codemirror'
 
 import { observer } from 'mobx-react-lite'
 
 import { InputBoolUI } from '../../../csuite/checkbox/InputBoolUI'
 
 export const GrammarChoiceUI = observer(function GrammarChoiceUI_(p: {
+   view: Maybe<EditorView>
    choice: Prompt_Choice
    index: number
    nested?: boolean
@@ -12,6 +14,7 @@ export const GrammarChoiceUI = observer(function GrammarChoiceUI_(p: {
    const choice = p.choice
    const index = p.index
    const nested = p.nested
+   const view = p.view
    const indexAST = choice.indexAST
    const theme = cushy.preferences.theme.value
 
@@ -22,9 +25,37 @@ export const GrammarChoiceUI = observer(function GrammarChoiceUI_(p: {
    }
 
    if (indexAST == null) {
-      return <>Invalid indexAST, expected `[number, "?", "_"]`</>
+      return (
+         <UY.Layout.Row //
+            tw='select-none !gap-2 p-1'
+            look='error'
+            line
+            key={index}
+            base={{ contrast: 0.05 }}
+            tooltip={
+               <UY.Misc.Frame tw='flex !min-w-72 text-wrap'>
+                  {`Inlined Wildcards (Choices) require the index to be set, for example 
+
+?>"My Choice"[index_value]
+The "index_value" would be a Number, Random "?", or Disable "_"]`}
+               </UY.Misc.Frame>
+            }
+         >
+            <UY.Misc.Button
+               icon={'mdiFileDocumentArrowRight'}
+               tooltip={'Jump to error'}
+               onClick={() => {
+                  p.view?.dispatch({
+                     selection: { anchor: choice.from },
+                     scrollIntoView: true,
+                  })
+                  p.view?.focus()
+               }}
+            />
+            <UY.Misc.Frame>Expected Index option</UY.Misc.Frame>
+         </UY.Layout.Row>
+      )
    }
-   const active = indexAST.number != null && indexAST.number == index
    const toggleGroup = `${choice.name}_${index}`
 
    return (
@@ -79,10 +110,10 @@ export const GrammarChoiceUI = observer(function GrammarChoiceUI_(p: {
                               indexAST.number = index
                            }}
                         >
-                           {entry && formatChoice(entry, index)}
+                           {entry && formatChoice(view, entry, index)}
                         </InputBoolUI>
                         {entry && entry.$kind == 'Choice' && selected && (
-                           <GrammarChoiceUI choice={entry} index={index} nested />
+                           <GrammarChoiceUI view={view} choice={entry} index={index} nested />
                         )}
                      </>
                   )
@@ -92,7 +123,7 @@ export const GrammarChoiceUI = observer(function GrammarChoiceUI_(p: {
    )
 })
 
-function formatChoice(entry: Prompt_expression, index: number): JSX.Element {
+function formatChoice(view: Maybe<EditorView>, entry: Prompt_expression, index: number): JSX.Element {
    switch (entry.$kind) {
       case 'String':
          return <>{entry.text.slice(1, -1)}</>
@@ -100,6 +131,7 @@ function formatChoice(entry: Prompt_expression, index: number): JSX.Element {
          const indexAST = entry.indexAST
 
          if (indexAST == null) {
+            // entry.from
             return <>Invalid index AST</>
          }
          //  return <GrammarChoiceUI choice={entry} index={index} />
