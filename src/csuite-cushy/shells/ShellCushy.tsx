@@ -1,4 +1,4 @@
-import type { CompiledRenderProps } from '../presenters/RenderTypes'
+import type { RenderPropsCompiled } from '../presenters/RenderPropsCompiled'
 import type React from 'react'
 import type { ReactNode } from 'react'
 
@@ -13,7 +13,7 @@ import { AnimatedSizeUI } from '../../csuite/smooth-size/AnimatedSizeUI'
 import { WidgetPresetsUI } from '../catalog/Presets/WidgetPresets'
 
 const CushyShellUI = observer(function CushySHell(
-   p: CompiledRenderProps<Z.AnyField> & {
+   p: RenderPropsCompiled<Z.AnyField> & {
       border?: boolean
       HEADER: React.JSX.Element
    },
@@ -71,7 +71,7 @@ const CushyShellUI = observer(function CushySHell(
    return WUI
 })
 
-export const ShellCushyLeftUI = observer(function ShellCushyLeft(p: CompiledRenderProps) {
+export const ShellCushyLeftUI = observer(function ShellCushyLeft(p: RenderPropsCompiled) {
    const field = p.field
    const originalField = field /* 🔴 */
    const utils = p.presenter.utils
@@ -98,7 +98,7 @@ export const ShellCushyLeftUI = observer(function ShellCushyLeft(p: CompiledRend
    )
 })
 
-export const ShellCushyList1UI = observer(function ShellCushyList1(p: CompiledRenderProps) {
+export const ShellCushyList1UI = observer(function ShellCushyList1(p: RenderPropsCompiled) {
    const field = p.field
    const originalField = field /* 🔴 */
    const utils = p.presenter.utils
@@ -125,7 +125,7 @@ export const ShellCushyList1UI = observer(function ShellCushyList1(p: CompiledRe
    )
 })
 
-export const ShellCushyRightUI = observer(function ShellCushyRight(p: CompiledRenderProps) {
+export const ShellCushyRightUI = observer(function ShellCushyRight(p: RenderPropsCompiled) {
    const field = p.field
    const originalField = field /* 🔴 */
    const utils = p.presenter.utils
@@ -157,7 +157,7 @@ export const ShellCushyRightUI = observer(function ShellCushyRight(p: CompiledRe
    )
 })
 
-export const ShellCushyFluidUI = observer(function ShellCushyFluid(p: CompiledRenderProps) {
+export const ShellCushyFluidUI = observer(function ShellCushyFluid(p: RenderPropsCompiled) {
    const field = p.field
    const originalField = field /* 🔴 */
    const utils = p.presenter.utils

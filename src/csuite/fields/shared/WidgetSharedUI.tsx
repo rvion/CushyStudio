@@ -1,11 +1,11 @@
-import type { CompiledRenderProps } from '../../../csuite-cushy/presenters/RenderTypes'
+import type { RenderPropsCompiled } from '../../../csuite-cushy/presenters/RenderPropsCompiled'
 import type { Field_shared } from './FieldShared'
 
 import { observer } from 'mobx-react-lite'
 
 import { renderFCOrNode } from '../../utils/renderFCOrNode'
 
-export const ShellSharedUI = observer(function ShellShared(p: CompiledRenderProps<Field_shared>) {
+export const ShellSharedUI = observer(function ShellShared(p: RenderPropsCompiled<Field_shared>) {
    const field = p.field
    const child = field.child
    return (

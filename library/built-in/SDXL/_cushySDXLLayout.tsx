@@ -1,4 +1,4 @@
-import type { RenderRule } from '../../../src/csuite-cushy/presenters/RenderTypes'
+import type { RenderRule } from '../../../src/csuite-cushy/presenters/RenderPropsCompiled'
 import type { Field_group } from '../../../src/csuite/fields/group/FieldGroup'
 import type { Field_list } from '../../../src/csuite/fields/list/FieldList'
 import type { IconName } from '../../../src/csuite/icons/IconName'

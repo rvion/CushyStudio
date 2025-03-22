@@ -1,8 +1,8 @@
-import type { CompiledRenderProps } from '../presenters/RenderTypes'
+import type { RenderPropsCompiled } from '../presenters/RenderPropsCompiled'
 
 import { observer } from 'mobx-react-lite'
 
-export const ShellInputOnly = observer(function ShellInputOnly(p: CompiledRenderProps) {
+export const ShellInputOnly = observer(function ShellInputOnly(p: RenderPropsCompiled) {
    const field = p.field
    const utils = p.presenter.utils
    return (

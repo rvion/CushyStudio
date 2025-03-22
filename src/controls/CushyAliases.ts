@@ -1,6 +1,6 @@
 import type { ComfyUnionValue } from '../comfyui/comfyui-types'
 import type { OpenRouter_Models } from '../csuite'
-import type { UIPropsFor as UIPropsFor_ } from '../csuite-cushy/presenters/RenderSlots'
+import type { UIPropsFor as UIPropsFor_ } from '../csuite-cushy/presenters/RenderProps'
 import type { Field_board } from '../csuite/fields/board/Field_board'
 import type { Field_bool } from '../csuite/fields/bool/FieldBool'
 import type { Field_choices, MAGICCHOICES } from '../csuite/fields/choices/FieldChoices'

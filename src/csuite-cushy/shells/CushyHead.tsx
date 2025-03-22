@@ -1,11 +1,11 @@
-import type { CompiledRenderProps } from '../presenters/RenderTypes'
+import type { RenderPropsCompiled } from '../presenters/RenderPropsCompiled'
 import type { ReactNode } from 'react'
 
 import { observer } from 'mobx-react-lite'
 
 import { WidgetHeaderContainerUI } from '../../csuite/form/WidgetHeaderContainerUI'
 
-export type CushyHeadProps = CompiledRenderProps & {
+export type CushyHeadProps = RenderPropsCompiled & {
    children?: ReactNode
    // asRevealAnchor?: // TODO
 }

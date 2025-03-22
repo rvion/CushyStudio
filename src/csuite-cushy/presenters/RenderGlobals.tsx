@@ -21,29 +21,28 @@ import type { Field_string } from '../../csuite/fields/string/FieldString'
 import type { Field } from '../../csuite/model/Field'
 import type { Field_prompt } from '../../prompt/FieldPrompt'
 import type { WidgetsCatalog } from './RenderCatalog'
-import type { DisplaySlots } from './RenderSlots'
-import type { FieldUIConf } from './RenderTypes'
+import type { RenderProps } from './RenderProps'
 import type { FC } from 'react'
-
-export type CatalogVariants<N extends CATALOG.AllFieldTypes> = any
 
 /* eslint-disable @typescript-eslint/no-namespace */
 declare global {
    namespace RENDERER {
-      type UIConf<FIELD extends Field> = FieldUIConf<FIELD>
-      interface FieldRenderArgs<out FIELD extends Field> extends DisplaySlots<FIELD> {
-         rule?: FieldUIConf<FIELD>
-      }
+      // what is passed to `uiui` in the config
+      type UIConf<FIELD extends Field> = RenderProps<FIELD>
+
+      // props given to <field.UI ... /> (not including field)
+      type FieldRenderArgs<FIELD extends Field> = RenderProps<FIELD>
    }
 
    interface Window {
+      // renderer entrypoint that should be injected once for every project;
+      // src/csuite-cushy/presenters/Renderer.tsx in cushy
       RENDERER: {
          Render: FC<{ field: Field } & RENDERER.FieldRenderArgs<any>>
       }
    }
 
    namespace CATALOG {
-      type variants = { [k in AllFieldTypes]: CatalogVariants<k> }
       type widgets = WidgetsCatalog
       /** closed union to help typescript proove variance by checking all branches */
 

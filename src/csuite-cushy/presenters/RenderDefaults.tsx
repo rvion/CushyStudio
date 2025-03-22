@@ -1,8 +1,7 @@
 import type { Field_group } from '../../csuite/fields/group/FieldGroup'
 import type { SelectKey } from '../../csuite/fields/selectOne/SelectOneKey'
 import type { Field } from '../../csuite/model/Field'
-import type { DisplaySlots } from './RenderSlots'
-import type { DisplaySlotsExt } from './RenderTypes'
+import type { RenderProps } from './RenderProps'
 
 import { runInAction } from 'mobx'
 
@@ -35,7 +34,7 @@ import { defaultRulesV2, renderDefaultKey } from './RenderDefaultsKey'
  * every project can define its own algebra for rendering fields
  * in CushyStudio, our Shell iw suppose to handle those
  */
-const baseslots: DisplaySlots<Field> = {
+const baseslots: RenderProps<Field> = {
    /* ✅ */ Shell: ShellCushyLeftUI,
 
    // heavilly suggested to include in your presenter unless you know what you do
@@ -81,7 +80,7 @@ const baseslots: DisplaySlots<Field> = {
 function r<FIELD extends Field>(
    //
    selector: string,
-   slots: DisplaySlotsExt<FIELD>,
+   slots: RenderProps<FIELD>,
    priority = 10,
 ): void {
    defaultRulesV2.push({
@@ -131,10 +130,10 @@ function resetDefaultRules() {
    r<Field>('$.{@group|@optional.@group|@list|@choices|@prompt}', {
       Decoration: (p) => <UY.Decorations.Card {...p} />,
    })
-   r<Z.FList<Z.Record_>>('@list.@optional.@group.', (f) => ({
-      Body: <UY.list.BlenderLike field={f.field} renderItem={() => <>🔴</>} />,
-   }))
-   r<Z.FList<Z.Record_>>('@list:has(.@group.)', () => ({
+   r<Z.FList<Z.Record_>>('@list.@optional.@group.', {
+      Body: (f) => <UY.list.BlenderLike field={f.field} renderItem={() => <>🔴</>} />,
+   })
+   r<Z.FList<Z.Record_>>('@list:has(.@group.)', {
       Body: (f) => {
          return (
             <UY.list.BlenderLike
@@ -153,7 +152,7 @@ function resetDefaultRules() {
             />
          )
       },
-   }))
+   })
    renderDefaultKey.version++
 }
 runInAction(() => {

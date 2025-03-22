@@ -1,5 +1,5 @@
 import type { CSchema } from '../controls/CSchema'
-import type { RenderRule } from '../csuite-cushy/presenters/RenderTypes'
+import type { RenderRule } from '../csuite-cushy/presenters/RenderPropsCompiled'
 import type { Field } from '../csuite/model/Field'
 import type { SchemaDict } from '../csuite/model/SchemaDict'
 import type { MediaImageL } from '../models/MediaImage'

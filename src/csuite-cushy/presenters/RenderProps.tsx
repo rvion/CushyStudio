@@ -4,23 +4,21 @@ import type { WidgetLabelCaretProps } from '../../csuite/form/WidgetLabelCaretUI
 import type { WidgetLabelIconProps } from '../../csuite/form/WidgetLabelIconUI'
 import type { WidgetMenuProps } from '../../csuite/form/WidgetMenu'
 import type { WidgetSingleLineSummaryProps } from '../../csuite/form/WidgetSingleLineSummaryUI'
-import type { WidgetToggleProps } from '../../csuite/form/WidgetToggleUI'
 import type { Field } from '../../csuite/model/Field'
 import type { FCOrJSXOrNamed, FCOrNode } from '../../csuite/utils/renderFCOrNode'
-import type { CovariantFn } from '../../csuite/variance/BivariantHack'
-import type { QuickFormContent } from '../catalog/group/QuickForm'
 import type { WidgetIndentProps } from '../catalog/Indent/WidgetIndentUI'
 import type { WidgetPresetsProps } from '../catalog/Presets/WidgetPresets'
 import type { WidgetTitleProps } from '../catalog/Title/WidgetLabelTextUI'
 import type { CushyHeadProps } from '../shells/CushyHead'
-import type { CompiledRenderProps } from './RenderTypes'
+import type { RenderPropsCompiled } from './RenderPropsCompiled'
+import type { RenderRule } from './RenderRule'
 import type { FC, ReactNode } from 'react'
 
 // #region Slots
 /**
- * component slots available in your Presenter
- * list of all components used in the built-in FieldPresenter
- * from very prioritary to very optional
+ * ui config forwarded to your selected Shell.
+ * if you create your own shells, you're advised to take into account given props
+ *
  * ✅ really recommended
  * 🟢 recommanded
  * 🟡 optional
@@ -28,44 +26,54 @@ import type { FC, ReactNode } from 'react'
  * 🟣 not recommended
  * 🟥 really not recommended
  *
- * ⭕️ entrypoint; needs to be handled by the presenter
  * Mayby<FC> means:
- *
  *    undefined => don't change anything; keep previous slot value
  *    FC        => use this component for the slot, passing props it expects (that's why most of the FC only accept very few params)
  *    null      => disable the slot; i.e. slot should not be displayed/used
  *    ReactNode => use this react node direclty
  */
 
-export type UIPropsFor<FIELD extends Field> = Omit<DisplaySlots<FIELD>, 'Shell'> & { field: FIELD }
+export type UIPropsFor<FIELD extends Field> = Omit<RenderProps<FIELD>, 'Shell'> & { field: FIELD }
 
-export interface DisplaySlots<out FIELD extends Field = Field> {
+export interface RenderProps<out FIELD extends Field = Field> {
+   /**
+    * The component that will receive all those props. It's the main container for the field to be rendered.
+    * it will handle the compositing the various element of the field (menu, errors, label, etc.)
+    * note: passing a custom function serve as an escape hatch for a 100% custom UI
+    */
+   Shell?: FCOrJSXOrNamed<RenderPropsCompiled<FIELD>, keyof CATALOG.widgets['Shell']>
+
+   /**
+    * list of rules injected for itself and its *visual* children
+    * note: a bit like CSS rules, except with stuff to swap components / props / etc.
+    * */
+   rules?: RenderRule<Z.AnyField>[]
+
    /**
     * if specified, css rules will be matched as if the given
     * field was a direct child of given field.
-    * // TODO: handle properly
     */
    virtualParent?: Field
 
    /** instruct the components to pretend config has been overriten with that */
    config?: Partial<FIELD['$config']>
 
-   /** instruct the components to pretend config has been overriten with that */
+   /**
+    * instruct the components to pretend config has been overriten with that
+    * very similar to `config`, but show less fields in the completion, so may be a bit
+    * simpler to explore field-specific config
+    */
    ownConfig?: Partial<FIELD['$ownConfig']>
 
-   // TODO: remove
-   // /** @deprecated */
-   // ⏸️layout?: CovariantFn<[FIELD], QuickFormContent[]>
+   // when you want to wrap your whole shell into some dedicated component
+   // e.g. a form, a modal, a card, etc.
+   // very very common use-case
+   /* ✅ */ Decoration?: FCOrNode<{ field: FIELD; children: ReactNode }>
 
-   // 0. stuff that will wrap the shell if specified
-   Decoration?: FCOrNode<{ field: FIELD; children: ReactNode }>
-
-   // 1. Shell
-   // can also be used an escape hatch for 100% custom UI
-   /* ⭕️ */ Shell?: FCOrJSXOrNamed<CompiledRenderProps<FIELD>, keyof CATALOG.widgets['Shell']>
-
-   Before?: FCOrNode<{ field: FIELD }>
-   After?: FCOrNode<{ field: FIELD }>
+   // for when you want to add something above/below a field ui without changing how it's rendered
+   // very very common use-case
+   /* ✅ */ Before?: FCOrNode<{ field: FIELD }>
+   /* ✅ */ After?: FCOrNode<{ field: FIELD }>
 
    // 2. Direct Slots for this field only
    // heavilly suggested to include in your presenter unless you know what you do
