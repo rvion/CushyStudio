@@ -51,7 +51,6 @@ export class LibraryFile {
       public absPath: AbsolutePath,
       public relPath: RelativePath,
    ) {
-      this.st = library.st
       this.strategies = this.findLoadStrategies()
       makeAutoObservable(this, {
          fPath: false,
@@ -69,8 +68,6 @@ export class LibraryFile {
    get baseName(): string {
       return basename(this.relPath)
    }
-   /** access to the global app state */
-   st: STATE
 
    /** abs path to the folder this file is in */
    get folderAbs(): AbsolutePath {
@@ -86,25 +83,20 @@ export class LibraryFile {
       return nameLower.includes(searchLower)
    }
 
-   // scripts = new LiveCollection<CushyScriptL>({
-   //     table: () => this.st.db.cushy_scripts,
-   //     where: () => ({ path: this.relPath }),
-   // })
-
    get scriptInDB(): Maybe<CushyScriptL> {
-      return this.st.db.cushy_script.get(this.relPath) // script is IS the relPath
-      // return this.st.db.cushy_scripts.findOne({ path: this.relPath })
+      return cushy.db.cushy_script.get(this.relPath) // script is IS the relPath
+      // return cushy.db.cushy_scripts.findOne({ path: this.relPath })
    }
 
    strategies: LoadStrategy[] = []
 
    // --------------------------------------------------------
-   // loaded = new ManualPromise<true>()
    errors: {
       title: string
       body: string
       details?: any
    }[] = []
+
    resetErrors(): void {
       this.errors = []
    }
@@ -170,7 +162,7 @@ export class LibraryFile {
          }
 
          // if we have already attempted extraction once in a previous session, return it
-         const scriptFromDB = this.st.db.cushy_script.get(this.relPath)
+         const scriptFromDB = cushy.db.cushy_script.get(this.relPath)
          if (scriptFromDB) {
             this.currentScriptExtractionPromise = null
             return { type: 'cached', script: scriptFromDB }
@@ -210,7 +202,7 @@ export class LibraryFile {
          this.currentScriptExtractionPromise.resolve(RESULT)
          this.currentScriptExtractionPromise = null
 
-         const scriptFromDB = this.st.db.cushy_script.get(this.relPath)
+         const scriptFromDB = cushy.db.cushy_script.get(this.relPath)
          if (scriptFromDB == null) {
             this.UPSERT_SCRIPT(`/* ERROR */`)
          }
@@ -342,7 +334,7 @@ export class LibraryFile {
          const filename = path.basename(this.absPath)
          const author = path.dirname(this.absPath)
          const title = filename
-         this.codeJS = this.st.importer.convertPromptToCode(comfyPromptJSON, {
+         this.codeJS = cushy.importer.convertPromptToCode(comfyPromptJSON, {
             title,
             author,
             preserveId: true,
@@ -350,11 +342,11 @@ export class LibraryFile {
          })
          this.promptJSON = comfyPromptJSON
          return { type: 'SUCCESS', script: this.UPSERT_SCRIPT(this.codeJS) }
-         // ⏸️ const graph = this.st.db.graphs.create({ comfyPromptJSON: comfyPromptJSON })
+         // ⏸️ const graph = cushy.db.graphs.create({ comfyPromptJSON: comfyPromptJSON })
          // ⏸️ const workflow = await graph.json_workflow()
          // ⏸️ this.liteGraphJSON = workflow
          // ⏸️ return LoadStatus.SUCCESS
-         // 🦊 const codeJSAuto = this.st.importer.convertPromptToCode(json, { title, author, preserveId: true, autoUI: true })
+         // 🦊 const codeJSAuto = cushy.importer.convertPromptToCode(json, { title, author, preserveId: true, autoUI: true })
          // 🦊 const codeTSAuto = codeJS
          // 🦊 const toolsAuto =  this.RUN_ACTION_FILE({ codeJS: codeJSAuto })
          // 🦊 this.asAutoAction = __OK({ codeJS: codeJSAuto, codeTS: codeTSAuto, tools: toolsAuto }) // 🟢 AUTOACTION
@@ -404,7 +396,7 @@ export class LibraryFile {
       // 2. promptJSON
       let promptJSON: ComfyUIAPIRequest
       try {
-         promptJSON = convertLiteGraphToPrompt(this.st.schema, workflowJSON)
+         promptJSON = convertLiteGraphToPrompt(cushy.schema, workflowJSON)
       } catch (error) {
          console.error(error)
          return this.addError(`❌ failed to import workflow: cannot convert LiteGraph To Prompt`, error)
@@ -416,7 +408,7 @@ export class LibraryFile {
 
       // 3. asAction
       try {
-         this.codeJS = this.st.importer.convertPromptToCode(promptJSON, {
+         this.codeJS = cushy.importer.convertPromptToCode(promptJSON, {
             // metadat
             illustration: metadata.illustration,
             author: metadata.author,
@@ -440,7 +432,7 @@ export class LibraryFile {
       console.groupCollapsed(`[🧐] script extracted for ${this.relPath}`)
       console.log(codeJS)
       console.groupEnd()
-      const script = this.st.db.cushy_script.upsert({
+      const script = cushy.db.cushy_script.upsert({
          id: asCushyScriptID(this.relPath),
          code: codeJS,
          path: this.relPath,
