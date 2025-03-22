@@ -27,6 +27,8 @@ import { WidgetString_MarkdownUI } from '../../csuite/fields/string/WidgetString
 import { WidgetString_SmallInput } from '../../csuite/fields/string/WidgetString_SmallInput'
 import { WidgetString_summary } from '../../csuite/fields/string/WidgetString_summary'
 import { WidgetString_TextareaInput } from '../../csuite/fields/string/WidgetString_TextareaInput'
+import { WidgetLabelCaretUI } from '../../csuite/form/WidgetLabelCaretUI'
+import { WidgetLabelIconPlacholderUI, WidgetLabelIconUI } from '../../csuite/form/WidgetLabelIconUI'
 import { Frame } from '../../csuite/frame/Frame'
 import { IkonOf } from '../../csuite/icons/iconHelpers'
 import { MessageErrorUI } from '../../csuite/messages/MessageErrorUI'
@@ -160,6 +162,9 @@ export const widgetsCatalog /* WidgetsCatalog */ = {
       Button: Button,
       Checkbox: InputBoolCheckboxUI,
       ResizableFrame: ResizableFrame,
+      Caret: WidgetLabelCaretUI,
+      Icon: WidgetLabelIconPlacholderUI,
+      Icon_: WidgetLabelIconUI,
    },
    // #region Form components
    Title: {

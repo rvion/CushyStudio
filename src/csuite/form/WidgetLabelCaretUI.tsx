@@ -15,8 +15,6 @@ export type WidgetLabelCaretProps = {
 }
 
 export const WidgetLabelCaretUI = observer(function WidgetLabelCaretUI_(p: WidgetLabelCaretProps) {
-   const preferences = cushy.preferences
-
    // (bird_d): This is always true in cushy, does not have an option.
    // if (!preferences.interface.value.widgetshowExpandCarets) return null
    if (p.field.parent == null) return null

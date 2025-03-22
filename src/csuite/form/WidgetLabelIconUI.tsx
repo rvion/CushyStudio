@@ -23,3 +23,17 @@ export const WidgetLabelIconUI = observer(function WidgetLabelIconUI_(p: WidgetL
       </Frame>
    )
 })
+
+export const WidgetLabelIconPlacholderUI = observer(function WidgetLabelIconPlacholderUI_(
+   p: WidgetLabelIconProps,
+) {
+   return (
+      <Frame //
+         tw='UI-WidgetLabelIcon minh-widget flex items-center self-start'
+         className={p.className}
+         text={{ chroma: 0.2, contrast: 0.9 }}
+      >
+         <IkonOf name={p.field.icon ?? IKONS._} />
+      </Frame>
+   )
+})
