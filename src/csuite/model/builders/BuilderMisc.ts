@@ -18,7 +18,7 @@ export type BuilderMiscMixin = {
    markdown(config: Field_markdown['$config'] | string): Z.Markdown
    header(config: Field_markdown['$config'] | string): Z.Markdown
    pixel(config?: Omit<Field_number['$config'], 'mode' | 'parse' | 'format'>): Z.Number
-   tuple: Tuple
+   // tuple: Tuple
 }
 
 // 💬 2025-02-14 rvion:
@@ -94,23 +94,23 @@ const BuilderMiscImpl = (): BuilderMiscMixin =>
          })
       },
 
-      tuple: tuple,
+      // tuple: tuple,
    })
 
 // prettier-ignore
-type Tuple = {
-   (): Z.Tuple<[]>
-   <T1 extends CSchema>(s1: T1): Z.Tuple<[T1]>
-   <T1 extends CSchema, T2 extends CSchema>(s1: T1, s2: T2): Z.Tuple<[T1, T2]>
-   <T1 extends CSchema, T2 extends CSchema, T3 extends CSchema>(s1: T1, s2: T2,s3: T3): Z.Tuple<[T1, T2, T3]>
-   <T1 extends CSchema, T2 extends CSchema, T3 extends CSchema, T4 extends CSchema>(s1: T1, s2: T2,s3: T3, s4: T4): Z.Tuple<[T1, T2, T3, T4]>
-   <T1 extends CSchema, T2 extends CSchema, T3 extends CSchema, T4 extends CSchema, T5 extends CSchema>(s1: T1, s2: T2,s3: T3, S4: T4, S5: T5): Z.Tuple<[T1, T2, T3, T4, T5]>
-}
+// type Tuple = {
+//    (): Z.Tuple<[]>
+//    <T1 extends CSchema>(s1: T1): Z.Tuple<[T1]>
+//    <T1 extends CSchema, T2 extends CSchema>(s1: T1, s2: T2): Z.Tuple<[T1, T2]>
+//    <T1 extends CSchema, T2 extends CSchema, T3 extends CSchema>(s1: T1, s2: T2,s3: T3): Z.Tuple<[T1, T2, T3]>
+//    <T1 extends CSchema, T2 extends CSchema, T3 extends CSchema, T4 extends CSchema>(s1: T1, s2: T2,s3: T3, s4: T4): Z.Tuple<[T1, T2, T3, T4]>
+//    <T1 extends CSchema, T2 extends CSchema, T3 extends CSchema, T4 extends CSchema, T5 extends CSchema>(s1: T1, s2: T2,s3: T3, S4: T4, S5: T5): Z.Tuple<[T1, T2, T3, T4, T5]>
+// }
 
-const tuple: Tuple = function tuple(...args: CSchema[]): Z.Tuple<CSchema[]> {
-   throw new Error('❌ Tuple implementation unfinished')
-   // return  CSchema.new(Field_string, config)
-}
+// const tuple: Tuple = function tuple(...args: CSchema[]): Z.Tuple<CSchema[]> {
+//    throw new Error('❌ Tuple implementation unfinished')
+//    // return  CSchema.new(Field_string, config)
+// }
 
 export const BuilderMiscDescriptors: Record<string, PropertyDescriptor> =
    Object.getOwnPropertyDescriptors(BuilderMiscImpl())
