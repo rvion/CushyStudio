@@ -1,3 +1,4 @@
+import type { FieldPattern } from '../../csuite-cushy/presenters/RenderRule'
 import type { Field } from '../model/Field'
 
 import { defineFieldMixin } from '../model/defineFieldMixin'
@@ -11,10 +12,11 @@ export const SelectorMixinImpl = defineFieldMixin({
       const selector = FieldSelector.from(selector_)
       return this.select(selector).length > 0
    },
-   matches(selector_: string | FieldSelector | boolean, virtualParents?: Map<Field, Field>): boolean {
-      if (typeof selector_ === 'boolean') return selector_
-      const selector = FieldSelector.from(selector_)
-      return selector.matches(this, virtualParents)
+   matches(selector_: FieldPattern<Field>, virtualParents?: Map<Field, Field>): boolean {
+      return FieldSelector.match(selector_, this, virtualParents)
+      // if (typeof selector_ === 'boolean') return selector_
+      // const selector = FieldSelector.from(selector_)
+      // return selector.matches(this, virtualParents)
    },
    // extraction
    extract(selector_: string | FieldSelector): any {
