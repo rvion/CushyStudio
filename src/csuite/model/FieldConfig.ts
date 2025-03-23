@@ -141,7 +141,9 @@ export interface FieldConfig_CommonProperties<out FIELD extends Field> {
     */
    startCollapsed?: boolean
 
-   /** if false, the widget will always be expanded */
+   /**
+    * @deprecated
+    * if false, the widget will always be expanded */
    collapsed?: false
 
    /** if provided, override the default logic to decide if the widget need to be bordered */

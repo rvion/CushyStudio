@@ -4,6 +4,7 @@ import type { ReactNode } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import { WidgetHeaderContainerUI } from '../../csuite/form/WidgetHeaderContainerUI'
+import { renderFCOrNode, renderFCOrNodeWithWrapper } from '../../csuite/utils/renderFCOrNode'
 
 export type CushyHeadProps = RenderPropsCompiled & {
    children?: ReactNode
@@ -12,7 +13,6 @@ export type CushyHeadProps = RenderPropsCompiled & {
 
 export const CushyHeadUI = observer(function CushyHead(p: CushyHeadProps) {
    const field = p.field
-   const utils = p.presenter.utils
    const interfacePreferences = cushy.preferences.interface.value
 
    return (
@@ -21,18 +21,29 @@ export const CushyHeadUI = observer(function CushyHead(p: CushyHeadProps) {
          {p.children}
 
          {/* HEADER CONTROLS */}
-         {utils.renderFCOrNodeWithWrapper(p.Header, p, p.ContainerForHeader, {
+         {renderFCOrNode(
+            p.ContainerForHeader,
+            {
+               className: p.classNameAroundBodyAndHeader ?? undefined,
+               field,
+            },
+            renderFCOrNode(p.OnLeft, p),
+            renderFCOrNode(p.Header, p),
+            renderFCOrNode(p.OnRight, p),
+            //
+         )}
+         {/* {renderFCOrNodeWithWrapper(p.Header, p, p.ContainerForHeader, {
             className: p.classNameAroundBodyAndHeader ?? undefined,
             field,
-         })}
+         })} */}
 
-         {utils.renderFCOrNode(p.UpDownBtn, p)}
-         {utils.renderFCOrNode(p.DeleteBtn, p)}
+         {renderFCOrNode(p.UpDownBtn, p)}
+         {renderFCOrNode(p.DeleteBtn, p)}
 
          {/* HEADER EXTRA prettier-ignore */}
-         {utils.renderFCOrNode(p.Extra, p)}
-         {interfacePreferences.widget.showUndo && utils.renderFCOrNode(p.UndoBtn, p)}
-         {interfacePreferences.widget.showMenu && utils.renderFCOrNode(p.MenuBtn, p)}
+         {renderFCOrNode(p.Extra, p)}
+         {interfacePreferences.widget.showUndo && renderFCOrNode(p.UndoBtn, p)}
+         {interfacePreferences.widget.showMenu && renderFCOrNode(p.MenuBtn, p)}
       </WidgetHeaderContainerUI>
    )
 })

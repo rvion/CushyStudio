@@ -271,7 +271,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                )}
                {draft.form && (
                   <draft.form.UI //
-                     rule={draft.app.layout ?? undefined}
+                     rules={draft.app.layout ?? undefined}
                      // global={{ Shell: ShellMobileUI }}
                   />
                )}

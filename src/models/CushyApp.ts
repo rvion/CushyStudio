@@ -1,5 +1,5 @@
+import type { App } from '../cards/App'
 import type { LibraryFile } from '../cards/LibraryFile'
-import type { RenderRule } from '../csuite-cushy/presenters/RenderPropsCompiled'
 import type { Timestamp } from '../csuite/types/Timestamp'
 import type { LiveDB } from '../db/LiveDB'
 import type { TABLES } from '../db/TYPES.gen'
@@ -12,6 +12,7 @@ import { computed, runInAction } from 'mobx'
 import { basename, extname, join } from 'pathe'
 
 import { generateAvatar } from '../cards/AvatarGenerator'
+import { normalizeRule, type RenderRule, type RenderRule_asDict } from '../csuite-cushy/presenters/RenderRule'
 import { VirtualHierarchy } from '../csuite/tree/VirtualHierarchy'
 import { SQLITE_false, SQLITE_true } from '../csuite/types/SQLITE_boolean'
 import { toastError, toastSuccess } from '../csuite/utils/toasts'
@@ -344,7 +345,7 @@ export class CushyAppL extends BaseInst<TABLES['cushy_app']> {
       return this.data.createdAt as Timestamp
    }
 
-   @computed get layout(): Maybe<RenderRule<any>> {
+   @computed get layout(): App<any>['layout'] {
       return this.executable_orExtract?.def.layout
    }
 

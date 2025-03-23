@@ -22,13 +22,14 @@ import type { Field } from '../../csuite/model/Field'
 import type { Field_prompt } from '../../prompt/FieldPrompt'
 import type { WidgetsCatalog } from './RenderCatalog'
 import type { RenderProps } from './RenderProps'
+import type { RenderRule } from './RenderRule'
 import type { FC } from 'react'
 
 /* eslint-disable @typescript-eslint/no-namespace */
 declare global {
    namespace RENDERER {
       // what is passed to `uiui` in the config
-      type UIConf<FIELD extends Field> = RenderProps<FIELD>
+      type UIConf<FIELD extends Field> = RenderProps<FIELD> | RenderRule<Z.AnyField>[]
 
       // props given to <field.UI ... /> (not including field)
       type FieldRenderArgs<FIELD extends Field> = RenderProps<FIELD>

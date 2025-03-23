@@ -1,5 +1,6 @@
 import type { CSchema } from '../controls/CSchema'
-import type { RenderRule } from '../csuite-cushy/presenters/RenderPropsCompiled'
+import type { RenderProps } from '../csuite-cushy/presenters/RenderProps'
+import type { RenderRule, RenderRule_asList } from '../csuite-cushy/presenters/RenderRule'
 import type { Field } from '../csuite/model/Field'
 import type { SchemaDict } from '../csuite/model/SchemaDict'
 import type { MediaImageL } from '../models/MediaImage'
@@ -53,8 +54,20 @@ export type App<FIELD extends Field> = {
    /** app interface (GUI) */
    ui: (form: Z.Builder) => CSchema<FIELD>
 
-   /* layout */
-   layout?: Maybe<RenderRule<NoInfer<FIELD>>>
+   /**
+    * Use that option to change the look of the form by using the set function
+    *You can also use the `set` function both
+    *   - to acumulate child ruules rules easilly
+    *   - or to set the top-level UIProps
+    */
+   // prettier-ignore
+   layout?: (
+      field: FIELD,
+      set: {
+         <F extends Field>(...props: RenderRule_asList<F>): void
+         <F extends Field>(prop: RenderProps<FIELD>): void
+      }
+   ) => void
 
    /** so you cana have fancy buttons to switch between a few things */
    presets?: Record<string, (doc: NoInfer<FIELD>) => void>

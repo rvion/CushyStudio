@@ -35,6 +35,10 @@ import type { FC, ReactNode } from 'react'
 
 export type UIPropsFor<FIELD extends Field> = Omit<RenderProps<FIELD>, 'Shell'> & { field: FIELD }
 
+export interface StandardProps<FIELD extends Field = Field> {
+   Decoration: { rp: UIPropsFor<FIELD>; className?: string; children: ReactNode }
+}
+
 export interface RenderProps<out FIELD extends Field = Field> {
    /**
     * The component that will receive all those props. It's the main container for the field to be rendered.
@@ -47,7 +51,7 @@ export interface RenderProps<out FIELD extends Field = Field> {
     * list of rules injected for itself and its *visual* children
     * note: a bit like CSS rules, except with stuff to swap components / props / etc.
     * */
-   rules?: RenderRule<Z.AnyField>[]
+   rules?: RenderRule<Field>[]
 
    /**
     * if specified, css rules will be matched as if the given
@@ -68,12 +72,14 @@ export interface RenderProps<out FIELD extends Field = Field> {
    // when you want to wrap your whole shell into some dedicated component
    // e.g. a form, a modal, a card, etc.
    // very very common use-case
-   /* ✅ */ Decoration?: FCOrNode<{ field: FIELD; children: ReactNode }>
+   /* ✅ */ Decoration?: FCOrNode<StandardProps<FIELD>['Decoration']>
 
    // for when you want to add something above/below a field ui without changing how it's rendered
    // very very common use-case
-   /* ✅ */ Before?: FCOrNode<{ field: FIELD }>
-   /* ✅ */ After?: FCOrNode<{ field: FIELD }>
+   /* ✅ */ OnTop?: FCOrNode<{ field: FIELD }>
+   /* ✅ */ OnBottom?: FCOrNode<{ field: FIELD }>
+   /* ✅ */ OnLeft?: FCOrNode<{ field: FIELD }>
+   /* ✅ */ OnRight?: FCOrNode<{ field: FIELD }>
 
    // 2. Direct Slots for this field only
    // heavilly suggested to include in your presenter unless you know what you do
@@ -95,7 +101,7 @@ export interface RenderProps<out FIELD extends Field = Field> {
    /* 🟡 */ Indent?: FCOrNode<WidgetIndentProps>
    /* 🟡 */ UndoBtn?: FCOrNode<UIPropsFor<FIELD>>
    /* 🟡 */ Toogle?: FCOrNode<UIPropsFor<FIELD>>
-   /* 🟡 */ Caret?: FCOrNode<WidgetLabelCaretProps>
+   /* 🟡 */ Caret?: FCOrNode<UIPropsFor<FIELD> & WidgetLabelCaretProps>
    /* 🟡 */ Icon?: FCOrNode<WidgetLabelIconProps>
    /* 🟡 */ Presets?: FCOrNode<WidgetPresetsProps>
    /* 🟡 */ MenuBtn?: FCOrNode<WidgetMenuProps>
@@ -110,7 +116,9 @@ export interface RenderProps<out FIELD extends Field = Field> {
    classNameAroundBodyAndHeader?: Maybe<string>
    classNameAroundBody?: Maybe<string>
    classNameAroundHeader?: Maybe<string>
+   classNameForShell?: Maybe<string>
    className?: Maybe<string>
+
    shouldShowHiddenFields?: Maybe<boolean>
    shouldAnimateResize?: Maybe<boolean>
    collapsible?: boolean

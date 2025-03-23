@@ -52,10 +52,6 @@ app({
          promptFromLlm2: b.textarea({ default: '' }),
       }),
 
-   layout: (ui) => {
-      ui.set('', { Decoration: null, Indent: null })
-      ui.set(ui.field.PromptFromLlm2, { Header: UY.string.markdown })
-   },
    run: async (sdk, conf) => {
       if (!sdk.LLM.isConfigured) {
          sdk.output_text(`Enter your api key in Config`)
@@ -81,5 +77,9 @@ app({
       const summaryTxt = conf.llmModels.map((model, ix) => formatResult(model, llmResults[ix]!)).join('\n\n')
       sdk.form.fields.promptFromLlm2.value = summaryTxt
       sdk.output_text(summaryTxt)
+   },
+   layout: (field, set) => {
+      set('', { Decoration: null, Indent: null })
+      set(field.PromptFromLlm2, { Header: UY.string.markdown })
    },
 })

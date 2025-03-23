@@ -1,14 +1,15 @@
 import type { RenderCtx } from './RenderCtx'
 import type { RenderProps } from './RenderProps'
 import type { RenderPropsCompiled } from './RenderPropsCompiled'
-import type { RenderRule } from './RenderRule'
 import type { ReactNode } from 'react'
 
 import { Field } from '../../csuite/model/Field'
+import { FieldSelector } from '../../csuite/selector/selector'
 import { extractComponentName } from '../../csuite/utils/extractComponentName'
 import { mergeDefined } from '../../csuite/utils/mergeDefined'
 import { _isFC, renderFCOrNode, renderFCOrNodeWithWrapper } from '../../csuite/utils/renderFCOrNode'
 import { defaultRulesV2 } from './RenderDefaultsKey'
+import { normalizeRule, type RenderRule } from './RenderRule'
 import { RenderUI } from './RenderUI'
 
 // see `src/csuite/form/presenters/presenter.readme.md`
@@ -22,6 +23,12 @@ export class Renderer {
       Renderer.count++
    }
 
+   private getRulesFromUIUI(field: Field): RenderRule<any>[] {
+      const x = field.config.uiui
+      if (x == null) return []
+      if (Array.isArray(x)) return x
+      return x.rules ?? []
+   }
    /**
     * MAIN METHOD TO RENDER A FIELD
     * this method is both for humans (calling render on field root)
@@ -29,19 +36,27 @@ export class Renderer {
     */
    render<FIELD extends Field>(ctx: RenderCtx<FIELD>): ReactNode {
       const { field, ancestors, uiconf } = ctx
-      // console.log(`[🦊🟢 1] rendering ${field.path} at ${getVisualPath(ctx)}`, uiconf.shouldShowHiddenFields)
+      const debug = false // field.path === '...'
 
-      const debug = false // field.path === '$.linkedFromChannel.val'
-      const rules: RenderRule<Field>[] = [
-         //
+      // all rules applied
+      const foo: RenderProps<FIELD> | RenderRule<Z.AnyField>[] = field.config.uiui as any
+      const bar: RenderRule<Field>[] = Array.isArray(foo) //
+         ? []
+         : [{ pattern: true, uiconf: foo }]
+      const rules_: RenderRule<Field>[] = [
+         // default rules
          ...defaultRulesV2,
-         ...ancestors.flatMap((prevCtx) => prevCtx.field.config.uiui?.rules ?? []),
+         // ancestors rules
+         ...ancestors.flatMap((prevCtx) => this.getRulesFromUIUI(prevCtx.field)),
          ...ancestors.flatMap((prevCtx) => prevCtx.uiconf.rules ?? []),
-         ...(field.config.uiui?.rules ?? []),
+         // from config { uiui: {...} }
+         ...this.getRulesFromUIUI(field),
+         ...bar,
+         // from  <UI {...} />
          ...(uiconf.rules ?? []),
-         { uiconf: field.config.uiui ?? {}, selector: true },
-         { uiconf, selector: true },
+         { uiconf: uiconf, pattern: true },
       ]
+      const rules = rules_.map(normalizeRule)
 
       // override parents if need be
       const virtualParents: Map<Field, Field> = new Map<Field, Field>()
@@ -50,60 +65,36 @@ export class Renderer {
          const child_ = ancestors[i + 1]!.field
          if (child_.parent !== parent_) virtualParents.set(child_, parent_)
       }
+
       const directParent_ = ancestors[ancestors.length - 1]?.field
       if (directParent_ && field.parent !== directParent_) virtualParents.set(field, directParent_)
+      // if (virtualParents.size > 0)
+      //    console.log(`[      🟢 >] rendering ${field.path} at ${getVisualPath(ctx)}`, virtualParents)
+
       let slots: RenderProps<FIELD> = {}
       // eval rule from config
       // if (field.config.uiui != null) xxx.evalRule(field.config.uiui, RENDER_PRIORITY_UIUI)
       for (const rule of rules) {
-         // only attempt to apply rules defined by parents
-         // ⏸️ if (rule.addedBy !== null && !field.path.startsWith(rule.addedBy.path)) continue
+         const isMatching = FieldSelector.match(rule.pattern, field, virtualParents)
 
-         // starts from this, and ensures the result contains the field.
-         // we probably want contains in many place.
-         const selector = rule.selector
-
-         // prettier-ignore
-         const isMatching =
-            isBool(selector) ? selector
-            : selector instanceof Field ? selector === field
-            : field.matches(selector, virtualParents)
-
-         // if (debug) {
-         //    console.log(
-         //       `[🦊] ${field.pathExt}`,
-         //       isMatching ? '🟢' : '🔴',
-         //       isBool(rule.selector) ? rule.selector : rule.selector.selector,
-         //       typeof rule.uiconf !== 'function' ? this.explainSlots(rule.uiconf) : '<function...>',
-         //    )
-         // }
          if (isMatching) {
             const newSlots = rule.uiconf as RenderProps<FIELD>
-            // const newSlots =
-            //    typeof rule.uiconf === 'function' //
-            //       ? (rule.uiconf({ field }) as RenderProps<FIELD>)
-            //       : (rule.uiconf as RenderProps<FIELD>)
             if (newSlots != null && Object.keys(newSlots).length > 0) {
                slots = mergeDefined(slots, newSlots)
             }
          }
       }
-      // console.log(`[🦊🟢 2] rendering ${field.path} at ${getVisualPath(ctx)}`, slots.shouldShowHiddenFields)
-
-      // ⏸️ override `Body` if `chidlren` is specified
-      // ⏸️ const layout = slots.layout
-      // ⏸️ if (layout != null) {
-      // ⏸️    slots.Body = createElement(QuickForm, { field, items: layout(field) })
-      // ⏸️ }
-
       // console.log(`[🔴🦊SHELL]`, slots.Shell)
       const Shell =
          typeof slots.Shell === 'string' //
             ? UY.Shell[slots.Shell]
-            : (slots.Shell ?? UY.Shell.Default)
+            : slots.Shell
+      // === undefined
+      //   ? UY.Shell.Default
+      //   : () => null
 
       // console.log(`[🤠] slots.ShellName`, slots.ShellName, field.path, Shell === catalog.Shell.Inline)
-      if (!Shell) throw new Error('Shell is not defined')
+      // if (!Shell) throw new Error('Shell is not defined')
 
       // COMPILED
       const finalProps: RenderPropsCompiled<FIELD> = { field, presenter: this, ...slots }
@@ -112,6 +103,7 @@ export class Renderer {
       // if (field.path === '$.latent.b.image.resize') this.debugFinalProps(finalProps)
       // console.log(`[🤠] Shell for ${field.path} is `, Shell)
       // console.log(`[🦊] slots for`, field.path, slots)
+      // console.log(`[🦊🟢FINAL] slots for`, field.path, slots.Head)
       return renderFCOrNode(Shell, finalProps)
    }
 

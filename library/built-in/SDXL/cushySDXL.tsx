@@ -9,7 +9,7 @@ app<CushySDXLSchema>({
       description: 'An example app to play with various stable diffusion technologies. Feel free to contribute improvements to it.', // prettier-ignore
    },
    ui: CushySDXLSchema.schema,
-   layout: _cushySDXLLayout(),
+   layout: _cushySDXLLayout,
    run: _cushySDXLRun,
 })
 
@@ -31,6 +31,6 @@ app<CushySDXLSchema>({
       ].join('\n'),
    },
    ui: CushySDXLSchema.schema,
-   layout: _cushySDXLLayout(),
+   layout: _cushySDXLLayout,
    run: _cushySDXLRun,
 })

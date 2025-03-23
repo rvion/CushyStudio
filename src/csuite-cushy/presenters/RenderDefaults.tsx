@@ -80,13 +80,13 @@ const baseslots: RenderProps<Field> = {
 function r<FIELD extends Field>(
    //
    selector: string,
-   slots: RenderProps<FIELD>,
+   uiconf: RenderProps<FIELD>,
    priority = 10,
 ): void {
    defaultRulesV2.push({
       addedBy: null,
-      selector: FieldSelector.from(selector),
-      uiconf: slots,
+      pattern: FieldSelector.from(selector),
+      uiconf,
       priority,
    })
 }
@@ -106,7 +106,7 @@ function resetDefaultRules() {
    // core rules
    r('.@group.', { Shell: ShellCushyRightUI })
    r('.@choices.', { Shell: ShellCushyRightUI })
-   r('@choices.@group', { Head: false })
+   // r('@choices.@group', { Head: false })
    r<Z.FShared<any>>('@shared', { Shell: ShellSharedUI })
    r<Z.FOptional<any>>('@optional', { Shell: ShellOptionalUI })
    r<Z.FString>('@str', { Header: UY.string.input, Body: null })
@@ -122,7 +122,7 @@ function resetDefaultRules() {
    r<any>('@enum', { Header: UY.enum.default, Body: null })
    r<any>('@prompt', { Header: UY.prompt.DefaultHeaderUI, Body: UY.prompt.DefaultBodyUI })
    r<Field>('$', { collapsible: false })
-   r<Field>('!(:has(.))', { Caret: false })
+   // r<Field>('!(:has(.))', { Caret: false })
    r<Field_group>('$@group', {
       Indent: false,
       Body: (f) => <UY.group.Default field={f.field} className='gap-1' />,

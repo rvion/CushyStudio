@@ -3,22 +3,22 @@ import type { RenderPropsCompiled } from '../presenters/RenderPropsCompiled'
 import { observer } from 'mobx-react-lite'
 
 import { Frame } from '../../csuite/frame/Frame'
+import { renderFCOrNode, renderFCOrNodeWithWrapper } from '../../csuite/utils/renderFCOrNode'
 
 // SHELL SIMPLE
 export const ShellInlineUI = observer(function ShellInline(p: RenderPropsCompiled) {
    const field = p.field
-   const utils = p.presenter.utils
    return (
       <Frame row>
-         {utils.renderFCOrNode(p.Before, { field })}
-         {utils.renderFCOrNodeWithWrapper(p.Header, p, p.ContainerForHeader, {
+         {renderFCOrNode(p.OnTop, { field })}
+         {renderFCOrNodeWithWrapper(p.Header, p, p.ContainerForHeader, {
             className: p.classNameAroundBodyAndHeader ?? undefined,
             field,
          })}
-         {utils.renderFCOrNodeWithWrapper(p.Body, p, p.ContainerForBody, {
+         {renderFCOrNodeWithWrapper(p.Body, p, p.ContainerForBody, {
             className: p.classNameAroundBodyAndHeader ?? undefined,
          })}
-         {utils.renderFCOrNode(p.After, { field })}
+         {renderFCOrNode(p.OnBottom, { field })}
       </Frame>
    )
 })

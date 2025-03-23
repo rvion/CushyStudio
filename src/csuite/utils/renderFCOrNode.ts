@@ -43,8 +43,9 @@ export const renderFCOrNode = <T extends object>(
    //
    x: FCOrNode__<T>,
    props: NoInfer<T>,
+   ...children: ReactNode[]
 ): ReactNode => {
-   if (_isFC<T>(x)) return createElement(x, props)
+   if (_isFC<T>(x)) return createElement(x, props, ...children)
    return x
 }
 
@@ -54,18 +55,19 @@ export const renderFCOrNodeWithWrapper = <
    T extends object,
    U extends object,
 >(
-   //
-   x: FCOrNode<T>,
-   props: NoInfer<T>,
+   // content
+   content: FCOrNode<T>,
+   contentProps: NoInfer<T>,
+   // wrapper
    wrapper: Maybe<FCOrNode<U>>,
    wrapperProps: NoInfer<U>,
 ): SimpleReactNode => {
    // if wrapper is already rendered, let's skip the content
-   if (wrapper != null && _isSimpleReactNode(wrapper)) return wrapper
+   if (/* wrapper != null && */ _isSimpleReactNode(wrapper)) return wrapper
 
-   const inner = _isFC<T>(x) ? createElement(x, props) : x
-   if (inner == null) return null
-   if (wrapper == null) return inner
+   const inner = _isFC<T>(content) ? createElement(content, contentProps) : content
+   // if (inner == null) return null
+   // if (wrapper == null) return null
 
    // if (!isValidElement(inner)) {
    //     console.error(`[💄] inner is not valid element:`, inner)

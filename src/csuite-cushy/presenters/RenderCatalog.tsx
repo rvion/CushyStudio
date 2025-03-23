@@ -27,7 +27,7 @@ import { WidgetString_MarkdownUI } from '../../csuite/fields/string/WidgetString
 import { WidgetString_SmallInput } from '../../csuite/fields/string/WidgetString_SmallInput'
 import { WidgetString_summary } from '../../csuite/fields/string/WidgetString_summary'
 import { WidgetString_TextareaInput } from '../../csuite/fields/string/WidgetString_TextareaInput'
-import { WidgetLabelCaretUI } from '../../csuite/form/WidgetLabelCaretUI'
+import { type WidgetLabelCaretProps, WidgetLabelCaretUI } from '../../csuite/form/WidgetLabelCaretUI'
 import { WidgetLabelIconPlacholderUI, WidgetLabelIconUI } from '../../csuite/form/WidgetLabelIconUI'
 import { Frame } from '../../csuite/frame/Frame'
 import { IkonOf } from '../../csuite/icons/iconHelpers'
@@ -157,7 +157,11 @@ export const widgetsCatalog /* WidgetsCatalog */ = {
       List1: ShellCushyList1UI,
    },
    // #region Utils
-   Misc: {
+   caret: {
+      Caret: WidgetLabelCaretUI,
+      CaretWithPlaceholder: (p: WidgetLabelCaretProps) => <WidgetLabelCaretUI {...p} placeholder />,
+   },
+   misc: {
       Frame: Frame,
       Button: Button,
       Checkbox: InputBoolCheckboxUI,

@@ -14,5 +14,7 @@ export interface RenderPropsCompiled<FIELD extends Field = Z.AnyField>
 
    /** Field we're currently rendering */
    field: FIELD
+
+   children?: React.ReactNode
 }
 //

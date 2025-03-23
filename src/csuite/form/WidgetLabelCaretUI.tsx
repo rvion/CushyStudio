@@ -8,26 +8,33 @@ import { WidgetLabelCaretPlaceholderUI } from './WidgetLabelCaretPlaceholderUI'
 export const LabelCaretWidth: '1rem' = '1rem'
 
 export type WidgetLabelCaretProps = {
-   className?: string
+   caretClassName?: string
    /** @default true */
    placeholder?: boolean
    field: Field
 }
 
-export const WidgetLabelCaretUI = observer(function WidgetLabelCaretUI_(p: WidgetLabelCaretProps) {
+export const WidgetLabelCaretUI = observer(function WidgetLabelCaretUI_(
+   p: Z.UIProps & WidgetLabelCaretProps,
+) {
    // (bird_d): This is always true in cushy, does not have an option.
    // if (!preferences.interface.value.widgetshowExpandCarets) return null
    if (p.field.parent == null) return null
-   if (!p.field.isCollapsed && !p.field.isCollapsible) {
+
+   const isProbablyCollapsible = p.Body != null
+   // if (!isProbablyCollapsible) return <>🟢</>
+   // return typeof p.Body
+   // return <p.Body {...p} />
+   // return p.Body ? '🟢' : '🔴' + Object.keys(p).join(', ')
+   if (!p.field.isCollapsed && !isProbablyCollapsible) {
       const showPlaceholder = p.placeholder ?? true
-      // 🔴
-      if (showPlaceholder) return <WidgetLabelCaretPlaceholderUI className={p.className} />
+      if (showPlaceholder) return <WidgetLabelCaretPlaceholderUI className={p.caretClassName} />
       return null
    }
    return (
       <WidgetLabelCaretAlwaysUI //
          tw='text-sm'
-         className={p.className}
+         className={p.caretClassName}
          isCollapsed={p.field.isCollapsed}
       />
    )

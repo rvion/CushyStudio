@@ -1,7 +1,7 @@
 import 'react'
 
 import type { WidgetsCatalog } from '../csuite-cushy/presenters/RenderCatalog'
-import type { RenderRule } from '../csuite-cushy/presenters/RenderPropsCompiled'
+import type { RenderRule } from '../csuite-cushy/presenters/RenderRule'
 import type { Field } from '../csuite/model/Field'
 import type { PixiReactElementProps } from '@pixi/react/types/typedefs/PixiReactNode'
 import type { Viewport } from 'pixi-viewport'
