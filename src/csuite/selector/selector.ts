@@ -22,6 +22,8 @@ examples selectors
     - >@str=(@.map(v => v.value).join('+'))
 */
 
+import type { FieldPattern } from '../../csuite-cushy/presenters/RenderRule'
+
 import { Field } from '../model/Field'
 import { exhaust } from '../utils/exhaust'
 
@@ -42,6 +44,7 @@ export type ASTStep =
     | StepHas
     | StepIsRoot
     | StepDebug
+    | StepYes
 
 type StepDebug = { type: 'debug' }
 type StepIsRoot = { type: 'root' }
@@ -54,6 +57,9 @@ type StepIndex = { type: 'index'; index: number }
 type StepBranches = { type: 'branches'; branches: ASTStep[][] }
 type StepNot = { type: 'not'; steps: ASTStep[] }
 type StepHas = { type: 'has'; steps: ASTStep[] }
+
+type StepLocally = { type: 'has'; steps: ASTStep[] } // & // todo
+type StepYes = { type: 'yes' }
 
 export type FL_RawFieldSelector = Tagged<string, 'FL_RawFieldSelector'>
 const axes: Axis[] = ['.', '>', '^', '<']
@@ -86,6 +92,20 @@ export type ParsedSelector = {
  */
 export class FieldSelector {
    static cache = new Map<string, FieldSelector>()
+
+   static match(
+      //
+      pattern: FieldPattern<Field>,
+      field: Field,
+      virtualParents?: Map<Field, Field>,
+   ): boolean {
+      if (pattern instanceof Field) return pattern === field
+      if (Array.isArray(pattern)) return pattern.includes(field)
+      if (pattern instanceof FieldSelector) return field.matches(pattern, virtualParents)
+      if (typeof pattern === 'string') return FieldSelector.from(pattern).matches(field, virtualParents)
+      if (typeof pattern === 'boolean') return pattern
+      return false
+   }
 
    static from(selector: string | ParsedSelector | FieldSelector): FieldSelector {
       // 1.
@@ -258,6 +278,11 @@ export class FieldSelector {
             candidates = this.applyAxis(candidates, step, mode, ___)
          }
 
+         // axis
+         else if (step.type === 'yes') {
+            // noop
+         }
+
          // branches
          else if (step.type === 'branches') {
             candidates = this.applyBranch(candidates, step, mode)
@@ -306,6 +331,7 @@ export class FieldSelector {
       if (step.type === 'has') return `:has(${step.steps.map(FieldSelector.renderStep).join('')})`
       if (step.type === 'root') return `$`
       if (step.type === 'debug') return `+`
+      if (step.type === 'yes') return `*`
       exhaust(step)
       throw new Error(`Unknown step type "${(step as any).type}"`)
    }
@@ -398,6 +424,7 @@ export class FieldSelector {
       this.consumeWhitespace()
       const char = this.peek()!
       if (char === '{') return this.parseBranches()
+      else if (char === '*') return this.parseYes()
       else if (char === '$') return this.parseRoot()
       else if (char === '@') return this.parseFilterType()
       else if (char === '=') return this.parseCollector()
@@ -527,6 +554,11 @@ export class FieldSelector {
    parseRoot(): StepIsRoot {
       this.consumeCharOrThrow('$')
       return { type: 'root' }
+   }
+
+   parseYes(): StepYes {
+      this.consumeCharOrThrow('*')
+      return { type: 'yes' }
    }
 
    parseFilterType(): StepFilterType {
