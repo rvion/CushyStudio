@@ -142,23 +142,40 @@ export class FieldSelector {
    // }
 
    // #region HIGH LEVEL API
-   matches(field: Field | Field[]): boolean {
-      const { fields } = this.runMatch(field)
+   matches(
+      //
+      field: Field | Field[],
+      ___?: Map<Field, Field>,
+   ): boolean {
+      const { fields } = this.runMatch(field, ___)
       return fields.length > 0
    }
 
-   run(field: Field | Field[], mode: SelectorMode) {
-      if (mode === SelectorMode.MATCH) return this.runMatch(field)
-      if (mode === SelectorMode.SELECT) return this.runSelect(field)
+   run(
+      //
+      field: Field | Field[],
+      mode: SelectorMode,
+      ___?: Map<Field, Field>,
+   ) {
+      if (mode === SelectorMode.MATCH) return this.runMatch(field, ___)
+      if (mode === SelectorMode.SELECT) return this.runSelect(field, ___)
       throw new Error(`Unknown mode "${mode}"`)
    }
-   runMatch(field: Field | Field[]): { fields: Field[]; values: any[] } {
+   runMatch(
+      //
+      field: Field | Field[],
+      ___?: Map<Field, Field>,
+   ): { fields: Field[]; values: any[] } {
       const { steps } = this.parse()
-      return this.selectFrom_(field, steps, SelectorMode.MATCH)
+      return this.selectFrom_(field, steps, SelectorMode.MATCH, ___)
    }
-   runSelect(from: Field | Field[]): { fields: Field[]; values: any[] } {
+   runSelect(
+      //
+      from: Field | Field[],
+      ___?: Map<Field, Field>,
+   ): { fields: Field[]; values: any[] } {
       const { steps } = this.parse()
-      return this.selectFrom_(from, steps, SelectorMode.SELECT)
+      return this.selectFrom_(from, steps, SelectorMode.SELECT, ___)
    }
 
    isDebugEnabled = false
@@ -167,6 +184,7 @@ export class FieldSelector {
       from: Field[] | Field,
       steps_: ASTStep[],
       mode: SelectorMode,
+      ___?: Map<Field, Field>,
    ) {
       let candidates: Field[] = Array.isArray(from) ? from : [from]
       let steps = mode === SelectorMode.MATCH ? steps_.toReversed() : steps_
@@ -237,7 +255,7 @@ export class FieldSelector {
 
          // axis
          else if (step.type === 'axis') {
-            candidates = this.applyAxis(candidates, step, mode)
+            candidates = this.applyAxis(candidates, step, mode, ___)
          }
 
          // branches
@@ -299,6 +317,7 @@ export class FieldSelector {
       candidates: Field[],
       step: StepAxis,
       mode: SelectorMode,
+      ___?: Map<Field, Field>,
    ): Field[] {
       const nextNodes: Set<Field> = new Set()
       const addChildNode = (node: Field | null): void => {
@@ -316,14 +335,14 @@ export class FieldSelector {
       }
       for (const at of candidates) {
          if (mode === SelectorMode.MATCH) {
-            if (step.axis === '.') addParentNode(at.parent)
+            if (step.axis === '.') addParentNode(___?.get(at) ?? at.parent)
             else if (step.axis === '^') at.childrenAll.forEach(addChildNode)
             else if (step.axis === '>') at.ancestors.forEach(addParentNode)
             else if (step.axis === '<') at.descendants.forEach(addChildNode)
             else throw new Error(`Invalid axis "${step.axis}"`)
          } else {
             if (step.axis === '.') at.childrenAll.forEach(addChildNode)
-            else if (step.axis === '^') addParentNode(at.parent)
+            else if (step.axis === '^') addParentNode(___?.get(at) ?? at.parent)
             else if (step.axis === '>') at.descendants.forEach(addChildNode)
             else if (step.axis === '<') at.ancestors.forEach(addParentNode)
             else throw new Error(`Invalid axis "${step.axis}"`)

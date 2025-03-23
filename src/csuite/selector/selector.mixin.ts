@@ -11,9 +11,9 @@ export const SelectorMixinImpl = defineFieldMixin({
       const selector = FieldSelector.from(selector_)
       return this.select(selector).length > 0
    },
-   matches(selector_: string | FieldSelector): boolean {
+   matches(selector_: string | FieldSelector, virtualParents: Map<Field, Field>): boolean {
       const selector = FieldSelector.from(selector_)
-      return selector.matches(this)
+      return selector.matches(this, virtualParents)
    },
    // extraction
    extract(selector_: string | FieldSelector): any {

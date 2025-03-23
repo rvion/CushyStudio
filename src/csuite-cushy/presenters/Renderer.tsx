@@ -1,14 +1,14 @@
+import type { RenderCtx } from './RenderCtx'
 import type { RenderProps } from './RenderProps'
 import type { RenderPropsCompiled } from './RenderPropsCompiled'
+import type { RenderRule } from './RenderRule'
 import type { ReactNode } from 'react'
 
 import { Field } from '../../csuite/model/Field'
 import { extractComponentName } from '../../csuite/utils/extractComponentName'
 import { mergeDefined } from '../../csuite/utils/mergeDefined'
 import { _isFC, renderFCOrNode, renderFCOrNodeWithWrapper } from '../../csuite/utils/renderFCOrNode'
-import { getVisualPath, type RenderCtx } from './RenderCtx'
 import { defaultRulesV2 } from './RenderDefaultsKey'
-import { type RenderRule } from './RenderRule'
 import { RenderUI } from './RenderUI'
 
 // see `src/csuite/form/presenters/presenter.readme.md`
@@ -35,11 +35,23 @@ export class Renderer {
       const rules: RenderRule<Field>[] = [
          //
          ...defaultRulesV2,
+         ...ancestors.flatMap((prevCtx) => prevCtx.field.config.uiui?.rules ?? []),
          ...ancestors.flatMap((prevCtx) => prevCtx.uiconf.rules ?? []),
+         ...(field.config.uiui?.rules ?? []),
          ...(uiconf.rules ?? []),
-         { uiconf, addedBy: null, selector: field, priority: 100 },
+         { uiconf: field.config.uiui ?? {}, selector: true },
+         { uiconf, selector: true },
       ]
 
+      // override parents if need be
+      const virtualParents: Map<Field, Field> = new Map<Field, Field>()
+      for (let i = 0; i < ancestors.length - 1; i++) {
+         const parent_ = ancestors[i]!.field
+         const child_ = ancestors[i + 1]!.field
+         if (child_.parent !== parent_) virtualParents.set(child_, parent_)
+      }
+      const directParent_ = ancestors[ancestors.length - 1]?.field
+      if (directParent_ && field.parent !== directParent_) virtualParents.set(field, directParent_)
       let slots: RenderProps<FIELD> = {}
       // eval rule from config
       // if (field.config.uiui != null) xxx.evalRule(field.config.uiui, RENDER_PRIORITY_UIUI)
@@ -55,7 +67,7 @@ export class Renderer {
          const isMatching =
             isBool(selector) ? selector
             : selector instanceof Field ? selector === field
-            : field.matches(selector)
+            : field.matches(selector, virtualParents)
 
          // if (debug) {
          //    console.log(
