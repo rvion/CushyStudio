@@ -33,7 +33,7 @@ export const DraftHeaderUI = observer(function DraftHeader({
    return (
       <Frame
          style={mergeStylesTsEfficient({ zIndex: 99 }, style)}
-         tw='🔴test sticky top-0 z-50 flex shrink-0 flex-col overflow-clip'
+         tw='sticky top-0 z-50 flex shrink-0 flex-col overflow-clip'
          {...rest}
       >
          <PanelHeaderUI>
