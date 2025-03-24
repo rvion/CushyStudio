@@ -1,5 +1,7 @@
-import type { DraftExecutionContext } from '../cards/App'
+import type { AppUI, DraftExecutionContext } from '../cards/App'
 import type { LibraryFile } from '../cards/LibraryFile'
+import type { RenderProps } from '../csuite-cushy/presenters/RenderProps'
+import type { RenderRule, RenderRule_asList } from '../csuite-cushy/presenters/RenderRule'
 import type { Field_group } from '../csuite/fields/group/FieldGroup'
 import type { Provenance } from '../csuite/provenance/Provenance'
 import type { LiveDB } from '../db/LiveDB'
@@ -126,6 +128,36 @@ export class DraftL extends BaseInst<TABLES['draft']> {
 
    @computed get app(): CushyAppL {
       return this.appRef.item
+   }
+
+   // computed very important here
+   @computed get UIProps() {
+      const uiFn: AppUI | undefined = this.app.layout
+      if (uiFn == null) return {}
+      return this.getUIPropsFor(uiFn)
+   }
+
+   private getUIPropsFor(uiFn: AppUI): RenderProps<any> {
+      if (this.form == null) throw new Error('form not loaded yet')
+
+      const extraRules: RenderRule<any>[] = []
+      let OUT: RenderProps = {}
+
+      function set<F extends Z.Field>(...props: RenderRule_asList<F>): void
+      function set<F extends Z.Field>(prop: RenderProps<any>): void
+      function set(...props: any[]) {
+         if (props.length === 1) Object.assign(OUT, props[0])
+         else extraRules.push(props as RenderRule_asList<any>)
+      }
+
+      uiFn(this.form, set)
+
+      if (extraRules.length > 0) {
+         if (OUT.rules == null) OUT.rules = extraRules
+         else OUT.rules?.push(...extraRules)
+      }
+
+      return OUT
    }
 
    @computed get executable(): Maybe<Executable> {

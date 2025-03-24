@@ -36,10 +36,13 @@ import type { FC, ReactNode } from 'react'
 export type UIPropsFor<FIELD extends Field> = Omit<RenderProps<FIELD>, 'Shell'> & { field: FIELD }
 
 export interface StandardProps<FIELD extends Field = Field> {
-   Decoration: { rp: UIPropsFor<FIELD>; className?: string; children: ReactNode }
+   wrappers: { rp: UIPropsFor<FIELD>; className?: string; children: ReactNode }
 }
 
 export interface RenderProps<out FIELD extends Field = Field> {
+   // todo
+   // noInherit?: boolean
+
    /**
     * The component that will receive all those props. It's the main container for the field to be rendered.
     * it will handle the compositing the various element of the field (menu, errors, label, etc.)
@@ -72,7 +75,7 @@ export interface RenderProps<out FIELD extends Field = Field> {
    // when you want to wrap your whole shell into some dedicated component
    // e.g. a form, a modal, a card, etc.
    // very very common use-case
-   /* ✅ */ Decoration?: FCOrNode<StandardProps<FIELD>['Decoration']>
+   /* ✅ */ Decoration?: FCOrNode<StandardProps<FIELD>['wrappers']>
 
    // for when you want to add something above/below a field ui without changing how it's rendered
    // very very common use-case

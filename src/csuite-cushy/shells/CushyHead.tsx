@@ -30,13 +30,7 @@ export const CushyHeadUI = observer(function CushyHead(p: CushyHeadProps) {
             renderFCOrNode(p.OnLeft, p),
             renderFCOrNode(p.Header, p),
             renderFCOrNode(p.OnRight, p),
-            //
          )}
-         {/* {renderFCOrNodeWithWrapper(p.Header, p, p.ContainerForHeader, {
-            className: p.classNameAroundBodyAndHeader ?? undefined,
-            field,
-         })} */}
-
          {renderFCOrNode(p.UpDownBtn, p)}
          {renderFCOrNode(p.DeleteBtn, p)}
 

@@ -128,11 +128,12 @@ function resetDefaultRules() {
       Body: (f) => <UY.group.Default field={f.field} className='gap-1' />,
    })
    r<Field>('$.{@group|@optional.@group|@list|@choices|@prompt}', {
-      Decoration: (p) => <UY.Decorations.Card {...p} />,
+      Decoration: (p) => <UY.wrappers.Card {...p} />,
    })
    r<Z.FList<Z.Record_>>('@list.@optional.@group.', {
       Body: (f) => <UY.list.BlenderLike field={f.field} renderItem={() => <>🔴</>} />,
    })
+   // '@list:has(.@group.{@image & {name | title}@string})'
    r<Z.FList<Z.Record_>>('@list:has(.@group.)', {
       Body: (f) => {
          return (

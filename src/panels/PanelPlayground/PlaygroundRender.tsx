@@ -1,4 +1,4 @@
-import type { RenderProps, StandardProps } from '../../csuite-cushy/presenters/RenderProps'
+import type { RenderProps } from '../../csuite-cushy/presenters/RenderProps'
 import type { RenderRule, RenderRule_asList } from '../../csuite-cushy/presenters/RenderRule'
 import type { Field } from '../../csuite/model/Field'
 import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
@@ -6,6 +6,7 @@ import type React from 'react'
 
 import { observer } from 'mobx-react-lite'
 
+import { ColoredMarginUI } from '../../csuite-cushy/catalog/Decorations/ColoredMarginUI'
 import { usePanel } from '../../router/usePanel'
 
 export const PlaygroundRenderUI = observer(function PlaygroundRender(p: NO_PROPS) {
@@ -26,6 +27,19 @@ export const PlaygroundRenderUI = observer(function PlaygroundRender(p: NO_PROPS
    )
    function rule<T extends Field>(rule: RenderRule<T>): RenderRule<T> { return rule } // prettier-ignore
    function r<T extends Field>(...rule: RenderRule_asList<T>): RenderRule<T> { return rule } // prettier-ignore
+   // [
+   //    '$.bbb.y',
+   //    {
+   //       Shell: (f) => (
+   //          <div tw='bg-blue-900 m-2 animate-bounce'>
+   //             <f.field.UI />
+   //             {/* <f.field.UI Decoration='bounce' />
+   //             <f.field.UI Decoration={bounce: {timer:30}} />
+   //             <f.field.UI Decoration={['bounce', {timer:30}]} /> */}
+   //          </div>
+   //       ),
+   //    },
+   // ],
    return (
       <div>
          <x.UI
@@ -44,26 +58,12 @@ export const PlaygroundRenderUI = observer(function PlaygroundRender(p: NO_PROPS
                rules={[rule([x.Sub1.Y, { config: { max: 30, min: 0 } }])]}
                classNameForShell='grow'
             />
-            <x.Sub2.UI classNameForShell='grow' Decoration={Pinkmargin} />
+            <x.Sub2.UI classNameForShell='grow' Decoration={ColoredMarginUI} />
          </div>
-         <x.Sub2.UI classNameForShell='grow' Decoration={(f) => <Pinkmargin {...f} bgcolor='blue' />} />
+         <x.Sub2.UI classNameForShell='grow' Decoration={(f) => <ColoredMarginUI {...f} bgcolor='blue' />} />
+         <x.Sub1.UI classNameForShell='grow' Decoration={(f) => <ColoredMarginUI {...f} bgcolor='gray' />} />
          {/* todo: support final syntax below */}
          {/* <x.Sub2.UI classNameForShell='grow' Decoration={{ Pinkmargin: { bgColor: 'red' } }} /> */}
-      </div>
-   )
-})
-
-export const Pinkmargin = observer(function card3dspinningUI_({
-   children,
-   bgcolor,
-   ...rest
-}: {
-   children?: React.ReactNode
-   bgcolor?: string
-} & StandardProps['Decoration']) {
-   return (
-      <div style={{ backgroundColor: bgcolor }} tw='bg-pink-800 p-4 rounded-lg shadow-lg' {...rest}>
-         <div style={{ boxShadow: '0px 0px 20px 0px black' }}>{children}</div>
       </div>
    )
 })

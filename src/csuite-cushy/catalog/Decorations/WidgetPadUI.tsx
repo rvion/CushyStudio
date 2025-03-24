@@ -1,10 +1,12 @@
+import type { StandardProps } from '../../presenters/RenderProps'
+
 import { observer } from 'mobx-react-lite'
 
 export type WidgetPadProps = {
    children: any
    /** Enables the theme-based padding */
    enable?: boolean
-}
+} & StandardProps['wrappers']
 
 /** Decoration that gives horizontal padding, uses `group.padding` theme option */
 export const WidgetPadUI = observer(function WidgetPadUI_(p: WidgetPadProps) {

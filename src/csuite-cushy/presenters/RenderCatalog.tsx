@@ -37,6 +37,7 @@ import { MessageWarningUI } from '../../csuite/messages/MessageWarningUI'
 import { ResizableFrame } from '../../csuite/resizableFrame/resizableFrameUI'
 import { WidgetPromptCollapsibleUI } from '../../prompt/widgets/WidgetPromptCollapsibleUI'
 import { WidgetPromptUI } from '../../prompt/widgets/WidgetPromptUI'
+import { ColoredMarginUI } from '../catalog/Decorations/ColoredMarginUI'
 import { WidgetCardUI } from '../catalog/Decorations/WidgetCardUI'
 import { WidgetPadUI } from '../catalog/Decorations/WidgetPadUI'
 import { QuickForm } from '../catalog/group/QuickForm'
@@ -128,7 +129,8 @@ export type WidgetsCatalog = typeof widgetsCatalog /* {
 
 export const widgetsCatalog /* WidgetsCatalog */ = {
    // #region global stuff
-   Decorations: {
+   wrappers: {
+      ColoredPadding: ColoredMarginUI,
       Card: WidgetCardUI,
       Pad: WidgetPadUI,
    },

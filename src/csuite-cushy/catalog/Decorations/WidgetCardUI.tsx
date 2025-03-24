@@ -1,18 +1,11 @@
-import type { Field } from '../../../csuite/model/Field'
-import type { FCOrNode } from '../../../csuite/utils/renderFCOrNode'
-import type { RenderProps, StandardProps } from '../../presenters/RenderProps'
+import type { StandardProps } from '../../presenters/RenderProps'
 
 import { observer } from 'mobx-react-lite'
 
 import { Frame } from '../../../csuite/frame/Frame'
 
-type FF<T> = T extends FCOrNode<infer XXX> ? XXX : Record<never, never>
-type XX = FF<RenderProps['Decoration']>
-
-export type WidgetCardProps = StandardProps['Decoration'] & {
-   // extra stuff that can be specified for this decoration variant
+export type WidgetCardProps = StandardProps['wrappers'] & {
    hue?: number // (bird_d/legacy) ?
-   field: Field
    children: any
    enablePadding?: boolean
    contrast?: number
@@ -25,7 +18,7 @@ export type WidgetCardProps = StandardProps['Decoration'] & {
 /** Decoration that surrounds widget groups */
 export const WidgetCardUI = observer(function WidgetCardUI_(p: WidgetCardProps) {
    const theme = cushy.preferences.theme.value
-   const enablePadding = !p.field.isCollapsed
+   const enablePadding = !p.rp.field.isCollapsed
    return (
       <Frame
          // Clipping here fixes border's corners since child content goes outside of this component.

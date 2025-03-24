@@ -50,6 +50,14 @@ export type DraftExecutionContext = {
    canvas?: Maybe<UnifiedCanvas>
 }
 
+export type AppUI<FIELD extends Field = Field> = (
+   field: FIELD,
+   set: {
+      <F extends Field>(...props: RenderRule_asList<F>): void
+      <F extends Field>(prop: RenderProps<FIELD>): void
+   },
+) => void
+
 export type App<FIELD extends Field> = {
    /** app interface (GUI) */
    ui: (form: Z.Builder) => CSchema<FIELD>
@@ -61,13 +69,7 @@ export type App<FIELD extends Field> = {
     *   - or to set the top-level UIProps
     */
    // prettier-ignore
-   layout?: (
-      field: FIELD,
-      set: {
-         <F extends Field>(...props: RenderRule_asList<F>): void
-         <F extends Field>(prop: RenderProps<FIELD>): void
-      }
-   ) => void
+   layout?: AppUI<FIELD>
 
    /** so you cana have fancy buttons to switch between a few things */
    presets?: Record<string, (doc: NoInfer<FIELD>) => void>

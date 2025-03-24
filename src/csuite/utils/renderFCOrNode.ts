@@ -50,6 +50,7 @@ export const renderFCOrNode = <T extends object>(
 }
 
 /** render with wrapper */
+// TODO: remove that, just use `renderFCOrNode`
 export const renderFCOrNodeWithWrapper = <
    //
    T extends object,

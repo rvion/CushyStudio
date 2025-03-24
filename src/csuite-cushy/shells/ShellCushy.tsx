@@ -76,7 +76,8 @@ const CushyShellUI = observer(function CushySHell(
       WUI = renderFCOrNode(p.Decoration, {
          className: p.classNameForShell ?? undefined,
          children: WUI,
-         field,
+         // field,
+         rp: p,
       })
    return WUI
 })

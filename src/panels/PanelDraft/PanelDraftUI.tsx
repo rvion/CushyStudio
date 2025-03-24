@@ -199,6 +199,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
    const fpath = draft.file.fPath
    let OUT = (
       <draftContext.Provider value={draft} key={draft.id}>
+         [[{Object.keys(draft.UIProps).join(', ')}]]
          {/* <DraftHeaderUI
                 draft={draft}
                 children={justify.root.UI({
@@ -269,12 +270,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                      requirements={metadata.requirements}
                   />
                )}
-               {draft.form && (
-                  <draft.form.UI //
-                     rules={draft.app.layout ?? undefined}
-                     // global={{ Shell: ShellMobileUI }}
-                  />
-               )}
+               {draft.form && <draft.form.UI {...draft.UIProps} />}
             </Frame>
             <Frame tw='[height:80vh]'></Frame>
          </Frame>
