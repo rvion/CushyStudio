@@ -30,21 +30,33 @@ import { exhaust } from '../utils/exhaust'
 // import chalk from 'chalk'
 
 // #region TYPES
-
 // prettier-ignore
-export type ASTStep =
-    | StepAxis
-    | StepFilterMountKey
-    | StepFilterType
-    | StepFilterCode
-    | StepCollect
-    | StepIndex
-    | StepBranches
-    | StepNot
-    | StepHas
-    | StepIsRoot
-    | StepDebug
-    | StepYes
+export type SelectorToken =
+   // AXIS --------------------------------------------------------------------
+   | StepAxis // "." (`child` in select mode, `parent` in match mode)
+              // "^" (`parent` in select mode, `child` in match mode)
+              // ">" (`descendants` in select mode, `ancestors` in match mode)
+              // "<" (`ancestors` in select mode, `descendants` in match mode)
+   // AXIS + FILTER hybrid ----------------------------------------------------
+   | StepIndex // [<number>]
+   // FILTER ------------------------------------------------------------------
+   | StepFilterMountKey // foo
+   | StepFilterType // @str
+   | StepFilterCode // ?(<jscode>)
+   | StepIsRoot // $
+   | StepYes // *
+   | StepNesting // &
+   | StepHasID // #id
+   | StepHasTag // %tag
+   // LOGIC -------------------------------------------------------------------
+   | StepBranches // {...|...|...}
+   | StepHas // :has()
+   // EXPERIMENTAL ------------------------------------------------------------
+   | StepNot // !() 👉 weird semantic; possibly just a `:has-not()` in disguise
+   // COLLECTION --------------------------------------------------------------
+   | StepCollect // =()
+   // FLAGS -------------------------------------------------------------------
+   | StepDebug // +
 
 type StepDebug = { type: 'debug' }
 type StepIsRoot = { type: 'root' }
@@ -54,11 +66,13 @@ type StepFilterType = { type: 'filterType'; fieldType: string }
 type StepFilterCode = { type: 'filterCode'; filterCode: string }
 type StepCollect = { type: 'collect'; collectCode?: string }
 type StepIndex = { type: 'index'; index: number }
-type StepBranches = { type: 'branches'; branches: ASTStep[][] }
-type StepNot = { type: 'not'; steps: ASTStep[] }
-type StepHas = { type: 'has'; steps: ASTStep[] }
+type StepBranches = { type: 'branches'; branches: SelectorToken[][] }
+type StepNot = { type: 'not'; steps: SelectorToken[] }
+type StepHas = { type: 'has'; steps: SelectorToken[] }
+type StepNesting = { type: 'nesting' }
+type StepHasID = { type: 'hasId'; id: string }
+type StepHasTag = { type: 'hasTag'; tag: string }
 
-type StepLocally = { type: 'has'; steps: ASTStep[] } // & // todo
 type StepYes = { type: 'yes' }
 
 export type FL_RawFieldSelector = Tagged<string, 'FL_RawFieldSelector'>
@@ -84,7 +98,7 @@ export interface Selector {
 export type ASTNode = Field
 
 export type ParsedSelector = {
-   steps: ASTStep[]
+   steps: SelectorToken[]
 }
 
 /**
@@ -93,6 +107,7 @@ export type ParsedSelector = {
 export class FieldSelector {
    static cache = new Map<string, FieldSelector>()
 
+   // #region CONSTRUCTORS
    static match(
       //
       pattern: FieldPattern<Field>,
@@ -161,7 +176,7 @@ export class FieldSelector {
    //    return stepsInverse
    // }
 
-   // #region HIGH LEVEL API
+   // #region API
    matches(
       //
       field: Field | Field[],
@@ -176,35 +191,46 @@ export class FieldSelector {
       field: Field | Field[],
       mode: SelectorMode,
       ___?: Map<Field, Field>,
+      /**
+       * field to use for the nesting filter (`&`).
+       * if not provided, evalutating `&` will crash.
+       */
+      nestedUnder?: Field,
    ) {
-      if (mode === SelectorMode.MATCH) return this.runMatch(field, ___)
-      if (mode === SelectorMode.SELECT) return this.runSelect(field, ___)
+      if (mode === SelectorMode.MATCH) return this.runMatch(field, ___, nestedUnder)
+      if (mode === SelectorMode.SELECT) return this.runSelect(field, ___, nestedUnder)
       throw new Error(`Unknown mode "${mode}"`)
    }
+
+   /** returns the roots that given to the selector would select the given fields  */
    runMatch(
-      //
+      /** fields to match */
       field: Field | Field[],
       ___?: Map<Field, Field>,
+      nestedUnder?: Field,
    ): { fields: Field[]; values: any[] } {
       const { steps } = this.parse()
-      return this.selectFrom_(field, steps, SelectorMode.MATCH, ___)
+      return this.selectFrom_(field, steps, SelectorMode.MATCH, ___, nestedUnder)
    }
    runSelect(
-      //
+      /** fields to return selection against */
       from: Field | Field[],
       ___?: Map<Field, Field>,
+      nestedUnder?: Field,
    ): { fields: Field[]; values: any[] } {
       const { steps } = this.parse()
-      return this.selectFrom_(from, steps, SelectorMode.SELECT, ___)
+      return this.selectFrom_(from, steps, SelectorMode.SELECT, ___, nestedUnder)
    }
 
+   // #region EVAL
    isDebugEnabled = false
    private selectFrom_(
       //
       from: Field[] | Field,
-      steps_: ASTStep[],
+      steps_: SelectorToken[],
       mode: SelectorMode,
       ___?: Map<Field, Field>,
+      nestedUnder?: Field,
    ) {
       let candidates: Field[] = Array.isArray(from) ? from : [from]
       let steps = mode === SelectorMode.MATCH ? steps_.toReversed() : steps_
@@ -252,6 +278,22 @@ export class FieldSelector {
          // root
          else if (step.type === 'root') {
             candidates = candidates.filter((node) => node.parent == null)
+         }
+
+         // nesting
+         else if (step.type === 'nesting') {
+            if (nestedUnder == null) throw new Error(`No nestedUnder provided for nesting filter`)
+            candidates = candidates.filter((c) => c._uid === nestedUnder?._uid)
+         }
+
+         // HasID
+         else if (step.type === 'hasId') {
+            candidates = candidates.filter((c) => c._uid === step.id)
+         }
+
+         // HasTag
+         else if (step.type === 'hasTag') {
+            candidates = candidates.filter((c) => c.config.tags?.includes(step.tag) ?? false)
          }
 
          // has
@@ -321,10 +363,11 @@ export class FieldSelector {
       return { fields: candidates, values }
    }
 
-   static renderSteps(steps: ASTStep[]): string {
+   // #region RENDER
+   static renderSteps(steps: SelectorToken[]): string {
       return steps.map(FieldSelector.renderStep).join('')
    }
-   static renderStep(step: ASTStep): string {
+   static renderStep(step: SelectorToken): string {
       if (step.type === 'axis') return step.axis
       if (step.type === 'mount') return `${step.key}`
       if (step.type === 'filterType') return `@${step.fieldType}`
@@ -338,6 +381,9 @@ export class FieldSelector {
       if (step.type === 'root') return `$`
       if (step.type === 'debug') return `+`
       if (step.type === 'yes') return `*`
+      if (step.type === 'hasId') return `#${step.id}`
+      if (step.type === 'hasTag') return `%${step.tag}`
+      if (step.type === 'nesting') return `&`
       exhaust(step)
       throw new Error(`Unknown step type "${(step as any).type}"`)
    }
@@ -410,7 +456,7 @@ export class FieldSelector {
    parse(): ParsedSelector {
       if (this.parsed != null) return this.parsed
 
-      const steps: ASTStep[] = []
+      const steps: SelectorToken[] = []
       while (this.position < this.length) {
          this.consumeWhitespace()
          steps.push(this.parseStep())
@@ -426,7 +472,7 @@ export class FieldSelector {
     * we need to always be able to decide what to parsed based on the current char
     * we need to always be able to know when to stop parsing from one of the few tokens possibles
     */
-   parseStep(): ASTStep {
+   parseStep(): SelectorToken {
       this.consumeWhitespace()
       const char = this.peek()!
       if (char === '{') return this.parseBranches()
@@ -439,6 +485,9 @@ export class FieldSelector {
       else if (char === '!') return this.parseNot()
       else if (char === ':') return this.parseHas()
       else if (char === '+') return this.parseDebug()
+      else if (char === '&') return this.parseNested()
+      else if (char === '#') return this.parseHasId()
+      else if (char === '%') return this.parseHasTag()
       else if (/[a-zA-Z0-9_-]/.test(char!)) return this.parseFilterKey()
       else if (axes.includes(char as any)) return this.parseAxisStep()
       else
@@ -447,8 +496,24 @@ export class FieldSelector {
          )
    }
 
+   private parseNested(): StepNesting {
+      this.consumeCharOrThrow('&')
+      return { type: 'nesting' }
+   }
+
+   private parseHasId(): StepHasID {
+      this.consumeCharOrThrow('#')
+      const fieldID = this.consumeNextWord()
+      return { type: 'hasId', id: fieldID }
+   }
+   private parseHasTag(): StepHasTag {
+      this.consumeCharOrThrow('%')
+      const fieldTag = this.consumeNextWord()
+      return { type: 'hasTag', tag: fieldTag }
+   }
+
    /** Parses a single axis step. */
-   private parseAxisStep(): ASTStep {
+   private parseAxisStep(): SelectorToken {
       const axis = this.parseAxis()
       this.consumeWhitespace()
       return { type: 'axis', axis }
@@ -474,8 +539,8 @@ export class FieldSelector {
 
    /** Parses a branch step. */
    private parseBranches(): StepBranches {
-      const branches: ASTStep[][] = []
-      let currentBranch: ASTStep[] = []
+      const branches: SelectorToken[][] = []
+      let currentBranch: SelectorToken[] = []
       this.position++
       while (this.position < this.length) {
          this.consumeWhitespace()
@@ -519,10 +584,10 @@ export class FieldSelector {
    parseNot(): StepNot {
       this.consumeCharOrThrow('!')
       this.consumeCharOrThrow('(')
-      const steps: ASTStep[] = []
+      const steps: SelectorToken[] = []
       while (true) {
          if (this.peek() === ')') break
-         const step: ASTStep = this.parseStep()
+         const step: SelectorToken = this.parseStep()
          steps.push(step)
       }
       this.consumeCharOrThrow(')')
@@ -535,10 +600,10 @@ export class FieldSelector {
       this.consumeCharOrThrow('a')
       this.consumeCharOrThrow('s')
       this.consumeCharOrThrow('(')
-      const steps: ASTStep[] = []
+      const steps: SelectorToken[] = []
       while (true) {
          if (this.peek() === ')') break
-         const step: ASTStep = this.parseStep()
+         const step: SelectorToken = this.parseStep()
          steps.push(step)
       }
       this.consumeCharOrThrow(')')
