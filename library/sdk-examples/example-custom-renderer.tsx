@@ -13,9 +13,9 @@ app({
                uiui: {
                   Header: ({ field }) => (
                      <div tw='flex'>
-                        <field.fields.a.UI Shell={UY.Shell.HeaderOnly} />
-                        <field.fields.b.UI Shell={UY.Shell.HeaderOnly} />
-                        <field.fields.a.UI Shell={UY.Shell.HeaderOnly} />
+                        <field.fields.a.UI Shell={UY.shell.HeaderOnly} />
+                        <field.fields.b.UI Shell={UY.shell.HeaderOnly} />
+                        <field.fields.a.UI Shell={UY.shell.HeaderOnly} />
                      </div>
                   ),
                },

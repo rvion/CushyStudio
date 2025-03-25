@@ -17,14 +17,14 @@ export const PlaygroundForms = observer(function PlaygroundImportFromComfy_(p: {
                   <Frame //
                      border={30}
                      tw='p-2'
-                     children={this.UI({ Shell: UY.Shell.HeaderOnly })}
+                     children={this.UI({ Shell: UY.shell.HeaderOnly })}
                   />
                )
                UIWithSuperFancyBorder = (): React.JSX.Element => (
-                  <Frame border={30} tw='p-8' children={<this.UI Shell={UY.Shell.HeaderOnly} />} />
+                  <Frame border={30} tw='p-8' children={<this.UI Shell={UY.shell.HeaderOnly} />} />
                )
                UIWithSuperFancyBorder2 = (p: { size: 'big' | 'small' }): React.JSX.Element => (
-                  <Frame border={30} tw='p-8' children={<this.UI Shell={UY.Shell.HeaderOnly} />} />
+                  <Frame border={30} tw='p-8' children={<this.UI Shell={UY.shell.HeaderOnly} />} />
                )
             },
             null,

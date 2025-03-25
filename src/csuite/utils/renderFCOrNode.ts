@@ -29,14 +29,15 @@ export type FCOrNode__<P extends object> =
    | SimpleReactComponent<P>
    | ReactNode
 
-export type FCOrJSXOrNamed<P extends object, Named extends string> =
-   | SimpleReactComponent<P>
-   | SimpleReactNode
-   | Named
+export type FCOrJSXOrNamed<
+   //
+   P extends object,
+   Named extends keyof CATALOG.widgets,
+> = SimpleReactComponent<P> | SimpleReactNode | keyof CATALOG.widgets[Named]
 
-export function isNamed<NAME extends string>(x: FCOrJSXOrNamed<any, NAME>): x is NAME {
-   return typeof x === 'string'
-}
+// export function isNamed<NAME extends keyof CATALOG.widgets>(x: FCOrJSXOrNamed<any, NAME>): x is NAME {
+//    return typeof x === 'string'
+// }
 
 /** render */
 export const renderFCOrNode = <T extends object>(

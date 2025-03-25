@@ -43,10 +43,10 @@ export const ui_tint = (ui: Z.Builder, def?: Tint): UI_Tint => {
                }),
             },
             {
-               uiui: (ui) => {
-                  ui.set(ui.field._.contrast, ui.presets.noLabel)
-                  ui.set(ui.field._.lightness, ui.presets.noLabel)
-               },
+               uiui: [
+                  [`&.contrast`, { Title: null, Icon: null, Indent: null }],
+                  [`&.lightness`, { Title: null, Icon: null, Indent: null }],
+               ],
                appearance: 'tab',
                label: 'Light',
                default: def?.lightness ? 'lightness' : 'contrast',

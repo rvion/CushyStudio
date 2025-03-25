@@ -8,7 +8,7 @@ export const GallerySearchControlsUI = observer(function GallerySearchControlsUI
       <div tw='flex items-center gap-1'>
          {/* {conf.fields.filterPath.header()} */}
          {/* {conf.fields.filterAppName.header()} */}
-         <conf.FilterTag.UI Shell={UY.Shell.FluidUI} />
+         <conf.FilterTag.UI Shell={UY.shell.FluidUI} />
          {/* {conf.fields.filterStar.header()} */}
          {/* <input
                 tw='csuite-basic-input my-0.5'

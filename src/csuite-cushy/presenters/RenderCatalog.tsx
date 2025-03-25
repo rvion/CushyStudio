@@ -58,7 +58,158 @@ import { ShellMobileUI } from '../shells/ShellMobile'
 import { ShellNoop } from '../shells/ShellNoop'
 import { ShellSimpleUI } from '../shells/ShellSimple'
 
-export type WidgetsCatalog = typeof widgetsCatalog /* {
+export type WidgetsCatalog = typeof widgetsCatalog
+
+// #region misc
+const catalog_wrappers = {
+   ColoredPadding: ColoredMarginUI,
+   Card: WidgetCardUI,
+   Pad: WidgetPadUI,
+}
+const catalog_icons = {
+   IkonOf: IkonOf,
+}
+const catalog_message = {
+   Error: MessageErrorUI,
+   Info: MessageInfoUI,
+   Warning: MessageWarningUI,
+}
+const catalog_caret = {
+   Caret: WidgetLabelCaretUI,
+   CaretWithPlaceholder: (p: WidgetLabelCaretProps) => <WidgetLabelCaretUI {...p} placeholder />,
+}
+const catalog_misc = {
+   Frame: Frame,
+   Button: Button,
+   Checkbox: InputBoolCheckboxUI,
+   ResizableFrame: ResizableFrame,
+   Caret: WidgetLabelCaretUI,
+   Icon: WidgetLabelIconPlacholderUI,
+   Icon_: WidgetLabelIconUI,
+}
+const catalog_Title = {
+   h1: H1Title,
+   h2: H2Title,
+   h3: H3Title,
+   h4: H4Title,
+   default: DefaultWidgetTitleUI,
+}
+const catalog_Indent = {
+   indentWithLiness: WidgetIndentNoLinesUI,
+   indentNoLiness: WidgetIndentUI,
+}
+// #region inputs
+const catalog_inputs = {
+   InputBoolUI: InputBoolUI,
+}
+// #region shells
+const catalog_shell = {
+   Default: ShellCushyLeftUI,
+   // most common
+   Left: ShellCushyLeftUI,
+   Right: ShellCushyRightUI,
+   FluidUI: ShellCushyFluidUI,
+   Inline: ShellInlineUI,
+   // minimalist
+   Simple: ShellSimpleUI,
+   HeaderOnly: ShellHeaderOnlyUI,
+   BodyOnly: ShellBodyOnlyUI,
+   // experimental
+   Mobile: ShellMobileUI,
+   Noop: ShellNoop,
+   // custom
+   List1: ShellCushyList1UI,
+}
+// #region fields
+const catalog_size = {
+   line: WigetSize_LineUI,
+   block: WigetSize_BlockUI,
+}
+const catalog_number = {
+   input: WidgetNumberUI /** inline WidgetNumber */,
+   simple: WidgetNumberSimpleUI,
+}
+const catalog_enum = {
+   default: WidgetEnumUI,
+   select: WidgetEnum_SelectUI,
+   tab: WidgetEnum_TabUI,
+}
+const catalog_boolean = {
+   default: WidgetBoolUI,
+}
+const catalog_choices = {
+   DefaultHeader: WidgetChoices_HeaderUI,
+   DefaultBody: WidgetChoices_BodyUI,
+   TabBar: WidgetChoices_HeaderTabBarUI,
+   Buttons: WidgetChoices_HeaderButtonsUI,
+   SelectHeaderUI: WidgetChoices_HeaderSelectUI,
+}
+const catalog_selectOne = {
+   Select: WidgetSelectOneUI,
+}
+const catalog_selectMany = {
+   DefaultHeader: WidgetSelectManyUI,
+}
+const catalog_string = {
+   input: WidgetString_SmallInput,
+   summary: WidgetString_summary,
+   textarea: WidgetString_TextareaInput,
+   markdown: WidgetString_MarkdownUI,
+}
+const catalog_list = {
+   BlenderLike: BlenderListUI,
+   DefaultHeader: WidgetList_LineUI,
+   DefaultBody: WidgetList_BodyUI,
+}
+const catalog_prompt = {
+   DefaultHeaderUI: WidgetPromptCollapsibleUI,
+   DefaultBodyUI: WidgetPromptUI,
+}
+const catalog_group = {
+   Tabbed: WidgetGroup_TabUI,
+   controls: WidgetGroup_LineUI,
+   Default: WidgetGroup_BlockUI,
+   inline: WidgetGroup_InlineUI,
+}
+
+export const widgetsCatalog /* WidgetsCatalog */ = {
+   // misc
+   wrappers: catalog_wrappers,
+   icons: catalog_icons,
+   message: catalog_message,
+   caret: catalog_caret,
+   misc: catalog_misc,
+   title: catalog_Title,
+   Indent: catalog_Indent,
+
+   // inputs
+   inputs: catalog_inputs,
+
+   // shells
+   shell: catalog_shell,
+
+   // fields
+   size: catalog_size,
+   number: catalog_number,
+   enum: catalog_enum,
+   boolean: catalog_boolean,
+   choices: catalog_choices,
+   selectOne: catalog_selectOne,
+   selectMany: catalog_selectMany,
+   string: catalog_string,
+   list: catalog_list,
+   prompt: catalog_prompt,
+   group: catalog_group,
+}
+
+// make globally available
+;(window as any).UY = widgetsCatalog
+if (import.meta.hot) {
+   import.meta.hot.accept()
+   ;(window as any).UY = widgetsCatalog
+}
+
+/* {
    Misc: {
       Frame: FC<FrameProps>
       Button: FC<ButtonProps>
@@ -127,123 +278,5 @@ export type WidgetsCatalog = typeof widgetsCatalog /* {
    }
 } */
 
-export const widgetsCatalog /* WidgetsCatalog */ = {
-   // #region global stuff
-   wrappers: {
-      ColoredPadding: ColoredMarginUI,
-      Card: WidgetCardUI,
-      Pad: WidgetPadUI,
-   },
-   IkonOf: IkonOf,
-   Message: {
-      Error: MessageErrorUI,
-      Info: MessageInfoUI,
-      Warning: MessageWarningUI,
-   },
-   QuickForm: QuickForm,
-   Shell: {
-      Default: ShellCushyLeftUI,
-      // most common
-      Left: ShellCushyLeftUI,
-      Right: ShellCushyRightUI,
-      FluidUI: ShellCushyFluidUI,
-      Inline: ShellInlineUI,
-      // minimalist
-      Simple: ShellSimpleUI,
-      HeaderOnly: ShellHeaderOnlyUI,
-      BodyOnly: ShellBodyOnlyUI,
-      // experimental
-      Mobile: ShellMobileUI,
-      Noop: ShellNoop,
-      // custom
-      List1: ShellCushyList1UI,
-   },
-   // #region Utils
-   caret: {
-      Caret: WidgetLabelCaretUI,
-      CaretWithPlaceholder: (p: WidgetLabelCaretProps) => <WidgetLabelCaretUI {...p} placeholder />,
-   },
-   misc: {
-      Frame: Frame,
-      Button: Button,
-      Checkbox: InputBoolCheckboxUI,
-      ResizableFrame: ResizableFrame,
-      Caret: WidgetLabelCaretUI,
-      Icon: WidgetLabelIconPlacholderUI,
-      Icon_: WidgetLabelIconUI,
-   },
-   // #region Form components
-   Title: {
-      h1: H1Title,
-      h2: H2Title,
-      h3: H3Title,
-      h4: H4Title,
-      default: DefaultWidgetTitleUI,
-   },
-   Indent: {
-      indentWithLiness: WidgetIndentNoLinesUI,
-      indentNoLiness: WidgetIndentUI,
-   },
-   // base inputs
-   inputs: {
-      InputBoolUI: InputBoolUI,
-   },
-   // #region fields -----------------------------------------------------------------------------------------------------
-   size: {
-      line: WigetSize_LineUI,
-      block: WigetSize_BlockUI,
-   },
-   number: {
-      input: WidgetNumberUI /** inline WidgetNumber */,
-      simple: WidgetNumberSimpleUI,
-   },
-   enum: {
-      default: WidgetEnumUI,
-      select: WidgetEnum_SelectUI,
-      tab: WidgetEnum_TabUI,
-   },
-   boolean: {
-      default: WidgetBoolUI,
-   },
-   choices: {
-      DefaultHeader: WidgetChoices_HeaderUI,
-      DefaultBody: WidgetChoices_BodyUI,
-      TabBar: WidgetChoices_HeaderTabBarUI,
-      Buttons: WidgetChoices_HeaderButtonsUI,
-      SelectHeaderUI: WidgetChoices_HeaderSelectUI,
-   },
-   selectOne: {
-      Select: WidgetSelectOneUI,
-   },
-   selectMany: {
-      DefaultHeader: WidgetSelectManyUI,
-   },
-   string: {
-      input: WidgetString_SmallInput,
-      summary: WidgetString_summary,
-      textarea: WidgetString_TextareaInput,
-      markdown: WidgetString_MarkdownUI,
-   },
-   list: {
-      BlenderLike: BlenderListUI,
-      DefaultHeader: WidgetList_LineUI,
-      DefaultBody: WidgetList_BodyUI,
-   },
-   prompt: {
-      DefaultHeaderUI: WidgetPromptCollapsibleUI,
-      DefaultBodyUI: WidgetPromptUI,
-   },
-   group: {
-      Tabbed: WidgetGroup_TabUI,
-      controls: WidgetGroup_LineUI,
-      Default: WidgetGroup_BlockUI,
-      inline: WidgetGroup_InlineUI,
-   },
-}
-
-// make globally available
-;(window as any).UY = widgetsCatalog
-if (import.meta.hot) {
-   import.meta.hot.accept()
-   ;(window as any).UY = widgetsCatalog
-}
+// QuickForm: QuickForm,
+// #region global stuff

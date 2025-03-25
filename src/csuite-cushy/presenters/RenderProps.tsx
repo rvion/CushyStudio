@@ -48,7 +48,7 @@ export interface RenderProps<out FIELD extends Field = Field> {
     * it will handle the compositing the various element of the field (menu, errors, label, etc.)
     * note: passing a custom function serve as an escape hatch for a 100% custom UI
     */
-   Shell?: FCOrJSXOrNamed<RenderPropsCompiled<FIELD>, keyof CATALOG.widgets['Shell']>
+   Shell?: FCOrJSXOrNamed<RenderPropsCompiled<FIELD>, 'shell'>
 
    /**
     * list of rules injected for itself and its *visual* children

@@ -87,10 +87,10 @@ export class Renderer {
       // console.log(`[🔴🦊SHELL]`, slots.Shell)
       const Shell =
          typeof slots.Shell === 'string' //
-            ? UY.Shell[slots.Shell]
+            ? UY.shell[slots.Shell]
             : slots.Shell
       // === undefined
-      //   ? UY.Shell.Default
+      //   ? UY.shell.Default
       //   : () => null
 
       // console.log(`[🤠] slots.ShellName`, slots.ShellName, field.path, Shell === catalog.Shell.Inline)

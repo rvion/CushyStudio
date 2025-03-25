@@ -133,12 +133,12 @@ export const _cushySDXLLayout: App<CushySDXLSchema>['layout'] = (field, set) => 
    //    // if (ui2.field.parent === field.Positive.Prompts) ui2.set({ Shell: ShellOptionalEnabledUI })
    // })
 
-   // // set(latent.bField, { Shell: UY.Shell.Right })
+   // // set(latent.bField, { Shell: UY.shell.Right })
    // // set(field.Latent..bField.fields.emptyLatent && latent.bField.fields.emptyLatent.fields.batchSize, {
    // //    Head: false,
    // //    Header: false,
    // // })
-   // // set(latent, { Shell: UY.Shell.Left })
+   // // set(latent, { Shell: UY.shell.Left })
    // set('', (ui2) => {
    //    // ui2.for()
    //    // const isTopLevelGroup = ui2.field.depth === 1 && true //
@@ -147,16 +147,16 @@ export const _cushySDXLLayout: App<CushySDXLSchema>['layout'] = (field, set) => 
    //       ui2.field.type !== 'shared' &&
    //       ui2.field.type !== 'optional'
    //    ) {
-   //       return { Shell: UY.Shell.Right }
+   //       return { Shell: UY.shell.Right }
    //    }
 
-   //    if (ui2.field.path.startsWith(model.path + '.')) return { Shell: UY.Shell.Right }
+   //    if (ui2.field.path.startsWith(model.path + '.')) return { Shell: UY.shell.Right }
 
    //    let should = ui2.field.path.startsWith(field.Sampler.path + '.')
    //    should = ui2.field.depth >= 2
    //    if (should) {
    //       if (ui2.field.isOfType('group', 'list', 'choices')) return { Title: UY.Title.h4 }
-   //       if (!ui2.field.isOfType('optional', 'list', 'shared')) return { Shell: UY.Shell.Right }
+   //       if (!ui2.field.isOfType('optional', 'list', 'shared')) return { Shell: UY.shell.Right }
    //    }
    // })
 }

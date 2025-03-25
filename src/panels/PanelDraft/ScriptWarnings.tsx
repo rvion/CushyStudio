@@ -15,7 +15,7 @@ export const ScriptWarningsUI = observer(function ScriptWarningsUI_({
       <div tw='_MD'>
          {/* warnings */}
          {warningEntries.length ? (
-            <UY.Message.Error title='Loading Strategies'>
+            <UY.message.Error title='Loading Strategies'>
                <ul {...rest}>
                   {warningEntries.map(([k, v]) => (
                      <li key={k}>
@@ -23,11 +23,11 @@ export const ScriptWarningsUI = observer(function ScriptWarningsUI_({
                      </li>
                   ))}
                </ul>
-            </UY.Message.Error>
+            </UY.message.Error>
          ) : null}
          {/* errors */}
          {file.errors.length > 0 ? (
-            <UY.Message.Error title='Script Errors'>
+            <UY.message.Error title='Script Errors'>
                <ul>
                   {file.errors.map((v, i) => (
                      <li key={i}>
@@ -37,7 +37,7 @@ export const ScriptWarningsUI = observer(function ScriptWarningsUI_({
                      </li>
                   ))}
                </ul>
-            </UY.Message.Error>
+            </UY.message.Error>
          ) : null}
       </div>
    )
