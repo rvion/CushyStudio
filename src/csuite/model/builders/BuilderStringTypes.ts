@@ -1,5 +1,5 @@
 import { nanoid } from 'nanoid'
-import { v1, v3, v4, v5, v6, v7 } from 'uuid'
+import { v1, v3, v4, v5, v6, v7, validate } from 'uuid'
 
 import { csuiteConfig } from '../../config/configureCsuite'
 import { Field_string } from '../../fields/string/FieldString'
@@ -26,6 +26,9 @@ export type BuilderStringMixin = {
    stringDatetime(config?: Field_string['$config']): Z.String
 }
 
+const validateUUID = (v: string): boolean => {
+   return !validate(v)
+}
 const BuilderStringImpl = (): BuilderStringMixin =>
    defineSchemaBuilderMixin<BuilderStringMixin>({
       /**
@@ -44,7 +47,7 @@ const BuilderStringImpl = (): BuilderStringMixin =>
        * @since 2025-03-25
        */
       uuidV1(config: Field_string['$config'] = {}): Z.String {
-         return this.string_({ ...(config as any), default: v1, readonly: true })
+         return this.string_({ ...(config as any), default: v1, readonly: true, check: validateUUID })
       },
       /**
        * readonly string, defaulting to some new UUID-V4
@@ -52,7 +55,7 @@ const BuilderStringImpl = (): BuilderStringMixin =>
        * @since 2025-03-25
        */
       uuidV3(config: Field_string['$config'] = {}): Z.String {
-         return this.string_({ ...(config as any), default: v3, readonly: true })
+         return this.string_({ ...(config as any), default: v3, readonly: true, check: validateUUID })
       },
       /**
        * readonly string, defaulting to some new UUID-V4
@@ -60,7 +63,7 @@ const BuilderStringImpl = (): BuilderStringMixin =>
        * @since 2024-10-25
        */
       uuidV4(config: Field_string['$config'] = {}): Z.String {
-         return this.string_({ ...(config as any), default: v4, readonly: true })
+         return this.string_({ ...(config as any), default: v4, readonly: true, check: validateUUID })
       },
       /**
        * readonly string, defaulting to some new UUID-V4
@@ -68,7 +71,7 @@ const BuilderStringImpl = (): BuilderStringMixin =>
        * @since 2025-03-25
        */
       uuidV5(config: Field_string['$config'] = {}): Z.String {
-         return this.string_({ ...(config as any), default: v5, readonly: true })
+         return this.string_({ ...(config as any), default: v5, readonly: true, check: validateUUID })
       },
       /**
        * readonly string, defaulting to some new UUID-V4
@@ -76,7 +79,7 @@ const BuilderStringImpl = (): BuilderStringMixin =>
        * @since 2025-03-25
        */
       uuidV6(config: Field_string['$config'] = {}): Z.String {
-         return this.string_({ ...(config as any), default: v6, readonly: true })
+         return this.string_({ ...(config as any), default: v6, readonly: true, check: validateUUID })
       },
       /**
        * readonly string, defaulting to some new UUID-V4
@@ -84,7 +87,7 @@ const BuilderStringImpl = (): BuilderStringMixin =>
        * @since 2025-03-25
        */
       uuidV7(config: Field_string['$config'] = {}): Z.String {
-         return this.string_({ ...(config as any), default: v7, readonly: true })
+         return this.string_({ ...(config as any), default: v7, readonly: true, check: validateUUID })
       },
 
       string_(config: Field_string['$config'] = {}): Z.String {

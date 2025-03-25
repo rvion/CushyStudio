@@ -1,3 +1,4 @@
+import { validate } from 'uuid'
 import { describe, expect, it } from 'vitest'
 
 import { sb } from '../../simple/SimpleFactory'
@@ -16,6 +17,13 @@ describe('BuilderStringTypes', () => {
          // expect(s1).toBe(s2)
          expect(v1).not.toBe(v2)
          expect(v2).not.toBe(v3)
+      })
+      it('isInvalid when value is not a valid uuid', () => {
+         const s1 = b.uuidV4()
+         const v1 = s1.create({ $: 'str', value: 'test' })
+         expect(validate('test')).toBeFalsy()
+         expect(v1.value).toBe('test')
+         expect(v1.isValid).toBeFalsy()
       })
    })
    describe('nanoid', () => {
