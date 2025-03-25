@@ -5,6 +5,7 @@ import type { CovariantFn } from '../variance/BivariantHack'
 import type { CovariantFC } from '../variance/CovariantFC'
 import type { Field } from './Field'
 import type { FieldOptions } from './FieldOptions'
+import type { FieldTag } from './FieldTag'
 import type { Klass } from './KlassToUse'
 import type { FieldReaction } from './pubsub/FieldReaction'
 import type { Publication } from './pubsub/Producer'
@@ -79,6 +80,7 @@ export interface FieldConfig_CommonProperties<out FIELD extends Field> {
     * This function will be executed either on every widget instanciation.
     */
    onInit?(field: FIELD): void
+   tags?: FieldTag[]
 
    /** will be called when value changed */
    onValueChange?(field: FIELD): void
