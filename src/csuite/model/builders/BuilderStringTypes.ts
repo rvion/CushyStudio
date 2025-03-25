@@ -1,16 +1,19 @@
 import { nanoid } from 'nanoid'
-import { createElement } from 'react'
-import { v4 } from 'uuid'
+import { v1, v3, v4, v5, v6, v7 } from 'uuid'
 
 import { csuiteConfig } from '../../config/configureCsuite'
 import { Field_string } from '../../fields/string/FieldString'
-import { memoizedFN } from '../../hashUtils/hash'
 import { CSchema } from '../CSchema'
 import { defineSchemaBuilderMixin } from './defineSchemaBuilderMixin'
 
 export type BuilderStringMixin = {
    nanoid(config?: Field_string['$config']): Z.String
+   uuidV1(config?: Field_string['$config']): Z.String
+   uuidV3(config?: Field_string['$config']): Z.String
    uuidV4(config?: Field_string['$config']): Z.String
+   uuidV5(config?: Field_string['$config']): Z.String
+   uuidV6(config?: Field_string['$config']): Z.String
+   uuidV7(config?: Field_string['$config']): Z.String
    string_(config?: Field_string['$config']): Z.String
    string(config?: Field_string['$config']): Z.String
    password(config?: Field_string['$config']): Z.String
@@ -32,27 +35,56 @@ const BuilderStringImpl = (): BuilderStringMixin =>
        * @since 2024-10-25
        */
       nanoid(config: Field_string['$config'] = {}): Z.String {
-         const uid: string = nanoid()
-         return this.string_({
-            ...(config as any) /* ping @domi; uiui type error here */,
-            header: memoizedFN(this, 'nanoid', (p) => createElement('div', {}, p.field.value), []),
-            default: uid,
-         })
+         return this.string_({ ...(config as any), default: nanoid, readonly: true })
       },
 
       /**
        * readonly string, defaulting to some new UUID-V4
-       * (new default for each schema instanciation)
-       *
+       * (new default for each field instanciation)
+       * @since 2025-03-25
+       */
+      uuidV1(config: Field_string['$config'] = {}): Z.String {
+         return this.string_({ ...(config as any), default: v1, readonly: true })
+      },
+      /**
+       * readonly string, defaulting to some new UUID-V4
+       * (new default for each field instanciation)
+       * @since 2025-03-25
+       */
+      uuidV3(config: Field_string['$config'] = {}): Z.String {
+         return this.string_({ ...(config as any), default: v3, readonly: true })
+      },
+      /**
+       * readonly string, defaulting to some new UUID-V4
+       * (new default for each field instanciation)
        * @since 2024-10-25
        */
       uuidV4(config: Field_string['$config'] = {}): Z.String {
-         const uuid: string = v4()
-         return this.string_({
-            ...(config as any) /* ping @domi; uiui type error here */,
-            header: memoizedFN(this, 'uuidV4', (p) => createElement('div', {}, p.field.value), []),
-            default: uuid,
-         })
+         return this.string_({ ...(config as any), default: v4, readonly: true })
+      },
+      /**
+       * readonly string, defaulting to some new UUID-V4
+       * (new default for each field instanciation)
+       * @since 2025-03-25
+       */
+      uuidV5(config: Field_string['$config'] = {}): Z.String {
+         return this.string_({ ...(config as any), default: v5, readonly: true })
+      },
+      /**
+       * readonly string, defaulting to some new UUID-V4
+       * (new default for each field instanciation)
+       * @since 2025-03-25
+       */
+      uuidV6(config: Field_string['$config'] = {}): Z.String {
+         return this.string_({ ...(config as any), default: v6, readonly: true })
+      },
+      /**
+       * readonly string, defaulting to some new UUID-V4
+       * (new default for each field instanciation)
+       * @since 2025-03-25
+       */
+      uuidV7(config: Field_string['$config'] = {}): Z.String {
+         return this.string_({ ...(config as any), default: v7, readonly: true })
       },
 
       string_(config: Field_string['$config'] = {}): Z.String {
