@@ -373,11 +373,54 @@ export class CSchema<out FIELD extends Field = Field> {
       return this.instanciate(repository, null, null, '$', serial)
    }
 
+   // ------------------------------------------------------------------------
+   // 💬 2025-03-25 rvion:
+   // 🔴 this was caching serial too agressively
+   // | get defaultSerial(): FIELD['$serial'] {
+   // |    const serial = this.fieldConstructor.generateSerial(undefined, this.config)
+   // |    Object.defineProperty(this, 'defaultSerial', { value: serial })
+   // |    return serial
+   // | }
+   //
+   // 🟢 a better solution would be to have `generateSerial()` return whether or not
+   // - 🟢 would still be cached in most cases
+   // - 🔶 we would loose the serial equality unless we hash every value and maintain a cache
+   //     - we could only keep the past hash/serial everytime; would still be a decent heuristic.
+   //
+   // 🔶 a temporary hacky solution is to cache it if the 2nd call yields the same hash as the first call.
+   // 👉 IT IS STILL WRONG (just a bit less)
+   // a `Z.Day` would appear stable, but it's not => default will be wrong when day change if
+   // server is not restarted.
+
+   private ___empty: Maybe<{
+      hash: string
+      serial: FIELD['$serial']
+      stable: boolean | null
+   }>
    get defaultSerial(): FIELD['$serial'] {
       const serial = this.fieldConstructor.generateSerial(undefined, this.config)
-      Object.defineProperty(this, 'defaultSerial', { value: serial })
+      // first call
+      if (this.___empty == null) {
+         this.___empty = { serial, hash: JSON.stringify(serial), stable: null }
+      }
+      // second call
+      else if (this.___empty.stable == null) {
+         const hash = JSON.stringify(serial)
+         if (this.___empty.hash === hash) {
+            // if 2nd call yields the exact same hash as 1st call,
+            // we cache it as stable
+            const FINAL = this.___empty.serial
+            Object.defineProperty(this, 'defaultSerial', { value: FINAL })
+            this.___empty = null
+            return FINAL
+         } else {
+            this.___empty.stable = false
+         }
+      }
+      // 3rd+ calls
       return serial
    }
+   // ------------------------------------------------------------------------
 
    generateSerial(value: Maybe<FIELD['$value']>): FIELD['$serial'] {
       if (value === undefined) return this.defaultSerial
