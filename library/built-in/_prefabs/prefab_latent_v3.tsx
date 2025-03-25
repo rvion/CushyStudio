@@ -60,16 +60,12 @@ export function ui_latent_v3(p: { size?: Field_size_config } = {}): UI_LatentV3 
       },
       {
          uiui: {
-            Header: (p) => {
-               const size = p.field.value.emptyLatent?.size || p.field.value.random?.size
+            OnRight: (f) => {
+               const size = f.field.value.emptyLatent?.size || f.field.value.random?.size
+               if (size == null) return null
                return (
-                  <div tw='flex gap-1'>
-                     <p.field.UI Header={UY.choices.DefaultHeader} />
-                     {size && (
-                        <>
-                           {size.width} x{size.height}
-                        </>
-                     )}
+                  <div tw='flex whitespace-nowrap text-xs lh-input opacity-70'>
+                     {size.width}x{size.height}
                   </div>
                )
             },
