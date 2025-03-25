@@ -23,10 +23,15 @@ const bar = root._.foo._.bar
 const baz = root._.foo._.baz
 const qux = root._.qux
 const test2nd = root._.foo._.test.items[1]!
+root.Foo.Test.at(1)!.value = 'test'
 
 baz.updateFieldCustom((t) => ({ abcdefgh: true })) // makes @.custom.abcdefgh be true
 
 describe('selector.match', () => {
+   it('works with indexes', () => {
+      expect(root.Foo.Test.at(1)?.matches('[1]')).toBeTruthy()
+      expect(root.Foo.Test.select('[1]').map((i) => i.value)).toEqual(['test'])
+   })
    it('works', () => {
       const F = root._.foo._.bar
       expect(F.path).toBe('$.foo.bar')

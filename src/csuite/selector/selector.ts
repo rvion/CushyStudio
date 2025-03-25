@@ -290,7 +290,13 @@ export class FieldSelector {
 
          // index
          else if (step.type === 'index') {
-            candidates = candidates.map((c) => c.childrenActive.at(step.index)).filter(Boolean) as Field[]
+            if (mode === SelectorMode.MATCH) {
+               candidates = candidates
+                  .filter((t) => t.parent?.childrenActive.at(step.index) === t)
+                  .map((t) => t.parent!)
+            } else {
+               candidates = candidates.map((c) => c.childrenActive.at(step.index)).filter(Boolean) as Field[]
+            }
          }
 
          // collect
