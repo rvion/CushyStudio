@@ -21,6 +21,7 @@ import { asComfySchemaID, type TABLES } from '../db/TYPES.gen'
 import { ComfyManager } from '../manager/ComfyManager'
 import { downloadFile } from '../utils/fs/downloadFile'
 import { asRelativePath } from '../utils/fs/pathUtils'
+import { writeFileAsync } from '../utils/fs/writeFile'
 
 export class HostRepo extends LiveTable<TABLES['host'], typeof HostL> {
    constructor(liveDB: LiveDB) {
@@ -175,9 +176,10 @@ export class HostL extends BaseInst<TABLES['host']> {
       return true
    }
 
-   restartComfyUI = async (): Promise<true> => {
+   async restartComfyUI(): Promise<true> {
       toastError(`[🔴] NOT IMPLEMENTED`)
       console.log(`[🔴] NOT IMPLEMENTED`)
+      await Promise.resolve(true)
       return true
    }
 
@@ -243,7 +245,7 @@ export class HostL extends BaseInst<TABLES['host']> {
 
    CONNECT = (): void => {
       if (this.data.isVirtual) {
-         this.updateSchemaFromFileCache()
+         void this.updateSchemaFromFileCache()
       } else {
          this.initWebsocket()
       }
@@ -255,14 +257,14 @@ export class HostL extends BaseInst<TABLES['host']> {
       return this.st.configFile.value.mainComfyHostID === this.id
    }
 
-   private writeSDKToDisk = (): void => {
+   private async writeSDKToDisk(): Promise<void> {
       const comfySchemaTs = this.schema.parseObjectInfo.codegenDTS()
-      writeFileSync(this.sdkDTSPath, comfySchemaTs, 'utf-8')
-      if (this.isPrimary) writeFileSync(this.st.primarySdkDtsPath, comfySchemaTs, 'utf-8')
+      await writeFileAsync(this.sdkDTSPath, comfySchemaTs, 'utf-8')
+      if (this.isPrimary) await writeFileAsync(this.st.primarySdkDtsPath, comfySchemaTs, 'utf-8')
       // if (this.isPrimary) this._copyGeneratedSDKToGlobalDTS()
       if (this.st.githubUsername === 'rvion') {
          // prettier-ignore
-         /* 💊 */ /* 💊 */ writeFileSync('tmp/docs/ex/a.md', '```ts\n' + comfySchemaTs + '\n```\n', 'utf-8')
+         /* 💊 */ /* 💊 */ await writeFileAsync('tmp/docs/ex/a.md', '```ts\n' + comfySchemaTs + '\n```\n', 'utf-8')
          /* 💊 */ // writeFileSync('tmp/docs/ex/b.md', '```json\n' + object_info_str + '\n```\n', 'utf-8')
          /* 💊 */
       }
@@ -296,7 +298,7 @@ export class HostL extends BaseInst<TABLES['host']> {
 
    schemaUpdateResult: Maybe<{ type: 'success' } | { type: 'error'; error: any }> = null
 
-   private updateSchemaFromFileCache = (): void => {
+   private async updateSchemaFromFileCache(): Promise<void> {
       const object_info_json = this.st.readJSON_<any>(this.comfyJSONPath)
       const embeddings_json = this.st.readJSON_<any>(this.embeddingsPath)
 
@@ -305,7 +307,7 @@ export class HostL extends BaseInst<TABLES['host']> {
       this.schema.RUN_BASIC_CHECKS()
 
       // regen sdk
-      this.writeSDKToDisk()
+      await this.writeSDKToDisk()
    }
 
    /** retrieve the comfy spec from the schema*/
@@ -327,9 +329,9 @@ export class HostL extends BaseInst<TABLES['host']> {
          const object_info_res = await fetch(object_info_url, { method: 'GET', headers })
          const object_info_json = (await object_info_res.json()) as { [key: string]: any }
          const object_info_str = readableStringify(object_info_json, 4)
-         writeFileSync(this.comfyJSONPath, object_info_str, 'utf-8')
+         void writeFileAsync(this.comfyJSONPath, object_info_str, 'utf-8')
          // use valibot to check if payload match the type, and display errors if not
-         const res = v.safeParse(ComfySchemaJSON_valibot, object_info_json)
+         const res = await v.safeParseAsync(ComfySchemaJSON_valibot, object_info_json)
          // const res = ComfySchemaJSON_valibot..safeParse(object_info_json) //{ KSampler: schema$['KSampler'] })
          if (res.success) {
             // console.log('🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢 valid schema')
@@ -361,7 +363,7 @@ export class HostL extends BaseInst<TABLES['host']> {
 
          // 3 ------------------------------------
          // regen sdk
-         this.writeSDKToDisk()
+         await this.writeSDKToDisk()
          this.isUpdatingSchema = false
          this.schemaUpdateResult = { type: 'success' }
       } catch (error) {
@@ -372,7 +374,7 @@ export class HostL extends BaseInst<TABLES['host']> {
          console.error('🔴 FAILURE TO GENERATE nodes.d.ts', extractErrorMessage(error))
 
          const schemaExists = existsSync(this.sdkDTSPath)
-         if (!schemaExists) this.writeSDKToDisk()
+         if (!schemaExists) await this.writeSDKToDisk()
       } finally {
          this.isUpdatingSchema = false
       }
