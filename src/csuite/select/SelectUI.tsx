@@ -12,7 +12,6 @@ import { SelectPopupUI } from './SelectPopupUI'
 import { SelectShellUI } from './SelectShellUI'
 import { AutoCompleteSelectState } from './SelectState'
 
-// TODO fork this component
 export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
    const select = useMemo(() => new AutoCompleteSelectState(/* st, */ p), [])
    const fullyShrinkable = p.fullyShrinkable ?? true
