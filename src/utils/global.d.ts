@@ -33,7 +33,7 @@ declare global {
         | Object.defineProperty(window, 'cushy', { get() { return (window as any).st } }) // prettier-ignore
     */
    const cushy: import('../state/state').STATE
-   const UY: WidgetsCatalog
+   const uy: WidgetsCatalog
    const defaultRenderRules: RenderRule<Field>
    const IKONS: AllIkons
 }

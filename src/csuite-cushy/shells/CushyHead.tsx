@@ -4,7 +4,7 @@ import type { ReactNode } from 'react'
 import { observer } from 'mobx-react-lite'
 
 import { WidgetHeaderContainerUI } from '../../csuite/form/WidgetHeaderContainerUI'
-import { renderFCOrNode, renderFCOrNodeWithWrapper } from '../../csuite/utils/renderFCOrNode'
+import { renderFCOrNode } from '../../csuite/utils/renderFCOrNode'
 
 export type CushyHeadProps = RenderPropsCompiled & {
    children?: ReactNode

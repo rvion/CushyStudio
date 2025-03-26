@@ -1,10 +1,9 @@
 import type { Field_string } from './FieldString'
 
-import { observer } from 'mobx-react-lite'
-
 import { MarkdownUI } from '../../markdown/MarkdownUI'
+import { observer2 } from '../../mobx/observer2'
 
-export const WidgetString_MarkdownUI = observer(function WidgetString_MarkdownUI_(p: {
+export const WidgetString_MarkdownUI = observer2(function WidgetString_MarkdownUI_(p: {
    field: Field_string
    readonly?: boolean
 }) {

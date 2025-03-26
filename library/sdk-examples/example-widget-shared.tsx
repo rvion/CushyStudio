@@ -20,7 +20,7 @@ app({
             },
             {
                uiui: {
-                  // Decoration: (f) => <UY.Decorations.Card {...f} contrast={30} />,
+                  // Decoration: (f) => <uy.Decorations.Card {...f} contrast={30} />,
                   // Before: (f) => <>🔴</>,
                   // Header: (f) => <>coucou</>,
                   // rules: [{ selector: '', uiconf: { After: <>🟢</> } }],

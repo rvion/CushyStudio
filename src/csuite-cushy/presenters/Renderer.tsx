@@ -87,10 +87,10 @@ export class Renderer {
       // console.log(`[🔴🦊SHELL]`, slots.Shell)
       const Shell =
          typeof slots.Shell === 'string' //
-            ? UY.shell[slots.Shell]
+            ? uy.shell[slots.Shell]
             : slots.Shell
       // === undefined
-      //   ? UY.shell.Default
+      //   ? uy.shell.Default
       //   : () => null
 
       // console.log(`[🤠] slots.ShellName`, slots.ShellName, field.path, Shell === catalog.Shell.Inline)
@@ -104,6 +104,7 @@ export class Renderer {
       // console.log(`[🤠] Shell for ${field.path} is `, Shell)
       // console.log(`[🦊] slots for`, field.path, slots)
       // console.log(`[🦊🟢FINAL] slots for`, field.path, slots.Head)
+      // return renderFCOrNode(Shell, finalProps)
       return renderFCOrNode(Shell, finalProps)
    }
 

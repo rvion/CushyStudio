@@ -5,7 +5,7 @@ import type { WidgetLabelIconProps } from '../../csuite/form/WidgetLabelIconUI'
 import type { WidgetMenuProps } from '../../csuite/form/WidgetMenu'
 import type { WidgetSingleLineSummaryProps } from '../../csuite/form/WidgetSingleLineSummaryUI'
 import type { Field } from '../../csuite/model/Field'
-import type { FCOrJSXOrNamed, FCOrNode } from '../../csuite/utils/renderFCOrNode'
+import type { FCOrNode } from '../../csuite/utils/renderFCOrNode'
 import type { WidgetIndentProps } from '../catalog/Indent/WidgetIndentUI'
 import type { WidgetPresetsProps } from '../catalog/Presets/WidgetPresets'
 import type { WidgetTitleProps } from '../catalog/Title/WidgetLabelTextUI'
@@ -48,7 +48,7 @@ export interface RenderProps<out FIELD extends Field = Field> {
     * it will handle the compositing the various element of the field (menu, errors, label, etc.)
     * note: passing a custom function serve as an escape hatch for a 100% custom UI
     */
-   Shell?: FCOrJSXOrNamed<RenderPropsCompiled<FIELD>, 'shell'>
+   Shell?: FCOrNode<RenderPropsCompiled<FIELD>>
 
    /**
     * list of rules injected for itself and its *visual* children

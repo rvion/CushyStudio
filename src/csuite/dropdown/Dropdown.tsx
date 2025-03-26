@@ -4,10 +4,10 @@ import type { ReactNode } from 'react'
 
 import { Button } from '../button/Button'
 import { Frame } from '../frame/Frame'
+import { observerWC } from '../mobx/observerWC'
 import { RevealUI } from '../reveal/RevealUI'
 import { MenuDivider } from './MenuDivider'
 import { MenuItem } from './MenuItem'
-import { observerWC } from './observerWC'
 
 export type DropdownProps = {
    title: ReactNode

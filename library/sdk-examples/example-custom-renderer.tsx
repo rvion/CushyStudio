@@ -13,9 +13,9 @@ app({
                uiui: {
                   Header: ({ field }) => (
                      <div tw='flex'>
-                        <field.fields.a.UI Shell={UY.shell.HeaderOnly} />
-                        <field.fields.b.UI Shell={UY.shell.HeaderOnly} />
-                        <field.fields.a.UI Shell={UY.shell.HeaderOnly} />
+                        <field.fields.a.UI Shell={uy.shell.HeaderOnly} />
+                        <field.fields.b.UI Shell={uy.shell.HeaderOnly} />
+                        <field.fields.a.UI Shell={uy.shell.HeaderOnly} />
                      </div>
                   ),
                },
@@ -46,7 +46,7 @@ app({
                         click here
                      </div>
                      <div tw='ml-auto flex flex-nowrap'>
-                        (default UI: 👉 <UY.boolean.default field={widget} /> 👈)
+                        (default UI: 👉 <uy.boolean.default field={widget} /> 👈)
                      </div>
                   </div>
                ),

@@ -109,35 +109,35 @@ function resetDefaultRules() {
    // r('@choices.@group', { Head: false })
    r<Z.FShared<any>>('@shared', { Shell: ShellSharedUI })
    r<Z.FOptional<any>>('@optional', { Shell: ShellOptionalUI })
-   r<Z.FString>('@str', { Header: UY.string.input, Body: null })
-   r<Z.FNumber>('@number', { Header: UY.number.input, Body: null })
-   r<Z.FSize>('@size', { Header: UY.size.line, Body: UY.size.block })
-   r<Z.FSelectOne<unknown, SelectKey>>('@selectOne', { Header: WidgetSelectOneUI /* UY.selectOne.Select */ }) // prettier-ignore
-   r<Z.FList<any>>('@list', { Body: UY.list.DefaultBody, Header: UY.list.DefaultHeader })
-   r<Z.FImage>('@image', { Body: WidgetSelectImageUI /* UY.selectOne.Select */ })
-   r<Z.FRecord<any>>('@group', { Header: WidgetGroup_LineUI, Body: WidgetGroup_BlockUI })
+   r<Z.FString>('@str', { Header: uy.string.input, Body: null })
+   r<Z.FNumber>('@number', { Header: uy.number.input, Body: null })
+   r<Z.FSize>('@size', { Header: uy.size.line, Body: uy.size.block })
+   r<Z.FSelectOne<unknown, SelectKey>>('@selectOne', { Header: WidgetSelectOneUI /* uy.selectOne.Select */ }) // prettier-ignore
+   r<Z.FList<any>>('@list', { Body: uy.list.DefaultBody, Header: uy.list.DefaultHeader })
+   r<Z.FImage>('@image', { Body: WidgetSelectImageUI /* uy.selectOne.Select */ })
+   r<Z.FRecord<any>>('@group', { Header: WidgetGroup_LineUI, Body: uy.group.DefaultBody })
    r<Z.FChoices<any>>('@choices', { Header: WidgetChoices_HeaderUI, Body: WidgetChoices_BodyUI })
    r<Z.FColor>('@color', { Header: WidgetColorUI, Body: null })
-   r<Z.FBool>('@bool', { Header: UY.boolean.default, Body: null })
-   r<any>('@enum', { Header: UY.enum.default, Body: null })
-   r<any>('@prompt', { Header: UY.prompt.DefaultHeaderUI, Body: UY.prompt.DefaultBodyUI })
+   r<Z.FBool>('@bool', { Header: uy.boolean.default, Body: null })
+   r<any>('@enum', { Header: uy.enum.default, Body: null })
+   r<any>('@prompt', { Header: uy.prompt.DefaultHeaderUI, Body: uy.prompt.DefaultBodyUI })
    r<Field>('$', { collapsible: false })
    // r<Field>('!(:has(.))', { Caret: false })
    r<Field_group>('$@group', {
       Indent: false,
-      Body: (f) => <UY.group.Default field={f.field} className='gap-1' />,
+      Body: (f) => <uy.group.DefaultBody field={f.field} className='gap-1' />,
    })
    r<Field>('$.{@group|@optional.@group|@list|@choices|@prompt}', {
-      Decoration: (p) => <UY.wrappers.Card {...p} />,
+      Decoration: (p) => <uy.wrappers.Card {...p} />,
    })
    r<Z.FList<Z.Record_>>('@list.@optional.@group.', {
-      Body: (f) => <UY.list.BlenderLike field={f.field} renderItem={() => <>🔴</>} />,
+      Body: (f) => <uy.list.BlenderLike field={f.field} renderItem={() => <>🔴</>} />,
    })
    // '@list:has(.@group.{@image & {name | title}@string})'
    r<Z.FList<Z.Record_>>('@list:has(.@group.)', {
       Body: (f) => {
          return (
-            <UY.list.BlenderLike
+            <uy.list.BlenderLike
                field={f.field}
                renderItem={(item) => {
                   const children = item.childrenActive
@@ -171,10 +171,10 @@ if (import.meta.hot) {
 //       if (field.type == 'choices') {
 //          return p.children
 //       }
-//       return <UY.Decorations.Pad {...p} />
+//       return <uy.Decorations.Pad {...p} />
 //    },
 // })
-// ui.set('@number', { Header: UY.number.simple, Body: null })
+// ui.set('@number', { Header: uy.number.simple, Body: null })
 // ui.set('$.{@group|@list|@choices}.', { Indent: false })
 // ui.set('$.@link.{@group|@list|@choices}.', { Indent: false })
 // ui.set('$.{@group|@list|@choices}.@link.', { Indent: false })

@@ -17,14 +17,14 @@ export const PlaygroundForms = observer(function PlaygroundImportFromComfy_(p: {
                   <Frame //
                      border={30}
                      tw='p-2'
-                     children={this.UI({ Shell: UY.shell.HeaderOnly })}
+                     children={this.UI({ Shell: uy.shell.HeaderOnly })}
                   />
                )
                UIWithSuperFancyBorder = (): React.JSX.Element => (
-                  <Frame border={30} tw='p-8' children={<this.UI Shell={UY.shell.HeaderOnly} />} />
+                  <Frame border={30} tw='p-8' children={<this.UI Shell={uy.shell.HeaderOnly} />} />
                )
                UIWithSuperFancyBorder2 = (p: { size: 'big' | 'small' }): React.JSX.Element => (
-                  <Frame border={30} tw='p-8' children={<this.UI Shell={UY.shell.HeaderOnly} />} />
+                  <Frame border={30} tw='p-8' children={<this.UI Shell={uy.shell.HeaderOnly} />} />
                )
             },
             null,
@@ -52,7 +52,7 @@ export const PlaygroundForms = observer(function PlaygroundImportFromComfy_(p: {
                            </div>
                         </Frame>
                         <Frame base={{ hueShift: 200 }}>
-                           {b.type}({b._uid})<div>{a.UI({ Shell: 'HeaderOnly' })}</div>
+                           {b.type}({b._uid})<div>{a.UI({ Shell: uy.shell.HeaderOnly })}</div>
                            <div>{b.UIWithFancyBorder()}</div>
                         </Frame>
                      </Frame>

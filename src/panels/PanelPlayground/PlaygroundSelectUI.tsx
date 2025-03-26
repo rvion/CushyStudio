@@ -104,7 +104,7 @@ export const PlaygroundSelectUI = observer(function PlaygroundSelectUI_(p: {}) {
                      ),
                   }),
                )
-               .UI({ Shell: 'BodyOnly' })}
+               .UI({ Shell: uy.shell.BodyOnly })}
             <RevealTestUI />
          </div>
       </ErrorBoundaryUI>

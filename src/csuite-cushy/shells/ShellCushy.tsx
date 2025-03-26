@@ -73,10 +73,10 @@ const CushyShellUI = observer(function CushySHell(
 
    WUI = <AnimatedSizeUI>{WUI}</AnimatedSizeUI>
    if (p.Decoration)
+      // WUI = renderFCOrNode(p.Decoration, {
       WUI = renderFCOrNode(p.Decoration, {
          className: p.classNameForShell ?? undefined,
          children: WUI,
-         // field,
          rp: p,
       })
    return WUI

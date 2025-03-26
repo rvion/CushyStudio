@@ -32,14 +32,14 @@ export const _cushySDXLLayout: App<CushySDXLSchema>['layout'] = (field, set) => 
    //       const activePrompt = p.field.items[promptGroup.activeIndex]
    //       return (
    //          <>
-   //             <UY.list.BlenderLike<typeof p.field> //
+   //             <uy.list.BlenderLike<typeof p.field> //
    //                activeIndex={promptGroup.activeIndex}
    //                field={p.field}
    //                renderItem={(item, index) => {
    //                   const conditioningIcon: IconName =
    //                      index == 0 ? IKONS.mdiArrowDown : IKONS.mdiFormatListGroupPlus
    //                   return (
-   //                      <UY.misc.Frame
+   //                      <uy.misc.Frame
    //                         tw='flex items-center'
    //                         hover
    //                         key={item._uid}
@@ -56,7 +56,7 @@ export const _cushySDXLLayout: App<CushySDXLSchema>['layout'] = (field, set) => 
    //                               : item.fields.name.value}
    //                         </span>
    //                         <div tw='flex-none'>
-   //                            <UY.IkonOf name={conditioningIcon} />
+   //                            <uy.IkonOf name={conditioningIcon} />
    //                         </div>
    //                         <div tw='w-2' />
    //                         <div tw='flex-none'>
@@ -67,7 +67,7 @@ export const _cushySDXLLayout: App<CushySDXLSchema>['layout'] = (field, set) => 
    //                            onValueChange={() => {}}
    //                            value={ree}
    //                         /> */}
-   //                            <UY.misc.Checkbox
+   //                            <uy.misc.Checkbox
    //                               square // TODO(bird_d/ui): Buttons like this, where there's only an icon, should just automatically apply square if there's no text/children.
    //                               toggleGroup='prompt'
    //                               value={item.fields.enabled.value}
@@ -75,11 +75,11 @@ export const _cushySDXLLayout: App<CushySDXLSchema>['layout'] = (field, set) => 
    //                               tooltip='Whether or not the prompt effects the generation'
    //                            />
    //                         </div>
-   //                      </UY.misc.Frame>
+   //                      </uy.misc.Frame>
    //                   )
    //                }}
    //             />
-   //             <UY.misc.Button
+   //             <uy.misc.Button
    //                hover
    //                tw='w-full !content-start !items-center !justify-start !border-none !bg-transparent py-[15px] pl-3.5 text-center'
    //                icon={promptGroup.showEditor ? IKONS.mdiChevronDown : IKONS.mdiChevronRight}
@@ -91,14 +91,14 @@ export const _cushySDXLLayout: App<CushySDXLSchema>['layout'] = (field, set) => 
    //                }}
    //             >
    //                Editor
-   //             </UY.misc.Button>
+   //             </uy.misc.Button>
 
    //             {promptGroup.showEditor && (
-   //                <UY.misc.Frame tw='gap-2 ' col>
+   //                <uy.misc.Frame tw='gap-2 ' col>
    //                   {activePrompt ? (
    //                      <>
-   //                         <UY.string.input field={activePrompt.fields.name} />
-   //                         <UY.inputs.InputBoolUI
+   //                         <uy.string.input field={activePrompt.fields.name} />
+   //                         <uy.inputs.InputBoolUI
    //                            toggleGroup='y802w34ty80we4th80er0erh8008'
    //                            value={activePrompt.fields.enabled.value}
    //                            onValueChange={(v) => (activePrompt.fields.enabled.value = v)}
@@ -109,14 +109,14 @@ export const _cushySDXLLayout: App<CushySDXLSchema>['layout'] = (field, set) => 
    //                            // display='button'
    //                            expand
    //                         />
-   //                         <UY.misc.ResizableFrame tw='!bg-transparent'>
-   //                            <UY.group.Default tw='flex-1' field={activePrompt} />
-   //                         </UY.misc.ResizableFrame>
+   //                         <uy.misc.ResizableFrame tw='!bg-transparent'>
+   //                            <uy.group.Default tw='flex-1' field={activePrompt} />
+   //                         </uy.misc.ResizableFrame>
    //                      </>
    //                   ) : (
    //                      <>No prompt</>
    //                   )}
-   //                </UY.misc.Frame>
+   //                </uy.misc.Frame>
    //             )}
    //          </>
    //       )
@@ -133,12 +133,12 @@ export const _cushySDXLLayout: App<CushySDXLSchema>['layout'] = (field, set) => 
    //    // if (ui2.field.parent === field.Positive.Prompts) ui2.set({ Shell: ShellOptionalEnabledUI })
    // })
 
-   // // set(latent.bField, { Shell: UY.shell.Right })
+   // // set(latent.bField, { Shell: uy.shell.Right })
    // // set(field.Latent..bField.fields.emptyLatent && latent.bField.fields.emptyLatent.fields.batchSize, {
    // //    Head: false,
    // //    Header: false,
    // // })
-   // // set(latent, { Shell: UY.shell.Left })
+   // // set(latent, { Shell: uy.shell.Left })
    // set('', (ui2) => {
    //    // ui2.for()
    //    // const isTopLevelGroup = ui2.field.depth === 1 && true //
@@ -147,16 +147,16 @@ export const _cushySDXLLayout: App<CushySDXLSchema>['layout'] = (field, set) => 
    //       ui2.field.type !== 'shared' &&
    //       ui2.field.type !== 'optional'
    //    ) {
-   //       return { Shell: UY.shell.Right }
+   //       return { Shell: uy.shell.Right }
    //    }
 
-   //    if (ui2.field.path.startsWith(model.path + '.')) return { Shell: UY.shell.Right }
+   //    if (ui2.field.path.startsWith(model.path + '.')) return { Shell: uy.shell.Right }
 
    //    let should = ui2.field.path.startsWith(field.Sampler.path + '.')
    //    should = ui2.field.depth >= 2
    //    if (should) {
-   //       if (ui2.field.isOfType('group', 'list', 'choices')) return { Title: UY.Title.h4 }
-   //       if (!ui2.field.isOfType('optional', 'list', 'shared')) return { Shell: UY.shell.Right }
+   //       if (ui2.field.isOfType('group', 'list', 'choices')) return { Title: uy.Title.h4 }
+   //       if (!ui2.field.isOfType('optional', 'list', 'shared')) return { Shell: uy.shell.Right }
    //    }
    // })
 }

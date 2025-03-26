@@ -20,7 +20,7 @@ app({
                uiui: {
                   Body: ({ field }) => (
                      <div>
-                        <UY.list.DefaultBody field={field} />
+                        <uy.list.DefaultBody field={field} />
                         <LegacyFieldUI label='OpenRouter API KEY'>
                            <InputStringUI
                               icon={IKONS.mdiKey}
@@ -80,6 +80,6 @@ app({
    },
    layout: (field, set) => {
       set('', { Decoration: null, Indent: null })
-      set(field.PromptFromLlm2, { Header: UY.string.markdown })
+      set(field.PromptFromLlm2, { Header: uy.string.markdown })
    },
 })
