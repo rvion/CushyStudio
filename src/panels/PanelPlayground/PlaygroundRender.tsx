@@ -39,10 +39,10 @@ export const PlaygroundRenderUI = observer(function PlaygroundRender(p: NO_PROPS
       <div>
          <x.UI
             rules={[
-               rule<Z.FList<Z.Record<{ name: Z.String }> | Z.Record<{ title: Z.String }>>>([
-                  '@list:has(.@group.{{name|title}@string})',
-                  { Header: (f) => <>{f.field}</> },
-               ]),
+               // rule<Z.FList<Z.Record<{ name: Z.String }> | Z.Record<{ title: Z.String }>>>([
+               //    '@list:has(.@group.{{name|title}@string})',
+               //    { Header: (f) => <>{f.field}</> },
+               // ]),
                // rule<Z.FMaybe<Z.String>>(['@optional.=(this.size > 3)@str^^^^<', {}]),
                // [x.Aaa._.foo!, { Decoration: (f) => <uy.wrappers.ColoredPadding {...f} bgcolor='red' /> }],
                // [x.Aaa._.foo!, { Decoration: { ColoredPadding: { bgcolor: 'red' } } }],

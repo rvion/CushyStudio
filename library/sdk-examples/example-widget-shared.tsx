@@ -1,5 +1,4 @@
 import type { Field_number } from '../../src/csuite/fields/number/FieldNumber'
-import type { Field } from '../../src/csuite/model/Field'
 
 app({
    metadata: {
@@ -72,7 +71,7 @@ app({
       })
    },
 
-   run: async (sdk, ui) => {
+   run: (sdk, ui) => {
       console.clear()
       console.log(JSON.stringify(ui))
    },
