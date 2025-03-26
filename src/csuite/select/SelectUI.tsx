@@ -45,7 +45,7 @@ export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
          // shell='popover'
          shell={SelectShellUI}
          // placement={p.placement ?? 'autoVerticalStart'}
-         placement='cover'
+         placement='cover-auto'
          content={({ reveal }) => (
             <PopupComp reveal={reveal} selectState={select} createOption={p.createOption} />
          )} // 🔶 be careful to not override stuff with that (goes both ways)

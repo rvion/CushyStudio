@@ -1,12 +1,14 @@
 import type { RevealShellProps } from '../reveal/shells/ShellProps'
 
 import { observer } from 'mobx-react-lite'
+
+import { Frame } from '../frame/Frame'
 import { ShellFocusTrapUI } from '../reveal/shells/utils/ShellFocusTrap'
 
 export const SelectShellUI = observer(function SelectShellUI_(p: RevealShellProps) {
    const reveal = p.reveal
    return (
-      <div
+      <Frame
          // make sure the shell intercept focus events
          // when  see _ShellForFocusEvents
          tabIndex={0}
@@ -15,8 +17,8 @@ export const SelectShellUI = observer(function SelectShellUI_(p: RevealShellProp
          tw={[
             // '_RevealUI', // 🚂
             'pointer-events-auto',
-            'shadow-xl shadow-neutral-300',
-            'border border-gray-200 bg-white',
+            // 🐦‍🔥 'shadow-xl shadow-neutral-300',
+            // 🐦‍🔥 'border border-gray-200 bg-white',
             'overflow-auto',
             'flex flex-col',
             'rounded-md', // should be exactly like the input
@@ -39,6 +41,6 @@ export const SelectShellUI = observer(function SelectShellUI_(p: RevealShellProp
          <ShellFocusTrapUI reveal={p.reveal} />
          {p.children}
          <ShellFocusTrapUI reveal={p.reveal} />
-      </div>
+      </Frame>
    )
 })
