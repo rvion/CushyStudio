@@ -1,9 +1,9 @@
 import type { CSchema } from '../../model/CSchema'
 import type { Field_list } from './FieldList'
+import type { ReactNode } from 'react'
 
 import { action, runInAction } from 'mobx'
-import { observer, useLocalObservable } from 'mobx-react-lite'
-import { type ReactNode } from 'react'
+import { useLocalObservable } from 'mobx-react-lite'
 
 import { Button } from '../../button/Button'
 import { Frame } from '../../frame/Frame'
