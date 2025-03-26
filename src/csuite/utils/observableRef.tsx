@@ -3,6 +3,8 @@ import type { DependencyList } from 'react'
 import { makeAutoObservable, observable } from 'mobx'
 import { useMemo } from 'react'
 
+import { getFirstFocusableChild } from './getFirstFocusableChild'
+
 export function useObservableRef<T extends any>(deps: DependencyList = []): ObservableRef<T> {
    return useMemo(() => new ObservableRef(), deps)
 }
@@ -25,6 +27,19 @@ export class ObservableRef<T extends any> {
          if (value instanceof HTMLElement) {
             const isInside = value.contains(document.activeElement)
             if (!isInside) value.focus()
+         }
+      })
+   }
+
+   focusFirstInputLikeOnMountOrNowIfMounted_EXCEPT_IF_FOCUS_ALREADY_INSIDE(): void {
+      this.onMount((value) => {
+         if (value instanceof HTMLElement) {
+            const isInside = value.contains(document.activeElement)
+            if (!isInside) {
+               const firstInput = getFirstFocusableChild(value, (el) => !el.hasAttribute('data-focus-trap'))
+               if (firstInput) firstInput.focus()
+               else value.focus()
+            }
          }
       })
    }

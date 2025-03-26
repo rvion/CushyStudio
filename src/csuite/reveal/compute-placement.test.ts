@@ -16,7 +16,7 @@ describe('compute-placement', () => {
                   window: { innerHeight: 800, innerWidth: 1000 },
                })
 
-               expect(result).toEqual({ left: 10, top: 120 })
+               expect(result).toEqual({ left: 10, top: 120, finalPlacementLogic: 'topStart' })
             })
          })
 
@@ -28,7 +28,7 @@ describe('compute-placement', () => {
                   window: { innerHeight: 800, innerWidth: 1000 },
                })
 
-               expect(result).toEqual({ left: 8, top: 120 })
+               expect(result).toEqual({ left: 8, top: 120, finalPlacementLogic: 'topStart' })
             })
          })
 
@@ -40,7 +40,7 @@ describe('compute-placement', () => {
                   window: { innerHeight: 800, innerWidth: 1000 },
                })
 
-               expect(result).toEqual({ left: 10, top: 2 })
+               expect(result).toEqual({ left: 10, top: 2, finalPlacementLogic: 'topStart' })
             })
 
             it('should not position the shell above 0', () => {
@@ -50,7 +50,7 @@ describe('compute-placement', () => {
                   window: { innerHeight: 800, innerWidth: 1000 },
                })
 
-               expect(result).toEqual({ left: 10, top: 0 })
+               expect(result).toEqual({ left: 10, top: 0, finalPlacementLogic: 'topStart' })
             })
          })
       })
@@ -64,7 +64,7 @@ describe('compute-placement', () => {
                   window: { innerHeight: 800, innerWidth: 1000 },
                })
 
-               expect(result).toEqual({ left: 10, bottom: 100 })
+               expect(result).toEqual({ left: 10, bottom: 100, finalPlacementLogic: 'bottomStart' })
             })
          })
 
@@ -76,7 +76,7 @@ describe('compute-placement', () => {
                   window: { innerHeight: 800, innerWidth: 1000 },
                })
 
-               expect(result).toEqual({ left: 8, bottom: 100 })
+               expect(result).toEqual({ left: 8, bottom: 100, finalPlacementLogic: 'bottomStart' })
             })
          })
 
@@ -88,7 +88,7 @@ describe('compute-placement', () => {
                   window: { innerHeight: 800, innerWidth: 1000 },
                })
 
-               expect(result).toEqual({ left: 10, bottom: 2 })
+               expect(result).toEqual({ left: 10, bottom: 2, finalPlacementLogic: 'bottomStart' })
             })
 
             it('should position the shell below 0', () => {
@@ -98,7 +98,7 @@ describe('compute-placement', () => {
                   window: { innerHeight: 800, innerWidth: 1000 },
                })
 
-               expect(result).toEqual({ left: 10, bottom: -200 })
+               expect(result).toEqual({ left: 10, bottom: -200, finalPlacementLogic: 'bottomStart' })
             })
          })
       })
@@ -114,7 +114,7 @@ describe('compute-placement', () => {
                   window: { innerHeight: 800, innerWidth: 1000 },
                })
 
-               expect(result).toEqual({ right: 10, top: 120 })
+               expect(result).toEqual({ right: 10, top: 120, finalPlacementLogic: 'topEnd' })
             })
          })
 
@@ -126,7 +126,7 @@ describe('compute-placement', () => {
                   window: { innerHeight: 800, innerWidth: 1000 },
                })
 
-               expect(result).toEqual({ right: 8, top: 120 })
+               expect(result).toEqual({ right: 8, top: 120, finalPlacementLogic: 'topEnd' })
             })
          })
 
@@ -138,7 +138,7 @@ describe('compute-placement', () => {
                   window: { innerHeight: 800, innerWidth: 1000 },
                })
 
-               expect(result).toEqual({ right: 10, top: 2 })
+               expect(result).toEqual({ right: 10, top: 2, finalPlacementLogic: 'topEnd' })
             })
 
             it('should not position the shell above 0', () => {
@@ -148,7 +148,7 @@ describe('compute-placement', () => {
                   window: { innerHeight: 800, innerWidth: 1000 },
                })
 
-               expect(result).toEqual({ right: 10, top: 0 })
+               expect(result).toEqual({ right: 10, top: 0, finalPlacementLogic: 'topEnd' })
             })
          })
       })
@@ -162,7 +162,7 @@ describe('compute-placement', () => {
                   window: { innerHeight: 800, innerWidth: 1000 },
                })
 
-               expect(result).toEqual({ right: 10, bottom: 100 })
+               expect(result).toEqual({ right: 10, bottom: 100, finalPlacementLogic: 'bottomEnd' })
             })
          })
 
@@ -174,7 +174,7 @@ describe('compute-placement', () => {
                   window: { innerHeight: 800, innerWidth: 1000 },
                })
 
-               expect(result).toEqual({ right: 8, bottom: 100 })
+               expect(result).toEqual({ right: 8, bottom: 100, finalPlacementLogic: 'bottomEnd' })
             })
          })
 
@@ -186,7 +186,7 @@ describe('compute-placement', () => {
                   window: { innerHeight: 800, innerWidth: 1000 },
                })
 
-               expect(result).toEqual({ right: 10, bottom: 2 })
+               expect(result).toEqual({ right: 10, bottom: 2, finalPlacementLogic: 'bottomEnd' })
             })
 
             it('should position the shell below 0', () => {
@@ -196,7 +196,7 @@ describe('compute-placement', () => {
                   window: { innerHeight: 800, innerWidth: 1000 },
                })
 
-               expect(result).toEqual({ right: 10, bottom: -200 })
+               expect(result).toEqual({ right: 10, bottom: -200, finalPlacementLogic: 'bottomEnd' })
             })
          })
       })

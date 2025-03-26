@@ -356,7 +356,12 @@ export class RevealState {
       // ⏸️ console.log(`[🤠] posCSS`, JSON.stringify(out, null, 4))
       return out
    }
-   tooltipPosition: RevealComputedPosition = { top: 0, left: 0 }
+   tooltipPosition: RevealComputedPosition = {
+      top: 0,
+      left: 0,
+      finalPlacementLogic: 'screen-top-left',
+   }
+
    setPosition = (rect: DOMRect | null, shell: DOMRect | null): void => {
       this.tooltipPosition = computePlacement(this.placement, rect, shell)
    }
@@ -447,7 +452,16 @@ export class RevealState {
       this.inAnchor = true
 
       if (!wasVisible) this.p.onRevealed?.(this)
-      if (!wasVisible) this.focusOnMountOrNowIfMounted_EXCEPT_IF_FOCUS_ALREADY_INSIDE()
+      if (!wasVisible) {
+         if (
+            this.p.focusOnOpen !== false &&
+            (typeof this.p.focusOnOpen != 'function' || this.p.focusOnOpen() != false)
+         ) {
+            this.focusFirstInputLikeOnMountOrNowIfMounted_EXCEPT_IF_FOCUS_ALREADY_INSIDE()
+         } else {
+            this.focusOnMountOrNowIfMounted_EXCEPT_IF_FOCUS_ALREADY_INSIDE()
+         }
+      }
    }
 
    get shouldCloseOthersonOpen(): boolean {
@@ -471,6 +485,10 @@ export class RevealState {
 
    focusOnMountOrNowIfMounted_EXCEPT_IF_FOCUS_ALREADY_INSIDE(): void {
       this.shellRef.focusOnMountOrNowIfMounted_EXCEPT_IF_FOCUS_ALREADY_INSIDE()
+   }
+
+   focusFirstInputLikeOnMountOrNowIfMounted_EXCEPT_IF_FOCUS_ALREADY_INSIDE(): void {
+      this.shellRef.focusFirstInputLikeOnMountOrNowIfMounted_EXCEPT_IF_FOCUS_ALREADY_INSIDE()
    }
 
    close = (reason?: RevealHideReason): void => {

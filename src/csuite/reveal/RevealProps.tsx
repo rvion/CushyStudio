@@ -128,6 +128,8 @@ export type RevealProps = {
    hideTriggers?: RevealHideTriggers
    showTriggers?: RevealShowTriggers
 
+   focusOnOpen?: boolean | (() => boolean)
+
    // delays ------------------------------------------------------------------
    hideDelay?: number /** only for hover */
    showDelay?: number /** only for hover */
