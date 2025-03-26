@@ -6,6 +6,7 @@ import type { UIKit } from './WidgetCustomUI'
 import type { FC } from 'react'
 
 import { produce } from 'immer'
+import { computed } from 'mobx'
 
 import { stableStringify } from '../../hashUtils/hash'
 import { Field } from '../../model/Field'
@@ -108,7 +109,7 @@ export class Field_custom<T> extends Field {
    }
 
    // #region Changes
-   get defaultValue(): T {
+   @computed get defaultValue(): T {
       return this.config.defaultValue()
    }
 

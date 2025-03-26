@@ -4,7 +4,7 @@ import type { Patch_Common } from '../../model/Patch'
 import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 
-import { observable, reaction } from 'mobx'
+import { computed, observable, reaction } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { Field, type KeyedField, type VALUE_MODE } from '../../model/Field'
@@ -210,7 +210,7 @@ export class Field_list<T extends CSchema> extends Field {
       return this.items_.map(fn)
    }
 
-   get hasChanges(): boolean {
+   @computed get hasChanges(): boolean {
       // 💬 2024-06-?? rvion:
       //  | in auto mode, length is managed,
       //  | so we must not take it into account

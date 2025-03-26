@@ -198,7 +198,7 @@ export class Field_date<out VALUE> extends Field {
       return this.selectedValue_ != null
    }
 
-   get defaultValue(): Field_date_unchecked<VALUE> {
+   @computed get defaultValue(): Field_date_unchecked<VALUE> {
       if (typeof this.config.default === 'function') {
          return (this.config.default as () => VALUE | null | undefined)()
       }
@@ -252,10 +252,9 @@ export class Field_date<out VALUE> extends Field {
       return null
    }
    // #region changes
-   get hasChanges(): boolean {
-      return (
-         this.serial.value != (this.defaultValue == null ? null : this.config.serialize(this.defaultValue))
-      )
+   @computed get hasChanges(): boolean {
+      const def = this.defaultValue == null ? null : this.config.serialize(this.defaultValue)
+      return this.serial.value != def
    }
 
    // #region misc

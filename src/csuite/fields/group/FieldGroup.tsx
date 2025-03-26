@@ -193,7 +193,7 @@ export class Field_group<T extends SchemaDict> extends Field {
       // return this.subFields.every((f) => f.isSet)
    }
 
-   get hasChanges(): boolean {
+   @computed get hasChanges(): boolean {
       const fields: Field[] = Object.values(this.fields)
       return fields.some((f) => f.hasChanges)
    }

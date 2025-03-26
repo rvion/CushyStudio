@@ -5,6 +5,7 @@ import type { Repository } from '../../model/Repository'
 import type { Problem_Ext } from '../../model/Validation'
 
 import { produce } from 'immer'
+import { computed } from 'mobx'
 
 import { Field } from '../../model/Field'
 import { bang } from '../../utils/bang'
@@ -158,7 +159,7 @@ export class Field_size extends Field {
       return null
    }
 
-   get defaultValue(): Field_size_value {
+   @computed get defaultValue(): Field_size_value {
       const config = this.schema.config
       const aspectRatio: AspectRatio = config.default?.aspectRatio ?? '1:1'
       const modelType: SDModelType = config.default?.modelType ?? 'SD1.5 512'

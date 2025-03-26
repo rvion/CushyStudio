@@ -237,7 +237,7 @@ export class Field_string extends Field {
       return true
    }
 
-   get defaultValue(): string | undefined {
+   @computed get defaultValue(): string | undefined {
       return this.evalDefaultValue()
    }
 
