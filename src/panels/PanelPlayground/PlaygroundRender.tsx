@@ -62,10 +62,7 @@ export const PlaygroundRenderUI = observer(function PlaygroundRender(p: NO_PROPS
                // [x.Sub1, { Shell: null }],
                // [[x.Sub1, x.Sub2], { Shell: null }],
                // ['{sub1|sub2}', { Shell: null }],
-               [
-                  '@number',
-                  { OnLeft: <div tw='text-center'>👉</div>, OnRight: <div tw='text-center'>👈</div> },
-               ],
+               ['@number', { OnLeft: '👉', OnRight: '👈' }],
                // [
                //    '@number',
                //    { OnTop: <div tw='text-center'>👇</div>, OnBottom: <div tw='text-center'>👆</div> },

@@ -14,7 +14,7 @@ export type SimpleReactNode =
    | boolean
    | null
    | undefined
-// | string <--- ❌  disabled so we reserve string for named components
+| string //<--- ❌  disabled so we reserve string for named components
 
 export type SimpleReactComponent<P> = CovariantFn<[props: P], ReactNode | Promise<ReactNode>>
 // export type SimpleReactComponent<P> = CovariantFn<[props: P], React.JSX.Element>

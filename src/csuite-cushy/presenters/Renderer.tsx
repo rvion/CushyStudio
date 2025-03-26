@@ -43,6 +43,9 @@ export class Renderer {
       const bar: RenderRule<Field>[] = Array.isArray(foo) //
          ? []
          : [{ pattern: true, uiconf: foo }]
+
+      // massive optimization here; just support arbitrary nested arrays
+      // and ache the object so we never spread stuff
       const rules_: RenderRule<Field>[] = [
          // default rules
          ...defaultRulesV2,
@@ -85,14 +88,7 @@ export class Renderer {
          }
       }
       // console.log(`[🔴🦊SHELL]`, slots.Shell)
-      const Shell =
-         typeof slots.Shell === 'string' //
-            ? uy.shell[slots.Shell]
-            : slots.Shell
-      // === undefined
-      //   ? uy.shell.Default
-      //   : () => null
-
+      const Shell = slots.Shell
       // console.log(`[🤠] slots.ShellName`, slots.ShellName, field.path, Shell === catalog.Shell.Inline)
       // if (!Shell) throw new Error('Shell is not defined')
 
