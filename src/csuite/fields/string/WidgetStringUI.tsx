@@ -9,7 +9,7 @@ import { Frame } from '../../frame/Frame'
 import { InputStringUI } from '../../input-string/InputStringUI'
 
 // Textarea HEADER
-export const WidgetString_TextareaHeaderUI = observer(function WidgetString_TextareaHeaderUI_(p: {
+export const WidgetString_TextareaHeaderUI = obs(function WidgetString_TextareaHeaderUI_(p: {
    field: Field_string
 }) {
    const field = p.field
@@ -19,7 +19,7 @@ export const WidgetString_TextareaHeaderUI = observer(function WidgetString_Text
 })
 
 // Textarea BODY
-export const WidgetString_TextareaBodyUI = observer(function WidgetString_TextareaBodyUI_(p: {
+export const WidgetString_TextareaBodyUI = obs(function WidgetString_TextareaBodyUI_(p: {
    field: Field_string
    readonly?: boolean
    config?: Field_string['config']
@@ -64,7 +64,7 @@ export const WidgetString_TextareaBodyUI = observer(function WidgetString_Textar
 })
 
 // string HEADER
-export const WidgetString_HeaderUI = observer(function WidgetStringUI_(p: {
+export const WidgetString_HeaderUI = obs(function WidgetStringUI_(p: {
    field: Field_string
    readonly?: boolean
    config?: Field_string['config']

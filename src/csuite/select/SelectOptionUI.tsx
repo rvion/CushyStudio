@@ -3,7 +3,6 @@ import type { RevealState } from '../reveal/RevealState'
 import type { AutoCompleteSelectState } from './SelectState'
 import type { CSSProperties } from 'react'
 
-import { observer } from 'mobx-react-lite'
 import { type ListChildComponentProps } from 'react-window'
 
 import { InputBoolCheckboxUI } from '../checkbox/InputBoolCheckboxUI'
@@ -19,7 +18,7 @@ export type SelectOptionProps<T> = {
    boolButtonProps?: BoolButtonProps
 }
 
-export const SelectOptionUI = observer(function SelectOptionUI_<T>(p: SelectOptionProps<T>) {
+export const SelectOptionUI = obs(function SelectOptionUI_<T>(p: SelectOptionProps<T>) {
    const state = p.state
    const isSelected = state.values.find((v) => state.isEqual(v, p.option)) != null
    const mode: BoolButtonMode = state.isMultiSelect ? 'checkbox' : 'radio'
@@ -46,7 +45,7 @@ export const SelectOptionUI = observer(function SelectOptionUI_<T>(p: SelectOpti
    )
 })
 
-export const SelectAllNoneUI = observer(function SelectAllNoneUI_<T>(p: {
+export const SelectAllNoneUI = obs(function SelectAllNoneUI_<T>(p: {
    state: AutoCompleteSelectState<T>
    className?: string
 }) {
@@ -78,7 +77,7 @@ export const SelectAllNoneUI = observer(function SelectAllNoneUI_<T>(p: {
  * what react-window (virtualization library) expects as a component
  */
 // eslint-disable-next-line react-refresh/only-export-components
-export const SelectOptionUI_FixedList = observer(function SelectOptionUI_<T>({
+export const SelectOptionUI_FixedList = obs(function SelectOptionUI_<T>({
    data,
    index,
    style,

@@ -1,8 +1,6 @@
 import type { RenderPropsCompiled } from '../presenters/RenderPropsCompiled'
 import type { ReactNode } from 'react'
 
-import { observer } from 'mobx-react-lite'
-
 import { WidgetHeaderContainerUI } from '../../csuite/form/WidgetHeaderContainerUI'
 import { renderFCOrNode } from '../../csuite/utils/renderFCOrNode'
 
@@ -11,7 +9,7 @@ export type CushyHeadProps = RenderPropsCompiled & {
    // asRevealAnchor?: // TODO
 }
 
-export const CushyHeadUI = observer(function CushyHead(p: CushyHeadProps) {
+export const CushyHeadUI = obs(function CushyHead(p: CushyHeadProps) {
    const field = p.field
    const interfacePreferences = cushy.preferences.interface.value
 

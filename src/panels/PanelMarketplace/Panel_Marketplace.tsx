@@ -1,7 +1,5 @@
 import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
 
-import { observer } from 'mobx-react-lite'
-
 import { Button } from '../../csuite/button/Button'
 import { Panel, type PanelHeader } from '../../router/Panel'
 import { CreateAppBtnUI } from '../PanelWelcome/CreateAppBtnUI'
@@ -15,7 +13,7 @@ export const PanelMarketplace = new Panel({
    category: 'app',
 })
 
-export const PanelMarketplaceUI = observer(function PanelMarketplaceUI_(p: NO_PROPS) {
+export const PanelMarketplaceUI = obs(function PanelMarketplaceUI_(p: NO_PROPS) {
    // const form = useMemo(
    //         CushyRepository.form(
    //             (ui) => ({
@@ -88,7 +86,7 @@ export const PanelMarketplaceUI = observer(function PanelMarketplaceUI_(p: NO_PR
    )
 })
 
-// export const ActionPackUI = observer(function ActionPackUI_(p: { pkg: Package }) {
+// export const ActionPackUI = obs(function ActionPackUI_(p: { pkg: Package }) {
 //     const pkg = p.pkg
 //     return (
 //         <div tw='cursor-pointer hover:bg-gray-700 p-2' key={pkg.name} style={{ borderBottom: '1px solid #515151' }}>

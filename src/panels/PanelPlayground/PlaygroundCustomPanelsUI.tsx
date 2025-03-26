@@ -1,13 +1,12 @@
 import type { AnyFieldSerial } from '../../csuite/model/EntitySerial'
 
 import { observable } from 'mobx'
-import { observer } from 'mobx-react-lite'
 
 import { Button } from '../../csuite/button/Button'
 import { usePanelTemporaryData } from '../../router/usePanelTemporaryData'
 import { registerCustomPanel } from '../PanelCustom/CustomPanels'
 
-export const PlaygroundCustomPanelsUI = observer(function PlaygroundCustomPanelsUI_(p: {}) {
+export const PlaygroundCustomPanelsUI = obs(function PlaygroundCustomPanelsUI_(p: {}) {
    return (
       <div tw='flex gap-1'>
          <Button
@@ -27,7 +26,7 @@ export const PlaygroundCustomPanelsUI = observer(function PlaygroundCustomPanels
 
 const HANDLE = registerCustomPanel(
    'myCustomPanel',
-   observer((p: { name: string }) => {
+   obs((p: { name: string }) => {
       const store = usePanelTemporaryData((): { data: Maybe<AnyFieldSerial> } =>
          observable({
             data: null,

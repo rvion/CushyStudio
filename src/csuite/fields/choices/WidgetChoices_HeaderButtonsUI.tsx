@@ -1,8 +1,6 @@
 import type { SchemaDict } from '../../model/SchemaDict'
 import type { Field_choices } from './FieldChoices'
 
-import { observer } from 'mobx-react-lite'
-
 import { Button } from '../../button/Button'
 import { InputBoolUI } from '../../checkbox/InputBoolUI'
 import { useCSuite } from '../../ctx/useCSuite'
@@ -10,7 +8,7 @@ import { getJustifyContent } from './TabPositionConfig'
 
 // ============================================================================================================
 
-export const WidgetChoices_HeaderButtonsUI = observer(function WidgetChoices_HeaderButtonsUI_<
+export const WidgetChoices_HeaderButtonsUI = obs(function WidgetChoices_HeaderButtonsUI_<
    T extends SchemaDict,
 >(p: { field: Field_choices<T> }) {
    const field: Field_choices<T> = p.field

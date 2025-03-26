@@ -4,7 +4,6 @@ import type { Field } from '../model/Field'
 import type { NO_PROPS } from '../types/NO_PROPS'
 import type { RSSize } from '../types/RsuiteTypes'
 
-import { observer } from 'mobx-react-lite'
 import { type CSSProperties, type FC } from 'react'
 
 import { Button } from '../../csuite/button/Button'
@@ -59,7 +58,7 @@ export type FormUIProps = {
  * - some custom header to include in the main div
  * - some action buttons (submit...)
  */
-export const FormUI = observer(function FormUI_(p: FormUIProps) {
+export const FormUI = obs(function FormUI_(p: FormUIProps) {
    const field = p.field
    if (field == null) return <MessageErrorUI markdown={`form is not yet initialized`} />
    // if (form.error) return <MessageErrorUI markdown={form.error} />

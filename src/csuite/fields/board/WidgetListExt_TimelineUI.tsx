@@ -3,7 +3,7 @@ import type { Field_board } from './Field_board'
 
 import { observer, useLocalObservable } from 'mobx-react-lite'
 
-export const WidgetListExt_TimelineUI = observer(function WidgetTimelineUI_<T extends CSchema>(p: {
+export const WidgetListExt_TimelineUI = obs(function WidgetTimelineUI_<T extends CSchema>(p: {
    //
    field: Field_board<any>
 }) {

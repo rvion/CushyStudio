@@ -2,8 +2,6 @@ import type { ComfyPromptL } from '../models/ComfyPrompt'
 import type { ProgressReport } from '../models/ComfyWorkflow'
 import type { StepL } from '../models/Step'
 
-import { observer } from 'mobx-react-lite'
-
 import { Button } from '../csuite/button/Button'
 import { Frame } from '../csuite/frame/Frame'
 import { parseFloatNoRoundingErr } from '../csuite/utils/parseFloatNoRoundingErr'
@@ -11,7 +9,7 @@ import { GraphSummaryUI } from '../widgets/workspace/GraphSummaryUI'
 
 // TODO: Make the color of the "done" bar success or warn if failed!!
 
-export const OutputPromptPreviewUI = observer(function OutputPromptPreviewUI_(p: {
+export const OutputPromptPreviewUI = obs(function OutputPromptPreviewUI_(p: {
    //
    step?: Maybe<StepL>
    output: ComfyPromptL
@@ -73,7 +71,7 @@ export const OutputPromptPreviewUI = observer(function OutputPromptPreviewUI_(p:
    )
 })
 
-export const OutputPromptUI = observer(function OutputPromptUI_(p: {
+export const OutputPromptUI = obs(function OutputPromptUI_(p: {
    //
    step?: Maybe<StepL>
    output: ComfyPromptL

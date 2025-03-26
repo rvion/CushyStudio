@@ -1,7 +1,5 @@
 import type { BoolButtonProps } from './InputBoolUI'
 
-import { observer } from 'mobx-react-lite'
-
 // import { twMerge } from 'tailwind-merge'
 import { Button } from '../button/Button'
 import { useCSuite } from '../ctx/useCSuite'
@@ -13,7 +11,7 @@ import { CheckboxAndRadioIcon } from './_InputBoolToggleButtonBoxUI'
 // 🔴 2024-07-31: domi: this should actually look like a button?
 // => then let's use a Button propably
 // => or only have one component with some props?
-export const ToggleButtonUI = observer(function ToggleButtonUI_(
+export const ToggleButtonUI = obs(function ToggleButtonUI_(
    p: BoolButtonProps & {
       preventDefault?: boolean
       showToggleButtonBox?: boolean

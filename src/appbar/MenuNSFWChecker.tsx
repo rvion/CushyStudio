@@ -1,10 +1,8 @@
-import { observer } from 'mobx-react-lite'
-
 import { Button } from '../csuite/button/Button'
 import { MessageInfoUI } from '../csuite/messages/MessageInfoUI'
 import { MessageWarningUI } from '../csuite/messages/MessageWarningUI'
 
-export const MenuNSFWCheckerUI = observer(function MenuNSFWCheckerUI_(p: {}) {
+export const MenuNSFWCheckerUI = obs(function MenuNSFWCheckerUI_(p: {}) {
    const pj = cushy.project
    return (
       <Button //
@@ -19,7 +17,7 @@ export const MenuNSFWCheckerUI = observer(function MenuNSFWCheckerUI_(p: {}) {
    )
 })
 
-export const NSFWToggleUI = observer(function NSFWToggleUI_(p: {}) {
+export const NSFWToggleUI = obs(function NSFWToggleUI_(p: {}) {
    const val: boolean = cushy.project.filterNSFW
    return (
       <div tw='p-2'>

@@ -1,8 +1,8 @@
 // import { useApplication } from '@pixi/react'
-// import { observer } from 'mobx-react-lite'
+//
 // import { useEffect } from 'react'
 
-// export const ResizeTestPixi = observer(function ResizeTestUI_(p: {}) {
+// export const ResizeTestPixi = obs(function ResizeTestUI_(p: {}) {
 //     const app = useApplication()
 //     useEffect(() => {
 //         setTimeout(() => {

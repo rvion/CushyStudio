@@ -1,6 +1,5 @@
 import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
 
-import { observer } from 'mobx-react-lite'
 import { useLayoutEffect } from 'react'
 
 import { cushyFactory } from '../../controls/CushyBuilder'
@@ -36,7 +35,7 @@ export const PanelPlayground = new Panel({
 
 export type PanelPlaygroundProps = NO_PROPS
 
-export const PanelPlaygroundUI = observer(function PanelPlaygroundUI_(p: PanelPlaygroundProps) {
+export const PanelPlaygroundUI = obs(function PanelPlaygroundUI_(p: PanelPlaygroundProps) {
    const relPathToThisPage = './src/panels/PanelPlayground/PanelPlayground.tsx' as RelativePath
    const mode = Header_Playground.value
 

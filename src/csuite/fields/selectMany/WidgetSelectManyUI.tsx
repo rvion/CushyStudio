@@ -1,14 +1,12 @@
 import type { SelectKey } from '../selectOne/SelectOneKey'
 import type { Field_selectMany, SelectManyAppearance } from './FieldSelectMany'
 
-import { observer } from 'mobx-react-lite'
-
 import { exhaust } from '../../utils/exhaust'
 import { WidgetSelectMany_ListUI } from './WidgetSelectMany_ListUI'
 import { WidgetSelectMany_SelectUI } from './WidgetSelectMany_SelectUI'
 import { WidgetSelectMany_TabUI } from './WidgetSelectMany_TabUI'
 
-export const WidgetSelectManyUI = observer(function WidgetSelectManyUI_<VALUE, KEY extends SelectKey>(p: {
+export const WidgetSelectManyUI = obs(function WidgetSelectManyUI_<VALUE, KEY extends SelectKey>(p: {
    field: Field_selectMany<VALUE, KEY>
 }) {
    const field = p.field

@@ -1,6 +1,5 @@
 import type { Field_prompt } from '../FieldPrompt'
 
-import { observer } from 'mobx-react-lite'
 import { useEffect, useLayoutEffect, useMemo } from 'react'
 
 import { Frame } from '../../csuite/frame/Frame'
@@ -10,7 +9,7 @@ import { WidgetPromptUISt } from '../WidgetPromptUISt'
 
 // UI
 
-export const WidgetPromptUI = observer(function WidgetPromptUI_(p: { field: Field_prompt }) {
+export const WidgetPromptUI = obs(function WidgetPromptUI_(p: { field: Field_prompt }) {
    const field = p.field
    const uist = useMemo(() => new WidgetPromptUISt(field), [])
    useLayoutEffect(() => {

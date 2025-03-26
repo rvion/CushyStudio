@@ -1,5 +1,3 @@
-import { observer } from 'mobx-react-lite'
-
 import { OutputUI } from '../../outputs/OutputUI'
 import { PanelStepsConf } from '../PanelSteps/PanelStepsConf'
 import { LatentIfLastUI } from './LatentIfLastUI'
@@ -8,7 +6,7 @@ export type PanelOutputProps = {
    stepID?: Maybe<StepID>
 }
 
-export const PanelOutputUI = observer(function PanelStepUI_(p: PanelOutputProps) {
+export const PanelOutputUI = obs(function PanelStepUI_(p: PanelOutputProps) {
    // 1. get step
    const step =
       p.stepID == null //

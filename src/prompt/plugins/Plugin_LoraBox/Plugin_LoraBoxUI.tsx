@@ -1,12 +1,10 @@
 import type { WidgetPromptUISt } from '../../WidgetPromptUISt'
 
-import { observer } from 'mobx-react-lite'
-
 import { LoraBoxUI } from './LoraBoxUI'
 
 // TODO: Once it is possible to get the modifier key's states, holding shift when pressing the trash button should not trim whitespace/commas
 
-export const Plugin_LoraControlsUI = observer(function Plugin_LoraControlsUI_(p: {
+export const Plugin_LoraControlsUI = obs(function Plugin_LoraControlsUI_(p: {
    //
    uist: WidgetPromptUISt
 }) {

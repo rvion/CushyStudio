@@ -1,7 +1,5 @@
 import type { TreeView } from './TreeView'
 
-import { observer } from 'mobx-react-lite'
-
 import { ComboUI } from '../accelerators/ComboUI'
 import { Ikon } from '../icons/iconHelpers'
 import { RegionUI } from '../regions/RegionUI'
@@ -10,7 +8,7 @@ import { TreeViewCtx } from './TreeCtx'
 import { TreeEntryUI } from './TreeEntryUI'
 import { TreeKeys } from './TreeKeys'
 
-export const TreeUI = observer(function TreeEditorUI_(p: {
+export const TreeUI = obs(function TreeEditorUI_(p: {
    //
    title?: string
    shortcut?: string

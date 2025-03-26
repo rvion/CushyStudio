@@ -1,9 +1,7 @@
-import { observer } from 'mobx-react-lite'
-
 import { openExternal } from '../../app/layout/openExternal'
 import { Button } from '../../csuite/button/Button'
 
-export const OpenComfyExternalUI = observer(function OpenComfyExternalUI_(p: {}) {
+export const OpenComfyExternalUI = obs(function OpenComfyExternalUI_(p: {}) {
    return (
       <Button
          size='sm'

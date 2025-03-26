@@ -1,5 +1,3 @@
-import { observer } from 'mobx-react-lite'
-
 import { Frame, type FrameProps } from '../frame/Frame'
 
 /**
@@ -15,7 +13,7 @@ import { Frame, type FrameProps } from '../frame/Frame'
  * </PanelHeaderUI>
  * ```
  */
-export const PanelHeaderUI = observer(function PanelHeader({
+export const PanelHeaderUI = obs(function PanelHeader({
    // own props ---------------------------------------------------------------------
    /** extensible flag makes the panel header have minh-widget instead of h-widget */
    extensibleHeight,

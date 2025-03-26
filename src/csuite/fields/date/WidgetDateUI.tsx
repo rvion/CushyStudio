@@ -1,7 +1,5 @@
 import type { Field_date } from './FieldDate'
 
-import { observer } from 'mobx-react-lite'
-
 import { Button } from '../../button/Button'
 import { InputStringUI } from '../../input-string/InputStringUI'
 
@@ -11,7 +9,7 @@ import { InputStringUI } from '../../input-string/InputStringUI'
  * This needs to be fixed, and the warning will disappear. (2024-08-23)
  * Please remove this explanation when the warning is fixed.
  */
-export const WidgetDate_ClearButtonUI = observer(function WidgetDate_ClearButtonUI_<VALUE>(p: {
+export const WidgetDate_ClearButtonUI = obs(function WidgetDate_ClearButtonUI_<VALUE>(p: {
    field: Field_date<VALUE>
    readonly?: boolean
 }) {
@@ -37,7 +35,7 @@ export const WidgetDate_ClearButtonUI = observer(function WidgetDate_ClearButton
 })
 
 // date HEADER
-export const WidgetDate_HeaderUI = observer(function WidgetDateUI_<VALUE>(p: {
+export const WidgetDate_HeaderUI = obs(function WidgetDateUI_<VALUE>(p: {
    field: Field_date<VALUE>
    readonly?: boolean
 }) {

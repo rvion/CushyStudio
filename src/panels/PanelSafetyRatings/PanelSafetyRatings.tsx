@@ -1,5 +1,4 @@
 import { sql } from 'kysely'
-import { observer } from 'mobx-react-lite'
 
 import { Button } from '../../csuite/button/Button'
 import { UI } from '../../csuite/components/UI'
@@ -28,7 +27,7 @@ export type PanelSafetyRatingsProps = {
    onClick?: (img: MediaImageL) => void
 }
 
-export const PanelSafetyRatingsUI = observer(function PanelSafetyRatings(p: PanelSafetyRatingsProps) {
+export const PanelSafetyRatingsUI = obs(function PanelSafetyRatings(p: PanelSafetyRatingsProps) {
    const conf = useGalleryConf()
    const xxx = usePanel().usePersistentModel('uist', (ui) =>
       ui.fields({

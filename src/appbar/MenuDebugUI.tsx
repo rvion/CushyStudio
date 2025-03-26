@@ -1,5 +1,3 @@
-import { observer } from 'mobx-react-lite'
-
 import { KEYS } from '../app/shortcuts/shorcutKeys'
 import { activityManager } from '../csuite/activity/ActivityManager'
 import { Dropdown } from '../csuite/dropdown/Dropdown'
@@ -10,7 +8,7 @@ import { DBStatsUI } from '../db/gui/DBStats'
 import { quickBench } from '../db/quickBench'
 import { DEMO_ACTIVITY } from '../operators/useDebugActivity'
 
-export const MenuDebugUI = observer(function MenuDebugUI_(p: {}) {
+export const MenuDebugUI = obs(function MenuDebugUI_(p: {}) {
    return (
       <Dropdown
          title='Dev'

@@ -1,9 +1,7 @@
-import { observer } from 'mobx-react-lite'
-
 import { csuiteConfig } from '../config/configureCsuite'
 import { CreateButton, FixedSlot, type SelectPopupProps } from './SelectPopupUI'
 
-export const SelectPopupUI_NoResults = observer(function SelectPopupUI_NoResults<OPTION>(
+export const SelectPopupUI_NoResults = obs(function SelectPopupUI_NoResults<OPTION>(
    p: SelectPopupProps<OPTION>,
 ): React.ReactNode {
    const select = p.selectState

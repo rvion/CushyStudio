@@ -1,12 +1,10 @@
 import type { ICanvasTool } from '../utils/_ICanvasTool'
 
-import { observer } from 'mobx-react-lite'
-
 import { DraftIllustrationUI } from '../../../cards/fancycard/DraftIllustration'
 import { ToolShelfButtonUI, ToolShelfUI } from '../../../csuite/shelf/ToolShelfUI'
 import { useUnifiedCanvas } from '../states/UnifiedCanvasCtx'
 
-export const CanvasToolbarUI = observer(function CanvasToolbarUI_(p: {}) {
+export const CanvasToolbarUI = obs(function CanvasToolbarUI_(p: {}) {
    const canvas = useUnifiedCanvas()
    return (
       <ToolShelfUI
@@ -47,7 +45,7 @@ export const CanvasToolbarUI = observer(function CanvasToolbarUI_(p: {}) {
    )
 })
 
-export const CanvasToolCategoriesUI = observer(function CanvasToolCategoriesUI_(p: {}) {
+export const CanvasToolCategoriesUI = obs(function CanvasToolCategoriesUI_(p: {}) {
    const categories = cushy.canvasCategories
    return (
       <div>
@@ -64,7 +62,7 @@ export const CanvasToolCategoriesUI = observer(function CanvasToolCategoriesUI_(
       </div>
    )
 })
-export const CanvasToolsUI = observer(function CanvasToolsUI_(p: { category?: string }) {
+export const CanvasToolsUI = obs(function CanvasToolsUI_(p: { category?: string }) {
    const canvasTools = p.category ? cushy.getCanvasToolsInCategory(p.category) : cushy.canvasTools
    const canvas = useUnifiedCanvas()
    return (

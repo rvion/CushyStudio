@@ -1,8 +1,6 @@
 import type { ComfyWorkflowL } from '../models/ComfyWorkflow'
 import type { StepL } from '../models/Step'
 
-import { observer } from 'mobx-react-lite'
-
 import { MenuItem } from '../csuite/dropdown/MenuItem'
 import { Frame } from '../csuite/frame/Frame'
 import { RevealUI } from '../csuite/reveal/RevealUI'
@@ -10,7 +8,7 @@ import { DrawWorkflowUI } from '../widgets/graph/DrawWorkflowUI'
 import { GraphPreviewUI } from '../widgets/graph/GraphPreviewUI'
 import { ButtonOpenInComfyUI } from '../widgets/workspace/ButtonOpenInComfyUI'
 
-export const OutputWorkflowPreviewUI = observer(function OutputWorkflowUI_(p: {
+export const OutputWorkflowPreviewUI = obs(function OutputWorkflowUI_(p: {
    step?: Maybe<StepL>
    output: ComfyWorkflowL
 }) {
@@ -62,7 +60,7 @@ export const OutputWorkflowPreviewUI = observer(function OutputWorkflowUI_(p: {
    )
 })
 
-export const OutputWorkflowUI = observer(function OutputWorkflowUI_(p: {
+export const OutputWorkflowUI = obs(function OutputWorkflowUI_(p: {
    step?: Maybe<StepL>
    output: ComfyWorkflowL
 }) {

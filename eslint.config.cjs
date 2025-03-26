@@ -324,11 +324,16 @@ module.exports = [
                   //    importNames: ['Button'],
                   //    message: 'Use the LSuite button instead of the CushyForms button',
                   // },
-                  // {
-                  //    name: 'rsuite',
-                  //    importNames: ['Button', 'IconButton'],
-                  //    message: 'Use the LSuite button',
-                  // },
+                  {
+                     name: 'mobx',
+                     importNames: ['observer'],
+                     message: 'Use the globaly-available `obs` instead',
+                  },
+                  {
+                     name: 'mobx-react-lite',
+                     importNames: ['observer'],
+                     message: 'Use the globaly-available `obs` instead',
+                  },
                   {
                      name: 'lodash',
                      message: 'Use lodash/[functionName] instead',
@@ -348,16 +353,16 @@ module.exports = [
                   {
                      name: 'src/cushy-forms/main',
                      importNames: ['Button'],
-                     message: 'Use UY.Button instead',
+                     message: 'Use uy.Button instead',
                   },
                   {
                      name: 'src/front/lsuite/Button',
-                     message: 'Use UY.Button instead',
+                     message: 'Use uy.Button instead',
                   },
                   {
                      name: 'rsuite',
                      importNames: ['Button', 'IconButton'],
-                     message: 'Use UY.Button instead',
+                     message: 'Use uy.Button instead',
                   },
                ],
             },

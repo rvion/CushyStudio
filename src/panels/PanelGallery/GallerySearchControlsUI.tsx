@@ -1,8 +1,6 @@
-import { observer } from 'mobx-react-lite'
-
 import { type GalleryConf, useGalleryConf } from './galleryConf'
 
-export const GallerySearchControlsUI = observer(function GallerySearchControlsUI_(p: {}) {
+export const GallerySearchControlsUI = obs(function GallerySearchControlsUI_(p: {}) {
    const conf: GalleryConf = useGalleryConf()
    return (
       <div tw='flex items-center gap-1'>

@@ -1,6 +1,4 @@
-import { observer } from 'mobx-react-lite'
-
-export const WidgetHeaderControlsContainerUI = observer(function WidgetHeaderControlsContainerUI_(p: {
+export const WidgetHeaderControlsContainerUI = obs(function WidgetHeaderControlsContainerUI_(p: {
    className?: string
    children: React.ReactNode
 }) {

@@ -2,11 +2,9 @@ import type { RevealState } from '../reveal/RevealState'
 import type { AutoCompleteSelectState } from './SelectState'
 import type { ListChildComponentProps } from 'react-window'
 
-import { observer } from 'mobx-react-lite'
-
 import { SelectOptionUI } from './SelectOptionUI'
 
-export const SelectOptionUI_FixedList = observer(function SelectOptionUI_<T>({
+export const SelectOptionUI_FixedList = obs(function SelectOptionUI_<T>({
    data,
    index,
    style,

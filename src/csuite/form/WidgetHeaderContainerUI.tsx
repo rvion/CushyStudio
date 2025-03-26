@@ -1,7 +1,5 @@
 import type { Field } from '../model/Field'
 
-import { observer } from 'mobx-react-lite'
-
 import { ErrorBoundaryUI } from '../errors/ErrorBoundaryUI'
 import { Frame, type FrameProps } from '../frame/Frame'
 
@@ -9,7 +7,7 @@ export type WidgetHeaderContainerProps = {
    field: Field
 } & FrameProps
 
-export const WidgetHeaderContainerUI = observer(function WidgetHeaderContainerUI_({
+export const WidgetHeaderContainerUI = obs(function WidgetHeaderContainerUI_({
    // own
    field,
 

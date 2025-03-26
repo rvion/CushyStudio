@@ -1,6 +1,5 @@
 import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
 
-import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 
 import { SpacerUI } from '../../csuite/components/SpacerUI'
@@ -10,7 +9,7 @@ import { SectionTitleUI } from '../../widgets/workspace/SectionTitle'
 import { Civitai } from './Civitai'
 import { CivitaiUI } from './CivitaiUI'
 
-export const PanelModelsUI = observer(function PanelModelsUI_(p: NO_PROPS) {
+export const PanelModelsUI = obs(function PanelModelsUI_(p: NO_PROPS) {
    const civitai = useMemo(() => new Civitai(), [])
    return (
       <div className='flex size-full flex-col gap-2'>

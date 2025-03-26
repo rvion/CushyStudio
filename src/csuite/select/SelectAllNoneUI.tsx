@@ -1,10 +1,8 @@
 import type { AutoCompleteSelectState } from './SelectState'
 
-import { observer } from 'mobx-react-lite'
-
 import { csuiteConfig } from '../config/configureCsuite'
 
-export const SelectAllNoneUI = observer(function SelectAllNoneUI_<T>(p: {
+export const SelectAllNoneUI = obs(function SelectAllNoneUI_<T>(p: {
    state: AutoCompleteSelectState<T>
    className?: string
 }) {

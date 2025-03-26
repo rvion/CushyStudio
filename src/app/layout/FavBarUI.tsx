@@ -1,5 +1,3 @@
-import { observer } from 'mobx-react-lite'
-
 import { AppIllustrationUI } from '../../cards/fancycard/AppIllustrationUI'
 import { Button } from '../../csuite/button/Button'
 import { Frame } from '../../csuite/frame/Frame'
@@ -8,7 +6,7 @@ import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { CreateAppPopupUI } from '../../panels/PanelWelcome/CreateAppBtnUI'
 import { AppDraftsQuickListUI } from './AppDraftsQuickListUI'
 
-export const FavBarUI = observer(function FavBarUI_(p: { direction?: 'row' | 'column' }) {
+export const FavBarUI = obs(function FavBarUI_(p: { direction?: 'row' | 'column' }) {
    const conf = cushy.preferences.interface.value.favBar
    // 💬 2024-09-29 rvion:
    // | temporarilly always display the favbar

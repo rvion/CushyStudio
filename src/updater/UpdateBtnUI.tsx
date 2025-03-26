@@ -1,8 +1,6 @@
 import type { GitManagedFolder } from './updater'
 import type { ReactNode } from 'react'
 
-import { observer } from 'mobx-react-lite'
-
 import { FolderGitStatus } from '../cards/FolderGitStatus'
 import { BadgeUI } from '../csuite/badge/BadgeUI'
 import { Button } from '../csuite/button/Button'
@@ -16,7 +14,7 @@ import { _formatAsRelativeDateTime } from './_getRelativeTimeString'
 import { GitInstallUI } from './GitInstallUI'
 import { UpdaterErrorUI } from './UpdaterErrorUI'
 
-export const UpdateBtnUI = observer(function UpdateBtnUI_(p: {
+export const UpdateBtnUI = obs(function UpdateBtnUI_(p: {
    //
    className?: string
    updater: GitManagedFolder
@@ -48,7 +46,7 @@ export const UpdateBtnUI = observer(function UpdateBtnUI_(p: {
    return <RevealUI content={() => <UpdaterDetailsUI updater={updater} />}>{ANCHOR}</RevealUI>
 })
 
-export const UpdaterAnchorUI = observer(function UpdaterAnchorUI_(p: { updater: GitManagedFolder }) {
+export const UpdaterAnchorUI = obs(function UpdaterAnchorUI_(p: { updater: GitManagedFolder }) {
    const updater = p.updater
    const status = updater.status
    if (status === FolderGitStatus.Unknown) return <Loader size='xs' />
@@ -60,7 +58,7 @@ export const UpdaterAnchorUI = observer(function UpdaterAnchorUI_(p: { updater: 
    exhaust(status)
 })
 
-export const UpdaterDetailsUI = observer(function UpdaterDetailsUI_(p: { updater: GitManagedFolder }) {
+export const UpdaterDetailsUI = obs(function UpdaterDetailsUI_(p: { updater: GitManagedFolder }) {
    const updater = p.updater
    const hasErrors = updater.hasErrors
 

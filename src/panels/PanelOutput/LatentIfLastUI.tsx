@@ -1,8 +1,6 @@
-import { observer } from 'mobx-react-lite'
-
 import { PanelOutputConf } from './PanelOutput_conf'
 
-export const LatentIfLastUI = observer(function LatentIfLastUI_(p: {}) {
+export const LatentIfLastUI = obs(function LatentIfLastUI_(p: {}) {
    const lastImage = cushy.db.media_image.last()
    const latent = cushy.latentPreview
    const sizeStr = PanelOutputConf.value.latentSize + '%'

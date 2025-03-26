@@ -1,7 +1,6 @@
 import type { CushyShortcut } from '../commands/CommandManager'
 import type { IconName } from '../icons/IconName'
 
-import { observer } from 'mobx-react-lite'
 import { type ReactNode, useState } from 'react'
 
 import { ComboUI } from '../accelerators/ComboUI'

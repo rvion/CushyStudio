@@ -5,7 +5,7 @@ import type { StepL } from '../../models/Step'
 import type { STATE } from '../../state/state'
 
 import { mkdirSync } from 'fs'
-import { observer } from 'mobx-react-lite'
+
 import { nanoid } from 'nanoid'
 import path, { dirname } from 'pathe'
 import { useMemo } from 'react'
@@ -24,7 +24,7 @@ import { asRelativePath } from '../../utils/fs/pathUtils'
 import { DisplacementState } from './DisplacementState'
 import { DisplacementUI } from './DisplacementUI'
 
-export const OutputDisplacementPreviewUI = observer(function OutputImagePreviewUI_(p: {
+export const OutputDisplacementPreviewUI = obs(function OutputImagePreviewUI_(p: {
    step?: Maybe<StepL>
    output: Media3dDisplacementL
 }) {
@@ -49,7 +49,7 @@ export type Panel_DisplacementProps = {
    height: number
 }
 
-export const OutputDisplacementUI = observer(function OutputDisplacementUI_(p: {
+export const OutputDisplacementUI = obs(function OutputDisplacementUI_(p: {
    step?: Maybe<StepL>
    output: Media3dDisplacementL
 }) {

@@ -1,12 +1,10 @@
 import type { CushyAppL } from '../../models/CushyApp'
 
-import { observer } from 'mobx-react-lite'
-
 import { InputBoolFlipButtonUI } from '../../csuite/checkbox/InputBoolFlipButtonUI'
 import { Frame } from '../../csuite/frame/Frame'
 import { AppIllustrationUI } from './AppIllustrationUI'
 
-export const AppCardUI = observer(function FancyCardUI_(p: {
+export const AppCardUI = obs(function FancyCardUI_(p: {
    //
    // deck: Package
    app: CushyAppL

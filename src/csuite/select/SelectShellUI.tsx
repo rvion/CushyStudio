@@ -1,11 +1,9 @@
 import type { RevealShellProps } from '../reveal/shells/ShellProps'
 
-import { observer } from 'mobx-react-lite'
-
 import { Frame } from '../frame/Frame'
 import { ShellFocusTrapUI } from '../reveal/shells/utils/ShellFocusTrap'
 
-export const SelectShellUI = observer(function SelectShellUI_(p: RevealShellProps) {
+export const SelectShellUI = obs(function SelectShellUI_(p: RevealShellProps) {
    const reveal = p.reveal
    return (
       <Frame

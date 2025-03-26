@@ -1,14 +1,12 @@
 import type { Field_size } from './FieldSize'
 
-import { observer } from 'mobx-react-lite'
-
 import { Button } from '../../button/Button'
 import { useCSuite } from '../../ctx/useCSuite'
 import { Dropdown } from '../../dropdown/Dropdown'
 import { Frame } from '../../frame/Frame'
 import { WigetSizeXUI } from './WigetSizeXUI'
 
-export const AspectLockButtonUI = observer(function AspectLockButtonUI_(p: { sizeHelper: Field_size }) {
+export const AspectLockButtonUI = obs(function AspectLockButtonUI_(p: { sizeHelper: Field_size }) {
    const uist = p.sizeHelper
    const theme = cushy.preferences.theme.value
 

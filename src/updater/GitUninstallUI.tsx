@@ -1,10 +1,8 @@
 import type { GitManagedFolder } from './updater'
 
-import { observer } from 'mobx-react-lite'
-
 import { Button } from '../csuite/button/Button'
 
-export const UninstallUI = observer(function UninstallUI_(p: { updater: GitManagedFolder }) {
+export const UninstallUI = obs(function UninstallUI_(p: { updater: GitManagedFolder }) {
    const updater = p.updater
    return (
       <Button

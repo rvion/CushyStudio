@@ -1,4 +1,3 @@
-import { observer } from 'mobx-react-lite'
 import React, { useMemo } from 'react'
 
 import { mkPlacement } from '../../csuite/fields/core-prefabs/ShapeSchema'
@@ -19,7 +18,7 @@ export type PanelCanvasProps = {
 }
 
 // https://github.com/devforth/painterro
-export const PanelCanvasUI = observer(function Panel_Canvas_(p: PanelCanvasProps) {
+export const PanelCanvasUI = obs(function Panel_Canvas_(p: PanelCanvasProps) {
    const uc2 = useUCV2()
    const canvas: UnifiedCanvas = useMemo(() => new UnifiedCanvas(cushy, uc2), [uc2])
    const [dropStyle, dropRef_] = useImageDrop(cushy, (img) => {

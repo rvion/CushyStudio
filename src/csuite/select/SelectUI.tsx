@@ -1,6 +1,5 @@
 import type { SelectProps } from './SelectProps'
 
-import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 
 import { Button } from '../button/Button'
@@ -12,7 +11,7 @@ import { SelectPopupUI } from './SelectPopupUI'
 import { SelectShellUI } from './SelectShellUI'
 import { AutoCompleteSelectState } from './SelectState'
 
-export const SelectUI = observer(function SelectUI_<T>(p: SelectProps<T>) {
+export const SelectUI = obs(function SelectUI_<T>(p: SelectProps<T>) {
    const select = useMemo(() => new AutoCompleteSelectState(/* st, */ p), [])
    const fullyShrinkable = p.fullyShrinkable ?? true
    const PopupComp = p.slotPopupUI ?? SelectPopupUI

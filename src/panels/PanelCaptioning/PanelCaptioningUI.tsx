@@ -1,5 +1,5 @@
 import { action, runInAction } from 'mobx'
-import { observer } from 'mobx-react-lite'
+
 import { useRef } from 'react'
 
 import { Button } from '../../csuite/button/Button'
@@ -14,7 +14,7 @@ import { ResizableFrame } from '../../csuite/resizableFrame/resizableFrameUI'
 import { BasicShelfUI } from '../../csuite/shelf/ShelfUI'
 import { useCaptioningState } from './PanelCaptioningCtx'
 
-export const PanelCaptioningUI = observer(function PanelCaptioningUI_(p: {}) {
+export const PanelCaptioningUI = obs(function PanelCaptioningUI_(p: {}) {
    const doc = useCaptioningState()
    // const misc = usePanel().usePersistentStore<{ showDebug: boolean }>('misc', () => ({ showDebug: false }))
    return (

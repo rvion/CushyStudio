@@ -1,7 +1,5 @@
 import type { Layer$ } from '../stateV2/Layer$'
 
-import { observer } from 'mobx-react-lite'
-
 import { ShellInputOnly } from '../../../csuite-cushy/shells/ShellInputOnly'
 import { Button } from '../../../csuite/button/Button'
 import { Frame } from '../../../csuite/frame/Frame'
@@ -16,7 +14,7 @@ type UCMenuLayerEntryUIProps = {
    onClick?: () => void
 }
 
-export const UCMenuLayerEntryUI = observer(function UCMenuLayerEntryUI_(p: UCMenuLayerEntryUIProps) {
+export const UCMenuLayerEntryUI = obs(function UCMenuLayerEntryUI_(p: UCMenuLayerEntryUIProps) {
    const inputHeight = cushy.preferences.interface.value.inputHeight
    const isVisible: boolean = p.layer.Visible.value
    const image = p.layer.Content.matchExhaustive({

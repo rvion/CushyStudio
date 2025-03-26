@@ -1,17 +1,14 @@
 import type { SelectKey } from '../selectOne/SelectOneKey'
 import type { Field_selectMany } from './FieldSelectMany'
 
-import { observer } from 'mobx-react-lite'
-
 import { InputBoolUI } from '../../checkbox/InputBoolUI'
 import { makeLabelFromPrimitiveValue } from '../../utils/makeLabelFromFieldName'
 import { getJustifyContent } from '../choices/TabPositionConfig'
 import { convertSelectKeyToReactKey } from '../selectOne/SelectOneKey'
 
-export const WidgetSelectMany_TabUI = observer(function WidgetSelectMany_TabUI_<
-   VALUE,
-   KEY extends SelectKey,
->(p: { field: Field_selectMany<VALUE, KEY> }) {
+export const WidgetSelectMany_TabUI = obs(function WidgetSelectMany_TabUI_<VALUE, KEY extends SelectKey>(p: {
+   field: Field_selectMany<VALUE, KEY>
+}) {
    const field = p.field
 
    return (

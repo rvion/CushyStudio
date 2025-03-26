@@ -1,8 +1,6 @@
-import { observer } from 'mobx-react-lite'
-
 import { CUSHY_PORT } from '../state/PORT'
 
-export const Panel_TypeDoc = observer(function Panel_TypeDoc_(p: {}) {
+export const Panel_TypeDoc = obs(function Panel_TypeDoc_(p: {}) {
    return (
       <iframe //
          className='size-full'

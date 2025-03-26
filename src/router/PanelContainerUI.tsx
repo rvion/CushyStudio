@@ -1,7 +1,6 @@
 import type * as FL from '../flexlayout-react'
 import type { PanelName } from './PANELS'
 
-import { observer } from 'mobx-react-lite'
 import { useState } from 'react'
 
 import { ErrorBoundaryUI } from '../csuite/errors/ErrorBoundaryUI'
@@ -14,7 +13,7 @@ import { PanelStateByNode } from './PanelStateByNode'
 import { panelContext } from './usePanel'
 
 /** internal component; do not use yourself */
-export const PanelContainerUI = observer(function PanelContainer(p: {
+export const PanelContainerUI = obs(function PanelContainer(p: {
    //
    flexLayoutTabNode: FL.TabNode
    panelName: PanelName

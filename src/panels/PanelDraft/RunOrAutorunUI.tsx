@@ -1,13 +1,11 @@
 import type { IconName } from '../../csuite/icons/IconName'
 import type { DraftL } from '../../models/Draft'
 
-import { observer } from 'mobx-react-lite'
-
 import { Button } from '../../csuite/button/Button'
 import { InputNumberUI } from '../../csuite/input-number/InputNumberUI'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
 
-export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?: string; draft: DraftL }) {
+export const RunOrAutorunUI = obs(function RunOrAutorunUI_(p: { className?: string; draft: DraftL }) {
    const draft = p.draft
    const icon: IconName = draft.shouldAutoStart ? IKONS.mdiPause : IKONS.mdiPlay
    return (

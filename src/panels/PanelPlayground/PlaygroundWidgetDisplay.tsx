@@ -1,13 +1,12 @@
 import type { Field } from '../../csuite/model/Field'
 
-import { observer } from 'mobx-react-lite'
 import { Fragment } from 'react/jsx-runtime'
 
 import { FrameWithCSuiteOverride } from '../../csuite/ctx/CSuiteOverride'
 import { FormUI } from '../../csuite/form/FormUI'
 import { readJSON, writeJSON } from '../../state/jsonUtils'
 
-export const PlaygroundWidgetDisplay = observer(function PlaygroundRequirements_(p: {}) {
+export const PlaygroundWidgetDisplay = obs(function PlaygroundRequirements_(p: {}) {
    const doc = useDoc()
    return (
       <Fragment>

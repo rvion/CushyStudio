@@ -1,7 +1,5 @@
 import type { Field } from '../model/Field'
 
-import { observer } from 'mobx-react-lite'
-
 import { Frame } from '../../csuite/frame/Frame'
 import { IkonOf } from '../../csuite/icons/iconHelpers'
 
@@ -10,7 +8,7 @@ export type WidgetLabelIconProps = {
    field: Field
 }
 
-export const WidgetLabelIconUI = observer(function WidgetLabelIconUI_(p: WidgetLabelIconProps) {
+export const WidgetLabelIconUI = obs(function WidgetLabelIconUI_(p: WidgetLabelIconProps) {
    const iconName = p.field.icon
    if (iconName == null) return null
    return (
@@ -24,7 +22,7 @@ export const WidgetLabelIconUI = observer(function WidgetLabelIconUI_(p: WidgetL
    )
 })
 
-export const WidgetLabelIconPlacholderUI = observer(function WidgetLabelIconPlacholderUI_(
+export const WidgetLabelIconPlacholderUI = obs(function WidgetLabelIconPlacholderUI_(
    p: WidgetLabelIconProps,
 ) {
    return (

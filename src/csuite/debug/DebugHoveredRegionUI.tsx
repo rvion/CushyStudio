@@ -1,8 +1,6 @@
-import { observer } from 'mobx-react-lite'
-
 import { regionMonitor } from '../regions/RegionMonitor'
 
-export const DebugHoveredRegionUI = observer(function DebugHoveredRegionUI_(p: {}) {
+export const DebugHoveredRegionUI = obs(function DebugHoveredRegionUI_(p: {}) {
    const rType = regionMonitor.hoveredRegion?.type ?? 'NO_REGION_CONTEXT_FIX_ME'
    const rID = regionMonitor.hoveredRegion?.id ?? '0'
    return (

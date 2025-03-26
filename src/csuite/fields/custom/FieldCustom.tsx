@@ -81,7 +81,7 @@ export class Field_custom<T> extends Field {
    }
 
    protected setOwnSerial(next: Field_custom<T>['$serial']): void {
-      if (!this.serial.value === undefined) {
+      if (!(this.serial.value === undefined)) {
          const def = this.defaultValue
          if (def !== undefined) {
             next = produce(next, (draft) => void ((draft.value = def as any) /* 🔴 */))

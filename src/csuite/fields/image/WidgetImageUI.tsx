@@ -1,6 +1,5 @@
 import type { Field_image } from './FieldImage'
 
-import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 
 import { createMediaImage_fromBlobObject } from '../../../models/createMediaImage_fromWebFile'
@@ -16,7 +15,7 @@ import { ResizableFrame } from '../../resizableFrame/resizableFrameUI'
 import { RevealUI } from '../../reveal/RevealUI'
 import { useDragDropRefForReact19 } from '../../utils/dnd'
 
-export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: {
+export const WidgetSelectImageUI = obs(function WidgetSelectImageUI_(p: {
    //
    field: Field_image
 }) {

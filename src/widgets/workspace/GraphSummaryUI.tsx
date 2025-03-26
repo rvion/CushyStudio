@@ -1,7 +1,5 @@
 import type { ComfyWorkflowL } from '../../models/ComfyWorkflow'
 
-import { observer } from 'mobx-react-lite'
-
 import { LegacyProgressLineUI } from '../../csuite/inputs/LegacyProgressLineUI'
 import { LegacySurfaceUI } from '../../csuite/inputs/LegacySurfaceUI'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
@@ -10,7 +8,7 @@ import { JSONHighlightedCodeUI } from '../misc/TypescriptHighlightedCodeUI'
 import { ButtonDownloadFilesUI } from './ButtonDownloadFilesUI'
 import { ButtonOpenInComfyUI } from './ButtonOpenInComfyUI'
 
-export const GraphSummaryUI = observer(function GraphSummaryUI_(p: { graph: ComfyWorkflowL }) {
+export const GraphSummaryUI = obs(function GraphSummaryUI_(p: { graph: ComfyWorkflowL }) {
    const graph = p.graph
    return (
       <LegacySurfaceUI tw='relative [min-width:2rem]'>
@@ -41,14 +39,14 @@ export const GraphSummaryUI = observer(function GraphSummaryUI_(p: { graph: Comf
    )
 })
 
-export const NodeProgressUI = observer(function NodeProgressUI_(p: { graph: ComfyWorkflowL }) {
+export const NodeProgressUI = obs(function NodeProgressUI_(p: { graph: ComfyWorkflowL }) {
    const graph = p.graph
    if (graph == null) return <>no execution yet</>
    const pgr = graph.progressCurrentNode
    return <LegacyProgressLineUI status={pgr?.isDone ? 'success' : 'active'} percent={pgr?.percent} />
 })
 
-export const GraphProgressUI = observer(function NodeProgressUI_(p: { graph: ComfyWorkflowL }) {
+export const GraphProgressUI = obs(function NodeProgressUI_(p: { graph: ComfyWorkflowL }) {
    const graph = p.graph
    if (graph == null) return null
    const pgr = graph.progressGlobal

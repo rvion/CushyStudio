@@ -1,7 +1,6 @@
 import type { Field_selectOne_ } from '../../csuite/fields/selectOne/FieldSelectOne'
 import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
 
-import { observer } from 'mobx-react-lite'
 import { type FC, Fragment } from 'react'
 
 import { openFolderInOS } from '../../app/layout/openExternal'
@@ -29,7 +28,7 @@ export type PanelPreferencesProps = NO_PROPS
 
 const PreferenceTabs: PreferenceMode[] = ['hosts', 'input', 'interface', 'legacy', 'system', 'theme']
 
-export const PanelPreferencesUI = observer(function Panel_Preferences_(p: PanelPreferencesProps) {
+export const PanelPreferencesUI = obs(function Panel_Preferences_(p: PanelPreferencesProps) {
    const panel = usePanel()
 
    const panelState = panel.usePersistentModel('abcd', (ui) =>
@@ -109,7 +108,7 @@ export const PanelPreferencesUI = observer(function Panel_Preferences_(p: PanelP
    )
 })
 
-const PreferenceTabButtonUI = observer(function PreferenceTabButtonUI_(p: {
+const PreferenceTabButtonUI = obs(function PreferenceTabButtonUI_(p: {
    //
    mode: PreferenceMode
    field: Field_selectOne_<PreferenceMode>

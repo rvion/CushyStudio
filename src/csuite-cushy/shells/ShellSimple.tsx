@@ -1,11 +1,9 @@
 import type { RenderPropsCompiled } from '../presenters/RenderPropsCompiled'
 
-import { observer } from 'mobx-react-lite'
-
 import { renderFCOrNode, renderFCOrNodeWithWrapper } from '../../csuite/utils/renderFCOrNode'
 
 // SHELL SIMPLE
-export const ShellSimpleUI = observer(function ShellSimple(p: RenderPropsCompiled) {
+export const ShellSimpleUI = obs(function ShellSimple(p: RenderPropsCompiled) {
    const field = p.field
    return (
       <div>

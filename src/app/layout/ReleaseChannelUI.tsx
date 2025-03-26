@@ -1,8 +1,6 @@
 import type { ReleaseChannels } from '../../config/ConfigFile'
 
-import { observer } from 'mobx-react-lite'
-
-export const ReleaseChannelUI = observer(function ReleaseChannelUI_(p: {
+export const ReleaseChannelUI = obs(function ReleaseChannelUI_(p: {
    //
    onChange: (val: ReleaseChannels) => void
 }) {

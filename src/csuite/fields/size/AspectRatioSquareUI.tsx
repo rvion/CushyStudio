@@ -1,10 +1,8 @@
 import type { Field_size } from './FieldSize'
 
-import { observer } from 'mobx-react-lite'
-
 import { Frame } from '../../frame/Frame'
 
-export const AspectRatioSquareUI = observer(function AspectRatioSquareUI_(p: { sizeHelper: Field_size }) {
+export const AspectRatioSquareUI = obs(function AspectRatioSquareUI_(p: { sizeHelper: Field_size }) {
    const uist = p.sizeHelper
    const ratioDisplaySize =
       cushy.preferences.interface.value.inputHeight *

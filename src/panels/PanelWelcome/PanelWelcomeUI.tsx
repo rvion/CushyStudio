@@ -1,4 +1,3 @@
-import { observer } from 'mobx-react-lite'
 import { useEffect } from 'react'
 
 import { Button } from '../../csuite/button/Button'
@@ -7,7 +6,7 @@ import { CreateAppBtnUI } from './CreateAppBtnUI'
 import { ForceUpdateAllAppsBtnUI, IndexAllAppsBtnUI } from './LibraryHeaderUI'
 import { StandaloneAppBtnUI } from './StandaloneAppBtnUI'
 
-export const PanelWelcomeUI = observer(function PanelWelcomeUI_(p: {}) {
+export const PanelWelcomeUI = obs(function PanelWelcomeUI_(p: {}) {
    useEffect(() => void cushy.showConfettiAndBringFun())
 
    return (

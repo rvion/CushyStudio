@@ -3,7 +3,6 @@ import type { StepL } from '../../models/Step'
 
 // import * as drei from '@react-three/drei'
 // import * as fiber from '@react-three/fiber'
-import { observer } from 'mobx-react-lite'
 
 import { jsx, jsxs } from '../../csuite/custom-jsx/jsx-runtime'
 // import * as react from 'react'
@@ -15,7 +14,7 @@ import { jsx, jsxs } from '../../csuite/custom-jsx/jsx-runtime'
 import { ErrorBoundaryUI } from '../../csuite/errors/ErrorBoundaryUI'
 import { MessageErrorUI } from '../../csuite/messages/MessageErrorUI'
 
-export const Output3dScenePreviewUI = observer(function Output3dScenePreviewUI_(p: {
+export const Output3dScenePreviewUI = obs(function Output3dScenePreviewUI_(p: {
    step?: Maybe<StepL>
    output: MediaCustomL
 }) {
@@ -32,7 +31,7 @@ export const Output3dScenePreviewUI = observer(function Output3dScenePreviewUI_(
    )
 })
 
-export const Output3dSceneUI2 = observer(function Output3dSceneUI2_(p: {
+export const Output3dSceneUI2 = obs(function Output3dSceneUI2_(p: {
    //
    step?: Maybe<StepL>
    output: MediaCustomL
@@ -66,12 +65,12 @@ export const Output3dSceneUI2 = observer(function Output3dSceneUI2_(p: {
    )
 })
 
-export const RenderSceneUI = observer(function RenderSceneUI_(p: {
+export const RenderSceneUI = obs(function RenderSceneUI_(p: {
    render: (params: Record<string, any>) => React.JSX.Element
 }) {
    return 1
 })
-// export const RenderSceneUI = observer(function RenderSceneUI_(p: {
+// export const RenderSceneUI = obs(function RenderSceneUI_(p: {
 //     //
 //     // code: string
 //     // data: Record<string, any>

@@ -1,13 +1,12 @@
 import type { TreeNode } from './TreeNode'
 
-import { observer } from 'mobx-react-lite'
 import { Fragment } from 'react'
 
 import { Ikon } from '../icons/iconHelpers'
 import { RenderItemTitleUI } from './RenderItemTitleUI'
 import { useTreeView } from './TreeCtx'
 
-export const TreeEntryUI = observer(function TreeEntryUI_(p: {
+export const TreeEntryUI = obs(function TreeEntryUI_(p: {
    //
    depth?: number
    node: TreeNode

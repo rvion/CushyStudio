@@ -1,7 +1,5 @@
 import type { DraftL } from '../../models/Draft'
 
-import { observer } from 'mobx-react-lite'
-
 import { DraftIllustrationUI } from '../../cards/fancycard/DraftIllustration'
 import { InputBoolCheckboxUI } from '../../csuite/checkbox/InputBoolCheckboxUI'
 import { SpacerUI } from '../../csuite/components/SpacerUI'
@@ -16,7 +14,7 @@ import { DraftMenuDataBlockUI } from './DraftMenuJump'
 import { DraftMenuLooks } from './DraftMenuLooksUI'
 import { RunOrAutorunUI } from './RunOrAutorunUI'
 
-export const DraftHeaderUI = observer(function DraftHeader({
+export const DraftHeaderUI = obs(function DraftHeader({
    // own props
    draft,
 

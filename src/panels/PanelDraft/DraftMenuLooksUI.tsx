@@ -63,7 +63,7 @@ type DraftMenuLooksProps = {
    className?: string
 }
 
-// export const DraftMenuLooksUI = observer(function DraftMenuLookUI_(p: DraftMenuLooksProps) {
+// export const DraftMenuLooksUI = obs(function DraftMenuLookUI_(p: DraftMenuLooksProps) {
 //    const draft = p.draft
 //    const file = draft.file
 //    const layout = cushy.preferedFormLayout

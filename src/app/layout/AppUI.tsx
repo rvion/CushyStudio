@@ -1,7 +1,7 @@
 import '../../ALL_CMDS'
 
 import { action } from 'mobx'
-import { observer } from 'mobx-react-lite'
+
 import { useEffect, useRef } from 'react'
 
 import { AppBarUI } from '../../appbar/AppBarUI'
@@ -22,7 +22,7 @@ import { FavBarUI } from './FavBarUI'
 import { FooterBarUI } from './FooterBarUI'
 import { ProjectUI } from './ProjectUI'
 
-export const CushyUI = observer(function CushyUI_() {
+export const CushyUI = obs(function CushyUI_() {
    const appRef = useRef<HTMLDivElement>(null)
    useRegionMonitor()
    useEffect(() => {

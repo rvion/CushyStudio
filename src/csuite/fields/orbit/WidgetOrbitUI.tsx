@@ -3,12 +3,12 @@ import type { OrbitControls as OrbitControlsT } from 'three/examples/jsm/control
 
 import { OrbitControls } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
-import { observer } from 'mobx-react-lite'
+
 import { useRef } from 'react'
 
 import { Cube } from './Cube3D'
 
-export const WidgetOrbitUI = observer((p: { field: Field_orbit }) => {
+export const WidgetOrbitUI = obs((p: { field: Field_orbit }) => {
    const ref = useRef<any>(null)
    return (
       <div>

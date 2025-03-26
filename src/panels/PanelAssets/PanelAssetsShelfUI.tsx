@@ -1,12 +1,10 @@
 import type { PanelAssetsState } from './PanelAssets'
 
-import { observer } from 'mobx-react-lite'
-
 import { useCSuite } from '../../csuite/ctx/useCSuite'
 import { Frame } from '../../csuite/frame/Frame'
 import { BasicShelfUI } from '../../csuite/shelf/ShelfUI'
 
-export const PanelAssetsShelfUI = observer(function PanelAssetsShelfUI_(p: { st: PanelAssetsState }) {
+export const PanelAssetsShelfUI = obs(function PanelAssetsShelfUI_(p: { st: PanelAssetsState }) {
    const activeLora = p.st.props.active > -1 && cushy.schema.getLoras()[p.st.props.active]
    const theme = cushy.preferences.theme.value
 

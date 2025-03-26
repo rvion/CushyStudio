@@ -3,12 +3,11 @@ import type { MeshStandardMaterial } from 'three'
 
 import { CameraControls, OrbitControls, useTexture } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
-import { observer } from 'mobx-react-lite'
 
 import { Ground3D } from '../3d-utils/Ground3d'
 import { SkyBox3D } from '../3d-utils/SkyBox3D'
 
-export const DisplacementUI = observer(function DisplacementUI_(p: { uist: DisplacementState }) {
+export const DisplacementUI = obs(function DisplacementUI_(p: { uist: DisplacementState }) {
    return (
       <Canvas ref={p.uist.canvasRef} tw='flex-1' camera={{ fov: 10 }}>
          <DisplacementUI2 uist={p.uist} />
@@ -16,7 +15,7 @@ export const DisplacementUI = observer(function DisplacementUI_(p: { uist: Displ
    )
 })
 
-export const DisplacementUI2 = observer(function DisplacementUI2_(p: { uist: DisplacementState }) {
+export const DisplacementUI2 = obs(function DisplacementUI2_(p: { uist: DisplacementState }) {
    const uist = p.uist
    const st = cushy
    const [depthMap, normalMap, image] = useTexture([

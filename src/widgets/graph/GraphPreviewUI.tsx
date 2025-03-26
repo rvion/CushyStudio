@@ -3,7 +3,7 @@ import type { MutableRefObject } from 'react'
 
 // @ts-ignore
 import { action, autorun, observable } from 'mobx'
-import { observer } from 'mobx-react-lite'
+
 import { useEffect, useMemo } from 'react'
 import { createPortal } from 'react-dom'
 
@@ -12,7 +12,7 @@ import { window_addEventListener } from '../../csuite/utils/window_addEventListe
 import { DrawWorkflowUI } from './DrawWorkflowUI'
 import { useCursorLockMove } from './useCursorLockMove'
 
-export const GraphPreviewUI = observer(function GraphPreviewUI_(p: { graph: ComfyWorkflowL }) {
+export const GraphPreviewUI = obs(function GraphPreviewUI_(p: { graph: ComfyWorkflowL }) {
    const workflow = p.graph
    const canvasRef = useObservableRef<HTMLCanvasElement>([])
    const canvas = canvasRef.current

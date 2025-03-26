@@ -1,7 +1,7 @@
-// import { observer } from 'mobx-react-lite'
+//
 // import { Modal } from '../rsuite/shims'
 
-// export const ImportWindowUI = observer(function ImportWindowUI_(p: {}) {
+// export const ImportWindowUI = obs(function ImportWindowUI_(p: {}) {
 //     const workspace = useWorkspace()
 
 //     const isDraggingFile = workspace.cushy.isDraggigFile

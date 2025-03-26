@@ -1,12 +1,10 @@
 import type { FrameProps } from '../frame/Frame'
 
-import { observer } from 'mobx-react-lite'
-
 import { RevealUI } from '../reveal/RevealUI'
 import { BadgeContainerUI } from './BadgeContainerUI'
 import { BadgeUI } from './BadgeUI'
 
-export const BadgeListUI = observer(function BadgeListUI_({
+export const BadgeListUI = obs(function BadgeListUI_({
    autoHue,
    badges,
    wrap = true,

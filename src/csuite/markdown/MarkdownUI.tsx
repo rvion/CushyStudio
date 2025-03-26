@@ -1,7 +1,6 @@
 import { marked } from 'marked'
-import { observer } from 'mobx-react-lite'
 
-export const MarkdownUI = observer(function MarkdownUI_(p: {
+export const MarkdownUI = obs(function MarkdownUI_(p: {
    //
    className?: string
    markdown?: string

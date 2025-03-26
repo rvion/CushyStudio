@@ -9,7 +9,7 @@ import type { SimpleDropShadow } from './SimpleDropShadow'
 import type { AriaRole, MouseEvent } from 'react'
 
 import { runInAction } from 'mobx'
-import { observer } from 'mobx-react-lite'
+
 import { useContext, useState } from 'react'
 
 import { normalizeBox } from '../box/BoxNormalized'
@@ -88,7 +88,7 @@ export type FrameProps = {
    FrameSize
 
 // ------------------------------------------------------------------
-export const Frame = observer(function Frame_(p: FrameProps) {
+export const Frame = obs(function Frame_(p: FrameProps) {
    // PROPS --------------------------------------------
 
    // prettier-ignore

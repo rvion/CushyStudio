@@ -1,7 +1,5 @@
 import type { NO_PROPS } from '../csuite/types/NO_PROPS'
 
-import { observer } from 'mobx-react-lite'
-
 import { Panel, type PanelHeader } from '../router/Panel'
 
 export const PanelSquoosh = new Panel({
@@ -13,7 +11,7 @@ export const PanelSquoosh = new Panel({
    icon: IKONS.mdiImageFilterVintage,
 })
 
-export const PanelSquooshUI = observer(function PanelSquooshUI_(p: NO_PROPS) {
+export const PanelSquooshUI = obs(function PanelSquooshUI_(p: NO_PROPS) {
    // return (
    //     <iframe
    //         src='https://squoosh.app/'

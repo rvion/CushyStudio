@@ -1,11 +1,9 @@
 import type { IconName } from '../icons/IconName'
 
-import { observer } from 'mobx-react-lite'
-
 // import { Toggle } from 'rsuite' // 🔴 BAD
 import { IkonOf } from '../icons/iconHelpers'
 
-export const CheckboxAndRadioIcon = observer(function InputBoolToggleButtonBoxUI_(p: {
+export const CheckboxAndRadioIcon = obs(function InputBoolToggleButtonBoxUI_(p: {
    //
    mode: 'radio' | 'checkbox' | false | 'switch'
    disabled?: boolean

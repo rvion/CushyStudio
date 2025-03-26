@@ -1,9 +1,9 @@
 import type { StandardProps } from '../../presenters/RenderProps'
 import type React from 'react'
 
-import { observer2 } from '../../../csuite/mobx/observer2'
+import { obs } from '../../../csuite/mobx/observer2'
 
-export const ColoredMarginUI = observer2(function ColoredMarginUI_({
+export const ColoredMarginUI = obs(function ColoredMarginUI_({
    children,
    bgcolor,
    padding,

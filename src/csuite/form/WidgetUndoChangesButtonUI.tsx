@@ -1,10 +1,8 @@
 import type { Field } from '../model/Field'
 
-import { observer } from 'mobx-react-lite'
-
 import { Button } from '../../csuite/button/Button'
 
-export const WidgetUndoChangesButtonUI = observer(function WidgetUndoChangesButtonUI_(p: {
+export const WidgetUndoChangesButtonUI = obs(function WidgetUndoChangesButtonUI_(p: {
    //
    className?: string
    field: Field

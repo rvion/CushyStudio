@@ -40,7 +40,7 @@ type CivitaiDownloadableFileProps = {
    file: CivitaiDownloadableFile
 }
 
-export const CivitaiDownloadableFileUI = observer(function CivitaiDownloadableFileUI_(
+export const CivitaiDownloadableFileUI = obs(function CivitaiDownloadableFileUI_(
    p: CivitaiDownloadableFileProps,
 ) {
    const file: CivitaiDownloadableFile = p.file

@@ -1,5 +1,3 @@
-import { observer } from 'mobx-react-lite'
-
 import { TabUI } from '../csuite/tabs/TabUI'
 import { Panel, type PanelHeader } from '../router/Panel'
 import { _formatAsRelativeDateTime } from '../updater/_getRelativeTimeString'
@@ -19,7 +17,7 @@ export type PanelScriptProps = {
    scriptID: CushyScriptID
 }
 
-export const PanelScriptUI = observer(function PanelScriptUI_(p: PanelScriptProps) {
+export const PanelScriptUI = obs(function PanelScriptUI_(p: PanelScriptProps) {
    const script = cushy.db.cushy_script.get(p.scriptID)
 
    if (script == null) {

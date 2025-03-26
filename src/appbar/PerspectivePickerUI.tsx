@@ -1,5 +1,3 @@
-import { observer } from 'mobx-react-lite'
-
 import { Button } from '../csuite/button/Button'
 import { MenuItem } from '../csuite/dropdown/MenuItem'
 import { Frame, type FrameProps } from '../csuite/frame/Frame'
@@ -7,7 +5,7 @@ import { InputStringUI } from '../csuite/input-string/InputStringUI'
 import { RevealUI } from '../csuite/reveal/RevealUI'
 import { perspectiveHelper } from '../router/perspectives/_PerspectiveBuilder'
 
-export const PerspectivePickerUI = observer(function PerspectivePicker(p: FrameProps) {
+export const PerspectivePickerUI = obs(function PerspectivePicker(p: FrameProps) {
    const perspectives = cushy.db.perspective.all
    return (
       <Frame tw='flex gap-1' {...p}>
@@ -78,6 +76,6 @@ export const PerspectivePickerUI = observer(function PerspectivePicker(p: FrameP
    )
 })
 
-const PerspectiveTabUI = observer(function _PerspectiveTabUI(p: FrameProps) {
+const PerspectiveTabUI = obs(function _PerspectiveTabUI(p: FrameProps) {
    return <></>
 })

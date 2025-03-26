@@ -1,9 +1,7 @@
-import { observer } from 'mobx-react-lite'
-
 import { useCSuite } from '../ctx/useCSuite'
 import { Frame } from '../frame/Frame'
 
-export const ListOfFieldsContainerUI = observer(function ListOfFieldsContainerUI_(p: {
+export const ListOfFieldsContainerUI = obs(function ListOfFieldsContainerUI_(p: {
    layout?: 'H' | 'V'
    className?: string
    children?: React.ReactNode

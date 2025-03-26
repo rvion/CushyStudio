@@ -1,8 +1,6 @@
-import { observer } from 'mobx-react-lite'
-
 import { useTreeView } from './TreeCtx'
 
-export const TreeDebugUI = observer(function TreeDebugUI_(p: {}) {
+export const TreeDebugUI = obs(function TreeDebugUI_(p: {}) {
    const tree = useTreeView()
    if (tree.cursorInfos == null) return null
    return (

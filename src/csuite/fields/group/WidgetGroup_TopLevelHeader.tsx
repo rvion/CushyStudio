@@ -1,15 +1,13 @@
 import type { Field_group } from './FieldGroup'
 import type { ReactNode } from 'react'
 
-import { observer } from 'mobx-react-lite'
-
 import { Button } from '../../button/Button'
 import { UI } from '../../components/UI'
 import { useCSuite } from '../../ctx/useCSuite'
 
 // import { WidgetSingleLineSummaryUI } from '../../form/WidgetSingleLineSummaryUI'
 
-export const WidgetGroup_LineUI = observer(function WidgetGroup_LineUI_(p: { field: Field_group<any> }) {
+export const WidgetGroup_LineUI = obs(function WidgetGroup_LineUI_(p: { field: Field_group<any> }) {
    const field = p.field
    // if (p.field.serial.collapsed)
    //    return <WidgetSingleLineSummaryUI>{p.field.summary}</WidgetSingleLineSummaryUI>

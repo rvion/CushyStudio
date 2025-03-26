@@ -1,14 +1,12 @@
 import type { MediaTextL } from '../models/MediaText'
 import type { StepL } from '../models/Step'
 
-import { observer } from 'mobx-react-lite'
-
 import { Frame } from '../csuite/frame/Frame'
 import { LegacySurfaceUI } from '../csuite/inputs/LegacySurfaceUI'
 import { MarkdownUI } from '../csuite/markdown/MarkdownUI'
 import { TabUI } from '../csuite/tabs/TabUI'
 
-export const OutputTextPreviewUI = observer(function OutputTextPreviewUI_(p: {
+export const OutputTextPreviewUI = obs(function OutputTextPreviewUI_(p: {
    //
    step?: Maybe<StepL>
    output: MediaTextL
@@ -49,7 +47,7 @@ export const OutputTextPreviewUI = observer(function OutputTextPreviewUI_(p: {
    return message
 })
 
-export const OutputTextUI = observer(function OutputTextUI_(p: { step?: Maybe<StepL>; output: MediaTextL }) {
+export const OutputTextUI = obs(function OutputTextUI_(p: { step?: Maybe<StepL>; output: MediaTextL }) {
    // 🔴 handle markdown / html / text
    if (p.output.data.kind === 'markdown')
       return (

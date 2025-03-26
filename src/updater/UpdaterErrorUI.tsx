@@ -1,10 +1,8 @@
 import type { GitManagedFolder } from './updater'
 
-import { observer } from 'mobx-react-lite'
-
 import { LegacyMessageUI } from '../csuite/inputs/LegacyMessageUI'
 
-export const UpdaterErrorUI = observer(function UpdaterErrorUI_(p: { updater: GitManagedFolder }) {
+export const UpdaterErrorUI = obs(function UpdaterErrorUI_(p: { updater: GitManagedFolder }) {
    const updater = p.updater
    const errs = updater.commandErrors
    if (errs.size === 0) return null

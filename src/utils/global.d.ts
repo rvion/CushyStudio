@@ -5,6 +5,7 @@ import type { RenderRule } from '../csuite-cushy/presenters/RenderRule'
 import type { Field } from '../csuite/model/Field'
 import type { PixiReactElementProps } from '@pixi/react/types/typedefs/PixiReactNode'
 import type { Viewport } from 'pixi-viewport'
+import type { PropsOf } from '../csuite/types/PropsOf'
 
 type ClassLike = import('../csuite/types/ClassLike').ClassLike
 
@@ -34,6 +35,29 @@ declare global {
     */
    const cushy: import('../state/state').STATE
    const uy: WidgetsCatalog
+
+   // ----------------------------------------------------------------
+   // 💬 2025-03-26 rvion: irrelevant for us
+   // function obs2<P extends object, TRef = {}>(baseComponent: React.ForwardRefRenderFunction<TRef, P>): React.MemoExoticComponent<React.ForwardRefExoticComponent<React.PropsWithoutRef<P> & React.RefAttributes<TRef>>>;
+
+   // 💬 2025-03-26 rvion: irrelevant for us
+   // function obs2<P extends object, TRef = {}>(baseComponent: React.ForwardRefExoticComponent<React.PropsWithoutRef<P> & React.RefAttributes<TRef>>): React.MemoExoticComponent<React.ForwardRefExoticComponent<React.PropsWithoutRef<P> & React.RefAttributes<TRef>>>;
+
+   interface FC_<P = {}> extends React.FunctionComponent<P> {
+      with(p: Partial<P> | ((t: P) => Partial<P>)): React.FunctionComponent<P>
+   }
+   // prettier-ignore
+   function obs<P extends object>(baseComponent: React.FunctionComponent<P>): FC_<P>
+
+   // prettier-ignore
+   function obs<C extends React.FunctionComponent<any> | React.ForwardRefRenderFunction<any>, Options extends any>(baseComponent: C, options?: Options): Options extends {
+      forwardRef: true;
+   } ? C extends React.ForwardRefRenderFunction<infer TRef, infer P> ? C & React.MemoExoticComponent<React.ForwardRefExoticComponent<React.PropsWithoutRef<P> & React.RefAttributes<TRef>>> : never : C & {
+      displayName: string;
+      with(p: Partial<PropsOf<C>> | ((t: PropsOf<C>) => Partial<PropsOf<C>>)): C
+   };
+   // ----------------------------------------------------------------
+
    const defaultRenderRules: RenderRule<Field>
    const IKONS: AllIkons
 }

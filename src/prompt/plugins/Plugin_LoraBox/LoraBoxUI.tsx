@@ -1,8 +1,6 @@
 import type { Prompt_Lora, Prompt_WeightedExpression } from '../../grammar/grammar.practical'
 import type { WidgetPromptUISt } from '../../WidgetPromptUISt'
 
-import { observer } from 'mobx-react-lite'
-
 import { openExternal } from '../../../app/layout/openExternal'
 import { MessageErrorUI } from '../../../csuite'
 import { Button } from '../../../csuite/button/Button'
@@ -12,7 +10,7 @@ import { InputNumberUI } from '../../../csuite/input-number/InputNumberUI'
 import { InputStringUI } from '../../../csuite/input-string/InputStringUI'
 import { SelectUI } from '../../../csuite/select/SelectUI'
 
-export const LoraBoxUI = observer(function LoraBoxUI_(p: {
+export const LoraBoxUI = obs(function LoraBoxUI_(p: {
    //
    uist: WidgetPromptUISt
    loraASTNode: Prompt_Lora

@@ -1,5 +1,3 @@
-import { observer } from 'mobx-react-lite'
-
 import { ShellInputOnly } from '../../../csuite-cushy/shells/ShellInputOnly'
 import { Button } from '../../../csuite/button/Button'
 import { mkPlacement } from '../../../csuite/fields/core-prefabs/ShapeSchema'
@@ -13,7 +11,7 @@ import { UCDraftImagePickerHorizontalUI } from './UCDraftImagePickerHorizontalUI
 import { UCMaskMenuUI } from './UCMaskMenuUI'
 import { UCMenuLayerEntryUI } from './UCMenuLayerEntryUI'
 
-export const UCMenuUI = observer(function UCMenuUI_(p: {}) {
+export const UCMenuUI = obs(function UCMenuUI_(p: {}) {
    const uc1 = useUnifiedCanvas()
    const ucv2 = useUCV2()
    const layers = ucv2._.layers

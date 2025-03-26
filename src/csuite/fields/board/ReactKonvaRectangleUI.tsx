@@ -1,11 +1,10 @@
 import type { SimpleShape } from '../core-prefabs/ShapeSchema'
 import type { Shape } from 'konva/lib/Shape'
 
-import { observer } from 'mobx-react-lite'
 import * as React from 'react'
 import { Rect, Transformer } from 'react-konva'
 
-export const ReactKonvaRectangleUI = observer(function ReactKonvaRectangleUI_(p: {
+export const ReactKonvaRectangleUI = obs(function ReactKonvaRectangleUI_(p: {
    //
    shape: SimpleShape
    isSelected?: boolean

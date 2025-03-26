@@ -1,7 +1,7 @@
 import type { FrameProps } from '../frame/Frame'
 
 import { makeAutoObservable, observable, runInAction } from 'mobx'
-import { observer } from 'mobx-react-lite'
+
 import React, { useEffect, useMemo } from 'react'
 
 import { Frame } from '../frame/Frame'
@@ -23,7 +23,7 @@ export type ButtonProps = FrameProps & {
    chroma?: number
 }
 
-const _Button = observer(function Button_(p: ButtonProps) {
+const _Button = obs(function Button_(p: ButtonProps) {
    const uist = useMemo(() => new ButtonState(p), [])
 
    // ensure new properties that could change during lifetime of the component stays up-to-date in the stable state.

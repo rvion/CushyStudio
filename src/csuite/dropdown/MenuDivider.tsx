@@ -1,10 +1,8 @@
 import type { ReactNode } from 'react'
 
-import { observer } from 'mobx-react-lite'
-
 import { Frame } from '../frame/Frame'
 
-export const MenuDivider = observer(function Divider_(p: { children?: ReactNode }) {
+export const MenuDivider = obs(function Divider_(p: { children?: ReactNode }) {
    return (
       <div className='!h-widget relative mx-2 grid text-sm'>
          <Frame base={{ contrast: 0.1 }} tw='absolute z-0 h-0.5 w-full [top:50%]'></Frame>

@@ -6,7 +6,7 @@ import type { Layer$ } from '../stateV2/Layer$'
 import { extend } from '@pixi/react'
 // import { Sprite, Text } from '@pixi/react/lib/components'
 import { makeAutoObservable } from 'mobx'
-import { observer } from 'mobx-react-lite'
+
 import {
    Assets,
    type Container,
@@ -127,7 +127,7 @@ const useAsset = (relPath: string = 'https://pixijs.com/assets/bunny.png'): Text
    return texture
 }
 
-export const PixiMediaImage = observer(function DraggableSpriteUI_(p: DraggableSpriteProps) {
+export const PixiMediaImage = obs(function DraggableSpriteUI_(p: DraggableSpriteProps) {
    const mediaImage = p.mediaImage
    const uc = useUnifiedCanvas()
    const xxx = useMemo(() => new XXX(p.mediaImage, p.placement, uc), [mediaImage])

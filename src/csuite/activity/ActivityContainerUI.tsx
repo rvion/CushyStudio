@@ -1,12 +1,11 @@
 import type { Routine } from './Routine'
 
-import { observer } from 'mobx-react-lite'
 import { type CSSProperties, type ReactNode, useRef } from 'react'
 
 import { ModalShellUI } from '../../csuite/modal/ModalShell'
 import { computePlacement } from '../../csuite/reveal/RevealPlacement'
 
-export const ActivityContainerUI = observer(function ActivityContainerUI_(p: {
+export const ActivityContainerUI = obs(function ActivityContainerUI_(p: {
    routine: Routine
    uid?: string
    ix?: number

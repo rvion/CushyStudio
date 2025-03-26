@@ -1,6 +1,6 @@
 import Color, { type SpaceAccessor } from 'colorjs.io'
 import { makeAutoObservable, runInAction } from 'mobx'
-import { observer } from 'mobx-react-lite'
+
 import { createRef, useEffect, useMemo, useRef, useState } from 'react'
 
 import { Frame } from '../frame/Frame'
@@ -235,7 +235,7 @@ function ensureHSV(hsv: SpaceAccessor): { h: number; s: number; v: number } {
 // Global
 let mode: 'rgb' | 'hsv' | 'oklch' = 'rgb'
 
-export const ColorPickerUI = observer(function ColorPickerUI_(p: ColorPickerProps) {
+export const ColorPickerUI = obs(function ColorPickerUI_(p: ColorPickerProps) {
    const uist = useMemo(() => new ColorPickerState(p), [])
 
    // ensure new properties that could change during lifetime of the component stays up-to-date in the stable state.

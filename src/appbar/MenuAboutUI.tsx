@@ -1,11 +1,9 @@
-import { observer } from 'mobx-react-lite'
-
 import { Dropdown } from '../csuite/dropdown/Dropdown'
 import { MenuItem } from '../csuite/dropdown/MenuItem'
 import { JsonViewUI } from '../csuite/json/JsonViewUI'
 import { RevealUI } from '../csuite/reveal/RevealUI'
 
-export const MenuAboutUI = observer(function MenuAboutUI_(p: {}) {
+export const MenuAboutUI = obs(function MenuAboutUI_(p: {}) {
    return (
       <Dropdown
          title='About'

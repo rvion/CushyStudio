@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 
 import { makeAutoObservable } from 'mobx'
-import { observer } from 'mobx-react-lite'
+
 import { createRef, useMemo } from 'react'
 
 import { Button } from '../button/Button'
@@ -101,7 +101,7 @@ class ResizableFrameStableState {
    }
 }
 
-export const ResizableFrame = observer(function ResizableFrame_(p: ResizableFrameProps) {
+export const ResizableFrame = obs(function ResizableFrame_(p: ResizableFrameProps) {
    // create stable state, that we can programmatically mutate witout caring about stale references
    const uist = useMemo(() => new ResizableFrameStableState(p), [])
    const theme = cushy.preferences.theme.value

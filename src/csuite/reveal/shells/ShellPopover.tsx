@@ -1,11 +1,9 @@
 import type { RevealShellProps } from './ShellProps'
 
-import { observer } from 'mobx-react-lite'
-
 import { Frame } from '../../frame/Frame'
 import { ShellFocusTrapUI } from './utils/ShellFocusTrap'
 
-export const ShellPopoverUI = observer(function ShellPopoverUI_(p: RevealShellProps) {
+export const ShellPopoverUI = obs(function ShellPopoverUI_(p: RevealShellProps) {
    const reveal = p.reveal
    const locked = reveal._lock
    return (

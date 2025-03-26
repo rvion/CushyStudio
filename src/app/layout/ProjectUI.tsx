@@ -1,9 +1,7 @@
-import { observer } from 'mobx-react-lite'
-
 import { ErrorBoundaryUI } from '../../csuite/errors/ErrorBoundaryUI'
 import { GalleryHoveredPreviewUI } from '../../widgets/galleries/GalleryHoveredPreviewUI'
 
-export const ProjectUI = observer(function ProjectUI_(p: {}) {
+export const ProjectUI = obs(function ProjectUI_(p: {}) {
    return (
       <div tw='UI-MAIN relative flex h-full grow flex-col' {...p}>
          <GalleryHoveredPreviewUI />

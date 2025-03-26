@@ -1,7 +1,5 @@
 import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
 
-import { observer } from 'mobx-react-lite'
-
 import { Panel, type PanelHeader } from '../../router/Panel'
 
 export const PanelCivitai = new Panel({
@@ -13,6 +11,6 @@ export const PanelCivitai = new Panel({
    icon: IKONS.mdiAccountStarOutline,
 })
 
-const PanelCivitaiUI = observer(function PanelCivitaiUI_(p: NO_PROPS) {
+const PanelCivitaiUI = obs(function PanelCivitaiUI_(p: NO_PROPS) {
    return <iframe className='size-full' src={'https://civitai.com'} frameBorder='0' />
 })

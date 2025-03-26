@@ -2,13 +2,12 @@ import type { RevealState } from '../reveal/RevealState'
 import type { SelectPopupProps } from './SelectPopupUI'
 import type { AutoCompleteSelectState } from './SelectState'
 
-import { observer } from 'mobx-react-lite'
 import { FixedSizeList } from 'react-window'
 
 import { Frame } from '../frame/Frame'
 import { SelectAllNoneUI, SelectOptionUI, SelectOptionUI_FixedList } from './SelectOptionUI'
 
-export const SelectPopupUI_Results = observer(function SelectPopupUI_Results<OPTION>(
+export const SelectPopupUI_Results = obs(function SelectPopupUI_Results<OPTION>(
    p: SelectPopupProps<OPTION>,
 ): React.ReactNode {
    const select = p.selectState

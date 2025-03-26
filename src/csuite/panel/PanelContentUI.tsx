@@ -1,6 +1,4 @@
-import { observer } from 'mobx-react-lite'
-
-export const PanelContentUI = observer(function PanelContent(p: React.HTMLAttributes<HTMLDivElement>) {
+export const PanelContentUI = obs(function PanelContent(p: React.HTMLAttributes<HTMLDivElement>) {
    return (
       <div //
          // style={{ border: '2px solid blue' }}

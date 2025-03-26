@@ -1,7 +1,6 @@
 import type { MediaImageL } from '../../models/MediaImage'
 
 import { existsSync, type PathLike } from 'fs'
-import { observer } from 'mobx-react-lite'
 
 import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { useDragDropRefForReact19 } from '../../csuite/utils/dnd'
@@ -9,7 +8,7 @@ import { ImageDropdownMenuUI } from '../../panels/ImageDropdownUI'
 import { useImageDrag } from './dnd'
 import { ImageErrorDisplayUI } from './ImageErrorDisplayUI'
 
-export const ImageUI = observer(function ImageUI_({
+export const ImageUI = obs(function ImageUI_({
    size,
    img,
    onClick,
@@ -79,7 +78,7 @@ export const ImageUI = observer(function ImageUI_({
    )
 })
 
-export const ImageUIDumb = observer(function ImageUIDumb_({
+export const ImageUIDumb = obs(function ImageUIDumb_({
    className,
    img,
    ...rest

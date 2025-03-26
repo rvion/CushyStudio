@@ -1,8 +1,6 @@
-import { observer } from 'mobx-react-lite'
-
 import { MessageWarningUI } from '../../csuite/messages/MessageWarningUI'
 
-export const CivitaiWarningAPIKeyMissingUI = observer(function CivitaiWarningAPIKeyMissingUI_(p: {}) {
+export const CivitaiWarningAPIKeyMissingUI = obs(function CivitaiWarningAPIKeyMissingUI_(p: {}) {
    return (
       <MessageWarningUI>
          <div>

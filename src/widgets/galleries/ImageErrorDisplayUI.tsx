@@ -1,11 +1,9 @@
 import type { IconName } from '../../csuite/icons/IconName'
 
-import { observer } from 'mobx-react-lite'
-
 import { Frame } from '../../csuite/frame/Frame'
 import { IkonOf } from '../../csuite/icons/iconHelpers'
 
-export const ImageErrorDisplayUI = observer(function ImageErrorDisplayUI_(p: {
+export const ImageErrorDisplayUI = obs(function ImageErrorDisplayUI_(p: {
    className?: string
    icon: IconName
    size?: string

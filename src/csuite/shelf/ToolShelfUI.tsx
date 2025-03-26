@@ -3,7 +3,7 @@ import type { RevealPlacement } from '../reveal/RevealPlacement'
 import type { ReactNode } from 'react'
 
 import { runInAction } from 'mobx'
-import { observer } from 'mobx-react-lite'
+
 import { useEffect, useMemo } from 'react'
 
 import { Button } from '../button/Button'
@@ -27,7 +27,7 @@ export type ToolShelfProps = {
    panelState: ToolShelfPanelState
 }
 
-export const ToolShelfUI = observer(function ToolShelfUI_(p: ToolShelfProps) {
+export const ToolShelfUI = obs(function ToolShelfUI_(p: ToolShelfProps) {
    const uist = useMemo(() => new ToolShelfState(p), [])
 
    // ensure new properties that could change during lifetime of the component stays up-to-date in the stable state.
@@ -118,7 +118,7 @@ function getFlex(pState: ToolShelfPanelState): 'flex-row' | 'flex-col' {
    return 'flex-col'
 }
 
-export const ToolShelfGroupUI = observer(function ToolShelfGroupUI_(p: {
+export const ToolShelfGroupUI = obs(function ToolShelfGroupUI_(p: {
    panelState: ToolShelfPanelState
    children: ReactNode
 }) {
@@ -135,7 +135,7 @@ export const ToolShelfGroupUI = observer(function ToolShelfGroupUI_(p: {
    )
 })
 
-export const ToolShelfButtonUI = observer(function ToolShelfButtonUI_(
+export const ToolShelfButtonUI = obs(function ToolShelfButtonUI_(
    p: {
       panelState: ToolShelfPanelState
       text?: string

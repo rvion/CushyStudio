@@ -8,7 +8,7 @@ import { JsonViewUI } from '../../csuite/json/JsonViewUI'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { CivitaiDownloadableFileUI } from './CivitaiDownloadableFileUI'
 
-export const CivitaiResultVersionUI = observer(function CivitaiResultVersionUI_(p: {
+export const CivitaiResultVersionUI = obs(function CivitaiResultVersionUI_(p: {
    //
    entry: CivitaiSearchResultItem
    version: CivitaiModelVersion

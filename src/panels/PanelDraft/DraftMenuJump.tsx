@@ -1,8 +1,6 @@
 import type { CushyAppL } from '../../models/CushyApp'
 import type { DraftL } from '../../models/Draft'
 
-import { observer } from 'mobx-react-lite'
-
 import { DraftIllustrationUI } from '../../cards/fancycard/DraftIllustration'
 import { Button } from '../../csuite/button/Button'
 import { Dropdown } from '../../csuite/dropdown/Dropdown'
@@ -12,7 +10,7 @@ import { InputStringUI } from '../../csuite/input-string/InputStringUI'
 import { _formatAsRelativeDateTime } from '../../updater/_getRelativeTimeString'
 
 /* TODO(bird_d): In the future it might be good to define a plethora of datablock types and just have a DataBlockTemplateUI and feed it the type/data for a consistent look throughout the program. */
-export const DraftMenuDataBlockUI = observer(function DraftMenuDataBlockUI_(p: {
+export const DraftMenuDataBlockUI = obs(function DraftMenuDataBlockUI_(p: {
    //
    title: string
    draft: DraftL
@@ -59,7 +57,7 @@ export const DraftMenuDataBlockUI = observer(function DraftMenuDataBlockUI_(p: {
    )
 })
 
-const DraftListUI = observer(function DraftListUI_(p: { app: CushyAppL }) {
+const DraftListUI = obs(function DraftListUI_(p: { app: CushyAppL }) {
    return (
       <div>
          {p.app.lastExecutedDrafts.map(({ id, title, lastRunAt }) => {

@@ -1,13 +1,11 @@
 import type { Field } from '../../../csuite/model/Field'
 import type { Problem } from '../../../csuite/model/Validation'
 
-import { observer } from 'mobx-react-lite'
-
 import { Frame } from '../../../csuite/frame/Frame'
 import { Ikon } from '../../../csuite/icons/iconHelpers'
 import { RevealUI } from '../../../csuite/reveal/RevealUI'
 
-export const ErrorMessage = observer(function ErrorMessage_(p: { problem: Problem }) {
+export const ErrorMessage = obs(function ErrorMessage_(p: { problem: Problem }) {
    return (
       <div tw='minh-input flex items-start gap-1'>
          <Ikon.mdiAlert tw='mt-1' />
@@ -17,7 +15,7 @@ export const ErrorMessage = observer(function ErrorMessage_(p: { problem: Proble
 })
 
 /** default error block */
-export const WidgetErrorsUI = observer(function WidgerErrorsUI_(p: { field: Field }) {
+export const WidgetErrorsUI = obs(function WidgerErrorsUI_(p: { field: Field }) {
    const field = p.field
    if (!field.mustDisplayErrors) return null
    return (

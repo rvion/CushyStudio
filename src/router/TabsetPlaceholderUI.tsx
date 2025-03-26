@@ -1,5 +1,3 @@
-import { observer } from 'mobx-react-lite'
-
 import { ErrorBoundaryUI } from '../csuite/errors/ErrorBoundaryUI'
 import { Frame } from '../csuite/frame/Frame'
 import { useMemoAction } from '../csuite/utils/useMemoAction'
@@ -15,7 +13,7 @@ export const TabsetPlaceholderUI = (): React.JSX.Element => {
    return <TabsetPlaceholderHackUI />
 }
 
-const TabsetPlaceholderHackUI = observer((): React.JSX.Element => {
+const TabsetPlaceholderHackUI = obs((): React.JSX.Element => {
    const panelName = 'Welcome'
    const panelURI = '~TabsetPlaceholderUI~'
    const panelState = useMemoAction(() => {

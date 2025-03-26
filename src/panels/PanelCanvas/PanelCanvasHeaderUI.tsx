@@ -1,5 +1,3 @@
-import { observer } from 'mobx-react-lite'
-
 import { Button } from '../../csuite/button/Button'
 import { ToggleButtonUI } from '../../csuite/checkbox/InputBoolToggleButtonUI'
 import { Dropdown } from '../../csuite/dropdown/Dropdown'
@@ -7,7 +5,7 @@ import { InputNumberUI } from '../../csuite/input-number/InputNumberUI'
 import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
 import { useUnifiedCanvas } from './states/UnifiedCanvasCtx'
 
-export const PanelCanvasHeaderUI = observer(function PanelCanvasHeaderUI_(p: {}) {
+export const PanelCanvasHeaderUI = obs(function PanelCanvasHeaderUI_(p: {}) {
    const canvas = useUnifiedCanvas()
    return (
       <PanelHeaderUI tw='grid grid-cols-[1fr_1fr_1fr]'>

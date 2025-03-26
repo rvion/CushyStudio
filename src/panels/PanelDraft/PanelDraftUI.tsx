@@ -2,7 +2,7 @@ import type { DraftL } from '../../models/Draft'
 import type { PanelState } from '../../router/PanelState'
 
 import { toJS } from 'mobx'
-import { observer } from 'mobx-react-lite'
+
 import { useLayoutEffect, useRef, useState } from 'react'
 
 import { openFolderInOS } from '../../app/layout/openExternal'
@@ -34,13 +34,13 @@ export type PanelDraftProps = {
    draftID: DraftID
 }
 
-export const PanelDraftUI = observer(function PanelDraftUI_(p: PanelDraftProps) {
+export const PanelDraftUI = obs(function PanelDraftUI_(p: PanelDraftProps) {
    // 1. get draft
    const draft = typeof p.draftID === 'string' ? cushy.db.draft.get(p.draftID) : p.draftID
    return <DraftUI draft={draft} />
 })
 
-const POPUP = observer(function POPUP___(p: { title?: string; children?: React.ReactNode }) {
+const POPUP = obs(function POPUP___(p: { title?: string; children?: React.ReactNode }) {
    const divRef = useRef<HTMLDivElement | null>(null)
 
    // Really simple and just keep it on screen for now. Should
@@ -116,7 +116,7 @@ const POPUP = observer(function POPUP___(p: { title?: string; children?: React.R
    )
 })
 
-export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> }) {
+export const DraftUI = obs(function Panel_Draft_(p: { draft: Maybe<DraftL> }) {
    const draft = p.draft
    const justify = cushy.forms.use(ui_justify)
    const [isDnDHovered, dropRef_] = useImageSlotDrop((img) => {

@@ -4,7 +4,7 @@ import './main'
 // import './csuite/fields/string/FieldString'
 
 // import { _getAdministration, computed, observable } from 'mobx'
-// // import { observer } from 'mobx-react-lite'
+// //
 // // 💬 2025-03-18 rvion:
 // //
 // // if the app does not start, you can try to swap

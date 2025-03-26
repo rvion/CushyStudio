@@ -1,7 +1,5 @@
 import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
 
-import { observer } from 'mobx-react-lite'
-
 import { AppCardUI } from '../../cards/fancycard/AppCardUI'
 import { Button } from '../../csuite/button/Button'
 import { ToggleButtonUI } from '../../csuite/checkbox/InputBoolToggleButtonUI'
@@ -10,7 +8,7 @@ import { InputStringUI } from '../../csuite/input-string/InputStringUI'
 import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
 import { toastSuccess } from '../../csuite/utils/toasts'
 
-export const PanelAppLibraryUI = observer(function PanelAppLibraryUI_(p: NO_PROPS) {
+export const PanelAppLibraryUI = obs(function PanelAppLibraryUI_(p: NO_PROPS) {
    const library = cushy.library
 
    return (

@@ -6,7 +6,6 @@ import type { DraftL } from '../../../../models/Draft'
 import type { STATE } from '../../../../state/state'
 
 import { makeAutoObservable } from 'mobx'
-import { observer } from 'mobx-react-lite'
 
 import { AppFavoriteBtnUI } from './misc/CardPicker2UI'
 import { TreeDraft } from './TreeDraft'
@@ -78,7 +77,7 @@ export class TreeApp implements ITreeEntry {
    ]
 }
 
-export const TreeApp_BtnFavUI = observer(function TreeApp_BtnFavUI_(p: { entry: TreeApp }) {
+export const TreeApp_BtnFavUI = obs(function TreeApp_BtnFavUI_(p: { entry: TreeApp }) {
    if (p.entry.app == null) return null
    return <AppFavoriteBtnUI app={p.entry.app} />
 })

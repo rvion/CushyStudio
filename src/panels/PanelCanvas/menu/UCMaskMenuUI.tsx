@@ -1,12 +1,10 @@
 import type { Mask$ } from '../stateV2/Masks$'
 
-import { observer } from 'mobx-react-lite'
-
 import { ShellInputOnly } from '../../../csuite-cushy/shells/ShellInputOnly'
 import { Button } from '../../../csuite/button/Button'
 import { Frame } from '../../../csuite/frame/Frame'
 
-export const UCMaskMenuUI = observer(function UCMaskMenuUI_(p: {
+export const UCMaskMenuUI = obs(function UCMaskMenuUI_(p: {
    //
    mask: Mask$['$field']
    index: number

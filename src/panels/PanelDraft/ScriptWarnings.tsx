@@ -1,15 +1,8 @@
 import type { LibraryFile } from '../../cards/LibraryFile'
 
-import { observer } from 'mobx-react-lite'
-
 import { objectEntries } from '../../csuite/utils/getEntries.utils'
 
-export const ScriptWarningsUI = observer(function ScriptWarningsUI_({
-   file,
-   ...rest
-}: {
-   file: LibraryFile
-}) {
+export const ScriptWarningsUI = obs(function ScriptWarningsUI_({ file, ...rest }: { file: LibraryFile }) {
    const warningEntries = objectEntries(file.strategyStatus)
    return (
       <div tw='_MD'>

@@ -4,8 +4,6 @@ import type { Field_list } from '../../../src/csuite/fields/list/FieldList'
 import type { IconName } from '../../../src/csuite/icons/IconName'
 import type { CushySDXLSchema } from './_cushySDXLSchema'
 
-import { observer } from 'mobx-react-lite'
-
 export const _cushySDXLLayout: App<CushySDXLSchema>['layout'] = (field, set) => {
    set('$.customSave.subfolder', { OnLeft: <>👉</> })
 

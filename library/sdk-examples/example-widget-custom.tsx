@@ -2,14 +2,13 @@
 
 import type { CustomWidgetProps } from '../../src/csuite/fields/custom/FieldCustom'
 
-import { observer } from 'mobx-react-lite'
 import Confetti from 'react-confetti'
 
 import { Button } from '../../src/csuite/button/Button'
 import { MyCustomComponent2 } from './example-widget-custom-2'
 
 // eslint-disable-next-line react-refresh/only-export-components
-const MyCustomComponent = observer(function (
+const MyCustomComponent = obs(function (
    p: CustomWidgetProps<{
       clickCount: number
       text: string

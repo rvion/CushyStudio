@@ -3,7 +3,6 @@ import type { IconName } from '../icons/IconName'
 import type { CSSSizeString } from './CSSSizeString'
 import type { CSSProperties, ReactElement, ReactNode } from 'react'
 
-import { observer } from 'mobx-react-lite'
 import { useState } from 'react'
 
 import { Button } from '../button/Button'
@@ -84,7 +83,7 @@ export type InputStringProps = {
    roundness?: FrameProps['roundness']
    dropShadow?: FrameProps['dropShadow']
 }
-export const InputStringUI = observer(function WidgetStringUI_(p: InputStringProps) {
+export const InputStringUI = obs(function WidgetStringUI_(p: InputStringProps) {
    // getValue is mandatory, but it may avoid crash to be permissive about it's absense
    // let's rely on typescript to catch this
    const ref = p.ref

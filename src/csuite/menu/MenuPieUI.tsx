@@ -1,6 +1,5 @@
 import type { MenuInstance } from './MenuInstance'
 
-import { observer } from 'mobx-react-lite'
 import * as React from 'react'
 import { type MouseEvent } from 'react'
 
@@ -47,7 +46,7 @@ function positionFromIndex(index: number, distance: number): { x: number; y: num
    return { x: 0, y: 0 }
 }
 
-export const MenuPieUI = observer(function MenuPieUI_({
+export const MenuPieUI = obs(function MenuPieUI_({
    // own props
    menu,
 

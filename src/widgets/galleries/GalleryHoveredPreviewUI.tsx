@@ -1,9 +1,8 @@
-import { observer } from 'mobx-react-lite'
 import { useDragLayer } from 'react-dnd'
 
 import { OutputUI } from '../../outputs/OutputUI'
 
-export const GalleryHoveredPreviewUI = observer(function GalleryHoveredPreviewUI_(p: {}) {
+export const GalleryHoveredPreviewUI = obs(function GalleryHoveredPreviewUI_(p: {}) {
    const cccP = useDragLayer((monitor) => {
       if (monitor.isDragging()) return true
       return false

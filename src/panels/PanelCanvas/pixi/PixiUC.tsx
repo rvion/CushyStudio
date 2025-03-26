@@ -2,7 +2,7 @@ import type { ForwardedRef } from 'react'
 
 import { Application, extend } from '@pixi/react'
 import { runInAction } from 'mobx'
-import { observer } from 'mobx-react-lite'
+
 import { Container, Text } from 'pixi.js'
 import { forwardRef, Suspense, useRef } from 'react'
 
@@ -18,7 +18,7 @@ import { RectPixi } from './RectPixi'
 import { PixiApplicationProvider } from './workaround/useApplication/PixiApplicationProvider'
 
 extend({ Text, Container })
-export const PixiUC = observer(function PixiUC(p: any): React.JSX.Element {
+export const PixiUC = obs(function PixiUC(p: any): React.JSX.Element {
    const uc1 = useUnifiedCanvas()
    const uc2 = useUCV2()
    // const blurFilter = useMemo(() => new BlurFilter(2), [])

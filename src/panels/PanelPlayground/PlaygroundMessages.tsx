@@ -1,5 +1,3 @@
-import { observer } from 'mobx-react-lite'
-
 import { ErrorBoundaryUI } from '../../csuite/errors/ErrorBoundaryUI'
 import { InputStringUI } from '../../csuite/input-string/InputStringUI'
 import { sampleInputStringUIProps } from '../../csuite/input-string/sampleInputStringUIProps'
@@ -8,7 +6,7 @@ import { MessageInfoUI } from '../../csuite/messages/MessageInfoUI'
 import { MessageWarningUI } from '../../csuite/messages/MessageWarningUI'
 
 /** Freely modify this as you like, then pick the "Scratch Pad" option in the top left. Do not commit changes made to this. */
-export const PlaygroundMessages = observer(function PlaygroundImportFromComfy_(p: {}) {
+export const PlaygroundMessages = obs(function PlaygroundImportFromComfy_(p: {}) {
    return (
       <ErrorBoundaryUI>
          <div tw='flex flex-col gap-1'>

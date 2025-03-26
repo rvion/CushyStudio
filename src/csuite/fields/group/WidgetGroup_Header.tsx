@@ -1,14 +1,12 @@
 import type { Field_group } from './FieldGroup'
 import type { ReactNode } from 'react'
 
-import { observer } from 'mobx-react-lite'
-
 import { Button } from '../../button/Button'
 import { UI } from '../../components/UI'
 import { WidgetSingleLineSummaryUI } from '../../form/WidgetSingleLineSummaryUI'
 
 // HEADER
-export const WidgetGroup_LineUI = observer(function WidgetGroup_LineUI_(p: {
+export const WidgetGroup_LineUI = obs(function WidgetGroup_LineUI_(p: {
    //
    field: Field_group<any>
 }) {

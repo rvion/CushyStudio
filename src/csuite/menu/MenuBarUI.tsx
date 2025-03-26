@@ -1,6 +1,5 @@
 import type { MenuInstance } from './MenuInstance'
 
-import { observer } from 'mobx-react-lite'
 import { useId } from 'react'
 
 import { Frame } from '../frame/Frame'
@@ -15,7 +14,7 @@ import { MenuUI, type MenuUIProps } from './MenuUI'
 import { SimpleMenuAction } from './SimpleMenuAction'
 import { SimpleMenuModal } from './SimpleMenuModal'
 
-export const MenuBarUI = observer(function MenuBar({
+export const MenuBarUI = obs(function MenuBar({
    // own props
    menu,
 

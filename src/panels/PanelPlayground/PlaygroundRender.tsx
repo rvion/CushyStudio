@@ -4,12 +4,10 @@ import type { Field } from '../../csuite/model/Field'
 import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
 import type React from 'react'
 
-import { observer } from 'mobx-react-lite'
-
 import { ColoredMarginUI } from '../../csuite-cushy/catalog/Decorations/ColoredMarginUI'
 import { usePanel } from '../../router/usePanel'
 
-export const PlaygroundRenderUI = observer(function PlaygroundRender(p: NO_PROPS) {
+export const PlaygroundRenderUI = obs(function PlaygroundRender(p: NO_PROPS) {
    const external = usePanel().usePersistentModel('test', (b) =>
       b.fields({
          title: b.string(),
@@ -39,6 +37,13 @@ export const PlaygroundRenderUI = observer(function PlaygroundRender(p: NO_PROPS
       <div>
          <x.UI
             rules={[
+               [x.Aaa!, { Header: uy.choices.TabBar }],
+               [x.Aaa._.foo!, { Decoration: uy.wrappers.ColoredPadding.with({ bgcolor: '#ba2c2c4d' }) }],
+               ['@number', { OnLeft: '👉', OnRight: '👈' }],
+               [
+                  x.Aaa._.bar!,
+                  { Decoration: (f) => <uy.wrappers.ColoredPadding {...f} bgcolor='#2c4dba4d' /> },
+               ],
                // rule<Z.FList<Z.Record<{ name: Z.String }> | Z.Record<{ title: Z.String }>>>([
                //    '@list:has(.@group.{{name|title}@string})',
                //    { Header: (f) => <>{f.field}</> },
@@ -47,9 +52,6 @@ export const PlaygroundRenderUI = observer(function PlaygroundRender(p: NO_PROPS
                // [x.Aaa._.foo!, { Decoration: (f) => <uy.wrappers.ColoredPadding {...f} bgcolor='red' /> }],
                // [x.Aaa._.foo!, { Decoration: { ColoredPadding: { bgcolor: 'red' } } }],
                // [x.Aaa._.foo!, { Decoration: uy.wrappers.ColoredPadding.with({ bgcolor: 'red' }) }],
-               [x.Aaa!, { Header: uy.choices.TabBar }],
-               [x.Aaa._.foo!, { Decoration: uy.wrappers.ColoredPadding.with({ bgcolor: 'blue' }) }],
-               [x.Aaa._.bar!, { Decoration: (f) => <uy.wrappers.ColoredPadding {...f} bgcolor='red' /> }],
                // rule([x.Aaa._.baz!, { OnRight: uy.group.DefaultBody }]),
                // rule<Z.FString>(['@str', { OnTop: uy.number.input }]),
                // [x.Aaa._.foo!, { Decoration: <uy.wrappers.ColoredPadding /> }],
@@ -58,11 +60,10 @@ export const PlaygroundRenderUI = observer(function PlaygroundRender(p: NO_PROPS
                // ['{description|title}@str', { Header: uy.string.textarea }],
                // rule<Z.FString>(['{description|title}@str', { Header: uy.string.textarea }]),
                // rule<Z.FString>(['@str', { Header: 'markdown' }]),
-               rule<Z.FString>(['@str', { OnTop: uy.string.markdown }]),
+               // rule<Z.FString>(['@str', { OnTop: uy.string.markdown }]),
                // [x.Sub1, { Shell: null }],
                // [[x.Sub1, x.Sub2], { Shell: null }],
                // ['{sub1|sub2}', { Shell: null }],
-               ['@number', { OnLeft: '👉', OnRight: '👈' }],
                // [
                //    '@number',
                //    { OnTop: <div tw='text-center'>👇</div>, OnBottom: <div tw='text-center'>👆</div> },
@@ -79,30 +80,11 @@ export const PlaygroundRenderUI = observer(function PlaygroundRender(p: NO_PROPS
                rules={[rule([x.Sub1.Y, { config: { max: 30, min: 0 } }])]}
                classNameForShell='grow'
             />
-            <x.Sub2.UI classNameForShell='grow' Decoration={ColoredMarginUI} />
+            <x.Sub2.UI
+               classNameForShell='grow'
+               Decoration={uy.wrappers.ColoredPadding.with({ bgcolor: '#126e2d4d' })}
+            />
          </div>
-         {/* <x.Sub2.UI classNameForShell='grow' Decoration={(f) => <ColoredMarginUI {...f} bgcolor='blue' />} /> */}
-         <x.Sub2.UI
-            classNameForShell='grow'
-            Decoration={uy.wrappers.ColoredPadding.with({ bgcolor: 'blue' })}
-         />
-         {/* <x.Sub1.UI classNameForShell='grow' Decoration={(f) => <ColoredMarginUI {...f} bgcolor='gray' />} /> */}
-         {/* todo: support final syntax below */}
-         {/* <x.Sub2.UI classNameForShell='grow' Decoration={{ Pinkmargin: { bgColor: 'red' } }} /> */}
       </div>
    )
 })
-
-// [
-//    '$.bbb.y',
-//    {
-//       Shell: (f) => (
-//          <div tw='bg-blue-900 m-2 animate-bounce'>
-//             <f.field.UI />
-//             {/* <f.field.UI Decoration='bounce' />
-//             <f.field.UI Decoration={bounce: {timer:30}} />
-//             <f.field.UI Decoration={['bounce', {timer:30}]} /> */}
-//          </div>
-//       ),
-//    },
-// ],

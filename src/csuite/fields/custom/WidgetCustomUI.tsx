@@ -1,15 +1,11 @@
 import type { PropsOf } from '../../types/PropsOf'
 import type { Field_custom } from './FieldCustom'
 
-import { observer } from 'mobx-react-lite'
-
 import { ImageUI } from '../../../widgets/galleries/ImageUI'
 import { InputNumberUI } from '../../input-number/InputNumberUI'
 import { JsonViewUI } from '../../json/JsonViewUI'
 
-export const WidgetCustom_HeaderUI = observer(function WidgetCustom_HeaderUI_<T>(p: {
-   field: Field_custom<T>
-}) {
+export const WidgetCustom_HeaderUI = obs(function WidgetCustom_HeaderUI_<T>(p: { field: Field_custom<T> }) {
    const field = p.field
    return (
       <field.config.Component

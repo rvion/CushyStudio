@@ -1,11 +1,9 @@
 import type { BoolButtonProps } from './InputBoolUI'
 
-import { observer } from 'mobx-react-lite'
-
 import { useCSuite } from '../ctx/useCSuite'
 import { Frame } from '../frame/Frame'
 
-export const InputBoolFlipButtonUI = observer(function InputBoolFlipButtonUI_(p: BoolButtonProps) {
+export const InputBoolFlipButtonUI = obs(function InputBoolFlipButtonUI_(p: BoolButtonProps) {
    const isActive = p.value ?? false
    const label = p.text
    const mode = p.mode ?? false // 'checkbox'

@@ -1,7 +1,5 @@
 import type { ReactNode } from 'react'
 
-import { observer } from 'mobx-react-lite'
-
 import { Button } from '../button/Button'
 import { Frame, type FrameProps } from '../frame/Frame'
 import { hashStringToNumber } from '../hashUtils/hash'
@@ -22,7 +20,7 @@ export type BadgeProps = {
    className?: string
 } & FrameProps
 
-export const BadgeUI = observer(function BadgeUI_({
+export const BadgeUI = obs(function BadgeUI_({
    // own props
    hue,
    autoHue,

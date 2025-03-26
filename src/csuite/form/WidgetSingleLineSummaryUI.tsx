@@ -1,12 +1,10 @@
 import type { BoxUIProps } from '../box/BoxUIProps'
 
-import { observer } from 'mobx-react-lite'
-
 import { FrameSubtle } from '../../csuite/wrappers/FrameSubtle'
 
 export type WidgetSingleLineSummaryProps = BoxUIProps<HTMLDivElement>
 
-export const WidgetSingleLineSummaryUI = observer(function WidgetSingleLineSummaryUI_(
+export const WidgetSingleLineSummaryUI = obs(function WidgetSingleLineSummaryUI_(
    p: WidgetSingleLineSummaryProps,
 ) {
    return (

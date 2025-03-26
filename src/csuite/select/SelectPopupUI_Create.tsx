@@ -1,8 +1,6 @@
-import { observer } from 'mobx-react-lite'
-
 import { CreateButton, FixedSlot, type SelectPopupProps } from './SelectPopupUI'
 
-export const SelectPopupUI_Create = observer(function SelectPopupUI_Create<OPTION>(
+export const SelectPopupUI_Create = obs(function SelectPopupUI_Create<OPTION>(
    p: SelectPopupProps<OPTION>,
 ): React.ReactNode {
    const select = p.selectState

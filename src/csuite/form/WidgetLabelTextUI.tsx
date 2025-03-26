@@ -1,12 +1,11 @@
 import type { Field } from '../model/Field'
 
-import { observer } from 'mobx-react-lite'
 import { type ReactNode, useState } from 'react'
 
 import { useCSuite } from '../ctx/useCSuite'
 import { Frame } from '../frame/Frame'
 
-export const WidgetLabelTextUI = observer(function WidgetLabelTextUI_(p: {
+export const WidgetLabelTextUI = obs(function WidgetLabelTextUI_(p: {
    //
    widget: Field
    className?: string

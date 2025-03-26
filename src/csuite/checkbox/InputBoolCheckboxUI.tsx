@@ -1,7 +1,5 @@
 import type { BoolButtonProps } from './InputBoolUI'
 
-import { observer } from 'mobx-react-lite'
-
 import { useCSuite } from '../ctx/useCSuite'
 import { Frame } from '../frame/Frame'
 import { run_theme_dropShadow } from '../frame/SimpleDropShadow'
@@ -11,7 +9,7 @@ import { CheckboxAndRadioIcon } from './_InputBoolToggleButtonBoxUI'
 // 2024-07-31: domi: not 100% sure what the difference is supposed to be with InputBoolToggleButtonUI
 // => ok the the other one is probably a togglable button. it was just unclear in SelectOptionUI
 // => can probably merge the two of them, except "input" like style may not make sense for buttons... let's see later
-export const InputBoolCheckboxUI = observer(function InputBoolCheckboxUI_(p: BoolButtonProps) {
+export const InputBoolCheckboxUI = obs(function InputBoolCheckboxUI_(p: BoolButtonProps) {
    const { onValueChange, iconOff, toggleGroup, widgetLabel, value, ...rest } = p
    const isActive = value ?? false
    const mode = p.mode ?? 'checkbox' // 'checkbox'

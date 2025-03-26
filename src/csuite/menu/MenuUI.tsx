@@ -1,6 +1,5 @@
 import type { MenuInstance } from './MenuInstance'
 
-import { observer } from 'mobx-react-lite'
 import * as React from 'react'
 import { type MouseEvent } from 'react'
 
@@ -21,7 +20,7 @@ export type MenuUIProps = {
    menu: MenuInstance
 } & React.HTMLAttributes<HTMLDivElement>
 
-export const MenuUI = observer(function MenuUI_({
+export const MenuUI = obs(function MenuUI_({
    // own props
    menu,
 

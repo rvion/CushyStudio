@@ -1,5 +1,3 @@
-import { observer } from 'mobx-react-lite'
-
 import { BadgeListUI } from '../../csuite/badge/BadgeListUI'
 import { BadgeUI } from '../../csuite/badge/BadgeUI'
 import { DebugControlsUI } from '../../csuite/debug/DebugControlsUI'
@@ -11,7 +9,7 @@ import { Frame, type FrameProps } from '../../csuite/frame/Frame'
    - Command Matching History amount
 */
 
-export const DebugShortcutsFloatingUI = observer(function DebugShortcutsFloating(p: FrameProps) {
+export const DebugShortcutsFloatingUI = obs(function DebugShortcutsFloating(p: FrameProps) {
    const theme = cushy.preferences.theme.value
 
    return (

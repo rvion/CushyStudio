@@ -1,4 +1,3 @@
-import { observer } from 'mobx-react-lite'
 import { type RefObject, useEffect, useMemo, useRef } from 'react'
 
 import { RegionUI } from '../../csuite/regions/RegionUI'
@@ -9,7 +8,7 @@ import { PanelCaptioningUI } from './PanelCaptioningUI'
 
 export type PanelCaptioningProps = {}
 
-export const PanelCaptioningWrapperUI = observer(function PanelCaptioningUI_(p: PanelCaptioningProps) {
+export const PanelCaptioningWrapperUI = obs(function PanelCaptioningUI_(p: PanelCaptioningProps) {
    // 💬 2024-11-03 rvion: save current folder to panel block storage, so we can restore it
    // both on hot-reload, or regular app restart
    const store = usePanel().usePersistentStore<{ folder: string | null }>('curr-folder', () => ({

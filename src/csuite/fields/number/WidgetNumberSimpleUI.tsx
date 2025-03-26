@@ -1,10 +1,8 @@
 import type { Field_number } from './FieldNumber'
 
-import { observer } from 'mobx-react-lite'
-
 import { useCSuite } from '../../ctx/useCSuite'
 
-export const WidgetNumberSimpleUI = observer(function WidgetNumberSimpleUI_(p: {
+export const WidgetNumberSimpleUI = obs(function WidgetNumberSimpleUI_(p: {
    //
    field: Field_number
    config?: Field_number['config']

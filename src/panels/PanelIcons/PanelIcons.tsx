@@ -1,7 +1,7 @@
 import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
 
 import { runInAction } from 'mobx'
-import { observer } from 'mobx-react-lite'
+
 import { useMemo } from 'react'
 import { FixedSizeGrid } from 'react-window'
 
@@ -27,7 +27,7 @@ export const PanelIcon = new Panel({
    icon: IKONS.mdiImageSyncOutline,
 })
 
-export const PanelIconUI = observer(function PanelIconUI_(p: NO_PROPS) {
+export const PanelIconUI = obs(function PanelIconUI_(p: NO_PROPS) {
    const { ref: refFn, size } = useSizeOf()
    const panel = usePanel()
    const form = panel.usePersistentModel('misc', (ui) =>

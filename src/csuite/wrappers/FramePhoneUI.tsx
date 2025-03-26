@@ -1,8 +1,6 @@
 import type { ReactNode } from 'react'
 
-import { observer } from 'mobx-react-lite'
-
-export const FramePhoneUI = observer(function FramePhoneUI_(p: {
+export const FramePhoneUI = obs(function FramePhoneUI_(p: {
    //
    className?: string
    size: 0 | 1 | 2 | 3 | 4 | 5 | 6

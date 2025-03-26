@@ -1,8 +1,6 @@
 import type { CSchema } from '../../model/CSchema'
 import type { Field_board } from './Field_board'
 
-import { observer } from 'mobx-react-lite'
-
 // import { WidgetSizeX_LineUI, WigetSizeXUI } from '../size/WidgetSizeUI'
 import { WidgetListExt_KonvaBoardUI } from './WidgetListExt_KonvaBoardUI'
 import { WidgetListExt_TimelineUI } from './WidgetListExt_TimelineUI'
@@ -28,7 +26,7 @@ export function WidgetListExtUI__Timeline(p: { field: Field_board<any> }): React
    )
 }
 
-export const WidgetListExtUI = observer(function WidgetListExtUI_<T extends CSchema>(p: {
+export const WidgetListExtUI = obs(function WidgetListExtUI_<T extends CSchema>(p: {
    //
    field: Field_board<T>
    mode: 'timeline' | 'regional'

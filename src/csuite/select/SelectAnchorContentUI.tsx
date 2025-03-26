@@ -1,10 +1,8 @@
 import type { AutoCompleteSelectState } from './SelectState'
 
-import { observer } from 'mobx-react-lite'
-
 import { SelectValueContainerUI } from './SelectValueContainerUI'
 
-export const SelectAnchorContentUI = observer(function SelectAnchorContentUI_<OPTION>(p: {
+export const SelectAnchorContentUI = obs(function SelectAnchorContentUI_<OPTION>(p: {
    /** since 2024-12-10 */
    fullyShrinkable?: boolean
    select: AutoCompleteSelectState<OPTION>

@@ -1,12 +1,8 @@
 import type { SelectPopupProps } from './SelectPopupUI'
 
-import { observer } from 'mobx-react-lite'
-
 import { InputStringUI } from '../input-string/InputStringUI'
 
-export const SelectPopupUI_Input = observer(function SelectPopupUI_Input<OPTION>(
-   p: SelectPopupProps<OPTION>,
-) {
+export const SelectPopupUI_Input = obs(function SelectPopupUI_Input<OPTION>(p: SelectPopupProps<OPTION>) {
    const select = p.selectState
    return (
       <div

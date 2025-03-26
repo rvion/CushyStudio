@@ -1,12 +1,10 @@
-import { observer } from 'mobx-react-lite'
-
 import { Button } from '../../csuite/button/Button'
 import { ToggleButtonUI } from '../../csuite/checkbox/InputBoolToggleButtonUI'
 import { Frame, type FrameProps } from '../../csuite/frame/Frame'
 import { IkonOf } from '../../csuite/icons/iconHelpers'
 import { DebugShortcutsFloatingUI } from './DebugShortcutsFloatingUI'
 
-export const FooterBarUI = observer(function FooterBarUI_(p: FrameProps) {
+export const FooterBarUI = obs(function FooterBarUI_(p: FrameProps) {
    const theme = cushy.preferences.theme.value
    return (
       <Frame

@@ -1,6 +1,5 @@
 import type { CSSProperties, ReactElement, ReactNode } from 'react'
 
-import { observer } from 'mobx-react-lite'
 import { useEffect, useState } from 'react'
 
 type TabBody = () => ReactElement | null
@@ -9,7 +8,7 @@ type Tab = {
    body: TabBody
 }
 
-export const TabsUI = observer(function Tabs_(p: {
+export const TabsUI = obs(function Tabs_(p: {
    //
    inline?: boolean
    tabs: Tab[]
@@ -71,6 +70,6 @@ export const TabsUI = observer(function Tabs_(p: {
    )
 })
 
-const TabBodyWrapperUI = observer(function TabBodyWrapperUI_(p: { fn: TabBody }) {
+const TabBodyWrapperUI = obs(function TabBodyWrapperUI_(p: { fn: TabBody }) {
    return p.fn()
 })

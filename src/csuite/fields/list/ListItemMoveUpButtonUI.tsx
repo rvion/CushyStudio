@@ -1,7 +1,5 @@
 import type { Field_list } from './FieldList'
 
-import { observer } from 'mobx-react-lite'
-
 import { Button } from '../../button/Button'
 
 // const ListDragHandleUI = ((p: { ix: number; field: Field, ref?: ObservableRef<HTMLDivElement>}, ref) => {
@@ -13,7 +11,7 @@ import { Button } from '../../button/Button'
 //    )
 // })
 
-export const ListItemMoveUpButtonUI = observer(function ListItemMoveUpButtonUI_({
+export const ListItemMoveUpButtonUI = obs(function ListItemMoveUpButtonUI_({
    listField,
    ix,
 }: {

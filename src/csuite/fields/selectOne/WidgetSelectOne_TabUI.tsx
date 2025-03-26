@@ -1,16 +1,14 @@
 import type { Field_selectOne } from './FieldSelectOne'
 
-import { observer } from 'mobx-react-lite'
-
 import { InputBoolUI } from '../../checkbox/InputBoolUI'
 import { makeLabelFromPrimitiveValue } from '../../utils/makeLabelFromFieldName'
 import { getJustifyContent } from '../choices/TabPositionConfig'
 import { convertSelectKeyToReactKey, type SelectKey } from './SelectOneKey'
 
-export const WidgetSelectOne_TabUI = observer(function WidgetSelectOne_TabUI_<
-   VALUE,
-   KEY extends SelectKey,
->(p: { field: Field_selectOne<VALUE, KEY>; className?: string }) {
+export const WidgetSelectOne_TabUI = obs(function WidgetSelectOne_TabUI_<VALUE, KEY extends SelectKey>(p: {
+   field: Field_selectOne<VALUE, KEY>
+   className?: string
+}) {
    const field = p.field
    const selected = field.serial.val
    return (

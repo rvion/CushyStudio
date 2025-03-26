@@ -1,13 +1,12 @@
 import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
 
-import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 
 import { getColorForInputNameInComfy, getColorForOutputNameInCushy } from '../../core/Colors'
 import { LegacyInputUI } from '../../csuite/inputs/LegacyInputUI'
 import { ComfyNodeExplorerState } from './ComfyNodeExplorerState'
 
-export const PanelComfyNodeExplorerUI = observer(function PanelComfyNodeExplorerUI_(p: NO_PROPS) {
+export const PanelComfyNodeExplorerUI = obs(function PanelComfyNodeExplorerUI_(p: NO_PROPS) {
    const pj = cushy.getProject()
    const search = useMemo(() => new ComfyNodeExplorerState(pj), [])
    const repo = cushy.comfyAddons

@@ -1,7 +1,6 @@
 import type { ButtonProps } from '../button/Button'
 import type { InputStringProps } from '../input-string/InputStringUI'
 
-import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 
 import { Button } from '../button/Button'
@@ -13,7 +12,7 @@ export type ButtonStringProps = {
    getValue: InputStringProps['getValue']
 } & ButtonProps
 
-export const ButtonStringUI = observer(function WidgetStringUI_({
+export const ButtonStringUI = obs(function WidgetStringUI_({
    getValue,
    setValue,
    onKeyDown,

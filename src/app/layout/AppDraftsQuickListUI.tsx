@@ -1,6 +1,5 @@
 import type { CushyAppL } from '../../models/CushyApp'
 
-import { observer } from 'mobx-react-lite'
 import { useState } from 'react'
 
 import { DraftIllustrationUI } from '../../cards/fancycard/DraftIllustration'
@@ -8,7 +7,7 @@ import { Button } from '../../csuite/button/Button'
 import { Frame } from '../../csuite/frame/Frame'
 import { InputStringUI } from '../../csuite/input-string/InputStringUI'
 
-export const AppDraftsQuickListUI = observer(function AppDraftsQuickListUI_(p: { app: CushyAppL }) {
+export const AppDraftsQuickListUI = obs(function AppDraftsQuickListUI_(p: { app: CushyAppL }) {
    const app = p.app
 
    const [filterText, setFilterText] = useState<string>('')

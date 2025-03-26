@@ -1,10 +1,10 @@
 // import type { StepL } from '../../models/Step'
 
-// import { observer } from 'mobx-react-lite'
+//
 // import { Nav } from '../../rsuite/shims'
 // import { renderStatus } from '../../../back/Status'
 
-// export const StepTabBtnUI = observer(function StepTabBtnUI_(p: { step: StepL }) {
+// export const StepTabBtnUI = obs(function StepTabBtnUI_(p: { step: StepL }) {
 //     const step = p.step
 //     const parentGraph = step.parentGraph.item
 //     const focusedBranch = parentGraph.focusedStep.item

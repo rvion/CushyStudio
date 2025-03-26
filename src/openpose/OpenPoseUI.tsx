@@ -1,4 +1,3 @@
-import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 
 import { Button } from '../csuite/button/Button'
@@ -10,7 +9,7 @@ const CANVAS_HEIGHT: 480 = 480
 // Get the canvas element from the HTML document
 const canvas = document.getElementById('canvas')
 
-export const OpenPoseViewerUI = observer(function OpenPoseViewerUI_(p: {}) {
+export const OpenPoseViewerUI = obs(function OpenPoseViewerUI_(p: {}) {
    const OPAnim = useMemo(() => new OpenPoseAnimV0(cushy), [])
 
    return (

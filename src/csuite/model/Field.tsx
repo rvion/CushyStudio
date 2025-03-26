@@ -25,7 +25,7 @@ import _get from 'lodash/get'
 import _set from 'lodash/set'
 import _unset from 'lodash/unset'
 import { computed, isObservable, observable, runInAction } from 'mobx'
-import { observer } from 'mobx-react-lite'
+
 import { nanoid } from 'nanoid'
 import { type FC, type ReactNode, useMemo } from 'react'
 
@@ -89,7 +89,7 @@ export type VALUE_MODE = 'fail' | 'zero' | 'unchecked' | 'set'
 export const ensureObserver = <T extends null | undefined | FC<any>>(fn: T): T => {
    if (fn == null) return null as T
    const isObserver = '$$typeof' in fn && fn.$$typeof === Symbol.for('react.memo')
-   const FmtUI = (isObserver ? fn : observer(fn)) as T
+   const FmtUI = (isObserver ? fn : obs(fn)) as T
    return FmtUI
 }
 

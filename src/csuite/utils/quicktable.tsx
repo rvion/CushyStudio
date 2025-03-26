@@ -1,9 +1,8 @@
-import { observer } from 'mobx-react-lite'
 import { isValidElement } from 'react'
 
 import { Frame } from '../frame/Frame'
 
-export const QuickTableUI = observer(function QuickTable({
+export const QuickTableUI = obs(function QuickTable({
    // own props
    rows,
    dense,

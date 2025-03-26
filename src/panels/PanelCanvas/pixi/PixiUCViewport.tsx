@@ -1,12 +1,11 @@
 import type { Viewport } from 'pixi-viewport'
 
 import { runInAction } from 'mobx'
-import { observer } from 'mobx-react-lite'
 
 import { useUnifiedCanvas } from '../states/UnifiedCanvasCtx'
 import { PixiViewport } from './PixiViewport'
 
-export const PixiUCViewport = observer(function PixiUCViewport_(p: { children: React.ReactNode[] }) {
+export const PixiUCViewport = obs(function PixiUCViewport_(p: { children: React.ReactNode[] }) {
    const uc1 = useUnifiedCanvas()
    return (
       <PixiViewport // zoom/pan/pinch/scroll area

@@ -1,11 +1,9 @@
-import { observer } from 'mobx-react-lite'
-
 import { Frame } from '../../csuite/frame/Frame'
 import { clamp } from '../../csuite/utils/clamp'
 import { PanelStepsConf } from './PanelStepsConf'
 import { StepCardUI } from './StepCardUI'
 
-export const StepListUI = observer(function StepLists(p: {}) {
+export const StepListUI = obs(function StepLists(p: {}) {
    const amount = clamp(Math.round(PanelStepsConf.value.maxItem), 1, 1000)
    const steps = cushy.db.step.getLastN(amount)
    return (

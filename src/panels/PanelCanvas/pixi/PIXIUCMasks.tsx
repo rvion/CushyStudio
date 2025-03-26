@@ -1,10 +1,8 @@
 import type { UC2$ } from '../stateV2/ucV2'
 
-import { observer } from 'mobx-react-lite'
-
 import { PixiMediaImage } from './PixiMediaImage'
 
-export const PIXIUCMasks = observer(function UCMasks_(p: { uc2: UC2$['$field'] }) {
+export const PIXIUCMasks = obs(function UCMasks_(p: { uc2: UC2$['$field'] }) {
    const uc2 = p.uc2
    return (
       <>

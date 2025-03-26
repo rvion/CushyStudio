@@ -1,8 +1,6 @@
 import type { SchemaDict } from '../../../csuite/model/SchemaDict'
 import type { ReactNode } from 'react'
 
-import { observer } from 'mobx-react-lite'
-
 import { CollapsibleUI } from '../../../csuite/collapsible/CollapsibleUI'
 import { Frame } from '../../../csuite/frame/Frame'
 import { Field } from '../../../csuite/model/Field'
@@ -14,7 +12,7 @@ export type QuickFormProps = {
    items: QuickFormContent[]
 }
 
-export const QuickForm = observer(function QuickForm_<T extends SchemaDict>(p: QuickFormProps) {
+export const QuickForm = obs(function QuickForm_<T extends SchemaDict>(p: QuickFormProps) {
    const seen = useShowMoreSeen()
    const subs = p.items // Fields(p.field)
 
@@ -74,7 +72,7 @@ export const QuickForm = observer(function QuickForm_<T extends SchemaDict>(p: Q
    )
 })
 
-// export const WidgetGroupLoco = observer(function WidgetGroupLoco_<T extends SchemaDict>(p: WidgetProps<Field_group<T>>) {
+// export const WidgetGroupLoco = obs(function WidgetGroupLoco_<T extends SchemaDict>(p: WidgetProps<Field_group<T>>) {
 //     // 2024-09-20 domi: we need to use a context to keep track of the fields that have been seen in other groups
 //     return (
 //         <ShowMoreSeenCtx.Provider value={useShowMoreSeen()}>

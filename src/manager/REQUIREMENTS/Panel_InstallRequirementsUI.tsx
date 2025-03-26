@@ -1,8 +1,6 @@
 import type { ComfyManagerPluginInfo } from '../types/ComfyManagerPluginInfo'
 import type { Requirements } from './Requirements'
 
-import { observer } from 'mobx-react-lite'
-
 import { MessageWarningUI } from '../../csuite'
 import { MessageErrorUI } from '../../csuite/messages/MessageErrorUI'
 import { exhaust } from '../../csuite/utils/exhaust'
@@ -11,7 +9,7 @@ import { Button_InstalModelViaManagerUI } from './Button_InstalModelViaManagerUI
 import { IntallBtnForKnownCivitaiModelId, IntallBtnForKnownCivitaiModelVersionId } from './FOOBAR'
 import { QuickHostActionsUI } from './QuickHostActionsUI'
 
-export const Panel_InstallRequirementsUI = observer(function Panel_InstallRequirementsUI_(p: {
+export const Panel_InstallRequirementsUI = obs(function Panel_InstallRequirementsUI_(p: {
    requirements: Requirements[]
 }) {
    const rr = p.requirements

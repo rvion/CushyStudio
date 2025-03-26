@@ -2,8 +2,6 @@ import type { RevealState } from '../reveal/RevealState'
 import type { SelectProps } from './SelectProps'
 import type { AutoCompleteSelectState } from './SelectState'
 
-import { observer } from 'mobx-react-lite'
-
 import { csuiteConfig } from '../config/configureCsuite'
 import { SelectPopupUI_Create } from './SelectPopupUI_Create'
 import { SelectPopupUI_Input } from './SelectPopupUI_Input'
@@ -18,7 +16,7 @@ export type SelectPopupProps<OPTION> = {
    createOption: SelectProps<OPTION>['createOption']
 }
 
-export const SelectPopupUI = observer(function SelectPopupUI_<OPTION>(p: SelectPopupProps<OPTION>) {
+export const SelectPopupUI = obs(function SelectPopupUI_<OPTION>(p: SelectPopupProps<OPTION>) {
    const select = p.selectState
    const minWidth =
       select.anchorRef.current?.clientWidth != null //
@@ -56,11 +54,11 @@ export const SelectPopupUI = observer(function SelectPopupUI_<OPTION>(p: SelectP
    )
 })
 
-export const FixedSlot = observer(function CreateSlot<OPTION>(p: { children?: React.ReactNode }) {
+export const FixedSlot = obs(function CreateSlot<OPTION>(p: { children?: React.ReactNode }) {
    return <div className='h-input gap-1 px-2 text-base'>{p.children}</div>
 })
 
-export const CreateButton = observer(function CreateButton<OPTION>(p: {
+export const CreateButton = obs(function CreateButton<OPTION>(p: {
    select: AutoCompleteSelectState<OPTION>
 }) {
    return (

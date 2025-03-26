@@ -1,12 +1,10 @@
 import type { RenderPropsCompiled } from '../presenters/RenderPropsCompiled'
 
-import { observer } from 'mobx-react-lite'
-
 import { Frame } from '../../csuite/frame/Frame'
 import { renderFCOrNode, renderFCOrNodeWithWrapper } from '../../csuite/utils/renderFCOrNode'
 
 // SHELL SIMPLE
-export const ShellInlineUI = observer(function ShellInline(p: RenderPropsCompiled) {
+export const ShellInlineUI = obs(function ShellInline(p: RenderPropsCompiled) {
    const field = p.field
    return (
       <Frame row>

@@ -1,6 +1,5 @@
 import type { MediaImageL } from '../../models/MediaImage'
 
-import { observer } from 'mobx-react-lite'
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
 
 import { Button } from '../../csuite/button/Button'
@@ -39,7 +38,7 @@ export type PanelViewImageProps = {
    imageID?: MediaImageID | 'latent'
 }
 
-export const PanelViewImageUI = observer(function PanelViewImage(p: PanelViewImageProps) {
+export const PanelViewImageUI = obs(function PanelViewImage(p: PanelViewImageProps) {
    const img: Maybe<MediaImageL> = p.imageID //
       ? cushy.db.media_image.get(p.imageID)
       : cushy.db.media_image.last()
@@ -105,7 +104,7 @@ export const PanelViewImageUI = observer(function PanelViewImage(p: PanelViewIma
    )
 })
 
-export const ImageActionBarUI = observer(function ImageActionBar(p: { img?: Maybe<MediaImageL> }) {
+export const ImageActionBarUI = obs(function ImageActionBar(p: { img?: Maybe<MediaImageL> }) {
    const img = p.img
    const isStarred = Boolean(img?.data.star)
    const showTags = usePanel().usePersistentModel('showTags', (ui) =>

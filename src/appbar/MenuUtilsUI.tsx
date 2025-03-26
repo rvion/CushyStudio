@@ -1,10 +1,8 @@
-import { observer } from 'mobx-react-lite'
-
 import { KEYS } from '../app/shortcuts/shorcutKeys'
 import { Dropdown } from '../csuite/dropdown/Dropdown'
 import { MenuItem } from '../csuite/dropdown/MenuItem'
 
-export const MenuUtilsUI = observer(function MenuUtilsUI_(p: {}) {
+export const MenuUtilsUI = obs(function MenuUtilsUI_(p: {}) {
    return (
       <Dropdown
          title='Utils'

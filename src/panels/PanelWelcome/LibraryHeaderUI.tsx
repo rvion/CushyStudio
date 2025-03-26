@@ -1,8 +1,6 @@
-import { observer } from 'mobx-react-lite'
-
 import { Button } from '../../csuite/button/Button'
 
-export const IndexAllAppsBtnUI = observer(function IndexAllAppsBtnUI_(p: {}) {
+export const IndexAllAppsBtnUI = obs(function IndexAllAppsBtnUI_(p: {}) {
    return (
       <Button //
          icon={IKONS.mdiMagnifyScan}
@@ -15,6 +13,6 @@ export const IndexAllAppsBtnUI = observer(function IndexAllAppsBtnUI_(p: {}) {
    )
 })
 
-export const ForceUpdateAllAppsBtnUI = observer(function IndexAllAppsBtnUI_(p: {}) {
+export const ForceUpdateAllAppsBtnUI = obs(function IndexAllAppsBtnUI_(p: {}) {
    return <Button onClick={cushy.forceRefreshAllApps}>Force-Recompile All Apps</Button>
 })

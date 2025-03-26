@@ -1,12 +1,10 @@
 import type { MediaImageL } from '../../models/MediaImage'
 import type { CSSProperties } from 'react'
 
-import { observer } from 'mobx-react-lite'
-
 import { Frame } from '../../csuite/frame/Frame'
 import { ImageUIDumb } from '../../widgets/galleries/ImageUI'
 
-export const GalleryImageCardUI = observer(function GalleryImageCardUI_(p: {
+export const GalleryImageCardUI = obs(function GalleryImageCardUI_(p: {
    img: MediaImageL
    style?: CSSProperties
    //    favorited: boolean

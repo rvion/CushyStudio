@@ -1,7 +1,6 @@
 import JsonView from '@uiw/react-json-view'
-import { observer } from 'mobx-react-lite'
 
-export const JsonViewUI = observer(function JsonViewUI_(p: { value?: Maybe<object> }) {
+export const JsonViewUI = obs(function JsonViewUI_(p: { value?: Maybe<object> }) {
    // mobx hack to make the widget react to any change in the value
    JSON.stringify(p.value)
    return (

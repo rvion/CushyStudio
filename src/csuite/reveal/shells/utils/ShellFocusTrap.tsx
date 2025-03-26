@@ -1,8 +1,6 @@
 import type { RevealState } from '../../RevealState'
 
-import { observer } from 'mobx-react-lite'
-
-export const ShellFocusTrapUI = observer(function ShellFocusTrapUI_(p: { reveal: RevealState }) {
+export const ShellFocusTrapUI = obs(function ShellFocusTrapUI_(p: { reveal: RevealState }) {
    return (
       <div
          tabIndex={0}

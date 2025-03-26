@@ -1,15 +1,13 @@
 import type { DropdownProps } from '../../../csuite/dropdown/Dropdown'
 import type { Field } from '../../../csuite/model/Field'
 
-import { observer } from 'mobx-react-lite'
-
 import { UI } from '../../../csuite/components/UI'
 
 export type WidgetPresetsProps = {
    field: Field
 } & Omit<DropdownProps, 'title'>
 
-export const WidgetPresetsUI = observer(function WidgetPresets({
+export const WidgetPresetsUI = obs(function WidgetPresets({
    //own props
    field,
 

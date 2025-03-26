@@ -1,12 +1,10 @@
-import { observer } from 'mobx-react-lite'
-
 import { MessageInfoUI } from '../../csuite'
 import { Button } from '../../csuite/button/Button'
 import { commandManager } from '../../csuite/commands/CommandManager'
 import { Frame, type FrameProps } from '../../csuite/frame/Frame'
 import { Trigger } from '../../csuite/trigger/Trigger'
 
-export const CommandContextDebugUI = observer(function CommandContextDebug(p: FrameProps) {
+export const CommandContextDebugUI = obs(function CommandContextDebug(p: FrameProps) {
    return (
       <Frame {...p} col tw='gap-2'>
          <h3>Command Contexts</h3>

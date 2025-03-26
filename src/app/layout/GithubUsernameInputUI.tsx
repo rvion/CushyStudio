@@ -1,14 +1,12 @@
 import type { ReactNode } from 'react'
 
-import { observer } from 'mobx-react-lite'
-
 import { BadgeUI } from '../../csuite/badge/BadgeUI'
 import { InputStringUI } from '../../csuite/input-string/InputStringUI'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { assets } from '../../utils/assets/assets'
 
 export type RsuiteSize = 'lg' | 'md' | 'sm' | 'xs'
-export const GithubUsernameInputUI = observer(function GithubUsernameInputUI_(p: {
+export const GithubUsernameInputUI = obs(function GithubUsernameInputUI_(p: {
    //
    children?: ReactNode
 }) {

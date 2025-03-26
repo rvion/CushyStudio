@@ -1,5 +1,5 @@
 import { makeAutoObservable } from 'mobx'
-import { observer } from 'mobx-react-lite'
+
 import { useMemo } from 'react'
 
 import { useCSuite } from '../../csuite/ctx/useCSuite'
@@ -32,7 +32,7 @@ export class PanelAssetsState {
    }
 }
 
-export const PanelAssetsUI = observer(function PanelAssetsUI_(p: PanelAssetsProps) {
+export const PanelAssetsUI = obs(function PanelAssetsUI_(p: PanelAssetsProps) {
    const uist = useMemo(() => new PanelAssetsState({ active: -1, selected: new Set() }), [])
    // const panel = usePanel<PanelAssetsProps>()
    return (
@@ -44,7 +44,7 @@ export const PanelAssetsUI = observer(function PanelAssetsUI_(p: PanelAssetsProp
 })
 
 // TODO: (bird_d): Pages need a selectui to change the page viewing, unsure if that's the right approach though instead of just using filters.
-const AssetContent = observer(function AssetContent_(p: { st: PanelAssetsState }) {
+const AssetContent = obs(function AssetContent_(p: { st: PanelAssetsState }) {
    return (
       <Frame //
          tw='flex h-full w-full overflow-auto'
@@ -68,7 +68,7 @@ const AssetContent = observer(function AssetContent_(p: { st: PanelAssetsState }
  *          = Insert the Lora's pic?
  *          = Quickly generate an image using the lora and put it in the canvas?
  */
-const AssetPageLora = observer(function AssetPageLora_(p: { st: PanelAssetsState }) {
+const AssetPageLora = obs(function AssetPageLora_(p: { st: PanelAssetsState }) {
    const loras = cushy.schema.getLoras()
 
    if (!cushy.mainHost.isConnected) {

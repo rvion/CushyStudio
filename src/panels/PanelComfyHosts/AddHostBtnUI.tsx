@@ -1,11 +1,10 @@
-import { observer } from 'mobx-react-lite'
 import { resolve } from 'pathe'
 
 import { Button } from '../../csuite/button/Button'
 import { SQLITE_false } from '../../csuite/types/SQLITE_boolean'
 import { asAbsolutePath } from '../../utils/fs/pathUtils'
 
-export const AddHostBtnUI = observer(function AddHostBtnUI_(p: {}) {
+export const AddHostBtnUI = obs(function AddHostBtnUI_(p: {}) {
    return (
       <Button
          tooltip='Add a new Host'

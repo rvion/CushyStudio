@@ -1,11 +1,9 @@
 import type { Field_prompt } from '../FieldPrompt'
 
-import { observer } from 'mobx-react-lite'
-
 import { PluginToggleBarUI } from './PluginToggleBarUI'
 import { WidgetPrompt_LineUI } from './WidgetPrompt_LineUI'
 
-export const WidgetPromptCollapsibleUI = observer(function WidgetPromptCollapsibleUI_({
+export const WidgetPromptCollapsibleUI = obs(function WidgetPromptCollapsibleUI_({
    field,
 }: {
    field: Field_prompt

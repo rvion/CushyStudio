@@ -1,7 +1,7 @@
 import type { MediaImageL } from '../../models/MediaImage'
 
 import { runInAction } from 'mobx'
-import { observer } from 'mobx-react-lite'
+
 import { useLayoutEffect, useMemo } from 'react'
 
 import { Button } from '../../csuite/button/Button'
@@ -12,7 +12,7 @@ import { MinipaintState } from './MinipaintState'
 
 export type PanelMinipaintProps = { imgID?: MediaImageID }
 
-export const PanelMinipaintUI = observer(function PanelMinipaintUI_(p: PanelMinipaintProps) {
+export const PanelMinipaintUI = obs(function PanelMinipaintUI_(p: PanelMinipaintProps) {
    const uist = useMemo(() => new MinipaintState(cushy), [])
 
    // load image once the widget is ready

@@ -15,7 +15,7 @@ export const CustomView3dCan = view<{
    render: (p) => <CanUI imageID={p.imageID} />,
 })
 
-const CanUI = observer(function CanUI_(p: { imageID: MediaImageID | null }) {
+const CanUI = obs(function CanUI_(p: { imageID: MediaImageID | null }) {
    const image = cushy.db.media_image.get(p.imageID)
    const form = cushy.forms.use(
       (ui) =>
@@ -67,7 +67,7 @@ const CanUI = observer(function CanUI_(p: { imageID: MediaImageID | null }) {
 
 const useGLTFProxy = (url: string): void => {}
 
-const Can3 = observer(function Can3_(props: ThreeElements['group'] & { _textureURL?: string }) {
+const Can3 = obs(function Can3_(props: ThreeElements['group'] & { _textureURL?: string }) {
    // writeFileSync('src/outputs/3d-scene/can3/test/can3.gltf,')
    const gltf = useGLTF(`/library/built-in/_views/_can3/can3.gltf`)
    const { nodes, materials } = gltf

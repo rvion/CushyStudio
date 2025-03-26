@@ -2,8 +2,6 @@ import type { RenderPropsCompiled } from '../presenters/RenderPropsCompiled'
 import type React from 'react'
 import type { ReactNode } from 'react'
 
-import { observer } from 'mobx-react-lite'
-
 import { fieldActionMenu } from '../../csuite/form/fieldActionMenu'
 import { WidgetLabelContainerUI } from '../../csuite/form/WidgetLabelContainerUI'
 import { Frame } from '../../csuite/frame/Frame'
@@ -13,7 +11,7 @@ import { AnimatedSizeUI } from '../../csuite/smooth-size/AnimatedSizeUI'
 import { renderFCOrNode, renderFCOrNodeWithWrapper } from '../../csuite/utils/renderFCOrNode'
 import { WidgetPresetsUI } from '../catalog/Presets/WidgetPresets'
 
-const CushyShellUI = observer(function CushySHell(
+const CushyShellUI = obs(function CushySHell(
    p: RenderPropsCompiled<Z.AnyField> & {
       border?: boolean
       HEADER: React.JSX.Element
@@ -82,7 +80,7 @@ const CushyShellUI = observer(function CushySHell(
    return WUI
 })
 
-export const ShellCushyLeftUI = observer(function ShellCushyLeft(p: RenderPropsCompiled) {
+export const ShellCushyLeftUI = obs(function ShellCushyLeft(p: RenderPropsCompiled) {
    const field = p.field
    const originalField = field /* 🔴 */
 
@@ -109,7 +107,7 @@ export const ShellCushyLeftUI = observer(function ShellCushyLeft(p: RenderPropsC
    )
 })
 
-export const ShellCushyList1UI = observer(function ShellCushyList1(p: RenderPropsCompiled) {
+export const ShellCushyList1UI = obs(function ShellCushyList1(p: RenderPropsCompiled) {
    const field = p.field
    const originalField = field /* 🔴 */
 
@@ -135,7 +133,7 @@ export const ShellCushyList1UI = observer(function ShellCushyList1(p: RenderProp
    )
 })
 
-export const ShellCushyRightUI = observer(function ShellCushyRight(p: RenderPropsCompiled) {
+export const ShellCushyRightUI = obs(function ShellCushyRight(p: RenderPropsCompiled) {
    const field = p.field
    const originalField = field /* 🔴 */
 
@@ -166,7 +164,7 @@ export const ShellCushyRightUI = observer(function ShellCushyRight(p: RenderProp
    )
 })
 
-export const ShellCushyFluidUI = observer(function ShellCushyFluid(p: RenderPropsCompiled) {
+export const ShellCushyFluidUI = obs(function ShellCushyFluid(p: RenderPropsCompiled) {
    const field = p.field
    const originalField = field /* 🔴 */
 

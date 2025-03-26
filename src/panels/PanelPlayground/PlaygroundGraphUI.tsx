@@ -1,10 +1,9 @@
-import { observer } from 'mobx-react-lite'
 import { useEffect } from 'react'
 
 import { Button } from '../../csuite/button/Button'
 import { DrawWorkflowUI } from '../../widgets/graph/DrawWorkflowUI'
 
-export const PlaygroundGraphUI = observer(function PlaygroundGraphUI_(p: {}) {
+export const PlaygroundGraphUI = obs(function PlaygroundGraphUI_(p: {}) {
    const workflow = cushy.db.comfy_workflow.last()!
    const form = cushy.graphConf
    const update = (): void => void workflow.RUNLAYOUT(cushy.autolayoutOpts)

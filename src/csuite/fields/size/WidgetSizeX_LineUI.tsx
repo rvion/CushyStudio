@@ -1,14 +1,12 @@
 import type { Field_size } from './FieldSize'
 
-import { observer } from 'mobx-react-lite'
-
 import { useCSuite } from '../../ctx/useCSuite'
 import { Frame } from '../../frame/Frame'
 import { InputNumberUI } from '../../input-number/InputNumberUI'
 import { AspectLockButtonUI } from './AspectLockButtonUI'
 import { AspectRatioSquareUI } from './AspectRatioSquareUI'
 
-export const WidgetSizeX_LineUI = observer(function WidgetSize_LineUI_(p: {
+export const WidgetSizeX_LineUI = obs(function WidgetSize_LineUI_(p: {
    size: Field_size
    bounds?: { min?: number; max?: number; step?: number }
 }) {

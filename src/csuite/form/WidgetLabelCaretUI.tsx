@@ -1,7 +1,5 @@
 import type { Field } from '../model/Field'
 
-import { observer } from 'mobx-react-lite'
-
 import { Frame } from '../frame/Frame'
 import { WidgetLabelCaretPlaceholderUI } from './WidgetLabelCaretPlaceholderUI'
 
@@ -14,9 +12,7 @@ export type WidgetLabelCaretProps = {
    field: Field
 }
 
-export const WidgetLabelCaretUI = observer(function WidgetLabelCaretUI_(
-   p: Z.UIProps & WidgetLabelCaretProps,
-) {
+export const WidgetLabelCaretUI = obs(function WidgetLabelCaretUI_(p: Z.UIProps & WidgetLabelCaretProps) {
    // (bird_d): This is always true in cushy, does not have an option.
    // if (!preferences.interface.value.widgetshowExpandCarets) return null
    if (p.field.parent == null) return null
@@ -40,7 +36,7 @@ export const WidgetLabelCaretUI = observer(function WidgetLabelCaretUI_(
    )
 })
 
-const WidgetLabelCaretAlwaysUI = observer(function WidgetLabelCaretAlways_({
+const WidgetLabelCaretAlwaysUI = obs(function WidgetLabelCaretAlways_({
    isCollapsed,
    className,
 }: {

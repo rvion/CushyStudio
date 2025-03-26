@@ -1,7 +1,6 @@
 import type { NodePort } from '../../comfyui/livegraph/ComfyNode'
 import type { ComfyWorkflowL } from '../../models/ComfyWorkflow'
 
-import { observer } from 'mobx-react-lite'
 import { Fragment, useEffect, useRef } from 'react'
 
 import { Frame } from '../../csuite/frame/Frame'
@@ -11,7 +10,7 @@ import { bang } from '../../csuite/utils/bang'
 import { randomColorHSLNice } from '../../panels/PanelCanvas/utils/randomColor'
 import { NodeSlotSize } from './NodeSlotSize'
 
-export const DrawWorkflowUI = observer(function DrawWorkflowUI_(p: {
+export const DrawWorkflowUI = obs(function DrawWorkflowUI_(p: {
    //
    spline?: number
    workflow: ComfyWorkflowL

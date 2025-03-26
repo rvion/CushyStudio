@@ -1,10 +1,8 @@
 import type { RenderPropsCompiled } from '../presenters/RenderPropsCompiled'
 
-import { observer } from 'mobx-react-lite'
-
 import { renderFCOrNode } from '../../csuite/utils/renderFCOrNode'
 
-export const ShellInputOnly = observer(function ShellInputOnly(p: RenderPropsCompiled) {
+export const ShellInputOnly = obs(function ShellInputOnly(p: RenderPropsCompiled) {
    const field = p.field
    return (
       <div tw='row' className={p.className ?? undefined}>

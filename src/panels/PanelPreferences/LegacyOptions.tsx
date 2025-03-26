@@ -1,5 +1,3 @@
-import { observer } from 'mobx-react-lite'
-
 import { KEYS } from '../../app/shortcuts/shorcutKeys'
 import { ComboUI } from '../../csuite/accelerators/ComboUI'
 import { Button } from '../../csuite/button/Button'
@@ -10,7 +8,7 @@ import { parseFloatNoRoundingErr } from '../../csuite/utils/parseFloatNoRounding
 import { openInVSCode } from '../../utils/electron/openInVsCode'
 import { LegacyFieldUI } from './LegacyFieldUI'
 
-export const LegacyOptions = observer(function LegacyOptions_() {
+export const LegacyOptions = obs(function LegacyOptions_() {
    const config = cushy.configFile
 
    return (

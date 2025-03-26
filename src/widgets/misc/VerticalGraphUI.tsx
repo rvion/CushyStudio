@@ -1,11 +1,10 @@
 // import { Orientation } from '@gitgraph/core'
 // import { Gitgraph, TemplateName } from '@gitgraph/react'
-import { observer } from 'mobx-react-lite'
 
 // import { useEffect, useState } from 'react'
 
 // https://www.nicoespeon.com/gitgraph.js/stories/?path=/story/gitgraph-react-1-basic-usage--custom-branch-order
-export const VerticalGraph = observer(function VerticalGraph_() {
+export const VerticalGraph = obs(function VerticalGraph_() {
    return null
    // const client = cushy
    // const pj = client.project

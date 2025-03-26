@@ -1,10 +1,8 @@
 import type { Result } from '../../types/Either'
 
-import { observer } from 'mobx-react-lite'
-
 import { LegacyMessageUI } from '../../csuite/inputs/LegacyMessageUI'
 
-export const ResultWrapperUI = observer(function ResultWrapperUI_<T>(p: {
+export const ResultWrapperUI = obs(function ResultWrapperUI_<T>(p: {
    res?: Maybe<Result<T>>
    whenValid: (v: T) => React.ReactNode
 }) {

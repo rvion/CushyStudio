@@ -1,7 +1,6 @@
 import type { IconName } from '../../csuite/icons/IconName'
 
 import { makeAutoObservable, runInAction } from 'mobx'
-import { observer } from 'mobx-react-lite'
 
 import { Frame } from '../../csuite/frame/Frame'
 
@@ -148,7 +147,7 @@ export class CushyDnDHandler {
    }
 }
 
-export const DnDDragIndicatorUI = observer(function DnDDragIndicateUI_() {
+export const DnDDragIndicatorUI = obs(function DnDDragIndicateUI_() {
    const dndHandler = cushy.dndHandler
    const theme = cushy.preferences.theme.value
    const widgetHeight = cushy.preferences.interface.value.widgetHeight

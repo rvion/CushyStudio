@@ -1,7 +1,5 @@
 import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
 
-import { observer } from 'mobx-react-lite'
-
 import { Button } from '../../csuite/button/Button'
 import { SpacerUI } from '../../csuite/components/SpacerUI'
 import { Frame } from '../../csuite/frame/Frame'
@@ -18,7 +16,7 @@ export const PanelImport = new Panel({
    icon: IKONS.mdiImport,
 })
 
-export const PanelImportUI = observer(function PanelImportUI_(p: {}) {
+export const PanelImportUI = obs(function PanelImportUI_(p: {}) {
    return (
       <div tw='h-full w-full'>
          <PanelHeaderUI>

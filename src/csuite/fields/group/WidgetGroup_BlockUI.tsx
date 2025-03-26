@@ -1,10 +1,8 @@
 import type { Field_group } from './FieldGroup'
 
-import { observer } from 'mobx-react-lite'
-
 import { ListOfFieldsContainerUI } from '../../form/WidgetsContainerUI'
 
-export const WidgetGroup_BlockUI = observer(function WidgetGroup_BlockUI_(p: {
+export const WidgetGroup_BlockUI = obs(function WidgetGroup_BlockUI_(p: {
    //
    className?: Maybe<string>
    field: Field_group

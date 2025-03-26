@@ -6,7 +6,7 @@ import { Layer, Stage } from 'react-konva'
 import { InputNumberUI } from '../../input-number/InputNumberUI'
 import { ReactKonvaRectangleUI } from './ReactKonvaRectangleUI'
 
-export const WidgetListExt_KonvaBoardUI = observer(function WidgetListExt_KonvaBoardUI(p: {
+export const WidgetListExt_KonvaBoardUI = obs(function WidgetListExt_KonvaBoardUI(p: {
    field: Field_board<any>
 }) {
    const RG = p.field

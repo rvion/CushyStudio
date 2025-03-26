@@ -1,5 +1,5 @@
 import { makeAutoObservable, runInAction } from 'mobx'
-import { observer } from 'mobx-react-lite'
+
 import React, { useEffect, useMemo } from 'react'
 
 import { Button } from '../button/Button'
@@ -236,7 +236,7 @@ class InputNumberStableState {
    }
 }
 
-export const InputNumberUI = observer(function InputNumberUI_(p: InputNumberProps) {
+export const InputNumberUI = obs(function InputNumberUI_(p: InputNumberProps) {
    // create stable state, that we can programmatically mutate witout caring about stale references
    const uist = useMemo(() => new InputNumberStableState(p), [])
 

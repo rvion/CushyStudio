@@ -1,7 +1,5 @@
 import type { StepOutput } from '../types/StepOutput'
 
-import { observer } from 'mobx-react-lite'
-
 import { Frame } from '../csuite/frame/Frame'
 import { exhaust } from '../csuite/utils/exhaust'
 import { ComfyPromptL } from '../models/ComfyPrompt'
@@ -26,7 +24,7 @@ import { OutputVideoPreviewUI, OutputVideoUI } from './OutputVideo'
 import { OutputWorkflowPreviewUI, OutputWorkflowUI } from './OutputWorkflowUI'
 
 // PREVIEW -----------------------------------------------------------------------------
-export const OutputPreviewUI = observer(function StepOutputUI_(p: {
+export const OutputPreviewUI = obs(function StepOutputUI_(p: {
    //
    step?: Maybe<StepL>
    output: StepOutput
@@ -57,7 +55,7 @@ function getOutput(step: Maybe<StepL>, output: StepOutput): React.JSX.Element | 
    return <Frame square icon={IKONS.mdiAlert} iconSize='80%' tooltip={`❌ unhandled message of type ${(output as any).constructor.name}`}  />
    }
 
-export const OutputPreview_ContentUI = observer(function OutputPreview_ContentUI_(p: {
+export const OutputPreview_ContentUI = obs(function OutputPreview_ContentUI_(p: {
    step?: Maybe<StepL>
    output: StepOutput
 }) {
@@ -107,7 +105,7 @@ export const OutputPreview_ContentUI = observer(function OutputPreview_ContentUI
 
 // FULL -----------------------------------------------------------------------------
 // prettier-ignore
-export const OutputUI = observer(function StepOutputUI_(p: { step?: Maybe<StepL>; output: StepOutput }) {
+export const OutputUI = obs(function StepOutputUI_(p: { step?: Maybe<StepL>; output: StepOutput }) {
     const output = p.output
 
     if (output instanceof MediaTextL)            return <OutputTextUI                step={p.step} output={output} />

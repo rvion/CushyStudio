@@ -1,17 +1,15 @@
 import type { Field_selectOne } from './FieldSelectOne'
 import type { SelectKey } from './SelectOneKey'
 
-import { observer } from 'mobx-react-lite'
-
 import { BadgeUI } from '../../badge/BadgeUI'
 import { hashPrimitiveToNumber } from '../../hashUtils/hash'
 import { RevealUI } from '../../reveal/RevealUI'
 import { makeLabelFromPrimitiveValue } from '../../utils/makeLabelFromFieldName'
 
-export const WidgetSelectOne_CellUI = observer(function WidgetSelectOne_TabUI_<
-   VALUE,
-   KEY extends SelectKey,
->(p: { field: Field_selectOne<VALUE, KEY>; opts?: { reveal?: boolean } }) {
+export const WidgetSelectOne_CellUI = obs(function WidgetSelectOne_TabUI_<VALUE, KEY extends SelectKey>(p: {
+   field: Field_selectOne<VALUE, KEY>
+   opts?: { reveal?: boolean }
+}) {
    const val = p.field.selectedOption_unchecked
 
    if (val == null) return p.field.config.placeholder ?? ''

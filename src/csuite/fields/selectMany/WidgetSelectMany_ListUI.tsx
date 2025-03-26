@@ -1,13 +1,11 @@
 import type { Field_selectMany } from './FieldSelectMany'
 
-import { observer } from 'mobx-react-lite'
-
 import { ToggleButtonUI } from '../../checkbox/InputBoolToggleButtonUI'
 import { ResizableFrame } from '../../resizableFrame/resizableFrameUI'
 import { makeLabelFromPrimitiveValue } from '../../utils/makeLabelFromFieldName'
 import { convertSelectKeyToReactKey, type SelectKey } from '../selectOne/SelectOneKey'
 
-export const WidgetSelectMany_ListUI = observer(function WidgetSelectMany_ListUI_<
+export const WidgetSelectMany_ListUI = obs(function WidgetSelectMany_ListUI_<
    VALUE,
    KEY extends SelectKey,
 >(p: { field: Field_selectMany<VALUE, KEY> }) {

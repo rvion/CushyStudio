@@ -1,7 +1,5 @@
 import type { NO_PROPS } from '../../csuite/types/NO_PROPS'
 
-import { observer } from 'mobx-react-lite'
-
 import { PanelHeaderUI } from '../../csuite/panel/PanelHeaderUI'
 import { TreeUI } from '../../csuite/tree/TreeUI'
 import { Panel, type PanelHeader } from '../../router/Panel'
@@ -16,7 +14,7 @@ export const PanelTreeExplorer = new Panel({
    category: 'app',
 })
 
-export const PanelTreeExplorerUI = observer(function PanelTreeExplorerUI_(p: NO_PROPS) {
+export const PanelTreeExplorerUI = obs(function PanelTreeExplorerUI_(p: NO_PROPS) {
    return (
       <>
          <PanelHeaderUI>

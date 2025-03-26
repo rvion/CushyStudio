@@ -1,19 +1,17 @@
 import type { RuntimeErrorL } from '../models/RuntimeError'
 import type { StepL } from '../models/Step'
 
-import { observer } from 'mobx-react-lite'
-
 import { LegacySurfaceUI } from '../csuite/inputs/LegacySurfaceUI'
 import { JsonViewUI } from '../csuite/json/JsonViewUI'
 
-export const OutputRuntimeErrorPreviewUI = observer(function OutputRuntimeErrorPreviewUI_(p: {
+export const OutputRuntimeErrorPreviewUI = obs(function OutputRuntimeErrorPreviewUI_(p: {
    step?: Maybe<StepL>
    output: RuntimeErrorL
 }) {
    return <div tw='text-error-content bg-error font-bold'>Runtime Error</div>
 })
 
-export const OutputRuntimeErrorUI = observer(function OutputRuntimeErrorUI_(p: {
+export const OutputRuntimeErrorUI = obs(function OutputRuntimeErrorUI_(p: {
    step?: Maybe<StepL>
    output: RuntimeErrorL
 }) {

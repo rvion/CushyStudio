@@ -1,7 +1,5 @@
 import type { StandardProps } from '../../presenters/RenderProps'
 
-import { observer } from 'mobx-react-lite'
-
 export type WidgetPadProps = {
    children: any
    /** Enables the theme-based padding */
@@ -9,7 +7,7 @@ export type WidgetPadProps = {
 } & StandardProps['wrappers']
 
 /** Decoration that gives horizontal padding, uses `group.padding` theme option */
-export const WidgetPadUI = observer(function WidgetPadUI_(p: WidgetPadProps) {
+export const WidgetPadUI = obs(function WidgetPadUI_(p: WidgetPadProps) {
    const theme = cushy.preferences.theme.value
 
    return (

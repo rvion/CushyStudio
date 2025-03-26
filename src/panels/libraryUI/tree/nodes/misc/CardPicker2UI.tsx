@@ -1,9 +1,7 @@
 import type { CushyAppL } from '../../../../../models/CushyApp'
 import type { DraftL } from '../../../../../models/Draft'
 
-import { observer } from 'mobx-react-lite'
-
-export const AppFavoriteBtnUI = observer(function AppFavoriteBtnUI_(p: {
+export const AppFavoriteBtnUI = obs(function AppFavoriteBtnUI_(p: {
    //
    size?: string
    app: CushyAppL
@@ -17,7 +15,7 @@ export const AppFavoriteBtnUI = observer(function AppFavoriteBtnUI_(p: {
    )
 })
 
-export const DraftFavoriteBtnUI = observer(function DraftFavoriteBtnUI_(p: {
+export const DraftFavoriteBtnUI = obs(function DraftFavoriteBtnUI_(p: {
    //
    size?: string
    draft: DraftL
@@ -31,7 +29,7 @@ export const DraftFavoriteBtnUI = observer(function DraftFavoriteBtnUI_(p: {
    )
 })
 
-export const AppFavoriteBtnCustomUI = observer(function AppFavoriteBtnCustomUI_(p: {
+export const AppFavoriteBtnCustomUI = obs(function AppFavoriteBtnCustomUI_(p: {
    //
    size?: string
    get: () => boolean

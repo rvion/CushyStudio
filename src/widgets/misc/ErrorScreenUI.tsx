@@ -1,8 +1,6 @@
 import type { CSCriticalError } from '../CSCriticalError'
 
-import { observer } from 'mobx-react-lite'
-
-export const ErrorScreenUI = observer(function ErrorScreenUI_(p: { err: CSCriticalError }) {
+export const ErrorScreenUI = obs(function ErrorScreenUI_(p: { err: CSCriticalError }) {
    return (
       <div
          style={{

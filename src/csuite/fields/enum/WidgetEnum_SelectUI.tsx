@@ -1,11 +1,10 @@
 import type { Field_enum } from './FieldEnum'
 
-import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 
 import { EnumSelectorUI } from './EnumSelectorUI'
 
-export const WidgetEnum_SelectUI = observer(function WidgetEnum_SelectUI_(p: { field: Field_enum<any> }) {
+export const WidgetEnum_SelectUI = obs(function WidgetEnum_SelectUI_(p: { field: Field_enum<any> }) {
    const field = p.field
    const slotName = field.config.slotName
    const clearable = useMemo(

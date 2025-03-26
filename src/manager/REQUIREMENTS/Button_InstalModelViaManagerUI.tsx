@@ -1,13 +1,11 @@
 import type { ComfyManagerModelInfo } from '../types/ComfyManagerModelInfo'
 
-import { observer } from 'mobx-react-lite'
-
 import { Button } from '../../csuite/button/Button'
 import { Frame } from '../../csuite/frame/Frame'
 import { Ikon } from '../../csuite/icons/iconHelpers'
 import { renderStatus } from './renderStatus'
 
-export const Button_InstalModelViaManagerUI = observer(function Button_InstalModelViaManagerUI_(p: {
+export const Button_InstalModelViaManagerUI = obs(function Button_InstalModelViaManagerUI_(p: {
    //
    optional: boolean
    modelInfo: ComfyManagerModelInfo

@@ -1,7 +1,7 @@
 import type { DragDropManager } from 'dnd-core'
 
 import { runInAction } from 'mobx'
-import { observer } from 'mobx-react-lite'
+
 import { useMemo } from 'react'
 import { useDragDropManager } from 'react-dnd'
 import { ToastContainer } from 'react-toastify'
@@ -13,7 +13,7 @@ import { asAbsolutePath } from '../../utils/fs/pathUtils'
 
 const path = asAbsolutePath(process.cwd())
 
-export const MainUI = observer(function MainUI_() {
+export const MainUI = obs(function MainUI_() {
    const dragDropManager: DragDropManager = useDragDropManager()
    const st = useMemo(() => runInAction(() => new STATE(path, dragDropManager)), [])
    return (

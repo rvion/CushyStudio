@@ -1,8 +1,6 @@
-import { observer } from 'mobx-react-lite'
-
 import { Ikon } from '../icons/iconHelpers'
 
-export const WidgetLabelCaretPlaceholderUI = observer(function WidgetLabelCaretPlaceholderUI_(p: {
+export const WidgetLabelCaretPlaceholderUI = obs(function WidgetLabelCaretPlaceholderUI_(p: {
    className?: string
 }) {
    return (

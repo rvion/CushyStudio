@@ -9,7 +9,7 @@ import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { SelectUI } from '../../csuite/select/SelectUI'
 
 /** Freely modify this as you like, then pick the "Scratch Pad" option in the top left. Do not commit changes made to this. */
-export const PlaygroundSelectUI = observer(function PlaygroundSelectUI_(p: {}) {
+export const PlaygroundSelectUI = obs(function PlaygroundSelectUI_(p: {}) {
    const values = useLocalObservable(
       () => ({
          a: undefined as string | undefined,

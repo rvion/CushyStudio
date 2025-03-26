@@ -1,5 +1,3 @@
-import { observer } from 'mobx-react-lite'
-
 import { useCSuite } from '../../csuite/ctx/useCSuite'
 import { Frame } from '../../csuite/frame/Frame'
 import { SelectUI } from '../../csuite/select/SelectUI'
@@ -10,7 +8,7 @@ export type PanelComfyHostProps = {
    hostID?: HostID
 }
 
-export const PanelComfyHostsUI = observer(function PanelComfyHostsUI_(p: PanelComfyHostProps) {
+export const PanelComfyHostsUI = obs(function PanelComfyHostsUI_(p: PanelComfyHostProps) {
    const allHosts = cushy.hosts
    const mainHost = cushy.mainHost
    const theme = cushy.preferences.theme.value

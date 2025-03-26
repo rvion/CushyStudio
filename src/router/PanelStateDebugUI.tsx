@@ -1,10 +1,8 @@
 import type { PanelState } from './PanelState'
 
-import { observer } from 'mobx-react-lite'
-
 import { Frame } from '../csuite/frame/Frame'
 
-export const PanelStateDebugUI = observer(function PanelStateDebugUI_(p: { panel: PanelState }) {
+export const PanelStateDebugUI = obs(function PanelStateDebugUI_(p: { panel: PanelState }) {
    const panel = p.panel
    return (
       <div>

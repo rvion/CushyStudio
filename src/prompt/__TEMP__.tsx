@@ -5,7 +5,7 @@ import type { Prompt_Lora } from './grammar/grammar.practical'
 import { EditorState } from '@codemirror/state'
 import { basicSetup, EditorView } from 'codemirror'
 import { makeAutoObservable, observable, reaction } from 'mobx'
-import { observer } from 'mobx-react-lite'
+
 import { createRef, useLayoutEffect, useMemo } from 'react'
 
 import { Button } from '../csuite/button/Button'
@@ -18,7 +18,7 @@ import { PromptAST } from './grammar/grammar.practical'
 
 type X = { id: FieldId; label?: string }
 
-export const PromptEditorUI = observer(function PromptEditorUI_(p: { promptID: Field_prompt['_uid'] }) {
+export const PromptEditorUI = obs(function PromptEditorUI_(p: { promptID: Field_prompt['_uid'] }) {
    return '❌ broken'
    // 1. retrieve the widget to get the inital value
    // |  the widget won't be used afterwise unless we programmatically do stuff with it

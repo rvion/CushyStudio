@@ -1,11 +1,9 @@
 import type { Field_string } from './FieldString'
 
-import { observer } from 'mobx-react-lite'
-
 import { useCSuite } from '../../ctx/useCSuite'
 import { Frame } from '../../frame/Frame'
 
-export const WidgetString_TextareaInput = observer(function WidgetString_TextareaBodyUI_(p: {
+export const WidgetString_TextareaInput = obs(function WidgetString_TextareaBodyUI_(p: {
    field: Field_string
    readonly?: boolean
 }) {

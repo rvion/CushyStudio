@@ -29,7 +29,7 @@ export interface FileListProps {
    files: File[]
 }
 
-export const ImportAsImageUI = observer(function ImportAsImageUI_(p: { className?: string; file: File }) {
+export const ImportAsImageUI = obs(function ImportAsImageUI_(p: { className?: string; file: File }) {
    const file = p.file
    const url = URL.createObjectURL(p.file)
    const uiSt = useLocalObservable(() => ({ validImage: false }))
@@ -64,7 +64,7 @@ function foobar(file: File): TTT {
    if (file.name.endsWith('.json')) return file.text().then((x) => ({ workflow: x }))
    return 'NO'
 }
-export const ImportedFileUI = observer(function ImportedFileUI_(p: {
+export const ImportedFileUI = obs(function ImportedFileUI_(p: {
    //
    className?: string
    file: File
@@ -198,7 +198,7 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: {
    )
 })
 
-const LegacyFieldUI = observer(function LegacyFieldUI_(p: { k: string; v: string | number | object }) {
+const LegacyFieldUI = obs(function LegacyFieldUI_(p: { k: string; v: string | number | object }) {
    return (
       <div className='flex items-start gap-1'>
          <div className='text-neutral-content italic'>{p.k}:</div>

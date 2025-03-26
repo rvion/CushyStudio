@@ -1,13 +1,11 @@
 import type { SchemaDict } from '../../model/SchemaDict'
 import type { Field_choices } from './FieldChoices'
 
-import { observer } from 'mobx-react-lite'
-
 import { Button } from '../../button/Button'
 import { csuiteConfig } from '../../config/configureCsuite'
 import { SelectUI } from '../../select/SelectUI'
 
-export const WidgetChoices_SelectHeaderUI = observer(function WidgetChoices_SelectLineUI_<
+export const WidgetChoices_SelectHeaderUI = obs(function WidgetChoices_SelectLineUI_<
    T extends SchemaDict,
 >(p: { field: Field_choices<T> }) {
    const field = p.field

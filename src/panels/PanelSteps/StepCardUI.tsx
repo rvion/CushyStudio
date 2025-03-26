@@ -1,8 +1,6 @@
 import type { StepL } from '../../models/Step'
 import type { CSSProperties } from 'react'
 
-import { observer } from 'mobx-react-lite'
-
 import { Status } from '../../back/Status'
 import { statusUI } from '../../back/statusUI'
 import { AppIllustrationUI } from '../../cards/fancycard/AppIllustrationUI'
@@ -15,7 +13,7 @@ import { Frame } from '../../csuite/frame/Frame'
 import { OutputPreviewUI } from '../../outputs/OutputUI'
 import { PanelStepsConf } from './PanelStepsConf'
 
-export const StepCardUI = observer(function StepOutputsV1HeaderUI_(p: {
+export const StepCardUI = obs(function StepOutputsV1HeaderUI_(p: {
    // Data ---------------------
    step: StepL
 

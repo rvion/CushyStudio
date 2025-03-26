@@ -1,5 +1,3 @@
-import { observer } from 'mobx-react-lite'
-
 import { SpacerUI } from '../csuite/components/SpacerUI'
 import { Frame } from '../csuite/frame/Frame'
 import { defineMenu } from '../csuite/menu/Menu'
@@ -26,7 +24,7 @@ const mainMenu = defineMenu({
    // horizontalMenuGroup: true,
 })
 
-export const AppBarUI = observer(function AppBarUI_(p: {}) {
+export const AppBarUI = obs(function AppBarUI_(p: {}) {
    const mainHost = cushy.mainHost
    return (
       <Frame

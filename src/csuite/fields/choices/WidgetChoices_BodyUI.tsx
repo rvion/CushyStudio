@@ -2,12 +2,10 @@ import type { Field } from '../../model/Field'
 import type { SchemaDict } from '../../model/SchemaDict'
 import type { Field_choices } from './FieldChoices'
 
-import { observer } from 'mobx-react-lite'
-
 import { ListOfFieldsContainerUI } from '../../form/WidgetsContainerUI'
 import { WidgetToggleUI } from '../../form/WidgetToggleUI'
 
-export const WidgetChoices_BodyUI = observer(function WidgetChoices_BodyUI_(p: {
+export const WidgetChoices_BodyUI = obs(function WidgetChoices_BodyUI_(p: {
    field: Field_choices<SchemaDict>
    justify?: boolean
    className?: Maybe<string>

@@ -15,7 +15,7 @@ app({
             // subTree:
             defaultValue: () => ({ foo: 1, bar: 'test' }),
             // subTree
-            Component: observer((p) => {
+            Component: obs((p) => {
                const uist = p.field.value
                return (
                   <div tw='flex'>

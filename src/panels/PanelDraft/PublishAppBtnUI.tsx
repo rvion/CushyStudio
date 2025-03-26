@@ -1,10 +1,8 @@
 import type { CushyAppL } from '../../models/CushyApp'
 
-import { observer } from 'mobx-react-lite'
-
 import { Button, type ButtonProps } from '../../csuite/button/Button'
 
-export const PublishAppBtnUI = observer(function PublishAppBtnUI_({
+export const PublishAppBtnUI = obs(function PublishAppBtnUI_({
    // own props
    app,
 

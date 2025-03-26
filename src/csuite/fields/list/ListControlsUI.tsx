@@ -1,7 +1,5 @@
 import type { Field } from '../../model/Field'
 
-import { observer } from 'mobx-react-lite'
-
 import { useCSuite } from '../../ctx/useCSuite'
 import { ListButtonAddUI } from './ListButtonAddUI'
 import { ListButtonClearUI } from './ListButtonClearUI'
@@ -24,7 +22,7 @@ export type IWidgetListLike = {
    }
 }
 
-export const ListControlsUI = observer(function ListControlsUI_({
+export const ListControlsUI = obs(function ListControlsUI_({
    field,
    children,
    ...rest

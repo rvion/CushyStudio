@@ -3,12 +3,10 @@ import type { Field_selectOne } from './FieldSelectOne'
 import type { SelectKey } from './SelectOneKey'
 import type { SelectOption } from './SelectOption'
 
-import { observer } from 'mobx-react-lite'
-
 import { SelectUI } from '../../select/SelectUI'
 import { makeLabelFromPrimitiveValue } from '../../utils/makeLabelFromFieldName'
 
-export const WidgetSelectOne_SelectUI = observer(function WidgetSelectOne_SelectUI_<
+export const WidgetSelectOne_SelectUI = obs(function WidgetSelectOne_SelectUI_<
    VALUE,
    KEY extends SelectKey,
 >(p: {

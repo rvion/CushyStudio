@@ -1,13 +1,11 @@
 import type { Requirements } from './Requirements'
 
-import { observer } from 'mobx-react-lite'
-
 import { Button } from '../../csuite/button/Button'
 import { run_tint } from '../../csuite/kolor/prefab_Tint'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { Panel_InstallRequirementsUI } from './Panel_InstallRequirementsUI'
 
-export const InstallRequirementsBtnUI = observer(function InstallRequirementsBtnUI_(p: {
+export const InstallRequirementsBtnUI = obs(function InstallRequirementsBtnUI_(p: {
    active: boolean
    label?: string
    requirements: Requirements[]

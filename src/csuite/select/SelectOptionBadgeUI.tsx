@@ -1,11 +1,9 @@
 import type { BadgeProps } from '../badge/BadgeUI'
 
-import { observer } from 'mobx-react-lite'
-
 import { BadgeUI } from '../badge/BadgeUI'
 import { Frame } from '../frame/Frame'
 
-export const SelectDefaultOptionUI = observer(function SelectDefaultOptionUI_({
+export const SelectDefaultOptionUI = obs(function SelectDefaultOptionUI_({
    // own
    label,
    closeFn,

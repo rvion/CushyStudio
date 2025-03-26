@@ -11,7 +11,7 @@ import { JsonViewUI } from '../../csuite/json/JsonViewUI'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { CivitaiResultVersionUI } from './CivitaiResultVersionUI'
 
-export const CivitaiResultFullUI = observer(function CivitaiResultFullUI_(p: {
+export const CivitaiResultFullUI = obs(function CivitaiResultFullUI_(p: {
    //
    civitai: Civitai
    item: CivitaiSearchResultItem

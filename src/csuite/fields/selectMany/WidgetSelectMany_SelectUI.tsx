@@ -3,13 +3,11 @@ import type { SelectKey } from '../selectOne/SelectOneKey'
 import type { SelectOption } from '../selectOne/SelectOption'
 import type { Field_selectMany } from './FieldSelectMany'
 
-import { observer } from 'mobx-react-lite'
-
 import { InputBoolFlipButtonUI } from '../../checkbox/InputBoolFlipButtonUI'
 import { SelectUI } from '../../select/SelectUI'
 import { makeLabelFromPrimitiveValue } from '../../utils/makeLabelFromFieldName'
 
-export const WidgetSelectMany_SelectUI = observer(function WidgetSelectMany_SelectUI_<
+export const WidgetSelectMany_SelectUI = obs(function WidgetSelectMany_SelectUI_<
    //
    VALUE extends any,
    KEY extends SelectKey,

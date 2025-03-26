@@ -2,13 +2,11 @@ import type { Field } from '../../csuite/model/Field'
 import type { RenderProps } from './RenderProps'
 import type { ReactNode } from 'react'
 
-import { observer } from 'mobx-react-lite'
-
 import { type RenderCtx, rendererCtx, useRendererCtx } from './RenderCtx'
 import { renderDefaultKey } from './RenderDefaultsKey'
 import { Renderer } from './Renderer'
 
-export const RenderUI = observer(function RenderUI_({
+export const RenderUI = obs(function RenderUI_({
    field,
    ...uiconf
 }: { field: Field } & RenderProps<any>): ReactNode {

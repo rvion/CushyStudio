@@ -1,7 +1,5 @@
 import type { IconName } from '../../icons/IconName'
 
-import { observer } from 'mobx-react-lite'
-
 import { Frame } from '../../frame/Frame'
 import { ColorPickerUI } from '../../input-color/ColorPickerUI'
 import { getLCHFromStringAsString } from '../../kolor/getLCHFromStringAsString'
@@ -9,7 +7,7 @@ import { Kolor } from '../../kolor/Kolor'
 import { RevealUI } from '../../reveal/RevealUI'
 import { knownOKLCHHues } from '../../tinyCSS/knownHues'
 
-export const InputColorUI = observer(function InputColorUI_(p: {
+export const InputColorUI = obs(function InputColorUI_(p: {
    getValue: () => string
    setValue: (value: string) => void
    noColorStuff?: boolean

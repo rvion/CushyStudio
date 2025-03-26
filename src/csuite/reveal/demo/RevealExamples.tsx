@@ -1,8 +1,6 @@
-import { observer } from 'mobx-react-lite'
-
 import { RevealUI } from '../RevealUI'
 
-export const RevealExample_NestedMenuUI = observer(function RevealExample_NestedMenuUI_(p: {}) {
+export const RevealExample_NestedMenuUI = obs(function RevealExample_NestedMenuUI_(p: {}) {
    return (
       <div>
          <RevealUI
@@ -45,9 +43,7 @@ export const RevealExample_NestedMenuUI = observer(function RevealExample_Nested
    )
 })
 
-export const RevealExample_InfiniteMenuUI = observer(function RevealExample_NestedMenuUI_(p: {
-   prefix: string
-}) {
+export const RevealExample_InfiniteMenuUI = obs(function RevealExample_NestedMenuUI_(p: { prefix: string }) {
    return (
       <div>
          <RevealUI

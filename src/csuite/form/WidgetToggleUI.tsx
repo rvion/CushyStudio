@@ -1,7 +1,5 @@
 import type { Field } from '../model/Field'
 
-import { observer } from 'mobx-react-lite'
-
 import { InputBoolUI } from '../checkbox/InputBoolUI'
 
 export type WidgetToggleProps = {
@@ -9,7 +7,7 @@ export type WidgetToggleProps = {
    field: Field
 }
 
-export const WidgetToggleUI = observer(function WidgetToggleUI_(p: WidgetToggleProps) {
+export const WidgetToggleUI = obs(function WidgetToggleUI_(p: WidgetToggleProps) {
    const isTogglable = p.field.canBeToggledWithinParent
    if (!isTogglable) return null
    // if (!isFieldOptional(p.field)) return

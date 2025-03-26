@@ -53,7 +53,7 @@ const menuDivider = (
    </MenuDivider>
 )
 
-// export const MenuComfyUI = observer(function MenuComfyUI_(p: {}) {
+// export const MenuComfyUI = obs(function MenuComfyUI_(p: {}) {
 //     const isConnected = st.ws?.isOpen ?? false
 //     return (
 //         <Dropdown
@@ -88,7 +88,7 @@ const menuDivider = (
 //     )
 // })
 
-// const HostMenuItemUI = observer(function HostMenuItemUI_(p: { host: HostL }) {
+// const HostMenuItemUI = obs(function HostMenuItemUI_(p: { host: HostL }) {
 //     const host = p.host
 //     const isMain = host.id === cushy.configFile.value.mainComfyHostID
 //     return (

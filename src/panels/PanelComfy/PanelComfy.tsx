@@ -1,7 +1,7 @@
 import type { LiteGraphJSON } from '../../comfyui/litegraph/LiteGraphJSON'
 
 import { toJS } from 'mobx'
-import { observer } from 'mobx-react-lite'
+
 import { nanoid } from 'nanoid'
 import { useLayoutEffect } from 'react'
 
@@ -26,7 +26,7 @@ export type PanelComfyUIProps = {
    hostID?: HostID
 }
 
-export const PanelComfyUI = observer(function PanelComfyUI_(p: PanelComfyUIProps) {
+export const PanelComfyUI = obs(function PanelComfyUI_(p: PanelComfyUIProps) {
    const host = cushy.db.host.get(p.hostID) ?? cushy.mainHost
    const url = host.getServerHostHTTP()
    const conf = usePanel().usePersistentModel('uist', (ui) =>

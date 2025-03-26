@@ -1,8 +1,6 @@
 import type { Field_group } from './FieldGroup'
 
-import { observer } from 'mobx-react-lite'
-
-export const WidgetGroup_InlineUI = observer(function WidgetGroup_InlineUI_<T extends Field_group>(p: {
+export const WidgetGroup_InlineUI = obs(function WidgetGroup_InlineUI_<T extends Field_group>(p: {
    className?: string
    field: T
 }) {

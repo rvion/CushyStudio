@@ -2,7 +2,6 @@ import type { ReactNode } from 'react'
 import type { RevealProps } from './RevealProps'
 import type { RevealShellProps } from './shells/ShellProps'
 
-import { observer } from 'mobx-react-lite'
 import React, { cloneElement, createElement, useEffect, useMemo } from 'react'
 import { createPortal } from 'react-dom'
 
@@ -28,7 +27,7 @@ import {
 } from './shells/ShellPopupUI'
 import { useSyncForwardedRef } from './useSyncForwardedRef'
 
-export const RevealUI: React.FunctionComponent<RevealProps> = observer(function RevealUI_(p: RevealProps) {
+export const RevealUI: React.FunctionComponent<RevealProps> = obs(function RevealUI_(p: RevealProps) {
    const ref2 = p.ref
    const parents_: RevealStateLazy[] = p.parentRevealState?.tower ?? useRevealOrNull()?.tower ?? []
    const parents: RevealStateLazy[] = p.useSeparateTower ? [] : parents_
@@ -196,7 +195,7 @@ export const RevealUI: React.FunctionComponent<RevealProps> = observer(function 
 
 RevealUI.displayName = 'RevealUI'
 
-const MkTooltip = observer(({ lazyState }: { lazyState: RevealStateLazy }) => {
+const MkTooltip = obs(({ lazyState }: { lazyState: RevealStateLazy }) => {
    const select = lazyState.state
    const p = lazyState.p
    const ShellUI: React.FC<RevealShellProps> = useMemo(

@@ -1,6 +1,5 @@
 import type { MediaImageL } from '../../models/MediaImage'
 
-import { observer } from 'mobx-react-lite'
 import { FixedSizeGrid } from 'react-window'
 
 import { useSizeOf } from '../../csuite/smooth-size/useSizeOf'
@@ -8,7 +7,7 @@ import { useGalleryConf } from './galleryConf'
 import { GalleryImageCardUI } from './GalleryImageCardUI'
 import { StepGroupUI } from './StepGroups'
 
-export const GalleryImageGridUI = observer(function GalleryImageGridUI_(p: {
+export const GalleryImageGridUI = obs(function GalleryImageGridUI_(p: {
    /** when not specified, it will just open the default image menu */
    onClick?: (img: MediaImageL) => void
 }) {
@@ -46,7 +45,7 @@ export const GalleryImageGridUI = observer(function GalleryImageGridUI_(p: {
    )
 })
 
-const GalleryGridUI = observer(function GalleryGridUI_(p: {
+const GalleryGridUI = obs(function GalleryGridUI_(p: {
    containerHeight: number
    containerWidth: number
    nbCols: number

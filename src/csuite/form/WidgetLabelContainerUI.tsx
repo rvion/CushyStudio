@@ -1,8 +1,6 @@
 import type { RevealPlacement } from '../reveal/RevealPlacement'
 import type { CSSProperties } from 'react'
 
-import { observer } from 'mobx-react-lite'
-
 import { Frame } from '../../csuite/frame/Frame'
 
 export type WidgetLabelContainerProps = {
@@ -14,9 +12,7 @@ export type WidgetLabelContainerProps = {
    tooltipPlacement?: RevealPlacement
 }
 
-export const WidgetLabelContainerUI = observer(function WidgetLabelContainerUI_(
-   p: WidgetLabelContainerProps,
-) {
+export const WidgetLabelContainerUI = obs(function WidgetLabelContainerUI_(p: WidgetLabelContainerProps) {
    // const theme = cushy.preferences.theme.value
    return (
       <Frame

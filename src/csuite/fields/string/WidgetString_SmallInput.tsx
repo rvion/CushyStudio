@@ -1,10 +1,8 @@
 import type { Field_string } from './FieldString'
 
-import { observer } from 'mobx-react-lite'
-
 import { InputStringUI } from '../../input-string/InputStringUI'
 
-export const WidgetString_SmallInput = observer(function WidgetStringUI_(p: {
+export const WidgetString_SmallInput = obs(function WidgetStringUI_(p: {
    field: Field_string
    readonly?: boolean
 }) {

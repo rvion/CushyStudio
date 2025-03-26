@@ -1,8 +1,6 @@
 import type { Menu } from '../menu/Menu'
 import type { Field } from '../model/Field'
 
-import { observer } from 'mobx-react-lite'
-
 import { Button } from '../../csuite/button/Button'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { useProvenance } from '../provenance/Provenance'
@@ -13,7 +11,7 @@ export type WidgetMenuProps = {
    field: Field
 }
 
-export const WidgetMenuUI = observer(function WidgetMenu(p: WidgetMenuProps) {
+export const WidgetMenuUI = obs(function WidgetMenu(p: WidgetMenuProps) {
    const field = p.field
    const provenance = useProvenance()
    const menu: Menu = fieldActionMenu.useBind({ field, provenance })

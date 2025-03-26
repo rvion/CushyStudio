@@ -1,14 +1,12 @@
 import type { HostL } from '../../models/Host'
 
-import { observer } from 'mobx-react-lite'
-
 import { Button } from '../../csuite/button/Button'
 import { Ikon } from '../../csuite/icons/iconHelpers'
 import { LegacyMessageUI } from '../../csuite/inputs/LegacyMessageUI'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { QuickHostActionsUI } from '../../manager/REQUIREMENTS/QuickHostActionsUI'
 
-export const HostSchemaIndicatorUI = observer(function HostSchemaIndicatorUI_(p: {
+export const HostSchemaIndicatorUI = obs(function HostSchemaIndicatorUI_(p: {
    //
    showIcon?: boolean
    showSize?: boolean

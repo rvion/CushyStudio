@@ -1,11 +1,10 @@
-import { observer } from 'mobx-react-lite'
 import { useCallback, useState } from 'react'
 
 /**
  * this container is used to wrap the list of values in their dense inline form.
  * it is used inline
  */
-export const SelectValueContainerUI = observer(function SelectValueContainerUI_<OPTION>(p: {
+export const SelectValueContainerUI = obs(function SelectValueContainerUI_<OPTION>(p: {
    //
    wrap?: Maybe<boolean | 'no-wrap-no-overflow-hidden'>
    children?: React.ReactNode
@@ -37,7 +36,7 @@ export const SelectValueContainerUI = observer(function SelectValueContainerUI_<
    )
 })
 
-export const SelectValueOverflowUI = observer(function SelectValueOverflowUI(p: { valuesCount: number }) {
+export const SelectValueOverflowUI = obs(function SelectValueOverflowUI(p: { valuesCount: number }) {
    if (p.valuesCount <= 1) return null
 
    return (

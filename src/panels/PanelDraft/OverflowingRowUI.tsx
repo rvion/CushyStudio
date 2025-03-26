@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react'
 
-import { observer } from 'mobx-react-lite'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 import { Frame, type FrameProps } from '../../csuite/frame/Frame'
@@ -13,7 +12,7 @@ export type TabBarProps = {
    children: TabContent[]
 } & Omit<FrameProps, 'children'>
 
-export const OverflowingRowUI = observer(function OverflowingRow({
+export const OverflowingRowUI = obs(function OverflowingRow({
    //
    children,
    className,

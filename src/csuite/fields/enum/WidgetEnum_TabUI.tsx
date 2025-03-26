@@ -1,10 +1,8 @@
 import type { Field_enum } from './FieldEnum'
 
-import { observer } from 'mobx-react-lite'
-
 import { InputBoolUI } from '../../checkbox/InputBoolUI'
 
-export const WidgetEnum_TabUI = observer(function WidgetEnum_TabUI_(p: { field: Field_enum<any> }) {
+export const WidgetEnum_TabUI = obs(function WidgetEnum_TabUI_(p: { field: Field_enum<any> }) {
    const field = p.field
    const selected = field.serial.val
    return (

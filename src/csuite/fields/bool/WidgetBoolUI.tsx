@@ -1,11 +1,9 @@
 import type { Field_bool } from './FieldBool'
 
-import { observer } from 'mobx-react-lite'
-
 import { InputBoolUI } from '../../checkbox/InputBoolUI'
 import { SpacerUI } from '../../components/SpacerUI'
 
-export const WidgetBoolUI = observer(function WidgetBoolUI_(p: { field: Field_bool }) {
+export const WidgetBoolUI = obs(function WidgetBoolUI_(p: { field: Field_bool }) {
    const field = p.field
 
    if (field.config.label2) {

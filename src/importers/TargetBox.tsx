@@ -1,13 +1,12 @@
 import type { ReactNode } from 'react'
 import type { DropTargetMonitor } from 'react-dnd'
 
-import { observer } from 'mobx-react-lite'
 import { useDrop } from 'react-dnd'
 import { NativeTypes } from 'react-dnd-html5-backend'
 
 import { useDragDropRefForReact19 } from '../csuite/utils/dnd'
 
-export const TargetBox = observer((p: { children?: ReactNode }) => {
+export const TargetBox = obs((p: { children?: ReactNode }) => {
    const [{ isActive, canDrop, isOver }, drop_] = useDrop(
       () => ({
          accept: [

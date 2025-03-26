@@ -1,14 +1,12 @@
 import type { MediaImageL } from '../models/MediaImage'
 
-import { observer } from 'mobx-react-lite'
-
 import { openExternal, showItemInFolder } from '../app/layout/openExternal'
 import { DraftIllustrationUI } from '../cards/fancycard/DraftIllustration'
 import { Button } from '../csuite/button/Button'
 import { Dropdown } from '../csuite/dropdown/Dropdown'
 import { MenuItem } from '../csuite/dropdown/MenuItem'
 
-export const ImageDropdownUI = observer(function ImageDropdownUI_(p: { img: MediaImageL }) {
+export const ImageDropdownUI = obs(function ImageDropdownUI_(p: { img: MediaImageL }) {
    const img = p.img
    return (
       <Dropdown //
@@ -20,7 +18,7 @@ export const ImageDropdownUI = observer(function ImageDropdownUI_(p: { img: Medi
    )
 })
 
-export const ImageDropdownMenuUI = observer(function ImageDropdownMenuUI_(p: { img: MediaImageL }) {
+export const ImageDropdownMenuUI = obs(function ImageDropdownMenuUI_(p: { img: MediaImageL }) {
    const img = p.img
    return (
       <>
@@ -128,7 +126,7 @@ const ImagePathUIString = (path: string | undefined): string => {
    }
 }
 
-export const ImageActionMenu = observer(function ImageActionMenu_(p: { img: MediaImageL }) {
+export const ImageActionMenu = obs(function ImageActionMenu_(p: { img: MediaImageL }) {
    const img = p.img
    return (
       <>

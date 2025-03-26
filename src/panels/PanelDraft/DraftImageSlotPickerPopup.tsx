@@ -2,7 +2,6 @@ import type { Field_image } from '../../csuite/fields/image/FieldImage'
 import type { DraftL } from '../../models/Draft'
 import type { MediaImageL } from '../../models/MediaImage'
 
-import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 
 import { Button } from '../../csuite/button/Button'
@@ -19,7 +18,7 @@ function formatFieldPath(text: string): string {
    return builder.join('>')
 }
 
-export const DraftImageSlotPickerUI = observer(function DraftImageSlotPickerUI_({
+export const DraftImageSlotPickerUI = obs(function DraftImageSlotPickerUI_({
    // own
    draft,
    image,

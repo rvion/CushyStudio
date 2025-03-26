@@ -1,6 +1,5 @@
 import type { ComfyManagerPluginInfo } from '../types/ComfyManagerPluginInfo'
 
-import { observer } from 'mobx-react-lite'
 import { useState } from 'react'
 
 import { Button } from '../../csuite/button/Button'
@@ -9,7 +8,7 @@ import { Ikon } from '../../csuite/icons/iconHelpers'
 import { useAsyncAction } from '../../importers/usePromise'
 import { renderStatus } from './renderStatus'
 
-export const Button_InstallCustomNodeUI = observer(function Button_InstallCustomNodeUI_(p: {
+export const Button_InstallCustomNodeUI = obs(function Button_InstallCustomNodeUI_(p: {
    optional: boolean
    plugin: ComfyManagerPluginInfo
 }) {

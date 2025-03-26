@@ -1,10 +1,8 @@
 // import type { FC } from 'react'
 
-import { observer } from 'mobx-react-lite'
-
 import { Frame } from '../../csuite/frame/Frame'
 
-export const PlaygroundSkinsUI = observer(function PlaygroundSkinsUI_(p: {}) {
+export const PlaygroundSkinsUI = obs(function PlaygroundSkinsUI_(p: {}) {
    const xx = cushy.forms.useLocalstorage('SCm5xmdc', (ui) =>
       ui.fields({
          a: ui.string(),

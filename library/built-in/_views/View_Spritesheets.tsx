@@ -13,7 +13,7 @@ export const CustomViewSpriteSheet = view<{
    render: (p) => <SpriteSheetUI imageID={p.imageID} />,
 })
 
-const SpriteSheetUI = observer(function SpriteSheet(p: { imageID: MediaImageID | null }) {
+const SpriteSheetUI = obs(function SpriteSheet(p: { imageID: MediaImageID | null }) {
    const image = cushy.db.media_image.get(p.imageID)
    const form = cushy.forms.use(
       (ui) =>
@@ -94,7 +94,7 @@ const SpriteSheetUI = observer(function SpriteSheet(p: { imageID: MediaImageID |
 })
 
 // const useGLTFProxy = (url: string) => {}
-const Can3 = observer(function Can3_(props: ThreeElements['group'] & { _textureURL?: string }) {
+const Can3 = obs(function Can3_(props: ThreeElements['group'] & { _textureURL?: string }) {
    // writeFileSync('src/outputs/3d-scene/can3/test/can3.gltf,')
    const gltf = useGLTF(`/library/built-in/_views/_can3/can3.gltf`)
    const { nodes, materials } = gltf

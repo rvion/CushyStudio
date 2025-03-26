@@ -2,11 +2,10 @@ import type { FrameAppearance } from '../../frame/FrameTemplates'
 import type { Field_bool } from '../bool/FieldBool'
 
 import { runInAction } from 'mobx'
-import { observer } from 'mobx-react-lite'
 
 import { Button } from '../../button/Button'
 
-export const WidgetButtonUI = observer(function WidgetButtonUI_<K extends any>(p: {
+export const WidgetButtonUI = obs(function WidgetButtonUI_<K extends any>(p: {
    field: Field_bool
    look?: FrameAppearance
    onClick: () => void

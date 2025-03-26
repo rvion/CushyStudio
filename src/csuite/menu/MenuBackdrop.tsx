@@ -1,10 +1,9 @@
 // TODO: FINISH THIS 🔴🔴
 import type { MenuInstance } from './MenuInstance'
 
-import { observer } from 'mobx-react-lite'
 import { useCallback } from 'react'
 
-export const MenuBackdropUI = observer(function MenuBackdropUI_(p: {
+export const MenuBackdropUI = obs(function MenuBackdropUI_(p: {
    //
    menuInst: MenuInstance
    x1: number

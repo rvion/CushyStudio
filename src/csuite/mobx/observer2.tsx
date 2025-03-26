@@ -1,13 +1,29 @@
 import { observer } from 'mobx-react-lite'
+import type React from 'react'
+import type { PropsOf } from '../types/PropsOf'
 
-export type FunctionComponentPlus<T> = React.FunctionComponent<T> & {
-   with(p: Partial<T> | ((t: T) => Partial<T>)): React.FunctionComponent<T>
+export type FC_<P> = React.FunctionComponent<P> & {
+   with(p: Partial<P> | ((t: P) => Partial<P>)): React.FunctionComponent<P>
 }
-export const observer2 = <T extends object>(fn: React.FunctionComponent<T>): FunctionComponentPlus<T> => {
+
+export function obs<P extends object>(
+   baseComponent: React.FunctionComponent<P>,
+): React.FunctionComponent<P> & {
+   with(p: Partial<P> | ((t: P) => Partial<P>)): React.FunctionComponent<P>
+}
+
+export function obs<C extends React.FunctionComponent<any>>(
+   baseComponent: C,
+): C & {
+   displayName: string
+   with(p: Partial<PropsOf<C>> | ((t: PropsOf<C>) => Partial<PropsOf<C>>)): C
+}
+
+export function obs(fn: any): any {
    const ObsFn = observer(fn as any)
    Object.assign(ObsFn, {
       with(args: any) {
-         return (p: any) => <ObsFn {...{ ...p, ...args }} />
+         return (p: any): React.JSX.Element => <ObsFn {...{ ...p, ...args }} />
       },
    })
    return ObsFn

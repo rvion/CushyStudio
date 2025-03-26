@@ -1,10 +1,6 @@
 import type { Field_string } from './FieldString'
 
-import { observer } from 'mobx-react-lite'
-
-export const WidgetString_summary = observer(function WidgetString_TextareaHeaderUI_(p: {
-   field: Field_string
-}) {
+export const WidgetString_summary = obs(function WidgetString_TextareaHeaderUI_(p: { field: Field_string }) {
    const field = p.field
    if (!field.config.textarea) return null
    if (!p.field.serial.collapsed) return null

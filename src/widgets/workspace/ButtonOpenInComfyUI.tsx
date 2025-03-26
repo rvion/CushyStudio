@@ -1,10 +1,8 @@
 import type { ComfyWorkflowL } from '../../models/ComfyWorkflow'
 
-import { observer } from 'mobx-react-lite'
-
 import { Button } from '../../csuite/button/Button'
 
-export const ButtonOpenInComfyUI = observer(function ButtonOpenInComfyUI_(p: {
+export const ButtonOpenInComfyUI = obs(function ButtonOpenInComfyUI_(p: {
    graph: ComfyWorkflowL | ComfyWorkflowID
 }) {
    const graphOrGraphID = p.graph

@@ -1,6 +1,4 @@
-import { observer } from 'mobx-react-lite'
-
-export const WidgetIndentUI = observer(function WidgetIndentUI_(p: {
+export const WidgetIndentUI = obs(function WidgetIndentUI_(p: {
    //
    className?: string
    depth: number

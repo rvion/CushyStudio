@@ -1,7 +1,5 @@
 import type { FC } from 'react'
 
-import { observer } from 'mobx-react-lite'
-
 import { Panel, type PanelHeader, type PanelPreset } from '../../router/Panel'
 
 export const PanelIframe = new Panel({
@@ -36,7 +34,7 @@ type PanelIframeProps = {
    url: string
 }
 
-export const PanelIframeUI = observer(function Panel_Iframe_(p: PanelIframeProps) {
+export const PanelIframeUI = obs(function Panel_Iframe_(p: PanelIframeProps) {
    // return (
    //     <iframe
    //         src='...'

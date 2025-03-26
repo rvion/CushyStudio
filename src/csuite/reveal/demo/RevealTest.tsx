@@ -1,13 +1,11 @@
 import type { RevealContentProps } from '../shells/ShellProps'
 
-import { observer } from 'mobx-react-lite'
-
 import { Button } from '../../button/Button'
 import { Frame, type FrameProps } from '../../frame/Frame'
 import { simpleFactory } from '../../SimpleFactory'
 import { RevealUI } from '../RevealUI'
 
-export const RevealTestUI = observer(function RevealTestUI_(p: {}) {
+export const RevealTestUI = obs(function RevealTestUI_(p: {}) {
    const anchor = (where: string, props?: FrameProps): React.JSX.Element => (
       <Button expand {...props}>
          {where}
@@ -23,7 +21,7 @@ export const RevealTestUI = observer(function RevealTestUI_(p: {}) {
       }),
    )
 
-   const Content2 = observer(
+   const Content2 = obs(
       (p: { content: () => string }): React.JSX.Element => (
          <pre //
             style={{

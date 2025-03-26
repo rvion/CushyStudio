@@ -1,11 +1,9 @@
-import { observer } from 'mobx-react-lite'
-
 import { Button } from '../../csuite/button/Button'
 import { FrameWithCSuiteOverride } from '../../csuite/ctx/CSuiteOverride'
 import { Frame } from '../../csuite/frame/Frame'
 import { sizeManual } from '../../csuite/types/RsuiteTypes'
 
-export const PlaygroundSizeUI = observer(function PlaygroundSizeUI_(p: {}) {
+export const PlaygroundSizeUI = obs(function PlaygroundSizeUI_(p: {}) {
    return (
       <div>
          <Frame border base={{ hueShift: 10, contrast: 0.1, chroma: 0.05 }}>

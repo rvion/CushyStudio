@@ -1,9 +1,7 @@
-import { observer } from 'mobx-react-lite'
-
 import { InstallRequirementsBtnUI } from '../../manager/REQUIREMENTS/InstallRequirementsBtnUI'
 import { Panel_InstallRequirementsUI } from '../../manager/REQUIREMENTS/Panel_InstallRequirementsUI'
 
-export const PlaygroundRequirementsHeader = observer(function PlaygroundRequirements_(p: {}) {
+export const PlaygroundRequirementsHeader = obs(function PlaygroundRequirements_(p: {}) {
    return (
       <>
          {/* stuff to test how it looks like when in button form */}
@@ -31,7 +29,7 @@ export const PlaygroundRequirementsHeader = observer(function PlaygroundRequirem
       </>
    )
 })
-export const PlaygroundRequirements = observer(function PlaygroundRequirements_(p: {}) {
+export const PlaygroundRequirements = obs(function PlaygroundRequirements_(p: {}) {
    return (
       <div tw='flex-col'>
          {/* stuff to test how the panel look like when unfolded */}

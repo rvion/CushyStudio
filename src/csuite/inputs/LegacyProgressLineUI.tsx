@@ -1,6 +1,4 @@
-import { observer } from 'mobx-react-lite'
-
-export const LegacyProgressLineUI = observer(function ProgressLine_(p: {
+export const LegacyProgressLineUI = obs(function ProgressLine_(p: {
    //
    className?: string
    percent?: number

@@ -1,10 +1,8 @@
 import type { Field_number } from './FieldNumber'
 
-import { observer } from 'mobx-react-lite'
-
 import { InputNumberUI } from '../../input-number/InputNumberUI'
 
-export const WidgetNumberUI = observer(function WidgetNumberUI_(p: {
+export const WidgetNumberUI = obs(function WidgetNumberUI_(p: {
    field: Field_number
    config?: Field_number['config']
 }) {

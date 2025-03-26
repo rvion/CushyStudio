@@ -1,8 +1,6 @@
 import type { MediaImageL } from '../../models/MediaImage'
 import type { CSSProperties } from 'react'
 
-import { observer } from 'mobx-react-lite'
-
 import { Frame } from '../../csuite/frame/Frame'
 import { hashStringToNumber } from '../../csuite/hashUtils/hash'
 import { useGalleryConf } from './galleryConf'
@@ -155,7 +153,7 @@ function computeStyles(
    return styles['warning']
 }
 
-export const StepGroupUI = observer(function StepGroupUI_(p: {
+export const StepGroupUI = obs(function StepGroupUI_(p: {
    index: number
    // grouper: StepGrouper
    style: CSSProperties

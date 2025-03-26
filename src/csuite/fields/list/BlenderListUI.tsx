@@ -18,7 +18,7 @@ export type BlenderListProps<T extends Field_list<any>> = {
    direction?: 'horizontal' | 'vertical'
 }
 
-export const BlenderListUI = observer(function BlenderListUI_<T extends Field_list<CSchema>>({
+export const BlenderListUI = obs(function BlenderListUI_<T extends Field_list<CSchema>>({
    field,
    activeIndex = 0,
    renderItem,
@@ -200,7 +200,7 @@ export const BlenderListUI = observer(function BlenderListUI_<T extends Field_li
    )
 })
 
-export const BlenderListFooterFilterUI = observer(function BlenderListFooterFilterUI_(p: {}) {
+export const BlenderListFooterFilterUI = obs(function BlenderListFooterFilterUI_(p: {}) {
    const x = useLocalObservable(() => ({ filter: '' }))
    return (
       <div tw='flex w-full flex-grow flex-col p-1'>

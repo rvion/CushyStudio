@@ -1,10 +1,9 @@
 import type { RevealState } from './RevealState'
 import type { ReactNode } from 'react'
 
-import { observer } from 'mobx-react-lite'
 import { useRef } from 'react'
 
-export const RevealBackdropUI = observer(function RevealBackdropUI_({
+export const RevealBackdropUI = obs(function RevealBackdropUI_({
    reveal,
    children,
 }: {

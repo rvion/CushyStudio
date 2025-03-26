@@ -1,11 +1,9 @@
 import type { HostL } from '../../models/Host'
 
-import { observer } from 'mobx-react-lite'
-
 import { Button } from '../../csuite/button/Button'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
 
-export const QuickHostActionsUI = observer(function QuickHostActionsUI_(p: {
+export const QuickHostActionsUI = obs(function QuickHostActionsUI_(p: {
    /** defaults to 'flex gap-1' */
    className?: string
    host?: HostL

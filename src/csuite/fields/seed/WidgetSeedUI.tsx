@@ -1,14 +1,12 @@
 import type { Field_seed } from './FieldSeed'
 
-import { observer } from 'mobx-react-lite'
-
 import { Button } from '../../button/Button'
 import { ToggleButtonUI } from '../../checkbox/InputBoolToggleButtonUI'
 import { useCSuite } from '../../ctx/useCSuite'
 import { Frame } from '../../frame/Frame'
 import { InputNumberUI } from '../../input-number/InputNumberUI'
 
-export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { field: Field_seed }) {
+export const WidgetSeedUI = obs(function WidgetSeedUI_(p: { field: Field_seed }) {
    const field = p.field
    const val = field.value_or_zero
    const csuite = useCSuite()

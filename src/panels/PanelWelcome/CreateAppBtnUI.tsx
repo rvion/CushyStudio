@@ -11,7 +11,7 @@ import { toastError } from '../../csuite/utils/toasts'
 import { TypescriptHighlightedCodeUI } from '../../widgets/misc/TypescriptHighlightedCodeUI'
 import { convertToValidCrossPlatformFileName } from './convertToValidCrossPlatformFileName'
 
-export const CreateAppBtnUI = observer(function CreateAppBtnUI_(p: {}) {
+export const CreateAppBtnUI = obs(function CreateAppBtnUI_(p: {}) {
    return (
       <RevealUI
          //
@@ -27,7 +27,7 @@ export const CreateAppBtnUI = observer(function CreateAppBtnUI_(p: {}) {
    )
 })
 
-export const CreateAppPopupUI = observer(function CreateAppPopupUI_(p: { closeFn: () => void }) {
+export const CreateAppPopupUI = obs(function CreateAppPopupUI_(p: { closeFn: () => void }) {
    const uist = useLocalObservable(() => ({
       appName: `my-app-${Date.now()}`,
       description: 'my app description',
