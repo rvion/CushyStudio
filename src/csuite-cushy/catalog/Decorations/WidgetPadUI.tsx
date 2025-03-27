@@ -8,7 +8,7 @@ export type WidgetPadProps = {
 
 /** Decoration that gives horizontal padding, uses `group.padding` theme option */
 export const WidgetPadUI = obs(function WidgetPadUI_(p: WidgetPadProps) {
-   const theme = cushy.preferences.theme.ϟvalue
+   const theme = cushy.preferences.theme.zValue
 
    return (
       <div

@@ -6,7 +6,7 @@ export const WigetSize_LineUI = obs(function WigetSize_LineUI_(p: { field: Field
    // 🔴❓ return <WidgetSizeX_LineUI size={p.field} bounds={p.field.config} />
    return (
       <div tw='flex flex-1 flex-col'>
-         <WidgetSizeX_LineUI size={p.field} bounds={p.field.ϟconfig} />
+         <WidgetSizeX_LineUI size={p.field} bounds={p.field.zConfig} />
          {/* {p.field.isCollapsed ? null : <WigetSizeXUI size={p.field} bounds={p.field.config} />} */}
       </div>
    )

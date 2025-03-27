@@ -9,7 +9,7 @@ import { Field_enum } from '../csuite/fields/enum/FieldEnum'
 import { CSchema } from './CSchema'
 
 export type IEnumBuilderFN<ENUM_NAME extends keyof Comfy.Slots> = (
-   config?: Omit<Field_enum<Comfy.Slots[ENUM_NAME]>['Ҩconfig'], 'slotName'>,
+   config?: Omit<Field_enum<Comfy.Slots[ENUM_NAME]>['ҨConfig'], 'slotName'>,
 ) => Z.Enum<ENUM_NAME>
 
 export type IEnumBuilder = { [K in keyof Comfy.Slots]: IEnumBuilderFN<K> }

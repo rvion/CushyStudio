@@ -21,7 +21,7 @@ export const fieldActionMenu: MenuTemplate<FieldActionMenuProps> = defineMenuTem
    entries: ({ field, provenance }) => {
       const out: MenuEntry[] = []
       // CREATE PRESET ACTION
-      const presets = field.ϟconfig.presets ?? []
+      const presets = field.zConfig.presets ?? []
       out.push(
          new MenuTemplate({
             icon: IKONS.mdiLanguageXaml,
@@ -64,8 +64,8 @@ export const fieldActionMenu: MenuTemplate<FieldActionMenuProps> = defineMenuTem
          new SimpleMenuAction({
             label: 'Reset',
             icon: IKONS.mdiUndoVariant,
-            disabled: (): boolean => !field.ϟhasChanges,
-            onClick: (): void => void field.ϟreset(),
+            disabled: (): boolean => !field.zHasChanges,
+            onClick: (): void => void field.zReset(),
          }),
       )
       out.push(MenuDividerUI_)
@@ -74,7 +74,7 @@ export const fieldActionMenu: MenuTemplate<FieldActionMenuProps> = defineMenuTem
             label: 'Save Snapshot',
             icon: IKONS.mdiArrowLeftBox,
             onClick: (): void => {
-               const snap = field.ϟsaveSnapshot()
+               const snap = field.zSaveSnapshot()
                console.log(JSON.stringify(potatoClone(snap), null, 4))
             },
          }),
@@ -84,8 +84,8 @@ export const fieldActionMenu: MenuTemplate<FieldActionMenuProps> = defineMenuTem
          new SimpleMenuAction({
             label: 'Restore Snapshot',
             icon: IKONS.mdiArrowRightBox,
-            disabled: (): boolean => !field.ϟhasSnapshot,
-            onClick: (): void => void field.ϟrevertToSnapshot(),
+            disabled: (): boolean => !field.zHasSnapshot,
+            onClick: (): void => void field.zRevertToSnapshot(),
          }),
       )
       out.push(MenuDividerUI_)
@@ -95,7 +95,7 @@ export const fieldActionMenu: MenuTemplate<FieldActionMenuProps> = defineMenuTem
          new SimpleMenuAction({
             label: 'Collapse All',
             icon: IKONS.mdiCollapseAll,
-            onClick: (): void => field.ϟcollapseAllChildren(),
+            onClick: (): void => field.zCollapseAllChildren(),
          }),
       )
 
@@ -104,8 +104,8 @@ export const fieldActionMenu: MenuTemplate<FieldActionMenuProps> = defineMenuTem
          new SimpleMenuAction({
             label: 'Expand All',
             icon: IKONS.mdiExpandAll,
-            disabled: field.ϟhasNoChild,
-            onClick: (): void => field.ϟexpandAllChildren(),
+            disabled: field.zHasNoChild,
+            onClick: (): void => field.zExpandAllChildren(),
          }),
       )
 
@@ -132,21 +132,21 @@ export const fieldActionMenu: MenuTemplate<FieldActionMenuProps> = defineMenuTem
       out.push(MenuDividerUI_)
       out.push(
          new SimpleMenuAction({
-            label: `copy path (${field.ϟpath})`,
+            label: `copy path (${field.zPath})`,
             icon: IKONS.mdiContentCopy,
             onClick: (): Promise<void> => {
-               toastInfo(field.ϟpath)
-               return navigator.clipboard.writeText(field.ϟpath)
+               toastInfo(field.zPath)
+               return navigator.clipboard.writeText(field.zPath)
             },
          }),
       )
       out.push(
          new SimpleMenuAction({
-            label: `copy pathExt (${field.ϟpathExt})`,
+            label: `copy pathExt (${field.zPathExt})`,
             icon: IKONS.mdiContentCopy,
             onClick: (): Promise<void> => {
-               toastInfo(field.ϟpathExt)
-               return navigator.clipboard.writeText(field.ϟpathExt)
+               toastInfo(field.zPathExt)
+               return navigator.clipboard.writeText(field.zPathExt)
             },
          }),
       )

@@ -72,7 +72,7 @@ export const FormUI = obs(function FormUI_(p: FormUIProps) {
       // | components re-evaluated at every single rendering will not be properly cached.
       // | this was making every sub components re-render everytime => int were not working properly
       // | also...... now that I'm writing that, why the hell was this component re-rendering everytime the value was changing ?
-      p.field.ϟallErrorsIncludingChildrenErrors.length === 0
+      p.field.zAllErrorsIncludingChildrenErrors.length === 0
 
    return (
       <Frame

@@ -8,7 +8,7 @@ export const ImageErrorDisplayUI = obs(function ImageErrorDisplayUI_(p: {
    icon: IconName
    size?: string
 }) {
-   const theme = cushy.preferences.theme.ϟvalue
+   const theme = cushy.preferences.theme.zValue
 
    return (
       <Frame

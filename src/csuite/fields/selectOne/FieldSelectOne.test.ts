@@ -13,21 +13,21 @@ describe('FieldSelectOne', () => {
       const S = b.selectOneString(['a', 'b', 'c'], { default: undefined })
       const E = S.create()
 
-      expect(E.ϟisSet).toBeFalsy()
-      expectJSON(E.ϟvalue_unchecked).toBeUndefined()
+      expect(E.zIsSet).toBeFalsy()
+      expectJSON(E.zValue_unchecked).toBeUndefined()
 
-      E.ϟvalue = 'a'
-      expectJSON(E.ϟvalue).toEqual('a')
+      E.zValue = 'a'
+      expectJSON(E.zValue).toEqual('a')
 
-      E.ϟvalue = 'b'
-      expectJSON(E.ϟvalue).toEqual('b')
+      E.zValue = 'b'
+      expectJSON(E.zValue).toEqual('b')
    })
 
    it('works with defaults', () => {
       const S = b.selectOneString(['a', 'b', 'c'], { default: 'a' })
       const E = S.create()
 
-      expectJSON(E.ϟvalue).toEqual('a')
+      expectJSON(E.zValue).toEqual('a')
    })
 
    it('works with legacy serials', () => {
@@ -36,24 +36,24 @@ describe('FieldSelectOne', () => {
       // @ts-expect-error: legacy serial injection
       const E = S.create(serial)
 
-      expectJSON(E.ϟvalue).toEqual('b')
+      expectJSON(E.zValue).toEqual('b')
    })
 
    it('can be created and set from a serial', () => {
       const S = b.selectOneString(['a', 'b', 'c'], { default: 'b' })
-      const ser1: (typeof S)['Ҩserial'] = { $: 'selectOne', val: 'c' }
-      const ser2: (typeof S)['Ҩserial'] = { $: 'selectOne', val: 'a' }
+      const ser1: (typeof S)['ҨSerial'] = { $: 'selectOne', val: 'c' }
+      const ser2: (typeof S)['ҨSerial'] = { $: 'selectOne', val: 'a' }
       const E = S.create(ser1)
 
-      expectJSON(E.ϟvalue).toEqual('c')
-      expect(E.ϟserial === ser1).toBeTruthy()
+      expectJSON(E.zValue).toEqual('c')
+      expect(E.zSerial === ser1).toBeTruthy()
 
-      E.ϟsetSerial(ser2)
-      expectJSON(E.ϟvalue).toEqual('a')
-      expect(E.ϟserial === ser2).toBeTruthy()
+      E.zSetSerial(ser2)
+      expectJSON(E.zValue).toEqual('a')
+      expect(E.zSerial === ser2).toBeTruthy()
 
-      E.ϟsetSerial({ $: 'selectOne' })
-      expectJSON(E.ϟvalue).toEqual('b')
+      E.zSetSerial({ $: 'selectOne' })
+      expectJSON(E.zValue).toEqual('b')
    })
 
    describe('isValueEqual', () => {
@@ -63,7 +63,7 @@ describe('FieldSelectOne', () => {
             const E1 = S.create()
             const E2 = S.create()
 
-            expect(E1.ϟisValueEqual(E2)).toBeTruthy()
+            expect(E1.zIsValueEqual(E2)).toBeTruthy()
          })
 
          it('should return true if both fields are set to the same value', () => {
@@ -71,10 +71,10 @@ describe('FieldSelectOne', () => {
             const E1 = S.create()
             const E2 = S.create()
 
-            E1.ϟvalue = 'b'
-            E2.ϟvalue = 'b'
+            E1.zValue = 'b'
+            E2.zValue = 'b'
 
-            expect(E1.ϟisValueEqual(E2)).toBeTruthy()
+            expect(E1.zIsValueEqual(E2)).toBeTruthy()
          })
       })
 
@@ -84,9 +84,9 @@ describe('FieldSelectOne', () => {
             const E1 = S.create()
             const E2 = S.create()
 
-            E1.ϟvalue = 'a'
+            E1.zValue = 'a'
 
-            expect(E1.ϟisValueEqual(E2)).toBeFalsy()
+            expect(E1.zIsValueEqual(E2)).toBeFalsy()
          })
 
          it('should return false if both fields are set to different values', () => {
@@ -94,10 +94,10 @@ describe('FieldSelectOne', () => {
             const E1 = S.create()
             const E2 = S.create()
 
-            E1.ϟvalue = 'a'
-            E2.ϟvalue = 'b'
+            E1.zValue = 'a'
+            E2.zValue = 'b'
 
-            expect(E1.ϟisValueEqual(E2)).toBeFalsy()
+            expect(E1.zIsValueEqual(E2)).toBeFalsy()
          })
       })
    })
@@ -108,14 +108,14 @@ describe('FieldSelectOne', () => {
          const E1 = S.create()
          const E2 = S.create()
 
-         E1.ϟvalue = 'b'
-         E2.ϟvalue = 'a'
+         E1.zValue = 'b'
+         E2.zValue = 'a'
 
-         const patches = E1.ϟgeneratePatches(E2)
+         const patches = E1.zGeneratePatches(E2)
 
-         E2.ϟapplyPatches(patches)
+         E2.zApplyPatches(patches)
 
-         expect(E2.ϟvalue as string).toBe('b' as string)
+         expect(E2.zValue as string).toBe('b' as string)
       })
 
       it('should not generate a patch for the query', () => {
@@ -123,12 +123,12 @@ describe('FieldSelectOne', () => {
          const E1 = S.create()
          const E2 = S.create()
 
-         E1.ϟvalue = 'a'
+         E1.zValue = 'a'
          E1.query = 'b'
-         E1.ϟvalue = 'a'
+         E1.zValue = 'a'
          E1.query = 'c'
 
-         const patches = E1.ϟgeneratePatches(E2)
+         const patches = E1.zGeneratePatches(E2)
 
          expectJSON(patches).toEqual([])
       })
@@ -138,35 +138,35 @@ describe('FieldSelectOne', () => {
       describe('without a serial', () => {
          describe('without a default value', () => {
             it('should use the empty serial and not patch it', () => {
-               const patchSerial = vitest.spyOn(Field_selectOne.prototype, 'ϟpatchSerial')
+               const patchSerial = vitest.spyOn(Field_selectOne.prototype, 'zPatchSerial')
                const S = b.selectOneString_(['a', 'b', 'c'])
                const E = S.create()
 
-               expect(E.ϟserial).toBe(S.defaultSerial)
+               expect(E.zSerial).toBe(S.defaultSerial)
                expect(patchSerial).not.toHaveBeenCalled()
             })
          })
 
          describe('with a default value', () => {
             it('should use the default serial and not patch it', () => {
-               const patchSerial = vitest.spyOn(Field_selectOne.prototype, 'ϟpatchSerial')
+               const patchSerial = vitest.spyOn(Field_selectOne.prototype, 'zPatchSerial')
                const S = b.selectOneString_(['a', 'b', 'c'], { default: 'b' })
                const E = S.create()
 
-               expect(E.ϟserial).toBe(S.defaultSerial)
+               expect(E.zSerial).toBe(S.defaultSerial)
                expect(patchSerial).not.toHaveBeenCalled()
             })
          })
 
          describe('with an optional', () => {
             it('should not patch the serial', () => {
-               const optionalPatchSerial = vitest.spyOn(Field_optional.prototype, 'ϟpatchSerial')
-               const selectPatchSerial = vitest.spyOn(Field_selectOne.prototype, 'ϟpatchSerial')
+               const optionalPatchSerial = vitest.spyOn(Field_optional.prototype, 'zPatchSerial')
+               const selectPatchSerial = vitest.spyOn(Field_selectOne.prototype, 'zPatchSerial')
 
                const S = b.selectOneString_(['a', 'b', 'c']).optional()
                const E = S.create()
 
-               expect(E.ϟserial).toBe(S.defaultSerial)
+               expect(E.zSerial).toBe(S.defaultSerial)
                expect(optionalPatchSerial).not.toHaveBeenCalled()
                expect(selectPatchSerial).not.toHaveBeenCalled()
             })

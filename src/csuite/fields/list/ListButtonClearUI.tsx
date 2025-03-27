@@ -4,7 +4,7 @@ import { Button } from '../../button/Button'
 
 export const ListButtonClearUI = obs(function ListButtonClearUI_(p: { field: IWidgetListLike }) {
    const field = p.field
-   const min: number | undefined = field.ϟconfig.min
+   const min: number | undefined = field.zConfig.min
    const canClear = min != null ? field.items.length > min : true
    return (
       <Button
@@ -15,7 +15,7 @@ export const ListButtonClearUI = obs(function ListButtonClearUI_(p: { field: IWi
          square
          icon={IKONS.mdiDeleteSweep}
          onClick={(ev) => {
-            field.ϟtouch()
+            field.zTouch()
             if (!canClear) return
             ev.stopPropagation()
             field.removeAllItems()

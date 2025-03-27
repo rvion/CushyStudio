@@ -56,9 +56,9 @@ export const PlaygroundRenderUI = obs(function PlaygroundRender(p: NO_PROPS) {
 })
 
 // [x.Aaa!, { Header: uy.choices.TabBar }],
-// [x.Aaa._.foo!, { Decoration: uy.wrappers.ColoredPadding.with({ bgcolor: '#ba2c2c4d' }) }],
+// [x.Aaa.foo!, { Decoration: uy.wrappers.ColoredPadding.with({ bgcolor: '#ba2c2c4d' }) }],
 // [
-//    x.Aaa._.bar!,
+//    x.Aaa.bar!,
 //    { Decoration: (f) => <uy.wrappers.ColoredPadding {...f} bgcolor='#2c4dba4d' /> },
 // ],
 // rule<Z.FList<Z.Record<{ name: Z.String }> | Z.Record<{ title: Z.String }>>>([
@@ -66,12 +66,12 @@ export const PlaygroundRenderUI = obs(function PlaygroundRender(p: NO_PROPS) {
 //    { Header: (f) => <>{f.field}</> },
 // ]),
 // rule<Z.FMaybe<Z.String>>(['@optional.=(this.size > 3)@str^^^^<', {}]),
-// [x.Aaa._.foo!, { Decoration: (f) => <uy.wrappers.ColoredPadding {...f} bgcolor='red' /> }],
-// [x.Aaa._.foo!, { Decoration: { ColoredPadding: { bgcolor: 'red' } } }],
-// [x.Aaa._.foo!, { Decoration: uy.wrappers.ColoredPadding.with({ bgcolor: 'red' }) }],
-// rule([x.Aaa._.baz!, { OnRight: uy.group.DefaultBody }]),
+// [x.Aaa.foo!, { Decoration: (f) => <uy.wrappers.ColoredPadding {...f} bgcolor='red' /> }],
+// [x.Aaa.foo!, { Decoration: { ColoredPadding: { bgcolor: 'red' } } }],
+// [x.Aaa.foo!, { Decoration: uy.wrappers.ColoredPadding.with({ bgcolor: 'red' }) }],
+// rule([x.Aaa.baz!, { OnRight: uy.group.DefaultBody }]),
 // rule<Z.FString>(['@str', { OnTop: uy.number.input }]),
-// [x.Aaa._.foo!, { Decoration: <uy.wrappers.ColoredPadding /> }],
+// [x.Aaa.foo!, { Decoration: <uy.wrappers.ColoredPadding /> }],
 // ['.@group', { Body: uy.group.inline }],
 // ['{description|title}@str', { Header: uy.string.textarea }],
 // rule<Z.FString>(['{description|title}@str', { Header: uy.string.textarea }]),

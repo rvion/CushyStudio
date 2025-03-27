@@ -140,13 +140,13 @@ function resetDefaultRules() {
             <uy.list.BlenderLike
                field={f.field}
                renderItem={(item) => {
-                  const children = item.ϟchildrenActive
-                  const str = children.find((x) => x.ϟtype === 'str') as Z.FString | undefined
-                  const img = children.find((x) => x.ϟtype === 'image') as Z.FImage | undefined
+                  const children = item.zChildrenActive
+                  const str = children.find((x) => x.zType === 'str') as Z.FString | undefined
+                  const img = children.find((x) => x.zType === 'image') as Z.FImage | undefined
                   return (
                      <div tw='flex'>
-                        {str?.ϟvalue_unchecked ?? item.ϟsummary}
-                        {img && <img src={img.ϟvalue.url} tw='h-widget w-widget' />}
+                        {str?.zValue_unchecked ?? item.zSummary}
+                        {img && <img src={img.zValue.url} tw='h-widget w-widget' />}
                      </div>
                   )
                }}

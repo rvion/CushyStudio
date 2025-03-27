@@ -6,7 +6,7 @@ import type { RenderProps } from './RenderProps'
  * this is the final type that is given to your most of your widgets (Shell, Body, ...)
  * it contains context things like `Presenter`, `field`, and `UI catalog`
  */
-export interface RenderPropsCompiled<FIELD extends Field = Z.AnyField>
+export interface RenderPropsCompiled<FIELD extends Field = Field>
 /** full list of all slots when applying all the rules. */
    extends RenderProps<FIELD> {
    /** presenter */

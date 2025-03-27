@@ -23,7 +23,7 @@ export type Field_matrix_cell = {
 }
 
 // CONFIG
-export type Field_matrix_config = Field_matrix['Ҩconfig']
+export type Field_matrix_config = Field_matrix['ҨConfig']
 type Field_matrix_ownConfig = {
    default?: { row: string; col: string }[]
    rows: string[]
@@ -31,7 +31,7 @@ type Field_matrix_ownConfig = {
 }
 
 // SERIAL
-export type Field_matrix_serial = Field_matrix['Ҩserial']
+export type Field_matrix_serial = Field_matrix['ҨSerial']
 type Field_matrix_ownSerial = {
    $: 'matrix'
    /** only contains cells that are ONs */
@@ -44,15 +44,15 @@ export type Field_matrix_unchecked = Field_matrix_value | undefined
 
 // TYPES
 export interface Field_matrix {
-   ['Ҩtype']: 'matrix'
-   ['ҨownConfig']: Field_matrix_ownConfig
-   ['ҨownSerial']: Field_matrix_ownSerial
-   ['Ҩvalue']: Field_matrix_value
-   ['Ҩsetvalue']: Field_matrix_value
-   ['Ҩunchecked']: Field_matrix_unchecked
-   ['Ҩchild']: never
-   ['Ҩopts']: unknown
-   ['ҨownPatch']: Patch<'matrix'>
+   ['ҨType']: 'matrix'
+   ['ҨOwnConfig']: Field_matrix_ownConfig
+   ['ҨOwnSerial']: Field_matrix_ownSerial
+   ['ҨValue']: Field_matrix_value
+   ['ҨSetvalue']: Field_matrix_value
+   ['ҨUnchecked']: Field_matrix_unchecked
+   ['ҨChild']: never
+   ['ҨOpts']: unknown
+   ['ҨOwnPatch']: Patch<'matrix'>
 }
 
 // STATE
@@ -91,17 +91,17 @@ export class Field_matrix extends Field {
       this.init(serial)
    }
 
-   protected ϟsetOwnSerial(next: Field_matrix_serial): void {
-      this.ϟassignNewSerial(next)
+   protected zSetOwnSerial(next: Field_matrix_serial): void {
+      this.zAssignNewSerial(next)
 
-      if (next.selected == null && this.ϟconfig.default == null) return
+      if (next.selected == null && this.zConfig.default == null) return
 
-      const cells = this.ϟserial.selected ?? this.ϟconfig.default ?? []
+      const cells = this.zSerial.selected ?? this.zConfig.default ?? []
       const selectedCells = new Set(cells.map(({ row, col }) => this.getCellkey(row, col)))
 
       // make sure every cell has the right value
-      for (const [x, row] of this.ϟconfig.rows.entries()) {
-         for (const [y, col] of this.ϟconfig.cols.entries()) {
+      for (const [x, row] of this.zConfig.rows.entries()) {
+         for (const [y, col] of this.zConfig.cols.entries()) {
             const cellKey = this.getCellkey(row, col)
             const value = selectedCells.has(cellKey)
             const prev = this.store.get(cellKey)
@@ -110,31 +110,31 @@ export class Field_matrix extends Field {
          }
       }
 
-      if (this.ϟserial.selected?.every((v, index) => v === cells[index])) return
-      this.ϟpatchSerial((draft) => void (draft.selected = this.activeCells))
+      if (this.zSerial.selected?.every((v, index) => v === cells[index])) return
+      this.zPatchSerial((draft) => void (draft.selected = this.activeCells))
    }
 
    // #region VALUE
    /** list of all active cells */
-   get ϟvalue(): Field_matrix_value {
-      return this.ϟvalue_or_fail
+   get zValue(): Field_matrix_value {
+      return this.zValue_or_fail
    }
 
-   get ϟvalue_or_fail(): Field_matrix_value {
-      if (this.ϟserial.selected == null) throw new Error('Field_matrix.value_or_fail: field not set')
-      return this.ϟserial.selected
+   get zValue_or_fail(): Field_matrix_value {
+      if (this.zSerial.selected == null) throw new Error('Field_matrix.zValue_or_fail: field not set')
+      return this.zSerial.selected
    }
 
-   get ϟvalue_or_zero(): Field_matrix_value {
-      return this.ϟserial.selected ?? []
+   get zValue_or_zero(): Field_matrix_value {
+      return this.zSerial.selected ?? []
    }
 
-   get ϟvalue_unchecked(): Field_matrix_unchecked {
-      return this.ϟserial.selected
+   get zValue_unchecked(): Field_matrix_unchecked {
+      return this.zSerial.selected
    }
 
    /** 🔶 this is inneficient */
-   set ϟvalue(val: Field_matrix_value) {
+   set zValue(val: Field_matrix_value) {
       runInAction(() => {
          // 1. reset all cells to false
          for (const c of this.allCells) {
@@ -149,42 +149,42 @@ export class Field_matrix extends Field {
       })
    }
 
-   override ϟisValueEqual(other: Field): boolean {
+   override zIsValueEqual(other: Field): boolean {
       if (!(other instanceof Field_matrix)) return false
-      if (this.ϟvalue.length !== other.ϟvalue.length) return false
+      if (this.zValue.length !== other.zValue.length) return false
 
-      return JSON.stringify(this.ϟserial.selected) === JSON.stringify(other.ϟserial.selected)
+      return JSON.stringify(this.zSerial.selected) === JSON.stringify(other.zSerial.selected)
    }
 
    /** list of all possible row keys */
    get rows(): string[] {
-      return this.ϟconfig.rows
+      return this.zConfig.rows
    }
 
    /** list of all possible colum keys */
    get cols(): string[] {
-      return this.ϟconfig.cols
+      return this.zConfig.cols
    }
 
    // #region validation
-   get ϟownConfigSpecificProblems(): Problem_Ext {
+   get zOwnConfigSpecificProblems(): Problem_Ext {
       return null
    }
 
-   get ϟownTypeSpecificProblems(): Problem_Ext {
+   get zOwnTypeSpecificProblems(): Problem_Ext {
       return null
    }
 
-   get ϟisOwnSet(): boolean {
-      return this.ϟserial.selected != null
+   get zIsOwnSet(): boolean {
+      return this.zSerial.selected != null
    }
 
-   get ϟhasChanges(): boolean {
-      const def = this.ϟconfig.default
-      if (def == null) return this.ϟvalue.length != 0
+   get zHasChanges(): boolean {
+      const def = this.zConfig.default
+      if (def == null) return this.zValue.length != 0
       else {
-         if (def.length != this.ϟvalue.length) return true
-         for (const v of this.ϟvalue) {
+         if (def.length != this.zValue.length) return true
+         for (const v of this.zValue) {
             if (!def.find((d) => d.row == v.row && d.col == v.col)) return true
          }
          return false
@@ -209,8 +209,8 @@ export class Field_matrix extends Field {
     * every setter should update this
     */
    private UPDATE(): void {
-      this.ϟrunInTransaction(() => {
-         this.ϟpatchSerial((draft) => void (draft.selected = this.activeCells))
+      this.zRunInTransaction(() => {
+         this.zPatchSerial((draft) => void (draft.selected = this.activeCells))
       })
    }
 

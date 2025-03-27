@@ -12,7 +12,7 @@ export const CanvasToolbarUI = obs(function CanvasToolbarUI_(p: {}) {
          anchor='left'
          floating
          panelState={canvas.toolShelf}
-         defaultSize={cushy.preferences.interface.ϟvalue.toolBarIconSize}
+         defaultSize={cushy.preferences.interface.zValue.toolBarIconSize}
       >
          <div tw='flex flex-col gap-1 p-2'>
             {/* <Button // NONE ----------------------------------------------------------------

@@ -39,13 +39,13 @@ export function ui_sampler(p?: UiSampleProps): UI_Sampler {
       {
          icon: IKONS.mdiTimerSandComplete,
          // box: { base: { hue: 120, chroma: 0.03 } },
-         toString_: ({ value: ui }): string => {
+         toString_: ({ zValue: ui }): string => {
             return `denoise:${ui.denoise} steps:${ui.steps} cfg:${ui.cfg} sampler:${ui.sampler_name}/${ui.scheduler}`
          },
          startCollapsed: p?.startCollapsed ?? false,
          presets: [
-            { label: 'default', apply: (w) => w.setPartialValue({ denoise: 1, steps: 20, cfg: 7 }) },
-            { label: 'low changes', apply: (w) => w.setPartialValue({ denoise: 0.6, steps: 20, cfg: 5 }) },
+            { label: 'default', apply: (w) => w.zSet({ denoise: 1, steps: 20, cfg: 7 }) },
+            { label: 'low changes', apply: (w) => w.zSet({ denoise: 0.6, steps: 20, cfg: 5 }) },
          ],
          // actions: edit definition > current file
       },

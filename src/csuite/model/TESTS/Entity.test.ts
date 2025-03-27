@@ -9,7 +9,7 @@ describe('basic', () => {
       it('works', () => {
          const ent = simpleFactory.document((f) => f.fields({}))
          expectToJS(ent).toBeTruthy()
-         expectToJS(ent.ϟvalue).toMatchObject({})
+         expectToJS(ent.zValue).toMatchObject({})
       })
    })
 
@@ -17,28 +17,28 @@ describe('basic', () => {
       it('works', () => {
          const E = simpleFactory.document((f) => f.fields({ md: f.markdown('ok') }))
          expectToJS(E).toBeTruthy()
-         expectToJS(E.ϟchildrenAll.length).toBe(1)
-         expectToJS(E.ϟchildrenAll[0]!.ϟtype).toBe('markdown')
-         expectToJS((E.ϟroot.ϟvalue as any).md).toEqual({ $: 'markdown' })
+         expectToJS(E.zChildrenAll.length).toBe(1)
+         expectToJS(E.zChildrenAll[0]!.zType).toBe('markdown')
+         expectToJS((E.zRoot.zValue as any).md).toEqual({ $: 'markdown' })
       })
    })
 
    describe('string', () => {
       it('works', () => {
          const E = simpleFactory.document((f) => f.string())
-         expectToJS(E.ϟvalue).toBe('')
+         expectToJS(E.zValue).toBe('')
 
          // set root value through entity.value setter
-         E.ϟvalue = 'super'
-         expectToJS(E.ϟvalue).toBe('super')
+         E.zValue = 'super'
+         expectToJS(E.zValue).toBe('super')
 
          // set root value through entity.root.value setter
-         E.ϟroot.ϟvalue = 'super2'
-         expectToJS(E.ϟvalue).toBe('super2')
-         expectToJS(E.ϟroot.ϟvalue).toBe('super2')
+         E.zRoot.zValue = 'super2'
+         expectToJS(E.zValue).toBe('super2')
+         expectToJS(E.zRoot.zValue).toBe('super2')
 
          const E2 = simpleFactory.document((f) => f.string({ default: 'ok' }))
-         expectToJS(E2.ϟvalue).toBe('ok')
+         expectToJS(E2.zValue).toBe('ok')
       })
    })
 
@@ -46,8 +46,8 @@ describe('basic', () => {
       it('works', () => {
          const ent = simpleFactory.document((f) => f.fields({ size: f.size() }))
          expectToJS(ent).toBeTruthy()
-         expectToJS(ent.ϟvalue).toMatchObject({})
-         expectToJS(ent.ϟvalue.size).toMatchObject({
+         expectToJS(ent.zValue).toMatchObject({})
+         expectToJS(ent.zValue.size).toMatchObject({
             $: 'size',
             width: 512,
             height: 512,

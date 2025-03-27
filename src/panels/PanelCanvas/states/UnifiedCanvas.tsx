@@ -28,8 +28,8 @@ import { UnifiedMask } from './UnifiedMask'
 import { UnifiedSelection } from './UnifiedSelection'
 
 export class UnifiedCanvas {
-   activeLayer: Layer$['Ҩfield'] | null = null
-   selectLayer(layer: Layer$['Ҩfield']): void {
+   activeLayer: Layer$['ҨField'] | null = null
+   selectLayer(layer: Layer$['ҨField']): void {
       this.activeLayer = layer
    }
    app: Application<Renderer> | null = null
@@ -66,7 +66,7 @@ export class UnifiedCanvas {
    enableOverlay: boolean = true
    toolShelf = {
       visible: true,
-      size: cushy.preferences.interface.ϟvalue.toolBarIconSize,
+      size: cushy.preferences.interface.zValue.toolBarIconSize,
    }
    rootRef = createRef<HTMLDivElement>()
    currentDraft: DraftL | null = null
@@ -219,7 +219,7 @@ export class UnifiedCanvas {
 
    constructor(
       public st: STATE,
-      public ucv2: UC2$['Ҩfield'],
+      public ucv2: UC2$['ҨField'],
    ) {
       this.stage = new Konva.Stage({ container: this.containerDiv, width: 512, height: 512 })
 

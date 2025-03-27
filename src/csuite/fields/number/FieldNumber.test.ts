@@ -12,29 +12,29 @@ const b = simpleBuilder
 describe('field number', () => {
    describe('create', () => {
       it('should load the value from the serial', () => {
-         const serial: Field_number['Ҩserial'] = { $: 'number', value: 8 }
+         const serial: Field_number['ҨSerial'] = { $: 'number', value: 8 }
          const schema = b.number({ default: 5 })
          const document = schema.create(serial)
-         expect(document.ϟvalue).toBe(8)
+         expect(document.zValue).toBe(8)
       })
 
       it('should keep an invalid value from the serial', () => {
-         const serial: Field_number['Ҩserial'] = { $: 'number', value: 'invalid' }
+         const serial: Field_number['ҨSerial'] = { $: 'number', value: 'invalid' }
          const schema = b.number({ default: 5 })
          const document = schema.create(serial)
-         expect(document.ϟvalue_unchecked).toBeNull() // 'invalid'
-         expect(document.ϟhasOwnErrors).toBeTruthy()
+         expect(document.zValue_unchecked).toBeNull() // 'invalid'
+         expect(document.zHasOwnErrors).toBeTruthy()
       })
 
       it('should parse previously serialized value', () => {
-         const serial: Field_number['Ҩserial'] = { $: 'number', value: '8' }
+         const serial: Field_number['ҨSerial'] = { $: 'number', value: '8' }
          const schema = b.number({ default: 5 })
          const document = schema.create(serial)
-         expect(document.ϟserial).toEqual({
+         expect(document.zSerial).toEqual({
             $: 'number',
             value: 8,
          })
-         expect(document.ϟvalue).toBe(8)
+         expect(document.zValue).toBe(8)
       })
    })
 
@@ -43,15 +43,15 @@ describe('field number', () => {
          it('should accept a number', () => {
             const schema = b.number({ default: 5 })
             const document = schema.create()
-            document.ϟvalue = 8
-            expect(document.ϟvalue).toBe(8)
+            document.zValue = 8
+            expect(document.zValue).toBe(8)
          })
 
          it('should not be on error', () => {
             const schema = b.number({ default: 5 })
             const document = schema.create()
-            document.ϟvalue = 8
-            expect(document.ϟhasOwnErrors).toBeFalsy()
+            document.zValue = 8
+            expect(document.zHasOwnErrors).toBeFalsy()
          })
       })
 
@@ -59,16 +59,16 @@ describe('field number', () => {
          it('should accept null', () => {
             const schema = b.number({ default: 5 })
             const document = schema.create()
-            const x = document.ϟvalue
-            document.ϟvalue = null
-            expect(document.ϟvalue_unchecked).toBeNull()
+            const x = document.zValue
+            document.zValue = null
+            expect(document.zValue_unchecked).toBeNull()
          })
 
          it('should be on error', () => {
             const schema = b.number({ default: 5 })
             const document = schema.create()
-            document.ϟvalue = null
-            expect(document.ϟhasOwnErrors).toBeTruthy()
+            document.zValue = null
+            expect(document.zHasOwnErrors).toBeTruthy()
          })
       })
 
@@ -77,24 +77,24 @@ describe('field number', () => {
             it('should save the value', () => {
                const schema = b.number({ default: 5 })
                const document = schema.create()
-               document.ϟvalue = 'invalid'
-               expect(document.ϟvalue_unchecked).toBeNull()
-               expect(document.ϟserial.value).toBe('invalid')
+               document.zValue = 'invalid'
+               expect(document.zValue_unchecked).toBeNull()
+               expect(document.zSerial.value).toBe('invalid')
             })
 
             it('should be on error', () => {
                const schema = b.number({ default: 5 })
                const document = schema.create()
-               document.ϟvalue = 'invalid'
-               expect(document.ϟhasOwnErrors).toBeTruthy()
-               expect(document.ϟownTypeSpecificProblems).toBe('Enter a valid number')
+               document.zValue = 'invalid'
+               expect(document.zHasOwnErrors).toBeTruthy()
+               expect(document.zOwnTypeSpecificProblems).toBe('Enter a valid number')
             })
 
             it('should set the value to null if the string is empty', () => {
                const schema = b.number({ default: 5 })
                const document = schema.create()
-               document.ϟvalue = ' '
-               expect(document.ϟvalue_unchecked).toBeNull()
+               document.zValue = ' '
+               expect(document.zValue_unchecked).toBeNull()
             })
          })
 
@@ -102,15 +102,15 @@ describe('field number', () => {
             it('should save the value', () => {
                const schema = b.number({ default: 5 })
                const document = schema.create()
-               document.ϟvalue = '8'
-               expect(document.ϟvalue).toBe(8)
+               document.zValue = '8'
+               expect(document.zValue).toBe(8)
             })
 
             it('should not be on error', () => {
                const schema = b.number({ default: 5 })
                const document = schema.create()
-               document.ϟvalue = '8'
-               expect(document.ϟhasOwnErrors).toBeFalsy()
+               document.zValue = '8'
+               expect(document.zHasOwnErrors).toBeFalsy()
             })
          })
       })
@@ -142,59 +142,59 @@ describe('field number', () => {
       })
 
       it('should only change the serial reference if something changes', () => {
-         const serial: Field_number['Ҩserial'] = { $: 'number', value: 8 }
+         const serial: Field_number['ҨSerial'] = { $: 'number', value: 8 }
          const schema = b.number({ default: 5 })
          const document = schema.create(serial)
-         expect(document.ϟvalue).toBe(8)
-         expect(document.ϟserial).toBe(serial)
+         expect(document.zValue).toBe(8)
+         expect(document.zSerial).toBe(serial)
 
-         document.ϟvalue = 8
-         expect(document.ϟvalue).toBe(8)
-         expect(document.ϟserial).toBe(serial)
+         document.zValue = 8
+         expect(document.zValue).toBe(8)
+         expect(document.zSerial).toBe(serial)
          // TODO: check we don't emit any change events
 
-         document.ϟvalue = 9
-         expect(document.ϟserial).not.toBe(serial)
+         document.zValue = 9
+         expect(document.zSerial).not.toBe(serial)
       })
 
       it('should preserve the reference when changed within a group', () => {
          const schema = b.fields({ num: b.number({ default: 5 }) })
-         const serial: Z.Group<{ num: Z.Number }>['Ҩserial'] = {
+         const serial: Z.Group<{ num: Z.Number }>['ҨSerial'] = {
             $: 'group',
             values_: { num: { $: 'number', value: 8 } },
          }
 
-         const patchSerial = vitest.spyOn(Field_group.prototype, 'ϟpatchSerial')
+         const patchSerial = vitest.spyOn(Field_group.prototype, 'zPatchSerial')
 
          const document = schema.create(serial)
-         expect(document.ϟvalue.num).toBe(8)
-         expect(document.ϟserial).toBe(serial)
+         expect(document.zValue.num).toBe(8)
+         expect(document.zSerial).toBe(serial)
 
          expect(patchSerial).not.toHaveBeenCalled()
-         document.ϟvalue.num = 8
-         expect(document.ϟvalue.num).toBe(8)
-         expect(document.ϟserial).toBe(serial)
+         document.zValue.num = 8
+         expect(document.zValue.num).toBe(8)
+         expect(document.zSerial).toBe(serial)
          expect(patchSerial).not.toHaveBeenCalled()
 
-         document.ϟvalue.num = 9
-         expect(document.ϟvalue.num).toBe(9)
-         expect(document.ϟserial).not.toBe(serial)
+         document.zValue.num = 9
+         expect(document.zValue.num).toBe(9)
+         expect(document.zSerial).not.toBe(serial)
          expect(patchSerial).toHaveBeenCalledOnce()
 
          // test things are properly mutable
          let x = 0
          reaction(
-            () => document.ϟvalue.num,
+            () => document.zValue.num,
             (v) => void x++,
          )
          expect(x).toBe(0)
-         document.ϟvalue.num++
+         document.zValue.num++
          expect(x).toBe(1)
-         document.ϟvalue.num++
+         document.zValue.num++
          expect(x).toBe(2)
-         document.ϟvalue.num++
+         document.zValue.num++
          expect(x).toBe(3)
-         document.ϟvalue.num++
+         document.zValue.num++
          expect(x).toBe(4)
       })
    })
@@ -206,7 +206,7 @@ describe('field number', () => {
             const E1 = schema.create()
             const E2 = schema.create()
 
-            expect(E1.ϟisValueEqual(E2)).toBeTruthy()
+            expect(E1.zIsValueEqual(E2)).toBeTruthy()
          })
 
          it('should return true if both fields are set to the same value', () => {
@@ -214,10 +214,10 @@ describe('field number', () => {
             const E1 = schema.create()
             const E2 = schema.create()
 
-            E1.ϟvalue = 8
-            E2.ϟvalue = 8
+            E1.zValue = 8
+            E2.zValue = 8
 
-            expect(E1.ϟisValueEqual(E2)).toBeTruthy()
+            expect(E1.zIsValueEqual(E2)).toBeTruthy()
          })
       })
 
@@ -227,9 +227,9 @@ describe('field number', () => {
             const E1 = schema.create()
             const E2 = schema.create()
 
-            E1.ϟvalue = 8
+            E1.zValue = 8
 
-            expect(E1.ϟisValueEqual(E2)).toBeFalsy()
+            expect(E1.zIsValueEqual(E2)).toBeFalsy()
          })
 
          it('should return false if both fields are set to different values', () => {
@@ -237,10 +237,10 @@ describe('field number', () => {
             const E1 = schema.create()
             const E2 = schema.create()
 
-            E1.ϟvalue = 8
-            E2.ϟvalue = 9
+            E1.zValue = 8
+            E2.zValue = 9
 
-            expect(E1.ϟisValueEqual(E2)).toBeFalsy()
+            expect(E1.zIsValueEqual(E2)).toBeFalsy()
          })
 
          it('should return false if the other field is not a number', () => {
@@ -248,9 +248,9 @@ describe('field number', () => {
             const E1 = schema.create()
             const E2 = b.text({ default: '8' }).create()
 
-            E1.ϟvalue = 8
+            E1.zValue = 8
 
-            expect(E1.ϟisValueEqual(E2 as any)).toBeFalsy()
+            expect(E1.zIsValueEqual(E2 as any)).toBeFalsy()
          })
       })
    })
@@ -261,13 +261,13 @@ describe('field number', () => {
          const E1 = schema.create()
          const E2 = schema.create()
 
-         E1.ϟvalue = 8
+         E1.zValue = 8
 
-         const patches = E1.ϟgeneratePatches(E2)
+         const patches = E1.zGeneratePatches(E2)
 
-         E2.ϟapplyPatches(patches)
+         E2.zApplyPatches(patches)
 
-         expect(E2.ϟvalue).toBe(8)
+         expect(E2.zValue).toBe(8)
       })
    })
 
@@ -275,24 +275,24 @@ describe('field number', () => {
       describe('without a serial', () => {
          describe('without a default value', () => {
             it('should use the default serial and not modify it', () => {
-               const patchSerial = vitest.spyOn(Field_number.prototype, 'ϟpatchSerial')
+               const patchSerial = vitest.spyOn(Field_number.prototype, 'zPatchSerial')
 
                const schema = b.number_()
                const document = schema.create()
 
-               expect(document.ϟserial).toBe(schema.defaultSerial)
+               expect(document.zSerial).toBe(schema.defaultSerial)
                expect(patchSerial).not.toHaveBeenCalled()
             })
          })
 
          describe('with a default value', () => {
             it('should use the default serial and not modify it', () => {
-               const patchSerial = vitest.spyOn(Field_number.prototype, 'ϟpatchSerial')
+               const patchSerial = vitest.spyOn(Field_number.prototype, 'zPatchSerial')
 
                const schema = b.number({ default: 5 })
                const document = schema.create()
 
-               expect(document.ϟserial).toBe(schema.defaultSerial)
+               expect(document.zSerial).toBe(schema.defaultSerial)
                expect(patchSerial).not.toHaveBeenCalled()
             })
          })

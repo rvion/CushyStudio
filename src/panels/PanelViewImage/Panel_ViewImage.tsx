@@ -172,7 +172,7 @@ export const ImageActionBarUI = obs(function ImageActionBar(p: { img?: Maybe<Med
             />
          </PanelHeaderUI>
          <div>
-            {img && showTags.ϟvalue && (
+            {img && showTags.zValue && (
                <SelectUI<string> //
                   startIcon={IKONS.mdiTagEdit}
                   multiple

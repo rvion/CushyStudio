@@ -13,9 +13,9 @@ app({
                uiui: {
                   Header: ({ field }) => (
                      <div tw='flex'>
-                        <field.fields.a.UI Shell={uy.shell.HeaderOnly} />
-                        <field.fields.b.UI Shell={uy.shell.HeaderOnly} />
-                        <field.fields.a.UI Shell={uy.shell.HeaderOnly} />
+                        <field.zFields.a.UI Shell={uy.shell.HeaderOnly} />
+                        <field.zFields.b.UI Shell={uy.shell.HeaderOnly} />
+                        <field.zFields.a.UI Shell={uy.shell.HeaderOnly} />
                      </div>
                   ),
                },
@@ -41,7 +41,7 @@ app({
                      <div
                         tw='cursor-pointer px-1'
                         style={{ border: '3px solid red' }}
-                        onClick={() => (widget.value = !widget.value)}
+                        onClick={() => (widget.zValue = !widget.zValue)}
                      >
                         click here
                      </div>
@@ -55,7 +55,7 @@ app({
 
          d: b.header('Custom string body:'),
          testD: b.string({
-            body: ({ field: widget }) => <div>the string is {widget.value.length} char long.</div>,
+            body: ({ field: widget }) => <div>the string is {widget.zValue.length} char long.</div>,
          }),
       }),
    run: (ctx) => {},

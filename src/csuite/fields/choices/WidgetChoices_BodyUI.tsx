@@ -17,8 +17,8 @@ export const WidgetChoices_BodyUI = obs(function WidgetChoices_BodyUI_(p: {
    // return activeSubwidgets.map((i) => i.branch).join(',')
    return (
       <ListOfFieldsContainerUI //
-         layout={field.ϟconfig.layout}
-         tw={[field.ϟconfig.className, p.className]}
+         layout={field.zConfig.layout}
+         tw={[field.zConfig.className, p.className]}
       >
          {activeSubwidgets.map((val) => {
             const subField = val.subField

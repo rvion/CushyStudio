@@ -5,7 +5,7 @@ import { TreeUI } from '../tree/TreeUI'
 import { TreeView } from '../tree/TreeView'
 
 export const CreatePresetUI = obs(function CreatePresetUI_(p: { field: Field }) {
-   const tree = new Tree([p.field.ϟasTreeElement('root')])
+   const tree = new Tree([p.field.zAsTreeElement('root')])
    const treeView = new TreeView(tree, { selectable: true })
    return (
       <TreeUI //

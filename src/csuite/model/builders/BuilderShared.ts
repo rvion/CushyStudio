@@ -20,15 +20,15 @@ const BuilderSharedImpl = (): BuilderSharedMixin =>
        * or you using a link within a dynamic, and already have access to the field
        */
       linkedFromExternalField<T extends Field>(field: T): Z.Shared<T> {
-         return CSchema.new(Field_shared<T>, { field: () => field, schema: field.ϟschema })
+         return CSchema.new(Field_shared<T>, { field: () => field, schema: field.zSchema })
       },
       /** sometimes, you just want to get the filed from a chanel */
       linkedFromChannel<T extends Field>(channel: Channel<T>, schema: Z.Schema<T>): Z.Shared<T> {
-         return CSchema.new(Field_shared<T>, { field: (f) => f.ϟreadChannel(channel), schema })
+         return CSchema.new(Field_shared<T>, { field: (f) => f.zReadChannel(channel), schema })
       },
       /** ...and sometimes you're so lazy you don't even bother to type it properly */
       linkedFromChannelId<T extends Field>(channelId: ChannelId, schema: Z.Schema<T>): Z.Shared<T> {
-         return CSchema.new(Field_shared<T>, { field: (f) => f.ϟreadChannel(channelId), schema })
+         return CSchema.new(Field_shared<T>, { field: (f) => f.zReadChannel(channelId), schema })
       },
       /** sometimes, you just want to specify how to retrieve it manually */
       linkedFromCustom<T extends Field>(
@@ -73,7 +73,7 @@ const BuilderSharedImpl = (): BuilderSharedMixin =>
          return CSchema.new(Field_shared<T>, {
             field: (f) => {
                // 1. get root
-               const root = f.ϟroot
+               const root = f.zRoot
 
                // 2. get unique key
                const key = Symbol.for(uid)
@@ -82,15 +82,15 @@ const BuilderSharedImpl = (): BuilderSharedMixin =>
                if (key in root) return root[key] as T
 
                // 4.1 create it,
-               const prevSerial = root.ϟserial._shared?.[uid]
+               const prevSerial = root.zSerial._shared?.[uid]
                const field: T = schema.create(prevSerial)
                // 4.2. store it on root
                ;(root as any)[key] = field
                // 4.2. add a new change callback to keep its serial synced
-               field.ϟonSerialChanges((x: Field) => {
-                  root.ϟpatchInTransaction((rootNext) => {
+               field.zOnSerialChanges((x: Field) => {
+                  root.zPatchInTransaction((rootNext) => {
                      rootNext._shared ??= {}
-                     rootNext._shared[uid] = x.ϟserial
+                     rootNext._shared[uid] = x.zSerial
                   })
                })
                return field

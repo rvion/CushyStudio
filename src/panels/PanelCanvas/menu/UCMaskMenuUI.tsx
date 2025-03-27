@@ -6,13 +6,13 @@ import { Frame } from '../../../csuite/frame/Frame'
 
 export const UCMaskMenuUI = obs(function UCMaskMenuUI_(p: {
    //
-   mask: Mask$['Ҩfield']
+   mask: Mask$['ҨField']
    index: number
 }) {
-   const inputHeight = cushy.preferences.interface.ϟvalue.inputHeight
-   const isVisible: boolean = p.mask.visible.ϟvalue
+   const inputHeight = cushy.preferences.interface.zValue.inputHeight
+   const isVisible: boolean = p.mask.visible.zValue
    const imgField = p.mask.image
-   const image = imgField?.ϟvalue_or_zero
+   const image = imgField?.zValue_or_zero
 
    // TEMP
    // Do not use interface.value.inputHeight in the future. Have a separate option for layer size?
@@ -60,7 +60,7 @@ export const UCMaskMenuUI = obs(function UCMaskMenuUI_(p: {
 
                {/* <SpacerUI /> */}
                <Button
-                  onClick={() => p.mask.ϟdisableSelfWithinParent()}
+                  onClick={() => p.mask.zDisableSelfWithinParent()}
                   icon={IKONS.mdiDelete}
                   borderless
                   subtle

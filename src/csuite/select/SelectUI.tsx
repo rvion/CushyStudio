@@ -16,7 +16,7 @@ export const SelectUI = obs(function SelectUI_<T>(p: SelectProps<T>) {
    const fullyShrinkable = p.fullyShrinkable ?? true
    const PopupComp = p.slotPopupUI ?? SelectPopupUI
    const AnchorContentComp = p.slotAnchorContentUI ?? SelectAnchorContentUI
-   const theme = cushy.preferences.theme.ϟvalue
+   const theme = cushy.preferences.theme.zValue
 
    // if (p.readonly) return <AnchorContentComp select={select} />
    if (p.readonly)
@@ -77,7 +77,7 @@ export const SelectUI = obs(function SelectUI_<T>(p: SelectProps<T>) {
             base={theme.global.contrast}
             border={theme.global.border}
             roundness={theme.global.roundness}
-            dropShadow={cushy.preferences.theme.ϟvalue.global.shadow}
+            dropShadow={cushy.preferences.theme.zValue.global.shadow}
             expand // </RevealUI>={p.expand ?? true}
             tabIndex={0}
             tooltip={p.tooltip}

@@ -9,7 +9,7 @@ export type WidgetLabelIconProps = {
 }
 
 export const WidgetLabelIconUI = obs(function WidgetLabelIconUI_(p: WidgetLabelIconProps) {
-   const iconName = p.field.ϟicon
+   const iconName = p.field.zIcon
    if (iconName == null) return null
    return (
       <Frame //
@@ -31,7 +31,7 @@ export const WidgetLabelIconPlacholderUI = obs(function WidgetLabelIconPlacholde
          className={p.className}
          text={{ chroma: 0.2, contrast: 0.9 }}
       >
-         <IkonOf name={p.field.ϟicon ?? IKONS._} />
+         <IkonOf name={p.field.zIcon ?? IKONS._} />
       </Frame>
    )
 })

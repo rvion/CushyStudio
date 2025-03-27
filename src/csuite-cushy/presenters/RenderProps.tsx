@@ -63,14 +63,14 @@ export interface RenderProps<out FIELD extends Field = Field> {
    virtualParent?: Field
 
    /** instruct the components to pretend config has been overriten with that */
-   config?: Partial<FIELD['Ҩconfig']>
+   config?: Partial<FIELD['ҨConfig']>
 
    /**
     * instruct the components to pretend config has been overriten with that
     * very similar to `config`, but show less fields in the completion, so may be a bit
     * simpler to explore field-specific config
     */
-   ownConfig?: Partial<FIELD['ҨownConfig']>
+   ownConfig?: Partial<FIELD['ҨOwnConfig']>
 
    // when you want to wrap your whole shell into some dedicated component
    // e.g. a form, a modal, a card, etc.

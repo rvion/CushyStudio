@@ -12,7 +12,7 @@ import { renderFCOrNode, renderFCOrNodeWithWrapper } from '../../csuite/utils/re
 import { WidgetPresetsUI } from '../catalog/Presets/WidgetPresets'
 
 const CushyShellUI = obs(function CushySHell(
-   p: RenderPropsCompiled<Z.AnyField> & {
+   p: RenderPropsCompiled & {
       border?: boolean
       HEADER: React.JSX.Element
    },
@@ -21,12 +21,12 @@ const CushyShellUI = obs(function CushySHell(
    const provenance = useProvenance()
    const isCollapsed = ((): boolean => {
       if (p.collapsible != null) return p.collapsible // UI config most important
-      if (!p.field.isCollapsible) return false
-      return field.isCollapsed
+      if (!p.field.zIsCollapsible) return false
+      return field.zIsCollapsed
    })()
-   if (p.field.isHidden && !p.shouldShowHiddenFields) return null
+   if (p.field.zIsHidden && !p.shouldShowHiddenFields) return null
 
-   const theme = cushy.preferences.theme.ϟvalue
+   const theme = cushy.preferences.theme.zValue
 
    let WUI: ReactNode = (
       <Frame
@@ -35,7 +35,7 @@ const CushyShellUI = obs(function CushySHell(
          roundness={theme.global.roundness}
          // base={field.background}
          // border={p.card ? 1 : field.border}
-         {...p.field.config.box}
+         {...p.field.zConfig.box}
       >
          {renderFCOrNode(p.OnTop, { field })}
          <RevealUI
@@ -70,7 +70,7 @@ const CushyShellUI = obs(function CushySHell(
    )
 
    WUI = <AnimatedSizeUI>{WUI}</AnimatedSizeUI>
-   if (p.Decoration)
+   if (p.Decoration != null)
       // WUI = renderFCOrNode(p.Decoration, {
       WUI = renderFCOrNode(p.Decoration, {
          className: p.classNameForShell ?? undefined,
@@ -90,8 +90,8 @@ export const ShellCushyLeftUI = obs(function ShellCushyLeft(p: RenderPropsCompil
          HEADER={
             <>
                {/* prettier-ignore */}
-               <WidgetLabelContainerUI tooltip={field.config.tooltip} justify>
-                  {renderFCOrNode(p.Indent,      { depth: field.depth })}
+               <WidgetLabelContainerUI tooltip={field.zConfig.tooltip} justify>
+                  {renderFCOrNode(p.Indent,      { depth: field.zDepth })}
                   {renderFCOrNode(p.DragKnob,    { field })}
                   {renderFCOrNode(p.Icon,        { field, className: 'mr-1' })}
                   {renderFCOrNode(p.Caret,       { ...p, placeholder: true })}
@@ -117,8 +117,8 @@ export const ShellCushyList1UI = obs(function ShellCushyList1(p: RenderPropsComp
          HEADER={
             <>
                {/* prettier-ignore */}
-               <WidgetLabelContainerUI tooltip={field.config.tooltip} justify>
-                  {renderFCOrNode(p.Indent,      { depth: field.depth })}
+               <WidgetLabelContainerUI tooltip={field.zConfig.tooltip} justify>
+                  {renderFCOrNode(p.Indent,      { depth: field.zDepth })}
                   {renderFCOrNode(p.DragKnob,    { field })}
                   {renderFCOrNode(p.Caret,       { field, placeholder: true })}
                   {renderFCOrNode(p.Icon,        { field, className: 'mr-1' })}
@@ -143,10 +143,10 @@ export const ShellCushyRightUI = obs(function ShellCushyRight(p: RenderPropsComp
          HEADER={
             <>
                <WidgetLabelContainerUI //
-                  tooltip={field.config.tooltip}
+                  tooltip={field.zConfig.tooltip}
                   justify
                >
-                  {renderFCOrNode(p.Indent /*    */, { depth: field.depth })}
+                  {renderFCOrNode(p.Indent /*    */, { depth: field.zDepth })}
                   {renderFCOrNode(p.DragKnob /*  */, { field })}
                   {renderFCOrNode(p.Caret /*     */, { field, caretClassName: 'mr-auto' })}
                   {renderFCOrNode(p.Presets /*   */, { field, className: 'self-start mr-2' })}
@@ -174,10 +174,10 @@ export const ShellCushyFluidUI = obs(function ShellCushyFluid(p: RenderPropsComp
          HEADER={
             <>
                <WidgetLabelContainerUI //
-                  tooltip={field.config.tooltip}
+                  tooltip={field.zConfig.tooltip}
                   justify={false}
                >
-                  {renderFCOrNode(p.Indent, /*    */ { depth: field.depth })}
+                  {renderFCOrNode(p.Indent, /*    */ { depth: field.zDepth })}
                   {renderFCOrNode(p.DragKnob, /*  */ { field })}
                   {renderFCOrNode(p.Caret, /*     */ { field })}
                   {renderFCOrNode(p.Toogle, /*    */ { field: originalField, className: 'mr-1' })}

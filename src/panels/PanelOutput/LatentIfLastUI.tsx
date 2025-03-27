@@ -3,7 +3,7 @@ import { PanelOutputConf } from './PanelOutput_conf'
 export const LatentIfLastUI = obs(function LatentIfLastUI_(p: {}) {
    const lastImage = cushy.db.media_image.last()
    const latent = cushy.latentPreview
-   const sizeStr = PanelOutputConf.ϟvalue.latentSize + '%'
+   const sizeStr = PanelOutputConf.zValue.latentSize + '%'
    if (latent == null) return null // <>🔴 NO LATENT 🔴</>
    if (lastImage == null || latent.receivedAt > lastImage.createdAt) {
       return (
@@ -15,7 +15,7 @@ export const LatentIfLastUI = obs(function LatentIfLastUI_(p: {}) {
                width: sizeStr,
                height: sizeStr,
                objectFit: 'contain',
-               opacity: PanelOutputConf.ϟvalue.latentTransparency / 100,
+               opacity: PanelOutputConf.zValue.latentTransparency / 100,
             }}
             src={latent.url}
             alt='last generated image'

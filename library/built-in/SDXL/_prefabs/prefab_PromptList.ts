@@ -56,8 +56,8 @@ export function promptList(b: Z.Builder, options?: { default?: string }): $Promp
          regionalPrompt: ui_regionalPrompting_v1(b)
             // .withConfig({ uiui: { Head: false } })
             .subscribeToChannel(latentSizeChanel, (s, self) => {
-               const area = self.fields.area
-               self.fields.area.runInTransaction(() => {
+               const area = self.area
+               self.area.zRunInTransaction(() => {
                   area.width = s.w
                   area.height = s.h
                })

@@ -6,7 +6,7 @@ import { BasicShelfUI } from '../../csuite/shelf/ShelfUI'
 
 export const PanelAssetsShelfUI = obs(function PanelAssetsShelfUI_(p: { st: PanelAssetsState }) {
    const activeLora = p.st.props.active > -1 && cushy.schema.getLoras()[p.st.props.active]
-   const theme = cushy.preferences.theme.ϟvalue
+   const theme = cushy.preferences.theme.zValue
 
    return (
       <BasicShelfUI //

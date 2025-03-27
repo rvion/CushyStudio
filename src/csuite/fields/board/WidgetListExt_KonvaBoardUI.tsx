@@ -10,7 +10,7 @@ export const WidgetListExt_KonvaBoardUI = obs(function WidgetListExt_KonvaBoardU
    field: Field_board<any>
 }) {
    const RG = p.field
-   const entries = RG.ϟfields.items.map((i) => i.ϟfields)
+   const entries = RG.zFields.items.map((i) => i.zFields)
    const uist = useLocalObservable(() => ({ scale: 1 }))
    return (
       <>
@@ -26,8 +26,8 @@ export const WidgetListExt_KonvaBoardUI = obs(function WidgetListExt_KonvaBoardU
          <div
             style={{
                transform: `scale(${uist.scale})`,
-               width: RG.ϟfields.area.width * uist.scale,
-               height: RG.ϟfields.area.height * uist.scale,
+               width: RG.zFields.area.width * uist.scale,
+               height: RG.zFields.area.height * uist.scale,
                transformOrigin: 'top left',
                display: 'block',
                border: '1px solid red',
@@ -35,8 +35,8 @@ export const WidgetListExt_KonvaBoardUI = obs(function WidgetListExt_KonvaBoardU
          >
             <Stage
                //
-               width={RG.ϟfields.area.width}
-               height={RG.ϟfields.area.height}
+               width={RG.zFields.area.width}
+               height={RG.zFields.area.height}
                onContextMenu={(e) => {
                   e.evt.preventDefault()
                   console.log('context menu')
@@ -51,14 +51,14 @@ export const WidgetListExt_KonvaBoardUI = obs(function WidgetListExt_KonvaBoardU
                      <ReactKonvaRectangleUI
                         key={`rect-${value.id}`}
                         onChange={(p) => {
-                           shape.ϟrunInTransaction(() => {
-                              const v = shape.ϟvalue
+                           shape.zRunInTransaction(() => {
+                              const v = shape.zValue
                               Object.assign(v, p)
                            })
                            value.applyValueUpdateEffects()
                         }}
-                        isSelected={shape.ϟvalue.isSelected}
-                        shape={shape.ϟvalue}
+                        isSelected={shape.zValue.isSelected}
+                        shape={shape.zValue}
                         // shape={{ x: 10, y: 10, width: 100, height: 100, fill: 'red', z: 0, depth: 0 }}
                      />
                   ))}

@@ -13,8 +13,8 @@ export class DisplacementState {
       //
       shader: THREE.WebGLProgramParametersWithUniforms,
       // mat: any,
-      cutout: { ϟvalue: number },
-      removeBackground: { ϟvalue: number },
+      cutout: { zValue: number },
+      removeBackground: { zValue: number },
       // val: number,
       // shader: THREE.ShaderMaterial,
       // cutout: any,

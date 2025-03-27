@@ -47,13 +47,13 @@ export type BoardDataSchema<SCHEMA extends CSchema> = {
 
 // ------------------------------------------------------------------------------------------------------------------------
 export interface Field_board<SCHEMA extends CSchema> extends MAGICFIELDS<BoardDataSchema<SCHEMA>> {
-   ['Ҩopts']: Field_board_config<SCHEMA>
+   ['ҨOpts']: Field_board_config<SCHEMA>
 }
 export class Field_board<SCHEMA extends CSchema> extends Field_group<BoardDataSchema<SCHEMA>> {
    // built-in mechanism to inject schema-level opts without having to redefine the constructor
-   get min(): number | undefined { return this.ϟopts2.min } // prettier-ignore
-   get max(): number | undefined { return this.ϟopts2.max } // prettier-ignore
-   get step(): number | undefined { return this.ϟopts2.step } // prettier-ignore
+   get min(): number | undefined { return this.zOpts2.min } // prettier-ignore
+   get max(): number | undefined { return this.zOpts2.max } // prettier-ignore
+   get step(): number | undefined { return this.zOpts2.step } // prettier-ignore
 
    static schema = <SCHEMA extends CSchema>(
       b: SimpleBuilder,
@@ -90,11 +90,11 @@ export class Field_board<SCHEMA extends CSchema> extends Field_group<BoardDataSc
    }
 
    @computed get width(): number {
-      return this.ϟfields.area.width
+      return this.zFields.area.width
    }
 
    @computed get height(): number {
-      return this.ϟfields.area.width
+      return this.zFields.area.width
    }
 
    // somehow this is enough to make the ui work for now

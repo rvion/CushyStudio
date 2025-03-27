@@ -8,7 +8,7 @@ export const WidgetPromptCollapsibleUI = obs(function WidgetPromptCollapsibleUI_
 }: {
    field: Field_prompt
 }) {
-   if (field.ϟisCollapsed) return <WidgetPrompt_LineUI field={field} />
+   if (field.zIsCollapsed) return <WidgetPrompt_LineUI field={field} />
    // return <WidgetPromptUI field={field} />
    return <PluginToggleBarUI />
 })

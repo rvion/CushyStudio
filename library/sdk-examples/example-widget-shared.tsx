@@ -53,9 +53,9 @@ app({
           */
          linkedFromCustom_usingParent: b.fields({
             val: b.int().hidden(), // no publication
-            val1: b.linkedFromCustom((f) => (f.parent as Z.FRecord<{ val: Z.Number }>)._.val, b.int()),
-            val2: b.linkedFromCustom((f) => (f.parent as any)._.val, b.int()),
-            val3: b.linkedFromCustom((f) => (f.parent as Z.FRecord<any>)._.val, b.int()),
+            val1: b.linkedFromCustom((f) => (f.zParent as Z.FRecord<{ val: Z.Number }>).val, b.int()),
+            val2: b.linkedFromCustom((f) => (f.zParent as any).val, b.int()),
+            val3: b.linkedFromCustom((f) => (f.zParent as Z.FRecord<any>).val, b.int()),
          }),
 
          /**

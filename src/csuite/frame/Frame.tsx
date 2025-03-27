@@ -9,7 +9,6 @@ import type { SimpleDropShadow } from './SimpleDropShadow'
 import type { AriaRole, MouseEvent } from 'react'
 
 import { runInAction } from 'mobx'
-
 import { useContext, useState } from 'react'
 
 import { normalizeBox } from '../box/BoxNormalized'

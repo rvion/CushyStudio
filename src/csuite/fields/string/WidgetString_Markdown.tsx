@@ -8,7 +8,7 @@ export const WidgetString_MarkdownUI = obs(function WidgetString_MarkdownUI_(p: 
    readonly?: boolean
 }) {
    const field = p.field
-   const config = field.ϟconfig
+   const config = field.zConfig
 
    // 💬 2024-11-30 rvion: do we want to keep the placeholder ❓
    // prettier-ignore
@@ -18,8 +18,8 @@ export const WidgetString_MarkdownUI = obs(function WidgetString_MarkdownUI_(p: 
         // 2. if label is specified, and is string, use it
         (typeof config.label == 'string' ? config.label : undefined) ??
         // 3. if none of the above, use mountKye
-        field.ϟmountKey
+        field.zMountKey
 
    // return '🟢'
-   return <MarkdownUI markdown={field.ϟvalue ?? placeholder} />
+   return <MarkdownUI markdown={field.zValue ?? placeholder} />
 })

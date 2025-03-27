@@ -8,7 +8,7 @@ import { JsonViewUI } from '../../json/JsonViewUI'
 export const WidgetCustom_HeaderUI = obs(function WidgetCustom_HeaderUI_<T>(p: { field: Field_custom<T> }) {
    const field = p.field
    return (
-      <field.ϟconfig.Component
+      <field.zConfig.Component
          //
          field={field}
          extra={_commonUIComponents}

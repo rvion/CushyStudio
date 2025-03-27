@@ -12,9 +12,9 @@ export const ListButtonUnfoldUI = obs(function ListButtonUnfoldUI_(p: { field: I
          square
          icon={IKONS.mdiUnfoldLessHorizontal}
          onClick={(ev) => {
-            field.ϟtouch()
+            field.zTouch()
             ev.stopPropagation()
-            field.ϟcollapseAllChildren()
+            field.zCollapseAllChildren()
          }}
       />
    )

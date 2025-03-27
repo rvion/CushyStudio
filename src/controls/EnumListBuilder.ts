@@ -21,7 +21,7 @@ export type IEnumListBuilder = {
    // | without Extract<...>
    // |    ❌: X.Many_<"4x-AnimeSharp.pth" | "4x-UltraSharp.pth" | "4x_NMKD-Siax_200k.pth" | ...>
    [K in keyof Comfy.Slots]: IEnumListBuilderFn<Extract<Comfy.Slots[K], string>>
-   // [K in keyof Requirable]: IEnumListBuilderFn<Requirable[K]['Ҩvalue'] & string>
+   // [K in keyof Requirable]: IEnumListBuilderFn<Requirable[K]['ҨValue'] & string>
 }
 
 export interface EnumListBuilder extends IEnumListBuilder {}

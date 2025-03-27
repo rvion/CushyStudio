@@ -83,7 +83,7 @@ export const PanelComfyUI = obs(function PanelComfyUI_(p: PanelComfyUIProps) {
       void loadFn()
    }, [cushy.comfyUIIframeRef.current])
 
-   const finalURL = conf.ϟvalue.hash ? `${url}?hash=${conf.ϟvalue.hash}` : url
+   const finalURL = conf.zValue.hash ? `${url}?hash=${conf.zValue.hash}` : url
    return (
       <PanelUI>
          {/* <div className='absolute top-0 right-0'>
@@ -94,10 +94,10 @@ export const PanelComfyUI = obs(function PanelComfyUI_(p: PanelComfyUIProps) {
          <PanelUI.Header>
             <Button
                onClick={() => {
-                  conf.ϟvalue.hash = nanoid()
+                  conf.zValue.hash = nanoid()
                }}
             >
-               force-refresh {conf.ϟvalue.hash ? `${conf.ϟvalue.hash})` : null}
+               force-refresh {conf.zValue.hash ? `${conf.zValue.hash})` : null}
             </Button>
             {url}
          </PanelUI.Header>

@@ -104,7 +104,7 @@ class ResizableFrameStableState {
 export const ResizableFrame = obs(function ResizableFrame_(p: ResizableFrameProps) {
    // create stable state, that we can programmatically mutate witout caring about stale references
    const uist = useMemo(() => new ResizableFrameStableState(p), [])
-   const theme = cushy.preferences.theme.ϟvalue
+   const theme = cushy.preferences.theme.zValue
 
    const { currentSize, ...props } = p
    return (

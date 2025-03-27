@@ -8,20 +8,20 @@ export const WidgetGroup_BlockUI = obs(function WidgetGroup_BlockUI_(p: {
    field: Field_group
 }) {
    const field = p.field
-   const children = field.ϟchildrenActive
-   const isHorizontal = field.ϟconfig.layout === 'H'
+   const children = field.zChildrenActive
+   const isHorizontal = field.zConfig.layout === 'H'
 
    return (
       <ListOfFieldsContainerUI //
-         layout={p.field.ϟconfig.layout}
-         tw={[field.ϟconfig.className, p.className]}
+         layout={p.field.zConfig.layout}
+         tw={[field.zConfig.className, p.className]}
       >
          {children.map((child, ix) => {
-            const shouldJustifyLabel = isHorizontal ? false : field.ϟconfig.justifyLabel
+            const shouldJustifyLabel = isHorizontal ? false : field.zConfig.justifyLabel
             return (
                <child.UI
-                  key={child.ϟmountKey}
-                  Indent={(p.field.ϟconfig.layout === 'H' ? ix === 0 : true) ? undefined : null}
+                  key={child.zMountKey}
+                  Indent={(p.field.zConfig.layout === 'H' ? ix === 0 : true) ? undefined : null}
                />
             )
          })}

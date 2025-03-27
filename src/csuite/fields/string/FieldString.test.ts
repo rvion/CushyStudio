@@ -13,24 +13,24 @@ describe('field string', () => {
       const ser2: Field_string_serial = { $: 'str', value: 'ser 2', custom: { THING: 12 } }
 
       const E = S.create(ser1)
-      expect(E.ϟserial === ser1).toBeTruthy()
+      expect(E.zSerial === ser1).toBeTruthy()
 
-      E.ϟsetSerial(ser1)
-      expect(E.ϟserial === ser1).toBeTruthy()
-      expect(E.ϟvalue).toBe('ser 1')
-      expect(E.ϟserial === ser1).toBeTruthy()
+      E.zSetSerial(ser1)
+      expect(E.zSerial === ser1).toBeTruthy()
+      expect(E.zValue).toBe('ser 1')
+      expect(E.zSerial === ser1).toBeTruthy()
       // expect(E.__version__).toBe(1)
 
-      E.ϟsetSerial(ser2)
-      expect(E.ϟvalue).toBe('ser 2')
-      expect(E.ϟserial.custom.THING === 12).toBeTruthy()
-      expect(E.ϟserial === ser2).toBeTruthy()
+      E.zSetSerial(ser2)
+      expect(E.zValue).toBe('ser 2')
+      expect(E.zSerial.custom.THING === 12).toBeTruthy()
+      expect(E.zSerial === ser2).toBeTruthy()
       // expect(E.__version__).toBe(2)
 
-      E.ϟsetSerial(ser2)
-      E.ϟsetSerial(ser2)
-      E.ϟsetSerial(ser2)
-      E.ϟsetSerial(ser2)
+      E.zSetSerial(ser2)
+      E.zSetSerial(ser2)
+      E.zSetSerial(ser2)
+      E.zSetSerial(ser2)
       // expect(E.__version__).toBe(2)
    })
 
@@ -40,13 +40,13 @@ describe('field string', () => {
          const E1 = S.create()
          const E2 = S.create()
 
-         E1.ϟvalue = 'def'
+         E1.zValue = 'def'
 
-         const patches = E1.ϟgeneratePatches(E2)
+         const patches = E1.zGeneratePatches(E2)
 
-         E2.ϟapplyPatches(patches)
+         E2.zApplyPatches(patches)
 
-         expect(E2.ϟvalue).toBe('def')
+         expect(E2.zValue).toBe('def')
       })
    })
 
@@ -54,26 +54,26 @@ describe('field string', () => {
       describe('without a serial', () => {
          describe('without a default value', () => {
             it('should use the default serial and not modify it', () => {
-               const patchSerial = vitest.spyOn(Field_string.prototype, 'ϟpatchSerial')
+               const patchSerial = vitest.spyOn(Field_string.prototype, 'zPatchSerial')
 
                const S = b.string_()
 
                const E = S.create()
 
-               expect(E.ϟserial).toBe(S.defaultSerial)
+               expect(E.zSerial).toBe(S.defaultSerial)
                expect(patchSerial).not.toHaveBeenCalled()
             })
          })
 
          describe('with a default value', () => {
             it('should use the default serial and not modify it', () => {
-               const patchSerial = vitest.spyOn(Field_string.prototype, 'ϟpatchSerial')
+               const patchSerial = vitest.spyOn(Field_string.prototype, 'zPatchSerial')
 
                const S = b.string({ default: 'abc' })
 
                const E = S.create()
 
-               expect(E.ϟserial).toBe(S.defaultSerial)
+               expect(E.zSerial).toBe(S.defaultSerial)
                expect(patchSerial).not.toHaveBeenCalled()
             })
          })
@@ -81,14 +81,14 @@ describe('field string', () => {
 
       describe('with a serial', () => {
          it('should use the serial without patching it', () => {
-            const patchSerial = vitest.spyOn(Field_string.prototype, 'ϟpatchSerial')
+            const patchSerial = vitest.spyOn(Field_string.prototype, 'zPatchSerial')
 
             const S = b.string({ default: 'abc' })
             const serial: Field_string_serial = { $: 'str', value: 'def' }
 
             const E = S.create(serial)
 
-            expect(E.ϟserial).toBe(serial)
+            expect(E.zSerial).toBe(serial)
             expect(patchSerial).not.toHaveBeenCalled()
          })
       })

@@ -10,8 +10,8 @@ export const WidgetListExt_TimelineUI = obs(function WidgetTimelineUI_<T extends
    //
    const scale = 20
    const TL = p.field
-   const value = TL.ϟvalue
-   const entries = TL.ϟfields.items.map((i) => i.ϟfields)
+   const value = TL.zValue
+   const entries = TL.zFields.items.map((i) => i.zFields)
    const uiSt = useLocalObservable(() => ({
       ix: 0,
    }))
@@ -23,7 +23,7 @@ export const WidgetListExt_TimelineUI = obs(function WidgetTimelineUI_<T extends
                tw='timeline-item relative w-full'
             ></div>
             {entries.map(({ shape, value: widget }, ix) => {
-               const { width, x } = shape.ϟvalue
+               const { width, x } = shape.zValue
                return (
                   <div
                      key={widget.id}

@@ -9,7 +9,7 @@ export const DebugInputHistoryUI = obs(function DebugInputHistoryUI_(p: {}) {
                <Frame //
                   key={`${text}-${_}`}
                   tw='px-2'
-                  roundness={cushy.preferences.theme.ϟvalue.global.roundness}
+                  roundness={cushy.preferences.theme.zValue.global.roundness}
                   base={{ contrast: -0.075 }}
                >
                   {text}

@@ -244,7 +244,7 @@ export const ColorPickerUI = obs(function ColorPickerUI_(p: ColorPickerProps) {
    mode = 'rgb'
    const [tempHex, setTempHex] = useState<string>('')
 
-   const theme = cushy.preferences.theme.ϟvalue
+   const theme = cushy.preferences.theme.zValue
    const color = p.color
 
    // Make sure we have a valid hsv color
@@ -371,7 +371,7 @@ export const ColorPickerUI = obs(function ColorPickerUI_(p: ColorPickerProps) {
                   height={CANVASSIZE}
                   style={{
                      borderRadius: '50%',
-                     cursor: cushy.preferences.interface.ϟvalue.useDefaultCursorEverywhere
+                     cursor: cushy.preferences.interface.zValue.useDefaultCursorEverywhere
                         ? 'default'
                         : 'pointer',
                   }}

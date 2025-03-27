@@ -25,9 +25,9 @@ describe('FieldSize', () => {
          E2.width = 5
          E2.height = 5
 
-         const patches = E1.ϟgeneratePatches(E2)
+         const patches = E1.zGeneratePatches(E2)
 
-         E2.ϟapplyPatches(patches)
+         E2.zApplyPatches(patches)
 
          expect(E2.width).toBe(1024)
          expect(E2.height).toBe(683)
@@ -39,23 +39,23 @@ describe('FieldSize', () => {
    describe('create perf', () => {
       describe('without a default value', () => {
          it('should use the empty serial and not patch it', () => {
-            const patchSerial = vitest.spyOn(Field_size.prototype, 'ϟpatchSerial')
+            const patchSerial = vitest.spyOn(Field_size.prototype, 'zPatchSerial')
             const S = simpleBuilder.size_()
             const E = S.create()
 
             expect(patchSerial).not.toHaveBeenCalled()
-            expect(E.ϟserial).toBe(S.defaultSerial)
+            expect(E.zSerial).toBe(S.defaultSerial)
          })
       })
 
       describe('with a default value', () => {
          it('should use the default serial and not patch it', () => {
-            const patchSerial = vitest.spyOn(Field_size.prototype, 'ϟpatchSerial')
+            const patchSerial = vitest.spyOn(Field_size.prototype, 'zPatchSerial')
             const S = simpleBuilder.size({ default: { width: 5, height: 5 } })
             const E = S.create()
 
             expect(patchSerial).not.toHaveBeenCalled()
-            expect(E.ϟserial).toBe(S.defaultSerial)
+            expect(E.zSerial).toBe(S.defaultSerial)
          })
       })
    })

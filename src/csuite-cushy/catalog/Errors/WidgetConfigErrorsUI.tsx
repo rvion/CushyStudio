@@ -14,7 +14,7 @@ export const WidgetConfigErrorsUI = obs(function WidgetConfigErrorsUI_(p: { fiel
    if (!csuiteConfig.isDev) return null
 
    const field = p.field
-   const configPbs = normalizeProblem(field, field.ϟownConfigSpecificProblems)
+   const configPbs = normalizeProblem(field, field.zOwnConfigSpecificProblems)
    if (configPbs.length === 0) return null
    return (
       <MessageInfoUI title={`Field Config Invalid (ONLY VISIBLE DURING DEV)`}>

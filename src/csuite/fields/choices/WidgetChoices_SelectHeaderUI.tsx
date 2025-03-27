@@ -12,7 +12,7 @@ export const WidgetChoices_SelectHeaderUI = obs(function WidgetChoices_SelectLin
    type Entry = { key: string; label: string }
    const choices: Entry[] = field.choicesWithLabels
 
-   const isActive = !p.field.ϟcanBeToggledWithinParent || p.field.ϟisEnabledWithinParent
+   const isActive = !p.field.zCanBeToggledWithinParent || p.field.zIsEnabledWithinParent
 
    return (
       <div
@@ -25,7 +25,7 @@ export const WidgetChoices_SelectHeaderUI = obs(function WidgetChoices_SelectLin
          <SelectUI<Entry>
             key={`${isActive}`}
             tw='flex-grow'
-            placeholder={p.field.ϟconfig.placeholder ?? csuiteConfig.i18n.ui.field.empty}
+            placeholder={p.field.zConfig.placeholder ?? csuiteConfig.i18n.ui.field.empty}
             value={() =>
                isActive
                   ? field.activeBranchNames.map((key) => ({
@@ -54,16 +54,16 @@ export const WidgetChoices_SelectHeaderUI = obs(function WidgetChoices_SelectLin
                </div>
             )}
             equalityCheck={(a, b) => a.key === b.key}
-            multiple={field.ϟconfig.multi ?? false}
+            multiple={field.zConfig.multi ?? false}
             // closeOnPick={false}
             resetQueryOnPick={false}
             onOptionToggled={(v) => {
-               if (p.field.ϟcanBeToggledWithinParent) p.field.ϟenableSelfWithinParent()
+               if (p.field.zCanBeToggledWithinParent) p.field.zEnableSelfWithinParent()
                field.toggleBranch(v.key)
-               p.field.ϟtouch()
+               p.field.zTouch()
             }}
          />
-         {p.field.ϟcanBeToggledWithinParent && (
+         {p.field.zCanBeToggledWithinParent && (
             <Button
                tw='flex-shrink flex-grow-0'
                size='input'
@@ -73,8 +73,8 @@ export const WidgetChoices_SelectHeaderUI = obs(function WidgetChoices_SelectLin
                icon={IKONS.mdiClose}
                disabled={!isActive}
                onClick={() => {
-                  field.ϟdisableSelfWithinParent()
-                  p.field.ϟtouch()
+                  field.zDisableSelfWithinParent()
+                  p.field.zTouch()
                }}
             />
          )}

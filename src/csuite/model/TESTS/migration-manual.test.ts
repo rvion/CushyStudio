@@ -18,8 +18,8 @@ describe('migration manual', () => {
          {
             version: '2',
             onInit: (x) => {
-               kunther += x.ϟvalue.a
-               x.ϟvalue.b += 2
+               kunther += x.zValue.a
+               x.zValue.b += 2
             },
             beforeInit: (x: BUGGYSerial) => ({
                $: 'group',
@@ -41,13 +41,13 @@ describe('migration manual', () => {
 
       // @ts-expect-error
       const e1 = s.create({ valA: 4, valB: 8 })
-      expect(e1.ϟtoValueJSON()).toEqual({ a: 4, b: 10 })
+      expect(e1.zToValueJSON()).toEqual({ a: 4, b: 10 })
       expect(kunther).toBe(4)
       expect(r.transactionCount).toBe(2)
 
       // @ts-expect-error
       const e2 = s.create({ valA: 123, valB: 888 })
-      expect(e2.ϟtoValueJSON()).toEqual({ a: 123, b: 890 })
+      expect(e2.zToValueJSON()).toEqual({ a: 123, b: 890 })
       expect(kunther).toBe(127)
       expect(r.transactionCount).toBe(4)
    })

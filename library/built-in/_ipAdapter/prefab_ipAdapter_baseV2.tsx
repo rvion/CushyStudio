@@ -36,7 +36,7 @@ export const ui_ipadapter_advancedSettings = (
          unfold_batch: form.bool({ default: false }),
       },
       {
-         toString_: ({ value: ui }): string => {
+         toString_: ({ zValue: ui }): string => {
             return `${ui.weight_type} | from:${ui.startAtStepPercent}=>${ui.endAtStepPercent}`
          },
       },
@@ -75,7 +75,7 @@ export function ui_IPAdapterImageInput(form: Z.Builder): UI_IPAdapterImageInput 
             {
                startCollapsed: true,
                label: 'Image Settings',
-               toString_: ({ value: ui }): string => {
+               toString_: ({ zValue: ui }): string => {
                   return `weight:${ui.imageWeight} | combo:${ui.embedding_combination} | mask:${
                      ui.imageAttentionMask ? 'yes' : 'no'
                   }`
@@ -84,7 +84,7 @@ export function ui_IPAdapterImageInput(form: Z.Builder): UI_IPAdapterImageInput 
          ),
       },
       {
-         toString_: ({ value: ui }): string => {
+         toString_: ({ zValue: ui }): string => {
             return `weight:${ui.advanced.imageWeight} | combo:${ui.advanced.embedding_combination} | mask:${
                ui.advanced.imageAttentionMask ? 'yes' : 'no'
             }`
@@ -122,14 +122,14 @@ export function ui_IPAdapterV2(): UI_IPAdapterV2 {
                            default: 'STANDARD (medium strength)',
                         }),
                      },
-                     { startCollapsed: true, toString_: ({ value: ui }): string => `model:${ui.type}` },
+                     { startCollapsed: true, toString_: ({ zValue: ui }): string => `model:${ui.type}` },
                   ),
                   advancedSettings: ui_ipadapter_advancedSettings(form),
                },
                {
                   label: 'IP Adapter Settings',
                   startCollapsed: true,
-                  toString_: ({ value: ui }): string =>
+                  toString_: ({ zValue: ui }): string =>
                      `strength:${ui.adapterStrength} | model:${ui.models.type}|`,
                },
             ),
@@ -143,7 +143,7 @@ export function ui_IPAdapterV2(): UI_IPAdapterV2 {
             icon: IKONS.mdiAnvil,
             label: 'IPAdapter',
             box: { base: { hue: 70, chroma: 0.1 } },
-            toString_: ({ value: ui }): string => {
+            toString_: ({ zValue: ui }): string => {
                return `images:${1 + ui.images.length} | strength:${ui.settings.adapterStrength} | model:${
                   ui.settings.models.type
                }`
@@ -165,7 +165,7 @@ export const run_IPAdapterV2 = async (
 }> => {
    const run = getCurrentRun()
    const graph = run.nodes
-   if (!ui) {
+   if (ui == null) {
       return { ip_adapted_model: ckpt, ip_adapter: previousIPAdapter }
    }
 

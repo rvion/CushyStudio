@@ -1,9 +1,9 @@
+import type { Field } from '../../csuite/model/Field'
 import type { RenderCtx } from './RenderCtx'
 import type { RenderProps } from './RenderProps'
 import type { RenderPropsCompiled } from './RenderPropsCompiled'
 import type { ReactNode } from 'react'
 
-import { Field } from '../../csuite/model/Field'
 import { FieldSelector } from '../../csuite/selector/selector'
 import { extractComponentName } from '../../csuite/utils/extractComponentName'
 import { mergeDefined } from '../../csuite/utils/mergeDefined'
@@ -24,7 +24,7 @@ export class Renderer {
    }
 
    private getRulesFromUIUI(field: Field): RenderRule<any>[] {
-      const x = field.ϟconfig.uiui
+      const x = field.zConfig.uiui
       if (x == null) return []
       if (Array.isArray(x)) return x
       return x.rules ?? []
@@ -39,7 +39,7 @@ export class Renderer {
       const debug = false // field.path === '...'
 
       // all rules applied
-      const foo: RenderProps<FIELD> | RenderRule<Z.AnyField>[] = field.ϟconfig.uiui as any
+      const foo: RenderProps<FIELD> | RenderRule<FIELD>[] = field.zConfig.uiui as any
       const bar: RenderRule<Field>[] = Array.isArray(foo) //
          ? []
          : [{ pattern: true, uiconf: foo }]
@@ -66,11 +66,11 @@ export class Renderer {
       for (let i = 0; i < ancestors.length - 1; i++) {
          const parent_ = ancestors[i]!.field
          const child_ = ancestors[i + 1]!.field
-         if (child_.ϟparent !== parent_) virtualParents.set(child_, parent_)
+         if (child_.zParent !== parent_) virtualParents.set(child_, parent_)
       }
 
       const directParent_ = ancestors[ancestors.length - 1]?.field
-      if (directParent_ && field.ϟparent !== directParent_) virtualParents.set(field, directParent_)
+      if (directParent_ && field.zParent !== directParent_) virtualParents.set(field, directParent_)
       // if (virtualParents.size > 0)
       //    console.log(`[      🟢 >] rendering ${field.path} at ${getVisualPath(ctx)}`, virtualParents)
 

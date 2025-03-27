@@ -25,7 +25,7 @@ export class MigrationEngine {
          isApplicable: () => true,
          config: (b) => b.empty(),
          action: ({ document: field }) => {
-            field.ϟdropAnomalies()
+            field.zDropAnomalies()
             return 'SUCCESS'
          },
       })
@@ -34,17 +34,17 @@ export class MigrationEngine {
          solutionID: 'number-to-string',
          description: 'convert previous number serial to string serial',
          isApplicable: ({ document, anomaly }) => {
-            const field = document.ϟgetFieldAt(anomaly.path)
+            const field = document.zGetFieldAt(anomaly.path)
             if (!isFieldString(field)) return // console.log(`   > field at ${anomaly.path} is not a string`)
             if (anomaly.got.$ !== 'number') return // console.log(`   >  prevSerial.$ is not a 'number'`)
-            const oldVal = (anomaly.got as Field_number['Ҩserial']).value
+            const oldVal = (anomaly.got as Field_number['ҨSerial']).value
             if (typeof oldVal !== 'number') return // console.log(`   >  prevSerial.value is not a number`, anomaly.got)
             return { field, oldVal }
          },
          config: (b) => b.choices({ prefix: b.string(), suffix: b.string() }),
          action: ({ document, config, anomaly, data }) => {
-            data.field.ϟpatchInTransaction((draft) => {
-               draft.value = (config.ϟvalue.prefix ?? '') + String(data.oldVal) + (config.ϟvalue.suffix ?? '')
+            data.field.zPatchInTransaction((draft) => {
+               draft.value = (config.zValue.prefix ?? '') + String(data.oldVal) + (config.zValue.suffix ?? '')
             })
             return 'SUCCESS'
          },
@@ -61,12 +61,12 @@ export class MigrationEngine {
    /** raw list of all anomales found for all fields in the scope  */
    get anomalies(): BoundAnomaly[] {
       return [...this.scope.values()] //
-         .flatMap((document) => document.ϟanomalies.map((anomaly): BoundAnomaly => ({ document, anomaly })))
+         .flatMap((document) => document.zAnomalies.map((anomaly): BoundAnomaly => ({ document, anomaly })))
    }
 
    get batchOfSimilarAnomalies(): Record<AnomalySuggestionID, BoundAnomaly[]> {
       // this is kind of some `Anomaly Batch Id`
-      const y = groupBy(this.anomalies, (a) => `{{${a.document.ϟschema.uid}}}${a.anomaly.pathExt}`)
+      const y = groupBy(this.anomalies, (a) => `{{${a.document.zSchema.uid}}}${a.anomaly.pathExt}`)
       return y
    }
 
@@ -122,7 +122,7 @@ export class MigrationEngine {
                console.log(`[🔶] solution provided for ${k} is no longer applicable`)
                continue
             }
-            const prevDocSerial = document.ϟserial
+            const prevDocSerial = document.zSerial
             const result = solution.action({
                document,
                anomaly,
@@ -130,7 +130,7 @@ export class MigrationEngine {
                data: data,
             })
             totalProcessed++
-            if (prevDocSerial !== document.ϟserial) totalChanged++
+            if (prevDocSerial !== document.zSerial) totalChanged++
             if (result === 'SUCCESS') totalSuccess++
             else if (result === 'FAILURE') totalFailed++
 

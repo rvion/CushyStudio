@@ -36,7 +36,7 @@ export type Field_selectOne_config_simplified_<KEY extends SelectKey> = PartialO
 
 // #region CONFIG
 export type Field_selectOne_config_<KEY extends SelectKey> = Field_selectOne_config<KEY, KEY>
-export type Field_selectOne_config<VALUE, KEY extends SelectKey> = Field_selectOne<VALUE, KEY>['Ҩconfig']
+export type Field_selectOne_config<VALUE, KEY extends SelectKey> = Field_selectOne<VALUE, KEY>['ҨConfig']
 type Field_selectOne_ownConfig<
    //
    VALUE,
@@ -98,7 +98,7 @@ type Field_selectOne_ownConfig<
 }
 
 // #region SERIAL
-export type Field_selectOne_serial<KEY extends SelectKey> = Field_selectOne<unknown, KEY>['Ҩserial']
+export type Field_selectOne_serial<KEY extends SelectKey> = Field_selectOne<unknown, KEY>['ҨSerial']
 type Field_selectOne_ownSerial<KEY extends SelectKey> = {
    $: 'selectOne'
    query?: string
@@ -142,15 +142,15 @@ export interface Field_selectOne<
    VALUE extends unknown,
    KEY extends SelectKey,
 > {
-   ['Ҩtype']: 'selectOne'
-   ['ҨownConfig']: Field_selectOne_ownConfig<VALUE, KEY>
-   ['ҨownSerial']: Field_selectOne_ownSerial<KEY>
-   ['Ҩvalue']: VALUE
-   ['Ҩsetvalue']: VALUE | KEY
-   ['Ҩunchecked']: Field_selectOne_unchecked<VALUE>
-   ['Ҩchild']: never
-   ['Ҩopts']: unknown
-   ['ҨownPatch']: Patch<'selectOne'>
+   ['ҨType']: 'selectOne'
+   ['ҨOwnConfig']: Field_selectOne_ownConfig<VALUE, KEY>
+   ['ҨOwnSerial']: Field_selectOne_ownSerial<KEY>
+   ['ҨValue']: VALUE
+   ['ҨSetvalue']: VALUE | KEY
+   ['ҨUnchecked']: Field_selectOne_unchecked<VALUE>
+   ['ҨChild']: never
+   ['ҨOpts']: unknown
+   ['ҨOwnPatch']: Patch<'selectOne'>
 }
 export class Field_selectOne<
    //
@@ -187,9 +187,9 @@ export class Field_selectOne<
    }
 
    static generateSerial(
-      value: Maybe<Field_selectOne<any, any>['Ҩvalue']>,
-      config: Field_selectOne<any, any>['Ҩconfig'],
-   ): Field_selectOne<any, any>['Ҩserial'] {
+      value: Maybe<Field_selectOne<any, any>['ҨValue']>,
+      config: Field_selectOne<any, any>['ҨConfig'],
+   ): Field_selectOne<any, any>['ҨSerial'] {
       if (value == null && config.default == null) return this.unsetSerial
 
       return {
@@ -212,29 +212,29 @@ export class Field_selectOne<
    }
 
    // #region PROBLEMS
-   get ϟownConfigSpecificProblems(): Maybe<string[]> {
-      if (Array.isArray(this.ϟconfig.choices)) {
-         if (this.ϟconfig.choices.length === 0) return ['no choices availble from the config']
+   get zOwnConfigSpecificProblems(): Maybe<string[]> {
+      if (Array.isArray(this.zConfig.choices)) {
+         if (this.zConfig.choices.length === 0) return ['no choices availble from the config']
       }
       // const invalidDefaults = this.defaultKeys?.filter((key) => !this.possibleKeys.includes(key))
       return null
    }
 
    get shouldValidateThatValueIsAmongstKeys(): boolean {
-      if (Array.isArray(this.ϟconfig.choices)) return true
+      if (Array.isArray(this.zConfig.choices)) return true
       // return locoFront != null // 🔴 pick a better logic ? add config flag ?
       return false
    }
 
-   get ϟownTypeSpecificProblems(): Maybe<string[]> {
+   get zOwnTypeSpecificProblems(): Maybe<string[]> {
       // when field is not set, no specific error yet; FieldNotSet error will already
       // be thrown elsewhere
-      if (this.ϟserial.val == null) return null
+      if (this.zSerial.val == null) return null
 
       const errors: string[] = []
       if (this.shouldValidateThatValueIsAmongstKeys) {
          const selected = this.possibleKeys.find((c) => c === this.selectedId)
-         if (selected === undefined && !this.ϟconfig.disableLocalFiltering)
+         if (selected === undefined && !this.zConfig.disableLocalFiltering)
             errors.push(`selected value (id: ${this.selectedId}) not in choices`)
       }
 
@@ -243,24 +243,24 @@ export class Field_selectOne<
    }
 
    // 📌 CHANGES ----------------------------------------------------------------|
-   get ϟisOwnSet(): boolean {
-      return this.ϟserial.val !== undefined
+   get zIsOwnSet(): boolean {
+      return this.zSerial.val !== undefined
    }
 
-   get ϟhasChanges(): boolean {
-      return this.ϟserial.val !== this.defaultKey
+   get zHasChanges(): boolean {
+      return this.zSerial.val !== this.defaultKey
    }
 
-   override ϟreset(): void {
+   override zReset(): void {
       this.selectedId = this.defaultKey
    }
 
    get query(): string {
-      return this.ϟserial.query ?? ''
+      return this.zSerial.query ?? ''
    }
 
    set query(next: string) {
-      this.ϟpatchInTransaction((draft) => void (draft.query = next))
+      this.zPatchInTransaction((draft) => void (draft.query = next))
    }
 
    /**
@@ -268,8 +268,8 @@ export class Field_selectOne<
     * 🔶 warning: if config.choices is a function, will execute the method
     */
    get possibleKeys(): KEY[] {
-      if (this.ϟconfig.choices != null) {
-         const _choices = this.ϟconfig.choices
+      if (this.zConfig.choices != null) {
+         const _choices = this.zConfig.choices
          if (typeof _choices === 'function') {
             // 🔴 if (!this.root.ready) return []
             return _choices(this)
@@ -277,14 +277,14 @@ export class Field_selectOne<
          return _choices
       }
 
-      if (this.ϟconfig.options != null) {
+      if (this.zConfig.options != null) {
          const _options = this.options
          return _options.map((o) => o.id)
       }
 
-      if (this.ϟconfig.values != null && this.ϟconfig.getIdFromValue != null) {
+      if (this.zConfig.values != null && this.zConfig.getIdFromValue != null) {
          const _values = this.values
-         return _values.map(this.ϟconfig.getIdFromValue)
+         return _values.map(this.zConfig.getIdFromValue)
       }
 
       // 🔶 maybe do all these config checks in the constructor?
@@ -299,22 +299,22 @@ export class Field_selectOne<
    // 💬 2024-09-16 rvion:
    // | Do we always want to have some "unset" value injected here ?
    get options(): SelectOption<VALUE, KEY>[] {
-      if (this.ϟconfig.options != null) {
-         const _options = this.ϟconfig.options
+      if (this.zConfig.options != null) {
+         const _options = this.zConfig.options
          if (typeof _options === 'function') return _options(this)
          return _options
       }
 
-      if (this.ϟconfig.choices != null && this.getOptionFromId != null) {
+      if (this.zConfig.choices != null && this.getOptionFromId != null) {
          return this.possibleKeys.map(this.getOptionFromId).filter((x) => x != null) as SelectOption<
             VALUE,
             KEY
          >[]
       }
 
-      if (this.ϟconfig.values != null && this.getValueFromId != null && this.getOptionFromId != null) {
+      if (this.zConfig.values != null && this.getValueFromId != null && this.getOptionFromId != null) {
          return this.values
-            .map((v) => this.getOptionFromId(this.ϟconfig.getIdFromValue(v)))
+            .map((v) => this.getOptionFromId(this.zConfig.getIdFromValue(v)))
             .filter((x) => x != null)
       }
 
@@ -322,21 +322,21 @@ export class Field_selectOne<
    }
 
    private get values(): VALUE[] {
-      if (this.ϟconfig.values != null) {
-         const _values = this.ϟconfig.values
+      if (this.zConfig.values != null) {
+         const _values = this.zConfig.values
          if (typeof _values === 'function') {
-            if (!this.ϟroot.ϟready) return []
+            if (!this.zRoot.zReady) return []
             return _values(this)
          }
          return _values
       }
 
-      if (this.ϟconfig.options != null) {
+      if (this.zConfig.options != null) {
          const _options = this.options
          return _options.map((o) => o.value)
       }
 
-      if (this.ϟconfig.choices != null && this.ϟconfig.getValueFromId != null) {
+      if (this.zConfig.choices != null && this.zConfig.getValueFromId != null) {
          const _choices = this.possibleKeys
          return _choices.map(this.getValueFromId).filter((x) => x != null)
       }
@@ -346,7 +346,7 @@ export class Field_selectOne<
 
    // 📌 MOCK ------------------------------------------------------------|
    /** randomly pick one of the options */
-   override ϟrandomize(): void {
+   override zRandomize(): void {
       const choices = this.possibleKeys
       if (choices.length === 0) return
       const idx = Math.floor(Math.random() * choices.length)
@@ -356,20 +356,20 @@ export class Field_selectOne<
    // #region CHILDREN
 
    // 📌 SERIAL -----------------------------------------------------------------|
-   protected ϟsetOwnSerial(next: Field_selectOne_serial<KEY>): void {
-      this.ϟassignNewSerial(next)
+   protected zSetOwnSerial(next: Field_selectOne_serial<KEY>): void {
+      this.zAssignNewSerial(next)
 
       if (
-         this.ϟserial.val === undefined && //
+         this.zSerial.val === undefined && //
          this.defaultKey !== undefined
       ) {
-         this.ϟpatchSerial((draft) => void (draft.val = this.defaultKey))
+         this.zPatchSerial((draft) => void (draft.val = this.defaultKey))
       }
    }
 
    /** return true if the value is equal to the given id */
    is(value: VALUE): boolean {
-      return this.ϟconfig.getIdFromValue(value) === this.selectedId
+      return this.zConfig.getIdFromValue(value) === this.selectedId
    }
 
    // #region VALUE
@@ -388,12 +388,12 @@ export class Field_selectOne<
     * 🔴 TODO: add test
     */
    get hasDefaultKey(): boolean {
-      return 'default' in this.ϟconfig
+      return 'default' in this.zConfig
    }
 
    /** proxy to this.config.default */
    get defaultKey(): KEY | undefined {
-      return this.ϟconfig.default
+      return this.zConfig.default
    }
 
    // #region VALUE
@@ -410,47 +410,47 @@ export class Field_selectOne<
       return false
    }
 
-   override ϟset(valOrKey: VALUE | KEY): this {
+   override zSet(valOrKey: VALUE | KEY): this {
       if (this.isProbablyValidKey(valOrKey)) this.selectedId = valOrKey
-      else this.ϟvalue = valOrKey
+      else this.zValue = valOrKey
       return this
    }
 
-   override ϟgetSetValue(): this['Ҩsetvalue'] | undefined {
+   override zGetSetValue(): this['ҨSetvalue'] | undefined {
       // console.log(`[💀 getSetValue] `, this.path)
       return this.selectedId
    }
 
-   get ϟvalue(): CanThrow<VALUE> {
-      return this.ϟvalue_or_fail
+   get zValue(): CanThrow<VALUE> {
+      return this.zValue_or_fail
    }
 
-   set ϟvalue(next: Field_selectOne_value<VALUE>) {
-      this.selectedId = this.ϟconfig.getIdFromValue(next)
+   set zValue(next: Field_selectOne_value<VALUE>) {
+      this.selectedId = this.zConfig.getIdFromValue(next)
    }
 
    /** different from reset; doesn't take default into account */
    unset(): void {
-      this.ϟpatchInTransaction((draft) => void (draft.val = undefined))
+      this.zPatchInTransaction((draft) => void (draft.val = undefined))
    }
 
-   get ϟvalue_or_fail(): CanThrow<VALUE> {
+   get zValue_or_fail(): CanThrow<VALUE> {
       return this._getValueOrThrow(this.selectedId)
    }
 
    /** zero value may not exists */
-   get ϟvalue_or_zero(): CanThrow<VALUE> {
+   get zValue_or_zero(): CanThrow<VALUE> {
       return this._getValueOrThrow(this.selectedId ?? this.firstPossibleKey)
    }
 
-   get ϟvalue_unchecked(): Field_selectOne_unchecked<VALUE> {
+   get zValue_unchecked(): Field_selectOne_unchecked<VALUE> {
       if (this.selectedId === undefined) return undefined
       const value = this.getValueFromId(this.selectedId)
       if (value === undefined) return undefined
       return value
    }
 
-   override ϟisValueEqual(other: Field): boolean {
+   override zIsValueEqual(other: Field): boolean {
       if (!(other instanceof Field_selectOne)) return false
       return this.selectedId === other.selectedId
    }
@@ -458,9 +458,9 @@ export class Field_selectOne<
    public static readonly patchedSerialPaths: readonly string[] = Object.freeze(['val'])
 
    private _getValueOrThrow(key: KEY | undefined): CanThrow<VALUE> {
-      if (key === undefined) throw new Error(`Field_selectOne._getValueOrThrow (${this.ϟpathExt}): no key available`) // prettier-ignore
+      if (key === undefined) throw new Error(`Field_selectOne._getValueOrThrow (${this.zPathExt}): no key available`) // prettier-ignore
       const value = this.getValueFromId(key)
-      if (value === undefined) throw new Error(`Field_selectOne._getValueOrThrow (${this.ϟpathExt}): value not found for first key: ${key}`) // prettier-ignore
+      if (value === undefined) throw new Error(`Field_selectOne._getValueOrThrow (${this.zPathExt}): value not found for first key: ${key}`) // prettier-ignore
       return value as VALUE
    }
 
@@ -486,14 +486,14 @@ export class Field_selectOne<
    }
 
    get selectedId(): KEY | undefined {
-      return this.ϟserial.val // || this.default // 🔴 idk, probably bad to have default here
+      return this.zSerial.val // || this.default // 🔴 idk, probably bad to have default here
    }
 
    set selectedId(nextId: KEY | undefined) {
-      if (this.ϟserial.val === nextId) return
+      if (this.zSerial.val === nextId) return
 
-      this.ϟrunInTransaction(() => {
-         this.ϟpatchSerial((draft) => void (draft.val = nextId))
+      this.zRunInTransaction(() => {
+         this.zPatchSerial((draft) => void (draft.val = nextId))
 
          // 💬 2024-07-08 rvion:
          // | when setting a value with equal id, we may be actually changing the SelectOption
@@ -540,22 +540,22 @@ export class Field_selectOne<
     * | see also "extra"
     */
    getValueFromId = (id: KEY): VALUE | undefined => {
-      return this.ϟconfig.getValueFromId(id, this)
+      return this.zConfig.getValueFromId(id, this)
    }
 
    get pathToValueInRootSerial(): string {
-      return `${this.ϟgetOwnSerialPathFromRoot()}.val`
+      return `${this.zGetOwnSerialPathFromRoot()}.val`
    }
 
    // 💬 2024-08-21 rvion: (for @domi)
    // | I dislike this `getOptionFromId`.
    // | it is redundant / slow / sometimes unnecessary
    // | I'd rather just add the missing mapper for icon, and we would have everything.
-   getOptionFromId = (id: KEY): Maybe<SelectOption<VALUE, KEY>> => this.ϟconfig.getOptionFromId(id, this)
+   getOptionFromId = (id: KEY): Maybe<SelectOption<VALUE, KEY>> => this.zConfig.getOptionFromId(id, this)
 
    // 🔶 do not compare queries
-   override get ϟisDirtyFromSnapshot_UNSAFE(): boolean {
-      const { snapshot, ...currentSerial } = this.ϟserial
+   override get zIsDirtyFromSnapshot_UNSAFE(): boolean {
+      const { snapshot, ...currentSerial } = this.zSerial
       if (snapshot == null) return false
       return stableStringify(snapshot.val) !== stableStringify(currentSerial.val)
    }

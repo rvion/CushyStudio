@@ -6,7 +6,7 @@ import { renderFCOrNode } from '../../utils/renderFCOrNode'
 
 export const ShellOptionalUI = obs(function ShellOptionalUI_(p: RenderPropsCompiled<Field_optional>) {
    const field = p.field
-   const extraClass = field.ϟisDisabled ? 'pointer-events-none opacity-30 bg-[#00000005]' : undefined
+   const extraClass = field.zIsDisabled ? 'pointer-events-none opacity-30 bg-[#00000005]' : undefined
    const child = field.child
    return (
       <child.UI //

@@ -27,13 +27,15 @@ app({
          }),
          button: b.button({ onClick: () => void cushy.showConfettiAndBringFun() }),
       }),
-   run: async (run, ui) => {
-      const regional = run.form.fields.regionalPrompt
-      const newItem = regional.fields.items.addItem()!
-      newItem.value.shape.width = 256
-      newItem.value.shape.height = 256
-      newItem.value.shape.x = 0
-      newItem.value.shape.y = 128
-      newItem.fields.value.fields.prompt.text = `Set to dynamic prompt at ${Date.now()}`
+   run: (run, ui) => {
+      const regional = run.form.regionalPrompt
+      const newItem = regional.zFields.items.addItem()!
+      newItem.shape.zSet({
+         width: 256,
+         height: 256,
+         x: 0,
+         y: 128,
+      })
+      newItem.value.prompt.text = `Set to dynamic prompt at ${Date.now()}`
    },
 })

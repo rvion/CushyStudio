@@ -12,7 +12,7 @@ export const GalleryImageCardUI = obs(function GalleryImageCardUI_(p: {
    onMouseEnter?: React.MouseEventHandler<HTMLDivElement>
    onMouseLeave?: React.MouseEventHandler<HTMLDivElement>
 }) {
-   const theme = cushy.preferences.theme.ϟvalue
+   const theme = cushy.preferences.theme.zValue
 
    return (
       <div // Layouting

@@ -40,24 +40,24 @@ export type Field_number_unchecked = Field_number_value | null | undefined
 
 // #region TYPES
 export interface Field_number {
-   ['Ҩtype']: 'number'
-   ['ҨownConfig']: Field_number_ownConfig
-   ['ҨownSerial']: Field_number_ownSerial
-   ['Ҩvalue']: Field_number_value
-   ['Ҩsetvalue']: Field_number_value
-   ['Ҩunchecked']: Field_number_unchecked
-   ['Ҩchild']: never
-   ['Ҩopts']: unknown
-   ['ҨownPatch']: Patch<'number'>
+   ['ҨType']: 'number'
+   ['ҨOwnConfig']: Field_number_ownConfig
+   ['ҨOwnSerial']: Field_number_ownSerial
+   ['ҨValue']: Field_number_value
+   ['ҨSetvalue']: Field_number_value
+   ['ҨUnchecked']: Field_number_unchecked
+   ['ҨChild']: never
+   ['ҨOpts']: unknown
+   ['ҨOwnPatch']: Patch<'number'>
 }
 
 // #region STATE
 export class Field_number extends Field {
    // #region TYPE
    static readonly type: 'number' = 'number'
-   static readonly unsetSerial: Field_number['Ҩserial'] = { $: 'number' }
-   static readonly codeForTypescriptValue = (config: Field_number['Ҩconfig']): string => 'number'
-   static override migrateSerial(serial: object): Maybe<Field_number['Ҩserial']> {
+   static readonly unsetSerial: Field_number['ҨSerial'] = { $: 'number' }
+   static readonly codeForTypescriptValue = (config: Field_number['ҨConfig']): string => 'number'
+   static override migrateSerial(serial: object): Maybe<Field_number['ҨSerial']> {
       // migrate from string with number typed as string
       if (isProbablySerialString(serial)) {
          const prop = serial.value
@@ -68,9 +68,9 @@ export class Field_number extends Field {
    }
 
    static generateSerial(
-      value: Maybe<Field_number['Ҩvalue']>,
-      config: Field_number['Ҩconfig'],
-   ): Field_number['Ҩserial'] {
+      value: Maybe<Field_number['ҨValue']>,
+      config: Field_number['ҨConfig'],
+   ): Field_number['ҨSerial'] {
       if (value == null && config.default == null) return this.unsetSerial
 
       return {
@@ -86,7 +86,7 @@ export class Field_number extends Field {
       parent: Field | null,
       schema: CSchema<Field_number>,
       initialMountKey: string,
-      serial?: Field_number['Ҩserial'],
+      serial?: Field_number['ҨSerial'],
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
       // /* 😂 */ console.log(`[🤠] ${getUIDForMemoryStructure(serial)} (FieldNumber#constructor ❌)`)
@@ -95,37 +95,37 @@ export class Field_number extends Field {
    }
 
    // #region SERIAL
-   protected ϟsetOwnSerial(next: Field_number['Ҩserial']): void {
+   protected zSetOwnSerial(next: Field_number['ҨSerial']): void {
       if (next.value == null) {
          const def = this.defaultValue
          if (def != null) next = produce(next, (draft) => void (draft.value = def))
       } else if (typeof next.value === 'string') {
-         const parsed = csuiteConfig.i18n.ui.number.parse(next.value, this.ϟconfig.mode)
+         const parsed = csuiteConfig.i18n.ui.number.parse(next.value, this.zConfig.mode)
          if (!isNaN(parsed)) next = produce(next, (draft) => void (draft.value = parsed))
       }
       // assign given serial (or default one)
-      this.ϟassignNewSerial(next)
+      this.zAssignNewSerial(next)
    }
 
    readonly forceSnap: boolean = false
 
    get defaultValue(): number | undefined {
-      return this.ϟconfig.default
+      return this.zConfig.default
    }
 
-   get ϟisOwnSet(): boolean {
-      return this.ϟserial.value != null
+   get zIsOwnSet(): boolean {
+      return this.zSerial.value != null
    }
 
-   get ϟhasChanges(): boolean {
-      return this.ϟserial.value !== this.defaultValue
+   get zHasChanges(): boolean {
+      return this.zSerial.value !== this.defaultValue
    }
 
-   get ϟownConfigSpecificProblems(): Problem_Ext {
+   get zOwnConfigSpecificProblems(): Problem_Ext {
       const i18n = csuiteConfig.i18n
       const out: string[] = []
-      const min = this.ϟconfig.min
-      const max = this.ϟconfig.max
+      const min = this.zConfig.min
+      const max = this.zConfig.max
       if (min != null && max != null) {
          if (min > max) {
             // 💬 2024-09-17 rvion: lol, no need to check the opposite 🤦‍♂️
@@ -135,100 +135,104 @@ export class Field_number extends Field {
             out.push(i18n.err.int.minSameThanMax({ minmax: min }))
          }
       }
-      const def = this.ϟconfig.default
+      const def = this.zConfig.default
       if (def != null) {
          if (min != null && def < min) out.push(i18n.err.int.defaultTooSmall({ min, def }))
          if (max != null && def > max) out.push(i18n.err.int.defaultTooBig({ def, max }))
       }
       return out
    }
-   get ϟownTypeSpecificProblems(): Problem_Ext {
-      if (!this.ϟisSet) return null
+   get zOwnTypeSpecificProblems(): Problem_Ext {
+      if (!this.zIsSet) return null
 
-      if (typeof this.ϟvalue_unchecked !== 'number') {
+      if (typeof this.zValue_unchecked !== 'number') {
          return csuiteConfig.i18n.err.number.notANumber
       }
 
-      const value = this.ϟvalue_or_zero
+      const value = this.zValue_or_zero
       // < MIN
-      if (this.ϟconfig.min != null && value < this.ϟconfig.min) {
-         return csuiteConfig.i18n.err.number.lessThanMin({ min: this.ϟconfig.min })
+      if (this.zConfig.min != null && value < this.zConfig.min) {
+         return csuiteConfig.i18n.err.number.lessThanMin({ min: this.zConfig.min })
       }
       // > MAX
-      if (this.ϟconfig.max != null && value > this.ϟconfig.max) {
-         return csuiteConfig.i18n.err.number.greaterThanMax({ max: this.ϟconfig.max })
+      if (this.zConfig.max != null && value > this.zConfig.max) {
+         return csuiteConfig.i18n.err.number.greaterThanMax({ max: this.zConfig.max })
       }
       return null
    }
 
    // #region VALUE
-   get ϟvalue(): Field_number_value {
-      return this.ϟvalue_or_fail
+   get zValue(): Field_number_value {
+      return this.zValue_or_fail
    }
 
-   set ϟvalue(next: Field_number_value | string | null) {
-      if (this.ϟserial.value === next) return
+   set zValue(next: Field_number_value | string | null) {
+      if (this.zSerial.value === next) return
 
       if (typeof next === 'string') {
          if (next.trim() === '') {
             next = null
          } else {
-            const parsed = csuiteConfig.i18n.ui.number.parse(next, this.ϟconfig.mode)
+            const parsed = csuiteConfig.i18n.ui.number.parse(next, this.zConfig.mode)
             if (!isNaN(parsed)) next = parsed
          }
       }
 
-      this.ϟpatchInTransaction((draft, tct) => {
+      this.zPatchInTransaction((draft, tct) => {
          draft.value = next
       })
    }
 
-   get ϟvalue_or_fail(): Field_number_value {
-      const val = this.ϟvalue_unchecked
-      if (val == null) throw new Error('Field_number.value_or_fail: not set')
-      if (typeof val === 'string') throw new Error('Field_number.value_or_fail: invalid number')
+   get zValue_or_fail(): Field_number_value {
+      const val = this.zValue_unchecked
+      if (val == null) throw new Error('Field_number.zValue_or_fail: not set')
+      if (typeof val === 'string') throw new Error('Field_number.zValue_or_fail: invalid number')
 
       return val
    }
 
-   get ϟvalue_or_zero(): number {
-      if (typeof this.ϟserial.value === 'string') return 0
-      return this.ϟserial.value ?? 0
+   get zValue_or_zero(): number {
+      if (typeof this.zSerial.value === 'string') return 0
+      return this.zSerial.value ?? 0
    }
 
-   get ϟvalue_unchecked(): Field_number_unchecked {
-      if (typeof this.ϟserial.value === 'string') return null
-      return this.ϟserial.value
+   get zValue_unchecked(): Field_number_unchecked {
+      if (typeof this.zSerial.value === 'string') return null
+      return this.zSerial.value
    }
 
-   set ϟvalue_unchecked(next: number | string | null | undefined) {
-      this.ϟpatchSerial((serial) => void (serial.value = next))
+   set zValue_unchecked(next: number | string | null | undefined) {
+      this.zPatchSerial((serial) => void (serial.value = next))
    }
 
-   override ϟisValueEqual(other: Field): boolean {
+   override zIsValueEqual(other: Field): boolean {
       if (!(other instanceof Field_number)) return false
 
-      return this.ϟvalue_unchecked === other.ϟvalue_unchecked
+      return this.zValue_unchecked === other.zValue_unchecked
    }
 
    public static readonly patchedSerialPaths: readonly string[] = Object.freeze(['value'])
 
    get pathToValueInRootSerial(): string {
-      return `${this.ϟgetOwnSerialPathFromRoot()}.value`
+      return `${this.zGetOwnSerialPathFromRoot()}.value`
+   }
+
+   toString() {
+      return this.zValue
    }
 
    setValueFromString(stringValue: string): void {
-      const parsed = csuiteConfig.i18n.ui.number.parse(stringValue, this.ϟconfig.mode)
+      const parsed = csuiteConfig.i18n.ui.number.parse(stringValue, this.zConfig.mode)
       if (isNaN(parsed)) return
-      this.ϟvalue = parsed
+      this.zValue = parsed
    }
 
    // #region SETTERS
    /** randomize respect (soft)Min and (soft)max */
-   override ϟrandomize(): void {
-      const min = this.ϟconfig.softMin ?? this.ϟconfig.min ?? 0
-      const max = this.ϟconfig.softMax ?? this.ϟconfig.max ?? 100
-      this.ϟvalue = Math.floor(Math.random() * (max - min + 1))
+   override zRandomize(): void {
+      const min = this.zConfig.softMin ?? this.zConfig.min ?? 0
+      const max = this.zConfig.softMax ?? this.zConfig.max ?? 100
+      this.zValue = Math.floor(Math.random() * (max - min + 1))
    }
 }
 

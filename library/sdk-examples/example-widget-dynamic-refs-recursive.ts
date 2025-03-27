@@ -3,6 +3,7 @@ import type { Field_choices } from '../../src/csuite/fields/choices/FieldChoices
 import type { Field_group } from '../../src/csuite/fields/group/FieldGroup'
 import type { Field_image } from '../../src/csuite/fields/image/FieldImage'
 import type { Field_list } from '../../src/csuite/fields/list/FieldList'
+import { sb } from '../../src/csuite/simple/SimpleFactory'
 
 type ListItem = Z.Group<{
    uid: Z.String /* UID */
@@ -23,15 +24,15 @@ app({
             // if choices is a function, the form root is injected as first parameter
             //                           VVVVVVVVVVV
             process: b.selectOneOptionId((self) => {
-               const formRoot = self.root as Field_group<any>
+               const formRoot = self.zRoot as Field_group<any>
 
                // 🔶 null when the form is not yet fully initialized
-               if (formRoot.fields.samplerUI == null) return []
+               if (formRoot.zFields.samplerUI == null) return []
 
                // 🔶 self-referencing => typescript can't infer the type here
                // so to make sure code is correct, we need to cast it to the correct type
                // (and yes, types are slighly verbose for now)
-               const steps = formRoot.fields.samplerUI as Field_list<
+               const steps = formRoot.zFields.samplerUI as Field_list<
                   Z.Choice<{
                      sampler_output_abc_asdf: Z.OneOf_<any>
                      empty_latent: Z.Record<any>
@@ -48,11 +49,11 @@ app({
                   // 🔶 probably useless check now (bis)
                   if (_selectOne == null) console.log(`[🔴] err 2: firstActiveBranchWidget is null`, _selectOne) // prettier-ignore
 
-                  const _actualChoice = _selectOne?.value
+                  const _actualChoice = _selectOne?.zValue
                   return {
-                     id: _selectOne?._uid ?? 'error',
+                     id: _selectOne?.zUid ?? 'error',
                      disabled: _actualChoice == null,
-                     name: _selectOne?.type ?? '❌ ERROR',
+                     name: _selectOne?.zType ?? '❌ ERROR',
                      label: `${ix + 1}th (${choiceWidget.firstActiveBranchName ?? '❓'})`,
                   }
                })

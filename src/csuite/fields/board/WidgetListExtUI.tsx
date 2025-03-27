@@ -32,7 +32,7 @@ export const WidgetListExtUI = obs(function WidgetListExtUI_<T extends CSchema>(
    mode: 'timeline' | 'regional'
 }) {
    const listExt = p.field
-   const { area } = listExt.ϟfields
+   const { area } = listExt.zFields
    return (
       <div className='_WidgetListExtUI' tw='w-full flex-grow'>
          {/* <ListControlsUI widget={widget} /> */}

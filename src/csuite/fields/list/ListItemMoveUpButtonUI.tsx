@@ -23,7 +23,7 @@ export const ListItemMoveUpButtonUI = obs(function ListItemMoveUpButtonUI_({
          disabled={ix === 0}
          onClick={(ev) => {
             listField.moveItem(ix, ix - 1)
-            listField.ϟtouch()
+            listField.zTouch()
             ev.preventDefault()
             ev.stopPropagation()
          }}

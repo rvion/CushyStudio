@@ -72,7 +72,7 @@ export function ui_LatentShapeGenerator(
             {
                label: 'default',
                apply: (widget): void => {
-                  widget.setPartialValue({
+                  widget.zSet({
                      amountCircle: 0,
                      amountRect: 0,
                      amountStar: 0,
@@ -88,7 +88,7 @@ export function ui_LatentShapeGenerator(
             {
                label: 'pinkPower',
                apply: (widget): void => {
-                  widget.setPartialValue({
+                  widget.zSet({
                      amountCircle: 1,
                      amountRect: 1,
                      amountStar: 1,
@@ -104,7 +104,7 @@ export function ui_LatentShapeGenerator(
             {
                label: 'itHurtsMyEyes',
                apply: (widget): void => {
-                  widget.setPartialValue({
+                  widget.zSet({
                      amountCircle: 10,
                      amountRect: 10,
                      amountStar: 10,
@@ -126,7 +126,7 @@ export function ui_LatentShapeGenerator(
 /** this function returns a fancy latent */
 export const run_LatentShapeGenerator = async (
    /** the shape generation config */
-   shapeConfig: UI_LatentShapeGenerator['Ҩvalue'],
+   shapeConfig: UI_LatentShapeGenerator['ҨValue'],
    /** required to convert generated image to latent */
    vae: Comfy.Signal['VAE'],
 ): Promise<{

@@ -118,7 +118,7 @@ export const ui_tint = (ui: Z.Builder, def?: Tint): UI_Tint => {
                icon: IKONS.mdiText,
                label: 'Text (v1)',
                apply(w): void {
-                  w.ϟsetValue({
+                  w.zSetValue({
                      l: { contrast: 0.9 },
                      c: { chromaBlend: 1 },
                      h: { hue: 0 },
@@ -129,7 +129,7 @@ export const ui_tint = (ui: Z.Builder, def?: Tint): UI_Tint => {
                icon: IKONS.mdiText,
                label: 'Text (colored)',
                apply(w): void {
-                  w.ϟsetValue({
+                  w.zSetValue({
                      l: { contrast: 0.7 },
                      c: { chroma: 0.3 },
                      h: { hueShift: 180 },
@@ -140,14 +140,14 @@ export const ui_tint = (ui: Z.Builder, def?: Tint): UI_Tint => {
                icon: IKONS.mdiText,
                label: 'Text (subtle)',
                apply(w): void {
-                  w.ϟsetValue({ l: { contrast: 0.3 } })
+                  w.zSetValue({ l: { contrast: 0.3 } })
                },
             },
             {
                icon: IKONS.mdiSquareCircle,
                label: 'base 100',
                apply(w): void {
-                  w.ϟsetValue({ l: { contrast: 0.05 } })
+                  w.zSetValue({ l: { contrast: 0.05 } })
                },
             },
          ],
@@ -155,7 +155,7 @@ export const ui_tint = (ui: Z.Builder, def?: Tint): UI_Tint => {
    )
 }
 
-export const run_tint = (ui: ReturnType<typeof ui_tint>['Ҩvalue']): Tint => {
+export const run_tint = (ui: ReturnType<typeof ui_tint>['ҨValue']): Tint => {
    return {
       // l
       lightness: ui.l?.lightness,

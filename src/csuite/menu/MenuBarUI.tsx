@@ -123,7 +123,7 @@ export const MenuBarUI = obs(function MenuBar({
                   line
                   icon={entry.icon}
                   hover
-                  roundness={cushy.preferences.theme.ϟvalue.global.roundness}
+                  roundness={cushy.preferences.theme.zValue.global.roundness}
                >
                   {formatMenuLabel(charIx, label)}
                </Frame>

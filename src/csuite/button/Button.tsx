@@ -33,7 +33,7 @@ const _Button = obs(function Button_(p: ButtonProps) {
    useEffect(() => uist.release, [])
 
    const { size, look, subtle, borderless, iconSize, onClick, square: square_, style, ...rest } = p
-   const theme = cushy.preferences.theme.ϟvalue
+   const theme = cushy.preferences.theme.zValue
    const square = square_ ?? (p.icon != null && p.children == null)
 
    return (

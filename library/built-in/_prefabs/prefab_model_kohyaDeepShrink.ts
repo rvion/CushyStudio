@@ -44,7 +44,7 @@ export function ui_model_kohyaDeepShrink(form: Z.Builder): UI_model_kohyaDeepShr
             },
             {
                startCollapsed: true,
-               toString_: ({ value: ui }): string => {
+               toString_: ({ zValue: ui }): string => {
                   return `scale:${ui.downscaleFactor} end:${ui.endPercent} afterSkip:${ui.downscaleAfterSkip} downMethod:${ui.downscaleMethod}`
                },
             },
@@ -54,8 +54,8 @@ export function ui_model_kohyaDeepShrink(form: Z.Builder): UI_model_kohyaDeepShr
          startCollapsed: true,
          tooltip:
             'Shrinks and patches the model. Can be used to generate resolutions higher than the model training and helps with hires fix.',
-         toString_: ({ value: ui }): string => {
-            return `${ui.include.base ? '🟢Base (' + ui.advancedSettings.downscaleFactor + ')' : ''}${ui.include.hiRes ? '🟢HiRes ' : ''} end:${ui.advancedSettings.endPercent}`
+         toString_: ({ zValue: v }): string => {
+            return `${v.include.base ? '🟢Base (' + v.advancedSettings.downscaleFactor + ')' : ''}${v.include.hiRes ? '🟢HiRes ' : ''} end:${v.advancedSettings.endPercent}`
          },
       },
    )
@@ -63,7 +63,7 @@ export function ui_model_kohyaDeepShrink(form: Z.Builder): UI_model_kohyaDeepShr
 
 /** https://www.reddit.com/r/StableDiffusion/comments/18ld5sj/kohya_deep_shrink_explain_to_me_like_im_5_years/  */
 export const run_model_kohyaDeepShrink = (
-   ui: UI_model_kohyaDeepShrink['Ҩvalue'],
+   ui: UI_model_kohyaDeepShrink['ҨValue'],
    ckpt: Comfy.Signal['MODEL'],
    forHiRes?: boolean,
    kohyaScale?: number,

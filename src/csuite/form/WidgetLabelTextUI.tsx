@@ -22,13 +22,13 @@ export const WidgetLabelTextUI = obs(function WidgetLabelTextUI_(p: {
                node.scrollHeight > node.clientHeight + 5 || node.scrollWidth > node.clientWidth + 5,
             )
          }}
-         tooltip={isOverflowing ? p.widget.ϟlabelText : undefined}
+         tooltip={isOverflowing ? p.widget.zLabelText : undefined}
          tw={[
             'lh-widget',
             'UI-WidgetLabel minh-widget ABDDE self-start',
 
             // 1. indicate we can click on the label
-            p.widget.ϟisCollapsed || p.widget.ϟisCollapsible ? 'COLLAPSE-PASSTHROUGH cursor-pointer' : null,
+            p.widget.zIsCollapsed || p.widget.zIsCollapsible ? 'COLLAPSE-PASSTHROUGH cursor-pointer' : null,
 
             // 3. label wrappign strategy
             // 3.1  alt. 1: disable all wrapping
@@ -48,7 +48,7 @@ export const WidgetLabelTextUI = obs(function WidgetLabelTextUI_(p: {
             p.className,
          ]}
       >
-         {p.widget.ϟisHidden && '🥷 '}
+         {p.widget.zIsHidden && '🥷 '}
          {p.children}
       </Frame>
    )

@@ -34,23 +34,23 @@ describe('field customizations', () => {
       it('works with prims like Field_number or Field_bool', (): void => {
          class F extends Field_bool {
             @computed get inverse(): boolean {
-               return !this.ϟvalue
+               return !this.zValue
             }
          }
          // const z: CSchema<CSchema<F>> = 0 as any
          const S1 = b.bool().useClass(F, null)
          const E1 = S1.create()
-         E1 satisfies CSchema<CSchema<F>['Ҩfield']>['Ҩfield']
-         E1 satisfies CSchema<CSchema<CSchema<F>['Ҩfield']>['Ҩfield']>['Ҩfield']
+         E1 satisfies CSchema<CSchema<F>['ҨField']>['ҨField']
+         E1 satisfies CSchema<CSchema<CSchema<F>['ҨField']>['ҨField']>['ҨField']
 
-         expect(E1.ϟvalue).toBe(false)
+         expect(E1.zValue).toBe(false)
          expect(E1.inverse).toBe(true)
       })
 
       it('works with external class', () => {
          const S0 = b.fields({ foo: b.int({ default: 10 }) })
 
-         type T0 = Field_group<{ foo: Z.Number }>['Ҩsubfields']
+         type T0 = Field_group<{ foo: Z.Number }>['ҨSubfields']
 
          interface Foo2 extends MAGICFIELDS<T0> {}
          class Foo2 extends Field_group<T0> {
@@ -60,7 +60,7 @@ describe('field customizations', () => {
                return 33
             }
             get bar2(): number {
-               return this.ϟvalue.foo * 2
+               return this.zValue.foo * 2
             }
          }
 
@@ -71,10 +71,10 @@ describe('field customizations', () => {
          expect((E1.constructor as any).HELLO).toBe('WORLD')
 
          // proper
-         expect(E1.ϟvalue.foo).toBe(10)
+         expect(E1.zValue.foo).toBe(10)
          expect(E1.bar2).toBe(20)
-         E1.ϟvalue.foo++
-         expect(E1.ϟvalue.foo).toBe(11)
+         E1.zValue.foo++
+         expect(E1.zValue.foo).toBe(11)
          expect(E1.bar2).toBe(22)
 
          // make sure the prop is observable
@@ -86,10 +86,10 @@ describe('field customizations', () => {
             () => E1.bar2,
             (val) => xx++,
          )
-         E1.ϟvalue.foo++
-         E1.ϟvalue.foo++
-         E1.ϟvalue.foo++
-         E1.ϟvalue.foo++
+         E1.zValue.foo++
+         E1.zValue.foo++
+         E1.zValue.foo++
+         E1.zValue.foo++
          expect(xx).toBe(4)
       })
    })
@@ -111,7 +111,7 @@ describe('field customizations', () => {
          // 💬 2025-02-06 rvion:
          // until we pick a better default for MagicFields, I can't find an other way
          // than just having it merged at the final subclass.
-         // from a practical standpoint, it's probably ok since we anyway need to merge the Ҩfield for now.
+         // from a practical standpoint, it's probably ok since we anyway need to merge the ҨField for now.
          interface MyFooCollection extends MAGICFIELDS<FooStuff> {  } // prettier-ignore
          class MyFooCollection extends MyCollection<FooStuff> {
             static schema = (b: SimpleBuilder): CSchema<MyFooCollection> =>
@@ -131,27 +131,27 @@ describe('field customizations', () => {
             }
             @computed get distance(): number {
                let dist = 0
-               for (let p = 1; p < this.ϟvalue.b.points.length; p++) {
-                  const prev = this.ϟvalue.b.points[p - 1]!
-                  const curr = this.ϟvalue.b.points[p]!
+               for (let p = 1; p < this.zValue.b.points.length; p++) {
+                  const prev = this.zValue.b.points[p - 1]!
+                  const curr = this.zValue.b.points[p]!
                   const segmentLen = Math.sqrt((curr.x - prev.x) ** 2 + (curr.y - prev.y) ** 2)
                   dist += segmentLen
                }
                return dist
             }
-            get X():number{return this.ϟfields.b.ϟfields.points.at(-1)?.ϟfields.x.ϟvalue??0} // prettier-ignore
+            get X():number{return this.zFields.b.zFields.points.at(-1)?.zFields.x.zValue??0} // prettier-ignore
             get Y(): number {
-               return this.ϟfields.b.ϟfields.points.at(-1)?.ϟfields.y.ϟvalue ?? 0
+               return this.zFields.b.zFields.points.at(-1)?.zFields.y.zValue ?? 0
             }
             @action up(): void {
-               this.ϟfields.b.ϟfields.points.push({ x: this.X, y: this.Y - 1 })
+               this.zFields.b.zFields.points.push({ x: this.X, y: this.Y - 1 })
             }
-            @action down():void{this.ϟfields.b.ϟfields.points.push({x: this.X, y: this.Y+1})} // prettier-ignore
+            @action down():void{this.zFields.b.zFields.points.push({x: this.X, y: this.Y+1})} // prettier-ignore
          }
 
          const t1 = MyFooCollection.schema(b)
             .create()
-            .ϟset({
+            .zSet({
                b: {
                   points: [
                      { x: 0, y: 0 },
@@ -168,7 +168,7 @@ describe('field customizations', () => {
          expect(emmittedDistances).toEqual([])
          expect(t1.distance).toBe(2)
          t1.up()
-         expect(JSON.parse(JSON.stringify(t1.ϟvalue))).toMatchObject({
+         expect(JSON.parse(JSON.stringify(t1.zValue))).toMatchObject({
             a: 0,
             b: {
                points: [
@@ -204,7 +204,7 @@ describe('field customizations', () => {
                return 33
             }
             @computed get bar2(): number {
-               return this.ϟvalue.foo * 2
+               return this.zValue.foo * 2
             }
          }
 
@@ -215,10 +215,10 @@ describe('field customizations', () => {
          expect((E1.constructor as any).HELLO).toBe('WORLD')
 
          // proper
-         expect(E1.ϟvalue.foo).toBe(10)
+         expect(E1.zValue.foo).toBe(10)
          expect(E1.bar2).toBe(20)
-         E1.ϟvalue.foo++
-         expect(E1.ϟvalue.foo).toBe(11)
+         E1.zValue.foo++
+         expect(E1.zValue.foo).toBe(11)
          expect(E1.bar2).toBe(22)
 
          // make sure the prop is observable
@@ -230,10 +230,10 @@ describe('field customizations', () => {
             () => E1.bar2,
             (val) => xx++,
          )
-         E1.ϟvalue.foo++
-         E1.ϟvalue.foo++
-         E1.ϟvalue.foo++
-         E1.ϟvalue.foo++
+         E1.zValue.foo++
+         E1.zValue.foo++
+         E1.zValue.foo++
+         E1.zValue.foo++
          expect(xx).toBe(4)
       })
    })

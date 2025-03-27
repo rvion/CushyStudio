@@ -16,7 +16,7 @@ import { capitalize } from '../../utils/capitalize'
 import { registerFieldClass } from '../WidgetUI.DI'
 
 // CONFIG
-export type Field_group_config<T extends SchemaDict> = Field_group<T>['Ҩconfig']
+export type Field_group_config<T extends SchemaDict> = Field_group<T>['ҨConfig']
 type Field_group_ownConfig<T extends SchemaDict> = {
    /**
     * Lambdas allowed only for recursive fields;
@@ -29,14 +29,14 @@ type Field_group_ownConfig<T extends SchemaDict> = {
    items?: T | (() => T)
 
    /** @deprecated; use `toString` instead */
-   summary?: CovariantFn<[items: { [k in keyof T]: T[k]['Ҩvalue'] }, self: Field_group<T>], string>
+   summary?: CovariantFn<[items: { [k in keyof T]: T[k]['ҨValue'] }, self: Field_group<T>], string>
    // (
    //    //
    // ): string
 
    /** @default @false */
    presetButtons?: boolean
-   default?: T['Ҩvalue']
+   default?: T['ҨValue']
 
    // 🔶 TODO 1: remove summary from here and move it to the base field config directly
    // 🟢 TODO 2: stop passing values to that function, only pass the field directly
@@ -45,48 +45,48 @@ type Field_group_ownConfig<T extends SchemaDict> = {
 }
 
 // SERIAL
-export type Field_group_serial<T extends SchemaDict> = Field_group<T>['Ҩserial']
+export type Field_group_serial<T extends SchemaDict> = Field_group<T>['ҨSerial']
 type Field_group_ownSerial<T extends SchemaDict> = {
    $: 'group'
    // fix required here; invariant violation!
    // TODO: why is that not optional ? it should be.
-   values_: { [K in keyof T]?: T[K]['Ҩserial'] }
+   values_: { [K in keyof T]?: T[K]['ҨSerial'] }
 }
 
 // VALUE
 export type Field_group_value<T extends SchemaDict> = {
-   [k in keyof T]: T[k]['Ҩvalue']
+   [k in keyof T]: T[k]['ҨValue']
 }
 
 export type Field_group_SetValue<T extends SchemaDict> = {
-   [k in keyof T]?: T[k]['Ҩsetvalue']
+   [k in keyof T]?: T[k]['ҨSetvalue']
 }
 
 export type Field_group_unchecked<T extends SchemaDict> = {
-   [k in keyof T]: T[k]['Ҩunchecked']
+   [k in keyof T]: T[k]['ҨUnchecked']
 }
 
 // TYPES
 export interface Field_group<T extends SchemaDict = SchemaDict> {
-   Ҩtype: 'group'
-   ҨownConfig: Field_group_ownConfig<T>
-   ҨownSerial: Field_group_ownSerial<T>
-   Ҩvalue: Field_group_value<T>
-   Ҩsetvalue: Field_group_SetValue<T>
-   Ҩunchecked: Field_group_unchecked<T>
-   Ҩchild: T[keyof T]['Ҩfield']
-   Ҩopts: unknown
-   ҨownPatch: Patch<'group'>
+   ҨType: 'group'
+   ҨOwnConfig: Field_group_ownConfig<T>
+   ҨOwnSerial: Field_group_ownSerial<T>
+   ҨValue: Field_group_value<T>
+   ҨSetvalue: Field_group_SetValue<T>
+   ҨUnchecked: Field_group_unchecked<T>
+   ҨChild: T[keyof T]['ҨField']
+   ҨOpts: unknown
+   ҨOwnPatch: Patch<'group'>
    // own
-   Ҩsubfields: T
+   ҨSubfields: T
 }
 
 // ---------------------------------------------------------------------------
 // 💬 2025-02-10 rvion: pending decision about removal or not
 /** @deprecated */
 export type FieldGroupWithMAGICFIELDS<T extends SchemaDict> = Field_group<T> & MAGICFIELDS<T>
-export type MAGICFIELDS<T extends { [key: string]: { Ҩfield: any } }> = {
-   [K in keyof T /* as Capitalize<K & string> */]: T[K]['Ҩfield']
+export type MAGICFIELDS<T extends { [key: string]: { ҨField: any } }> = {
+   [K in keyof T /* as Capitalize<K & string> */]: T[K]['ҨField']
 }
 
 export class Field_group<T extends SchemaDict> extends Field {
@@ -122,9 +122,9 @@ export class Field_group<T extends SchemaDict> extends Field {
       return OUT
    }
    static generateSerial(
-      value: Maybe<Field_group<any>['Ҩvalue']>,
-      config: Field_group<any>['Ҩconfig'],
-   ): Field_group<any>['Ҩserial'] {
+      value: Maybe<Field_group<any>['ҨValue']>,
+      config: Field_group<any>['ҨConfig'],
+   ): Field_group<any>['ҨSerial'] {
       const configItems = typeof config.items === 'function' ? config.items() : config.items
       if (configItems == null) return this.unsetSerial
 
@@ -142,8 +142,8 @@ export class Field_group<T extends SchemaDict> extends Field {
    private _defineMagicFields(): void {
       const properties: PropertyDescriptorMap & ThisType<any> = {}
       for (const [fName, fSchema] of this._fieldSchemas) {
-         properties[capitalize(fName)] = {
-            get: (): any => this.ϟfields[fName],
+         properties[fName as string] = {
+            get: (): any => this.zFields[fName],
             configurable: true,
          }
       }
@@ -164,38 +164,38 @@ export class Field_group<T extends SchemaDict> extends Field {
    }
 
    // #region UI
-   override get ϟsummary(): string {
+   override get zSummary(): string {
       return (
-         this.ϟconfig.toString_?.(this) ?? // 👇🤔 Maybe we don't want to invoke the summary unless the field is valid -> it could throw with children that have a throwable _or_zero
-         this.ϟconfig.summary?.(this.ϟvalue_or_zero, this) ??
+         this.zConfig.toString_?.(this) ?? // 👇🤔 Maybe we don't want to invoke the summary unless the field is valid -> it could throw with children that have a throwable _or_zero
+         this.zConfig.summary?.(this.zValue_or_zero, this) ??
          ''
       )
       // return this.config.summary?.(this.value) ?? Object.keys(this.fields).length + ' fields'
    }
 
-   override get ϟjustifyLabel(): boolean {
-      if (this.ϟnumFields > 1) return false
+   override get zJustifyLabel(): boolean {
+      if (this.zNumFields > 1) return false
       return true
    }
 
    // #region PROBLEMS
-   get ϟownConfigSpecificProblems(): Problem_Ext {
+   get zOwnConfigSpecificProblems(): Problem_Ext {
       return null
    }
 
-   get ϟownTypeSpecificProblems(): Problem_Ext {
+   get zOwnTypeSpecificProblems(): Problem_Ext {
       return null
    }
 
    // #region CHANGES
-   get ϟisOwnSet(): boolean {
+   get zIsOwnSet(): boolean {
       return true
       // return this.subFields.every((f) => f.isSet)
    }
 
-   @computed get ϟhasChanges(): boolean {
-      const fields: Field[] = Object.values(this.ϟfields)
-      return fields.some((f) => f.ϟhasChanges)
+   @computed get zHasChanges(): boolean {
+      const fields: Field[] = Object.values(this.zFields)
+      return fields.some((f) => f.zHasChanges)
    }
    //            IMPOSSIBLE
    //                VV
@@ -203,7 +203,7 @@ export class Field_group<T extends SchemaDict> extends Field {
    // runInTransaction
 
    // #region SERIAL
-   protected ϟsetOwnSerial(next: Field_group_serial<T>): void {
+   protected zSetOwnSerial(next: Field_group_serial<T>): void {
       // setOwnSerial(next) is just here to call `this.serial = next`
       // with some extra stuff. it's almost a regular field action, execpt
       // it's internal, and has a few extra responsibilities (like fixing external serials)
@@ -228,25 +228,25 @@ export class Field_group<T extends SchemaDict> extends Field {
       }
 
       // 2. ASSIGN SERIAL
-      this.ϟassignNewSerial(next)
+      this.zAssignNewSerial(next)
 
       // 3. RECONCILE CHILDREN
       for (const [fName, fSchema] of this._fieldSchemas) {
          // reconcile can yield different serial during setSerial; both for
          // - new child (e.g. running migration),
          // - old child (e.g. default value beeing added in setOwnSerial)
-         this.ϟRECONCILE({
+         this.zRECONCILE({
             mountKey: fName,
-            existingChild: this.ϟfields[fName],
+            existingChild: this.zFields[fName],
             correctChildSchema: fSchema,
             targetChildSerial: next?.values_?.[fName],
             attach: (child) => {
-               this.ϟfields[fName] = child
+               this.zFields[fName] = child
                const isNew = !(fName in next.values_)
                if (isNew) {
-                  const hasDefault = this.ϟconfig.default != null && fName in this.ϟconfig.default
+                  const hasDefault = this.zConfig.default != null && fName in this.zConfig.default
                   if (hasDefault) {
-                     child.value = this.ϟconfig.default![fName as keyof T['Ҩvalue']]
+                     child.value = this.zConfig.default![fName as keyof T['ҨValue']]
                   }
                }
             },
@@ -261,44 +261,44 @@ export class Field_group<T extends SchemaDict> extends Field {
     * // fix | I'm not really convinces that this should be observable
     * // fix | varying fields should probably always go though a dynamic 🤔
     */
-   ϟfields: { [k in keyof T]: T[k]['Ҩfield'] } = observable({}) as any
-   override ϟacknowledgeNewChildSerial(mountKey: string, newChildSerial: any): boolean {
+   zFields: { [k in keyof T]: T[k]['ҨField'] } = observable({}) as any
+   override zAcknowledgeNewChildSerial(mountKey: string, newChildSerial: any): boolean {
       // fast path: abort when exactly the same
-      if (this.ϟserial.values_[mountKey] === newChildSerial) return false
+      if (this.zSerial.values_[mountKey] === newChildSerial) return false
       // console.log(`[🤠] ACK`, getUIDForMemoryStructure(newChildSerial), getUIDForMemoryStructure(this.serial), this.serial)
-      return this.ϟpatchSerial((draft) => void ((draft.values_ as any)[mountKey] = newChildSerial))
+      return this.zPatchSerial((draft) => void ((draft.values_ as any)[mountKey] = newChildSerial))
       // console.log(`[🤠] ACK`, getUIDForMemoryStructure(newChildSerial), getUIDForMemoryStructure(this.serial), this.serial)
    }
 
    /** all [key,value] pairs */
-   @computed get ϟentries(): [string, Field][] {
-      return Object.entries(this.ϟfields) as [string, Field][]
+   @computed get zEntries(): [string, Field][] {
+      return Object.entries(this.zFields) as [string, Field][]
    }
 
-   @computed get ϟnumFields(): number {
-      return Object.keys(this.ϟfields).length
+   @computed get zNumFields(): number {
+      return Object.keys(this.zFields).length
    }
 
    /** return item at give key */
-   ϟat<K extends keyof T>(key: K): T[K]['Ҩfield'] {
-      return this.ϟfields[key]
+   zAt<K extends keyof T>(key: K): T[K]['ҨField'] {
+      return this.zFields[key]
    }
 
-   override ϟgetChildrenSerialPath(branchName: keyof T & string): string {
+   override zGetChildrenSerialPath(branchName: keyof T & string): string {
       return `values_.${branchName}`
    }
 
-   @computed override get ϟchildrenAll(): Field[] {
-      return Object.values(this.ϟfields)
+   @computed override get zChildrenAll(): Field[] {
+      return Object.values(this.zFields)
    }
 
-   override get ϟsubFieldsWithKeys(): KeyedField[] {
-      return Object.entries(this.ϟfields).map(([key, field]) => ({ key, field }))
+   override get zSubFieldsWithKeys(): KeyedField[] {
+      return Object.entries(this.zFields).map(([key, field]) => ({ key, field }))
    }
 
    /** just here to normalize fieldSchema definitions, since it used to be a lambda */
    private get _fieldSchemas(): [keyof T & string, CSchema<any>][] {
-      const itemsDef = this.ϟconfig.items
+      const itemsDef = this.zConfig.items
       const fieldSchemas: SchemaDict =
          typeof itemsDef === 'function' //
             ? ((itemsDef as any)() ?? {}) // <-- LEGACY SUPPORT
@@ -306,95 +306,95 @@ export class Field_group<T extends SchemaDict> extends Field {
       return Object.entries(fieldSchemas) as [keyof T & string, CSchema<any>][]
    }
    // #region VALUE
-   override ϟset(x: this['Ҩsetvalue']): this {
-      this.ϟrunInTransaction(() => {
+   override zSet(x: this['ҨSetvalue']): this {
+      this.zRunInTransaction(() => {
          for (const key in x) {
-            const child = this.ϟfields[key]
+            const child = this.zFields[key]
             if (child == null) {
-               console.error( `🔴 Field_Group(${this.ϟpath}).setValue: invalid key "${key}" with value`, x[key]) // prettier-ignore
+               console.error( `🔴 Field_Group(${this.zPath}).setValue: invalid key "${key}" with value`, x[key]) // prettier-ignore
                continue
             }
-            child.ϟset(x[key])
+            child.zSet(x[key])
          }
       })
       return this
    }
 
-   get ϟvalue(): Field_group_value<T> {
-      return this.ϟvalue_or_fail
+   get zValue(): Field_group_value<T> {
+      return this.zValue_or_fail
    }
 
-   set ϟvalue(val: Field_group_value<T>) {
-      this.ϟrunInTransaction(() => {
+   set zValue(val: Field_group_value<T>) {
+      this.zRunInTransaction(() => {
          for (const key in val) {
-            const child = this.ϟfields[key]
+            const child = this.zFields[key]
             if (child == null) {
-               console.warn(`🔴 Field_Group(${this.ϟpath}).value: invalid key "${key}" with value`, val[key], Object.keys(this.ϟfields)) // prettier-ignore
+               console.warn(`🔴 Field_Group(${this.zPath}).value: invalid key "${key}" with value`, val[key], Object.keys(this.zFields)) // prettier-ignore
                continue
             }
-            child.ϟvalue = val[key]
+            child.zValue = val[key]
          }
       })
    }
 
-   get ϟvalue_or_fail(): Field_group_value<T> {
+   get zValue_or_fail(): Field_group_value<T> {
       const value = new Proxy({}, this.makeValueProxy('fail'))
-      void this.ϟserial
-      Object.defineProperty(this, 'value_or_fail', {
+      void this.zSerial
+      Object.defineProperty(this, 'zValue_or_fail', {
          get: () => {
-            void this.ϟserial
+            void this.zSerial
             return value
          },
       })
       return value
    }
-   get ϟvalue_or_zero(): Field_group_value<T> {
+   get zValue_or_zero(): Field_group_value<T> {
       const value = new Proxy({}, this.makeValueProxy('zero'))
-      void this.ϟserial
-      Object.defineProperty(this, 'value_or_zero', {
+      void this.zSerial
+      Object.defineProperty(this, 'zValue_or_zero', {
          get: () => {
-            void this.ϟserial
+            void this.zSerial
             return value
          },
       })
       return value
    }
-   get ϟvalue_unchecked(): Field_group_unchecked<T> {
+   get zValue_unchecked(): Field_group_unchecked<T> {
       const value = new Proxy({}, this.makeValueProxy('unchecked'))
-      void this.ϟserial
-      Object.defineProperty(this, 'value_unchecked', {
+      void this.zSerial
+      Object.defineProperty(this, 'zValue_unchecked', {
          get: () => {
-            void this.ϟserial
+            void this.zSerial
             return value
          },
       })
       return value
    }
-   get ϟvalue_set(): Field_group_SetValue<T> {
+   get zValue_set(): Field_group_SetValue<T> {
       const value = new Proxy({}, this.makeValueProxy('set'))
-      void this.ϟserial
-      Object.defineProperty(this, 'value_set', {
+      void this.zSerial
+      Object.defineProperty(this, 'zValue_set', {
          get: () => {
-            void this.ϟvalue
+            void this.zValue
             return value
          },
       })
       return value
    }
 
-   public ϟisValueEqual(other: Field): boolean {
+   public zIsValueEqual(other: Field): boolean {
       if (other === this) return true
       if (!(other instanceof Field_group)) return false
-      const otherChildren = other.ϟchildrenActive
-      const thisChildren = this.ϟchildrenActive
+      const otherChildren = other.zChildrenActive
+      const thisChildren = this.zChildrenActive
 
       if (otherChildren.length !== thisChildren.length) return false
 
       return thisChildren.every((child) => {
-         const otherChild = other.ϟfields[child.ϟmountKey]
+         const otherChild = other.zFields[child.zMountKey]
          if (otherChild == null) return false
 
-         return child.ϟmountKey === otherChild.mountKey && child.ϟisValueEqual(otherChild)
+         return child.zMountKey === otherChild.mountKey && child.zIsValueEqual(otherChild)
       })
    }
 
@@ -403,50 +403,50 @@ export class Field_group<T extends SchemaDict> extends Field {
    private makeValueProxy(mode: VALUE_MODE): ProxyHandler<any> {
       return {
          ownKeys: (_target): string[] => {
-            return Object.keys(this.ϟfields)
+            return Object.keys(this.zFields)
          },
          set: (_target, prop, value): boolean => {
             if (typeof prop !== 'string') return false
-            const subWidget: Maybe<Field> = this.ϟfields[prop]
+            const subWidget: Maybe<Field> = this.zFields[prop]
             if (subWidget == null) return false
-            subWidget.ϟvalue = value
+            subWidget.zValue = value
             return true
          },
          get: (_target, prop): any => {
             if (typeof prop !== 'string') return
-            const subWidget: Maybe<Field> = this.ϟfields[prop]
+            const subWidget: Maybe<Field> = this.zFields[prop]
             if (subWidget == null) return
             if (!(subWidget instanceof Field)) return void console.log(`[🔶] tried to access non-field`, prop)
-            return subWidget.ϟgetValue(mode)
+            return subWidget.zGetValue(mode)
          },
          getOwnPropertyDescriptor: (_target, prop): PropertyDescriptor | undefined => {
             if (typeof prop !== 'string') return
-            const subWidget: Maybe<Field> = this.ϟfields[prop]
+            const subWidget: Maybe<Field> = this.zFields[prop]
             if (subWidget == null) return
             if (!(subWidget instanceof Field)) return void console.log(`[🔶] tried to access non-field`, prop)
             return {
                enumerable: true,
                configurable: true,
                get(): any {
-                  return subWidget.ϟgetValue(mode)
+                  return subWidget.zGetValue(mode)
                },
             }
          },
       }
    }
 
-   override ϟgetSetValue(): this['Ҩsetvalue'] | undefined {
+   override zGetSetValue(): this['ҨSetvalue'] | undefined {
       // console.log(`[💀 getSetValue] `, this.path)
-      return this.ϟvalue_set
+      return this.zValue_set
    }
 
-   override ϟreset(): void {
-      super.ϟreset()
-      this.ϟchildrenAll.forEach((f) => f.ϟreset())
+   override zReset(): void {
+      super.zReset()
+      this.zChildrenAll.forEach((f) => f.zReset())
    }
 
-   override ϟrandomize(): void {
-      this.ϟchildrenAll.forEach((f) => f.ϟrandomize())
+   override zRandomize(): void {
+      this.zChildrenAll.forEach((f) => f.zRandomize())
    }
 }
 

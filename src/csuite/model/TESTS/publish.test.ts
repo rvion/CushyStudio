@@ -8,43 +8,43 @@ describe('publish', () => {
    it('works with string', () => {
       const E = simpleFactory.document((f) =>
          f.fields({
-            a: f.string({ default: 'test' }).publishToChannel('foo', (self) => self.ϟvalue),
-            b: f.string().subscribeToChannel<string>('foo', (x, self) => (self.ϟvalue = x)),
+            a: f.string({ default: 'test' }).publishToChannel('foo', (self) => self.zValue),
+            b: f.string().subscribeToChannel<string>('foo', (x, self) => (self.zValue = x)),
          }),
       )
-      expect(E.ϟvalue.a).toBe('test')
-      expect(E.ϟvalue.b).toBe('test')
+      expect(E.zValue.a).toBe('test')
+      expect(E.zValue.b).toBe('test')
    })
 
    it('works with ints', () => {
       const E = simpleFactory.document((f) =>
          f.fields({
-            a: f.int({ default: 8 }).publishToChannel('foo', (self) => self.ϟvalue),
-            b: f.int({ default: 1 }).subscribeToChannel<number>('foo', (x, self) => (self.ϟvalue = x)),
+            a: f.int({ default: 8 }).publishToChannel('foo', (self) => self.zValue),
+            b: f.int({ default: 1 }).subscribeToChannel<number>('foo', (x, self) => (self.zValue = x)),
          }),
       )
-      expect(E.ϟvalue.a).toBe(8)
-      expect(E.ϟvalue.b).toBe(8)
+      expect(E.zValue.a).toBe(8)
+      expect(E.zValue.b).toBe(8)
    })
 
    it('works regardless field order definition', () => {
       const E = simpleFactory.document((f) =>
          f.fields({
-            b: f.string({ default: '🟡' }).subscribeToChannel<string>('foo', (x, self) => (self.ϟvalue = x)),
-            a: f.string({ default: '🔵' }).publishToChannel('foo', (self) => self.ϟvalue),
+            b: f.string({ default: '🟡' }).subscribeToChannel<string>('foo', (x, self) => (self.zValue = x)),
+            a: f.string({ default: '🔵' }).publishToChannel('foo', (self) => self.zValue),
          }),
       )
-      expect(E.ϟvalue.a).toBe('🔵')
-      expect(E.ϟvalue.b).toBe('🔵')
+      expect(E.zValue.a).toBe('🔵')
+      expect(E.zValue.b).toBe('🔵')
 
       // bonus test before weekend
-      E.ϟfields.b.ϟvalue = '🟤'
-      expect(E.ϟvalue.a).toBe('🔵')
-      expect(E.ϟvalue.b).toBe('🟤')
+      E.zFields.b.zValue = '🟤'
+      expect(E.zValue.a).toBe('🔵')
+      expect(E.zValue.b).toBe('🟤')
 
-      E.ϟfields.a.ϟvalue = '🟠'
-      expect(E.ϟvalue.a).toBe('🟠')
-      expect(E.ϟvalue.b).toBe('🟠')
+      E.zFields.a.zValue = '🟠'
+      expect(E.zValue.a).toBe('🟠')
+      expect(E.zValue.b).toBe('🟠')
    })
    function expect(a: any): Assertion<any> {
       // eslint-disable-next-line vitest/valid-expect

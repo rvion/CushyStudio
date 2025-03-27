@@ -13,11 +13,11 @@ export const PlaygroundGraphUI = obs(function PlaygroundGraphUI_(p: {}) {
       <div tw='h-full'>
          <div tw='flex items-center gap-1'>
             <Button onClick={update}>update</Button>
-            {form.ϟrenderAsConfigBtn({ title: 'Graph Conf' })}
+            {form.zRenderAsConfigBtn({ title: 'Graph Conf' })}
          </div>
          {form.UI()}
          <DrawWorkflowUI //
-            spline={form.ϟvalue.spline}
+            spline={form.zValue.spline}
             workflow={workflow}
          />
       </div>

@@ -10,24 +10,24 @@ import { Field } from './Field'
 type Field_dummy_serial = { $: string; value?: string; deepValue?: { str: string; num: number } }
 
 interface Field_dummy extends Field {
-   ['Ҩtype']: any
-   ['ҨownConfig']: {}
-   ['ҨownSerial']: Field_dummy_serial
-   ['Ҩvalue']: string
-   ['Ҩsetvalue']: string
-   ['Ҩunchecked']: Maybe<string>
-   ['Ҩchild']: never
-   ['Ҩopts']: unknown
-   ['ҨownPatch']: Patch
+   ['ҨType']: any
+   ['ҨOwnConfig']: {}
+   ['ҨOwnSerial']: Field_dummy_serial
+   ['ҨValue']: string
+   ['ҨSetvalue']: string
+   ['ҨUnchecked']: Maybe<string>
+   ['ҨChild']: never
+   ['ҨOpts']: unknown
+   ['ҨOwnPatch']: Patch
 }
 
 class Field_dummy extends Field {
    static readonly codeForTypescriptValue = (): string => '0'
    static readonly patchedSerialPaths: readonly string[] = Object.freeze(['value'])
    static generateSerial(
-      value: Maybe<Field_dummy['Ҩvalue']>,
-      config: Field_dummy['Ҩconfig'],
-   ): Field_dummy['Ҩserial'] {
+      value: Maybe<Field_dummy['ҨValue']>,
+      config: Field_dummy['ҨConfig'],
+   ): Field_dummy['ҨSerial'] {
       if (value == null) return this.unsetSerial
 
       return {
@@ -36,39 +36,39 @@ class Field_dummy extends Field {
       }
    }
 
-   override get ϟvalue(): string {
-      return this.ϟvalue_or_fail
+   override get zValue(): string {
+      return this.zValue_or_fail
    }
-   set ϟvalue(value: string) {
-      this.ϟpatchInTransaction((draft) => {
+   set zValue(value: string) {
+      this.zPatchInTransaction((draft) => {
          draft.value = value
       })
    }
 
-   override get ϟvalue_or_fail(): string {
-      if (this.ϟvalue_unchecked == null) throw new Error('Fail')
-      return this.ϟvalue_unchecked
+   override get zValue_or_fail(): string {
+      if (this.zValue_unchecked == null) throw new Error('Fail')
+      return this.zValue_unchecked
    }
-   override get ϟvalue_or_zero(): string {
-      return this.ϟvalue_unchecked ?? ''
+   override get zValue_or_zero(): string {
+      return this.zValue_unchecked ?? ''
    }
-   override get ϟvalue_unchecked(): Maybe<string> {
-      return this.ϟserial.value
+   override get zValue_unchecked(): Maybe<string> {
+      return this.zSerial.value
    }
 
-   override ϟisValueEqual(other: Field): boolean {
-      return this.ϟvalue_unchecked === other.ϟvalue_unchecked
+   override zIsValueEqual(other: Field): boolean {
+      return this.zValue_unchecked === other.zValue_unchecked
    }
-   protected override ϟsetOwnSerial(serial: Field_dummy_serial): void {
-      this.ϟassignNewSerial(serial)
+   protected override zSetOwnSerial(serial: Field_dummy_serial): void {
+      this.zAssignNewSerial(serial)
    }
-   override get ϟhasChanges(): boolean {
+   override get zHasChanges(): boolean {
       return true
    }
-   override ϟownTypeSpecificProblems: Problem_Ext
-   override ϟownConfigSpecificProblems: Problem_Ext
-   override get ϟisOwnSet(): boolean {
-      return this.ϟvalue_unchecked !== undefined
+   override zOwnTypeSpecificProblems: Problem_Ext
+   override zOwnConfigSpecificProblems: Problem_Ext
+   override get zIsOwnSet(): boolean {
+      return this.zValue_unchecked !== undefined
    }
    static readonly type = 'dummy'
    private static readonly unsetSerial = { $: 'dummy' }
@@ -98,10 +98,10 @@ describe('Field', () => {
          const field1 = schema.create()
          const field2 = schema.create()
 
-         field1.ϟvalue = 'abc'
-         field2.ϟvalue = 'abc'
+         field1.zValue = 'abc'
+         field2.zValue = 'abc'
 
-         const patches = field1.ϟgeneratePatches(field2)
+         const patches = field1.zGeneratePatches(field2)
          expect(patches).toEqual([])
       })
 
@@ -110,10 +110,10 @@ describe('Field', () => {
          const field1 = schema.create()
          const field2 = schema.create()
 
-         field1.ϟvalue = 'abc'
-         field2.ϟvalue = 'def'
+         field1.zValue = 'abc'
+         field2.zValue = 'def'
 
-         const patches = field1.ϟgeneratePatches(field2) as Patch[]
+         const patches = field1.zGeneratePatches(field2) as Patch[]
          expect(patches).toEqual([
             {
                op: 'replace',
@@ -130,9 +130,9 @@ describe('Field', () => {
          const field1 = schema.create()
          const field2 = schema.create()
 
-         field2.ϟvalue = 'def'
+         field2.zValue = 'def'
 
-         const patches = field1.ϟgeneratePatches(field2) as Patch[]
+         const patches = field1.zGeneratePatches(field2) as Patch[]
          expect(patches).toEqual([
             {
                op: 'remove',
@@ -148,9 +148,9 @@ describe('Field', () => {
          const field1 = schema.create()
          const field2 = schema.create()
 
-         field1.ϟvalue = 'abc'
+         field1.zValue = 'abc'
 
-         const patches = field1.ϟgeneratePatches(field2) as Patch[]
+         const patches = field1.zGeneratePatches(field2) as Patch[]
          expect(patches).toEqual([
             {
                op: 'add',
@@ -168,7 +168,7 @@ describe('Field', () => {
          it('should replace the serial with the new one', () => {
             const schema = dummy()
             const field = schema.create()
-            field.ϟvalue = 'abc'
+            field.zValue = 'abc'
             const patches: Patch[] = [
                {
                   op: 'replace',
@@ -179,15 +179,15 @@ describe('Field', () => {
                },
             ]
 
-            field.ϟapplyPatches(patches)
+            field.zApplyPatches(patches)
 
-            expect(field.ϟvalue).toBe('def')
+            expect(field.zValue).toBe('def')
          })
 
          it('should not apply the patch if the path is different', () => {
             const schema = dummy()
             const field = schema.create()
-            field.ϟvalue = 'abc'
+            field.zValue = 'abc'
             const patches: Patch[] = [
                {
                   op: 'replace',
@@ -198,9 +198,9 @@ describe('Field', () => {
                },
             ]
 
-            field.ϟapplyPatches(patches)
+            field.zApplyPatches(patches)
 
-            expect(field.ϟvalue).toBe('abc')
+            expect(field.zValue).toBe('abc')
          })
       })
 
@@ -208,7 +208,7 @@ describe('Field', () => {
          it('should unset the value if the patch is a remove', () => {
             const schema = dummy()
             const field = schema.create()
-            field.ϟvalue = 'abc'
+            field.zValue = 'abc'
             const patches: Patch[] = [
                {
                   op: 'remove',
@@ -218,9 +218,9 @@ describe('Field', () => {
                },
             ]
 
-            field.ϟapplyPatches(patches)
+            field.zApplyPatches(patches)
 
-            expect(field.ϟserial.value).toBeUndefined()
+            expect(field.zSerial.value).toBeUndefined()
          })
       })
 
@@ -228,7 +228,7 @@ describe('Field', () => {
          it('should set the value if the patch is an add and the value is unset', () => {
             const schema = dummy()
             const field = schema.create()
-            field.ϟvalue = 'abc'
+            field.zValue = 'abc'
             const patches: Patch[] = [
                {
                   op: 'add',
@@ -239,16 +239,16 @@ describe('Field', () => {
                },
             ]
 
-            field.ϟapplyPatches(patches)
+            field.zApplyPatches(patches)
 
-            expect(field.ϟvalue).toBe('def')
+            expect(field.zValue).toBe('def')
          })
 
          // 🔶 this is questionnable
          it('should set the value if the patch is an add and the value is set', () => {
             const schema = dummy()
             const field = schema.create()
-            field.ϟvalue = 'abc'
+            field.zValue = 'abc'
             const patches: Patch[] = [
                {
                   op: 'add',
@@ -259,11 +259,11 @@ describe('Field', () => {
                },
             ]
 
-            field.ϟvalue = 'ghi'
+            field.zValue = 'ghi'
 
-            field.ϟapplyPatches(patches)
+            field.zApplyPatches(patches)
 
-            expect(field.ϟvalue).toBe('def')
+            expect(field.zValue).toBe('def')
          })
       })
    })

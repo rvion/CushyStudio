@@ -75,7 +75,7 @@ const AssetPageLora = obs(function AssetPageLora_(p: { st: PanelAssetsState }) {
       return 'Not connected to host, can not display Loras'
    }
 
-   const theme = cushy.preferences.theme.ϟvalue
+   const theme = cushy.preferences.theme.zValue
    const selectedItems = p.st.props.selected
 
    return (

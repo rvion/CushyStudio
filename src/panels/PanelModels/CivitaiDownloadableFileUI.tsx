@@ -45,7 +45,7 @@ export const CivitaiDownloadableFileUI = obs(function CivitaiDownloadableFileUI_
 ) {
    const file: CivitaiDownloadableFile = p.file
    const version: CivitaiModelVersion = p.version
-   const apiKey = cushy.civitaiConf.ϟfields.apiKey.ϟvalue
+   const apiKey = cushy.civitaiConf.zFields.apiKey.zValue
    const detectedBase = detectBase(p)
    const detectedType = detectType(p)
 

@@ -16,20 +16,20 @@ export class TreeEntry_Field implements ITreeEntry {
    /** config label, or parent key */
    get label(): string {
       if (
-         this.widget.ϟconfig.label != null &&
-         this.widget.ϟconfig.label !== '' &&
-         this.widget.ϟconfig.label !== false
+         this.widget.zConfig.label != null &&
+         this.widget.zConfig.label !== '' &&
+         this.widget.zConfig.label !== false
       )
-         return this.widget.ϟconfig.label
+         return this.widget.zConfig.label
       return this.widgetWithKey.key
    }
 
    get name(): string {
-      return `${this.label} = ${this.widget.ϟuid /* 🔴 */}`
+      return `${this.label} = ${this.widget.zUid /* 🔴 */}`
    }
 
    get isFolder(): boolean {
-      return this.widget.ϟchildrenAll.length > 0
+      return this.widget.zChildrenAll.length > 0
    }
 
    /** packed with a bunch of sane default for now; we'll see if this is ever */
@@ -74,7 +74,7 @@ export class TreeEntry_Field implements ITreeEntry {
    }
 
    children = (): ITreeElement<any>[] => {
-      return this.widget.ϟsubFieldsWithKeys.map((w) => w.field.ϟasTreeElement(w.key))
+      return this.widget.zSubFieldsWithKeys.map((w) => w.field.zAsTreeElement(w.key))
    }
 
    // extra = () => (

@@ -15,8 +15,8 @@ export const WidgetUndoChangesButtonUI = obs(function WidgetUndoChangesButtonUI_
          tooltip='Reset to default values'
          borderless
          className={p.className}
-         onClick={() => field?.ϟreset()}
-         disabled={!(field?.ϟhasChanges ?? false)}
+         onClick={() => field?.zReset()}
+         disabled={!(field?.zHasChanges ?? false)}
          icon={IKONS.mdiUndoVariant}
          look='ghost'
          size='widget'

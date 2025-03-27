@@ -8,12 +8,12 @@ export type IWidgetListLike = {
    removeAllItems(): void
 
    // field specific
-   ϟexpandAllChildren(): void
-   ϟcollapseAllChildren(): void
-   readonly ϟisCollapsed?: boolean
-   ϟsetCollapsed(value: boolean): void
-   ϟtouch: () => void
-   ϟconfig: {
+   zExpandAllChildren(): void
+   zCollapseAllChildren(): void
+   readonly zIsCollapsed?: boolean
+   zSetCollapsed(value: boolean): void
+   zTouch: () => void
+   zConfig: {
       max?: number
       min?: number
    }

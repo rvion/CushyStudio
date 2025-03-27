@@ -166,7 +166,7 @@ export const StepGroupUI = obs(function StepGroupUI_(p: {
    const conf = useGalleryConf()
    const ALLIMAGES = conf.imageToDisplay
 
-   const theme = cushy.preferences.theme.ϟvalue
+   const theme = cushy.preferences.theme.zValue
 
    const img = ALLIMAGES[p.index]
    if (img == undefined) {

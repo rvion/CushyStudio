@@ -8,42 +8,42 @@ import { InputNumberUI } from '../../input-number/InputNumberUI'
 
 export const WidgetSeedUI = obs(function WidgetSeedUI_(p: { field: Field_seed }) {
    const field = p.field
-   const val = field.ϟvalue_or_zero
+   const val = field.zValue_or_zero
    const csuite = useCSuite()
 
    return (
       <Frame border={csuite.inputBorder} tw={['h-input', 'flex flex-1 items-center']}>
          <ToggleButtonUI // Random
             icon={IKONS.mdiAutoFix}
-            value={field.ϟserial.mode === 'randomize'}
+            value={field.zSerial.mode === 'randomize'}
             onValueChange={() => {
                field.setToRandomize()
-               field.ϟtouch()
+               field.zTouch()
             }}
-            toggleGroup={field.ϟuid}
+            toggleGroup={field.zUid}
             // text='Random'
          />
          <ToggleButtonUI // Fixed
             icon={IKONS.mdiNumeric1CircleOutline}
-            value={field.ϟserial.mode === 'fixed'}
+            value={field.zSerial.mode === 'fixed'}
             onValueChange={() => {
                field.setToFixed()
-               field.ϟtouch()
+               field.zTouch()
             }}
-            toggleGroup={field.ϟuid}
+            toggleGroup={field.zUid}
             // text='Fixed'
          />
          <InputNumberUI // Fixed value
-            disabled={field.ϟserial.mode === 'randomize'}
+            disabled={field.zSerial.mode === 'randomize'}
             tw={['flex-1 !border-none']}
-            min={field.ϟconfig.min}
-            max={field.ϟconfig.max}
+            min={field.zConfig.min}
+            max={field.zConfig.max}
             step={1}
             value={val}
             mode='int'
             onValueChange={(value) => {
-               field.ϟvalue = value
-               field.ϟtouch()
+               field.zValue = value
+               field.zTouch()
             }}
          />
          <Button // reset fixed value
@@ -51,7 +51,7 @@ export const WidgetSeedUI = obs(function WidgetSeedUI_(p: { field: Field_seed })
             tw='!border-l !border-r-0'
             onClick={() => {
                field.setToFixed(Math.floor(Math.random() * 100000000))
-               field.ϟtouch()
+               field.zTouch()
             }}
             icon={IKONS.mdiAutorenew}
             square

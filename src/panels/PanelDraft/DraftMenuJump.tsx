@@ -16,7 +16,7 @@ export const DraftMenuDataBlockUI = obs(function DraftMenuDataBlockUI_(p: {
    draft: DraftL
    className?: string
 }) {
-   const theme = cushy.preferences.theme.ϟvalue
+   const theme = cushy.preferences.theme.zValue
 
    return (
       <Frame

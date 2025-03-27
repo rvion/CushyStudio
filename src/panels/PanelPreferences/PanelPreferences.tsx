@@ -39,9 +39,9 @@ export const PanelPreferencesUI = obs(function Panel_Preferences_(p: PanelPrefer
       }),
    )
 
-   const modeField = panelState.ϟfields.preferenceMode
+   const modeField = panelState.preferenceMode
    const page: React.JSX.Element = ((): React.JSX.Element => {
-      switch (modeField.ϟvalue) {
+      switch (modeField.zValue) {
          case 'hosts': {
             return <PanelComfyHostsUI />
          }
@@ -119,7 +119,7 @@ const PreferenceTabButtonUI = obs(function PreferenceTabButtonUI_(p: {
          tw='!h-10 capitalize'
          value={p.field.is(p.mode)}
          text={p.mode}
-         onValueChange={(_) => p.field.ϟsetValue(p.mode)}
+         onValueChange={(_) => p.field.zSetValue(p.mode)}
       />
    )
 })

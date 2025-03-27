@@ -15,8 +15,8 @@ export type WidgetCardProps = StandardProps['wrappers'] & {
 
 /** Decoration that surrounds widget groups */
 export const WidgetCardUI = obs(function WidgetCardUI_(p: WidgetCardProps) {
-   const theme = cushy.preferences.theme.ϟvalue
-   const enablePadding = !p.rp.field.ϟisCollapsed
+   const theme = cushy.preferences.theme.zValue
+   const enablePadding = !p.rp.field.zIsCollapsed
    return (
       <Frame
          // Clipping here fixes border's corners since child content goes outside of this component.

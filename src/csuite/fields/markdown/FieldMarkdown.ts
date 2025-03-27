@@ -8,14 +8,14 @@ import { Field } from '../../model/Field'
 import { registerFieldClass } from '../WidgetUI.DI'
 
 // #region CONFIG TYPE
-export type Field_markdown_config = Field_markdown['Ҩconfig']
+export type Field_markdown_config = Field_markdown['ҨConfig']
 type Field_markdown_ownConfig = {
    markdown: string | ((self: Field_markdown) => string)
    inHeader?: boolean
 }
 
 // #region SERIAL TYPE
-export type Field_markdown_serial = Field_markdown['Ҩserial']
+export type Field_markdown_serial = Field_markdown['ҨSerial']
 type Field_markdown_ownSerial = { $: 'markdown' }
 
 // #region VALUE TYPE
@@ -24,15 +24,15 @@ export type Field_markdown_unchecked = Field_markdown_value
 
 // #region STATE TYPE
 export interface Field_markdown {
-   ['Ҩtype']: 'markdown'
-   ['ҨownConfig']: Field_markdown_ownConfig
-   ['ҨownSerial']: Field_markdown_ownSerial
-   ['Ҩvalue']: Field_markdown_value
-   ['Ҩsetvalue']: Field_markdown_value
-   ['Ҩunchecked']: Field_markdown_unchecked
-   ['Ҩchild']: never
-   ['Ҩopts']: unknown
-   ['ҨownPatch']: Patch<'markdown'>
+   ['ҨType']: 'markdown'
+   ['ҨOwnConfig']: Field_markdown_ownConfig
+   ['ҨOwnSerial']: Field_markdown_ownSerial
+   ['ҨValue']: Field_markdown_value
+   ['ҨSetvalue']: Field_markdown_value
+   ['ҨUnchecked']: Field_markdown_unchecked
+   ['ҨChild']: never
+   ['ҨOpts']: unknown
+   ['ҨOwnPatch']: Patch<'markdown'>
 }
 export class Field_markdown extends Field {
    // #region TYPE
@@ -59,56 +59,56 @@ export class Field_markdown extends Field {
    }
 
    // #region SERIAL
-   protected ϟsetOwnSerial(_next: Field_markdown_serial): void {}
+   protected zSetOwnSerial(_next: Field_markdown_serial): void {}
 
    // #region VALIDATION
-   get ϟownConfigSpecificProblems(): Problem_Ext {
+   get zOwnConfigSpecificProblems(): Problem_Ext {
       return null
    }
 
-   get ϟownTypeSpecificProblems(): Problem_Ext {
+   get zOwnTypeSpecificProblems(): Problem_Ext {
       return null
    }
 
-   get ϟisOwnSet(): boolean {
+   get zIsOwnSet(): boolean {
       return true
    }
 
    // #region MISC
    get markdown(): string {
-      const md = this.ϟconfig.markdown
+      const md = this.zConfig.markdown
       if (typeof md === 'string') return md
       return md(this)
    }
 
    // #region value
    /** do nothing, see coment on the hasChange getter */
-   set ϟvalue(_: Field_markdown_value) {}
+   set zValue(_: Field_markdown_value) {}
 
-   get ϟvalue(): Field_markdown_value {
-      return this.ϟserial
+   get zValue(): Field_markdown_value {
+      return this.zSerial
    }
 
    /**
     * always return false, because the text isn't part of the serial, it's part of the config
     * markdown fields have NO value
     */
-   get ϟhasChanges(): boolean {
+   get zHasChanges(): boolean {
       return false
    }
    // the whole markdown field is legacy
    // this is why most of the attributes make no sense.
-   get ϟvalue_or_fail(): Field_markdown_value {
-      return this.ϟserial
+   get zValue_or_fail(): Field_markdown_value {
+      return this.zSerial
    }
-   get ϟvalue_or_zero(): Field_markdown_value {
-      return this.ϟserial
+   get zValue_or_zero(): Field_markdown_value {
+      return this.zSerial
    }
-   get ϟvalue_unchecked(): Field_markdown_unchecked {
-      return this.ϟserial
+   get zValue_unchecked(): Field_markdown_unchecked {
+      return this.zSerial
    }
 
-   override ϟisValueEqual(other: Field): boolean {
+   override zIsValueEqual(other: Field): boolean {
       if (!(other instanceof Field_markdown)) return false
 
       return true

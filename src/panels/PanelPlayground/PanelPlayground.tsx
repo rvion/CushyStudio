@@ -37,7 +37,7 @@ export type PanelPlaygroundProps = NO_PROPS
 
 export const PanelPlaygroundUI = obs(function PanelPlaygroundUI_(p: PanelPlaygroundProps) {
    const relPathToThisPage = './src/panels/PanelPlayground/PanelPlayground.tsx' as RelativePath
-   const mode = Header_Playground.ϟvalue
+   const mode = Header_Playground.zValue
 
    useLayoutEffect(() => {
       cushy.layout.syncTabTitle('Playground', {}, 'DevPlayground')
@@ -46,7 +46,7 @@ export const PanelPlaygroundUI = obs(function PanelPlaygroundUI_(p: PanelPlaygro
    return (
       <UI.Panel tw='gap-1'>
          <UI.Panel.Header extensibleHeight>
-            <Header_Playground.ϟroot.UI Shell={uy.shell.HeaderOnly} />
+            <Header_Playground.zRoot.UI Shell={uy.shell.HeaderOnly} />
          </UI.Panel.Header>
          <ErrorBoundaryUI /* 👇 playground sub-pages */>
             {mode.electron && <PlaygroundElectronUI />}
@@ -109,6 +109,6 @@ const Header_Playground = cushyFactory.document(
    {
       name: 'Playground Conf',
       serial: () => readJSON('settings/playground_config.json'),
-      onSerialChange: (form) => writeJSON('settings/playground_config.json', form.ϟserial),
+      onSerialChange: (form) => writeJSON('settings/playground_config.json', form.zSerial),
    },
 )

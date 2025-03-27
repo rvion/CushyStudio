@@ -22,8 +22,8 @@ export const CivitaiResultVersionUI = obs(function CivitaiResultVersionUI_(p: {
    }))
    const img = uist.image
    const imgUrl = img?.url // ?? noImage
-   const size1 = `${cushy.civitaiConf.ϟfields.imgSize1.ϟvalue}px`
-   const size2 = `${cushy.civitaiConf.ϟfields.imgSize2.ϟvalue}px`
+   const size1 = `${cushy.civitaiConf.zFields.imgSize1.zValue}px`
+   const size2 = `${cushy.civitaiConf.zFields.imgSize2.zValue}px`
 
    return (
       <div tw='flex flex-col gap-1'>

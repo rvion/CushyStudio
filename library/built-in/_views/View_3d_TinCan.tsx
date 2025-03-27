@@ -1,10 +1,10 @@
-import type { AnyFieldSerial } from '../../../src/csuite/model/EntitySerial'
 import type { ThreeElements } from '@react-three/fiber'
 import type { Group } from 'three'
+import type { AnyFieldSerial } from '../../../src/csuite/model/EntitySerial'
 
 import { Environment, Html, Image, OrbitControls, Sparkles, Stage, useGLTF } from '@react-three/drei'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { observer, useLocalObservable } from 'mobx-react-lite'
+import { useLocalObservable } from 'mobx-react-lite'
 import { useMemo, useRef } from 'react'
 
 /** this custom view  */
@@ -29,7 +29,7 @@ const CanUI = obs(function CanUI_(p: { imageID: MediaImageID | null }) {
       {
          name: 'Playground Widget Showcase',
          serial: () => cushy.readJSON<AnyFieldSerial>('settings/beer.json'),
-         onSerialChange: (form) => cushy.writeJSON('settings/beer.json', form.serial),
+         onSerialChange: (form) => cushy.writeJSON('settings/beer.json', form.zSerial),
       },
    )
    return (

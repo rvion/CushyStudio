@@ -11,7 +11,7 @@ import type { FieldReaction } from './pubsub/FieldReaction'
 import type { Publication } from './pubsub/Producer'
 import type { Problem_Ext } from './Validation'
 
-export type FieldConfigFor<FIELD extends Field> = FieldConfig_CommonProperties<FIELD> & FIELD['ҨownConfig']
+export type FieldConfigFor<FIELD extends Field> = FieldConfig_CommonProperties<FIELD> & FIELD['ҨOwnConfig']
 
 export interface FieldConfig_CommonProperties<out FIELD extends Field> {
    readonly uiui?: RENDERER.UIConf<FIELD>
@@ -71,7 +71,7 @@ export interface FieldConfig_CommonProperties<out FIELD extends Field> {
     * @since 2024-05-14
     * @stability beta
     */
-   beforeInit?(serial: unknown /* FIELD['Ҩserial'] */): FIELD['Ҩserial']
+   beforeInit?(serial: unknown /* FIELD['ҨSerial'] */): FIELD['ҨSerial']
    version?: string
 
    /**
@@ -159,7 +159,7 @@ export interface FieldConfig_CommonProperties<out FIELD extends Field> {
 
    /** unused internally, here so you can add whatever you want inside */
    custom?: unknown
-   opts?: FIELD['Ҩopts']
+   opts?: FIELD['ҨOpts']
 
    // EXTENSION SYSMEM ------------------------------------------------------
    // csuite models have 3 main ways to be extends:

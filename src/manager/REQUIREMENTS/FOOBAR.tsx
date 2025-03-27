@@ -16,7 +16,7 @@ export const IntallBtnForKnownCivitaiModelId = obs(function IntallBtnForKnownCiv
    civitaiModelId?: string | number
 }) {
    const x = usePromise(() => {
-      const apiKey = cushy.civitaiConf.ϟfields.apiKey.ϟvalue // retrieve api key
+      const apiKey = cushy.civitaiConf.zFields.apiKey.zValue // retrieve api key
       if (!apiKey) return Promise.resolve({ error: 'no api key' })
       let url = `https://civitai.com` // base civitai url (or later proxy to civitai when you live in a bad country)
       url = `${url}/api/v1/models/${p.civitaiModelId || testDataIllustrious.modelId}` // enpoint url
@@ -46,7 +46,7 @@ export const IntallBtnForKnownCivitaiModelId = obs(function IntallBtnForKnownCiv
 export const IntallBtnForKnownCivitaiModelVersionId = obs(
    function IntallBtnForKnownCivitaiModelVersionId_(p: { civitaiModelVersionId?: string | number }) {
       const x = usePromise(() => {
-         const apiKey = cushy.civitaiConf.ϟfields.apiKey.ϟvalue // retrieve api key
+         const apiKey = cushy.civitaiConf.zFields.apiKey.zValue // retrieve api key
          if (!apiKey) return Promise.resolve({ error: 'no api key' })
          let url = `https://civitai.com` // base civitai url (or later proxy to civitai when you live in a bad country)
          url = `${url}/api/v1/model-versions/${p.civitaiModelVersionId || testDataIllustrious.modelVersionId}` // enpoint url

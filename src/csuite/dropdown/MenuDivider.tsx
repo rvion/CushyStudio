@@ -11,7 +11,7 @@ export const MenuDivider = obs(function Divider_(p: { children?: ReactNode }) {
                line
                border
                tw='z-1 !h-widget relative justify-self-center px-2'
-               roundness={cushy.preferences.theme.ϟvalue.global.roundness}
+               roundness={cushy.preferences.theme.zValue.global.roundness}
             >
                {p.children}
             </Frame>

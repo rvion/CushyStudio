@@ -13,12 +13,12 @@ export const WidgetGroup_LineUI = obs(function WidgetGroup_LineUI_(p: { field: F
    //    return <WidgetSingleLineSummaryUI>{p.field.summary}</WidgetSingleLineSummaryUI>
    const preferences = cushy.preferences
 
-   const presets = field.ϟconfig.presets
+   const presets = field.zConfig.presets
    const presetCount = presets?.length ?? 0
    const out: ReactNode[] = []
-   const showFoldButtons = preferences.interface.ϟvalue.widget.showFoldButtons
-   const hasFoldableSubfields = field.ϟhasFoldableSubfields
-   if (presets && presetCount > 0 && field.ϟconfig.presetButtons) {
+   const showFoldButtons = preferences.interface.zValue.widget.showFoldButtons
+   const hasFoldableSubfields = field.zHasFoldableSubfields
+   if (presets && presetCount > 0 && field.zConfig.presetButtons) {
       out.push(
          ...presets.map((preset, ix) => (
             <UI.Button //
@@ -29,7 +29,7 @@ export const WidgetGroup_LineUI = obs(function WidgetGroup_LineUI_(p: { field: F
                onClick={(ev) => {
                   preset.apply(field)
                   ev.stopPropagation()
-                  field.ϟtouch()
+                  field.zTouch()
                }}
                children={preset.label}
             />
@@ -44,10 +44,10 @@ export const WidgetGroup_LineUI = obs(function WidgetGroup_LineUI_(p: { field: F
                subtle
                borderless
                icon={IKONS.mdiUnfoldMoreHorizontal}
-               disabled={!field.ϟhasFoldableSubfieldsThatAreFolded}
+               disabled={!field.zHasFoldableSubfieldsThatAreFolded}
                onClick={() => {
-                  p.field.ϟexpandAllChildren()
-                  field.ϟtouch()
+                  p.field.zExpandAllChildren()
+                  field.zTouch()
                }}
             />
 
@@ -56,10 +56,10 @@ export const WidgetGroup_LineUI = obs(function WidgetGroup_LineUI_(p: { field: F
                subtle
                borderless
                icon={IKONS.mdiUnfoldLessHorizontal}
-               disabled={!field.ϟhasFoldableSubfieldsThatAreUnfolded}
+               disabled={!field.zHasFoldableSubfieldsThatAreUnfolded}
                onClick={() => {
-                  p.field.ϟcollapseAllChildren()
-                  field.ϟtouch()
+                  p.field.zCollapseAllChildren()
+                  field.zTouch()
                }}
             />
          </div>,

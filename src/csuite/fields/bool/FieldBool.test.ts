@@ -12,7 +12,7 @@ describe('FieldBool', () => {
             const E1 = S.create()
             const E2 = S.create()
 
-            expect(E1.ϟisValueEqual(E2)).toBe(true)
+            expect(E1.zIsValueEqual(E2)).toBe(true)
          })
 
          it('should return true if both fields are set to the same value', () => {
@@ -20,9 +20,9 @@ describe('FieldBool', () => {
             const E1 = S.create()
             const E2 = S.create()
 
-            E1.ϟvalue = true
-            E2.ϟvalue = true
-            expect(E1.ϟisValueEqual(E2)).toBeTruthy()
+            E1.zValue = true
+            E2.zValue = true
+            expect(E1.zIsValueEqual(E2)).toBeTruthy()
             const x: Z.Field = 0 as any
          })
       })
@@ -33,9 +33,9 @@ describe('FieldBool', () => {
             const E1 = S.create()
             const E2 = S.create()
 
-            E1.ϟvalue = false
+            E1.zValue = false
 
-            expect(E1.ϟisValueEqual(E2)).toBeFalsy()
+            expect(E1.zIsValueEqual(E2)).toBeFalsy()
          })
 
          it('should return false if both fields are set to different values', () => {
@@ -43,10 +43,10 @@ describe('FieldBool', () => {
             const E1 = S.create()
             const E2 = S.create()
 
-            E1.ϟvalue = true
-            E2.ϟvalue = false
+            E1.zValue = true
+            E2.zValue = false
 
-            expect(E1.ϟisValueEqual(E2)).toBeFalsy()
+            expect(E1.zIsValueEqual(E2)).toBeFalsy()
          })
       })
    })
@@ -55,22 +55,22 @@ describe('FieldBool', () => {
       describe('without a serial', () => {
          describe('without a default value', () => {
             it('should use the defaultSerial without patching it', () => {
-               const patchSerial = vitest.spyOn(Field_bool.prototype, 'ϟpatchSerial')
+               const patchSerial = vitest.spyOn(Field_bool.prototype, 'zPatchSerial')
                const S = b.bool_()
                const E = S.create()
 
-               expect(E.ϟserial).toBe(S.defaultSerial)
+               expect(E.zSerial).toBe(S.defaultSerial)
                expect(patchSerial).not.toHaveBeenCalled()
             })
          })
 
          describe('with a default value', () => {
             it('should use the defaultSerial and patch it with the default value', () => {
-               const patchSerial = vitest.spyOn(Field_bool.prototype, 'ϟpatchSerial')
+               const patchSerial = vitest.spyOn(Field_bool.prototype, 'zPatchSerial')
                const S = b.bool({ default: true })
                const E = S.create()
 
-               expect(E.ϟserial).toBe(S.defaultSerial)
+               expect(E.zSerial).toBe(S.defaultSerial)
                expect(patchSerial).not.toHaveBeenCalled()
             })
          })

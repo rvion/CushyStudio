@@ -13,7 +13,7 @@ export const ListButtonAdd100ItemsUI = obs(function ListButtonAdd100ItemsUI_(p: 
          square
          icon={IKONS.mdiUnfoldLessHorizontal}
          onClick={() => {
-            field.ϟtouch()
+            field.zTouch()
             runInAction(() => {
                for (let i = 0; i < 100; i++) field.addItem()
             })

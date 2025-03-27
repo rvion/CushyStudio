@@ -20,11 +20,11 @@ export type Problem = {
    data?: any
 }
 
-export const normalizeProblem = (field: { ϟpath: string }, problem: Problem_Ext): Problem[] => {
-   if (problem === true) return [{ path: field.ϟpath, message: 'Error (unknown (true))' }]
+export const normalizeProblem = (field: { zPath: string }, problem: Problem_Ext): Problem[] => {
+   if (problem === true) return [{ path: field.zPath, message: 'Error (unknown (true))' }]
    if (problem === false) return []
    if (problem == null) return []
-   if (typeof problem === 'string') return [{ path: field.ϟpath, message: problem }]
+   if (typeof problem === 'string') return [{ path: field.zPath, message: problem }]
    if (Array.isArray(problem)) return problem.flatMap((p) => normalizeProblem(field, p))
    return [problem]
 }

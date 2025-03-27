@@ -22,9 +22,9 @@ export const WidgetSelectOne_RollUI = obs(function WidgetSelectOne_RollUI_<VALUE
             disabled={nextId == null}
             onClick={() => {
                field.selectedId = nextId!
-               field.ϟtouch()
+               field.zTouch()
             }}
-            onBlur={() => field.ϟtouch()}
+            onBlur={() => field.zTouch()}
          >
             {curr.label}
          </Button>

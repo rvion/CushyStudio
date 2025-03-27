@@ -11,35 +11,35 @@ describe('auto-migration', () => {
       // E1 works
       const S1: Z.String = b.string({ default: '🔵' })
       const E1 = S1.create()
-      expectJSON(E1.ϟvalue).toBe('🔵')
+      expectJSON(E1.zValue).toBe('🔵')
 
       // set E1 value to '🟢'
-      E1.ϟvalue = '🟢'
-      expectJSON(E1.ϟvalue).toBe('🟢')
-      expectJSON(E1.ϟserial).toMatchObject({ $: 'str', value: '🟢' })
+      E1.zValue = '🟢'
+      expectJSON(E1.zValue).toBe('🟢')
+      expectJSON(E1.zSerial).toMatchObject({ $: 'str', value: '🟢' })
 
       // construct E2 from E1 serial, but with schema wrapped into list
       const S2 = b.string().list()
       // @ts-expect-error
-      const E2 = S2.create(E1.ϟserial)
+      const E2 = S2.create(E1.zSerial)
 
       // E2 should able to PRESERVE the '🟢' when schema has been wrapped into list
-      expectJSON(E2.ϟvalue).toMatchObject(['🟢'])
-      expectJSON(E2.ϟserial).toMatchObject({
+      expectJSON(E2.zValue).toMatchObject(['🟢'])
+      expectJSON(E2.zSerial).toMatchObject({
          $: 'list',
          items_: [{ $: 'str', value: '🟢' }],
-         keys: [E2.items[0]?.ϟmountKey],
+         keys: [E2.items[0]?.zMountKey],
       })
 
       // E1 should still have the same value, despite its serial having been used to create E2
-      expectJSON(E1.ϟserial).toMatchObject({ $: 'str', value: '🟢' })
+      expectJSON(E1.zSerial).toMatchObject({ $: 'str', value: '🟢' })
 
       // construct E3 from E2 serial, but with schema back to simple string (not in list anymore)
       // @ts-expect-error
-      const E3 = S1.create(E2.ϟserial)
+      const E3 = S1.create(E2.zSerial)
 
       // E3 is able to PRESERVE the '🟢' when schema has been stripped from list
-      expectJSON(E3.ϟserial).toMatchObject({ $: 'str', value: '🟢' })
+      expectJSON(E3.zSerial).toMatchObject({ $: 'str', value: '🟢' })
    })
 
    // 🔶 it('can recover from/to lists', () => {
@@ -84,35 +84,35 @@ describe('auto-migration', () => {
       // E1 works
       const S1: Z.String = b.string({ default: '🔵' })
       const E1 = S1.create()
-      expectJSON(E1.ϟvalue).toBe('🔵')
+      expectJSON(E1.zValue).toBe('🔵')
 
       // set E1 value to '🟢'
-      E1.ϟvalue = '🟢'
-      expectJSON(E1.ϟvalue).toBe('🟢')
-      expectJSON(E1.ϟserial).toMatchObject({ $: 'str', value: '🟢' })
+      E1.zValue = '🟢'
+      expectJSON(E1.zValue).toBe('🟢')
+      expectJSON(E1.zSerial).toMatchObject({ $: 'str', value: '🟢' })
 
       // construct E2 from E1 serial, but with schema wrapped into list
       const S2 = b.string().list()
       // @ts-expect-error
-      const E2 = S2.create(E1.ϟserial)
+      const E2 = S2.create(E1.zSerial)
 
       // E2 should able to PRESERVE the '🟢' when schema has been wrapped into list
-      expectJSON(E2.ϟvalue).toMatchObject(['🟢'])
-      E2.ϟvalue[0] = '🔴'
-      expectJSON(E2.ϟserial).toMatchObject({
+      expectJSON(E2.zValue).toMatchObject(['🟢'])
+      E2.zValue[0] = '🔴'
+      expectJSON(E2.zSerial).toMatchObject({
          $: 'list',
          items_: [{ $: 'str', value: '🔴' }],
-         keys: [E2.items[0]?.ϟmountKey as Field_list_ItemID],
+         keys: [E2.items[0]?.zMountKey as Field_list_ItemID],
       })
 
       // E1 should still have the same value, despite its serial having been used to create E2
-      expectJSON(E1.ϟserial).toMatchObject({ $: 'str', value: '🟢' })
+      expectJSON(E1.zSerial).toMatchObject({ $: 'str', value: '🟢' })
 
       // construct E3 from E2 serial, but with schema back to simple string (not in list anymore)
       // @ts-expect-error
-      const E3 = S1.create(E2.ϟserial)
+      const E3 = S1.create(E2.zSerial)
 
       // E3 is able to PRESERVE the '🔴' when schema has been stripped from list
-      expectJSON(E3.ϟserial).toMatchObject({ $: 'str', value: '🔴' })
+      expectJSON(E3.zSerial).toMatchObject({ $: 'str', value: '🔴' })
    })
 })

@@ -102,7 +102,7 @@ export type FieldCtorProps<TYPES extends Field = any> = [
    parent: Field | null,
    schema: CSchema<TYPES>,
    initialMountKey: string,
-   serial?: TYPES['Ҩserial'],
+   serial?: TYPES['ҨSerial'],
 ]
 
 export type FieldCtorProps_ALT<TYPES extends Field = any> = [
@@ -111,7 +111,7 @@ export type FieldCtorProps_ALT<TYPES extends Field = any> = [
    parent: Field | null,
    schema: CSchema<any>,
    initialMountKey: string,
-   serial?: TYPES['Ҩserial'],
+   serial?: TYPES['ҨSerial'],
 ]
 
 type PathObject = [string, Maybe<PathObject>]
@@ -145,8 +145,8 @@ type PathObject = [string, Maybe<PathObject>]
  * https://en.wikipedia.org/wiki/Theta
  * greek letters:
  *    - Ξ
- *    - π
  *    - Ω
+ *    - π
  *    - ϟ 🟢
  *    - φ 🟢
  *
@@ -158,18 +158,18 @@ type PathObject = [string, Maybe<PathObject>]
  */
 
 export interface Field {
-   Ҩtype: CATALOG.AllFieldTypes
-   ҨownConfig: unknown
-   ҨownSerial: unknown
-   Ҩserial: FieldSerialFor<this>
-   Ҩconfig: FieldConfigFor<this>
-   Ҩvalue: unknown
-   Ҩsetvalue: unknown
-   Ҩunchecked: unknown
-   Ҩchild: unknown
-   Ҩopts: unknown
-   ҨownPatch: Patch_Common<this['Ҩtype']>
-   Ҩschema: CSchema<this>
+   ҨType: CATALOG.AllFieldTypes
+   ҨOwnConfig: unknown
+   ҨOwnSerial: unknown
+   ҨSerial: FieldSerialFor<this>
+   ҨConfig: FieldConfigFor<this>
+   ҨValue: unknown
+   ҨSetvalue: unknown
+   ҨUnchecked: unknown
+   ҨChild: unknown
+   ҨOpts: unknown
+   ҨOwnPatch: Patch_Common<this['ҨType']>
+   ҨSchema: CSchema<this>
 }
 export abstract class Field {
    // 2025-02-11 new addition
@@ -181,10 +181,10 @@ export abstract class Field {
     * change every time the field is instantiated
     * @undecorated (can't change)
     */
-   readonly ϟuid: FieldId
+   readonly zUid: FieldId
 
    /** widget serial is the full serialized representation of that widget  */
-   @observable.ref accessor ϟserial: this['Ҩserial']
+   @observable.ref accessor zSerial: this['ҨSerial']
 
    /**
     * singleton repository for the project
@@ -192,24 +192,24 @@ export abstract class Field {
     * and other shared resource
     * @undecorated (can't change)
     */
-   readonly ϟrepo: Repository
+   readonly zRepo: Repository
 
    /**
     * root of the field tree this field belongs to
     * @undecorated (can't change)
     */
-   readonly ϟroot: Field
+   readonly zRoot: Field
 
    private _symField = Symbol.for('Field')
 
    /** parent field, (null when root) */
-   @observable.ref accessor ϟparent: Field | null
+   @observable.ref accessor zParent: Field | null
 
    /** schema used to instanciate this widget */
-   ϟschema: CSchema<this>
+   zSchema: CSchema<this>
 
-   get ϟopts2(): this['Ҩopts'] {
-      return this.ϟconfig.opts!
+   get zOpts2(): this['ҨOpts'] {
+      return this.zConfig.opts!
    }
 
    constructor(
@@ -226,16 +226,16 @@ export abstract class Field {
       /** schema used to instanciate this widget */
       schema: CSchema<any /* ❓ */>,
       initialMountKey: string,
-      serial?: any /* ❓ */, // this['Ҩserial'],
+      serial?: any /* ❓ */, // this['ҨSerial'],
    ) {
-      this.ϟuid = mkNewFieldId()
-      this.ϟrepo = repo
-      this.ϟroot = root ?? this
-      this.ϟparent = parent
-      this.ϟschema = schema
-      this.ϟserial = serial ?? this.ϟschema.defaultSerial
-      this.ϟmountKey = initialMountKey
-      this.ϟparent?.ϟacknowledgeNewChildSerial(initialMountKey, this.ϟserial)
+      this.zUid = mkNewFieldId()
+      this.zRepo = repo
+      this.zRoot = root ?? this
+      this.zParent = parent
+      this.zSchema = schema
+      this.zSerial = serial ?? this.zSchema.defaultSerial
+      this.zMountKey = initialMountKey
+      this.zParent?.zAcknowledgeNewChildSerial(initialMountKey, this.zSerial)
    }
 
    /**
@@ -243,12 +243,12 @@ export abstract class Field {
     * Retrieved by looking in prototype for static `type` attribute.
     * @undecorated
     */
-   get ϟtype(): this['Ҩtype'] {
+   get zType(): this['ҨType'] {
       return (this.constructor as FieldConstructor<this>).type
    }
 
    /** @undecorated */
-   private get ϟmigrateSerial_(): SerialMigrationFunction<this['Ҩserial']> {
+   private get zMigrateSerial_(): SerialMigrationFunction<this['ҨSerial']> {
       return (this.constructor as FieldConstructor<this>).migrateSerial
    }
 
@@ -256,18 +256,18 @@ export abstract class Field {
     * widget value is the simple/easy-to-use representation of that widget
     * @undecorated
     */
-   abstract ϟvalue: this['Ҩvalue']
+   abstract zValue: this['ҨValue']
 
    // 💬 2024-09-09 rvion:
    // | we can't actually use the following code to share get value() implementation
    // | because of mobx. Mobx force getters and setters to live on the same prototype.
    // |
    // | ```ts
-   // | get value(): K['Ҩvalue'] {
-   // |     return this.value_or_fail
+   // | get value(): K['ҨValue'] {
+   // |     return this.zValue_or_fail
    // | }
    // |
-   // | set value(_newValue: K['Ҩvalue']) {
+   // | set value(_newValue: K['ҨValue']) {
    // |     throw new Error(`❌ field_${this.type}.value = ... failed: setter not implemented`)
    // | }
    // | ```
@@ -277,10 +277,10 @@ export abstract class Field {
     * this method will NOT try to conjure any intented value.
     * @since 2024-09-03
     *
-    * @see {@link ϟvalue_or_zero}
-    * @see {@link ϟvalue_unchecked}
+    * @see {@link zValue_or_zero}
+    * @see {@link zValue_unchecked}
     */
-   abstract ϟvalue_or_fail: this['Ҩvalue']
+   abstract zValue_or_fail: this['ҨValue']
 
    /**
     * Should do its best to return a value,
@@ -289,72 +289,79 @@ export abstract class Field {
     * 🔶 do not return null, unless the type allows you to
     * @since 2024-09-03
     *
-    * @see {@link ϟvalue_or_fail}
-    * @see {@link ϟvalue_unchecked}
+    * @see {@link zValue_or_fail}
+    * @see {@link zValue_unchecked}
     *
     **/
-   abstract ϟvalue_or_zero: this['Ҩvalue']
+   abstract zValue_or_zero: this['ҨValue']
 
    /**
      * this method
-     *  - Always returns the advertized type (`Field['Ҩunchecked']`).
+     *  - Always returns the advertized type (`Field['ҨUnchecked']`).
      *  - Never crashes
      *
      * @since 2024-09-03
      *
-     * @see {@link ϟvalue_or_fail}
-     * @see {@link ϟvalue_or_zero}
+     * @see {@link zValue_or_fail}
+     * @see {@link zValue_or_zero}
 
      */
-   abstract ϟvalue_unchecked: this['Ҩunchecked']
+   abstract zValue_unchecked: this['ҨUnchecked']
 
    /**
     * Returns true if the given field has the same value as this field
     * (only possible if fields are of the same type)
     */
-   abstract ϟisValueEqual(other: Field): boolean
+   abstract zIsValueEqual(other: Field): boolean
 
    /**
     * you should NOT override this method.
     * you need to override the `generateOwnPatches`
-    * @see ϟgenerateOwnPatches
+    * @see zGenerateOwnPatches
     *
     * (TODO: since final is not a thing in TS; we may prevent this overridability; configurable: false, writable: false) => probbaly want to wait for decorators first)
     * @undecorated (pure producer)
     */
-   public ϟgeneratePatches(referenceField: this): Patch_Common[] {
+   public zGeneratePatches(referenceField: this): Patch_Common[] {
       const patches: Patch_Common[] = []
-      if (this.ϟtype !== referenceField.ϟtype) {
+      if (this.zType !== referenceField.zType) {
          throw new Error(`Can't generate patches between fields of different types`)
          // what do we do here ? 🔴
          // case where it can happen:
          //   - hot reload ? different schema ? 🤔
          // return []
       }
-      const ownPatches = this.ϟgenerateOwnPatches(referenceField)
+      const ownPatches = this.zGenerateOwnPatches(referenceField)
       patches.push(...ownPatches)
-      patches.push(...this.ϟgenerateChildrenPatches(referenceField))
+      patches.push(...this.zGenerateChildrenPatches(referenceField))
       return patches
    }
 
-   get ϟpatchedSerialPaths(): readonly string[] {
+   get zPatchedSerialPaths(): readonly string[] {
       return (this.constructor as FieldConstructor<this>).patchedSerialPaths
    }
 
-   get ϟshorthash(): string {
-      return getUIDForMemoryStructure(this.ϟserial)
+   get zShorthash(): string {
+      return getUIDForMemoryStructure(this.zSerial)
    }
+
+   // superFoo=1
+   // יFoo=1
+   // test(){
+   //    this.foo
+   // }
+
    /**
     * To be overwritten by subclasses to generate patches for the field itself
     * for special cases
     * @undecorated
     */
-   protected ϟgenerateOwnPatches(referenceField: this): this['ҨownPatch'][] {
-      if (this.ϟisValueEqual(referenceField)) return []
+   protected zGenerateOwnPatches(referenceField: this): this['ҨOwnPatch'][] {
+      if (this.zIsValueEqual(referenceField)) return []
 
-      return this.ϟpatchedSerialPaths.flatMap((serialPath): Patch<this['Ҩtype']>[] => {
-         const thisValue = _get(this.ϟserial, serialPath)
-         const referenceValue = _get(referenceField.ϟserial, serialPath)
+      return this.zPatchedSerialPaths.flatMap((serialPath): Patch<this['ҨType']>[] => {
+         const thisValue = _get(this.zSerial, serialPath)
+         const referenceValue = _get(referenceField.zSerial, serialPath)
 
          if (thisValue === referenceValue) return []
 
@@ -362,32 +369,32 @@ export abstract class Field {
             return [
                {
                   op: 'remove',
-                  fieldType: this.ϟtype,
-                  fieldPath: this.ϟpath,
+                  fieldType: this.zType,
+                  fieldPath: this.zPath,
                   serialPath,
-               } as PatchRemove<this['Ҩtype']>,
+               } as PatchRemove<this['ҨType']>,
             ]
          }
          if (referenceValue === undefined) {
             return [
                {
                   op: 'add',
-                  fieldType: this.ϟtype,
-                  fieldPath: this.ϟpath,
+                  fieldType: this.zType,
+                  fieldPath: this.zPath,
                   serialPath,
                   value: thisValue,
-               } as PatchAdd<this['Ҩtype'], unknown>,
+               } as PatchAdd<this['ҨType'], unknown>,
             ]
          }
 
          return [
             {
                op: 'replace',
-               fieldType: this.ϟtype,
-               fieldPath: this.ϟpath,
+               fieldType: this.zType,
+               fieldPath: this.zPath,
                serialPath,
                value: thisValue,
-            } as PatchReplace<this['Ҩtype'], unknown>,
+            } as PatchReplace<this['ҨType'], unknown>,
          ]
       })
    }
@@ -396,29 +403,29 @@ export abstract class Field {
     * generic implementation; must be overriden for every non-leaves
     * @undecorated (single action setter inside)
     */
-   ϟset(x: this['Ҩsetvalue']): this {
-      if (isProbablySomeFieldSerialOf(x, this.ϟtype)) this.ϟsetSerial(x as this['Ҩserial'])
-      else if ((x as any) instanceof Field) this.ϟsetSerial((x as any).serial as this['Ҩserial'])
-      else this.ϟsetValue(x)
+   zSet(x: this['ҨSetvalue']): this {
+      if (isProbablySomeFieldSerialOf(x, this.zType)) this.zSetSerial(x as this['ҨSerial'])
+      else if ((x as any) instanceof Field) this.zSetSerial((x as any).serial as this['ҨSerial'])
+      else this.zSetValue(x)
       return this
    }
 
    /** @undecorated (pure getter function) */
-   ϟgetSetValue(): this['Ҩsetvalue'] | undefined {
+   zGetSetValue(): this['ҨSetvalue'] | undefined {
       // console.log(`[💀 getSetValue] `, this.path)
-      return this.ϟvalue
+      return this.zValue
    }
 
    /**
     * To be overwritten by subclasses to generate patches for children
     * @undecorated (pure getter)
     */
-   protected ϟgenerateChildrenPatches(reference: this): Patch_Common[] {
-      return this.ϟchildrenAll.flatMap((child) => {
-         const referenceChild = reference.ϟgetChildByKey(child.ϟmountKey)
+   protected zGenerateChildrenPatches(reference: this): Patch_Common[] {
+      return this.zChildrenAll.flatMap((child) => {
+         const referenceChild = reference.zGetChildByKey(child.zMountKey)
 
          if (referenceChild != null) {
-            return child.ϟgeneratePatches(referenceChild as Field)
+            return child.zGeneratePatches(referenceChild as Field)
          }
 
          return []
@@ -426,21 +433,21 @@ export abstract class Field {
    }
 
    /** @undecorated (manual runInAction inside) */
-   public ϟapplyPatches(patches: Patch_Common[]): void {
+   public zApplyPatches(patches: Patch_Common[]): void {
       const thisPatches = patches.filter(
-         (patch) => patch.fieldPath === this.ϟpath && patch.fieldType === this.ϟtype,
+         (patch) => patch.fieldPath === this.zPath && patch.fieldType === this.zType,
       )
       runInAction(() => {
-         this.ϟapplyOwnPatches(thisPatches)
-         this.ϟapplyChildrenPatches(patches)
+         this.zApplyOwnPatches(thisPatches)
+         this.zApplyChildrenPatches(patches)
       })
    }
 
    /** @undecorated (manual runInAction inside) */
-   protected ϟapplyOwnPatches(patches: this['ҨownPatch'][]): void {
+   protected zApplyOwnPatches(patches: this['ҨOwnPatch'][]): void {
       if (patches.length === 0) return
       runInAction(() => {
-         const nextState = produce(this.ϟserial, (draft) => {
+         const nextState = produce(this.zSerial, (draft) => {
             patches.forEach((patch) => {
                if (isPatchReplace(patch) || isPatchAdd(patch)) {
                   _set(draft, patch.serialPath, patch.value)
@@ -451,21 +458,21 @@ export abstract class Field {
                }
             })
          })
-         this.ϟsetSerial(nextState)
+         this.zSetSerial(nextState)
       })
    }
 
    /** @undecorated (manual runInAction inside) */
-   protected ϟapplyChildrenPatches(patches: Patch_Common[]): void {
+   protected zApplyChildrenPatches(patches: Patch_Common[]): void {
       if (patches.length === 0) return
 
       runInAction(() => {
-         this.ϟchildrenAll.forEach((child) => {
+         this.zChildrenAll.forEach((child) => {
             const childPatches = patches.filter(
-               (patch) => patch.fieldPath === child.ϟpath || patch.fieldPath.startsWith(`${child.ϟpath}.`),
+               (patch) => patch.fieldPath === child.zPath || patch.fieldPath.startsWith(`${child.zPath}.`),
             )
             if (childPatches.length > 0) {
-               child.ϟapplyPatches(childPatches)
+               child.zApplyPatches(childPatches)
             }
          })
       })
@@ -476,7 +483,7 @@ export abstract class Field {
     * @stability beta
     * @undecorated (base function does nothing)
     */
-   static migrateSerial(serial: Field['Ҩserial']): any {
+   static migrateSerial(serial: Field['ҨSerial']): any {
       return serial
    }
 
@@ -502,12 +509,12 @@ export abstract class Field {
     * to customize that. useful for tests.
     * @undecorated (base function does nothing)
     */
-   ϟrandomize(): void {}
+   zRandomize(): void {}
 
    // #region lifecycle
 
    /** field is already instanciated => probably used as a linked */
-   ϟshared(): Z.Shared<this> {
+   zShared(): Z.Shared<this> {
       const FieldSharedClass = getFieldSharedClass()
       // 💬 2024-08-30 rvion:
       // | SimpleSchema usage is OK here, even if your project
@@ -527,7 +534,7 @@ export abstract class Field {
     * avoid memory leak.
     * @undecorated (will only be called at disposal time; no need to react on additions)
     */
-   protected ϟdisposeFns: (() => void)[] = []
+   protected zDisposeFns: (() => void)[] = []
 
    /**
     * lifecycle method, is called
@@ -535,37 +542,37 @@ export abstract class Field {
     * @since 2024-07-05
     * @undecorated (this.repo.runInTransaction already wrapped in runInAction)
     */
-   ϟdisposeTree(): void {
-      this.ϟrunInTransaction((tct) => this.ϟ_disposeTree(tct))
+   zDisposeTree(): void {
+      this.zRunInTransaction((tct) => this.z_disposeTree(tct))
    }
 
    /**
     * calls itself recursively
     * @undecorated (manual runInAction inside)
     */
-   private ϟ_disposeTree(tct: Transaction): void {
+   private z_disposeTree(tct: Transaction): void {
       runInAction(() => {
-         this.ϟ_disposeSelf(tct)
+         this.z_disposeSelf(tct)
 
          // dispose all children
-         for (const sub of this.ϟchildrenAll) {
-            sub.ϟ_disposeTree(tct)
+         for (const sub of this.zChildrenAll) {
+            sub.z_disposeTree(tct)
          }
       })
    }
 
    /** @undecorated (only called by _disposeTree above, which is wrapped in runInAction) */
-   private ϟ_disposeSelf(tct: Transaction): void {
+   private z_disposeSelf(tct: Transaction): void {
       // TODO:
       // - disable all publish
       // - disable all reactions
       // - mark as DELETED;  => makes most function throw an error if used
 
       // unregister from repo
-      this.ϟrepo._unregisterField(this, tct)
+      this.zRepo._unregisterField(this, tct)
 
       // dispose all reactions/other long-running stuff
-      for (const disposeFn of this.ϟdisposeFns) {
+      for (const disposeFn of this.zDisposeFns) {
          disposeFn()
       }
    }
@@ -575,7 +582,7 @@ export abstract class Field {
     * TODO: also use that to wait for whole tree to be patched before applying effects
     * (may not need to be made observable; review this decision later)
     * */
-   @observable accessor ϟready: boolean = false
+   @observable accessor zReady: boolean = false
 
    /**
     * if your field need to wait for the document to be ready;
@@ -583,8 +590,8 @@ export abstract class Field {
     *
     * @since 2024-09-04
     */
-   get ϟisDocumentReady(): boolean {
-      return this.ϟroot.ϟready
+   get zIsDocumentReady(): boolean {
+      return this.zRoot.zReady
    }
 
    // #region Serial
@@ -608,14 +615,14 @@ export abstract class Field {
     * YOU PROBABLY DO NOT WANT TO OVERRIDE THIS
     * @undecorated (wrapped in runInTransaction, that is already an action)
     */
-   ϟsetSerial(
+   zSetSerial(
       /** this serial may be from a previous schema; we need to be able to handle properly */
-      serial: Maybe<this['Ҩserial']>,
+      serial: Maybe<this['ҨSerial']>,
    ): void {
-      if (serial === this.ϟserial) return
-      this.ϟrunInTransaction(() => {
+      if (serial === this.zSerial) return
+      this.zRunInTransaction(() => {
          // this.copyCommonSerialFields(serial)
-         this.ϟsetOwnSerialWithValidationAndMigrationAndFixes(serial)
+         this.zSetOwnSerialWithValidationAndMigrationAndFixes(serial)
       })
    }
 
@@ -625,27 +632,27 @@ export abstract class Field {
     * This function can only be called by `setOwnSerialWithValidationAndMigration`
     * which itself can only be called by `init` and `setSerial`
     */
-   protected abstract ϟsetOwnSerial(serial: this['Ҩserial']): void
+   protected abstract zSetOwnSerial(serial: this['ҨSerial']): void
 
    /**
      * contains the list of all serial problems that occured during the last setSerial
      * it only contains the **LAST** setSerial problems
      * => this list will be emptied everytime we call setSerial
      *
-     * @see {@link ϟrecordSerialProblem}
+     * @see {@link zRecordSerialProblem}
      * @since 2024-09-11
 
      */
-   ϟserialProblems: { msg: string; data: any }[] = []
+   zSerialProblems: { msg: string; data: any }[] = []
 
    /**
     * Append a problem to the serialProblems list
     *
-    * @see {@link ϟserialProblems}
+    * @see {@link zSerialProblems}
     * @since 2024-09-11
     */
-   ϟrecordSerialProblem = (msg: string, data: any): void => {
-      this.ϟserialProblems.push({ msg, data })
+   zRecordSerialProblem = (msg: string, data: any): void => {
+      this.zSerialProblems.push({ msg, data })
    }
 
    /*
@@ -658,7 +665,7 @@ export abstract class Field {
     //    C.2. global via generated zod-or-similar json schema
 
     */
-   ϟsetOwnSerialWithValidationAndMigrationAndFixes(serialish: UNVALIDATED<Maybe<this['Ҩserial']>>): {
+   zSetOwnSerialWithValidationAndMigrationAndFixes(serialish: UNVALIDATED<Maybe<this['ҨSerial']>>): {
       problems: { msg: string; data: any }[]
    } {
       const wasNull = serialish == null
@@ -667,22 +674,22 @@ export abstract class Field {
 
       // #region 1.1. case `null` => use `defaultSerial`
       if (serialish == null) {
-         this.ϟrecordSerialProblem(`serial is null, using defaultSerial`, serialish)
-         serial = this.ϟschema.defaultSerial
+         this.zRecordSerialProblem(`serial is null, using defaultSerial`, serialish)
+         serial = this.zSchema.defaultSerial
          skipAutoFix = true
       }
 
       // #region 1.2. case not an object => use `defaultSerial`
       else if (typeof serialish !== 'object') {
-         this.ϟrecordSerialProblem(`serial is not an object, using defaultSerial`, serialish)
-         serial = this.ϟschema.defaultSerial
+         this.zRecordSerialProblem(`serial is not an object, using defaultSerial`, serialish)
+         serial = this.zSchema.defaultSerial
          skipAutoFix = true
       }
 
       // #region 1.3. empty object => use defaultSerial
       else if (Object.keys(serialish).length === 0) {
-         this.ϟrecordSerialProblem(`serial is not an empty object, using defaultSerial`, serialish)
-         serial = this.ϟschema.defaultSerial
+         this.zRecordSerialProblem(`serial is not an empty object, using defaultSerial`, serialish)
+         serial = this.zSchema.defaultSerial
          skipAutoFix = true
       }
 
@@ -704,16 +711,16 @@ export abstract class Field {
       // #region 3. run the static migrateSerial function from field
       // 🔶 this is probably wrong; and we probably need to get rid of it sooner than later.
       if (!wasNull) {
-         const newSerial = this.ϟmigrateSerial_(serial)
+         const newSerial = this.zMigrateSerial_(serial)
          if (newSerial != null) serial = newSerial
       }
 
       // #region 4. Legacy (🔴!) run the heuristic migration function
       // 🔶 this is probably wrong; and we probably need to get rid of it sooner than later.
       // TODO: dispatch to various migrateSerial functions within fields themselves
-      if (isProbablySomeFieldSerial(serial) && serial.$ !== this.ϟtype) {
+      if (isProbablySomeFieldSerial(serial) && serial.$ !== this.zType) {
          // ADDING LIST
-         if (this.ϟtype === 'list') {
+         if (this.zType === 'list') {
             const id = nanoid(6) as Field_list_ItemID
             const next: Field_list_serial<any> = {
                $: 'list',
@@ -724,7 +731,7 @@ export abstract class Field {
          }
 
          // ADDING OPTIONAL
-         else if (this.ϟtype === 'optional') {
+         else if (this.zType === 'optional') {
             const next: Field_optional_serial<any> = {
                $: 'optional',
                y: serial,
@@ -740,7 +747,7 @@ export abstract class Field {
             serial.items_.length >= 1
          ) {
             const item0 = serial.items_[0]!
-            if (isHole(item0)) throw new Error(`invalid serial at '${this.ϟpath}': hole found in list.`)
+            if (isHole(item0)) throw new Error(`invalid serial at '${this.zPath}': hole found in list.`)
             serial = item0
          }
 
@@ -755,11 +762,11 @@ export abstract class Field {
 
       // #region 5. Legacy (🔴!) migration system
       // 🔶 this is probably wrong; and we probably need to get rid of it sooner than later.
-      if (this.ϟconfig.beforeInit != null) {
+      if (this.zConfig.beforeInit != null) {
          const oldVersion = (serial as any)._version ?? 'default'
-         const newVersion = this.ϟconfig.version ?? 'default'
+         const newVersion = this.zConfig.version ?? 'default'
          if (oldVersion !== newVersion) {
-            serial = this.ϟconfig.beforeInit(serial)
+            serial = this.zConfig.beforeInit(serial)
             if (!isProbablySomeFieldSerial(serial)) throw new Error(`invalid serial`)
             serial._version = newVersion
          }
@@ -770,23 +777,23 @@ export abstract class Field {
       // #region 7. catch all phase
       if (!isProbablySomeFieldSerial(serial)) {
          console.error({ invalidSerial: serial })
-         throw new Error(`invalid serial at '${this.ϟpath}'`)
+         throw new Error(`invalid serial at '${this.zPath}'`)
       }
-      if (isProbablySomeFieldSerial(serial) && serial.$ !== this.ϟtype) {
-         console.log(`[🔶] INVALID SERIAL at ${this.ϟpath} (expected: ${this.ϟtype}, got: ${serial.$})`)
+      if (isProbablySomeFieldSerial(serial) && serial.$ !== this.zType) {
+         console.log(`[🔶] INVALID SERIAL at ${this.zPath} (expected: ${this.zType}, got: ${serial.$})`)
          console.log(`[🔶] INVALID SERIAL:`, JSON.stringify(serial))
          const anomaly: FieldAnomaly = {
             type: 'invalid-serial',
             date: Date.now(),
-            path: this.ϟpath,
-            pathExt: this.ϟpathExt,
+            path: this.zPath,
+            pathExt: this.zPathExt,
             got: serialish as AnyFieldSerial,
          }
-         if (this.ϟroot !== this) {
-            this.ϟroot.ϟaddAnomaly(anomaly)
-            serial = this.ϟschema.defaultSerial
+         if (this.zRoot !== this) {
+            this.zRoot.zAddAnomaly(anomaly)
+            serial = this.zSchema.defaultSerial
          } else {
-            serial = { ...this.ϟschema.defaultSerial /* ❌ */, anomalies: [anomaly] }
+            serial = { ...this.zSchema.defaultSerial /* ❌ */, anomalies: [anomaly] }
          }
       }
 
@@ -795,7 +802,7 @@ export abstract class Field {
          return serial
          // TODO
       }
-      const validSerial = ensureValid<this['Ҩserial']>(serial)
+      const validSerial = ensureValid<this['ҨSerial']>(serial)
 
       // #region 9. set the now valid serial
       // 💬 2024-09-11 rvion: at this point, we should be able to guarantee that
@@ -803,8 +810,8 @@ export abstract class Field {
       // | the serial is well formed valid.
       // | no data has been discarded.
       // | all validation properly succeeed
-      this.ϟsetOwnSerial(validSerial)
-      return { problems: this.ϟserialProblems }
+      this.zSetOwnSerial(validSerial)
+      return { problems: this.zSerialProblems }
    }
 
    // private copyCommonSerialFields(s: Maybe<FieldSerial_CommonProperties>): void {
@@ -816,34 +823,34 @@ export abstract class Field {
    // }
 
    /** unified api to allow setting serial from value */
-   ϟsetValue(val: this['Ҩvalue']): this {
-      this.ϟvalue = val
+   zSetValue(val: this['ҨValue']): this {
+      this.zValue = val
       return this
    }
 
-   ϟRECONCILE<SCHEMA extends CSchema>(p: {
+   zRECONCILE<SCHEMA extends CSchema>(p: {
       mountKey: string
       existingChild: Maybe<Field>
       correctChildSchema: SCHEMA
       /** the target child to clone/apply into child */
-      targetChildSerial: Maybe<SCHEMA['Ҩserial']>
+      targetChildSerial: Maybe<SCHEMA['ҨSerial']>
       /**
        * ONLY CALLED FOR NEW CHILD
        *
        * must attach/register both
        *  - child into parent where it belongs
        *  - child.serial into parent.serial where it belongs  */
-      attach(child: SCHEMA['Ҩfield']): void
+      attach(child: SCHEMA['ҨField']): void
    }): void {
       let child = p.existingChild
-      if (child != null && child.ϟschema === p.correctChildSchema) {
-         child.ϟsetSerial(p.targetChildSerial)
+      if (child != null && child.zSchema === p.correctChildSchema) {
+         child.zSetSerial(p.targetChildSerial)
       } else {
-         if (child) child.ϟdisposeTree()
+         if (child) child.zDisposeTree()
          child = p.correctChildSchema.instanciate(
             //
-            this.ϟrepo,
-            this.ϟroot,
+            this.zRepo,
+            this.zRoot,
             this,
             p.mountKey,
             p.targetChildSerial,
@@ -857,29 +864,29 @@ export abstract class Field {
 
    // #region UI HELPERS
    /** @deprecated with the new UI system */
-   get ϟactualWidgetToDisplay(): Field {
+   get zActualWidgetToDisplay(): Field {
       return this
    }
 
-   get ϟindentChildren(): number {
+   get zIndentChildren(): number {
       return 1
    }
 
    /** @deprecated ? with the new UI system */
-   get ϟjustifyLabel(): boolean {
-      if (this.ϟconfig.justifyLabel != null) return this.ϟconfig.justifyLabel
+   get zJustifyLabel(): boolean {
+      if (this.zConfig.justifyLabel != null) return this.zConfig.justifyLabel
       return true
    }
 
-   @computed get ϟdepth(): number {
-      if (this.ϟparent == null) return 0
-      return this.ϟparent.ϟdepth + this.ϟparent.ϟindentChildren
+   @computed get zDepth(): number {
+      if (this.zParent == null) return 0
+      return this.zParent.zDepth + this.zParent.zIndentChildren
    }
 
    /** DO NOT OVERRIDE; used internally to properly schedule events */
-   @computed get ϟtrueDepth(): number {
-      if (this.ϟparent == null) return 0
-      return this.ϟparent.ϟtrueDepth + 1
+   @computed get zTrueDepth(): number {
+      if (this.zParent == null) return 0
+      return this.zParent.zTrueDepth + 1
    }
 
    // #region ON/OFF
@@ -888,12 +895,12 @@ export abstract class Field {
     * returns true if we can either `setOn` and `setOff` this field
     * @since 2024-09-03
     */
-   @computed get ϟcanBeToggledWithinParent(): boolean {
+   @computed get zCanBeToggledWithinParent(): boolean {
       // if (isFieldOptional(this)) return true
-      if (isFieldList(this.ϟparent)) return true
-      if (isFieldOptional(this.ϟparent)) return true
-      if (isFieldChoices(this.ϟparent)) return true
-      if (isFieldChoice(this.ϟparent)) return false
+      if (isFieldList(this.zParent)) return true
+      if (isFieldOptional(this.zParent)) return true
+      if (isFieldChoices(this.zParent)) return true
+      if (isFieldChoice(this.zParent)) return false
       return false
    }
 
@@ -903,13 +910,13 @@ export abstract class Field {
     * @since 2024-09-03
     * @undecorated (single child action)
     */
-   ϟenableSelfWithinParent(): void {
-      const parent = this.ϟparent
+   zEnableSelfWithinParent(): void {
+      const parent = this.zParent
       if (isFieldOptional(parent)) return parent.setOn()
-      if (isFieldChoices(parent)) return parent.enableBranch(this.ϟmountKey)
-      if (isFieldChoice(parent)) return parent.enableBranch(this.ϟmountKey)
+      if (isFieldChoices(parent)) return parent.enableBranch(this.zMountKey)
+      if (isFieldChoice(parent)) return parent.enableBranch(this.zMountKey)
       throw new Error(
-         `(${this.ϟtype}@'${this.ϟpath}').setOn: parent (${parent?.ϟtype}) is neither optional or choices`,
+         `(${this.zType}@'${this.zPath}').setOn: parent (${parent?.zType}) is neither optional or choices`,
       )
    }
 
@@ -919,41 +926,41 @@ export abstract class Field {
     * @since 2024-09-03
     * @undecorated (single child action)
     */
-   ϟdisableSelfWithinParent(): void {
-      const parent = this.ϟparent
+   zDisableSelfWithinParent(): void {
+      const parent = this.zParent
       if (isFieldOptional(parent)) return parent.setOff()
       if (isFieldList(parent)) return parent.removeItem(this)
-      if (isFieldChoices(parent)) return parent.disableBranch(this.ϟmountKey)
-      if (isFieldChoice(parent)) return parent.disableBranch(this.ϟmountKey)
+      if (isFieldChoices(parent)) return parent.disableBranch(this.zMountKey)
+      if (isFieldChoice(parent)) return parent.disableBranch(this.zMountKey)
       throw new Error(
-         `(${this.ϟtype}@'${this.ϟpath}').setOff: parent (${parent?.ϟtype}) is neither optional or choices`,
+         `(${this.zType}@'${this.zPath}').setOff: parent (${parent?.zType}) is neither optional or choices`,
       )
    }
 
-   @computed get ϟisInsideDisabledBranch(): boolean {
-      if (this.ϟparent == null) return false
-      if (this.ϟparent.ϟisInsideDisabledBranch) return true
-      if (isFieldOptional(this.ϟparent)) return this.ϟparent.ϟisDisabled
-      if (isFieldChoices(this.ϟparent)) return this.ϟparent.isBranchDisabled(this.ϟmountKey)
-      if (isFieldChoice(this.ϟparent)) return this.ϟparent.isBranchDisabled(this.ϟmountKey)
+   @computed get zIsInsideDisabledBranch(): boolean {
+      if (this.zParent == null) return false
+      if (this.zParent.zIsInsideDisabledBranch) return true
+      if (isFieldOptional(this.zParent)) return this.zParent.zIsDisabled
+      if (isFieldChoices(this.zParent)) return this.zParent.isBranchDisabled(this.zMountKey)
+      if (isFieldChoice(this.zParent)) return this.zParent.isBranchDisabled(this.zMountKey)
       return false
    }
 
-   @computed get ϟisDisabledWithinParent(): boolean {
-      return !this.ϟisEnabledWithinParent
+   @computed get zIsDisabledWithinParent(): boolean {
+      return !this.zIsEnabledWithinParent
    }
 
-   @computed get ϟisEnabledWithinParent(): boolean {
-      if (isFieldOptional(this.ϟparent)) return this.ϟparent.isActive
-      if (isFieldChoices(this.ϟparent)) return this.ϟparent.isBranchEnabled(this.ϟmountKey)
-      if (isFieldChoice(this.ϟparent)) return this.ϟparent.isBranchEnabled(this.ϟmountKey)
+   @computed get zIsEnabledWithinParent(): boolean {
+      if (isFieldOptional(this.zParent)) return this.zParent.isActive
+      if (isFieldChoices(this.zParent)) return this.zParent.isBranchEnabled(this.zMountKey)
+      if (isFieldChoice(this.zParent)) return this.zParent.isBranchEnabled(this.zMountKey)
       return true
    }
 
    // #region Tree
 
    // abstract readonly id: string
-   ϟasTreeElement(key: string): ITreeElement<{ widget: Field; key: string }> {
+   zAsTreeElement(key: string): ITreeElement<{ widget: Field; key: string }> {
       return {
          key: (this as any).id,
          ctor: TreeEntry_Field as any,
@@ -965,16 +972,16 @@ export abstract class Field {
     * shorthand access to schema.config
     * @undecorated (static, no need for mobx)
     */
-   get ϟconfig(): this['Ҩconfig'] {
-      return this.ϟschema.config
+   get zConfig(): this['ҨConfig'] {
+      return this.zSchema.config
    }
 
    /** @undecorated (not an action; pure; defer to single computed) */
-   ϟgetValue(mode: VALUE_MODE): this['Ҩvalue'] | this['Ҩunchecked'] {
-      if (mode === 'fail') return this.ϟvalue_or_fail
-      if (mode === 'zero') return this.ϟvalue_or_zero
-      if (mode === 'unchecked') return this.ϟvalue_unchecked
-      if (mode === 'set') return this.ϟgetSetValue()
+   zGetValue(mode: VALUE_MODE): this['ҨValue'] | this['ҨUnchecked'] {
+      if (mode === 'fail') return this.zValue_or_fail
+      if (mode === 'zero') return this.zValue_or_zero
+      if (mode === 'unchecked') return this.zValue_unchecked
+      if (mode === 'set') return this.zGetSetValue()
       exhaust(mode)
    }
 
@@ -982,8 +989,8 @@ export abstract class Field {
     * return true when widget has no child
     * return false when widget has one or more child
     * */
-   get ϟhasNoChild(): boolean {
-      return this.ϟchildrenAll.length === 0
+   get zHasNoChild(): boolean {
+      return this.zChildrenAll.length === 0
    }
 
    /**
@@ -991,57 +998,57 @@ export abstract class Field {
     * @status broken
     * return a short summary of changes from default
     */
-   @computed get ϟdiffSummaryFromDefault(): string {
+   @computed get zDiffSummaryFromDefault(): string {
       return [
-         this.ϟhasChanges //
-            ? `${this.ϟpath}(${this.ϟvalue?.toString?.() ?? '.'})`
+         this.zHasChanges //
+            ? `${this.zPath}(${this.zValue?.toString?.() ?? '.'})`
             : null,
-         ...this.ϟchildrenAll.map((w) => w.ϟdiffSummaryFromDefault),
+         ...this.zChildrenAll.map((w) => w.zDiffSummaryFromDefault),
       ]
          .filter(Boolean)
          .join('\n')
    }
 
    /** path within the model */
-   @computed get ϟpath(): FL_FieldPath {
-      const p = this.ϟparent
+   @computed get zPath(): FL_FieldPath {
+      const p = this.zParent
       if (p == null) return '$'
-      return p.ϟpath + '.' + this.ϟmountKey
+      return p.zPath + '.' + this.zMountKey
    }
 
-   @computed get ϟpathObject(): PathObject {
-      return [this.ϟpath, this.ϟparent?.ϟpathObject]
+   @computed get zPathObject(): PathObject {
+      return [this.zPath, this.zParent?.zPathObject]
    }
 
    /** path within the model */
-   @computed get ϟpathExt(): FL_FieldPathExt {
-      const p = this.ϟparent
-      if (p == null) return `@${this.ϟtype}`
-      return p.ϟpathExt + '.' + this.ϟmountKey + `@${this.ϟtype}`
+   @computed get zPathExt(): FL_FieldPathExt {
+      const p = this.zParent
+      if (p == null) return `@${this.zType}`
+      return p.zPathExt + '.' + this.zMountKey + `@${this.zType}`
    }
 
-   ϟgetFieldAt(path: string): Maybe<Field> {
+   zGetFieldAt(path: string): Maybe<Field> {
       const parts = path.split('.')
       // eslint-disable-next-line consistent-this
       let current: Maybe<Field> = this
       for (const part of parts) {
          if (part === '$') {
-            current = this.ϟroot
+            current = this.zRoot
             continue
          }
-         current = current.ϟgetChildByKey(part) as Maybe<Field>
+         current = current.zGetChildByKey(part) as Maybe<Field>
          if (current == null) return null
       }
 
       return current
    }
 
-   ϟgetChildByKey(key: string): Maybe<this['Ҩchild']> {
+   zGetChildByKey(key: string): Maybe<this['ҨChild']> {
       // TODO: more efficient overrides
-      return this.ϟchildrenAll.find((f) => f.ϟmountKey === key)
+      return this.zChildrenAll.find((f) => f.zMountKey === key)
    }
 
-   @observable accessor ϟmountKey: string
+   @observable accessor zMountKey: string
    // get mountKey(): string {
    //     if (this.parent == null) return '$'
    //     if (this.parent.type === 'optional') return 'child' // hack for line below who is wrong
@@ -1049,29 +1056,29 @@ export abstract class Field {
    // }
 
    /** collapse all children that can be collapsed */
-   ϟcollapseAllChildren(): void {
-      this.ϟrunInTransaction(() => {
-         for (const _item of this.ϟchildrenAll) {
+   zCollapseAllChildren(): void {
+      this.zRunInTransaction(() => {
+         for (const _item of this.zChildrenAll) {
             // this allow to make sure we fold though optionals and similar constructs
-            const item = _item.ϟactualWidgetToDisplay
-            if (item.ϟserial.collapsed) continue
-            const isCollapsible = item.ϟisCollapsible
-            if (isCollapsible) item.ϟsetCollapsed(true)
+            const item = _item.zActualWidgetToDisplay
+            if (item.zSerial.collapsed) continue
+            const isCollapsible = item.zIsCollapsible
+            if (isCollapsible) item.zSetCollapsed(true)
          }
       })
    }
 
-   ϟisOfType(...type: CATALOG.AllFieldTypes[]): boolean {
-      return type.includes(this.ϟtype)
+   zIsOfType(...type: CATALOG.AllFieldTypes[]): boolean {
+      return type.includes(this.zType)
    }
 
    /** expand all children that can are collapsed */
-   ϟexpandAllChildren(): void {
-      this.ϟrunInTransaction(() => {
-         for (const _item of this.ϟchildrenAll) {
+   zExpandAllChildren(): void {
+      this.zRunInTransaction(() => {
+         for (const _item of this.zChildrenAll) {
             // this allow to make sure we fold though optionals and similar constructs
-            const item = _item.ϟactualWidgetToDisplay
-            item.ϟsetCollapsed(undefined)
+            const item = _item.zActualWidgetToDisplay
+            item.zSetCollapsed(undefined)
          }
       })
    }
@@ -1091,62 +1098,62 @@ export abstract class Field {
     * | it's simpler  though
     * 🔶 some widget like `WidgetPrompt` would not work with such logic
     * */
-   ϟreset(): void {
+   zReset(): void {
       runInAction(() => {
-         this.ϟsetSerial(null)
-         this.ϟtouched = false
+         this.zSetSerial(null)
+         this.zTouched = false
       })
    }
 
    /** return a cloned/detached value object you can use anywhere without care */
-   ϟtoValueJSON(): this['Ҩvalue'] {
-      return JSON.parse(JSON.stringify(this.ϟvalue))
+   zToValueJSON(): this['ҨValue'] {
+      return JSON.parse(JSON.stringify(this.zValue))
    }
 
    /** return a clone/detached serial object you can use anywhere without care */
-   ϟtoSerialJSON(): this['Ҩserial'] {
-      return this.ϟserial // JSON.parse(JSON.stringify(this.serial))
+   zToSerialJSON(): this['ҨSerial'] {
+      return this.zSerial // JSON.parse(JSON.stringify(this.serial))
    }
 
    /** every child class must implement change detection from its default  */
-   abstract readonly ϟhasChanges: boolean
+   abstract readonly zHasChanges: boolean
 
-   @observable private accessor ϟtouched_: boolean = false
+   @observable private accessor zTouched_: boolean = false
 
    /** true when the field contains unsaved changes */
-   get ϟtouched(): boolean {
-      return this.ϟtouched_
+   get zTouched(): boolean {
+      return this.zTouched_
    }
 
-   set ϟtouched(val: boolean) {
+   set zTouched(val: boolean) {
       runInAction(() => {
          if (
             val === true && //
-            this.ϟtouched_ !== val &&
-            this.ϟparent !== this &&
-            this.ϟparent != null
+            this.zTouched_ !== val &&
+            this.zParent !== this &&
+            this.zParent != null
          ) {
-            this.ϟparent.ϟtouched = true
+            this.zParent.zTouched = true
          }
 
-         this.ϟtouched_ = val
+         this.zTouched_ = val
       })
    }
    /**
     * Identical to field.touched = true but easier to use when field is nullable
     */
-   ϟtouch(): void {
+   zTouch(): void {
       runInAction(() => {
-         this.ϟtouched = true
+         this.zTouched = true
       })
    }
 
-   ϟtouchAll(): void {
+   zTouchAll(): void {
       runInAction(() => {
-         if (this.ϟchildrenAll.length === 0) this.ϟtouched = true
+         if (this.zChildrenAll.length === 0) this.zTouched = true
 
-         for (const child of this.ϟchildrenAll) {
-            child.ϟtouchAll()
+         for (const child of this.zChildrenAll) {
+            child.zTouchAll()
          }
       })
    }
@@ -1158,7 +1165,7 @@ export abstract class Field {
     * 🔶 some widget like `WidgetPrompt` would not work with such logic
     * 🔶 some widget like `Optional` have no simple way to retrieve the default value
     */
-   // abstract readonly defaultValue: this['schema']['Ҩvalue'] |
+   // abstract readonly defaultValue: this['schema']['ҨValue'] |
 
    private $FieldSym: typeof FieldSym = FieldSym // DO NOT REMOVE
 
@@ -1166,20 +1173,20 @@ export abstract class Field {
     * when this widget or one of its descendant publishes a value,
     * it will be stored here and possibly consumed by other descendants
     */
-   @observable accessor ϟadvertisedValues: Record<ChannelId, any> = {}
+   @observable accessor zAdvertisedValues: Record<ChannelId, any> = {}
 
    /**
     * when reading a publication, we will walk up the parent chain
     * and look for a value stored in the advsertised values.
     */
-   ϟreadChannel<T extends any>(chan: Channel<T> | ChannelId): Maybe<T> /* 🔸: T | $EmptyChannel */ {
+   zReadChannel<T extends any>(chan: Channel<T> | ChannelId): Maybe<T> /* 🔸: T | $EmptyChannel */ {
       const channelId = typeof chan === 'string' ? chan : chan.id
       let at = this as any as Field | null
       while (at != null) {
-         if (channelId in at.ϟadvertisedValues) {
-            return at.ϟadvertisedValues[channelId]
+         if (channelId in at.zAdvertisedValues) {
+            return at.zAdvertisedValues[channelId]
          }
-         at = at.ϟparent
+         at = at.zParent
       }
       // console.warn(`[🪈] ${channelId} | not found from ${this.path}`)
       return null // $EmptyChannel
@@ -1189,8 +1196,8 @@ export abstract class Field {
     * return a short string summary that display the value in a simple way.
     * This method is expected to be overriden in most child classes
     */
-   @computed get ϟsummary(): string {
-      return JSON.stringify(this.ϟvalue)
+   @computed get zSummary(): string {
+      return JSON.stringify(this.zValue)
    }
 
    /**
@@ -1201,9 +1208,9 @@ export abstract class Field {
     * This data is completely unused internally by CSuite.
     * It is READONLY.
     */
-   ϟgetConfigCustom<T = unknown>(): Readonly<T> {
+   zGetConfigCustom<T = unknown>(): Readonly<T> {
       return (
-         this.ϟconfig.custom ?? //
+         this.zConfig.custom ?? //
          ({} as any)
       )
    }
@@ -1216,13 +1223,13 @@ export abstract class Field {
     * You can use them however you want provided you keep them serializable.
     * It's just a quick/hacky place to store stuff
     */
-   ϟgetFieldCustom<T = unknown>(): T {
-      return this.ϟserial.custom
+   zGetFieldCustom<T = unknown>(): T {
+      return this.zSerial.custom
    }
 
    // will be easy to type/extend with the new type accumulator strategy when we backport
-   get ϟcustom(): any {
-      return this.ϟserial.custom
+   get zCustom(): any {
+      return this.zSerial.custom
    }
 
    /**
@@ -1230,10 +1237,10 @@ export abstract class Field {
     * You can either return a new value, or patch the initial value
     * use `deleteFieldCustomData` instead to replace the value by null or undefined.
     */
-   ϟupdateFieldCustom(fn: (x: Maybe<this['Ҩvalue']>) => this['ϟcustom']): this {
-      const prev = this.ϟvalue
+   zUpdateFieldCustom(fn: (x: Maybe<this['ҨValue']>) => this['zCustom']): this {
+      const prev = this.zValue
       const next = fn(prev) ?? prev
-      return this.ϟpatchInTransaction((draft) => {
+      return this.zPatchInTransaction((draft) => {
          // 💬 2024-09-17 rvion:
          // | I'll assume that the custom data is already serializable...
          // | still wrong, but probably a bit less dangerous than naive deep-cloning it.
@@ -1243,8 +1250,8 @@ export abstract class Field {
    }
 
    /** delete field custom data (delete this.serial.custom)  */
-   ϟdeleteFieldCustomData(): this {
-      return this.ϟpatchInTransaction((draft) => {
+   zDeleteFieldCustomData(): this {
+      return this.zPatchInTransaction((draft) => {
          delete draft.custom
       })
    }
@@ -1252,7 +1259,7 @@ export abstract class Field {
    // 📌 ERROR / VALIDATION ---------------------------------------------------------------|
 
    // 🔶 TEMPORARY HACK UNTIL RENDER BRANCH
-   ϟgetFieldUnchecked(): this {
+   zGetFieldUnchecked(): this {
       return this
    }
 
@@ -1260,14 +1267,14 @@ export abstract class Field {
     * @since 2024-09-04
     * @category Validation
     */
-   ϟvalidate(): Result<this, ValidationError> {
-      this.ϟtouched = true
-      if (!this.ϟisValid)
+   zValidate(): Result<this, ValidationError> {
+      this.zTouched = true
+      if (!this.zIsValid)
          return __ERROR(
             new ValidationError(
-               `Validation failed for field ${this.ϟtype} at '${this.ϟpath}'`,
+               `Validation failed for field ${this.zType} at '${this.zPath}'`,
                this,
-               this.ϟallErrorsIncludingChildrenErrors,
+               this.zAllErrorsIncludingChildrenErrors,
             ),
          )
       return __OK(this)
@@ -1280,9 +1287,9 @@ export abstract class Field {
     * @category Validation
     * @see {@link validationOrThrow}
     */
-   ϟvalidateOrNull(): Maybe<this> {
-      this.ϟtouched = true
-      if (!this.ϟisValid) return null
+   zValidateOrNull(): Maybe<this> {
+      this.zTouched = true
+      if (!this.zIsValid) return null
       return this
    }
 
@@ -1291,10 +1298,10 @@ export abstract class Field {
     *
     * @since 2024-09-04
     * @category Validation
-    * @see {@link ϟvalidateOrNull}
+    * @see {@link zValidateOrNull}
     */
-   ϟvalidateOrThrow(): this {
-      const res = this.ϟvalidate()
+   zValidateOrThrow(): this {
+      const res = this.zValidate()
       if (!res.valid) throw res.error
       return this
    }
@@ -1309,23 +1316,23 @@ export abstract class Field {
     * @category Validation
     * @since 2024-09-04
     */
-   get ϟisValid(): boolean {
-      return this.ϟallErrorsIncludingChildrenErrors.length === 0
+   get zIsValid(): boolean {
+      return this.zAllErrorsIncludingChildrenErrors.length === 0
    }
 
    /**
     * returns true if errors.length > 0
     * @category Validation
     */
-   get ϟhasOwnErrors(): boolean {
-      const errors = this.ϟownErrors
+   get zHasOwnErrors(): boolean {
+      const errors = this.zOwnErrors
       return errors.length > 0
    }
 
-   get ϟmustDisplayErrors(): boolean {
-      return this.ϟhasOwnErrors && !this.ϟisInsideDisabledBranch
-      return this.ϟhasOwnErrors
-      return this.ϟhasOwnErrors && this.ϟtouched
+   get zMustDisplayErrors(): boolean {
+      return this.zHasOwnErrors && !this.zIsInsideDisabledBranch
+      return this.zHasOwnErrors
+      return this.zHasOwnErrors && this.zTouched
    }
    /**
     * all own errors:
@@ -1333,20 +1340,20 @@ export abstract class Field {
     *  + custom       (user-defined in config)
     * @category Validation
     */
-   @computed get ϟownErrors(): Problem[] {
+   @computed get zOwnErrors(): Problem[] {
       const i18n = csuiteConfig.i18n
       // If we have a leaf Field, we add its "not set" error (isOwnSet)
-      if (!this.ϟisOwnSet) {
+      if (!this.zIsOwnSet) {
          return [
             {
-               path: this.ϟpath,
+               path: this.zPath,
                message: i18n.err.field.not_set,
-               longerMessage: `${i18n.err.field.not_set} (${this.ϟpathExt})`,
+               longerMessage: `${i18n.err.field.not_set} (${this.zPathExt})`,
             },
          ]
       } else {
-         return normalizeProblem(this, this.ϟownTypeSpecificProblems) //
-            .concat(this.ϟownCustomConfigCheckProblems)
+         return normalizeProblem(this, this.zOwnTypeSpecificProblems) //
+            .concat(this.zOwnCustomConfigCheckProblems)
       }
 
       // return errors
@@ -1355,14 +1362,14 @@ export abstract class Field {
    /**
     * @category Validation
     */
-   @computed get ϟallErrorsIncludingChildrenErrors(): Problem[] {
-      const subErrs = this.ϟchildrenActive.flatMap((f) => f.ϟallErrorsIncludingChildrenErrors)
-      if (subErrs.length === 0) return this.ϟownErrors
+   @computed get zAllErrorsIncludingChildrenErrors(): Problem[] {
+      const subErrs = this.zChildrenActive.flatMap((f) => f.zAllErrorsIncludingChildrenErrors)
+      if (subErrs.length === 0) return this.zOwnErrors
 
-      const ownErrs = this.ϟownErrors
+      const ownErrs = this.zOwnErrors
       if (ownErrs.length === 0) return subErrs
 
-      return this.ϟownErrors.concat(subErrs)
+      return this.zOwnErrors.concat(subErrs)
    }
 
    /**
@@ -1376,9 +1383,9 @@ export abstract class Field {
     * ```
     * @category Validation
     */
-   @computed get ϟownCustomConfigCheckProblems(): Problem[] {
-      if (this.ϟconfig.check == null) return []
-      const res = this.ϟconfig.check(this)
+   @computed get zOwnCustomConfigCheckProblems(): Problem[] {
+      if (this.zConfig.check == null) return []
+      const res = this.zConfig.check(this)
       return normalizeProblem(this, res)
       // return [...normalizeProblem(res), { message: 'foo' }]
    }
@@ -1395,20 +1402,20 @@ export abstract class Field {
     *
     * @category Validation
     */
-   abstract readonly ϟownTypeSpecificProblems: Problem_Ext
-   abstract readonly ϟownConfigSpecificProblems: Problem_Ext
+   abstract readonly zOwnTypeSpecificProblems: Problem_Ext
+   abstract readonly zOwnConfigSpecificProblems: Problem_Ext
 
    // -----------------------------------------------------------------------|
    /**
     * returns the list of all ancestors, NOT including self
     * @since 2024-07-08
     */
-   @computed get ϟancestors(): Field[] {
+   @computed get zAncestors(): Field[] {
       const result: Field[] = []
-      let current: Maybe<Field> = this.ϟparent
+      let current: Maybe<Field> = this.zParent
       while (current) {
          result.push(current)
-         current = current.ϟparent
+         current = current.zParent
       }
       return result
    }
@@ -1417,39 +1424,39 @@ export abstract class Field {
     * returns the list of all ancestors, including self
     * @since 2024-07-08
     */
-   @computed get ϟancestorsIncludingSelf(): Field[] {
+   @computed get zAncestorsIncludingSelf(): Field[] {
       const result: Field[] = []
       // eslint-disable-next-line consistent-this
       let current: Maybe<Field> = this
       while (current) {
          result.push(current)
-         current = current.ϟparent
+         current = current.zParent
       }
       return result
    }
 
-   @computed get ϟdescendants(): Field[] {
+   @computed get zDescendants(): Field[] {
       const result: Field[] = []
-      for (const child of this.ϟchildrenAll) {
+      for (const child of this.zChildrenAll) {
          result.push(child)
-         result.push(...child.ϟdescendants)
+         result.push(...child.zDescendants)
       }
       return result
    }
 
-   @computed get ϟdescendantsIncludingSelf(): Field[] {
+   @computed get zDescendantsIncludingSelf(): Field[] {
       const result: Field[] = [this]
-      for (const child of this.ϟchildrenAll) {
+      for (const child of this.zChildrenAll) {
          result.push(child)
-         result.push(...child.ϟdescendants)
+         result.push(...child.zDescendants)
       }
       return result
    }
 
    // BUMP ----------------------------------------------------
-   private ϟ_extraSerialChangesFunction: ((self: Field) => void)[] = [] // 🔶 cannot (but probably need not) type self as K['Ҩfield'] due to variance issues
-   ϟonSerialChanges(fn: (self: this) => void): this {
-      this.ϟ_extraSerialChangesFunction.push(fn as any)
+   private z_extraSerialChangesFunction: ((self: Field) => void)[] = [] // 🔶 cannot (but probably need not) type self as K['ҨField'] due to variance issues
+   zOnSerialChanges(fn: (self: this) => void): this {
+      this.z_extraSerialChangesFunction.push(fn as any)
       return this
    }
 
@@ -1458,10 +1465,10 @@ export abstract class Field {
     * this function is called recursively upwards.
     * persistance will usually be done at the root field reacting to this event.
     */
-   ϟ_applySerialUpdateEffects(): void {
-      for (const fn of this.ϟ_extraSerialChangesFunction) fn(this)
-      this.ϟconfig.onSerialChange?.(this)
-      this.ϟconfig.onValueChange?.(this)
+   z_applySerialUpdateEffects(): void {
+      for (const fn of this.z_extraSerialChangesFunction) fn(this)
+      this.zConfig.onSerialChange?.(this)
+      this.zConfig.onValueChange?.(this)
    }
 
    /**
@@ -1471,9 +1478,9 @@ export abstract class Field {
     *  - by defining a getter on the _advertisedValues object of all parents
     *  - by only setting this getter up once.
     * */
-   ϟrunPublications(this: Field): void {
+   zRunPublications(this: Field): void {
       // 1. publications(broadcast upwards)
-      const publications = this.ϟschema.publications
+      const publications = this.zSchema.publications
       if (publications.length === 0) return
 
       // 💬 2024-09-20 rvion:
@@ -1486,15 +1493,15 @@ export abstract class Field {
       // | we need to add try-catch instead.
       // | 👇👇👇👇👇👇👇👇👇👇👇👇
       // ❌ if (!this.isSet) return
-      if (!this.ϟisOwnSet)
-         return console.log(`[🤠] skipping publication of ${this.ϟpathExt} because field is not set`)
+      if (!this.zIsOwnSet)
+         return console.log(`[🤠] skipping publication of ${this.zPathExt} because field is not set`)
 
       // Create and store values for every producer
       const producedValues: Record<ChannelId, any> = {}
       for (const publication of publications) {
          const channelId = typeof publication.chan === 'string' ? publication.chan : publication.chan.id
          if (publication.hoist) producedValues[channelId] = publication.produce(this)
-         else this.ϟadvertisedValues[channelId] = publication.produce(this)
+         else this.zAdvertisedValues[channelId] = publication.produce(this)
          // console.log(`[🪈] ${channelId} | ${this.path} is publishing`)
       }
       runInAction(() => {
@@ -1502,21 +1509,21 @@ export abstract class Field {
          if (Object.keys(producedValues).length > 0) {
             let at = this as any as Field | null
             while (at != null) {
-               Object.assign(at.ϟadvertisedValues, producedValues)
-               at = at.ϟparent
+               Object.assign(at.zAdvertisedValues, producedValues)
+               at = at.zParent
             }
          }
       })
    }
 
-   @computed get ϟisHidden(): boolean {
-      if (this.ϟconfig.hidden != null) return this.ϟconfig.hidden
-      if (isFieldGroup(this) && Object.keys(this.ϟfields).length === 0) return true
+   @computed get zIsHidden(): boolean {
+      if (this.zConfig.hidden != null) return this.zConfig.hidden
+      if (isFieldGroup(this) && Object.keys(this.zFields).length === 0) return true
       return false
    }
 
    /** whether the widget should be considered inactive */
-   @computed get ϟisDisabled(): boolean {
+   @computed get zIsDisabled(): boolean {
       return isFieldOptional(this) && !this.isActive
    }
 
@@ -1529,29 +1536,29 @@ export abstract class Field {
 
    // #region UI.Fold
    /** @undecorated (single child action)  */
-   ϟsetCollapsed(val?: boolean): void {
-      if (this.ϟserial.collapsed === val) return
-      this.ϟpatchInTransaction((draft) => {
+   zSetCollapsed(val?: boolean): void {
+      if (this.zSerial.collapsed === val) return
+      this.zPatchInTransaction((draft) => {
          draft.collapsed = val
       })
    }
 
    /** @undecorated (single child action)  */
-   ϟtoggleCollapsed(this: Field): void {
-      this.ϟpatchInTransaction((draft) => {
+   zToggleCollapsed(this: Field): void {
+      this.zPatchInTransaction((draft) => {
          draft.collapsed = !draft.collapsed
       })
    }
 
-   get ϟisCollapsedByDefault(): boolean {
+   get zIsCollapsedByDefault(): boolean {
       return false
    }
 
-   @computed get ϟisCollapsed(): boolean {
-      if (!this.ϟisCollapsible) return false
-      if (this.ϟserial.collapsed != null) return this.ϟserial.collapsed
-      if (this.ϟparent?.ϟisDisabled) return true
-      return this.ϟisCollapsedByDefault ?? false
+   @computed get zIsCollapsed(): boolean {
+      if (!this.zIsCollapsible) return false
+      if (this.zSerial.collapsed != null) return this.zSerial.collapsed
+      if (this.zParent?.zIsDisabled) return true
+      return this.zIsCollapsedByDefault ?? false
    }
 
    /**
@@ -1559,11 +1566,11 @@ export abstract class Field {
     * @deprecated
     * 🔶 going to be removed ASAP
     */
-   @computed get ϟisCollapsible(): boolean {
+   @computed get zIsCollapsible(): boolean {
       // top level widget is not collapsible; we may want to revisit this decision
       // if (widget.parent == null) return false
-      if (this.ϟconfig.collapsed != null) return this.ϟconfig.collapsed //
-      if (this.ϟconfig.label === false) return false
+      if (this.zConfig.collapsed != null) return this.zConfig.collapsed //
+      if (this.zConfig.label === false) return false
       return true
    }
 
@@ -1571,12 +1578,12 @@ export abstract class Field {
     * if provided, the default logic to decide if the widget need to be bordered
     * @deprecated
     */
-   @computed get ϟborder(): TintExt {
+   @computed get zBorder(): TintExt {
       // avoif borders for the top level form
-      if (this.ϟparent == null) return false
+      if (this.zParent == null) return false
       // if (this.parent.subWidgets.length === 0) return false
       // if app author manually specify they want no border, then we respect that
-      if (this.ϟconfig.border != null) return this.ϟconfig.border
+      if (this.zConfig.border != null) return this.zConfig.border
       // if the widget do NOT have a body => we do not show the border
       // if (this.DefaultBodyUI == null) return false // 🔴 <-- probably a mistake here
       // default case when we have a body => we show the border
@@ -1617,14 +1624,14 @@ export abstract class Field {
     * somewhat an internal method; usage should remain as low as possible.
     * @undecorated
     */
-   ϟgetOwnSerialPathFromRoot(): string {
+   zGetOwnSerialPathFromRoot(): string {
       const segments: string[] = []
-      let at = this.ϟparent
-      let key = this.ϟmountKey
+      let at = this.zParent
+      let key = this.zMountKey
       while (at != null) {
-         segments.push(at.ϟgetChildrenSerialPath(key))
-         at = at.ϟparent
-         key = at?.ϟmountKey ?? '$'
+         segments.push(at.zGetChildrenSerialPath(key))
+         at = at.zParent
+         key = at?.zMountKey ?? '$'
       }
       return segments.reverse().join('.')
    }
@@ -1633,7 +1640,7 @@ export abstract class Field {
     * need to be overwritten for all contaienr fields
     * @undecorated (placeholder made to be overriden)
     */
-   ϟgetChildrenSerialPath(key: string): string {
+   zGetChildrenSerialPath(key: string): string {
       return `❌`
    }
 
@@ -1651,7 +1658,7 @@ export abstract class Field {
     * @remarks was previously named `subFields`
     * @undecorated (placeholder made to be overriden)
     */
-   get ϟchildrenAll(): Field[] {
+   get zChildrenAll(): Field[] {
       return []
    }
 
@@ -1664,8 +1671,8 @@ export abstract class Field {
     * @remarks expected to be overriden in every field that have children that can be toggled,
     * like FIeldChoice, FieldOptional
     */
-   get ϟchildrenActive(): Field[] {
-      return this.ϟchildrenAll
+   get zChildrenActive(): Field[] {
+      return this.zChildrenAll
    }
 
    // TODO: split subFields into two variants: active subFields, and childrenIncludingInactive
@@ -1679,7 +1686,7 @@ export abstract class Field {
     * // TODO: remove
     * @undecorated
     */
-   get ϟsubFieldsWithKeys(): KeyedField[] {
+   get zSubFieldsWithKeys(): KeyedField[] {
       return []
    }
 
@@ -1688,15 +1695,15 @@ export abstract class Field {
     * proxy this.repo.action
     * defined to shorted call and allow per-field override
     */
-   ϟrunInTransaction<T>(fn: (tct: Transaction) => T): T {
-      return this.ϟrepo.runInTransaction(fn)
+   zRunInTransaction<T>(fn: (tct: Transaction) => T): T {
+      return this.zRepo.runInTransaction(fn)
    }
 
    /**
     * equivalent to `runInTransaction(() => patchSerial(() => {....}))`
     */
-   ϟpatchInTransaction(fn: (draft: this['Ҩserial'], tct: Transaction) => undefined): this {
-      this.ϟrunInTransaction((tct) => this.ϟpatchSerial((draft) => fn(draft, tct)))
+   zPatchInTransaction(fn: (draft: this['ҨSerial'], tct: Transaction) => undefined): this {
+      this.zRunInTransaction((tct) => this.zPatchSerial((draft) => fn(draft, tct)))
       return this
    }
 
@@ -1704,20 +1711,20 @@ export abstract class Field {
     * DO NOT OVERRIDE.
     * @internal
     */
-   protected ϟassignNewSerial(next: this['Ҩserial']): void {
-      const tct = this.ϟrepo.tct
+   protected zAssignNewSerial(next: this['ҨSerial']): void {
+      const tct = this.zRepo.tct
       if (tct == null)
          throw new Error(
             '❌ patchSerial should be called within a transaction; you may want to use `patchInTransaction`',
          )
 
       // console.log(`[🤠] ${this.path}`, JSON.stringify(this.serial), JSON.stringify(next), this.serial === next)
-      if (this.ϟserial === next) return
+      if (this.zSerial === next) return
       runInAction(() => {
          tct.trackAsUpdated(this)
-         this.ϟserial = next
+         this.zSerial = next
          // this.__version__++
-         this.ϟparent?.ϟacknowledgeNewChildSerial(this.ϟmountKey, this.ϟserial)
+         this.zParent?.zAcknowledgeNewChildSerial(this.zMountKey, this.zSerial)
       })
    }
 
@@ -1731,30 +1738,30 @@ export abstract class Field {
     * true when serial has been updated by the lambda
     * @internal
     */
-   ϟpatchSerial(
+   zPatchSerial(
       //
-      fn: (draft: this['Ҩserial']) => undefined,
+      fn: (draft: this['ҨSerial']) => undefined,
       /*
-       * cowe uld allow K['Ҩserial'] and hand it back to the caller
+       * cowe uld allow K['ҨSerial'] and hand it back to the caller
        * to match immerjs API
-       * | fn: (serial: K['Ҩserial']) => undefined  | K['Ҩserial']
+       * | fn: (serial: K['ҨSerial']) => undefined  | K['ҨSerial']
        */
    ): boolean {
-      if (this.ϟrepo.tct == null)
+      if (this.zRepo.tct == null)
          throw new Error(
             '❌ patchSerial should be called within a transaction; you may want to use `patchInTransaction`',
          )
       // console.log(`[🧑‍🦯‍➡️] patch serial called from ${this.pathExt}`)
       // from 2024-09-09, serial are not longer observable objects
-      if (isObservable(this.ϟserial)) throw new Error('❌ serial should not be observable')
+      if (isObservable(this.zSerial)) throw new Error('❌ serial should not be observable')
 
       // apply patch function
-      const nextState = produce(this.ϟserial, fn)
-      const stateChanged = nextState !== this.ϟserial // ⚠️ Ref equality check
+      const nextState = produce(this.zSerial, fn)
+      const stateChanged = nextState !== this.zSerial // ⚠️ Ref equality check
       if (!stateChanged) return false // patch function did nothing; we can safely abort
 
       // otherwise, assign serial to current field, and bubble upwards to the document rot
-      this.ϟassignNewSerial(nextState)
+      this.zAssignNewSerial(nextState)
       return true
    }
 
@@ -1765,8 +1772,8 @@ export abstract class Field {
     *
     * (this method needs a true implementation in every field that use RECONCILE)
     */
-   protected ϟacknowledgeNewChildSerial(mountKey: string, serial: any): boolean {
-      throw new Error(`🔴 _acknowledgeNewChildSerial not implemented (${this.ϟpathExt})`)
+   protected zAcknowledgeNewChildSerial(mountKey: string, serial: any): boolean {
+      throw new Error(`🔴 _acknowledgeNewChildSerial not implemented (${this.zPathExt})`)
    }
 
    // --------------------------------------------------------------------------------
@@ -1777,78 +1784,78 @@ export abstract class Field {
     * getter that resolve to `this.schema.producers`
     * @undecorated
     */
-   get ϟproducers(): Publication<any, any>[] {
-      return this.ϟschema.publications
+   get zProducers(): Publication<any, any>[] {
+      return this.zSchema.publications
    }
 
    /** probably the wrong place to retrieve that now that presenter are comming */
-   get ϟicon(): Maybe<IconName> {
-      const x = this.ϟschema.config.icon
+   get zIcon(): Maybe<IconName> {
+      const x = this.zSchema.config.icon
       if (typeof x === 'function') return x(this)
       if (x == null) return null
 
       return x
    }
 
-   private ϟhasBeenInitialized: boolean = false
+   private zHasBeenInitialized: boolean = false
 
    /** this function MUST be called at the end of every widget constructor */
    protected init(
       //
-      serial?: this['Ҩserial'],
+      serial?: this['ҨSerial'],
    ): void {
       // /* 😂 */ console.log(`[🤠] ${getUIDForMemoryStructure(serial)} (field.init)`)
 
       // 1. ensure field hasn't been initialized yet
-      if (this.ϟhasBeenInitialized)
+      if (this.zHasBeenInitialized)
          return console.error(`[🔶] Field.init has already been called => ABORTING`)
-      this.ϟhasBeenInitialized = true
+      this.zHasBeenInitialized = true
 
       // 2. ...
-      this.ϟrunInTransaction((tct) => {
+      this.zRunInTransaction((tct) => {
          // this.copyCommonSerialFields(serial)
-         this.ϟrepo._registerField(this, tct)
+         this.zRepo._registerField(this, tct)
 
          //   VVVVVVVVVVVV this is where we hydrate children
-         this.ϟsetOwnSerialWithValidationAndMigrationAndFixes(serial)
+         this.zSetOwnSerialWithValidationAndMigrationAndFixes(serial)
 
          this.UI = this.UI.bind(this)
-         this.ϟready = true
+         this.zReady = true
       })
    }
 
-   ϟcloneWithoutParent(): this {
-      return this.ϟschema.create(this.ϟserial) as this
+   zCloneWithoutParent(): this {
+      return this.zSchema.create(this.zSerial) as this
    }
 
-   ϟcloneTheWholeTree(): this {
-      const r = this.ϟroot.ϟcloneWithoutParent()
-      return r.ϟgetFieldAt(this.ϟpath) as this
+   zCloneTheWholeTree(): this {
+      const r = this.zRoot.zCloneWithoutParent()
+      return r.zGetFieldAt(this.zPath) as this
    }
 
-   ϟcloneWithConfig(config: Partial<this['Ҩconfig']>, opts?: WithConfigOptions): this {
-      return this.ϟschema.withConfig(config, opts).create(this.ϟserial) as this
+   zCloneWithConfig(config: Partial<this['ҨConfig']>, opts?: WithConfigOptions): this {
+      return this.zSchema.withConfig(config, opts).create(this.zSerial) as this
    }
 
-   ϟcodeForTypescriptValue(p?: { indent?: number }): string {
-      return this.ϟschema.codeForTypescriptValue(p)
+   zCodeForTypescriptValue(p?: { indent?: number }): string {
+      return this.zSchema.codeForTypescriptValue(p)
    }
    // ---------------------------------------------------------------
 
-   @computed get ϟhasFoldableSubfieldsThatAreUnfolded(): boolean {
-      return this.ϟchildrenAll.some((f) => f.ϟisCollapsible && !f.ϟserial.collapsed)
+   @computed get zHasFoldableSubfieldsThatAreUnfolded(): boolean {
+      return this.zChildrenAll.some((f) => f.zIsCollapsible && !f.zSerial.collapsed)
    }
 
-   @computed get ϟhasFoldableSubfieldsThatAreFolded(): boolean {
-      return this.ϟchildrenAll.some((f) => f.ϟisCollapsible && Boolean(f.ϟserial.collapsed))
+   @computed get zHasFoldableSubfieldsThatAreFolded(): boolean {
+      return this.zChildrenAll.some((f) => f.zIsCollapsible && Boolean(f.zSerial.collapsed))
    }
 
-   @computed get ϟhasFoldableSubfields(): boolean {
-      return this.ϟchildrenAll.some((f) => f.ϟisCollapsible)
+   @computed get zHasFoldableSubfields(): boolean {
+      return this.zChildrenAll.some((f) => f.zIsCollapsible)
    }
 
-   ϟdeleteSnapshot(): void {
-      this.ϟpatchInTransaction((draft) => {
+   zDeleteSnapshot(): void {
+      this.zPatchInTransaction((draft) => {
          delete draft.snapshot
       })
    }
@@ -1856,15 +1863,15 @@ export abstract class Field {
    // ['🤭caht'] = 1 // 🔶
    // ['-caht'] = 1; // 🔶
    // ['/chat'] = 1; // 🔶
-   // ['Ҩchat'] = 1; // 🟢
+   // ['ҨChat'] = 1; // 🟢
    // ['ܔchat'] = 1;
-   get ϟhasSnapshot(): boolean {
-      return this.ϟserial.snapshot != null
+   get zHasSnapshot(): boolean {
+      return this.zSerial.snapshot != null
    }
 
    /** update current field snapshot */
-   ϟsaveSnapshot(): this['Ҩserial'] {
-      const snapshot = produce(this.ϟserial, (draft) => {
+   zSaveSnapshot(): this['ҨSerial'] {
+      const snapshot = produce(this.zSerial, (draft) => {
          // a bad person would say: "Yo, Dawg; I heard you liked snapshots. So I put a snapshot in your snapshot, so you can snapshot while snapshotting"
          // but it's wrong. we don't want snapshotception.
          // so we delete the snapshot from the snapshot before it's too late.
@@ -1872,62 +1879,62 @@ export abstract class Field {
          // Snapshot.
          delete draft.snapshot
       })
-      this.ϟpatchInTransaction((draft) => void (draft.snapshot = snapshot))
+      this.zPatchInTransaction((draft) => void (draft.snapshot = snapshot))
       return snapshot
    }
 
    /** revert to the last snapshot */
-   ϟrevertToSnapshot(): void {
+   zRevertToSnapshot(): void {
       // 🔘 IX++
       // 🔘 console.log(`[🤠] #${IX} seri`, getUIDForMemoryStructure(this.serial))
       // 🔘 console.log(`[🤠] #${IX} snap`, getUIDForMemoryStructure(this.serial.snapshot))
 
       // 🔘 console.log(`[🤠] #${IX} seri.values`, getUIDForMemoryStructure(this.serial?.values))
       // 🔘 console.log(`[🤠] #${IX} snap.values`, getUIDForMemoryStructure(this.serial.snapshot?.values))
-      if (this.ϟserial.snapshot == null) {
+      if (this.zSerial.snapshot == null) {
          // 🔘 console.log(`[🤠] #${IX} RESET`)
-         return this.ϟreset()
+         return this.zReset()
       }
       // 🔘 console.log(`[🤠] #${IX} SNAP=`, deepCopyNaive(this.serial.snapshot))
-      this.ϟsetSerial(this.ϟserial.snapshot)
+      this.zSetSerial(this.zSerial.snapshot)
    }
 
-   get ϟisDirtyFromSnapshot_UNSAFE(): boolean {
-      const { snapshot, ...currentSerial } = this.ϟserial
+   get zIsDirtyFromSnapshot_UNSAFE(): boolean {
+      const { snapshot, ...currentSerial } = this.zSerial
       if (snapshot == null) return false
       return hashJSONObjectToNumber(snapshot) !== hashJSONObjectToNumber(currentSerial)
    }
 
-   get ϟhashSerial(): number {
-      return hashJSONObjectToNumber(this.ϟserial)
+   get zHashSerial(): number {
+      return hashJSONObjectToNumber(this.zSerial)
    }
 
-   abstract ϟisOwnSet: boolean
+   abstract zIsOwnSet: boolean
 
    /**
     * return true if and only if self and every descendant is set.
     * [not made to be overriden]
     */
-   get ϟisSet(): boolean {
-      if (!this.ϟisOwnSet) return false
-      if (this.ϟchildrenActive.some((f) => !f.ϟisSet)) return false
+   get zIsSet(): boolean {
+      if (!this.zIsOwnSet) return false
+      if (this.zChildrenActive.some((f) => !f.zIsSet)) return false
       return true
    }
 
-   get ϟlabelText(): string {
-      if (this.ϟconfig.label == null) {
-         const mountKey = this.ϟparent?.ϟtype === 'optional' ? this.ϟparent.ϟmountKey : this.ϟmountKey
+   get zLabelText(): string {
+      if (this.zConfig.label == null) {
+         const mountKey = this.zParent?.zType === 'optional' ? this.zParent.zMountKey : this.zMountKey
          return makeLabelFromPrimitiveValue(mountKey)
       }
-      if (this.ϟconfig.label === false) return '' // not sure about the config.label doc
-      return this.ϟconfig.label
+      if (this.zConfig.label === false) return '' // not sure about the config.label doc
+      return this.zConfig.label
    }
 
-   private ϟ_extraSaveChangesFunction: (() => Promise<void> | void)[] = []
-   ϟonSaveChanges(fn: () => Promise<void> | void): void { this.ϟ_extraSaveChangesFunction.push(fn) } // prettier-ignore
-   public async ϟsaveChanges(): Promise<void> {
-      for (const fn of this.ϟ_extraSaveChangesFunction) await fn()
-      this.ϟtouched = false
+   private z_extraSaveChangesFunction: (() => Promise<void> | void)[] = []
+   zOnSaveChanges(fn: () => Promise<void> | void): void { this.z_extraSaveChangesFunction.push(fn) } // prettier-ignore
+   public async zSaveChanges(): Promise<void> {
+      for (const fn of this.z_extraSaveChangesFunction) await fn()
+      this.zTouched = false
    }
 }
 

@@ -10,33 +10,33 @@ describe('default values', () => {
 
    describe('createDraft', () => {
       it('works', () => {
-         expect(() => S1.createDraft().ϟvalidateOrNull()).not.toThrow()
-         expect(S1.createDraft().ϟvalidateOrNull()).toBeNull()
-         expect(() => S1.createDraft().ϟvalidateOrThrow()).toThrow()
+         expect(() => S1.createDraft().zValidateOrNull()).not.toThrow()
+         expect(S1.createDraft().zValidateOrNull()).toBeNull()
+         expect(() => S1.createDraft().zValidateOrThrow()).toThrow()
       })
    })
 
    describe('schema.create', () => {
       it('should not throw time despite missing values', () => {
          const E1 = S1.create()
-         expect(() => E1.ϟvalue).toThrow()
-         expect(E1.ϟvalue_unchecked).toBeUndefined()
-         expect(E1.ϟvalue_or_zero).toBe(false)
+         expect(() => E1.zValue).toThrow()
+         expect(E1.zValue_unchecked).toBeUndefined()
+         expect(E1.zValue_or_zero).toBe(false)
 
          const E2 = S2.create()
-         expect(() => E2.ϟvalue).not.toThrow()
-         expect(() => E2.ϟvalue.x).toThrow()
-         expect(() => E2.ϟtoValueJSON()).toThrow()
+         expect(() => E2.zValue).not.toThrow()
+         expect(() => E2.zValue.x).toThrow()
+         expect(() => E2.zToValueJSON()).toThrow()
       })
    })
 
    describe('schema.createOrThrowIfInvalid', () => {
       it('throw at creation time', () => {
-         expect(() => S1.create().ϟvalidateOrThrow()).toThrow()
+         expect(() => S1.create().zValidateOrThrow()).toThrow()
       })
 
       it('throw at creation time (part 2)', () => {
-         expect(() => S2.create().ϟvalidateOrThrow()).toThrow()
+         expect(() => S2.create().zValidateOrThrow()).toThrow()
       })
    })
 })

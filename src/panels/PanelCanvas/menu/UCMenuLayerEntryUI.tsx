@@ -6,7 +6,7 @@ import { Frame } from '../../../csuite/frame/Frame'
 import { UCMenuEntryContainerUI } from './UCMenuEntryContainerUI'
 
 type UCMenuLayerEntryUIProps = {
-   layer: Layer$['Ҩfield']
+   layer: Layer$['ҨField']
    index: number
    active?: boolean
    children?: React.ReactNode
@@ -15,11 +15,11 @@ type UCMenuLayerEntryUIProps = {
 }
 
 export const UCMenuLayerEntryUI = obs(function UCMenuLayerEntryUI_(p: UCMenuLayerEntryUIProps) {
-   const inputHeight = cushy.preferences.interface.ϟvalue.inputHeight
-   const isVisible: boolean = p.layer.visible.ϟvalue
+   const inputHeight = cushy.preferences.interface.zValue.inputHeight
+   const isVisible: boolean = p.layer.visible.zValue
    const image = p.layer.content.matchExhaustive({
-      aiGeneration: (t) => t.ϟfields.image.ϟvalue_or_zero,
-      image: (t) => t.ϟvalue_or_zero,
+      aiGeneration: (t) => t.zFields.image.zValue_or_zero,
+      image: (t) => t.zValue_or_zero,
    })
 
    // TEMP
@@ -69,7 +69,7 @@ export const UCMenuLayerEntryUI = obs(function UCMenuLayerEntryUI_(p: UCMenuLaye
             {/* <SpacerUI /> */}
             <Button
                tooltip='Delete'
-               onClick={() => p.layer.ϟdisableSelfWithinParent()}
+               onClick={() => p.layer.zDisableSelfWithinParent()}
                icon={IKONS.mdiDeleteOutline}
                borderless
                subtle

@@ -13,7 +13,7 @@ import { PromptAST } from './grammar/grammar.practical'
 
 type X = { id: FieldId; label?: string }
 
-export const PromptEditorUI = obs(function PromptEditorUI_(p: { promptID: Field_prompt['ϟuid'] }) {
+export const PromptEditorUI = obs(function PromptEditorUI_(p: { promptID: Field_prompt['zUid'] }) {
    return '❌ broken'
    // 1. retrieve the widget to get the inital value
    // |  the widget won't be used afterwise unless we programmatically do stuff with it

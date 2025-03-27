@@ -38,7 +38,7 @@ describe('model links', () => {
          },
       )
 
-      const DEFAULT_SERIAL: (typeof S)['Ҩserial'] = {
+      const DEFAULT_SERIAL: (typeof S)['ҨSerial'] = {
          $: 'group',
          values_: {
             int: { $: 'number', value: 0 },
@@ -64,11 +64,11 @@ describe('model links', () => {
 
       // #region create entity
       const e = S.create(DEFAULT_SERIAL)
-      expect(e.ϟrepo).toBe(r)
+      expect(e.zRepo).toBe(r)
       expect(totalRootSerialChanged).toBe(0)
       expect(totalRootValueChanged).toBe(0)
-      expect(e.ϟtoValueJSON()).toMatchObject({ int: 0, str: '', bool: false, list: [0, 0, 0] })
-      expectJSON(e.ϟserial).toMatchObject(DEFAULT_SERIAL)
+      expect(e.zToValueJSON()).toMatchObject({ int: 0, str: '', bool: false, list: [0, 0, 0] })
+      expectJSON(e.zSerial).toMatchObject(DEFAULT_SERIAL)
       // console.log(`[🔴] `)
       // entity map
       expect(r.tracked).toMatchObject({
@@ -85,8 +85,8 @@ describe('model links', () => {
 
       // console.log(`[🤠] totalRootSerialChanged`, totalRootSerialChanged)
       // console.log(`[🤠] totalRootSerialChanged`, r.updateCount)
-      e.ϟvalue.int = 5
-      e.ϟvalue.int = 6
+      e.zValue.int = 5
+      e.zValue.int = 6
       // console.log(`[🤠] totalRootSerialChanged`, totalRootSerialChanged)
       // console.log(`[🤠] totalRootSerialChanged`, r.updateCount)
 
@@ -102,10 +102,10 @@ describe('model links', () => {
          deleteCount: 0, //      = (serial only incremented when value identical)
       })
 
-      e.ϟrunInTransaction(() => {
-         e.ϟvalue.int = 5
-         e.ϟvalue.int = 7
-         e.ϟvalue.int = 6
+      e.zRunInTransaction(() => {
+         e.zValue.int = 5
+         e.zValue.int = 7
+         e.zValue.int = 6
       })
 
       expect(r.tracked).toMatchObject({
@@ -119,15 +119,15 @@ describe('model links', () => {
       })
       r.endRecording()
       expect(totalRootSerialChanged).toBe(3)
-      expect(e.ϟvalue.list).toHaveLength(3)
-      expect(e.ϟtoValueJSON().list).toMatchObject([0, 0, 0])
+      expect(e.zValue.list).toHaveLength(3)
+      expect(e.zToValueJSON().list).toMatchObject([0, 0, 0])
 
       // #region samve value assignment
       // SAME VALUE: should NOT trigger any snapshot
-      e.ϟvalue.list = [0, 0, 0]
+      e.zValue.list = [0, 0, 0]
       expect(totalRootSerialChanged).toBe(3)
 
-      e.ϟvalue = {
+      e.zValue = {
          int: 6,
          str: '',
          bool: false,
@@ -147,7 +147,7 @@ describe('model links', () => {
 
       // different value ------------------------
       r.startRecording()
-      e.ϟvalue = {
+      e.zValue = {
          bool: false,
          int: 0,
          str: 'coucou',
@@ -182,7 +182,7 @@ describe('model links', () => {
       })
 
       // only change the value in `$.list[1]` ----------------> VV
-      e.ϟvalue = { bool: false, int: 0, str: 'coucou', list: [1, 22, 3, 4] }
+      e.zValue = { bool: false, int: 0, str: 'coucou', list: [1, 22, 3, 4] }
       const tct = r.lastTransaction
       // const pathsTouched = [...tct!.updatedFields.entries()].map(([field, mode]) => ({ path: field.path, mode }))
       expect(tct?.summary1).toMatchObject({

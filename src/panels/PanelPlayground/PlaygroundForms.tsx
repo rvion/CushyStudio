@@ -33,15 +33,15 @@ export const PlaygroundForms = obs(function PlaygroundImportFromComfy_(p: {}) {
          }),
       })
       return raw.useClass(
-         class extends Field_group<(typeof raw)['Ҩfield']['Ҩsubfields']> {
+         class extends Field_group<(typeof raw)['ҨField']['ҨSubfields']> {
             v1 = (): React.JSX.Element => {
-               const { a, b } = field.ϟfields
+               const { a, b } = field.zFields
                return (
                   <ErrorBoundaryUI>
                      <h3>play with forms</h3>
                      <Frame border={20} tw='m-8'>
                         <Frame base={10}>
-                           {field.ϟtype}({field.ϟuid})
+                           {field.zType}({field.zUid})
                         </Frame>
                         <Frame base={{ hueShift: 100 }}>
                            <div>
@@ -50,7 +50,7 @@ export const PlaygroundForms = obs(function PlaygroundImportFromComfy_(p: {}) {
                            </div>
                         </Frame>
                         <Frame base={{ hueShift: 200 }}>
-                           {b.ϟtype}({b.ϟuid})<div>{a.UI({ Shell: uy.shell.HeaderOnly })}</div>
+                           {b.zType}({b.zUid})<div>{a.UI({ Shell: uy.shell.HeaderOnly })}</div>
                            <div>{b.UIWithFancyBorder()}</div>
                         </Frame>
                      </Frame>

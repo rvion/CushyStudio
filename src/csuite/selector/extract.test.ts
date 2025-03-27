@@ -21,19 +21,19 @@ const S1 = b.fields({
    qux: b.string({ default: 'hello' }),
 })
 const root = S1.create()
-root.ϟvalue.foo.test = ['a', 'b', 'c']
-root.ϟvalue.foo.test2 = [1, 2, 3, 4]
-const foo = root.ϟfields.foo
-const bar = root.ϟfields.foo.ϟfields.bar
-const baz = root.ϟfields.foo.ϟfields.baz
-const qux = root.ϟfields.qux
-const test2nd = root.ϟfields.foo.ϟfields.test.items[1]!
+root.zValue.foo.test = ['a', 'b', 'c']
+root.zValue.foo.test2 = [1, 2, 3, 4]
+const foo = root.zFields.foo
+const bar = root.zFields.foo.zFields.bar
+const baz = root.zFields.foo.zFields.baz
+const qux = root.zFields.qux
+const test2nd = root.zFields.foo.zFields.test.items[1]!
 
-baz.ϟupdateFieldCustom((t) => ({ abcdefgh: true })) // makes @.custom.abcdefgh be true
+baz.zUpdateFieldCustom((t) => ({ abcdefgh: true })) // makes @.custom.abcdefgh be true
 
 describe('SelectorCompiler Tests', () => {
    it('properly reduces stuff', () => {
-      expectJSON(root.ϟvalue).toMatchObject({
+      expectJSON(root.zValue).toMatchObject({
          foo: {
             bar: '33',
             baz: 42,
@@ -51,7 +51,7 @@ describe('SelectorCompiler Tests', () => {
             { type: 'collect' /* collectCode: '(this.map(v=>v.value).join("-"))' */ },
          ],
       })
-      expect(root.ϟextractLastOrThrow(X)).toBe('33-a-b-c-hello')
-      expect(root.ϟextractLastOrThrow('>@number=(this.reduce((r,a)=>r+a.value,0))')).toBe(52)
+      expect(root.zExtractLastOrThrow(X)).toBe('33-a-b-c-hello')
+      expect(root.zExtractLastOrThrow('>@number=(this.reduce((r,a)=>r+a.value,0))')).toBe(52)
    })
 })

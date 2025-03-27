@@ -7,19 +7,19 @@ import { _isFC, renderFCOrNode, renderFCOrNodeWithWrapper } from '../../csuite/u
 
 export const ShellMobileUI = obs(function ShellMobile(p: RenderPropsCompiled) {
    const { field } = p
-   if (p.field.isHidden && !p.shouldShowHiddenFields) return null
+   if (p.field.zIsHidden && !p.shouldShowHiddenFields) return null
 
    const WUI = (
       <Frame
          className={p.className ?? undefined}
          tw={['UI-WidgetWithLabel !border-b-0 !border-l-0 !border-r-0']}
          // base={field.background}
-         border={field.border}
-         {...p.field.config.box}
+         border={field.zBorder}
+         {...p.field.zConfig.box}
       >
          {/* HEADER --------------------------------------------------------------------------------- */}
          <WidgetHeaderContainerUI field={field}>
-            {_isFC(p.Indent) ? <p.Indent tw='pr-2' depth={field.depth} /> : p.Indent}
+            {_isFC(p.Indent) ? <p.Indent tw='pr-2' depth={field.zDepth} /> : p.Indent}
             <div tw='flex-1'>
                {/* prettier-ignore */}
                <div tw='flex flex-1'>

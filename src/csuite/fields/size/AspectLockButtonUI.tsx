@@ -8,7 +8,7 @@ import { WigetSizeXUI } from './WigetSizeXUI'
 
 export const AspectLockButtonUI = obs(function AspectLockButtonUI_(p: { sizeHelper: Field_size }) {
    const uist = p.sizeHelper
-   const theme = cushy.preferences.theme.ϟvalue
+   const theme = cushy.preferences.theme.zValue
 
    return (
       <Frame

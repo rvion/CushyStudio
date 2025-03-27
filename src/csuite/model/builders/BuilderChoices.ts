@@ -5,8 +5,8 @@ import { Field_choices } from '../../fields/choices/FieldChoices'
 import { CSchema } from '../CSchema'
 import { defineSchemaBuilderMixin } from './defineSchemaBuilderMixin'
 
-type Items<T extends SchemaDict> = Field_choices<T>['Ҩconfig']['items']
-type Config<T extends SchemaDict> = Omit<Field_choices<T>['Ҩconfig'], 'multi' | 'items'>
+type Items<T extends SchemaDict> = Field_choices<T>['ҨConfig']['items']
+type Config<T extends SchemaDict> = Omit<Field_choices<T>['ҨConfig'], 'multi' | 'items'>
 
 // prettier-ignore
 export type BuilderChoicesMixin = {

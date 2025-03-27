@@ -50,8 +50,8 @@ export const cmd_canvas_drawRectMask = command({
             // 0. get activeLayer
             const al = UC.activeLayer
             if (al === null) return toastError('no active layer')
-            const alWidth = al.placement.width.ϟvalue || 512
-            const alHeight = al.placement.height.ϟvalue || 512
+            const alWidth = al.placement.width.zValue || 512
+            const alHeight = al.placement.height.zValue || 512
 
             // 1. compute mask placement
             const screenLeft = UC.cursor.xInWindow - UC.cursor.xInScreen
@@ -64,8 +64,8 @@ export const cmd_canvas_drawRectMask = command({
             const startXInWorld = startPosInWorld?.x ?? 0
             const startYInWorld = startPosInWorld?.y ?? 0
 
-            const startXInImage = startXInWorld - al.placement.x.ϟvalue
-            const startYInImage = startYInWorld - al.placement.y.ϟvalue
+            const startXInImage = startXInWorld - al.placement.x.zValue
+            const startYInImage = startYInWorld - al.placement.y.zValue
             // UC.viewportInstance?.toWorld()
             console.log(
                `[💩] `,
@@ -109,16 +109,16 @@ export const cmd_canvas_drawRectMask = command({
             bang(UC.ucv2).masks.push({
                name: 'rect mask',
                image,
-               placement: al.placement.ϟvalue,
+               placement: al.placement.zValue,
                visible: true,
             })
 
-            const maskField = bang(UC.ucv2?.ϟfields.masks.at(-1))
+            const maskField = bang(UC.ucv2?.zFields.masks.at(-1))
 
             // 4. enable the mask on the active layer
             UC.activeLayer?.content.matchAll({
                aiGeneration: (x) => {
-                  x.masks.ϟvalue.push(maskField.ϟuid)
+                  x.masks.zValue.push(maskField.zUid)
                },
             })
          },

@@ -43,7 +43,7 @@ const HANDLE = registerCustomPanel(
             name: 'myCustomPanel',
             serial: () => store.data,
             onSerialChange: (form) => {
-               store.data = form.ϟserial
+               store.data = form.zSerial
             },
          },
       )

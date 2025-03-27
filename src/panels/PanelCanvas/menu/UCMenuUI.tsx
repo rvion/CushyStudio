@@ -14,13 +14,13 @@ import { UCMenuLayerEntryUI } from './UCMenuLayerEntryUI'
 export const UCMenuUI = obs(function UCMenuUI_(p: {}) {
    const uc1 = useUnifiedCanvas()
    const ucv2 = useUCV2()
-   const layers = ucv2.ϟfields.layers
-   const masks = ucv2.ϟfields.masks.items
+   const layers = ucv2.zFields.layers
+   const masks = ucv2.zFields.masks.items
 
    const [dropStyle2, dropRef2] = useImageDrop(cushy, (img) => {
       // TODO: move as method once setup with custom classes finished
       // canvas.addMask(img)
-      ucv2.ϟfields.masks.push({
+      ucv2.zFields.masks.push({
          image: img,
          visible: true,
          name: 'masky-mac-mask-face',
@@ -80,14 +80,14 @@ export const UCMenuUI = obs(function UCMenuUI_(p: {}) {
                                  index={i}
                                  onClick={() => {
                                     uc1.activeLayer = layer
-                                    cushy.layout.open('Draft', { draftID: x.draftId.ϟvalue.id })
+                                    cushy.layout.open('Draft', { draftID: x.draftId.zValue.id })
                                  }}
                                  body={
-                                    x.draftId.ϟvalue_unchecked?.id && (
+                                    x.draftId.zValue_unchecked?.id && (
                                        <UCDraftImagePickerHorizontalUI
                                           size={32}
-                                          onCLick={(img) => (x.image.ϟvalue = img)}
-                                          draftID={x.draftId.ϟvalue_unchecked.id}
+                                          onCLick={(img) => (x.image.zValue = img)}
+                                          draftID={x.draftId.zValue_unchecked.id}
                                        />
                                     )
                                  }
@@ -99,7 +99,7 @@ export const UCMenuUI = obs(function UCMenuUI_(p: {}) {
                                           <Button
                                              icon={IKONS.mdiPlay}
                                              onClick={() => {
-                                                const draft = cushy.db.draft.get(x.draftId.ϟvalue.id)
+                                                const draft = cushy.db.draft.get(x.draftId.zValue.id)
                                                 if (!draft) return toastError('Draft not found')
                                                 draft.start({
                                                    /* context */

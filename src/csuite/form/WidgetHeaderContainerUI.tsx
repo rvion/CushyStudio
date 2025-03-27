@@ -18,7 +18,7 @@ export const WidgetHeaderContainerUI = obs(function WidgetHeaderContainerUI_({
    // rest
    ...rest
 }: WidgetHeaderContainerProps) {
-   const isCollapsed = field.ϟisCollapsed
+   const isCollapsed = field.zIsCollapsed
    return (
       <ErrorBoundaryUI>
          <Frame
@@ -39,10 +39,10 @@ export const WidgetHeaderContainerUI = obs(function WidgetHeaderContainerUI_({
             onClick={
                onClick ??
                ((ev): void => {
-                  if (ev.button != 0 || !field.ϟisCollapsible) return
+                  if (ev.button != 0 || !field.zIsCollapsible) return
                   const target = ev.target as HTMLElement
                   if (!target.classList.contains('COLLAPSE-PASSTHROUGH')) return
-                  field.ϟsetCollapsed(!isCollapsed)
+                  field.zSetCollapsed(!isCollapsed)
                })
             }
             {...rest}

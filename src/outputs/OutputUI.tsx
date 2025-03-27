@@ -59,7 +59,7 @@ export const OutputPreview_ContentUI = obs(function OutputPreview_ContentUI_(p: 
    step?: Maybe<StepL>
    output: StepOutput
 }) {
-   const theme = cushy.preferences.theme.ϟvalue
+   const theme = cushy.preferences.theme.zValue
 
    const step = p.step
 

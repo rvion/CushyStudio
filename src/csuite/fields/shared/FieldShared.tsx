@@ -26,32 +26,32 @@ type Field_shared_ownSerial = {
 }
 
 // #region VALUE TYPE
-export type Field_shared_value<F extends Field = Field> = F['Ҩvalue']
-export type Field_shared_unchecked<F extends Field = Field> = Maybe<F['Ҩunchecked']>
+export type Field_shared_value<F extends Field = Field> = F['ҨValue']
+export type Field_shared_unchecked<F extends Field = Field> = Maybe<F['ҨUnchecked']>
 
 // #region Field
 export interface Field_shared<F extends Field = Field> {
-   ['Ҩtype']: 'shared'
-   ['ҨownConfig']: Field_shared_ownConfig<F>
-   ['ҨownSerial']: Field_shared_ownSerial
-   ['Ҩvalue']: Field_shared_value<F>
-   ['Ҩsetvalue']: Field_shared_value<F>
-   ['Ҩunchecked']: Field_shared_unchecked<F>
-   ['Ҩchild']: F
-   ['Ҩopts']: unknown
-   ['ҨownPatch']: Patch<'shared'>
+   ['ҨType']: 'shared'
+   ['ҨOwnConfig']: Field_shared_ownConfig<F>
+   ['ҨOwnSerial']: Field_shared_ownSerial
+   ['ҨValue']: Field_shared_value<F>
+   ['ҨSetvalue']: Field_shared_value<F>
+   ['ҨUnchecked']: Field_shared_unchecked<F>
+   ['ҨChild']: F
+   ['ҨOpts']: unknown
+   ['ҨOwnPatch']: Patch<'shared'>
 }
 
 // #region STATE
 export class Field_shared<out F extends Field = Field> extends Field {
    // #region TYPE
    static readonly type: 'shared' = 'shared'
-   private static readonly unsetSerial: Field_shared['Ҩserial'] = { $: 'shared' }
+   private static readonly unsetSerial: Field_shared['ҨSerial'] = { $: 'shared' }
    static override migrateSerial(): undefined {}
-   static codeForTypescriptValue = (config: Field_shared<Field>['Ҩconfig'], opts: CodegenOpts): string => {
+   static codeForTypescriptValue = (config: Field_shared<Field>['ҨConfig'], opts: CodegenOpts): string => {
       return `Z.Shared<${config.schema.codeForTypescriptValue(opts)}>`
    }
-   static generateSerial(): Field_shared['Ҩserial'] {
+   static generateSerial(): Field_shared['ҨSerial'] {
       return Field_shared.unsetSerial
    }
 
@@ -62,29 +62,29 @@ export class Field_shared<out F extends Field = Field> extends Field {
       parent: Field | null,
       schema: CSchema<Field_shared<F>>,
       initialMountKey: string,
-      serial?: Field_shared<F>['Ҩserial'],
+      serial?: Field_shared<F>['ҨSerial'],
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
       this.init(serial)
    }
 
    // #region UI
-   protected ϟsetOwnSerial(_next: this['Ҩserial']): void {}
+   protected zSetOwnSerial(_next: this['ҨSerial']): void {}
 
-   get ϟisOwnSet(): boolean {
-      return this.child.ϟisSet
+   get zIsOwnSet(): boolean {
+      return this.child.zIsSet
    }
 
-   get ϟhasChanges(): boolean {
-      return this.child.ϟhasChanges
+   get zHasChanges(): boolean {
+      return this.child.zHasChanges
    }
 
-   override get ϟactualWidgetToDisplay(): Field {
-      return this.child.ϟactualWidgetToDisplay
+   override get zActualWidgetToDisplay(): Field {
+      return this.child.zActualWidgetToDisplay
    }
 
    @computed get childOrNull(): Maybe<F> {
-      return this.ϟconfig.field(this)
+      return this.zConfig.field(this)
    }
 
    @computed get child(): F {
@@ -93,37 +93,37 @@ export class Field_shared<out F extends Field = Field> extends Field {
       return child
    }
 
-   get ϟownConfigSpecificProblems(): Problem_Ext {
+   get zOwnConfigSpecificProblems(): Problem_Ext {
       return null
    }
 
-   get ϟownTypeSpecificProblems(): Problem_Ext {
-      return this.child.ϟownTypeSpecificProblems
+   get zOwnTypeSpecificProblems(): Problem_Ext {
+      return this.child.zOwnTypeSpecificProblems
    }
 
-   get ϟvalue(): Field_shared_value<F> {
-      return this.child.ϟvalue
+   get zValue(): Field_shared_value<F> {
+      return this.child.zValue
    }
 
-   set ϟvalue(val: Field_shared_value<F>) {
-      this.child.ϟvalue = val
+   set zValue(val: Field_shared_value<F>) {
+      this.child.zValue = val
    }
 
-   get ϟvalue_or_fail(): Field_shared_value<F> {
-      return this.child.ϟvalue_or_fail
+   get zValue_or_fail(): Field_shared_value<F> {
+      return this.child.zValue_or_fail
    }
 
-   get ϟvalue_or_zero(): Field_shared_value<F> {
-      return this.child.ϟvalue_or_zero
+   get zValue_or_zero(): Field_shared_value<F> {
+      return this.child.zValue_or_zero
    }
 
-   get ϟvalue_unchecked(): Field_shared_unchecked<F> {
-      return this.childOrNull?.ϟvalue_unchecked
+   get zValue_unchecked(): Field_shared_unchecked<F> {
+      return this.childOrNull?.zValue_unchecked
    }
 
-   override ϟisValueEqual(other: Field): boolean {
+   override zIsValueEqual(other: Field): boolean {
       if (!(other instanceof Field_shared)) return false
-      return this.child.ϟisValueEqual(other.child)
+      return this.child.zIsValueEqual(other.child)
    }
 
    public static readonly patchedSerialPaths: readonly string[] = Object.freeze([])

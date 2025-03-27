@@ -16,7 +16,7 @@ export const WidgetMatrixUI = obs(function WidgetStrUI_(p: { field: Field_matrix
                      className='cursor-pointer hover:text-red-600'
                      onClick={() => {
                         field.setAll(!field.firstValue)
-                        field.ϟtouch()
+                        field.zTouch()
                      }}
                   >
                      all
@@ -28,7 +28,7 @@ export const WidgetMatrixUI = obs(function WidgetStrUI_(p: { field: Field_matrix
                         key={ix}
                         onClick={() => {
                            field.setCol(col, !field.getCell(rows[0]!, col).value)
-                           field.ϟtouch()
+                           field.zTouch()
                         }}
                      >
                         {col}
@@ -43,7 +43,7 @@ export const WidgetMatrixUI = obs(function WidgetStrUI_(p: { field: Field_matrix
                         //
                         onClick={() => {
                            field.setRow(row, !field.getCell(row, cols[0]!).value)
-                           field.ϟtouch()
+                           field.zTouch()
                         }}
                         className='cursor-pointer'
                      >
@@ -57,7 +57,7 @@ export const WidgetMatrixUI = obs(function WidgetStrUI_(p: { field: Field_matrix
                               className='cursor-pointer hover:bg-gray-400'
                               onClick={() => {
                                  field.setCell(row, col, !checked)
-                                 field.ϟtouch()
+                                 field.zTouch()
                               }}
                               tw={[checked ? undefined : '']}
                               style={{

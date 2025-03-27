@@ -20,24 +20,24 @@ export const WidgetSelectMany_SelectUI = obs(function WidgetSelectMany_SelectUI_
    return (
       <div tw='flex w-full flex-1 gap-1'>
          <SelectUI<OPTION>
-            hasErrors={field.ϟhasOwnErrors}
+            hasErrors={field.zHasOwnErrors}
             multiple
             wrap={field.wrap}
             tw={[
-               field.ϟownTypeSpecificProblems != null &&
-                  field.ϟownTypeSpecificProblems.length > 0 &&
+               field.zOwnTypeSpecificProblems != null &&
+                  field.zOwnTypeSpecificProblems.length > 0 &&
                   'rsx-field-error',
             ]}
             getLabelText={(t: OPTION): string => {
-               if (t == null) return field.ϟconfig.placeholder ?? '<null>'
+               if (t == null) return field.zConfig.placeholder ?? '<null>'
                return t.label ?? makeLabelFromPrimitiveValue(t.id)
             }}
-            OptionLabelUI={field.ϟconfig.OptionLabelUI}
+            OptionLabelUI={field.zConfig.OptionLabelUI}
             getSearchQuery={() => field.query}
             setSearchQuery={(query) => (field.query = query)}
-            disableLocalFiltering={field.ϟconfig.disableLocalFiltering}
+            disableLocalFiltering={field.zConfig.disableLocalFiltering}
             options={() => field.options}
-            createOption={field.ϟconfig.createOption}
+            createOption={field.zConfig.createOption}
             value={() => field.selectedOptions}
             equalityCheck={(a, b) => a?.id === b?.id}
             onOptionToggled={(selectOption) => {
@@ -46,31 +46,31 @@ export const WidgetSelectMany_SelectUI = obs(function WidgetSelectMany_SelectUI_
                if (selectOption == null) return field.unset()
 
                field.toggleId(selectOption.id)
-               field.ϟtouch()
+               field.zTouch()
             }}
             onCleared={
-               p.field.ϟcanBeToggledWithinParent &&
-               p.field.ϟisEnabledWithinParent &&
-               !p.field.ϟconfig.readonly &&
-               !p.field.ϟparent?.ϟconfig.readonly
+               p.field.zCanBeToggledWithinParent &&
+               p.field.zIsEnabledWithinParent &&
+               !p.field.zConfig.readonly &&
+               !p.field.zParent?.zConfig.readonly
                   ? (): void => {
-                       p.field.ϟdisableSelfWithinParent()
-                       field.ϟtouch()
+                       p.field.zDisableSelfWithinParent()
+                       field.zTouch()
                        p.selectProps?.onCleared?.()
                     }
                   : null
             }
-            placeholder={field.ϟconfig.placeholder}
+            placeholder={field.zConfig.placeholder}
             {...p.selectProps}
             revealProps={{
                ...p.selectProps?.revealProps,
                onHidden: (reason) => {
-                  field.ϟtouch()
+                  field.zTouch()
                   p.selectProps?.revealProps?.onHidden?.(reason)
                },
             }}
          />
-         {field.ϟconfig.wrapButton && (
+         {field.zConfig.wrapButton && (
             <InputBoolFlipButtonUI
                tooltip='Wrap items'
                tw='self-start'
@@ -78,10 +78,10 @@ export const WidgetSelectMany_SelectUI = obs(function WidgetSelectMany_SelectUI_
                value={p.field.wrap}
                onValueChange={(next) => {
                   p.field.wrap = next
-                  p.field.ϟtouch()
+                  p.field.zTouch()
                }}
-               onBlur={() => p.field.ϟtouch()}
-               toggleGroup={p.field.ϟuid}
+               onBlur={() => p.field.zTouch()}
+               toggleGroup={p.field.zUid}
             />
          )}
       </div>

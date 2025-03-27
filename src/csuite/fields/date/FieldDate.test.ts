@@ -20,54 +20,54 @@ describe('FieldDate', () => {
          const field = b.date().create()
 
          expect(field).toBeDefined()
-         expect(field.ϟvalue_unchecked).toBeUndefined()
+         expect(field.zValue_unchecked).toBeUndefined()
       })
 
       describe('default value', () => {
          it('should have the default value', () => {
             const field = b.date({ default: new Date(2025, 1, 3, 4, 5) }).create()
 
-            expect(field.ϟvalue_unchecked).toEqual(new Date(2025, 1, 3, 4, 5))
+            expect(field.zValue_unchecked).toEqual(new Date(2025, 1, 3, 4, 5))
          })
 
          it('should have the default value specified by a function', () => {
             const field = b.date({ default: () => new Date(2025, 1, 3, 4, 5) }).create()
 
-            expect(field.ϟvalue_unchecked).toEqual(new Date(2025, 1, 3, 4, 5))
+            expect(field.zValue_unchecked).toEqual(new Date(2025, 1, 3, 4, 5))
          })
 
          it('should set an invalid value if the default value is invalid', () => {
             const field = b.date({ default: new Date('INVALID') }).create()
 
-            expect(field.ϟvalue_unchecked).toBeNull()
-            expect(field.ϟhasOwnErrors).toBeTruthy()
+            expect(field.zValue_unchecked).toBeNull()
+            expect(field.zHasOwnErrors).toBeTruthy()
          })
       })
 
       describe('Create with a serial', () => {
          it('should correctly load the value from the serial', () => {
             const originalField = b.date().create()
-            originalField.ϟvalue = new Date(2025, 1, 3, 4, 5)
-            const serial = originalField.ϟserial
+            originalField.zValue = new Date(2025, 1, 3, 4, 5)
+            const serial = originalField.zSerial
 
             const newField = b.date().create(serial)
 
-            expect(newField.ϟvalue).toEqual(new Date(2025, 1, 3, 4, 5))
+            expect(newField.zValue).toEqual(new Date(2025, 1, 3, 4, 5))
          })
 
          it('should load an invalid serial and just return the appropriate error', () => {
-            const serial: Field_date<Date>['ϟserial'] = {
+            const serial: Field_date<Date>['zSerial'] = {
                value: 'invalid',
                $: 'date',
             }
             const newField = b.date().create(serial)
 
-            expect(newField.ϟserial).toEqual(serial)
-            expect(newField.ϟownErrors).toEqual([
-               { path: newField.ϟpath, message: 'Invalid date', severity: Severity.Error },
+            expect(newField.zSerial).toEqual(serial)
+            expect(newField.zOwnErrors).toEqual([
+               { path: newField.zPath, message: 'Invalid date', severity: Severity.Error },
             ])
-            expect(newField.ϟvalue_unchecked).toBeNull()
-            expect(() => newField.ϟvalue).toThrowError()
+            expect(newField.zValue_unchecked).toBeNull()
+            expect(() => newField.zValue).toThrowError()
          })
       })
 
@@ -78,7 +78,7 @@ describe('FieldDate', () => {
                   const S = b.date()
                   const E = S.create()
 
-                  expect(E.ϟserial).toBe(S.defaultSerial)
+                  expect(E.zSerial).toBe(S.defaultSerial)
                })
             })
 
@@ -87,14 +87,14 @@ describe('FieldDate', () => {
                   const S = b.date({ default: new Date(2025, 1, 3, 4, 5) })
                   const E = S.create()
 
-                  expect(E.ϟserial).toBe(S.defaultSerial)
+                  expect(E.zSerial).toBe(S.defaultSerial)
                })
 
                it('should use the defaultSerial and patch it (default as function)', () => {
                   const S = b.date({ default: () => new Date(2025, 1, 3, 4, 5) })
                   const E = S.create()
 
-                  expect(E.ϟserial).toBe(S.defaultSerial)
+                  expect(E.zSerial).toBe(S.defaultSerial)
                })
             })
          })
@@ -181,44 +181,44 @@ describe('FieldDate', () => {
          const field = b.date().create()
 
          const d = new Date(2025, 1, 3, 4, 5)
-         field.ϟvalue = d
+         field.zValue = d
 
-         expect(field.ϟvalue_unchecked).toEqual(d)
-         expect(field.ϟvalue).toEqual(d)
-         expect(field.ϟvalue_or_fail).toEqual(d)
-         expect(field.ϟvalue_or_zero).toEqual(d)
+         expect(field.zValue_unchecked).toEqual(d)
+         expect(field.zValue).toEqual(d)
+         expect(field.zValue_or_fail).toEqual(d)
+         expect(field.zValue_or_zero).toEqual(d)
       })
 
       it('should set null', () => {
          const field = b.date().create()
 
-         field.ϟvalue = null as any as Date
+         field.zValue = null as any as Date
 
-         expect(field.ϟvalue_unchecked).toBeNull()
-         expect(() => field.ϟvalue).toThrowError()
-         expect(() => field.ϟvalue_or_fail).toThrowError()
-         expect(field.ϟvalue_or_zero).toBeInstanceOf(Date)
+         expect(field.zValue_unchecked).toBeNull()
+         expect(() => field.zValue).toThrowError()
+         expect(() => field.zValue_or_fail).toThrowError()
+         expect(field.zValue_or_zero).toBeInstanceOf(Date)
       })
 
       it('should set undefined', () => {
          const field = b.date().create()
 
-         field.ϟvalue = undefined as any as Date
+         field.zValue = undefined as any as Date
 
-         expect(field.ϟvalue_unchecked).toBeUndefined()
-         expect(() => field.ϟvalue).toThrowError()
-         expect(() => field.ϟvalue_or_fail).toThrowError()
-         expect(field.ϟvalue_or_zero).toBeInstanceOf(Date)
+         expect(field.zValue_unchecked).toBeUndefined()
+         expect(() => field.zValue).toThrowError()
+         expect(() => field.zValue_or_fail).toThrowError()
+         expect(field.zValue_or_zero).toBeInstanceOf(Date)
       })
 
       it('should patch the serial in a transaction if the value is valid', () => {
          const field = b.date().create()
 
-         spyOn(field.ϟrepo, 'runInTransaction')
+         spyOn(field.zRepo, 'runInTransaction')
 
-         field.ϟvalue = new Date(2025, 1, 3, 4, 5)
+         field.zValue = new Date(2025, 1, 3, 4, 5)
 
-         expect(field.ϟrepo.runInTransaction).toHaveBeenCalledTimes(1)
+         expect(field.zRepo.runInTransaction).toHaveBeenCalledTimes(1)
       })
    })
 
@@ -228,7 +228,7 @@ describe('FieldDate', () => {
 
          field.setValueFromString('3/2/25, 04:05 AM')
 
-         expect(field.ϟvalue_unchecked).toEqual(new Date(2025, 2, 2, 4, 5))
+         expect(field.zValue_unchecked).toEqual(new Date(2025, 2, 2, 4, 5))
       })
 
       it('should trim the string', () => {
@@ -236,7 +236,7 @@ describe('FieldDate', () => {
 
          field.setValueFromString('  3/2/25, 04:05 AM  ')
 
-         expect(field.ϟvalue_unchecked).toEqual(new Date(2025, 2, 2, 4, 5))
+         expect(field.zValue_unchecked).toEqual(new Date(2025, 2, 2, 4, 5))
       })
 
       it('should set an invalid date', () => {
@@ -244,7 +244,7 @@ describe('FieldDate', () => {
 
          field.setValueFromString('invalid')
 
-         expect(field.ϟvalue_unchecked).toBeNull()
+         expect(field.zValue_unchecked).toBeNull()
       })
 
       it('should set null if the string is empty', () => {
@@ -252,7 +252,7 @@ describe('FieldDate', () => {
 
          field.setValueFromString('')
 
-         expect(field.ϟvalue_unchecked).toBeNull()
+         expect(field.zValue_unchecked).toBeNull()
       })
 
       it('should set null if the string contains only spaces', () => {
@@ -260,7 +260,7 @@ describe('FieldDate', () => {
 
          field.setValueFromString('   ')
 
-         expect(field.ϟvalue_unchecked).toBeNull()
+         expect(field.zValue_unchecked).toBeNull()
       })
 
       it('should set the serial even if the string is invalid', () => {
@@ -268,7 +268,7 @@ describe('FieldDate', () => {
 
          field.setValueFromString('invalid')
 
-         expect(field.ϟserial).toMatchObject({
+         expect(field.zSerial).toMatchObject({
             value: 'invalid',
          })
       })
@@ -276,13 +276,13 @@ describe('FieldDate', () => {
       it('should patch the serial in a transaction', () => {
          const field = b.date().create()
 
-         spyOn(field.ϟrepo, 'runInTransaction')
+         spyOn(field.zRepo, 'runInTransaction')
 
          field.setValueFromString('03/02/2025 04:05')
 
-         expect(field.ϟrepo.runInTransaction).toHaveBeenCalledTimes(1)
+         expect(field.zRepo.runInTransaction).toHaveBeenCalledTimes(1)
 
-         expect(field.ϟserial).toMatchObject({
+         expect(field.zSerial).toMatchObject({
             value: expect.any(String),
          })
       })
@@ -290,10 +290,10 @@ describe('FieldDate', () => {
       it('should patch the serial in a transaction if the value is invalid', () => {
          const field = b.date().create()
 
-         spyOn(field.ϟrepo, 'runInTransaction')
+         spyOn(field.zRepo, 'runInTransaction')
          field.setValueFromString('invalid')
 
-         expect(field.ϟrepo.runInTransaction).toHaveBeenCalledTimes(1)
+         expect(field.zRepo.runInTransaction).toHaveBeenCalledTimes(1)
       })
    })
 
@@ -303,14 +303,14 @@ describe('FieldDate', () => {
 
          field.setValueFromString('03/02/2025 04:05')
 
-         expect(field.ϟownTypeSpecificProblems).toBeNull()
+         expect(field.zOwnTypeSpecificProblems).toBeNull()
       })
 
       it('should return an error if the value is null', () => {
          const field = b.date().create()
 
-         expect(field.ϟownTypeSpecificProblems).toEqual({
-            path: field.ϟpath,
+         expect(field.zOwnTypeSpecificProblems).toEqual({
+            path: field.zPath,
             severity: Severity.Error,
             message: 'Field is not set',
          })
@@ -321,8 +321,8 @@ describe('FieldDate', () => {
 
          field.setValueFromString('invalid')
 
-         expect(field.ϟownTypeSpecificProblems).toEqual({
-            path: field.ϟpath,
+         expect(field.zOwnTypeSpecificProblems).toEqual({
+            path: field.zPath,
             severity: Severity.Error,
             message: 'Invalid date',
          })
@@ -333,11 +333,11 @@ describe('FieldDate', () => {
       it('should return an error if the value is not a valid date', () => {
          const field = b.date().create()
 
-         field.ϟvalue = new Date('ABCDEF')
+         field.zValue = new Date('ABCDEF')
 
-         expect(field.ϟownCustomConfigCheckProblems).toEqual([
+         expect(field.zOwnCustomConfigCheckProblems).toEqual([
             {
-               path: field.ϟpath,
+               path: field.zPath,
                severity: Severity.Error,
                message: 'Invalid date',
             },
@@ -348,7 +348,7 @@ describe('FieldDate', () => {
          const field = b
             .date({
                check: (f) => {
-                  if (f.ϟvalue_unchecked?.getFullYear() !== 2025) {
+                  if (f.zValue_unchecked?.getFullYear() !== 2025) {
                      return {
                         path: '$',
                         severity: Severity.Error,
@@ -359,11 +359,11 @@ describe('FieldDate', () => {
             })
             .create()
 
-         field.ϟvalue = new Date(2024, 1, 3, 4, 5)
+         field.zValue = new Date(2024, 1, 3, 4, 5)
 
-         expect(field.ϟownCustomConfigCheckProblems).toEqual([
+         expect(field.zOwnCustomConfigCheckProblems).toEqual([
             {
-               path: field.ϟpath,
+               path: field.zPath,
                severity: Severity.Error,
                message: 'Invalid year',
             },
@@ -377,7 +377,7 @@ describe('FieldDate', () => {
 
          field.setValueFromString('invalid')
 
-         expect(field.ϟownErrors).toMatchObject([{ message: 'Invalid date' }])
+         expect(field.zOwnErrors).toMatchObject([{ message: 'Invalid date' }])
       })
 
       it('should remove the error once the value is valid', () => {
@@ -386,7 +386,7 @@ describe('FieldDate', () => {
          field.setValueFromString('invalid')
          field.setValueFromString('03/02/2025 04:05')
 
-         expect(field.ϟownErrors).toEqual([])
+         expect(field.zOwnErrors).toEqual([])
       })
    })
 
@@ -394,7 +394,7 @@ describe('FieldDate', () => {
       it('should return false if the value has not been set', () => {
          const field = b.date().create()
 
-         expect(field.ϟisOwnSet).toBeFalsy()
+         expect(field.zIsOwnSet).toBeFalsy()
       })
 
       it('should return true if the value has been set', () => {
@@ -402,16 +402,16 @@ describe('FieldDate', () => {
 
          field.setValueFromString('03/02/2025 04:05')
 
-         expect(field.ϟisOwnSet).toBeTruthy()
+         expect(field.zIsOwnSet).toBeTruthy()
       })
 
       it('should return true if the value is null', () => {
          const field = b.date().create()
 
          field.setValueFromString('03/02/2025 04:05')
-         field.ϟvalue = null as any as Date
+         field.zValue = null as any as Date
 
-         expect(field.ϟisOwnSet).toBeTruthy()
+         expect(field.zIsOwnSet).toBeTruthy()
       })
 
       it('should return true if the value is invalid', () => {
@@ -419,7 +419,7 @@ describe('FieldDate', () => {
 
          field.setValueFromString('invalid')
 
-         expect(field.ϟisOwnSet).toBeTruthy()
+         expect(field.zIsOwnSet).toBeTruthy()
       })
    })
 
@@ -430,7 +430,7 @@ describe('FieldDate', () => {
             const E1 = S.create()
             const E2 = S.create()
 
-            expect(E1.ϟisValueEqual(E2)).toBeTruthy()
+            expect(E1.zIsValueEqual(E2)).toBeTruthy()
          })
 
          it('should return true if both fields are set to the same value', () => {
@@ -438,10 +438,10 @@ describe('FieldDate', () => {
             const E1 = S.create()
             const E2 = S.create()
 
-            E1.ϟvalue = new Date(2025, 1, 3, 4, 5)
-            E2.ϟvalue = new Date(2025, 1, 3, 4, 5)
+            E1.zValue = new Date(2025, 1, 3, 4, 5)
+            E2.zValue = new Date(2025, 1, 3, 4, 5)
 
-            expect(E1.ϟisValueEqual(E2)).toBeTruthy()
+            expect(E1.zIsValueEqual(E2)).toBeTruthy()
          })
       })
 
@@ -451,9 +451,9 @@ describe('FieldDate', () => {
             const E1 = S.create()
             const E2 = S.create()
 
-            E1.ϟvalue = new Date(2025, 1, 3, 4, 5)
+            E1.zValue = new Date(2025, 1, 3, 4, 5)
 
-            expect(E1.ϟisValueEqual(E2)).toBeFalsy()
+            expect(E1.zIsValueEqual(E2)).toBeFalsy()
          })
 
          it('should return false if both fields are set to different values', () => {
@@ -461,10 +461,10 @@ describe('FieldDate', () => {
             const E1 = S.create()
             const E2 = S.create()
 
-            E1.ϟvalue = new Date(2025, 1, 3, 4, 5)
-            E2.ϟvalue = new Date(2025, 1, 3, 4, 6)
+            E1.zValue = new Date(2025, 1, 3, 4, 5)
+            E2.zValue = new Date(2025, 1, 3, 4, 6)
 
-            expect(E1.ϟisValueEqual(E2)).toBeFalsy()
+            expect(E1.zIsValueEqual(E2)).toBeFalsy()
          })
 
          it('should return false if the other field is not a date', () => {
@@ -472,10 +472,10 @@ describe('FieldDate', () => {
             const E1 = S.create()
             const E2 = b.text().create()
 
-            E1.ϟvalue = new Date(2025, 1, 3, 4, 5)
-            E2.ϟvalue = new Date(2025, 1, 3, 4, 5).toISOString()
+            E1.zValue = new Date(2025, 1, 3, 4, 5)
+            E2.zValue = new Date(2025, 1, 3, 4, 5).toISOString()
 
-            expect(E1.ϟisValueEqual(E2 as any)).toBeFalsy()
+            expect(E1.zIsValueEqual(E2 as any)).toBeFalsy()
          })
       })
    })

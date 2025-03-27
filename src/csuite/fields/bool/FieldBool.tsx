@@ -54,23 +54,23 @@ type Field_bool_unchecked = Field_bool_value | undefined
 
 // #region TYPES
 export interface Field_bool extends Field {
-   ['Ҩtype']: 'bool'
-   ['ҨownConfig']: Field_bool_ownConfig
-   ['ҨownSerial']: Field_bool_ownSerial
-   ['Ҩvalue']: Field_bool_value
-   ['Ҩsetvalue']: Field_bool_value
-   ['Ҩunchecked']: Field_bool_unchecked
-   ['Ҩchild']: never
-   ['Ҩopts']: unknown
-   ['ҨownPatch']: Patch<'bool'>
+   ['ҨType']: 'bool'
+   ['ҨOwnConfig']: Field_bool_ownConfig
+   ['ҨOwnSerial']: Field_bool_ownSerial
+   ['ҨValue']: Field_bool_value
+   ['ҨSetvalue']: Field_bool_value
+   ['ҨUnchecked']: Field_bool_unchecked
+   ['ҨChild']: never
+   ['ҨOpts']: unknown
+   ['ҨOwnPatch']: Patch<'bool'>
 }
 
 export class Field_bool extends Field {
    // #region TYPE
    static readonly type: 'bool' = 'bool'
-   private static readonly unsetSerial: Field_bool['Ҩserial'] = { $: 'bool' }
+   private static readonly unsetSerial: Field_bool['ҨSerial'] = { $: 'bool' }
    static readonly codeForTypescriptValue = (config: Field_bool_ownConfig): string => 'boolean'
-   static override migrateSerial(serial: object): Maybe<Field_bool['Ҩserial']> {
+   static override migrateSerial(serial: object): Maybe<Field_bool['ҨSerial']> {
       if (isProbablySerialBool(serial)) {
          if ('val' in serial) {
             const recoveredVal = serial.val
@@ -82,9 +82,9 @@ export class Field_bool extends Field {
    }
 
    static generateSerial(
-      value: Maybe<Field_bool['Ҩvalue']>,
-      config: Field_bool['Ҩconfig'],
-   ): Field_bool['Ҩserial'] {
+      value: Maybe<Field_bool['ҨValue']>,
+      config: Field_bool['ҨConfig'],
+   ): Field_bool['ҨSerial'] {
       if (value == null && config.default == null) return this.unsetSerial
 
       return {
@@ -100,77 +100,77 @@ export class Field_bool extends Field {
       parent: Field | null,
       schema: CSchema<any /* Field_bool */>,
       initialMountKey: string,
-      serial?: Field_bool['Ҩserial'],
+      serial?: Field_bool['ҨSerial'],
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
       this.init(serial)
    }
 
    // #region SERIAL
-   protected ϟsetOwnSerial(next: Field_bool['Ҩserial']): void {
+   protected zSetOwnSerial(next: Field_bool['ҨSerial']): void {
       if (next.value == null) {
          const def = this.defaultValue
          if (def != null) next = produce(next, (draft) => void (draft.value = def))
       }
 
-      this.ϟassignNewSerial(next)
+      this.zAssignNewSerial(next)
    }
 
    // #region CHILDREN
    // #region VALUE
-   get ϟvalue(): Field_bool_value {
-      return this.ϟvalue_or_fail
+   get zValue(): Field_bool_value {
+      return this.zValue_or_fail
    }
 
-   set ϟvalue(next: Field_bool_value) {
-      if (this.ϟserial.value === next) return
-      this.ϟrunInTransaction(() => this.ϟpatchSerial((serial) => void (serial.value = next)))
+   set zValue(next: Field_bool_value) {
+      if (this.zSerial.value === next) return
+      this.zRunInTransaction(() => this.zPatchSerial((serial) => void (serial.value = next)))
    }
 
-   get ϟvalue_or_fail(): Field_bool_value {
-      const val = this.ϟvalue_unchecked
-      if (val == null) throw new Error('Field_bool.value_or_fail: not set')
+   get zValue_or_fail(): Field_bool_value {
+      const val = this.zValue_unchecked
+      if (val == null) throw new Error('Field_bool.zValue_or_fail: not set')
       return val
    }
 
-   get ϟvalue_or_zero(): Field_bool_value {
-      return this.ϟserial.value ?? false
+   get zValue_or_zero(): Field_bool_value {
+      return this.zSerial.value ?? false
    }
 
-   get ϟvalue_unchecked(): Field_bool_unchecked {
-      return this.ϟserial.value
+   get zValue_unchecked(): Field_bool_unchecked {
+      return this.zSerial.value
    }
 
    get pathToValueInRootSerial(): string {
-      return `${this.ϟgetOwnSerialPathFromRoot()}.value`
+      return `${this.zGetOwnSerialPathFromRoot()}.value`
    }
 
-   override ϟisValueEqual(other: Field): boolean {
+   override zIsValueEqual(other: Field): boolean {
       if (!(other instanceof Field_bool)) return false
-      return this.ϟvalue_unchecked === other.ϟvalue_unchecked
+      return this.zValue_unchecked === other.zValue_unchecked
    }
 
    // #region CHANGES
-   get ϟisOwnSet(): boolean {
-      return this.ϟserial.value !== undefined
+   get zIsOwnSet(): boolean {
+      return this.zSerial.value !== undefined
    }
 
-   get ϟhasChanges(): boolean {
-      if (this.ϟserial.value == null) return false
-      if (this.ϟserial.value === this.defaultValue) return false
+   get zHasChanges(): boolean {
+      if (this.zSerial.value == null) return false
+      if (this.zSerial.value === this.defaultValue) return false
       return true
    }
 
    get defaultValue(): boolean | undefined {
-      return this.ϟconfig.default
+      return this.zConfig.default
    }
 
    // #region PROBLEMS
-   get ϟownConfigSpecificProblems(): Problem_Ext {
+   get zOwnConfigSpecificProblems(): Problem_Ext {
       return null
    }
 
-   get ϟownTypeSpecificProblems(): Problem_Ext {
+   get zOwnTypeSpecificProblems(): Problem_Ext {
       return null
    }
 
@@ -181,24 +181,24 @@ export class Field_bool extends Field {
 
    /** set the value to true */
    setOn(): void {
-      this.ϟvalue = true
+      this.zValue = true
    }
 
    /** set the value to false */
    setOff(): void {
-      this.ϟvalue = false
+      this.zValue = false
    }
 
    // #region SETTERS
    /** set value to true if false, and to false if true */
    toggle(): void {
-      this.ϟvalue = !this.ϟvalue_or_zero
+      this.zValue = !this.zValue_or_zero
    }
 
    // #region MOCK
-   override ϟrandomize(): void {
+   override zRandomize(): void {
       const r = Math.random()
-      this.ϟvalue = r > 0.5
+      this.zValue = r > 0.5
    }
 
    // #region PATCH

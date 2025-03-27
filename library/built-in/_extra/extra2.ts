@@ -34,7 +34,7 @@ export function extra2(): $extra2 {
    )
 }
 
-export async function eval_extra2(p: $extra2['Ҩvalue']): Promise<void> {
+export async function eval_extra2(p: $extra2['ҨValue']): Promise<void> {
    const run = getCurrentRun()
 
    if (p?.gaussianSplat) run.output_GaussianSplat({ url: '' })

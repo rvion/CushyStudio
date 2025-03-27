@@ -4,8 +4,8 @@ import { WidgetSingleLineSummaryUI } from '../../csuite/form/WidgetSingleLineSum
 
 export const WidgetPrompt_LineUI = obs(function WidgetPrompt_LineUI_(p: { field: Field_prompt }) {
    const field = p.field
-   if (field.ϟserial.collapsed)
-      return <WidgetSingleLineSummaryUI>{field.ϟserial.val}</WidgetSingleLineSummaryUI>
+   if (field.zSerial.collapsed)
+      return <WidgetSingleLineSummaryUI>{field.zSerial.val}</WidgetSingleLineSummaryUI>
    return null
    //         {/* <Button
    //             onClick={() => cushy.layout.addCustomV2(PromptEditorUI, { promptID: field._uid })}

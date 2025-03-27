@@ -121,12 +121,12 @@ export const _cushySDXLLayout: App<CushySDXLSchema>['layout'] = (field, set) => 
    //    }),
    // })
    // // already handled by its parent
-   // set(field._.positive._.prompts, { collapsible: false, Head: false, Header: false })
-   // set(field._.negative._.prompts, { collapsible: false, Head: false, Header: false })
+   // set(field.positive.prompts, { collapsible: false, Head: false, Header: false })
+   // set(field.negative.prompts, { collapsible: false, Head: false, Header: false })
 
    // set('', (ui2) => {
-   //    if (ui2.field.parent?.parent === field._.positive._.prompts) return { Head: false }
-   //    if (ui2.field.parent?.parent === field._.negative._.prompts) return { Head: false }
+   //    if (ui2.field.parent?.parent === field.positive.prompts) return { Head: false }
+   //    if (ui2.field.parent?.parent === field.negative.prompts) return { Head: false }
    //    // No longer needed as not using optional, opting for the enabled field. It didn't even work anyways.
    //    // if (ui2.field.parent === field.Positive.Prompts) ui2.set({ Shell: ShellOptionalEnabledUI })
    // })

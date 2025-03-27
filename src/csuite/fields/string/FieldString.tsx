@@ -31,7 +31,7 @@ export type FieldStringInputType =
     | 'color'
 
 // #region CONFIG TYPE
-export type Field_string_config = Field_string['Ҩconfig']
+export type Field_string_config = Field_string['ҨConfig']
 type Field_string_ownConfig = {
    /**
     * used:
@@ -69,7 +69,7 @@ type Field_string_ownConfig = {
 }
 
 // #region SERIAL TYPE
-export type Field_string_serial = Field_string['Ҩserial']
+export type Field_string_serial = Field_string['ҨSerial']
 type Field_string_ownSerial = {
    $: 'str'
    value?: string | undefined
@@ -87,28 +87,28 @@ type Field_string_unchecked = Field_string_value | undefined
 
 // #region Field
 export interface Field_string {
-   ['Ҩtype']: 'str'
-   ['ҨownConfig']: Field_string_ownConfig
-   ['ҨownSerial']: Field_string_ownSerial
-   ['Ҩvalue']: Field_string_value
-   ['Ҩsetvalue']: Field_string_value
-   ['Ҩunchecked']: Field_string_unchecked
-   ['Ҩchild']: never
-   ['Ҩopts']: unknown
-   ['ҨownPatch']: Patch<'str'>
+   ['ҨType']: 'str'
+   ['ҨOwnConfig']: Field_string_ownConfig
+   ['ҨOwnSerial']: Field_string_ownSerial
+   ['ҨValue']: Field_string_value
+   ['ҨSetvalue']: Field_string_value
+   ['ҨUnchecked']: Field_string_unchecked
+   ['ҨChild']: never
+   ['ҨOpts']: unknown
+   ['ҨOwnPatch']: Patch<'str'>
 }
 
 // #region STATE
 export class Field_string extends Field {
    // #region Type
    static readonly type: 'str' = 'str'
-   private static readonly unsetSerial: Field_string['Ҩserial'] = { $: 'str' }
+   private static readonly unsetSerial: Field_string['ҨSerial'] = { $: 'str' }
    static readonly codeForTypescriptValue = (config: Field_string_ownConfig): string => {
       if (config.inputType == null) return 'string'
       if (config.inputType === 'text') return 'string'
       return `Z.FL_string_${config.inputType}`
    }
-   static override migrateSerial(serial: object): Maybe<Field_string['Ҩserial']> | void {
+   static override migrateSerial(serial: object): Maybe<Field_string['ҨSerial']> | void {
       if (isProbablySerialString(serial)) {
          // recover from previous version of string serial
          if ('val' in serial) {
@@ -120,9 +120,9 @@ export class Field_string extends Field {
    }
 
    static generateSerial(
-      value: Maybe<Field_string['Ҩvalue']>,
-      config: Field_string['Ҩconfig'],
-   ): Field_string['Ҩserial'] {
+      value: Maybe<Field_string['ҨValue']>,
+      config: Field_string['ҨConfig'],
+   ): Field_string['ҨSerial'] {
       if (value == null && config.default == null) return this.unsetSerial
 
       const selectedVal = value ?? (typeof config.default === 'function' ? config.default() : config.default)
@@ -140,7 +140,7 @@ export class Field_string extends Field {
       parent: Field | null,
       schema: CSchema<Field_string>,
       initialMountKey: string,
-      serial?: Field_string['Ҩserial'],
+      serial?: Field_string['ҨSerial'],
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
       this.init(serial)
@@ -148,7 +148,7 @@ export class Field_string extends Field {
 
    // #region SERIAL
    // 🟢
-   protected ϟsetOwnSerial(next: Field_string['Ҩserial']): void {
+   protected zSetOwnSerial(next: Field_string['ҨSerial']): void {
       // 💬 2024-09-10 rvion:
       // | we CAN'T do this:
       // | ```
@@ -172,50 +172,54 @@ export class Field_string extends Field {
       // 2. ASSIGN
       // assign given serial (or default one)
       // this.serial = next
-      this.ϟassignNewSerial(next)
+      this.zAssignNewSerial(next)
 
       // 3. RECONCILIATION
       // N.A.
    }
 
-   // #region VALUE
-   get ϟvalue(): this['Ҩvalue'] {
-      return this.ϟvalue_or_fail
+   private toString(): string {
+      return this.zValue
    }
 
-   set ϟvalue(next: this['Ҩvalue'] | undefined) {
+   // #region VALUE
+   get zValue(): this['ҨValue'] {
+      return this.zValue_or_fail
+   }
+
+   set zValue(next: this['ҨValue'] | undefined) {
       // Do we want to add that to implicitly convert non strings to string ?
       // convenient, but can be a source of bugs / unexpected behaviours.
       const nextStrVal = typeof next === 'string' ? next : JSON.stringify(next)
 
       // abort if same value
-      const normalized = this.ϟconfig.normalize ? this.ϟconfig.normalize(nextStrVal) : nextStrVal
-      if (this.ϟserial.value === normalized) return
+      const normalized = this.zConfig.normalize ? this.zConfig.normalize(nextStrVal) : nextStrVal
+      if (this.zSerial.value === normalized) return
 
       // patch value in serial
-      this.ϟrunInTransaction(() => {
-         this.ϟpatchSerial((serial) => void (serial.value = normalized))
+      this.zRunInTransaction(() => {
+         this.zPatchSerial((serial) => void (serial.value = normalized))
       })
    }
 
-   get ϟvalue_or_fail(): Field_string_value {
-      const val = this.ϟvalue_unchecked
-      if (val == null) throw new Error('Field_string.value_or_fail: not set')
+   get zValue_or_fail(): Field_string_value {
+      const val = this.zValue_unchecked
+      if (val == null) throw new Error('Field_string.zValue_or_fail: not set')
       return val
    }
 
-   get ϟvalue_or_zero(): Field_string_value {
-      return this.ϟvalue_unchecked ?? ''
+   get zValue_or_zero(): Field_string_value {
+      return this.zValue_unchecked ?? ''
    }
 
-   get ϟvalue_unchecked(): Field_string_unchecked {
-      return this.ϟserial.value
+   get zValue_unchecked(): Field_string_unchecked {
+      return this.zSerial.value
    }
 
-   public ϟisValueEqual(other: Field): boolean {
+   public zIsValueEqual(other: Field): boolean {
       if (other === this) return true
       if (!(other instanceof Field_string)) return false
-      return this.ϟvalue_unchecked === other.ϟvalue_unchecked
+      return this.zValue_unchecked === other.zValue_unchecked
    }
 
    public static patchedSerialPaths: readonly string[] = Object.freeze(['value'])
@@ -227,13 +231,13 @@ export class Field_string extends Field {
    }
 
    // #region CHANGES
-   get ϟisOwnSet(): boolean {
-      return this.ϟserial.value !== undefined
+   get zIsOwnSet(): boolean {
+      return this.zSerial.value !== undefined
    }
 
-   get ϟhasChanges(): boolean {
-      if (this.ϟserial.value == null) return false
-      if (this.ϟserial.value === this.defaultValue) return false
+   get zHasChanges(): boolean {
+      if (this.zSerial.value == null) return false
+      if (this.zSerial.value === this.defaultValue) return false
       return true
    }
 
@@ -242,11 +246,11 @@ export class Field_string extends Field {
    }
 
    get pathToValueInRootSerial(): string {
-      return `${this.ϟgetOwnSerialPathFromRoot()}.value`
+      return `${this.zGetOwnSerialPathFromRoot()}.value`
    }
 
    private evalDefaultValue(): string | undefined {
-      const d = this.ϟconfig.default
+      const d = this.zConfig.default
       if (d == null) return undefined
       if (typeof d === 'function') return d()
       if (typeof d === 'string') return d
@@ -254,11 +258,11 @@ export class Field_string extends Field {
    }
 
    // #region PROBLEMS
-   @computed get ϟownConfigSpecificProblems(): Problem_Ext {
+   @computed get zOwnConfigSpecificProblems(): Problem_Ext {
       const i18n = csuiteConfig.i18n
       const out: string[] = []
-      const minlen = extractConfigValue(this.ϟconfig.minLength)
-      const maxlen = extractConfigValue(this.ϟconfig.maxLength)
+      const minlen = extractConfigValue(this.zConfig.minLength)
+      const maxlen = extractConfigValue(this.zConfig.maxLength)
       if (minlen != null && maxlen != null) {
          if (minlen > maxlen) {
             // 💬 2024-09-17 rvion: lol, no need to check the opposite 🤦‍♂️
@@ -268,7 +272,7 @@ export class Field_string extends Field {
             out.push(i18n.err.str.minLengthSameThanMaxLength({ minmax: minlen }))
          }
       }
-      const def = this.ϟconfig.default
+      const def = this.zConfig.default
       if (def != null) {
          const defLen = def?.length
          if (minlen != null && defLen < minlen)
@@ -279,44 +283,44 @@ export class Field_string extends Field {
       return out
    }
 
-   @computed get ϟownTypeSpecificProblems(): Problem_Ext {
+   @computed get zOwnTypeSpecificProblems(): Problem_Ext {
       const i18n = csuiteConfig.i18n
       const out: Problem_Ext = []
 
-      if (!this.ϟisSet) return null
-      const value = this.ϟvalue_or_zero
+      if (!this.zIsSet) return null
+      const value = this.zValue_or_zero
 
       // check min
-      const min = extractConfigValue(this.ϟconfig.minLength)
+      const min = extractConfigValue(this.zConfig.minLength)
       if (min === 1 && value.length === 0)
          out.push(
             extractConfigMessage(
-               this.ϟconfig.minLength,
+               this.zConfig.minLength,
 
                i18n.err.str.required({
                   prefix:
-                     this.ϟconfig.label != null && this.ϟconfig.label !== false
-                        ? this.ϟconfig.label
-                        : makeLabelFromPrimitiveValue(this.ϟmountKey),
+                     this.zConfig.label != null && this.zConfig.label !== false
+                        ? this.zConfig.label
+                        : makeLabelFromPrimitiveValue(this.zMountKey),
                }),
             ),
          )
       else if (min != null && value.length < min)
-         out.push(extractConfigMessage(this.ϟconfig.minLength, i18n.err.str.tooShort({ min })))
+         out.push(extractConfigMessage(this.zConfig.minLength, i18n.err.str.tooShort({ min })))
 
       // check max
-      const max = extractConfigValue(this.ϟconfig.maxLength)
+      const max = extractConfigValue(this.zConfig.maxLength)
       if (max != null && value.length > max)
-         out.push(extractConfigMessage(this.ϟconfig.maxLength, i18n.err.str.tooLong({ max })))
+         out.push(extractConfigMessage(this.zConfig.maxLength, i18n.err.str.tooLong({ max })))
 
       // check pattern
-      const pattern = extractConfigValue(this.ϟconfig.pattern)
+      const pattern = extractConfigValue(this.zConfig.pattern)
       if (pattern != null) {
          const reg = new RegExp(pattern).test(value)
          if (!reg)
             out.push(
                extractConfigMessage(
-                  this.ϟconfig.pattern,
+                  this.zConfig.pattern,
                   i18n.err.str.pattern({ pattern: pattern.toString() }),
                ),
             )
@@ -325,11 +329,11 @@ export class Field_string extends Field {
    }
    // #region randomization
 
-   override ϟrandomize(): void {
-      if (this.ϟconfig.randomizationPool) {
-         this.ϟvalue = choose(this.ϟconfig.randomizationPool)
+   override zRandomize(): void {
+      if (this.zConfig.randomizationPool) {
+         this.zValue = choose(this.zConfig.randomizationPool)
       } else {
-         this.ϟvalue = random3LetterWord()
+         this.zValue = random3LetterWord()
       }
 
       function choose(arr: string[]): string {
@@ -342,8 +346,8 @@ export class Field_string extends Field {
    }
 
    // #region UI
-   override get ϟisCollapsible(): boolean {
-      if (this.ϟconfig.textarea) return true
+   override get zIsCollapsible(): boolean {
+      if (this.zConfig.textarea) return true
       return false
    }
 }

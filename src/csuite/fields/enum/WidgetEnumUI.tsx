@@ -8,7 +8,7 @@ import { WidgetEnum_TabUI } from './WidgetEnum_TabUI'
 
 export const WidgetEnumUI = obs(function WidgetEnumUI_(p: { field: Field_enum<any> }) {
    const field = p.field
-   const skin = field.ϟconfig.appearance ?? 'select'
+   const skin = field.zConfig.appearance ?? 'select'
    if (skin === 'select') return <WidgetEnum_SelectUI field={field} />
    if (skin === 'tab') return <WidgetEnum_TabUI field={field} />
    exhaust(skin)

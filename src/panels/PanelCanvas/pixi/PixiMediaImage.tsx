@@ -42,18 +42,18 @@ let currentlyDragged: {
 class XXX {
    constructor(
       public i: MediaImageL,
-      public placement: SimpleShape$['Ҩfield'],
+      public placement: SimpleShape$['ҨField'],
       public uc: UnifiedCanvas,
    ) {
       makeAutoObservable(this)
    }
    get xInWorld(): number {
-      return this.placement.x.ϟvalue
+      return this.placement.x.zValue
    }
 
    /** y position relative the the whole view origin */
    get yInWorld(): number {
-      return this.placement.y.ϟvalue
+      return this.placement.y.zValue
    }
 
    onDragStart: FederatedEventHandler<FederatedPointerEvent> = (event: FederatedPointerEvent): void => {
@@ -101,17 +101,17 @@ class XXX {
       const snappedX = snapToGrid != null ? Math.round(nextXInWorld / snapToGrid) * snapToGrid : nextXInWorld
       const snappedY = snapToGrid != null ? Math.round(nextYInWorld / snapToGrid) * snapToGrid : nextYInWorld
 
-      this.placement.ϟrunInTransaction(() => {
-         this.placement.x.ϟvalue = snappedX
-         this.placement.y.ϟvalue = snappedY
+      this.placement.zRunInTransaction(() => {
+         this.placement.x.zValue = snappedX
+         this.placement.y.zValue = snappedY
       })
    }
 }
 
 type DraggableSpriteProps = {
-   placement: SimpleShape$['Ҩfield']
+   placement: SimpleShape$['ҨField']
    mediaImage: MediaImageL
-   layer?: Layer$['Ҩfield']
+   layer?: Layer$['ҨField']
    onClick?: () => void
    alpha?: number
 }
@@ -140,8 +140,8 @@ export const PixiMediaImage = obs(function DraggableSpriteUI_(p: DraggableSprite
       <>
          <pixiSprite //
             interactive
-            width={p.placement.width.ϟvalue || mediaImage.width}
-            height={p.placement.height.ϟvalue || mediaImage.height}
+            width={p.placement.width.zValue || mediaImage.width}
+            height={p.placement.height.zValue || mediaImage.height}
             alpha={p.alpha}
             key={mediaImage.id}
             onClick={p.onClick}
@@ -150,8 +150,8 @@ export const PixiMediaImage = obs(function DraggableSpriteUI_(p: DraggableSprite
             onPointerUp={xxx.onDragEnd}
             onPointerUpOutside={xxx.onDragEnd}
             onPointerMove={xxx.onDragMove}
-            x={xxx.placement.x.ϟvalue}
-            y={xxx.placement.y.ϟvalue}
+            x={xxx.placement.x.zValue}
+            y={xxx.placement.y.zValue}
             texture={asset}
          />
 

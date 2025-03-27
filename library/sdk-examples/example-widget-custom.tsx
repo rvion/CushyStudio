@@ -7,7 +7,6 @@ import Confetti from 'react-confetti'
 import { Button } from '../../src/csuite/button/Button'
 import { MyCustomComponent2 } from './example-widget-custom-2'
 
-// eslint-disable-next-line react-refresh/only-export-components
 const MyCustomComponent = obs(function (
    p: CustomWidgetProps<{
       clickCount: number
@@ -15,7 +14,7 @@ const MyCustomComponent = obs(function (
       image?: MediaImageID
    }>,
 ) {
-   const value = p.field.value
+   const value = p.field.zValue
    const img = value.image ?? cushy.db.media_image.last()
    return (
       <div className='flex flex-col gap-2 p-2'>
@@ -58,12 +57,12 @@ app({
          }),
       }),
 
-   run: async (run, ui) => {
+   run: (run, ui): void => {
       /** 📝 Get the view state during a run */
       const clickCount = ui.demo.clickCount
       run.output_text(`You have clicked it ${clickCount ?? 0} times (before resetting)`)
 
       /** 📝 programmatically reset the state from the UI */
-      if (ui.demo.text === 'reset') run.form.fields.demo.reset()
+      if (ui.demo.text === 'reset') run.form.demo.zReset()
    },
 })

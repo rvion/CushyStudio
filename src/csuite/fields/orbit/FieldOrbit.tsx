@@ -44,24 +44,24 @@ export type Field_orbit_unchecked = {
 
 // STATE
 export interface Field_orbit {
-   ['Ҩtype']: 'orbit'
-   ['ҨownConfig']: Field_orbit_ownConfig
-   ['ҨownSerial']: Field_orbit_ownSerial
-   ['Ҩvalue']: Field_orbit_value
-   ['Ҩunchecked']: Field_orbit_unchecked
-   Ҩfield: Field_orbit
-   ['Ҩchild']: never
+   ['ҨType']: 'orbit'
+   ['ҨOwnConfig']: Field_orbit_ownConfig
+   ['ҨOwnSerial']: Field_orbit_ownSerial
+   ['ҨValue']: Field_orbit_value
+   ['ҨUnchecked']: Field_orbit_unchecked
+   ҨField: Field_orbit
+   ['ҨChild']: never
 }
 export class Field_orbit extends Field {
    // #region types
    static readonly type: 'orbit' = 'orbit'
-   static readonly unsetSerial: Field_orbit['Ҩserial'] = { $: 'orbit' }
+   static readonly unsetSerial: Field_orbit['ҨSerial'] = { $: 'orbit' }
    static migrateSerial(): undefined {}
    public static readonly patchedSerialPaths: readonly string[] = Object.freeze(['azimuth', 'elevation'])
    static generateSerial(
-      value: Maybe<Field_orbit['Ҩvalue']>,
-      config: Field_orbit['Ҩconfig'],
-   ): Field_orbit['Ҩserial'] {
+      value: Maybe<Field_orbit['ҨValue']>,
+      config: Field_orbit['ҨConfig'],
+   ): Field_orbit['ҨSerial'] {
       if (value == null && config.default == null) return this.unsetSerial
       const selectedVal = value ?? config.default
       return {
@@ -70,7 +70,7 @@ export class Field_orbit extends Field {
          elevation: selectedVal?.elevation,
       }
    }
-   static codeForTypescriptValue(config: Field_orbit['Ҩconfig']): string {
+   static codeForTypescriptValue(config: Field_orbit['ҨConfig']): string {
       return `number`
    }
 
@@ -81,23 +81,23 @@ export class Field_orbit extends Field {
       parent: Field | null,
       schema: CSchema<Field_orbit>,
       initialMountKey: string,
-      serial?: Field_orbit['Ҩserial'],
+      serial?: Field_orbit['ҨSerial'],
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
       this.init(serial)
    }
 
    // #region Serial
-   get ϟisOwnSet(): boolean {
-      if (this.ϟserial.azimuth == null) return false
-      if (this.ϟserial.elevation == null) return false
+   get zIsOwnSet(): boolean {
+      if (this.zSerial.azimuth == null) return false
+      if (this.zSerial.elevation == null) return false
       return true
    }
 
-   protected ϟsetOwnSerial(next: Field_orbit['Ҩserial']): void {
+   protected zSetOwnSerial(next: Field_orbit['ҨSerial']): void {
       // assign default
-      if (this.ϟserial.azimuth == null) {
-         const def = this.ϟconfig.default
+      if (this.zSerial.azimuth == null) {
+         const def = this.zConfig.default
          if (def != null) {
             next = produce(next, (draft) => {
                draft.azimuth ??= def.azimuth ?? 0
@@ -106,7 +106,7 @@ export class Field_orbit extends Field {
          }
       }
 
-      this.ϟassignNewSerial(next)
+      this.zAssignNewSerial(next)
    }
 
    // #region UI
@@ -114,10 +114,10 @@ export class Field_orbit extends Field {
    DefaultBodyUI: undefined = undefined
 
    // #region Validation
-   get ϟownTypeSpecificProblems(): Problem_Ext {
+   get zOwnTypeSpecificProblems(): Problem_Ext {
       return null
    }
-   get ϟownConfigSpecificProblems(): Problem_Ext {
+   get zOwnConfigSpecificProblems(): Problem_Ext {
       return null
    }
 
@@ -150,53 +150,53 @@ export class Field_orbit extends Field {
       azimuth_rad: number
       elevation_rad: number
    }): void {
-      this.ϟrunInTransaction(() => {
-         this.ϟserial.azimuth = clampMod(-90 + p.azimuth_rad * (180 / Math.PI), -180, 180)
-         this.ϟserial.elevation = clampMod(90 - p.elevation_rad * (180 / Math.PI), -180, 180)
+      this.zRunInTransaction(() => {
+         this.zSerial.azimuth = clampMod(-90 + p.azimuth_rad * (180 / Math.PI), -180, 180)
+         this.zSerial.elevation = clampMod(90 - p.elevation_rad * (180 / Math.PI), -180, 180)
       })
       // (Math.PI / 4 - curr.getPolarAngle()) * (180 / Math.PI)
    }
 
    // #region Changes
-   get ϟhasChanges(): boolean {
+   get zHasChanges(): boolean {
       if (this.azimuth !== this.defaultAzimuth) return true
       if (this.elevation !== this.defaultElevation) return true
       return false
    }
 
-   override ϟisValueEqual(other: Field): boolean {
+   override zIsValueEqual(other: Field): boolean {
       if (!(other instanceof Field_orbit)) return false
       return (
-         this.ϟserial.azimuth === other.ϟserial.azimuth && //
-         this.ϟserial.elevation === other.ϟserial.elevation
+         this.zSerial.azimuth === other.zSerial.azimuth && //
+         this.zSerial.elevation === other.zSerial.elevation
       )
    }
 
    // #region Value
-   get ϟvalue(): Field_orbit_value {
-      return this.ϟvalue_or_fail
+   get zValue(): Field_orbit_value {
+      return this.zValue_or_fail
    }
 
-   set ϟvalue(val: Field_orbit_value) {
+   set zValue(val: Field_orbit_value) {
       this.azimuth = val.azimuth
       this.elevation = val.elevation
    }
 
-   get ϟvalue_or_fail(): Field_orbit_value {
+   get zValue_or_fail(): Field_orbit_value {
       const azimuth = this.azimuth_or_fail
       const elevation = this.elevation_or_fail
       const englishSummary = mkEnglishSummary(azimuth, elevation)
       return { azimuth, elevation, englishSummary }
    }
 
-   get ϟvalue_or_zero(): Field_orbit_value {
+   get zValue_or_zero(): Field_orbit_value {
       const azimuth = this.azimuth_or_zero
       const elevation = this.elevation_or_zero
       const englishSummary = mkEnglishSummary(azimuth, elevation)
       return { azimuth, elevation, englishSummary }
    }
 
-   get ϟvalue_unchecked(): Field_orbit_unchecked {
+   get zValue_unchecked(): Field_orbit_unchecked {
       const azimuth = this.azimuth_unchecked
       const elevation = this.elevation_unchecked
       const englishSummary =
@@ -217,27 +217,27 @@ export class Field_orbit extends Field {
 
    set azimuth(val: number) {
       if (this.azimuth === val) return
-      this.ϟrunInTransaction(() => {
-         this.ϟpatchSerial((draft) => {
+      this.zRunInTransaction(() => {
+         this.zPatchSerial((draft) => {
             draft.azimuth = val
          })
       })
    }
 
    get azimuth_or_fail(): number {
-      return bang(this.ϟserial.azimuth)
+      return bang(this.zSerial.azimuth)
    }
 
    get azimuth_or_zero(): number {
-      return this.ϟserial.azimuth ?? 0
+      return this.zSerial.azimuth ?? 0
    }
 
    get azimuth_unchecked(): number | undefined {
-      return this.ϟserial.azimuth
+      return this.zSerial.azimuth
    }
 
    get defaultAzimuth(): number | undefined {
-      return this.ϟconfig.default?.azimuth
+      return this.zConfig.default?.azimuth
    }
 
    // #region Elevation
@@ -247,27 +247,27 @@ export class Field_orbit extends Field {
 
    set elevation(val: number) {
       if (this.elevation === val) return
-      this.ϟrunInTransaction(() => {
-         this.ϟpatchSerial((draft) => {
+      this.zRunInTransaction(() => {
+         this.zPatchSerial((draft) => {
             draft.elevation = val
          })
       })
    }
 
    get elevation_or_fail(): number {
-      return bang(this.ϟserial.elevation)
+      return bang(this.zSerial.elevation)
    }
 
    get elevation_or_zero(): number {
-      return this.ϟserial.elevation ?? 0
+      return this.zSerial.elevation ?? 0
    }
 
    get elevation_unchecked(): number | undefined {
-      return this.ϟserial.elevation
+      return this.zSerial.elevation
    }
 
    get defaultElevation(): number | undefined {
-      return this.ϟconfig.default?.elevation
+      return this.zConfig.default?.elevation
    }
 }
 

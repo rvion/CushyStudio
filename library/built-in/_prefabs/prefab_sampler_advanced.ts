@@ -198,7 +198,7 @@ export function ui_sampler_advanced(p?: {
          // steps: form.int({ step: 10, default: p?.steps ?? 20, label: 'Steps', min: 0, softMax: 100 }),
       },
       {
-         toString_: ({ value: ui }): string => {
+         toString_: ({ zValue: ui }): string => {
             let sigmas: string = ''
             if (ui.sigmasType.basic) {
                sigmas = 'basic'
@@ -242,7 +242,7 @@ export function ui_sampler_advanced(p?: {
                label: 'SD3',
                icon: IKONS.mdiStar,
                apply: (w): void => {
-                  w.value = {
+                  w.zValue = {
                      guidanceType: { CFG: 4.5 },
                      sigmasType: { basic: { denoise: 1, steps: 28, scheduler: 'sgm_uniform' } },
                      sampler_name: 'dpmpp_2m',
@@ -255,7 +255,7 @@ export function ui_sampler_advanced(p?: {
                label: 'FLUX',
                icon: IKONS.mdiStar,
                apply: (w): void => {
-                  w.value = {
+                  w.zValue = {
                      guidanceType: { CFG: 3.5 },
                      sigmasType: { basic: { denoise: 1, steps: 28, scheduler: 'simple' } },
                      sampler_name: 'euler',

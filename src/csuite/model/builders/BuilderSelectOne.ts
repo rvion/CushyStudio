@@ -185,7 +185,7 @@ const BuilderSelectOneImpl = (
             getIdFromValue: (v) => v.id,
             getValueFromId: (id, self) => {
                const options = optionsFn(self)
-               if (options == null) console.log(`[‼️ builder.selectOneOptionFn > optionsFn(...) returned undefined] `, id, self.ϟuid, optionsFn.toString(), options) // prettier-ignore
+               if (options == null) console.log(`[‼️ builder.selectOneOptionFn > optionsFn(...) returned undefined] `, id, self.zUid, optionsFn.toString(), options) // prettier-ignore
                return options.find((c) => c.id === id)
             },
             getOptionFromId: (id, self) => {

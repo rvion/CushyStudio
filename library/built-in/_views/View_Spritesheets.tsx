@@ -32,12 +32,12 @@ const SpriteSheetUI = obs(function SpriteSheet(p: { imageID: MediaImageID | null
                   {
                      icon: IKONS.mdiAnimationPlay,
                      label: '4 dirs',
-                     apply: (f): void => void f.setPartialValue({ row: 4, col: 4, imagePerAnim: 4 }),
+                     apply: (f): void => void f.zSet({ row: 4, col: 4, imagePerAnim: 4 }),
                   },
                   {
                      icon: IKONS.mdiRun,
                      label: 'run 1x6',
-                     apply: (f): void => void f.setPartialValue({ row: 1, col: 6, imagePerAnim: 6 }),
+                     apply: (f): void => void f.zSet({ row: 1, col: 6, imagePerAnim: 6 }),
                   },
                ],
             },
@@ -49,7 +49,7 @@ const SpriteSheetUI = obs(function SpriteSheet(p: { imageID: MediaImageID | null
       },
    )
    const uist = useLocalObservable(() => ({ step: 0 }))
-   const v = form.value
+   const v = form.zValue
    useEffect(() => {
       const i = setInterval(() => uist.step++, 1000 / v.fps)
       return (): void => clearInterval(i)
@@ -78,8 +78,8 @@ const SpriteSheetUI = obs(function SpriteSheet(p: { imageID: MediaImageID | null
                         style={{
                            width: cellWidth,
                            height: cellHeight,
-                           border: `${form.value.border}px solid black`,
-                           padding: `${form.value.padding}px`,
+                           border: `${form.zValue.border}px solid black`,
+                           padding: `${form.zValue.padding}px`,
                            // select sub-part of the image
                            objectPosition: `-${startX}px -${startY}px`,
                            objectFit: 'none',

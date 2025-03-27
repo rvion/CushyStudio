@@ -50,7 +50,7 @@ declare global {
 
       // #region core types
       type Shared<T extends Field>                    = CSchema<Field_shared<T>>
-      type SharedAlt<S extends CSchema>               = CSchema<Field_shared<S['Ҩfield']>>
+      type SharedAlt<S extends CSchema>               = CSchema<Field_shared<S['ҨField']>>
       type Group<T extends SchemaDict>                = CSchema<Field_group<T> & MAGICFIELDS<T>>
       type Record<T extends SchemaDict>               = CSchema<Field_group<T> & MAGICFIELDS<T>>
       type Group_<T extends SchemaDict = SchemaDict>  = CSchema<Field_group<T>>
@@ -60,9 +60,10 @@ declare global {
       type Optional<T extends CSchema>                = CSchema<Field_optional<T>>
       type Bool                                       = CSchema<Field_bool>
       type String                                     = CSchema<Field_string>
-      type Union<T extends SchemaDict>                = CSchema<Field_choices<T>>
-      type Choices<T extends SchemaDict = SchemaDict> = CSchema<Field_choices<T> & MAGICCHOICES<T>>
+      // choices
+      type Union<T extends SchemaDict = SchemaDict>   = CSchema<Field_choices<T> & MAGICCHOICES<T>>
       type Choice<T extends SchemaDict = SchemaDict>  = CSchema<Field_choices<T> & MAGICCHOICES<T>>
+      type Choices<T extends SchemaDict = SchemaDict> = CSchema<Field_choices<T> & MAGICCHOICES<T>>
       type Number                                     = CSchema<Field_number>
       type Color                                      = CSchema<Field_color>
       type List<T extends CSchema>                    = CSchema<Field_list<T>>
@@ -103,7 +104,7 @@ declare global {
 
       // Fields
       type FShared<T extends Field>                    = Field_shared<T>
-      type FSharedAlt<S extends CSchema>               = Field_shared<S['Ҩfield']>
+      type FSharedAlt<S extends CSchema>               = Field_shared<S['ҨField']>
       type FGroup<T extends SchemaDict>                = Field_group<T> & MAGICFIELDS<T>
       type FRecord<T extends SchemaDict>               = Field_group<T> & MAGICFIELDS<T>
       type FEmpty                                      = Field_group<NO_PROPS>

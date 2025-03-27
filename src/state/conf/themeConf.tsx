@@ -118,5 +118,5 @@ export class Theme extends Field_group<ThemeConf> {
 export const themeConf: Theme = cushyFactory.document(Theme.schema, {
    name: 'theme config',
    serial: () => readJSON('settings/theme2.json'),
-   onSerialChange: (form) => writeJSON('settings/theme2.json', form.ϟserial),
+   onSerialChange: (form) => writeJSON('settings/theme2.json', form.zSerial),
 })

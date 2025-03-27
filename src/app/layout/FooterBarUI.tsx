@@ -5,11 +5,11 @@ import { IkonOf } from '../../csuite/icons/iconHelpers'
 import { DebugShortcutsFloatingUI } from './DebugShortcutsFloatingUI'
 
 export const FooterBarUI = obs(function FooterBarUI_(p: FrameProps) {
-   const theme = cushy.preferences.theme.ϟvalue
+   const theme = cushy.preferences.theme.zValue
    return (
       <Frame
          border={0}
-         base={cushy.preferences.theme.ϟvalue.appbar ?? { contrast: -0.077 }}
+         base={cushy.preferences.theme.zValue.appbar ?? { contrast: -0.077 }}
          tw='line-clamp-1 flex items-center truncate px-1 py-1'
          {...p}
       >

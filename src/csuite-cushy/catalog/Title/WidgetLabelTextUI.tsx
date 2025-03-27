@@ -12,7 +12,7 @@ export type WidgetTitleProps = {
 }
 
 export const DefaultWidgetTitleUI = obs(function DefaultWidgetTitle(p: WidgetTitleProps) {
-   const labelText = p.children ?? p.field.ϟconfig.label ?? makeLabelFromPrimitiveValue(p.field.ϟmountKey)
+   const labelText = p.children ?? p.field.zConfig.label ?? makeLabelFromPrimitiveValue(p.field.zMountKey)
    // const Elem: 'div' = (p.as ?? 'div') as 'div'
    return (
       // Using Frame for the tooltips
@@ -52,7 +52,7 @@ export const DefaultWidgetTitleUI = obs(function DefaultWidgetTitle(p: WidgetTit
             p.className,
          ]}
       >
-         {p.field.ϟisHidden && '🥷 '}
+         {p.field.zIsHidden && '🥷 '}
          {labelText}
       </Frame>
    )

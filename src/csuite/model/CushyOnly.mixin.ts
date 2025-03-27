@@ -15,7 +15,7 @@ export const CushyOnlyMixinImpl = defineFieldMixin({
     * without having to import any component; usage:
     * | <div>{x.renderAsConfigBtn()}</div>
     */
-   ϟrenderAsConfigBtn(p?: {
+   zRenderAsConfigBtn(p?: {
       // 1. anchor option
       // ...TODO
       // 2. popup options

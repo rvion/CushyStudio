@@ -87,7 +87,7 @@ class InputNumberStableState {
    }
 
    get numberSliderSpeed(): number {
-      return cushy.preferences.interface.ϟvalue.widget.valueSliderMultiplier
+      return cushy.preferences.interface.zValue.widget.valueSliderMultiplier
    }
 
    get isInteger(): boolean {
@@ -251,7 +251,7 @@ export const InputNumberUI = obs(function InputNumberUI_(p: InputNumberProps) {
    const step = uist.step
    const rounding = uist.rounding
    const isEditing = uist.isEditing
-   const theme = cushy.preferences.theme.ϟvalue
+   const theme = cushy.preferences.theme.zValue
 
    const dropShadow = uist.props.dropShadow ?? theme.global.shadow
    return (

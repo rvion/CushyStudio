@@ -17,17 +17,17 @@ import { hole, type HOLE } from './HOLE'
 // #region 🔶AUTO
 interface AutoBehaviour<out T extends CSchema> {
    /** list of keys that must be present */
-   keys(self: T['Ҩfield']): string[] // ['foo', 'bar', 'baz']
+   keys(self: T['ҨField']): string[] // ['foo', 'bar', 'baz']
 
    /** for every item given by the list above */
-   getKey(self: T['Ҩfield'], ix: number): string
+   getKey(self: T['ҨField'], ix: number): string
 
    /** once an item if  */
-   init(key: string /* foo */): T['Ҩvalue']
+   init(key: string /* foo */): T['ҨValue']
 }
 
 // #region CONFIG
-export type Field_list_config<T extends CSchema> = Field_list<T>['Ҩconfig']
+export type Field_list_config<T extends CSchema> = Field_list<T>['ҨConfig']
 type Field_list_ownConfig<out T extends CSchema> = {
    /**
     * item schema;
@@ -66,18 +66,18 @@ type Field_list_ownConfig<out T extends CSchema> = {
 // #region SERIAL type
 export type Field_list_ItemID = Tagged<string, 'Field_list_ItemID'>
 
-export type Field_list_serial<T extends CSchema> = Field_list<T>['Ҩserial']
+export type Field_list_serial<T extends CSchema> = Field_list<T>['ҨSerial']
 type Field_list_ownSerial<T extends CSchema> = {
    $: 'list'
    /** when undefined, means the list has not be `set` yet */
-   items_?: (T['Ҩserial'] | HOLE)[]
+   items_?: (T['ҨSerial'] | HOLE)[]
    keys?: Field_list_ItemID[]
 }
 
 // #region VALUE type
-export type Field_list_value<T extends CSchema> = T['Ҩvalue'][]
-export type Field_list_SetValue<T extends CSchema> = T['Ҩsetvalue'][]
-export type Field_list_unchecked<T extends CSchema> = T['Ҩunchecked'][]
+export type Field_list_value<T extends CSchema> = T['ҨValue'][]
+export type Field_list_SetValue<T extends CSchema> = T['ҨSetvalue'][]
+export type Field_list_unchecked<T extends CSchema> = T['ҨUnchecked'][]
 
 export type Field_list_patch<T extends CSchema> =
    | Field_list_patch_insert<T>
@@ -87,7 +87,7 @@ export type Field_list_patch_insert<T extends CSchema> = Patch_Common<'list'> & 
    op: 'insert'
    order: Field_list_ItemID[]
    key: Field_list_ItemID
-   value: T['Ҩserial']
+   value: T['ҨSerial']
 }
 export type Field_list_patch_remove = Patch_Common<'list'> & {
    op: 'remove'
@@ -108,15 +108,15 @@ export type Field_list_patch_move = Patch_Common<'list'> & {
 
 // #region STATE
 export interface Field_list<T extends CSchema> {
-   ['Ҩtype']: 'list'
-   ['ҨownConfig']: Field_list_ownConfig<T>
-   ['ҨownSerial']: Field_list_ownSerial<T>
-   ['Ҩvalue']: Field_list_value<T>
-   ['Ҩsetvalue']: Field_list_SetValue<T>
-   ['Ҩunchecked']: Field_list_unchecked<T>
-   ['Ҩchild']: T['Ҩfield']
-   ['Ҩopts']: unknown
-   ['ҨownPatch']: Field_list_patch<T>
+   ['ҨType']: 'list'
+   ['ҨOwnConfig']: Field_list_ownConfig<T>
+   ['ҨOwnSerial']: Field_list_ownSerial<T>
+   ['ҨValue']: Field_list_value<T>
+   ['ҨSetvalue']: Field_list_SetValue<T>
+   ['ҨUnchecked']: Field_list_unchecked<T>
+   ['ҨChild']: T['ҨField']
+   ['ҨOpts']: unknown
+   ['ҨOwnPatch']: Field_list_patch<T>
 }
 export class Field_list<T extends CSchema> extends Field {
    // #region TYPE
@@ -160,7 +160,7 @@ export class Field_list<T extends CSchema> extends Field {
    }
 
    static generateSerial(
-      value: Maybe<Field_list<CSchema>['Ҩvalue']>,
+      value: Maybe<Field_list<CSchema>['ҨValue']>,
       config: Field_list_config<CSchema>,
    ): Field_list_serial<CSchema> {
       if (value == null && config.defaultLength == null) return this.unsetSerial
@@ -195,38 +195,38 @@ export class Field_list<T extends CSchema> extends Field {
       return nanoid(6) as string as Field_list_ItemID
    }
 
-   get ϟisOwnSet(): boolean {
-      return this.ϟserial.items_ != null
+   get zIsOwnSet(): boolean {
+      return this.zSerial.items_ != null
    }
 
    get length(): number {
       return this.items_.length
    }
 
-   private readonly items_: T['Ҩfield'][] = observable([])
-   public get items(): readonly T['Ҩfield'][] { return this.items_ } // prettier-ignore
-   public get _(): readonly T['Ҩfield'][] { return this.items_ } // prettier-ignore
-   map<U>(fn: (item: T['Ҩfield'], ix: number) => U): U[] {
+   private readonly items_: T['ҨField'][] = observable([])
+   public get items(): readonly T['ҨField'][] { return this.items_ } // prettier-ignore
+   public get _(): readonly T['ҨField'][] { return this.items_ } // prettier-ignore
+   map<U>(fn: (item: T['ҨField'], ix: number) => U): U[] {
       return this.items_.map(fn)
    }
 
-   @computed get ϟhasChanges(): boolean {
+   @computed get zHasChanges(): boolean {
       // 💬 2024-06-?? rvion:
       //  | in auto mode, length is managed,
       //  | so we must not take it into account
       // 💬 2024-07-05 rvion:
       //   | ^^^ 🤔< NOT SURE about my previous opinion here
       //   |         I'll add some '🔴' for future review
-      if (!this.ϟconfig.auto) {
+      if (!this.zConfig.auto) {
          const defaultLength = clamp_or_min_or_zero(
-            this.ϟconfig.defaultLength,
-            this.ϟconfig.min,
-            this.ϟconfig.max,
+            this.zConfig.defaultLength,
+            this.zConfig.min,
+            this.zConfig.max,
          )
          if (this.items_.length !== defaultLength) return true
       }
       // check if any remaining item has changes
-      return this.items_.some((i) => i.ϟhasChanges)
+      return this.items_.some((i) => i.zHasChanges)
    }
 
    // resetSmart(): void {
@@ -241,38 +241,38 @@ export class Field_list<T extends CSchema> extends Field {
    //     for (const i of this.items) i.reset()
    // }
 
-   override ϟreset(): void {
-      super.ϟreset()
-      this.ϟchildrenAll.forEach((i) => i.ϟreset())
+   override zReset(): void {
+      super.zReset()
+      this.zChildrenAll.forEach((i) => i.zReset())
    }
 
    findItemIndexContaining(widget: Field): number | null {
       let at = widget as Field | null
       let child = at
       while (at != null) {
-         at = at.ϟparent
+         at = at.zParent
          if (at === this) {
-            return this.items_.indexOf(child as T['Ҩfield'])
+            return this.items_.indexOf(child as T['ҨField'])
          }
          child = at
       }
       return null
    }
 
-   override ϟgetChildrenSerialPath(branchName: string): string {
+   override zGetChildrenSerialPath(branchName: string): string {
       return `items_.[${branchName}]`
    }
 
-   override get ϟchildrenAll(): T['Ҩfield'][] {
+   override get zChildrenAll(): T['ҨField'][] {
       return this.items_
    }
 
-   override get ϟsubFieldsWithKeys(): KeyedField[] {
+   override get zSubFieldsWithKeys(): KeyedField[] {
       return this.items_.map((field, ix) => ({ key: ix.toString(), field }))
    }
 
    schemaAt(ix: number): T {
-      const _schema = this.ϟconfig.element
+      const _schema = this.zConfig.element
       const schema: T =
          typeof _schema === 'function' //
             ? _schema(ix)
@@ -281,19 +281,19 @@ export class Field_list<T extends CSchema> extends Field {
    }
 
    get isAuto(): boolean {
-      return this.ϟconfig.auto != null
+      return this.zConfig.auto != null
    }
 
    // probably slow and clunky;
    // TODO: rewrite this piece of crap
    private startAutoBehaviour(): void {
-      const auto = this.ϟconfig.auto
+      const auto = this.zConfig.auto
       if (auto == null) return
 
       const disposeFn = reaction(
          () => auto.keys(this),
          (keys: string[]) => {
-            this.ϟrunInTransaction(() => {
+            this.zRunInTransaction(() => {
                // 1. Add missing entries
                const currentKeys: string[] = this.items_.map((i, ix) => auto.getKey(i, ix))
                const missingKeys: string[] = keys.filter((k) => !currentKeys.includes(k))
@@ -313,7 +313,7 @@ export class Field_list<T extends CSchema> extends Field {
          { fireImmediately: true },
       )
 
-      this.ϟdisposeFns.push(disposeFn)
+      this.zDisposeFns.push(disposeFn)
    }
 
    constructor(
@@ -329,73 +329,73 @@ export class Field_list<T extends CSchema> extends Field {
       this.startAutoBehaviour()
    }
 
-   at(ix: number): T['Ҩfield'] | undefined {
+   at(ix: number): T['ҨField'] | undefined {
       return this.items_.at(ix)
    }
 
    get valueArr(): Field_list_value<T> {
-      return this.items_.map((i) => i.ϟvalue)
+      return this.items_.map((i) => i.zValue)
    }
 
    valueArrMode(mode: VALUE_MODE): Field_list_value<T> | Field_list_unchecked<T> {
-      return this.items_.map((i) => i.ϟgetValue(mode))
+      return this.items_.map((i) => i.zGetValue(mode))
    }
 
-   override ϟacknowledgeNewChildSerial(
+   override zAcknowledgeNewChildSerial(
       //
       mountKey: Field_list_ItemID,
       nextChildSerial: any,
    ): boolean {
       // parse index
-      const index = this.ϟserial.keys?.indexOf(mountKey) ?? -1
+      const index = this.zSerial.keys?.indexOf(mountKey) ?? -1
 
       // ensure index is valid
       if (index < 0) throw new Error(`❌ FieldList._acknowledgeNewChildSerial: index(${index}) is < 0`)
-      if (index > (this.ϟserial.items_ ?? []).length)
+      if (index > (this.zSerial.items_ ?? []).length)
          throw new Error(`❌ FieldList._acknowledgeNewChildSerial: index is OOB (${index}`)
 
-      if (this.ϟserial.items_?.[index] === nextChildSerial) return false
+      if (this.zSerial.items_?.[index] === nextChildSerial) return false
 
       // make sure the serial.items_ is set (akin to saying that from now-on, the field is `set`)
       // 💬 2024-09-11 rvion:
       // | 🔴 we could actually throw here 🤔
       // | it's probably possible to make sure this is set before, since we're in control of
       // | all primitive actions on that field.
-      if (this.ϟserial.items_ == null || this.ϟserial.keys == null) {
-         this.ϟpatchSerial((draft) => {
+      if (this.zSerial.items_ == null || this.zSerial.keys == null) {
+         this.zPatchSerial((draft) => {
             draft.items_ ??= []
             draft.keys ??= []
          })
       }
 
       // swap the pointer in the serial.items_ array at given index to new serial
-      return this.ϟpatchSerial((draft) => {
+      return this.zPatchSerial((draft) => {
          draft.items_![index] = nextChildSerial
       })
    }
 
-   protected ϟsetOwnSerial(next: Field_list_serial<T>): void {
+   protected zSetOwnSerial(next: Field_list_serial<T>): void {
       // apply default value
       // IF AND ONLY IF both
       //  - we are NOT in auto mode
       //  - we are not set yet
       if (next.items_ == null || next.keys == null) {
-         for (const item of this.items_) item.ϟdisposeTree()
+         for (const item of this.items_) item.zDisposeTree()
          this.items_.length = 0
 
          // 2. ASSIGN SERIAL
 
-         this.ϟassignNewSerial(next)
+         this.zAssignNewSerial(next)
 
-         if (!this.ϟconfig.auto) {
-            const defaultLength = this.ϟconfig.defaultLength // clamp_or_null(this.config.defaultLength, this.config.min, this.config.max)
+         if (!this.zConfig.auto) {
+            const defaultLength = this.zConfig.defaultLength // clamp_or_null(this.config.defaultLength, this.config.min, this.config.max)
             // console.log(`[🤠] AA defaultLength`, defaultLength)
             if (defaultLength == null) {
                // no default, we never set the `draft.items_`, so the
                // field remains unset
                return
             }
-            this.ϟpatchSerial((draft) => {
+            this.zPatchSerial((draft) => {
                draft.items_ ??= []
                draft.keys ??= []
             })
@@ -410,18 +410,18 @@ export class Field_list<T extends CSchema> extends Field {
       const nextMountKeys = next.keys
       const nextIds = new Set(nextMountKeys)
 
-      const remainingEntries = this.items_.filter((item) => nextIds.has(item.ϟmountKey as Field_list_ItemID))
-      const deletedEntries = this.items_.filter((item) => !nextIds.has(item.ϟmountKey as Field_list_ItemID))
+      const remainingEntries = this.items_.filter((item) => nextIds.has(item.zMountKey as Field_list_ItemID))
+      const deletedEntries = this.items_.filter((item) => !nextIds.has(item.zMountKey as Field_list_ItemID))
 
       // Remove deleted elements
       deletedEntries.forEach((item) => {
-         item.ϟdisposeTree()
+         item.zDisposeTree()
       })
       // Update the list of items with only the remaining entries
       this.items_.length = 0
       this.items_.push(...remainingEntries)
 
-      this.ϟassignNewSerial(next)
+      this.zAssignNewSerial(next)
 
       // Add new elements
       for (let ix = 0; ix < nextItems.length; ix++) {
@@ -434,10 +434,10 @@ export class Field_list<T extends CSchema> extends Field {
 
          const schema = this.schemaAt(ix)
 
-         this.ϟRECONCILE({
+         this.zRECONCILE({
             mountKey,
             correctChildSchema: schema,
-            existingChild: remainingEntries.find((i) => i.ϟmountKey === mountKey),
+            existingChild: remainingEntries.find((i) => i.zMountKey === mountKey),
             targetChildSerial: nextSerial,
             attach: (sub) => {
                // push instead of doing [ix]= ... since we're re-creating them in order
@@ -453,8 +453,8 @@ export class Field_list<T extends CSchema> extends Field {
       // TODO repace by a faster (inplace?) impl; this seems wrong.
       const indicesByKeys = new Map(nextMountKeys.map((key, ix) => [key, ix]))
       this.items_.sort((a, b) => {
-         const aIndex = indicesByKeys.get(a.ϟmountKey as Field_list_ItemID) ?? -1
-         const bIndex = indicesByKeys.get(b.ϟmountKey as Field_list_ItemID) ?? -1
+         const aIndex = indicesByKeys.get(a.zMountKey as Field_list_ItemID) ?? -1
+         const bIndex = indicesByKeys.get(b.zMountKey as Field_list_ItemID) ?? -1
          return aIndex - bIndex
       })
 
@@ -475,34 +475,34 @@ export class Field_list<T extends CSchema> extends Field {
     * see `src/csuite/model/TESTS/proxy.test.ts` if you're not scared
     */
 
-   get ϟvalue_or_fail(): Field_list_value<T> {
+   get zValue_or_fail(): Field_list_value<T> {
       const value = new Proxy([], this.makeValueProxy('fail'))
-      void this.ϟserial
-      Object.defineProperty(this, 'value_or_fail', {
+      void this.zSerial
+      Object.defineProperty(this, 'zValue_or_fail', {
          get: () => {
-            void this.ϟserial
+            void this.zSerial
             return value
          },
       })
       return value
    }
-   get ϟvalue_or_zero(): Field_list_value<T> {
+   get zValue_or_zero(): Field_list_value<T> {
       const value = new Proxy([], this.makeValueProxy('zero'))
-      void this.ϟserial
-      Object.defineProperty(this, 'value_or_zero', {
+      void this.zSerial
+      Object.defineProperty(this, 'zValue_or_zero', {
          get: () => {
-            void this.ϟserial
+            void this.zSerial
             return value
          },
       })
       return value
    }
-   get ϟvalue_unchecked(): Field_list_unchecked<T> {
+   get zValue_unchecked(): Field_list_unchecked<T> {
       const value = new Proxy([], this.makeValueProxy('unchecked'))
-      void this.ϟserial
-      Object.defineProperty(this, 'value_unchecked', {
+      void this.zSerial
+      Object.defineProperty(this, 'zValue_unchecked', {
          get: () => {
-            void this.ϟserial
+            void this.zSerial
             return value
          },
       })
@@ -510,43 +510,43 @@ export class Field_list<T extends CSchema> extends Field {
    }
    get value_set(): Field_list_SetValue<T> {
       const value = new Proxy([], this.makeValueProxy('set'))
-      void this.ϟserial
+      void this.zSerial
       Object.defineProperty(this, 'value_set', {
          get: () => {
-            void this.ϟserial
+            void this.zSerial
             return value
          },
       })
       return value
    }
 
-   // 🦊 get value_or_fail(): Field_list_value<T> {
-   // 🦊     const x: this['Ҩvalue'] = new Proxy([], this.makeValueProxy('fail'))
-   // 🦊     Object.defineProperty(this, 'value_or_fail', { value: x })
+   // 🦊 get zValue_or_fail(): Field_list_value<T> {
+   // 🦊     const x: this['ҨValue'] = new Proxy([], this.makeValueProxy('fail'))
+   // 🦊     Object.defineProperty(this, 'zValue_or_fail', { value: x })
    // 🦊     return x
    // 🦊 }
 
-   // 🦊 get value_or_zero(): Field_list_value<T> {
-   // 🦊     const x: this['Ҩvalue'] = new Proxy([], this.makeValueProxy('zero'))
-   // 🦊     Object.defineProperty(this, 'value_or_zero', { value: x })
+   // 🦊 get zValue_or_zero(): Field_list_value<T> {
+   // 🦊     const x: this['ҨValue'] = new Proxy([], this.makeValueProxy('zero'))
+   // 🦊     Object.defineProperty(this, 'zValue_or_zero', { value: x })
    // 🦊     return x
    // 🦊 }
 
    // 🦊 get value_unchecked(): Field_list_unchecked<T> {
-   // 🦊     const x: this['Ҩunchecked'] = new Proxy([], this.makeValueProxy('unchecked'))
+   // 🦊     const x: this['ҨUnchecked'] = new Proxy([], this.makeValueProxy('unchecked'))
    // 🦊     Object.defineProperty(this, 'value_unchecked', { value: x })
    // 🦊     return x
    // 🦊 }
 
-   get ϟvalue(): Field_list_value<T> {
-      return this.ϟvalue_or_fail
+   get zValue(): Field_list_value<T> {
+      return this.zValue_or_fail
    }
 
-   set ϟvalue(val: Field_list_value<T>) {
-      this.ϟrunInTransaction(() => {
+   set zValue(val: Field_list_value<T>) {
+      this.zRunInTransaction(() => {
          for (let i = 0; i < val.length; i++) {
             // 1. replace existing items
-            if (i < this.items_.length) this.items_[i]!.ϟvalue = val[i]
+            if (i < this.items_.length) this.items_[i]!.zValue = val[i]
             // 2. add missing items
             else this.addItem({ at: i, value: val[i] })
          }
@@ -557,11 +557,11 @@ export class Field_list<T extends CSchema> extends Field {
    // 💬 2025-01-21 rvion: all of those `setSerial()`, `set()`, and `set value()` are wrong and should have
    // some kind of basic keyed reconciliation.
    // I really want to do better; should be super cheap and will avoid days of crying and/or waiting later.
-   override ϟset(x: Field_list_SetValue<T>): this {
-      this.ϟrunInTransaction(() => {
+   override zSet(x: Field_list_SetValue<T>): this {
+      this.zRunInTransaction(() => {
          for (let i = 0; i < x.length; i++) {
             // 1. replace existing items
-            if (i < this.items_.length) this.items_[i]!.ϟset(x[i])
+            if (i < this.items_.length) this.items_[i]!.zSet(x[i])
             // 2. add missing items
             else this.addItem({ at: i, valueExt: x[i] })
          }
@@ -570,12 +570,12 @@ export class Field_list<T extends CSchema> extends Field {
       return this
    }
 
-   public ϟisValueEqual(other: Field): boolean {
+   public zIsValueEqual(other: Field): boolean {
       if (this === other) return true
       if (!(other instanceof Field_list)) return false
       if (this.items_.length !== other.items_.length) return false
 
-      return this.items_.every((item, ix) => other.items_[ix] != null && item.ϟisValueEqual(other.items_[ix]))
+      return this.items_.every((item, ix) => other.items_[ix] != null && item.zIsValueEqual(other.items_[ix]))
    }
 
    private makeValueProxy(mode: VALUE_MODE): ProxyHandler<never> {
@@ -600,7 +600,7 @@ export class Field_list<T extends CSchema> extends Field {
             // handle numbers (1) and number-like ('1')
             if (parseInt(prop, 10) === +prop) {
                const field: Maybe<Field> = this.items_[+prop]
-               return field?.ϟgetValue(mode)
+               return field?.zGetValue(mode)
                // return target[+prop]?.getvalue
             }
 
@@ -617,7 +617,7 @@ export class Field_list<T extends CSchema> extends Field {
                   this.addItem({ value })
                   return true
                } else if (this.items_[prop]) {
-                  this.items_[prop]!.ϟvalue = value
+                  this.items_[prop]!.zValue = value
                   return true
                }
             }
@@ -630,32 +630,32 @@ export class Field_list<T extends CSchema> extends Field {
       }
    }
 
-   override ϟgetSetValue(): this['Ҩsetvalue'] | undefined {
+   override zGetSetValue(): this['ҨSetvalue'] | undefined {
       // console.log(`[💀 getSetValue] `, this.path)
       return this.value_set
    }
 
    // #region Validation
-   get ϟownConfigSpecificProblems(): Problem_Ext {
+   get zOwnConfigSpecificProblems(): Problem_Ext {
       return null
    }
 
-   get ϟownTypeSpecificProblems(): string[] {
+   get zOwnTypeSpecificProblems(): string[] {
       // console.log(`[🤠] `, this.config.min, this.length)
       // console.log(`[🤠] `, this.config.max, this.length)
       const out: string[] = []
       if (
          //
-         this.ϟconfig.min != null &&
-         this.length < this.ϟconfig.min
+         this.zConfig.min != null &&
+         this.length < this.zConfig.min
       ) {
          out.push(`List is too short`)
       }
 
       if (
          //
-         this.ϟconfig.max != null &&
-         this.length > this.ϟconfig.max
+         this.zConfig.max != null &&
+         this.length > this.zConfig.max
       ) {
          out.push(`List is too long`)
       }
@@ -663,18 +663,18 @@ export class Field_list<T extends CSchema> extends Field {
    }
 
    // ADDING ITEMS -------------------------------------------------
-   duplicateItemAtIndex(ix: number): Maybe<T['Ҩfield']> {
+   duplicateItemAtIndex(ix: number): Maybe<T['ҨField']> {
       const item = bang(this.items_[ix])
-      return this.addItem({ at: ix, value: item.ϟisValid ? item.ϟvalue : undefined })
+      return this.addItem({ at: ix, value: item.zIsValid ? item.zValue : undefined })
    }
 
    /**
     * Appends new elements to the end of an array,
     * and returns the new length of the array.
     */
-   push(...values: T['Ҩsetvalue'][]): number {
+   push(...values: T['ҨSetvalue'][]): number {
       if (values.length === 0) return this.length
-      this.ϟrunInTransaction(() => {
+      this.zRunInTransaction(() => {
          for (const v of values) {
             this.addItem({ valueExt: v })
          }
@@ -686,9 +686,9 @@ export class Field_list<T extends CSchema> extends Field {
     * Inserts new elements at the start of an array,
     * and returns the new length of the array.
     */
-   unshift(...values: T['Ҩvalue'][]): number {
+   unshift(...values: T['ҨValue'][]): number {
       if (values.length === 0) return this.length
-      this.ϟrunInTransaction(() => {
+      this.zRunInTransaction(() => {
          for (const v of values) {
             this.addItem({ value: v, at: 0 })
          }
@@ -703,25 +703,25 @@ export class Field_list<T extends CSchema> extends Field {
          at?: number
          applyEvenIfAtMaxLen?: boolean
          // value
-         value?: T['Ҩvalue']
-         valueExt?: T['Ҩsetvalue']
-         serial?: T['Ҩserial']
+         value?: T['ҨValue']
+         valueExt?: T['ҨSetvalue']
+         serial?: T['ҨSerial']
       } = {},
-   ): Maybe<T['Ҩfield']> {
+   ): Maybe<T['ҨField']> {
       if (p.at != null && p.at < 0) return void console.log(`[🔶] list.addItem: at is negative`)
       if (p.at != null && p.at > this.items_.length)
          return void console.log(`[🔶] list.addItem: at is out of bounds`)
       if (
          !Boolean(p.applyEvenIfAtMaxLen) &&
-         this.ϟconfig.max != null &&
-         this.items_.length >= this.ϟconfig.max
+         this.zConfig.max != null &&
+         this.items_.length >= this.zConfig.max
       )
          return void console.log(`[🔶] list.addItem: list is already at max length`)
 
-      return this.ϟrunInTransaction(() => {
+      return this.zRunInTransaction(() => {
          const itemId = Field_list.generateId()
          const at: number = p.at ?? this.items_.length
-         this.ϟpatchSerial((draft) => {
+         this.zPatchSerial((draft) => {
             if (draft.items_ == null || draft.keys == null) {
                if (at !== 0) throw new Error('❌ Field_list is not sparsed')
                draft.items_ = [hole]
@@ -734,9 +734,9 @@ export class Field_list<T extends CSchema> extends Field {
          })
 
          const schema = this.schemaAt(at) // TODO: evaluate schema in the form loop
-         const item = schema.instanciate(this.ϟrepo, this.ϟroot, this, itemId, p.serial ?? null)
-         if (p.value !== undefined) item.ϟvalue = p.value
-         if (p.valueExt !== undefined) item.ϟset(p.valueExt)
+         const item = schema.instanciate(this.zRepo, this.zRoot, this, itemId, p.serial ?? null)
+         if (p.value !== undefined) item.zValue = p.value
+         if (p.valueExt !== undefined) item.zSet(p.valueExt)
 
          this.items_.splice(at, 0, item)
          // 👉 lists are assumed not to be sparsed        ^^^^
@@ -751,15 +751,15 @@ export class Field_list<T extends CSchema> extends Field {
       /** new index in the list to move the item to */
       newIndex: number,
    ): void {
-      if (this.ϟserial.items_ == null || this.ϟserial.keys == null) return console.log(`[🔶] list.moveItem: list is not set`) // prettier-ignore
+      if (this.zSerial.items_ == null || this.zSerial.keys == null) return console.log(`[🔶] list.moveItem: list is not set`) // prettier-ignore
       if (oldIndex === newIndex) return console.log(`[🔶] list.moveItem: oldIndex === newIndex`)
       if (oldIndex < 0 || oldIndex >= this.length) return console.log(`[🔶] list.moveItem: oldIndex out of bounds`) // prettier-ignore
       if (newIndex < 0 || newIndex >= this.length) return console.log(`[🔶] list.moveItem: newIndex out of bounds`) // prettier-ignore
 
       // serials
 
-      this.ϟrunInTransaction(() => {
-         this.ϟpatchSerial((draft) => {
+      this.zRunInTransaction(() => {
+         this.zPatchSerial((draft) => {
             const items = draft.items_
             const mountKeys = draft.keys
             if (items == null || mountKeys == null) return // should never be the case
@@ -788,13 +788,13 @@ export class Field_list<T extends CSchema> extends Field {
       start: number,
       /** The number of elements to remove. */
       deleteCount: number = Infinity,
-   ): T['Ҩfield'][] {
+   ): T['ҨField'][] {
       if (deleteCount === 0) return []
       if (start >= this.length) return []
-      let deleted: T['Ҩfield'][] = []
-      this.ϟrunInTransaction(() => {
+      let deleted: T['ҨField'][] = []
+      this.zRunInTransaction(() => {
          // remove from serial
-         this.ϟpatchSerial((draft) => {
+         this.zPatchSerial((draft) => {
             const mountKeys = draft.keys
             const items = draft.items_
             if (mountKeys == null || items == null) throw new Error('❌ Field_list is not set yet')
@@ -806,7 +806,7 @@ export class Field_list<T extends CSchema> extends Field {
          deleted = this.items_.splice(start, deleteCount)
 
          // dispose every removed children
-         for (const x of deleted) x.ϟdisposeTree()
+         for (const x of deleted) x.zDisposeTree()
       })
       return deleted
    }
@@ -815,14 +815,14 @@ export class Field_list<T extends CSchema> extends Field {
     * Removes all elements from the array and
     * @returns An array containing the elements that were deleted.
     */
-   removeAllItems(): T['Ҩfield'][] {
+   removeAllItems(): T['ҨField'][] {
       // ensure list is not empty
       if (this.length === 0) {
          console.log(`[🔶] list.removeAllItems: list is already empty`)
          return []
       }
       // ensure list is not at min len already
-      const minLen = this.ϟconfig.min ?? 0
+      const minLen = this.zConfig.min ?? 0
       if (this.length <= minLen) {
          console.log(`[🔶] list.removeAllItems: list is already at min lenght`)
          return []
@@ -835,7 +835,7 @@ export class Field_list<T extends CSchema> extends Field {
       // })
    }
 
-   removeItem(item: T['Ҩfield']): Maybe<T['Ҩfield']> {
+   removeItem(item: T['ҨField']): Maybe<T['ҨField']> {
       // ensure item is in the list
       const i = this.items_.indexOf(item)
       if (i === -1) {
@@ -854,11 +854,11 @@ export class Field_list<T extends CSchema> extends Field {
     * Removes the first element from an array and returns it.
     * If the array is empty, undefined is returned and the array is not modified.
     */
-   shift(): Maybe<T['Ҩfield']> {
+   shift(): Maybe<T['ҨField']> {
       return this.removeItemAt(0)
    }
 
-   removeItemAt(i: number): Maybe<T['Ҩfield']> {
+   removeItemAt(i: number): Maybe<T['ҨField']> {
       if (this.length < i) return null
       return this.splice(i, 1)[0]
    }
@@ -866,20 +866,20 @@ export class Field_list<T extends CSchema> extends Field {
    // #region Patches
    public static readonly patchedSerialPaths: readonly string[] = Object.freeze(['keys_'])
 
-   protected override ϟgenerateOwnPatches(referenceField: this): Field_list_patch<T>[] {
+   protected override zGenerateOwnPatches(referenceField: this): Field_list_patch<T>[] {
       const patches: Field_list_patch<T>[] = []
-      const thisSerials = this.ϟserial.items_ ?? []
+      const thisSerials = this.zSerial.items_ ?? []
 
-      const refMountKeys = referenceField.ϟserial.keys ?? []
+      const refMountKeys = referenceField.zSerial.keys ?? []
       const refMountKeysSet = new Set(refMountKeys)
 
-      const thisMountKeys = this.ϟserial.keys ?? []
+      const thisMountKeys = this.zSerial.keys ?? []
       const thisMountKeysSet = new Set(thisMountKeys)
 
       const added = thisMountKeys
          .map((mountKey, ix) => ({
             mountKey,
-            serial: thisSerials[ix] as T['Ҩserial'],
+            serial: thisSerials[ix] as T['ҨSerial'],
          }))
          // It's easier to filter afterwards, because the map function needs the index
          // to get the serial
@@ -895,7 +895,7 @@ export class Field_list<T extends CSchema> extends Field {
             (id): Field_list_patch_remove => ({
                op: 'remove',
                key: id,
-               fieldPath: this.ϟpath,
+               fieldPath: this.zPath,
                fieldType: 'list',
             }),
          ),
@@ -905,7 +905,7 @@ export class Field_list<T extends CSchema> extends Field {
          patches.push({
             op: 'move',
             order: inCommonKeysThisSorted,
-            fieldPath: this.ϟpath,
+            fieldPath: this.zPath,
             fieldType: 'list',
          })
       }
@@ -917,7 +917,7 @@ export class Field_list<T extends CSchema> extends Field {
                key: mountKey,
                order: thisMountKeys,
                value: serial,
-               fieldPath: this.ϟpath,
+               fieldPath: this.zPath,
                fieldType: 'list',
             }),
          ),
@@ -926,11 +926,11 @@ export class Field_list<T extends CSchema> extends Field {
       return patches
    }
 
-   protected override ϟapplyOwnPatches(patches: Field_list_patch<T>[]): void {
+   protected override zApplyOwnPatches(patches: Field_list_patch<T>[]): void {
       if (patches.length === 0) return
 
-      this.ϟrunInTransaction(() => {
-         this.ϟpatchSerial((draft) => {
+      this.zRunInTransaction(() => {
+         this.zPatchSerial((draft) => {
             patches.forEach((patch) => {
                const thisMountKeys = draft.keys
                const items = draft.items_
@@ -979,7 +979,7 @@ export class Field_list<T extends CSchema> extends Field {
                   )
 
                   newMountKeys.splice(indexEstimation, 0, patch.key)
-                  newItems.splice(indexEstimation, 0, patch.value as T['Ҩserial'])
+                  newItems.splice(indexEstimation, 0, patch.value as T['ҨSerial'])
                } else {
                   throw new Error('❌ Field_list.applyOwnPatches: unknown patch')
                }
@@ -988,19 +988,19 @@ export class Field_list<T extends CSchema> extends Field {
 
          for (const patch of patches) {
             if (isPatchRemove(patch)) {
-               const removedIndex = this.items_.findIndex((i) => i.ϟmountKey === patch.key)
+               const removedIndex = this.items_.findIndex((i) => i.zMountKey === patch.key)
 
                if (removedIndex > -1) {
                   const removedItem = this.items_.splice(removedIndex, 1)[0]!
-                  removedItem.ϟdisposeTree()
+                  removedItem.zDisposeTree()
                }
             } else if (isPatchInsert(patch)) {
-               const index = this.ϟserial.keys!.indexOf(patch.key)
+               const index = this.zSerial.keys!.indexOf(patch.key)
 
-               if (this.items_.find((i) => i.ϟmountKey === patch.key)) return // already exists, weird case
+               if (this.items_.find((i) => i.zMountKey === patch.key)) return // already exists, weird case
                if (index == -1) throw new Error('❌ Field_list.applyOwnPatches: patch.key not found')
 
-               this.ϟRECONCILE({
+               this.zRECONCILE({
                   mountKey: patch.key,
                   correctChildSchema: this.schemaAt(index),
                   existingChild: null,
@@ -1012,9 +1012,9 @@ export class Field_list<T extends CSchema> extends Field {
             }
          }
 
-         const itemsByKey = new Map(this.items_.map((i) => [i.ϟmountKey, i]))
+         const itemsByKey = new Map(this.items_.map((i) => [i.zMountKey, i]))
          this.items_.length = 0
-         this.items_.push(...(this.ϟserial.keys ?? []).map((key) => itemsByKey.get(key)!))
+         this.items_.push(...(this.zSerial.keys ?? []).map((key) => itemsByKey.get(key)!))
       })
    }
 }

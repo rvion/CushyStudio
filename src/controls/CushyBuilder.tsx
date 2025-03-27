@@ -61,11 +61,11 @@ import { EnumListBuilder } from './EnumListBuilder'
 
 /** cushy studio form builder */
 export class CushySchemaBuilder /* implements IBuilder */ {
-   orbit(config: Field_orbit['Ҩconfig'] = {}): Z.Orbit {
+   orbit(config: Field_orbit['ҨConfig'] = {}): Z.Orbit {
       return CSchema.new<Field_orbit>(Field_orbit, config)
    }
 
-   color(config: Field_color['Ҩconfig'] = {}): Z.Color {
+   color(config: Field_color['ҨConfig'] = {}): Z.Color {
       return CSchema.new<Field_color>(Field_color, config)
    }
 
@@ -74,27 +74,27 @@ export class CushySchemaBuilder /* implements IBuilder */ {
    }
 
    /** image field, defaulting to `cushy.defaultImage` if no default provided */
-   image(config: Field_image['Ҩconfig'] = {}): Z.Image {
+   image(config: Field_image['ҨConfig'] = {}): Z.Image {
       const def = config.default ?? cushy.defaultImage
       return this.image_({ default: def, ...config })
    }
 
    /** image field, without any default */
-   image_(config: Field_image['Ҩconfig'] = {}): Z.Image {
+   image_(config: Field_image['ҨConfig'] = {}): Z.Image {
       return CSchema.new<Field_image>(Field_image, config)
    }
 
    /** prompt, defaulting to '' */
-   prompt(config: Field_prompt['Ҩconfig'] = {}): Z.Prompt {
+   prompt(config: Field_prompt['ҨConfig'] = {}): Z.Prompt {
       const def = config.default ?? ''
       return this.prompt_({ default: def, ...config })
    }
 
-   prompt_(config: Field_prompt['Ҩconfig'] = {}): Z.Prompt {
+   prompt_(config: Field_prompt['ҨConfig'] = {}): Z.Prompt {
       return CSchema.new<Field_prompt>(Field_prompt, config)
    }
 
-   remSize(config: Omit<Field_number['Ҩconfig'], 'mode'> = {}): Z.Number {
+   remSize(config: Omit<Field_number['ҨConfig'], 'mode'> = {}): Z.Number {
       return this.number({
          min: 1,
          max: 20,
@@ -105,7 +105,7 @@ export class CushySchemaBuilder /* implements IBuilder */ {
       })
    }
 
-   custom<T>(config: Field_custom<T>['Ҩconfig']): Z.Custom<T> {
+   custom<T>(config: Field_custom<T>['ҨConfig']): Z.Custom<T> {
       return CSchema.new<Field_custom<T>>(Field_custom, config)
    }
 
@@ -167,7 +167,7 @@ export class CushySchemaBuilder /* implements IBuilder */ {
    // with<const SCHEMA1 extends CSchema, SCHEMA2 extends CSchema>(
    //     /** the schema of the field you'll want to re-use the in second part */
    //     injected: SCHEMA1,
-   //     children: (shared: SCHEMA1['Ҩfield']) => SCHEMA2,
+   //     children: (shared: SCHEMA1['ҨField']) => SCHEMA2,
    // ): X.XLink<SCHEMA1, SCHEMA2> {
    //     return CSchema.new<Field_link<SCHEMA1, SCHEMA2>>(Field_link, { share: injected, children })
    // }
@@ -281,7 +281,7 @@ export class CushySchemaBuilder /* implements IBuilder */ {
          },
          values: (self) => {
             const matchingApps = cushy.db.cushy_app.selectRaw((q) => {
-               const query = self.ϟserial.query
+               const query = self.zSerial.query
                const Q1 = q
                   .innerJoin('step', 'cushy_app.id', 'step.appID')
                   .groupBy('cushy_app.id')
@@ -317,7 +317,7 @@ export class CushySchemaBuilder /* implements IBuilder */ {
          },
          values: (self) => {
             const matchingApps = cushy.db.draft.selectRaw((q) => {
-               const query = self.ϟserial.query
+               const query = self.zSerial.query
                const Q1 = q
                   .innerJoin('step', 'draft.id', 'step.draftID')
                   .groupBy('draft.id')

@@ -293,7 +293,7 @@ const useDoc = (): Field => {
       {
          name: 'Playground Widget Showcase',
          serial: () => readJSON('settings/playground_form_display.json'),
-         onSerialChange: (form) => writeJSON('settings/playground_form_display.json', form.ϟserial),
+         onSerialChange: (form) => writeJSON('settings/playground_form_display.json', form.zSerial),
       },
    )
 }

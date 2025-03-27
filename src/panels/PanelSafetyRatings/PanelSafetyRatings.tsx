@@ -58,12 +58,12 @@ export const PanelSafetyRatingsUI = obs(function PanelSafetyRatings(p: PanelSafe
             <Button
                size='lg'
                look='success'
-               children={`compute ${xxx.ϟvalue.amout} more`}
+               children={`compute ${xxx.zValue.amout} more`}
                onClick={() =>
                   MediaImageL.cacheMissingSafetyRatings({
-                     amount: xxx.ϟvalue.amout,
-                     delay: xxx.ϟvalue.delay,
-                     onProcess: (image) => (xxx.ϟvalue.image = image),
+                     amount: xxx.zValue.amout,
+                     delay: xxx.zValue.delay,
+                     onProcess: (image) => (xxx.zValue.image = image),
                   })
                }
             />
@@ -94,9 +94,9 @@ export const PanelSafetyRatingsUI = obs(function PanelSafetyRatings(p: PanelSafe
                            {JSON.parse(r.ids)
                               .map((imgID: string): MediaImageL => cushy.db.media_image.get(imgID)!)
                               .sort((a: MediaImageL, b: MediaImageL) => b.data.updatedAt - a.data.updatedAt)
-                              .slice(0, xxx.ϟvalue.preview)
+                              .slice(0, xxx.zValue.preview)
                               .map((img: MediaImageL) => (
-                                 <ImageSimpleUI size={xxx.ϟvalue.previewSize} key={img.id} img={img!} />
+                                 <ImageSimpleUI size={xxx.zValue.previewSize} key={img.id} img={img!} />
                               ))}
                         </div>
                      ),
@@ -105,7 +105,7 @@ export const PanelSafetyRatingsUI = obs(function PanelSafetyRatings(p: PanelSafe
          />
 
          <QuickTableUI
-            key={xxx.ϟvalue.image?.id}
+            key={xxx.zValue.image?.id}
             tw='bd m-2'
             rows={cushy.db.media_image.selectRaw2((r) =>
                r

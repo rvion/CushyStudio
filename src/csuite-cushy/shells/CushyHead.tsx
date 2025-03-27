@@ -11,7 +11,7 @@ export type CushyHeadProps = RenderPropsCompiled & {
 
 export const CushyHeadUI = obs(function CushyHead(p: CushyHeadProps) {
    const field = p.field
-   const interfacePreferences = cushy.preferences.interface.ϟvalue
+   const interfacePreferences = cushy.preferences.interface.zValue
 
    return (
       <WidgetHeaderContainerUI field={field} /* border={'red'} */>

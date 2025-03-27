@@ -1,4 +1,4 @@
-import { observer } from 'mobx-react-lite'
+import { sb } from '../../src/csuite/simple/SimpleFactory'
 
 app({
    metadata: {
@@ -16,7 +16,7 @@ app({
             defaultValue: () => ({ foo: 1, bar: 'test' }),
             // subTree
             Component: obs((p) => {
-               const uist = p.field.value
+               const uist = p.field.zValue
                return (
                   <div tw='flex'>
                      <div tw='loading loading-spinner'></div>

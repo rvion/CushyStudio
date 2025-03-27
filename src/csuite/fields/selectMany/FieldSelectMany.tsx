@@ -30,7 +30,7 @@ export type Field_selectMany_config_simplified_<KEY extends SelectKey> = Field_s
 >
 
 // #region CONFIG
-export type Field_selectMany_config<VALUE, KEY extends SelectKey> = Field_selectMany<VALUE, KEY>['Ҩconfig']
+export type Field_selectMany_config<VALUE, KEY extends SelectKey> = Field_selectMany<VALUE, KEY>['ҨConfig']
 type Field_selectMany_ownConfig<
    /** the final object that will be accessible as value */
    VALUE,
@@ -112,7 +112,7 @@ export type Field_selectMany_config_simplified<VALUE, KEY extends SelectKey> = O
 type Omit2<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
 
 // SERIAL
-export type Field_selectMany_serial<KEY extends SelectKey> = Field_selectMany<unknown, KEY>['Ҩserial']
+export type Field_selectMany_serial<KEY extends SelectKey> = Field_selectMany<unknown, KEY>['ҨSerial']
 type Field_selectMany_ownSerial<KEY extends SelectKey> = {
    $: 'selectMany'
    query?: string
@@ -130,15 +130,15 @@ export interface Field_selectMany<
    VALUE extends unknown,
    KEY extends SelectKey,
 > extends Field {
-   ['Ҩtype']: 'selectMany'
-   ['ҨownConfig']: Field_selectMany_ownConfig<VALUE, KEY>
-   ['ҨownSerial']: Field_selectMany_ownSerial<KEY>
-   ['Ҩvalue']: Field_selectMany_value<VALUE>
-   ['Ҩsetvalue']: VALUE[] | KEY[]
-   ['Ҩunchecked']: Field_selectMany_unchecked<VALUE>
-   ['Ҩchild']: never
-   ['Ҩopts']: unknown
-   ['ҨownPatch']: Patch<'selectMany'>
+   ['ҨType']: 'selectMany'
+   ['ҨOwnConfig']: Field_selectMany_ownConfig<VALUE, KEY>
+   ['ҨOwnSerial']: Field_selectMany_ownSerial<KEY>
+   ['ҨValue']: Field_selectMany_value<VALUE>
+   ['ҨSetvalue']: VALUE[] | KEY[]
+   ['ҨUnchecked']: Field_selectMany_unchecked<VALUE>
+   ['ҨChild']: never
+   ['ҨOpts']: unknown
+   ['ҨOwnPatch']: Patch<'selectMany'>
 }
 
 // #region STATE
@@ -179,9 +179,9 @@ export class Field_selectMany<
    }
 
    static generateSerial<VALUE, KEY extends SelectKey>(
-      value: Maybe<Field_selectMany<VALUE, KEY>['Ҩvalue']>,
-      config: Field_selectMany<VALUE, KEY>['Ҩconfig'],
-   ): Field_selectMany<VALUE, KEY>['Ҩserial'] {
+      value: Maybe<Field_selectMany<VALUE, KEY>['ҨValue']>,
+      config: Field_selectMany<VALUE, KEY>['ҨConfig'],
+   ): Field_selectMany<VALUE, KEY>['ҨSerial'] {
       if (value == null && config.default == null) return this.unsetSerial
 
       const defaultSelectedKeys = Array.isArray(config.default)
@@ -197,51 +197,51 @@ export class Field_selectMany<
    }
 
    // #region UI
-   override get ϟisCollapsedByDefault(): boolean {
+   override get zIsCollapsedByDefault(): boolean {
       return true
    }
 
-   override get ϟisCollapsible(): boolean {
+   override get zIsCollapsible(): boolean {
       // return true // 🚂 we disabled this
       return false
    }
 
    get defaultKeys(): KEY[] | undefined {
-      const def = this.ϟconfig.default
+      const def = this.zConfig.default
       if (def === undefined) return
       return Array.isArray(def) ? def : [def]
    }
 
-   get ϟisOwnSet(): boolean {
-      return this.ϟserial.values != null
+   get zIsOwnSet(): boolean {
+      return this.zSerial.values != null
    }
 
-   get ϟhasChanges(): boolean {
-      if (this.ϟserial.values == null) return false
+   get zHasChanges(): boolean {
+      if (this.zSerial.values == null) return false
       const def = this.defaultKeys
-      if (def == null) return this.ϟserial.values.length > 0
-      if (this.ϟserial.values.some((id) => !def.includes(id))) return true
+      if (def == null) return this.zSerial.values.length > 0
+      if (this.zSerial.values.some((id) => !def.includes(id))) return true
       return false
    }
 
-   override ϟreset(): void {
+   override zReset(): void {
       this.selectedKeys = this.defaultKeys ?? []
    }
 
    wrap: boolean
 
    get query(): string {
-      return this.ϟserial.query ?? ''
+      return this.zSerial.query ?? ''
    }
 
    set query(next: string) {
-      this.ϟrunInTransaction(() => {
-         this.ϟpatchSerial((draft) => void (draft.query = next))
+      this.zRunInTransaction(() => {
+         this.zPatchSerial((draft) => void (draft.query = next))
       })
    }
 
    get possibleKeys(): KEY[] {
-      const _choices = this.ϟconfig.choices
+      const _choices = this.zConfig.choices
       // 2024-08-02: domi: 🔴 select all is dangerous for models
       // because it will evaluate choices in the backend...
       return typeof _choices === 'function' //
@@ -253,39 +253,39 @@ export class Field_selectMany<
       return this.possibleKeys.map((key) => this.getOptionFromId(key)).filter((opt) => opt != null)
    }
 
-   get ϟownConfigSpecificProblems(): Maybe<string[]> {
-      if (Array.isArray(this.ϟconfig.choices)) {
-         if (this.ϟconfig.choices.length === 0) return ['no choices availble from the config']
+   get zOwnConfigSpecificProblems(): Maybe<string[]> {
+      if (Array.isArray(this.zConfig.choices)) {
+         if (this.zConfig.choices.length === 0) return ['no choices availble from the config']
       }
       // const invalidDefaults = this.defaultKeys?.filter((key) => !this.possibleKeys.includes(key))
       return null
    }
 
    get shouldValidateThatValueIsAmongstKeys(): boolean {
-      if (Array.isArray(this.ϟconfig.choices)) return true
+      if (Array.isArray(this.zConfig.choices)) return true
       // return locoFront != null // 🔴 pick a better logic ? add config flag ?
       return false
    }
 
-   get ϟownTypeSpecificProblems(): Maybe<string[]> {
+   get zOwnTypeSpecificProblems(): Maybe<string[]> {
       // when field is not set, no specific error yet; FieldNotSet error will already
       // be thrown elsewhere
-      if (this.ϟserial.values == null) return null
+      if (this.zSerial.values == null) return null
 
       const errors: string[] = []
-      const min = extractConfigValue(this.ϟconfig.minLength)
-      if (min === 1 && this.ϟserial.values.length === 0)
+      const min = extractConfigValue(this.zConfig.minLength)
+      if (min === 1 && this.zSerial.values.length === 0)
          errors.push(
             extractConfigMessage(
-               this.ϟconfig.minLength,
+               this.zConfig.minLength,
 
                csuiteConfig.i18n.err.selectMany.required(),
             ),
          )
-      else if (min != null && this.ϟserial.values.length < min)
+      else if (min != null && this.zSerial.values.length < min)
          errors.push(
             extractConfigMessage(
-               this.ϟconfig.minLength,
+               this.zConfig.minLength,
                csuiteConfig.i18n.err.selectMany.notEnoughValues({ min }),
             ),
          )
@@ -316,16 +316,16 @@ export class Field_selectMany<
       serial?: Field_selectMany_serial<KEY>,
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
-      this.wrap = this.ϟconfig.wrap ?? false
+      this.wrap = this.zConfig.wrap ?? false
       this.init(serial)
    }
 
-   protected ϟsetOwnSerial(next: Field_selectMany_serial<KEY>): void {
-      this.ϟassignNewSerial(next)
+   protected zSetOwnSerial(next: Field_selectMany_serial<KEY>): void {
+      this.zAssignNewSerial(next)
 
-      if (this.ϟserial.values == null) {
+      if (this.zSerial.values == null) {
          const def = this.defaultKeys
-         if (def != null) this.ϟpatchSerial((draft) => void (draft.values = def))
+         if (def != null) this.zPatchSerial((draft) => void (draft.values = def))
       }
    }
 
@@ -342,10 +342,10 @@ export class Field_selectMany<
       return this._removeExistingKey(key)
    }
    private _removeExistingKey(key: KEY): void {
-      const values = this.ϟserial.values
+      const values = this.zSerial.values
       if (values == null) return
-      this.ϟrunInTransaction(() =>
-         this.ϟpatchSerial((draft) => {
+      this.zRunInTransaction(() =>
+         this.zPatchSerial((draft) => {
             draft.values = values.filter((k) => k !== key) // filter just in case of duplicate
          }),
       )
@@ -364,8 +364,8 @@ export class Field_selectMany<
       this._addNewKey(key)
    }
    private _addNewKey(key: KEY): void {
-      this.ϟrunInTransaction(() =>
-         this.ϟpatchSerial((draft) => {
+      this.zRunInTransaction(() =>
+         this.zPatchSerial((draft) => {
             draft.values ??= [] // adding a new key means we're being set
             draft.values.push(key)
          }),
@@ -373,7 +373,7 @@ export class Field_selectMany<
    }
 
    addValue(value: VALUE): void {
-      const key = this.ϟconfig.getIdFromValue(value)
+      const key = this.zConfig.getIdFromValue(value)
       return this.addKey(key)
    }
 
@@ -391,7 +391,7 @@ export class Field_selectMany<
    }
 
    isKeySet(key: KEY): boolean {
-      return this.ϟserial.values?.includes(key) ?? false
+      return this.zSerial.values?.includes(key) ?? false
    }
 
    /**
@@ -405,7 +405,7 @@ export class Field_selectMany<
     * @since 2024-09-03
     */
    hasValue(value: VALUE): boolean {
-      const valueId = this.ϟconfig.getIdFromValue(value)
+      const valueId = this.zConfig.getIdFromValue(value)
       return this.hasKey(valueId)
    }
 
@@ -420,7 +420,7 @@ export class Field_selectMany<
     * @since 2024-09-03
     */
    pushValue(...values: VALUE[]): void {
-      this.ϟrunInTransaction(() => {
+      this.zRunInTransaction(() => {
          for (const value of values) {
             this.addValue(value)
          }
@@ -439,25 +439,25 @@ export class Field_selectMany<
       return false
    }
 
-   override ϟset(valOrKey: VALUE[] | KEY[]): this {
+   override zSet(valOrKey: VALUE[] | KEY[]): this {
       if (valOrKey.length === 0) this.selectedKeys = []
       else if (this.isProbablyValidKey(valOrKey[0])) this.selectedKeys = valOrKey as KEY[]
-      else this.ϟvalue = valOrKey as VALUE[]
+      else this.zValue = valOrKey as VALUE[]
       return this
    }
 
-   override ϟgetSetValue(): this['Ҩsetvalue'] | undefined {
+   override zGetSetValue(): this['ҨSetvalue'] | undefined {
       // console.log(`[💀 getSetValue] `, this.path)
       return this.selectedKeys
    }
 
-   get ϟvalue(): Field_selectMany_value<VALUE> {
-      return this.ϟvalue_or_fail
+   get zValue(): Field_selectMany_value<VALUE> {
+      return this.zValue_or_fail
    }
 
-   ϟvalue_or_fail: Field_selectMany_value<VALUE> = new Proxy([], this.makeValueProxy())
-   ϟvalue_or_zero: Field_selectMany_value<VALUE> = this.ϟvalue_or_fail
-   ϟvalue_unchecked: Field_selectMany_value<VALUE> = this.ϟvalue_or_fail
+   zValue_or_fail: Field_selectMany_value<VALUE> = new Proxy([], this.makeValueProxy())
+   zValue_or_zero: Field_selectMany_value<VALUE> = this.zValue_or_fail
+   zValue_unchecked: Field_selectMany_value<VALUE> = this.zValue_or_fail
 
    private makeValueProxy(): ProxyHandler<never> {
       return {
@@ -510,13 +510,13 @@ export class Field_selectMany<
                const index = +prop
                const prevKey = this.selectedKeys[index]
 
-               const newKey = this.ϟconfig.getIdFromValue(value)
+               const newKey = this.zConfig.getIdFromValue(value)
                if (prevKey == null) {
                   // 🔴 weird to assign at 3 but append at the end 🤔 ❓
                   this.addKey(newKey)
                } else if (prevKey != null) {
                   if (prevKey === newKey) return false // nothing to do
-                  this.ϟrunInTransaction(() => {
+                  this.zRunInTransaction(() => {
                      this.removeKey(prevKey)
                      this.addKey(newKey)
                   })
@@ -527,31 +527,31 @@ export class Field_selectMany<
       }
    }
 
-   set ϟvalue(next: Field_selectMany_value<VALUE>) {
-      this.selectedKeys = next.map((val) => this.ϟconfig.getIdFromValue(val))
+   set zValue(next: Field_selectMany_value<VALUE>) {
+      this.selectedKeys = next.map((val) => this.zConfig.getIdFromValue(val))
    }
 
-   override ϟisValueEqual(other: Field): boolean {
+   override zIsValueEqual(other: Field): boolean {
       if (!(other instanceof Field_selectMany)) return false
-      return JSON.stringify(this.ϟserial.values) === JSON.stringify(other.ϟserial.values)
+      return JSON.stringify(this.zSerial.values) === JSON.stringify(other.zSerial.values)
    }
 
    public static readonly patchedSerialPaths: readonly string[] = Object.freeze(['values'])
 
    /** different from reset; doesn't take default into account */
    unset(): void {
-      this.ϟrunInTransaction(() => {
-         this.ϟpatchSerial((draft) => void (draft.values = undefined))
+      this.zRunInTransaction(() => {
+         this.zPatchSerial((draft) => void (draft.values = undefined))
       })
    }
 
    get selectedKeys(): KEY[] {
-      if (this.ϟserial.values == null) return []
-      return [...this.ϟserial.values]
+      if (this.zSerial.values == null) return []
+      return [...this.zSerial.values]
    }
 
    set selectedKeys(nextKeys: KEY[]) {
-      const values = this.ϟserial.values
+      const values = this.zSerial.values
 
       // Avoid patching when no-op
       if (
@@ -561,8 +561,8 @@ export class Field_selectMany<
       )
          return
 
-      this.ϟrunInTransaction(() => {
-         this.ϟpatchSerial((draft) => void (draft.values = [...nextKeys]))
+      this.zRunInTransaction(() => {
+         this.zPatchSerial((draft) => void (draft.values = [...nextKeys]))
 
          // 2024-07-08 rvion:
          // | when setting a value with equal id, we may be actually changing the SelectEntry
@@ -584,8 +584,8 @@ export class Field_selectMany<
    }
 
    // see FieldSelectOne.getValueFromId notes
-   getValueFromId = (id: KEY): Maybe<VALUE> => this.ϟconfig.getValueFromId(id, this)
-   getOptionFromId = (id: KEY): Maybe<SelectOption<VALUE, KEY>> => this.ϟconfig.getOptionFromId(id, this)
+   getValueFromId = (id: KEY): Maybe<VALUE> => this.zConfig.getValueFromId(id, this)
+   getOptionFromId = (id: KEY): Maybe<SelectOption<VALUE, KEY>> => this.zConfig.getOptionFromId(id, this)
 
    private get selectedValues(): VALUE[] {
       return this.selectedKeys.map(this.getValueFromId).filter((x) => x != null) as VALUE[]
@@ -597,8 +597,8 @@ export class Field_selectMany<
    }
 
    // 🔶 do not compare queries
-   override get ϟisDirtyFromSnapshot_UNSAFE(): boolean {
-      const { snapshot, ...currentSerial } = this.ϟserial
+   override get zIsDirtyFromSnapshot_UNSAFE(): boolean {
+      const { snapshot, ...currentSerial } = this.zSerial
       if (snapshot == null) return false
       return JSON.stringify(snapshot.values) !== JSON.stringify(currentSerial.values)
    }
@@ -607,7 +607,7 @@ export class Field_selectMany<
     * TODO: add distribution config in the config
     * pick between 0 and 2 random values
     */
-   override ϟrandomize(): void {
+   override zRandomize(): void {
       const choices = this.possibleKeys
       if (choices.length === 0) return
       const numOfValuesSelected = Math.floor(Math.random() * 3)

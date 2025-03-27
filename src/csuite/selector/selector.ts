@@ -240,14 +240,14 @@ export class FieldSelector {
             const stepIndex = steps.indexOf(step)
             const start = steps.slice(0, stepIndex)
             const startStr = FieldSelector.renderSteps(start)
-            console.log(`[🧠] `, startStr, [candidates.map((c) => c.ϟpath)])
+            console.log(`[🧠] `, startStr, [candidates.map((c) => c.zPath)])
          }
          // early abort
          if (candidates.length === 0) return { fields: [], values: values }
 
          // mount
          if (step.type === 'mount') {
-            candidates = candidates.filter((node) => node.ϟmountKey === step.key)
+            candidates = candidates.filter((node) => node.zMountKey === step.key)
          }
 
          // dbg
@@ -258,7 +258,7 @@ export class FieldSelector {
          // filterType
          else if (step.type === 'filterType') {
             candidates = candidates.filter(
-               (node) => node.ϟtype === (step.fieldType === 'str' ? 'str' : step.fieldType),
+               (node) => node.zType === (step.fieldType === 'str' ? 'str' : step.fieldType),
             )
          }
 
@@ -277,30 +277,30 @@ export class FieldSelector {
 
          // root
          else if (step.type === 'root') {
-            candidates = candidates.filter((node) => node.ϟparent == null)
+            candidates = candidates.filter((node) => node.zParent == null)
          }
 
          // nesting
          else if (step.type === 'nesting') {
             if (nestedUnder == null) throw new Error(`No nestedUnder provided for nesting filter`)
-            candidates = candidates.filter((c) => c.ϟuid === nestedUnder?.ϟuid)
+            candidates = candidates.filter((c) => c.zUid === nestedUnder?.zUid)
          }
 
          // HasID
          else if (step.type === 'hasId') {
-            candidates = candidates.filter((c) => c.ϟuid === step.id)
+            candidates = candidates.filter((c) => c.zUid === step.id)
          }
 
          // HasTag
          else if (step.type === 'hasTag') {
-            candidates = candidates.filter((c) => c.ϟconfig.tags?.includes(step.tag) ?? false)
+            candidates = candidates.filter((c) => c.zConfig.tags?.includes(step.tag) ?? false)
          }
 
          // has
          else if (step.type === 'has') {
             candidates = candidates.filter((node) => {
                const subSelector = FieldSelector.from({ steps: step.steps })
-               const res = node.ϟselectFirstOrNull(subSelector)
+               const res = node.zSelectFirstOrNull(subSelector)
                return res != null
             })
          }
@@ -310,7 +310,7 @@ export class FieldSelector {
             // throw new Error('❌ not is not implemented')
             candidates = candidates.filter((node) => {
                const subSelector = FieldSelector.from({ steps: step.steps })
-               const res = node.ϟselectFirstOrNull(subSelector)
+               const res = node.zSelectFirstOrNull(subSelector)
                return res == null
             })
          }
@@ -334,10 +334,10 @@ export class FieldSelector {
          else if (step.type === 'index') {
             if (mode === SelectorMode.MATCH) {
                candidates = candidates
-                  .filter((t) => t.ϟparent?.ϟchildrenActive.at(step.index) === t)
-                  .map((t) => t.ϟparent!)
+                  .filter((t) => t.zParent?.zChildrenActive.at(step.index) === t)
+                  .map((t) => t.zParent!)
             } else {
-               candidates = candidates.map((c) => c.ϟchildrenActive.at(step.index)).filter(Boolean) as Field[]
+               candidates = candidates.map((c) => c.zChildrenActive.at(step.index)).filter(Boolean) as Field[]
             }
          }
 
@@ -400,29 +400,29 @@ export class FieldSelector {
       const nextNodes: Set<Field> = new Set()
       const addChildNode = (node: Field | null): void => {
          if (node == null) return
-         const skip_ = this.axisSkips[node.ϟtype]
+         const skip_ = this.axisSkips[node.zType]
          if (skip_ != null) node = skip_(node)
          nextNodes.add(node)
       }
       const addParentNode = (node: Field | null): void => {
          if (node == null) return
-         const skip_ = this.axisSkips[node.ϟtype]
-         if (skip_ != null) node = node.ϟparent
+         const skip_ = this.axisSkips[node.zType]
+         if (skip_ != null) node = node.zParent
          if (node == null) return
          nextNodes.add(node)
       }
       for (const at of candidates) {
          if (mode === SelectorMode.MATCH) {
-            if (step.axis === '.') addParentNode(___?.get(at) ?? at.ϟparent)
-            else if (step.axis === '^') at.ϟchildrenAll.forEach(addChildNode)
-            else if (step.axis === '>') at.ϟancestors.forEach(addParentNode)
-            else if (step.axis === '<') at.ϟdescendants.forEach(addChildNode)
+            if (step.axis === '.') addParentNode(___?.get(at) ?? at.zParent)
+            else if (step.axis === '^') at.zChildrenAll.forEach(addChildNode)
+            else if (step.axis === '>') at.zAncestors.forEach(addParentNode)
+            else if (step.axis === '<') at.zDescendants.forEach(addChildNode)
             else throw new Error(`Invalid axis "${step.axis}"`)
          } else {
-            if (step.axis === '.') at.ϟchildrenAll.forEach(addChildNode)
-            else if (step.axis === '^') addParentNode(___?.get(at) ?? at.ϟparent)
-            else if (step.axis === '>') at.ϟdescendants.forEach(addChildNode)
-            else if (step.axis === '<') at.ϟancestors.forEach(addParentNode)
+            if (step.axis === '.') at.zChildrenAll.forEach(addChildNode)
+            else if (step.axis === '^') addParentNode(___?.get(at) ?? at.zParent)
+            else if (step.axis === '>') at.zDescendants.forEach(addChildNode)
+            else if (step.axis === '<') at.zAncestors.forEach(addParentNode)
             else throw new Error(`Invalid axis "${step.axis}"`)
          }
       }

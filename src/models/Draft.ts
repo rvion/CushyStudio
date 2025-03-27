@@ -3,6 +3,7 @@ import type { LibraryFile } from '../cards/LibraryFile'
 import type { RenderProps } from '../csuite-cushy/presenters/RenderProps'
 import type { RenderRule, RenderRule_asList } from '../csuite-cushy/presenters/RenderRule'
 import type { Field_group } from '../csuite/fields/group/FieldGroup'
+import type { Field } from '../csuite/model/Field'
 import type { Provenance } from '../csuite/provenance/Provenance'
 import type { LiveDB } from '../db/LiveDB'
 import type { TABLES } from '../db/TYPES.gen'
@@ -65,12 +66,12 @@ export class DraftL extends BaseInst<TABLES['draft']> {
 
    /** collapse all top-level form entryes */
    collapseTopLevelFormEntries(): void {
-      return this.form?.ϟroot?.ϟcollapseAllChildren()
+      return this.form?.zRoot?.zCollapseAllChildren()
    }
 
    /** expand all top-level form entries */
    expandTopLevelFormEntries(): void {
-      return this.form?.ϟroot?.ϟexpandAllChildren()
+      return this.form?.zRoot?.zExpandAllChildren()
    }
 
    // TODO: rename
@@ -297,7 +298,7 @@ export class DraftL extends BaseInst<TABLES['draft']> {
          name: this.data.title,
          appID: this.data.appID,
          draftID: this.data.id,
-         formSerial: field.ϟserial,
+         formSerial: field.zSerial,
          outputGraphID: graph.id,
          isExpanded: SQLITE_true,
          status: Status.New,
@@ -345,9 +346,9 @@ export class DraftL extends BaseInst<TABLES['draft']> {
                name: this.name,
                serial: () => this.data.formSerial,
                onSerialChange: debounce(
-                  (form) => {
+                  (field: Field) => {
                      console.log(`[🧐] updating draft(${this.id}) SERIAL`)
-                     this.update({ formSerial: form.serial })
+                     this.update({ formSerial: field.zSerial })
                      this.isDirty = true
                      this.checkIfShouldRestart()
                   },

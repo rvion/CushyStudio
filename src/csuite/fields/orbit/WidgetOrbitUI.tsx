@@ -13,7 +13,7 @@ export const WidgetOrbitUI = obs((p: { field: Field_orbit }) => {
    return (
       <div>
          <div tw='flex items-center'>
-            <div tw='btn' onClick={() => p.field.ϟreset()}>
+            <div tw='btn' onClick={() => p.field.zReset()}>
                reset
             </div>
             {/* <pre>{JSON.stringify(p.widget.euler, null, 2)}</pre> */}

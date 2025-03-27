@@ -167,7 +167,7 @@ export class PanelState<PROPS extends object = any> {
       uid: string,
       init: ((ui: Builder) => SCHEMA) | SCHEMA,
       opts?: { log?: boolean },
-   ): SCHEMA['Ҩfield'] => {
+   ): SCHEMA['ҨField'] => {
       return useMemoAction(() => {
          let schema: SCHEMA = typeof init === 'function' ? init(cushy.forms.builder) : init
          const log = opts?.log ? logForPersistentModel : logVoid
@@ -175,7 +175,7 @@ export class PanelState<PROPS extends object = any> {
 
          const prevEntity = this.documents.get(uid)
          if (prevEntity != null) {
-            const prevHash = prevEntity.ϟschema.codeForTypescriptValue()
+            const prevHash = prevEntity.zSchema.codeForTypescriptValue()
             const nextHash = schema.codeForTypescriptValue()
             if (prevHash === nextHash) {
                log(`    | 🟢 prev entity found; schema is identical`)
@@ -192,7 +192,7 @@ export class PanelState<PROPS extends object = any> {
          // get or create panel store to hold/persist the entity
          const storeName = `entity-${uid}`
          let store: PanelPersistentStore<any> = this.stores.get(storeName) as PanelPersistentStore<
-            SCHEMA['Ҩserial'] | false
+            SCHEMA['ҨSerial'] | false
          >
          if (store == null) {
             log(`    | creating store (${storeName})`)
@@ -203,14 +203,14 @@ export class PanelState<PROPS extends object = any> {
          // clone the schema to inject a callback to persist the entity via the panel store
          schema = schema.withConfig({
             onSerialChange: (self) => {
-               store.saveData(self.ϟserial)
+               store.saveData(self.zSerial)
             },
          })
 
          const prevSerial = store.data
          const entity = schema.create(prevSerial)
          this.documents.set(uid, entity)
-         log(`    | ENTITY for (${uid}) ID IS`, entity.ϟuid, `from store ${store.uid}`)
+         log(`    | ENTITY for (${uid}) ID IS`, entity.zUid, `from store ${store.uid}`)
          return entity
       }, [uid])
    }

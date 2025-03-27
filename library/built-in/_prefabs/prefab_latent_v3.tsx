@@ -61,7 +61,7 @@ export function ui_latent_v3(p: { size?: Field_size_config } = {}): UI_LatentV3 
       {
          uiui: {
             OnRight: (f) => {
-               const size = f.field.value.emptyLatent?.size || f.field.value.random?.size
+               const size = f.field.zValue.emptyLatent?.size || f.field.zValue.random?.size
                if (size == null) return null
                return (
                   <div tw='flex whitespace-nowrap text-xs lh-input opacity-70'>
@@ -80,7 +80,7 @@ export function ui_latent_v3(p: { size?: Field_size_config } = {}): UI_LatentV3 
 
 export const run_latent_v3 = async (p: {
    //
-   opts: ReturnType<typeof ui_latent_v3>['Ҩvalue']
+   opts: ReturnType<typeof ui_latent_v3>['ҨValue']
    vae: Comfy.Signal['VAE']
 }): Promise<{
    latent: Comfy.Signal['LATENT']

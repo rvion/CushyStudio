@@ -39,32 +39,32 @@ export type Field_image_value = MediaImageL
 
 // #region STATE
 export interface Field_image {
-   ['Ҩtype']: 'image'
-   ['ҨownConfig']: Field_image_ownConfig
-   ['ҨownSerial']: Field_image_ownSerial
-   ['Ҩvalue']: Field_image_value
-   ['Ҩunchecked']: Field_image_value | undefined
-   Ҩfield: Field_image
-   ['Ҩchild']: never
+   ['ҨType']: 'image'
+   ['ҨOwnConfig']: Field_image_ownConfig
+   ['ҨOwnSerial']: Field_image_ownSerial
+   ['ҨValue']: Field_image_value
+   ['ҨUnchecked']: Field_image_value | undefined
+   ҨField: Field_image
+   ['ҨChild']: never
 }
 export class Field_image extends Field {
    // #region static
    static readonly type: 'image' = 'image'
-   static readonly unsetSerial: Field_image['Ҩserial'] = { $: 'image' }
+   static readonly unsetSerial: Field_image['ҨSerial'] = { $: 'image' }
    public static readonly patchedSerialPaths: readonly string[] = Object.freeze([
       'imageID',
       'imageHash',
       'size',
    ])
    static generateSerial(
-      value: Maybe<Field_image['Ҩvalue']>,
-      config: Field_image['Ҩconfig'],
-   ): Field_image['Ҩserial'] {
+      value: Maybe<Field_image['ҨValue']>,
+      config: Field_image['ҨConfig'],
+   ): Field_image['ҨSerial'] {
       if (value == null && config.default == null) return this.unsetSerial
       return { $: 'image', imageID: value?.id ?? config.default?.id }
    }
    static migrateSerial(): undefined {}
-   static codeForTypescriptValue(config: Field_image['Ҩconfig']): string {
+   static codeForTypescriptValue(config: Field_image['ҨConfig']): string {
       return `MediaImageL`
    }
 
@@ -75,27 +75,27 @@ export class Field_image extends Field {
       parent: Field | null,
       schema: CSchema<Field_image>,
       initialMountKey: string,
-      serial?: Field_image['Ҩserial'],
+      serial?: Field_image['ҨSerial'],
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
       this.init(serial)
    }
 
    // #region serial
-   get ϟisOwnSet(): boolean {
-      return this.ϟserial.imageID != null
+   get zIsOwnSet(): boolean {
+      return this.zSerial.imageID != null
    }
 
-   protected ϟsetOwnSerial(next: Field_image['Ҩserial']): void {
+   protected zSetOwnSerial(next: Field_image['ҨSerial']): void {
       // apply default if unset + default in config
-      const def = this.ϟconfig.default
-      if (this.ϟserial.imageID == null && def != null) {
+      const def = this.zConfig.default
+      if (this.zSerial.imageID == null && def != null) {
          next = produce(next, (draft) => {
             draft.imageID = def.id
          })
       }
 
-      this.ϟassignNewSerial(next)
+      this.zAssignNewSerial(next)
    }
 
    // #region UI
@@ -108,71 +108,71 @@ export class Field_image extends Field {
    }
 
    // #region Validation
-   get ϟownConfigSpecificProblems(): Problem_Ext {
+   get zOwnConfigSpecificProblems(): Problem_Ext {
       return null
    }
 
-   get ϟownTypeSpecificProblems(): Problem_Ext {
+   get zOwnTypeSpecificProblems(): Problem_Ext {
       return null
    }
 
    // #region ...
    get defaultValue(): MediaImageL | undefined {
-      return this.ϟconfig.default
+      return this.zConfig.default
    }
 
-   get ϟhasChanges(): boolean {
-      return this.ϟvalue !== this.defaultValue
+   get zHasChanges(): boolean {
+      return this.zValue !== this.defaultValue
    }
 
    // #region value
-   get ϟvalue(): MediaImageL {
-      return this.ϟvalue_or_fail
+   get zValue(): MediaImageL {
+      return this.zValue_or_fail
    }
 
-   set ϟvalue(next: MediaImageL) {
-      if (this.ϟserial.imageID === next.id) return
-      this.ϟrunInTransaction(() => {
-         this.ϟpatchSerial((draft) => {
+   set zValue(next: MediaImageL) {
+      if (this.zSerial.imageID === next.id) return
+      this.zRunInTransaction(() => {
+         this.zPatchSerial((draft) => {
             draft.imageID = next.id
          })
       })
    }
 
-   get ϟvalue_or_zero(): MediaImageL {
-      if (this.ϟserial.imageID == null) return cushy.defaultImage
-      return cushy.db.media_image.get(this.ϟserial.imageID) ?? cushy.defaultImage
+   get zValue_or_zero(): MediaImageL {
+      if (this.zSerial.imageID == null) return cushy.defaultImage
+      return cushy.db.media_image.get(this.zSerial.imageID) ?? cushy.defaultImage
    }
 
-   get ϟvalue_or_fail(): MediaImageL {
-      if (this.ϟserial.imageID == null) throw new Error('Field_image.value_or_fail: not set')
-      const image = cushy.db.media_image.get(this.ϟserial.imageID)
-      if (image == null) throw new Error('Field_image.value_or_fail: not found')
+   get zValue_or_fail(): MediaImageL {
+      if (this.zSerial.imageID == null) throw new Error('Field_image.zValue_or_fail: not set')
+      const image = cushy.db.media_image.get(this.zSerial.imageID)
+      if (image == null) throw new Error('Field_image.zValue_or_fail: not found')
       return image
    }
 
-   get ϟvalue_unchecked(): MediaImageL | undefined {
-      if (this.ϟserial.imageID == null) return
-      const image = cushy.db.media_image.get(this.ϟserial.imageID)
+   get zValue_unchecked(): MediaImageL | undefined {
+      if (this.zSerial.imageID == null) return
+      const image = cushy.db.media_image.get(this.zSerial.imageID)
       if (image == null) return
       return image
    }
 
-   public ϟisValueEqual(other: Field): boolean {
+   public zIsValueEqual(other: Field): boolean {
       if (other === this) return true
       if (!(other instanceof Field_image)) return false
-      return this.ϟserial.imageID === this.ϟserial.imageID
+      return this.zSerial.imageID === this.zSerial.imageID
    }
 
    // #region UI/preview
    /** size of the preview */
    get size(): number {
-      return this.ϟserial.size ?? this._defaultPreviewSize
+      return this.zSerial.size ?? this._defaultPreviewSize
    }
 
    set size(val: number) {
-      this.ϟrunInTransaction(() => {
-         this.ϟpatchSerial((serial) => {
+      this.zRunInTransaction(() => {
+         this.zPatchSerial((serial) => {
             if (val === this._defaultPreviewSize) delete serial.size
             else serial.size = val
          })

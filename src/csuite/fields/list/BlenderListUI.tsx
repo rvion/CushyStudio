@@ -28,7 +28,7 @@ export const BlenderListUI = obs(function BlenderListUI_<T extends Field_list<CS
    const size = uiConf.size
    const x = useLocalObservable(() => ({ selectedIx: activeIndex }))
    const selectedChild = field.items[x.selectedIx]
-   const theme = cushy.preferences.theme.ϟvalue
+   const theme = cushy.preferences.theme.zValue
    const wrapperCls =
       direction === 'horizontal' //
          ? 'flex flex-row gap-2'

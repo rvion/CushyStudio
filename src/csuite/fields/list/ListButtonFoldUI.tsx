@@ -12,9 +12,9 @@ export const ListButtonFoldUI = obs(function ListButtonFoldUI_(p: { field: IWidg
          square
          icon={IKONS.mdiUnfoldMoreHorizontal}
          onClick={(ev) => {
-            field.ϟtouch()
+            field.zTouch()
             ev.stopPropagation()
-            field.ϟexpandAllChildren()
+            field.zExpandAllChildren()
          }}
       />
    )

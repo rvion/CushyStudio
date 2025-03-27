@@ -24,7 +24,7 @@ export const PanelModelsUI = obs(function PanelModelsUI_(p: NO_PROPS) {
                className='block'
             />
             <SpacerUI />
-            {cushy.civitaiConf.ϟrenderAsConfigBtn({ title: 'CIVITAI Options' })}
+            {cushy.civitaiConf.zRenderAsConfigBtn({ title: 'CIVITAI Options' })}
          </PanelHeaderUI>
          <CivitaiUI //
             tw='flex-1'
