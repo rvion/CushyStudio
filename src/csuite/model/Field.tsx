@@ -1765,38 +1765,6 @@ export abstract class Field {
       return this.schema.publications
    }
 
-   /**
-    * getter that resolve to `this.schema.publish`
-    * @undecorated
-    */
-   get publish(): CSchema['publishToChannel'] {
-      return this.schema.publishToChannel
-   }
-
-   /**
-    * getter that resolve to `this.schema.subscribe`
-    * @undecorated
-    */
-   get subscribe(): CSchema['subscribeToChannel'] {
-      return this.schema.subscribeToChannel
-   }
-
-   /**
-    * getter that resolve to `this.schema.reactions`
-    * @undecorated
-    */
-   get reactions(): CSchema['reactions'] {
-      return this.schema.reactions
-   }
-
-   /**
-    * getter that resolve to `this.schema.addReaction`
-    * @undecorated
-    */
-   get addReaction(): CSchema['addReaction'] {
-      return this.schema.addReaction
-   }
-
    /** probably the wrong place to retrieve that now that presenter are comming */
    get icon(): Maybe<IconName> {
       const x = this.schema.config.icon
