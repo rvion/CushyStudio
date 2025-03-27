@@ -483,8 +483,11 @@ export class Field_selectMany<
             if (prop === 'forEach') return (...args: [any, any]) => this.selectedValues.forEach(...args)
             if (prop === 'map') return (...args: [any, any]) => this.selectedValues.map(...args)
             if (prop === 'slice') return (...args: [any, any]) => this.selectedValues.slice(...args)
+            // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
             if (prop === 'filter') return (...args: [any, any]) => this.selectedValues.filter(...args)
+            // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
             if (prop === 'find') return (...args: [any, any]) => this.selectedValues.find(...args)
+            // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
             if (prop === 'some') return (...args: [any, any]) => this.selectedValues.some(...args)
             if (prop === 'concat') return (...args: any[]) => this.selectedValues.concat(...args)
             if (prop === 'sort') return (...args: [any]) => this.selectedValues.sort(...args)
@@ -594,7 +597,7 @@ export class Field_selectMany<
    }
 
    // 🔶 do not compare queries
-   override get isDirtyFromSnapshot_UNSAFE(): boolean {
+   override get ['⇓isDirtyFromSnapshot_UNSAFE'](): boolean {
       const { snapshot, ...currentSerial } = this.serial
       if (snapshot == null) return false
       return JSON.stringify(snapshot.values) !== JSON.stringify(currentSerial.values)

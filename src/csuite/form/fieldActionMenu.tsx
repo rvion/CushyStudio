@@ -84,8 +84,8 @@ export const fieldActionMenu: MenuTemplate<FieldActionMenuProps> = defineMenuTem
          new SimpleMenuAction({
             label: 'Restore Snapshot',
             icon: IKONS.mdiArrowRightBox,
-            disabled: (): boolean => !field.hasSnapshot,
-            onClick: (): void => void field.revertToSnapshot(),
+            disabled: (): boolean => !field['⇓hasSnapshot'],
+            onClick: (): void => void field['⇓revertToSnapshot'](),
          }),
       )
       out.push(MenuDividerUI_)

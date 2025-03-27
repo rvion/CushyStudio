@@ -86,7 +86,7 @@ describe('assign to value object', () => {
       expectJSON(snap1).toEqual(serial)
 
       E.value = ['b']
-      E.revertToSnapshot() // ↩️
+      E['⇓revertToSnapshot']() // ↩️
       expectJSON(E.value).toMatchObject(['a'])
 
       E.value.push('c')
@@ -95,7 +95,7 @@ describe('assign to value object', () => {
       E.value.push('c')
       expectJSON(E.value).toMatchObject(['a', 'c'])
 
-      E.revertToSnapshot() // 🔴 Unclear what's this supposed to do
+      E['⇓revertToSnapshot']() // 🔴 Unclear what's this supposed to do
       // Either
       // expectJSON(E.value).toMatchObject(['a'])
       // Or
@@ -110,14 +110,14 @@ describe('assign to value object', () => {
       E['⇓saveSnapshot']() // 💾 1
 
       E.value.push('b')
-      E.revertToSnapshot() // ↩️
+      E['⇓revertToSnapshot']() // ↩️
       E['⇓saveSnapshot']() // 💾 2
       expectJSON(E.value).toMatchObject(['a'])
 
       E.value.push('c')
       expectJSON(E.value).toMatchObject(['a', 'c'])
 
-      E.revertToSnapshot() // ↩️ reset to 💾 2
+      E['⇓revertToSnapshot']() // ↩️ reset to 💾 2
       expectJSON(E.value).toMatchObject(['a'])
 
       expect(E.serial.snapshot?.snapshot).toBeUndefined()
@@ -129,7 +129,7 @@ describe('assign to value object', () => {
 
       E.value = 3
       for (let i = 0; i < 10; ++i) {
-         E.revertToSnapshot()
+         E['⇓revertToSnapshot']()
       }
 
       expect(E.serial.snapshot?.snapshot).toBeUndefined()
@@ -143,13 +143,13 @@ describe('assign to value object', () => {
       E['⇓saveSnapshot']() // 💾 1
 
       E.value = ['b']
-      E.revertToSnapshot()
+      E['⇓revertToSnapshot']()
       expectJSON(E.value).toMatchObject(['a'])
 
       E.value = ['a', 'c']
       expectJSON(E.value).toMatchObject(['a', 'c'])
 
-      E.revertToSnapshot() // Revert to 💾 1 as expected
+      E['⇓revertToSnapshot']() // Revert to 💾 1 as expected
       expectJSON(E.value).toMatchObject([])
    })
 })

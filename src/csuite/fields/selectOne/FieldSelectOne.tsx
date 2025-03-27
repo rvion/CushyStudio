@@ -554,7 +554,7 @@ export class Field_selectOne<
    getOptionFromId = (id: KEY): Maybe<SelectOption<VALUE, KEY>> => this.config.getOptionFromId(id, this)
 
    // 🔶 do not compare queries
-   override get isDirtyFromSnapshot_UNSAFE(): boolean {
+   override get ['⇓isDirtyFromSnapshot_UNSAFE'](): boolean {
       const { snapshot, ...currentSerial } = this.serial
       if (snapshot == null) return false
       return stableStringify(snapshot.val) !== stableStringify(currentSerial.val)

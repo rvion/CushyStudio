@@ -48,7 +48,7 @@ import { type SelectorMixin, SelectorMixinDescriptors } from '../selector/select
 import { exhaust } from '../utils/exhaust'
 import { getUIDForMemoryStructure } from '../utils/getUIDForMemoryStructure'
 import { makeLabelFromPrimitiveValue } from '../utils/makeLabelFromFieldName'
-import { $FieldSym } from './$FieldSym'
+import { FieldSym } from './$FieldSym'
 import { autofixSerial_20240703 } from './autofix/autofixSerial_20240703'
 import { autofixSerial_20240711 } from './autofix/autofixSerial_20240711'
 import { CSchema, type WithConfigOptions } from './CSchema'
@@ -117,6 +117,19 @@ export type FieldCtorProps_ALT<TYPES extends Field = any> = [
 ]
 
 type PathObject = [string, Maybe<PathObject>]
+
+/**
+ * * private is too private
+ * * symbols are too unpractical
+ * * '$' is shown too early in the completion
+ * * various utf8 characters used in the codebase as key
+ *
+ * - <space> -> really good to hide stuff from completions
+ * - ܮ = internal
+ * - …  = type only
+ * - ⇓  = snapshot related => should move into mixin
+ * - →  = traversal mixin
+ */
 
 export interface Field {
    ['…type']: CATALOG.AllFieldTypes
@@ -1127,7 +1140,7 @@ export abstract class Field {
     */
    // abstract readonly defaultValue: this['schema']['…value'] |
 
-   $FieldSym: typeof $FieldSym = $FieldSym
+   $FieldSym: typeof FieldSym = FieldSym
 
    /**
     * when this widget or one of its descendant publishes a value,
@@ -1425,7 +1438,7 @@ export abstract class Field {
     * this function is called recursively upwards.
     * persistance will usually be done at the root field reacting to this event.
     */
-   INTERNAL_applySerialUpdateEffects(): void {
+   ['ܮ_applySerialUpdateEffects'](): void {
       for (const fn of this._extraSerialChangesFunction) fn(this)
       this.config.onSerialChange?.(this)
       this.config.onValueChange?.(this)
@@ -1841,10 +1854,6 @@ export abstract class Field {
    }
    // ---------------------------------------------------------------
 
-   get hasSnapshot(): boolean {
-      return this.serial.snapshot != null
-   }
-
    @computed get hasFoldableSubfieldsThatAreUnfolded(): boolean {
       return this.childrenAll.some((f) => f.isCollapsible && !f.serial.collapsed)
    }
@@ -1857,7 +1866,7 @@ export abstract class Field {
       return this.childrenAll.some((f) => f.isCollapsible)
    }
 
-   deleteSnapshot(): void {
+   ['⇓deleteSnapshot'](): void {
       this.patchInTransaction((draft) => {
          delete draft.snapshot
       })
@@ -1865,6 +1874,9 @@ export abstract class Field {
    // ['-caht'] = 1; // 🔶
    // ['/chat'] = 1; // 🔶
    // ['…chat'] = 1; // 🟢
+   get ['⇓hasSnapshot'](): boolean {
+      return this.serial.snapshot != null
+   }
 
    /** update current field snapshot */
    ['⇓saveSnapshot'](): this['…serial'] {
@@ -1881,7 +1893,7 @@ export abstract class Field {
    }
 
    /** revert to the last snapshot */
-   revertToSnapshot(): void {
+   ['⇓revertToSnapshot'](): void {
       // 🔘 IX++
       // 🔘 console.log(`[🤠] #${IX} seri`, getUIDForMemoryStructure(this.serial))
       // 🔘 console.log(`[🤠] #${IX} snap`, getUIDForMemoryStructure(this.serial.snapshot))
@@ -1896,7 +1908,7 @@ export abstract class Field {
       this.setSerial(this.serial.snapshot)
    }
 
-   get isDirtyFromSnapshot_UNSAFE(): boolean {
+   get ['⇓isDirtyFromSnapshot_UNSAFE'](): boolean {
       const { snapshot, ...currentSerial } = this.serial
       if (snapshot == null) return false
       return hashJSONObjectToNumber(snapshot) !== hashJSONObjectToNumber(currentSerial)

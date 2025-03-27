@@ -22,7 +22,8 @@ export const TraversalMixinImpl = defineFieldMixin({
       if (p.order === 'depth-first' && p.cover === 'active') return this['→traverseDepthFirst'](fn)
       if (p.order === 'breadth-first' && p.cover === 'active') return this['→traverseBreadthFirst'](fn)
       if (p.order === 'depth-first' && p.cover === 'all') return this['→traverseAllDepthFirst'](fn)
-      if (p.order === 'breadth-first' && p.cover === 'all') return this.traverseAlltraverseBreadthFirst(fn)
+      if (p.order === 'breadth-first' && p.cover === 'all')
+         return this['→traverseAlltraverseBreadthFirst'](fn)
       return this['→traverseDepthFirst'](fn)
    },
 
@@ -109,7 +110,7 @@ export const TraversalMixinImpl = defineFieldMixin({
       })
    },
    /** @since 2024-10-07 */
-   traverseAlltraverseBreadthFirst(fn: (c: Field) => TraverseSignal): void {
+   ['→traverseAlltraverseBreadthFirst'](fn: (c: Field) => TraverseSignal): void {
       runInAction(() => {
          const queue: Field[] = [this]
          while (queue.length > 0) {
