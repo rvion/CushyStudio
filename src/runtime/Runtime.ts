@@ -344,7 +344,7 @@ export class Runtime<FIELD extends Field = any> {
             console.log(`❌ action not found`)
             return { type: 'error', error: 'action not found' }
          }
-         await executable.run(this, formResult, this.context)
+         await executable.run(this, formResult, this.context, p.formInstance)
          // console.log(`🔴 after: size=${this.workflow.nodes.length}`)
          console.log('[✅] RUN SUCCESS')
          const duration = Date.now() - start
