@@ -5,7 +5,7 @@ export type IWidgetListLike = {
    removeAllItems(): void
    expandAllChildren(): void
    collapseAllChildren(): void
-   items: unknown[]
+   readonly items: readonly unknown[]
    readonly length: number
    readonly isCollapsed?: boolean
    setCollapsed(value: boolean): void

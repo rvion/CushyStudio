@@ -1,4 +1,4 @@
-import type { IWidgetListLike } from './ListControlsUI'
+import type { IWidgetListLike } from './IWidgetListLike'
 
 import { Button } from '../../button/Button'
 
@@ -12,7 +12,7 @@ export const ListButtonFoldUI = obs(function ListButtonFoldUI_(p: { field: IWidg
          square
          icon={IKONS.mdiUnfoldMoreHorizontal}
          onClick={(ev) => {
-            field.touch()
+            field.ܒtouch()
             ev.stopPropagation()
             field.expandAllChildren()
          }}

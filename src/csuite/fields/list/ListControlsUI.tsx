@@ -1,26 +1,9 @@
-import type { Field } from '../../model/Field'
-
 import { useCSuite } from '../../ctx/useCSuite'
+import type { IWidgetListLike } from './IWidgetListLike'
 import { ListButtonAddUI } from './ListButtonAddUI'
 import { ListButtonClearUI } from './ListButtonClearUI'
 import { ListButtonFoldUI } from './ListButtonFoldUI'
 import { ListButtonUnfoldUI } from './ListButtonUnfoldUI'
-
-export type IWidgetListLike = {
-   addItem(): Maybe<Field>
-   removeAllItems(): void
-   expandAllChildren(): void
-   collapseAllChildren(): void
-   readonly items: readonly unknown[]
-   readonly length: number
-   readonly isCollapsed?: boolean
-   setCollapsed(value: boolean): void
-   touch: () => void
-   config: {
-      max?: number
-      min?: number
-   }
-}
 
 export const ListControlsUI = obs(function ListControlsUI_({
    field,

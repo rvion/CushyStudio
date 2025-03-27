@@ -1,5 +1,4 @@
-import type { IWidgetListLike } from './ListControlsUI'
-
+import type { IWidgetListLike } from './IWidgetListLike'
 import { runInAction } from 'mobx'
 
 import { Button } from '../../button/Button'
@@ -14,7 +13,7 @@ export const ListButtonAdd100ItemsUI = obs(function ListButtonAdd100ItemsUI_(p: 
          square
          icon={IKONS.mdiUnfoldLessHorizontal}
          onClick={() => {
-            field.touch()
+            field.ܒtouch()
             runInAction(() => {
                for (let i = 0; i < 100; i++) field.addItem()
             })

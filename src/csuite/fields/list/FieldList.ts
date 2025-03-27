@@ -593,6 +593,7 @@ export class Field_list<T extends CSchema> extends Field {
             if (prop === 'unshift') return (...args: any[]) => this.unshift(...args)
             if (prop === 'push') return (...args: any[]) => this.push(...args)
             if (prop === 'map') return (...args: [any, any]) => this.valueArrMode(mode).map(...args)
+            // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
             if (prop === 'filter') return (...args: [any, any]) => this.valueArrMode(mode).filter(...args)
             // MOBX HACK ----------------------------------------------------
 

@@ -1,4 +1,4 @@
-import type { IWidgetListLike } from './ListControlsUI'
+import type { IWidgetListLike } from './IWidgetListLike'
 
 import { Button } from '../../button/Button'
 
@@ -15,7 +15,7 @@ export const ListButtonAddUI = obs(function ListButtonAddUI_(p: { field: IWidget
          square
          icon={IKONS.mdiPlus}
          onClick={(ev) => {
-            field.touch()
+            field.ܒtouch()
             if (!canAdd) return
             ev.stopPropagation()
             field.addItem()

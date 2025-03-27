@@ -1,4 +1,4 @@
-import type { IWidgetListLike } from './ListControlsUI'
+import type { IWidgetListLike } from './IWidgetListLike'
 
 import { Button } from '../../button/Button'
 
@@ -15,7 +15,7 @@ export const ListButtonClearUI = obs(function ListButtonClearUI_(p: { field: IWi
          square
          icon={IKONS.mdiDeleteSweep}
          onClick={(ev) => {
-            field.touch()
+            field.ܒtouch()
             if (!canClear) return
             ev.stopPropagation()
             field.removeAllItems()
