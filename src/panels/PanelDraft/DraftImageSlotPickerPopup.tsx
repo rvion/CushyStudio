@@ -32,7 +32,7 @@ export const DraftImageSlotPickerUI = obs(function DraftImageSlotPickerUI_({
 }) {
    const imageFields = useMemo(() => {
       const allImageFields: Field_image[] = []
-      draft.form?.traverseAllDepthFirst((f) => {
+      draft.form?.['→traverseAllDepthFirst']((f) => {
          if (isFieldImage(f)) allImageFields.push(f)
       })
       return allImageFields

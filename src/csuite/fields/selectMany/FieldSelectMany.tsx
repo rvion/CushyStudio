@@ -30,7 +30,7 @@ export type Field_selectMany_config_simplified_<KEY extends SelectKey> = Field_s
 >
 
 // #region CONFIG
-export type Field_selectMany_config<VALUE, KEY extends SelectKey> = Field_selectMany<VALUE, KEY>['$config']
+export type Field_selectMany_config<VALUE, KEY extends SelectKey> = Field_selectMany<VALUE, KEY>['…config']
 type Field_selectMany_ownConfig<
    /** the final object that will be accessible as value */
    VALUE,
@@ -112,7 +112,7 @@ export type Field_selectMany_config_simplified<VALUE, KEY extends SelectKey> = O
 type Omit2<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
 
 // SERIAL
-export type Field_selectMany_serial<KEY extends SelectKey> = Field_selectMany<unknown, KEY>['$serial']
+export type Field_selectMany_serial<KEY extends SelectKey> = Field_selectMany<unknown, KEY>['…serial']
 type Field_selectMany_ownSerial<KEY extends SelectKey> = {
    $: 'selectMany'
    query?: string
@@ -130,15 +130,15 @@ export interface Field_selectMany<
    VALUE extends unknown,
    KEY extends SelectKey,
 > extends Field {
-   $type: 'selectMany'
-   $ownConfig: Field_selectMany_ownConfig<VALUE, KEY>
-   $ownSerial: Field_selectMany_ownSerial<KEY>
-   $value: Field_selectMany_value<VALUE>
-   $setValue: VALUE[] | KEY[]
-   $unchecked: Field_selectMany_unchecked<VALUE>
-   $child: never
-   $opts: unknown
-   $ownPatch: Patch<'selectMany'>
+   ['…type']: 'selectMany'
+   ['…ownConfig']: Field_selectMany_ownConfig<VALUE, KEY>
+   ['…ownSerial']: Field_selectMany_ownSerial<KEY>
+   ['…value']: Field_selectMany_value<VALUE>
+   ['…setvalue']: VALUE[] | KEY[]
+   ['…unchecked']: Field_selectMany_unchecked<VALUE>
+   ['…child']: never
+   ['…opts']: unknown
+   ['…ownPatch']: Patch<'selectMany'>
 }
 
 // #region STATE
@@ -179,9 +179,9 @@ export class Field_selectMany<
    }
 
    static generateSerial<VALUE, KEY extends SelectKey>(
-      value: Maybe<Field_selectMany<VALUE, KEY>['$value']>,
-      config: Field_selectMany<VALUE, KEY>['$config'],
-   ): Field_selectMany<VALUE, KEY>['$serial'] {
+      value: Maybe<Field_selectMany<VALUE, KEY>['…value']>,
+      config: Field_selectMany<VALUE, KEY>['…config'],
+   ): Field_selectMany<VALUE, KEY>['…serial'] {
       if (value == null && config.default == null) return this.unsetSerial
 
       const defaultSelectedKeys = Array.isArray(config.default)
@@ -446,7 +446,7 @@ export class Field_selectMany<
       return this
    }
 
-   override getSetValue(): this['$setValue'] | undefined {
+   override getSetValue(): this['…setvalue'] | undefined {
       // console.log(`[💀 getSetValue] `, this.path)
       return this.selectedKeys
    }

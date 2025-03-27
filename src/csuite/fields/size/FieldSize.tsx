@@ -26,7 +26,7 @@ type SizeAble = {
 }
 
 // CONFIG
-export type Field_size_config = Field_size['$config']
+export type Field_size_config = Field_size['…config']
 type Field_size_ownConfig = {
    default?: CushySizeByRatio
    min?: number
@@ -35,7 +35,7 @@ type Field_size_ownConfig = {
 }
 
 // SERIAL
-export type Field_size_serial = Field_size['$serial']
+export type Field_size_serial = Field_size['…serial']
 type Field_size_ownSerial = {
    width?: number
    height?: number
@@ -54,15 +54,15 @@ export type Field_size_unchecked = Field_size_serial
 
 // TYPES
 export interface Field_size {
-   $type: 'size'
-   $ownConfig: Field_size_ownConfig
-   $ownSerial: Field_size_ownSerial
-   $value: Field_size_value
-   $setValue: Field_size_value
-   $unchecked: Field_size_unchecked
-   $child: never
-   $opts: unknown
-   $ownPatch: Patch<'size'>
+   ['…type']: 'size'
+   ['…ownConfig']: Field_size_ownConfig
+   ['…ownSerial']: Field_size_ownSerial
+   ['…value']: Field_size_value
+   ['…setvalue']: Field_size_value
+   ['…unchecked']: Field_size_unchecked
+   ['…child']: never
+   ['…opts']: unknown
+   ['…ownPatch']: Patch<'size'>
 }
 
 // STATE
@@ -82,9 +82,9 @@ export class Field_size extends Field {
    }
 
    static generateSerial(
-      value: Maybe<Field_size['$value']>,
-      config: Field_size['$config'],
-   ): Field_size['$serial'] {
+      value: Maybe<Field_size['…value']>,
+      config: Field_size['…config'],
+   ): Field_size['…serial'] {
       if (value == null && config.default == null) return this.unsetSerial
 
       const selectedVal = value ?? config.default

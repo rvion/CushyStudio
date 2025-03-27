@@ -14,7 +14,7 @@ export class RuntimeApps {
    execute = <const FIELD extends Field>(p: {
       //
       app: AppRef<FIELD>
-      formValue: FIELD['$value']
+      formValue: FIELD['…value']
       draftID?: string
    }): Promise<RuntimeExecutionResult> => {
       return this.executeByID_UNSAFE({

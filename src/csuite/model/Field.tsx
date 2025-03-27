@@ -25,7 +25,6 @@ import _get from 'lodash/get'
 import _set from 'lodash/set'
 import _unset from 'lodash/unset'
 import { computed, isObservable, observable, runInAction } from 'mobx'
-
 import { nanoid } from 'nanoid'
 import { type FC, type ReactNode, useMemo } from 'react'
 
@@ -104,7 +103,7 @@ export type FieldCtorProps<TYPES extends Field = any> = [
    parent: Field | null,
    schema: CSchema<TYPES>,
    initialMountKey: string,
-   serial?: TYPES['$serial'],
+   serial?: TYPES['…serial'],
 ]
 
 export type FieldCtorProps_ALT<TYPES extends Field = any> = [
@@ -114,25 +113,25 @@ export type FieldCtorProps_ALT<TYPES extends Field = any> = [
    parent: Field | null,
    schema: CSchema<any>,
    initialMountKey: string,
-   serial?: TYPES['$serial'],
+   serial?: TYPES['…serial'],
 ]
 
 type PathObject = [string, Maybe<PathObject>]
 
 export interface Field {
-   $type: CATALOG.AllFieldTypes
-   $ownConfig: unknown
-   $ownSerial: unknown
+   ['…type']: CATALOG.AllFieldTypes
+   ['…ownConfig']: unknown
+   ['…ownSerial']: unknown
 
-   $serial: FieldSerialFor<this>
-   $config: FieldConfigFor<this>
+   ['…serial']: FieldSerialFor<this>
+   ['…config']: FieldConfigFor<this>
 
-   $value: unknown
-   $setValue: unknown
-   $unchecked: unknown
-   $child: unknown
-   $opts: unknown
-   $ownPatch: Patch_Common<this['$type']>
+   ['…value']: unknown
+   ['…setvalue']: unknown
+   ['…unchecked']: unknown
+   ['…child']: unknown
+   ['…opts']: unknown
+   ['…ownPatch']: Patch_Common<this['…type']>
 
    $Schema: CSchema<this>
 }
@@ -149,7 +148,7 @@ export abstract class Field {
    readonly _uid: FieldId
 
    /** widget serial is the full serialized representation of that widget  */
-   @observable.ref accessor serial: this['$serial']
+   @observable.ref accessor serial: this['…serial']
 
    /**
     * singleton repository for the project
@@ -181,7 +180,7 @@ export abstract class Field {
    /** schema used to instanciate this widget */
    schema: CSchema<this>
 
-   get opts2(): this['$opts'] {
+   get opts2(): this['…opts'] {
       return this.config.opts!
    }
 
@@ -199,7 +198,7 @@ export abstract class Field {
       /** schema used to instanciate this widget */
       schema: CSchema<any /* ❓ */>,
       initialMountKey: string,
-      serial?: any /* ❓ */, // this['$serial'],
+      serial?: any /* ❓ */, // this['…serial'],
    ) {
       this._uid = mkNewFieldId()
       this.repo = repo
@@ -216,12 +215,12 @@ export abstract class Field {
     * Retrieved by looking in prototype for static `type` attribute.
     * @undecorated
     */
-   get type(): this['$type'] {
+   get type(): this['…type'] {
       return (this.constructor as FieldConstructor<this>).type
    }
 
    /** @undecorated */
-   private get _migrateSerial(): SerialMigrationFunction<this['$serial']> {
+   private get _migrateSerial(): SerialMigrationFunction<this['…serial']> {
       return (this.constructor as FieldConstructor<this>).migrateSerial
    }
 
@@ -229,18 +228,18 @@ export abstract class Field {
     * widget value is the simple/easy-to-use representation of that widget
     * @undecorated
     */
-   abstract value: this['$value']
+   abstract value: this['…value']
 
    // 💬 2024-09-09 rvion:
    // | we can't actually use the following code to share get value() implementation
    // | because of mobx. Mobx force getters and setters to live on the same prototype.
    // |
    // | ```ts
-   // | get value(): K['$value'] {
+   // | get value(): K['…value'] {
    // |     return this.value_or_fail
    // | }
    // |
-   // | set value(_newValue: K['$value']) {
+   // | set value(_newValue: K['…value']) {
    // |     throw new Error(`❌ field_${this.type}.value = ... failed: setter not implemented`)
    // | }
    // | ```
@@ -253,7 +252,7 @@ export abstract class Field {
     * @see {@link value_or_zero}
     * @see {@link value_unchecked}
     */
-   abstract value_or_fail: this['$value']
+   abstract value_or_fail: this['…value']
 
    /**
     * Should do its best to return a value,
@@ -266,11 +265,11 @@ export abstract class Field {
     * @see {@link value_unchecked}
     *
     **/
-   abstract value_or_zero: this['$value']
+   abstract value_or_zero: this['…value']
 
    /**
      * this method
-     *  - Always returns the advertized type (`Field['$unchecked']`).
+     *  - Always returns the advertized type (`Field['…unchecked']`).
      *  - Never crashes
      *
      * @since 2024-09-03
@@ -279,7 +278,7 @@ export abstract class Field {
      * @see {@link value_or_zero}
 
      */
-   abstract value_unchecked: this['$unchecked']
+   abstract value_unchecked: this['…unchecked']
 
    /**
     * Returns true if the given field has the same value as this field
@@ -322,10 +321,10 @@ export abstract class Field {
     * for special cases
     * @undecorated
     */
-   protected generateOwnPatches(referenceField: this): this['$ownPatch'][] {
+   protected generateOwnPatches(referenceField: this): this['…ownPatch'][] {
       if (this.isValueEqual(referenceField)) return []
 
-      return this.patchedSerialPaths.flatMap((serialPath): Patch<this['$type']>[] => {
+      return this.patchedSerialPaths.flatMap((serialPath): Patch<this['…type']>[] => {
          const thisValue = _get(this.serial, serialPath)
          const referenceValue = _get(referenceField.serial, serialPath)
 
@@ -338,7 +337,7 @@ export abstract class Field {
                   fieldType: this.type,
                   fieldPath: this.path,
                   serialPath,
-               } as PatchRemove<this['$type']>,
+               } as PatchRemove<this['…type']>,
             ]
          }
          if (referenceValue === undefined) {
@@ -349,7 +348,7 @@ export abstract class Field {
                   fieldPath: this.path,
                   serialPath,
                   value: thisValue,
-               } as PatchAdd<this['$type'], unknown>,
+               } as PatchAdd<this['…type'], unknown>,
             ]
          }
 
@@ -360,7 +359,7 @@ export abstract class Field {
                fieldPath: this.path,
                serialPath,
                value: thisValue,
-            } as PatchReplace<this['$type'], unknown>,
+            } as PatchReplace<this['…type'], unknown>,
          ]
       })
    }
@@ -369,15 +368,15 @@ export abstract class Field {
     * generic implementation; must be overriden for every non-leaves
     * @undecorated (single action setter inside)
     */
-   set(x: this['$setValue']): this {
-      if (isProbablySomeFieldSerialOf(x, this.type)) this.setSerial(x as this['$serial'])
-      else if ((x as any) instanceof Field) this.setSerial((x as any).serial as this['$serial'])
+   set(x: this['…setvalue']): this {
+      if (isProbablySomeFieldSerialOf(x, this.type)) this.setSerial(x as this['…serial'])
+      else if ((x as any) instanceof Field) this.setSerial((x as any).serial as this['…serial'])
       else this.setValue(x)
       return this
    }
 
    /** @undecorated (pure getter function) */
-   getSetValue(): this['$setValue'] | undefined {
+   getSetValue(): this['…setvalue'] | undefined {
       // console.log(`[💀 getSetValue] `, this.path)
       return this.value
    }
@@ -410,7 +409,7 @@ export abstract class Field {
    }
 
    /** @undecorated (manual runInAction inside) */
-   protected applyOwnPatches(patches: this['$ownPatch'][]): void {
+   protected applyOwnPatches(patches: this['…ownPatch'][]): void {
       if (patches.length === 0) return
       runInAction(() => {
          const nextState = produce(this.serial, (draft) => {
@@ -449,7 +448,7 @@ export abstract class Field {
     * @stability beta
     * @undecorated (base function does nothing)
     */
-   static migrateSerial(serial: Field['$serial']): any {
+   static migrateSerial(serial: Field['…serial']): any {
       return serial
    }
 
@@ -583,7 +582,7 @@ export abstract class Field {
     */
    setSerial(
       /** this serial may be from a previous schema; we need to be able to handle properly */
-      serial: Maybe<this['$serial']>,
+      serial: Maybe<this['…serial']>,
    ): void {
       if (serial === this.serial) return
       this.runInTransaction(() => {
@@ -598,7 +597,7 @@ export abstract class Field {
     * This function can only be called by `setOwnSerialWithValidationAndMigration`
     * which itself can only be called by `init` and `setSerial`
     */
-   protected abstract setOwnSerial(serial: this['$serial']): void
+   protected abstract setOwnSerial(serial: this['…serial']): void
 
    /**
      * contains the list of all serial problems that occured during the last setSerial
@@ -631,7 +630,7 @@ export abstract class Field {
     //    C.2. global via generated zod-or-similar json schema
 
     */
-   setOwnSerialWithValidationAndMigrationAndFixes(serialish: UNVALIDATED<Maybe<this['$serial']>>): {
+   setOwnSerialWithValidationAndMigrationAndFixes(serialish: UNVALIDATED<Maybe<this['…serial']>>): {
       problems: { msg: string; data: any }[]
    } {
       const wasNull = serialish == null
@@ -768,7 +767,7 @@ export abstract class Field {
          return serial
          // TODO
       }
-      const validSerial = ensureValid<this['$serial']>(serial)
+      const validSerial = ensureValid<this['…serial']>(serial)
 
       // #region 9. set the now valid serial
       // 💬 2024-09-11 rvion: at this point, we should be able to guarantee that
@@ -789,7 +788,7 @@ export abstract class Field {
    // }
 
    /** unified api to allow setting serial from value */
-   setValue(val: this['$value']): this {
+   setValue(val: this['…value']): this {
       this.value = val
       return this
    }
@@ -799,7 +798,7 @@ export abstract class Field {
       existingChild: Maybe<Field>
       correctChildSchema: SCHEMA
       /** the target child to clone/apply into child */
-      targetChildSerial: Maybe<SCHEMA['$serial']>
+      targetChildSerial: Maybe<SCHEMA['…serial']>
       /**
        * ONLY CALLED FOR NEW CHILD
        *
@@ -938,12 +937,12 @@ export abstract class Field {
     * shorthand access to schema.config
     * @undecorated (static, no need for mobx)
     */
-   get config(): this['$config'] {
+   get config(): this['…config'] {
       return this.schema.config
    }
 
    /** @undecorated (not an action; pure; defer to single computed) */
-   getValue(mode: VALUE_MODE): this['$value'] | this['$unchecked'] {
+   getValue(mode: VALUE_MODE): this['…value'] | this['…unchecked'] {
       if (mode === 'fail') return this.value_or_fail
       if (mode === 'zero') return this.value_or_zero
       if (mode === 'unchecked') return this.value_unchecked
@@ -1009,7 +1008,7 @@ export abstract class Field {
       return current
    }
 
-   getChildByKey(key: string): Maybe<this['$child']> {
+   getChildByKey(key: string): Maybe<this['…child']> {
       // TODO: more efficient overrides
       return this.childrenAll.find((f) => f.mountKey === key)
    }
@@ -1072,12 +1071,12 @@ export abstract class Field {
    }
 
    /** return a cloned/detached value object you can use anywhere without care */
-   toValueJSON(): this['$value'] {
+   toValueJSON(): this['…value'] {
       return JSON.parse(JSON.stringify(this.value))
    }
 
    /** return a clone/detached serial object you can use anywhere without care */
-   toSerialJSON(): this['$serial'] {
+   toSerialJSON(): this['…serial'] {
       return this.serial // JSON.parse(JSON.stringify(this.serial))
    }
 
@@ -1126,7 +1125,7 @@ export abstract class Field {
     * 🔶 some widget like `WidgetPrompt` would not work with such logic
     * 🔶 some widget like `Optional` have no simple way to retrieve the default value
     */
-   // abstract readonly defaultValue: this['schema']['$value'] |
+   // abstract readonly defaultValue: this['schema']['…value'] |
 
    $FieldSym: typeof $FieldSym = $FieldSym
 
@@ -1198,7 +1197,7 @@ export abstract class Field {
     * You can either return a new value, or patch the initial value
     * use `deleteFieldCustomData` instead to replace the value by null or undefined.
     */
-   updateFieldCustom(fn: (x: Maybe<this['$value']>) => this['custom']): this {
+   updateFieldCustom(fn: (x: Maybe<this['…value']>) => this['custom']): this {
       const prev = this.value
       const next = fn(prev) ?? prev
       return this.patchInTransaction((draft) => {
@@ -1670,7 +1669,7 @@ export abstract class Field {
    /**
     * equivalent to `runInTransaction(() => patchSerial(() => {....}))`
     */
-   patchInTransaction(fn: (draft: this['$serial'], tct: Transaction) => undefined): this {
+   patchInTransaction(fn: (draft: this['…serial'], tct: Transaction) => undefined): this {
       this.runInTransaction((tct) => this.patchSerial((draft) => fn(draft, tct)))
       return this
    }
@@ -1679,7 +1678,7 @@ export abstract class Field {
     * DO NOT OVERRIDE.
     * @internal
     */
-   protected assignNewSerial(next: this['$serial']): void {
+   protected assignNewSerial(next: this['…serial']): void {
       const tct = this.repo.tct
       if (tct == null)
          throw new Error(
@@ -1708,11 +1707,11 @@ export abstract class Field {
     */
    patchSerial(
       //
-      fn: (draft: this['$serial']) => undefined,
+      fn: (draft: this['…serial']) => undefined,
       /*
-       * cowe uld allow K['$serial'] and hand it back to the caller
+       * cowe uld allow K['…serial'] and hand it back to the caller
        * to match immerjs API
-       * | fn: (serial: K['$serial']) => undefined  | K['$serial']
+       * | fn: (serial: K['…serial']) => undefined  | K['…serial']
        */
    ): boolean {
       if (this.repo.tct == null)
@@ -1802,7 +1801,7 @@ export abstract class Field {
    /** this function MUST be called at the end of every widget constructor */
    protected init(
       //
-      serial?: this['$serial'],
+      serial?: this['…serial'],
    ): void {
       // /* 😂 */ console.log(`[🤠] ${getUIDForMemoryStructure(serial)} (field.init)`)
 
@@ -1833,7 +1832,7 @@ export abstract class Field {
       return r.getFieldAt(this.path) as this
    }
 
-   cloneWithConfig(config: Partial<this['$config']>, opts?: WithConfigOptions): this {
+   cloneWithConfig(config: Partial<this['…config']>, opts?: WithConfigOptions): this {
       return this.schema.withConfig(config, opts).create(this.serial) as this
    }
 
@@ -1863,9 +1862,12 @@ export abstract class Field {
          delete draft.snapshot
       })
    }
+   // ['-caht'] = 1; // 🔶
+   // ['/chat'] = 1; // 🔶
+   // ['…chat'] = 1; // 🟢
 
    /** update current field snapshot */
-   saveSnapshot(): this['$serial'] {
+   ['⇓saveSnapshot'](): this['…serial'] {
       const snapshot = produce(this.serial, (draft) => {
          // a bad person would say: "Yo, Dawg; I heard you liked snapshots. So I put a snapshot in your snapshot, so you can snapshot while snapshotting"
          // but it's wrong. we don't want snapshotception.
@@ -1874,9 +1876,6 @@ export abstract class Field {
          // Snapshot.
          delete draft.snapshot
       })
-
-      // delete snapshot.snapshot
-
       this.patchInTransaction((draft) => void (draft.snapshot = snapshot))
       return snapshot
    }

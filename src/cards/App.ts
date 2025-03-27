@@ -37,7 +37,7 @@ export type CustomViewRef<PARAMS> = {
    id: CushyViewID
 }
 
-export type $ExtractFormValueType<FIELDS extends SchemaDict> = { [k in keyof FIELDS]: FIELDS[k]['$value'] }
+export type $ExtractFormValueType<FIELDS extends SchemaDict> = { [k in keyof FIELDS]: FIELDS[k]['…value'] }
 
 export type CustomView<T = any> = {
    preview: (t: T) => ReactNode
@@ -78,8 +78,9 @@ export type App<FIELD extends Field> = {
    run: (
       //
       runtime: Runtime<NoInfer<FIELD>>,
-      formResult: NoInfer<FIELD>['$value'],
+      value: NoInfer<FIELD>['…value'],
       context: DraftExecutionContext,
+      field: NoInfer<FIELD>,
    ) => void | Promise<void>
 
    /** if set to true, will register drafts to quick action in image context menu */

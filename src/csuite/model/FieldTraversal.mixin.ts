@@ -9,7 +9,7 @@ export type TraverseSignal = 'stop' | 'abort' | void
 
 export const TraversalMixinImpl = defineFieldMixin({
    /** @since 2024-10-07 */
-   traverse(
+   ['→traverse'](
       fn: (c: Field) => TraverseSignal,
       p: {
          /** default to depth-first (les memory usage, usually more logical) */
@@ -19,11 +19,11 @@ export const TraversalMixinImpl = defineFieldMixin({
          cover?: 'active' | 'all'
       },
    ): void {
-      if (p.order === 'depth-first' && p.cover === 'active') return this.traverseDepthFirst(fn)
-      if (p.order === 'breadth-first' && p.cover === 'active') return this.traverseBreadthFirst(fn)
-      if (p.order === 'depth-first' && p.cover === 'all') return this.traverseAllDepthFirst(fn)
+      if (p.order === 'depth-first' && p.cover === 'active') return this['→traverseDepthFirst'](fn)
+      if (p.order === 'breadth-first' && p.cover === 'active') return this['→traverseBreadthFirst'](fn)
+      if (p.order === 'depth-first' && p.cover === 'all') return this['→traverseAllDepthFirst'](fn)
       if (p.order === 'breadth-first' && p.cover === 'all') return this.traverseAlltraverseBreadthFirst(fn)
-      return this.traverseDepthFirst(fn)
+      return this['→traverseDepthFirst'](fn)
    },
 
    // 💬 2024-12-04 rvion: legacy non-abortable traversals
@@ -51,7 +51,7 @@ export const TraversalMixinImpl = defineFieldMixin({
    // |  },
 
    /** @since 2024-10-07 */
-   traverseDepthFirst(fn: (c: Field) => TraverseSignal): void {
+   ['→traverseDepthFirst'](fn: (c: Field) => TraverseSignal): void {
       runInAction(() => {
          const stack: Field[] = [this]
 
@@ -73,7 +73,7 @@ export const TraversalMixinImpl = defineFieldMixin({
    },
 
    /** @since 2024-10-07 */
-   traverseAllDepthFirst(fn: (c: Field) => TraverseSignal): void {
+   ['→traverseAllDepthFirst'](fn: (c: Field) => TraverseSignal): void {
       runInAction(() => {
          const stack: Field[] = [this]
 
@@ -95,7 +95,7 @@ export const TraversalMixinImpl = defineFieldMixin({
    },
 
    /** @since 2024-10-07 */
-   traverseBreadthFirst(fn: (c: Field) => TraverseSignal): void {
+   ['→traverseBreadthFirst'](fn: (c: Field) => TraverseSignal): void {
       runInAction(() => {
          const queue: Field[] = [this]
          while (queue.length > 0) {

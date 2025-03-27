@@ -12,7 +12,7 @@ import { CSchema } from './CSchema'
 // 🔴 showcase how nullability work without optional
 
 export type IEnumBuilderOptFn<ENUM_NAME extends keyof Comfy.Slots> = (
-   config?: Omit<Field_enum<Comfy.Slots[ENUM_NAME]>['$config'], 'slotName'> & { startActive?: boolean },
+   config?: Omit<Field_enum<Comfy.Slots[ENUM_NAME]>['…config'], 'slotName'> & { startActive?: boolean },
 ) => Z.Maybe<Z.Enum<ENUM_NAME>>
 
 export type IEnumBuilderOpt = {

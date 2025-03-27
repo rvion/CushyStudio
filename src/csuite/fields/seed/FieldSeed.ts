@@ -13,7 +13,7 @@ import { getGlobalSeeder, type Seeder } from './Seeder'
 type SeedMode = 'randomize' | 'fixed' | 'last'
 
 // #region Config
-export type Field_seed_config = Field_seed['$config']
+export type Field_seed_config = Field_seed['…config']
 type Field_seed_ownConfig = {
    default?: number
    defaultMode?: SeedMode
@@ -23,7 +23,7 @@ type Field_seed_ownConfig = {
 }
 
 // #region Serial
-export type Field_seed_serial = Field_seed['$serial']
+export type Field_seed_serial = Field_seed['…serial']
 type Field_seed_ownSerial = {
    $: 'seed'
    val?: number
@@ -36,15 +36,15 @@ export type Field_seed_unchecked = Field_seed_value | undefined
 
 // #region Types
 export interface Field_seed {
-   $type: 'seed'
-   $ownConfig: Field_seed_ownConfig
-   $ownSerial: Field_seed_ownSerial
-   $value: Field_seed_value
-   $setValue: Field_seed_value
-   $unchecked: Field_seed_unchecked
-   $child: never
-   $opts: unknown
-   $ownPatch: Patch<'seed'>
+   ['…type']: 'seed'
+   ['…ownConfig']: Field_seed_ownConfig
+   ['…ownSerial']: Field_seed_ownSerial
+   ['…value']: Field_seed_value
+   ['…setvalue']: Field_seed_value
+   ['…unchecked']: Field_seed_unchecked
+   ['…child']: never
+   ['…opts']: unknown
+   ['…ownPatch']: Patch<'seed'>
 }
 
 // STATE
@@ -55,9 +55,9 @@ export class Field_seed extends Field {
    static override migrateSerial(): undefined {}
    static readonly codeForTypescriptValue = (config: Field_seed_config): string => 'Z.Seed'
    static generateSerial(
-      value: Maybe<Field_seed['$value']>,
-      config: Field_seed['$config'],
-   ): Field_seed['$serial'] {
+      value: Maybe<Field_seed['…value']>,
+      config: Field_seed['…config'],
+   ): Field_seed['…serial'] {
       if (value == null) return this.unsetSerial
 
       return {

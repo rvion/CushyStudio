@@ -31,7 +31,7 @@ export type FieldStringInputType =
     | 'color'
 
 // #region CONFIG TYPE
-export type Field_string_config = Field_string['$config']
+export type Field_string_config = Field_string['…config']
 type Field_string_ownConfig = {
    /**
     * used:
@@ -69,7 +69,7 @@ type Field_string_ownConfig = {
 }
 
 // #region SERIAL TYPE
-export type Field_string_serial = Field_string['$serial']
+export type Field_string_serial = Field_string['…serial']
 type Field_string_ownSerial = {
    $: 'str'
    value?: string | undefined
@@ -87,28 +87,28 @@ type Field_string_unchecked = Field_string_value | undefined
 
 // #region Field
 export interface Field_string {
-   $type: 'str'
-   $ownConfig: Field_string_ownConfig
-   $ownSerial: Field_string_ownSerial
-   $value: Field_string_value
-   $setValue: Field_string_value
-   $unchecked: Field_string_unchecked
-   $child: never
-   $opts: unknown
-   $ownPatch: Patch<'str'>
+   ['…type']: 'str'
+   ['…ownConfig']: Field_string_ownConfig
+   ['…ownSerial']: Field_string_ownSerial
+   ['…value']: Field_string_value
+   ['…setvalue']: Field_string_value
+   ['…unchecked']: Field_string_unchecked
+   ['…child']: never
+   ['…opts']: unknown
+   ['…ownPatch']: Patch<'str'>
 }
 
 // #region STATE
 export class Field_string extends Field {
    // #region Type
    static readonly type: 'str' = 'str'
-   private static readonly unsetSerial: Field_string['$serial'] = { $: 'str' }
+   private static readonly unsetSerial: Field_string['…serial'] = { $: 'str' }
    static readonly codeForTypescriptValue = (config: Field_string_ownConfig): string => {
       if (config.inputType == null) return 'string'
       if (config.inputType === 'text') return 'string'
       return `Z.FL_string_${config.inputType}`
    }
-   static override migrateSerial(serial: object): Maybe<Field_string['$serial']> | void {
+   static override migrateSerial(serial: object): Maybe<Field_string['…serial']> | void {
       if (isProbablySerialString(serial)) {
          // recover from previous version of string serial
          if ('val' in serial) {
@@ -120,9 +120,9 @@ export class Field_string extends Field {
    }
 
    static generateSerial(
-      value: Maybe<Field_string['$value']>,
-      config: Field_string['$config'],
-   ): Field_string['$serial'] {
+      value: Maybe<Field_string['…value']>,
+      config: Field_string['…config'],
+   ): Field_string['…serial'] {
       if (value == null && config.default == null) return this.unsetSerial
 
       const selectedVal = value ?? (typeof config.default === 'function' ? config.default() : config.default)
@@ -140,7 +140,7 @@ export class Field_string extends Field {
       parent: Field | null,
       schema: CSchema<Field_string>,
       initialMountKey: string,
-      serial?: Field_string['$serial'],
+      serial?: Field_string['…serial'],
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
       this.init(serial)
@@ -148,7 +148,7 @@ export class Field_string extends Field {
 
    // #region SERIAL
    // 🟢
-   protected setOwnSerial(next: Field_string['$serial']): void {
+   protected setOwnSerial(next: Field_string['…serial']): void {
       // 💬 2024-09-10 rvion:
       // | we CAN'T do this:
       // | ```
@@ -179,11 +179,11 @@ export class Field_string extends Field {
    }
 
    // #region VALUE
-   get value(): this['$value'] {
+   get value(): this['…value'] {
       return this.value_or_fail
    }
 
-   set value(next: this['$value'] | undefined) {
+   set value(next: this['…value'] | undefined) {
       // Do we want to add that to implicitly convert non strings to string ?
       // convenient, but can be a source of bugs / unexpected behaviours.
       const nextStrVal = typeof next === 'string' ? next : JSON.stringify(next)

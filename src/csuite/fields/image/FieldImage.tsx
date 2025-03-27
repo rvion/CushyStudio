@@ -39,32 +39,32 @@ export type Field_image_value = MediaImageL
 
 // #region STATE
 export interface Field_image {
-   $type: 'image'
-   $ownConfig: Field_image_ownConfig
-   $ownSerial: Field_image_ownSerial
-   $value: Field_image_value
-   $unchecked: Field_image_value | undefined
+   ['…type']: 'image'
+   ['…ownConfig']: Field_image_ownConfig
+   ['…ownSerial']: Field_image_ownSerial
+   ['…value']: Field_image_value
+   ['…unchecked']: Field_image_value | undefined
    $field: Field_image
-   $child: never
+   ['…child']: never
 }
 export class Field_image extends Field {
    // #region static
    static readonly type: 'image' = 'image'
-   static readonly unsetSerial: Field_image['$serial'] = { $: 'image' }
+   static readonly unsetSerial: Field_image['…serial'] = { $: 'image' }
    public static readonly patchedSerialPaths: readonly string[] = Object.freeze([
       'imageID',
       'imageHash',
       'size',
    ])
    static generateSerial(
-      value: Maybe<Field_image['$value']>,
-      config: Field_image['$config'],
-   ): Field_image['$serial'] {
+      value: Maybe<Field_image['…value']>,
+      config: Field_image['…config'],
+   ): Field_image['…serial'] {
       if (value == null && config.default == null) return this.unsetSerial
       return { $: 'image', imageID: value?.id ?? config.default?.id }
    }
    static migrateSerial(): undefined {}
-   static codeForTypescriptValue(config: Field_image['$config']): string {
+   static codeForTypescriptValue(config: Field_image['…config']): string {
       return `MediaImageL`
    }
 
@@ -75,7 +75,7 @@ export class Field_image extends Field {
       parent: Field | null,
       schema: CSchema<Field_image>,
       initialMountKey: string,
-      serial?: Field_image['$serial'],
+      serial?: Field_image['…serial'],
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
       this.init(serial)
@@ -86,7 +86,7 @@ export class Field_image extends Field {
       return this.serial.imageID != null
    }
 
-   protected setOwnSerial(next: Field_image['$serial']): void {
+   protected setOwnSerial(next: Field_image['…serial']): void {
       // apply default if unset + default in config
       const def = this.config.default
       if (this.serial.imageID == null && def != null) {

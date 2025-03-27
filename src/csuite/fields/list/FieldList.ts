@@ -23,11 +23,11 @@ interface AutoBehaviour<out T extends CSchema> {
    getKey(self: T['$field'], ix: number): string
 
    /** once an item if  */
-   init(key: string /* foo */): T['$value']
+   init(key: string /* foo */): T['…value']
 }
 
 // #region CONFIG
-export type Field_list_config<T extends CSchema> = Field_list<T>['$config']
+export type Field_list_config<T extends CSchema> = Field_list<T>['…config']
 type Field_list_ownConfig<out T extends CSchema> = {
    /**
     * item schema;
@@ -66,18 +66,18 @@ type Field_list_ownConfig<out T extends CSchema> = {
 // #region SERIAL type
 export type Field_list_ItemID = Tagged<string, 'Field_list_ItemID'>
 
-export type Field_list_serial<T extends CSchema> = Field_list<T>['$serial']
+export type Field_list_serial<T extends CSchema> = Field_list<T>['…serial']
 type Field_list_ownSerial<T extends CSchema> = {
    $: 'list'
    /** when undefined, means the list has not be `set` yet */
-   items_?: (T['$serial'] | HOLE)[]
+   items_?: (T['…serial'] | HOLE)[]
    keys?: Field_list_ItemID[]
 }
 
 // #region VALUE type
-export type Field_list_value<T extends CSchema> = T['$value'][]
-export type Field_list_SetValue<T extends CSchema> = T['$setValue'][]
-export type Field_list_unchecked<T extends CSchema> = T['$unchecked'][]
+export type Field_list_value<T extends CSchema> = T['…value'][]
+export type Field_list_SetValue<T extends CSchema> = T['…setvalue'][]
+export type Field_list_unchecked<T extends CSchema> = T['…unchecked'][]
 
 export type Field_list_patch<T extends CSchema> =
    | Field_list_patch_insert<T>
@@ -87,7 +87,7 @@ export type Field_list_patch_insert<T extends CSchema> = Patch_Common<'list'> & 
    op: 'insert'
    order: Field_list_ItemID[]
    key: Field_list_ItemID
-   value: T['$serial']
+   value: T['…serial']
 }
 export type Field_list_patch_remove = Patch_Common<'list'> & {
    op: 'remove'
@@ -108,15 +108,15 @@ export type Field_list_patch_move = Patch_Common<'list'> & {
 
 // #region STATE
 export interface Field_list<T extends CSchema> {
-   $type: 'list'
-   $ownConfig: Field_list_ownConfig<T>
-   $ownSerial: Field_list_ownSerial<T>
-   $value: Field_list_value<T>
-   $setValue: Field_list_SetValue<T>
-   $unchecked: Field_list_unchecked<T>
-   $child: T['$field']
-   $opts: unknown
-   $ownPatch: Field_list_patch<T>
+   ['…type']: 'list'
+   ['…ownConfig']: Field_list_ownConfig<T>
+   ['…ownSerial']: Field_list_ownSerial<T>
+   ['…value']: Field_list_value<T>
+   ['…setvalue']: Field_list_SetValue<T>
+   ['…unchecked']: Field_list_unchecked<T>
+   ['…child']: T['$field']
+   ['…opts']: unknown
+   ['…ownPatch']: Field_list_patch<T>
 }
 export class Field_list<T extends CSchema> extends Field {
    // #region TYPE
@@ -160,7 +160,7 @@ export class Field_list<T extends CSchema> extends Field {
    }
 
    static generateSerial(
-      value: Maybe<Field_list<CSchema>['$value']>,
+      value: Maybe<Field_list<CSchema>['…value']>,
       config: Field_list_config<CSchema>,
    ): Field_list_serial<CSchema> {
       if (value == null && config.defaultLength == null) return this.unsetSerial
@@ -521,19 +521,19 @@ export class Field_list<T extends CSchema> extends Field {
    }
 
    // 🦊 get value_or_fail(): Field_list_value<T> {
-   // 🦊     const x: this['$value'] = new Proxy([], this.makeValueProxy('fail'))
+   // 🦊     const x: this['…value'] = new Proxy([], this.makeValueProxy('fail'))
    // 🦊     Object.defineProperty(this, 'value_or_fail', { value: x })
    // 🦊     return x
    // 🦊 }
 
    // 🦊 get value_or_zero(): Field_list_value<T> {
-   // 🦊     const x: this['$value'] = new Proxy([], this.makeValueProxy('zero'))
+   // 🦊     const x: this['…value'] = new Proxy([], this.makeValueProxy('zero'))
    // 🦊     Object.defineProperty(this, 'value_or_zero', { value: x })
    // 🦊     return x
    // 🦊 }
 
    // 🦊 get value_unchecked(): Field_list_unchecked<T> {
-   // 🦊     const x: this['$unchecked'] = new Proxy([], this.makeValueProxy('unchecked'))
+   // 🦊     const x: this['…unchecked'] = new Proxy([], this.makeValueProxy('unchecked'))
    // 🦊     Object.defineProperty(this, 'value_unchecked', { value: x })
    // 🦊     return x
    // 🦊 }
@@ -629,7 +629,7 @@ export class Field_list<T extends CSchema> extends Field {
       }
    }
 
-   override getSetValue(): this['$setValue'] | undefined {
+   override getSetValue(): this['…setvalue'] | undefined {
       // console.log(`[💀 getSetValue] `, this.path)
       return this.value_set
    }
@@ -671,7 +671,7 @@ export class Field_list<T extends CSchema> extends Field {
     * Appends new elements to the end of an array,
     * and returns the new length of the array.
     */
-   push(...values: T['$setValue'][]): number {
+   push(...values: T['…setvalue'][]): number {
       if (values.length === 0) return this.length
       this.runInTransaction(() => {
          for (const v of values) {
@@ -685,7 +685,7 @@ export class Field_list<T extends CSchema> extends Field {
     * Inserts new elements at the start of an array,
     * and returns the new length of the array.
     */
-   unshift(...values: T['$value'][]): number {
+   unshift(...values: T['…value'][]): number {
       if (values.length === 0) return this.length
       this.runInTransaction(() => {
          for (const v of values) {
@@ -702,9 +702,9 @@ export class Field_list<T extends CSchema> extends Field {
          at?: number
          applyEvenIfAtMaxLen?: boolean
          // value
-         value?: T['$value']
-         valueExt?: T['$setValue']
-         serial?: T['$serial']
+         value?: T['…value']
+         valueExt?: T['…setvalue']
+         serial?: T['…serial']
       } = {},
    ): Maybe<T['$field']> {
       if (p.at != null && p.at < 0) return void console.log(`[🔶] list.addItem: at is negative`)
@@ -874,7 +874,7 @@ export class Field_list<T extends CSchema> extends Field {
       const added = thisMountKeys
          .map((mountKey, ix) => ({
             mountKey,
-            serial: thisSerials[ix] as T['$serial'],
+            serial: thisSerials[ix] as T['…serial'],
          }))
          // It's easier to filter afterwards, because the map function needs the index
          // to get the serial
@@ -974,7 +974,7 @@ export class Field_list<T extends CSchema> extends Field {
                   )
 
                   newMountKeys.splice(indexEstimation, 0, patch.key)
-                  newItems.splice(indexEstimation, 0, patch.value as T['$serial'])
+                  newItems.splice(indexEstimation, 0, patch.value as T['…serial'])
                } else {
                   throw new Error('❌ Field_list.applyOwnPatches: unknown patch')
                }

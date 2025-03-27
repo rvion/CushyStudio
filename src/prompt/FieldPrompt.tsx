@@ -30,7 +30,7 @@ export type Field_prompt_ownConfig = {
 }
 
 // #region Serial from value
-export const Field_prompt_fromValue = (val: Field_prompt_value): Field_prompt['$serial'] => ({
+export const Field_prompt_fromValue = (val: Field_prompt_value): Field_prompt['…serial'] => ({
    $: 'prompt',
    val: val.text,
 })
@@ -48,24 +48,24 @@ export type Field_prompt_unchecked = Field_prompt
 
 // #region State
 export interface Field_prompt {
-   $type: 'prompt'
-   $ownConfig: Field_prompt_ownConfig
-   $ownSerial: Field_prompt_ownSerial
-   $value: Field_prompt_value
-   $unchecked: Field_prompt_value | undefined
+   ['…type']: 'prompt'
+   ['…ownConfig']: Field_prompt_ownConfig
+   ['…ownSerial']: Field_prompt_ownSerial
+   ['…value']: Field_prompt_value
+   ['…unchecked']: Field_prompt_value | undefined
    $field: Field_prompt
-   $child: never
+   ['…child']: never
 }
 export class Field_prompt extends Field {
    // #region types
    static readonly type: 'prompt' = 'prompt'
-   static readonly unsetSerial: Field_prompt['$serial'] = { $: 'prompt' }
+   static readonly unsetSerial: Field_prompt['…serial'] = { $: 'prompt' }
    static codeForTypescriptValue = () => `Field_prompt`
    public static readonly patchedSerialPaths: readonly string[] = Object.freeze(['val'])
    static generateSerial(
-      value: Maybe<Field_prompt['$value']>,
-      config: Field_prompt['$config'],
-   ): Field_prompt['$serial'] {
+      value: Maybe<Field_prompt['…value']>,
+      config: Field_prompt['…config'],
+   ): Field_prompt['…serial'] {
       if (value == null && config.default == null) return this.unsetSerial
       return { $: 'prompt', val: value != null ? value.serial.val : config.default }
    }
@@ -78,7 +78,7 @@ export class Field_prompt extends Field {
       parent: Field | null,
       schema: CSchema<Field_prompt>,
       initialMountKey: string,
-      serial?: Field_prompt['$serial'],
+      serial?: Field_prompt['…serial'],
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
       this.init(serial)
@@ -110,7 +110,7 @@ export class Field_prompt extends Field {
       return (this.serial.val ?? '') !== (this.config.default ?? '')
    }
 
-   protected setOwnSerial(next: Field_prompt['$serial']): void {
+   protected setOwnSerial(next: Field_prompt['…serial']): void {
       // assign default value if not value set but has default value
       if (next.val == null) {
          const def = this.defaultValue
@@ -175,7 +175,7 @@ export class Field_prompt extends Field {
       return this
    }
 
-   override getSetValue(): this['$setValue'] | undefined {
+   override getSetValue(): this['…setvalue'] | undefined {
       // console.log(`[💀 getSetValue] `, this.path)
       return this.serial.val
    }

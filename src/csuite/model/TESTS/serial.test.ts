@@ -23,7 +23,6 @@ describe('assign to value object', () => {
          }),
       })
       const E1 = S1.create()
-
       // VALUE
       expectJSON({
          bool: false,
@@ -81,7 +80,7 @@ describe('assign to value object', () => {
       const E = S.create()
 
       E.value = ['a']
-      const snap1 = E.saveSnapshot() // 💾 1
+      const snap1 = E['⇓saveSnapshot']() // 💾 1
       expect(snap1 === E.serial).toBeFalsy()
       const { snapshot, ...serial } = E.serial
       expectJSON(snap1).toEqual(serial)
@@ -108,11 +107,11 @@ describe('assign to value object', () => {
       const E = S.create()
 
       E.value = ['a']
-      E.saveSnapshot() // 💾 1
+      E['⇓saveSnapshot']() // 💾 1
 
       E.value.push('b')
       E.revertToSnapshot() // ↩️
-      E.saveSnapshot() // 💾 2
+      E['⇓saveSnapshot']() // 💾 2
       expectJSON(E.value).toMatchObject(['a'])
 
       E.value.push('c')
@@ -130,7 +129,6 @@ describe('assign to value object', () => {
 
       E.value = 3
       for (let i = 0; i < 10; ++i) {
-         E.saveSnapshot()
          E.revertToSnapshot()
       }
 
@@ -142,7 +140,7 @@ describe('assign to value object', () => {
       const E = S.create()
 
       E.value = ['a']
-      E.saveSnapshot() // 💾 1
+      E['⇓saveSnapshot']() // 💾 1
 
       E.value = ['b']
       E.revertToSnapshot()

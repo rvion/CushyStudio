@@ -23,7 +23,7 @@ export type Field_matrix_cell = {
 }
 
 // CONFIG
-export type Field_matrix_config = Field_matrix['$config']
+export type Field_matrix_config = Field_matrix['…config']
 type Field_matrix_ownConfig = {
    default?: { row: string; col: string }[]
    rows: string[]
@@ -31,7 +31,7 @@ type Field_matrix_ownConfig = {
 }
 
 // SERIAL
-export type Field_matrix_serial = Field_matrix['$serial']
+export type Field_matrix_serial = Field_matrix['…serial']
 type Field_matrix_ownSerial = {
    $: 'matrix'
    /** only contains cells that are ONs */
@@ -44,15 +44,15 @@ export type Field_matrix_unchecked = Field_matrix_value | undefined
 
 // TYPES
 export interface Field_matrix {
-   $type: 'matrix'
-   $ownConfig: Field_matrix_ownConfig
-   $ownSerial: Field_matrix_ownSerial
-   $value: Field_matrix_value
-   $setValue: Field_matrix_value
-   $unchecked: Field_matrix_unchecked
-   $child: never
-   $opts: unknown
-   $ownPatch: Patch<'matrix'>
+   ['…type']: 'matrix'
+   ['…ownConfig']: Field_matrix_ownConfig
+   ['…ownSerial']: Field_matrix_ownSerial
+   ['…value']: Field_matrix_value
+   ['…setvalue']: Field_matrix_value
+   ['…unchecked']: Field_matrix_unchecked
+   ['…child']: never
+   ['…opts']: unknown
+   ['…ownPatch']: Patch<'matrix'>
 }
 
 // STATE

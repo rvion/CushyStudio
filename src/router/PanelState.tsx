@@ -192,7 +192,7 @@ export class PanelState<PROPS extends object = any> {
          // get or create panel store to hold/persist the entity
          const storeName = `entity-${uid}`
          let store: PanelPersistentStore<any> = this.stores.get(storeName) as PanelPersistentStore<
-            SCHEMA['$serial'] | false
+            SCHEMA['…serial'] | false
          >
          if (store == null) {
             log(`    | creating store (${storeName})`)

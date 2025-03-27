@@ -44,7 +44,7 @@ export const AnomalyMixinImpl = defineFieldMixin({
    hoistAnomalies(): void {
       const basePath = this.path
       const basePathExt = this.pathExt
-      this.traverseAllDepthFirst((x) => {
+      this['→traverseAllDepthFirst']((x) => {
          if (x.serial.anomalies == null) return
          const pathPrefix = x.path.slice(0, basePath.length)
          const pathExtPrefix = x.pathExt.slice(0, basePathExt.length)

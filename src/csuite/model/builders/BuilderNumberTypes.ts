@@ -2,7 +2,7 @@ import { Field_number } from '../../fields/number/FieldNumber'
 import { CSchema } from '../CSchema'
 import { defineSchemaBuilderMixin } from './defineSchemaBuilderMixin'
 
-export type Field_number_config_configured = Omit<Field_number['$config'], 'mode'>
+export type Field_number_config_configured = Omit<Field_number['…config'], 'mode'>
 
 export type BuilderNumberMixin = {
    int_(config?: Field_number_config_configured): Z.Number
@@ -51,7 +51,7 @@ const BuilderNumberImpl = (): BuilderNumberMixin =>
        * [number variant] ratio = mode=float, default=0.5, step=0.01, min=0, max=1, suffix='%',
        * see also: `percent`
        */
-      ratio(config: Omit<Field_number['$config'], 'mode'> = {}): Z.Number {
+      ratio(config: Omit<Field_number['…config'], 'mode'> = {}): Z.Number {
          return CSchema.new<Field_number>(Field_number, {
             mode: 'float',
             default: 0.5,
@@ -71,7 +71,7 @@ const BuilderNumberImpl = (): BuilderNumberMixin =>
       },
    })
 
-function buildNumberSchema(config: Field_number['$config']): Z.Number {
+function buildNumberSchema(config: Field_number['…config']): Z.Number {
    return CSchema.new(Field_number, config)
 }
 

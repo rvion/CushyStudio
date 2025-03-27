@@ -61,11 +61,11 @@ import { EnumListBuilder } from './EnumListBuilder'
 
 /** cushy studio form builder */
 export class CushySchemaBuilder /* implements IBuilder */ {
-   orbit(config: Field_orbit['$config'] = {}): Z.Orbit {
+   orbit(config: Field_orbit['…config'] = {}): Z.Orbit {
       return CSchema.new<Field_orbit>(Field_orbit, config)
    }
 
-   color(config: Field_color['$config'] = {}): Z.Color {
+   color(config: Field_color['…config'] = {}): Z.Color {
       return CSchema.new<Field_color>(Field_color, config)
    }
 
@@ -74,27 +74,27 @@ export class CushySchemaBuilder /* implements IBuilder */ {
    }
 
    /** image field, defaulting to `cushy.defaultImage` if no default provided */
-   image(config: Field_image['$config'] = {}): Z.Image {
+   image(config: Field_image['…config'] = {}): Z.Image {
       const def = config.default ?? cushy.defaultImage
       return this.image_({ default: def, ...config })
    }
 
    /** image field, without any default */
-   image_(config: Field_image['$config'] = {}): Z.Image {
+   image_(config: Field_image['…config'] = {}): Z.Image {
       return CSchema.new<Field_image>(Field_image, config)
    }
 
    /** prompt, defaulting to '' */
-   prompt(config: Field_prompt['$config'] = {}): Z.Prompt {
+   prompt(config: Field_prompt['…config'] = {}): Z.Prompt {
       const def = config.default ?? ''
       return this.prompt_({ default: def, ...config })
    }
 
-   prompt_(config: Field_prompt['$config'] = {}): Z.Prompt {
+   prompt_(config: Field_prompt['…config'] = {}): Z.Prompt {
       return CSchema.new<Field_prompt>(Field_prompt, config)
    }
 
-   remSize(config: Omit<Field_number['$config'], 'mode'> = {}): Z.Number {
+   remSize(config: Omit<Field_number['…config'], 'mode'> = {}): Z.Number {
       return this.number({
          min: 1,
          max: 20,
@@ -105,7 +105,7 @@ export class CushySchemaBuilder /* implements IBuilder */ {
       })
    }
 
-   custom<T>(config: Field_custom<T>['$config']): Z.Custom<T> {
+   custom<T>(config: Field_custom<T>['…config']): Z.Custom<T> {
       return CSchema.new<Field_custom<T>>(Field_custom, config)
    }
 

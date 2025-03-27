@@ -1,24 +1,24 @@
 # ⚖️ LAWS of Fields ⚖️
 
-1. Your custom `get value_or_fail(): K['$value']`
+1. Your custom `get value_or_fail(): K['…value']`
 
    1. Must crash if the value is not set.
    2. Must NOT try to conjure any intented value.
    3. Must **NOT use default value**. default value should be assigned during `setOwnSerial`, only.
 
-2. Your custom `get value_or_zero(): K['$value']`
+2. Your custom `get value_or_zero(): K['…value']`
 
    1. Should do its best to return a value,
    2. must conjuring some valid default value if possible 3. Must **NOT use default value**. default value should be assigned during `setOwnSerial`, only.
    3. must THROW if some `zero` value does not exists or is deemed too dangerous
    4. must NOT return null, unless the type allows you to
 
-3. Your custom `get value_unchecked(): K['$unchecked']`
+3. Your custom `get value_unchecked(): K['…unchecked']`
 
-   1. must always return the advertized type (`Field['$unchecked']`).
+   1. must always return the advertized type (`Field['…unchecked']`).
    2. must never crash
 
-4. Your custom `get value(K['$value']): K['$value']`:
+4. Your custom `get value(K['…value']): K['…value']`:
 
    1. is only required because mobx is prevening us to place it on base class
    2. must just return :
@@ -28,7 +28,7 @@
       }
       ```
 
-5. Your custom `set value(next: K['$value']): void` setter:
+5. Your custom `set value(next: K['…value']): void` setter:
 
    1. must abort early if the value is the same
    2. must **not** call `this.setOwnSerial` directly, but simply patch this.serial

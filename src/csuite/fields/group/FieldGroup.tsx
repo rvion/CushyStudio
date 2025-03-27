@@ -16,7 +16,7 @@ import { capitalize } from '../../utils/capitalize'
 import { registerFieldClass } from '../WidgetUI.DI'
 
 // CONFIG
-export type Field_group_config<T extends SchemaDict> = Field_group<T>['$config']
+export type Field_group_config<T extends SchemaDict> = Field_group<T>['…config']
 type Field_group_ownConfig<T extends SchemaDict> = {
    /**
     * Lambdas allowed only for recursive fields;
@@ -29,14 +29,14 @@ type Field_group_ownConfig<T extends SchemaDict> = {
    items?: T | (() => T)
 
    /** @deprecated; use `toString` instead */
-   summary?: CovariantFn<[items: { [k in keyof T]: T[k]['$value'] }, self: Field_group<T>], string>
+   summary?: CovariantFn<[items: { [k in keyof T]: T[k]['…value'] }, self: Field_group<T>], string>
    // (
    //    //
    // ): string
 
    /** @default @false */
    presetButtons?: boolean
-   default?: T['$value']
+   default?: T['…value']
 
    // 🔶 TODO 1: remove summary from here and move it to the base field config directly
    // 🟢 TODO 2: stop passing values to that function, only pass the field directly
@@ -45,38 +45,38 @@ type Field_group_ownConfig<T extends SchemaDict> = {
 }
 
 // SERIAL
-export type Field_group_serial<T extends SchemaDict> = Field_group<T>['$serial']
+export type Field_group_serial<T extends SchemaDict> = Field_group<T>['…serial']
 type Field_group_ownSerial<T extends SchemaDict> = {
    $: 'group'
    // fix required here; invariant violation!
    // TODO: why is that not optional ? it should be.
-   values_: { [K in keyof T]?: T[K]['$serial'] }
+   values_: { [K in keyof T]?: T[K]['…serial'] }
 }
 
 // VALUE
 export type Field_group_value<T extends SchemaDict> = {
-   [k in keyof T]: T[k]['$value']
+   [k in keyof T]: T[k]['…value']
 }
 
 export type Field_group_SetValue<T extends SchemaDict> = {
-   [k in keyof T]?: T[k]['$setValue']
+   [k in keyof T]?: T[k]['…setvalue']
 }
 
 export type Field_group_unchecked<T extends SchemaDict> = {
-   [k in keyof T]: T[k]['$unchecked']
+   [k in keyof T]: T[k]['…unchecked']
 }
 
 // TYPES
 export interface Field_group<T extends SchemaDict = SchemaDict> {
-   $type: 'group'
-   $ownConfig: Field_group_ownConfig<T>
-   $ownSerial: Field_group_ownSerial<T>
-   $value: Field_group_value<T>
-   $setValue: Field_group_SetValue<T>
-   $unchecked: Field_group_unchecked<T>
-   $child: T[keyof T]['$field']
-   $opts: unknown
-   $ownPatch: Patch<'group'>
+   ['…type']: 'group'
+   ['…ownConfig']: Field_group_ownConfig<T>
+   ['…ownSerial']: Field_group_ownSerial<T>
+   ['…value']: Field_group_value<T>
+   ['…setvalue']: Field_group_SetValue<T>
+   ['…unchecked']: Field_group_unchecked<T>
+   ['…child']: T[keyof T]['$field']
+   ['…opts']: unknown
+   ['…ownPatch']: Patch<'group'>
    // own
    $subfields: T
 }
@@ -122,9 +122,9 @@ export class Field_group<T extends SchemaDict> extends Field {
       return OUT
    }
    static generateSerial(
-      value: Maybe<Field_group<any>['$value']>,
-      config: Field_group<any>['$config'],
-   ): Field_group<any>['$serial'] {
+      value: Maybe<Field_group<any>['…value']>,
+      config: Field_group<any>['…config'],
+   ): Field_group<any>['…serial'] {
       const configItems = typeof config.items === 'function' ? config.items() : config.items
       if (configItems == null) return this.unsetSerial
 
@@ -246,7 +246,7 @@ export class Field_group<T extends SchemaDict> extends Field {
                if (isNew) {
                   const hasDefault = this.config.default != null && fName in this.config.default
                   if (hasDefault) {
-                     child.value = this.config.default![fName as keyof T['$value']]
+                     child.value = this.config.default![fName as keyof T['…value']]
                   }
                }
             },
@@ -314,7 +314,7 @@ export class Field_group<T extends SchemaDict> extends Field {
       return this.set(val)
    }
 
-   override set(x: this['$setValue']): this {
+   override set(x: this['…setvalue']): this {
       this.runInTransaction(() => {
          for (const key in x) {
             const child = this.fields[key]
@@ -443,7 +443,7 @@ export class Field_group<T extends SchemaDict> extends Field {
       }
    }
 
-   override getSetValue(): this['$setValue'] | undefined {
+   override getSetValue(): this['…setvalue'] | undefined {
       // console.log(`[💀 getSetValue] `, this.path)
       return this.value_set
    }

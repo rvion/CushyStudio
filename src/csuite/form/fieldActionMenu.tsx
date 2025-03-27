@@ -74,7 +74,7 @@ export const fieldActionMenu: MenuTemplate<FieldActionMenuProps> = defineMenuTem
             label: 'Save Snapshot',
             icon: IKONS.mdiArrowLeftBox,
             onClick: (): void => {
-               const snap = field.saveSnapshot()
+               const snap = field['⇓saveSnapshot']()
                console.log(JSON.stringify(potatoClone(snap), null, 4))
             },
          }),

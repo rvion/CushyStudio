@@ -197,7 +197,7 @@ export class Runtime<FIELD extends Field = any> {
     * the main value sent to your app as context.
     * Most apps only need this value.
     */
-   formResult!: FIELD['$value']
+   formResult!: FIELD['…value']
 
    /**
     * the extended json form value including internal state
@@ -206,7 +206,7 @@ export class Runtime<FIELD extends Field = any> {
     *      - use the ids for dynamic references
     *      - do something based on if some fields are folded
     * */
-   formSerial!: FIELD['$serial']
+   formSerial!: FIELD['…serial']
 
    /**
     * the live form instance;

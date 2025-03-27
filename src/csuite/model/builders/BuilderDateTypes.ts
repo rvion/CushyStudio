@@ -29,7 +29,7 @@ export type BuilderDateMixin = {
 }
 
 export type Field_date_config_specific<VALUE> = Omit<
-   Field_date<VALUE>['$config'],
+   Field_date<VALUE>['…config'],
    'serialize' | 'deserialize' | 'now' | 'valueToDate' | 'dateToValue' | 'time' | 'codeForTypescriptValue'
 > & { time?: boolean }
 
