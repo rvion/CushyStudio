@@ -97,7 +97,6 @@ export type FL_FieldPathExt = Tagged<string, 'FL_FieldPathExt'>
 export type FL_FieldPath = Tagged<string, 'FL_FieldPath'>
 
 export type FieldCtorProps<TYPES extends Field = any> = [
-   //
    repo: Repository,
    root: Field | null,
    parent: Field | null,
@@ -107,7 +106,6 @@ export type FieldCtorProps<TYPES extends Field = any> = [
 ]
 
 export type FieldCtorProps_ALT<TYPES extends Field = any> = [
-   //
    repo: Repository,
    root: Field | null,
    parent: Field | null,
@@ -132,21 +130,18 @@ type PathObject = [string, Maybe<PathObject>]
  */
 
 export interface Field {
-   ['…type']: CATALOG.AllFieldTypes
-   ['…ownConfig']: unknown
-   ['…ownSerial']: unknown
-
-   ['…serial']: FieldSerialFor<this>
-   ['…config']: FieldConfigFor<this>
-
-   ['…value']: unknown
-   ['…setvalue']: unknown
-   ['…unchecked']: unknown
-   ['…child']: unknown
-   ['…opts']: unknown
-   ['…ownPatch']: Patch_Common<this['…type']>
-
-   $Schema: CSchema<this>
+   '…type': CATALOG.AllFieldTypes
+   '…ownConfig': unknown
+   '…ownSerial': unknown
+   '…serial': FieldSerialFor<this>
+   '…config': FieldConfigFor<this>
+   '…value': unknown
+   '…setvalue': unknown
+   '…unchecked': unknown
+   '…child': unknown
+   '…opts': unknown
+   '…ownPatch': Patch_Common<this['…type']>
+   '…schema': CSchema<this>
 }
 export abstract class Field {
    // 2025-02-11 new addition
@@ -318,7 +313,7 @@ export abstract class Field {
       }
       const ownPatches = this.generateOwnPatches(referenceField)
       patches.push(...ownPatches)
-      patches.push(...this.generateChildrenPatches(referenceField))
+      patches.push(...this.ܮgenerateChildrenPatches(referenceField))
       return patches
    }
 
@@ -398,7 +393,7 @@ export abstract class Field {
     * To be overwritten by subclasses to generate patches for children
     * @undecorated (pure getter)
     */
-   protected generateChildrenPatches(reference: this): Patch_Common[] {
+   protected ܮgenerateChildrenPatches(reference: this): Patch_Common[] {
       return this.childrenAll.flatMap((child) => {
          const referenceChild = reference.getChildByKey(child.mountKey)
 
@@ -411,7 +406,7 @@ export abstract class Field {
    }
 
    /** @undecorated (manual runInAction inside) */
-   public applyPatches(patches: Patch_Common[]): void {
+   public ܮapplyPatches(patches: Patch_Common[]): void {
       const thisPatches = patches.filter(
          (patch) => patch.fieldPath === this.path && patch.fieldType === this.type,
       )
@@ -450,7 +445,7 @@ export abstract class Field {
                (patch) => patch.fieldPath === child.path || patch.fieldPath.startsWith(`${child.path}.`),
             )
             if (childPatches.length > 0) {
-               child.applyPatches(childPatches)
+               child.ܮapplyPatches(childPatches)
             }
          })
       })
@@ -806,7 +801,7 @@ export abstract class Field {
       return this
    }
 
-   RECONCILE<SCHEMA extends CSchema>(p: {
+   ܮRECONCILE<SCHEMA extends CSchema>(p: {
       mountKey: string
       existingChild: Maybe<Field>
       correctChildSchema: SCHEMA
@@ -1593,9 +1588,11 @@ export abstract class Field {
       // | ⚠ props must be added first, to avoid circular references of field
       return <window.RENDERER.Render {...props} field={this} />
    }
-   Render(props: RENDERER.FieldRenderArgs<this> = {}): ReactNode {
-      return this.UI(props)
-   }
+
+   // 👉 use `UI`
+   // | Render(props: RENDERER.FieldRenderArgs<this> = {}): ReactNode {
+   // |    return this.UI(props)
+   // | }
 
    // #region CHILDREN
    /**
@@ -1703,13 +1700,13 @@ export abstract class Field {
       runInAction(() => {
          tct.trackAsUpdated(this)
          this.serial = next
-         this.__version__++
+         // this.__version__++
          this.parent?._acknowledgeNewChildSerial(this.mountKey, this.serial)
       })
    }
 
    /** @undecorated (we really don't need this anymore; legacy stuff; to remove) */
-   __version__: number = 1
+   // __version__: number = 1
 
    /**
     * equivalent to `produce`, followed by `assignNewSerial` (if something did change)
@@ -1874,6 +1871,7 @@ export abstract class Field {
    // ['-caht'] = 1; // 🔶
    // ['/chat'] = 1; // 🔶
    // ['…chat'] = 1; // 🟢
+   // ['ܔchat'] = 1;
    get ['⇓hasSnapshot'](): boolean {
       return this.serial.snapshot != null
    }

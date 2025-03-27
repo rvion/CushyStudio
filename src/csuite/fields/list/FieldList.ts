@@ -434,7 +434,7 @@ export class Field_list<T extends CSchema> extends Field {
 
          const schema = this.schemaAt(ix)
 
-         this.RECONCILE({
+         this.ܮRECONCILE({
             mountKey,
             correctChildSchema: schema,
             existingChild: remainingEntries.find((i) => i.mountKey === mountKey),
@@ -995,7 +995,7 @@ export class Field_list<T extends CSchema> extends Field {
                if (this.items_.find((i) => i.mountKey === patch.key)) return // already exists, weird case
                if (index == -1) throw new Error('❌ Field_list.applyOwnPatches: patch.key not found')
 
-               this.RECONCILE({
+               this.ܮRECONCILE({
                   mountKey: patch.key,
                   correctChildSchema: this.schemaAt(index),
                   existingChild: null,

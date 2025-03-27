@@ -265,7 +265,7 @@ describe('field number', () => {
 
          const patches = E1.generatePatches(E2)
 
-         E2.applyPatches(patches)
+         E2.ܮapplyPatches(patches)
 
          expect(E2.value).toBe(8)
       })

@@ -223,7 +223,7 @@ export class Field_optional<out T extends CSchema = CSchema> extends Field {
 
    /** must always be run within a runInTransaction */
    private __initializeChild(targetChildSerial: Maybe<T['…serial']>): void {
-      this.RECONCILE({
+      this.ܮRECONCILE({
          mountKey: 'child',
          existingChild: this.child,
          correctChildSchema: this.config.schema,

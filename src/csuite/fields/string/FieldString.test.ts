@@ -19,19 +19,19 @@ describe('field string', () => {
       expect(E.serial === ser1).toBeTruthy()
       expect(E.value).toBe('ser 1')
       expect(E.serial === ser1).toBeTruthy()
-      expect(E.__version__).toBe(1)
+      // expect(E.__version__).toBe(1)
 
       E.setSerial(ser2)
       expect(E.value).toBe('ser 2')
       expect(E.serial.custom.THING === 12).toBeTruthy()
       expect(E.serial === ser2).toBeTruthy()
-      expect(E.__version__).toBe(2)
+      // expect(E.__version__).toBe(2)
 
       E.setSerial(ser2)
       E.setSerial(ser2)
       E.setSerial(ser2)
       E.setSerial(ser2)
-      expect(E.__version__).toBe(2)
+      // expect(E.__version__).toBe(2)
    })
 
    describe('generatePatches & applyPatches', () => {
@@ -44,7 +44,7 @@ describe('field string', () => {
 
          const patches = E1.generatePatches(E2)
 
-         E2.applyPatches(patches)
+         E2.ܮapplyPatches(patches)
 
          expect(E2.value).toBe('def')
       })

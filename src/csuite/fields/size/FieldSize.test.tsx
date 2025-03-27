@@ -27,7 +27,7 @@ describe('FieldSize', () => {
 
          const patches = E1.generatePatches(E2)
 
-         E2.applyPatches(patches)
+         E2.ܮapplyPatches(patches)
 
          expect(E2.width).toBe(1024)
          expect(E2.height).toBe(683)

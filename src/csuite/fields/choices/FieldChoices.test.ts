@@ -450,7 +450,7 @@ describe('FieldChoices', () => {
             field2.value = { b: 'ok' }
 
             const patches = field1.generatePatches(field2)
-            field2.applyPatches(patches)
+            field2.ܮapplyPatches(patches)
 
             expectJSON(field2.value).toEqual({ a: 'ok' })
          })
@@ -484,7 +484,7 @@ describe('FieldChoices', () => {
                bar: 'bar2',
             })
 
-            field2.applyPatches(patches)
+            field2.ܮapplyPatches(patches)
             expectJSON(field2.value).toEqual({
                foo: 'foo1',
                bar: 'bar2',
@@ -510,7 +510,7 @@ describe('FieldChoices', () => {
 
             const patches = field1.generatePatches(field2)
 
-            field2.applyPatches(patches)
+            field2.ܮapplyPatches(patches)
             expectJSON(field2.value).toEqual({
                foo: 'foo',
                bar: 'bar',
@@ -536,7 +536,7 @@ describe('FieldChoices', () => {
 
             const patches = field1.generatePatches(field2)
 
-            field2.applyPatches(patches)
+            field2.ܮapplyPatches(patches)
             expectJSON(field2.value).toEqual({
                foo: 'foo',
             })

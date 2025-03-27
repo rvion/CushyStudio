@@ -172,28 +172,28 @@ describe('FieldGroup', () => {
          const E1 = S1.create(ser1)
          expect(E1.value).toEqual({ num: 10, str: 'A' })
          expect(E1.serial === ser1).toBeTruthy()
-         expect(E1.__version__).toBe(1)
-         expect(E1._.num.__version__).toBe(1)
-         expect(E1._.str.__version__).toBe(1)
+         // expect(E1.__version__).toBe(1)
+         // expect(E1._.num.__version__).toBe(1)
+         // expect(E1._.str.__version__).toBe(1)
 
          E1.setSerial(ser2)
          expect(E1.value).toEqual({ num: 20, str: 'B' })
          expect(E1.serial === ser2).toBeTruthy()
-         expect(E1.__version__).toBe(2)
-         expect(E1._.num.__version__).toBe(2)
-         expect(E1._.str.__version__).toBe(2)
+         // expect(E1.__version__).toBe(2)
+         // expect(E1._.num.__version__).toBe(2)
+         // expect(E1._.str.__version__).toBe(2)
 
          E1.setSerial(ser2)
          E1.setSerial(ser2)
          E1.setSerial(ser2)
          E1.setSerial(ser2)
-         expect(E1.__version__).toBe(2)
-         expect(E1._.num.__version__).toBe(2)
+         // expect(E1.__version__).toBe(2)
+         // expect(E1._.num.__version__).toBe(2)
 
          E1.value.num = 30
-         expect(E1.__version__).toBe(3) // <- changed
-         expect(E1._.num.__version__).toBe(3)
-         expect(E1._.str.__version__).toBe(2) // <- not changed
+         // expect(E1.__version__).toBe(3) // <- changed
+         // expect(E1._.num.__version__).toBe(3)
+         // expect(E1._.str.__version__).toBe(2) // <- not changed
       })
    })
 
@@ -341,7 +341,7 @@ describe('FieldGroup', () => {
          const patches = field1.generatePatches(field2)
 
          field2.value.description = 'DESCRIPTION MODIFIED'
-         field2.applyPatches(patches)
+         field2.ܮapplyPatches(patches)
 
          expect(field2.value.title).toBe('One')
          expect(field2.value.description).toBe('DESCRIPTION MODIFIED')

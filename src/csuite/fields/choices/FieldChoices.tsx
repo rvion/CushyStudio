@@ -545,7 +545,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
                   draft.branches[branch] = true
                })
                // ...and reconcile
-               this.RECONCILE({
+               this.ܮRECONCILE({
                   mountKey: branch,
                   correctChildSchema: bang(this.getSchemaForBranch(branch)),
                   existingChild: this._[branch],
@@ -571,7 +571,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
                   draft.branches[branch] = true
                })
                // and reconcile
-               this.RECONCILE({
+               this.ܮRECONCILE({
                   mountKey: branch,
                   correctChildSchema: bang(schema),
                   existingChild: this._[branch],
@@ -796,7 +796,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
             }
          }
 
-         this.RECONCILE({
+         this.ܮRECONCILE({
             mountKey: branchName,
             correctChildSchema: schema,
             existingChild: this._[branchName],

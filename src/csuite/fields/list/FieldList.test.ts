@@ -584,7 +584,7 @@ describe('FieldList', () => {
                },
             ])
 
-            field2.applyPatches(patches)
+            field2.ܮapplyPatches(patches)
             expectJSON(field2.value).toEqual(['One', 'Four', 'Three'])
             expect(field2.serial.keys).toEqual(field1.serial.keys as any)
             expect(field2.serial.items_).toEqual(field1.serial.items_ as any)
@@ -611,7 +611,7 @@ describe('FieldList', () => {
             ])
 
             field2.value[0] = 'MODIFIED'
-            field2.applyPatches(patches)
+            field2.ܮapplyPatches(patches)
             expectJSON(field2.value).toEqual(['MODIFIED', 'PATCHED', 'Three'])
          })
 
@@ -636,7 +636,7 @@ describe('FieldList', () => {
             ])
 
             field2.push('INSERTED')
-            field2.applyPatches(patches)
+            field2.ܮapplyPatches(patches)
             expectJSON(field2.value).toEqual(['One', 'PATCHED', 'Three', 'INSERTED'])
          })
 
@@ -661,7 +661,7 @@ describe('FieldList', () => {
             ])
 
             field2.removeItemAt(1)
-            field2.applyPatches(patches)
+            field2.ܮapplyPatches(patches)
             expectJSON(field2.value).toEqual(['One', 'Three'])
          })
       })
@@ -678,7 +678,7 @@ describe('FieldList', () => {
 
                const patches = field1.generatePatches(field2) as Field_list_patch<Z.String>[]
 
-               field2.applyPatches(patches)
+               field2.ܮapplyPatches(patches)
                expectJSON(field2.value as any[]).toEqual(['One', 'Two', 'Three', 'ADDED'])
                expect(field2.serial.keys).toEqual(field1.serial.keys as any)
                expect(field2.serial.items_).toEqual(field1.serial.items_ as any)
@@ -714,7 +714,7 @@ describe('FieldList', () => {
                const patches = field1.generatePatches(field2) as Field_list_patch<Z.String>[]
 
                field2.push('INSERTED')
-               field2.applyPatches(patches)
+               field2.ܮapplyPatches(patches)
                expectJSON(field2.value).toEqual(['One', 'INSERTED', 'NEW ELEMENT'])
 
                expect(patches).toEqual([
@@ -752,7 +752,7 @@ describe('FieldList', () => {
                const patches = field1.generatePatches(field2)
 
                // But applying the patch to field1
-               field1.applyPatches(patches)
+               field1.ܮapplyPatches(patches)
 
                expectJSON(field1.value).toEqual(['One', 'Two', 'Three', 'ADDED'])
                expect(field1.serial).toEqual({
@@ -779,7 +779,7 @@ describe('FieldList', () => {
 
                const patches = field1.generatePatches(field2)
 
-               field2.applyPatches(patches)
+               field2.ܮapplyPatches(patches)
                expectJSON(field2.value).toEqual(['One', 'NEW ELEMENT', 'Two', 'Three'])
                expect(field2.serial.keys).toEqual(field1.serial.keys as any)
                expect(field2.serial.items_).toEqual(field1.serial.items_ as any)
@@ -798,7 +798,7 @@ describe('FieldList', () => {
                const patches = field1.generatePatches(field2)
 
                field2.removeItemAt(0)
-               field2.applyPatches(patches)
+               field2.ܮapplyPatches(patches)
 
                expectJSON(field2.value as string[]).toEqual(['NEW ELEMENT', 'Two'])
                expect(field2.serial.keys as any[]).toEqual([
@@ -820,7 +820,7 @@ describe('FieldList', () => {
                const patches = field1.generatePatches(field2)
 
                field2.removeItemAt(1)
-               field2.applyPatches(patches)
+               field2.ܮapplyPatches(patches)
 
                expectJSON(field2.value).toEqual(['One', 'NEW ELEMENT'])
                expect(field2.serial.keys as any[]).toEqual([

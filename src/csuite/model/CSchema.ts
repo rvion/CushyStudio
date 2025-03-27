@@ -33,13 +33,13 @@ import { getGlobalRepository, type Repository } from './Repository'
 
 declare global {
    namespace CSuite {
-      export interface CSchemaExtensions<$ extends { $Schema: CSchema<any> }> {}
+      export interface CSchemaExtensions<$ extends { ['…schema']: CSchema<any> }> {}
    }
 }
 
 // export interface CSchema<out FIELD extends Field = Field>
 export interface CSchema<out FIELD extends Field = Field>
-   extends CSuite.CSchemaExtensions<{ $Schema: CSchema<FIELD> }> {
+   extends CSuite.CSchemaExtensions<{ ['…schema']: CSchema<FIELD> }> {
    $field: FIELD
    ['…type']: FIELD['…type']
    ['…ownConfig']: FIELD['…ownConfig']

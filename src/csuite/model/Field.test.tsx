@@ -179,7 +179,7 @@ describe('Field', () => {
                },
             ]
 
-            field.applyPatches(patches)
+            field.ܮapplyPatches(patches)
 
             expect(field.value).toBe('def')
          })
@@ -198,7 +198,7 @@ describe('Field', () => {
                },
             ]
 
-            field.applyPatches(patches)
+            field.ܮapplyPatches(patches)
 
             expect(field.value).toBe('abc')
          })
@@ -218,7 +218,7 @@ describe('Field', () => {
                },
             ]
 
-            field.applyPatches(patches)
+            field.ܮapplyPatches(patches)
 
             expect(field.serial.value).toBeUndefined()
          })
@@ -239,7 +239,7 @@ describe('Field', () => {
                },
             ]
 
-            field.applyPatches(patches)
+            field.ܮapplyPatches(patches)
 
             expect(field.value).toBe('def')
          })
@@ -261,7 +261,7 @@ describe('Field', () => {
 
             field.value = 'ghi'
 
-            field.applyPatches(patches)
+            field.ܮapplyPatches(patches)
 
             expect(field.value).toBe('def')
          })

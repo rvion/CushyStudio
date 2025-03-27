@@ -161,7 +161,7 @@ describe('FieldSelectMany', () => {
             },
          ])
 
-         E2.applyPatches(patches)
+         E2.ܮapplyPatches(patches)
 
          expectJSON(E2.value).toEqual(['b', 'c'])
       })

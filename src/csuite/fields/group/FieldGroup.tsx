@@ -235,7 +235,7 @@ export class Field_group<T extends SchemaDict> extends Field {
          // reconcile can yield different serial during setSerial; both for
          // - new child (e.g. running migration),
          // - old child (e.g. default value beeing added in setOwnSerial)
-         this.RECONCILE({
+         this.ܮRECONCILE({
             mountKey: fName,
             existingChild: this.fields[fName],
             correctChildSchema: fSchema,

@@ -65,7 +65,7 @@ describe('FieldOptional', () => {
 
          const patches = E1.generatePatches(E2)
 
-         E2.applyPatches(patches)
+         E2.ܮapplyPatches(patches)
 
          expect(E2.isActive).toBe(false)
       })
@@ -79,7 +79,7 @@ describe('FieldOptional', () => {
 
          const patches = E1.generatePatches(E2)
 
-         E2.applyPatches(patches)
+         E2.ܮapplyPatches(patches)
 
          expect(E2.isActive).toBe(true)
          expect(E2.value).toBe(8)
@@ -95,7 +95,7 @@ describe('FieldOptional', () => {
 
          const patches = E1.generatePatches(E2)
 
-         E2.applyPatches(patches)
+         E2.ܮapplyPatches(patches)
 
          expect(E2.value).toBe(8)
       })
@@ -158,7 +158,7 @@ describe('FieldOptional', () => {
          it('should create the field and use the serial without patching it', () => {
             const patchSerial = vitest.spyOn(Field_optional.prototype, 'patchSerial')
             const S = b.number_().optional()
-            const serial: Field_optional_serial<Field_number['$Schema']> = {
+            const serial: Field_optional_serial<Field_number['…schema']> = {
                $: 'optional',
                y: { $: 'number', value: 42 },
             }
