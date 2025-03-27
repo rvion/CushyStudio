@@ -70,7 +70,7 @@ export class Field_color extends Field {
          if (def != null) next = produce(next, (draft) => void (draft.value = def))
       }
 
-      this.assignNewSerial(next)
+      this.ܮassignNewSerial(next)
    }
 
    get isOwnSet(): boolean {
@@ -83,7 +83,7 @@ export class Field_color extends Field {
 
    set value(next: Field_color_value) {
       if (this.serial.value === next) return
-      this.runInTransaction(() => this.patchSerial((draft) => void (draft.value = next)))
+      this.ܮrunInTransaction(() => this.patchSerial((draft) => void (draft.value = next)))
    }
 
    get value_or_fail(): Field_color_value {

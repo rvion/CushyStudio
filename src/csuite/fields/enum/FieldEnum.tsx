@@ -134,7 +134,7 @@ export class Field_enum<O extends ComfyUnionValue> extends Field {
       //     next?.val ?? //
       //     _extractDefaultValue(this.config) ??
       //     (this.possibleValues[0] as any)
-      this.assignNewSerial(next)
+      this.ܮassignNewSerial(next)
    }
 
    get status(): CleanedEnumResult<any> {
@@ -148,7 +148,7 @@ export class Field_enum<O extends ComfyUnionValue> extends Field {
 
    set value(next: Field_enum_value<O>) {
       if (this.serial.val === next) return
-      this.patchInTransaction((draft) => void (draft.val = next))
+      this.ܮpatchInTransaction((draft) => void (draft.val = next))
    }
 
    get value_or_fail(): Field_enum_value<O> {

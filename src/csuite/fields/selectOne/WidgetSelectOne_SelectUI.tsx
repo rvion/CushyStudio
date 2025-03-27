@@ -53,14 +53,14 @@ export const WidgetSelectOne_SelectUI = obs(function WidgetSelectOne_SelectUI_<
                field.canBeToggledWithinParent
                   ? (): void => {
                        field.disableSelfWithinParent()
-                       field.touch()
+                       field.ܒtouch()
                        p.selectProps?.onCleared?.()
                     }
                   : undefined
             }
             onOptionToggled={(option) => {
                console.log(`[🤠] option`, option, field.selectedId, option?.id === field.selectedId)
-               field.touch()
+               field.ܒtouch()
                if (option == null || field.selectedId === option.id) return field.unset()
                field.selectedId = option.id
             }}
@@ -68,7 +68,7 @@ export const WidgetSelectOne_SelectUI = obs(function WidgetSelectOne_SelectUI_<
             revealProps={{
                ...p.selectProps?.revealProps,
                onHidden: (reason) => {
-                  field.touch()
+                  field.ܒtouch()
                   p.selectProps?.revealProps?.onHidden?.(reason)
                },
             }}

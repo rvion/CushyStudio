@@ -27,7 +27,7 @@ export const WidgetString_TextareaInput = obs(function WidgetString_TextareaBody
             onChange={(ev) => {
                field.value = ev.target.value
             }}
-            onBlur={() => field.touch()}
+            onBlur={() => field.ܒtouch()}
          />
       </Frame>
    )

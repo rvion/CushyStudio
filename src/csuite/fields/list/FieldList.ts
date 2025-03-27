@@ -293,7 +293,7 @@ export class Field_list<T extends CSchema> extends Field {
       const disposeFn = reaction(
          () => auto.keys(this),
          (keys: string[]) => {
-            this.runInTransaction(() => {
+            this.ܮrunInTransaction(() => {
                // 1. Add missing entries
                const currentKeys: string[] = this.items_.map((i, ix) => auto.getKey(i, ix))
                const missingKeys: string[] = keys.filter((k) => !currentKeys.includes(k))
@@ -341,7 +341,7 @@ export class Field_list<T extends CSchema> extends Field {
       return this.items_.map((i) => i.getValue(mode))
    }
 
-   override _acknowledgeNewChildSerial(
+   override ܮacknowledgeNewChildSerial(
       //
       mountKey: Field_list_ItemID,
       nextChildSerial: any,
@@ -385,7 +385,7 @@ export class Field_list<T extends CSchema> extends Field {
 
          // 2. ASSIGN SERIAL
 
-         this.assignNewSerial(next)
+         this.ܮassignNewSerial(next)
 
          if (!this.config.auto) {
             const defaultLength = this.config.defaultLength // clamp_or_null(this.config.defaultLength, this.config.min, this.config.max)
@@ -421,7 +421,7 @@ export class Field_list<T extends CSchema> extends Field {
       this.items_.length = 0
       this.items_.push(...remainingEntries)
 
-      this.assignNewSerial(next)
+      this.ܮassignNewSerial(next)
 
       // Add new elements
       for (let ix = 0; ix < nextItems.length; ix++) {
@@ -543,7 +543,7 @@ export class Field_list<T extends CSchema> extends Field {
    }
 
    set value(val: Field_list_value<T>) {
-      this.runInTransaction(() => {
+      this.ܮrunInTransaction(() => {
          for (let i = 0; i < val.length; i++) {
             // 1. replace existing items
             if (i < this.items_.length) this.items_[i]!.value = val[i]
@@ -558,7 +558,7 @@ export class Field_list<T extends CSchema> extends Field {
    // some kind of basic keyed reconciliation.
    // I really want to do better; should be super cheap and will avoid days of crying and/or waiting later.
    override set(x: Field_list_SetValue<T>): this {
-      this.runInTransaction(() => {
+      this.ܮrunInTransaction(() => {
          for (let i = 0; i < x.length; i++) {
             // 1. replace existing items
             if (i < this.items_.length) this.items_[i]!.set(x[i])
@@ -673,7 +673,7 @@ export class Field_list<T extends CSchema> extends Field {
     */
    push(...values: T['…setvalue'][]): number {
       if (values.length === 0) return this.length
-      this.runInTransaction(() => {
+      this.ܮrunInTransaction(() => {
          for (const v of values) {
             this.addItem({ valueExt: v })
          }
@@ -687,7 +687,7 @@ export class Field_list<T extends CSchema> extends Field {
     */
    unshift(...values: T['…value'][]): number {
       if (values.length === 0) return this.length
-      this.runInTransaction(() => {
+      this.ܮrunInTransaction(() => {
          for (const v of values) {
             this.addItem({ value: v, at: 0 })
          }
@@ -713,7 +713,7 @@ export class Field_list<T extends CSchema> extends Field {
       if (!Boolean(p.applyEvenIfAtMaxLen) && this.config.max != null && this.items_.length >= this.config.max)
          return void console.log(`[🔶] list.addItem: list is already at max length`)
 
-      return this.runInTransaction(() => {
+      return this.ܮrunInTransaction(() => {
          const itemId = Field_list.generateId()
          const at: number = p.at ?? this.items_.length
          this.patchSerial((draft) => {
@@ -753,7 +753,7 @@ export class Field_list<T extends CSchema> extends Field {
 
       // serials
 
-      this.runInTransaction(() => {
+      this.ܮrunInTransaction(() => {
          this.patchSerial((draft) => {
             const items = draft.items_
             const mountKeys = draft.keys
@@ -787,7 +787,7 @@ export class Field_list<T extends CSchema> extends Field {
       if (deleteCount === 0) return []
       if (start >= this.length) return []
       let deleted: T['$field'][] = []
-      this.runInTransaction(() => {
+      this.ܮrunInTransaction(() => {
          // remove from serial
          this.patchSerial((draft) => {
             const mountKeys = draft.keys
@@ -924,7 +924,7 @@ export class Field_list<T extends CSchema> extends Field {
    protected override applyOwnPatches(patches: Field_list_patch<T>[]): void {
       if (patches.length === 0) return
 
-      this.runInTransaction(() => {
+      this.ܮrunInTransaction(() => {
          this.patchSerial((draft) => {
             patches.forEach((patch) => {
                const thisMountKeys = draft.keys

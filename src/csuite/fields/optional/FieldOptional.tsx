@@ -205,7 +205,7 @@ export class Field_optional<out T extends CSchema = CSchema> extends Field {
       // > 3.1 EITHER (when unset): apply default (with reconcile if need be)
       // > 2.3.    OR (when set)  : just reconcile
 
-      this.assignNewSerial(next)
+      this.ܮassignNewSerial(next)
 
       // when is not set
       const startActive = this.config.startActive
@@ -281,7 +281,7 @@ export class Field_optional<out T extends CSchema = CSchema> extends Field {
       return this.isActive ? this.child : null
    }
 
-   override _acknowledgeNewChildSerial(mountKey: string, childSerial: any): boolean {
+   override ܮacknowledgeNewChildSerial(mountKey: string, childSerial: any): boolean {
       if (mountKey !== 'child') throw new Error(`❌ invalid mountKey (${mountKey} for serial)`)
       if (this.isActive && this.serial.y === childSerial) return false
       if (!this.isActive && this.serial.n === childSerial) return false
@@ -396,7 +396,7 @@ export class Field_optional<out T extends CSchema = CSchema> extends Field {
    // #region Setters
    setActive(value: boolean): void {
       if (this.isActive === value) return
-      this.runInTransaction(() => {
+      this.ܮrunInTransaction(() => {
          this.patchSerial((draft) => {
             if (value) {
                draft.y = this.child.serial

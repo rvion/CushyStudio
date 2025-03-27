@@ -104,7 +104,7 @@ export class Field_number extends Field {
          if (!isNaN(parsed)) next = produce(next, (draft) => void (draft.value = parsed))
       }
       // assign given serial (or default one)
-      this.assignNewSerial(next)
+      this.ܮassignNewSerial(next)
    }
 
    readonly forceSnap: boolean = false
@@ -178,7 +178,7 @@ export class Field_number extends Field {
          }
       }
 
-      this.patchInTransaction((draft, tct) => {
+      this.ܮpatchInTransaction((draft, tct) => {
          draft.value = next
       })
    }

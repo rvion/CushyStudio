@@ -46,7 +46,7 @@ export const WidgetSelectMany_SelectUI = obs(function WidgetSelectMany_SelectUI_
                if (selectOption == null) return field.unset()
 
                field.toggleId(selectOption.id)
-               field.touch()
+               field.ܒtouch()
             }}
             onCleared={
                p.field.canBeToggledWithinParent &&
@@ -55,7 +55,7 @@ export const WidgetSelectMany_SelectUI = obs(function WidgetSelectMany_SelectUI_
                !p.field.parent?.config.readonly
                   ? (): void => {
                        p.field.disableSelfWithinParent()
-                       field.touch()
+                       field.ܒtouch()
                        p.selectProps?.onCleared?.()
                     }
                   : null
@@ -65,7 +65,7 @@ export const WidgetSelectMany_SelectUI = obs(function WidgetSelectMany_SelectUI_
             revealProps={{
                ...p.selectProps?.revealProps,
                onHidden: (reason) => {
-                  field.touch()
+                  field.ܒtouch()
                   p.selectProps?.revealProps?.onHidden?.(reason)
                },
             }}
@@ -78,9 +78,9 @@ export const WidgetSelectMany_SelectUI = obs(function WidgetSelectMany_SelectUI_
                value={p.field.wrap}
                onValueChange={(next) => {
                   p.field.wrap = next
-                  p.field.touch()
+                  p.field.ܒtouch()
                }}
-               onBlur={() => p.field.touch()}
+               onBlur={() => p.field.ܒtouch()}
                toggleGroup={p.field._uid}
             />
          )}

@@ -28,9 +28,9 @@ export const WidgetSelectMany_TabUI = obs(function WidgetSelectMany_TabUI_<VALUE
                      text={option.label ?? makeLabelFromPrimitiveValue(option.id)}
                      onValueChange={(value) => {
                         if (value != isSelected) field.toggleId(option.id)
-                        field.touch()
+                        field.ܒtouch()
                      }}
-                     onBlur={() => field.touch()}
+                     onBlur={() => field.ܒtouch()}
                      toggleGroup={p.field._uid}
                   />
                )
@@ -49,9 +49,9 @@ export const WidgetSelectMany_TabUI = obs(function WidgetSelectMany_TabUI_<VALUE
                      text={makeLabelFromPrimitiveValue(missingId)}
                      onValueChange={(value) => {
                         field.toggleId(missingId)
-                        field.touch()
+                        field.ܒtouch()
                      }}
-                     onBlur={() => field.touch()}
+                     onBlur={() => field.ܒtouch()}
                      toggleGroup={p.field._uid}
                   />
                ))}

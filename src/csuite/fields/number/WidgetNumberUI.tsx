@@ -27,7 +27,7 @@ export const WidgetNumberUI = obs(function WidgetNumberUI_(p: {
          onValueChange={(next) => {
             field.value = next
          }}
-         onBlur={() => field.touch()}
+         onBlur={() => field.ܒtouch()}
          forceSnap={finalConfig.forceSnap}
       />
    )

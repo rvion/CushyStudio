@@ -228,7 +228,7 @@ export class Field_group<T extends SchemaDict> extends Field {
       }
 
       // 2. ASSIGN SERIAL
-      this.assignNewSerial(next)
+      this.ܮassignNewSerial(next)
 
       // 3. RECONCILE CHILDREN
       for (const [fName, fSchema] of this._fieldSchemas) {
@@ -266,7 +266,7 @@ export class Field_group<T extends SchemaDict> extends Field {
       return this.fields
    }
 
-   override _acknowledgeNewChildSerial(mountKey: string, newChildSerial: any): boolean {
+   override ܮacknowledgeNewChildSerial(mountKey: string, newChildSerial: any): boolean {
       // fast path: abort when exactly the same
       if (this.serial.values_[mountKey] === newChildSerial) return false
       // console.log(`[🤠] ACK`, getUIDForMemoryStructure(newChildSerial), getUIDForMemoryStructure(this.serial), this.serial)
@@ -315,7 +315,7 @@ export class Field_group<T extends SchemaDict> extends Field {
    }
 
    override set(x: this['…setvalue']): this {
-      this.runInTransaction(() => {
+      this.ܮrunInTransaction(() => {
          for (const key in x) {
             const child = this.fields[key]
             if (child == null) {
@@ -333,7 +333,7 @@ export class Field_group<T extends SchemaDict> extends Field {
    }
 
    set value(val: Field_group_value<T>) {
-      this.runInTransaction(() => {
+      this.ܮrunInTransaction(() => {
          for (const key in val) {
             const child = this.fields[key]
             if (child == null) {

@@ -102,7 +102,7 @@ describe('model links', () => {
          deleteCount: 0, //      = (serial only incremented when value identical)
       })
 
-      e.runInTransaction(() => {
+      e.ܮrunInTransaction(() => {
          e.value.int = 5
          e.value.int = 7
          e.value.int = 6

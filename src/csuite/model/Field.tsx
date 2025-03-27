@@ -124,6 +124,11 @@ type PathObject = [string, Maybe<PathObject>]
  *
  * - <space> -> really good to hide stuff from completions
  * - ܮ = internal
+ *
+ * - ܐ =
+ * - ܒ = touchy stuff
+ * - ܡ =
+ *
  * - …  = type only
  * - ⇓  = snapshot related => should move into mixin
  * - →  = traversal mixin
@@ -172,14 +177,6 @@ export abstract class Field {
     */
    readonly root: Field
 
-   /**
-    * alias to root; since that's what `document` is.
-    * @undecorated (static as of 2025-02-06)
-    */
-   get document(): Field {
-      return this.root
-   }
-
    private _symField = Symbol.for('Field')
 
    /** parent field, (null when root) */
@@ -215,7 +212,7 @@ export abstract class Field {
       this.schema = schema
       this.serial = serial ?? this.schema.defaultSerial
       this.mountKey = initialMountKey
-      this.parent?._acknowledgeNewChildSerial(initialMountKey, this.serial)
+      this.parent?.ܮacknowledgeNewChildSerial(initialMountKey, this.serial)
    }
 
    /**
@@ -516,7 +513,7 @@ export abstract class Field {
     * @undecorated (this.repo.runInTransaction already wrapped in runInAction)
     */
    disposeTree(): void {
-      this.runInTransaction((tct) => this._disposeTree(tct))
+      this.ܮrunInTransaction((tct) => this._disposeTree(tct))
    }
 
    /**
@@ -593,7 +590,7 @@ export abstract class Field {
       serial: Maybe<this['…serial']>,
    ): void {
       if (serial === this.serial) return
-      this.runInTransaction(() => {
+      this.ܮrunInTransaction(() => {
          // this.copyCommonSerialFields(serial)
          this.setOwnSerialWithValidationAndMigrationAndFixes(serial)
       })
@@ -1030,7 +1027,7 @@ export abstract class Field {
 
    /** collapse all children that can be collapsed */
    collapseAllChildren(): void {
-      this.runInTransaction(() => {
+      this.ܮrunInTransaction(() => {
          for (const _item of this.childrenAll) {
             // this allow to make sure we fold though optionals and similar constructs
             const item = _item.actualWidgetToDisplay
@@ -1047,7 +1044,7 @@ export abstract class Field {
 
    /** expand all children that can are collapsed */
    expandAllChildren(): void {
-      this.runInTransaction(() => {
+      this.ܮrunInTransaction(() => {
          for (const _item of this.childrenAll) {
             // this allow to make sure we fold though optionals and similar constructs
             const item = _item.actualWidgetToDisplay
@@ -1074,7 +1071,7 @@ export abstract class Field {
    reset(): void {
       runInAction(() => {
          this.setSerial(null)
-         this.touched = false
+         this.ܒtouched = false
       })
    }
 
@@ -1091,37 +1088,42 @@ export abstract class Field {
    /** every child class must implement change detection from its default  */
    abstract readonly hasChanges: boolean
 
-   @observable private accessor touched_: boolean = false
+   @observable private accessor ܒtouched_: boolean = false
 
    /** true when the field contains unsaved changes */
-   get touched(): boolean {
-      return this.touched_
+   get ܒtouched(): boolean {
+      return this.ܒtouched_
    }
 
-   set touched(val: boolean) {
+   set ܒtouched(val: boolean) {
       runInAction(() => {
-         if (val === true && this.touched_ !== val && this.parent !== this && this.parent != null) {
-            this.parent.touched = true
+         if (
+            val === true && //
+            this.ܒtouched_ !== val &&
+            this.parent !== this &&
+            this.parent != null
+         ) {
+            this.parent.ܒtouched = true
          }
 
-         this.touched_ = val
+         this.ܒtouched_ = val
       })
    }
    /**
     * Identical to field.touched = true but easier to use when field is nullable
     */
-   touch(): void {
+   ܒtouch(): void {
       runInAction(() => {
-         this.touched = true
+         this.ܒtouched = true
       })
    }
 
-   touchAll(): void {
+   ܒtouchAll(): void {
       runInAction(() => {
-         if (this.childrenAll.length === 0) this.touched = true
+         if (this.childrenAll.length === 0) this.ܒtouched = true
 
          for (const child of this.childrenAll) {
-            child.touchAll()
+            child.ܒtouchAll()
          }
       })
    }
@@ -1135,13 +1137,13 @@ export abstract class Field {
     */
    // abstract readonly defaultValue: this['schema']['…value'] |
 
-   $FieldSym: typeof FieldSym = FieldSym
+   private $FieldSym: typeof FieldSym = FieldSym // DO NOT REMOVE
 
    /**
     * when this widget or one of its descendant publishes a value,
     * it will be stored here and possibly consumed by other descendants
     */
-   @observable accessor _advertisedValues: Record<ChannelId, any> = {}
+   @observable accessor ܮadvertisedValues: Record<ChannelId, any> = {}
 
    /**
     * when reading a publication, we will walk up the parent chain
@@ -1151,8 +1153,8 @@ export abstract class Field {
       const channelId = typeof chan === 'string' ? chan : chan.id
       let at = this as any as Field | null
       while (at != null) {
-         if (channelId in at._advertisedValues) {
-            return at._advertisedValues[channelId]
+         if (channelId in at.ܮadvertisedValues) {
+            return at.ܮadvertisedValues[channelId]
          }
          at = at.parent
       }
@@ -1208,7 +1210,7 @@ export abstract class Field {
    updateFieldCustom(fn: (x: Maybe<this['…value']>) => this['custom']): this {
       const prev = this.value
       const next = fn(prev) ?? prev
-      return this.patchInTransaction((draft) => {
+      return this.ܮpatchInTransaction((draft) => {
          // 💬 2024-09-17 rvion:
          // | I'll assume that the custom data is already serializable...
          // | still wrong, but probably a bit less dangerous than naive deep-cloning it.
@@ -1219,7 +1221,7 @@ export abstract class Field {
 
    /** delete field custom data (delete this.serial.custom)  */
    deleteFieldCustomData(): this {
-      return this.patchInTransaction((draft) => {
+      return this.ܮpatchInTransaction((draft) => {
          delete draft.custom
       })
    }
@@ -1236,7 +1238,7 @@ export abstract class Field {
     * @category Validation
     */
    validate(): Result<this, ValidationError> {
-      this.touched = true
+      this.ܒtouched = true
       if (!this.isValid)
          return __ERROR(
             new ValidationError(
@@ -1256,7 +1258,7 @@ export abstract class Field {
     * @see {@link validationOrThrow}
     */
    validateOrNull(): Maybe<this> {
-      this.touched = true
+      this.ܒtouched = true
       if (!this.isValid) return null
       return this
    }
@@ -1300,7 +1302,7 @@ export abstract class Field {
    get mustDisplayErrors(): boolean {
       return this.hasOwnErrors && !this.isInsideDisabledBranch
       return this.hasOwnErrors
-      return this.hasOwnErrors && this.touched
+      return this.hasOwnErrors && this.ܒtouched
    }
    /**
     * all own errors:
@@ -1478,7 +1480,7 @@ export abstract class Field {
       for (const publication of publications) {
          const channelId = typeof publication.chan === 'string' ? publication.chan : publication.chan.id
          if (publication.hoist) producedValues[channelId] = publication.produce(this)
-         else this._advertisedValues[channelId] = publication.produce(this)
+         else this.ܮadvertisedValues[channelId] = publication.produce(this)
          // console.log(`[🪈] ${channelId} | ${this.path} is publishing`)
       }
       runInAction(() => {
@@ -1486,7 +1488,7 @@ export abstract class Field {
          if (Object.keys(producedValues).length > 0) {
             let at = this as any as Field | null
             while (at != null) {
-               Object.assign(at._advertisedValues, producedValues)
+               Object.assign(at.ܮadvertisedValues, producedValues)
                at = at.parent
             }
          }
@@ -1515,14 +1517,14 @@ export abstract class Field {
    /** @undecorated (single child action)  */
    setCollapsed(val?: boolean): void {
       if (this.serial.collapsed === val) return
-      this.patchInTransaction((draft) => {
+      this.ܮpatchInTransaction((draft) => {
          draft.collapsed = val
       })
    }
 
    /** @undecorated (single child action)  */
    toggleCollapsed(this: Field): void {
-      this.patchInTransaction((draft) => {
+      this.ܮpatchInTransaction((draft) => {
          draft.collapsed = !draft.collapsed
       })
    }
@@ -1672,15 +1674,15 @@ export abstract class Field {
     * proxy this.repo.action
     * defined to shorted call and allow per-field override
     */
-   runInTransaction<T>(fn: (tct: Transaction) => T): T {
+   ܮrunInTransaction<T>(fn: (tct: Transaction) => T): T {
       return this.repo.runInTransaction(fn)
    }
 
    /**
     * equivalent to `runInTransaction(() => patchSerial(() => {....}))`
     */
-   patchInTransaction(fn: (draft: this['…serial'], tct: Transaction) => undefined): this {
-      this.runInTransaction((tct) => this.patchSerial((draft) => fn(draft, tct)))
+   ܮpatchInTransaction(fn: (draft: this['…serial'], tct: Transaction) => undefined): this {
+      this.ܮrunInTransaction((tct) => this.patchSerial((draft) => fn(draft, tct)))
       return this
    }
 
@@ -1688,7 +1690,7 @@ export abstract class Field {
     * DO NOT OVERRIDE.
     * @internal
     */
-   protected assignNewSerial(next: this['…serial']): void {
+   protected ܮassignNewSerial(next: this['…serial']): void {
       const tct = this.repo.tct
       if (tct == null)
          throw new Error(
@@ -1701,7 +1703,7 @@ export abstract class Field {
          tct.trackAsUpdated(this)
          this.serial = next
          // this.__version__++
-         this.parent?._acknowledgeNewChildSerial(this.mountKey, this.serial)
+         this.parent?.ܮacknowledgeNewChildSerial(this.mountKey, this.serial)
       })
    }
 
@@ -1738,7 +1740,7 @@ export abstract class Field {
       if (!stateChanged) return false // patch function did nothing; we can safely abort
 
       // otherwise, assign serial to current field, and bubble upwards to the document rot
-      this.assignNewSerial(nextState)
+      this.ܮassignNewSerial(nextState)
       return true
    }
 
@@ -1749,7 +1751,7 @@ export abstract class Field {
     *
     * (this method needs a true implementation in every field that use RECONCILE)
     */
-   _acknowledgeNewChildSerial(mountKey: string, serial: any): boolean {
+   protected ܮacknowledgeNewChildSerial(mountKey: string, serial: any): boolean {
       throw new Error(`🔴 _acknowledgeNewChildSerial not implemented (${this.pathExt})`)
    }
 
@@ -1774,7 +1776,7 @@ export abstract class Field {
       return x
    }
 
-   private _hasBeenInitialized: boolean = false
+   private ܮhasBeenInitialized: boolean = false
 
    /** this function MUST be called at the end of every widget constructor */
    protected init(
@@ -1784,12 +1786,12 @@ export abstract class Field {
       // /* 😂 */ console.log(`[🤠] ${getUIDForMemoryStructure(serial)} (field.init)`)
 
       // 1. ensure field hasn't been initialized yet
-      if (this._hasBeenInitialized)
+      if (this.ܮhasBeenInitialized)
          return console.error(`[🔶] Field.init has already been called => ABORTING`)
-      this._hasBeenInitialized = true
+      this.ܮhasBeenInitialized = true
 
       // 2. ...
-      this.runInTransaction((tct) => {
+      this.ܮrunInTransaction((tct) => {
          // this.copyCommonSerialFields(serial)
          this.repo._registerField(this, tct)
 
@@ -1832,7 +1834,7 @@ export abstract class Field {
    }
 
    ['⇓deleteSnapshot'](): void {
-      this.patchInTransaction((draft) => {
+      this.ܮpatchInTransaction((draft) => {
          delete draft.snapshot
       })
    }
@@ -1854,7 +1856,7 @@ export abstract class Field {
          // Snapshot.
          delete draft.snapshot
       })
-      this.patchInTransaction((draft) => void (draft.snapshot = snapshot))
+      this.ܮpatchInTransaction((draft) => void (draft.snapshot = snapshot))
       return snapshot
    }
 
@@ -1909,7 +1911,7 @@ export abstract class Field {
    onSaveChanges(fn: () => Promise<void> | void): void { this._extraSaveChangesFunction.push(fn) } // prettier-ignore
    public async saveChanges(): Promise<void> {
       for (const fn of this._extraSaveChangesFunction) await fn()
-      this.touched = false
+      this.ܒtouched = false
    }
 
    /**

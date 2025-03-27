@@ -113,7 +113,7 @@ export class Field_bool extends Field {
          if (def != null) next = produce(next, (draft) => void (draft.value = def))
       }
 
-      this.assignNewSerial(next)
+      this.ܮassignNewSerial(next)
    }
 
    // #region CHILDREN
@@ -124,7 +124,7 @@ export class Field_bool extends Field {
 
    set value(next: Field_bool_value) {
       if (this.serial.value === next) return
-      this.runInTransaction(() => this.patchSerial((serial) => void (serial.value = next)))
+      this.ܮrunInTransaction(() => this.patchSerial((serial) => void (serial.value = next)))
    }
 
    get value_or_fail(): Field_bool_value {

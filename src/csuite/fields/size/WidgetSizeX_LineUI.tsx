@@ -35,12 +35,12 @@ export const WidgetSizeX_LineUI = obs(function WidgetSize_LineUI_(p: {
                hideSlider
                onValueChange={(next) => {
                   uist.setWidth(next)
-                  uist.touch()
+                  uist.ܒtouch()
                }}
                forceSnap={true}
                text='Width'
                suffix='px'
-               onBlur={() => uist.touch()}
+               onBlur={() => uist.ܒtouch()}
             />
             <InputNumberUI
                //
@@ -52,12 +52,12 @@ export const WidgetSizeX_LineUI = obs(function WidgetSize_LineUI_(p: {
                value={uist.height_or_zero}
                onValueChange={(next) => {
                   uist.setHeight(next)
-                  uist.touch()
+                  uist.ܒtouch()
                }}
                forceSnap={true}
                text='Height'
                suffix='px'
-               onBlur={() => uist.touch()}
+               onBlur={() => uist.ܒtouch()}
             />
             {/* <Button onClick={uist.flip} icon={ratioIcon} style={{ border: 'none', borderRadius: '0px' }} /> */}
             {/* <div tw='h-full' style={{ width: '1px' }} /> */}

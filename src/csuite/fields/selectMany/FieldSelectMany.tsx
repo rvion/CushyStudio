@@ -235,7 +235,7 @@ export class Field_selectMany<
    }
 
    set query(next: string) {
-      this.runInTransaction(() => {
+      this.ܮrunInTransaction(() => {
          this.patchSerial((draft) => void (draft.query = next))
       })
    }
@@ -321,7 +321,7 @@ export class Field_selectMany<
    }
 
    protected setOwnSerial(next: Field_selectMany_serial<KEY>): void {
-      this.assignNewSerial(next)
+      this.ܮassignNewSerial(next)
 
       if (this.serial.values == null) {
          const def = this.defaultKeys
@@ -344,7 +344,7 @@ export class Field_selectMany<
    private _removeExistingKey(key: KEY): void {
       const values = this.serial.values
       if (values == null) return
-      this.runInTransaction(() =>
+      this.ܮrunInTransaction(() =>
          this.patchSerial((draft) => {
             draft.values = values.filter((k) => k !== key) // filter just in case of duplicate
          }),
@@ -364,7 +364,7 @@ export class Field_selectMany<
       this._addNewKey(key)
    }
    private _addNewKey(key: KEY): void {
-      this.runInTransaction(() =>
+      this.ܮrunInTransaction(() =>
          this.patchSerial((draft) => {
             draft.values ??= [] // adding a new key means we're being set
             draft.values.push(key)
@@ -420,7 +420,7 @@ export class Field_selectMany<
     * @since 2024-09-03
     */
    pushValue(...values: VALUE[]): void {
-      this.runInTransaction(() => {
+      this.ܮrunInTransaction(() => {
          for (const value of values) {
             this.addValue(value)
          }
@@ -516,7 +516,7 @@ export class Field_selectMany<
                   this.addKey(newKey)
                } else if (prevKey != null) {
                   if (prevKey === newKey) return false // nothing to do
-                  this.runInTransaction(() => {
+                  this.ܮrunInTransaction(() => {
                      this.removeKey(prevKey)
                      this.addKey(newKey)
                   })
@@ -540,7 +540,7 @@ export class Field_selectMany<
 
    /** different from reset; doesn't take default into account */
    unset(): void {
-      this.runInTransaction(() => {
+      this.ܮrunInTransaction(() => {
          this.patchSerial((draft) => void (draft.values = undefined))
       })
    }
@@ -561,7 +561,7 @@ export class Field_selectMany<
       )
          return
 
-      this.runInTransaction(() => {
+      this.ܮrunInTransaction(() => {
          this.patchSerial((draft) => void (draft.values = [...nextKeys]))
 
          // 2024-07-08 rvion:

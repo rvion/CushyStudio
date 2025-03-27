@@ -87,7 +87,7 @@ export class Field_custom<T> extends Field {
          }
       }
 
-      this.assignNewSerial(next)
+      this.ܮassignNewSerial(next)
    }
 
    // #region UI
@@ -131,7 +131,7 @@ export class Field_custom<T> extends Field {
 
    set value(next: Field_custom_value<T>) {
       if (this.serial.value === next) return
-      this.runInTransaction(() => (this.serial.value = next))
+      this.ܮrunInTransaction(() => (this.serial.value = next))
    }
 
    get value_or_fail(): Field_custom_value<T> {

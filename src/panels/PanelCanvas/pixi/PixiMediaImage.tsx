@@ -102,7 +102,7 @@ class XXX {
       const snappedX = snapToGrid ? Math.round(nextXInWorld / snapToGrid) * snapToGrid : nextXInWorld
       const snappedY = snapToGrid ? Math.round(nextYInWorld / snapToGrid) * snapToGrid : nextYInWorld
 
-      this.placement.runInTransaction(() => {
+      this.placement.ܮrunInTransaction(() => {
          this.placement.X.value = snappedX
          this.placement.Y.value = snappedY
       })

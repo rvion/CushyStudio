@@ -22,10 +22,10 @@ export const WidgetBoolUI = obs(function WidgetBoolUI_(p: { field: Field_bool })
             text={field.config.text ?? field.config.label2}
             // value
             value={field.value_or_zero}
-            onBlur={() => field.touch()}
+            onBlur={() => field.ܒtouch()}
             onValueChange={(value) => {
                field.value = value
-               p.field.touch()
+               p.field.ܒtouch()
             }}
             toggleGroup={field._uid}
          />

@@ -455,7 +455,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
       return Object.entries(this._).map(([key, field]) => ({ key, field }))
    }
 
-   override _acknowledgeNewChildSerial(mountKey: keyof T & string, childSerial: any): boolean {
+   override ܮacknowledgeNewChildSerial(mountKey: keyof T & string, childSerial: any): boolean {
       if (this.serial.values?.[mountKey] === childSerial) return false
 
       return this.patchSerial((draft) => {
@@ -532,7 +532,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
             })
          }
 
-         this.assignNewSerial(next)
+         this.ܮassignNewSerial(next)
 
          // if field is not set, and field has default => apply default
          if (next.branches == null) {
@@ -600,7 +600,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
    }
 
    override set(val: Field_choices_SetValue<T>): this {
-      this.runInTransaction(() => {
+      this.ܮrunInTransaction(() => {
          for (const branch of this.allPossibleChoices) {
             this._setBranchTo(branch, val[branch])
          }
@@ -614,7 +614,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
       }
       // case 2. branch should be ENABLED
       else {
-         this.runInTransaction(() => {
+         this.ܮrunInTransaction(() => {
             // 2.1. enable branch if disabled
             if (this.isBranchDisabled(branch)) this.enableBranch(branch)
 
@@ -625,7 +625,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
    }
 
    set value(val: Field_choices_value<T>) {
-      this.runInTransaction(() => {
+      this.ܮrunInTransaction(() => {
          for (const branch of this.allPossibleChoices) {
             this._setBranchValue(branch, val[branch])
          }
@@ -762,7 +762,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
       if (!this._[branch]) {
          return // console.info(`❌ Branch "${branch}" not enabled`)
       }
-      this.runInTransaction(() => {
+      this.ܮrunInTransaction(() => {
          // remove children
          const prevChild = this._[branch]
          if (prevChild) prevChild.disposeTree()
@@ -786,7 +786,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
          return this._[branchName]
       }
 
-      this.runInTransaction(() => {
+      this.ܮrunInTransaction(() => {
          const schema = this.getSchemaForBranch(branchName)
          if (schema == null) return null
 
@@ -974,7 +974,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
    protected override applyOwnPatches(patches: Field_choices_patch<T>[]): void {
       if (patches.length === 0) return
 
-      this.runInTransaction(() => {
+      this.ܮrunInTransaction(() => {
          patches.forEach((patch) => {
             if (isEnablePatch(patch)) {
                const activeChild = this.getChildIfActive(patch.branch)

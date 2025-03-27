@@ -95,7 +95,7 @@ export class Field_image extends Field {
          })
       }
 
-      this.assignNewSerial(next)
+      this.ܮassignNewSerial(next)
    }
 
    // #region UI
@@ -132,7 +132,7 @@ export class Field_image extends Field {
 
    set value(next: MediaImageL) {
       if (this.serial.imageID === next.id) return
-      this.runInTransaction(() => {
+      this.ܮrunInTransaction(() => {
          this.patchSerial((draft) => {
             draft.imageID = next.id
          })
@@ -171,7 +171,7 @@ export class Field_image extends Field {
    }
 
    set size(val: number) {
-      this.runInTransaction(() => {
+      this.ܮrunInTransaction(() => {
          this.patchSerial((serial) => {
             if (val === this._defaultPreviewSize) delete serial.size
             else serial.size = val

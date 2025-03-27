@@ -145,7 +145,7 @@ export class Field_size extends Field {
       }
 
       // 2. ASSIGN SERIAL
-      this.assignNewSerial(next)
+      this.ܮassignNewSerial(next)
 
       // 3. RECONCILE CHILDREN
       // (primitive field; no children)
@@ -192,12 +192,12 @@ export class Field_size extends Field {
 
    set width(next: number) {
       if (next === this.serial.width) return
-      this.runInTransaction(() => void this.patchSerial((draft) => void (draft.width = next)))
+      this.ܮrunInTransaction(() => void this.patchSerial((draft) => void (draft.width = next)))
    }
 
    set height(next: number) {
       if (next === this.serial.height) return
-      this.runInTransaction(() => void this.patchSerial((draft) => void (draft.height = next)))
+      this.ܮrunInTransaction(() => void this.patchSerial((draft) => void (draft.height = next)))
    }
 
    setWidth(width: number): void {
@@ -229,7 +229,7 @@ export class Field_size extends Field {
       ) {
          return
       }
-      this.runInTransaction(() => {
+      this.ܮrunInTransaction(() => {
          this.patchSerial((draft) => {
             Object.assign(draft, val)
          })
@@ -287,7 +287,7 @@ export class Field_size extends Field {
    /** flip width and height */
    flip(): void {
       if (this.width === this.height) return
-      this.runInTransaction(() => {
+      this.ܮrunInTransaction(() => {
          const prevWidth = this.width
          this.width = this.height
          this.height = prevWidth

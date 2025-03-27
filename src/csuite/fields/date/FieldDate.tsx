@@ -116,7 +116,7 @@ export class Field_date<out VALUE> extends Field {
             })
       }
 
-      this.assignNewSerial(next)
+      this.ܮassignNewSerial(next)
 
       const raw = this.serial.value
       let deserialized: Field_date_value<VALUE> | null | undefined = null
@@ -151,7 +151,7 @@ export class Field_date<out VALUE> extends Field {
 
       this.selectedValue_ = nextValue
       this.stringValue_ = null
-      this.runInTransaction(() => {
+      this.ܮrunInTransaction(() => {
          this.patchSerial((draft) => {
             draft.value = nextValue != null ? this.config.serialize(nextValue) : null
          })
@@ -265,7 +265,7 @@ export class Field_date<out VALUE> extends Field {
          nextValue = !this.stringValue_ ? null : this.parse(this.stringValue_)
       } catch (e) {
          this.selectedValue_ = null
-         this.runInTransaction(() => {
+         this.ܮrunInTransaction(() => {
             this.patchSerial((draft) => {
                draft.value = this.stringValue_ || null
             })

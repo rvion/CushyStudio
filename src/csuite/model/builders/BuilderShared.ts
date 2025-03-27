@@ -88,7 +88,7 @@ const BuilderSharedImpl = (): BuilderSharedMixin =>
                ;(root as any)[key] = field
                // 4.2. add a new change callback to keep its serial synced
                field.onSerialChanges((x: Field) => {
-                  root.patchInTransaction((rootNext) => {
+                  root.ܮpatchInTransaction((rootNext) => {
                      rootNext._shared ??= {}
                      rootNext._shared[uid] = x.serial
                   })

@@ -77,7 +77,7 @@ describe('FieldGroup', () => {
       })
 
       const __serial = undefined // { $: 'group', values_: { num: { $: 'number' }, str: { $: 'str' } } }
-      const _acknowledgeNewChildSerial = vitest.spyOn(Field_group.prototype, '_acknowledgeNewChildSerial')
+      const _acknowledgeNewChildSerial = vitest.spyOn(Field_group.prototype, 'ܮacknowledgeNewChildSerial')
       const E1 = S1.create(__serial)
       expect(E1._.num.serial).toEqual({ $: 'number' })
       expect(E1.serial).toEqual({

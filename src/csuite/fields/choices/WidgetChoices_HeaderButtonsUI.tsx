@@ -36,7 +36,7 @@ export const WidgetChoices_HeaderButtonsUI = obs(function WidgetChoices_HeaderBu
                      if (value != isSelected) {
                         field.toggleBranch(c.key)
                      }
-                     p.field.touch()
+                     p.field.ܒtouch()
                   }}
                />
             )
@@ -52,7 +52,7 @@ export const WidgetChoices_HeaderButtonsUI = obs(function WidgetChoices_HeaderBu
                disabled={!isActive}
                onClick={() => {
                   p.field.disableSelfWithinParent()
-                  p.field.touch()
+                  p.field.ܒtouch()
                }}
             />
          )}

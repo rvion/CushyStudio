@@ -19,7 +19,7 @@ export const ErrorMessage = obs(function ErrorMessage_(p: { problem: Problem }) 
 /** default error block */
 export const WidgetErrorsUI = obs(function WidgerErrorsUI_(p: { field: Field }) {
    const field = p.field
-   if (!field.hasOwnErrors || !field.touched) return null
+   if (!field.hasOwnErrors || !field.ܒtouched) return null
    return (
       <Frame tw={['text-red-700', field.type === 'group' ? 'mt-4' : '']} noColorStuff>
          {/* {field.pathExt} */}

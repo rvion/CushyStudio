@@ -39,11 +39,11 @@ export const WidgetList_BodyUI = obs(function WidgetList_BodyUI_<T extends CSche
                               icon={IKONS.mdiDeleteOutline}
                               onClick={(ev) => {
                                  listField.removeItem(subField)
-                                 listField.touch()
+                                 listField.ܒtouch()
                                  ev.preventDefault()
                                  ev.stopPropagation()
                               }}
-                              onBlur={() => listField.touch()}
+                              onBlur={() => listField.ܒtouch()}
                            />
                         )
                      }

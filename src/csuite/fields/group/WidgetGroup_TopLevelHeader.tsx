@@ -29,7 +29,7 @@ export const WidgetGroup_LineUI = obs(function WidgetGroup_LineUI_(p: { field: F
                onClick={(ev) => {
                   preset.apply(field)
                   ev.stopPropagation()
-                  field.touch()
+                  field.ܒtouch()
                }}
                children={preset.label}
             />
@@ -47,7 +47,7 @@ export const WidgetGroup_LineUI = obs(function WidgetGroup_LineUI_(p: { field: F
                disabled={!field.hasFoldableSubfieldsThatAreFolded}
                onClick={() => {
                   p.field.expandAllChildren()
-                  field.touch()
+                  field.ܒtouch()
                }}
             />
 
@@ -59,7 +59,7 @@ export const WidgetGroup_LineUI = obs(function WidgetGroup_LineUI_(p: { field: F
                disabled={!field.hasFoldableSubfieldsThatAreUnfolded}
                onClick={() => {
                   p.field.collapseAllChildren()
-                  field.touch()
+                  field.ܒtouch()
                }}
             />
          </div>,

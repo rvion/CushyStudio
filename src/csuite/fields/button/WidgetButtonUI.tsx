@@ -23,7 +23,7 @@ export const WidgetButtonUI = obs(function WidgetButtonUI_<K extends any>(p: {
             runInAction(() => {
                p.onClick?.()
                p.field.toggle()
-               p.field.touch()
+               p.field.ܒtouch()
             })
          }
       >

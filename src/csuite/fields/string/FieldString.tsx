@@ -172,7 +172,7 @@ export class Field_string extends Field {
       // 2. ASSIGN
       // assign given serial (or default one)
       // this.serial = next
-      this.assignNewSerial(next)
+      this.ܮassignNewSerial(next)
 
       // 3. RECONCILIATION
       // N.A.
@@ -193,7 +193,7 @@ export class Field_string extends Field {
       if (this.serial.value === normalized) return
 
       // patch value in serial
-      this.runInTransaction(() => {
+      this.ܮrunInTransaction(() => {
          this.patchSerial((serial) => void (serial.value = normalized))
       })
    }

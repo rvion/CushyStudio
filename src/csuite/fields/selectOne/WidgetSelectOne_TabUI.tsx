@@ -38,9 +38,9 @@ export const WidgetSelectOne_TabUI = obs(function WidgetSelectOne_TabUI_<VALUE, 
                   onValueChange={(value: boolean) => {
                      if (value === isSelected) return
                      field.selectedId = c.id
-                     field.touch()
+                     field.ܒtouch()
                   }}
-                  onBlur={() => field.touch()}
+                  onBlur={() => field.ܒtouch()}
                   toggleGroup={p.field._uid}
                />
             )

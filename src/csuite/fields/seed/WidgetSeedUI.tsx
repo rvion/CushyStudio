@@ -18,7 +18,7 @@ export const WidgetSeedUI = obs(function WidgetSeedUI_(p: { field: Field_seed })
             value={field.serial.mode === 'randomize'}
             onValueChange={() => {
                field.setToRandomize()
-               field.touch()
+               field.ܒtouch()
             }}
             toggleGroup={field._uid}
             // text='Random'
@@ -28,7 +28,7 @@ export const WidgetSeedUI = obs(function WidgetSeedUI_(p: { field: Field_seed })
             value={field.serial.mode === 'fixed'}
             onValueChange={() => {
                field.setToFixed()
-               field.touch()
+               field.ܒtouch()
             }}
             toggleGroup={field._uid}
             // text='Fixed'
@@ -43,7 +43,7 @@ export const WidgetSeedUI = obs(function WidgetSeedUI_(p: { field: Field_seed })
             mode='int'
             onValueChange={(value) => {
                field.value = value
-               field.touch()
+               field.ܒtouch()
             }}
          />
          <Button // reset fixed value
@@ -51,7 +51,7 @@ export const WidgetSeedUI = obs(function WidgetSeedUI_(p: { field: Field_seed })
             tw='!border-l !border-r-0'
             onClick={() => {
                field.setToFixed(Math.floor(Math.random() * 100000000))
-               field.touch()
+               field.ܒtouch()
             }}
             icon={IKONS.mdiAutorenew}
             square

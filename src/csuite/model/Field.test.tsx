@@ -40,7 +40,7 @@ class Field_dummy extends Field {
       return this.value_or_fail
    }
    set value(value: string) {
-      this.patchInTransaction((draft) => {
+      this.ܮpatchInTransaction((draft) => {
          draft.value = value
       })
    }
@@ -60,7 +60,7 @@ class Field_dummy extends Field {
       return this.value_unchecked === other.value_unchecked
    }
    protected override setOwnSerial(serial: Field_dummy_serial): void {
-      this.assignNewSerial(serial)
+      this.ܮassignNewSerial(serial)
    }
    override get hasChanges(): boolean {
       return true

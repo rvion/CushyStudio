@@ -43,7 +43,7 @@ export class MigrationEngine {
          },
          config: (b) => b.choices({ prefix: b.string(), suffix: b.string() }),
          action: ({ document, config, anomaly, data }) => {
-            data.field.patchInTransaction((draft) => {
+            data.field.ܮpatchInTransaction((draft) => {
                draft.value = (config.value.prefix ?? '') + String(data.oldVal) + (config.value.suffix ?? '')
             })
             return 'SUCCESS'

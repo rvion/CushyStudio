@@ -6,10 +6,10 @@ export const WidgetColorUI = obs(function WidgetColorUI_(p: { field: Field_color
       <input //
          value={field.serial.value}
          type='color'
-         onBlur={() => field.touch()}
+         onBlur={() => field.ܒtouch()}
          onChange={(ev) => {
             field.value = ev.target.value
-            p.field.touch()
+            p.field.ܒtouch()
          }}
       />
    )

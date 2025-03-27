@@ -51,7 +51,7 @@ export const WidgetString_TextareaBodyUI = obs(function WidgetString_TextareaBod
                uiSt.value = ev.target.value
             }}
             onBlur={action(() => {
-               field.touch()
+               field.ܒtouch()
                uiSt.focused = false
             })}
             onFocus={action(() => {
@@ -82,7 +82,7 @@ export const WidgetString_HeaderUI = obs(function WidgetStringUI_(p: {
       <InputStringUI
          tw={[
             'w-full',
-            field.hasOwnErrors && !field.isInsideDisabledBranch && field.touched && 'rsx-field-error',
+            field.hasOwnErrors && !field.isInsideDisabledBranch && field.ܒtouched && 'rsx-field-error',
          ]}
          icon={config.innerIcon}
          type={config.inputType}
@@ -115,7 +115,7 @@ export const WidgetString_HeaderUI = obs(function WidgetStringUI_(p: {
             uiSt.value = field.value_or_zero
          })}
          onBlur={action(() => {
-            field.touch()
+            field.ܒtouch()
             uiSt.focused = false
          })}
          noColorStuff

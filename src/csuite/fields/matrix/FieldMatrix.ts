@@ -92,7 +92,7 @@ export class Field_matrix extends Field {
    }
 
    protected setOwnSerial(next: Field_matrix_serial): void {
-      this.assignNewSerial(next)
+      this.ܮassignNewSerial(next)
 
       if (next.selected == null && this.config.default == null) return
 
@@ -209,7 +209,7 @@ export class Field_matrix extends Field {
     * every setter should update this
     */
    private UPDATE(): void {
-      this.runInTransaction(() => {
+      this.ܮrunInTransaction(() => {
          this.patchSerial((draft) => void (draft.selected = this.activeCells))
       })
    }

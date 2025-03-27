@@ -42,7 +42,7 @@ export const WidgetString_SmallInput = obs(function WidgetStringUI_(p: {
                  }
                : undefined
          }
-         onBlur={() => field.touch()}
+         onBlur={() => field.ܒtouch()}
       />
    )
 })

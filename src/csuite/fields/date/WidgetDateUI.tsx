@@ -28,7 +28,7 @@ export const WidgetDate_ClearButtonUI = obs(function WidgetDate_ClearButtonUI_<V
             if (p.field.canBeToggledWithinParent) {
                p.field.disableSelfWithinParent()
             }
-            p.field.touch()
+            p.field.ܒtouch()
          }}
       />
    )
@@ -49,7 +49,7 @@ export const WidgetDate_HeaderUI = obs(function WidgetDateUI_<VALUE>(p: {
                'w-full',
                'minh-input',
                'UI-InputDate',
-               field.hasOwnErrors && field.touched && 'border-red-700 border',
+               field.hasOwnErrors && field.ܒtouched && 'border-red-700 border',
             ].join(' ')}
             // inputClassName={field.hasOwnErrors && field.touched ? 'border-red-700 border' : undefined}
             icon={p.field.config.innerIcon}
@@ -70,11 +70,11 @@ export const WidgetDate_HeaderUI = obs(function WidgetDateUI_<VALUE>(p: {
                }
 
                field.setValueFromString(value)
-               p.field.touch()
+               p.field.ܒtouch()
             }}
             placeholder={field.config.placeHolder}
             disabled={p.readonly}
-            onBlur={() => p.field.touch()}
+            onBlur={() => p.field.ܒtouch()}
          />
          <WidgetDate_ClearButtonUI field={field} readonly={p.readonly} />
       </div>

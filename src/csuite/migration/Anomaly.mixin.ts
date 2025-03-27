@@ -15,7 +15,7 @@ export const AnomalyMixinImpl = defineFieldMixin({
    /** drop all anomalies specific to this field (not incl. children anomalies) */
    dropAnomalies(): void {
       if (this.serial.anomalies == null) return
-      this.patchInTransaction((draft) => {
+      this.ܮpatchInTransaction((draft) => {
          delete draft.anomalies
       })
    },
@@ -27,11 +27,11 @@ export const AnomalyMixinImpl = defineFieldMixin({
    /** append an anomalies */
    addAnomaly(anomaly: FieldAnomaly): void {
       if (this.serial.anomalies == null) {
-         this.patchInTransaction((draft) => {
+         this.ܮpatchInTransaction((draft) => {
             draft.anomalies = [anomaly]
          })
       } else {
-         this.patchInTransaction((draft) => {
+         this.ܮpatchInTransaction((draft) => {
             draft.anomalies!.push(anomaly)
          })
       }

@@ -106,7 +106,7 @@ export class Field_orbit extends Field {
          }
       }
 
-      this.assignNewSerial(next)
+      this.ܮassignNewSerial(next)
    }
 
    // #region UI
@@ -150,7 +150,7 @@ export class Field_orbit extends Field {
       azimuth_rad: number
       elevation_rad: number
    }): void {
-      this.runInTransaction(() => {
+      this.ܮrunInTransaction(() => {
          this.serial.azimuth = clampMod(-90 + p.azimuth_rad * (180 / Math.PI), -180, 180)
          this.serial.elevation = clampMod(90 - p.elevation_rad * (180 / Math.PI), -180, 180)
       })
@@ -217,7 +217,7 @@ export class Field_orbit extends Field {
 
    set azimuth(val: number) {
       if (this.azimuth === val) return
-      this.runInTransaction(() => {
+      this.ܮrunInTransaction(() => {
          this.patchSerial((draft) => {
             draft.azimuth = val
          })
@@ -247,7 +247,7 @@ export class Field_orbit extends Field {
 
    set elevation(val: number) {
       if (this.elevation === val) return
-      this.runInTransaction(() => {
+      this.ܮrunInTransaction(() => {
          this.patchSerial((draft) => {
             draft.elevation = val
          })

@@ -38,7 +38,7 @@ export const WidgetChoices_TabHeaderUI = obs(function WidgetChoicesTab_LineUI_<T
                      if (value != isSelected) {
                         field.toggleBranch(c.key)
                      }
-                     p.field.touch()
+                     p.field.ܒtouch()
                   }}
                   toggleGroup={field._uid}
                />
@@ -55,7 +55,7 @@ export const WidgetChoices_TabHeaderUI = obs(function WidgetChoicesTab_LineUI_<T
                disabled={!isActive}
                onClick={() => {
                   p.field.disableSelfWithinParent()
-                  p.field.touch()
+                  p.field.ܒtouch()
                }}
             />
          )}

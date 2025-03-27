@@ -9,7 +9,7 @@ export type IWidgetListLike = {
    readonly length: number
    readonly isCollapsed?: boolean
    setCollapsed(value: boolean): void
-   touch: () => void
+   ܒtouch: () => void
    config: {
       max?: number
       min?: number

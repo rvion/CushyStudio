@@ -45,7 +45,7 @@ export const WidgetChoices_HeaderSelectUI = obs(function WidgetChoices_HeaderSel
                // 🔴 DUBIOUS
                if (p.field.canBeToggledWithinParent) p.field.enableSelfWithinParent()
                field.toggleBranch(v.key)
-               p.field.touch()
+               p.field.ܒtouch()
             }}
          />
       </div>

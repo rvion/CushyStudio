@@ -60,7 +60,7 @@ export const WidgetChoices_SelectHeaderUI = obs(function WidgetChoices_SelectLin
             onOptionToggled={(v) => {
                if (p.field.canBeToggledWithinParent) p.field.enableSelfWithinParent()
                field.toggleBranch(v.key)
-               p.field.touch()
+               p.field.ܒtouch()
             }}
          />
          {p.field.canBeToggledWithinParent && (
@@ -74,7 +74,7 @@ export const WidgetChoices_SelectHeaderUI = obs(function WidgetChoices_SelectLin
                disabled={!isActive}
                onClick={() => {
                   field.disableSelfWithinParent()
-                  p.field.touch()
+                  p.field.ܒtouch()
                }}
             />
          )}
