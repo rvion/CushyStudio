@@ -49,7 +49,7 @@ export const ui_tint = (ui: Z.Builder, def?: Tint): UI_Tint => {
                ],
                appearance: 'tab',
                label: 'Light',
-               default: def?.lightness ? 'lightness' : 'contrast',
+               default: def?.lightness != null ? 'lightness' : 'contrast',
             },
          ),
          c: ui.choice(
@@ -75,7 +75,7 @@ export const ui_tint = (ui: Z.Builder, def?: Tint): UI_Tint => {
             {
                appearance: 'tab',
                label: 'Chroma',
-               default: def?.chroma ? 'chroma' : 'chromaBlend',
+               default: def?.chroma != null ? 'chroma' : 'chromaBlend',
             },
          ),
          h: ui.choice(
@@ -103,7 +103,7 @@ export const ui_tint = (ui: Z.Builder, def?: Tint): UI_Tint => {
             {
                appearance: 'tab',
                label: 'Hue',
-               default: def?.hue ? 'hue' : 'hueShift',
+               default: def?.hue != null ? 'hue' : 'hueShift',
             },
          ),
       },
