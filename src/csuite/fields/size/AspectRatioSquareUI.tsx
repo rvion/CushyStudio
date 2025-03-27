@@ -5,10 +5,10 @@ import { Frame } from '../../frame/Frame'
 export const AspectRatioSquareUI = obs(function AspectRatioSquareUI_(p: { sizeHelper: Field_size }) {
    const uist = p.sizeHelper
    const ratioDisplaySize =
-      cushy.preferences.interface.value.inputHeight *
+      cushy.preferences.interface.ϟvalue.inputHeight *
       2.05 *
       parseFloat(getComputedStyle(document.documentElement).fontSize)
-   const theme = cushy.preferences.theme.value
+   const theme = cushy.preferences.theme.ϟvalue
 
    const width = uist.width_or_zero || 1
    const height = uist.height_or_zero || 1

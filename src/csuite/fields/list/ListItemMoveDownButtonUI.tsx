@@ -15,7 +15,7 @@ export const ListItemMoveDownButtonUI = obs(function ListItemMoveDownButtonUI_({
          disabled={ix === listField.length - 1}
          onClick={(ev) => {
             listField.moveItem(ix, ix + 1)
-            listField.ܒtouch()
+            listField.ϟtouch()
             ev.preventDefault()
             ev.stopPropagation()
          }}

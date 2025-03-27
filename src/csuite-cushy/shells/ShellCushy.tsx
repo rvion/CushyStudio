@@ -26,7 +26,7 @@ const CushyShellUI = obs(function CushySHell(
    })()
    if (p.field.isHidden && !p.shouldShowHiddenFields) return null
 
-   const theme = cushy.preferences.theme.value
+   const theme = cushy.preferences.theme.ϟvalue
 
    let WUI: ReactNode = (
       <Frame

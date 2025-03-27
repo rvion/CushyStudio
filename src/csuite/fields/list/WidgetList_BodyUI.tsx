@@ -10,7 +10,7 @@ export const WidgetList_BodyUI = obs(function WidgetList_BodyUI_<T extends CSche
 }) {
    const listField = p.field
    const subFields = listField.items
-   const min = listField.config.min
+   const min = listField.ϟconfig.min
    return (
       <div /* SortableList */
          // onSortEnd={(s, e) => p.field.moveItem(s, e)}
@@ -19,7 +19,7 @@ export const WidgetList_BodyUI = obs(function WidgetList_BodyUI_<T extends CSche
       >
          {subFields.map((subField, ix) => {
             return (
-               <div /* SortableItem */ key={subField._uid}>
+               <div /* SortableItem */ key={subField.ϟuid}>
                   <subField.UI
                      Title={<>{ix.toString()}</>}
                      // slotDragKnob={
@@ -39,11 +39,11 @@ export const WidgetList_BodyUI = obs(function WidgetList_BodyUI_<T extends CSche
                               icon={IKONS.mdiDeleteOutline}
                               onClick={(ev) => {
                                  listField.removeItem(subField)
-                                 listField.ܒtouch()
+                                 listField.ϟtouch()
                                  ev.preventDefault()
                                  ev.stopPropagation()
                               }}
-                              onBlur={() => listField.ܒtouch()}
+                              onBlur={() => listField.ϟtouch()}
                            />
                         )
                      }

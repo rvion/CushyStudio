@@ -23,7 +23,7 @@ export type Field_matrix_cell = {
 }
 
 // CONFIG
-export type Field_matrix_config = Field_matrix['…config']
+export type Field_matrix_config = Field_matrix['Ҩconfig']
 type Field_matrix_ownConfig = {
    default?: { row: string; col: string }[]
    rows: string[]
@@ -31,7 +31,7 @@ type Field_matrix_ownConfig = {
 }
 
 // SERIAL
-export type Field_matrix_serial = Field_matrix['…serial']
+export type Field_matrix_serial = Field_matrix['Ҩserial']
 type Field_matrix_ownSerial = {
    $: 'matrix'
    /** only contains cells that are ONs */
@@ -44,15 +44,15 @@ export type Field_matrix_unchecked = Field_matrix_value | undefined
 
 // TYPES
 export interface Field_matrix {
-   ['…type']: 'matrix'
-   ['…ownConfig']: Field_matrix_ownConfig
-   ['…ownSerial']: Field_matrix_ownSerial
-   ['…value']: Field_matrix_value
-   ['…setvalue']: Field_matrix_value
-   ['…unchecked']: Field_matrix_unchecked
-   ['…child']: never
-   ['…opts']: unknown
-   ['…ownPatch']: Patch<'matrix'>
+   ['Ҩtype']: 'matrix'
+   ['ҨownConfig']: Field_matrix_ownConfig
+   ['ҨownSerial']: Field_matrix_ownSerial
+   ['Ҩvalue']: Field_matrix_value
+   ['Ҩsetvalue']: Field_matrix_value
+   ['Ҩunchecked']: Field_matrix_unchecked
+   ['Ҩchild']: never
+   ['Ҩopts']: unknown
+   ['ҨownPatch']: Patch<'matrix'>
 }
 
 // STATE
@@ -91,17 +91,17 @@ export class Field_matrix extends Field {
       this.init(serial)
    }
 
-   protected setOwnSerial(next: Field_matrix_serial): void {
-      this.ܮassignNewSerial(next)
+   protected ϟsetOwnSerial(next: Field_matrix_serial): void {
+      this.ϟassignNewSerial(next)
 
-      if (next.selected == null && this.config.default == null) return
+      if (next.selected == null && this.ϟconfig.default == null) return
 
-      const cells = this.serial.selected ?? this.config.default ?? []
+      const cells = this.ϟserial.selected ?? this.ϟconfig.default ?? []
       const selectedCells = new Set(cells.map(({ row, col }) => this.getCellkey(row, col)))
 
       // make sure every cell has the right value
-      for (const [x, row] of this.config.rows.entries()) {
-         for (const [y, col] of this.config.cols.entries()) {
+      for (const [x, row] of this.ϟconfig.rows.entries()) {
+         for (const [y, col] of this.ϟconfig.cols.entries()) {
             const cellKey = this.getCellkey(row, col)
             const value = selectedCells.has(cellKey)
             const prev = this.store.get(cellKey)
@@ -110,31 +110,31 @@ export class Field_matrix extends Field {
          }
       }
 
-      if (this.serial.selected?.every((v, index) => v === cells[index])) return
-      this.patchSerial((draft) => void (draft.selected = this.activeCells))
+      if (this.ϟserial.selected?.every((v, index) => v === cells[index])) return
+      this.ϟpatchSerial((draft) => void (draft.selected = this.activeCells))
    }
 
    // #region VALUE
    /** list of all active cells */
-   get value(): Field_matrix_value {
-      return this.value_or_fail
+   get ϟvalue(): Field_matrix_value {
+      return this.ϟvalue_or_fail
    }
 
-   get value_or_fail(): Field_matrix_value {
-      if (this.serial.selected == null) throw new Error('Field_matrix.value_or_fail: field not set')
-      return this.serial.selected
+   get ϟvalue_or_fail(): Field_matrix_value {
+      if (this.ϟserial.selected == null) throw new Error('Field_matrix.value_or_fail: field not set')
+      return this.ϟserial.selected
    }
 
-   get value_or_zero(): Field_matrix_value {
-      return this.serial.selected ?? []
+   get ϟvalue_or_zero(): Field_matrix_value {
+      return this.ϟserial.selected ?? []
    }
 
-   get value_unchecked(): Field_matrix_unchecked {
-      return this.serial.selected
+   get ϟvalue_unchecked(): Field_matrix_unchecked {
+      return this.ϟserial.selected
    }
 
    /** 🔶 this is inneficient */
-   set value(val: Field_matrix_value) {
+   set ϟvalue(val: Field_matrix_value) {
       runInAction(() => {
          // 1. reset all cells to false
          for (const c of this.allCells) {
@@ -149,42 +149,42 @@ export class Field_matrix extends Field {
       })
    }
 
-   override isValueEqual(other: Field): boolean {
+   override ϟisValueEqual(other: Field): boolean {
       if (!(other instanceof Field_matrix)) return false
-      if (this.value.length !== other.value.length) return false
+      if (this.ϟvalue.length !== other.ϟvalue.length) return false
 
-      return JSON.stringify(this.serial.selected) === JSON.stringify(other.serial.selected)
+      return JSON.stringify(this.ϟserial.selected) === JSON.stringify(other.ϟserial.selected)
    }
 
    /** list of all possible row keys */
    get rows(): string[] {
-      return this.config.rows
+      return this.ϟconfig.rows
    }
 
    /** list of all possible colum keys */
    get cols(): string[] {
-      return this.config.cols
+      return this.ϟconfig.cols
    }
 
    // #region validation
-   get ownConfigSpecificProblems(): Problem_Ext {
+   get ϟownConfigSpecificProblems(): Problem_Ext {
       return null
    }
 
-   get ownTypeSpecificProblems(): Problem_Ext {
+   get ϟownTypeSpecificProblems(): Problem_Ext {
       return null
    }
 
-   get isOwnSet(): boolean {
-      return this.serial.selected != null
+   get ϟisOwnSet(): boolean {
+      return this.ϟserial.selected != null
    }
 
-   get hasChanges(): boolean {
-      const def = this.config.default
-      if (def == null) return this.value.length != 0
+   get ϟhasChanges(): boolean {
+      const def = this.ϟconfig.default
+      if (def == null) return this.ϟvalue.length != 0
       else {
-         if (def.length != this.value.length) return true
-         for (const v of this.value) {
+         if (def.length != this.ϟvalue.length) return true
+         for (const v of this.ϟvalue) {
             if (!def.find((d) => d.row == v.row && d.col == v.col)) return true
          }
          return false
@@ -209,8 +209,8 @@ export class Field_matrix extends Field {
     * every setter should update this
     */
    private UPDATE(): void {
-      this.ܮrunInTransaction(() => {
-         this.patchSerial((draft) => void (draft.selected = this.activeCells))
+      this.ϟrunInTransaction(() => {
+         this.ϟpatchSerial((draft) => void (draft.selected = this.activeCells))
       })
    }
 

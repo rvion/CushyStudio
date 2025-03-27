@@ -17,28 +17,28 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
    showSelectIcons: boolean = false
 
    get tooltipDelay(): Maybe<number> {
-      return cushy.preferences.interface._.tooltipDelay.value
+      return cushy.preferences.interface.ϟfields.tooltipDelay.ϟvalue
    }
 
    get showFoldButtons(): boolean {
-      return this.st.preferences.interface._.widget._.showFoldButtons.value ?? true
+      return this.st.preferences.interface.ϟfields.widget.ϟfields.showFoldButtons.ϟvalue ?? true
    }
 
    // sizes ------------------------------------------------------
    get widgetHeight(): number {
-      return this.st.preferences.interface._.widgetHeight.value ?? 1.8
+      return this.st.preferences.interface.ϟfields.widgetHeight.ϟvalue ?? 1.8
    }
 
    get inputHeight(): number {
-      return this.st.preferences.interface._.inputHeight.value ?? 1.6
+      return this.st.preferences.interface.ϟfields.inputHeight.ϟvalue ?? 1.6
    }
 
    get insideHeight(): number {
-      return this.st.preferences.interface._.insideHeight.value ?? 1.2
+      return this.st.preferences.interface.ϟfields.insideHeight.ϟvalue ?? 1.2
    }
 
    get inputRoundness(): number {
-      return this.st.preferences.theme.value.global.roundness ?? 5
+      return this.st.preferences.theme.ϟvalue.global.roundness ?? 5
    }
 
    // misc ------------------------------------------------------
@@ -47,23 +47,23 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
    }
 
    get showWidgetUndo(): boolean {
-      return this.st.preferences.interface._.widget._.showUndo.value ?? true
+      return this.st.preferences.interface.ϟfields.widget.ϟfields.showUndo.ϟvalue ?? true
    }
 
    get showWidgetMenu(): boolean {
-      return this.st.preferences.interface._.widget._.showMenu.value ?? true
+      return this.st.preferences.interface.ϟfields.widget.ϟfields.showMenu.ϟvalue ?? true
    }
 
    get showWidgetDiff(): boolean {
-      return this.st.preferences.interface._.widget._.showDiff.value ?? true
+      return this.st.preferences.interface.ϟfields.widget.ϟfields.showDiff.ϟvalue ?? true
    }
 
    get showToggleButtonBox(): boolean {
-      return this.st.preferences.interface._.widget._.showToggleButtonBox.value ?? false
+      return this.st.preferences.interface.ϟfields.widget.ϟfields.showToggleButtonBox.ϟvalue ?? false
    }
 
    get labellayout(): FormGlobalLayoutMode {
-      const x = this.st.preferences.theme._.labelLayout.value
+      const x = this.st.preferences.theme.ϟfields.labelLayout.ϟvalue
       if (x === 'fluid') return 'fluid'
       if (x === 'fixed-left') return 'fixed-left'
       if (x === 'fixed-right') return 'fixed-right'
@@ -77,7 +77,7 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
    // theme
 
    get baseStr(): string {
-      return this.st.preferences.theme._.base.value
+      return this.st.preferences.theme.base.ϟvalue
    }
 
    get base(): Kolor {
@@ -91,19 +91,19 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
    labelBackground: TintExt = 0 // 3 // {}
 
    get text(): Tint {
-      return run_tint(this.st.preferences.theme.value.global.text.base)
+      return run_tint(this.st.preferences.theme.ϟvalue.global.text.base)
    }
 
    get inputContrast(): TintExt {
-      return this.st.preferences.theme.value.global.contrast
+      return this.st.preferences.theme.ϟvalue.global.contrast
    }
 
    get inputBorder(): TintExt {
-      return this.st.preferences.theme.value.global.border ?? 10
+      return this.st.preferences.theme.ϟvalue.global.border ?? 10
    }
 
    get labelText(): Tint | undefined {
-      const raw = this.st.preferences.theme.value.global.labelText.base
+      const raw = this.st.preferences.theme.ϟvalue.global.labelText.base
       if (raw == null) return undefined
       return run_tint(raw)
    }
@@ -113,8 +113,8 @@ export class CSuite_ThemeCushy implements CSuiteConfig {
       contrast: Maybe<number>
    } {
       return {
-         border: this.st.preferences.theme.FieldGroups.value?.border,
-         contrast: this.st.preferences.theme.FieldGroups.value?.contrast,
+         border: this.st.preferences.theme.fieldGroups.ϟvalue?.border,
+         contrast: this.st.preferences.theme.fieldGroups.ϟvalue?.contrast,
       }
    }
 }

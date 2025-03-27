@@ -46,7 +46,7 @@ export const systemConf = cushyFactory.document(
             label: false,
             collapsed: false,
             body: (w) => {
-               const f = w.field.fields
+               const f = w.field.ϟfields
                return (
                   <div
                      tw='flex flex-1 flex-grow flex-col gap-5' //TODO(bird_d): COMPONENT REPLACE: These "containers" should be replaced by a group component.
@@ -62,6 +62,6 @@ export const systemConf = cushyFactory.document(
    {
       name: 'System Config',
       serial: () => readJSON('settings/system.json'),
-      onSerialChange: (form) => writeJSON('settings/system.json', form.serial),
+      onSerialChange: (form) => writeJSON('settings/system.json', form.ϟserial),
    },
 )

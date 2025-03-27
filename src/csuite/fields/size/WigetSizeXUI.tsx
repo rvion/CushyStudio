@@ -12,10 +12,10 @@ const modelBtn = (uist: Field_size, model: ModelType): React.JSX.Element => (
       value={uist.desiredModelType == model}
       onValueChange={() => {
          uist.setModelType(model)
-         uist.ܒtouch()
+         uist.ϟtouch()
       }}
       text={model}
-      onBlur={() => uist.ܒtouch()}
+      onBlur={() => uist.ϟtouch()}
    />
 )
 

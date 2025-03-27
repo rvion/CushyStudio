@@ -84,7 +84,7 @@ export function schemaConfigHash(obj: any): string {
       const isPOJO = Object.getPrototypeOf(obj) === Object.prototype
       if (!isPOJO) {
          if (obj._symCSchema === Symbol.for('CSchema')) return `🚼${(obj as CSchema)._uid}` // sub-schema
-         if (obj._symField === Symbol.for('Field')) return `🚼${(obj as Field)._uid}` // sub-schema
+         if (obj._symField === Symbol.for('Field')) return `🚼${(obj as Field).ϟuid}` // sub-schema
          if (obj._symCTCollection === Symbol.for('CTCollection')) return `🛜${obj.id}` // sub-schema
          if (obj._symLoCollection === Symbol.for('LoCollection')) return `🇮🇸${obj.id}` // sub-schema
          const readableName = obj.constructor?.name

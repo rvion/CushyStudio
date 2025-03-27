@@ -6,7 +6,7 @@ import { Frame } from '../../../csuite/frame/Frame'
 import { UCMenuEntryContainerUI } from './UCMenuEntryContainerUI'
 
 type UCMenuLayerEntryUIProps = {
-   layer: Layer$['$field']
+   layer: Layer$['Ҩfield']
    index: number
    active?: boolean
    children?: React.ReactNode
@@ -15,11 +15,11 @@ type UCMenuLayerEntryUIProps = {
 }
 
 export const UCMenuLayerEntryUI = obs(function UCMenuLayerEntryUI_(p: UCMenuLayerEntryUIProps) {
-   const inputHeight = cushy.preferences.interface.value.inputHeight
-   const isVisible: boolean = p.layer.Visible.value
-   const image = p.layer.Content.matchExhaustive({
-      aiGeneration: (t) => t.fields.image.value_or_zero,
-      image: (t) => t.value_or_zero,
+   const inputHeight = cushy.preferences.interface.ϟvalue.inputHeight
+   const isVisible: boolean = p.layer.visible.ϟvalue
+   const image = p.layer.content.matchExhaustive({
+      aiGeneration: (t) => t.ϟfields.image.ϟvalue_or_zero,
+      image: (t) => t.ϟvalue_or_zero,
    })
 
    // TEMP
@@ -55,7 +55,7 @@ export const UCMenuLayerEntryUI = obs(function UCMenuLayerEntryUI_(p: UCMenuLaye
                 /> */}
          </Frame>
          <div tw='flex w-full flex-col'>
-            <p.layer.Name.UI Shell={ShellInputOnly} />
+            <p.layer.name.UI Shell={ShellInputOnly} />
             {p.children}
          </div>
 
@@ -69,14 +69,14 @@ export const UCMenuLayerEntryUI = obs(function UCMenuLayerEntryUI_(p: UCMenuLaye
             {/* <SpacerUI /> */}
             <Button
                tooltip='Delete'
-               onClick={() => p.layer.disableSelfWithinParent()}
+               onClick={() => p.layer.ϟdisableSelfWithinParent()}
                icon={IKONS.mdiDeleteOutline}
                borderless
                subtle
             />
             <Button
                tooltip='visibility'
-               onClick={() => p.layer.Visible.toggle()}
+               onClick={() => p.layer.visible.toggle()}
                icon={isVisible ? IKONS.mdiEyeOutline : IKONS.mdiEyeClosed}
                borderless
                subtle

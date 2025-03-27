@@ -13,7 +13,7 @@ export const WidgetDate_ClearButtonUI = obs(function WidgetDate_ClearButtonUI_<V
    field: Field_date<VALUE>
    readonly?: boolean
 }) {
-   if (!p.field.canBeToggledWithinParent || p.readonly) return null
+   if (!p.field.ϟcanBeToggledWithinParent || p.readonly) return null
 
    return (
       <Button
@@ -23,12 +23,12 @@ export const WidgetDate_ClearButtonUI = obs(function WidgetDate_ClearButtonUI_<V
          subtle
          square
          icon={IKONS.mdiClose}
-         disabled={p.field.selectedValue == null || !p.field.isEnabledWithinParent}
+         disabled={p.field.selectedValue == null || !p.field.ϟisEnabledWithinParent}
          onClick={() => {
-            if (p.field.canBeToggledWithinParent) {
-               p.field.disableSelfWithinParent()
+            if (p.field.ϟcanBeToggledWithinParent) {
+               p.field.ϟdisableSelfWithinParent()
             }
-            p.field.ܒtouch()
+            p.field.ϟtouch()
          }}
       />
    )
@@ -40,7 +40,7 @@ export const WidgetDate_HeaderUI = obs(function WidgetDateUI_<VALUE>(p: {
    readonly?: boolean
 }) {
    const field = p.field
-   const config = field.config
+   const config = field.ϟconfig
    return (
       <div tw='sticky top-0 flex w-full items-center gap-0.5'>
          <InputStringUI
@@ -49,32 +49,32 @@ export const WidgetDate_HeaderUI = obs(function WidgetDateUI_<VALUE>(p: {
                'w-full',
                'minh-input',
                'UI-InputDate',
-               field.hasOwnErrors && field.ܒtouched && 'border-red-700 border',
+               field.ϟhasOwnErrors && field.ϟtouched && 'border-red-700 border',
             ].join(' ')}
             // inputClassName={field.hasOwnErrors && field.touched ? 'border-red-700 border' : undefined}
-            icon={p.field.config.innerIcon}
+            icon={p.field.ϟconfig.innerIcon}
             type='datetime-local'
             className={config.className}
             getValue={() =>
-               !field.isEnabledWithinParent || field.value_unchecked == null
+               !field.ϟisEnabledWithinParent || field.ϟvalue_unchecked == null
                   ? ''
-                  : field.format(field.value_unchecked)
+                  : field.format(field.ϟvalue_unchecked)
             }
             setValue={(value) => {
-               if (p.field.canBeToggledWithinParent) {
+               if (p.field.ϟcanBeToggledWithinParent) {
                   if (value == '') {
-                     p.field.disableSelfWithinParent()
+                     p.field.ϟdisableSelfWithinParent()
                   } else {
-                     p.field.enableSelfWithinParent()
+                     p.field.ϟenableSelfWithinParent()
                   }
                }
 
                field.setValueFromString(value)
-               p.field.ܒtouch()
+               p.field.ϟtouch()
             }}
-            placeholder={field.config.placeHolder}
+            placeholder={field.ϟconfig.placeHolder}
             disabled={p.readonly}
-            onBlur={() => p.field.ܒtouch()}
+            onBlur={() => p.field.ϟtouch()}
          />
          <WidgetDate_ClearButtonUI field={field} readonly={p.readonly} />
       </div>

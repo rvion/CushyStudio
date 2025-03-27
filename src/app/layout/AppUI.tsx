@@ -59,7 +59,7 @@ export const CushyUI = obs(function CushyUI_() {
       return (): void => window.removeEventListener('keydown', handleKeyDown)
    }, [appRef.current, cushy])
 
-   const appBarColor = cushy.preferences.theme.value.appbar ?? cushy.preferences.theme.value.base
+   const appBarColor = cushy.preferences.theme.ϟvalue.appbar ?? cushy.preferences.theme.ϟvalue.base
    const appBarBase = Kolor.fromString(appBarColor)
    const inactiveTabColors = computeColors(
       {
@@ -79,7 +79,7 @@ export const CushyUI = obs(function CushyUI_() {
       { base: { contrast: -0.077 } },
    )
 
-   const theme = cushy.preferences.theme.value
+   const theme = cushy.preferences.theme.ϟvalue
    const textShadow = theme.global.text.shadow
    return (
       <CSuiteProvider config={cushy.csuite}>
@@ -112,7 +112,7 @@ export const CushyUI = obs(function CushyUI_() {
             tw={[
                'col h-full grow overflow-clip',
                // topic=WZ2sEOGiLy
-               cushy.preferences.interface.value.useDefaultCursorEverywhere && 'useDefaultCursorEverywhere',
+               cushy.preferences.interface.ϟvalue.useDefaultCursorEverywhere && 'useDefaultCursorEverywhere',
             ]}
          >
             <div // Global Popup/Reveal/Tooltip container always be on screen with overflow-clip added.

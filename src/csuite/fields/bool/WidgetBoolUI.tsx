@@ -6,7 +6,7 @@ import { SpacerUI } from '../../components/SpacerUI'
 export const WidgetBoolUI = obs(function WidgetBoolUI_(p: { field: Field_bool }) {
    const field = p.field
 
-   if (field.config.label2) {
+   if (field.ϟconfig.label2) {
       console.warn(
          'label2 is deprecated, please use the text option instead. label2 will be removed in the future',
       )
@@ -16,18 +16,18 @@ export const WidgetBoolUI = obs(function WidgetBoolUI_(p: { field: Field_bool })
       <div tw='flex h-full w-full '>
          <InputBoolUI
             // config
-            display={field.config.display}
-            expand={field.config.display === 'button' ? field.config.expand : true}
-            icon={field.icon}
-            text={field.config.text ?? field.config.label2}
+            display={field.ϟconfig.display}
+            expand={field.ϟconfig.display === 'button' ? field.ϟconfig.expand : true}
+            icon={field.ϟicon}
+            text={field.ϟconfig.text ?? field.ϟconfig.label2}
             // value
-            value={field.value_or_zero}
-            onBlur={() => field.ܒtouch()}
+            value={field.ϟvalue_or_zero}
+            onBlur={() => field.ϟtouch()}
             onValueChange={(value) => {
-               field.value = value
-               p.field.ܒtouch()
+               field.ϟvalue = value
+               p.field.ϟtouch()
             }}
-            toggleGroup={field._uid}
+            toggleGroup={field.ϟuid}
          />
 
          <SpacerUI />

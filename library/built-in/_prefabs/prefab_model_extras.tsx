@@ -29,7 +29,7 @@ export const schemaModelExtras = (
    p: {
       defaultVAE?: Comfy.Slots['VAELoader.vae_name']
       vaeActiveByDefault?: boolean
-      // default?: $schemaModelExtras['…value']
+      // default?: $schemaModelExtras['Ҩvalue']
    } = {},
 ): $schemaModelExtras => {
    const b = getBuilder()
@@ -86,7 +86,7 @@ type XX2 = { vae: Comfy.Signal['VAE']; clip: Comfy.Signal['CLIP']; ckpt: Comfy.S
 
 export function evalModelExtras_part1(
    //
-   extra: $schemaModelExtras['…value'],
+   extra: $schemaModelExtras['Ҩvalue'],
    { vae, clip, ckpt }: XX1,
 ): XX2 {
    const graph = getCurrentRun().nodes
@@ -132,7 +132,7 @@ export function evalModelExtras_part1(
 }
 
 export const evalModelExtras_part2 = (
-   extra: $schemaModelExtras['…value'],
+   extra: $schemaModelExtras['Ҩvalue'],
    ckpt: Comfy.Signal['MODEL'],
    forHiRes?: boolean,
    kohyaScale?: number,

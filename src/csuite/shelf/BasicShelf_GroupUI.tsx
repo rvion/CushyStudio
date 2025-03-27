@@ -5,7 +5,7 @@ import { Frame } from '../frame/Frame'
 
 export const BasicShelf_GroupUI: React.FC<{ align?: boolean; children?: ReactNode } & Tint> = obs(
    function BasicShelf_Group({ align, children, ...tint }) {
-      const theme = cushy.preferences.theme.value
+      const theme = cushy.preferences.theme.ϟvalue
 
       return (
          <Frame

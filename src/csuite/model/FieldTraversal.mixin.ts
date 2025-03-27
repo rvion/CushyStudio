@@ -9,7 +9,7 @@ export type TraverseSignal = 'stop' | 'abort' | void
 
 export const TraversalMixinImpl = defineFieldMixin({
    /** @since 2024-10-07 */
-   ['→traverse'](
+   ϟtraverse(
       fn: (c: Field) => TraverseSignal,
       p: {
          /** default to depth-first (les memory usage, usually more logical) */
@@ -19,12 +19,11 @@ export const TraversalMixinImpl = defineFieldMixin({
          cover?: 'active' | 'all'
       },
    ): void {
-      if (p.order === 'depth-first' && p.cover === 'active') return this['→traverseDepthFirst'](fn)
-      if (p.order === 'breadth-first' && p.cover === 'active') return this['→traverseBreadthFirst'](fn)
-      if (p.order === 'depth-first' && p.cover === 'all') return this['→traverseAllDepthFirst'](fn)
-      if (p.order === 'breadth-first' && p.cover === 'all')
-         return this['→traverseAlltraverseBreadthFirst'](fn)
-      return this['→traverseDepthFirst'](fn)
+      if (p.order === 'depth-first' && p.cover === 'active') return this.ϟtraverseDepthFirst(fn)
+      if (p.order === 'breadth-first' && p.cover === 'active') return this.ϟtraverseBreadthFirst(fn)
+      if (p.order === 'depth-first' && p.cover === 'all') return this.ϟtraverseAllDepthFirst(fn)
+      if (p.order === 'breadth-first' && p.cover === 'all') return this.ϟtraverseAlltraverseBreadthFirst(fn)
+      return this.ϟtraverseDepthFirst(fn)
    },
 
    // 💬 2024-12-04 rvion: legacy non-abortable traversals
@@ -52,7 +51,7 @@ export const TraversalMixinImpl = defineFieldMixin({
    // |  },
 
    /** @since 2024-10-07 */
-   ['→traverseDepthFirst'](fn: (c: Field) => TraverseSignal): void {
+   ϟtraverseDepthFirst(fn: (c: Field) => TraverseSignal): void {
       runInAction(() => {
          const stack: Field[] = [this]
 
@@ -65,8 +64,8 @@ export const TraversalMixinImpl = defineFieldMixin({
 
             if (result !== 'stop') {
                // Push children in reverse order to maintain left-to-right traversal
-               for (let i = current.childrenActive.length - 1; i >= 0; i--) {
-                  stack.push(current.childrenActive[i]!)
+               for (let i = current.ϟchildrenActive.length - 1; i >= 0; i--) {
+                  stack.push(current.ϟchildrenActive[i]!)
                }
             }
          }
@@ -74,7 +73,7 @@ export const TraversalMixinImpl = defineFieldMixin({
    },
 
    /** @since 2024-10-07 */
-   ['→traverseAllDepthFirst'](fn: (c: Field) => TraverseSignal): void {
+   ϟtraverseAllDepthFirst(fn: (c: Field) => TraverseSignal): void {
       runInAction(() => {
          const stack: Field[] = [this]
 
@@ -87,8 +86,8 @@ export const TraversalMixinImpl = defineFieldMixin({
 
             if (result !== 'stop') {
                // Push all children in reverse order
-               for (let i = current.childrenAll.length - 1; i >= 0; i--) {
-                  stack.push(current.childrenAll[i]!)
+               for (let i = current.ϟchildrenAll.length - 1; i >= 0; i--) {
+                  stack.push(current.ϟchildrenAll[i]!)
                }
             }
          }
@@ -96,7 +95,7 @@ export const TraversalMixinImpl = defineFieldMixin({
    },
 
    /** @since 2024-10-07 */
-   ['→traverseBreadthFirst'](fn: (c: Field) => TraverseSignal): void {
+   ϟtraverseBreadthFirst(fn: (c: Field) => TraverseSignal): void {
       runInAction(() => {
          const queue: Field[] = [this]
          while (queue.length > 0) {
@@ -104,20 +103,20 @@ export const TraversalMixinImpl = defineFieldMixin({
             const shouldEnterChildren = fn(current)
             if (shouldEnterChildren === 'abort') return
             if (shouldEnterChildren !== 'stop') {
-               queue.push(...current.childrenActive)
+               queue.push(...current.ϟchildrenActive)
             }
          }
       })
    },
    /** @since 2024-10-07 */
-   ['→traverseAlltraverseBreadthFirst'](fn: (c: Field) => TraverseSignal): void {
+   ϟtraverseAlltraverseBreadthFirst(fn: (c: Field) => TraverseSignal): void {
       runInAction(() => {
          const queue: Field[] = [this]
          while (queue.length > 0) {
             const current = queue.shift()!
             const shouldEnterChildren = fn(current)
             if (shouldEnterChildren === 'stop') return
-            queue.push(...current.childrenAll)
+            queue.push(...current.ϟchildrenAll)
          }
       })
    },

@@ -24,7 +24,7 @@ export const LoraBoxUI = obs(function LoraBoxUI_(p: {
    const associatedText = loraMetadata?.text ?? ''
    const associatedUrl = loraMetadata?.url ?? ''
    const weighted = p.weightedASTNode
-   const theme = cushy.preferences.theme.value
+   const theme = cushy.preferences.theme.ϟvalue
 
    // const numbers = def.ref.node.getChildren('Number')
    return (

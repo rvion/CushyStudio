@@ -31,9 +31,9 @@ import type { ValidationError } from './ValidationError'
  */
 export interface DraftLike<FIELD extends Field> {
    // 🔶 TEMPORARY HACK UNTIL RENDER BRANCH
-   getFieldUnchecked(): FIELD
+   ϟgetFieldUnchecked(): FIELD
 
-   validate(): Result<FIELD, ValidationError>
-   validateOrNull(): Maybe<FIELD>
-   validateOrThrow(): FIELD
+   ϟvalidate(): Result<FIELD, ValidationError>
+   ϟvalidateOrNull(): Maybe<FIELD>
+   ϟvalidateOrThrow(): FIELD
 }

@@ -18,7 +18,7 @@ export const WidgetPresetsUI = obs(function WidgetPresets({
    // rest
    ...rest
 }: WidgetPresetsProps) {
-   const presets = field.config.presets
+   const presets = field.ϟconfig.presets
    const presetCount = presets?.length ?? 0
    if (presets == null) return null
    if (presetCount == 0) return null

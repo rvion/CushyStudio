@@ -34,7 +34,7 @@ export const getVisualPath = (ctx: RenderCtx<Field> | null = useRendererCtx()): 
    if (ctx == null) return 'not in a rendering context'
    return [
       //
-      ...ctx.ancestors.map((i) => i.field.mountKey),
-      ctx.field.mountKey,
+      ...ctx.ancestors.map((i) => i.field.ϟmountKey),
+      ctx.field.ϟmountKey,
    ].join('->')
 }

@@ -56,13 +56,13 @@ export const PixiUC = obs(function PixiUC(p: any): React.JSX.Element {
                <PixiApplicationProvider>
                   <PixiUCViewport>
                      <GridPixi // background grid
-                        y={uc2.Frame.Y.value}
-                        x={uc2.Frame.Y.value}
-                        height={uc2.Frame.Width.value}
-                        width={uc2.Frame.Width.value}
+                        y={uc2.frame.y.ϟvalue}
+                        x={uc2.frame.y.ϟvalue}
+                        height={uc2.frame.height.ϟvalue}
+                        width={uc2.frame.width.ϟvalue}
                      />
                      <RectPixi // final frame of the image
-                        {...uc2.Frame.value}
+                        {...uc2.frame.ϟvalue}
                      />
                      <Suspense fallback={<PixiLoadingText />}>
                         <PIXIUCLayers uc2={uc2} />

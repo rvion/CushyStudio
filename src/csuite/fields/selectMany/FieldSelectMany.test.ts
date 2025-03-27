@@ -41,20 +41,20 @@ describe('FieldSelectMany', () => {
       const S = b.selectManyString(['a', 'b', 'c'])
       const E = S.create()
 
-      expectJSON(E.value).toEqual([])
+      expectJSON(E.ϟvalue).toEqual([])
 
-      E.value = ['a']
-      expectJSON(E.value).toEqual(['a'])
+      E.ϟvalue = ['a']
+      expectJSON(E.ϟvalue).toEqual(['a'])
 
-      E.value = ['b', 'c']
-      expectJSON(E.value).toEqual(['b', 'c'])
+      E.ϟvalue = ['b', 'c']
+      expectJSON(E.ϟvalue).toEqual(['b', 'c'])
    })
 
    it('works with defaults', () => {
       const S = b.selectManyString(['a', 'b', 'c'], { default: ['a'] })
       const E = S.create()
 
-      expectJSON(E.value).toEqual(['a'])
+      expectJSON(E.ϟvalue).toEqual(['a'])
    })
 
    it('works with legacy serials', () => {
@@ -63,24 +63,24 @@ describe('FieldSelectMany', () => {
       // @ts-expect-error: legacy serial injection
       const E = S.create(serial)
 
-      expectJSON(E.value).toEqual(['b', 'c'])
+      expectJSON(E.ϟvalue).toEqual(['b', 'c'])
    })
 
    it('can be created and set from a serial', () => {
       const S = b.selectManyString(['a', 'b', 'c'], { default: ['b'] })
-      const ser1: (typeof S)['…serial'] = { $: 'selectMany', values: ['b', 'c'] }
-      const ser2: (typeof S)['…serial'] = { $: 'selectMany', values: ['a'] }
+      const ser1: (typeof S)['Ҩserial'] = { $: 'selectMany', values: ['b', 'c'] }
+      const ser2: (typeof S)['Ҩserial'] = { $: 'selectMany', values: ['a'] }
       const E = S.create(ser1)
 
-      expectJSON(E.value).toEqual(['b', 'c'])
-      expect(E.serial === ser1).toBeTruthy()
+      expectJSON(E.ϟvalue).toEqual(['b', 'c'])
+      expect(E.ϟserial === ser1).toBeTruthy()
 
-      E.setSerial(ser2)
-      expectJSON(E.value).toEqual(['a'])
-      expect(E.serial === ser2).toBeTruthy()
+      E.ϟsetSerial(ser2)
+      expectJSON(E.ϟvalue).toEqual(['a'])
+      expect(E.ϟserial === ser2).toBeTruthy()
 
-      E.setSerial({ $: 'selectMany' })
-      expectJSON(E.value).toEqual(['b'])
+      E.ϟsetSerial({ $: 'selectMany' })
+      expectJSON(E.ϟvalue).toEqual(['b'])
    })
 
    describe('isValueEqual', () => {
@@ -90,7 +90,7 @@ describe('FieldSelectMany', () => {
             const E1 = S.create()
             const E2 = S.create()
 
-            expect(E1.isValueEqual(E2)).toBeTruthy()
+            expect(E1.ϟisValueEqual(E2)).toBeTruthy()
          })
 
          it('should return true if both fields are set to the same value', () => {
@@ -98,10 +98,10 @@ describe('FieldSelectMany', () => {
             const E1 = S.create()
             const E2 = S.create()
 
-            E1.value = ['b', 'c']
-            E2.value = ['b', 'c']
+            E1.ϟvalue = ['b', 'c']
+            E2.ϟvalue = ['b', 'c']
 
-            expect(E1.isValueEqual(E2)).toBeTruthy()
+            expect(E1.ϟisValueEqual(E2)).toBeTruthy()
          })
       })
 
@@ -111,10 +111,10 @@ describe('FieldSelectMany', () => {
             const E1 = S.create()
             const E2 = S.create()
 
-            E1.value = ['b', 'c']
-            E2.value = ['a', 'b']
+            E1.ϟvalue = ['b', 'c']
+            E2.ϟvalue = ['a', 'b']
 
-            expect(E1.isValueEqual(E2)).toBeFalsy()
+            expect(E1.ϟisValueEqual(E2)).toBeFalsy()
          })
 
          it('should return false if one field is unset and the other is set', () => {
@@ -122,9 +122,9 @@ describe('FieldSelectMany', () => {
             const E1 = S.create()
             const E2 = S.create()
 
-            E1.value = ['a', 'b']
+            E1.ϟvalue = ['a', 'b']
 
-            expect(E1.isValueEqual(E2)).toBeFalsy()
+            expect(E1.ϟisValueEqual(E2)).toBeFalsy()
          })
 
          it('should return false if values are the same but in different order', () => {
@@ -132,10 +132,10 @@ describe('FieldSelectMany', () => {
             const E1 = S.create()
             const E2 = S.create()
 
-            E1.value = ['b', 'c']
-            E2.value = ['c', 'b']
+            E1.ϟvalue = ['b', 'c']
+            E2.ϟvalue = ['c', 'b']
 
-            expect(E1.isValueEqual(E2)).toBeFalsy()
+            expect(E1.ϟisValueEqual(E2)).toBeFalsy()
          })
       })
    })
@@ -146,10 +146,10 @@ describe('FieldSelectMany', () => {
          const E1 = S.create()
          const E2 = S.create()
 
-         E1.value = ['b', 'c']
-         E2.value = ['a', 'b']
+         E1.ϟvalue = ['b', 'c']
+         E2.ϟvalue = ['a', 'b']
 
-         const patches = E1.generatePatches(E2) as Patch[]
+         const patches = E1.ϟgeneratePatches(E2) as Patch[]
 
          expect(patches).toEqual([
             {
@@ -161,9 +161,9 @@ describe('FieldSelectMany', () => {
             },
          ])
 
-         E2.ܮapplyPatches(patches)
+         E2.ϟapplyPatches(patches)
 
-         expectJSON(E2.value).toEqual(['b', 'c'])
+         expectJSON(E2.ϟvalue).toEqual(['b', 'c'])
       })
 
       it('should not generate a patch for the query', () => {
@@ -171,12 +171,12 @@ describe('FieldSelectMany', () => {
          const E1 = S.create()
          const E2 = S.create()
 
-         E1.value = ['b', 'c']
+         E1.ϟvalue = ['b', 'c']
          E1.query = 'b'
-         E2.value = ['b', 'c']
+         E2.ϟvalue = ['b', 'c']
          E2.query = 'c'
 
-         const patches = E1.generatePatches(E2)
+         const patches = E1.ϟgeneratePatches(E2)
 
          expectJSON(patches).toEqual([])
       })
@@ -186,7 +186,7 @@ describe('FieldSelectMany', () => {
       describe('without a serial', () => {
          describe('without a default value', () => {
             it('should use the empty serial', () => {
-               const patchSerial = vitest.spyOn(Field_selectMany.prototype, 'patchSerial')
+               const patchSerial = vitest.spyOn(Field_selectMany.prototype, 'ϟpatchSerial')
                const S = b.selectMany_({
                   choices: ['a', 'b', 'c'],
                   getIdFromValue: (v) => v as any,
@@ -196,40 +196,40 @@ describe('FieldSelectMany', () => {
                const E = S.create()
 
                expect(patchSerial).not.toHaveBeenCalled()
-               expect(E.serial).toBe(S.defaultSerial)
+               expect(E.ϟserial).toBe(S.defaultSerial)
             })
          })
 
          describe('with a default value', () => {
             it('should use the default serial', () => {
-               const patchSerial = vitest.spyOn(Field_selectMany.prototype, 'patchSerial')
+               const patchSerial = vitest.spyOn(Field_selectMany.prototype, 'ϟpatchSerial')
                const S = b.selectManyString(['a', 'b', 'c'], { default: ['a'] })
                const E = S.create()
 
                expect(patchSerial).not.toHaveBeenCalled()
-               expect(E.serial).toBe(S.defaultSerial)
+               expect(E.ϟserial).toBe(S.defaultSerial)
             })
 
             it('should use the default serial (empty default)', () => {
-               const patchSerial = vitest.spyOn(Field_selectMany.prototype, 'patchSerial')
+               const patchSerial = vitest.spyOn(Field_selectMany.prototype, 'ϟpatchSerial')
                const S = b.selectManyString(['a', 'b', 'c'])
                const E = S.create()
 
                expect(patchSerial).not.toHaveBeenCalled()
-               expect(E.serial).toBe(S.defaultSerial)
+               expect(E.ϟserial).toBe(S.defaultSerial)
             })
          })
       })
 
       describe('with a serial', () => {
          it('should not patch the serial', () => {
-            const patchSerial = vitest.spyOn(Field_selectMany.prototype, 'patchSerial')
+            const patchSerial = vitest.spyOn(Field_selectMany.prototype, 'ϟpatchSerial')
             const S = b.selectManyString(['a', 'b', 'c'])
             const serial: Field_selectMany_serial<'a' | 'b' | 'c'> = { $: 'selectMany', values: ['b', 'c'] }
             const E = S.create(serial)
 
             expect(patchSerial).not.toHaveBeenCalled()
-            expect(E.serial).toBe(serial)
+            expect(E.ϟserial).toBe(serial)
          })
       })
    })

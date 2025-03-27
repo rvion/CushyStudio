@@ -7,7 +7,7 @@ export const WidgetString_SmallInput = obs(function WidgetStringUI_(p: {
    readonly?: boolean
 }) {
    const field = p.field
-   const config = field.config
+   const config = field.ϟconfig
 
    // prettier-ignore
    const placeholder =
@@ -16,33 +16,33 @@ export const WidgetString_SmallInput = obs(function WidgetStringUI_(p: {
         // 2. if label is specified, and is string, use it
         (typeof config.label == 'string' ? config.label : undefined) ??
         // 3. if none of the above, use mountKye
-        field.mountKey
+        field.ϟmountKey
 
    // return '🟢'
    return (
       <InputStringUI
-         tw={['w-full', field.mustDisplayErrors && 'rsx-field-error']}
-         icon={p.field.config.innerIcon}
+         tw={['w-full', field.ϟmustDisplayErrors && 'rsx-field-error']}
+         icon={p.field.ϟconfig.innerIcon}
          type={config.inputType}
          placeholder={placeholder}
          pattern={config.pattern}
          className={config.className}
-         getValue={() => field.value_or_zero}
+         getValue={() => field.ϟvalue_or_zero}
          setValue={(value) => {
-            field.value = value
+            field.ϟvalue = value
          }}
-         disabled={p.readonly ?? p.field.config.readonly}
+         disabled={p.readonly ?? p.field.ϟconfig.readonly}
          // clearable={config.clearable}
          autoResize={config.autoResize}
          buffered={
-            field.config.buffered
+            field.ϟconfig.buffered
                ? {
                     getTemporaryValue: (): string | null => field.temporaryValue,
                     setTemporaryValue: (value): void => void (field.temporaryValue = value),
                  }
                : undefined
          }
-         onBlur={() => field.ܒtouch()}
+         onBlur={() => field.ϟtouch()}
       />
    )
 })

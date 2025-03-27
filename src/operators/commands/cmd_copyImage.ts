@@ -49,7 +49,7 @@ export const cmd_copyImage_as = (format: string): Command<MediaImageL> =>
       action: (image) =>
          image.copyToClipboard_viaCanvas({
             format: format,
-            quality: form_foo.fields.quality.value,
+            quality: form_foo.ϟfields.quality.ϟvalue,
          }),
    })
 
@@ -95,6 +95,6 @@ export const menu_copyImageAs: MenuTemplate<{ image: MediaImageL }> = defineMenu
       cmd_copyImage_as_PNG.bind(p.image),
       cmd_copyImage_as_WEBP.bind(p.image),
       cmd_copyImage_as_JPG.bind(p.image),
-      form_foo.fields.quality,
+      form_foo.ϟfields.quality,
    ],
 })

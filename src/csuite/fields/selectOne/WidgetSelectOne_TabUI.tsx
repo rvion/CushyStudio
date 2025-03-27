@@ -10,10 +10,10 @@ export const WidgetSelectOne_TabUI = obs(function WidgetSelectOne_TabUI_<VALUE, 
    className?: string
 }) {
    const field = p.field
-   const selected = field.serial.val
+   const selected = field.ϟserial.val
    return (
       <div
-         style={{ justifyContent: getJustifyContent(field.config.tabPosition) }}
+         style={{ justifyContent: getJustifyContent(field.ϟconfig.tabPosition) }}
          className={p.className}
          tw={[
             //
@@ -22,7 +22,7 @@ export const WidgetSelectOne_TabUI = obs(function WidgetSelectOne_TabUI_<VALUE, 
             'select-none',
             //
 
-            (field.config.wrap ?? true) && 'flex-wrap',
+            (field.ϟconfig.wrap ?? true) && 'flex-wrap',
             'gap-x-1 gap-y-0',
          ]}
       >
@@ -38,10 +38,10 @@ export const WidgetSelectOne_TabUI = obs(function WidgetSelectOne_TabUI_<VALUE, 
                   onValueChange={(value: boolean) => {
                      if (value === isSelected) return
                      field.selectedId = c.id
-                     field.ܒtouch()
+                     field.ϟtouch()
                   }}
-                  onBlur={() => field.ܒtouch()}
-                  toggleGroup={p.field._uid}
+                  onBlur={() => field.ϟtouch()}
+                  toggleGroup={p.field.ϟuid}
                />
             )
          })}

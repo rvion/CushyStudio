@@ -8,8 +8,8 @@ import { useDelay } from './useDelay'
 export const TooltipUI = obs(function TooltipUI_(p: {}) {
    const shellRef = useRef<HTMLDivElement>(null)
    const preferences = cushy.preferences
-   const conf = preferences.interface.value.tooltipDelay
-   const theme = preferences.theme.value
+   const conf = preferences.interface.ϟvalue.tooltipDelay
+   const theme = preferences.theme.ϟvalue
 
    const tooltip = tooltipStuff.deepest
    const isDelayed = useDelay(conf, [tooltip, conf])

@@ -10,24 +10,24 @@ import { Field } from './Field'
 type Field_dummy_serial = { $: string; value?: string; deepValue?: { str: string; num: number } }
 
 interface Field_dummy extends Field {
-   ['…type']: any
-   ['…ownConfig']: {}
-   ['…ownSerial']: Field_dummy_serial
-   ['…value']: string
-   ['…setvalue']: string
-   ['…unchecked']: Maybe<string>
-   ['…child']: never
-   ['…opts']: unknown
-   ['…ownPatch']: Patch
+   ['Ҩtype']: any
+   ['ҨownConfig']: {}
+   ['ҨownSerial']: Field_dummy_serial
+   ['Ҩvalue']: string
+   ['Ҩsetvalue']: string
+   ['Ҩunchecked']: Maybe<string>
+   ['Ҩchild']: never
+   ['Ҩopts']: unknown
+   ['ҨownPatch']: Patch
 }
 
 class Field_dummy extends Field {
    static readonly codeForTypescriptValue = (): string => '0'
    static readonly patchedSerialPaths: readonly string[] = Object.freeze(['value'])
    static generateSerial(
-      value: Maybe<Field_dummy['…value']>,
-      config: Field_dummy['…config'],
-   ): Field_dummy['…serial'] {
+      value: Maybe<Field_dummy['Ҩvalue']>,
+      config: Field_dummy['Ҩconfig'],
+   ): Field_dummy['Ҩserial'] {
       if (value == null) return this.unsetSerial
 
       return {
@@ -36,39 +36,39 @@ class Field_dummy extends Field {
       }
    }
 
-   override get value(): string {
-      return this.value_or_fail
+   override get ϟvalue(): string {
+      return this.ϟvalue_or_fail
    }
-   set value(value: string) {
-      this.ܮpatchInTransaction((draft) => {
+   set ϟvalue(value: string) {
+      this.ϟpatchInTransaction((draft) => {
          draft.value = value
       })
    }
 
-   override get value_or_fail(): string {
-      if (this.value_unchecked == null) throw new Error('Fail')
-      return this.value_unchecked
+   override get ϟvalue_or_fail(): string {
+      if (this.ϟvalue_unchecked == null) throw new Error('Fail')
+      return this.ϟvalue_unchecked
    }
-   override get value_or_zero(): string {
-      return this.value_unchecked ?? ''
+   override get ϟvalue_or_zero(): string {
+      return this.ϟvalue_unchecked ?? ''
    }
-   override get value_unchecked(): Maybe<string> {
-      return this.serial.value
+   override get ϟvalue_unchecked(): Maybe<string> {
+      return this.ϟserial.value
    }
 
-   override isValueEqual(other: Field): boolean {
-      return this.value_unchecked === other.value_unchecked
+   override ϟisValueEqual(other: Field): boolean {
+      return this.ϟvalue_unchecked === other.ϟvalue_unchecked
    }
-   protected override setOwnSerial(serial: Field_dummy_serial): void {
-      this.ܮassignNewSerial(serial)
+   protected override ϟsetOwnSerial(serial: Field_dummy_serial): void {
+      this.ϟassignNewSerial(serial)
    }
-   override get hasChanges(): boolean {
+   override get ϟhasChanges(): boolean {
       return true
    }
-   override ownTypeSpecificProblems: Problem_Ext
-   override ownConfigSpecificProblems: Problem_Ext
-   override get isOwnSet(): boolean {
-      return this.value_unchecked !== undefined
+   override ϟownTypeSpecificProblems: Problem_Ext
+   override ϟownConfigSpecificProblems: Problem_Ext
+   override get ϟisOwnSet(): boolean {
+      return this.ϟvalue_unchecked !== undefined
    }
    static readonly type = 'dummy'
    private static readonly unsetSerial = { $: 'dummy' }
@@ -98,10 +98,10 @@ describe('Field', () => {
          const field1 = schema.create()
          const field2 = schema.create()
 
-         field1.value = 'abc'
-         field2.value = 'abc'
+         field1.ϟvalue = 'abc'
+         field2.ϟvalue = 'abc'
 
-         const patches = field1.generatePatches(field2)
+         const patches = field1.ϟgeneratePatches(field2)
          expect(patches).toEqual([])
       })
 
@@ -110,10 +110,10 @@ describe('Field', () => {
          const field1 = schema.create()
          const field2 = schema.create()
 
-         field1.value = 'abc'
-         field2.value = 'def'
+         field1.ϟvalue = 'abc'
+         field2.ϟvalue = 'def'
 
-         const patches = field1.generatePatches(field2) as Patch[]
+         const patches = field1.ϟgeneratePatches(field2) as Patch[]
          expect(patches).toEqual([
             {
                op: 'replace',
@@ -130,9 +130,9 @@ describe('Field', () => {
          const field1 = schema.create()
          const field2 = schema.create()
 
-         field2.value = 'def'
+         field2.ϟvalue = 'def'
 
-         const patches = field1.generatePatches(field2) as Patch[]
+         const patches = field1.ϟgeneratePatches(field2) as Patch[]
          expect(patches).toEqual([
             {
                op: 'remove',
@@ -148,9 +148,9 @@ describe('Field', () => {
          const field1 = schema.create()
          const field2 = schema.create()
 
-         field1.value = 'abc'
+         field1.ϟvalue = 'abc'
 
-         const patches = field1.generatePatches(field2) as Patch[]
+         const patches = field1.ϟgeneratePatches(field2) as Patch[]
          expect(patches).toEqual([
             {
                op: 'add',
@@ -168,7 +168,7 @@ describe('Field', () => {
          it('should replace the serial with the new one', () => {
             const schema = dummy()
             const field = schema.create()
-            field.value = 'abc'
+            field.ϟvalue = 'abc'
             const patches: Patch[] = [
                {
                   op: 'replace',
@@ -179,15 +179,15 @@ describe('Field', () => {
                },
             ]
 
-            field.ܮapplyPatches(patches)
+            field.ϟapplyPatches(patches)
 
-            expect(field.value).toBe('def')
+            expect(field.ϟvalue).toBe('def')
          })
 
          it('should not apply the patch if the path is different', () => {
             const schema = dummy()
             const field = schema.create()
-            field.value = 'abc'
+            field.ϟvalue = 'abc'
             const patches: Patch[] = [
                {
                   op: 'replace',
@@ -198,9 +198,9 @@ describe('Field', () => {
                },
             ]
 
-            field.ܮapplyPatches(patches)
+            field.ϟapplyPatches(patches)
 
-            expect(field.value).toBe('abc')
+            expect(field.ϟvalue).toBe('abc')
          })
       })
 
@@ -208,7 +208,7 @@ describe('Field', () => {
          it('should unset the value if the patch is a remove', () => {
             const schema = dummy()
             const field = schema.create()
-            field.value = 'abc'
+            field.ϟvalue = 'abc'
             const patches: Patch[] = [
                {
                   op: 'remove',
@@ -218,9 +218,9 @@ describe('Field', () => {
                },
             ]
 
-            field.ܮapplyPatches(patches)
+            field.ϟapplyPatches(patches)
 
-            expect(field.serial.value).toBeUndefined()
+            expect(field.ϟserial.value).toBeUndefined()
          })
       })
 
@@ -228,7 +228,7 @@ describe('Field', () => {
          it('should set the value if the patch is an add and the value is unset', () => {
             const schema = dummy()
             const field = schema.create()
-            field.value = 'abc'
+            field.ϟvalue = 'abc'
             const patches: Patch[] = [
                {
                   op: 'add',
@@ -239,16 +239,16 @@ describe('Field', () => {
                },
             ]
 
-            field.ܮapplyPatches(patches)
+            field.ϟapplyPatches(patches)
 
-            expect(field.value).toBe('def')
+            expect(field.ϟvalue).toBe('def')
          })
 
          // 🔶 this is questionnable
          it('should set the value if the patch is an add and the value is set', () => {
             const schema = dummy()
             const field = schema.create()
-            field.value = 'abc'
+            field.ϟvalue = 'abc'
             const patches: Patch[] = [
                {
                   op: 'add',
@@ -259,11 +259,11 @@ describe('Field', () => {
                },
             ]
 
-            field.value = 'ghi'
+            field.ϟvalue = 'ghi'
 
-            field.ܮapplyPatches(patches)
+            field.ϟapplyPatches(patches)
 
-            expect(field.value).toBe('def')
+            expect(field.ϟvalue).toBe('def')
          })
       })
    })

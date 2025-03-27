@@ -15,7 +15,7 @@ export const WidgetSelectMany_TabUI = obs(function WidgetSelectMany_TabUI_<VALUE
       <div>
          <div
             tw='flex select-none flex-wrap gap-x-0.5 gap-y-0 rounded'
-            style={{ justifyContent: getJustifyContent(field.config.tabPosition) }}
+            style={{ justifyContent: getJustifyContent(field.ϟconfig.tabPosition) }}
          >
             {p.field.options.map((option) => {
                const isSelected = field.selectedKeys.includes(option.id)
@@ -28,10 +28,10 @@ export const WidgetSelectMany_TabUI = obs(function WidgetSelectMany_TabUI_<VALUE
                      text={option.label ?? makeLabelFromPrimitiveValue(option.id)}
                      onValueChange={(value) => {
                         if (value != isSelected) field.toggleId(option.id)
-                        field.ܒtouch()
+                        field.ϟtouch()
                      }}
-                     onBlur={() => field.ܒtouch()}
-                     toggleGroup={p.field._uid}
+                     onBlur={() => field.ϟtouch()}
+                     toggleGroup={p.field.ϟuid}
                   />
                )
             })}
@@ -49,10 +49,10 @@ export const WidgetSelectMany_TabUI = obs(function WidgetSelectMany_TabUI_<VALUE
                      text={makeLabelFromPrimitiveValue(missingId)}
                      onValueChange={(value) => {
                         field.toggleId(missingId)
-                        field.ܒtouch()
+                        field.ϟtouch()
                      }}
-                     onBlur={() => field.ܒtouch()}
-                     toggleGroup={p.field._uid}
+                     onBlur={() => field.ϟtouch()}
+                     toggleGroup={p.field.ϟuid}
                   />
                ))}
          </div>

@@ -14,13 +14,13 @@ import { UCMenuLayerEntryUI } from './UCMenuLayerEntryUI'
 export const UCMenuUI = obs(function UCMenuUI_(p: {}) {
    const uc1 = useUnifiedCanvas()
    const ucv2 = useUCV2()
-   const layers = ucv2._.layers
-   const masks = ucv2._.masks.items
+   const layers = ucv2.ϟfields.layers
+   const masks = ucv2.ϟfields.masks.items
 
    const [dropStyle2, dropRef2] = useImageDrop(cushy, (img) => {
       // TODO: move as method once setup with custom classes finished
       // canvas.addMask(img)
-      ucv2._.masks.push({
+      ucv2.ϟfields.masks.push({
          image: img,
          visible: true,
          name: 'masky-mac-mask-face',
@@ -41,7 +41,7 @@ export const UCMenuUI = obs(function UCMenuUI_(p: {}) {
                      onClick={() => {
                         const lastActiveDraft = cushy.db.draft.last()
                         if (lastActiveDraft == null) return toastError('No active draft')
-                        ucv2.Layers.addItem({
+                        ucv2.layers.addItem({
                            valueExt: {
                               name: 'new layer',
                               placement: mkPlacement({ x: 0, y: 0 }),
@@ -64,7 +64,7 @@ export const UCMenuUI = obs(function UCMenuUI_(p: {}) {
                >
                   <div /* SortableList */ className='list' tw='flex flex-col gap-2'>
                      {layers.items.map((layer, i) => {
-                        return layer.Content.matchExhaustive({
+                        return layer.content.matchExhaustive({
                            image: () => (
                               <UCMenuLayerEntryUI //
                                  active={layer === uc1.activeLayer}
@@ -80,26 +80,26 @@ export const UCMenuUI = obs(function UCMenuUI_(p: {}) {
                                  index={i}
                                  onClick={() => {
                                     uc1.activeLayer = layer
-                                    cushy.layout.open('Draft', { draftID: x.DraftId.value.id })
+                                    cushy.layout.open('Draft', { draftID: x.draftId.ϟvalue.id })
                                  }}
                                  body={
-                                    x.DraftId.value_unchecked?.id && (
+                                    x.draftId.ϟvalue_unchecked?.id && (
                                        <UCDraftImagePickerHorizontalUI
                                           size={32}
-                                          onCLick={(img) => (x.Image.value = img)}
-                                          draftID={x.DraftId.value_unchecked.id}
+                                          onCLick={(img) => (x.image.ϟvalue = img)}
+                                          draftID={x.draftId.ϟvalue_unchecked.id}
                                        />
                                     )
                                  }
                                  children={
                                     <>
                                        <div tw='flex gap-0.5'>
-                                          <x.DraftId.UI Shell={ShellInputOnly} className='flex-1' />
+                                          <x.draftId.UI Shell={ShellInputOnly} className='flex-1' />
                                           {/* <Button icon={IKONS.mdiCursorMove} /> */}
                                           <Button
                                              icon={IKONS.mdiPlay}
                                              onClick={() => {
-                                                const draft = cushy.db.draft.get(x.DraftId.value.id)
+                                                const draft = cushy.db.draft.get(x.draftId.ϟvalue.id)
                                                 if (!draft) return toastError('Draft not found')
                                                 draft.start({
                                                    /* context */
@@ -112,8 +112,8 @@ export const UCMenuUI = obs(function UCMenuUI_(p: {}) {
                                                 const newLayer = layers.duplicateItemAtIndex(i)
                                                 if (newLayer == null)
                                                    return toastError('Failed to duplicate layer')
-                                                newLayer.Content.matchAll({
-                                                   aiGeneration: (x) => x.Image.setActive(false),
+                                                newLayer.content.matchAll({
+                                                   aiGeneration: (x) => x.image.setActive(false),
                                                 })
                                                 // should create a copy of that layer, below, without any image selected
                                              }}
@@ -138,7 +138,7 @@ export const UCMenuUI = obs(function UCMenuUI_(p: {}) {
                      onClick={() => {
                         const lastActiveDraft = cushy.db.draft.last()
                         if (lastActiveDraft == null) return toastError('No active draft')
-                        ucv2.Masks.addItem({
+                        ucv2.masks.addItem({
                            valueExt: {
                               name: 'new layer',
                               placement: mkPlacement({ x: 0, y: 0 }),

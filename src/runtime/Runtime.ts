@@ -197,7 +197,7 @@ export class Runtime<FIELD extends Field = any> {
     * the main value sent to your app as context.
     * Most apps only need this value.
     */
-   formResult!: FIELD['…value']
+   formResult!: FIELD['Ҩvalue']
 
    /**
     * the extended json form value including internal state
@@ -206,7 +206,7 @@ export class Runtime<FIELD extends Field = any> {
     *      - use the ids for dynamic references
     *      - do something based on if some fields are folded
     * */
-   formSerial!: FIELD['…serial']
+   formSerial!: FIELD['Ҩserial']
 
    /**
     * the live form instance;
@@ -329,7 +329,7 @@ export class Runtime<FIELD extends Field = any> {
    }): Promise<RuntimeExecutionResult> => {
       const start = Date.now()
       const executable = this.step.executable
-      const formResult = p.formInstance.value
+      const formResult = p.formInstance.ϟvalue
       // const appFormInput = this.step.data.formResult
       const appFormSerial = this.step.data.formSerial.values_
       this.formResult = formResult as any

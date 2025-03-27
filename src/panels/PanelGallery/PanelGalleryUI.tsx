@@ -21,7 +21,7 @@ export const PanelGalleryUI = obs(function PanelGalleryUI_(p: PanelGalleryProps)
    return (
       <UI.Panel //
          className={p.className}
-         style={{ background: conf.value.galleryBgColor ?? undefined }}
+         style={{ background: conf.ϟvalue.galleryBgColor ?? undefined }}
       >
          <UI.Panel.Header>
             <SpacerUI />

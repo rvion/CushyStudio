@@ -15,14 +15,14 @@ export type WidgetLabelCaretProps = {
 export const WidgetLabelCaretUI = obs(function WidgetLabelCaretUI_(p: Z.UIProps & WidgetLabelCaretProps) {
    // (bird_d): This is always true in cushy, does not have an option.
    // if (!preferences.interface.value.widgetshowExpandCarets) return null
-   if (p.field.parent == null) return null
+   if (p.field.ϟparent == null) return null
 
    const isProbablyCollapsible = p.Body != null
    // if (!isProbablyCollapsible) return <>🟢</>
    // return typeof p.Body
    // return <p.Body {...p} />
    // return p.Body ? '🟢' : '🔴' + Object.keys(p).join(', ')
-   if (!p.field.isCollapsed && !isProbablyCollapsible) {
+   if (!p.field.ϟisCollapsed && !isProbablyCollapsible) {
       const showPlaceholder = p.placeholder ?? true
       if (showPlaceholder) return <WidgetLabelCaretPlaceholderUI className={p.caretClassName} />
       return null
@@ -31,7 +31,7 @@ export const WidgetLabelCaretUI = obs(function WidgetLabelCaretUI_(p: Z.UIProps 
       <WidgetLabelCaretAlwaysUI //
          tw='text-sm'
          className={p.caretClassName}
-         isCollapsed={p.field.isCollapsed}
+         isCollapsed={p.field.ϟisCollapsed}
       />
    )
 })

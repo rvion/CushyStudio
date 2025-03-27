@@ -37,9 +37,9 @@ describe('FieldGroup', () => {
       })
       // )
       const E = S.create()
-      expectJSON(E.value).toEqual({ a: [] })
-      E.set({ a: ['a', null, 'c'] })
-      expectJSON(E.value).toEqual({
+      expectJSON(E.ϟvalue).toEqual({ a: [] })
+      E.ϟset({ a: ['a', null, 'c'] })
+      expectJSON(E.ϟvalue).toEqual({
          a: [{ lable: 'a', uid: 'a' }, null, { lable: 'c', uid: 'c' }],
       })
    })
@@ -51,7 +51,7 @@ describe('FieldGroup', () => {
          },
          { default: { num: 20, str: 'B' } },
       )
-      expectJSON(S1.create().value).toEqual({ num: 20, str: 'B' })
+      expectJSON(S1.create().ϟvalue).toEqual({ num: 20, str: 'B' })
       const S2 = b.fields(
          {
             x: b.number({ default: 10 }),
@@ -64,7 +64,7 @@ describe('FieldGroup', () => {
          },
          { default: { x: 20, xx: { y: 'B', yy: { z: true } } } },
       )
-      expectJSON(S2.create().value).toEqual({ x: 20, xx: { y: 'B', yy: { z: true } } })
+      expectJSON(S2.create().ϟvalue).toEqual({ x: 20, xx: { y: 'B', yy: { z: true } } })
       // TODO: move that elsewhere
       // const S2 = b.int().list({ default: [1, 2, 3] })
       // expectJSON(S2.create().value).toEqual([1, 2, 3])
@@ -77,10 +77,10 @@ describe('FieldGroup', () => {
       })
 
       const __serial = undefined // { $: 'group', values_: { num: { $: 'number' }, str: { $: 'str' } } }
-      const _acknowledgeNewChildSerial = vitest.spyOn(Field_group.prototype, 'ܮacknowledgeNewChildSerial')
+      const _acknowledgeNewChildSerial = vitest.spyOn(Field_group.prototype, 'ϟacknowledgeNewChildSerial')
       const E1 = S1.create(__serial)
-      expect(E1._.num.serial).toEqual({ $: 'number' })
-      expect(E1.serial).toEqual({
+      expect(E1.ϟfields.num.ϟserial).toEqual({ $: 'number' })
+      expect(E1.ϟserial).toEqual({
          $: 'group',
          values_: {
             num: { $: 'number' },
@@ -97,7 +97,7 @@ describe('FieldGroup', () => {
          }),
       })
       const E1 = S1.create()
-      expect(E1._.baz._.qux).toEqual(E1.fields.baz.fields.qux)
+      expect(E1.ϟfields.baz.ϟfields.qux).toEqual(E1.ϟfields.baz.ϟfields.qux)
       // |      ^   ^
       // |     capital letter automatically added the the field
       // |
@@ -121,7 +121,7 @@ describe('FieldGroup', () => {
          // expect(Object.keys(E1Ann).length).toBeGreaterThan(100)
          expect(isObservableProp(E1, 'id')).toBe(false)
          expect(isObservableProp(E1, 'schema')).toBe(false)
-         expect(E1.numFields).toBe(0)
+         expect(E1.ϟnumFields).toBe(0)
          expect(E1.constructor).toBe(Field_group)
          expect(isObservableProp(E1, 'numFields')).toBe(true)
 
@@ -131,7 +131,7 @@ describe('FieldGroup', () => {
          // expect(Object.keys(E2Ann).length).toBeGreaterThan(100)
          expect(isObservableProp(E2, 'id')).toBe(false)
          expect(isObservableProp(E2, 'schema')).toBe(false)
-         expect(E2.numFields).toBe(0)
+         expect(E2.ϟnumFields).toBe(0)
          expect(E2.constructor).toBe(Field_group)
          expect(isObservableProp(E2, 'numFields')).toBe(true)
 
@@ -170,27 +170,27 @@ describe('FieldGroup', () => {
          }
 
          const E1 = S1.create(ser1)
-         expect(E1.value).toEqual({ num: 10, str: 'A' })
-         expect(E1.serial === ser1).toBeTruthy()
+         expect(E1.ϟvalue).toEqual({ num: 10, str: 'A' })
+         expect(E1.ϟserial === ser1).toBeTruthy()
          // expect(E1.__version__).toBe(1)
          // expect(E1._.num.__version__).toBe(1)
          // expect(E1._.str.__version__).toBe(1)
 
-         E1.setSerial(ser2)
-         expect(E1.value).toEqual({ num: 20, str: 'B' })
-         expect(E1.serial === ser2).toBeTruthy()
+         E1.ϟsetSerial(ser2)
+         expect(E1.ϟvalue).toEqual({ num: 20, str: 'B' })
+         expect(E1.ϟserial === ser2).toBeTruthy()
          // expect(E1.__version__).toBe(2)
          // expect(E1._.num.__version__).toBe(2)
          // expect(E1._.str.__version__).toBe(2)
 
-         E1.setSerial(ser2)
-         E1.setSerial(ser2)
-         E1.setSerial(ser2)
-         E1.setSerial(ser2)
+         E1.ϟsetSerial(ser2)
+         E1.ϟsetSerial(ser2)
+         E1.ϟsetSerial(ser2)
+         E1.ϟsetSerial(ser2)
          // expect(E1.__version__).toBe(2)
          // expect(E1._.num.__version__).toBe(2)
 
-         E1.value.num = 30
+         E1.ϟvalue.num = 30
          // expect(E1.__version__).toBe(3) // <- changed
          // expect(E1._.num.__version__).toBe(3)
          // expect(E1._.str.__version__).toBe(2) // <- not changed
@@ -211,7 +211,7 @@ describe('FieldGroup', () => {
                })
                .create()
 
-            expect(field.isValueEqual(field2)).toBe(true)
+            expect(field.ϟisValueEqual(field2)).toBe(true)
          })
 
          it('should return true if both fields are equal', () => {
@@ -220,15 +220,15 @@ describe('FieldGroup', () => {
                   title: b.string({}),
                })
                .create()
-            field.value.title = 'One'
+            field.ϟvalue.title = 'One'
             const field2 = b
                .fields({
                   title: b.string({}),
                })
                .create()
-            field2.value.title = 'One'
+            field2.ϟvalue.title = 'One'
 
-            expect(field.isValueEqual(field2)).toBe(true)
+            expect(field.ϟisValueEqual(field2)).toBe(true)
          })
 
          it('should return true if values are equal but fields are declared in a different order', () => {
@@ -238,18 +238,18 @@ describe('FieldGroup', () => {
                   description: b.string({}),
                })
                .create()
-            field.value.title = 'One'
-            field.value.description = 'DESCRIPTION'
+            field.ϟvalue.title = 'One'
+            field.ϟvalue.description = 'DESCRIPTION'
             const field2 = b
                .fields({
                   description: b.string({}),
                   title: b.string({}),
                })
                .create()
-            field2.value.title = 'One'
-            field2.value.description = 'DESCRIPTION'
+            field2.ϟvalue.title = 'One'
+            field2.ϟvalue.description = 'DESCRIPTION'
 
-            expect(field.isValueEqual(field2)).toBe(true)
+            expect(field.ϟisValueEqual(field2)).toBe(true)
          })
       })
 
@@ -260,15 +260,15 @@ describe('FieldGroup', () => {
                   title: b.string({}),
                })
                .create()
-            field.value.title = 'One'
+            field.ϟvalue.title = 'One'
             const field2 = b
                .fields({
                   title: b.string({}),
                })
                .create()
-            field2.value.title = 'Two'
+            field2.ϟvalue.title = 'Two'
 
-            expect(field.isValueEqual(field2)).toBe(false)
+            expect(field.ϟisValueEqual(field2)).toBe(false)
          })
 
          it('should return false if keys are different', () => {
@@ -277,15 +277,15 @@ describe('FieldGroup', () => {
                   title: b.string({}),
                })
                .create()
-            field.value.title = 'One'
+            field.ϟvalue.title = 'One'
             const field2 = b
                .fields({
                   title2: b.string({}),
                })
                .create()
-            field2.value.title2 = 'One'
+            field2.ϟvalue.title2 = 'One'
 
-            expect(field.isValueEqual(field2 as any)).toBe(false)
+            expect(field.ϟisValueEqual(field2 as any)).toBe(false)
          })
 
          it('should return false if there is a missing key', () => {
@@ -294,16 +294,16 @@ describe('FieldGroup', () => {
                   title: b.string({}),
                })
                .create()
-            field.value.title = 'One'
+            field.ϟvalue.title = 'One'
             const field2 = b
                .fields({
                   title: b.string({}),
                   title2: b.string({}),
                })
                .create()
-            field2.value.title = 'One'
+            field2.ϟvalue.title = 'One'
 
-            expect(field.isValueEqual(field2 as any)).toBe(false)
+            expect(field.ϟisValueEqual(field2 as any)).toBe(false)
          })
 
          it('should return false if types are different', () => {
@@ -312,11 +312,11 @@ describe('FieldGroup', () => {
                   title: b.string({}),
                })
                .create()
-            field.value.title = 'One'
+            field.ϟvalue.title = 'One'
             const field2 = b.string().create()
-            field2.value = 'One'
+            field2.ϟvalue = 'One'
 
-            expect(field.isValueEqual(field2 as any)).toBe(false)
+            expect(field.ϟisValueEqual(field2 as any)).toBe(false)
          })
       })
    })
@@ -331,20 +331,20 @@ describe('FieldGroup', () => {
          })
 
          const field1 = schema.create()
-         field1.value.title = 'One'
-         field1.value.description = 'DESCRIPTION'
+         field1.ϟvalue.title = 'One'
+         field1.ϟvalue.description = 'DESCRIPTION'
 
          const field2 = schema.create()
-         field2.value.title = 'Two'
-         field2.value.description = 'DESCRIPTION'
+         field2.ϟvalue.title = 'Two'
+         field2.ϟvalue.description = 'DESCRIPTION'
 
-         const patches = field1.generatePatches(field2)
+         const patches = field1.ϟgeneratePatches(field2)
 
-         field2.value.description = 'DESCRIPTION MODIFIED'
-         field2.ܮapplyPatches(patches)
+         field2.ϟvalue.description = 'DESCRIPTION MODIFIED'
+         field2.ϟapplyPatches(patches)
 
-         expect(field2.value.title).toBe('One')
-         expect(field2.value.description).toBe('DESCRIPTION MODIFIED')
+         expect(field2.ϟvalue.title).toBe('One')
+         expect(field2.ϟvalue.description).toBe('DESCRIPTION MODIFIED')
       })
    })
 
@@ -358,7 +358,7 @@ describe('FieldGroup', () => {
 
             const field = schema.create()
 
-            expect(field.serial).toBe(schema.defaultSerial)
+            expect(field.ϟserial).toBe(schema.defaultSerial)
          })
       })
 
@@ -379,7 +379,7 @@ describe('FieldGroup', () => {
 
             const field = schema.create()
 
-            expect(field.serial).toBe(schema.defaultSerial)
+            expect(field.ϟserial).toBe(schema.defaultSerial)
          })
       })
    })

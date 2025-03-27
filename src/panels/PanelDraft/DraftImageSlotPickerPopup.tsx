@@ -32,7 +32,7 @@ export const DraftImageSlotPickerUI = obs(function DraftImageSlotPickerUI_({
 }) {
    const imageFields = useMemo(() => {
       const allImageFields: Field_image[] = []
-      draft.form?.['→traverseAllDepthFirst']((f) => {
+      draft.form?.ϟtraverseAllDepthFirst((f) => {
          if (isFieldImage(f)) allImageFields.push(f)
       })
       return allImageFields
@@ -45,17 +45,17 @@ export const DraftImageSlotPickerUI = obs(function DraftImageSlotPickerUI_({
          {imageFields.map((imgField, i) => {
             let addDivider = false
 
-            const parentPath = imgField.path.split('.')
+            const parentPath = imgField.ϟpath.split('.')
             while (parentPath.length > 3) {
                parentPath.pop()
             }
 
-            const topParent = draft.form?.getFieldAt(parentPath.join('.'))
+            const topParent = draft.form?.ϟgetFieldAt(parentPath.join('.'))
 
             console.log('[FD]: FEF: ', topParent)
 
-            if (lastParent != topParent?.config.label) {
-               lastParent = topParent?.config.label
+            if (lastParent != topParent?.ϟconfig.label) {
+               lastParent = topParent?.ϟconfig.label
                if (i != 0) {
                   addDivider = true
                }
@@ -69,9 +69,9 @@ export const DraftImageSlotPickerUI = obs(function DraftImageSlotPickerUI_({
                         borderless
                         icon={
                            (!i || addDivider) && topParent //
-                              ? typeof topParent.config.icon === 'function'
-                                 ? topParent.config.icon(topParent)
-                                 : topParent.config.icon
+                              ? typeof topParent.ϟconfig.icon === 'function'
+                                 ? topParent.ϟconfig.icon(topParent)
+                                 : topParent.ϟconfig.icon
                               : IKONS.mdiChevronRight
                         }
                         expand
@@ -80,14 +80,14 @@ export const DraftImageSlotPickerUI = obs(function DraftImageSlotPickerUI_({
                         // tooltip={imgField.config.tooltip ?? '' + '\n' + imgField.path}
                         // tw='flex-1 w-full'
                         onClick={() => {
-                           imgField.value = image
+                           imgField.ϟvalue = image
                            // cushy.showConfettiAndBringFun()
                            stop()
                         }}
                      >
-                        {(!i || addDivider) && topParent ? `${topParent.config.label}: ` : ''}
-                        {formatFieldPath(imgField.path)}
-                        <span tw='ml-5 flex-1 text-right opacity-50'>{imgField.labelText}</span>
+                        {(!i || addDivider) && topParent ? `${topParent.ϟconfig.label}: ` : ''}
+                        {formatFieldPath(imgField.ϟpath)}
+                        <span tw='ml-5 flex-1 text-right opacity-50'>{imgField.ϟlabelText}</span>
                      </Button>
                   </div>
                </>

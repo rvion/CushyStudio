@@ -7,7 +7,7 @@ import { CreateAppPopupUI } from '../../panels/PanelWelcome/CreateAppBtnUI'
 import { AppDraftsQuickListUI } from './AppDraftsQuickListUI'
 
 export const FavBarUI = obs(function FavBarUI_(p: { direction?: 'row' | 'column' }) {
-   const conf = cushy.preferences.interface.value.favBar
+   const conf = cushy.preferences.interface.ϟvalue.favBar
    // 💬 2024-09-29 rvion:
    // | temporarilly always display the favbar
    // |
@@ -22,7 +22,7 @@ export const FavBarUI = obs(function FavBarUI_(p: { direction?: 'row' | 'column'
    return (
       <>
          <Frame //
-            base={cushy.preferences.theme.value.appbar ?? { contrast: -0.077 }}
+            base={cushy.preferences.theme.ϟvalue.appbar ?? { contrast: -0.077 }}
             tw='flex overflow-auto px-1'
             // style={{ width: `${size + 20}px` }}
          >
@@ -158,7 +158,7 @@ export const FavBarUI = obs(function FavBarUI_(p: { direction?: 'row' | 'column'
                         <Frame
                            border={20}
                            tooltip={app.name}
-                           roundness={cushy.preferences.theme.value.global.roundness}
+                           roundness={cushy.preferences.theme.ϟvalue.global.roundness}
                            key={app.id}
                            style={{ width: tempSize, height: tempSize }}
                            tw='flex overflow-clip object-contain'

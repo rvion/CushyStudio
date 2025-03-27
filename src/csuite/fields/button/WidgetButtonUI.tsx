@@ -16,18 +16,18 @@ export const WidgetButtonUI = obs(function WidgetButtonUI_<K extends any>(p: {
       <Button
          look={p.look}
          className='self-start'
-         icon={p.field.icon}
-         expand={p.field.config.expand}
-         suffixIcon={p.field.value_unchecked ? IKONS.mdiCheck : IKONS._}
+         icon={p.field.ϟicon}
+         expand={p.field.ϟconfig.expand}
+         suffixIcon={p.field.ϟvalue_unchecked ? IKONS.mdiCheck : IKONS._}
          onClick={() =>
             runInAction(() => {
                p.onClick?.()
                p.field.toggle()
-               p.field.ܒtouch()
+               p.field.ϟtouch()
             })
          }
       >
-         {p.field.config.text ?? `Run`}
+         {p.field.ϟconfig.text ?? `Run`}
       </Button>
    )
 })

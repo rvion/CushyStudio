@@ -13,16 +13,16 @@ export class DisplacementState {
       //
       shader: THREE.WebGLProgramParametersWithUniforms,
       // mat: any,
-      cutout: { value: number },
-      removeBackground: { value: number },
+      cutout: { ϟvalue: number },
+      removeBackground: { ϟvalue: number },
       // val: number,
       // shader: THREE.ShaderMaterial,
       // cutout: any,
    ) => {
       console.log(`[🧐] mat1`, cutout)
       // console.log(`[🧐] mat2`, mat.userData.cutout)
-      shader.uniforms.cutout = cutout // mat.userData.cutout //{ value: 0.3 }
-      shader.uniforms.removeBackground = removeBackground
+      shader.uniforms.cutout = { value: cutout } // mat.userData.cutout //{ value: 0.3 }
+      shader.uniforms.removeBackground = { value: removeBackground }
 
       // shader.uniforms.cutout = mat.userData.cutout
       shader.vertexShader = shader.vertexShader

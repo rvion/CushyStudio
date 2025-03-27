@@ -24,11 +24,11 @@ export const WidgetSelectOne_SelectUI = obs(function WidgetSelectOne_SelectUI_<
          <SelectUI<OPTION>
             // 💬 2024-09-16 rvion: still necessary ?
             // | probably not; todo: remove
-            key={field._uid}
+            key={field.ϟuid}
             // 💬 2024-09-16 rvion: weird/tmporary class name here
             // | this is just so we outline the input with a red border
             //                                                                     VVVVVVVVVVVVVVVVV
-            tw={[field.ownTypeSpecificProblems && !field.isInsideDisabledBranch && 'rsx-field-error']}
+            tw={[field.ϟownTypeSpecificProblems && !field.ϟisInsideDisabledBranch && 'rsx-field-error']}
             // 💬 2024-09-16 rvion:
             // | since 2024-09-12, we can't use the value anymore
             // | since the value may not be set anymore, we need to use
@@ -37,30 +37,30 @@ export const WidgetSelectOne_SelectUI = obs(function WidgetSelectOne_SelectUI_<
             value={() => field.selectedOption_unchecked}
             options={() => field.options}
             getLabelText={(t): string => {
-               if (t == null) return field.config.placeholder ?? '(Empty)'
+               if (t == null) return field.ϟconfig.placeholder ?? '(Empty)'
                return t.label ?? makeLabelFromPrimitiveValue(t.id)
             }}
             //
-            OptionLabelUI={field.config.OptionLabelUI}
+            OptionLabelUI={field.ϟconfig.OptionLabelUI}
             getSearchQuery={() => field.query}
             setSearchQuery={(query) => (field.query = query)}
-            disableLocalFiltering={field.config.disableLocalFiltering}
+            disableLocalFiltering={field.ϟconfig.disableLocalFiltering}
             equalityCheck={(a, b) => a?.id === b?.id}
-            placeholder={field.config.placeholder}
-            readonly={field.config.readonly}
-            slotAnchorContentUI={field.config.SlotAnchorContentUI}
+            placeholder={field.ϟconfig.placeholder}
+            readonly={field.ϟconfig.readonly}
+            slotAnchorContentUI={field.ϟconfig.SlotAnchorContentUI}
             onCleared={
-               field.canBeToggledWithinParent
+               field.ϟcanBeToggledWithinParent
                   ? (): void => {
-                       field.disableSelfWithinParent()
-                       field.ܒtouch()
+                       field.ϟdisableSelfWithinParent()
+                       field.ϟtouch()
                        p.selectProps?.onCleared?.()
                     }
                   : undefined
             }
             onOptionToggled={(option) => {
                console.log(`[🤠] option`, option, field.selectedId, option?.id === field.selectedId)
-               field.ܒtouch()
+               field.ϟtouch()
                if (option == null || field.selectedId === option.id) return field.unset()
                field.selectedId = option.id
             }}
@@ -68,7 +68,7 @@ export const WidgetSelectOne_SelectUI = obs(function WidgetSelectOne_SelectUI_<
             revealProps={{
                ...p.selectProps?.revealProps,
                onHidden: (reason) => {
-                  field.ܒtouch()
+                  field.ϟtouch()
                   p.selectProps?.revealProps?.onHidden?.(reason)
                },
             }}

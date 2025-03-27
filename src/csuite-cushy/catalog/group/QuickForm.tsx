@@ -39,10 +39,10 @@ export const QuickForm = obs(function QuickForm_<T extends SchemaDict>(p: QuickF
                seen.add(s)
                // key is not unique if we display the same field multiple times
                // ...but it's not a realistic use case anyway
-               return <s.UI key={`${s.path}-input`} />
+               return <s.UI key={`${s.ϟpath}-input`} />
             }
             if (s === '*') {
-               const notSeen = p.field.childrenActive.filter((f) => !seen.has(f))
+               const notSeen = p.field.ϟchildrenActive.filter((f) => !seen.has(f))
                if (notSeen.length === 0) return null
                return (
                   <ShowMoreSeenCtx.Provider value={useShowMoreSeen()}>

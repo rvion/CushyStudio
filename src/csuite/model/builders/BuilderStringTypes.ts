@@ -7,23 +7,23 @@ import { CSchema } from '../CSchema'
 import { defineSchemaBuilderMixin } from './defineSchemaBuilderMixin'
 
 export type BuilderStringMixin = {
-   nanoid(config?: Field_string['…config']): Z.String
-   uuidV1(config?: Field_string['…config']): Z.String
-   uuidV3(config?: Field_string['…config']): Z.String
-   uuidV4(config?: Field_string['…config']): Z.String
-   uuidV5(config?: Field_string['…config']): Z.String
-   uuidV6(config?: Field_string['…config']): Z.String
-   uuidV7(config?: Field_string['…config']): Z.String
-   string_(config?: Field_string['…config']): Z.String
-   string(config?: Field_string['…config']): Z.String
-   password(config?: Field_string['…config']): Z.String
-   email(config?: Field_string['…config']): Z.String
-   url(config?: Field_string['…config']): Z.String
-   text(config?: Field_string['…config']): Z.String
-   textarea(config?: Field_string['…config']): Z.String
-   stringTime(config?: Field_string['…config']): Z.String
-   stringDate(config?: Field_string['…config']): Z.String
-   stringDatetime(config?: Field_string['…config']): Z.String
+   nanoid(config?: Field_string['Ҩconfig']): Z.String
+   uuidV1(config?: Field_string['Ҩconfig']): Z.String
+   uuidV3(config?: Field_string['Ҩconfig']): Z.String
+   uuidV4(config?: Field_string['Ҩconfig']): Z.String
+   uuidV5(config?: Field_string['Ҩconfig']): Z.String
+   uuidV6(config?: Field_string['Ҩconfig']): Z.String
+   uuidV7(config?: Field_string['Ҩconfig']): Z.String
+   string_(config?: Field_string['Ҩconfig']): Z.String
+   string(config?: Field_string['Ҩconfig']): Z.String
+   password(config?: Field_string['Ҩconfig']): Z.String
+   email(config?: Field_string['Ҩconfig']): Z.String
+   url(config?: Field_string['Ҩconfig']): Z.String
+   text(config?: Field_string['Ҩconfig']): Z.String
+   textarea(config?: Field_string['Ҩconfig']): Z.String
+   stringTime(config?: Field_string['Ҩconfig']): Z.String
+   stringDate(config?: Field_string['Ҩconfig']): Z.String
+   stringDatetime(config?: Field_string['Ҩconfig']): Z.String
 }
 
 const validateUUID = (v: string): boolean => {
@@ -37,7 +37,7 @@ const BuilderStringImpl = (): BuilderStringMixin =>
        *
        * @since 2024-10-25
        */
-      nanoid(config: Field_string['…config'] = {}): Z.String {
+      nanoid(config: Field_string['Ҩconfig'] = {}): Z.String {
          return this.string_({ ...(config as any), default: nanoid, readonly: true })
       },
 
@@ -46,7 +46,7 @@ const BuilderStringImpl = (): BuilderStringMixin =>
        * (new default for each field instanciation)
        * @since 2025-03-25
        */
-      uuidV1(config: Field_string['…config'] = {}): Z.String {
+      uuidV1(config: Field_string['Ҩconfig'] = {}): Z.String {
          return this.string_({ ...(config as any), default: v1, readonly: true, check: validateUUID })
       },
       /**
@@ -54,7 +54,7 @@ const BuilderStringImpl = (): BuilderStringMixin =>
        * (new default for each field instanciation)
        * @since 2025-03-25
        */
-      uuidV3(config: Field_string['…config'] = {}): Z.String {
+      uuidV3(config: Field_string['Ҩconfig'] = {}): Z.String {
          return this.string_({ ...(config as any), default: v3, readonly: true, check: validateUUID })
       },
       /**
@@ -62,7 +62,7 @@ const BuilderStringImpl = (): BuilderStringMixin =>
        * (new default for each field instanciation)
        * @since 2024-10-25
        */
-      uuidV4(config: Field_string['…config'] = {}): Z.String {
+      uuidV4(config: Field_string['Ҩconfig'] = {}): Z.String {
          return this.string_({ ...(config as any), default: v4, readonly: true, check: validateUUID })
       },
       /**
@@ -70,7 +70,7 @@ const BuilderStringImpl = (): BuilderStringMixin =>
        * (new default for each field instanciation)
        * @since 2025-03-25
        */
-      uuidV5(config: Field_string['…config'] = {}): Z.String {
+      uuidV5(config: Field_string['Ҩconfig'] = {}): Z.String {
          return this.string_({ ...(config as any), default: v5, readonly: true, check: validateUUID })
       },
       /**
@@ -78,7 +78,7 @@ const BuilderStringImpl = (): BuilderStringMixin =>
        * (new default for each field instanciation)
        * @since 2025-03-25
        */
-      uuidV6(config: Field_string['…config'] = {}): Z.String {
+      uuidV6(config: Field_string['Ҩconfig'] = {}): Z.String {
          return this.string_({ ...(config as any), default: v6, readonly: true, check: validateUUID })
       },
       /**
@@ -86,18 +86,18 @@ const BuilderStringImpl = (): BuilderStringMixin =>
        * (new default for each field instanciation)
        * @since 2025-03-25
        */
-      uuidV7(config: Field_string['…config'] = {}): Z.String {
+      uuidV7(config: Field_string['Ҩconfig'] = {}): Z.String {
          return this.string_({ ...(config as any), default: v7, readonly: true, check: validateUUID })
       },
 
-      string_(config: Field_string['…config'] = {}): Z.String {
+      string_(config: Field_string['Ҩconfig'] = {}): Z.String {
          return CSchema.new(Field_string, config)
       },
 
       /**
        * primitive string type
        */
-      string(config: Field_string['…config'] = {}): Z.String {
+      string(config: Field_string['Ҩconfig'] = {}): Z.String {
          config.default ??= ''
          config.placeHolder ??= csuiteConfig.i18n.ui.field.empty
          return this.string_(config)
@@ -110,7 +110,7 @@ const BuilderStringImpl = (): BuilderStringMixin =>
        * - serial is plain string
        * - no specific validation
        */
-      password(config: Field_string['…config'] = {}): Z.String {
+      password(config: Field_string['Ҩconfig'] = {}): Z.String {
          config.inputType ??= 'password'
          return this.string(config)
       },
@@ -122,10 +122,10 @@ const BuilderStringImpl = (): BuilderStringMixin =>
        * - serial is plain string
        * - no specific validation
        */
-      email(config: Field_string['…config'] = {}): Z.String {
+      email(config: Field_string['Ҩconfig'] = {}): Z.String {
          const { inputType, ...rest } = config
 
-         const emailConfig: Field_string['…config'] = {
+         const emailConfig: Field_string['Ҩconfig'] = {
             innerIcon: IKONS.mdiEmailOutline,
             normalize: (v) => v?.toLowerCase()?.trim(),
             inputType: inputType ?? 'email',
@@ -135,8 +135,8 @@ const BuilderStringImpl = (): BuilderStringMixin =>
                const configuredError = config.check?.(v)
                if (configuredError != null) return configuredError
 
-               if (!v.value) return
-               if (!/^.+@.+\..+$/.test(v.value.trim())) {
+               if (!v.ϟvalue) return
+               if (!/^.+@.+\..+$/.test(v.ϟvalue.trim())) {
                   return csuiteConfig.i18n.err.email.invalid
                }
             },
@@ -152,7 +152,7 @@ const BuilderStringImpl = (): BuilderStringMixin =>
        * - serial is plain string
        * - no specific validation
        */
-      url(config: Field_string['…config'] = {}): Z.String {
+      url(config: Field_string['Ҩconfig'] = {}): Z.String {
          config.inputType ??= 'url'
          return this.string(config)
       },
@@ -160,14 +160,14 @@ const BuilderStringImpl = (): BuilderStringMixin =>
       /**
        * alias to `string`
        */
-      text(config: Field_string['…config'] = {}): Z.String {
+      text(config: Field_string['Ҩconfig'] = {}): Z.String {
          return this.string(config)
       },
 
       /**
        * alias to `string`, with `textarea` appearance added by default
        */
-      textarea(config: Field_string['…config'] = {}): Z.String {
+      textarea(config: Field_string['Ҩconfig'] = {}): Z.String {
          config.textarea = true
          return this.string(config)
       },
@@ -184,7 +184,7 @@ const BuilderStringImpl = (): BuilderStringMixin =>
        * @see {@link datePlain} for Temporal.PlainDate fields
        * @see {@link dateTimeZoned} for Temporal.PlainDate fields
        */
-      stringTime(config: Field_string['…config'] = {}): Z.String {
+      stringTime(config: Field_string['Ҩconfig'] = {}): Z.String {
          config.inputType ??= 'time'
          return this.string(config)
       },
@@ -201,7 +201,7 @@ const BuilderStringImpl = (): BuilderStringMixin =>
        * @see {@link datePlain} for Temporal.PlainDate fields
        * @see {@link dateTimeZoned} for Temporal.PlainDate fields
        */
-      stringDate(config: Field_string['…config'] = {}): Z.String {
+      stringDate(config: Field_string['Ҩconfig'] = {}): Z.String {
          config.inputType ??= 'date'
          return this.string(config)
       },
@@ -218,7 +218,7 @@ const BuilderStringImpl = (): BuilderStringMixin =>
        * @see {@link datePlain} for Temporal.PlainDate fields
        * @see {@link dateTimeZoned} for Temporal.PlainDate fields
        */
-      stringDatetime(config: Field_string['…config'] = {}): Z.String {
+      stringDatetime(config: Field_string['Ҩconfig'] = {}): Z.String {
          config.inputType ??= 'datetime-local'
          return this.string(config)
       },

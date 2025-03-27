@@ -13,26 +13,26 @@ export const WidgetString_TextareaHeaderUI = obs(function WidgetString_TextareaH
    field: Field_string
 }) {
    const field = p.field
-   if (!field.config.textarea) return null
-   if (!p.field.serial.collapsed) return null
-   return <div tw='line-clamp-1 italic opacity-50'>{JSON.stringify(p.field.value)}</div>
+   if (!field.ϟconfig.textarea) return null
+   if (!p.field.ϟserial.collapsed) return null
+   return <div tw='line-clamp-1 italic opacity-50'>{JSON.stringify(p.field.ϟvalue)}</div>
 })
 
 // Textarea BODY
 export const WidgetString_TextareaBodyUI = obs(function WidgetString_TextareaBodyUI_(p: {
    field: Field_string
    readonly?: boolean
-   config?: Field_string['config']
+   config?: Field_string['ϟconfig']
 }) {
    const field = p.field
    const csuite = useCSuite()
-   const config = p.config ? { ...field.config, ...p.config } : field.config
+   const config = p.config ? { ...field.ϟconfig, ...p.config } : field.ϟconfig
    const uiSt = useLocalObservable(() => ({
       focused: false,
-      value: field.value_or_zero,
+      value: field.ϟvalue_or_zero,
    }))
 
-   if (p.readonly) return <pre>{field.value_or_zero}</pre>
+   if (p.readonly) return <pre>{field.ϟvalue_or_zero}</pre>
    return (
       <Frame base={csuite.inputContrast} expand>
          {/* <pre>{JSON.stringify(Object.keys(p))}</pre> */}
@@ -45,18 +45,18 @@ export const WidgetString_TextareaBodyUI = obs(function WidgetString_TextareaBod
             tw='csuite-input w-full !bg-transparent p-2'
             placeholder={config.placeHolder}
             rows={3}
-            value={uiSt.focused ? uiSt.value : field.value_or_zero}
+            value={uiSt.focused ? uiSt.value : field.ϟvalue_or_zero}
             onChange={(ev) => {
-               field.value = ev.target.value
+               field.ϟvalue = ev.target.value
                uiSt.value = ev.target.value
             }}
             onBlur={action(() => {
-               field.ܒtouch()
+               field.ϟtouch()
                uiSt.focused = false
             })}
             onFocus={action(() => {
                uiSt.focused = true
-               uiSt.value = field.value_or_zero
+               uiSt.value = field.ϟvalue_or_zero
             })}
          />
       </Frame>
@@ -67,14 +67,14 @@ export const WidgetString_TextareaBodyUI = obs(function WidgetString_TextareaBod
 export const WidgetString_HeaderUI = obs(function WidgetStringUI_(p: {
    field: Field_string
    readonly?: boolean
-   config?: Field_string['config']
+   config?: Field_string['ϟconfig']
 }) {
    const field = p.field
-   const config = p.config ? { ...field.config, ...p.config } : field.config
+   const config = p.config ? { ...field.ϟconfig, ...p.config } : field.ϟconfig
 
    // This is necessary to avoid changing the value while the user is typing something
    const uiSt = useLocalObservable(() => ({
-      value: p.field.value_or_zero,
+      value: p.field.ϟvalue_or_zero,
       focused: false,
    }))
 
@@ -82,28 +82,28 @@ export const WidgetString_HeaderUI = obs(function WidgetStringUI_(p: {
       <InputStringUI
          tw={[
             'w-full',
-            field.hasOwnErrors && !field.isInsideDisabledBranch && field.ܒtouched && 'rsx-field-error',
+            field.ϟhasOwnErrors && !field.ϟisInsideDisabledBranch && field.ϟtouched && 'rsx-field-error',
          ]}
          icon={config.innerIcon}
          type={config.inputType}
          placeholder={config.placeHolder ?? csuiteConfig.i18n.ui.field.empty}
          pattern={config.pattern}
          className={config.className}
-         getValue={() => (uiSt.focused ? uiSt.value : field.value_or_zero)}
+         getValue={() => (uiSt.focused ? uiSt.value : field.ϟvalue_or_zero)}
          setValue={action((value) => {
             uiSt.value = value
-            field.value = value
+            field.ϟvalue = value
 
-            if (!value && p.field.canBeToggledWithinParent) {
-               p.field.disableSelfWithinParent()
-            } else if (value && p.field.canBeToggledWithinParent) {
-               p.field.enableSelfWithinParent()
+            if (!value && p.field.ϟcanBeToggledWithinParent) {
+               p.field.ϟdisableSelfWithinParent()
+            } else if (value && p.field.ϟcanBeToggledWithinParent) {
+               p.field.ϟenableSelfWithinParent()
             }
          })}
-         disabled={p.readonly || p.field.config.readonly}
+         disabled={p.readonly || p.field.ϟconfig.readonly}
          autoResize={config.autoResize}
          buffered={
-            field.config.buffered
+            field.ϟconfig.buffered
                ? {
                     getTemporaryValue: (): string | null => field.temporaryValue,
                     setTemporaryValue: (value): void => void (field.temporaryValue = value),
@@ -112,10 +112,10 @@ export const WidgetString_HeaderUI = obs(function WidgetStringUI_(p: {
          }
          onFocus={action(() => {
             uiSt.focused = true
-            uiSt.value = field.value_or_zero
+            uiSt.value = field.ϟvalue_or_zero
          })}
          onBlur={action(() => {
-            field.ܒtouch()
+            field.ϟtouch()
             uiSt.focused = false
          })}
          noColorStuff

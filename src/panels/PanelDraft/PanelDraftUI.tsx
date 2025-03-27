@@ -87,7 +87,7 @@ const POPUP = obs(function POPUP___(p: { title?: string; children?: React.ReactN
       return <div> POSITION FAILED SOMEHOW</div>
    }
 
-   const theme = cushy.preferences.theme.value
+   const theme = cushy.preferences.theme.ϟvalue
 
    return (
       <Frame
@@ -143,7 +143,7 @@ export const DraftUI = obs(function Panel_Draft_(p: { draft: Maybe<DraftL> }) {
       return null
    })
    const dropRef = useDragDropRefForReact19(dropRef_)
-   const theme = cushy.preferences.theme.value
+   const theme = cushy.preferences.theme.ϟvalue
 
    // useEffect(() => draft?.AWAKE(), [draft?.id])
    const panel: PanelState<any> = usePanel()
@@ -241,7 +241,7 @@ export const DraftUI = obs(function Panel_Draft_(p: { draft: Maybe<DraftL> }) {
                tw={[
                   //
                   'flex flex-1 flex-col gap-1 p-2',
-                  run_justify(justify.value),
+                  run_justify(justify.ϟvalue),
                   containerClassName,
                ]}
                onKeyUp={(ev) => {

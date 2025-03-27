@@ -121,12 +121,12 @@ export function codegenSDK(
       p('   // ' + e.unionNameInCushy)
       for (const alias of e.enumNames) {
          const enumKey = alias
-         // p(`    ${escapeJSKey(enumKey)}: { $Name: ${JSON.stringify(enumKey)}, ['…value']: Union.${e.unionNameInCushy} },`) // prettier-ignore
+         // p(`    ${escapeJSKey(enumKey)}: { $Name: ${JSON.stringify(enumKey)}, ['Ҩvalue']: Union.${e.unionNameInCushy} },`) // prettier-ignore
          p(`   ${escapeJSKey(enumKey)}: Union['${e.unionNameInCushy}']`) // prettier-ignore
       }
    }
    // for (const n of requirables)
-   //    p(`    ${escapeJSKey(n.name)}: { $Name: ${JSON.stringify(n.name)}, ['…value']: Union.${n.enum.enumNameInCushy} },`) // prettier-ignore
+   //    p(`    ${escapeJSKey(n.name)}: { $Name: ${JSON.stringify(n.name)}, ['Ҩvalue']: Union.${n.enum.enumNameInCushy} },`) // prettier-ignore
    p(`}`)
 
    // #region Embeddings ------------------------------------------------------------------------------------

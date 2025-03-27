@@ -16,7 +16,7 @@ import { capitalize } from '../../utils/capitalize'
 import { registerFieldClass } from '../WidgetUI.DI'
 
 // CONFIG
-export type Field_group_config<T extends SchemaDict> = Field_group<T>['…config']
+export type Field_group_config<T extends SchemaDict> = Field_group<T>['Ҩconfig']
 type Field_group_ownConfig<T extends SchemaDict> = {
    /**
     * Lambdas allowed only for recursive fields;
@@ -29,14 +29,14 @@ type Field_group_ownConfig<T extends SchemaDict> = {
    items?: T | (() => T)
 
    /** @deprecated; use `toString` instead */
-   summary?: CovariantFn<[items: { [k in keyof T]: T[k]['…value'] }, self: Field_group<T>], string>
+   summary?: CovariantFn<[items: { [k in keyof T]: T[k]['Ҩvalue'] }, self: Field_group<T>], string>
    // (
    //    //
    // ): string
 
    /** @default @false */
    presetButtons?: boolean
-   default?: T['…value']
+   default?: T['Ҩvalue']
 
    // 🔶 TODO 1: remove summary from here and move it to the base field config directly
    // 🟢 TODO 2: stop passing values to that function, only pass the field directly
@@ -45,48 +45,48 @@ type Field_group_ownConfig<T extends SchemaDict> = {
 }
 
 // SERIAL
-export type Field_group_serial<T extends SchemaDict> = Field_group<T>['…serial']
+export type Field_group_serial<T extends SchemaDict> = Field_group<T>['Ҩserial']
 type Field_group_ownSerial<T extends SchemaDict> = {
    $: 'group'
    // fix required here; invariant violation!
    // TODO: why is that not optional ? it should be.
-   values_: { [K in keyof T]?: T[K]['…serial'] }
+   values_: { [K in keyof T]?: T[K]['Ҩserial'] }
 }
 
 // VALUE
 export type Field_group_value<T extends SchemaDict> = {
-   [k in keyof T]: T[k]['…value']
+   [k in keyof T]: T[k]['Ҩvalue']
 }
 
 export type Field_group_SetValue<T extends SchemaDict> = {
-   [k in keyof T]?: T[k]['…setvalue']
+   [k in keyof T]?: T[k]['Ҩsetvalue']
 }
 
 export type Field_group_unchecked<T extends SchemaDict> = {
-   [k in keyof T]: T[k]['…unchecked']
+   [k in keyof T]: T[k]['Ҩunchecked']
 }
 
 // TYPES
 export interface Field_group<T extends SchemaDict = SchemaDict> {
-   ['…type']: 'group'
-   ['…ownConfig']: Field_group_ownConfig<T>
-   ['…ownSerial']: Field_group_ownSerial<T>
-   ['…value']: Field_group_value<T>
-   ['…setvalue']: Field_group_SetValue<T>
-   ['…unchecked']: Field_group_unchecked<T>
-   ['…child']: T[keyof T]['$field']
-   ['…opts']: unknown
-   ['…ownPatch']: Patch<'group'>
+   Ҩtype: 'group'
+   ҨownConfig: Field_group_ownConfig<T>
+   ҨownSerial: Field_group_ownSerial<T>
+   Ҩvalue: Field_group_value<T>
+   Ҩsetvalue: Field_group_SetValue<T>
+   Ҩunchecked: Field_group_unchecked<T>
+   Ҩchild: T[keyof T]['Ҩfield']
+   Ҩopts: unknown
+   ҨownPatch: Patch<'group'>
    // own
-   $subfields: T
+   Ҩsubfields: T
 }
 
 // ---------------------------------------------------------------------------
 // 💬 2025-02-10 rvion: pending decision about removal or not
 /** @deprecated */
 export type FieldGroupWithMAGICFIELDS<T extends SchemaDict> = Field_group<T> & MAGICFIELDS<T>
-export type MAGICFIELDS<T extends { [key: string]: { $field: any } }> = {
-   [K in keyof T as Capitalize<K & string>]: T[K]['$field']
+export type MAGICFIELDS<T extends { [key: string]: { Ҩfield: any } }> = {
+   [K in keyof T /* as Capitalize<K & string> */]: T[K]['Ҩfield']
 }
 
 export class Field_group<T extends SchemaDict> extends Field {
@@ -122,9 +122,9 @@ export class Field_group<T extends SchemaDict> extends Field {
       return OUT
    }
    static generateSerial(
-      value: Maybe<Field_group<any>['…value']>,
-      config: Field_group<any>['…config'],
-   ): Field_group<any>['…serial'] {
+      value: Maybe<Field_group<any>['Ҩvalue']>,
+      config: Field_group<any>['Ҩconfig'],
+   ): Field_group<any>['Ҩserial'] {
       const configItems = typeof config.items === 'function' ? config.items() : config.items
       if (configItems == null) return this.unsetSerial
 
@@ -143,7 +143,7 @@ export class Field_group<T extends SchemaDict> extends Field {
       const properties: PropertyDescriptorMap & ThisType<any> = {}
       for (const [fName, fSchema] of this._fieldSchemas) {
          properties[capitalize(fName)] = {
-            get: (): any => this.fields[fName],
+            get: (): any => this.ϟfields[fName],
             configurable: true,
          }
       }
@@ -164,38 +164,38 @@ export class Field_group<T extends SchemaDict> extends Field {
    }
 
    // #region UI
-   override get summary(): string {
+   override get ϟsummary(): string {
       return (
-         this.config.toString_?.(this) ?? // 👇🤔 Maybe we don't want to invoke the summary unless the field is valid -> it could throw with children that have a throwable _or_zero
-         this.config.summary?.(this.value_or_zero, this) ??
+         this.ϟconfig.toString_?.(this) ?? // 👇🤔 Maybe we don't want to invoke the summary unless the field is valid -> it could throw with children that have a throwable _or_zero
+         this.ϟconfig.summary?.(this.ϟvalue_or_zero, this) ??
          ''
       )
       // return this.config.summary?.(this.value) ?? Object.keys(this.fields).length + ' fields'
    }
 
-   override get justifyLabel(): boolean {
-      if (this.numFields > 1) return false
+   override get ϟjustifyLabel(): boolean {
+      if (this.ϟnumFields > 1) return false
       return true
    }
 
    // #region PROBLEMS
-   get ownConfigSpecificProblems(): Problem_Ext {
+   get ϟownConfigSpecificProblems(): Problem_Ext {
       return null
    }
 
-   get ownTypeSpecificProblems(): Problem_Ext {
+   get ϟownTypeSpecificProblems(): Problem_Ext {
       return null
    }
 
    // #region CHANGES
-   get isOwnSet(): boolean {
+   get ϟisOwnSet(): boolean {
       return true
       // return this.subFields.every((f) => f.isSet)
    }
 
-   @computed get hasChanges(): boolean {
-      const fields: Field[] = Object.values(this.fields)
-      return fields.some((f) => f.hasChanges)
+   @computed get ϟhasChanges(): boolean {
+      const fields: Field[] = Object.values(this.ϟfields)
+      return fields.some((f) => f.ϟhasChanges)
    }
    //            IMPOSSIBLE
    //                VV
@@ -203,7 +203,7 @@ export class Field_group<T extends SchemaDict> extends Field {
    // runInTransaction
 
    // #region SERIAL
-   protected setOwnSerial(next: Field_group_serial<T>): void {
+   protected ϟsetOwnSerial(next: Field_group_serial<T>): void {
       // setOwnSerial(next) is just here to call `this.serial = next`
       // with some extra stuff. it's almost a regular field action, execpt
       // it's internal, and has a few extra responsibilities (like fixing external serials)
@@ -228,25 +228,25 @@ export class Field_group<T extends SchemaDict> extends Field {
       }
 
       // 2. ASSIGN SERIAL
-      this.ܮassignNewSerial(next)
+      this.ϟassignNewSerial(next)
 
       // 3. RECONCILE CHILDREN
       for (const [fName, fSchema] of this._fieldSchemas) {
          // reconcile can yield different serial during setSerial; both for
          // - new child (e.g. running migration),
          // - old child (e.g. default value beeing added in setOwnSerial)
-         this.ܮRECONCILE({
+         this.ϟRECONCILE({
             mountKey: fName,
-            existingChild: this.fields[fName],
+            existingChild: this.ϟfields[fName],
             correctChildSchema: fSchema,
             targetChildSerial: next?.values_?.[fName],
             attach: (child) => {
-               this.fields[fName] = child
+               this.ϟfields[fName] = child
                const isNew = !(fName in next.values_)
                if (isNew) {
-                  const hasDefault = this.config.default != null && fName in this.config.default
+                  const hasDefault = this.ϟconfig.default != null && fName in this.ϟconfig.default
                   if (hasDefault) {
-                     child.value = this.config.default![fName as keyof T['…value']]
+                     child.value = this.ϟconfig.default![fName as keyof T['Ҩvalue']]
                   }
                }
             },
@@ -261,48 +261,44 @@ export class Field_group<T extends SchemaDict> extends Field {
     * // fix | I'm not really convinces that this should be observable
     * // fix | varying fields should probably always go though a dynamic 🤔
     */
-   fields: { [k in keyof T]: T[k]['$field'] } = observable({}) as any
-   get _(): { [k in keyof T]: T[k]['$field'] } {
-      return this.fields
-   }
-
-   override ܮacknowledgeNewChildSerial(mountKey: string, newChildSerial: any): boolean {
+   ϟfields: { [k in keyof T]: T[k]['Ҩfield'] } = observable({}) as any
+   override ϟacknowledgeNewChildSerial(mountKey: string, newChildSerial: any): boolean {
       // fast path: abort when exactly the same
-      if (this.serial.values_[mountKey] === newChildSerial) return false
+      if (this.ϟserial.values_[mountKey] === newChildSerial) return false
       // console.log(`[🤠] ACK`, getUIDForMemoryStructure(newChildSerial), getUIDForMemoryStructure(this.serial), this.serial)
-      return this.patchSerial((draft) => void ((draft.values_ as any)[mountKey] = newChildSerial))
+      return this.ϟpatchSerial((draft) => void ((draft.values_ as any)[mountKey] = newChildSerial))
       // console.log(`[🤠] ACK`, getUIDForMemoryStructure(newChildSerial), getUIDForMemoryStructure(this.serial), this.serial)
    }
 
    /** all [key,value] pairs */
-   @computed get entries(): [string, Field][] {
-      return Object.entries(this.fields) as [string, Field][]
+   @computed get ϟentries(): [string, Field][] {
+      return Object.entries(this.ϟfields) as [string, Field][]
    }
 
-   @computed get numFields(): number {
-      return Object.keys(this.fields).length
+   @computed get ϟnumFields(): number {
+      return Object.keys(this.ϟfields).length
    }
 
    /** return item at give key */
-   at<K extends keyof T>(key: K): T[K]['$field'] {
-      return this.fields[key]
+   ϟat<K extends keyof T>(key: K): T[K]['Ҩfield'] {
+      return this.ϟfields[key]
    }
 
-   override getChildrenSerialPath(branchName: keyof T & string): string {
+   override ϟgetChildrenSerialPath(branchName: keyof T & string): string {
       return `values_.${branchName}`
    }
 
-   @computed override get childrenAll(): Field[] {
-      return Object.values(this.fields)
+   @computed override get ϟchildrenAll(): Field[] {
+      return Object.values(this.ϟfields)
    }
 
-   override get subFieldsWithKeys(): KeyedField[] {
-      return Object.entries(this.fields).map(([key, field]) => ({ key, field }))
+   override get ϟsubFieldsWithKeys(): KeyedField[] {
+      return Object.entries(this.ϟfields).map(([key, field]) => ({ key, field }))
    }
 
    /** just here to normalize fieldSchema definitions, since it used to be a lambda */
    private get _fieldSchemas(): [keyof T & string, CSchema<any>][] {
-      const itemsDef = this.config.items
+      const itemsDef = this.ϟconfig.items
       const fieldSchemas: SchemaDict =
          typeof itemsDef === 'function' //
             ? ((itemsDef as any)() ?? {}) // <-- LEGACY SUPPORT
@@ -310,99 +306,95 @@ export class Field_group<T extends SchemaDict> extends Field {
       return Object.entries(fieldSchemas) as [keyof T & string, CSchema<any>][]
    }
    // #region VALUE
-   setPartialValue(val: Field_group_SetValue<T>): this {
-      return this.set(val)
-   }
-
-   override set(x: this['…setvalue']): this {
-      this.ܮrunInTransaction(() => {
+   override ϟset(x: this['Ҩsetvalue']): this {
+      this.ϟrunInTransaction(() => {
          for (const key in x) {
-            const child = this.fields[key]
+            const child = this.ϟfields[key]
             if (child == null) {
-               console.error( `🔴 Field_Group(${this.path}).setValue: invalid key "${key}" with value`, x[key]) // prettier-ignore
+               console.error( `🔴 Field_Group(${this.ϟpath}).setValue: invalid key "${key}" with value`, x[key]) // prettier-ignore
                continue
             }
-            child.set(x[key])
+            child.ϟset(x[key])
          }
       })
       return this
    }
 
-   get value(): Field_group_value<T> {
-      return this.value_or_fail
+   get ϟvalue(): Field_group_value<T> {
+      return this.ϟvalue_or_fail
    }
 
-   set value(val: Field_group_value<T>) {
-      this.ܮrunInTransaction(() => {
+   set ϟvalue(val: Field_group_value<T>) {
+      this.ϟrunInTransaction(() => {
          for (const key in val) {
-            const child = this.fields[key]
+            const child = this.ϟfields[key]
             if (child == null) {
-               console.warn(`🔴 Field_Group(${this.path}).value: invalid key "${key}" with value`, val[key], Object.keys(this.fields)) // prettier-ignore
+               console.warn(`🔴 Field_Group(${this.ϟpath}).value: invalid key "${key}" with value`, val[key], Object.keys(this.ϟfields)) // prettier-ignore
                continue
             }
-            child.value = val[key]
+            child.ϟvalue = val[key]
          }
       })
    }
 
-   get value_or_fail(): Field_group_value<T> {
+   get ϟvalue_or_fail(): Field_group_value<T> {
       const value = new Proxy({}, this.makeValueProxy('fail'))
-      void this.serial
+      void this.ϟserial
       Object.defineProperty(this, 'value_or_fail', {
          get: () => {
-            void this.serial
+            void this.ϟserial
             return value
          },
       })
       return value
    }
-   get value_or_zero(): Field_group_value<T> {
+   get ϟvalue_or_zero(): Field_group_value<T> {
       const value = new Proxy({}, this.makeValueProxy('zero'))
-      void this.serial
+      void this.ϟserial
       Object.defineProperty(this, 'value_or_zero', {
          get: () => {
-            void this.serial
+            void this.ϟserial
             return value
          },
       })
       return value
    }
-   get value_unchecked(): Field_group_unchecked<T> {
+   get ϟvalue_unchecked(): Field_group_unchecked<T> {
       const value = new Proxy({}, this.makeValueProxy('unchecked'))
-      void this.serial
+      void this.ϟserial
       Object.defineProperty(this, 'value_unchecked', {
          get: () => {
-            void this.serial
+            void this.ϟserial
             return value
          },
       })
       return value
    }
-   get value_set(): Field_group_SetValue<T> {
+   get ϟvalue_set(): Field_group_SetValue<T> {
       const value = new Proxy({}, this.makeValueProxy('set'))
-      void this.serial
+      void this.ϟserial
       Object.defineProperty(this, 'value_set', {
          get: () => {
-            void this.value
+            void this.ϟvalue
             return value
          },
       })
       return value
    }
 
-   public isValueEqual(other: Field): boolean {
+   public ϟisValueEqual(other: Field): boolean {
       if (other === this) return true
       if (!(other instanceof Field_group)) return false
-      const otherChildren = other.childrenActive
-      const thisChildren = this.childrenActive
+      const otherChildren = other.ϟchildrenActive
+      const thisChildren = this.ϟchildrenActive
 
       if (otherChildren.length !== thisChildren.length) return false
 
       return thisChildren.every((child) => {
-         const otherChild = other.fields[child.mountKey]
+         const otherChild = other.ϟfields[child.ϟmountKey]
          if (otherChild == null) return false
 
-         return child.mountKey === otherChild.mountKey && child.isValueEqual(otherChild)
+         return child.ϟmountKey === otherChild.mountKey && child.ϟisValueEqual(otherChild)
       })
    }
 
@@ -411,50 +403,50 @@ export class Field_group<T extends SchemaDict> extends Field {
    private makeValueProxy(mode: VALUE_MODE): ProxyHandler<any> {
       return {
          ownKeys: (_target): string[] => {
-            return Object.keys(this.fields)
+            return Object.keys(this.ϟfields)
          },
          set: (_target, prop, value): boolean => {
             if (typeof prop !== 'string') return false
-            const subWidget: Maybe<Field> = this.fields[prop]
+            const subWidget: Maybe<Field> = this.ϟfields[prop]
             if (subWidget == null) return false
-            subWidget.value = value
+            subWidget.ϟvalue = value
             return true
          },
          get: (_target, prop): any => {
             if (typeof prop !== 'string') return
-            const subWidget: Maybe<Field> = this.fields[prop]
+            const subWidget: Maybe<Field> = this.ϟfields[prop]
             if (subWidget == null) return
             if (!(subWidget instanceof Field)) return void console.log(`[🔶] tried to access non-field`, prop)
-            return subWidget.getValue(mode)
+            return subWidget.ϟgetValue(mode)
          },
          getOwnPropertyDescriptor: (_target, prop): PropertyDescriptor | undefined => {
             if (typeof prop !== 'string') return
-            const subWidget: Maybe<Field> = this.fields[prop]
+            const subWidget: Maybe<Field> = this.ϟfields[prop]
             if (subWidget == null) return
             if (!(subWidget instanceof Field)) return void console.log(`[🔶] tried to access non-field`, prop)
             return {
                enumerable: true,
                configurable: true,
                get(): any {
-                  return subWidget.getValue(mode)
+                  return subWidget.ϟgetValue(mode)
                },
             }
          },
       }
    }
 
-   override getSetValue(): this['…setvalue'] | undefined {
+   override ϟgetSetValue(): this['Ҩsetvalue'] | undefined {
       // console.log(`[💀 getSetValue] `, this.path)
-      return this.value_set
+      return this.ϟvalue_set
    }
 
-   override reset(): void {
-      super.reset()
-      this.childrenAll.forEach((f) => f.reset())
+   override ϟreset(): void {
+      super.ϟreset()
+      this.ϟchildrenAll.forEach((f) => f.ϟreset())
    }
 
-   override randomize(): void {
-      this.childrenAll.forEach((f) => f.randomize())
+   override ϟrandomize(): void {
+      this.ϟchildrenAll.forEach((f) => f.ϟrandomize())
    }
 }
 

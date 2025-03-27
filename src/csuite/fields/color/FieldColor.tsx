@@ -25,25 +25,25 @@ export type Field_color_unchecked = Field_color_value | undefined
 
 // STATE
 export interface Field_color {
-   ['…type']: 'color'
-   ['…ownConfig']: Field_color_ownConfig
-   ['…ownSerial']: Field_color_ownSerial
-   ['…value']: Field_color_value
-   ['…setvalue']: Field_color_value
-   ['…unchecked']: Field_color_unchecked
-   ['…child']: never
-   ['…opts']: unknown
-   ['…ownPatch']: Patch<'color'>
+   ['Ҩtype']: 'color'
+   ['ҨownConfig']: Field_color_ownConfig
+   ['ҨownSerial']: Field_color_ownSerial
+   ['Ҩvalue']: Field_color_value
+   ['Ҩsetvalue']: Field_color_value
+   ['Ҩunchecked']: Field_color_unchecked
+   ['Ҩchild']: never
+   ['Ҩopts']: unknown
+   ['ҨownPatch']: Patch<'color'>
 }
 export class Field_color extends Field {
    static readonly type: 'color' = 'color'
-   static readonly unsetSerial: Field_color['…serial'] = { $: 'color' }
+   static readonly unsetSerial: Field_color['Ҩserial'] = { $: 'color' }
    static override migrateSerial(): undefined {}
-   static readonly codeForTypescriptValue = (config: Field_color['…config']): string => 'Z.Color'
+   static readonly codeForTypescriptValue = (config: Field_color['Ҩconfig']): string => 'Z.Color'
    static generateSerial(
-      value: Maybe<Field_color['…value']>,
-      config: Field_color['…config'],
-   ): Field_color['…serial'] {
+      value: Maybe<Field_color['Ҩvalue']>,
+      config: Field_color['Ҩconfig'],
+   ): Field_color['Ҩserial'] {
       if (value == null && config.default == null) return this.unsetSerial
 
       return {
@@ -58,71 +58,71 @@ export class Field_color extends Field {
       parent: Field | null,
       schema: CSchema<Field_color>,
       initialMountKey: string,
-      serial?: Field_color['…serial'],
+      serial?: Field_color['Ҩserial'],
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
       this.init(serial)
    }
 
-   protected setOwnSerial(next: this['…serial']): void {
+   protected ϟsetOwnSerial(next: this['Ҩserial']): void {
       if (next.value == null) {
          const def = this.defaultValue
          if (def != null) next = produce(next, (draft) => void (draft.value = def))
       }
 
-      this.ܮassignNewSerial(next)
+      this.ϟassignNewSerial(next)
    }
 
-   get isOwnSet(): boolean {
-      return this.serial.value !== undefined
+   get ϟisOwnSet(): boolean {
+      return this.ϟserial.value !== undefined
    }
 
-   get value(): Field_color_value {
-      return this.value_or_fail
+   get ϟvalue(): Field_color_value {
+      return this.ϟvalue_or_fail
    }
 
-   set value(next: Field_color_value) {
-      if (this.serial.value === next) return
-      this.ܮrunInTransaction(() => this.patchSerial((draft) => void (draft.value = next)))
+   set ϟvalue(next: Field_color_value) {
+      if (this.ϟserial.value === next) return
+      this.ϟrunInTransaction(() => this.ϟpatchSerial((draft) => void (draft.value = next)))
    }
 
-   get value_or_fail(): Field_color_value {
-      const val = this.value_unchecked
+   get ϟvalue_or_fail(): Field_color_value {
+      const val = this.ϟvalue_unchecked
       if (val == null) throw new Error('Field_color.value_or_fail: not set')
       return val
    }
 
-   get value_or_zero(): Field_color_value {
-      return this.serial.value ?? '#000000' /* <- zero */
+   get ϟvalue_or_zero(): Field_color_value {
+      return this.ϟserial.value ?? '#000000' /* <- zero */
    }
 
-   get value_unchecked(): Field_color_unchecked {
-      return this.serial.value
+   get ϟvalue_unchecked(): Field_color_unchecked {
+      return this.ϟserial.value
    }
 
-   override isValueEqual(other: Field): boolean {
+   override ϟisValueEqual(other: Field): boolean {
       if (!(other instanceof Field_color)) return false
 
-      return this.serial.value === other.serial.value
+      return this.ϟserial.value === other.ϟserial.value
    }
 
    public static readonly patchedSerialPaths: readonly string[] = Object.freeze(['value'])
 
-   get ownTypeSpecificProblems(): Problem_Ext {
+   get ϟownTypeSpecificProblems(): Problem_Ext {
       return null
    }
 
-   get ownConfigSpecificProblems(): Problem_Ext {
+   get ϟownConfigSpecificProblems(): Problem_Ext {
       return null
    }
 
    get defaultValue(): string | undefined {
-      return this.config.default
+      return this.ϟconfig.default
    }
 
-   get hasChanges(): boolean {
-      if (!this.isSet) return false
-      if (this.serial.value === this.defaultValue) return false
+   get ϟhasChanges(): boolean {
+      if (!this.ϟisSet) return false
+      if (this.ϟserial.value === this.defaultValue) return false
       return true
    }
 }

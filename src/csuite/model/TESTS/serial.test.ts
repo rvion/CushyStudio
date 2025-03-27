@@ -39,7 +39,7 @@ describe('assign to value object', () => {
             b1: false,
             b2: false,
          },
-      }).toEqual(E1.toValueJSON())
+      }).toEqual(E1.ϟtoValueJSON())
 
       // SERIAL
       expectJSON({
@@ -72,84 +72,84 @@ describe('assign to value object', () => {
                },
             },
          },
-      }).toMatchObject(E1.toSerialJSON())
+      }).toMatchObject(E1.ϟtoSerialJSON())
    })
 
    it('snapshots correctly', () => {
       const S = b.selectManyString(['a', 'b', 'c'])
       const E = S.create()
 
-      E.value = ['a']
-      const snap1 = E['⇓saveSnapshot']() // 💾 1
-      expect(snap1 === E.serial).toBeFalsy()
-      const { snapshot, ...serial } = E.serial
+      E.ϟvalue = ['a']
+      const snap1 = E.ϟsaveSnapshot() // 💾 1
+      expect(snap1 === E.ϟserial).toBeFalsy()
+      const { snapshot, ...serial } = E.ϟserial
       expectJSON(snap1).toEqual(serial)
 
-      E.value = ['b']
-      E['⇓revertToSnapshot']() // ↩️
-      expectJSON(E.value).toMatchObject(['a'])
+      E.ϟvalue = ['b']
+      E.ϟrevertToSnapshot() // ↩️
+      expectJSON(E.ϟvalue).toMatchObject(['a'])
 
-      E.value.push('c')
-      expectJSON(E.value).toMatchObject(['a', 'c'])
+      E.ϟvalue.push('c')
+      expectJSON(E.ϟvalue).toMatchObject(['a', 'c'])
 
-      E.value.push('c')
-      expectJSON(E.value).toMatchObject(['a', 'c'])
+      E.ϟvalue.push('c')
+      expectJSON(E.ϟvalue).toMatchObject(['a', 'c'])
 
-      E['⇓revertToSnapshot']() // 🔴 Unclear what's this supposed to do
+      E.ϟrevertToSnapshot() // 🔴 Unclear what's this supposed to do
       // Either
       // expectJSON(E.value).toMatchObject(['a'])
       // Or
-      expectJSON(E.value).toMatchObject([])
+      expectJSON(E.ϟvalue).toMatchObject([])
    })
 
    it('snapshots correctly v2', () => {
       const S = b.selectManyString(['a', 'b', 'c'])
       const E = S.create()
 
-      E.value = ['a']
-      E['⇓saveSnapshot']() // 💾 1
+      E.ϟvalue = ['a']
+      E.ϟsaveSnapshot() // 💾 1
 
-      E.value.push('b')
-      E['⇓revertToSnapshot']() // ↩️
-      E['⇓saveSnapshot']() // 💾 2
-      expectJSON(E.value).toMatchObject(['a'])
+      E.ϟvalue.push('b')
+      E.ϟrevertToSnapshot() // ↩️
+      E.ϟsaveSnapshot() // 💾 2
+      expectJSON(E.ϟvalue).toMatchObject(['a'])
 
-      E.value.push('c')
-      expectJSON(E.value).toMatchObject(['a', 'c'])
+      E.ϟvalue.push('c')
+      expectJSON(E.ϟvalue).toMatchObject(['a', 'c'])
 
-      E['⇓revertToSnapshot']() // ↩️ reset to 💾 2
-      expectJSON(E.value).toMatchObject(['a'])
+      E.ϟrevertToSnapshot() // ↩️ reset to 💾 2
+      expectJSON(E.ϟvalue).toMatchObject(['a'])
 
-      expect(E.serial.snapshot?.snapshot).toBeUndefined()
+      expect(E.ϟserial.snapshot?.snapshot).toBeUndefined()
    })
 
    it('Does not nest snapshots', () => {
       const S = b.int()
       const E = S.create()
 
-      E.value = 3
+      E.ϟvalue = 3
       for (let i = 0; i < 10; ++i) {
-         E['⇓revertToSnapshot']()
+         E.ϟrevertToSnapshot()
       }
 
-      expect(E.serial.snapshot?.snapshot).toBeUndefined()
+      expect(E.ϟserial.snapshot?.snapshot).toBeUndefined()
    })
 
    it('snapshots correctly v3', () => {
       const S = b.selectManyString(['a', 'b', 'c'])
       const E = S.create()
 
-      E.value = ['a']
-      E['⇓saveSnapshot']() // 💾 1
+      E.ϟvalue = ['a']
+      E.ϟsaveSnapshot() // 💾 1
 
-      E.value = ['b']
-      E['⇓revertToSnapshot']()
-      expectJSON(E.value).toMatchObject(['a'])
+      E.ϟvalue = ['b']
+      E.ϟrevertToSnapshot()
+      expectJSON(E.ϟvalue).toMatchObject(['a'])
 
-      E.value = ['a', 'c']
-      expectJSON(E.value).toMatchObject(['a', 'c'])
+      E.ϟvalue = ['a', 'c']
+      expectJSON(E.ϟvalue).toMatchObject(['a', 'c'])
 
-      E['⇓revertToSnapshot']() // Revert to 💾 1 as expected
-      expectJSON(E.value).toMatchObject([])
+      E.ϟrevertToSnapshot() // Revert to 💾 1 as expected
+      expectJSON(E.ϟvalue).toMatchObject([])
    })
 })

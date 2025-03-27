@@ -63,7 +63,7 @@ export function ui_model_kohyaDeepShrink(form: Z.Builder): UI_model_kohyaDeepShr
 
 /** https://www.reddit.com/r/StableDiffusion/comments/18ld5sj/kohya_deep_shrink_explain_to_me_like_im_5_years/  */
 export const run_model_kohyaDeepShrink = (
-   ui: UI_model_kohyaDeepShrink['…value'],
+   ui: UI_model_kohyaDeepShrink['Ҩvalue'],
    ckpt: Comfy.Signal['MODEL'],
    forHiRes?: boolean,
    kohyaScale?: number,

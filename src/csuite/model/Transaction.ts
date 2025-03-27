@@ -22,9 +22,9 @@ export class Transaction {
 
    get summary1(): TransactionSummary1 {
       return {
-         created: [...this.createdFields.values()].map((f) => f.path),
-         updated: [...this.updatedFields.values()].map((f) => f.path),
-         deleted: [...this.deletedFields.values()].map((f) => f.path),
+         created: [...this.createdFields.values()].map((f) => f.ϟpath),
+         updated: [...this.updatedFields.values()].map((f) => f.ϟpath),
+         deleted: [...this.deletedFields.values()].map((f) => f.ϟpath),
       }
    }
 
@@ -32,13 +32,13 @@ export class Transaction {
    get summary2(): TransactionSummary2 {
       return [
          ...[...this.createdFields.values()].map((f) =>
-            this._mkTransactionSummary2Item({ path: f.path, type: 'create' }),
+            this._mkTransactionSummary2Item({ path: f.ϟpath, type: 'create' }),
          ),
          ...[...this.updatedFields.values()].map((f) =>
-            this._mkTransactionSummary2Item({ path: f.path, type: 'update' }),
+            this._mkTransactionSummary2Item({ path: f.ϟpath, type: 'update' }),
          ),
          ...[...this.deletedFields.values()].map((f) =>
-            this._mkTransactionSummary2Item({ path: f.path, type: 'delete' }),
+            this._mkTransactionSummary2Item({ path: f.ϟpath, type: 'delete' }),
          ),
       ]
    }
@@ -85,37 +85,37 @@ export class Transaction {
       // compute all nodes from leaves that need to call effects
       // call them in order, non recursively.
       const createdFieldList = Array.from(this.createdFields.values())
-         .map((field) => ({ field, depth: field.trueDepth }))
+         .map((field) => ({ field, depth: field.ϟtrueDepth }))
          .sort((a, b) => b.depth - a.depth)
 
       for (const { field } of createdFieldList) {
-         this.repo.debugLog(`🟢 ${`create`.padEnd(10)} ${field.path}`)
-         field.config.onInit?.(field)
+         this.repo.debugLog(`🟢 ${`create`.padEnd(10)} ${field.ϟpath}`)
+         field.ϟconfig.onInit?.(field)
       }
 
       // #region Update
       // compute all nodes from leaves that need to call effects
       // call them in order, non recursively.
       const updatedFieldList = Array.from(this.updatedFields.values())
-         .map((field) => ({ field, depth: field.trueDepth }))
+         .map((field) => ({ field, depth: field.ϟtrueDepth }))
          .sort((a, b) => b.depth - a.depth)
 
       for (const { field } of updatedFieldList) {
-         this.repo.debugLog(`👛 ${`update`.padEnd(10)} ${field.path}`)
-         field['ܮ_applySerialUpdateEffects']()
+         this.repo.debugLog(`👛 ${`update`.padEnd(10)} ${field.ϟpath}`)
+         field.ϟ_applySerialUpdateEffects()
       }
 
       for (const { field } of updatedFieldList) {
-         this.repo.debugLog(`💙 ${`publish`.padEnd(10)} ${field.path}`)
-         field.runPublications()
+         this.repo.debugLog(`💙 ${`publish`.padEnd(10)} ${field.ϟpath}`)
+         field.ϟrunPublications()
       }
 
       // #region Delete
       const deletedFieldList = Array.from(this.deletedFields.values())
-         .map((field) => ({ field, depth: field.trueDepth }))
+         .map((field) => ({ field, depth: field.ϟtrueDepth }))
          .sort((a, b) => b.depth - a.depth)
       for (const { field } of deletedFieldList) {
-         this.repo.debugLog(`❌ ${`delete`.padEnd(10)} ${field.path}`)
+         this.repo.debugLog(`❌ ${`delete`.padEnd(10)} ${field.ϟpath}`)
          // field.INTERNAL_applyOnDelete() // TODO
       }
    }

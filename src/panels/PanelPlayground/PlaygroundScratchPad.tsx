@@ -34,7 +34,7 @@ export const ThemeConfigUI = obs(function ThemeConfigUI_(p: {}) {
                }}
                field={cushy.forms.use((ui) =>
                   ui.fields({
-                     col: ui.stringColor({ onValueChange: (v) => (uist.base = v.value) }),
+                     col: ui.stringColor({ onValueChange: (v) => (uist.base = v.ϟvalue) }),
                      foo: ui.string(),
                      bar: ui.int().list({ min: 3 }),
                      baz: ui.fields({

@@ -24,7 +24,7 @@ export class Renderer {
    }
 
    private getRulesFromUIUI(field: Field): RenderRule<any>[] {
-      const x = field.config.uiui
+      const x = field.ϟconfig.uiui
       if (x == null) return []
       if (Array.isArray(x)) return x
       return x.rules ?? []
@@ -39,7 +39,7 @@ export class Renderer {
       const debug = false // field.path === '...'
 
       // all rules applied
-      const foo: RenderProps<FIELD> | RenderRule<Z.AnyField>[] = field.config.uiui as any
+      const foo: RenderProps<FIELD> | RenderRule<Z.AnyField>[] = field.ϟconfig.uiui as any
       const bar: RenderRule<Field>[] = Array.isArray(foo) //
          ? []
          : [{ pattern: true, uiconf: foo }]
@@ -66,11 +66,11 @@ export class Renderer {
       for (let i = 0; i < ancestors.length - 1; i++) {
          const parent_ = ancestors[i]!.field
          const child_ = ancestors[i + 1]!.field
-         if (child_.parent !== parent_) virtualParents.set(child_, parent_)
+         if (child_.ϟparent !== parent_) virtualParents.set(child_, parent_)
       }
 
       const directParent_ = ancestors[ancestors.length - 1]?.field
-      if (directParent_ && field.parent !== directParent_) virtualParents.set(field, directParent_)
+      if (directParent_ && field.ϟparent !== directParent_) virtualParents.set(field, directParent_)
       // if (virtualParents.size > 0)
       //    console.log(`[      🟢 >] rendering ${field.path} at ${getVisualPath(ctx)}`, virtualParents)
 

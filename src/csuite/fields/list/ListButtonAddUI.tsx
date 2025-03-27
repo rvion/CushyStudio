@@ -4,7 +4,7 @@ import { Button } from '../../button/Button'
 
 export const ListButtonAddUI = obs(function ListButtonAddUI_(p: { field: IWidgetListLike }) {
    const field = p.field
-   const max: number | undefined = field.config.max
+   const max: number | undefined = field.ϟconfig.max
    const canAdd = max != null ? field.items.length < max : true
    return (
       <Button
@@ -15,11 +15,11 @@ export const ListButtonAddUI = obs(function ListButtonAddUI_(p: { field: IWidget
          square
          icon={IKONS.mdiPlus}
          onClick={(ev) => {
-            field.ܒtouch()
+            field.ϟtouch()
             if (!canAdd) return
             ev.stopPropagation()
             field.addItem()
-            if (field.isCollapsed) field.setCollapsed(false)
+            if (field.ϟisCollapsed) field.ϟsetCollapsed(false)
          }}
       />
    )

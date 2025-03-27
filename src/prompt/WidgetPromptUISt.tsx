@@ -55,7 +55,7 @@ export class WidgetPromptUISt {
 
    // get/set
    get text(): string {
-      return this.field.serial.val ?? ''
+      return this.field.ϟserial.val ?? ''
    }
 
    set text(val: string) {

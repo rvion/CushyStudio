@@ -8,12 +8,12 @@ describe('FieldPrompt', () => {
    // 💬 2025-03-21 rvion: hacky way of testing the prompt
    const b = new (class SimpleBuilderWithPrompt extends SimpleBuilder {
       /** prompt, defaulting to '' */
-      prompt(config: Field_prompt['…config'] = {}): Z.Prompt {
+      prompt(config: Field_prompt['Ҩconfig'] = {}): Z.Prompt {
          const def = config.default ?? ''
          return this.prompt_({ default: def, ...config })
       }
 
-      prompt_(config: Field_prompt['…config'] = {}): Z.Prompt {
+      prompt_(config: Field_prompt['Ҩconfig'] = {}): Z.Prompt {
          return CSchema.new<Field_prompt>(Field_prompt, config)
       }
    })()
@@ -31,7 +31,7 @@ describe('FieldPrompt', () => {
          presets: [
             {
                label: 'test',
-               apply({ fields }): void {
+               apply({ ϟfields: fields }): void {
                   // V1
                   fields.c.enableBranch('bar')
                   fields.c._.bar?.setText('new prompt A')
@@ -45,26 +45,26 @@ describe('FieldPrompt', () => {
 
    it('works', () => {
       const E1 = S1.create()
-      expect(E1.value.c.foo).toBe('')
-      expect(E1.value.c.bar).toBe(undefined)
+      expect(E1.ϟvalue.c.foo).toBe('')
+      expect(E1.ϟvalue.c.bar).toBe(undefined)
 
-      E1.fields.c.enableBranch('bar')
+      E1.ϟfields.c.enableBranch('bar')
 
-      expect(E1.value.c.foo).toBe(undefined)
-      expect(E1.value.c.bar?.text).toBe('coucou')
+      expect(E1.ϟvalue.c.foo).toBe(undefined)
+      expect(E1.ϟvalue.c.bar?.text).toBe('coucou')
 
-      E1.fields.c._.bar?.setText('new prompt')
+      E1.ϟfields.c._.bar?.setText('new prompt')
 
-      expect(E1.value.c.bar?.text).toBe('new prompt')
+      expect(E1.ϟvalue.c.bar?.text).toBe('new prompt')
    })
 
    it('works too', () => {
       const E1 = S1.create()
-      expect(E1.value.c.foo).toBe('')
-      expect(E1.value.c.bar).toBeUndefined()
+      expect(E1.ϟvalue.c.foo).toBe('')
+      expect(E1.ϟvalue.c.bar).toBeUndefined()
 
-      E1.fields.c.enableBranch('bar')?.setText('new prompt')
+      E1.ϟfields.c.enableBranch('bar')?.setText('new prompt')
 
-      expect(E1.value.c.bar?.text).toBe('new prompt')
+      expect(E1.ϟvalue.c.bar?.text).toBe('new prompt')
    })
 })

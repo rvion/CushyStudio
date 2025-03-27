@@ -38,7 +38,7 @@ export const PanelStepsConf = cushyFactory.document(
    {
       name: 'panel-steps',
       serial: () => readJSON('settings/panel-steps-config.json'),
-      onSerialChange: (form) => writeJSON('settings/panel-steps-config.json', form.serial),
+      onSerialChange: (form) => writeJSON('settings/panel-steps-config.json', form.ϟserial),
    },
 )
 

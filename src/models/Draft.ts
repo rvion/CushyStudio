@@ -65,12 +65,12 @@ export class DraftL extends BaseInst<TABLES['draft']> {
 
    /** collapse all top-level form entryes */
    collapseTopLevelFormEntries(): void {
-      return this.form?.root?.collapseAllChildren()
+      return this.form?.ϟroot?.ϟcollapseAllChildren()
    }
 
    /** expand all top-level form entries */
    expandTopLevelFormEntries(): void {
-      return this.form?.root?.expandAllChildren()
+      return this.form?.ϟroot?.ϟexpandAllChildren()
    }
 
    // TODO: rename
@@ -141,7 +141,7 @@ export class DraftL extends BaseInst<TABLES['draft']> {
       if (this.form == null) throw new Error('form not loaded yet')
 
       const extraRules: RenderRule<any>[] = []
-      let OUT: RenderProps = {}
+      const OUT: RenderProps = {}
 
       function set<F extends Z.Field>(...props: RenderRule_asList<F>): void
       function set<F extends Z.Field>(prop: RenderProps<any>): void
@@ -297,7 +297,7 @@ export class DraftL extends BaseInst<TABLES['draft']> {
          name: this.data.title,
          appID: this.data.appID,
          draftID: this.data.id,
-         formSerial: field.serial,
+         formSerial: field.ϟserial,
          outputGraphID: graph.id,
          isExpanded: SQLITE_true,
          status: Status.New,

@@ -6,7 +6,7 @@ export const GallerySearchControlsUI = obs(function GallerySearchControlsUI_(p: 
       <div tw='flex items-center gap-1'>
          {/* {conf.fields.filterPath.header()} */}
          {/* {conf.fields.filterAppName.header()} */}
-         <conf.FilterTag.UI Shell={uy.shell.FluidUI} />
+         <conf.filterTag.UI Shell={uy.shell.FluidUI} />
          {/* {conf.fields.filterStar.header()} */}
          {/* <input
                 tw='csuite-basic-input my-0.5'

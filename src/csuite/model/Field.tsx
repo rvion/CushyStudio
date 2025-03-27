@@ -102,7 +102,7 @@ export type FieldCtorProps<TYPES extends Field = any> = [
    parent: Field | null,
    schema: CSchema<TYPES>,
    initialMountKey: string,
-   serial?: TYPES['…serial'],
+   serial?: TYPES['Ҩserial'],
 ]
 
 export type FieldCtorProps_ALT<TYPES extends Field = any> = [
@@ -111,7 +111,7 @@ export type FieldCtorProps_ALT<TYPES extends Field = any> = [
    parent: Field | null,
    schema: CSchema<any>,
    initialMountKey: string,
-   serial?: TYPES['…serial'],
+   serial?: TYPES['Ҩserial'],
 ]
 
 type PathObject = [string, Maybe<PathObject>]
@@ -122,31 +122,54 @@ type PathObject = [string, Maybe<PathObject>]
  * * '$' is shown too early in the completion
  * * various utf8 characters used in the codebase as key
  *
- * - <space> -> really good to hide stuff from completions
- * - ܮ = internal
+ * metric to appreciate the char:
  *
- * - ܐ =
- * - ܒ = touchy stuff
- * - ܡ =
+ *    - is recognizable
+ *    - does not look like a leter
+ *    - is the same width as letter 'a' on most font (including default vscode one)
+ *    - is placed at the end of the completion list
+ *    - is not a common character (must not have been used in the codebase)
+ *    - is written from left to right so selection works proely
  *
- * - …  = type only
- * - ⇓  = snapshot related => should move into mixin
- * - →  = traversal mixin
+ * character tested:
+ *
+ *    - japanese chars > cool but too wide
+ *    - syriac chars > many cool things that look like emojis but weird width
+ *
+ * good candidates:
+ *
+ * picked:
+ *    - ⵜ (removed because too sad)
+ *    - ϟ
+ *
+ * https://en.wikipedia.org/wiki/Theta
+ * greek letters:
+ *    - Ξ
+ *    - π
+ *    - Ω
+ *    - ϟ 🟢
+ *    - φ 🟢
+ *
+ *  https://en.wikipedia.org/wiki/O-hook
+ * cyrilic letters
+ *    - ж 🟢
+ *    - Ҩ 🟢
+ *    - ю
  */
 
 export interface Field {
-   '…type': CATALOG.AllFieldTypes
-   '…ownConfig': unknown
-   '…ownSerial': unknown
-   '…serial': FieldSerialFor<this>
-   '…config': FieldConfigFor<this>
-   '…value': unknown
-   '…setvalue': unknown
-   '…unchecked': unknown
-   '…child': unknown
-   '…opts': unknown
-   '…ownPatch': Patch_Common<this['…type']>
-   '…schema': CSchema<this>
+   Ҩtype: CATALOG.AllFieldTypes
+   ҨownConfig: unknown
+   ҨownSerial: unknown
+   Ҩserial: FieldSerialFor<this>
+   Ҩconfig: FieldConfigFor<this>
+   Ҩvalue: unknown
+   Ҩsetvalue: unknown
+   Ҩunchecked: unknown
+   Ҩchild: unknown
+   Ҩopts: unknown
+   ҨownPatch: Patch_Common<this['Ҩtype']>
+   Ҩschema: CSchema<this>
 }
 export abstract class Field {
    // 2025-02-11 new addition
@@ -158,10 +181,10 @@ export abstract class Field {
     * change every time the field is instantiated
     * @undecorated (can't change)
     */
-   readonly _uid: FieldId
+   readonly ϟuid: FieldId
 
    /** widget serial is the full serialized representation of that widget  */
-   @observable.ref accessor serial: this['…serial']
+   @observable.ref accessor ϟserial: this['Ҩserial']
 
    /**
     * singleton repository for the project
@@ -169,24 +192,24 @@ export abstract class Field {
     * and other shared resource
     * @undecorated (can't change)
     */
-   readonly repo: Repository
+   readonly ϟrepo: Repository
 
    /**
     * root of the field tree this field belongs to
     * @undecorated (can't change)
     */
-   readonly root: Field
+   readonly ϟroot: Field
 
    private _symField = Symbol.for('Field')
 
    /** parent field, (null when root) */
-   @observable.ref accessor parent: Field | null
+   @observable.ref accessor ϟparent: Field | null
 
    /** schema used to instanciate this widget */
-   schema: CSchema<this>
+   ϟschema: CSchema<this>
 
-   get opts2(): this['…opts'] {
-      return this.config.opts!
+   get ϟopts2(): this['Ҩopts'] {
+      return this.ϟconfig.opts!
    }
 
    constructor(
@@ -203,16 +226,16 @@ export abstract class Field {
       /** schema used to instanciate this widget */
       schema: CSchema<any /* ❓ */>,
       initialMountKey: string,
-      serial?: any /* ❓ */, // this['…serial'],
+      serial?: any /* ❓ */, // this['Ҩserial'],
    ) {
-      this._uid = mkNewFieldId()
-      this.repo = repo
-      this.root = root ?? this
-      this.parent = parent
-      this.schema = schema
-      this.serial = serial ?? this.schema.defaultSerial
-      this.mountKey = initialMountKey
-      this.parent?.ܮacknowledgeNewChildSerial(initialMountKey, this.serial)
+      this.ϟuid = mkNewFieldId()
+      this.ϟrepo = repo
+      this.ϟroot = root ?? this
+      this.ϟparent = parent
+      this.ϟschema = schema
+      this.ϟserial = serial ?? this.ϟschema.defaultSerial
+      this.ϟmountKey = initialMountKey
+      this.ϟparent?.ϟacknowledgeNewChildSerial(initialMountKey, this.ϟserial)
    }
 
    /**
@@ -220,12 +243,12 @@ export abstract class Field {
     * Retrieved by looking in prototype for static `type` attribute.
     * @undecorated
     */
-   get type(): this['…type'] {
+   get ϟtype(): this['Ҩtype'] {
       return (this.constructor as FieldConstructor<this>).type
    }
 
    /** @undecorated */
-   private get _migrateSerial(): SerialMigrationFunction<this['…serial']> {
+   private get ϟmigrateSerial_(): SerialMigrationFunction<this['Ҩserial']> {
       return (this.constructor as FieldConstructor<this>).migrateSerial
    }
 
@@ -233,18 +256,18 @@ export abstract class Field {
     * widget value is the simple/easy-to-use representation of that widget
     * @undecorated
     */
-   abstract value: this['…value']
+   abstract ϟvalue: this['Ҩvalue']
 
    // 💬 2024-09-09 rvion:
    // | we can't actually use the following code to share get value() implementation
    // | because of mobx. Mobx force getters and setters to live on the same prototype.
    // |
    // | ```ts
-   // | get value(): K['…value'] {
+   // | get value(): K['Ҩvalue'] {
    // |     return this.value_or_fail
    // | }
    // |
-   // | set value(_newValue: K['…value']) {
+   // | set value(_newValue: K['Ҩvalue']) {
    // |     throw new Error(`❌ field_${this.type}.value = ... failed: setter not implemented`)
    // | }
    // | ```
@@ -254,10 +277,10 @@ export abstract class Field {
     * this method will NOT try to conjure any intented value.
     * @since 2024-09-03
     *
-    * @see {@link value_or_zero}
-    * @see {@link value_unchecked}
+    * @see {@link ϟvalue_or_zero}
+    * @see {@link ϟvalue_unchecked}
     */
-   abstract value_or_fail: this['…value']
+   abstract ϟvalue_or_fail: this['Ҩvalue']
 
    /**
     * Should do its best to return a value,
@@ -266,72 +289,72 @@ export abstract class Field {
     * 🔶 do not return null, unless the type allows you to
     * @since 2024-09-03
     *
-    * @see {@link value_or_fail}
-    * @see {@link value_unchecked}
+    * @see {@link ϟvalue_or_fail}
+    * @see {@link ϟvalue_unchecked}
     *
     **/
-   abstract value_or_zero: this['…value']
+   abstract ϟvalue_or_zero: this['Ҩvalue']
 
    /**
      * this method
-     *  - Always returns the advertized type (`Field['…unchecked']`).
+     *  - Always returns the advertized type (`Field['Ҩunchecked']`).
      *  - Never crashes
      *
      * @since 2024-09-03
      *
-     * @see {@link value_or_fail}
-     * @see {@link value_or_zero}
+     * @see {@link ϟvalue_or_fail}
+     * @see {@link ϟvalue_or_zero}
 
      */
-   abstract value_unchecked: this['…unchecked']
+   abstract ϟvalue_unchecked: this['Ҩunchecked']
 
    /**
     * Returns true if the given field has the same value as this field
     * (only possible if fields are of the same type)
     */
-   abstract isValueEqual(other: Field): boolean
+   abstract ϟisValueEqual(other: Field): boolean
 
    /**
     * you should NOT override this method.
     * you need to override the `generateOwnPatches`
-    * @see generateOwnPatches
+    * @see ϟgenerateOwnPatches
     *
     * (TODO: since final is not a thing in TS; we may prevent this overridability; configurable: false, writable: false) => probbaly want to wait for decorators first)
     * @undecorated (pure producer)
     */
-   public generatePatches(referenceField: this): Patch_Common[] {
+   public ϟgeneratePatches(referenceField: this): Patch_Common[] {
       const patches: Patch_Common[] = []
-      if (this.type !== referenceField.type) {
+      if (this.ϟtype !== referenceField.ϟtype) {
          throw new Error(`Can't generate patches between fields of different types`)
          // what do we do here ? 🔴
          // case where it can happen:
          //   - hot reload ? different schema ? 🤔
          // return []
       }
-      const ownPatches = this.generateOwnPatches(referenceField)
+      const ownPatches = this.ϟgenerateOwnPatches(referenceField)
       patches.push(...ownPatches)
-      patches.push(...this.ܮgenerateChildrenPatches(referenceField))
+      patches.push(...this.ϟgenerateChildrenPatches(referenceField))
       return patches
    }
 
-   get patchedSerialPaths(): readonly string[] {
+   get ϟpatchedSerialPaths(): readonly string[] {
       return (this.constructor as FieldConstructor<this>).patchedSerialPaths
    }
 
-   get shorthash(): string {
-      return getUIDForMemoryStructure(this.serial)
+   get ϟshorthash(): string {
+      return getUIDForMemoryStructure(this.ϟserial)
    }
    /**
     * To be overwritten by subclasses to generate patches for the field itself
     * for special cases
     * @undecorated
     */
-   protected generateOwnPatches(referenceField: this): this['…ownPatch'][] {
-      if (this.isValueEqual(referenceField)) return []
+   protected ϟgenerateOwnPatches(referenceField: this): this['ҨownPatch'][] {
+      if (this.ϟisValueEqual(referenceField)) return []
 
-      return this.patchedSerialPaths.flatMap((serialPath): Patch<this['…type']>[] => {
-         const thisValue = _get(this.serial, serialPath)
-         const referenceValue = _get(referenceField.serial, serialPath)
+      return this.ϟpatchedSerialPaths.flatMap((serialPath): Patch<this['Ҩtype']>[] => {
+         const thisValue = _get(this.ϟserial, serialPath)
+         const referenceValue = _get(referenceField.ϟserial, serialPath)
 
          if (thisValue === referenceValue) return []
 
@@ -339,32 +362,32 @@ export abstract class Field {
             return [
                {
                   op: 'remove',
-                  fieldType: this.type,
-                  fieldPath: this.path,
+                  fieldType: this.ϟtype,
+                  fieldPath: this.ϟpath,
                   serialPath,
-               } as PatchRemove<this['…type']>,
+               } as PatchRemove<this['Ҩtype']>,
             ]
          }
          if (referenceValue === undefined) {
             return [
                {
                   op: 'add',
-                  fieldType: this.type,
-                  fieldPath: this.path,
+                  fieldType: this.ϟtype,
+                  fieldPath: this.ϟpath,
                   serialPath,
                   value: thisValue,
-               } as PatchAdd<this['…type'], unknown>,
+               } as PatchAdd<this['Ҩtype'], unknown>,
             ]
          }
 
          return [
             {
                op: 'replace',
-               fieldType: this.type,
-               fieldPath: this.path,
+               fieldType: this.ϟtype,
+               fieldPath: this.ϟpath,
                serialPath,
                value: thisValue,
-            } as PatchReplace<this['…type'], unknown>,
+            } as PatchReplace<this['Ҩtype'], unknown>,
          ]
       })
    }
@@ -373,29 +396,29 @@ export abstract class Field {
     * generic implementation; must be overriden for every non-leaves
     * @undecorated (single action setter inside)
     */
-   set(x: this['…setvalue']): this {
-      if (isProbablySomeFieldSerialOf(x, this.type)) this.setSerial(x as this['…serial'])
-      else if ((x as any) instanceof Field) this.setSerial((x as any).serial as this['…serial'])
-      else this.setValue(x)
+   ϟset(x: this['Ҩsetvalue']): this {
+      if (isProbablySomeFieldSerialOf(x, this.ϟtype)) this.ϟsetSerial(x as this['Ҩserial'])
+      else if ((x as any) instanceof Field) this.ϟsetSerial((x as any).serial as this['Ҩserial'])
+      else this.ϟsetValue(x)
       return this
    }
 
    /** @undecorated (pure getter function) */
-   getSetValue(): this['…setvalue'] | undefined {
+   ϟgetSetValue(): this['Ҩsetvalue'] | undefined {
       // console.log(`[💀 getSetValue] `, this.path)
-      return this.value
+      return this.ϟvalue
    }
 
    /**
     * To be overwritten by subclasses to generate patches for children
     * @undecorated (pure getter)
     */
-   protected ܮgenerateChildrenPatches(reference: this): Patch_Common[] {
-      return this.childrenAll.flatMap((child) => {
-         const referenceChild = reference.getChildByKey(child.mountKey)
+   protected ϟgenerateChildrenPatches(reference: this): Patch_Common[] {
+      return this.ϟchildrenAll.flatMap((child) => {
+         const referenceChild = reference.ϟgetChildByKey(child.ϟmountKey)
 
          if (referenceChild != null) {
-            return child.generatePatches(referenceChild as Field)
+            return child.ϟgeneratePatches(referenceChild as Field)
          }
 
          return []
@@ -403,21 +426,21 @@ export abstract class Field {
    }
 
    /** @undecorated (manual runInAction inside) */
-   public ܮapplyPatches(patches: Patch_Common[]): void {
+   public ϟapplyPatches(patches: Patch_Common[]): void {
       const thisPatches = patches.filter(
-         (patch) => patch.fieldPath === this.path && patch.fieldType === this.type,
+         (patch) => patch.fieldPath === this.ϟpath && patch.fieldType === this.ϟtype,
       )
       runInAction(() => {
-         this.applyOwnPatches(thisPatches)
-         this.applyChildrenPatches(patches)
+         this.ϟapplyOwnPatches(thisPatches)
+         this.ϟapplyChildrenPatches(patches)
       })
    }
 
    /** @undecorated (manual runInAction inside) */
-   protected applyOwnPatches(patches: this['…ownPatch'][]): void {
+   protected ϟapplyOwnPatches(patches: this['ҨownPatch'][]): void {
       if (patches.length === 0) return
       runInAction(() => {
-         const nextState = produce(this.serial, (draft) => {
+         const nextState = produce(this.ϟserial, (draft) => {
             patches.forEach((patch) => {
                if (isPatchReplace(patch) || isPatchAdd(patch)) {
                   _set(draft, patch.serialPath, patch.value)
@@ -428,21 +451,21 @@ export abstract class Field {
                }
             })
          })
-         this.setSerial(nextState)
+         this.ϟsetSerial(nextState)
       })
    }
 
    /** @undecorated (manual runInAction inside) */
-   protected applyChildrenPatches(patches: Patch_Common[]): void {
+   protected ϟapplyChildrenPatches(patches: Patch_Common[]): void {
       if (patches.length === 0) return
 
       runInAction(() => {
-         this.childrenAll.forEach((child) => {
+         this.ϟchildrenAll.forEach((child) => {
             const childPatches = patches.filter(
-               (patch) => patch.fieldPath === child.path || patch.fieldPath.startsWith(`${child.path}.`),
+               (patch) => patch.fieldPath === child.ϟpath || patch.fieldPath.startsWith(`${child.ϟpath}.`),
             )
             if (childPatches.length > 0) {
-               child.ܮapplyPatches(childPatches)
+               child.ϟapplyPatches(childPatches)
             }
          })
       })
@@ -453,7 +476,7 @@ export abstract class Field {
     * @stability beta
     * @undecorated (base function does nothing)
     */
-   static migrateSerial(serial: Field['…serial']): any {
+   static migrateSerial(serial: Field['Ҩserial']): any {
       return serial
    }
 
@@ -479,12 +502,12 @@ export abstract class Field {
     * to customize that. useful for tests.
     * @undecorated (base function does nothing)
     */
-   randomize(): void {}
+   ϟrandomize(): void {}
 
    // #region lifecycle
 
    /** field is already instanciated => probably used as a linked */
-   shared(): Z.Shared<this> {
+   ϟshared(): Z.Shared<this> {
       const FieldSharedClass = getFieldSharedClass()
       // 💬 2024-08-30 rvion:
       // | SimpleSchema usage is OK here, even if your project
@@ -504,7 +527,7 @@ export abstract class Field {
     * avoid memory leak.
     * @undecorated (will only be called at disposal time; no need to react on additions)
     */
-   protected disposeFns: (() => void)[] = []
+   protected ϟdisposeFns: (() => void)[] = []
 
    /**
     * lifecycle method, is called
@@ -512,37 +535,37 @@ export abstract class Field {
     * @since 2024-07-05
     * @undecorated (this.repo.runInTransaction already wrapped in runInAction)
     */
-   disposeTree(): void {
-      this.ܮrunInTransaction((tct) => this._disposeTree(tct))
+   ϟdisposeTree(): void {
+      this.ϟrunInTransaction((tct) => this.ϟ_disposeTree(tct))
    }
 
    /**
     * calls itself recursively
     * @undecorated (manual runInAction inside)
     */
-   private _disposeTree(tct: Transaction): void {
+   private ϟ_disposeTree(tct: Transaction): void {
       runInAction(() => {
-         this._disposeSelf(tct)
+         this.ϟ_disposeSelf(tct)
 
          // dispose all children
-         for (const sub of this.childrenAll) {
-            sub._disposeTree(tct)
+         for (const sub of this.ϟchildrenAll) {
+            sub.ϟ_disposeTree(tct)
          }
       })
    }
 
    /** @undecorated (only called by _disposeTree above, which is wrapped in runInAction) */
-   private _disposeSelf(tct: Transaction): void {
+   private ϟ_disposeSelf(tct: Transaction): void {
       // TODO:
       // - disable all publish
       // - disable all reactions
       // - mark as DELETED;  => makes most function throw an error if used
 
       // unregister from repo
-      this.repo._unregisterField(this, tct)
+      this.ϟrepo._unregisterField(this, tct)
 
       // dispose all reactions/other long-running stuff
-      for (const disposeFn of this.disposeFns) {
+      for (const disposeFn of this.ϟdisposeFns) {
          disposeFn()
       }
    }
@@ -552,7 +575,7 @@ export abstract class Field {
     * TODO: also use that to wait for whole tree to be patched before applying effects
     * (may not need to be made observable; review this decision later)
     * */
-   @observable accessor ready: boolean = false
+   @observable accessor ϟready: boolean = false
 
    /**
     * if your field need to wait for the document to be ready;
@@ -560,8 +583,8 @@ export abstract class Field {
     *
     * @since 2024-09-04
     */
-   get isDocumentReady(): boolean {
-      return this.root.ready
+   get ϟisDocumentReady(): boolean {
+      return this.ϟroot.ϟready
    }
 
    // #region Serial
@@ -585,14 +608,14 @@ export abstract class Field {
     * YOU PROBABLY DO NOT WANT TO OVERRIDE THIS
     * @undecorated (wrapped in runInTransaction, that is already an action)
     */
-   setSerial(
+   ϟsetSerial(
       /** this serial may be from a previous schema; we need to be able to handle properly */
-      serial: Maybe<this['…serial']>,
+      serial: Maybe<this['Ҩserial']>,
    ): void {
-      if (serial === this.serial) return
-      this.ܮrunInTransaction(() => {
+      if (serial === this.ϟserial) return
+      this.ϟrunInTransaction(() => {
          // this.copyCommonSerialFields(serial)
-         this.setOwnSerialWithValidationAndMigrationAndFixes(serial)
+         this.ϟsetOwnSerialWithValidationAndMigrationAndFixes(serial)
       })
    }
 
@@ -602,27 +625,27 @@ export abstract class Field {
     * This function can only be called by `setOwnSerialWithValidationAndMigration`
     * which itself can only be called by `init` and `setSerial`
     */
-   protected abstract setOwnSerial(serial: this['…serial']): void
+   protected abstract ϟsetOwnSerial(serial: this['Ҩserial']): void
 
    /**
      * contains the list of all serial problems that occured during the last setSerial
      * it only contains the **LAST** setSerial problems
      * => this list will be emptied everytime we call setSerial
      *
-     * @see {@link recordSerialProblem}
+     * @see {@link ϟrecordSerialProblem}
      * @since 2024-09-11
 
      */
-   serialProblems: { msg: string; data: any }[] = []
+   ϟserialProblems: { msg: string; data: any }[] = []
 
    /**
     * Append a problem to the serialProblems list
     *
-    * @see {@link serialProblems}
+    * @see {@link ϟserialProblems}
     * @since 2024-09-11
     */
-   recordSerialProblem = (msg: string, data: any): void => {
-      this.serialProblems.push({ msg, data })
+   ϟrecordSerialProblem = (msg: string, data: any): void => {
+      this.ϟserialProblems.push({ msg, data })
    }
 
    /*
@@ -635,7 +658,7 @@ export abstract class Field {
     //    C.2. global via generated zod-or-similar json schema
 
     */
-   setOwnSerialWithValidationAndMigrationAndFixes(serialish: UNVALIDATED<Maybe<this['…serial']>>): {
+   ϟsetOwnSerialWithValidationAndMigrationAndFixes(serialish: UNVALIDATED<Maybe<this['Ҩserial']>>): {
       problems: { msg: string; data: any }[]
    } {
       const wasNull = serialish == null
@@ -644,22 +667,22 @@ export abstract class Field {
 
       // #region 1.1. case `null` => use `defaultSerial`
       if (serialish == null) {
-         this.recordSerialProblem(`serial is null, using defaultSerial`, serialish)
-         serial = this.schema.defaultSerial
+         this.ϟrecordSerialProblem(`serial is null, using defaultSerial`, serialish)
+         serial = this.ϟschema.defaultSerial
          skipAutoFix = true
       }
 
       // #region 1.2. case not an object => use `defaultSerial`
       else if (typeof serialish !== 'object') {
-         this.recordSerialProblem(`serial is not an object, using defaultSerial`, serialish)
-         serial = this.schema.defaultSerial
+         this.ϟrecordSerialProblem(`serial is not an object, using defaultSerial`, serialish)
+         serial = this.ϟschema.defaultSerial
          skipAutoFix = true
       }
 
       // #region 1.3. empty object => use defaultSerial
       else if (Object.keys(serialish).length === 0) {
-         this.recordSerialProblem(`serial is not an empty object, using defaultSerial`, serialish)
-         serial = this.schema.defaultSerial
+         this.ϟrecordSerialProblem(`serial is not an empty object, using defaultSerial`, serialish)
+         serial = this.ϟschema.defaultSerial
          skipAutoFix = true
       }
 
@@ -681,16 +704,16 @@ export abstract class Field {
       // #region 3. run the static migrateSerial function from field
       // 🔶 this is probably wrong; and we probably need to get rid of it sooner than later.
       if (!wasNull) {
-         const newSerial = this._migrateSerial(serial)
+         const newSerial = this.ϟmigrateSerial_(serial)
          if (newSerial != null) serial = newSerial
       }
 
       // #region 4. Legacy (🔴!) run the heuristic migration function
       // 🔶 this is probably wrong; and we probably need to get rid of it sooner than later.
       // TODO: dispatch to various migrateSerial functions within fields themselves
-      if (isProbablySomeFieldSerial(serial) && serial.$ !== this.type) {
+      if (isProbablySomeFieldSerial(serial) && serial.$ !== this.ϟtype) {
          // ADDING LIST
-         if (this.type === 'list') {
+         if (this.ϟtype === 'list') {
             const id = nanoid(6) as Field_list_ItemID
             const next: Field_list_serial<any> = {
                $: 'list',
@@ -701,7 +724,7 @@ export abstract class Field {
          }
 
          // ADDING OPTIONAL
-         else if (this.type === 'optional') {
+         else if (this.ϟtype === 'optional') {
             const next: Field_optional_serial<any> = {
                $: 'optional',
                y: serial,
@@ -717,7 +740,7 @@ export abstract class Field {
             serial.items_.length >= 1
          ) {
             const item0 = serial.items_[0]!
-            if (isHole(item0)) throw new Error(`invalid serial at '${this.path}': hole found in list.`)
+            if (isHole(item0)) throw new Error(`invalid serial at '${this.ϟpath}': hole found in list.`)
             serial = item0
          }
 
@@ -732,11 +755,11 @@ export abstract class Field {
 
       // #region 5. Legacy (🔴!) migration system
       // 🔶 this is probably wrong; and we probably need to get rid of it sooner than later.
-      if (this.config.beforeInit != null) {
+      if (this.ϟconfig.beforeInit != null) {
          const oldVersion = (serial as any)._version ?? 'default'
-         const newVersion = this.config.version ?? 'default'
+         const newVersion = this.ϟconfig.version ?? 'default'
          if (oldVersion !== newVersion) {
-            serial = this.config.beforeInit(serial)
+            serial = this.ϟconfig.beforeInit(serial)
             if (!isProbablySomeFieldSerial(serial)) throw new Error(`invalid serial`)
             serial._version = newVersion
          }
@@ -747,23 +770,23 @@ export abstract class Field {
       // #region 7. catch all phase
       if (!isProbablySomeFieldSerial(serial)) {
          console.error({ invalidSerial: serial })
-         throw new Error(`invalid serial at '${this.path}'`)
+         throw new Error(`invalid serial at '${this.ϟpath}'`)
       }
-      if (isProbablySomeFieldSerial(serial) && serial.$ !== this.type) {
-         console.log(`[🔶] INVALID SERIAL at ${this.path} (expected: ${this.type}, got: ${serial.$})`)
+      if (isProbablySomeFieldSerial(serial) && serial.$ !== this.ϟtype) {
+         console.log(`[🔶] INVALID SERIAL at ${this.ϟpath} (expected: ${this.ϟtype}, got: ${serial.$})`)
          console.log(`[🔶] INVALID SERIAL:`, JSON.stringify(serial))
          const anomaly: FieldAnomaly = {
             type: 'invalid-serial',
             date: Date.now(),
-            path: this.path,
-            pathExt: this.pathExt,
+            path: this.ϟpath,
+            pathExt: this.ϟpathExt,
             got: serialish as AnyFieldSerial,
          }
-         if (this.root !== this) {
-            this.root.addAnomaly(anomaly)
-            serial = this.schema.defaultSerial
+         if (this.ϟroot !== this) {
+            this.ϟroot.ϟaddAnomaly(anomaly)
+            serial = this.ϟschema.defaultSerial
          } else {
-            serial = { ...this.schema.defaultSerial /* ❌ */, anomalies: [anomaly] }
+            serial = { ...this.ϟschema.defaultSerial /* ❌ */, anomalies: [anomaly] }
          }
       }
 
@@ -772,7 +795,7 @@ export abstract class Field {
          return serial
          // TODO
       }
-      const validSerial = ensureValid<this['…serial']>(serial)
+      const validSerial = ensureValid<this['Ҩserial']>(serial)
 
       // #region 9. set the now valid serial
       // 💬 2024-09-11 rvion: at this point, we should be able to guarantee that
@@ -780,8 +803,8 @@ export abstract class Field {
       // | the serial is well formed valid.
       // | no data has been discarded.
       // | all validation properly succeeed
-      this.setOwnSerial(validSerial)
-      return { problems: this.serialProblems }
+      this.ϟsetOwnSerial(validSerial)
+      return { problems: this.ϟserialProblems }
    }
 
    // private copyCommonSerialFields(s: Maybe<FieldSerial_CommonProperties>): void {
@@ -793,34 +816,34 @@ export abstract class Field {
    // }
 
    /** unified api to allow setting serial from value */
-   setValue(val: this['…value']): this {
-      this.value = val
+   ϟsetValue(val: this['Ҩvalue']): this {
+      this.ϟvalue = val
       return this
    }
 
-   ܮRECONCILE<SCHEMA extends CSchema>(p: {
+   ϟRECONCILE<SCHEMA extends CSchema>(p: {
       mountKey: string
       existingChild: Maybe<Field>
       correctChildSchema: SCHEMA
       /** the target child to clone/apply into child */
-      targetChildSerial: Maybe<SCHEMA['…serial']>
+      targetChildSerial: Maybe<SCHEMA['Ҩserial']>
       /**
        * ONLY CALLED FOR NEW CHILD
        *
        * must attach/register both
        *  - child into parent where it belongs
        *  - child.serial into parent.serial where it belongs  */
-      attach(child: SCHEMA['$field']): void
+      attach(child: SCHEMA['Ҩfield']): void
    }): void {
       let child = p.existingChild
-      if (child != null && child.schema === p.correctChildSchema) {
-         child.setSerial(p.targetChildSerial)
+      if (child != null && child.ϟschema === p.correctChildSchema) {
+         child.ϟsetSerial(p.targetChildSerial)
       } else {
-         if (child) child.disposeTree()
+         if (child) child.ϟdisposeTree()
          child = p.correctChildSchema.instanciate(
             //
-            this.repo,
-            this.root,
+            this.ϟrepo,
+            this.ϟroot,
             this,
             p.mountKey,
             p.targetChildSerial,
@@ -834,29 +857,29 @@ export abstract class Field {
 
    // #region UI HELPERS
    /** @deprecated with the new UI system */
-   get actualWidgetToDisplay(): Field {
+   get ϟactualWidgetToDisplay(): Field {
       return this
    }
 
-   get indentChildren(): number {
+   get ϟindentChildren(): number {
       return 1
    }
 
    /** @deprecated ? with the new UI system */
-   get justifyLabel(): boolean {
-      if (this.config.justifyLabel != null) return this.config.justifyLabel
+   get ϟjustifyLabel(): boolean {
+      if (this.ϟconfig.justifyLabel != null) return this.ϟconfig.justifyLabel
       return true
    }
 
-   @computed get depth(): number {
-      if (this.parent == null) return 0
-      return this.parent.depth + this.parent.indentChildren
+   @computed get ϟdepth(): number {
+      if (this.ϟparent == null) return 0
+      return this.ϟparent.ϟdepth + this.ϟparent.ϟindentChildren
    }
 
    /** DO NOT OVERRIDE; used internally to properly schedule events */
-   @computed get trueDepth(): number {
-      if (this.parent == null) return 0
-      return this.parent.trueDepth + 1
+   @computed get ϟtrueDepth(): number {
+      if (this.ϟparent == null) return 0
+      return this.ϟparent.ϟtrueDepth + 1
    }
 
    // #region ON/OFF
@@ -865,12 +888,12 @@ export abstract class Field {
     * returns true if we can either `setOn` and `setOff` this field
     * @since 2024-09-03
     */
-   @computed get canBeToggledWithinParent(): boolean {
+   @computed get ϟcanBeToggledWithinParent(): boolean {
       // if (isFieldOptional(this)) return true
-      if (isFieldList(this.parent)) return true
-      if (isFieldOptional(this.parent)) return true
-      if (isFieldChoices(this.parent)) return true
-      if (isFieldChoice(this.parent)) return false
+      if (isFieldList(this.ϟparent)) return true
+      if (isFieldOptional(this.ϟparent)) return true
+      if (isFieldChoices(this.ϟparent)) return true
+      if (isFieldChoice(this.ϟparent)) return false
       return false
    }
 
@@ -880,13 +903,13 @@ export abstract class Field {
     * @since 2024-09-03
     * @undecorated (single child action)
     */
-   enableSelfWithinParent(): void {
-      const parent = this.parent
+   ϟenableSelfWithinParent(): void {
+      const parent = this.ϟparent
       if (isFieldOptional(parent)) return parent.setOn()
-      if (isFieldChoices(parent)) return parent.enableBranch(this.mountKey)
-      if (isFieldChoice(parent)) return parent.enableBranch(this.mountKey)
+      if (isFieldChoices(parent)) return parent.enableBranch(this.ϟmountKey)
+      if (isFieldChoice(parent)) return parent.enableBranch(this.ϟmountKey)
       throw new Error(
-         `(${this.type}@'${this.path}').setOn: parent (${parent?.type}) is neither optional or choices`,
+         `(${this.ϟtype}@'${this.ϟpath}').setOn: parent (${parent?.ϟtype}) is neither optional or choices`,
       )
    }
 
@@ -896,41 +919,41 @@ export abstract class Field {
     * @since 2024-09-03
     * @undecorated (single child action)
     */
-   disableSelfWithinParent(): void {
-      const parent = this.parent
+   ϟdisableSelfWithinParent(): void {
+      const parent = this.ϟparent
       if (isFieldOptional(parent)) return parent.setOff()
       if (isFieldList(parent)) return parent.removeItem(this)
-      if (isFieldChoices(parent)) return parent.disableBranch(this.mountKey)
-      if (isFieldChoice(parent)) return parent.disableBranch(this.mountKey)
+      if (isFieldChoices(parent)) return parent.disableBranch(this.ϟmountKey)
+      if (isFieldChoice(parent)) return parent.disableBranch(this.ϟmountKey)
       throw new Error(
-         `(${this.type}@'${this.path}').setOff: parent (${parent?.type}) is neither optional or choices`,
+         `(${this.ϟtype}@'${this.ϟpath}').setOff: parent (${parent?.ϟtype}) is neither optional or choices`,
       )
    }
 
-   @computed get isInsideDisabledBranch(): boolean {
-      if (this.parent == null) return false
-      if (this.parent.isInsideDisabledBranch) return true
-      if (isFieldOptional(this.parent)) return this.parent.isDisabled
-      if (isFieldChoices(this.parent)) return this.parent.isBranchDisabled(this.mountKey)
-      if (isFieldChoice(this.parent)) return this.parent.isBranchDisabled(this.mountKey)
+   @computed get ϟisInsideDisabledBranch(): boolean {
+      if (this.ϟparent == null) return false
+      if (this.ϟparent.ϟisInsideDisabledBranch) return true
+      if (isFieldOptional(this.ϟparent)) return this.ϟparent.ϟisDisabled
+      if (isFieldChoices(this.ϟparent)) return this.ϟparent.isBranchDisabled(this.ϟmountKey)
+      if (isFieldChoice(this.ϟparent)) return this.ϟparent.isBranchDisabled(this.ϟmountKey)
       return false
    }
 
-   @computed get isDisabledWithinParent(): boolean {
-      return !this.isEnabledWithinParent
+   @computed get ϟisDisabledWithinParent(): boolean {
+      return !this.ϟisEnabledWithinParent
    }
 
-   @computed get isEnabledWithinParent(): boolean {
-      if (isFieldOptional(this.parent)) return this.parent.isActive
-      if (isFieldChoices(this.parent)) return this.parent.isBranchEnabled(this.mountKey)
-      if (isFieldChoice(this.parent)) return this.parent.isBranchEnabled(this.mountKey)
+   @computed get ϟisEnabledWithinParent(): boolean {
+      if (isFieldOptional(this.ϟparent)) return this.ϟparent.isActive
+      if (isFieldChoices(this.ϟparent)) return this.ϟparent.isBranchEnabled(this.ϟmountKey)
+      if (isFieldChoice(this.ϟparent)) return this.ϟparent.isBranchEnabled(this.ϟmountKey)
       return true
    }
 
    // #region Tree
 
    // abstract readonly id: string
-   asTreeElement(key: string): ITreeElement<{ widget: Field; key: string }> {
+   ϟasTreeElement(key: string): ITreeElement<{ widget: Field; key: string }> {
       return {
          key: (this as any).id,
          ctor: TreeEntry_Field as any,
@@ -942,16 +965,16 @@ export abstract class Field {
     * shorthand access to schema.config
     * @undecorated (static, no need for mobx)
     */
-   get config(): this['…config'] {
-      return this.schema.config
+   get ϟconfig(): this['Ҩconfig'] {
+      return this.ϟschema.config
    }
 
    /** @undecorated (not an action; pure; defer to single computed) */
-   getValue(mode: VALUE_MODE): this['…value'] | this['…unchecked'] {
-      if (mode === 'fail') return this.value_or_fail
-      if (mode === 'zero') return this.value_or_zero
-      if (mode === 'unchecked') return this.value_unchecked
-      if (mode === 'set') return this.getSetValue()
+   ϟgetValue(mode: VALUE_MODE): this['Ҩvalue'] | this['Ҩunchecked'] {
+      if (mode === 'fail') return this.ϟvalue_or_fail
+      if (mode === 'zero') return this.ϟvalue_or_zero
+      if (mode === 'unchecked') return this.ϟvalue_unchecked
+      if (mode === 'set') return this.ϟgetSetValue()
       exhaust(mode)
    }
 
@@ -959,8 +982,8 @@ export abstract class Field {
     * return true when widget has no child
     * return false when widget has one or more child
     * */
-   get hasNoChild(): boolean {
-      return this.childrenAll.length === 0
+   get ϟhasNoChild(): boolean {
+      return this.ϟchildrenAll.length === 0
    }
 
    /**
@@ -968,57 +991,57 @@ export abstract class Field {
     * @status broken
     * return a short summary of changes from default
     */
-   @computed get diffSummaryFromDefault(): string {
+   @computed get ϟdiffSummaryFromDefault(): string {
       return [
-         this.hasChanges //
-            ? `${this.path}(${this.value?.toString?.() ?? '.'})`
+         this.ϟhasChanges //
+            ? `${this.ϟpath}(${this.ϟvalue?.toString?.() ?? '.'})`
             : null,
-         ...this.childrenAll.map((w) => w.diffSummaryFromDefault),
+         ...this.ϟchildrenAll.map((w) => w.ϟdiffSummaryFromDefault),
       ]
          .filter(Boolean)
          .join('\n')
    }
 
    /** path within the model */
-   @computed get path(): FL_FieldPath {
-      const p = this.parent
+   @computed get ϟpath(): FL_FieldPath {
+      const p = this.ϟparent
       if (p == null) return '$'
-      return p.path + '.' + this.mountKey
+      return p.ϟpath + '.' + this.ϟmountKey
    }
 
-   @computed get pathObject(): PathObject {
-      return [this.path, this.parent?.pathObject]
+   @computed get ϟpathObject(): PathObject {
+      return [this.ϟpath, this.ϟparent?.ϟpathObject]
    }
 
    /** path within the model */
-   @computed get pathExt(): FL_FieldPathExt {
-      const p = this.parent
-      if (p == null) return `@${this.type}`
-      return p.pathExt + '.' + this.mountKey + `@${this.type}`
+   @computed get ϟpathExt(): FL_FieldPathExt {
+      const p = this.ϟparent
+      if (p == null) return `@${this.ϟtype}`
+      return p.ϟpathExt + '.' + this.ϟmountKey + `@${this.ϟtype}`
    }
 
-   getFieldAt(path: string): Maybe<Field> {
+   ϟgetFieldAt(path: string): Maybe<Field> {
       const parts = path.split('.')
       // eslint-disable-next-line consistent-this
       let current: Maybe<Field> = this
       for (const part of parts) {
          if (part === '$') {
-            current = this.root
+            current = this.ϟroot
             continue
          }
-         current = current.getChildByKey(part) as Maybe<Field>
+         current = current.ϟgetChildByKey(part) as Maybe<Field>
          if (current == null) return null
       }
 
       return current
    }
 
-   getChildByKey(key: string): Maybe<this['…child']> {
+   ϟgetChildByKey(key: string): Maybe<this['Ҩchild']> {
       // TODO: more efficient overrides
-      return this.childrenAll.find((f) => f.mountKey === key)
+      return this.ϟchildrenAll.find((f) => f.ϟmountKey === key)
    }
 
-   @observable accessor mountKey: string
+   @observable accessor ϟmountKey: string
    // get mountKey(): string {
    //     if (this.parent == null) return '$'
    //     if (this.parent.type === 'optional') return 'child' // hack for line below who is wrong
@@ -1026,29 +1049,29 @@ export abstract class Field {
    // }
 
    /** collapse all children that can be collapsed */
-   collapseAllChildren(): void {
-      this.ܮrunInTransaction(() => {
-         for (const _item of this.childrenAll) {
+   ϟcollapseAllChildren(): void {
+      this.ϟrunInTransaction(() => {
+         for (const _item of this.ϟchildrenAll) {
             // this allow to make sure we fold though optionals and similar constructs
-            const item = _item.actualWidgetToDisplay
-            if (item.serial.collapsed) continue
-            const isCollapsible = item.isCollapsible
-            if (isCollapsible) item.setCollapsed(true)
+            const item = _item.ϟactualWidgetToDisplay
+            if (item.ϟserial.collapsed) continue
+            const isCollapsible = item.ϟisCollapsible
+            if (isCollapsible) item.ϟsetCollapsed(true)
          }
       })
    }
 
-   isOfType(...type: CATALOG.AllFieldTypes[]): boolean {
-      return type.includes(this.type)
+   ϟisOfType(...type: CATALOG.AllFieldTypes[]): boolean {
+      return type.includes(this.ϟtype)
    }
 
    /** expand all children that can are collapsed */
-   expandAllChildren(): void {
-      this.ܮrunInTransaction(() => {
-         for (const _item of this.childrenAll) {
+   ϟexpandAllChildren(): void {
+      this.ϟrunInTransaction(() => {
+         for (const _item of this.ϟchildrenAll) {
             // this allow to make sure we fold though optionals and similar constructs
-            const item = _item.actualWidgetToDisplay
-            item.setCollapsed(undefined)
+            const item = _item.ϟactualWidgetToDisplay
+            item.ϟsetCollapsed(undefined)
          }
       })
    }
@@ -1068,62 +1091,62 @@ export abstract class Field {
     * | it's simpler  though
     * 🔶 some widget like `WidgetPrompt` would not work with such logic
     * */
-   reset(): void {
+   ϟreset(): void {
       runInAction(() => {
-         this.setSerial(null)
-         this.ܒtouched = false
+         this.ϟsetSerial(null)
+         this.ϟtouched = false
       })
    }
 
    /** return a cloned/detached value object you can use anywhere without care */
-   toValueJSON(): this['…value'] {
-      return JSON.parse(JSON.stringify(this.value))
+   ϟtoValueJSON(): this['Ҩvalue'] {
+      return JSON.parse(JSON.stringify(this.ϟvalue))
    }
 
    /** return a clone/detached serial object you can use anywhere without care */
-   toSerialJSON(): this['…serial'] {
-      return this.serial // JSON.parse(JSON.stringify(this.serial))
+   ϟtoSerialJSON(): this['Ҩserial'] {
+      return this.ϟserial // JSON.parse(JSON.stringify(this.serial))
    }
 
    /** every child class must implement change detection from its default  */
-   abstract readonly hasChanges: boolean
+   abstract readonly ϟhasChanges: boolean
 
-   @observable private accessor ܒtouched_: boolean = false
+   @observable private accessor ϟtouched_: boolean = false
 
    /** true when the field contains unsaved changes */
-   get ܒtouched(): boolean {
-      return this.ܒtouched_
+   get ϟtouched(): boolean {
+      return this.ϟtouched_
    }
 
-   set ܒtouched(val: boolean) {
+   set ϟtouched(val: boolean) {
       runInAction(() => {
          if (
             val === true && //
-            this.ܒtouched_ !== val &&
-            this.parent !== this &&
-            this.parent != null
+            this.ϟtouched_ !== val &&
+            this.ϟparent !== this &&
+            this.ϟparent != null
          ) {
-            this.parent.ܒtouched = true
+            this.ϟparent.ϟtouched = true
          }
 
-         this.ܒtouched_ = val
+         this.ϟtouched_ = val
       })
    }
    /**
     * Identical to field.touched = true but easier to use when field is nullable
     */
-   ܒtouch(): void {
+   ϟtouch(): void {
       runInAction(() => {
-         this.ܒtouched = true
+         this.ϟtouched = true
       })
    }
 
-   ܒtouchAll(): void {
+   ϟtouchAll(): void {
       runInAction(() => {
-         if (this.childrenAll.length === 0) this.ܒtouched = true
+         if (this.ϟchildrenAll.length === 0) this.ϟtouched = true
 
-         for (const child of this.childrenAll) {
-            child.ܒtouchAll()
+         for (const child of this.ϟchildrenAll) {
+            child.ϟtouchAll()
          }
       })
    }
@@ -1135,7 +1158,7 @@ export abstract class Field {
     * 🔶 some widget like `WidgetPrompt` would not work with such logic
     * 🔶 some widget like `Optional` have no simple way to retrieve the default value
     */
-   // abstract readonly defaultValue: this['schema']['…value'] |
+   // abstract readonly defaultValue: this['schema']['Ҩvalue'] |
 
    private $FieldSym: typeof FieldSym = FieldSym // DO NOT REMOVE
 
@@ -1143,20 +1166,20 @@ export abstract class Field {
     * when this widget or one of its descendant publishes a value,
     * it will be stored here and possibly consumed by other descendants
     */
-   @observable accessor ܮadvertisedValues: Record<ChannelId, any> = {}
+   @observable accessor ϟadvertisedValues: Record<ChannelId, any> = {}
 
    /**
     * when reading a publication, we will walk up the parent chain
     * and look for a value stored in the advsertised values.
     */
-   readChannel<T extends any>(chan: Channel<T> | ChannelId): Maybe<T> /* 🔸: T | $EmptyChannel */ {
+   ϟreadChannel<T extends any>(chan: Channel<T> | ChannelId): Maybe<T> /* 🔸: T | $EmptyChannel */ {
       const channelId = typeof chan === 'string' ? chan : chan.id
       let at = this as any as Field | null
       while (at != null) {
-         if (channelId in at.ܮadvertisedValues) {
-            return at.ܮadvertisedValues[channelId]
+         if (channelId in at.ϟadvertisedValues) {
+            return at.ϟadvertisedValues[channelId]
          }
-         at = at.parent
+         at = at.ϟparent
       }
       // console.warn(`[🪈] ${channelId} | not found from ${this.path}`)
       return null // $EmptyChannel
@@ -1166,8 +1189,8 @@ export abstract class Field {
     * return a short string summary that display the value in a simple way.
     * This method is expected to be overriden in most child classes
     */
-   @computed get summary(): string {
-      return JSON.stringify(this.value)
+   @computed get ϟsummary(): string {
+      return JSON.stringify(this.ϟvalue)
    }
 
    /**
@@ -1178,9 +1201,9 @@ export abstract class Field {
     * This data is completely unused internally by CSuite.
     * It is READONLY.
     */
-   getConfigCustom<T = unknown>(): Readonly<T> {
+   ϟgetConfigCustom<T = unknown>(): Readonly<T> {
       return (
-         this.config.custom ?? //
+         this.ϟconfig.custom ?? //
          ({} as any)
       )
    }
@@ -1193,13 +1216,13 @@ export abstract class Field {
     * You can use them however you want provided you keep them serializable.
     * It's just a quick/hacky place to store stuff
     */
-   getFieldCustom<T = unknown>(): T {
-      return this.serial.custom
+   ϟgetFieldCustom<T = unknown>(): T {
+      return this.ϟserial.custom
    }
 
    // will be easy to type/extend with the new type accumulator strategy when we backport
-   get custom(): any {
-      return this.serial.custom
+   get ϟcustom(): any {
+      return this.ϟserial.custom
    }
 
    /**
@@ -1207,10 +1230,10 @@ export abstract class Field {
     * You can either return a new value, or patch the initial value
     * use `deleteFieldCustomData` instead to replace the value by null or undefined.
     */
-   updateFieldCustom(fn: (x: Maybe<this['…value']>) => this['custom']): this {
-      const prev = this.value
+   ϟupdateFieldCustom(fn: (x: Maybe<this['Ҩvalue']>) => this['ϟcustom']): this {
+      const prev = this.ϟvalue
       const next = fn(prev) ?? prev
-      return this.ܮpatchInTransaction((draft) => {
+      return this.ϟpatchInTransaction((draft) => {
          // 💬 2024-09-17 rvion:
          // | I'll assume that the custom data is already serializable...
          // | still wrong, but probably a bit less dangerous than naive deep-cloning it.
@@ -1220,8 +1243,8 @@ export abstract class Field {
    }
 
    /** delete field custom data (delete this.serial.custom)  */
-   deleteFieldCustomData(): this {
-      return this.ܮpatchInTransaction((draft) => {
+   ϟdeleteFieldCustomData(): this {
+      return this.ϟpatchInTransaction((draft) => {
          delete draft.custom
       })
    }
@@ -1229,7 +1252,7 @@ export abstract class Field {
    // 📌 ERROR / VALIDATION ---------------------------------------------------------------|
 
    // 🔶 TEMPORARY HACK UNTIL RENDER BRANCH
-   getFieldUnchecked(): this {
+   ϟgetFieldUnchecked(): this {
       return this
    }
 
@@ -1237,14 +1260,14 @@ export abstract class Field {
     * @since 2024-09-04
     * @category Validation
     */
-   validate(): Result<this, ValidationError> {
-      this.ܒtouched = true
-      if (!this.isValid)
+   ϟvalidate(): Result<this, ValidationError> {
+      this.ϟtouched = true
+      if (!this.ϟisValid)
          return __ERROR(
             new ValidationError(
-               `Validation failed for field ${this.type} at '${this.path}'`,
+               `Validation failed for field ${this.ϟtype} at '${this.ϟpath}'`,
                this,
-               this.allErrorsIncludingChildrenErrors,
+               this.ϟallErrorsIncludingChildrenErrors,
             ),
          )
       return __OK(this)
@@ -1257,9 +1280,9 @@ export abstract class Field {
     * @category Validation
     * @see {@link validationOrThrow}
     */
-   validateOrNull(): Maybe<this> {
-      this.ܒtouched = true
-      if (!this.isValid) return null
+   ϟvalidateOrNull(): Maybe<this> {
+      this.ϟtouched = true
+      if (!this.ϟisValid) return null
       return this
    }
 
@@ -1268,10 +1291,10 @@ export abstract class Field {
     *
     * @since 2024-09-04
     * @category Validation
-    * @see {@link validateOrNull}
+    * @see {@link ϟvalidateOrNull}
     */
-   validateOrThrow(): this {
-      const res = this.validate()
+   ϟvalidateOrThrow(): this {
+      const res = this.ϟvalidate()
       if (!res.valid) throw res.error
       return this
    }
@@ -1286,23 +1309,23 @@ export abstract class Field {
     * @category Validation
     * @since 2024-09-04
     */
-   get isValid(): boolean {
-      return this.allErrorsIncludingChildrenErrors.length === 0
+   get ϟisValid(): boolean {
+      return this.ϟallErrorsIncludingChildrenErrors.length === 0
    }
 
    /**
     * returns true if errors.length > 0
     * @category Validation
     */
-   get hasOwnErrors(): boolean {
-      const errors = this.ownErrors
+   get ϟhasOwnErrors(): boolean {
+      const errors = this.ϟownErrors
       return errors.length > 0
    }
 
-   get mustDisplayErrors(): boolean {
-      return this.hasOwnErrors && !this.isInsideDisabledBranch
-      return this.hasOwnErrors
-      return this.hasOwnErrors && this.ܒtouched
+   get ϟmustDisplayErrors(): boolean {
+      return this.ϟhasOwnErrors && !this.ϟisInsideDisabledBranch
+      return this.ϟhasOwnErrors
+      return this.ϟhasOwnErrors && this.ϟtouched
    }
    /**
     * all own errors:
@@ -1310,20 +1333,20 @@ export abstract class Field {
     *  + custom       (user-defined in config)
     * @category Validation
     */
-   @computed get ownErrors(): Problem[] {
+   @computed get ϟownErrors(): Problem[] {
       const i18n = csuiteConfig.i18n
       // If we have a leaf Field, we add its "not set" error (isOwnSet)
-      if (!this.isOwnSet) {
+      if (!this.ϟisOwnSet) {
          return [
             {
-               path: this.path,
+               path: this.ϟpath,
                message: i18n.err.field.not_set,
-               longerMessage: `${i18n.err.field.not_set} (${this.pathExt})`,
+               longerMessage: `${i18n.err.field.not_set} (${this.ϟpathExt})`,
             },
          ]
       } else {
-         return normalizeProblem(this, this.ownTypeSpecificProblems) //
-            .concat(this.ownCustomConfigCheckProblems)
+         return normalizeProblem(this, this.ϟownTypeSpecificProblems) //
+            .concat(this.ϟownCustomConfigCheckProblems)
       }
 
       // return errors
@@ -1332,14 +1355,14 @@ export abstract class Field {
    /**
     * @category Validation
     */
-   @computed get allErrorsIncludingChildrenErrors(): Problem[] {
-      const subErrs = this.childrenActive.flatMap((f) => f.allErrorsIncludingChildrenErrors)
-      if (subErrs.length === 0) return this.ownErrors
+   @computed get ϟallErrorsIncludingChildrenErrors(): Problem[] {
+      const subErrs = this.ϟchildrenActive.flatMap((f) => f.ϟallErrorsIncludingChildrenErrors)
+      if (subErrs.length === 0) return this.ϟownErrors
 
-      const ownErrs = this.ownErrors
+      const ownErrs = this.ϟownErrors
       if (ownErrs.length === 0) return subErrs
 
-      return this.ownErrors.concat(subErrs)
+      return this.ϟownErrors.concat(subErrs)
    }
 
    /**
@@ -1353,9 +1376,9 @@ export abstract class Field {
     * ```
     * @category Validation
     */
-   @computed get ownCustomConfigCheckProblems(): Problem[] {
-      if (this.config.check == null) return []
-      const res = this.config.check(this)
+   @computed get ϟownCustomConfigCheckProblems(): Problem[] {
+      if (this.ϟconfig.check == null) return []
+      const res = this.ϟconfig.check(this)
       return normalizeProblem(this, res)
       // return [...normalizeProblem(res), { message: 'foo' }]
    }
@@ -1372,20 +1395,20 @@ export abstract class Field {
     *
     * @category Validation
     */
-   abstract readonly ownTypeSpecificProblems: Problem_Ext
-   abstract readonly ownConfigSpecificProblems: Problem_Ext
+   abstract readonly ϟownTypeSpecificProblems: Problem_Ext
+   abstract readonly ϟownConfigSpecificProblems: Problem_Ext
 
    // -----------------------------------------------------------------------|
    /**
     * returns the list of all ancestors, NOT including self
     * @since 2024-07-08
     */
-   @computed get ancestors(): Field[] {
+   @computed get ϟancestors(): Field[] {
       const result: Field[] = []
-      let current: Maybe<Field> = this.parent
+      let current: Maybe<Field> = this.ϟparent
       while (current) {
          result.push(current)
-         current = current.parent
+         current = current.ϟparent
       }
       return result
    }
@@ -1394,39 +1417,39 @@ export abstract class Field {
     * returns the list of all ancestors, including self
     * @since 2024-07-08
     */
-   @computed get ancestorsIncludingSelf(): Field[] {
+   @computed get ϟancestorsIncludingSelf(): Field[] {
       const result: Field[] = []
       // eslint-disable-next-line consistent-this
       let current: Maybe<Field> = this
       while (current) {
          result.push(current)
-         current = current.parent
+         current = current.ϟparent
       }
       return result
    }
 
-   @computed get descendants(): Field[] {
+   @computed get ϟdescendants(): Field[] {
       const result: Field[] = []
-      for (const child of this.childrenAll) {
+      for (const child of this.ϟchildrenAll) {
          result.push(child)
-         result.push(...child.descendants)
+         result.push(...child.ϟdescendants)
       }
       return result
    }
 
-   @computed get descendantsIncludingSelf(): Field[] {
+   @computed get ϟdescendantsIncludingSelf(): Field[] {
       const result: Field[] = [this]
-      for (const child of this.childrenAll) {
+      for (const child of this.ϟchildrenAll) {
          result.push(child)
-         result.push(...child.descendants)
+         result.push(...child.ϟdescendants)
       }
       return result
    }
 
    // BUMP ----------------------------------------------------
-   private _extraSerialChangesFunction: ((self: Field) => void)[] = [] // 🔶 cannot (but probably need not) type self as K['$field'] due to variance issues
-   onSerialChanges(fn: (self: this) => void): this {
-      this._extraSerialChangesFunction.push(fn as any)
+   private ϟ_extraSerialChangesFunction: ((self: Field) => void)[] = [] // 🔶 cannot (but probably need not) type self as K['Ҩfield'] due to variance issues
+   ϟonSerialChanges(fn: (self: this) => void): this {
+      this.ϟ_extraSerialChangesFunction.push(fn as any)
       return this
    }
 
@@ -1435,31 +1458,22 @@ export abstract class Field {
     * this function is called recursively upwards.
     * persistance will usually be done at the root field reacting to this event.
     */
-   ['ܮ_applySerialUpdateEffects'](): void {
-      for (const fn of this._extraSerialChangesFunction) fn(this)
-      this.config.onSerialChange?.(this)
-      this.config.onValueChange?.(this)
+   ϟ_applySerialUpdateEffects(): void {
+      for (const fn of this.ϟ_extraSerialChangesFunction) fn(this)
+      this.ϟconfig.onSerialChange?.(this)
+      this.ϟconfig.onValueChange?.(this)
    }
-
-   /** recursively walk upwards on any field change  */
-   // private applyValueUpdateEffects_OF_CHILD(child: Field): void {
-   //     this.serial.lastUpdatedAt = Date.now() as Timestamp
-   //     this.parent?.applyValueUpdateEffects_OF_CHILD(child)
-   //     this.config.onValueChange?.(this /* TODO: add extra param here:, child  */)
-   //     this.publishValue() // 🔴  should probably be a reaction rather than this
-   // }
 
    /**
     * this method can be heavily optimized
-    * ping @globi
     * todo:
     *  - by storing the published value locally
     *  - by defining a getter on the _advertisedValues object of all parents
     *  - by only setting this getter up once.
     * */
-   runPublications(this: Field): void {
+   ϟrunPublications(this: Field): void {
       // 1. publications(broadcast upwards)
-      const publications = this.schema.publications
+      const publications = this.ϟschema.publications
       if (publications.length === 0) return
 
       // 💬 2024-09-20 rvion:
@@ -1472,15 +1486,15 @@ export abstract class Field {
       // | we need to add try-catch instead.
       // | 👇👇👇👇👇👇👇👇👇👇👇👇
       // ❌ if (!this.isSet) return
-      if (!this.isOwnSet)
-         return console.log(`[🤠] skipping publication of ${this.pathExt} because field is not set`)
+      if (!this.ϟisOwnSet)
+         return console.log(`[🤠] skipping publication of ${this.ϟpathExt} because field is not set`)
 
       // Create and store values for every producer
       const producedValues: Record<ChannelId, any> = {}
       for (const publication of publications) {
          const channelId = typeof publication.chan === 'string' ? publication.chan : publication.chan.id
          if (publication.hoist) producedValues[channelId] = publication.produce(this)
-         else this.ܮadvertisedValues[channelId] = publication.produce(this)
+         else this.ϟadvertisedValues[channelId] = publication.produce(this)
          // console.log(`[🪈] ${channelId} | ${this.path} is publishing`)
       }
       runInAction(() => {
@@ -1488,21 +1502,21 @@ export abstract class Field {
          if (Object.keys(producedValues).length > 0) {
             let at = this as any as Field | null
             while (at != null) {
-               Object.assign(at.ܮadvertisedValues, producedValues)
-               at = at.parent
+               Object.assign(at.ϟadvertisedValues, producedValues)
+               at = at.ϟparent
             }
          }
       })
    }
 
-   @computed get isHidden(): boolean {
-      if (this.config.hidden != null) return this.config.hidden
-      if (isFieldGroup(this) && Object.keys(this.fields).length === 0) return true
+   @computed get ϟisHidden(): boolean {
+      if (this.ϟconfig.hidden != null) return this.ϟconfig.hidden
+      if (isFieldGroup(this) && Object.keys(this.ϟfields).length === 0) return true
       return false
    }
 
    /** whether the widget should be considered inactive */
-   @computed get isDisabled(): boolean {
+   @computed get ϟisDisabled(): boolean {
       return isFieldOptional(this) && !this.isActive
    }
 
@@ -1515,29 +1529,29 @@ export abstract class Field {
 
    // #region UI.Fold
    /** @undecorated (single child action)  */
-   setCollapsed(val?: boolean): void {
-      if (this.serial.collapsed === val) return
-      this.ܮpatchInTransaction((draft) => {
+   ϟsetCollapsed(val?: boolean): void {
+      if (this.ϟserial.collapsed === val) return
+      this.ϟpatchInTransaction((draft) => {
          draft.collapsed = val
       })
    }
 
    /** @undecorated (single child action)  */
-   toggleCollapsed(this: Field): void {
-      this.ܮpatchInTransaction((draft) => {
+   ϟtoggleCollapsed(this: Field): void {
+      this.ϟpatchInTransaction((draft) => {
          draft.collapsed = !draft.collapsed
       })
    }
 
-   get isCollapsedByDefault(): boolean {
+   get ϟisCollapsedByDefault(): boolean {
       return false
    }
 
-   @computed get isCollapsed(): boolean {
-      if (!this.isCollapsible) return false
-      if (this.serial.collapsed != null) return this.serial.collapsed
-      if (this.parent?.isDisabled) return true
-      return this.isCollapsedByDefault ?? false
+   @computed get ϟisCollapsed(): boolean {
+      if (!this.ϟisCollapsible) return false
+      if (this.ϟserial.collapsed != null) return this.ϟserial.collapsed
+      if (this.ϟparent?.ϟisDisabled) return true
+      return this.ϟisCollapsedByDefault ?? false
    }
 
    /**
@@ -1545,11 +1559,11 @@ export abstract class Field {
     * @deprecated
     * 🔶 going to be removed ASAP
     */
-   @computed get isCollapsible(): boolean {
+   @computed get ϟisCollapsible(): boolean {
       // top level widget is not collapsible; we may want to revisit this decision
       // if (widget.parent == null) return false
-      if (this.config.collapsed != null) return this.config.collapsed //
-      if (this.config.label === false) return false
+      if (this.ϟconfig.collapsed != null) return this.ϟconfig.collapsed //
+      if (this.ϟconfig.label === false) return false
       return true
    }
 
@@ -1557,12 +1571,12 @@ export abstract class Field {
     * if provided, the default logic to decide if the widget need to be bordered
     * @deprecated
     */
-   @computed get border(): TintExt {
+   @computed get ϟborder(): TintExt {
       // avoif borders for the top level form
-      if (this.parent == null) return false
+      if (this.ϟparent == null) return false
       // if (this.parent.subWidgets.length === 0) return false
       // if app author manually specify they want no border, then we respect that
-      if (this.config.border != null) return this.config.border
+      if (this.ϟconfig.border != null) return this.ϟconfig.border
       // if the widget do NOT have a body => we do not show the border
       // if (this.DefaultBodyUI == null) return false // 🔴 <-- probably a mistake here
       // default case when we have a body => we show the border
@@ -1603,14 +1617,14 @@ export abstract class Field {
     * somewhat an internal method; usage should remain as low as possible.
     * @undecorated
     */
-   getOwnSerialPathFromRoot(): string {
+   ϟgetOwnSerialPathFromRoot(): string {
       const segments: string[] = []
-      let at = this.parent
-      let key = this.mountKey
+      let at = this.ϟparent
+      let key = this.ϟmountKey
       while (at != null) {
-         segments.push(at.getChildrenSerialPath(key))
-         at = at.parent
-         key = at?.mountKey ?? '$'
+         segments.push(at.ϟgetChildrenSerialPath(key))
+         at = at.ϟparent
+         key = at?.ϟmountKey ?? '$'
       }
       return segments.reverse().join('.')
    }
@@ -1619,7 +1633,7 @@ export abstract class Field {
     * need to be overwritten for all contaienr fields
     * @undecorated (placeholder made to be overriden)
     */
-   getChildrenSerialPath(key: string): string {
+   ϟgetChildrenSerialPath(key: string): string {
       return `❌`
    }
 
@@ -1637,7 +1651,7 @@ export abstract class Field {
     * @remarks was previously named `subFields`
     * @undecorated (placeholder made to be overriden)
     */
-   get childrenAll(): Field[] {
+   get ϟchildrenAll(): Field[] {
       return []
    }
 
@@ -1650,8 +1664,8 @@ export abstract class Field {
     * @remarks expected to be overriden in every field that have children that can be toggled,
     * like FIeldChoice, FieldOptional
     */
-   get childrenActive(): Field[] {
-      return this.childrenAll
+   get ϟchildrenActive(): Field[] {
+      return this.ϟchildrenAll
    }
 
    // TODO: split subFields into two variants: active subFields, and childrenIncludingInactive
@@ -1665,7 +1679,7 @@ export abstract class Field {
     * // TODO: remove
     * @undecorated
     */
-   get subFieldsWithKeys(): KeyedField[] {
+   get ϟsubFieldsWithKeys(): KeyedField[] {
       return []
    }
 
@@ -1674,15 +1688,15 @@ export abstract class Field {
     * proxy this.repo.action
     * defined to shorted call and allow per-field override
     */
-   ܮrunInTransaction<T>(fn: (tct: Transaction) => T): T {
-      return this.repo.runInTransaction(fn)
+   ϟrunInTransaction<T>(fn: (tct: Transaction) => T): T {
+      return this.ϟrepo.runInTransaction(fn)
    }
 
    /**
     * equivalent to `runInTransaction(() => patchSerial(() => {....}))`
     */
-   ܮpatchInTransaction(fn: (draft: this['…serial'], tct: Transaction) => undefined): this {
-      this.ܮrunInTransaction((tct) => this.patchSerial((draft) => fn(draft, tct)))
+   ϟpatchInTransaction(fn: (draft: this['Ҩserial'], tct: Transaction) => undefined): this {
+      this.ϟrunInTransaction((tct) => this.ϟpatchSerial((draft) => fn(draft, tct)))
       return this
    }
 
@@ -1690,20 +1704,20 @@ export abstract class Field {
     * DO NOT OVERRIDE.
     * @internal
     */
-   protected ܮassignNewSerial(next: this['…serial']): void {
-      const tct = this.repo.tct
+   protected ϟassignNewSerial(next: this['Ҩserial']): void {
+      const tct = this.ϟrepo.tct
       if (tct == null)
          throw new Error(
             '❌ patchSerial should be called within a transaction; you may want to use `patchInTransaction`',
          )
 
       // console.log(`[🤠] ${this.path}`, JSON.stringify(this.serial), JSON.stringify(next), this.serial === next)
-      if (this.serial === next) return
+      if (this.ϟserial === next) return
       runInAction(() => {
          tct.trackAsUpdated(this)
-         this.serial = next
+         this.ϟserial = next
          // this.__version__++
-         this.parent?.ܮacknowledgeNewChildSerial(this.mountKey, this.serial)
+         this.ϟparent?.ϟacknowledgeNewChildSerial(this.ϟmountKey, this.ϟserial)
       })
    }
 
@@ -1717,30 +1731,30 @@ export abstract class Field {
     * true when serial has been updated by the lambda
     * @internal
     */
-   patchSerial(
+   ϟpatchSerial(
       //
-      fn: (draft: this['…serial']) => undefined,
+      fn: (draft: this['Ҩserial']) => undefined,
       /*
-       * cowe uld allow K['…serial'] and hand it back to the caller
+       * cowe uld allow K['Ҩserial'] and hand it back to the caller
        * to match immerjs API
-       * | fn: (serial: K['…serial']) => undefined  | K['…serial']
+       * | fn: (serial: K['Ҩserial']) => undefined  | K['Ҩserial']
        */
    ): boolean {
-      if (this.repo.tct == null)
+      if (this.ϟrepo.tct == null)
          throw new Error(
             '❌ patchSerial should be called within a transaction; you may want to use `patchInTransaction`',
          )
       // console.log(`[🧑‍🦯‍➡️] patch serial called from ${this.pathExt}`)
       // from 2024-09-09, serial are not longer observable objects
-      if (isObservable(this.serial)) throw new Error('❌ serial should not be observable')
+      if (isObservable(this.ϟserial)) throw new Error('❌ serial should not be observable')
 
       // apply patch function
-      const nextState = produce(this.serial, fn)
-      const stateChanged = nextState !== this.serial // ⚠️ Ref equality check
+      const nextState = produce(this.ϟserial, fn)
+      const stateChanged = nextState !== this.ϟserial // ⚠️ Ref equality check
       if (!stateChanged) return false // patch function did nothing; we can safely abort
 
       // otherwise, assign serial to current field, and bubble upwards to the document rot
-      this.ܮassignNewSerial(nextState)
+      this.ϟassignNewSerial(nextState)
       return true
    }
 
@@ -1751,8 +1765,8 @@ export abstract class Field {
     *
     * (this method needs a true implementation in every field that use RECONCILE)
     */
-   protected ܮacknowledgeNewChildSerial(mountKey: string, serial: any): boolean {
-      throw new Error(`🔴 _acknowledgeNewChildSerial not implemented (${this.pathExt})`)
+   protected ϟacknowledgeNewChildSerial(mountKey: string, serial: any): boolean {
+      throw new Error(`🔴 _acknowledgeNewChildSerial not implemented (${this.ϟpathExt})`)
    }
 
    // --------------------------------------------------------------------------------
@@ -1763,92 +1777,94 @@ export abstract class Field {
     * getter that resolve to `this.schema.producers`
     * @undecorated
     */
-   get producers(): Publication<any, any>[] {
-      return this.schema.publications
+   get ϟproducers(): Publication<any, any>[] {
+      return this.ϟschema.publications
    }
 
    /** probably the wrong place to retrieve that now that presenter are comming */
-   get icon(): Maybe<IconName> {
-      const x = this.schema.config.icon
+   get ϟicon(): Maybe<IconName> {
+      const x = this.ϟschema.config.icon
       if (typeof x === 'function') return x(this)
       if (x == null) return null
 
       return x
    }
 
-   private ܮhasBeenInitialized: boolean = false
+   private ϟhasBeenInitialized: boolean = false
 
    /** this function MUST be called at the end of every widget constructor */
    protected init(
       //
-      serial?: this['…serial'],
+      serial?: this['Ҩserial'],
    ): void {
       // /* 😂 */ console.log(`[🤠] ${getUIDForMemoryStructure(serial)} (field.init)`)
 
       // 1. ensure field hasn't been initialized yet
-      if (this.ܮhasBeenInitialized)
+      if (this.ϟhasBeenInitialized)
          return console.error(`[🔶] Field.init has already been called => ABORTING`)
-      this.ܮhasBeenInitialized = true
+      this.ϟhasBeenInitialized = true
 
       // 2. ...
-      this.ܮrunInTransaction((tct) => {
+      this.ϟrunInTransaction((tct) => {
          // this.copyCommonSerialFields(serial)
-         this.repo._registerField(this, tct)
+         this.ϟrepo._registerField(this, tct)
 
          //   VVVVVVVVVVVV this is where we hydrate children
-         this.setOwnSerialWithValidationAndMigrationAndFixes(serial)
+         this.ϟsetOwnSerialWithValidationAndMigrationAndFixes(serial)
 
          this.UI = this.UI.bind(this)
-         this.ready = true
+         this.ϟready = true
       })
    }
 
-   cloneWithoutParent(): this {
-      return this.schema.create(this.serial) as this
+   ϟcloneWithoutParent(): this {
+      return this.ϟschema.create(this.ϟserial) as this
    }
 
-   cloneTheWholeTree(): this {
-      const r = this.root.cloneWithoutParent()
-      return r.getFieldAt(this.path) as this
+   ϟcloneTheWholeTree(): this {
+      const r = this.ϟroot.ϟcloneWithoutParent()
+      return r.ϟgetFieldAt(this.ϟpath) as this
    }
 
-   cloneWithConfig(config: Partial<this['…config']>, opts?: WithConfigOptions): this {
-      return this.schema.withConfig(config, opts).create(this.serial) as this
+   ϟcloneWithConfig(config: Partial<this['Ҩconfig']>, opts?: WithConfigOptions): this {
+      return this.ϟschema.withConfig(config, opts).create(this.ϟserial) as this
    }
 
-   codeForTypescriptValue(p?: { indent?: number }): string {
-      return this.schema.codeForTypescriptValue(p)
+   ϟcodeForTypescriptValue(p?: { indent?: number }): string {
+      return this.ϟschema.codeForTypescriptValue(p)
    }
    // ---------------------------------------------------------------
 
-   @computed get hasFoldableSubfieldsThatAreUnfolded(): boolean {
-      return this.childrenAll.some((f) => f.isCollapsible && !f.serial.collapsed)
+   @computed get ϟhasFoldableSubfieldsThatAreUnfolded(): boolean {
+      return this.ϟchildrenAll.some((f) => f.ϟisCollapsible && !f.ϟserial.collapsed)
    }
 
-   @computed get hasFoldableSubfieldsThatAreFolded(): boolean {
-      return this.childrenAll.some((f) => f.isCollapsible && Boolean(f.serial.collapsed))
+   @computed get ϟhasFoldableSubfieldsThatAreFolded(): boolean {
+      return this.ϟchildrenAll.some((f) => f.ϟisCollapsible && Boolean(f.ϟserial.collapsed))
    }
 
-   @computed get hasFoldableSubfields(): boolean {
-      return this.childrenAll.some((f) => f.isCollapsible)
+   @computed get ϟhasFoldableSubfields(): boolean {
+      return this.ϟchildrenAll.some((f) => f.ϟisCollapsible)
    }
 
-   ['⇓deleteSnapshot'](): void {
-      this.ܮpatchInTransaction((draft) => {
+   ϟdeleteSnapshot(): void {
+      this.ϟpatchInTransaction((draft) => {
          delete draft.snapshot
       })
    }
+
+   // ['🤭caht'] = 1 // 🔶
    // ['-caht'] = 1; // 🔶
    // ['/chat'] = 1; // 🔶
-   // ['…chat'] = 1; // 🟢
+   // ['Ҩchat'] = 1; // 🟢
    // ['ܔchat'] = 1;
-   get ['⇓hasSnapshot'](): boolean {
-      return this.serial.snapshot != null
+   get ϟhasSnapshot(): boolean {
+      return this.ϟserial.snapshot != null
    }
 
    /** update current field snapshot */
-   ['⇓saveSnapshot'](): this['…serial'] {
-      const snapshot = produce(this.serial, (draft) => {
+   ϟsaveSnapshot(): this['Ҩserial'] {
+      const snapshot = produce(this.ϟserial, (draft) => {
          // a bad person would say: "Yo, Dawg; I heard you liked snapshots. So I put a snapshot in your snapshot, so you can snapshot while snapshotting"
          // but it's wrong. we don't want snapshotception.
          // so we delete the snapshot from the snapshot before it's too late.
@@ -1856,69 +1872,62 @@ export abstract class Field {
          // Snapshot.
          delete draft.snapshot
       })
-      this.ܮpatchInTransaction((draft) => void (draft.snapshot = snapshot))
+      this.ϟpatchInTransaction((draft) => void (draft.snapshot = snapshot))
       return snapshot
    }
 
    /** revert to the last snapshot */
-   ['⇓revertToSnapshot'](): void {
+   ϟrevertToSnapshot(): void {
       // 🔘 IX++
       // 🔘 console.log(`[🤠] #${IX} seri`, getUIDForMemoryStructure(this.serial))
       // 🔘 console.log(`[🤠] #${IX} snap`, getUIDForMemoryStructure(this.serial.snapshot))
 
       // 🔘 console.log(`[🤠] #${IX} seri.values`, getUIDForMemoryStructure(this.serial?.values))
       // 🔘 console.log(`[🤠] #${IX} snap.values`, getUIDForMemoryStructure(this.serial.snapshot?.values))
-      if (this.serial.snapshot == null) {
+      if (this.ϟserial.snapshot == null) {
          // 🔘 console.log(`[🤠] #${IX} RESET`)
-         return this.reset()
+         return this.ϟreset()
       }
       // 🔘 console.log(`[🤠] #${IX} SNAP=`, deepCopyNaive(this.serial.snapshot))
-      this.setSerial(this.serial.snapshot)
+      this.ϟsetSerial(this.ϟserial.snapshot)
    }
 
-   get ['⇓isDirtyFromSnapshot_UNSAFE'](): boolean {
-      const { snapshot, ...currentSerial } = this.serial
+   get ϟisDirtyFromSnapshot_UNSAFE(): boolean {
+      const { snapshot, ...currentSerial } = this.ϟserial
       if (snapshot == null) return false
       return hashJSONObjectToNumber(snapshot) !== hashJSONObjectToNumber(currentSerial)
    }
 
-   get hashSerial(): number {
-      return hashJSONObjectToNumber(this.serial)
+   get ϟhashSerial(): number {
+      return hashJSONObjectToNumber(this.ϟserial)
    }
 
-   abstract isOwnSet: boolean
+   abstract ϟisOwnSet: boolean
 
    /**
     * return true if and only if self and every descendant is set.
     * [not made to be overriden]
     */
-   get isSet(): boolean {
-      if (!this.isOwnSet) return false
-      if (this.childrenActive.some((f) => !f.isSet)) return false
+   get ϟisSet(): boolean {
+      if (!this.ϟisOwnSet) return false
+      if (this.ϟchildrenActive.some((f) => !f.ϟisSet)) return false
       return true
    }
 
-   get labelText(): string {
-      if (this.config.label == null) {
-         const mountKey = this.parent?.type === 'optional' ? this.parent.mountKey : this.mountKey
+   get ϟlabelText(): string {
+      if (this.ϟconfig.label == null) {
+         const mountKey = this.ϟparent?.ϟtype === 'optional' ? this.ϟparent.ϟmountKey : this.ϟmountKey
          return makeLabelFromPrimitiveValue(mountKey)
       }
-      if (this.config.label === false) return '' // not sure about the config.label doc
-      return this.config.label
+      if (this.ϟconfig.label === false) return '' // not sure about the config.label doc
+      return this.ϟconfig.label
    }
 
-   private _extraSaveChangesFunction: (() => Promise<void> | void)[] = []
-   onSaveChanges(fn: () => Promise<void> | void): void { this._extraSaveChangesFunction.push(fn) } // prettier-ignore
-   public async saveChanges(): Promise<void> {
-      for (const fn of this._extraSaveChangesFunction) await fn()
-      this.ܒtouched = false
-   }
-
-   /**
-    * defined by subtypes
-    */
-   get isEmpty(): boolean {
-      return false
+   private ϟ_extraSaveChangesFunction: (() => Promise<void> | void)[] = []
+   ϟonSaveChanges(fn: () => Promise<void> | void): void { this.ϟ_extraSaveChangesFunction.push(fn) } // prettier-ignore
+   public async ϟsaveChanges(): Promise<void> {
+      for (const fn of this.ϟ_extraSaveChangesFunction) await fn()
+      this.ϟtouched = false
    }
 }
 

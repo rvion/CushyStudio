@@ -5,11 +5,11 @@ export const WidgetGroup_InlineUI = obs(function WidgetGroup_InlineUI_<T extends
    field: T
 }) {
    const field = p.field
-   const children = field.childrenActive
+   const children = field.ϟchildrenActive
    return (
-      <div tw={[field.config.className, p.className, 'flex']}>
+      <div tw={[field.ϟconfig.className, p.className, 'flex']}>
          {children.map((child, ix) => {
-            return <child.UI key={child.mountKey} />
+            return <child.UI key={child.ϟmountKey} />
          })}
       </div>
    )

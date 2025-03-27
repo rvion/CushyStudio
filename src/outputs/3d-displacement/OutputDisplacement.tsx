@@ -72,7 +72,7 @@ export const OutputDisplacementUI = obs(function OutputDisplacementUI_(p: {
          onClick={(ev) => saveCanvasAsImage(uist.canvasRef.current)}
       />
    )
-   const menuConf = cushy.displacementConf.value.menu
+   const menuConf = cushy.displacementConf.ϟvalue.menu
    return (
       <div tw='relative flex flex-1 flex-col'>
          {menuConf.right ? (
@@ -86,7 +86,7 @@ export const OutputDisplacementUI = obs(function OutputDisplacementUI_(p: {
                <FormUI field={cushy.displacementConf} />
             </div>
          ) : (
-            <PanelHeaderUI>{cushy.displacementConf.renderAsConfigBtn()}</PanelHeaderUI>
+            <PanelHeaderUI>{cushy.displacementConf.ϟrenderAsConfigBtn()}</PanelHeaderUI>
          )}
 
          <DisplacementUI uist={uist} />

@@ -149,8 +149,8 @@ export class CushyDnDHandler {
 
 export const DnDDragIndicatorUI = obs(function DnDDragIndicateUI_() {
    const dndHandler = cushy.dndHandler
-   const theme = cushy.preferences.theme.value
-   const widgetHeight = cushy.preferences.interface.value.widgetHeight
+   const theme = cushy.preferences.theme.ϟvalue
+   const widgetHeight = cushy.preferences.interface.ϟvalue.widgetHeight
 
    return (
       <div

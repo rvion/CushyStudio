@@ -11,15 +11,15 @@ describe('FieldChoices', () => {
       it('works when only specifying branches', () => {
          type Model = Z.Choices<{ foo: Z.String; bar: Z.Number }>
          const schema = b.choices({ foo: b.string(), bar: b.int() })
-         const serial: Model['…serial'] = {
+         const serial: Model['Ҩserial'] = {
             $: 'choices',
             branches: { bar: true },
          }
          const E = schema.create(serial)
 
          // serial should have been completed, since values was missing
-         expect(E.serial === serial).toBeFalsy()
-         expect(E.serial).toEqual({
+         expect(E.ϟserial === serial).toBeFalsy()
+         expect(E.ϟserial).toEqual({
             $: 'choices',
             branches: { bar: true },
             values: { bar: { $: 'number', value: 0 } },
@@ -29,15 +29,15 @@ describe('FieldChoices', () => {
       it('works when only specifying values', () => {
          type Model = Z.Choices<{ foo: Z.String; bar: Z.Number }>
          const schema = b.choices({ foo: b.string(), bar: b.int() })
-         const serial: Model['…serial'] = {
+         const serial: Model['Ҩserial'] = {
             $: 'choices',
             values: { bar: { $: 'number', value: 0 } },
          }
          const E = schema.create(serial)
 
          // serial should have been completed, since values was missing
-         expect(E.serial === serial).toBeFalsy()
-         expect(E.serial).toEqual({
+         expect(E.ϟserial === serial).toBeFalsy()
+         expect(E.ϟserial).toEqual({
             $: 'choices',
             branches: { bar: true },
             values: { bar: { $: 'number', value: 0 } },
@@ -73,7 +73,7 @@ describe('FieldChoices', () => {
             baz: b.string(),
          })
          const E2 = MultiNoDefault.create()
-         expectJSON(E2.value).toEqual({})
+         expectJSON(E2.ϟvalue).toEqual({})
       })
       it('works without default - Single', () => {
          const SingleNoDefault = b.choice({
@@ -83,13 +83,13 @@ describe('FieldChoices', () => {
          })
 
          const E1 = SingleNoDefault.create()
-         expectJSON(E1.value).toEqual({ foo: 'yo' })
+         expectJSON(E1.ϟvalue).toEqual({ foo: 'yo' })
       })
 
       it('works WITH default - Multi', () => {
          const E1 = Multi.create()
-         expect(E1.toValueJSON()).toEqual({ baz: '' })
-         expect(E1.serial).toMatchObject({
+         expect(E1.ϟtoValueJSON()).toEqual({ baz: '' })
+         expect(E1.ϟserial).toMatchObject({
             values: {
                baz: { value: '' },
             },
@@ -98,8 +98,8 @@ describe('FieldChoices', () => {
 
       it('works WITH default - Single', () => {
          const E2 = Single.create()
-         expect(E2.toValueJSON()).toEqual({ baz: '' })
-         expect(E2.serial).toMatchObject({
+         expect(E2.ϟtoValueJSON()).toEqual({ baz: '' })
+         expect(E2.ϟserial).toMatchObject({
             values: {
                baz: { value: '' },
             },
@@ -111,7 +111,7 @@ describe('FieldChoices', () => {
    describe('setSerial', () => {
       it('works', () => {
          const E1 = Multi.create()
-         expectJSON(E1.value).toEqual({ baz: '' })
+         expectJSON(E1.ϟvalue).toEqual({ baz: '' })
 
          const serial = {
             $: 'choices' as const,
@@ -133,18 +133,18 @@ describe('FieldChoices', () => {
                   ],
                },
             },
-         } satisfies (typeof Multi)['…serial']
+         } satisfies (typeof Multi)['Ҩserial']
 
-         E1.setSerial(serial)
-         expect(E1.serial === serial).toBeTruthy()
+         E1.ϟsetSerial(serial)
+         expect(E1.ϟserial === serial).toBeTruthy()
          // expect(E1.value).toBe(2)
-         expectJSON(E1.value).toEqual({ foo: '🟢', bar: [1, 2, 3], baz: '🔵' })
-         expect(E1.serial).toMatchObject(serial)
+         expectJSON(E1.ϟvalue).toEqual({ foo: '🟢', bar: [1, 2, 3], baz: '🔵' })
+         expect(E1.ϟserial).toMatchObject(serial)
       })
 
       it('should work with the values_ property (backward compatibility)', () => {
          const E1 = Multi.create()
-         expectJSON(E1.value).toEqual({ baz: '' })
+         expectJSON(E1.ϟvalue).toEqual({ baz: '' })
 
          const serial = {
             $: 'choices' as const,
@@ -153,28 +153,28 @@ describe('FieldChoices', () => {
             values_: { baz: { $: 'str' as const, value: '🔵' } },
          } as any
 
-         E1.setSerial(serial)
-         expect(E1.serial === serial).toBeFalsy() // because of migration
-         expect(E1.serial).toMatchObject({
+         E1.ϟsetSerial(serial)
+         expect(E1.ϟserial === serial).toBeFalsy() // because of migration
+         expect(E1.ϟserial).toMatchObject({
             $: 'choices',
             branches: { baz: true },
             values: { baz: { $: 'str', value: '🔵' } },
          })
-         expectJSON(E1.value).toEqual({ baz: '🔵' })
+         expectJSON(E1.ϟvalue).toEqual({ baz: '🔵' })
       })
 
       it('should assign the serial if the branch is active', () => {
          const E1 = Multi.create()
-         const serial: (typeof Multi)['…serial'] = {
+         const serial: (typeof Multi)['Ҩserial'] = {
             $: 'choices',
             branches: { baz: true },
             values: { baz: { $: 'str', value: '🔵' } },
          }
 
-         E1.setSerial(serial)
-         expect(E1.serial === serial).toBeTruthy()
-         expectJSON(E1.value).toEqual({ baz: '🔵' })
-         expect(E1.serial).toMatchObject(serial)
+         E1.ϟsetSerial(serial)
+         expect(E1.ϟserial === serial).toBeTruthy()
+         expectJSON(E1.ϟvalue).toEqual({ baz: '🔵' })
+         expect(E1.ϟserial).toMatchObject(serial)
       })
 
       describe('disabled branch', () => {
@@ -194,66 +194,66 @@ describe('FieldChoices', () => {
 
          it('should assign the serial even if the branch is deactivated', () => {
             const E1 = MultiNoDefault.create()
-            E1.setSerial(serial)
-            expect(E1.serial === serial).toBeTruthy()
-            expectJSON(E1.value).toEqual({})
+            E1.ϟsetSerial(serial)
+            expect(E1.ϟserial === serial).toBeTruthy()
+            expectJSON(E1.ϟvalue).toEqual({})
          })
 
          it('should not activate the branch', () => {
             const E1 = MultiNoDefault.create()
-            E1.setSerial(serial)
-            expect(E1.serial.branches).toEqual({})
+            E1.ϟsetSerial(serial)
+            expect(E1.ϟserial.branches).toEqual({})
          })
 
          describe('when the field is not instanciated', () => {
             it('should not instanciate the field', () => {
                const E1 = MultiNoDefault.create()
 
-               E1.setSerial(serial)
-               expect(E1.repo.fieldCount).toBe(1)
+               E1.ϟsetSerial(serial)
+               expect(E1.ϟrepo.fieldCount).toBe(1)
             })
 
             it('should NOT deep clone the value', () => {
                const E1 = MultiNoDefault.create()
 
-               E1.setSerial(serial)
-               expect(E1.serial.values?.baz === serial.values.baz).toBeTruthy()
+               E1.ϟsetSerial(serial)
+               expect(E1.ϟserial.values?.baz === serial.values.baz).toBeTruthy()
             })
          })
 
          it('should keep the serial when we disable children via setSerial', () => {
             const E1 = MultiNoDefault.create()
-            const activeSerial: (typeof E1)['…serial'] = {
+            const activeSerial: (typeof E1)['Ҩserial'] = {
                $: 'choices',
                branches: { baz: true },
                values: { baz: { $: 'str', value: '🔵' } },
             }
-            const unactiveSerial: (typeof E1)['…serial'] = {
+            const unactiveSerial: (typeof E1)['Ҩserial'] = {
                $: 'choices',
                branches: {},
                values: { baz: { $: 'str', value: '🟢' } },
             }
-            E1.setSerial(activeSerial)
-            E1.setSerial(unactiveSerial)
-            expect(E1.serial).toMatchObject(unactiveSerial)
-            expect(E1.childrenAll).toHaveLength(0)
-            expect(E1.value).toEqual({})
+            E1.ϟsetSerial(activeSerial)
+            E1.ϟsetSerial(unactiveSerial)
+            expect(E1.ϟserial).toMatchObject(unactiveSerial)
+            expect(E1.ϟchildrenAll).toHaveLength(0)
+            expect(E1.ϟvalue).toEqual({})
          })
 
          it('should unset the value if deactivating without a value for the field', () => {
             const E1 = MultiNoDefault.create()
-            E1.setSerial({
+            E1.ϟsetSerial({
                $: 'choices' as const,
                branches: { baz: true },
                values: { baz: { $: 'str' as const, value: '🔵' } },
             })
-            E1.setSerial({
+            E1.ϟsetSerial({
                $: 'choices' as const,
                branches: {},
                values: {},
             })
-            expect(E1.serial.values).toEqual({})
-            expect(E1.value).toEqual({})
+            expect(E1.ϟserial.values).toEqual({})
+            expect(E1.ϟvalue).toEqual({})
          })
       })
    })
@@ -263,14 +263,14 @@ describe('FieldChoices', () => {
          it('should activate the branch and instanciate the child field', () => {
             const E1 = Multi.create()
             E1.enableBranch('foo')
-            expect(E1.serial).toMatchObject({
+            expect(E1.ϟserial).toMatchObject({
                branches: { foo: true, baz: true },
                values: {
                   foo: { $: 'str' as const, value: 'yo' },
                   baz: { $: 'str' as const, value: '' },
                },
             })
-            expect(E1.childrenAll).toHaveLength(2)
+            expect(E1.ϟchildrenAll).toHaveLength(2)
          })
       })
 
@@ -278,14 +278,14 @@ describe('FieldChoices', () => {
          it('should deactivate the current branch', () => {
             const E1 = Single.create()
             E1.enableBranch('foo')
-            expect(E1.serial).toMatchObject({
+            expect(E1.ϟserial).toMatchObject({
                branches: { foo: true },
                values: {
                   foo: { $: 'str' as const, value: 'yo' },
                   baz: { $: 'str' as const, value: '' },
                },
             })
-            expect(E1.childrenAll).toHaveLength(1)
+            expect(E1.ϟchildrenAll).toHaveLength(1)
          })
       })
    })
@@ -295,7 +295,7 @@ describe('FieldChoices', () => {
          it('should keep the value inside the serial when disabling a branch', () => {
             const E1 = Multi.create()
 
-            E1.setSerial({
+            E1.ϟsetSerial({
                $: 'choices' as const,
                branches: { baz: true },
                values: { baz: { $: 'str' as const, value: '🔵' } },
@@ -303,7 +303,7 @@ describe('FieldChoices', () => {
 
             E1.disableBranch('baz')
 
-            expect(E1.serial).toMatchObject({
+            expect(E1.ϟserial).toMatchObject({
                branches: {},
                values: { baz: { $: 'str' as const, value: '🔵' } },
             })
@@ -311,13 +311,13 @@ describe('FieldChoices', () => {
 
          it('should remove the value', () => {
             const E1 = Multi.create()
-            E1.setSerial({
+            E1.ϟsetSerial({
                $: 'choices' as const,
                branches: { baz: true },
                values: { baz: { $: 'str' as const, value: '🔵' } },
             })
             E1.disableBranch('baz')
-            expect(E1.value).toEqual({})
+            expect(E1.ϟvalue).toEqual({})
          })
       })
    })
@@ -326,32 +326,32 @@ describe('FieldChoices', () => {
       describe('Multi', () => {
          it('works', () => {
             const E1 = Multi.create()
-            expectJSON(E1.value).toEqual({ baz: '' })
-            E1.value.baz = 'coucou'
-            expectJSON(E1.value).toEqual({ baz: 'coucou' })
+            expectJSON(E1.ϟvalue).toEqual({ baz: '' })
+            E1.ϟvalue.baz = 'coucou'
+            expectJSON(E1.ϟvalue).toEqual({ baz: 'coucou' })
          })
 
          it('can enable branches', () => {
             const E1 = Multi.create()
-            expectJSON(E1.value).toEqual({ baz: '' })
-            E1.value.foo = 'glop'
-            expectJSON(E1.value).toEqual({ baz: '', foo: 'glop' })
+            expectJSON(E1.ϟvalue).toEqual({ baz: '' })
+            E1.ϟvalue.foo = 'glop'
+            expectJSON(E1.ϟvalue).toEqual({ baz: '', foo: 'glop' })
          })
       })
       describe('Single', () => {
          it('works', () => {
             const E1 = Single.create()
-            expectJSON(E1.value).toEqual({ baz: '' })
-            E1.value.baz = 'coucou'
-            expectJSON(E1.value).toEqual({ baz: 'coucou' })
+            expectJSON(E1.ϟvalue).toEqual({ baz: '' })
+            E1.ϟvalue.baz = 'coucou'
+            expectJSON(E1.ϟvalue).toEqual({ baz: 'coucou' })
          })
 
          it('can enable branches', () => {
             const E1 = Single.create()
-            expectJSON(E1.value).toEqual({ baz: '' })
-            E1.value.foo = 'glop'
-            expectJSON(E1.value).toEqual({ foo: 'glop' })
-            expectJSON(E1.serial).toEqual({
+            expectJSON(E1.ϟvalue).toEqual({ baz: '' })
+            E1.ϟvalue.foo = 'glop'
+            expectJSON(E1.ϟvalue).toEqual({ foo: 'glop' })
+            expectJSON(E1.ϟserial).toEqual({
                $: 'choices',
                branches: { foo: true },
                values: {
@@ -388,17 +388,17 @@ describe('FieldChoices', () => {
             const E1 = SingleNoDefault.create()
             const E2 = SingleNoDefault.create()
 
-            expect(E1.isValueEqual(E2)).toBeTruthy()
+            expect(E1.ϟisValueEqual(E2)).toBeTruthy()
          })
 
          it('should return true if both fields are set to the same value', () => {
             const E1 = Single.create()
             const E2 = Single.create()
 
-            E1.value = { foo: 'b' }
-            E2.value = { foo: 'b' }
+            E1.ϟvalue = { foo: 'b' }
+            E2.ϟvalue = { foo: 'b' }
 
-            expect(E1.isValueEqual(E2)).toBeTruthy()
+            expect(E1.ϟisValueEqual(E2)).toBeTruthy()
          })
       })
 
@@ -408,29 +408,29 @@ describe('FieldChoices', () => {
             const E1 = SingleNoDefault.create()
             const E2 = SingleNoDefault.create()
 
-            E1.value = { foo: 'a' }
+            E1.ϟvalue = { foo: 'a' }
 
-            expect(E1.isValueEqual(E2)).toBeFalsy()
+            expect(E1.ϟisValueEqual(E2)).toBeFalsy()
          })
 
          it('should return false if both fields are set to different values', () => {
             const E1 = Single.create()
             const E2 = Single.create()
 
-            E1.value = { foo: 'a' }
-            E2.value = { foo: 'b' }
+            E1.ϟvalue = { foo: 'a' }
+            E2.ϟvalue = { foo: 'b' }
 
-            expect(E1.isValueEqual(E2)).toBeFalsy()
+            expect(E1.ϟisValueEqual(E2)).toBeFalsy()
          })
 
          it('if branches are not the same', () => {
             const E1 = Single.create()
             const E2 = Single.create()
 
-            E1.value = { foo: 'a' }
-            E2.value = { baz: 'a' }
+            E1.ϟvalue = { foo: 'a' }
+            E2.ϟvalue = { baz: 'a' }
 
-            expect(E1.isValueEqual(E2)).toBeFalsy()
+            expect(E1.ϟisValueEqual(E2)).toBeFalsy()
          })
       })
    })
@@ -444,15 +444,15 @@ describe('FieldChoices', () => {
             })
 
             const field1 = schema.create()
-            field1.value = { a: 'ok' }
+            field1.ϟvalue = { a: 'ok' }
 
             const field2 = schema.create()
-            field2.value = { b: 'ok' }
+            field2.ϟvalue = { b: 'ok' }
 
-            const patches = field1.generatePatches(field2)
-            field2.ܮapplyPatches(patches)
+            const patches = field1.ϟgeneratePatches(field2)
+            field2.ϟapplyPatches(patches)
 
-            expectJSON(field2.value).toEqual({ a: 'ok' })
+            expectJSON(field2.ϟvalue).toEqual({ a: 'ok' })
          })
       })
 
@@ -464,28 +464,28 @@ describe('FieldChoices', () => {
             })
 
             const field1 = schema.create()
-            field1.setValue({
+            field1.ϟsetValue({
                foo: 'foo1',
                bar: 'bar',
             })
 
             const field2 = schema.create()
-            field2.setValue({
+            field2.ϟsetValue({
                foo: 'foo2',
                bar: 'bar',
             })
 
-            const patches = field1.generatePatches(field2)
+            const patches = field1.ϟgeneratePatches(field2)
 
             expect(patches).toHaveLength(1)
 
-            field2.setValue({
+            field2.ϟsetValue({
                foo: 'foo2',
                bar: 'bar2',
             })
 
-            field2.ܮapplyPatches(patches)
-            expectJSON(field2.value).toEqual({
+            field2.ϟapplyPatches(patches)
+            expectJSON(field2.ϟvalue).toEqual({
                foo: 'foo1',
                bar: 'bar2',
             })
@@ -498,20 +498,20 @@ describe('FieldChoices', () => {
             })
 
             const field1 = schema.create()
-            field1.setValue({
+            field1.ϟsetValue({
                foo: 'foo',
                bar: 'bar',
             })
 
             const field2 = schema.create()
-            field2.setValue({
+            field2.ϟsetValue({
                foo: 'foo',
             })
 
-            const patches = field1.generatePatches(field2)
+            const patches = field1.ϟgeneratePatches(field2)
 
-            field2.ܮapplyPatches(patches)
-            expectJSON(field2.value).toEqual({
+            field2.ϟapplyPatches(patches)
+            expectJSON(field2.ϟvalue).toEqual({
                foo: 'foo',
                bar: 'bar',
             })
@@ -524,23 +524,23 @@ describe('FieldChoices', () => {
             })
 
             const field1 = schema.create()
-            field1.setValue({
+            field1.ϟsetValue({
                foo: 'foo',
             })
 
             const field2 = schema.create()
-            field2.setValue({
+            field2.ϟsetValue({
                foo: 'foo',
                bar: 'bar',
             })
 
-            const patches = field1.generatePatches(field2)
+            const patches = field1.ϟgeneratePatches(field2)
 
-            field2.ܮapplyPatches(patches)
-            expectJSON(field2.value).toEqual({
+            field2.ϟapplyPatches(patches)
+            expectJSON(field2.ϟvalue).toEqual({
                foo: 'foo',
             })
-            expect(field2.serial).toEqual({
+            expect(field2.ϟserial).toEqual({
                $: 'choices',
                branches: { foo: true },
                values: {

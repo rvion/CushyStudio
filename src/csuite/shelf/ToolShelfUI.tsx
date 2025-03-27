@@ -111,7 +111,7 @@ export const ToolShelfUI = obs(function ToolShelfUI_(p: ToolShelfProps) {
 })
 
 function getFlex(pState: ToolShelfPanelState): 'flex-row' | 'flex-col' {
-   const size = cushy.preferences.interface.value.toolBarIconSize
+   const size = cushy.preferences.interface.ϟvalue.toolBarIconSize
    if (pState.size < size * 2 && pState.size > size) {
       return 'flex-row'
    }
@@ -147,7 +147,7 @@ export const ToolShelfButtonUI = obs(function ToolShelfButtonUI_(
       tooltipPlacement?: RevealPlacement
    } /* & FrameProps */,
 ) {
-   const iconSize = cushy.preferences.interface.value.toolBarIconSize
+   const iconSize = cushy.preferences.interface.ϟvalue.toolBarIconSize
    const expand = p.panelState.size > iconSize * 2
    return (
       <ToggleButtonUI //

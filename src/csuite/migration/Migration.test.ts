@@ -15,9 +15,9 @@ describe('paths and pathExt', () => {
    it('looks like jsonPath', () => {
       const S1 = b.fields({ a: b.int() })
       const E1 = S1.create()
-      expect(E1.path).toBe('$')
-      expect(E1._.a.path).toBe('$.a')
-      expect(E1._.a.pathExt).toBe('@group.a@number')
+      expect(E1.ϟpath).toBe('$')
+      expect(E1.ϟfields.a.ϟpath).toBe('$.a')
+      expect(E1.ϟfields.a.ϟpathExt).toBe('@group.a@number')
    })
 })
 
@@ -26,15 +26,15 @@ describe('migrator', () => {
       // 1. first version: everything OK
       const S1 = b.fields({ a: b.int() }).withUID('TEST-abcd')
       const E1 = S1.create()
-      E1._.a.value = 100
-      expect(E1.serial.anomalies).toBeUndefined()
+      E1.ϟfields.a.ϟvalue = 100
+      expect(E1.ϟserial.anomalies).toBeUndefined()
 
       // 2. then schema changes, but serial not migrated => ANOMALIES
       const S2 = b.fields({ a: b.string() }).withUID('TEST-abcd') // <--- Same Schema.uid
-      const E2 = S2.create(E1.serial as any)
-      expect(E2._.a.serial.anomalies).toBeUndefined()
-      expect(E2.serial.anomalies?.length).toBe(1)
-      expect(E2.serial.anomalies![0]).toMatchObject({
+      const E2 = S2.create(E1.ϟserial as any)
+      expect(E2.ϟfields.a.ϟserial.anomalies).toBeUndefined()
+      expect(E2.ϟserial.anomalies?.length).toBe(1)
+      expect(E2.ϟserial.anomalies![0]).toMatchObject({
          type: 'invalid-serial',
          path: '$.a',
          pathExt: '@group.a@str',
@@ -43,7 +43,7 @@ describe('migrator', () => {
 
       // 3. fortunately, migrator is here to offer us Fixes
       const migrator = new MigrationEngine()
-      const E3 = S2.create(E1.serial as any)
+      const E3 = S2.create(E1.ϟserial as any)
       migrator.consider(E2)
       migrator.consider(E3)
 
@@ -60,7 +60,7 @@ describe('migrator', () => {
       //     },
       // })
 
-      expect(E1.hoistAnomalies).toBeDefined()
+      expect(E1.ϟhoistAnomalies).toBeDefined()
       expect(migrator.scope.size).toBe(2)
       expect(Object.keys(migrator.batchOfSimilarAnomalies)).toHaveLength(1)
       expect(migrator.suggestions).toHaveLength(1)
@@ -78,7 +78,7 @@ describe('migrator', () => {
             config: b
                .choices({ prefix: b.string(), suffix: b.string() })
                .create()
-               .setValue({ prefix: '🔢', suffix: '🔚' }),
+               .ϟsetValue({ prefix: '🔢', suffix: '🔚' }),
          },
       })
 
@@ -97,7 +97,7 @@ describe('migrator', () => {
          ],
          status: 'SUCCESS',
       })
-      expect(E3._.a.value).toBe('🔢100🔚')
+      expect(E3.ϟfields.a.ϟvalue).toBe('🔢100🔚')
    })
 
    // eslint-disable-next-line vitest/no-commented-out-tests

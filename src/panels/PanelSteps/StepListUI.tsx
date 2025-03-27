@@ -4,7 +4,7 @@ import { PanelStepsConf } from './PanelStepsConf'
 import { StepCardUI } from './StepCardUI'
 
 export const StepListUI = obs(function StepLists(p: {}) {
-   const amount = clamp(Math.round(PanelStepsConf.value.maxItem), 1, 1000)
+   const amount = clamp(Math.round(PanelStepsConf.ϟvalue.maxItem), 1, 1000)
    const steps = cushy.db.step.getLastN(amount)
    return (
       <Frame

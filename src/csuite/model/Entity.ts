@@ -5,6 +5,6 @@ import type { Field } from './Field'
 export type EntityConfig<SCHEMA extends CSchema<any>> = {
    name?: string
    serial?: () => Maybe<AnyFieldSerial>
-   onValueChange?: (field: SCHEMA['$field']) => void
-   onSerialChange?: (field: SCHEMA['$field']) => void
+   onValueChange?: (field: SCHEMA['Ҩfield']) => void
+   onSerialChange?: (field: SCHEMA['Ҩfield']) => void
 }

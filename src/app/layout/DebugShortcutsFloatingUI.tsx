@@ -10,7 +10,7 @@ import { Frame, type FrameProps } from '../../csuite/frame/Frame'
 */
 
 export const DebugShortcutsFloatingUI = obs(function DebugShortcutsFloating(p: FrameProps) {
-   const theme = cushy.preferences.theme.value
+   const theme = cushy.preferences.theme.ϟvalue
 
    return (
       <Frame //

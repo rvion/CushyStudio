@@ -50,8 +50,8 @@ export const cmd_canvas_drawRectMask = command({
             // 0. get activeLayer
             const al = UC.activeLayer
             if (al === null) return toastError('no active layer')
-            const alWidth = al.Placement.Width.value || 512
-            const alHeight = al.Placement.Height.value || 512
+            const alWidth = al.placement.width.ϟvalue || 512
+            const alHeight = al.placement.height.ϟvalue || 512
 
             // 1. compute mask placement
             const screenLeft = UC.cursor.xInWindow - UC.cursor.xInScreen
@@ -61,11 +61,11 @@ export const cmd_canvas_drawRectMask = command({
             const startYInScreen = info.startY - screenTop
             const startPosInWorld = UC.viewportInstance?.toWorld(startXInScreen, startYInScreen)
 
-            const startXInWorld = startPosInWorld?.x || 0
-            const startYInWorld = startPosInWorld?.y || 0
+            const startXInWorld = startPosInWorld?.x ?? 0
+            const startYInWorld = startPosInWorld?.y ?? 0
 
-            const startXInImage = startXInWorld - al.Placement.X.value
-            const startYInImage = startYInWorld - al.Placement.Y.value
+            const startXInImage = startXInWorld - al.placement.x.ϟvalue
+            const startYInImage = startYInWorld - al.placement.y.ϟvalue
             // UC.viewportInstance?.toWorld()
             console.log(
                `[💩] `,
@@ -106,19 +106,19 @@ export const cmd_canvas_drawRectMask = command({
             const image = createMediaImage_fromDataURI(dataURL)
 
             // 3. add the  mask to the UnifiedCanvas list of masks
-            bang(UC.ucv2).Masks.push({
+            bang(UC.ucv2).masks.push({
                name: 'rect mask',
                image,
-               placement: al.Placement.value,
+               placement: al.placement.ϟvalue,
                visible: true,
             })
 
-            const maskField = bang(UC.ucv2?._.masks.at(-1))
+            const maskField = bang(UC.ucv2?.ϟfields.masks.at(-1))
 
             // 4. enable the mask on the active layer
-            UC.activeLayer?.Content.matchAll({
+            UC.activeLayer?.content.matchAll({
                aiGeneration: (x) => {
-                  x.Masks.value.push(maskField._uid)
+                  x.masks.ϟvalue.push(maskField.ϟuid)
                },
             })
          },

@@ -30,7 +30,7 @@ export type Field_selectMany_config_simplified_<KEY extends SelectKey> = Field_s
 >
 
 // #region CONFIG
-export type Field_selectMany_config<VALUE, KEY extends SelectKey> = Field_selectMany<VALUE, KEY>['…config']
+export type Field_selectMany_config<VALUE, KEY extends SelectKey> = Field_selectMany<VALUE, KEY>['Ҩconfig']
 type Field_selectMany_ownConfig<
    /** the final object that will be accessible as value */
    VALUE,
@@ -112,7 +112,7 @@ export type Field_selectMany_config_simplified<VALUE, KEY extends SelectKey> = O
 type Omit2<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
 
 // SERIAL
-export type Field_selectMany_serial<KEY extends SelectKey> = Field_selectMany<unknown, KEY>['…serial']
+export type Field_selectMany_serial<KEY extends SelectKey> = Field_selectMany<unknown, KEY>['Ҩserial']
 type Field_selectMany_ownSerial<KEY extends SelectKey> = {
    $: 'selectMany'
    query?: string
@@ -130,15 +130,15 @@ export interface Field_selectMany<
    VALUE extends unknown,
    KEY extends SelectKey,
 > extends Field {
-   ['…type']: 'selectMany'
-   ['…ownConfig']: Field_selectMany_ownConfig<VALUE, KEY>
-   ['…ownSerial']: Field_selectMany_ownSerial<KEY>
-   ['…value']: Field_selectMany_value<VALUE>
-   ['…setvalue']: VALUE[] | KEY[]
-   ['…unchecked']: Field_selectMany_unchecked<VALUE>
-   ['…child']: never
-   ['…opts']: unknown
-   ['…ownPatch']: Patch<'selectMany'>
+   ['Ҩtype']: 'selectMany'
+   ['ҨownConfig']: Field_selectMany_ownConfig<VALUE, KEY>
+   ['ҨownSerial']: Field_selectMany_ownSerial<KEY>
+   ['Ҩvalue']: Field_selectMany_value<VALUE>
+   ['Ҩsetvalue']: VALUE[] | KEY[]
+   ['Ҩunchecked']: Field_selectMany_unchecked<VALUE>
+   ['Ҩchild']: never
+   ['Ҩopts']: unknown
+   ['ҨownPatch']: Patch<'selectMany'>
 }
 
 // #region STATE
@@ -179,9 +179,9 @@ export class Field_selectMany<
    }
 
    static generateSerial<VALUE, KEY extends SelectKey>(
-      value: Maybe<Field_selectMany<VALUE, KEY>['…value']>,
-      config: Field_selectMany<VALUE, KEY>['…config'],
-   ): Field_selectMany<VALUE, KEY>['…serial'] {
+      value: Maybe<Field_selectMany<VALUE, KEY>['Ҩvalue']>,
+      config: Field_selectMany<VALUE, KEY>['Ҩconfig'],
+   ): Field_selectMany<VALUE, KEY>['Ҩserial'] {
       if (value == null && config.default == null) return this.unsetSerial
 
       const defaultSelectedKeys = Array.isArray(config.default)
@@ -197,51 +197,51 @@ export class Field_selectMany<
    }
 
    // #region UI
-   override get isCollapsedByDefault(): boolean {
+   override get ϟisCollapsedByDefault(): boolean {
       return true
    }
 
-   override get isCollapsible(): boolean {
+   override get ϟisCollapsible(): boolean {
       // return true // 🚂 we disabled this
       return false
    }
 
    get defaultKeys(): KEY[] | undefined {
-      const def = this.config.default
+      const def = this.ϟconfig.default
       if (def === undefined) return
       return Array.isArray(def) ? def : [def]
    }
 
-   get isOwnSet(): boolean {
-      return this.serial.values != null
+   get ϟisOwnSet(): boolean {
+      return this.ϟserial.values != null
    }
 
-   get hasChanges(): boolean {
-      if (this.serial.values == null) return false
+   get ϟhasChanges(): boolean {
+      if (this.ϟserial.values == null) return false
       const def = this.defaultKeys
-      if (def == null) return this.serial.values.length > 0
-      if (this.serial.values.some((id) => !def.includes(id))) return true
+      if (def == null) return this.ϟserial.values.length > 0
+      if (this.ϟserial.values.some((id) => !def.includes(id))) return true
       return false
    }
 
-   override reset(): void {
+   override ϟreset(): void {
       this.selectedKeys = this.defaultKeys ?? []
    }
 
    wrap: boolean
 
    get query(): string {
-      return this.serial.query ?? ''
+      return this.ϟserial.query ?? ''
    }
 
    set query(next: string) {
-      this.ܮrunInTransaction(() => {
-         this.patchSerial((draft) => void (draft.query = next))
+      this.ϟrunInTransaction(() => {
+         this.ϟpatchSerial((draft) => void (draft.query = next))
       })
    }
 
    get possibleKeys(): KEY[] {
-      const _choices = this.config.choices
+      const _choices = this.ϟconfig.choices
       // 2024-08-02: domi: 🔴 select all is dangerous for models
       // because it will evaluate choices in the backend...
       return typeof _choices === 'function' //
@@ -253,39 +253,39 @@ export class Field_selectMany<
       return this.possibleKeys.map((key) => this.getOptionFromId(key)).filter((opt) => opt != null)
    }
 
-   get ownConfigSpecificProblems(): Maybe<string[]> {
-      if (Array.isArray(this.config.choices)) {
-         if (this.config.choices.length === 0) return ['no choices availble from the config']
+   get ϟownConfigSpecificProblems(): Maybe<string[]> {
+      if (Array.isArray(this.ϟconfig.choices)) {
+         if (this.ϟconfig.choices.length === 0) return ['no choices availble from the config']
       }
       // const invalidDefaults = this.defaultKeys?.filter((key) => !this.possibleKeys.includes(key))
       return null
    }
 
    get shouldValidateThatValueIsAmongstKeys(): boolean {
-      if (Array.isArray(this.config.choices)) return true
+      if (Array.isArray(this.ϟconfig.choices)) return true
       // return locoFront != null // 🔴 pick a better logic ? add config flag ?
       return false
    }
 
-   get ownTypeSpecificProblems(): Maybe<string[]> {
+   get ϟownTypeSpecificProblems(): Maybe<string[]> {
       // when field is not set, no specific error yet; FieldNotSet error will already
       // be thrown elsewhere
-      if (this.serial.values == null) return null
+      if (this.ϟserial.values == null) return null
 
       const errors: string[] = []
-      const min = extractConfigValue(this.config.minLength)
-      if (min === 1 && this.serial.values.length === 0)
+      const min = extractConfigValue(this.ϟconfig.minLength)
+      if (min === 1 && this.ϟserial.values.length === 0)
          errors.push(
             extractConfigMessage(
-               this.config.minLength,
+               this.ϟconfig.minLength,
 
                csuiteConfig.i18n.err.selectMany.required(),
             ),
          )
-      else if (min != null && this.serial.values.length < min)
+      else if (min != null && this.ϟserial.values.length < min)
          errors.push(
             extractConfigMessage(
-               this.config.minLength,
+               this.ϟconfig.minLength,
                csuiteConfig.i18n.err.selectMany.notEnoughValues({ min }),
             ),
          )
@@ -316,16 +316,16 @@ export class Field_selectMany<
       serial?: Field_selectMany_serial<KEY>,
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
-      this.wrap = this.config.wrap ?? false
+      this.wrap = this.ϟconfig.wrap ?? false
       this.init(serial)
    }
 
-   protected setOwnSerial(next: Field_selectMany_serial<KEY>): void {
-      this.ܮassignNewSerial(next)
+   protected ϟsetOwnSerial(next: Field_selectMany_serial<KEY>): void {
+      this.ϟassignNewSerial(next)
 
-      if (this.serial.values == null) {
+      if (this.ϟserial.values == null) {
          const def = this.defaultKeys
-         if (def != null) this.patchSerial((draft) => void (draft.values = def))
+         if (def != null) this.ϟpatchSerial((draft) => void (draft.values = def))
       }
    }
 
@@ -342,10 +342,10 @@ export class Field_selectMany<
       return this._removeExistingKey(key)
    }
    private _removeExistingKey(key: KEY): void {
-      const values = this.serial.values
+      const values = this.ϟserial.values
       if (values == null) return
-      this.ܮrunInTransaction(() =>
-         this.patchSerial((draft) => {
+      this.ϟrunInTransaction(() =>
+         this.ϟpatchSerial((draft) => {
             draft.values = values.filter((k) => k !== key) // filter just in case of duplicate
          }),
       )
@@ -364,8 +364,8 @@ export class Field_selectMany<
       this._addNewKey(key)
    }
    private _addNewKey(key: KEY): void {
-      this.ܮrunInTransaction(() =>
-         this.patchSerial((draft) => {
+      this.ϟrunInTransaction(() =>
+         this.ϟpatchSerial((draft) => {
             draft.values ??= [] // adding a new key means we're being set
             draft.values.push(key)
          }),
@@ -373,7 +373,7 @@ export class Field_selectMany<
    }
 
    addValue(value: VALUE): void {
-      const key = this.config.getIdFromValue(value)
+      const key = this.ϟconfig.getIdFromValue(value)
       return this.addKey(key)
    }
 
@@ -391,7 +391,7 @@ export class Field_selectMany<
    }
 
    isKeySet(key: KEY): boolean {
-      return this.serial.values?.includes(key) ?? false
+      return this.ϟserial.values?.includes(key) ?? false
    }
 
    /**
@@ -405,7 +405,7 @@ export class Field_selectMany<
     * @since 2024-09-03
     */
    hasValue(value: VALUE): boolean {
-      const valueId = this.config.getIdFromValue(value)
+      const valueId = this.ϟconfig.getIdFromValue(value)
       return this.hasKey(valueId)
    }
 
@@ -420,7 +420,7 @@ export class Field_selectMany<
     * @since 2024-09-03
     */
    pushValue(...values: VALUE[]): void {
-      this.ܮrunInTransaction(() => {
+      this.ϟrunInTransaction(() => {
          for (const value of values) {
             this.addValue(value)
          }
@@ -439,25 +439,25 @@ export class Field_selectMany<
       return false
    }
 
-   override set(valOrKey: VALUE[] | KEY[]): this {
+   override ϟset(valOrKey: VALUE[] | KEY[]): this {
       if (valOrKey.length === 0) this.selectedKeys = []
       else if (this.isProbablyValidKey(valOrKey[0])) this.selectedKeys = valOrKey as KEY[]
-      else this.value = valOrKey as VALUE[]
+      else this.ϟvalue = valOrKey as VALUE[]
       return this
    }
 
-   override getSetValue(): this['…setvalue'] | undefined {
+   override ϟgetSetValue(): this['Ҩsetvalue'] | undefined {
       // console.log(`[💀 getSetValue] `, this.path)
       return this.selectedKeys
    }
 
-   get value(): Field_selectMany_value<VALUE> {
-      return this.value_or_fail
+   get ϟvalue(): Field_selectMany_value<VALUE> {
+      return this.ϟvalue_or_fail
    }
 
-   value_or_fail: Field_selectMany_value<VALUE> = new Proxy([], this.makeValueProxy())
-   value_or_zero: Field_selectMany_value<VALUE> = this.value_or_fail
-   value_unchecked: Field_selectMany_value<VALUE> = this.value_or_fail
+   ϟvalue_or_fail: Field_selectMany_value<VALUE> = new Proxy([], this.makeValueProxy())
+   ϟvalue_or_zero: Field_selectMany_value<VALUE> = this.ϟvalue_or_fail
+   ϟvalue_unchecked: Field_selectMany_value<VALUE> = this.ϟvalue_or_fail
 
    private makeValueProxy(): ProxyHandler<never> {
       return {
@@ -510,13 +510,13 @@ export class Field_selectMany<
                const index = +prop
                const prevKey = this.selectedKeys[index]
 
-               const newKey = this.config.getIdFromValue(value)
+               const newKey = this.ϟconfig.getIdFromValue(value)
                if (prevKey == null) {
                   // 🔴 weird to assign at 3 but append at the end 🤔 ❓
                   this.addKey(newKey)
                } else if (prevKey != null) {
                   if (prevKey === newKey) return false // nothing to do
-                  this.ܮrunInTransaction(() => {
+                  this.ϟrunInTransaction(() => {
                      this.removeKey(prevKey)
                      this.addKey(newKey)
                   })
@@ -527,31 +527,31 @@ export class Field_selectMany<
       }
    }
 
-   set value(next: Field_selectMany_value<VALUE>) {
-      this.selectedKeys = next.map((val) => this.config.getIdFromValue(val))
+   set ϟvalue(next: Field_selectMany_value<VALUE>) {
+      this.selectedKeys = next.map((val) => this.ϟconfig.getIdFromValue(val))
    }
 
-   override isValueEqual(other: Field): boolean {
+   override ϟisValueEqual(other: Field): boolean {
       if (!(other instanceof Field_selectMany)) return false
-      return JSON.stringify(this.serial.values) === JSON.stringify(other.serial.values)
+      return JSON.stringify(this.ϟserial.values) === JSON.stringify(other.ϟserial.values)
    }
 
    public static readonly patchedSerialPaths: readonly string[] = Object.freeze(['values'])
 
    /** different from reset; doesn't take default into account */
    unset(): void {
-      this.ܮrunInTransaction(() => {
-         this.patchSerial((draft) => void (draft.values = undefined))
+      this.ϟrunInTransaction(() => {
+         this.ϟpatchSerial((draft) => void (draft.values = undefined))
       })
    }
 
    get selectedKeys(): KEY[] {
-      if (this.serial.values == null) return []
-      return [...this.serial.values]
+      if (this.ϟserial.values == null) return []
+      return [...this.ϟserial.values]
    }
 
    set selectedKeys(nextKeys: KEY[]) {
-      const values = this.serial.values
+      const values = this.ϟserial.values
 
       // Avoid patching when no-op
       if (
@@ -561,8 +561,8 @@ export class Field_selectMany<
       )
          return
 
-      this.ܮrunInTransaction(() => {
-         this.patchSerial((draft) => void (draft.values = [...nextKeys]))
+      this.ϟrunInTransaction(() => {
+         this.ϟpatchSerial((draft) => void (draft.values = [...nextKeys]))
 
          // 2024-07-08 rvion:
          // | when setting a value with equal id, we may be actually changing the SelectEntry
@@ -584,8 +584,8 @@ export class Field_selectMany<
    }
 
    // see FieldSelectOne.getValueFromId notes
-   getValueFromId = (id: KEY): Maybe<VALUE> => this.config.getValueFromId(id, this)
-   getOptionFromId = (id: KEY): Maybe<SelectOption<VALUE, KEY>> => this.config.getOptionFromId(id, this)
+   getValueFromId = (id: KEY): Maybe<VALUE> => this.ϟconfig.getValueFromId(id, this)
+   getOptionFromId = (id: KEY): Maybe<SelectOption<VALUE, KEY>> => this.ϟconfig.getOptionFromId(id, this)
 
    private get selectedValues(): VALUE[] {
       return this.selectedKeys.map(this.getValueFromId).filter((x) => x != null) as VALUE[]
@@ -597,8 +597,8 @@ export class Field_selectMany<
    }
 
    // 🔶 do not compare queries
-   override get ['⇓isDirtyFromSnapshot_UNSAFE'](): boolean {
-      const { snapshot, ...currentSerial } = this.serial
+   override get ϟisDirtyFromSnapshot_UNSAFE(): boolean {
+      const { snapshot, ...currentSerial } = this.ϟserial
       if (snapshot == null) return false
       return JSON.stringify(snapshot.values) !== JSON.stringify(currentSerial.values)
    }
@@ -607,7 +607,7 @@ export class Field_selectMany<
     * TODO: add distribution config in the config
     * pick between 0 and 2 random values
     */
-   override randomize(): void {
+   override ϟrandomize(): void {
       const choices = this.possibleKeys
       if (choices.length === 0) return
       const numOfValuesSelected = Math.floor(Math.random() * 3)
@@ -617,10 +617,6 @@ export class Field_selectMany<
          if (this.selectedKeys.includes(choice)) continue
          this.addKey(choice)
       }
-   }
-
-   override get isEmpty(): boolean {
-      return this.selectedKeys.length === 0
    }
 }
 

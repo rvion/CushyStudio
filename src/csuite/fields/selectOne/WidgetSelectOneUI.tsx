@@ -10,7 +10,7 @@ export const WidgetSelectOneUI = obs(function WidgetSelectOneUI_<VALUE, KEY exte
    field: Field_selectOne<VALUE, KEY>
 }) {
    const field = p.field
-   const skin = field.config.appearance ?? 'select'
+   const skin = field.ϟconfig.appearance ?? 'select'
    if (skin === 'tab') return <WidgetSelectOne_TabUI field={field} />
    if (skin === 'select') return <WidgetSelectOne_SelectUI field={field} />
    if (skin === 'roll') return <WidgetSelectOne_RollUI field={field} />

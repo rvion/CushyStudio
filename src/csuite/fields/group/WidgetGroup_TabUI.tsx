@@ -9,7 +9,7 @@ export const WidgetGroup_TabUI = obs(function WidgetGroup_TabUI_(p: {
    field: Field_group<any>
    defaultTab?: string
 }) {
-   const groupFields = p.field.subFieldsWithKeys
+   const groupFields = p.field.ϟsubFieldsWithKeys
    const keys = groupFields.map((s) => s.key)
    const [tabId, setTabId] = useState(() => p.defaultTab ?? keys[0]!)
    const uid = useId()
@@ -29,7 +29,7 @@ export const WidgetGroup_TabUI = obs(function WidgetGroup_TabUI_(p: {
                )
             })}
          </div>
-         <div>{p.field.fields[tabId]?.render() ?? 'Aucun onglet selectionné'}</div>
+         <div>{p.field.ϟfields[tabId]?.render() ?? 'Aucun onglet selectionné'}</div>
       </div>
    )
 })

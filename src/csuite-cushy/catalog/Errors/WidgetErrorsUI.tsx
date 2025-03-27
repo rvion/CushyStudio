@@ -17,7 +17,7 @@ export const ErrorMessage = obs(function ErrorMessage_(p: { problem: Problem }) 
 /** default error block */
 export const WidgetErrorsUI = obs(function WidgerErrorsUI_(p: { field: Field }) {
    const field = p.field
-   if (!field.mustDisplayErrors) return null
+   if (!field.ϟmustDisplayErrors) return null
    return (
       <Frame
          // tw='text-red-700 -mt-1'
@@ -25,7 +25,7 @@ export const WidgetErrorsUI = obs(function WidgerErrorsUI_(p: { field: Field }) 
          tw='-mt-1'
       >
          {/* {field.pathExt} */}
-         {field.ownErrors.map((e, i) =>
+         {field.ϟownErrors.map((e, i) =>
             e.longerMessage ? (
                // 🦀 Added `h-input` to make it less ugly, but not sure if it's the right way
                <RevealUI key={i} trigger={'click'} content={() => e.longerMessage ?? 'no extra infos'}>

@@ -4,13 +4,13 @@ import { InputBoolUI } from '../../checkbox/InputBoolUI'
 
 export const WidgetEnum_TabUI = obs(function WidgetEnum_TabUI_(p: { field: Field_enum<any> }) {
    const field = p.field
-   const selected = field.serial.val
+   const selected = field.ϟserial.val
    return (
       <div
          tw={[
             //
             'flex flex-1',
-            (field.config.wrap ?? true) && 'flex-wrap',
+            (field.ϟconfig.wrap ?? true) && 'flex-wrap',
             'rounded',
             'select-none',
             'gap-x-0.5 gap-y-0',
@@ -20,14 +20,14 @@ export const WidgetEnum_TabUI = obs(function WidgetEnum_TabUI_(p: { field: Field
             const isSelected = selected === c
             return (
                <InputBoolUI
-                  toggleGroup={field._uid}
+                  toggleGroup={field.ϟuid}
                   key={c}
                   value={isSelected}
                   display='button'
                   text={c.toString()}
                   onValueChange={(value) => {
                      if (value === isSelected) return
-                     field.value = c
+                     field.ϟvalue = c
                   }}
                />
             )

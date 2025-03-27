@@ -23,7 +23,7 @@ export const PanelCanvasUI = obs(function Panel_Canvas_(p: PanelCanvasProps) {
    const canvas: UnifiedCanvas = useMemo(() => new UnifiedCanvas(cushy, uc2), [uc2])
    const [dropStyle, dropRef_] = useImageDrop(cushy, (img) => {
       // runInAction(() => canvas.addImage(img))
-      uc2.Layers.push({
+      uc2.layers.push({
          placement: mkPlacement({ x: 0, y: 0 }),
          name: img.id,
          visible: true,

@@ -12,7 +12,7 @@ export const WidgetSelectOne_CellUI = obs(function WidgetSelectOne_TabUI_<VALUE,
 }) {
    const val = p.field.selectedOption_unchecked
 
-   if (val == null) return p.field.config.placeholder ?? ''
+   if (val == null) return p.field.ϟconfig.placeholder ?? ''
    const hue = val.hue ?? hashPrimitiveToNumber(val.id)
 
    if (p.opts?.reveal)

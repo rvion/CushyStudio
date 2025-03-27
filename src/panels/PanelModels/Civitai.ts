@@ -8,7 +8,7 @@ import { Promize } from '../../csuite/utils/Promize'
 // civitai wrapper
 export class Civitai {
    // https://github.com/civitai/civitai/wiki/REST-API-Reference#get-apiv1models
-   query = new Debounced(cushy.civitaiConf.fields.defaultQuery.value ?? '', 300)
+   query = new Debounced(cushy.civitaiConf.ϟfields.defaultQuery.ϟvalue ?? '', 300)
    selectedResult: Maybe<CivitaiSearchResultItem> = null
 
    get results(): Maybe<Promize<CivitaiSearchResult>> {

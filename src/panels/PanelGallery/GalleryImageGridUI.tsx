@@ -17,8 +17,8 @@ export const GalleryImageGridUI = obs(function GalleryImageGridUI_(p: {
    const ALLIMAGES = conf.imageToDisplay
    const total = ALLIMAGES.length
 
-   const itemWidth = conf.value.gallerySize
-   const itemHeight = conf.value.gallerySize
+   const itemWidth = conf.ϟvalue.gallerySize
+   const itemHeight = conf.ϟvalue.gallerySize
    const containerWidth = size.width ?? 100
    const containerHeight = size.height ?? 100
    const nbCols = Math.floor(containerWidth / itemWidth) || 1
@@ -29,7 +29,7 @@ export const GalleryImageGridUI = obs(function GalleryImageGridUI_(p: {
          ref={refFn}
          tw='flex-1 select-none overflow-auto'
          // applying filter on the whole gallery is way faster than doing it on every individual images
-         style={conf.value.onlyShowBlurryThumbnails ? { filter: 'blur(10px)' } : undefined}
+         style={conf.ϟvalue.onlyShowBlurryThumbnails ? { filter: 'blur(10px)' } : undefined}
       >
          <GalleryGridUI
             containerHeight={containerHeight}
@@ -38,7 +38,7 @@ export const GalleryImageGridUI = obs(function GalleryImageGridUI_(p: {
             nbRows={nbRows}
             itemWidth={itemWidth}
             itemHeight={itemHeight}
-            enableStepGrouping={conf.value.enableStepGrouping}
+            enableStepGrouping={conf.ϟvalue.enableStepGrouping}
             images={ALLIMAGES}
          />
       </div>

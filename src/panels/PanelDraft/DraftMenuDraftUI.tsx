@@ -51,7 +51,7 @@ export const DraftMenuDraftUI = obs(function DraftMenuDraftUI_(p: { draft: Draft
                   }}
                />
 
-               {cushy.preferences.interface.value.developerOptions.showMenuItems && (
+               {cushy.preferences.interface.ϟvalue.developerOptions.showMenuItems && (
                   <>
                      <MenuDivider />
                      <MenuItem //

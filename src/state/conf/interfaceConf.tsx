@@ -30,7 +30,7 @@ export const interfaceConf = cushyFactory.document(
             text: 'Auto-Hide Tabset',
             tooltip: 'Hide the tabset when there is only one tab',
             default: false,
-            onValueChange: (v) => cushy.layout.setSingleTabStretch(v.value),
+            onValueChange: (v) => cushy.layout.setSingleTabStretch(v.ϟvalue),
          }),
 
          //
@@ -164,7 +164,7 @@ export const interfaceConf = cushyFactory.document(
    {
       name: 'Interface Config',
       serial: () => readJSON('settings/interface.json'),
-      onSerialChange: (form) => writeJSON('settings/interface.json', form.serial),
+      onSerialChange: (form) => writeJSON('settings/interface.json', form.ϟserial),
    },
 )
 

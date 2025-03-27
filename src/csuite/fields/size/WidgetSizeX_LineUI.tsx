@@ -15,7 +15,7 @@ export const WidgetSizeX_LineUI = obs(function WidgetSize_LineUI_(p: {
    // const ratio = uist.width / uist.height
    // const ratioIcon = ratio == 1.0 ? IKONS.mdiApproximatelyEqual : ratio > 1.0 ? IKONS.mdiCropLandscape : IKONS.mdiCropPortrait
 
-   const theme = cushy.preferences.theme.value
+   const theme = cushy.preferences.theme.ϟvalue
 
    return (
       <div className='full flex flex-1 gap-1'>
@@ -35,12 +35,12 @@ export const WidgetSizeX_LineUI = obs(function WidgetSize_LineUI_(p: {
                hideSlider
                onValueChange={(next) => {
                   uist.setWidth(next)
-                  uist.ܒtouch()
+                  uist.ϟtouch()
                }}
                forceSnap={true}
                text='Width'
                suffix='px'
-               onBlur={() => uist.ܒtouch()}
+               onBlur={() => uist.ϟtouch()}
             />
             <InputNumberUI
                //
@@ -52,12 +52,12 @@ export const WidgetSizeX_LineUI = obs(function WidgetSize_LineUI_(p: {
                value={uist.height_or_zero}
                onValueChange={(next) => {
                   uist.setHeight(next)
-                  uist.ܒtouch()
+                  uist.ϟtouch()
                }}
                forceSnap={true}
                text='Height'
                suffix='px'
-               onBlur={() => uist.ܒtouch()}
+               onBlur={() => uist.ϟtouch()}
             />
             {/* <Button onClick={uist.flip} icon={ratioIcon} style={{ border: 'none', borderRadius: '0px' }} /> */}
             {/* <div tw='h-full' style={{ width: '1px' }} /> */}

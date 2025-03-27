@@ -29,7 +29,7 @@ export type BuilderDateMixin = {
 }
 
 export type Field_date_config_specific<VALUE> = Omit<
-   Field_date<VALUE>['…config'],
+   Field_date<VALUE>['Ҩconfig'],
    'serialize' | 'deserialize' | 'now' | 'valueToDate' | 'dateToValue' | 'time' | 'codeForTypescriptValue'
 > & { time?: boolean }
 
@@ -55,8 +55,8 @@ const BuilderDateImpl = (): BuilderDateMixin =>
                this,
                'date',
                (field: Field_date<Date>): Problem_Ext => {
-                  if (field.value_unchecked instanceof Date && isNaN(field.value_unchecked.getTime()))
-                     return { path: field.path, severity: Severity.Error, message: 'Invalid date' }
+                  if (field.ϟvalue_unchecked instanceof Date && isNaN(field.ϟvalue_unchecked.getTime()))
+                     return { path: field.ϟpath, severity: Severity.Error, message: 'Invalid date' }
                   return config.check?.(field)
                },
                [config],

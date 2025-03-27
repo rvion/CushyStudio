@@ -5,11 +5,11 @@ import { useCSuite } from '../../ctx/useCSuite'
 export const WidgetNumberSimpleUI = obs(function WidgetNumberSimpleUI_(p: {
    //
    field: Field_number
-   config?: Field_number['config']
+   config?: Field_number['ϟconfig']
 }) {
    const field = p.field
-   const finalConfig = p.config ? { ...field.config, ...p.config } : field.config
-   const value = field.value_or_zero
+   const finalConfig = p.config ? { ...field.ϟconfig, ...p.config } : field.ϟconfig
+   const value = field.ϟvalue_or_zero
    const mode = finalConfig.mode
    const step = finalConfig.step ?? (mode === 'int' ? 1 : 0.1)
    // const contrast = useCSuite().inputContrast
@@ -22,7 +22,7 @@ export const WidgetNumberSimpleUI = obs(function WidgetNumberSimpleUI_(p: {
             const raw = e.target.value
             const parsed = mode === 'int' ? parseInt(raw, 10) : parseFloat(raw)
             if (isNaN(parsed)) return
-            field.value = parsed
+            field.ϟvalue = parsed
          }}
          value={value}
          min={finalConfig.min}

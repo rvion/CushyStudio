@@ -63,11 +63,11 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
    document<SCHEMA extends CSchema>(
       schemaExt: SCHEMA | ((form: BUILDER) => SCHEMA),
       entityConfig: EntityConfig<NoInfer<SCHEMA>> = {},
-   ): SCHEMA['$field'] {
+   ): SCHEMA['Ҩfield'] {
       const schema: SCHEMA = this.evalSchema(schemaExt)
       const doc = schema.create(entityConfig.serial?.(), this.repository)
-      if (entityConfig.onSerialChange != null) doc.onSerialChanges(entityConfig.onSerialChange)
-      if (entityConfig.onValueChange != null) doc.onSerialChanges(entityConfig.onValueChange)
+      if (entityConfig.onSerialChange != null) doc.ϟonSerialChanges(entityConfig.onSerialChange)
+      if (entityConfig.onValueChange != null) doc.ϟonSerialChanges(entityConfig.onValueChange)
       return doc
    }
 
@@ -75,7 +75,7 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
    draft<SCHEMA extends CSchema>(
       schemaExt: SCHEMA | ((form: BUILDER) => SCHEMA),
       entityConfig: EntityConfig<NoInfer<SCHEMA>> = {},
-   ): DraftLike<SCHEMA['$field']> {
+   ): DraftLike<SCHEMA['Ҩfield']> {
       return this.document(schemaExt, entityConfig)
    }
 
@@ -92,7 +92,7 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
       schemaExt: SCHEMA | ((form: BUILDER) => SCHEMA),
       entityConfig: EntityConfig<SCHEMA> = {},
       deps: DependencyList = [],
-   ): SCHEMA['$field'] {
+   ): SCHEMA['Ҩfield'] {
       const doc = useMemo(() => {
          // TODO: document properly
          // 💬 2024-09-19 rvion:
@@ -114,9 +114,9 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
 
    // // this is not much more than a useMemo(() => new Prez(field))...
    // usePrez<SCHEMA extends CSchema>(
-   //    fieldOrSchema: SCHEMA['$field'] | SCHEMA,
+   //    fieldOrSchema: SCHEMA['Ҩfield'] | SCHEMA,
    //    conf:
-   //       | RENDERER.FieldRenderArgs<SCHEMA['$field']>
+   //       | RENDERER.FieldRenderArgs<SCHEMA['Ҩfield']>
    //       | ((fo: RENDERER.Prez<SCHEMA>) => RENDERER.Prez<SCHEMA>) = {},
    //    deps: DependencyList = [],
    // ): RENDERER.Prez<SCHEMA> {
@@ -138,10 +138,10 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
       schemaExt: SCHEMA | ((form: BUILDER) => SCHEMA),
       entityConfig: EntityConfig<NoInfer<SCHEMA>> = {},
       deps: DependencyList = [],
-   ): SCHEMA['$field'] {
+   ): SCHEMA['Ҩfield'] {
       const doc = this.use(schemaExt, entityConfig, deps)
       // dispose that document when the component unmount
-      useEffect(() => (): void => doc.disposeTree(), [doc])
+      useEffect(() => (): void => doc.ϟdisposeTree(), [doc])
       return doc
    }
 
@@ -149,7 +149,7 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
       schemaExt: SCHEMA | ((form: BUILDER) => SCHEMA),
       entityConfig: EntityConfig<NoInfer<SCHEMA>> = {},
       deps: DependencyList = [],
-   ): DraftLike<SCHEMA['$field']> {
+   ): DraftLike<SCHEMA['Ҩfield']> {
       return this.use(schemaExt, entityConfig, deps)
    }
 
@@ -164,7 +164,7 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
       schemaExt: SCHEMA | ((form: BUILDER) => SCHEMA),
       entityConfig: EntityConfig<NoInfer<SCHEMA>> = {},
       deps: DependencyList = [],
-   ): DraftLike<SCHEMA['$field']> {
+   ): DraftLike<SCHEMA['Ҩfield']> {
       return this.useDisposable(schemaExt, entityConfig, deps)
    }
 
@@ -173,7 +173,7 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
       key: string,
       schemaExt: SCHEMA | ((form: BUILDER) => SCHEMA),
       deps: DependencyList = [],
-   ): SCHEMA['$field'] {
+   ): SCHEMA['Ҩfield'] {
       let serial: any = null
 
       try {
@@ -190,7 +190,7 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
          {
             serial: () => serial,
             onSerialChange: (root) => {
-               localStorage.setItem(key, JSON.stringify(root.serial))
+               localStorage.setItem(key, JSON.stringify(root.ϟserial))
             },
          },
          finalDeps,
@@ -202,7 +202,7 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
       key: string,
       schemaExt: SCHEMA | ((form: BUILDER) => SCHEMA),
       deps: DependencyList = [],
-   ): SCHEMA['$field'] {
+   ): SCHEMA['Ҩfield'] {
       let serial: any = null
 
       try {
@@ -219,7 +219,7 @@ export class Factory<BUILDER extends IBuilder = IBuilder> {
          {
             serial: () => serial,
             onSerialChange: (root) => {
-               if (root.isValid) localStorage.setItem(key, JSON.stringify(root.serial))
+               if (root.ϟisValid) localStorage.setItem(key, JSON.stringify(root.ϟserial))
             },
          },
          finalDeps,

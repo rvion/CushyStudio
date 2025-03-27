@@ -23,7 +23,7 @@ type ActiveBranchesByName<T> = { [key in keyof T]?: true }
 
 // 💬 2024-12-30 rvion:
 // added so we can offer "smart" completions before having instances.
-export function getPossibleChoicesFromConfig(config: Field_choices['…config']): string[] {
+export function getPossibleChoicesFromConfig(config: Field_choices['Ҩconfig']): string[] {
    const items = config.items
    const out = typeof items === 'function' ? Object.keys((items as any)() ?? {}) : Object.keys(items ?? {})
    return out
@@ -80,35 +80,35 @@ type Field_choices_ownSerial<T extends SchemaDict = SchemaDict> = {
    branches?: ActiveBranchesByName<T>
 
    /** every children serial, including disabled ones */
-   values?: { [k in keyof T]?: T[k]['…serial'] }
+   values?: { [k in keyof T]?: T[k]['Ҩserial'] }
 }
 
 // #region VALUE TYPE
 export type Field_choices_value<T extends SchemaDict = SchemaDict> = {
-   [k in keyof T]?: T[k]['$field']['…value']
+   [k in keyof T]?: T[k]['Ҩfield']['Ҩvalue']
 }
 
 export type Field_choices_SetValue<T extends SchemaDict = SchemaDict> = {
-   [k in keyof T]?: T[k]['$field']['…setvalue']
+   [k in keyof T]?: T[k]['Ҩfield']['Ҩsetvalue']
 }
 
 export type Field_choices_unchecked<T extends SchemaDict = SchemaDict> = {
-   [k in keyof T]?: T[k]['$field']['…unchecked']
+   [k in keyof T]?: T[k]['Ҩfield']['Ҩunchecked']
 }
 
 // #region $TypeString
 export interface Field_choices<T extends SchemaDict = SchemaDict> {
-   ['…type']: 'choices'
-   ['…ownConfig']: Field_choices_ownConfig<T>
-   ['…ownSerial']: Field_choices_ownSerial<T>
-   ['…value']: Field_choices_value<T>
-   ['…setvalue']: Field_choices_SetValue<T>
-   ['…unchecked']: Field_choices_unchecked<T>
-   ['…child']: T[keyof T]['$field']
-   ['…opts']: unknown
-   ['…ownPatch']: Field_choices_patch<T>
+   ['Ҩtype']: 'choices'
+   ['ҨownConfig']: Field_choices_ownConfig<T>
+   ['ҨownSerial']: Field_choices_ownSerial<T>
+   ['Ҩvalue']: Field_choices_value<T>
+   ['Ҩsetvalue']: Field_choices_SetValue<T>
+   ['Ҩunchecked']: Field_choices_unchecked<T>
+   ['Ҩchild']: T[keyof T]['Ҩfield']
+   ['Ҩopts']: unknown
+   ['ҨownPatch']: Field_choices_patch<T>
    //
-   $subfields: T
+   Ҩsubfields: T
 }
 
 export type Field_choices_patch<T extends SchemaDict = SchemaDict> =
@@ -117,22 +117,22 @@ export type Field_choices_patch<T extends SchemaDict = SchemaDict> =
 export type Field_choices_patch_enable<T extends SchemaDict = SchemaDict> = Patch_Common<'choices'> & {
    op: 'enable'
    branch: keyof T & string
-   value: T[keyof T]['…serial']
+   value: T[keyof T]['Ҩserial']
 }
 export type Field_choices_patch_disable<T extends SchemaDict = SchemaDict> = Patch_Common<'choices'> & {
    op: 'disable'
    branch: keyof T & string
 }
 
-export type MAGICCHOICES<T extends { [key: string]: { $field: any } }> = {
-   [K in keyof T as Capitalize<K & string>]?: T[K]['$field']
+export type MAGICCHOICES<T extends { [key: string]: { Ҩfield: any } }> = {
+   [K in keyof T as Capitalize<K & string>]?: T[K]['Ҩfield']
 }
 
 // #region STATE
 export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
    // #region TYPE
    static readonly type: 'choices' = 'choices'
-   static readonly codeForTypescriptValue = (config: Field_choices['…config'], opts: CodegenOpts): string => {
+   static readonly codeForTypescriptValue = (config: Field_choices['Ҩconfig'], opts: CodegenOpts): string => {
       const subSchema = config.items
       const schemaDict = typeof subSchema === 'function' ? subSchema() : subSchema
       if (schemaDict == null) return 'never'
@@ -151,12 +151,12 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
       out += `${indentStr}}`
       return out
    }
-   static override migrateSerial<T extends SchemaDict>(serial: object): Maybe<Field_choices<T>['…serial']> {
+   static override migrateSerial<T extends SchemaDict>(serial: object): Maybe<Field_choices<T>['Ҩserial']> {
       if (isProbablySerialChoices(serial)) {
          if ('values_' in serial) {
-            const legacyValues = serial.values_ as Field_choices<T>['…serial']['values'] // 🔴 very unchecked cast, much danger
+            const legacyValues = serial.values_ as Field_choices<T>['Ҩserial']['values'] // 🔴 very unchecked cast, much danger
             const { $, values_, ...rest } = serial
-            const next: Field_choices<T>['…serial'] = {
+            const next: Field_choices<T>['Ҩserial'] = {
                $: 'choices',
                values: legacyValues,
                ...rest,
@@ -165,10 +165,10 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
          }
       }
    }
-   static getSchemaDict(config: Field_choices<SchemaDict>['…config']): SchemaDict {
+   static getSchemaDict(config: Field_choices<SchemaDict>['Ҩconfig']): SchemaDict {
       return typeof config.items === 'function' ? config.items() : (config.items ?? {})
    }
-   static override getChildren(config: Field_choices<SchemaDict>['…config']): SchemaDictWithPaths {
+   static override getChildren(config: Field_choices<SchemaDict>['Ҩconfig']): SchemaDictWithPaths {
       const X = this.getSchemaDict(config)
       const OUT: SchemaDictWithPaths = {}
       for (const [k, v] of Object.entries(X)) {
@@ -178,9 +178,9 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
    }
 
    static generateSerial(
-      value: Maybe<Field_choices<SchemaDict>['…value']>,
-      config: Field_choices<SchemaDict>['…config'],
-   ): Field_choices<SchemaDict>['…serial'] {
+      value: Maybe<Field_choices<SchemaDict>['Ҩvalue']>,
+      config: Field_choices<SchemaDict>['Ҩconfig'],
+   ): Field_choices<SchemaDict>['Ҩserial'] {
       const configItems = typeof config.items === 'function' ? config.items() : config.items
       const defaultBranches =
          typeof config.default === 'string' ? { [config.default]: null } : (config.default ?? {})
@@ -197,7 +197,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
 
                return [k, configItem.generateSerial(value?.[k])]
             }),
-         ) as Field_choices<SchemaDict>['…serial']['values'],
+         ) as Field_choices<SchemaDict>['Ҩserial']['values'],
       }
    }
 
@@ -220,7 +220,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
       parent: Field | null,
       schema: CSchema<Field_choices<T>>,
       initialMountKey: string,
-      serial?: Field_choices<T>['…serial'],
+      serial?: Field_choices<T>['Ҩserial'],
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
       this._defineMagicFields()
@@ -229,7 +229,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
    }
 
    private startDynamicBehaviour(): void {
-      const dynamic = this.config.dynamic
+      const dynamic = this.ϟconfig.dynamic
       if (dynamic == null) return
       const disposeFn = reaction(
          () => dynamic(this),
@@ -240,19 +240,19 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
          },
          { fireImmediately: true },
       )
-      this.disposeFns.push(disposeFn)
+      this.ϟdisposeFns.push(disposeFn)
    }
 
    // #region MISC
    get expand(): boolean {
-      return this.config.expand ?? false
+      return this.ϟconfig.expand ?? false
    }
 
    /**
     * true if the choice widget multiple values (0+)
     */
    get isMulti(): boolean {
-      return this.config.multi
+      return this.ϟconfig.multi
    }
 
    /**
@@ -260,20 +260,20 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
     * (not 0, not 2+)
     */
    get isSingle(): boolean {
-      return !this.config.multi
+      return !this.ϟconfig.multi
    }
 
    /**
     * dictionary of enabled children branches
     * TODO: rename
     */
-   readonly _: { [k in keyof T]?: T[k]['$field'] } = observable({})
+   readonly _: { [k in keyof T]?: T[k]['Ҩfield'] } = observable({})
 
-   @computed get activeBranchesList(): T[keyof T]['$field'][] {
+   @computed get activeBranchesList(): T[keyof T]['Ҩfield'][] {
       return Object.values(this._)
    }
 
-   getChildIfActive<KEY extends keyof T & string>(branchName: KEY): T[KEY]['$field'] | undefined {
+   getChildIfActive<KEY extends keyof T & string>(branchName: KEY): T[KEY]['Ҩfield'] | undefined {
       return this._[branchName]
    }
 
@@ -285,10 +285,10 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
       return Object.keys(this.configItems)
    }
 
-   override get isCollapsible(): boolean {
+   override get ϟisCollapsible(): boolean {
       if (this.isMulti) return false // 🔶 may be wrong, but it really annoys me right now
       if (this.activeBranchNames.length === 0) return false
-      return super.isCollapsible
+      return super.ϟisCollapsible
    }
 
    @computed get choicesWithLabels(): { key: keyof T & string; label: string; icon?: Maybe<IconName> }[] {
@@ -310,7 +310,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
 
    /** array of all active branch keys */
    get activeBranchNames(): (keyof T & string)[] {
-      const branches = this.serial.branches
+      const branches = this.ϟserial.branches
       if (branches == null) return []
       return Object.keys(branches).filter((x) => Boolean(branches[x]))
    }
@@ -319,7 +319,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
       return this.activeBranchNames[0]
    }
 
-   get firstActiveBranchField(): T[keyof T]['$field'] | undefined {
+   get firstActiveBranchField(): T[keyof T]['Ҩfield'] | undefined {
       if (this.firstActiveBranchName == null) return undefined
       return this._[this.firstActiveBranchName]
    }
@@ -338,7 +338,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
     * @since 2024-09-11
     */
    @computed private get branchesActiveByDefault(): (keyof T & string)[] {
-      const def = this.config.default
+      const def = this.ϟconfig.default
       if (def == null) return []
       if (typeof def === 'string') {
          if (this.isValidBranchName(def)) return [def]
@@ -348,7 +348,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
    }
 
    isBranchActiveByDefault(branchName: keyof T & string): boolean {
-      const def = this.config.default
+      const def = this.ϟconfig.default
       if (def == null) return false
       if (typeof def === 'string') return branchName === def
       return Boolean((def as ActiveBranchesByName<T>)[branchName])
@@ -376,14 +376,14 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
 
    // #region VALIDATION
 
-   get ownConfigSpecificProblems(): Problem_Ext {
+   get ϟownConfigSpecificProblems(): Problem_Ext {
       return null
    }
 
-   @computed get ownTypeSpecificProblems(): Problem_Ext {
+   @computed get ϟownTypeSpecificProblems(): Problem_Ext {
       const OUT: Problem_Ext[] = []
-      const config = this.config
-      const serial = this.serial
+      const config = this.ϟconfig
+      const serial = this.ϟserial
       if (this.isSingle) {
          const activeBranches = this.getActiveBranchNamesFromBooleanRecord(serial.branches)
 
@@ -405,20 +405,20 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
       return OUT
    }
 
-   @computed get hasChanges(): boolean {
+   @computed get ϟhasChanges(): boolean {
       for (const branchName of this.allPossibleChoices) {
          const shouldBeActive = this.isBranchActiveByDefault(branchName)
          const child = this._[branchName]
          if (child && !shouldBeActive) return true
          if (!child && shouldBeActive) return true
-         if (child && shouldBeActive && child.hasChanges) return true
+         if (child && shouldBeActive && child.ϟhasChanges) return true
       }
       return false
    }
 
-   @computed get isOwnSet(): boolean {
-      if (this.serial.values == null) return false
-      if (this.serial.branches == null) return false
+   @computed get ϟisOwnSet(): boolean {
+      if (this.ϟserial.values == null) return false
+      if (this.ϟserial.branches == null) return false
       return true
       // if (this.subFields.some((f) => !f.isSet)) return false
       // return true
@@ -435,7 +435,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
 
    // #region CHILDREN
 
-   override getChildrenSerialPath(branchName: keyof T & string): string {
+   override ϟgetChildrenSerialPath(branchName: keyof T & string): string {
       return `values.${branchName}`
    }
 
@@ -443,22 +443,22 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
     * as of 2024-09-11, choices eagerly dispose de-activated branches,
     * so it's active children fields are just the activated one
     */
-   @computed override get childrenAll(): Field[] {
+   @computed override get ϟchildrenAll(): Field[] {
       return Object.values(this._)
    }
 
-   override get childrenActive(): Field[] {
-      return this.childrenAll
+   override get ϟchildrenActive(): Field[] {
+      return this.ϟchildrenAll
    }
 
-   @computed override get subFieldsWithKeys(): KeyedField[] {
+   @computed override get ϟsubFieldsWithKeys(): KeyedField[] {
       return Object.entries(this._).map(([key, field]) => ({ key, field }))
    }
 
-   override ܮacknowledgeNewChildSerial(mountKey: keyof T & string, childSerial: any): boolean {
-      if (this.serial.values?.[mountKey] === childSerial) return false
+   override ϟacknowledgeNewChildSerial(mountKey: keyof T & string, childSerial: any): boolean {
+      if (this.ϟserial.values?.[mountKey] === childSerial) return false
 
-      return this.patchSerial((draft) => {
+      return this.ϟpatchSerial((draft) => {
          draft.values ??= {}
          draft.values[mountKey] = childSerial
       })
@@ -467,7 +467,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
    protected checkConfigValidity(): void {
       // INVARIANT CHECKING -----------------------------------------------------------------------------
       const OUT: Problem_Ext[] = []
-      const config = this.config
+      const config = this.ϟconfig
 
       // 1. more than 1 default, while in single mode
       if (
@@ -480,12 +480,12 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
    }
 
    @computed private get configItems(): T {
-      const X = this.config.items
+      const X = this.ϟconfig.items
       if (typeof X === 'function') {
          const res = (X as any)(this)
          for (const x of Object.keys(res)) {
             if (res[x] == null) {
-               console.log(`[🔶🦖‼️] missing choice: ${x} at (${this.path})`)
+               console.log(`[🔶🦖‼️] missing choice: ${x} at (${this.ϟpath})`)
                delete res[x]
             }
          }
@@ -502,7 +502,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
    private getSchemaForBranch(branchName: keyof T & string): Maybe<CSchema> {
       const schema = this.configItems[branchName]
       if (schema == null) {
-         console.log(`[🔶🦖] missing choice: ${branchName} at (${this.path})`)
+         console.log(`[🔶🦖] missing choice: ${branchName} at (${this.ϟpath})`)
          return null
       }
       // if (schema == null) throw new Error(`❌ Branch "${branchName}" has no initializer function`)
@@ -516,7 +516,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
    }
 
    // #region setOwnSerial
-   protected setOwnSerial(next: this['…serial']): void {
+   protected ϟsetOwnSerial(next: this['Ҩserial']): void {
       runInAction(() => {
          this.checkConfigValidity() // 🔴 bof -> à appeler ailleurs
 
@@ -524,7 +524,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
          // Only setting values is supported since 2024-09-11
          if (next.values != null && next.branches == null) {
             const branchNames: (keyof T & string)[] = Object.keys(next.values)
-            next = produce(next, (draft: this['…serial']) => {
+            next = produce(next, (draft: this['Ҩserial']) => {
                draft.branches ??= {}
                for (const branchName of branchNames) {
                   draft.branches[branchName] = true
@@ -532,20 +532,20 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
             })
          }
 
-         this.ܮassignNewSerial(next)
+         this.ϟassignNewSerial(next)
 
          // if field is not set, and field has default => apply default
          if (next.branches == null) {
             const branchesActiveByDefault = this.branchesActiveByDefault
             for (const branch of branchesActiveByDefault) {
                // allocate holes in the serial + set branch active...
-               this.patchSerial((draft) => {
+               this.ϟpatchSerial((draft) => {
                   draft.values ??= {}
                   draft.branches ??= {}
                   draft.branches[branch] = true
                })
                // ...and reconcile
-               this.ܮRECONCILE({
+               this.ϟRECONCILE({
                   mountKey: branch,
                   correctChildSchema: bang(this.getSchemaForBranch(branch)),
                   existingChild: this._[branch],
@@ -565,13 +565,13 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
             const isActive = Boolean(next.branches?.[branch])
             if (isActive) {
                // set the active branch as active...
-               this.patchSerial((draft) => {
+               this.ϟpatchSerial((draft) => {
                   draft.values ??= {}
                   draft.branches ??= {}
                   draft.branches[branch] = true
                })
                // and reconcile
-               this.ܮRECONCILE({
+               this.ϟRECONCILE({
                   mountKey: branch,
                   correctChildSchema: bang(schema),
                   existingChild: this._[branch],
@@ -584,7 +584,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
                // remove children
                const prevChild = this._[branch]
                if (prevChild) {
-                  prevChild.disposeTree()
+                  prevChild.ϟdisposeTree()
                   delete this._[branch]
                }
             }
@@ -595,71 +595,71 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
    // #region VALUE
 
    /** results, but only for active branches */
-   get value(): Field_choices_value<T> {
-      return this.value_or_fail
+   get ϟvalue(): Field_choices_value<T> {
+      return this.ϟvalue_or_fail
    }
 
-   override set(val: Field_choices_SetValue<T>): this {
-      this.ܮrunInTransaction(() => {
+   override ϟset(val: Field_choices_SetValue<T>): this {
+      this.ϟrunInTransaction(() => {
          for (const branch of this.allPossibleChoices) {
             this._setBranchTo(branch, val[branch])
          }
       })
       return this
    }
-   private _setBranchTo(branch: keyof T & string, to?: Maybe<T[keyof T]['…setvalue']>): void {
+   private _setBranchTo(branch: keyof T & string, to?: Maybe<T[keyof T]['Ҩsetvalue']>): void {
       // case 1. branch should be DISABLED
       if (to == null) {
          if (this.isBranchEnabled(branch)) this.disableBranch(branch)
       }
       // case 2. branch should be ENABLED
       else {
-         this.ܮrunInTransaction(() => {
+         this.ϟrunInTransaction(() => {
             // 2.1. enable branch if disabled
             if (this.isBranchDisabled(branch)) this.enableBranch(branch)
 
             // 2.2 then patch branch value to given value
-            this._[branch]!.set(to!)
+            this._[branch]!.ϟset(to!)
          })
       }
    }
 
-   set value(val: Field_choices_value<T>) {
-      this.ܮrunInTransaction(() => {
+   set ϟvalue(val: Field_choices_value<T>) {
+      this.ϟrunInTransaction(() => {
          for (const branch of this.allPossibleChoices) {
             this._setBranchValue(branch, val[branch])
          }
       })
    }
 
-   get value_or_fail(): Field_choices_value<T> {
+   get ϟvalue_or_fail(): Field_choices_value<T> {
       const value = new Proxy({} as any, this.makeValueProxy('fail'))
-      void this.serial
+      void this.ϟserial
       Object.defineProperty(this, 'value_or_fail', {
          get: () => {
-            void this.serial
+            void this.ϟserial
             return value
          },
       })
       return value
    }
-   get value_or_zero(): Field_choices_value<T> {
+   get ϟvalue_or_zero(): Field_choices_value<T> {
       const value = new Proxy({} as any, this.makeValueProxy('zero'))
-      void this.serial
+      void this.ϟserial
       Object.defineProperty(this, 'value_or_zero', {
          get: () => {
-            void this.serial
+            void this.ϟserial
             return value
          },
       })
       return value
    }
-   get value_unchecked(): Field_choices_unchecked<T> {
+   get ϟvalue_unchecked(): Field_choices_unchecked<T> {
       const value = new Proxy({} as any, this.makeValueProxy('unchecked'))
-      void this.serial
+      void this.ϟserial
       Object.defineProperty(this, 'value_unchecked', {
          get: () => {
-            void this.serial
+            void this.ϟserial
             return value
          },
       })
@@ -667,26 +667,26 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
    }
    get value_set(): Field_choices_SetValue<T> {
       const value = new Proxy({} as any, this.makeValueProxy('set'))
-      void this.serial
+      void this.ϟserial
       Object.defineProperty(this, 'value_set', {
          get: () => {
-            void this.serial
+            void this.ϟserial
             return value
          },
       })
       return value
    }
 
-   override isValueEqual(other: Field): boolean {
+   override ϟisValueEqual(other: Field): boolean {
       if (!(other instanceof Field_choices)) return false
       return (
          this.hasSameActivatedBranches(other) &&
-         this.childrenActive.every((f) => {
-            const otherChild = other._[f.mountKey]
+         this.ϟchildrenActive.every((f) => {
+            const otherChild = other._[f.ϟmountKey]
 
             if (otherChild == null) return false
 
-            return f.isValueEqual(otherChild)
+            return f.ϟisValueEqual(otherChild)
          })
       )
    }
@@ -717,12 +717,12 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
             if (subWidget == null) {
                const field = this.enableBranch(branchName)
                if (field == null) return false
-               field.value = value
+               field.ϟvalue = value
                return true
             }
             // case when branch currently ENABLED
             else {
-               subWidget.value = value
+               subWidget.ϟvalue = value
                return true
             }
          },
@@ -732,7 +732,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
             const subWidget: Maybe<Field> = this._[branchName]
             if (subWidget == null) return
             if (!(subWidget instanceof Field)) return void console.log(`[🔶] tried to access non-field`, prop)
-            return subWidget.getValue(mode)
+            return subWidget.ϟgetValue(mode)
          },
          getOwnPropertyDescriptor: (_target, prop): PropertyDescriptor | undefined => {
             if (typeof prop !== 'string') return
@@ -744,14 +744,14 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
                enumerable: true,
                configurable: true,
                get(): any {
-                  return subWidget.getValue(mode)
+                  return subWidget.ϟgetValue(mode)
                },
             }
          },
       }
    }
 
-   override getSetValue(): this['…setvalue'] | undefined {
+   override ϟgetSetValue(): this['Ҩsetvalue'] | undefined {
       // console.log(`[💀 getSetValue] `, this.path)
       return this.value_set
    }
@@ -762,31 +762,31 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
       if (!this._[branch]) {
          return // console.info(`❌ Branch "${branch}" not enabled`)
       }
-      this.ܮrunInTransaction(() => {
+      this.ϟrunInTransaction(() => {
          // remove children
          const prevChild = this._[branch]
-         if (prevChild) prevChild.disposeTree()
+         if (prevChild) prevChild.ϟdisposeTree()
          delete this._[branch]
 
          // WE NEED TO KEEP THIS ONE UNLESS WE WANT TO DISCARD THE DRAFT
          // we could make this opt-in via a config flag and persist in memory only via enableBranch
          // delete this.serial.values_[branch]
 
-         this.patchSerial((draft) => {
+         this.ϟpatchSerial((draft) => {
             draft.branches ??= {}
             delete draft.branches[branch] // = false
          })
       })
    }
 
-   enableBranch<K extends keyof T & string>(branchName: K): Maybe<T[K]['$field']> {
+   enableBranch<K extends keyof T & string>(branchName: K): Maybe<T[K]['Ҩfield']> {
       // ensure branch to enable is disabled
       if (this.isBranchEnabled(branchName)) {
          void console.info(`❌ Branch "${branchName}" already enabled`)
          return this._[branchName]
       }
 
-      this.ܮrunInTransaction(() => {
+      this.ϟrunInTransaction(() => {
          const schema = this.getSchemaForBranch(branchName)
          if (schema == null) return null
 
@@ -796,18 +796,18 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
             }
          }
 
-         this.ܮRECONCILE({
+         this.ϟRECONCILE({
             mountKey: branchName,
             correctChildSchema: schema,
             existingChild: this._[branchName],
-            targetChildSerial: this.serial.values?.[branchName],
+            targetChildSerial: this.ϟserial.values?.[branchName],
             attach: (child) => {
                this._[branchName] = child
             },
          })
 
          // set the active branch as active
-         this.patchSerial((draft) => {
+         this.ϟpatchSerial((draft) => {
             draft.branches ??= {}
             draft.branches[branchName] = true
          })
@@ -831,8 +831,8 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
    }
 
    isBranchEnabled(branch: keyof T & string): boolean {
-      if (this.serial.branches == null) return false
-      return Boolean(this.serial.branches[branch])
+      if (this.ϟserial.branches == null) return false
+      return Boolean(this.ϟserial.branches[branch])
    }
 
    /**
@@ -861,7 +861,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
        *      Let's just say that passing null disable the highest
        *      level field that can be disabled.
        */
-      value?: Maybe<T[keyof T]['…value']>,
+      value?: Maybe<T[keyof T]['Ҩvalue']>,
    ): boolean {
       // case 1. branch should be DISABLED
       if (value == null) {
@@ -880,7 +880,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
          if (this.isBranchDisabled(branch)) this.enableBranch(branch)
 
          // 2.2 then patch branch value to given value
-         this._[branch]!.value = value!
+         this._[branch]!.ϟvalue = value!
          return true
       }
    }
@@ -888,13 +888,13 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
    // #region Matching
    matchCase<R, DEF = null>(
       cases: {
-         [K in keyof T]?: (field: T[K]['$field']) => R
+         [K in keyof T]?: (field: T[K]['Ҩfield']) => R
       },
       def: DEF,
    ): R | DEF {
       for (const branch of this.activeBranchesList) {
-         if (branch != null && branch.mountKey in cases) {
-            return cases[branch.mountKey]!(branch)
+         if (branch != null && branch.ϟmountKey in cases) {
+            return cases[branch.ϟmountKey]!(branch)
          }
       }
       return def
@@ -902,11 +902,11 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
 
    // sigh, nullable composition...
    // matchExhaustive<R>(cases: {
-   //    [K in keyof T]: (field: T[K]['$field']) => R
+   //    [K in keyof T]: (field: T[K]['Ҩfield']) => R
    // }): [null] extends [R] ? "❌ match branches cannot return 'null'" : R
 
    matchExhaustive<R>(cases: {
-      [K in keyof T]: (field: T[K]['$field']) => R
+      [K in keyof T]: (field: T[K]['Ҩfield']) => R
    }): R {
       const result = this.matchCase(cases, _NotExhaustive)
       if (result == _NotExhaustive)
@@ -917,32 +917,32 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
    }
 
    matchAll<R>(cases: {
-      [K in keyof T]?: (field: T[K]['$field']) => R
+      [K in keyof T]?: (field: T[K]['Ҩfield']) => R
    }): R[] {
       const OUT: R[] = []
       for (const branch of this.activeBranchesList) {
-         if (branch != null && branch.mountKey in cases) {
-            OUT.push(cases[branch.mountKey]!(branch))
+         if (branch != null && branch.ϟmountKey in cases) {
+            OUT.push(cases[branch.ϟmountKey]!(branch))
          }
       }
       return OUT
    }
 
    // #region SETTERS
-   override randomize(): void {
+   override ϟrandomize(): void {
       // pick ONE random branch
       const branches = this.allPossibleChoices
       const branch = branches[Math.floor(Math.random() * branches.length)]
       if (branch == null) return
       this.enableBranch(branch)
-      this.childrenActive.forEach((f) => f.randomize())
+      this.ϟchildrenActive.forEach((f) => f.ϟrandomize())
    }
 
    // #region PATCH
 
    public static readonly patchedSerialPaths: readonly string[] = Object.freeze([])
 
-   protected override generateOwnPatches(referenceField: this): Field_choices_patch<T>[] {
+   protected override ϟgenerateOwnPatches(referenceField: this): Field_choices_patch<T>[] {
       const patches: Field_choices_patch<T>[] = []
 
       Object.entries(this._)
@@ -950,7 +950,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
          .forEach(([name, child]) => {
             patches.push({
                op: 'enable',
-               fieldPath: this.path,
+               fieldPath: this.ϟpath,
                fieldType: 'choices',
                branch: name,
                value: child.serial,
@@ -962,7 +962,7 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
          .forEach(([name]) => {
             patches.push({
                op: 'disable',
-               fieldPath: this.path,
+               fieldPath: this.ϟpath,
                fieldType: 'choices',
                branch: name,
             })
@@ -971,19 +971,19 @@ export class Field_choices<T extends SchemaDict = SchemaDict> extends Field {
       return patches
    }
 
-   protected override applyOwnPatches(patches: Field_choices_patch<T>[]): void {
+   protected override ϟapplyOwnPatches(patches: Field_choices_patch<T>[]): void {
       if (patches.length === 0) return
 
-      this.ܮrunInTransaction(() => {
+      this.ϟrunInTransaction(() => {
          patches.forEach((patch) => {
             if (isEnablePatch(patch)) {
                const activeChild = this.getChildIfActive(patch.branch)
                if (activeChild != null) {
-                  activeChild.setSerial(patch.value)
+                  activeChild.ϟsetSerial(patch.value)
                   return
                }
 
-               this.patchSerial((draft) => {
+               this.ϟpatchSerial((draft) => {
                   draft.values ??= {}
                   draft.values[patch.branch] = patch.value
                })

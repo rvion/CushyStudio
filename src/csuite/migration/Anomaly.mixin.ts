@@ -13,25 +13,25 @@ import { rescopeAnomaly } from './rescopeAnomaly'
 export type AnomalyMixin = typeof AnomalyMixinImpl
 export const AnomalyMixinImpl = defineFieldMixin({
    /** drop all anomalies specific to this field (not incl. children anomalies) */
-   dropAnomalies(): void {
-      if (this.serial.anomalies == null) return
-      this.ܮpatchInTransaction((draft) => {
+   ϟdropAnomalies(): void {
+      if (this.ϟserial.anomalies == null) return
+      this.ϟpatchInTransaction((draft) => {
          delete draft.anomalies
       })
    },
 
-   get anomalies(): FieldAnomaly[] {
-      return this.serial.anomalies ?? []
+   get ϟanomalies(): FieldAnomaly[] {
+      return this.ϟserial.anomalies ?? []
    },
 
    /** append an anomalies */
-   addAnomaly(anomaly: FieldAnomaly): void {
-      if (this.serial.anomalies == null) {
-         this.ܮpatchInTransaction((draft) => {
+   ϟaddAnomaly(anomaly: FieldAnomaly): void {
+      if (this.ϟserial.anomalies == null) {
+         this.ϟpatchInTransaction((draft) => {
             draft.anomalies = [anomaly]
          })
       } else {
-         this.ܮpatchInTransaction((draft) => {
+         this.ϟpatchInTransaction((draft) => {
             draft.anomalies!.push(anomaly)
          })
       }
@@ -41,16 +41,16 @@ export const AnomalyMixinImpl = defineFieldMixin({
     * hoist anomalies from all descendants.
     * @since 2024-10-07
     */
-   hoistAnomalies(): void {
-      const basePath = this.path
-      const basePathExt = this.pathExt
-      this['→traverseAllDepthFirst']((x) => {
-         if (x.serial.anomalies == null) return
-         const pathPrefix = x.path.slice(0, basePath.length)
-         const pathExtPrefix = x.pathExt.slice(0, basePathExt.length)
-         for (const anomaly of x.serial.anomalies) {
+   ϟhoistAnomalies(): void {
+      const basePath = this.ϟpath
+      const basePathExt = this.ϟpathExt
+      this.ϟtraverseAllDepthFirst((x) => {
+         if (x.ϟserial.anomalies == null) return
+         const pathPrefix = x.ϟpath.slice(0, basePath.length)
+         const pathExtPrefix = x.ϟpathExt.slice(0, basePathExt.length)
+         for (const anomaly of x.ϟserial.anomalies) {
             const rescoped = rescopeAnomaly(anomaly, pathPrefix, pathExtPrefix)
-            this.addAnomaly(rescoped)
+            this.ϟaddAnomaly(rescoped)
          }
       })
    },

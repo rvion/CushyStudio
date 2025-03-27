@@ -63,7 +63,7 @@ export const _PieMenuItem = obs(function _PieMenuItem_(p: MenuItemProps) {
          ? disabled()
          : disabled
 
-   const theme = cushy.preferences.theme.value
+   const theme = cushy.preferences.theme.ϟvalue
 
    return (
       <Frame

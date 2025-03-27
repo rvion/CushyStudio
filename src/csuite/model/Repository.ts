@@ -85,7 +85,7 @@ export class Repository {
     */
    _unregisterField(field: Field, tct: Transaction): void {
       this.fieldCount -= 1
-      if (field.root == field) this.documentCount -= 1
+      if (field.ϟroot == field) this.documentCount -= 1
 
       // unregister field in `this._allWidgetsByType(<type>)`
       tct.trackAsDeleted(field)
@@ -94,7 +94,7 @@ export class Repository {
    /** only called when  a new field is created */
    _registerField(field: Field, tct: Transaction): void {
       this.fieldCount += 1
-      if (field.root == field) this.documentCount += 1
+      if (field.ϟroot == field) this.documentCount += 1
 
       // 🔴 creations ⁉️
       tct.trackAsCreated(field)

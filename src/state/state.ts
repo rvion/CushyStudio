@@ -466,7 +466,7 @@ export class STATE {
       node_vsep: number
       forceLeft: boolean
    } {
-      const fv = this.graphConf.value
+      const fv = this.graphConf.ϟvalue
       return {
          node_hsep: fv.hsep,
          node_vsep: fv.vsep,
@@ -485,7 +485,7 @@ export class STATE {
       {
          name: 'Graph Visualisation',
          serial: () => readJSON('settings/graph-visualization.json'),
-         onSerialChange: (form) => writeJSON('settings/graph-visualization.json', form.serial),
+         onSerialChange: (form) => writeJSON('settings/graph-visualization.json', form.ϟserial),
       },
    )
 
@@ -510,11 +510,11 @@ export class STATE {
       {
          name: 'Civitai Conf',
          serial: () => readJSON('settings/civitai.json'),
-         onSerialChange: (form) => writeJSON('settings/civitai.json', form.serial),
+         onSerialChange: (form) => writeJSON('settings/civitai.json', form.ϟserial),
       },
    )
-   get favbar(): $schemaFavbar['$field'] {
-      return this.preferences.interface.fields.favBar
+   get favbar(): $schemaFavbar['Ҩfield'] {
+      return this.preferences.interface.ϟfields.favBar
    }
    // favbar = cushyFactory.document(
    //     (b) =>
@@ -556,7 +556,7 @@ export class STATE {
       {
          name: 'Displacement Conf',
          serial: () => readJSON<AnyFieldSerial>('settings/displacement.json'),
-         onSerialChange: (form) => writeJSON('settings/displacement.json', form.serial),
+         onSerialChange: (form) => writeJSON('settings/displacement.json', form.ϟserial),
       },
    )
 

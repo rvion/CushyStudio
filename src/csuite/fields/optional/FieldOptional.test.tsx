@@ -14,7 +14,7 @@ describe('FieldOptional', () => {
             const E1 = b.number({ default: 5 }).optional().create()
             const E2 = b.number({ default: 6 }).optional().create()
 
-            expect(E1.isValueEqual(E2)).toBeTruthy()
+            expect(E1.ϟisValueEqual(E2)).toBeTruthy()
          })
 
          it('should return true if both fields are set to the same value', () => {
@@ -22,10 +22,10 @@ describe('FieldOptional', () => {
             const E1 = schema.create()
             const E2 = schema.create()
 
-            E1.value = 8
-            E2.value = 8
+            E1.ϟvalue = 8
+            E2.ϟvalue = 8
 
-            expect(E1.isValueEqual(E2)).toBeTruthy()
+            expect(E1.ϟisValueEqual(E2)).toBeTruthy()
          })
       })
 
@@ -35,11 +35,11 @@ describe('FieldOptional', () => {
             const E1 = schema.create()
             const E2 = schema.create()
 
-            E1.value = 8
-            expect(E1.isValueEqual(E2)).toBeFalsy()
+            E1.ϟvalue = 8
+            expect(E1.ϟisValueEqual(E2)).toBeFalsy()
 
-            E1.value = 5
-            expect(E1.isValueEqual(E2)).toBeFalsy()
+            E1.ϟvalue = 5
+            expect(E1.ϟisValueEqual(E2)).toBeFalsy()
          })
 
          it('should return false if both fields are set to different values', () => {
@@ -47,10 +47,10 @@ describe('FieldOptional', () => {
             const E1 = schema.create()
             const E2 = schema.create()
 
-            E1.value = 8
-            E2.value = 9
+            E1.ϟvalue = 8
+            E2.ϟvalue = 9
 
-            expect(E1.isValueEqual(E2)).toBeFalsy()
+            expect(E1.ϟisValueEqual(E2)).toBeFalsy()
          })
       })
    })
@@ -63,9 +63,9 @@ describe('FieldOptional', () => {
 
          E1.setActive(false)
 
-         const patches = E1.generatePatches(E2)
+         const patches = E1.ϟgeneratePatches(E2)
 
-         E2.ܮapplyPatches(patches)
+         E2.ϟapplyPatches(patches)
 
          expect(E2.isActive).toBe(false)
       })
@@ -75,14 +75,14 @@ describe('FieldOptional', () => {
          const E1 = schema.create()
          const E2 = schema.create()
 
-         E1.value = 8
+         E1.ϟvalue = 8
 
-         const patches = E1.generatePatches(E2)
+         const patches = E1.ϟgeneratePatches(E2)
 
-         E2.ܮapplyPatches(patches)
+         E2.ϟapplyPatches(patches)
 
          expect(E2.isActive).toBe(true)
-         expect(E2.value).toBe(8)
+         expect(E2.ϟvalue).toBe(8)
       })
 
       it('should patch the child when active has the same value', () => {
@@ -90,14 +90,14 @@ describe('FieldOptional', () => {
          const E1 = schema.create()
          const E2 = schema.create()
 
-         E1.value = 8
-         E2.value = 5
+         E1.ϟvalue = 8
+         E2.ϟvalue = 5
 
-         const patches = E1.generatePatches(E2)
+         const patches = E1.ϟgeneratePatches(E2)
 
-         E2.ܮapplyPatches(patches)
+         E2.ϟapplyPatches(patches)
 
-         expect(E2.value).toBe(8)
+         expect(E2.ϟvalue).toBe(8)
       })
    })
 
@@ -105,49 +105,49 @@ describe('FieldOptional', () => {
       describe('without a serial', () => {
          describe('without a default value', () => {
             it('should create the field and use the empty serial without patching it', () => {
-               const patchSerial = vitest.spyOn(Field_optional.prototype, 'patchSerial')
+               const patchSerial = vitest.spyOn(Field_optional.prototype, 'ϟpatchSerial')
                const S = b.number_().optional()
                const E = S.create()
 
-               expect(E.serial).toBe(S.defaultSerial)
+               expect(E.ϟserial).toBe(S.defaultSerial)
                expect(patchSerial).not.toHaveBeenCalled()
             })
 
             it('should not be set', () => {
                const E = b.number_().optional_().create()
                expect(() => {
-                  console.log(E.value)
+                  console.log(E.ϟvalue)
                }).toThrowError('not set')
-               expect(E.isOwnSet).toBe(false)
-               expect(E.hasOwnErrors).toBe(true)
-               expect(E.ownErrors).toEqual([
+               expect(E.ϟisOwnSet).toBe(false)
+               expect(E.ϟhasOwnErrors).toBe(true)
+               expect(E.ϟownErrors).toEqual([
                   {
                      longerMessage: 'Field is not set (@optional)',
                      message: 'Field is not set',
                      path: '$',
                   },
                ])
-               expect(E.value_unchecked).toBeUndefined()
+               expect(E.ϟvalue_unchecked).toBeUndefined()
             })
          })
 
          describe('with a default value', () => {
             it('should create the field and use the default serial without patching it', () => {
-               const patchSerial = vitest.spyOn(Field_optional.prototype, 'patchSerial')
+               const patchSerial = vitest.spyOn(Field_optional.prototype, 'ϟpatchSerial')
                const S = b.number_().optional(true)
                const E = S.create()
 
-               expect(E.serial).toBe(S.defaultSerial)
+               expect(E.ϟserial).toBe(S.defaultSerial)
                expect(patchSerial).not.toHaveBeenCalled()
             })
 
             describe('when the target field has a default value', () => {
                it('should create the field and use the default serial without patching it', () => {
-                  const patchSerial = vitest.spyOn(Field_optional.prototype, 'patchSerial')
+                  const patchSerial = vitest.spyOn(Field_optional.prototype, 'ϟpatchSerial')
                   const S = b.number_({ default: 42 }).optional(true)
                   const E = S.create()
 
-                  expect(E.serial).toBe(S.defaultSerial)
+                  expect(E.ϟserial).toBe(S.defaultSerial)
                   expect(patchSerial).not.toHaveBeenCalled()
                })
             })
@@ -156,15 +156,15 @@ describe('FieldOptional', () => {
 
       describe('with a serial', () => {
          it('should create the field and use the serial without patching it', () => {
-            const patchSerial = vitest.spyOn(Field_optional.prototype, 'patchSerial')
+            const patchSerial = vitest.spyOn(Field_optional.prototype, 'ϟpatchSerial')
             const S = b.number_().optional()
-            const serial: Field_optional_serial<Field_number['…schema']> = {
+            const serial: Field_optional_serial<Field_number['Ҩschema']> = {
                $: 'optional',
                y: { $: 'number', value: 42 },
             }
             const E = S.create(serial)
 
-            expect(E.serial).toBe(serial)
+            expect(E.ϟserial).toBe(serial)
             expect(patchSerial).not.toHaveBeenCalled()
          })
 
@@ -176,7 +176,7 @@ describe('FieldOptional', () => {
                   const E = S.create(serial)
 
                   expect(E.isActive).toBe(true)
-                  expect(E.value_unchecked).toBe(0)
+                  expect(E.ϟvalue_unchecked).toBe(0)
                })
 
                it('should be inactive when the value is null', () => {
@@ -185,7 +185,7 @@ describe('FieldOptional', () => {
                   const E = S.create(serial)
 
                   expect(E.isActive).toBe(false)
-                  expect(E.value).toBeNull()
+                  expect(E.ϟvalue).toBeNull()
                })
             })
 
@@ -196,7 +196,7 @@ describe('FieldOptional', () => {
                   const E = S.create(serial)
 
                   expect(E.isActive).toBe(false)
-                  expect(E.value).toBeNull()
+                  expect(E.ϟvalue).toBeNull()
                })
 
                it('should keep the null value', () => {
@@ -205,7 +205,7 @@ describe('FieldOptional', () => {
                   const E = S.create(serial)
 
                   expect(E.isActive).toBe(false)
-                  expect(E.value).toBeNull()
+                  expect(E.ϟvalue).toBeNull()
                })
             })
 
@@ -214,22 +214,22 @@ describe('FieldOptional', () => {
                   const S = b.number_().optional_()
                   const serial = S.generateSerial(undefined)
                   const E = S.create(serial)
-                  expect(E.serial).toEqual({ $: 'optional' })
+                  expect(E.ϟserial).toEqual({ $: 'optional' })
 
                   expect(E.isActive).toBe(false)
                   expect(() => {
-                     console.log(E.value)
+                     console.log(E.ϟvalue)
                   }).toThrowError('not set')
-                  expect(E.isOwnSet).toBe(false)
-                  expect(E.hasOwnErrors).toBe(true)
-                  expect(E.ownErrors).toEqual([
+                  expect(E.ϟisOwnSet).toBe(false)
+                  expect(E.ϟhasOwnErrors).toBe(true)
+                  expect(E.ϟownErrors).toEqual([
                      {
                         longerMessage: 'Field is not set (@optional)',
                         message: 'Field is not set',
                         path: '$',
                      },
                   ])
-                  expect(E.value_unchecked).toBeUndefined()
+                  expect(E.ϟvalue_unchecked).toBeUndefined()
                })
 
                it('should keep the null value', () => {
@@ -238,7 +238,7 @@ describe('FieldOptional', () => {
                   const E = S.create(serial)
 
                   expect(E.isActive).toBe(false)
-                  expect(E.value).toBeNull()
+                  expect(E.ϟvalue).toBeNull()
                })
 
                it('should keep the value', () => {
@@ -254,10 +254,10 @@ describe('FieldOptional', () => {
                   expect(serial).toEqual({ $: 'optional', y: { $: 'number', value: 42 } })
 
                   const E = S.create(serial)
-                  console.log(`[🤠HHHAA] `, E.serial, serial)
-                  expect(E.serial).toEqual(serial)
+                  console.log(`[🤠HHHAA] `, E.ϟserial, serial)
+                  expect(E.ϟserial).toEqual(serial)
                   expect(E.isActive).toBe(true)
-                  expect(E.value).toBe(42)
+                  expect(E.ϟvalue).toBe(42)
                })
             })
          })

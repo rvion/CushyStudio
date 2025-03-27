@@ -26,7 +26,7 @@ export const DraftHeaderUI = obs(function DraftHeader({
    ...rest
 }: { draft: DraftL } & FrameProps) {
    const app = draft.appRef.item
-   const theme = cushy.preferences.theme.value
+   const theme = cushy.preferences.theme.ϟvalue
 
    return (
       <Frame
@@ -72,7 +72,7 @@ export const DraftHeaderUI = obs(function DraftHeader({
             <DraftIllustrationUI
                revealAppIllustrationOnHover
                draft={draft}
-               size={`${cushy.preferences.interface.value.inputHeight * 2.25}rem`}
+               size={`${cushy.preferences.interface.ϟvalue.inputHeight * 2.25}rem`}
                // size='3.69rem'
             />
             <div tw='flex flex-1 flex-col gap-2'>

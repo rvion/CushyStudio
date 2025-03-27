@@ -21,19 +21,19 @@ const S1 = b.fields({
    qux: b.string({ default: 'hello' }),
 })
 const root = S1.create()
-root.value.foo.test = ['a', 'b', 'c']
-root.value.foo.test2 = [1, 2, 3, 4]
-const foo = root._.foo
-const bar = root._.foo._.bar
-const baz = root._.foo._.baz
-const qux = root._.qux
-const test2nd = root._.foo._.test.items[1]!
+root.ϟvalue.foo.test = ['a', 'b', 'c']
+root.ϟvalue.foo.test2 = [1, 2, 3, 4]
+const foo = root.ϟfields.foo
+const bar = root.ϟfields.foo.ϟfields.bar
+const baz = root.ϟfields.foo.ϟfields.baz
+const qux = root.ϟfields.qux
+const test2nd = root.ϟfields.foo.ϟfields.test.items[1]!
 
-baz.updateFieldCustom((t) => ({ abcdefgh: true })) // makes @.custom.abcdefgh be true
+baz.ϟupdateFieldCustom((t) => ({ abcdefgh: true })) // makes @.custom.abcdefgh be true
 
 describe('SelectorCompiler Tests', () => {
    it('properly reduces stuff', () => {
-      expectJSON(root.value).toMatchObject({
+      expectJSON(root.ϟvalue).toMatchObject({
          foo: {
             bar: '33',
             baz: 42,
@@ -51,7 +51,7 @@ describe('SelectorCompiler Tests', () => {
             { type: 'collect' /* collectCode: '(this.map(v=>v.value).join("-"))' */ },
          ],
       })
-      expect(root.extractLastOrThrow(X)).toBe('33-a-b-c-hello')
-      expect(root.extractLastOrThrow('>@number=(this.reduce((r,a)=>r+a.value,0))')).toBe(52)
+      expect(root.ϟextractLastOrThrow(X)).toBe('33-a-b-c-hello')
+      expect(root.ϟextractLastOrThrow('>@number=(this.reduce((r,a)=>r+a.value,0))')).toBe(52)
    })
 })

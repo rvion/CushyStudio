@@ -4,11 +4,11 @@ import { InputNumberUI } from '../../input-number/InputNumberUI'
 
 export const WidgetNumberUI = obs(function WidgetNumberUI_(p: {
    field: Field_number
-   config?: Field_number['config']
+   config?: Field_number['ϟconfig']
 }) {
    const field = p.field
-   const value = field.value_or_zero
-   const finalConfig = p.config ? { ...field.config, ...p.config } : field.config
+   const value = field.ϟvalue_or_zero
+   const finalConfig = p.config ? { ...field.ϟconfig, ...p.config } : field.ϟconfig
    const mode = finalConfig.mode
    const step = finalConfig.step ?? (mode === 'int' ? 1 : 0.1)
 
@@ -25,9 +25,9 @@ export const WidgetNumberUI = obs(function WidgetNumberUI_(p: {
          suffix={finalConfig.suffix}
          text={finalConfig.text}
          onValueChange={(next) => {
-            field.value = next
+            field.ϟvalue = next
          }}
-         onBlur={() => field.ܒtouch()}
+         onBlur={() => field.ϟtouch()}
          forceSnap={finalConfig.forceSnap}
       />
    )

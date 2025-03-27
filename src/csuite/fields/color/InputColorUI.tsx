@@ -19,8 +19,8 @@ export const InputColorUI = obs(function InputColorUI_(p: {
    const value = p.getValue?.() ?? ''
    const isDirty = false // isBuffered && temporaryValue != null && temporaryValue !== value
 
-   const theme = cushy.preferences.theme.value
-   const interfacePref = cushy.preferences.interface.value
+   const theme = cushy.preferences.theme.ϟvalue
+   const interfacePref = cushy.preferences.interface.ϟvalue
 
    const visualHelper = (
       <Frame //

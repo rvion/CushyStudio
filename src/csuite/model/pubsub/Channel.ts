@@ -8,16 +8,16 @@ import { bang } from '../../utils/bang'
 export type ChannelOrChannelId<T> = Channel<T> | ChannelId
 export type ChannelId = string
 export interface Channel<T> {
-   ['…type']: T
+   ['Ҩtype']: T
 }
 
 export class Channel<T> {
    readFrom(field: Field): Maybe<T> {
-      return field.readChannel(this)
+      return field.ϟreadChannel(this)
    }
 
    getOrThrow(field: Field): T {
-      return bang(field.readChannel(this), 'Empty channel')
+      return bang(field.ϟreadChannel(this), 'Empty channel')
    }
 
    constructor(public id: ChannelId = nanoid()) {

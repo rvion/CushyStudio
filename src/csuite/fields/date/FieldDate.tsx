@@ -31,7 +31,7 @@ export type Field_date_value<VALUE> = VALUE
 export type Field_date_unchecked<VALUE> = Maybe<Field_date_value<VALUE>>
 
 // #region Serial
-type Field_date_serial = Field_date<unknown>['…serial']
+type Field_date_serial = Field_date<unknown>['Ҩserial']
 type Field_date_ownSerial = {
    $: 'date'
    value?: ISOString | null
@@ -39,15 +39,15 @@ type Field_date_ownSerial = {
 
 // #region Types
 export interface Field_date<VALUE> {
-   ['…type']: 'date'
-   ['…ownConfig']: Field_date_ownConfig<VALUE>
-   ['…ownSerial']: Field_date_ownSerial
-   ['…value']: Field_date_value<VALUE>
-   ['…setvalue']: Field_date_value<VALUE>
-   ['…unchecked']: Field_date_unchecked<VALUE>
-   ['…child']: never
-   ['…opts']: unknown
-   ['…ownPatch']: Patch<'date'>
+   ['Ҩtype']: 'date'
+   ['ҨownConfig']: Field_date_ownConfig<VALUE>
+   ['ҨownSerial']: Field_date_ownSerial
+   ['Ҩvalue']: Field_date_value<VALUE>
+   ['Ҩsetvalue']: Field_date_value<VALUE>
+   ['Ҩunchecked']: Field_date_unchecked<VALUE>
+   ['Ҩchild']: never
+   ['Ҩopts']: unknown
+   ['ҨownPatch']: Patch<'date'>
 }
 
 // #region State
@@ -55,7 +55,7 @@ export class Field_date<out VALUE> extends Field {
    // #region static
    static readonly type: 'date' = 'date'
    private static readonly unsetSerial: Field_date_serial = { $: 'date' }
-   static readonly codeForTypescriptValue = (config: Field_date<unknown>['…config']): string =>
+   static readonly codeForTypescriptValue = (config: Field_date<unknown>['Ҩconfig']): string =>
       config.codeForTypescriptValue ?? 'Date'
    // #region migration
    static override migrateSerial(serial: object): Field_date_serial | null {
@@ -81,9 +81,9 @@ export class Field_date<out VALUE> extends Field {
    }
 
    static generateSerial(
-      value: Maybe<Field_date<any>['…value']>,
-      config: Field_date<any>['…config'],
-   ): Field_date<any>['…serial'] {
+      value: Maybe<Field_date<any>['Ҩvalue']>,
+      config: Field_date<any>['Ҩconfig'],
+   ): Field_date<any>['Ҩserial'] {
       const defaultValue = typeof config.default === 'function' ? config.default() : config.default
       if (value == null && defaultValue == null) return this.unsetSerial
 
@@ -107,21 +107,21 @@ export class Field_date<out VALUE> extends Field {
    }
 
    // #region serial
-   protected setOwnSerial(next: Field_date_serial): void {
+   protected ϟsetOwnSerial(next: Field_date_serial): void {
       if (next.value === undefined) {
          const def = this.defaultValue
          if (def !== undefined)
             next = produce(next, (draft) => {
-               draft.value = def == null ? def : this.config.serialize(def)
+               draft.value = def == null ? def : this.ϟconfig.serialize(def)
             })
       }
 
-      this.ܮassignNewSerial(next)
+      this.ϟassignNewSerial(next)
 
-      const raw = this.serial.value
+      const raw = this.ϟserial.value
       let deserialized: Field_date_value<VALUE> | null | undefined = null
       try {
-         deserialized = raw === null || raw === undefined ? raw : this.config.deserialize(raw)
+         deserialized = raw === null || raw === undefined ? raw : this.ϟconfig.deserialize(raw)
          this.selectedValue_ = deserialized
       } catch (e) {
          this.selectedValue_ = null
@@ -131,34 +131,34 @@ export class Field_date<out VALUE> extends Field {
    }
 
    // #region Set/Unset
-   get isOwnSet(): boolean {
-      return this.serial.value !== undefined
+   get ϟisOwnSet(): boolean {
+      return this.ϟserial.value !== undefined
    }
 
    unset(): void {
-      this.patchSerial((draft) => {
+      this.ϟpatchSerial((draft) => {
          delete draft.value
       })
    }
 
    // #region value
-   get value(): Field_date_value<VALUE> {
-      return this.value_or_fail
+   get ϟvalue(): Field_date_value<VALUE> {
+      return this.ϟvalue_or_fail
    }
 
-   set value(next: Field_date_unchecked<VALUE> | Date) {
-      const nextValue = next instanceof Date ? this.config.dateToValue(next) : next
+   set ϟvalue(next: Field_date_unchecked<VALUE> | Date) {
+      const nextValue = next instanceof Date ? this.ϟconfig.dateToValue(next) : next
 
       this.selectedValue_ = nextValue
       this.stringValue_ = null
-      this.ܮrunInTransaction(() => {
-         this.patchSerial((draft) => {
-            draft.value = nextValue != null ? this.config.serialize(nextValue) : null
+      this.ϟrunInTransaction(() => {
+         this.ϟpatchSerial((draft) => {
+            draft.value = nextValue != null ? this.ϟconfig.serialize(nextValue) : null
          })
       })
    }
 
-   get value_or_fail(): Field_date_value<VALUE> {
+   get ϟvalue_or_fail(): Field_date_value<VALUE> {
       if (this.isValidSelectedValue) {
          return this.selectedValue as Field_date_value<VALUE>
       }
@@ -166,19 +166,19 @@ export class Field_date<out VALUE> extends Field {
       throw new Error('Field_date: value_or_fail called on invalid value')
    }
 
-   get value_or_zero(): Field_date_value<VALUE> {
-      if (this.isValidSelectedValue && this.value_unchecked != null) return this.value_unchecked
-      return this.config.dateToValue(new Date()) // ⚠️ zero value set to now ? Maybe new Date(0) would be saner
+   get ϟvalue_or_zero(): Field_date_value<VALUE> {
+      if (this.isValidSelectedValue && this.ϟvalue_unchecked != null) return this.ϟvalue_unchecked
+      return this.ϟconfig.dateToValue(new Date()) // ⚠️ zero value set to now ? Maybe new Date(0) would be saner
    }
 
-   get value_unchecked(): Field_date_unchecked<VALUE> {
+   get ϟvalue_unchecked(): Field_date_unchecked<VALUE> {
       return this.selectedValue
    }
 
-   override isValueEqual(other: Field): boolean {
+   override ϟisValueEqual(other: Field): boolean {
       if (!(other instanceof Field_date)) return false
 
-      return this.serial.value === other.serial.value
+      return this.ϟserial.value === other.ϟserial.value
    }
 
    public static readonly patchedSerialPaths: readonly string[] = Object.freeze(['value'])
@@ -199,51 +199,51 @@ export class Field_date<out VALUE> extends Field {
    }
 
    @computed get defaultValue(): Field_date_unchecked<VALUE> {
-      if (typeof this.config.default === 'function') {
-         return (this.config.default as () => VALUE | null | undefined)()
+      if (typeof this.ϟconfig.default === 'function') {
+         return (this.ϟconfig.default as () => VALUE | null | undefined)()
       }
 
-      return this.config.default
+      return this.ϟconfig.default
    }
 
    // #region format/parse
    public format(value: VALUE): string {
       return csuiteConfig.i18n.ui.date.format(
-         this.config.valueToDate(value),
-         this.config.time ? 'datetime' : 'date',
+         this.ϟconfig.valueToDate(value),
+         this.ϟconfig.time ? 'datetime' : 'date',
       )
    }
 
    public parse(value: string): Field_date_value<VALUE> {
-      return this.config.dateToValue(csuiteConfig.i18n.ui.date.parse(value))
+      return this.ϟconfig.dateToValue(csuiteConfig.i18n.ui.date.parse(value))
    }
 
    // #region validation
-   get ownConfigSpecificProblems(): Problem_Ext {
+   get ϟownConfigSpecificProblems(): Problem_Ext {
       const out: string[] = []
 
-      if ('default' in this.config) {
-         const def = this.config.default
+      if ('default' in this.ϟconfig) {
+         const def = this.ϟconfig.default
          if (def == null) out.push(csuiteConfig.i18n.err.field.defaultExplicitelySetToNullButFieldNotNullable)
       }
 
       return out
    }
 
-   get ownTypeSpecificProblems(): Problem_Ext {
+   get ϟownTypeSpecificProblems(): Problem_Ext {
       if (
          (this.stringValue_ != null && this.selectedValue == null) ||
          (this.selectedValue != null && !this.isValidSelectedValue)
       ) {
          return {
-            path: this.path,
+            path: this.ϟpath,
             severity: Severity.Error,
             message: csuiteConfig.i18n.err.date.invalid,
          }
       }
       if (this.selectedValue == null) {
          return {
-            path: this.path,
+            path: this.ϟpath,
             severity: Severity.Error,
             message: csuiteConfig.i18n.err.field.not_set,
          }
@@ -252,9 +252,9 @@ export class Field_date<out VALUE> extends Field {
       return null
    }
    // #region changes
-   @computed get hasChanges(): boolean {
-      const def = this.defaultValue == null ? null : this.config.serialize(this.defaultValue)
-      return this.serial.value != def
+   @computed get ϟhasChanges(): boolean {
+      const def = this.defaultValue == null ? null : this.ϟconfig.serialize(this.defaultValue)
+      return this.ϟserial.value != def
    }
 
    // #region misc
@@ -265,22 +265,22 @@ export class Field_date<out VALUE> extends Field {
          nextValue = !this.stringValue_ ? null : this.parse(this.stringValue_)
       } catch (e) {
          this.selectedValue_ = null
-         this.ܮrunInTransaction(() => {
-            this.patchSerial((draft) => {
+         this.ϟrunInTransaction(() => {
+            this.ϟpatchSerial((draft) => {
                draft.value = this.stringValue_ || null
             })
          })
          return
       }
 
-      this.value = nextValue as Field_date_value<VALUE>
+      this.ϟvalue = nextValue as Field_date_value<VALUE>
    }
 
    // #region SETTERS
-   override randomize(): void {
+   override ϟrandomize(): void {
       // pick a random date between +30 days and -30 days
       const max = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
       const min = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
-      this.value = new Date(min.getTime() + Math.random() * (max.getTime() - min.getTime()))
+      this.ϟvalue = new Date(min.getTime() + Math.random() * (max.getTime() - min.getTime()))
    }
 }

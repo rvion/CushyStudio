@@ -25,15 +25,15 @@ export const DisplacementUI2 = obs(function DisplacementUI2_(p: { uist: Displace
       uist.p.image,
    ])
 
-   const conf = st.displacementConf.fields
+   const conf = st.displacementConf.ϟfields
    return (
       <>
-         <ambientLight color={conf.ambientLightColor.value} intensity={conf.ambientLightIntensity.value} />
+         <ambientLight color={conf.ambientLightColor.ϟvalue} intensity={conf.ambientLightIntensity.ϟvalue} />
          <pointLight position={[10, 10, 10]} />
 
-         {conf.ground.value && <Ground3D />}
+         {conf.ground.ϟvalue && <Ground3D />}
 
-         {conf.skyBox.value && <SkyBox3D />}
+         {conf.skyBox.ϟvalue && <SkyBox3D />}
 
          <mesh>
             <planeGeometry attach='geometry' args={[1, 1, 800, 800]}></planeGeometry>
@@ -42,10 +42,10 @@ export const DisplacementUI2 = obs(function DisplacementUI2_(p: { uist: Displace
                ref={uist.materialRef}
                transparent={true}
                displacementMap={depthMap}
-               displacementScale={conf.displacementScale.value}
+               displacementScale={conf.displacementScale.ϟvalue}
                normalMap={normalMap}
-               metalness={conf.metalness.value}
-               roughness={conf.roughness.value}
+               metalness={conf.metalness.ϟvalue}
+               roughness={conf.roughness.ϟvalue}
                userData={{
                   cutout: { value: conf.cutout },
                   removeBackground: { value: conf.removeBackground },
@@ -65,7 +65,7 @@ export const DisplacementUI2 = obs(function DisplacementUI2_(p: { uist: Displace
             </points>
             */}
 
-         {conf.camera.value.orbit ? (
+         {conf.camera.ϟvalue.orbit ? (
             <OrbitControls
                // change start position
                // getPolarAngle={() => p.widget.state.val.elevation / (180 / Math.PI)}

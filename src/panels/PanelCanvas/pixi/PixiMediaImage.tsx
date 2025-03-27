@@ -42,24 +42,23 @@ let currentlyDragged: {
 class XXX {
    constructor(
       public i: MediaImageL,
-      public placement: SimpleShape$['$field'],
+      public placement: SimpleShape$['Ҩfield'],
       public uc: UnifiedCanvas,
    ) {
       makeAutoObservable(this)
    }
    get xInWorld(): number {
-      return this.placement.X.value
+      return this.placement.x.ϟvalue
    }
 
    /** y position relative the the whole view origin */
    get yInWorld(): number {
-      return this.placement.Y.value
+      return this.placement.y.ϟvalue
    }
 
    onDragStart: FederatedEventHandler<FederatedPointerEvent> = (event: FederatedPointerEvent): void => {
       if (event.button !== 0) return
       // console.log(`[💩] button is`, event.button, event.buttons)
-      // eslint-disable-next-line consistent-this
       currentlyDragged = {
          self: this,
          startXInWorld: this.xInWorld,
@@ -99,20 +98,20 @@ class XXX {
 
       // Respect snap to grid global nullable value
       const snapToGrid = this.uc.snapToGrid ? this.uc.snapSize : null
-      const snappedX = snapToGrid ? Math.round(nextXInWorld / snapToGrid) * snapToGrid : nextXInWorld
-      const snappedY = snapToGrid ? Math.round(nextYInWorld / snapToGrid) * snapToGrid : nextYInWorld
+      const snappedX = snapToGrid != null ? Math.round(nextXInWorld / snapToGrid) * snapToGrid : nextXInWorld
+      const snappedY = snapToGrid != null ? Math.round(nextYInWorld / snapToGrid) * snapToGrid : nextYInWorld
 
-      this.placement.ܮrunInTransaction(() => {
-         this.placement.X.value = snappedX
-         this.placement.Y.value = snappedY
+      this.placement.ϟrunInTransaction(() => {
+         this.placement.x.ϟvalue = snappedX
+         this.placement.y.ϟvalue = snappedY
       })
    }
 }
 
 type DraggableSpriteProps = {
-   placement: SimpleShape$['$field']
+   placement: SimpleShape$['Ҩfield']
    mediaImage: MediaImageL
-   layer?: Layer$['$field']
+   layer?: Layer$['Ҩfield']
    onClick?: () => void
    alpha?: number
 }
@@ -122,7 +121,7 @@ extend({ Sprite })
 const useAsset = (relPath: string = 'https://pixijs.com/assets/bunny.png'): Texture<TextureSource<any>> => {
    const [texture, setTexture] = useState(Texture.EMPTY)
    useEffect(() => {
-      Assets.load(relPath).then((result) => void setTexture(result))
+      void Assets.load(relPath).then((result) => void setTexture(result))
    })
    return texture
 }
@@ -141,8 +140,8 @@ export const PixiMediaImage = obs(function DraggableSpriteUI_(p: DraggableSprite
       <>
          <pixiSprite //
             interactive
-            width={p.placement.Width.value || mediaImage.width}
-            height={p.placement.Height.value || mediaImage.height}
+            width={p.placement.width.ϟvalue || mediaImage.width}
+            height={p.placement.height.ϟvalue || mediaImage.height}
             alpha={p.alpha}
             key={mediaImage.id}
             onClick={p.onClick}
@@ -151,8 +150,8 @@ export const PixiMediaImage = obs(function DraggableSpriteUI_(p: DraggableSprite
             onPointerUp={xxx.onDragEnd}
             onPointerUpOutside={xxx.onDragEnd}
             onPointerMove={xxx.onDragMove}
-            x={xxx.placement.X.value}
-            y={xxx.placement.Y.value}
+            x={xxx.placement.x.ϟvalue}
+            y={xxx.placement.y.ϟvalue}
             texture={asset}
          />
 

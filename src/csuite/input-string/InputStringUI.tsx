@@ -100,8 +100,8 @@ export const InputStringUI = obs(function WidgetStringUI_(p: InputStringProps) {
    let inputTailwind: string | ClassLike[] | undefined
    let visualHelper: ReactElement<any, any> | undefined
 
-   const theme = cushy.preferences.theme.value
-   const interfacePref = cushy.preferences.interface.value
+   const theme = cushy.preferences.theme.ϟvalue
+   const interfacePref = cushy.preferences.interface.ϟvalue
 
    switch (p.type) {
       case 'color':

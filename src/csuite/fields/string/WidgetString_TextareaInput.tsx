@@ -8,9 +8,9 @@ export const WidgetString_TextareaInput = obs(function WidgetString_TextareaBody
    readonly?: boolean
 }) {
    const field = p.field
-   if (p.readonly) return <pre>{field.value_or_zero}</pre>
+   if (p.readonly) return <pre>{field.ϟvalue_or_zero}</pre>
 
-   const theme = cushy.preferences.theme.value
+   const theme = cushy.preferences.theme.ϟvalue
    return (
       <Frame base={theme.global.contrast} expand>
          {/* <pre>{JSON.stringify(Object.keys(p))}</pre> */}
@@ -18,16 +18,16 @@ export const WidgetString_TextareaInput = obs(function WidgetString_TextareaBody
             style={{
                /* ...p.widget.config.style, */
                lineHeight: '1.3rem',
-               resize: p.field.config.resize ?? 'both',
+               resize: p.field.ϟconfig.resize ?? 'both',
             }}
             tw='csuite-input w-full !bg-transparent p-2'
-            placeholder={field.config.placeHolder}
+            placeholder={field.ϟconfig.placeHolder}
             rows={3}
-            value={field.value_or_zero}
+            value={field.ϟvalue_or_zero}
             onChange={(ev) => {
-               field.value = ev.target.value
+               field.ϟvalue = ev.target.value
             }}
-            onBlur={() => field.ܒtouch()}
+            onBlur={() => field.ϟtouch()}
          />
       </Frame>
    )

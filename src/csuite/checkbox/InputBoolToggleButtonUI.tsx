@@ -23,7 +23,7 @@ export const ToggleButtonUI = obs(function ToggleButtonUI_(
    const isActive = p.value ?? false
    // const chroma = getInputBoolChroma(isActive)
    // const border = p.border ?? 10
-   const theme = cushy.preferences.theme.value
+   const theme = cushy.preferences.theme.ϟvalue
    const dropShadow: SimpleDropShadow | null = p.dropShadow ?? theme.global.shadow
    const activeColor = run_tint(theme.global.active)
    return (
@@ -83,7 +83,7 @@ export const ToggleButtonUI = obs(function ToggleButtonUI_(
          //         : { inset: true, y: -3, blur: 5, spread: 0, color: 5 }
          // }
       >
-         {(p.showToggleButtonBox ?? cushy.preferences.interface.value.widget.showToggleButtonBox) &&
+         {(p.showToggleButtonBox ?? cushy.preferences.interface.ϟvalue.widget.showToggleButtonBox) &&
             p.mode != null && <CheckboxAndRadioIcon disabled isActive={isActive} mode={p.mode} />}
          {/* 2024-06-07 rvion: make sure long label remain legible even on low width
                 - I removed the "line-clamp-1" from the paragraph below

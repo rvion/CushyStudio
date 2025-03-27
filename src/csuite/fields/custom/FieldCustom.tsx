@@ -18,7 +18,7 @@ export type CustomWidgetProps<T> = {
    extra: UIKit
 }
 
-// #region ['…config']
+// #region ['Ҩconfig']
 export type Field_custom_ownConfig<T> = {
    defaultValue: () => T
    subTree?: () => CSchema
@@ -31,34 +31,34 @@ export type Field_custom_ownSerial<T> = {
    value?: T
 }
 
-// #region ['…value']
+// #region ['Ҩvalue']
 export type Field_custom_value<T> = T
 
 // #region $Types
 export interface Field_custom<T> {
-   ['…type']: 'custom'
-   ['…ownConfig']: Field_custom_ownConfig<T>
-   ['…ownSerial']: Field_custom_ownSerial<T>
-   ['…value']: Field_custom_value<T>
-   ['…unchecked']: Field_custom_value<T> | undefined
-   $field: Field_custom<T>
-   ['…child']: never
+   ['Ҩtype']: 'custom'
+   ['ҨownConfig']: Field_custom_ownConfig<T>
+   ['ҨownSerial']: Field_custom_ownSerial<T>
+   ['Ҩvalue']: Field_custom_value<T>
+   ['Ҩunchecked']: Field_custom_value<T> | undefined
+   Ҩfield: Field_custom<T>
+   ['Ҩchild']: never
 }
 
 export class Field_custom<T> extends Field {
    static readonly type: 'custom' = 'custom'
-   static readonly unsetSerial: Field_custom<any>['…serial'] = { $: 'custom' }
+   static readonly unsetSerial: Field_custom<any>['Ҩserial'] = { $: 'custom' }
    static generateSerial(
-      value: Maybe<Field_custom<any>['…value']>,
-      config: Field_custom<any>['…config'],
-   ): Field_custom<any>['…serial'] {
+      value: Maybe<Field_custom<any>['Ҩvalue']>,
+      config: Field_custom<any>['Ҩconfig'],
+   ): Field_custom<any>['Ҩserial'] {
       if (value == null && config.defaultValue == null) return this.unsetSerial
       const finalValue = value != null ? value : config.defaultValue()
       return { $: 'custom', value: finalValue }
    }
    static migrateSerial(): undefined {}
    public static readonly patchedSerialPaths: readonly string[] = Object.freeze(['val'])
-   static codeForTypescriptValue(config: Field_custom<any>['…config']): string {
+   static codeForTypescriptValue(config: Field_custom<any>['Ҩconfig']): string {
       return `unknown /* ${config.Component.name} */`
    }
 
@@ -69,85 +69,85 @@ export class Field_custom<T> extends Field {
       parent: Field | null,
       schema: CSchema<Field_custom<T>>,
       initialMountKey: string,
-      serial?: Field_custom<T>['…serial'],
+      serial?: Field_custom<T>['Ҩserial'],
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
       this.init(serial)
    }
    // #region serial
-   get isOwnSet(): boolean {
-      return this.serial.value !== undefined
+   get ϟisOwnSet(): boolean {
+      return this.ϟserial.value !== undefined
    }
 
-   protected setOwnSerial(next: Field_custom<T>['…serial']): void {
-      if (!(this.serial.value === undefined)) {
+   protected ϟsetOwnSerial(next: Field_custom<T>['Ҩserial']): void {
+      if (!(this.ϟserial.value === undefined)) {
          const def = this.defaultValue
          if (def !== undefined) {
             next = produce(next, (draft) => void ((draft.value = def as any) /* 🔴 */))
          }
       }
 
-      this.ܮassignNewSerial(next)
+      this.ϟassignNewSerial(next)
    }
 
    // #region UI
    DefaultHeaderUI = WidgetCustom_HeaderUI
    DefaultBodyUI: undefined = undefined
 
-   get Component(): Field_custom<T>['…config']['Component'] {
-      return this.config.Component
+   get Component(): Field_custom<T>['Ҩconfig']['Component'] {
+      return this.ϟconfig.Component
    }
 
    // #region Validation
-   get ownConfigSpecificProblems(): Problem_Ext {
+   get ϟownConfigSpecificProblems(): Problem_Ext {
       return null
    }
 
-   get ownTypeSpecificProblems(): Problem_Ext {
+   get ϟownTypeSpecificProblems(): Problem_Ext {
       return null
    }
 
    // #region Changes
    @computed get defaultValue(): T {
-      return this.config.defaultValue()
+      return this.ϟconfig.defaultValue()
    }
 
-   get hasChanges(): boolean {
-      return this.value !== this.defaultValue
+   get ϟhasChanges(): boolean {
+      return this.ϟvalue !== this.defaultValue
    }
 
-   public isValueEqual(other: Field): boolean {
+   public ϟisValueEqual(other: Field): boolean {
       if (other === this) return true
       if (!(other instanceof Field_custom)) return false
       // 🔴 naive
-      return stableStringify(other.serial) === stableStringify(this.serial)
+      return stableStringify(other.ϟserial) === stableStringify(this.ϟserial)
    }
 
    // #region Value
    /** never mutate this field manually, only access to .state */
-   get value(): Field_custom_value<T> {
-      return this.serial.value ?? this.defaultValue
+   get ϟvalue(): Field_custom_value<T> {
+      return this.ϟserial.value ?? this.defaultValue
    }
 
-   set value(next: Field_custom_value<T>) {
-      if (this.serial.value === next) return
-      this.ܮrunInTransaction(() => (this.serial.value = next))
+   set ϟvalue(next: Field_custom_value<T>) {
+      if (this.ϟserial.value === next) return
+      this.ϟrunInTransaction(() => (this.ϟserial.value = next))
    }
 
-   get value_or_fail(): Field_custom_value<T> {
-      if (this.serial.value === undefined) throw new Error('Field_custom.value_or_fail: ❌ not set')
-      return this.serial.value
+   get ϟvalue_or_fail(): Field_custom_value<T> {
+      if (this.ϟserial.value === undefined) throw new Error('Field_custom.value_or_fail: ❌ not set')
+      return this.ϟserial.value
    }
 
    /* there is no zero value */
-   get value_or_zero(): Field_custom_value<T> {
-      const valOrZero = this.serial.value ?? this.defaultValue
+   get ϟvalue_or_zero(): Field_custom_value<T> {
+      const valOrZero = this.ϟserial.value ?? this.defaultValue
       if (valOrZero) throw new Error('Field_custom.value_or_zero: ❌ both not set, and without default')
       return valOrZero
    }
 
-   get value_unchecked(): Field_custom_value<T> | undefined {
-      return this.serial.value
+   get ϟvalue_unchecked(): Field_custom_value<T> | undefined {
+      return this.ϟserial.value
    }
 }
 

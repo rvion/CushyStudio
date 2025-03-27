@@ -233,21 +233,21 @@ export class FieldSelector {
       nestedUnder?: Field,
    ) {
       let candidates: Field[] = Array.isArray(from) ? from : [from]
-      let steps = mode === SelectorMode.MATCH ? steps_.toReversed() : steps_
+      const steps = mode === SelectorMode.MATCH ? steps_.toReversed() : steps_
       const values: any[] = []
       for (const step of steps) {
          if (this.isDebugEnabled) {
             const stepIndex = steps.indexOf(step)
             const start = steps.slice(0, stepIndex)
             const startStr = FieldSelector.renderSteps(start)
-            console.log(`[🧠] `, startStr, [candidates.map((c) => c.path)])
+            console.log(`[🧠] `, startStr, [candidates.map((c) => c.ϟpath)])
          }
          // early abort
          if (candidates.length === 0) return { fields: [], values: values }
 
          // mount
          if (step.type === 'mount') {
-            candidates = candidates.filter((node) => node.mountKey === step.key)
+            candidates = candidates.filter((node) => node.ϟmountKey === step.key)
          }
 
          // dbg
@@ -258,7 +258,7 @@ export class FieldSelector {
          // filterType
          else if (step.type === 'filterType') {
             candidates = candidates.filter(
-               (node) => node.type === (step.fieldType === 'str' ? 'str' : step.fieldType),
+               (node) => node.ϟtype === (step.fieldType === 'str' ? 'str' : step.fieldType),
             )
          }
 
@@ -277,30 +277,30 @@ export class FieldSelector {
 
          // root
          else if (step.type === 'root') {
-            candidates = candidates.filter((node) => node.parent == null)
+            candidates = candidates.filter((node) => node.ϟparent == null)
          }
 
          // nesting
          else if (step.type === 'nesting') {
             if (nestedUnder == null) throw new Error(`No nestedUnder provided for nesting filter`)
-            candidates = candidates.filter((c) => c._uid === nestedUnder?._uid)
+            candidates = candidates.filter((c) => c.ϟuid === nestedUnder?.ϟuid)
          }
 
          // HasID
          else if (step.type === 'hasId') {
-            candidates = candidates.filter((c) => c._uid === step.id)
+            candidates = candidates.filter((c) => c.ϟuid === step.id)
          }
 
          // HasTag
          else if (step.type === 'hasTag') {
-            candidates = candidates.filter((c) => c.config.tags?.includes(step.tag) ?? false)
+            candidates = candidates.filter((c) => c.ϟconfig.tags?.includes(step.tag) ?? false)
          }
 
          // has
          else if (step.type === 'has') {
             candidates = candidates.filter((node) => {
                const subSelector = FieldSelector.from({ steps: step.steps })
-               const res = node.selectFirstOrNull(subSelector)
+               const res = node.ϟselectFirstOrNull(subSelector)
                return res != null
             })
          }
@@ -310,7 +310,7 @@ export class FieldSelector {
             // throw new Error('❌ not is not implemented')
             candidates = candidates.filter((node) => {
                const subSelector = FieldSelector.from({ steps: step.steps })
-               const res = node.selectFirstOrNull(subSelector)
+               const res = node.ϟselectFirstOrNull(subSelector)
                return res == null
             })
          }
@@ -334,10 +334,10 @@ export class FieldSelector {
          else if (step.type === 'index') {
             if (mode === SelectorMode.MATCH) {
                candidates = candidates
-                  .filter((t) => t.parent?.childrenActive.at(step.index) === t)
-                  .map((t) => t.parent!)
+                  .filter((t) => t.ϟparent?.ϟchildrenActive.at(step.index) === t)
+                  .map((t) => t.ϟparent!)
             } else {
-               candidates = candidates.map((c) => c.childrenActive.at(step.index)).filter(Boolean) as Field[]
+               candidates = candidates.map((c) => c.ϟchildrenActive.at(step.index)).filter(Boolean) as Field[]
             }
          }
 
@@ -400,29 +400,29 @@ export class FieldSelector {
       const nextNodes: Set<Field> = new Set()
       const addChildNode = (node: Field | null): void => {
          if (node == null) return
-         const skip_ = this.axisSkips[node.type]
+         const skip_ = this.axisSkips[node.ϟtype]
          if (skip_ != null) node = skip_(node)
          nextNodes.add(node)
       }
       const addParentNode = (node: Field | null): void => {
          if (node == null) return
-         const skip_ = this.axisSkips[node.type]
-         if (skip_ != null) node = node.parent
+         const skip_ = this.axisSkips[node.ϟtype]
+         if (skip_ != null) node = node.ϟparent
          if (node == null) return
          nextNodes.add(node)
       }
       for (const at of candidates) {
          if (mode === SelectorMode.MATCH) {
-            if (step.axis === '.') addParentNode(___?.get(at) ?? at.parent)
-            else if (step.axis === '^') at.childrenAll.forEach(addChildNode)
-            else if (step.axis === '>') at.ancestors.forEach(addParentNode)
-            else if (step.axis === '<') at.descendants.forEach(addChildNode)
+            if (step.axis === '.') addParentNode(___?.get(at) ?? at.ϟparent)
+            else if (step.axis === '^') at.ϟchildrenAll.forEach(addChildNode)
+            else if (step.axis === '>') at.ϟancestors.forEach(addParentNode)
+            else if (step.axis === '<') at.ϟdescendants.forEach(addChildNode)
             else throw new Error(`Invalid axis "${step.axis}"`)
          } else {
-            if (step.axis === '.') at.childrenAll.forEach(addChildNode)
-            else if (step.axis === '^') addParentNode(___?.get(at) ?? at.parent)
-            else if (step.axis === '>') at.descendants.forEach(addChildNode)
-            else if (step.axis === '<') at.ancestors.forEach(addParentNode)
+            if (step.axis === '.') at.ϟchildrenAll.forEach(addChildNode)
+            else if (step.axis === '^') addParentNode(___?.get(at) ?? at.ϟparent)
+            else if (step.axis === '>') at.ϟdescendants.forEach(addChildNode)
+            else if (step.axis === '<') at.ϟancestors.forEach(addParentNode)
             else throw new Error(`Invalid axis "${step.axis}"`)
          }
       }

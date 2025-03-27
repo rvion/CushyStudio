@@ -40,10 +40,10 @@ export const WidgetSelectMany_ListUI = obs(function WidgetSelectMany_ListUI_<
                   text={c.label ?? makeLabelFromPrimitiveValue(c.id)}
                   onValueChange={(value) => {
                      if (value != isSelected) field.toggleId(c.id)
-                     field.ܒtouch()
+                     field.ϟtouch()
                   }}
-                  onBlur={() => field.ܒtouch()}
-                  toggleGroup={p.field._uid}
+                  onBlur={() => field.ϟtouch()}
+                  toggleGroup={p.field.ϟuid}
                />
             )
          })}

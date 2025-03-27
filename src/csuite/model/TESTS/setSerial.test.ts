@@ -7,8 +7,8 @@ describe('setSerial', () => {
    it('works with valid serial', () => {
       const S1 = b.string({ default: '🔵A' })
       const E1 = S1.create()
-      E1.setSerial({ $: 'str', value: '🟢B' })
-      expect(E1.value).toBe('🟢B')
+      E1.ϟsetSerial({ $: 'str', value: '🟢B' })
+      expect(E1.ϟvalue).toBe('🟢B')
    })
 
    it('works with nested fields', () => {
@@ -21,7 +21,7 @@ describe('setSerial', () => {
          }),
       })
       const E1 = S1.create()
-      E1.setSerial({
+      E1.ϟsetSerial({
          $: 'group',
          values_: {
             a: {
@@ -44,7 +44,7 @@ describe('setSerial', () => {
             },
          },
       })
-      expect(E1.value.a.b.c).toBe('🟢')
-      expect(E1.value.a.b.d).toBe(2)
+      expect(E1.ϟvalue.a.b.c).toBe('🟢')
+      expect(E1.ϟvalue.a.b.d).toBe(2)
    })
 })

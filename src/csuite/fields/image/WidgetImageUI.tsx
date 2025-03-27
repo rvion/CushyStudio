@@ -21,11 +21,11 @@ export const WidgetSelectImageUI = obs(function WidgetSelectImageUI_(p: {
 }) {
    const field = p.field
    const [dropStyle, dropRef__] = useImageDrop(cushy, (imageL) => {
-      field.value = imageL
+      field.ϟvalue = imageL
    })
    const dropRef = useDragDropRefForReact19(dropRef__)
 
-   const image = field.value_unchecked
+   const image = field.ϟvalue_unchecked
    // ⏸️ const suggestionsRaw = p.field.config.assetSuggested
    // ⏸️ const suggestions: RelativePath[] =
    // ⏸️     suggestionsRaw == null ? [] : Array.isArray(suggestionsRaw) ? suggestionsRaw : [suggestionsRaw]
@@ -63,7 +63,7 @@ export const WidgetSelectImageUI = obs(function WidgetSelectImageUI_(p: {
                                     const filename = `${imageID}.png`
                                     const fpath = new FPath(`outputs/imported/${filename}`)
                                     const out = await createMediaImage_fromBlobObject(blob, fpath)
-                                    field.value = out
+                                    field.ϟvalue = out
                                  }
                               }
                            }
@@ -92,7 +92,7 @@ export const WidgetSelectImageUI = obs(function WidgetSelectImageUI_(p: {
                   content={(p) => (
                      <PanelGalleryUI
                         onClick={(img) => {
-                           field.value = img
+                           field.ϟvalue = img
                            p.reveal.close()
                         }}
                      />
@@ -100,12 +100,12 @@ export const WidgetSelectImageUI = obs(function WidgetSelectImageUI_(p: {
                />
                <SpacerUI />
                <Button //
-                  disabled={field.value == cushy.defaultImage}
+                  disabled={field.ϟvalue == cushy.defaultImage}
                   tooltip='reset'
                   square
                   subtle
                   icon={IKONS.mdiRestore}
-                  onClick={() => (field.value = cushy.defaultImage)}
+                  onClick={() => (field.ϟvalue = cushy.defaultImage)}
                />
             </Frame>
          }

@@ -10,7 +10,7 @@ export const WidgetSelectManyUI = obs(function WidgetSelectManyUI_<VALUE, KEY ex
    field: Field_selectMany<VALUE, KEY>
 }) {
    const field = p.field
-   const appearance: SelectManyAppearance = field.config.appearance ?? 'tab'
+   const appearance: SelectManyAppearance = field.ϟconfig.appearance ?? 'tab'
    if (appearance === 'tab') return <WidgetSelectMany_TabUI field={field} />
    if (appearance === 'select') return <WidgetSelectMany_SelectUI field={field} />
    if (appearance === 'list') return <WidgetSelectMany_ListUI field={field} />

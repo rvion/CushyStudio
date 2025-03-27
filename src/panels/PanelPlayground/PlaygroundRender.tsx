@@ -42,11 +42,11 @@ export const PlaygroundRenderUI = obs(function PlaygroundRender(p: NO_PROPS) {
             ]}
          />
          <div className='flex flex-wrap gap-1 mt-1'>
-            <x.Sub1.UI //
-               rules={[rule([x.Sub1.Y, { config: { max: 30, min: 0 } }])]}
+            <x.sub1.UI //
+               rules={[rule([x.sub1.y, { config: { max: 30, min: 0 } }])]}
                classNameForShell='grow'
             />
-            <x.Sub2.UI
+            <x.sub2.UI
                classNameForShell='grow'
                Decoration={uy.wrappers.ColoredPadding.with({ bgcolor: '#126e2d4d' })}
             />

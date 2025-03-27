@@ -71,7 +71,7 @@ export class DanbooruTags {
 
    private async load(): Promise<void> {
       const filePaths = []
-      const enabledTags = cushy.preferences.system.value.tags
+      const enabledTags = cushy.preferences.system.ϟvalue.tags
 
       if (enabledTags.danbooru) filePaths.push('completions/danbooru.csv')
       if (enabledTags.danbooruNSFW) filePaths.push('completions/danbooru_nsfw.csv')

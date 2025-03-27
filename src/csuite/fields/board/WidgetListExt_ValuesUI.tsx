@@ -8,23 +8,23 @@ export const WidgetListExt_ValuesUI = obs(function WidgetListExtValuesUI_<T exte
    field: Field_board<T>
 }) {
    const listExt = p.field
-   const { items } = listExt.fields
-   const values = listExt.fields.items.childrenAll
+   const { items } = listExt.ϟfields
+   const values = listExt.ϟfields.items.ϟchildrenAll
    const len = values.length
    const indexWidth = len < 10 ? 1 : len < 100 ? 2 : 3
-   const min = items.config.min
+   const min = items.ϟconfig.min
    return (
       <div tw='flex flex-col gap-1'>
          {values.map((sub2, ix) => {
-            const sub = sub2.fields
+            const sub = sub2.ϟfields
             const subWidget = sub.value
             const shape = sub.shape
             return (
-               <div key={subWidget._uid} tw='flex items-start'>
+               <div key={subWidget.ϟuid} tw='flex items-start'>
                   <div style={{ width: `${indexWidth}rem` }}>{ix}</div>
                   <input
-                     value={shape.value.fill}
-                     onChange={(ev) => (shape.value.fill = ev.target.value)}
+                     value={shape.ϟvalue.fill}
+                     onChange={(ev) => (shape.ϟvalue.fill = ev.target.value)}
                      type='color'
                      tw='w-7'
                   ></input>
@@ -32,9 +32,9 @@ export const WidgetListExt_ValuesUI = obs(function WidgetListExtValuesUI_<T exte
                      style={{ width: `${indexWidth}rem` }}
                      look='subtle'
                      size='sm'
-                     onClick={() => subWidget.setCollapsed(!Boolean(subWidget.serial.collapsed))}
+                     onClick={() => subWidget.ϟsetCollapsed(!Boolean(subWidget.ϟserial.collapsed))}
                   >
-                     {subWidget.serial.collapsed ? '▸' : '▿'}
+                     {subWidget.ϟserial.collapsed ? '▸' : '▿'}
                   </Button>
                   <subWidget.UI />
                   <shape.UI />

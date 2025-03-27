@@ -6,13 +6,13 @@ import { Frame } from '../../../csuite/frame/Frame'
 
 export const UCMaskMenuUI = obs(function UCMaskMenuUI_(p: {
    //
-   mask: Mask$['$field']
+   mask: Mask$['Ҩfield']
    index: number
 }) {
-   const inputHeight = cushy.preferences.interface.value.inputHeight
-   const isVisible: boolean = p.mask.Visible.value
-   const imgField = p.mask.Image
-   const image = imgField?.value_or_zero
+   const inputHeight = cushy.preferences.interface.ϟvalue.inputHeight
+   const isVisible: boolean = p.mask.visible.ϟvalue
+   const imgField = p.mask.image
+   const image = imgField?.ϟvalue_or_zero
 
    // TEMP
    // Do not use interface.value.inputHeight in the future. Have a separate option for layer size?
@@ -48,25 +48,25 @@ export const UCMaskMenuUI = obs(function UCMaskMenuUI_(p: {
          {/*  */}
          <div tw='flex w-full flex-col'>
             <div tw={['flex flex-grow gap-2']} style={{ height: `${inputHeight}rem` }}>
-               <p.mask.Name.UI Shell={ShellInputOnly} />
+               <p.mask.name.UI Shell={ShellInputOnly} />
             </div>
             {/* <div tw={['flex flex-grow gap-2']} style={{ height: `${inputHeight}rem` }}></div> */}
             <div tw={['flex flex-grow']} style={{ height: `${inputHeight}rem` }}>
                <Button //
                   // base={{ hue: 250, chroma: 0.1, contrast: 0.5 }}
-                  onClick={() => p.mask.Visible.toggle()}
+                  onClick={() => p.mask.visible.toggle()}
                   icon={IKONS.mdiBrush}
                />
 
                {/* <SpacerUI /> */}
                <Button
-                  onClick={() => p.mask.disableSelfWithinParent()}
+                  onClick={() => p.mask.ϟdisableSelfWithinParent()}
                   icon={IKONS.mdiDelete}
                   borderless
                   subtle
                />
                <Button
-                  onClick={() => p.mask.Visible.toggle()}
+                  onClick={() => p.mask.visible.toggle()}
                   icon={isVisible ? IKONS.mdiEye : IKONS.mdiEyeClosed}
                   borderless
                   subtle

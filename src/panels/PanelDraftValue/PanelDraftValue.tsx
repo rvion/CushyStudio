@@ -17,5 +17,5 @@ export type PanelDraftValueProps = {
 export const PanelDraftValueUI = obs(function PanelDraftValueUI_(p: PanelDraftValueProps) {
    const draft = typeof p.draftID === 'string' ? cushy.db.draft.get(p.draftID) : p.draftID
    if (draft == null) return <>❌ draft with id "{p.draftID}" not found</>
-   return <JsonViewUI value={draft.form?.value} />
+   return <JsonViewUI value={draft.form?.ϟvalue} />
 })

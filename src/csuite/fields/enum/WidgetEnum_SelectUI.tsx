@@ -6,10 +6,10 @@ import { EnumSelectorUI } from './EnumSelectorUI'
 
 export const WidgetEnum_SelectUI = obs(function WidgetEnum_SelectUI_(p: { field: Field_enum<any> }) {
    const field = p.field
-   const slotName = field.config.slotName
+   const slotName = field.ϟconfig.slotName
    const clearable = useMemo(
-      () => (field.canBeToggledWithinParent ? (): void => field.disableSelfWithinParent() : undefined),
-      [field.canBeToggledWithinParent],
+      () => (field.ϟcanBeToggledWithinParent ? (): void => field.ϟdisableSelfWithinParent() : undefined),
+      [field.ϟcanBeToggledWithinParent],
    )
    return (
       <EnumSelectorUI
@@ -18,7 +18,7 @@ export const WidgetEnum_SelectUI = obs(function WidgetEnum_SelectUI_(p: { field:
          clearable={clearable}
          onChange={(e) => {
             if (e == null) return // ❓
-            field.value = e
+            field.ϟvalue = e
          }}
       />
    )

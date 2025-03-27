@@ -30,7 +30,7 @@ export type Field_prompt_ownConfig = {
 }
 
 // #region Serial from value
-export const Field_prompt_fromValue = (val: Field_prompt_value): Field_prompt['…serial'] => ({
+export const Field_prompt_fromValue = (val: Field_prompt_value): Field_prompt['Ҩserial'] => ({
    $: 'prompt',
    val: val.text,
 })
@@ -48,26 +48,26 @@ export type Field_prompt_unchecked = Field_prompt
 
 // #region State
 export interface Field_prompt {
-   ['…type']: 'prompt'
-   ['…ownConfig']: Field_prompt_ownConfig
-   ['…ownSerial']: Field_prompt_ownSerial
-   ['…value']: Field_prompt_value
-   ['…unchecked']: Field_prompt_value | undefined
-   $field: Field_prompt
-   ['…child']: never
+   ['Ҩtype']: 'prompt'
+   ['ҨownConfig']: Field_prompt_ownConfig
+   ['ҨownSerial']: Field_prompt_ownSerial
+   ['Ҩvalue']: Field_prompt_value
+   ['Ҩunchecked']: Field_prompt_value | undefined
+   Ҩfield: Field_prompt
+   ['Ҩchild']: never
 }
 export class Field_prompt extends Field {
    // #region types
    static readonly type: 'prompt' = 'prompt'
-   static readonly unsetSerial: Field_prompt['…serial'] = { $: 'prompt' }
+   static readonly unsetSerial: Field_prompt['Ҩserial'] = { $: 'prompt' }
    static codeForTypescriptValue = () => `Field_prompt`
    public static readonly patchedSerialPaths: readonly string[] = Object.freeze(['val'])
    static generateSerial(
-      value: Maybe<Field_prompt['…value']>,
-      config: Field_prompt['…config'],
-   ): Field_prompt['…serial'] {
+      value: Maybe<Field_prompt['Ҩvalue']>,
+      config: Field_prompt['Ҩconfig'],
+   ): Field_prompt['Ҩserial'] {
       if (value == null && config.default == null) return this.unsetSerial
-      return { $: 'prompt', val: value != null ? value.serial.val : config.default }
+      return { $: 'prompt', val: value != null ? value.ϟserial.val : config.default }
    }
    static migrateSerial(): undefined {}
 
@@ -78,46 +78,46 @@ export class Field_prompt extends Field {
       parent: Field | null,
       schema: CSchema<Field_prompt>,
       initialMountKey: string,
-      serial?: Field_prompt['…serial'],
+      serial?: Field_prompt['Ҩserial'],
    ) {
       super(repo, root, parent, schema, initialMountKey, serial)
       this.init(serial)
    }
 
-   get isOwnSet(): boolean {
-      return typeof this.serial.val === 'string'
+   get ϟisOwnSet(): boolean {
+      return typeof this.ϟserial.val === 'string'
    }
 
    // #region UI
    // DefaultHeaderUI = WidgetPromptCollapsibleUI
    // DefaultBodyUI = WidgetPromptUI // WidgetPromptUI
 
-   get isCollapsible(): boolean {
+   get ϟisCollapsible(): boolean {
       return true
    }
 
    // #region validation
-   get ownTypeSpecificProblems(): Problem_Ext {
+   get ϟownTypeSpecificProblems(): Problem_Ext {
       return null
    }
 
-   get ownConfigSpecificProblems(): Problem_Ext {
+   get ϟownConfigSpecificProblems(): Problem_Ext {
       return null
    }
 
    // #region change tracking
-   get hasChanges(): boolean {
-      return (this.serial.val ?? '') !== (this.config.default ?? '')
+   get ϟhasChanges(): boolean {
+      return (this.ϟserial.val ?? '') !== (this.ϟconfig.default ?? '')
    }
 
-   protected setOwnSerial(next: Field_prompt['…serial']): void {
+   protected ϟsetOwnSerial(next: Field_prompt['Ҩserial']): void {
       // assign default value if not value set but has default value
       if (next.val == null) {
          const def = this.defaultValue
          if (def != null) next = produce(next, (draft) => void (draft.val = def))
       }
 
-      this.ܮassignNewSerial(next)
+      this.ϟassignNewSerial(next)
    }
 
    // sentinel value so we know when to trigger update effect in the UI to update
@@ -126,9 +126,9 @@ export class Field_prompt extends Field {
 
    /** DO NOT CALL YOURSELF; use `field.text =` setter instead */
    setText_INTERNAL(next: string): void {
-      if (this.serial.val === next) return
-      this.ܮrunInTransaction(() => {
-         this.patchSerial((draft) => {
+      if (this.ϟserial.val === next) return
+      this.ϟrunInTransaction(() => {
+         this.ϟpatchSerial((draft) => {
             draft.val = next
          })
       })
@@ -138,14 +138,14 @@ export class Field_prompt extends Field {
       this.text = next
    }
    set text(next: string) {
-      if (this.serial.val === next) return
-      this.ܮrunInTransaction(() => {
+      if (this.ϟserial.val === next) return
+      this.ϟrunInTransaction(() => {
          // widget prompt uses codemirror, and codemirror manage its internal state itsef.
          // making the widget "uncontrolled". Usual automagical mobx-reactivity may not always apply.
          // To allow CodeMirror editor to react to external value changes, we need to use an effect in the UI.
          // To know when to run the effect, we update `valueUpdatedViaAPIAt` here to trigger the effect.
          this._valueUpdatedViaAPIAt = Date.now() as Timestamp
-         this.patchSerial((draft) => {
+         this.ϟpatchSerial((draft) => {
             draft.val = next
          })
       })
@@ -153,7 +153,7 @@ export class Field_prompt extends Field {
 
    // the raw unparsed text
    get text(): string {
-      return this.serial.val ?? ''
+      return this.ϟserial.val ?? ''
    }
 
    // the parsed tree
@@ -162,26 +162,26 @@ export class Field_prompt extends Field {
    }
 
    get ast_generic(): Tree {
-      return parser.parse(this.serial.val ?? '')
+      return parser.parse(this.ϟserial.val ?? '')
    }
 
    get defaultValue(): string | undefined {
-      return this.config.default
+      return this.ϟconfig.default
    }
 
-   override set(valOrKey: Field_prompt | string): this {
-      if (valOrKey instanceof Field_prompt) this.value = valOrKey.value
-      else this.ܮpatchInTransaction((next) => void (next.val = valOrKey))
+   override ϟset(valOrKey: Field_prompt | string): this {
+      if (valOrKey instanceof Field_prompt) this.ϟvalue = valOrKey.ϟvalue
+      else this.ϟpatchInTransaction((next) => void (next.val = valOrKey))
       return this
    }
 
-   override getSetValue(): this['…setvalue'] | undefined {
+   override ϟgetSetValue(): this['Ҩsetvalue'] | undefined {
       // console.log(`[💀 getSetValue] `, this.path)
-      return this.serial.val
+      return this.ϟserial.val
    }
 
    // #region value
-   get value(): Field_prompt_value {
+   get ϟvalue(): Field_prompt_value {
       return this
       // return {
       //     text: this.serial.val ?? this.config.default ?? '',
@@ -189,27 +189,27 @@ export class Field_prompt extends Field {
       // }
    }
 
-   set value(next: Field_prompt_value) {
+   set ϟvalue(next: Field_prompt_value) {
       if (next !== this) throw new Error('not implemented')
       // do nothing, value it the instance itself
    }
 
-   get value_or_fail(): Field_prompt_value {
-      if (this.serial.val == null) throw new Error('Field_prompt.value_or_fail: not set')
+   get ϟvalue_or_fail(): Field_prompt_value {
+      if (this.ϟserial.val == null) throw new Error('Field_prompt.value_or_fail: not set')
       return this
    }
 
-   get value_unchecked(): Field_prompt_unchecked {
+   get ϟvalue_unchecked(): Field_prompt_unchecked {
       return this
    }
 
-   public isValueEqual(other: Field): boolean {
+   public ϟisValueEqual(other: Field): boolean {
       if (other === this) return true
       if (!(other instanceof Field_prompt)) return false
-      return this.value_unchecked === other.value_unchecked
+      return this.ϟvalue_unchecked === other.ϟvalue_unchecked
    }
 
-   get value_or_zero(): Field_prompt_value {
+   get ϟvalue_or_zero(): Field_prompt_value {
       return this
    }
 

@@ -43,14 +43,14 @@ export const PanelIconUI = obs(function PanelIconUI_(p: NO_PROPS) {
    const uist = useMemo(() => new IconPanelStableState(), [])
    const allIcons = uist.allIcons
    const total = allIcons.length
-   const itemSize = form.value.size
+   const itemSize = form.ϟvalue.size
    const itemWidth = itemSize /* 100 */
    const itemHeight = itemSize /* 100 */
    const containerWidth = size.width ?? 100
    const containerHeight = size.height ?? 100
    const nbCols = Math.floor(containerWidth / itemWidth) || 1
    const nbRows = Math.ceil(total / nbCols) + 1
-   const theme = cushy.preferences.theme.value
+   const theme = cushy.preferences.theme.ϟvalue
 
    return (
       <div tw='flex h-full w-full flex-col'>
@@ -93,7 +93,7 @@ export const PanelIconUI = obs(function PanelIconUI_(p: NO_PROPS) {
             >
                Clear Recent
             </Button>
-            {form.renderAsConfigBtn({ title: 'Icon Settings' })}
+            {form.ϟrenderAsConfigBtn({ title: 'Icon Settings' })}
          </PanelHeaderUI>
 
          <Frame // RECENTLY COPIED ICONS

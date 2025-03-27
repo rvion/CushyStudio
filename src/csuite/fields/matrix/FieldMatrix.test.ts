@@ -12,13 +12,13 @@ describe('FieldMatrix', () => {
       expect(E1.cols).toHaveLength(2)
       expectJSON(E1.cols).toEqual(['x', 'y'])
       expectJSON(E1.rows).toEqual(['a', 'b'])
-      expectJSON(E1.value).toEqual([])
+      expectJSON(E1.ϟvalue).toEqual([])
 
       const S2 = S1.withConfig({ default: [{ row: 'a', col: 'x' }] })
       const E2 = S2.create()
-      expectJSON(E2.value).toMatchObject([{ row: 'a', col: 'x' }])
+      expectJSON(E2.ϟvalue).toMatchObject([{ row: 'a', col: 'x' }])
       E2.setCol('y', true)
-      expectJSON(E2.value).toMatchObject([
+      expectJSON(E2.ϟvalue).toMatchObject([
          { row: 'a', col: 'x' },
          { row: 'a', col: 'y' },
          { row: 'b', col: 'y' },
@@ -32,7 +32,7 @@ describe('FieldMatrix', () => {
             const E1 = S.create()
             const E2 = S.create()
 
-            expect(E1.isValueEqual(E2)).toBeTruthy()
+            expect(E1.ϟisValueEqual(E2)).toBeTruthy()
          })
 
          it('should return true if both fields are set to the same value', () => {
@@ -43,7 +43,7 @@ describe('FieldMatrix', () => {
             E1.setCol('x', true)
             E2.setCol('x', true)
 
-            expect(E1.isValueEqual(E2)).toBeTruthy()
+            expect(E1.ϟisValueEqual(E2)).toBeTruthy()
          })
       })
 
@@ -55,7 +55,7 @@ describe('FieldMatrix', () => {
 
             E1.setCol('x', true)
 
-            expect(E1.isValueEqual(E2)).toBeFalsy()
+            expect(E1.ϟisValueEqual(E2)).toBeFalsy()
          })
 
          it('should return false if both fields are set to different values', () => {
@@ -66,7 +66,7 @@ describe('FieldMatrix', () => {
             E1.setCol('x', true)
             E2.setCol('y', true)
 
-            expect(E1.isValueEqual(E2)).toBeFalsy()
+            expect(E1.ϟisValueEqual(E2)).toBeFalsy()
          })
 
          it('should return false if the other field is not a matrix', () => {
@@ -76,7 +76,7 @@ describe('FieldMatrix', () => {
 
             E1.setCol('x', true)
 
-            expect(E1.isValueEqual(E2 as any)).toBeFalsy()
+            expect(E1.ϟisValueEqual(E2 as any)).toBeFalsy()
          })
       })
    })
@@ -85,23 +85,23 @@ describe('FieldMatrix', () => {
       describe('without serial', () => {
          describe('without a default value', () => {
             it('should use the empty serial', () => {
-               const patchSerial = vitest.spyOn(Field_matrix.prototype, 'patchSerial')
+               const patchSerial = vitest.spyOn(Field_matrix.prototype, 'ϟpatchSerial')
                const S = CSchema.new(Field_matrix, { rows: ['a', 'b'], cols: ['x', 'y'] })
                const E = S.create()
 
                expect(patchSerial).not.toHaveBeenCalled()
-               expect(E.serial).toBe(S.defaultSerial)
+               expect(E.ϟserial).toBe(S.defaultSerial)
             })
          })
 
          describe('with a default value', () => {
             it('should use the empty serial', () => {
-               const patchSerial = vitest.spyOn(Field_matrix.prototype, 'patchSerial')
+               const patchSerial = vitest.spyOn(Field_matrix.prototype, 'ϟpatchSerial')
                const S = b.matrix({ rows: ['a', 'b'], cols: ['x', 'y'], default: [{ row: 'a', col: 'x' }] })
                const E = S.create()
 
                expect(patchSerial).not.toHaveBeenCalled()
-               expect(E.serial).toBe(S.defaultSerial)
+               expect(E.ϟserial).toBe(S.defaultSerial)
             })
          })
       })

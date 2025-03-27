@@ -10,7 +10,7 @@ export const WidgetChoices_HeaderSelectUI = obs(function WidgetChoices_HeaderSel
    const field = p.field
    type Entry = { key: string; label: string }
    const choices: Entry[] = field.choicesWithLabels
-   const isActive = !p.field.canBeToggledWithinParent || !p.field.isInsideDisabledBranch
+   const isActive = !p.field.ϟcanBeToggledWithinParent || !p.field.ϟisInsideDisabledBranch
 
    return (
       <div
@@ -23,7 +23,7 @@ export const WidgetChoices_HeaderSelectUI = obs(function WidgetChoices_HeaderSel
          <SelectUI<Entry>
             tw='flex-grow'
             key={`${isActive}`}
-            placeholder={p.field.config.placeholder ?? csuiteConfig.i18n.ui.field.empty}
+            placeholder={p.field.ϟconfig.placeholder ?? csuiteConfig.i18n.ui.field.empty}
             value={() =>
                field.activeBranchNames.map((key) => ({
                   key,
@@ -38,14 +38,14 @@ export const WidgetChoices_HeaderSelectUI = obs(function WidgetChoices_HeaderSel
             //     </div>
             // )}
             equalityCheck={(a, b) => a.key === b.key}
-            multiple={field.config.multi ?? false}
+            multiple={field.ϟconfig.multi ?? false}
             // closeOnPick={false}
             resetQueryOnPick={false}
             onOptionToggled={(v) => {
                // 🔴 DUBIOUS
-               if (p.field.canBeToggledWithinParent) p.field.enableSelfWithinParent()
+               if (p.field.ϟcanBeToggledWithinParent) p.field.ϟenableSelfWithinParent()
                field.toggleBranch(v.key)
-               p.field.ܒtouch()
+               p.field.ϟtouch()
             }}
          />
       </div>

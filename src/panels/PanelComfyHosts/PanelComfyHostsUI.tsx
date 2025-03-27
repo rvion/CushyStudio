@@ -11,7 +11,7 @@ export type PanelComfyHostProps = {
 export const PanelComfyHostsUI = obs(function PanelComfyHostsUI_(p: PanelComfyHostProps) {
    const allHosts = cushy.hosts
    const mainHost = cushy.mainHost
-   const theme = cushy.preferences.theme.value
+   const theme = cushy.preferences.theme.ϟvalue
 
    return (
       <div tw='flex h-full w-full flex-col gap-2 p-2'>
