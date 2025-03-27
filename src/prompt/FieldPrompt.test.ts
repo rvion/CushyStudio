@@ -46,11 +46,11 @@ describe('FieldPrompt', () => {
    it('works', () => {
       const E1 = S1.create()
       expect(E1.ϟvalue.c.foo).toBe('')
-      expect(E1.ϟvalue.c.bar).toBe(undefined)
+      expect(E1.ϟvalue.c.bar).toBeUndefined()
 
       E1.ϟfields.c.enableBranch('bar')
 
-      expect(E1.ϟvalue.c.foo).toBe(undefined)
+      expect(E1.ϟvalue.c.foo).toBeUndefined()
       expect(E1.ϟvalue.c.bar?.text).toBe('coucou')
 
       E1.ϟfields.c._.bar?.setText('new prompt')
