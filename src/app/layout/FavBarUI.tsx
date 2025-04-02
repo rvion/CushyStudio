@@ -14,17 +14,13 @@ export const FavBarUI = obs(function FavBarUI_(p: { direction?: 'row' | 'column'
    // |> if (!conf.visible) return null
 
    const size = conf.size
-   const appIcons = conf.appIcons
    const sizeStr = size + 'px'
    const tempSize = `${size}px`
 
-   const ree = ['1', '2', '3', '4', '5', '6', '1', '2', '3', '4', '5', '6', '1', '2', '3', '4', '5', '6']
    return (
-      <>
          <Frame //
             base={cushy.preferences.theme.zValue.appbar ?? { contrast: -0.077 }}
             tw='flex overflow-auto px-1'
-            // style={{ width: `${size + 20}px` }}
          >
             <Frame //
                base={{ contrast: -0.1 }}
@@ -35,13 +31,11 @@ export const FavBarUI = obs(function FavBarUI_(p: { direction?: 'row' | 'column'
                   //
                   tw='my-0.5 flex flex-shrink-0 items-center justify-center self-center'
                   tooltip='SD1.5'
-                  // base={{ hue: 0, chromaBlend: 2, contrast: 0.2 }}
                   style={{ width: tempSize, height: tempSize }}
                   onClick={() => cushy.layout.open('PanelAppLibrary', {})}
                >
                   <Ikon.mdiApps style={{ fontSize: '8rem' }} />
                </Button>
-               {/* <PanelHeaderUI>{conf.renderAsConfigBtn()}</PanelHeaderUI> */}
                <Button
                   //
                   tw='my-0.5 flex flex-shrink-0 items-center justify-center self-center'
@@ -127,9 +121,7 @@ export const FavBarUI = obs(function FavBarUI_(p: { direction?: 'row' | 'column'
                   base={{ hue: 270, chromaBlend: 2, contrast: 0.2 }}
                   style={{ width: tempSize, height: tempSize }}
                   onClick={() =>
-                     cushy.db.cushy_app
-                        .get('library/built-in/sts/slay-the-spire.ts:0')
-                        ?.openLastOrCreateDraft()
+                  cushy.db.cushy_app.get('library/built-in/sts/slay-the-spire.ts:0')?.openLastOrCreateDraft()
                   }
                >
                   <span tw='truncate'>StS</span>
@@ -149,12 +141,8 @@ export const FavBarUI = obs(function FavBarUI_(p: { direction?: 'row' | 'column'
                      iconSize={tempSize}
                   />
                </RevealUI>
-               {/* Lot of divs, but it makes it so the scrolling container is rounded on the inside. */}
-
-               {/* ------------------------------------------------------------------------ */}
-               {cushy.favoriteApps.length > 0 && (
-                  <>
-                     {cushy.favoriteApps.map((app) => (
+            {cushy.favoriteApps.length > 0 &&
+               cushy.favoriteApps.map((app) => (
                         <Frame
                            border={20}
                            tooltip={app.name}
@@ -164,7 +152,6 @@ export const FavBarUI = obs(function FavBarUI_(p: { direction?: 'row' | 'column'
                            tw='flex overflow-clip object-contain'
                         >
                            <RevealUI
-                              // showDelay={0}
                               trigger='click'
                               placement='right'
                               content={() => <AppDraftsQuickListUI app={app} />}
@@ -177,11 +164,7 @@ export const FavBarUI = obs(function FavBarUI_(p: { direction?: 'row' | 'column'
                            </RevealUI>
                         </Frame>
                      ))}
-                  </>
-               )}
-               {/* ------------------------------------------------------------------------ */}
             </Frame>
          </Frame>
-      </>
    )
 })

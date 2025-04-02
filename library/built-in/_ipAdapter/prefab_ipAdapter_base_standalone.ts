@@ -1,4 +1,4 @@
-import type { CSchema } from '../../../src/controls/CSchema'
+import type { CSchema } from '../../../src/controls/CSchema.cushy'
 import type { Field_list } from '../../../src/csuite/fields/list/FieldList'
 import type { OutputFor } from '../_prefabs/_prefabs'
 

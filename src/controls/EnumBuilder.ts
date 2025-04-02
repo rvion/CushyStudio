@@ -6,7 +6,7 @@ import type { CushySchemaBuilder } from './CushyBuilder'
 
 import { asComfyNodeSlotName } from '../comfyui/comfyui-types'
 import { Field_enum } from '../csuite/fields/enum/FieldEnum'
-import { CSchema } from './CSchema'
+import { CSchema } from './CSchema.cushy'
 
 export type IEnumBuilderFN<ENUM_NAME extends keyof Comfy.Slots> = (
    config?: Omit<Field_enum<Comfy.Slots[ENUM_NAME]>['ҨConfig'], 'slotName'>,

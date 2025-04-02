@@ -1,4 +1,4 @@
-import type { CSchema } from '../controls/CSchema'
+import type { CSchema } from '../controls/CSchema.cushy'
 import type { RenderProps } from '../csuite-cushy/presenters/RenderProps'
 import type { RenderRule, RenderRule_asList } from '../csuite-cushy/presenters/RenderRule'
 import type { Field } from '../csuite/model/Field'

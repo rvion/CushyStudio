@@ -7,7 +7,7 @@ import type { CushySchemaBuilder } from './CushyBuilder'
 
 import { asComfyNodeSlotName } from '../comfyui/comfyui-types'
 import { Field_enum } from '../csuite/fields/enum/FieldEnum'
-import { CSchema } from './CSchema'
+import { CSchema } from './CSchema.cushy'
 
 // 🔴 showcase how nullability work without optional
 

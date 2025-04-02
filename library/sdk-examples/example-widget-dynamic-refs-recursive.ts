@@ -1,8 +1,9 @@
-import type { CSchema } from '../../src/controls/CSchema'
+import type { CSchema } from '../../src/controls/CSchema.cushy'
 import type { Field_choices } from '../../src/csuite/fields/choices/FieldChoices'
 import type { Field_group } from '../../src/csuite/fields/group/FieldGroup'
 import type { Field_image } from '../../src/csuite/fields/image/FieldImage'
 import type { Field_list } from '../../src/csuite/fields/list/FieldList'
+
 import { sb } from '../../src/csuite/simple/SimpleFactory'
 
 type ListItem = Z.Group<{

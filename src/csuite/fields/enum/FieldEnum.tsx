@@ -130,10 +130,6 @@ export class Field_enum<O extends ComfyUnionValue> extends Field {
             next = produce(next, (draft) => void (draft.val = nextXX))
          }
       }
-      // this.serial.val =
-      //     next?.val ?? //
-      //     _extractDefaultValue(this.config) ??
-      //     (this.possibleValues[0] as any)
       this.zAssignNewSerial(next)
    }
 

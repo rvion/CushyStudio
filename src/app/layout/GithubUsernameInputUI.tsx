@@ -1,15 +1,9 @@
-import type { ReactNode } from 'react'
-
 import { BadgeUI } from '../../csuite/badge/BadgeUI'
 import { InputStringUI } from '../../csuite/input-string/InputStringUI'
 import { RevealUI } from '../../csuite/reveal/RevealUI'
 import { assets } from '../../utils/assets/assets'
 
-export type RsuiteSize = 'lg' | 'md' | 'sm' | 'xs'
-export const GithubUsernameInputUI = obs(function GithubUsernameInputUI_(p: {
-   //
-   children?: ReactNode
-}) {
+export const GithubUsernameInputUI = obs(function GithubUsernameInputUI_(p: {}) {
    const githubUsername = cushy.configFile.value.githubUsername || '<your-github-username>'
    return (
       <div tw='join w-auto'>

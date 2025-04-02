@@ -9,7 +9,7 @@ export const FooterBarUI = obs(function FooterBarUI_(p: FrameProps) {
    return (
       <Frame
          border={0}
-         base={cushy.preferences.theme.zValue.appbar ?? { contrast: -0.077 }}
+         base={theme.appbar ?? { contrast: -0.077 }}
          tw='line-clamp-1 flex items-center truncate px-1 py-1'
          {...p}
       >
@@ -23,7 +23,6 @@ export const FooterBarUI = obs(function FooterBarUI_(p: FrameProps) {
          />
 
          <div tw='flex-1' />
-         {/* {tooltipStuff.deepest && <div>{tooltipStuff.deepest.text}</div>} */}
          {cushy.showCommandHistory && <DebugShortcutsFloatingUI />}
          <Frame // Git/Version info
             align
@@ -42,7 +41,6 @@ export const FooterBarUI = obs(function FooterBarUI_(p: FrameProps) {
                         ? { contrast: 0.2, chromaBlend: 25 }
                         : undefined
                   }
-                  // roundness={theme.global.roundness}
                >
                   <Frame
                      square
@@ -55,7 +53,6 @@ export const FooterBarUI = obs(function FooterBarUI_(p: FrameProps) {
                         <Frame
                            tw='absolute bottom-0.5 right-0.5 h-1.5 w-1.5'
                            roundness={'100%'}
-                           // border={theme.global.border}
                            dropShadow={theme.global.shadow}
                            base={{ contrast: 0.5, chromaBlend: 100, hue: 180 }}
                         />
