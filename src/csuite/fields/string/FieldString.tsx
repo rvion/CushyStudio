@@ -345,6 +345,10 @@ export class Field_string extends Field {
       if (this.zConfig.textarea) return true
       return false
    }
+
+   clear(): void {
+      this.zValue = ''
+   }
 }
 
 // DI
