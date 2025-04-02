@@ -7,6 +7,10 @@ export type Field_number_config_configured = Omit<Field_number['ҨConfig'], 'mod
 export type BuilderNumberMixin = {
    int_(config?: Field_number_config_configured): Z.Number
    int(config?: Field_number_config_configured): Z.Number
+   /** Integer number without formatting (no thousand separator), without default value */
+   rawInt_(config?: Field_number_config_configured): Z.Number
+   /** Integer number without formatting (no thousand separator), with default value */
+   rawInt(config?: Field_number_config_configured): Z.Number
    float(config?: Field_number_config_configured): Z.Number
    float_(config?: Field_number_config_configured): Z.Number
    percent(config?: Field_number_config_configured): Z.Number
@@ -24,7 +28,13 @@ const BuilderNumberImpl = (): BuilderNumberMixin =>
       int(config: Field_number_config_configured = {}): Z.Number {
          return this.int_({ default: _autoDefault(config), ...config })
       },
-
+      // #region raw ints
+      rawInt_(config: Field_number_config_configured = {}): Z.Number {
+         return buildNumberSchema({ mode: 'rawInt', ...config })
+      },
+      rawInt(config: Field_number_config_configured = {}): Z.Number {
+         return this.rawInt_({ default: _autoDefault(config), ...config })
+      },
       // #region float
       float(config: Field_number_config_configured = {}): Z.Number {
          return buildNumberSchema({ mode: 'float', default: _autoDefault(config), ...config })
