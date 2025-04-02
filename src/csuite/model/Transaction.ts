@@ -102,7 +102,7 @@ export class Transaction {
 
       for (const { field } of updatedFieldList) {
          this.repo.debugLog(`👛 ${`update`.padEnd(10)} ${field.zPath}`)
-         field.z_applySerialUpdateEffects()
+         field.zApplySerialUpdateEffects()
       }
 
       for (const { field } of updatedFieldList) {

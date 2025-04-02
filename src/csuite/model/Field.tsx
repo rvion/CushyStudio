@@ -1416,7 +1416,7 @@ export abstract class Field {
     * this function is called recursively upwards.
     * persistance will usually be done at the root field reacting to this event.
     */
-   z_applySerialUpdateEffects(): void {
+   zApplySerialUpdateEffects(): void {
       for (const fn of this.z_extraSerialChangesFunction) fn(this)
       this.zConfig.onSerialChange?.(this)
       this.zConfig.onValueChange?.(this)
