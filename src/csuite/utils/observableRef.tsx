@@ -5,7 +5,7 @@ import { useMemo } from 'react'
 
 import { getFirstFocusableChild } from './getFirstFocusableChild'
 
-export function useObservableRef<T extends any>(deps: DependencyList = []): ObservableRef<T> {
+export function useObservableRef<T extends any>(deps: DependencyList): ObservableRef<T> {
    return useMemo(() => new ObservableRef(), deps)
 }
 

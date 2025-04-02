@@ -21,7 +21,7 @@ export const OverflowingRowUI = obs(function OverflowingRow({
    const containerRef = useRef<HTMLDivElement>(null)
    const [extraIndex, setExtraIndex] = useState(0)
    const tabRefs = useRef<(HTMLDivElement | null)[]>([])
-   const caretRef = useObservableRef<HTMLDivElement>()
+   const caretRef = useObservableRef<HTMLDivElement>([])
 
    const handleReveal = (): void => {
       if (!containerRef.current) return console.log(`[🤠] ❌ no containerRef`)
