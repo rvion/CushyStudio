@@ -1,20 +1,23 @@
-import type { ToastPosition } from 'react-toastify'
+import type { ToastOptions, ToastPosition } from 'react-toastify'
 
 import { toast } from 'react-toastify'
 
 import { Trigger } from '../trigger/Trigger'
 
 const position: ToastPosition = 'bottom-right'
-export const toastSuccess = (msg: string): Trigger => {
-   toast(msg, { type: 'success', position })
+
+export const toastSuccess = (msg: string, opts?: ToastOptions): Trigger => {
+   toast(msg, { type: 'success', position, ...opts })
    return Trigger.UNMATCHED
 }
-export const toastInfo = (msg: string): Trigger => {
-   toast(msg, { type: 'info', position })
+
+export const toastInfo = (msg: string, opts?: ToastOptions): Trigger => {
+   toast(msg, { type: 'info', position, ...opts })
    return Trigger.UNMATCHED
 }
-export const toastError = (msg: string): Trigger => {
-   toast(msg, { type: 'error', position })
+
+export const toastError = (msg: string, opts?: ToastOptions): Trigger => {
+   toast(msg, { type: 'error', position, ...opts })
    return Trigger.UNMATCHED
 }
 
