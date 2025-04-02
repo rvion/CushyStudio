@@ -142,15 +142,15 @@ export interface Field_selectOne<
    VALUE extends unknown,
    KEY extends SelectKey,
 > {
-   ['::Type']: 'selectOne'
-   ['::OwnConfig']: Field_selectOne_ownConfig<VALUE, KEY>
-   ['::OwnSerial']: Field_selectOne_ownSerial<KEY>
-   ['::Value']: VALUE
-   ['::Setvalue']: VALUE | KEY
-   ['::Unchecked']: Field_selectOne_unchecked<VALUE>
-   ['::Child']: never
-   ['::Opts']: unknown
-   ['::OwnPatch']: Patch<'selectOne'>
+   '::Type': 'selectOne'
+   '::OwnConfig': Field_selectOne_ownConfig<VALUE, KEY>
+   '::OwnSerial': Field_selectOne_ownSerial<KEY>
+   '::Value': VALUE
+   '::Setvalue': VALUE | KEY
+   '::Unchecked': Field_selectOne_unchecked<VALUE>
+   '::Child': never
+   '::Opts': unknown
+   '::OwnPatch': Patch<'selectOne'>
 }
 export class Field_selectOne<
    //

@@ -68,24 +68,24 @@ export type Field_group_unchecked<T extends SchemaDict> = {
 
 // TYPES
 export interface Field_group<T extends SchemaDict = SchemaDict> {
-   ['::Type']: 'group'
-   ['::OwnConfig']: Field_group_ownConfig<T>
-   ['::OwnSerial']: Field_group_ownSerial<T>
-   ['::Value']: Field_group_value<T>
-   ['::Setvalue']: Field_group_SetValue<T>
-   ['::Unchecked']: Field_group_unchecked<T>
-   ['::Child']: T[keyof T]['::Field']
-   ['::Opts']: unknown
-   ['::OwnPatch']: Patch<'group'>
+   '::Type': 'group'
+   '::OwnConfig': Field_group_ownConfig<T>
+   '::OwnSerial': Field_group_ownSerial<T>
+   '::Value': Field_group_value<T>
+   '::Setvalue': Field_group_SetValue<T>
+   '::Unchecked': Field_group_unchecked<T>
+   '::Child': T[keyof T]['::Field']
+   '::Opts': unknown
+   '::OwnPatch': Patch<'group'>
    // own
-   ['::Subfields']: T
+   '::Subfields': T
 }
 
 // ---------------------------------------------------------------------------
 // 💬 2025-02-10 rvion: pending decision about removal or not
 /** @deprecated */
 export type FieldGroupWithMAGICFIELDS<T extends SchemaDict> = Field_group<T> & MAGICFIELDS<T>
-export type MAGICFIELDS<T extends { [key: string]: { ['::Field']: any } }> = {
+export type MAGICFIELDS<T extends { [key: string]: { '::Field': any } }> = {
    [K in keyof T /* as Capitalize<K & string> */]: T[K]['::Field']
 }
 

@@ -52,7 +52,7 @@ export const getFieldListClass = (): typeof Field_list<any> => getFieldClass('li
 export const getFieldSelectOneClass = (): typeof Field_selectOne<any, string> =>
    getFieldClass('selectOne') as any
 
-export const registerFieldClass = <T extends { ['::Type']: CATALOG.AllFieldTypes }>(
+export const registerFieldClass = <T extends { '::Type': CATALOG.AllFieldTypes }>(
    //
    type: T['::Type'],
    kls: { new (...args: any[]): T },

@@ -83,15 +83,15 @@ type Field_string_ownSerial = {
 
 // #region Field
 export interface Field_string {
-   ['::Type']: 'str'
-   ['::OwnConfig']: Field_string_ownConfig
-   ['::OwnSerial']: Field_string_ownSerial
-   ['::Value']: string
-   ['::Setvalue']: string
-   ['::Unchecked']: string | undefined
-   ['::Child']: never
-   ['::Opts']: unknown
-   ['::OwnPatch']: Patch<'str'>
+   '::Type': 'str'
+   '::OwnConfig': Field_string_ownConfig
+   '::OwnSerial': Field_string_ownSerial
+   '::Value': string
+   '::Setvalue': string
+   '::Unchecked': string | undefined
+   '::Child': never
+   '::Opts': unknown
+   '::OwnPatch': Patch<'str'>
 }
 
 // #region STATE

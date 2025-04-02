@@ -36,15 +36,15 @@ export type Field_seed_unchecked = Field_seed_value | undefined
 
 // #region Types
 export interface Field_seed {
-   ['::Type']: 'seed'
-   ['::OwnConfig']: Field_seed_ownConfig
-   ['::OwnSerial']: Field_seed_ownSerial
-   ['::Value']: Field_seed_value
-   ['::Setvalue']: Field_seed_value
-   ['::Unchecked']: Field_seed_unchecked
-   ['::Child']: never
-   ['::Opts']: unknown
-   ['::OwnPatch']: Patch<'seed'>
+   '::Type': 'seed'
+   '::OwnConfig': Field_seed_ownConfig
+   '::OwnSerial': Field_seed_ownSerial
+   '::Value': Field_seed_value
+   '::Setvalue': Field_seed_value
+   '::Unchecked': Field_seed_unchecked
+   '::Child': never
+   '::Opts': unknown
+   '::OwnPatch': Patch<'seed'>
 }
 
 // STATE

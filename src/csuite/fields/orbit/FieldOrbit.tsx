@@ -44,13 +44,13 @@ export type Field_orbit_unchecked = {
 
 // STATE
 export interface Field_orbit {
-   ['::Type']: 'orbit'
-   ['::OwnConfig']: Field_orbit_ownConfig
-   ['::OwnSerial']: Field_orbit_ownSerial
-   ['::Value']: Field_orbit_value
-   ['::Unchecked']: Field_orbit_unchecked
-   ['::Field']: Field_orbit
-   ['::Child']: never
+   '::Type': 'orbit'
+   '::OwnConfig': Field_orbit_ownConfig
+   '::OwnSerial': Field_orbit_ownSerial
+   '::Value': Field_orbit_value
+   '::Unchecked': Field_orbit_unchecked
+   '::Field': Field_orbit
+   '::Child': never
 }
 export class Field_orbit extends Field {
    // #region types

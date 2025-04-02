@@ -36,13 +36,13 @@ export type Field_custom_value<T> = T
 
 // #region $Types
 export interface Field_custom<T> {
-   ['::Type']: 'custom'
-   ['::OwnConfig']: Field_custom_ownConfig<T>
-   ['::OwnSerial']: Field_custom_ownSerial<T>
-   ['::Value']: Field_custom_value<T>
-   ['::Unchecked']: Field_custom_value<T> | undefined
-   ['::Field']: Field_custom<T>
-   ['::Child']: never
+   '::Type': 'custom'
+   '::OwnConfig': Field_custom_ownConfig<T>
+   '::OwnSerial': Field_custom_ownSerial<T>
+   '::Value': Field_custom_value<T>
+   '::Unchecked': Field_custom_value<T> | undefined
+   '::Field': Field_custom<T>
+   '::Child': never
 }
 
 export class Field_custom<T> extends Field {

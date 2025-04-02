@@ -39,15 +39,15 @@ type Field_date_ownSerial = {
 
 // #region Types
 export interface Field_date<VALUE> {
-   ['::Type']: 'date'
-   ['::OwnConfig']: Field_date_ownConfig<VALUE>
-   ['::OwnSerial']: Field_date_ownSerial
-   ['::Value']: Field_date_value<VALUE>
-   ['::Setvalue']: Field_date_value<VALUE>
-   ['::Unchecked']: Field_date_unchecked<VALUE>
-   ['::Child']: never
-   ['::Opts']: unknown
-   ['::OwnPatch']: Patch<'date'>
+   '::Type': 'date'
+   '::OwnConfig': Field_date_ownConfig<VALUE>
+   '::OwnSerial': Field_date_ownSerial
+   '::Value': Field_date_value<VALUE>
+   '::Setvalue': Field_date_value<VALUE>
+   '::Unchecked': Field_date_unchecked<VALUE>
+   '::Child': never
+   '::Opts': unknown
+   '::OwnPatch': Patch<'date'>
 }
 
 // #region State

@@ -48,13 +48,13 @@ export type Field_prompt_unchecked = Field_prompt
 
 // #region State
 export interface Field_prompt {
-   ['::Type']: 'prompt'
-   ['::OwnConfig']: Field_prompt_ownConfig
-   ['::OwnSerial']: Field_prompt_ownSerial
-   ['::Value']: Field_prompt_value
-   ['::Unchecked']: Field_prompt_value | undefined
-   ['::Field']: Field_prompt
-   ['::Child']: never
+   '::Type': 'prompt'
+   '::OwnConfig': Field_prompt_ownConfig
+   '::OwnSerial': Field_prompt_ownSerial
+   '::Value': Field_prompt_value
+   '::Unchecked': Field_prompt_value | undefined
+   '::Field': Field_prompt
+   '::Child': never
 }
 export class Field_prompt extends Field {
    // #region types

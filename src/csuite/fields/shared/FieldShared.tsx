@@ -31,15 +31,15 @@ export type Field_shared_unchecked<F extends Field = Field> = Maybe<F['::Uncheck
 
 // #region Field
 export interface Field_shared<F extends Field = Field> {
-   ['::Type']: 'shared'
-   ['::OwnConfig']: Field_shared_ownConfig<F>
-   ['::OwnSerial']: Field_shared_ownSerial
-   ['::Value']: Field_shared_value<F>
-   ['::Setvalue']: Field_shared_value<F>
-   ['::Unchecked']: Field_shared_unchecked<F>
-   ['::Child']: F
-   ['::Opts']: unknown
-   ['::OwnPatch']: Patch<'shared'>
+   '::Type': 'shared'
+   '::OwnConfig': Field_shared_ownConfig<F>
+   '::OwnSerial': Field_shared_ownSerial
+   '::Value': Field_shared_value<F>
+   '::Setvalue': Field_shared_value<F>
+   '::Unchecked': Field_shared_unchecked<F>
+   '::Child': F
+   '::Opts': unknown
+   '::OwnPatch': Patch<'shared'>
 }
 
 // #region STATE

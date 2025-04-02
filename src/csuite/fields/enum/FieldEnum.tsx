@@ -37,13 +37,13 @@ export type Field_enum_value<O extends ComfyUnionValue> = O // Requirable[T]
 
 // #region State
 export interface Field_enum<O extends ComfyUnionValue> {
-   ['::Type']: 'enum'
-   ['::OwnConfig']: Field_enum_ownConfig<O>
-   ['::OwnSerial']: Field_enum_ownSerial<O>
-   ['::Value']: Field_enum_value<O>
-   ['::Unchecked']: Field_enum_value<O> | undefined
-   ['::Field']: Field_enum<O>
-   ['::Child']: never
+   '::Type': 'enum'
+   '::OwnConfig': Field_enum_ownConfig<O>
+   '::OwnSerial': Field_enum_ownSerial<O>
+   '::Value': Field_enum_value<O>
+   '::Unchecked': Field_enum_value<O> | undefined
+   '::Field': Field_enum<O>
+   '::Child': never
 }
 export class Field_enum<O extends ComfyUnionValue> extends Field {
    // #region Static

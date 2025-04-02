@@ -130,15 +130,15 @@ export interface Field_selectMany<
    VALUE extends unknown,
    KEY extends SelectKey,
 > extends Field {
-   ['::Type']: 'selectMany'
-   ['::OwnConfig']: Field_selectMany_ownConfig<VALUE, KEY>
-   ['::OwnSerial']: Field_selectMany_ownSerial<KEY>
-   ['::Value']: Field_selectMany_value<VALUE>
-   ['::Setvalue']: VALUE[] | KEY[]
-   ['::Unchecked']: Field_selectMany_unchecked<VALUE>
-   ['::Child']: never
-   ['::Opts']: unknown
-   ['::OwnPatch']: Patch<'selectMany'>
+   '::Type': 'selectMany'
+   '::OwnConfig': Field_selectMany_ownConfig<VALUE, KEY>
+   '::OwnSerial': Field_selectMany_ownSerial<KEY>
+   '::Value': Field_selectMany_value<VALUE>
+   '::Setvalue': VALUE[] | KEY[]
+   '::Unchecked': Field_selectMany_unchecked<VALUE>
+   '::Child': never
+   '::Opts': unknown
+   '::OwnPatch': Patch<'selectMany'>
 }
 
 // #region STATE

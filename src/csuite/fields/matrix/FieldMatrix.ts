@@ -44,15 +44,15 @@ export type Field_matrix_unchecked = Field_matrix_value | undefined
 
 // TYPES
 export interface Field_matrix {
-   ['::Type']: 'matrix'
-   ['::OwnConfig']: Field_matrix_ownConfig
-   ['::OwnSerial']: Field_matrix_ownSerial
-   ['::Value']: Field_matrix_value
-   ['::Setvalue']: Field_matrix_value
-   ['::Unchecked']: Field_matrix_unchecked
-   ['::Child']: never
-   ['::Opts']: unknown
-   ['::OwnPatch']: Patch<'matrix'>
+   '::Type': 'matrix'
+   '::OwnConfig': Field_matrix_ownConfig
+   '::OwnSerial': Field_matrix_ownSerial
+   '::Value': Field_matrix_value
+   '::Setvalue': Field_matrix_value
+   '::Unchecked': Field_matrix_unchecked
+   '::Child': never
+   '::Opts': unknown
+   '::OwnPatch': Patch<'matrix'>
 }
 
 // STATE

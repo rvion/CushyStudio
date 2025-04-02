@@ -39,13 +39,13 @@ export type Field_image_value = MediaImageL
 
 // #region STATE
 export interface Field_image {
-   ['::Type']: 'image'
-   ['::OwnConfig']: Field_image_ownConfig
-   ['::OwnSerial']: Field_image_ownSerial
-   ['::Value']: Field_image_value
-   ['::Unchecked']: Field_image_value | undefined
-   ['::Field']: Field_image
-   ['::Child']: never
+   '::Type': 'image'
+   '::OwnConfig': Field_image_ownConfig
+   '::OwnSerial': Field_image_ownSerial
+   '::Value': Field_image_value
+   '::Unchecked': Field_image_value | undefined
+   '::Field': Field_image
+   '::Child': never
 }
 export class Field_image extends Field {
    // #region static

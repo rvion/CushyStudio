@@ -54,15 +54,15 @@ export type Field_size_unchecked = Field_size_serial
 
 // TYPES
 export interface Field_size {
-   ['::Type']: 'size'
-   ['::OwnConfig']: Field_size_ownConfig
-   ['::OwnSerial']: Field_size_ownSerial
-   ['::Value']: Field_size_value
-   ['::Setvalue']: Field_size_value
-   ['::Unchecked']: Field_size_unchecked
-   ['::Child']: never
-   ['::Opts']: unknown
-   ['::OwnPatch']: Patch<'size'>
+   '::Type': 'size'
+   '::OwnConfig': Field_size_ownConfig
+   '::OwnSerial': Field_size_ownSerial
+   '::Value': Field_size_value
+   '::Setvalue': Field_size_value
+   '::Unchecked': Field_size_unchecked
+   '::Child': never
+   '::Opts': unknown
+   '::OwnPatch': Patch<'size'>
 }
 
 // STATE

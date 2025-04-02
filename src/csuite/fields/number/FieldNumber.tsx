@@ -40,15 +40,15 @@ export type Field_number_unchecked = Field_number_value | null | undefined
 
 // #region TYPES
 export interface Field_number {
-   ['::Type']: 'number'
-   ['::OwnConfig']: Field_number_ownConfig
-   ['::OwnSerial']: Field_number_ownSerial
-   ['::Value']: Field_number_value
-   ['::Setvalue']: Field_number_value
-   ['::Unchecked']: Field_number_unchecked
-   ['::Child']: never
-   ['::Opts']: unknown
-   ['::OwnPatch']: Patch<'number'>
+   '::Type': 'number'
+   '::OwnConfig': Field_number_ownConfig
+   '::OwnSerial': Field_number_ownSerial
+   '::Value': Field_number_value
+   '::Setvalue': Field_number_value
+   '::Unchecked': Field_number_unchecked
+   '::Child': never
+   '::Opts': unknown
+   '::OwnPatch': Patch<'number'>
 }
 
 // #region STATE

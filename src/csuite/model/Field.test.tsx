@@ -10,15 +10,15 @@ import { Field } from './Field'
 type Field_dummy_serial = { $: string; value?: string; deepValue?: { str: string; num: number } }
 
 interface Field_dummy extends Field {
-   ['::Type']: any
-   ['::OwnConfig']: {}
-   ['::OwnSerial']: Field_dummy_serial
-   ['::Value']: string
-   ['::Setvalue']: string
-   ['::Unchecked']: Maybe<string>
-   ['::Child']: never
-   ['::Opts']: unknown
-   ['::OwnPatch']: Patch
+   '::Type': any
+   '::OwnConfig': {}
+   '::OwnSerial': Field_dummy_serial
+   '::Value': string
+   '::Setvalue': string
+   '::Unchecked': Maybe<string>
+   '::Child': never
+   '::Opts': unknown
+   '::OwnPatch': Patch
 }
 
 class Field_dummy extends Field {

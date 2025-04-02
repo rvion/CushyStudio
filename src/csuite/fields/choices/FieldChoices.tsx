@@ -98,17 +98,17 @@ export type Field_choices_unchecked<T extends SchemaDict = SchemaDict> = {
 
 // #region $TypeString
 export interface Field_choices<T extends SchemaDict = SchemaDict> {
-   ['::Type']: 'choices'
-   ['::OwnConfig']: Field_choices_ownConfig<T>
-   ['::OwnSerial']: Field_choices_ownSerial<T>
-   ['::Value']: Field_choices_value<T>
-   ['::Setvalue']: Field_choices_SetValue<T>
-   ['::Unchecked']: Field_choices_unchecked<T>
-   ['::Child']: T[keyof T]['::Field']
-   ['::Opts']: unknown
-   ['::OwnPatch']: Field_choices_patch<T>
+   '::Type': 'choices'
+   '::OwnConfig': Field_choices_ownConfig<T>
+   '::OwnSerial': Field_choices_ownSerial<T>
+   '::Value': Field_choices_value<T>
+   '::Setvalue': Field_choices_SetValue<T>
+   '::Unchecked': Field_choices_unchecked<T>
+   '::Child': T[keyof T]['::Field']
+   '::Opts': unknown
+   '::OwnPatch': Field_choices_patch<T>
    //
-   ['::Subfields']: T
+   '::Subfields': T
 }
 
 export type Field_choices_patch<T extends SchemaDict = SchemaDict> =
@@ -124,7 +124,7 @@ export type Field_choices_patch_disable<T extends SchemaDict = SchemaDict> = Pat
    branch: keyof T & string
 }
 
-export type MAGICCHOICES<T extends { [key: string]: { ['::Field']: any } }> = {
+export type MAGICCHOICES<T extends { [key: string]: { '::Field': any } }> = {
    [K in keyof T]?: T[K]['::Field']
 }
 

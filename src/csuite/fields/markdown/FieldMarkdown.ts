@@ -24,15 +24,15 @@ export type Field_markdown_unchecked = Field_markdown_value
 
 // #region STATE TYPE
 export interface Field_markdown {
-   ['::Type']: 'markdown'
-   ['::OwnConfig']: Field_markdown_ownConfig
-   ['::OwnSerial']: Field_markdown_ownSerial
-   ['::Value']: Field_markdown_value
-   ['::Setvalue']: Field_markdown_value
-   ['::Unchecked']: Field_markdown_unchecked
-   ['::Child']: never
-   ['::Opts']: unknown
-   ['::OwnPatch']: Patch<'markdown'>
+   '::Type': 'markdown'
+   '::OwnConfig': Field_markdown_ownConfig
+   '::OwnSerial': Field_markdown_ownSerial
+   '::Value': Field_markdown_value
+   '::Setvalue': Field_markdown_value
+   '::Unchecked': Field_markdown_unchecked
+   '::Child': never
+   '::Opts': unknown
+   '::OwnPatch': Patch<'markdown'>
 }
 export class Field_markdown extends Field {
    // #region TYPE

@@ -117,18 +117,18 @@ export type FieldCtorProps_ALT<TYPES extends Field = any> = [
 type PathObject = [string, Maybe<PathObject>]
 
 export interface Field {
-   ['::Type']: CATALOG.AllFieldTypes
-   ['::OwnConfig']: unknown
-   ['::OwnSerial']: unknown
-   ['::Serial']: FieldSerialFor<this>
-   ['::Config']: FieldConfigFor<this>
-   ['::Value']: unknown
-   ['::Setvalue']: unknown
-   ['::Unchecked']: unknown
-   ['::Child']: unknown
-   ['::Opts']: unknown
-   ['::OwnPatch']: Patch_Common<this['::Type']>
-   ['::Schema']: CSchema<this>
+   '::Type': CATALOG.AllFieldTypes
+   '::OwnConfig': unknown
+   '::OwnSerial': unknown
+   '::Serial': FieldSerialFor<this>
+   '::Config': FieldConfigFor<this>
+   '::Value': unknown
+   '::Setvalue': unknown
+   '::Unchecked': unknown
+   '::Child': unknown
+   '::Opts': unknown
+   '::OwnPatch': Patch_Common<this['::Type']>
+   '::Schema': CSchema<this>
 }
 export abstract class Field {
    // 2025-02-11 new addition

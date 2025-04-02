@@ -33,25 +33,25 @@ import { getGlobalRepository, type Repository } from './Repository'
 
 declare global {
    namespace CSuite {
-      export interface CSchemaExtensions<$ extends { ['::Schema']: CSchema<any> }> {}
+      export interface CSchemaExtensions<$ extends { '::Schema': CSchema<any> }> {}
    }
 }
 
 // export interface CSchema<out FIELD extends Field = Field>
 export interface CSchema<out FIELD extends Field = Field>
-   extends CSuite.CSchemaExtensions<{ ['::Schema']: CSchema<FIELD> }> {
-   ['::Field']: FIELD
-   ['::Type']: FIELD['::Type']
-   ['::OwnConfig']: FIELD['::OwnConfig']
-   ['::OwnSerial']: FIELD['::OwnSerial']
-   ['::Serial']: FIELD['::Serial']
-   ['::Config']: FIELD['::Config']
-   ['::Value']: FIELD['::Value']
-   ['::Setvalue']: FIELD['::Setvalue']
-   ['::Unchecked']: FIELD['::Unchecked']
-   ['::Child']: FIELD['::Child']
-   ['::Opts']: FIELD['::Opts']
-   ['::OwnPatch']: FIELD['::OwnPatch']
+   extends CSuite.CSchemaExtensions<{ '::Schema': CSchema<FIELD> }> {
+   '::Field': FIELD
+   '::Type': FIELD['::Type']
+   '::OwnConfig': FIELD['::OwnConfig']
+   '::OwnSerial': FIELD['::OwnSerial']
+   '::Serial': FIELD['::Serial']
+   '::Config': FIELD['::Config']
+   '::Value': FIELD['::Value']
+   '::Setvalue': FIELD['::Setvalue']
+   '::Unchecked': FIELD['::Unchecked']
+   '::Child': FIELD['::Child']
+   '::Opts': FIELD['::Opts']
+   '::OwnPatch': FIELD['::OwnPatch']
 }
 
 export type WithConfigOptions = {

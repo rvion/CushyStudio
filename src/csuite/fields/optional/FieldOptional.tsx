@@ -61,15 +61,15 @@ export type Field_optional_SetValue<T extends CSchema = CSchema> = T['::Setvalue
 
 // #region Types
 export interface Field_optional<T extends CSchema = CSchema> {
-   ['::Type']: 'optional'
-   ['::OwnConfig']: Field_optional_ownConfig<T>
-   ['::OwnSerial']: Field_optional_ownSerial<T>
-   ['::Value']: Field_optional_value<T>
-   ['::Setvalue']: Field_optional_SetValue<T>
-   ['::Unchecked']: Field_optional_value<T>
-   ['::Child']: T['::Field']
-   ['::Opts']: unknown
-   ['::OwnPatch']: Patch<'optional'>
+   '::Type': 'optional'
+   '::OwnConfig': Field_optional_ownConfig<T>
+   '::OwnSerial': Field_optional_ownSerial<T>
+   '::Value': Field_optional_value<T>
+   '::Setvalue': Field_optional_SetValue<T>
+   '::Unchecked': Field_optional_value<T>
+   '::Child': T['::Field']
+   '::Opts': unknown
+   '::OwnPatch': Patch<'optional'>
 }
 
 export function isOptionalSerialV1(serial: object): serial is Field_optional_ownSerialV1 {

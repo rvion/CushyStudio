@@ -108,15 +108,15 @@ export type Field_list_patch_move = Patch_Common<'list'> & {
 
 // #region STATE
 export interface Field_list<T extends CSchema> {
-   ['::Type']: 'list'
-   ['::OwnConfig']: Field_list_ownConfig<T>
-   ['::OwnSerial']: Field_list_ownSerial<T>
-   ['::Value']: Field_list_value<T>
-   ['::Setvalue']: Field_list_SetValue<T>
-   ['::Unchecked']: Field_list_unchecked<T>
-   ['::Child']: T['::Field']
-   ['::Opts']: unknown
-   ['::OwnPatch']: Field_list_patch<T>
+   '::Type': 'list'
+   '::OwnConfig': Field_list_ownConfig<T>
+   '::OwnSerial': Field_list_ownSerial<T>
+   '::Value': Field_list_value<T>
+   '::Setvalue': Field_list_SetValue<T>
+   '::Unchecked': Field_list_unchecked<T>
+   '::Child': T['::Field']
+   '::Opts': unknown
+   '::OwnPatch': Field_list_patch<T>
 }
 export class Field_list<T extends CSchema> extends Field {
    // #region TYPE

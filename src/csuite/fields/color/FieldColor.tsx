@@ -25,15 +25,15 @@ export type Field_color_unchecked = Field_color_value | undefined
 
 // STATE
 export interface Field_color {
-   ['::Type']: 'color'
-   ['::OwnConfig']: Field_color_ownConfig
-   ['::OwnSerial']: Field_color_ownSerial
-   ['::Value']: Field_color_value
-   ['::Setvalue']: Field_color_value
-   ['::Unchecked']: Field_color_unchecked
-   ['::Child']: never
-   ['::Opts']: unknown
-   ['::OwnPatch']: Patch<'color'>
+   '::Type': 'color'
+   '::OwnConfig': Field_color_ownConfig
+   '::OwnSerial': Field_color_ownSerial
+   '::Value': Field_color_value
+   '::Setvalue': Field_color_value
+   '::Unchecked': Field_color_unchecked
+   '::Child': never
+   '::Opts': unknown
+   '::OwnPatch': Patch<'color'>
 }
 export class Field_color extends Field {
    static readonly type: 'color' = 'color'
