@@ -189,7 +189,7 @@ export class Field_date<out VALUE> extends Field {
       if (this.stringValue_ == null && this.selectedValue != null) return this.format(this.selectedValue)
       return this.stringValue_
    }
-   private selectedValue_: Field_date_unchecked<VALUE> = undefined
+   @observable private accessor selectedValue_: Field_date_unchecked<VALUE> = undefined
 
    get selectedValue(): Field_date_unchecked<VALUE> {
       return this.selectedValue_
