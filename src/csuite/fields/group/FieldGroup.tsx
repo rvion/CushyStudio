@@ -306,6 +306,9 @@ export class Field_group<T extends SchemaDict> extends Field {
    override zSet(x: this['ҨSetvalue']): this {
       this.zRunInTransaction(() => {
          for (const key in x) {
+            // set support partial values
+            if (x[key] === undefined) continue
+
             const child = this.zFields[key]
             if (child == null) {
                console.error( `🔴 Field_Group(${this.zPath}).setValue: invalid key "${key}" with value`, x[key]) // prettier-ignore
@@ -414,6 +417,7 @@ export class Field_group<T extends SchemaDict> extends Field {
             const subWidget: Maybe<Field> = this.zFields[prop]
             if (subWidget == null) return
             if (!(subWidget instanceof Field)) return void console.log(`[🔶] tried to access non-field`, prop)
+            if (mode === 'set' && !subWidget.zIsSet) return undefined // 🔴
             return subWidget.zGetValue(mode)
          },
          getOwnPropertyDescriptor: (_target, prop): PropertyDescriptor | undefined => {
