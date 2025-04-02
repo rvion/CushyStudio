@@ -10,7 +10,7 @@ export const RenderUI = obs(function RenderUI_({
    field,
    ...uiconf
 }: { field: Field } & RenderProps<any>): ReactNode {
-   let prevCtx: RenderCtx | null = useRendererCtx()
+   const prevCtx: RenderCtx | null = useRendererCtx()
    // console.log(`[🤠🟢22] `, uiconf)
    // case 1. top level
    if (prevCtx == null) {
