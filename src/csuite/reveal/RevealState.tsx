@@ -4,13 +4,16 @@ import type { RevealStateLazy } from './RevealStateLazy'
 import type { RevealContentProps } from './shells/ShellProps'
 import type { CSSProperties, FC, FocusEvent, MouseEvent, ReactNode, SyntheticEvent } from 'react'
 
-import { makeAutoObservable, observable } from 'mobx'
+import { action, makeAutoObservable, observable } from 'mobx'
 
 import { hasMod } from '../accelerators/META_NAME'
+import { regionMonitor } from '../regions/RegionMonitor'
 import { getUIDForMemoryStructure } from '../utils/getUIDForMemoryStructure'
 import { isElemAChildOf } from '../utils/isElemAChildOf'
 import { toCssSizeValue } from '../utils/toCssSizeValue'
+import { window_addEventListener } from '../utils/window_addEventListenerAction'
 import { DEBUG_REVEAL } from './DEBUG_REVEAL'
+import { VirtualDomRect } from './misc/VirtualDomRect'
 import { RevealCloseEvent } from './RevealCloseEvent'
 import { removeFromGlobalRevealStack } from './RevealGlobal'
 import { computePlacement, type RevealComputedPosition, type RevealPlacement } from './RevealPlacement'
@@ -365,9 +368,57 @@ export class RevealState {
       left: 0,
       finalPlacementLogic: 'screen-top-left',
    }
-
    setPosition = (rect: DOMRect | null, shell: DOMRect | null): void => {
       this.tooltipPosition = computePlacement(this.placement, rect, shell)
+   }
+
+   // Needed for all placements that are relative to the window's bottom or right side
+   handleWindowResize = action((): void => {
+      if (this.p.relativeTo === 'mouse') return
+
+      this.updatePlacement()
+   })
+
+   updatePlacement = (): void => {
+      if (!this.isVisible) return
+
+      // find element to attach to
+      const relTo = this.p.relativeTo
+
+      // 1. place around mouse cursor
+      if (relTo === 'mouse') {
+         const x = regionMonitor.mouseX
+         const y = regionMonitor.mouseY
+         const vDomRect = new VirtualDomRect({ x, y, width: 1, height: 1 })
+         this.setPosition(vDomRect, null)
+      }
+
+      // 2. place around anchor
+      else if (relTo == null || relTo === 'anchor') {
+         const element = this.anchorRef.current
+         // console.log(`[🌍 1] `, element?.getBoundingClientRect())
+         // console.log(`[🌍 2] `, reveal.getBoundingClientRect(element))
+         this.setPosition(
+            // 🌍 element?.getBoundingClientRect() ?? null,
+            this.getBoundingClientRect(element),
+            // 🌍 shellRef.current?.getBoundingClientRect() ?? null,
+            this.getBoundingClientRect(this.shellRef.current),
+         )
+      }
+
+      // 3. place somewhere else
+      else if (relTo?.startsWith('#')) {
+         const element = document.getElementById(relTo.slice(1))!
+         // do we want to throw HERE ?
+         // or defer to anchor instead ?
+         // we could move this block above 2.
+         // and use 2 as a fallback case.
+         if (element == null) return
+         const rect = element.getBoundingClientRect()
+         this.setPosition(rect, this.shellRef.current?.getBoundingClientRect() ?? null)
+
+         // in that case, let's add a return here
+      }
    }
 
    // lock --------------------------------------------
@@ -455,6 +506,10 @@ export class RevealState {
       this._resetAllAnchorTimouts()
       this.inAnchor = true
 
+      // Just to be safe that we don't add the same event manager twice
+      window.removeEventListener('resize', this.handleWindowResize)
+      window_addEventListener('resize', this.handleWindowResize)
+
       if (!wasVisible) this.p.onRevealed?.(this)
       if (!wasVisible) {
          if (
@@ -496,6 +551,8 @@ export class RevealState {
    }
 
    close = (reason?: RevealHideReason): void => {
+      window.removeEventListener('resize', this.handleWindowResize)
+
       if (!this.isVisible) return this.log(`🔴 attempting to close BUT already closed ! (reason=${reason})`)
       this.log(`🚨 close (reason=${reason})`)
 
