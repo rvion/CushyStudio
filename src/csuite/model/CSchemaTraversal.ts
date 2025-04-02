@@ -33,7 +33,20 @@ export class CSchemaNeighborhood<KEY extends string> {
       if (Array.isArray(key)) return this._getAtPath(key)
       return this._getOne(key)
    }
-   getOrNull(key: KEY): Maybe<CSchema> {
+
+   getOrNull(key: KEY | KEY[]): Maybe<CSchema> {
+      if (Array.isArray(key)) {
+         let at: Maybe<CSchema> = this.schema
+         for (const k of key) {
+            at = at.neighboors[this.name]._getOneOrNull(k)
+            if (at == null) return null
+         }
+         return at
+      }
+      return this.edges[key]?.schema
+   }
+
+   private _getOneOrNull(key: KEY): Maybe<CSchema> {
       return this.edges[key]?.schema
    }
 
