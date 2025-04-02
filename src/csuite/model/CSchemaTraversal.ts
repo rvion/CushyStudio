@@ -1,3 +1,4 @@
+import type { ColExpr } from './ColExpr'
 import type { CSchema } from './CSchema'
 import type { SchemaDictWithPaths, SchemaWithSerialPath } from './FieldConstructor'
 
@@ -6,9 +7,11 @@ import { computed } from 'mobx'
 import { isSchemaOptional } from '../fields/WidgetUI.DI'
 import { bang } from '../utils/bang'
 import { searchMatches } from '../utils/searchMatches'
+import { CUSTOM_TRAVEL_PREFIX } from './CSchemaTraversalExt'
 
 export type NeighborhoodName = 'children' | 'travels'
-export type NeighborhoodPath = Flavor<string, 'NeighborhoodPath'>
+export type NeighborhoodPath = ColExpr
+
 export class CSchemaNeighborhood<KEY extends string> {
    constructor(
       public name: NeighborhoodName,
@@ -47,14 +50,16 @@ export class CSchemaNeighborhood<KEY extends string> {
    }
 
    private _getOneOrNull(key: KEY): Maybe<CSchema> {
+      if (key.startsWith(CUSTOM_TRAVEL_PREFIX)) return getBuilder().empty()
       return this.edges[key]?.schema
    }
 
    private _getOne(key: KEY): CSchema {
+      if (key.startsWith(CUSTOM_TRAVEL_PREFIX)) return getBuilder().empty()
       const edge = this.edges[key]
       if (edge == null) {
          const availableKeys = this.getPathsAndSchemaNoFollow().map((i) => i.at)
-         const errMsg = `❌ key ${key} does not exist in schema ${this.schema._uid}(${this.schema.codeForTypescriptValue()})'s ${this.name} neighboorhood (available keys: ${availableKeys})`
+         const errMsg = `❌ key "${key}" does not exist in schema ${this.schema._uid}(${this.schema.codeForTypescriptValue()})'s ${this.name} neighboorhood (available keys: ${availableKeys})`
          throw new Error(errMsg)
       }
       return edge.schema
@@ -75,7 +80,7 @@ export class CSchemaNeighborhood<KEY extends string> {
    }
    // 🟢
    private _getOneP(key: KEY): { schema: CSchema; serialPath: string | null } {
-      const errMsg = `❌ key ${key} does not exist in schema ${this.schema._uid}'s ${this.name} neighboorhood`
+      const errMsg = `❌ key "${key}" does not exist in schema ${this.schema._uid}'s ${this.name} neighboorhood`
       const zz = bang(this.edges[key], errMsg)
       return { schema: zz.schema, serialPath: zz.serialPath }
    }
@@ -143,7 +148,7 @@ export class CSchemaNeighborhood<KEY extends string> {
             return true
          },
          // step 2. if accept is present,
-         accept: (schema, at) => {
+         accept: (schema) => {
             const realSchema = isSchemaOptional(schema) ? schema.config.schema : schema
             if (realSchema.type === 'group') return false
             if (realSchema.type === 'choices') return false
@@ -173,9 +178,12 @@ export class CSchemaNeighborhood<KEY extends string> {
          out.push(...nextLeaves)
          leaves = nextLeaves
       }
+
       return leaves
    }
 }
 
-type ColExpr = Flavor<string, 'NeighborhoodPath'>
-export type SchemaGraphNode = { at: ColExpr; schema: CSchema }
+export type SchemaGraphNode = {
+   at: ColExpr
+   schema: CSchema
+}
