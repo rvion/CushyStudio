@@ -21,6 +21,7 @@ export type RevealPlacement =
 
    // absolute placement ---------------------------------------------------------
    | 'screen'
+   | 'screen-cover'
    | 'screen-top'
    | 'screen-top-left'
    | 'screen-top-right'
@@ -80,6 +81,7 @@ export type RevealComputedPosition = {
       | 'above-no-min-size'
       | 'above-no-min-no-max-size'
       | 'screen'
+      | 'screen-cover'
       | 'screen-top'
       | 'screen-top-left'
       | 'screen-top-right'
@@ -119,6 +121,14 @@ export const computePlacement = (
          maxWidth: '100vw',
          maxHeight: '98vh',
          finalPlacementLogic: 'screen',
+      }
+   if (placement === 'screen-cover')
+      return {
+         top: 0,
+         left: 0,
+         bottom: 0,
+         right: 0,
+         finalPlacementLogic: 'screen-cover',
       }
 
    if (placement === 'screen-top')
